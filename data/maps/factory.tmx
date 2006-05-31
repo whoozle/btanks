@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<map version="0.99a" orientation="orthogonal" width="20" height="16" tilewidth="64" tileheight="64">
+ <tileset name="Untitled" firstgid="1">
+  <tile id="0">
+   <image format="png">
+    <data encoding="base64">
+     iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAAYklEQVR42u3QMREAAAgAoe9fWnN4MlCAqnlOgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIuG4BWHzw4uJRQGoAAAAASUVORK5CYII=
+    </data>
+   </image>
+  </tile>
+  <tile id="1">
+   <image format="png">
+    <data encoding="base64">
+     iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAAYElEQVR42u3QAQ0AAAwCIPuX1hzfIQLpcxEgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQLuG0bQw7Ko2TvAAAAAAElFTkSuQmCC
+    </data>
+   </image>
+  </tile>
+  <tile id="2">
+   <image format="png">
+    <data encoding="base64">
+     iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAAfElEQVR42u3bIQEAIRREwQ1EGSR1LhdBaAMJMCf5I16BEes2SXbxslsfJQMAAMAd4LWx+wcw1/dEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD4DHmNAQAAoA5A5Q4xRFpd41bs0wAAAABJRU5ErkJggg==
+    </data>
+   </image>
+  </tile>
+ </tileset>
+ <layer name="Layer 0" width="20" height="16">
+  <property name="z" value="-100"/>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNiYGBgBGImNJpYjE09uWbhM58aZuFzM63MYqKifUwk2EuKmSPFfcTYw0QlO0fNo32cUQMDAJX5vpMABQAA
+  </data>
+ </layer>
+ <layer name="Layer 1" width="20" height="16">
+  <property name="z" value="100"/>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGFmAGQ1T2+xR8ygzjxbxMlCA2v4Z7OYNRQAARD/K3AAFAAA=
+  </data>
+ </layer>
+</map>
