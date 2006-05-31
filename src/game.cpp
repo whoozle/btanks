@@ -100,10 +100,10 @@ void IGame::run() {
 	sdlx::Rect window_size = _window.getSize();
 	Uint32 black = _window.mapRGB(0, 0, 0);
 
-	float mapx = 0, mapy = 0, mapvx = 400, mapvy = 300;
+	float mapx = 0, mapy = 0, mapvx = 100, mapvy = 75;
 	int fps_limit = 75;
 	
-	int fr = fps_limit / 2;
+	float fr = fps_limit / 2;
 	int max_delay = 1000/fps_limit;
 	
 	while (_running) {
@@ -129,7 +129,7 @@ void IGame::run() {
 		_main_menu.render(_window);
 		
 		
-		std::string f = mrt::formatString("%d", fr);
+		std::string f = mrt::formatString("%d", (int)fr);
 		stringRGBA(_window.getSDLSurface(), 3, 3, f.c_str(), 255, 255, 255, 255);
 		
 		if (_map.loaded()) {
@@ -140,7 +140,7 @@ void IGame::run() {
 		_window.flip();
 
 		int tdelta = SDL_GetTicks() - tstart;
-		fr = (tdelta != 0)? (1000 / tdelta): 9999;
+		fr = (tdelta != 0)? (1000.0 / tdelta): 9999;
 		if (tdelta < max_delay)
 			SDL_Delay(max_delay - tdelta);
 	}
@@ -150,6 +150,7 @@ void IGame::run() {
 }
 
 void IGame::deinit() {
+	LOG_DEBUG(("shutting down, freeing surface"));
 	_running = false;
 	_window.free();
 }

@@ -10,7 +10,7 @@ int main(int argc, const char **argv) {
 			Game->run();
 		} CATCH("run", {});
 		Game->deinit();
-		
+		LOG_DEBUG(("exiting"));
 	} CATCH("main", {return 1;})
 	return 0;
 }
