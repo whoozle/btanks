@@ -16,7 +16,7 @@ void MenuItem::render(sdlx::TTF &font) {
 
 	_inversed.createRGB(_normal.getWidth(), _normal.getHeight(), _normal.getBPP(), _normal.getFlags());
 	_inversed.convertAlpha();
-	_inversed.setAlpha(0);
+	//_inversed.setAlpha(0);
 		
 	//LOG_DEBUG(("inversed: %dx%d:%d", _inversed.getWidth(), _inversed.getHeight(), _inversed.getBPP()));
 
