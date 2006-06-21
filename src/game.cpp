@@ -36,13 +36,14 @@ void IGame::init(const int argv, const char **argc) {
 //	putenv("SDL_VIDEODRIVER=dga");
 #endif
 	bool opengl = false;
+//	bool opengl = true;
 
 	LOG_DEBUG(("initializing SDL..."));
 	sdlx::System::init(SDL_INIT_EVERYTHING);
 
 	if (opengl) {
 		if (SDL_GL_LoadLibrary(NULL) == -1) 
-			LOG_WARN(("cannot load GL library"));
+			throw_sdl(("SDL_GL_LoadLibrary"));
 
 		glEnable_ptr = (glEnable_Func) SDL_GL_GetProcAddress("glEnable");
 		if (!glEnable_ptr)
@@ -73,19 +74,6 @@ void IGame::init(const int argv, const char **argc) {
 */
 		}
 	}
-	
-	LOG_DEBUG(("probing video info..."));
-	char drv_name[256];
-	if (SDL_VideoDriverName(drv_name, sizeof(drv_name)) == NULL)
-		throw_sdl(("SDL_VideoDriverName"));
-	LOG_DEBUG(("driver name: %s", drv_name));
-
-	const SDL_VideoInfo * vinfo = SDL_GetVideoInfo();
-	if (vinfo == NULL)
-		throw_sdl(("SDL_GetVideoInfo()"));
-	LOG_DEBUG(("hw_available: %u; wm_available: %u;\n\tblit_hw: %u; blit_hw_CC:%u; blit_hw_A:%u; blit_sw:%u; blit_sw_CC:%u; blit_sw_A: %u; \n\tblit_fill: %u; video_mem: %u", 
-		vinfo->hw_available, vinfo->wm_available, vinfo->blit_hw, vinfo->blit_hw_CC, vinfo->blit_hw_A, vinfo->blit_sw, vinfo->blit_sw_CC, vinfo->blit_sw_A, vinfo->blit_fill, vinfo->video_mem ));
-	
 	int w = 800, h = 600;
 	if (opengl) {
 		SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
@@ -100,6 +88,9 @@ void IGame::init(const int argv, const char **argc) {
 	}
 	
 	LOG_DEBUG(("created main surface. (%dx%dx%d)", w, h, _window.getBPP()));
+
+	sdlx::System::probeVideoMode();	
+
 	SDL_WM_SetCaption("Battle tanks - " VERSION_STRING, "btanks");
 
 	_main_menu.init(w, h);	
@@ -113,12 +104,12 @@ void IGame::init(const int argv, const char **argc) {
 }
 
 void IGame::onKey(const Uint8 type, const SDL_keysym key) {
-/*	if (key.sym == SDLK_ESCAPE && _main_menu.isActive() == false) {
+	if (key.sym == SDLK_ESCAPE && _main_menu.isActive() == false) {
 		//pause game
 		//...
 		LOG_DEBUG(("pause"));
 	}
-*/}
+}
 
 void IGame::onMenu(const std::string &name) {
 	if (name == "quit") 
@@ -142,7 +133,7 @@ void IGame::run() {
 	Uint32 black = _window.mapRGB(0, 0, 0);
 
 	float mapx = 0, mapy = 0, mapvx = 0, mapvy = 0;
-	int fps_limit = 50;
+	int fps_limit = 100;
 	
 	float fr = fps_limit;
 	int max_delay = 1000/fps_limit;

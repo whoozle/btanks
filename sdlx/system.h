@@ -24,7 +24,7 @@ namespace sdlx {
 	class System {
 	public:
 		static void init(int system);
-
+		static void probeVideoMode();
 	};
 }
 

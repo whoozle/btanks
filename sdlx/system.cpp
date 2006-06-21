@@ -19,10 +19,26 @@
 #include "sdlx/sdl_ex.h"
 #include <stdlib.h>
 
+#include "mrt/logger.h"
+
 using namespace sdlx;
 
 void System::init(int system) {
 	if (SDL_Init(system) == -1) 
 		throw_sdl(("SDL_Init"));
 	atexit(::SDL_Quit);
+}
+
+void System::probeVideoMode() {
+	LOG_DEBUG(("probing video info..."));
+	char drv_name[256];
+	if (SDL_VideoDriverName(drv_name, sizeof(drv_name)) == NULL)
+		throw_sdl(("SDL_VideoDriverName"));
+	LOG_DEBUG(("driver name: %s", drv_name));
+
+	const SDL_VideoInfo * vinfo = SDL_GetVideoInfo();
+	if (vinfo == NULL)
+		throw_sdl(("SDL_GetVideoInfo()"));
+	LOG_DEBUG(("hw_available: %u; wm_available: %u;\n\tblit_hw: %u; blit_hw_CC:%u; blit_hw_A:%u; blit_sw:%u; blit_sw_CC:%u; blit_sw_A: %u; \n\tblit_fill: %u; video_mem: %u", 
+		vinfo->hw_available, vinfo->wm_available, vinfo->blit_hw, vinfo->blit_hw_CC, vinfo->blit_hw_A, vinfo->blit_sw, vinfo->blit_sw_CC, vinfo->blit_sw_A, vinfo->blit_fill, vinfo->video_mem ));
 }
