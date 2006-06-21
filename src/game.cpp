@@ -35,20 +35,23 @@ void IGame::init(const int argv, const char **argc) {
 #ifdef __linux__
 //	putenv("SDL_VIDEODRIVER=dga");
 #endif
+	bool opengl = false;
 
 	LOG_DEBUG(("initializing SDL..."));
 	sdlx::System::init(SDL_INIT_EVERYTHING);
 
-	if (SDL_GL_LoadLibrary(NULL) == -1) 
-		LOG_WARN(("cannot load GL library"));
+	if (opengl) {
+		if (SDL_GL_LoadLibrary(NULL) == -1) 
+			LOG_WARN(("cannot load GL library"));
+
+		glEnable_ptr = (glEnable_Func) SDL_GL_GetProcAddress("glEnable");
+		if (!glEnable_ptr)
+			throw_ex(("cannot get address of glEnable"));
 	
-	glEnable_ptr = (glEnable_Func) SDL_GL_GetProcAddress("glEnable");
-	if (!glEnable_ptr)
-		throw_ex(("cannot get address of glEnable"));
-	
-	glBlendFunc_ptr = (glBlendFunc_Func) SDL_GL_GetProcAddress("glBlendFunc");
-	if (!glBlendFunc_ptr)
-		throw_ex(("cannot get address of glBlendFunc"));
+		glBlendFunc_ptr = (glBlendFunc_Func) SDL_GL_GetProcAddress("glBlendFunc");
+		if (!glBlendFunc_ptr)
+			throw_ex(("cannot get address of glBlendFunc"));
+	}
 	
 	sdlx::Surface::setDefaultFlags(sdlx::Surface::Hardware | sdlx::Surface::Alpha | sdlx::Surface::ColorKey);
 
@@ -84,15 +87,17 @@ void IGame::init(const int argv, const char **argc) {
 		vinfo->hw_available, vinfo->wm_available, vinfo->blit_hw, vinfo->blit_hw_CC, vinfo->blit_hw_A, vinfo->blit_sw, vinfo->blit_sw_CC, vinfo->blit_sw_A, vinfo->blit_fill, vinfo->video_mem ));
 	
 	int w = 800, h = 600;
-	//_window.setVideoMode(w, h, 32, SDL_ASYNCBLIT | SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_SRCALPHA);
-
-	SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
-	SDL_GL_SetAttribute( SDL_GL_ALPHA_SIZE, 8 );
+	if (opengl) {
+		SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
+		SDL_GL_SetAttribute( SDL_GL_ALPHA_SIZE, 8 );
 	
-	glBlendFunc_ptr( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA ) ;
-	glEnable_ptr( GL_BLEND ) ;
+		glBlendFunc_ptr( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA ) ;
+		glEnable_ptr( GL_BLEND ) ;
 	
-	_window.setVideoMode(w, h, 32, SDL_OPENGL | SDL_OPENGLBLIT);
+		_window.setVideoMode(w, h, 32, SDL_OPENGL | SDL_OPENGLBLIT);
+	} else {
+		_window.setVideoMode(w, h, 32, SDL_ASYNCBLIT | SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_SRCALPHA);
+	}
 	
 	LOG_DEBUG(("created main surface. (%dx%dx%d)", w, h, _window.getBPP()));
 	SDL_WM_SetCaption("Battle tanks - " VERSION_STRING, "btanks");
