@@ -16,6 +16,7 @@ void MenuItem::render(sdlx::TTF &font) {
 
 	_inversed.createRGB(_normal.getWidth(), _normal.getHeight(), _normal.getBPP(), _normal.getFlags());
 	_inversed.convertAlpha();
+	_inversed.setAlpha(0);
 		
 	//LOG_DEBUG(("inversed: %dx%d:%d", _inversed.getWidth(), _inversed.getHeight(), _inversed.getBPP()));
 
@@ -27,9 +28,11 @@ void MenuItem::render(sdlx::TTF &font) {
 			//LOG_DEBUG(("%08x ", (unsigned )c));
 			Uint8 r, g, b, a;
 			_normal.getRGBA(c, r, g, b, a);
+			//LOG_DEBUG(("%02x %02x %02x %02x", a, r, g, b));
 			if (r == 0 && g == 0 && b == 0 || a == 0) {
 				r = 0; g = 0; b = 128; a = 255;
 			}
+			//LOG_DEBUG(("%02x %02x %02x %02x", a, r, g, b));
 			c = _inversed.mapRGBA(r, g, b, a);
 			//LOG_DEBUG(("%08x ", (unsigned )c));
 			_inversed.putPixel(x, y, c);

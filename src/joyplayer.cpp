@@ -1,12 +1,38 @@
 #include "joyplayer.h"
+#include "mrt/logger.h"
 
 JoyPlayer::JoyPlayer(const int idx) {
 	_joy.open(idx);
 }
 
+#define THRESHOLD 16384
+
 void JoyPlayer::processEvent(const SDL_Event &event) {
-	if (event.type != SDL_JOYAXISMOTION && event.type != SDL_JOYBUTTONDOWN && event.type != SDL_JOYBUTTONUP)
-		return;
+	switch(event.type) {
+		case SDL_JOYAXISMOTION: 
+			//LOG_DEBUG(("%d:%d", event.jaxis.axis, event.jaxis.value));
+			if (event.jaxis.axis == 0) {
+				vx = 0;
+				if (event.jaxis.value >= THRESHOLD)  vx += 1;
+				if (event.jaxis.value <= -THRESHOLD) vx -= 1;
+			}
+
+			if (event.jaxis.axis == 1) {
+				vy = 0;
+				if (event.jaxis.value >= THRESHOLD)  vy += 1;
+				if (event.jaxis.value <= -THRESHOLD) vy -= 1;
+			}
+			//LOG_DEBUG(("(vx, vy) = (%f, %f)", vx, vy));
+		break;
+		case SDL_JOYBUTTONDOWN: 
+			//LOG_DEBUG(("button: %d", event.jbutton.button));
+			switch(event.jbutton.button) {
+				case 0: action.emit("shoot");
+			}
+		break;
+		case SDL_JOYBUTTONUP: 
+		break;
+	}
 }
 
 JoyPlayer::~JoyPlayer() {

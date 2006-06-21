@@ -4,10 +4,13 @@
 #include "sdlx/surface.h"
 #include "mrt/singleton.h"
 #include <string>
+#include <vector>
 #include <sigc++/sigc++.h>
 
 #include "menu.h"
 #include "map.h"
+
+class Player;
 
 class IGame {
 public: 
@@ -30,6 +33,9 @@ private:
 
 	bool _running;
 	sdlx::Surface _window;
+
+	typedef std::vector<Player *> PlayerList;
+	PlayerList _players;
 	
 	MainMenu _main_menu;
 	Map _map;

@@ -242,7 +242,11 @@ void Surface::update(const int x, const int y, const int w, const int h) {
 }
 
 void Surface::flip() {
-    SDL_Flip(surface);
+	if (surface->flags & SDL_OPENGL) {
+		SDL_GL_SwapBuffers();
+	} else {
+		SDL_Flip(surface);
+	}
 }
 
 void Surface::toggleFullscreen() {

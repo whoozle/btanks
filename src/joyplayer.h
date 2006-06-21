@@ -7,7 +7,7 @@
 class JoyPlayer : public Player {
 public:
 	JoyPlayer(const int idx);
-	virtual void processEvent(const SDL_Event &event) = 0;
+	virtual void processEvent(const SDL_Event &event) ;
 	virtual ~JoyPlayer();
 private:
 	sdlx::Joystick _joy;

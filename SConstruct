@@ -43,7 +43,7 @@ conf.Finish()
 
 env.Append(CPPFLAGS=' -Wall -pedantic -ggdb3 -Wno-long-long')
 #env.Append(LINKFLAGS=' -pg ')
-#env.Append(CPPFLAGS=' -O3')
+env.Append(CPPFLAGS=' -O')
 
 Export('env')
 Export('sigc_cpppath')
@@ -59,5 +59,5 @@ env.Append(CPPPATH=sigc_cpppath)
 
 xc = env.Program('bt', \
 	['src/main.cpp', 'src/game.cpp', 'src/menu.cpp', 'src/menuitem.cpp', 'src/joyplayer.cpp', \
-	'src/map.cpp', 'src/layer.cpp'], \
+	'src/map.cpp', 'src/layer.cpp', 'src/object.cpp'], \
 LIBS=['sdlx', 'mrt', sigc_lib, 'SDL_gfx', 'SDL_ttf', 'SDL_image', 'SDL', 'expat', 'z'], RPATH=['.'])
