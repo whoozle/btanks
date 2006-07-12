@@ -133,7 +133,7 @@ void IGame::run() {
 	Uint32 black = _window.mapRGB(0, 0, 0);
 
 	float mapx = 0, mapy = 0, mapvx = 0, mapvy = 0;
-	int fps_limit = 100;
+	int fps_limit = 50;
 	
 	float fr = fps_limit;
 	int max_delay = 1000/fps_limit;
@@ -179,12 +179,13 @@ void IGame::run() {
 	
 		int tdelta = SDL_GetTicks() - tstart;
 
-		if (tdelta < max_delay)
+		if (tdelta < max_delay) {
+			//LOG_DEBUG(("tdelta: %d, delay: %d", tdelta, max_delay - tdelta));
 			SDL_Delay(max_delay - tdelta);
+		}
 
 		tdelta = SDL_GetTicks() - tstart;
-		float fr2 = (tdelta != 0)? (1000.0 / tdelta): 10000;
-		fr = (fr + fr2)/2;
+		fr = (tdelta != 0)? (1000.0 / tdelta): 10000;
 	}
 
 	if (_running)

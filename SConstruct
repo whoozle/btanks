@@ -3,8 +3,13 @@ env = Environment()
 opts = Options(['options.cache'])
 opts.Add('CC', 'C compiler')
 opts.Add('CXX', 'C++ compiler')
+opts.Add('CCFLAGS', 'General options that are passed to the C compiler', '')
+opts.Add('CXXFLAGS', 'General options that are passed to the C++ compiler', '')
 
 opts.Update(env)
+
+env.Append(CCFLAGS = env['CCFLAGS'])
+
 opts.Save('options.cache', env.Copy())
 
 Help(opts.GenerateHelpText(env))
@@ -58,6 +63,6 @@ env.Prepend(CPPPATH=['.'])
 env.Append(CPPPATH=sigc_cpppath)
 
 xc = env.Program('bt', \
-	['src/main.cpp', 'src/game.cpp', 'src/menu.cpp', 'src/menuitem.cpp', 'src/joyplayer.cpp', \
-	'src/map.cpp', 'src/layer.cpp', 'src/object.cpp'], \
+	['src/main.cpp', 'src/game.cpp', 'src/menu.cpp', 'src/menuitem.cpp', 'src/joyplayer.cpp', 'src/keyplayer.cpp', \
+	'src/map.cpp', 'src/layer.cpp', 'src/object.cpp', 'src/world.cpp'], \
 LIBS=['sdlx', 'mrt', sigc_lib, 'SDL_gfx', 'SDL_ttf', 'SDL_image', 'SDL', 'expat', 'z'], RPATH=['.'])
