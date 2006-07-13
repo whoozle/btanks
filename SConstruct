@@ -18,7 +18,7 @@ Help(opts.GenerateHelpText(env))
 conf_env = env.Copy()
 conf = Configure(conf_env)
 
-sigc_cpppath = ['/usr/lib/sigc++-2.0/include', '/usr/include/sigc++-2.0']
+sigc_cpppath = ['/usr/lib/sigc++-2.0/include', '/usr/include/sigc++-2.0', '/usr/local/include/sigc++-2.0', '/usr/local/lib/sigc++-2.0/include']
 sigc_lib = 'sigc-2.0'
 
 conf_env.Prepend(CPPPATH=sigc_cpppath)

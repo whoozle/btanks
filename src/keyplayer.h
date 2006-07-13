@@ -1,13 +1,19 @@
 #ifndef __BT_KEYPLAYER_H__
 #define __BT_KEYPLAYER_H__
 
-#include "player.h"
+#include "object.h"
 #include "sdlx/joystick.h"
 
-class KeyPlayer : public Player {
+class KeyPlayer : public Object {
 public:
-	virtual void processEvent(const SDL_Event &event) ;
+	KeyPlayer();
 	virtual ~KeyPlayer();
+	virtual void tick(const float dt);
+	
+protected: 
+	struct state { float vx, vy; } state;
+private:
+	void onKey(const Uint8 type, const SDL_keysym sym);
 };
 
 #endif

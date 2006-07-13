@@ -1,3 +1,4 @@
+#include <SDL/SDL.h>
 #include "joyplayer.h"
 #include "mrt/logger.h"
 
@@ -7,6 +8,22 @@ JoyPlayer::JoyPlayer(const int idx) {
 
 #define THRESHOLD 16384
 
+void JoyPlayer::tick(const float dt) {
+	SDL_JoystickUpdate();
+	Sint16 x = _joy.getAxis(0);
+	Sint16 y = _joy.getAxis(1);
+	
+	float vx = 0, vy = 0;
+	
+	if (x >= THRESHOLD) vx += 1;
+	if (x <= -THRESHOLD) vx += 1;
+	if (y >= THRESHOLD) vy += 1;
+	if (y <= -THRESHOLD) vy += 1;
+
+	setV(vx, vy);
+}
+
+/*
 void JoyPlayer::processEvent(const SDL_Event &event) {
 	switch(event.type) {
 		case SDL_JOYAXISMOTION: 
@@ -34,6 +51,7 @@ void JoyPlayer::processEvent(const SDL_Event &event) {
 		break;
 	}
 }
+*/
 
 JoyPlayer::~JoyPlayer() {
 	_joy.close();

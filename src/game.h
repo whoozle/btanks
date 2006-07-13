@@ -34,9 +34,6 @@ private:
 	bool _running;
 	sdlx::Surface _window;
 
-	typedef std::vector<Player *> PlayerList;
-	PlayerList _players;
-	
 	MainMenu _main_menu;
 	Map _map;
 };

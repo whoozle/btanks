@@ -63,7 +63,7 @@ void IGame::init(const int argv, const char **argc) {
 	int jc = sdlx::Joystick::getCount();
 	if (jc > 0) {
 		LOG_DEBUG(("found %d joystick(s)", jc));
-		sdlx::Joystick::sendEvents(true);
+		//sdlx::Joystick::sendEvents(true);
 		
 		for(int i = 0; i < jc; ++i) {
 			LOG_DEBUG(("%d: %s", i, sdlx::Joystick::getName(i).c_str()));
@@ -119,8 +119,6 @@ void IGame::onMenu(const std::string &name) {
 		_main_menu.setActive(false);
 		
 		_map.load("factory");
-		
-		_players.push_back(new JoyPlayer(0));
 	}
 }
 
@@ -155,10 +153,6 @@ void IGame::run() {
 				_running = false;
 			break;
     		}
-			
-			for(PlayerList::iterator i = _players.begin(); i != _players.end(); ++i) {
-				(*i)->processEvent(event);
-			}
 		}
 		_window.fillRect(window_size, black);
 		_map.render(_window, (long)mapx, (long)mapy);
@@ -185,7 +179,7 @@ void IGame::run() {
 		}
 
 		tdelta = SDL_GetTicks() - tstart;
-		fr = (tdelta != 0)? (1000.0 / tdelta): 10000;
+		fr = (tdelta != 0)? (1000.0 / tdelta): 1000;
 	}
 
 	if (_running)

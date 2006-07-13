@@ -9,8 +9,9 @@ public:
 	
 	virtual void tick(const float dt) = 0;
 protected:
+	void setV(const float vx, const float vy);
 private:
-
+	float _vx, _vy;
 	friend class IWorld;
 };
 
