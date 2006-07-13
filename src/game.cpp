@@ -35,13 +35,13 @@ void IGame::init(const int argv, const char **argc) {
 #ifdef __linux__
 //	putenv("SDL_VIDEODRIVER=dga");
 #endif
-	bool opengl = false;
-//	bool opengl = true;
+	bool opengl = (argv > 1 && std::string(argc[1]) == "--gl");
 
 	LOG_DEBUG(("initializing SDL..."));
 	sdlx::System::init(SDL_INIT_EVERYTHING);
 
 	if (opengl) {
+		LOG_DEBUG(("loading GL library"));
 		if (SDL_GL_LoadLibrary(NULL) == -1) 
 			throw_sdl(("SDL_GL_LoadLibrary"));
 
