@@ -20,6 +20,7 @@
 
 #include <SDL/SDL.h>
 #include "rect.h"
+#include <string>
 
 namespace mrt {
 class Chunk;
@@ -69,9 +70,9 @@ namespace sdlx {
 		void getVideo();
 		void setVideoMode(int w, int h, int bpp, int flags = Default);
 
-		void saveBMP(const char *fname) const;
+		void saveBMP(const std::string &fname) const;
 #ifndef NO_SDL_IMAGE
-		void loadImage(const char *str);
+		void loadImage(const std::string &fname);
 		void loadImage(const mrt::Chunk &memory);
 #endif
 		/*

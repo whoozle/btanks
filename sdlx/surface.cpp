@@ -183,17 +183,17 @@ Uint32 Surface::getPixel(int x, int y) const{
 
 
 
-void Surface::saveBMP(const char *fname)  const {
-    if (surface == NULL) return;
-	if (SDL_SaveBMP(surface, fname) == -1) throw_sdl(("SDL_SaveBMP"));
+void Surface::saveBMP(const std::string &fname)  const {
+	if (SDL_SaveBMP(surface, fname.c_str()) == -1) 
+		throw_sdl(("SDL_SaveBMP"));
 }
 
 
 #ifndef NO_SDL_IMAGE
 #include <SDL/SDL_image.h>
-void Surface::loadImage(const char *str) {
+void Surface::loadImage(const std::string &str) {
     free();
-    if ((surface = IMG_Load(str)) == NULL ) throw_sdl(("IMG_Load"));
+    if ((surface = IMG_Load(str.c_str())) == NULL ) throw_sdl(("IMG_Load"));
 }
 
 void Surface::loadImage(const mrt::Chunk &memory) {
