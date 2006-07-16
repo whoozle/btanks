@@ -121,8 +121,17 @@ void Map::end(const std::string &name) {
 		_image = NULL;
 		
 		_image = new sdlx::Surface;
-		_image->loadImage(_data);
-		_image->convert(SDL_ASYNCBLIT | SDL_HWSURFACE);
+		std::string source = e.attrs["source"];
+		if (source.size()) {
+			source = "data/tiles/" + source;
+			LOG_DEBUG(("loading tileset from single file ('%s')", source.c_str()));
+			_image->loadImage(source);
+			_image_is_tileset = true;
+		} else {
+			_image->loadImage(_data);
+			_image_is_tileset = false;
+		}
+		//_image->convert(SDL_ASYNCBLIT | SDL_HWSURFACE);
 		_image->convertAlpha();
 		
 		LOG_DEBUG(("image loaded. (%dx%d) format: %s", _image->getWidth(), _image->getHeight(), e.attrs["format"].c_str()));
@@ -142,6 +151,30 @@ void Map::end(const std::string &name) {
 		//LOG_DEBUG(("(1,1) = %ld", _layers[z]->get(1,1)));
 	} else if (name == "property") {
 		_properties[e.attrs["name"]] = e.attrs["value"];
+	} else if (name == "tileset" && _image != NULL && _image_is_tileset) {
+		//fixme: do not actualy chop image in many tiles at once, use `tile' wrapper
+		_image->setAlpha(0, 0);
+		long w = _image->getWidth(), h = _image->getHeight();
+		long id = 0;
+		for(long y = 0; y < h; y += _th) {
+			for(long x = 0; x < w; x += _tw) {
+				sdlx::Surface *s = new sdlx::Surface;
+				s->createRGB(_tw, _th, 24);
+				s->convertAlpha();
+
+				sdlx::Rect from(x, y, _tw, _th);
+				s->copyFrom(*_image, from);
+				//s->saveBMP(mrt::formatString("tile-%ld.bmp", id));
+
+				LOG_DEBUG(("cut tile %ld from tileset [%ld:%ld, %ld:%ld]", _firstgid + id, x, y, _tw, _th));
+
+				_tiles[_firstgid + id++] = s;
+				s = NULL;
+			}
+		}
+
+		delete _image;
+		_image = NULL;
 	}
 	
 	_stack.pop();

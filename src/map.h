@@ -31,6 +31,7 @@ private:
 	long _w, _h, _tw, _th, _firstgid, _lastz;
 	mrt::Chunk _data;
 	sdlx::Surface *_image;
+	bool _image_is_tileset;
 
 	typedef std::map<const std::string, std::string> PropertyMap;
 	PropertyMap _properties;
