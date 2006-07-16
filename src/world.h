@@ -2,19 +2,18 @@
 #define __BT_WORLD_H__
 
 #include "mrt/singleton.h"
-#include <list>
+#include <set>
 
-struct ObjectInfo {
-	float x, y, z;
-};
-
+class Object;
 
 class IWorld {
 public:
 	DECLARE_SINGLETON(IWorld);
+	
+	void addObject(Object *);
 private:
-	typedef std::list<ObjectInfo> ObjectInfoList;
-	ObjectInfoList _objects;
+	typedef std::set<Object *> tObjectSet;
+	tObjectSet _objects;
 };
 
 SINGLETON(World, IWorld);
