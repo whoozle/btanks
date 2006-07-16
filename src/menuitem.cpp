@@ -12,13 +12,13 @@ void MenuItem::render(sdlx::TTF &font) {
 	_inversed.free();
 
 	font.renderBlended(_normal, _value, _color);
-	LOG_DEBUG(("normal  : %dx%d:%d (%d)", _normal.getWidth(), _normal.getHeight(), _normal.getBPP(), _normal.getSDLSurface()->format->BytesPerPixel));
+	//LOG_DEBUG(("normal  : %dx%d:%d (%d)", _normal.getWidth(), _normal.getHeight(), _normal.getBPP(), _normal.getSDLSurface()->format->BytesPerPixel));
 
 	_inversed.createRGB(_normal.getWidth(), _normal.getHeight(), _normal.getBPP(), SDL_SWSURFACE);
 	_inversed.convertAlpha();
 	//_inversed.setAlpha(255);
 		
-	LOG_DEBUG(("inversed: %dx%d:%d", _inversed.getWidth(), _inversed.getHeight(), _inversed.getBPP()));
+	//LOG_DEBUG(("inversed: %dx%d:%d", _inversed.getWidth(), _inversed.getHeight(), _inversed.getBPP()));
 
 	int w = _normal.getWidth();
 	int h = _normal.getHeight();
