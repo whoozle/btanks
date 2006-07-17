@@ -19,6 +19,8 @@
  */
 
 #include <string>
+#include <vector>
+
 #include <inttypes.h>
 
 #if !(defined(__GNUC__) || defined(__GNUG__) || defined(__attribute__))
@@ -30,6 +32,7 @@ namespace mrt {
 
 const std::string formatString(const char *fmt, ...) __attribute__((format(printf, 1, 2)));
 void trim(std::string &str, const std::string chars = "\t\n\r ");
+void split(std::vector<std::string> & result, const std::string &str, const std::string &delimiter, const int limit = 0);
 
 }
 

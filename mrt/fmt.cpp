@@ -26,3 +26,25 @@ void mrt::trim(std::string &str, const std::string chars) {
 	if (i != str.npos)
 		str.erase(i + 1, str.size());
 }
+
+void mrt::split(std::vector<std::string> & result, const std::string &str, const std::string &delimiter, const int limit) {
+	result.clear();
+	
+	std::string::size_type pos = 0, p;
+	int n = limit;
+	
+	while(pos < str.size()) {
+		if (n > 0) {
+			if (n-- == 0) 
+				return;
+		}
+		p = str.find(delimiter, pos);
+		if (p != std::string::npos) 
+			result.push_back(str.substr(pos, p - pos));
+		else {
+			result.push_back(str.substr(pos));
+			return;
+		}
+		pos = p + delimiter.size();
+	}
+}
