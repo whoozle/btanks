@@ -17,18 +17,23 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+ 
+namespace sdlx {
+	class Surface;
+}
 
 class Object {
 public:
-	float mass;
+	float mass, w, h;
 	Object();
 	virtual ~Object();
 	
 	virtual void tick(const float dt) = 0;
+	virtual void render(sdlx::Surface &surf, const int x, const int y) = 0;
 protected:
-	void setV(const float vx, const float vy);
+	float _vx, _vy, _vz;
 private:
-	float _vx, _vy;
+	float _x, _y, _z;
 	friend class IWorld;
 };
 

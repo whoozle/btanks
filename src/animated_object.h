@@ -27,13 +27,17 @@ namespace sdlx {
 class AnimatedObject : public Object {
 public:
 	AnimatedObject();
-	AnimatedObject(sdlx::Surface *surface, const long tile_w, const long tile_h);
-	
+	AnimatedObject(sdlx::Surface *surface, const long tile_w, const long tile_h, const float speed);
+
+	void setPose(const long pose);
 	virtual void tick(const float dt);
+	void render(sdlx::Surface &surface, const int x, const int y);
 	
-protected: 
+private: 
 	sdlx::Surface *_surface;
-	long _poses, _fpp;
+	long _tw, _th;
+	long _poses, _fpp, _pose;
+	float _speed, _pos;
 };
 
 #endif

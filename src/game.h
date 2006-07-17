@@ -48,7 +48,7 @@ private:
 	void onKey(const Uint8 type, const SDL_keysym sym);
 	void onMenu(const std::string &name);
 
-	bool _running;
+	bool _running, _paused;
 	sdlx::Surface _window;
 
 	MainMenu _main_menu;

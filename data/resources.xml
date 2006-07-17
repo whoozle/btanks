@@ -1,3 +1,6 @@
 <resources tile_width="64" tile_height="64" version="0.3">
-	<animation id="green-tank" tile="Tank_tile3.png" poses="8" fpp="8"/>
+	<animation id="green-tank" tile="Tank_tile3.png" />
+	<animation id="red-tank" tile="Tank_tile4.png" />
+	<animation id="yellow-tank" tile="Tank_tile5.png" />
+	<animation id="cyan-tank" tile="Tank_tile6.png" />
 </resources>

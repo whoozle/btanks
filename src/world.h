@@ -21,6 +21,11 @@
 #include "mrt/singleton.h"
 #include <set>
 
+namespace sdlx {
+class Surface;
+class Rect;
+}
+
 class Object;
 
 class IWorld {
@@ -28,6 +33,8 @@ public:
 	DECLARE_SINGLETON(IWorld);
 	
 	void addObject(Object *);
+	void render(sdlx::Surface &surface, const sdlx::Rect &viewport);
+	void tick(const float dt);
 private:
 	typedef std::set<Object *> tObjectSet;
 	tObjectSet _objects;

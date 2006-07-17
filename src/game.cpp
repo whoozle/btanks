@@ -1,6 +1,7 @@
 #include "game.h"
 #include "version.h"
 #include "joyplayer.h"
+#include "keyplayer.h"
 #include "world.h"
 #include "resource_manager.h"
 
@@ -29,8 +30,13 @@ const std::string IGame::data_dir = "data";
 typedef void (*glEnable_Func)(GLenum cap);
 typedef void (*glBlendFunc_Func) (GLenum sfactor, GLenum dfactor );
 
-static glEnable_Func glEnable_ptr;
-static glBlendFunc_Func glBlendFunc_ptr;
+template <typename FuncPtr> union SharedPointer {
+	FuncPtr call;
+	void *ptr;
+};
+
+static SharedPointer<glEnable_Func> glEnable_ptr;
+static SharedPointer<glBlendFunc_Func> glBlendFunc_ptr;
 
 void IGame::init(const int argv, const char **argc) {
 
@@ -47,12 +53,12 @@ void IGame::init(const int argv, const char **argc) {
 		if (SDL_GL_LoadLibrary(NULL) == -1) 
 			throw_sdl(("SDL_GL_LoadLibrary"));
 
-		glEnable_ptr = (glEnable_Func) SDL_GL_GetProcAddress("glEnable");
-		if (!glEnable_ptr)
+		glEnable_ptr.ptr = SDL_GL_GetProcAddress("glEnable");
+		if (!glEnable_ptr.ptr)
 			throw_ex(("cannot get address of glEnable"));
 	
-		glBlendFunc_ptr = (glBlendFunc_Func) SDL_GL_GetProcAddress("glBlendFunc");
-		if (!glBlendFunc_ptr)
+		glBlendFunc_ptr.ptr = SDL_GL_GetProcAddress("glBlendFunc");
+		if (!glBlendFunc_ptr.ptr)
 			throw_ex(("cannot get address of glBlendFunc"));
 	}
 	
@@ -81,8 +87,8 @@ void IGame::init(const int argv, const char **argc) {
 		SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
 		SDL_GL_SetAttribute( SDL_GL_ALPHA_SIZE, 8 );
 	
-		glBlendFunc_ptr( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA ) ;
-		glEnable_ptr( GL_BLEND ) ;
+		glBlendFunc_ptr.call( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA ) ;
+		glEnable_ptr.call( GL_BLEND ) ;
 	
 		_window.setVideoMode(w, h, 32, SDL_OPENGL | SDL_OPENGLBLIT);
 	} else {
@@ -97,8 +103,10 @@ void IGame::init(const int argv, const char **argc) {
 
 	_main_menu.init(w, h);	
 
-	_window.update();
+	_paused = false;
 	_running = true;
+
+	_window.update();
 	
 	LOG_DEBUG(("initializing resource manager..."));
 	ResourceManager->init("data/resources.xml");
@@ -109,10 +117,10 @@ void IGame::init(const int argv, const char **argc) {
 }
 
 void IGame::onKey(const Uint8 type, const SDL_keysym key) {
-	if (key.sym == SDLK_ESCAPE && _main_menu.isActive() == false) {
-		//pause game
-		//...
-		LOG_DEBUG(("pause"));
+	if (key.sym == SDLK_ESCAPE && type == SDL_KEYUP) {
+		LOG_DEBUG(("escape hit, paused: %s", _paused?"true":"false"));
+		_paused = !_paused;
+		_main_menu.setActive(_paused);
 	}
 }
 
@@ -124,6 +132,7 @@ void IGame::onMenu(const std::string &name) {
 		_main_menu.setActive(false);
 		
 		_map.load("country");
+		World->addObject(new KeyPlayer(ResourceManager->getAnimation("red-tank"), SDLK_UP, SDLK_DOWN, SDLK_LEFT, SDLK_RIGHT));
 	}
 }
 
@@ -133,6 +142,8 @@ void IGame::run() {
 	SDL_Event event;
 
 	sdlx::Rect window_size = _window.getSize();
+	sdlx::Rect viewport = _window.getSize();
+	
 	Uint32 black = _window.mapRGB(0, 0, 0);
 
 	float mapx = 0, mapy = 0, mapvx = 0, mapvy = 0;
@@ -159,8 +170,13 @@ void IGame::run() {
 			break;
     		}
 		}
+		if (!_paused) 
+			World->tick(1/fr);
+		
 		_window.fillRect(window_size, black);
-		_map.render(_window, (long)mapx, (long)mapy);
+		_map.render(_window, viewport);
+		World->render(_window, viewport);
+
 		_main_menu.render(_window);
 		
 		
@@ -169,8 +185,8 @@ void IGame::run() {
 		stringRGBA(_window.getSDLSurface(), 3, 3, f.c_str(), 255, 255, 255, 255);
 		
 		if (_map.loaded()) {
-			mapx += mapvx / fr ;
-			mapy += mapvy / fr ;
+			viewport.x = (Sint16) (mapx += mapvx / fr );
+			viewport.x = (Sint16) (mapy += mapvy / fr );
 			//LOG_DEBUG(("%f %f", mapx, mapy));
 		}
 		_window.update();

@@ -18,19 +18,22 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include "object.h"
+#include "animated_object.h"
 #include "sdlx/joystick.h"
 
 class KeyPlayer : public Object {
 public:
-	KeyPlayer();
+	KeyPlayer(AnimatedObject *animation, SDLKey up, SDLKey down, SDLKey left, SDLKey right);
 	virtual ~KeyPlayer();
 	virtual void tick(const float dt);
-	
+	virtual void render(sdlx::Surface &surf, const int x, const int y);
+
 protected: 
 	struct state { float vx, vy; } state;
 private:
+	AnimatedObject *_animation;
 	void onKey(const Uint8 type, const SDL_keysym sym);
+	SDLKey _up, _down, _left, _right;
 };
 
 #endif

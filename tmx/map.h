@@ -9,6 +9,7 @@
 
 namespace sdlx {
 class Surface;
+class Rect;
 }
 
 class TMXEntity;
@@ -25,7 +26,7 @@ public:
 	virtual void end(const std::string &name);
 	virtual void charData(const std::string &data);
 	
-	void render(sdlx::Surface &window, long x, long y);
+	void render(sdlx::Surface &window, const sdlx::Rect &dst);
 
 private:
 	long _w, _h, _tw, _th, _firstgid, _lastz;
