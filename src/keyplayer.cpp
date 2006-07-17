@@ -6,7 +6,7 @@
 KeyPlayer::KeyPlayer(AnimatedObject *animation, SDLKey up, SDLKey down, SDLKey left, SDLKey right): 
 _animation(animation),
 _up(up), _down(down), _left(left), _right(right) {
-	speed = 200;
+	speed = 400;
 	Game->key_signal.connect(sigc::mem_fun(this, &KeyPlayer::onKey));
 	memset(&state, 0, sizeof(state));
 }
