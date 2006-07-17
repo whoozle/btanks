@@ -1,6 +1,14 @@
 <resources tile_width="64" tile_height="64" version="0.3">
-	<animation id="green-tank" tile="Tank_tile3.png" speed="10"/>
-	<animation id="red-tank" tile="Tank_tile4.png" speed="10"/>
-	<animation id="yellow-tank" tile="Tank_tile5.png" speed="10" />
-	<animation id="cyan-tank" tile="Tank_tile6.png" speed="10" />
+	
+	<animation-model id="tank-animation">
+		<pose id="hold">0</pose>
+		<pose id="start">1,2</pose>
+		<pose id="move">3,4,5,6,7,8</pose>
+	</animation-model>
+	
+	<animation id="green-tank" tile="Tank_tile3.png" model="tank-animation" speed="10"/>
+	<animation id="red-tank" tile="Tank_tile4.png" model="tank-animation" speed="10"/>
+	<animation id="yellow-tank" tile="Tank_tile5.png" model="tank-animation" speed="10" />
+	<animation id="cyan-tank" tile="Tank_tile6.png" model="tank-animation" speed="10" />
+	<vehicle id="tank" speed="200" />
 </resources>
