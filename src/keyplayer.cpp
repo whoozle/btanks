@@ -6,7 +6,7 @@
 KeyPlayer::KeyPlayer(AnimatedObject *animation, SDLKey up, SDLKey down, SDLKey left, SDLKey right): 
 _animation(animation),
 _up(up), _down(down), _left(left), _right(right) {
-	speed = 500;
+	speed = 200;
 	Game->key_signal.connect(sigc::mem_fun(this, &KeyPlayer::onKey));
 	memset(&state, 0, sizeof(state));
 }
@@ -20,8 +20,10 @@ void KeyPlayer::tick(const float dt) {
 	if (_vx != state.vx || _vy != state.vy) {
 		int pose = posemap[(int)((state.vy + 1) * 3 + state.vx + 1)];
 		//LOG_DEBUG(("pose %d", pose));
-		if (pose) 
+		if (pose) {
 			_animation->setPose(pose - 1);
+			_animation->play(true);
+		}
 	}
 	_vx = state.vx;
 	_vy = state.vy;

@@ -30,14 +30,20 @@ public:
 	AnimatedObject(sdlx::Surface *surface, const int tile_w, const int tile_h, const float speed);
 
 	void setPose(const int pose);
+	const int getPose() const;
+
 	virtual void tick(const float dt);
 	void render(sdlx::Surface &surface, const int x, const int y);
+	
+	void play(const bool repeat = false);
+	void stop();
 	
 private: 
 	sdlx::Surface *_surface;
 	int _tw, _th;
 	int _poses, _fpp, _pose;
 	float _speed, _pos;
+	bool _active, _repeat;
 };
 
 #endif
