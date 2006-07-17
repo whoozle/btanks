@@ -38,11 +38,25 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 			LOG_DEBUG(("loaded animation '%s' from '%s'", id.c_str(), fname.c_str()));
 			_animations[id] = new AnimatedObject(s, tw, th, speed);
 		} CATCH("animation", { delete s; s = NULL; });
+	} else if (name == "pose") {
+		//nope
 	} else LOG_WARN(("unhandled tag: %s", name.c_str()));
 }
 
-void IResourceManager::end(const std::string &name) {}
-void IResourceManager::charData(const std::string &data) {}
+void IResourceManager::end(const std::string &name) {
+	if (name == "pose") {
+		LOG_DEBUG(("pose frames: %s", _data.c_str()));
+		std::vector<std::string> frames;
+		mrt::split(frames, _data, ",");
+		for(size_t i = 0; i < frames.size(); ++i) {
+			//LOG_DEBUG(("%d: %s", i, frames[i].c_str()));
+			mrt::trim(frames[i]);
+		}
+	}
+}
+void IResourceManager::charData(const std::string &data) {
+	_data = data;
+}
 
 IResourceManager::IResourceManager() {
 	//LOG_DEBUG(("IResourceManager ctor"));

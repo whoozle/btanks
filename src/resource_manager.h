@@ -47,6 +47,8 @@ private:
 	typedef std::map<const std::string, AnimatedObject *> AnimationMap;
 	AnimationMap _animations;
 	
+	std::string _data;
+	
 	long _tw, _th;
 };
 
