@@ -4,8 +4,13 @@
 
 using namespace mrt;
 
-XMLException::XMLException() {}
+#define throw_xml(parser) { \
+	mrt::XMLException e; \
+	e.addMessage(__FILE__, __LINE__); \
+	e.addMessage("XML error" + parser->getErrorMessage()); throw e; }
 
+
+XMLException::XMLException() {}
 
 const std::string XMLException::getCustomMessage() { return ""; }
 
