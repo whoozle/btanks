@@ -17,7 +17,7 @@ public:
 
 	void parseFile(const std::string &fname);
 	
-	virtual void start(const std::string &name, const Attrs &attr) = 0;
+	virtual void start(const std::string &name, Attrs &attr) = 0;
 	virtual void end(const std::string &name) = 0;
 	virtual void charData(const std::string &data);
 	
