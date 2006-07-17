@@ -1,6 +1,7 @@
 #include "game.h"
 #include "version.h"
 #include "joyplayer.h"
+#include "world.h"
 
 #include "mrt/logger.h"
 #include "mrt/exception.h"
@@ -118,7 +119,7 @@ void IGame::onMenu(const std::string &name) {
 		LOG_DEBUG(("start single player requested"));
 		_main_menu.setActive(false);
 		
-		_map.load("factory");
+		_map.load("country");
 	}
 }
 
