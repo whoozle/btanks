@@ -1,5 +1,5 @@
-/* Fannon Codder Game
- * Copyright (C) 2004 Fannon Codder team
+/* Battle Tanks Game
+ * Copyright (C) 2006 Battle Tanks team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
