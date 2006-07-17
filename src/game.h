@@ -8,7 +8,7 @@
 #include <sigc++/sigc++.h>
 
 #include "menu.h"
-#include "map.h"
+#include "tmx/map.h"
 
 class Player;
 

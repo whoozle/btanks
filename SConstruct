@@ -56,6 +56,7 @@ Export('sigc_lib')
 
 SConscript('mrt/SConscript')
 SConscript('sdlx/SConscript')
+SConscript('tmx/SConscript')
 
 env = env.Copy()
 env.Append(LIBPATH=['mrt', 'sdlx', 'src'])
@@ -64,5 +65,7 @@ env.Append(CPPPATH=sigc_cpppath)
 
 xc = env.Program('bt', \
 	['src/main.cpp', 'src/game.cpp', 'src/menu.cpp', 'src/menuitem.cpp', 'src/joyplayer.cpp', 'src/keyplayer.cpp', \
-	'src/map.cpp', 'src/layer.cpp', 'src/object.cpp', 'src/world.cpp', 'src/animated_object.cpp'], \
+	'src/object.cpp', 'src/world.cpp', 'src/animated_object.cpp', \
+	'tmx/map.cpp', 'tmx/layer.cpp'
+	], \
 LIBS=['sdlx', 'mrt', sigc_lib, 'SDL_gfx', 'SDL_ttf', 'SDL_image', 'SDL', 'expat', 'z'], RPATH=['.'])
