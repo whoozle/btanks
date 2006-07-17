@@ -39,6 +39,6 @@ void System::probeVideoMode() {
 	const SDL_VideoInfo * vinfo = SDL_GetVideoInfo();
 	if (vinfo == NULL)
 		throw_sdl(("SDL_GetVideoInfo()"));
-	LOG_DEBUG(("hw_available: %u; wm_available: %u;\n\tblit_hw: %u; blit_hw_CC:%u; blit_hw_A:%u; blit_sw:%u; blit_sw_CC:%u; blit_sw_A: %u; \n\tblit_fill: %u; video_mem: %u", 
+	LOG_DEBUG(("hw_available: %u; wm_available: %u; blit_hw: %u; blit_hw_CC:%u; blit_hw_A:%u; blit_sw:%u; blit_sw_CC:%u; blit_sw_A: %u; blit_fill: %u; video_mem: %u", 
 		vinfo->hw_available, vinfo->wm_available, vinfo->blit_hw, vinfo->blit_hw_CC, vinfo->blit_hw_A, vinfo->blit_sw, vinfo->blit_sw_CC, vinfo->blit_sw_A, vinfo->blit_fill, vinfo->video_mem ));
 }
