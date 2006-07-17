@@ -43,7 +43,7 @@ void Map::load(const std::string &name) {
 	LOG_DEBUG(("loading completed"));
 }
 
-void Map::start(const std::string &name, const Attrs &attrs) {
+void Map::start(const std::string &name, Attrs &attrs) {
 	//LOG_DEBUG(("started %s", name.c_str()));
 	Entity e(attrs);
 	
@@ -166,8 +166,9 @@ void Map::end(const std::string &name) {
 				s->copyFrom(*_image, from);
 				//s->saveBMP(mrt::formatString("tile-%ld.bmp", id));
 
-				LOG_DEBUG(("cut tile %ld from tileset [%ld:%ld, %ld:%ld]", _firstgid + id, x, y, _tw, _th));
-
+				//LOG_DEBUG(("cut tile %ld from tileset [%ld:%ld, %ld:%ld]", _firstgid + id, x, y, _tw, _th));
+				
+				delete _tiles[_firstgid + id];
 				_tiles[_firstgid + id++] = s;
 				s = NULL;
 			}

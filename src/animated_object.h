@@ -10,10 +10,13 @@ namespace sdlx {
 class AnimatedObject : public Object {
 public:
 	AnimatedObject();
-	AnimatedObject(sdlx::Surface *surface, const long tile_w, const long tile_h, const long w, const long h);
+	AnimatedObject(sdlx::Surface *surface, const long tile_w, const long tile_h);
+	
+	virtual void tick(const float dt);
 	
 protected: 
 	sdlx::Surface *_surface;
+	long _poses, _fpp;
 };
 
 #endif

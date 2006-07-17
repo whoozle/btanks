@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<map version="0.99b" orientation="orthogonal" width="10" height="8" tilewidth="128" tileheight="128">
+ <tileset name="country" firstgid="1" tilewidth="128" tileheight="128">
+  <image source="../tiles/test_tileset.png"/>
+ </tileset>
+ <layer name="ground" width="10" height="8">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNkYGBgHMVkYwD9+/chQAEAAA==
+  </data>
+ </layer>
+ <layer name="stuff" width="10" height="8">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgwASsWMSwAZA6JiiGATYsmAOLGC7z8AGYPaS4jxjAxUC8+5jQxAC830VAQAEAAA==
+  </data>
+ </layer>
+ <layer name="trees" width="10" height="8">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAJNjYGCQA2J5BvoCcRziokAshiQvjUOdJBBLIcnjUifLgOo/XOrQAbHhAQChAU+XQAEAAA==
+  </data>
+ </layer>
+</map>

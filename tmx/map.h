@@ -21,7 +21,7 @@ public:
 	void load(const std::string &name);
 	const bool loaded() const;
 	
-	virtual void start(const std::string &name, const Attrs &attr);
+	virtual void start(const std::string &name, Attrs &attr);
 	virtual void end(const std::string &name);
 	virtual void charData(const std::string &data);
 	

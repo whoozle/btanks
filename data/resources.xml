@@ -1,0 +1,3 @@
+<resources tile_width="64" tile_height="64" version="0.3">
+	<animation id="green-tank" tile="Tank_tile3.png" poses="8" fpp="8"/>
+</resources>
