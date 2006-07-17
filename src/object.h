@@ -24,7 +24,7 @@ namespace sdlx {
 
 class Object {
 public:
-	float mass, w, h;
+	float mass, w, h, speed;
 	Object();
 	virtual ~Object();
 	

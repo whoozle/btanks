@@ -28,8 +28,8 @@ void IWorld::tick(const float dt) {
 	for(tObjectSet::iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		Object &o = **i;
 		o.tick(dt);
-		o._x += o._vx * dt;
-		o._y += o._vy * dt;
-		o._z += o._vz * dt;
+		o._x += o._vx * dt * o.speed;
+		o._y += o._vy * dt * o.speed;
+		o._z += o._vz * dt * o.speed;
 	}
 }

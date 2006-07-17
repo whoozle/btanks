@@ -26,7 +26,7 @@ public:
 	virtual void end(const std::string &name);
 	virtual void charData(const std::string &data);
 	
-	void render(sdlx::Surface &window, const sdlx::Rect &dst);
+	void render(sdlx::Surface &window, const sdlx::Rect &dst, const int z1, const int z2);
 
 private:
 	long _w, _h, _tw, _th, _firstgid, _lastz;

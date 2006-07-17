@@ -1,6 +1,6 @@
 <resources tile_width="64" tile_height="64" version="0.3">
-	<animation id="green-tank" tile="Tank_tile3.png" />
-	<animation id="red-tank" tile="Tank_tile4.png" />
-	<animation id="yellow-tank" tile="Tank_tile5.png" />
-	<animation id="cyan-tank" tile="Tank_tile6.png" />
+	<animation id="green-tank" tile="Tank_tile3.png" speed="10"/>
+	<animation id="red-tank" tile="Tank_tile4.png" speed="10"/>
+	<animation id="yellow-tank" tile="Tank_tile5.png" speed="10" />
+	<animation id="cyan-tank" tile="Tank_tile6.png" speed="10" />
 </resources>

@@ -174,8 +174,9 @@ void IGame::run() {
 			World->tick(1/fr);
 		
 		_window.fillRect(window_size, black);
-		_map.render(_window, viewport);
+		_map.render(_window, viewport, -1000, 0);
 		World->render(_window, viewport);
+		_map.render(_window, viewport, 0, 1001);
 
 		_main_menu.render(_window);
 		

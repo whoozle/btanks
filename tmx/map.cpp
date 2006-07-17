@@ -193,7 +193,7 @@ void Map::charData(const std::string &d) {
 	_stack.top().data = d;
 }
 
-void Map::render(sdlx::Surface &window, const sdlx::Rect &dst) {
+void Map::render(sdlx::Surface &window, const sdlx::Rect &dst, const int z1, const int z2) {
 	if (!loaded()) 
 		return;
 
@@ -211,7 +211,7 @@ void Map::render(sdlx::Surface &window, const sdlx::Rect &dst) {
 	long txn = (dst.w - 1) / _tw + 2;
 	long tyn = (dst.h - 1) / _th + 2;
 	
-	for(LayerMap::iterator l = _layers.begin(); l != _layers.end(); ++l) {
+	for(LayerMap::iterator l = _layers.begin(); l != _layers.end(); ++l) if (l->first >= z1 && l->first < z2) {
 		for(long ty = 0; ty < tyn; ++ty) {
 			for(long tx = 0; tx < txn; ++tx) {
 				long tid = l->second->get(txp + tx, typ + ty);
