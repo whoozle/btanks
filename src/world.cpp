@@ -2,6 +2,7 @@
 #include "object.h"
 #include "mrt/logger.h"
 #include "sdlx/rect.h"
+#include <math.h>
 
 IMPLEMENT_SINGLETON(World, IWorld)
 
@@ -28,8 +29,13 @@ void IWorld::tick(const float dt) {
 	for(tObjectSet::iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		Object &o = **i;
 		o.tick(dt);
-		o._x += o._vx * dt * o.speed;
-		o._y += o._vy * dt * o.speed;
-		o._z += o._vz * dt * o.speed;
+		float vx = o._vx, vy = o._vy, vz = o._vz;
+		float len = sqrt(vx * vx + vy * vy + vz * vz);
+		if (len == 0)
+			continue;
+		
+		o._x += o.speed * vx / len * dt;
+		o._y += o.speed * vy / len * dt;
+		o._z += o.speed * vz / len * dt;
 	}
 }

@@ -37,8 +37,11 @@ void AnimatedObject::cancel() {
 
 void AnimatedObject::cancelRepeatable() {
 	for (EventQueue::iterator i = _events.begin(); i != _events.end();) {
-		if (i->repeat) 
+		if (i->repeat) {
+			if (i == _events.begin())
+				_pos = 0;
 			i = _events.erase(i);
+		} 
 		else ++i;
 	}
 }
@@ -56,6 +59,7 @@ void AnimatedObject::tick(const float dt) {
 		return;
 	
 	const Event & event = _events.front();
+	//LOG_DEBUG(("event: %s, pos = %f", event.name.c_str(), _pos));
 	const Pose * pose = event.pose;
 	
 	if (pose == NULL) {
@@ -65,9 +69,11 @@ void AnimatedObject::tick(const float dt) {
 	
 	_pos += dt * pose->speed;
 	int cycles = ((int)_pos / pose->frames.size());
-	if (cycles && !event.repeat) 
+	if (cycles && !event.repeat) {
 		cancel();
-	_pos -= cycles * pose->frames.size();
+	} else {
+		_pos -= cycles * pose->frames.size();
+	}
 }
 
 void AnimatedObject::render(sdlx::Surface &surface, const int x, const int y) {
@@ -75,6 +81,11 @@ void AnimatedObject::render(sdlx::Surface &surface, const int x, const int y) {
 		return;
 	unsigned frame = (unsigned)_pos;
 	frame = _events.front().pose->frames[frame];
+	
+	if (frame * _th >= (unsigned)_surface->getHeight()) {
+		LOG_WARN(("frame %u is out of range.", frame));
+		return;
+	}
 	
 	sdlx::Rect src(_direction * _tw, frame * _th, _tw, _th);
 	surface.copyFrom(*_surface, src, x, y);
