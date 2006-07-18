@@ -3,7 +3,6 @@
 #include "mrt/logger.h"
 #include "animation_model.h"
 
-AnimatedObject::AnimatedObject() : _surface(0) {}
 AnimatedObject::AnimatedObject(AnimationModel *model, sdlx::Surface *surface, const int tile_w, const int tile_h) {
 	_model = model;
 	_surface = surface;

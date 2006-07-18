@@ -27,7 +27,6 @@ namespace sdlx {
 class AnimationModel;
 class AnimatedObject : public Object {
 public:
-	AnimatedObject();
 	AnimatedObject(AnimationModel *model, sdlx::Surface *surface, const int tile_w, const int tile_h);
 
 	void setPose(const int pose);
