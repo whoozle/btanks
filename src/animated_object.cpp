@@ -7,49 +7,82 @@ AnimatedObject::AnimatedObject(AnimationModel *model, sdlx::Surface *surface, co
 	_model = model;
 	_surface = surface;
 	_tw = tile_w; _th = tile_h;
-	_poses = (surface->getWidth()-1)/tile_w + 1;
-	_fpp = (surface->getHeight()-1)/tile_w + 1;
-	_pose= 0;
-	_pos = 0;
-	LOG_DEBUG(("poses: %d, fpp: %d", _poses, _fpp));
-	_active = false;
-	_repeat = false;
-}
-
-void AnimatedObject::setPose(const int pose) {
-	_pose = pose;
-}
-
-const int AnimatedObject::getPose() const {
-	return _pose;
-}
-
-void AnimatedObject::play(const bool repeat) {
-	_repeat = repeat;
-	_active = true;
+	_direction= 0;
 	_pos = 0;
 }
 
+void AnimatedObject::setDirection(const int dir) {
+	_direction = dir;
+}
 
-void AnimatedObject::stop() {
-	_active = false;
+const int AnimatedObject::getDirection() const {
+	return _direction;
+}
+
+void AnimatedObject::play(const std::string &id, const bool repeat) {
+	if (_events.empty())
+		_pos = 0;
+	const Pose *pose = _model->getPose(id);
+	if (pose != NULL)
+		_events.push_back(Event(id, repeat, pose));
+}
+
+
+void AnimatedObject::cancel() {
+	if (_events.empty()) 
+		return;
+	_events.pop_front();
 	_pos = 0;
 }
+
+void AnimatedObject::cancelRepeatable() {
+	for (EventQueue::iterator i = _events.begin(); i != _events.end();) {
+		if (i->repeat) 
+			i = _events.erase(i);
+		else ++i;
+	}
+}
+
+
+void AnimatedObject::cancelAll() {
+	while(!_events.empty())
+		_events.pop_front();
+}
+
 
 
 void AnimatedObject::tick(const float dt) {
-	if (!_active) 
+	if (_events.empty()) 
 		return;
 	
-	_pos += dt /* _speed*/;
-	int cycles = ((int)_pos / _fpp);
-	if (cycles && !_repeat) 
-		stop();
-	_pos -= cycles * _fpp;
+	const Event & event = _events.front();
+	const Pose * pose = event.pose;
+	
+	if (pose == NULL) {
+		cancel();
+		return;
+	}
+	
+	_pos += dt * pose->speed;
+	int cycles = ((int)_pos / pose->frames.size());
+	if (cycles && !event.repeat) 
+		cancel();
+	_pos -= cycles * pose->frames.size();
 }
 
 void AnimatedObject::render(sdlx::Surface &surface, const int x, const int y) {
-	int frame = (int)_pos;
-	sdlx::Rect src(_pose * _tw, frame * _th, _tw, _th);
+	if (_events.empty()) 
+		return;
+	unsigned frame = (unsigned)_pos;
+	frame = _events.front().pose->frames[frame];
+	
+	sdlx::Rect src(_direction * _tw, frame * _th, _tw, _th);
 	surface.copyFrom(*_surface, src, x, y);
+}
+
+const std::string AnimatedObject::getState() const {
+	static std::string empty;
+	if (_events.empty())
+		return empty;
+	return _events.front().name;
 }

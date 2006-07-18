@@ -9,20 +9,29 @@ _up(up), _down(down), _left(left), _right(right) {
 	speed = 400;
 	Game->key_signal.connect(sigc::mem_fun(this, &KeyPlayer::onKey));
 	memset(&state, 0, sizeof(state));
+	_animation->play("hold", true);
 }
 
 void KeyPlayer::tick(const float dt) {
-	static int posemap[] = {
+	static int dirmap[] = {
 		4, 3, 2,
 		5, 0, 1,
 		6, 7, 8,
 	};
 	if (_vx != state.vx || _vy != state.vy) {
-		int pose = posemap[(int)((state.vy + 1) * 3 + state.vx + 1)];
+		int dir = dirmap[(int)((state.vy + 1) * 3 + state.vx + 1)];
 		//LOG_DEBUG(("pose %d", pose));
-		if (pose) {
-			_animation->setPose(pose - 1);
-			_animation->play(true);
+		if (dir) {
+			_animation->setDirection(dir - 1);
+			//LOG_DEBUG(("animation state: %s", _animation->getState().c_str()));
+			if (_animation->getState() == "hold") {
+				_animation->cancelAll();
+				_animation->play("start", false);
+				_animation->play("move", true);
+			}
+		} else {
+			_animation->cancelRepeatable();
+			_animation->play("hold", true);
 		}
 	}
 	_vx = state.vx;

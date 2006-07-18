@@ -19,33 +19,49 @@
  */
 
 #include "object.h"
+#include <deque>
+#include <string>
 
 namespace sdlx {
 	class Surface;
 }
 
 class AnimationModel;
+class Pose;
+
 class AnimatedObject : public Object {
 public:
 	AnimatedObject(AnimationModel *model, sdlx::Surface *surface, const int tile_w, const int tile_h);
 
-	void setPose(const int pose);
-	const int getPose() const;
-
+	void setDirection(const int dir);
+	const int getDirection() const;
+	
 	virtual void tick(const float dt);
 	void render(sdlx::Surface &surface, const int x, const int y);
 	
-	void play(const bool repeat = false);
-	void stop();
+	void play(const std::string &id, const bool repeat = false);
+	void cancel();
+	void cancelRepeatable();
+	void cancelAll();
+	const std::string getState() const;
 	
 private: 
+	struct Event {
+		std::string name;
+		bool repeat;
+		const Pose * pose;
+		Event(const std::string name, const bool repeat, const Pose *pose) : name(name), repeat(repeat), pose(pose) {}
+	};
+
 	AnimationModel *_model;
 	sdlx::Surface *_surface;
 	
+	typedef std::deque<Event> EventQueue;
+	EventQueue _events;
+	
 	int _tw, _th;
-	int _poses, _fpp, _pose;
+	int _direction;
 	float _pos;
-	bool _active, _repeat;
 };
 
 #endif
