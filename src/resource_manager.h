@@ -27,6 +27,8 @@ namespace sdlx {
 }
 
 class AnimatedObject;
+class AnimationModel;
+class Pose;
 
 class IResourceManager : public mrt::XMLParser {
 public:
@@ -38,6 +40,7 @@ public:
 	void clear();
 	
 	AnimatedObject *getAnimation(const std::string &id);
+	AnimationModel *getAnimationModel(const std::string &id);
 
 private:
 	virtual void start(const std::string &name, Attrs &attr);
@@ -46,8 +49,14 @@ private:
 	
 	typedef std::map<const std::string, AnimatedObject *> AnimationMap;
 	AnimationMap _animations;
-	
-	std::string _data;
+
+	typedef std::map<const std::string, AnimationModel *> AnimationModelMap;
+	AnimationModelMap _animation_models;
+
+	//parser specific stuff	
+	AnimationModel *_am;
+	Pose *_pose;
+	std::string _data, _pose_id, _am_id;
 	
 	long _tw, _th;
 };

@@ -1,8 +1,8 @@
 <resources tile_width="64" tile_height="64" version="0.3">
 	
-	<animation-model id="tank-animation">
+	<animation-model id="tank-animation" speed="10">
 		<pose id="hold">0</pose>
-		<pose id="start">1,2</pose>
+		<pose id="start" speed="3">1,2</pose>
 		<pose id="move">3,4,5,6,7,8</pose>
 	</animation-model>
 	

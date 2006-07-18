@@ -64,7 +64,8 @@ env.Append(CPPPATH=sigc_cpppath)
 
 xc = env.Program('bt', \
 	['src/main.cpp', 'src/game.cpp', 'src/menu.cpp', 'src/menuitem.cpp', 'src/joyplayer.cpp', 'src/keyplayer.cpp', \
-	'src/object.cpp', 'src/world.cpp', 'src/animated_object.cpp', 'src/resource_manager.cpp', \
+	'src/object.cpp', 'src/world.cpp', 'src/animated_object.cpp', 'src/animation_model.cpp', \
+	'src/resource_manager.cpp', \
 	'tmx/map.cpp', 'tmx/layer.cpp'
 	], \
 LIBS=['sdlx', 'mrt', sigc_lib, 'SDL_gfx', 'SDL_ttf', 'SDL_image', 'SDL', 'expat', 'z'], RPATH=['.'])
