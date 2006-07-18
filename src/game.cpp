@@ -191,6 +191,7 @@ void IGame::run() {
 		
 		const float dt = 1.0/fr;
 		
+		
 		if (_running && !_paused && _players.size()) {
 			World->tick(dt);
 			Object * p = _players[0];

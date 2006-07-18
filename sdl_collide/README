@@ -1,0 +1,70 @@
+--------------------------------------
+SDL_Collide - collision detection library
+--------------------------------------
+
+examples.
+
+a pixel perfect collision test between
+
+	SDL_Surface *a positioned at (104,600)
+	SDL_Surface *b positioned at (708,256)
+
+	if(SDL_CollidePixel(a,104,600 , b,708,256))
+		// ...
+
+SDL_Surface bounding box intersection
+(fast but inaccurate)
+
+	SDL_Surface *a positioned at (104,600)
+	SDL_Surface *b positioned at (708,256)
+
+	if(SDL_CollideBoundingBox(a,104,600 , b,708,256))
+		// ...
+
+SDL_Rect bounding box intersection
+
+	SDL_Rect a;
+	SDL_Rect b;
+
+	if(SDL_CollideBoundingBox(a,b))
+		// ...
+
+circle intersection
+(better than bounding box test on smaller objects
+such as bullets)
+
+	circle A has centre at (10,90) with a radius of 3
+	circle B has centre at (7,600) with a radius of 10
+
+	allow a gap between circles of 2
+
+	if(SDL_CollideBoundingCircle(10,90,3 , 7,600,10 , 2))
+		// ...
+
+circle intersection, but approximated from SDL_Surfaces.
+radius and centre of the circle is approximated from the
+width and height of the surface.
+
+i.e a surface with width of 4 and height of 6 would have
+an approximate radius of 2.5 ((4+6)/2/2)and the centre
+would be offseted by (2,3)
+
+	SDL_Surface *a positioned at (104,600) with width and height (4,6)
+	SDL_Surface *b positioned at (708,256) with width and height (8,11)
+
+	allow a gap between circles of 3
+
+	if(SDL_CollideBoundingCircle(a,104,600 , b,708,256 , 3)
+		// ...
+
+	the algorithm approximates
+	SDL_Surface *a centre at (106,603) with radius 2 (radius rounded down)
+	SDL_Surface *b centre at (712,261) with radius 9 (radius and y rounded down)
+
+
+credits.
+    Amir Taaki
+    genjix@gmail.com
+
+    Rob Loach
+    http://robloach.net

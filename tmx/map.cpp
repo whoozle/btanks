@@ -139,15 +139,21 @@ void Map::end(const std::string &name) {
 		long w = atol(e.attrs["width"].c_str());
 		long h = atol(e.attrs["height"].c_str());
 		long z;
+		float impassability = 0;
+
 		if (_properties.find("z") == _properties.end()) {
 			z = ++_lastz;
 		} else {
 			z = atol(_properties["z"].c_str());
 		}
-		LOG_DEBUG(("layer '%s'. %ldx%ld. z: %ld, size: %d", e.attrs["name"].c_str(), w, h, z, _data.getSize()));
+		if (_properties.find("impassability") != _properties.end()) {
+			impassability = atof(_properties["impassability"].c_str());
+		}
+
+		LOG_DEBUG(("layer '%s'. %ldx%ld. z: %ld, size: %d, impassability: %f", e.attrs["name"].c_str(), w, h, z, _data.getSize(), impassability));
 		if (_layers.find(z) != _layers.end())
 			throw_ex(("layer with z %ld already exists", z));
-		_layers[z] = new Layer(w, h, _data);
+		_layers[z] = new Layer(w, h, _data, impassability);
 		//LOG_DEBUG(("(1,1) = %ld", _layers[z]->get(1,1)));
 	} else if (name == "property") {
 		_properties[e.attrs["name"]] = e.attrs["value"];
