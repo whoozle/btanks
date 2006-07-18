@@ -203,8 +203,8 @@ void IGame::run() {
 					mapvx = 0; 
 					mapvy = 0;
 				} else {
-					mapvx = p->speed * (wx - passive_viewport.x) / passive_viewport.w ;
-					mapvy = p->speed * (wy - passive_viewport.y) / passive_viewport.h ;
+					mapvx = p->speed * 2 * (wx - passive_viewport.x) / passive_viewport.w ;
+					mapvy = p->speed * 2 * (wy - passive_viewport.y) / passive_viewport.h ;
 					/*
 					LOG_DEBUG(("position : %f %f viewport: %d %d(passive:%d %d %d %d) mapv: %f %f", x, y,
 						viewport.x, viewport.y, passive_viewport.x, passive_viewport.y, passive_viewport.w, passive_viewport.h, 
