@@ -1,17 +1,18 @@
 #include "animated_object.h"
 #include "sdlx/surface.h"
 #include "mrt/logger.h"
+#include "animation_model.h"
 
 AnimatedObject::AnimatedObject() : _surface(0) {}
-AnimatedObject::AnimatedObject(sdlx::Surface *surface, const int tile_w, const int tile_h, const float speed) {
+AnimatedObject::AnimatedObject(AnimationModel *model, sdlx::Surface *surface, const int tile_w, const int tile_h) {
+	_model = model;
 	_surface = surface;
 	_tw = tile_w; _th = tile_h;
 	_poses = (surface->getWidth()-1)/tile_w + 1;
 	_fpp = (surface->getHeight()-1)/tile_w + 1;
 	_pose= 0;
-	_speed = speed;
 	_pos = 0;
-	LOG_DEBUG(("poses: %d, fpp: %d, speed: %f", _poses, _fpp, _speed));
+	LOG_DEBUG(("poses: %d, fpp: %d", _poses, _fpp));
 	_active = false;
 	_repeat = false;
 }
@@ -41,7 +42,7 @@ void AnimatedObject::tick(const float dt) {
 	if (!_active) 
 		return;
 	
-	_pos += dt * _speed;
+	_pos += dt /* _speed*/;
 	int cycles = ((int)_pos / _fpp);
 	if (cycles && !_repeat) 
 		stop();

@@ -23,13 +23,14 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 		if (id.size() == 0)
 			throw_ex(("animation.id was not set"));
 
+		const std::string &model = attr["model"];
+		if (model.size() == 0)
+			throw_ex(("animation.model was not set"));
+
 		long tw = atol(attr["tile_width"].c_str());
 		long th = atol(attr["tile_height"].c_str());
 		if (tw == 0) tw = _tw;
 		if (th == 0) th = _th;
-
-		float speed = atof(attr["speed"].c_str());
-		if (speed == 0) speed = 1;
 
 		sdlx::Surface *s = NULL;
 		TRY { 
@@ -37,7 +38,7 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 			const std::string fname = "data/tiles/" + attr["tile"];
 			s->loadImage(fname);
 			LOG_DEBUG(("loaded animation '%s' from '%s'", id.c_str(), fname.c_str()));
-			_animations[id] = new AnimatedObject(s, tw, th, speed);
+			_animations[id] = new AnimatedObject(getAnimationModel(model), s, tw, th);
 		} CATCH("animation", { delete s; s = NULL; });
 	} else if (name == "animation-model") {
 		const std::string & id = attr["id"];

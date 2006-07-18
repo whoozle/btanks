@@ -24,10 +24,11 @@ namespace sdlx {
 	class Surface;
 }
 
+class AnimationModel;
 class AnimatedObject : public Object {
 public:
 	AnimatedObject();
-	AnimatedObject(sdlx::Surface *surface, const int tile_w, const int tile_h, const float speed);
+	AnimatedObject(AnimationModel *model, sdlx::Surface *surface, const int tile_w, const int tile_h);
 
 	void setPose(const int pose);
 	const int getPose() const;
@@ -39,10 +40,12 @@ public:
 	void stop();
 	
 private: 
+	AnimationModel *_model;
 	sdlx::Surface *_surface;
+	
 	int _tw, _th;
 	int _poses, _fpp, _pose;
-	float _speed, _pos;
+	float _pos;
 	bool _active, _repeat;
 };
 

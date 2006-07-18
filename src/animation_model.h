@@ -19,6 +19,7 @@ public:
 	AnimationModel(const float default_speed);
 	
 	void addPose(const std::string &id, Pose *pose);
+	const Pose * getPose(const std::string &id) const;
 
 private:
 	typedef std::map<const std::string, Pose *> PoseMap;
