@@ -254,3 +254,7 @@ Map::~Map() {
 const bool Map::loaded() const {
 	return _w != 0;
 }
+
+const sdlx::Rect Map::getSize() const {
+	return sdlx::Rect(0,0,_tw * _w,_th * _h);
+}

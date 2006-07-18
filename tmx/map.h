@@ -27,6 +27,7 @@ public:
 	virtual void charData(const std::string &data);
 	
 	void render(sdlx::Surface &window, const sdlx::Rect &dst, const int z1, const int z2);
+	const sdlx::Rect getSize() const;
 
 private:
 	long _w, _h, _tw, _th, _firstgid, _lastz;

@@ -40,8 +40,7 @@ namespace sdlx {
 	    x = y = w = h = 0;
 	}
 	inline const bool in(const int _x, const int _y) const {
-	    return (_x>=x && _y>=y && 
-		    _x < x+w && _y < y+h);
+		return (_x>=x && _y>=y && _x < x+w && _y < y+h);
 	}
 	
 	const bool intersected(const Rect & other) {

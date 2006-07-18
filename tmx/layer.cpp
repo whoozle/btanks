@@ -6,7 +6,7 @@ Layer::Layer(const long w, const long h, const mrt::Chunk & data) : _w(w), _h(h)
 }
 
 const long Layer::get(const long x, const long y) const {
-	if (x >= _w || y >= _h) 
+	if (x < 0 || x >= _w || y < 0 || y >= _h) 
 		return 0;
 	
 	register long * ptr = (long *) _data.getPtr();

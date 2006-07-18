@@ -33,11 +33,13 @@ public:
 	DECLARE_SINGLETON(IWorld);
 	
 	void addObject(Object *);
+	const bool getInfo(Object *, float &x, float &y, float &z, float &vx, float &vy, float &vz) const;
+	
 	void render(sdlx::Surface &surface, const sdlx::Rect &viewport);
 	void tick(const float dt);
 private:
-	typedef std::set<Object *> tObjectSet;
-	tObjectSet _objects;
+	typedef std::set<Object *> ObjectSet;
+	ObjectSet _objects;
 };
 
 SINGLETON(World, IWorld);

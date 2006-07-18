@@ -132,7 +132,12 @@ void IGame::onMenu(const std::string &name) {
 		_main_menu.setActive(false);
 		
 		_map.load("country");
-		World->addObject(new KeyPlayer(ResourceManager->getAnimation("green-tank"), SDLK_UP, SDLK_DOWN, SDLK_LEFT, SDLK_RIGHT));
+		Object *player = new KeyPlayer(ResourceManager->getAnimation("green-tank"), SDLK_UP, SDLK_DOWN, SDLK_LEFT, SDLK_RIGHT);
+		_players.clear();
+		_players.push_back(player);
+
+		//World->clear();
+		World->addObject(player);
 	}
 }
 
@@ -143,11 +148,24 @@ void IGame::run() {
 
 	sdlx::Rect window_size = _window.getSize();
 	sdlx::Rect viewport = _window.getSize();
+	sdlx::Rect passive_viewport;
+	passive_viewport.w = passive_viewport.x = viewport.w / 3;
+	passive_viewport.h = passive_viewport.y = viewport.h / 3;
+	sdlx::Rect passive_viewport_stopzone(passive_viewport);
+	
+	{
+		int xmargin = passive_viewport_stopzone.w / 4;
+		int ymargin = passive_viewport_stopzone.h / 4;
+		passive_viewport_stopzone.x += xmargin;
+		passive_viewport_stopzone.y += ymargin;
+		passive_viewport_stopzone.w -= 2*xmargin;
+		passive_viewport_stopzone.h -= 2*ymargin;
+	}
 	
 	Uint32 black = _window.mapRGB(0, 0, 0);
 
 	float mapx = 0, mapy = 0, mapvx = 0, mapvy = 0;
-	int fps_limit = 50;
+	int fps_limit = 40;
 	
 	float fr = fps_limit;
 	int max_delay = 1000/fps_limit;
@@ -170,8 +188,31 @@ void IGame::run() {
 			break;
     		}
 		}
-		if (!_paused) 
-			World->tick(1/fr);
+		
+		const float dt = 1.0/fr;
+		
+		if (_running && !_paused && _players.size()) {
+			World->tick(dt);
+			Object * p = _players[0];
+			float x, y, z, vx, vy, vz;
+			if (World->getInfo(p, x, y, z, vx, vy, vz)) {
+				//LOG_DEBUG(("player[0] %f, %f, %f", vx, vy, vz));
+				int wx = (int)x - viewport.x;
+				int wy = (int)y - viewport.y;
+				if (passive_viewport_stopzone.in(wx, wy)) {
+					mapvx = 0; 
+					mapvy = 0;
+				} else {
+					mapvx = p->speed * (wx - passive_viewport.x) / passive_viewport.w ;
+					mapvy = p->speed * (wy - passive_viewport.y) / passive_viewport.h ;
+					/*
+					LOG_DEBUG(("position : %f %f viewport: %d %d(passive:%d %d %d %d) mapv: %f %f", x, y,
+						viewport.x, viewport.y, passive_viewport.x, passive_viewport.y, passive_viewport.w, passive_viewport.h, 
+						mapvx, mapvy));
+					*/
+				}
+			}
+		}
 		
 		_window.fillRect(window_size, black);
 		_map.render(_window, viewport, -1000, 0);
@@ -186,8 +227,24 @@ void IGame::run() {
 		stringRGBA(_window.getSDLSurface(), 3, 3, f.c_str(), 255, 255, 255, 255);
 		
 		if (_map.loaded()) {
-			viewport.x = (Sint16) (mapx += mapvx / fr );
-			viewport.x = (Sint16) (mapy += mapvy / fr );
+			sdlx::Rect world_size = _map.getSize();
+		
+			mapx += mapvx * dt;
+			mapy += mapvy * dt;
+			
+			if (mapx < 0) 
+				mapx = 0;
+			if (mapx + viewport.w > world_size.w) 
+				mapx = world_size.w - viewport.w;
+
+			if (mapy < 0) 
+				mapy = 0;
+			if (mapy + viewport.h > world_size.h) 
+				mapy = world_size.h - viewport.h;
+			
+			viewport.x = (Sint16) mapx;
+			viewport.y = (Sint16) mapy;
+			
 			//LOG_DEBUG(("%f %f", mapx, mapy));
 		}
 		_window.update();
