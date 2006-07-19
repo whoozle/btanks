@@ -20,6 +20,7 @@
 
 #include "mrt/singleton.h"
 #include <set>
+#include "v3.h"
 
 namespace sdlx {
 class Surface;
@@ -35,12 +36,12 @@ public:
 	
 	void addObject(Object *);
 	const bool exists(Object *) const;
-	const bool getInfo(Object *, float &x, float &y, float &z, float &vx, float &vy, float &vz) const;
+	const bool getInfo(Object *, v3<float> &pos, v3<float> &vel) const;
 	
 	void render(sdlx::Surface &surface, const sdlx::Rect &viewport);
 	void tick(WorldMap &map, const float dt);
 	
-	void spawn(Object *src, Object *obj, const float dx, const float dy, const float dz, const float vx, const float vy, const float vz);
+	void spawn(Object *src, Object *obj, const v3<float> &dpos, const v3<float> &vel);
 
 private:
 	typedef std::set<Object *> ObjectSet;

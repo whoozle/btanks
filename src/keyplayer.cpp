@@ -30,7 +30,7 @@ void KeyPlayer::tick(const float dt) {
 		5, 0, 1,
 		6, 7, 8,
 	};
-	if (_vx != state.vx || _vy != state.vy) {
+	if (_velocity.x != state.vx || _velocity.y != state.vy) {
 		int dir = dirmap[(int)((state.vy + 1) * 3 + state.vx + 1)];
 		//LOG_DEBUG(("pose %d", pose));
 		if (dir) {
@@ -49,8 +49,8 @@ void KeyPlayer::tick(const float dt) {
 			_animation->play("hold", true);
 		}
 	}
-	_vx = state.vx;
-	_vy = state.vy;
+	_velocity.x = state.vx;
+	_velocity.y = state.vy;
 
 
 	if (state.fire && !World->exists(_bullet)) {
@@ -67,7 +67,7 @@ void KeyPlayer::tick(const float dt) {
 		_bullet->play("move", true);
 		_bullet->setDirection(_animation->getDirection());
 		//LOG_DEBUG(("vel: %f %f", state.old_vx, state.old_vy));
-		spawn(_bullet, 0, 0, 0, state.old_vx, state.old_vy, 0);
+		spawn(_bullet, v3<float>(), v3<float>(state.old_vx, state.old_vy, 0));
 	}
 	state.fire = false;
 	
@@ -116,6 +116,6 @@ void KeyPlayer::emit(const std::string &event, const Object * emitter) {
 		_animation->cancelAll();
 		_animation->play("dead", true);
 		stale = true;
-		_vx = _vy = _vz = 0;
+		_velocity.x = _velocity.y = _velocity.z = 0;
 	} else Object::emit(event, emitter);
 }

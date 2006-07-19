@@ -195,11 +195,11 @@ void IGame::run() {
 		if (_running && !_paused && _players.size()) {
 			World->tick(_map, dt);
 			Object * p = _players[0];
-			float x, y, z, vx, vy, vz;
-			if (World->getInfo(p, x, y, z, vx, vy, vz)) {
+			v3<float> pos, vel;
+			if (World->getInfo(p, pos, vel)) {
 				//LOG_DEBUG(("player[0] %f, %f, %f", vx, vy, vz));
-				int wx = (int)x - viewport.x;
-				int wy = (int)y - viewport.y;
+				int wx = (int)pos.x - viewport.x;
+				int wy = (int)pos.y - viewport.y;
 				if (passive_viewport_stopzone.in(wx, wy)) {
 					mapvx = 0; 
 					mapvy = 0;

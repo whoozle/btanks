@@ -18,6 +18,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 #include <string>
+#include "v3.h"
  
 namespace sdlx {
 	class Surface;
@@ -35,13 +36,13 @@ public:
 	virtual void render(sdlx::Surface &surf, const int x, const int y) = 0;
 	virtual void emit(const std::string &event, const Object * emitter = NULL);
 	
-	void getPosition(float &x, float &y, float &z);
+	void getPosition(v3<float> &position);
 protected:
-	void spawn(Object *, const float dx, const float dy, const float dz, const float vx, const float vy, const float vz);
-	float _vx, _vy, _vz;
+	void spawn(Object *, const v3<float> &dpos, const v3<float> &vel);
+	v3<float> _velocity;
 private:
 	bool dead;
-	float _x, _y, _z;
+	v3<float> _position;
 	friend class IWorld;
 };
 

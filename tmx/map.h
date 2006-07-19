@@ -31,7 +31,7 @@ public:
 	void render(sdlx::Surface &window, const sdlx::Rect &dst, const int z1, const int z2);
 	const sdlx::Rect getSize() const;
 	
-	virtual const int getImpassability(Object &object, const int x, const int y, const int z) const;
+	virtual const int getImpassability(Object &object, const v3<int>& pos) const;
 private:
 	const bool collides(const sdlx::Surface&, const int dx, const int dy, const int tid) const;
 

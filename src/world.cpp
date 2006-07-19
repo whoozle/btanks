@@ -19,21 +19,16 @@ void IWorld::addObject(Object *o) {
 	LOG_DEBUG(("object %p added, objects: %d", (void*)o, _objects.size()));
 }
 
-const bool IWorld::getInfo(Object * po, float &x, float &y, float &z, float &vx, float &vy, float &vz) const {
+const bool IWorld::getInfo(Object * po, v3<float> &pos, v3<float> &vel) const {
 	ObjectSet::const_iterator i = _objects.find(po);
 	if (i == _objects.end())
 		return false;
 		
 	const Object &o = **i;
-	x = o._x;   y = o._y; 	z = o._z;
-	vx = o._vx; vy = o._vy; vz = o._vz;
-
-	float len = sqrt(vx * vx + vy * vy + vz * vz);
-	if (len != 0) {
-		vx /= len;
-		vy /= len;
-		vz /= len;
-	}
+	pos = o._position;
+	vel = o._velocity;
+	
+	vel.normalize();
 	
 	return true;
 }
@@ -42,7 +37,7 @@ const bool IWorld::getInfo(Object * po, float &x, float &y, float &z, float &vx,
 void IWorld::render(sdlx::Surface &surface, const sdlx::Rect &viewport) {
 	for(ObjectSet::iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		Object &o = **i;
-		sdlx::Rect r((int)o._x, (int)o._y, (int)o.w, (int) o.h);
+		sdlx::Rect r((int)o._position.x, (int)o._position.y, (int)o.w, (int) o.h);
 		if (true /* r.in(viewport) */) {
 			r.x -= viewport.x;
 			r.y -= viewport.y;
@@ -70,32 +65,36 @@ void IWorld::tick(WorldMap &map, const float dt) {
 		}
 		
 		o.tick(dt);
-		float vx = o._vx, vy = o._vy, vz = o._vz;
-		float len = sqrt(vx * vx + vy * vy + vz * vz);
+		
+		v3<float> vel = o._velocity;
+		float len = vel.normalize();
 		if (len == 0) {
 			++i;
 			continue;
 		}
 
 		//LOG_DEBUG(("im = %f", im));
-		
+		v3<float> dpos = o.speed * vel * dt;
+/*		
 		float dx = o.speed * vx / len * dt;
 		float dy = o.speed * vy / len * dt;
 		float dz = o.speed * vz / len * dt;
-
+*/
+		v3<int> new_pos((o._position + dpos).convert<int>());
+		
 		float im = 1;
 		if (o.piercing) {
-			if (map.getImpassability(o, (int)(o._x + dx), (int)(o._y + dy), (int)(o._z + dz)) == 100) {
+			if (map.getImpassability(o, new_pos) == 100) {
 				o.emit("death"); //fixme
 			}
 		} else {
-			im = 1 - map.getImpassability(o, (int)(o._x + dx), (int)(o._y + dy), (int)(o._z + dz)) / 100.0;
+			im = 1 - map.getImpassability(o, new_pos) / 100.0;
 		}
-
-		o._x += dx * im; 
+		o._position += dpos * im;
+/*		o._x += dx * im; 
 		o._y += dy * im;
 		o._z += dz * im;
-		
+*/		
 		++i;
 	}
 }
@@ -104,12 +103,14 @@ const bool IWorld::exists(Object *o) const {
 	return _objects.find(o) != _objects.end();
 }
 
-void IWorld::spawn(Object *src, Object *obj, const float dx, const float dy, const float dz, const float vx, const float vy, const float vz) {
-	obj->_x = src->_x + dx;
+void IWorld::spawn(Object *src, Object *obj, const v3<float> &dpos, const v3<float> &vel) {
+	obj->_position = src->_position + dpos;
+	obj->_velocity = vel;
+/*	obj->_x = src->_x + dx;
 	obj->_y = src->_y + dy;
 	obj->_z = src->_z + dz;
 	obj->_vx = vx;
 	obj->_vy = vy;
-	obj->_vz = vz;
+	obj->_vz = vz; */
 	addObject(obj);
 }

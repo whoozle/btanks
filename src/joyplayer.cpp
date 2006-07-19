@@ -13,12 +13,12 @@ void JoyPlayer::tick(const float dt) {
 	Sint16 x = _joy.getAxis(0);
 	Sint16 y = _joy.getAxis(1);
 	
-	_vx = _vy = 0;
+	_velocity.x = _velocity.y = 0;
 	
-	if (x >= THRESHOLD) _vx += 1;
-	if (x <= -THRESHOLD) _vx += 1;
-	if (y >= THRESHOLD) _vy += 1;
-	if (y <= -THRESHOLD) _vy += 1;
+	if (x >= THRESHOLD) _velocity.x += 1;
+	if (x <= -THRESHOLD) _velocity.x += 1;
+	if (y >= THRESHOLD) _velocity.y += 1;
+	if (y <= -THRESHOLD) _velocity.y += 1;
 }
 
 /*

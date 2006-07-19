@@ -29,8 +29,14 @@ const bool Map::collides(const sdlx::Surface &surf, const int dx, const int dy, 
 }
 
 
-const int Map::getImpassability(Object &object, const int x, const int y, const int z) const {
-	int x1 = x, y1 = y, w = (int)object.w, h = (int)object.h; 
+const int Map::getImpassability(Object &object, const v3<int>&pos) const {
+	int x, x1;
+	int y, y1;
+	x = x1 = pos.x;
+	y = y1 = pos.y;
+	
+	int w = (int)object.w;
+	int h = (int)object.h; 
 	
 	sdlx::Surface s;
 	assert(w != 0 && h != 0);
