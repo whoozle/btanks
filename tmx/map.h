@@ -35,7 +35,8 @@ public:
 private:
 	const bool collides(const sdlx::Surface&, const int dx, const int dy, const unsigned tid) const;
 
-	long _w, _h, _tw, _th, _firstgid, _lastz;
+	long _w, _h, _tw, _th, _firstgid;
+	int _lastz;
 	mrt::Chunk _data;
 	sdlx::Surface *_image;
 	bool _image_is_tileset;
@@ -43,7 +44,7 @@ private:
 	typedef std::map<const std::string, std::string> PropertyMap;
 	PropertyMap _properties;
 	
-	typedef std::map<const long, Layer *> LayerMap;
+	typedef std::map<const int, Layer *> LayerMap;
 	LayerMap _layers;
 
 	typedef std::vector<sdlx::Surface *> TileMap;
