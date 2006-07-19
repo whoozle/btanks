@@ -202,6 +202,7 @@ void Map::end(const std::string &name) {
 		long w = atol(e.attrs["width"].c_str());
 		long h = atol(e.attrs["height"].c_str());
 		long z = (_properties.find("z") == _properties.end())?++_lastz:atol(_properties["z"].c_str());
+		_lastz = z;
 		int impassability = (_properties.find("impassability") != _properties.end())?atoi(_properties["impassability"].c_str()):-1;
 
 		LOG_DEBUG(("layer '%s'. %ldx%ld. z: %ld, size: %d, impassability: %d", e.attrs["name"].c_str(), w, h, z, _data.getSize(), impassability));
