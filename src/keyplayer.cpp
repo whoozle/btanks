@@ -3,9 +3,9 @@
 #include "game.h"
 #include <string.h>
 
-KeyPlayer::KeyPlayer(AnimatedObject *animation, SDLKey up, SDLKey down, SDLKey left, SDLKey right): 
+KeyPlayer::KeyPlayer(AnimatedObject *animation, SDLKey up, SDLKey down, SDLKey left, SDLKey right, SDLKey fire): 
 _animation(animation),
-_up(up), _down(down), _left(left), _right(right) {
+_up(up), _down(down), _left(left), _right(right), _fire(fire) {
 	speed = 300;
 	Game->key_signal.connect(sigc::mem_fun(this, &KeyPlayer::onKey));
 	memset(&state, 0, sizeof(state));
@@ -13,6 +13,13 @@ _up(up), _down(down), _left(left), _right(right) {
 }
 
 void KeyPlayer::tick(const float dt) {
+
+	if (state.fire) {
+		if (_animation->getState() != "fire")
+			_animation->playNow("fire");
+		state.fire = false;
+	}
+
 	static int dirmap[] = {
 		4, 3, 2,
 		5, 0, 1,
@@ -36,6 +43,7 @@ void KeyPlayer::tick(const float dt) {
 	}
 	_vx = state.vx;
 	_vy = state.vy;
+	
 	_animation->tick(dt);
 }
 
@@ -57,6 +65,8 @@ void KeyPlayer::onKey(const Uint8 type, const SDL_keysym sym) {
 		vx = -1;
 	} else if (sym.sym == _right) {		
 		vx = 1;
+	} else if (sym.sym == _fire && type == SDL_KEYDOWN) {
+		state.fire = true;
 	} else return;
 
 	if (type == SDL_KEYDOWN) {

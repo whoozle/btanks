@@ -27,6 +27,13 @@ void AnimatedObject::play(const std::string &id, const bool repeat) {
 		_events.push_back(Event(id, repeat, pose));
 }
 
+void AnimatedObject::playNow(const std::string &id) {
+	const Pose *pose = _model->getPose(id);
+	if (pose == NULL) 
+		return;
+	_pos = 0;
+	_events.push_front(Event(id, false, pose));
+}
 
 void AnimatedObject::cancel() {
 	if (_events.empty()) 

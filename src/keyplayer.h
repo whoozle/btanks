@@ -23,17 +23,17 @@
 
 class KeyPlayer : public Object {
 public:
-	KeyPlayer(AnimatedObject *animation, SDLKey up, SDLKey down, SDLKey left, SDLKey right);
+	KeyPlayer(AnimatedObject *animation, SDLKey up, SDLKey down, SDLKey left, SDLKey right, SDLKey fire);
 	virtual ~KeyPlayer();
 	virtual void tick(const float dt);
 	virtual void render(sdlx::Surface &surf, const int x, const int y, int &w, int &h);
 
 protected: 
-	struct state { float vx, vy; } state;
+	struct state { float vx, vy; bool fire; } state;
 private:
 	AnimatedObject *_animation;
 	void onKey(const Uint8 type, const SDL_keysym sym);
-	SDLKey _up, _down, _left, _right;
+	SDLKey _up, _down, _left, _right, _fire;
 };
 
 #endif

@@ -40,6 +40,7 @@ public:
 	void render(sdlx::Surface &surface, const int x, const int y, int &w, int &h);
 	
 	void play(const std::string &id, const bool repeat = false);
+	void playNow(const std::string &id);
 	void cancel();
 	void cancelRepeatable();
 	void cancelAll();
