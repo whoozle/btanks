@@ -14,28 +14,33 @@
 
 #include "sdl_collide/SDL_collide.h"
 
-const bool Map::collides(const sdlx::Surface &surf, const int dx, const int dy, const int w, const int h, const int tid) const {
+const bool Map::collides(const sdlx::Surface &surf, const int dx, const int dy, const int tid) const {
 	if (tid == 0)
 		return false;
-	//LOG_DEBUG(("dx: %d, dy: %d, w: %d, h: %d, tid: %d", dx, dy, w, h, tid));
+	
+	//LOG_DEBUG(("dx: %d, dy: %d, w: %d, h: %d, tid: %d", dx, dy, surf.getWidth(), surf.getHeight(), tid));
 	TileMap::const_iterator i = _tiles.find(tid);
 	assert(i != _tiles.end());
 	const sdlx::Surface *bs = i->second;
 	assert(bs != NULL);
-	return SDL_CollidePixel(surf.getSDLSurface(), dx, dy, w, h, bs->getSDLSurface(), 0, 0) != 0;
+	int r = SDL_CollidePixel(surf.getSDLSurface(), dx, dy, bs->getSDLSurface(), 0, 0);
+	//LOG_DEBUG(("r = %d", r));
+	return r != 0;
 }
 
 
 const int Map::getImpassability(Object &object, const int x, const int y, const int z) const {
-	int x1 = x, y1 = y, w, h; 
+	int x1 = x, y1 = y, w = (int)object.w, h = (int)object.h; 
 	
-	static sdlx::Surface s;
-	if (s.isNull()) {
-		s.createRGB(256, 256, 24, sdlx::Surface::Software);
-		s.convertAlpha();
-	}
+	sdlx::Surface s;
+	assert(w != 0 && h != 0);
 	
-	object.render(s, 0, 0, w, h);
+	s.createRGB(w, h, 24, sdlx::Surface::Software);
+	s.convertAlpha();
+	s.fillRect(s.getSize(), SDL_MapRGBA(s.getPixelFormat(), 0,0,0,255));
+	object.render(s, 0, 0);
+	s.saveBMP("snapshot.bmp");
+	
 	int x2 = x1 + w; int y2 = y1 + h;
 	
 	int xt1 = x1 / _tw; int xt2 = x2 / _tw;
@@ -51,15 +56,15 @@ const int Map::getImpassability(Object &object, const int x, const int y, const 
 		if (layer_im == -1) 
 			continue;
 		//LOG_DEBUG(("im: %d, tile: %ld", layer_im, layer->get(xt1, yt1)));
-		if (collides(s, dx1, dy1, w, h, layer->get(xt1, yt1)) && im > layer_im)
+		if (collides(s, dx1, dy1, layer->get(xt1, yt1)) && im > layer_im)
 			im = layer_im;
-		if (yt2 != yt1 && collides(s, dx1, dy2, w, h, layer->get(xt1, yt2)) && im > layer_im)
+		if (yt2 != yt1 && collides(s, dx1, dy2, layer->get(xt1, yt2)) && im > layer_im)
 			im = layer_im;
 
 		if (xt2 != xt1) {
-			if (collides(s, dx2, dy1, w, h, layer->get(xt2, yt1)) && im > layer_im)
+			if (collides(s, dx2, dy1, layer->get(xt2, yt1)) && im > layer_im)
 				im = layer_im;
-			if (yt2 != yt1 && collides(s, dx2, dy2, w, h, layer->get(xt2, yt2)) && im > layer_im)
+			if (yt2 != yt1 && collides(s, dx2, dy2, layer->get(xt2, yt2)) && im > layer_im)
 					im = layer_im;
 		}
 		if (im < 101) {
@@ -68,7 +73,7 @@ const int Map::getImpassability(Object &object, const int x, const int y, const 
 		}
 	}
 	if (im == 101) 
-		return 0;
+		im = 0;
 	//LOG_DEBUG(("im = %d", im));
 	return im;
 }

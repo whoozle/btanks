@@ -58,15 +58,15 @@ int SDL_CollideTransparentPixelTest(const SDL_Surface *surface , const int u , c
 /*
 	SDL pixel perfect collision test
 */
-int SDL_CollidePixel(const SDL_Surface *as , const int ax , const int ay , const int aw, const int ah,
+int SDL_CollidePixel(const SDL_Surface *as , const int ax , const int ay , 
                        const SDL_Surface *bs , const int bx , const int by)
 {
 	/*Box A;
 	Box B;*/
 
 	/*a - bottom right co-ordinates*/
-	int ax1 = ax + aw - 1;
-	int ay1 = ay + ah - 1;
+	int ax1 = ax + as->w - 1;
+	int ay1 = ay + as->h - 1;
 	
 	/*b - bottom right co-ordinates*/
 	int bx1 = bx + bs->w - 1;

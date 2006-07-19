@@ -17,6 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+#include <string>
  
 namespace sdlx {
 	class Surface;
@@ -24,17 +25,19 @@ namespace sdlx {
 
 class Object {
 public:
-	float mass, w, h, speed;
+	float mass, w, h, speed, ttl;
 	Object();
 	virtual ~Object();
 	
 	virtual void tick(const float dt) = 0;
-	virtual void render(sdlx::Surface &surf, const int x, const int y, int &w, int &h) = 0;
+	virtual void render(sdlx::Surface &surf, const int x, const int y) = 0;
+	virtual void emit(const std::string &event, const Object * emitter = NULL);
 	
 	void getPosition(float &x, float &y, float &z);
 protected:
 	float _vx, _vy, _vz;
 private:
+	bool dead;
 	float _x, _y, _z;
 	friend class IWorld;
 };

@@ -40,27 +40,41 @@ const bool IWorld::getInfo(Object * po, float &x, float &y, float &z, float &vx,
 
 
 void IWorld::render(sdlx::Surface &surface, const sdlx::Rect &viewport) {
-	int w, h;
 	for(ObjectSet::iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		Object &o = **i;
 		sdlx::Rect r((int)o._x, (int)o._y, (int)o.w, (int) o.h);
 		if (true /* r.in(viewport) */) {
 			r.x -= viewport.x;
 			r.y -= viewport.y;
-			o.render(surface, r.x, r.y, w, h);
+			o.render(surface, r.x, r.y);
 		}
 	}
 }
 
 void IWorld::tick(WorldMap &map, const float dt) {
 	//LOG_DEBUG(("tick dt = %f", dt));
-	for(ObjectSet::iterator i = _objects.begin(); i != _objects.end(); ++i) {
+	for(ObjectSet::iterator i = _objects.begin(); i != _objects.end(); ) {
 		Object &o = **i;
+		if (o.ttl > 0) {
+			o.ttl -= dt;
+			if (o.ttl <= 0) {
+				//dead
+				o.emit("death");
+				o.ttl = 0;
+			}
+		}
+		if (o.dead) {
+			_objects.erase(i++);
+			continue;
+		}
+		
 		o.tick(dt);
 		float vx = o._vx, vy = o._vy, vz = o._vz;
 		float len = sqrt(vx * vx + vy * vy + vz * vz);
-		if (len == 0)
+		if (len == 0) {
+			++i;
 			continue;
+		}
 
 		//LOG_DEBUG(("im = %f", im));
 		
@@ -73,5 +87,11 @@ void IWorld::tick(WorldMap &map, const float dt) {
 		o._x += dx * im; 
 		o._y += dy * im;
 		o._z += dz * im;
+		
+		++i;
 	}
+}
+
+const bool IWorld::exists(Object *o) const {
+	return _objects.find(o) != _objects.end();
 }

@@ -26,14 +26,17 @@ public:
 	KeyPlayer(AnimatedObject *animation, SDLKey up, SDLKey down, SDLKey left, SDLKey right, SDLKey fire);
 	virtual ~KeyPlayer();
 	virtual void tick(const float dt);
-	virtual void render(sdlx::Surface &surf, const int x, const int y, int &w, int &h);
+	virtual void render(sdlx::Surface &surf, const int x, const int y);
+	virtual void emit(const std::string &event, const Object * emitter = NULL);
 
 protected: 
 	struct state { float vx, vy; bool fire; } state;
 private:
+	Object *_bullet;
 	AnimatedObject *_animation;
 	void onKey(const Uint8 type, const SDL_keysym sym);
 	SDLKey _up, _down, _left, _right, _fire;
+	bool stale;
 };
 
 #endif

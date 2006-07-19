@@ -44,7 +44,7 @@ int SDL_CollideTransparentPixelTest(const SDL_Surface *surface , const int u , c
 /*
 	SDL pixel perfect collision test
 */
-int SDL_CollidePixel(const SDL_Surface *as , const int ax , const int ay , const int aw, const int ah,
+int SDL_CollidePixel(const SDL_Surface *as , const int ax , const int ay ,
                        const SDL_Surface *bs , const int bx , const int by);
 
 /* Ends C function definitions when using C++ */

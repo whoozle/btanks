@@ -6,7 +6,7 @@
 AnimatedObject::AnimatedObject(AnimationModel *model, sdlx::Surface *surface, const int tile_w, const int tile_h) {
 	_model = model;
 	_surface = surface;
-	_tw = tile_w; _th = tile_h;
+	w = _tw = tile_w; h = _th = tile_h;
 	_direction= 0;
 	_pos = 0;
 }
@@ -83,9 +83,7 @@ void AnimatedObject::tick(const float dt) {
 	}
 }
 
-void AnimatedObject::render(sdlx::Surface &surface, const int x, const int y, int &w, int &h) {
-	w = _tw; h = _th;
-	
+void AnimatedObject::render(sdlx::Surface &surface, const int x, const int y) {
 	if (_events.empty()) 
 		return;
 	unsigned frame = (unsigned)_pos;

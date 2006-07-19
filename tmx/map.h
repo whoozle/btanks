@@ -33,7 +33,7 @@ public:
 	
 	virtual const int getImpassability(Object &object, const int x, const int y, const int z) const;
 private:
-	const bool collides(const sdlx::Surface&, const int dx, const int dy, const int w, const int h, const int tid) const;
+	const bool collides(const sdlx::Surface&, const int dx, const int dy, const int tid) const;
 
 	long _w, _h, _tw, _th, _firstgid, _lastz;
 	mrt::Chunk _data;

@@ -37,7 +37,7 @@ public:
 	const int getDirection() const;
 	
 	virtual void tick(const float dt);
-	void render(sdlx::Surface &surface, const int x, const int y, int &w, int &h);
+	void render(sdlx::Surface &surface, const int x, const int y);
 	
 	void play(const std::string &id, const bool repeat = false);
 	void playNow(const std::string &id);
