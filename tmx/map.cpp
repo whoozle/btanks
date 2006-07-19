@@ -28,23 +28,12 @@ const bool Map::collides(const sdlx::Surface &surf, const int dx, const int dy, 
 }
 
 
-const int Map::getImpassability(Object &object, const v3<int>&pos) const {
+const int Map::getImpassability(const sdlx::Surface &s, const v3<int>&pos) const {
+	int w = s.getWidth(), h = s.getHeight();
 	int x, x1;
 	int y, y1;
 	x = x1 = pos.x;
 	y = y1 = pos.y;
-	
-	int w = (int)object.w;
-	int h = (int)object.h; 
-	
-	sdlx::Surface s;
-	assert(w != 0 && h != 0);
-	
-	s.createRGB(w, h, 24, sdlx::Surface::Software);
-	s.convertAlpha();
-	s.fillRect(s.getSize(), SDL_MapRGBA(s.getPixelFormat(), 0,0,0,255));
-	object.render(s, 0, 0);
-	s.saveBMP("snapshot.bmp");
 	
 	int x2 = x1 + w; int y2 = y1 + h;
 	

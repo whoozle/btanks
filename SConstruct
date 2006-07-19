@@ -3,12 +3,10 @@ env = Environment()
 opts = Options(['options.cache'])
 opts.Add('CC', 'C compiler')
 opts.Add('CXX', 'C++ compiler')
-opts.Add('CCFLAGS', 'General options that are passed to the C compiler', '')
+opts.Add('CFLAGS', 'General options that are passed to the C compiler', '')
 opts.Add('CXXFLAGS', 'General options that are passed to the C++ compiler', '')
 
 opts.Update(env)
-
-env.Append(CCFLAGS = env['CCFLAGS'])
 
 opts.Save('options.cache', env.Copy())
 

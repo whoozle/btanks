@@ -3,10 +3,13 @@
 
 #include "v3.h"
 
-class Object;
+namespace sdlx {
+class Surface;
+}
+
 class WorldMap {
 public:
-	virtual const int getImpassability(Object &object, const v3<int> &pos) const = 0;
+	virtual const int getImpassability(const sdlx::Surface &object_surf, const v3<int> &pos) const = 0;
 	virtual ~WorldMap() {}
 };
 

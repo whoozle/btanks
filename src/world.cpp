@@ -5,8 +5,10 @@
 #include "mrt/exception.h"
 #include "mrt/logger.h"
 #include "sdlx/rect.h"
+#include "sdlx/surface.h"
 
 #include <math.h>
+#include <assert.h>
 
 IMPLEMENT_SINGLETON(World, IWorld)
 
@@ -81,14 +83,27 @@ void IWorld::tick(WorldMap &map, const float dt) {
 		float dz = o.speed * vz / len * dt;
 */
 		v3<int> new_pos((o._position + dpos).convert<int>());
+
+		int ow = (int)o.w;
+		int oh = (int)o.h; 
+
+		sdlx::Surface osurf;
+		
+		assert(ow != 0 && oh != 0);
+	
+		osurf.createRGB(ow, oh, 24, sdlx::Surface::Software);
+		osurf.convertAlpha();
+		osurf.fillRect(osurf.getSize(), SDL_MapRGBA(osurf.getPixelFormat(), 0,0,0,255));
+		o.render(osurf, 0, 0);
+		//s.saveBMP("snapshot.bmp");
 		
 		float im = 1;
 		if (o.piercing) {
-			if (map.getImpassability(o, new_pos) == 100) {
+			if (map.getImpassability(osurf, new_pos) == 100) {
 				o.emit("death"); //fixme
 			}
 		} else {
-			im = 1 - map.getImpassability(o, new_pos) / 100.0;
+			im = 1 - map.getImpassability(osurf, new_pos) / 100.0;
 		}
 		o._position += dpos * im;
 /*		o._x += dx * im; 
