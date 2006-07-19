@@ -39,6 +39,9 @@ public:
 	
 	void render(sdlx::Surface &surface, const sdlx::Rect &viewport);
 	void tick(WorldMap &map, const float dt);
+	
+	void spawn(Object *src, Object *obj, const float dx, const float dy, const float dz, const float vx, const float vy, const float vz);
+
 private:
 	typedef std::set<Object *> ObjectSet;
 	ObjectSet _objects;

@@ -26,6 +26,8 @@ namespace sdlx {
 class Object {
 public:
 	float mass, w, h, speed, ttl;
+	bool piercing;
+	
 	Object();
 	virtual ~Object();
 	
@@ -35,6 +37,7 @@ public:
 	
 	void getPosition(float &x, float &y, float &z);
 protected:
+	void spawn(Object *, const float dx, const float dy, const float dz, const float vx, const float vy, const float vz);
 	float _vx, _vy, _vz;
 private:
 	bool dead;

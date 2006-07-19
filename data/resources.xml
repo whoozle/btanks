@@ -20,5 +20,6 @@
 	
 	<animation id="bullet" tile="bullet_tile.png" model="bullet-animation"/>
 	
-	<vehicle id="tank" speed="200" mass="10" />
+	<object class="vehicle" speed="400" mass="10" />
+	<object class="bullet" speed="500" mass="1" />
 </resources>

@@ -30,9 +30,9 @@ public:
 	virtual void emit(const std::string &event, const Object * emitter = NULL);
 
 protected: 
-	struct state { float vx, vy; bool fire; } state;
+	struct state { float vx, vy, old_vx, old_vy; bool fire; } state;
 private:
-	Object *_bullet;
+	AnimatedObject *_bullet;
 	AnimatedObject *_animation;
 	void onKey(const Uint8 type, const SDL_keysym sym);
 	SDLKey _up, _down, _left, _right, _fire;

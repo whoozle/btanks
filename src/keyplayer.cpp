@@ -24,18 +24,6 @@ void KeyPlayer::tick(const float dt) {
 	if (stale) 
 		return;
 	
-	if (state.fire && !World->exists(_bullet)) {
-		if (_animation->getState() == "fire") 
-			_animation->cancel();
-		
-		_animation->playNow("fire");
-		delete _bullet;
-		_bullet = ResourceManager->createAnimation("bullet");
-		_bullet->speed = 500;
-		_bullet->ttl = 3;
-		World->addObject(_bullet);
-	}
-	state.fire = false;
 
 	static int dirmap[] = {
 		4, 3, 2,
@@ -53,6 +41,9 @@ void KeyPlayer::tick(const float dt) {
 				_animation->play("start", false);
 				_animation->play("move", true);
 			}
+			
+			state.old_vx = state.vx;
+			state.old_vy = state.vy;
 		} else {
 			_animation->cancelRepeatable();
 			_animation->play("hold", true);
@@ -60,6 +51,25 @@ void KeyPlayer::tick(const float dt) {
 	}
 	_vx = state.vx;
 	_vy = state.vy;
+
+
+	if (state.fire && !World->exists(_bullet)) {
+		if (_animation->getState() == "fire") 
+			_animation->cancel();
+		
+		_animation->playNow("fire");
+		
+		_bullet = ResourceManager->createAnimation("bullet");
+		_bullet->speed = 500;
+		_bullet->ttl = 1;
+		_bullet->piercing = true;
+		
+		_bullet->play("move", true);
+		_bullet->setDirection(_animation->getDirection());
+		//LOG_DEBUG(("vel: %f %f", state.old_vx, state.old_vy));
+		spawn(_bullet, 0, 0, 0, state.old_vx, state.old_vy, 0);
+	}
+	state.fire = false;
 	
 	_animation->tick(dt);
 }

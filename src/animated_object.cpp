@@ -66,7 +66,7 @@ void AnimatedObject::tick(const float dt) {
 		return;
 	
 	const Event & event = _events.front();
-	//LOG_DEBUG(("event: %s, pos = %f", event.name.c_str(), _pos));
+	//LOG_DEBUG(("%p: event: %s, pos = %f", (void *)this, event.name.c_str(), _pos));
 	const Pose * pose = event.pose;
 	
 	if (pose == NULL) {

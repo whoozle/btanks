@@ -64,6 +64,7 @@ void IWorld::tick(WorldMap &map, const float dt) {
 			}
 		}
 		if (o.dead) {
+			delete *i;
 			_objects.erase(i++);
 			continue;
 		}
@@ -82,7 +83,14 @@ void IWorld::tick(WorldMap &map, const float dt) {
 		float dy = o.speed * vy / len * dt;
 		float dz = o.speed * vz / len * dt;
 
-		float im = 1 - map.getImpassability(o, (int)(o._x + dx), (int)(o._y + dy), (int)(o._z + dz)) / 100.0;
+		float im = 1;
+		if (o.piercing) {
+			if (map.getImpassability(o, (int)(o._x + dx), (int)(o._y + dy), (int)(o._z + dz)) == 100) {
+				o.emit("death"); //fixme
+			}
+		} else {
+			im = 1 - map.getImpassability(o, (int)(o._x + dx), (int)(o._y + dy), (int)(o._z + dz)) / 100.0;
+		}
 
 		o._x += dx * im; 
 		o._y += dy * im;
@@ -94,4 +102,14 @@ void IWorld::tick(WorldMap &map, const float dt) {
 
 const bool IWorld::exists(Object *o) const {
 	return _objects.find(o) != _objects.end();
+}
+
+void IWorld::spawn(Object *src, Object *obj, const float dx, const float dy, const float dz, const float vx, const float vy, const float vz) {
+	obj->_x = src->_x + dx;
+	obj->_y = src->_y + dy;
+	obj->_z = src->_z + dz;
+	obj->_vx = vx;
+	obj->_vy = vy;
+	obj->_vz = vz;
+	addObject(obj);
 }

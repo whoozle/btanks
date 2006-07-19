@@ -1,7 +1,8 @@
 #include "object.h"
 #include "mrt/logger.h"
+#include "world.h"
 
-Object::Object() : mass(1), speed(1), ttl(-1), dead (false) {
+Object::Object() : mass(1), speed(1), ttl(-1), piercing(false), dead (false)  {
 	_vx = _vy = _vz = _x = _y = _z = w = h = 0;
 }
 
@@ -18,3 +19,6 @@ void Object::emit(const std::string &event, const Object * emitter) {
 	} else LOG_WARN(("unhandled event '%s'", event.c_str()));
 }
 
+void Object::spawn(Object *o, const float dx, const float dy, const float dz, const float vx, const float vy, const float vz) {
+	World->spawn(this, o, dx, dy, dz, vx, vy, vz);
+}
