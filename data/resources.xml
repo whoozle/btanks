@@ -16,5 +16,8 @@
 	<animation id="red-tank" tile="Tank_tile4.png" model="tank-animation"/>
 	<animation id="yellow-tank" tile="Tank_tile5.png" model="tank-animation"/>
 	<animation id="cyan-tank" tile="Tank_tile6.png" model="tank-animation"/>
+	
+	<animation id="bullet" tile="bullet_tile.png" model="bullet-animation"/>
+	
 	<vehicle id="tank" speed="200" mass="10" />
 </resources>

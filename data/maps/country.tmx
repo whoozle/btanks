@@ -4,7 +4,7 @@
   <image source="../tiles/test_tileset.png"/>
  </tileset>
  <layer name="ground" width="10" height="8">
-  <property name="impassability" value="25"/>
+  <property name="impassability" value="40"/>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNkYGBgHMVkYwD9+/chQAEAAA==
   </data>
