@@ -48,7 +48,7 @@ conf.Finish()
 
 env.Append(CPPFLAGS=' -Wall -pedantic -ggdb3 -Wno-long-long')
 #env.Append(LINKFLAGS=' -pg ')
-env.Append(CPPFLAGS=' -O')
+#env.Append(CPPFLAGS=' -O')
 
 Export('env')
 Export('sigc_cpppath')
