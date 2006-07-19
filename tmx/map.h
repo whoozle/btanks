@@ -14,6 +14,7 @@ class Rect;
 
 class TMXEntity;
 class Layer;
+class Object;
 
 class Map : protected mrt::XMLParser {
 public:
@@ -28,6 +29,8 @@ public:
 	
 	void render(sdlx::Surface &window, const sdlx::Rect &dst, const int z1, const int z2);
 	const sdlx::Rect getSize() const;
+	
+	const int getImpassability(Object *object) const;
 
 private:
 	long _w, _h, _tw, _th, _firstgid, _lastz;

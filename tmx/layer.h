@@ -7,9 +7,9 @@
 class Layer {
 public:
 	sdlx::Surface surface;
-	const float impassability;
+	const int impassability;
 
-	Layer(const long w, const long h, const mrt::Chunk & data, const float impassability);
+	Layer(const long w, const long h, const mrt::Chunk & data, const int impassability);
 	const long get(const long x, const long y) const;
 private: 
 	mrt::Chunk _data;
