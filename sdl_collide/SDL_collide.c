@@ -8,13 +8,13 @@
 /*
 	SDL surface test if offset (u,v) is a transparent pixel
 */
-int SDL_CollideTransparentPixelTest(SDL_Surface *surface , int u , int v) {
+int SDL_CollideTransparentPixelTest(const SDL_Surface *surface , int u , int v) {
 	int bpp;
 	Uint8 *p;
 	Uint32 pixelcolor;
 	
 	/*assert that (u,v) offsets lie within surface*/
-	assert( !((u < surface->w) || (v < surface->h)) );
+	assert( u < surface->w && v < surface->h );
 
 	bpp = surface->format->BytesPerPixel;
 	/*here p is the address to the pixel we want to retrieve*/
@@ -31,10 +31,11 @@ int SDL_CollideTransparentPixelTest(SDL_Surface *surface , int u , int v) {
 		break;
 
 		case(3):
-			if(SDL_BYTEORDER == SDL_BIG_ENDIAN)
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
 				pixelcolor = p[0] << 16 | p[1] << 8 | p[2];
-			else
+#else
 				pixelcolor = p[0] | p[1] << 8 | p[2] << 16;
+#endif
 		break;
 
 		case(4):
@@ -44,23 +45,28 @@ int SDL_CollideTransparentPixelTest(SDL_Surface *surface , int u , int v) {
 		default: 
 			assert(0);
 	}
-
+	if (surface->flags && SDL_SRCALPHA) {
+		Uint8 r, g, b, a;
+		SDL_GetRGBA(pixelcolor, surface->format, &r, &g, &b, &a); 
+		/* printf("%p(%d:%d) %d %d %d %d\n", surface, u, v, r, g, b, a); */
+		return a != 0;
+	}
 	/*test whether pixels color == color of transparent pixels for that surface*/
-	return (pixelcolor == surface->format->colorkey);
+	return (pixelcolor != surface->format->colorkey);
 }
 
 /*
 	SDL pixel perfect collision test
 */
-int SDL_CollidePixel(SDL_Surface *as , int ax , int ay ,
-                       SDL_Surface *bs , int bx , int by)
+int SDL_CollidePixel(const SDL_Surface *as , int ax , int ay , int aw, int ah,
+                       const SDL_Surface *bs , int bx , int by)
 {
 	/*Box A;
 	Box B;*/
 
 	/*a - bottom right co-ordinates*/
-	int ax1 = ax + as->w - 1;
-	int ay1 = ay + as->h - 1;
+	int ax1 = ax + aw - 1;
+	int ay1 = ay + ah - 1;
 	
 	/*b - bottom right co-ordinates*/
 	int bx1 = bx + bs->w - 1;

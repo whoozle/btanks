@@ -48,6 +48,7 @@ namespace sdlx {
 
 		const bool isNull() const { return surface == NULL; }
 		SDL_Surface * getSDLSurface() { return surface; }
+		const SDL_Surface * getSDLSurface() const { return surface; }
 
 		void putPixel(int x, int y, Uint32 pix);
 		Uint32 getPixel(int x, int y) const;

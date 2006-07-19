@@ -38,13 +38,13 @@ extern "C" {
 /*
 	SDL surface test if offset (u,v) is a transparent pixel
 */
-int SDL_CollideTransparentPixelTest(SDL_Surface *surface , int u , int v);
+int SDL_CollideTransparentPixelTest(const SDL_Surface *surface , int u , int v);
 
 /*
 	SDL pixel perfect collision test
 */
-int SDL_CollidePixel(SDL_Surface *as , int ax , int ay ,
-                       SDL_Surface *bs , int bx , int by);
+int SDL_CollidePixel(const SDL_Surface *as , int ax , int ay , int aw, int ah,
+                       const SDL_Surface *bs , int bx , int by);
 
 /* Ends C function definitions when using C++ */
 #ifdef __cplusplus

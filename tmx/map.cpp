@@ -12,19 +12,36 @@
 
 #include <assert.h>
 
+#include "sdl_collide/SDL_collide.h"
+
+const bool Map::collides(const sdlx::Surface &surf, const int dx, const int dy, const int w, const int h, const int tid) const {
+	if (tid == 0)
+		return false;
+	//LOG_DEBUG(("dx: %d, dy: %d, w: %d, h: %d, tid: %d", dx, dy, w, h, tid));
+	TileMap::const_iterator i = _tiles.find(tid);
+	assert(i != _tiles.end());
+	const sdlx::Surface *bs = i->second;
+	assert(bs != NULL);
+	return SDL_CollidePixel(surf.getSDLSurface(), dx, dy, w, h, bs->getSDLSurface(), 0, 0) != 0;
+}
+
 
 const int Map::getImpassability(Object &object, const int x, const int y, const int z) const {
 	int x1 = x, y1 = y, w, h; 
 	
-	sdlx::Surface s;
-	s.createRGB(256, 256, 24, sdlx::Surface::Software);
-	s.convertAlpha();
+	static sdlx::Surface s;
+	if (s.isNull()) {
+		s.createRGB(256, 256, 24, sdlx::Surface::Software);
+		s.convertAlpha();
+	}
 	
 	object.render(s, 0, 0, w, h);
 	int x2 = x1 + w; int y2 = y1 + h;
 	
 	int xt1 = x1 / _tw; int xt2 = x2 / _tw;
 	int yt1 = y1 / _th; int yt2 = y2 / _th; 
+	int dx1 = x - xt1 * _tw; int dx2 = x - xt2 * _tw;
+	int dy1 = y - yt1 * _th; int dy2 = y - yt2 * _th;
 
 	int im = 101;
 	//LOG_DEBUG(("%d:%d:%d:%d --> %d:%d %d:%d", x1, y1, w, h, xt1, yt1, xt2, yt2));
@@ -34,15 +51,15 @@ const int Map::getImpassability(Object &object, const int x, const int y, const 
 		if (layer_im == -1) 
 			continue;
 		//LOG_DEBUG(("im: %d, tile: %ld", layer_im, layer->get(xt1, yt1)));
-		if (layer->get(xt1, yt1) && im > layer_im)
+		if (collides(s, dx1, dy1, w, h, layer->get(xt1, yt1)) && im > layer_im)
 			im = layer_im;
-		if (yt2 != yt1 && layer->get(xt1, yt2) && im > layer_im)
+		if (yt2 != yt1 && collides(s, dx1, dy2, w, h, layer->get(xt1, yt2)) && im > layer_im)
 			im = layer_im;
 
 		if (xt2 != xt1) {
-			if (layer->get(xt2, yt1) && im > layer_im)
+			if (collides(s, dx2, dy1, w, h, layer->get(xt2, yt1)) && im > layer_im)
 				im = layer_im;
-			if (yt2 != yt1 && layer->get(xt2, yt2) && im > layer_im)
+			if (yt2 != yt1 && collides(s, dx2, dy2, w, h, layer->get(xt2, yt2)) && im > layer_im)
 					im = layer_im;
 		}
 		if (im < 101) {
