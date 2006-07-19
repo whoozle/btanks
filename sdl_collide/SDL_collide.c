@@ -8,7 +8,7 @@
 /*
 	SDL surface test if offset (u,v) is a transparent pixel
 */
-int SDL_CollideTransparentPixelTest(const SDL_Surface *surface , int u , int v) {
+int SDL_CollideTransparentPixelTest(const SDL_Surface *surface , const int u , const int v) {
 	int bpp;
 	Uint8 *p;
 	Uint32 pixelcolor;
@@ -58,8 +58,8 @@ int SDL_CollideTransparentPixelTest(const SDL_Surface *surface , int u , int v) 
 /*
 	SDL pixel perfect collision test
 */
-int SDL_CollidePixel(const SDL_Surface *as , int ax , int ay , int aw, int ah,
-                       const SDL_Surface *bs , int bx , int by)
+int SDL_CollidePixel(const SDL_Surface *as , const int ax , const int ay , const int aw, const int ah,
+                       const SDL_Surface *bs , const int bx , const int by)
 {
 	/*Box A;
 	Box B;*/
