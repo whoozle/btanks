@@ -94,11 +94,16 @@ IResourceManager::IResourceManager() : _am(0) {
 	//LOG_DEBUG(("IResourceManager ctor"));
 }
 
+
 AnimatedObject *IResourceManager::getAnimation(const std::string &id) {
 	AnimationMap::iterator i;
 	if ((i = _animations.find(id)) == _animations.end()) 
 		throw_ex(("could not find animation with id '%s'", id.c_str()));
 	return i->second;
+}
+
+AnimatedObject *IResourceManager::createAnimation(const std::string &id) {
+	return new AnimatedObject(*getAnimation(id));	
 }
 
 AnimationModel *IResourceManager::getAnimationModel(const std::string &id) {

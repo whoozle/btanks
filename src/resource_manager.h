@@ -39,10 +39,11 @@ public:
 	void init(const std::string &fname);
 	void clear();
 	
-	AnimatedObject *getAnimation(const std::string &id);
+	AnimatedObject *createAnimation(const std::string &id);
 	AnimationModel *getAnimationModel(const std::string &id);
 
 private:
+	AnimatedObject *getAnimation(const std::string &id);
 	virtual void start(const std::string &name, Attrs &attr);
 	virtual void end(const std::string &name);
 	virtual void charData(const std::string &data);
