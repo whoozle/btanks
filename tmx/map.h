@@ -33,7 +33,7 @@ public:
 	
 	virtual const int getImpassability(Object &object, const v3<int>& pos) const;
 private:
-	const bool collides(const sdlx::Surface&, const int dx, const int dy, const int tid) const;
+	const bool collides(const sdlx::Surface&, const int dx, const int dy, const unsigned tid) const;
 
 	long _w, _h, _tw, _th, _firstgid, _lastz;
 	mrt::Chunk _data;
@@ -46,7 +46,7 @@ private:
 	typedef std::map<const long, Layer *> LayerMap;
 	LayerMap _layers;
 
-	typedef std::map<const long, sdlx::Surface *> TileMap;
+	typedef std::vector<sdlx::Surface *> TileMap;
 	TileMap _tiles;
 
 	struct Entity {

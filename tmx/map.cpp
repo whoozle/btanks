@@ -14,14 +14,13 @@
 
 #include "sdl_collide/SDL_collide.h"
 
-const bool Map::collides(const sdlx::Surface &surf, const int dx, const int dy, const int tid) const {
+const bool Map::collides(const sdlx::Surface &surf, const int dx, const int dy, const unsigned tid) const {
 	if (tid == 0)
 		return false;
 	
 	//LOG_DEBUG(("dx: %d, dy: %d, w: %d, h: %d, tid: %d", dx, dy, surf.getWidth(), surf.getHeight(), tid));
-	TileMap::const_iterator i = _tiles.find(tid);
-	assert(i != _tiles.end());
-	const sdlx::Surface *bs = i->second;
+	assert((unsigned)tid < _tiles.size());
+	const sdlx::Surface *bs = _tiles[tid];
 	assert(bs != NULL);
 	int r = SDL_CollidePixel(surf.getSDLSurface(), dx, dy, bs->getSDLSurface(), 0, 0);
 	//LOG_DEBUG(("r = %d", r));
@@ -95,6 +94,7 @@ void Map::load(const std::string &name) {
 	const std::string file = "data/maps/" + name + ".tmx";
 	parseFile(file);
 #ifdef PRERENDER_LAYERS
+	size_t n = _tiles.size();
 	LOG_DEBUG(("rendering layers..."));
 	for(LayerMap::iterator l = _layers.begin(); l != _layers.end(); ++l) {
 		l->second->surface.createRGB(_w * _tw, _h * _th, 24);
@@ -106,6 +106,7 @@ void Map::load(const std::string &name) {
 				if (tid == 0) 
 					continue;
 				
+				assert(tid < n);
 				sdlx::Surface * s = _tiles[tid];
 				if (s == NULL) 
 					throw_ex(("invalid tile with id %ld found", tid));
@@ -155,12 +156,15 @@ void Map::end(const std::string &name) {
 		if (_image == NULL) 
 			throw_ex(("tile must contain <image> inside it."));
 		
-		long id = atol(e.attrs["id"].c_str());
+		unsigned long id = atol(e.attrs["id"].c_str());
 		id += _firstgid;
 		LOG_DEBUG(("tile gid = %ld, image: %p", id, (void *)_image));
 
 		//TileManager->set(id, _image);
 		//_tiles.reserve(id + 2);
+		if (id >= _tiles.size())
+			_tiles.resize(id + 20);
+		
 		sdlx::Surface * &tile = _tiles[id];	
 		assert (tile == NULL);
 		tile = _image;
@@ -239,6 +243,8 @@ void Map::end(const std::string &name) {
 				//s->saveBMP(mrt::formatString("tile-%ld.bmp", id));
 
 				//LOG_DEBUG(("cut tile %ld from tileset [%ld:%ld, %ld:%ld]", _firstgid + id, x, y, _tw, _th));
+				if ((size_t)(_firstgid + id) >= _tiles.size())
+					_tiles.resize(_firstgid + id + 20);
 				
 				delete _tiles[_firstgid + id];
 				_tiles[_firstgid + id++] = s;
@@ -290,6 +296,7 @@ void Map::render(sdlx::Surface &window, const sdlx::Rect &dst, const int z1, con
 				if (tid == 0) 
 					continue;
 				
+				assert((size_t)tid < _tiles.size());
 				sdlx::Surface * s = _tiles[tid];
 				if (s == NULL) 
 					throw_ex(("invalid tile with id %ld found", tid));
@@ -308,7 +315,7 @@ void Map::clear() {
 	_layers.clear();
 	
 	for(TileMap::iterator i = _tiles.begin(); i != _tiles.end(); ++i) {
-		delete i->second;
+		delete *i;
 	}
 	_tiles.clear();
 	
