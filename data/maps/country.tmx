@@ -16,13 +16,13 @@
   </data>
  </layer>
  <layer name="stuff" width="10" height="8">
-  <property name="impassability" value="100"/>
+  <property name="impassability" value="80"/>
+  <property name="z" value="50"/>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgIA8wkamP1uYxU1kdIX0Ahx6TZkABAAA=
   </data>
  </layer>
  <layer name="trees" width="10" height="8">
-  <property name="z" value="100"/>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAJNjYGCQA2J5BvoCcRziokAshiQvjUOdJBBLIcnjUifLgOo/XOrQAbHhAQChAU+XQAEAAA==
   </data>
