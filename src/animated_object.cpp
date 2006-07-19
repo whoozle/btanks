@@ -76,7 +76,9 @@ void AnimatedObject::tick(const float dt) {
 	}
 }
 
-void AnimatedObject::render(sdlx::Surface &surface, const int x, const int y) {
+void AnimatedObject::render(sdlx::Surface &surface, const int x, const int y, int &w, int &h) {
+	w = _tw; h = _th;
+	
 	if (_events.empty()) 
 		return;
 	unsigned frame = (unsigned)_pos;

@@ -165,7 +165,7 @@ void IGame::run() {
 	Uint32 black = _window.mapRGB(0, 0, 0);
 
 	float mapx = 0, mapy = 0, mapvx = 0, mapvy = 0;
-	int fps_limit = 40;
+	int fps_limit = 50;
 	
 	float fr = fps_limit;
 	int max_delay = 1000/fps_limit;
@@ -193,7 +193,7 @@ void IGame::run() {
 		
 		
 		if (_running && !_paused && _players.size()) {
-			World->tick(dt);
+			World->tick(_map, dt);
 			Object * p = _players[0];
 			float x, y, z, vx, vy, vz;
 			if (World->getInfo(p, x, y, z, vx, vy, vz)) {

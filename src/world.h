@@ -27,6 +27,7 @@ class Rect;
 }
 
 class Object;
+class WorldMap;
 
 class IWorld {
 public:
@@ -36,7 +37,7 @@ public:
 	const bool getInfo(Object *, float &x, float &y, float &z, float &vx, float &vy, float &vz) const;
 	
 	void render(sdlx::Surface &surface, const sdlx::Rect &viewport);
-	void tick(const float dt);
+	void tick(WorldMap &map, const float dt);
 private:
 	typedef std::set<Object *> ObjectSet;
 	ObjectSet _objects;

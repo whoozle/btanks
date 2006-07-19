@@ -1,5 +1,6 @@
 #include "map.h"
 #include "layer.h"
+#include "src/object.h"
 
 #include "mrt/file.h"
 #include "mrt/b64.h"
@@ -12,8 +13,47 @@
 #include <assert.h>
 
 
-const int Map::getImpassability(Object *object) const {
-	return 0;
+const int Map::getImpassability(Object &object, const int x, const int y, const int z) const {
+	int x1 = x, y1 = y, w, h; 
+	
+	sdlx::Surface s;
+	s.createRGB(256, 256, 24, sdlx::Surface::Software);
+	s.convertAlpha();
+	
+	object.render(s, 0, 0, w, h);
+	int x2 = x1 + w; int y2 = y1 + h;
+	
+	int xt1 = x1 / _tw; int xt2 = x2 / _tw;
+	int yt1 = y1 / _th; int yt2 = y2 / _th; 
+
+	int im = 101;
+	//LOG_DEBUG(("%d:%d:%d:%d --> %d:%d %d:%d", x1, y1, w, h, xt1, yt1, xt2, yt2));
+	for(LayerMap::const_reverse_iterator l = _layers.rbegin(); l != _layers.rend(); ++l) {
+		const Layer *layer = l->second;
+		int layer_im = layer->impassability;
+		if (layer_im == -1) 
+			continue;
+		//LOG_DEBUG(("im: %d, tile: %ld", layer_im, layer->get(xt1, yt1)));
+		if (layer->get(xt1, yt1) && im > layer_im)
+			im = layer_im;
+		if (yt2 != yt1 && layer->get(xt1, yt2) && im > layer_im)
+			im = layer_im;
+
+		if (xt2 != xt1) {
+			if (layer->get(xt2, yt1) && im > layer_im)
+				im = layer_im;
+			if (yt2 != yt1 && layer->get(xt2, yt2) && im > layer_im)
+					im = layer_im;
+		}
+		if (im < 101) {
+			//LOG_DEBUG(("im = %d", im));	
+			return im;
+		}
+	}
+	if (im == 101) 
+		return 0;
+	//LOG_DEBUG(("im = %d", im));
+	return im;
 }
 
 
@@ -144,17 +184,8 @@ void Map::end(const std::string &name) {
 	} else if (name == "layer") {
 		long w = atol(e.attrs["width"].c_str());
 		long h = atol(e.attrs["height"].c_str());
-		long z;
-		int impassability = 0;
-
-		if (_properties.find("z") == _properties.end()) {
-			z = ++_lastz;
-		} else {
-			z = atol(_properties["z"].c_str());
-		}
-		if (_properties.find("impassability") != _properties.end()) {
-			impassability = atoi(_properties["impassability"].c_str());
-		}
+		long z = (_properties.find("z") == _properties.end())?++_lastz:atol(_properties["z"].c_str());
+		int impassability = (_properties.find("impassability") != _properties.end())?atoi(_properties["impassability"].c_str()):-1;
 
 		LOG_DEBUG(("layer '%s'. %ldx%ld. z: %ld, size: %d, impassability: %d", e.attrs["name"].c_str(), w, h, z, _data.getSize(), impassability));
 		if (_layers.find(z) != _layers.end())

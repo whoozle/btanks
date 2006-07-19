@@ -29,7 +29,9 @@ public:
 	virtual ~Object();
 	
 	virtual void tick(const float dt) = 0;
-	virtual void render(sdlx::Surface &surf, const int x, const int y) = 0;
+	virtual void render(sdlx::Surface &surf, const int x, const int y, int &w, int &h) = 0;
+	
+	void getPosition(float &x, float &y, float &z);
 protected:
 	float _vx, _vy, _vz;
 private:

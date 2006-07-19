@@ -26,7 +26,7 @@ public:
 	KeyPlayer(AnimatedObject *animation, SDLKey up, SDLKey down, SDLKey left, SDLKey right);
 	virtual ~KeyPlayer();
 	virtual void tick(const float dt);
-	virtual void render(sdlx::Surface &surf, const int x, const int y);
+	virtual void render(sdlx::Surface &surf, const int x, const int y, int &w, int &h);
 
 protected: 
 	struct state { float vx, vy; } state;

@@ -39,8 +39,8 @@ void KeyPlayer::tick(const float dt) {
 	_animation->tick(dt);
 }
 
-void KeyPlayer::render(sdlx::Surface &surf, const int x, const int y) {
-	_animation->render(surf, x, y);
+void KeyPlayer::render(sdlx::Surface &surf, const int x, const int y, int &w, int &h) {
+	_animation->render(surf, x, y, w, h);
 }
 
 
