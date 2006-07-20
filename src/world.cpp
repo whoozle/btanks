@@ -65,13 +65,13 @@ const float IWorld::getImpassability(Object &obj, const sdlx::Surface &surface, 
 		if (my.intersects(other)) {
 	
 			sdlx::Surface osurf;
-			osurf.createRGB(other.w, other.h, 24, sdlx::Surface::Software);
+			osurf.createRGB(other.w, other.h, 24, sdlx::Surface::Software | sdlx::Surface::Alpha );
 			osurf.convertAlpha();
-			osurf.fillRect(osurf.getSize(), SDL_MapRGBA(osurf.getPixelFormat(), 0,0,0,255));
+			osurf.fillRect(osurf.getSize(), SDL_MapRGBA(osurf.getPixelFormat(), 255, 0, 255, 255));
 			o.render(osurf, 0, 0);
 			
 			v3<int> dpos = o._position.convert<int>() - position;
-			LOG_DEBUG(("%s: %d %d", o.classname.c_str(), dpos.x, dpos.y));
+			//LOG_DEBUG(("%s: %d %d", o.classname.c_str(), dpos.x, dpos.y));
 			int r = SDL_CollidePixel(surface.getSDLSurface(), 0, 0, osurf.getSDLSurface(), dpos.x, dpos.y);
 			if (r) {
 				//LOG_DEBUG(("collision"));
@@ -135,11 +135,12 @@ void IWorld::tick(WorldMap &map, const float dt) {
 		
 		assert(ow != 0 && oh != 0);
 	
-		osurf.createRGB(ow, oh, 24, sdlx::Surface::Software);
+		osurf.createRGB(ow, oh, 24, sdlx::Surface::Software |  sdlx::Surface::Alpha);
 		osurf.convertAlpha();
-		osurf.fillRect(osurf.getSize(), SDL_MapRGBA(osurf.getPixelFormat(), 0,0,0,255));
+		osurf.fillRect(osurf.getSize(), SDL_MapRGBA(osurf.getPixelFormat(), 255, 0, 255, 255));
 		o.render(osurf, 0, 0);
-		//s.saveBMP("snapshot.bmp");
+		
+		//osurf.saveBMP("snapshot.bmp");
 		
 		float obj_im = getImpassability(o, osurf, new_pos);
 		//LOG_DEBUG(("obj_im = %f", obj_im));

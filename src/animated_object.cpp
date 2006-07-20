@@ -85,8 +85,10 @@ void AnimatedObject::tick(const float dt) {
 }
 
 void AnimatedObject::render(sdlx::Surface &surface, const int x, const int y) {
-	if (_events.empty()) 
+	if (_events.empty()) {
+		LOG_WARN(("no animation played"));
 		return;
+	}
 	unsigned frame = (unsigned)_pos;
 	frame = _events.front().pose->frames[frame];
 	
