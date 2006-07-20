@@ -3,7 +3,7 @@
 #include "world.h"
 
 Object::Object(const std::string &classname)
- : mass(1), speed(1), ttl(-1), piercing(false), classname(classname), _direction(1,0,0), dead(false) {
+ : mass(1), speed(1), ttl(-1), impassability(1), piercing(false), classname(classname), _direction(1,0,0), dead(false) {
 	_velocity.clear();
 	_position.clear();
 }
@@ -27,4 +27,33 @@ void Object::spawn(Object *o, const v3<float> &dpos, const v3<float> &vel) {
 
 const bool Object::getNearest(const std::string &classname, v3<float> &position, v3<float> &velocity) const {
 	return World->getNearest(this, classname, position, velocity);
+}
+
+const float Object::getCollisionTime(const v3<float> &pos, const v3<float> &vel) const {
+	v3<float> dpos = pos - _position;
+	float a = vel.x * vel.x + vel.y * vel.y;
+	if (a == 0)
+		return -1;
+	
+	float p = 2 * (vel.x * dpos.x + vel.y * dpos.y) / a;
+	float q = ( dpos.x * dpos.x + dpos.y * dpos.y - /*R.*/(size.x + size.y) / 2 ) / a;
+	
+	if (p > 0 && q > 0) //both times < 0
+		return -1;
+	
+	float d = p * p - 4 * q;
+	if (d < 0) 
+		return -1; //no solution
+
+	d = sqrt(d);
+	
+	float t1 = (-p + d) / 2;
+	if (t1 > 0) 
+		return t1;
+		
+	float t2 = (-p - d) / 2;
+	if (t2 > 0)
+		return t2;
+	
+	return -1;
 }
