@@ -2,7 +2,8 @@
 #include "joyplayer.h"
 #include "mrt/logger.h"
 
-JoyPlayer::JoyPlayer(const int idx) : Object("human") {
+JoyPlayer::JoyPlayer(const std::string &animation, const int idx, const int fire)
+: Player("human", animation, false), _fire(fire) {
 	_joy.open(idx);
 }
 
@@ -13,12 +14,15 @@ void JoyPlayer::tick(const float dt) {
 	Sint16 x = _joy.getAxis(0);
 	Sint16 y = _joy.getAxis(1);
 	
-	_velocity.x = _velocity.y = 0;
+	memset(&_state, 0, sizeof(_state));
 	
-	if (x >= THRESHOLD) _velocity.x += 1;
-	if (x <= -THRESHOLD) _velocity.x += 1;
-	if (y >= THRESHOLD) _velocity.y += 1;
-	if (y <= -THRESHOLD) _velocity.y += 1;
+	if (x >= THRESHOLD) _state.right = true;
+	if (x <= -THRESHOLD) _state.left = true;
+	if (y >= THRESHOLD) _state.down = true;;
+	if (y <= -THRESHOLD) _state.up = true;
+	_state.fire = _joy.getButton(_fire);
+
+	Player::tick(dt);
 }
 
 /*

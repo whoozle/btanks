@@ -18,17 +18,18 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include "object.h"
+#include "player.h"
 #include "sdlx/joystick.h"
 
-class JoyPlayer :public Object {
+class JoyPlayer :public Player {
 public:
-	JoyPlayer(const int idx);
+	JoyPlayer(const std::string &animation, const int idx, const int fire);
 	virtual void tick(const float dt);
 	
 	virtual ~JoyPlayer();
 private:
 	sdlx::Joystick _joy;
+	int _fire;
 };
 
 #endif

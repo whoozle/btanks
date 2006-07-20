@@ -37,6 +37,10 @@ Sint16 Joystick::getAxis(const int idx) const {
 	return SDL_JoystickGetAxis(_joy, idx);
 }
 
+const bool Joystick::getButton(const int idx) const {
+	return SDL_JoystickGetButton(_joy, idx) != 0;
+}
+
 
 void Joystick::close() {
 	if (_joy == NULL) 
