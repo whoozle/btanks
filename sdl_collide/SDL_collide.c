@@ -12,6 +12,8 @@ int SDL_CollideTransparentPixelTest(const SDL_Surface *surface , const int u , c
 	int bpp;
 	Uint8 *p;
 	Uint32 pixelcolor;
+	if (u < 0 || v < 0) 
+		return 0;
 	
 	/*assert that (u,v) offsets lie within surface*/
 	assert( u < surface->w && v < surface->h );
@@ -121,6 +123,7 @@ int SDL_CollidePixel(const SDL_Surface *as , const int ax , const int ay ,
 
 	inter_y0 = SDL_COLLIDE_MAX(ay,by);
 	inter_y1 = SDL_COLLIDE_MIN(ay1,by1);
+	/* printf("%d %d :: %d %d\n", inter_x0, inter_y0, inter_x1, inter_y1); */
 
 	for(y = inter_y0 ; y <= inter_y1 ; y++)
 	{
