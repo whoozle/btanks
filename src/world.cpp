@@ -74,6 +74,7 @@ void IWorld::tick(WorldMap &map, const float dt) {
 			++i;
 			continue;
 		}
+		o._old_velocity = o._velocity;
 
 		//LOG_DEBUG(("im = %f", im));
 		v3<float> dpos = o.speed * vel * dt;
@@ -106,10 +107,6 @@ void IWorld::tick(WorldMap &map, const float dt) {
 			im = 1 - map.getImpassability(osurf, new_pos) / 100.0;
 		}
 		o._position += dpos * im;
-/*		o._x += dx * im; 
-		o._y += dy * im;
-		o._z += dz * im;
-*/		
 		++i;
 	}
 }
@@ -121,11 +118,5 @@ const bool IWorld::exists(Object *o) const {
 void IWorld::spawn(Object *src, Object *obj, const v3<float> &dpos, const v3<float> &vel) {
 	obj->_position = src->_position + dpos;
 	obj->_velocity = vel;
-/*	obj->_x = src->_x + dx;
-	obj->_y = src->_y + dy;
-	obj->_z = src->_z + dz;
-	obj->_vx = vx;
-	obj->_vy = vy;
-	obj->_vz = vz; */
 	addObject(obj);
 }

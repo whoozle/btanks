@@ -1,9 +1,13 @@
-#include "keyplayer.h"
-#include "mrt/logger.h"
-#include "game.h"
 #include <string.h>
+
+#include "mrt/logger.h"
+
+#include "keyplayer.h"
+#include "game.h"
 #include "resource_manager.h"
+#include "animated_object.h"
 #include "world.h"
+#include "assert.h"
 
 KeyPlayer::KeyPlayer(AnimatedObject *animation, SDLKey up, SDLKey down, SDLKey left, SDLKey right, SDLKey fire): 
 _animation(animation),
@@ -13,7 +17,7 @@ _up(up), _down(down), _left(left), _right(right), _fire(fire) {
 	//ttl = 1;
 	stale = false;
 	Game->key_signal.connect(sigc::mem_fun(this, &KeyPlayer::onKey));
-	memset(&state, 0, sizeof(state));
+	memset(&_state, 0, sizeof(_state));
 	_animation->play("hold", true);
 }
 
@@ -30,8 +34,15 @@ void KeyPlayer::tick(const float dt) {
 		5, 0, 1,
 		6, 7, 8,
 	};
-	if (_velocity.x != state.vx || _velocity.y != state.vy) {
-		int dir = dirmap[(int)((state.vy + 1) * 3 + state.vx + 1)];
+	
+	v3<float> velocity;
+	if (_state.left) velocity.x -= 1;
+	if (_state.right) velocity.x += 1;
+	if (_state.up) velocity.y -= 1;
+	if (_state.down) velocity.y += 1;
+	
+	if (_velocity != velocity) {
+		int dir = dirmap[(int)((velocity.y + 1) * 3 + velocity.x + 1)];
 		//LOG_DEBUG(("pose %d", pose));
 		if (dir) {
 			_animation->setDirection(dir - 1);
@@ -42,18 +53,17 @@ void KeyPlayer::tick(const float dt) {
 				_animation->play("move", true);
 			}
 			
-			state.old_vx = state.vx;
-			state.old_vy = state.vy;
+//			_state.old_vx = _state.vx;
+//			_state.old_vy = _state.vy;
 		} else {
 			_animation->cancelRepeatable();
 			_animation->play("hold", true);
 		}
 	}
-	_velocity.x = state.vx;
-	_velocity.y = state.vy;
+	_velocity = velocity;
 
 
-	if (state.fire && !World->exists(_bullet)) {
+	if (_state.fire && !World->exists(_bullet)) {
 		if (_animation->getState() == "fire") 
 			_animation->cancel();
 		
@@ -66,10 +76,10 @@ void KeyPlayer::tick(const float dt) {
 		
 		_bullet->play("move", true);
 		_bullet->setDirection(_animation->getDirection());
-		//LOG_DEBUG(("vel: %f %f", state.old_vx, state.old_vy));
-		spawn(_bullet, v3<float>(), v3<float>(state.old_vx, state.old_vy, 0));
+		//LOG_DEBUG(("vel: %f %f", _state.old_vx, _state.old_vy));
+		spawn(_bullet, v3<float>(), _old_velocity);
 	}
-	state.fire = false;
+	_state.fire = false;
 	
 	_animation->tick(dt);
 }
@@ -85,28 +95,25 @@ void KeyPlayer::onKey(const Uint8 type, const SDL_keysym sym) {
 	if (stale)
 		return;
 	
-	float vx = 0, vy = 0;
-
+	bool *key = NULL;
 	if (sym.sym == _up) {
-		vy = -1;
+		key = &_state.up;
 	} else if (sym.sym == _down) {
-		vy = 1;
+		key = &_state.down;
 	} else if (sym.sym == _left) {		
-		vx = -1;
+		key = &_state.left;
 	} else if (sym.sym == _right) {		
-		vx = 1;
+		key = &_state.right;
 	} else if (sym.sym == _fire && type == SDL_KEYDOWN) {
-		state.fire = true;
+		key = &_state.fire;
 	} else return;
-
+	assert(key != NULL);
+	
 	if (type == SDL_KEYDOWN) {
-		state.vx += vx;
-		state.vy += vy;
+		*key = true;
 	} else if (type == SDL_KEYUP) {
-		state.vx -= vx;
-		state.vy -= vy;
+		*key = false;
 	}
-	//LOG_DEBUG(("%f, %f", state.vx, state.vy));
 }
 
 

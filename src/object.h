@@ -39,7 +39,7 @@ public:
 	void getPosition(v3<float> &position);
 protected:
 	void spawn(Object *, const v3<float> &dpos, const v3<float> &vel);
-	v3<float> _velocity;
+	v3<float> _velocity, _old_velocity;
 private:
 	bool dead;
 	v3<float> _position;

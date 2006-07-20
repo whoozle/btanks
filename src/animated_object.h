@@ -21,6 +21,7 @@
 #include "object.h"
 #include <deque>
 #include <string>
+#include "v3.h"
 
 namespace sdlx {
 	class Surface;
@@ -45,6 +46,8 @@ public:
 	void cancelRepeatable();
 	void cancelAll();
 	const std::string getState() const;
+protected:
+	v3<float> _old_velocity;
 	
 private: 
 	struct Event {

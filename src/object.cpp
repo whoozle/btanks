@@ -6,6 +6,7 @@ Object::Object() : mass(1), speed(1), ttl(-1), piercing(false), dead (false)  {
 	_velocity.clear();
 	_position.clear();
 	w = h = 0;
+	_old_velocity.x = 1;
 }
 
 Object::~Object() {}

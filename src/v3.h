@@ -11,20 +11,32 @@ public:
 
 	void clear() { x = y = z = 0; }
 	const T normalize() {
-		T len = (T)sqrt(x * x + y * y + z * z);
-		if (len != 0) {
-			x /= len;
-			y /= len;
-			z /= len;
-			return 1;
-		}
-		return 0;
+		T len = lenght();
+		if (len == 0 || len == 1) 
+			return len;
+		
+		x /= len;
+		y /= len;
+		z /= len;
+		return 1;
 	}
+	
 	const T lenght() const {
+		if (x == 0 && y == 0 && z == 0) 
+			return 0;
+		
 		return (T)sqrt(x * x + y * y + z * z);
 	}
 	
 	//operators 
+	const bool operator==(const v3<T> &other) {
+		return x == other.x && y == other.y && z == other.z;
+	}
+
+	const bool operator!=(const v3<T> &other) {
+		return x != other.x || y != other.y || z != other.z;
+	}
+	
 	const v3<T>& operator+=(const v3<T>& other) {
 		x += other.x;
 		y += other.y;

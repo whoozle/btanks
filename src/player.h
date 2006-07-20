@@ -19,15 +19,15 @@
  */
 
 #include <SDL/SDL.h>
-#include <sigc++/sigc++.h>
+#include "object.h"
+#include "v3.h"
 
-class Player {
+class Player : public Object {
 public:
-	float vx, vy;
-	sigc::signal1<void, const std::string &> action;
-
-	virtual void processEvent(const SDL_Event &event) = 0;
-	virtual ~Player() {}
+protected:
+	struct State {
+		bool left, right, up, down, fire;
+	} _state;
 };
 
 #endif

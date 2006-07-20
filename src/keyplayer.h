@@ -18,10 +18,12 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include "animated_object.h"
 #include "sdlx/joystick.h"
+#include "player.h"
 
-class KeyPlayer : public Object {
+class AnimatedObject;
+
+class KeyPlayer : public Player {
 public:
 	KeyPlayer(AnimatedObject *animation, SDLKey up, SDLKey down, SDLKey left, SDLKey right, SDLKey fire);
 	virtual ~KeyPlayer();
@@ -30,7 +32,7 @@ public:
 	virtual void emit(const std::string &event, const Object * emitter = NULL);
 
 protected: 
-	struct state { float vx, vy, old_vx, old_vy; bool fire; } state;
+	//struct state { float vx, vy, old_vx, old_vy; bool fire; } state;
 private:
 	AnimatedObject *_bullet;
 	AnimatedObject *_animation;
