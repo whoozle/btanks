@@ -70,11 +70,13 @@ void IWorld::tick(WorldMap &map, const float dt) {
 		
 		v3<float> vel = o._velocity;
 		float len = vel.normalize();
+		o._old_velocity = vel;
+		
 		if (len == 0) {
 			++i;
 			continue;
 		}
-		o._old_velocity = o._velocity;
+		o._direction = o._velocity;
 
 		//LOG_DEBUG(("im = %f", im));
 		v3<float> dpos = o.speed * vel * dt;

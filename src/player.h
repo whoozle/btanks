@@ -27,7 +27,7 @@ class AnimatedObject;
 
 class Player : public Object {
 public:
-	Player(const std::string &animation);
+	Player(const std::string &animation, const bool stateless);
 
 	virtual void emit(const std::string &event, const Object * emitter);
 	virtual void tick(const float dt);
@@ -39,6 +39,8 @@ protected:
 	} _state;
 	bool _stale;
 	AnimatedObject *_animation, *_bullet;
+private:
+	bool _stateless;
 };
 
 #endif

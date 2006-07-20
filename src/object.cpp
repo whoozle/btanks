@@ -2,11 +2,11 @@
 #include "mrt/logger.h"
 #include "world.h"
 
-Object::Object() : mass(1), speed(1), ttl(-1), piercing(false), dead (false)  {
+Object::Object() : mass(1), speed(1), ttl(-1), piercing(false), _direction(1,0,0), dead(false) {
 	_velocity.clear();
 	_position.clear();
 	w = h = 0;
-	_old_velocity.x = 1;
+
 }
 
 Object::~Object() {}
