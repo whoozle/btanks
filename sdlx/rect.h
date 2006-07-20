@@ -36,23 +36,51 @@ namespace sdlx {
             h = _h;
         }
 	
-	void reset() {
+	inline void reset() {
 	    x = y = w = h = 0;
 	}
+	
 	inline const bool in(const int _x, const int _y) const {
 		return (_x>=x && _y>=y && _x < x+w && _y < y+h);
 	}
 	
-	const bool intersected(const Rect & other) {
-		int rx = x+w-1;
-		int dy = y+h-1;
+	inline const bool intersects(const Rect & other) {
+		int min, max, omin, omax;
+		int iw, ih;
 		
-		return (
-			other.in(x, y) ||
-			other.in(rx, y) || 
-			other.in(x, dy) ||
-			other.in(rx, dy)
-		);
+		/* Horizontal intersection */
+		min = x;
+		max = min + w;
+		omin = other.x;
+		omax = omin + other.w;
+		if(omin > min)
+			min = omin;
+		        
+		//intersection->x = min;
+		
+		if(omax < max)
+			max = omax;
+		
+		iw = max - min > 0 ? max - min : 0;
+		//intersection->w = max - min > 0 ? max - min : 0;
+
+		/* Vertical intersection */
+		min = y;
+		max = min + h;
+		omin = other.y;
+		omax = omin + other.h;
+		
+		if(omin > min)
+			min = omin;
+		//intersection->y = min;
+		
+		if(omax < max)
+	        max = omax;
+	    
+		//intersection->h = max - min > 0 ? max - min : 0;
+		ih = max - min > 0 ? max - min : 0;
+
+		return (iw && ih);
 	}
 /*
         operator pSDL_Rect() {

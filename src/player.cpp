@@ -123,7 +123,8 @@ void Player::tick(const float dt) {
 		_bullet->play("move", true);
 		_bullet->setDirection(_animation->getDirection());
 		//LOG_DEBUG(("vel: %f %f", _state.old_vx, _state.old_vy));
-		spawn(_bullet, v3<float>(), _velocity.is0()?_direction:_velocity);
+		v3<float> v = _velocity.is0()?_direction:_velocity;
+		spawn(_bullet, v * 16, v);
 	}
 	_state.fire = false;
 	

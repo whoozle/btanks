@@ -75,6 +75,19 @@ public:
 	const v3<T> operator/(const v3<T>& other) const {
 		return v3<T>(x / other.x, y / other.y, z / other.z);
 	}
+
+	const v3<T> operator*(const T& other) const {
+		return v3<T>(x * other, y * other, z * other);
+	}
+	const v3<T> operator+(const T& other) const {
+		return v3<T>(x + other, y + other, z + other);
+	}
+	const v3<T> operator-(const T& other) const {
+		return v3<T>(x - other, y - other, z - other);
+	}
+	const v3<T> operator/(const T& other) const {
+		return v3<T>(x / other, y / other, z / other);
+	}
 	
 };
 

@@ -11,6 +11,8 @@
 #include <assert.h>
 #include <limits>
 
+#include "sdl_collide/SDL_collide.h"
+
 IMPLEMENT_SINGLETON(World, IWorld)
 
 
@@ -49,6 +51,44 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect &viewport) {
 		}
 	}
 }
+
+const float IWorld::getImpassability(Object &obj, const sdlx::Surface &surface, const v3<int> &position) const {
+	sdlx::Rect my((int)position.x, (int)position.y,(int)obj.size.x, (int)obj.size.y);
+	float im = 0;
+	
+	for(ObjectSet::iterator i = _objects.begin(); i != _objects.end(); ++i) {
+		Object &o = **i;
+		if (&o == &obj) 
+			continue;
+		
+		sdlx::Rect other((int)o._position.x, (int)o._position.y,(int)o.size.x, (int)o.size.y);
+		if (my.intersects(other)) {
+	
+			sdlx::Surface osurf;
+			osurf.createRGB(other.w, other.h, 24, sdlx::Surface::Software);
+			osurf.convertAlpha();
+			osurf.fillRect(osurf.getSize(), SDL_MapRGBA(osurf.getPixelFormat(), 0,0,0,255));
+			o.render(osurf, 0, 0);
+			
+			//v3<int> dpos = o._position.convert<int>() - position;
+			v3<int> dpos = position - o._position.convert<int>();
+			LOG_DEBUG(("%s: %d %d", o.classname.c_str(), dpos.x, dpos.y));
+			int r = SDL_CollidePixel(osurf.getSDLSurface(), dpos.x, dpos.y, surface.getSDLSurface(), 0, 0);
+			if (r) {
+				//LOG_DEBUG(("collision"));
+				LOG_DEBUG(("collision %s <-> %s", obj.classname.c_str(), o.classname.c_str()));
+				o.emit("collision", &obj);
+				obj.emit("collision", &o);
+
+				if (im < o.impassability)
+					im = o.impassability;
+			}
+		}
+	}
+	
+	return im;
+}
+
 
 void IWorld::tick(WorldMap &map, const float dt) {
 	//LOG_DEBUG(("tick dt = %f", dt));
@@ -102,15 +142,18 @@ void IWorld::tick(WorldMap &map, const float dt) {
 		o.render(osurf, 0, 0);
 		//s.saveBMP("snapshot.bmp");
 		
-		float im = 1;
+		float obj_im = getImpassability(o, osurf, new_pos);
+		//LOG_DEBUG(("obj_im = %f", obj_im));
+		
+		float map_im = 1;
 		if (o.piercing) {
 			if (map.getImpassability(osurf, new_pos) == 100) {
 				o.emit("death"); //fixme
 			}
 		} else {
-			im = 1 - map.getImpassability(osurf, new_pos) / 100.0;
+			map_im = 1 - map.getImpassability(osurf, new_pos) / 100.0;
 		}
-		o._position += dpos * im;
+		o._position += dpos * map_im * (1 - obj_im);
 		++i;
 	}
 }
