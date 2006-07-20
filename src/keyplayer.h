@@ -25,20 +25,12 @@ class AnimatedObject;
 
 class KeyPlayer : public Player {
 public:
-	KeyPlayer(AnimatedObject *animation, SDLKey up, SDLKey down, SDLKey left, SDLKey right, SDLKey fire);
+	KeyPlayer(const std::string &animation, SDLKey up, SDLKey down, SDLKey left, SDLKey right, SDLKey fire);
 	virtual ~KeyPlayer();
-	virtual void tick(const float dt);
-	virtual void render(sdlx::Surface &surf, const int x, const int y);
-	virtual void emit(const std::string &event, const Object * emitter = NULL);
 
-protected: 
-	//struct state { float vx, vy, old_vx, old_vy; bool fire; } state;
 private:
-	AnimatedObject *_bullet;
-	AnimatedObject *_animation;
 	void onKey(const Uint8 type, const SDL_keysym sym);
 	SDLKey _up, _down, _left, _right, _fire;
-	bool stale;
 };
 
 #endif

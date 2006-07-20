@@ -21,13 +21,24 @@
 #include <SDL/SDL.h>
 #include "object.h"
 #include "v3.h"
+#include <string>
+
+class AnimatedObject;
 
 class Player : public Object {
 public:
+	Player(const std::string &animation);
+
+	virtual void emit(const std::string &event, const Object * emitter);
+	virtual void tick(const float dt);
+	virtual void render(sdlx::Surface &surf, const int x, const int y);
+
 protected:
 	struct State {
 		bool left, right, up, down, fire;
 	} _state;
+	bool _stale;
+	AnimatedObject *_animation, *_bullet;
 };
 
 #endif

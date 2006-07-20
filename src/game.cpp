@@ -132,7 +132,7 @@ void IGame::onMenu(const std::string &name) {
 		_main_menu.setActive(false);
 		
 		_map.load("country");
-		Object *player = new KeyPlayer(ResourceManager->createAnimation("green-tank"), SDLK_UP, SDLK_DOWN, SDLK_LEFT, SDLK_RIGHT, SDLK_SPACE);
+		Object *player = new KeyPlayer("green-tank", SDLK_UP, SDLK_DOWN, SDLK_LEFT, SDLK_RIGHT, SDLK_SPACE);
 		_players.clear();
 		_players.push_back(player);
 
