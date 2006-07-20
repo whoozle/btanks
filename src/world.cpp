@@ -70,10 +70,9 @@ const float IWorld::getImpassability(Object &obj, const sdlx::Surface &surface, 
 			osurf.fillRect(osurf.getSize(), SDL_MapRGBA(osurf.getPixelFormat(), 0,0,0,255));
 			o.render(osurf, 0, 0);
 			
-			//v3<int> dpos = o._position.convert<int>() - position;
-			v3<int> dpos = position - o._position.convert<int>();
+			v3<int> dpos = o._position.convert<int>() - position;
 			LOG_DEBUG(("%s: %d %d", o.classname.c_str(), dpos.x, dpos.y));
-			int r = SDL_CollidePixel(osurf.getSDLSurface(), dpos.x, dpos.y, surface.getSDLSurface(), 0, 0);
+			int r = SDL_CollidePixel(surface.getSDLSurface(), 0, 0, osurf.getSDLSurface(), dpos.x, dpos.y);
 			if (r) {
 				//LOG_DEBUG(("collision"));
 				LOG_DEBUG(("collision %s <-> %s", obj.classname.c_str(), o.classname.c_str()));
