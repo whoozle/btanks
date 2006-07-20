@@ -33,8 +33,20 @@ void AIPlayer::tick(const float dt) {
 		
 		static float threshold = 12;
 		
-		if (_velocity.x >= -threshold && _velocity.x <= threshold) _velocity.x = 0;
-		if (_velocity.y >= -threshold && _velocity.y <= threshold) _velocity.y = 0;
+		if (_velocity.x >= -threshold && _velocity.x <= threshold) { 
+			_velocity.x = 0;
+			_state.fire = true;
+		}
+		if (_velocity.y >= -threshold && _velocity.y <= threshold) {
+			_velocity.y = 0;
+			_state.fire = true;
+		}
+		float tg = _velocity.x != 0 ?(_velocity.y / _velocity.x - 1):100;
+		//LOG_DEBUG(("tg = %f", tg));
+		if (tg*tg < 1) {
+			_state.fire = true;
+		}
+		
 		//LOG_DEBUG(("v: %f %f", _velocity.x, _velocity.y));
 	}
 
