@@ -36,7 +36,8 @@ const float Object::getCollisionTime(const v3<float> &pos, const v3<float> &vel)
 		return -1;
 	
 	float b = 2 * (vel.x * dpos.x + vel.y * dpos.y) ;
-	float c = dpos.x * dpos.x + dpos.y * dpos.y - /*R.*/((size.x + size.y) / 2) ;
+	float r = ((size.x + size.y) / 2);
+	float c = dpos.x * dpos.x + dpos.y * dpos.y - r*r;
 	
 	if (b/a > 0 && c/a > 0) //both times < 0
 		return -1;
