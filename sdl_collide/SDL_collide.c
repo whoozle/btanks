@@ -125,9 +125,9 @@ int SDL_CollidePixel(const SDL_Surface *as , const int ax , const int ay ,
 	inter_y1 = SDL_COLLIDE_MIN(ay1,by1);
 	/* printf("%d %d :: %d %d\n", inter_x0, inter_y0, inter_x1, inter_y1); */
 
-	for(y = inter_y0 ; y <= inter_y1 ; y++)
+	for(y = inter_y0 ; y <= inter_y1 ; ++y)
 	{
-		for(x = inter_x0 ; x <= inter_x1 ; x++)
+		for(x = inter_x0 ; x <= inter_x1 ; ++x)
 		{
 			/*compute offsets for surface
 			before pass to TransparentPixel test*/
