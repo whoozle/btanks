@@ -34,7 +34,7 @@ class IWorld {
 public:
 	DECLARE_SINGLETON(IWorld);
 	
-	void addObject(Object *);
+	void addObject(Object *, const v3<float> &pos);
 	const bool exists(Object *) const;
 	const bool getInfo(Object *, v3<float> &pos, v3<float> &vel) const;
 	

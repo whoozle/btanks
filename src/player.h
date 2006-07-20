@@ -32,6 +32,7 @@ public:
 	virtual void emit(const std::string &event, const Object * emitter);
 	virtual void tick(const float dt);
 	virtual void render(sdlx::Surface &surf, const int x, const int y);
+	void setDirection(const int d);
 
 protected:
 	struct State {

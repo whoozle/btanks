@@ -3,10 +3,11 @@
 #include "mrt/logger.h"
 #include "animation_model.h"
 
-AnimatedObject::AnimatedObject(AnimationModel *model, sdlx::Surface *surface, const int tile_w, const int tile_h) {
+AnimatedObject::AnimatedObject(const std::string &classname, AnimationModel *model, sdlx::Surface *surface, const int tile_w, const int tile_h) 
+: Object(classname) {
 	_model = model;
 	_surface = surface;
-	w = _tw = tile_w; h = _th = tile_h;
+	size.x = _tw = tile_w; size.y = _th = tile_h;
 	_direction= 0;
 	_pos = 0;
 }

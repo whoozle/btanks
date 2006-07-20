@@ -13,9 +13,10 @@
 IMPLEMENT_SINGLETON(World, IWorld)
 
 
-void IWorld::addObject(Object *o) {
+void IWorld::addObject(Object *o, const v3<float> &pos) {
 	if (o == NULL) 
 		throw_ex(("adding NULL as world object is not allowed"));
+	o->_position = pos;
 		
 	_objects.insert(o);
 	LOG_DEBUG(("object %p added, objects: %d", (void*)o, _objects.size()));
@@ -39,7 +40,7 @@ const bool IWorld::getInfo(Object * po, v3<float> &pos, v3<float> &vel) const {
 void IWorld::render(sdlx::Surface &surface, const sdlx::Rect &viewport) {
 	for(ObjectSet::iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		Object &o = **i;
-		sdlx::Rect r((int)o._position.x, (int)o._position.y, (int)o.w, (int) o.h);
+		sdlx::Rect r((int)o._position.x, (int)o._position.y, o.size.x, o.size.y);
 		if (true /* r.in(viewport) */) {
 			r.x -= viewport.x;
 			r.y -= viewport.y;
@@ -87,8 +88,8 @@ void IWorld::tick(WorldMap &map, const float dt) {
 */
 		v3<int> new_pos((o._position + dpos).convert<int>());
 
-		int ow = (int)o.w;
-		int oh = (int)o.h; 
+		int ow = o.size.x;
+		int oh = o.size.y; 
 
 		sdlx::Surface osurf;
 		
@@ -118,7 +119,6 @@ const bool IWorld::exists(Object *o) const {
 }
 
 void IWorld::spawn(Object *src, Object *obj, const v3<float> &dpos, const v3<float> &vel) {
-	obj->_position = src->_position + dpos;
 	obj->_velocity = vel;
-	addObject(obj);
+	addObject(obj, src->_position + dpos);
 }

@@ -26,10 +26,13 @@ namespace sdlx {
 
 class Object {
 public:
-	float mass, w, h, speed, ttl;
+	v3<int> size;
+	float mass, speed, ttl;
 	bool piercing;
 	
-	Object();
+	const std::string classname;
+	
+	Object(const std::string &classname);
 	virtual ~Object();
 	
 	virtual void tick(const float dt) = 0;

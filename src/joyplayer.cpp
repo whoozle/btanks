@@ -2,7 +2,7 @@
 #include "joyplayer.h"
 #include "mrt/logger.h"
 
-JoyPlayer::JoyPlayer(const int idx) {
+JoyPlayer::JoyPlayer(const int idx) : Object("human") {
 	_joy.open(idx);
 }
 

@@ -2,6 +2,7 @@
 #include "version.h"
 #include "joyplayer.h"
 #include "keyplayer.h"
+#include "aiplayer.h"
 #include "world.h"
 #include "resource_manager.h"
 
@@ -137,7 +138,12 @@ void IGame::onMenu(const std::string &name) {
 		_players.push_back(player);
 
 		//World->clear();
-		World->addObject(player);
+		World->addObject(player, v3<float>(100, 100, 0));
+
+		Player *p = new AIPlayer("red-tank");
+		p->setDirection(4);
+		sdlx::Rect r = _map.getSize();
+		World->addObject(p, v3<float>(r.w - 100, 100, 0));
 	}
 }
 

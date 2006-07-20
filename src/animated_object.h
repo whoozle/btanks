@@ -32,7 +32,7 @@ class Pose;
 
 class AnimatedObject : public Object {
 public:
-	AnimatedObject(AnimationModel *model, sdlx::Surface *surface, const int tile_w, const int tile_h);
+	AnimatedObject(const std::string &classname, AnimationModel *model, sdlx::Surface *surface, const int tile_w, const int tile_h);
 
 	void setDirection(const int dir);
 	const int getDirection() const;
