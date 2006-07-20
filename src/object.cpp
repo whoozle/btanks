@@ -24,3 +24,7 @@ void Object::emit(const std::string &event, const Object * emitter) {
 void Object::spawn(Object *o, const v3<float> &dpos, const v3<float> &vel) {
 	World->spawn(this, o, dpos, vel);
 }
+
+const bool Object::getNearest(const std::string &classname, v3<float> &position, v3<float> &velocity) const {
+	return World->getNearest(this, classname, position, velocity);
+}

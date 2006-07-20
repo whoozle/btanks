@@ -42,6 +42,9 @@ public:
 	void getPosition(v3<float> &position);
 protected:
 	void spawn(Object *, const v3<float> &dpos, const v3<float> &vel);
+	const bool getNearest(const std::string &classname, v3<float> &position, v3<float> &velocity) const;
+
+	
 	v3<float> _velocity, _old_velocity, _direction;
 private:
 	bool dead;

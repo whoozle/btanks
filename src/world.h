@@ -42,6 +42,8 @@ public:
 	void tick(WorldMap &map, const float dt);
 	
 	void spawn(Object *src, Object *obj, const v3<float> &dpos, const v3<float> &vel);
+	
+	const bool getNearest(const Object *obj, const std::string &classname, v3<float> &position, v3<float> &velocity) const;
 
 private:
 	typedef std::set<Object *> ObjectSet;

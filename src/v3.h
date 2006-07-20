@@ -10,6 +10,10 @@ public:
 	v3<T>(const T x, const T y, const T z) : x(x), y(y), z(z) {} 
 
 	void clear() { x = y = z = 0; }
+	const bool is0() const {
+		return x== 0 && y == 0 && z == 0;
+	}
+	
 	const T normalize() {
 		T len = lenght();
 		if (len == 0 || len == 1) 
@@ -43,6 +47,21 @@ public:
 		z += other.z;
 		return *this;
 	}
+	template <typename T2> 
+		v3<T2> convert() const { return v3<T2>((T2)x, (T2)y, (T2)z); }
+	
+	const T distance(const v3<T>& other) const {
+		v3<T>d(this);
+		d-= other;
+		return d.lenght();
+	}
+	
+	const T quick_distance(const v3<T>& other) const {
+		T dx = x - other.x;
+		T dy = y - other.y;
+		T dz = z - other.z;
+		return (dx * dx + dy * dy + dz * dz);
+	}
 	
 	const v3<T> operator*(const v3<T>& other) const {
 		return v3<T>(x * other.x, y * other.y, z * other.z);
@@ -57,8 +76,6 @@ public:
 		return v3<T>(x / other.x, y / other.y, z / other.z);
 	}
 	
-	template <typename T2> 
-		v3<T2> convert() const { return v3<T2>((T2)x, (T2)y, (T2)z); }
 };
 
 template <typename T>

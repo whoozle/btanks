@@ -9,6 +9,7 @@
 
 #include <math.h>
 #include <assert.h>
+#include <limits>
 
 IMPLEMENT_SINGLETON(World, IWorld)
 
@@ -113,6 +114,29 @@ void IWorld::tick(WorldMap &map, const float dt) {
 		++i;
 	}
 }
+
+const bool IWorld::getNearest(const Object *obj, const std::string &classname, v3<float> &position, v3<float> &velocity) const {
+	bool found = false;
+	
+	position.clear();
+	velocity.clear();
+	float distance = std::numeric_limits<float>::infinity();
+	
+	for(ObjectSet::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
+		const Object *o = *i;
+		if (o == obj || o->classname != classname) 
+			continue;
+		float d = obj->_position.quick_distance(o->_position);
+		if (d < distance) {
+			distance = d;
+			position = o->_position;
+			velocity = o->_velocity;
+			found = true;
+		}
+	}
+	return found;
+}
+
 
 const bool IWorld::exists(Object *o) const {
 	return _objects.find(o) != _objects.end();
