@@ -7,7 +7,20 @@ AIPlayer::AIPlayer(const std::string &animation) : Player("ai", animation, true)
 
 void AIPlayer::tick(const float dt) {	
 	v3<float> pos, vel;
-	if (getNearest("human", pos, vel)) {
+	bool skip_human = false;
+
+	if (getNearest("bullet", pos, vel)) {
+		//LOG_DEBUG(("AAA!!!"));
+		float t = getCollisionTime(pos, vel);
+		if (t >= 0) {
+			//LOG_DEBUG(("collision time: %f", t));
+			_velocity.x = -vel.y;
+			_velocity.y = vel.x;
+			skip_human = true;
+		}
+	} 
+	
+	if (!skip_human && getNearest("human", pos, vel)) {
 		//LOG_DEBUG(("found human: %f %f", pos.x, pos.y));
 		v3<float> my_pos;
 		getPosition(my_pos);
@@ -23,6 +36,7 @@ void AIPlayer::tick(const float dt) {
 		if (_velocity.x >= -threshold && _velocity.x <= threshold) _velocity.x = 0;
 		if (_velocity.y >= -threshold && _velocity.y <= threshold) _velocity.y = 0;
 		//LOG_DEBUG(("v: %f %f", _velocity.x, _velocity.y));
-	} else _velocity.clear();
+	}
+
 	Player::tick(dt);
 }
