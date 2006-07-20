@@ -42,8 +42,10 @@ void AIPlayer::tick(const float dt) {
 			_state.fire = true;
 		}
 		float tg = _velocity.x != 0 ?(_velocity.y / _velocity.x - 1):100;
+		if (tg < 0) tg = -tg;
+		
 		//LOG_DEBUG(("tg = %f", tg));
-		if (tg*tg < 1) {
+		if (tg > 0.577350269189625798 && tg < 1.7320508075688778) {
 			_state.fire = true;
 		}
 		
