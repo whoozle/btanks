@@ -33,6 +33,7 @@ public:
 protected:
 	struct State {
 		bool left, right, up, down, fire;
+		void clear() { memset(this, 0, sizeof(*this)); }
 	} _state;
 	bool _stale;
 	const Object *_bullet;

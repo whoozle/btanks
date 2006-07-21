@@ -94,6 +94,7 @@ void AnimatedObject::tick(const float dt) {
 	}
 	
 	_pos += dt * pose->speed;
+	//LOG_DEBUG(("%s: _pos: %f", classname.c_str(), _pos));
 	int cycles = ((int)_pos / pose->frames.size());
 	if (cycles && !event.repeat) {
 		cancel();
@@ -104,14 +105,15 @@ void AnimatedObject::tick(const float dt) {
 
 void AnimatedObject::render(sdlx::Surface &surface, const int x, const int y) {
 	if (_events.empty()) {
-		LOG_WARN(("no animation played"));
+		if (!isDead())
+			LOG_WARN(("%s: no animation played", classname.c_str()));
 		return;
 	}
 	unsigned frame = (unsigned)_pos;
 	frame = _events.front().pose->frames[frame];
 	
 	if (frame * _th >= (unsigned)_surface->getHeight()) {
-		LOG_WARN(("frame %u is out of range.", frame));
+		LOG_WARN(("%s: event '%s' frame %u is out of range.", classname.c_str(), _events.front().name.c_str(), frame));
 		return;
 	}
 	

@@ -102,7 +102,7 @@ void IWorld::tick(WorldMap &map, const float dt) {
 				o.ttl = 0;
 			}
 		}
-		if (o.dead) {
+		if (o.isDead()) {
 			delete *i;
 			_objects.erase(i++);
 			continue;
@@ -154,6 +154,14 @@ void IWorld::tick(WorldMap &map, const float dt) {
 		} else {
 			map_im = 1 - map.getImpassability(osurf, new_pos) / 100.0;
 		}
+
+		if (o.isDead()) {
+			delete *i;
+			_objects.erase(i++);
+			continue;
+		}
+		
+
 		o._position += dpos * map_im * (1 - obj_im);
 		++i;
 	}

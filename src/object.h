@@ -45,6 +45,7 @@ public:
 	const float getCollisionTime(const v3<float> &pos, const v3<float> &vel) const;
 	
 	void getPosition(v3<float> &position);
+	const bool isDead() const;
 protected:
 	const Object * spawn(const std::string &classname, const v3<float> &dpos, const v3<float> &vel);
 	const bool getNearest(const std::string &classname, v3<float> &position, v3<float> &velocity) const;
@@ -52,7 +53,7 @@ protected:
 	
 	v3<float> _velocity, _old_velocity, _direction;
 private:
-	bool dead;
+	bool _dead;
 	v3<float> _position;
 	friend class IWorld;
 };

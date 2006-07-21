@@ -21,7 +21,8 @@ void AIPlayer::tick(const float dt) {
 		}
 	} 
 	
-	if (!skip_human && getNearest("human", pos, vel)) {
+	if (!skip_human) {
+	  if (getNearest("human", pos, vel)) {
 		//LOG_DEBUG(("found human: %f %f", pos.x, pos.y));
 		v3<float> my_pos;
 		getPosition(my_pos);
@@ -51,6 +52,9 @@ void AIPlayer::tick(const float dt) {
 		}
 		
 		//LOG_DEBUG(("v: %f %f", _velocity.x, _velocity.y));
+	  } else {
+	  	_velocity.clear();
+	  }
 	}
 
 	Player::tick(dt);

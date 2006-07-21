@@ -16,6 +16,7 @@ void Bullet::tick(const float dt) {
 	if (dir) {
 		setDirection(dir - 1);
 	}
+	AnimatedObject::tick(dt);
 }
 
 void Bullet::emit(const std::string &event, const Object * emitter) {

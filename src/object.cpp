@@ -3,7 +3,7 @@
 #include "world.h"
 
 Object::Object(const std::string &classname)
- : mass(1), speed(1), ttl(-1), impassability(1), hp(1), piercing(false), classname(classname), _direction(1,0,0), dead(false) {
+ : mass(1), speed(1), ttl(-1), impassability(1), hp(1), piercing(false), classname(classname), _direction(1,0,0), _dead(false) {
 	_velocity.clear();
 	_position.clear();
 }
@@ -14,10 +14,13 @@ void Object::getPosition(v3<float> &position) {
 	position = _position;
 }
 
+const bool Object::isDead() const { return _dead;}
+
+
 void Object::emit(const std::string &event, const Object * emitter) {
 	if (event == "death") {
 		_velocity.clear();
-		dead = true;
+		_dead = true;
 	} else LOG_WARN(("unhandled event '%s'", event.c_str()));
 }
 

@@ -13,14 +13,23 @@
 		<pose id="move">0</pose>
 	</animation-model>
 
-	<animation-model id="explosion-animation" speed="1">
+	<animation-model id="explosion-animation" speed="10">
 		<pose id="boom">0,1,2</pose>
+	</animation-model>
+	
+	<animation-model id="single-tile" speed="1">
+		<pose id="main">0</pose>
 	</animation-model>
 	
 	<animation id="green-tank" tile="Tank_tile3.png" model="tank-animation"/>
 	<animation id="red-tank" tile="Tank_tile4.png" model="tank-animation"/>
 	<animation id="yellow-tank" tile="Tank_tile5.png" model="tank-animation"/>
 	<animation id="cyan-tank" tile="Tank_tile6.png" model="tank-animation"/>
+
+	<animation id="dead-green-tank" tile="Tank_tile3_dead.png" model="single-tile"/>
+	<animation id="dead-red-tank" tile="Tank_tile4_dead.png" model="single-tile"/>
+	<animation id="dead-yellow-tank" tile="Tank_tile5_dead.png" model="single-tile"/>
+	<animation id="dead-cyan-tank" tile="Tank_tile6_dead.png" model="single-tile"/>
 	
 	<animation id="bullet" tile="bullet_tile.png" model="bullet-animation"/>
 	<animation id="explosion" tile="explosion.png" model="explosion-animation" />

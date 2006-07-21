@@ -11,23 +11,28 @@ public:
 
 
 void Explosion::tick(const float dt) {
-	if (getState() == "")	
+	if (!getState().size()) {	
+		//LOG_DEBUG(("over"));
 		emit("death", this);
+	}
+	AnimatedObject::tick(dt);
 }
 
 void Explosion::emit(const std::string &event, const Object * emitter) {
 	if (event == "collision") {
-		emit("death", this);
+		return;
 	} else Object::emit(event, emitter);
 }
 
 
 Object* Explosion::clone() const  {
 	AnimatedObject *a = new Explosion;
-	ResourceManager->initMe(a, "Explosion");
+	ResourceManager->initMe(a, "explosion");
 	a->speed = 0;
+	a->hp = 1000;
 	a->setDirection(0);
 	a->play("boom", false);
+	a->impassability = 0;
 	return a;
 }
 

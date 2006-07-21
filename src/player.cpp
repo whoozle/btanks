@@ -27,9 +27,12 @@ void Player::emit(const std::string &event, const Object * emitter) {
 	if (event == "death") {
 		LOG_DEBUG(("dead"));
 		cancelAll();
-		play("dead", true);
+		//play("dead", true);
+		spawn("explosion", v3<float>(0,0,1), v3<float>(0,0,0));
+		spawn("corpse", v3<float>(0,0,0), v3<float>(0,0,0));
 		_stale = true;
 		_velocity.x = _velocity.y = _velocity.z = 0;
+		Object::emit(event, emitter);
 	} else if (event == "collision") {
 		const std::string &c = emitter->classname;
 		LOG_DEBUG(("collision with %s", c.c_str()));
