@@ -5,7 +5,7 @@
 #include <assert.h>
 
 Player::Player(const std::string &classname, const std::string &animation, const bool stateless) 
-: AnimatedObject(classname), _stale(false), _stateless(stateless) {
+: AnimatedObject(classname), _stale(false), _stateless(stateless), _animation(animation) {
 	ResourceManager->initMe(this, animation);
 	
 	LOG_DEBUG(("player %p: %s", (void *)this, classname.c_str()));
@@ -28,8 +28,8 @@ void Player::emit(const std::string &event, const Object * emitter) {
 		LOG_DEBUG(("dead"));
 		cancelAll();
 		//play("dead", true);
-		spawn("explosion", v3<float>(0,0,1), v3<float>(0,0,0));
-		spawn("corpse", v3<float>(0,0,0), v3<float>(0,0,0));
+		spawn("explosion", "explosion", v3<float>(0,0,1), v3<float>(0,0,0));
+		spawn("corpse", "dead-" + _animation, v3<float>(0,0,0), v3<float>(0,0,0));
 		_stale = true;
 		_velocity.x = _velocity.y = _velocity.z = 0;
 		Object::emit(event, emitter);
@@ -102,7 +102,7 @@ void Player::tick(const float dt) {
 		//LOG_DEBUG(("vel: %f %f", _state.old_vx, _state.old_vy));
 		v3<float> v = _velocity.is0()?_direction:_velocity;
 		v.normalize();
-		_bullet = spawn("bullet", v * 64, v);
+		_bullet = spawn("bullet", "bullet", v * 64, v);
 	}
 	_state.fire = false;
 	

@@ -5,7 +5,7 @@ class Bullet : public AnimatedObject {
 public:
 	Bullet() : AnimatedObject("bullet") {}
 	virtual void tick(const float dt);
-	virtual Object * clone() const;
+	virtual Object * clone(const std::string &opt) const;
 	virtual void emit(const std::string &event, const Object * emitter = NULL);
 };
 
@@ -26,9 +26,9 @@ void Bullet::emit(const std::string &event, const Object * emitter) {
 }
 
 
-Object* Bullet::clone() const  {
+Object* Bullet::clone(const std::string &opt) const  {
 	AnimatedObject *a = new Bullet;
-	ResourceManager->initMe(a, "bullet");
+	ResourceManager->initMe(a, opt);
 	a->speed = 500;
 	a->ttl = 1;
 	a->piercing = true;

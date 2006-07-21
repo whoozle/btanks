@@ -5,7 +5,7 @@ class Explosion : public AnimatedObject {
 public:
 	Explosion() : AnimatedObject("explosion") {}
 	virtual void tick(const float dt);
-	virtual Object * clone() const;
+	virtual Object * clone(const std::string &opt) const;
 	virtual void emit(const std::string &event, const Object * emitter = NULL);
 };
 
@@ -25,9 +25,9 @@ void Explosion::emit(const std::string &event, const Object * emitter) {
 }
 
 
-Object* Explosion::clone() const  {
+Object* Explosion::clone(const std::string &opt) const  {
 	AnimatedObject *a = new Explosion;
-	ResourceManager->initMe(a, "explosion");
+	ResourceManager->initMe(a, opt);
 	a->speed = 0;
 	a->hp = 1000;
 	a->setDirection(0);

@@ -39,7 +39,7 @@ public:
 	
 	virtual void tick(const float dt) = 0;
 	virtual void render(sdlx::Surface &surf, const int x, const int y) = 0;
-	virtual Object * clone() const = 0;
+	virtual Object * clone(const std::string &opt) const = 0;
 	virtual void emit(const std::string &event, const Object * emitter = NULL);
 	
 	const float getCollisionTime(const v3<float> &pos, const v3<float> &vel) const;
@@ -47,7 +47,7 @@ public:
 	void getPosition(v3<float> &position);
 	const bool isDead() const;
 protected:
-	const Object * spawn(const std::string &classname, const v3<float> &dpos, const v3<float> &vel);
+	const Object * spawn(const std::string &classname, const std::string &animation, const v3<float> &dpos, const v3<float> &vel);
 	const bool getNearest(const std::string &classname, v3<float> &position, v3<float> &velocity) const;
 
 	

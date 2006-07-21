@@ -4,7 +4,7 @@
 class Corpse : public AnimatedObject {
 public:
 	Corpse() : AnimatedObject("corpse") {}
-	virtual Object * clone() const;
+	virtual Object * clone(const std::string &opt) const;
 	virtual void emit(const std::string &event, const Object * emitter = NULL);
 };
 
@@ -19,9 +19,9 @@ void Corpse::emit(const std::string &event, const Object * emitter) {
 }
 
 
-Object* Corpse::clone() const  {
+Object* Corpse::clone(const std::string &opt) const  {
 	AnimatedObject *a = new Corpse;
-	ResourceManager->initMe(a, "dead-green-tank");
+	ResourceManager->initMe(a, opt);
 	a->speed = 0;
 	a->hp = 10;
 	a->ttl = 10;

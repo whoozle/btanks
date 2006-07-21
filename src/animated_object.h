@@ -35,7 +35,7 @@ public:
 	AnimatedObject(const std::string &classname);
 	void init(AnimationModel *model, sdlx::Surface *surface, const int tile_w, const int tile_h);
 	void init(const AnimatedObject &o);
-	virtual Object * clone() const;
+	virtual Object * clone(const std::string &opt) const;
 
 	void setDirection(const int dir);
 	const int getDirection() const;

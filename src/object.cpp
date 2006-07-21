@@ -24,8 +24,8 @@ void Object::emit(const std::string &event, const Object * emitter) {
 	} else LOG_WARN(("unhandled event '%s'", event.c_str()));
 }
 
-const Object* Object::spawn(const std::string &classname, const v3<float> &dpos, const v3<float> &vel) {
-	return World->spawn(this, classname, dpos, vel);
+const Object* Object::spawn(const std::string &classname, const std::string &animation, const v3<float> &dpos, const v3<float> &vel) {
+	return World->spawn(this, classname, animation, dpos, vel);
 }
 
 const bool Object::getNearest(const std::string &classname, v3<float> &position, v3<float> &velocity) const {

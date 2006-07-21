@@ -194,8 +194,8 @@ const bool IWorld::exists(const Object *o) const {
 	return _objects.find((Object *)o) != _objects.end();
 }
 
-const Object* IWorld::spawn(Object *src, const std::string &classname, const v3<float> &dpos, const v3<float> &vel) {
-	Object *obj = ResourceManager->createObject(classname);
+const Object* IWorld::spawn(Object *src, const std::string &classname, const std::string &animation, const v3<float> &dpos, const v3<float> &vel) {
+	Object *obj = ResourceManager->createObject(classname, animation);
 	obj->_velocity = vel;
 	//LOG_DEBUG(("spawning %s, position = %f %f dPosition = %f:%f, velocity: %f %f", 
 		//classname.c_str(), src->_position.x, src->_position.y, dpos.x, dpos.y, vel.x, vel.y));

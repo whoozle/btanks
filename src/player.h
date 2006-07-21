@@ -39,6 +39,7 @@ protected:
 	const Object *_bullet;
 private:
 	bool _stateless;
+	std::string _animation;
 };
 
 #endif

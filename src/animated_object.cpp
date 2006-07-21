@@ -1,5 +1,6 @@
 #include "animated_object.h"
 #include "sdlx/surface.h"
+#include "mrt/exception.h"
 #include "mrt/logger.h"
 #include "animation_model.h"
 
@@ -24,9 +25,11 @@ void AnimatedObject::init(const AnimatedObject &o) {
 	_pos = o._pos;
 }
 
-Object * AnimatedObject::clone() const {
-	AnimatedObject *obj = new AnimatedObject(*this);
-	return obj;
+Object * AnimatedObject::clone(const std::string &opt) const {
+	throw_ex(("your object uses AnimatedObject directly, which is obsoleted and prohibited."));
+//	AnimatedObject *obj = new AnimatedObject(*this);
+//	return obj;
+	return NULL;
 }
 
 
