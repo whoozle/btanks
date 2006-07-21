@@ -45,7 +45,7 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect &viewport) {
 	for(ObjectSet::iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		Object &o = **i;
 		sdlx::Rect r((int)o._position.x, (int)o._position.y, o.size.x, o.size.y);
-		if (true /* r.in(viewport) */) {
+		if (r.intersects(viewport)) {
 			r.x -= viewport.x;
 			r.y -= viewport.y;
 			o.render(surface, r.x, r.y);
