@@ -28,7 +28,7 @@ void Player::emit(const std::string &event, const Object * emitter) {
 		LOG_DEBUG(("dead"));
 		cancelAll();
 		//play("dead", true);
-		spawn("corpse", "dead-" + _animation, v3<float>(0,0,0), v3<float>(0,0,0));
+		spawn("corpse", "dead-" + _animation, v3<float>(0,0,-0.5), v3<float>(0,0,0));
 		_stale = true;
 		_velocity.x = _velocity.y = _velocity.z = 0;
 		Object::emit(event, emitter);

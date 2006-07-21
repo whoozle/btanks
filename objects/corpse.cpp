@@ -27,6 +27,7 @@ Object* Corpse::clone(const std::string &opt) const  {
 	a->speed = 0;
 	a->hp = 10;
 	a->ttl = 60;
+	a->impassability = 0.7;
 	a->play("main", true);
 	return a;
 }
