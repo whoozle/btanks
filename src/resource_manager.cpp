@@ -92,7 +92,6 @@ void IResourceManager::charData(const std::string &data) {
 }
 
 IResourceManager::IResourceManager() : _am(0) {
-	//LOG_DEBUG(("IResourceManager ctor"));
 }
 
 

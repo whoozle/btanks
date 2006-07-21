@@ -111,7 +111,7 @@ void IGame::init(const int argv, const char **argc) {
 	
 	LOG_DEBUG(("initializing resource manager..."));
 	ResourceManager->init("data/resources.xml");
-	
+
 	LOG_DEBUG(("installing callbacks..."));
 	key_signal.connect(sigc::mem_fun(this, &IGame::onKey));
 	_main_menu.menu_signal.connect(sigc::mem_fun(this, &IGame::onMenu));

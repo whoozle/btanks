@@ -19,6 +19,7 @@
  */
 
 #include "mrt/singleton.h"
+#include "mrt/exception.h"
 #include "mrt/xml.h"
 #include <map>
 
@@ -74,7 +75,7 @@ SINGLETON(ResourceManager, IResourceManager);
 
 #define REGISTER_OBJECT(name, classname, args) class classname##Registrar {\
 public: \
-	classname##Registrar() { ResourceManager->registerObject(name, new classname args); } \
+	classname##Registrar() { TRY { ResourceManager->registerObject(name, new classname args); } CATCH("registering class", throw;) } \
 } instance_of_##classname##Registrar
 
 #endif
