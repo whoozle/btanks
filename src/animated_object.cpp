@@ -24,6 +24,11 @@ void AnimatedObject::init(const AnimatedObject &o) {
 	_pos = o._pos;
 }
 
+Object * AnimatedObject::clone() const {
+	AnimatedObject *obj = new AnimatedObject(*this);
+	return obj;
+}
+
 
 void AnimatedObject::setDirection(const int dir) {
 	_direction_idx = dir;

@@ -151,3 +151,10 @@ void IResourceManager::registerObject(const std::string &classname, Object *o) {
 	_objects[classname] = o;
 	LOG_DEBUG(("classname %s registered at %p", classname.c_str(), (void*)o));
 }
+
+Object *IResourceManager::createObject(const std::string &classname) const {
+	ObjectMap::const_iterator i = _objects.find(classname);
+	if (i == _objects.end())
+		throw_ex(("classname '%s' was not registered", classname.c_str()));
+	return i->second->clone();
+}

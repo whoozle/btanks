@@ -1,6 +1,7 @@
 #include "world.h"
 #include "object.h"
 #include "world_map.h"
+#include "resource_manager.h"
 
 #include "mrt/exception.h"
 #include "mrt/logger.h"
@@ -25,8 +26,8 @@ void IWorld::addObject(Object *o, const v3<float> &pos) {
 	LOG_DEBUG(("object %p added, objects: %d", (void*)o, _objects.size()));
 }
 
-const bool IWorld::getInfo(Object * po, v3<float> &pos, v3<float> &vel) const {
-	ObjectSet::const_iterator i = _objects.find(po);
+const bool IWorld::getInfo(const Object * po, v3<float> &pos, v3<float> &vel) const {
+	ObjectSet::const_iterator i = _objects.find((Object *)po);
 	if (i == _objects.end())
 		return false;
 		
@@ -181,11 +182,13 @@ const bool IWorld::getNearest(const Object *obj, const std::string &classname, v
 }
 
 
-const bool IWorld::exists(Object *o) const {
-	return _objects.find(o) != _objects.end();
+const bool IWorld::exists(const Object *o) const {
+	return _objects.find((Object *)o) != _objects.end();
 }
 
-void IWorld::spawn(Object *src, Object *obj, const v3<float> &dpos, const v3<float> &vel) {
+const Object* IWorld::spawn(Object *src, const std::string &classname, const v3<float> &dpos, const v3<float> &vel) {
+	Object *obj = ResourceManager->createObject(classname);
 	obj->_velocity = vel;
 	addObject(obj, src->_position + dpos);
+	return obj;
 }

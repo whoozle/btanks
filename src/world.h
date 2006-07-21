@@ -35,13 +35,13 @@ public:
 	DECLARE_SINGLETON(IWorld);
 	
 	void addObject(Object *, const v3<float> &pos);
-	const bool exists(Object *) const;
-	const bool getInfo(Object *, v3<float> &pos, v3<float> &vel) const;
+	const bool exists(const Object *) const;
+	const bool getInfo(const Object *, v3<float> &pos, v3<float> &vel) const;
 	
 	void render(sdlx::Surface &surface, const sdlx::Rect &viewport);
 	void tick(WorldMap &map, const float dt);
 	
-	void spawn(Object *src, Object *obj, const v3<float> &dpos, const v3<float> &vel);
+	const Object * spawn(Object *src, const std::string &classname, const v3<float> &dpos, const v3<float> &vel);
 	
 	const bool getNearest(const Object *obj, const std::string &classname, v3<float> &position, v3<float> &velocity) const;
 	const float getImpassability(Object &obj, const sdlx::Surface &surface, const v3<int> &position) const;

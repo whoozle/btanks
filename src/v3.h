@@ -88,7 +88,42 @@ public:
 	const v3<T> operator/(const T& other) const {
 		return v3<T>(x / other, y / other, z / other);
 	}
-	
+
+private:
+	static inline int c2d(const T c) {
+		if (c > 0.9238795325112867385) //cos(22.5)
+			return 0;
+		else if (c > 0.3826834323650898373) //cos(67.5)
+			return 1;
+		else if (c > -0.3826834323650898373)
+			return 2;
+		else if (c > -0.9238795325112867385)
+			return 3;
+		return 4;
+	}
+
+public:
+	static int getDirection8(const v3<T> &v) {
+		if (v.is0())
+			return 0;
+
+		int x = c2d(v.x) + 1;
+		if (v.y <= 0) 
+			return x;
+		else {
+			//LOG_DEBUG(("%d %d", x, 10 - x));
+			return 10 - x;
+		}
+		return 0;
+	}
+
+	static void quantize(T &x) {
+		if (x > 0.3826834323650898373) {
+			x = 1;
+		} else if (x < -0.3826834323650898373)
+			x = -1;
+		else x = 0;
+	}
 };
 
 template <typename T>

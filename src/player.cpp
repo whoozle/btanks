@@ -30,39 +30,6 @@ void Player::emit(const std::string &event, const Object * emitter) {
 }
 
 
-static inline int c2d(const float c) {
-	if (c > 0.9238795325112867385) //cos(22.5)
-		return 0;
-	else if (c > 0.3826834323650898373) //cos(67.5)
-		return 1;
-	else if (c > -0.3826834323650898373)
-		return 2;
-	else if (c > -0.9238795325112867385)
-		return 3;
-	return 4;
-}
-
-static int v3dir(const v3<float> &v) {
-	if (v.is0())
-		return 0;
-
-	int x = c2d(v.x) + 1;
-	if (v.y <= 0) 
-		return x;
-	else {
-		//LOG_DEBUG(("%d %d", x, 10 - x));
-		return 10 - x;
-	}
-	return 0;
-}
-
-static void quantize(float &x) {
-	if (x > 0.3826834323650898373) {
-		x = 1;
-	} else if (x < -0.3826834323650898373)
-		x = -1;
-	else x = 0;
-}
 
 void Player::tick(const float dt) {
 	if (_stale) 
@@ -71,8 +38,8 @@ void Player::tick(const float dt) {
 	//AI player will be easier to implement if operating directly with velocity
 	
 	if (_stateless) {
-		quantize(_velocity.x);	
-		quantize(_velocity.y);
+		v3<float>::quantize(_velocity.x);	
+		v3<float>::quantize(_velocity.y);
 		
 		_state.left = _velocity.x == -1;
 		_state.right = _velocity.x == 1;
@@ -90,7 +57,7 @@ void Player::tick(const float dt) {
 	_velocity.normalize();
 	
 	if (_velocity != _old_velocity) {
-		int dir = v3dir(_velocity);
+		int dir = v3<float>::getDirection8(_velocity);
 		//LOG_DEBUG(("pose %d", pose));
 		if (dir) {
 			setDirection(dir - 1);
@@ -115,16 +82,9 @@ void Player::tick(const float dt) {
 		
 		playNow("fire");
 		
-		_bullet = ResourceManager->createAnimation("bullet");
-		_bullet->speed = 500;
-		_bullet->ttl = 1;
-		_bullet->piercing = true;
-		
-		_bullet->play("move", true);
-		_bullet->setDirection(getDirection());
 		//LOG_DEBUG(("vel: %f %f", _state.old_vx, _state.old_vy));
 		v3<float> v = _velocity.is0()?_direction:_velocity;
-		spawn(_bullet, v * 20, v);
+		_bullet = spawn("bullet", v * 20, v);
 	}
 	_state.fire = false;
 	

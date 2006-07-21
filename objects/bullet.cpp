@@ -3,13 +3,28 @@
 
 class Bullet : public AnimatedObject {
 public:
-	Bullet() : AnimatedObject("bullet") {
-	}
-	Bullet(const Bullet &other) : AnimatedObject(other.classname) {
-		ResourceManager->initMe(this, "bullet");
-	}
-//	virtual void tick(float) {}
-//	virtual void render(sdlx::Surface&, int, int) {}
+	Bullet() : AnimatedObject("bullet") {}
+	virtual void tick(const float dt);
+	virtual Object * clone() const;
 };
+
+
+void Bullet::tick(const float dt) {
+	_velocity.normalize();
+	int dir = v3<float>::getDirection8(_velocity);
+	if (dir) {
+		setDirection(dir - 1);
+	}
+}
+
+Object* Bullet::clone() const  {
+	AnimatedObject *a = new Bullet;
+	ResourceManager->initMe(a, "bullet");
+	a->speed = 500;
+	a->ttl = 1;
+	a->piercing = true;
+	a->play("move", true);
+	return a;
+}
 
 REGISTER_OBJECT("bullet", Bullet, ());

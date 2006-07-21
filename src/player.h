@@ -35,7 +35,7 @@ protected:
 		bool left, right, up, down, fire;
 	} _state;
 	bool _stale;
-	AnimatedObject *_bullet;
+	const Object *_bullet;
 private:
 	bool _stateless;
 };

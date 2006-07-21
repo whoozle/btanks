@@ -46,6 +46,7 @@ public:
 	AnimationModel *getAnimationModel(const std::string &id);
 	
 	void registerObject(const std::string &classname, Object *);
+	Object *createObject(const std::string &classname) const;
 
 private:
 	AnimatedObject *getAnimation(const std::string &id);
