@@ -12,6 +12,10 @@
 		<pose id="hold">0</pose>
 		<pose id="move">0</pose>
 	</animation-model>
+
+	<animation-model id="explosion-animation" speed="1">
+		<pose id="boom">0,1,2</pose>
+	</animation-model>
 	
 	<animation id="green-tank" tile="Tank_tile3.png" model="tank-animation"/>
 	<animation id="red-tank" tile="Tank_tile4.png" model="tank-animation"/>
@@ -19,6 +23,7 @@
 	<animation id="cyan-tank" tile="Tank_tile6.png" model="tank-animation"/>
 	
 	<animation id="bullet" tile="bullet_tile.png" model="bullet-animation"/>
+	<animation id="explosion" tile="explosion.png" model="explosion-animation" />
 	
 	<object class="vehicle" speed="400" mass="10" />
 	<object class="bullet" speed="500" mass="1" />

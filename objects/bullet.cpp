@@ -6,6 +6,7 @@ public:
 	Bullet() : AnimatedObject("bullet") {}
 	virtual void tick(const float dt);
 	virtual Object * clone() const;
+	virtual void emit(const std::string &event, const Object * emitter = NULL);
 };
 
 
@@ -16,6 +17,13 @@ void Bullet::tick(const float dt) {
 		setDirection(dir - 1);
 	}
 }
+
+void Bullet::emit(const std::string &event, const Object * emitter) {
+	if (event == "collision") {
+		emit("death", this);
+	} else Object::emit(event, emitter);
+}
+
 
 Object* Bullet::clone() const  {
 	AnimatedObject *a = new Bullet;

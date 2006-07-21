@@ -13,6 +13,7 @@ Player::Player(const std::string &classname, const std::string &animation, const
 	speed = 300;
 	_bullet = 0;
 	memset(&_state, 0, sizeof(_state));
+	hp = 5;
 	//ttl = 1;
 
 	//_animation = ResourceManager->createAnimation(animation);
@@ -20,21 +21,34 @@ Player::Player(const std::string &classname, const std::string &animation, const
 }
 
 void Player::emit(const std::string &event, const Object * emitter) {
+	if (_stale)
+		return;
+	
 	if (event == "death") {
 		LOG_DEBUG(("dead"));
 		cancelAll();
 		play("dead", true);
 		_stale = true;
 		_velocity.x = _velocity.y = _velocity.z = 0;
+	} else if (event == "collision") {
+		const std::string &c = emitter->classname;
+		LOG_DEBUG(("collision with %s", c.c_str()));
+		if (c == "bullet") {
+			hp -= emitter->hp;	
+			LOG_DEBUG(("received %d hp of damage. hp = %d", emitter->hp, hp));
+			if (hp <= 0) 
+				emit("death", emitter);
+		}
 	} else Object::emit(event, emitter);
 }
 
 
 
 void Player::tick(const float dt) {
-	if (_stale) 
+	if (_stale) {
+		_velocity.clear();
 		return;
-	
+	}
 	//AI player will be easier to implement if operating directly with velocity
 	
 	if (_stateless) {
@@ -84,7 +98,8 @@ void Player::tick(const float dt) {
 		
 		//LOG_DEBUG(("vel: %f %f", _state.old_vx, _state.old_vy));
 		v3<float> v = _velocity.is0()?_direction:_velocity;
-		_bullet = spawn("bullet", v * 20, v);
+		v.normalize();
+		_bullet = spawn("bullet", v * 64, v);
 	}
 	_state.fire = false;
 	

@@ -61,7 +61,7 @@ env.Prepend(CPPPATH=['.', 'src'])
 env.Append(CPPPATH=sigc_cpppath)
 
 xc = env.Program('bt', 
-	['src/object.cpp', 'objects/bullet.cpp', 
+	['src/object.cpp', 'objects/bullet.cpp', 'objects/explosion.cpp', 
 
 	'src/menu.cpp', 'src/menuitem.cpp', 'src/joyplayer.cpp', 'src/keyplayer.cpp', 
 	 'src/player.cpp', 'src/aiplayer.cpp',

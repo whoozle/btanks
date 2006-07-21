@@ -76,7 +76,7 @@ const float IWorld::getImpassability(Object &obj, const sdlx::Surface &surface, 
 			int r = SDL_CollidePixel(surface.getSDLSurface(), 0, 0, osurf.getSDLSurface(), dpos.x, dpos.y);
 			if (r) {
 				//LOG_DEBUG(("collision"));
-				LOG_DEBUG(("collision %s <-> %s", obj.classname.c_str(), o.classname.c_str()));
+				//LOG_DEBUG(("collision %s <-> %s", obj.classname.c_str(), o.classname.c_str()));
 				o.emit("collision", &obj);
 				obj.emit("collision", &o);
 
@@ -189,6 +189,9 @@ const bool IWorld::exists(const Object *o) const {
 const Object* IWorld::spawn(Object *src, const std::string &classname, const v3<float> &dpos, const v3<float> &vel) {
 	Object *obj = ResourceManager->createObject(classname);
 	obj->_velocity = vel;
+	//LOG_DEBUG(("spawning %s, position = %f %f dPosition = %f:%f, velocity: %f %f", 
+		//classname.c_str(), src->_position.x, src->_position.y, dpos.x, dpos.y, vel.x, vel.y));
 	addObject(obj, src->_position + dpos);
+	//LOG_DEBUG(("result: %f %f", obj->_position.x, obj->_position.y));
 	return obj;
 }

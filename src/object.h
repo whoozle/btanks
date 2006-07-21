@@ -28,6 +28,8 @@ class Object {
 public:
 	v3<int> size;
 	float mass, speed, ttl, impassability;
+	int hp;
+	
 	bool piercing;
 	
 	const std::string classname;
