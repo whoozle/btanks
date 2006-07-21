@@ -33,6 +33,7 @@ Object* Bullet::clone(const std::string &opt) const  {
 	a->ttl = 1;
 	a->piercing = true;
 	a->play("move", true);
+	a->setDirection(getDirection());
 	return a;
 }
 
