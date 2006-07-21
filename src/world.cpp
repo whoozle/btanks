@@ -42,8 +42,16 @@ const bool IWorld::getInfo(const Object * po, v3<float> &pos, v3<float> &vel) co
 
 
 void IWorld::render(sdlx::Surface &surface, const sdlx::Rect &viewport) {
+	typedef std::multimap<const float, Object *> LayerMap;
+	LayerMap layers;
+	
 	for(ObjectSet::iterator i = _objects.begin(); i != _objects.end(); ++i) {
-		Object &o = **i;
+		Object *o = *i;
+		layers.insert(LayerMap::value_type(o->_position.z, o));
+	}
+	
+	for(LayerMap::iterator i = layers.begin(); i != layers.end(); ++i) {
+		Object &o = *i->second;
 		sdlx::Rect r((int)o._position.x, (int)o._position.y, o.size.x, o.size.y);
 		if (r.intersects(viewport)) {
 			r.x -= viewport.x;
