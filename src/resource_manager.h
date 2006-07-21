@@ -26,6 +26,7 @@ namespace sdlx {
 	class Surface;
 }
 
+class Object;
 class AnimatedObject;
 class AnimationModel;
 class Pose;
@@ -41,6 +42,8 @@ public:
 	
 	AnimatedObject *createAnimation(const std::string &id);
 	AnimationModel *getAnimationModel(const std::string &id);
+	
+	void registerObject(const std::string &classname, Object *);
 
 private:
 	AnimatedObject *getAnimation(const std::string &id);
@@ -60,9 +63,17 @@ private:
 	std::string _data, _pose_id, _am_id;
 	
 	long _tw, _th;
+	
+	typedef std::map<const std::string, Object *> ObjectMap;
+	ObjectMap _objects;
 };
 
 SINGLETON(ResourceManager, IResourceManager);
+
+#define REGISTER_OBJECT(name, classname, args) class classname##Registrar {\
+public: \
+	classname##Registrar() { ResourceManager->registerObject(name, new classname args); } \
+} instance_of_##classname##Registrar
 
 #endif
 
