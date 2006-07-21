@@ -61,35 +61,41 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect &viewport) {
 	}
 }
 
-const float IWorld::getImpassability(Object &obj, const sdlx::Surface &surface, const v3<int> &position) const {
-	sdlx::Rect my((int)position.x, (int)position.y,(int)obj.size.x, (int)obj.size.y);
+const float IWorld::getImpassability(Object *obj, const sdlx::Surface &surface, const v3<int> &position) const {
+	sdlx::Rect my((int)position.x, (int)position.y,(int)obj->size.x, (int)obj->size.y);
 	float im = 0;
+	if (obj->_owner != NULL && _objects.find(obj->_owner) == _objects.end()) {
+		obj->_owner = NULL; //dead object.
+	}
 	
 	for(ObjectSet::iterator i = _objects.begin(); i != _objects.end(); ++i) {
-		Object &o = **i;
-		if (&o == &obj) 
+		Object *o = *i;
+		if (o == obj) 
 			continue;
 		
-		sdlx::Rect other((int)o._position.x, (int)o._position.y,(int)o.size.x, (int)o.size.y);
+		if ((obj->_owner != NULL && obj->_owner == o) || (o->_owner != NULL && o->_owner == obj)) 
+			continue;
+		
+		sdlx::Rect other((int)o->_position.x, (int)o->_position.y,(int)o->size.x, (int)o->size.y);
 		if (my.intersects(other)) {
 	
 			sdlx::Surface osurf;
 			osurf.createRGB(other.w, other.h, 24, sdlx::Surface::Software | sdlx::Surface::Alpha );
 			osurf.convertAlpha();
 			osurf.fillRect(osurf.getSize(), SDL_MapRGBA(osurf.getPixelFormat(), 255, 0, 255, 255));
-			o.render(osurf, 0, 0);
+			o->render(osurf, 0, 0);
 			
-			v3<int> dpos = o._position.convert<int>() - position;
-			//LOG_DEBUG(("%s: %d %d", o.classname.c_str(), dpos.x, dpos.y));
+			v3<int> dpos = o->_position.convert<int>() - position;
+			//LOG_DEBUG(("%s: %d %d", o->classname.c_str(), dpos.x, dpos.y));
 			int r = SDL_CollidePixel(surface.getSDLSurface(), 0, 0, osurf.getSDLSurface(), dpos.x, dpos.y);
 			if (r) {
 				//LOG_DEBUG(("collision"));
-				//LOG_DEBUG(("collision %s <-> %s", obj.classname.c_str(), o.classname.c_str()));
-				o.emit("collision", &obj);
-				obj.emit("collision", &o);
+				//LOG_DEBUG(("collision %s <-> %s", obj->classname.c_str(), o->classname.c_str()));
+				o->emit("collision", obj);
+				obj->emit("collision", o);
 
-				if (im < o.impassability)
-					im = o.impassability;
+				if (im < o->impassability)
+					im = o->impassability;
 			}
 		}
 	}
@@ -151,7 +157,7 @@ void IWorld::tick(WorldMap &map, const float dt) {
 		
 		//osurf.saveBMP("snapshot.bmp");
 		
-		float obj_im = getImpassability(o, osurf, new_pos);
+		float obj_im = getImpassability(*i, osurf, new_pos);
 		//LOG_DEBUG(("obj_im = %f", obj_im));
 		
 		float map_im = 1;
@@ -204,6 +210,9 @@ const bool IWorld::exists(const Object *o) const {
 
 const Object* IWorld::spawn(Object *src, const std::string &classname, const std::string &animation, const v3<float> &dpos, const v3<float> &vel) {
 	Object *obj = ResourceManager->createObject(classname, animation);
+	assert(obj->_owner == NULL);
+	//LOG_DEBUG(("%s spawns %s", src->classname.c_str(), obj->classname.c_str()));
+	obj->_owner = src;
 	obj->_velocity = vel;
 	//LOG_DEBUG(("spawning %s, position = %f %f dPosition = %f:%f, velocity: %f %f", 
 		//classname.c_str(), src->_position.x, src->_position.y, dpos.x, dpos.y, vel.x, vel.y));

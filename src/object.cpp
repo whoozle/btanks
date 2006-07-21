@@ -3,7 +3,8 @@
 #include "world.h"
 
 Object::Object(const std::string &classname)
- : mass(1), speed(1), ttl(-1), impassability(1), hp(1), piercing(false), classname(classname), _direction(1,0,0), _dead(false) {
+ : mass(1), speed(1), ttl(-1), impassability(1), hp(1), piercing(false), 
+   classname(classname), _direction(1,0,0), _dead(false), _owner(NULL) {
 	_velocity.clear();
 	_position.clear();
 }

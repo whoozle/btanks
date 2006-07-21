@@ -34,7 +34,6 @@ void Player::emit(const std::string &event, const Object * emitter) {
 		Object::emit(event, emitter);
 	} else if (event == "collision") {
 		const std::string &c = emitter->classname;
-		LOG_DEBUG(("collision with %s", c.c_str()));
 		if (c == "bullet") {
 			spawn("explosion", "explosion", v3<float>(0,0,1), v3<float>(0,0,0));
 			hp -= emitter->hp;	
@@ -102,7 +101,7 @@ void Player::tick(const float dt) {
 		//LOG_DEBUG(("vel: %f %f", _state.old_vx, _state.old_vy));
 		v3<float> v = _velocity.is0()?_direction:_velocity;
 		v.normalize();
-		_bullet = spawn("bullet", "bullet", v * 64, v);
+		_bullet = spawn("bullet", "bullet", v3<float>(0,0,-0.1), v);
 	}
 	_state.fire = false;
 	

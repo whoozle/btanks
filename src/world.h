@@ -44,7 +44,7 @@ public:
 	const Object * spawn(Object *src, const std::string &classname, const std::string &animation, const v3<float> &dpos, const v3<float> &vel);
 	
 	const bool getNearest(const Object *obj, const std::string &classname, v3<float> &position, v3<float> &velocity) const;
-	const float getImpassability(Object &obj, const sdlx::Surface &surface, const v3<int> &position) const;
+	const float getImpassability(Object *obj, const sdlx::Surface &surface, const v3<int> &position) const;
 
 private:
 	typedef std::set<Object *> ObjectSet;

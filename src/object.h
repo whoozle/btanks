@@ -55,6 +55,7 @@ protected:
 private:
 	bool _dead;
 	v3<float> _position;
+	Object *_owner;
 	friend class IWorld;
 };
 
