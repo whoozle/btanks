@@ -38,6 +38,7 @@ public:
 	DECLARE_SINGLETON(IResourceManager);
 	
 	void init(const std::string &fname);
+	void initMe(AnimatedObject *o, const std::string &animation) const;
 	void clear();
 	
 	AnimatedObject *createAnimation(const std::string &id);
@@ -47,6 +48,7 @@ public:
 
 private:
 	AnimatedObject *getAnimation(const std::string &id);
+	const AnimatedObject *getAnimation(const std::string &id) const ;
 	virtual void start(const std::string &name, Attrs &attr);
 	virtual void end(const std::string &name);
 	virtual void charData(const std::string &data);

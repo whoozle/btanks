@@ -5,7 +5,9 @@
 #include <assert.h>
 
 Player::Player(const std::string &classname, const std::string &animation, const bool stateless) 
-: Object(classname), _stale(false), _stateless(stateless) {
+: AnimatedObject(classname), _stale(false), _stateless(stateless) {
+	ResourceManager->initMe(this, animation);
+	
 	LOG_DEBUG(("player %p: %s", (void *)this, classname.c_str()));
 	
 	speed = 300;
@@ -13,15 +15,15 @@ Player::Player(const std::string &classname, const std::string &animation, const
 	memset(&_state, 0, sizeof(_state));
 	//ttl = 1;
 
-	_animation = ResourceManager->createAnimation(animation);
-	_animation->play("hold", true);
+	//_animation = ResourceManager->createAnimation(animation);
+	play("hold", true);
 }
 
 void Player::emit(const std::string &event, const Object * emitter) {
 	if (event == "death") {
 		LOG_DEBUG(("dead"));
-		_animation->cancelAll();
-		_animation->play("dead", true);
+		cancelAll();
+		play("dead", true);
 		_stale = true;
 		_velocity.x = _velocity.y = _velocity.z = 0;
 	} else Object::emit(event, emitter);
@@ -63,8 +65,6 @@ static void quantize(float &x) {
 }
 
 void Player::tick(const float dt) {
-	size = _animation->size;
-	
 	if (_stale) 
 		return;
 	
@@ -93,27 +93,27 @@ void Player::tick(const float dt) {
 		int dir = v3dir(_velocity);
 		//LOG_DEBUG(("pose %d", pose));
 		if (dir) {
-			_animation->setDirection(dir - 1);
+			setDirection(dir - 1);
 			//LOG_DEBUG(("animation state: %s", _animation->getState().c_str()));
-			if (_animation->getState() == "hold") {
-				_animation->cancelAll();
-				_animation->play("start", false);
-				_animation->play("move", true);
+			if (getState() == "hold") {
+				cancelAll();
+				play("start", false);
+				play("move", true);
 			}
 			
 //			_state.old_vx = _state.vx;
 //			_state.old_vy = _state.vy;
 		} else {
-			_animation->cancelRepeatable();
-			_animation->play("hold", true);
+			cancelRepeatable();
+			play("hold", true);
 		}
 	}
 
 	if (_state.fire && !World->exists(_bullet)) {
-		if (_animation->getState() == "fire") 
-			_animation->cancel();
+		if (getState() == "fire") 
+			cancel();
 		
-		_animation->playNow("fire");
+		playNow("fire");
 		
 		_bullet = ResourceManager->createAnimation("bullet");
 		_bullet->speed = 500;
@@ -121,20 +121,12 @@ void Player::tick(const float dt) {
 		_bullet->piercing = true;
 		
 		_bullet->play("move", true);
-		_bullet->setDirection(_animation->getDirection());
+		_bullet->setDirection(getDirection());
 		//LOG_DEBUG(("vel: %f %f", _state.old_vx, _state.old_vy));
 		v3<float> v = _velocity.is0()?_direction:_velocity;
 		spawn(_bullet, v * 20, v);
 	}
 	_state.fire = false;
 	
-	_animation->tick(dt);
-}
-
-void Player::render(sdlx::Surface &surf, const int x, const int y) {
-	_animation->render(surf, x, y);
-}
-
-void Player::setDirection(const int d) {
-	_animation->setDirection(d);
+	AnimatedObject::tick(dt);
 }

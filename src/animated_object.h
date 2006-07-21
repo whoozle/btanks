@@ -32,7 +32,9 @@ class Pose;
 
 class AnimatedObject : public Object {
 public:
-	AnimatedObject(const std::string &classname, AnimationModel *model, sdlx::Surface *surface, const int tile_w, const int tile_h);
+	AnimatedObject(const std::string &classname);
+	void init(AnimationModel *model, sdlx::Surface *surface, const int tile_w, const int tile_h);
+	void init(const AnimatedObject &o);
 
 	void setDirection(const int dir);
 	const int getDirection() const;
@@ -64,7 +66,7 @@ private:
 	EventQueue _events;
 	
 	int _tw, _th;
-	int _direction;
+	int _direction_idx;
 	float _pos;
 };
 

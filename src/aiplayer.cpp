@@ -6,6 +6,7 @@
 AIPlayer::AIPlayer(const std::string &animation) : Player("ai", animation, true) {}
 
 void AIPlayer::tick(const float dt) {	
+	//LOG_DEBUG(("dt = %f", dt));
 	v3<float> pos, vel;
 	bool skip_human = false;
 

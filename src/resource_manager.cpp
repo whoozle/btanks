@@ -38,7 +38,8 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 			const std::string fname = "data/tiles/" + attr["tile"];
 			s->loadImage(fname);
 			LOG_DEBUG(("loaded animation '%s' from '%s'", id.c_str(), fname.c_str()));
-			_animations[id] = new AnimatedObject(id, getAnimationModel(model), s, tw, th);
+			_animations[id] = new AnimatedObject(id);
+			_animations[id]->init(getAnimationModel(model), s, tw, th);
 		} CATCH("animation", { delete s; s = NULL; });
 	} else if (name == "animation-model") {
 		const std::string & id = attr["id"];
@@ -102,6 +103,13 @@ AnimatedObject *IResourceManager::getAnimation(const std::string &id) {
 	return i->second;
 }
 
+const AnimatedObject *IResourceManager::getAnimation(const std::string &id) const {
+	AnimationMap::const_iterator i;
+	if ((i = _animations.find(id)) == _animations.end()) 
+		throw_ex(("could not find animation with id '%s'", id.c_str()));
+	return i->second;
+}
+
 AnimatedObject *IResourceManager::createAnimation(const std::string &id) {
 	return new AnimatedObject(*getAnimation(id));	
 }
@@ -118,6 +126,10 @@ AnimationModel *IResourceManager::getAnimationModel(const std::string &id) {
 void IResourceManager::init(const std::string &fname) {
 	LOG_DEBUG(("loading resources from file: %s", fname.c_str()));
 	parseFile(fname);
+}
+
+void IResourceManager::initMe(AnimatedObject *o, const std::string &animation) const {
+	o->init(*getAnimation(animation));
 }
 
 

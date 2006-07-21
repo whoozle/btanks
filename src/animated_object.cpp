@@ -3,21 +3,34 @@
 #include "mrt/logger.h"
 #include "animation_model.h"
 
-AnimatedObject::AnimatedObject(const std::string &classname, AnimationModel *model, sdlx::Surface *surface, const int tile_w, const int tile_h) 
-: Object(classname) {
+AnimatedObject::AnimatedObject(const std::string &classname) : Object(classname) {}
+
+void AnimatedObject::init(AnimationModel *model, sdlx::Surface *surface, const int tile_w, const int tile_h) {
+	_events.clear();
 	_model = model;
 	_surface = surface;
 	size.x = _tw = tile_w; size.y = _th = tile_h;
-	_direction= 0;
+	_direction_idx = 0;
 	_pos = 0;
 }
 
+void AnimatedObject::init(const AnimatedObject &o) {
+	_events.clear();
+
+	_model = o._model;
+	_surface = o._surface;
+	size.x = _tw = o._tw; size.y = _th = o._th;
+	_direction_idx = o._direction_idx;
+	_pos = o._pos;
+}
+
+
 void AnimatedObject::setDirection(const int dir) {
-	_direction = dir;
+	_direction_idx = dir;
 }
 
 const int AnimatedObject::getDirection() const {
-	return _direction;
+	return _direction_idx;
 }
 
 void AnimatedObject::play(const std::string &id, const bool repeat) {
@@ -97,7 +110,7 @@ void AnimatedObject::render(sdlx::Surface &surface, const int x, const int y) {
 		return;
 	}
 	
-	sdlx::Rect src(_direction * _tw, frame * _th, _tw, _th);
+	sdlx::Rect src(_direction_idx * _tw, frame * _th, _tw, _th);
 	surface.copyFrom(*_surface, src, x, y);
 }
 
