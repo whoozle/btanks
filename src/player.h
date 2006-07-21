@@ -36,9 +36,9 @@ protected:
 		void clear() { memset(this, 0, sizeof(*this)); }
 	} _state;
 	bool _stale;
-	const Object *_bullet;
 private:
 	bool _stateless;
+	float _fire_rate, _fire_counter;
 	std::string _animation;
 };
 

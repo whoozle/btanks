@@ -11,7 +11,9 @@ Player::Player(const std::string &classname, const std::string &animation, const
 	LOG_DEBUG(("player %p: %s", (void *)this, classname.c_str()));
 	
 	speed = 300;
-	_bullet = 0;
+	_fire_rate = 0.5;
+	_fire_counter = 0;
+	
 	memset(&_state, 0, sizeof(_state));
 	hp = 5;
 	//ttl = 1;
@@ -50,6 +52,11 @@ void Player::tick(const float dt) {
 	if (_stale) {
 		_velocity.clear();
 		return;
+	}
+	if (_fire_counter) {
+		_fire_counter -= dt;
+		if (_fire_counter < 0) 
+			_fire_counter = 0;
 	}
 	//AI player will be easier to implement if operating directly with velocity
 	
@@ -92,7 +99,8 @@ void Player::tick(const float dt) {
 		}
 	}
 
-	if (_state.fire && !World->exists(_bullet)) {
+	if (_state.fire && _fire_counter == 0) {
+		_fire_counter = _fire_rate;
 		if (getState() == "fire") 
 			cancel();
 		
@@ -101,7 +109,7 @@ void Player::tick(const float dt) {
 		//LOG_DEBUG(("vel: %f %f", _state.old_vx, _state.old_vy));
 		v3<float> v = _velocity.is0()?_direction:_velocity;
 		v.normalize();
-		_bullet = spawn("bullet", "bullet", v3<float>(0,0,-0.1), v);
+		spawn("bullet", "bullet", v3<float>(0,0,-0.1), v);
 	}
 	_state.fire = false;
 	

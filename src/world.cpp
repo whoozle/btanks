@@ -190,8 +190,9 @@ const bool IWorld::getNearest(const Object *obj, const std::string &classname, v
 	
 	for(ObjectSet::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		const Object *o = *i;
-		if (o == obj || o->classname != classname) 
+		if (o == obj || o->classname != classname || o->_owner == obj) 
 			continue;
+		
 		float d = obj->_position.quick_distance(o->_position);
 		if (d < distance) {
 			distance = d;
