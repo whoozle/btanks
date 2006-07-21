@@ -12,8 +12,10 @@ void Corpse::emit(const std::string &event, const Object * emitter) {
 	if (event == "collision") {
 		if (emitter->classname == "bullet") {
 			hp -= emitter->hp;
-			if (hp <= 0) 
+			if (hp <= 0) {
 				emit("death", emitter);
+				spawn("explosion", "explosion", v3<float>(0,0,1), v3<float>());
+			}
 		}
 	} else Object::emit(event, emitter);
 }
@@ -24,7 +26,7 @@ Object* Corpse::clone(const std::string &opt) const  {
 	ResourceManager->initMe(a, opt);
 	a->speed = 0;
 	a->hp = 10;
-	a->ttl = 10;
+	a->ttl = 60;
 	a->play("main", true);
 	return a;
 }

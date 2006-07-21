@@ -28,7 +28,6 @@ void Player::emit(const std::string &event, const Object * emitter) {
 		LOG_DEBUG(("dead"));
 		cancelAll();
 		//play("dead", true);
-		spawn("explosion", "explosion", v3<float>(0,0,1), v3<float>(0,0,0));
 		spawn("corpse", "dead-" + _animation, v3<float>(0,0,0), v3<float>(0,0,0));
 		_stale = true;
 		_velocity.x = _velocity.y = _velocity.z = 0;
@@ -37,6 +36,7 @@ void Player::emit(const std::string &event, const Object * emitter) {
 		const std::string &c = emitter->classname;
 		LOG_DEBUG(("collision with %s", c.c_str()));
 		if (c == "bullet") {
+			spawn("explosion", "explosion", v3<float>(0,0,1), v3<float>(0,0,0));
 			hp -= emitter->hp;	
 			LOG_DEBUG(("received %d hp of damage. hp = %d", emitter->hp, hp));
 			if (hp <= 0) 
