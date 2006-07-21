@@ -25,6 +25,7 @@
 	<animation id="red-tank" tile="Tank_tile4.png" model="tank-animation"/>
 	<animation id="yellow-tank" tile="Tank_tile5.png" model="tank-animation"/>
 	<animation id="cyan-tank" tile="Tank_tile6.png" model="tank-animation"/>
+	<animation id="green-launcher" tile="Launcher_tile1.png" model="tank-animation"/>
 
 	<animation id="dead-green-tank" tile="Tank_tile3_dead.png" model="single-tile"/>
 	<animation id="dead-red-tank" tile="Tank_tile4_dead.png" model="single-tile"/>
