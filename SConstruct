@@ -57,16 +57,18 @@ SConscript('sdlx/SConscript')
 
 env = env.Copy()
 env.Append(LIBPATH=['mrt', 'sdlx', 'src'])
-env.Prepend(CPPPATH=['.'])
+env.Prepend(CPPPATH=['.', 'src'])
 env.Append(CPPPATH=sigc_cpppath)
 
-xc = env.Program('bt', \
-	['src/menu.cpp', 'src/menuitem.cpp', 'src/joyplayer.cpp', 'src/keyplayer.cpp', \
-	'src/object.cpp', 'src/player.cpp', 'src/aiplayer.cpp',
-	'src/animated_object.cpp', 'src/animation_model.cpp', \
+xc = env.Program('bt', 
+	['src/object.cpp', 'objects/bullet.cpp', 
+
+	'src/menu.cpp', 'src/menuitem.cpp', 'src/joyplayer.cpp', 'src/keyplayer.cpp', 
+	 'src/player.cpp', 'src/aiplayer.cpp',
+	'src/animated_object.cpp', 'src/animation_model.cpp', 
 	'src/resource_manager.cpp', 'src/world.cpp',
-	'tmx/map.cpp', 'tmx/layer.cpp', \
-	'sdl_collide/SDL_collide.c', \
-	'src/main.cpp', 'src/game.cpp', \
-	], \
+	'tmx/map.cpp', 'tmx/layer.cpp', 
+	'sdl_collide/SDL_collide.c', 
+	'src/main.cpp', 'src/game.cpp', 
+	], 
 LIBS=['sdlx', 'mrt', sigc_lib, 'SDL_gfx', 'SDL_ttf', 'SDL_image', 'SDL', 'expat', 'z'], RPATH=['.'])

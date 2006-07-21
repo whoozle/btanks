@@ -6,7 +6,7 @@
 #include <stack>
 #include "mrt/xml.h"
 #include "mrt/chunk.h"
-#include "src/world_map.h"
+#include "world_map.h"
 
 namespace sdlx {
 class Surface;
