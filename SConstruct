@@ -1,16 +1,29 @@
+import sys
 env = Environment()
 
 opts = Options(['options.cache'])
 opts.Add('CC', 'C compiler')
 opts.Add('CXX', 'C++ compiler')
-opts.Add('CFLAGS', 'General options that are passed to the C compiler', '')
+opts.Add('CCFLAGS', 'General options that are passed to the C compiler', '')
 opts.Add('CXXFLAGS', 'General options that are passed to the C++ compiler', '')
 
 opts.Update(env)
-
 opts.Save('options.cache', env.Copy())
 
 Help(opts.GenerateHelpText(env))
+
+
+#print sys.platform
+if sys.platform == "win32":
+	env.Append(CPPDEFINES = ['WIN32', '_WINDOWS']) #, '_UNICODE'
+	env.Append(CCFLAGS = '/GX /GR /W3 /MT ')
+	env.Append(CPPFLAGS = '/GX /GR /W3 /MT ')
+#	env.Append(LINKFLAGS = '/OPT:NOREF /OPT:NOICF /INCREMENTAL:NO')
+	env.Append(CCFLAGS = '/Ox /Ot ') #optimizations
+	env.Append(CPPFLAGS = '/Ox /Ot ') #optimizations
+else:
+	env.Append(CPPFLAGS=' -Wall -pedantic -ggdb3 -Wno-long-long')
+
 
 
 conf_env = env.Copy()
@@ -21,19 +34,10 @@ sigc_lib = 'sigc-2.0'
 
 conf_env.Prepend(CPPPATH=sigc_cpppath)
 
+#print conf.env['CCFLAGS']
+
+
 if not conf.CheckLibWithHeader(sigc_lib, 'sigc++/sigc++.h', 'c++', "SigC::Signal1<int,int> sig;", False):
-	Exit(1)
-
-if not conf.CheckLibWithHeader('SDL', 'SDL/SDL.h', 'c++', "SDL_Init(0);", False):
-	Exit(1)
-
-if not conf.CheckLibWithHeader('SDL_image', 'SDL/SDL_image.h', 'c++', "IMG_Load(0);", False):
-	Exit(1)
-
-if not conf.CheckLibWithHeader('SDL_ttf', 'SDL/SDL_ttf.h', 'c++', "TTF_Init();", False):
-	Exit(1)
-
-if not conf.CheckLibWithHeader('SDL_gfx', 'SDL/SDL_framerate.h', 'c++', "SDL_initFramerate(0);", False):
 	Exit(1)
 
 if not conf.CheckLibWithHeader('expat', 'expat.h', 'c', "XML_ParserCreate(NULL);", False):
@@ -42,11 +46,21 @@ if not conf.CheckLibWithHeader('expat', 'expat.h', 'c', "XML_ParserCreate(NULL);
 if not conf.CheckLibWithHeader('z', 'zlib.h', 'c', "zlibVersion();", False):
 	Exit(1)
 
+if sys.platform == "win32":
+	conf.env.Append(LINKFLAGS = '/SUBSYSTEM:WINDOWS')
+
+if not conf.CheckLibWithHeader('SDL_image', 'SDL/SDL_image.h', 'c++', "IMG_Load(0);", False):
+	Exit(1)
+
+if not conf.CheckLibWithHeader('SDL_ttf', 'SDL/SDL_ttf.h', 'c++', "TTF_Init();", False):
+	Exit(1)
+
+if not conf.CheckLibWithHeader('SDL', 'SDL/SDL.h', 'c++', "SDL_Init(0);", False):
+	Exit(1)
+
+
 conf.Finish()
 
-env.Append(CPPFLAGS=' -Wall -pedantic -ggdb3 -Wno-long-long')
-#env.Append(LINKFLAGS=' -pg ')
-#env.Append(CPPFLAGS=' -O')
 
 Export('env')
 Export('sigc_cpppath')
