@@ -90,6 +90,9 @@ xc = env.Program('bt',
 	'src/resource_manager.cpp', 'src/world.cpp',
 	'tmx/map.cpp', 'tmx/layer.cpp', 
 	'sdl_collide/SDL_collide.c', 
-	'src/main.cpp', 'src/game.cpp'], 
+	'src/main.cpp', 'src/game.cpp', 
+	
+	'net/server.cpp', 
+	], 
 	
 	LIBS=['sdlx', 'mrt', sigc_lib, 'SDL_gfx', 'SDL_ttf', 'SDL_image', 'SDL_net', 'SDL', 'expat', 'z'], RPATH=['.'])

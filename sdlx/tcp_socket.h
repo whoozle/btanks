@@ -9,7 +9,7 @@ namespace sdlx {
 class TCPSocket {
 public:
 	TCPSocket();
-	void listen(const int port);
+	void listen(const unsigned port);
 	void connect(const std::string &host, const int port);
 	void close();
 

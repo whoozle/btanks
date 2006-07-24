@@ -5,7 +5,7 @@ using namespace sdlx;
 
 TCPSocket::TCPSocket() : _sock(NULL) {}
 
-void TCPSocket::listen(const int port) {
+void TCPSocket::listen(const unsigned port) {
 	close();
 	
 	IPaddress ip;
