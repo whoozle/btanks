@@ -16,6 +16,7 @@
 #include "sdlx/color.h"
 #include "sdlx/fps.h"
 #include "sdlx/net_ex.h"
+#include "sdlx/tcp_socket.h"
 
 #include <SDL/SDL_gfxPrimitives.h>
 #include <SDL/SDL_opengl.h>
@@ -150,6 +151,20 @@ void IGame::onMenu(const std::string &name) {
 		p->setDirection(4);
 		sdlx::Rect r = _map.getSize();
 		World->addObject(p, v3<float>(r.w - 100, 100, 0));
+	} else if (name == "m-start") {
+		LOG_DEBUG(("start new multiplayer game requested"));
+		int port = 9876;
+		LOG_DEBUG(("listening on port %d", port));
+		sdlx::TCPSocket server;
+		server.listen(port);
+		
+		_main_menu.setActive(false);
+
+		_map.load("country");
+		Object *player = new KeyPlayer("green-tank", SDLK_UP, SDLK_DOWN, SDLK_LEFT, SDLK_RIGHT, SDLK_SPACE);
+		_players.clear();
+		_players.push_back(player);
+		World->addObject(player, v3<float>(100, 100, 0));
 	}
 }
 
