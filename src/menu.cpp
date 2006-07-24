@@ -23,11 +23,15 @@ void MainMenu::init(const int w, const int h) {
 	_active_menu.clear();
 	
 	_items[""].push_back(new MenuItem(_font, "start", "command", "START GAME"));
+	_items[""].push_back(new MenuItem(_font, "multiplayer", "submenu", "MULTIPLAYER"));
 	_items[""].push_back(new MenuItem(_font, "options", "submenu", "OPTIONS"));
 	_items[""].push_back(new MenuItem(_font, "credits", "command", "CREDITS"));
 	_items[""].push_back(new MenuItem(_font, "quit", "command", "QUIT"));
 	_items["options"].push_back(new MenuItem(_font, "back", "back", "BACK"));
 	_items["options"].push_back(new MenuItem(_font, "player1", "iterable", "PLAYER 1 CONTROL: AI"));
+
+	_items["multiplayer"].push_back(new MenuItem(_font, "m-start", "command", "START NEW GAME"));
+	_items["multiplayer"].push_back(new MenuItem(_font, "m-join", "command", "JOIN GAME"));
 
 	recalculateSizes();
 
