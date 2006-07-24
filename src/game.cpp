@@ -162,6 +162,14 @@ void IGame::onMenu(const std::string &name) {
 		World->addObject(player, v3<float>(100, 100, 0));
 
 		_server.init(9876);
+	} else if (name == "m-join") {
+		std::string host = "localhost";
+		unsigned port = 9876;
+		TRY {
+			_client.init(host, port);
+		} CATCH("_client.init", return);
+		
+		_main_menu.setActive(false);
 	}
 }
 

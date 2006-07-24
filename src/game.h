@@ -27,6 +27,7 @@
 #include "menu.h"
 #include "tmx/map.h"
 #include "net/server.h"
+#include "net/client.h"
 
 class Object;
 
@@ -58,6 +59,7 @@ private:
 	std::vector<Object *> _players;
 	
 	Server _server;
+	Client _client;
 };
 
 SINGLETON(Game, IGame);
