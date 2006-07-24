@@ -15,9 +15,11 @@
 #include "sdlx/ttf.h"
 #include "sdlx/color.h"
 #include "sdlx/fps.h"
+#include "sdlx/net_ex.h"
 
 #include <SDL/SDL_gfxPrimitives.h>
 #include <SDL/SDL_opengl.h>
+#include <SDL/SDL_net.h>
 
 IMPLEMENT_SINGLETON(Game, IGame)
 
@@ -65,8 +67,13 @@ void IGame::init(const int argv, const char **argc) {
 	
 	sdlx::Surface::setDefaultFlags(sdlx::Surface::Hardware | sdlx::Surface::Alpha | sdlx::Surface::ColorKey);
 
-	LOG_DEBUG(("initialzing SDL_ttf..."));
+	LOG_DEBUG(("initializing SDL_ttf..."));
 	sdlx::TTF::init();
+
+	LOG_DEBUG(("initializing SDL_net..."));
+	if (SDLNet_Init() == -1) {
+		throw_net(("SDLNet_Init"));
+	}
 	
 	LOG_DEBUG(("probing for joysticks"));
 	int jc = sdlx::Joystick::getCount();

@@ -59,6 +59,9 @@ if not conf.CheckLibWithHeader('SDL_image', 'SDL/SDL_image.h', 'c++', "IMG_Load(
 if not conf.CheckLibWithHeader('SDL_ttf', 'SDL/SDL_ttf.h', 'c++', "TTF_Init();", False):
 	Exit(1)
 
+if not conf.CheckLibWithHeader('SDL_net', 'SDL/SDL_net.h', 'c++', "SDLNet_Init();", False):
+	Exit(1)
+
 conf.Finish()
 
 if sys.platform == "win32":
@@ -87,6 +90,6 @@ xc = env.Program('bt',
 	'src/resource_manager.cpp', 'src/world.cpp',
 	'tmx/map.cpp', 'tmx/layer.cpp', 
 	'sdl_collide/SDL_collide.c', 
-	'src/main.cpp', 'src/game.cpp', 
-	], 
-LIBS=['sdlx', 'mrt', sigc_lib, 'SDL_gfx', 'SDL_ttf', 'SDL_image', 'SDL', 'expat', 'z'], RPATH=['.'])
+	'src/main.cpp', 'src/game.cpp'], 
+	
+	LIBS=['sdlx', 'mrt', sigc_lib, 'SDL_gfx', 'SDL_ttf', 'SDL_image', 'SDL_net', 'SDL', 'expat', 'z'], RPATH=['.'])
