@@ -68,7 +68,7 @@ const float IWorld::getImpassability(Object *obj, const sdlx::Surface &surface, 
 		obj->_owner = NULL; //dead object.
 	}
 	
-	for(ObjectSet::iterator i = _objects.begin(); i != _objects.end(); ++i) {
+	for(ObjectSet::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		Object *o = *i;
 		if (o == obj) 
 			continue;

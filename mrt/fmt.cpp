@@ -3,6 +3,10 @@
 #include <stdlib.h>
 #include <stdarg.h>
 
+#if defined WIN32 && !defined vsnprintf
+#define vsnprintf _vsnprintf
+#endif
+
 using namespace mrt;
 
 const std::string mrt::formatString(const char *fmt, ...) {

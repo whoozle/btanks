@@ -47,7 +47,11 @@ if not conf.CheckLibWithHeader('z', 'zlib.h', 'c', "zlibVersion();", False):
 	Exit(1)
 
 if sys.platform == "win32":
-	conf.env.Append(LINKFLAGS = '/SUBSYSTEM:WINDOWS')
+	conf.env.Append(LINKFLAGS = '/SUBSYSTEM:WINDOWS /FORCE')
+	conf.env.Append(LIBS=['SDLmain'])
+
+if not conf.CheckLibWithHeader('SDL', 'SDL/SDL.h', 'c++', "SDL_Init(0);", False):
+	Exit(1)
 
 if not conf.CheckLibWithHeader('SDL_image', 'SDL/SDL_image.h', 'c++', "IMG_Load(0);", False):
 	Exit(1)
@@ -55,11 +59,11 @@ if not conf.CheckLibWithHeader('SDL_image', 'SDL/SDL_image.h', 'c++', "IMG_Load(
 if not conf.CheckLibWithHeader('SDL_ttf', 'SDL/SDL_ttf.h', 'c++', "TTF_Init();", False):
 	Exit(1)
 
-if not conf.CheckLibWithHeader('SDL', 'SDL/SDL.h', 'c++', "SDL_Init(0);", False):
-	Exit(1)
-
-
 conf.Finish()
+
+if sys.platform == "win32":
+	env.Append(LINKFLAGS = '/SUBSYSTEM:WINDOWS /FORCE')
+	env.Append(LIBS=['SDLmain'])
 
 
 Export('env')

@@ -21,8 +21,6 @@
 #include <string>
 #include <vector>
 
-#include <inttypes.h>
-
 #if !(defined(__GNUC__) || defined(__GNUG__) || defined(__attribute__))
 #	define __attribute__(p) /* nothing */
 #endif
