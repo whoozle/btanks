@@ -32,6 +32,17 @@ void TCPSocket::connect(const std::string &host, const int port) {
 		throw_net(("SDLNet_TCP_Open"));	                
 }
 
+void TCPSocket::accept(sdlx::TCPSocket &client) {
+	client.close();
+	client._sock = SDLNet_TCP_Accept(_sock);
+	if (client._sock == NULL)
+		throw_net(("SDLNet_TCP_Accept"));
+}
+
+
+const bool TCPSocket::ready() const {
+	return SDLNet_SocketReady(_sock) != 0;
+}
 
 void TCPSocket::close() {
 	if (_sock == NULL) 

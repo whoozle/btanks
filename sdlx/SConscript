@@ -4,4 +4,4 @@ env = env.Copy()
 env.Append(CPPPATH='..')
 sdlx = env.StaticLibrary('sdlx', 
 	['cursor.cpp', 'sdl_ex.cpp', 'surface.cpp', 'system.cpp', 'joystick.cpp', 'ttf.cpp', 'fps.cpp', 
-	'tcp_socket.cpp', 'net_ex.cpp'])
+	'tcp_socket.cpp', 'net_ex.cpp', 'socket_set.cpp'])

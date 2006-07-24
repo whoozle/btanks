@@ -12,10 +12,15 @@ public:
 	void listen(const unsigned port);
 	void connect(const std::string &host, const int port);
 	void close();
+	
+	void accept(sdlx::TCPSocket &client);
+	
+	const bool ready() const;
 
 	~TCPSocket();
-private: 
+protected: 
 	::TCPsocket _sock;
+	friend class SocketSet;
 };
 
 }
