@@ -92,7 +92,7 @@ xc = env.Program('bt',
 	'sdl_collide/SDL_collide.c', 
 	'src/main.cpp', 'src/game.cpp', 
 	
-	'net/server.cpp', 'net/client.cpp'
+	'net/server.cpp', 'net/client.cpp', 'net/protocol.cpp'
 	], 
 	
 	LIBS=['sdlx', 'mrt', sigc_lib, 'SDL_gfx', 'SDL_ttf', 'SDL_image', 'SDL_net', 'SDL', 'expat', 'z'], RPATH=['.'])
