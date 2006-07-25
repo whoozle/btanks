@@ -4,7 +4,8 @@
 #include "mrt/logger.h"
 #include "animation_model.h"
 
-AnimatedObject::AnimatedObject(const std::string &classname) : Object(classname) {}
+AnimatedObject::AnimatedObject(const std::string &classname) : 
+	Object(classname),  _model(0), _surface(0), _direction_idx(0), _pos(0)  {}
 
 void AnimatedObject::init(AnimationModel *model, sdlx::Surface *surface, const int tile_w, const int tile_h) {
 	_events.clear();
