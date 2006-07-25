@@ -9,6 +9,8 @@ public:
 		PlayerEvent,
 		UpdateWorld
 	};
+	
+	class Message {};
 
 };
 

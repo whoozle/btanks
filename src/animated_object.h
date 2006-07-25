@@ -49,9 +49,7 @@ public:
 	void cancelRepeatable();
 	void cancelAll();
 	const std::string getState() const;
-protected:
-	v3<float> _old_velocity;
-	
+
 private: 
 	struct Event {
 		std::string name;

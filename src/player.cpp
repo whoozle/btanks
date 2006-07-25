@@ -81,7 +81,6 @@ void Player::tick(const float dt) {
 	
 	if (_velocity != _old_velocity) {
 		int dir = v3<float>::getDirection8(_velocity);
-		//LOG_DEBUG(("pose %d", pose));
 		if (dir) {
 			setDirection(dir - 1);
 			//LOG_DEBUG(("animation state: %s", _animation->getState().c_str()));
