@@ -18,6 +18,9 @@
 #include "sdlx/net_ex.h"
 #include "sdlx/tcp_socket.h"
 
+#include "net/server.h"
+#include "net/client.h"
+
 #include <SDL/SDL_gfxPrimitives.h>
 #include <SDL/SDL_opengl.h>
 #include <SDL/SDL_net.h>
@@ -44,6 +47,7 @@ static SharedPointer<glBlendFunc_Func> glBlendFunc_ptr;
 
 void IGame::init(const int argv, const char **argc) {
 
+	_server = NULL; _client = NULL;
 #ifdef __linux__
 //	putenv("SDL_VIDEODRIVER=dga");
 #endif
@@ -161,13 +165,15 @@ void IGame::onMenu(const std::string &name) {
 		_players.push_back(player);
 		World->addObject(player, v3<float>(100, 100, 0));
 
-		_server.init(9876);
+		_server = new Server;
+		_server->init(9876);
 	} else if (name == "m-join") {
 		std::string host = "localhost";
 		unsigned port = 9876;
 		TRY {
-			_client.init(host, port);
-		} CATCH("_client.init", return);
+			_client = new Client;
+			_client->init(host, port);
+		} CATCH("_client.init", { delete _client; _client = NULL; return; });
 		
 		_main_menu.setActive(false);
 	}
@@ -228,27 +234,33 @@ void IGame::run() {
 		const float dt = 1.0/fr;
 		
 		
-		if (_running && !_paused && _players.size()) {
+		if (_running && !_paused) {
 			World->tick(_map, dt);
-			_server.tick(dt);
+			if (_server) 
+				_server->tick(dt);
+
+			if (_client) 
+				_client->tick(dt);
 			
-			Object * p = _players[0];
-			v3<float> pos, vel;
-			if (World->getInfo(p, pos, vel)) {
-				//LOG_DEBUG(("player[0] %f, %f, %f", vx, vy, vz));
-				int wx = (int)pos.x - viewport.x;
-				int wy = (int)pos.y - viewport.y;
-				if (passive_viewport_stopzone.in(wx, wy)) {
-					mapvx = 0; 
-					mapvy = 0;
-				} else {
-					mapvx = p->speed * 2 * (wx - passive_viewport.x) / passive_viewport.w ;
-					mapvy = p->speed * 2 * (wy - passive_viewport.y) / passive_viewport.h ;
-					/*
-					LOG_DEBUG(("position : %f %f viewport: %d %d(passive:%d %d %d %d) mapv: %f %f", x, y,
-						viewport.x, viewport.y, passive_viewport.x, passive_viewport.y, passive_viewport.w, passive_viewport.h, 
-						mapvx, mapvy));
-					*/
+			if (_players.size()) {
+				Object * p = _players[0];
+				v3<float> pos, vel;
+				if (World->getInfo(p, pos, vel)) {
+					//LOG_DEBUG(("player[0] %f, %f, %f", vx, vy, vz));
+					int wx = (int)pos.x - viewport.x;
+					int wy = (int)pos.y - viewport.y;
+					if (passive_viewport_stopzone.in(wx, wy)) {
+						mapvx = 0; 
+						mapvy = 0;
+					} else {
+						mapvx = p->speed * 2 * (wx - passive_viewport.x) / passive_viewport.w ;
+						mapvy = p->speed * 2 * (wy - passive_viewport.y) / passive_viewport.h ;
+						/*
+						LOG_DEBUG(("position : %f %f viewport: %d %d(passive:%d %d %d %d) mapv: %f %f", x, y,
+							viewport.x, viewport.y, passive_viewport.x, passive_viewport.y, passive_viewport.w, passive_viewport.h, 
+							mapvx, mapvy));
+						*/
+					}
 				}
 			}
 		}
@@ -305,7 +317,18 @@ void IGame::run() {
 }
 
 void IGame::deinit() {
+	delete _server; _server = NULL;
+	delete _client; _client = NULL;
 	LOG_DEBUG(("shutting down, freeing surface"));
 	_running = false;
 	_window.free();
+}
+
+void IGame::notify(const PlayerState& state) {
+	if (_client)
+		_client->notify(state);
+}
+
+void IGame::onClient(Message &message) {
+	LOG_DEBUG(("sending server status message..."));
 }

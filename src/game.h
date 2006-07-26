@@ -26,10 +26,12 @@
 
 #include "menu.h"
 #include "tmx/map.h"
-#include "net/server.h"
-#include "net/client.h"
 
 class Object;
+class PlayerState;
+class Message;
+class Server;
+class Client;
 
 class IGame {
 public: 
@@ -46,6 +48,10 @@ public:
 
 	IGame();
 	~IGame();
+	
+	//multiplayer stuff. refactor it.
+	void notify(const PlayerState& state);
+	void onClient(Message &message);
 private:
 	void onKey(const Uint8 type, const SDL_keysym sym);
 	void onMenu(const std::string &name);
@@ -58,8 +64,8 @@ private:
 	
 	std::vector<Object *> _players;
 	
-	Server _server;
-	Client _client;
+	Server *_server;
+	Client *_client;
 };
 
 SINGLETON(Game, IGame);

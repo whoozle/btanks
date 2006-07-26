@@ -83,6 +83,7 @@ env.Append(CPPPATH=sigc_cpppath)
 
 xc = env.Program('bt', 
 	['src/object.cpp', 'objects/bullet.cpp', 'objects/explosion.cpp', 'objects/corpse.cpp',
+	'net/server.cpp', 'net/client.cpp', 'net/protocol.cpp',
 
 	'src/menu.cpp', 'src/menuitem.cpp', 'src/joyplayer.cpp', 'src/keyplayer.cpp', 
 	 'src/player.cpp', 'src/aiplayer.cpp',
@@ -92,7 +93,6 @@ xc = env.Program('bt',
 	'sdl_collide/SDL_collide.c', 
 	'src/main.cpp', 'src/game.cpp', 
 	
-	'net/server.cpp', 'net/client.cpp', 'net/protocol.cpp'
 	], 
 	
 	LIBS=['sdlx', 'mrt', sigc_lib, 'SDL_gfx', 'SDL_ttf', 'SDL_image', 'SDL_net', 'SDL', 'expat', 'z'], RPATH=['.'])
