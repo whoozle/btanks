@@ -22,6 +22,7 @@
 #include <string>
 #include "animated_object.h"
 #include "v3.h"
+#include "player_state.h"
 
 class Player : public AnimatedObject {
 public:
@@ -31,10 +32,7 @@ public:
 	virtual void tick(const float dt);
 
 protected:
-	struct State {
-		bool left, right, up, down, fire;
-		void clear() { memset(this, 0, sizeof(*this)); }
-	} _state;
+	PlayerState _state;
 	bool _stale;
 private:
 	bool _stateless;
