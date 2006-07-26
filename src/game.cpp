@@ -212,6 +212,10 @@ void IGame::run() {
 					_window.toggleFullscreen();
 					break;
 				}
+				if (event.key.keysym.sym==SDLK_s && event.key.keysym.mod & KMOD_CTRL) {
+					_window.saveBMP("screenshot.bmp");
+					break;
+				}
 			case SDL_KEYUP:
 				key_signal.emit(event.key.type, event.key.keysym);
 			break;
