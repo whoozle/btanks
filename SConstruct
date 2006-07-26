@@ -22,8 +22,8 @@ if sys.platform == "win32":
 	env.Append(CCFLAGS = '/Ox /Ot ') #optimizations
 	env.Append(CPPFLAGS = '/Ox /Ot ') #optimizations
 else:
-	env.Append(CPPFLAGS=' -Wall -pedantic -ggdb3 -Wno-long-long')
-
+	env.Append(CPPFLAGS=' -Wall -pedantic -ggdb3 -Wno-long-long -pipe ')
+	env.Append(CCFLAGS=' -Wall -pedantic -ggdb3 -Wno-long-long -pipe ')
 
 
 conf_env = env.Copy()
