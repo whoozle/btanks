@@ -32,6 +32,8 @@ void Client::tick(const float dt) {
 	if (_sock.ready()) {
 		Message m;
 		m.recv(_sock);
+		if (m.type != UpdateWorld && m.type != ServerStatus) 
+			throw_ex(("message type %d is not allowed", m.type));
 		Game->onMessage(m);
 	}
 }

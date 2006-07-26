@@ -43,6 +43,9 @@ void Server::tick(const float dt) {
 					LOG_DEBUG(("event in connection %p", (void *)*i));
 					Message m;
 					m.recv(*(*i)->sock);
+					if (m.type != PlayerEvent) 
+						throw_ex(("message type %d is not allowed", m.type));
+					
 					Game->onMessage(m);
 				}
 				++i;
