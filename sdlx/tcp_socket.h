@@ -28,6 +28,8 @@ public:
 	TCPSocket();
 	void listen(const unsigned port);
 	void connect(const std::string &host, const int port);
+	void send(const void *data, const int len) const;
+	const int recv(void *data, const int len) const;
 	void close();
 	
 	void accept(sdlx::TCPSocket &client);

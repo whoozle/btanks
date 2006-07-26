@@ -39,6 +39,19 @@ void TCPSocket::accept(sdlx::TCPSocket &client) {
 		throw_net(("SDLNet_TCP_Accept"));
 }
 
+void TCPSocket::send(const void *data, const int len) const {
+	int result = SDLNet_TCP_Send(_sock, (void *)data, len); //SDL_net const lack
+	if (result < len) 
+		throw_net(("SDLNet_TCP_Send"));
+}
+
+const int TCPSocket::recv(void *data, const int len) const {
+	int result = SDLNet_TCP_Recv(_sock, data, len);
+	if (result <= 0) 
+		throw_net(("SDLNet_TCP_Recv"));
+	return result;
+}
+
 
 const bool TCPSocket::ready() const {
 	return SDLNet_SocketReady(_sock) != 0;
