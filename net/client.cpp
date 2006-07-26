@@ -3,6 +3,7 @@
 #include "player_state.h"
 #include "protocol.h"
 #include "sdlx/socket_set.h"
+#include "game.h"
 
 Client::Client(): _running(false) {}
 
@@ -31,7 +32,6 @@ void Client::tick(const float dt) {
 	if (_sock.ready()) {
 		Message m;
 		m.recv(_sock);
+		Game->onMessage(m);
 	}
 }
-
-

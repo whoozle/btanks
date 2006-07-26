@@ -43,6 +43,7 @@ void Server::tick(const float dt) {
 					LOG_DEBUG(("event in connection %p", (void *)*i));
 					Message m;
 					m.recv(*(*i)->sock);
+					Game->onMessage(m);
 				}
 				++i;
 			} CATCH("reading from socket", {

@@ -20,6 +20,7 @@
 
 #include "net/server.h"
 #include "net/client.h"
+#include "net/protocol.h"
 
 #include <SDL/SDL_gfxPrimitives.h>
 #include <SDL/SDL_opengl.h>
@@ -332,3 +333,8 @@ void IGame::notify(const PlayerState& state) {
 void IGame::onClient(Message &message) {
 	LOG_DEBUG(("sending server status message..."));
 }
+
+void IGame::onMessage(const Message &message) {
+	LOG_DEBUG(("incoming message %d", message.type));
+}
+

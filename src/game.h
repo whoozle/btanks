@@ -52,6 +52,7 @@ public:
 	//multiplayer stuff. refactor it.
 	void notify(const PlayerState& state);
 	void onClient(Message &message);
+	void onMessage(const Message &message);
 private:
 	void onKey(const Uint8 type, const SDL_keysym sym);
 	void onMenu(const std::string &name);

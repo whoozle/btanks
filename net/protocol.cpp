@@ -9,7 +9,7 @@ Message::Message() : type(None), data_size(0) {}
 
 Message::Message(const MessageType type) : type(type), data_size(0) {}
 
-#define BUF_SIZE 256
+#define BUF_SIZE 1024
 
 // 0, 1: short, size
 // 2: type
@@ -29,6 +29,7 @@ void Message::send(const sdlx::TCPSocket &sock) {
 
 void Message::recv(const sdlx::TCPSocket &sock) {
 	unsigned char buf[2];
+	_attrs.clear();
 	if (sock.recv(buf, 3) != 3) 
 		throw_ex(("fixme: implement handling of fragmented packets."));
 	data_size = ntohs(*(unsigned short *)buf);
@@ -37,4 +38,15 @@ void Message::recv(const sdlx::TCPSocket &sock) {
 		sock.recv(data, data_size);
 	}
 	LOG_DEBUG(("message type: %d, recv %d bytes", type, data_size));
+}
+
+void Message::set(const std::string &key, const std::string &value) {
+	_attrs[key] = value;
+}
+
+const std::string &Message::get(const std::string &key) const {
+	AttrMap::const_iterator i = _attrs.find(key);
+	if (i != _attrs.end())
+		throw_ex(("no attribute '%s' found", key.c_str()));
+	return i->second;
 }
