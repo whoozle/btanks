@@ -46,7 +46,7 @@ void Message::set(const std::string &key, const std::string &value) {
 
 const std::string &Message::get(const std::string &key) const {
 	AttrMap::const_iterator i = _attrs.find(key);
-	if (i != _attrs.end())
+	if (i == _attrs.end())
 		throw_ex(("no attribute '%s' found", key.c_str()));
 	return i->second;
 }
