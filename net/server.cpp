@@ -33,15 +33,23 @@ void Server::tick(const float dt) {
 				LOG_DEBUG(("client connected..."));
 				Message msg(ServerStatus);
 				Game->onClient(msg);
+				msg.send(*s);
 				_connections.push_back(new Connection(s));
 			} CATCH("accept", { delete s; s = NULL; })
 		}
-		for(ConnectionList::iterator i = _connections.begin(); i != _connections.end(); ++i) {
-			if ((*i)->sock->ready()) {
-				LOG_DEBUG(("event in connection %p", (void *)*i));
-				Message m;
-				m.recv(*(*i)->sock);
-			}
+		for(ConnectionList::iterator i = _connections.begin(); i != _connections.end(); ) {
+			TRY {
+				if ((*i)->sock->ready()) {
+					LOG_DEBUG(("event in connection %p", (void *)*i));
+					Message m;
+					m.recv(*(*i)->sock);
+				}
+				++i;
+			} CATCH("reading from socket", {
+				LOG_DEBUG(("error, client disconnected"));
+				delete *i;
+				i = _connections.erase(i);
+			} );
 		}
 	} CATCH("tick", {});
 }

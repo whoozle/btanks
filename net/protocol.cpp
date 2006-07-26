@@ -5,9 +5,9 @@
 
 #include <arpa/inet.h>
 
-Message::Message() : type(None) {}
+Message::Message() : type(None), data_size(0) {}
 
-Message::Message(const MessageType type) : type(type) {}
+Message::Message(const MessageType type) : type(type), data_size(0) {}
 
 #define BUF_SIZE 256
 
@@ -29,11 +29,12 @@ void Message::send(const sdlx::TCPSocket &sock) {
 
 void Message::recv(const sdlx::TCPSocket &sock) {
 	unsigned char buf[2];
-	int size;
-	if ((size = sock.recv(buf, 3)) != 3) 
+	if (sock.recv(buf, 3) != 3) 
 		throw_ex(("fixme: implement handling of fragmented packets."));
 	data_size = ntohs(*(unsigned short *)buf);
 	type = (MessageType)buf[2];
-	sock.recv(data, data_size);
-	LOG_DEBUG(("message type: %d, recv %d bytes", type, size));
+	if (data_size != 0) {
+		sock.recv(data, data_size);
+	}
+	LOG_DEBUG(("message type: %d, recv %d bytes", type, data_size));
 }
