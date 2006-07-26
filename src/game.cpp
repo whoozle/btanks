@@ -336,5 +336,9 @@ void IGame::onClient(Message &message) {
 
 void IGame::onMessage(const Message &message) {
 	LOG_DEBUG(("incoming message %d", message.type));
+	if (message.type == ServerStatus) {
+		LOG_DEBUG(("loading map..."));
+		_map.load(message.get("map"));
+	}
 }
 
