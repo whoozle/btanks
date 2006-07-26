@@ -22,6 +22,7 @@ public:
 	~Map();
 	void clear();
 	void load(const std::string &name);
+	const std::string & getName() const { return _name; }
 	const bool loaded() const;
 	
 	virtual void start(const std::string &name, Attrs &attr);
@@ -58,6 +59,8 @@ private:
 	
 	typedef std::stack<Entity> EntityStack;
 	EntityStack _stack;
+	
+	std::string _name;
 };
 
 #endif

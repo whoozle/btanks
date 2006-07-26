@@ -332,6 +332,8 @@ void IGame::notify(const PlayerState& state) {
 
 void IGame::onClient(Message &message) {
 	LOG_DEBUG(("sending server status message..."));
+	Message m(ServerStatus);
+	m.set("map", _map.getName());
 }
 
 void IGame::onMessage(const Message &message) {

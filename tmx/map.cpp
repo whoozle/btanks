@@ -104,6 +104,7 @@ void Map::load(const std::string &name) {
 		}
 	}
 #endif
+	_name = name;
 	LOG_DEBUG(("loading completed"));
 }
 
