@@ -60,6 +60,9 @@ void Chunk::append(const Chunk &other) {
 	memcpy((char *) ptr + s1, other.ptr, s2);
 }
 
+void Chunk::reserve(const int more) {
+	setSize(size + more);
+}
 
 void Chunk::free() {
 	if (ptr != NULL) {

@@ -38,6 +38,7 @@ public:
 	void setData(void *ptr, const size_t size, const bool takeOwnership = false);
 	
 	void append(const Chunk &other);
+	void reserve(const int more);
 
 	inline void *getPtr() const { return ptr; }
 	inline const size_t getSize() const { return size; }
