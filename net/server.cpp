@@ -47,7 +47,7 @@ void Server::tick(const float dt) {
 					if (m.type != PlayerEvent) 
 						throw_ex(("message type %d is not allowed", m.type));
 					
-					Game->onMessage(m);
+					Game->onMessage(**i, m);
 				}
 				++i;
 			} CATCH("reading from socket", {

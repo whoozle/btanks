@@ -6,8 +6,8 @@ namespace sdlx  {
 }
 
 struct Connection {
-	Connection(sdlx::TCPSocket *s) : sock(s) {}
-	~Connection() { delete sock; sock = NULL; }
+	Connection(sdlx::TCPSocket *s);
+	~Connection();
 		
 	sdlx::TCPSocket * sock;
 };

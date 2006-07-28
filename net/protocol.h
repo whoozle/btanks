@@ -27,10 +27,14 @@ public:
 	const std::string &get(const std::string &key) const;
 	
 	MessageType type;
-	char data[128];
+
+	char data[1500];
 	size_t data_size;
 	
 private:
+	const int readMap(const char *buf, const int len);
+	const int writeMap(char *buf, const int len) const;
+
 	typedef std::map<const std::string, std::string> AttrMap;
 	AttrMap _attrs;
 };

@@ -21,6 +21,7 @@
 #include "net/server.h"
 #include "net/client.h"
 #include "net/protocol.h"
+#include "net/connection.h"
 
 #include <SDL/SDL_gfxPrimitives.h>
 #include <SDL/SDL_opengl.h>
@@ -332,11 +333,11 @@ void IGame::notify(const PlayerState& state) {
 
 void IGame::onClient(Message &message) {
 	LOG_DEBUG(("sending server status message..."));
-	Message m(ServerStatus);
-	m.set("map", _map.getName());
+	message.type = ServerStatus;
+	message.set("map", _map.getName());
 }
 
-void IGame::onMessage(const Message &message) {
+void IGame::onMessage(const Connection &conn, const Message &message) {
 	LOG_DEBUG(("incoming message %d", message.type));
 	if (message.type == ServerStatus) {
 		LOG_DEBUG(("loading map..."));

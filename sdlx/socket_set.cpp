@@ -19,6 +19,15 @@ void SocketSet::add(const sdlx::TCPSocket &sock) {
 		throw_net(("SDLNet_TCP_AddSocket"));        
 }
 
+void SocketSet::add(const sdlx::TCPSocket *sock) {
+	if (sock == NULL || sock->_sock == NULL)
+		throw_ex(("attempt to add NULL/uninitialized socket to set"));
+	
+	int numused = SDLNet_TCP_AddSocket(_set, sock->_sock);
+	if (numused == -1)
+		throw_net(("SDLNet_TCP_AddSocket"));        
+}
+
 
 void SocketSet::remove(const sdlx::TCPSocket &sock) {
 	if (sock._sock == NULL)

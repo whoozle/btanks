@@ -26,6 +26,7 @@ class SocketSet {
 public: 
 	SocketSet(const int max_sockets);
 	void add(const sdlx::TCPSocket &sock);
+	void add(const sdlx::TCPSocket *sock);
 	void remove(const sdlx::TCPSocket &sock);
 	
 	const int check(const Uint32 timeout) const;

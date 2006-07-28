@@ -83,7 +83,7 @@ env.Append(CPPPATH=sigc_cpppath)
 
 xc = env.Program('bt', 
 	['src/object.cpp', 'objects/bullet.cpp', 'objects/explosion.cpp', 'objects/corpse.cpp',
-	'net/server.cpp', 'net/client.cpp', 'net/protocol.cpp',
+	'net/server.cpp', 'net/client.cpp', 'net/protocol.cpp', 'net/connection.cpp',
 
 	'src/menu.cpp', 'src/menuitem.cpp', 'src/joyplayer.cpp', 'src/keyplayer.cpp', 
 	 'src/player.cpp', 'src/aiplayer.cpp',
