@@ -20,13 +20,25 @@ void AnimatedObject::init(const std::string &model, sdlx::Surface *surface, cons
 
 void AnimatedObject::init(const AnimatedObject &o) {
 	_events.clear();
+	std::string c = classname; //fixme: rework code in resource manager to do not workaround it.
+	
+	//LOG_DEBUG(("classname: %s, model_name: %s", classname.c_str(), _model_name.c_str()));
+	//LOG_DEBUG(("o.classname: %s, o.model_name: %s", o.classname.c_str(), o._model_name.c_str()));
+	*this = o;
+	
+	classname = c;
+	//LOG_DEBUG(("classname: %s, model_name: %s", classname.c_str(), _model_name.c_str()));
+/*
 	_model_name = o._model_name;
 	_model = o._model;
 	_surface = o._surface;
 	size.x = _tw = o._tw; size.y = _th = o._th;
 	_direction_idx = o._direction_idx;
 	_pos = o._pos;
+*/
 }
+
+
 
 Object * AnimatedObject::clone(const std::string &opt) const {
 	throw_ex(("your object uses AnimatedObject directly, which is obsoleted and prohibited."));

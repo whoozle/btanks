@@ -33,7 +33,7 @@ public:
 	
 	bool piercing;
 	
-	const std::string classname;
+	std::string classname;
 	
 	Object(const std::string &classname);
 	virtual ~Object();

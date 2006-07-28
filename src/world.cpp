@@ -191,6 +191,7 @@ const bool IWorld::getNearest(const Object *obj, const std::string &classname, v
 	
 	for(ObjectSet::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		const Object *o = *i;
+		//LOG_DEBUG(("%s is looking for %s. found: %s", obj->classname.c_str(), classname.c_str(), o->classname.c_str()));
 		if (o == obj || o->classname != classname || o->_owner == obj) 
 			continue;
 		
