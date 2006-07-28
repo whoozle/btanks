@@ -348,7 +348,7 @@ void IGame::onClient(Message &message) {
 	memcpy(message.data, data.getPtr(), message.data_size = data.getSize());
 	LOG_DEBUG(("serialized world: %s", data.dump().c_str()));
 	mrt::Chunk cdata;
-	mrt::ZStream::compress(cdata, data);
+	mrt::ZStream::compress(cdata, data, 9);
 	LOG_DEBUG(("compressed world: %s", cdata.dump().c_str()));
 }
 
