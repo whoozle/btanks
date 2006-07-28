@@ -156,4 +156,6 @@ void AnimatedObject::serialize(mrt::Serializator &s) const {
 }
 void AnimatedObject::deserialize(const mrt::Serializator &s) {
 	Object::deserialize(s);
+	s.get(_model_name);
+	_model = ResourceManager->getAnimationModel(_model_name);
 }
