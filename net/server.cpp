@@ -4,6 +4,7 @@
 #include "sdlx/socket_set.h"
 #include "game.h"
 #include "protocol.h"
+#include "connection.h"
 
 Server::Server()  : _running(false) {}
 

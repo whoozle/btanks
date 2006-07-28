@@ -4,6 +4,7 @@
 #include "sdlx/tcp_socket.h"
 #include <deque>
 
+class Connection;
 class Server {
 public:
 	Server(); 
@@ -11,12 +12,6 @@ public:
 	void tick(const float dt);
 	
 private:
-	struct Connection {
-		Connection(sdlx::TCPSocket *s) : sock(s) {}
-		~Connection() { delete sock; sock = NULL; }
-		
-		sdlx::TCPSocket * sock;
-	};
 	
 	typedef std::deque<Connection *> ConnectionList;
 	ConnectionList _connections;
