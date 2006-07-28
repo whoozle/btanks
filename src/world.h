@@ -21,6 +21,7 @@
 #include "mrt/singleton.h"
 #include <set>
 #include "v3.h"
+#include "mrt/serializable.h"
 
 namespace sdlx {
 class Surface;
@@ -30,7 +31,7 @@ class Rect;
 class Object;
 class WorldMap;
 
-class IWorld {
+class IWorld : public mrt::Serializable {
 public:
 	DECLARE_SINGLETON(IWorld);
 	
@@ -46,6 +47,8 @@ public:
 	const bool getNearest(const Object *obj, const std::string &classname, v3<float> &position, v3<float> &velocity) const;
 	const float getImpassability(Object *obj, const sdlx::Surface &surface, const v3<int> &position) const;
 
+	virtual void serialize(mrt::Serializator &s) const;
+	virtual void deserialize(const mrt::Serializator &s);
 private:
 	typedef std::set<Object *> ObjectSet;
 	ObjectSet _objects;

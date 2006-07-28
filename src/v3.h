@@ -2,8 +2,10 @@
 #define __BTANKS_V3_H__
 
 #include <math.h>
+#include "mrt/serializator.h"
+#include "mrt/serializable.h"
 
-template <typename T> class v3 {
+template <typename T> class v3 : public mrt::Serializable {
 public:
 	T x, y, z;
 	v3<T>() : x(0), y(0), z(0) {}
@@ -124,6 +126,17 @@ public:
 			x = -1;
 		else x = 0;
 	}
+	virtual void serialize(mrt::Serializator &s) const {
+		s.add(x);
+		s.add(y);
+		s.add(z);
+	}
+	virtual void deserialize(const mrt::Serializator &s) {
+		s.get(x);
+		s.get(y);
+		s.get(z);
+	}
+
 };
 
 template <typename T>

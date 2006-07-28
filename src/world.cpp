@@ -5,6 +5,7 @@
 
 #include "mrt/exception.h"
 #include "mrt/logger.h"
+#include "mrt/chunk.h"
 #include "sdlx/rect.h"
 #include "sdlx/surface.h"
 
@@ -220,4 +221,12 @@ const Object* IWorld::spawn(Object *src, const std::string &classname, const std
 	addObject(obj, src->_position + dpos);
 	//LOG_DEBUG(("result: %f %f", obj->_position.x, obj->_position.y));
 	return obj;
+}
+
+void IWorld::serialize(mrt::Serializator &s) const {
+	s.add("hello");
+}
+
+void IWorld::deserialize(const mrt::Serializator &s) {
+
 }

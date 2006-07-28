@@ -337,6 +337,14 @@ void IGame::onClient(Message &message) {
 	message.type = ServerStatus;
 	message.set("map", _map.getName());
 	message.set("version", VERSION_STRING);
+
+	mrt::Serializator s;
+	World->serialize(s);
+	const mrt::Chunk &data = s.getData();
+	if (data.getSize() > sizeof(message.data))
+		throw_ex(("increase message data limit"));
+	memcpy(message.data, data.getPtr(), message.data_size = data.getSize());
+	LOG_DEBUG(("serialized world: %s", data.dump().c_str()));
 }
 
 void IGame::onMessage(const Connection &conn, const Message &message) {

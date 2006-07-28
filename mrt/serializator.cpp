@@ -48,16 +48,20 @@ void Serializator::add(const size_t n) {
 	}
 
 	unsigned char *ptr = (unsigned char *) _data->reserve(1 + len) + _pos;
-	*ptr++ = type;
+	*ptr++ = type | len;
 	memcpy(ptr, buf, len);
 	_pos += len + 1;
+}
+
+void Serializator::add(const int n) {
+	add((size_t)n);
 }
 
 void Serializator::add(const std::string &str) {
 	size_t size = str.size();
 	add(size);
 	
-	unsigned char *ptr = (unsigned char *) _data->reserve(size);
+	unsigned char *ptr = (unsigned char *) _data->reserve(size) + _pos;
 	memcpy(ptr, str.c_str(), size);
 	_pos += size;
 }
@@ -65,7 +69,7 @@ void Serializator::add(const std::string &str) {
 void Serializator::add(const float f) {
 	char buf[256];
 	snprintf(buf, sizeof(buf) -1, "%f", f);
-	buf[255] = 0;
+	buf[sizeof(buf) -1] = 0;
 	add(buf);
 }
 
@@ -74,6 +78,10 @@ void Serializator::get(size_t &n)  const {
 	unsigned char len = *(ptr + _pos++);
 	if (! (len & INTEGER))
 		throw_ex(("got %02x, instead of integer type-len byte", len));
+}
+
+void Serializator::get(int &n) const {
+	get((size_t&)n);
 }
 
 void Serializator::get(float &f) const {
