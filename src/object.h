@@ -50,12 +50,13 @@ public:
 	virtual void serialize(mrt::Serializator &s) const;
 	virtual void deserialize(const mrt::Serializator &s);
 protected:
+	int _id;
+	
 	const Object * spawn(const std::string &classname, const std::string &animation, const v3<float> &dpos, const v3<float> &vel);
 	const bool getNearest(const std::string &classname, v3<float> &position, v3<float> &velocity) const;
 	
 	v3<float> _velocity, _old_velocity, _direction;
 private:
-	int _id;
 	static int _last_id;
 	void getPosition(v3<float> &position);
 	bool _dead;
