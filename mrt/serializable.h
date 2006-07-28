@@ -7,6 +7,7 @@ class Serializable {
 public:
 	virtual void serialize(Serializator &s) const = 0;
 	virtual void deserialize(const Serializator &s) = 0;
+	virtual ~Serializable() {}
 };
 }
 
