@@ -4,8 +4,8 @@
 #include "world.h"
 #include <assert.h>
 
-Player::Player(const std::string &classname, const std::string &animation, const bool stateless) 
-: AnimatedObject(classname), _stale(false), _stateless(stateless), _animation(animation) {
+Player::Player(const std::string &animation, const bool stateless) 
+: AnimatedObject("player"), _stale(false), _stateless(stateless), _animation(animation) {
 	ResourceManager->initMe(this, animation);
 	
 	LOG_DEBUG(("player %p: %s", (void *)this, classname.c_str()));

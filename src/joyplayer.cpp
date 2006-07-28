@@ -3,7 +3,7 @@
 #include "mrt/logger.h"
 
 JoyPlayer::JoyPlayer(const std::string &animation, const int idx, const int fire)
-: Player("human", animation, false), _fire(fire) {
+: Player(animation, false), _fire(fire) {
 	_joy.open(idx);
 }
 

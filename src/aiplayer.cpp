@@ -3,7 +3,7 @@
 
 #include "mrt/logger.h"
 
-AIPlayer::AIPlayer(const std::string &animation) : Player("ai", animation, true) {}
+AIPlayer::AIPlayer(const std::string &animation) : Player(animation, true) {}
 
 void AIPlayer::tick(const float dt) {	
 	//LOG_DEBUG(("dt = %f", dt));
@@ -22,7 +22,7 @@ void AIPlayer::tick(const float dt) {
 	} 
 	
 	if (!skip_human) {
-	  if (getNearest("human", pos, vel)) {
+	  if (getNearest("player", pos, vel)) {
 		//LOG_DEBUG(("found human: %f %f", pos.x, pos.y));
 		v3<float> my_pos;
 		getPosition(my_pos);

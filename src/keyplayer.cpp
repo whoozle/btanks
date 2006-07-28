@@ -9,7 +9,7 @@
 #include "assert.h"
 
 KeyPlayer::KeyPlayer(const std::string &animation, SDLKey up, SDLKey down, SDLKey left, SDLKey right, SDLKey fire): 
-Player("human", animation, false), _up(up), _down(down), _left(left), _right(right), _fire(fire) {
+Player(animation, false), _up(up), _down(down), _left(left), _right(right), _fire(fire) {
 	Game->key_signal.connect(sigc::mem_fun(this, &KeyPlayer::onKey));
 }
 
