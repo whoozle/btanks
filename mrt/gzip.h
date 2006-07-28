@@ -27,6 +27,7 @@ class Chunk;
 class ZStream {
 public:
 	static void decompress(mrt::Chunk &dst, const mrt::Chunk &src);
+	static void compress(mrt::Chunk &dst, const mrt::Chunk &src, const int level = 3);
 private:
 };
 

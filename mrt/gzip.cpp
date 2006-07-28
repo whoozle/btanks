@@ -61,3 +61,56 @@ void ZStream::decompress(mrt::Chunk &dst, const mrt::Chunk &src) {
 		dst.setSize(z.total_out);
 	} CATCH("decompress", {inflateEnd(&z); throw;});
 }
+
+void ZStream::compress(mrt::Chunk &dst, const mrt::Chunk &src, const int level) {
+	z_stream z;
+	memset(&z, 0, sizeof(z));
+	try {
+		int ret;
+		z.avail_in = src.getSize();
+		z.next_in = (Bytef*) src.getPtr();
+
+		if ((ret = deflateInit(&z, level)) != Z_OK)
+			throw_z("DeflateInit", ret);
+		
+		dst.setSize(BUF);
+		size_t out_pos = 0;
+
+		z.avail_out = dst.getSize();
+		z.next_out = (Bytef*)dst.getPtr() + out_pos;
+		
+		do {
+			//LOG_DEBUG(("deflate"));
+			if (z.avail_in ==0)
+				break; //fixme ?
+			
+			ret = deflate(&z, Z_FINISH);
+			
+			if (ret == Z_STREAM_END) 
+				break;
+			
+			if (ret == Z_BUF_ERROR) {
+				if (z.avail_out == 0) {
+					LOG_DEBUG(("ran out of out buf"));
+					dst.setSize(dst.getSize() + BUF);
+					
+					out_pos += BUF;
+					z.next_out = (Bytef*)dst.getPtr() + out_pos;
+					z.avail_out = BUF;
+					continue;
+				} else if (z.avail_in == 0) {
+					throw_ex(("stream was truncated. unable to proceed."));
+				}
+			}
+
+			if (ret != Z_OK)
+				throw_z("deflate", ret);
+			
+		} while(1);
+		if ((ret = deflateEnd(&z)) != Z_OK) 
+			throw_z("deflateEnd", ret);
+		
+		dst.setSize(z.total_out);
+	} CATCH("compress", {deflateEnd(&z); throw;});
+
+}

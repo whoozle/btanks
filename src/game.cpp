@@ -332,6 +332,8 @@ void IGame::notify(const PlayerState& state) {
 		_client->notify(state);
 }
 
+#include "mrt/gzip.h"
+
 void IGame::onClient(Message &message) {
 	LOG_DEBUG(("sending server status message..."));
 	message.type = ServerStatus;
@@ -345,6 +347,9 @@ void IGame::onClient(Message &message) {
 		throw_ex(("increase message data limit"));
 	memcpy(message.data, data.getPtr(), message.data_size = data.getSize());
 	LOG_DEBUG(("serialized world: %s", data.dump().c_str()));
+	mrt::Chunk cdata;
+	mrt::ZStream::compress(cdata, data);
+	LOG_DEBUG(("compressed world: %s", cdata.dump().c_str()));
 }
 
 void IGame::onMessage(const Connection &conn, const Message &message) {
