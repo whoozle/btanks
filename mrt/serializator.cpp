@@ -36,7 +36,9 @@ void Serializator::add(const size_t n) {
 		x = -x;
 	}
 	assert(x >= 0);
-	if (x <= UCHAR_MAX) {
+	if (x == 0) {
+		len = 0;
+	} else if (x <= UCHAR_MAX) {
 		buf[0] = (unsigned char)x;
 		len = sizeof(unsigned char);
 	} else if (x <= USHRT_MAX) {
@@ -75,9 +77,21 @@ void Serializator::add(const float f) {
 
 void Serializator::get(size_t &n)  const {
 	unsigned char * ptr = (unsigned char *) _data->getPtr();
-	unsigned char len = *(ptr + _pos++);
-	if (! (len & INTEGER))
-		throw_ex(("got %02x, instead of integer type-len byte", len));
+	unsigned char type = *(ptr + _pos++);
+	if (! (type & INTEGER))
+		throw_ex(("got %02x, instead of integer type-len byte", type));
+	unsigned char len = type & 0x3f;
+	if (len == 0) {
+		n = 0; 
+	} else if(len == sizeof(unsigned char)) {
+		n = *(ptr + _pos++);
+	} else if (len == sizeof(unsigned short)) {
+		n = ntohs(*((unsigned short *)(ptr + _pos)));
+		_pos += sizeof(unsigned short);
+	} else if (len == sizeof(unsigned long)) {
+		n = ntohs(*((unsigned long *)(ptr + _pos)));
+		_pos += sizeof(unsigned long);
+	}
 }
 
 void Serializator::get(int &n) const {
