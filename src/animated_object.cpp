@@ -135,3 +135,11 @@ const std::string AnimatedObject::getState() const {
 		return empty;
 	return _events.front().name;
 }
+
+void AnimatedObject::serialize(mrt::Serializator &s) const {
+	Object::serialize(s);
+	
+}
+void AnimatedObject::deserialize(const mrt::Serializator &s) {
+	Object::deserialize(s);
+}

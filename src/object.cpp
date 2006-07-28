@@ -19,9 +19,12 @@ void Object::serialize(mrt::Serializator &s) const {
 	s.add(hp);
 	s.add(piercing);
 	s.add(_dead);
+
 	_velocity.serialize(s);
 	_old_velocity.serialize(s);
 	_direction.serialize(s);
+
+	_position.serialize(s);
 }
 
 void Object::deserialize(const mrt::Serializator &s) {}

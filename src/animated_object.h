@@ -50,6 +50,8 @@ public:
 	void cancelAll();
 	const std::string getState() const;
 
+	virtual void serialize(mrt::Serializator &s) const;
+	virtual void deserialize(const mrt::Serializator &s);
 private: 
 	struct Event {
 		std::string name;
