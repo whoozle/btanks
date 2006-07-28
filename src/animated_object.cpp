@@ -113,11 +113,15 @@ void AnimatedObject::render(sdlx::Surface &surface, const int x, const int y) {
 			LOG_WARN(("%s: no animation played", classname.c_str()));
 		return;
 	}
-	unsigned frame = (unsigned)_pos;
+	int frame = (int)_pos;
+	if (frame < 0 || frame >= (int)_events.front().pose->frames.size()) {
+		LOG_WARN(("%s: event '%s' frame %d is out of range.", classname.c_str(), _events.front().name.c_str(), frame));
+		return;		
+	}
 	frame = _events.front().pose->frames[frame];
 	
-	if (frame * _th >= (unsigned)_surface->getHeight()) {
-		LOG_WARN(("%s: event '%s' frame %u is out of range.", classname.c_str(), _events.front().name.c_str(), frame));
+	if (frame * _th >= _surface->getHeight()) {
+		LOG_WARN(("%s: event '%s' tile row %d is out of range.", classname.c_str(), _events.front().name.c_str(), frame));
 		return;
 	}
 	
