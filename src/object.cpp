@@ -18,6 +18,7 @@ void Object::serialize(mrt::Serializator &s) const {
 	s.add(impassability);
 	s.add(hp);
 	s.add(piercing);
+	s.add(classname);
 	s.add(_dead);
 
 	_velocity.serialize(s);
