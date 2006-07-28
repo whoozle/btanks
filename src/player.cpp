@@ -5,14 +5,12 @@
 #include <assert.h>
 
 Player::Player(const std::string &animation, const bool stateless) 
-: AnimatedObject("player"), _stale(false), _stateless(stateless), _animation(animation) {
+: AnimatedObject("player"), _stale(false), _stateless(stateless), _fire(0.5, false), _animation(animation) {
 	ResourceManager->initMe(this, animation);
 	
 	LOG_DEBUG(("player %p: %s", (void *)this, classname.c_str()));
 	
 	speed = 300;
-	_fire_rate = 0.5;
-	_fire_counter = 0;
 	
 	memset(&_state, 0, sizeof(_state));
 	hp = 5;
@@ -53,11 +51,7 @@ void Player::tick(const float dt) {
 		_velocity.clear();
 		return;
 	}
-	if (_fire_counter) {
-		_fire_counter -= dt;
-		if (_fire_counter < 0) 
-			_fire_counter = 0;
-	}
+	bool fire_possible = _fire.tick(dt);
 	//AI player will be easier to implement if operating directly with velocity
 	
 	if (_stateless) {
@@ -98,8 +92,9 @@ void Player::tick(const float dt) {
 		}
 	}
 
-	if (_state.fire && _fire_counter == 0) {
-		_fire_counter = _fire_rate;
+	if (_state.fire && fire_possible) {
+		_fire.reset();
+		
 		if (getState() == "fire") 
 			cancel();
 		

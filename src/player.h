@@ -23,6 +23,7 @@
 #include "animated_object.h"
 #include "v3.h"
 #include "player_state.h"
+#include "alarm.h"
 
 class Player : public AnimatedObject {
 public:
@@ -36,7 +37,7 @@ protected:
 	bool _stale;
 private:
 	bool _stateless;
-	float _fire_rate, _fire_counter;
+	Alarm _fire;
 	std::string _animation;
 };
 
