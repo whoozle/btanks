@@ -61,7 +61,7 @@ private:
 	void getPosition(v3<float> &position);
 	bool _dead;
 	v3<float> _position;
-	Object *_owner;
+	int _owner_id;
 	friend class IWorld;
 };
 

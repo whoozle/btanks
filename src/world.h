@@ -20,6 +20,7 @@
 
 #include "mrt/singleton.h"
 #include <set>
+#include <map>
 #include "v3.h"
 #include "mrt/serializable.h"
 
@@ -51,7 +52,10 @@ public:
 	virtual void deserialize(const mrt::Serializator &s);
 private:
 	typedef std::set<Object *> ObjectSet;
+	typedef std::map<const int, Object*>ObjectMap;
+	
 	ObjectSet _objects;
+	ObjectMap _id2obj;
 };
 
 SINGLETON(World, IWorld);

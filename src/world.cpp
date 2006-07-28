@@ -24,7 +24,8 @@ void IWorld::addObject(Object *o, const v3<float> &pos) {
 	o->_position = pos;
 		
 	_objects.insert(o);
-	LOG_DEBUG(("object %p added, objects: %d", (void*)o, _objects.size()));
+	_id2obj[o->_id] = o;
+	LOG_DEBUG(("object %d: %p added, objects: %d", o->_id, (void*)o, _objects.size()));
 }
 
 const bool IWorld::getInfo(const Object * po, v3<float> &pos, v3<float> &vel) const {
@@ -65,8 +66,8 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect &viewport) {
 const float IWorld::getImpassability(Object *obj, const sdlx::Surface &surface, const v3<int> &position) const {
 	sdlx::Rect my((int)position.x, (int)position.y,(int)obj->size.x, (int)obj->size.y);
 	float im = 0;
-	if (obj->_owner != NULL && _objects.find(obj->_owner) == _objects.end()) {
-		obj->_owner = NULL; //dead object.
+	if (obj->_owner_id != 0 && _id2obj.find(obj->_owner_id) == _id2obj.end()) {
+		obj->_owner_id = 0; //dead object.
 	}
 	
 	for(ObjectSet::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
@@ -74,7 +75,7 @@ const float IWorld::getImpassability(Object *obj, const sdlx::Surface &surface, 
 		if (o == obj) 
 			continue;
 		
-		if ((obj->_owner != NULL && obj->_owner == o) || (o->_owner != NULL && o->_owner == obj)) 
+		if ((obj->_owner_id != 0 && obj->_owner_id == o->_id) || (o->_owner_id != 0 && o->_owner_id == obj->_id)) 
 			continue;
 		
 		sdlx::Rect other((int)o->_position.x, (int)o->_position.y,(int)o->size.x, (int)o->size.y);
@@ -118,6 +119,7 @@ void IWorld::tick(WorldMap &map, const float dt) {
 			}
 		}
 		if (o.isDead()) {
+			_id2obj.erase((*i)->_id);
 			delete *i;
 			_objects.erase(i++);
 			continue;
@@ -171,6 +173,7 @@ void IWorld::tick(WorldMap &map, const float dt) {
 		}
 
 		if (o.isDead()) {
+			_id2obj.erase((*i)->_id);
 			delete *i;
 			_objects.erase(i++);
 			continue;
@@ -192,7 +195,7 @@ const bool IWorld::getNearest(const Object *obj, const std::string &classname, v
 	for(ObjectSet::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		const Object *o = *i;
 		//LOG_DEBUG(("%s is looking for %s. found: %s", obj->classname.c_str(), classname.c_str(), o->classname.c_str()));
-		if (o == obj || o->classname != classname || o->_owner == obj) 
+		if (o->_id == obj->_id || o->classname != classname || o->_owner_id == obj->_id) 
 			continue;
 		
 		float d = obj->_position.quick_distance(o->_position);
@@ -216,9 +219,9 @@ const bool IWorld::exists(const Object *o) const {
 
 const Object* IWorld::spawn(Object *src, const std::string &classname, const std::string &animation, const v3<float> &dpos, const v3<float> &vel) {
 	Object *obj = ResourceManager->createObject(classname, animation);
-	assert(obj->_owner == NULL);
+	assert(obj->_owner_id == 0);
 	//LOG_DEBUG(("%s spawns %s", src->classname.c_str(), obj->classname.c_str()));
-	obj->_owner = src;
+	obj->_owner_id = src->_id;
 	obj->_velocity = vel;
 	//LOG_DEBUG(("spawning %s, position = %f %f dPosition = %f:%f, velocity: %f %f", 
 		//classname.c_str(), src->_position.x, src->_position.y, dpos.x, dpos.y, vel.x, vel.y));

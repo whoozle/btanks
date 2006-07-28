@@ -6,12 +6,13 @@ int Object::_last_id;
 
 Object::Object(const std::string &classname)
  : mass(1), speed(1), ttl(-1), impassability(1), hp(1), piercing(false), 
-   classname(classname), _id(++_last_id), _direction(1,0,0),  _dead(false), _owner(NULL) {
+   classname(classname), _id(++_last_id), _direction(1,0,0),  _dead(false), _owner_id(0) {
 	//LOG_DEBUG(("allocated id %ld", _id));
 }
 
 void Object::serialize(mrt::Serializator &s) const {
 	s.add(_id);
+	s.add(_owner_id);
 
 	s.add(mass);
 	s.add(speed);
@@ -32,6 +33,7 @@ void Object::serialize(mrt::Serializator &s) const {
 
 void Object::deserialize(const mrt::Serializator &s) {
 	s.get(_id);
+	s.get(_owner_id);
 
 	s.get(mass);
 	s.get(speed);
