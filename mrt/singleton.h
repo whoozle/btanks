@@ -8,6 +8,10 @@ namespace mrt {
 			static S * p = S::get_instance();
 			return p;
 		}
+		inline const S* get_const() const {
+			static const S * p = S::get_instance();
+			return p;
+		}
 	};
 }
 
