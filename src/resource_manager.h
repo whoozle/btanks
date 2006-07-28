@@ -47,10 +47,10 @@ public:
 	
 	void registerObject(const std::string &classname, Object *);
 	Object *createObject(const std::string &classname, const std::string &animation) const;
+	const AnimatedObject *getAnimation(const std::string &id) const ;
 
 private:
 	AnimatedObject *getAnimation(const std::string &id);
-	const AnimatedObject *getAnimation(const std::string &id) const ;
 	virtual void start(const std::string &name, Attrs &attr);
 	virtual void end(const std::string &name);
 	virtual void charData(const std::string &data);

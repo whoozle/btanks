@@ -3,13 +3,15 @@
 #include "mrt/exception.h"
 #include "mrt/logger.h"
 #include "animation_model.h"
+#include "resource_manager.h"
 
 AnimatedObject::AnimatedObject(const std::string &classname) : 
 	Object(classname),  _model(0), _surface(0), _direction_idx(0), _pos(0)  {}
 
-void AnimatedObject::init(AnimationModel *model, sdlx::Surface *surface, const int tile_w, const int tile_h) {
+void AnimatedObject::init(const std::string &model, sdlx::Surface *surface, const int tile_w, const int tile_h) {
+	_model_name = model;
+	_model = ResourceManager->getAnimationModel(model);
 	_events.clear();
-	_model = model;
 	_surface = surface;
 	size.x = _tw = tile_w; size.y = _th = tile_h;
 	_direction_idx = 0;
@@ -18,7 +20,7 @@ void AnimatedObject::init(AnimationModel *model, sdlx::Surface *surface, const i
 
 void AnimatedObject::init(const AnimatedObject &o) {
 	_events.clear();
-
+	_model_name = o._model_name;
 	_model = o._model;
 	_surface = o._surface;
 	size.x = _tw = o._tw; size.y = _th = o._th;
@@ -138,7 +140,7 @@ const std::string AnimatedObject::getState() const {
 
 void AnimatedObject::serialize(mrt::Serializator &s) const {
 	Object::serialize(s);
-	
+	s.add(_model_name);
 }
 void AnimatedObject::deserialize(const mrt::Serializator &s) {
 	Object::deserialize(s);

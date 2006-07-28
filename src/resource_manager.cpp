@@ -39,7 +39,7 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 			s->loadImage(fname);
 			LOG_DEBUG(("loaded animation '%s' from '%s'", id.c_str(), fname.c_str()));
 			_animations[id] = new AnimatedObject(id);
-			_animations[id]->init(getAnimationModel(model), s, tw, th);
+			_animations[id]->init(model, s, tw, th);
 		} CATCH("animation", { delete s; s = NULL; });
 	} else if (name == "animation-model") {
 		const std::string & id = attr["id"];
