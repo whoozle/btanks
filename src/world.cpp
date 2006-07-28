@@ -231,6 +231,7 @@ const Object* IWorld::spawn(Object *src, const std::string &classname, const std
 }
 
 void IWorld::serialize(mrt::Serializator &s) const {
+	s.add(_objects.size());
 	for(ObjectSet::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		const Object *o = *i;
 		o->serialize(s);
@@ -238,4 +239,8 @@ void IWorld::serialize(mrt::Serializator &s) const {
 }
 
 void IWorld::deserialize(const mrt::Serializator &s) {
+	size_t size = _objects.size();
+	while(size--) {
+		
+	}
 }
