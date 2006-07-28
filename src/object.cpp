@@ -30,7 +30,25 @@ void Object::serialize(mrt::Serializator &s) const {
 	_position.serialize(s);
 }
 
-void Object::deserialize(const mrt::Serializator &s) {}
+void Object::deserialize(const mrt::Serializator &s) {
+	s.get(_id);
+
+	s.get(mass);
+	s.get(speed);
+	s.get(ttl);
+	s.get(impassability);
+	s.get(hp);
+	s.get(piercing);
+	s.get(classname);
+	s.get(_dead);
+
+	size.deserialize(s);
+	_velocity.deserialize(s);
+	_old_velocity.deserialize(s);
+	_direction.deserialize(s);
+
+	_position.deserialize(s);
+}
 
 Object::~Object() {}
 
