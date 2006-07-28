@@ -24,9 +24,7 @@ void AIPlayer::tick(const float dt) {
 	if (!skip_human) {
 	  if (getNearest("player", pos, vel)) {
 		//LOG_DEBUG(("found human: %f %f", pos.x, pos.y));
-		v3<float> my_pos;
-		getPosition(my_pos);
-		_velocity = pos - my_pos;
+		_velocity = pos;
 		
 		if (_velocity.lenght() < 100) {
 			_velocity.clear();

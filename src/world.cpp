@@ -202,6 +202,9 @@ const bool IWorld::getNearest(const Object *obj, const std::string &classname, v
 			found = true;
 		}
 	}
+	if (found) {
+		position -= obj->_position;
+	}
 	return found;
 }
 

@@ -33,22 +33,7 @@ public:
 		
 		return (T)sqrt(x * x + y * y + z * z);
 	}
-	
-	//operators 
-	const bool operator==(const v3<T> &other) {
-		return x == other.x && y == other.y && z == other.z;
-	}
 
-	const bool operator!=(const v3<T> &other) {
-		return x != other.x || y != other.y || z != other.z;
-	}
-	
-	const v3<T>& operator+=(const v3<T>& other) {
-		x += other.x;
-		y += other.y;
-		z += other.z;
-		return *this;
-	}
 	template <typename T2> 
 		v3<T2> convert() const { return v3<T2>((T2)x, (T2)y, (T2)z); }
 	
@@ -63,6 +48,27 @@ public:
 		T dy = y - other.y;
 		T dz = z - other.z;
 		return (dx * dx + dy * dy + dz * dz);
+	}
+
+	
+	//operators 
+	const bool operator==(const v3<T> &other) {
+		return x == other.x && y == other.y && z == other.z;
+	}
+
+	const bool operator!=(const v3<T> &other) {
+		return x != other.x || y != other.y || z != other.z;
+	}
+	
+
+	const v3<T>& operator+=(const v3<T>& other) {
+		x += other.x; y += other.y; z += other.z;
+		return *this;
+	}
+
+	const v3<T>& operator-=(const v3<T>& other) {
+		x -= other.x; y -= other.y; z -= other.z;
+		return *this;
 	}
 	
 	const v3<T> operator*(const v3<T>& other) const {
