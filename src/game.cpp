@@ -335,6 +335,7 @@ void IGame::onClient(Message &message) {
 	LOG_DEBUG(("sending server status message..."));
 	message.type = ServerStatus;
 	message.set("map", _map.getName());
+	message.set("version", VERSION_STRING);
 }
 
 void IGame::onMessage(const Connection &conn, const Message &message) {
