@@ -19,12 +19,13 @@
  */
 #include <string>
 #include "v3.h"
+#include "mrt/serializable.h"
  
 namespace sdlx {
 	class Surface;
 }
 
-class Object {
+class Object : public mrt::Serializable {
 public:
 	v3<int> size;
 	float mass, speed, ttl, impassability;
@@ -45,6 +46,9 @@ public:
 	const float getCollisionTime(const v3<float> &pos, const v3<float> &vel) const;
 	
 	const bool isDead() const;
+
+	virtual void serialize(mrt::Serializator &s) const;
+	virtual void deserialize(const mrt::Serializator &s);
 protected:
 	const Object * spawn(const std::string &classname, const std::string &animation, const v3<float> &dpos, const v3<float> &vel);
 	const bool getNearest(const std::string &classname, v3<float> &position, v3<float> &velocity) const;

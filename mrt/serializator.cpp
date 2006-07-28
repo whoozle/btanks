@@ -27,8 +27,8 @@ Serializator::~Serializator() {
 	}
 }
 
-void Serializator::add(const size_t n) {
-
+void Serializator::add(const int n) {
+	//LOG_DEBUG(("added int %d", n));
 	unsigned char type = INTEGER;
 	unsigned char buf[sizeof(unsigned long)];
 	
@@ -57,13 +57,20 @@ void Serializator::add(const size_t n) {
 	_pos += len + 1;
 }
 
-void Serializator::add(const int n) {
-	add((size_t)n);
+void Serializator::add(const size_t n) {
+	//LOG_DEBUG(("added size_t %d", n));
+	add((int)n);
+}
+
+void Serializator::add(const bool b) {
+	//LOG_DEBUG(("added bool %c", b?'t':'f'));
+	add(b?(int)'t':(int)'f');
 }
 
 void Serializator::add(const std::string &str) {
+	//LOG_DEBUG(("added string %s", str.c_str()));
 	size_t size = str.size();
-	add(size);
+	add((int)size);
 	
 	unsigned char *ptr = (unsigned char *) _data->reserve(size) + _pos;
 	memcpy(ptr, str.c_str(), size);
@@ -71,13 +78,13 @@ void Serializator::add(const std::string &str) {
 }
 
 void Serializator::add(const float f) {
+	//LOG_DEBUG(("added float %f", f));
 	char buf[256];
-	snprintf(buf, sizeof(buf) -1, "%f", f);
-	buf[sizeof(buf) -1] = 0;
-	add(buf);
+	size_t len = snprintf(buf, sizeof(buf) -1, "%g", f);
+	add(std::string(buf, len));
 }
 
-void Serializator::get(size_t &n)  const {
+void Serializator::get(int &n)  const {
 	unsigned char * ptr = (unsigned char *) _data->getPtr();
 
 	ASSERT_POS(1);
@@ -100,8 +107,16 @@ void Serializator::get(size_t &n)  const {
 	}
 }
 
-void Serializator::get(int &n) const {
-	get((size_t&)n);
+void Serializator::get(size_t &n) const {
+	get((int&)n);
+}
+
+void Serializator::get(bool &b) const {
+	int x;
+	get(x);
+	if (x != 't' && x != 'f')
+		throw_ex(("invalid boolean value '%02x'", x));
+	b = x == 't';
 }
 
 void Serializator::get(float &f) const {

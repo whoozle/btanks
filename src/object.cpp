@@ -9,6 +9,23 @@ Object::Object(const std::string &classname)
 	_position.clear();
 }
 
+void Object::serialize(mrt::Serializator &s) const {
+	size.serialize(s);
+	
+	s.add(mass);
+	s.add(speed);
+	s.add(ttl);
+	s.add(impassability);
+	s.add(hp);
+	s.add(piercing);
+	s.add(_dead);
+	_velocity.serialize(s);
+	_old_velocity.serialize(s);
+	_direction.serialize(s);
+}
+
+void Object::deserialize(const mrt::Serializator &s) {}
+
 Object::~Object() {}
 
 void Object::getPosition(v3<float> &position) {
@@ -62,3 +79,4 @@ const float Object::getCollisionTime(const v3<float> &pos, const v3<float> &vel)
 	
 	return -1;
 }
+
