@@ -13,6 +13,8 @@ using namespace mrt;
 #define FLOAT 1
 #define STRING 2
 
+#define ASSERT_POS(size) if (_pos + (size) > _data->getSize()) throw_ex(("buffer overrun %d + %d > %d", _pos, (size), _data->getSize()))
+
 //ugly hackish trick, upcast const pointer to non-const variant.
 
 Serializator::Serializator() : _data(new mrt::Chunk), _pos(0), _owns_data(true) {}
@@ -77,10 +79,14 @@ void Serializator::add(const float f) {
 
 void Serializator::get(size_t &n)  const {
 	unsigned char * ptr = (unsigned char *) _data->getPtr();
+
+	ASSERT_POS(1);
 	unsigned char type = *(ptr + _pos++);
 	if (! (type & INTEGER))
 		throw_ex(("got %02x, instead of integer type-len byte", type));
 	unsigned char len = type & 0x3f;
+	ASSERT_POS(len);
+	
 	if (len == 0) {
 		n = 0; 
 	} else if(len == sizeof(unsigned char)) {
@@ -109,6 +115,7 @@ void Serializator::get(std::string &str)  const {
 	size_t size;
 	get(size);
 
+	ASSERT_POS(size);
 	const char * ptr = (const char *) _data->getPtr() + _pos;
 	str = std::string(ptr, size);
 	_pos += size;
