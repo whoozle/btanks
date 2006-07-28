@@ -37,6 +37,7 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 			s = new sdlx::Surface;
 			const std::string fname = "data/tiles/" + attr["tile"];
 			s->loadImage(fname);
+			s->convertAlpha();
 			LOG_DEBUG(("loaded animation '%s' from '%s'", id.c_str(), fname.c_str()));
 			_animations[id] = new AnimatedObject(id);
 			_animations[id]->init(model, s, tw, th);
