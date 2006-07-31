@@ -70,7 +70,7 @@ void ZStream::compress(mrt::Chunk &dst, const mrt::Chunk &src, const int level) 
 		z.avail_in = src.getSize();
 		z.next_in = (Bytef*) src.getPtr();
 
-		if ((ret = deflateInit(&z, level)) != Z_OK)
+		if ((ret = deflateInit2(&z, level, Z_DEFLATED, 0x1f, 8, Z_DEFAULT_STRATEGY)) != Z_OK)
 			throw_z("DeflateInit", ret);
 		
 		dst.setSize(BUF);

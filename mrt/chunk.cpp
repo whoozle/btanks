@@ -36,6 +36,7 @@ void Chunk::setData(const void *p, const size_t s) {
 			throw_io(("realloc (%p, %d)", ptr, s));
 		ptr = x;
 		memcpy(ptr, p, s);
+		size = s;
 	}
 }
 
