@@ -61,6 +61,9 @@ private:
 	typedef std::map<const std::string, AnimationModel *> AnimationModelMap;
 	AnimationModelMap _animation_models;
 
+	typedef std::map<const std::string, sdlx::Surface *> SurfaceMap;
+	SurfaceMap _surfaces;
+
 	//parser specific stuff	
 	AnimationModel *_am;
 	Pose *_pose;

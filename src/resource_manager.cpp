@@ -3,6 +3,9 @@
 #include "sdlx/surface.h"
 #include "animated_object.h"
 #include "animation_model.h"
+#include "utils.h"
+
+#include <algorithm>
 
 IMPLEMENT_SINGLETON(ResourceManager, IResourceManager)
 
@@ -38,9 +41,12 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 			const std::string fname = "data/tiles/" + attr["tile"];
 			s->loadImage(fname);
 			s->convertAlpha();
+			_surfaces[attr["tile"]] = s;
+			s = NULL;
+			
 			LOG_DEBUG(("loaded animation '%s' from '%s'", id.c_str(), fname.c_str()));
 			_animations[id] = new AnimatedObject(id);
-			_animations[id]->init(model, s, tw, th);
+			_animations[id]->init(model, _surfaces[attr["tile"]], tw, th);
 		} CATCH("animation", { delete s; s = NULL; });
 	} else if (name == "animation-model") {
 		const std::string & id = attr["id"];
@@ -132,14 +138,15 @@ void IResourceManager::initMe(AnimatedObject *o, const std::string &animation) c
 	o->init(*getAnimation(animation));
 }
 
-
 void IResourceManager::clear() {
 	LOG_DEBUG(("freeing resources"));
-	for(AnimationMap::iterator i = _animations.begin(); i != _animations.end(); ++i) {
-		delete i->second;
-		i->second = NULL;
-	}
+	std::for_each(_animations.begin(), _animations.end(), delete_ptr2<AnimationMap::value_type>());
 	_animations.clear();
+	std::for_each(_animation_models.begin(), _animation_models.end(), delete_ptr2<AnimationModelMap::value_type>());
+	_animation_models.clear();
+	std::for_each(_surfaces.begin(), _surfaces.end(), delete_ptr2<SurfaceMap::value_type>());
+	_surfaces.clear();
+
 	_am = NULL;
 }
 
