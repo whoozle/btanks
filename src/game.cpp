@@ -363,6 +363,9 @@ void IGame::onMessage(const Connection &conn, const Message &message) {
 		mrt::Chunk data;
 		mrt::ZStream::decompress(data, message.data);
 		LOG_DEBUG(("world data: %s", data.dump().c_str()));
+		
+		mrt::Serializator s(&data);
+		World->deserialize(s);
 	}
 }
 
