@@ -8,11 +8,15 @@
 AnimatedObject::AnimatedObject(const std::string &classname) : 
 	Object(classname),  _model(0), _surface(0), _direction_idx(0), _pos(0)  {}
 
-void AnimatedObject::init(const std::string &model, sdlx::Surface *surface, const int tile_w, const int tile_h) {
-	_model_name = model;
-	_model = ResourceManager->getAnimationModel(model);
+void AnimatedObject::init(const std::string &model, const std::string &surface, const int tile_w, const int tile_h) {
 	_events.clear();
-	_surface = surface;
+
+	_model = ResourceManager->getAnimationModel(model);
+	_model_name = model;
+
+	_surface = ResourceManager->getSurface(surface);
+	_surface_name = surface;
+
 	size.x = _tw = tile_w; size.y = _th = tile_h;
 	_direction_idx = 0;
 	_pos = 0;
@@ -155,9 +159,16 @@ const std::string AnimatedObject::getState() const {
 void AnimatedObject::serialize(mrt::Serializator &s) const {
 	Object::serialize(s);
 	s.add(_model_name);
+	s.add(_surface_name);
+	s.add(_tw);
+	s.add(_th);
 }
+
 void AnimatedObject::deserialize(const mrt::Serializator &s) {
 	Object::deserialize(s);
 	s.get(_model_name);
-	_model = ResourceManager->getAnimationModel(_model_name);
+	s.get(_surface_name);
+	s.get(_tw);
+	s.get(_th);
+	init(_model_name, _surface_name, _tw, _th);
 }

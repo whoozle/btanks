@@ -46,7 +46,7 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 			
 			LOG_DEBUG(("loaded animation '%s' from '%s'", id.c_str(), fname.c_str()));
 			_animations[id] = new AnimatedObject(id);
-			_animations[id]->init(model, _surfaces[attr["tile"]], tw, th);
+			_animations[id]->init(model, attr["tile"], tw, th);
 		} CATCH("animation", { delete s; s = NULL; });
 	} else if (name == "animation-model") {
 		const std::string & id = attr["id"];
@@ -127,6 +127,12 @@ AnimationModel *IResourceManager::getAnimationModel(const std::string &id) {
 	return i->second;
 }
 
+const sdlx::Surface *IResourceManager::getSurface(const std::string &id) const  {
+	SurfaceMap::const_iterator i;
+	if ((i = _surfaces.find(id)) == _surfaces.end()) 
+		throw_ex(("could not find surface with id '%s'", id.c_str()));
+	return i->second;
+}
 
 
 void IResourceManager::init(const std::string &fname) {

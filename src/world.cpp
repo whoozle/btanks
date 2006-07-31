@@ -1,5 +1,6 @@
 #include "world.h"
 #include "object.h"
+#include "animated_object.h"
 #include "world_map.h"
 #include "resource_manager.h"
 
@@ -239,13 +240,25 @@ void IWorld::serialize(mrt::Serializator &s) const {
 	s.add(_objects.size());
 	for(ObjectSet::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		const Object *o = *i;
+		const AnimatedObject *ao = dynamic_cast<const AnimatedObject *>(o);
+		if (ao == NULL) {
+			LOG_WARN(("object %d was not serialized, unknown class", o->_id));
+			continue;
+		}
 		o->serialize(s);
 	}
 }
 
 void IWorld::deserialize(const mrt::Serializator &s) {
-	size_t size = _objects.size();
+	int size;
+	s.get(size);
 	while(size--) {
-		
+		AnimatedObject *ao = NULL;
+		TRY {
+			AnimatedObject *ao = new AnimatedObject("dummy");
+			ao->deserialize(s);
+			delete ao;
+		} CATCH("deserialize", { delete ao; ao = NULL; });
 	}
+	LOG_DEBUG(("deserialization completed successfully"));
 }

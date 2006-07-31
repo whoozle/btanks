@@ -49,6 +49,8 @@ public:
 	Object *createObject(const std::string &classname, const std::string &animation) const;
 	const AnimatedObject *getAnimation(const std::string &id) const ;
 
+	const sdlx::Surface *getSurface(const std::string &id) const;
+
 private:
 	AnimatedObject *getAnimation(const std::string &id);
 	virtual void start(const std::string &name, Attrs &attr);

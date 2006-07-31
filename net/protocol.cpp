@@ -54,7 +54,7 @@ void Message::recv(const sdlx::TCPSocket &sock) {
 		throw_ex(("data buffer overflow. data_size: %d", data_size));
 	memmove(data, data + i, data_size);
 	
-	LOG_DEBUG(("message type: %d, recv %d bytes", type, data_size));
+	LOG_DEBUG(("message type: %d, recv %d+%d+%d bytes", type, r, i, data_size));
 }
 
 const int Message::writeMap(char *buf, const int len) const {
@@ -69,13 +69,11 @@ const int Message::writeMap(char *buf, const int len) const {
 	}
 	
 	for(AttrMap::const_iterator ai = _attrs.begin(); ai != _attrs.end(); ++ai) {
-		{
-			int ni = ai->first.size() + ai->second.size() + 2;
-			if (ni >= len)
-				throw_ex(("output buffer overrun (%d >= %d)", ni, len));
-		}
 		int kn = ai->first.size();
 		int vn = ai->second.size();
+		if (kn + vn + 2 >= len)
+			throw_ex(("output buffer overrun (%d >= %d)", kn + vn + 2, len));
+		
 		if (kn > 255 || kn > 255)
 			throw_ex(("key/value length cannot exceed 255 bytes."));
 		
@@ -116,6 +114,7 @@ const int Message::readMap(const char *buf, const int len) {
 
 		if (i > len)
 			throw_ex(("input buffer overrun (%d >= %d)", i, len));
+		LOG_DEBUG(("key: %d(%d), value: %d(%d)", ki, kn, vi, vn));
 		std::string key(buf + ki, kn);
 		std::string value(buf + vi, vn);	
 		LOG_DEBUG(("%s = %s", key.c_str(), value.c_str()));

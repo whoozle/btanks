@@ -33,7 +33,7 @@ class Pose;
 class AnimatedObject : public Object {
 public:
 	AnimatedObject(const std::string &classname);
-	void init(const std::string &model, sdlx::Surface *surface, const int tile_w, const int tile_h);
+	void init(const std::string &model, const std::string &surface, const int tile_w, const int tile_h);
 	void init(const AnimatedObject &o);
 	virtual Object * clone(const std::string &opt) const;
 
@@ -62,7 +62,8 @@ private:
 
 	const AnimationModel *_model;
 	std::string _model_name;
-	sdlx::Surface *_surface;
+	const sdlx::Surface *_surface;
+	std::string _surface_name;
 	
 	typedef std::deque<Event> EventQueue;
 	EventQueue _events;

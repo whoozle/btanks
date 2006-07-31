@@ -350,6 +350,10 @@ void IGame::onClient(Message &message) {
 	mrt::Chunk cdata;
 	mrt::ZStream::compress(cdata, data, 9);
 	LOG_DEBUG(("compressed world: %s", cdata.dump().c_str()));
+	if (sizeof(message.data) < cdata.getSize()) 
+		throw_ex(("fixme: increase message buffer/port to chunk"));
+	memcpy(message.data, cdata.getPtr(), cdata.getSize());
+	message.data_size = cdata.getSize();
 }
 
 void IGame::onMessage(const Connection &conn, const Message &message) {
@@ -357,6 +361,14 @@ void IGame::onMessage(const Connection &conn, const Message &message) {
 	if (message.type == ServerStatus) {
 		LOG_DEBUG(("loading map..."));
 		_map.load(message.get("map"));
+		
+		mrt::Chunk data, cdata;
+		cdata.setData(message.data, message.data_size);
+		
+		LOG_DEBUG(("world data: %s", cdata.dump().c_str()));
+		LOG_DEBUG(("decompressing world data..."));
+		mrt::ZStream::decompress(data, cdata);
+		LOG_DEBUG(("world data: %s", data.dump().c_str()));
 	}
 }
 
