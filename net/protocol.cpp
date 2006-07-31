@@ -36,7 +36,7 @@ void Message::send(const sdlx::TCPSocket &sock) {
 		rawdata.setSize(data.getSize() + 2);
 	
 		*(unsigned short *)(rawdata.getPtr()) = htons(size);
-		memcpy(rawdata.getPtr(), data.getPtr(), size);
+		memcpy((unsigned char *)rawdata.getPtr() + 2, data.getPtr(), size);
 	}
 	sock.send(rawdata.getPtr(), rawdata.getSize());	
 	LOG_DEBUG(("message type %d, sent %d bytes", type, rawdata.getSize()));
