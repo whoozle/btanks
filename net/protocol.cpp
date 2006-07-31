@@ -52,6 +52,8 @@ void Message::recv(const sdlx::TCPSocket &sock) {
 	int size = ntohs(*(unsigned short *)buf);
 	mrt::Chunk data;
 	data.setSize(size);
+	sock.recv(data.getPtr(), size);
+	
 	mrt::Serializator s(&data);
 	deserialize(s);
 }
