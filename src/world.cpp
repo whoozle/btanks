@@ -29,7 +29,7 @@ void IWorld::addObject(Object *o, const v3<float> &pos) {
 	_id2obj[o->_id] = o;
 
 	assert(_id2obj.size() == _objects.size());
-	LOG_DEBUG(("object %d: %p added, objects: %d", o->_id, (void*)o, _objects.size()));
+	LOG_DEBUG(("object %d added, objects: %d", o->_id, _objects.size()));
 }
 
 const bool IWorld::getInfo(const Object * po, v3<float> &pos, v3<float> &vel) const {
