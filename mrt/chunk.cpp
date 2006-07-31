@@ -14,6 +14,11 @@ const Chunk& Chunk::operator=(const Chunk& c) {
     return *this;
 }
 
+Chunk::Chunk(const Chunk& c) {
+	*this = c;
+}
+
+
 void Chunk::setSize(size_t s) {
 	if (s == 0) {
 		if (size == 0) return;

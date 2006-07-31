@@ -342,18 +342,14 @@ void IGame::onClient(Message &message) {
 
 	mrt::Serializator s;
 	World->serialize(s);
-	const mrt::Chunk &data = s.getData();
-	if (data.getSize() > sizeof(message.data))
-		throw_ex(("increase message data limit"));
-	memcpy(message.data, data.getPtr(), message.data_size = data.getSize());
-	LOG_DEBUG(("serialized world: %s", data.dump().c_str()));
+
+	message.data = s.getData();
+	LOG_DEBUG(("serialized world: %s", message.data.dump().c_str()));
 	mrt::Chunk cdata;
-	mrt::ZStream::compress(cdata, data, 9);
+	mrt::ZStream::compress(cdata, message.data, 9);
 	LOG_DEBUG(("compressed world: %s", cdata.dump().c_str()));
-	if (sizeof(message.data) < cdata.getSize()) 
-		throw_ex(("fixme: increase message buffer/port to chunk"));
-	memcpy(message.data, cdata.getPtr(), cdata.getSize());
-	message.data_size = cdata.getSize();
+
+	message.data = cdata;
 }
 
 void IGame::onMessage(const Connection &conn, const Message &message) {
@@ -362,12 +358,10 @@ void IGame::onMessage(const Connection &conn, const Message &message) {
 		LOG_DEBUG(("loading map..."));
 		_map.load(message.get("map"));
 		
-		mrt::Chunk data, cdata;
-		cdata.setData(message.data, message.data_size);
-		
-		LOG_DEBUG(("world data: %s", cdata.dump().c_str()));
+		LOG_DEBUG(("world data: %s", message.data.dump().c_str()));
 		LOG_DEBUG(("decompressing world data..."));
-		mrt::ZStream::decompress(data, cdata);
+		mrt::Chunk data;
+		mrt::ZStream::decompress(data, message.data);
 		LOG_DEBUG(("world data: %s", data.dump().c_str()));
 	}
 }

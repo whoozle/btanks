@@ -77,6 +77,16 @@ void Serializator::add(const std::string &str) {
 	_pos += size;
 }
 
+void Serializator::add(const Chunk &c) {
+	int size = c.getSize();
+	add(size);
+
+	unsigned char *ptr = (unsigned char *) _data->reserve(size) + _pos;
+	memcpy(ptr, c.getPtr(), size);
+	_pos += size;
+}
+
+
 void Serializator::add(const float f) {
 	//LOG_DEBUG(("added float %f", f));
 	char buf[256];
@@ -133,6 +143,16 @@ void Serializator::get(std::string &str)  const {
 	ASSERT_POS(size);
 	const char * ptr = (const char *) _data->getPtr() + _pos;
 	str = std::string(ptr, size);
+	_pos += size;
+}
+
+void Serializator::get(Chunk &c)  const {
+	int size;
+	get(size);
+
+	ASSERT_POS(size);
+	const char * ptr = (const char *) _data->getPtr() + _pos;
+	c.setData(ptr, size);
 	_pos += size;
 }
 

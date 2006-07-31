@@ -17,12 +17,14 @@ public:
 	void add(const float f);
 	void add(const std::string &str);
 	void add(const bool b);
+	void add(const Chunk &c);
 
 	void get(int &n) const;
 	void get(size_t &n) const;
 	void get(float &f) const;
 	void get(std::string &str) const;
 	void get(bool &b) const;
+	void get(Chunk &c) const;
 	
 	const Chunk & getData() const;
 protected:

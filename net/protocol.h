@@ -4,6 +4,8 @@
 #include <sys/types.h>
 #include <map>
 #include <string>
+#include "mrt/serializable.h"
+#include "mrt/chunk.h"
 
 namespace sdlx {
 	class TCPSocket;
@@ -16,24 +18,24 @@ enum MessageType {
 	UpdateWorld
 };
 	
-class Message {
+class Message : public mrt::Serializable {
 public: 
 	Message();
 	Message(const MessageType type);
 	void send(const sdlx::TCPSocket &sock);
 	void recv(const sdlx::TCPSocket &sock);
+	virtual void serialize(mrt::Serializator &s) const;
+	virtual void deserialize(const mrt::Serializator &s);
 	
 	void set(const std::string &key, const std::string &value);
 	const std::string &get(const std::string &key) const;
 	
 	MessageType type;
 
-	char data[1500];
-	size_t data_size;
-	
+	mrt::Chunk data;
 private:
-	const int readMap(const char *buf, const int len);
-	const int writeMap(char *buf, const int len) const;
+	void readMap(const mrt::Serializator &s);
+	void writeMap(mrt::Serializator &s) const;
 
 	typedef std::map<const std::string, std::string> AttrMap;
 	AttrMap _attrs;

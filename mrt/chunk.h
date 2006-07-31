@@ -58,12 +58,11 @@ public:
 	}
 	
 	const std::string dump() const;
+	Chunk(const Chunk&);
 
 protected:
 	void *ptr;
 	size_t size;
-private:
-	Chunk(const Chunk&) {}
 };
 
 }

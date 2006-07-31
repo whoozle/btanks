@@ -24,8 +24,8 @@ void Client::notify(const PlayerState &state) {
 	
 	LOG_DEBUG(("notify from player"));
 	Message m(PlayerEvent);
+	m.data.setSize(1);
 	m.data[0] = state.left?1:0 | state.right?2:0 | state.up ? 4:0 | state.down ? 8:0 | state.fire ? 16:0;
-	m.data_size = 1;
 
 	m.send(*_conn->sock);	
 }
