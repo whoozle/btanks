@@ -146,6 +146,8 @@ void IResourceManager::clear() {
 	_animation_models.clear();
 	std::for_each(_surfaces.begin(), _surfaces.end(), delete_ptr2<SurfaceMap::value_type>());
 	_surfaces.clear();
+	std::for_each(_objects.begin(), _objects.end(), delete_ptr2<ObjectMap::value_type>());
+	_objects.clear();
 
 	_am = NULL;
 }
