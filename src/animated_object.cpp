@@ -112,13 +112,15 @@ void AnimatedObject::tick(const float dt) {
 	}
 	
 	_pos += dt * pose->speed;
-	//LOG_DEBUG(("%s: _pos: %f", classname.c_str(), _pos));
 	int cycles = ((int)_pos / pose->frames.size());
-	if (cycles && !event.repeat) {
-		cancel();
-	} else {
-		_pos -= cycles * pose->frames.size();
-	}
+	//LOG_DEBUG(("%s: _pos: %f, cycles: %d", classname.c_str(), _pos, cycles));
+	
+	if (cycles) {
+		if (!event.repeat)
+			cancel();
+		else 
+			_pos -= cycles * pose->frames.size();
+	} 
 }
 
 void AnimatedObject::render(sdlx::Surface &surface, const int x, const int y) {
