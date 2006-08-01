@@ -255,8 +255,15 @@ void IWorld::deserialize(const mrt::Serializator &s) {
 	while(size--) {
 		AnimatedObject *ao = NULL;
 		TRY {
-			AnimatedObject *ao = new AnimatedObject("dummy");
+			ao = new AnimatedObject("wagner");
 			ao->deserialize(s);
+			
+			LOG_DEBUG(("deserialized %d: %s", ao->_id, ao->classname.c_str()));
+			if (_id2obj.find(ao->_id) != _id2obj.end()) {
+				
+			} else {
+				
+			}
 			delete ao;
 		} CATCH("deserialize", { delete ao; ao = NULL; });
 	}
