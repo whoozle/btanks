@@ -332,8 +332,6 @@ void IGame::notify(const PlayerState& state) {
 		_client->notify(state);
 }
 
-#include "mrt/gzip.h"
-
 void IGame::onClient(Message &message) {
 	LOG_DEBUG(("sending server status message..."));
 	message.type = ServerStatus;
@@ -344,12 +342,6 @@ void IGame::onClient(Message &message) {
 	World->serialize(s);
 
 	message.data = s.getData();
-	LOG_DEBUG(("serialized world: %s", message.data.dump().c_str()));
-	mrt::Chunk cdata;
-	mrt::ZStream::compress(cdata, message.data, 9);
-	LOG_DEBUG(("compressed world: %s", cdata.dump().c_str()));
-
-	message.data = cdata;
 }
 
 void IGame::onMessage(const Connection &conn, const Message &message) {
@@ -358,13 +350,7 @@ void IGame::onMessage(const Connection &conn, const Message &message) {
 		LOG_DEBUG(("loading map..."));
 		_map.load(message.get("map"));
 		
-		LOG_DEBUG(("world data: %s", message.data.dump().c_str()));
-		LOG_DEBUG(("decompressing world data..."));
-		mrt::Chunk data;
-		mrt::ZStream::decompress(data, message.data);
-		LOG_DEBUG(("world data: %s", data.dump().c_str()));
-		
-		mrt::Serializator s(&data);
+		mrt::Serializator s(&message.data);
 		World->deserialize(s);
 	}
 }
