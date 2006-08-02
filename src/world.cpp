@@ -259,12 +259,16 @@ void IWorld::deserialize(const mrt::Serializator &s) {
 			ao->deserialize(s);
 			
 			LOG_DEBUG(("deserialized %d: %s", ao->_id, ao->classname.c_str()));
-			if (_id2obj.find(ao->_id) != _id2obj.end()) {
-				
+			ObjectMap::iterator i;
+			if ((i = _id2obj.find(ao->_id)) != _id2obj.end()) {
+				Object *o = i->second;
+				*o = *ao;
+				delete ao; ao = NULL;
 			} else {
-				
+				_id2obj[ao->_id] = ao;
+				_objects.insert(ao);
+				ao = NULL;
 			}
-			delete ao;
 		} CATCH("deserialize", { delete ao; ao = NULL; });
 	}
 	LOG_DEBUG(("deserialization completed successfully"));

@@ -52,7 +52,7 @@ public:
 	virtual void deserialize(const mrt::Serializator &s);
 private:
 	typedef std::set<Object *> ObjectSet;
-	typedef std::map<const int, Object*>ObjectMap;
+	typedef std::map<const int, Object*> ObjectMap;
 	
 	ObjectSet _objects;
 	ObjectMap _id2obj;
