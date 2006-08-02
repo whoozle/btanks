@@ -19,10 +19,11 @@
 #include "mrt/logger.h"
 #include "mrt/exception.h"
 #include "game.h"
+#include "version.h"
 
 int main(int argc, const char **argv) {
 	TRY {
-		LOG_DEBUG(("starting up..."));
+		LOG_NOTICE(("starting up... version: %s", getVersion().c_str()));
 		Game->init(argc, argv);
 		TRY {
 			Game->run();
