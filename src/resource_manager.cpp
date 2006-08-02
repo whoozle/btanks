@@ -141,7 +141,9 @@ void IResourceManager::init(const std::string &fname) {
 }
 
 void IResourceManager::initMe(AnimatedObject *o, const std::string &animation) const {
+	const std::string classname = o->classname;
 	o->init(*getAnimation(animation));
+	o->classname = classname;
 }
 
 void IResourceManager::clear() {

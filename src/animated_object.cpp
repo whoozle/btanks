@@ -23,14 +23,9 @@ void AnimatedObject::init(const std::string &model, const std::string &surface, 
 }
 
 void AnimatedObject::init(const AnimatedObject &o) {
-	_events.clear();
-	std::string c = classname; //fixme: rework code in resource manager to do not workaround it.
-	
 	//LOG_DEBUG(("classname: %s, model_name: %s", classname.c_str(), _model_name.c_str()));
 	//LOG_DEBUG(("o.classname: %s, o.model_name: %s", o.classname.c_str(), o._model_name.c_str()));
 	*this = o;
-	
-	classname = c;
 	//LOG_DEBUG(("classname: %s, model_name: %s", classname.c_str(), _model_name.c_str()));
 /*
 	_model_name = o._model_name;
