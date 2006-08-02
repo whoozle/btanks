@@ -58,19 +58,23 @@ void Serializator::add(const int n) {
 }
 
 void Serializator::add(const size_t n) {
-	//LOG_DEBUG(("added size_t %d", n));
 	add((int)n);
+}
+
+void Serializator::get(size_t &n) const {
+	int *p = (int *)&n;
+	get(*p);
 }
 
 void Serializator::add(const bool b) {
 	//LOG_DEBUG(("added bool %c", b?'t':'f'));
-	add(b?(int)'t':(int)'f');
+	add((int) (b?'t':'f'));
 }
 
 void Serializator::add(const std::string &str) {
 	//LOG_DEBUG(("added string %s", str.c_str()));
-	size_t size = str.size();
-	add((int)size);
+	int size = str.size();
+	add(size);
 	
 	unsigned char *ptr = (unsigned char *) _data->reserve(size) + _pos;
 	memcpy(ptr, str.c_str(), size);
@@ -100,7 +104,7 @@ void Serializator::get(int &n)  const {
 	ASSERT_POS(1);
 	unsigned char type = *(ptr + _pos++);
 	if (! (type & INTEGER))
-		throw_ex(("got %02x, instead of integer type-len byte", type));
+		throw_ex(("got %02x('%c'), instead of integer type-len byte", type, type>=0x20?type:'.'));
 	unsigned char len = type & 0x3f;
 	ASSERT_POS(len);
 	
@@ -115,10 +119,6 @@ void Serializator::get(int &n)  const {
 		n = ntohs(*((unsigned long *)(ptr + _pos)));
 		_pos += sizeof(unsigned long);
 	}
-}
-
-void Serializator::get(size_t &n) const {
-	get((int&)n);
 }
 
 void Serializator::get(bool &b) const {

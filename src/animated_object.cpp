@@ -5,8 +5,20 @@
 #include "animation_model.h"
 #include "resource_manager.h"
 
+AnimatedObject::Event::Event() {}
+
 AnimatedObject::Event::Event(const std::string name, const bool repeat): 
 	name(name), repeat(repeat) {}
+	
+void AnimatedObject::Event::serialize(mrt::Serializator &s) const {
+	s.add(name);
+	s.add(repeat);
+}
+void AnimatedObject::Event::deserialize(const mrt::Serializator &s) {
+	s.get(name);
+	s.get(repeat);
+}
+
 
 AnimatedObject::AnimatedObject(const std::string &classname) : 
 	Object(classname),  _model(0), _surface(0), _direction_idx(0), _pos(0)  {}
@@ -104,6 +116,7 @@ void AnimatedObject::tick(const float dt) {
 	const Pose * pose = _model->getPose(event.name);
 	
 	if (pose == NULL) {
+		LOG_WARN(("animation model %s does not have pose %s", _model_name.c_str(), event.name.c_str()));
 		cancel();
 		return;
 	}
@@ -123,7 +136,7 @@ void AnimatedObject::tick(const float dt) {
 void AnimatedObject::render(sdlx::Surface &surface, const int x, const int y) {
 	if (_events.empty()) {
 		if (!isDead())
-			LOG_WARN(("%s: no animation played", classname.c_str()));
+			LOG_WARN(("%s: no animation played. latest position: %g", classname.c_str(), _pos));
 		return;
 	}
 	const Pose * pose = _model->getPose(_events.front().name);
@@ -157,17 +170,44 @@ const std::string AnimatedObject::getState() const {
 
 void AnimatedObject::serialize(mrt::Serializator &s) const {
 	Object::serialize(s);
+	
+	int en = _events.size();
+	s.add(en);
+	
+	EventQueue::const_iterator i = _events.begin();
+	while(en--) {
+		i->serialize(s);
+	}
+	
 	s.add(_model_name);
 	s.add(_surface_name);
 	s.add(_tw);
 	s.add(_th);
+	s.add(_direction_idx);
+	s.add(_pos);
 }
 
 void AnimatedObject::deserialize(const mrt::Serializator &s) {
 	Object::deserialize(s);
+
+	_events.clear();
+	int en;
+	s.get(en);
+	while(en--) {
+		Event e;
+		e.deserialize(s);
+		//LOG_DEBUG(("event: %s, repeat: %s", e.name.c_str(), e.repeat?"true":"false"));
+		_events.push_back(e);
+	}
 	s.get(_model_name);
 	s.get(_surface_name);
 	s.get(_tw);
 	s.get(_th);
-	init(_model_name, _surface_name, _tw, _th);
+	s.get(_direction_idx);
+	s.get(_pos);
+
+	_model = ResourceManager->getAnimationModel(_model_name);
+	_surface = ResourceManager->getSurface(_surface_name);
+
+	size.x = _tw; size.y = _th;
 }

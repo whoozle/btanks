@@ -342,6 +342,7 @@ void IGame::onClient(Message &message) {
 	World->serialize(s);
 
 	message.data = s.getData();
+	LOG_DEBUG(("world: %s", message.data.dump().c_str()));
 }
 
 void IGame::onMessage(const Connection &conn, const Message &message) {

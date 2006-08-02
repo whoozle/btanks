@@ -53,11 +53,14 @@ public:
 	virtual void serialize(mrt::Serializator &s) const;
 	virtual void deserialize(const mrt::Serializator &s);
 private: 
-	struct Event {
+	struct Event : public mrt::Serializable {
 		std::string name;
 		bool repeat;
 		
+		Event();
 		Event(const std::string name, const bool repeat);
+		virtual void serialize(mrt::Serializator &s) const;
+		virtual void deserialize(const mrt::Serializator &s);
 	};
 
 	const AnimationModel *_model;
