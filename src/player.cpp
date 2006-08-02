@@ -2,6 +2,7 @@
 #include "resource_manager.h"
 #include "animated_object.h"
 #include "world.h"
+#include "game.h"
 #include <assert.h>
 
 Player::Player(const std::string &animation, const bool stateless) 
@@ -90,6 +91,7 @@ void Player::tick(const float dt) {
 			cancelRepeatable();
 			play("hold", true);
 		}
+		Game->notify(_state);
 	}
 
 	if (_state.fire && fire_possible) {

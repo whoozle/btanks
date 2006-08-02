@@ -5,10 +5,12 @@
 #include <deque>
 
 class Connection;
+class PlayerState;
 class Server {
 public:
 	Server(); 
 	void init(const unsigned port);
+	void notify(const PlayerState &state);
 	void tick(const float dt);
 	
 private:

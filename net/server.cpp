@@ -4,6 +4,7 @@
 #include "sdlx/socket_set.h"
 #include "game.h"
 #include "protocol.h"
+#include "player_state.h"
 #include "connection.h"
 
 Server::Server()  : _running(false) {}
@@ -59,3 +60,32 @@ void Server::tick(const float dt) {
 	} CATCH("tick", {});
 }
 
+void Server::notify(const PlayerState &state) {
+	if (!_running)
+		return;
+	
+	LOG_DEBUG(("notify my state to clients"));
+	Message m(PlayerEvent);
+	m.data.setSize(1);
+	m.data[0] = state.left?1:0 | state.right?2:0 | state.up ? 4:0 | state.down ? 8:0 | state.fire ? 16:0;
+
+/*	for(ConnectionList::iterator i = _connections.begin(); i != _connections.end(); ) {
+			TRY {
+				if ((*i)->sock->ready()) {
+					LOG_DEBUG(("event in connection %p", (void *)*i));
+					Message m;
+					m.recv(*(*i)->sock);
+					if (m.type != PlayerEvent) 
+						throw_ex(("message type %d is not allowed", m.type));
+					
+					Game->onMessage(**i, m);
+				}
+				++i;
+			} CATCH("reading from socket", {
+				LOG_DEBUG(("error, client disconnected"));
+				delete *i;
+				i = _connections.erase(i);
+			} );
+		}
+*/
+}

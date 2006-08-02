@@ -330,6 +330,8 @@ void IGame::deinit() {
 void IGame::notify(const PlayerState& state) {
 	if (_client)
 		_client->notify(state);
+	if (_server)
+		_server->notify(state);
 }
 
 void IGame::onClient(Message &message) {
