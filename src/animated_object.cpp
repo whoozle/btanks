@@ -129,7 +129,7 @@ void AnimatedObject::render(sdlx::Surface &surface, const int x, const int y) {
 	const Pose * pose = _model->getPose(_events.front().name);
 	if (pose == NULL) {
 		LOG_WARN(("%s: pose '%s' is not supported", classname.c_str(), _events.front().name.c_str()));
-		return;
+		return; 
 	}
 	
 	int frame = (int)_pos;
