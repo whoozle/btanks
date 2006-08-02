@@ -5,6 +5,9 @@
 #include "animation_model.h"
 #include "resource_manager.h"
 
+AnimatedObject::Event::Event(const std::string name, const bool repeat): 
+	name(name), repeat(repeat) {}
+
 AnimatedObject::AnimatedObject(const std::string &classname) : 
 	Object(classname),  _model(0), _surface(0), _direction_idx(0), _pos(0)  {}
 
@@ -58,17 +61,12 @@ const int AnimatedObject::getDirection() const {
 void AnimatedObject::play(const std::string &id, const bool repeat) {
 	if (_events.empty())
 		_pos = 0;
-	const Pose *pose = _model->getPose(id);
-	if (pose != NULL)
-		_events.push_back(Event(id, repeat, pose));
+	_events.push_back(Event(id, repeat));
 }
 
 void AnimatedObject::playNow(const std::string &id) {
-	const Pose *pose = _model->getPose(id);
-	if (pose == NULL) 
-		return;
 	_pos = 0;
-	_events.push_front(Event(id, false, pose));
+	_events.push_front(Event(id, false));
 }
 
 void AnimatedObject::cancel() {
@@ -103,7 +101,7 @@ void AnimatedObject::tick(const float dt) {
 	
 	const Event & event = _events.front();
 	//LOG_DEBUG(("%p: event: %s, pos = %f", (void *)this, event.name.c_str(), _pos));
-	const Pose * pose = event.pose;
+	const Pose * pose = _model->getPose(event.name);
 	
 	if (pose == NULL) {
 		cancel();
@@ -128,12 +126,18 @@ void AnimatedObject::render(sdlx::Surface &surface, const int x, const int y) {
 			LOG_WARN(("%s: no animation played", classname.c_str()));
 		return;
 	}
+	const Pose * pose = _model->getPose(_events.front().name);
+	if (pose == NULL) {
+		LOG_WARN(("%s: pose '%s' is not supported", classname.c_str(), _events.front().name.c_str()));
+		return;
+	}
+	
 	int frame = (int)_pos;
-	if (frame < 0 || frame >= (int)_events.front().pose->frames.size()) {
+	if (frame < 0 || frame >= (int)pose->frames.size()) {
 		LOG_WARN(("%s: event '%s' frame %d is out of range.", classname.c_str(), _events.front().name.c_str(), frame));
 		return;		
 	}
-	frame = _events.front().pose->frames[frame];
+	frame = pose->frames[frame];
 	
 	if (frame * _th >= _surface->getHeight()) {
 		LOG_WARN(("%s: event '%s' tile row %d is out of range.", classname.c_str(), _events.front().name.c_str(), frame));

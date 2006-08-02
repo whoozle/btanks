@@ -56,8 +56,8 @@ private:
 	struct Event {
 		std::string name;
 		bool repeat;
-		const Pose * pose;
-		Event(const std::string name, const bool repeat, const Pose *pose) : name(name), repeat(repeat), pose(pose) {}
+		
+		Event(const std::string name, const bool repeat);
 	};
 
 	const AnimationModel *_model;
