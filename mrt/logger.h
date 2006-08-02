@@ -22,6 +22,7 @@
 #include "fmt.h"
 
 #define LL_DEBUG 0
+#define LL_NOTICE 1
 #define LL_WARN 6
 #define LL_ERROR 7
 
@@ -47,6 +48,7 @@ SINGLETON(Logger, ILogger);
 }
 
 #define LOG_DEBUG(msg) mrt::ILogger::get_instance()->log(LL_DEBUG, __FILE__, __LINE__, mrt::formatString msg)
+#define LOG_NOTICE(msg) mrt::ILogger::get_instance()->log(LL_NOTICE, __FILE__, __LINE__, mrt::formatString msg)
 #define LOG_WARN(msg)  mrt::ILogger::get_instance()->log(LL_WARN, __FILE__, __LINE__, mrt::formatString msg)
 #define LOG_ERROR(msg) mrt::ILogger::get_instance()->log(LL_ERROR, __FILE__, __LINE__, mrt::formatString msg)
 

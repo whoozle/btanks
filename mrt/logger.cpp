@@ -16,6 +16,7 @@ void ILogger::setLogLevel(const int level) {
 const char * ILogger::getLogLevelName(const int level) {
 	switch(level) {
 		case LL_DEBUG: return "debug";
+		case LL_NOTICE: return "notice";
 		case LL_WARN: return "warn";
 		case LL_ERROR: return "error";
 		default: return "unknown";
