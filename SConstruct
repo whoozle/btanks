@@ -1,4 +1,6 @@
 import sys
+import os
+
 env = Environment()
 
 opts = Options(['options.cache'])
@@ -81,7 +83,17 @@ env.Append(LIBPATH=['mrt', 'sdlx', 'src'])
 env.Prepend(CPPPATH=['.', 'src'])
 env.Append(CPPPATH=sigc_cpppath)
 
-xc = env.Program('bt', 
+svnversion = os.popen('svnversion -n .', 'r')
+version = svnversion.readline()
+version = version[version.rfind(':') + 1:]
+print "version: %s" %version
+
+venv = env.Copy()
+venv.Append(CPPDEFINES=['VERSION="\\"' + version + '\\""'])
+
+vobj = venv.Object('src/version.cpp')
+
+bt = env.Program('bt', 
 	['src/alarm.cpp', 'src/object.cpp', 'objects/bullet.cpp', 'objects/explosion.cpp', 'objects/corpse.cpp',
 	'net/protocol.cpp', 'net/server.cpp', 'net/client.cpp', 'net/connection.cpp',
 
@@ -92,7 +104,7 @@ xc = env.Program('bt',
 	'tmx/map.cpp', 'tmx/layer.cpp', 
 	'sdl_collide/SDL_collide.c', 
 	'src/main.cpp', 'src/game.cpp', 
-	
+	vobj
 	], 
 	
 	LIBS=['sdlx', 'mrt', sigc_lib, 'SDL_gfx', 'SDL_ttf', 'SDL_image', 'SDL_net', 'SDL', 'expat', 'z'], RPATH=['.'])

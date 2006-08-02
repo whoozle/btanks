@@ -114,7 +114,7 @@ void IGame::init(const int argv, const char **argc) {
 
 	sdlx::System::probeVideoMode();	
 
-	SDL_WM_SetCaption("Battle tanks - " VERSION_STRING, "btanks");
+	SDL_WM_SetCaption(("Battle tanks - " + getVersion()).c_str(), "btanks");
 
 	_main_menu.init(w, h);	
 
@@ -336,7 +336,7 @@ void IGame::onClient(Message &message) {
 	LOG_DEBUG(("sending server status message..."));
 	message.type = ServerStatus;
 	message.set("map", _map.getName());
-	message.set("version", VERSION_STRING);
+	message.set("version", getVersion());
 
 	mrt::Serializator s;
 	World->serialize(s);

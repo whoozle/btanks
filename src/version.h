@@ -1,7 +1,9 @@
 #ifndef __BT_VERSION_H__
 #define __BT_VERSION_H__
 
-#define VERSION_STRING "0.3"
+#include <string>
+
+const std::string & getVersion();
 
 #endif
 
