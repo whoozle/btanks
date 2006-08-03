@@ -174,5 +174,9 @@ Object *IResourceManager::createObject(const std::string &classname, const std::
 	ObjectMap::const_iterator i = _objects.find(classname);
 	if (i == _objects.end())
 		throw_ex(("classname '%s' was not registered", classname.c_str()));
-	return i->second->clone(animation);
+	Object * r = i->second->clone(animation);
+	if (r == NULL)
+		throw_ex(("%s->clone('%s') returns NULL", classname.c_str(), animation.c_str()));
+	r->animation = animation;
+	return r;
 }

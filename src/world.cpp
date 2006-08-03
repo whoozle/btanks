@@ -239,6 +239,8 @@ void IWorld::serialize(mrt::Serializator &s) const {
 	s.add(_objects.size());
 	for(ObjectSet::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		const Object *o = *i;
+		s.add(o->classname);
+		s.add(o->animation);
 		o->serialize(s);
 	}
 }
@@ -247,9 +249,13 @@ void IWorld::deserialize(const mrt::Serializator &s) {
 	int size;
 	s.get(size);
 	while(size--) {
+		std::string cn, an;
+		s.get(cn);
+		s.get(an);
+		
 		Object *ao = NULL;
 		TRY {
-			ao = new Object("wagner");
+			ao = ResourceManager->createObject(cn, an);
 			ao->deserialize(s);
 			
 			LOG_DEBUG(("deserialized %d: %s", ao->_id, ao->classname.c_str()));

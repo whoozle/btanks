@@ -32,6 +32,8 @@ class Pose;
 
 class Object : public BaseObject {
 public:
+	std::string animation;
+
 	Object(const std::string &classname);
 	void init(const std::string &model, const std::string &surface, const int tile_w, const int tile_h);
 	void init(const Object &o);
@@ -67,7 +69,8 @@ private:
 		virtual void serialize(mrt::Serializator &s) const;
 		virtual void deserialize(const mrt::Serializator &s);
 	};
-
+	
+	
 	const AnimationModel *_model;
 	std::string _model_name;
 	const sdlx::Surface *_surface;
