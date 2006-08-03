@@ -3,6 +3,7 @@
 
 struct PlayerState {
 	bool left, right, up, down, fire;
+	PlayerState() { clear(); }
 	void clear() { memset(this, 0, sizeof(*this)); }
 };
 
