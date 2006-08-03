@@ -256,6 +256,7 @@ void IWorld::deserialize(const mrt::Serializator &s) {
 		Object *ao = NULL;
 		TRY {
 			ao = ResourceManager->createObject(cn, an);
+			LOG_DEBUG(("created ('%s', '%s')", cn.c_str(), an.c_str()));
 			ao->deserialize(s);
 			
 			LOG_DEBUG(("deserialized %d: %s", ao->_id, ao->classname.c_str()));
