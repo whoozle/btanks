@@ -1,3 +1,4 @@
+#include "object.h"
 #include "game.h"
 #include "version.h"
 #include "world.h"
@@ -19,10 +20,6 @@
 #include "net/client.h"
 #include "net/protocol.h"
 #include "net/connection.h"
-
-#include "objects/joyplayer.h"
-#include "objects/keyplayer.h"
-#include "objects/aiplayer.h"
 
 #include <SDL/SDL_gfxPrimitives.h>
 #include <SDL/SDL_opengl.h>
@@ -156,8 +153,9 @@ void IGame::onMenu(const std::string &name) {
 		_players.push_back(player);
 		World->addObject(player, v3<float>(100, 100, 0));
 
-		Player *p = new AIPlayer("red-tank");
-		p->setDirection(4);
+		//AnimatedObject *p = new AIPlayer("red-tank");
+		Object *p = ResourceManager->createObject("ai-player", "red-tank");
+		//p->setDirection(4);
 		sdlx::Rect r = _map.getSize();
 		World->addObject(p, v3<float>(r.w - 100, 100, 0));
 	} else if (name == "m-start") {
@@ -165,7 +163,8 @@ void IGame::onMenu(const std::string &name) {
 		_main_menu.setActive(false);
 
 		_map.load("country");
-		Object *player = new KeyPlayer("green-tank", SDLK_UP, SDLK_DOWN, SDLK_LEFT, SDLK_RIGHT, SDLK_SPACE);
+		Object *player = ResourceManager->createObject("key-player", "green-tank");
+	//	Object *player = new KeyPlayer("green-tank", SDLK_UP, SDLK_DOWN, SDLK_LEFT, SDLK_RIGHT, SDLK_SPACE);
 		_players.clear();
 		_players.push_back(player);
 		World->addObject(player, v3<float>(100, 100, 0));

@@ -35,7 +35,7 @@ Player::Player(const std::string &animation, const bool stateless)
 Object * Player::clone(const std::string &opt) const {
 	Player *p = NULL;
 	TRY { 
-		LOG_DEBUG(("cloning player with animation '%s'", opt.c_str()));
+		//LOG_DEBUG(("cloning player with animation '%s'", opt.c_str()));
 		p = new Player(*this);
 		p->setup(opt);
 	} CATCH("clone", { delete p; throw; });

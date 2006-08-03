@@ -62,3 +62,13 @@ void AIPlayer::tick(const float dt) {
 
 	Player::tick(dt);
 }
+
+Object * AIPlayer::clone(const std::string &opt) const {
+	AIPlayer *p = NULL;
+	TRY { 
+		//LOG_DEBUG(("cloning player with animation '%s'", opt.c_str()));
+		p = new AIPlayer(*this);
+		p->setup(opt);
+	} CATCH("clone", { delete p; throw; });
+	return p;
+}

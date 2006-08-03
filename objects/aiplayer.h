@@ -9,6 +9,7 @@ public:
 	AIPlayer(const std::string &animation);
 
 	virtual void tick(const float dt);
+	virtual Object * clone(const std::string &opt) const;
 };
 
 #endif
