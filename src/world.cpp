@@ -1,5 +1,5 @@
 #include "world.h"
-#include "object.h"
+#include "animated_object.h"
 #include "animated_object.h"
 #include "world_map.h"
 #include "resource_manager.h"
@@ -225,7 +225,7 @@ const bool IWorld::exists(const Object *o) const {
 const Object* IWorld::spawn(Object *src, const std::string &classname, const std::string &animation, const v3<float> &dpos, const v3<float> &vel) {
 	Object *obj = ResourceManager->createObject(classname, animation);
 	assert(obj->_owner_id == 0);
-	obj->_id = ++Object::_last_id;
+	obj->_id = ++BaseObject::_last_id;
 	//LOG_DEBUG(("%s spawns %s", src->classname.c_str(), obj->classname.c_str()));
 	obj->_owner_id = src->_id;
 	obj->_velocity = vel;
@@ -240,11 +240,6 @@ void IWorld::serialize(mrt::Serializator &s) const {
 	s.add(_objects.size());
 	for(ObjectSet::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		const Object *o = *i;
-		const AnimatedObject *ao = dynamic_cast<const AnimatedObject *>(o);
-		if (ao == NULL) {
-			LOG_WARN(("object %d was not serialized, unknown class", o->_id));
-			continue;
-		}
 		o->serialize(s);
 	}
 }
@@ -253,9 +248,9 @@ void IWorld::deserialize(const mrt::Serializator &s) {
 	int size;
 	s.get(size);
 	while(size--) {
-		AnimatedObject *ao = NULL;
+		Object *ao = NULL;
 		TRY {
-			ao = new AnimatedObject("wagner");
+			ao = new Object("wagner");
 			ao->deserialize(s);
 			
 			LOG_DEBUG(("deserialized %d: %s", ao->_id, ao->classname.c_str()));

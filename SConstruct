@@ -94,7 +94,7 @@ venv.Append(CPPDEFINES=['VERSION="\\"' + version + '\\""'])
 vobj = venv.Object('src/version.cpp')
 
 bt = env.Program('bt', 
-	['src/alarm.cpp', 'src/object.cpp', 
+	['src/alarm.cpp', 'src/base_object.cpp', 
 	
 	'objects/bullet.cpp', 'objects/explosion.cpp', 'objects/corpse.cpp',
 	'objects/joyplayer.cpp', 'objects/keyplayer.cpp', 'objects/player.cpp', 'objects/aiplayer.cpp',

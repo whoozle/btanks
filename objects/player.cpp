@@ -8,7 +8,7 @@
 REGISTER_OBJECT("player", Player, (false));
 
 Player::Player(const bool stateless) 
-: AnimatedObject("player"), _stale(false), _stateless(stateless), _fire(0.5, false) {}
+: Object("player"), _stale(false), _stateless(stateless), _fire(0.5, false) {}
 
 void Player::setup(const std::string &animation) {
 	_animation = animation;
@@ -28,7 +28,7 @@ void Player::setup(const std::string &animation) {
 
 
 Player::Player(const std::string &animation, const bool stateless) 
-: AnimatedObject("player"), _stale(false), _stateless(stateless), _fire(0.5, false), _animation(animation) {
+: Object("player"), _stale(false), _stateless(stateless), _fire(0.5, false), _animation(animation) {
 	setup(animation);
 }
 
@@ -43,7 +43,7 @@ Object * Player::clone(const std::string &opt) const {
 }
 
 
-void Player::emit(const std::string &event, const Object * emitter) {
+void Player::emit(const std::string &event, const BaseObject * emitter) {
 	if (_stale)
 		return;
 	
@@ -131,5 +131,5 @@ void Player::tick(const float dt) {
 	}
 	_state.fire = false;
 	
-	AnimatedObject::tick(dt);
+	Object::tick(dt);
 }

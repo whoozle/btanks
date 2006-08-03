@@ -1,16 +1,16 @@
-#include "object.h"
+#include "base_object.h"
 #include "mrt/logger.h"
 #include "world.h"
 
-int Object::_last_id;
+int BaseObject::_last_id;
 
-Object::Object(const std::string &classname)
+BaseObject::BaseObject(const std::string &classname)
  : mass(1), speed(1), ttl(-1), impassability(1), hp(1), piercing(false), 
    classname(classname), _id(++_last_id), _direction(1,0,0),  _dead(false), _owner_id(0) {
 	//LOG_DEBUG(("allocated id %ld", _id));
 }
 
-void Object::serialize(mrt::Serializator &s) const {
+void BaseObject::serialize(mrt::Serializator &s) const {
 	s.add(_id);
 	s.add(_owner_id);
 
@@ -31,7 +31,7 @@ void Object::serialize(mrt::Serializator &s) const {
 	_position.serialize(s);
 }
 
-void Object::deserialize(const mrt::Serializator &s) {
+void BaseObject::deserialize(const mrt::Serializator &s) {
 	s.get(_id);
 	s.get(_owner_id);
 
@@ -52,31 +52,23 @@ void Object::deserialize(const mrt::Serializator &s) {
 	_position.deserialize(s);
 }
 
-Object::~Object() {}
+BaseObject::~BaseObject() {}
 
-void Object::getPosition(v3<float> &position) {
+void BaseObject::getPosition(v3<float> &position) {
 	position = _position;
 }
 
-const bool Object::isDead() const { return _dead;}
+const bool BaseObject::isDead() const { return _dead;}
 
 
-void Object::emit(const std::string &event, const Object * emitter) {
+void BaseObject::emit(const std::string &event, const BaseObject * emitter) {
 	if (event == "death") {
 		_velocity.clear();
 		_dead = true;
-	} else LOG_WARN(("unhandled event '%s'", event.c_str()));
+	} else LOG_WARN(("%s[%d]: unhandled event '%s'", classname.c_str(), _id, event.c_str()));
 }
 
-const Object* Object::spawn(const std::string &classname, const std::string &animation, const v3<float> &dpos, const v3<float> &vel) {
-	return World->spawn(this, classname, animation, dpos, vel);
-}
-
-const bool Object::getNearest(const std::string &classname, v3<float> &position, v3<float> &velocity) const {
-	return World->getNearest(this, classname, position, velocity);
-}
-
-const float Object::getCollisionTime(const v3<float> &pos, const v3<float> &vel) const {
+const float BaseObject::getCollisionTime(const v3<float> &pos, const v3<float> &vel) const {
 	v3<float> dpos = pos - _position;
 	float a = vel.x * vel.x + vel.y * vel.y;
 	if (a == 0)

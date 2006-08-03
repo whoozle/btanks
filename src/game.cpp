@@ -1,4 +1,4 @@
-#include "object.h"
+#include "animated_object.h"
 #include "game.h"
 #include "version.h"
 #include "world.h"
@@ -153,7 +153,7 @@ void IGame::onMenu(const std::string &name) {
 		_players.push_back(player);
 		World->addObject(player, v3<float>(100, 100, 0));
 
-		//AnimatedObject *p = new AIPlayer("red-tank");
+		//Object *p = new AIPlayer("red-tank");
 		Object *p = ResourceManager->createObject("ai-player", "red-tank");
 		//p->setDirection(4);
 		sdlx::Rect r = _map.getSize();

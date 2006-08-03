@@ -25,14 +25,14 @@
 #include "player_state.h"
 #include "alarm.h"
 
-class Player : public AnimatedObject {
+class Player : public Object {
 public:
 	Player(const bool stateless);
 	Player(const std::string &animation, const bool stateless);
 	
 	virtual Object * clone(const std::string &opt) const;
 
-	virtual void emit(const std::string &event, const Object * emitter);
+	virtual void emit(const std::string &event, const BaseObject * emitter);
 	virtual void tick(const float dt);
 
 protected:

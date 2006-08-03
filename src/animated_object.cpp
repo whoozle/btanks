@@ -4,26 +4,27 @@
 #include "mrt/logger.h"
 #include "animation_model.h"
 #include "resource_manager.h"
+#include "world.h"
 
-AnimatedObject::Event::Event() {}
+Object::Event::Event() {}
 
-AnimatedObject::Event::Event(const std::string name, const bool repeat): 
+Object::Event::Event(const std::string name, const bool repeat): 
 	name(name), repeat(repeat) {}
 	
-void AnimatedObject::Event::serialize(mrt::Serializator &s) const {
+void Object::Event::serialize(mrt::Serializator &s) const {
 	s.add(name);
 	s.add(repeat);
 }
-void AnimatedObject::Event::deserialize(const mrt::Serializator &s) {
+void Object::Event::deserialize(const mrt::Serializator &s) {
 	s.get(name);
 	s.get(repeat);
 }
 
 
-AnimatedObject::AnimatedObject(const std::string &classname) : 
-	Object(classname),  _model(0), _surface(0), _direction_idx(0), _pos(0)  {}
+Object::Object(const std::string &classname) : 
+	BaseObject(classname),  _model(0), _surface(0), _direction_idx(0), _pos(0)  {}
 
-void AnimatedObject::init(const std::string &model, const std::string &surface, const int tile_w, const int tile_h) {
+void Object::init(const std::string &model, const std::string &surface, const int tile_w, const int tile_h) {
 	_events.clear();
 
 	_model = ResourceManager->getAnimationModel(model);
@@ -37,7 +38,7 @@ void AnimatedObject::init(const std::string &model, const std::string &surface, 
 	_pos = 0;
 }
 
-void AnimatedObject::init(const AnimatedObject &o) {
+void Object::init(const Object &o) {
 	//LOG_DEBUG(("classname: %s, model_name: %s", classname.c_str(), _model_name.c_str()));
 	//LOG_DEBUG(("o.classname: %s, o.model_name: %s", o.classname.c_str(), o._model_name.c_str()));
 	*this = o;
@@ -52,43 +53,50 @@ void AnimatedObject::init(const AnimatedObject &o) {
 */
 }
 
+const Object* Object::spawn(const std::string &classname, const std::string &animation, const v3<float> &dpos, const v3<float> &vel) {
+	return World->spawn(this, classname, animation, dpos, vel);
+}
+
+const bool Object::getNearest(const std::string &classname, v3<float> &position, v3<float> &velocity) const {
+	return World->getNearest(this, classname, position, velocity);
+}
 
 
-Object * AnimatedObject::clone(const std::string &opt) const {
-	throw_ex(("your object uses AnimatedObject directly, which is obsoleted and prohibited."));
-//	AnimatedObject *obj = new AnimatedObject(*this);
+Object * Object::clone(const std::string &opt) const {
+	throw_ex(("your object uses Object directly, which is obsoleted and prohibited."));
+//	Object *obj = new Object(*this);
 //	return obj;
 	return NULL;
 }
 
 
-void AnimatedObject::setDirection(const int dir) {
+void Object::setDirection(const int dir) {
 	_direction_idx = dir;
 }
 
-const int AnimatedObject::getDirection() const {
+const int Object::getDirection() const {
 	return _direction_idx;
 }
 
-void AnimatedObject::play(const std::string &id, const bool repeat) {
+void Object::play(const std::string &id, const bool repeat) {
 	if (_events.empty())
 		_pos = 0;
 	_events.push_back(Event(id, repeat));
 }
 
-void AnimatedObject::playNow(const std::string &id) {
+void Object::playNow(const std::string &id) {
 	_pos = 0;
 	_events.push_front(Event(id, false));
 }
 
-void AnimatedObject::cancel() {
+void Object::cancel() {
 	if (_events.empty()) 
 		return;
 	_events.pop_front();
 	_pos = 0;
 }
 
-void AnimatedObject::cancelRepeatable() {
+void Object::cancelRepeatable() {
 	for (EventQueue::iterator i = _events.begin(); i != _events.end();) {
 		if (i->repeat) {
 			if (i == _events.begin())
@@ -100,14 +108,14 @@ void AnimatedObject::cancelRepeatable() {
 }
 
 
-void AnimatedObject::cancelAll() {
+void Object::cancelAll() {
 	while(!_events.empty())
 		_events.pop_front();
 }
 
 
 
-void AnimatedObject::tick(const float dt) {
+void Object::tick(const float dt) {
 	if (_events.empty()) 
 		return;
 	
@@ -133,7 +141,7 @@ void AnimatedObject::tick(const float dt) {
 	} 
 }
 
-void AnimatedObject::render(sdlx::Surface &surface, const int x, const int y) {
+void Object::render(sdlx::Surface &surface, const int x, const int y) {
 	if (_events.empty()) {
 		if (!isDead())
 			LOG_WARN(("%s: no animation played. latest position: %g", classname.c_str(), _pos));
@@ -161,15 +169,15 @@ void AnimatedObject::render(sdlx::Surface &surface, const int x, const int y) {
 	surface.copyFrom(*_surface, src, x, y);
 }
 
-const std::string AnimatedObject::getState() const {
+const std::string Object::getState() const {
 	static std::string empty;
 	if (_events.empty())
 		return empty;
 	return _events.front().name;
 }
 
-void AnimatedObject::serialize(mrt::Serializator &s) const {
-	Object::serialize(s);
+void Object::serialize(mrt::Serializator &s) const {
+	BaseObject::serialize(s);
 	
 	int en = _events.size();
 	s.add(en);
@@ -187,8 +195,8 @@ void AnimatedObject::serialize(mrt::Serializator &s) const {
 	s.add(_pos);
 }
 
-void AnimatedObject::deserialize(const mrt::Serializator &s) {
-	Object::deserialize(s);
+void Object::deserialize(const mrt::Serializator &s) {
+	BaseObject::deserialize(s);
 
 	_events.clear();
 	int en;
@@ -210,4 +218,8 @@ void AnimatedObject::deserialize(const mrt::Serializator &s) {
 	_surface = ResourceManager->getSurface(_surface_name);
 
 	size.x = _tw; size.y = _th;
+}
+
+void Object::emit(const std::string &event, const BaseObject * emitter) {
+	BaseObject::emit(event, emitter);
 }

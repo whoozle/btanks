@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include "object.h"
+#include "base_object.h"
 #include <deque>
 #include <string>
 #include "v3.h"
@@ -30,11 +30,11 @@ namespace sdlx {
 class AnimationModel;
 class Pose;
 
-class AnimatedObject : public Object {
+class Object : public BaseObject {
 public:
-	AnimatedObject(const std::string &classname);
+	Object(const std::string &classname);
 	void init(const std::string &model, const std::string &surface, const int tile_w, const int tile_h);
-	void init(const AnimatedObject &o);
+	void init(const Object &o);
 	virtual Object * clone(const std::string &opt) const;
 
 	void setDirection(const int dir);
@@ -50,8 +50,13 @@ public:
 	void cancelAll();
 	const std::string getState() const;
 
+	virtual void emit(const std::string &event, const BaseObject * emitter = NULL);
 	virtual void serialize(mrt::Serializator &s) const;
 	virtual void deserialize(const mrt::Serializator &s);
+protected:
+	const Object * spawn(const std::string &classname, const std::string &animation, const v3<float> &dpos, const v3<float> &vel);
+	const bool getNearest(const std::string &classname, v3<float> &position, v3<float> &velocity) const;
+
 private: 
 	struct Event : public mrt::Serializable {
 		std::string name;

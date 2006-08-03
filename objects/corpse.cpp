@@ -1,14 +1,14 @@
 #include "animated_object.h"
 #include "resource_manager.h"
 
-class Corpse : public AnimatedObject {
+class Corpse : public Object {
 public:
-	Corpse() : AnimatedObject("corpse") {}
+	Corpse() : Object("corpse") {}
 	virtual Object * clone(const std::string &opt) const;
-	virtual void emit(const std::string &event, const Object * emitter = NULL);
+	virtual void emit(const std::string &event, const BaseObject * emitter = NULL);
 };
 
-void Corpse::emit(const std::string &event, const Object * emitter) {
+void Corpse::emit(const std::string &event, const BaseObject * emitter) {
 	if (event == "collision") {
 		if (emitter->classname == "bullet") {
 			hp -= emitter->hp;
@@ -22,7 +22,7 @@ void Corpse::emit(const std::string &event, const Object * emitter) {
 
 
 Object* Corpse::clone(const std::string &opt) const  {
-	AnimatedObject *a = new Corpse;
+	Object *a = new Corpse;
 	ResourceManager->initMe(a, opt);
 	a->speed = 0;
 	a->hp = 10;

@@ -1,6 +1,6 @@
 #include "map.h"
 #include "layer.h"
-#include "object.h"
+#include "base_object.h"
 
 #include "mrt/file.h"
 #include "mrt/b64.h"

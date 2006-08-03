@@ -1,5 +1,5 @@
-#ifndef __WORLD_OBJECT_H__
-#define __WORLD_OBJECT_H__
+#ifndef __WORLD_BASE_OBJECT_H__
+#define __WORLD_BASE_OBJECT_H__
 /* Battle Tanks Game
  * Copyright (C) 2006 Battle Tanks team
  *
@@ -25,7 +25,7 @@ namespace sdlx {
 	class Surface;
 }
 
-class Object : public mrt::Serializable {
+class BaseObject : public mrt::Serializable {
 public:
 	v3<int> size;
 	float mass, speed, ttl, impassability;
@@ -35,13 +35,12 @@ public:
 	
 	std::string classname;
 	
-	Object(const std::string &classname);
-	virtual ~Object();
+	BaseObject(const std::string &classname);
+	virtual ~BaseObject();
 	
 	virtual void tick(const float dt) = 0;
 	virtual void render(sdlx::Surface &surf, const int x, const int y) = 0;
-	virtual Object * clone(const std::string &opt) const = 0;
-	virtual void emit(const std::string &event, const Object * emitter = NULL);
+	virtual void emit(const std::string &event, const BaseObject * emitter = NULL);
 	
 	const float getCollisionTime(const v3<float> &pos, const v3<float> &vel) const;
 	
@@ -51,9 +50,6 @@ public:
 	virtual void deserialize(const mrt::Serializator &s);
 protected:
 	int _id;
-	
-	const Object * spawn(const std::string &classname, const std::string &animation, const v3<float> &dpos, const v3<float> &vel);
-	const bool getNearest(const std::string &classname, v3<float> &position, v3<float> &velocity) const;
 	
 	v3<float> _velocity, _old_velocity, _direction;
 private:

@@ -1,12 +1,12 @@
 #include "animated_object.h"
 #include "resource_manager.h"
 
-class Explosion : public AnimatedObject {
+class Explosion : public Object {
 public:
-	Explosion() : AnimatedObject("explosion") {}
+	Explosion() : Object("explosion") {}
 	virtual void tick(const float dt);
 	virtual Object * clone(const std::string &opt) const;
-	virtual void emit(const std::string &event, const Object * emitter = NULL);
+	virtual void emit(const std::string &event, const BaseObject * emitter = NULL);
 };
 
 
@@ -15,10 +15,10 @@ void Explosion::tick(const float dt) {
 		//LOG_DEBUG(("over"));
 		emit("death", this);
 	}
-	AnimatedObject::tick(dt);
+	Object::tick(dt);
 }
 
-void Explosion::emit(const std::string &event, const Object * emitter) {
+void Explosion::emit(const std::string &event, const BaseObject * emitter) {
 	if (event == "collision") {
 		return;
 	} else Object::emit(event, emitter);
@@ -26,7 +26,7 @@ void Explosion::emit(const std::string &event, const Object * emitter) {
 
 
 Object* Explosion::clone(const std::string &opt) const  {
-	AnimatedObject *a = new Explosion;
+	Object *a = new Explosion;
 	ResourceManager->initMe(a, opt);
 	a->speed = 0;
 	a->hp = 1000;

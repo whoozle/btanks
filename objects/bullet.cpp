@@ -1,12 +1,12 @@
 #include "animated_object.h"
 #include "resource_manager.h"
 
-class Bullet : public AnimatedObject {
+class Bullet : public Object {
 public:
-	Bullet() : AnimatedObject("bullet") {}
+	Bullet() : Object("bullet") {}
 	virtual void tick(const float dt);
 	virtual Object * clone(const std::string &opt) const;
-	virtual void emit(const std::string &event, const Object * emitter = NULL);
+	virtual void emit(const std::string &event, const BaseObject * emitter = NULL);
 };
 
 
@@ -16,18 +16,18 @@ void Bullet::tick(const float dt) {
 	if (dir) {
 		setDirection(dir - 1);
 	}
-	AnimatedObject::tick(dt);
+	Object::tick(dt);
 }
 
-void Bullet::emit(const std::string &event, const Object * emitter) {
+void Bullet::emit(const std::string &event, const BaseObject * emitter) {
 	if (event == "collision") {
-		emit("death", this);
+		Object::emit("death", emitter);
 	} else Object::emit(event, emitter);
 }
 
 
 Object* Bullet::clone(const std::string &opt) const  {
-	AnimatedObject *a = new Bullet;
+	Object *a = new Bullet;
 	ResourceManager->initMe(a, opt);
 	a->speed = 500;
 	a->ttl = 1;

@@ -21,7 +21,7 @@
 #include "sdlx/joystick.h"
 #include "player.h"
 
-class AnimatedObject;
+class Object;
 
 class KeyPlayer : public Player {
 public:

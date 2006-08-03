@@ -28,7 +28,7 @@ namespace sdlx {
 }
 
 class Object;
-class AnimatedObject;
+class Object;
 class AnimationModel;
 class Pose;
 
@@ -39,25 +39,25 @@ public:
 	DECLARE_SINGLETON(IResourceManager);
 	
 	void init(const std::string &fname);
-	void initMe(AnimatedObject *o, const std::string &animation) const;
+	void initMe(Object *o, const std::string &animation) const;
 	void clear();
 	
-	AnimatedObject *createAnimation(const std::string &id);
+	Object *createAnimation(const std::string &id);
 	AnimationModel *getAnimationModel(const std::string &id);
 	
 	void registerObject(const std::string &classname, Object *);
 	Object *createObject(const std::string &classname, const std::string &animation) const;
-	const AnimatedObject *getAnimation(const std::string &id) const ;
+	const Object *getAnimation(const std::string &id) const ;
 
 	const sdlx::Surface *getSurface(const std::string &id) const;
 
 private:
-	AnimatedObject *getAnimation(const std::string &id);
+	Object *getAnimation(const std::string &id);
 	virtual void start(const std::string &name, Attrs &attr);
 	virtual void end(const std::string &name);
 	virtual void charData(const std::string &data);
 	
-	typedef std::map<const std::string, AnimatedObject *> AnimationMap;
+	typedef std::map<const std::string, Object *> AnimationMap;
 	AnimationMap _animations;
 
 	typedef std::map<const std::string, AnimationModel *> AnimationModelMap;
