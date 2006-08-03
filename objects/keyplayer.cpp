@@ -22,7 +22,8 @@ Object * KeyPlayer::clone(const std::string &opt) const {
 	KeyPlayer *p = NULL;
 	TRY {
 		p = new KeyPlayer(*this);
-		ResourceManager->initMe(p, opt);
+		p->setup(opt);
+		
 		LOG_WARN(("used hardcoded values for control keys [fixme]"));
 		p->_up = SDLK_UP;
 		p->_down = SDLK_DOWN;

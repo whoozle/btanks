@@ -10,8 +10,8 @@ REGISTER_OBJECT("base-player", Player, (false));
 Player::Player(const bool stateless) 
 : AnimatedObject("player"), _stale(false), _stateless(stateless), _fire(0.5, false) {}
 
-Player::Player(const std::string &animation, const bool stateless) 
-: AnimatedObject("player"), _stale(false), _stateless(stateless), _fire(0.5, false), _animation(animation) {
+void Player::setup(const std::string &animation) {
+	_animation = animation;
 	ResourceManager->initMe(this, animation);
 	
 	LOG_DEBUG(("player %p: %s", (void *)this, classname.c_str()));
@@ -26,15 +26,18 @@ Player::Player(const std::string &animation, const bool stateless)
 	play("hold", true);
 }
 
+
+Player::Player(const std::string &animation, const bool stateless) 
+: AnimatedObject("player"), _stale(false), _stateless(stateless), _fire(0.5, false), _animation(animation) {
+	setup(animation);
+}
+
 Object * Player::clone(const std::string &opt) const {
 	Player *p = NULL;
 	TRY { 
+		LOG_DEBUG(("cloning player with animation '%s'", opt.c_str()));
 		p = new Player(*this);
-	
-		ResourceManager->initMe(p, opt);
-		p->speed = 500;
-		p->_state.clear();
-		p->hp = 5;
+		p->setup(opt);
 	} CATCH("clone", { delete p; throw; });
 	return p;
 }

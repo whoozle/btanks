@@ -18,6 +18,8 @@ Object * JoyPlayer::clone(const std::string &opt) const {
 	JoyPlayer *p = NULL;
 	TRY {
 		p = new JoyPlayer(*this);
+		p->setup(opt);
+		
 		LOG_WARN(("used 0 as joystick number and button index. [fixme]"));
 		p->_joy.open(0);
 	} CATCH("clone", { delete p; throw; })

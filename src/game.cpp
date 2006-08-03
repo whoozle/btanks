@@ -148,7 +148,8 @@ void IGame::onMenu(const std::string &name) {
 		_main_menu.setActive(false);
 		
 		_map.load("country");
-		Object *player = new KeyPlayer("green-tank", SDLK_UP, SDLK_DOWN, SDLK_LEFT, SDLK_RIGHT, SDLK_SPACE);
+		Object *player = ResourceManager->createObject("key-player", "green-tank");
+		//Object *player = new KeyPlayer("green-tank", SDLK_UP, SDLK_DOWN, SDLK_LEFT, SDLK_RIGHT, SDLK_SPACE);
 		//Object *player = new JoyPlayer("green-tank", 0, 0);
 		//Object *player = new AIPlayer("green-tank");
 		_players.clear();
