@@ -5,7 +5,7 @@
 #include "world.h"
 #include "game.h"
 
-REGISTER_OBJECT("base-player", Player, (false));
+REGISTER_OBJECT("player", Player, (false));
 
 Player::Player(const bool stateless) 
 : AnimatedObject("player"), _stale(false), _stateless(stateless), _fire(0.5, false) {}
