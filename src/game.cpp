@@ -1,8 +1,5 @@
 #include "game.h"
 #include "version.h"
-#include "joyplayer.h"
-#include "keyplayer.h"
-#include "aiplayer.h"
 #include "world.h"
 #include "resource_manager.h"
 
@@ -22,6 +19,10 @@
 #include "net/client.h"
 #include "net/protocol.h"
 #include "net/connection.h"
+
+#include "objects/joyplayer.h"
+#include "objects/keyplayer.h"
+#include "objects/aiplayer.h"
 
 #include <SDL/SDL_gfxPrimitives.h>
 #include <SDL/SDL_opengl.h>

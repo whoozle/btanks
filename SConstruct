@@ -94,11 +94,14 @@ venv.Append(CPPDEFINES=['VERSION="\\"' + version + '\\""'])
 vobj = venv.Object('src/version.cpp')
 
 bt = env.Program('bt', 
-	['src/alarm.cpp', 'src/object.cpp', 'objects/bullet.cpp', 'objects/explosion.cpp', 'objects/corpse.cpp',
+	['src/alarm.cpp', 'src/object.cpp', 
+	
+	'objects/bullet.cpp', 'objects/explosion.cpp', 'objects/corpse.cpp',
+	'objects/joyplayer.cpp', 'objects/keyplayer.cpp', 'objects/player.cpp', 'objects/aiplayer.cpp',
+	
 	'net/protocol.cpp', 'net/server.cpp', 'net/client.cpp', 'net/connection.cpp',
 
-	'src/menu.cpp', 'src/menuitem.cpp', 'src/joyplayer.cpp', 'src/keyplayer.cpp', 
-	 'src/player.cpp', 'src/aiplayer.cpp',
+	'src/menu.cpp', 'src/menuitem.cpp', 
 	'src/animated_object.cpp', 'src/animation_model.cpp', 
 	'src/resource_manager.cpp', 'src/world.cpp',
 	'tmx/map.cpp', 'tmx/layer.cpp', 
