@@ -1,4 +1,4 @@
-#include "animated_object.h"
+#include "object.h"
 #include "sdlx/surface.h"
 #include "mrt/exception.h"
 #include "mrt/logger.h"

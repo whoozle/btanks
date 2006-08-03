@@ -1,7 +1,7 @@
 #include <assert.h>
 #include "player.h"
 #include "resource_manager.h"
-#include "animated_object.h"
+#include "object.h"
 #include "world.h"
 #include "game.h"
 

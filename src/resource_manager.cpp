@@ -1,7 +1,7 @@
 #include "resource_manager.h"
 #include "mrt/logger.h"
 #include "sdlx/surface.h"
-#include "animated_object.h"
+#include "object.h"
 #include "animation_model.h"
 #include "utils.h"
 

@@ -1,4 +1,4 @@
-#include "animated_object.h"
+#include "object.h"
 #include "resource_manager.h"
 
 class Bullet : public Object {

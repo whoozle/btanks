@@ -20,7 +20,7 @@
 
 #include <SDL/SDL.h>
 #include <string>
-#include "animated_object.h"
+#include "object.h"
 #include "v3.h"
 #include "player_state.h"
 #include "alarm.h"

@@ -1,4 +1,4 @@
-#include "animated_object.h"
+#include "object.h"
 #include "game.h"
 #include "version.h"
 #include "world.h"

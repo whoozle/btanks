@@ -4,7 +4,7 @@
 
 #include "keyplayer.h"
 #include "game.h"
-#include "animated_object.h"
+#include "object.h"
 #include "resource_manager.h"
 #include "world.h"
 #include "assert.h"

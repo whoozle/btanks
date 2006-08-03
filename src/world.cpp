@@ -1,6 +1,5 @@
 #include "world.h"
-#include "animated_object.h"
-#include "animated_object.h"
+#include "object.h"
 #include "world_map.h"
 #include "resource_manager.h"
 

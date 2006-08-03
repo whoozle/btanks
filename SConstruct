@@ -102,7 +102,7 @@ bt = env.Program('bt',
 	'net/protocol.cpp', 'net/server.cpp', 'net/client.cpp', 'net/connection.cpp',
 
 	'src/menu.cpp', 'src/menuitem.cpp', 
-	'src/animated_object.cpp', 'src/animation_model.cpp', 
+	'src/object.cpp', 'src/animation_model.cpp', 
 	'src/resource_manager.cpp', 'src/world.cpp',
 	'tmx/map.cpp', 'tmx/layer.cpp', 
 	'sdl_collide/SDL_collide.c', 
