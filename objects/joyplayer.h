@@ -25,9 +25,10 @@ class JoyPlayer :public Player {
 public:
 	JoyPlayer();
 	JoyPlayer(const std::string &animation, const int idx, const int fire);
+	virtual Object * clone(const std::string &opt) const;
+
 	virtual void tick(const float dt);
 	
-	virtual ~JoyPlayer();
 private:
 	sdlx::Joystick _joy;
 	int _fire;

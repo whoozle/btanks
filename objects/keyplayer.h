@@ -27,7 +27,7 @@ class KeyPlayer : public Player {
 public:
 	KeyPlayer();
 	KeyPlayer(const std::string &animation, SDLKey up, SDLKey down, SDLKey left, SDLKey right, SDLKey fire);
-	virtual ~KeyPlayer();
+	virtual Object * clone(const std::string &opt) const;
 
 private:
 	void onKey(const Uint8 type, const SDL_keysym sym);

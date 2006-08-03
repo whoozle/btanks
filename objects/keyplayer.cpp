@@ -18,7 +18,21 @@ Player(animation, false), _up(up), _down(down), _left(left), _right(right), _fir
 	Game->key_signal.connect(sigc::mem_fun(this, &KeyPlayer::onKey));
 }
 
-KeyPlayer::~KeyPlayer() {}
+Object * KeyPlayer::clone(const std::string &opt) const {
+	KeyPlayer *p = NULL;
+	TRY {
+		p = new KeyPlayer(*this);
+		ResourceManager->initMe(p, opt);
+		LOG_WARN(("used hardcoded values for control keys [fixme]"));
+		p->_up = SDLK_UP;
+		p->_down = SDLK_DOWN;
+		p->_left = SDLK_LEFT;
+		p->_right = SDLK_RIGHT;
+		p->_fire = SDLK_SPACE;
+		Game->key_signal.connect(sigc::mem_fun(p, &KeyPlayer::onKey));
+	} CATCH("clone", { delete p; throw; })
+	return p; 
+}
 
 void KeyPlayer::onKey(const Uint8 type, const SDL_keysym sym) {
 	if (_stale)

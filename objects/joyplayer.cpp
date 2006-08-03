@@ -14,6 +14,16 @@ JoyPlayer::JoyPlayer(const std::string &animation, const int idx, const int fire
 	_joy.open(idx);
 }
 
+Object * JoyPlayer::clone(const std::string &opt) const {
+	JoyPlayer *p = NULL;
+	TRY {
+		p = new JoyPlayer(*this);
+		LOG_WARN(("used 0 as joystick number and button index. [fixme]"));
+		p->_joy.open(0);
+	} CATCH("clone", { delete p; throw; })
+	return p;
+}
+
 #define THRESHOLD 16384
 
 void JoyPlayer::tick(const float dt) {
@@ -32,6 +42,3 @@ void JoyPlayer::tick(const float dt) {
 	Player::tick(dt);
 }
 
-JoyPlayer::~JoyPlayer() {
-	_joy.close();
-}
