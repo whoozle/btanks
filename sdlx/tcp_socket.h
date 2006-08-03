@@ -21,6 +21,10 @@
 #include <SDL/SDL_net.h>
 #include <string>
 
+namespace mrt {
+class Chunk;
+}
+
 namespace sdlx {
 
 class TCPSocket {
@@ -29,6 +33,7 @@ public:
 	void listen(const unsigned port);
 	void connect(const std::string &host, const int port);
 	void send(const void *data, const int len) const;
+	void send(const mrt::Chunk &data) const;
 	const int recv(void *data, const int len) const;
 	void close();
 	

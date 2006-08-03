@@ -1,5 +1,6 @@
 #include "tcp_socket.h"
 #include "net_ex.h"
+#include "mrt/chunk.h"
 
 using namespace sdlx;
 
@@ -44,6 +45,11 @@ void TCPSocket::send(const void *data, const int len) const {
 	if (result < len) 
 		throw_net(("SDLNet_TCP_Send"));
 }
+
+void TCPSocket::send(const mrt::Chunk &data) const {
+	send(data.getPtr(), data.getSize());
+}
+
 
 const int TCPSocket::recv(void *data, const int len) const {
 	int result = SDLNet_TCP_Recv(_sock, data, len);
