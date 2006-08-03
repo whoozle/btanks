@@ -271,5 +271,5 @@ void IWorld::deserialize(const mrt::Serializator &s) {
 			}
 		} CATCH("deserialize", { delete ao; ao = NULL; });
 	}
-	LOG_DEBUG(("deserialization completed successfully"));
+	//LOG_DEBUG(("deserialization completed successfully"));
 }

@@ -330,8 +330,14 @@ void IGame::deinit() {
 void IGame::notify(const PlayerState& state) {
 	if (_client)
 		_client->notify(state);
-	if (_server)
-		_server->notify(state);
+	if (_server) {
+		mrt::Serializator s;
+		World->serialize(s);
+
+		Message message(UpdateWorld);
+		message.data = s.getData();
+		_server->broadcast(message);
+	}
 }
 
 void IGame::onClient(Message &message) {
@@ -353,6 +359,9 @@ void IGame::onMessage(const Connection &conn, const Message &message) {
 		LOG_DEBUG(("loading map..."));
 		_map.load(message.get("map"));
 		
+		mrt::Serializator s(&message.data);
+		World->deserialize(s);
+	} else if (message.type == UpdateWorld) {
 		mrt::Serializator s(&message.data);
 		World->deserialize(s);
 	}

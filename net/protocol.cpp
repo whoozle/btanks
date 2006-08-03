@@ -28,7 +28,7 @@ void Message::deserialize(const mrt::Serializator &s) {
 }
 
 
-void Message::send(const sdlx::TCPSocket &sock) {
+void Message::send(const sdlx::TCPSocket &sock) const {
 	mrt::Serializator s; 
 	serialize(s);
 	mrt::Chunk rawdata;

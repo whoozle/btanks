@@ -6,12 +6,15 @@
 
 class Connection;
 class PlayerState;
+class Message;
+
 class Server {
 public:
 	Server(); 
 	void init(const unsigned port);
 	void notify(const PlayerState &state);
 	void tick(const float dt);
+	void broadcast(const Message &m);
 	
 private:
 	

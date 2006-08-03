@@ -22,7 +22,7 @@ class Message : public mrt::Serializable {
 public: 
 	Message();
 	Message(const MessageType type);
-	void send(const sdlx::TCPSocket &sock);
+	void send(const sdlx::TCPSocket &sock) const;
 	void recv(const sdlx::TCPSocket &sock);
 	virtual void serialize(mrt::Serializator &s) const;
 	virtual void deserialize(const mrt::Serializator &s);
