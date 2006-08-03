@@ -75,6 +75,7 @@ void Player::tick(const float dt) {
 		return;
 	}
 	bool fire_possible = _fire.tick(dt);
+	bool notify = false;
 	//AI player will be easier to implement if operating directly with velocity
 	
 	if (_stateless) {
@@ -113,7 +114,7 @@ void Player::tick(const float dt) {
 			cancelRepeatable();
 			play("hold", true);
 		}
-		Game->notify(_state);
+		notify = true;
 	}
 
 	if (_state.fire && fire_possible) {
@@ -128,7 +129,11 @@ void Player::tick(const float dt) {
 		v3<float> v = _velocity.is0()?_direction:_velocity;
 		v.normalize();
 		spawn("bullet", "bullet", v3<float>(0,0,-0.1), v);
+		notify = true;
 	}
+	if (notify) 
+		Game->notify(_state);
+	
 	_state.fire = false;
 	
 	Object::tick(dt);
