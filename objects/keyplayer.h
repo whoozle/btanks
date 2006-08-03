@@ -25,6 +25,7 @@ class AnimatedObject;
 
 class KeyPlayer : public Player {
 public:
+	KeyPlayer();
 	KeyPlayer(const std::string &animation, SDLKey up, SDLKey down, SDLKey left, SDLKey right, SDLKey fire);
 	virtual ~KeyPlayer();
 

@@ -5,8 +5,13 @@
 #include "keyplayer.h"
 #include "game.h"
 #include "animated_object.h"
+#include "resource_manager.h"
 #include "world.h"
 #include "assert.h"
+
+REGISTER_OBJECT("key-player", KeyPlayer, ());
+
+KeyPlayer::KeyPlayer() : Player(false) {}
 
 KeyPlayer::KeyPlayer(const std::string &animation, SDLKey up, SDLKey down, SDLKey left, SDLKey right, SDLKey fire): 
 Player(animation, false), _up(up), _down(down), _left(left), _right(right), _fire(fire) {

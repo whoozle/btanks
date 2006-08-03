@@ -1,6 +1,13 @@
 #include <SDL/SDL.h>
 #include "joyplayer.h"
+#include "resource_manager.h"
 #include "mrt/logger.h"
+
+REGISTER_OBJECT("joy-player", JoyPlayer, ());
+
+JoyPlayer::JoyPlayer() : Player(false), _fire(0) {
+	//LOG_WARN(("using button 0 [fixme]"));
+}
 
 JoyPlayer::JoyPlayer(const std::string &animation, const int idx, const int fire)
 : Player(animation, false), _fire(fire) {

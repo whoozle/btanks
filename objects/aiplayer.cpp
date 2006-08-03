@@ -2,6 +2,11 @@
 #include "world.h"
 
 #include "mrt/logger.h"
+#include "resource_manager.h"
+
+REGISTER_OBJECT("ai-player", AIPlayer, ());
+
+AIPlayer::AIPlayer() : Player(true) {}
 
 AIPlayer::AIPlayer(const std::string &animation) : Player(animation, true) {}
 

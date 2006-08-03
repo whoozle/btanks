@@ -5,6 +5,7 @@
 
 class AIPlayer : public Player {
 public: 
+	AIPlayer();
 	AIPlayer(const std::string &animation);
 
 	virtual void tick(const float dt);

@@ -23,6 +23,7 @@
 
 class JoyPlayer :public Player {
 public:
+	JoyPlayer();
 	JoyPlayer(const std::string &animation, const int idx, const int fire);
 	virtual void tick(const float dt);
 	

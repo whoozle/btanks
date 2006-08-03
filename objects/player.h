@@ -27,6 +27,7 @@
 
 class Player : public AnimatedObject {
 public:
+	Player(const bool stateless);
 	Player(const std::string &animation, const bool stateless);
 
 	virtual void emit(const std::string &event, const Object * emitter);

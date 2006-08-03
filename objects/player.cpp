@@ -1,9 +1,15 @@
+#include <assert.h>
 #include "player.h"
 #include "resource_manager.h"
 #include "animated_object.h"
 #include "world.h"
 #include "game.h"
-#include <assert.h>
+
+REGISTER_OBJECT("base-player", Player, (false));
+
+Player::Player(const bool stateless) 
+: AnimatedObject("player"), _stale(false), _stateless(stateless), _fire(0.5, false) {}
+
 
 Player::Player(const std::string &animation, const bool stateless) 
 : AnimatedObject("player"), _stale(false), _stateless(stateless), _fire(0.5, false), _animation(animation) {
