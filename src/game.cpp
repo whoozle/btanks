@@ -392,9 +392,9 @@ void IGame::onMessage(const Connection &conn, const Message &message) {
 		int my_id;
 		s.get(my_id);
 		
-		const Object * obj = World->getObjectByID(my_id);
 		_players.clear();
 		_my_index = 0;
+		const Object * obj = World->getObjectByID(my_id);
 		_players.push_back(obj);
 	} else if (message.type == UpdateWorld) {
 		mrt::Serializator s(&message.data);
