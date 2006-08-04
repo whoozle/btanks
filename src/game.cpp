@@ -142,33 +142,16 @@ void IGame::onMenu(const std::string &name) {
 		_running = false;
 	else if (name == "start") {
 		LOG_DEBUG(("start single player requested"));
-		_main_menu.setActive(false);
+		loadMap("country");
 		
-		_map.load("country");
-		Object *player = ResourceManager->createObject("key-player", "green-tank");
-		//Object *player = new KeyPlayer("green-tank", SDLK_UP, SDLK_DOWN, SDLK_LEFT, SDLK_RIGHT, SDLK_SPACE);
-		//Object *player = new JoyPlayer("green-tank", 0, 0);
-		//Object *player = new AIPlayer("green-tank");
-		_players.clear();
-		_players.push_back(player);
-		World->addObject(player, v3<float>(100, 100, 0));
-
-		//Object *p = new AIPlayer("red-tank");
-		Object *p = ResourceManager->createObject("ai-player", "red-tank");
-		//p->setDirection(4);
-		sdlx::Rect r = _map.getSize();
-		World->addObject(p, v3<float>(r.w - 100, 100, 0));
+		_my_index = spawnPlayer("key-player", "green-tank");
+		spawnPlayer("ai-player", "red-tank");
 	} else if (name == "m-start") {
+		LOG_DEBUG(("start multiplayer server requested"));
+		loadMap("country");
+
+		_my_index = spawnPlayer("key-player", "green-tank");
 		
-		_main_menu.setActive(false);
-
-		_map.load("country");
-		Object *player = ResourceManager->createObject("key-player", "green-tank");
-	//	Object *player = new KeyPlayer("green-tank", SDLK_UP, SDLK_DOWN, SDLK_LEFT, SDLK_RIGHT, SDLK_SPACE);
-		_players.clear();
-		_players.push_back(player);
-		World->addObject(player, v3<float>(100, 100, 0));
-
 		_server = new Server;
 		_server->init(9876);
 	} else if (name == "m-join") {
@@ -183,6 +166,44 @@ void IGame::onMenu(const std::string &name) {
 	}
 }
 
+
+void IGame::loadMap(const std::string &name) {
+	_main_menu.setActive(false);
+	_map.load(name);
+	
+	sdlx::Rect size = _map.getSize();
+	_players.clear();
+	for (Map::PropertyMap::iterator i = _map.properties.begin(); i != _map.properties.end(); ++i) {
+		if (i->first.substr(0, 6) == "spawn:") {
+			v3<int> pos;
+			pos.fromString(i->second);
+			if (pos.x < 0) 
+				pos.x += size.w;
+			if (pos.y < 0) 
+				pos.y += size.h;
+			LOG_DEBUG(("spawnpoint: %d,%d", pos.x, pos.y));
+			
+			PlayerSlot slot;
+			slot.position = pos;
+			_players.push_back(slot);
+		}
+	}
+}
+
+const int IGame::spawnPlayer(const std::string &classname, const std::string &animation) {
+	size_t i, n = _players.size();
+	for(i = 0; i < n; ++i) {
+		if (_players[i].obj == NULL)
+			break;
+	}
+	if (i == n) 
+		throw_ex(("no available slots found from %d", n));
+	PlayerSlot &slot = _players[i];
+	Object *obj = ResourceManager->createObject(classname, animation);
+	World->addObject(obj, slot.position.convert<float>());
+	slot.obj = obj;
+	return i;
+}
 
 
 void IGame::run() {
@@ -247,7 +268,7 @@ void IGame::run() {
 				_client->tick(dt);
 			
 			if (_players.size()) {
-				Object * p = _players[0];
+				const Object * p = _players[_my_index].obj;
 				v3<float> pos, vel;
 				if (World->getInfo(p, pos, vel)) {
 					//LOG_DEBUG(("player[0] %f, %f, %f", vx, vy, vz));

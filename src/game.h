@@ -26,6 +26,7 @@
 
 #include "menu.h"
 #include "tmx/map.h"
+#include "v3.h"
 
 class Object;
 class PlayerState;
@@ -64,7 +65,17 @@ private:
 	MainMenu _main_menu;
 	Map _map;
 	
-	std::vector<Object *> _players;
+	void loadMap(const std::string &name);	
+	const int spawnPlayer(const std::string &classname, const std::string &animation);
+	struct PlayerSlot {
+		PlayerSlot() : obj(NULL) {}
+		PlayerSlot(const Object *obj) : obj(obj) {}
+		const Object * obj;
+		v3<int> position;
+	};
+	
+	std::vector<PlayerSlot> _players;
+	int _my_index;
 	
 	Server *_server;
 	Client *_client;

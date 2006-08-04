@@ -19,6 +19,9 @@ class Object;
 
 class Map : public WorldMap, protected mrt::XMLParser {
 public:
+	typedef std::map<const std::string, std::string> PropertyMap;
+	PropertyMap properties;
+
 	~Map();
 	void clear();
 	void load(const std::string &name);
@@ -42,11 +45,11 @@ private:
 	sdlx::Surface *_image;
 	bool _image_is_tileset;
 
-	typedef std::map<const std::string, std::string> PropertyMap;
 	PropertyMap _properties;
 	
 	typedef std::map<const int, Layer *> LayerMap;
 	LayerMap _layers;
+	bool layer;
 
 	typedef std::vector<sdlx::Surface *> TileMap;
 	TileMap _tiles;

@@ -130,6 +130,7 @@ void Map::start(const std::string &name, Attrs &attrs) {
 		LOG_DEBUG(("tileset: '%s'. firstgid = %ld", e.attrs["name"].c_str(), _firstgid));
 	} else if (name == "layer") {
 		_properties.clear();
+		layer = true;
 	}
 	
 	_stack.push(e);
@@ -215,8 +216,12 @@ void Map::end(const std::string &name) {
 			throw_ex(("layer with z %ld already exists", z));
 		_layers[z] = new Layer(w, h, _data, impassability);
 		//LOG_DEBUG(("(1,1) = %ld", _layers[z]->get(1,1)));
+		layer = false;
 	} else if (name == "property") {
-		_properties[e.attrs["name"]] = e.attrs["value"];
+		if (layer)
+			_properties[e.attrs["name"]] = e.attrs["value"];
+		else 
+			properties[e.attrs["name"]] = e.attrs["value"];
 	} else if (name == "tileset" && _image != NULL && _image_is_tileset) {
 		//fixme: do not actualy chop image in many tiles at once, use `tile' wrapper
 		_image->setAlpha(0, 0);
@@ -309,6 +314,7 @@ void Map::clear() {
 	}
 	_tiles.clear();
 	
+	properties.clear();
 	_properties.clear();
 
 	_image = NULL;

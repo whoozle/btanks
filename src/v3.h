@@ -1,9 +1,15 @@
 #ifndef __BTANKS_V3_H__
 #define __BTANKS_V3_H__
 
+#include <stdio.h>
 #include <math.h>
+
 #include "mrt/serializator.h"
 #include "mrt/serializable.h"
+
+#include <string>
+#include <stdexcept>
+#include <typeinfo>
 
 template <typename T> class v3 : public mrt::Serializable {
 public:
@@ -143,6 +149,13 @@ public:
 		s.get(z);
 	}
 
+	void fromString(const std::string &str) {
+		clear();
+		if (typeid(T) == typeid(int)) {
+			if (sscanf(str.c_str(), "%d,%d,%d", &x, &y, &z) < 2)
+				throw std::invalid_argument("cannot parse %d,%d,%d from " + str);
+		} else throw std::invalid_argument("invalid type T. only int allowed for fromString()");
+	}
 };
 
 template <typename T>
