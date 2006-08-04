@@ -94,8 +94,7 @@ void Object::cancelRepeatable() {
 
 
 void Object::cancelAll() {
-	while(!_events.empty())
-		_events.pop_front();
+	_events.clear();
 }
 
 
