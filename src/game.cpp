@@ -271,7 +271,7 @@ void IGame::run() {
 				const Object * p = _players[_my_index].obj;
 				v3<float> pos, vel;
 				if (World->getInfo(p, pos, vel)) {
-					//LOG_DEBUG(("player[0] %f, %f, %f", vx, vy, vz));
+					//LOG_DEBUG(("player[0] %f, %f", vel.x, vel.y));
 					int wx = (int)pos.x - viewport.x;
 					int wy = (int)pos.y - viewport.y;
 					if (passive_viewport_stopzone.in(wx, wy)) {
@@ -366,7 +366,7 @@ void IGame::onClient(Message &message) {
 	const std::string an = "red-tank";
 	LOG_DEBUG(("new client! spawning player:%s", an.c_str()));
 	const int client_id = spawnPlayer("player", an);
-	LOG_DEBUG(("client_id = %d", client_id));
+	LOG_DEBUG(("client #%d", client_id));
 
 	LOG_DEBUG(("sending server status message..."));
 	message.type = ServerStatus;
@@ -375,7 +375,7 @@ void IGame::onClient(Message &message) {
 
 	mrt::Serializator s;
 	World->serialize(s);
-	s.add(client_id);
+	s.add(_players[client_id].obj->getID());
 
 	message.data = s.getData();
 	LOG_DEBUG(("world: %s", message.data.dump().c_str()));
@@ -391,11 +391,14 @@ void IGame::onMessage(const Connection &conn, const Message &message) {
 		World->deserialize(s);
 		int my_id;
 		s.get(my_id);
-		
+		LOG_DEBUG(("my_id = %d", my_id));
 		_players.clear();
 		_my_index = 0;
 		const Object * obj = World->getObjectByID(my_id);
+		if (obj == NULL) 
+			throw_ex(("invalid object id returned from server. (%d)", my_id));
 		_players.push_back(obj);
+		LOG_DEBUG(("players = %d", _players.size()));
 	} else if (message.type == UpdateWorld) {
 		mrt::Serializator s(&message.data);
 		World->deserialize(s);
