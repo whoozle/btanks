@@ -363,6 +363,11 @@ void IGame::notify(const PlayerState& state) {
 }
 
 void IGame::onClient(Message &message) {
+	const std::string an = "red-tank";
+	LOG_DEBUG(("new client! spawning player:%s", an.c_str()));
+	const int client_id = spawnPlayer("player", an);
+	LOG_DEBUG(("client_id = %d", client_id));
+
 	LOG_DEBUG(("sending server status message..."));
 	message.type = ServerStatus;
 	message.set("map", _map.getName());
@@ -370,6 +375,7 @@ void IGame::onClient(Message &message) {
 
 	mrt::Serializator s;
 	World->serialize(s);
+	s.add(client_id);
 
 	message.data = s.getData();
 	LOG_DEBUG(("world: %s", message.data.dump().c_str()));
@@ -383,6 +389,13 @@ void IGame::onMessage(const Connection &conn, const Message &message) {
 		
 		mrt::Serializator s(&message.data);
 		World->deserialize(s);
+		int my_id;
+		s.get(my_id);
+		
+		const Object * obj = World->getObjectByID(my_id);
+		_players.clear();
+		_my_index = 0;
+		_players.push_back(obj);
 	} else if (message.type == UpdateWorld) {
 		mrt::Serializator s(&message.data);
 		World->deserialize(s);
