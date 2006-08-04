@@ -38,21 +38,6 @@ void Object::init(const std::string &model, const std::string &surface, const in
 	_pos = 0;
 }
 
-void Object::init(const Object &o) {
-	//LOG_DEBUG(("classname: %s, model_name: %s", classname.c_str(), _model_name.c_str()));
-	//LOG_DEBUG(("o.classname: %s, o.model_name: %s", o.classname.c_str(), o._model_name.c_str()));
-	*this = o;
-	//LOG_DEBUG(("classname: %s, model_name: %s", classname.c_str(), _model_name.c_str()));
-/*
-	_model_name = o._model_name;
-	_model = o._model;
-	_surface = o._surface;
-	size.x = _tw = o._tw; size.y = _th = o._th;
-	_direction_idx = o._direction_idx;
-	_pos = o._pos;
-*/
-}
-
 const Object* Object::spawn(const std::string &classname, const std::string &animation, const v3<float> &dpos, const v3<float> &vel) {
 	return World->spawn(this, classname, animation, dpos, vel);
 }
