@@ -68,22 +68,24 @@ void BaseObject::emit(const std::string &event, const BaseObject * emitter) {
 	} else LOG_WARN(("%s[%d]: unhandled event '%s'", classname.c_str(), _id, event.c_str()));
 }
 
-const float BaseObject::getCollisionTime(const v3<float> &pos, const v3<float> &vel) const {
-	v3<float> dpos = pos - _position;
+const float BaseObject::getCollisionTime(const v3<float> &dpos, const v3<float> &vel) const {
+	//v3<float> dpos = pos - _position;
 	float a = vel.x * vel.x + vel.y * vel.y;
 	if (a == 0)
 		return -1;
-	
+	//LOG_DEBUG(("a = %f", a));
 	float b = 2 * (vel.x * dpos.x + vel.y * dpos.y) ;
 	float r = ((size.x + size.y) / 2);
-	float c = dpos.x * dpos.x + dpos.y * dpos.y - r*r;
+	float c = dpos.x * dpos.x + dpos.y * dpos.y - r * r;
+	//LOG_DEBUG(("dpos: %f %f", dpos.x, dpos.y));
+	//LOG_DEBUG(("b = %f, c = %f, r = %f", b, c, r));
 	
-	if (b/a > 0 && c/a > 0) //both times < 0
-		return -1;
+	if (b/a > 0 && c/a > 0) //both t1,t2 < 0
+		return -2;
 	
 	float d = b * b - 4 * a * c;
 	if (d < 0) 
-		return -1; //no solution
+		return -3; //no solution
 
 	d = sqrt(d);
 	
@@ -95,6 +97,6 @@ const float BaseObject::getCollisionTime(const v3<float> &pos, const v3<float> &
 	if (t2 > 0)
 		return t2;
 	
-	return -1;
+	return -4;
 }
 
