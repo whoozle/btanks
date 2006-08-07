@@ -3,8 +3,9 @@
 
 #include "player.h"
 #include "alarm.h"
+#include "base_ai.h"
 
-class AIPlayer : public Player {
+class AIPlayer : public Player, public BaseAI {
 public: 
 	AIPlayer();
 	AIPlayer(const std::string &animation);

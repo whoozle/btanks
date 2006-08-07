@@ -19,8 +19,11 @@ IMPLEMENT_SINGLETON(World, IWorld)
 
 
 void IWorld::addObject(Object *o, const v3<float> &pos) {
+	static int last_id;
 	if (o == NULL) 
 		throw_ex(("adding NULL as world object is not allowed"));
+	o->_id = ++last_id;
+	
 	assert (_id2obj.find(o->_id) == _id2obj.end());
 
 	o->_position = pos;
@@ -232,7 +235,6 @@ const Object *IWorld::getObjectByID(const int id) const {
 const Object* IWorld::spawn(Object *src, const std::string &classname, const std::string &animation, const v3<float> &dpos, const v3<float> &vel) {
 	Object *obj = ResourceManager->createObject(classname, animation);
 	assert(obj->_owner_id == 0);
-	obj->_id = ++BaseObject::_last_id;
 	//LOG_DEBUG(("%s spawns %s", src->classname.c_str(), obj->classname.c_str()));
 	obj->_owner_id = src->_id;
 	obj->_velocity = vel;
