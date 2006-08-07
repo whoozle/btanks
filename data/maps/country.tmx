@@ -1,8 +1,10 @@
 <?xml version="1.0"?>
 <map version="0.99b" orientation="orthogonal" width="10" height="8" tilewidth="128" tileheight="128">
  <properties>
-  <property name="spawn:2" value="-100,100"/>
   <property name="spawn:1" value="100,100"/>
+  <property name="spawn:2" value="-100,100"/>
+  <property name="spawn:3" value="100,-100"/>
+  <property name="spawn:4" value="-100,-100"/>
  </properties>
  <tileset name="country" firstgid="1" tilewidth="128" tileheight="128">
   <image source="../tiles/test_tileset.png"/>
