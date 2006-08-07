@@ -153,7 +153,7 @@ void Object::render(sdlx::Surface &surface, const int x, const int y) {
 	
 	int frame = (int)_pos;
 	if (frame < 0 || frame >= (int)pose->frames.size()) {
-		LOG_WARN(("%s: event '%s' frame %d is out of range.", classname.c_str(), _events.front().name.c_str(), frame));
+		LOG_WARN(("%s: event '%s' frame %d is out of range (position: %g).", classname.c_str(), _events.front().name.c_str(), frame, _pos));
 		return;		
 	}
 	frame = pose->frames[frame];
