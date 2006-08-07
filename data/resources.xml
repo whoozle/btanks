@@ -44,12 +44,12 @@
 	<animation id="bullet" tile="bullet_tile.png" model="bullet-animation"/>
 	<animation id="explosion" tile="explosion.png" model="explosion-animation" />
 	
-	<object class="player" speed="300" mass="10" hp="5" />
+	<object class="player" speed="400" mass="10" hp="5" />
 	<object class="key-player" parent="player" />
 	<object class="joy-player" parent="player" />
 	<object class="ai-player" parent="player" />
 	
-	<object class="bullet" speed="500" mass="1" piercing="true" ttl="1" />
+	<object class="bullet" speed="550" mass="1" piercing="true" ttl="1" />
 	<object class="corpse" speed="0" hp="10" ttl="10" />
 	<object class="explosion" speed="0" hp="1000" />
 </resources>

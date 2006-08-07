@@ -147,7 +147,7 @@ void IGame::onMenu(const std::string &name) {
 		_my_index = spawnPlayer("key-player", "green-tank");
 		spawnPlayer("ai-player", "red-tank");
 		spawnPlayer("ai-player", "yellow-tank");
-	//	spawnPlayer("ai-player", "cyan-tank");
+		spawnPlayer("ai-player", "cyan-tank");
 	} else if (name == "m-start") {
 		LOG_DEBUG(("start multiplayer server requested"));
 		loadMap("country");
