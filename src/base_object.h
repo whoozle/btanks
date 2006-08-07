@@ -42,7 +42,7 @@ public:
 	virtual void render(sdlx::Surface &surf, const int x, const int y) = 0;
 	virtual void emit(const std::string &event, const BaseObject * emitter = NULL);
 	
-	const float getCollisionTime(const v3<float> &pos, const v3<float> &vel) const;
+	const float getCollisionTime(const v3<float> &pos, const v3<float> &vel, const float r) const;
 	
 	const bool isDead() const;
 	const int getID() const { return _id; }

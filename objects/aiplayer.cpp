@@ -24,7 +24,7 @@ void AIPlayer::tick(const float dt) {
 
 	if (getNearest("bullet", pos, vel)) {
 		//LOG_DEBUG(("AAA!!!"));
-		float t = getCollisionTime(pos, vel);
+		float t = getCollisionTime(pos, vel, (size.x + size.y)*0.7);
 		//LOG_DEBUG(("collision time: %f", t));
 		if (t >= 0) {
 			_velocity.x = -vel.y;
