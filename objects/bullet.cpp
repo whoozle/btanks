@@ -27,11 +27,12 @@ void Bullet::emit(const std::string &event, const BaseObject * emitter) {
 
 
 Object* Bullet::clone(const std::string &opt) const  {
-	Object *a = new Bullet;
+	Object *a = new Bullet(*this);
 	ResourceManager->initMe(a, opt);
-	a->speed = 500;
+/*	a->speed = 500;
 	a->ttl = 1;
 	a->piercing = true;
+*/
 	a->play("move", true);
 	a->setDirection(getDirection());
 	return a;

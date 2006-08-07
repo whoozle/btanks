@@ -16,10 +16,10 @@ void Player::setup(const std::string &animation) {
 	
 	LOG_DEBUG(("player %p: %s", (void *)this, classname.c_str()));
 	
-	speed = 300;
 	
 	memset(&_state, 0, sizeof(_state));
-	hp = 5;
+	//speed = 300;
+	//	hp = 5;
 	//ttl = 1;
 
 	//_animation = ResourceManager->createAnimation(animation);

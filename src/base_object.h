@@ -49,6 +49,9 @@ public:
 
 	virtual void serialize(mrt::Serializator &s) const;
 	virtual void deserialize(const mrt::Serializator &s);
+	
+	const std::string dump() const;
+	void inheritParameters(const BaseObject *other);
 protected:
 	int _id;
 	

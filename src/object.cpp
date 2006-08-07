@@ -38,6 +38,20 @@ void Object::init(const std::string &model, const std::string &surface, const in
 	_pos = 0;
 }
 
+void Object::init(const Object *a) {
+	_model = a->_model;
+	_model_name = a->_model_name;
+	_surface = a->_surface;
+	_surface_name = a->_surface_name;
+	_events = a->_events;
+	_tw = a->_tw;
+	_th = a->_th;
+	_pos = a->_pos;
+	
+	size = a->size;
+}
+
+
 const Object* Object::spawn(const std::string &classname, const std::string &animation, const v3<float> &dpos, const v3<float> &vel) {
 	return World->spawn(this, classname, animation, dpos, vel);
 }

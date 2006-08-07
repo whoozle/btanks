@@ -26,11 +26,11 @@ void Explosion::emit(const std::string &event, const BaseObject * emitter) {
 
 
 Object* Explosion::clone(const std::string &opt) const  {
-	Object *a = new Explosion;
+	Object *a = new Explosion(*this);
 	ResourceManager->initMe(a, opt);
-	a->speed = 0;
+/*	a->speed = 0;
 	a->hp = 1000;
-	a->setDirection(0);
+*/	a->setDirection(0);
 	a->play("boom", false);
 	a->impassability = 0;
 	return a;

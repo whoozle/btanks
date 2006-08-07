@@ -69,6 +69,41 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 			speed = _am->default_speed;
 		_pose = new Pose(speed);
 		//nope
+	} else if (name == "object") {
+		const std::string classname = attr["class"];
+		if (classname.size() == 0)
+			throw_ex(("tag 'object' must provide its classname id."));
+		ObjectMap::iterator object; 
+		if ((object = _objects.find(classname)) == _objects.end()) {
+			LOG_WARN(("class '%s' was not registered. skipped.", classname.c_str()));
+			return;
+		}
+		LOG_DEBUG(("setting up class '%s'", classname.c_str()));
+		for (Attrs::iterator i = attr.begin(); i != attr.end(); ++i) {
+			const std::string &name = i->first;
+			const std::string &value = i->second;
+			if (name == "speed") {
+				object->second->speed = atol(value.c_str());
+			} else if (name == "mass") {
+				object->second->mass = atof(value.c_str());
+			} else if (name == "ttl") {
+				object->second->ttl = atof(value.c_str());
+			} else if (name == "piercing") {
+				object->second->piercing = (value[0] == 't' || value[0] == '1' || value[0] == 'y');
+			} else if (name == "hp") {
+				object->second->hp = atol(value.c_str());
+			} else if (name == "parent") {
+				ObjectMap::iterator parent; 
+				if ((parent = _objects.find(value)) == _objects.end()) {
+					LOG_WARN(("class '%s' declared as parent of '%s' was not registered. skipped.", value.c_str(), classname.c_str()));
+					return;
+				}	
+				
+				object->second->inheritParameters(parent->second);
+			} else if (name != "class") 
+				LOG_WARN(("attr '%s' is not supported", name.c_str()));
+		}
+		LOG_DEBUG(("%s", object->second->dump().c_str()));
 	} else LOG_WARN(("unhandled tag: %s", name.c_str()));
 }
 
@@ -142,8 +177,9 @@ void IResourceManager::init(const std::string &fname) {
 
 void IResourceManager::initMe(Object *o, const std::string &animation) const {
 	const std::string classname = o->classname;
-	*o = *getAnimation(animation);
-	o->classname = classname;
+	const Object * a = getAnimation(animation);
+	o->init(a);
+	//o->classname = classname;
 }
 
 void IResourceManager::clear() {
@@ -177,6 +213,8 @@ Object *IResourceManager::createObject(const std::string &classname, const std::
 	Object * r = i->second->clone(animation);
 	if (r == NULL)
 		throw_ex(("%s->clone('%s') returns NULL", classname.c_str(), animation.c_str()));
+	//LOG_DEBUG(("base: %s", i->second->dump().c_str()));
+	//LOG_DEBUG(("clone: %s", r->dump().c_str()));
 	r->animation = animation;
 	return r;
 }

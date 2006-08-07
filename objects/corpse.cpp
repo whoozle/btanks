@@ -22,11 +22,12 @@ void Corpse::emit(const std::string &event, const BaseObject * emitter) {
 
 
 Object* Corpse::clone(const std::string &opt) const  {
-	Object *a = new Corpse;
+	Object *a = new Corpse(*this);
 	ResourceManager->initMe(a, opt);
-	a->speed = 0;
+/*	a->speed = 0;
 	a->hp = 10;
 	a->ttl = 60;
+*/
 	a->play("main", true);
 	return a;
 }

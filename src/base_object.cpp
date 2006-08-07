@@ -10,6 +10,17 @@ BaseObject::BaseObject(const std::string &classname)
 	//LOG_DEBUG(("allocated id %ld", _id));
 }
 
+void BaseObject::inheritParameters(const BaseObject *other) {
+	hp = other->hp;
+	mass = other->mass;
+	speed = other->speed;
+	ttl = other->ttl;
+	impassability = other->impassability;
+	piercing = other->piercing;
+	size = other->size;
+}
+
+
 void BaseObject::serialize(mrt::Serializator &s) const {
 	s.add(_id);
 	s.add(_owner_id);
@@ -52,6 +63,12 @@ void BaseObject::deserialize(const mrt::Serializator &s) {
 	_position.deserialize(s);
 }
 
+const std::string BaseObject::dump() const {
+	return mrt::formatString("object '%s', mass: %g, speed: %g, ttl: %g, impassability: %g, hp: %d, piercing: %s, dead: %s",
+		classname.c_str(), mass, speed, ttl, impassability, hp, piercing?"true":"false", _dead?"true":"false"
+	);
+}
+
 BaseObject::~BaseObject() {}
 
 void BaseObject::getPosition(v3<float> &position) {
@@ -73,12 +90,12 @@ const float BaseObject::getCollisionTime(const v3<float> &dpos, const v3<float> 
 	float a = vel.x * vel.x + vel.y * vel.y;
 	if (a == 0)
 		return -1;
-	//LOG_DEBUG(("a = %f", a));
+	//LOG_DEBUG(("a = %g", a));
 	float b = 2 * (vel.x * dpos.x + vel.y * dpos.y) ;
 	float r = ((size.x + size.y) / 2);
 	float c = dpos.x * dpos.x + dpos.y * dpos.y - r * r;
-	//LOG_DEBUG(("dpos: %f %f", dpos.x, dpos.y));
-	//LOG_DEBUG(("b = %f, c = %f, r = %f", b, c, r));
+	//LOG_DEBUG(("dpos: %g %g", dpos.x, dpos.y));
+	//LOG_DEBUG(("b = %g, c = %g, r = %g", b, c, r));
 	
 	if (b/a > 0 && c/a > 0) //both t1,t2 < 0
 		return -2;
