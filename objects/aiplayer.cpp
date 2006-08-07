@@ -38,10 +38,6 @@ void AIPlayer::tick(const float dt) {
 		//LOG_DEBUG(("found human: %f %f", pos.x, pos.y));
 		_velocity = pos;
 		
-		if (_velocity.lenght() < 100) {
-			_velocity.clear();
-			return;
-		}
 		
 		static float threshold = 12;
 		
@@ -53,6 +49,7 @@ void AIPlayer::tick(const float dt) {
 			_velocity.y = 0;
 			_state.fire = true;
 		}
+
 		float tg = _velocity.x != 0 ?(_velocity.y / _velocity.x - 1):100;
 		if (tg < 0) tg = -tg;
 		
@@ -61,6 +58,11 @@ void AIPlayer::tick(const float dt) {
 			_state.fire = true;
 		}
 		
+		if (_velocity.lenght() < 100) {
+			_velocity.clear();
+			Player::tick(dt);
+			return;
+		}
 		//LOG_DEBUG(("v: %f %f", _velocity.x, _velocity.y));
 	  } else {
 	  	_velocity.clear();
