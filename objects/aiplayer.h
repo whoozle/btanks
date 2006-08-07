@@ -2,6 +2,7 @@
 #define __BTANKS_AIPLAYER_H__
 
 #include "player.h"
+#include "alarm.h"
 
 class AIPlayer : public Player {
 public: 
@@ -10,6 +11,8 @@ public:
 
 	virtual void tick(const float dt);
 	virtual Object * clone(const std::string &opt) const;
+private: 
+	Alarm _reaction_time;
 };
 
 #endif

@@ -6,12 +6,19 @@
 
 REGISTER_OBJECT("ai-player", AIPlayer, ());
 
-AIPlayer::AIPlayer() : Player(true) {}
+#define REACTION_TIME (0.100)
 
-AIPlayer::AIPlayer(const std::string &animation) : Player(animation, true) {}
+AIPlayer::AIPlayer() : Player(true), _reaction_time(REACTION_TIME, true) {}
+
+AIPlayer::AIPlayer(const std::string &animation) : Player(animation, true), _reaction_time(REACTION_TIME, true) {}
 
 void AIPlayer::tick(const float dt) {	
 	//LOG_DEBUG(("dt = %f", dt));
+	if (!_reaction_time.tick(dt)) {
+		Player::tick(dt);
+		return;
+	}
+	
 	v3<float> pos, vel;
 	bool skip_human = false;
 
