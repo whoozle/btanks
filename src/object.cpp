@@ -109,6 +109,7 @@ void Object::cancelRepeatable() {
 
 void Object::cancelAll() {
 	_events.clear();
+	_pos = 0;
 }
 
 
@@ -128,14 +129,23 @@ void Object::tick(const float dt) {
 	}
 	
 	_pos += dt * pose->speed;
-	int cycles = ((int)_pos / pose->frames.size());
+	int n = pose->frames.size();
+	if (n == 0) {
+		LOG_WARN(("animation model %s, pose %s doesnt contain any frames", _model_name.c_str(), event.name.c_str()));
+		return;
+	}
+		
+	int cycles = (int)(_pos / n);
 	//LOG_DEBUG(("%s: _pos: %f, cycles: %d", classname.c_str(), _pos, cycles));
+	_pos -= cycles * n;
+	while((int)_pos >= n) {
+		_pos -= n;
+		++cycles;
+	}
 	
 	if (cycles) {
 		if (!event.repeat)
 			cancel();
-		else 
-			_pos -= cycles * pose->frames.size();
 	} 
 }
 
