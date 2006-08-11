@@ -111,7 +111,6 @@ bt_sources = 	['src/alarm.cpp', 'src/base_object.cpp',
 
 bt_libs = ['sdlx', 'mrt', sigc_lib, 'SDL_gfx', 'SDL_ttf', 'SDL_image', 'SDL_net', 'SDL', 'expat', 'z']
 if sys.platform == "win32":
-	bt_sources.append('src/SDL_win32_main.c')
 #	bt_libs[0:0] = ['SDLmain']
 	bt_libs.append('Ws2_32')
 

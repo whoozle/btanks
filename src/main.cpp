@@ -23,7 +23,7 @@
 #include <stdlib.h>
 
 #ifdef WIN32
-#include "SDL_main.h"
+#include "sdlx/SDL_main.h"
 #endif
 
 #ifdef __cplusplus

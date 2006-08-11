@@ -1,7 +1,12 @@
+import sys
 Import('env')
 
 env = env.Copy()
 env.Append(CPPPATH='..')
-sdlx = env.StaticLibrary('sdlx', 
-	['cursor.cpp', 'sdl_ex.cpp', 'surface.cpp', 'system.cpp', 'joystick.cpp', 'ttf.cpp', 'fps.cpp', 
-	'tcp_socket.cpp', 'net_ex.cpp', 'socket_set.cpp'])
+sdlx_sources = 	['cursor.cpp', 'sdl_ex.cpp', 'surface.cpp', 'system.cpp', 'joystick.cpp', 'ttf.cpp', 'fps.cpp', 
+	'tcp_socket.cpp', 'net_ex.cpp', 'socket_set.cpp']
+
+if sys.platform == "win32":
+	sdlx_sources.append('SDL_win32_main.c')
+
+sdlx = env.StaticLibrary('sdlx', sdlx_sources)
