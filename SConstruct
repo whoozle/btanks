@@ -19,10 +19,9 @@ Help(opts.GenerateHelpText(env))
 #print sys.platform
 if sys.platform == "win32":
 	env.Append(CPPDEFINES = ['WIN32', '_WINDOWS']) #, '_UNICODE'
-	env.Append(CCFLAGS = '/GX /GR /W3 /MT /nologo ')
-	env.Append(CPPFLAGS = '/GX /GR /W3 /MT /nologo ')
-#	env.Append(LINKFLAGS = '/OPT:NOREF /OPT:NOICF /INCREMENTAL:NO /NOLOGO ')
-	env.Append(LINKFLAGS = ' /OPT:REF /NOLOGO ')
+	env.Append(CCFLAGS = '/GX /GR /W3 /MD /nologo ')
+	env.Append(CPPFLAGS = '/TP /GX /GR /W3 /MD /nologo ')
+	env.Append(LINKFLAGS = ' /OPT:REF /NOLOGO /DEBUG ')
 	env.Append(CCFLAGS = '/Ox /Ot ') #optimizations
 	env.Append(CPPFLAGS = '/Ox /Ot ') #optimizations
 else:
@@ -70,7 +69,7 @@ conf.Finish()
 
 if sys.platform == "win32":
 	env.Append(LIBS=['Ws2_32', 'SDLmain'])
-	env.Append(LINKFLAGS = '/SUBSYSTEM:WINDOWS /FORCE')
+	env.Append(LINKFLAGS = '/SUBSYSTEM:WINDOWS /FORCE ')
 
 
 Export('env')
@@ -94,9 +93,7 @@ venv = env.Copy()
 venv.Append(CPPDEFINES=['VERSION="\\"' + version + '\\""'])
 
 vobj = venv.Object('src/version.cpp')
-
-bt = env.Program('bt', 
-	['src/alarm.cpp', 'src/base_object.cpp', 
+bt_sources = 	['src/alarm.cpp', 'src/base_object.cpp', 
 	
 	'objects/base_ai.cpp', 'objects/bullet.cpp', 'objects/explosion.cpp', 'objects/corpse.cpp',
 	'objects/joyplayer.cpp', 'objects/keyplayer.cpp', 'objects/player.cpp', 'objects/aiplayer.cpp',
@@ -110,6 +107,12 @@ bt = env.Program('bt',
 	'sdl_collide/SDL_collide.c', 
 	'src/main.cpp', 'src/game.cpp', 
 	vobj
-	], 
-	LIBS=['sdlx', 'mrt', sigc_lib, 'SDL_gfx', 'SDL_ttf', 'SDL_image', 'SDL_net', 'SDL', 'expat', 'z', 'Ws2_32']	,
-	RPATH=['.'])
+	]
+
+bt_libs = ['sdlx', 'mrt', sigc_lib, 'SDL_gfx', 'SDL_ttf', 'SDL_image', 'SDL_net', 'SDL', 'expat', 'z']
+if sys.platform == "win32":
+	bt_sources.append('src/SDL_win32_main.c')
+#	bt_libs[0:0] = ['SDLmain']
+	bt_libs.append('Ws2_32')
+
+bt = env.Program('bt', bt_sources, LIBS=bt_libs, RPATH=['.'])

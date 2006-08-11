@@ -22,14 +22,18 @@
 #include "version.h"
 #include <stdlib.h>
 
-int main(int argc, const char **argv) {
-	TRY {
 #ifdef WIN32
-		std::string path = getenv("PATH");
-		path = "PATH=.\\bin\\;" + path;
-		_putenv(path.c_str());
-		LOG_DEBUG(("path = %s", path.c_str()));
+#include "SDL_main.h"
 #endif
+
+#ifdef __cplusplus
+extern "C"
+#endif
+	int main(int argc, char *argv[]);
+
+
+int main(int argc, char *argv[]) {
+	TRY {
 		LOG_NOTICE(("starting up... version: %s", getVersion().c_str()));
 		Game->init(argc, argv);
 		TRY {

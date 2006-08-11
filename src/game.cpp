@@ -45,16 +45,16 @@ template <typename FuncPtr> union SharedPointer {
 static SharedPointer<glEnable_Func> glEnable_ptr;
 static SharedPointer<glBlendFunc_Func> glBlendFunc_ptr;
 
-void IGame::init(const int argv, const char **argc) {
+void IGame::init(const int argc, char *argv[]) {
 
 	_server = NULL; _client = NULL;
 #ifdef __linux__
 //	putenv("SDL_VIDEODRIVER=dga");
 #endif
-	bool opengl = (argv > 1 && std::string(argc[1]) == "--gl");
+	bool opengl = (argc > 1 && std::string(argv[1]) == "--gl");
 
 	LOG_DEBUG(("initializing SDL..."));
-	sdlx::System::init(SDL_INIT_EVERYTHING);
+	sdlx::System::init(SDL_INIT_EVERYTHING | SDL_INIT_NOPARACHUTE);
 
 	if (opengl) {
 		LOG_DEBUG(("loading GL library"));

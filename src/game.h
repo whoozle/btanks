@@ -43,7 +43,7 @@ public:
 	//signals
 	sigc::signal2<void, const Uint8, const SDL_keysym> key_signal;
 
-	void init(const int argv, const char **argc);
+	void init(const int argc, char *argv[]);
 	void run();
 	void deinit();
 
