@@ -8,6 +8,9 @@
 #	include <arpa/inet.h>
 #else
 #	include <winsock2.h>
+#	ifndef snprintf
+#		define snprintf _snprintf
+#	endif
 #endif
 
 using namespace mrt;
@@ -121,7 +124,7 @@ void Serializator::get(int &n)  const {
 		n = ntohs(*((unsigned short *)(ptr + _pos)));
 		_pos += sizeof(unsigned short);
 	} else if (len == sizeof(unsigned long)) {
-		n = ntohs(*((unsigned long *)(ptr + _pos)));
+		n = ntohl(*((unsigned long *)(ptr + _pos)));
 		_pos += sizeof(unsigned long);
 	}
 }
