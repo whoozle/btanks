@@ -8,6 +8,7 @@ opts.Add('CC', 'C compiler')
 opts.Add('CXX', 'C++ compiler')
 opts.Add('CCFLAGS', 'General options that are passed to the C compiler', '')
 opts.Add('CXXFLAGS', 'General options that are passed to the C++ compiler', '')
+opts.Add('LINKFLAGS', 'General options that are passed to the linker', '')
 
 opts.Update(env)
 opts.Save('options.cache', env.Copy())
@@ -18,9 +19,9 @@ Help(opts.GenerateHelpText(env))
 #print sys.platform
 if sys.platform == "win32":
 	env.Append(CPPDEFINES = ['WIN32', '_WINDOWS']) #, '_UNICODE'
-	env.Append(CCFLAGS = '/GX /GR /W3 /MT ')
-	env.Append(CPPFLAGS = '/GX /GR /W3 /MT ')
-#	env.Append(LINKFLAGS = '/OPT:NOREF /OPT:NOICF /INCREMENTAL:NO')
+	env.Append(CCFLAGS = '/GX /GR /W3 /MT /nologo ')
+	env.Append(CPPFLAGS = '/GX /GR /W3 /MT /nologo ')
+#	env.Append(LINKFLAGS = '/OPT:NOREF /OPT:NOICF /INCREMENTAL:NO /NOLOGO ')
 	env.Append(CCFLAGS = '/Ox /Ot ') #optimizations
 	env.Append(CPPFLAGS = '/Ox /Ot ') #optimizations
 else:

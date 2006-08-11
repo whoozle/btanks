@@ -7,7 +7,11 @@
 #include "sdlx/tcp_socket.h"
 #include <string.h>
 
-//#include <arpa/inet.h>
+#ifdef WIN32
+#	include <winsock2.h>
+#else
+#	include <arpa/inet.h>
+#endif
 
 Message::Message() : type(None) {}
 
