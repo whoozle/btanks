@@ -26,18 +26,6 @@ const char * ILogger::getLogLevelName(const int level) {
 
 void ILogger::log(const int level, const char *file, const int line, const std::string &str) {
 	if (level < _level) return;
-#ifdef WIN32
-	static bool opened;
-	static FILE *f;
-	if (!opened) {
-		f = fopen("log", "wt");
-		if (f == NULL)
-			f = stderr;
-		opened = true;
-	}
-	fprintf(f, "[%s:%d]\t [%s] %s\n", file, line, getLogLevelName(level), str.c_str());
-#else
 	fprintf(stderr, "[%s:%d]\t [%s] %s\n", file, line, getLogLevelName(level), str.c_str());
-#endif
 }
 
