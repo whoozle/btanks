@@ -5,7 +5,8 @@
 #include <string>
 #include <map>
 
-struct Pose {
+class Pose {
+public:
 	Pose(const float speed) : speed(speed) {}
 
 	const float speed;
