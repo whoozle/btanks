@@ -4,7 +4,10 @@
 
 #include <sys/types.h>
 #include <sys/stat.h>
+
+#ifndef WIN32
 #include <unistd.h>
+#endif
 
 using namespace mrt;
 
