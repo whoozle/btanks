@@ -1,9 +1,3 @@
-#include "serializator.h"
-#include "chunk.h"
-#include <assert.h>
-#include <limits.h>
-#include "exception.h"
-
 #ifndef WIN32
 #	include <arpa/inet.h>
 #else
@@ -12,6 +6,13 @@
 #		define snprintf _snprintf
 #	endif
 #endif
+
+#include "serializator.h"
+#include "chunk.h"
+#include <assert.h>
+#include <limits.h>
+#include "exception.h"
+
 
 using namespace mrt;
 
@@ -40,7 +41,7 @@ void Serializator::add(const int n) {
 	unsigned char type = INTEGER;
 	unsigned char buf[sizeof(unsigned long)];
 	
-	size_t x = n, len;
+	int x = n, len;
 	if (x < 0) {
 		type |= SIGNED_INTEGER;
 		x = -x;

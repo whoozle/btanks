@@ -20,9 +20,16 @@
 #include "mrt/exception.h"
 #include "game.h"
 #include "version.h"
+#include <stdlib.h>
 
 int main(int argc, const char **argv) {
 	TRY {
+#ifdef WIN32
+		std::string path = getenv("PATH");
+		path = "PATH=.\\bin\\;" + path;
+		_putenv(path.c_str());
+		LOG_DEBUG(("path = %s", path.c_str()));
+#endif
 		LOG_NOTICE(("starting up... version: %s", getVersion().c_str()));
 		Game->init(argc, argv);
 		TRY {

@@ -22,6 +22,7 @@ if sys.platform == "win32":
 	env.Append(CCFLAGS = '/GX /GR /W3 /MT /nologo ')
 	env.Append(CPPFLAGS = '/GX /GR /W3 /MT /nologo ')
 #	env.Append(LINKFLAGS = '/OPT:NOREF /OPT:NOICF /INCREMENTAL:NO /NOLOGO ')
+	env.Append(LINKFLAGS = ' /OPT:REF /NOLOGO ')
 	env.Append(CCFLAGS = '/Ox /Ot ') #optimizations
 	env.Append(CPPFLAGS = '/Ox /Ot ') #optimizations
 else:
@@ -68,8 +69,8 @@ if not conf.CheckLibWithHeader('SDL_net', 'SDL/SDL_net.h', 'c++', "SDLNet_Init()
 conf.Finish()
 
 if sys.platform == "win32":
+	env.Append(LIBS=['Ws2_32', 'SDLmain'])
 	env.Append(LINKFLAGS = '/SUBSYSTEM:WINDOWS /FORCE')
-	env.Append(LIBS=['SDLmain'])
 
 
 Export('env')
@@ -110,5 +111,5 @@ bt = env.Program('bt',
 	'src/main.cpp', 'src/game.cpp', 
 	vobj
 	], 
-	
-	LIBS=['sdlx', 'mrt', sigc_lib, 'SDL_gfx', 'SDL_ttf', 'SDL_image', 'SDL_net', 'SDL', 'expat', 'z'], RPATH=['.'])
+	LIBS=['sdlx', 'mrt', sigc_lib, 'SDL_gfx', 'SDL_ttf', 'SDL_image', 'SDL_net', 'SDL', 'expat', 'z', 'Ws2_32']	,
+	RPATH=['.'])

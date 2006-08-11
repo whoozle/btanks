@@ -5,7 +5,8 @@ namespace sdlx  {
 	class TCPSocket;
 }
 
-struct Connection {
+class Connection {
+public:
 	Connection(sdlx::TCPSocket *s);
 	~Connection();
 		
