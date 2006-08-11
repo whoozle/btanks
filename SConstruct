@@ -21,7 +21,7 @@ if sys.platform == "win32":
 	env.Append(CPPDEFINES = ['WIN32', '_WINDOWS']) #, '_UNICODE'
 	env.Append(CCFLAGS = '/GX /GR /W3 /MD /nologo ')
 	env.Append(CPPFLAGS = '/TP /GX /GR /W3 /MD /nologo ')
-	env.Append(LINKFLAGS = ' /OPT:REF /NOLOGO /DEBUG ')
+	env.Append(LINKFLAGS = ' /OPT:REF /NOLOGO ')
 	env.Append(CCFLAGS = '/Ox /Ot ') #optimizations
 	env.Append(CPPFLAGS = '/Ox /Ot ') #optimizations
 else:
