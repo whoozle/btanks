@@ -7,7 +7,7 @@
 #include "sdlx/tcp_socket.h"
 #include <string.h>
 
-#include <arpa/inet.h>
+//#include <arpa/inet.h>
 
 Message::Message() : type(None) {}
 
