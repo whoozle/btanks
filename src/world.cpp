@@ -168,7 +168,11 @@ void IWorld::tick(WorldMap &map, const float dt) {
 		//osurf.saveBMP("snapshot.bmp");
 		
 		float obj_im = getImpassability(*i, osurf, new_pos);
-		//LOG_DEBUG(("obj_im = %f", obj_im));
+/*
+		if (getImpassability(*i, osurf, o._position.convert<int>()) == 1.0 && obj_im == 1.0) {
+			//obj_im = 0.1; //fix it.
+		}
+*/		//LOG_DEBUG(("obj_im = %f", obj_im));
 		
 		float map_im = 1;
 		if (o.piercing) {
@@ -177,12 +181,11 @@ void IWorld::tick(WorldMap &map, const float dt) {
 			}
 		} else {
 			map_im = 1 - map.getImpassability(osurf, new_pos) / 100.0;
-			int old_im = map.getImpassability(osurf, o._position.convert<int>());
+/*			int old_im = map.getImpassability(osurf, o._position.convert<int>());
 			if (old_im == 100 && map_im > 0) {
-				//LOG_DEBUG(("stuck!"));
-				map_im = 1; //special case, to work around animations causing object to "stuck" into solid objects.
+				map_im = 0.5; //special case, to work around animations causing object to "stuck" into solid objects.
 			} 
-		}
+*/		}
 
 		if (o.isDead()) {
 			_id2obj.erase((*i)->_id);

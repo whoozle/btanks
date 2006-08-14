@@ -148,18 +148,6 @@ void IGame::onMenu(const std::string &name) {
 		spawnPlayer("ai-player", "red-tank");
 		spawnPlayer("ai-player", "yellow-tank");
 		spawnPlayer("ai-player", "cyan-tank");
-		Map::PropertyMap::const_iterator i;
-
-		std::vector<std::string> res;
-		for(i = _map.properties.begin(); i != _map.properties.end(); ++i) {
-			mrt::split(res, i->first, ":");
-			if (res.size() > 2 && res[0] == "object") {
-				v3<int> pos;
-				pos.fromString(i->second);
-				//LOG_DEBUG(("object %s, animation %s, pos: %s", res[1].c_str(), res[2].c_str(), i->second.c_str()));
-				World->addObject(ResourceManager->createObject(res[1], res[2]), pos.convert<float>());
-			}
-		}
 	} else if (name == "m-start") {
 		LOG_DEBUG(("start multiplayer server requested"));
 		loadMap("country");
@@ -200,6 +188,15 @@ void IGame::loadMap(const std::string &name) {
 			PlayerSlot slot;
 			slot.position = pos;
 			_players.push_back(slot);
+		}
+
+		std::vector<std::string> res;
+		mrt::split(res, i->first, ":");
+		if (res.size() > 2 && res[0] == "object") {
+			v3<int> pos;
+			pos.fromString(i->second);
+			//LOG_DEBUG(("object %s, animation %s, pos: %s", res[1].c_str(), res[2].c_str(), i->second.c_str()));
+			World->addObject(ResourceManager->createObject(res[1], res[2]), pos.convert<float>());
 		}
 	}
 }
