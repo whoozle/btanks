@@ -13,6 +13,8 @@ private:
 
 
 void TrafficLights::tick(const float dt) {
+	Object::tick(dt);
+
 	static const char *names[] = {"red", "yellow", "green", "yellow"};
 	
 	if (getState().size() == 0) {
@@ -22,7 +24,6 @@ void TrafficLights::tick(const float dt) {
 		//LOG_DEBUG(("tick! %d: %s", _idx, names[_idx]));
 		play(names[_idx]);
 	}
-	Object::tick(dt);
 }
 /*
 void TrafficLights::emit(const std::string &event, const BaseObject * emitter) {

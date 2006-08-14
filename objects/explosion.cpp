@@ -11,11 +11,11 @@ public:
 
 
 void Explosion::tick(const float dt) {
+	Object::tick(dt);
 	if (!getState().size()) {	
 		//LOG_DEBUG(("over"));
 		emit("death", this);
 	}
-	Object::tick(dt);
 }
 
 void Explosion::emit(const std::string &event, const BaseObject * emitter) {
