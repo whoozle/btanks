@@ -6,7 +6,7 @@ public:
 	TrafficLights() : Object("traffic-lights"), _idx(-1) {}
 	virtual void tick(const float dt);
 	virtual Object * clone(const std::string &opt) const;
-	//virtual void emit(const std::string &event, const BaseObject * emitter = NULL);
+	virtual void emit(const std::string &event, const BaseObject * emitter = NULL);
 private: 
 	int _idx;
 };
@@ -25,11 +25,12 @@ void TrafficLights::tick(const float dt) {
 		play(names[_idx]);
 	}
 }
-/*
+
 void TrafficLights::emit(const std::string &event, const BaseObject * emitter) {
-	Object::emit(event, emitter);
+	if (event != "collision")
+		Object::emit(event, emitter);
 }
-*/
+
 
 Object* TrafficLights::clone(const std::string &opt) const  {
 	Object *a = new TrafficLights(*this);
