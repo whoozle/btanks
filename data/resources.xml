@@ -29,6 +29,12 @@
 		<pose id="main">0</pose>
 	</animation-model>
 	
+	<animation-model id="traffic-lights-animation" speed="0.5">
+		<pose id="red">0</pose>
+		<pose id="yellow">1</pose>
+		<pose id="green">2</pose>
+	</animation-model>
+	
 	<animation id="green-tank" tile="Tank_tile3.png" model="tank-animation"/>
 	<animation id="red-tank" tile="Tank_tile4.png" model="tank-animation"/>
 	<animation id="yellow-tank" tile="Tank_tile5.png" model="tank-animation"/>
@@ -43,6 +49,7 @@
 	
 	<animation id="bullet" tile="bullet_tile.png" model="bullet-animation"/>
 	<animation id="explosion" tile="explosion.png" model="explosion-animation" />
+	<animation id="traffic-lights" tile="traffic_lights_tile.png" model="traffic-lights-animation"/>
 	
 	<object class="player" speed="400" mass="10" hp="5" />
 	<object class="key-player" parent="player" />
