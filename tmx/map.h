@@ -37,6 +37,7 @@ public:
 	const v3<int> getSize() const;
 	
 	virtual const int getImpassability(const sdlx::Surface &object_surf, const v3<int>& pos) const;
+	
 private:
 	const bool collides(const sdlx::Surface&, const int dx, const int dy, const unsigned tid) const;
 

@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <map version="0.99b" orientation="orthogonal" width="10" height="8" tilewidth="128" tileheight="128">
  <properties>
-  <property name="spawn:1" value="100,100"/>
   <property name="spawn:2" value="-100,100"/>
-  <property name="spawn:3" value="100,-100"/>
-  <property name="spawn:4" value="-100,-100"/>
-  <property name="object:traffic-lights:traffic-lights:1" value="600,200,1"/>
+  <property name="spawn:1" value="100,100"/>
   <property name="object:traffic-lights:traffic-lights:2" value="750,350,1"/>
+  <property name="object:traffic-lights:traffic-lights:1" value="600,200,1"/>
+  <property name="spawn:4" value="-100,-100"/>
+  <property name="spawn:3" value="100,-100"/>
  </properties>
  <tileset name="country" firstgid="1" tilewidth="128" tileheight="128">
   <image source="../tiles/test_tileset.png"/>
@@ -27,10 +27,18 @@
    H4sIAAAAAAAAAGNgwASsWMSwAWzq2JAwJ5TmQBNnw2EOIXuprY6LCu4DAGv3aj1AAQAA
   </data>
  </layer>
+ <layer name="rocks" width="10" height="8">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgoAywUKif1ubRGgAA1lv3kEABAAA=
+  </data>
+  <properties>
+   <property name="impassability" value="100"/>
+  </properties>
+ </layer>
  <layer name="stuff" width="10" height="8">
   <properties>
-   <property name="impassability" value="80"/>
    <property name="z" value="50"/>
+   <property name="impassability" value="80"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgIA8wkamP1uYxk6iOVHvRzQcA7EOIo0ABAAA=

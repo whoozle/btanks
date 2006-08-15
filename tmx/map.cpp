@@ -11,6 +11,7 @@
 #include "sdlx/surface.h"
 
 #include <assert.h>
+#include <limits>
 
 #include "sdl_collide/SDL_collide.h"
 
@@ -105,6 +106,30 @@ void Map::load(const std::string &name) {
 	}
 #endif
 	_name = name;
+	
+	LOG_DEBUG(("building map matrix..."));
+	_imp_map.setSize(_h, _w);
+	for(int y = 0; y < _h; ++y) {
+		for(int x = 0; x < _w; ++x) {
+			int im = 0;
+			for(LayerMap::const_reverse_iterator l = _layers.rbegin(); l != _layers.rend(); ++l) {
+				long tid = l->second->get(x, y);
+				if (tid == 0)
+					continue;
+				int l_im = l->second->impassability;
+				if (l_im == -1)
+					continue;
+				
+				im = l_im;
+				break;
+			}
+			if (im == 100) 
+				im = -1; //inf :)
+			_imp_map.set(y, x, im);
+		}
+	}
+	LOG_DEBUG(("\n%s", _imp_map.dump().c_str()));
+	
 	LOG_DEBUG(("loading completed"));
 }
 
