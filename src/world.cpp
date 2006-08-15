@@ -1,6 +1,7 @@
 #include "world.h"
 #include "object.h"
 #include "world_map.h"
+#include "game.h"
 #include "resource_manager.h"
 
 #include "mrt/exception.h"
@@ -110,6 +111,27 @@ const float IWorld::getImpassability(Object *obj, const sdlx::Surface &surface, 
 	}
 	
 	return im;
+}
+
+void IWorld::getImpassabilityMatrix(Matrix<int> &matrix) const {
+	const Map &map = Game->getMap();
+	const v3<int> size = map.getTileSize();
+	
+	map.getImpassabilityMatrix(matrix);
+	for(ObjectSet::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
+		Object *o = *i;
+		int im = (int)(o->impassability * 100);
+		if (o->piercing || im == 0) 
+			continue;
+		v3<int> p1, p2;
+		p1 = o->_position.convert<int>();
+		p2 = (p1 + o->size).convert<int>();
+		
+		matrix.set(p1.y / size.y, p1.x / size.x, im);
+		matrix.set(p1.y / size.y, p2.x / size.x, im);
+		matrix.set(p2.y / size.y, p1.x / size.x, im);
+		matrix.set(p2.y / size.y, p2.x / size.x, im);
+	}
 }
 
 

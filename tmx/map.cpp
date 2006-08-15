@@ -107,8 +107,10 @@ void Map::load(const std::string &name) {
 #endif
 	_name = name;
 	
-	LOG_DEBUG(("building map matrix..."));
+	LOG_DEBUG(("building map matrix[%ld:%ld]...", _h, _w));
 	_imp_map.setSize(_h, _w);
+	_imp_map.useDefault(-1);
+	
 	for(int y = 0; y < _h; ++y) {
 		for(int x = 0; x < _w; ++x) {
 			int im = 0;
@@ -357,4 +359,8 @@ const bool Map::loaded() const {
 
 const v3<int> Map::getSize() const {
 	return v3<int>(_tw * _w,_th * _h, 0);
+}
+
+const v3<int> Map::getTileSize() const {
+	return v3<int>(_tw, _th, 0);
 }

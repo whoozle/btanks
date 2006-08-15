@@ -19,6 +19,12 @@ void AIPlayer::tick(const float dt) {
 		return;
 	}
 	
+	{ //path-finding test
+		Matrix<int> m;
+		World->getImpassabilityMatrix(m);
+		LOG_DEBUG(("\n%s", m.dump().c_str()));
+	} 
+	
 	v3<float> pos, vel;
 	bool skip_human = false;
 

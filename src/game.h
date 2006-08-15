@@ -55,6 +55,8 @@ public:
 	void notify(const PlayerState& state);
 	void onClient(Message &message);
 	void onMessage(const Connection &connection, const Message &message);
+	
+	const Map &getMap() const { return _map; }
 private:
 	void onKey(const Uint8 type, const SDL_keysym sym);
 	void onMenu(const std::string &name);

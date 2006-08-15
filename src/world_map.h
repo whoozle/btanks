@@ -12,6 +12,8 @@ class WorldMap {
 public:
 	virtual const int getImpassability(const sdlx::Surface &object_surf, const v3<int> &pos) const = 0;
 	virtual ~WorldMap() {}
+
+	void getImpassabilityMatrix(Matrix<int> &matrix) const { matrix = _imp_map; }
 protected:
 	Matrix<int> _imp_map;
 };

@@ -35,6 +35,7 @@ public:
 	
 	void render(sdlx::Surface &window, const sdlx::Rect &dst, const int z1, const int z2);
 	const v3<int> getSize() const;
+	const v3<int> getTileSize() const;
 	
 	virtual const int getImpassability(const sdlx::Surface &object_surf, const v3<int>& pos) const;
 	

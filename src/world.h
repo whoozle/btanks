@@ -22,6 +22,7 @@
 #include <set>
 #include <map>
 #include "math/v3.h"
+#include "math/matrix.h"
 #include "mrt/serializable.h"
 
 namespace sdlx {
@@ -48,6 +49,7 @@ public:
 	
 	const bool getNearest(const Object *obj, const std::string &classname, v3<float> &position, v3<float> &velocity) const;
 	const float getImpassability(Object *obj, const sdlx::Surface &surface, const v3<int> &position) const;
+	void getImpassabilityMatrix(Matrix<int> &matrix) const;
 
 	virtual void serialize(mrt::Serializator &s) const;
 	virtual void deserialize(const mrt::Serializator &s);
