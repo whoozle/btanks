@@ -79,6 +79,16 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 			return;
 		}
 		LOG_DEBUG(("setting up class '%s'", classname.c_str()));
+	
+		if (attr.find("parent") != attr.end())  {
+			ObjectMap::iterator parent; 
+			if ((parent = _objects.find(attr["parent"])) == _objects.end()) {
+				LOG_WARN(("class '%s' declared as parent of '%s' was not registered. skipped.", attr["parent"].c_str(), classname.c_str()));
+				return;
+			}
+			object->second->inheritParameters(parent->second);
+		}
+	
 		for (Attrs::iterator i = attr.begin(); i != attr.end(); ++i) {
 			const std::string &name = i->first;
 			const std::string &value = i->second;
@@ -92,15 +102,7 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 				object->second->piercing = (value[0] == 't' || value[0] == '1' || value[0] == 'y');
 			} else if (name == "hp") {
 				object->second->hp = atol(value.c_str());
-			} else if (name == "parent") {
-				ObjectMap::iterator parent; 
-				if ((parent = _objects.find(value)) == _objects.end()) {
-					LOG_WARN(("class '%s' declared as parent of '%s' was not registered. skipped.", value.c_str(), classname.c_str()));
-					return;
-				}	
-				
-				object->second->inheritParameters(parent->second);
-			} else if (name != "class") 
+			} else if (name != "class" && name != "parent") 
 				LOG_WARN(("attr '%s' is not supported", name.c_str()));
 		}
 		LOG_DEBUG(("%s", object->second->dump().c_str()));
