@@ -21,7 +21,7 @@
 #include <SDL/SDL.h>
 #include <string>
 #include "object.h"
-#include "v3.h"
+#include "math/v3.h"
 #include "player_state.h"
 #include "alarm.h"
 

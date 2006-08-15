@@ -26,7 +26,7 @@
 
 #include "menu.h"
 #include "tmx/map.h"
-#include "v3.h"
+#include "math/v3.h"
 
 class Object;
 class PlayerState;

@@ -7,6 +7,7 @@
 #include "mrt/xml.h"
 #include "mrt/chunk.h"
 #include "world_map.h"
+#include "math/v3.h"
 
 namespace sdlx {
 class Surface;
@@ -33,7 +34,7 @@ public:
 	virtual void charData(const std::string &data);
 	
 	void render(sdlx::Surface &window, const sdlx::Rect &dst, const int z1, const int z2);
-	const sdlx::Rect getSize() const;
+	const v3<int> getSize() const;
 	
 	virtual const int getImpassability(const sdlx::Surface &object_surf, const v3<int>& pos) const;
 private:

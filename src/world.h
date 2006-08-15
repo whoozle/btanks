@@ -21,7 +21,7 @@
 #include "mrt/singleton.h"
 #include <set>
 #include <map>
-#include "v3.h"
+#include "math/v3.h"
 #include "mrt/serializable.h"
 
 namespace sdlx {

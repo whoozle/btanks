@@ -173,16 +173,16 @@ void IGame::loadMap(const std::string &name) {
 	_main_menu.setActive(false);
 	_map.load(name);
 	
-	sdlx::Rect size = _map.getSize();
+	const v3<int> size = _map.getSize();
 	_players.clear();
 	for (Map::PropertyMap::iterator i = _map.properties.begin(); i != _map.properties.end(); ++i) {
 		if (i->first.substr(0, 6) == "spawn:") {
 			v3<int> pos;
 			pos.fromString(i->second);
 			if (pos.x < 0) 
-				pos.x += size.w;
+				pos.x += size.x;
 			if (pos.y < 0) 
-				pos.y += size.h;
+				pos.y += size.y;
 			LOG_DEBUG(("spawnpoint: %d,%d", pos.x, pos.y));
 			
 			PlayerSlot slot;
@@ -314,20 +314,20 @@ void IGame::run() {
 		stringRGBA(_window.getSDLSurface(), 3, 3, f.c_str(), 255, 255, 255, 255);
 		
 		if (_map.loaded()) {
-			sdlx::Rect world_size = _map.getSize();
+			const v3<int> world_size = _map.getSize();
 		
 			mapx += mapvx * dt;
 			mapy += mapvy * dt;
 			
 			if (mapx < 0) 
 				mapx = 0;
-			if (mapx + viewport.w > world_size.w) 
-				mapx = world_size.w - viewport.w;
+			if (mapx + viewport.w > world_size.x) 
+				mapx = world_size.x - viewport.w;
 
 			if (mapy < 0) 
 				mapy = 0;
-			if (mapy + viewport.h > world_size.h) 
-				mapy = world_size.h - viewport.h;
+			if (mapy + viewport.h > world_size.y) 
+				mapy = world_size.y - viewport.h;
 			
 			viewport.x = (Sint16) mapx;
 			viewport.y = (Sint16) mapy;

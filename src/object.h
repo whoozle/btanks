@@ -21,7 +21,7 @@
 #include "base_object.h"
 #include <deque>
 #include <string>
-#include "v3.h"
+#include "math/v3.h"
 
 namespace sdlx {
 	class Surface;
