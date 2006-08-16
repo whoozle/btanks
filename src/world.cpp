@@ -389,7 +389,7 @@ const bool IWorld::getNearest(const Object *obj, const std::string &classname, v
 	
 	if (n == -1) {
 		imp.set(dst.y, dst.x, -99);
-		imp.set(src.y, src.x, imp.get(src.y, src.x) * 100);
+		imp.set(src.y, src.x, imp.get(src.y, src.x) - 100);
 		LOG_DEBUG(("imp\n%s", imp.dump().c_str()));
 		return true;
 	}
