@@ -121,12 +121,19 @@ void IWorld::getImpassabilityMatrix(Matrix<int> &matrix) const {
 		int im = (int)(o->impassability * 100);
 		if (o->piercing || im == 0) 
 			continue;
+		if (im >= 100)
+			im = -1;
+		
 		v3<int> p1, p2;
 		p1 = o->_position.convert<int>();
-		p2 = (p1 + o->size).convert<int>();
-		for(int y = p1.y; y < p2.y; y += IMap::pathfinding_step) 
-			for(int x = p1.x; x < p2.x; x += IMap::pathfinding_step) 
-				matrix.set(y / IMap::pathfinding_step, x / IMap::pathfinding_step, im);
+		p2 = p1 + o->size - 1;
+		
+		for(int y = p1.y/IMap::pathfinding_step; y <= p2.y/IMap::pathfinding_step; ++y) 
+			for(int x = p1.x/IMap::pathfinding_step; x <= p2.x/IMap::pathfinding_step; ++x) {
+				//int old = matrix.get(y, x);
+				//LOG_DEBUG(("%d %d = %d->%d", y, x, old, im));
+				matrix.set(y, x, im);
+			}
 	}
 }
 

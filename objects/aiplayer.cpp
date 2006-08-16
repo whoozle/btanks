@@ -1,5 +1,6 @@
 #include "aiplayer.h"
-
+#include "tmx/map.h"
+#include "sdlx/rect.h"
 #include "mrt/logger.h"
 #include "resource_manager.h"
 
@@ -40,10 +41,38 @@ void AIPlayer::tick(const float dt) {
 			goto skip_player;
 		}
 		
-		{
-			Matrix<int> path;
-			getPath(path, pos);
-		}
+		Way way;
+		
+		if (getPath(way, pos) && !way.empty()) {
+			//LOG_DEBUG(("path finding turned on"));
+			v3<float> me;
+			getPosition(me);
+			const WayPoint &wp = *way.begin();
+			LOG_DEBUG(("way point: %g %g --> %d %d (%d:%d)", me.x, me.y, wp.x, wp.y, wp.y/IMap::pathfinding_step, wp.x/IMap::pathfinding_step));
+			_velocity.x = wp.x - me.x;
+			_velocity.y = wp.y - me.y;
+			goto skip_player;
+
+/*			LOG_DEBUG(("%d waypoints", way.size()));
+			sdlx::Rect mr(me.x, me.y, size.x, size.y);
+			for(Way::reverse_iterator i = way.rbegin(); i != way.rend(); ++i) {
+				sdlx::Rect wr(i->x, i->y, IMap::pathfinding_step, IMap::pathfinding_step);
+				//LOG_DEBUG(("%g %g", i->x, i->y));
+				if (wr.in(me.x, me.y)) {
+					LOG_DEBUG(("got waypoint: %d %d", i->x, i->y));
+					_velocity.x = i->x - me.x;
+					_velocity.y = i->y - me.y;
+					_velocity.normalize();
+					LOG_DEBUG(("vel : %g %g", _velocity.x, _velocity.y));
+					goto skip_player;
+				}
+			}
+*/		} else {	
+			_velocity.clear();
+			LOG_WARN(("no path. killed"));
+			throw_ex(("byebye"));
+			goto skip_player;
+		} 
 
 		_velocity = pos;
 		

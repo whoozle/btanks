@@ -4,13 +4,15 @@
 #include "math/matrix.h"
 #include "player.h"
 #include "math/v3.h"
+#include <deque>
 
 class BaseAI : public Player {
 public: 
 	BaseAI(const bool stateless);
 	BaseAI(const std::string &animation, const bool stateless);
-
-	const bool getPath(Matrix<int> &path, const v3<float> pos);
+	typedef v3<int> WayPoint;
+	typedef std::deque<WayPoint> Way;
+	const bool getPath(Way &way, const v3<float> &pos);
 };
 
 #endif

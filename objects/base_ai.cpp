@@ -25,19 +25,30 @@ static const bool pop(vertex_queue &buf, vertex &vertex) {
 	return true;
 }
 
-const bool BaseAI::getPath(Matrix<int> &result, const v3<float> dpos) {
+static void clear(Matrix<int> &m, const v3<int>& p1, const v3<int> &size) {
+	v3<int> p2 = p1 + size - 1;
+	for(int y = p1.y/IMap::pathfinding_step; y <= p2.y/IMap::pathfinding_step; ++y) 
+		for(int x = p1.x/IMap::pathfinding_step; x <= p2.x/IMap::pathfinding_step; ++x) {
+		m.set(y, x, 0);
+	}
+}
+
+const bool BaseAI::getPath(Way &result, const v3<float> &dpos) {
 	Matrix<int> imp, path;
 	World->getImpassabilityMatrix(imp);
+	//LOG_DEBUG(("imp\n%s", imp.dump().c_str()));
 	
 	v3<int> src, dst;
 	
 	{
 		v3<float> p;
 		convertToAbsolute(p, dpos);
+		clear(imp, p.convert<int>(), size);
 		p /= IMap::pathfinding_step;
 		dst = p.convert<int>();
 		
 		getPosition(p);
+		clear(imp, p.convert<int>(), size);
 		p /= IMap::pathfinding_step;
 		src = p.convert<int>();
 	}
@@ -46,7 +57,6 @@ const bool BaseAI::getPath(Matrix<int> &result, const v3<float> dpos) {
 
 	path.setSize(h, w, -1);
 	path.useDefault(-1);
-	//path.set(src.y, src.x, 0);
 	
 	vertex_queue buf;
 	push(path, buf, vertex(src.x, src.y, 0));
@@ -76,14 +86,20 @@ const bool BaseAI::getPath(Matrix<int> &result, const v3<float> dpos) {
 	int len, n = path.get(dst.y, dst.x);
 	len = n;
 	
-	if (n == -1)
+	if (n == -1) {
+		imp.set(dst.y, dst.x, -99);
+		LOG_DEBUG(("imp\n%s", imp.dump().c_str()));
 		return false;
-	result.setSize(h, w, -1);
+	}
+
+	result.clear();
 	int x = dst.x, y = dst.y;
-	int i = 0;
+	int i = -10;
 	
 	while ( x != src.x || y != src.y) {
-		result.set(y, x, i++);
+		assert(imp.get(y, x) != -1);
+		imp.set(y, x, i--);
+		result.push_front(WayPoint(x, y, 0));
 		int t = n;
 		int x2 = x, y2 = y;
 
@@ -105,7 +121,13 @@ const bool BaseAI::getPath(Matrix<int> &result, const v3<float> dpos) {
 		}
 		x = x2; y = y2; n = t;
 	}
-	result.set(y, x, i++);
+	//result.push_front(WayPoint(x, y, 0));
+	LOG_DEBUG(("imp\n%s", imp.dump().c_str()));
+	
+	
+	for(Way::iterator i = result.begin(); i != result.end(); ++i) {
+		(*i) *= IMap::pathfinding_step;
+	}
 	
 	//LOG_DEBUG(("getPath: length: %d, \n%s", len, result.dump().c_str()));
 	return true;

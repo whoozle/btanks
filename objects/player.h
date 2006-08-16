@@ -34,7 +34,7 @@ public:
 
 	virtual void emit(const std::string &event, const BaseObject * emitter);
 	virtual void tick(const float dt);
-
+	
 protected:
 	void setup(const std::string &animation);
 

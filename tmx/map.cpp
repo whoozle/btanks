@@ -17,7 +17,7 @@
 
 IMPLEMENT_SINGLETON(Map, IMap)
 
-const int IMap::pathfinding_step = 32;
+const int IMap::pathfinding_step = 64;
 
 const bool IMap::collides(const sdlx::Surface &surf, const int dx, const int dy, const unsigned tid) const {
 	if (tid == 0)

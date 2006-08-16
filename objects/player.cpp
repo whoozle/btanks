@@ -138,3 +138,4 @@ void Player::tick(const float dt) {
 	
 	Object::tick(dt);
 }
+
