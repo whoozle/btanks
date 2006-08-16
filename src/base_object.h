@@ -56,10 +56,10 @@ public:
 	
 protected:
 	int _id;
+	void getPosition(v3<float> &position);
 	
 	v3<float> _velocity, _old_velocity, _direction;
 private:
-	void getPosition(v3<float> &position);
 	bool _dead;
 	v3<float> _position;
 	int _owner_id;

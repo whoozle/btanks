@@ -10,7 +10,7 @@ public:
 	BaseAI(const bool stateless);
 	BaseAI(const std::string &animation, const bool stateless);
 
-	void getPath(Matrix<int> &path, const v3<float> pos);
+	const bool getPath(Matrix<int> &path, const v3<float> pos);
 };
 
 #endif
