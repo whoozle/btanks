@@ -57,6 +57,7 @@ public:
 protected:
 	int _id;
 	void getPosition(v3<float> &position);
+	void getPosition(v3<int> &position);
 	
 	v3<float> _velocity, _old_velocity, _direction;
 private:

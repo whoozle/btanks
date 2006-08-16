@@ -73,6 +73,10 @@ void BaseObject::getPosition(v3<float> &position) {
 	position = _position;
 }
 
+void BaseObject::getPosition(v3<int> &position) {
+	position = _position.convert<int>();
+}
+
 const bool BaseObject::isDead() const { return _dead;}
 
 
