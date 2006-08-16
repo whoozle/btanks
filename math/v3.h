@@ -40,6 +40,10 @@ public:
 		return (T)sqrt(x * x + y * y + z * z);
 	}
 
+	const T quick_length() const {
+		return (T)(x * x + y * y + z * z);
+	}
+
 	template <typename T2> 
 		v3<T2> convert() const { return v3<T2>((T2)x, (T2)y, (T2)z); }
 	
