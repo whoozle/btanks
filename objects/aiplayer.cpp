@@ -33,7 +33,8 @@ void AIPlayer::tick(const float dt) {
 		}
 	} 
 
-	if (getNearest("player", pos, vel)) {
+	Way way;
+	if (getNearest("player", pos, vel, &way)) {
 		//LOG_DEBUG(("found human: %f %f", pos.x, pos.y));
 		
 		if (found_bullet && bpos.quick_length() < pos.quick_length()) {
@@ -41,36 +42,41 @@ void AIPlayer::tick(const float dt) {
 			goto skip_player;
 		}
 		
-		Way way;
-		
-		if (getPath(way, pos) && !way.empty()) {
+		if (!way.empty()) {
 			//LOG_DEBUG(("path finding turned on"));
 			v3<float> me;
 			getPosition(me);
-			const WayPoint &wp = *way.begin();
+/*			const WayPoint &wp = *way.begin();
 			LOG_DEBUG(("way point: %g %g --> %d %d (%d:%d)", me.x, me.y, wp.x, wp.y, wp.y/IMap::pathfinding_step, wp.x/IMap::pathfinding_step));
 			_velocity.x = wp.x - me.x;
 			_velocity.y = wp.y - me.y;
 			goto skip_player;
-
-/*			LOG_DEBUG(("%d waypoints", way.size()));
+*/
+			LOG_DEBUG(("%d waypoints", way.size()));
 			sdlx::Rect mr(me.x, me.y, size.x, size.y);
+
+			Way::reverse_iterator dst_it = way.rend();
 			for(Way::reverse_iterator i = way.rbegin(); i != way.rend(); ++i) {
+				LOG_DEBUG(("%d %d %d %d", i->x, i->y, (int)me.x, (int)me.y));
 				sdlx::Rect wr(i->x, i->y, IMap::pathfinding_step, IMap::pathfinding_step);
-				//LOG_DEBUG(("%g %g", i->x, i->y));
 				if (wr.in(me.x, me.y)) {
-					LOG_DEBUG(("got waypoint: %d %d", i->x, i->y));
-					_velocity.x = i->x - me.x;
-					_velocity.y = i->y - me.y;
-					_velocity.normalize();
-					LOG_DEBUG(("vel : %g %g", _velocity.x, _velocity.y));
-					goto skip_player;
+					break;
 				}
+				dst_it = i;
 			}
-*/		} else {	
+			assert (dst_it != way.rend());
+			const WayPoint &wp = *dst_it;
+			
+			LOG_DEBUG(("got waypoint: %d %d", wp.x, wp.y));
+			_velocity.x = wp.x - me.x;
+			_velocity.y = wp.y - me.y;
+			_velocity.normalize();
+			LOG_DEBUG(("vel : %g %g", _velocity.x, _velocity.y));
+			goto skip_player;
+		} else {	
 			_velocity.clear();
-			LOG_WARN(("no path. killed"));
-			throw_ex(("byebye"));
+			LOG_WARN(("no path."));
+			//throw_ex(("byebye"));
 			goto skip_player;
 		} 
 

@@ -112,12 +112,15 @@ const float IWorld::getImpassability(Object *obj, const sdlx::Surface &surface, 
 	return im;
 }
 
-void IWorld::getImpassabilityMatrix(Matrix<int> &matrix) const {
+void IWorld::getImpassabilityMatrix(Matrix<int> &matrix, const Object *src, const Object *dst) const {
 	const v3<int> size = Map->getTileSize();
 	
 	Map->getImpassabilityMatrix(matrix);
 	for(ObjectSet::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		Object *o = *i;
+		if (o == src || o == dst)
+			continue;
+		
 		int im = (int)(o->impassability * 100);
 		if (o->piercing || im == 0) 
 			continue;
@@ -226,32 +229,6 @@ void IWorld::tick(const float dt) {
 	}
 }
 
-const bool IWorld::getNearest(const Object *obj, const std::string &classname, v3<float> &position, v3<float> &velocity) const {
-	bool found = false;
-	
-	position.clear();
-	velocity.clear();
-	float distance = std::numeric_limits<float>::infinity();
-	
-	for(ObjectSet::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
-		const Object *o = *i;
-		//LOG_DEBUG(("%s is looking for %s. found: %s", obj->classname.c_str(), classname.c_str(), o->classname.c_str()));
-		if (o->_id == obj->_id || o->classname != classname || o->_owner_id == obj->_id) 
-			continue;
-		
-		float d = obj->_position.quick_distance(o->_position);
-		if (d < distance) {
-			distance = d;
-			position = o->_position;
-			velocity = o->_velocity;
-			found = true;
-		}
-	}
-	if (found) {
-		position -= obj->_position;
-	}
-	return found;
-}
 
 
 const bool IWorld::exists(const Object *o) const {
@@ -318,3 +295,144 @@ void IWorld::deserialize(const mrt::Serializator &s) {
 	}
 	//LOG_DEBUG(("deserialization completed successfully"));
 }
+
+//BIG PATHFINDING PART
+
+typedef v3<int> vertex;
+typedef std::deque<vertex> vertex_queue;
+
+static void push(Matrix<int> &path, vertex_queue &buf, const vertex &vertex) {
+	int w = path.get(vertex.y, vertex.x);
+	if (w != -1 && w <= vertex.z) 
+		return;
+	path.set(vertex.y, vertex.x, vertex.z);
+	buf.push_back(vertex);
+}
+
+static const bool pop(vertex_queue &buf, vertex &vertex) {
+	if (buf.empty())
+		return false;
+	vertex = buf.front();
+	buf.pop_front();
+	return true;
+}
+
+const bool IWorld::getNearest(const Object *obj, const std::string &classname, v3<float> &position, v3<float> &velocity, Object::Way * way) const {
+	position.clear();
+	velocity.clear();
+	float distance = std::numeric_limits<float>::infinity();
+	const Object *target = NULL;
+	
+	for(ObjectSet::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
+		const Object *o = *i;
+		//LOG_DEBUG(("%s is looking for %s. found: %s", obj->classname.c_str(), classname.c_str(), o->classname.c_str()));
+		if (o->_id == obj->_id || o->classname != classname || o->_owner_id == obj->_id) 
+			continue;
+		
+		float d = obj->_position.quick_distance(o->_position);
+		if (d < distance) {
+			distance = d;
+			position = o->_position;
+			velocity = o->_velocity;
+			target = o;
+		}
+	}
+	if (target == NULL) 
+		return false;
+	
+	position -= obj->_position;
+	if (way == NULL)
+		return true;
+
+	//finding shortest path.
+
+	Matrix<int> imp, path;
+	World->getImpassabilityMatrix(imp, obj, target);
+	//LOG_DEBUG(("imp\n%s", imp.dump().c_str()));
+	
+	v3<int> src = obj->_position.convert<int>() / IMap::pathfinding_step;
+	v3<int> dst = target->_position.convert<int>() / IMap::pathfinding_step;
+	
+	int w = imp.getWidth(), h = imp.getHeight();
+
+	path.setSize(h, w, -1);
+	path.useDefault(-1);
+	
+	vertex_queue buf;
+	imp.set(src.y, src.x, 0);
+	push(path, buf, vertex(src.x, src.y, 0));
+	
+	vertex v;
+	while(pop(buf, v)) {
+		int n = path.get(v.y, v.x);
+		assert(n != -1);
+		int w = imp.get(v.y, v.x);
+		//LOG_DEBUG(("get(%d, %d) = %d, %d", v.y, v.x, w, n));
+		//assert(w != -1);
+		if (w == -1)
+			continue;
+
+		n += w + 1;
+		
+		if (imp.get(v.y + 1, v.x) != -1)
+			push(path, buf, vertex(v.x, v.y + 1, n));
+		if (imp.get(v.y - 1, v.x) != -1)
+			push(path, buf, vertex(v.x, v.y - 1, n));
+		if (imp.get(v.y, v.x + 1) != -1)
+			push(path, buf, vertex(v.x + 1, v.y, n));
+		if (imp.get(v.y, v.x - 1) != -1)
+			push(path, buf, vertex(v.x - 1, v.y, n));
+	}
+	
+	int len, n = path.get(dst.y, dst.x);
+	len = n;
+	
+	if (n == -1) {
+		imp.set(dst.y, dst.x, -99);
+		imp.set(src.y, src.x, imp.get(src.y, src.x) * 100);
+		LOG_DEBUG(("imp\n%s", imp.dump().c_str()));
+		return true;
+	}
+
+	way->clear();
+	int x = dst.x, y = dst.y;
+	int i = -10;
+	
+	while ( x != src.x || y != src.y) {
+		assert(imp.get(y, x) != -1);
+		imp.set(y, x, i--);
+		way->push_front(Object::WayPoint(x, y, 0));
+		int t = n;
+		int x2 = x, y2 = y;
+
+		int w = path.get(y + 1, x);
+		if (w != -1 && w < t) {
+			x2 = x; y2 = y + 1; t = w;
+		}
+		w = path.get(y - 1, x);
+		if (w != -1 && w < t) {
+			x2 = x; y2 = y - 1;	t = w;
+		}
+		w = path.get(y, x + 1);
+		if (w != -1 && w < t) {
+			x2 = x + 1; y2 = y; t = w;
+		}
+		w = path.get(y, x - 1);
+		if (w != -1 && w < t) {
+			x2 = x - 1; y2 = y; t = w;
+		}
+		x = x2; y = y2; n = t;
+	}
+	//result.push_front(WayPoint(x, y, 0));
+	LOG_DEBUG(("imp\n%s", imp.dump().c_str()));
+	
+	
+	for(Object::Way::iterator i = way->begin(); i != way->end(); ++i) {
+		(*i) *= IMap::pathfinding_step;
+	}
+	
+	//LOG_DEBUG(("getPath: length: %d, \n%s", len, result.dump().c_str()));
+	return true;
+}
+
+

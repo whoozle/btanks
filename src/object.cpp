@@ -56,8 +56,8 @@ const Object* Object::spawn(const std::string &classname, const std::string &ani
 	return World->spawn(this, classname, animation, dpos, vel);
 }
 
-const bool Object::getNearest(const std::string &classname, v3<float> &position, v3<float> &velocity) const {
-	return World->getNearest(this, classname, position, velocity);
+const bool Object::getNearest(const std::string &classname, v3<float> &position, v3<float> &velocity, Way * way) const {
+	return World->getNearest(this, classname, position, velocity, way);
 }
 
 

@@ -10,9 +10,6 @@ class BaseAI : public Player {
 public: 
 	BaseAI(const bool stateless);
 	BaseAI(const std::string &animation, const bool stateless);
-	typedef v3<int> WayPoint;
-	typedef std::deque<WayPoint> Way;
-	const bool getPath(Way &way, const v3<float> &pos);
 };
 
 #endif

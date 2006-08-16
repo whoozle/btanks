@@ -55,9 +55,14 @@ public:
 	virtual void emit(const std::string &event, const BaseObject * emitter = NULL);
 	virtual void serialize(mrt::Serializator &s) const;
 	virtual void deserialize(const mrt::Serializator &s);
+
+	typedef v3<int> WayPoint;
+	typedef std::deque<WayPoint> Way;
+
 protected:
+
 	const Object * spawn(const std::string &classname, const std::string &animation, const v3<float> &dpos, const v3<float> &vel);
-	const bool getNearest(const std::string &classname, v3<float> &position, v3<float> &velocity) const;
+	const bool getNearest(const std::string &classname, v3<float> &position, v3<float> &velocity, Way * way = NULL) const;
 
 private: 
 	struct Event : public mrt::Serializable {
@@ -83,6 +88,8 @@ private:
 	int _direction_idx;
 	float _pos;
 };
+
+
 
 #endif
 
