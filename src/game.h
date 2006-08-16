@@ -25,7 +25,6 @@
 #include <sigc++/sigc++.h>
 
 #include "menu.h"
-#include "tmx/map.h"
 #include "math/v3.h"
 
 class Object;
@@ -56,7 +55,6 @@ public:
 	void onClient(Message &message);
 	void onMessage(const Connection &connection, const Message &message);
 	
-	const Map &getMap() const { return _map; }
 private:
 	void onKey(const Uint8 type, const SDL_keysym sym);
 	void onMenu(const std::string &name);
@@ -65,7 +63,6 @@ private:
 	sdlx::Surface _window;
 
 	MainMenu _main_menu;
-	Map _map;
 	
 	void loadMap(const std::string &name);	
 	const int spawnPlayer(const std::string &classname, const std::string &animation);

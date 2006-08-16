@@ -6,6 +6,7 @@
 #include "game.h"
 #include "connection.h"
 #include "sdlx/tcp_socket.h"
+#include "mrt/exception.h"
 
 Client::Client():  _conn(NULL), _running(false) {}
 

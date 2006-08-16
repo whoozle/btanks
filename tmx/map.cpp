@@ -15,7 +15,11 @@
 
 #include "sdl_collide/SDL_collide.h"
 
-const bool Map::collides(const sdlx::Surface &surf, const int dx, const int dy, const unsigned tid) const {
+IMPLEMENT_SINGLETON(Map, IMap)
+
+const int IMap::pathfinding_step = 32;
+
+const bool IMap::collides(const sdlx::Surface &surf, const int dx, const int dy, const unsigned tid) const {
 	if (tid == 0)
 		return false;
 	
@@ -29,7 +33,7 @@ const bool Map::collides(const sdlx::Surface &surf, const int dx, const int dy, 
 }
 
 
-const int Map::getImpassability(const sdlx::Surface &s, const v3<int>&pos) const {
+const int IMap::getImpassability(const sdlx::Surface &s, const v3<int>&pos) const {
 	int w = s.getWidth(), h = s.getHeight();
 	int x, x1;
 	int y, y1;
@@ -77,7 +81,7 @@ const int Map::getImpassability(const sdlx::Surface &s, const v3<int>&pos) const
 #define PRERENDER_LAYERS
 #undef PRERENDER_LAYERS
 
-void Map::load(const std::string &name) {
+void IMap::load(const std::string &name) {
 	clear();
 	
 	LOG_DEBUG(("loading map '%s'", name.c_str()));
@@ -107,8 +111,8 @@ void Map::load(const std::string &name) {
 #endif
 	_name = name;
 	
-	LOG_DEBUG(("building map matrix[%ld:%ld]...", _h, _w));
-	_imp_map.setSize(_h, _w);
+	_imp_map.setSize(_h * _th / pathfinding_step, _w * _tw / pathfinding_step);
+	LOG_DEBUG(("building map matrix[%d:%d]...", _imp_map.getHeight(), _imp_map.getWidth()));
 	_imp_map.useDefault(-1);
 	
 	for(int y = 0; y < _h; ++y) {
@@ -127,7 +131,12 @@ void Map::load(const std::string &name) {
 			}
 			if (im == 100) 
 				im = -1; //inf :)
-			_imp_map.set(y, x, im);
+			//_imp_map.set(y, x, im);
+			
+			for(int y1 = y * _th / pathfinding_step; y1 < (y + 1) * _th / pathfinding_step; ++y1) 
+				for(int x1 = x * _tw / pathfinding_step; x1 < (x + 1) * _tw / pathfinding_step; ++x1) 
+					_imp_map.set(y1, x1, im);
+			
 		}
 	}
 	LOG_DEBUG(("\n%s", _imp_map.dump().c_str()));
@@ -135,7 +144,7 @@ void Map::load(const std::string &name) {
 	LOG_DEBUG(("loading completed"));
 }
 
-void Map::start(const std::string &name, Attrs &attrs) {
+void IMap::start(const std::string &name, Attrs &attrs) {
 	//LOG_DEBUG(("started %s", name.c_str()));
 	Entity e(attrs);
 	
@@ -163,7 +172,7 @@ void Map::start(const std::string &name, Attrs &attrs) {
 	_stack.push(e);
 }
 
-void Map::end(const std::string &name) {
+void IMap::end(const std::string &name) {
 	assert(!_stack.empty());
 	Entity &e = _stack.top();
 	
@@ -281,7 +290,7 @@ void Map::end(const std::string &name) {
 	_stack.pop();
 }
 
-void Map::charData(const std::string &d) {
+void IMap::charData(const std::string &d) {
 	assert(!_stack.empty());
 	
 	std::string data(d);
@@ -293,7 +302,7 @@ void Map::charData(const std::string &d) {
 	_stack.top().data = d;
 }
 
-void Map::render(sdlx::Surface &window, const sdlx::Rect &dst, const int z1, const int z2) {
+void IMap::render(sdlx::Surface &window, const sdlx::Rect &dst, const int z1, const int z2) {
 	if (!loaded()) 
 		return;
 
@@ -330,7 +339,7 @@ void Map::render(sdlx::Surface &window, const sdlx::Rect &dst, const int z1, con
 }
 
 
-void Map::clear() {
+void IMap::clear() {
 	for(LayerMap::iterator i = _layers.begin(); i != _layers.end(); ++i) {
 		delete i->second;
 	}
@@ -349,18 +358,18 @@ void Map::clear() {
 	_w = _h = _tw = _th = _firstgid = 0;
 }
 
-Map::~Map() {
+IMap::~IMap() {
 	clear();
 }
 
-const bool Map::loaded() const {
+const bool IMap::loaded() const {
 	return _w != 0;
 }
 
-const v3<int> Map::getSize() const {
+const v3<int> IMap::getSize() const {
 	return v3<int>(_tw * _w,_th * _h, 0);
 }
 
-const v3<int> Map::getTileSize() const {
+const v3<int> IMap::getTileSize() const {
 	return v3<int>(_tw, _th, 0);
 }

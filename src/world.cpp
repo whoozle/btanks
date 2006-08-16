@@ -1,7 +1,6 @@
 #include "world.h"
 #include "object.h"
-#include "world_map.h"
-#include "game.h"
+#include "tmx/map.h"
 #include "resource_manager.h"
 
 #include "mrt/exception.h"
@@ -114,10 +113,9 @@ const float IWorld::getImpassability(Object *obj, const sdlx::Surface &surface, 
 }
 
 void IWorld::getImpassabilityMatrix(Matrix<int> &matrix) const {
-	const Map &map = Game->getMap();
-	const v3<int> size = map.getTileSize();
+	const v3<int> size = Map->getTileSize();
 	
-	map.getImpassabilityMatrix(matrix);
+	Map->getImpassabilityMatrix(matrix);
 	for(ObjectSet::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		Object *o = *i;
 		int im = (int)(o->impassability * 100);
@@ -135,7 +133,8 @@ void IWorld::getImpassabilityMatrix(Matrix<int> &matrix) const {
 }
 
 
-void IWorld::tick(WorldMap &map, const float dt) {
+void IWorld::tick(const float dt) {
+	const IMap &map = *IMap::get_instance();
 	//LOG_DEBUG(("tick dt = %f", dt));
 	for(ObjectSet::iterator i = _objects.begin(); i != _objects.end(); ) {
 		Object &o = **i;

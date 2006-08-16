@@ -4,6 +4,8 @@
 #include "world.h"
 #include "resource_manager.h"
 
+#include "tmx/map.h"
+
 #include "mrt/logger.h"
 #include "mrt/exception.h"
 
@@ -171,11 +173,12 @@ void IGame::onMenu(const std::string &name) {
 
 void IGame::loadMap(const std::string &name) {
 	_main_menu.setActive(false);
-	_map.load(name);
+	IMap &map = *IMap::get_instance();
+	map.load(name);
 	
-	const v3<int> size = _map.getSize();
+	const v3<int> size = map.getSize();
 	_players.clear();
-	for (Map::PropertyMap::iterator i = _map.properties.begin(); i != _map.properties.end(); ++i) {
+	for (IMap::PropertyMap::iterator i = map.properties.begin(); i != map.properties.end(); ++i) {
 		if (i->first.substr(0, 6) == "spawn:") {
 			v3<int> pos;
 			pos.fromString(i->second);
@@ -219,6 +222,7 @@ const int IGame::spawnPlayer(const std::string &classname, const std::string &an
 
 void IGame::run() {
 	SDL_Event event;
+	IMap &map = *IMap::get_instance();
 
 	sdlx::Rect window_size = _window.getSize();
 	sdlx::Rect viewport = _window.getSize();
@@ -271,7 +275,7 @@ void IGame::run() {
 		
 		
 		if (_running && !_paused) {
-			World->tick(_map, dt);
+			World->tick(dt);
 			if (_server) 
 				_server->tick(dt);
 
@@ -302,9 +306,9 @@ void IGame::run() {
 		}
 		
 		_window.fillRect(window_size, black);
-		_map.render(_window, viewport, -1000, 0);
+		map.render(_window, viewport, -1000, 0);
 		World->render(_window, viewport);
-		_map.render(_window, viewport, 0, 1001);
+		map.render(_window, viewport, 0, 1001);
 
 		_main_menu.render(_window);
 		
@@ -313,8 +317,8 @@ void IGame::run() {
 		stringRGBA(_window.getSDLSurface(), 4, 4, f.c_str(), 0,0,0, 255);
 		stringRGBA(_window.getSDLSurface(), 3, 3, f.c_str(), 255, 255, 255, 255);
 		
-		if (_map.loaded()) {
-			const v3<int> world_size = _map.getSize();
+		if (map.loaded()) {
+			const v3<int> world_size = map.getSize();
 		
 			mapx += mapvx * dt;
 			mapy += mapvy * dt;
@@ -381,7 +385,7 @@ void IGame::onClient(Message &message) {
 
 	LOG_DEBUG(("sending server status message..."));
 	message.type = ServerStatus;
-	message.set("map", _map.getName());
+	message.set("map", Map->getName());
 	message.set("version", getVersion());
 
 	mrt::Serializator s;
@@ -396,7 +400,7 @@ void IGame::onMessage(const Connection &conn, const Message &message) {
 	LOG_DEBUG(("incoming message %d", message.type));
 	if (message.type == ServerStatus) {
 		LOG_DEBUG(("loading map..."));
-		_map.load(message.get("map"));
+		Map->load(message.get("map"));
 		
 		mrt::Serializator s(&message.data);
 		World->deserialize(s);

@@ -10,7 +10,7 @@
 using namespace mrt;
 
 const std::string mrt::formatString(const char *fmt, ...) {
-	char buf[1024];
+	char buf[4096];
 	memset(buf, 0, sizeof(buf));
 	
 	va_list ap;

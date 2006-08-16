@@ -31,7 +31,6 @@ class Rect;
 }
 
 class Object;
-class WorldMap;
 
 class IWorld : public mrt::Serializable {
 public:
@@ -43,7 +42,7 @@ public:
 	const bool getInfo(const Object *, v3<float> &pos, v3<float> &vel) const;
 	
 	void render(sdlx::Surface &surface, const sdlx::Rect &viewport);
-	void tick(WorldMap &map, const float dt);
+	void tick(const float dt);
 	
 	const Object * spawn(Object *src, const std::string &classname, const std::string &animation, const v3<float> &dpos, const v3<float> &vel);
 	

@@ -6,8 +6,9 @@
 #include <stack>
 #include "mrt/xml.h"
 #include "mrt/chunk.h"
-#include "world_map.h"
 #include "math/v3.h"
+#include "math/matrix.h"
+#include "mrt/singleton.h"
 
 namespace sdlx {
 class Surface;
@@ -18,12 +19,14 @@ class TMXEntity;
 class Layer;
 class Object;
 
-class Map : public WorldMap, protected mrt::XMLParser {
+class IMap : protected mrt::XMLParser {
 public:
+	DECLARE_SINGLETON(IMap);
+	
 	typedef std::map<const std::string, std::string> PropertyMap;
 	PropertyMap properties;
 
-	~Map();
+	~IMap();
 	void clear();
 	void load(const std::string &name);
 	const std::string & getName() const { return _name; }
@@ -38,8 +41,11 @@ public:
 	const v3<int> getTileSize() const;
 	
 	virtual const int getImpassability(const sdlx::Surface &object_surf, const v3<int>& pos) const;
-	
+	void getImpassabilityMatrix(Matrix<int> &matrix) const { matrix = _imp_map; }
+	static const int pathfinding_step;
+
 private:
+	Matrix<int> _imp_map;
 	const bool collides(const sdlx::Surface&, const int dx, const int dy, const unsigned tid) const;
 
 	long _w, _h, _tw, _th, _firstgid;
@@ -68,6 +74,8 @@ private:
 	
 	std::string _name;
 };
+
+SINGLETON(Map, IMap);
 
 #endif
 
