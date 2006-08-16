@@ -114,3 +114,7 @@ const float BaseObject::getCollisionTime(const v3<float> &dpos, const v3<float> 
 	return -4;
 }
 
+void BaseObject::convertToAbsolute(v3<float> &pos, const v3<float> &dpos) {
+	pos = _position;
+	pos += dpos;
+}

@@ -37,8 +37,11 @@ public:
 	}
 	
 	inline void set(const int y, const int x, const T v) {
-		if (x < 0 || x >= _w || y < 0 || y > _h) 
+		if (x < 0 || x >= _w || y < 0 || y > _h) {
+			if (_use_default)
+				return;
 			throw_ex(("set(%d, %d) is out of bounds", y, x));
+		}
 		
 		register int idx = y * _w + x;
 		register T *ptr = (T*) _data.getPtr();

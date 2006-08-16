@@ -139,7 +139,7 @@ void IMap::load(const std::string &name) {
 			
 		}
 	}
-	LOG_DEBUG(("\n%s", _imp_map.dump().c_str()));
+	//LOG_DEBUG(("\n%s", _imp_map.dump().c_str()));
 	
 	LOG_DEBUG(("loading completed"));
 }

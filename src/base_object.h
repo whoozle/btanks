@@ -52,6 +52,8 @@ public:
 	
 	const std::string dump() const;
 	void inheritParameters(const BaseObject *other);
+	void convertToAbsolute(v3<float> &pos, const v3<float> &dpos);
+	
 protected:
 	int _id;
 	

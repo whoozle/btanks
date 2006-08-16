@@ -1,11 +1,10 @@
 #ifndef __BTANKS_AIPLAYER_H__
 #define __BTANKS_AIPLAYER_H__
 
-#include "player.h"
 #include "alarm.h"
 #include "base_ai.h"
 
-class AIPlayer : public Player, public BaseAI {
+class AIPlayer : public BaseAI {
 public: 
 	AIPlayer();
 	AIPlayer(const std::string &animation);

@@ -1,5 +1,4 @@
 #include "aiplayer.h"
-#include "world.h"
 
 #include "mrt/logger.h"
 #include "resource_manager.h"
@@ -8,9 +7,9 @@ REGISTER_OBJECT("ai-player", AIPlayer, ());
 
 #define REACTION_TIME (0.100)
 
-AIPlayer::AIPlayer() : Player(true), _reaction_time(REACTION_TIME, true) {}
+AIPlayer::AIPlayer() : BaseAI(true), _reaction_time(REACTION_TIME, true) {}
 
-AIPlayer::AIPlayer(const std::string &animation) : Player(animation, true), _reaction_time(REACTION_TIME, true) {}
+AIPlayer::AIPlayer(const std::string &animation) : BaseAI(animation, true), _reaction_time(REACTION_TIME, true) {}
 
 void AIPlayer::tick(const float dt) {	
 	//LOG_DEBUG(("dt = %f", dt));
@@ -19,31 +18,34 @@ void AIPlayer::tick(const float dt) {
 		return;
 	}
 	
-	{ //path-finding test
-		Matrix<int> m;
-		World->getImpassabilityMatrix(m);
-		LOG_DEBUG(("\n%s", m.dump().c_str()));
-	} 
-	
-	v3<float> pos, vel;
-	bool skip_human = false;
+	v3<float> bpos, pos, vel;
+	bool found_bullet = false;
 
-	if (getNearest("bullet", pos, vel)) {
+	if (getNearest("bullet", bpos, vel)) {
 		//LOG_DEBUG(("AAA!!!"));
-		float t = getCollisionTime(pos, vel, (size.x + size.y)*0.7);
+		float t = getCollisionTime(bpos, vel, (size.x + size.y)/2);
 		//LOG_DEBUG(("collision time: %f", t));
 		if (t >= 0) {
 			_velocity.x = -vel.y;
 			_velocity.y = vel.x;
-			skip_human = true;
+			found_bullet = true;
 		}
 	} 
-	
-	if (!skip_human) {
-	  if (getNearest("player", pos, vel)) {
+
+	if (getNearest("player", pos, vel)) {
 		//LOG_DEBUG(("found human: %f %f", pos.x, pos.y));
-		_velocity = pos;
 		
+		if (found_bullet && bpos.quick_length() < pos.quick_length()) {
+			//LOG_DEBUG(("bpos: %g, player: %g", bpos.quick_length(), pos.quick_length()));
+			goto skip_player;
+		}
+		
+		{
+			Matrix<int> path;
+			getPath(path, pos);
+		}
+
+		_velocity = pos;
 		
 		static float threshold = 12;
 		
@@ -73,8 +75,9 @@ void AIPlayer::tick(const float dt) {
 	  } else {
 	  	_velocity.clear();
 	  }
-	}
-
+	
+	skip_player:
+	
 	Player::tick(dt);
 }
 

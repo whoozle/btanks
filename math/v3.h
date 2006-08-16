@@ -107,6 +107,34 @@ public:
 		return v3<T>(x / other, y / other, z / other);
 	}
 
+	const v3<T>& operator/=(const T& other) {
+		x /= other;
+		y /= other;
+		z /= other;
+		return *this;
+	}
+
+	const v3<T>& operator*=(const T& other) {
+		x *= other;
+		y *= other;
+		z *= other;
+		return *this;
+	}
+
+	const v3<T>& operator+=(const T& other) {
+		x += other;
+		y += other;
+		z += other;
+		return *this;
+	}
+
+	const v3<T>& operator-=(const T& other) {
+		x -= other;
+		y -= other;
+		z -= other;
+		return *this;
+	}
+
 private:
 	static inline int c2d(const T c) {
 		if (c > 0.9238795325112867385) //cos(22.5)
