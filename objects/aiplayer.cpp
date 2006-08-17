@@ -49,12 +49,13 @@ void AIPlayer::tick(const float dt) {
 		}
 		
 		if (!way.empty()) {
-			LOG_DEBUG(("finding path..."));
+			//LOG_DEBUG(("finding path..."));
+			way.pop_back();
 			setWay(way);
 		} else {	
 			if (!isDriven()) {
-				_velocity = pos; //straight to player.
-				//LOG_WARN(("no path."));
+				//_velocity = pos; //straight to player.
+				LOG_WARN(("no path."));
 			}
 		} 
 

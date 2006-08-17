@@ -80,7 +80,7 @@ void Player::tick(const float dt) {
 	
 	if (_stateless) {
 		_velocity.normalize();
-		LOG_DEBUG(("_velocity: %g %g", _velocity.x, _velocity.y));
+		//LOG_DEBUG(("_velocity: %g %g", _velocity.x, _velocity.y));
 		
 		v3<float>::quantize(_velocity.x);	
 		v3<float>::quantize(_velocity.y);
