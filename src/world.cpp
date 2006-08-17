@@ -223,8 +223,11 @@ void IWorld::tick(const float dt) {
 			continue;
 		}
 		
-
-		o._position += dpos * map_im * (1 - obj_im);
+		dpos *= map_im * (1 - obj_im);
+		if (o._distance > 0) {
+			o._distance -= dpos.length();
+		}
+		o._position += dpos;
 		++i;
 	}
 }

@@ -79,6 +79,9 @@ void Player::tick(const float dt) {
 	//AI player will be easier to implement if operating directly with velocity
 	
 	if (_stateless) {
+		_velocity.normalize();
+		LOG_DEBUG(("_velocity: %g %g", _velocity.x, _velocity.y));
+		
 		v3<float>::quantize(_velocity.x);	
 		v3<float>::quantize(_velocity.y);
 		
@@ -135,6 +138,8 @@ void Player::tick(const float dt) {
 		Game->notify(_state);
 	
 	_state.fire = false;
+
+	//LOG_DEBUG(("_velocity: %g %g", _velocity.x, _velocity.y));
 	
 	Object::tick(dt);
 }

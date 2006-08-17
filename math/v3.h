@@ -23,7 +23,7 @@ public:
 	}
 	
 	const T normalize() {
-		T len = lenght();
+		T len = length();
 		if (len == 0 || len == 1) 
 			return len;
 		
@@ -33,7 +33,7 @@ public:
 		return 1;
 	}
 	
-	const T lenght() const {
+	const T length() const {
 		if (x == 0 && y == 0 && z == 0) 
 			return 0;
 		

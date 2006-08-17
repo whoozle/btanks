@@ -57,9 +57,11 @@ public:
 protected:
 	int _id;
 	void getPosition(v3<float> &position);
+	inline const v3<float> & getPosition() { return _position; }
 	void getPosition(v3<int> &position);
 	
 	v3<float> _velocity, _old_velocity, _direction;
+	float _distance;
 private:
 	bool _dead;
 	v3<float> _position;

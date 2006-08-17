@@ -12,7 +12,7 @@ public:
 	virtual void tick(const float dt);
 	virtual Object * clone(const std::string &opt) const;
 private: 
-	Alarm _reaction_time;
+	Alarm _reaction_time, _refresh_waypoints;
 };
 
 #endif

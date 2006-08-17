@@ -7,10 +7,13 @@
 REGISTER_OBJECT("ai-player", AIPlayer, ());
 
 #define REACTION_TIME (0.100)
+#define PATHFINDING_TIME (0.200)
 
-AIPlayer::AIPlayer() : BaseAI(true), _reaction_time(REACTION_TIME, true) {}
+AIPlayer::AIPlayer() : BaseAI(true), 
+	_reaction_time(REACTION_TIME, true), _refresh_waypoints(PATHFINDING_TIME, true) {}
 
-AIPlayer::AIPlayer(const std::string &animation) : BaseAI(animation, true), _reaction_time(REACTION_TIME, true) {}
+AIPlayer::AIPlayer(const std::string &animation) : BaseAI(animation, true), 
+	_reaction_time(REACTION_TIME, true), _refresh_waypoints(PATHFINDING_TIME, true)  {}
 
 void AIPlayer::tick(const float dt) {	
 	//LOG_DEBUG(("dt = %f", dt));
@@ -34,7 +37,10 @@ void AIPlayer::tick(const float dt) {
 	} 
 
 	Way way;
-	if (getNearest("player", pos, vel, &way)) {
+	
+	bool refresh_path = _refresh_waypoints.tick(dt);
+	
+	if (getNearest("player", pos, vel, (refresh_path || !isDriven())?&way:0)) {
 		//LOG_DEBUG(("found human: %f %f", pos.x, pos.y));
 		
 		if (found_bullet && bpos.quick_length() < pos.quick_length()) {
@@ -43,57 +49,27 @@ void AIPlayer::tick(const float dt) {
 		}
 		
 		if (!way.empty()) {
-			//LOG_DEBUG(("path finding turned on"));
-			v3<float> me;
-			getPosition(me);
-/*			const WayPoint &wp = *way.begin();
-			LOG_DEBUG(("way point: %g %g --> %d %d (%d:%d)", me.x, me.y, wp.x, wp.y, wp.y/IMap::pathfinding_step, wp.x/IMap::pathfinding_step));
-			_velocity.x = wp.x - me.x;
-			_velocity.y = wp.y - me.y;
-			goto skip_player;
-*/
-			LOG_DEBUG(("%d waypoints", way.size()));
-			sdlx::Rect mr(me.x, me.y, size.x, size.y);
-
-			Way::reverse_iterator dst_it = way.rend();
-			for(Way::reverse_iterator i = way.rbegin(); i != way.rend(); ++i) {
-				LOG_DEBUG(("%d %d %d %d", i->x, i->y, (int)me.x, (int)me.y));
-				sdlx::Rect wr(i->x, i->y, IMap::pathfinding_step, IMap::pathfinding_step);
-				if (wr.in(me.x, me.y)) {
-					break;
-				}
-				dst_it = i;
-			}
-			assert (dst_it != way.rend());
-			const WayPoint &wp = *dst_it;
-			
-			LOG_DEBUG(("got waypoint: %d %d", wp.x, wp.y));
-			_velocity.x = wp.x - me.x;
-			_velocity.y = wp.y - me.y;
-			_velocity.normalize();
-			LOG_DEBUG(("vel : %g %g", _velocity.x, _velocity.y));
-			goto skip_player;
+			LOG_DEBUG(("finding path..."));
+			setWay(way);
 		} else {	
-			_velocity.clear();
-			LOG_WARN(("no path."));
-			//throw_ex(("byebye"));
-			goto skip_player;
+			if (!isDriven()) {
+				_velocity = pos; //straight to player.
+				//LOG_WARN(("no path."));
+			}
 		} 
 
-		_velocity = pos;
-		
 		static float threshold = 12;
 		
-		if (_velocity.x >= -threshold && _velocity.x <= threshold) { 
-			_velocity.x = 0;
+		if (pos.x >= -threshold && pos.x <= threshold) { 
+			pos.x = 0;
 			_state.fire = true;
 		}
-		if (_velocity.y >= -threshold && _velocity.y <= threshold) {
-			_velocity.y = 0;
+		if (pos.y >= -threshold && pos.y <= threshold) {
+			pos.y = 0;
 			_state.fire = true;
 		}
 
-		float tg = _velocity.x != 0 ?(_velocity.y / _velocity.x - 1):100;
+		float tg = pos.x != 0 ?(pos.y / pos.x - 1):100;
 		if (tg < 0) tg = -tg;
 		
 		//LOG_DEBUG(("tg = %f", tg));
@@ -101,12 +77,13 @@ void AIPlayer::tick(const float dt) {
 			_state.fire = true;
 		}
 		
-		if (_velocity.lenght() < 100) {
-			_velocity.clear();
+		if (pos.length() < 100) {
+			pos.clear();
 			Player::tick(dt);
 			return;
 		}
-		//LOG_DEBUG(("v: %f %f", _velocity.x, _velocity.y));
+
+		//LOG_DEBUG(("v: %f %f", pos.x, pos.y));
 	  } else {
 	  	_velocity.clear();
 	  }

@@ -63,6 +63,9 @@ protected:
 
 	const Object * spawn(const std::string &classname, const std::string &animation, const v3<float> &dpos, const v3<float> &vel);
 	const bool getNearest(const std::string &classname, v3<float> &position, v3<float> &velocity, Way * way = NULL) const;
+	
+	void setWay(const Way & way);
+	const bool isDriven() const;
 
 private: 
 	struct Event : public mrt::Serializable {
@@ -87,6 +90,9 @@ private:
 	int _tw, _th;
 	int _direction_idx;
 	float _pos;
+	
+	//waypoints stuff
+	Way _way;
 };
 
 
