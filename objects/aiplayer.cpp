@@ -37,7 +37,7 @@ void AIPlayer::tick(const float dt) {
 	} 
 
 	Way way;
-	const bool refresh_path = _refresh_waypoints.tick(dt) && pos.quick_length() >= 10000; //100px
+	const bool refresh_path = _refresh_waypoints.tick(dt);
 	
 	if (getNearest("player", pos, vel, (refresh_path || !isDriven())?&way:0)) {
 		//LOG_DEBUG(("found human: %f %f", pos.x, pos.y));
@@ -85,8 +85,8 @@ void AIPlayer::tick(const float dt) {
 			_state.fire = true;
 		}
 		
-		if (pos.length() < 100) {
-			pos.clear();
+		if (pos.length() < 3*IMap::pathfinding_step / 2) {
+			_velocity.clear();
 			Player::tick(dt);
 			return;
 		}

@@ -249,7 +249,8 @@ void Object::emit(const std::string &event, const BaseObject * emitter) {
 void Object::setWay(const Way & way) {
 	_way = way;
 	_distance = 0;
-	LOG_DEBUG(("set %d pending waypoints", _way.size()));
+	if (!way.empty()) 
+		LOG_DEBUG(("set %d pending waypoints", _way.size()));
 }
 
 const bool Object::isDriven() const {
