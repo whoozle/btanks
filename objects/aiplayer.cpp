@@ -37,15 +37,22 @@ void AIPlayer::tick(const float dt) {
 	} 
 
 	Way way;
-	
-	bool refresh_path = _refresh_waypoints.tick(dt);
+	const bool refresh_path = _refresh_waypoints.tick(dt) && pos.quick_length() >= 10000; //100px
 	
 	if (getNearest("player", pos, vel, (refresh_path || !isDriven())?&way:0)) {
 		//LOG_DEBUG(("found human: %f %f", pos.x, pos.y));
+		const bool player_close = pos.quick_length() < IMap::pathfinding_step * IMap::pathfinding_step * 9; //3xpathfinding step
 		
 		if (found_bullet && bpos.quick_length() < pos.quick_length()) {
 			//LOG_DEBUG(("bpos: %g, player: %g", bpos.quick_length(), pos.quick_length()));
 			goto skip_player;
+		}
+		
+		if (player_close) {
+			if (isDriven())
+				LOG_DEBUG(("player is too close, turning off waypoints..."));
+			way.clear();
+			setWay(way);
 		}
 		
 		if (!way.empty()) {
@@ -54,8 +61,8 @@ void AIPlayer::tick(const float dt) {
 			setWay(way);
 		} else {	
 			if (!isDriven()) {
-				//_velocity = pos; //straight to player.
 				LOG_WARN(("no path."));
+				_velocity = pos; //straight to player.
 			}
 		} 
 

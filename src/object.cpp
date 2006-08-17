@@ -247,9 +247,6 @@ void Object::emit(const std::string &event, const BaseObject * emitter) {
 }
 
 void Object::setWay(const Way & way) {
-	if (way.empty()) 
-		return;
-	
 	_way = way;
 	_distance = 0;
 	LOG_DEBUG(("set %d pending waypoints", _way.size()));
