@@ -163,6 +163,20 @@ void IWorld::tick(const float dt) {
 		
 		o.tick(dt);
 		
+		{
+			int f = o.getLeader();
+			if (f != 0) {
+				ObjectMap::const_iterator i = _id2obj.find(f);
+				if (i != _id2obj.end()) {
+					const Object *leader = i->second;
+					LOG_DEBUG(("following %d...", f));
+					o._direction = leader->_direction;
+					o._position = leader->_position;
+					o._velocity = leader->_velocity;
+				}
+			}
+		}
+		
 		v3<float> vel = o._velocity;
 		float len = vel.normalize();
 		o._old_velocity = vel;
@@ -245,8 +259,7 @@ const Object *IWorld::getObjectByID(const int id) const {
 	return NULL;
 }
 
-
-const Object* IWorld::spawn(Object *src, const std::string &classname, const std::string &animation, const v3<float> &dpos, const v3<float> &vel) {
+Object* IWorld::spawn(Object *src, const std::string &classname, const std::string &animation, const v3<float> &dpos, const v3<float> &vel) {
 	Object *obj = ResourceManager->createObject(classname, animation);
 	assert(obj->_owner_id == 0);
 	//LOG_DEBUG(("%s spawns %s", src->classname.c_str(), obj->classname.c_str()));

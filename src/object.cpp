@@ -22,7 +22,7 @@ void Object::Event::deserialize(const mrt::Serializator &s) {
 
 
 Object::Object(const std::string &classname) : 
-	BaseObject(classname),  _model(0), _surface(0), _direction_idx(0), _pos(0) {}
+	BaseObject(classname),  _model(0), _surface(0), _direction_idx(0), _pos(0), _follow(0) {}
 
 void Object::init(const std::string &model, const std::string &surface, const int tile_w, const int tile_h) {
 	_events.clear();
@@ -52,7 +52,7 @@ void Object::init(const Object *a) {
 }
 
 
-const Object* Object::spawn(const std::string &classname, const std::string &animation, const v3<float> &dpos, const v3<float> &vel) {
+Object* Object::spawn(const std::string &classname, const std::string &animation, const v3<float> &dpos, const v3<float> &vel) {
 	return World->spawn(this, classname, animation, dpos, vel);
 }
 
@@ -255,4 +255,12 @@ void Object::setWay(const Way & way) {
 
 const bool Object::isDriven() const {
 	return !_way.empty();
+}
+
+void Object::follow(const Object *obj) {
+	_follow = obj->_id;
+}
+
+void Object::follow(const int id) {
+	_follow = id;
 }
