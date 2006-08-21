@@ -5,15 +5,21 @@
 		<pose id="start" speed="10">1,2</pose>
 		<pose id="move">3,4,5,6,7,8</pose>
 		<pose id="fire">10, 11</pose>
-		<pose id="dead">0</pose>
 	</animation-model>
 
 	<animation-model id="launcher-animation" speed="10">
 		<pose id="hold">0</pose>
-		<pose id="start">1,2</pose>
-		<pose id="move">3,4,5,6,7,8</pose>
-		<!-- <pose id="fire">10, 11</pose> -->
-		<pose id="dead">0</pose>
+		<pose id="move">0,1,0</pose>
+	</animation-model>
+
+	<animation-model id="smoke-animation" speed="10">
+		<pose id="main">0,1,2,3,4</pose>
+	</animation-model>
+
+	<animation-model id="rocket-on-vehicle-animation" speed="10">
+		<pose id="rocket-1">0,1,1</pose>
+		<pose id="rocket-2">2,3,3</pose>
+		<pose id="rocket-3">3,4,5</pose>
 	</animation-model>
 
 	<animation-model id="bullet-animation" speed="1">
