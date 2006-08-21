@@ -79,10 +79,13 @@ private:
 
 SINGLETON(ResourceManager, IResourceManager);
 
-#define REGISTER_OBJECT(name, classname, args) class classname##Registrar {\
+#define CONCATENATE(x, y) CONCATENATE_DIRECT(x, y) 
+#define CONCATENATE_DIRECT(x, y) x##y
+
+#define REGISTER_OBJECT(name, classname, args) class CONCATENATE(classname##Registrar, __LINE__) {\
 public: \
-	classname##Registrar() { TRY { ResourceManager->registerObject(name, new classname args); } CATCH("registering class", throw;) } \
-} instance_of_##classname##Registrar
+	CONCATENATE(classname##Registrar, __LINE__)() { TRY { ResourceManager->registerObject(name, new classname args); } CATCH("registering class", throw;) } \
+} CONCATENATE(instance_of_##classname##Registrar, __LINE__)
 
 #endif
 
