@@ -16,7 +16,7 @@
 		<pose id="main">0,1,2,3,4</pose>
 	</animation-model>
 
-	<animation-model id="rocket-on-vehicle-animation" speed="10">
+	<animation-model id="rockets-in-vehicle-animation" speed="10">
 		<pose id="rocket-1">0,1,1</pose>
 		<pose id="rocket-2">2,3,3</pose>
 		<pose id="rocket-3">3,4,5</pose>
@@ -46,16 +46,18 @@
 	<animation id="yellow-tank" tile="Tank_tile5.png" model="tank-animation"/>
 	<animation id="cyan-tank" tile="Tank_tile6.png" model="tank-animation"/>
 
-	<animation id="green-launcher" tile="Launcher_tile1.png" model="launcher-animation"/>
-
 	<animation id="dead-green-tank" tile="Tank_tile3_dead.png" model="single-tile"/>
 	<animation id="dead-red-tank" tile="Tank_tile4_dead.png" model="single-tile"/>
 	<animation id="dead-yellow-tank" tile="Tank_tile5_dead.png" model="single-tile"/>
 	<animation id="dead-cyan-tank" tile="Tank_tile6_dead.png" model="single-tile"/>
+
+	<animation id="green-launcher" tile="Launcher_tile1.png" model="launcher-animation"/>
 	
 	<animation id="bullet" tile="bullet_tile.png" model="bullet-animation"/>
 	<animation id="explosion" tile="explosion.png" model="explosion-animation" />
 	<animation id="traffic-lights" tile="traffic_lights_tile.png" model="traffic-lights-animation"/>
+	<animation id="smoke" tile="Smoke_tile1.png" model="smoke-animation" />
+	<animation id="rockets-in-vehicle" tile="Rocket_tile1.png" model="rockets-in-vehicle-animation" />
 	
 	<object class="player" speed="400" mass="10" hp="5" />
 	<object class="key-player" parent="player" />
