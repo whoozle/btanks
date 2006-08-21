@@ -26,6 +26,10 @@
 #include <SDL/SDL_gfxPrimitives.h>
 #include <SDL/SDL_opengl.h>
 #include <SDL/SDL_net.h>
+#include "objects/player.h"
+
+#include "controls/joyplayer.h"
+#include "controls/keyplayer.h"
 
 IMPLEMENT_SINGLETON(Game, IGame)
 
@@ -146,15 +150,15 @@ void IGame::onMenu(const std::string &name) {
 		LOG_DEBUG(("start single player requested"));
 		loadMap("country");
 		
-		_my_index = spawnPlayer("key-player", "green-tank");
-		spawnPlayer("ai-player", "red-tank");
+		_my_index = spawnPlayer("player", "green-tank", "keys");
+		spawnPlayer("ai-player", "red-tank", "ai");
 		//spawnPlayer("ai-player", "yellow-tank");
 		//spawnPlayer("ai-player", "cyan-tank");
 	} else if (name == "m-start") {
 		LOG_DEBUG(("start multiplayer server requested"));
 		loadMap("country");
 
-		_my_index = spawnPlayer("key-player", "green-tank");
+		_my_index = spawnPlayer("player", "green-tank", "keys");
 		
 		_server = new Server;
 		_server->init(9876);
@@ -204,7 +208,7 @@ void IGame::loadMap(const std::string &name) {
 	}
 }
 
-const int IGame::spawnPlayer(const std::string &classname, const std::string &animation) {
+const int IGame::spawnPlayer(const std::string &classname, const std::string &animation, const std::string &control_method) {
 	size_t i, n = _players.size();
 	for(i = 0; i < n; ++i) {
 		if (_players[i].obj == NULL)
@@ -213,9 +217,21 @@ const int IGame::spawnPlayer(const std::string &classname, const std::string &an
 	if (i == n) 
 		throw_ex(("no available slots found from %d", n));
 	PlayerSlot &slot = _players[i];
+
+	delete slot.control_method;
+	slot.control_method = NULL;
+	
+	if (control_method == "keys") {
+		slot.control_method = new KeyPlayer(SDLK_UP, SDLK_DOWN, SDLK_LEFT, SDLK_RIGHT, SDLK_SPACE);
+	} else if (control_method != "ai" && control_method != "net") {
+		throw_ex(("unknown control method '%s' used", control_method.c_str()));
+	}
+	LOG_DEBUG(("player: %s.%s using control method: %s", classname.c_str(), animation.c_str(), control_method.c_str()));
 	Object *obj = ResourceManager->createObject(classname, animation);
 	World->addObject(obj, slot.position.convert<float>());
-	slot.obj = obj;
+
+	slot.obj = dynamic_cast<Player *>(obj);
+	assert(slot.obj != NULL);
 	return i;
 }
 
@@ -275,6 +291,16 @@ void IGame::run() {
 		
 		
 		if (_running && !_paused) {
+			{
+				//updating all player states.
+				for(std::vector<PlayerSlot>::iterator i = _players.begin(); i != _players.end(); ++i) {
+					PlayerSlot &slot = *i;
+					if (slot.control_method != NULL) {
+						slot.control_method->updateState(slot.obj->getPlayerState());
+					}
+				}
+			}
+		
 			World->tick(dt);
 			if (_server) 
 				_server->tick(dt);
@@ -380,7 +406,7 @@ void IGame::notify(const PlayerState& state) {
 void IGame::onClient(Message &message) {
 	const std::string an = "red-tank";
 	LOG_DEBUG(("new client! spawning player:%s", an.c_str()));
-	const int client_id = spawnPlayer("player", an);
+	const int client_id = spawnPlayer("stateless-player", an, "network");
 	LOG_DEBUG(("client #%d", client_id));
 
 	LOG_DEBUG(("sending server status message..."));
@@ -412,7 +438,9 @@ void IGame::onMessage(const Connection &conn, const Message &message) {
 		const Object * obj = World->getObjectByID(my_id);
 		if (obj == NULL) 
 			throw_ex(("invalid object id returned from server. (%d)", my_id));
-		_players.push_back(obj);
+		Player *player = dynamic_cast<Player *>(const_cast<Object *>(obj));
+		assert(player != NULL);
+		_players.push_back(player);
 		LOG_DEBUG(("players = %d", _players.size()));
 	} else if (message.type == UpdateWorld) {
 		mrt::Serializator s(&message.data);

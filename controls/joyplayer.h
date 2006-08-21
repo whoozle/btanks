@@ -1,5 +1,5 @@
-#ifndef __BT_KEYPLAYER_H__
-#define __BT_KEYPLAYER_H__
+#ifndef __BTANKS_JOYPLAYER_H__
+#define __BTANKS_JOYPLAYER_H__
 /* Battle Tanks Game
  * Copyright (C) 2006 Battle Tanks team
  *
@@ -18,20 +18,17 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+#include "control_method.h"
 #include "sdlx/joystick.h"
-#include "player.h"
 
-class Object;
-
-class KeyPlayer : public Player {
+class JoyPlayer :public ControlMethod {
 public:
-	KeyPlayer();
-	KeyPlayer(const std::string &animation, SDLKey up, SDLKey down, SDLKey left, SDLKey right, SDLKey fire);
-	virtual Object * clone(const std::string &opt) const;
-
+	JoyPlayer(const int idx, const int fire);
+	virtual void updateState(PlayerState &state);
+	
 private:
-	void onKey(const Uint8 type, const SDL_keysym sym);
-	SDLKey _up, _down, _left, _right, _fire;
+	sdlx::Joystick _joy;
+	int _fire;
 };
 
 #endif

@@ -32,7 +32,9 @@ class PlayerState;
 class Message;
 class Server;
 class Client;
+class Player;
 class Connection;
+class ControlMethod;
 
 class IGame {
 public: 
@@ -65,11 +67,12 @@ private:
 	MainMenu _main_menu;
 	
 	void loadMap(const std::string &name);	
-	const int spawnPlayer(const std::string &classname, const std::string &animation);
+	const int spawnPlayer(const std::string &classname, const std::string &animation, const std::string &method);
 	struct PlayerSlot {
-		PlayerSlot() : obj(NULL) {}
-		PlayerSlot(const Object *obj) : obj(obj) {}
-		const Object * obj;
+		PlayerSlot() : obj(NULL), control_method(NULL) {}
+		PlayerSlot(Player *obj) : obj(obj), control_method(NULL) {}
+		Player * obj;
+		ControlMethod * control_method;
 		v3<int> position;
 	};
 	
