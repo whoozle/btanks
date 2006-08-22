@@ -3,7 +3,7 @@
 
 class Bullet : public Object {
 public:
-	Bullet() : Object("bullet") {}
+	Bullet() : Object("bullet", true) {}
 	virtual void tick(const float dt);
 	virtual Object * clone(const std::string &opt) const;
 	virtual void emit(const std::string &event, const BaseObject * emitter = NULL);

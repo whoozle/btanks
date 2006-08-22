@@ -45,7 +45,7 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 			s = NULL;
 			
 			LOG_DEBUG(("loaded animation '%s' from '%s'", id.c_str(), fname.c_str()));
-			_animations[id] = new Object(id);
+			_animations[id] = new Object(id, false);
 			_animations[id]->init(model, attr["tile"], tw, th);
 		} CATCH("animation", { delete s; s = NULL; });
 	} else if (name == "animation-model") {

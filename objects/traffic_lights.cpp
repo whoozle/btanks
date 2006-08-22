@@ -3,7 +3,7 @@
 
 class TrafficLights : public Object {
 public:
-	TrafficLights() : Object("traffic-lights"), _idx(-1) {}
+	TrafficLights() : Object("traffic-lights", false), _idx(-1) {}
 	virtual void tick(const float dt);
 	virtual Object * clone(const std::string &opt) const;
 	virtual void emit(const std::string &event, const BaseObject * emitter = NULL);

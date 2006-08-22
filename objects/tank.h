@@ -36,7 +36,6 @@ public:
 	
 private:
 	Alarm _fire;
-	std::string _animation;
 };
 
 #endif

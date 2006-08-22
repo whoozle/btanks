@@ -70,6 +70,8 @@ protected:
 	v3<float> _velocity, _old_velocity, _direction;
 	float _distance;
 private:
+	void updateState();
+
 	bool _dead;
 	v3<float> _position;
 	int _owner_id;

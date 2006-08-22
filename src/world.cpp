@@ -161,6 +161,7 @@ void IWorld::tick(const float dt) {
 			continue;
 		}
 		
+		o.updateState();
 		o.tick(dt);
 		
 		{

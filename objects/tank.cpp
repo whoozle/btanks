@@ -32,7 +32,7 @@ void Tank::emit(const std::string &event, const BaseObject * emitter) {
 		LOG_DEBUG(("dead"));
 		cancelAll();
 		//play("dead", true);
-		spawn("corpse", "dead-" + _animation, v3<float>(0,0,-0.5), v3<float>(0,0,0));
+		spawn("corpse", "dead-" + animation, v3<float>(0,0,-0.5), v3<float>(0,0,0));
 		_velocity.x = _velocity.y = _velocity.z = 0;
 		Object::emit(event, emitter);
 	} else if (event == "collision") {
@@ -52,29 +52,6 @@ void Tank::emit(const std::string &event, const BaseObject * emitter) {
 void Tank::tick(const float dt) {
 	bool fire_possible = _fire.tick(dt);
 	bool notify = false;
-	//AI player will be easier to implement if operating directly with velocity
-	
-	if (_stateless) {
-		_velocity.normalize();
-		//LOG_DEBUG(("_velocity: %g %g", _velocity.x, _velocity.y));
-		
-		v3<float>::quantize(_velocity.x);	
-		v3<float>::quantize(_velocity.y);
-		
-		_state.left = _velocity.x == -1;
-		_state.right = _velocity.x == 1;
-		_state.up = _velocity.y == -1;
-		_state.down = _velocity.y == 1;
-	}
-	
-	_velocity.clear();
-	
-	if (_state.left) _velocity.x -= 1;
-	if (_state.right) _velocity.x += 1;
-	if (_state.up) _velocity.y -= 1;
-	if (_state.down) _velocity.y += 1;
-	
-	_velocity.normalize();
 	
 	if (getState().empty()) {
 		play("hold", true);

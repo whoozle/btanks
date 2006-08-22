@@ -266,8 +266,8 @@ void Object::follow(const int id) {
 }
 
 void Object::setup(const std::string &a) {
+	ResourceManager->initMe(this, a);
 	animation = a;
-	ResourceManager->initMe(this, animation);
 	
 	memset(&_state, 0, sizeof(_state));
 	_events.clear();

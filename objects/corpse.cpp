@@ -3,7 +3,7 @@
 
 class Corpse : public Object {
 public:
-	Corpse() : Object("corpse") {}
+	Corpse() : Object("corpse", true) {}
 	virtual Object * clone(const std::string &opt) const;
 	virtual void emit(const std::string &event, const BaseObject * emitter = NULL);
 };
