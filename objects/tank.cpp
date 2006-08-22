@@ -1,59 +1,38 @@
 #include <assert.h>
-#include "player.h"
 #include "resource_manager.h"
 #include "object.h"
 #include "world.h"
 #include "game.h"
+#include "tank.h"
 
-REGISTER_OBJECT("player", Player, (false));
-REGISTER_OBJECT("stateless-player", Player, (true));
+REGISTER_OBJECT("tank", Tank, (false));
 
-Player::Player(const bool stateless) 
-: Object("player"), _stale(false), _stateless(stateless), _fire(0.5, false) {}
-
-void Player::setup(const std::string &animation) {
-	_animation = animation;
-	ResourceManager->initMe(this, animation);
-	
-	LOG_DEBUG(("player %p: %s", (void *)this, classname.c_str()));
-	
-	
-	memset(&_state, 0, sizeof(_state));
-	//speed = 300;
-	//	hp = 5;
-	//ttl = 1;
-
-	//_animation = ResourceManager->createAnimation(animation);
-	play("hold", true);
+Tank::Tank(const bool stateless) 
+: Object("player", stateless), _fire(0.5, false) {
 }
 
-
-Player::Player(const std::string &animation, const bool stateless) 
-: Object("player"), _stale(false), _stateless(stateless), _fire(0.5, false), _animation(animation) {
+Tank::Tank(const std::string &animation, const bool stateless) 
+: Object("player", stateless), _fire(0.5, false) {
 	setup(animation);
 }
 
-Object * Player::clone(const std::string &opt) const {
-	Player *p = NULL;
+Object * Tank::clone(const std::string &opt) const {
+	Tank *p = NULL;
 	TRY { 
 		//LOG_DEBUG(("cloning player with animation '%s'", opt.c_str()));
-		p = new Player(*this);
+		p = new Tank(*this);
 		p->setup(opt);
 	} CATCH("clone", { delete p; throw; });
 	return p;
 }
 
 
-void Player::emit(const std::string &event, const BaseObject * emitter) {
-	if (_stale)
-		return;
-	
+void Tank::emit(const std::string &event, const BaseObject * emitter) {
 	if (event == "death") {
 		LOG_DEBUG(("dead"));
 		cancelAll();
 		//play("dead", true);
 		spawn("corpse", "dead-" + _animation, v3<float>(0,0,-0.5), v3<float>(0,0,0));
-		_stale = true;
 		_velocity.x = _velocity.y = _velocity.z = 0;
 		Object::emit(event, emitter);
 	} else if (event == "collision") {
@@ -70,11 +49,7 @@ void Player::emit(const std::string &event, const BaseObject * emitter) {
 
 
 
-void Player::tick(const float dt) {
-	if (_stale) {
-		_velocity.clear();
-		return;
-	}
+void Tank::tick(const float dt) {
 	bool fire_possible = _fire.tick(dt);
 	bool notify = false;
 	//AI player will be easier to implement if operating directly with velocity
@@ -100,6 +75,10 @@ void Player::tick(const float dt) {
 	if (_state.down) _velocity.y += 1;
 	
 	_velocity.normalize();
+	
+	if (getState().empty()) {
+		play("hold", true);
+	}
 	
 	if (_velocity != _old_velocity) {
 		int dir = v3<float>::getDirection8(_velocity);
@@ -145,8 +124,3 @@ void Player::tick(const float dt) {
 	Object::tick(dt);
 }
 
-PlayerState & Player::getPlayerState() {
-	if (_stateless) 
-		throw_ex(("cannot getPlayerState for `stateless` player."));
-	return _state;
-}

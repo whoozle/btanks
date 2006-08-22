@@ -34,7 +34,7 @@ class Object : public BaseObject {
 public:
 	std::string animation;
 
-	Object(const std::string &classname);
+	Object(const std::string &classname, const bool stateless = false);
 	void init(const std::string &model, const std::string &surface, const int tile_w, const int tile_h);
 	void init(const Object *other);
 	virtual Object * clone(const std::string &opt) const;
@@ -70,6 +70,8 @@ protected:
 	
 	void setWay(const Way & way);
 	const bool isDriven() const;
+
+	void setup(const std::string &animation);
 
 private: 
 	struct Event : public mrt::Serializable {

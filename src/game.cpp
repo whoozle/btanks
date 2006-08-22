@@ -26,7 +26,6 @@
 #include <SDL/SDL_gfxPrimitives.h>
 #include <SDL/SDL_opengl.h>
 #include <SDL/SDL_net.h>
-#include "objects/player.h"
 
 #include "controls/joyplayer.h"
 #include "controls/keyplayer.h"
@@ -150,8 +149,8 @@ void IGame::onMenu(const std::string &name) {
 		LOG_DEBUG(("start single player requested"));
 		loadMap("country");
 		
-		_my_index = spawnPlayer("player", "green-tank", "keys");
-		spawnPlayer("ai-player", "red-tank", "ai");
+		_my_index = spawnPlayer("tank", "green-tank", "keys");
+		spawnPlayer("ai-tank", "red-tank", "ai");
 		//spawnPlayer("ai-player", "yellow-tank");
 		//spawnPlayer("ai-player", "cyan-tank");
 	} else if (name == "m-start") {
@@ -228,10 +227,11 @@ const int IGame::spawnPlayer(const std::string &classname, const std::string &an
 	}
 	LOG_DEBUG(("player: %s.%s using control method: %s", classname.c_str(), animation.c_str(), control_method.c_str()));
 	Object *obj = ResourceManager->createObject(classname, animation);
+	assert(obj != NULL);
+
 	World->addObject(obj, slot.position.convert<float>());
 
-	slot.obj = dynamic_cast<Player *>(obj);
-	assert(slot.obj != NULL);
+	slot.obj = obj;
 	return i;
 }
 
@@ -438,7 +438,7 @@ void IGame::onMessage(const Connection &conn, const Message &message) {
 		const Object * obj = World->getObjectByID(my_id);
 		if (obj == NULL) 
 			throw_ex(("invalid object id returned from server. (%d)", my_id));
-		Player *player = dynamic_cast<Player *>(const_cast<Object *>(obj));
+		Object *player = const_cast<Object *>(obj); //fixme
 		assert(player != NULL);
 		_players.push_back(player);
 		LOG_DEBUG(("players = %d", _players.size()));

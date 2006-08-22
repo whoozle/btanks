@@ -4,21 +4,22 @@
 #include "mrt/logger.h"
 #include "resource_manager.h"
 
-REGISTER_OBJECT("ai-player", AIPlayer, ());
+REGISTER_OBJECT("ai-tank", AIPlayer, ());
 
 #define REACTION_TIME (0.100)
 #define PATHFINDING_TIME (0.200)
 
-AIPlayer::AIPlayer() : BaseAI(true), 
+AIPlayer::AIPlayer() : Tank(true), 
 	_reaction_time(REACTION_TIME, true), _refresh_waypoints(PATHFINDING_TIME, true) {}
 
-AIPlayer::AIPlayer(const std::string &animation) : BaseAI(animation, true), 
-	_reaction_time(REACTION_TIME, true), _refresh_waypoints(PATHFINDING_TIME, true)  {}
+AIPlayer::AIPlayer(const std::string &animation) : Tank(animation, true), 
+	_reaction_time(REACTION_TIME, true), _refresh_waypoints(PATHFINDING_TIME, true)  {
+}
 
 void AIPlayer::tick(const float dt) {	
 	//LOG_DEBUG(("dt = %f", dt));
 	if (!_reaction_time.tick(dt)) {
-		Player::tick(dt);
+		Tank::tick(dt);
 		return;
 	}
 	
@@ -86,7 +87,7 @@ void AIPlayer::tick(const float dt) {
 		
 		if (pos.length() < 3*IMap::pathfinding_step / 2) {
 			_velocity.clear();
-			Player::tick(dt);
+			Tank::tick(dt);
 			return;
 		}
 
@@ -97,7 +98,7 @@ void AIPlayer::tick(const float dt) {
 	
 	skip_player:
 	
-	Player::tick(dt);
+	Tank::tick(dt);
 }
 
 Object * AIPlayer::clone(const std::string &opt) const {

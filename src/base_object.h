@@ -19,8 +19,9 @@
  */
 #include <string>
 #include "math/v3.h"
-#include "mrt/serializable.h"
- 
+#include "mrt/serializable.h" 
+#include "player_state.h"
+
 namespace sdlx {
 	class Surface;
 }
@@ -35,7 +36,7 @@ public:
 	
 	std::string classname;
 	
-	BaseObject(const std::string &classname);
+	BaseObject(const std::string &classname, const bool _stateless);
 	virtual ~BaseObject();
 	
 	virtual void tick(const float dt) = 0;
@@ -53,9 +54,15 @@ public:
 	const std::string dump() const;
 	void inheritParameters(const BaseObject *other);
 	void convertToAbsolute(v3<float> &pos, const v3<float> &dpos);
-	
+
+	PlayerState & getPlayerState();
+
 protected:
 	int _id;
+
+	bool _stateless;
+	PlayerState _state;
+	
 	void getPosition(v3<float> &position);
 	inline const v3<float> & getPosition() { return _position; }
 	void getPosition(v3<int> &position);

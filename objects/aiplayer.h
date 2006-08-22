@@ -2,9 +2,9 @@
 #define __BTANKS_AIPLAYER_H__
 
 #include "alarm.h"
-#include "base_ai.h"
+#include "tank.h"
 
-class AIPlayer : public BaseAI {
+class AIPlayer : public Tank {
 public: 
 	AIPlayer();
 	AIPlayer(const std::string &animation);

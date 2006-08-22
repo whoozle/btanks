@@ -2,9 +2,9 @@
 #include "mrt/logger.h"
 #include "world.h"
 
-BaseObject::BaseObject(const std::string &classname)
+BaseObject::BaseObject(const std::string &classname, const bool stateless)
  : mass(1), speed(1), ttl(-1), impassability(1), hp(1), piercing(false), 
-   classname(classname), _id(0), _direction(1,0,0), _distance(0), _dead(false), _owner_id(0) {
+   classname(classname), _id(0), _stateless(stateless), _direction(1,0,0), _distance(0), _dead(false), _owner_id(0) {
 	//LOG_DEBUG(("allocated id %ld", _id));
 }
 
@@ -121,4 +121,8 @@ const float BaseObject::getCollisionTime(const v3<float> &dpos, const v3<float> 
 void BaseObject::convertToAbsolute(v3<float> &pos, const v3<float> &dpos) {
 	pos = _position;
 	pos += dpos;
+}
+
+PlayerState & BaseObject::getPlayerState() {
+	return _state;
 }

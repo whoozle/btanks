@@ -21,8 +21,8 @@ void Object::Event::deserialize(const mrt::Serializator &s) {
 }
 
 
-Object::Object(const std::string &classname) : 
-	BaseObject(classname),  _model(0), _surface(0), _direction_idx(0), _pos(0), _follow(0) {}
+Object::Object(const std::string &classname, const bool stateless) : 
+	BaseObject(classname, stateless),  _model(0), _surface(0), _direction_idx(0), _pos(0), _follow(0) {}
 
 void Object::init(const std::string &model, const std::string &surface, const int tile_w, const int tile_h) {
 	_events.clear();
@@ -263,4 +263,12 @@ void Object::follow(const Object *obj) {
 
 void Object::follow(const int id) {
 	_follow = id;
+}
+
+void Object::setup(const std::string &a) {
+	animation = a;
+	ResourceManager->initMe(this, animation);
+	
+	memset(&_state, 0, sizeof(_state));
+	_events.clear();
 }
