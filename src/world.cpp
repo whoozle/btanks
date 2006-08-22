@@ -165,8 +165,8 @@ void IWorld::tick(const float dt) {
 			continue;
 		}
 		
-		o.updateState();
 		o.tick(dt);
+		o.updateState();
 		
 		{
 			int f = o._follow;
