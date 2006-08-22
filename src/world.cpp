@@ -470,11 +470,11 @@ const bool IWorld::getNearest(const Object *obj, const std::string &classname, v
 
 	way->clear();
 	int x = dst.x, y = dst.y;
-	int i = -10;
+	int vi = -10;
 	
 	while ( x != src.x || y != src.y) {
 		assert(imp.get(y, x) != -1);
-		imp.set(y, x, i--);
+		imp.set(y, x, vi--);
 		way->push_front(WayPoint(x, y, 0));
 		int t = n;
 		int x2 = x, y2 = y;
