@@ -388,7 +388,7 @@ const bool IWorld::getNearest(const Object *obj, const std::string &classname, v
 	for(ObjectSet::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		const Object *o = *i;
 		//LOG_DEBUG(("%s is looking for %s. found: %s", obj->classname.c_str(), classname.c_str(), o->classname.c_str()));
-		if (o->_id == obj->_id || o->classname != classname || o->_owner_id == obj->_id) 
+		if (o->_id == obj->_id || o->classname != classname || o->_owner_id == obj->_id || obj->_owner_id == o->_id) 
 			continue;
 		
 		float d = obj->_position.quick_distance(o->_position);
