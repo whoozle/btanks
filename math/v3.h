@@ -154,13 +154,7 @@ public:
 			return 0;
 
 		int x = c2d(v.x) + 1;
-		if (v.y <= 0) 
-			return x;
-		else {
-			//LOG_DEBUG(("%d %d", x, 10 - x));
-			return 10 - x;
-		}
-		return 0;
+		return (v.y <= 0 || x == 1)? x: 10 - x;
 	}
 
 	static void quantize(T &x) {
