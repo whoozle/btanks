@@ -35,7 +35,7 @@ void Launcher::onSpawn() {
 }
 
 
-void Launcher::emit(const std::string &event, const BaseObject * emitter) {
+void Launcher::emit(const std::string &event, BaseObject * emitter) {
 	if (event == "death") {
 		_smoke->emit(event, this);
 		_rockets->emit(event, this);
@@ -56,6 +56,10 @@ void Launcher::emit(const std::string &event, const BaseObject * emitter) {
 			if (hp <= 0) 
 				emit("death", emitter);
 		}
+	} else if (event == "launch") {
+		v3<float> v = _velocity.is0()?_direction:_velocity;
+		v.normalize();
+		spawn("rocket", "rocket", v3<float>(0,0,1), v);
 	} else Object::emit(event, emitter);
 }
 

@@ -27,7 +27,7 @@ Object * Tank::clone(const std::string &opt) const {
 }
 
 
-void Tank::emit(const std::string &event, const BaseObject * emitter) {
+void Tank::emit(const std::string &event, BaseObject * emitter) {
 	if (event == "death") {
 		LOG_DEBUG(("dead"));
 		cancelAll();

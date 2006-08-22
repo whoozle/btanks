@@ -5,10 +5,10 @@ class SinglePose : public Object {
 public:
 	SinglePose() : Object("single-pose", true) {}
 	virtual Object * clone(const std::string &opt) const;
-	virtual void emit(const std::string &event, const BaseObject * emitter = NULL);
+	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
 };
 
-void SinglePose::emit(const std::string &event, const BaseObject * emitter) {
+void SinglePose::emit(const std::string &event, BaseObject * emitter) {
 	if (event == "collision") {
 		if (emitter->classname == "bullet") {
 			hp -= emitter->hp;

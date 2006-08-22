@@ -80,7 +80,7 @@ void BaseObject::getPosition(v3<int> &position) {
 const bool BaseObject::isDead() const { return _dead;}
 
 
-void BaseObject::emit(const std::string &event, const BaseObject * emitter) {
+void BaseObject::emit(const std::string &event, BaseObject * emitter) {
 	if (event == "death") {
 		_velocity.clear();
 		_dead = true;
@@ -130,12 +130,13 @@ PlayerState & BaseObject::getPlayerState() {
 void BaseObject::updateState() {
 	//AI player will be easier to implement if operating directly with velocity
 	
-	if (_stateless) {
+	if (_stateless && !_velocity.is0()) {
+		//LOG_DEBUG(("class: %s", classname.c_str()));
 		_velocity.normalize();
-		//LOG_DEBUG(("_velocity: %g %g", _velocity.x, _velocity.y));
 		
 		v3<float>::quantize(_velocity.x);	
 		v3<float>::quantize(_velocity.y);
+		//LOG_DEBUG(("%s: _velocity: %g %g", classname.c_str(), _velocity.x, _velocity.y));
 		
 		_state.left = _velocity.x == -1;
 		_state.right = _velocity.x == 1;

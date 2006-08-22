@@ -158,7 +158,7 @@ void IGame::onMenu(const std::string &name) {
 		LOG_DEBUG(("start multiplayer server requested"));
 		loadMap("country");
 
-		_my_index = spawnPlayer("player", "green-tank", "keys");
+		_my_index = spawnPlayer("launcher", "green-launcher", "keys");
 		
 		_server = new Server;
 		_server->init(9876);

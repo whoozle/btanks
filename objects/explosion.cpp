@@ -6,7 +6,7 @@ public:
 	Explosion() : Object("explosion", true) {}
 	virtual void tick(const float dt);
 	virtual Object * clone(const std::string &opt) const;
-	virtual void emit(const std::string &event, const BaseObject * emitter = NULL);
+	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
 };
 
 
@@ -18,7 +18,7 @@ void Explosion::tick(const float dt) {
 	}
 }
 
-void Explosion::emit(const std::string &event, const BaseObject * emitter) {
+void Explosion::emit(const std::string &event, BaseObject * emitter) {
 	if (event == "collision") {
 		return;
 	} else Object::emit(event, emitter);
@@ -28,9 +28,8 @@ void Explosion::emit(const std::string &event, const BaseObject * emitter) {
 Object* Explosion::clone(const std::string &opt) const  {
 	Object *a = new Explosion(*this);
 	ResourceManager->initMe(a, opt);
-/*	a->speed = 0;
-	a->hp = 1000;
-*/	a->setDirection(0);
+
+	a->setDirection(0);
 	a->play("boom", false);
 	a->impassability = 0;
 	return a;

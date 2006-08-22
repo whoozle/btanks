@@ -52,7 +52,7 @@ public:
 	void cancelAll();
 	const std::string getState() const;
 
-	virtual void emit(const std::string &event, const BaseObject * emitter = NULL);
+	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
 	virtual void serialize(mrt::Serializator &s) const;
 	virtual void deserialize(const mrt::Serializator &s);
 

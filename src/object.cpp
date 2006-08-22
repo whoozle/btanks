@@ -242,7 +242,7 @@ void Object::deserialize(const mrt::Serializator &s) {
 	size.x = _tw; size.y = _th;
 }
 
-void Object::emit(const std::string &event, const BaseObject * emitter) {
+void Object::emit(const std::string &event, BaseObject * emitter) {
 	BaseObject::emit(event, emitter);
 }
 

@@ -28,7 +28,7 @@ public:
 	Launcher(const std::string &animation, const bool stateless);
 	virtual Object * clone(const std::string &opt) const;
 
-	virtual void emit(const std::string &event, const BaseObject * emitter);
+	virtual void emit(const std::string &event, BaseObject * emitter);
 	virtual void tick(const float dt);
 	virtual void onSpawn();
 	

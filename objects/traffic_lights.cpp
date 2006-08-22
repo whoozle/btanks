@@ -6,7 +6,7 @@ public:
 	TrafficLights() : Object("traffic-lights", false), _idx(-1) {}
 	virtual void tick(const float dt);
 	virtual Object * clone(const std::string &opt) const;
-	virtual void emit(const std::string &event, const BaseObject * emitter = NULL);
+	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
 private: 
 	int _idx;
 };
@@ -26,7 +26,7 @@ void TrafficLights::tick(const float dt) {
 	}
 }
 
-void TrafficLights::emit(const std::string &event, const BaseObject * emitter) {
+void TrafficLights::emit(const std::string &event, BaseObject * emitter) {
 	if (event != "collision")
 		Object::emit(event, emitter);
 }

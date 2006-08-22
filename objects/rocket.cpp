@@ -1,41 +1,47 @@
 #include "object.h"
 #include "resource_manager.h"
 
-class Bullet : public Object {
+class Rocket : public Object {
 public:
-	Bullet() : Object("bullet", true) {}
+	Rocket() : Object("bullet", true) {}
 	virtual void tick(const float dt);
 	virtual Object * clone(const std::string &opt) const;
 	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
+	void onSpawn();
 };
 
+void Rocket::onSpawn() {
+	play("main", true);
+}
 
-void Bullet::tick(const float dt) {
+
+void Rocket::tick(const float dt) {
+	v3<float> pos, vel;
+	if (getNearest("player", pos, vel, NULL)) {
+		_velocity = pos;
+	}
+
 	_velocity.normalize();
 	int dir = v3<float>::getDirection8(_velocity);
-	if (dir) {
+	if (dir > 0)
 		setDirection(dir - 1);
-	}
+
 	Object::tick(dt);
 }
 
-void Bullet::emit(const std::string &event, BaseObject * emitter) {
+void Rocket::emit(const std::string &event, BaseObject * emitter) {
 	if (event == "collision") {
 		Object::emit("death", emitter);
 	} else Object::emit(event, emitter);
 }
 
 
-Object* Bullet::clone(const std::string &opt) const  {
-	Object *a = new Bullet(*this);
+Object* Rocket::clone(const std::string &opt) const  {
+	Object *a = new Rocket(*this);
 	ResourceManager->initMe(a, opt);
-/*	a->speed = 500;
-	a->ttl = 1;
-	a->piercing = true;
-*/
-	a->play("move", true);
+
 	a->setDirection(getDirection());
 	return a;
 }
 
-REGISTER_OBJECT("bullet", Bullet, ());
+REGISTER_OBJECT("rocket", Rocket, ());

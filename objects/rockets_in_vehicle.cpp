@@ -6,7 +6,7 @@ public:
 	RocketsInVehicle() : Object("rockets-in-vehicle", true), n(3), hold(true) {}
 	virtual void tick(const float dt);
 	virtual Object * clone(const std::string &opt) const;
-	virtual void emit(const std::string &event, const BaseObject * emitter = NULL);
+	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
 	virtual void onSpawn();
 	virtual void render(sdlx::Surface &surface, const int x, const int y);
 	
@@ -40,7 +40,7 @@ void RocketsInVehicle::tick(const float dt) {
 	Object::tick(dt);
 }
 
-void RocketsInVehicle::emit(const std::string &event, const BaseObject * emitter) {
+void RocketsInVehicle::emit(const std::string &event, BaseObject * emitter) {
 	if (event == "move") {
 		hold = false;
 		updatePose();
@@ -51,6 +51,7 @@ void RocketsInVehicle::emit(const std::string &event, const BaseObject * emitter
 		if (n > 0) {
 			--n;
 			LOG_DEBUG(("launching rocket!"));
+			emitter->emit("launch", this);
 			updatePose();
 		}
 	} else if (event == "reload") {
