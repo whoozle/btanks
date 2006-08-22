@@ -25,7 +25,7 @@ if sys.platform == "win32":
 	env.Append(LINKFLAGS = ' /OPT:REF /NOLOGO ')
 	env.Append(CCFLAGS = '/Ox /Ot ') #optimizations
 	env.Append(CPPFLAGS = '/Ox /Ot ') #optimizations
-	env.Prepend(CPPPATH=' C:\\\\STLport-4.6.2\\\\stlport ')
+#	env.Prepend(CPPPATH=' C:\\\\STLport-4.6.2\\\\stlport ')
 else:
 	env.Append(CPPFLAGS=' -Wall -pedantic -ggdb3 -Wno-long-long -pipe ')
 	env.Append(CCFLAGS=' -Wall -pedantic -ggdb3 -Wno-long-long -pipe ')
