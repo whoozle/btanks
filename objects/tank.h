@@ -18,11 +18,8 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include <SDL/SDL.h>
 #include <string>
 #include "object.h"
-#include "math/v3.h"
-#include "player_state.h"
 #include "alarm.h"
 
 class Tank : public Object {
