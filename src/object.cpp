@@ -22,7 +22,7 @@ void Object::Event::deserialize(const mrt::Serializator &s) {
 
 
 Object::Object(const std::string &classname, const bool stateless) : 
-	BaseObject(classname, stateless),  _model(0), _surface(0), _direction_idx(0), _pos(0), _follow(0) {}
+	BaseObject(classname, stateless),  _model(0), _surface(0), _direction_idx(0), _pos(0) {}
 
 void Object::init(const std::string &model, const std::string &surface, const int tile_w, const int tile_h) {
 	_events.clear();
@@ -257,14 +257,6 @@ const bool Object::isDriven() const {
 	return !_way.empty();
 }
 
-void Object::follow(const Object *obj) {
-	_follow = obj->_id;
-}
-
-void Object::follow(const int id) {
-	_follow = id;
-}
-
 void Object::setup(const std::string &a) {
 	ResourceManager->initMe(this, a);
 	animation = a;
@@ -274,3 +266,7 @@ void Object::setup(const std::string &a) {
 }
 
 void Object::onSpawn() {}
+
+Object * Object::spawnGrouped(const std::string &classname, const std::string &animation, const v3<float> &dpos, const GroupType type) {
+	return World->spawnGrouped(this, classname, animation, dpos, type);
+}

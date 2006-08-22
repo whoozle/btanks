@@ -276,6 +276,24 @@ Object* IWorld::spawn(Object *src, const std::string &classname, const std::stri
 	return obj;
 }
 
+Object * IWorld::spawnGrouped(Object *src, const std::string &classname, const std::string &animation, const v3<float> &dpos, const GroupType type) {
+	Object *obj = ResourceManager->createObject(classname, animation);
+	assert(obj->_owner_id == 0);
+	obj->_owner_id = src->_id;
+	
+	obj->_follow_position = dpos;
+	switch(type) {
+		case Centered:
+			obj->_follow_position += (src->size.convert<float>() - obj->size.convert<float>())/2;
+			break;
+		case Fixed:
+			break;
+	}
+	obj->follow(src);
+	addObject(obj, obj->_position + obj->_follow_position);
+	return obj;
+}
+
 void IWorld::serialize(mrt::Serializator &s) const {
 	s.add(_objects.size());
 	for(ObjectSet::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
@@ -358,7 +376,7 @@ inline static const int check(const Matrix<int> &imp, const vertex &v, const int
 	return r * 100 / 41;
 }
 
-const bool IWorld::getNearest(const Object *obj, const std::string &classname, v3<float> &position, v3<float> &velocity, Object::Way * way) const {
+const bool IWorld::getNearest(const Object *obj, const std::string &classname, v3<float> &position, v3<float> &velocity, Way * way) const {
 	position.clear();
 	velocity.clear();
 	float distance = std::numeric_limits<float>::infinity();
@@ -454,7 +472,7 @@ const bool IWorld::getNearest(const Object *obj, const std::string &classname, v
 	while ( x != src.x || y != src.y) {
 		assert(imp.get(y, x) != -1);
 		imp.set(y, x, i--);
-		way->push_front(Object::WayPoint(x, y, 0));
+		way->push_front(WayPoint(x, y, 0));
 		int t = n;
 		int x2 = x, y2 = y;
 
@@ -499,12 +517,11 @@ const bool IWorld::getNearest(const Object *obj, const std::string &classname, v
 	//LOG_DEBUG(("imp\n%s", imp.dump().c_str()));
 	
 	
-	for(Object::Way::iterator i = way->begin(); i != way->end(); ++i) {
+	for(Way::iterator i = way->begin(); i != way->end(); ++i) {
 		(*i) *= IMap::pathfinding_step;
 	}
 	
 	//LOG_DEBUG(("getPath: length: %d, \n%s", len, result.dump().c_str()));
 	return true;
 }
-
 

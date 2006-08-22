@@ -24,13 +24,14 @@
 #include "math/v3.h"
 #include "math/matrix.h"
 #include "mrt/serializable.h"
+#include "object_common.h"
 
 namespace sdlx {
 class Surface;
 class Rect;
 }
 
-#include "object.h"
+class Object;
 
 class IWorld : public mrt::Serializable {
 public:
@@ -45,8 +46,9 @@ public:
 	void tick(const float dt);
 	
 	Object * spawn(Object *src, const std::string &classname, const std::string &animation, const v3<float> &dpos, const v3<float> &vel);
+	Object * spawnGrouped(Object *src, const std::string &classname, const std::string &animation, const v3<float> &dpos, const GroupType type);
 	
-	const bool getNearest(const Object *obj, const std::string &classname, v3<float> &position, v3<float> &velocity, Object::Way * way = NULL) const;
+	const bool getNearest(const Object *obj, const std::string &classname, v3<float> &position, v3<float> &velocity, Way * way = NULL) const;
 	const float getImpassability(Object *obj, const sdlx::Surface &surface, const v3<int> &position) const;
 	void getImpassabilityMatrix(Matrix<int> &matrix, const Object *src, const Object *dst) const;
 

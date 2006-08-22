@@ -4,7 +4,7 @@
 
 BaseObject::BaseObject(const std::string &classname, const bool stateless)
  : mass(1), speed(1), ttl(-1), impassability(1), hp(1), piercing(false), 
-   classname(classname), _id(0), _stateless(stateless), _direction(1,0,0), _distance(0), _dead(false), _owner_id(0) {
+   classname(classname), _id(0), _follow(0), _stateless(stateless), _direction(1,0,0), _distance(0), _dead(false), _owner_id(0) {
 	//LOG_DEBUG(("allocated id %ld", _id));
 }
 
@@ -152,4 +152,12 @@ void BaseObject::updateState() {
 	
 	_velocity.normalize();
 
+}
+
+void BaseObject::follow(const BaseObject *obj) {
+	_follow = obj->_id;
+}
+
+void BaseObject::follow(const int id) {
+	_follow = id;
 }

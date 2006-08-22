@@ -61,6 +61,8 @@
 	
 	<object class="tank" speed="400" mass="10" hp="5" />
 	<object class="ai-tank" parent="tank" />
+
+	<object class="launcher" speed="300" mass="10" hp="3" />
 	
 	<object class="bullet" speed="550" mass="1" piercing="true" ttl="1" />
 	<object class="corpse" speed="0" hp="10" ttl="10" />

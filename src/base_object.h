@@ -57,8 +57,14 @@ public:
 
 	PlayerState & getPlayerState();
 
+	void follow(const BaseObject *obj);
+	void follow(const int id);
+
 protected:
 	int _id;
+
+	int _follow;
+	v3<float> _follow_position;
 
 	bool _stateless;
 	PlayerState _state;

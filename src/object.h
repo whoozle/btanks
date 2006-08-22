@@ -19,9 +19,9 @@
  */
 
 #include "base_object.h"
-#include <deque>
 #include <string>
 #include "math/v3.h"
+#include "object_common.h"
 
 namespace sdlx {
 	class Surface;
@@ -56,18 +56,14 @@ public:
 	virtual void serialize(mrt::Serializator &s) const;
 	virtual void deserialize(const mrt::Serializator &s);
 
-	typedef v3<int> WayPoint;
-	typedef std::deque<WayPoint> Way;
 	const int getLeader() const { return _follow; }
 	
 	virtual void onSpawn();
 
-	void follow(const Object *obj);
-	void follow(const int id);
-
 protected:
 
 	Object * spawn(const std::string &classname, const std::string &animation, const v3<float> &dpos, const v3<float> &vel);
+	Object * spawnGrouped(const std::string &classname, const std::string &animation, const v3<float> &dpos, const GroupType type);
 
 	const bool getNearest(const std::string &classname, v3<float> &position, v3<float> &velocity, Way * way = NULL) const;
 	
@@ -100,7 +96,6 @@ private:
 	int _direction_idx;
 	float _pos;
 
-	int _follow;
 	//waypoints stuff
 	Way _way;
 };
