@@ -146,5 +146,7 @@ void Player::tick(const float dt) {
 }
 
 PlayerState & Player::getPlayerState() {
+	if (_stateless) 
+		throw_ex(("cannot getPlayerState for `stateless` player."));
 	return _state;
 }
