@@ -64,7 +64,6 @@ void RocketsInVehicle::emit(const std::string &event, const BaseObject * emitter
 Object* RocketsInVehicle::clone(const std::string &opt) const  {
 	Object *a = new RocketsInVehicle(*this);
 	ResourceManager->initMe(a, opt);
-	a->impassability = 0;
 	return a;
 }
 

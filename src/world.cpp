@@ -72,6 +72,9 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect &viewport) {
 }
 
 const float IWorld::getImpassability(Object *obj, const sdlx::Surface &surface, const v3<int> &position) const {
+	if (obj->impassability == 0)
+		return 0;
+	
 	sdlx::Rect my((int)position.x, (int)position.y,(int)obj->size.x, (int)obj->size.y);
 	float im = 0;
 	if (obj->_owner_id != 0 && _id2obj.find(obj->_owner_id) == _id2obj.end()) {
@@ -80,7 +83,7 @@ const float IWorld::getImpassability(Object *obj, const sdlx::Surface &surface, 
 	
 	for(ObjectSet::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		Object *o = *i;
-		if (o == obj) 
+		if (o == obj || o->impassability == 0) 
 			continue;
 		
 		if ((obj->_owner_id != 0 && obj->_owner_id == o->_id) || (o->_owner_id != 0 && o->_owner_id == obj->_id)) 
