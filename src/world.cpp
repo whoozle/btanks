@@ -166,14 +166,14 @@ void IWorld::tick(const float dt) {
 		o.tick(dt);
 		
 		{
-			int f = o.getLeader();
+			int f = o._follow;
 			if (f != 0) {
 				ObjectMap::const_iterator i = _id2obj.find(f);
 				if (i != _id2obj.end()) {
 					const Object *leader = i->second;
 					//LOG_DEBUG(("following %d...", f));
 					o._direction = leader->_direction;
-					o._position = leader->_position;
+					o._position = leader->_position + o._follow_position;
 					o._velocity = leader->_velocity;
 					o._old_velocity = leader->_old_velocity;
 					o.setDirection(leader->getDirection());

@@ -19,7 +19,10 @@
 	<animation-model id="rockets-in-vehicle-animation" speed="10">
 		<pose id="rocket-1">0,1,1</pose>
 		<pose id="rocket-2">2,3,3</pose>
-		<pose id="rocket-3">3,4,5</pose>
+		<pose id="rocket-3">4,5,6</pose>
+		<pose id="rocket-1-hold">0</pose>
+		<pose id="rocket-2-hold">2</pose>
+		<pose id="rocket-3-hold">4</pose>
 	</animation-model>
 
 	<animation-model id="bullet-animation" speed="1">
