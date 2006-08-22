@@ -9,6 +9,7 @@ opts.Add('CXX', 'C++ compiler')
 opts.Add('CCFLAGS', 'General options that are passed to the C compiler', '')
 opts.Add('CXXFLAGS', 'General options that are passed to the C++ compiler', '')
 opts.Add('LINKFLAGS', 'General options that are passed to the linker', '')
+opts.Add('CPPPATH', 'extra cpp path', '')
 
 opts.Update(env)
 opts.Save('options.cache', env.Copy())
@@ -24,6 +25,7 @@ if sys.platform == "win32":
 	env.Append(LINKFLAGS = ' /OPT:REF /NOLOGO ')
 	env.Append(CCFLAGS = '/Ox /Ot ') #optimizations
 	env.Append(CPPFLAGS = '/Ox /Ot ') #optimizations
+	env.Prepend(CPPPATH=' C:\\\\STLport-4.6.2\\\\stlport ')
 else:
 	env.Append(CPPFLAGS=' -Wall -pedantic -ggdb3 -Wno-long-long -pipe ')
 	env.Append(CCFLAGS=' -Wall -pedantic -ggdb3 -Wno-long-long -pipe ')
@@ -35,7 +37,7 @@ conf = Configure(conf_env)
 sigc_cpppath = ['/usr/lib/sigc++-2.0/include', '/usr/include/sigc++-2.0', '/usr/local/include/sigc++-2.0', '/usr/local/lib/sigc++-2.0/include']
 sigc_lib = 'sigc-2.0'
 
-conf_env.Prepend(CPPPATH=sigc_cpppath)
+conf_env.Append(CPPPATH=sigc_cpppath)
 
 #print conf.env['CCFLAGS']
 
@@ -81,7 +83,7 @@ SConscript('sdlx/SConscript')
 
 env = env.Copy()
 env.Append(LIBPATH=['mrt', 'sdlx', 'src'])
-env.Prepend(CPPPATH=['.', 'src'])
+env.Append(CPPPATH=['.', 'src'])
 env.Append(CPPPATH=sigc_cpppath)
 
 svnversion = os.popen('svnversion -n .', 'r')
