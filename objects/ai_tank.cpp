@@ -1,4 +1,4 @@
-#include "aiplayer.h"
+#include "ai_tank.h"
 #include "tmx/map.h"
 #include "sdlx/rect.h"
 #include "mrt/logger.h"

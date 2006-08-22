@@ -96,7 +96,7 @@ vobj = venv.Object('src/version.cpp')
 bt_sources = 	['src/alarm.cpp', 'src/base_object.cpp', 
 	
 	'objects/bullet.cpp', 'objects/explosion.cpp', 'objects/corpse.cpp',
-	'objects/tank.cpp', 'objects/aiplayer.cpp',
+	'objects/tank.cpp', 'objects/launcher.cpp', 'objects/ai_tank.cpp',
 	'objects/traffic_lights.cpp',
 	
 	'net/protocol.cpp', 'net/server.cpp', 'net/client.cpp', 'net/connection.cpp',
