@@ -32,6 +32,7 @@ void IWorld::addObject(Object *o, const v3<float> &pos) {
 	_id2obj[o->_id] = o;
 
 	assert(_id2obj.size() == _objects.size());
+	o->onSpawn();
 	//LOG_DEBUG(("object %d added, objects: %d", o->_id, _objects.size()));
 }
 
@@ -170,10 +171,12 @@ void IWorld::tick(const float dt) {
 				ObjectMap::const_iterator i = _id2obj.find(f);
 				if (i != _id2obj.end()) {
 					const Object *leader = i->second;
-					LOG_DEBUG(("following %d...", f));
+					//LOG_DEBUG(("following %d...", f));
 					o._direction = leader->_direction;
 					o._position = leader->_position;
 					o._velocity = leader->_velocity;
+					o._old_velocity = leader->_old_velocity;
+					o.setDirection(leader->getDirection());
 				}
 			}
 		}

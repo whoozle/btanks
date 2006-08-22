@@ -59,12 +59,15 @@ public:
 	typedef v3<int> WayPoint;
 	typedef std::deque<WayPoint> Way;
 	const int getLeader() const { return _follow; }
+	
+	virtual void onSpawn();
+
+	void follow(const Object *obj);
+	void follow(const int id);
 
 protected:
 
 	Object * spawn(const std::string &classname, const std::string &animation, const v3<float> &dpos, const v3<float> &vel);
-	void follow(const Object *obj);
-	void follow(const int id);
 
 	const bool getNearest(const std::string &classname, v3<float> &position, v3<float> &velocity, Way * way = NULL) const;
 	

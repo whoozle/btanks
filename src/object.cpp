@@ -272,3 +272,5 @@ void Object::setup(const std::string &a) {
 	memset(&_state, 0, sizeof(_state));
 	_events.clear();
 }
+
+void Object::onSpawn() {}

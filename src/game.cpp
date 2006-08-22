@@ -149,7 +149,8 @@ void IGame::onMenu(const std::string &name) {
 		LOG_DEBUG(("start single player requested"));
 		loadMap("country");
 		
-		_my_index = spawnPlayer("tank", "green-tank", "keys");
+		//_my_index = spawnPlayer("tank", "green-tank", "keys");
+		_my_index = spawnPlayer("launcher", "green-launcher", "keys");
 		spawnPlayer("ai-tank", "red-tank", "ai");
 		//spawnPlayer("ai-player", "yellow-tank");
 		//spawnPlayer("ai-player", "cyan-tank");
