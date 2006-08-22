@@ -55,6 +55,7 @@ void RocketsInVehicle::emit(const std::string &event, const BaseObject * emitter
 		}
 	} else if (event == "reload") {
 		n = 3;
+		updatePose();
 	} else if (event == "collision") {
 		return;
 	} else Object::emit(event, emitter);
