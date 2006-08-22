@@ -118,7 +118,7 @@ void IMap::load(const std::string &name) {
 	for(int y = 0; y < _h; ++y) {
 		for(int x = 0; x < _w; ++x) {
 			int im = 0;
-			for(LayerMap::const_reverse_iterator l = _layers.rbegin(); l != _layers.rend(); ++l) {
+			for(LayerMap::reverse_iterator l = _layers.rbegin(); l != _layers.rend(); ++l) {
 				long tid = l->second->get(x, y);
 				if (tid == 0)
 					continue;
