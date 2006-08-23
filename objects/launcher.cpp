@@ -66,15 +66,19 @@ void Launcher::emit(const std::string &event, BaseObject * emitter) {
 
 
 void Launcher::tick(const float dt) {
+	Object::tick(dt);
 	bool fire_possible = _fire.tick(dt);
-	bool notify = false;
 	
 	if (getState().empty()) {
 		play("hold", true);
 		_rockets->emit("hold", this);
 	}
-	
-	if (_velocity != _old_velocity) {
+
+	if (_velocity.is0()) {	
+		cancelRepeatable();
+		play("hold", true);
+		_rockets->emit("hold", this);
+	} else {
 		int dir = v3<float>::getDirection8(_velocity);
 		if (dir) {
 			setDirection(dir - 1);
@@ -85,29 +89,16 @@ void Launcher::tick(const float dt) {
 				play("move", true);
 				_rockets->emit("move", this);
 			}
-			
-//			_state.old_vx = _state.vx;
-//			_state.old_vy = _state.vy;
-		} else {
-			cancelRepeatable();
-			play("hold", true);
-			_rockets->emit("hold", this);
 		}
-		notify = true;
 	}
 
 	if (_state.fire && fire_possible) {
 		_fire.reset();
 		_rockets->emit("launch", this);
-		notify = true;
 	}
-	if (notify) 
-		Game->notify(_state);
-	
+
 	_state.fire = false;
 
 	//LOG_DEBUG(("_velocity: %g %g", _velocity.x, _velocity.y));
-	
-	Object::tick(dt);
 }
 

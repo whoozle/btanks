@@ -50,14 +50,19 @@ void Tank::emit(const std::string &event, BaseObject * emitter) {
 
 
 void Tank::tick(const float dt) {
+	Object::tick(dt);
+
 	bool fire_possible = _fire.tick(dt);
-	bool notify = false;
 	
 	if (getState().empty()) {
 		play("hold", true);
 	}
-	
-	if (_velocity != _old_velocity) {
+
+	_velocity.normalize();
+	if (_velocity.is0()) {
+		cancelRepeatable();
+		play("hold", true);
+	} else {
 		int dir = v3<float>::getDirection8(_velocity);
 		if (dir) {
 			setDirection(dir - 1);
@@ -67,14 +72,7 @@ void Tank::tick(const float dt) {
 				play("start", false);
 				play("move", true);
 			}
-			
-//			_state.old_vx = _state.vx;
-//			_state.old_vy = _state.vy;
-		} else {
-			cancelRepeatable();
-			play("hold", true);
 		}
-		notify = true;
 	}
 
 	if (_state.fire && fire_possible) {
@@ -89,15 +87,10 @@ void Tank::tick(const float dt) {
 		v3<float> v = _velocity.is0()?_direction:_velocity;
 		v.normalize();
 		spawn("bullet", "bullet", v3<float>(0,0,-0.1), v);
-		notify = true;
 	}
-	if (notify) 
-		Game->notify(_state);
 	
 	_state.fire = false;
 
 	//LOG_DEBUG(("_velocity: %g %g", _velocity.x, _velocity.y));
-	
-	Object::tick(dt);
 }
 

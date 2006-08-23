@@ -73,10 +73,12 @@ protected:
 	inline const v3<float> & getPosition() { return _position; }
 	void getPosition(v3<int> &position);
 	
-	v3<float> _velocity, _old_velocity, _direction;
+	v3<float> _velocity, _direction;
 	float _distance;
 private:
-	void updateState();
+	void pretick();
+	void posttick();
+	void state2velocity();
 
 	bool _dead;
 	v3<float> _position;

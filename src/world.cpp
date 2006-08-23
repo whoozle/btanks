@@ -165,8 +165,9 @@ void IWorld::tick(const float dt) {
 			continue;
 		}
 		
+		o.pretick();
 		o.tick(dt);
-		o.updateState();
+		o.posttick();
 		
 		{
 			int f = o._follow;
@@ -178,7 +179,6 @@ void IWorld::tick(const float dt) {
 					o._direction = leader->_direction;
 					o._position = leader->_position + o._follow_position;
 					o._velocity = leader->_velocity;
-					o._old_velocity = leader->_old_velocity;
 					o.setDirection(leader->getDirection());
 				}
 			}
@@ -186,7 +186,6 @@ void IWorld::tick(const float dt) {
 		
 		v3<float> vel = o._velocity;
 		float len = vel.normalize();
-		o._old_velocity = vel;
 		
 		if (len == 0) {
 			++i;
