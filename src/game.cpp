@@ -282,6 +282,9 @@ void IGame::run() {
 			case SDL_KEYUP:
 				key_signal.emit(event.key.type, event.key.keysym);
 			break;
+			case SDL_MOUSEBUTTONDOWN:
+			case SDL_MOUSEBUTTONUP:
+				mouse_signal.emit(event.button.button, event.button.type, event.button.x, event.button.y);
 		    case SDL_QUIT:
 				_running = false;
 			break;

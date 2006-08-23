@@ -42,6 +42,7 @@ public:
 	static const std::string data_dir;
 	//signals
 	sigc::signal2<void, const Uint8, const SDL_keysym> key_signal;
+	sigc::signal4<void, const Uint8, const Uint8, const Uint16, const Uint16> mouse_signal;
 
 	void init(const int argc, char *argv[]);
 	void run();
