@@ -5,14 +5,14 @@
 #include "game.h"
 #include "tank.h"
 
-REGISTER_OBJECT("tank", Tank, (false));
+REGISTER_OBJECT("tank", Tank, ());
 
-Tank::Tank(const bool stateless) 
-: Object("player", stateless), _fire(0.5, false) {
+Tank::Tank() 
+: Object("player"), _fire(0.5, false) {
 }
 
-Tank::Tank(const std::string &animation, const bool stateless) 
-: Object("player", stateless), _fire(0.5, false) {
+Tank::Tank(const std::string &animation) 
+: Object("player"), _fire(0.5, false) {
 	setup(animation);
 }
 
@@ -63,7 +63,7 @@ void Tank::tick(const float dt) {
 		cancelRepeatable();
 		play("hold", true);
 	} else {
-		int dir = v3<float>::getDirection8(_velocity);
+		int dir = _velocity.getDirection8();
 		if (dir) {
 			setDirection(dir - 1);
 			//LOG_DEBUG(("animation state: %s", _animation->getState().c_str()));

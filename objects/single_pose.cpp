@@ -3,7 +3,7 @@
 
 class SinglePose : public Object {
 public:
-	SinglePose() : Object("single-pose", true) {}
+	SinglePose() : Object("single-pose") {}
 	virtual Object * clone(const std::string &opt) const;
 	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
 };

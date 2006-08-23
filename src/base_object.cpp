@@ -2,9 +2,9 @@
 #include "mrt/logger.h"
 #include "world.h"
 
-BaseObject::BaseObject(const std::string &classname, const bool stateless)
+BaseObject::BaseObject(const std::string &classname)
  : mass(1), speed(1), ttl(-1), impassability(1), hp(1), piercing(false), 
-   classname(classname), _id(0), _follow(0), _stateless(stateless), _direction(1,0,0), _distance(0), _dead(false), _owner_id(0) {
+   classname(classname), _id(0), _follow(0), _direction(1,0,0), _distance(0), _dead(false), _owner_id(0) {
 	//LOG_DEBUG(("allocated id %ld", _id));
 }
 
@@ -125,6 +125,19 @@ PlayerState & BaseObject::getPlayerState() {
 	return _state;
 }
 
+void BaseObject::calculate(const float dt) {
+	_velocity.clear();
+		
+	if (_state.left) _velocity.x -= 1;
+	if (_state.right) _velocity.x += 1;
+	if (_state.up) _velocity.y -= 1;
+	if (_state.down) _velocity.y += 1;
+	
+	_velocity.normalize();
+}
+
+/*
+
 void BaseObject::pretick() {
 	if (_stateless)
 		return;
@@ -162,7 +175,7 @@ void BaseObject::state2velocity() {
 	
 	_velocity.normalize();
 }
-
+*/
 void BaseObject::follow(const BaseObject *obj) {
 	_follow = obj->_id;
 }

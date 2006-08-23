@@ -3,7 +3,7 @@
 
 class Explosion : public Object {
 public:
-	Explosion() : Object("explosion", true) {}
+	Explosion() : Object("explosion") {}
 	virtual void tick(const float dt);
 	virtual Object * clone(const std::string &opt) const;
 	virtual void emit(const std::string &event, BaseObject * emitter = NULL);

@@ -61,7 +61,7 @@
 	<animation id="traffic-lights" tile="traffic_lights_tile.png" model="traffic-lights-animation"/>
 	<animation id="smoke" tile="Smoke_tile1.png" model="smoke-animation" />
 	<animation id="rockets-in-vehicle" tile="Rocket_tile1.png" model="rockets-in-vehicle-animation" />
-	<animation id="rocket" tile="rocket_flight.png" model="single-tile" />
+	<animation id="rocket" tile="rocket.png" model="single-tile" />
 	
 	<object class="tank" speed="400" mass="10" hp="5" />
 	<object class="ai-tank" parent="tank" />

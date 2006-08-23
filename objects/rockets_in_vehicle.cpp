@@ -3,7 +3,7 @@
 
 class RocketsInVehicle : public Object {
 public:
-	RocketsInVehicle() : Object("rockets-in-vehicle", true), n(3), hold(true) {}
+	RocketsInVehicle() : Object("rockets-in-vehicle"), n(3), hold(true) {}
 	virtual void tick(const float dt);
 	virtual Object * clone(const std::string &opt) const;
 	virtual void emit(const std::string &event, BaseObject * emitter = NULL);

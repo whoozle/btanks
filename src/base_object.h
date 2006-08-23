@@ -36,7 +36,7 @@ public:
 	
 	std::string classname;
 	
-	BaseObject(const std::string &classname, const bool _stateless);
+	BaseObject(const std::string &classname);
 	virtual ~BaseObject();
 	
 	virtual void tick(const float dt) = 0;
@@ -66,7 +66,6 @@ protected:
 	int _follow;
 	v3<float> _follow_position;
 
-	bool _stateless;
 	PlayerState _state;
 	
 	void getPosition(v3<float> &position);
@@ -75,10 +74,9 @@ protected:
 	
 	v3<float> _velocity, _direction;
 	float _distance;
+
+	virtual void calculate(const float dt);
 private:
-	void pretick();
-	void posttick();
-	void state2velocity();
 
 	bool _dead;
 	v3<float> _position;

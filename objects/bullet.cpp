@@ -3,20 +3,21 @@
 
 class Bullet : public Object {
 public:
-	Bullet() : Object("bullet", true) {}
-	virtual void tick(const float dt);
+	Bullet() : Object("bullet") {}
+	virtual void calculate(const float dt);
 	virtual Object * clone(const std::string &opt) const;
 	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
 };
 
 
-void Bullet::tick(const float dt) {
+void Bullet::calculate(const float dt) {
 	_velocity.normalize();
-	int dir = v3<float>::getDirection8(_velocity);
+	
+	int dir = _velocity.getDirection8();
 	if (dir) {
 		setDirection(dir - 1);
 	}
-	Object::tick(dt);
+	_velocity.quantize8();
 }
 
 void Bullet::emit(const std::string &event, BaseObject * emitter) {

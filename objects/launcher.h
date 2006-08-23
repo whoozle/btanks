@@ -24,8 +24,8 @@
 
 class Launcher : public Object {
 public:
-	Launcher(const bool stateless);
-	Launcher(const std::string &animation, const bool stateless);
+	Launcher();
+	Launcher(const std::string &animation);
 	virtual Object * clone(const std::string &opt) const;
 
 	virtual void emit(const std::string &event, BaseObject * emitter);

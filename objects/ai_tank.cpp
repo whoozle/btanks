@@ -4,22 +4,21 @@
 #include "mrt/logger.h"
 #include "resource_manager.h"
 
-REGISTER_OBJECT("ai-tank", AIPlayer, ());
+REGISTER_OBJECT("ai-tank", AITank, ());
 
 #define REACTION_TIME (0.100)
 #define PATHFINDING_TIME (0.200)
 
-AIPlayer::AIPlayer() : Tank(true), 
+AITank::AITank() : Tank(), 
 	_reaction_time(REACTION_TIME, true), _refresh_waypoints(PATHFINDING_TIME, true) {}
 
-AIPlayer::AIPlayer(const std::string &animation) : Tank(animation, true), 
+AITank::AITank(const std::string &animation) : Tank(animation), 
 	_reaction_time(REACTION_TIME, true), _refresh_waypoints(PATHFINDING_TIME, true)  {
 }
 
-void AIPlayer::tick(const float dt) {	
+void AITank::calculate(const float dt) {	
 	//LOG_DEBUG(("dt = %f", dt));
 	if (!_reaction_time.tick(dt)) {
-		Tank::tick(dt);
 		return;
 	}
 	
@@ -36,6 +35,7 @@ void AIPlayer::tick(const float dt) {
 			found_bullet = true;
 		}
 	} 
+	_velocity.quantize8();
 
 	Way way;
 	const bool refresh_path = _refresh_waypoints.tick(dt);
@@ -46,7 +46,7 @@ void AIPlayer::tick(const float dt) {
 		
 		if (found_bullet && bpos.quick_length() < pos.quick_length()) {
 			//LOG_DEBUG(("bpos: %g, player: %g", bpos.quick_length(), pos.quick_length()));
-			goto skip_player;
+			return;
 		}
 		
 		if (player_close) {
@@ -63,6 +63,7 @@ void AIPlayer::tick(const float dt) {
 		} else {	
 			if (!isDriven()) {
 				_velocity = pos; //straight to player.
+				_velocity.quantize8();
 			}
 		} 
 
@@ -87,7 +88,6 @@ void AIPlayer::tick(const float dt) {
 		
 		if (pos.length() < 3*IMap::pathfinding_step / 2) {
 			_velocity.clear();
-			Tank::tick(dt);
 			return;
 		}
 
@@ -96,16 +96,13 @@ void AIPlayer::tick(const float dt) {
 	  	_velocity.clear();
 	  }
 	
-	skip_player:
-	
-	Tank::tick(dt);
 }
 
-Object * AIPlayer::clone(const std::string &opt) const {
-	AIPlayer *p = NULL;
+Object * AITank::clone(const std::string &opt) const {
+	AITank *p = NULL;
 	TRY { 
 		//LOG_DEBUG(("cloning player with animation '%s'", opt.c_str()));
-		p = new AIPlayer(*this);
+		p = new AITank(*this);
 		p->setup(opt);
 	} CATCH("clone", { delete p; throw; });
 	return p;

@@ -21,8 +21,8 @@ void Object::Event::deserialize(const mrt::Serializator &s) {
 }
 
 
-Object::Object(const std::string &classname, const bool stateless) : 
-	BaseObject(classname, stateless),  _model(0), _surface(0), _direction_idx(0), _pos(0) {}
+Object::Object(const std::string &classname) : 
+	BaseObject(classname),  _model(0), _surface(0), _direction_idx(0), _pos(0) {}
 
 void Object::init(const std::string &model, const std::string &surface, const int tile_w, const int tile_h) {
 	_events.clear();

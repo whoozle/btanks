@@ -24,8 +24,8 @@
 
 class Tank : public Object {
 public:
-	Tank(const bool stateless);
-	Tank(const std::string &animation, const bool stateless);
+	Tank();
+	Tank(const std::string &animation);
 	virtual Object * clone(const std::string &opt) const;
 
 	virtual void emit(const std::string &event, BaseObject * emitter);

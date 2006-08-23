@@ -4,14 +4,14 @@
 #include "game.h"
 #include "launcher.h"
 
-REGISTER_OBJECT("launcher", Launcher, (false));
+REGISTER_OBJECT("launcher", Launcher, ());
 
-Launcher::Launcher(const bool stateless) 
-: Object("player", stateless), _fire(0.3, false), _smoke(0), _rockets(0) {
+Launcher::Launcher() 
+: Object("player"), _fire(0.3, false), _smoke(0), _rockets(0) {
 }
 
-Launcher::Launcher(const std::string &animation, const bool stateless) 
-: Object("player", stateless), _fire(0.3, false), _smoke(0), _rockets(0) {
+Launcher::Launcher(const std::string &animation) 
+: Object("player"), _fire(0.3, false), _smoke(0), _rockets(0) {
 	setup(animation);
 }
 
@@ -79,7 +79,7 @@ void Launcher::tick(const float dt) {
 		play("hold", true);
 		_rockets->emit("hold", this);
 	} else {
-		int dir = v3<float>::getDirection8(_velocity);
+		int dir = _velocity.getDirection8();
 		if (dir) {
 			setDirection(dir - 1);
 			//LOG_DEBUG(("animation state: %s", _animation->getState().c_str()));

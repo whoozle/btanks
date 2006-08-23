@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <math.h>
+#include <assert.h>
 
 #include "mrt/serializator.h"
 #include "mrt/serializable.h"
@@ -163,40 +164,57 @@ private:
 			return 5;
 		else if (c > -0.8314696123025452357)
 			return 6;
-		return 7;
+		else if (c > -0.9807852804032304306) //11.25
+			return 7;
+		return 8;
 	}
 
-public:
-	static int getDirection8(const v3<T> &v) {
-		if (v.is0())
+public:	
+	int getDirection8() {
+		if (is0())
 			return 0;
 
-		int x = c2d8(v.x) + 1;
-		return (v.y <= 0 || x == 1)? x: 10 - x;
+		int xx = c2d8(x) + 1;
+		return (y <= 0 || xx == 1)? xx: 10 - xx;
 	}
 
-	static int getDirection16(const v3<T> &v) {
-		if (v.is0())
+	int getDirection16() {
+		if (is0())
 			return 0;
 
-		int x = c2d16(v.x) + 1;
-		return (v.y <= 0 || x == 1)? x: 18 - x;
+		int xx = c2d16(x) + 1;
+		return (y <= 0 || xx == 1)? xx: 18 - xx;
 	}
 
-	static void quantize(T &x) {
+	static void quantize8(T &x) {
 		if (x > 0.3826834323650898373) {
 			x = 1;
 		} else if (x < -0.3826834323650898373)
 			x = -1;
 		else x = 0;
 	}
+
 	
 	void quantize8() {
 		normalize();
-		quantize(x);
-		quantize(y);
-		quantize(z);
+		quantize8(x);
+		quantize8(y);
+		quantize8(z);
 		normalize();
+	}
+
+	void quantize16() {
+		static T cos_t[] = {1, 0.9238795325112867385, 0.7071067811865475727, 0.3826834323650898373, 
+						  0, -0.3826834323650898373, -0.7071067811865475727, -0.9238795325112867385, -1};
+		static T sin_t[] = {0, 0.3826834323650898373, 0.7071067811865475727, 0.9238795325112867385, 1,
+						0.9238795325112867385, 0.7071067811865475727, 0.3826834323650898373, 0 };
+		normalize();
+		int xx = c2d16(x);
+		x = cos_t[xx];
+		if (y >= 0) 
+			y = sin_t[xx];
+		else 
+			y = -sin_t[xx];
 	}
 	
 	virtual void serialize(mrt::Serializator &s) const {
