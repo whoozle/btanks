@@ -16,6 +16,8 @@ void Rocket::onSpawn() {
 
 
 void Rocket::tick(const float dt) {
+	Object::tick(dt);
+
 	v3<float> pos, vel;
 	if (getNearest("player", pos, vel, NULL)) {
 		_velocity = pos;
@@ -25,8 +27,6 @@ void Rocket::tick(const float dt) {
 	int dir = v3<float>::getDirection8(_velocity);
 	if (dir > 0)
 		setDirection(dir - 1);
-
-	Object::tick(dt);
 }
 
 void Rocket::emit(const std::string &event, BaseObject * emitter) {
