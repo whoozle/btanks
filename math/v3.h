@@ -164,6 +164,15 @@ public:
 			x = -1;
 		else x = 0;
 	}
+	
+	void quantize() {
+		normalize();
+		quantize(x);
+		quantize(y);
+		quantize(z);
+		normalize();
+	}
+	
 	virtual void serialize(mrt::Serializator &s) const {
 		s.add(x);
 		s.add(y);
