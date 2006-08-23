@@ -136,7 +136,7 @@ public:
 	}
 
 private:
-	static inline int c2d(const T c) {
+	static inline int c2d8(const T c) {
 		if (c > 0.9238795325112867385) //cos(22.5)
 			return 0;
 		else if (c > 0.3826834323650898373) //cos(67.5)
@@ -148,13 +148,39 @@ private:
 		return 4;
 	}
 
+	static inline int c2d16(const T c) {
+		if (c > 0.9807852804032304306) //11.25
+			return 0;
+		else if (c > 0.8314696123025452357) //cos(33.75)
+			return 1;
+		else if (c > 0.5526644777167217804) //cos 56.45
+			return 2;
+		else if (c > 0.1916655539320546719) //cos 78.95
+			return 3;
+		else if (c > -0.1916655539320546719) 
+			return 4;
+		else if (c > -0.5526644777167217804)
+			return 5;
+		else if (c > -0.8314696123025452357)
+			return 6;
+		return 7;
+	}
+
 public:
 	static int getDirection8(const v3<T> &v) {
 		if (v.is0())
 			return 0;
 
-		int x = c2d(v.x) + 1;
+		int x = c2d8(v.x) + 1;
 		return (v.y <= 0 || x == 1)? x: 10 - x;
+	}
+
+	static int getDirection16(const v3<T> &v) {
+		if (v.is0())
+			return 0;
+
+		int x = c2d16(v.x) + 1;
+		return (v.y <= 0 || x == 1)? x: 18 - x;
 	}
 
 	static void quantize(T &x) {
@@ -165,7 +191,7 @@ public:
 		else x = 0;
 	}
 	
-	void quantize() {
+	void quantize8() {
 		normalize();
 		quantize(x);
 		quantize(y);
