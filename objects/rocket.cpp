@@ -8,10 +8,14 @@ public:
 	virtual Object * clone(const std::string &opt) const;
 	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
 	void onSpawn();
+private:
+	Object *_fire;
 };
 
 void Rocket::onSpawn() {
 	play("main", true);
+	_fire = spawnGrouped("single-pose", "rocket-fire", v3<float>(0,0, -0.1), Centered);
+	_fire->impassability = 0;
 }
 
 void Rocket::calculate(const float dt) {
@@ -28,8 +32,11 @@ void Rocket::calculate(const float dt) {
 }
 
 void Rocket::emit(const std::string &event, BaseObject * emitter) {
-	if (event == "collision") {
+	if (event == "death") {
+		_fire->emit("death", this);
 		Object::emit("death", emitter);
+	} else if (event == "collision") {
+		emit("death", emitter);
 	} else Object::emit(event, emitter);
 }
 
