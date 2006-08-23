@@ -102,6 +102,8 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 				object->second->piercing = (value[0] == 't' || value[0] == '1' || value[0] == 'y');
 			} else if (name == "hp") {
 				object->second->hp = atol(value.c_str());
+			} else if (name == "impassability") {
+				object->second->impassability = atof(value.c_str());
 			} else if (name != "class" && name != "parent") 
 				LOG_WARN(("attr '%s' is not supported", name.c_str()));
 		}

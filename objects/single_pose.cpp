@@ -3,9 +3,15 @@
 
 class SinglePose : public Object {
 public:
-	SinglePose() : Object("single-pose") {}
+	SinglePose(const std::string &pose, const bool repeat) : Object("single-pose"), _pose(pose), _repeat(repeat) {}
+
 	virtual Object * clone(const std::string &opt) const;
 	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
+	virtual void tick(const float dt);
+	virtual void onSpawn();
+private:
+	std::string _pose;
+	bool _repeat;
 };
 
 void SinglePose::emit(const std::string &event, BaseObject * emitter) {
@@ -20,14 +26,29 @@ void SinglePose::emit(const std::string &event, BaseObject * emitter) {
 	} else Object::emit(event, emitter);
 }
 
+void SinglePose::tick(const float dt) {
+	Object::tick(dt);
+	if (!getState().size()) {	
+		//LOG_DEBUG(("over"));
+		emit("death", this);
+	}
+}
+
+void SinglePose::onSpawn() {
+	//LOG_DEBUG(("single-pose: play('%s', %s)", _pose.c_str(), _repeat?"true":"false"));
+	play(_pose, _repeat);
+}
+
 
 Object* SinglePose::clone(const std::string &opt) const  {
-	Object *a = new SinglePose(*this);
-	ResourceManager->initMe(a, opt);
-
-	a->play("main", true);
+	Object *a = NULL;
+	TRY {
+		a = new SinglePose(*this);
+		ResourceManager->initMe(a, opt);
+	} CATCH("clone", { delete a; throw; });
 	return a;
 }
 
-REGISTER_OBJECT("single-pose", SinglePose, ());
-REGISTER_OBJECT("corpse", SinglePose, ());
+REGISTER_OBJECT("single-pose", SinglePose, ("main", true));
+REGISTER_OBJECT("corpse", SinglePose, ("main", true));
+REGISTER_OBJECT("rocket-launch", SinglePose, ("launch", false));

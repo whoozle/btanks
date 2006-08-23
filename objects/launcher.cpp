@@ -60,6 +60,14 @@ void Launcher::emit(const std::string &event, BaseObject * emitter) {
 		v3<float> v = _velocity.is0()?_direction:_velocity;
 		v.normalize();
 		spawn("rocket", "rocket", v3<float>(0,0,1), v);
+		const Object * la = ResourceManager.get_const()->getAnimation("rocket-launch");
+		v3<float> dpos = (size - la->size).convert<float>();
+		dpos.z = 1;
+		dpos /= 2;
+
+		Object *o = spawn("rocket-launch", "rocket-launch", dpos, v3<float>());
+		o->setDirection(getDirection());
+		//LOG_DEBUG(("dir: %d", o->getDirection()));
 	} else Object::emit(event, emitter);
 }
 
