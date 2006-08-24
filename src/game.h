@@ -81,6 +81,7 @@ private:
 	
 	Server *_server;
 	Client *_client;
+	bool _vsync;
 };
 
 SINGLETON(Game, IGame);

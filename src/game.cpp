@@ -58,9 +58,12 @@ void IGame::init(const int argc, char *argv[]) {
 #endif
 	bool opengl = false;
 	bool fullscreen = false;
+	_vsync = true;
+	
 	for(int i = 1; i < argc; ++i) {
 		if (strcmp(argv[i], "--gl") == 0) opengl = true;
 		else if (strcmp(argv[i], "--fs") == 0) fullscreen = true;
+		else if (strcmp(argv[i], "--no-vsync") == 0) _vsync = false;
 		else throw_ex(("unrecognized option: '%s'", argv[i]));
 	}
 
@@ -116,7 +119,7 @@ void IGame::init(const int argc, char *argv[]) {
 	
 		_window.setVideoMode(w, h, 32, SDL_OPENGL | SDL_OPENGLBLIT | (fullscreen?SDL_FULLSCREEN:0));
 	} else {
-		_window.setVideoMode(w, h, 32, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_SRCALPHA | (fullscreen?SDL_FULLSCREEN:0));
+		_window.setVideoMode(w, h, 32, SDL_HWSURFACE | (_vsync?SDL_DOUBLEBUF:0) | SDL_SRCALPHA | (fullscreen?SDL_FULLSCREEN:0));
 	}
 	
 	LOG_DEBUG(("created main surface. (%dx%dx%d)", w, h, _window.getBPP()));
@@ -380,7 +383,10 @@ void IGame::run() {
 			//LOG_DEBUG(("%f %f", mapx, mapy));
 		}
 		_window.update();
-		_window.flip();
+		if (_vsync)
+			_window.flip();
+		else 
+			_window.update();
 	
 		int tdelta = SDL_GetTicks() - tstart;
 
