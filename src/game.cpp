@@ -116,7 +116,7 @@ void IGame::init(const int argc, char *argv[]) {
 	
 		_window.setVideoMode(w, h, 32, SDL_OPENGL | SDL_OPENGLBLIT | (fullscreen?SDL_FULLSCREEN:0));
 	} else {
-		_window.setVideoMode(w, h, 32, SDL_ASYNCBLIT | SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_SRCALPHA | (fullscreen?SDL_FULLSCREEN:0));
+		_window.setVideoMode(w, h, 32, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_SRCALPHA | (fullscreen?SDL_FULLSCREEN:0));
 	}
 	
 	LOG_DEBUG(("created main surface. (%dx%dx%d)", w, h, _window.getBPP()));
