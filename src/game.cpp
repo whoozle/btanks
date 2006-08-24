@@ -58,7 +58,7 @@ void IGame::init(const int argc, char *argv[]) {
 #endif
 
 #ifdef WIN32
-	_putenv("SDL_VIDEODRIVER=directx");
+	//_putenv("SDL_VIDEODRIVER=directx");
 #endif
 
 	bool opengl = false;
