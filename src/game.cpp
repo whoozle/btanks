@@ -266,7 +266,7 @@ void IGame::run() {
 	Uint32 black = _window.mapRGB(0, 0, 0);
 
 	float mapx = 0, mapy = 0, mapvx = 0, mapvy = 0;
-	int fps_limit = 50;
+	int fps_limit = 100;
 	
 	float fr = fps_limit;
 	int max_delay = 1000/fps_limit;
