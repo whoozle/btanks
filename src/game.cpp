@@ -57,20 +57,23 @@ void IGame::init(const int argc, char *argv[]) {
 //	putenv("SDL_VIDEODRIVER=dga");
 #endif
 
-#ifdef WIN32
-	//_putenv("SDL_VIDEODRIVER=directx");
-#endif
-
 	bool opengl = false;
 	bool fullscreen = false;
+	bool dx = false;
 	_vsync = true;
 	
 	for(int i = 1; i < argc; ++i) {
 		if (strcmp(argv[i], "--gl") == 0) opengl = true;
 		else if (strcmp(argv[i], "--fs") == 0) fullscreen = true;
 		else if (strcmp(argv[i], "--no-vsync") == 0) _vsync = false;
+		else if (strcmp(argv[i], "--dx") == 0) dx = true;
 		else throw_ex(("unrecognized option: '%s'", argv[i]));
 	}
+
+#ifdef WIN32
+	if (dx) 
+		_putenv("SDL_VIDEODRIVER=directx");
+#endif
 
 	LOG_DEBUG(("initializing SDL..."));
 #ifdef DEBUG
