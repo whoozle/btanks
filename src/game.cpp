@@ -69,6 +69,8 @@ void IGame::init(const int argc, char *argv[]) {
 		else if (strcmp(argv[i], "--dx") == 0) dx = true;
 		else throw_ex(("unrecognized option: '%s'", argv[i]));
 	}
+	
+	LOG_DEBUG(("gl: %s, vsync: %s, dx: %s", opengl?"yes":"no", _vsync?"yes":"no", dx?"yes":"no"));
 
 #ifdef WIN32
 	if (dx) 
