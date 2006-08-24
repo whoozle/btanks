@@ -56,7 +56,13 @@ void IGame::init(const int argc, char *argv[]) {
 #ifdef __linux__
 //	putenv("SDL_VIDEODRIVER=dga");
 #endif
-	bool opengl = (argc > 1 && std::string(argv[1]) == "--gl");
+	bool opengl = false;
+	bool fullscreen = false;
+	for(int i = 1; i < argc; ++i) {
+		if (strcmp(argv[i], "--gl") == 0) opengl = true;
+		else if (strcmp(argv[i], "--fs") == 0) fullscreen = true;
+		else throw_ex(("unrecognized option: '%s'", argv[i]));
+	}
 
 	LOG_DEBUG(("initializing SDL..."));
 	sdlx::System::init(SDL_INIT_EVERYTHING | SDL_INIT_NOPARACHUTE);
@@ -108,9 +114,9 @@ void IGame::init(const int argc, char *argv[]) {
 		glBlendFunc_ptr.call( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA ) ;
 		glEnable_ptr.call( GL_BLEND ) ;
 	
-		_window.setVideoMode(w, h, 32, SDL_OPENGL | SDL_OPENGLBLIT);
+		_window.setVideoMode(w, h, 32, SDL_OPENGL | SDL_OPENGLBLIT | (fullscreen?SDL_FULLSCREEN:0));
 	} else {
-		_window.setVideoMode(w, h, 32, SDL_ASYNCBLIT | SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_SRCALPHA);
+		_window.setVideoMode(w, h, 32, SDL_ASYNCBLIT | SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_SRCALPHA | (fullscreen?SDL_FULLSCREEN:0));
 	}
 	
 	LOG_DEBUG(("created main surface. (%dx%dx%d)", w, h, _window.getBPP()));
