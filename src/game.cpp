@@ -98,7 +98,7 @@ void IGame::init(const int argc, char *argv[]) {
 			throw_ex(("cannot get address of glBlendFunc"));
 	}
 	
-	sdlx::Surface::setDefaultFlags(sdlx::Surface::Hardware | sdlx::Surface::Alpha | sdlx::Surface::ColorKey);
+	sdlx::Surface::setDefaultFlags(sdlx::Surface::Hardware | sdlx::Surface::Alpha);
 
 	LOG_DEBUG(("initializing SDL_ttf..."));
 	sdlx::TTF::init();
@@ -396,7 +396,6 @@ void IGame::run() {
 			
 			//LOG_DEBUG(("%f %f", mapx, mapy));
 		}
-		_window.update();
 		if (_vsync)
 			_window.flip();
 		else 
