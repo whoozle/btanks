@@ -56,6 +56,11 @@ void IGame::init(const int argc, char *argv[]) {
 #ifdef __linux__
 //	putenv("SDL_VIDEODRIVER=dga");
 #endif
+
+#ifdef WIN32
+	_putenv("SDL_VIDEODRIVER=directx");
+#endif
+
 	bool opengl = false;
 	bool fullscreen = false;
 	_vsync = true;
