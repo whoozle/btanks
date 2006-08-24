@@ -271,10 +271,12 @@ void IGame::run() {
 		while (SDL_PollEvent(&event)) {
 			switch(event.type) {
 			case SDL_KEYDOWN:
+#ifndef WIN32
 				if (event.key.keysym.sym==SDLK_f && event.key.keysym.mod & KMOD_CTRL) {
 					_window.toggleFullscreen();
 					break;
 				}
+#endif
 				if (event.key.keysym.sym==SDLK_s && event.key.keysym.mod & KMOD_CTRL) {
 					_window.saveBMP("screenshot.bmp");
 					break;
