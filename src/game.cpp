@@ -285,6 +285,7 @@ void IGame::run() {
 			case SDL_MOUSEBUTTONDOWN:
 			case SDL_MOUSEBUTTONUP:
 				mouse_signal.emit(event.button.button, event.button.type, event.button.x, event.button.y);
+				break;
 		    case SDL_QUIT:
 				_running = false;
 			break;
