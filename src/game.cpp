@@ -68,7 +68,11 @@ void IGame::init(const int argc, char *argv[]) {
 	}
 
 	LOG_DEBUG(("initializing SDL..."));
+#ifdef DEBUG
 	sdlx::System::init(SDL_INIT_EVERYTHING | SDL_INIT_NOPARACHUTE);
+#else
+	sdlx::System::init(SDL_INIT_EVERYTHING);
+#endif
 
 	if (opengl) {
 		LOG_DEBUG(("loading GL library"));
