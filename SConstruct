@@ -16,15 +16,26 @@ opts.Save('options.cache', env.Copy())
 
 Help(opts.GenerateHelpText(env))
 
+debug = False
 
 #print sys.platform
 if sys.platform == "win32":
 	env.Append(CPPDEFINES = ['WIN32', '_WINDOWS']) #, '_UNICODE'
 	env.Append(CCFLAGS = '/GX /GR /W3 /MD /nologo ')
-	env.Append(CPPFLAGS = '/TP /GX /GR /W3 /MD /nologo ')
-	env.Append(LINKFLAGS = ' /OPT:REF /NOLOGO ')
-	env.Append(CCFLAGS = '/Ox /Ot ') #optimizations
-	env.Append(CPPFLAGS = '/Ox /Ot ') #optimizations
+	env.Append(CPPFLAGS = ' /TP /GX /GR /W3 /MD /nologo ')
+
+	env.Append(CCFLAGS = ' /GX /GR /W3 /MD /nologo ')
+	if debug:
+		env.Append(' /Yd /Zi ')
+		env.Append(LINKFLAGS = ' /NOLOGO /DEBUG ')
+		env.Append(CPPDEFINES = ['DEBUG'])
+	else:
+		env.Append(CCCFLAGS = ' /Ot /Ob2gity /G6 ') #optimizations
+		env.Append(CPPFLAGS = ' /Ot /Ob2gity /G6 ') #optimizations
+		env.Append(LINKFLAGS = ' /OPT:REF /OPT:ICF /NOLOGO ')
+
+#	
+#	env.Append(CPPFLAGS = '/Ox /Ot ') #optimizations
 #	env.Prepend(CPPPATH=' C:\\\\STLport-4.6.2\\\\stlport ')
 else:
 	env.Append(CPPFLAGS=' -Wall -pedantic -ggdb3 -Wno-long-long -pipe ')
