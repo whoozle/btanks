@@ -140,6 +140,30 @@ void IGame::init(const int argc, char *argv[]) {
 
 	sdlx::System::probeVideoMode();	
 
+	{
+		SDL_Rect **modes;
+		int i;
+
+		/* Get available fullscreen/hardware modes */
+		modes = SDL_ListModes(NULL, SDL_FULLSCREEN|SDL_HWSURFACE);
+
+		/* Check is there are any modes available */
+		if(modes == (SDL_Rect **)0) {
+			printf("No modes available!\n");
+		    exit(-1);
+	    }
+    
+	    /* Check if our resolution is restricted */
+    	if(modes == (SDL_Rect **)-1){
+			LOG_DEBUG(("all resolutions available."));
+		} else {
+			/* Print valid modes */
+			LOG_DEBUG(("available modes:"));
+			for(i=0;modes[i];++i)
+				LOG_DEBUG(("\t%dx%d", modes[i]->w, modes[i]->h));
+		}
+	}
+		
 	SDL_WM_SetCaption(("Battle tanks - " + getVersion()).c_str(), "btanks");
 
 	_main_menu.init(w, h);	
