@@ -244,6 +244,7 @@ const int IGame::spawnPlayer(const std::string &classname, const std::string &an
 
 
 void IGame::run() {
+	LOG_DEBUG(("entering main loop"));
 	SDL_Event event;
 	IMap &map = *IMap::get_instance();
 
@@ -270,6 +271,7 @@ void IGame::run() {
 	
 	float fr = fps_limit;
 	int max_delay = 1000/fps_limit;
+	LOG_DEBUG(("fps_limit set to %d, maximum frame delay: %d", fps_limit, max_delay));
 	
 	while (_running) {
 		Uint32 tstart = SDL_GetTicks();
@@ -390,7 +392,7 @@ void IGame::run() {
 		tdelta = SDL_GetTicks() - tstart;
 		fr = (tdelta != 0)? (1000.0 / tdelta): 1000;
 	}
-
+	LOG_DEBUG(("exiting main loop."));
 	if (_running)
 		throw_sdl(("SDL_WaitEvent"));
 }
