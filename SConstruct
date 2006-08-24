@@ -16,7 +16,7 @@ opts.Save('options.cache', env.Copy())
 
 Help(opts.GenerateHelpText(env))
 
-debug = False
+debug = True
 
 #print sys.platform
 if sys.platform == "win32":
@@ -26,7 +26,8 @@ if sys.platform == "win32":
 
 	env.Append(CCFLAGS = ' /GX /GR /W3 /MD /nologo ')
 	if debug:
-		env.Append(' /Yd /Zi ')
+		env.Append(CCFLAGS = ' /Yd /Zi ')
+		env.Append(CPPFLAGS = ' /Yd /Zi ')
 		env.Append(LINKFLAGS = ' /NOLOGO /DEBUG ')
 		env.Append(CPPDEFINES = ['DEBUG'])
 	else:
@@ -36,7 +37,7 @@ if sys.platform == "win32":
 
 #	
 #	env.Append(CPPFLAGS = '/Ox /Ot ') #optimizations
-#	env.Prepend(CPPPATH=' C:\\\\STLport-4.6.2\\\\stlport ')
+	env.Prepend(CPPPATH=' C:\\\\STLport-4.6.2\\\\stlport ')
 else:
 	env.Append(CPPFLAGS=' -Wall -pedantic -ggdb3 -Wno-long-long -pipe ')
 	env.Append(CCFLAGS=' -Wall -pedantic -ggdb3 -Wno-long-long -pipe ')
@@ -82,7 +83,7 @@ conf.Finish()
 
 if sys.platform == "win32":
 	env.Append(LIBS=['Ws2_32', 'SDLmain'])
-	env.Append(LINKFLAGS = '/SUBSYSTEM:WINDOWS /FORCE ')
+	env.Append(LINKFLAGS = '/SUBSYSTEM:WINDOWS ')
 
 
 Export('env')
