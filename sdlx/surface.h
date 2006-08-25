@@ -103,6 +103,9 @@ namespace sdlx {
 		PixelFormat* getPixelFormat() const { return surface->format; }
 
 		void free();
+		
+		void lock();
+		void unlock();
 
 		~Surface();
 	private:

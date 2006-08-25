@@ -387,12 +387,15 @@ void IGame::run() {
 			}
 		}
 		
+		_window.lock();
 		_window.fillRect(window_size, black);
 		map.render(_window, viewport, -1000, 0);
 		World->render(_window, viewport);
 		map.render(_window, viewport, 0, 1001);
 
 		_main_menu.render(_window);
+		
+		_window.unlock();
 		
 		
 		std::string f = mrt::formatString("%d", (int)fr);
