@@ -107,7 +107,7 @@ void Surface::convert(Uint32 flags) {
 	if (x == NULL) 
 		throw_sdl(("SDL_ConvertSurface"));
 	assign(x);
-	LOG_DEBUG(("converted image. store: %s", (x->flags&SDL_HWSURFACE)?"hardware":"software"));
+	LOG_DEBUG(("converted image. store: %s", ((x->flags & SDL_HWSURFACE) == SDL_HWSURFACE)?"hardware":"software"));
 }
 
 
