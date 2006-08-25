@@ -295,6 +295,21 @@ void Surface::free() {
     surface=NULL;
 }
 
+void Surface::lock() {
+	if (SDL_MUSTLOCK(surface)) {
+		if (SDL_LockSurface(surface) == -1) 
+			throw_sdl(("SDL_LockSurface"));
+	}
+}
+
+void Surface::unlock() {
+	if (SDL_MUSTLOCK(surface)) {
+		SDL_UnlockSurface(surface);
+	}
+}
+
+
 Surface::~Surface() {
     free();
 }
+
