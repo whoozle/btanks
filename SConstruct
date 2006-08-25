@@ -16,7 +16,7 @@ opts.Save('options.cache', env.Copy())
 
 Help(opts.GenerateHelpText(env))
 
-debug = True
+debug = False
 
 #print sys.platform
 if sys.platform == "win32":
