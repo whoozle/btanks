@@ -107,6 +107,7 @@ void Surface::convert(Uint32 flags) {
 	if (x == NULL) 
 		throw_sdl(("SDL_ConvertSurface"));
 	assign(x);
+	LOG_DEBUG(("converted image. store: %s", (x->flags&SDL_HWSURFACE)?"hardware":"software"));
 }
 
 
@@ -285,7 +286,6 @@ void Surface::convertAlpha() {
 	if (r == NULL)
 		throw_sdl(("SDL_DisplayFormatAlpha"));
 	assign(r);
-	LOG_DEBUG(("converted image. store: %s", (r->flags&SDL_HWSURFACE)?"hardware":"software"));
 }
 
 
