@@ -285,6 +285,7 @@ void Surface::convertAlpha() {
 	if (r == NULL)
 		throw_sdl(("SDL_DisplayFormatAlpha"));
 	assign(r);
+	LOG_DEBUG(("converted image. store: %s", (r->flags&SDL_HWSURFACE)?"hardware":"software"));
 }
 
 
