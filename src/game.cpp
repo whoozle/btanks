@@ -357,7 +357,10 @@ void IGame::run() {
 				}
 			}
 		
+			_window.lock();
 			World->tick(dt);
+			_window.unlock();
+			
 			if (_server) 
 				_server->tick(dt);
 
@@ -386,7 +389,6 @@ void IGame::run() {
 				}
 			}
 		}
-		
 		_window.lock();
 		_window.fillRect(window_size, black);
 		map.render(_window, viewport, -1000, 0);
