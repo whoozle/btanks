@@ -41,7 +41,7 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 			const std::string fname = "data/tiles/" + attr["tile"];
 			s->loadImage(fname);
 			s->convertAlpha();
-			s->convert((s->getFlags() & ~SDL_SWSURFACE) | SDL_HWSURFACE);
+			s->convertToHardware();
 			_surfaces[attr["tile"]] = s;
 			s = NULL;
 			

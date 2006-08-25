@@ -309,6 +309,10 @@ void Surface::unlock() {
 	}
 }
 
+void Surface::convertToHardware() {
+	convert((surface->flags & ~SDL_SWSURFACE) | SDL_HWSURFACE);
+}
+
 
 Surface::~Surface() {
     free();

@@ -93,6 +93,7 @@ void IMap::load(const std::string &name) {
 	for(LayerMap::iterator l = _layers.begin(); l != _layers.end(); ++l) {
 		l->second->surface.createRGB(_w * _tw, _h * _th, 24);
 		l->second->surface.convertAlpha();
+		l->second->surface.convertToHardware();
 		
 		for(long ty = 0; ty < _h; ++ty) {
 			for(long tx = 0; tx < _w; ++tx) {
@@ -238,6 +239,7 @@ void IMap::end(const std::string &name) {
 		}
 		//_image->convert(SDL_ASYNCBLIT | SDL_HWSURFACE);
 		_image->convertAlpha();
+		_image->convertToHardware();
 		
 		LOG_DEBUG(("image loaded. (%dx%d) format: %s", _image->getWidth(), _image->getHeight(), e.attrs["format"].c_str()));
 	} else if (name == "layer") {
@@ -268,6 +270,7 @@ void IMap::end(const std::string &name) {
 				sdlx::Surface *s = new sdlx::Surface;
 				s->createRGB(_tw, _th, 24);
 				s->convertAlpha();
+				s->convertToHardware();
 
 				sdlx::Rect from(x, y, _tw, _th);
 				s->copyFrom(*_image, from);

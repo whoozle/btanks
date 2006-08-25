@@ -99,6 +99,7 @@ namespace sdlx {
 		void fillRect(const Rect &r, Uint32 color);
 		void setAlpha(Uint8 alpha, Uint32 flags = SDL_SRCALPHA);
 		void convertAlpha();
+		void convertToHardware();
 
 		PixelFormat* getPixelFormat() const { return surface->format; }
 
