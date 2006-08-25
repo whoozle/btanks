@@ -131,7 +131,7 @@ void IGame::init(const int argc, char *argv[]) {
 		glBlendFunc_ptr.call( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA ) ;
 		glEnable_ptr.call( GL_BLEND ) ;
 	
-		_window.setVideoMode(w, h, 32, SDL_OPENGL | SDL_OPENGLBLIT | (fullscreen?SDL_FULLSCREEN:0));
+		_window.setVideoMode(w, h, 32, SDL_OPENGL | SDL_OPENGLBLIT | (fullscreen?SDL_FULLSCREEN:0) | (_vsync?SDL_DOUBLEBUF:0));
 	} else {
 		_window.setVideoMode(w, h, 32, SDL_HWSURFACE | (_vsync?SDL_DOUBLEBUF:0) | SDL_SRCALPHA | (fullscreen?SDL_FULLSCREEN:0));
 	}
