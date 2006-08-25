@@ -131,12 +131,12 @@ void IGame::init(const int argc, char *argv[]) {
 		glBlendFunc_ptr.call( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA ) ;
 		glEnable_ptr.call( GL_BLEND ) ;
 	
-		_window.setVideoMode(w, h, 32, SDL_OPENGL | SDL_OPENGLBLIT | (fullscreen?SDL_FULLSCREEN:0) | (_vsync?SDL_DOUBLEBUF:0));
+		_window.setVideoMode(w, h, 32, SDL_HWSURFACE | SDL_OPENGL | SDL_OPENGLBLIT | (fullscreen?SDL_FULLSCREEN:0) | (_vsync?SDL_DOUBLEBUF:0));
 	} else {
 		_window.setVideoMode(w, h, 32, SDL_HWSURFACE | (_vsync?SDL_DOUBLEBUF:0) | SDL_SRCALPHA | (fullscreen?SDL_FULLSCREEN:0));
 	}
 	
-	LOG_DEBUG(("created main surface. (%dx%dx%d)", w, h, _window.getBPP()));
+	LOG_DEBUG(("created main surface. (%dx%dx%d, %s)", w, h, _window.getBPP(), (_window.getFlags() & SDL_HWSURFACE)?"hardware":"software"));
 
 	sdlx::System::probeVideoMode();	
 
