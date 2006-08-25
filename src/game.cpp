@@ -357,9 +357,7 @@ void IGame::run() {
 				}
 			}
 		
-			_window.lock();
 			World->tick(dt);
-			_window.unlock();
 			
 			if (_server) 
 				_server->tick(dt);

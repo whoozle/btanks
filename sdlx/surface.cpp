@@ -218,7 +218,8 @@ void Surface::copyFrom(const Surface &from, int x, int y) {
 	memset(&dst, 0, sizeof(dst));
     dst.x=x;
     dst.y=y; //only x, y are used... bla bla bla - see manual
-    if (SDL_BlitSurface(from.surface, NULL, surface, &dst) == -1) throw_sdl(("SDL_BlitSurface"));
+    if (SDL_BlitSurface(from.surface, NULL, surface, &dst) == -1) 
+		throw_sdl(("SDL_BlitSurface"));
 }
 
 void Surface::copyFrom(const Surface &from, Rect &fromRect, int x, int y) {
