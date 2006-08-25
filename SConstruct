@@ -33,7 +33,7 @@ if sys.platform == "win32":
 	else:
 		env.Append(CCCFLAGS = ' /Ot /Ob2gity /G6 ') #optimizations
 		env.Append(CPPFLAGS = ' /Ot /Ob2gity /G6 ') #optimizations
-		env.Append(LINKFLAGS = ' /OPT:REF /OPT:ICF /NOLOGO /INCREMENTAL:NO')
+		env.Append(LINKFLAGS = ' /OPT:REF /OPT:ICF /NOLOGO /INCREMENTAL:NO ')
 
 #	
 #	env.Append(CPPFLAGS = '/Ox /Ot ') #optimizations
