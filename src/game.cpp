@@ -57,20 +57,20 @@ void IGame::init(const int argc, char *argv[]) {
 //	putenv("SDL_VIDEODRIVER=dga");
 #endif
 
-	bool opengl = false;
+	_opengl = false;
 	bool fullscreen = false;
 	bool dx = false;
 	_vsync = true;
 	
 	for(int i = 1; i < argc; ++i) {
-		if (strcmp(argv[i], "--gl") == 0) opengl = true;
+		if (strcmp(argv[i], "--gl") == 0) _opengl = true;
 		else if (strcmp(argv[i], "--fs") == 0) fullscreen = true;
 		else if (strcmp(argv[i], "--no-vsync") == 0) _vsync = false;
 		else if (strcmp(argv[i], "--dx") == 0) dx = true;
 		else throw_ex(("unrecognized option: '%s'", argv[i]));
 	}
 	
-	LOG_DEBUG(("gl: %s, vsync: %s, dx: %s", opengl?"yes":"no", _vsync?"yes":"no", dx?"yes":"no"));
+	LOG_DEBUG(("gl: %s, vsync: %s, dx: %s", _opengl?"yes":"no", _vsync?"yes":"no", dx?"yes":"no"));
 
 #ifdef WIN32
 	if (dx) 
@@ -84,7 +84,7 @@ void IGame::init(const int argc, char *argv[]) {
 	sdlx::System::init(SDL_INIT_EVERYTHING);
 #endif
 
-	if (opengl) {
+	if (_opengl) {
 		LOG_DEBUG(("loading GL library"));
 		if (SDL_GL_LoadLibrary(NULL) == -1) 
 			throw_sdl(("SDL_GL_LoadLibrary"));
@@ -124,7 +124,7 @@ void IGame::init(const int argc, char *argv[]) {
 		}
 	}
 	int w = 800, h = 600;
-	if (opengl) {
+	if (_opengl) {
 		SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
 		SDL_GL_SetAttribute( SDL_GL_ALPHA_SIZE, 8 );
 	
@@ -420,7 +420,7 @@ void IGame::run() {
 			
 			//LOG_DEBUG(("%f %f", mapx, mapy));
 		}
-		if (_vsync)
+		if (_vsync || _opengl)
 			_window.flip();
 		else 
 			_window.update();
