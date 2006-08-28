@@ -52,12 +52,19 @@ private:
 #define throw_ex(str) throw_generic(mrt::Exception, str)
 
 #define TRY try 
+
+#if defined WIN32 && defined DEBUG
+#	define CATCH_D(where, code) /* bye bye */
+#else
+#	define CATCH_D(where, code) catch(...) {\
+		LOG_ERROR(("%s: unknown error", where));\
+		code;\
+		}
+#endif
+
 #define CATCH(where, code)  catch(const std::exception &_e) {\
 	LOG_ERROR(("%s: %s", where, _e.what())); \
 	code;\
-	} catch(...) {\
-	LOG_ERROR(("%s: unknown error", where));\
-	code;\
-	}\
+	} CATCH_D(where, code)
 
 #endif
