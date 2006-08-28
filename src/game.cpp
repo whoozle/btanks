@@ -30,6 +30,12 @@
 #include "controls/joyplayer.h"
 #include "controls/keyplayer.h"
 
+#ifndef SDL_OPENGLBLIT
+#define SDL_OPENGLBLIT 0
+// using 0 as OPENGLBLIT value. SDL 1.3 or later
+#endif
+
+
 IMPLEMENT_SINGLETON(Game, IGame)
 
 IGame::IGame() {

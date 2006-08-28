@@ -21,10 +21,9 @@ debug = False
 #print sys.platform
 if sys.platform == "win32":
 	env.Append(CPPDEFINES = ['WIN32', '_WINDOWS']) #, '_UNICODE'
-	env.Append(CCFLAGS = '/GX /GR /W3 /MD /nologo ')
-	env.Append(CPPFLAGS = ' /TP /GX /GR /W3 /MD /nologo ')
+	env.Append(CCFLAGS = ' /GR /W3 /MD /nologo ')
+	env.Append(CPPFLAGS = ' /GX /TP /GR /W3 /MD /nologo ')
 
-	env.Append(CCFLAGS = ' /GX /GR /W3 /MD /nologo ')
 	if debug:
 		env.Append(CCFLAGS = ' /Yd /Zi ')
 		env.Append(CPPFLAGS = ' /Yd /Zi ')
