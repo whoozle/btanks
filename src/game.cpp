@@ -87,7 +87,7 @@ void IGame::init(const int argc, char *argv[]) {
 #ifdef DEBUG
 	sdlx::System::init(SDL_INIT_EVERYTHING | SDL_INIT_NOPARACHUTE);
 #else
-	sdlx::System::init(SDL_INIT_EVERYTHING);
+	sdlx::System::init(SDL_INIT_EVERYTHING | SDL_INIT_NOPARACHUTE);
 #endif
 
 	if (_opengl) {
@@ -95,14 +95,14 @@ void IGame::init(const int argc, char *argv[]) {
 		if (SDL_GL_LoadLibrary(NULL) == -1) 
 			throw_sdl(("SDL_GL_LoadLibrary"));
 
-		glEnable_ptr.ptr = SDL_GL_GetProcAddress("glEnable");
+/*		glEnable_ptr.ptr = SDL_GL_GetProcAddress("glEnable");
 		if (!glEnable_ptr.ptr)
 			throw_ex(("cannot get address of glEnable"));
 	
 		glBlendFunc_ptr.ptr = SDL_GL_GetProcAddress("glBlendFunc");
 		if (!glBlendFunc_ptr.ptr)
 			throw_ex(("cannot get address of glBlendFunc"));
-	}
+*/	}
 	
 	sdlx::Surface::setDefaultFlags(sdlx::Surface::Hardware | sdlx::Surface::Alpha);
 
@@ -134,8 +134,8 @@ void IGame::init(const int argc, char *argv[]) {
 		SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
 		SDL_GL_SetAttribute( SDL_GL_ALPHA_SIZE, 8 );
 	
-		glBlendFunc_ptr.call( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA ) ;
-		glEnable_ptr.call( GL_BLEND ) ;
+		//glBlendFunc_ptr.call( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA ) ;
+		//glEnable_ptr.call( GL_BLEND ) ;
 	
 		_window.setVideoMode(w, h, 32, SDL_HWSURFACE | SDL_OPENGL | SDL_OPENGLBLIT | (fullscreen?SDL_FULLSCREEN:0) | (_vsync?SDL_DOUBLEBUF:0));
 	} else {
@@ -154,10 +154,8 @@ void IGame::init(const int argc, char *argv[]) {
 		modes = SDL_ListModes(NULL, SDL_FULLSCREEN|SDL_HWSURFACE);
 
 		/* Check is there are any modes available */
-		if(modes == (SDL_Rect **)0) {
-			printf("No modes available!\n");
-		    exit(-1);
-	    }
+		if(modes == (SDL_Rect **)0) 
+			throw_ex(("No video modes available"));
     
 	    /* Check if our resolution is restricted */
     	if(modes == (SDL_Rect **)-1){
@@ -169,15 +167,16 @@ void IGame::init(const int argc, char *argv[]) {
 				LOG_DEBUG(("\t%dx%d", modes[i]->w, modes[i]->h));
 		}
 	}
-		
+	LOG_DEBUG(("setting caption..."));		
 	SDL_WM_SetCaption(("Battle tanks - " + getVersion()).c_str(), "btanks");
 
+	LOG_DEBUG(("initializing menus..."));		
 	_main_menu.init(w, h);	
 
 	_paused = false;
 	_running = true;
 
-	_window.update();
+	//_window.update();
 	
 	LOG_DEBUG(("initializing resource manager..."));
 	ResourceManager->init("data/resources.xml");

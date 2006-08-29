@@ -16,6 +16,7 @@ opts.Save('options.cache', env.Copy())
 
 Help(opts.GenerateHelpText(env))
 
+#debug = True
 debug = False
 
 #print sys.platform
@@ -25,8 +26,8 @@ if sys.platform == "win32":
 	env.Append(CPPFLAGS = ' /GX /TP /GR /W3 /MD /nologo ')
 
 	if debug:
-		env.Append(CCFLAGS = ' /Yd /Zi ')
-		env.Append(CPPFLAGS = ' /Yd /Zi ')
+		env.Append(CCFLAGS = ' /Yd /Zi /Ge /GT /GZ /Od /ZI ')
+		env.Append(CPPFLAGS = ' /Yd /Zi /Ge /GT /GZ /Od /ZI  ')
 		env.Append(LINKFLAGS = ' /NOLOGO /DEBUG ')
 		env.Append(CPPDEFINES = ['DEBUG'])
 	else:
