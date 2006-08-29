@@ -45,8 +45,8 @@ IGame::~IGame() {}
 
 const std::string IGame::data_dir = "data";
 
-typedef void (*glEnable_Func)(GLenum cap);
-typedef void (*glBlendFunc_Func) (GLenum sfactor, GLenum dfactor );
+typedef void (APIENTRY *glEnable_Func)(GLenum cap);
+typedef void (APIENTRY *glBlendFunc_Func) (GLenum sfactor, GLenum dfactor );
 
 template <typename FuncPtr> union SharedPointer {
 	FuncPtr call;
@@ -95,14 +95,14 @@ void IGame::init(const int argc, char *argv[]) {
 		if (SDL_GL_LoadLibrary(NULL) == -1) 
 			throw_sdl(("SDL_GL_LoadLibrary"));
 
-/*		glEnable_ptr.ptr = SDL_GL_GetProcAddress("glEnable");
+		glEnable_ptr.ptr = SDL_GL_GetProcAddress("glEnable");
 		if (!glEnable_ptr.ptr)
 			throw_ex(("cannot get address of glEnable"));
 	
 		glBlendFunc_ptr.ptr = SDL_GL_GetProcAddress("glBlendFunc");
 		if (!glBlendFunc_ptr.ptr)
 			throw_ex(("cannot get address of glBlendFunc"));
-*/	}
+	}
 	
 	sdlx::Surface::setDefaultFlags(sdlx::Surface::Hardware | sdlx::Surface::Alpha);
 
@@ -135,8 +135,8 @@ void IGame::init(const int argc, char *argv[]) {
 			SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
 		SDL_GL_SetAttribute( SDL_GL_ALPHA_SIZE, 8 );
 	
-		//glBlendFunc_ptr.call( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA ) ;
-		//glEnable_ptr.call( GL_BLEND ) ;
+		glBlendFunc_ptr.call( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+		glEnable_ptr.call( GL_BLEND ) ;
 	
 		_window.setVideoMode(w, h, 32, SDL_HWSURFACE | SDL_OPENGL | SDL_OPENGLBLIT | (fullscreen?SDL_FULLSCREEN:0) | (_vsync?SDL_DOUBLEBUF:0));
 	} else {
@@ -314,7 +314,7 @@ void IGame::run() {
 	Uint32 black = _window.mapRGB(0, 0, 0);
 
 	float mapx = 0, mapy = 0, mapvx = 0, mapvy = 0;
-	int fps_limit = 100;
+	int fps_limit = 1000;
 	
 	float fr = fps_limit;
 	int max_delay = 1000/fps_limit;
@@ -393,6 +393,8 @@ void IGame::run() {
 				}
 			}
 		}
+		Uint32 t_tick = SDL_GetTicks() - tstart;
+
 		_window.fillRect(window_size, black);
 		map.render(_window, viewport, -1000, 0);
 		World->render(_window, viewport);
@@ -427,12 +429,15 @@ void IGame::run() {
 			//LOG_DEBUG(("%f %f", mapx, mapy));
 		}
 
+		Uint32 t_render = SDL_GetTicks() - tstart;
 		_window.flip();
+		Uint32 t_flip = SDL_GetTicks() - tstart;
 	
 		int tdelta = SDL_GetTicks() - tstart;
 
+		LOG_DEBUG(("tick time: %u, render time: %u, flip time: %u", t_tick, t_render, t_flip));
 		if (tdelta < max_delay) {
-			//LOG_DEBUG(("tdelta: %d, delay: %d", tdelta, max_delay - tdelta));
+			LOG_DEBUG(("tdelta: %d, delay: %d", tdelta, max_delay - tdelta));
 			SDL_Delay(max_delay - tdelta);
 		}
 
