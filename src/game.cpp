@@ -131,7 +131,8 @@ void IGame::init(const int argc, char *argv[]) {
 	}
 	int w = 800, h = 600;
 	if (_opengl) {
-		SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
+		if (_vsync) 
+			SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
 		SDL_GL_SetAttribute( SDL_GL_ALPHA_SIZE, 8 );
 	
 		//glBlendFunc_ptr.call( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA ) ;
