@@ -176,7 +176,7 @@ void IGame::init(const int argc, char *argv[]) {
 	_paused = false;
 	_running = true;
 
-	//_window.update();
+	_window.update();
 	
 	LOG_DEBUG(("initializing resource manager..."));
 	ResourceManager->init("data/resources.xml");
@@ -425,10 +425,8 @@ void IGame::run() {
 			
 			//LOG_DEBUG(("%f %f", mapx, mapy));
 		}
-		if (_vsync || _opengl)
-			_window.flip();
-		else 
-			_window.update();
+
+		_window.flip();
 	
 		int tdelta = SDL_GetTicks() - tstart;
 
