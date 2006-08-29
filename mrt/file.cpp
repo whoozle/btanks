@@ -63,7 +63,10 @@ const size_t File::read(void *buf, const size_t size) const {
 
 
 const bool File::eof() const {
-	return feof(_f);
+	int r = feof(_f);
+	if (r == -1)
+		throw_io(("feof"));
+	return r != 0;	
 }
 
 
