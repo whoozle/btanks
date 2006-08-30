@@ -24,7 +24,7 @@ namespace mrt {
 #define IMPLEMENT_SINGLETON(name, class) \
 	mrt::Accessor<class> name; \
 \
-	class * class::get_instance() { \
+	inline class * class::get_instance() { \
 		static class instance; \
 		return &instance; \
 	} 
