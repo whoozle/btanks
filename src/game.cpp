@@ -74,22 +74,37 @@ void IGame::init(const int argc, char *argv[]) {
 		if (strcmp(argv[i], "--gl") == 0) _opengl = true;
 		else if (strcmp(argv[i], "--fs") == 0) fullscreen = true;
 		else if (strcmp(argv[i], "--no-vsync") == 0) _vsync = false;
+#ifdef WIN32
 		else if (strcmp(argv[i], "--dx") == 0) dx = true;
+#endif
 		else throw_ex(("unrecognized option: '%s'", argv[i]));
 	}
 	
 	LOG_DEBUG(("gl: %s, vsync: %s, dx: %s", _opengl?"yes":"no", _vsync?"yes":"no", dx?"yes":"no"));
-
 #ifdef WIN32
+	_putenv("SDL_VIDEO_RENDERER=gdi");
+
 	if (dx) 
+#if SDL_MAJOR_VERSION >= 1 && SDL_MINOR_VERSION >= 3
+		_putenv("SDL_VIDEO_RENDERER=d3d");
+#else
 		_putenv("SDL_VIDEODRIVER=directx");
 #endif
+
+#endif
+
+//opengl renderer
+#if SDL_MAJOR_VERSION >= 1 && SDL_MINOR_VERSION >= 3
+	if (_opengl)
+		_putenv("SDL_VIDEO_RENDERER=opengl");
+#endif
+
 
 	LOG_DEBUG(("initializing SDL..."));
 #ifdef DEBUG
 	sdlx::System::init(SDL_INIT_EVERYTHING | SDL_INIT_NOPARACHUTE);
 #else
-	sdlx::System::init(SDL_INIT_EVERYTHING | SDL_INIT_NOPARACHUTE);
+	sdlx::System::init(SDL_INIT_EVERYTHING);
 #endif
 
 	if (_opengl) {
@@ -152,7 +167,7 @@ void IGame::init(const int argc, char *argv[]) {
 	LOG_DEBUG(("created main surface. (%dx%dx%d, %s)", w, h, _window.getBPP(), ((_window.getFlags() & SDL_HWSURFACE) == SDL_HWSURFACE)?"hardware":"software"));
 
 	sdlx::System::probeVideoMode();	
-
+#if 0
 	{
 		SDL_Rect **modes;
 		int i;
@@ -174,6 +189,7 @@ void IGame::init(const int argc, char *argv[]) {
 				LOG_DEBUG(("\t%dx%d", modes[i]->w, modes[i]->h));
 		}
 	}
+#endif
 	LOG_DEBUG(("setting caption..."));		
 	SDL_WM_SetCaption(("Battle tanks - " + getVersion()).c_str(), "btanks");
 
