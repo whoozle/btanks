@@ -340,7 +340,7 @@ void IWorld::deserialize(const mrt::Serializator &s) {
 typedef v3<int> vertex;
 typedef std::deque<vertex> vertex_queue;
 
-static void push(Matrix<int> &path, vertex_queue &buf, const vertex &vertex) {
+static inline void push(Matrix<int> &path, vertex_queue &buf, const vertex &vertex) {
 	int w = path.get(vertex.y, vertex.x);
 	if (w != -1 && w <= vertex.z) 
 		return;
@@ -348,7 +348,7 @@ static void push(Matrix<int> &path, vertex_queue &buf, const vertex &vertex) {
 	buf.push_back(vertex);
 }
 
-static const bool pop(vertex_queue &buf, vertex &vertex) {
+static inline const bool pop(vertex_queue &buf, vertex &vertex) {
 	if (buf.empty())
 		return false;
 	vertex = buf.front();
