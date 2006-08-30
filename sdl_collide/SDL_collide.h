@@ -38,8 +38,8 @@ extern "C" {
 
 /*
 	SDL surface test if offset (u,v) is a transparent pixel
-*/
 int SDL_CollideTransparentPixelTest(const SDL_Surface *surface , const int u , const int v);
+*/
 
 /*
 	SDL pixel perfect collision test
