@@ -25,7 +25,7 @@ namespace mrt {
 	} 
 
 #define IMPLEMENT_SINGLETON(name, class) \
-	const mrt::Accessor<class> name; \
+	const mrt::Accessor<class> name = mrt::Accessor<class>(); \
 
 
 #endif
