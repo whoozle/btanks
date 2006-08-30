@@ -31,8 +31,8 @@ if sys.platform == "win32":
 		env.Append(LINKFLAGS = ' /NOLOGO /DEBUG ')
 		env.Append(CPPDEFINES = ['DEBUG'])
 	else:
-		env.Append(CCCFLAGS = ' /Ot /Ob2gity /G6 ') #optimizations
-		env.Append(CPPFLAGS = ' /Ot /Ob2gity /G6 ') #optimizations
+		env.Append(CCCFLAGS = ' /Ot /Ob2gity /G6 /GA /GF /Gs /Gy ') #optimizations
+		env.Append(CPPFLAGS = ' /Ot /Ob2gity /G6 /GA /GF /Gs /Gy ') #optimizations
 		env.Append(LINKFLAGS = ' /OPT:REF /OPT:ICF /NOLOGO /INCREMENTAL:NO ')
 
 #	
