@@ -16,7 +16,7 @@ namespace mrt {
 }
 
 #define SINGLETON(name, class) \
-	extern mrt::Accessor<class> name
+	extern const mrt::Accessor<class> name
 
 #define DECLARE_SINGLETON(class) \
 	static inline class * get_instance() { \
@@ -25,7 +25,7 @@ namespace mrt {
 	} 
 
 #define IMPLEMENT_SINGLETON(name, class) \
-	mrt::Accessor<class> name; \
+	const mrt::Accessor<class> name; \
 
 
 #endif
