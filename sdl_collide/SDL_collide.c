@@ -50,15 +50,15 @@ int SDL_CollideTransparentPixelTest(const SDL_Surface *surface , const int u , c
 	if (surface->flags && SDL_SRCALPHA) {
 		Uint8 r, g, b, a;
 		SDL_GetRGBA(pixelcolor, surface->format, &r, &g, &b, &a); 
-		if (r == 255 && g == 0 && b == 255 && a == 255) 
+		if (r == b && g == 0) 
 			return 0;
 		/*
 		assert(r != 0 || g != 0 || b != 0 || a != 255);
 		*/
-		/*
-		if (surface->w == 64)
-			printf("%p(%d:%d) %d %d %d %d\n", surface, u, v, r, g, b, a);
-		*/
+		
+/*		if (surface->w == 64)
+			printf("%p(%d:%d) %d %d %d %d (rb: %d %d)\n", (void *)surface, u, v, r, g, b, a, r - g, b - g);
+*/		
 		return a != 0;
 	}
 	/*test whether pixels color == color of transparent pixels for that surface*/
