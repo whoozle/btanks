@@ -23,7 +23,7 @@
 #include "net/protocol.h"
 #include "net/connection.h"
 
-#include <SDL/SDL_gfxPrimitives.h>
+#include "SDL_gfx/SDL_gfxPrimitives.h"
 #include <SDL/SDL_opengl.h>
 #include <SDL/SDL_net.h>
 
@@ -341,6 +341,9 @@ void IGame::run() {
 	float fr = fps_limit;
 	int max_delay = 1000/fps_limit;
 	LOG_DEBUG(("fps_limit set to %d, maximum frame delay: %d", fps_limit, max_delay));
+
+	sdlx::Surface fps_surf;
+	fps_surf.createRGB(64, 64, 32, SDL_SWSURFACE);
 	
 	while (_running) {
 		Uint32 tstart = SDL_GetTicks();
@@ -429,8 +432,9 @@ void IGame::run() {
 		
 		
 		std::string f = mrt::formatString("%d", (int)fr);
-		stringRGBA(_window.getSDLSurface(), 4, 4, f.c_str(), 0,0,0, 255);
-		stringRGBA(_window.getSDLSurface(), 3, 3, f.c_str(), 255, 255, 255, 255);
+		stringRGBA(fps_surf.getSDLSurface(), 4, 4, f.c_str(), 0,0,0, 255);
+		stringRGBA(fps_surf.getSDLSurface(), 3, 3, f.c_str(), 255, 255, 255, 255);
+		_window.copyFrom(fps_surf, 0, 0);
 		
 		if (map.loaded()) {
 			const v3<int> world_size = map.getSize();

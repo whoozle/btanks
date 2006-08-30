@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include "SDL/SDL_framerate.h"
+#include "SDL_gfx/SDL_framerate.h"
 
 namespace sdlx {
 class FPSManager {
