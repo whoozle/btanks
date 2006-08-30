@@ -46,6 +46,7 @@ IGame::~IGame() {}
 const std::string IGame::data_dir = "data";
 
 typedef void (APIENTRY *glEnable_Func)(GLenum cap);
+typedef void (APIENTRY *glFlush_Func)(void);
 typedef void (APIENTRY *glBlendFunc_Func) (GLenum sfactor, GLenum dfactor );
 
 template <typename FuncPtr> union SharedPointer {
@@ -55,6 +56,7 @@ template <typename FuncPtr> union SharedPointer {
 
 static SharedPointer<glEnable_Func> glEnable_ptr;
 static SharedPointer<glBlendFunc_Func> glBlendFunc_ptr;
+static SharedPointer<glFlush_Func> glFlush_ptr;
 
 void IGame::init(const int argc, char *argv[]) {
 
@@ -102,6 +104,10 @@ void IGame::init(const int argc, char *argv[]) {
 		glBlendFunc_ptr.ptr = SDL_GL_GetProcAddress("glBlendFunc");
 		if (!glBlendFunc_ptr.ptr)
 			throw_ex(("cannot get address of glBlendFunc"));
+
+		glFlush_ptr.ptr = SDL_GL_GetProcAddress("glFlush");
+		if (!glFlush_ptr.ptr)
+			throw_ex(("cannot get address of glFlush"));
 	}
 	
 	sdlx::Surface::setDefaultFlags(sdlx::Surface::Hardware | sdlx::Surface::Alpha);
@@ -394,6 +400,9 @@ void IGame::run() {
 			}
 		}
 		Uint32 t_tick = SDL_GetTicks() - tstart;
+		if (_opengl) {
+			glFlush_ptr.call();
+		}
 
 		_window.fillRect(window_size, black);
 		map.render(_window, viewport, -1000, 0);
@@ -431,6 +440,7 @@ void IGame::run() {
 
 		Uint32 t_render = SDL_GetTicks() - tstart;
 		_window.flip();
+		
 		Uint32 t_flip = SDL_GetTicks() - tstart;
 	
 		int tdelta = SDL_GetTicks() - tstart;
