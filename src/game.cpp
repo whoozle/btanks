@@ -69,6 +69,7 @@ void IGame::init(const int argc, char *argv[]) {
 	bool fullscreen = false;
 	bool dx = false;
 	_vsync = true;
+	int w = 800, h = 600;
 	
 	for(int i = 1; i < argc; ++i) {
 		if (strcmp(argv[i], "--gl") == 0) _opengl = true;
@@ -77,6 +78,7 @@ void IGame::init(const int argc, char *argv[]) {
 #ifdef WIN32
 		else if (strcmp(argv[i], "--dx") == 0) dx = true;
 #endif
+		else if (strcmp(argv[i], "-2") == 0) { w = 1024; h = 768; }
 		else throw_ex(("unrecognized option: '%s'", argv[i]));
 	}
 	
@@ -150,7 +152,6 @@ void IGame::init(const int argc, char *argv[]) {
 */
 		}
 	}
-	int w = 800, h = 600;
 	if (_opengl) {
 		if (_vsync) 
 			SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
