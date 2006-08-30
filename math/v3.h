@@ -15,15 +15,15 @@
 template <typename T> class v3 : public mrt::Serializable {
 public:
 	T x, y, z;
-	v3<T>() : x(0), y(0), z(0) {}
-	v3<T>(const T x, const T y, const T z) : x(x), y(y), z(z) {} 
+	inline v3<T>() : x(0), y(0), z(0) {}
+	inline v3<T>(const T x, const T y, const T z) : x(x), y(y), z(z) {} 
 
-	void clear() { x = y = z = 0; }
-	const bool is0() const {
+	inline void clear() { x = y = z = 0; }
+	inline const bool is0() const {
 		return x== 0 && y == 0 && z == 0;
 	}
 	
-	const T normalize() {
+	inline const T normalize() {
 		T len = length();
 		if (len == 0 || len == 1) 
 			return len;
@@ -34,27 +34,27 @@ public:
 		return 1;
 	}
 	
-	const T length() const {
+	inline const T length() const {
 		if (x == 0 && y == 0 && z == 0) 
 			return 0;
 		
 		return (T)sqrt(x * x + y * y + z * z);
 	}
 
-	const T quick_length() const {
+	inline const T quick_length() const {
 		return (T)(x * x + y * y + z * z);
 	}
 
 	template <typename T2> 
-		v3<T2> convert() const { return v3<T2>((T2)x, (T2)y, (T2)z); }
+		inline v3<T2> convert() const { return v3<T2>((T2)x, (T2)y, (T2)z); }
 	
-	const T distance(const v3<T>& other) const {
+	inline const T distance(const v3<T>& other) const {
 		v3<T>d(this);
 		d-= other;
 		return d.lenght();
 	}
 	
-	const T quick_distance(const v3<T>& other) const {
+	inline const T quick_distance(const v3<T>& other) const {
 		T dx = x - other.x;
 		T dy = y - other.y;
 		T dz = z - other.z;
@@ -63,73 +63,73 @@ public:
 
 	
 	//operators 
-	const bool operator==(const v3<T> &other) {
+	inline const bool operator==(const v3<T> &other) {
 		return x == other.x && y == other.y && z == other.z;
 	}
 
-	const bool operator!=(const v3<T> &other) {
+	inline const bool operator!=(const v3<T> &other) {
 		return x != other.x || y != other.y || z != other.z;
 	}
 	
 
-	const v3<T>& operator+=(const v3<T>& other) {
+	inline const v3<T>& operator+=(const v3<T>& other) {
 		x += other.x; y += other.y; z += other.z;
 		return *this;
 	}
 
-	const v3<T>& operator-=(const v3<T>& other) {
+	inline const v3<T>& operator-=(const v3<T>& other) {
 		x -= other.x; y -= other.y; z -= other.z;
 		return *this;
 	}
 	
-	const v3<T> operator*(const v3<T>& other) const {
+	inline const v3<T> operator*(const v3<T>& other) const {
 		return v3<T>(x * other.x, y * other.y, z * other.z);
 	}
-	const v3<T> operator+(const v3<T>& other) const {
+	inline const v3<T> operator+(const v3<T>& other) const {
 		return v3<T>(x + other.x, y + other.y, z + other.z);
 	}
-	const v3<T> operator-(const v3<T>& other) const {
+	inline const v3<T> operator-(const v3<T>& other) const {
 		return v3<T>(x - other.x, y - other.y, z - other.z);
 	}
-	const v3<T> operator/(const v3<T>& other) const {
+	inline const v3<T> operator/(const v3<T>& other) const {
 		return v3<T>(x / other.x, y / other.y, z / other.z);
 	}
 
-	const v3<T> operator*(const T& other) const {
+	inline const v3<T> operator*(const T& other) const {
 		return v3<T>(x * other, y * other, z * other);
 	}
-	const v3<T> operator+(const T& other) const {
+	inline const v3<T> operator+(const T& other) const {
 		return v3<T>(x + other, y + other, z + other);
 	}
-	const v3<T> operator-(const T& other) const {
+	inline const v3<T> operator-(const T& other) const {
 		return v3<T>(x - other, y - other, z - other);
 	}
-	const v3<T> operator/(const T& other) const {
+	inline const v3<T> operator/(const T& other) const {
 		return v3<T>(x / other, y / other, z / other);
 	}
 
-	const v3<T>& operator/=(const T& other) {
+	inline const v3<T>& operator/=(const T& other) {
 		x /= other;
 		y /= other;
 		z /= other;
 		return *this;
 	}
 
-	const v3<T>& operator*=(const T& other) {
+	inline const v3<T>& operator*=(const T& other) {
 		x *= other;
 		y *= other;
 		z *= other;
 		return *this;
 	}
 
-	const v3<T>& operator+=(const T& other) {
+	inline const v3<T>& operator+=(const T& other) {
 		x += other;
 		y += other;
 		z += other;
 		return *this;
 	}
 
-	const v3<T>& operator-=(const T& other) {
+	inline const v3<T>& operator-=(const T& other) {
 		x -= other;
 		y -= other;
 		z -= other;
@@ -170,7 +170,7 @@ private:
 	}
 
 public:	
-	int getDirection8() {
+	inline int getDirection8() {
 		if (is0())
 			return 0;
 
@@ -178,7 +178,7 @@ public:
 		return (y <= 0 || xx == 1)? xx: 10 - xx;
 	}
 
-	int getDirection16() {
+	inline int getDirection16() {
 		if (is0())
 			return 0;
 
@@ -186,7 +186,7 @@ public:
 		return (y <= 0 || xx == 1)? xx: 18 - xx;
 	}
 
-	static void quantize8(T &x) {
+	static inline void quantize8(T &x) {
 		if (x > 0.3826834323650898373) {
 			x = 1;
 		} else if (x < -0.3826834323650898373)
@@ -195,7 +195,7 @@ public:
 	}
 
 	
-	void quantize8() {
+	inline void quantize8() {
 		normalize();
 		quantize8(x);
 		quantize8(y);
@@ -203,7 +203,7 @@ public:
 		normalize();
 	}
 
-	void quantize16() {
+	inline void quantize16() {
 		static T cos_t[] = {1, 0.9238795325112867385, 0.7071067811865475727, 0.3826834323650898373, 
 						  0, -0.3826834323650898373, -0.7071067811865475727, -0.9238795325112867385, -1};
 		static T sin_t[] = {0, 0.3826834323650898373, 0.7071067811865475727, 0.9238795325112867385, 1,
