@@ -189,7 +189,7 @@ extern "C" {
 
 /* Ends C function definitions when using C++ */
 #ifdef __cplusplus
-};
+}
 #endif
 
 #endif				/* _SDL_gfxPrimitives_h */

@@ -31,11 +31,11 @@ unsigned int cpuFlags()
     int flags = 0;
 
 #ifdef USE_MMX
-    asm volatile ("pusha		     \n\t" "mov    %1, %%eax     \n\t"	// request feature flag
-		  "cpuid                \n\t"	// get CPU ID flag
-		  "mov    %%edx, %0     \n\t"	// move result to mmx_bit
-		  "popa		     \n\t":"=m" (flags)	// %0
-		  :"i"(0x00000001)	// %1
+    asm volatile ("pusha		     \n\t" "mov    %1, %%eax     \n\t"	
+		  "cpuid                \n\t"	
+		  "mov    %%edx, %0     \n\t"	
+		  "popa		     \n\t":"=m" (flags)	
+		  :"i"(0x00000001)	
 	);
 #endif
 
@@ -68,37 +68,33 @@ void SDL_imageFilterMMXon()
     SDL_imageFilterUseMMX = 1;
 }
 
-// ------------------------------------------------------------------------------------
-
-//  SDL_imageFilterAdd: D = saturation255(S1 + S2)
 int SDL_imageFilterAddMMX(unsigned char *Src1, unsigned char *Src2, unsigned char *Dest, int length)
 {
 #ifdef USE_MMX
     asm volatile
-     ("pusha		     \n\t" "mov          %2, %%eax \n\t"	// load Src1 address into eax
-      "mov          %1, %%ebx \n\t"	// load Src2 address into ebx
-      "mov          %0, %%edi \n\t"	// load Dest address into edi
-       "mov          %3, %%ecx \n\t"	// load loop counter (SIZE) into ecx
-      "shr          $3, %%ecx \n\t"	// counter/8 (MMX loads 8 bytes at a time)
-       ".align 16              \n\t"	// 16 byte allignment of the loop entry
-      ".L1010:                \n\t" "movq    (%%eax), %%mm1 \n\t"	// load 8 bytes from Src1 into mm1
-      "paddusb (%%ebx), %%mm1 \n\t"	// mm1=Src1+Src2 (add 8 bytes with saturation)
-      "movq    %%mm1, (%%edi) \n\t"	// store result in Dest
-       "add          $8, %%eax \n\t"	// increase Src1, Src2 and Dest 
-      "add          $8, %%ebx \n\t"	// register pointers by 8
-      "add          $8, %%edi \n\t" "dec              %%ecx \n\t"	// decrease loop counter
-      "jnz             .L1010 \n\t"	// check loop termination, proceed if required
-       "emms                   \n\t"	// exit MMX state
-      "popa                   \n\t":"=m" (Dest)	// %0
-      :"m"(Src2),		// %1
-      "m"(Src1),		// %2
-      "m"(length)		// %3
+     ("pusha		     \n\t" "mov          %2, %%eax \n\t"	
+      "mov          %1, %%ebx \n\t"	
+      "mov          %0, %%edi \n\t"	
+       "mov          %3, %%ecx \n\t"
+      "shr          $3, %%ecx \n\t"	
+       ".align 16              \n\t"
+      ".L1010:                \n\t" "movq    (%%eax), %%mm1 \n\t"
+      "paddusb (%%ebx), %%mm1 \n\t"
+      "movq    %%mm1, (%%edi) \n\t"
+       "add          $8, %%eax \n\t"
+      "add          $8, %%ebx \n\t"	
+      "add          $8, %%edi \n\t" "dec              %%ecx \n\t"
+      "jnz             .L1010 \n\t"	
+       "emms                   \n\t"	
+      "popa                   \n\t":"=m" (Dest)	
+      :"m"(Src2),		
+      "m"(Src1),		
+      "m"(length)		
 	);
 #endif
     return (0);
 }
 
-//  SDL_imageFilterAdd: D = saturation255(S1 + S2)
 int SDL_imageFilterAdd(unsigned char *Src1, unsigned char *Src2, unsigned char *Dest, int length)
 {
     unsigned int i, istart;
@@ -144,49 +140,48 @@ int SDL_imageFilterAdd(unsigned char *Src1, unsigned char *Src2, unsigned char *
     return (0);
 }
 
-//  SDL_imageFilterMean: D = S1/2 + S2/2
 int SDL_imageFilterMeanMMX(unsigned char *Src1, unsigned char *Src2, unsigned char *Dest, int length,
 			   unsigned char *Mask)
 {
 #ifdef USE_MMX
     asm volatile
-     ("pusha		     \n\t" "movl         %4, %%edx \n\t"	// load Mask address into edx
-      "movq    (%%edx), %%mm0 \n\t"	// load Mask into mm0
-       "mov          %2, %%eax \n\t"	// load Src1 address into eax
-      "mov          %1, %%ebx \n\t"	// load Src2 address into ebx
-      "mov          %0, %%edi \n\t"	// load Dest address into edi
-       "mov          %3, %%ecx \n\t"	// load loop counter (SIZE) into ecx
-      "shr          $3, %%ecx \n\t"	// counter/8 (MMX loads 8 bytes at a time)
-       ".align 16              \n\t"	// 16 byte allignment of the loop entry
+     ("pusha		     \n\t" "movl         %4, %%edx \n\t"	
+      "movq    (%%edx), %%mm0 \n\t"	
+       "mov          %2, %%eax \n\t"	
+      "mov          %1, %%ebx \n\t"	
+      "mov          %0, %%edi \n\t"	
+       "mov          %3, %%ecx \n\t"	
+      "shr          $3, %%ecx \n\t"	
+       ".align 16              \n\t"	
       ".L21011:                \n\t" 
-      "movq    (%%eax), %%mm1 \n\t"	// load 8 bytes from Src1 into mm1
-      "movq    (%%ebx), %%mm2 \n\t"	// load 8 bytes from Src2 into mm2
-      // --- Byte shift via Word shift ---
-       "psrlw        $1, %%mm1 \n\t"	// shift 4 WORDS of mm1 1 bit to the right
-      "psrlw        $1, %%mm2 \n\t"	// shift 4 WORDS of mm2 1 bit to the right
-//      "pand      %%mm0, %%mm1 \n\t"    // apply Mask to 8 BYTES of mm1
+      "movq    (%%eax), %%mm1 \n\t"	
+      "movq    (%%ebx), %%mm2 \n\t"	
+      
+       "psrlw        $1, %%mm1 \n\t"	
+      "psrlw        $1, %%mm2 \n\t"	
+
       ".byte     0x0f, 0xdb, 0xc8 \n\t"
-//      "pand      %%mm0, %%mm2 \n\t"    // apply Mask to 8 BYTES of mm2
+
       ".byte     0x0f, 0xdb, 0xd0 \n\t" 
-      "paddusb   %%mm2, %%mm1 \n\t"	// mm1=mm1+mm2 (add 8 bytes with saturation)
-      "movq    %%mm1, (%%edi) \n\t"	// store result in Dest
-       "add          $8, %%eax \n\t"	// increase Src1, Src2 and Dest 
-      "add          $8, %%ebx \n\t"	// register pointers by 8
+      "paddusb   %%mm2, %%mm1 \n\t"	
+      "movq    %%mm1, (%%edi) \n\t"	
+       "add          $8, %%eax \n\t"	
+      "add          $8, %%ebx \n\t"	
       "add          $8, %%edi \n\t" 
-      "dec              %%ecx \n\t"	// decrease loop counter
-      "jnz             .L21011 \n\t"	// check loop termination, proceed if required
-       "emms                   \n\t"	// exit MMX state
-      "popa                   \n\t":"=m" (Dest)	// %0
-      :"m"(Src2),		// %1
-      "m"(Src1),		// %2
-      "m"(length),		// %3
-      "m"(Mask)			// %4
+      "dec              %%ecx \n\t"	
+      "jnz             .L21011 \n\t"	
+       "emms                   \n\t"	
+      "popa                   \n\t":"=m" (Dest)	
+      :"m"(Src2),		
+      "m"(Src1),		
+      "m"(length),		
+      "m"(Mask)			
 	);
 #endif
     return (0);
 }
 
-//  SDL_imageFilterMean: D = S1/2 + S2/2
+
 int SDL_imageFilterMean(unsigned char *Src1, unsigned char *Src2, unsigned char *Dest, int length)
 {
     static unsigned char Mask[8] = { 0x7F, 0x7F, 0x7F, 0x7F, 0x7F, 0x7F, 0x7F, 0x7F };
@@ -230,29 +225,29 @@ int SDL_imageFilterMean(unsigned char *Src1, unsigned char *Src2, unsigned char 
     return (0);
 }
 
-//  SDL_imageFilterSub: D = saturation0(S1 - S2)
+
 int SDL_imageFilterSubMMX(unsigned char *Src1, unsigned char *Src2, unsigned char *Dest, int length)
 {
 #ifdef USE_MMX
     asm volatile
-     ("pusha		     \n\t" "mov %2, %%eax \n\t"	// load Src1 address into eax
-      "mov %1, %%ebx \n\t"	// load Src2 address into ebx
-      "mov %0, %%edi \n\t"	// load Dest address into edi
-       "mov %3, %%ecx \n\t"	// load loop counter (SIZE) into ecx
-      "shr $3, %%ecx \n\t"	// counter/8 (MMX loads 8 bytes at a time)
-       ".align 16       \n\t"	// 16 byte allignment of the loop entry
-      ".L1012:         \n\t" "movq    (%%eax), %%mm1 \n\t"	// load 8 bytes from Src1 into mm1
-      "psubusb (%%ebx), %%mm1 \n\t"	// mm1=Src1-Src2 (sub 8 bytes with saturation)
-      "movq    %%mm1, (%%edi) \n\t"	// store result in Dest
-       "add $8, %%eax \n\t"	// increase Src1, Src2 and Dest 
-      "add $8, %%ebx \n\t"	// register pointers by 8
-      "add $8, %%edi \n\t" "dec %%ecx     \n\t"	// decrease loop counter
-      "jnz .L1012    \n\t"	// check loop termination, proceed if required
-       "emms          \n\t"	// exit MMX state
-      "popa                   \n\t":"=m" (Dest)	// %0
-      :"m"(Src2),		// %1
-      "m"(Src1),		// %2
-      "m"(length)		// %3
+     ("pusha		     \n\t" "mov %2, %%eax \n\t"	
+      "mov %1, %%ebx \n\t"	
+      "mov %0, %%edi \n\t"	
+       "mov %3, %%ecx \n\t"	
+      "shr $3, %%ecx \n\t"	
+       ".align 16       \n\t"	
+      ".L1012:         \n\t" "movq    (%%eax), %%mm1 \n\t"	
+      "psubusb (%%ebx), %%mm1 \n\t"	
+      "movq    %%mm1, (%%edi) \n\t"	
+       "add $8, %%eax \n\t"	
+      "add $8, %%ebx \n\t"	
+      "add $8, %%edi \n\t" "dec %%ecx     \n\t"	
+      "jnz .L1012    \n\t"	
+       "emms          \n\t"	
+      "popa                   \n\t":"=m" (Dest)	
+      :"m"(Src2),		
+      "m"(Src1),		
+      "m"(length)		
 	);
 #endif
     return (0);
@@ -302,38 +297,38 @@ int SDL_imageFilterSub(unsigned char *Src1, unsigned char *Src2, unsigned char *
     return (0);
 }
 
-//  SDL_imageFilterAbsDiff: D = | S1 - S2 |
+
 int SDL_imageFilterAbsDiffMMX(unsigned char *Src1, unsigned char *Src2, unsigned char *Dest, int length)
 {
 #ifdef USE_MMX
     asm volatile
-     ("pusha		     \n\t" "mov %2, %%eax \n\t"	// load Src1 address into eax
-      "mov %1, %%ebx \n\t"	// load Src2 address into ebx
-      "mov %0, %%edi \n\t"	// load Dest address into edi
-       "mov %3, %%ecx \n\t"	// load loop counter (SIZE) into ecx
-      "shr $3, %%ecx \n\t"	// counter/8 (MMX loads 8 bytes at a time)
-       ".align 16       \n\t"	// 16 byte allignment of the loop entry
-      ".L1013:         \n\t" "movq    (%%eax), %%mm1 \n\t"	// load 8 bytes from Src1 into mm1
-      "movq    (%%ebx), %%mm2 \n\t"	// load 8 bytes from Src2 into mm2
-      "psubusb (%%ebx), %%mm1 \n\t"	// mm1=Src1-Src2 (sub 8 bytes with saturation)
-      "psubusb (%%eax), %%mm2 \n\t"	// mm2=Src2-Src1 (sub 8 bytes with saturation)
-      "por       %%mm2, %%mm1 \n\t"	// combine both mm2 and mm1 results
-      "movq    %%mm1, (%%edi) \n\t"	// store result in Dest
-       "add $8, %%eax \n\t"	// increase Src1, Src2 and Dest 
-      "add $8, %%ebx \n\t"	// register pointers by 8
-      "add $8, %%edi \n\t" "dec %%ecx     \n\t"	// decrease loop counter
-      "jnz .L1013    \n\t"	// check loop termination, proceed if required
-       "emms          \n\t"	// exit MMX state
-      "popa                   \n\t":"=m" (Dest)	// %0
-      :"m"(Src2),		// %1
-      "m"(Src1),		// %2
-      "m"(length)		// %3
+     ("pusha		     \n\t" "mov %2, %%eax \n\t"	
+      "mov %1, %%ebx \n\t"	
+      "mov %0, %%edi \n\t"	
+       "mov %3, %%ecx \n\t"	
+      "shr $3, %%ecx \n\t"	
+       ".align 16       \n\t"	
+      ".L1013:         \n\t" "movq    (%%eax), %%mm1 \n\t"	
+      "movq    (%%ebx), %%mm2 \n\t"	
+      "psubusb (%%ebx), %%mm1 \n\t"	
+      "psubusb (%%eax), %%mm2 \n\t"	
+      "por       %%mm2, %%mm1 \n\t"	
+      "movq    %%mm1, (%%edi) \n\t"	
+       "add $8, %%eax \n\t"	
+      "add $8, %%ebx \n\t"	
+      "add $8, %%edi \n\t" "dec %%ecx     \n\t"	
+      "jnz .L1013    \n\t"	
+       "emms          \n\t"	
+      "popa                   \n\t":"=m" (Dest)	
+      :"m"(Src2),		
+      "m"(Src1),		
+      "m"(length)		
 	);
 #endif
     return (0);
 }
 
-//  SDL_imageFilterAbsDiff: D = | S1 - S2 |
+
 int SDL_imageFilterAbsDiff(unsigned char *Src1, unsigned char *Src2, unsigned char *Dest, int length)
 {
     unsigned int i, istart;
@@ -376,54 +371,54 @@ int SDL_imageFilterAbsDiff(unsigned char *Src1, unsigned char *Src2, unsigned ch
     return (0);
 }
 
-//  SDL_imageFilterMult: D = saturation255(S1 * S2)
+
 int SDL_imageFilterMultMMX(unsigned char *Src1, unsigned char *Src2, unsigned char *Dest, int length)
 {
 #ifdef USE_MMX
     asm volatile
-     ("pusha		     \n\t" "mov %2, %%eax \n\t"	// load Src1 address into eax
-      "mov %1, %%ebx \n\t"	// load Src2 address into ebx
-      "mov %0, %%edi \n\t"	// load Dest address into edi
-       "mov %3, %%ecx \n\t"	// load loop counter (SIZE) into ecx
-      "shr $3, %%ecx \n\t"	// counter/8 (MMX loads 8 bytes at a time)
-       "pxor      %%mm0, %%mm0 \n\t"	// zero mm0 register
-       ".align 16       \n\t"	// 16 byte allignment of the loop entry
-      ".L1014:         \n\t" "movq    (%%eax), %%mm1 \n\t"	// load 8 bytes from Src1 into mm1
-      "movq    (%%ebx), %%mm3 \n\t"	// load 8 bytes from Src2 into mm3
-      "movq      %%mm1, %%mm2 \n\t"	// copy mm1 into mm2
-      "movq      %%mm3, %%mm4 \n\t"	// copy mm3 into mm4 
-       "punpcklbw %%mm0, %%mm1 \n\t"	// unpack low  bytes of Src1 into words
-      "punpckhbw %%mm0, %%mm2 \n\t"	// unpack high bytes of Src1 into words
-      "punpcklbw %%mm0, %%mm3 \n\t"	// unpack low  bytes of Src2 into words
-      "punpckhbw %%mm0, %%mm4 \n\t"	// unpack high bytes of Src2 into words
-       "pmullw    %%mm3, %%mm1 \n\t"	// mul low  bytes of Src1 and Src2 
-      "pmullw    %%mm4, %%mm2 \n\t"	// mul high bytes of Src1 and Src2
-      // Take abs value of the results (signed words)
-       "movq      %%mm1, %%mm5 \n\t"	// copy mm1 into mm5
-      "movq      %%mm2, %%mm6 \n\t"	// copy mm2 into mm6
-       "psraw       $15, %%mm5 \n\t"	// fill mm5 words with word sign bit
-      "psraw       $15, %%mm6 \n\t"	// fill mm6 words with word sign bit
-       "pxor      %%mm5, %%mm1 \n\t"	// take 1's compliment of only neg. words
-      "pxor      %%mm6, %%mm2 \n\t"	// take 1's compliment of only neg. words
-       "psubsw    %%mm5, %%mm1 \n\t"	// add 1 to only neg. words, W-(-1) or W-0
-      "psubsw    %%mm6, %%mm2 \n\t"	// add 1 to only neg. words, W-(-1) or W-0
-       "packuswb  %%mm2, %%mm1 \n\t"	// pack words back into bytes with saturation
-       "movq    %%mm1, (%%edi) \n\t"	// store result in Dest
-       "add $8, %%eax \n\t"	// increase Src1, Src2 and Dest 
-      "add $8, %%ebx \n\t"	// register pointers by 8
-      "add $8, %%edi \n\t" "dec %%ecx     \n\t"	// decrease loop counter
-      "jnz .L1014    \n\t"	// check loop termination, proceed if required
-       "emms          \n\t"	// exit MMX state
-      "popa \n\t":"=m" (Dest)	// %0
-      :"m"(Src2),		// %1
-      "m"(Src1),		// %2
-      "m"(length)		// %3
+     ("pusha		     \n\t" "mov %2, %%eax \n\t"	
+      "mov %1, %%ebx \n\t"	
+      "mov %0, %%edi \n\t"	
+       "mov %3, %%ecx \n\t"	
+      "shr $3, %%ecx \n\t"	
+       "pxor      %%mm0, %%mm0 \n\t"	
+       ".align 16       \n\t"	
+      ".L1014:         \n\t" "movq    (%%eax), %%mm1 \n\t"	
+      "movq    (%%ebx), %%mm3 \n\t"	
+      "movq      %%mm1, %%mm2 \n\t"	
+      "movq      %%mm3, %%mm4 \n\t"	
+       "punpcklbw %%mm0, %%mm1 \n\t"	
+      "punpckhbw %%mm0, %%mm2 \n\t"	
+      "punpcklbw %%mm0, %%mm3 \n\t"	
+      "punpckhbw %%mm0, %%mm4 \n\t"	
+       "pmullw    %%mm3, %%mm1 \n\t"	
+      "pmullw    %%mm4, %%mm2 \n\t"	
+      
+       "movq      %%mm1, %%mm5 \n\t"	
+      "movq      %%mm2, %%mm6 \n\t"	
+       "psraw       $15, %%mm5 \n\t"	
+      "psraw       $15, %%mm6 \n\t"	
+       "pxor      %%mm5, %%mm1 \n\t"	
+      "pxor      %%mm6, %%mm2 \n\t"	
+       "psubsw    %%mm5, %%mm1 \n\t"	
+      "psubsw    %%mm6, %%mm2 \n\t"	
+       "packuswb  %%mm2, %%mm1 \n\t"	
+       "movq    %%mm1, (%%edi) \n\t"	
+       "add $8, %%eax \n\t"	
+      "add $8, %%ebx \n\t"	
+      "add $8, %%edi \n\t" "dec %%ecx     \n\t"	
+      "jnz .L1014    \n\t"	
+       "emms          \n\t"	
+      "popa \n\t":"=m" (Dest)	
+      :"m"(Src2),		
+      "m"(Src1),		
+      "m"(length)		
 	);
 #endif
     return (0);
 }
 
-//  SDL_imageFilterMult: D = saturation255(S1 * S2)
+
 int SDL_imageFilterMult(unsigned char *Src1, unsigned char *Src2, unsigned char *Dest, int length)
 {
     unsigned int i, istart;
@@ -471,33 +466,33 @@ int SDL_imageFilterMult(unsigned char *Src1, unsigned char *Src2, unsigned char 
     return (0);
 }
 
-//  SDL_imageFilterMultNor: D = S1 * S2  (non-MMX)
+
 int SDL_imageFilterMultNorASM(unsigned char *Src1, unsigned char *Src2, unsigned char *Dest, int length)
 {
 #ifdef USE_MMX
     asm volatile
-     ("pusha		     \n\t" "mov %2, %%edx \n\t"	// load Src1 address into edx
-      "mov %1, %%esi \n\t"	// load Src2 address into esi
-      "mov %0, %%edi \n\t"	// load Dest address into edi
-       "mov %3, %%ecx \n\t"	// load loop counter (SIZE) into ecx
-       ".align 16       \n\t"	// 16 byte allignment of the loop entry
-      ".L10141:        \n\t" "mov  (%%edx), %%al \n\t"	// load a byte from Src1
-      "mulb (%%esi)       \n\t"	// mul with a byte from Src2
-       ".L10142:           \n\t" "mov %%al, (%%edi)  \n\t"	// move a byte result to Dest
-       "inc %%edx \n\t"		// increment Src1, Src2, Dest
-      "inc %%esi \n\t"		// pointer registers by one
-      "inc %%edi \n\t" "dec %%ecx      \n\t"	// decrease loop counter
-      "jnz .L10141    \n\t"	// check loop termination, proceed if required
-       "popa                   \n\t":"=m" (Dest)	// %0
-      :"m"(Src2),		// %1
-      "m"(Src1),		// %2
-      "m"(length)		// %3
+     ("pusha		     \n\t" "mov %2, %%edx \n\t"	
+      "mov %1, %%esi \n\t"	
+      "mov %0, %%edi \n\t"	
+       "mov %3, %%ecx \n\t"	
+       ".align 16       \n\t"	
+      ".L10141:        \n\t" "mov  (%%edx), %%al \n\t"	
+      "mulb (%%esi)       \n\t"	
+       ".L10142:           \n\t" "mov %%al, (%%edi)  \n\t"	
+       "inc %%edx \n\t"		
+      "inc %%esi \n\t"		
+      "inc %%edi \n\t" "dec %%ecx      \n\t"	
+      "jnz .L10141    \n\t"	
+       "popa                   \n\t":"=m" (Dest)	
+      :"m"(Src2),		
+      "m"(Src1),		
+      "m"(length)		
 	);
 #endif
     return (0);
 }
 
-//  SDL_imageFilterMultNor: D = S1 * S2
+
 int SDL_imageFilterMultNor(unsigned char *Src1, unsigned char *Src2, unsigned char *Dest, int length)
 {
     unsigned int i, istart;
@@ -537,47 +532,47 @@ int SDL_imageFilterMultNor(unsigned char *Src1, unsigned char *Src2, unsigned ch
     return (0);
 }
 
-//  SDL_imageFilterMultDivby2: D = saturation255(S1/2 * S2)
+
 int SDL_imageFilterMultDivby2MMX(unsigned char *Src1, unsigned char *Src2, unsigned char *Dest, int length)
 {
 #ifdef USE_MMX
     asm volatile
-     ("pusha \n\t" "mov %2, %%eax \n\t"	// load Src1 address into eax
-      "mov %1, %%ebx \n\t"	// load Src2 address into ebx
-      "mov %0, %%edi \n\t"	// load Dest address into edi
-       "mov %3, %%ecx \n\t"	// load loop counter (SIZE) into ecx
-      "shr $3, %%ecx \n\t"	// counter/8 (MMX loads 8 bytes at a time)
-       "pxor      %%mm0, %%mm0 \n\t"	// zero mm0 register
-       ".align 16       \n\t"	// 16 byte allignment of the loop entry
-      ".L1015:         \n\t" "movq    (%%eax), %%mm1 \n\t"	// load 8 bytes from Src1 into mm1
-      "movq    (%%ebx), %%mm3 \n\t"	// load 8 bytes from Src2 into mm3
-      "movq      %%mm1, %%mm2 \n\t"	// copy mm1 into mm2
-      "movq      %%mm3, %%mm4 \n\t"	// copy mm3 into mm4 
-       "punpcklbw %%mm0, %%mm1 \n\t"	// unpack low  bytes of Src1 into words
-      "punpckhbw %%mm0, %%mm2 \n\t"	// unpack high bytes of Src1 into words
-      "punpcklbw %%mm0, %%mm3 \n\t"	// unpack low  bytes of Src2 into words
-      "punpckhbw %%mm0, %%mm4 \n\t"	// unpack high bytes of Src2 into words
-       "psrlw        $1, %%mm1 \n\t"	// divide mm1 words by 2, Src1 low bytes
-      "psrlw        $1, %%mm2 \n\t"	// divide mm2 words by 2, Src1 high bytes
-       "pmullw    %%mm3, %%mm1 \n\t"	// mul low  bytes of Src1 and Src2 
-      "pmullw    %%mm4, %%mm2 \n\t"	// mul high bytes of Src1 and Src2
-       "packuswb  %%mm2, %%mm1 \n\t"	// pack words back into bytes with saturation
-       "movq    %%mm1, (%%edi) \n\t"	// store result in Dest
-       "add $8, %%eax \n\t"	// increase Src1, Src2 and Dest 
-      "add $8, %%ebx \n\t"	// register pointers by 8
-      "add $8, %%edi \n\t" "dec %%ecx     \n\t"	// decrease loop counter
-      "jnz .L1015    \n\t"	// check loop termination, proceed if required
-       "emms          \n\t"	// exit MMX state
-      "popa \n\t":"=m" (Dest)	// %0
-      :"m"(Src2),		// %1
-      "m"(Src1),		// %2
-      "m"(length)		// %3
+     ("pusha \n\t" "mov %2, %%eax \n\t"	
+      "mov %1, %%ebx \n\t"	
+      "mov %0, %%edi \n\t"	
+       "mov %3, %%ecx \n\t"	
+      "shr $3, %%ecx \n\t"	
+       "pxor      %%mm0, %%mm0 \n\t"	
+       ".align 16       \n\t"	
+      ".L1015:         \n\t" "movq    (%%eax), %%mm1 \n\t"	
+      "movq    (%%ebx), %%mm3 \n\t"	
+      "movq      %%mm1, %%mm2 \n\t"	
+      "movq      %%mm3, %%mm4 \n\t"	
+       "punpcklbw %%mm0, %%mm1 \n\t"	
+      "punpckhbw %%mm0, %%mm2 \n\t"	
+      "punpcklbw %%mm0, %%mm3 \n\t"	
+      "punpckhbw %%mm0, %%mm4 \n\t"	
+       "psrlw        $1, %%mm1 \n\t"	
+      "psrlw        $1, %%mm2 \n\t"	
+       "pmullw    %%mm3, %%mm1 \n\t"	
+      "pmullw    %%mm4, %%mm2 \n\t"	
+       "packuswb  %%mm2, %%mm1 \n\t"	
+       "movq    %%mm1, (%%edi) \n\t"	
+       "add $8, %%eax \n\t"	
+      "add $8, %%ebx \n\t"	
+      "add $8, %%edi \n\t" "dec %%ecx     \n\t"	
+      "jnz .L1015    \n\t"	
+       "emms          \n\t"	
+      "popa \n\t":"=m" (Dest)	
+      :"m"(Src2),		
+      "m"(Src1),		
+      "m"(length)		
 	);
 #endif
     return (0);
 }
 
-//  SDL_imageFilterMultDivby2: D = saturation255(S1/2 * S2)
+
 int SDL_imageFilterMultDivby2(unsigned char *Src1, unsigned char *Src2, unsigned char *Dest, int length)
 {
     unsigned int i, istart;
@@ -622,49 +617,49 @@ int SDL_imageFilterMultDivby2(unsigned char *Src1, unsigned char *Src2, unsigned
     return (0);
 }
 
-//  SDL_imageFilterMultDivby4: D = saturation255(S1/2 * S2/2)
+
 int SDL_imageFilterMultDivby4MMX(unsigned char *Src1, unsigned char *Src2, unsigned char *Dest, int length)
 {
 #ifdef USE_MMX
     asm volatile
-     ("pusha		     \n\t" "mov %2, %%eax \n\t"	// load Src1 address into eax
-      "mov %1, %%ebx \n\t"	// load Src2 address into ebx
-      "mov %0, %%edi \n\t"	// load Dest address into edi
-       "mov %3, %%ecx \n\t"	// load loop counter (SIZE) into ecx
-      "shr $3, %%ecx \n\t"	// counter/8 (MMX loads 8 bytes at a time)
-       "pxor      %%mm0, %%mm0 \n\t"	// zero mm0 register
-       ".align 16       \n\t"	// 16 byte allignment of the loop entry
-      ".L1016:         \n\t" "movq    (%%eax), %%mm1 \n\t"	// load 8 bytes from Src1 into mm1
-      "movq    (%%ebx), %%mm3 \n\t"	// load 8 bytes from Src2 into mm3
-      "movq      %%mm1, %%mm2 \n\t"	// copy mm1 into mm2
-      "movq      %%mm3, %%mm4 \n\t"	// copy mm3 into mm4 
-       "punpcklbw %%mm0, %%mm1 \n\t"	// unpack low  bytes of Src1 into words
-      "punpckhbw %%mm0, %%mm2 \n\t"	// unpack high bytes of Src1 into words
-      "punpcklbw %%mm0, %%mm3 \n\t"	// unpack low  bytes of Src2 into words
-      "punpckhbw %%mm0, %%mm4 \n\t"	// unpack high bytes of Src2 into words
-       "psrlw        $1, %%mm1 \n\t"	// divide mm1 words by 2, Src1 low bytes
-      "psrlw        $1, %%mm2 \n\t"	// divide mm2 words by 2, Src1 high bytes
-      "psrlw        $1, %%mm3 \n\t"	// divide mm3 words by 2, Src2 low bytes
-      "psrlw        $1, %%mm4 \n\t"	// divide mm4 words by 2, Src2 high bytes
-       "pmullw    %%mm3, %%mm1 \n\t"	// mul low  bytes of Src1 and Src2 
-      "pmullw    %%mm4, %%mm2 \n\t"	// mul high bytes of Src1 and Src2
-       "packuswb  %%mm2, %%mm1 \n\t"	// pack words back into bytes with saturation
-       "movq    %%mm1, (%%edi) \n\t"	// store result in Dest
-       "add $8, %%eax \n\t"	// increase Src1, Src2 and Dest 
-      "add $8, %%ebx \n\t"	// register pointers by 8
-      "add $8, %%edi \n\t" "dec %%ecx     \n\t"	// decrease loop counter
-      "jnz .L1016    \n\t"	// check loop termination, proceed if required
-       "emms          \n\t"	// exit MMX state
-      "popa                   \n\t":"=m" (Dest)	// %0
-      :"m"(Src2),		// %1
-      "m"(Src1),		// %2
-      "m"(length)		// %3
+     ("pusha		     \n\t" "mov %2, %%eax \n\t"	
+      "mov %1, %%ebx \n\t"	
+      "mov %0, %%edi \n\t"	
+       "mov %3, %%ecx \n\t"	
+      "shr $3, %%ecx \n\t"	
+       "pxor      %%mm0, %%mm0 \n\t"	
+       ".align 16       \n\t"	
+      ".L1016:         \n\t" "movq    (%%eax), %%mm1 \n\t"	
+      "movq    (%%ebx), %%mm3 \n\t"	
+      "movq      %%mm1, %%mm2 \n\t"	
+      "movq      %%mm3, %%mm4 \n\t"	
+       "punpcklbw %%mm0, %%mm1 \n\t"	
+      "punpckhbw %%mm0, %%mm2 \n\t"	
+      "punpcklbw %%mm0, %%mm3 \n\t"	
+      "punpckhbw %%mm0, %%mm4 \n\t"	
+       "psrlw        $1, %%mm1 \n\t"	
+      "psrlw        $1, %%mm2 \n\t"	
+      "psrlw        $1, %%mm3 \n\t"	
+      "psrlw        $1, %%mm4 \n\t"	
+       "pmullw    %%mm3, %%mm1 \n\t"	
+      "pmullw    %%mm4, %%mm2 \n\t"	
+       "packuswb  %%mm2, %%mm1 \n\t"	
+       "movq    %%mm1, (%%edi) \n\t"	
+       "add $8, %%eax \n\t"	
+      "add $8, %%ebx \n\t"	
+      "add $8, %%edi \n\t" "dec %%ecx     \n\t"	
+      "jnz .L1016    \n\t"	
+       "emms          \n\t"	
+      "popa                   \n\t":"=m" (Dest)	
+      :"m"(Src2),		
+      "m"(Src1),		
+      "m"(length)		
 	);
 #endif
     return (0);
 }
 
-//  SDL_imageFilterMultDivby4: D = saturation255(S1/2 * S2/2)
+
 int SDL_imageFilterMultDivby4(unsigned char *Src1, unsigned char *Src2, unsigned char *Dest, int length)
 {
     unsigned int i, istart;
@@ -709,41 +704,41 @@ int SDL_imageFilterMultDivby4(unsigned char *Src1, unsigned char *Src2, unsigned
     return (0);
 }
 
-//  SDL_imageFilterBitAnd: D = S1 & S2
+
 int SDL_imageFilterBitAndMMX(unsigned char *Src1, unsigned char *Src2, unsigned char *Dest, int length)
 {
 #ifdef USE_MMX
     asm volatile
-     ("pusha		     \n\t" "mov %2, %%eax \n\t"	// load Src1 address into eax
-      "mov %1, %%ebx \n\t"	// load Src2 address into ebx
-      "mov %0, %%edi \n\t"	// load Dest address into edi
-       "mov %3, %%ecx \n\t"	// load loop counter (SIZE) into ecx
-      "shr $3, %%ecx \n\t"	// counter/8 (MMX loads 8 bytes at a time)
-       ".align 16       \n\t"	// 16 byte allignment of the loop entry
-      ".L1017:         \n\t" "movq    (%%eax), %%mm1 \n\t"	// load 8 bytes from Src1 into mm1
-      "pand    (%%ebx), %%mm1 \n\t"	// mm1=Src1&Src2
-      "movq    %%mm1, (%%edi) \n\t"	// store result in Dest
-       "add $8, %%eax \n\t"	// increase Src1, Src2 and Dest 
-      "add $8, %%ebx \n\t"	// register pointers by 8
-      "add $8, %%edi \n\t" "dec %%ecx     \n\t"	// decrease loop counter
-      "jnz .L1017    \n\t"	// check loop termination, proceed if required
-       "emms          \n\t"	// exit MMX state
-      "popa                   \n\t":"=m" (Dest)	// %0
-      :"m"(Src2),		// %1
-      "m"(Src1),		// %2
-      "m"(length)		// %3
+     ("pusha		     \n\t" "mov %2, %%eax \n\t"	
+      "mov %1, %%ebx \n\t"	
+      "mov %0, %%edi \n\t"	
+       "mov %3, %%ecx \n\t"	
+      "shr $3, %%ecx \n\t"	
+       ".align 16       \n\t"	
+      ".L1017:         \n\t" "movq    (%%eax), %%mm1 \n\t"	
+      "pand    (%%ebx), %%mm1 \n\t"	
+      "movq    %%mm1, (%%edi) \n\t"	
+       "add $8, %%eax \n\t"	
+      "add $8, %%ebx \n\t"	
+      "add $8, %%edi \n\t" "dec %%ecx     \n\t"	
+      "jnz .L1017    \n\t"	
+       "emms          \n\t"	
+      "popa                   \n\t":"=m" (Dest)	
+      :"m"(Src2),		
+      "m"(Src1),		
+      "m"(length)		
 	);
 #endif
     return (0);
 }
 
-//  SDL_imageFilterBitAnd: D = S1 & S2
+
 int SDL_imageFilterBitAnd(unsigned char *Src1, unsigned char *Src2, unsigned char *Dest, int length)
 {
     unsigned int i, istart;
     unsigned char *cursrc1, *cursrc2, *curdst;
 
-// if ((SDL_imageFilterMMXdetect()>0) && (length>7)) {
+
     if (length > 7) {
 	/* Call MMX routine */
 
@@ -781,35 +776,35 @@ int SDL_imageFilterBitAnd(unsigned char *Src1, unsigned char *Src2, unsigned cha
     return (0);
 }
 
-//  SDL_imageFilterBitOr: D = S1 | S2
+
 int SDL_imageFilterBitOrMMX(unsigned char *Src1, unsigned char *Src2, unsigned char *Dest, int length)
 {
 #ifdef USE_MMX
     asm volatile
-     ("pusha		     \n\t" "mov %2, %%eax \n\t"	// load Src1 address into eax
-      "mov %1, %%ebx \n\t"	// load Src2 address into ebx
-      "mov %0, %%edi \n\t"	// load Dest address into edi
-       "mov %3, %%ecx \n\t"	// load loop counter (SIZE) into ecx
-      "shr $3, %%ecx \n\t"	// counter/8 (MMX loads 8 bytes at a time)
-       ".align 16       \n\t"	// 16 byte allignment of the loop entry
-      ".L91017:        \n\t" "movq    (%%eax), %%mm1 \n\t"	// load 8 bytes from Src1 into mm1
-      "por     (%%ebx), %%mm1 \n\t"	// mm1=Src1|Src2
-      "movq    %%mm1, (%%edi) \n\t"	// store result in Dest
-       "add $8, %%eax \n\t"	// increase Src1, Src2 and Dest 
-      "add $8, %%ebx \n\t"	// register pointers by 8
-      "add $8, %%edi \n\t" "dec %%ecx     \n\t"	// decrease loop counter
-      "jnz .L91017   \n\t"	// check loop termination, proceed if required
-       "emms          \n\t"	// exit MMX state
-      "popa                   \n\t":"=m" (Dest)	// %0
-      :"m"(Src2),		// %1
-      "m"(Src1),		// %2
-      "m"(length)		// %3
+     ("pusha		     \n\t" "mov %2, %%eax \n\t"	
+      "mov %1, %%ebx \n\t"	
+      "mov %0, %%edi \n\t"	
+       "mov %3, %%ecx \n\t"	
+      "shr $3, %%ecx \n\t"	
+       ".align 16       \n\t"	
+      ".L91017:        \n\t" "movq    (%%eax), %%mm1 \n\t"	
+      "por     (%%ebx), %%mm1 \n\t"	
+      "movq    %%mm1, (%%edi) \n\t"	
+       "add $8, %%eax \n\t"	
+      "add $8, %%ebx \n\t"	
+      "add $8, %%edi \n\t" "dec %%ecx     \n\t"	
+      "jnz .L91017   \n\t"	
+       "emms          \n\t"	
+      "popa                   \n\t":"=m" (Dest)	
+      :"m"(Src2),		
+      "m"(Src1),		
+      "m"(length)		
 	);
 #endif
     return (0);
 }
 
-//  SDL_imageFilterBitOr: D = S1 | S2
+
 int SDL_imageFilterBitOr(unsigned char *Src1, unsigned char *Src2, unsigned char *Dest, int length)
 {
     unsigned int i, istart;
@@ -850,37 +845,37 @@ int SDL_imageFilterBitOr(unsigned char *Src1, unsigned char *Src2, unsigned char
     return (0);
 }
 
-//  SDL_imageFilterDiv: D = S1 / S2  (non-MMX)
+
 int SDL_imageFilterDivASM(unsigned char *Src1, unsigned char *Src2, unsigned char *Dest, int length)
 {
 #ifdef USE_MMX
     asm volatile
-     ("pusha \n\t" "mov %2, %%edx \n\t"	// load Src1 address into edx
-      "mov %1, %%esi \n\t"	// load Src2 address into esi
-      "mov %0, %%edi \n\t"	// load Dest address into edi
-       "mov %3, %%ecx \n\t"	// load loop counter (SIZE) into ecx
-       ".align 16     \n\t"	// 16 byte allignment of the loop entry
-      ".L10191:      \n\t" "mov  (%%esi), %%bl  \n\t"	// load a byte from Src2
-      "cmp       $0, %%bl  \n\t"	// check if it zero
-      "jnz .L10192         \n\t" "movb  $255, (%%edi) \n\t"	// division by zero = 255 !!!
-      "jmp  .L10193        \n\t" ".L10192:            \n\t" "xor   %%ah, %%ah    \n\t"	// prepare AX, zero AH register
-      "mov   (%%edx), %%al \n\t"	// load a byte from Src1 into AL
-      "div   %%bl          \n\t"	// divide AL by BL
-      "mov   %%al, (%%edi) \n\t"	// move a byte result to Dest
-       ".L10193:            \n\t" "inc %%edx \n\t"	// increment Src1, Src2, Dest
-      "inc %%esi \n\t"		// pointer registers by one
-      "inc %%edi \n\t" "dec %%ecx    \n\t"	// decrease loop counter
-      "jnz .L10191  \n\t"	// check loop termination, proceed if required
-       "popa \n\t":"=m" (Dest)	// %0
-      :"m"(Src2),		// %1
-      "m"(Src1),		// %2
-      "m"(length)		// %3
+     ("pusha \n\t" "mov %2, %%edx \n\t"	
+      "mov %1, %%esi \n\t"	
+      "mov %0, %%edi \n\t"	
+       "mov %3, %%ecx \n\t"	
+       ".align 16     \n\t"	
+      ".L10191:      \n\t" "mov  (%%esi), %%bl  \n\t"	
+      "cmp       $0, %%bl  \n\t"	
+      "jnz .L10192         \n\t" "movb  $255, (%%edi) \n\t"	
+      "jmp  .L10193        \n\t" ".L10192:            \n\t" "xor   %%ah, %%ah    \n\t"	
+      "mov   (%%edx), %%al \n\t"	
+      "div   %%bl          \n\t"	
+      "mov   %%al, (%%edi) \n\t"	
+       ".L10193:            \n\t" "inc %%edx \n\t"	
+      "inc %%esi \n\t"		
+      "inc %%edi \n\t" "dec %%ecx    \n\t"	
+      "jnz .L10191  \n\t"	
+       "popa \n\t":"=m" (Dest)	
+      :"m"(Src2),		
+      "m"(Src1),		
+      "m"(length)		
 	);
 #endif
     return (0);
 }
 
-//  SDL_imageFilterDiv: D = S1 / S2  (non-MMX!)
+
 int SDL_imageFilterDiv(unsigned char *Src1, unsigned char *Src2, unsigned char *Dest, int length)
 {
     if (length > 0) {
@@ -894,35 +889,35 @@ int SDL_imageFilterDiv(unsigned char *Src1, unsigned char *Src2, unsigned char *
     }
 }
 
-// ------------------------------------------------------------------------------------
 
-//  SDL_imageFilterBitNegation: D = !S
+
+
 int SDL_imageFilterBitNegationMMX(unsigned char *Src1, unsigned char *Dest, int length)
 {
 #ifdef USE_MMX
     asm volatile
-     ("pusha		     \n\t" "pcmpeqb   %%mm1, %%mm1 \n\t"	// generate all 1's in mm1
-       "mov %1, %%eax \n\t"	// load Src1 address into eax
-      "mov %0, %%edi \n\t"	// load Dest address into edi
-       "mov %2, %%ecx \n\t"	// load loop counter (SIZE) into ecx
-      "shr $3, %%ecx \n\t"	// counter/8 (MMX loads 8 bytes at a time)
-       ".align 16       \n\t"	// 16 byte allignment of the loop entry
-      ".L91117:        \n\t" "movq    (%%eax), %%mm0 \n\t"	// load 8 bytes from Src1 into mm1
-      "pxor      %%mm1, %%mm0 \n\t"	// negate mm0 by xoring with mm1
-      "movq    %%mm0, (%%edi) \n\t"	// store result in Dest
-       "add $8, %%eax \n\t"	// increase Src1, Src2 and Dest 
-      "add $8, %%edi \n\t" "dec %%ecx     \n\t"	// decrease loop counter
-      "jnz .L91117   \n\t"	// check loop termination, proceed if required
-       "emms          \n\t"	// exit MMX state
-      "popa                   \n\t":"=m" (Dest)	// %0
-      :"m"(Src1),		// %1
-      "m"(length)		// %2
+     ("pusha		     \n\t" "pcmpeqb   %%mm1, %%mm1 \n\t"	
+       "mov %1, %%eax \n\t"	
+      "mov %0, %%edi \n\t"	
+       "mov %2, %%ecx \n\t"	
+      "shr $3, %%ecx \n\t"	
+       ".align 16       \n\t"	
+      ".L91117:        \n\t" "movq    (%%eax), %%mm0 \n\t"	
+      "pxor      %%mm1, %%mm0 \n\t"	
+      "movq    %%mm0, (%%edi) \n\t"	
+       "add $8, %%eax \n\t"	
+      "add $8, %%edi \n\t" "dec %%ecx     \n\t"	
+      "jnz .L91117   \n\t"	
+       "emms          \n\t"	
+      "popa                   \n\t":"=m" (Dest)	
+      :"m"(Src1),		
+      "m"(length)		
 	);
 #endif
     return (0);
 }
 
-//  SDL_imageFilterBitNegation: D = !S
+
 int SDL_imageFilterBitNegation(unsigned char *Src1, unsigned char *Dest, int length)
 {
     unsigned int i, istart;
@@ -960,45 +955,45 @@ int SDL_imageFilterBitNegation(unsigned char *Src1, unsigned char *Dest, int len
     return (0);
 }
 
-//  SDL_imageFilterAddByteMMX: D = saturation255(S + C)
+
 int SDL_imageFilterAddByteMMX(unsigned char *Src1, unsigned char *Dest, int length, unsigned char C)
 {
 #ifdef USE_MMX
     asm volatile
      ("pusha		     \n\t"
-      // ** Duplicate C in 8 bytes of MM1 **
-      "mov           %3, %%al \n\t"	// load C into AL
-      "mov         %%al, %%ah \n\t"	// copy AL into AH
-      "mov         %%ax, %%bx \n\t"	// copy AX into BX
-      "shl         $16, %%eax \n\t"	// shift 2 bytes of EAX left
-      "mov         %%bx, %%ax \n\t"	// copy BX into AX
-      "movd      %%eax, %%mm1 \n\t"	// copy EAX into MM1
-      "movd      %%eax, %%mm2 \n\t"	// copy EAX into MM2
-      "punpckldq %%mm2, %%mm1 \n\t"	// fill higher bytes of MM1 with C
-       "mov          %1, %%eax \n\t"	// load Src1 address into eax
-      "mov          %0, %%edi \n\t"	// load Dest address into edi
-      "mov          %2, %%ecx \n\t"	// load loop counter (SIZE) into ecx
-      "shr          $3, %%ecx \n\t"	// counter/8 (MMX loads 8 bytes at a time)
-       ".align 16              \n\t"	// 16 byte allignment of the loop entry
+      
+      "mov           %3, %%al \n\t"	
+      "mov         %%al, %%ah \n\t"	
+      "mov         %%ax, %%bx \n\t"	
+      "shl         $16, %%eax \n\t"	
+      "mov         %%bx, %%ax \n\t"	
+      "movd      %%eax, %%mm1 \n\t"	
+      "movd      %%eax, %%mm2 \n\t"	
+      "punpckldq %%mm2, %%mm1 \n\t"	
+       "mov          %1, %%eax \n\t"	
+      "mov          %0, %%edi \n\t"	
+      "mov          %2, %%ecx \n\t"	
+      "shr          $3, %%ecx \n\t"	
+       ".align 16              \n\t"	
       ".L1021:                \n\t" 
-      "movq    (%%eax), %%mm0 \n\t"	// load 8 bytes from Src1 into MM0
-      "paddusb   %%mm1, %%mm0 \n\t"	// MM0=SrcDest+C (add 8 bytes with saturation)
-      "movq    %%mm0, (%%edi) \n\t"	// store result in Dest
-       "add          $8, %%eax \n\t"	// increase Dest register pointer by 8
-      "add          $8, %%edi \n\t"	// increase Dest register pointer by 8
-      "dec              %%ecx \n\t"	// decrease loop counter
-      "jnz             .L1021 \n\t"	// check loop termination, proceed if required
-       "emms                   \n\t"	// exit MMX state
-      "popa                   \n\t":"=m" (Dest)	// %0
-      :"m"(Src1),		// %1
-      "m"(length),		// %2
-      "m"(C)			// %3
+      "movq    (%%eax), %%mm0 \n\t"	
+      "paddusb   %%mm1, %%mm0 \n\t"	
+      "movq    %%mm0, (%%edi) \n\t"	
+       "add          $8, %%eax \n\t"	
+      "add          $8, %%edi \n\t"	
+      "dec              %%ecx \n\t"	
+      "jnz             .L1021 \n\t"	
+       "emms                   \n\t"	
+      "popa                   \n\t":"=m" (Dest)	
+      :"m"(Src1),		
+      "m"(length),		
+      "m"(C)			
 	);
 #endif
     return (0);
 }
 
-//  SDL_imageFilterAddByte: D = saturation255(S + C)
+
 int SDL_imageFilterAddByte(unsigned char *Src1, unsigned char *Dest, int length, unsigned char C)
 {
     unsigned int i, istart;
@@ -1042,43 +1037,43 @@ int SDL_imageFilterAddByte(unsigned char *Src1, unsigned char *Dest, int length,
     return (0);
 }
 
-//  SDL_imageFilterAddUintMMX: D = saturation255((S + (uint)C), Cs=swap_32(C)
+
 int SDL_imageFilterAddUintMMX(unsigned char *Src1, unsigned char *Dest, int length, unsigned int C, unsigned int Cs)
 {
 #ifdef USE_MMX
     asm volatile
      ("pusha		     \n\t"
-      // ** Duplicate (int)C in 8 bytes of MM1 **
-      "mov          %3, %%eax \n\t"	// load C into EAX
-      "movd      %%eax, %%mm1 \n\t"	// copy EAX into MM1
-      "mov          %4, %%eax \n\t"	// load Cs into EAX
-      "movd      %%eax, %%mm2 \n\t"	// copy EAX into MM2
-      "punpckldq %%mm2, %%mm1 \n\t"	// fill higher bytes of MM1 with C
-      "mov          %1, %%eax \n\t"	// load Src1 address into eax
-      "mov          %0, %%edi \n\t"	// load Dest address into edi
-      "mov          %2, %%ecx \n\t"	// load loop counter (SIZE) into ecx
-      "shr          $3, %%ecx \n\t"	// counter/8 (MMX loads 8 bytes at a time)
-       ".align 16              \n\t"	// 16 byte allignment of the loop entry
+      
+      "mov          %3, %%eax \n\t"	
+      "movd      %%eax, %%mm1 \n\t"	
+      "mov          %4, %%eax \n\t"	
+      "movd      %%eax, %%mm2 \n\t"	
+      "punpckldq %%mm2, %%mm1 \n\t"	
+      "mov          %1, %%eax \n\t"	
+      "mov          %0, %%edi \n\t"	
+      "mov          %2, %%ecx \n\t"	
+      "shr          $3, %%ecx \n\t"	
+       ".align 16              \n\t"	
       ".L11023:                \n\t" 
-      "movq    (%%eax), %%mm0 \n\t"	// load 8 bytes from SrcDest into MM0
-      "paddusb   %%mm1, %%mm0 \n\t"	// MM0=SrcDest+C (add 8 bytes with saturation)
-      "movq    %%mm0, (%%edi) \n\t"	// store result in SrcDest
-      "add          $8, %%eax \n\t"	// increase Src1 register pointer by 8
-      "add          $8, %%edi \n\t"	// increase Dest register pointer by 8
-      "dec              %%ecx \n\t"	// decrease loop counter
-      "jnz             .L11023 \n\t"	// check loop termination, proceed if required
-       "emms                   \n\t"	// exit MMX state
-      "popa                   \n\t":"=m" (Dest)	// %0
-      :"m"(Src1),		// %1
-      "m"(length),		// %2
-      "m"(C),			// %3
-      "m"(Cs)			// %4
+      "movq    (%%eax), %%mm0 \n\t"	
+      "paddusb   %%mm1, %%mm0 \n\t"	
+      "movq    %%mm0, (%%edi) \n\t"	
+      "add          $8, %%eax \n\t"	
+      "add          $8, %%edi \n\t"	
+      "dec              %%ecx \n\t"	
+      "jnz             .L11023 \n\t"	
+       "emms                   \n\t"	
+      "popa                   \n\t":"=m" (Dest)	
+      :"m"(Src1),		
+      "m"(length),		
+      "m"(C),			
+      "m"(Cs)			
 	);
 #endif
     return (0);
 }
 
-//  SDL_imageFilterAddUint: D = saturation0(S - (Uint)C)
+
 int SDL_imageFilterAddUint(unsigned char *Src1, unsigned char *Dest, int length, unsigned int C)
 {
     unsigned int i, j, istart, D;
@@ -1131,52 +1126,52 @@ int SDL_imageFilterAddUint(unsigned char *Src1, unsigned char *Dest, int length,
 }
 
 
-//  SDL_imageFilterAddByteToHalfMMX: D = saturation255(S/2 + C)
+
 int SDL_imageFilterAddByteToHalfMMX(unsigned char *Src1, unsigned char *Dest, int length, unsigned char C,
 				    unsigned char *Mask)
 {
 #ifdef USE_MMX
     asm volatile
      ("pusha		     \n\t"
-      // ** Duplicate C in 8 bytes of MM1 **
-      "mov           %3, %%al \n\t"	// load C into AL
-      "mov         %%al, %%ah \n\t"	// copy AL into AH
-      "mov         %%ax, %%bx \n\t"	// copy AX into BX
-      "shl         $16, %%eax \n\t"	// shift 2 bytes of EAX left
-      "mov         %%bx, %%ax \n\t"	// copy BX into AX
-      "movd      %%eax, %%mm1 \n\t"	// copy EAX into MM1
-      "movd      %%eax, %%mm2 \n\t"	// copy EAX into MM2
-      "punpckldq %%mm2, %%mm1 \n\t"	// fill higher bytes of MM1 with C
-       "movl         %4, %%edx \n\t"	// load Mask address into edx
-      "movq    (%%edx), %%mm0 \n\t"	// load Mask into mm0
-       "mov          %1, %%eax \n\t"	// load Src1 address into eax
-      "mov          %0, %%edi \n\t"	// load Dest address into edi
-      "mov          %2, %%ecx \n\t"	// load loop counter (SIZE) into ecx
-      "shr          $3, %%ecx \n\t"	// counter/8 (MMX loads 8 bytes at a time)
-       ".align 16              \n\t"	// 16 byte allignment of the loop entry
+      
+      "mov           %3, %%al \n\t"	
+      "mov         %%al, %%ah \n\t"	
+      "mov         %%ax, %%bx \n\t"	
+      "shl         $16, %%eax \n\t"	
+      "mov         %%bx, %%ax \n\t"	
+      "movd      %%eax, %%mm1 \n\t"	
+      "movd      %%eax, %%mm2 \n\t"	
+      "punpckldq %%mm2, %%mm1 \n\t"	
+       "movl         %4, %%edx \n\t"	
+      "movq    (%%edx), %%mm0 \n\t"	
+       "mov          %1, %%eax \n\t"	
+      "mov          %0, %%edi \n\t"	
+      "mov          %2, %%ecx \n\t"	
+      "shr          $3, %%ecx \n\t"	
+       ".align 16              \n\t"	
       ".L1022:                \n\t" 
-      "movq    (%%eax), %%mm2 \n\t"	// load 8 bytes from Src1 into MM2
-      "psrlw        $1, %%mm2 \n\t"	// shift 4 WORDS of MM2 1 bit to the right
-      //    "pand      %%mm0, %%mm2 \n\t"    // apply Mask to 8 BYTES of MM2
+      "movq    (%%eax), %%mm2 \n\t"	
+      "psrlw        $1, %%mm2 \n\t"	
+      
       ".byte     0x0f, 0xdb, 0xd0 \n\t" 
-      "paddusb   %%mm1, %%mm2 \n\t"	// MM2=SrcDest+C (add 8 bytes with saturation)
-      "movq    %%mm2, (%%edi) \n\t"	// store result in Dest
-       "add          $8, %%eax \n\t"	// increase Src1 register pointer by 8
-      "add          $8, %%edi \n\t"	// increase Dest register pointer by 8
-      "dec              %%ecx \n\t"	// decrease loop counter
-      "jnz             .L1022 \n\t"	// check loop termination, proceed if required
-       "emms                   \n\t"	// exit MMX state
-      "popa                   \n\t":"=m" (Dest)	// %0
-      :"m"(Src1),		// %1
-      "m"(length),		// %2
-      "m"(C),			// %3
-      "m"(Mask)			// %4
+      "paddusb   %%mm1, %%mm2 \n\t"	
+      "movq    %%mm2, (%%edi) \n\t"	
+       "add          $8, %%eax \n\t"	
+      "add          $8, %%edi \n\t"	
+      "dec              %%ecx \n\t"	
+      "jnz             .L1022 \n\t"	
+       "emms                   \n\t"	
+      "popa                   \n\t":"=m" (Dest)	
+      :"m"(Src1),		
+      "m"(length),		
+      "m"(C),			
+      "m"(Mask)			
 	);
 #endif
     return (0);
 }
 
-//  SDL_imageFilterAddByteToHalf: D = saturation255(S/2 + C)
+
 int SDL_imageFilterAddByteToHalf(unsigned char *Src1, unsigned char *Dest, int length, unsigned char C)
 {
     static unsigned char Mask[8] = { 0x7F, 0x7F, 0x7F, 0x7F, 0x7F, 0x7F, 0x7F, 0x7F };
@@ -1223,44 +1218,44 @@ int SDL_imageFilterAddByteToHalf(unsigned char *Src1, unsigned char *Dest, int l
     return (0);
 }
 
-//  SDL_imageFilterSubByteMMX: D = saturation0(S - C)
+
 int SDL_imageFilterSubByteMMX(unsigned char *Src1, unsigned char *Dest, int length, unsigned char C)
 {
 #ifdef USE_MMX
     asm volatile
      ("pusha		     \n\t"
-      // ** Duplicate C in 8 bytes of MM1 **
-      "mov           %3, %%al \n\t"	// load C into AL
-      "mov         %%al, %%ah \n\t"	// copy AL into AH
-      "mov         %%ax, %%bx \n\t"	// copy AX into BX
-      "shl         $16, %%eax \n\t"	// shift 2 bytes of EAX left
-      "mov         %%bx, %%ax \n\t"	// copy BX into AX
-      "movd      %%eax, %%mm1 \n\t"	// copy EAX into MM1
-      "movd      %%eax, %%mm2 \n\t"	// copy EAX into MM2
-      "punpckldq %%mm2, %%mm1 \n\t"	// fill higher bytes of MM1 with C
-      "mov          %1, %%eax \n\t"	// load Src1 address into eax
-      "mov          %0, %%edi \n\t"	// load Dest address into edi
-      "mov          %2, %%ecx \n\t"	// load loop counter (SIZE) into ecx
-      "shr          $3, %%ecx \n\t"	// counter/8 (MMX loads 8 bytes at a time)
-       ".align 16              \n\t"	// 16 byte allignment of the loop entry
-      ".L1023:                \n\t" "movq    (%%eax), %%mm0 \n\t"	// load 8 bytes from SrcDest into MM0
-      "psubusb   %%mm1, %%mm0 \n\t"	// MM0=SrcDest-C (sub 8 bytes with saturation)
-      "movq    %%mm0, (%%edi) \n\t"	// store result in SrcDest
-       "add          $8, %%eax \n\t"	// increase Src1 register pointer by 8
-      "add          $8, %%edi \n\t"	// increase Dest register pointer by 8
-      "dec              %%ecx \n\t"	// decrease loop counter
-      "jnz             .L1023 \n\t"	// check loop termination, proceed if required
-       "emms                   \n\t"	// exit MMX state
-      "popa                   \n\t":"=m" (Dest)	// %0
-      :"m"(Src1),		// %1
-      "m"(length),		// %2
-      "m"(C)			// %3
+      
+      "mov           %3, %%al \n\t"	
+      "mov         %%al, %%ah \n\t"	
+      "mov         %%ax, %%bx \n\t"	
+      "shl         $16, %%eax \n\t"	
+      "mov         %%bx, %%ax \n\t"	
+      "movd      %%eax, %%mm1 \n\t"	
+      "movd      %%eax, %%mm2 \n\t"	
+      "punpckldq %%mm2, %%mm1 \n\t"	
+      "mov          %1, %%eax \n\t"	
+      "mov          %0, %%edi \n\t"	
+      "mov          %2, %%ecx \n\t"	
+      "shr          $3, %%ecx \n\t"	
+       ".align 16              \n\t"	
+      ".L1023:                \n\t" "movq    (%%eax), %%mm0 \n\t"	
+      "psubusb   %%mm1, %%mm0 \n\t"	
+      "movq    %%mm0, (%%edi) \n\t"	
+       "add          $8, %%eax \n\t"	
+      "add          $8, %%edi \n\t"	
+      "dec              %%ecx \n\t"	
+      "jnz             .L1023 \n\t"	
+       "emms                   \n\t"	
+      "popa                   \n\t":"=m" (Dest)	
+      :"m"(Src1),		
+      "m"(length),		
+      "m"(C)			
 	);
 #endif
     return (0);
 }
 
-//  SDL_imageFilterSubByte: D = saturation0(S - C)
+
 int SDL_imageFilterSubByte(unsigned char *Src1, unsigned char *Dest, int length, unsigned char C)
 {
     unsigned int i, istart;
@@ -1305,42 +1300,42 @@ int SDL_imageFilterSubByte(unsigned char *Src1, unsigned char *Dest, int length,
     return (0);
 }
 
-//  SDL_imageFilterSubUintMMX: D = saturation0(S - (uint)C), Cs=swap_32(C)
+
 int SDL_imageFilterSubUintMMX(unsigned char *Src1, unsigned char *Dest, int length, unsigned int C, unsigned int Cs)
 {
 #ifdef USE_MMX
     asm volatile
      ("pusha		     \n\t"
-      // ** Duplicate (int)C in 8 bytes of MM1 **
-      "mov          %3, %%eax \n\t"	// load C into EAX
-      "movd      %%eax, %%mm1 \n\t"	// copy EAX into MM1
-      "mov          %4, %%eax \n\t"	// load Cs into EAX
-      "movd      %%eax, %%mm2 \n\t"	// copy EAX into MM2
-      "punpckldq %%mm2, %%mm1 \n\t"	// fill higher bytes of MM1 with C
-      "mov          %1, %%eax \n\t"	// load Src1 address into eax
-      "mov          %0, %%edi \n\t"	// load Dest address into edi
-      "mov          %2, %%ecx \n\t"	// load loop counter (SIZE) into ecx
-      "shr          $3, %%ecx \n\t"	// counter/8 (MMX loads 8 bytes at a time)
-       ".align 16              \n\t"	// 16 byte allignment of the loop entry
-      ".L11024:                \n\t" "movq    (%%eax), %%mm0 \n\t"	// load 8 bytes from SrcDest into MM0
-      "psubusb   %%mm1, %%mm0 \n\t"	// MM0=SrcDest-C (sub 8 bytes with saturation)
-      "movq    %%mm0, (%%edi) \n\t"	// store result in SrcDest
-       "add          $8, %%eax \n\t"	// increase Src1 register pointer by 8
-      "add          $8, %%edi \n\t"	// increase Dest register pointer by 8
-      "dec              %%ecx \n\t"	// decrease loop counter
-      "jnz             .L11024 \n\t"	// check loop termination, proceed if required
-       "emms                   \n\t"	// exit MMX state
-      "popa                   \n\t":"=m" (Dest)	// %0
-      :"m"(Src1),		// %1
-      "m"(length),		// %2
-      "m"(C),			// %3
-      "m"(Cs)			// %4
+      
+      "mov          %3, %%eax \n\t"	
+      "movd      %%eax, %%mm1 \n\t"	
+      "mov          %4, %%eax \n\t"	
+      "movd      %%eax, %%mm2 \n\t"	
+      "punpckldq %%mm2, %%mm1 \n\t"	
+      "mov          %1, %%eax \n\t"	
+      "mov          %0, %%edi \n\t"	
+      "mov          %2, %%ecx \n\t"	
+      "shr          $3, %%ecx \n\t"	
+       ".align 16              \n\t"	
+      ".L11024:                \n\t" "movq    (%%eax), %%mm0 \n\t"	
+      "psubusb   %%mm1, %%mm0 \n\t"	
+      "movq    %%mm0, (%%edi) \n\t"	
+       "add          $8, %%eax \n\t"	
+      "add          $8, %%edi \n\t"	
+      "dec              %%ecx \n\t"	
+      "jnz             .L11024 \n\t"	
+       "emms                   \n\t"	
+      "popa                   \n\t":"=m" (Dest)	
+      :"m"(Src1),		
+      "m"(length),		
+      "m"(C),			
+      "m"(Cs)			
 	);
 #endif
     return (0);
 }
 
-//  SDL_imageFilterSubUint: D = saturation0(S - (Uint)C)
+
 int SDL_imageFilterSubUint(unsigned char *Src1, unsigned char *Dest, int length, unsigned int C)
 {
     unsigned int i, j, istart, D;
@@ -1393,52 +1388,52 @@ int SDL_imageFilterSubUint(unsigned char *Src1, unsigned char *Dest, int length,
 }
 
 
-//  SDL_imageFilterShiftRightMMX: D = saturation0(S >> N)
+
 int SDL_imageFilterShiftRightMMX(unsigned char *Src1, unsigned char *Dest, int length, unsigned char N,
 				 unsigned char *Mask)
 {
 #ifdef USE_MMX
     asm volatile
-     ("pusha		     \n\t" "movl         %4, %%edx \n\t"	// load Mask address into edx
-      "movq    (%%edx), %%mm0 \n\t"	// load Mask into mm0
-       "xor       %%ecx, %%ecx \n\t"	// zero ECX
-      "mov           %3, %%cl \n\t"	// load loop counter (N) into CL
-      "movd      %%ecx, %%mm3 \n\t"	// copy (N) into MM3 
-       "pcmpeqb   %%mm1, %%mm1 \n\t"	// generate all 1's in mm1
-       ".L10240:               \n\t"	// ** Prepare proper bit-Mask in MM1 **
-       "psrlw        $1, %%mm1 \n\t"	// shift 4 WORDS of MM1 1 bit to the right
-      //    "pand      %%mm0, %%mm1 \n\t"    // apply Mask to 8 BYTES of MM1
+     ("pusha		     \n\t" "movl         %4, %%edx \n\t"	
+      "movq    (%%edx), %%mm0 \n\t"	
+       "xor       %%ecx, %%ecx \n\t"	
+      "mov           %3, %%cl \n\t"	
+      "movd      %%ecx, %%mm3 \n\t"	
+       "pcmpeqb   %%mm1, %%mm1 \n\t"	
+       ".L10240:               \n\t"	
+       "psrlw        $1, %%mm1 \n\t"	
+      
       ".byte     0x0f, 0xdb, 0xc8 \n\t" 
-      "dec               %%cl \n\t"	// decrease loop counter
-      "jnz            .L10240 \n\t"	// check loop termination, proceed if required
-      // ** Shift all bytes of the image **
-       "mov          %1, %%eax \n\t"	// load Src1 address into eax
-      "mov          %0, %%edi \n\t"	// load Dest address into edi
-      "mov          %2, %%ecx \n\t"	// load loop counter (SIZE) into ecx
-      "shr          $3, %%ecx \n\t"	// counter/8 (MMX loads 8 bytes at a time)
-       ".align 16              \n\t"	// 16 byte allignment of the loop entry
+      "dec               %%cl \n\t"	
+      "jnz            .L10240 \n\t"	
+      
+       "mov          %1, %%eax \n\t"	
+      "mov          %0, %%edi \n\t"	
+      "mov          %2, %%ecx \n\t"	
+      "shr          $3, %%ecx \n\t"	
+       ".align 16              \n\t"	
       ".L10241:               \n\t" 
-      "movq    (%%eax), %%mm0 \n\t"	// load 8 bytes from SrcDest into MM0
-      "psrlw     %%mm3, %%mm0 \n\t"	// shift 4 WORDS of MM0 (N) bits to the right
-      //    "pand      %%mm1, %%mm0 \n\t"    // apply proper bit-Mask to 8 BYTES of MM0
+      "movq    (%%eax), %%mm0 \n\t"	
+      "psrlw     %%mm3, %%mm0 \n\t"	
+      
       ".byte     0x0f, 0xdb, 0xc1 \n\t" 
-      "movq    %%mm0, (%%edi) \n\t"	// store result in SrcDest
-      "add          $8, %%eax \n\t"	// increase Src1 register pointer by 8
-      "add          $8, %%edi \n\t"	// increase Dest register pointer by 8
-      "dec              %%ecx \n\t"	// decrease loop counter
-      "jnz            .L10241 \n\t"	// check loop termination, proceed if required
-       "emms                   \n\t"	// exit MMX state
-      "popa                   \n\t":"=m" (Dest)	// %0
-      :"m"(Src1),		// %1
-      "m"(length),		// %2
-      "m"(N),			// %3
-      "m"(Mask)			// %4
+      "movq    %%mm0, (%%edi) \n\t"	
+      "add          $8, %%eax \n\t"	
+      "add          $8, %%edi \n\t"	
+      "dec              %%ecx \n\t"	
+      "jnz            .L10241 \n\t"	
+       "emms                   \n\t"	
+      "popa                   \n\t":"=m" (Dest)	
+      :"m"(Src1),		
+      "m"(length),		
+      "m"(N),			
+      "m"(Mask)			
 	);
 #endif
     return (0);
 }
 
-//  SDL_imageFilterShiftRight: D = saturation0(S >> N)
+
 int SDL_imageFilterShiftRight(unsigned char *Src1, unsigned char *Dest, int length, unsigned char N)
 {
     static unsigned char Mask[8] = { 0x7F, 0x7F, 0x7F, 0x7F, 0x7F, 0x7F, 0x7F, 0x7F };
@@ -1484,35 +1479,35 @@ int SDL_imageFilterShiftRight(unsigned char *Src1, unsigned char *Dest, int leng
     return (0);
 }
 
-//  SDL_imageFilterShiftRightUintMMX: D = Saturation0(S >> N)
+
 int SDL_imageFilterShiftRightUintMMX(unsigned char *Src1, unsigned char *Dest, int length, unsigned char N)
 {
 #ifdef USE_MMX
     asm volatile
      ("pusha		     \n\t"
-      "mov          %1, %%eax \n\t"	// load Src1 address into eax
-      "mov          %0, %%edi \n\t"	// load Dest address into edi
-      "mov          %2, %%ecx \n\t"	// load loop counter (SIZE) into ecx
-      "shr          $3, %%ecx \n\t"	// counter/8 (MMX loads 8 bytes at a time)
-       ".align 16              \n\t"	// 16 byte allignment of the loop entry
-      ".L13023:                \n\t" "movq    (%%eax), %%mm0 \n\t"	// load 8 bytes from SrcDest into MM0
-      "psrld   %3, %%mm0 \n\t"	// MM0=SrcDest+C (add 8 bytes with saturation)
-      "movq    %%mm0, (%%edi) \n\t"	// store result in SrcDest
-      "add          $8, %%eax \n\t"	// increase Src1 register pointer by 8
-      "add          $8, %%edi \n\t"	// increase Dest register pointer by 8
-      "dec              %%ecx \n\t"	// decrease loop counter
-      "jnz             .L13023 \n\t"	// check loop termination, proceed if required
-      "emms                   \n\t"	// exit MMX state
-      "popa                   \n\t":"=m" (Dest)	// %0
-      :"m"(Src1),		// %1
-      "m"(length),		// %2
-      "m"(N)			// %3
+      "mov          %1, %%eax \n\t"	
+      "mov          %0, %%edi \n\t"	
+      "mov          %2, %%ecx \n\t"	
+      "shr          $3, %%ecx \n\t"	
+       ".align 16              \n\t"	
+      ".L13023:                \n\t" "movq    (%%eax), %%mm0 \n\t"	
+      "psrld   %3, %%mm0 \n\t"	
+      "movq    %%mm0, (%%edi) \n\t"	
+      "add          $8, %%eax \n\t"	
+      "add          $8, %%edi \n\t"	
+      "dec              %%ecx \n\t"	
+      "jnz             .L13023 \n\t"	
+      "emms                   \n\t"	
+      "popa                   \n\t":"=m" (Dest)	
+      :"m"(Src1),		
+      "m"(length),		
+      "m"(N)			
 	);
 #endif
     return (0);
 }
 
-//  SDL_imageFilterShiftRightUint: D = Saturation0((uint)S >> N)
+
 int SDL_imageFilterShiftRightUint(unsigned char *Src1, unsigned char *Dest, int length, unsigned char N)
 {
     unsigned int i, istart;
@@ -1520,7 +1515,7 @@ int SDL_imageFilterShiftRightUint(unsigned char *Src1, unsigned char *Dest, int 
     unsigned int *icursrc1, *icurdest;
     int result;
 
-    // min. 1 bit and max. 32 bit shift is allowed
+    
     if ((N > 32) || (N < 1)) return (-1);
 
     if ((SDL_imageFilterMMXdetect()) && (length > 7)) {
@@ -1560,73 +1555,73 @@ int SDL_imageFilterShiftRightUint(unsigned char *Src1, unsigned char *Dest, int 
     return (0);
 }
 
-//  SDL_imageFilterMultByByteMMX: D = saturation255(S * C)
+
 int SDL_imageFilterMultByByteMMX(unsigned char *Src1, unsigned char *Dest, int length, unsigned char C)
 {
 #ifdef USE_MMX
     asm volatile
      ("pusha		     \n\t"
-      // ** Duplicate C in 4 words of MM1 **
-      "mov           %3, %%al \n\t"	// load C into AL
-      "xor         %%ah, %%ah \n\t"	// zero AH
-      "mov         %%ax, %%bx \n\t"	// copy AX into BX
-      "shl         $16, %%eax \n\t"	// shift 2 bytes of EAX left
-      "mov         %%bx, %%ax \n\t"	// copy BX into AX
-      "movd      %%eax, %%mm1 \n\t"	// copy EAX into MM1
-      "movd      %%eax, %%mm2 \n\t"	// copy EAX into MM2
-      "punpckldq %%mm2, %%mm1 \n\t"	// fill higher words of MM1 with C
-       "pxor      %%mm0, %%mm0 \n\t"	// zero MM0 register
-       "mov          %1, %%eax \n\t"	// load Src1 address into eax
-      "mov          %0, %%edi \n\t"	// load Dest address into edi
-      "mov          %2, %%ecx \n\t"	// load loop counter (SIZE) into ecx
-      "shr          $3, %%ecx \n\t"	// counter/8 (MMX loads 8 bytes at a time)
-       "cmp         $128, %%al \n\t"	// if (C <= 128) execute more efficient code
-      "jg             .L10251 \n\t" ".align 16              \n\t"	// 16 byte allignment of the loop entry
-      ".L10250:               \n\t" "movq    (%%eax), %%mm3 \n\t"	// load 8 bytes from Src1 into MM3
-      "movq      %%mm3, %%mm4 \n\t"	// copy MM3 into MM4 
-      "punpcklbw %%mm0, %%mm3 \n\t"	// unpack low  bytes of SrcDest into words
-      "punpckhbw %%mm0, %%mm4 \n\t"	// unpack high bytes of SrcDest into words
-      "pmullw    %%mm1, %%mm3 \n\t"	// mul low  bytes of SrcDest and MM1
-      "pmullw    %%mm1, %%mm4 \n\t"	// mul high bytes of SrcDest and MM1
-      "packuswb  %%mm4, %%mm3 \n\t"	// pack words back into bytes with saturation
-      "movq    %%mm3, (%%edi) \n\t"	// store result in Dest
-       "add          $8, %%eax \n\t"	// increase Src1 register pointer by 8
-      "add          $8, %%edi \n\t"	// increase Dest register pointer by 8
-      "dec              %%ecx \n\t"	// decrease loop counter
-      "jnz            .L10250 \n\t"	// check loop termination, proceed if required
-      "jmp            .L10252 \n\t" ".align 16              \n\t"	// 16 byte allignment of the loop entry
-      ".L10251:               \n\t" "movq    (%%eax), %%mm3 \n\t"	// load 8 bytes from Src1 into MM3
-      "movq      %%mm3, %%mm4 \n\t"	// copy MM3 into MM4 
-      "punpcklbw %%mm0, %%mm3 \n\t"	// unpack low  bytes of SrcDest into words
-      "punpckhbw %%mm0, %%mm4 \n\t"	// unpack high bytes of SrcDest into words
-      "pmullw    %%mm1, %%mm3 \n\t"	// mul low  bytes of SrcDest and MM1
-      "pmullw    %%mm1, %%mm4 \n\t"	// mul high bytes of SrcDest and MM1
-      // ** Take abs value of the results (signed words) **
-       "movq      %%mm3, %%mm5 \n\t"	// copy mm3 into mm5
-      "movq      %%mm4, %%mm6 \n\t"	// copy mm4 into mm6
-      "psraw       $15, %%mm5 \n\t"	// fill mm5 words with word sign bit
-      "psraw       $15, %%mm6 \n\t"	// fill mm6 words with word sign bit
-      "pxor      %%mm5, %%mm3 \n\t"	// take 1's compliment of only neg. words
-      "pxor      %%mm6, %%mm4 \n\t"	// take 1's compliment of only neg. words
-      "psubsw    %%mm5, %%mm3 \n\t"	// add 1 to only neg. words, W-(-1) or W-0
-      "psubsw    %%mm6, %%mm4 \n\t"	// add 1 to only neg. words, W-(-1) or W-0
-      "packuswb  %%mm4, %%mm3 \n\t"	// pack words back into bytes with saturation
-      "movq    %%mm3, (%%edi) \n\t"	// store result in Dest
-       "add          $8, %%eax \n\t"	// increase Src1 register pointer by 8
-      "add          $8, %%edi \n\t"	// increase Dest register pointer by 8
-      "dec              %%ecx \n\t"	// decrease loop counter
-      "jnz            .L10251 \n\t"	// check loop termination, proceed if required
-       ".L10252:               \n\t" "emms                   \n\t"	// exit MMX state
-      "popa                   \n\t":"=m" (Dest)	// %0
-      :"m"(Src1),		// %1
-      "m"(length),		// %2
-      "m"(C)			// %3
+      
+      "mov           %3, %%al \n\t"	
+      "xor         %%ah, %%ah \n\t"	
+      "mov         %%ax, %%bx \n\t"	
+      "shl         $16, %%eax \n\t"	
+      "mov         %%bx, %%ax \n\t"	
+      "movd      %%eax, %%mm1 \n\t"	
+      "movd      %%eax, %%mm2 \n\t"	
+      "punpckldq %%mm2, %%mm1 \n\t"	
+       "pxor      %%mm0, %%mm0 \n\t"	
+       "mov          %1, %%eax \n\t"	
+      "mov          %0, %%edi \n\t"	
+      "mov          %2, %%ecx \n\t"	
+      "shr          $3, %%ecx \n\t"	
+       "cmp         $128, %%al \n\t"	
+      "jg             .L10251 \n\t" ".align 16              \n\t"	
+      ".L10250:               \n\t" "movq    (%%eax), %%mm3 \n\t"	
+      "movq      %%mm3, %%mm4 \n\t"	
+      "punpcklbw %%mm0, %%mm3 \n\t"	
+      "punpckhbw %%mm0, %%mm4 \n\t"	
+      "pmullw    %%mm1, %%mm3 \n\t"	
+      "pmullw    %%mm1, %%mm4 \n\t"	
+      "packuswb  %%mm4, %%mm3 \n\t"	
+      "movq    %%mm3, (%%edi) \n\t"	
+       "add          $8, %%eax \n\t"	
+      "add          $8, %%edi \n\t"	
+      "dec              %%ecx \n\t"	
+      "jnz            .L10250 \n\t"	
+      "jmp            .L10252 \n\t" ".align 16              \n\t"	
+      ".L10251:               \n\t" "movq    (%%eax), %%mm3 \n\t"	
+      "movq      %%mm3, %%mm4 \n\t"	
+      "punpcklbw %%mm0, %%mm3 \n\t"	
+      "punpckhbw %%mm0, %%mm4 \n\t"	
+      "pmullw    %%mm1, %%mm3 \n\t"	
+      "pmullw    %%mm1, %%mm4 \n\t"	
+      
+       "movq      %%mm3, %%mm5 \n\t"	
+      "movq      %%mm4, %%mm6 \n\t"	
+      "psraw       $15, %%mm5 \n\t"	
+      "psraw       $15, %%mm6 \n\t"	
+      "pxor      %%mm5, %%mm3 \n\t"	
+      "pxor      %%mm6, %%mm4 \n\t"	
+      "psubsw    %%mm5, %%mm3 \n\t"	
+      "psubsw    %%mm6, %%mm4 \n\t"	
+      "packuswb  %%mm4, %%mm3 \n\t"	
+      "movq    %%mm3, (%%edi) \n\t"	
+       "add          $8, %%eax \n\t"	
+      "add          $8, %%edi \n\t"	
+      "dec              %%ecx \n\t"	
+      "jnz            .L10251 \n\t"	
+       ".L10252:               \n\t" "emms                   \n\t"	
+      "popa                   \n\t":"=m" (Dest)	
+      :"m"(Src1),		
+      "m"(length),		
+      "m"(C)			
 	);
 #endif
     return (0);
 }
 
-//  SDL_imageFilterMultByByte: D = saturation255(S * C)
+
 int SDL_imageFilterMultByByte(unsigned char *Src1, unsigned char *Dest, int length, unsigned char C)
 {
     unsigned int i, istart;
@@ -1671,57 +1666,57 @@ int SDL_imageFilterMultByByte(unsigned char *Src1, unsigned char *Dest, int leng
     return (0);
 }
 
-//  SDL_imageFilterShiftRightAndMultByByteMMX: D = saturation255((S >> N) * C)
+
 int SDL_imageFilterShiftRightAndMultByByteMMX(unsigned char *Src1, unsigned char *Dest, int length, unsigned char N,
 					      unsigned char C)
 {
 #ifdef USE_MMX
     asm volatile
      ("pusha		     \n\t"
-      // ** Duplicate C in 4 words of MM1 **
-      "mov           %4, %%al \n\t"	// load C into AL
-      "xor         %%ah, %%ah \n\t"	// zero AH
-      "mov         %%ax, %%bx \n\t"	// copy AX into BX
-      "shl         $16, %%eax \n\t"	// shift 2 bytes of EAX left
-      "mov         %%bx, %%ax \n\t"	// copy BX into AX
-      "movd      %%eax, %%mm1 \n\t"	// copy EAX into MM1
-      "movd      %%eax, %%mm2 \n\t"	// copy EAX into MM2
-      "punpckldq %%mm2, %%mm1 \n\t"	// fill higher words of MM1 with C
-       "xor       %%ecx, %%ecx \n\t"	// zero ECX
-      "mov           %3, %%cl \n\t"	// load N into CL
-      "movd      %%ecx, %%mm7 \n\t"	// copy N into MM7
-       "pxor      %%mm0, %%mm0 \n\t"	// zero MM0 register
-       "mov          %1, %%eax \n\t"	// load Src1 address into eax
-      "mov          %0, %%edi \n\t"	// load Dest address into edi
-      "mov          %2, %%ecx \n\t"	// load loop counter (SIZE) into ecx
-      "shr          $3, %%ecx \n\t"	// counter/8 (MMX loads 8 bytes at a time)
-       ".align 16              \n\t"	// 16 byte allignment of the loop entry
-      ".L1026:                \n\t" "movq    (%%eax), %%mm3 \n\t"	// load 8 bytes from Src1 into MM3
-      "movq      %%mm3, %%mm4 \n\t"	// copy MM3 into MM4 
-      "punpcklbw %%mm0, %%mm3 \n\t"	// unpack low  bytes of SrcDest into words
-      "punpckhbw %%mm0, %%mm4 \n\t"	// unpack high bytes of SrcDest into words
-      "psrlw     %%mm7, %%mm3 \n\t"	// shift 4 WORDS of MM3 (N) bits to the right
-      "psrlw     %%mm7, %%mm4 \n\t"	// shift 4 WORDS of MM4 (N) bits to the right
-      "pmullw    %%mm1, %%mm3 \n\t"	// mul low  bytes of SrcDest by MM1
-      "pmullw    %%mm1, %%mm4 \n\t"	// mul high bytes of SrcDest by MM1
-      "packuswb  %%mm4, %%mm3 \n\t"	// pack words back into bytes with saturation
-      "movq    %%mm3, (%%edi) \n\t"	// store result in Dest
-       "add          $8, %%eax \n\t"	// increase Src1 register pointer by 8
-      "add          $8, %%edi \n\t"	// increase Dest register pointer by 8
-      "dec              %%ecx \n\t"	// decrease loop counter
-      "jnz             .L1026 \n\t"	// check loop termination, proceed if required
-       "emms                   \n\t"	// exit MMX state
-      "popa                   \n\t":"=m" (Dest)	// %0
-      :"m"(Src1),		// %1
-      "m"(length),		// %2
-      "m"(N),			// %3
-      "m"(C)			// %4
+      
+      "mov           %4, %%al \n\t"	
+      "xor         %%ah, %%ah \n\t"	
+      "mov         %%ax, %%bx \n\t"	
+      "shl         $16, %%eax \n\t"	
+      "mov         %%bx, %%ax \n\t"	
+      "movd      %%eax, %%mm1 \n\t"	
+      "movd      %%eax, %%mm2 \n\t"	
+      "punpckldq %%mm2, %%mm1 \n\t"	
+       "xor       %%ecx, %%ecx \n\t"	
+      "mov           %3, %%cl \n\t"	
+      "movd      %%ecx, %%mm7 \n\t"	
+       "pxor      %%mm0, %%mm0 \n\t"	
+       "mov          %1, %%eax \n\t"	
+      "mov          %0, %%edi \n\t"	
+      "mov          %2, %%ecx \n\t"	
+      "shr          $3, %%ecx \n\t"	
+       ".align 16              \n\t"	
+      ".L1026:                \n\t" "movq    (%%eax), %%mm3 \n\t"	
+      "movq      %%mm3, %%mm4 \n\t"	
+      "punpcklbw %%mm0, %%mm3 \n\t"	
+      "punpckhbw %%mm0, %%mm4 \n\t"	
+      "psrlw     %%mm7, %%mm3 \n\t"	
+      "psrlw     %%mm7, %%mm4 \n\t"	
+      "pmullw    %%mm1, %%mm3 \n\t"	
+      "pmullw    %%mm1, %%mm4 \n\t"	
+      "packuswb  %%mm4, %%mm3 \n\t"	
+      "movq    %%mm3, (%%edi) \n\t"	
+       "add          $8, %%eax \n\t"	
+      "add          $8, %%edi \n\t"	
+      "dec              %%ecx \n\t"	
+      "jnz             .L1026 \n\t"	
+       "emms                   \n\t"	
+      "popa                   \n\t":"=m" (Dest)	
+      :"m"(Src1),		
+      "m"(length),		
+      "m"(N),			
+      "m"(C)			
 	);
 #endif
     return (0);
 }
 
-//  SDL_imageFilterShiftRightAndMultByByte: D = saturation255((S >> N) * C)
+
 int SDL_imageFilterShiftRightAndMultByByte(unsigned char *Src1, unsigned char *Dest, int length, unsigned char N,
 					   unsigned char C)
 {
@@ -1772,49 +1767,49 @@ int SDL_imageFilterShiftRightAndMultByByte(unsigned char *Src1, unsigned char *D
     return (0);
 }
 
-//  SDL_imageFilterShiftLeftByteMMX: D = (S << N)
+
 int SDL_imageFilterShiftLeftByteMMX(unsigned char *Src1, unsigned char *Dest, int length, unsigned char N,
 				    unsigned char *Mask)
 {
 #ifdef USE_MMX
     asm volatile
-     ("pusha		     \n\t" "movl         %4, %%edx \n\t"	// load Mask address into edx
-      "movq    (%%edx), %%mm0 \n\t"	// load Mask into mm0
-       "xor       %%ecx, %%ecx \n\t"	// zero ECX
-      "mov           %3, %%cl \n\t"	// load loop counter (N) into CL
-      "movd      %%ecx, %%mm3 \n\t"	// copy (N) into MM3 
-       "pcmpeqb   %%mm1, %%mm1 \n\t"	// generate all 1's in mm1
-       ".L10270:               \n\t"	// ** Prepare proper bit-Mask in MM1 **
-       "psllw        $1, %%mm1 \n\t"	// shift 4 WORDS of MM1 1 bit to the left
-      //    "pand      %%mm0, %%mm1 \n\t"    // apply Mask to 8 BYTES of MM1
-      ".byte     0x0f, 0xdb, 0xc8 \n\t" "dec %%cl               \n\t"	// decrease loop counter
-      "jnz            .L10270 \n\t"	// check loop termination, proceed if required
-      // ** Shift all bytes of the image **
-       "mov          %1, %%eax \n\t"	// load Src1 address into eax
-      "mov          %0, %%edi \n\t"	// load SrcDest address into edi
-      "mov          %2, %%ecx \n\t"	// load loop counter (SIZE) into ecx
-      "shr          $3, %%ecx \n\t"	// counter/8 (MMX loads 8 bytes at a time)
-       ".align 16              \n\t"	// 16 byte allignment of the loop entry
-      ".L10271:               \n\t" "movq    (%%eax), %%mm0 \n\t"	// load 8 bytes from Src1 into MM0
-      "psllw     %%mm3, %%mm0 \n\t"	// shift 4 WORDS of MM0 (N) bits to the left
-      //    "pand      %%mm1, %%mm0 \n\t"    // apply proper bit-Mask to 8 BYTES of MM0
-      ".byte     0x0f, 0xdb, 0xc1 \n\t" "movq    %%mm0, (%%edi) \n\t"	// store result in Dest
-       "add          $8, %%eax \n\t"	// increase Src1 register pointer by 8
-      "add          $8, %%edi \n\t"	// increase Dest register pointer by 8
-      "dec              %%ecx \n\t"	// decrease loop counter
-      "jnz            .L10271 \n\t"	// check loop termination, proceed if required
-       "emms                   \n\t"	// exit MMX state
-      "popa                   \n\t":"=m" (Dest)	// %0
-      :"m"(Src1),		// %1
-      "m"(length),		// %2
-      "m"(N),			// %3
-      "m"(Mask)			// %4
+     ("pusha		     \n\t" "movl         %4, %%edx \n\t"	
+      "movq    (%%edx), %%mm0 \n\t"	
+       "xor       %%ecx, %%ecx \n\t"	
+      "mov           %3, %%cl \n\t"	
+      "movd      %%ecx, %%mm3 \n\t"	
+       "pcmpeqb   %%mm1, %%mm1 \n\t"	
+       ".L10270:               \n\t"	
+       "psllw        $1, %%mm1 \n\t"	
+      
+      ".byte     0x0f, 0xdb, 0xc8 \n\t" "dec %%cl               \n\t"	
+      "jnz            .L10270 \n\t"	
+      
+       "mov          %1, %%eax \n\t"	
+      "mov          %0, %%edi \n\t"	
+      "mov          %2, %%ecx \n\t"	
+      "shr          $3, %%ecx \n\t"	
+       ".align 16              \n\t"	
+      ".L10271:               \n\t" "movq    (%%eax), %%mm0 \n\t"	
+      "psllw     %%mm3, %%mm0 \n\t"	
+      
+      ".byte     0x0f, 0xdb, 0xc1 \n\t" "movq    %%mm0, (%%edi) \n\t"	
+       "add          $8, %%eax \n\t"	
+      "add          $8, %%edi \n\t"	
+      "dec              %%ecx \n\t"	
+      "jnz            .L10271 \n\t"	
+       "emms                   \n\t"	
+      "popa                   \n\t":"=m" (Dest)	
+      :"m"(Src1),		
+      "m"(length),		
+      "m"(N),			
+      "m"(Mask)			
 	);
 #endif
     return (0);
 }
 
-//  SDL_imageFilterShiftLeftByte: D = (S << N)
+
 int SDL_imageFilterShiftLeftByte(unsigned char *Src1, unsigned char *Dest, int length, unsigned char N)
 {
     static unsigned char Mask[8] = { 0xFE, 0xFE, 0xFE, 0xFE, 0xFE, 0xFE, 0xFE, 0xFE };
@@ -1823,8 +1818,8 @@ int SDL_imageFilterShiftLeftByte(unsigned char *Src1, unsigned char *Dest, int l
     int result;
 
     if ((N > 8) || (N < 1))
-	return (-1);		// image size must be at least 8 bytes 
-    // and min. 1 bit and max. 8 bit shift is allowed
+	return (-1);		
+    
 
     if ((SDL_imageFilterMMXdetect()) && (length > 7)) {
 
@@ -1859,35 +1854,35 @@ int SDL_imageFilterShiftLeftByte(unsigned char *Src1, unsigned char *Dest, int l
     return (0);
 }
 
-//  SDL_imageFilterShiftLeftUintMMX: D = (S << N)
+
 int SDL_imageFilterShiftLeftUintMMX(unsigned char *Src1, unsigned char *Dest, int length, unsigned char N)
 {
 #ifdef USE_MMX
     asm volatile
      ("pusha		     \n\t"
-      "mov          %1, %%eax \n\t"	// load Src1 address into eax
-      "mov          %0, %%edi \n\t"	// load Dest address into edi
-      "mov          %2, %%ecx \n\t"	// load loop counter (SIZE) into ecx
-      "shr          $3, %%ecx \n\t"	// counter/8 (MMX loads 8 bytes at a time)
-       ".align 16              \n\t"	// 16 byte allignment of the loop entry
-      ".L12023:                \n\t" "movq    (%%eax), %%mm0 \n\t"	// load 8 bytes from SrcDest into MM0
-      "pslld   %3, %%mm0 \n\t"	// MM0=SrcDest+C (add 8 bytes with saturation)
-      "movq    %%mm0, (%%edi) \n\t"	// store result in SrcDest
-      "add          $8, %%eax \n\t"	// increase Src1 register pointer by 8
-      "add          $8, %%edi \n\t"	// increase Dest register pointer by 8
-      "dec              %%ecx \n\t"	// decrease loop counter
-      "jnz             .L12023 \n\t"	// check loop termination, proceed if required
-      "emms                   \n\t"	// exit MMX state
-      "popa                   \n\t":"=m" (Dest)	// %0
-      :"m"(Src1),		// %1
-      "m"(length),		// %2
-      "m"(N)			// %3
+      "mov          %1, %%eax \n\t"	
+      "mov          %0, %%edi \n\t"	
+      "mov          %2, %%ecx \n\t"	
+      "shr          $3, %%ecx \n\t"	
+       ".align 16              \n\t"	
+      ".L12023:                \n\t" "movq    (%%eax), %%mm0 \n\t"	
+      "pslld   %3, %%mm0 \n\t"	
+      "movq    %%mm0, (%%edi) \n\t"	
+      "add          $8, %%eax \n\t"	
+      "add          $8, %%edi \n\t"	
+      "dec              %%ecx \n\t"	
+      "jnz             .L12023 \n\t"	
+      "emms                   \n\t"	
+      "popa                   \n\t":"=m" (Dest)	
+      :"m"(Src1),		
+      "m"(length),		
+      "m"(N)			
 	);
 #endif
     return (0);
 }
 
-//  SDL_imageFilterShiftLeftUint: D = ((uint)S << N)
+
 int SDL_imageFilterShiftLeftUint(unsigned char *Src1, unsigned char *Dest, int length, unsigned char N)
 {
     unsigned int i, istart;
@@ -1895,7 +1890,7 @@ int SDL_imageFilterShiftLeftUint(unsigned char *Src1, unsigned char *Dest, int l
     unsigned int *icursrc1, *icurdest;
     int result;
 
-    // min. 1 bit and max. 32 bit shift is allowed
+    
     if ((N > 32) || (N < 1)) return (-1);
 
     if ((SDL_imageFilterMMXdetect()) && (length > 7)) {
@@ -1935,66 +1930,66 @@ int SDL_imageFilterShiftLeftUint(unsigned char *Src1, unsigned char *Dest, int l
     return (0);
 }
 
-//  SDL_imageFilterShiftLeftMMX: D = saturation255(S << N)
+
 int SDL_imageFilterShiftLeftMMX(unsigned char *Src1, unsigned char *Dest, int length, unsigned char N)
 {
 #ifdef USE_MMX
     asm volatile
-     ("pusha		     \n\t" "xor       %%eax, %%eax \n\t"	// zero EAX
-      "mov           %3, %%al \n\t"	// load N into AL
-      "movd      %%eax, %%mm7 \n\t"	// copy N into MM7
-       "pxor      %%mm0, %%mm0 \n\t"	// zero MM0 register
-       "mov         %1, %%eax  \n\t"	// load Src1 address into eax
-      "mov         %0, %%edi  \n\t"	// load Dest address into edi
-      "mov         %2, %%ecx  \n\t"	// load loop counter (SIZE) into ecx
-      "shr         $3, %%ecx  \n\t"	// counter/8 (MMX loads 8 bytes at a time)
-       "cmp           $7, %%al \n\t"	// if (N <= 7) execute more efficient code
-      "jg             .L10281 \n\t" ".align 16              \n\t"	// 16 byte allignment of the loop entry
-      ".L10280:               \n\t" "movq    (%%eax), %%mm3 \n\t"	// load 8 bytes from Src1 into MM3
-      "movq      %%mm3, %%mm4 \n\t"	// copy MM3 into MM4 
-      "punpcklbw %%mm0, %%mm3 \n\t"	// unpack low  bytes of SrcDest into words
-      "punpckhbw %%mm0, %%mm4 \n\t"	// unpack high bytes of SrcDest into words
-      "psllw     %%mm7, %%mm3 \n\t"	// shift 4 WORDS of MM3 (N) bits to the right
-      "psllw     %%mm7, %%mm4 \n\t"	// shift 4 WORDS of MM4 (N) bits to the right
-      "packuswb  %%mm4, %%mm3 \n\t"	// pack words back into bytes with saturation
-      "movq    %%mm3, (%%edi) \n\t"	// store result in Dest
-       "add          $8, %%eax \n\t"	// increase Src1 register pointer by 8
-      "add          $8, %%edi \n\t"	// increase Dest register pointer by 8
-      "dec              %%ecx \n\t"	// decrease loop counter
-      "jnz            .L10280 \n\t"	// check loop termination, proceed if required
-      "jmp            .L10282 \n\t" ".align 16              \n\t"	// 16 byte allignment of the loop entry
-      ".L10281:               \n\t" "movq    (%%eax), %%mm3 \n\t"	// load 8 bytes from Src1 into MM3
-      "movq      %%mm3, %%mm4 \n\t"	// copy MM3 into MM4 
-      "punpcklbw %%mm0, %%mm3 \n\t"	// unpack low  bytes of SrcDest into words
-      "punpckhbw %%mm0, %%mm4 \n\t"	// unpack high bytes of SrcDest into words
-      "psllw     %%mm7, %%mm3 \n\t"	// shift 4 WORDS of MM3 (N) bits to the right
-      "psllw     %%mm7, %%mm4 \n\t"	// shift 4 WORDS of MM4 (N) bits to the right
-      // ** Take abs value of the signed words **
-       "movq      %%mm3, %%mm5 \n\t"	// copy mm3 into mm5
-      "movq      %%mm4, %%mm6 \n\t"	// copy mm4 into mm6
-      "psraw       $15, %%mm5 \n\t"	// fill mm5 words with word sign bit
-      "psraw       $15, %%mm6 \n\t"	// fill mm6 words with word sign bit
-      "pxor      %%mm5, %%mm3 \n\t"	// take 1's compliment of only neg. words
-      "pxor      %%mm6, %%mm4 \n\t"	// take 1's compliment of only neg. words
-      "psubsw    %%mm5, %%mm3 \n\t"	// add 1 to only neg. words, W-(-1) or W-0
-      "psubsw    %%mm6, %%mm4 \n\t"	// add 1 to only neg. words, W-(-1) or W-0
-       "packuswb  %%mm4, %%mm3 \n\t"	// pack words back into bytes with saturation
-      "movq    %%mm3, (%%edi) \n\t"	// store result in Dest
-       "add          $8, %%eax \n\t"	// increase Src1 register pointer by 8
-      "add          $8, %%edi \n\t"	// increase Dest register pointer by 8
-      "dec              %%ecx \n\t"	// decrease loop counter
-      "jnz            .L10281 \n\t"	// check loop termination, proceed if required
-       ".L10282:               \n\t" "emms                   \n\t"	// exit MMX state
-      "popa                   \n\t":"=m" (Dest)	// %0
-      :"m"(Src1),		// %1
-      "m"(length),		// %2
-      "m"(N)			// %3
+     ("pusha		     \n\t" "xor       %%eax, %%eax \n\t"	
+      "mov           %3, %%al \n\t"	
+      "movd      %%eax, %%mm7 \n\t"	
+       "pxor      %%mm0, %%mm0 \n\t"	
+       "mov         %1, %%eax  \n\t"	
+      "mov         %0, %%edi  \n\t"	
+      "mov         %2, %%ecx  \n\t"	
+      "shr         $3, %%ecx  \n\t"	
+       "cmp           $7, %%al \n\t"	
+      "jg             .L10281 \n\t" ".align 16              \n\t"	
+      ".L10280:               \n\t" "movq    (%%eax), %%mm3 \n\t"	
+      "movq      %%mm3, %%mm4 \n\t"	
+      "punpcklbw %%mm0, %%mm3 \n\t"	
+      "punpckhbw %%mm0, %%mm4 \n\t"	
+      "psllw     %%mm7, %%mm3 \n\t"	
+      "psllw     %%mm7, %%mm4 \n\t"	
+      "packuswb  %%mm4, %%mm3 \n\t"	
+      "movq    %%mm3, (%%edi) \n\t"	
+       "add          $8, %%eax \n\t"	
+      "add          $8, %%edi \n\t"	
+      "dec              %%ecx \n\t"	
+      "jnz            .L10280 \n\t"	
+      "jmp            .L10282 \n\t" ".align 16              \n\t"	
+      ".L10281:               \n\t" "movq    (%%eax), %%mm3 \n\t"	
+      "movq      %%mm3, %%mm4 \n\t"	
+      "punpcklbw %%mm0, %%mm3 \n\t"	
+      "punpckhbw %%mm0, %%mm4 \n\t"	
+      "psllw     %%mm7, %%mm3 \n\t"	
+      "psllw     %%mm7, %%mm4 \n\t"	
+      
+       "movq      %%mm3, %%mm5 \n\t"	
+      "movq      %%mm4, %%mm6 \n\t"	
+      "psraw       $15, %%mm5 \n\t"	
+      "psraw       $15, %%mm6 \n\t"	
+      "pxor      %%mm5, %%mm3 \n\t"	
+      "pxor      %%mm6, %%mm4 \n\t"	
+      "psubsw    %%mm5, %%mm3 \n\t"	
+      "psubsw    %%mm6, %%mm4 \n\t"	
+       "packuswb  %%mm4, %%mm3 \n\t"	
+      "movq    %%mm3, (%%edi) \n\t"	
+       "add          $8, %%eax \n\t"	
+      "add          $8, %%edi \n\t"	
+      "dec              %%ecx \n\t"	
+      "jnz            .L10281 \n\t"	
+       ".L10282:               \n\t" "emms                   \n\t"	
+      "popa                   \n\t":"=m" (Dest)	
+      :"m"(Src1),		
+      "m"(length),		
+      "m"(N)			
 	);
 #endif
     return (0);
 }
 
-//  SDL_imageFilterShiftLeft: D = saturation255(S << N)
+
 int SDL_imageFilterShiftLeft(unsigned char *Src1, unsigned char *Dest, int length, unsigned char N)
 {
     unsigned int i, istart;
@@ -2002,8 +1997,8 @@ int SDL_imageFilterShiftLeft(unsigned char *Src1, unsigned char *Dest, int lengt
     int result;
 
     if ((N > 8) || (N < 1))
-	return (-1);		// image size must be at least 8 bytes 
-    // and min. 1 bit and max. 8 bit shift is allowed
+	return (-1);		
+    
 
     if ((SDL_imageFilterMMXdetect()) && (length > 7)) {
 
@@ -2040,49 +2035,49 @@ int SDL_imageFilterShiftLeft(unsigned char *Src1, unsigned char *Dest, int lengt
     return (0);
 }
 
-//  SDL_imageFilterBinarizeUsingThresholdMMX: D = (S >= T) ? 255:0
+
 int SDL_imageFilterBinarizeUsingThresholdMMX(unsigned char *Src1, unsigned char *Dest, int length, unsigned char T)
 {
 #ifdef USE_MMX
     asm volatile
      ("pusha		     \n\t"
-      // ** Duplicate T in 8 bytes of MM3 **
-      "pcmpeqb   %%mm1, %%mm1 \n\t"	// generate all 1's in mm1
-      "pcmpeqb   %%mm2, %%mm2 \n\t"	// generate all 1's in mm2
-       "mov           %3, %%al \n\t"	// load T into AL
-      "mov         %%al, %%ah \n\t"	// copy AL into AH
-      "mov         %%ax, %%bx \n\t"	// copy AX into BX
-      "shl         $16, %%eax \n\t"	// shift 2 bytes of EAX left
-      "mov         %%bx, %%ax \n\t"	// copy BX into AX
-      "movd      %%eax, %%mm3 \n\t"	// copy EAX into MM3
-      "movd      %%eax, %%mm4 \n\t"	// copy EAX into MM4
-      "punpckldq %%mm4, %%mm3 \n\t"	// fill higher bytes of MM3 with T
-       "psubusb   %%mm3, %%mm2 \n\t"	// store 0xFF - T in MM2
-       "mov          %1, %%eax \n\t"	// load Src1 address into eax
-      "mov          %0, %%edi \n\t"	// load Dest address into edi
-      "mov          %2, %%ecx \n\t"	// load loop counter (SIZE) into ecx
-      "shr          $3, %%ecx \n\t"	// counter/8 (MMX loads 8 bytes at a time)
-       ".align 16              \n\t"	// 16 byte alignment of the loop entry
+      
+      "pcmpeqb   %%mm1, %%mm1 \n\t"	
+      "pcmpeqb   %%mm2, %%mm2 \n\t"	
+       "mov           %3, %%al \n\t"	
+      "mov         %%al, %%ah \n\t"	
+      "mov         %%ax, %%bx \n\t"	
+      "shl         $16, %%eax \n\t"	
+      "mov         %%bx, %%ax \n\t"	
+      "movd      %%eax, %%mm3 \n\t"	
+      "movd      %%eax, %%mm4 \n\t"	
+      "punpckldq %%mm4, %%mm3 \n\t"	
+       "psubusb   %%mm3, %%mm2 \n\t"	
+       "mov          %1, %%eax \n\t"	
+      "mov          %0, %%edi \n\t"	
+      "mov          %2, %%ecx \n\t"	
+      "shr          $3, %%ecx \n\t"	
+       ".align 16              \n\t"	
       ".L1029:                \n\t" 
-      "movq    (%%eax), %%mm0 \n\t"	// load 8 bytes from SrcDest into MM0
-      "paddusb   %%mm2, %%mm0 \n\t"	// MM0=SrcDest+(0xFF-T) (add 8 bytes with saturation)
-      "pcmpeqb   %%mm1, %%mm0 \n\t"	// binarize 255:0, comparing to 255
-      "movq    %%mm0, (%%edi) \n\t"	// store result in SrcDest
-       "add          $8, %%eax \n\t"	// increase Src1 register pointer by 8
-      "add          $8, %%edi \n\t"	// increase Dest register pointer by 8
-      "dec              %%ecx \n\t"	// decrease loop counter
-      "jnz             .L1029 \n\t"	// check loop termination, proceed if required
-       "emms                   \n\t"	// exit MMX state
-      "popa                   \n\t":"=m" (Dest)	// %0
-      :"m"(Src1),		// %1
-      "m"(length),		// %2
-      "m"(T)			// %3
+      "movq    (%%eax), %%mm0 \n\t"	
+      "paddusb   %%mm2, %%mm0 \n\t"	
+      "pcmpeqb   %%mm1, %%mm0 \n\t"	
+      "movq    %%mm0, (%%edi) \n\t"	
+       "add          $8, %%eax \n\t"	
+      "add          $8, %%edi \n\t"	
+      "dec              %%ecx \n\t"	
+      "jnz             .L1029 \n\t"	
+       "emms                   \n\t"	
+      "popa                   \n\t":"=m" (Dest)	
+      :"m"(Src1),		
+      "m"(length),		
+      "m"(T)			
 	);
 #endif
     return (0);
 }
 
-//  SDL_imageFilterBinarizeUsingThreshold: D = (S >= T) ? 255:0
+
 int SDL_imageFilterBinarizeUsingThreshold(unsigned char *Src1, unsigned char *Dest, int length, unsigned char T)
 {
     unsigned int i, istart;
@@ -2121,61 +2116,61 @@ int SDL_imageFilterBinarizeUsingThreshold(unsigned char *Src1, unsigned char *De
     return (0);
 }
 
-//  SDL_imageFilterClipToRangeMMX: D = (S >= Tmin) & (S <= Tmax) S:Tmin | Tmax
+
 int SDL_imageFilterClipToRangeMMX(unsigned char *Src1, unsigned char *Dest, int length, unsigned char Tmin,
 				  unsigned char Tmax)
 {
 #ifdef USE_MMX
     asm volatile
-     ("pusha		     \n\t" "pcmpeqb   %%mm1, %%mm1 \n\t"	// generate all 1's in mm1
-      // ** Duplicate Tmax in 8 bytes of MM3 **
-       "mov           %4, %%al \n\t"	// load Tmax into AL
-      "mov         %%al, %%ah \n\t"	// copy AL into AH
-      "mov         %%ax, %%bx \n\t"	// copy AX into BX
-      "shl         $16, %%eax \n\t"	// shift 2 bytes of EAX left
-      "mov         %%bx, %%ax \n\t"	// copy BX into AX
-      "movd      %%eax, %%mm3 \n\t"	// copy EAX into MM3
-      "movd      %%eax, %%mm4 \n\t"	// copy EAX into MM4
-      "punpckldq %%mm4, %%mm3 \n\t"	// fill higher bytes of MM3 with Tmax
-       "psubusb   %%mm3, %%mm1 \n\t"	// store 0xFF - Tmax in MM1
-      // ** Duplicate Tmin in 8 bytes of MM5 **
-       "mov           %3, %%al \n\t"	// load Tmin into AL
-      "mov         %%al, %%ah \n\t"	// copy AL into AH
-      "mov         %%ax, %%bx \n\t"	// copy AX into BX
-      "shl         $16, %%eax \n\t"	// shift 2 bytes of EAX left
-      "mov         %%bx, %%ax \n\t"	// copy BX into AX
-      "movd      %%eax, %%mm5 \n\t"	// copy EAX into MM5
-      "movd      %%eax, %%mm4 \n\t"	// copy EAX into MM4
-      "punpckldq %%mm4, %%mm5 \n\t"	// fill higher bytes of MM5 with Tmin
-       "movq      %%mm5, %%mm7 \n\t"	// copy MM5 into MM7
-      "paddusb   %%mm1, %%mm7 \n\t"	// store 0xFF - Tmax + Tmin in MM7
-       "mov          %1, %%eax \n\t"	// load Src1 address into eax
-      "mov          %0, %%edi \n\t"	// load Dest address into edi
-      "mov          %2, %%ecx \n\t"	// load loop counter (SIZE) into ecx
-      "shr          $3, %%ecx \n\t"	// counter/8 (MMX loads 8 bytes at a time)
-       ".align 16              \n\t"	// 16 byte allignment of the loop entry
+     ("pusha		     \n\t" "pcmpeqb   %%mm1, %%mm1 \n\t"	
+      
+       "mov           %4, %%al \n\t"	
+      "mov         %%al, %%ah \n\t"	
+      "mov         %%ax, %%bx \n\t"	
+      "shl         $16, %%eax \n\t"	
+      "mov         %%bx, %%ax \n\t"	
+      "movd      %%eax, %%mm3 \n\t"	
+      "movd      %%eax, %%mm4 \n\t"	
+      "punpckldq %%mm4, %%mm3 \n\t"	
+       "psubusb   %%mm3, %%mm1 \n\t"	
+      
+       "mov           %3, %%al \n\t"	
+      "mov         %%al, %%ah \n\t"	
+      "mov         %%ax, %%bx \n\t"	
+      "shl         $16, %%eax \n\t"	
+      "mov         %%bx, %%ax \n\t"	
+      "movd      %%eax, %%mm5 \n\t"	
+      "movd      %%eax, %%mm4 \n\t"	
+      "punpckldq %%mm4, %%mm5 \n\t"	
+       "movq      %%mm5, %%mm7 \n\t"	
+      "paddusb   %%mm1, %%mm7 \n\t"	
+       "mov          %1, %%eax \n\t"	
+      "mov          %0, %%edi \n\t"	
+      "mov          %2, %%ecx \n\t"	
+      "shr          $3, %%ecx \n\t"	
+       ".align 16              \n\t"	
       ".L1030:                \n\t" 
-      "movq    (%%eax), %%mm0 \n\t"	// load 8 bytes from Src1 into MM0
-      "paddusb   %%mm1, %%mm0 \n\t"	// MM0=SrcDest+(0xFF-Tmax)
-      "psubusb   %%mm7, %%mm0 \n\t"	// MM0=MM0-(0xFF-Tmax+Tmin)
-      "paddusb   %%mm5, %%mm0 \n\t"	// MM0=MM0+Tmin
-      "movq    %%mm0, (%%edi) \n\t"	// store result in Dest
-       "add          $8, %%eax \n\t"	// increase Src1 register pointer by 8
-      "add          $8, %%edi \n\t"	// increase Dest register pointer by 8
-      "dec              %%ecx \n\t"	// decrease loop counter
-      "jnz             .L1030 \n\t"	// check loop termination, proceed if required
-       "emms                   \n\t"	// exit MMX state
-      "popa                   \n\t":"=m" (Dest)	// %0
-      :"m"(Src1),		// %1
-      "m"(length),		// %2
-      "m"(Tmin),		// %3
-      "m"(Tmax)			// %4
+      "movq    (%%eax), %%mm0 \n\t"	
+      "paddusb   %%mm1, %%mm0 \n\t"	
+      "psubusb   %%mm7, %%mm0 \n\t"	
+      "paddusb   %%mm5, %%mm0 \n\t"	
+      "movq    %%mm0, (%%edi) \n\t"	
+       "add          $8, %%eax \n\t"	
+      "add          $8, %%edi \n\t"	
+      "dec              %%ecx \n\t"	
+      "jnz             .L1030 \n\t"	
+       "emms                   \n\t"	
+      "popa                   \n\t":"=m" (Dest)	
+      :"m"(Src1),		
+      "m"(length),		
+      "m"(Tmin),		
+      "m"(Tmax)			
 	);
 #endif
     return (0);
 }
 
-//  SDL_imageFilterClipToRange: D = (S >= Tmin) & (S <= Tmax) S:Tmin | Tmax
+
 int SDL_imageFilterClipToRange(unsigned char *Src1, unsigned char *Dest, int length, unsigned char Tmin,
 			       unsigned char Tmax)
 {
@@ -2221,89 +2216,89 @@ int SDL_imageFilterClipToRange(unsigned char *Src1, unsigned char *Dest, int len
     return (0);
 }
 
-//  SDL_imageFilterNormalizeLinearMMX: D = saturation255((Nmax - Nmin)/(Cmax - Cmin)*(S - Cmin) + Nmin)
+
 int SDL_imageFilterNormalizeLinearMMX(unsigned char *Src1, unsigned char *Dest, int length, int Cmin, int Cmax,
 				      int Nmin, int Nmax)
 {
 #ifdef USE_MMX
     asm volatile
-     ("pusha		     \n\t" "mov           %6, %%ax \n\t"	// load Nmax in AX
-      "mov           %4, %%bx \n\t"	// load Cmax in BX
-      "sub           %5, %%ax \n\t"	// AX = Nmax - Nmin
-      "sub           %3, %%bx \n\t"	// BX = Cmax - Cmin
-      "jz             .L10311 \n\t"	// check division by zero
-      "xor         %%dx, %%dx \n\t"	// prepare for division, zero DX
-      "div               %%bx \n\t"	// AX = AX/BX
-      "jmp            .L10312 \n\t" ".L10311:               \n\t" "mov         $255, %%ax \n\t"	// if div by zero, assume result max. byte value
-       ".L10312:               \n\t"	// ** Duplicate AX in 4 words of MM0 **
-       "mov         %%ax, %%bx \n\t"	// copy AX into BX
-      "shl         $16, %%eax \n\t"	// shift 2 bytes of EAX left
-      "mov         %%bx, %%ax \n\t"	// copy BX into AX
-      "movd      %%eax, %%mm0 \n\t"	// copy EAX into MM0
-      "movd      %%eax, %%mm1 \n\t"	// copy EAX into MM1
-      "punpckldq %%mm1, %%mm0 \n\t"	// fill higher words of MM0 with AX
-      // ** Duplicate Cmin in 4 words of MM1 **
-       "mov           %3, %%ax \n\t"	// load Cmin into AX
-      "mov         %%ax, %%bx \n\t"	// copy AX into BX
-      "shl         $16, %%eax \n\t"	// shift 2 bytes of EAX left
-      "mov         %%bx, %%ax \n\t"	// copy BX into AX
-      "movd      %%eax, %%mm1 \n\t"	// copy EAX into MM1
-      "movd      %%eax, %%mm2 \n\t"	// copy EAX into MM2
-      "punpckldq %%mm2, %%mm1 \n\t"	// fill higher words of MM1 with Cmin
-      // ** Duplicate Nmin in 4 words of MM2 **
-       "mov           %5, %%ax \n\t"	// load Nmin into AX
-      "mov         %%ax, %%bx \n\t"	// copy AX into BX
-      "shl         $16, %%eax \n\t"	// shift 2 bytes of EAX left
-      "mov         %%bx, %%ax \n\t"	// copy BX into AX
-      "movd      %%eax, %%mm2 \n\t"	// copy EAX into MM2
-      "movd      %%eax, %%mm3 \n\t"	// copy EAX into MM3
-      "punpckldq %%mm3, %%mm2 \n\t"	// fill higher words of MM2 with Nmin
-       "pxor      %%mm7, %%mm7 \n\t"	// zero MM7 register
-       "mov          %1, %%eax \n\t"	// load Src1 address into eax
-      "mov          %0, %%edi \n\t"	// load Dest address into edi
-      "mov          %2, %%ecx \n\t"	// load loop counter (SIZE) into ecx
-      "shr          $3, %%ecx \n\t"	// counter/8 (MMX loads 8 bytes at a time)
-       ".align 16              \n\t"	// 16 byte allignment of the loop entry
+     ("pusha		     \n\t" "mov           %6, %%ax \n\t"	
+      "mov           %4, %%bx \n\t"	
+      "sub           %5, %%ax \n\t"	
+      "sub           %3, %%bx \n\t"	
+      "jz             .L10311 \n\t"	
+      "xor         %%dx, %%dx \n\t"	
+      "div               %%bx \n\t"	
+      "jmp            .L10312 \n\t" ".L10311:               \n\t" "mov         $255, %%ax \n\t"	
+       ".L10312:               \n\t"	
+       "mov         %%ax, %%bx \n\t"	
+      "shl         $16, %%eax \n\t"	
+      "mov         %%bx, %%ax \n\t"	
+      "movd      %%eax, %%mm0 \n\t"	
+      "movd      %%eax, %%mm1 \n\t"	
+      "punpckldq %%mm1, %%mm0 \n\t"	
+      
+       "mov           %3, %%ax \n\t"	
+      "mov         %%ax, %%bx \n\t"	
+      "shl         $16, %%eax \n\t"	
+      "mov         %%bx, %%ax \n\t"	
+      "movd      %%eax, %%mm1 \n\t"	
+      "movd      %%eax, %%mm2 \n\t"	
+      "punpckldq %%mm2, %%mm1 \n\t"	
+      
+       "mov           %5, %%ax \n\t"	
+      "mov         %%ax, %%bx \n\t"	
+      "shl         $16, %%eax \n\t"	
+      "mov         %%bx, %%ax \n\t"	
+      "movd      %%eax, %%mm2 \n\t"	
+      "movd      %%eax, %%mm3 \n\t"	
+      "punpckldq %%mm3, %%mm2 \n\t"	
+       "pxor      %%mm7, %%mm7 \n\t"	
+       "mov          %1, %%eax \n\t"	
+      "mov          %0, %%edi \n\t"	
+      "mov          %2, %%ecx \n\t"	
+      "shr          $3, %%ecx \n\t"	
+       ".align 16              \n\t"	
       ".L1031:                \n\t" 
-      "movq    (%%eax), %%mm3 \n\t"	// load 8 bytes from Src1 into MM3
-      "movq      %%mm3, %%mm4 \n\t"	// copy MM3 into MM4 
-      "punpcklbw %%mm7, %%mm3 \n\t"	// unpack low  bytes of SrcDest into words
-      "punpckhbw %%mm7, %%mm4 \n\t"	// unpack high bytes of SrcDest into words
-      "psubusb   %%mm1, %%mm3 \n\t"	// S-Cmin, low  bytes
-      "psubusb   %%mm1, %%mm4 \n\t"	// S-Cmin, high bytes
-      "pmullw    %%mm0, %%mm3 \n\t"	// MM0*(S-Cmin), low  bytes
-      "pmullw    %%mm0, %%mm4 \n\t"	// MM0*(S-Cmin), high bytes
-      "paddusb   %%mm2, %%mm3 \n\t"	// MM0*(S-Cmin)+Nmin, low  bytes
-      "paddusb   %%mm2, %%mm4 \n\t"	// MM0*(S-Cmin)+Nmin, high bytes
-      // ** Take abs value of the signed words **
-       "movq      %%mm3, %%mm5 \n\t"	// copy mm3 into mm5
-      "movq      %%mm4, %%mm6 \n\t"	// copy mm4 into mm6
-      "psraw       $15, %%mm5 \n\t"	// fill mm5 words with word sign bit
-      "psraw       $15, %%mm6 \n\t"	// fill mm6 words with word sign bit
-      "pxor      %%mm5, %%mm3 \n\t"	// take 1's compliment of only neg. words
-      "pxor      %%mm6, %%mm4 \n\t"	// take 1's compliment of only neg. words
-      "psubsw    %%mm5, %%mm3 \n\t"	// add 1 to only neg. words, W-(-1) or W-0
-      "psubsw    %%mm6, %%mm4 \n\t"	// add 1 to only neg. words, W-(-1) or W-0
-      "packuswb  %%mm4, %%mm3 \n\t"	// pack words back into bytes with saturation
-       "movq    %%mm3, (%%edi) \n\t"	// store result in Dest
-       "add          $8, %%eax \n\t"	// increase Src1 register pointer by 8
-      "add          $8, %%edi \n\t"	// increase Dest register pointer by 8
-      "dec              %%ecx \n\t"	// decrease loop counter
-      "jnz             .L1031 \n\t"	// check loop termination, proceed if required
-       "emms                   \n\t"	// exit MMX state
-      "popa                   \n\t":"=m" (Dest)	// %0
-      :"m"(Src1),		// %1
-      "m"(length),		// %2
-      "m"(Cmin),		// %3
-      "m"(Cmax),		// %4
-      "m"(Nmin),		// %5
-      "m"(Nmax)			// %6
+      "movq    (%%eax), %%mm3 \n\t"	
+      "movq      %%mm3, %%mm4 \n\t"	
+      "punpcklbw %%mm7, %%mm3 \n\t"	
+      "punpckhbw %%mm7, %%mm4 \n\t"	
+      "psubusb   %%mm1, %%mm3 \n\t"	
+      "psubusb   %%mm1, %%mm4 \n\t"	
+      "pmullw    %%mm0, %%mm3 \n\t"	
+      "pmullw    %%mm0, %%mm4 \n\t"	
+      "paddusb   %%mm2, %%mm3 \n\t"	
+      "paddusb   %%mm2, %%mm4 \n\t"	
+      
+       "movq      %%mm3, %%mm5 \n\t"	
+      "movq      %%mm4, %%mm6 \n\t"	
+      "psraw       $15, %%mm5 \n\t"	
+      "psraw       $15, %%mm6 \n\t"	
+      "pxor      %%mm5, %%mm3 \n\t"	
+      "pxor      %%mm6, %%mm4 \n\t"	
+      "psubsw    %%mm5, %%mm3 \n\t"	
+      "psubsw    %%mm6, %%mm4 \n\t"	
+      "packuswb  %%mm4, %%mm3 \n\t"	
+       "movq    %%mm3, (%%edi) \n\t"	
+       "add          $8, %%eax \n\t"	
+      "add          $8, %%edi \n\t"	
+      "dec              %%ecx \n\t"	
+      "jnz             .L1031 \n\t"	
+       "emms                   \n\t"	
+      "popa                   \n\t":"=m" (Dest)	
+      :"m"(Src1),		
+      "m"(length),		
+      "m"(Cmin),		
+      "m"(Cmax),		
+      "m"(Nmin),		
+      "m"(Nmax)			
 	);
 #endif
     return (0);
 }
 
-//  SDL_imageFilterNormalizeLinear: D = saturation255((Nmax - Nmin)/(Cmax - Cmin)*(S - Cmin) + Nmin)
+
 int SDL_imageFilterNormalizeLinear(unsigned char *Src1, unsigned char *Dest, int length, int Cmin, int Cmax, int Nmin,
 				   int Nmax)
 {
@@ -2353,9 +2348,9 @@ int SDL_imageFilterNormalizeLinear(unsigned char *Src1, unsigned char *Dest, int
     return (0);
 }
 
-// ------------------------------------------------------------------------------------
 
-//  SDL_imageFilterConvolveKernel3x3Divide: Dij = saturation0and255( ... )
+
+
 int SDL_imageFilterConvolveKernel3x3Divide(unsigned char *Src, unsigned char *Dest, int rows, int columns,
 					   signed short *Kernel, unsigned char Divisor)
 {
@@ -2365,81 +2360,81 @@ int SDL_imageFilterConvolveKernel3x3Divide(unsigned char *Src, unsigned char *De
     if ((SDL_imageFilterMMXdetect())) {
 #ifdef USE_MMX
 	asm volatile
-	 ("pusha		     \n\t" "pxor      %%mm0, %%mm0 \n\t"	// zero MM0
-	  "xor       %%ebx, %%ebx \n\t"	// zero EBX
-	  "mov           %5, %%bl \n\t"	// load Divisor into BL
-	   "mov          %4, %%edx \n\t"	// load Kernel address into EDX
-	  "movq    (%%edx), %%mm5 \n\t"	// MM5 = {0,K2,K1,K0}
-	  "add          $8, %%edx \n\t"	// second row              |K0 K1 K2 0|
-	  "movq    (%%edx), %%mm6 \n\t"	// MM6 = {0,K5,K4,K3}  K = |K3 K4 K5 0|
-	  "add          $8, %%edx \n\t"	// third row               |K6 K7 K8 0|
-	  "movq    (%%edx), %%mm7 \n\t"	// MM7 = {0,K8,K7,K6}
-// ---
-	  "mov          %3, %%eax \n\t"	// load columns into EAX
-	  "mov          %1, %%esi \n\t"	// ESI = Src row 0 address
-	  "mov          %0, %%edi \n\t"	// load Dest address to EDI
-	  "add       %%eax, %%edi \n\t"	// EDI = EDI + columns
-	  "inc              %%edi \n\t"	// 1 byte offset from the left edge
-	   "mov          %2, %%edx \n\t"	// initialize ROWS counter
-	  "sub          $2, %%edx \n\t"	// do not use first and last row
-// ---
-	  ".L10320:               \n\t" "mov       %%eax, %%ecx \n\t"	// initialize COLUMS counter
-	  "sub          $2, %%ecx \n\t"	// do not use first and last column
-	   ".align 16              \n\t"	// 16 byte allignment of the loop entry
+	 ("pusha		     \n\t" "pxor      %%mm0, %%mm0 \n\t"	
+	  "xor       %%ebx, %%ebx \n\t"	
+	  "mov           %5, %%bl \n\t"	
+	   "mov          %4, %%edx \n\t"	
+	  "movq    (%%edx), %%mm5 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	  "movq    (%%edx), %%mm6 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	  "movq    (%%edx), %%mm7 \n\t"	
+
+	  "mov          %3, %%eax \n\t"	
+	  "mov          %1, %%esi \n\t"	
+	  "mov          %0, %%edi \n\t"	
+	  "add       %%eax, %%edi \n\t"	
+	  "inc              %%edi \n\t"	
+	   "mov          %2, %%edx \n\t"	
+	  "sub          $2, %%edx \n\t"	
+
+	  ".L10320:               \n\t" "mov       %%eax, %%ecx \n\t"	
+	  "sub          $2, %%ecx \n\t"	
+	   ".align 16              \n\t"	
 	  ".L10322:               \n\t"
-// ---
-	  "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the image first row
-	  "add       %%eax, %%esi \n\t"	// move one row below
-	  "movq    (%%esi), %%mm2 \n\t"	// load 8 bytes of the image second row
-	  "add       %%eax, %%esi \n\t"	// move one row below
-	  "movq    (%%esi), %%mm3 \n\t"	// load 8 bytes of the image third row
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first 4 bytes into words
-	  "punpcklbw %%mm0, %%mm2 \n\t"	// unpack first 4 bytes into words
-	  "punpcklbw %%mm0, %%mm3 \n\t"	// unpack first 4 bytes into words
-	   "pmullw    %%mm5, %%mm1 \n\t"	// multiply words first row  image*Kernel
-	  "pmullw    %%mm6, %%mm2 \n\t"	// multiply words second row image*Kernel
-	  "pmullw    %%mm7, %%mm3 \n\t"	// multiply words third row  image*Kernel
-	   "paddsw    %%mm2, %%mm1 \n\t"	// add 4 words of the first and second rows
-	  "paddsw    %%mm3, %%mm1 \n\t"	// add 4 words of the third row and result
-	  "movq      %%mm1, %%mm2 \n\t"	// copy MM1 into MM2
-	  "psrlq       $32, %%mm1 \n\t"	// shift 2 left words to the right
-	  "paddsw    %%mm2, %%mm1 \n\t"	// add 2 left and 2 right result words
-	  "movq      %%mm1, %%mm3 \n\t"	// copy MM1 into MM3
-	  "psrlq       $16, %%mm1 \n\t"	// shift 1 left word to the right
-	  "paddsw    %%mm3, %%mm1 \n\t"	// add 1 left and 1 right result words
-// --
-	  "movd      %%eax, %%mm2 \n\t"	// save EAX in MM2
-	  "movd      %%edx, %%mm3 \n\t"	// save EDX in MM3
-	  "movd      %%mm1, %%eax \n\t"	// copy MM1 into EAX
-	  "psraw       $15, %%mm1 \n\t"	// spread sign bit of the result
-	  "movd      %%mm1, %%edx \n\t"	// fill EDX with a sign bit
-	  "idivw             %%bx \n\t"	// IDIV - VERY EXPENSIVE
-	  "movd      %%eax, %%mm1 \n\t"	// move result of division into MM1
-	  "packuswb  %%mm0, %%mm1 \n\t"	// pack division result with saturation
-	  "movd      %%mm1, %%eax \n\t"	// copy saturated result into EAX
-	  "mov      %%al, (%%edi) \n\t"	// copy a byte result into Dest
-	  "movd      %%mm3, %%edx \n\t"	// restore saved EDX
-	  "movd      %%mm2, %%eax \n\t"	// restore saved EAX
-// --
-	  "sub       %%eax, %%esi \n\t"	// move two rows up
-	  "sub       %%eax, %%esi \n\t"	//
-	  "inc              %%esi \n\t"	// move Src  pointer to the next pixel
-	  "inc              %%edi \n\t"	// move Dest pointer to the next pixel
-// ---
-	  "dec              %%ecx \n\t"	// decrease loop counter COLUMNS
-	  "jnz            .L10322 \n\t"	// check loop termination, proceed if required
-	   "add          $2, %%esi \n\t"	// move to the next row in Src
-	  "add          $2, %%edi \n\t"	// move to the next row in Dest
-	   "dec              %%edx \n\t"	// decrease loop counter ROWS
-	  "jnz            .L10320 \n\t"	// check loop termination, proceed if required
-// ---
-	  "emms                   \n\t"	// exit MMX state
-	  "popa                   \n\t":"=m" (Dest)	// %0
-	  :"m"(Src),		// %1
-	  "m"(rows),		// %2
-	  "m"(columns),		// %3
-	  "m"(Kernel),		// %4
-	  "m"(Divisor)		// %5
+
+	  "movq    (%%esi), %%mm1 \n\t"	
+	  "add       %%eax, %%esi \n\t"	
+	  "movq    (%%esi), %%mm2 \n\t"	
+	  "add       %%eax, %%esi \n\t"	
+	  "movq    (%%esi), %%mm3 \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "punpcklbw %%mm0, %%mm2 \n\t"	
+	  "punpcklbw %%mm0, %%mm3 \n\t"	
+	   "pmullw    %%mm5, %%mm1 \n\t"	
+	  "pmullw    %%mm6, %%mm2 \n\t"	
+	  "pmullw    %%mm7, %%mm3 \n\t"	
+	   "paddsw    %%mm2, %%mm1 \n\t"	
+	  "paddsw    %%mm3, %%mm1 \n\t"	
+	  "movq      %%mm1, %%mm2 \n\t"	
+	  "psrlq       $32, %%mm1 \n\t"	
+	  "paddsw    %%mm2, %%mm1 \n\t"	
+	  "movq      %%mm1, %%mm3 \n\t"	
+	  "psrlq       $16, %%mm1 \n\t"	
+	  "paddsw    %%mm3, %%mm1 \n\t"	
+
+	  "movd      %%eax, %%mm2 \n\t"	
+	  "movd      %%edx, %%mm3 \n\t"	
+	  "movd      %%mm1, %%eax \n\t"	
+	  "psraw       $15, %%mm1 \n\t"	
+	  "movd      %%mm1, %%edx \n\t"	
+	  "idivw             %%bx \n\t"	
+	  "movd      %%eax, %%mm1 \n\t"	
+	  "packuswb  %%mm0, %%mm1 \n\t"	
+	  "movd      %%mm1, %%eax \n\t"	
+	  "mov      %%al, (%%edi) \n\t"	
+	  "movd      %%mm3, %%edx \n\t"	
+	  "movd      %%mm2, %%eax \n\t"	
+
+	  "sub       %%eax, %%esi \n\t"	
+	  "sub       %%eax, %%esi \n\t"	
+	  "inc              %%esi \n\t"	
+	  "inc              %%edi \n\t"	
+
+	  "dec              %%ecx \n\t"	
+	  "jnz            .L10322 \n\t"	
+	   "add          $2, %%esi \n\t"	
+	  "add          $2, %%edi \n\t"	
+	   "dec              %%edx \n\t"	
+	  "jnz            .L10320 \n\t"	
+
+	  "emms                   \n\t"	
+	  "popa                   \n\t":"=m" (Dest)	
+	  :"m"(Src),		
+	  "m"(rows),		
+	  "m"(columns),		
+	  "m"(Kernel),		
+	  "m"(Divisor)		
 	    );
 #endif
 	return (0);
@@ -2449,7 +2444,7 @@ int SDL_imageFilterConvolveKernel3x3Divide(unsigned char *Src, unsigned char *De
     }
 }
 
-//  SDL_imageFilterConvolveKernel5x5Divide: Dij = saturation0and255( ... )
+
 int SDL_imageFilterConvolveKernel5x5Divide(unsigned char *Src, unsigned char *Dest, int rows, int columns,
 					   signed short *Kernel, unsigned char Divisor)
 {
@@ -2459,137 +2454,137 @@ int SDL_imageFilterConvolveKernel5x5Divide(unsigned char *Src, unsigned char *De
     if ((SDL_imageFilterMMXdetect())) {
 #ifdef USE_MMX
 	asm volatile
-	 ("pusha		     \n\t" "pxor      %%mm0, %%mm0 \n\t"	// zero MM0
-	   "xor       %%ebx, %%ebx \n\t"	// zero EBX
-	  "mov           %5, %%bl \n\t"	// load Divisor into BL
-	  "movd      %%ebx, %%mm5 \n\t"	// copy Divisor into MM5
-	   "mov          %4, %%edx \n\t"	// load Kernel address into EDX
-	  "mov          %1, %%esi \n\t"	// load Src  address to ESI
-	  "mov          %0, %%edi \n\t"	// load Dest address to EDI
-	  "add          $2, %%edi \n\t"	// 2 column offset from the left edge
-	  "mov          %3, %%eax \n\t"	// load columns into EAX
-	  "shl          $1, %%eax \n\t"	// EAX = columns * 2
-	  "add       %%eax, %%edi \n\t"	// 2 row offset from the top edge
-	  "shr          $1, %%eax \n\t"	// EAX = columns
-	   "mov          %2, %%ebx \n\t"	// initialize ROWS counter
-	  "sub          $4, %%ebx \n\t"	// do not use first 2 and last 2 rows
-// ---
-	  ".L10330:               \n\t" "mov       %%eax, %%ecx \n\t"	// initialize COLUMNS counter
-	  "sub          $4, %%ecx \n\t"	// do not use first 2 and last 2 columns
-	   ".align 16              \n\t"	// 16 byte allignment of the loop entry
-	  ".L10332:               \n\t" "pxor      %%mm7, %%mm7 \n\t"	// zero MM7 (accumulator)
-	  "movd      %%esi, %%mm6 \n\t"	// save ESI in MM6
-// --- 1
-	  "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "movq      %%mm1, %%mm2 \n\t"	// copy MM1 into MM2
-	  "add       %%eax, %%esi \n\t"	// move Src pointer 1 row below
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	  "movq    (%%edx), %%mm4 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "punpckhbw %%mm0, %%mm2 \n\t"	// unpack second 4 bytes into words
-	   "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "pmullw    %%mm4, %%mm2 \n\t"	// mult. 4 high words of Src and Kernel
-	   "paddsw    %%mm2, %%mm1 \n\t"	// add 4 words of the high and low bytes
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-// --- 2
-	  "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "movq      %%mm1, %%mm2 \n\t"	// copy MM1 into MM2
-	  "add       %%eax, %%esi \n\t"	// move Src pointer 1 row below
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	  "movq    (%%edx), %%mm4 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "punpckhbw %%mm0, %%mm2 \n\t"	// unpack second 4 bytes into words
-	   "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "pmullw    %%mm4, %%mm2 \n\t"	// mult. 4 high words of Src and Kernel
-	   "paddsw    %%mm2, %%mm1 \n\t"	// add 4 words of the high and low bytes
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-// --- 3
-	  "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "movq      %%mm1, %%mm2 \n\t"	// copy MM1 into MM2
-	  "add       %%eax, %%esi \n\t"	// move Src pointer 1 row below
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	  "movq    (%%edx), %%mm4 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "punpckhbw %%mm0, %%mm2 \n\t"	// unpack second 4 bytes into words
-	   "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "pmullw    %%mm4, %%mm2 \n\t"	// mult. 4 high words of Src and Kernel
-	   "paddsw    %%mm2, %%mm1 \n\t"	// add 4 words of the high and low bytes
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-// --- 4
-	  "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "movq      %%mm1, %%mm2 \n\t"	// copy MM1 into MM2
-	  "add       %%eax, %%esi \n\t"	// move Src pointer 1 row below
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	  "movq    (%%edx), %%mm4 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "punpckhbw %%mm0, %%mm2 \n\t"	// unpack second 4 bytes into words
-	   "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "pmullw    %%mm4, %%mm2 \n\t"	// mult. 4 high words of Src and Kernel
-	   "paddsw    %%mm2, %%mm1 \n\t"	// add 4 words of the high and low bytes
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-// --- 5
-	  "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "movq      %%mm1, %%mm2 \n\t"	// copy MM1 into MM2
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	  "movq    (%%edx), %%mm4 \n\t"	// load 4 words of Kernel
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "punpckhbw %%mm0, %%mm2 \n\t"	// unpack second 4 bytes into words
-	   "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "pmullw    %%mm4, %%mm2 \n\t"	// mult. 4 high words of Src and Kernel
-	   "paddsw    %%mm2, %%mm1 \n\t"	// add 4 words of the high and low bytes
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-// ---
-	  "movq      %%mm7, %%mm3 \n\t"	// copy MM7 into MM3
-	  "psrlq       $32, %%mm7 \n\t"	// shift 2 left words to the right
-	  "paddsw    %%mm3, %%mm7 \n\t"	// add 2 left and 2 right result words
-	  "movq      %%mm7, %%mm2 \n\t"	// copy MM7 into MM2
-	  "psrlq       $16, %%mm7 \n\t"	// shift 1 left word to the right
-	  "paddsw    %%mm2, %%mm7 \n\t"	// add 1 left and 1 right result words
-// ---
-	  "movd      %%eax, %%mm1 \n\t"	// save EDX in MM1
-	  "movd      %%ebx, %%mm2 \n\t"	// save EDX in MM2
-	  "movd      %%edx, %%mm3 \n\t"	// save EDX in MM3
-	   "movd      %%mm7, %%eax \n\t"	// load summation result into EAX
-	  "psraw       $15, %%mm7 \n\t"	// spread sign bit of the result
-	  "movd      %%mm5, %%ebx \n\t"	// load Divisor into EBX
-	  "movd      %%mm7, %%edx \n\t"	// fill EDX with a sign bit
-	  "idivw             %%bx \n\t"	// IDIV - VERY EXPENSIVE
-	  "movd      %%eax, %%mm7 \n\t"	// move result of division into MM7
-	  "packuswb  %%mm0, %%mm7 \n\t"	// pack division result with saturation
-	   "movd      %%mm7, %%eax \n\t"	// copy saturated result into EAX
-	  "mov      %%al, (%%edi) \n\t"	// copy a byte result into Dest
-	   "movd      %%mm3, %%edx \n\t"	// restore saved EDX
-	  "movd      %%mm2, %%ebx \n\t"	// restore saved EBX
-	  "movd      %%mm1, %%eax \n\t"	// restore saved EAX
-// --
-	  "movd      %%mm6, %%esi \n\t"	// move Src pointer to the top pixel
-	  "sub         $72, %%edx \n\t"	// EDX = Kernel address
-	  "inc              %%esi \n\t"	// move Src  pointer to the next pixel
-	  "inc              %%edi \n\t"	// move Dest pointer to the next pixel
-// ---
-	  "dec              %%ecx \n\t"	// decrease loop counter COLUMNS
-	  "jnz            .L10332 \n\t"	// check loop termination, proceed if required
-	   "add          $4, %%esi \n\t"	// move to the next row in Src
-	  "add          $4, %%edi \n\t"	// move to the next row in Dest
-	   "dec              %%ebx \n\t"	// decrease loop counter ROWS
-	  "jnz            .L10330 \n\t"	// check loop termination, proceed if required
-// ---
-	  "emms                   \n\t"	// exit MMX state
-	  "popa                   \n\t":"=m" (Dest)	// %0
-	  :"m"(Src),		// %1
-	  "m"(rows),		// %2
-	  "m"(columns),		// %3
-	  "m"(Kernel),		// %4
-	  "m"(Divisor)		// %5
+	 ("pusha		     \n\t" "pxor      %%mm0, %%mm0 \n\t"	
+	   "xor       %%ebx, %%ebx \n\t"	
+	  "mov           %5, %%bl \n\t"	
+	  "movd      %%ebx, %%mm5 \n\t"	
+	   "mov          %4, %%edx \n\t"	
+	  "mov          %1, %%esi \n\t"	
+	  "mov          %0, %%edi \n\t"	
+	  "add          $2, %%edi \n\t"	
+	  "mov          %3, %%eax \n\t"	
+	  "shl          $1, %%eax \n\t"	
+	  "add       %%eax, %%edi \n\t"	
+	  "shr          $1, %%eax \n\t"	
+	   "mov          %2, %%ebx \n\t"	
+	  "sub          $4, %%ebx \n\t"	
+
+	  ".L10330:               \n\t" "mov       %%eax, %%ecx \n\t"	
+	  "sub          $4, %%ecx \n\t"	
+	   ".align 16              \n\t"	
+	  ".L10332:               \n\t" "pxor      %%mm7, %%mm7 \n\t"	
+	  "movd      %%esi, %%mm6 \n\t"	
+
+	  "movq    (%%esi), %%mm1 \n\t"	
+	  "movq      %%mm1, %%mm2 \n\t"	
+	  "add       %%eax, %%esi \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	  "movq    (%%edx), %%mm4 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "punpckhbw %%mm0, %%mm2 \n\t"	
+	   "pmullw    %%mm3, %%mm1 \n\t"	
+	  "pmullw    %%mm4, %%mm2 \n\t"	
+	   "paddsw    %%mm2, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+
+	  "movq    (%%esi), %%mm1 \n\t"	
+	  "movq      %%mm1, %%mm2 \n\t"	
+	  "add       %%eax, %%esi \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	  "movq    (%%edx), %%mm4 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "punpckhbw %%mm0, %%mm2 \n\t"	
+	   "pmullw    %%mm3, %%mm1 \n\t"	
+	  "pmullw    %%mm4, %%mm2 \n\t"	
+	   "paddsw    %%mm2, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+
+	  "movq    (%%esi), %%mm1 \n\t"	
+	  "movq      %%mm1, %%mm2 \n\t"	
+	  "add       %%eax, %%esi \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	  "movq    (%%edx), %%mm4 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "punpckhbw %%mm0, %%mm2 \n\t"	
+	   "pmullw    %%mm3, %%mm1 \n\t"	
+	  "pmullw    %%mm4, %%mm2 \n\t"	
+	   "paddsw    %%mm2, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+
+	  "movq    (%%esi), %%mm1 \n\t"	
+	  "movq      %%mm1, %%mm2 \n\t"	
+	  "add       %%eax, %%esi \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	  "movq    (%%edx), %%mm4 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "punpckhbw %%mm0, %%mm2 \n\t"	
+	   "pmullw    %%mm3, %%mm1 \n\t"	
+	  "pmullw    %%mm4, %%mm2 \n\t"	
+	   "paddsw    %%mm2, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+
+	  "movq    (%%esi), %%mm1 \n\t"	
+	  "movq      %%mm1, %%mm2 \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	  "movq    (%%edx), %%mm4 \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "punpckhbw %%mm0, %%mm2 \n\t"	
+	   "pmullw    %%mm3, %%mm1 \n\t"	
+	  "pmullw    %%mm4, %%mm2 \n\t"	
+	   "paddsw    %%mm2, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+
+	  "movq      %%mm7, %%mm3 \n\t"	
+	  "psrlq       $32, %%mm7 \n\t"	
+	  "paddsw    %%mm3, %%mm7 \n\t"	
+	  "movq      %%mm7, %%mm2 \n\t"	
+	  "psrlq       $16, %%mm7 \n\t"	
+	  "paddsw    %%mm2, %%mm7 \n\t"	
+
+	  "movd      %%eax, %%mm1 \n\t"	
+	  "movd      %%ebx, %%mm2 \n\t"	
+	  "movd      %%edx, %%mm3 \n\t"	
+	   "movd      %%mm7, %%eax \n\t"	
+	  "psraw       $15, %%mm7 \n\t"	
+	  "movd      %%mm5, %%ebx \n\t"	
+	  "movd      %%mm7, %%edx \n\t"	
+	  "idivw             %%bx \n\t"	
+	  "movd      %%eax, %%mm7 \n\t"	
+	  "packuswb  %%mm0, %%mm7 \n\t"	
+	   "movd      %%mm7, %%eax \n\t"	
+	  "mov      %%al, (%%edi) \n\t"	
+	   "movd      %%mm3, %%edx \n\t"	
+	  "movd      %%mm2, %%ebx \n\t"	
+	  "movd      %%mm1, %%eax \n\t"	
+
+	  "movd      %%mm6, %%esi \n\t"	
+	  "sub         $72, %%edx \n\t"	
+	  "inc              %%esi \n\t"	
+	  "inc              %%edi \n\t"	
+
+	  "dec              %%ecx \n\t"	
+	  "jnz            .L10332 \n\t"	
+	   "add          $4, %%esi \n\t"	
+	  "add          $4, %%edi \n\t"	
+	   "dec              %%ebx \n\t"	
+	  "jnz            .L10330 \n\t"	
+
+	  "emms                   \n\t"	
+	  "popa                   \n\t":"=m" (Dest)	
+	  :"m"(Src),		
+	  "m"(rows),		
+	  "m"(columns),		
+	  "m"(Kernel),		
+	  "m"(Divisor)		
 	    );
 #endif
 	return (0);
@@ -2599,7 +2594,7 @@ int SDL_imageFilterConvolveKernel5x5Divide(unsigned char *Src, unsigned char *De
     }
 }
 
-//  SDL_imageFilterConvolveKernel7x7Divide: Dij = saturation0and255( ... )
+
 int SDL_imageFilterConvolveKernel7x7Divide(unsigned char *Src, unsigned char *Dest, int rows, int columns,
 					   signed short *Kernel, unsigned char Divisor)
 {
@@ -2609,163 +2604,163 @@ int SDL_imageFilterConvolveKernel7x7Divide(unsigned char *Src, unsigned char *De
     if ((SDL_imageFilterMMXdetect())) {
 #ifdef USE_MMX
 	asm volatile
-	 ("pusha		     \n\t" "pxor      %%mm0, %%mm0 \n\t"	// zero MM0
-	   "xor       %%ebx, %%ebx \n\t"	// zero EBX
-	  "mov           %5, %%bl \n\t"	// load Divisor into BL
-	  "movd      %%ebx, %%mm5 \n\t"	// copy Divisor into MM5
-	   "mov          %4, %%edx \n\t"	// load Kernel address into EDX
-	  "mov          %1, %%esi \n\t"	// load Src  address to ESI
-	  "mov          %0, %%edi \n\t"	// load Dest address to EDI
-	  "add          $3, %%edi \n\t"	// 3 column offset from the left edge
-	  "mov          %3, %%eax \n\t"	// load columns into EAX
-	  "add       %%eax, %%edi \n\t"	// 3 row offset from the top edge
-	  "add       %%eax, %%edi \n\t" "add       %%eax, %%edi \n\t" "mov          %2, %%ebx \n\t"	// initialize ROWS counter
-	  "sub          $6, %%ebx \n\t"	// do not use first 3 and last 3 rows
-// ---
-	  ".L10340:               \n\t" "mov       %%eax, %%ecx \n\t"	// initialize COLUMNS counter
-	  "sub          $6, %%ecx \n\t"	// do not use first 3 and last 3 columns
-	   ".align 16              \n\t"	// 16 byte allignment of the loop entry
-	  ".L10342:               \n\t" "pxor      %%mm7, %%mm7 \n\t"	// zero MM7 (accumulator)
-	  "movd      %%esi, %%mm6 \n\t"	// save ESI in MM6
-// --- 1
-	  "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "movq      %%mm1, %%mm2 \n\t"	// copy MM1 into MM2
-	  "add       %%eax, %%esi \n\t"	// move Src pointer 1 row below
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	  "movq    (%%edx), %%mm4 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "punpckhbw %%mm0, %%mm2 \n\t"	// unpack second 4 bytes into words
-	   "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "pmullw    %%mm4, %%mm2 \n\t"	// mult. 4 high words of Src and Kernel
-	   "paddsw    %%mm2, %%mm1 \n\t"	// add 4 words of the high and low bytes
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-// --- 2
-	  "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "movq      %%mm1, %%mm2 \n\t"	// copy MM1 into MM2
-	  "add       %%eax, %%esi \n\t"	// move Src pointer 1 row below
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	  "movq    (%%edx), %%mm4 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "punpckhbw %%mm0, %%mm2 \n\t"	// unpack second 4 bytes into words
-	   "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "pmullw    %%mm4, %%mm2 \n\t"	// mult. 4 high words of Src and Kernel
-	   "paddsw    %%mm2, %%mm1 \n\t"	// add 4 words of the high and low bytes
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-// --- 3
-	  "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "movq      %%mm1, %%mm2 \n\t"	// copy MM1 into MM2
-	  "add       %%eax, %%esi \n\t"	// move Src pointer 1 row below
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	  "movq    (%%edx), %%mm4 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "punpckhbw %%mm0, %%mm2 \n\t"	// unpack second 4 bytes into words
-	   "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "pmullw    %%mm4, %%mm2 \n\t"	// mult. 4 high words of Src and Kernel
-	   "paddsw    %%mm2, %%mm1 \n\t"	// add 4 words of the high and low bytes
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-// --- 4
-	  "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "movq      %%mm1, %%mm2 \n\t"	// copy MM1 into MM2
-	  "add       %%eax, %%esi \n\t"	// move Src pointer 1 row below
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	  "movq    (%%edx), %%mm4 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "punpckhbw %%mm0, %%mm2 \n\t"	// unpack second 4 bytes into words
-	   "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "pmullw    %%mm4, %%mm2 \n\t"	// mult. 4 high words of Src and Kernel
-	   "paddsw    %%mm2, %%mm1 \n\t"	// add 4 words of the high and low bytes
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-// --- 5
-	  "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "movq      %%mm1, %%mm2 \n\t"	// copy MM1 into MM2
-	  "add       %%eax, %%esi \n\t"	// move Src pointer 1 row below
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	  "movq    (%%edx), %%mm4 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "punpckhbw %%mm0, %%mm2 \n\t"	// unpack second 4 bytes into words
-	   "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "pmullw    %%mm4, %%mm2 \n\t"	// mult. 4 high words of Src and Kernel
-	   "paddsw    %%mm2, %%mm1 \n\t"	// add 4 words of the high and low bytes
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-// --- 6
-	  "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "movq      %%mm1, %%mm2 \n\t"	// copy MM1 into MM2
-	  "add       %%eax, %%esi \n\t"	// move Src pointer 1 row below
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	  "movq    (%%edx), %%mm4 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "punpckhbw %%mm0, %%mm2 \n\t"	// unpack second 4 bytes into words
-	   "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "pmullw    %%mm4, %%mm2 \n\t"	// mult. 4 high words of Src and Kernel
-	   "paddsw    %%mm2, %%mm1 \n\t"	// add 4 words of the high and low bytes
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-// --- 7
-	  "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "movq      %%mm1, %%mm2 \n\t"	// copy MM1 into MM2
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	  "movq    (%%edx), %%mm4 \n\t"	// load 4 words of Kernel
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "punpckhbw %%mm0, %%mm2 \n\t"	// unpack second 4 bytes into words
-	   "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "pmullw    %%mm4, %%mm2 \n\t"	// mult. 4 high words of Src and Kernel
-	   "paddsw    %%mm2, %%mm1 \n\t"	// add 4 words of the high and low bytes
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-// ---
-	  "movq      %%mm7, %%mm3 \n\t"	// copy MM7 into MM3
-	  "psrlq       $32, %%mm7 \n\t"	// shift 2 left words to the right
-	  "paddsw    %%mm3, %%mm7 \n\t"	// add 2 left and 2 right result words
-	  "movq      %%mm7, %%mm2 \n\t"	// copy MM7 into MM2
-	  "psrlq       $16, %%mm7 \n\t"	// shift 1 left word to the right
-	  "paddsw    %%mm2, %%mm7 \n\t"	// add 1 left and 1 right result words
-// ---
-	  "movd      %%eax, %%mm1 \n\t"	// save EDX in MM1
-	  "movd      %%ebx, %%mm2 \n\t"	// save EDX in MM2
-	  "movd      %%edx, %%mm3 \n\t"	// save EDX in MM3
-	   "movd      %%mm7, %%eax \n\t"	// load summation result into EAX
-	  "psraw       $15, %%mm7 \n\t"	// spread sign bit of the result
-	  "movd      %%mm5, %%ebx \n\t"	// load Divisor into EBX
-	  "movd      %%mm7, %%edx \n\t"	// fill EDX with a sign bit
-	  "idivw             %%bx \n\t"	// IDIV - VERY EXPENSIVE
-	  "movd      %%eax, %%mm7 \n\t"	// move result of division into MM7
-	  "packuswb  %%mm0, %%mm7 \n\t"	// pack division result with saturation
-	   "movd      %%mm7, %%eax \n\t"	// copy saturated result into EAX
-	  "mov      %%al, (%%edi) \n\t"	// copy a byte result into Dest
-	   "movd      %%mm3, %%edx \n\t"	// restore saved EDX
-	  "movd      %%mm2, %%ebx \n\t"	// restore saved EBX
-	  "movd      %%mm1, %%eax \n\t"	// restore saved EAX
-// --
-	  "movd      %%mm6, %%esi \n\t"	// move Src pointer to the top pixel
-	  "sub        $104, %%edx \n\t"	// EDX = Kernel address
-	  "inc              %%esi \n\t"	// move Src  pointer to the next pixel
-	  "inc              %%edi \n\t"	// move Dest pointer to the next pixel
-// ---
-	  "dec              %%ecx \n\t"	// decrease loop counter COLUMNS
-	  "jnz            .L10342 \n\t"	// check loop termination, proceed if required
-	   "add          $6, %%esi \n\t"	// move to the next row in Src
-	  "add          $6, %%edi \n\t"	// move to the next row in Dest
-	   "dec              %%ebx \n\t"	// decrease loop counter ROWS
-	  "jnz            .L10340 \n\t"	// check loop termination, proceed if required
-// ---
-	  "emms                   \n\t"	// exit MMX state
-	  "popa                   \n\t":"=m" (Dest)	// %0
-	  :"m"(Src),		// %1
-	  "m"(rows),		// %2
-	  "m"(columns),		// %3
-	  "m"(Kernel),		// %4
-	  "m"(Divisor)		// %5
+	 ("pusha		     \n\t" "pxor      %%mm0, %%mm0 \n\t"	
+	   "xor       %%ebx, %%ebx \n\t"	
+	  "mov           %5, %%bl \n\t"	
+	  "movd      %%ebx, %%mm5 \n\t"	
+	   "mov          %4, %%edx \n\t"	
+	  "mov          %1, %%esi \n\t"	
+	  "mov          %0, %%edi \n\t"	
+	  "add          $3, %%edi \n\t"	
+	  "mov          %3, %%eax \n\t"	
+	  "add       %%eax, %%edi \n\t"	
+	  "add       %%eax, %%edi \n\t" "add       %%eax, %%edi \n\t" "mov          %2, %%ebx \n\t"	
+	  "sub          $6, %%ebx \n\t"	
+
+	  ".L10340:               \n\t" "mov       %%eax, %%ecx \n\t"	
+	  "sub          $6, %%ecx \n\t"	
+	   ".align 16              \n\t"	
+	  ".L10342:               \n\t" "pxor      %%mm7, %%mm7 \n\t"	
+	  "movd      %%esi, %%mm6 \n\t"	
+
+	  "movq    (%%esi), %%mm1 \n\t"	
+	  "movq      %%mm1, %%mm2 \n\t"	
+	  "add       %%eax, %%esi \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	  "movq    (%%edx), %%mm4 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "punpckhbw %%mm0, %%mm2 \n\t"	
+	   "pmullw    %%mm3, %%mm1 \n\t"	
+	  "pmullw    %%mm4, %%mm2 \n\t"	
+	   "paddsw    %%mm2, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+
+	  "movq    (%%esi), %%mm1 \n\t"	
+	  "movq      %%mm1, %%mm2 \n\t"	
+	  "add       %%eax, %%esi \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	  "movq    (%%edx), %%mm4 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "punpckhbw %%mm0, %%mm2 \n\t"	
+	   "pmullw    %%mm3, %%mm1 \n\t"	
+	  "pmullw    %%mm4, %%mm2 \n\t"	
+	   "paddsw    %%mm2, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+
+	  "movq    (%%esi), %%mm1 \n\t"	
+	  "movq      %%mm1, %%mm2 \n\t"	
+	  "add       %%eax, %%esi \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	  "movq    (%%edx), %%mm4 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "punpckhbw %%mm0, %%mm2 \n\t"	
+	   "pmullw    %%mm3, %%mm1 \n\t"	
+	  "pmullw    %%mm4, %%mm2 \n\t"	
+	   "paddsw    %%mm2, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+
+	  "movq    (%%esi), %%mm1 \n\t"	
+	  "movq      %%mm1, %%mm2 \n\t"	
+	  "add       %%eax, %%esi \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	  "movq    (%%edx), %%mm4 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "punpckhbw %%mm0, %%mm2 \n\t"	
+	   "pmullw    %%mm3, %%mm1 \n\t"	
+	  "pmullw    %%mm4, %%mm2 \n\t"	
+	   "paddsw    %%mm2, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+
+	  "movq    (%%esi), %%mm1 \n\t"	
+	  "movq      %%mm1, %%mm2 \n\t"	
+	  "add       %%eax, %%esi \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	  "movq    (%%edx), %%mm4 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "punpckhbw %%mm0, %%mm2 \n\t"	
+	   "pmullw    %%mm3, %%mm1 \n\t"	
+	  "pmullw    %%mm4, %%mm2 \n\t"	
+	   "paddsw    %%mm2, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+
+	  "movq    (%%esi), %%mm1 \n\t"	
+	  "movq      %%mm1, %%mm2 \n\t"	
+	  "add       %%eax, %%esi \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	  "movq    (%%edx), %%mm4 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "punpckhbw %%mm0, %%mm2 \n\t"	
+	   "pmullw    %%mm3, %%mm1 \n\t"	
+	  "pmullw    %%mm4, %%mm2 \n\t"	
+	   "paddsw    %%mm2, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+
+	  "movq    (%%esi), %%mm1 \n\t"	
+	  "movq      %%mm1, %%mm2 \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	  "movq    (%%edx), %%mm4 \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "punpckhbw %%mm0, %%mm2 \n\t"	
+	   "pmullw    %%mm3, %%mm1 \n\t"	
+	  "pmullw    %%mm4, %%mm2 \n\t"	
+	   "paddsw    %%mm2, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+
+	  "movq      %%mm7, %%mm3 \n\t"	
+	  "psrlq       $32, %%mm7 \n\t"	
+	  "paddsw    %%mm3, %%mm7 \n\t"	
+	  "movq      %%mm7, %%mm2 \n\t"	
+	  "psrlq       $16, %%mm7 \n\t"	
+	  "paddsw    %%mm2, %%mm7 \n\t"	
+
+	  "movd      %%eax, %%mm1 \n\t"	
+	  "movd      %%ebx, %%mm2 \n\t"	
+	  "movd      %%edx, %%mm3 \n\t"	
+	   "movd      %%mm7, %%eax \n\t"	
+	  "psraw       $15, %%mm7 \n\t"	
+	  "movd      %%mm5, %%ebx \n\t"	
+	  "movd      %%mm7, %%edx \n\t"	
+	  "idivw             %%bx \n\t"	
+	  "movd      %%eax, %%mm7 \n\t"	
+	  "packuswb  %%mm0, %%mm7 \n\t"	
+	   "movd      %%mm7, %%eax \n\t"	
+	  "mov      %%al, (%%edi) \n\t"	
+	   "movd      %%mm3, %%edx \n\t"	
+	  "movd      %%mm2, %%ebx \n\t"	
+	  "movd      %%mm1, %%eax \n\t"	
+
+	  "movd      %%mm6, %%esi \n\t"	
+	  "sub        $104, %%edx \n\t"	
+	  "inc              %%esi \n\t"	
+	  "inc              %%edi \n\t"	
+
+	  "dec              %%ecx \n\t"	
+	  "jnz            .L10342 \n\t"	
+	   "add          $6, %%esi \n\t"	
+	  "add          $6, %%edi \n\t"	
+	   "dec              %%ebx \n\t"	
+	  "jnz            .L10340 \n\t"	
+
+	  "emms                   \n\t"	
+	  "popa                   \n\t":"=m" (Dest)	
+	  :"m"(Src),		
+	  "m"(rows),		
+	  "m"(columns),		
+	  "m"(Kernel),		
+	  "m"(Divisor)		
 	    );
 #endif
 	return (0);
@@ -2775,7 +2770,7 @@ int SDL_imageFilterConvolveKernel7x7Divide(unsigned char *Src, unsigned char *De
     }
 }
 
-//  SDL_imageFilterConvolveKernel9x9Divide: Dij = saturation0and255( ... )
+
 int SDL_imageFilterConvolveKernel9x9Divide(unsigned char *Src, unsigned char *Dest, int rows, int columns,
 					   signed short *Kernel, unsigned char Divisor)
 {
@@ -2785,254 +2780,254 @@ int SDL_imageFilterConvolveKernel9x9Divide(unsigned char *Src, unsigned char *De
     if ((SDL_imageFilterMMXdetect())) {
 #ifdef USE_MMX
 	asm volatile
-	 ("pusha		     \n\t" "pxor      %%mm0, %%mm0 \n\t"	// zero MM0
-	   "xor       %%ebx, %%ebx \n\t"	// zero EBX
-	  "mov           %5, %%bl \n\t"	// load Divisor into BL
-	  "movd      %%ebx, %%mm5 \n\t"	// copy Divisor into MM5
-	   "mov          %4, %%edx \n\t"	// load Kernel address into EDX
-	  "mov          %1, %%esi \n\t"	// load Src  address to ESI
-	  "mov          %0, %%edi \n\t"	// load Dest address to EDI
-	  "add          $4, %%edi \n\t"	// 4 column offset from the left edge
-	  "mov          %3, %%eax \n\t"	// load columns into EAX
-	  "add       %%eax, %%edi \n\t"	// 4 row offset from the top edge
-	  "add       %%eax, %%edi \n\t" "add       %%eax, %%edi \n\t" "add       %%eax, %%edi \n\t" "mov          %2, %%ebx \n\t"	// initialize ROWS counter
-	  "sub          $8, %%ebx \n\t"	// do not use first 4 and last 4 rows
-// ---
-	  ".L10350:               \n\t" "mov       %%eax, %%ecx \n\t"	// initialize COLUMNS counter
-	  "sub          $8, %%ecx \n\t"	// do not use first 4 and last 4 columns
-	   ".align 16              \n\t"	// 16 byte allignment of the loop entry
-	  ".L10352:               \n\t" "pxor      %%mm7, %%mm7 \n\t"	// zero MM7 (accumulator)
-	  "movd      %%esi, %%mm6 \n\t"	// save ESI in MM6
-// --- 1
-	  "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "movq      %%mm1, %%mm2 \n\t"	// copy MM1 into MM2
-	  "inc              %%esi \n\t"	// move pointer to the next 8 bytes of Src
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	  "movq    (%%edx), %%mm4 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "punpckhbw %%mm0, %%mm2 \n\t"	// unpack second 4 bytes into words
-	   "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "pmullw    %%mm4, %%mm2 \n\t"	// mult. 4 high words of Src and Kernel
-	   "paddsw    %%mm2, %%mm1 \n\t"	// add 4 words of the high and low bytes
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-	   "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "dec              %%esi \n\t" "add       %%eax, %%esi \n\t"	// move Src pointer 1 row below
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-// --- 2
-	  "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "movq      %%mm1, %%mm2 \n\t"	// copy MM1 into MM2
-	  "inc              %%esi \n\t"	// move pointer to the next 8 bytes of Src
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	  "movq    (%%edx), %%mm4 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "punpckhbw %%mm0, %%mm2 \n\t"	// unpack second 4 bytes into words
-	   "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "pmullw    %%mm4, %%mm2 \n\t"	// mult. 4 high words of Src and Kernel
-	   "paddsw    %%mm2, %%mm1 \n\t"	// add 4 words of the high and low bytes
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-	   "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "dec              %%esi \n\t" "add       %%eax, %%esi \n\t"	// move Src pointer 1 row below
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-// --- 3
-	  "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "movq      %%mm1, %%mm2 \n\t"	// copy MM1 into MM2
-	  "inc              %%esi \n\t"	// move pointer to the next 8 bytes of Src
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	  "movq    (%%edx), %%mm4 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "punpckhbw %%mm0, %%mm2 \n\t"	// unpack second 4 bytes into words
-	   "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "pmullw    %%mm4, %%mm2 \n\t"	// mult. 4 high words of Src and Kernel
-	   "paddsw    %%mm2, %%mm1 \n\t"	// add 4 words of the high and low bytes
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-	   "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "dec              %%esi \n\t" "add       %%eax, %%esi \n\t"	// move Src pointer 1 row below
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-// --- 4
-	  "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "movq      %%mm1, %%mm2 \n\t"	// copy MM1 into MM2
-	  "inc              %%esi \n\t"	// move pointer to the next 8 bytes of Src
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	  "movq    (%%edx), %%mm4 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "punpckhbw %%mm0, %%mm2 \n\t"	// unpack second 4 bytes into words
-	   "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "pmullw    %%mm4, %%mm2 \n\t"	// mult. 4 high words of Src and Kernel
-	   "paddsw    %%mm2, %%mm1 \n\t"	// add 4 words of the high and low bytes
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-	   "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "dec              %%esi \n\t" "add       %%eax, %%esi \n\t"	// move Src pointer 1 row below
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-// --- 5
-	  "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "movq      %%mm1, %%mm2 \n\t"	// copy MM1 into MM2
-	  "inc              %%esi \n\t"	// move pointer to the next 8 bytes of Src
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	  "movq    (%%edx), %%mm4 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "punpckhbw %%mm0, %%mm2 \n\t"	// unpack second 4 bytes into words
-	   "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "pmullw    %%mm4, %%mm2 \n\t"	// mult. 4 high words of Src and Kernel
-	   "paddsw    %%mm2, %%mm1 \n\t"	// add 4 words of the high and low bytes
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-	   "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "dec              %%esi \n\t" "add       %%eax, %%esi \n\t"	// move Src pointer 1 row below
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-// --- 6
-	  "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "movq      %%mm1, %%mm2 \n\t"	// copy MM1 into MM2
-	  "inc              %%esi \n\t"	// move pointer to the next 8 bytes of Src
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	  "movq    (%%edx), %%mm4 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "punpckhbw %%mm0, %%mm2 \n\t"	// unpack second 4 bytes into words
-	   "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "pmullw    %%mm4, %%mm2 \n\t"	// mult. 4 high words of Src and Kernel
-	   "paddsw    %%mm2, %%mm1 \n\t"	// add 4 words of the high and low bytes
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-	   "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "dec              %%esi \n\t" "add       %%eax, %%esi \n\t"	// move Src pointer 1 row below
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-// --- 7
-	  "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "movq      %%mm1, %%mm2 \n\t"	// copy MM1 into MM2
-	  "inc              %%esi \n\t"	// move pointer to the next 8 bytes of Src
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	  "movq    (%%edx), %%mm4 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "punpckhbw %%mm0, %%mm2 \n\t"	// unpack second 4 bytes into words
-	   "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "pmullw    %%mm4, %%mm2 \n\t"	// mult. 4 high words of Src and Kernel
-	   "paddsw    %%mm2, %%mm1 \n\t"	// add 4 words of the high and low bytes
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-	   "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "dec              %%esi \n\t" "add       %%eax, %%esi \n\t"	// move Src pointer 1 row below
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-// --- 8
-	  "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "movq      %%mm1, %%mm2 \n\t"	// copy MM1 into MM2
-	  "inc              %%esi \n\t"	// move pointer to the next 8 bytes of Src
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	  "movq    (%%edx), %%mm4 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "punpckhbw %%mm0, %%mm2 \n\t"	// unpack second 4 bytes into words
-	   "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "pmullw    %%mm4, %%mm2 \n\t"	// mult. 4 high words of Src and Kernel
-	   "paddsw    %%mm2, %%mm1 \n\t"	// add 4 words of the high and low bytes
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-	   "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "dec              %%esi \n\t" "add       %%eax, %%esi \n\t"	// move Src pointer 1 row below
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-// --- 9
-	  "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "movq      %%mm1, %%mm2 \n\t"	// copy MM1 into MM2
-	  "inc              %%esi \n\t"	// move pointer to the next 8 bytes of Src
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	  "movq    (%%edx), %%mm4 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "punpckhbw %%mm0, %%mm2 \n\t"	// unpack second 4 bytes into words
-	   "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "pmullw    %%mm4, %%mm2 \n\t"	// mult. 4 high words of Src and Kernel
-	   "paddsw    %%mm2, %%mm1 \n\t"	// add 4 words of the high and low bytes
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-	   "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-// ---
-	  "movq      %%mm7, %%mm3 \n\t"	// copy MM7 into MM3
-	  "psrlq       $32, %%mm7 \n\t"	// shift 2 left words to the right
-	  "paddsw    %%mm3, %%mm7 \n\t"	// add 2 left and 2 right result words
-	  "movq      %%mm7, %%mm2 \n\t"	// copy MM7 into MM2
-	  "psrlq       $16, %%mm7 \n\t"	// shift 1 left word to the right
-	  "paddsw    %%mm2, %%mm7 \n\t"	// add 1 left and 1 right result words
-// ---
-	  "movd      %%eax, %%mm1 \n\t"	// save EDX in MM1
-	  "movd      %%ebx, %%mm2 \n\t"	// save EDX in MM2
-	  "movd      %%edx, %%mm3 \n\t"	// save EDX in MM3
-	   "movd      %%mm7, %%eax \n\t"	// load summation result into EAX
-	  "psraw       $15, %%mm7 \n\t"	// spread sign bit of the result
-	  "movd      %%mm5, %%ebx \n\t"	// load Divisor into EBX
-	  "movd      %%mm7, %%edx \n\t"	// fill EDX with a sign bit
-	  "idivw             %%bx \n\t"	// IDIV - VERY EXPENSIVE
-	  "movd      %%eax, %%mm7 \n\t"	// move result of division into MM7
-	  "packuswb  %%mm0, %%mm7 \n\t"	// pack division result with saturation
-	   "movd      %%mm7, %%eax \n\t"	// copy saturated result into EAX
-	  "mov      %%al, (%%edi) \n\t"	// copy a byte result into Dest
-	   "movd      %%mm3, %%edx \n\t"	// restore saved EDX
-	  "movd      %%mm2, %%ebx \n\t"	// restore saved EBX
-	  "movd      %%mm1, %%eax \n\t"	// restore saved EAX
-// --
-	  "movd      %%mm6, %%esi \n\t"	// move Src pointer to the top pixel
-	  "sub        $208, %%edx \n\t"	// EDX = Kernel address
-	  "inc              %%esi \n\t"	// move Src  pointer to the next pixel
-	  "inc              %%edi \n\t"	// move Dest pointer to the next pixel
-// ---
-	  "dec              %%ecx \n\t"	// decrease loop counter COLUMNS
-	  "jnz            .L10352 \n\t"	// check loop termination, proceed if required
-	   "add          $8, %%esi \n\t"	// move to the next row in Src
-	  "add          $8, %%edi \n\t"	// move to the next row in Dest
-	   "dec              %%ebx \n\t"	// decrease loop counter ROWS
-	  "jnz            .L10350 \n\t"	// check loop termination, proceed if required
-// ---
-	  "emms                   \n\t"	// exit MMX state
-	  "popa                   \n\t":"=m" (Dest)	// %0
-	  :"m"(Src),		// %1
-	  "m"(rows),		// %2
-	  "m"(columns),		// %3
-	  "m"(Kernel),		// %4
-	  "m"(Divisor)		// %5
+	 ("pusha		     \n\t" "pxor      %%mm0, %%mm0 \n\t"	
+	   "xor       %%ebx, %%ebx \n\t"	
+	  "mov           %5, %%bl \n\t"	
+	  "movd      %%ebx, %%mm5 \n\t"	
+	   "mov          %4, %%edx \n\t"	
+	  "mov          %1, %%esi \n\t"	
+	  "mov          %0, %%edi \n\t"	
+	  "add          $4, %%edi \n\t"	
+	  "mov          %3, %%eax \n\t"	
+	  "add       %%eax, %%edi \n\t"	
+	  "add       %%eax, %%edi \n\t" "add       %%eax, %%edi \n\t" "add       %%eax, %%edi \n\t" "mov          %2, %%ebx \n\t"	
+	  "sub          $8, %%ebx \n\t"	
+
+	  ".L10350:               \n\t" "mov       %%eax, %%ecx \n\t"	
+	  "sub          $8, %%ecx \n\t"	
+	   ".align 16              \n\t"	
+	  ".L10352:               \n\t" "pxor      %%mm7, %%mm7 \n\t"	
+	  "movd      %%esi, %%mm6 \n\t"	
+
+	  "movq    (%%esi), %%mm1 \n\t"	
+	  "movq      %%mm1, %%mm2 \n\t"	
+	  "inc              %%esi \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	  "movq    (%%edx), %%mm4 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "punpckhbw %%mm0, %%mm2 \n\t"	
+	   "pmullw    %%mm3, %%mm1 \n\t"	
+	  "pmullw    %%mm4, %%mm2 \n\t"	
+	   "paddsw    %%mm2, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+	   "movq    (%%esi), %%mm1 \n\t"	
+	  "dec              %%esi \n\t" "add       %%eax, %%esi \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "pmullw    %%mm3, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+
+	  "movq    (%%esi), %%mm1 \n\t"	
+	  "movq      %%mm1, %%mm2 \n\t"	
+	  "inc              %%esi \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	  "movq    (%%edx), %%mm4 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "punpckhbw %%mm0, %%mm2 \n\t"	
+	   "pmullw    %%mm3, %%mm1 \n\t"	
+	  "pmullw    %%mm4, %%mm2 \n\t"	
+	   "paddsw    %%mm2, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+	   "movq    (%%esi), %%mm1 \n\t"	
+	  "dec              %%esi \n\t" "add       %%eax, %%esi \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "pmullw    %%mm3, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+
+	  "movq    (%%esi), %%mm1 \n\t"	
+	  "movq      %%mm1, %%mm2 \n\t"	
+	  "inc              %%esi \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	  "movq    (%%edx), %%mm4 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "punpckhbw %%mm0, %%mm2 \n\t"	
+	   "pmullw    %%mm3, %%mm1 \n\t"	
+	  "pmullw    %%mm4, %%mm2 \n\t"	
+	   "paddsw    %%mm2, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+	   "movq    (%%esi), %%mm1 \n\t"	
+	  "dec              %%esi \n\t" "add       %%eax, %%esi \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "pmullw    %%mm3, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+
+	  "movq    (%%esi), %%mm1 \n\t"	
+	  "movq      %%mm1, %%mm2 \n\t"	
+	  "inc              %%esi \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	  "movq    (%%edx), %%mm4 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "punpckhbw %%mm0, %%mm2 \n\t"	
+	   "pmullw    %%mm3, %%mm1 \n\t"	
+	  "pmullw    %%mm4, %%mm2 \n\t"	
+	   "paddsw    %%mm2, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+	   "movq    (%%esi), %%mm1 \n\t"	
+	  "dec              %%esi \n\t" "add       %%eax, %%esi \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "pmullw    %%mm3, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+
+	  "movq    (%%esi), %%mm1 \n\t"	
+	  "movq      %%mm1, %%mm2 \n\t"	
+	  "inc              %%esi \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	  "movq    (%%edx), %%mm4 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "punpckhbw %%mm0, %%mm2 \n\t"	
+	   "pmullw    %%mm3, %%mm1 \n\t"	
+	  "pmullw    %%mm4, %%mm2 \n\t"	
+	   "paddsw    %%mm2, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+	   "movq    (%%esi), %%mm1 \n\t"	
+	  "dec              %%esi \n\t" "add       %%eax, %%esi \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "pmullw    %%mm3, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+
+	  "movq    (%%esi), %%mm1 \n\t"	
+	  "movq      %%mm1, %%mm2 \n\t"	
+	  "inc              %%esi \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	  "movq    (%%edx), %%mm4 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "punpckhbw %%mm0, %%mm2 \n\t"	
+	   "pmullw    %%mm3, %%mm1 \n\t"	
+	  "pmullw    %%mm4, %%mm2 \n\t"	
+	   "paddsw    %%mm2, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+	   "movq    (%%esi), %%mm1 \n\t"	
+	  "dec              %%esi \n\t" "add       %%eax, %%esi \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "pmullw    %%mm3, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+
+	  "movq    (%%esi), %%mm1 \n\t"	
+	  "movq      %%mm1, %%mm2 \n\t"	
+	  "inc              %%esi \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	  "movq    (%%edx), %%mm4 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "punpckhbw %%mm0, %%mm2 \n\t"	
+	   "pmullw    %%mm3, %%mm1 \n\t"	
+	  "pmullw    %%mm4, %%mm2 \n\t"	
+	   "paddsw    %%mm2, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+	   "movq    (%%esi), %%mm1 \n\t"	
+	  "dec              %%esi \n\t" "add       %%eax, %%esi \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "pmullw    %%mm3, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+
+	  "movq    (%%esi), %%mm1 \n\t"	
+	  "movq      %%mm1, %%mm2 \n\t"	
+	  "inc              %%esi \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	  "movq    (%%edx), %%mm4 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "punpckhbw %%mm0, %%mm2 \n\t"	
+	   "pmullw    %%mm3, %%mm1 \n\t"	
+	  "pmullw    %%mm4, %%mm2 \n\t"	
+	   "paddsw    %%mm2, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+	   "movq    (%%esi), %%mm1 \n\t"	
+	  "dec              %%esi \n\t" "add       %%eax, %%esi \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "pmullw    %%mm3, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+
+	  "movq    (%%esi), %%mm1 \n\t"	
+	  "movq      %%mm1, %%mm2 \n\t"	
+	  "inc              %%esi \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	  "movq    (%%edx), %%mm4 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "punpckhbw %%mm0, %%mm2 \n\t"	
+	   "pmullw    %%mm3, %%mm1 \n\t"	
+	  "pmullw    %%mm4, %%mm2 \n\t"	
+	   "paddsw    %%mm2, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+	   "movq    (%%esi), %%mm1 \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "pmullw    %%mm3, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+
+	  "movq      %%mm7, %%mm3 \n\t"	
+	  "psrlq       $32, %%mm7 \n\t"	
+	  "paddsw    %%mm3, %%mm7 \n\t"	
+	  "movq      %%mm7, %%mm2 \n\t"	
+	  "psrlq       $16, %%mm7 \n\t"	
+	  "paddsw    %%mm2, %%mm7 \n\t"	
+
+	  "movd      %%eax, %%mm1 \n\t"	
+	  "movd      %%ebx, %%mm2 \n\t"	
+	  "movd      %%edx, %%mm3 \n\t"	
+	   "movd      %%mm7, %%eax \n\t"	
+	  "psraw       $15, %%mm7 \n\t"	
+	  "movd      %%mm5, %%ebx \n\t"	
+	  "movd      %%mm7, %%edx \n\t"	
+	  "idivw             %%bx \n\t"	
+	  "movd      %%eax, %%mm7 \n\t"	
+	  "packuswb  %%mm0, %%mm7 \n\t"	
+	   "movd      %%mm7, %%eax \n\t"	
+	  "mov      %%al, (%%edi) \n\t"	
+	   "movd      %%mm3, %%edx \n\t"	
+	  "movd      %%mm2, %%ebx \n\t"	
+	  "movd      %%mm1, %%eax \n\t"	
+
+	  "movd      %%mm6, %%esi \n\t"	
+	  "sub        $208, %%edx \n\t"	
+	  "inc              %%esi \n\t"	
+	  "inc              %%edi \n\t"	
+
+	  "dec              %%ecx \n\t"	
+	  "jnz            .L10352 \n\t"	
+	   "add          $8, %%esi \n\t"	
+	  "add          $8, %%edi \n\t"	
+	   "dec              %%ebx \n\t"	
+	  "jnz            .L10350 \n\t"	
+
+	  "emms                   \n\t"	
+	  "popa                   \n\t":"=m" (Dest)	
+	  :"m"(Src),		
+	  "m"(rows),		
+	  "m"(columns),		
+	  "m"(Kernel),		
+	  "m"(Divisor)		
 	    );
 #endif
 	return (0);
@@ -3042,7 +3037,7 @@ int SDL_imageFilterConvolveKernel9x9Divide(unsigned char *Src, unsigned char *De
     }
 }
 
-//  SDL_imageFilterConvolveKernel3x3ShiftRight: Dij = saturation0and255( ... )
+
 int SDL_imageFilterConvolveKernel3x3ShiftRight(unsigned char *Src, unsigned char *Dest, int rows, int columns,
 					       signed short *Kernel, unsigned char NRightShift)
 {
@@ -3052,74 +3047,74 @@ int SDL_imageFilterConvolveKernel3x3ShiftRight(unsigned char *Src, unsigned char
     if ((SDL_imageFilterMMXdetect())) {
 #ifdef USE_MMX
 	asm volatile
-	 ("pusha		     \n\t" "pxor      %%mm0, %%mm0 \n\t"	// zero MM0
-	   "xor       %%ebx, %%ebx \n\t"	// zero EBX
-	  "mov           %5, %%bl \n\t"	// load NRightShift into BL
-	  "movd      %%ebx, %%mm4 \n\t"	// copy NRightShift into MM4
-	   "mov          %4, %%edx \n\t"	// load Kernel address into EDX
-	  "movq    (%%edx), %%mm5 \n\t"	// MM5 = {0,K2,K1,K0}
-	  "add          $8, %%edx \n\t"	// second row              |K0 K1 K2 0|
-	  "movq    (%%edx), %%mm6 \n\t"	// MM6 = {0,K5,K4,K3}  K = |K3 K4 K5 0|
-	  "add          $8, %%edx \n\t"	// third row               |K6 K7 K8 0|
-	  "movq    (%%edx), %%mm7 \n\t"	// MM7 = {0,K8,K7,K6}
-// ---
-	  "mov          %3, %%eax \n\t"	// load columns into EAX
-	  "mov          %1, %%esi \n\t"	// ESI = Src row 0 address
-	  "mov          %0, %%edi \n\t"	// load Dest address to EDI
-	  "add       %%eax, %%edi \n\t"	// EDI = EDI + columns
-	  "inc              %%edi \n\t"	// 1 byte offset from the left edge
-	   "mov          %2, %%edx \n\t"	// initialize ROWS counter
-	  "sub          $2, %%edx \n\t"	// do not use first and last row
-// ---
-	  ".L10360:               \n\t" "mov       %%eax, %%ecx \n\t"	// initialize COLUMS counter
-	  "sub          $2, %%ecx \n\t"	// do not use first and last column
-	   ".align 16              \n\t"	// 16 byte allignment of the loop entry
+	 ("pusha		     \n\t" "pxor      %%mm0, %%mm0 \n\t"	
+	   "xor       %%ebx, %%ebx \n\t"	
+	  "mov           %5, %%bl \n\t"	
+	  "movd      %%ebx, %%mm4 \n\t"	
+	   "mov          %4, %%edx \n\t"	
+	  "movq    (%%edx), %%mm5 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	  "movq    (%%edx), %%mm6 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	  "movq    (%%edx), %%mm7 \n\t"	
+
+	  "mov          %3, %%eax \n\t"	
+	  "mov          %1, %%esi \n\t"	
+	  "mov          %0, %%edi \n\t"	
+	  "add       %%eax, %%edi \n\t"	
+	  "inc              %%edi \n\t"	
+	   "mov          %2, %%edx \n\t"	
+	  "sub          $2, %%edx \n\t"	
+
+	  ".L10360:               \n\t" "mov       %%eax, %%ecx \n\t"	
+	  "sub          $2, %%ecx \n\t"	
+	   ".align 16              \n\t"	
 	  ".L10362:               \n\t"
-// ---
-	  "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the image first row
-	  "add       %%eax, %%esi \n\t"	// move one row below
-	  "movq    (%%esi), %%mm2 \n\t"	// load 8 bytes of the image second row
-	  "add       %%eax, %%esi \n\t"	// move one row below
-	  "movq    (%%esi), %%mm3 \n\t"	// load 8 bytes of the image third row
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first 4 bytes into words
-	  "punpcklbw %%mm0, %%mm2 \n\t"	// unpack first 4 bytes into words
-	  "punpcklbw %%mm0, %%mm3 \n\t"	// unpack first 4 bytes into words
-	   "psrlw     %%mm4, %%mm1 \n\t"	// shift right each pixel NshiftRight times
-	  "psrlw     %%mm4, %%mm2 \n\t"	// shift right each pixel NshiftRight times
-	  "psrlw     %%mm4, %%mm3 \n\t"	// shift right each pixel NshiftRight times
-	   "pmullw    %%mm5, %%mm1 \n\t"	// multiply words first row  image*Kernel
-	  "pmullw    %%mm6, %%mm2 \n\t"	// multiply words second row image*Kernel
-	  "pmullw    %%mm7, %%mm3 \n\t"	// multiply words third row  image*Kernel
-	   "paddsw    %%mm2, %%mm1 \n\t"	// add 4 words of the first and second rows
-	  "paddsw    %%mm3, %%mm1 \n\t"	// add 4 words of the third row and result
-	  "movq      %%mm1, %%mm2 \n\t"	// copy MM1 into MM2
-	  "psrlq       $32, %%mm1 \n\t"	// shift 2 left words to the right
-	  "paddsw    %%mm2, %%mm1 \n\t"	// add 2 left and 2 right result words
-	  "movq      %%mm1, %%mm3 \n\t"	// copy MM1 into MM3
-	  "psrlq       $16, %%mm1 \n\t"	// shift 1 left word to the right
-	  "paddsw    %%mm3, %%mm1 \n\t"	// add 1 left and 1 right result words
-	  "packuswb  %%mm0, %%mm1 \n\t"	// pack shift result with saturation
-	  "movd      %%mm1, %%ebx \n\t"	// copy saturated result into EBX
-	  "mov      %%bl, (%%edi) \n\t"	// copy a byte result into Dest
-// --
-	  "sub       %%eax, %%esi \n\t"	// move two rows up
-	  "sub       %%eax, %%esi \n\t" "inc              %%esi \n\t"	// move Src  pointer to the next pixel
-	  "inc              %%edi \n\t"	// move Dest pointer to the next pixel
-// ---
-	  "dec              %%ecx \n\t"	// decrease loop counter COLUMNS
-	  "jnz            .L10362 \n\t"	// check loop termination, proceed if required
-	   "add          $2, %%esi \n\t"	// move to the next row in Src
-	  "add          $2, %%edi \n\t"	// move to the next row in Dest
-	   "dec              %%edx \n\t"	// decrease loop counter ROWS
-	  "jnz            .L10360 \n\t"	// check loop termination, proceed if required
-// ---
-	  "emms                   \n\t"	// exit MMX state
-	  "popa                   \n\t":"=m" (Dest)	// %0
-	  :"m"(Src),		// %1
-	  "m"(rows),		// %2
-	  "m"(columns),		// %3
-	  "m"(Kernel),		// %4
-	  "m"(NRightShift)	// %5
+
+	  "movq    (%%esi), %%mm1 \n\t"	
+	  "add       %%eax, %%esi \n\t"	
+	  "movq    (%%esi), %%mm2 \n\t"	
+	  "add       %%eax, %%esi \n\t"	
+	  "movq    (%%esi), %%mm3 \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "punpcklbw %%mm0, %%mm2 \n\t"	
+	  "punpcklbw %%mm0, %%mm3 \n\t"	
+	   "psrlw     %%mm4, %%mm1 \n\t"	
+	  "psrlw     %%mm4, %%mm2 \n\t"	
+	  "psrlw     %%mm4, %%mm3 \n\t"	
+	   "pmullw    %%mm5, %%mm1 \n\t"	
+	  "pmullw    %%mm6, %%mm2 \n\t"	
+	  "pmullw    %%mm7, %%mm3 \n\t"	
+	   "paddsw    %%mm2, %%mm1 \n\t"	
+	  "paddsw    %%mm3, %%mm1 \n\t"	
+	  "movq      %%mm1, %%mm2 \n\t"	
+	  "psrlq       $32, %%mm1 \n\t"	
+	  "paddsw    %%mm2, %%mm1 \n\t"	
+	  "movq      %%mm1, %%mm3 \n\t"	
+	  "psrlq       $16, %%mm1 \n\t"	
+	  "paddsw    %%mm3, %%mm1 \n\t"	
+	  "packuswb  %%mm0, %%mm1 \n\t"	
+	  "movd      %%mm1, %%ebx \n\t"	
+	  "mov      %%bl, (%%edi) \n\t"	
+
+	  "sub       %%eax, %%esi \n\t"	
+	  "sub       %%eax, %%esi \n\t" "inc              %%esi \n\t"	
+	  "inc              %%edi \n\t"	
+
+	  "dec              %%ecx \n\t"	
+	  "jnz            .L10362 \n\t"	
+	   "add          $2, %%esi \n\t"	
+	  "add          $2, %%edi \n\t"	
+	   "dec              %%edx \n\t"	
+	  "jnz            .L10360 \n\t"	
+
+	  "emms                   \n\t"	
+	  "popa                   \n\t":"=m" (Dest)	
+	  :"m"(Src),		
+	  "m"(rows),		
+	  "m"(columns),		
+	  "m"(Kernel),		
+	  "m"(NRightShift)	
 	    );
 #endif
 	return (0);
@@ -3129,7 +3124,7 @@ int SDL_imageFilterConvolveKernel3x3ShiftRight(unsigned char *Src, unsigned char
     }
 }
 
-//  SDL_imageFilterConvolveKernel5x5ShiftRight: Dij = saturation0and255( ... )
+
 int SDL_imageFilterConvolveKernel5x5ShiftRight(unsigned char *Src, unsigned char *Dest, int rows, int columns,
 					       signed short *Kernel, unsigned char NRightShift)
 {
@@ -3139,136 +3134,136 @@ int SDL_imageFilterConvolveKernel5x5ShiftRight(unsigned char *Src, unsigned char
     if ((SDL_imageFilterMMXdetect())) {
 #ifdef USE_MMX
 	asm volatile
-	 ("pusha		     \n\t" "pxor      %%mm0, %%mm0 \n\t"	// zero MM0
-	   "xor       %%ebx, %%ebx \n\t"	// zero EBX
-	  "mov           %5, %%bl \n\t"	// load NRightShift into BL
-	  "movd      %%ebx, %%mm5 \n\t"	// copy NRightShift into MM5
-	   "mov          %4, %%edx \n\t"	// load Kernel address into EDX
-	  "mov          %1, %%esi \n\t"	// load Src  address to ESI
-	  "mov          %0, %%edi \n\t"	// load Dest address to EDI
-	  "add          $2, %%edi \n\t"	// 2 column offset from the left edge
-	  "mov          %3, %%eax \n\t"	// load columns into EAX
-	  "shl          $1, %%eax \n\t"	// EAX = columns * 2
-	  "add       %%eax, %%edi \n\t"	// 2 row offset from the top edge
-	  "shr          $1, %%eax \n\t"	// EAX = columns
-	   "mov          %2, %%ebx \n\t"	// initialize ROWS counter
-	  "sub          $4, %%ebx \n\t"	// do not use first 2 and last 2 rows
-// ---
-	  ".L10370:               \n\t" "mov       %%eax, %%ecx \n\t"	// initialize COLUMNS counter
-	  "sub          $4, %%ecx \n\t"	// do not use first 2 and last 2 columns
-	   ".align 16              \n\t"	// 16 byte allignment of the loop entry
-	  ".L10372:               \n\t" "pxor      %%mm7, %%mm7 \n\t"	// zero MM7 (accumulator)
-	  "movd      %%esi, %%mm6 \n\t"	// save ESI in MM6
-// --- 1
-	  "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "movq      %%mm1, %%mm2 \n\t"	// copy MM1 into MM2
-	  "add       %%eax, %%esi \n\t"	// move Src pointer 1 row below
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	  "movq    (%%edx), %%mm4 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "punpckhbw %%mm0, %%mm2 \n\t"	// unpack second 4 bytes into words
-	   "psrlw     %%mm5, %%mm1 \n\t"	// shift right each pixel NshiftRight times
-	  "psrlw     %%mm5, %%mm2 \n\t"	// shift right each pixel NshiftRight times
-	   "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "pmullw    %%mm4, %%mm2 \n\t"	// mult. 4 high words of Src and Kernel
-	   "paddsw    %%mm2, %%mm1 \n\t"	// add 4 words of the high and low bytes
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-// --- 2
-	  "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "movq      %%mm1, %%mm2 \n\t"	// copy MM1 into MM2
-	  "add       %%eax, %%esi \n\t"	// move Src pointer 1 row below
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	  "movq    (%%edx), %%mm4 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "punpckhbw %%mm0, %%mm2 \n\t"	// unpack second 4 bytes into words
-	   "psrlw     %%mm5, %%mm1 \n\t"	// shift right each pixel NshiftRight times
-	  "psrlw     %%mm5, %%mm2 \n\t"	// shift right each pixel NshiftRight times
-	   "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "pmullw    %%mm4, %%mm2 \n\t"	// mult. 4 high words of Src and Kernel
-	   "paddsw    %%mm2, %%mm1 \n\t"	// add 4 words of the high and low bytes
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-// --- 3
-	  "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "movq      %%mm1, %%mm2 \n\t"	// copy MM1 into MM2
-	  "add       %%eax, %%esi \n\t"	// move Src pointer 1 row below
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	  "movq    (%%edx), %%mm4 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "punpckhbw %%mm0, %%mm2 \n\t"	// unpack second 4 bytes into words
-	   "psrlw     %%mm5, %%mm1 \n\t"	// shift right each pixel NshiftRight times
-	  "psrlw     %%mm5, %%mm2 \n\t"	// shift right each pixel NshiftRight times
-	   "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "pmullw    %%mm4, %%mm2 \n\t"	// mult. 4 high words of Src and Kernel
-	   "paddsw    %%mm2, %%mm1 \n\t"	// add 4 words of the high and low bytes
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-// --- 4
-	  "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "movq      %%mm1, %%mm2 \n\t"	// copy MM1 into MM2
-	  "add       %%eax, %%esi \n\t"	// move Src pointer 1 row below
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	  "movq    (%%edx), %%mm4 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "punpckhbw %%mm0, %%mm2 \n\t"	// unpack second 4 bytes into words
-	   "psrlw     %%mm5, %%mm1 \n\t"	// shift right each pixel NshiftRight times
-	  "psrlw     %%mm5, %%mm2 \n\t"	// shift right each pixel NshiftRight times
-	   "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "pmullw    %%mm4, %%mm2 \n\t"	// mult. 4 high words of Src and Kernel
-	   "paddsw    %%mm2, %%mm1 \n\t"	// add 4 words of the high and low bytes
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-// --- 5
-	  "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "movq      %%mm1, %%mm2 \n\t"	// copy MM1 into MM2
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	  "movq    (%%edx), %%mm4 \n\t"	// load 4 words of Kernel
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "punpckhbw %%mm0, %%mm2 \n\t"	// unpack second 4 bytes into words
-	   "psrlw     %%mm5, %%mm1 \n\t"	// shift right each pixel NshiftRight times
-	  "psrlw     %%mm5, %%mm2 \n\t"	// shift right each pixel NshiftRight times
-	   "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "pmullw    %%mm4, %%mm2 \n\t"	// mult. 4 high words of Src and Kernel
-	   "paddsw    %%mm2, %%mm1 \n\t"	// add 4 words of the high and low bytes
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-// ---
-	  "movq      %%mm7, %%mm3 \n\t"	// copy MM7 into MM3
-	  "psrlq       $32, %%mm7 \n\t"	// shift 2 left words to the right
-	  "paddsw    %%mm3, %%mm7 \n\t"	// add 2 left and 2 right result words
-	  "movq      %%mm7, %%mm2 \n\t"	// copy MM7 into MM2
-	  "psrlq       $16, %%mm7 \n\t"	// shift 1 left word to the right
-	  "paddsw    %%mm2, %%mm7 \n\t"	// add 1 left and 1 right result words
-	  "movd      %%eax, %%mm1 \n\t"	// save EAX in MM1
-	  "packuswb  %%mm0, %%mm7 \n\t"	// pack division result with saturation
-	  "movd      %%mm7, %%eax \n\t"	// copy saturated result into EAX
-	  "mov      %%al, (%%edi) \n\t"	// copy a byte result into Dest
-	  "movd      %%mm1, %%eax \n\t"	// restore saved EAX
-// --
-	  "movd      %%mm6, %%esi \n\t"	// move Src pointer to the top pixel
-	  "sub         $72, %%edx \n\t"	// EDX = Kernel address
-	  "inc              %%esi \n\t"	// move Src  pointer to the next pixel
-	  "inc              %%edi \n\t"	// move Dest pointer to the next pixel
-// ---
-	  "dec              %%ecx \n\t"	// decrease loop counter COLUMNS
-	  "jnz            .L10372 \n\t"	// check loop termination, proceed if required
-	   "add          $4, %%esi \n\t"	// move to the next row in Src
-	  "add          $4, %%edi \n\t"	// move to the next row in Dest
-	   "dec              %%ebx \n\t"	// decrease loop counter ROWS
-	  "jnz            .L10370 \n\t"	// check loop termination, proceed if required
-// ---
-	  "emms                   \n\t"	// exit MMX state
-	  "popa                   \n\t":"=m" (Dest)	// %0
-	  :"m"(Src),		// %1
-	  "m"(rows),		// %2
-	  "m"(columns),		// %3
-	  "m"(Kernel),		// %4
-	  "m"(NRightShift)	// %5
+	 ("pusha		     \n\t" "pxor      %%mm0, %%mm0 \n\t"	
+	   "xor       %%ebx, %%ebx \n\t"	
+	  "mov           %5, %%bl \n\t"	
+	  "movd      %%ebx, %%mm5 \n\t"	
+	   "mov          %4, %%edx \n\t"	
+	  "mov          %1, %%esi \n\t"	
+	  "mov          %0, %%edi \n\t"	
+	  "add          $2, %%edi \n\t"	
+	  "mov          %3, %%eax \n\t"	
+	  "shl          $1, %%eax \n\t"	
+	  "add       %%eax, %%edi \n\t"	
+	  "shr          $1, %%eax \n\t"	
+	   "mov          %2, %%ebx \n\t"	
+	  "sub          $4, %%ebx \n\t"	
+
+	  ".L10370:               \n\t" "mov       %%eax, %%ecx \n\t"	
+	  "sub          $4, %%ecx \n\t"	
+	   ".align 16              \n\t"	
+	  ".L10372:               \n\t" "pxor      %%mm7, %%mm7 \n\t"	
+	  "movd      %%esi, %%mm6 \n\t"	
+
+	  "movq    (%%esi), %%mm1 \n\t"	
+	  "movq      %%mm1, %%mm2 \n\t"	
+	  "add       %%eax, %%esi \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	  "movq    (%%edx), %%mm4 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "punpckhbw %%mm0, %%mm2 \n\t"	
+	   "psrlw     %%mm5, %%mm1 \n\t"	
+	  "psrlw     %%mm5, %%mm2 \n\t"	
+	   "pmullw    %%mm3, %%mm1 \n\t"	
+	  "pmullw    %%mm4, %%mm2 \n\t"	
+	   "paddsw    %%mm2, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+
+	  "movq    (%%esi), %%mm1 \n\t"	
+	  "movq      %%mm1, %%mm2 \n\t"	
+	  "add       %%eax, %%esi \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	  "movq    (%%edx), %%mm4 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "punpckhbw %%mm0, %%mm2 \n\t"	
+	   "psrlw     %%mm5, %%mm1 \n\t"	
+	  "psrlw     %%mm5, %%mm2 \n\t"	
+	   "pmullw    %%mm3, %%mm1 \n\t"	
+	  "pmullw    %%mm4, %%mm2 \n\t"	
+	   "paddsw    %%mm2, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+
+	  "movq    (%%esi), %%mm1 \n\t"	
+	  "movq      %%mm1, %%mm2 \n\t"	
+	  "add       %%eax, %%esi \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	  "movq    (%%edx), %%mm4 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "punpckhbw %%mm0, %%mm2 \n\t"	
+	   "psrlw     %%mm5, %%mm1 \n\t"	
+	  "psrlw     %%mm5, %%mm2 \n\t"	
+	   "pmullw    %%mm3, %%mm1 \n\t"	
+	  "pmullw    %%mm4, %%mm2 \n\t"	
+	   "paddsw    %%mm2, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+
+	  "movq    (%%esi), %%mm1 \n\t"	
+	  "movq      %%mm1, %%mm2 \n\t"	
+	  "add       %%eax, %%esi \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	  "movq    (%%edx), %%mm4 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "punpckhbw %%mm0, %%mm2 \n\t"	
+	   "psrlw     %%mm5, %%mm1 \n\t"	
+	  "psrlw     %%mm5, %%mm2 \n\t"	
+	   "pmullw    %%mm3, %%mm1 \n\t"	
+	  "pmullw    %%mm4, %%mm2 \n\t"	
+	   "paddsw    %%mm2, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+
+	  "movq    (%%esi), %%mm1 \n\t"	
+	  "movq      %%mm1, %%mm2 \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	  "movq    (%%edx), %%mm4 \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "punpckhbw %%mm0, %%mm2 \n\t"	
+	   "psrlw     %%mm5, %%mm1 \n\t"	
+	  "psrlw     %%mm5, %%mm2 \n\t"	
+	   "pmullw    %%mm3, %%mm1 \n\t"	
+	  "pmullw    %%mm4, %%mm2 \n\t"	
+	   "paddsw    %%mm2, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+
+	  "movq      %%mm7, %%mm3 \n\t"	
+	  "psrlq       $32, %%mm7 \n\t"	
+	  "paddsw    %%mm3, %%mm7 \n\t"	
+	  "movq      %%mm7, %%mm2 \n\t"	
+	  "psrlq       $16, %%mm7 \n\t"	
+	  "paddsw    %%mm2, %%mm7 \n\t"	
+	  "movd      %%eax, %%mm1 \n\t"	
+	  "packuswb  %%mm0, %%mm7 \n\t"	
+	  "movd      %%mm7, %%eax \n\t"	
+	  "mov      %%al, (%%edi) \n\t"	
+	  "movd      %%mm1, %%eax \n\t"	
+
+	  "movd      %%mm6, %%esi \n\t"	
+	  "sub         $72, %%edx \n\t"	
+	  "inc              %%esi \n\t"	
+	  "inc              %%edi \n\t"	
+
+	  "dec              %%ecx \n\t"	
+	  "jnz            .L10372 \n\t"	
+	   "add          $4, %%esi \n\t"	
+	  "add          $4, %%edi \n\t"	
+	   "dec              %%ebx \n\t"	
+	  "jnz            .L10370 \n\t"	
+
+	  "emms                   \n\t"	
+	  "popa                   \n\t":"=m" (Dest)	
+	  :"m"(Src),		
+	  "m"(rows),		
+	  "m"(columns),		
+	  "m"(Kernel),		
+	  "m"(NRightShift)	
 	    );
 #endif
 	return (0);
@@ -3278,7 +3273,7 @@ int SDL_imageFilterConvolveKernel5x5ShiftRight(unsigned char *Src, unsigned char
     }
 }
 
-//  SDL_imageFilterConvolveKernel7x7ShiftRight: Dij = saturation0and255( ... )
+
 int SDL_imageFilterConvolveKernel7x7ShiftRight(unsigned char *Src, unsigned char *Dest, int rows, int columns,
 					       signed short *Kernel, unsigned char NRightShift)
 {
@@ -3288,166 +3283,166 @@ int SDL_imageFilterConvolveKernel7x7ShiftRight(unsigned char *Src, unsigned char
     if ((SDL_imageFilterMMXdetect())) {
 #ifdef USE_MMX
 	asm volatile
-	 ("pusha		     \n\t" "pxor      %%mm0, %%mm0 \n\t"	// zero MM0
-	   "xor       %%ebx, %%ebx \n\t"	// zero EBX
-	  "mov           %5, %%bl \n\t"	// load NRightShift into BL
-	  "movd      %%ebx, %%mm5 \n\t"	// copy NRightShift into MM5
-	   "mov          %4, %%edx \n\t"	// load Kernel address into EDX
-	  "mov          %1, %%esi \n\t"	// load Src  address to ESI
-	  "mov          %0, %%edi \n\t"	// load Dest address to EDI
-	  "add          $3, %%edi \n\t"	// 3 column offset from the left edge
-	  "mov          %3, %%eax \n\t"	// load columns into EAX
-	  "add       %%eax, %%edi \n\t"	// 3 row offset from the top edge
-	  "add       %%eax, %%edi \n\t" "add       %%eax, %%edi \n\t" "mov          %2, %%ebx \n\t"	// initialize ROWS counter
-	  "sub          $6, %%ebx \n\t"	// do not use first 3 and last 3 rows
-// ---
-	  ".L10380:               \n\t" "mov       %%eax, %%ecx \n\t"	// initialize COLUMNS counter
-	  "sub          $6, %%ecx \n\t"	// do not use first 3 and last 3 columns
-	   ".align 16              \n\t"	// 16 byte allignment of the loop entry
-	  ".L10382:               \n\t" "pxor      %%mm7, %%mm7 \n\t"	// zero MM7 (accumulator)
-	  "movd      %%esi, %%mm6 \n\t"	// save ESI in MM6
-// --- 1
-	  "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "movq      %%mm1, %%mm2 \n\t"	// copy MM1 into MM2
-	  "add       %%eax, %%esi \n\t"	// move Src pointer 1 row below
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	  "movq    (%%edx), %%mm4 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "punpckhbw %%mm0, %%mm2 \n\t"	// unpack second 4 bytes into words
-	   "psrlw     %%mm5, %%mm1 \n\t"	// shift right each pixel NshiftRight times
-	  "psrlw     %%mm5, %%mm2 \n\t"	// shift right each pixel NshiftRight times
-	   "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "pmullw    %%mm4, %%mm2 \n\t"	// mult. 4 high words of Src and Kernel
-	   "paddsw    %%mm2, %%mm1 \n\t"	// add 4 words of the high and low bytes
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-// --- 2
-	  "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "movq      %%mm1, %%mm2 \n\t"	// copy MM1 into MM2
-	  "add       %%eax, %%esi \n\t"	// move Src pointer 1 row below
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	  "movq    (%%edx), %%mm4 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "punpckhbw %%mm0, %%mm2 \n\t"	// unpack second 4 bytes into words
-	   "psrlw     %%mm5, %%mm1 \n\t"	// shift right each pixel NshiftRight times
-	  "psrlw     %%mm5, %%mm2 \n\t"	// shift right each pixel NshiftRight times
-	   "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "pmullw    %%mm4, %%mm2 \n\t"	// mult. 4 high words of Src and Kernel
-	   "paddsw    %%mm2, %%mm1 \n\t"	// add 4 words of the high and low bytes
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-// --- 3
-	  "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "movq      %%mm1, %%mm2 \n\t"	// copy MM1 into MM2
-	  "add       %%eax, %%esi \n\t"	// move Src pointer 1 row below
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	  "movq    (%%edx), %%mm4 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "punpckhbw %%mm0, %%mm2 \n\t"	// unpack second 4 bytes into words
-	   "psrlw     %%mm5, %%mm1 \n\t"	// shift right each pixel NshiftRight times
-	  "psrlw     %%mm5, %%mm2 \n\t"	// shift right each pixel NshiftRight times
-	   "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "pmullw    %%mm4, %%mm2 \n\t"	// mult. 4 high words of Src and Kernel
-	   "paddsw    %%mm2, %%mm1 \n\t"	// add 4 words of the high and low bytes
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-// --- 4
-	  "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "movq      %%mm1, %%mm2 \n\t"	// copy MM1 into MM2
-	  "add       %%eax, %%esi \n\t"	// move Src pointer 1 row below
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	  "movq    (%%edx), %%mm4 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "punpckhbw %%mm0, %%mm2 \n\t"	// unpack second 4 bytes into words
-	   "psrlw     %%mm5, %%mm1 \n\t"	// shift right each pixel NshiftRight times
-	  "psrlw     %%mm5, %%mm2 \n\t"	// shift right each pixel NshiftRight times
-	   "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "pmullw    %%mm4, %%mm2 \n\t"	// mult. 4 high words of Src and Kernel
-	   "paddsw    %%mm2, %%mm1 \n\t"	// add 4 words of the high and low bytes
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-// --- 5
-	  "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "movq      %%mm1, %%mm2 \n\t"	// copy MM1 into MM2
-	  "add       %%eax, %%esi \n\t"	// move Src pointer 1 row below
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	  "movq    (%%edx), %%mm4 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "punpckhbw %%mm0, %%mm2 \n\t"	// unpack second 4 bytes into words
-	   "psrlw     %%mm5, %%mm1 \n\t"	// shift right each pixel NshiftRight times
-	  "psrlw     %%mm5, %%mm2 \n\t"	// shift right each pixel NshiftRight times
-	   "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "pmullw    %%mm4, %%mm2 \n\t"	// mult. 4 high words of Src and Kernel
-	   "paddsw    %%mm2, %%mm1 \n\t"	// add 4 words of the high and low bytes
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-// --- 6
-	  "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "movq      %%mm1, %%mm2 \n\t"	// copy MM1 into MM2
-	  "add       %%eax, %%esi \n\t"	// move Src pointer 1 row below
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	  "movq    (%%edx), %%mm4 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "punpckhbw %%mm0, %%mm2 \n\t"	// unpack second 4 bytes into words
-	   "psrlw     %%mm5, %%mm1 \n\t"	// shift right each pixel NshiftRight times
-	  "psrlw     %%mm5, %%mm2 \n\t"	// shift right each pixel NshiftRight times
-	   "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "pmullw    %%mm4, %%mm2 \n\t"	// mult. 4 high words of Src and Kernel
-	   "paddsw    %%mm2, %%mm1 \n\t"	// add 4 words of the high and low bytes
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-// --- 7
-	  "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "movq      %%mm1, %%mm2 \n\t"	// copy MM1 into MM2
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	  "movq    (%%edx), %%mm4 \n\t"	// load 4 words of Kernel
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "punpckhbw %%mm0, %%mm2 \n\t"	// unpack second 4 bytes into words
-	   "psrlw     %%mm5, %%mm1 \n\t"	// shift right each pixel NshiftRight times
-	  "psrlw     %%mm5, %%mm2 \n\t"	// shift right each pixel NshiftRight times
-	   "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "pmullw    %%mm4, %%mm2 \n\t"	// mult. 4 high words of Src and Kernel
-	   "paddsw    %%mm2, %%mm1 \n\t"	// add 4 words of the high and low bytes
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-// ---
-	  "movq      %%mm7, %%mm3 \n\t"	// copy MM7 into MM3
-	  "psrlq       $32, %%mm7 \n\t"	// shift 2 left words to the right
-	  "paddsw    %%mm3, %%mm7 \n\t"	// add 2 left and 2 right result words
-	  "movq      %%mm7, %%mm2 \n\t"	// copy MM7 into MM2
-	  "psrlq       $16, %%mm7 \n\t"	// shift 1 left word to the right
-	  "paddsw    %%mm2, %%mm7 \n\t"	// add 1 left and 1 right result words
-	  "movd      %%eax, %%mm1 \n\t"	// save EAX in MM1
-	  "packuswb  %%mm0, %%mm7 \n\t"	// pack division result with saturation
-	  "movd      %%mm7, %%eax \n\t"	// copy saturated result into EAX
-	  "mov      %%al, (%%edi) \n\t"	// copy a byte result into Dest
-	  "movd      %%mm1, %%eax \n\t"	// restore saved EAX
-// --
-	  "movd      %%mm6, %%esi \n\t"	// move Src pointer to the top pixel
-	  "sub        $104, %%edx \n\t"	// EDX = Kernel address
-	  "inc              %%esi \n\t"	// move Src  pointer to the next pixel
-	  "inc              %%edi \n\t"	// move Dest pointer to the next pixel
-// ---
-	  "dec              %%ecx \n\t"	// decrease loop counter COLUMNS
-	  "jnz            .L10382 \n\t"	// check loop termination, proceed if required
-	   "add          $6, %%esi \n\t"	// move to the next row in Src
-	  "add          $6, %%edi \n\t"	// move to the next row in Dest
-	   "dec              %%ebx \n\t"	// decrease loop counter ROWS
-	  "jnz            .L10380 \n\t"	// check loop termination, proceed if required
-// ---
-	  "emms                   \n\t"	// exit MMX state
-	  "popa                   \n\t":"=m" (Dest)	// %0
-	  :"m"(Src),		// %1
-	  "m"(rows),		// %2
-	  "m"(columns),		// %3
-	  "m"(Kernel),		// %4
-	  "m"(NRightShift)	// %5
+	 ("pusha		     \n\t" "pxor      %%mm0, %%mm0 \n\t"	
+	   "xor       %%ebx, %%ebx \n\t"	
+	  "mov           %5, %%bl \n\t"	
+	  "movd      %%ebx, %%mm5 \n\t"	
+	   "mov          %4, %%edx \n\t"	
+	  "mov          %1, %%esi \n\t"	
+	  "mov          %0, %%edi \n\t"	
+	  "add          $3, %%edi \n\t"	
+	  "mov          %3, %%eax \n\t"	
+	  "add       %%eax, %%edi \n\t"	
+	  "add       %%eax, %%edi \n\t" "add       %%eax, %%edi \n\t" "mov          %2, %%ebx \n\t"	
+	  "sub          $6, %%ebx \n\t"	
+
+	  ".L10380:               \n\t" "mov       %%eax, %%ecx \n\t"	
+	  "sub          $6, %%ecx \n\t"	
+	   ".align 16              \n\t"	
+	  ".L10382:               \n\t" "pxor      %%mm7, %%mm7 \n\t"	
+	  "movd      %%esi, %%mm6 \n\t"	
+
+	  "movq    (%%esi), %%mm1 \n\t"	
+	  "movq      %%mm1, %%mm2 \n\t"	
+	  "add       %%eax, %%esi \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	  "movq    (%%edx), %%mm4 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "punpckhbw %%mm0, %%mm2 \n\t"	
+	   "psrlw     %%mm5, %%mm1 \n\t"	
+	  "psrlw     %%mm5, %%mm2 \n\t"	
+	   "pmullw    %%mm3, %%mm1 \n\t"	
+	  "pmullw    %%mm4, %%mm2 \n\t"	
+	   "paddsw    %%mm2, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+
+	  "movq    (%%esi), %%mm1 \n\t"	
+	  "movq      %%mm1, %%mm2 \n\t"	
+	  "add       %%eax, %%esi \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	  "movq    (%%edx), %%mm4 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "punpckhbw %%mm0, %%mm2 \n\t"	
+	   "psrlw     %%mm5, %%mm1 \n\t"	
+	  "psrlw     %%mm5, %%mm2 \n\t"	
+	   "pmullw    %%mm3, %%mm1 \n\t"	
+	  "pmullw    %%mm4, %%mm2 \n\t"	
+	   "paddsw    %%mm2, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+
+	  "movq    (%%esi), %%mm1 \n\t"	
+	  "movq      %%mm1, %%mm2 \n\t"	
+	  "add       %%eax, %%esi \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	  "movq    (%%edx), %%mm4 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "punpckhbw %%mm0, %%mm2 \n\t"	
+	   "psrlw     %%mm5, %%mm1 \n\t"	
+	  "psrlw     %%mm5, %%mm2 \n\t"	
+	   "pmullw    %%mm3, %%mm1 \n\t"	
+	  "pmullw    %%mm4, %%mm2 \n\t"	
+	   "paddsw    %%mm2, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+
+	  "movq    (%%esi), %%mm1 \n\t"	
+	  "movq      %%mm1, %%mm2 \n\t"	
+	  "add       %%eax, %%esi \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	  "movq    (%%edx), %%mm4 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "punpckhbw %%mm0, %%mm2 \n\t"	
+	   "psrlw     %%mm5, %%mm1 \n\t"	
+	  "psrlw     %%mm5, %%mm2 \n\t"	
+	   "pmullw    %%mm3, %%mm1 \n\t"	
+	  "pmullw    %%mm4, %%mm2 \n\t"	
+	   "paddsw    %%mm2, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+
+	  "movq    (%%esi), %%mm1 \n\t"	
+	  "movq      %%mm1, %%mm2 \n\t"	
+	  "add       %%eax, %%esi \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	  "movq    (%%edx), %%mm4 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "punpckhbw %%mm0, %%mm2 \n\t"	
+	   "psrlw     %%mm5, %%mm1 \n\t"	
+	  "psrlw     %%mm5, %%mm2 \n\t"	
+	   "pmullw    %%mm3, %%mm1 \n\t"	
+	  "pmullw    %%mm4, %%mm2 \n\t"	
+	   "paddsw    %%mm2, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+
+	  "movq    (%%esi), %%mm1 \n\t"	
+	  "movq      %%mm1, %%mm2 \n\t"	
+	  "add       %%eax, %%esi \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	  "movq    (%%edx), %%mm4 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "punpckhbw %%mm0, %%mm2 \n\t"	
+	   "psrlw     %%mm5, %%mm1 \n\t"	
+	  "psrlw     %%mm5, %%mm2 \n\t"	
+	   "pmullw    %%mm3, %%mm1 \n\t"	
+	  "pmullw    %%mm4, %%mm2 \n\t"	
+	   "paddsw    %%mm2, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+
+	  "movq    (%%esi), %%mm1 \n\t"	
+	  "movq      %%mm1, %%mm2 \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	  "movq    (%%edx), %%mm4 \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "punpckhbw %%mm0, %%mm2 \n\t"	
+	   "psrlw     %%mm5, %%mm1 \n\t"	
+	  "psrlw     %%mm5, %%mm2 \n\t"	
+	   "pmullw    %%mm3, %%mm1 \n\t"	
+	  "pmullw    %%mm4, %%mm2 \n\t"	
+	   "paddsw    %%mm2, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+
+	  "movq      %%mm7, %%mm3 \n\t"	
+	  "psrlq       $32, %%mm7 \n\t"	
+	  "paddsw    %%mm3, %%mm7 \n\t"	
+	  "movq      %%mm7, %%mm2 \n\t"	
+	  "psrlq       $16, %%mm7 \n\t"	
+	  "paddsw    %%mm2, %%mm7 \n\t"	
+	  "movd      %%eax, %%mm1 \n\t"	
+	  "packuswb  %%mm0, %%mm7 \n\t"	
+	  "movd      %%mm7, %%eax \n\t"	
+	  "mov      %%al, (%%edi) \n\t"	
+	  "movd      %%mm1, %%eax \n\t"	
+
+	  "movd      %%mm6, %%esi \n\t"	
+	  "sub        $104, %%edx \n\t"	
+	  "inc              %%esi \n\t"	
+	  "inc              %%edi \n\t"	
+
+	  "dec              %%ecx \n\t"	
+	  "jnz            .L10382 \n\t"	
+	   "add          $6, %%esi \n\t"	
+	  "add          $6, %%edi \n\t"	
+	   "dec              %%ebx \n\t"	
+	  "jnz            .L10380 \n\t"	
+
+	  "emms                   \n\t"	
+	  "popa                   \n\t":"=m" (Dest)	
+	  :"m"(Src),		
+	  "m"(rows),		
+	  "m"(columns),		
+	  "m"(Kernel),		
+	  "m"(NRightShift)	
 	    );
 #endif
 	return (0);
@@ -3457,7 +3452,7 @@ int SDL_imageFilterConvolveKernel7x7ShiftRight(unsigned char *Src, unsigned char
     }
 }
 
-//  SDL_imageFilterConvolveKernel9x9ShiftRight: Dij = saturation0and255( ... )
+
 int SDL_imageFilterConvolveKernel9x9ShiftRight(unsigned char *Src, unsigned char *Dest, int rows, int columns,
 					       signed short *Kernel, unsigned char NRightShift)
 {
@@ -3467,270 +3462,270 @@ int SDL_imageFilterConvolveKernel9x9ShiftRight(unsigned char *Src, unsigned char
     if ((SDL_imageFilterMMXdetect())) {
 #ifdef USE_MMX
 	asm volatile
-	 ("pusha		     \n\t" "pxor      %%mm0, %%mm0 \n\t"	// zero MM0
-	   "xor       %%ebx, %%ebx \n\t"	// zero EBX
-	  "mov           %5, %%bl \n\t"	// load NRightShift into BL
-	  "movd      %%ebx, %%mm5 \n\t"	// copy NRightShift into MM5
-	   "mov          %4, %%edx \n\t"	// load Kernel address into EDX
-	  "mov          %1, %%esi \n\t"	// load Src  address to ESI
-	  "mov          %0, %%edi \n\t"	// load Dest address to EDI
-	  "add          $4, %%edi \n\t"	// 4 column offset from the left edge
-	  "mov          %3, %%eax \n\t"	// load columns into EAX
-	  "add       %%eax, %%edi \n\t"	// 4 row offset from the top edge
-	  "add       %%eax, %%edi \n\t" "add       %%eax, %%edi \n\t" "add       %%eax, %%edi \n\t" "mov          %2, %%ebx \n\t"	// initialize ROWS counter
-	  "sub          $8, %%ebx \n\t"	// do not use first 4 and last 4 rows
-// ---
-	  ".L10390:               \n\t" "mov       %%eax, %%ecx \n\t"	// initialize COLUMNS counter
-	  "sub          $8, %%ecx \n\t"	// do not use first 4 and last 4 columns
-	   ".align 16              \n\t"	// 16 byte allignment of the loop entry
-	  ".L10392:               \n\t" "pxor      %%mm7, %%mm7 \n\t"	// zero MM7 (accumulator)
-	  "movd      %%esi, %%mm6 \n\t"	// save ESI in MM6
-// --- 1
-	  "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "movq      %%mm1, %%mm2 \n\t"	// copy MM1 into MM2
-	  "inc              %%esi \n\t"	// move pointer to the next 8 bytes of Src
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	  "movq    (%%edx), %%mm4 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "punpckhbw %%mm0, %%mm2 \n\t"	// unpack second 4 bytes into words
-	   "psrlw     %%mm5, %%mm1 \n\t"	// shift right each pixel NshiftRight times
-	  "psrlw     %%mm5, %%mm2 \n\t"	// shift right each pixel NshiftRight times
-	   "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "pmullw    %%mm4, %%mm2 \n\t"	// mult. 4 high words of Src and Kernel
-	   "paddsw    %%mm2, %%mm1 \n\t"	// add 4 words of the high and low bytes
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-	   "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "dec              %%esi \n\t" "add       %%eax, %%esi \n\t"	// move Src pointer 1 row below
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "psrlw     %%mm5, %%mm1 \n\t"	// shift right each pixel NshiftRight times
-	  "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-// --- 2
-	  "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "movq      %%mm1, %%mm2 \n\t"	// copy MM1 into MM2
-	  "inc              %%esi \n\t"	// move pointer to the next 8 bytes of Src
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	  "movq    (%%edx), %%mm4 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "punpckhbw %%mm0, %%mm2 \n\t"	// unpack second 4 bytes into words
-	   "psrlw     %%mm5, %%mm1 \n\t"	// shift right each pixel NshiftRight times
-	  "psrlw     %%mm5, %%mm2 \n\t"	// shift right each pixel NshiftRight times
-	   "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "pmullw    %%mm4, %%mm2 \n\t"	// mult. 4 high words of Src and Kernel
-	   "paddsw    %%mm2, %%mm1 \n\t"	// add 4 words of the high and low bytes
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-	   "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "dec              %%esi \n\t" "add       %%eax, %%esi \n\t"	// move Src pointer 1 row below
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "psrlw     %%mm5, %%mm1 \n\t"	// shift right each pixel NshiftRight times
-	  "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-// --- 3
-	  "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "movq      %%mm1, %%mm2 \n\t"	// copy MM1 into MM2
-	  "inc              %%esi \n\t"	// move pointer to the next 8 bytes of Src
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	  "movq    (%%edx), %%mm4 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "punpckhbw %%mm0, %%mm2 \n\t"	// unpack second 4 bytes into words
-	   "psrlw     %%mm5, %%mm1 \n\t"	// shift right each pixel NshiftRight times
-	  "psrlw     %%mm5, %%mm2 \n\t"	// shift right each pixel NshiftRight times
-	   "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "pmullw    %%mm4, %%mm2 \n\t"	// mult. 4 high words of Src and Kernel
-	   "paddsw    %%mm2, %%mm1 \n\t"	// add 4 words of the high and low bytes
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-	   "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "dec              %%esi \n\t" "add       %%eax, %%esi \n\t"	// move Src pointer 1 row below
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "psrlw     %%mm5, %%mm1 \n\t"	// shift right each pixel NshiftRight times
-	  "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-// --- 4
-	  "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "movq      %%mm1, %%mm2 \n\t"	// copy MM1 into MM2
-	  "inc              %%esi \n\t"	// move pointer to the next 8 bytes of Src
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	  "movq    (%%edx), %%mm4 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "punpckhbw %%mm0, %%mm2 \n\t"	// unpack second 4 bytes into words
-	   "psrlw     %%mm5, %%mm1 \n\t"	// shift right each pixel NshiftRight times
-	  "psrlw     %%mm5, %%mm2 \n\t"	// shift right each pixel NshiftRight times
-	   "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "pmullw    %%mm4, %%mm2 \n\t"	// mult. 4 high words of Src and Kernel
-	   "paddsw    %%mm2, %%mm1 \n\t"	// add 4 words of the high and low bytes
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-	   "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "dec              %%esi \n\t" "add       %%eax, %%esi \n\t"	// move Src pointer 1 row below
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "psrlw     %%mm5, %%mm1 \n\t"	// shift right each pixel NshiftRight times
-	  "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-// --- 5
-	  "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "movq      %%mm1, %%mm2 \n\t"	// copy MM1 into MM2
-	  "inc              %%esi \n\t"	// move pointer to the next 8 bytes of Src
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	  "movq    (%%edx), %%mm4 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "punpckhbw %%mm0, %%mm2 \n\t"	// unpack second 4 bytes into words
-	   "psrlw     %%mm5, %%mm1 \n\t"	// shift right each pixel NshiftRight times
-	  "psrlw     %%mm5, %%mm2 \n\t"	// shift right each pixel NshiftRight times
-	   "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "pmullw    %%mm4, %%mm2 \n\t"	// mult. 4 high words of Src and Kernel
-	   "paddsw    %%mm2, %%mm1 \n\t"	// add 4 words of the high and low bytes
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-	   "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "dec              %%esi \n\t" "add       %%eax, %%esi \n\t"	// move Src pointer 1 row below
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "psrlw     %%mm5, %%mm1 \n\t"	// shift right each pixel NshiftRight times
-	  "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-// --- 6
-	  "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "movq      %%mm1, %%mm2 \n\t"	// copy MM1 into MM2
-	  "inc              %%esi \n\t"	// move pointer to the next 8 bytes of Src
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	  "movq    (%%edx), %%mm4 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "punpckhbw %%mm0, %%mm2 \n\t"	// unpack second 4 bytes into words
-	   "psrlw     %%mm5, %%mm1 \n\t"	// shift right each pixel NshiftRight times
-	  "psrlw     %%mm5, %%mm2 \n\t"	// shift right each pixel NshiftRight times
-	   "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "pmullw    %%mm4, %%mm2 \n\t"	// mult. 4 high words of Src and Kernel
-	   "paddsw    %%mm2, %%mm1 \n\t"	// add 4 words of the high and low bytes
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-	   "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "dec              %%esi \n\t" "add       %%eax, %%esi \n\t"	// move Src pointer 1 row below
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "psrlw     %%mm5, %%mm1 \n\t"	// shift right each pixel NshiftRight times
-	  "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-// --- 7
-	  "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "movq      %%mm1, %%mm2 \n\t"	// copy MM1 into MM2
-	  "inc              %%esi \n\t"	// move pointer to the next 8 bytes of Src
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	  "movq    (%%edx), %%mm4 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "punpckhbw %%mm0, %%mm2 \n\t"	// unpack second 4 bytes into words
-	   "psrlw     %%mm5, %%mm1 \n\t"	// shift right each pixel NshiftRight times
-	  "psrlw     %%mm5, %%mm2 \n\t"	// shift right each pixel NshiftRight times
-	   "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "pmullw    %%mm4, %%mm2 \n\t"	// mult. 4 high words of Src and Kernel
-	   "paddsw    %%mm2, %%mm1 \n\t"	// add 4 words of the high and low bytes
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-	   "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "dec              %%esi \n\t" "add       %%eax, %%esi \n\t"	// move Src pointer 1 row below
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "psrlw     %%mm5, %%mm1 \n\t"	// shift right each pixel NshiftRight times
-	  "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-// --- 8
-	  "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "movq      %%mm1, %%mm2 \n\t"	// copy MM1 into MM2
-	  "inc              %%esi \n\t"	// move pointer to the next 8 bytes of Src
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	  "movq    (%%edx), %%mm4 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "punpckhbw %%mm0, %%mm2 \n\t"	// unpack second 4 bytes into words
-	   "psrlw     %%mm5, %%mm1 \n\t"	// shift right each pixel NshiftRight times
-	  "psrlw     %%mm5, %%mm2 \n\t"	// shift right each pixel NshiftRight times
-	   "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "pmullw    %%mm4, %%mm2 \n\t"	// mult. 4 high words of Src and Kernel
-	   "paddsw    %%mm2, %%mm1 \n\t"	// add 4 words of the high and low bytes
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-	   "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "dec              %%esi \n\t" "add       %%eax, %%esi \n\t"	// move Src pointer 1 row below
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "psrlw     %%mm5, %%mm1 \n\t"	// shift right each pixel NshiftRight times
-	  "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-// --- 9
-	  "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "movq      %%mm1, %%mm2 \n\t"	// copy MM1 into MM2
-	  "inc              %%esi \n\t"	// move pointer to the next 8 bytes of Src
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	  "movq    (%%edx), %%mm4 \n\t"	// load 4 words of Kernel
-	  "add          $8, %%edx \n\t"	// move pointer to other 4 words
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "punpckhbw %%mm0, %%mm2 \n\t"	// unpack second 4 bytes into words
-	   "psrlw     %%mm5, %%mm1 \n\t"	// shift right each pixel NshiftRight times
-	  "psrlw     %%mm5, %%mm2 \n\t"	// shift right each pixel NshiftRight times
-	   "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "pmullw    %%mm4, %%mm2 \n\t"	// mult. 4 high words of Src and Kernel
-	   "paddsw    %%mm2, %%mm1 \n\t"	// add 4 words of the high and low bytes
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-	   "movq    (%%esi), %%mm1 \n\t"	// load 8 bytes of the Src
-	  "movq    (%%edx), %%mm3 \n\t"	// load 4 words of Kernel
-	   "punpcklbw %%mm0, %%mm1 \n\t"	// unpack first  4 bytes into words
-	  "psrlw     %%mm5, %%mm1 \n\t"	// shift right each pixel NshiftRight times
-	  "pmullw    %%mm3, %%mm1 \n\t"	// mult. 4 low  words of Src and Kernel
-	  "paddsw    %%mm1, %%mm7 \n\t"	// add MM1 to accumulator MM7
-// ---
-	  "movq      %%mm7, %%mm3 \n\t"	// copy MM7 into MM3
-	  "psrlq       $32, %%mm7 \n\t"	// shift 2 left words to the right
-	  "paddsw    %%mm3, %%mm7 \n\t"	// add 2 left and 2 right result words
-	  "movq      %%mm7, %%mm2 \n\t"	// copy MM7 into MM2
-	  "psrlq       $16, %%mm7 \n\t"	// shift 1 left word to the right
-	  "paddsw    %%mm2, %%mm7 \n\t"	// add 1 left and 1 right result words
-	  "movd      %%eax, %%mm1 \n\t"	// save EAX in MM1
-	  "packuswb  %%mm0, %%mm7 \n\t"	// pack division result with saturation
-	  "movd      %%mm7, %%eax \n\t"	// copy saturated result into EAX
-	  "mov      %%al, (%%edi) \n\t"	// copy a byte result into Dest
-	  "movd      %%mm1, %%eax \n\t"	// restore saved EAX
-// --
-	  "movd      %%mm6, %%esi \n\t"	// move Src pointer to the top pixel
-	  "sub        $208, %%edx \n\t"	// EDX = Kernel address
-	  "inc              %%esi \n\t"	// move Src  pointer to the next pixel
-	  "inc              %%edi \n\t"	// move Dest pointer to the next pixel
-// ---
-	  "dec              %%ecx \n\t"	// decrease loop counter COLUMNS
-	  "jnz            .L10392 \n\t"	// check loop termination, proceed if required
-	   "add          $8, %%esi \n\t"	// move to the next row in Src
-	  "add          $8, %%edi \n\t"	// move to the next row in Dest
-	   "dec              %%ebx \n\t"	// decrease loop counter ROWS
-	  "jnz            .L10390 \n\t"	// check loop termination, proceed if required
-// ---
-	  "emms                   \n\t"	// exit MMX state
-	  "popa                   \n\t":"=m" (Dest)	// %0
-	  :"m"(Src),		// %1
-	  "m"(rows),		// %2
-	  "m"(columns),		// %3
-	  "m"(Kernel),		// %4
-	  "m"(NRightShift)	// %5
+	 ("pusha		     \n\t" "pxor      %%mm0, %%mm0 \n\t"	
+	   "xor       %%ebx, %%ebx \n\t"	
+	  "mov           %5, %%bl \n\t"	
+	  "movd      %%ebx, %%mm5 \n\t"	
+	   "mov          %4, %%edx \n\t"	
+	  "mov          %1, %%esi \n\t"	
+	  "mov          %0, %%edi \n\t"	
+	  "add          $4, %%edi \n\t"	
+	  "mov          %3, %%eax \n\t"	
+	  "add       %%eax, %%edi \n\t"	
+	  "add       %%eax, %%edi \n\t" "add       %%eax, %%edi \n\t" "add       %%eax, %%edi \n\t" "mov          %2, %%ebx \n\t"	
+	  "sub          $8, %%ebx \n\t"	
+
+	  ".L10390:               \n\t" "mov       %%eax, %%ecx \n\t"	
+	  "sub          $8, %%ecx \n\t"	
+	   ".align 16              \n\t"	
+	  ".L10392:               \n\t" "pxor      %%mm7, %%mm7 \n\t"	
+	  "movd      %%esi, %%mm6 \n\t"	
+
+	  "movq    (%%esi), %%mm1 \n\t"	
+	  "movq      %%mm1, %%mm2 \n\t"	
+	  "inc              %%esi \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	  "movq    (%%edx), %%mm4 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "punpckhbw %%mm0, %%mm2 \n\t"	
+	   "psrlw     %%mm5, %%mm1 \n\t"	
+	  "psrlw     %%mm5, %%mm2 \n\t"	
+	   "pmullw    %%mm3, %%mm1 \n\t"	
+	  "pmullw    %%mm4, %%mm2 \n\t"	
+	   "paddsw    %%mm2, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+	   "movq    (%%esi), %%mm1 \n\t"	
+	  "dec              %%esi \n\t" "add       %%eax, %%esi \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "psrlw     %%mm5, %%mm1 \n\t"	
+	  "pmullw    %%mm3, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+
+	  "movq    (%%esi), %%mm1 \n\t"	
+	  "movq      %%mm1, %%mm2 \n\t"	
+	  "inc              %%esi \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	  "movq    (%%edx), %%mm4 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "punpckhbw %%mm0, %%mm2 \n\t"	
+	   "psrlw     %%mm5, %%mm1 \n\t"	
+	  "psrlw     %%mm5, %%mm2 \n\t"	
+	   "pmullw    %%mm3, %%mm1 \n\t"	
+	  "pmullw    %%mm4, %%mm2 \n\t"	
+	   "paddsw    %%mm2, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+	   "movq    (%%esi), %%mm1 \n\t"	
+	  "dec              %%esi \n\t" "add       %%eax, %%esi \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "psrlw     %%mm5, %%mm1 \n\t"	
+	  "pmullw    %%mm3, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+
+	  "movq    (%%esi), %%mm1 \n\t"	
+	  "movq      %%mm1, %%mm2 \n\t"	
+	  "inc              %%esi \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	  "movq    (%%edx), %%mm4 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "punpckhbw %%mm0, %%mm2 \n\t"	
+	   "psrlw     %%mm5, %%mm1 \n\t"	
+	  "psrlw     %%mm5, %%mm2 \n\t"	
+	   "pmullw    %%mm3, %%mm1 \n\t"	
+	  "pmullw    %%mm4, %%mm2 \n\t"	
+	   "paddsw    %%mm2, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+	   "movq    (%%esi), %%mm1 \n\t"	
+	  "dec              %%esi \n\t" "add       %%eax, %%esi \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "psrlw     %%mm5, %%mm1 \n\t"	
+	  "pmullw    %%mm3, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+
+	  "movq    (%%esi), %%mm1 \n\t"	
+	  "movq      %%mm1, %%mm2 \n\t"	
+	  "inc              %%esi \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	  "movq    (%%edx), %%mm4 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "punpckhbw %%mm0, %%mm2 \n\t"	
+	   "psrlw     %%mm5, %%mm1 \n\t"	
+	  "psrlw     %%mm5, %%mm2 \n\t"	
+	   "pmullw    %%mm3, %%mm1 \n\t"	
+	  "pmullw    %%mm4, %%mm2 \n\t"	
+	   "paddsw    %%mm2, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+	   "movq    (%%esi), %%mm1 \n\t"	
+	  "dec              %%esi \n\t" "add       %%eax, %%esi \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "psrlw     %%mm5, %%mm1 \n\t"	
+	  "pmullw    %%mm3, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+
+	  "movq    (%%esi), %%mm1 \n\t"	
+	  "movq      %%mm1, %%mm2 \n\t"	
+	  "inc              %%esi \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	  "movq    (%%edx), %%mm4 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "punpckhbw %%mm0, %%mm2 \n\t"	
+	   "psrlw     %%mm5, %%mm1 \n\t"	
+	  "psrlw     %%mm5, %%mm2 \n\t"	
+	   "pmullw    %%mm3, %%mm1 \n\t"	
+	  "pmullw    %%mm4, %%mm2 \n\t"	
+	   "paddsw    %%mm2, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+	   "movq    (%%esi), %%mm1 \n\t"	
+	  "dec              %%esi \n\t" "add       %%eax, %%esi \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "psrlw     %%mm5, %%mm1 \n\t"	
+	  "pmullw    %%mm3, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+
+	  "movq    (%%esi), %%mm1 \n\t"	
+	  "movq      %%mm1, %%mm2 \n\t"	
+	  "inc              %%esi \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	  "movq    (%%edx), %%mm4 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "punpckhbw %%mm0, %%mm2 \n\t"	
+	   "psrlw     %%mm5, %%mm1 \n\t"	
+	  "psrlw     %%mm5, %%mm2 \n\t"	
+	   "pmullw    %%mm3, %%mm1 \n\t"	
+	  "pmullw    %%mm4, %%mm2 \n\t"	
+	   "paddsw    %%mm2, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+	   "movq    (%%esi), %%mm1 \n\t"	
+	  "dec              %%esi \n\t" "add       %%eax, %%esi \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "psrlw     %%mm5, %%mm1 \n\t"	
+	  "pmullw    %%mm3, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+
+	  "movq    (%%esi), %%mm1 \n\t"	
+	  "movq      %%mm1, %%mm2 \n\t"	
+	  "inc              %%esi \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	  "movq    (%%edx), %%mm4 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "punpckhbw %%mm0, %%mm2 \n\t"	
+	   "psrlw     %%mm5, %%mm1 \n\t"	
+	  "psrlw     %%mm5, %%mm2 \n\t"	
+	   "pmullw    %%mm3, %%mm1 \n\t"	
+	  "pmullw    %%mm4, %%mm2 \n\t"	
+	   "paddsw    %%mm2, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+	   "movq    (%%esi), %%mm1 \n\t"	
+	  "dec              %%esi \n\t" "add       %%eax, %%esi \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "psrlw     %%mm5, %%mm1 \n\t"	
+	  "pmullw    %%mm3, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+
+	  "movq    (%%esi), %%mm1 \n\t"	
+	  "movq      %%mm1, %%mm2 \n\t"	
+	  "inc              %%esi \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	  "movq    (%%edx), %%mm4 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "punpckhbw %%mm0, %%mm2 \n\t"	
+	   "psrlw     %%mm5, %%mm1 \n\t"	
+	  "psrlw     %%mm5, %%mm2 \n\t"	
+	   "pmullw    %%mm3, %%mm1 \n\t"	
+	  "pmullw    %%mm4, %%mm2 \n\t"	
+	   "paddsw    %%mm2, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+	   "movq    (%%esi), %%mm1 \n\t"	
+	  "dec              %%esi \n\t" "add       %%eax, %%esi \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "psrlw     %%mm5, %%mm1 \n\t"	
+	  "pmullw    %%mm3, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+
+	  "movq    (%%esi), %%mm1 \n\t"	
+	  "movq      %%mm1, %%mm2 \n\t"	
+	  "inc              %%esi \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	  "movq    (%%edx), %%mm4 \n\t"	
+	  "add          $8, %%edx \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "punpckhbw %%mm0, %%mm2 \n\t"	
+	   "psrlw     %%mm5, %%mm1 \n\t"	
+	  "psrlw     %%mm5, %%mm2 \n\t"	
+	   "pmullw    %%mm3, %%mm1 \n\t"	
+	  "pmullw    %%mm4, %%mm2 \n\t"	
+	   "paddsw    %%mm2, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+	   "movq    (%%esi), %%mm1 \n\t"	
+	  "movq    (%%edx), %%mm3 \n\t"	
+	   "punpcklbw %%mm0, %%mm1 \n\t"	
+	  "psrlw     %%mm5, %%mm1 \n\t"	
+	  "pmullw    %%mm3, %%mm1 \n\t"	
+	  "paddsw    %%mm1, %%mm7 \n\t"	
+
+	  "movq      %%mm7, %%mm3 \n\t"	
+	  "psrlq       $32, %%mm7 \n\t"	
+	  "paddsw    %%mm3, %%mm7 \n\t"	
+	  "movq      %%mm7, %%mm2 \n\t"	
+	  "psrlq       $16, %%mm7 \n\t"	
+	  "paddsw    %%mm2, %%mm7 \n\t"	
+	  "movd      %%eax, %%mm1 \n\t"	
+	  "packuswb  %%mm0, %%mm7 \n\t"	
+	  "movd      %%mm7, %%eax \n\t"	
+	  "mov      %%al, (%%edi) \n\t"	
+	  "movd      %%mm1, %%eax \n\t"	
+
+	  "movd      %%mm6, %%esi \n\t"	
+	  "sub        $208, %%edx \n\t"	
+	  "inc              %%esi \n\t"	
+	  "inc              %%edi \n\t"	
+
+	  "dec              %%ecx \n\t"	
+	  "jnz            .L10392 \n\t"	
+	   "add          $8, %%esi \n\t"	
+	  "add          $8, %%edi \n\t"	
+	   "dec              %%ebx \n\t"	
+	  "jnz            .L10390 \n\t"	
+
+	  "emms                   \n\t"	
+	  "popa                   \n\t":"=m" (Dest)	
+	  :"m"(Src),		
+	  "m"(rows),		
+	  "m"(columns),		
+	  "m"(Kernel),		
+	  "m"(NRightShift)	
 	    );
 #endif
 	return (0);
@@ -3740,9 +3735,9 @@ int SDL_imageFilterConvolveKernel9x9ShiftRight(unsigned char *Src, unsigned char
     }
 }
 
-// ------------------------------------------------------------------------------------
 
-//  SDL_imageFilterSobelX: Dij = saturation255( ... )
+
+
 int SDL_imageFilterSobelX(unsigned char *Src, unsigned char *Dest, int rows, int columns)
 {
     if ((columns < 8) || (rows < 3))
@@ -3751,112 +3746,112 @@ int SDL_imageFilterSobelX(unsigned char *Src, unsigned char *Dest, int rows, int
     if ((SDL_imageFilterMMXdetect())) {
 #ifdef USE_MMX
 	asm volatile
-	 ("pusha		     \n\t" "pxor      %%mm0, %%mm0 \n\t"	// zero MM0
-	  "mov          %3, %%eax \n\t"	// load columns into EAX
-// ---
-	  "mov          %1, %%esi \n\t"	// ESI = Src row 0 address
-	  "mov          %0, %%edi \n\t"	// load Dest address to EDI
-	  "add       %%eax, %%edi \n\t"	// EDI = EDI + columns
-	  "inc              %%edi \n\t"	// 1 byte offset from the left edge
-	   "mov          %2, %%edx \n\t"	// initialize ROWS counter
-	  "sub          $2, %%edx \n\t"	// do not use first and last rows
-// ---
-	  ".L10400:                \n\t" "mov       %%eax, %%ecx \n\t"	// initialize COLUMS counter
-	  "shr          $3, %%ecx \n\t"	// EBX/8 (MMX loads 8 bytes at a time)
-	   "mov       %%esi, %%ebx \n\t"	// save ESI in EBX
-	  "movd      %%edi, %%mm1 \n\t"	// save EDI in MM1
-	   ".align 16              \n\t"	// 16 byte allignment of the loop entry
+	 ("pusha		     \n\t" "pxor      %%mm0, %%mm0 \n\t"	
+	  "mov          %3, %%eax \n\t"	
+
+	  "mov          %1, %%esi \n\t"	
+	  "mov          %0, %%edi \n\t"	
+	  "add       %%eax, %%edi \n\t"	
+	  "inc              %%edi \n\t"	
+	   "mov          %2, %%edx \n\t"	
+	  "sub          $2, %%edx \n\t"	
+
+	  ".L10400:                \n\t" "mov       %%eax, %%ecx \n\t"	
+	  "shr          $3, %%ecx \n\t"	
+	   "mov       %%esi, %%ebx \n\t"	
+	  "movd      %%edi, %%mm1 \n\t"	
+	   ".align 16              \n\t"	
 	  ".L10402:               \n\t"
-// ---
-	  "movq    (%%esi), %%mm4 \n\t"	// load 8 bytes from Src
-	  "movq      %%mm4, %%mm5 \n\t"	// save MM4 in MM5
-	  "add          $2, %%esi \n\t"	// move ESI pointer 2 bytes right
-	  "punpcklbw %%mm0, %%mm4 \n\t"	// unpack 4 low  bytes into words
-	  "punpckhbw %%mm0, %%mm5 \n\t"	// unpack 4 high bytes into words
-	   "movq    (%%esi), %%mm6 \n\t"	// load 8 bytes from Src
-	  "movq      %%mm6, %%mm7 \n\t"	// save MM6 in MM7
-	  "sub          $2, %%esi \n\t"	// move ESI pointer back 2 bytes left
-	   "punpcklbw %%mm0, %%mm6 \n\t"	// unpack 4 low  bytes into words
-	  "punpckhbw %%mm0, %%mm7 \n\t"	// unpack 4 high bytes into words
-	   "add       %%eax, %%esi \n\t"	// move to the next row of Src
-	   "movq    (%%esi), %%mm2 \n\t"	// load 8 bytes from Src
-	  "movq      %%mm2, %%mm3 \n\t"	// save MM2 in MM3
-	  "add          $2, %%esi \n\t"	// move ESI pointer 2 bytes right
-	  "punpcklbw %%mm0, %%mm2 \n\t"	// unpack 4 low  bytes into words
-	  "punpckhbw %%mm0, %%mm3 \n\t"	// unpack 4 high bytes into words
-	   "paddw     %%mm2, %%mm4 \n\t"	// add 4 low  bytes to accumolator MM4
-	  "paddw     %%mm3, %%mm5 \n\t"	// add 4 high bytes to accumolator MM5
-	  "paddw     %%mm2, %%mm4 \n\t"	// add 4 low  bytes to accumolator MM4
-	  "paddw     %%mm3, %%mm5 \n\t"	// add 4 high bytes to accumolator MM5
-	   "movq    (%%esi), %%mm2 \n\t"	// load 8 bytes from Src
-	  "movq      %%mm2, %%mm3 \n\t"	// save MM2 in MM3
-	  "sub          $2, %%esi \n\t"	// move ESI pointer back 2 bytes left
-	  "punpcklbw %%mm0, %%mm2 \n\t"	// unpack 4 low  bytes into words
-	  "punpckhbw %%mm0, %%mm3 \n\t"	// unpack 4 high bytes into words
-	   "paddw     %%mm2, %%mm6 \n\t"	// add 4 low  bytes to accumolator MM6
-	  "paddw     %%mm3, %%mm7 \n\t"	// add 4 high bytes to accumolator MM7
-	  "paddw     %%mm2, %%mm6 \n\t"	// add 4 low  bytes to accumolator MM6
-	  "paddw     %%mm3, %%mm7 \n\t"	// add 4 high bytes to accumolator MM7
-	   "add       %%eax, %%esi \n\t"	// move to the next row of Src
-	   "movq    (%%esi), %%mm2 \n\t"	// load 8 bytes from Src
-	  "movq      %%mm2, %%mm3 \n\t"	// save MM2 in MM3
-	  "add          $2, %%esi \n\t"	// move ESI pointer 2 bytes right
-	  "punpcklbw %%mm0, %%mm2 \n\t"	// unpack 4 low  bytes into words
-	  "punpckhbw %%mm0, %%mm3 \n\t"	// unpack 4 high bytes into words
-	   "paddw     %%mm2, %%mm4 \n\t"	// add 4 low  bytes to accumolator MM4
-	  "paddw     %%mm3, %%mm5 \n\t"	// add 4 high bytes to accumolator MM5
-	   "movq    (%%esi), %%mm2 \n\t"	// load 8 bytes from Src
-	  "movq      %%mm2, %%mm3 \n\t"	// save MM2 in MM3
-	  "sub          $2, %%esi \n\t"	// move ESI pointer back 2 bytes left
-	  "punpcklbw %%mm0, %%mm2 \n\t"	// unpack 4 low  bytes into words
-	  "punpckhbw %%mm0, %%mm3 \n\t"	// unpack 4 high bytes into words
-	   "paddw     %%mm2, %%mm6 \n\t"	// add 4 low  bytes to accumolator MM6
-	  "paddw     %%mm3, %%mm7 \n\t"	// add 4 high bytes to accumolator MM7
-// ---
-	  "movq      %%mm4, %%mm2 \n\t"	// copy MM4 into MM2
-	  "psrlq       $32, %%mm4 \n\t"	// shift 2 left words to the right
-	  "psubw     %%mm2, %%mm4 \n\t"	// MM4 = MM4 - MM2
-	  "movq      %%mm6, %%mm3 \n\t"	// copy MM6 into MM3
-	  "psrlq       $32, %%mm6 \n\t"	// shift 2 left words to the right
-	  "psubw     %%mm3, %%mm6 \n\t"	// MM6 = MM6 - MM3
-	  "punpckldq %%mm6, %%mm4 \n\t"	// combine 2 words of MM6 and 2 words of MM4
-	   "movq      %%mm5, %%mm2 \n\t"	// copy MM6 into MM2
-	  "psrlq       $32, %%mm5 \n\t"	// shift 2 left words to the right
-	  "psubw     %%mm2, %%mm5 \n\t"	// MM5 = MM5 - MM2
-	  "movq      %%mm7, %%mm3 \n\t"	// copy MM7 into MM3
-	  "psrlq       $32, %%mm7 \n\t"	// shift 2 left words to the right
-	  "psubw     %%mm3, %%mm7 \n\t"	// MM7 = MM7 - MM3
-	  "punpckldq %%mm7, %%mm5 \n\t"	// combine 2 words of MM7 and 2 words of MM5
-	  // Take abs values of MM4 and MM5
-	  "movq      %%mm4, %%mm6 \n\t"	// copy MM4 into MM6
-	  "movq      %%mm5, %%mm7 \n\t"	// copy MM5 into MM7
-	  "psraw       $15, %%mm6 \n\t"	// fill MM6 words with word sign bit
-	  "psraw       $15, %%mm7 \n\t"	// fill MM7 words with word sign bit
-	  "pxor      %%mm6, %%mm4 \n\t"	// take 1's compliment of only neg. words
-	  "pxor      %%mm7, %%mm5 \n\t"	// take 1's compliment of only neg. words
-	  "psubsw    %%mm6, %%mm4 \n\t"	// add 1 to only neg. words, W-(-1) or W-0
-	  "psubsw    %%mm7, %%mm5 \n\t"	// add 1 to only neg. words, W-(-1) or W-0
-	   "packuswb  %%mm5, %%mm4 \n\t"	// combine and pack/saturate MM5 and MM4
-	  "movq    %%mm4, (%%edi) \n\t"	// store result in Dest
-// ---
-	  "sub       %%eax, %%esi \n\t"	// move to the current top row in Src
-	  "sub       %%eax, %%esi \n\t" "add $8,          %%esi \n\t"	// move Src  pointer to the next 8 pixels
-	  "add $8,          %%edi \n\t"	// move Dest pointer to the next 8 pixels
-// ---
-	  "dec              %%ecx \n\t"	// decrease loop counter COLUMNS
-	  "jnz            .L10402 \n\t"	// check loop termination, proceed if required
-	   "mov       %%ebx, %%esi \n\t"	// restore most left current row Src  address
-	  "movd      %%mm1, %%edi \n\t"	// restore most left current row Dest address
-	  "add       %%eax, %%esi \n\t"	// move to the next row in Src
-	  "add       %%eax, %%edi \n\t"	// move to the next row in Dest
-	   "dec              %%edx \n\t"	// decrease loop counter ROWS
-	  "jnz            .L10400 \n\t"	// check loop termination, proceed if required
-// ---
-	  "emms                   \n\t"	// exit MMX state
-	  "popa                   \n\t":"=m" (Dest)	// %0
-	  :"m"(Src),		// %1
-	  "m"(rows),		// %2
-	  "m"(columns)		// %3
+
+	  "movq    (%%esi), %%mm4 \n\t"	
+	  "movq      %%mm4, %%mm5 \n\t"	
+	  "add          $2, %%esi \n\t"	
+	  "punpcklbw %%mm0, %%mm4 \n\t"	
+	  "punpckhbw %%mm0, %%mm5 \n\t"	
+	   "movq    (%%esi), %%mm6 \n\t"	
+	  "movq      %%mm6, %%mm7 \n\t"	
+	  "sub          $2, %%esi \n\t"	
+	   "punpcklbw %%mm0, %%mm6 \n\t"	
+	  "punpckhbw %%mm0, %%mm7 \n\t"	
+	   "add       %%eax, %%esi \n\t"	
+	   "movq    (%%esi), %%mm2 \n\t"	
+	  "movq      %%mm2, %%mm3 \n\t"	
+	  "add          $2, %%esi \n\t"	
+	  "punpcklbw %%mm0, %%mm2 \n\t"	
+	  "punpckhbw %%mm0, %%mm3 \n\t"	
+	   "paddw     %%mm2, %%mm4 \n\t"	
+	  "paddw     %%mm3, %%mm5 \n\t"	
+	  "paddw     %%mm2, %%mm4 \n\t"	
+	  "paddw     %%mm3, %%mm5 \n\t"	
+	   "movq    (%%esi), %%mm2 \n\t"	
+	  "movq      %%mm2, %%mm3 \n\t"	
+	  "sub          $2, %%esi \n\t"	
+	  "punpcklbw %%mm0, %%mm2 \n\t"	
+	  "punpckhbw %%mm0, %%mm3 \n\t"	
+	   "paddw     %%mm2, %%mm6 \n\t"	
+	  "paddw     %%mm3, %%mm7 \n\t"	
+	  "paddw     %%mm2, %%mm6 \n\t"	
+	  "paddw     %%mm3, %%mm7 \n\t"	
+	   "add       %%eax, %%esi \n\t"	
+	   "movq    (%%esi), %%mm2 \n\t"	
+	  "movq      %%mm2, %%mm3 \n\t"	
+	  "add          $2, %%esi \n\t"	
+	  "punpcklbw %%mm0, %%mm2 \n\t"	
+	  "punpckhbw %%mm0, %%mm3 \n\t"	
+	   "paddw     %%mm2, %%mm4 \n\t"	
+	  "paddw     %%mm3, %%mm5 \n\t"	
+	   "movq    (%%esi), %%mm2 \n\t"	
+	  "movq      %%mm2, %%mm3 \n\t"	
+	  "sub          $2, %%esi \n\t"	
+	  "punpcklbw %%mm0, %%mm2 \n\t"	
+	  "punpckhbw %%mm0, %%mm3 \n\t"	
+	   "paddw     %%mm2, %%mm6 \n\t"	
+	  "paddw     %%mm3, %%mm7 \n\t"	
+
+	  "movq      %%mm4, %%mm2 \n\t"	
+	  "psrlq       $32, %%mm4 \n\t"	
+	  "psubw     %%mm2, %%mm4 \n\t"	
+	  "movq      %%mm6, %%mm3 \n\t"	
+	  "psrlq       $32, %%mm6 \n\t"	
+	  "psubw     %%mm3, %%mm6 \n\t"	
+	  "punpckldq %%mm6, %%mm4 \n\t"	
+	   "movq      %%mm5, %%mm2 \n\t"	
+	  "psrlq       $32, %%mm5 \n\t"	
+	  "psubw     %%mm2, %%mm5 \n\t"	
+	  "movq      %%mm7, %%mm3 \n\t"	
+	  "psrlq       $32, %%mm7 \n\t"	
+	  "psubw     %%mm3, %%mm7 \n\t"	
+	  "punpckldq %%mm7, %%mm5 \n\t"	
+	  
+	  "movq      %%mm4, %%mm6 \n\t"	
+	  "movq      %%mm5, %%mm7 \n\t"	
+	  "psraw       $15, %%mm6 \n\t"	
+	  "psraw       $15, %%mm7 \n\t"	
+	  "pxor      %%mm6, %%mm4 \n\t"	
+	  "pxor      %%mm7, %%mm5 \n\t"	
+	  "psubsw    %%mm6, %%mm4 \n\t"	
+	  "psubsw    %%mm7, %%mm5 \n\t"	
+	   "packuswb  %%mm5, %%mm4 \n\t"	
+	  "movq    %%mm4, (%%edi) \n\t"	
+
+	  "sub       %%eax, %%esi \n\t"	
+	  "sub       %%eax, %%esi \n\t" "add $8,          %%esi \n\t"	
+	  "add $8,          %%edi \n\t"	
+
+	  "dec              %%ecx \n\t"	
+	  "jnz            .L10402 \n\t"	
+	   "mov       %%ebx, %%esi \n\t"	
+	  "movd      %%mm1, %%edi \n\t"	
+	  "add       %%eax, %%esi \n\t"	
+	  "add       %%eax, %%edi \n\t"	
+	   "dec              %%edx \n\t"	
+	  "jnz            .L10400 \n\t"	
+
+	  "emms                   \n\t"	
+	  "popa                   \n\t":"=m" (Dest)	
+	  :"m"(Src),		
+	  "m"(rows),		
+	  "m"(columns)		
 	    );
 #endif
 	return (0);
@@ -3866,7 +3861,7 @@ int SDL_imageFilterSobelX(unsigned char *Src, unsigned char *Dest, int rows, int
     }
 }
 
-//  SDL_imageFilterSobelXShiftRight: Dij = saturation255( ... )
+
 int SDL_imageFilterSobelXShiftRight(unsigned char *Src, unsigned char *Dest, int rows, int columns,
 				    unsigned char NRightShift)
 {
@@ -3876,128 +3871,128 @@ int SDL_imageFilterSobelXShiftRight(unsigned char *Src, unsigned char *Dest, int
     if ((SDL_imageFilterMMXdetect())) {
 #ifdef USE_MMX
 	asm volatile
-	 ("pusha		     \n\t" "pxor      %%mm0, %%mm0 \n\t"	// zero MM0
-	  "mov          %3, %%eax \n\t"	// load columns into EAX
-	   "xor       %%ebx, %%ebx \n\t"	// zero EBX
-	  "mov           %4, %%bl \n\t"	// load NRightShift into BL
-	  "movd      %%ebx, %%mm1 \n\t"	// copy NRightShift into MM1
-// ---
-	  "mov          %1, %%esi \n\t"	// ESI = Src row 0 address
-	  "mov          %0, %%edi \n\t"	// load Dest address to EDI
-	  "add       %%eax, %%edi \n\t"	// EDI = EDI + columns
-	  "inc              %%edi \n\t"	// 1 byte offset from the left edge
-	  // initialize ROWS counter
-	  "subl            $2, %2 \n\t"	// do not use first and last rows
-// ---
-	  ".L10410:                \n\t" "mov       %%eax, %%ecx \n\t"	// initialize COLUMS counter
-	  "shr          $3, %%ecx \n\t"	// EBX/8 (MMX loads 8 bytes at a time)
-	   "mov       %%esi, %%ebx \n\t"	// save ESI in EBX
-	  "mov       %%edi, %%edx \n\t"	// save EDI in EDX
-	   ".align 16              \n\t"	// 16 byte allignment of the loop entry
+	 ("pusha		     \n\t" "pxor      %%mm0, %%mm0 \n\t"	
+	  "mov          %3, %%eax \n\t"	
+	   "xor       %%ebx, %%ebx \n\t"	
+	  "mov           %4, %%bl \n\t"	
+	  "movd      %%ebx, %%mm1 \n\t"	
+
+	  "mov          %1, %%esi \n\t"	
+	  "mov          %0, %%edi \n\t"	
+	  "add       %%eax, %%edi \n\t"	
+	  "inc              %%edi \n\t"	
+	  
+	  "subl            $2, %2 \n\t"	
+
+	  ".L10410:                \n\t" "mov       %%eax, %%ecx \n\t"	
+	  "shr          $3, %%ecx \n\t"	
+	   "mov       %%esi, %%ebx \n\t"	
+	  "mov       %%edi, %%edx \n\t"	
+	   ".align 16              \n\t"	
 	  ".L10412:               \n\t"
-// ---
-	  "movq    (%%esi), %%mm4 \n\t"	// load 8 bytes from Src
-	  "movq      %%mm4, %%mm5 \n\t"	// save MM4 in MM5
-	  "add          $2, %%esi \n\t"	// move ESI pointer 2 bytes right
-	  "punpcklbw %%mm0, %%mm4 \n\t"	// unpack 4 low  bytes into words
-	  "punpckhbw %%mm0, %%mm5 \n\t"	// unpack 4 high bytes into words
-	   "psrlw     %%mm1, %%mm4 \n\t"	// shift right each pixel NshiftRight times
-	  "psrlw     %%mm1, %%mm5 \n\t"	// shift right each pixel NshiftRight times
-	   "movq    (%%esi), %%mm6 \n\t"	// load 8 bytes from Src
-	  "movq      %%mm6, %%mm7 \n\t"	// save MM6 in MM7
-	  "sub          $2, %%esi \n\t"	// move ESI pointer back 2 bytes left
-	   "punpcklbw %%mm0, %%mm6 \n\t"	// unpack 4 low  bytes into words
-	  "punpckhbw %%mm0, %%mm7 \n\t"	// unpack 4 high bytes into words
-	   "psrlw     %%mm1, %%mm6 \n\t"	// shift right each pixel NshiftRight times
-	  "psrlw     %%mm1, %%mm7 \n\t"	// shift right each pixel NshiftRight times
-	   "add       %%eax, %%esi \n\t"	// move to the next row of Src
-	   "movq    (%%esi), %%mm2 \n\t"	// load 8 bytes from Src
-	  "movq      %%mm2, %%mm3 \n\t"	// save MM2 in MM3
-	  "add          $2, %%esi \n\t"	// move ESI pointer 2 bytes right
-	  "punpcklbw %%mm0, %%mm2 \n\t"	// unpack 4 low  bytes into words
-	  "punpckhbw %%mm0, %%mm3 \n\t"	// unpack 4 high bytes into words
-	   "psrlw     %%mm1, %%mm2 \n\t"	// shift right each pixel NshiftRight times
-	  "psrlw     %%mm1, %%mm3 \n\t"	// shift right each pixel NshiftRight times
-	   "paddw     %%mm2, %%mm4 \n\t"	// add 4 low  bytes to accumolator MM4
-	  "paddw     %%mm3, %%mm5 \n\t"	// add 4 high bytes to accumolator MM5
-	  "paddw     %%mm2, %%mm4 \n\t"	// add 4 low  bytes to accumolator MM4
-	  "paddw     %%mm3, %%mm5 \n\t"	// add 4 high bytes to accumolator MM5
-	   "movq    (%%esi), %%mm2 \n\t"	// load 8 bytes from Src
-	  "movq      %%mm2, %%mm3 \n\t"	// save MM2 in MM3
-	  "sub          $2, %%esi \n\t"	// move ESI pointer back 2 bytes left
-	  "punpcklbw %%mm0, %%mm2 \n\t"	// unpack 4 low  bytes into words
-	  "punpckhbw %%mm0, %%mm3 \n\t"	// unpack 4 high bytes into words
-	   "psrlw     %%mm1, %%mm2 \n\t"	// shift right each pixel NshiftRight times
-	  "psrlw     %%mm1, %%mm3 \n\t"	// shift right each pixel NshiftRight times
-	   "paddw     %%mm2, %%mm6 \n\t"	// add 4 low  bytes to accumolator MM6
-	  "paddw     %%mm3, %%mm7 \n\t"	// add 4 high bytes to accumolator MM7
-	  "paddw     %%mm2, %%mm6 \n\t"	// add 4 low  bytes to accumolator MM6
-	  "paddw     %%mm3, %%mm7 \n\t"	// add 4 high bytes to accumolator MM7
-	   "add       %%eax, %%esi \n\t"	// move to the next row of Src
-	   "movq    (%%esi), %%mm2 \n\t"	// load 8 bytes from Src
-	  "movq      %%mm2, %%mm3 \n\t"	// save MM2 in MM3
-	  "add          $2, %%esi \n\t"	// move ESI pointer 2 bytes right
-	  "punpcklbw %%mm0, %%mm2 \n\t"	// unpack 4 low  bytes into words
-	  "punpckhbw %%mm0, %%mm3 \n\t"	// unpack 4 high bytes into words
-	   "psrlw     %%mm1, %%mm2 \n\t"	// shift right each pixel NshiftRight times
-	  "psrlw     %%mm1, %%mm3 \n\t"	// shift right each pixel NshiftRight times
-	   "paddw     %%mm2, %%mm4 \n\t"	// add 4 low  bytes to accumolator MM4
-	  "paddw     %%mm3, %%mm5 \n\t"	// add 4 high bytes to accumolator MM5
-	   "movq    (%%esi), %%mm2 \n\t"	// load 8 bytes from Src
-	  "movq      %%mm2, %%mm3 \n\t"	// save MM2 in MM3
-	  "sub          $2, %%esi \n\t"	// move ESI pointer back 2 bytes left
-	  "punpcklbw %%mm0, %%mm2 \n\t"	// unpack 4 low  bytes into words
-	  "punpckhbw %%mm0, %%mm3 \n\t"	// unpack 4 high bytes into words
-	   "psrlw     %%mm1, %%mm2 \n\t"	// shift right each pixel NshiftRight times
-	  "psrlw     %%mm1, %%mm3 \n\t"	// shift right each pixel NshiftRight times
-	   "paddw     %%mm2, %%mm6 \n\t"	// add 4 low  bytes to accumolator MM6
-	  "paddw     %%mm3, %%mm7 \n\t"	// add 4 high bytes to accumolator MM7
-// ---
-	  "movq      %%mm4, %%mm2 \n\t"	// copy MM4 into MM2
-	  "psrlq       $32, %%mm4 \n\t"	// shift 2 left words to the right
-	  "psubw     %%mm2, %%mm4 \n\t"	// MM4 = MM4 - MM2
-	  "movq      %%mm6, %%mm3 \n\t"	// copy MM6 into MM3
-	  "psrlq       $32, %%mm6 \n\t"	// shift 2 left words to the right
-	  "psubw     %%mm3, %%mm6 \n\t"	// MM6 = MM6 - MM3
-	  "punpckldq %%mm6, %%mm4 \n\t"	// combine 2 words of MM6 and 2 words of MM4
-	   "movq      %%mm5, %%mm2 \n\t"	// copy MM6 into MM2
-	  "psrlq       $32, %%mm5 \n\t"	// shift 2 left words to the right
-	  "psubw     %%mm2, %%mm5 \n\t"	// MM5 = MM5 - MM2
-	  "movq      %%mm7, %%mm3 \n\t"	// copy MM7 into MM3
-	  "psrlq       $32, %%mm7 \n\t"	// shift 2 left words to the right
-	  "psubw     %%mm3, %%mm7 \n\t"	// MM7 = MM7 - MM3
-	  "punpckldq %%mm7, %%mm5 \n\t"	// combine 2 words of MM7 and 2 words of MM5
-	  // Take abs values of MM4 and MM5
-	  "movq      %%mm4, %%mm6 \n\t"	// copy MM4 into MM6
-	  "movq      %%mm5, %%mm7 \n\t"	// copy MM5 into MM7
-	  "psraw       $15, %%mm6 \n\t"	// fill MM6 words with word sign bit
-	  "psraw       $15, %%mm7 \n\t"	// fill MM7 words with word sign bit
-	  "pxor      %%mm6, %%mm4 \n\t"	// take 1's compliment of only neg. words
-	  "pxor      %%mm7, %%mm5 \n\t"	// take 1's compliment of only neg. words
-	  "psubsw    %%mm6, %%mm4 \n\t"	// add 1 to only neg. words, W-(-1) or W-0
-	  "psubsw    %%mm7, %%mm5 \n\t"	// add 1 to only neg. words, W-(-1) or W-0
-	   "packuswb  %%mm5, %%mm4 \n\t"	// combine and pack/saturate MM5 and MM4
-	  "movq    %%mm4, (%%edi) \n\t"	// store result in Dest
-// ---
-	  "sub       %%eax, %%esi \n\t"	// move to the current top row in Src
-	  "sub       %%eax, %%esi \n\t" "add $8,          %%esi \n\t"	// move Src  pointer to the next 8 pixels
-	  "add $8,          %%edi \n\t"	// move Dest pointer to the next 8 pixels
-// ---
-	  "dec              %%ecx \n\t"	// decrease loop counter COLUMNS
-	  "jnz            .L10412 \n\t"	// check loop termination, proceed if required
-	   "mov       %%ebx, %%esi \n\t"	// restore most left current row Src  address
-	  "mov       %%edx, %%edi \n\t"	// restore most left current row Dest address
-	  "add       %%eax, %%esi \n\t"	// move to the next row in Src
-	  "add       %%eax, %%edi \n\t"	// move to the next row in Dest
-	   "decl                %2 \n\t"	// decrease loop counter ROWS
-	  "jnz            .L10410 \n\t"	// check loop termination, proceed if required
-// ---
-	  "emms                   \n\t"	// exit MMX state
-	  "popa                   \n\t":"=m" (Dest)	// %0
-	  :"m"(Src),		// %1
-	  "m"(rows),		// %2
-	  "m"(columns),		// %3
-	  "m"(NRightShift)	// %4
+
+	  "movq    (%%esi), %%mm4 \n\t"	
+	  "movq      %%mm4, %%mm5 \n\t"	
+	  "add          $2, %%esi \n\t"	
+	  "punpcklbw %%mm0, %%mm4 \n\t"	
+	  "punpckhbw %%mm0, %%mm5 \n\t"	
+	   "psrlw     %%mm1, %%mm4 \n\t"	
+	  "psrlw     %%mm1, %%mm5 \n\t"	
+	   "movq    (%%esi), %%mm6 \n\t"	
+	  "movq      %%mm6, %%mm7 \n\t"	
+	  "sub          $2, %%esi \n\t"	
+	   "punpcklbw %%mm0, %%mm6 \n\t"	
+	  "punpckhbw %%mm0, %%mm7 \n\t"	
+	   "psrlw     %%mm1, %%mm6 \n\t"	
+	  "psrlw     %%mm1, %%mm7 \n\t"	
+	   "add       %%eax, %%esi \n\t"	
+	   "movq    (%%esi), %%mm2 \n\t"	
+	  "movq      %%mm2, %%mm3 \n\t"	
+	  "add          $2, %%esi \n\t"	
+	  "punpcklbw %%mm0, %%mm2 \n\t"	
+	  "punpckhbw %%mm0, %%mm3 \n\t"	
+	   "psrlw     %%mm1, %%mm2 \n\t"	
+	  "psrlw     %%mm1, %%mm3 \n\t"	
+	   "paddw     %%mm2, %%mm4 \n\t"	
+	  "paddw     %%mm3, %%mm5 \n\t"	
+	  "paddw     %%mm2, %%mm4 \n\t"	
+	  "paddw     %%mm3, %%mm5 \n\t"	
+	   "movq    (%%esi), %%mm2 \n\t"	
+	  "movq      %%mm2, %%mm3 \n\t"	
+	  "sub          $2, %%esi \n\t"	
+	  "punpcklbw %%mm0, %%mm2 \n\t"	
+	  "punpckhbw %%mm0, %%mm3 \n\t"	
+	   "psrlw     %%mm1, %%mm2 \n\t"	
+	  "psrlw     %%mm1, %%mm3 \n\t"	
+	   "paddw     %%mm2, %%mm6 \n\t"	
+	  "paddw     %%mm3, %%mm7 \n\t"	
+	  "paddw     %%mm2, %%mm6 \n\t"	
+	  "paddw     %%mm3, %%mm7 \n\t"	
+	   "add       %%eax, %%esi \n\t"	
+	   "movq    (%%esi), %%mm2 \n\t"	
+	  "movq      %%mm2, %%mm3 \n\t"	
+	  "add          $2, %%esi \n\t"	
+	  "punpcklbw %%mm0, %%mm2 \n\t"	
+	  "punpckhbw %%mm0, %%mm3 \n\t"	
+	   "psrlw     %%mm1, %%mm2 \n\t"	
+	  "psrlw     %%mm1, %%mm3 \n\t"	
+	   "paddw     %%mm2, %%mm4 \n\t"	
+	  "paddw     %%mm3, %%mm5 \n\t"	
+	   "movq    (%%esi), %%mm2 \n\t"	
+	  "movq      %%mm2, %%mm3 \n\t"	
+	  "sub          $2, %%esi \n\t"	
+	  "punpcklbw %%mm0, %%mm2 \n\t"	
+	  "punpckhbw %%mm0, %%mm3 \n\t"	
+	   "psrlw     %%mm1, %%mm2 \n\t"	
+	  "psrlw     %%mm1, %%mm3 \n\t"	
+	   "paddw     %%mm2, %%mm6 \n\t"	
+	  "paddw     %%mm3, %%mm7 \n\t"	
+
+	  "movq      %%mm4, %%mm2 \n\t"	
+	  "psrlq       $32, %%mm4 \n\t"	
+	  "psubw     %%mm2, %%mm4 \n\t"	
+	  "movq      %%mm6, %%mm3 \n\t"	
+	  "psrlq       $32, %%mm6 \n\t"	
+	  "psubw     %%mm3, %%mm6 \n\t"	
+	  "punpckldq %%mm6, %%mm4 \n\t"	
+	   "movq      %%mm5, %%mm2 \n\t"	
+	  "psrlq       $32, %%mm5 \n\t"	
+	  "psubw     %%mm2, %%mm5 \n\t"	
+	  "movq      %%mm7, %%mm3 \n\t"	
+	  "psrlq       $32, %%mm7 \n\t"	
+	  "psubw     %%mm3, %%mm7 \n\t"	
+	  "punpckldq %%mm7, %%mm5 \n\t"	
+	  
+	  "movq      %%mm4, %%mm6 \n\t"	
+	  "movq      %%mm5, %%mm7 \n\t"	
+	  "psraw       $15, %%mm6 \n\t"	
+	  "psraw       $15, %%mm7 \n\t"	
+	  "pxor      %%mm6, %%mm4 \n\t"	
+	  "pxor      %%mm7, %%mm5 \n\t"	
+	  "psubsw    %%mm6, %%mm4 \n\t"	
+	  "psubsw    %%mm7, %%mm5 \n\t"	
+	   "packuswb  %%mm5, %%mm4 \n\t"	
+	  "movq    %%mm4, (%%edi) \n\t"	
+
+	  "sub       %%eax, %%esi \n\t"	
+	  "sub       %%eax, %%esi \n\t" "add $8,          %%esi \n\t"	
+	  "add $8,          %%edi \n\t"	
+
+	  "dec              %%ecx \n\t"	
+	  "jnz            .L10412 \n\t"	
+	   "mov       %%ebx, %%esi \n\t"	
+	  "mov       %%edx, %%edi \n\t"	
+	  "add       %%eax, %%esi \n\t"	
+	  "add       %%eax, %%edi \n\t"	
+	   "decl                %2 \n\t"	
+	  "jnz            .L10410 \n\t"	
+
+	  "emms                   \n\t"	
+	  "popa                   \n\t":"=m" (Dest)	
+	  :"m"(Src),		
+	  "m"(rows),		
+	  "m"(columns),		
+	  "m"(NRightShift)	
 	    );
 #endif
 	return (0);
@@ -4012,12 +4007,12 @@ void SDL_imageFilterAlignStack(void)
 {
 #ifdef USE_MMX
     asm volatile
-     (				// --- stack alignment ---
-	 "mov       %%esp, %%ebx \n\t"	// load ESP into EBX
-	 "sub          $4, %%ebx \n\t"	// reserve space on stack for old value of ESP
-	 "and        $-32, %%ebx \n\t"	// align EBX along a 32 byte boundary
-	 "mov     %%esp, (%%ebx) \n\t"	// save old value of ESP in stack, behind the bndry
-	 "mov       %%ebx, %%esp \n\t"	// align ESP along a 32 byte boundary
+     (				
+	 "mov       %%esp, %%ebx \n\t"	
+	 "sub          $4, %%ebx \n\t"	
+	 "and        $-32, %%ebx \n\t"	
+	 "mov     %%esp, (%%ebx) \n\t"	
+	 "mov       %%ebx, %%esp \n\t"	
 	 ::);
 #endif
 }
@@ -4027,9 +4022,9 @@ void SDL_imageFilterRestoreStack(void)
 {
 #ifdef USE_MMX
     asm volatile
-     (				// --- restoring old stack ---
-	 "mov     (%%esp), %%ebx \n\t"	// load old value of ESP
-	 "mov       %%ebx, %%esp \n\t"	// restore old value of ESP
+     (				
+	 "mov     (%%esp), %%ebx \n\t"	
+	 "mov       %%ebx, %%esp \n\t"	
 	 ::);
 #endif
 }
