@@ -333,8 +333,6 @@ void IGame::run() {
 		passive_viewport_stopzone.h -= 2*ymargin;
 	}
 	
-	Uint32 black = _window.mapRGB(0, 0, 0);
-
 	float mapx = 0, mapy = 0, mapvx = 0, mapvy = 0;
 	int fps_limit = 1000;
 	
@@ -342,9 +340,6 @@ void IGame::run() {
 	int max_delay = 1000/fps_limit;
 	LOG_DEBUG(("fps_limit set to %d, maximum frame delay: %d", fps_limit, max_delay));
 
-	sdlx::Surface fps_surf;
-	fps_surf.createRGB(64, 64, 32, SDL_SWSURFACE);
-	
 	while (_running) {
 		Uint32 tstart = SDL_GetTicks();
 		
@@ -423,7 +418,7 @@ void IGame::run() {
 			glFlush_ptr.call();
 		}
 
-		_window.fillRect(window_size, black);
+		_window.fillRect(window_size, 0);
 		map.render(_window, viewport, -1000, 0);
 		World->render(_window, viewport);
 		map.render(_window, viewport, 0, 1001);
@@ -432,9 +427,10 @@ void IGame::run() {
 		
 		
 		std::string f = mrt::formatString("%d", (int)fr);
-		stringRGBA(fps_surf.getSDLSurface(), 4, 4, f.c_str(), 0,0,0, 255);
-		stringRGBA(fps_surf.getSDLSurface(), 3, 3, f.c_str(), 255, 255, 255, 255);
-		_window.copyFrom(fps_surf, 0, 0);
+		_window.lock();
+		stringRGBA(_window.getSDLSurface(), 4, 4, f.c_str(), 0, 0, 0, 255);
+		stringRGBA(_window.getSDLSurface(), 3, 3, f.c_str(), 255, 255, 255, 255);
+		_window.unlock();
 		
 		if (map.loaded()) {
 			const v3<int> world_size = map.getSize();
