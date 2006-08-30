@@ -47,6 +47,7 @@ void Surface::getVideo() {
 void Surface::createRGB(int width, int height, int depth, Uint32 flags) {
 	free();
 	if (flags == Default) flags = default_flags;
+	if (flags == Default) throw_ex(("setup default flags before using it."));
 
 	Uint32 rmask=0, gmask=0, bmask=0, amask=0;
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
@@ -93,6 +94,7 @@ void Surface::createRGBFrom(void *pixels, int width, int height, int depth,  int
 
 void Surface::convert(Surface &dest, PixelFormat *fmt, Uint32 flags)  const {
 	if (flags == Default) flags = default_flags;
+	if (flags == Default) throw_ex(("setup default flags before using it."));
 
 	SDL_Surface *x = SDL_ConvertSurface(surface, fmt, flags);
 	if (x == NULL) 
@@ -102,6 +104,7 @@ void Surface::convert(Surface &dest, PixelFormat *fmt, Uint32 flags)  const {
 
 void Surface::convert(Uint32 flags) {
 	if (flags == Default) flags = default_flags;
+	if (flags == Default) throw_ex(("setup default flags before using it."));
 
 	SDL_Surface *x = SDL_ConvertSurface(surface, surface->format, flags);
 	if (x == NULL) 
@@ -113,6 +116,7 @@ void Surface::convert(Uint32 flags) {
 
 void Surface::setVideoMode(int w, int h, int bpp, int flags) {
 	if (flags == Default) flags = default_flags;
+	if (flags == Default) throw_ex(("setup default flags before using it."));
     free();
     if ((surface = SDL_SetVideoMode(w, h, bpp, flags)) == NULL ) 
 		throw_sdl(("SDL_SetVideoMode(%d, %d, %d, %x)", w, h, bpp, flags));
@@ -275,6 +279,7 @@ void Surface::fillRect(const Rect &r, Uint32 color) {
 
 void Surface::setAlpha(Uint8 alpha, Uint32 flags) {
 	if (flags == Default) flags = default_flags;
+	if (flags == Default) throw_ex(("setup default flags before using it."));
 
     if (SDL_SetAlpha(surface, flags, alpha) == -1) throw_sdl(("SDL_SetAlpha"));
 }
