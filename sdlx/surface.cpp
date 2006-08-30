@@ -22,7 +22,7 @@
 
 using namespace sdlx;
 
-int Surface::default_flags  = Hardware;
+int Surface::default_flags  = Default;
 
 void Surface::setDefaultFlags(const Uint32 flags) {
 	if (flags == Default)
@@ -107,7 +107,6 @@ void Surface::convert(Uint32 flags) {
 	if (x == NULL) 
 		throw_sdl(("SDL_ConvertSurface"));
 	assign(x);
-	LOG_DEBUG(("converted image. store: %s", ((x->flags & SDL_HWSURFACE) == SDL_HWSURFACE)?"hardware":"software"));
 }
 
 
@@ -308,7 +307,11 @@ void Surface::unlock() {
 }
 
 void Surface::convertToHardware() {
+	if ((surface->flags & SDL_HWSURFACE) == SDL_HWSURFACE) {
+		LOG_DEBUG(("%p is already in hardware, skipping", (void*) surface));
+	}
 	convert((surface->flags & ~SDL_SWSURFACE) | SDL_HWSURFACE);
+	LOG_DEBUG(("moving %p to hardware,  result: %s", (void *)surface, ((surface->flags & SDL_HWSURFACE) == SDL_HWSURFACE)?"hardware":"software"));
 }
 
 
