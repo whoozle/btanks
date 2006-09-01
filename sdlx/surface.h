@@ -44,6 +44,7 @@ namespace sdlx {
 		};
 		
 		Surface();
+		Surface(SDL_Surface *x);
 		void assign(SDL_Surface *x);
 
 		const bool isNull() const { return surface == NULL; }

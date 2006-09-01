@@ -32,6 +32,7 @@ void Surface::setDefaultFlags(const Uint32 flags) {
 
 
 Surface::Surface():surface(NULL) {}
+Surface::Surface(SDL_Surface *x) : surface(x) {}
 
 void Surface::assign(SDL_Surface *x) {
 	free();
