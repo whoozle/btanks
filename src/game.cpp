@@ -354,10 +354,13 @@ void IGame::run() {
 	int max_delay = 1000/fps_limit;
 	LOG_DEBUG(("fps_limit set to %d, maximum frame delay: %d", fps_limit, max_delay));
 	sdlx::Surface fps_s;
-	fps_s.createRGB(32, 32, _window.getBPP(), SDL_SWSURFACE | SDL_SRCALPHA);
-	fps_s.convertAlpha();
 	
-	if (SDL_SetColorKey(fps_s.getSDLSurface(), SDL_SRCCOLORKEY, 128) == -1)
+	fps_s.createRGB(32, 32, 8, SDL_SWSURFACE | SDL_SRCCOLORKEY);
+	Uint32 fps_ck = fps_s.mapRGB(255, 0, 255);
+	Uint32 fps_bg = fps_s.mapRGB(0, 0, 0);
+	Uint32 fps_fg = fps_s.mapRGB(255, 255, 255);
+	
+	if (SDL_SetColorKey(fps_s.getSDLSurface(), SDL_SRCCOLORKEY, fps_ck) == -1)
 		throw_sdl(("SDL_SetColorKey"));
 	//fps_s.convertAlpha();
 
@@ -449,11 +452,14 @@ void IGame::run() {
 		
 		std::string f = mrt::formatString("%d", (int)fr);
 		fps_s.lock();
-		fps_s.fillRect(fps_s.getSize(), 128);
-		stringRGBA(fps_s.getSDLSurface(), 4, 4, f.c_str(), 0, 0, 0, 255);
-		stringRGBA(fps_s.getSDLSurface(), 3, 3, f.c_str(), 255, 255, 255, 255);
+		fps_s.fillRect(fps_s.getSize(), fps_ck);
+		stringColor(fps_s.getSDLSurface(), 4, 4, f.c_str(), fps_bg);
+		stringColor(fps_s.getSDLSurface(), 3, 3, f.c_str(), fps_fg);
 		fps_s.unlock();
-		_window.copyFrom(fps_s, 0, 0);
+		
+		sdlx::Surface fps_temp(SDL_DisplayFormatAlpha(fps_s.getSDLSurface()));
+		_window.copyFrom(fps_temp, 0, 0);
+		fps_temp.free();
 		
 		if (map.loaded()) {
 			const v3<int> world_size = map.getSize();
