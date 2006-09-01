@@ -157,7 +157,7 @@ void IGame::init(const int argc, char *argv[]) {
 		}
 	}
 	
-	int flags = SDL_HWSURFACE | SDL_SRCALPHA | SDL_ANYFORMAT;
+	int flags = SDL_HWSURFACE | SDL_ANYFORMAT;
 	if (_vsync) flags |= SDL_DOUBLEBUF;
 	if (fullscreen) flags |= SDL_FULLSCREEN;
 	
