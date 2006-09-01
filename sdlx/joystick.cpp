@@ -1,4 +1,4 @@
-#include "SDL/SDL.h"
+#include "sdlx.h"
 
 #include "sdlx/joystick.h"
 #include "sdlx/sdl_ex.h"

@@ -99,8 +99,10 @@ void IGame::init(const int argc, char *argv[]) {
 #if SDL_MAJOR_VERSION >= 1 && SDL_MINOR_VERSION >= 3
 	if (_opengl)
 		_putenv("SDL_VIDEO_RENDERER=opengl");
+#else
+	if (_opengl)
+		_putenv("SDL_VIDEODRIVER=opengl");
 #endif
-
 
 	LOG_DEBUG(("initializing SDL..."));
 #ifdef DEBUG
@@ -127,7 +129,7 @@ void IGame::init(const int argc, char *argv[]) {
 			throw_ex(("cannot get address of glFlush"));
 	}
 	
-	sdlx::Surface::setDefaultFlags(sdlx::Surface::Hardware | sdlx::Surface::Alpha);
+	sdlx::Surface::setDefaultFlags(sdlx::Surface::Hardware | sdlx::Surface::Alpha | (_opengl? SDL_OPENGL: 0) );
 
 	LOG_DEBUG(("initializing SDL_ttf..."));
 	sdlx::TTF::init();

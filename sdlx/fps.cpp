@@ -1,6 +1,6 @@
+#include "sdlx.h"
 #include "sdlx/fps.h"
 #include "sdlx/sdl_ex.h"
-#include "SDL/SDL.h"
 
 using namespace sdlx;
 

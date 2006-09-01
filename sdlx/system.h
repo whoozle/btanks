@@ -18,8 +18,6 @@
 #ifndef __SDL_SYSTEM_H__
 #define __SDL_SYSTEM_H__
 
-#include <SDL/SDL.h>
-
 namespace sdlx {
 	class System {
 	public:

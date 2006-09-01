@@ -29,7 +29,7 @@
 #ifndef _SDL_COLLIDE_h
 #define _SDL_COLLIDE_h
 
-#include <SDL/SDL.h>
+#include "sdlx/sdlx.h"
 
 /* Set up for C function definitions, even when using C++ */
 #ifdef __cplusplus

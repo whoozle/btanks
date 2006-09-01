@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 #include "sdlx/system.h"
+#include "sdlx/sdlx.h"
 #include "sdlx/sdl_ex.h"
 #include <stdlib.h>
 

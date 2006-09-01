@@ -1,0 +1,45 @@
+
+	How To Use The glSDL Wrapper Hack
+	---------------------------------
+	1. Include glSDL.h instead of SDL.h.
+	2. Add SDL_GLSDL to the flags to SDL_SetVideoMode().
+	3. Do *NOT* use the glSDL_*() calls explicitly!
+	4. #define HAVE_OPENGL if OpenGL is present.
+	5. Link with SDL, SDL_image, OpenGL and math.
+	6. Enjoy!
+
+
+	Notes
+	-----
+	* MS Visual C++ users: check out VisualC.html.
+	  (Project files by Florian Hufsky. Thanks!)
+
+	* Step 4 is intended to be handled by autoconf
+	  scripts or similar, so projects can be compiled
+	  with or without OpenGL. If HAVE_OPENGL is not
+	  defined when compiling, the application will use
+	  SDL directly, as if glSDL was not there.
+
+	  If you're not using GNU autotools or similar
+	  configuration tool, you can uncomment the
+	  '#define HAVE_OPENGL' line in glSDL.h.
+
+	* No, look again! :-) The parallax4 demo is
+	  actually running 640x480 - glSDL 0.2 and later
+	  won't even try any lower resolutions.
+
+	* There are some glSDL_*() calls that do not
+	  replace SDL API calls. These are the only calls
+	  meant to be used explicitly, but as most of them
+	  are probably broken, and because they make your
+	  code depend on glSDL, it's probably a better
+	  idea to just forget about them.
+
+	* Don't whine about the wrapper approach. A real
+	  SDL backend version is in the works. (Mostly
+	  working as I write this.) This backend lets
+	  you run most existing SDL applications with
+	  acceleration without recompiling them.
+
+
+		//David Olofson <david@olofson.net>

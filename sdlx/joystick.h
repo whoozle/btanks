@@ -19,7 +19,7 @@
  */
 
 #include <string>
-#include <SDL/SDL.h>
+#include "sdlx.h"
 
 namespace sdlx {
 class Joystick {

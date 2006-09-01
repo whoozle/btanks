@@ -1,4 +1,4 @@
-#include <SDL/SDL.h>
+#include "sdlx/sdlx.h"
 #include "joyplayer.h"
 #include "player_state.h"
 #include "mrt/logger.h"
