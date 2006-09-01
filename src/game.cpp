@@ -126,7 +126,12 @@ void IGame::init(const int argc, char *argv[]) {
 			throw_ex(("cannot get address of glFlush"));
 	}
 	
-	sdlx::Surface::setDefaultFlags(sdlx::Surface::Hardware | sdlx::Surface::Alpha | (_opengl? SDL_OPENGL: 0) );
+	int default_flags = sdlx::Surface::Hardware | sdlx::Surface::Alpha | (_opengl? SDL_OPENGL: 0) ;
+#ifdef USE_GLSDL
+	default_flags |= SDL_GLSDL;
+#endif
+
+	sdlx::Surface::setDefaultFlags(default_flags);
 
 	LOG_DEBUG(("initializing SDL_ttf..."));
 	sdlx::TTF::init();
@@ -165,7 +170,10 @@ void IGame::init(const int argc, char *argv[]) {
 		glEnable_ptr.call( GL_BLEND ) ;
 	
 		//_window.setVideoMode(w, h, 0,  SDL_OPENGL | SDL_OPENGLBLIT | flags );
-		_window.setVideoMode(w, h, 0,  SDL_GLSDL | flags );
+#ifdef USE_GLSDL
+		flags |= SDL_GLSDL;
+#endif
+		_window.setVideoMode(w, h, 0, flags );
 	} else {
 		_window.setVideoMode(w, h, 0, flags);
 	}
