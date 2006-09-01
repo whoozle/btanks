@@ -164,7 +164,8 @@ void IGame::init(const int argc, char *argv[]) {
 		glBlendFunc_ptr.call( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
 		glEnable_ptr.call( GL_BLEND ) ;
 	
-		_window.setVideoMode(w, h, 0,  SDL_OPENGL | SDL_OPENGLBLIT | flags );
+		//_window.setVideoMode(w, h, 0,  SDL_OPENGL | SDL_OPENGLBLIT | flags );
+		_window.setVideoMode(w, h, 0,  SDL_GLSDL | flags );
 	} else {
 		_window.setVideoMode(w, h, 0, flags);
 	}

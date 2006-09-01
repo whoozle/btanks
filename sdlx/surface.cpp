@@ -249,9 +249,12 @@ void Surface::update(const int x, const int y, const int w, const int h) {
 }
 
 void Surface::flip() {
-	SDL_Flip(surface);
+	//SDL_Flip(surface);
 	if ((surface->flags & SDL_OPENGL) == SDL_OPENGL) {
 		SDL_GL_SwapBuffers();
+	} else {
+		if (SDL_Flip(surface) == -1)
+			throw_sdl(("SDL_Flip"));
 	}
 }
 

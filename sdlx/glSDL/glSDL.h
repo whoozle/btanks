@@ -14,7 +14,7 @@
  * compile with OpenGL enabled:
  */
 #define HAVE_OPENGL
-#define HAS_SDL_OPENGL_H
+#define HAS_SDL_OPENGL_H 1
 
 /* We're still using SDL datatypes here - we just add some stuff. */
 #include "SDL/SDL.h"
@@ -29,7 +29,7 @@
 
 #else	/* HAVE_OPENGL */
 
-#include "begin_code.h"
+#include "SDL/begin_code.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -266,7 +266,7 @@ glSDL_TexInfo *glSDL_GetTexInfo(SDL_Surface *surface);
 #ifdef __cplusplus
 }
 #endif
-#include "close_code.h"
+#include "SDL/close_code.h"
 
 /* Some ugly "overriding"... */
 #ifndef	_GLSDL_NO_REDEFINES_

@@ -19,6 +19,8 @@ Help(opts.GenerateHelpText(env))
 #debug = True
 debug = False
 
+env.Append(CPPDEFINES = ['USE_GLSDL'])
+
 #print sys.platform
 if sys.platform == "win32":
 	env.Append(CPPDEFINES = ['WIN32', '_WINDOWS']) #, '_UNICODE'
@@ -127,7 +129,7 @@ bt_sources = 	['src/alarm.cpp', 'src/base_object.cpp',
 	vobj
 	]
 
-bt_libs = ['sdlx', 'mrt', sigc_lib, 'gfx', 'SDL_ttf', 'SDL_image', 'SDL_net', 'SDL', 'expat', 'z']
+bt_libs = ['sdlx', 'mrt', sigc_lib, 'gfx', 'SDL_ttf', 'SDL_image', 'SDL_net', 'SDL', 'expat', 'z', 'GL']
 if sys.platform == "win32":
 #	bt_libs[0:0] = ['SDLmain']
 	bt_libs.append('Ws2_32')
