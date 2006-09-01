@@ -240,6 +240,10 @@ void Surface::update(const Rect &rect) {
     SDL_UpdateRect(surface, rect.x, rect.y, rect.w, rect.h);
 }
 
+void Surface::update() {
+    SDL_UpdateRect(surface, 0, 0, 0, 0);
+}
+
 void Surface::update(const int x, const int y, const int w, const int h) {
     SDL_UpdateRect(surface, x, y, w, h);
 }

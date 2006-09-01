@@ -86,7 +86,8 @@ namespace sdlx {
 		void copyFrom(const Surface &s, Rect &from, int x, int y);
 		void copyFrom(const Surface &s, Rect &from); //to pos 0:0
 		
-		void update(const Rect &rect = Rect());
+		void update();
+		void update(const Rect &rect);
 		void update(const int x, const int y, const int w, const int h);
 		void flip();
 		void toggleFullscreen();
