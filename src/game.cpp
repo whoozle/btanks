@@ -99,9 +99,6 @@ void IGame::init(const int argc, char *argv[]) {
 #if SDL_MAJOR_VERSION >= 1 && SDL_MINOR_VERSION >= 3
 	if (_opengl)
 		_putenv("SDL_VIDEO_RENDERER=opengl");
-#else
-	if (_opengl)
-		_putenv("SDL_VIDEODRIVER=opengl");
 #endif
 
 	LOG_DEBUG(("initializing SDL..."));
