@@ -25,7 +25,7 @@ env.Append(CPPDEFINES = ['USE_GLSDL'])
 if sys.platform == "win32":
 	env.Append(CPPDEFINES = ['WIN32', '_WINDOWS']) #, '_UNICODE'
 	env.Append(CCFLAGS = ' /GR /W3 /MD /nologo ')
-	env.Append(CPPFLAGS = ' /GX /TP /GR /W3 /MD /nologo ')
+	env.Append(CPPFLAGS = ' /GX /GR /W3 /MD /nologo ')
 
 	if debug:
 		env.Append(CCFLAGS = ' /Yd /Zi /Ge /GT /GZ /Od /ZI ')
@@ -129,9 +129,12 @@ bt_sources = 	['src/alarm.cpp', 'src/base_object.cpp',
 	vobj
 	]
 
-bt_libs = ['sdlx', 'mrt', sigc_lib, 'gfx', 'SDL_ttf', 'SDL_image', 'SDL_net', 'SDL', 'expat', 'z', 'GL']
+bt_libs = ['sdlx', 'mrt', sigc_lib, 'gfx', 'SDL_ttf', 'SDL_image', 'SDL_net', 'SDL', 'expat', 'z']
 if sys.platform == "win32":
 #	bt_libs[0:0] = ['SDLmain']
 	bt_libs.append('Ws2_32')
+	bt_libs.append('opengl32')
+else: 
+	bt_libs.append('GL')
 
 bt = env.Program('bt', bt_sources, LIBS=bt_libs, RPATH=['.'])

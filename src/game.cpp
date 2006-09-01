@@ -428,7 +428,7 @@ void IGame::run() {
 		}
 		Uint32 t_tick = SDL_GetTicks() - tstart;
 		if (_opengl) {
-			glFlush_ptr.call();
+			//glFlush_ptr.call();
 		}
 
 		_window.fillRect(window_size, 0);

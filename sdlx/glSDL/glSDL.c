@@ -124,7 +124,7 @@ glSDL_TexInfo *glSDL_AllocTexInfo(SDL_Surface *surface)
 
 	if(!texinfotab)
 	{
-		texinfotab = calloc(MAX_TEXINFOS, sizeof(glSDL_TexInfo *));
+		texinfotab = (glSDL_TexInfo **)calloc(MAX_TEXINFOS, sizeof(glSDL_TexInfo *));
 		if(!texinfotab)
 			return NULL;
 	}
@@ -149,7 +149,7 @@ glSDL_TexInfo *glSDL_AllocTexInfo(SDL_Surface *surface)
 	}
 
 	/* ...and hook a new texinfo struct up to it. */
-	texinfotab[handle] = calloc(1, sizeof(glSDL_TexInfo));
+	texinfotab[handle] = (glSDL_TexInfo *) calloc(1, sizeof(glSDL_TexInfo));
 	if(!texinfotab[handle])
 		return NULL;
 
@@ -269,7 +269,7 @@ static int _CalcChop(glSDL_TexInfo *txi)
 
 	/* Calculate number of textures needed */
 	txi->textures = (rows + txi->tilespertex-1) / txi->tilespertex;
-	txi->texture = malloc(txi->textures * sizeof(int));
+	txi->texture = (int *)malloc(txi->textures * sizeof(int));
 	memset(txi->texture, -1, txi->textures * sizeof(int));
 	DBG3(fprintf(stderr, "textures=%d, ", txi->textures));
 	if(!txi->texture)

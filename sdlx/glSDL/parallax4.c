@@ -226,7 +226,7 @@ int main(int argc, char* argv[])
 	if(flags & SDL_FULLSCREEN)
 		printf("Display is fullscreen.\n");
 
-	layers = calloc(sizeof(layer_t), num_of_layers);
+	layers = (layer_t *) calloc(sizeof(layer_t), num_of_layers);
 	if(!layers)
 	{
 		fprintf(stderr, "Failed to allocate layers!\n");
