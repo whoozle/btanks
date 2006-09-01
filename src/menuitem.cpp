@@ -12,6 +12,8 @@ void MenuItem::render(sdlx::TTF &font) {
 	_inversed.free();
 
 	font.renderBlended(_normal, _value, _color);
+	_normal.convertAlpha();
+	_normal.convertToHardware();
 	//LOG_DEBUG(("normal  : %dx%d:%d (%d)", _normal.getWidth(), _normal.getHeight(), _normal.getBPP(), _normal.getSDLSurface()->format->BytesPerPixel));
 
 	_inversed.createRGB(_normal.getWidth(), _normal.getHeight(), _normal.getBPP(), SDL_SWSURFACE);
