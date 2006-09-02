@@ -36,6 +36,8 @@
 #endif
 
 
+//#define SHOW_PERFSTATS
+
 IMPLEMENT_SINGLETON(Game, IGame)
 
 IGame::IGame() {
@@ -79,6 +81,7 @@ void IGame::init(const int argc, char *argv[]) {
 		else if (strcmp(argv[i], "--dx") == 0) dx = true;
 #endif
 		else if (strcmp(argv[i], "-2") == 0) { w = 1024; h = 768; }
+		else if (strcmp(argv[i], "-3") == 0) { w = 1280; h = 1024; }
 		else throw_ex(("unrecognized option: '%s'", argv[i]));
 	}
 	
@@ -348,7 +351,7 @@ void IGame::run() {
 	}
 	
 	float mapx = 0, mapy = 0, mapvx = 0, mapvy = 0;
-	int fps_limit = 1000;
+	int fps_limit = 150;
 	
 	float fr = fps_limit;
 	int max_delay = 1000/fps_limit;
@@ -437,7 +440,9 @@ void IGame::run() {
 				}
 			}
 		}
+#ifdef SHOW_PERFSTATS
 		Uint32 t_tick = SDL_GetTicks() - tstart;
+#endif
 		if (_opengl) {
 			//glFlush_ptr.call();
 		}
@@ -483,16 +488,23 @@ void IGame::run() {
 			//LOG_DEBUG(("%f %f", mapx, mapy));
 		}
 
+#ifdef SHOW_PERFSTATS
 		Uint32 t_render = SDL_GetTicks() - tstart;
+#endif
 		_window.flip();
 		
+#ifdef SHOW_PERFSTATS
 		Uint32 t_flip = SDL_GetTicks() - tstart;
-	
+#endif
 		int tdelta = SDL_GetTicks() - tstart;
 
+#ifdef SHOW_PERFSTATS
 		LOG_DEBUG(("tick time: %u, render time: %u, flip time: %u", t_tick, t_render, t_flip));
+#endif
 		if (tdelta < max_delay) {
+#ifdef SHOW_PERFSTATS
 			LOG_DEBUG(("tdelta: %d, delay: %d", tdelta, max_delay - tdelta));
+#endif
 			SDL_Delay(max_delay - tdelta);
 		}
 
