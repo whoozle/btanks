@@ -331,7 +331,7 @@ void Surface::convertToHardware() {
 		LOG_DEBUG(("%p is already in hardware, skipping", (void*) surface));
 	}
 	convert((surface->flags & ~SDL_SWSURFACE) | SDL_HWSURFACE);
-	LOG_DEBUG(("moving %p to hardware,  result: %s", (void *)surface, ((surface->flags & SDL_HWSURFACE) == SDL_HWSURFACE)?"hardware":"software"));
+	//LOG_DEBUG(("moving %p to hardware,  result: %s", (void *)surface, ((surface->flags & SDL_HWSURFACE) == SDL_HWSURFACE)?"hardware":"software"));
 }
 
 
