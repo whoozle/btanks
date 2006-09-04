@@ -171,14 +171,19 @@ void IWorld::tick(const float dt) {
 		{
 			int f = o._follow;
 			if (f != 0) {
-				ObjectMap::const_iterator i = _id2obj.find(f);
-				if (i != _id2obj.end()) {
-					const Object *leader = i->second;
+				ObjectMap::const_iterator o_i = _id2obj.find(f);
+				if (o_i != _id2obj.end()) {
+					const Object *leader = o_i->second;
 					//LOG_DEBUG(("following %d...", f));
 					o._direction = leader->_direction;
 					o._position = leader->_position + o._follow_position;
 					o._velocity = leader->_velocity;
 					o.setDirection(leader->getDirection());
+					++i;
+					continue;
+				} else {
+					LOG_WARN(("leader for object %d is dead. (leader-id:%d)", o._id, f));
+					o._follow = 0;
 				}
 			}
 		}
