@@ -2,8 +2,8 @@
 	
 	<animation-model id="tank-animation" speed="5">
 		<pose id="hold">0</pose>
-		<pose id="start" speed="10">1,2</pose>
-		<pose id="move">1,2</pose>
+		<pose id="start" speed="10">0,1,2</pose>
+		<pose id="move">0,1,2</pose>
 		<pose id="fire" speed="10">3,4</pose>
 	</animation-model>
 
@@ -84,9 +84,9 @@
 	<animation id="rocket-fire" tile="rocket_fire.png" model="rocket-fire-animation" />
 	<animation id="rocket-launch" tile="rocket_launch.png" model="rocket-launch-animation" tile_width="128" tile_height="128" />
 	
-	<object class="tank" speed="400" mass="10" hp="5" />
+	<object class="tank" speed="400" mass="1000" hp="5"/>
 	<object class="ai-tank" parent="tank" />
-	<object class="launcher" speed="300" mass="10" hp="3" />
+	<object class="launcher" speed="300" mass="500" hp="3" />
 	<object class="bullet" speed="550" mass="1" piercing="true" ttl="1" />
 	<object class="rocket" speed="450" mass="5" piercing="true" ttl="5" hp="3" />
 	<object class="rocket-launch" impassability="0" />
