@@ -1,20 +1,19 @@
 #include "object.h"
 #include "resource_manager.h"
 
-class SinglePose : public Object {
+class Corpse : public Object {
 public:
-	SinglePose(const std::string &pose, const bool repeat) : Object("single-pose"), _pose(pose), _repeat(repeat) {}
+	Corpse(const int fc) : Object("corpse"), _fire_cycles(fc) {}
 
 	virtual Object * clone(const std::string &opt) const;
 	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
 	virtual void tick(const float dt);
 	virtual void onSpawn();
-private:
-	std::string _pose;
-	bool _repeat;
+private: 
+	int _fire_cycles;
 };
 
-void SinglePose::emit(const std::string &event, BaseObject * emitter) {
+void Corpse::emit(const std::string &event, BaseObject * emitter) {
 	if (event == "collision") {
 		if (emitter->classname == "bullet") {
 			hp -= emitter->hp;
@@ -26,7 +25,7 @@ void SinglePose::emit(const std::string &event, BaseObject * emitter) {
 	} else Object::emit(event, emitter);
 }
 
-void SinglePose::tick(const float dt) {
+void Corpse::tick(const float dt) {
 	Object::tick(dt);
 	if (!getState().size()) {	
 		//LOG_DEBUG(("over"));
@@ -34,20 +33,23 @@ void SinglePose::tick(const float dt) {
 	}
 }
 
-void SinglePose::onSpawn() {
+void Corpse::onSpawn() {
 	//LOG_DEBUG(("single-pose: play('%s', %s)", _pose.c_str(), _repeat?"true":"false"));
-	play(_pose, _repeat);
+	play("fade-in", false);
+	for(int i = 0; i < _fire_cycles; ++i)
+		play("burn", false);
+	play("fade-out", false);
+	play("dead", true);
 }
 
 
-Object* SinglePose::clone(const std::string &opt) const  {
+Object* Corpse::clone(const std::string &opt) const  {
 	Object *a = NULL;
 	TRY {
-		a = new SinglePose(*this);
+		a = new Corpse(*this);
 		ResourceManager->initMe(a, opt);
 	} CATCH("clone", { delete a; throw; });
 	return a;
 }
 
-REGISTER_OBJECT("single-pose", SinglePose, ("main", true));
-REGISTER_OBJECT("rocket-launch", SinglePose, ("launch", false));
+REGISTER_OBJECT("corpse", Corpse, (10));
