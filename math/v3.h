@@ -24,14 +24,25 @@ public:
 	}
 	
 	inline const T normalize() {
-		T len = length();
-		if (len == 0 || len == 1) 
+		const T len = length();
+		if (len == (T)0 || len ==(T)1) 
 			return len;
 		
 		x /= len;
 		y /= len;
 		z /= len;
-		return 1;
+		return (T)1;
+	}
+
+	inline const T normalize(const T nlen) {
+		const T len = length();
+		if (len == (T)0 || len == nlen) 
+			return len;
+		
+		x /= nlen * len;
+		y /= nlen * len;
+		z /= nlen * len;
+		return nlen;
 	}
 	
 	inline const T length() const {
@@ -55,9 +66,9 @@ public:
 	}
 	
 	inline const T quick_distance(const v3<T>& other) const {
-		T dx = x - other.x;
-		T dy = y - other.y;
-		T dz = z - other.z;
+		const T dx = x - other.x;
+		const T dy = y - other.y;
+		const T dz = z - other.z;
 		return (dx * dx + dy * dy + dz * dz);
 	}
 
