@@ -73,7 +73,7 @@ protected:
 	void getPosition(v3<int> &position);
 	
 	v3<float> _velocity, _direction;
-	float _distance;
+	float _distance, _moving_time, _idle_time;
 
 	virtual void calculate(const float dt);
 private:

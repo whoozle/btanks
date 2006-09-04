@@ -183,14 +183,23 @@ void IWorld::tick(const float dt) {
 			}
 		}
 		
-		v3<float> vel = o._velocity;
+		v3<float> &vel = o._velocity;
 		float len = vel.normalize();
 		
 		if (len == 0) {
+			o._moving_time = 0;
+			o._idle_time += dt;
 			++i;
 			continue;
 		}
+		o._idle_time = 0;
+		o._moving_time += dt;
 		o._direction = o._velocity;
+		
+		const float ac_t = o.mass / 1000.0;
+		if (o.mass > 0 && o._moving_time < ac_t) {
+			vel *= o._moving_time / ac_t * o._moving_time / ac_t;
+		}
 
 		//LOG_DEBUG(("im = %f", im));
 		v3<float> dpos = o.speed * vel * dt;
