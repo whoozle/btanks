@@ -69,7 +69,10 @@
 	<animation id="dead-yellow-tank" tile="tank03_crash.png" model="dead-tank-animation"/>
 	<animation id="dead-cyan-tank" tile="tank04_crash.png" model="dead-tank-animation"/>
 
-	<animation id="green-launcher" tile="Launcher_tile1.png" model="launcher-animation"/>
+	<animation id="green-launcher" tile="launcher01.png" model="launcher-animation"/>
+	<animation id="red-launcher" tile="launcher02.png" model="launcher-animation"/>
+	<animation id="yellow-launcher" tile="launcher03.png" model="launcher-animation"/>
+	<animation id="cyan-launcher" tile="launcher04.png" model="launcher-animation"/>
 	
 	<animation id="bullet" tile="bullet_tile.png" model="bullet-animation"/>
 	<animation id="explosion" tile="explosion.png" model="explosion-animation" />
