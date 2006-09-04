@@ -39,9 +39,9 @@ public:
 		if (len == (T)0 || len == nlen) 
 			return len;
 		
-		x /= nlen * len;
-		y /= nlen * len;
-		z /= nlen * len;
+		x *= nlen / len;
+		y *= nlen / len;
+		z *= nlen / len;
 		return nlen;
 	}
 	
