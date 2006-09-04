@@ -8,12 +8,19 @@
 REGISTER_OBJECT("tank", Tank, ());
 
 Tank::Tank() 
-: Object("player"), _fire(0.5, false) {
+: Object("player"), _fire(0.5, false), _smoke(NULL) {
 }
 
 Tank::Tank(const std::string &animation) 
-: Object("player"), _fire(0.5, false) {
+: Object("player"), _fire(0.5, false), _smoke(NULL) {
 	setup(animation);
+}
+
+
+void Tank::onSpawn() {
+	_smoke = spawnGrouped("single-pose", "smoke", v3<float>(0,0,0.1), Centered);
+	_smoke->hp = 100000;
+	_smoke->impassability = 0;
 }
 
 Object * Tank::clone(const std::string &opt) const {
@@ -29,6 +36,7 @@ Object * Tank::clone(const std::string &opt) const {
 
 void Tank::emit(const std::string &event, BaseObject * emitter) {
 	if (event == "death") {
+		_smoke->emit(event, emitter);
 		LOG_DEBUG(("dead"));
 		cancelAll();
 		//play("dead", true);

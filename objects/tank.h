@@ -27,12 +27,14 @@ public:
 	Tank();
 	Tank(const std::string &animation);
 	virtual Object * clone(const std::string &opt) const;
+	virtual void onSpawn();
 
 	virtual void emit(const std::string &event, BaseObject * emitter);
 	virtual void tick(const float dt);
 	
 private:
 	Alarm _fire;
+	Object *_smoke;	
 };
 
 #endif
