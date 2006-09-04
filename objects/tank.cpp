@@ -18,7 +18,7 @@ Tank::Tank(const std::string &animation)
 
 
 void Tank::onSpawn() {
-	_smoke = spawnGrouped("single-pose", "smoke", v3<float>(0,0,0.1), Centered);
+	_smoke = spawnGrouped("single-pose", "tank-smoke", v3<float>(0,0,0.1), Centered);
 	_smoke->hp = 100000;
 	_smoke->impassability = 0;
 }

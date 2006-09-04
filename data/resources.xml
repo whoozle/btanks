@@ -77,7 +77,8 @@
 	<animation id="bullet" tile="bullet_tile.png" model="bullet-animation"/>
 	<animation id="explosion" tile="explosion.png" model="explosion-animation" />
 	<animation id="traffic-lights" tile="traffic_lights_tile.png" model="traffic-lights-animation"/>
-	<animation id="smoke" tile="Smoke_tile1.png" model="smoke-animation" />
+	<animation id="launcher-smoke" tile="launcher_smoke.png" model="smoke-animation" />
+	<animation id="tank-smoke" tile="tank_smoke.png" model="smoke-animation" />
 	<animation id="rockets-in-vehicle" tile="Rocket_tile1.png" model="rockets-in-vehicle-animation" />
 	<animation id="rocket" tile="rocket.png" model="single-tile" />
 	<animation id="rocket-fire" tile="rocket_fire.png" model="rocket-fire-animation" />
