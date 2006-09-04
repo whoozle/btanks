@@ -13,7 +13,7 @@
 #include <assert.h>
 #include <limits>
 
-#include "sdl_collide/SDL_collide.h"
+#include "SDL_collide/SDL_collide.h"
 
 IMPLEMENT_SINGLETON(World, IWorld)
 

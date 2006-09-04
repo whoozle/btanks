@@ -124,7 +124,7 @@ bt_sources = 	['src/alarm.cpp', 'src/base_object.cpp',
 	'src/object.cpp', 'src/animation_model.cpp', 
 	'src/resource_manager.cpp', 'src/world.cpp',
 	'tmx/map.cpp', 'tmx/layer.cpp', 
-	'sdl_collide/SDL_collide.c', 
+	'SDL_collide/SDL_collide.c', 
 	'src/main.cpp', 'src/game.cpp', 
 	vobj
 	]
