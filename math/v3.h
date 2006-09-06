@@ -74,6 +74,10 @@ public:
 
 	
 	//operators 
+	inline const v3<T> operator-() const {
+		return v3<T>(-x, -y, -z);
+	}
+	
 	inline const bool operator==(const v3<T> &other) {
 		return x == other.x && y == other.y && z == other.z;
 	}
