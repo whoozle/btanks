@@ -188,10 +188,10 @@ void IWorld::tick(const float dt) {
 			}
 		}
 		
-		v3<float> &vel = o._velocity;
+		v3<float> vel = o._velocity;
 		float len = vel.normalize();
 		
-		if (len == 0) {
+		if (len == 0 && o._velocity_fadeout.is0()) {
 			o._moving_time = 0;
 			o._idle_time += dt;
 			++i;
@@ -205,6 +205,7 @@ void IWorld::tick(const float dt) {
 		if (o.mass > 0 && o._moving_time < ac_t) {
 			vel *= o._moving_time / ac_t * o._moving_time / ac_t;
 		}
+		vel += o._velocity_fadeout;
 
 		//LOG_DEBUG(("im = %f", im));
 		v3<float> dpos = o.speed * vel * dt;
@@ -230,12 +231,7 @@ void IWorld::tick(const float dt) {
 		//osurf.saveBMP("snapshot.bmp");
 		
 		float obj_im = getImpassability(*i, osurf, new_pos);
-/*
-		if (getImpassability(*i, osurf, o._position.convert<int>()) == 1.0 && obj_im == 1.0) {
-			//obj_im = 0.1; //fix it.
-		}
-*/		//LOG_DEBUG(("obj_im = %f", obj_im));
-		
+		//LOG_DEBUG(("obj_im = %f", obj_im));
 		float map_im = 1;
 		if (o.piercing) {
 			if (map.getImpassability(osurf, new_pos) == 100) {
@@ -249,6 +245,14 @@ void IWorld::tick(const float dt) {
 			} 
 */		}
 
+		if (obj_im == 1 || map_im == 0) {
+			//LOG_DEBUG(("bang!"));
+			o._velocity_fadeout = -vel;
+			o._velocity.clear();
+			o._moving_time = 0;
+		}
+		
+
 		if (o.isDead()) {
 			_id2obj.erase((*i)->_id);
 			delete *i;
@@ -261,6 +265,12 @@ void IWorld::tick(const float dt) {
 			o._distance -= dpos.length();
 		}
 		o._position += dpos;
+
+		o._velocity_fadeout *= 0.9;
+		//LOG_DEBUG(("vfadeout: %g %g", o._velocity_fadeout.x, o._velocity_fadeout.y));
+		if (o._velocity_fadeout.quick_length() < 0.1) {
+			o._velocity_fadeout.clear();
+		}
 		++i;
 	}
 }
