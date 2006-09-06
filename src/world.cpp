@@ -165,6 +165,8 @@ void IWorld::tick(const float dt) {
 			continue;
 		}
 		
+		
+		v3<float> old_vel = o._velocity;
 		o.calculate(dt);
 		o.tick(dt);
 		
@@ -190,17 +192,24 @@ void IWorld::tick(const float dt) {
 		
 		v3<float> vel = o._velocity;
 		float len = vel.normalize();
+
 		
-		if (len == 0 && o._velocity_fadeout.is0()) {
+		if (len == 0) {
+			if (o._moving_time > 0) {
+				o._velocity_fadeout = old_vel;
+			}
 			o._moving_time = 0;
 			o._idle_time += dt;
-			++i;
-			continue;
+			if (o._velocity_fadeout.is0()) {
+				++i;
+				continue;
+			}
+		} else {
+			o._idle_time = 0;
+			o._moving_time += dt;
+			o._direction = o._velocity;
 		}
-		o._idle_time = 0;
-		o._moving_time += dt;
-		o._direction = o._velocity;
-		
+
 		const float ac_t = o.mass / 1000.0;
 		if (o.mass > 0 && o._moving_time < ac_t) {
 			vel *= o._moving_time / ac_t * o._moving_time / ac_t;
@@ -209,11 +218,6 @@ void IWorld::tick(const float dt) {
 
 		//LOG_DEBUG(("im = %f", im));
 		v3<float> dpos = o.speed * vel * dt;
-/*		
-		float dx = o.speed * vx / len * dt;
-		float dy = o.speed * vy / len * dt;
-		float dz = o.speed * vz / len * dt;
-*/
 		v3<int> new_pos((o._position + dpos).convert<int>());
 
 		int ow = o.size.x;
