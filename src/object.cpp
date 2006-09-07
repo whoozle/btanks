@@ -176,7 +176,18 @@ void Object::render(sdlx::Surface &surface, const int x, const int y) {
 	}
 	
 	int frame = (int)_pos;
-	if (frame < 0 || frame >= (int)pose->frames.size()) {
+	int n = (int)pose->frames.size();
+	if (n == 0) {
+		LOG_WARN(("%s: pose '%s' doesnt have any frames", classname.c_str(), _events.front().name.c_str()));
+		return; 
+	}
+	
+	
+	//this stuff need to be fixed, but I still cannot find cause for overflowing frame
+	int r = frame / n;
+	frame -= r*n;
+	
+	if (frame < 0 || frame >= n) {
 		LOG_WARN(("%s: event '%s' frame %d is out of range (position: %g).", classname.c_str(), _events.front().name.c_str(), frame, _pos));
 		return;		
 	}
