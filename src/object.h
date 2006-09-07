@@ -44,6 +44,7 @@ public:
 	
 	virtual void tick(const float dt);
 	virtual void render(sdlx::Surface &surface, const int x, const int y);
+	void renderCopy(sdlx::Surface &surface);
 	
 	void play(const std::string &id, const bool repeat = false);
 	void playNow(const std::string &id);

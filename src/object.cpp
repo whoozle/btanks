@@ -270,3 +270,9 @@ void Object::onSpawn() {}
 Object * Object::spawnGrouped(const std::string &classname, const std::string &animation, const v3<float> &dpos, const GroupType type) {
 	return World->spawnGrouped(this, classname, animation, dpos, type);
 }
+
+void Object::renderCopy(sdlx::Surface &surface) {
+	const_cast<sdlx::Surface *>(_surface)->setAlpha(0,0);
+	render(surface, 0, 0);
+	const_cast<sdlx::Surface *>(_surface)->setAlpha(0, SDL_SRCALPHA);
+}

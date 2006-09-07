@@ -95,8 +95,7 @@ const float IWorld::getImpassability(Object *obj, const sdlx::Surface &surface, 
 			sdlx::Surface osurf;
 			osurf.createRGB(other.w, other.h, 24, sdlx::Surface::Software | sdlx::Surface::Alpha );
 			osurf.convertAlpha();
-			osurf.fillRect(osurf.getSize(), SDL_MapRGBA(osurf.getPixelFormat(), 255, 0, 255, 255));
-			o->render(osurf, 0, 0);
+			o->renderCopy(osurf);
 			
 			v3<int> dpos = o->_position.convert<int>() - position;
 			//LOG_DEBUG(("%s: %d %d", o->classname.c_str(), dpos.x, dpos.y));
@@ -229,8 +228,7 @@ void IWorld::tick(const float dt) {
 	
 		osurf.createRGB(ow, oh, 24, sdlx::Surface::Software |  sdlx::Surface::Alpha);
 		osurf.convertAlpha();
-		osurf.fillRect(osurf.getSize(), SDL_MapRGBA(osurf.getPixelFormat(), 255, 0, 255, 255));
-		o.render(osurf, 0, 0);
+		o.renderCopy(osurf);
 		
 		//osurf.saveBMP("snapshot.bmp");
 		
