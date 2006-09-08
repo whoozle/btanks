@@ -18,18 +18,16 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include "sdlx/joystick.h"
 #include "control_method.h"
 #include "player_state.h"
+#include "sdlx/sdlx.h"
 
 class KeyPlayer : public ControlMethod {
 public:
 	KeyPlayer(SDLKey up, SDLKey down, SDLKey left, SDLKey right, SDLKey fire);
 	virtual void updateState(PlayerState &state);
 private:
-	void onKey(const Uint8 type, const SDL_keysym sym);
 	SDLKey _up, _down, _left, _right, _fire;
-	PlayerState _state;
 };
 
 #endif
