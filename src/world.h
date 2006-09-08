@@ -49,7 +49,7 @@ public:
 	Object * spawnGrouped(Object *src, const std::string &classname, const std::string &animation, const v3<float> &dpos, const GroupType type);
 	
 	const bool getNearest(const Object *obj, const std::string &classname, v3<float> &position, v3<float> &velocity, Way * way = NULL) const;
-	const float getImpassability(Object *obj, const sdlx::Surface &surface, const v3<int> &position) const;
+	const float getImpassability(Object *obj, const sdlx::Surface &surface, const v3<int> &position, const Object **collided_with = NULL) const;
 	void getImpassabilityMatrix(Matrix<int> &matrix, const Object *src, const Object *dst) const;
 
 	virtual void serialize(mrt::Serializator &s) const;

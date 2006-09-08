@@ -71,15 +71,20 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect &viewport) {
 	}
 }
 
-const float IWorld::getImpassability(Object *obj, const sdlx::Surface &surface, const v3<int> &position) const {
-	if (obj->impassability == 0)
+const float IWorld::getImpassability(Object *obj, const sdlx::Surface &surface, const v3<int> &position, const Object **collided_with) const {
+	if (obj->impassability == 0) {
+		if (collided_with != NULL)
+			*collided_with = NULL;
 		return 0;
+	}
 	
 	sdlx::Rect my((int)position.x, (int)position.y,(int)obj->size.x, (int)obj->size.y);
 	float im = 0;
-	if (obj->_owner_id != 0 && _id2obj.find(obj->_owner_id) == _id2obj.end()) {
+/*	if (obj->_owner_id != 0 && _id2obj.find(obj->_owner_id) == _id2obj.end()) {
 		obj->_owner_id = 0; //dead object.
 	}
+*/	
+	const Object *result = NULL;
 	
 	for(ObjectSet::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		Object *o = *i;
@@ -106,11 +111,15 @@ const float IWorld::getImpassability(Object *obj, const sdlx::Surface &surface, 
 				o->emit("collision", obj);
 				obj->emit("collision", o);
 
-				if (im < o->impassability)
+				if (o->impassability > im) {
 					im = o->impassability;
+					result = o;
+				}
 			}
 		}
 	}
+	if (collided_with != NULL)
+		*collided_with = result;
 	
 	return im;
 }
@@ -189,6 +198,11 @@ void IWorld::tick(const float dt) {
 			}
 		}
 		
+		if (o.speed == 0) {
+			++i;
+			continue;
+		}
+		
 		v3<float> vel = o._velocity;
 		float len = vel.normalize();
 
@@ -218,6 +232,7 @@ void IWorld::tick(const float dt) {
 		//LOG_DEBUG(("im = %f", im));
 		v3<float> dpos = o.speed * vel * dt;
 		v3<int> new_pos((o._position + dpos).convert<int>());
+		v3<int> old_pos = o._position.convert<int>();
 
 		int ow = o.size.x;
 		int oh = o.size.y; 
@@ -231,6 +246,8 @@ void IWorld::tick(const float dt) {
 		o.renderCopy(osurf);
 		
 		//osurf.saveBMP("snapshot.bmp");
+		const Object *stuck_in = NULL;
+		bool stuck = map.getImpassability(osurf, old_pos) == 100 || getImpassability(*i, osurf, old_pos, &stuck_in) == 1;
 		
 		float obj_im = getImpassability(*i, osurf, new_pos);
 		//LOG_DEBUG(("obj_im = %f", obj_im));
@@ -240,20 +257,30 @@ void IWorld::tick(const float dt) {
 				o.emit("death"); //fixme
 			}
 		} else {
-			map_im = 1 - map.getImpassability(osurf, new_pos) / 100.0;
-/*			int old_im = map.getImpassability(osurf, o._position.convert<int>());
-			if (old_im == 100 && map_im > 0) {
-				map_im = 0.5; //special case, to work around animations causing object to "stuck" into solid objects.
-			} 
-*/		}
+			map_im = map.getImpassability(osurf, new_pos) / 100.0;
+		}
 
-		if (obj_im == 1 || map_im == 0) {
+		if (obj_im == 1.0 || map_im == 1.0) {
+			if (stuck) {
+				v3<float> allowed_velocity;
+				if (obj_im == 1) {
+					assert(stuck_in != NULL);
+					allowed_velocity = o._position - stuck_in->_position;
+					if (allowed_velocity.same_sign(vel)) {
+						//LOG_DEBUG(("stuck in object: %s, trespassing allowed!", stuck_in->classname.c_str()));
+						obj_im = map_im;
+						goto skip_collision;
+					}
+				} else if (map_im == 1.0) {
+					LOG_DEBUG(("stuck in map."));
+				}
+			}
 			//LOG_DEBUG(("bang!"));
 			o._velocity_fadeout = -vel;
 			o._velocity.clear();
 			o._moving_time = 0;
 		}
-		
+	skip_collision:
 
 		if (o.isDead()) {
 			_id2obj.erase((*i)->_id);
@@ -262,7 +289,7 @@ void IWorld::tick(const float dt) {
 			continue;
 		}
 		
-		dpos *= map_im * (1 - obj_im);
+		dpos *= (1 - map_im) * (1 - obj_im);
 		if (o._distance > 0) {
 			o._distance -= dpos.length();
 		}
