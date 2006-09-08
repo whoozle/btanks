@@ -74,13 +74,13 @@
 	<animation id="yellow-launcher" tile="launcher03.png" model="launcher-animation"/>
 	<animation id="cyan-launcher" tile="launcher04.png" model="launcher-animation"/>
 	
-	<animation id="bullet" tile="bullet_tile.png" model="bullet-animation"/>
+	<animation id="bullet" tile="bullet.png" model="bullet-animation"/>
 	<animation id="explosion" tile="explosion.png" model="explosion-animation" />
-	<animation id="traffic-lights" tile="traffic_lights_tile.png" model="traffic-lights-animation"/>
+	<animation id="traffic-lights" tile="traffic_lights.png" model="traffic-lights-animation"/>
 	<animation id="launcher-smoke" tile="launcher_smoke.png" model="smoke-animation" />
 	<animation id="tank-smoke" tile="tank_smoke.png" model="smoke-animation" />
-	<animation id="rockets-in-vehicle" tile="Rocket_tile1.png" model="rockets-in-vehicle-animation" />
-	<animation id="rocket" tile="rocket.png" model="single-tile" />
+	<animation id="rockets-in-vehicle" tile="launcher_rocket01.png" model="rockets-in-vehicle-animation" />
+	<animation id="rocket" tile="rocket01.png" model="single-tile" />
 	<animation id="rocket-fire" tile="rocket_fire.png" model="rocket-fire-animation" />
 	<animation id="rocket-launch" tile="rocket_launch.png" model="rocket-launch-animation" tile_width="128" tile_height="128" />
 	
