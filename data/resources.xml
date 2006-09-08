@@ -117,6 +117,12 @@
 	<animation-model id="rocket-fire-animation" speed="10">
 		<pose id="main">0,1,2,3,4</pose>
 	</animation-model>
+
+	<animation-model id="gate-animation" speed="1">
+		<pose id="hold">0</pose>
+		<pose id="broken">0</pose>
+	</animation-model>
+
 	
 	<animation id="green-tank" tile="tank01.png" model="tank-animation"/>
 	<animation id="red-tank" tile="tank02.png" model="tank-animation"/>
@@ -177,6 +183,8 @@
 	<animation id="rocket" tile="rocket01.png" model="single-tile" />
 	<animation id="rocket-fire" tile="rocket_fire.png" model="rocket-fire-animation" />
 	<animation id="rocket-launch" tile="rocket_launch.png" model="rocket-launch-animation" tile_width="128" tile_height="128" />
+
+	<animation id="gate" tile="gate01.png" model="gate-animation"/>
 	
 	<object class="tank" speed="400" mass="500" hp="5"/>
 	<object class="ai-tank" parent="tank" />
