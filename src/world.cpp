@@ -62,7 +62,7 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect &viewport) {
 	
 	for(LayerMap::iterator i = layers.begin(); i != layers.end(); ++i) {
 		Object &o = *i->second;
-		sdlx::Rect r((int)o._position.x, (int)o._position.y, o.size.x, o.size.y);
+		sdlx::Rect r((int)o._position.x, (int)o._position.y, (int)o.size.x, (int)o.size.y);
 		if (r.intersects(viewport)) {
 			r.x -= viewport.x;
 			r.y -= viewport.y;
@@ -144,7 +144,7 @@ void IWorld::getImpassabilityMatrix(Matrix<int> &matrix, const Object *src, cons
 		
 		v3<int> p1, p2;
 		p1 = o->_position.convert<int>();
-		p2 = p1 + o->size - 1;
+		p2 = (o->_position + o->size - 1).convert<int>();
 		
 		for(int y = p1.y/IMap::pathfinding_step; y <= p2.y/IMap::pathfinding_step; ++y) 
 			for(int x = p1.x/IMap::pathfinding_step; x <= p2.x/IMap::pathfinding_step; ++x) {
@@ -236,8 +236,8 @@ void IWorld::tick(const float dt) {
 		v3<int> new_pos((o._position + dpos).convert<int>());
 		v3<int> old_pos = o._position.convert<int>();
 
-		int ow = o.size.x;
-		int oh = o.size.y; 
+		int ow = (int)o.size.x;
+		int oh = (int)o.size.y; 
 
 		sdlx::Surface osurf;
 		
@@ -266,7 +266,7 @@ void IWorld::tick(const float dt) {
 		if (obj_im == 1.0 || map_im == 1.0) {
 			if (stuck) {
 				v3<float> allowed_velocity;
-				v3<float> object_center = o._position + o.size.convert<float>() / 2;
+				v3<float> object_center = o._position + o.size / 2;
 				if (map_im == 1.0) {
 					//LOG_DEBUG(("stuck: object: %g %g, map: %d %d", o._position.x, o._position.y, stuck_map_pos.x, stuck_map_pos.y));
 					allowed_velocity = object_center - stuck_map_pos.convert<float>();
@@ -277,7 +277,7 @@ void IWorld::tick(const float dt) {
 					goto skip_collision;
 				} else if (obj_im == 1.0) {
 					assert(stuck_in != NULL);
-					allowed_velocity = object_center - (stuck_in->_position + stuck_in->size.convert<float>()/2);
+					allowed_velocity = object_center - (stuck_in->_position + stuck_in->size/2);
 					if (allowed_velocity.same_sign(vel)) {
 						//LOG_DEBUG(("stuck in object: %s, trespassing allowed!", stuck_in->classname.c_str()));
 						obj_im = map_im;
@@ -348,7 +348,7 @@ Object * IWorld::spawnGrouped(Object *src, const std::string &classname, const s
 	obj->_follow_position = dpos;
 	switch(type) {
 		case Centered:
-			obj->_follow_position += (src->size.convert<float>() - obj->size.convert<float>())/2;
+			obj->_follow_position += (src->size - obj->size)/2;
 			break;
 		case Fixed:
 			break;

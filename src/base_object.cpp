@@ -3,7 +3,7 @@
 #include "world.h"
 
 BaseObject::BaseObject(const std::string &classname)
- : mass(1), speed(1), ttl(-1), impassability(1), hp(1), piercing(false), 
+ : mass(1), speed(0), ttl(-1), impassability(1), hp(1), piercing(false), 
    classname(classname), _id(0), _follow(0), _direction(1,0,0), _distance(0), _moving_time(0), _idle_time(0), _dead(false), _owner_id(0) {
 	//LOG_DEBUG(("allocated id %ld", _id));
 }

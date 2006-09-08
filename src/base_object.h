@@ -28,7 +28,7 @@ namespace sdlx {
 
 class BaseObject : public mrt::Serializable {
 public:
-	v3<int> size;
+	v3<float> size;
 	float mass, speed, ttl, impassability;
 	int hp;
 	
