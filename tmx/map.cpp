@@ -340,7 +340,7 @@ void IMap::charData(const std::string &d) {
 }
 
 void IMap::render(sdlx::Surface &window, const sdlx::Rect &dst, const int z1, const int z2) {
-	if (!loaded()) 
+	if (_w == 0)  //not loaded
 		return;
 
 #ifdef PRERENDER_LAYERS
