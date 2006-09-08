@@ -40,7 +40,7 @@ public:
 	const v3<int> getSize() const;
 	const v3<int> getTileSize() const;
 	
-	virtual const int getImpassability(const sdlx::Surface &object_surf, const v3<int>& pos) const;
+	virtual const int getImpassability(const sdlx::Surface &object_surf, const v3<int>& pos, v3<int> *tile_pos = NULL) const;
 	void getImpassabilityMatrix(Matrix<int> &matrix) const { matrix = _imp_map; }
 	static const int pathfinding_step;
 

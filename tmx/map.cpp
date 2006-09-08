@@ -33,7 +33,7 @@ const bool IMap::collides(const sdlx::Surface &surf, const int dx, const int dy,
 }
 
 
-const int IMap::getImpassability(const sdlx::Surface &s, const v3<int>&pos) const {
+const int IMap::getImpassability(const sdlx::Surface &s, const v3<int>&pos, v3<int> *tile_pos) const {
 	int w = s.getWidth(), h = s.getHeight();
 	int x, x1;
 	int y, y1;
@@ -55,24 +55,54 @@ const int IMap::getImpassability(const sdlx::Surface &s, const v3<int>&pos) cons
 		if (layer_im == -1) 
 			continue;
 		//LOG_DEBUG(("im: %d, tile: %ld", layer_im, layer->get(xt1, yt1)));
-		if (collides(s, dx1, dy1, layer->get(xt1, yt1)) && im > layer_im)
+		if (collides(s, dx1, dy1, layer->get(xt1, yt1)) && im > layer_im) {
+			if (tile_pos) {
+				tile_pos->x = xt1;
+				tile_pos->y = yt1;
+			}
 			im = layer_im;
-		if (yt2 != yt1 && collides(s, dx1, dy2, layer->get(xt1, yt2)) && im > layer_im)
-			im = layer_im;
+		}
 
+		if (yt2 != yt1 && collides(s, dx1, dy2, layer->get(xt1, yt2)) && im > layer_im) {
+			if (tile_pos) {
+				tile_pos->x = xt1;
+				tile_pos->y = yt2;
+			}
+			im = layer_im;
+		}
 		if (xt2 != xt1) {
-			if (collides(s, dx2, dy1, layer->get(xt2, yt1)) && im > layer_im)
+			if (collides(s, dx2, dy1, layer->get(xt2, yt1)) && im > layer_im) {
 				im = layer_im;
-			if (yt2 != yt1 && collides(s, dx2, dy2, layer->get(xt2, yt2)) && im > layer_im)
-					im = layer_im;
+				if (tile_pos) {
+					tile_pos->x = xt2;
+					tile_pos->y = yt1;
+				}
+			}
+			if (yt2 != yt1 && collides(s, dx2, dy2, layer->get(xt2, yt2)) && im > layer_im) {
+				if (tile_pos) {
+					tile_pos->x = xt2;
+					tile_pos->y = yt2;
+				}
+				im = layer_im;
+			}
 		}
 		if (im < 101) {
+			if (tile_pos) {
+				tile_pos->x *= _tw;
+				tile_pos->y *= _th;
+			}
 			//LOG_DEBUG(("im = %d", im));	
 			return im;
 		}
 	}
 	if (im == 101) 
 		im = 0;
+
+	if (tile_pos) {
+		tile_pos->x *= _tw;
+		tile_pos->y *= _th;
+	}
+
 	//LOG_DEBUG(("im = %d", im));
 	return im;
 }

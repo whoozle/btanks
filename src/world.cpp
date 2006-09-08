@@ -90,8 +90,11 @@ const float IWorld::getImpassability(Object *obj, const sdlx::Surface &surface, 
 		Object *o = *i;
 		if (o == obj || o->impassability == 0) 
 			continue;
-		
+			
+		//skip owner and grouped-leader.
 		if ((obj->_owner_id != 0 && obj->_owner_id == o->_id) || (o->_owner_id != 0 && o->_owner_id == obj->_id)) 
+			continue;
+		if ((obj->_follow != 0 && obj->_follow == o->_id) || (o->_follow != 0 && o->_follow == obj->_id)) 
 			continue;
 		
 		sdlx::Rect other((int)o->_position.x, (int)o->_position.y,(int)o->size.x, (int)o->size.y);
@@ -205,7 +208,6 @@ void IWorld::tick(const float dt) {
 		
 		v3<float> vel = o._velocity;
 		float len = vel.normalize();
-
 		
 		if (len == 0) {
 			if (o._moving_time > 0) {
@@ -247,11 +249,12 @@ void IWorld::tick(const float dt) {
 		
 		//osurf.saveBMP("snapshot.bmp");
 		const Object *stuck_in = NULL;
-		bool stuck = map.getImpassability(osurf, old_pos) == 100 || getImpassability(*i, osurf, old_pos, &stuck_in) == 1;
+		v3<int> stuck_map_pos;
+		bool stuck = map.getImpassability(osurf, old_pos, &stuck_map_pos) == 100 || getImpassability(*i, osurf, old_pos, &stuck_in) == 1;
 		
 		float obj_im = getImpassability(*i, osurf, new_pos);
 		//LOG_DEBUG(("obj_im = %f", obj_im));
-		float map_im = 1;
+		float map_im = 0;
 		if (o.piercing) {
 			if (map.getImpassability(osurf, new_pos) == 100) {
 				o.emit("death"); //fixme
@@ -262,6 +265,7 @@ void IWorld::tick(const float dt) {
 
 		if (obj_im == 1.0 || map_im == 1.0) {
 			if (stuck) {
+				LOG_DEBUG(("stuck"));
 				v3<float> allowed_velocity;
 				if (obj_im == 1) {
 					assert(stuck_in != NULL);
@@ -272,7 +276,11 @@ void IWorld::tick(const float dt) {
 						goto skip_collision;
 					}
 				} else if (map_im == 1.0) {
-					LOG_DEBUG(("stuck in map."));
+					allowed_velocity = o._position - stuck_map_pos.convert<float>();
+					if (allowed_velocity.same_sign(vel)) {
+						map_im = 0.5;
+					}
+					goto skip_collision;
 				}
 			}
 			//LOG_DEBUG(("bang!"));
