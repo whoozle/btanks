@@ -48,7 +48,7 @@ private:
 	Matrix<int> _imp_map;
 	const bool collides(const sdlx::Surface&, const int dx, const int dy, const unsigned tid) const;
 
-	long _w, _h, _tw, _th, _firstgid;
+	int _w, _h, _tw, _th, _firstgid;
 	int _lastz;
 	mrt::Chunk _data;
 	sdlx::Surface *_image;

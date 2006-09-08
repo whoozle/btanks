@@ -54,7 +54,7 @@ const int IMap::getImpassability(const sdlx::Surface &s, const v3<int>&pos, v3<i
 		int layer_im = layer->impassability;
 		if (layer_im == -1) 
 			continue;
-		//LOG_DEBUG(("im: %d, tile: %ld", layer_im, layer->get(xt1, yt1)));
+		//LOG_DEBUG(("im: %d, tile: %d", layer_im, layer->get(xt1, yt1)));
 		if (collides(s, dx1, dy1, layer->get(xt1, yt1)) && im > layer_im) {
 			if (tile_pos) {
 				tile_pos->x = xt1;
@@ -129,16 +129,16 @@ void IMap::load(const std::string &name) {
 		l->second->surface.convertAlpha();
 		l->second->surface.convertToHardware();
 		
-		for(long ty = 0; ty < _h; ++ty) {
-			for(long tx = 0; tx < _w; ++tx) {
-				long tid = l->second->get(tx, ty);
+		for(int ty = 0; ty < _h; ++ty) {
+			for(int tx = 0; tx < _w; ++tx) {
+				int tid = l->second->get(tx, ty);
 				if (tid == 0) 
 					continue;
 				
 				assert(tid < n);
 				sdlx::Surface * s = _tiles[tid];
 				if (s == NULL) 
-					throw_ex(("invalid tile with id %ld found", tid));
+					throw_ex(("invalid tile with id %d found", tid));
 				l->second->surface.copyFrom(*s, tx * _tw, ty * _th);
 			}
 		}
@@ -154,7 +154,7 @@ void IMap::load(const std::string &name) {
 		for(int x = 0; x < _w; ++x) {
 			int im = 0;
 			for(LayerMap::reverse_iterator l = _layers.rbegin(); l != _layers.rend(); ++l) {
-				long tid = l->second->get(x, y);
+				int tid = l->second->get(x, y);
 				if (tid == 0)
 					continue;
 				int l_im = l->second->impassability;
@@ -191,14 +191,14 @@ void IMap::start(const std::string &name, Attrs &attrs) {
 		_th = atol(e.attrs["tileheight"].c_str());
 		
 		if (_tw < 1 || _th < 1 || _w < 1 || _h < 1)
-			throw_ex(("invalid map parameters. %ldx%ld tile: %ldx%ld", _w, _h, _tw, _th));
+			throw_ex(("invalid map parameters. %dx%d tile: %dx%d", _w, _h, _tw, _th));
 		
-		LOG_DEBUG(("initializing map. size: %ldx%ld, tilesize: %ldx%ld", _w, _h, _tw, _th));
+		LOG_DEBUG(("initializing map. size: %dx%d, tilesize: %dx%d", _w, _h, _tw, _th));
 	} else if (name == "tileset") {
 		_firstgid = atol(e.attrs["firstgid"].c_str());
 		if (_firstgid < 1) 
 			throw_ex(("tileset.firstgid must be > 0"));
-		LOG_DEBUG(("tileset: '%s'. firstgid = %ld", e.attrs["name"].c_str(), _firstgid));
+		LOG_DEBUG(("tileset: '%s'. firstgid = %d", e.attrs["name"].c_str(), _firstgid));
 	} else if (name == "layer") {
 		_properties.clear();
 		layer = true;
@@ -218,9 +218,9 @@ void IMap::end(const std::string &name) {
 		if (_image == NULL) 
 			throw_ex(("tile must contain <image> inside it."));
 		
-		unsigned long id = atol(e.attrs["id"].c_str());
+		unsigned int id = atol(e.attrs["id"].c_str());
 		id += _firstgid;
-		LOG_DEBUG(("tile gid = %ld, image: %p", id, (void *)_image));
+		LOG_DEBUG(("tile gid = %d, image: %p", id, (void *)_image));
 
 		//TileManager->set(id, _image);
 		//_tiles.reserve(id + 2);
@@ -277,17 +277,17 @@ void IMap::end(const std::string &name) {
 		
 		LOG_DEBUG(("image loaded. (%dx%d) format: %s", _image->getWidth(), _image->getHeight(), e.attrs["format"].c_str()));
 	} else if (name == "layer") {
-		long w = atol(e.attrs["width"].c_str());
-		long h = atol(e.attrs["height"].c_str());
-		long z = (_properties.find("z") == _properties.end())?++_lastz:atol(_properties["z"].c_str());
+		int w = atol(e.attrs["width"].c_str());
+		int h = atol(e.attrs["height"].c_str());
+		int z = (_properties.find("z") == _properties.end())?++_lastz:atol(_properties["z"].c_str());
 		_lastz = z;
 		int impassability = (_properties.find("impassability") != _properties.end())?atoi(_properties["impassability"].c_str()):-1;
 
-		LOG_DEBUG(("layer '%s'. %ldx%ld. z: %ld, size: %d, impassability: %d", e.attrs["name"].c_str(), w, h, z, _data.getSize(), impassability));
+		LOG_DEBUG(("layer '%s'. %dx%d. z: %d, size: %d, impassability: %d", e.attrs["name"].c_str(), w, h, z, _data.getSize(), impassability));
 		if (_layers.find(z) != _layers.end())
-			throw_ex(("layer with z %ld already exists", z));
+			throw_ex(("layer with z %d already exists", z));
 		_layers[z] = new Layer(w, h, _data, impassability);
-		//LOG_DEBUG(("(1,1) = %ld", _layers[z]->get(1,1)));
+		//LOG_DEBUG(("(1,1) = %d", _layers[z]->get(1,1)));
 		layer = false;
 	} else if (name == "property") {
 		if (layer)
@@ -297,10 +297,10 @@ void IMap::end(const std::string &name) {
 	} else if (name == "tileset" && _image != NULL && _image_is_tileset) {
 		//fixme: do not actualy chop image in many tiles at once, use `tile' wrapper
 		_image->setAlpha(0, 0);
-		long w = _image->getWidth(), h = _image->getHeight();
-		long id = 0;
-		for(long y = 0; y < h; y += _th) {
-			for(long x = 0; x < w; x += _tw) {
+		int w = _image->getWidth(), h = _image->getHeight();
+		int id = 0;
+		for(int y = 0; y < h; y += _th) {
+			for(int x = 0; x < w; x += _tw) {
 				sdlx::Surface *s = new sdlx::Surface;
 				s->createRGB(_tw, _th, 24);
 				s->convertAlpha();
@@ -308,9 +308,9 @@ void IMap::end(const std::string &name) {
 
 				sdlx::Rect from(x, y, _tw, _th);
 				s->copyFrom(*_image, from);
-				//s->saveBMP(mrt::formatString("tile-%ld.bmp", id));
+				//s->saveBMP(mrt::formatString("tile-%d.bmp", id));
 
-				//LOG_DEBUG(("cut tile %ld from tileset [%ld:%ld, %ld:%ld]", _firstgid + id, x, y, _tw, _th));
+				//LOG_DEBUG(("cut tile %d from tileset [%d:%d, %d:%d]", _firstgid + id, x, y, _tw, _th));
 				if ((size_t)(_firstgid + id) >= _tiles.size())
 					_tiles.resize(_firstgid + id + 20);
 				
@@ -351,23 +351,23 @@ void IMap::render(sdlx::Surface &window, const sdlx::Rect &dst, const int z1, co
 		window.copyFrom(l->second->surface, src);
 	}
 #else
-	long txp = dst.x / _tw, typ = dst.y / _th;
-	long xp = - (dst.x % _tw), yp = -(dst.y % _th);
+	int txp = dst.x / _tw, typ = dst.y / _th;
+	int xp = - (dst.x % _tw), yp = -(dst.y % _th);
 	
-	long txn = (dst.w - 1) / _tw + 2;
-	long tyn = (dst.h - 1) / _th + 2;
+	int txn = (dst.w - 1) / _tw + 2;
+	int tyn = (dst.h - 1) / _th + 2;
 	
 	for(LayerMap::iterator l = _layers.begin(); l != _layers.end(); ++l) if (l->first >= z1 && l->first < z2) {
-		for(long ty = 0; ty < tyn; ++ty) {
-			for(long tx = 0; tx < txn; ++tx) {
-				long tid = l->second->get(txp + tx, typ + ty);
+		for(int ty = 0; ty < tyn; ++ty) {
+			for(int tx = 0; tx < txn; ++tx) {
+				int tid = l->second->get(txp + tx, typ + ty);
 				if (tid == 0) 
 					continue;
 				
 				assert((size_t)tid < _tiles.size());
 				sdlx::Surface * s = _tiles[tid];
 				if (s == NULL) 
-					throw_ex(("invalid tile with id %ld found", tid));
+					throw_ex(("invalid tile with id %d found", tid));
 				window.copyFrom(*s, xp + tx * _tw, yp + ty * _th);
 			}
 		}
