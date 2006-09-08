@@ -82,6 +82,7 @@ private:
 	Server *_server;
 	Client *_client;
 	bool _vsync, _opengl;
+	std::string _preload_map;
 };
 
 SINGLETON(Game, IGame);

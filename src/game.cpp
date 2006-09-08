@@ -82,6 +82,7 @@ void IGame::init(const int argc, char *argv[]) {
 #endif
 		else if (strcmp(argv[i], "-2") == 0) { w = 1024; h = 768; }
 		else if (strcmp(argv[i], "-3") == 0) { w = 1280; h = 1024; }
+		else if (strncmp(argv[i], "--map=", 6) == 0) { _preload_map = argv[i] + 6; }
 		else throw_ex(("unrecognized option: '%s'", argv[i]));
 	}
 	
@@ -224,6 +225,16 @@ void IGame::init(const int argc, char *argv[]) {
 	LOG_DEBUG(("installing callbacks..."));
 	key_signal.connect(sigc::mem_fun(this, &IGame::onKey));
 	_main_menu.menu_signal.connect(sigc::mem_fun(this, &IGame::onMenu));
+	
+	if (_preload_map.size()) {
+		LOG_DEBUG(("starting predefined map %s...", _preload_map.c_str()));
+		loadMap(_preload_map);
+		
+		//_my_index = spawnPlayer("tank", "green-tank", "keys");
+		_my_index = spawnPlayer("launcher", "green-launcher", "keys");
+		spawnPlayer("ai-tank", "green-tank", "ai");
+		_main_menu.setActive(false);
+	}
 }
 
 void IGame::onKey(const Uint8 type, const SDL_keysym key) {
