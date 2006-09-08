@@ -265,7 +265,6 @@ void IWorld::tick(const float dt) {
 
 		if (obj_im == 1.0 || map_im == 1.0) {
 			if (stuck) {
-				LOG_DEBUG(("stuck"));
 				v3<float> allowed_velocity;
 				if (obj_im == 1) {
 					assert(stuck_in != NULL);
