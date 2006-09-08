@@ -250,7 +250,7 @@ void IWorld::tick(const float dt) {
 		//osurf.saveBMP("snapshot.bmp");
 		const Object *stuck_in = NULL;
 		v3<int> stuck_map_pos;
-		bool stuck = map.getImpassability(osurf, old_pos, &stuck_map_pos) == 100 || getImpassability(*i, osurf, old_pos, &stuck_in) == 1;
+		bool stuck = map.getImpassability(osurf, old_pos, &stuck_map_pos) == 100 || getImpassability(*i, osurf, old_pos, &stuck_in) == 1.0;
 		
 		float obj_im = getImpassability(*i, osurf, new_pos);
 		//LOG_DEBUG(("obj_im = %f", obj_im));
@@ -266,7 +266,15 @@ void IWorld::tick(const float dt) {
 		if (obj_im == 1.0 || map_im == 1.0) {
 			if (stuck) {
 				v3<float> allowed_velocity;
-				if (obj_im == 1) {
+				if (map_im == 1.0) {
+					//LOG_DEBUG(("stuck: object: %g %g, map: %d %d", o._position.x, o._position.y, stuck_map_pos.x, stuck_map_pos.y));
+					allowed_velocity = stuck_map_pos.convert<float>() - o._position;
+					//LOG_DEBUG(("allowed-velocity: %g %g", allowed_velocity.x, allowed_velocity.y));
+					if (allowed_velocity.same_sign(vel)) {
+						map_im = 0.5;
+					}
+					goto skip_collision;
+				} else if (obj_im == 1.0) {
 					assert(stuck_in != NULL);
 					allowed_velocity = o._position - stuck_in->_position;
 					if (allowed_velocity.same_sign(vel)) {
@@ -274,12 +282,6 @@ void IWorld::tick(const float dt) {
 						obj_im = map_im;
 						goto skip_collision;
 					}
-				} else if (map_im == 1.0) {
-					allowed_velocity = o._position - stuck_map_pos.convert<float>();
-					if (allowed_velocity.same_sign(vel)) {
-						map_im = 0.5;
-					}
-					goto skip_collision;
 				}
 			}
 			//LOG_DEBUG(("bang!"));
