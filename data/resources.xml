@@ -14,9 +14,64 @@
 		<pose id="dead">10</pose>
 	</animation-model>
 
+	<animation-model id="shilka-animation" speed="5">
+		<pose id="hold">0</pose>
+		<pose id="start" speed="10">0,1,2</pose>
+		<pose id="move">0,1,2</pose>
+		<pose id="fire-left" speed="10">3</pose>
+		<pose id="fire-right" speed="10">4</pose>
+	</animation-model>
+
+	<animation-model id="dead-shilka-animation" speed="10">
+		<pose id="fade-in">0,1,2,3,4</pose>
+		<pose id="burn">5,6,7,6</pose>
+		<pose id="fade-out">8,9</pose>
+		<pose id="dead">10</pose>
+	</animation-model>
+
 	<animation-model id="launcher-animation" speed="10">
 		<pose id="hold">0</pose>
 		<pose id="move">0,1,0</pose>
+	</animation-model>
+
+	<animation-model id="dead-launcher-animation" speed="10">
+		<pose id="fade-in">0,1,2,3,4</pose>
+		<pose id="burn">5,6,7,6</pose>
+		<pose id="fade-out">8,9</pose>
+		<pose id="dead">10</pose>
+	</animation-model>
+
+	<animation-model id="car-animation" speed="10">
+		<pose id="hold">0</pose>
+		<pose id="move">0,1</pose>
+	</animation-model>
+
+	<animation-model id="dead-car-animation" speed="10">
+		<pose id="fade-in">0,1,2,3,4</pose>
+		<pose id="burn">5,6,7,6</pose>
+		<pose id="fade-out">8,9</pose>
+		<pose id="dead">10</pose>
+	</animation-model>
+
+	<animation-model id="man-animation" speed="10">
+		<pose id="hold">0</pose>
+		<pose id="walk">1,2,3,2,4,5,6,5</pose>
+		<pose id="run">7,8,9,10</pose>
+	</animation-model>
+
+	<animation-model id="die-man-animation" speed="10">
+		<pose id="die">0,1,2,3</pose>
+		<pose id="fade-out">4,5</pose>
+		<pose id="dead">6</pose>
+	</animation-model>
+
+	<animation-model id="pond-animation" speed="10">
+		<pose id="main">0,1,2,3,4,5,6,7,8,9</pose>
+	</animation-model>
+
+	<animation-model id="heal-animation" speed="10">
+		<pose id="main">0,1,2,3,4</pose>
+		<pose id="take">5,6,7</pose>
 	</animation-model>
 
 	<animation-model id="smoke-animation" speed="10">
@@ -41,6 +96,10 @@
 		<pose id="boom">0,1,2</pose>
 	</animation-model>
 	
+	<animation-model id="rocket-explosion-animation" speed="10">
+		<pose id="boom">0,1,2,3</pose>
+	</animation-model>
+
 	<animation-model id="single-tile" speed="1">
 		<pose id="main">0</pose>
 	</animation-model>
@@ -69,11 +128,46 @@
 	<animation id="dead-yellow-tank" tile="tank03_crash.png" model="dead-tank-animation"/>
 	<animation id="dead-cyan-tank" tile="tank04_crash.png" model="dead-tank-animation"/>
 
+	<animation id="green-shilka" tile="shilka01.png" model="shilka-animation"/>
+	<animation id="red-shilka" tile="shilka02.png" model="shilka-animation"/>
+	<animation id="yellow-shilka" tile="shilka03.png" model="shilka-animation"/>
+	<animation id="cyan-shilka" tile="shilka04.png" model="shilka-animation"/>
+
+	<animation id="dead-green-shilka" tile="shilka01_crash.png" model="dead-shilka-animation"/>
+	<animation id="dead-red-shilka" tile="shilka02_crash.png" model="dead-shilka-animation"/>
+	<animation id="dead-yellow-shilka" tile="shilka03_crash.png" model="dead-shilka-animation"/>
+	<animation id="dead-cyan-shilka" tile="shilka04_crash.png" model="dead-shilka-animation"/>
+
 	<animation id="green-launcher" tile="launcher01.png" model="launcher-animation"/>
 	<animation id="red-launcher" tile="launcher02.png" model="launcher-animation"/>
 	<animation id="yellow-launcher" tile="launcher03.png" model="launcher-animation"/>
 	<animation id="cyan-launcher" tile="launcher04.png" model="launcher-animation"/>
 	
+	<animation id="dead-green-launcher" tile="launcher01_crash.png" model="dead-launcher-animation"/>
+	<animation id="dead-red-launcher" tile="launcher02_crash.png" model="dead-launcher-animation"/>
+	<animation id="dead-yellow-launcher" tile="launcher03_crash.png" model="dead-launcher-animation"/>
+	<animation id="dead-cyan-launcher" tile="launcher04_crash.png" model="dead-launcher-animation"/>
+
+	<animation id="green-car" tile="car01.png" model="car-animation"/>
+	<animation id="cyan-car" tile="car02.png" model="car-animation"/>
+	<animation id="yellow-car" tile="car03.png" model="car-animation"/>
+	<animation id="white-car" tile="car04.png" model="car-animation"/>
+	
+	<animation id="dead-green-car" tile="car01_crash.png" model="dead-car-animation"/>
+	<animation id="dead-cyan-car" tile="car02_crash.png" model="dead-car-animation"/>
+	<animation id="dead-yellow-car" tile="car03_crash.png" model="dead-car-animation"/>
+	<animation id="dead-white-car" tile="car04_crash.png" model="dead-car-animation"/>
+
+	<animation id="man" tile="man01.png" model="man-animation"/>
+	<animation id="die-man" tile="man01_die01.png" model="die-man-animation"/>
+
+	<animation id="heal" tile="heal.png" model="heal-animation"/>
+	<animation id="megaheal" tile="megaheal.png" model="heal-animation"/>
+	<animation id="pond" tile="pond.png" model="pond-animation"/>
+	<animation id="rocket-explosion" tile="rocket_blast.png" model="rocket-explosion-animation" />
+	<animation id="shilka-bullet-left" tile="shilka_bullet2.png" model="bullet-animation"/>
+	<animation id="shilka-bullet-right" tile="shilka_bullet1.png" model="bullet-animation"/>
+
 	<animation id="bullet" tile="bullet.png" model="bullet-animation"/>
 	<animation id="explosion" tile="explosion.png" model="explosion-animation" />
 	<animation id="traffic-lights" tile="traffic_lights.png" model="traffic-lights-animation"/>
