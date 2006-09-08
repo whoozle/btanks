@@ -266,9 +266,10 @@ void IWorld::tick(const float dt) {
 		if (obj_im == 1.0 || map_im == 1.0) {
 			if (stuck) {
 				v3<float> allowed_velocity;
+				v3<float> object_center = o._position + o.size.convert<float>() / 2;
 				if (map_im == 1.0) {
 					//LOG_DEBUG(("stuck: object: %g %g, map: %d %d", o._position.x, o._position.y, stuck_map_pos.x, stuck_map_pos.y));
-					allowed_velocity = stuck_map_pos.convert<float>() - o._position;
+					allowed_velocity = object_center - stuck_map_pos.convert<float>();
 					//LOG_DEBUG(("allowed-velocity: %g %g", allowed_velocity.x, allowed_velocity.y));
 					if (allowed_velocity.same_sign(vel)) {
 						map_im = 0.5;
@@ -276,7 +277,7 @@ void IWorld::tick(const float dt) {
 					goto skip_collision;
 				} else if (obj_im == 1.0) {
 					assert(stuck_in != NULL);
-					allowed_velocity = o._position - stuck_in->_position;
+					allowed_velocity = object_center - (stuck_in->_position + stuck_in->size.convert<float>()/2);
 					if (allowed_velocity.same_sign(vel)) {
 						//LOG_DEBUG(("stuck in object: %s, trespassing allowed!", stuck_in->classname.c_str()));
 						obj_im = map_im;

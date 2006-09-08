@@ -90,6 +90,8 @@ const int IMap::getImpassability(const sdlx::Surface &s, const v3<int>&pos, v3<i
 			if (tile_pos) {
 				tile_pos->x *= _tw;
 				tile_pos->y *= _th;
+				tile_pos->x += _tw / 2;
+				tile_pos->y += _th / 2;
 			}
 			//LOG_DEBUG(("im = %d", im));	
 			return im;
@@ -101,6 +103,8 @@ const int IMap::getImpassability(const sdlx::Surface &s, const v3<int>&pos, v3<i
 	if (tile_pos) {
 		tile_pos->x *= _tw;
 		tile_pos->y *= _th;
+		tile_pos->x += _tw / 2;
+		tile_pos->y += _th / 2;
 	}
 
 	//LOG_DEBUG(("im = %d", im));
