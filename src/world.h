@@ -37,6 +37,9 @@ class IWorld : public mrt::Serializable {
 public:
 	DECLARE_SINGLETON(IWorld);
 	
+	void clear();
+	~IWorld();
+	
 	void addObject(Object *, const v3<float> &pos);
 	const bool exists(const Object *) const;
 	const Object *getObjectByID(const int id) const;

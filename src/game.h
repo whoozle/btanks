@@ -47,6 +47,8 @@ public:
 	void init(const int argc, char *argv[]);
 	void run();
 	void deinit();
+	
+	void clear();
 
 
 	IGame();

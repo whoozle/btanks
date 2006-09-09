@@ -3,6 +3,13 @@
 
 #include <algorithm>
 
+template <class T> struct delete_ptr : public std::unary_function<T, void> {
+	void operator()(const T &x) {
+		delete x;
+	}
+};
+
+
 template <class T> struct delete_ptr2 : public std::unary_function<T, void> {
 	void operator()(T &x) {
 		delete x.second;

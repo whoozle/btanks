@@ -2,6 +2,7 @@
 #include "object.h"
 #include "tmx/map.h"
 #include "resource_manager.h"
+#include "utils.h"
 
 #include "mrt/exception.h"
 #include "mrt/logger.h"
@@ -16,6 +17,17 @@
 #include "SDL_collide/SDL_collide.h"
 
 IMPLEMENT_SINGLETON(World, IWorld)
+
+void IWorld::clear() {
+	std::for_each(_objects.begin(), _objects.end(), delete_ptr<Object *>());
+	_objects.clear();
+	_id2obj.clear();
+}
+
+IWorld::~IWorld() {
+	clear();
+}
+
 
 
 void IWorld::addObject(Object *o, const v3<float> &pos) {

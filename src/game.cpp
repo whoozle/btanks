@@ -250,6 +250,7 @@ void IGame::onMenu(const std::string &name) {
 		_running = false;
 	else if (name == "start") {
 		LOG_DEBUG(("start single player requested"));
+		clear();
 		loadMap("country");
 		
 		//_my_index = spawnPlayer("tank", "green-tank", "keys");
@@ -259,6 +260,7 @@ void IGame::onMenu(const std::string &name) {
 		//spawnPlayer("ai-player", "cyan-tank");
 	} else if (name == "m-start") {
 		LOG_DEBUG(("start multiplayer server requested"));
+		clear();
 		loadMap("country");
 
 		_my_index = spawnPlayer("tank", "green-tank", "keys");
@@ -266,6 +268,7 @@ void IGame::onMenu(const std::string &name) {
 		_server = new Server;
 		_server->init(9876);
 	} else if (name == "m-join") {
+		clear();
 		std::string host = "localhost";
 		unsigned port = 9876;
 		TRY {
@@ -597,3 +600,10 @@ void IGame::onMessage(const Connection &conn, const Message &message) {
 	}
 }
 
+void IGame::clear() {
+	LOG_DEBUG(("cleaning up players..."));
+	_players.clear();
+	_my_index = -1;
+	LOG_DEBUG(("cleaning up world"));
+	World->clear();
+}
