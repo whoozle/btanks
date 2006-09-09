@@ -44,7 +44,7 @@ namespace sdlx {
 		return (_x>=x && _y>=y && _x < x+w && _y < y+h);
 	}
 	
-	inline const bool intersects(const Rect & other) {
+	inline const bool intersects(const Rect & other) const {
 		int min, max, omin, omax;
 		int iw, ih;
 		
