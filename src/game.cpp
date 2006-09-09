@@ -67,14 +67,14 @@ void IGame::init(const int argc, char *argv[]) {
 //	putenv("SDL_VIDEODRIVER=dga");
 #endif
 
-	_opengl = false;
+	_opengl = true;
 	bool fullscreen = false;
 	bool dx = false;
 	_vsync = true;
 	int w = 800, h = 600;
 	
 	for(int i = 1; i < argc; ++i) {
-		if (strcmp(argv[i], "--gl") == 0) _opengl = true;
+		if (strcmp(argv[i], "--no-gl") == 0) _opengl = false;
 		else if (strcmp(argv[i], "--fs") == 0) fullscreen = true;
 		else if (strcmp(argv[i], "--no-vsync") == 0) _vsync = false;
 #ifdef WIN32
