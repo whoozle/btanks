@@ -607,3 +607,10 @@ void IGame::clear() {
 	LOG_DEBUG(("cleaning up world"));
 	World->clear();
 }
+
+IGame::PlayerSlot::~PlayerSlot() {
+	if (control_method != NULL) {
+		delete control_method; 
+		control_method = NULL;
+	}
+}

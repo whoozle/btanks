@@ -76,6 +76,7 @@ private:
 		Object * obj;
 		ControlMethod * control_method;
 		v3<int> position;
+		~PlayerSlot();
 	};
 	
 	std::vector<PlayerSlot> _players;
