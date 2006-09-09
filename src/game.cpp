@@ -83,6 +83,14 @@ void IGame::init(const int argc, char *argv[]) {
 		else if (strcmp(argv[i], "-2") == 0) { w = 1024; h = 768; }
 		else if (strcmp(argv[i], "-3") == 0) { w = 1280; h = 1024; }
 		else if (strncmp(argv[i], "--map=", 6) == 0) { _preload_map = argv[i] + 6; }
+		else if (strcmp(argv[i], "--help") == 0) { 
+			printf("\t--help\tshow this help\n\
+\t--no-gl\tdisable GL renderer\n\
+\t--dx\tenable directX(tm) renderer (win32 only)\n\
+\t-2 -3\tenlarge video mode to 1024x768 or 1280x1024\n\
+\t--map=xx\tload xx as map, start single player\n");
+			exit(0);
+		}
 		else throw_ex(("unrecognized option: '%s'", argv[i]));
 	}
 	
