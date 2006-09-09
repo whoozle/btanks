@@ -104,10 +104,10 @@ const float IWorld::getImpassability(Object *obj, const sdlx::Surface &surface, 
 			continue;
 			
 		//skip owner and grouped-leader.
-		if ((obj->_owner_id != 0 && obj->_owner_id == o->_id) || (o->_owner_id != 0 && o->_owner_id == obj->_id)) 
-			continue;
-		if ((obj->_follow != 0 && obj->_follow == o->_id) || (o->_follow != 0 && o->_follow == obj->_id)) 
-			continue;
+		if (
+			(obj->_owner_id != 0 && obj->_owner_id == o->_id) || (o->_owner_id != 0 && o->_owner_id == obj->_id) ||
+			(obj->_follow != 0 && obj->_follow == o->_id) || (o->_follow != 0 && o->_follow == obj->_id) 
+		) continue;
 		
 		sdlx::Rect other((int)o->_position.x, (int)o->_position.y,(int)o->size.x, (int)o->size.y);
 		if (my.intersects(other)) {
