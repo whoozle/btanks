@@ -334,4 +334,6 @@ void Object::limitRotation(const float dt, const int dirs, const float speed, co
 		}
 	}
 	_direction.fromDirection(_direction_idx, dirs); //fixme. remove it.
+	if (!_velocity.is0()) 
+		_velocity.fromDirection(_direction_idx, dirs); //fixme. remove it.
 }
