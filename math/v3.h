@@ -280,16 +280,25 @@ public:
 	}
 	
 	void fromDirection(const int dir, const int total) {
-		static const float cos_vt[] = {1,-0.828085,0.371449,0.212902,-0.724051,0.98625,-0.909345,0.519781,0.0485005,-0.600106,0.945376,-0.965598,0.653818,-0.117235,-0.459656,0.878504,};
-		static const float sin_vt[] = {0,0.560603,-0.928453,0.977074,-0.689746,0.165263,0.416042,-0.8543,0.998823,-0.799921,0.325981,0.26004,-0.756652,0.993104,-0.888097,0.477735,};
+		static const float cos_vt16[] = {1,-0.828085,0.371449,0.212902,-0.724051,0.98625,-0.909345,0.519781,0.0485005,-0.600106,0.945376,-0.965598,0.653818,-0.117235,-0.459656,0.878504,};
+		static const float sin_vt16[] = {0,0.560603,-0.928453,0.977074,-0.689746,0.165263,0.416042,-0.8543,0.998823,-0.799921,0.325981,0.26004,-0.756652,0.993104,-0.888097,0.477735,};
+		static const float cos_vt8[] = {1,0.707107,0,-0.707107,-1,-0.707107,0,0.707107,};
+		static const float sin_vt8[] = {0,0.707107,1,0.707107,0,-0.707107,-1,-0.707107,};
 		
 		if (total != 4 && total != 8 && total != 16)
 			throw std::invalid_argument("fromDirection() supports 4, 8 or 16 directions.");
 		if (dir < 0 || dir >= total)
 			throw std::invalid_argument("direction is greater than total direction count.");
-		const int idx = dir * 16 / total;
-		x = cos_vt[idx];
-		y = sin_vt[idx];
+		z = 0;
+		
+		if (total != 16) {
+			int idx = dir * (8 / total);
+			x = cos_vt8[idx];
+			y = -sin_vt8[idx];
+		} else {
+			x = cos_vt16[dir];
+			y = -sin_vt16[dir];
+		}
 	}
 };
 
