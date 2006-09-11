@@ -87,16 +87,11 @@ void Launcher::tick(const float dt) {
 		play("hold", true);
 		_rockets->emit("hold", this);
 	} else {
-		int dir = _velocity.getDirection8();
-		if (dir) {
-			setDirection(dir - 1);
-			//LOG_DEBUG(("animation state: %s", _animation->getState().c_str()));
-			if (getState() == "hold") {
-				cancelAll();
-				//play("start", false);
-				play("move", true);
-				_rockets->emit("move", this);
-			}
+		if (getState() == "hold") {
+			cancelAll();
+			//play("start", false);
+			play("move", true);
+			_rockets->emit("move", this);
 		}
 	}
 
@@ -106,7 +101,7 @@ void Launcher::tick(const float dt) {
 	}
 
 	_state.fire = false;
-
+	limitRotation(dt, 0.2, false);
 	//LOG_DEBUG(("_velocity: %g %g", _velocity.x, _velocity.y));
 }
 

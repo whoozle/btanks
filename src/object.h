@@ -72,6 +72,8 @@ protected:
 	const bool isDriven() const;
 
 	void setup(const std::string &animation);
+	
+	void limitRotation(const float dt, const float speed, const bool rotate_even_stopped);
 
 private: 
 	struct Event : public mrt::Serializable {
@@ -99,6 +101,10 @@ private:
 
 	//waypoints stuff
 	Way _way;
+	
+	//rotation stuff
+	float _rotation_time;	
+	int _dst_direction;
 };
 
 

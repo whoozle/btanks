@@ -5,6 +5,7 @@
 #include "animation_model.h"
 #include "resource_manager.h"
 #include "world.h"
+#include "math/abs.h"
 
 Object::Event::Event() {}
 
@@ -22,7 +23,7 @@ void Object::Event::deserialize(const mrt::Serializator &s) {
 
 
 Object::Object(const std::string &classname) : 
-	BaseObject(classname),  _model(0), _surface(0), _direction_idx(0), _pos(0) {}
+	BaseObject(classname),  _model(0), _surface(0), _direction_idx(0), _pos(0), _rotation_time(-1) {}
 
 void Object::init(const std::string &model, const std::string &surface, const int tile_w, const int tile_h) {
 	_events.clear();
@@ -286,4 +287,45 @@ void Object::renderCopy(sdlx::Surface &surface) {
 	const_cast<sdlx::Surface *>(_surface)->setAlpha(0,0);
 	render(surface, 0, 0);
 	const_cast<sdlx::Surface *>(_surface)->setAlpha(0, SDL_SRCALPHA);
+}
+
+void Object::limitRotation(const float dt, const float speed, const bool rotate_even_stopped) {
+	if (_velocity.is0()) 
+		return;
+		
+	_dst_direction = _velocity.getDirection8() - 1;
+	if (_dst_direction == _direction_idx) 
+		return;
+	
+	if (_rotation_time < 0) {
+		//was not rotated.
+		_rotation_time = speed;
+
+		if (rotate_even_stopped) {
+			if (math::abs<float>(_dst_direction - _direction_idx) > 1)
+				_velocity.clear();
+		} 
+	}
+	
+	if (_rotation_time > 0) {
+		_rotation_time -= dt;
+		if (_rotation_time <= 0) {
+			//rotate.
+			int dd = _dst_direction - _direction_idx;
+			if (dd < 0) 
+				dd += 8;
+			dd = (dd > 4) ? -1: 1;
+			_direction_idx += dd;
+			if (_direction_idx < 0) 
+				_direction_idx += 8;
+			if (_direction_idx >= 8)
+				_direction_idx -= 8;
+			_rotation_time = (_direction_idx == _dst_direction)? -1.0: speed;
+			//LOG_DEBUG(("dd = %d, _direction_idx = %d, _dst_direction = %d", dd, _direction_idx, _dst_direction));
+		} 
+		if (!rotate_even_stopped) {
+			_velocity.fromDirection(_direction_idx, 8);
+			//LOG_DEBUG(("%d -> %g %g", _direction_idx, _velocity.x, _velocity.y));
+		}
+	}
 }

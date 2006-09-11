@@ -71,15 +71,10 @@ void Tank::tick(const float dt) {
 		cancelRepeatable();
 		play("hold", true);
 	} else {
-		int dir = _velocity.getDirection8();
-		if (dir) {
-			setDirection(dir - 1);
-			//LOG_DEBUG(("animation state: %s", _animation->getState().c_str()));
-			if (getState() == "hold") {
-				cancelAll();
-				play("start", false);
-				play("move", true);
-			}
+		if (getState() == "hold") {
+			cancelAll();
+			play("start", false);
+			play("move", true);
 		}
 	}
 
@@ -98,6 +93,8 @@ void Tank::tick(const float dt) {
 	}
 	
 	_state.fire = false;
+	
+	limitRotation(dt, 0.05, true);
 
 	//LOG_DEBUG(("_velocity: %g %g", _velocity.x, _velocity.y));
 }
