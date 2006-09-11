@@ -202,7 +202,7 @@ void Object::render(sdlx::Surface &surface, const int x, const int y) {
 	surface.copyFrom(*_surface, src, x, y);
 }
 
-const std::string Object::getState() const {
+const std::string& Object::getState() const {
 	static std::string empty;
 	if (_events.empty())
 		return empty;
