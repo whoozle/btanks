@@ -45,8 +45,8 @@ public:
 	
 	const float getCollisionTime(const v3<float> &pos, const v3<float> &vel, const float r) const;
 	
-	const bool isDead() const;
-	const int getID() const { return _id; }
+	inline const bool isDead() const { return _dead; }
+	inline const int getID() const { return _id; }
 
 	virtual void serialize(mrt::Serializator &s) const;
 	virtual void deserialize(const mrt::Serializator &s);
@@ -55,7 +55,7 @@ public:
 	void inheritParameters(const BaseObject *other);
 	void convertToAbsolute(v3<float> &pos, const v3<float> &dpos);
 
-	PlayerState & getPlayerState();
+	inline PlayerState & getPlayerState() { return _state; }
 
 	void follow(const BaseObject *obj);
 	void follow(const int id);
@@ -68,9 +68,9 @@ protected:
 
 	PlayerState _state;
 	
-	void getPosition(v3<float> &position);
+	inline void getPosition(v3<float> &position) { position = _position; }
 	inline const v3<float> & getPosition() { return _position; }
-	void getPosition(v3<int> &position);
+	inline void getPosition(v3<int> &position) { position = _position.convert<int>(); }
 	
 	v3<float> _velocity, _direction, _velocity_fadeout;
 	float _distance, _moving_time, _idle_time;

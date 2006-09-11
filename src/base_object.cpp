@@ -67,17 +67,6 @@ const std::string BaseObject::dump() const {
 
 BaseObject::~BaseObject() {}
 
-void BaseObject::getPosition(v3<float> &position) {
-	position = _position;
-}
-
-void BaseObject::getPosition(v3<int> &position) {
-	position = _position.convert<int>();
-}
-
-const bool BaseObject::isDead() const { return _dead;}
-
-
 void BaseObject::emit(const std::string &event, BaseObject * emitter) {
 	if (event == "death") {
 		_velocity.clear();
@@ -119,10 +108,6 @@ const float BaseObject::getCollisionTime(const v3<float> &dpos, const v3<float> 
 void BaseObject::convertToAbsolute(v3<float> &pos, const v3<float> &dpos) {
 	pos = _position;
 	pos += dpos;
-}
-
-PlayerState & BaseObject::getPlayerState() {
-	return _state;
 }
 
 void BaseObject::calculate(const float dt) {
