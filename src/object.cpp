@@ -299,11 +299,18 @@ void Object::limitRotation(const float dt, const int dirs, const float speed, co
 	} else {
 		_dst_direction = _velocity.getDirection16() - 1;
 	}
-	if (_dst_direction == _direction_idx) 
+	if (_dst_direction == _direction_idx) {
+		_rotation_time = -1;
 		return;
+	}
+		
 	
 	if (_rotation_time < 0) {
 		//was not rotated.
+		if (!rotate_even_stopped && (_dst_direction - _direction_idx + dirs) % dirs == dirs/2) {
+			return;
+		}
+		
 		_rotation_time = speed;
 
 		if (rotate_even_stopped) {
@@ -325,7 +332,7 @@ void Object::limitRotation(const float dt, const int dirs, const float speed, co
 				_direction_idx += dirs;
 			if (_direction_idx >= dirs)
 				_direction_idx -= dirs;
-			_rotation_time = (_direction_idx == _dst_direction)? -1.0: speed;
+			_rotation_time = (_direction_idx == _dst_direction)? -1: speed;
 			//LOG_DEBUG(("dd = %d, _direction_idx = %d, _dst_direction = %d", dd, _direction_idx, _dst_direction));
 		} 
 		if (!rotate_even_stopped) {
