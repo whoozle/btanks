@@ -78,7 +78,7 @@ void IGame::init(const int argc, char *argv[]) {
 		else if (strcmp(argv[i], "--fs") == 0) fullscreen = true;
 		else if (strcmp(argv[i], "--no-vsync") == 0) _vsync = false;
 #ifdef WIN32
-		else if (strcmp(argv[i], "--dx") == 0) dx = true;
+		else if (strcmp(argv[i], "--dx") == 0) { dx = true; _opengl = false; }
 #endif
 		else if (strcmp(argv[i], "-2") == 0) { w = 1024; h = 768; }
 		else if (strcmp(argv[i], "-3") == 0) { w = 1280; h = 1024; }
