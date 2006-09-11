@@ -25,10 +25,8 @@ void Rocket::calculate(const float dt) {
 	}
 
 	_velocity.normalize();
-	int dir = _velocity.getDirection16();
-	if (dir > 0)
-		setDirection(dir - 1);
 	_velocity.quantize16();
+	limitRotation(dt, 16, 0.5, true);
 }
 
 void Rocket::emit(const std::string &event, BaseObject * emitter) {

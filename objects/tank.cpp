@@ -87,14 +87,14 @@ void Tank::tick(const float dt) {
 		playNow("fire");
 		
 		//LOG_DEBUG(("vel: %f %f", _state.old_vx, _state.old_vy));
-		v3<float> v = _velocity.is0()?_direction:_velocity;
-		v.normalize();
-		spawn("bullet", "bullet", v3<float>(0,0,-0.1), v);
+		//v3<float> v = _velocity.is0()?_direction:_velocity;
+		//v.normalize();
+		spawn("bullet", "bullet", v3<float>(0,0,-0.1), _direction);
 	}
 	
 	_state.fire = false;
 	
-	limitRotation(dt, 0.05, true);
+	limitRotation(dt, 8, 0.05, true);
 
 	//LOG_DEBUG(("_velocity: %g %g", _velocity.x, _velocity.y));
 }

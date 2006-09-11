@@ -73,7 +73,7 @@ protected:
 
 	void setup(const std::string &animation);
 	
-	void limitRotation(const float dt, const float speed, const bool rotate_even_stopped);
+	void limitRotation(const float dt, const int dirs, const float speed, const bool rotate_even_stopped);
 
 private: 
 	struct Event : public mrt::Serializable {
