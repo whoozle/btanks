@@ -171,7 +171,7 @@
 
 	<animation id="heal" tile="heal.png" model="heal-animation"/>
 	<animation id="megaheal" tile="megaheal.png" model="heal-animation"/>
-	<animation id="pond" tile="pond.png" model="pond-animation"/>
+	<animation id="pond" tile="pond.png" model="pond-animation" tile_width="256" tile_height="256" />
 	<animation id="rocket-explosion" tile="rocket_blast.png" model="rocket-explosion-animation" />
 	<animation id="shilka-bullet-left" tile="shilka_bullet2.png" model="bullet-animation"/>
 	<animation id="shilka-bullet-right" tile="shilka_bullet1.png" model="bullet-animation"/>
