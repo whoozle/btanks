@@ -166,6 +166,10 @@
 	<animation id="dead-yellow-car" tile="car03_crash.png" model="dead-car-animation"/>
 	<animation id="dead-white-car" tile="car04_crash.png" model="dead-car-animation"/>
 
+	<animation id="orange-bus" tile="bus01.png" model="car-animation"/>
+
+	<animation id="dead-orage-bus" tile="bus01_crash.png" model="dead-car-animation"/>
+
 	<animation id="man" tile="man01.png" model="man-animation"/>
 	<animation id="die-man" tile="man01_die01.png" model="die-man-animation"/>
 
