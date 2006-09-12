@@ -317,10 +317,10 @@ void IWorld::tick(const float dt) {
 			o._distance -= dpos.length();
 		}
 
-		if (o._position.x + dpos.x < 0 || o._position.x + o.size.x + dpos.x >= map_size.x)
+		if (o._position.x + dpos.x < -o.size.x || o._position.x + dpos.x >= map_size.x)
 			dpos.x = 0;
 
-		if (o._position.y + dpos.y < 0 || o._position.y + o.size.y + dpos.y >= map_size.y)
+		if (o._position.y + dpos.y < -o.size.y || o._position.y + dpos.y >= map_size.y)
 			dpos.y = 0;
 		
 		o._position += dpos;
