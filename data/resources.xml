@@ -105,9 +105,11 @@
 	</animation-model>
 	
 	<animation-model id="traffic-lights-animation" speed="0.3">
-		<pose id="red">0</pose>
-		<pose id="yellow" speed="1">1</pose>
-		<pose id="green">2</pose>
+		<pose id="red">1</pose>
+		<pose id="flashing-red" speed="1.5">1,0,1,0,1,0</pose>
+		<pose id="yellow" speed="1">2</pose>
+		<pose id="green">3</pose>
+		<pose id="flashing-green" speed="1.5">3,0,3,0,3,0</pose>
 	</animation-model>
 	
 	<animation-model id="rocket-launch-animation" speed="10">

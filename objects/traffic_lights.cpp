@@ -15,7 +15,7 @@ private:
 void TrafficLights::tick(const float dt) {
 	Object::tick(dt);
 
-	static const char *names[] = {"red", "yellow", "green", "yellow"};
+	static const char *names[] = {"red", "flashing-red", "yellow", "green", "flashing-green", "yellow"};
 	
 	if (getState().size() == 0) {
 		++_idx; 
