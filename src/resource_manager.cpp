@@ -226,7 +226,7 @@ void IResourceManager::createAlias(const std::string &name, const std::string &c
 	ObjectMap::const_iterator i = _objects.find(classname);
 	if (i == _objects.end())
 		throw_ex(("object %s was not registered", classname.c_str()));
-	Object * r = i->second;
+	Object * r = i->second->clone();
 	if (r == NULL)
 		throw_ex(("%s->clone(\"\") returns NULL", classname.c_str()));
 	r->classname = name;
