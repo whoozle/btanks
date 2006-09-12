@@ -9,6 +9,7 @@
 #include "mrt/exception.h"
 
 #include "sdlx/surface.h"
+#include "object.h"
 
 #include <assert.h>
 #include <limits>
@@ -33,7 +34,12 @@ const bool IMap::collides(const sdlx::Surface &surf, const int dx, const int dy,
 }
 
 
-const int IMap::getImpassability(const sdlx::Surface &s, const v3<int>&pos, v3<int> *tile_pos) const {
+const int IMap::getImpassability(const Object *obj, const sdlx::Surface &s, const v3<int>&pos, v3<int> *tile_pos) const {
+	assert(obj != NULL);
+	if (obj->impassability == 0) {
+		return 0;
+	}
+	
 	int w = s.getWidth(), h = s.getHeight();
 	int x, x1;
 	int y, y1;
@@ -51,6 +57,9 @@ const int IMap::getImpassability(const sdlx::Surface &s, const v3<int>&pos, v3<i
 	//LOG_DEBUG(("%d:%d:%d:%d --> %d:%d %d:%d", x1, y1, w, h, xt1, yt1, xt2, yt2));
 	for(LayerMap::const_reverse_iterator l = _layers.rbegin(); l != _layers.rend(); ++l) {
 		const Layer *layer = l->second;
+		if (layer->pierceable && obj->piercing) 
+			continue;
+		
 		int layer_im = layer->impassability;
 		if (layer_im == -1) 
 			continue;
@@ -282,11 +291,13 @@ void IMap::end(const std::string &name) {
 		int z = (_properties.find("z") == _properties.end())?++_lastz:atol(_properties["z"].c_str());
 		_lastz = z;
 		int impassability = (_properties.find("impassability") != _properties.end())?atoi(_properties["impassability"].c_str()):-1;
+		const char pc = _properties["pierceable"][0];
+		const bool pierceable = pc == 't' || pc == 'T' || pc == '1';
 
 		LOG_DEBUG(("layer '%s'. %dx%d. z: %d, size: %d, impassability: %d", e.attrs["name"].c_str(), w, h, z, _data.getSize(), impassability));
 		if (_layers.find(z) != _layers.end())
 			throw_ex(("layer with z %d already exists", z));
-		_layers[z] = new Layer(w, h, _data, impassability);
+		_layers[z] = new Layer(w, h, _data, impassability, pierceable);
 		//LOG_DEBUG(("(1,1) = %d", _layers[z]->get(1,1)));
 		layer = false;
 	} else if (name == "property") {

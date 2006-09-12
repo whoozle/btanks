@@ -31,6 +31,7 @@
  <layer name="rocks" width="10" height="8">
   <properties>
    <property name="impassability" value="100"/>
+   <property name="pierceable" value="true"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgwA5YcIiPdHXoAAAU3+LWQAEAAA==

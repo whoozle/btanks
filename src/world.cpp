@@ -263,17 +263,17 @@ void IWorld::tick(const float dt) {
 		//osurf.saveBMP("snapshot.bmp");
 		const Object *stuck_in = NULL;
 		v3<int> stuck_map_pos;
-		bool stuck = map.getImpassability(osurf, old_pos, &stuck_map_pos) == 100 || getImpassability(*i, osurf, old_pos, &stuck_in) == 1.0;
+		bool stuck = map.getImpassability(*i, osurf, old_pos, &stuck_map_pos) == 100 || getImpassability(*i, osurf, old_pos, &stuck_in) == 1.0;
 		
 		float obj_im = getImpassability(*i, osurf, new_pos);
 		//LOG_DEBUG(("obj_im = %f", obj_im));
 		float map_im = 0;
 		if (o.piercing) {
-			if (map.getImpassability(osurf, new_pos) == 100) {
+			if (map.getImpassability(*i, osurf, new_pos) == 100) {
 				o.emit("death"); //fixme
 			}
 		} else {
-			map_im = map.getImpassability(osurf, new_pos) / 100.0;
+			map_im = map.getImpassability(*i, osurf, new_pos) / 100.0;
 		}
 
 		if (obj_im == 1.0 || map_im == 1.0) {

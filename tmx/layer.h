@@ -8,8 +8,9 @@ class Layer {
 public:
 	sdlx::Surface surface;
 	const int impassability;
+	const bool pierceable;
 
-	Layer(const int w, const int h, const mrt::Chunk & data, const int impassability);
+	Layer(const int w, const int h, const mrt::Chunk & data, const int impassability, const bool pierceable);
 
 	inline const int get(const int x, const int y) const {
 		if (x < 0 || x >= _w || y < 0 || y >= _h) 
