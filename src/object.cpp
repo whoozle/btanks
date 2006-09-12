@@ -202,7 +202,7 @@ void Object::render(sdlx::Surface &surface, const int x, const int y) {
 	sdlx::Rect src(_direction_idx * _tw, frame * _th, _tw, _th);
 
 	int alpha = 0;
-	if (fadeout_time > 0 && ttl < fadeout_time) 
+	if (fadeout_time > 0 && ttl > 0 && ttl < fadeout_time) 
 		alpha = (int)(255 * (fadeout_time - ttl) / fadeout_time);
 	//LOG_DEBUG(("alpha = %d", alpha));
 	if (alpha == 0) {
