@@ -23,6 +23,7 @@ void Object::Event::deserialize(const mrt::Serializator &s) {
 
 Object * Object::clone() const {
 	assert(0);
+	return NULL;
 }
 
 
