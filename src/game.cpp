@@ -296,28 +296,44 @@ void IGame::loadMap(const std::string &name) {
 	
 	const v3<int> size = map.getSize();
 	_players.clear();
+
 	for (IMap::PropertyMap::iterator i = map.properties.begin(); i != map.properties.end(); ++i) {
+		if (i->first.substr(0, 6) != "spawn:" && i->first.substr(0, 7) != "object:") {
+			continue;
+		}
+	
+		v3<int> pos;
+		std::string pos_str = i->second;
+		const bool tiled_pos = pos_str[0] == '@';
+		if (tiled_pos) { 
+			pos_str = pos_str.substr(1);
+		}
+		pos.fromString(pos_str);
+		if (tiled_pos) {
+			v3<int> tile_size = Map->getTileSize();
+			pos.x *= tile_size.x;
+			pos.y *= tile_size.y;
+			//keep z untouched.
+		}
+
+		if (pos.x < 0) 
+			pos.x += size.x;
+		if (pos.y < 0) 
+			pos.y += size.y;
+
 		if (i->first.substr(0, 6) == "spawn:") {
-			v3<int> pos;
-			pos.fromString(i->second);
-			if (pos.x < 0) 
-				pos.x += size.x;
-			if (pos.y < 0) 
-				pos.y += size.y;
 			LOG_DEBUG(("spawnpoint: %d,%d", pos.x, pos.y));
 			
 			PlayerSlot slot;
 			slot.position = pos;
 			_players.push_back(slot);
-		}
-
-		std::vector<std::string> res;
-		mrt::split(res, i->first, ":");
-		if (res.size() > 2 && res[0] == "object") {
-			v3<int> pos;
-			pos.fromString(i->second);
-			//LOG_DEBUG(("object %s, animation %s, pos: %s", res[1].c_str(), res[2].c_str(), i->second.c_str()));
-			World->addObject(ResourceManager->createObject(res[1], res[2]), pos.convert<float>());
+		} else {
+			std::vector<std::string> res;
+			mrt::split(res, i->first, ":");
+			if (res.size() > 2 && res[0] == "object") {
+				//LOG_DEBUG(("object %s, animation %s, pos: %s", res[1].c_str(), res[2].c_str(), i->second.c_str()));
+				World->addObject(ResourceManager->createObject(res[1], res[2]), pos.convert<float>());
+			}
 		}
 	}
 }
