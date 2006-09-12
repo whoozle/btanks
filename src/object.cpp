@@ -23,7 +23,7 @@ void Object::Event::deserialize(const mrt::Serializator &s) {
 
 
 Object::Object(const std::string &classname) : 
-	BaseObject(classname),  _model(0), _surface(0), _direction_idx(0), _pos(0), _rotation_time(-1) {}
+	BaseObject(classname), _fadeout_time(0),  _model(0), _surface(0), _direction_idx(0), _pos(0), _rotation_time(-1) {}
 
 void Object::init(const std::string &model, const std::string &surface, const int tile_w, const int tile_h) {
 	_events.clear();
@@ -185,8 +185,8 @@ void Object::render(sdlx::Surface &surface, const int x, const int y) {
 	
 	
 	//this stuff need to be fixed, but I still cannot find cause for overflowing frame
-	int r = frame / n;
-	frame -= r*n;
+	if (frame == n)
+		frame = n - 1;
 	
 	if (frame < 0 || frame >= n) {
 		LOG_WARN(("%s: event '%s' frame %d is out of range (position: %g).", classname.c_str(), _events.front().name.c_str(), frame, _pos));
@@ -198,9 +198,46 @@ void Object::render(sdlx::Surface &surface, const int x, const int y) {
 		LOG_WARN(("%s: event '%s' tile row %d is out of range.", classname.c_str(), _events.front().name.c_str(), frame));
 		return;
 	}
-	
+
 	sdlx::Rect src(_direction_idx * _tw, frame * _th, _tw, _th);
-	surface.copyFrom(*_surface, src, x, y);
+
+	int alpha = 0;
+	if (_fadeout_time > 0 && ttl < _fadeout_time) 
+		alpha = (int)(255 * (_fadeout_time - ttl) / _fadeout_time);
+	//LOG_DEBUG(("alpha = %d", alpha));
+	if (alpha == 0) {
+		surface.copyFrom(*_surface, src, x, y);
+		return;
+	} 
+	
+	sdlx::Surface blended; 
+	blended.createRGB(_tw, _th, 32, 0);
+	
+	const_cast<sdlx::Surface *>(_surface)->setAlpha(0,0);
+	blended.copyFrom(*_surface, src);
+	const_cast<sdlx::Surface *>(_surface)->setAlpha(0);
+
+	blended.convertAlpha();
+
+	const int w = blended.getWidth();
+	const int h = blended.getHeight();
+	
+	alpha = 255 - alpha;
+
+	blended.lock();
+	//optimize it.
+	
+	for(int py = 0; py < h; ++py) {
+		for(int px = 0; px < w; ++px) {
+			Uint8 r, g, b, a;
+			blended.getRGBA(blended.getPixel(px, py), r, g, b, a);
+			a = (((int)a) * alpha) / 255;
+			blended.putPixel(px, py, blended.mapRGBA(r, g, b, a));
+		}
+	}
+	blended.unlock();
+
+	surface.copyFrom(blended, x, y);
 }
 
 const std::string& Object::getState() const {

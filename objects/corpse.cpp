@@ -3,7 +3,9 @@
 
 class Corpse : public Object {
 public:
-	Corpse(const int fc) : Object("corpse"), _fire_cycles(fc) {}
+	Corpse(const int fc, const float fadeout) : Object("corpse"), _fire_cycles(fc) {
+		_fadeout_time = fadeout;
+	}
 
 	virtual Object * clone(const std::string &opt) const;
 	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
@@ -52,4 +54,4 @@ Object* Corpse::clone(const std::string &opt) const  {
 	return a;
 }
 
-REGISTER_OBJECT("corpse", Corpse, (10));
+REGISTER_OBJECT("corpse", Corpse, (10, 1.0));

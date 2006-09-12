@@ -62,6 +62,7 @@ public:
 	virtual void onSpawn();
 
 protected:
+	float _fadeout_time;
 
 	Object * spawn(const std::string &classname, const std::string &animation, const v3<float> &dpos, const v3<float> &vel);
 	Object * spawnGrouped(const std::string &classname, const std::string &animation, const v3<float> &dpos, const GroupType type);
