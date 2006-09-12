@@ -293,10 +293,13 @@ void Object::limitRotation(const float dt, const int dirs, const float speed, co
 	assert(dirs == 8 || dirs == 16);
 	if (_velocity.is0()) 
 		return;
+	_velocity.normalize();
 	
 	if (dirs == 8) {
+		_velocity.quantize8();
 		_dst_direction = _velocity.getDirection8() - 1;
 	} else {
+		_velocity.quantize16();
 		_dst_direction = _velocity.getDirection16() - 1;
 	}
 	if (_dst_direction == _direction_idx) {
@@ -304,10 +307,11 @@ void Object::limitRotation(const float dt, const int dirs, const float speed, co
 		return;
 	}
 		
-	
+	const int half_dirs = dirs / 2;
+
 	if (_rotation_time < 0) {
 		//was not rotated.
-		if (!rotate_even_stopped && (_dst_direction - _direction_idx + dirs) % dirs == dirs/2) {
+		if (!rotate_even_stopped && (_dst_direction - _direction_idx + dirs) % dirs == half_dirs) {
 			return;
 		}
 		
@@ -326,7 +330,7 @@ void Object::limitRotation(const float dt, const int dirs, const float speed, co
 			int dd = _dst_direction - _direction_idx;
 			if (dd < 0) 
 				dd += dirs;
-			dd = (dd > 4) ? -1: 1;
+			dd = (dd > half_dirs) ? -1: 1;
 			_direction_idx += dd;
 			if (_direction_idx < 0) 
 				_direction_idx += dirs;

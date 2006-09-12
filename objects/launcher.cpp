@@ -65,7 +65,7 @@ void Launcher::emit(const std::string &event, BaseObject * emitter) {
 		dpos.z = 1;
 		dpos /= 2;
 
-		Object *o = spawn("rocket-launch", "rocket-launch", dpos, v3<float>());
+		Object *o = spawn("rocket-launch", "rocket-launch", dpos, _direction);
 		o->setDirection(getDirection());
 		//LOG_DEBUG(("dir: %d", o->getDirection()));
 	} else Object::emit(event, emitter);

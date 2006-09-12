@@ -16,6 +16,11 @@ void Rocket::onSpawn() {
 	play("main", true);
 	_fire = spawnGrouped("single-pose", "rocket-fire", v3<float>(0,0, -0.1), Centered);
 	_fire->impassability = 0;
+	_velocity.normalize();
+	int dir = _velocity.getDirection16();
+	if (dir) {
+		setDirection(dir - 1);
+	}
 }
 
 void Rocket::calculate(const float dt) {
@@ -24,9 +29,7 @@ void Rocket::calculate(const float dt) {
 		_velocity = pos;
 	}
 
-	_velocity.normalize();
-	_velocity.quantize16();
-	limitRotation(dt, 16, 0.5, true);
+	limitRotation(dt, 16, 0.2, false);
 }
 
 void Rocket::emit(const std::string &event, BaseObject * emitter) {
