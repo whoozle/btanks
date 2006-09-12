@@ -37,6 +37,7 @@ void Rocket::emit(const std::string &event, BaseObject * emitter) {
 		_fire->emit("death", this);
 		Object::emit("death", emitter);
 	} else if (event == "collision") {
+		spawn("explosion", "rocket-explosion", v3<float>(0,0,1), v3<float>(0,0,0));
 		emit("death", emitter);
 	} else Object::emit(event, emitter);
 }

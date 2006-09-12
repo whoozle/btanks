@@ -31,6 +31,7 @@ void Bullet::onSpawn() {
 
 void Bullet::emit(const std::string &event, BaseObject * emitter) {
 	if (event == "collision") {
+		spawn("explosion", "explosion", v3<float>(0,0,1), v3<float>(0,0,0));
 		Object::emit("death", emitter);
 	} else Object::emit(event, emitter);
 }

@@ -45,7 +45,7 @@ void Tank::emit(const std::string &event, BaseObject * emitter) {
 	} else if (event == "collision") {
 		const std::string &c = emitter->classname;
 		if (c == "bullet") {
-			spawn("explosion", "explosion", v3<float>(0,0,1), v3<float>(0,0,0));
+			//spawn("explosion", "explosion", v3<float>(0,0,1), v3<float>(0,0,0));
 			hp -= emitter->hp;	
 			LOG_DEBUG(("received %d hp of damage. hp = %d", emitter->hp, hp));
 			if (hp <= 0) 
