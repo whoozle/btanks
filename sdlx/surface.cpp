@@ -264,22 +264,6 @@ void Surface::toggleFullscreen() {
 		throw_sdl(("SDL_WM_ToggleFullScreen"));
 }
 
-const Uint32 Surface::mapRGB(const Uint8 r, const Uint8 g, const Uint8 b) {
-    return SDL_MapRGB(surface->format, r, g, b);
-}
-
-const Uint32 Surface::mapRGBA(const Uint8 r, const Uint8 g, const Uint8 b, const Uint8 a) {
-    return SDL_MapRGBA(surface->format, r, g, b, a);
-}
-
-void Surface::getRGB(const Uint32 color, Uint8 &r, Uint8 &g, Uint8 &b) {
-	SDL_GetRGB(color, surface->format, &r, &g, &b);
-}
-
-void Surface::getRGBA(const Uint32 color, Uint8 &r, Uint8 &g, Uint8 &b, Uint8 &a) {
-	SDL_GetRGBA(color, surface->format, &r, &g, &b, &a);
-}
-
 void Surface::fillRect(const Rect &r, Uint32 color) {
     if ( SDL_FillRect(surface, (SDL_Rect *)&r , color) == -1) throw_sdl(("SDL_FillRect"));
 }

@@ -93,11 +93,22 @@ namespace sdlx {
 		void flip();
 		void toggleFullscreen();
 
-		const Uint32 mapRGB(const Uint8 r, const Uint8 g, const Uint8 b);
-		const Uint32 mapRGBA(const Uint8 r, const Uint8 g, const Uint8 b, const Uint8 a);
-		void getRGB(const Uint32 color, Uint8 &r, Uint8 &g, Uint8 &b);
-		void getRGBA(const Uint32 color, Uint8 &r, Uint8 &g, Uint8 &b, Uint8 &a);
+		inline const Uint32 mapRGB(const Uint8 r, const Uint8 g, const Uint8 b) const {
+		    return SDL_MapRGB(surface->format, r, g, b);
+		}
 		
+		inline const Uint32 mapRGBA(const Uint8 r, const Uint8 g, const Uint8 b, const Uint8 a) const {
+    		return SDL_MapRGBA(surface->format, r, g, b, a);
+		}
+		
+		inline void getRGB(const Uint32 color, Uint8 &r, Uint8 &g, Uint8 &b) const {
+			SDL_GetRGB(color, surface->format, &r, &g, &b);
+		}
+
+		inline void getRGBA(const Uint32 color, Uint8 &r, Uint8 &g, Uint8 &b, Uint8 &a) const {
+			SDL_GetRGBA(color, surface->format, &r, &g, &b, &a);
+		}
+
 		void fillRect(const Rect &r, Uint32 color);
 		void setAlpha(Uint8 alpha, Uint32 flags = SDL_SRCALPHA);
 		void convertAlpha();
