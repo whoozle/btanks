@@ -100,7 +100,7 @@ const float IWorld::getImpassability(Object *obj, const sdlx::Surface &surface, 
 	
 	for(ObjectSet::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		Object *o = *i;
-		if (o == obj || o->impassability == 0) 
+		if (o == obj || o->impassability == 0 || (obj->piercing && o->pierceable) || (obj->pierceable && o->piercing)) 
 			continue;
 			
 		//skip owner and grouped-leader.

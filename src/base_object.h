@@ -32,7 +32,7 @@ public:
 	float mass, speed, ttl, impassability;
 	int hp;
 	
-	bool piercing;
+	bool piercing, pierceable;
 	
 	std::string classname;
 	

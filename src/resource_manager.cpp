@@ -101,6 +101,8 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 				object->second->ttl = atof(value.c_str());
 			} else if (name == "piercing") {
 				object->second->piercing = (value[0] == 't' || value[0] == '1' || value[0] == 'y');
+			} else if (name == "pierceable") {
+				object->second->pierceable = (value[0] == 't' || value[0] == '1' || value[0] == 'y');
 			} else if (name == "hp") {
 				object->second->hp = atol(value.c_str());
 			} else if (name == "impassability") {

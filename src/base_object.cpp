@@ -3,7 +3,7 @@
 #include "world.h"
 
 BaseObject::BaseObject(const std::string &classname)
- : mass(1), speed(0), ttl(-1), impassability(1), hp(1), piercing(false), 
+ : mass(1), speed(0), ttl(-1), impassability(1), hp(1), piercing(false), pierceable(false),
    classname(classname), _id(0), _follow(0), _direction(1,0,0), _distance(0), _moving_time(0), _idle_time(0), _dead(false), _owner_id(0) {
 	//LOG_DEBUG(("allocated id %ld", _id));
 }
@@ -60,8 +60,8 @@ void BaseObject::deserialize(const mrt::Serializator &s) {
 }
 
 const std::string BaseObject::dump() const {
-	return mrt::formatString("object '%s', mass: %g, speed: %g, ttl: %g, impassability: %g, hp: %d, piercing: %s, dead: %s",
-		classname.c_str(), mass, speed, ttl, impassability, hp, piercing?"true":"false", _dead?"true":"false"
+	return mrt::formatString("object '%s', mass: %g, speed: %g, ttl: %g, impassability: %g, hp: %d, piercing: %s, pierceable: %s, dead: %s",
+		classname.c_str(), mass, speed, ttl, impassability, hp, piercing?"true":"false", pierceable?"true":"false", _dead?"true":"false"
 	);
 }
 
