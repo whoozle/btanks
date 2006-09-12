@@ -170,6 +170,7 @@ void IWorld::getImpassabilityMatrix(Matrix<int> &matrix, const Object *src, cons
 
 void IWorld::tick(const float dt) {
 	const IMap &map = *IMap::get_instance();
+	v3<int> map_size = map.getSize();
 	//LOG_DEBUG(("tick dt = %f", dt));
 	for(ObjectSet::iterator i = _objects.begin(); i != _objects.end(); ) {
 		Object &o = **i;
@@ -315,6 +316,13 @@ void IWorld::tick(const float dt) {
 		if (o._distance > 0) {
 			o._distance -= dpos.length();
 		}
+
+		if (o._position.x + dpos.x < 0 || o._position.x + o.size.x + dpos.x >= map_size.x)
+			dpos.x = 0;
+
+		if (o._position.y + dpos.y < 0 || o._position.y + o.size.y + dpos.y >= map_size.y)
+			dpos.y = 0;
+		
 		o._position += dpos;
 
 		o._velocity_fadeout *= 0.9;
