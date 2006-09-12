@@ -23,7 +23,7 @@ void Object::Event::deserialize(const mrt::Serializator &s) {
 
 
 Object::Object(const std::string &classname) : 
-	BaseObject(classname), _fadeout_time(0),  _model(0), _surface(0), _direction_idx(0), _pos(0), _rotation_time(-1) {}
+	BaseObject(classname), fadeout_time(0),  _model(0), _surface(0), _direction_idx(0), _pos(0), _rotation_time(-1) {}
 
 void Object::init(const std::string &model, const std::string &surface, const int tile_w, const int tile_h) {
 	_events.clear();
@@ -202,8 +202,8 @@ void Object::render(sdlx::Surface &surface, const int x, const int y) {
 	sdlx::Rect src(_direction_idx * _tw, frame * _th, _tw, _th);
 
 	int alpha = 0;
-	if (_fadeout_time > 0 && ttl < _fadeout_time) 
-		alpha = (int)(255 * (_fadeout_time - ttl) / _fadeout_time);
+	if (fadeout_time > 0 && ttl < fadeout_time) 
+		alpha = (int)(255 * (fadeout_time - ttl) / fadeout_time);
 	//LOG_DEBUG(("alpha = %d", alpha));
 	if (alpha == 0) {
 		surface.copyFrom(*_surface, src, x, y);

@@ -33,6 +33,7 @@ class Pose;
 class Object : public BaseObject {
 public:
 	std::string animation;
+	float fadeout_time;
 
 	Object(const std::string &classname);
 	void init(const std::string &model, const std::string &surface, const int tile_w, const int tile_h);
@@ -62,7 +63,6 @@ public:
 	virtual void onSpawn();
 
 protected:
-	float _fadeout_time;
 
 	Object * spawn(const std::string &classname, const std::string &animation, const v3<float> &dpos, const v3<float> &vel);
 	Object * spawnGrouped(const std::string &classname, const std::string &animation, const v3<float> &dpos, const GroupType type);

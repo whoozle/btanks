@@ -107,6 +107,8 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 				object->second->hp = atol(value.c_str());
 			} else if (name == "impassability") {
 				object->second->impassability = atof(value.c_str());
+			} else if (name == "fadeout_time") {
+				object->second->fadeout_time = atof(value.c_str());
 			} else if (name != "class" && name != "parent") 
 				LOG_WARN(("attr '%s' is not supported", name.c_str()));
 		}
