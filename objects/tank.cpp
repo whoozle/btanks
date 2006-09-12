@@ -23,12 +23,11 @@ void Tank::onSpawn() {
 	_smoke->impassability = 0;
 }
 
-Object * Tank::clone(const std::string &opt) const {
+Object * Tank::clone() const {
 	Tank *p = NULL;
 	TRY { 
 		//LOG_DEBUG(("cloning player with animation '%s'", opt.c_str()));
 		p = new Tank(*this);
-		p->setup(opt);
 	} CATCH("clone", { delete p; throw; });
 	return p;
 }

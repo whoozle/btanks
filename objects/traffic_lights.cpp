@@ -5,7 +5,7 @@ class TrafficLights : public Object {
 public:
 	TrafficLights() : Object("traffic-lights"), _idx(-1) {}
 	virtual void tick(const float dt);
-	virtual Object * clone(const std::string &opt) const;
+	virtual Object * clone() const;
 	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
 private: 
 	int _idx;
@@ -32,11 +32,8 @@ void TrafficLights::emit(const std::string &event, BaseObject * emitter) {
 }
 
 
-Object* TrafficLights::clone(const std::string &opt) const  {
-	Object *a = new TrafficLights(*this);
-	ResourceManager->initMe(a, opt);
-	a->setDirection(0);
-	return a;
+Object* TrafficLights::clone() const  {
+	return new TrafficLights(*this);
 }
 
 REGISTER_OBJECT("traffic-lights", TrafficLights, ());

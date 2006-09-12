@@ -5,7 +5,7 @@ class SinglePose : public Object {
 public:
 	SinglePose(const std::string &pose, const bool repeat) : Object("single-pose"), _pose(pose), _repeat(repeat) {}
 
-	virtual Object * clone(const std::string &opt) const;
+	virtual Object * clone() const;
 	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
 	virtual void tick(const float dt);
 	virtual void onSpawn();
@@ -40,11 +40,10 @@ void SinglePose::onSpawn() {
 }
 
 
-Object* SinglePose::clone(const std::string &opt) const  {
+Object* SinglePose::clone() const  {
 	Object *a = NULL;
 	TRY {
 		a = new SinglePose(*this);
-		ResourceManager->initMe(a, opt);
 	} CATCH("clone", { delete a; throw; });
 	return a;
 }

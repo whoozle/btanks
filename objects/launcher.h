@@ -26,7 +26,7 @@ class Launcher : public Object {
 public:
 	Launcher();
 	Launcher(const std::string &animation);
-	virtual Object * clone(const std::string &opt) const;
+	virtual Object * clone() const;
 
 	virtual void emit(const std::string &event, BaseObject * emitter);
 	virtual void tick(const float dt);

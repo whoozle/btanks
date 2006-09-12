@@ -5,7 +5,8 @@ class Explosion : public Object {
 public:
 	Explosion() : Object("explosion") {}
 	virtual void tick(const float dt);
-	virtual Object * clone(const std::string &opt) const;
+	virtual Object * clone() const;
+	virtual void onSpawn();
 	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
 };
 
@@ -18,6 +19,12 @@ void Explosion::tick(const float dt) {
 	}
 }
 
+void Explosion::onSpawn() {
+	setDirection(0);
+	play("boom", false);
+	impassability = 0;	
+}
+
 void Explosion::emit(const std::string &event, BaseObject * emitter) {
 	if (event == "collision") {
 		return;
@@ -25,13 +32,8 @@ void Explosion::emit(const std::string &event, BaseObject * emitter) {
 }
 
 
-Object* Explosion::clone(const std::string &opt) const  {
+Object* Explosion::clone() const  {
 	Object *a = new Explosion(*this);
-	ResourceManager->initMe(a, opt);
-
-	a->setDirection(0);
-	a->play("boom", false);
-	a->impassability = 0;
 	return a;
 }
 

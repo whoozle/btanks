@@ -21,6 +21,10 @@ void Object::Event::deserialize(const mrt::Serializator &s) {
 	s.get(repeat);
 }
 
+Object * Object::clone() const {
+	assert(0);
+}
+
 
 Object::Object(const std::string &classname) : 
 	BaseObject(classname), fadeout_time(0),  _model(0), _surface(0), _direction_idx(0), _pos(0), _rotation_time(-1) {}
@@ -60,15 +64,6 @@ Object* Object::spawn(const std::string &classname, const std::string &animation
 const bool Object::getNearest(const std::string &classname, v3<float> &position, v3<float> &velocity, Way * way) const {
 	return World->getNearest(this, classname, position, velocity, way);
 }
-
-
-Object * Object::clone(const std::string &opt) const {
-	throw_ex(("your object uses Object directly, which is obsoleted and prohibited."));
-//	Object *obj = new Object(*this);
-//	return obj;
-	return NULL;
-}
-
 
 void Object::setDirection(const int dir) {
 	_direction_idx = dir;

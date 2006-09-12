@@ -113,7 +113,13 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 				LOG_WARN(("attr '%s' is not supported", name.c_str()));
 		}
 		LOG_DEBUG(("%s", object->second->dump().c_str()));
-	} else LOG_WARN(("unhandled tag: %s", name.c_str()));
+	} else if (name == "alias") {
+		std::string name = attr["name"];
+		std::string classname = attr["class"];
+		if (name.empty() || classname.empty())
+			throw_ex(("alias must have both 'name' and 'class' attributes"));
+		createAlias(name, classname);
+	}else LOG_WARN(("unhandled tag: %s", name.c_str()));
 }
 
 void IResourceManager::end(const std::string &name) {
@@ -215,13 +221,28 @@ void IResourceManager::registerObject(const std::string &classname, Object *o) {
 	LOG_DEBUG(("classname %s registered at %p", classname.c_str(), (void*)o));
 }
 
+void IResourceManager::createAlias(const std::string &name, const std::string &classname) {
+	LOG_DEBUG(("creating alias '%s' -> '%s'", name.c_str(), classname.c_str()));
+	ObjectMap::const_iterator i = _objects.find(classname);
+	if (i == _objects.end())
+		throw_ex(("object %s was not registered", classname.c_str()));
+	Object * r = i->second;
+	if (r == NULL)
+		throw_ex(("%s->clone(\"\") returns NULL", classname.c_str()));
+	r->classname = name;
+	delete _objects[name];
+	_objects[name] = r;
+}
+
+
 Object *IResourceManager::createObject(const std::string &classname, const std::string &animation) const {
 	ObjectMap::const_iterator i = _objects.find(classname);
 	if (i == _objects.end())
 		throw_ex(("classname '%s' was not registered", classname.c_str()));
-	Object * r = i->second->clone(animation);
+	Object * r = i->second->clone();
 	if (r == NULL)
 		throw_ex(("%s->clone('%s') returns NULL", classname.c_str(), animation.c_str()));
+	r->setup(animation);
 	//LOG_DEBUG(("base: %s", i->second->dump().c_str()));
 	//LOG_DEBUG(("clone: %s", r->dump().c_str()));
 	r->animation = animation;

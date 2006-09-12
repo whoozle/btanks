@@ -15,12 +15,11 @@ Launcher::Launcher(const std::string &animation)
 	setup(animation);
 }
 
-Object * Launcher::clone(const std::string &opt) const {
+Object * Launcher::clone() const {
 	Launcher *p = NULL;
 	TRY { 
 		//LOG_DEBUG(("cloning player with animation '%s'", opt.c_str()));
 		p = new Launcher(*this);
-		p->setup(opt);
 	} CATCH("clone", { delete p; throw; });
 	return p;
 }

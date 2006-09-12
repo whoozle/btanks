@@ -38,7 +38,7 @@ public:
 	Object(const std::string &classname);
 	void init(const std::string &model, const std::string &surface, const int tile_w, const int tile_h);
 	void init(const Object *other);
-	virtual Object * clone(const std::string &opt) const;
+	virtual Object * clone() const;
 
 	void setDirection(const int dir);
 	const int getDirection() const;
@@ -61,6 +61,7 @@ public:
 	inline const int getLeader() const { return _follow; }
 	
 	virtual void onSpawn();
+	void setup(const std::string &animation); //do not use it, needed for resman
 
 protected:
 
@@ -72,8 +73,6 @@ protected:
 	void setWay(const Way & way);
 	const bool isDriven() const;
 
-	void setup(const std::string &animation);
-	
 	void limitRotation(const float dt, const int dirs, const float speed, const bool rotate_even_stopped);
 
 private: 

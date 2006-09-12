@@ -5,7 +5,7 @@ class Rocket : public Object {
 public:
 	Rocket() : Object("bullet") {}
 	virtual void calculate(const float dt);
-	virtual Object * clone(const std::string &opt) const;
+	virtual Object * clone() const;
 	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
 	void onSpawn();
 private:
@@ -42,12 +42,8 @@ void Rocket::emit(const std::string &event, BaseObject * emitter) {
 }
 
 
-Object* Rocket::clone(const std::string &opt) const  {
-	Object *a = new Rocket(*this);
-	ResourceManager->initMe(a, opt);
-
-	a->setDirection(getDirection());
-	return a;
+Object* Rocket::clone() const  {
+	return new Rocket(*this);
 }
 
 REGISTER_OBJECT("rocket", Rocket, ());

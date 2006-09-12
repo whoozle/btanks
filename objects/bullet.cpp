@@ -5,7 +5,8 @@ class Bullet : public Object {
 public:
 	Bullet() : Object("bullet") {}
 	virtual void calculate(const float dt);
-	virtual Object * clone(const std::string &opt) const;
+	virtual Object * clone() const;
+	virtual void onSpawn();
 	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
 };
 
@@ -20,6 +21,14 @@ void Bullet::calculate(const float dt) {
 	_velocity.quantize8();
 }
 
+void Bullet::onSpawn() {
+/*	a->speed = 500;
+	a->ttl = 1;
+	a->piercing = true;
+*/
+	play("move", true);
+}
+
 void Bullet::emit(const std::string &event, BaseObject * emitter) {
 	if (event == "collision") {
 		Object::emit("death", emitter);
@@ -27,14 +36,8 @@ void Bullet::emit(const std::string &event, BaseObject * emitter) {
 }
 
 
-Object* Bullet::clone(const std::string &opt) const  {
+Object* Bullet::clone() const  {
 	Object *a = new Bullet(*this);
-	ResourceManager->initMe(a, opt);
-/*	a->speed = 500;
-	a->ttl = 1;
-	a->piercing = true;
-*/
-	a->play("move", true);
 	a->setDirection(getDirection());
 	return a;
 }

@@ -5,7 +5,7 @@ class Corpse : public Object {
 public:
 	Corpse(const int fc) : Object("corpse"), _fire_cycles(fc) {}
 
-	virtual Object * clone(const std::string &opt) const;
+	virtual Object * clone() const;
 	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
 	virtual void tick(const float dt);
 	virtual void onSpawn();
@@ -43,13 +43,8 @@ void Corpse::onSpawn() {
 }
 
 
-Object* Corpse::clone(const std::string &opt) const  {
-	Object *a = NULL;
-	TRY {
-		a = new Corpse(*this);
-		ResourceManager->initMe(a, opt);
-	} CATCH("clone", { delete a; throw; });
-	return a;
+Object* Corpse::clone() const  {
+	return new Corpse(*this);
 }
 
 REGISTER_OBJECT("corpse", Corpse, (10));

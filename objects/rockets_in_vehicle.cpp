@@ -5,7 +5,7 @@ class RocketsInVehicle : public Object {
 public:
 	RocketsInVehicle() : Object("rockets-in-vehicle"), n(3), hold(true) {}
 	virtual void tick(const float dt);
-	virtual Object * clone(const std::string &opt) const;
+	virtual Object * clone() const;
 	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
 	virtual void onSpawn();
 	virtual void render(sdlx::Surface &surface, const int x, const int y);
@@ -63,10 +63,8 @@ void RocketsInVehicle::emit(const std::string &event, BaseObject * emitter) {
 }
 
 
-Object* RocketsInVehicle::clone(const std::string &opt) const  {
-	Object *a = new RocketsInVehicle(*this);
-	ResourceManager->initMe(a, opt);
-	return a;
+Object* RocketsInVehicle::clone() const  {
+	return new RocketsInVehicle(*this);
 }
 
 REGISTER_OBJECT("rockets-in-vehicle", RocketsInVehicle, ());

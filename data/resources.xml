@@ -188,6 +188,8 @@
 
 	<animation id="gate" tile="gate01.png" model="gate-animation"/>
 	
+	<alias name="pond" class="single-pose" />
+	
 	<object class="tank" speed="400" mass="500" hp="5"/>
 	<object class="ai-tank" parent="tank" />
 	<object class="launcher" speed="300" mass="300" hp="3" />
@@ -196,4 +198,5 @@
 	<object class="rocket-launch" impassability="0" />
 	<object class="corpse" speed="0" hp="10" ttl="10" fadeout_time="1"/>
 	<object class="explosion" speed="0" hp="1000" />
+	<object class="pond" speed="0" hp="1000" pierceable="true" />
 </resources>

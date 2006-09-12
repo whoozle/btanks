@@ -50,6 +50,7 @@ public:
 	const Object *getAnimation(const std::string &id) const ;
 
 	const sdlx::Surface *getSurface(const std::string &id) const;
+	void createAlias(const std::string &name, const std::string &classname);
 
 private:
 	Object *getAnimation(const std::string &id);
