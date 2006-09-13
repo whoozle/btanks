@@ -217,6 +217,6 @@
 	<object class="rocket-launch" impassability="0" />
 	<object class="corpse" hp="10" ttl="10" fadeout_time="1"/>
 	<object class="explosion" hp="1000" />
-	<object class="pond" hp="1000" pierceable="true" />
+	<object class="pond" hp="1000" pierceable="true" impassability="1" />
 	<object class="spawn-shield" hp="1000" impassability="1" />
 </resources>
