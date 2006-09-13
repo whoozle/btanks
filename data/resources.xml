@@ -130,7 +130,11 @@
 		<pose id="broken">0</pose>
 	</animation-model>
 
+	<animation-model id="spawning-animation" speed="1">
+		<pose id="main">0,1,2,3,4,5,6,7,8</pose>
+	</animation-model>
 	
+	<animation id="spawning" tile="respawn.png" model="spawning-animation" />
 	<animation id="green-tank" tile="tank01.png" model="tank-animation"/>
 	<animation id="red-tank" tile="tank02.png" model="tank-animation"/>
 	<animation id="yellow-tank" tile="tank03.png" model="tank-animation"/>
@@ -198,15 +202,21 @@
 
 	<animation id="gate" tile="gate01.png" model="gate-animation"/>
 	
+	<!-- basic object with single pose. do not edit. -->
+	<object class="single-pose" impassability="0" />
+	<!-- end of single-pose ;) -->
+
 	<alias name="pond" class="single-pose" />
-	
+	<alias name="spawn-shield" class="single-pose" />
+
 	<object class="tank" speed="400" mass="500" hp="5"/>
 	<object class="ai-tank" parent="tank" />
 	<object class="launcher" speed="300" mass="300" hp="3" />
 	<object class="bullet" speed="550" mass="1" piercing="true" ttl="1" />
 	<object class="rocket" speed="450" mass="100" piercing="true" ttl="5" hp="3" />
 	<object class="rocket-launch" impassability="0" />
-	<object class="corpse" speed="0" hp="10" ttl="10" fadeout_time="1"/>
-	<object class="explosion" speed="0" hp="1000" />
-	<object class="pond" speed="0" hp="1000" pierceable="true" />
+	<object class="corpse" hp="10" ttl="10" fadeout_time="1"/>
+	<object class="explosion" hp="1000" />
+	<object class="pond" hp="1000" pierceable="true" />
+	<object class="spawn-shield" hp="1000" impassability="1" />
 </resources>
