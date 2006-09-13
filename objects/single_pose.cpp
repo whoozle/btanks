@@ -9,6 +9,7 @@ public:
 	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
 	virtual void tick(const float dt);
 	virtual void onSpawn();
+
 private:
 	std::string _pose;
 	bool _repeat;
