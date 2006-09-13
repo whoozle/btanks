@@ -632,6 +632,7 @@ void IGame::clear() {
 	_my_index = -1;
 	LOG_DEBUG(("cleaning up world"));
 	World->clear();
+	_paused = false;
 }
 
 IGame::PlayerSlot::~PlayerSlot() {
