@@ -16,7 +16,7 @@
  * TexInfo 0 being leaked, as the checking is
  * done before the screen is closed. Ignore. :-)
  */
-//#define LEAK_TRACKING
+/* #define LEAK_TRACKING */
 
 #define	DBG(x)	x	/*error messages, warnings*/
 #define	DBG2(x)		/*texture allocation*/
@@ -820,8 +820,7 @@ void glSDL_UnlockSurface(SDL_Surface *surface)
 			_glSDL_BlitGL(fake_screen, NULL,
 					SDL_GetVideoSurface(), NULL);
 	}
-	else
-		SDL_UnlockSurface(surface);
+	SDL_UnlockSurface(surface);
 }
 
 
