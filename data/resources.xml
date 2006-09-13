@@ -78,7 +78,7 @@
 		<pose id="main">0,1,2,3,4</pose>
 	</animation-model>
 
-	<animation-model id="rockets-in-vehicle-animation" speed="10">
+	<animation-model id="rockets-on-launcher-animation" speed="10">
 		<pose id="rocket-1">0,1,1</pose>
 		<pose id="rocket-2">2,3,3</pose>
 		<pose id="rocket-3">4,5,6</pose>
@@ -185,7 +185,7 @@
 	<animation id="traffic-lights" tile="traffic_lights.png" model="traffic-lights-animation"/>
 	<animation id="launcher-smoke" tile="launcher_smoke.png" model="smoke-animation" />
 	<animation id="tank-smoke" tile="tank_smoke.png" model="smoke-animation" />
-	<animation id="rockets-in-vehicle" tile="launcher_rocket01.png" model="rockets-in-vehicle-animation" />
+	<animation id="rockets-on-launcher" tile="launcher_rocket01.png" model="rockets-on-launcher-animation" />
 	<animation id="rocket" tile="rocket01.png" model="single-tile" />
 	<animation id="rocket-fire" tile="rocket_fire.png" model="rocket-fire-animation" />
 	<animation id="rocket-launch" tile="rocket_launch.png" model="rocket-launch-animation" tile_width="128" tile_height="128" />

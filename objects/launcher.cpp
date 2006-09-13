@@ -29,7 +29,7 @@ void Launcher::onSpawn() {
 	_smoke->hp = 100000;
 	_smoke->impassability = 0;
 	add("smoke", _smoke);
-	Object *_rockets = spawnGrouped("rockets-in-vehicle", "rockets-in-vehicle", v3<float>(0,0,0.1), Centered);
+	Object *_rockets = spawnGrouped("rockets-on-launcher", "rockets-on-launcher", v3<float>(0,0,0.1), Centered);
 	_rockets->hp = 100000;
 	_rockets->impassability = 0;
 	add("rockets", _rockets);

@@ -3,7 +3,7 @@
 
 class RocketsInVehicle : public Object {
 public:
-	RocketsInVehicle() : Object("rockets-in-vehicle"), n(3), hold(true) {}
+	RocketsInVehicle(const int n) : Object("rockets-in-vehicle"), n(n), hold(true) {}
 	virtual void tick(const float dt);
 	virtual Object * clone() const;
 	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
@@ -67,4 +67,5 @@ Object* RocketsInVehicle::clone() const  {
 	return new RocketsInVehicle(*this);
 }
 
-REGISTER_OBJECT("rockets-in-vehicle", RocketsInVehicle, ());
+REGISTER_OBJECT("rockets-on-launcher", RocketsInVehicle, (3));
+REGISTER_OBJECT("rockets-on-tank", RocketsInVehicle, (1));
