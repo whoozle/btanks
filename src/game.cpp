@@ -352,7 +352,7 @@ const int IGame::spawnPlayer(const std::string &classname, const std::string &an
 	slot.control_method = NULL;
 	
 	if (control_method == "keys") {
-		slot.control_method = new KeyPlayer(SDLK_UP, SDLK_DOWN, SDLK_LEFT, SDLK_RIGHT, SDLK_LCTRL);
+		slot.control_method = new KeyPlayer(SDLK_UP, SDLK_DOWN, SDLK_LEFT, SDLK_RIGHT, SDLK_LCTRL, SDLK_LALT);
 	} else if (control_method != "ai" && control_method != "net") {
 		throw_ex(("unknown control method '%s' used", control_method.c_str()));
 	}

@@ -77,25 +77,25 @@ void Launcher::tick(const float dt) {
 	
 	if (getState().empty()) {
 		play("hold", true);
-		get("rockets")->emit("hold", this);
+		groupEmit("rockets", "hold");
 	}
 
 	if (_velocity.is0()) {	
 		cancelRepeatable();
 		play("hold", true);
-		get("rockets")->emit("hold", this);
+		groupEmit("rockets", "hold");
 	} else {
 		if (getState() == "hold") {
 			cancelAll();
 			//play("start", false);
 			play("move", true);
-			get("rockets")->emit("move", this);
+			groupEmit("rockets", "move");
 		}
 	}
 
 	if (_state.fire && fire_possible) {
 		_fire.reset();
-		get("rockets")->emit("launch", this);
+		groupEmit("rockets", "launch");
 	}
 
 	_state.fire = false;

@@ -23,12 +23,12 @@
 
 class JoyPlayer :public ControlMethod {
 public:
-	JoyPlayer(const int idx, const int fire);
+	JoyPlayer(const int idx, const int fire, const int alt_fire);
 	virtual void updateState(PlayerState &state);
 	
 private:
 	sdlx::Joystick _joy;
-	int _fire;
+	int _fire, _alt_fire;
 };
 
 #endif

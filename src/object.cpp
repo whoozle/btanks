@@ -410,7 +410,7 @@ const Object *Object::get(const std::string &name) const {
 	return i->second;
 }
 
-void Object::emit(const std::string &name, const std::string &event) {
+void Object::groupEmit(const std::string &name, const std::string &event) {
 	Object *o = get(name);
 	o->emit(event, this);
 }

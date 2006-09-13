@@ -3,7 +3,7 @@
 
 class PlayerState {
 public:
-	bool left, right, up, down, fire;
+	bool left, right, up, down, fire, alt_fire;
 	PlayerState() { clear(); }
 	void clear() { memset(this, 0, sizeof(*this)); }
 };

@@ -79,7 +79,7 @@ protected:
 	void add(const std::string &name, Object *obj);
 	Object *get(const std::string &name);
 	const Object *get(const std::string &name) const;
-	void emit(const std::string &name, const std::string &event);
+	void groupEmit(const std::string &name, const std::string &event);
 
 private: 
 	struct Event : public mrt::Serializable {

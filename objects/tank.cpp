@@ -19,8 +19,12 @@ Tank::Tank(const std::string &animation)
 
 void Tank::onSpawn() {
 	Object *_smoke = spawnGrouped("single-pose", "tank-smoke", v3<float>(0,0,0.1), Centered);
-	_smoke->hp = 100000;
 	_smoke->impassability = 0;
+
+	Object *_rockets = spawnGrouped("rockets-on-tank", "rockets-on-tank", v3<float>(0,0,0.1), Centered);
+	_rockets->impassability = 0;
+
+	add("rockets", _rockets);
 	add("smoke", _smoke);
 }
 
@@ -69,11 +73,13 @@ void Tank::tick(const float dt) {
 	if (_velocity.is0()) {
 		cancelRepeatable();
 		play("hold", true);
+		groupEmit("rockets", "hold");
 	} else {
 		if (getState() == "hold") {
 			cancelAll();
 			play("start", false);
 			play("move", true);
+			groupEmit("rockets", "move");
 		}
 	}
 
