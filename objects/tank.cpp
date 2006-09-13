@@ -55,6 +55,16 @@ void Tank::emit(const std::string &event, BaseObject * emitter) {
 			if (hp <= 0) 
 				emit("death", emitter);
 		}
+	} else if (event == "launch") {
+		spawn("rocket", "rocket", v3<float>(0,0,1), _direction);
+		const Object * la = ResourceManager.get_const()->getAnimation("rocket-launch");
+		v3<float> dpos = (size - la->size).convert<float>();
+		dpos.z = 1;
+		dpos /= 2;
+
+		Object *o = spawn("rocket-launch", "rocket-launch", dpos, _direction);
+		o->setDirection(getDirection());
+		//LOG_DEBUG(("dir: %d", o->getDirection()));else Object::emit(event, emitter);
 	} else Object::emit(event, emitter);
 }
 
@@ -95,6 +105,9 @@ void Tank::tick(const float dt) {
 		//v3<float> v = _velocity.is0()?_direction:_velocity;
 		//v.normalize();
 		spawn("bullet", "bullet", v3<float>(0,0,-0.1), _direction);
+	}
+	if (_state.alt_fire) {
+		groupEmit("rockets", "launch");
 	}
 	
 	_state.fire = false;
