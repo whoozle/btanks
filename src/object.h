@@ -20,6 +20,7 @@
 
 #include "base_object.h"
 #include <string>
+#include <map>
 #include "math/v3.h"
 #include "object_common.h"
 
@@ -73,7 +74,12 @@ protected:
 	void setWay(const Way & way);
 	const bool isDriven() const;
 
-	void limitRotation(const float dt, const int dirs, const float speed, const bool rotate_even_stopped);
+	void limitRotation(const float dt, const int dirs, const float speed, const bool rotate_even_stopped, const bool allow_backward);
+	
+	void add(const std::string &name, Object *obj);
+	Object *get(const std::string &name);
+	const Object *get(const std::string &name) const;
+	void emit(const std::string &name, const std::string &event);
 
 private: 
 	struct Event : public mrt::Serializable {
@@ -105,6 +111,10 @@ private:
 	//rotation stuff
 	float _rotation_time;	
 	int _dst_direction;
+	
+	//grouped objects stuff
+	typedef std::map<const std::string, Object *> Group;
+	Group _group;
 };
 
 

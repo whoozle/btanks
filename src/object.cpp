@@ -288,6 +288,12 @@ void Object::deserialize(const mrt::Serializator &s) {
 }
 
 void Object::emit(const std::string &event, BaseObject * emitter) {
+	if (event == "death") {
+		for(Group::iterator i = _group.begin(); i != _group.end(); ++i) {
+			i->second->emit(event, this);
+		}
+		_group.clear();
+	}
 	BaseObject::emit(event, emitter);
 }
 
@@ -322,7 +328,7 @@ void Object::renderCopy(sdlx::Surface &surface) {
 	const_cast<sdlx::Surface *>(_surface)->setAlpha(0, SDL_SRCALPHA);
 }
 
-void Object::limitRotation(const float dt, const int dirs, const float speed, const bool rotate_even_stopped) {
+void Object::limitRotation(const float dt, const int dirs, const float speed, const bool rotate_even_stopped, const bool allow_backward) {
 	assert(dirs == 8 || dirs == 16);
 	if (_velocity.is0()) 
 		return;
@@ -344,7 +350,7 @@ void Object::limitRotation(const float dt, const int dirs, const float speed, co
 
 	if (_rotation_time < 0) {
 		//was not rotated.
-		if (!rotate_even_stopped && (_dst_direction - _direction_idx + dirs) % dirs == half_dirs) {
+		if (allow_backward && (_dst_direction - _direction_idx + dirs) % dirs == half_dirs) {
 			return;
 		}
 		
@@ -381,3 +387,31 @@ void Object::limitRotation(const float dt, const int dirs, const float speed, co
 	if (!_velocity.is0()) 
 		_velocity.fromDirection(_direction_idx, dirs); //fixme. remove it.
 }
+
+//grouped object stuff
+
+void Object::add(const std::string &name, Object *obj) {
+	if (_group.find(name) != _group.end())
+		throw_ex(("object '%s'(%s) was already added to group", name.c_str(), obj->classname.c_str()));
+	_group.insert(Group::value_type(name, obj));
+}
+
+Object *Object::get(const std::string &name) {
+	Group::iterator i = _group.find(name);
+	if (i == _group.end())
+		throw_ex(("there's no object '%s' in group", name.c_str()));
+	return i->second;
+}
+
+const Object *Object::get(const std::string &name) const {
+	Group::const_iterator i = _group.find(name);
+	if (i == _group.end())
+		throw_ex(("there's no object '%s' in group", name.c_str()));
+	return i->second;
+}
+
+void Object::emit(const std::string &name, const std::string &event) {
+	Object *o = get(name);
+	o->emit(event, this);
+}
+

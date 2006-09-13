@@ -8,19 +8,20 @@
 REGISTER_OBJECT("tank", Tank, ());
 
 Tank::Tank() 
-: Object("player"), _fire(0.5, false), _smoke(NULL) {
+: Object("player"), _fire(0.5, false) {
 }
 
 Tank::Tank(const std::string &animation) 
-: Object("player"), _fire(0.5, false), _smoke(NULL) {
+: Object("player"), _fire(0.5, false) {
 	setup(animation);
 }
 
 
 void Tank::onSpawn() {
-	_smoke = spawnGrouped("single-pose", "tank-smoke", v3<float>(0,0,0.1), Centered);
+	Object *_smoke = spawnGrouped("single-pose", "tank-smoke", v3<float>(0,0,0.1), Centered);
 	_smoke->hp = 100000;
 	_smoke->impassability = 0;
+	add("smoke", _smoke);
 }
 
 Object * Tank::clone() const {
@@ -35,7 +36,6 @@ Object * Tank::clone() const {
 
 void Tank::emit(const std::string &event, BaseObject * emitter) {
 	if (event == "death") {
-		_smoke->emit(event, emitter);
 		LOG_DEBUG(("dead"));
 		cancelAll();
 		//play("dead", true);
@@ -93,7 +93,7 @@ void Tank::tick(const float dt) {
 	
 	_state.fire = false;
 	
-	limitRotation(dt, 8, 0.05, true);
+	limitRotation(dt, 8, 0.05, true, false);
 
 	//LOG_DEBUG(("_velocity: %g %g", _velocity.x, _velocity.y));
 }

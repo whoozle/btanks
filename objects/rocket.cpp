@@ -29,7 +29,7 @@ void Rocket::calculate(const float dt) {
 		_velocity = pos;
 	}
 
-	limitRotation(dt, 16, 0.2, false);
+	limitRotation(dt, 16, 0.2, false, false);
 }
 
 void Rocket::emit(const std::string &event, BaseObject * emitter) {

@@ -34,7 +34,6 @@ public:
 	
 private:
 	Alarm _fire;
-	Object *_smoke;	
 };
 
 #endif

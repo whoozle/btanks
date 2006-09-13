@@ -7,11 +7,11 @@
 REGISTER_OBJECT("launcher", Launcher, ());
 
 Launcher::Launcher() 
-: Object("player"), _fire(0.3, false), _smoke(0), _rockets(0) {
+: Object("player"), _fire(0.3, false) {
 }
 
 Launcher::Launcher(const std::string &animation) 
-: Object("player"), _fire(0.3, false), _smoke(0), _rockets(0) {
+: Object("player"), _fire(0.3, false) {
 	setup(animation);
 }
 
@@ -25,20 +25,19 @@ Object * Launcher::clone() const {
 }
 
 void Launcher::onSpawn() {
-	_smoke = spawnGrouped("single-pose", "launcher-smoke", v3<float>(0,0,0.1), Centered);
+	Object *_smoke = spawnGrouped("single-pose", "launcher-smoke", v3<float>(0,0,0.1), Centered);
 	_smoke->hp = 100000;
 	_smoke->impassability = 0;
-	_rockets = spawnGrouped("rockets-in-vehicle", "rockets-in-vehicle", v3<float>(0,0,0.1), Centered);
+	add("smoke", _smoke);
+	Object *_rockets = spawnGrouped("rockets-in-vehicle", "rockets-in-vehicle", v3<float>(0,0,0.1), Centered);
 	_rockets->hp = 100000;
 	_rockets->impassability = 0;
+	add("rockets", _rockets);
 }
 
 
 void Launcher::emit(const std::string &event, BaseObject * emitter) {
 	if (event == "death") {
-		_smoke->emit(event, this);
-		_rockets->emit(event, this);
-		_smoke = _rockets = NULL;
 		LOG_DEBUG(("dead"));
 		cancelAll();
 		//play("dead", true);
@@ -78,29 +77,29 @@ void Launcher::tick(const float dt) {
 	
 	if (getState().empty()) {
 		play("hold", true);
-		_rockets->emit("hold", this);
+		get("rockets")->emit("hold", this);
 	}
 
 	if (_velocity.is0()) {	
 		cancelRepeatable();
 		play("hold", true);
-		_rockets->emit("hold", this);
+		get("rockets")->emit("hold", this);
 	} else {
 		if (getState() == "hold") {
 			cancelAll();
 			//play("start", false);
 			play("move", true);
-			_rockets->emit("move", this);
+			get("rockets")->emit("move", this);
 		}
 	}
 
 	if (_state.fire && fire_possible) {
 		_fire.reset();
-		_rockets->emit("launch", this);
+		get("rockets")->emit("launch", this);
 	}
 
 	_state.fire = false;
-	limitRotation(dt, 8, 0.2, false);
+	limitRotation(dt, 8, 0.2, false, true);
 	//LOG_DEBUG(("_velocity: %g %g", _velocity.x, _velocity.y));
 }
 
