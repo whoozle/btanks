@@ -130,11 +130,11 @@
 		<pose id="broken">0</pose>
 	</animation-model>
 
-	<animation-model id="spawning-animation" speed="1">
+	<animation-model id="spawning-animation" speed="5">
 		<pose id="main">0,1,2,3,4,5,6,7,8</pose>
 	</animation-model>
 	
-	<animation id="spawning" tile="respawn.png" model="spawning-animation" />
+	<animation id="spawning" tile="respawn.png" model="spawning-animation" tile_width="128" tile_height="128" />
 	<animation id="green-tank" tile="tank01.png" model="tank-animation"/>
 	<animation id="red-tank" tile="tank02.png" model="tank-animation"/>
 	<animation id="yellow-tank" tile="tank03.png" model="tank-animation"/>
@@ -207,7 +207,7 @@
 	<!-- end of single-pose ;) -->
 
 	<alias name="pond" class="single-pose" />
-	<alias name="spawn-shield" class="single-pose" />
+	<alias name="spawn-shield" class="single-pose-once" />
 
 	<object class="tank" speed="400" mass="500" hp="5"/>
 	<object class="ai-tank" parent="tank" />

@@ -49,4 +49,5 @@ Object* SinglePose::clone() const  {
 }
 
 REGISTER_OBJECT("single-pose", SinglePose, ("main", true));
+REGISTER_OBJECT("single-pose-once", SinglePose, ("main", false));
 REGISTER_OBJECT("rocket-launch", SinglePose, ("launch", false));
