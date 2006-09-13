@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<map version="0.99b" orientation="orthogonal" width="55" height="45" tilewidth="64" tileheight="64">
+ <properties>
+  <property name="spawn:2" value="-100,100"/>
+  <property name="spawn:1" value="100,100"/>
+  <property name="spawn:4" value="-100,-100"/>
+  <property name="spawn:3" value="100,-100"/>
+ </properties>
+ <tileset name="City tiles" firstgid="1" tilewidth="64" tileheight="64">
+  <image source="../tiles/city_tileset.png"/>
+ </tileset>
+ <tileset name="City buildings" firstgid="171" tilewidth="64" tileheight="64">
+  <image source="../tiles/houses_tileset.png"/>
+ </tileset>
+ <tileset name="Untitled" firstgid="371" tilewidth="64" tileheight="64">
+  <image source="../tiles/test_tileset.png"/>
+ </tileset>
+ <layer name="zerosloy" width="50" height="50">
+  <properties>
+   <property name="impassability" value="20"/>
+   <property name="z" value="-100"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3DAQkAAAwEoYvy/VMux0DBVVNVVVVVVVVVVdXnDxJKzsAQJwAA
+  </data>
+ </layer>
+ <layer name="terrain" width="55" height="45">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3RwQ2AIBBFQfSq1dB/cVICshF3k5lkw5WX31ou/e8PfEhbTdpq0laTtpp2tF3j7sC7akfbMe4MvKvsFmM3u71htxi72Q3YpwcuO23astGmLRtt2rLRVrMNAGDGA1+amfasJgAA
+  </data>
+ </layer>
+ <layer name="road" width="55" height="45">
+  <properties>
+   <property name="impassability" value="0"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3WMQvCQAyG4ay6qjgq6qJV///PM8ctSqSQ3kUv8D4Q0qVcP9KWiMRYad201s77LgHP0ttGarat874M2ZiblSEbc7MyZGNu1i+ynbVODX0nNdveeW50tknroXVv6Fep2Sbn2dHZvN/IN6O+kz2yjfovYW7zmJuVIRtzszJkY27Ws8PZc/45t2hlB2zZJUtfuk9GO3Sq49v1KMp+27Inl750VwYAAAAAAADw6QXgQyv4rCYAAA==
+  </data>
+ </layer>
+ <layer name="road details" width="55" height="45">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3VsQkAQAgEQcvQ779QLcHsQWZg88suAgDgtpxqer+HAAArvhsAAAAA4KYGzN6OrqwmAAA=
+  </data>
+ </layer>
+ <layer name="details 2" width="55" height="45">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3OsQnAMAxFQaXIPMGTOHt4/z64E8FNCiMCd6BCv3oRAAAAa+dRXbDXVR2wUasO4JPxuqmn/047AAAAAAD81QM3v+4frCYAAA==
+  </data>
+ </layer>
+ <layer name="buildings-bottom" width="55" height="45">
+  <properties>
+   <property name="impassability" value="100"/>
+   <property name="z" value="1"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3TvQqAMAxG0VRx0Pd/PXd11UFBrClaWheHCv5xD3xomw7JEBEAAAAAKRpNq1k01l2Y7ev/Za93j3R3jZ/N9V6YkFrP+Y9mS6m/me99OHnTy3dnGyXsmI1q8d10f2uXGd2pzBx3rdRU0XmWsHsAAAAAAAAAAHzVCk0GFKisJgAA
+  </data>
+ </layer>
+ <layer name="buildings-top" width="55" height="45">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3TIQ6AQAxFwb3/IQGJAUECFiqQK2kaNjPJ87+irQEAQJ4t2qOz0xVN0RwtRfsyrdUDEo182yh6P3eULvre/QYAAAAAAPzDA8Wq7CKsJgAA
+  </data>
+ </layer>
+ <layer name="details 1" width="55" height="45" opacity="0.69">
+  <properties>
+   <property name="z" value="-50"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3OQQkAMAwEwThsdcS/gJyBvkNhBva/VQAAAG+dTrrbIwAAAAAAAHxtAMGrQbCsJgAA
+  </data>
+ </layer>
+ <layer name="Layer 9" width="55" height="45">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3OoQ0AIAwAQbYCCxb2n4eOgGkquEvef2sAAABvejSqJ5LMaFVPJNnRqZ4AAAAAAAC+dwHsZMnOrCYAAA==
+  </data>
+ </layer>
+ <layer name="Layer 8" width="55" height="45">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3OOQ6DQBQFQe6E8RIgvATG2/2vwws4gIMZ/aRK6ryHAQAA4H+ndE6X6pEObumeHtUjHXzSN/2qRzob0yFN6Vj80tqclr1r7Upzz7SmV3oXvwAAAAAA0M8GBO9zqKwmAAA=
+  </data>
+ </layer>
+ <layer name="Layer 10" width="55" height="45">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3BMQEAAADCoPVPbQo/oAAAAAAAAAAAAOBrgZwfM6wmAAA=
+  </data>
+ </layer>
+</map>
