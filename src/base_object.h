@@ -21,6 +21,7 @@
 #include "math/v3.h"
 #include "mrt/serializable.h" 
 #include "player_state.h"
+#include "object_common.h"
 
 namespace sdlx {
 	class Surface;
@@ -57,8 +58,10 @@ public:
 
 	inline PlayerState & getPlayerState() { return _state; }
 
-	void follow(const BaseObject *obj);
-	void follow(const int id);
+	void follow(const BaseObject *obj, const GroupType mode = Fixed);
+	void follow(const int id); //add mode
+	inline const int getLeader() const { return _follow; }
+	
 
 protected:
 	int _id;

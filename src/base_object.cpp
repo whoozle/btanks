@@ -161,8 +161,12 @@ void BaseObject::state2velocity() {
 	_velocity.normalize();
 }
 */
-void BaseObject::follow(const BaseObject *obj) {
+void BaseObject::follow(const BaseObject *obj, const GroupType mode) {
 	_follow = obj->_id;
+	if (mode == Centered) {
+		_follow_position = (obj->size - size) / 2;
+		LOG_DEBUG(("follow: %g %g", _follow_position.x, _follow_position.y));
+	}
 }
 
 void BaseObject::follow(const int id) {

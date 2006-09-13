@@ -361,7 +361,8 @@ const int IGame::spawnPlayer(const std::string &classname, const std::string &an
 	assert(obj != NULL);
 
 	World->addObject(obj, slot.position.convert<float>());
-	World->spawn(obj, "spawn-shield", "spawning", v3<float>(0,0,1), v3<float>());
+	Object *spawn = World->spawn(obj, "spawn-shield", "spawning", v3<float>(0,0,5), v3<float>());
+	spawn->follow(obj, Centered);
 
 	slot.obj = obj;
 	return i;

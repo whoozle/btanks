@@ -59,8 +59,6 @@ public:
 	virtual void serialize(mrt::Serializator &s) const;
 	virtual void deserialize(const mrt::Serializator &s);
 
-	inline const int getLeader() const { return _follow; }
-	
 	virtual void onSpawn();
 	void setup(const std::string &animation); //do not use it, needed for resman
 
