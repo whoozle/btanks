@@ -22,11 +22,16 @@ void MainMenu::init(const int w, const int h) {
 	_active_item = 0;
 	_active_menu.clear();
 	
-	_items[""].push_back(new MenuItem(_font, "start", "command", "START GAME"));
+	_items[""].push_back(new MenuItem(_font, "start-game", "submenu", "START GAME"));
 	_items[""].push_back(new MenuItem(_font, "multiplayer", "submenu", "MULTIPLAYER"));
 	_items[""].push_back(new MenuItem(_font, "options", "submenu", "OPTIONS"));
 	_items[""].push_back(new MenuItem(_font, "credits", "command", "CREDITS"));
 	_items[""].push_back(new MenuItem(_font, "quit", "command", "QUIT"));
+	
+	_items["start-game"].push_back(new MenuItem(_font, "start:tank", "command", "USE TANK"));
+	_items["start-game"].push_back(new MenuItem(_font, "start:launcher", "command", "USE LAUNCHER"));
+	_items["start-game"].push_back(new MenuItem(_font, "start:shilka", "command", "USE SHILKA"));
+	_items["start-game"].push_back(new MenuItem(_font, "back", "back", "BACK"));
 
 	_items["options"].push_back(new MenuItem(_font, "player1", "iterable", "PLAYER 1 CONTROL: AI"));
 	_items["options"].push_back(new MenuItem(_font, "back", "back", "BACK"));

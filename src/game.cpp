@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include "object.h"
 #include "game.h"
 #include "version.h"
@@ -61,7 +62,8 @@ static SharedPointer<glBlendFunc_Func> glBlendFunc_ptr;
 static SharedPointer<glFlush_Func> glFlush_ptr;
 
 void IGame::init(const int argc, char *argv[]) {
-
+	srand(time(NULL));
+	
 	_server = NULL; _client = NULL;
 #ifdef __linux__
 //	putenv("SDL_VIDEODRIVER=dga");
@@ -253,17 +255,24 @@ void IGame::onKey(const Uint8 type, const SDL_keysym key) {
 	}
 }
 
+#include <stdlib.h>
+
 void IGame::onMenu(const std::string &name) {
 	if (name == "quit") 
 		_running = false;
-	else if (name == "start") {
+	else if (name.substr(0, 6) == "start:") {
 		LOG_DEBUG(("start single player requested"));
 		clear();
+		const std::string vehicle = name.substr(6);
 		loadMap("country");
+		
+		static const char * colors[4] = {"green", "red", "yellow", "cyan"};
+		std::string animation = colors[(int) (4.0 * (rand() / (RAND_MAX + 1.0)))];
+		animation += "-" + vehicle;
 		
 		//_my_index = spawnPlayer("tank", "green-tank", "keys");
 		//_my_index = spawnPlayer("launcher", "green-launcher", "keys");
-		_my_index = spawnPlayer("shilka", "green-shilka", "keys");
+		_my_index = spawnPlayer(vehicle, animation, "keys");
 		spawnPlayer("ai-tank", "green-tank", "ai");
 		//spawnPlayer("ai-player", "yellow-tank");
 		//spawnPlayer("ai-player", "cyan-tank");
