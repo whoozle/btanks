@@ -298,7 +298,7 @@ void IWorld::tick(const float dt) {
 					assert(stuck_in != NULL);
 					allowed_velocity = object_center - (stuck_in->_position + stuck_in->size/2);
 					allowed_velocity.z = 0;
-					LOG_DEBUG(("allowed: %g %g", allowed_velocity.x, allowed_velocity.y));
+					//LOG_DEBUG(("allowed: %g %g", allowed_velocity.x, allowed_velocity.y));
 					if (allowed_velocity.same_sign(vel) || allowed_velocity.is0()) {
 						//LOG_DEBUG(("stuck in object: %s, trespassing allowed!", stuck_in->classname.c_str()));
 						obj_im = map_im;
