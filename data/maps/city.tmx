@@ -26,10 +26,11 @@
  </layer>
  <layer name="impassible border" width="55" height="45">
   <properties>
+   <property name="pierceable" value="true"/>
    <property name="impassability" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAO3aQQkAMBADwfNv5UxWRSlTdiAC9p+dmf14P6rNVJupNlNtptpMtZlqM9Vmqs1Um6k2U22m2ky1mWoz1WaqzVSbqTZTbabaTK+/Vrd3AFkkfyOsJgAA
+   H4sIAAAAAAAAAO3PsQ3AIBDF0N9AG/pAzf4b5jKGT36SB/BIchs2q52e3vhG5BuTb0y+MfnG5BuTb0y+MfnG5BuTb0y+MfnG5BuTb0y+MfnG5BuTb0y+MfnG9L891WnYqj4IWLXErCYAAA==
   </data>
  </layer>
  <layer name="plan" width="55" height="45">
