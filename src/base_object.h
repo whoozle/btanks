@@ -79,6 +79,9 @@ protected:
 	float _distance, _moving_time, _idle_time;
 
 	virtual void calculate(const float dt);
+
+	void addDamage(BaseObject *from);
+
 private:
 
 	bool _dead;

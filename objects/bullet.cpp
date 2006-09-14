@@ -22,10 +22,6 @@ void Bullet::calculate(const float dt) {
 }
 
 void Bullet::onSpawn() {
-/*	a->speed = 500;
-	a->ttl = 1;
-	a->piercing = true;
-*/
 	play("move", true);
 }
 

@@ -3,36 +3,33 @@
 #include "object.h"
 #include "world.h"
 #include "game.h"
-#include "tank.h"
+#include "shilka.h"
 
-REGISTER_OBJECT("tank", Tank, ());
+REGISTER_OBJECT("shilka", Shilka, ());
 
-Tank::Tank() 
-: Object("player"), _fire(0.5, false) {
+Shilka::Shilka() 
+: Object("player"), _fire(0.1, false), _left_fire(true) {
 }
 
-Tank::Tank(const std::string &animation) 
-: Object("player"), _fire(0.5, false) {
+Shilka::Shilka(const std::string &animation) 
+: Object("player"), _fire(0.1, false), _left_fire(true) {
 	setup(animation);
 }
 
 
-void Tank::onSpawn() {
+void Shilka::onSpawn() {
 	Object *_smoke = spawnGrouped("single-pose", "tank-smoke", v3<float>(0,0,0.1), Centered);
 	_smoke->impassability = 0;
 
-	Object *_rockets = spawnGrouped("rockets-on-tank", "rockets-on-tank", v3<float>(0,0,0.1), Centered);
-	_rockets->impassability = 0;
-
-	add("rockets", _rockets);
 	add("smoke", _smoke);
 }
 
-Object * Tank::clone() const {
-	return new Tank(*this);
+Object * Shilka::clone() const {
+	return new Shilka(*this);
 }
 
-void Tank::emit(const std::string &event, BaseObject * emitter) {
+
+void Shilka::emit(const std::string &event, BaseObject * emitter) {
 	if (event == "death") {
 		LOG_DEBUG(("dead"));
 		cancelAll();
@@ -57,7 +54,7 @@ void Tank::emit(const std::string &event, BaseObject * emitter) {
 
 
 
-void Tank::tick(const float dt) {
+void Shilka::tick(const float dt) {
 	Object::tick(dt);
 
 	bool fire_possible = _fire.tick(dt);
@@ -70,13 +67,11 @@ void Tank::tick(const float dt) {
 	if (_velocity.is0()) {
 		cancelRepeatable();
 		play("hold", true);
-		groupEmit("rockets", "hold");
 	} else {
 		if (getState() == "hold") {
 			cancelAll();
 			play("start", false);
 			play("move", true);
-			groupEmit("rockets", "move");
 		}
 	}
 
@@ -86,15 +81,13 @@ void Tank::tick(const float dt) {
 		if (getState() == "fire") 
 			cancel();
 		
-		playNow("fire");
+		//playNow("fire");
 		
-		//LOG_DEBUG(("vel: %f %f", _state.old_vx, _state.old_vy));
-		//v3<float> v = _velocity.is0()?_direction:_velocity;
-		//v.normalize();
-		spawn("bullet", "bullet", v3<float>(0,0,-0.1), _direction);
-	}
-	if (_state.alt_fire) {
-		groupEmit("rockets", "launch");
+		static const std::string left_fire = "shilka-bullet-left";
+		static const std::string right_fire = "shilka-bullet-right";
+		
+		spawn("shilka-bullet", _left_fire?left_fire:right_fire, v3<float>(0,0,-0.1), _direction);
+		_left_fire = ! _left_fire;
 	}
 	
 	_state.fire = false;

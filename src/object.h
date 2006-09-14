@@ -78,7 +78,7 @@ protected:
 	Object *get(const std::string &name);
 	const Object *get(const std::string &name) const;
 	void groupEmit(const std::string &name, const std::string &event);
-
+	
 private: 
 	struct Event : public mrt::Serializable {
 		std::string name;

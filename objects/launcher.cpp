@@ -16,12 +16,7 @@ Launcher::Launcher(const std::string &animation)
 }
 
 Object * Launcher::clone() const {
-	Launcher *p = NULL;
-	TRY { 
-		//LOG_DEBUG(("cloning player with animation '%s'", opt.c_str()));
-		p = new Launcher(*this);
-	} CATCH("clone", { delete p; throw; });
-	return p;
+	return new Launcher(*this);
 }
 
 void Launcher::onSpawn() {
@@ -46,14 +41,7 @@ void Launcher::emit(const std::string &event, BaseObject * emitter) {
 
 		Object::emit(event, emitter);
 	} else if (event == "collision") {
-		const std::string &c = emitter->classname;
-		if (c == "bullet") {
-			spawn("explosion", "explosion", v3<float>(0,0,1), v3<float>(0,0,0));
-			hp -= emitter->hp;	
-			LOG_DEBUG(("received %d hp of damage. hp = %d", emitter->hp, hp));
-			if (hp <= 0) 
-				emit("death", emitter);
-		}
+		addDamage(emitter);
 	} else if (event == "launch") {
 		v3<float> v = _velocity.is0()?_direction:_velocity;
 		v.normalize();

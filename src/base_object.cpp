@@ -172,3 +172,12 @@ void BaseObject::follow(const BaseObject *obj, const GroupType mode) {
 void BaseObject::follow(const int id) {
 	_follow = id;
 }
+
+void BaseObject::addDamage(BaseObject *from) {
+	if (!from->piercing)
+		return;
+	hp -= from->hp;	
+	LOG_DEBUG(("%s: received %d hp of damage from %s. hp = %d", classname.c_str(), from->hp, from->classname.c_str(), hp));
+	if (hp <= 0) 
+		emit("death", from);
+}

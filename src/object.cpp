@@ -414,4 +414,3 @@ void Object::groupEmit(const std::string &name, const std::string &event) {
 	Object *o = get(name);
 	o->emit(event, this);
 }
-
