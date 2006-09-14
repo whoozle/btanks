@@ -31,7 +31,7 @@ class BaseObject : public mrt::Serializable {
 public:
 	v3<float> size;
 	float mass, speed, ttl, impassability;
-	int hp;
+	int hp, max_hp;
 	
 	bool piercing, pierceable;
 	
@@ -61,7 +61,7 @@ public:
 	void follow(const BaseObject *obj, const GroupType mode = Fixed);
 	void follow(const int id); //add mode
 	inline const int getLeader() const { return _follow; }
-	
+	void heal(const int hp);
 
 protected:
 	int _id;

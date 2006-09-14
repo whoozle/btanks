@@ -225,4 +225,9 @@
 	<object class="explosion" hp="1000" />
 	<object class="pond" hp="1000" pierceable="true" impassability="1" />
 	<object class="spawn-shield" hp="1000" impassability="1" />
+
+	<!-- items -->
+	<object class="heal" hp="3" />
+	<object class="megaheal" hp="1000" />
+
 </resources>

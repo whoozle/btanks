@@ -3,7 +3,7 @@
 #include "world.h"
 
 BaseObject::BaseObject(const std::string &classname)
- : mass(1), speed(0), ttl(-1), impassability(1), hp(1), piercing(false), pierceable(false),
+ : mass(1), speed(0), ttl(-1), impassability(1), hp(1), max_hp(1), piercing(false), pierceable(false),
    classname(classname), _id(0), _follow(0), _direction(1,0,0), _distance(0), _moving_time(0), _idle_time(0), _dead(false), _owner_id(0) {
 	//LOG_DEBUG(("allocated id %ld", _id));
 }
@@ -180,4 +180,11 @@ void BaseObject::addDamage(BaseObject *from) {
 	LOG_DEBUG(("%s: received %d hp of damage from %s. hp = %d", classname.c_str(), from->hp, from->classname.c_str(), hp));
 	if (hp <= 0) 
 		emit("death", from);
+}
+
+void BaseObject::heal(const int n) {	
+	hp += n;
+	if (hp >= max_hp)
+		hp = max_hp;
+	LOG_DEBUG(("%s: got %d hp (heal). result: %d", classname.c_str(), n, hp));
 }
