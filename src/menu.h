@@ -43,6 +43,7 @@ public:
 	~MainMenu();
 	
 	void render(sdlx::Surface &dst);
+	void reset();
 private:
 	void onKey(const Uint8 type, const SDL_keysym sym);
 	

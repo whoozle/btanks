@@ -150,3 +150,9 @@ void MainMenu::render(sdlx::Surface &dst) {
 void MainMenu::setActive(const bool a) {
 	_active = a;
 }
+
+void MainMenu::reset() {
+	_menu_path.clear();
+	_active_menu.clear();
+	_active_item = 0;
+}

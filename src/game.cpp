@@ -264,6 +264,7 @@ void IGame::onMenu(const std::string &name) {
 	else if (name.substr(0, 6) == "start:") {
 		LOG_DEBUG(("start single player requested"));
 		clear();
+		_main_menu.reset();
 		const std::string vehicle = name.substr(6);
 		loadMap("country");
 		
