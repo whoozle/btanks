@@ -77,6 +77,10 @@ private:
 		ControlMethod * control_method;
 		v3<int> position;
 		~PlayerSlot();
+		
+		//respawn stuff.
+		std::string classname;
+		std::string animation;
 	};
 	
 	std::vector<PlayerSlot> _players;

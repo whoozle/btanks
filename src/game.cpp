@@ -376,6 +376,8 @@ const int IGame::spawnPlayer(const std::string &classname, const std::string &an
 	spawn->follow(obj, Centered);
 
 	slot.obj = obj;
+	slot.classname = classname;
+	slot.animation = animation;
 	return i;
 }
 
