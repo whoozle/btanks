@@ -42,7 +42,7 @@
 
 IMPLEMENT_SINGLETON(Game, IGame)
 
-IGame::IGame() {
+IGame::IGame() : _my_index(-1) {
 	LOG_DEBUG(("IGame ctor"));
 }
 IGame::~IGame() {}
@@ -369,6 +369,11 @@ const int IGame::spawnPlayer(const std::string &classname, const std::string &an
 		throw_ex(("unknown control method '%s' used", control_method.c_str()));
 	}
 	LOG_DEBUG(("player: %s.%s using control method: %s", classname.c_str(), animation.c_str(), control_method.c_str()));
+	spawnPlayer(slot, classname, animation);
+	return i;
+}
+
+void IGame::spawnPlayer(PlayerSlot &slot, const std::string &classname, const std::string &animation) {
 	Object *obj = ResourceManager->createObject(classname, animation);
 	assert(obj != NULL);
 
@@ -379,8 +384,8 @@ const int IGame::spawnPlayer(const std::string &classname, const std::string &an
 	slot.obj = obj;
 	slot.classname = classname;
 	slot.animation = animation;
-	return i;
 }
+
 
 
 void IGame::run() {
@@ -437,7 +442,7 @@ void IGame::run() {
 					_window.saveBMP("screenshot.bmp");
 					break;
 				}
-				if (event.key.keysym.sym==SDLK_d && event.key.keysym.mod & KMOD_CTRL) {
+				if (event.key.keysym.sym==SDLK_d && event.key.keysym.mod & KMOD_CTRL && _my_index >= 0) {
 					_players[_my_index].obj->emit("death", 0);
 					break;
 				}
@@ -475,6 +480,8 @@ void IGame::run() {
 
 			if (_client) 
 				_client->tick(dt);
+				
+			checkPlayers();
 			
 			if (_players.size()) {
 				const Object * p = _players[_my_index].obj;
@@ -653,5 +660,16 @@ IGame::PlayerSlot::~PlayerSlot() {
 	if (control_method != NULL) {
 		delete control_method; 
 		control_method = NULL;
+	}
+}
+
+void IGame::checkPlayers() {
+	size_t n = _players.size();
+	for(size_t i = 0; i < n; ++i) {
+		PlayerSlot &slot = _players[i];
+		if (slot.obj == NULL || World->exists(slot.obj)) 
+			continue;
+		LOG_DEBUG(("player in slot %d is dead. respawning.", i));
+		spawnPlayer(slot, slot.classname, slot.animation);
 	}
 }

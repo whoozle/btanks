@@ -69,7 +69,7 @@ private:
 	MainMenu _main_menu;
 	
 	void loadMap(const std::string &name);	
-	const int spawnPlayer(const std::string &classname, const std::string &animation, const std::string &method);
+	
 	struct PlayerSlot {
 		PlayerSlot() : obj(NULL), control_method(NULL) {}
 		PlayerSlot(Object *obj) : obj(obj), control_method(NULL) {}
@@ -82,6 +82,10 @@ private:
 		std::string classname;
 		std::string animation;
 	};
+
+	const int spawnPlayer(const std::string &classname, const std::string &animation, const std::string &method);
+	void spawnPlayer(PlayerSlot &slot, const std::string &classname, const std::string &animation);
+	void checkPlayers();
 	
 	std::vector<PlayerSlot> _players;
 	int _my_index;
