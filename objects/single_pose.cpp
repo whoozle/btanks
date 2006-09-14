@@ -3,29 +3,31 @@
 
 class SinglePose : public Object {
 public:
-	SinglePose(const std::string &pose, const bool repeat) : Object("single-pose"), _pose(pose), _repeat(repeat) {}
+	SinglePose(const std::string &pose, const bool repeat, const bool no_directions = false) : Object("single-pose"), _pose(pose), _repeat(repeat), _no_dir(no_directions) {}
 
 	virtual Object * clone() const;
 	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
 	virtual void tick(const float dt);
 	virtual void onSpawn();
+	virtual void render(sdlx::Surface &surface, const int x, const int y);
 
 private:
 	std::string _pose;
-	bool _repeat;
+	bool _repeat, _no_dir;
 };
 
 void SinglePose::emit(const std::string &event, BaseObject * emitter) {
 	if (event == "collision") {
-		if (emitter->classname == "bullet") {
-			hp -= emitter->hp;
-			if (hp <= 0) {
-				emit("death", emitter);
-				spawn("explosion", "explosion", v3<float>(0,0,1), v3<float>());
-			}
-		}
+		addDamage(emitter);
 	} else Object::emit(event, emitter);
 }
+
+void SinglePose::render(sdlx::Surface &surface, const int x, const int y) {
+	if (_no_dir)
+		setDirection(0);
+	Object::render(surface, x, y);
+}
+
 
 void SinglePose::tick(const float dt) {
 	Object::tick(dt);
@@ -51,4 +53,6 @@ Object* SinglePose::clone() const  {
 
 REGISTER_OBJECT("single-pose", SinglePose, ("main", true));
 REGISTER_OBJECT("single-pose-once", SinglePose, ("main", false));
+REGISTER_OBJECT("single-pose-no-directions", SinglePose, ("main", true, true));
+REGISTER_OBJECT("single-pose-once-no-directions", SinglePose, ("main", false, true));
 REGISTER_OBJECT("rocket-launch", SinglePose, ("launch", false));
