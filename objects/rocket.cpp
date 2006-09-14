@@ -3,7 +3,7 @@
 
 class Rocket : public Object {
 public:
-	Rocket() : Object("bullet") {}
+	Rocket() : Object("rocket") {}
 	virtual void calculate(const float dt);
 	virtual Object * clone() const;
 	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
