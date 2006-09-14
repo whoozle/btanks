@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <time.h>
 #include "object.h"
 #include "game.h"
 #include "version.h"
