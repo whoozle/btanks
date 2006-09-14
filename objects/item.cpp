@@ -8,8 +8,15 @@ public:
 	}
 	virtual Object * clone() const;
 	virtual void onSpawn();
+	virtual void tick(const float dt);
 	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
 };
+
+void Item::tick(const float dt) {
+	Object::tick(dt);
+	if (getState().empty()) 
+		Object::emit("death", this);
+}
 
 void Item::onSpawn() {
 	play("main", true);
@@ -20,9 +27,13 @@ void Item::emit(const std::string &event, BaseObject * emitter) {
 		if (emitter->classname != "player") 
 			return;
 		if (classname == "heal") {
-			emitter->heal(hp);
+			if (hp != 0)
+				emitter->heal(hp);
+			hp = 0;
+			impassability = 0;
+			cancelAll();
+			play("take", false);
 		} else LOG_WARN(("item '%s' was not implemented", classname.c_str()));
-		Object::emit("death", emitter);
 	} else Object::emit(event, emitter);
 }
 
