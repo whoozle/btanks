@@ -78,10 +78,10 @@ void Shilka::tick(const float dt) {
 	if (_state.fire && fire_possible) {
 		_fire.reset();
 		
-		if (getState() == "fire") 
+		if (getState().substr(0,4) == "fire") 
 			cancel();
 		
-		//playNow("fire");
+		playNow(_left_fire?"fire-left":"fire-right");
 		
 		static const std::string left_fire = "shilka-bullet-left";
 		static const std::string right_fire = "shilka-bullet-right";
