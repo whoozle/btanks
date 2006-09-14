@@ -188,3 +188,8 @@ void BaseObject::heal(const int n) {
 		hp = max_hp;
 	LOG_DEBUG(("%s: got %d hp (heal). result: %d", classname.c_str(), n, hp));
 }
+
+void BaseObject::setZ(const float z) {
+	_position.z = z;
+}
+

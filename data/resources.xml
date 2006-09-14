@@ -71,7 +71,7 @@
 
 	<animation-model id="heal-animation" speed="10">
 		<pose id="main">0,1,2,3,4</pose>
-		<pose id="take">5,6,7</pose>
+		<pose id="take" speed="8">5,6,7</pose>
 	</animation-model>
 
 	<animation-model id="smoke-animation" speed="10">

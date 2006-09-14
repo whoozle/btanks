@@ -31,6 +31,7 @@ void Item::emit(const std::string &event, BaseObject * emitter) {
 				emitter->heal(hp);
 			hp = 0;
 			impassability = 0;
+			setZ(5); //fly up on the vehicle
 			cancelAll();
 			play("take", false);
 		} else LOG_WARN(("item '%s' was not implemented", classname.c_str()));

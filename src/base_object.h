@@ -81,6 +81,7 @@ protected:
 	virtual void calculate(const float dt);
 
 	void addDamage(BaseObject *from);
+	void setZ(const float z); //fixme: remove it ? 
 
 private:
 
