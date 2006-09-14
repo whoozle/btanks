@@ -125,7 +125,10 @@ const float IWorld::getImpassability(Object *obj, const sdlx::Surface &surface, 
 				//LOG_DEBUG(("collision %s <-> %s", obj->classname.c_str(), o->classname.c_str()));
 				o->emit("collision", obj);
 				obj->emit("collision", o);
-
+				
+				if (o->isDead() || obj->isDead()) 
+					continue; // no effect.
+				
 				if (o->impassability > im) {
 					im = o->impassability;
 					result = o;
