@@ -11,7 +11,9 @@ public:
 	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
 };
 
-void Item::onSpawn() {}
+void Item::onSpawn() {
+	play("main", true);
+}
 
 void Item::emit(const std::string &event, BaseObject * emitter) {
 	if (event == "collision") {
