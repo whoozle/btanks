@@ -44,6 +44,7 @@ public:
 	
 	void render(sdlx::Surface &dst);
 	void reset();
+	const bool back();
 private:
 	void onKey(const Uint8 type, const SDL_keysym sym);
 	

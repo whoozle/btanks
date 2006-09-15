@@ -157,3 +157,14 @@ void MainMenu::reset() {
 	_active_menu.clear();
 	_active_item = 0;
 }
+
+const bool MainMenu::back() {
+	if (_menu_path.size() == 0) 
+		return false;
+	_active_item = _menu_path.front().first;
+	_active_menu = _menu_path.front().second;
+	
+	_menu_path.pop_front();
+	recalculateSizes();
+	return true;
+}
