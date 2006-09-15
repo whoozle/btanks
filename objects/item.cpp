@@ -6,7 +6,7 @@ public:
 	const std::string type;
 	Item(const std::string &classname, const std::string &type = std::string()) : Object(classname), type(type) {
 		pierceable = true;
-		impassability = 0.001;
+		impassability = 1;
 	}
 	virtual Object * clone() const;
 	virtual void onSpawn();
