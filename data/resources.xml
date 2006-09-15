@@ -134,6 +134,11 @@
 		<pose id="main">0,1,2,3,4,5,6,7,8</pose>
 	</animation-model>
 	
+	<animation-model id="smoke-cloud-animation" speed="5">
+		<pose id="start">0,1</pose>
+		<pose id="main">0,1,2,3,4,5,6,7,8,9,10,11</pose>
+	</animation-model>
+
 	<animation id="spawning" tile="respawn.png" model="spawning-animation" tile_width="128" tile_height="128" />
 	<animation id="green-tank" tile="tank01.png" model="tank-animation"/>
 	<animation id="red-tank" tile="tank02.png" model="tank-animation"/>
@@ -193,6 +198,8 @@
 	<animation id="man" tile="man01.png" model="man-animation"/>
 	<animation id="die-man" tile="man01_die01.png" model="die-man-animation"/>
 
+	<animation id="smoke-cloud" tile="smoke_cloud.png" model="smoke-cloud-animation" tile_width="192" tile_height="192"/>
+
 	<!-- pickable items -->
 	<animation id="heal" tile="heal.png" model="item-animation"/>
 	<animation id="megaheal" tile="megaheal.png" model="item-animation"/>
@@ -219,6 +226,7 @@
 	<alias name="pond" class="single-pose" />
 	<alias name="shilka-bullet" class="bullet" />
 	<alias name="spawn-shield" class="single-pose-once-no-directions" />
+	<alias name="smoke-cloud" class="single-pose" />
 
 	<object class="tank" speed="400" mass="500" hp="5"/>
 	<object class="ai-tank" parent="tank" />

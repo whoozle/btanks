@@ -11,6 +11,7 @@
   <property name="object:dumb-missiles-item:dumb-missiles-item:1" value="@3,3,-1"/>
   <property name="spawn:4" value="-100,-100"/>
   <property name="spawn:3" value="100,-100"/>
+  <property name="object:smoke-cloud:smoke-cloud:1" value="@1,1,10"/>
  </properties>
  <tileset name="country" firstgid="1" tilewidth="128" tileheight="128">
   <image source="../tiles/test_tileset.png"/>
