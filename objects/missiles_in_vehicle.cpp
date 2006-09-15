@@ -2,9 +2,9 @@
 #include "resource_manager.h"
 #include "world.h"
 
-class RocketsInVehicle : public Object {
+class MissilesInVehicle : public Object {
 public:
-	RocketsInVehicle(const int n) : Object("rockets-in-vehicle"), n(n), hold(true) {}
+	MissilesInVehicle(const int n) : Object("missiles-in-vehicle"), n(n), hold(true) {}
 	virtual void tick(const float dt);
 	virtual Object * clone() const;
 	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
@@ -18,31 +18,31 @@ private:
 };
 
 
-void RocketsInVehicle::updatePose() {
+void MissilesInVehicle::updatePose() {
 	if (n <= 0)
 		return;
 	cancelAll();
-	std::string pose = mrt::formatString("rocket-%d%s", n, hold?"-hold":"");
+	std::string pose = mrt::formatString("missile-%d%s", n, hold?"-hold":"");
 	//LOG_DEBUG(("updating pose to '%s'", pose.c_str()));
 	play(pose, true);
 }
 
-void RocketsInVehicle::onSpawn() {
+void MissilesInVehicle::onSpawn() {
 	updatePose();
 	impassability = 0;
 }
 
-void RocketsInVehicle::render(sdlx::Surface &surface, const int x, const int y) {
+void MissilesInVehicle::render(sdlx::Surface &surface, const int x, const int y) {
 	if (n == 0) 
 		return;
 	Object::render(surface, x, y);
 }
 
-void RocketsInVehicle::tick(const float dt) {
+void MissilesInVehicle::tick(const float dt) {
 	Object::tick(dt);
 }
 
-void RocketsInVehicle::emit(const std::string &event, BaseObject * emitter) {
+void MissilesInVehicle::emit(const std::string &event, BaseObject * emitter) {
 	if (event == "move") {
 		hold = false;
 		updatePose();
@@ -52,18 +52,18 @@ void RocketsInVehicle::emit(const std::string &event, BaseObject * emitter) {
 	} else if (event == "launch") {
 		if (n > 0) {
 			--n;
-			LOG_DEBUG(("launching rocket!"));
+			LOG_DEBUG(("launching missile!"));
 			{
 				v3<float> v = _velocity.is0()?_direction:_velocity;
 				v.normalize();
-				World->spawn(dynamic_cast<Object *>(emitter), "guided-rocket", "guided-rocket", v3<float>(0,0,1), v);
+				World->spawn(dynamic_cast<Object *>(emitter), "guided-missile", "guided-missile", v3<float>(0,0,1), v);
 				
-				const Object * la = ResourceManager.get_const()->getAnimation("rocket-launch");
+				const Object * la = ResourceManager.get_const()->getAnimation("missile-launch");
 				v3<float> dpos = (size - la->size).convert<float>();
 				dpos.z = 1;
 				dpos /= 2;
 
-				Object *o = World->spawn(dynamic_cast<Object *>(emitter), "rocket-launch", "rocket-launch", dpos, _direction);
+				Object *o = World->spawn(dynamic_cast<Object *>(emitter), "missile-launch", "missile-launch", dpos, _direction);
 				o->setDirection(getDirection());
 				//LOG_DEBUG(("dir: %d", o->getDirection()));	
 			}
@@ -78,9 +78,9 @@ void RocketsInVehicle::emit(const std::string &event, BaseObject * emitter) {
 }
 
 
-Object* RocketsInVehicle::clone() const  {
-	return new RocketsInVehicle(*this);
+Object* MissilesInVehicle::clone() const  {
+	return new MissilesInVehicle(*this);
 }
 
-REGISTER_OBJECT("rockets-on-launcher", RocketsInVehicle, (3));
-REGISTER_OBJECT("rockets-on-tank", RocketsInVehicle, (1));
+REGISTER_OBJECT("missiles-on-launcher", MissilesInVehicle, (3));
+REGISTER_OBJECT("missiles-on-tank", MissilesInVehicle, (1));

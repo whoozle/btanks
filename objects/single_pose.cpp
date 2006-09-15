@@ -55,4 +55,4 @@ REGISTER_OBJECT("single-pose", SinglePose, ("main", true));
 REGISTER_OBJECT("single-pose-once", SinglePose, ("main", false));
 REGISTER_OBJECT("single-pose-no-directions", SinglePose, ("main", true, true));
 REGISTER_OBJECT("single-pose-once-no-directions", SinglePose, ("main", false, true));
-REGISTER_OBJECT("rocket-launch", SinglePose, ("launch", false));
+REGISTER_OBJECT("missile-launch", SinglePose, ("launch", false));

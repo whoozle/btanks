@@ -51,6 +51,6 @@ Object* Item::clone() const  {
 REGISTER_OBJECT("heal", Item, ("heal"));
 REGISTER_OBJECT("megaheal", Item, ("heal"));
 
-REGISTER_OBJECT("guided-rockets-item", Item, ("rockets", "guided"));
-REGISTER_OBJECT("dumb-rockets-item", Item, ("rockets", "dumb"));
-REGISTER_OBJECT("smoke-rockets-item", Item, ("rockets", "smoke"));
+REGISTER_OBJECT("guided-missiles-item", Item, ("missiles", "guided"));
+REGISTER_OBJECT("dumb-missiles-item", Item, ("missiles", "dumb"));
+REGISTER_OBJECT("smoke-missiles-item", Item, ("missiles", "smoke"));

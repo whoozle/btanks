@@ -115,7 +115,7 @@ bt_sources = 	['src/alarm.cpp', 'src/base_object.cpp',
 	
 	'objects/bullet.cpp', 'objects/explosion.cpp', 'objects/single_pose.cpp',
 	'objects/tank.cpp', 'objects/shilka.cpp', 'objects/launcher.cpp', 'objects/ai_tank.cpp',
-	'objects/traffic_lights.cpp', 'objects/rockets_in_vehicle.cpp', 'objects/rocket.cpp',
+	'objects/traffic_lights.cpp', 'objects/missiles_in_vehicle.cpp', 'objects/missile.cpp',
 	'objects/corpse.cpp', 'objects/item.cpp', 
 	
 	'net/protocol.cpp', 'net/server.cpp', 'net/client.cpp', 'net/connection.cpp',

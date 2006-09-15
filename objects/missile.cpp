@@ -1,19 +1,19 @@
 #include "object.h"
 #include "resource_manager.h"
 
-class Rocket : public Object {
+class Missile : public Object {
 public:
 	std::string type;
-	Rocket(const std::string &type) : Object("rocket"), type(type) {}
+	Missile(const std::string &type) : Object("missile"), type(type) {}
 	virtual void calculate(const float dt);
 	virtual Object * clone() const;
 	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
 	void onSpawn();
 };
 
-void Rocket::onSpawn() {
+void Missile::onSpawn() {
 	play("main", true);
-	Object *_fire = spawnGrouped("single-pose", "rocket-fire", v3<float>(0,0, -0.1), Centered);
+	Object *_fire = spawnGrouped("single-pose", "missile-fire", v3<float>(0,0, -0.1), Centered);
 	_fire->impassability = 0;
 	add("fire", _fire);
 	
@@ -24,7 +24,7 @@ void Rocket::onSpawn() {
 	}
 }
 
-void Rocket::calculate(const float dt) {
+void Missile::calculate(const float dt) {
 	if (type == "guided") {
 		v3<float> pos, vel;
 		if (getNearest("player", pos, vel, NULL)) {
@@ -34,18 +34,18 @@ void Rocket::calculate(const float dt) {
 	}
 }
 
-void Rocket::emit(const std::string &event, BaseObject * emitter) {
+void Missile::emit(const std::string &event, BaseObject * emitter) {
 	if (event == "collision") {
-		spawn("explosion", "rocket-explosion", v3<float>(0,0,1), v3<float>(0,0,0));
+		spawn("explosion", "missile-explosion", v3<float>(0,0,1), v3<float>(0,0,0));
 		emit("death", emitter);
 	} else Object::emit(event, emitter);
 }
 
 
-Object* Rocket::clone() const  {
-	return new Rocket(*this);
+Object* Missile::clone() const  {
+	return new Missile(*this);
 }
 
-REGISTER_OBJECT("guided-rocket", Rocket, ("guided"));
-REGISTER_OBJECT("dumb-rocket", Rocket, ("dumb"));
-REGISTER_OBJECT("smoke-rocket", Rocket, ("smoke"));
+REGISTER_OBJECT("guided-missile", Missile, ("guided"));
+REGISTER_OBJECT("dumb-missile", Missile, ("dumb"));
+REGISTER_OBJECT("smoke-missile", Missile, ("smoke"));

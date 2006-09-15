@@ -21,10 +21,10 @@ void Tank::onSpawn() {
 	Object *_smoke = spawnGrouped("single-pose", "tank-smoke", v3<float>(0,0,0.1), Centered);
 	_smoke->impassability = 0;
 
-	Object *_rockets = spawnGrouped("rockets-on-tank", "rockets-on-tank", v3<float>(0,0,0.1), Centered);
-	_rockets->impassability = 0;
+	Object *_missiles = spawnGrouped("missiles-on-tank", "missiles-on-tank", v3<float>(0,0,0.1), Centered);
+	_missiles->impassability = 0;
 
-	add("rockets", _rockets);
+	add("missiles", _missiles);
 	add("smoke", _smoke);
 }
 
@@ -60,13 +60,13 @@ void Tank::tick(const float dt) {
 	if (_velocity.is0()) {
 		cancelRepeatable();
 		play("hold", true);
-		groupEmit("rockets", "hold");
+		groupEmit("missiles", "hold");
 	} else {
 		if (getState() == "hold") {
 			cancelAll();
 			play("start", false);
 			play("move", true);
-			groupEmit("rockets", "move");
+			groupEmit("missiles", "move");
 		}
 	}
 
@@ -84,7 +84,7 @@ void Tank::tick(const float dt) {
 		spawn("bullet", "bullet", v3<float>(0,0,-0.1), _direction);
 	}
 	if (_state.alt_fire) {
-		groupEmit("rockets", "launch");
+		groupEmit("missiles", "launch");
 	}
 	
 	_state.fire = false;
