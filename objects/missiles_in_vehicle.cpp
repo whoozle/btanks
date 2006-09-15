@@ -10,6 +10,7 @@ public:
 	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
 	virtual void onSpawn();
 	virtual void render(sdlx::Surface &surface, const int x, const int y);
+	virtual const bool take(const BaseObject *obj, const std::string &type);
 	
 	void updatePose();
 private:
@@ -17,6 +18,12 @@ private:
 	bool hold;
 };
 
+const bool MissilesInVehicle::take(const BaseObject *obj, const std::string &type) {
+	if (obj->classname != "missiles")
+		return false;
+	LOG_DEBUG(("missiles : %s taken", type.c_str()));
+	return true;
+}
 
 void MissilesInVehicle::updatePose() {
 	if (n <= 0)

@@ -91,3 +91,8 @@ void Launcher::tick(const float dt) {
 	//LOG_DEBUG(("_velocity: %g %g", _velocity.x, _velocity.y));
 }
 
+const bool Launcher::take(const BaseObject *obj, const std::string &type) {
+	if (get("missiles")->take(obj, type))
+		return true;
+	return BaseObject::take(obj, type);
+}

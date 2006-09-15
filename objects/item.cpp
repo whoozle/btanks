@@ -6,6 +6,7 @@ public:
 	const std::string type;
 	Item(const std::string &classname, const std::string &type = std::string()) : Object(classname), type(type) {
 		pierceable = true;
+		impassability = 0.001;
 	}
 	virtual Object * clone() const;
 	virtual void onSpawn();
@@ -25,12 +26,11 @@ void Item::onSpawn() {
 
 void Item::emit(const std::string &event, BaseObject * emitter) {
 	if (event == "collision") {
-		if (emitter->classname != "player") 
+		if (emitter->classname != "player")
 			return;
-		if (classname == "heal") {
-			emitter->heal(hp);
-		} else { 
-			emitter->emit("item", this);
+		
+		if (!emitter->take(this, type)) {
+			return;
 		}
 
 		hp = 0;

@@ -61,7 +61,9 @@ public:
 	void follow(const BaseObject *obj, const GroupType mode = Fixed);
 	void follow(const int id); //add mode
 	inline const int getLeader() const { return _follow; }
+
 	void heal(const int hp);
+	virtual const bool take(const BaseObject *obj, const std::string &type);
 
 protected:
 	int _id;
