@@ -41,8 +41,8 @@ public:
 	void init(const Object *other);
 	virtual Object * clone() const;
 
-	virtual void setDirection(const int dir);
-	virtual const int getDirection() const;
+	void setDirection(const int dir);
+	const int getDirection() const;
 	
 	virtual void tick(const float dt);
 	virtual void render(sdlx::Surface &surface, const int x, const int y);
