@@ -78,18 +78,18 @@
 		<pose id="main">0,1,2,3,4</pose>
 	</animation-model>
 
-	<animation-model id="rockets-on-launcher-animation" speed="10">
-		<pose id="rocket-1">0,1,1</pose>
-		<pose id="rocket-2">2,3,3</pose>
-		<pose id="rocket-3">4,5,6</pose>
-		<pose id="rocket-1-hold">0</pose>
-		<pose id="rocket-2-hold">2</pose>
-		<pose id="rocket-3-hold">4</pose>
+	<animation-model id="missiles-on-launcher-animation" speed="10">
+		<pose id="missile-1">0,1,1</pose>
+		<pose id="missile-2">2,3,3</pose>
+		<pose id="missile-3">4,5,6</pose>
+		<pose id="missile-1-hold">0</pose>
+		<pose id="missile-2-hold">2</pose>
+		<pose id="missile-3-hold">4</pose>
 	</animation-model>
 
-	<animation-model id="rockets-on-tank-animation" speed="10">
-		<pose id="rocket-1">0,1,2</pose>
-		<pose id="rocket-1-hold">0</pose>
+	<animation-model id="missiles-on-tank-animation" speed="10">
+		<pose id="missile-1">0,1,2</pose>
+		<pose id="missile-1-hold">0</pose>
 	</animation-model>
 
 	<animation-model id="bullet-animation" speed="1">
@@ -101,7 +101,7 @@
 		<pose id="boom">0,1,2</pose>
 	</animation-model>
 	
-	<animation-model id="rocket-explosion-animation" speed="10">
+	<animation-model id="missile-explosion-animation" speed="10">
 		<pose id="boom">0,1,2,3</pose>
 	</animation-model>
 
@@ -117,11 +117,11 @@
 		<pose id="flashing-green" speed="1.5">3,0,3,0,3,0</pose>
 	</animation-model>
 	
-	<animation-model id="rocket-launch-animation" speed="10">
+	<animation-model id="missile-launch-animation" speed="10">
 		<pose id="launch">0,1,2,3,4,5</pose>
 	</animation-model>
 
-	<animation-model id="rocket-fire-animation" speed="10">
+	<animation-model id="missile-fire-animation" speed="10">
 		<pose id="main">0,1,2,3,4</pose>
 	</animation-model>
 
@@ -144,7 +144,7 @@
 	<animation id="dead-yellow-tank" tile="tank03_crash.png" model="dead-tank-animation"/>
 	<animation id="dead-cyan-tank" tile="tank04_crash.png" model="dead-tank-animation"/>
 	<animation id="tank-smoke" tile="tank_smoke.png" model="smoke-animation" />
-	<animation id="rockets-on-tank" tile="tank_rocket.png" model="rockets-on-tank-animation" />
+	<animation id="missiles-on-tank" tile="tank_missile.png" model="missiles-on-tank-animation" />
 
 	<animation id="green-shilka" tile="shilka01.png" model="shilka-animation"/>
 	<animation id="red-shilka" tile="shilka02.png" model="shilka-animation"/>
@@ -166,7 +166,7 @@
 	<animation id="dead-yellow-launcher" tile="launcher03_crash.png" model="dead-launcher-animation"/>
 	<animation id="dead-cyan-launcher" tile="launcher04_crash.png" model="dead-launcher-animation"/>
 	<animation id="launcher-smoke" tile="launcher_smoke.png" model="smoke-animation" />
-	<animation id="rockets-on-launcher" tile="launcher_rocket01.png" model="rockets-on-launcher-animation" />
+	<animation id="missiles-on-launcher" tile="launcher_missile01.png" model="missiles-on-launcher-animation" />
 
 	<animation id="green-car" tile="car01.png" model="car-animation"/>
 	<animation id="cyan-car" tile="car02.png" model="car-animation"/>
@@ -177,11 +177,11 @@
 	<animation id="dead-yellow-car" tile="car03_crash.png" model="dead-car-animation"/>
 	<animation id="dead-white-car" tile="car04_crash.png" model="dead-car-animation"/>
 
-	<animation id="guided-rocket" tile="rocket01.png" model="single-tile" />
-	<animation id="smoke-rocket" tile="rocket02.png" model="single-tile" />
-	<animation id="dumb-rocket" tile="rocket03.png" model="single-tile" />
-	<animation id="rocket-fire" tile="rocket_fire.png" model="rocket-fire-animation" />
-	<animation id="rocket-launch" tile="rocket_launch.png" model="rocket-launch-animation" tile_width="128" tile_height="128" />
+	<animation id="guided-missile" tile="missile01.png" model="single-tile" />
+	<animation id="smoke-missile" tile="missile02.png" model="single-tile" />
+	<animation id="dumb-missile" tile="missile03.png" model="single-tile" />
+	<animation id="missile-fire" tile="missile_fire.png" model="missile-fire-animation" />
+	<animation id="missile-launch" tile="missile_launch.png" model="missile-launch-animation" tile_width="128" tile_height="128" />
 
 	<animation id="orange-bus" tile="bus01.png" model="car-animation"/>
 	<animation id="dead-orage-bus" tile="bus01_crash.png" model="dead-car-animation"/>
@@ -193,14 +193,14 @@
 	<animation id="heal" tile="heal.png" model="item-animation"/>
 	<animation id="megaheal" tile="megaheal.png" model="item-animation"/>
 	
-	<animation id="guided-rockets-item" tile="rocket01_item.png" model="item-animation" />
-	<animation id="smoke-rockets-item" tile="rocket02_item.png" model="item-animation" />
-	<animation id="dumb-rockets-item" tile="rocket03_item.png" model="item-animation" />
+	<animation id="guided-missiles-item" tile="missile01_item.png" model="item-animation" />
+	<animation id="smoke-missiles-item" tile="missile02_item.png" model="item-animation" />
+	<animation id="dumb-missiles-item" tile="missile03_item.png" model="item-animation" />
 	
 	<!-- end of items -->
 
 	<animation id="pond" tile="pond.png" model="pond-animation" tile_width="256" tile_height="256" />
-	<animation id="rocket-explosion" tile="rocket_blast.png" model="rocket-explosion-animation" />
+	<animation id="missile-explosion" tile="missile_blast.png" model="missile-explosion-animation" />
 
 	<animation id="bullet" tile="bullet.png" model="bullet-animation"/>
 	<animation id="explosion" tile="explosion.png" model="explosion-animation" />
@@ -224,9 +224,9 @@
 	<object class="shilka-bullet" speed="600" mass="1" piercing="true" ttl="1" hp="1" />
 
 	<object class="launcher" speed="300" mass="300" hp="3" />
-	<object class="guided-rocket" speed="450" mass="100" piercing="true" ttl="5" hp="3" />
-	<object class="dumb-rocket" speed="500" mass="100" piercing="true" ttl="5" hp="5" />
-	<object class="rocket-launch" impassability="0" />
+	<object class="guided-missile" speed="450" mass="100" piercing="true" ttl="5" hp="3" />
+	<object class="dumb-missile" speed="500" mass="100" piercing="true" ttl="5" hp="5" />
+	<object class="missile-launch" impassability="0" />
 
 	<object class="corpse" hp="10" ttl="10" fadeout_time="1"/>
 	<object class="explosion" hp="1000" />
