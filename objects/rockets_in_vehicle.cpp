@@ -1,5 +1,6 @@
 #include "object.h"
 #include "resource_manager.h"
+#include "world.h"
 
 class RocketsInVehicle : public Object {
 public:
@@ -28,6 +29,7 @@ void RocketsInVehicle::updatePose() {
 
 void RocketsInVehicle::onSpawn() {
 	updatePose();
+	impassability = 0;
 }
 
 void RocketsInVehicle::render(sdlx::Surface &surface, const int x, const int y) {
@@ -51,7 +53,20 @@ void RocketsInVehicle::emit(const std::string &event, BaseObject * emitter) {
 		if (n > 0) {
 			--n;
 			LOG_DEBUG(("launching rocket!"));
-			emitter->emit("launch", this);
+			{
+				v3<float> v = _velocity.is0()?_direction:_velocity;
+				v.normalize();
+				World->spawn(dynamic_cast<Object *>(emitter), "guided-rocket", "guided-rocket", v3<float>(0,0,1), v);
+				
+				const Object * la = ResourceManager.get_const()->getAnimation("rocket-launch");
+				v3<float> dpos = (size - la->size).convert<float>();
+				dpos.z = 1;
+				dpos /= 2;
+
+				Object *o = World->spawn(dynamic_cast<Object *>(emitter), "rocket-launch", "rocket-launch", dpos, _direction);
+				o->setDirection(getDirection());
+				//LOG_DEBUG(("dir: %d", o->getDirection()));	
+			}
 			updatePose();
 		}
 	} else if (event == "reload") {

@@ -42,16 +42,6 @@ void Tank::emit(const std::string &event, BaseObject * emitter) {
 		Object::emit(event, emitter);
 	} else if (event == "collision") {
 		addDamage(emitter);
-	} else if (event == "launch") {
-		spawn("guided-rocket", "guided-rocket", v3<float>(0,0,1), _direction);
-		const Object * la = ResourceManager.get_const()->getAnimation("rocket-launch");
-		v3<float> dpos = (size - la->size).convert<float>();
-		dpos.z = 1;
-		dpos /= 2;
-
-		Object *o = spawn("rocket-launch", "rocket-launch", dpos, _direction);
-		o->setDirection(getDirection());
-		//LOG_DEBUG(("dir: %d", o->getDirection()));else Object::emit(event, emitter);
 	} else Object::emit(event, emitter);
 }
 

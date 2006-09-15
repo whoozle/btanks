@@ -35,10 +35,7 @@ void Rocket::calculate(const float dt) {
 }
 
 void Rocket::emit(const std::string &event, BaseObject * emitter) {
-	if (event == "death") {
-		groupEmit("fire", "death");
-		Object::emit("death", emitter);
-	} else if (event == "collision") {
+	if (event == "collision") {
 		spawn("explosion", "rocket-explosion", v3<float>(0,0,1), v3<float>(0,0,0));
 		emit("death", emitter);
 	} else Object::emit(event, emitter);
