@@ -45,6 +45,11 @@ void Tank::emit(const std::string &event, BaseObject * emitter) {
 	} else Object::emit(event, emitter);
 }
 
+const bool Tank::take(const BaseObject *obj, const std::string &type) {
+	if (get("missiles")->take(obj, type))
+		return true;
+	return BaseObject::take(obj, type);
+}
 
 
 void Tank::tick(const float dt) {
