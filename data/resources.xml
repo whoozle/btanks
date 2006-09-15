@@ -144,7 +144,9 @@
 	<animation id="dead-yellow-tank" tile="tank03_crash.png" model="dead-tank-animation"/>
 	<animation id="dead-cyan-tank" tile="tank04_crash.png" model="dead-tank-animation"/>
 	<animation id="tank-smoke" tile="tank_smoke.png" model="smoke-animation" />
-	<animation id="missiles-on-tank" tile="tank_missile.png" model="missiles-on-tank-animation" />
+	<animation id="guided-missiles-on-tank" tile="tank_missile01.png" model="missiles-on-tank-animation" />
+	<animation id="smoke-missiles-on-tank" tile="tank_missile02.png" model="missiles-on-tank-animation" />
+	<animation id="dumb-missiles-on-tank" tile="tank_missile03.png" model="missiles-on-tank-animation" />
 
 	<animation id="green-shilka" tile="shilka01.png" model="shilka-animation"/>
 	<animation id="red-shilka" tile="shilka02.png" model="shilka-animation"/>

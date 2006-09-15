@@ -21,7 +21,7 @@ void Tank::onSpawn() {
 	Object *_smoke = spawnGrouped("single-pose", "tank-smoke", v3<float>(0,0,0.1), Centered);
 	_smoke->impassability = 0;
 
-	Object *_missiles = spawnGrouped("missiles-on-tank", "missiles-on-tank", v3<float>(0,0,0.1), Centered);
+	Object *_missiles = spawnGrouped("missiles-on-tank", "guided-missiles-on-tank", v3<float>(0,0,0.1), Centered);
 	_missiles->impassability = 0;
 
 	add("missiles", _missiles);
