@@ -55,4 +55,4 @@ REGISTER_OBJECT("guided-missiles-item", Item, ("missiles", "guided"));
 REGISTER_OBJECT("dumb-missiles-item", Item, ("missiles", "dumb"));
 REGISTER_OBJECT("smoke-missiles-item", Item, ("missiles", "smoke"));
 
-REGISTER_OBJECT("mines-item", Item, ("mines", "mine"));
+REGISTER_OBJECT("mines-item", Item, ("mines", "regular"));

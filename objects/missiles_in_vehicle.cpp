@@ -16,19 +16,21 @@ public:
 private:
 	int n, max_n;
 	bool hold;
-	std::string _vehicle, _type;
+	std::string _vehicle, _object, _type;
 };
 
 const bool MissilesInVehicle::take(const BaseObject *obj, const std::string &type) {
-	if (obj->classname != "missiles")
-		return false;
-	_type = type;
-	std::string animation = type + "-missiles-on-" + _vehicle;
-	setup(animation);
-	n = max_n;
-	updatePose();
-	LOG_DEBUG(("missiles : %s taken", type.c_str()));
-	return true;
+	if (obj->classname == "missiles" || obj->classname == "mines") {
+		_object = obj->classname;
+		_type = type;
+		std::string animation = type + "-" + obj->classname + "-on-" + _vehicle;
+		setup(animation);
+		n = max_n;
+		updatePose();
+		LOG_DEBUG(("missiles : %s taken", type.c_str()));
+		return true;
+	}
+	return false;
 }
 
 void MissilesInVehicle::updatePose() {
@@ -70,15 +72,21 @@ void MissilesInVehicle::emit(const std::string &event, BaseObject * emitter) {
 				v3<float> v = _velocity.is0()?_direction:_velocity;
 				v.normalize();
 				std::string type = _type.empty()?"guided":_type;
-				World->spawn(dynamic_cast<Object *>(emitter), type + "-missile", type + "-missile", v3<float>(0,0,1), v);
+				std::string object = _object.empty()?"missiles":_object;
+				object = object.substr(0, object.size()-1); //remove trailing 's' 
+				v3<float> opos(0,0,1);
+				if (_object == "mines") opos.z = -1;
+				World->spawn(dynamic_cast<Object *>(emitter), type + "-" + object, type + "-" + object, opos, v);
 				
-				const Object * la = ResourceManager.get_const()->getAnimation("missile-launch");
-				v3<float> dpos = (size - la->size).convert<float>();
-				dpos.z = 1;
-				dpos /= 2;
-
-				Object *o = World->spawn(dynamic_cast<Object *>(emitter), "missile-launch", "missile-launch", dpos, _direction);
-				o->setDirection(getDirection());
+				if (_object != "mines") {
+					const Object * la = ResourceManager.get_const()->getAnimation("missile-launch");
+					v3<float> dpos = (size - la->size).convert<float>();
+					dpos.z = 1;
+					dpos /= 2;
+		
+					Object *o = World->spawn(dynamic_cast<Object *>(emitter), "missile-launch", "missile-launch", dpos, _direction);
+					o->setDirection(getDirection());
+				}
 				//LOG_DEBUG(("dir: %d", o->getDirection()));	
 			}
 			updatePose();

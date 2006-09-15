@@ -176,6 +176,7 @@
 	<animation id="guided-missiles-on-launcher" tile="launcher_missile01.png" model="missiles-on-launcher-animation" />
 	<animation id="smoke-missiles-on-launcher" tile="launcher_missile02.png" model="missiles-on-launcher-animation" />
 	<animation id="dumb-missiles-on-launcher" tile="launcher_missile03.png" model="missiles-on-launcher-animation" />
+	<animation id="regular-mines-on-launcher" tile="launcher_mine.png" model="missiles-on-launcher-animation" />
 
 	<animation id="green-car" tile="car01.png" model="car-animation"/>
 	<animation id="cyan-car" tile="car02.png" model="car-animation"/>
@@ -191,6 +192,7 @@
 	<animation id="dumb-missile" tile="missile03.png" model="single-tile" />
 	<animation id="missile-fire" tile="missile_fire.png" model="missile-fire-animation" />
 	<animation id="missile-launch" tile="missile_launch.png" model="missile-launch-animation" tile_width="128" tile_height="128" />
+	<animation id="regular-mine" tile="mine.png" model="single-tile" />
 
 	<animation id="orange-bus" tile="bus01.png" model="car-animation"/>
 	<animation id="dead-orage-bus" tile="bus01_crash.png" model="dead-car-animation"/>
@@ -242,12 +244,12 @@
 	<object class="smoke-cloud" impassability="0" />
 	<object class="dumb-missile" speed="500" mass="100" piercing="true" ttl="5" hp="5" />
 	<object class="missile-launch" impassability="0" />
+	<object class="regular-mine" hp="10" />
 
 	<object class="corpse" hp="10" ttl="10" fadeout_time="1"/>
 	<object class="explosion" hp="1000" />
 	<object class="pond" hp="1000" pierceable="true" impassability="1" />
 	<object class="spawn-shield" hp="1000" impassability="1" />
-	<object class="mine" hp="10" />
 
 	<!-- items -->
 	<object class="heal" hp="3" />

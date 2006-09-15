@@ -46,6 +46,9 @@ void Tank::emit(const std::string &event, BaseObject * emitter) {
 }
 
 const bool Tank::take(const BaseObject *obj, const std::string &type) {
+	if (obj->classname == "mines") //disable mine for a tank
+		return false; 
+	
 	if (get("missiles")->take(obj, type))
 		return true;
 	return BaseObject::take(obj, type);
