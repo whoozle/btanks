@@ -513,9 +513,7 @@ void IGame::run() {
 		}
 
 		_window.fillRect(window_size, 0);
-		map.render(_window, viewport, -1000, 0);
 		World->render(_window, viewport);
-		map.render(_window, viewport, 0, 1001);
 
 		_main_menu.render(_window);
 		

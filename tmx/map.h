@@ -36,7 +36,7 @@ public:
 	virtual void end(const std::string &name);
 	virtual void charData(const std::string &data);
 	
-	void render(sdlx::Surface &window, const sdlx::Rect &dst, const int z1, const int z2);
+	void render(sdlx::Surface &window, const sdlx::Rect &dst, const int z1, const int z2) const;
 	const v3<int> getSize() const;
 	const v3<int> getTileSize() const;
 	

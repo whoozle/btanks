@@ -66,13 +66,17 @@ const bool IWorld::getInfo(const Object * po, v3<float> &pos, v3<float> &vel) co
 void IWorld::render(sdlx::Surface &surface, const sdlx::Rect &viewport) {
 	typedef std::multimap<const float, Object *> LayerMap;
 	LayerMap layers;
+	const IMap &map = *Map.get_const();
 	
 	for(ObjectSet::iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		Object *o = *i;
 		layers.insert(LayerMap::value_type(o->_position.z, o));
 	}
-	
+	int z1 = -1000;
 	for(LayerMap::iterator i = layers.begin(); i != layers.end(); ++i) {
+		int z2 = (int)i->first;
+		map.render(surface, viewport, z1, z2);
+		z1 = z2;
 		Object &o = *i->second;
 		sdlx::Rect r((int)o._position.x, (int)o._position.y, (int)o.size.x, (int)o.size.y);
 		if (r.intersects(viewport)) {
@@ -81,6 +85,7 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect &viewport) {
 			o.render(surface, r.x, r.y);
 		}
 	}
+	map.render(surface, viewport, z1, 1000);
 }
 
 const float IWorld::getImpassability(Object *obj, const sdlx::Surface &surface, const v3<int> &position, const Object **collided_with) const {
