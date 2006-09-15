@@ -108,13 +108,8 @@ void MainMenu::onKey(const Uint8 type, const SDL_keysym sym) {
 					_active_item = 0;
 					recalculateSizes();
 				} else if (item->type == "back") {
-					if (_menu_path.size() == 0) 
+					if (!back()) 
 						throw_ex(("cannot do 'back' command from top-level menu"));
-					_active_item = _menu_path.front().first;
-					_active_menu = _menu_path.front().second;
-					
-					_menu_path.pop_front();
-					recalculateSizes();
 				} else if (item->type == "command") {
 					LOG_DEBUG(("command: %s", name.c_str()));
 					menu_signal.emit(name);
