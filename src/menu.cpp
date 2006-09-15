@@ -33,7 +33,8 @@ void MainMenu::init(const int w, const int h) {
 	_items["start-game"].push_back(new MenuItem(_font, "start:shilka", "command", "USE SHILKA"));
 	_items["start-game"].push_back(new MenuItem(_font, "back", "back", "BACK"));
 
-	_items["options"].push_back(new MenuItem(_font, "player1", "iterable", "PLAYER 1 CONTROL: AI"));
+	//_items["options"].push_back(new MenuItem(_font, "player1", "iterable", "PLAYER 1 CONTROL: AI"));
+	
 	_items["options"].push_back(new MenuItem(_font, "back", "back", "BACK"));
 
 	_items["multiplayer"].push_back(new MenuItem(_font, "m-start", "command", "START NEW GAME"));

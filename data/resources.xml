@@ -139,44 +139,51 @@
 	<animation id="red-tank" tile="tank02.png" model="tank-animation"/>
 	<animation id="yellow-tank" tile="tank03.png" model="tank-animation"/>
 	<animation id="cyan-tank" tile="tank04.png" model="tank-animation"/>
-
 	<animation id="dead-green-tank" tile="tank01_crash.png" model="dead-tank-animation"/>
 	<animation id="dead-red-tank" tile="tank02_crash.png" model="dead-tank-animation"/>
 	<animation id="dead-yellow-tank" tile="tank03_crash.png" model="dead-tank-animation"/>
 	<animation id="dead-cyan-tank" tile="tank04_crash.png" model="dead-tank-animation"/>
+	<animation id="tank-smoke" tile="tank_smoke.png" model="smoke-animation" />
+	<animation id="rockets-on-tank" tile="tank_rocket.png" model="rockets-on-tank-animation" />
 
 	<animation id="green-shilka" tile="shilka01.png" model="shilka-animation"/>
 	<animation id="red-shilka" tile="shilka02.png" model="shilka-animation"/>
 	<animation id="yellow-shilka" tile="shilka03.png" model="shilka-animation"/>
 	<animation id="cyan-shilka" tile="shilka04.png" model="shilka-animation"/>
-
 	<animation id="dead-green-shilka" tile="shilka01_crash.png" model="dead-shilka-animation"/>
 	<animation id="dead-red-shilka" tile="shilka02_crash.png" model="dead-shilka-animation"/>
 	<animation id="dead-yellow-shilka" tile="shilka03_crash.png" model="dead-shilka-animation"/>
 	<animation id="dead-cyan-shilka" tile="shilka04_crash.png" model="dead-shilka-animation"/>
+	<animation id="shilka-bullet-left" tile="shilka_bullet2.png" model="bullet-animation"/>
+	<animation id="shilka-bullet-right" tile="shilka_bullet1.png" model="bullet-animation"/>
 
 	<animation id="green-launcher" tile="launcher01.png" model="launcher-animation"/>
 	<animation id="red-launcher" tile="launcher02.png" model="launcher-animation"/>
 	<animation id="yellow-launcher" tile="launcher03.png" model="launcher-animation"/>
 	<animation id="cyan-launcher" tile="launcher04.png" model="launcher-animation"/>
-	
 	<animation id="dead-green-launcher" tile="launcher01_crash.png" model="dead-launcher-animation"/>
 	<animation id="dead-red-launcher" tile="launcher02_crash.png" model="dead-launcher-animation"/>
 	<animation id="dead-yellow-launcher" tile="launcher03_crash.png" model="dead-launcher-animation"/>
 	<animation id="dead-cyan-launcher" tile="launcher04_crash.png" model="dead-launcher-animation"/>
+	<animation id="launcher-smoke" tile="launcher_smoke.png" model="smoke-animation" />
+	<animation id="rockets-on-launcher" tile="launcher_rocket01.png" model="rockets-on-launcher-animation" />
 
 	<animation id="green-car" tile="car01.png" model="car-animation"/>
 	<animation id="cyan-car" tile="car02.png" model="car-animation"/>
 	<animation id="yellow-car" tile="car03.png" model="car-animation"/>
 	<animation id="white-car" tile="car04.png" model="car-animation"/>
-	
 	<animation id="dead-green-car" tile="car01_crash.png" model="dead-car-animation"/>
 	<animation id="dead-cyan-car" tile="car02_crash.png" model="dead-car-animation"/>
 	<animation id="dead-yellow-car" tile="car03_crash.png" model="dead-car-animation"/>
 	<animation id="dead-white-car" tile="car04_crash.png" model="dead-car-animation"/>
 
-	<animation id="orange-bus" tile="bus01.png" model="car-animation"/>
+	<animation id="guided-rocket" tile="rocket01.png" model="single-tile" />
+	<animation id="smoke-rocket" tile="rocket02.png" model="single-tile" />
+	<animation id="dumb-rocket" tile="rocket03.png" model="single-tile" />
+	<animation id="rocket-fire" tile="rocket_fire.png" model="rocket-fire-animation" />
+	<animation id="rocket-launch" tile="rocket_launch.png" model="rocket-launch-animation" tile_width="128" tile_height="128" />
 
+	<animation id="orange-bus" tile="bus01.png" model="car-animation"/>
 	<animation id="dead-orage-bus" tile="bus01_crash.png" model="dead-car-animation"/>
 
 	<animation id="man" tile="man01.png" model="man-animation"/>
@@ -184,21 +191,13 @@
 
 	<animation id="heal" tile="heal.png" model="heal-animation"/>
 	<animation id="megaheal" tile="megaheal.png" model="heal-animation"/>
+
 	<animation id="pond" tile="pond.png" model="pond-animation" tile_width="256" tile_height="256" />
 	<animation id="rocket-explosion" tile="rocket_blast.png" model="rocket-explosion-animation" />
-	<animation id="shilka-bullet-left" tile="shilka_bullet2.png" model="bullet-animation"/>
-	<animation id="shilka-bullet-right" tile="shilka_bullet1.png" model="bullet-animation"/>
 
 	<animation id="bullet" tile="bullet.png" model="bullet-animation"/>
 	<animation id="explosion" tile="explosion.png" model="explosion-animation" />
 	<animation id="traffic-lights" tile="traffic_lights.png" model="traffic-lights-animation"/>
-	<animation id="launcher-smoke" tile="launcher_smoke.png" model="smoke-animation" />
-	<animation id="tank-smoke" tile="tank_smoke.png" model="smoke-animation" />
-	<animation id="rockets-on-launcher" tile="launcher_rocket01.png" model="rockets-on-launcher-animation" />
-	<animation id="rockets-on-tank" tile="tank_rocket.png" model="rockets-on-tank-animation" />
-	<animation id="rocket" tile="rocket01.png" model="single-tile" />
-	<animation id="rocket-fire" tile="rocket_fire.png" model="rocket-fire-animation" />
-	<animation id="rocket-launch" tile="rocket_launch.png" model="rocket-launch-animation" tile_width="128" tile_height="128" />
 
 	<animation id="gate" tile="gate01.png" model="gate-animation"/>
 	
@@ -218,7 +217,7 @@
 	<object class="shilka-bullet" speed="600" mass="1" piercing="true" ttl="1" hp="1" />
 
 	<object class="launcher" speed="300" mass="300" hp="3" />
-	<object class="rocket" speed="450" mass="100" piercing="true" ttl="5" hp="3" />
+	<object class="guided-rocket" speed="450" mass="100" piercing="true" ttl="5" hp="3" />
 	<object class="rocket-launch" impassability="0" />
 
 	<object class="corpse" hp="10" ttl="10" fadeout_time="1"/>

@@ -45,7 +45,7 @@ void Launcher::emit(const std::string &event, BaseObject * emitter) {
 	} else if (event == "launch") {
 		v3<float> v = _velocity.is0()?_direction:_velocity;
 		v.normalize();
-		spawn("rocket", "rocket", v3<float>(0,0,1), v);
+		spawn("guided-rocket", "guided-rocket", v3<float>(0,0,1), v);
 		const Object * la = ResourceManager.get_const()->getAnimation("rocket-launch");
 		v3<float> dpos = (size - la->size).convert<float>();
 		dpos.z = 1;

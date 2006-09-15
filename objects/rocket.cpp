@@ -47,4 +47,4 @@ Object* Rocket::clone() const  {
 	return new Rocket(*this);
 }
 
-REGISTER_OBJECT("rocket", Rocket, ());
+REGISTER_OBJECT("guided-rocket", Rocket, ());

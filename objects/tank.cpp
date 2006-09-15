@@ -43,7 +43,7 @@ void Tank::emit(const std::string &event, BaseObject * emitter) {
 	} else if (event == "collision") {
 		addDamage(emitter);
 	} else if (event == "launch") {
-		spawn("rocket", "rocket", v3<float>(0,0,1), _direction);
+		spawn("guided-rocket", "guided-rocket", v3<float>(0,0,1), _direction);
 		const Object * la = ResourceManager.get_const()->getAnimation("rocket-launch");
 		v3<float> dpos = (size - la->size).convert<float>();
 		dpos.z = 1;

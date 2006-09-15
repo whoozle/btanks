@@ -40,7 +40,7 @@ void Shilka::emit(const std::string &event, BaseObject * emitter) {
 	} else if (event == "collision") {
 		addDamage(emitter);
 	} else if (event == "launch") {
-		spawn("rocket", "rocket", v3<float>(0,0,1), _direction);
+/*		spawn("rocket", "rocket", v3<float>(0,0,1), _direction);
 		const Object * la = ResourceManager.get_const()->getAnimation("rocket-launch");
 		v3<float> dpos = (size - la->size).convert<float>();
 		dpos.z = 1;
@@ -48,7 +48,7 @@ void Shilka::emit(const std::string &event, BaseObject * emitter) {
 
 		Object *o = spawn("rocket-launch", "rocket-launch", dpos, _direction);
 		o->setDirection(getDirection());
-		//LOG_DEBUG(("dir: %d", o->getDirection()));else Object::emit(event, emitter);
+*/		//LOG_DEBUG(("dir: %d", o->getDirection()));else Object::emit(event, emitter);
 	} else Object::emit(event, emitter);
 }
 
