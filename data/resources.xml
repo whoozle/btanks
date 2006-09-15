@@ -207,6 +207,7 @@
 	<animation id="guided-missiles-item" tile="missile01_item.png" model="item-animation" />
 	<animation id="smoke-missiles-item" tile="missile02_item.png" model="item-animation" />
 	<animation id="dumb-missiles-item" tile="missile03_item.png" model="item-animation" />
+	<animation id="mines-item" tile="mine_item.png" model="item-animation" />
 	
 	<!-- end of items -->
 
@@ -246,6 +247,7 @@
 	<object class="explosion" hp="1000" />
 	<object class="pond" hp="1000" pierceable="true" impassability="1" />
 	<object class="spawn-shield" hp="1000" impassability="1" />
+	<object class="mine" hp="10" />
 
 	<!-- items -->
 	<object class="heal" hp="3" />
