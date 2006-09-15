@@ -238,6 +238,7 @@
 	<object class="launcher" speed="300" mass="300" hp="3" />
 	<object class="guided-missile" speed="450" mass="100" piercing="true" ttl="5" hp="3" />
 	<object class="smoke-missile" speed="450" mass="100" piercing="true" ttl="1" hp="3" />
+	<object class="smoke-cloud" impassability="0" />
 	<object class="dumb-missile" speed="500" mass="100" piercing="true" ttl="5" hp="5" />
 	<object class="missile-launch" impassability="0" />
 
