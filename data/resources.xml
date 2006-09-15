@@ -218,6 +218,7 @@
 
 	<object class="launcher" speed="300" mass="300" hp="3" />
 	<object class="guided-rocket" speed="450" mass="100" piercing="true" ttl="5" hp="3" />
+	<object class="dumb-rocket" speed="500" mass="100" piercing="true" ttl="5" hp="5" />
 	<object class="rocket-launch" impassability="0" />
 
 	<object class="corpse" hp="10" ttl="10" fadeout_time="1"/>

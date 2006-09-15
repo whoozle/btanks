@@ -3,19 +3,20 @@
 
 class Rocket : public Object {
 public:
-	Rocket() : Object("rocket") {}
+	std::string type;
+	Rocket(const std::string &type) : Object("rocket"), type(type) {}
 	virtual void calculate(const float dt);
 	virtual Object * clone() const;
 	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
 	void onSpawn();
-private:
-	Object *_fire;
 };
 
 void Rocket::onSpawn() {
 	play("main", true);
-	_fire = spawnGrouped("single-pose", "rocket-fire", v3<float>(0,0, -0.1), Centered);
+	Object *_fire = spawnGrouped("single-pose", "rocket-fire", v3<float>(0,0, -0.1), Centered);
 	_fire->impassability = 0;
+	add("fire", _fire);
+	
 	_velocity.normalize();
 	int dir = _velocity.getDirection16();
 	if (dir) {
@@ -24,17 +25,18 @@ void Rocket::onSpawn() {
 }
 
 void Rocket::calculate(const float dt) {
-	v3<float> pos, vel;
-	if (getNearest("player", pos, vel, NULL)) {
-		_velocity = pos;
+	if (type == "guided") {
+		v3<float> pos, vel;
+		if (getNearest("player", pos, vel, NULL)) {
+			_velocity = pos;
+		}
+		limitRotation(dt, 16, 0.2, false, false);
 	}
-
-	limitRotation(dt, 16, 0.2, false, false);
 }
 
 void Rocket::emit(const std::string &event, BaseObject * emitter) {
 	if (event == "death") {
-		_fire->emit("death", this);
+		groupEmit("fire", "death");
 		Object::emit("death", emitter);
 	} else if (event == "collision") {
 		spawn("explosion", "rocket-explosion", v3<float>(0,0,1), v3<float>(0,0,0));
@@ -47,4 +49,6 @@ Object* Rocket::clone() const  {
 	return new Rocket(*this);
 }
 
-REGISTER_OBJECT("guided-rocket", Rocket, ());
+REGISTER_OBJECT("guided-rocket", Rocket, ("guided"));
+REGISTER_OBJECT("dumb-rocket", Rocket, ("dumb"));
+REGISTER_OBJECT("smoke-rocket", Rocket, ("smoke"));
