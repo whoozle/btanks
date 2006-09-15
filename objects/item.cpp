@@ -3,7 +3,8 @@
 
 class Item : public Object {
 public:
-	Item(const std::string &classname) : Object(classname) {
+	const std::string type;
+	Item(const std::string &classname, const std::string &type = std::string()) : Object(classname), type(type) {
 		pierceable = true;
 	}
 	virtual Object * clone() const;
@@ -26,14 +27,13 @@ void Item::emit(const std::string &event, BaseObject * emitter) {
 	if (event == "collision") {
 		if (emitter->classname != "player") 
 			return;
+		hp = 0;
+		impassability = 0;
+		setZ(5); //fly up on the vehicle
+		cancelAll();
+		play("take", false);
 		if (classname == "heal") {
-			if (hp != 0)
-				emitter->heal(hp);
-			hp = 0;
-			impassability = 0;
-			setZ(5); //fly up on the vehicle
-			cancelAll();
-			play("take", false);
+			emitter->heal(hp);
 		} else LOG_WARN(("item '%s' was not implemented", classname.c_str()));
 	} else Object::emit(event, emitter);
 }
@@ -47,3 +47,7 @@ Object* Item::clone() const  {
 
 REGISTER_OBJECT("heal", Item, ("heal"));
 REGISTER_OBJECT("megaheal", Item, ("heal"));
+
+REGISTER_OBJECT("guided-rockets-item", Item, ("rockets", "guided"));
+REGISTER_OBJECT("dumb-rockets-item", Item, ("rockets", "dumb"));
+REGISTER_OBJECT("smoke-rockets-item", Item, ("rockets", "smoke"));

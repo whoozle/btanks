@@ -69,7 +69,7 @@
 		<pose id="main">0,1,2,3,4,5,6,7,8,9</pose>
 	</animation-model>
 
-	<animation-model id="heal-animation" speed="10">
+	<animation-model id="item-animation" speed="10">
 		<pose id="main">0,1,2,3,4</pose>
 		<pose id="take" speed="8">5,6,7</pose>
 	</animation-model>
@@ -189,8 +189,15 @@
 	<animation id="man" tile="man01.png" model="man-animation"/>
 	<animation id="die-man" tile="man01_die01.png" model="die-man-animation"/>
 
-	<animation id="heal" tile="heal.png" model="heal-animation"/>
-	<animation id="megaheal" tile="megaheal.png" model="heal-animation"/>
+	<!-- pickable items -->
+	<animation id="heal" tile="heal.png" model="item-animation"/>
+	<animation id="megaheal" tile="megaheal.png" model="item-animation"/>
+	
+	<animation id="guided-rockets-item" tile="rocket01_item.png" model="item-animation" />
+	<animation id="smoke-rockets-item" tile="rocket02_item.png" model="item-animation" />
+	<animation id="dumb-rockets-item" tile="rocket03_item.png" model="item-animation" />
+	
+	<!-- end of items -->
 
 	<animation id="pond" tile="pond.png" model="pond-animation" tile_width="256" tile_height="256" />
 	<animation id="rocket-explosion" tile="rocket_blast.png" model="rocket-explosion-animation" />
