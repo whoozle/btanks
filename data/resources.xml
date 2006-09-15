@@ -166,7 +166,9 @@
 	<animation id="dead-yellow-launcher" tile="launcher03_crash.png" model="dead-launcher-animation"/>
 	<animation id="dead-cyan-launcher" tile="launcher04_crash.png" model="dead-launcher-animation"/>
 	<animation id="launcher-smoke" tile="launcher_smoke.png" model="smoke-animation" />
-	<animation id="missiles-on-launcher" tile="launcher_missile01.png" model="missiles-on-launcher-animation" />
+	<animation id="guided-missiles-on-launcher" tile="launcher_missile01.png" model="missiles-on-launcher-animation" />
+	<animation id="smoke-missiles-on-launcher" tile="launcher_missile02.png" model="missiles-on-launcher-animation" />
+	<animation id="dumb-missiles-on-launcher" tile="launcher_missile03.png" model="missiles-on-launcher-animation" />
 
 	<animation id="green-car" tile="car01.png" model="car-animation"/>
 	<animation id="cyan-car" tile="car02.png" model="car-animation"/>

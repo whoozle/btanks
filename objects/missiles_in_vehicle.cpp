@@ -4,7 +4,7 @@
 
 class MissilesInVehicle : public Object {
 public:
-	MissilesInVehicle(const int n) : Object("missiles-in-vehicle"), n(n), hold(true) {}
+	MissilesInVehicle(const std::string &vehicle, const int n) : Object("missiles-in-vehicle"), n(n), max_n(n), hold(true), _vehicle(vehicle) {}
 	virtual void tick(const float dt);
 	virtual Object * clone() const;
 	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
@@ -14,13 +14,19 @@ public:
 	
 	void updatePose();
 private:
-	int n;
+	int n, max_n;
 	bool hold;
+	std::string _vehicle, _type;
 };
 
 const bool MissilesInVehicle::take(const BaseObject *obj, const std::string &type) {
 	if (obj->classname != "missiles")
 		return false;
+	_type = type;
+	std::string animation = type + "-missiles-on-" + _vehicle;
+	setup(animation);
+	n = max_n;
+	updatePose();
 	LOG_DEBUG(("missiles : %s taken", type.c_str()));
 	return true;
 }
@@ -63,7 +69,8 @@ void MissilesInVehicle::emit(const std::string &event, BaseObject * emitter) {
 			{
 				v3<float> v = _velocity.is0()?_direction:_velocity;
 				v.normalize();
-				World->spawn(dynamic_cast<Object *>(emitter), "guided-missile", "guided-missile", v3<float>(0,0,1), v);
+				std::string type = _type.empty()?"guided":_type;
+				World->spawn(dynamic_cast<Object *>(emitter), type + "-missile", type + "-missile", v3<float>(0,0,1), v);
 				
 				const Object * la = ResourceManager.get_const()->getAnimation("missile-launch");
 				v3<float> dpos = (size - la->size).convert<float>();
@@ -89,5 +96,5 @@ Object* MissilesInVehicle::clone() const  {
 	return new MissilesInVehicle(*this);
 }
 
-REGISTER_OBJECT("missiles-on-launcher", MissilesInVehicle, (3));
-REGISTER_OBJECT("missiles-on-tank", MissilesInVehicle, (1));
+REGISTER_OBJECT("missiles-on-launcher", MissilesInVehicle, ("launcher", 3));
+REGISTER_OBJECT("missiles-on-tank", MissilesInVehicle, ("tank", 1));

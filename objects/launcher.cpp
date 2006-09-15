@@ -24,7 +24,7 @@ void Launcher::onSpawn() {
 	_smoke->hp = 100000;
 	_smoke->impassability = 0;
 	add("smoke", _smoke);
-	Object *_missiles = spawnGrouped("missiles-on-launcher", "missiles-on-launcher", v3<float>(0,0,0.1), Centered);
+	Object *_missiles = spawnGrouped("missiles-on-launcher", "guided-missiles-on-launcher", v3<float>(0,0,0.1), Centered);
 	_missiles->hp = 100000;
 	_missiles->impassability = 0;
 	add("missiles", _missiles);
