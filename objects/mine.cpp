@@ -12,11 +12,17 @@ public:
 };
 
 void Mine::onSpawn() {
-	play("main", true);
+	play("3", false);
+	play("pause", false);
+	play("2", false);
+	play("pause", false);
+	play("1", false);
+	play("pause", false);
+	play("armed", true);
 }
 
 void Mine::emit(const std::string &event, BaseObject * emitter) {
-	if (event == "collision") {
+	if (event == "collision" && getState() == "armed") {
 		spawn("explosion", "explosion", v3<float>(0,0,1), v3<float>(0,0,0));
 		Object::emit("death", emitter);
 	} else Object::emit(event, emitter);

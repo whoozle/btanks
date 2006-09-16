@@ -139,6 +139,14 @@
 		<pose id="main">2,3,4,5,6,7,8,9,10,11</pose>
 	</animation-model>
 
+	<animation-model id="regular-mine-animation" speed="6">
+		<pose id="pause" speed="2">0</pose>
+		<pose id="3">1,2,3</pose>
+		<pose id="2">4,5,6</pose>
+		<pose id="1">7,8,9</pose>
+		<pose id="armed">0,10</pose>
+	</animation-model>
+
 	<animation id="spawning" tile="respawn.png" model="spawning-animation" tile_width="128" tile_height="128" />
 	<animation id="green-tank" tile="tank01.png" model="tank-animation"/>
 	<animation id="red-tank" tile="tank02.png" model="tank-animation"/>
@@ -192,7 +200,7 @@
 	<animation id="dumb-missile" tile="missile03.png" model="single-tile" />
 	<animation id="missile-fire" tile="missile_fire.png" model="missile-fire-animation" />
 	<animation id="missile-launch" tile="missile_launch.png" model="missile-launch-animation" tile_width="128" tile_height="128" />
-	<animation id="regular-mine" tile="mine.png" model="single-tile" tile_width="32" tile_height="32" />
+	<animation id="regular-mine" tile="mine.png" model="regular-mine-animation" tile_width="32" tile_height="32" />
 
 	<animation id="orange-bus" tile="bus01.png" model="car-animation"/>
 	<animation id="dead-orage-bus" tile="bus01_crash.png" model="dead-car-animation"/>
