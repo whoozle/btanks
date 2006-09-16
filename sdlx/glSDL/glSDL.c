@@ -553,15 +553,19 @@ void glSDL_Quit(void)
 {
 	if(SDL_WasInit(SDL_INIT_VIDEO))
 	{
+		/*
 		SDL_Surface *screen = SDL_GetVideoSurface();
 		glSDL_FreeTexInfo(screen);
+		*/
 		SDL_QuitSubSystem(SDL_INIT_VIDEO);
+		/*
 		if(fake_screen)
 		{
 			glSDL_FreeTexInfo(fake_screen);
 			free(fake_screen);
 			fake_screen = NULL;
 		}
+		*/
 	}
 #ifndef LEAK_TRACKING
 	_KillAllTextures();
