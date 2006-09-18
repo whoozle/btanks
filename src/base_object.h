@@ -84,6 +84,7 @@ protected:
 
 	void addDamage(BaseObject *from);
 	void setZ(const float z); //fixme: remove it ? 
+	void disown();
 
 private:
 

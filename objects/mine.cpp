@@ -8,6 +8,7 @@ public:
 	}
 	virtual Object * clone() const;
 	virtual void onSpawn();
+	virtual void tick(const float dt);
 	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
 };
 
@@ -19,6 +20,12 @@ void Mine::onSpawn() {
 	play("1", false);
 	play("pause", false);
 	play("armed", true);
+}
+
+void Mine::tick(const float dt) {
+	Object::tick(dt);
+	if (getState() == "armed") 
+		disown();
 }
 
 void Mine::emit(const std::string &event, BaseObject * emitter) {

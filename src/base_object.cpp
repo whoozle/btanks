@@ -198,3 +198,7 @@ const bool BaseObject::take(const BaseObject *obj, const std::string &type) {
 	//LOG_WARN(("%s: cannot take %s (%s)", classname.c_str(), obj->classname.c_str(), type.c_str()));
 	return false;
 }
+
+void BaseObject::disown() {
+	_owner_id = 0;
+}
