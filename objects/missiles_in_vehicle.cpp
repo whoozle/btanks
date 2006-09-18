@@ -28,7 +28,8 @@ const bool MissilesInVehicle::take(const BaseObject *obj, const std::string &typ
 		n = max_n;
 		
 		if (type == "nuke") {
-			n = 2; //fixme
+			if (n > 2)
+				n = 2; //fixme
 		}
 		updatePose();
 		LOG_DEBUG(("missiles : %s taken", type.c_str()));
