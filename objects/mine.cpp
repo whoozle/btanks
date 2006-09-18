@@ -3,7 +3,7 @@
 
 class Mine : public Object {
 public:
-	Mine() : Object("mine") { piercing = true; }
+	Mine() : Object("mine") { piercing = true; pierceable = true; }
 	virtual Object * clone() const;
 	virtual void onSpawn();
 	virtual void tick(const float dt);
