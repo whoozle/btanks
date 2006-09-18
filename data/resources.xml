@@ -144,7 +144,7 @@
 		<pose id="3">1,2,3</pose>
 		<pose id="2">4,5,6</pose>
 		<pose id="1">7,8,9</pose>
-		<pose id="armed">0,10</pose>
+		<pose id="armed">10</pose>
 	</animation-model>
 
 	<animation id="spawning" tile="respawn.png" model="spawning-animation" tile_width="128" tile_height="128" />
@@ -160,6 +160,7 @@
 	<animation id="guided-missiles-on-tank" tile="tank_missile01.png" model="missiles-on-tank-animation" />
 	<animation id="smoke-missiles-on-tank" tile="tank_missile02.png" model="missiles-on-tank-animation" />
 	<animation id="dumb-missiles-on-tank" tile="tank_missile03.png" model="missiles-on-tank-animation" />
+	<animation id="nuke-missiles-on-tank" tile="tank_missile04.png" model="missiles-on-tank-animation" />
 
 	<animation id="green-shilka" tile="shilka01.png" model="shilka-animation"/>
 	<animation id="red-shilka" tile="shilka02.png" model="shilka-animation"/>
@@ -184,6 +185,7 @@
 	<animation id="guided-missiles-on-launcher" tile="launcher_missile01.png" model="missiles-on-launcher-animation" />
 	<animation id="smoke-missiles-on-launcher" tile="launcher_missile02.png" model="missiles-on-launcher-animation" />
 	<animation id="dumb-missiles-on-launcher" tile="launcher_missile03.png" model="missiles-on-launcher-animation" />
+	<animation id="nuke-missiles-on-launcher" tile="launcher_missile04.png" model="missiles-on-launcher-animation" />
 	<animation id="regular-mines-on-launcher" tile="launcher_mine.png" model="missiles-on-launcher-animation" />
 
 	<animation id="green-car" tile="car01.png" model="car-animation"/>
@@ -198,6 +200,7 @@
 	<animation id="guided-missile" tile="missile01.png" model="single-tile" />
 	<animation id="smoke-missile" tile="missile02.png" model="single-tile" />
 	<animation id="dumb-missile" tile="missile03.png" model="single-tile" />
+	<animation id="nuke-missile" tile="missile04.png" model="single-tile" />
 	<animation id="missile-fire" tile="missile_fire.png" model="missile-fire-animation" />
 	<animation id="missile-launch" tile="missile_launch.png" model="missile-launch-animation" tile_width="128" tile_height="128" />
 	<animation id="regular-mine" tile="mine.png" model="regular-mine-animation" tile_width="32" tile_height="32" />
@@ -217,6 +220,7 @@
 	<animation id="guided-missiles-item" tile="missile01_item.png" model="item-animation" />
 	<animation id="smoke-missiles-item" tile="missile02_item.png" model="item-animation" />
 	<animation id="dumb-missiles-item" tile="missile03_item.png" model="item-animation" />
+	<animation id="nuke-missiles-item" tile="missile04_item.png" model="item-animation" />
 	<animation id="mines-item" tile="mine_item.png" model="item-animation" />
 	
 	<!-- end of items -->
@@ -251,6 +255,7 @@
 	<object class="smoke-missile" speed="450" mass="100" piercing="true" ttl="1" hp="3" />
 	<object class="smoke-cloud" impassability="0" />
 	<object class="dumb-missile" speed="500" mass="100" piercing="true" ttl="5" hp="5" />
+	<object class="nuke-missile" speed="100" mass="100" piercing="true" ttl="3" hp="1000" />
 	<object class="missile-launch" impassability="0" />
 	<object class="regular-mine" hp="10" impassability="-1" />
 

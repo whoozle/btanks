@@ -26,6 +26,10 @@ const bool MissilesInVehicle::take(const BaseObject *obj, const std::string &typ
 		std::string animation = type + "-" + obj->classname + "-on-" + _vehicle;
 		setup(animation);
 		n = max_n;
+		
+		if (type == "nuke") {
+			n = 2; //fixme
+		}
 		updatePose();
 		LOG_DEBUG(("missiles : %s taken", type.c_str()));
 		return true;
