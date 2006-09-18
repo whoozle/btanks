@@ -57,3 +57,5 @@ REGISTER_OBJECT("smoke-missiles-item", Item, ("missiles", "smoke"));
 REGISTER_OBJECT("nuke-missiles-item", Item, ("missiles", "nuke"));
 
 REGISTER_OBJECT("mines-item", Item, ("mines", "regular"));
+
+REGISTER_OBJECT("dirt-bullets-item", Item, ("effects", "dirt"));

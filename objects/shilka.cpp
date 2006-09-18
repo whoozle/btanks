@@ -75,8 +75,12 @@ void Shilka::tick(const float dt) {
 		
 		static const std::string left_fire = "shilka-bullet-left";
 		static const std::string right_fire = "shilka-bullet-right";
+		std::string animation = "shilka-";
+		animation += isEffectActive("dirt")?"dirt-":"";
+		animation += "bullet-";
+		animation += (_left_fire)?"left":"right";
 		
-		spawn("shilka-bullet", _left_fire?left_fire:right_fire, v3<float>(0,0,-0.1), _direction);
+		spawn(isEffectActive("dirt")?"dirt-bullet":"shilka-bullet", animation, v3<float>(0,0,-0.1), _direction);
 		_left_fire = ! _left_fire;
 	}
 	
@@ -85,5 +89,13 @@ void Shilka::tick(const float dt) {
 	limitRotation(dt, 8, 0.05, true, false);
 
 	//LOG_DEBUG(("_velocity: %g %g", _velocity.x, _velocity.y));
+}
+
+const bool Shilka::take(const BaseObject *obj, const std::string &type) {
+	if (obj->classname == "effects") {
+		addEffect(type);
+		return true;
+	}
+	return BaseObject::take(obj, type);
 }
 

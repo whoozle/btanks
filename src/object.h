@@ -60,6 +60,10 @@ public:
 			return empty;
 		return _events.front().name;
 	}
+	//effects
+	void addEffect(const std::string &name, const float ttl = -1);
+	const bool isEffectActive(const std::string &name) const;
+	void removeEffect(const std::string &name);
 
 	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
 	virtual void serialize(mrt::Serializator &s) const;
@@ -104,6 +108,9 @@ private:
 	
 	typedef std::deque<Event> EventQueue;
 	EventQueue _events;
+	
+	typedef std::map<const std::string, float> EffectMap;
+	EffectMap _effects;
 	
 	int _tw, _th;
 	int _direction_idx;

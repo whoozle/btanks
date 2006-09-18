@@ -112,6 +112,19 @@ void Object::cancelAll() {
 
 
 void Object::tick(const float dt) {
+	for(EffectMap::iterator ei = _effects.begin(); ei != _effects.end(); ) {
+		if (ei->second < 0) {
+			++ei;
+			continue;
+		}
+		ei->second -= dt;
+		if (ei->second <= 0) {
+			_effects.erase(ei++);
+			continue;
+		}
+		++ei;
+	}
+
 	if (_events.empty()) 
 		return;
 	
@@ -407,4 +420,17 @@ const Object *Object::get(const std::string &name) const {
 void Object::groupEmit(const std::string &name, const std::string &event) {
 	Object *o = get(name);
 	o->emit(event, this);
+}
+
+//effects
+void Object::addEffect(const std::string &name, const float ttl) {
+	_effects[name] = ttl;
+}
+
+const bool Object::isEffectActive(const std::string &name) const {
+	return (_effects.find(name) != _effects.end());
+}
+
+void Object::removeEffect(const std::string &name) {
+	_effects.erase(name);
 }

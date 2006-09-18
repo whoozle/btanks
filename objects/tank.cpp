@@ -46,6 +46,10 @@ void Tank::emit(const std::string &event, BaseObject * emitter) {
 }
 
 const bool Tank::take(const BaseObject *obj, const std::string &type) {
+	if (obj->classname == "effects") {
+		addEffect(type);
+		return true;
+	}
 	if (get("missiles")->take(obj, type))
 		return true;
 	return BaseObject::take(obj, type);
@@ -86,7 +90,10 @@ void Tank::tick(const float dt) {
 		//LOG_DEBUG(("vel: %f %f", _state.old_vx, _state.old_vy));
 		//v3<float> v = _velocity.is0()?_direction:_velocity;
 		//v.normalize();
-		spawn("bullet", "bullet", v3<float>(0,0,-0.1), _direction);
+		if (isEffectActive("dirt")) {
+			spawn("dirt-bullet", "dirt-bullet", v3<float>(0,0,-0.1), _direction);
+		} else 
+			spawn("bullet", "bullet", v3<float>(0,0,-0.1), _direction);
 	}
 	if (_state.alt_fire) {
 		groupEmit("missiles", "launch");

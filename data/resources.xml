@@ -173,6 +173,8 @@
 	<animation id="dead-cyan-shilka" tile="shilka04_crash.png" model="dead-shilka-animation"/>
 	<animation id="shilka-bullet-left" tile="shilka_bullet2.png" model="bullet-animation"/>
 	<animation id="shilka-bullet-right" tile="shilka_bullet1.png" model="bullet-animation"/>
+	<animation id="shilka-dirt-bullet-left" tile="shilka_dirt_bullet2.png" model="bullet-animation"/>
+	<animation id="shilka-dirt-bullet-right" tile="shilka_dirt_bullet1.png" model="bullet-animation"/>
 
 	<animation id="green-launcher" tile="launcher01.png" model="launcher-animation"/>
 	<animation id="red-launcher" tile="launcher02.png" model="launcher-animation"/>
@@ -223,6 +225,7 @@
 	<animation id="dumb-missiles-item" tile="missile03_item.png" model="item-animation" />
 	<animation id="nuke-missiles-item" tile="missile04_item.png" model="item-animation" />
 	<animation id="mines-item" tile="mine_item.png" model="item-animation" />
+	<animation id="dirt-bullets-item" tile="dirt_item.png" model="item-animation" />
 	
 	<!-- end of items -->
 
@@ -230,6 +233,7 @@
 	<animation id="missile-explosion" tile="missile_blast.png" model="missile-explosion-animation" />
 
 	<animation id="bullet" tile="bullet.png" model="bullet-animation"/>
+	<animation id="dirt-bullet" tile="dirt_bullet.png" model="bullet-animation"/>
 	<animation id="explosion" tile="explosion.png" model="explosion-animation" />
 	<animation id="traffic-lights" tile="traffic_lights.png" model="traffic-lights-animation"/>
 
@@ -241,12 +245,14 @@
 
 	<alias name="pond" class="single-pose" />
 	<alias name="shilka-bullet" class="bullet" />
+	<alias name="dirt-bullet" class="bullet" />
 	<alias name="spawn-shield" class="single-pose-once-no-directions" />
 	<alias name="smoke-cloud" class="single-pose-with-start" />
 
 	<object class="tank" speed="400" mass="500" hp="5"/>
 	<object class="ai-tank" parent="tank" />
 	<object class="bullet" speed="550" mass="1" piercing="true" ttl="1" hp="1" />
+	<object class="dirt-bullet" speed="300" mass="1" piercing="true" ttl="1" hp="1" />
 
 	<object class="shilka" speed="450" mass="500" hp="4"/>
 	<object class="shilka-bullet" speed="600" mass="1" piercing="true" ttl="1" hp="1" />
