@@ -427,10 +427,6 @@ void Object::addEffect(const std::string &name, const float ttl) {
 	_effects[name] = ttl;
 }
 
-const bool Object::isEffectActive(const std::string &name) const {
-	return (_effects.find(name) != _effects.end());
-}
-
 void Object::removeEffect(const std::string &name) {
 	_effects.erase(name);
 }

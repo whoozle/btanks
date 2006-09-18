@@ -8,11 +8,11 @@
 REGISTER_OBJECT("shilka", Shilka, ());
 
 Shilka::Shilka() 
-: Object("player"), _fire(0.1, false), _left_fire(true) {
+: Object("player"), _fire(0.1, false), _dirt_fire(1, false), _left_fire(true) {
 }
 
 Shilka::Shilka(const std::string &animation) 
-: Object("player"), _fire(0.1, false), _left_fire(true) {
+: Object("player"), _fire(0.1, false), _dirt_fire(1, false), _left_fire(true) {
 	setup(animation);
 }
 
@@ -47,7 +47,7 @@ void Shilka::emit(const std::string &event, BaseObject * emitter) {
 void Shilka::tick(const float dt) {
 	Object::tick(dt);
 
-	bool fire_possible = _fire.tick(dt);
+	bool fire_possible = isEffectActive("dirt")?(_fire.tick(dt),_dirt_fire.tick(dt)):(_dirt_fire.tick(dt),_fire.tick(dt));
 	
 	if (getState().empty()) {
 		play("hold", true);
@@ -64,9 +64,12 @@ void Shilka::tick(const float dt) {
 			play("move", true);
 		}
 	}
+	
+	
 
 	if (_state.fire && fire_possible) {
 		_fire.reset();
+		_dirt_fire.reset();
 		
 		if (getState().substr(0,4) == "fire") 
 			cancel();

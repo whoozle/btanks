@@ -34,7 +34,7 @@ public:
 	virtual const bool take(const BaseObject *obj, const std::string &type);
 	
 private:
-	Alarm _fire;
+	Alarm _fire, _dirt_fire;
 	bool _left_fire;
 };
 

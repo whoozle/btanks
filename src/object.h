@@ -62,7 +62,9 @@ public:
 	}
 	//effects
 	void addEffect(const std::string &name, const float ttl = -1);
-	const bool isEffectActive(const std::string &name) const;
+	inline const bool isEffectActive(const std::string &name) const {
+		return _effects.find(name) != _effects.end();
+	}
 	void removeEffect(const std::string &name);
 
 	virtual void emit(const std::string &event, BaseObject * emitter = NULL);

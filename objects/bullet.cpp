@@ -32,7 +32,7 @@ void Bullet::emit(const std::string &event, BaseObject * emitter) {
 		if (_type == "regular" && event == "collision") 
 			spawn("explosion", "explosion", v3<float>(0,0,1), v3<float>(0,0,0));
 		if (_type == "dirt") 
-			spawn("dirt", "dirt", v3<float>(0,0,-0.1), v3<float>(0,0,0));
+			spawn("dirt", "dirt", v3<float>(0,0,0.1), v3<float>(0,0,0));
 		Object::emit("death", emitter);
 	} else Object::emit(event, emitter);
 }

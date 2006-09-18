@@ -3,7 +3,7 @@
 
 class Dirt : public Object {
 public:
-	Dirt() : Object("dirt") {}
+	Dirt() : Object("dirt") { pierceable = true; }
 	virtual Object * clone() const;
 	virtual void onSpawn();
 	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
@@ -11,7 +11,7 @@ public:
 
 void Dirt::onSpawn() {
 	setDirection(0);
-	setZ(-0.1);
+	setZ(-0.5);
 	play("fade-in", false);
 	play("main", true);
 }
