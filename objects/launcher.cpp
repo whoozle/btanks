@@ -87,7 +87,8 @@ void Launcher::tick(const float dt) {
 	}
 
 	_state.fire = false;
-	limitRotation(dt, 8, 0.2, false, true);
+	//limitRotation(dt, 8, 0.2, false, true);
+	limitRotation(dt, 8, 0.07, true, false);
 	//LOG_DEBUG(("_velocity: %g %g", _velocity.x, _velocity.y));
 }
 
