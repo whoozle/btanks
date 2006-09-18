@@ -283,7 +283,7 @@
 	<object class="explosion" hp="1000" />
 	<object class="dirt" impassability="0.7" />
 	<object class="pond" hp="1000" pierceable="true" impassability="1" />
-	<object class="gate" hp="1" impassability="1" />
+	<object class="gate" hp="1" impassability="1" z="-10" />
 	<object class="spawn-shield" hp="1000" impassability="1" />
 	<object class="traffic-lights" hp="3" />
 
