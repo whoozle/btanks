@@ -173,12 +173,12 @@ void BaseObject::follow(const int id) {
 	_follow = id;
 }
 
-void BaseObject::addDamage(BaseObject *from) {
-	if (!from->piercing)
+void BaseObject::addDamage(BaseObject *from, const bool emitDeath) {
+	if (!from->piercing || hp == -1)
 		return;
 	hp -= from->hp;	
 	LOG_DEBUG(("%s: received %d hp of damage from %s. hp = %d", classname.c_str(), from->hp, from->classname.c_str(), hp));
-	if (hp <= 0) 
+	if (emitDeath && hp <= 0) 
 		emit("death", from);
 }
 

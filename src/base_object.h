@@ -82,7 +82,7 @@ protected:
 
 	virtual void calculate(const float dt);
 
-	void addDamage(BaseObject *from);
+	void addDamage(BaseObject *from, const bool emitDeath = true);
 	void setZ(const float z); //fixme: remove it ? 
 	void disown();
 

@@ -253,7 +253,7 @@
 	<alias name="shilka-bullet" class="bullet" />
 	<alias name="spawn-shield" class="single-pose-once-no-directions" />
 	<alias name="smoke-cloud" class="single-pose-with-start" />
-	<alias name="gate" class="single-pose" />
+	<alias name="gate" class="breakable-object" />
 
 	<object class="tank" speed="400" mass="500" hp="5"/>
 	<object class="ai-tank" parent="tank" />
