@@ -100,6 +100,10 @@
 	<animation-model id="explosion-animation" speed="10">
 		<pose id="boom">0,1,2</pose>
 	</animation-model>
+
+	<animation-model id="nuclear-explosion-animation" speed="5">
+		<pose id="boom">5,4,3,2,1,0</pose>
+	</animation-model>
 	
 	<animation-model id="missile-explosion-animation" speed="10">
 		<pose id="boom">0,1,2,3</pose>
@@ -243,7 +247,8 @@
 	<animation id="bullet" tile="bullet.png" model="bullet-animation"/>
 	<animation id="dirt-bullet" tile="dirt_bullet.png" model="bullet-animation"/>
 	<animation id="explosion" tile="explosion.png" model="explosion-animation" />
-	<animation id="traffic-lights" tile="traffic_lights.png" model="traffic-lights-animation"/>
+	<animation id="nuclear-explosion" tile="nuclear_explosion.png" model="nuclear-explosion-animation" size="448" />
+	<animation id="traffic-lights" tile="traffic_lights.png" model="traffic-lights-animation" />
 
 	<animation id="gate" tile="gate01.png" model="gate-animation" tile_width="128" tile_height="64" />
 	

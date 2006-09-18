@@ -41,6 +41,9 @@ void Missile::emit(const std::string &event, BaseObject * emitter) {
 	} if (event == "death" && type == "smoke") {
 		spawn("smoke-cloud", "smoke-cloud", v3<float>(0,0,8), v3<float>());
 		Object::emit(event, emitter);
+	} else if (event == "death" && type == "nuke") {
+		spawn("explosion", "nuclear-explosion", v3<float>(0,0,8), v3<float>());
+		Object::emit(event, emitter);
 	} else Object::emit(event, emitter);
 }
 
