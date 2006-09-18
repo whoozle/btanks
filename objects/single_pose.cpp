@@ -42,7 +42,6 @@ void SinglePose::onSpawn() {
 	//LOG_DEBUG(("single-pose: play('%s', %s)", _pose.c_str(), _repeat?"true":"false"));
 	play(_pose, _repeat);
 	if (_play_start) {
-		LOG_DEBUG(("play start!!!!!!!!"));
 		playNow("start");
 	}
 }
