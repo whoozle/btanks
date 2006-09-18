@@ -29,6 +29,12 @@ void TrafficLights::tick(const float dt) {
 void TrafficLights::emit(const std::string &event, BaseObject * emitter) {
 	if (event != "collision")
 		Object::emit(event, emitter);
+	addDamage(emitter, false);
+	if (hp <= 0) {
+		cancelAll();
+		play("fade-out", false); 
+		play("broken", true);
+	}
 }
 
 

@@ -66,6 +66,6 @@ REGISTER_OBJECT("single-pose-once", SinglePose, ("main", false));
 REGISTER_OBJECT("single-pose-no-directions", SinglePose, ("main", true, true));
 REGISTER_OBJECT("single-pose-once-no-directions", SinglePose, ("main", false, true));
 
-REGISTER_OBJECT("breakable-object", SinglePose, ("main", true, false, false, true));
+REGISTER_OBJECT("destructable-object", SinglePose, ("main", true, false, false, true));
 
 REGISTER_OBJECT("missile-launch", SinglePose, ("launch", false));
