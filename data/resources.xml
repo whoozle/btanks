@@ -126,8 +126,8 @@
 	</animation-model>
 
 	<animation-model id="gate-animation" speed="1">
-		<pose id="hold">0</pose>
-		<pose id="broken">0</pose>
+		<pose id="main">0</pose>
+		<pose id="broken">1</pose>
 	</animation-model>
 
 	<animation-model id="spawning-animation" speed="5">
@@ -243,7 +243,7 @@
 	<animation id="explosion" tile="explosion.png" model="explosion-animation" />
 	<animation id="traffic-lights" tile="traffic_lights.png" model="traffic-lights-animation"/>
 
-	<animation id="gate" tile="gate01.png" model="gate-animation"/>
+	<animation id="gate" tile="gate01.png" model="gate-animation" tile_width="128" tile_height="64" />
 	
 	<!-- basic object with single pose. do not edit. -->
 	<object class="single-pose" impassability="0" />
@@ -253,6 +253,7 @@
 	<alias name="shilka-bullet" class="bullet" />
 	<alias name="spawn-shield" class="single-pose-once-no-directions" />
 	<alias name="smoke-cloud" class="single-pose-with-start" />
+	<alias name="gate" class="single-pose" />
 
 	<object class="tank" speed="400" mass="500" hp="5"/>
 	<object class="ai-tank" parent="tank" />
@@ -275,6 +276,7 @@
 	<object class="explosion" hp="1000" />
 	<object class="dirt" impassability="0.7" />
 	<object class="pond" hp="1000" pierceable="true" impassability="1" />
+	<object class="gate" hp="1" impassability="1" />
 	<object class="spawn-shield" hp="1000" impassability="1" />
 
 	<!-- items -->
