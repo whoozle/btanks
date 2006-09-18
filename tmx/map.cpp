@@ -36,7 +36,7 @@ const bool IMap::collides(const sdlx::Surface &surf, const int dx, const int dy,
 
 const int IMap::getImpassability(const Object *obj, const sdlx::Surface &s, const v3<int>&pos, v3<int> *tile_pos) const {
 	assert(obj != NULL);
-	if (obj->impassability == 0) {
+	if (obj->impassability <= 0) {
 		return 0;
 	}
 	
