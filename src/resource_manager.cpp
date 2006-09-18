@@ -32,8 +32,10 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 
 		long tw = atol(attr["tile_width"].c_str());
 		long th = atol(attr["tile_height"].c_str());
+		long sz = atol(attr["size"].c_str());
 		if (tw == 0) tw = _tw;
 		if (th == 0) th = _th;
+		if (sz != 0) tw = th = sz;
 
 		sdlx::Surface *s = NULL;
 		TRY { 

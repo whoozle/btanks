@@ -147,7 +147,12 @@
 		<pose id="armed">10</pose>
 	</animation-model>
 
-	<animation id="spawning" tile="respawn.png" model="spawning-animation" tile_width="128" tile_height="128" />
+	<animation-model id="dirt-animation" speed="5">
+		<pose id="fade-in">0,1,2,3</pose>
+		<pose id="main">3</pose>
+	</animation-model>
+
+	<animation id="spawning" tile="respawn.png" model="spawning-animation" size="128" />
 	<animation id="green-tank" tile="tank01.png" model="tank-animation"/>
 	<animation id="red-tank" tile="tank02.png" model="tank-animation"/>
 	<animation id="yellow-tank" tile="tank03.png" model="tank-animation"/>
@@ -205,8 +210,8 @@
 	<animation id="dumb-missile" tile="missile03.png" model="single-tile" />
 	<animation id="nuke-missile" tile="missile04.png" model="single-tile" />
 	<animation id="missile-fire" tile="missile_fire.png" model="missile-fire-animation" />
-	<animation id="missile-launch" tile="missile_launch.png" model="missile-launch-animation" tile_width="128" tile_height="128" />
-	<animation id="regular-mine" tile="mine.png" model="regular-mine-animation" tile_width="32" tile_height="32" />
+	<animation id="missile-launch" tile="missile_launch.png" model="missile-launch-animation" size="128" />
+	<animation id="regular-mine" tile="mine.png" model="regular-mine-animation" size="32" />
 
 	<animation id="orange-bus" tile="bus01.png" model="car-animation"/>
 	<animation id="dead-orage-bus" tile="bus01_crash.png" model="dead-car-animation"/>
@@ -214,7 +219,8 @@
 	<animation id="man" tile="man01.png" model="man-animation"/>
 	<animation id="die-man" tile="man01_die01.png" model="die-man-animation"/>
 
-	<animation id="smoke-cloud" tile="smoke_cloud.png" model="smoke-cloud-animation" tile_width="192" tile_height="192"/>
+	<animation id="smoke-cloud" tile="smoke_cloud.png" model="smoke-cloud-animation" size="192"/>
+	<animation id="dirt" tile="dirt.png" model="dirt-animation" size="128" />
 
 	<!-- pickable items -->
 	<animation id="heal" tile="heal.png" model="item-animation"/>
@@ -229,7 +235,7 @@
 	
 	<!-- end of items -->
 
-	<animation id="pond" tile="pond.png" model="pond-animation" tile_width="256" tile_height="256" />
+	<animation id="pond" tile="pond.png" model="pond-animation" size="256" />
 	<animation id="missile-explosion" tile="missile_blast.png" model="missile-explosion-animation" />
 
 	<animation id="bullet" tile="bullet.png" model="bullet-animation"/>
@@ -245,7 +251,6 @@
 
 	<alias name="pond" class="single-pose" />
 	<alias name="shilka-bullet" class="bullet" />
-	<alias name="dirt-bullet" class="bullet" />
 	<alias name="spawn-shield" class="single-pose-once-no-directions" />
 	<alias name="smoke-cloud" class="single-pose-with-start" />
 
@@ -268,6 +273,7 @@
 
 	<object class="corpse" hp="10" ttl="10" fadeout_time="1"/>
 	<object class="explosion" hp="1000" />
+	<object class="dirt" impassability="0.7" />
 	<object class="pond" hp="1000" pierceable="true" impassability="1" />
 	<object class="spawn-shield" hp="1000" impassability="1" />
 
