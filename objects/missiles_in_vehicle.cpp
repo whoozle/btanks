@@ -78,7 +78,7 @@ void MissilesInVehicle::emit(const std::string &event, BaseObject * emitter) {
 				v.normalize();
 				std::string type = _type.empty()?"guided":_type;
 				std::string object = _object.empty()?"missiles":_object;
-				object = object.substr(0, object.size()-1); //remove trailing 's' 
+				object = object.substr(0, object.size() - 1); //remove trailing 's' 
 				v3<float> opos(0,0,1);
 				if (_object == "mines") opos.z = -1;
 				World->spawn(dynamic_cast<Object *>(emitter), type + "-" + object, type + "-" + object, opos, v);

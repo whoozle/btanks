@@ -47,13 +47,19 @@ public:
 	virtual void tick(const float dt);
 	virtual void render(sdlx::Surface &surface, const int x, const int y);
 	void renderCopy(sdlx::Surface &surface);
-	
+
+	// animation:
 	void play(const std::string &id, const bool repeat = false);
 	void playNow(const std::string &id);
 	void cancel();
 	void cancelRepeatable();
 	void cancelAll();
-	const std::string& getState() const;
+	inline const std::string& getState() const {
+		static std::string empty;
+		if (_events.empty())
+			return empty;
+		return _events.front().name;
+	}
 
 	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
 	virtual void serialize(mrt::Serializator &s) const;

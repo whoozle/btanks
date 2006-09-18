@@ -17,7 +17,7 @@ void TrafficLights::tick(const float dt) {
 
 	static const char *names[] = {"red", "flashing-red", "yellow", "green", "flashing-green", "yellow"};
 	
-	if (getState().size() == 0) {
+	if (getState().empty()) {
 		++_idx; 
 		_idx %= sizeof(names) / sizeof(names[0]);
 

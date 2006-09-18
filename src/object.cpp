@@ -236,12 +236,6 @@ void Object::render(sdlx::Surface &surface, const int x, const int y) {
 	surface.copyFrom(blended, x, y);
 }
 
-const std::string& Object::getState() const {
-	static std::string empty;
-	if (_events.empty())
-		return empty;
-	return _events.front().name;
-}
 
 void Object::serialize(mrt::Serializator &s) const {
 	BaseObject::serialize(s);

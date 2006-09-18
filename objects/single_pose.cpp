@@ -32,7 +32,7 @@ void SinglePose::render(sdlx::Surface &surface, const int x, const int y) {
 
 void SinglePose::tick(const float dt) {
 	Object::tick(dt);
-	if (!getState().size()) {	
+	if (getState().empty()) {	
 		//LOG_DEBUG(("over"));
 		emit("death", this);
 	}

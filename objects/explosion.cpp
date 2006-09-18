@@ -13,7 +13,7 @@ public:
 
 void Explosion::tick(const float dt) {
 	Object::tick(dt);
-	if (!getState().size()) {	
+	if (getState().empty()) {	
 		//LOG_DEBUG(("over"));
 		emit("death", this);
 	}
