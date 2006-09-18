@@ -55,7 +55,7 @@ public:
 	void cancelRepeatable();
 	void cancelAll();
 	inline const std::string& getState() const {
-		static std::string empty;
+		static const std::string empty;
 		if (_events.empty())
 			return empty;
 		return _events.front().name;
