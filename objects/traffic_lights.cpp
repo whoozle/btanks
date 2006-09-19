@@ -30,7 +30,7 @@ void TrafficLights::emit(const std::string &event, BaseObject * emitter) {
 	if (event != "collision")
 		Object::emit(event, emitter);
 	addDamage(emitter, false);
-	if (emitter->piercing && hp <= 0) {
+	if (emitter->piercing && getState() != "broken" && hp <= 0) {
 		cancelAll();
 		play("fade-out", false); 
 		play("broken", true);

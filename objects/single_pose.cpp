@@ -20,7 +20,7 @@ private:
 void SinglePose::emit(const std::string &event, BaseObject * emitter) {
 	if (event == "collision") {
 		addDamage(emitter, !_breakable);
-		if (_breakable && emitter->piercing && hp <= 0) {
+		if (_breakable && getState() != "broken" && emitter->piercing && hp <= 0) {
 			cancelAll();
 			play("broken", true);
 			hp = -1;
