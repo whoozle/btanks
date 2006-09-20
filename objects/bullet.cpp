@@ -29,7 +29,10 @@ void Bullet::onSpawn() {
 
 void Bullet::emit(const std::string &event, BaseObject * emitter) {
 	if (event == "collision" || event == "death") {
-		v3<float> dpos = getRelativePos(emitter) / 2;
+		v3<float> dpos;
+		if (emitter)
+			dpos = getRelativePos(emitter) / 2;
+		
 		dpos.z = 1;
 		if (_type == "regular" && event == "collision") {
 			spawn("explosion", "explosion", dpos, v3<float>(0,0,0));
