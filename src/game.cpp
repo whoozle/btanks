@@ -42,7 +42,7 @@
 
 IMPLEMENT_SINGLETON(Game, IGame)
 
-IGame::IGame() : _my_index(-1) {
+IGame::IGame() : _my_index(-1), _shake(0) {
 	LOG_DEBUG(("IGame ctor"));
 }
 IGame::~IGame() {}
@@ -514,7 +514,15 @@ void IGame::run() {
 		}
 
 		_window.fillRect(window_size, 0);
+		if (_shake > 0) {
+			viewport.y += _shake_int;
+		}		
 		World->render(_window, viewport);
+		if (_shake >0) {
+			viewport.y -= _shake_int;
+			_shake_int = -_shake_int;
+			_shake -= dt;
+		}
 
 		_main_menu.render(_window);
 		
@@ -671,4 +679,9 @@ void IGame::checkPlayers() {
 		LOG_DEBUG(("player in slot %d is dead. respawning.", i));
 		spawnPlayer(slot, slot.classname, slot.animation);
 	}
+}
+
+void IGame::shake(const float duration, const int intensity) {
+	_shake = duration;
+	_shake_int = intensity;
 }

@@ -59,6 +59,9 @@ public:
 	void onClient(Message &message);
 	void onMessage(const Connection &connection, const Message &message);
 	
+	//stupid visual effect
+	void shake(const float duration, const int intensity);
+	
 private:
 	void onKey(const Uint8 type, const SDL_keysym sym);
 	void onMenu(const std::string &name);
@@ -94,6 +97,9 @@ private:
 	Client *_client;
 	bool _vsync, _opengl;
 	std::string _preload_map;
+
+	float _shake;
+	int _shake_int;
 };
 
 SINGLETON(Game, IGame);

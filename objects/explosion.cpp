@@ -1,9 +1,10 @@
 #include "object.h"
 #include "resource_manager.h"
+#include "game.h"
 
 class Explosion : public Object {
 public:
-	Explosion() : Object("explosion") {}
+	Explosion(const std::string &classname) : Object(classname) {}
 	virtual void tick(const float dt);
 	virtual Object * clone() const;
 	virtual void onSpawn();
@@ -22,7 +23,9 @@ void Explosion::tick(const float dt) {
 void Explosion::onSpawn() {
 	setDirection(0);
 	play("boom", false);
-	impassability = 0;	
+	impassability = 0;
+	if (classname == "nuclear-explosion") 
+		Game->shake(1, 2);
 }
 
 void Explosion::emit(const std::string &event, BaseObject * emitter) {
@@ -37,4 +40,5 @@ Object* Explosion::clone() const  {
 	return a;
 }
 
-REGISTER_OBJECT("explosion", Explosion, ());
+REGISTER_OBJECT("explosion", Explosion, ("explosion"));
+REGISTER_OBJECT("nuclear-explosion", Explosion, ("nuclear-explosion"));
