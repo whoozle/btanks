@@ -380,8 +380,10 @@ Object* IWorld::spawn(Object *src, const std::string &classname, const std::stri
 	//LOG_DEBUG(("%s spawns %s", src->classname.c_str(), obj->classname.c_str()));
 	obj->_owner_id = src->_id;
 	obj->_velocity = vel;
-	//LOG_DEBUG(("spawning %s, position = %f %f dPosition = %f:%f, velocity: %f %f", 
-		//classname.c_str(), src->_position.x, src->_position.y, dpos.x, dpos.y, vel.x, vel.y));
+	
+	//LOG_DEBUG(("spawning %s, position = %g %g dPosition = %g:%g, velocity: %g %g", 
+	//	classname.c_str(), src->_position.x, src->_position.y, dpos.x, dpos.y, vel.x, vel.y));
+	
 	addObject(obj, src->_position + (src->size / 2)+ dpos - (obj->size / 2));
 	//LOG_DEBUG(("result: %f %f", obj->_position.x, obj->_position.y));
 	return obj;

@@ -66,6 +66,8 @@ public:
 	virtual const bool take(const BaseObject *obj, const std::string &type);
 	virtual void addDamage(BaseObject *from, const bool emitDeath = true);
 	
+	const v3<float> getRelativePos(const BaseObject *obj) const;
+	
 protected:
 	int _id;
 

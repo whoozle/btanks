@@ -215,3 +215,7 @@ const bool BaseObject::take(const BaseObject *obj, const std::string &type) {
 void BaseObject::disown() {
 	_owner_id = 0;
 }
+
+const v3<float> BaseObject::getRelativePos(const BaseObject *obj) const {
+	return obj->_position - _position;
+}

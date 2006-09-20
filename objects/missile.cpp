@@ -36,7 +36,9 @@ void Missile::calculate(const float dt) {
 
 void Missile::emit(const std::string &event, BaseObject * emitter) {
 	if (event == "collision") {
-		spawn("explosion", "missile-explosion", v3<float>(0,0,1), v3<float>(0,0,0));
+		v3<float> dpos = getRelativePos(emitter) / 2;
+		dpos.z = 1;
+		spawn("explosion", "missile-explosion", dpos, v3<float>(0,0,0));
 		emit("death", emitter);
 	} if (event == "death" && type == "smoke") {
 		spawn("smoke-cloud", "smoke-cloud", v3<float>(0,0,8), v3<float>());

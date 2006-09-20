@@ -29,10 +29,13 @@ void Bullet::onSpawn() {
 
 void Bullet::emit(const std::string &event, BaseObject * emitter) {
 	if (event == "collision" || event == "death") {
-		if (_type == "regular" && event == "collision") 
-			spawn("explosion", "explosion", v3<float>(0,0,1), v3<float>(0,0,0));
-		if (_type == "dirt") 
-			spawn("dirt", "dirt", v3<float>(0,0,0.1), v3<float>(0,0,0));
+		v3<float> dpos = getRelativePos(emitter) / 2;
+		dpos.z = 1;
+		if (_type == "regular" && event == "collision") {
+			spawn("explosion", "explosion", dpos, v3<float>(0,0,0));
+		} else if (_type == "dirt") {
+			spawn("dirt", "dirt", dpos, v3<float>(0,0,0));
+		}
 		Object::emit("death", emitter);
 	} else Object::emit(event, emitter);
 }
