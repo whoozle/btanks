@@ -217,5 +217,5 @@ void BaseObject::disown() {
 }
 
 const v3<float> BaseObject::getRelativePos(const BaseObject *obj) const {
-	return obj->_position - _position;
+	return obj->_position - _position + size / 2 - obj->size / 2;
 }
