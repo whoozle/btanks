@@ -158,6 +158,8 @@
 		<pose id="main">3</pose>
 	</animation-model>
 
+	<animation id="damage-digits" tile="../font/small.png" model="single-tile" size="16" />
+
 	<animation id="spawning" tile="respawn.png" model="spawning-animation" size="128" />
 	<animation id="green-tank" tile="tank01.png" model="tank-animation"/>
 	<animation id="red-tank" tile="tank02.png" model="tank-animation"/>
@@ -255,6 +257,8 @@
 	<!-- basic object with single pose. do not edit. -->
 	<object class="single-pose" impassability="0" />
 	<!-- end of single-pose ;) -->
+
+	<object class="damage-digits" speed="30" mass="1" ttl="0.4" />
 
 	<alias name="pond" class="single-pose" />
 	<alias name="shilka-bullet" class="bullet" />

@@ -175,6 +175,10 @@ void BaseObject::follow(const int id) {
 	_follow = id;
 }
 
+
+#include "resource_manager.h"
+#include "object.h"
+
 void BaseObject::addDamage(BaseObject *from, const bool emitDeath) {
 	if (!from->piercing || hp == -1)
 		return;
@@ -182,6 +186,13 @@ void BaseObject::addDamage(BaseObject *from, const bool emitDeath) {
 	LOG_DEBUG(("%s: received %d hp of damage from %s. hp = %d", classname.c_str(), from->hp, from->classname.c_str(), hp));
 	if (emitDeath && hp <= 0) 
 		emit("death", from);
+		
+	//look for a better place for that.
+	Object *o = ResourceManager->createObject("damage-digits", "damage-digits");
+	o->hp = from->hp;
+	if (hp < 0) 
+		o->hp += hp;
+	World->addObject(o, _position);
 }
 
 
