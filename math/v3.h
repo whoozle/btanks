@@ -60,9 +60,9 @@ public:
 		inline v3<T2> convert() const { return v3<T2>((T2)x, (T2)y, (T2)z); }
 	
 	inline const T distance(const v3<T>& other) const {
-		v3<T>d(this);
+		v3<T>d(*this);
 		d-= other;
-		return d.lenght();
+		return d.length();
 	}
 	
 	inline const T quick_distance(const v3<T>& other) const {
