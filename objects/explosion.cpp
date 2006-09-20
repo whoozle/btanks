@@ -25,7 +25,7 @@ void Explosion::onSpawn() {
 	play("boom", false);
 	impassability = 0;
 	if (classname == "nuclear-explosion") 
-		Game->shake(1, 2);
+		Game->shake(1, 4);
 }
 
 void Explosion::emit(const std::string &event, BaseObject * emitter) {
