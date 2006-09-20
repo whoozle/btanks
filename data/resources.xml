@@ -153,7 +153,7 @@
 		<pose id="armed">10</pose>
 	</animation-model>
 
-	<animation-model id="dirt-animation" speed="5">
+	<animation-model id="dirt-animation" speed="15">
 		<pose id="fade-in">0,1,2,3</pose>
 		<pose id="main">3</pose>
 	</animation-model>
