@@ -280,7 +280,8 @@
 	<object class="regular-mine" hp="10" impassability="-1" />
 
 	<object class="corpse" hp="10" ttl="10" fadeout_time="1"/>
-	<object class="explosion" hp="1000" />
+	<object class="explosion" hp="1" />
+	<object class="nuclear-explosion" hp="1000" />
 	<object class="dirt" impassability="0.7" />
 	<object class="pond" hp="1000" pierceable="true" impassability="1" />
 	<object class="gate" hp="1" impassability="1" z="-10" />
