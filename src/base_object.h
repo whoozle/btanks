@@ -64,7 +64,8 @@ public:
 
 	void heal(const int hp);
 	virtual const bool take(const BaseObject *obj, const std::string &type);
-
+	virtual void addDamage(BaseObject *from, const bool emitDeath = true);
+	
 protected:
 	int _id;
 
@@ -82,7 +83,6 @@ protected:
 
 	virtual void calculate(const float dt);
 
-	void addDamage(BaseObject *from, const bool emitDeath = true);
 	void setZ(const float z); //fixme: remove it ? 
 	void disown();
 

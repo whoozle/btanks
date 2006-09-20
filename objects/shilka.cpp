@@ -37,8 +37,6 @@ void Shilka::emit(const std::string &event, BaseObject * emitter) {
 		spawn("corpse", "dead-" + animation, v3<float>(0,0,-0.5), v3<float>(0,0,0));
 		_velocity.x = _velocity.y = _velocity.z = 0;
 		Object::emit(event, emitter);
-	} else if (event == "collision") {
-		addDamage(emitter);
 	} else Object::emit(event, emitter);
 }
 

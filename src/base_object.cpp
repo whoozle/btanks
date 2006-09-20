@@ -71,6 +71,8 @@ void BaseObject::emit(const std::string &event, BaseObject * emitter) {
 	if (event == "death") {
 		_velocity.clear();
 		_dead = true;
+	} else if (event == "collision") {
+		addDamage(emitter);
 	} else LOG_WARN(("%s[%d]: unhandled event '%s'", classname.c_str(), _id, event.c_str()));
 }
 

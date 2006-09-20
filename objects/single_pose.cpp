@@ -4,28 +4,40 @@
 class SinglePose : public Object {
 public:
 	SinglePose(const std::string &pose, const bool repeat, const bool no_directions = false, const bool play_start = false, const bool breakable = false) : 
-		Object("single-pose"), _pose(pose), _repeat(repeat), _no_dir(no_directions), _play_start(play_start), _breakable(breakable) {}
+		Object("single-pose"), _pose(pose), _repeat(repeat), _no_dir(no_directions), _play_start(play_start), _breakable(breakable), _broken(false) {}
 
 	virtual Object * clone() const;
 	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
 	virtual void tick(const float dt);
 	virtual void onSpawn();
 	virtual void render(sdlx::Surface &surface, const int x, const int y);
+	virtual void addDamage(BaseObject *from, const bool emitDeath = true);
 
 private:
 	std::string _pose;
-	bool _repeat, _no_dir, _play_start, _breakable;
+	bool _repeat, _no_dir, _play_start, _breakable, _broken;
 };
 
+void SinglePose::addDamage(BaseObject *from, const bool emitDeath) {
+	if (!_breakable) {
+		BaseObject::addDamage(from, emitDeath);
+		return;
+	}
+
+	if (_broken)
+		return;
+
+	BaseObject::addDamage(from, false);
+	if (hp <= 0) {
+		_broken = true;
+		cancelAll();
+		play("fade-out", false); 
+		play("broken", true);
+	}
+}
+
 void SinglePose::emit(const std::string &event, BaseObject * emitter) {
-	if (event == "collision") {
-		addDamage(emitter, !_breakable);
-		if (_breakable && getState() != "broken" && emitter->piercing && hp <= 0) {
-			cancelAll();
-			play("broken", true);
-			hp = -1;
-		}
-	} else Object::emit(event, emitter);
+	Object::emit(event, emitter);
 }
 
 void SinglePose::render(sdlx::Surface &surface, const int x, const int y) {

@@ -3,14 +3,28 @@
 
 class TrafficLights : public Object {
 public:
-	TrafficLights() : Object("traffic-lights"), _idx(-1) {}
+	TrafficLights() : Object("traffic-lights"), _idx(-1), _broken(false) {}
 	virtual void tick(const float dt);
 	virtual Object * clone() const;
 	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
+	virtual void addDamage(BaseObject *from, const bool emitDeath = true);
 private: 
 	int _idx;
+	bool _broken;
 };
 
+void TrafficLights::addDamage(BaseObject *from, const bool emitDeath) {
+	if (_broken)
+		return;
+
+	BaseObject::addDamage(from, false);
+	if (hp <= 0) {
+		_broken = true;
+		cancelAll();
+		play("fade-out", false); 
+		play("broken", true);
+	}
+}
 
 void TrafficLights::tick(const float dt) {
 	Object::tick(dt);
@@ -27,14 +41,7 @@ void TrafficLights::tick(const float dt) {
 }
 
 void TrafficLights::emit(const std::string &event, BaseObject * emitter) {
-	if (event != "collision")
-		Object::emit(event, emitter);
-	addDamage(emitter, false);
-	if (emitter->piercing && getState() != "broken" && hp <= 0) {
-		cancelAll();
-		play("fade-out", false); 
-		play("broken", true);
-	}
+	Object::emit(event, emitter);
 }
 
 

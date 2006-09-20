@@ -225,6 +225,20 @@ void IWorld::tick(const float dt) {
 		}
 		
 		if (o.speed == 0) {
+			if (o.impassability < 0) {
+				int ow = (int)o.size.x;
+				int oh = (int)o.size.y; 
+	
+				sdlx::Surface osurf;
+		
+				assert(ow != 0 && oh != 0);
+	
+				osurf.createRGB(ow, oh, 24, sdlx::Surface::Software |  sdlx::Surface::Alpha);
+				osurf.convertAlpha();
+				o.renderCopy(osurf); 
+			
+				getImpassability(*i, osurf, o._position.convert<int>());
+			}
 			++i;
 			continue;
 		}

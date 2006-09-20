@@ -40,8 +40,6 @@ void Launcher::emit(const std::string &event, BaseObject * emitter) {
 		_velocity.x = _velocity.y = _velocity.z = 0;
 
 		Object::emit(event, emitter);
-	} else if (event == "collision") {
-		addDamage(emitter);
 	} else if (event == "launch") {
 		v3<float> v = _velocity.is0()?_direction:_velocity;
 		v.normalize();
