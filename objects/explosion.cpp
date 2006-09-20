@@ -33,7 +33,7 @@ void Explosion::onSpawn() {
 
 void Explosion::emit(const std::string &event, BaseObject * emitter) {
 	if (event == "collision") {
-		if (classname != "nuclear-explosion")
+		if (classname != "nuclear-explosion" || emitter->pierceable)
 			return;
 		//nuke damage.
 		const int id = emitter->getID();
