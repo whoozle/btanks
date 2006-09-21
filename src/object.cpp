@@ -344,7 +344,7 @@ void Object::deserialize(const mrt::Serializator &s) {
 		s.get(id);
 		Object *obj = World->getObjectByID(id);
 		if (obj == NULL) 
-			continue;
+			throw_ex(("object id %d was not created. bug in serialization order code.", id));
 		_group[name] = obj;
 	}
 	//additional initialization

@@ -416,9 +416,9 @@ Object * IWorld::spawnGrouped(Object *src, const std::string &classname, const s
 }
 
 void IWorld::serialize(mrt::Serializator &s) const {
-	s.add(_objects.size());
-	for(ObjectSet::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
-		const Object *o = *i;
+	s.add(_id2obj.size());
+	for(ObjectMap::const_reverse_iterator i = _id2obj.rbegin(); i != _id2obj.rend(); ++i) {
+		const Object *o = i->second;
 		s.add(o->registered_name);
 		s.add(o->animation);
 		o->serialize(s);
