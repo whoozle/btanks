@@ -176,6 +176,9 @@ void IGame::init(const int argc, char *argv[]) {
 	int flags = SDL_HWSURFACE | SDL_ANYFORMAT;
 	if (_vsync) flags |= SDL_DOUBLEBUF;
 	if (fullscreen) flags |= SDL_FULLSCREEN;
+
+	LOG_DEBUG(("setting caption..."));		
+	SDL_WM_SetCaption(("Battle tanks - " + getVersion()).c_str(), "btanks");
 	
 	if (_opengl) {
 		if (_vsync) 
@@ -220,8 +223,6 @@ void IGame::init(const int argc, char *argv[]) {
 		}
 	}
 #endif
-	LOG_DEBUG(("setting caption..."));		
-	SDL_WM_SetCaption(("Battle tanks - " + getVersion()).c_str(), "btanks");
 
 	LOG_DEBUG(("initializing menus..."));		
 	_main_menu.init(w, h);	
