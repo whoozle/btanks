@@ -9,12 +9,14 @@ BaseObject::BaseObject(const std::string &classname)
 }
 
 void BaseObject::inheritParameters(const BaseObject *other) {
-	hp = other->hp;
 	mass = other->mass;
 	speed = other->speed;
 	ttl = other->ttl;
 	impassability = other->impassability;
+	hp = other->hp;
+	max_hp = other->max_hp;
 	piercing = other->piercing;
+	pierceable = other->pierceable;
 	size = other->size;
 }
 
