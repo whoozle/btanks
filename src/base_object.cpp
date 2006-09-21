@@ -180,7 +180,7 @@ void BaseObject::follow(const int id) {
 #include "object.h"
 
 void BaseObject::addDamage(BaseObject *from, const bool emitDeath) {
-	if (!from->piercing || hp == -1)
+	if (!from->piercing || hp == -1 || from->hp == 0)
 		return;
 	hp -= from->hp;	
 	LOG_DEBUG(("%s: received %d hp of damage from %s. hp = %d", classname.c_str(), from->hp, from->classname.c_str(), hp));
