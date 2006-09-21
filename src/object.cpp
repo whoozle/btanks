@@ -350,9 +350,6 @@ void Object::deserialize(const mrt::Serializator &s) {
 	//additional initialization
 	_model = ResourceManager->getAnimationModel(_model_name);
 	_surface = ResourceManager->getSurface(_surface_name);
-
-	size.x = _tw = _surface->getWidth();
-	size.y = _th = _surface->getHeight();
 }
 
 void Object::emit(const std::string &event, BaseObject * emitter) {
