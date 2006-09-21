@@ -466,6 +466,8 @@ void IGame::run() {
 		
 		if (_running && !_paused) {
 			{
+				checkPlayers();
+				
 				//updating all player states.
 				for(std::vector<PlayerSlot>::iterator i = _players.begin(); i != _players.end(); ++i) {
 					PlayerSlot &slot = *i;
@@ -488,7 +490,6 @@ void IGame::run() {
 			if (_client) 
 				_client->tick(dt);
 				
-			checkPlayers();
 			
 			if (_players.size()) {
 				const Object * p = _players[_my_index].obj;
@@ -639,6 +640,7 @@ void IGame::onMessage(const Connection &conn, const Message &message) {
 		
 		mrt::Serializator s(&message.data);
 		World->deserialize(s);
+		
 		int my_id;
 		s.get(my_id);
 		LOG_DEBUG(("my_id = %d", my_id));
@@ -649,11 +651,14 @@ void IGame::onMessage(const Connection &conn, const Message &message) {
 		if (player == NULL) 
 			throw_ex(("invalid object id returned from server. (%d)", my_id));
 		_players.push_back(player);
+		assert(!_players.empty());
 		PlayerSlot &slot = _players[_players.size() - 1];
-		assert(slot.control_method == NULL);
 		
+		assert(slot.control_method == NULL);
 		slot.control_method = new KeyPlayer(SDLK_UP, SDLK_DOWN, SDLK_LEFT, SDLK_RIGHT, SDLK_LCTRL, SDLK_LALT);
+
 		LOG_DEBUG(("players = %d", _players.size()));
+		
 	} else if (message.type == UpdateWorld) {
 		mrt::Serializator s(&message.data);
 		World->deserialize(s);
