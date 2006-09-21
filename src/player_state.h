@@ -2,13 +2,12 @@
 #define __BTANKS_PLAYER_STATE_H__
 
 #include "mrt/serializable.h"
-#include <string.h>
 
-class PlayerState {
+class PlayerState : public mrt::Serializable {
 public:
 	bool left, right, up, down, fire, alt_fire;
-	PlayerState() { clear(); }
-	void clear() { memset(this, 0, sizeof(*this)); }
+	PlayerState();
+	void clear();
 	
 	inline const bool operator==(const PlayerState &other) const {
 		return left == other.left && right == other.right && up == other.up && down == other.down &&
@@ -20,7 +19,6 @@ public:
 
 	virtual void serialize(mrt::Serializator &s) const;
 	virtual void deserialize(const mrt::Serializator &s);
-	virtual ~PlayerState() {}
 };
 
 #endif

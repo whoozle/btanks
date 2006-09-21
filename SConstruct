@@ -42,8 +42,8 @@ if sys.platform == "win32":
 #	env.Append(CPPFLAGS = '/Ox /Ot ') #optimizations
 #	env.Prepend(CPPPATH=' C:\\\\STLport-4.6.2\\\\stlport ')
 else:
-	env.Append(CPPFLAGS=' -Wall -pedantic -ggdb3 -Wno-long-long -pipe ')
-	env.Append(CCFLAGS=' -Wall -pedantic -ggdb3 -Wno-long-long -pipe ')
+	env.Append(CPPFLAGS=' -Wall -pedantic -Wno-long-long -pipe ')
+	env.Append(CCFLAGS=' -Wall -pedantic -Wno-long-long -pipe ')
 
 
 conf_env = env.Copy()

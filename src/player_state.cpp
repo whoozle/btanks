@@ -1,5 +1,9 @@
 #include "player_state.h"
 #include "mrt/serializator.h"
+#include <string.h>
+
+PlayerState::PlayerState() { clear(); } 
+void PlayerState::clear() { memset(this, 0, sizeof(PlayerState)); }
 
 void PlayerState::serialize(mrt::Serializator &s) const {
 	int packed = left?1:0 | right?2:0 | up ? 4:0 | down ? 8:0 | fire ? 16:0 | alt_fire ? 32:0;

@@ -649,6 +649,10 @@ void IGame::onMessage(const Connection &conn, const Message &message) {
 		if (player == NULL) 
 			throw_ex(("invalid object id returned from server. (%d)", my_id));
 		_players.push_back(player);
+		PlayerSlot &slot = _players[_players.size() - 1];
+		assert(slot.control_method == NULL);
+		
+		slot.control_method = new KeyPlayer(SDLK_UP, SDLK_DOWN, SDLK_LEFT, SDLK_RIGHT, SDLK_LCTRL, SDLK_LALT);
 		LOG_DEBUG(("players = %d", _players.size()));
 	} else if (message.type == UpdateWorld) {
 		mrt::Serializator s(&message.data);
