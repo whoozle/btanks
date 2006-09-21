@@ -374,6 +374,14 @@ const Object *IWorld::getObjectByID(const int id) const {
 	return NULL;
 }
 
+Object *IWorld::getObjectByID(const int id) {
+	ObjectMap::iterator i = _id2obj.find(id);
+	if (i != _id2obj.end())
+		return i->second;
+	return NULL;
+}
+
+
 Object* IWorld::spawn(Object *src, const std::string &classname, const std::string &animation, const v3<float> &dpos, const v3<float> &vel) {
 	Object *obj = ResourceManager->createObject(classname, animation);
 	assert(obj->_owner_id == 0);

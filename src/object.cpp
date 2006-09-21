@@ -253,13 +253,28 @@ void Object::render(sdlx::Surface &surface, const int x, const int y) {
 void Object::serialize(mrt::Serializator &s) const {
 	BaseObject::serialize(s);
 	
+	s.add(animation);
+	s.add(fadeout_time);
+	
 	int en = _events.size();
 	s.add(en);
-	
-	EventQueue::const_iterator i = _events.begin();
-	while(en--) {
-		i->serialize(s);
+	{
+		EventQueue::const_iterator i = _events.begin();
+		while(en--) {
+			i->serialize(s);
+		}
 	}
+
+	en = _effects.size();
+	s.add(en);
+	{
+		EffectMap::const_iterator i = _effects.begin();
+		while(en--) {
+			s.add(i->first);
+			s.add(i->second);
+		}
+	}
+
 	
 	s.add(_model_name);
 	s.add(_surface_name);
@@ -267,10 +282,28 @@ void Object::serialize(mrt::Serializator &s) const {
 	s.add(_th);
 	s.add(_direction_idx);
 	s.add(_pos);
+
+	//add support for waypoints here. AI cannot serialize now.
+	s.add(_rotation_time);
+	s.add(_dst_direction);
+
+	//Group	
+	en = _group.size();
+	s.add(en);
+	{
+		Group::const_iterator i = _group.begin();
+		while(en--) {
+			s.add(i->first);
+			s.add(i->second->_id);
+		}
+	}
 }
 
 void Object::deserialize(const mrt::Serializator &s) {
 	BaseObject::deserialize(s);
+
+	s.get(animation);
+	s.get(fadeout_time);
 
 	_events.clear();
 	int en;
@@ -281,17 +314,43 @@ void Object::deserialize(const mrt::Serializator &s) {
 		//LOG_DEBUG(("event: %s, repeat: %s", e.name.c_str(), e.repeat?"true":"false"));
 		_events.push_back(e);
 	}
+
+	_effects.clear();
+	s.get(en);
+	while(en--) {
+		std::string name;
+		float duration;
+		s.get(name);
+		s.get(duration);
+		_effects[name] = duration;
+	}
+	
 	s.get(_model_name);
 	s.get(_surface_name);
-	s.get(_tw);
-	s.get(_th);
 	s.get(_direction_idx);
 	s.get(_pos);
 
+	s.get(_rotation_time);
+	s.get(_dst_direction);
+
+	_group.clear();
+	s.get(en);
+	while(en--) {
+		std::string name;
+		int id;
+		s.get(name);
+		s.get(id);
+		Object *obj = World->getObjectByID(id);
+		if (obj == NULL) 
+			continue;
+		_group[name] = obj;
+	}
+	//additional initialization
 	_model = ResourceManager->getAnimationModel(_model_name);
 	_surface = ResourceManager->getSurface(_surface_name);
 
-	size.x = _tw; size.y = _th;
+	size.x = _tw = _surface->getWidth();
+	size.y = _th = _surface->getHeight();
 }
 
 void Object::emit(const std::string &event, BaseObject * emitter) {

@@ -43,6 +43,7 @@ public:
 	void addObject(Object *, const v3<float> &pos);
 	const bool exists(const Object *) const;
 	const Object *getObjectByID(const int id) const;
+	Object *getObjectByID(const int id);
 	const bool getInfo(const Object *, v3<float> &pos, v3<float> &vel) const;
 	
 	void render(sdlx::Surface &surface, const sdlx::Rect &viewport);
