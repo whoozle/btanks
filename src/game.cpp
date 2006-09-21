@@ -469,8 +469,9 @@ void IGame::run() {
 				checkPlayers();
 				
 				//updating all player states.
-				for(std::vector<PlayerSlot>::iterator i = _players.begin(); i != _players.end(); ++i) {
-					PlayerSlot &slot = *i;
+				size_t n = _players.size();
+				for(size_t i = 0; i < n; ++i) {
+					PlayerSlot &slot = _players[i];
 					if (slot.control_method != NULL) {
 						PlayerState & state = slot.obj->getPlayerState();
 						PlayerState old_state = state;
@@ -664,6 +665,8 @@ void IGame::onMessage(const Connection &conn, const Message &message) {
 		World->deserialize(s);
 	} else if (message.type == PlayerEvent) {
 		mrt::Serializator s(&message.data);
+		if (conn.id < 0 || (unsigned)conn.id >= _players.size())
+			throw_ex(("player id exceeds players count (%d/%d)", conn.id, _players.size()));
 		ExternalControl * ex = dynamic_cast<ExternalControl *>(_players[conn.id].control_method);
 		if (ex == NULL)
 			throw_ex(("player with id %d uses non-external control method", conn.id));

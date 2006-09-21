@@ -83,7 +83,7 @@ const std::string BaseObject::dump() const {
 	);
 }
 
-BaseObject::~BaseObject() {}
+BaseObject::~BaseObject() { _dead = true; }
 
 void BaseObject::emit(const std::string &event, BaseObject * emitter) {
 	if (event == "death") {

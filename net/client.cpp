@@ -24,7 +24,7 @@ void Client::notify(const PlayerState &state) {
 	if (!_running)
 		return;
 	
-	LOG_DEBUG(("notify from player"));
+	//LOG_DEBUG(("notify from player"));
 	Message m(PlayerEvent);
 	mrt::Serializator s;
 	state.serialize(s);
