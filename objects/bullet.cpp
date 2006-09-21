@@ -8,6 +8,16 @@ public:
 	virtual Object * clone() const;
 	virtual void onSpawn();
 	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
+
+	virtual void serialize(mrt::Serializator &s) const {
+		Object::serialize(s);
+		s.add(_type);
+	}
+	virtual void deserialize(const mrt::Serializator &s) {
+		Object::deserialize(s);
+		s.get(_type);
+	}
+
 private: 
 	std::string _type;
 };

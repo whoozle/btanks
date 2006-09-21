@@ -11,6 +11,24 @@ public:
 	virtual Object * clone() const;
 	virtual void onSpawn();
 	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
+	virtual void serialize(mrt::Serializator &s) const {
+		Object::serialize(s);
+		int n = _damaged_objects.size();
+		s.add(n);
+		for(std::set<int>::const_iterator i = _damaged_objects.begin(); i != _damaged_objects.end(); ++i) 
+			s.add(*i);
+	}
+	virtual void deserialize(const mrt::Serializator &s) {
+		Object::deserialize(s);
+		int n;
+		s.get(n);
+		_damaged_objects.clear();
+		for(std::set<int>::const_iterator i = _damaged_objects.begin(); i != _damaged_objects.end(); ++i) {
+			int id;
+			s.get(id);
+			_damaged_objects.insert(id);
+		}
+	}
 private:
 	std::set<int> _damaged_objects;
 };

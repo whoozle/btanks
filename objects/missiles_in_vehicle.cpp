@@ -13,6 +13,27 @@ public:
 	virtual const bool take(const BaseObject *obj, const std::string &type);
 	
 	void updatePose();
+	
+	virtual void serialize(mrt::Serializator &s) const {
+		Object::serialize(s);
+		s.add(n);
+		s.add(max_n);
+		s.add(hold);
+		s.add(_vehicle);
+		s.add(_object);
+		s.add(_type);
+	}
+
+	virtual void deserialize(const mrt::Serializator &s) {
+		Object::deserialize(s);
+		s.get(n);
+		s.get(max_n);
+		s.get(hold);
+		s.get(_vehicle);
+		s.get(_object);
+		s.get(_type);
+	}
+	
 private:
 	int n, max_n;
 	bool hold;

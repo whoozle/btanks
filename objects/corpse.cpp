@@ -9,6 +9,16 @@ public:
 	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
 	virtual void tick(const float dt);
 	virtual void onSpawn();
+
+	virtual void serialize(mrt::Serializator &s) const {
+		Object::serialize(s);
+		s.add(_fire_cycles);
+	}
+	virtual void deserialize(const mrt::Serializator &s) {
+		Object::deserialize(s);
+		s.get(_fire_cycles);
+	}
+
 private: 
 	int _fire_cycles;
 };

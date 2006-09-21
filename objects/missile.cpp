@@ -9,6 +9,16 @@ public:
 	virtual Object * clone() const;
 	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
 	void onSpawn();
+
+	virtual void serialize(mrt::Serializator &s) const {
+		Object::serialize(s);
+		s.add(type);
+	}
+	virtual void deserialize(const mrt::Serializator &s) {
+		Object::deserialize(s);
+		s.get(type);
+	}
+
 };
 
 void Missile::onSpawn() {

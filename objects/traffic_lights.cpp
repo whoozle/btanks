@@ -8,6 +8,18 @@ public:
 	virtual Object * clone() const;
 	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
 	virtual void addDamage(BaseObject *from, const bool emitDeath = true);
+
+	virtual void serialize(mrt::Serializator &s) const {
+		Object::serialize(s);
+		s.add(_idx);
+		s.add(_broken);
+	}
+	virtual void deserialize(const mrt::Serializator &s) {
+		Object::deserialize(s);
+		s.get(_idx);
+		s.get(_broken);
+	}
+
 private: 
 	int _idx;
 	bool _broken;

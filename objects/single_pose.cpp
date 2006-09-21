@@ -13,6 +13,26 @@ public:
 	virtual void render(sdlx::Surface &surface, const int x, const int y);
 	virtual void addDamage(BaseObject *from, const bool emitDeath = true);
 
+	virtual void serialize(mrt::Serializator &s) const {
+		Object::serialize(s);
+		s.add(_pose);
+		s.add(_repeat);
+		s.add(_no_dir);
+		s.add(_play_start);
+		s.add(_breakable);
+		s.add(_broken);
+	}
+
+	virtual void deserialize(const mrt::Serializator &s) {
+		Object::deserialize(s);
+		s.get(_pose);
+		s.get(_repeat);
+		s.get(_no_dir);
+		s.get(_play_start);
+		s.get(_breakable);
+		s.get(_broken);
+	}
+
 private:
 	std::string _pose;
 	bool _repeat, _no_dir, _play_start, _breakable, _broken;

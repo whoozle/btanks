@@ -3,7 +3,7 @@
 
 class Item : public Object {
 public:
-	const std::string type;
+	std::string type;
 	Item(const std::string &classname, const std::string &type = std::string()) : Object(classname), type(type) {
 		pierceable = true;
 		impassability = 1;
@@ -12,6 +12,16 @@ public:
 	virtual void onSpawn();
 	virtual void tick(const float dt);
 	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
+
+	virtual void serialize(mrt::Serializator &s) const {
+		Object::serialize(s);
+		s.add(type);
+	}
+	virtual void deserialize(const mrt::Serializator &s) {
+		Object::deserialize(s);
+		s.get(type);
+	}
+
 };
 
 void Item::tick(const float dt) {
