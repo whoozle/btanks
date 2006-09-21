@@ -377,7 +377,7 @@ void Object::setup(const std::string &a) {
 	ResourceManager->initMe(this, a);
 	animation = a;
 	
-	memset(&_state, 0, sizeof(_state));
+	_state.clear();
 	_events.clear();
 }
 

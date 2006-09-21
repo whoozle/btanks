@@ -9,7 +9,7 @@ IOException::IOException() {}
 
 
 const std::string IOException::getCustomMessage() {
-	char buf[160];
+	char buf[1024];
 	memset(buf, 0, sizeof(buf));
 
 #ifdef WIN32

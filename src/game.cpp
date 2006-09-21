@@ -473,7 +473,7 @@ void IGame::run() {
 				for(size_t i = 0; i < n; ++i) {
 					PlayerSlot &slot = _players[i];
 					if (slot.control_method != NULL) {
-						PlayerState & state = slot.obj->getPlayerState();
+						PlayerState &state = slot.obj->getPlayerState();
 						PlayerState old_state = state;
 						slot.control_method->updateState(state);
 						if (old_state != state) {

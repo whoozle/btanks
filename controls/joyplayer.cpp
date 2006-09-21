@@ -15,7 +15,7 @@ void JoyPlayer::updateState(PlayerState &_state) {
 	Sint16 x = _joy.getAxis(0);
 	Sint16 y = _joy.getAxis(1);
 	
-	memset(&_state, 0, sizeof(_state));
+	_state.clear();	
 	
 	if (x >= THRESHOLD) _state.right = true;
 	if (x <= -THRESHOLD) _state.left = true;
