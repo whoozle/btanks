@@ -633,11 +633,10 @@ void IGame::onMessage(const Connection &conn, const Message &message) {
 		LOG_DEBUG(("my_id = %d", my_id));
 		_players.clear();
 		_my_index = 0;
-		const Object * obj = World->getObjectByID(my_id);
-		if (obj == NULL) 
+		
+		Object * player = World->getObjectByID(my_id);
+		if (player == NULL) 
 			throw_ex(("invalid object id returned from server. (%d)", my_id));
-		Object *player = const_cast<Object *>(obj); //fixme
-		assert(player != NULL);
 		_players.push_back(player);
 		LOG_DEBUG(("players = %d", _players.size()));
 	} else if (message.type == UpdateWorld) {
