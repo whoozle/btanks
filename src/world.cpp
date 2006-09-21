@@ -22,19 +22,19 @@ void IWorld::clear() {
 	std::for_each(_objects.begin(), _objects.end(), delete_ptr<Object *>());
 	_objects.clear();
 	_id2obj.clear();
+	_last_id = 0;
 }
+
+IWorld::IWorld() : _last_id(0) {}
 
 IWorld::~IWorld() {
 	clear();
 }
 
-
-
 void IWorld::addObject(Object *o, const v3<float> &pos) {
-	static int last_id;
 	if (o == NULL) 
 		throw_ex(("adding NULL as world object is not allowed"));
-	o->_id = ++last_id;
+	o->_id = ++_last_id;
 	
 	assert (_id2obj.find(o->_id) == _id2obj.end());
 
@@ -416,6 +416,7 @@ Object * IWorld::spawnGrouped(Object *src, const std::string &classname, const s
 }
 
 void IWorld::serialize(mrt::Serializator &s) const {
+	s.add(_last_id);
 	s.add(_id2obj.size());
 	for(ObjectMap::const_reverse_iterator i = _id2obj.rbegin(); i != _id2obj.rend(); ++i) {
 		const Object *o = i->second;
@@ -429,6 +430,8 @@ void IWorld::serialize(mrt::Serializator &s) const {
 }
 
 void IWorld::deserialize(const mrt::Serializator &s) {
+	s.get(_last_id);
+	
 	int size;
 	s.get(size);
 	while(size--) {
@@ -439,10 +442,10 @@ void IWorld::deserialize(const mrt::Serializator &s) {
 		Object *ao = NULL;
 		TRY {
 			ao = ResourceManager->createObject(rn, an);
-			LOG_DEBUG(("created ('%s', '%s')", rn.c_str(), an.c_str()));
+			//LOG_DEBUG(("created ('%s', '%s')", rn.c_str(), an.c_str()));
 			ao->deserialize(s);
 			
-			LOG_DEBUG(("deserialized %d: %s", ao->_id, ao->classname.c_str()));
+			//LOG_DEBUG(("deserialized %d: %s", ao->_id, ao->classname.c_str()));
 			ObjectMap::iterator i;
 			if ((i = _id2obj.find(ao->_id)) != _id2obj.end()) {
 				Object *o = i->second;

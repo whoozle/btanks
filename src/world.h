@@ -39,6 +39,7 @@ public:
 	
 	void clear();
 	~IWorld();
+	IWorld();
 	
 	void addObject(Object *, const v3<float> &pos);
 	const bool exists(const Object *) const;
@@ -64,6 +65,7 @@ private:
 	
 	ObjectSet _objects;
 	ObjectMap _id2obj;
+	int _last_id;
 };
 
 SINGLETON(World, IWorld);
