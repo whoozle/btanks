@@ -25,7 +25,6 @@
 #include "net/protocol.h"
 #include "net/connection.h"
 
-#include "SDL_gfx/SDL_gfxPrimitives.h"
 #include <SDL/SDL_opengl.h>
 #include <SDL/SDL_net.h>
 
@@ -71,6 +70,7 @@ void IGame::init(const int argc, char *argv[]) {
 #endif
 
 	_opengl = true;
+	_show_fps = true;
 	bool fullscreen = false;
 	bool dx = false;
 	_vsync = true;
@@ -79,6 +79,7 @@ void IGame::init(const int argc, char *argv[]) {
 	for(int i = 1; i < argc; ++i) {
 		if (strcmp(argv[i], "--no-gl") == 0) _opengl = false;
 		else if (strcmp(argv[i], "--fs") == 0) fullscreen = true;
+		else if (strcmp(argv[i], "--no-fps") == 0) _show_fps = false;
 		else if (strcmp(argv[i], "--no-vsync") == 0) _vsync = false;
 #ifdef WIN32
 		else if (strcmp(argv[i], "--dx") == 0) { dx = true; _opengl = false; }
@@ -233,6 +234,13 @@ void IGame::init(const int argc, char *argv[]) {
 	
 	LOG_DEBUG(("initializing resource manager..."));
 	ResourceManager->init("data/resources.xml");
+	
+	if (_show_fps) {
+		LOG_DEBUG(("creating `digits' object..."));
+		_fps = ResourceManager->createObject("damage-digits", "damage-digits");
+		_fps->onSpawn();
+		_fps->speed = 0;
+	} else _fps = NULL;
 
 	LOG_DEBUG(("installing callbacks..."));
 	key_signal.connect(sigc::mem_fun(this, &IGame::onKey));
@@ -416,16 +424,6 @@ void IGame::run() {
 	float fr = fps_limit;
 	int max_delay = 1000/fps_limit;
 	LOG_DEBUG(("fps_limit set to %d, maximum frame delay: %d", fps_limit, max_delay));
-	sdlx::Surface fps_s;
-	
-	fps_s.createRGB(32, 32, 8, SDL_SWSURFACE | SDL_SRCCOLORKEY);
-	Uint32 fps_ck = fps_s.mapRGB(255, 0, 255);
-	Uint32 fps_bg = fps_s.mapRGB(0, 0, 0);
-	Uint32 fps_fg = fps_s.mapRGB(255, 255, 255);
-	
-	if (SDL_SetColorKey(fps_s.getSDLSurface(), SDL_SRCCOLORKEY, fps_ck) == -1)
-		throw_sdl(("SDL_SetColorKey"));
-	//fps_s.convertAlpha();
 
 	while (_running) {
 		Uint32 tstart = SDL_GetTicks();
@@ -526,17 +524,11 @@ void IGame::run() {
 
 		_main_menu.render(_window);
 		
-		
-		std::string f = mrt::formatString("%d", (int)fr);
-		fps_s.lock();
-		fps_s.fillRect(fps_s.getSize(), fps_ck);
-		stringColor(fps_s.getSDLSurface(), 4, 4, f.c_str(), fps_bg);
-		stringColor(fps_s.getSDLSurface(), 3, 3, f.c_str(), fps_fg);
-		fps_s.unlock();
-		
-		sdlx::Surface fps_temp(SDL_DisplayFormatAlpha(fps_s.getSDLSurface()));
-		_window.copyFrom(fps_temp, 0, 0);
-		fps_temp.free();
+
+		if (_show_fps) {
+			_fps->hp = (int)fr;
+			_fps->render(_window, 0, 0);
+		}		
 		
 		if (map.loaded()) {
 			const v3<int> world_size = map.getSize();

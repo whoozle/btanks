@@ -95,10 +95,9 @@ Export('sigc_lib')
 
 SConscript('mrt/SConscript')
 SConscript('sdlx/SConscript')
-SConscript('SDL_gfx/SConscript')
 
 env = env.Copy()
-env.Append(LIBPATH=['mrt', 'sdlx', 'src', 'SDL_gfx'])
+env.Append(LIBPATH=['mrt', 'sdlx', 'src'])
 env.Append(CPPPATH=['.', 'src'])
 env.Append(CPPPATH=sigc_cpppath)
 
@@ -132,7 +131,7 @@ bt_sources = 	['src/alarm.cpp', 'src/base_object.cpp',
 	vobj
 	]
 
-bt_libs = ['sdlx', 'mrt', sigc_lib, 'gfx', 'SDL_ttf', 'SDL_image', 'SDL_net', 'SDL', 'expat', 'z']
+bt_libs = ['sdlx', 'mrt', sigc_lib, 'SDL_ttf', 'SDL_image', 'SDL_net', 'SDL', 'expat', 'z']
 if sys.platform == "win32":
 #	bt_libs[0:0] = ['SDLmain']
 	bt_libs.append('Ws2_32')

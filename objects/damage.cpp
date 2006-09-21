@@ -35,7 +35,7 @@ void Damage::render(sdlx::Surface &surface, const int x, const int y) {
 		++digits;
 		mult *= 10;
 	}
-	//LOG_DEBUG(("digits = %d, mult: %d", digits, mult));
+	//LOG_DEBUG(("number: %d, digits = %d, mult: %d", hp, digits, mult));
 	int xp = x;
 	n = hp;
 	while(digits--) {
@@ -43,7 +43,7 @@ void Damage::render(sdlx::Surface &surface, const int x, const int y) {
 		
 		n %= mult;
 		mult /= 10;
-		
+		//LOG_DEBUG(("digit %d", d));
 		setDirection(d);
 		Object::render(surface, xp, y);
 		xp += (int)size.x;
