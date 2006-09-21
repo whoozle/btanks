@@ -16,7 +16,6 @@
 #include "sdlx/joystick.h"
 #include "sdlx/ttf.h"
 #include "sdlx/color.h"
-#include "sdlx/fps.h"
 #include "sdlx/net_ex.h"
 #include "sdlx/tcp_socket.h"
 
