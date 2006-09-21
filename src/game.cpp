@@ -434,16 +434,16 @@ void IGame::run() {
 			switch(event.type) {
 			case SDL_KEYDOWN:
 #ifndef WIN32
-				if (event.key.keysym.sym==SDLK_f && event.key.keysym.mod & KMOD_CTRL) {
+				if (event.key.keysym.sym==SDLK_f && event.key.keysym.mod & KMOD_SHIFT) {
 					_window.toggleFullscreen();
 					break;
 				}
 #endif
-				if (event.key.keysym.sym==SDLK_s && event.key.keysym.mod & KMOD_CTRL) {
+				if (event.key.keysym.sym==SDLK_s && event.key.keysym.mod & KMOD_SHIFT) {
 					_window.saveBMP("screenshot.bmp");
 					break;
 				}
-				if (event.key.keysym.sym==SDLK_d && event.key.keysym.mod & KMOD_CTRL && _my_index >= 0) {
+				if (event.key.keysym.sym==SDLK_d && event.key.keysym.mod & KMOD_SHIFT && _my_index >= 0) {
 					_players[_my_index].obj->emit("death", 0);
 					break;
 				}
