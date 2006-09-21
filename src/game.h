@@ -56,7 +56,7 @@ public:
 	
 	//multiplayer stuff. refactor it.
 	void notify(const PlayerState& state);
-	void onClient(Message &message);
+	const int onClient(Message &message);
 	void onMessage(const Connection &connection, const Message &message);
 	
 	//stupid visual effect

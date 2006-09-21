@@ -7,7 +7,9 @@ namespace sdlx  {
 
 class Connection {
 public:
-	Connection(sdlx::TCPSocket *s);
+	int id;
+	
+	Connection(sdlx::TCPSocket *s, const int id = -1);
 	~Connection();
 		
 	sdlx::TCPSocket * sock;

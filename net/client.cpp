@@ -7,6 +7,7 @@
 #include "connection.h"
 #include "sdlx/tcp_socket.h"
 #include "mrt/exception.h"
+#include "mrt/serializator.h"
 
 Client::Client():  _conn(NULL), _running(false) {}
 
@@ -25,8 +26,9 @@ void Client::notify(const PlayerState &state) {
 	
 	LOG_DEBUG(("notify from player"));
 	Message m(PlayerEvent);
-	m.data.setSize(1);
-	m.data[0] = state.left?1:0 | state.right?2:0 | state.up ? 4:0 | state.down ? 8:0 | state.fire ? 16:0;
+	mrt::Serializator s;
+	state.serialize(s);
+	m.data = s.getData();
 
 	m.send(*_conn->sock);	
 }

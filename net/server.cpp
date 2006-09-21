@@ -34,9 +34,9 @@ void Server::tick(const float dt) {
 				_sock.accept(*s);
 				LOG_DEBUG(("client connected..."));
 				Message msg(ServerStatus);
-				Game->onClient(msg);
+				int id = Game->onClient(msg);
 				msg.send(*s);
-				_connections.push_back(new Connection(s));
+				_connections.push_back(new Connection(s, id));
 			} CATCH("accept", { delete s; s = NULL; })
 		}
 		for(ConnectionList::iterator i = _connections.begin(); i != _connections.end(); ) {

@@ -120,7 +120,7 @@ bt_sources = 	['src/alarm.cpp', 'src/base_object.cpp',
 	
 	'net/protocol.cpp', 'net/server.cpp', 'net/client.cpp', 'net/connection.cpp',
 	
-	'controls/joyplayer.cpp', 'controls/keyplayer.cpp',
+	'src/player_state.cpp', 'controls/joyplayer.cpp', 'controls/keyplayer.cpp',
 
 	'src/menu.cpp', 'src/menuitem.cpp',
 	'src/object.cpp', 'src/animation_model.cpp', 

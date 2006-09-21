@@ -29,6 +29,7 @@
 
 #include "controls/joyplayer.h"
 #include "controls/keyplayer.h"
+#include "controls/external_control.h"
 
 #ifndef SDL_OPENGLBLIT
 #define SDL_OPENGLBLIT 0
@@ -374,7 +375,9 @@ const int IGame::spawnPlayer(const std::string &classname, const std::string &an
 	
 	if (control_method == "keys") {
 		slot.control_method = new KeyPlayer(SDLK_UP, SDLK_DOWN, SDLK_LEFT, SDLK_RIGHT, SDLK_LCTRL, SDLK_LALT);
-	} else if (control_method != "ai" && control_method != "net") {
+	} else if (control_method == "network") {
+		slot.control_method = new ExternalControl;
+	} else if (control_method != "ai") {
 		throw_ex(("unknown control method '%s' used", control_method.c_str()));
 	}
 	LOG_DEBUG(("player: %s.%s using control method: %s", classname.c_str(), animation.c_str(), control_method.c_str()));
@@ -601,10 +604,10 @@ void IGame::notify(const PlayerState& state) {
 	}
 }
 
-void IGame::onClient(Message &message) {
+const int IGame::onClient(Message &message) {
 	const std::string an = "red-tank";
 	LOG_DEBUG(("new client! spawning player:%s", an.c_str()));
-	const int client_id = spawnPlayer("stateless-player", an, "network");
+	const int client_id = spawnPlayer("tank", an, "network");
 	LOG_DEBUG(("client #%d", client_id));
 
 	LOG_DEBUG(("sending server status message..."));
@@ -618,6 +621,7 @@ void IGame::onClient(Message &message) {
 
 	message.data = s.getData();
 	LOG_DEBUG(("world: %s", message.data.dump().c_str()));
+	return client_id;
 }
 
 void IGame::onMessage(const Connection &conn, const Message &message) {
@@ -642,6 +646,12 @@ void IGame::onMessage(const Connection &conn, const Message &message) {
 	} else if (message.type == UpdateWorld) {
 		mrt::Serializator s(&message.data);
 		World->deserialize(s);
+	} else if (message.type == PlayerEvent) {
+		mrt::Serializator s(&message.data);
+		ExternalControl * ex = dynamic_cast<ExternalControl *>(_players[conn.id].control_method);
+		if (ex == NULL)
+			throw_ex(("player with id %d uses non-external control method", conn.id));
+		ex->state.deserialize(s);
 	}
 }
 
