@@ -327,6 +327,8 @@ void Object::deserialize(const mrt::Serializator &s) {
 	
 	s.get(_model_name);
 	s.get(_surface_name);
+	s.get(_tw);
+	s.get(_th);
 	s.get(_direction_idx);
 	s.get(_pos);
 
