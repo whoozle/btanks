@@ -429,7 +429,7 @@ void IGame::run() {
 	LOG_DEBUG(("fps_limit set to %d, maximum frame delay: %d", fps_limit, max_delay));
 
 	while (_running) {
-		Uint32 tstart = SDL_GetTicks();
+		Uint32 t_start = SDL_GetTicks();
 		
 		while (SDL_PollEvent(&event)) {
 			switch(event.type) {
@@ -470,7 +470,12 @@ void IGame::run() {
 				for(std::vector<PlayerSlot>::iterator i = _players.begin(); i != _players.end(); ++i) {
 					PlayerSlot &slot = *i;
 					if (slot.control_method != NULL) {
-						slot.control_method->updateState(slot.obj->getPlayerState());
+						PlayerState & state = slot.obj->getPlayerState();
+						PlayerState old_state = state;
+						slot.control_method->updateState(state);
+						if (old_state != state) {
+							notify(state);
+						}
 					}
 				}
 			}
@@ -510,9 +515,15 @@ void IGame::run() {
 #ifdef SHOW_PERFSTATS
 		Uint32 t_tick = SDL_GetTicks() - tstart;
 #endif
+
+		_window.flip();
 		if (_opengl) {
 			//glFlush_ptr.call();
 		}
+
+#ifdef SHOW_PERFSTATS
+		Uint32 t_flip = SDL_GetTicks() - t_tick;
+#endif
 
 		_window.fillRect(window_size, 0);
 		if (_shake > 0) {
@@ -556,14 +567,10 @@ void IGame::run() {
 		}
 
 #ifdef SHOW_PERFSTATS
-		Uint32 t_render = SDL_GetTicks() - tstart;
+		Uint32 t_render = SDL_GetTicks() - t_flip;
 #endif
-		_window.flip();
-		
-#ifdef SHOW_PERFSTATS
-		Uint32 t_flip = SDL_GetTicks() - tstart;
-#endif
-		int tdelta = SDL_GetTicks() - tstart;
+
+		int tdelta = SDL_GetTicks() - t_start;
 
 #ifdef SHOW_PERFSTATS
 		LOG_DEBUG(("tick time: %u, render time: %u, flip time: %u", t_tick, t_render, t_flip));
@@ -575,7 +582,7 @@ void IGame::run() {
 			SDL_Delay(max_delay - tdelta);
 		}
 
-		tdelta = SDL_GetTicks() - tstart;
+		tdelta = SDL_GetTicks() - t_start;
 		fr = (tdelta != 0)? (1000.0 / tdelta): 1000;
 	}
 	LOG_DEBUG(("exiting main loop."));
