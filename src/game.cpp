@@ -41,7 +41,7 @@
 
 IMPLEMENT_SINGLETON(Game, IGame)
 
-IGame::IGame() : _my_index(-1), _shake(0) {
+IGame::IGame() : _my_index(-1), _address("localhost"), _autojoin(false), _shake(0) {
 	LOG_DEBUG(("IGame ctor"));
 }
 IGame::~IGame() {}
@@ -87,6 +87,7 @@ void IGame::init(const int argc, char *argv[]) {
 		else if (strcmp(argv[i], "-2") == 0) { w = 1024; h = 768; }
 		else if (strcmp(argv[i], "-3") == 0) { w = 1280; h = 1024; }
 		else if (strncmp(argv[i], "--map=", 6) == 0) { _preload_map = argv[i] + 6; }
+		else if (strncmp(argv[i], "--connect=", 10) == 0) { _address = argv[i] + 10; _autojoin = true; }
 		else if (strcmp(argv[i], "--help") == 0) { 
 			printf(	"\t--help\tshow this help\n"
 					"\t--no-gl\tdisable GL renderer\n"
@@ -256,6 +257,10 @@ void IGame::init(const int argc, char *argv[]) {
 		spawnPlayer("ai-tank", "green-tank", "ai");
 		_main_menu.setActive(false);
 	}
+	if (_autojoin) {
+		onMenu("m-join");
+		_main_menu.setActive(false);
+	}
 }
 
 void IGame::onKey(const Uint8 type, const SDL_keysym key) {
@@ -299,11 +304,10 @@ void IGame::onMenu(const std::string &name) {
 		_server->init(9876);
 	} else if (name == "m-join") {
 		clear();
-		std::string host = "localhost";
 		unsigned port = 9876;
 		TRY {
 			_client = new Client;
-			_client->init(host, port);
+			_client->init(_address, port);
 		} CATCH("_client.init", { delete _client; _client = NULL; return; });
 		
 		_main_menu.setActive(false);
