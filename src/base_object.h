@@ -70,18 +70,15 @@ public:
 	
 protected:
 	int _id;
-
 	int _follow;
 	v3<float> _follow_position;
-
 	PlayerState _state;
+	v3<float> _velocity, _direction, _velocity_fadeout;
+	float _distance, _moving_time, _idle_time;
 	
 	inline void getPosition(v3<float> &position) { position = _position; }
 	inline const v3<float> & getPosition() { return _position; }
 	inline void getPosition(v3<int> &position) { position = _position.convert<int>(); }
-	
-	v3<float> _velocity, _direction, _velocity_fadeout;
-	float _distance, _moving_time, _idle_time;
 
 	virtual void calculate(const float dt);
 

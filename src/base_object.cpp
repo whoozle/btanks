@@ -21,42 +21,58 @@ void BaseObject::inheritParameters(const BaseObject *other) {
 
 void BaseObject::serialize(mrt::Serializator &s) const {
 	s.add(_id);
-	s.add(_owner_id);
-
+	
+	size.serialize(s);
 	s.add(mass);
 	s.add(speed);
 	s.add(ttl);
 	s.add(impassability);
 	s.add(hp);
+	s.add(max_hp);
 	s.add(piercing);
+	s.add(pierceable);
 	s.add(classname);
-	s.add(_dead);
-
-	size.serialize(s);
+	
+	s.add(_follow);
+	_follow_position.serialize(s);
 	_velocity.serialize(s);
 	_direction.serialize(s);
+	_velocity_fadeout.serialize(s);
+	s.add(_distance);	
+	s.add(_moving_time);	
+	s.add(_idle_time);	
 
+	s.add(_dead);
 	_position.serialize(s);
+	s.add(_owner_id);
 }
 
 void BaseObject::deserialize(const mrt::Serializator &s) {
 	s.get(_id);
-	s.get(_owner_id);
-
+	
+	size.deserialize(s);
 	s.get(mass);
 	s.get(speed);
 	s.get(ttl);
 	s.get(impassability);
 	s.get(hp);
+	s.get(max_hp);
 	s.get(piercing);
+	s.get(pierceable);
 	s.get(classname);
-	s.get(_dead);
-
-	size.deserialize(s);
+	
+	s.get(_follow);
+	_follow_position.deserialize(s);
 	_velocity.deserialize(s);
 	_direction.deserialize(s);
+	_velocity_fadeout.deserialize(s);
+	s.get(_distance);	
+	s.get(_moving_time);	
+	s.get(_idle_time);	
 
+	s.get(_dead);
 	_position.deserialize(s);
+	s.get(_owner_id);
 }
 
 const std::string BaseObject::dump() const {
