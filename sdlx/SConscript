@@ -5,7 +5,7 @@ env = env.Copy()
 env.Append(CPPPATH=['..', '.'])
 sdlx_sources = 	['cursor.cpp', 'sdl_ex.cpp', 'surface.cpp', 'system.cpp', 'joystick.cpp', 'ttf.cpp', 
 	'tcp_socket.cpp', 'net_ex.cpp', 'socket_set.cpp', 'glSDL/glSDL.c', 'glSDL/parallax4.c', 
-	'thread.cpp'
+	'thread.cpp', 'mutex.cpp'
 	]
 
 if sys.platform == "win32":
