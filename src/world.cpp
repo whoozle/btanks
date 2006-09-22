@@ -420,8 +420,6 @@ void IWorld::serialize(mrt::Serializator &s) const {
 	s.add(_id2obj.size());
 	for(ObjectMap::const_reverse_iterator i = _id2obj.rbegin(); i != _id2obj.rend(); ++i) {
 		const Object *o = i->second;
-		if (o->classname == "damage-digits")
-			continue;
 		
 		s.add(o->registered_name);
 		s.add(o->animation);
