@@ -118,7 +118,7 @@ bt_sources = 	['src/alarm.cpp', 'src/base_object.cpp',
 	'objects/corpse.cpp', 'objects/item.cpp', 'objects/mine.cpp', 'objects/dirt.cpp', 
 	'objects/damage.cpp', 
 	
-	'net/protocol.cpp', 'net/server.cpp', 'net/client.cpp', 'net/connection.cpp',
+	'net/protocol.cpp', 'net/server.cpp', 'net/client.cpp', 'net/connection.cpp', 'net/monitor.cpp',
 	
 	'src/player_state.cpp', 'controls/joyplayer.cpp', 'controls/keyplayer.cpp', 'controls/external_control.cpp',
 
