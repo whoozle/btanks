@@ -705,7 +705,6 @@ void IGame::PlayerSlot::clear() {
 	}
 	animation.clear();
 	classname.clear();
-	position.clear();
 }
 
 IGame::PlayerSlot::~PlayerSlot() {

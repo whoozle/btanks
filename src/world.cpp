@@ -430,6 +430,7 @@ void IWorld::serialize(mrt::Serializator &s) const {
 }
 
 void IWorld::deserialize(const mrt::Serializator &s) {
+TRY {
 	s.get(_last_id);
 	
 	int size;
@@ -479,7 +480,7 @@ void IWorld::deserialize(const mrt::Serializator &s) {
 			_id2obj.erase(i++);
 		} else ++i;
 	}
-	
+} CATCH("World::deserialize()", throw;);
 	//LOG_DEBUG(("deserialization completed successfully"));
 }
 
