@@ -21,6 +21,17 @@ void Monitor::send(const mrt::Chunk &data) {
 	_send_q.push_back(t);
 }
 
+const bool Monitor::recv(mrt::Chunk &data) {
+	sdlx::AutoMutex m(_result_mutex);
+	if (_result.empty())
+		return false;
+	
+	data = *_result.front();
+	_result.pop_front();
+	return true;
+}
+
+
 const int Monitor::run() {
 	_running = true;
 	while(_running) {
@@ -48,6 +59,9 @@ Monitor::~Monitor() {
 	}
 	for(TaskQueue::iterator i = _recv_q.begin(); i != _recv_q.end(); ++i) {
 		(*i)->clear();
+		delete *i;
+	}
+	for(ResultQueue::iterator i = _result.begin(); i != _result.end(); ++i) {
 		delete *i;
 	}
 }

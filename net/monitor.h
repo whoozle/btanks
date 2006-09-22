@@ -15,8 +15,8 @@ public:
 	Monitor();
 	void add(Connection *);
 	
-	virtual void onRecv(const mrt::Chunk &data) = 0;
 	void send(const mrt::Chunk &data);
+	const bool recv(mrt::Chunk &data);
 	
 	~Monitor();
 
@@ -37,10 +37,12 @@ private:
 	};
 	
 	typedef std::deque<Task *> TaskQueue;
+	typedef std::deque<mrt::Chunk *> ResultQueue;
 	TaskQueue _send_q, _recv_q;
+	ResultQueue _result;
 	
 	ConnectionList _connections;
-	sdlx::Mutex _connections_mutex;
+	sdlx::Mutex _connections_mutex, _result_mutex;
 };
 
 #endif
