@@ -34,7 +34,7 @@ void Server::tick(const float dt) {
 				_sock.accept(*s);
 				LOG_DEBUG(("client connected..."));
 				Message msg(ServerStatus);
-				int id = Game->onClient(msg);
+				int id = Game->onConnect(msg);
 				msg.send(*s);
 				_connections.push_back(new Connection(s, id));
 			} CATCH("accept", { delete s; s = NULL; })
@@ -52,7 +52,11 @@ void Server::tick(const float dt) {
 				}
 				++i;
 			} CATCH("reading from socket", {
-				LOG_DEBUG(("error, client disconnected"));
+				TRY {
+					int id = (*i)->id;
+					LOG_DEBUG(("error, player %d disconnected", id));
+					Game->onDisconnect(id);
+				} CATCH("onDisconnect", {});
 				delete *i;
 				i = _connections.erase(i);
 			} );
@@ -68,7 +72,11 @@ void Server::broadcast(const Message &m) {
 				m.send(*(*i)->sock);
 				++i;
 			} CATCH("reading from socket", {
-				LOG_DEBUG(("error, client disconnected"));
+				TRY {
+					int id = (*i)->id;
+					LOG_DEBUG(("error, player %d disconnected", id));
+					Game->onDisconnect(id);
+				} CATCH("onDisconnect", {});
 				delete *i;
 				i = _connections.erase(i);
 			} );

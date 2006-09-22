@@ -617,7 +617,7 @@ void IGame::notify(const PlayerState& state) {
 	}
 }
 
-const int IGame::onClient(Message &message) {
+const int IGame::onConnect(Message &message) {
 	const std::string an = "red-tank";
 	LOG_DEBUG(("new client! spawning player:%s", an.c_str()));
 	const int client_id = spawnPlayer("tank", an, "network");
@@ -636,6 +636,16 @@ const int IGame::onClient(Message &message) {
 	LOG_DEBUG(("world: %s", message.data.dump().c_str()));
 	return client_id;
 }
+
+void IGame::onDisconnect(const int id) {
+	if ((unsigned)id >= _players.size()) {
+		LOG_ERROR(("player %d doesnt exists, so cannot disconnect.", id));
+		return;
+	}
+	_players[id].obj->emit("death", NULL);
+	_players[id].clear();
+}
+
 
 void IGame::onMessage(const Connection &conn, const Message &message) {
 	LOG_DEBUG(("incoming message %d", message.type));
@@ -687,11 +697,19 @@ void IGame::clear() {
 	_paused = false;
 }
 
-IGame::PlayerSlot::~PlayerSlot() {
+void IGame::PlayerSlot::clear() {
+	obj = NULL;
 	if (control_method != NULL) {
 		delete control_method; 
 		control_method = NULL;
 	}
+	animation.clear();
+	classname.clear();
+	position.clear();
+}
+
+IGame::PlayerSlot::~PlayerSlot() {
+	clear();
 }
 
 void IGame::checkPlayers() {

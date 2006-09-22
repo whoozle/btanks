@@ -56,7 +56,9 @@ public:
 	
 	//multiplayer stuff. refactor it.
 	void notify(const PlayerState& state);
-	const int onClient(Message &message);
+	const int onConnect(Message &message);
+	void onDisconnect(const int id);
+	
 	void onMessage(const Connection &connection, const Message &message);
 	
 	//stupid visual effect
@@ -79,6 +81,8 @@ private:
 		Object * obj;
 		ControlMethod * control_method;
 		v3<int> position;
+		
+		void clear();
 		~PlayerSlot();
 		
 		//respawn stuff.
