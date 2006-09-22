@@ -434,6 +434,9 @@ void IWorld::deserialize(const mrt::Serializator &s) {
 	
 	int size;
 	s.get(size);
+	
+	std::set<int> recv_ids;
+	
 	while(size--) {
 		std::string rn, an;
 		s.get(rn);
@@ -444,20 +447,39 @@ void IWorld::deserialize(const mrt::Serializator &s) {
 			ao = ResourceManager->createObject(rn, an);
 			//LOG_DEBUG(("created ('%s', '%s')", rn.c_str(), an.c_str()));
 			ao->deserialize(s);
+			const int id = ao->_id;
+			recv_ids.insert(id);
 			
 			//LOG_DEBUG(("deserialized %d: %s", ao->_id, ao->classname.c_str()));
-			ObjectMap::iterator i;
-			if ((i = _id2obj.find(ao->_id)) != _id2obj.end()) {
+			ObjectMap::iterator i = _id2obj.find(id);
+			if (i != _id2obj.end()) {
 				Object *o = i->second;
-				*o = *ao;
-				delete ao; ao = NULL;
+				if (o->registered_name != ao->registered_name) {
+					//replace object with different class
+					delete o; o = NULL;
+					i->second = ao;
+					ao = NULL;
+				} else {
+					//copying object data.
+					*o = *ao;
+					delete ao; ao = NULL;
+				}
 			} else {
-				_id2obj[ao->_id] = ao;
+				//new object.
+				_id2obj[id] = ao;
 				_objects.insert(ao);
 				ao = NULL;
 			}
 		} CATCH("deserialize", { delete ao; ao = NULL; });
 	}
+	
+	for(ObjectMap::iterator i = _id2obj.begin(); i != _id2obj.end(); /*haha*/ ) {
+		if (recv_ids.find(i->first) == recv_ids.end()) {
+			_objects.erase(i->second);
+			_id2obj.erase(i++);
+		} else ++i;
+	}
+	
 	//LOG_DEBUG(("deserialization completed successfully"));
 }
 
