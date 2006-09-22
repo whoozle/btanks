@@ -597,8 +597,7 @@ void IGame::run() {
 }
 
 void IGame::deinit() {
-	delete _server; _server = NULL;
-	delete _client; _client = NULL;
+	clear();
 	LOG_DEBUG(("shutting down, freeing surface"));
 	_running = false;
 	_window.free();
@@ -689,6 +688,10 @@ void IGame::onMessage(const Connection &conn, const Message &message) {
 }
 
 void IGame::clear() {
+	LOG_DEBUG(("deleting server/client if exists."));
+	delete _server; _server = NULL;
+	delete _client; _client = NULL;
+
 	LOG_DEBUG(("cleaning up players..."));
 	_players.clear();
 	_my_index = -1;
