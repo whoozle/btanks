@@ -29,8 +29,11 @@ const int Monitor::run() {
 			sdlx::AutoMutex m(_connections_mutex);
 			n = _connections.size();
 		}
-		if (n == 0)
+		if (n == 0) {
 			SDL_Delay(100);
+			continue;
+		} 
+		
 	}
 	return 0;
 }
