@@ -66,7 +66,6 @@ const int SocketSet::check(const unsigned int timeout) {
 	if (r == -1)
 		throw_io(("select"));
 	
-	if (r) LOG_DEBUG(("socket = %d", r));
 	return r;
 }
 
