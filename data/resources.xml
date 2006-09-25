@@ -131,10 +131,11 @@
 		<pose id="main">0,1,2,3,4</pose>
 	</animation-model>
 
-	<animation-model id="gate-animation" speed="1">
+	<animation-model id="destructable-object-animation" speed="1">
 		<pose id="main">0</pose>
 		<pose id="broken">1</pose>
 	</animation-model>
+
 
 	<animation-model id="spawning-animation" speed="5">
 		<pose id="main">0,1,2,3,4,5,6,7,8</pose>
@@ -252,7 +253,12 @@
 	<animation id="nuclear-explosion" tile="nuclear_explosion.png" model="nuclear-explosion-animation" size="448" />
 	<animation id="traffic-lights" tile="traffic_lights.png" model="traffic-lights-animation" />
 
-	<animation id="gate" tile="gate01.png" model="gate-animation" tile_width="128" tile_height="64" />
+	<animation id="gate" tile="gate01.png" model="destructable-object-animation" tile_width="128" tile_height="64" />
+	<animation id="bus-stop-left" model="destructable-object-animation" tile="bus_stop_left.png" tile_width="64" tile_height="128" />
+	<animation id="bus-stop-right" model="destructable-object-animation" tile="bus_stop_right.png" tile_width="64" tile_height="128" />
+	<animation id="bus-stop-top" model="destructable-object-animation" tile="bus_stop_top.png" tile_width="128" tile_height="64" />
+	<animation id="stall-left" model="destructable-object-animation" tile="stall_left.png" tile_width="64" tile_height="64" />
+	<animation id="stall-right" model="destructable-object-animation" tile="stall_right.png" tile_width="64" tile_height="64" />
 	
 	<!-- basic object with single pose. do not edit. -->
 	<object class="single-pose" impassability="0" />
@@ -265,6 +271,8 @@
 	<alias name="spawn-shield" class="single-pose-once-no-directions" />
 	<alias name="smoke-cloud" class="single-pose-with-start" />
 	<alias name="gate" class="destructable-object" />
+	<alias name="bus-stop" class="destructable-object" />
+	<alias name="stall" class="destructable-object" />
 
 	<object class="tank" speed="400" mass="500" hp="5"/>
 	<object class="ai-tank" parent="tank" />
@@ -289,6 +297,8 @@
 	<object class="dirt" impassability="0.7" />
 	<object class="pond" hp="1000" pierceable="true" impassability="1" />
 	<object class="gate" hp="1" impassability="1" z="-10" />
+	<object class="bus-stop" hp="5" impassability="1" />
+	<object class="stall" hp="5" impassability="1" />
 	<object class="spawn-shield" hp="1000" impassability="1" />
 	<object class="traffic-lights" hp="3" />
 
