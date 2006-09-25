@@ -70,21 +70,21 @@ const int SocketSet::check(const unsigned int timeout) {
 	return r;
 }
 
-const bool SocketSet::check(const TCPSocket &sock, tState how) {
-	fd_set *set = NULL;
-	switch(how) {
-	case Read:
-		set = (fd_set*)_r_set;
-	case Write:
-		set = (fd_set*)_w_set;
-	case Exception:
-		set = (fd_set*)_e_set;
-	}
-	assert(set != NULL);
-	return FD_ISSET(sock._sock, set) != 0;
+const bool SocketSet::check(const TCPSocket &sock, const int how) {
+	int fd = sock._sock;
+	if (fd == -1)
+		throw_ex(("check on uninitialized socket"));
+	
+	if ((how & Read) != 0 && FD_ISSET(fd, ((fd_set*)_r_set)))
+		return true;
+	if ((how & Write) != 0 && FD_ISSET(fd, ((fd_set*)_w_set)))
+		return true;
+	if ((how & Exception) != 0 && FD_ISSET(fd, ((fd_set*)_e_set)))
+		return true;
+	return false;
 }
 
-const bool SocketSet::check(const TCPSocket *sock, tState how) {
+const bool SocketSet::check(const TCPSocket *sock, const int how) {
 	return check(*sock, how);
 }
 

@@ -23,7 +23,7 @@ namespace mrt {
 class TCPSocket;
 class SocketSet {
 public: 
-	enum tState {Read, Write, Exception};
+	static const int Read = 1, Write = 2, Exception = 4;
 
 	SocketSet();
 	void add(const TCPSocket &sock);
@@ -31,8 +31,8 @@ public:
 	void remove(const TCPSocket &sock);
 	
 	const int check(const unsigned int timeout);
-	const bool check(const TCPSocket &sock, tState how);
-	const bool check(const TCPSocket *sock, tState how);
+	const bool check(const TCPSocket &sock, const int how);
+	const bool check(const TCPSocket *sock, const int how);
 	
 	void reset();
 	
