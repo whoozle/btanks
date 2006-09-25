@@ -59,7 +59,7 @@ public:
 	const int onConnect(Message &message);
 	void onDisconnect(const int id);
 	
-	void onMessage(const Connection &connection, const Message &message);
+	void onMessage(const int id, const Message &message);
 	
 	//stupid visual effect
 	void shake(const float duration, const int intensity);

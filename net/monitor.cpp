@@ -43,6 +43,14 @@ void Monitor::send(const int id, const mrt::Chunk &data) {
 	_send_q.push_back(t);
 }
 
+void Monitor::broadcast(const mrt::Chunk &data) {
+	sdlx::AutoMutex m(_connections_mutex);
+	for(ConnectionMap::iterator i = _connections.begin(); i != _connections.end(); ++i) {
+		send(i->first, data);
+	}
+}
+
+
 Monitor::TaskQueue::iterator Monitor::findTask(TaskQueue &queue, const int conn_id) {
 	Monitor::TaskQueue::iterator i;
 	for(i = queue.begin(); i != queue.end(); ++i) 

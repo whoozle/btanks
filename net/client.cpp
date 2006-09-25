@@ -1,5 +1,4 @@
 #include "mrt/logger.h"
-#include "mrt/socket_set.h"
 #include "mrt/tcp_socket.h"
 #include "mrt/exception.h"
 #include "mrt/serializator.h"
@@ -8,42 +7,57 @@
 #include "player_state.h"
 #include "protocol.h"
 #include "game.h"
+#include "monitor.h"
 #include "connection.h"
 
 
-Client::Client():  _conn(NULL), _running(false) {}
+Client::Client(): _monitor(NULL) {
+}
+
+Client::~Client() {
+	delete _monitor;
+	_monitor = NULL;
+}
 
 void Client::init(const std::string &host, const unsigned port) {
-	LOG_DEBUG(("connecting to %s:%u [stub]", host.c_str(), port));
-	
-	delete _conn;
-	_conn = new Connection(new mrt::TCPSocket);
-	_conn->sock->connect(host, port);
-	_running = true;
+	delete _monitor;
+
+	LOG_DEBUG(("client::init('%s':%u)", host.c_str(), port));	
+	Connection *conn = NULL;
+	TRY { 
+		conn = new Connection(new mrt::TCPSocket);
+		conn->sock->connect(host, port);
+		_monitor = new Monitor;
+		_monitor->add(0, conn);
+		conn = NULL;
+	} CATCH("init", {delete conn; conn = NULL; throw; });
 }
 
 void Client::notify(const PlayerState &state) {
-	if (!_running)
+	if (!_monitor)
 		return;
 	
 	//LOG_DEBUG(("notify from player"));
+	mrt::Chunk data;
 	Message m(PlayerEvent);
-	mrt::Serializator s;
-	state.serialize(s);
-	m.data = s.getData();
-
-	m.send(*_conn->sock);	
+	state.serialize2(m.data);
+	m.serialize2(data);
+	
+	_monitor->send(0, data);
 }
 
 void Client::tick(const float dt) {	
-	mrt::SocketSet set;
-	set.add(_conn->sock);
-	set.check(0);
-	if (set.check(_conn->sock,mrt::SocketSet::Read)) {
+	if (_monitor == NULL) 
+		return;
+	
+	int id;
+	mrt::Chunk data;
+	if (_monitor->recv(id, data)) {
+		assert(id == 0);
 		Message m;
-		m.recv(*_conn->sock);
+		m.deserialize2(data);
 		if (m.type != UpdateWorld && m.type != ServerStatus) 
 			throw_ex(("message type %d is not allowed", m.type));
-		Game->onMessage(*_conn, m);
+		Game->onMessage(0, m);
 	}
 }

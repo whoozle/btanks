@@ -4,18 +4,18 @@
 #include <string>
 
 class PlayerState;
-class Connection;
+class Monitor;
 
 class Client {
 public:
 	Client();
+	~Client();
 	void init(const std::string &host, const unsigned port);
 	void notify(const PlayerState &state);
 	void tick(const float dt);
 
 protected:
-	Connection * _conn;
-	bool _running;
+	Monitor *_monitor;
 };
 
 

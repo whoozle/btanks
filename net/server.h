@@ -4,9 +4,9 @@
 #include "mrt/tcp_socket.h"
 #include <deque>
 
-class Connection;
 class PlayerState;
 class Message;
+class Monitor;
 
 class Server {
 public:
@@ -15,13 +15,11 @@ public:
 	void notify(const PlayerState &state);
 	void tick(const float dt);
 	void broadcast(const Message &m);
+	~Server();
 	
 private:
+	Monitor *_monitor;
 	
-	typedef std::deque<Connection *> ConnectionList;
-	ConnectionList _connections;
-
-	bool _running;
 	mrt::TCPSocket _sock;
 };
 

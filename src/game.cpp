@@ -639,7 +639,7 @@ void IGame::onDisconnect(const int id) {
 }
 
 
-void IGame::onMessage(const Connection &conn, const Message &message) {
+void IGame::onMessage(const int id, const Message &message) {
 	LOG_DEBUG(("incoming message %d", message.type));
 	if (message.type == ServerStatus) {
 		LOG_DEBUG(("loading map..."));
@@ -671,11 +671,11 @@ void IGame::onMessage(const Connection &conn, const Message &message) {
 		World->deserialize(s);
 	} else if (message.type == PlayerEvent) {
 		mrt::Serializator s(&message.data);
-		if (conn.id < 0 || (unsigned)conn.id >= _players.size())
-			throw_ex(("player id exceeds players count (%d/%d)", conn.id, _players.size()));
-		ExternalControl * ex = dynamic_cast<ExternalControl *>(_players[conn.id].control_method);
+		if (id < 0 || (unsigned)id >= _players.size())
+			throw_ex(("player id exceeds players count (%d/%d)", id, _players.size()));
+		ExternalControl * ex = dynamic_cast<ExternalControl *>(_players[id].control_method);
 		if (ex == NULL)
-			throw_ex(("player with id %d uses non-external control method", conn.id));
+			throw_ex(("player with id %d uses non-external control method", id));
 		ex->state.deserialize(s);
 	}
 }

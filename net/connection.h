@@ -7,9 +7,7 @@ namespace mrt  {
 
 class Connection {
 public:
-	int id;
-	
-	Connection(mrt::TCPSocket *s, const int id = -1);
+	Connection(mrt::TCPSocket *s);
 	~Connection();
 		
 	mrt::TCPSocket * sock;
