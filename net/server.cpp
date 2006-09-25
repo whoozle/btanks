@@ -18,6 +18,7 @@ void Server::init(const unsigned port) {
 	LOG_DEBUG(("starting game server at port %d", port));
 	_sock.listen(port);
 	_monitor = new Monitor;
+	_monitor->start();
 }
 
 void Server::tick(const float dt) {
