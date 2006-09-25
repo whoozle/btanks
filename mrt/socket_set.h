@@ -34,6 +34,8 @@ public:
 	const bool check(const TCPSocket &sock, tState how);
 	const bool check(const TCPSocket *sock, tState how);
 	
+	void reset();
+	
 	~SocketSet();
 protected: 
 	void * _r_set, *_w_set, *_e_set;
