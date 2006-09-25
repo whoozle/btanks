@@ -1,11 +1,15 @@
 #include "tcp_socket.h"
 #include <sys/types.h>
-#include <sys/socket.h>
 #include <string.h>
+
+#ifndef socklen_t 
+#define socklen_t int
+#endif
 
 #ifdef WIN32
 #	include "Winsock2.h"
 #else
+#	include <sys/socket.h>
 #	include <netinet/in.h>
 #	include <netinet/ip.h> /* superset of previous */
 #	include <arpa/inet.h>
@@ -47,11 +51,19 @@ void TCPSocket::connect(const std::string &host, const int port) {
 }
 
 const int TCPSocket::send(const void *data, const int len) const {
+#ifdef WIN32
+	return ::send(_sock, (const char *)data, len, 0);
+#else
 	return ::send(_sock, data, len, 0);
+#endif
 }
 //void send(const mrt::Chunk &data) const;
 const int TCPSocket::recv(void *data, const int len) const {
+#ifdef WIN32
+	return ::recv(_sock, (char *)data, len, 0);
+#else
 	return ::recv(_sock, data, len, 0);
+#endif
 }
 
 void TCPSocket::accept(TCPSocket &client) {

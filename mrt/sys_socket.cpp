@@ -18,6 +18,7 @@ void Socket::init() {
 		return;
 	
 #ifdef WIN32
+	struct WSAData WSAData;
 	if (WSAStartup (MAKEWORD(1,1), &WSAData) != 0) 
 		throw_ex(("failed to initialize winsock 1.1. upgrade your windows installation and/or upgrade mrt runtime"));
 #endif
