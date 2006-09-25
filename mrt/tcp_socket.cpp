@@ -59,9 +59,9 @@ void TCPSocket::connect(const std::string &host, const int port) {
 		hostent *he = gethostbyname(host.c_str());
 		if (he == NULL)
 			throw_ex(("host '%s' was not found", host.c_str()));
-		addr.sin_addr.s_addr = (in_addr_t)(he->h_addr); //first address;
+		addr.sin_addr = *(struct in_addr*)(he->h_addr_list[0]);
 	}
-
+	LOG_DEBUG(("connect %s:%d", inet_ntoa(addr.sin_addr), port));
 	if (::connect(_sock, (const struct sockaddr*)&addr, sizeof(addr))	 == -1)
 		throw_io(("connect"));
 }
