@@ -4,4 +4,4 @@ env = env.Copy()
 mrt = env.StaticLibrary('mrt', \
 	['exception.cpp', 'fmt.cpp', 'ioexception.cpp', 'logger.cpp', 'chunk.cpp', \
 	'file.cpp', 'xml.cpp', 'b64.cpp', 'gzip.cpp', 'serializator.cpp', 
-	'sys_socket.cpp', 'tcp_socket.cpp'])
+	'sys_socket.cpp', 'tcp_socket.cpp', 'socket_set.cpp'])

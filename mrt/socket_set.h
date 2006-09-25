@@ -1,5 +1,5 @@
-#ifndef __BTANKS_TCPSOCKET_H__
-#define __BTANKS_TCPSOCKET_H__
+#ifndef __MRT_SOCKET_SET_H__
+#define __MRT_SOCKET_SET_H__
 /* Battle Tanks Game
  * Copyright (C) 2006 Battle Tanks team
  *
@@ -18,27 +18,23 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include <string>
-#include "sys_socket.h"
-
 namespace mrt {
-class Chunk;
 
-class TCPSocket : public Socket {
-public:
-	TCPSocket();
-	void listen(const unsigned port);
-	void connect(const std::string &host, const int port);
-	const int send(const void *data, const int len) const;
-	//void send(const mrt::Chunk &data) const;
-	const int recv(void *data, const int len) const;
+class TCPSocket;
+class SocketSet {
+public: 
+	SocketSet();
+	void add(const TCPSocket &sock);
+	void add(const TCPSocket *sock);
+	void remove(const TCPSocket &sock);
 	
-	void accept(TCPSocket &client);
-
-	~TCPSocket();
-	friend class SocketSet;
+	const int check(const unsigned int timeout);
+	
+	~SocketSet();
+protected: 
+	void * _p_set;
+	int _n;
 };
-
 }
 
 #endif
