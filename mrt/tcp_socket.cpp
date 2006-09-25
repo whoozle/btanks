@@ -2,9 +2,6 @@
 #include <sys/types.h>
 #include <string.h>
 
-#ifndef socklen_t 
-#define socklen_t int
-#endif
 
 #ifdef WIN32
 #	include "Winsock2.h"
@@ -15,6 +12,17 @@
 #	include <arpa/inet.h>
 #	include <netdb.h>
 #endif              
+
+#ifdef WIN32
+#	ifndef socklen_t 
+#		define socklen_t int
+#	endif
+
+#	ifndef in_addr_t
+#		define in_addr_t unsigned long
+#	endif
+#endif
+
 
 #include "ioexception.h"              
 
