@@ -5,6 +5,11 @@
 
 using namespace mrt;
 
+Chunk::Chunk(const int size) : ptr(0), size(0) {
+	setSize(size);
+}
+
+
 const Chunk& Chunk::operator=(const Chunk& c) {
     free();
     if ((ptr = malloc(c.size)) == NULL) 

@@ -27,6 +27,7 @@ namespace mrt {
 class Chunk {
 public:
 	Chunk() : ptr(0), size(0) {};
+	Chunk(const int size);
 
 	void free();
 	//use unlink only if you know what you doing ;)
