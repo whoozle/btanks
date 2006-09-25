@@ -23,16 +23,19 @@ namespace mrt {
 class TCPSocket;
 class SocketSet {
 public: 
+	enum tState {Read, Write, Exception};
+
 	SocketSet();
 	void add(const TCPSocket &sock);
 	void add(const TCPSocket *sock);
 	void remove(const TCPSocket &sock);
 	
 	const int check(const unsigned int timeout);
+	const bool check(const TCPSocket &sock, tState how);
 	
 	~SocketSet();
 protected: 
-	void * _p_set;
+	void * _r_set, *_w_set, *_e_set;
 	int _n;
 };
 }
