@@ -30,12 +30,14 @@ private:
 	struct Task {
 		Task(const int id);
 		Task(const int id, const mrt::Chunk &);
+		Task(const int id, const int size);
 		void clear();
 		
 		int id;
 		mrt::Chunk *data;
 		unsigned int pos;
 		unsigned int len;
+		bool size_task;
 	};
 	
 	typedef std::deque<Task *> TaskQueue;
@@ -43,6 +45,9 @@ private:
 	
 	ConnectionMap _connections;
 	sdlx::Mutex _connections_mutex, _result_mutex;
+	
+	TaskQueue::iterator findTask(TaskQueue &queue, const int conn_id);
+	void eraseTask(TaskQueue &q, const TaskQueue::iterator &i);
 };
 
 #endif

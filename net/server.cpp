@@ -25,7 +25,9 @@ void Server::tick(const float dt) {
 		for(ConnectionList::iterator i = _connections.begin(); i != _connections.end(); ++i) {
 			set.add(*(*i)->sock);
 		}
-		set.check(0);
+		
+		if (set.check(0) == 0)
+			return;
 	
 		if (set.check(_sock, mrt::SocketSet::Read)) {
 			mrt::TCPSocket *s = NULL;
