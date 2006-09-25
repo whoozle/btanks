@@ -13,6 +13,7 @@
 #	include <netinet/in.h>
 #	include <netinet/ip.h> /* superset of previous */
 #	include <arpa/inet.h>
+#	include <netdb.h>
 #endif              
 
 #include "ioexception.h"              
@@ -45,6 +46,13 @@ void TCPSocket::connect(const std::string &host, const int port) {
 	addr.sin_port = htons(port);
 	addr.sin_addr.s_addr = inet_addr(host.c_str());
 	//add gethostbyname here.
+	if (addr.sin_addr.s_addr == (in_addr_t)-1) {
+		//try to resolve host
+		hostent *he = gethostbyname(host.c_str());
+		if (he == NULL)
+			throw_ex(("host '%s' was not found", host.c_str()));
+		addr.sin_addr.s_addr = inet_addr(he->h_addr); //first address;
+	}
 
 	if (::connect(_sock, (const struct sockaddr*)&addr, sizeof(addr))	 == -1)
 		throw_io(("connect"));
