@@ -22,7 +22,7 @@ using namespace mrt;
 TCPSocket::TCPSocket() {}
 
 void TCPSocket::listen(const unsigned port) {
-	_sock = create(PF_INET, SOCK_STREAM, 0);
+	create(PF_INET, SOCK_STREAM, 0);
 
 	struct sockaddr_in addr;
 	memset(&addr, 0, sizeof(addr));
@@ -37,7 +37,7 @@ void TCPSocket::listen(const unsigned port) {
 }
 
 void TCPSocket::connect(const std::string &host, const int port) {
-	_sock = create(PF_INET, SOCK_STREAM, 0);
+	create(PF_INET, SOCK_STREAM, 0);
 
 	struct sockaddr_in addr;
 	memset(&addr, 0, sizeof(addr));

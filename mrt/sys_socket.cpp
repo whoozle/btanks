@@ -25,13 +25,13 @@ void Socket::init() {
 	inited = true;
 }
 
-const int Socket::create(const int af, int type, int protocol) {
+void Socket::create(const int af, int type, int protocol) {
 	init();
+	close();
 	
-	int s = socket(af, type, protocol);
-	if (s == -1) 
+	_sock = socket(af, type, protocol);
+	if (_sock == -1) 
 		throw_io(("socket"));
-	return s;
 }
 
 void Socket::close() {
