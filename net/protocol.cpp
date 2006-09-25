@@ -4,7 +4,7 @@
 #include "mrt/gzip.h"
 #include "mrt/serializator.h"
 
-#include "sdlx/tcp_socket.h"
+#include "mrt/tcp_socket.h"
 #include <string.h>
 
 #ifdef WIN32
@@ -32,7 +32,7 @@ void Message::deserialize(const mrt::Serializator &s) {
 }
 
 
-void Message::send(const sdlx::TCPSocket &sock) const {
+void Message::send(const mrt::TCPSocket &sock) const {
 	mrt::Serializator s; 
 	serialize(s);
 	mrt::Chunk rawdata;
@@ -52,7 +52,7 @@ void Message::send(const sdlx::TCPSocket &sock) const {
 	//LOG_DEBUG(("message: %s", rawdata.dump().c_str()));
 }
 
-void Message::recv(const sdlx::TCPSocket &sock) {
+void Message::recv(const mrt::TCPSocket &sock) {
 	unsigned char buf[2];
 	_attrs.clear();
 	int r = sock.recv(buf, 2);

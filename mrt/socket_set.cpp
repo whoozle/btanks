@@ -73,6 +73,10 @@ const bool SocketSet::check(const TCPSocket &sock, tState how) {
 	return FD_ISSET(sock._sock, set) != 0;
 }
 
+const bool SocketSet::check(const TCPSocket *sock, tState how) {
+	return check(*sock, how);
+}
+
 SocketSet::~SocketSet() {
 	delete ((fd_set *)_r_set);
 	delete ((fd_set *)_w_set);

@@ -1,5 +1,5 @@
-#ifndef __BTANKS_TCPSOCKET_H__
-#define __BTANKS_TCPSOCKET_H__
+#ifndef __BTANKS_MRT_TCPSOCKET_H__
+#define __BTANKS_MRT_TCPSOCKET_H__
 /* Battle Tanks Game
  * Copyright (C) 2006 Battle Tanks team
  *
@@ -35,7 +35,6 @@ public:
 	
 	void accept(TCPSocket &client);
 
-	~TCPSocket();
 	friend class SocketSet;
 };
 

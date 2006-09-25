@@ -32,6 +32,7 @@ public:
 	
 	const int check(const unsigned int timeout);
 	const bool check(const TCPSocket &sock, tState how);
+	const bool check(const TCPSocket *sock, tState how);
 	
 	~SocketSet();
 protected: 

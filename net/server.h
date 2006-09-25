@@ -1,7 +1,7 @@
 #ifndef __BTANKS_SERVER_H__
 #define __BTANKS_SERVER_H__
 
-#include "sdlx/tcp_socket.h"
+#include "mrt/tcp_socket.h"
 #include <deque>
 
 class Connection;
@@ -22,7 +22,7 @@ private:
 	ConnectionList _connections;
 
 	bool _running;
-	sdlx::TCPSocket _sock;
+	mrt::TCPSocket _sock;
 };
 
 

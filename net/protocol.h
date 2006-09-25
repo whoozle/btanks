@@ -7,7 +7,7 @@
 #include "mrt/serializable.h"
 #include "mrt/chunk.h"
 
-namespace sdlx {
+namespace mrt {
 	class TCPSocket;
 }
 
@@ -22,8 +22,8 @@ class Message : public mrt::Serializable {
 public: 
 	Message();
 	Message(const MessageType type);
-	void send(const sdlx::TCPSocket &sock) const;
-	void recv(const sdlx::TCPSocket &sock);
+	void send(const mrt::TCPSocket &sock) const;
+	void recv(const mrt::TCPSocket &sock);
 	virtual void serialize(mrt::Serializator &s) const;
 	virtual void deserialize(const mrt::Serializator &s);
 	

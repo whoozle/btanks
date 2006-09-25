@@ -1,35 +1,38 @@
 #include "monitor.h"
 #include "mrt/chunk.h"
 #include "mrt/logger.h"
-#include "sdlx/socket_set.h"
+#include "mrt/socket_set.h"
 #include "connection.h"
 
-Monitor::Task::Task() : data(new mrt::Chunk), pos(0), len(0) {}
-Monitor::Task::Task(const mrt::Chunk &d) : data(new mrt::Chunk(d)), pos(0), len(data->getSize()) {}
+Monitor::Task::Task(const int id) : id(id), data(new mrt::Chunk), pos(0), len(0) {}
+Monitor::Task::Task(const int id, const mrt::Chunk &d) : id(id), data(new mrt::Chunk(d)), pos(0), len(data->getSize()) {}
 void Monitor::Task::clear() { delete data; pos = len = 0; }
 
 Monitor::Monitor() : _running(false) {
 }
 
-void Monitor::add(Connection *c) {
+void Monitor::add(const int id, Connection *c) {
 	sdlx::AutoMutex m(_connections_mutex);
-	_connections.push_back(c);
+	_connections[id] = c;
 }
 	
-void Monitor::send(const mrt::Chunk &data) {
-	Task *t = new Task(data);
+void Monitor::send(const int id, const mrt::Chunk &data) {
+	Task *t = new Task(id, data);
 	
 	sdlx::AutoMutex m(_connections_mutex);
 	_send_q.push_back(t);
 }
 
-const bool Monitor::recv(mrt::Chunk &data) {
+const bool Monitor::recv(int &id, mrt::Chunk &data) {
 	sdlx::AutoMutex m(_result_mutex);
-	if (_result.empty())
+	if (_result_q.empty())
 		return false;
 	
-	data = *_result.front();
-	_result.pop_front();
+	id = _result_q.front()->id;
+	data = *_result_q.front()->data;
+	_result_q.front()->clear();
+	
+	_result_q.pop_front();
 	return true;
 }
 
@@ -50,9 +53,9 @@ const int Monitor::run() {
 		for(TaskQueue::iterator i = _send_q.begin(); i != _send_q.end(); ++i) {
 			Task *t = *i;
 		}
-		sdlx::SocketSet set(n); 
-		for(ConnectionList::iterator i = _connections.begin(); i != _connections.end(); ++i) {
-			set.add(*(*i)->sock);
+		mrt::SocketSet set; 
+		for(ConnectionMap::iterator i = _connections.begin(); i != _connections.end(); ++i) {
+			set.add(i->second->sock);
 		}
 		set.check(10);
 		
@@ -65,8 +68,8 @@ Monitor::~Monitor() {
 	_running = false;
 	wait();
 
-	for(ConnectionList::iterator i = _connections.begin(); i != _connections.end(); ++i) {
-		delete *i;
+	for(ConnectionMap::iterator i = _connections.begin(); i != _connections.end(); ++i) {
+		delete i->second;
 	}
 
 	for(TaskQueue::iterator i = _send_q.begin(); i != _send_q.end(); ++i) {
@@ -77,7 +80,8 @@ Monitor::~Monitor() {
 		(*i)->clear();
 		delete *i;
 	}
-	for(ResultQueue::iterator i = _result.begin(); i != _result.end(); ++i) {
+	for(TaskQueue::iterator i = _result_q.begin(); i != _result_q.end(); ++i) {
+		(*i)->clear();
 		delete *i;
 	}
 }

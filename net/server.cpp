@@ -1,7 +1,7 @@
 #include "server.h"
 #include "mrt/logger.h"
 #include "mrt/exception.h"
-#include "sdlx/socket_set.h"
+#include "mrt/socket_set.h"
 #include "game.h"
 #include "protocol.h"
 #include "player_state.h"
@@ -20,17 +20,17 @@ void Server::tick(const float dt) {
 		return;
 	TRY {
 		//send world coordinated, receive events.
-		sdlx::SocketSet set(1 + _connections.size()); //1 + players.
+		mrt::SocketSet set;
 		set.add(_sock);
 		for(ConnectionList::iterator i = _connections.begin(); i != _connections.end(); ++i) {
 			set.add(*(*i)->sock);
 		}
 		set.check(0);
 	
-		if (_sock.ready()) {
-			sdlx::TCPSocket *s = NULL;
+		if (set.check(_sock, mrt::SocketSet::Read)) {
+			mrt::TCPSocket *s = NULL;
 			TRY {
-				s = new sdlx::TCPSocket;
+				s = new mrt::TCPSocket;
 				_sock.accept(*s);
 				LOG_DEBUG(("client connected..."));
 				Message msg(ServerStatus);
@@ -41,7 +41,7 @@ void Server::tick(const float dt) {
 		}
 		for(ConnectionList::iterator i = _connections.begin(); i != _connections.end(); ) {
 			TRY {
-				if ((*i)->sock->ready()) {
+				if (set.check(*(*i)->sock, mrt::SocketSet::Read)) {
 					LOG_DEBUG(("event in connection %p", (void *)*i));
 					Message m;
 					m.recv(*(*i)->sock);

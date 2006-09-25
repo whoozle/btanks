@@ -2,6 +2,7 @@
 #define __BTANKS_NET_MONITOR_H__
 
 #include <deque>
+#include <map>
 #include "sdlx/thread.h"
 #include "sdlx/mutex.h"
 
@@ -13,10 +14,10 @@ class Connection;
 class Monitor : public sdlx::Thread {
 public:
 	Monitor();
-	void add(Connection *);
+	void add(const int id, Connection *);
 	
-	void send(const mrt::Chunk &data);
-	const bool recv(mrt::Chunk &data);
+	void send(const int id, const mrt::Chunk &data);
+	const bool recv(int &id, mrt::Chunk &data);
 	
 	~Monitor();
 
@@ -24,24 +25,23 @@ private:
 	bool _running;
 	
 	virtual const int run();
-	typedef std::deque<Connection *> ConnectionList;
+	typedef std::map<const int, Connection *> ConnectionMap;
 	
 	struct Task {
-		Task();
-		Task(const mrt::Chunk &);
+		Task(const int id);
+		Task(const int id, const mrt::Chunk &);
 		void clear();
 		
+		int id;
 		mrt::Chunk *data;
 		unsigned int pos;
 		unsigned int len;
 	};
 	
 	typedef std::deque<Task *> TaskQueue;
-	typedef std::deque<mrt::Chunk *> ResultQueue;
-	TaskQueue _send_q, _recv_q;
-	ResultQueue _result;
+	TaskQueue _send_q, _recv_q, _result_q;
 	
-	ConnectionList _connections;
+	ConnectionMap _connections;
 	sdlx::Mutex _connections_mutex, _result_mutex;
 };
 

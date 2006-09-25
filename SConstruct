@@ -79,8 +79,8 @@ if not conf.CheckLibWithHeader('SDL_image', 'SDL/SDL_image.h', 'c++', "IMG_Load(
 if not conf.CheckLibWithHeader('SDL_ttf', 'SDL/SDL_ttf.h', 'c++', "TTF_Init();", False):
 	Exit(1)
 
-if not conf.CheckLibWithHeader('SDL_net', 'SDL/SDL_net.h', 'c++', "SDLNet_Init();", False):
-	Exit(1)
+#if not conf.CheckLibWithHeader('SDL_net', 'SDL/SDL_net.h', 'c++', "SDLNet_Init();", False):
+#	Exit(1)
 
 conf.Finish()
 
@@ -131,7 +131,7 @@ bt_sources = 	['src/alarm.cpp', 'src/base_object.cpp',
 	vobj
 	]
 
-bt_libs = ['sdlx', 'mrt', sigc_lib, 'SDL_ttf', 'SDL_image', 'SDL_net', 'SDL', 'expat', 'z']
+bt_libs = ['sdlx', 'mrt', sigc_lib, 'SDL_ttf', 'SDL_image', 'SDL', 'expat', 'z']
 if sys.platform == "win32":
 #	bt_libs[0:0] = ['SDLmain']
 	bt_libs.append('Ws2_32')

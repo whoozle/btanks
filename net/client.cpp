@@ -1,13 +1,15 @@
-#include "client.h"
 #include "mrt/logger.h"
-#include "player_state.h"
-#include "protocol.h"
-#include "sdlx/socket_set.h"
-#include "game.h"
-#include "connection.h"
-#include "sdlx/tcp_socket.h"
+#include "mrt/socket_set.h"
+#include "mrt/tcp_socket.h"
 #include "mrt/exception.h"
 #include "mrt/serializator.h"
+
+#include "client.h"
+#include "player_state.h"
+#include "protocol.h"
+#include "game.h"
+#include "connection.h"
+
 
 Client::Client():  _conn(NULL), _running(false) {}
 
@@ -15,7 +17,7 @@ void Client::init(const std::string &host, const unsigned port) {
 	LOG_DEBUG(("connecting to %s:%u [stub]", host.c_str(), port));
 	
 	delete _conn;
-	_conn = new Connection(new sdlx::TCPSocket);
+	_conn = new Connection(new mrt::TCPSocket);
 	_conn->sock->connect(host, port);
 	_running = true;
 }
@@ -34,10 +36,10 @@ void Client::notify(const PlayerState &state) {
 }
 
 void Client::tick(const float dt) {	
-	sdlx::SocketSet set(1);
+	mrt::SocketSet set;
 	set.add(_conn->sock);
 	set.check(0);
-	if (_conn->sock->ready()) {
+	if (set.check(_conn->sock,mrt::SocketSet::Read)) {
 		Message m;
 		m.recv(*_conn->sock);
 		if (m.type != UpdateWorld && m.type != ServerStatus) 

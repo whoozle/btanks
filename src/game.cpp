@@ -16,8 +16,6 @@
 #include "sdlx/joystick.h"
 #include "sdlx/ttf.h"
 #include "sdlx/color.h"
-#include "sdlx/net_ex.h"
-#include "sdlx/tcp_socket.h"
 
 #include "net/server.h"
 #include "net/client.h"
@@ -154,11 +152,6 @@ void IGame::init(const int argc, char *argv[]) {
 	LOG_DEBUG(("initializing SDL_ttf..."));
 	sdlx::TTF::init();
 
-	LOG_DEBUG(("initializing SDL_net..."));
-	if (SDLNet_Init() == -1) {
-		throw_net(("SDLNet_Init"));
-	}
-	
 	LOG_DEBUG(("probing for joysticks"));
 	int jc = sdlx::Joystick::getCount();
 	if (jc > 0) {
