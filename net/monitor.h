@@ -48,6 +48,7 @@ private:
 	
 	TaskQueue::iterator findTask(TaskQueue &queue, const int conn_id);
 	void eraseTask(TaskQueue &q, const TaskQueue::iterator &i);
+	void eraseTasks(TaskQueue &q, const int conn_id);
 };
 
 #endif

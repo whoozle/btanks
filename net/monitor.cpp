@@ -71,6 +71,15 @@ void Monitor::eraseTask(TaskQueue &q, const TaskQueue::iterator &i) {
 	q.erase(i);
 }
 
+void Monitor::eraseTasks(TaskQueue &q, const int conn_id) {
+	for(TaskQueue::iterator i = q.begin(); i != q.end(); ) {
+		if ((*i)->id == conn_id) {
+			i = q.erase(i);
+		} else ++i;
+	}
+}
+
+
 const int Monitor::run() {
 	_running = true;
 	LOG_DEBUG(("network monitor thread was started..."));
@@ -95,7 +104,9 @@ const int Monitor::run() {
 		for(ConnectionMap::iterator i = _connections.begin(); i != _connections.end();) {
 			const mrt::TCPSocket *sock = i->second->sock;
 			if (set.check(sock, mrt::SocketSet::Exception)) {
-				//fixme: cleanup all tasks with this connection, notify upper layer 
+				//fixme: notify upper layer 
+				eraseTasks(_send_q, i->first);
+				eraseTasks(_recv_q, i->first);
 				_connections.erase(i++);
 				continue;
 			}
