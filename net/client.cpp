@@ -27,6 +27,7 @@ void Client::init(const std::string &host, const unsigned port) {
 	TRY { 
 		conn = new Connection(new mrt::TCPSocket);
 		conn->sock->connect(host, port);
+		conn->sock->noDelay();
 		_monitor = new Monitor;
 		_monitor->start();
 		_monitor->add(0, conn);

@@ -37,6 +37,8 @@ void Server::tick(const float dt) {
 			TRY {
 				s = new mrt::TCPSocket;
 				_sock.accept(*s);
+				s->noDelay();
+				
 				LOG_DEBUG(("client connected..."));
 				Message msg(ServerStatus);
 				int id = Game->onConnect(msg);
