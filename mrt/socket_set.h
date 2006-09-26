@@ -26,8 +26,8 @@ public:
 	static const int Read = 1, Write = 2, Exception = 4;
 
 	SocketSet();
-	void add(const TCPSocket &sock);
-	void add(const TCPSocket *sock);
+	void add(const TCPSocket &sock, const int how = Read | Write | Exception);
+	void add(const TCPSocket *sock, const int how = Read | Write | Exception);
 	void remove(const TCPSocket &sock);
 	
 	const int check(const unsigned int timeout);

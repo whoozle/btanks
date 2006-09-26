@@ -29,19 +29,29 @@ void SocketSet::reset() {
 }
 
 
-void SocketSet::add(const TCPSocket &sock) {
+void SocketSet::add(const TCPSocket &sock, const int how) {
 	int fd = sock._sock;
 	if (fd == -1)
 		throw_ex(("attempt to add uninitialized socket to set"));
+	if (!(how & (Read | Write | Exception))) {
+		LOG_WARN(("skip add in set %d", how));
+		return;
+	}
 	
-	FD_SET(fd, (fd_set*)_r_set);
-	FD_SET(fd, (fd_set*)_w_set);
-	FD_SET(fd, (fd_set*)_e_set);
+	if (how & Read) {
+		FD_SET(fd, (fd_set*)_r_set);
+	}
+	if (how & Write) {
+		FD_SET(fd, (fd_set*)_w_set);
+	}
+	if (how & Exception) {
+		FD_SET(fd, (fd_set*)_e_set);
+	}
 	if (fd > _n) 
 		_n = fd + 1;
 }
 
-void SocketSet::add(const TCPSocket *sock) {
+void SocketSet::add(const TCPSocket *sock, const int how) {
 	if (sock == NULL)
 		throw_ex(("attempt to add NULL socket to set"));
 	add(*sock);
