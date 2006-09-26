@@ -113,6 +113,7 @@ const int Monitor::run() {
 		} 
 
 		mrt::SocketSet set; 
+		sdlx::AutoMutex m(_connections_mutex);
 		for(ConnectionMap::iterator i = _connections.begin(); i != _connections.end(); ++i) {
 			int how = mrt::SocketSet::Read | mrt::SocketSet::Exception;
 			if (findTask(_send_q, i->first) != _send_q.end()) 
@@ -120,9 +121,11 @@ const int Monitor::run() {
 			
 			set.add(i->second->sock, how);
 		}
-		if (set.check(20) == 0)
+		m.unlock();
+		if (set.check(1) == 0) 
 			continue;
 		
+		m.lock();
 		for(ConnectionMap::iterator i = _connections.begin(); i != _connections.end();) {
 			const mrt::TCPSocket *sock = i->second->sock;
 			if (set.check(sock, mrt::SocketSet::Exception)) {
@@ -177,8 +180,9 @@ const int Monitor::run() {
 							LOG_DEBUG(("recv(%d, %d) (decompressed: %d)", t->id, t->data->getSize(), data.getSize()));
 							*t->data = data;
 						}
-						_result_q.push_back(t);
 						_recv_q.erase(ti);
+						sdlx::AutoMutex m2(_result_mutex);
+						_result_q.push_back(t);
 					}
 				}
 			}
