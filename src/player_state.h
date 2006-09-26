@@ -11,7 +11,7 @@ public:
 	
 	inline const bool operator==(const PlayerState &other) const {
 		return left == other.left && right == other.right && up == other.up && down == other.down &&
-			fire == other.fire && alt_fire == other.fire;
+			fire == other.fire && alt_fire == other.alt_fire;
 	}
 	inline const bool operator!=(const PlayerState &other) const {
 		return !(*this == other);
