@@ -155,6 +155,11 @@ void IMap::load(const std::string &name) {
 #endif
 	_name = name;
 	
+	LOG_DEBUG(("optimizing layers..."));
+	for(LayerMap::iterator l = _layers.begin(); l != _layers.end(); ++l) {
+		l->second->optimize(_tiles);
+	}
+	
 	_imp_map.setSize(_h * _th / pathfinding_step, _w * _tw / pathfinding_step);
 	LOG_DEBUG(("building map matrix[%d:%d]...", _imp_map.getHeight(), _imp_map.getWidth()));
 	_imp_map.useDefault(-1);
@@ -375,15 +380,9 @@ void IMap::render(sdlx::Surface &window, const sdlx::Rect &dst, const int z1, co
 		
 		for(int ty = 0; ty < tyn; ++ty) {
 			for(int tx = 0; tx < txn; ++tx) {
-				int tid = l->second->get(txp + tx, typ + ty);
-				if (tid == 0) 
-					continue;
-				
-				assert((size_t)tid < _tiles.size());
-				sdlx::Surface * s = _tiles[tid];
-				if (s == NULL) 
-					throw_ex(("invalid tile with id %d found", tid));
-				window.copyFrom(*s, xp + tx * _tw, yp + ty * _th);
+				const sdlx::Surface * s = l->second->getSurface(txp + tx, typ + ty);
+				if (s != NULL) 
+					window.copyFrom(*s, xp + tx * _tw, yp + ty * _th);
 			}
 		}
 	}

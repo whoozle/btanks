@@ -3,10 +3,13 @@
 
 #include "mrt/chunk.h"
 #include "sdlx/surface.h"
+#include <vector>
 
 class Layer {
 public:
+#ifdef PRERENDERED_LAYERS
 	sdlx::Surface surface;
+#endif
 	const int impassability;
 	const bool pierceable;
 
@@ -18,8 +21,17 @@ public:
 		return *((int *) _data.getPtr() + _w * y + x);
 	}
 
+	inline const sdlx::Surface* getSurface(const int x, const int y) const {
+		if (x < 0 || x >= _w || y < 0 || y >= _h) 
+			return NULL;
+		return *((sdlx::Surface **) _data_s.getPtr() + _w * y + x);
+	}
+
+	void optimize(std::vector<sdlx::Surface *> & tilemap);
+
 private: 
 	mrt::Chunk _data;
+	mrt::Chunk _data_s;
 	int _w, _h;
 };
 
