@@ -3,6 +3,7 @@
 #include "mrt/logger.h"
 #include "mrt/socket_set.h"
 #include "mrt/tcp_socket.h"
+#include "mrt/gzip.h"
 #include "connection.h"
 
 #ifdef WIN32
@@ -29,7 +30,13 @@ void Monitor::add(const int id, Connection *c) {
 	_connections[id] = c;
 }
 	
-void Monitor::send(const int id, const mrt::Chunk &data) {
+void Monitor::send(const int id, const mrt::Chunk &rawdata) {
+	mrt::Chunk data;
+	{
+		mrt::ZStream::compress(data, rawdata, 3);
+		LOG_DEBUG(("send(%d, %d) (compressed: %d)", id, rawdata.getSize(), data.getSize()));
+	}
+
 	int size = data.getSize();
 	assert(size < 65536);
 
@@ -159,7 +166,12 @@ const int Monitor::run() {
 						Task *t = new Task(i->first, len);
 						_recv_q.push_back(t);
 					} else {
-						LOG_DEBUG(("recv'ed %u bytes", t->len));
+						{
+							mrt::Chunk data;
+							mrt::ZStream::decompress(data, *t->data);
+							LOG_DEBUG(("recv(%d, %d) (decompressed: %d)", t->id, t->data->getSize(), data.getSize()));
+							*t->data = data;
+						}
 						_result_q.push_back(t);
 						_recv_q.erase(ti);
 					}
