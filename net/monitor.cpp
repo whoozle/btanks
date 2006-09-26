@@ -36,7 +36,7 @@ void Monitor::send(const int id, const mrt::Chunk &rawdata) {
 	if (_comp_level > 0) {
 		flags = 1; //compressed
 		mrt::ZStream::compress(data, rawdata, _comp_level);
-		LOG_DEBUG(("send(%d, %d) (compressed: %d)", id, rawdata.getSize(), data.getSize()));
+		//LOG_DEBUG(("send(%d, %d) (compressed: %d)", id, rawdata.getSize(), data.getSize()));
 	} else data = rawdata; //fixme: optimize it somehow.
 
 	int size = data.getSize();
@@ -122,7 +122,7 @@ const int Monitor::run() {
 			set.add(i->second->sock, how);
 		}
 		m.unlock();
-		if (set.check(1) == 0) 
+		if (set.check(0) == 0) 
 			continue;
 		
 		m.lock();
@@ -145,7 +145,7 @@ const int Monitor::run() {
 					Task *t = new Task(i->first, 3);
 					t->size_task = true;
 					_recv_q.push_back(t);
-					LOG_DEBUG(("added size task to r-queue"));
+					//LOG_DEBUG(("added size task to r-queue"));
 					ti = findTask(_recv_q, i->first);
 					assert(ti != _recv_q.end());
 				}
@@ -167,7 +167,7 @@ const int Monitor::run() {
 					if (t->size_task) {
 						unsigned short len = ntohs(*((unsigned short *)(t->data->getPtr())));
 						unsigned char flags = *((unsigned char *)(t->data->getPtr()) + 2);
-						LOG_DEBUG(("added task for %u bytes. flags = %02x", len, flags));
+						//LOG_DEBUG(("added task for %u bytes. flags = %02x", len, flags));
 						eraseTask(_recv_q, ti);
 						
 						Task *t = new Task(i->first, len);
@@ -177,7 +177,7 @@ const int Monitor::run() {
 						if (t->flags & 1) {
 							mrt::Chunk data;
 							mrt::ZStream::decompress(data, *t->data);
-							LOG_DEBUG(("recv(%d, %d) (decompressed: %d)", t->id, t->data->getSize(), data.getSize()));
+							//LOG_DEBUG(("recv(%d, %d) (decompressed: %d)", t->id, t->data->getSize(), data.getSize()));
 							*t->data = data;
 						}
 						_recv_q.erase(ti);
@@ -204,7 +204,7 @@ const int Monitor::run() {
 					t->pos += r;
 					assert(t->pos <= t->len);
 					if (t->pos == t->len) {
-						LOG_DEBUG(("sent %u bytes", t->len));
+						//LOG_DEBUG(("sent %u bytes", t->len));
 						eraseTask(_send_q, ti);
 					}
 				}
