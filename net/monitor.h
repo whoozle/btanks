@@ -14,6 +14,7 @@ class Connection;
 class Monitor : public sdlx::Thread {
 public:
 	Monitor();
+	void setCompressionLevel(const int level = 3);
 	void add(const int id, Connection *);
 	
 	void send(const int id, const mrt::Chunk &data);
@@ -39,6 +40,7 @@ private:
 		unsigned int pos;
 		unsigned int len;
 		bool size_task;
+		unsigned char flags;
 	};
 	
 	typedef std::deque<Task *> TaskQueue;
@@ -50,6 +52,8 @@ private:
 	TaskQueue::iterator findTask(TaskQueue &queue, const int conn_id);
 	void eraseTask(TaskQueue &q, const TaskQueue::iterator &i);
 	void eraseTasks(TaskQueue &q, const int conn_id);
+	
+	int _comp_level;
 };
 
 #endif

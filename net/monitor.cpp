@@ -22,7 +22,7 @@ Monitor::Task::Task(const int id, const mrt::Chunk &d) : id(id), data(new mrt::C
 Monitor::Task::Task(const int id, const int size) : id(id), data(new mrt::Chunk(size)), pos(0), len(data->getSize()), size_task(false) {}
 void Monitor::Task::clear() { delete data; pos = len = 0; }
 
-Monitor::Monitor() : _running(false) {
+Monitor::Monitor() : _running(false), _comp_level(0) {
 }
 
 void Monitor::add(const int id, Connection *c) {
@@ -32,19 +32,22 @@ void Monitor::add(const int id, Connection *c) {
 	
 void Monitor::send(const int id, const mrt::Chunk &rawdata) {
 	mrt::Chunk data;
-	{
-		mrt::ZStream::compress(data, rawdata, 3);
+	unsigned char flags = 0;
+	if (_comp_level > 0) {
+		flags = 1; //compressed
+		mrt::ZStream::compress(data, rawdata, _comp_level);
 		LOG_DEBUG(("send(%d, %d) (compressed: %d)", id, rawdata.getSize(), data.getSize()));
-	}
+	} else data = rawdata; //fixme: optimize it somehow.
 
 	int size = data.getSize();
 	assert(size < 65536);
 
-	Task *t = new Task(id, size + 2);
+	Task *t = new Task(id, size + 3);
 
 	unsigned short nsize = htons((short)size);
 	memcpy(t->data->getPtr(), &nsize, 2);
-	memcpy((unsigned char *)t->data->getPtr() + 2, data.getPtr(), size);
+	*((unsigned char *)t->data->getPtr() + 2) = flags;
+	memcpy((unsigned char *)t->data->getPtr() + 3, data.getPtr(), size);
 	
 	sdlx::AutoMutex m(_connections_mutex);
 	_send_q.push_back(t);
@@ -136,7 +139,7 @@ const int Monitor::run() {
 
 				TaskQueue::iterator ti = findTask(_recv_q, i->first);
 				if (ti == _recv_q.end()) {
-					Task *t = new Task(i->first, 2);
+					Task *t = new Task(i->first, 3);
 					t->size_task = true;
 					_recv_q.push_back(t);
 					LOG_DEBUG(("added size task to r-queue"));
@@ -160,13 +163,15 @@ const int Monitor::run() {
 				if (t->pos == t->len) {
 					if (t->size_task) {
 						unsigned short len = ntohs(*((unsigned short *)(t->data->getPtr())));
-						LOG_DEBUG(("added task for %u bytes.", len));
+						unsigned char flags = *((unsigned char *)(t->data->getPtr()) + 2);
+						LOG_DEBUG(("added task for %u bytes. flags = %02x", len, flags));
 						eraseTask(_recv_q, ti);
 						
 						Task *t = new Task(i->first, len);
+						t->flags = flags;
 						_recv_q.push_back(t);
 					} else {
-						{
+						if (t->flags & 1) {
 							mrt::Chunk data;
 							mrt::ZStream::decompress(data, *t->data);
 							LOG_DEBUG(("recv(%d, %d) (decompressed: %d)", t->id, t->data->getSize(), data.getSize()));
@@ -229,4 +234,8 @@ Monitor::~Monitor() {
 		(*i)->clear();
 		delete *i;
 	}
+}
+
+void Monitor::setCompressionLevel(const int level) {
+	_comp_level = level;
 }

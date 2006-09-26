@@ -640,7 +640,7 @@ void IGame::onDisconnect(const int id) {
 
 
 void IGame::onMessage(const int id, const Message &message) {
-	LOG_DEBUG(("incoming message %d", message.type));
+	//LOG_DEBUG(("incoming message %d", message.type));
 	if (message.type == ServerStatus) {
 		LOG_DEBUG(("loading map..."));
 		Map->load(message.get("map"));
