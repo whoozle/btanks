@@ -8,6 +8,7 @@
 #else
 #	include <sys/socket.h>
 #	include <netinet/in.h>
+#	include <netinet/tcp.h>
 #	include <netinet/ip.h> /* superset of previous */
 #	include <arpa/inet.h>
 #	include <netdb.h>
@@ -94,3 +95,12 @@ void TCPSocket::accept(TCPSocket &client) {
 	client._sock = s;
 }
 
+void TCPSocket::noDelay(const bool flag) {
+	if (_sock == -1)
+		throw_ex(("noDelay on unitialized socket"));
+	
+	int value = flag?1:0;
+	int r = setsockopt(_sock, IPPROTO_TCP, TCP_NODELAY, &value, sizeof(value));
+	if (r < 0) 
+		throw_io(("setsockopt"));
+}

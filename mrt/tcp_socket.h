@@ -27,6 +27,9 @@ class Chunk;
 class TCPSocket : public Socket {
 public:
 	TCPSocket();
+	
+	void noDelay(const bool value = true);
+	
 	void listen(const unsigned port);
 	void connect(const std::string &host, const int port);
 	const int send(const void *data, const int len) const;
