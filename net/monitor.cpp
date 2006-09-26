@@ -113,6 +113,8 @@ const int Monitor::run() {
 			const mrt::TCPSocket *sock = i->second->sock;
 			if (set.check(sock, mrt::SocketSet::Exception)) {
 				//fixme: notify upper layer 
+			disconnect: 
+				LOG_DEBUG(("client disconnected."));
 				eraseTasks(_send_q, i->first);
 				eraseTasks(_recv_q, i->first);
 				_connections.erase(i++);
@@ -136,8 +138,10 @@ const int Monitor::run() {
 				assert(estimate > 0);
 			
 				int r = sock->recv((char *)(t->data->getPtr()) + t->pos, t->len);
-				if (r == -1 || r == 0) 
-					goto skip_read;
+				if (r == -1 || r == 0) {
+					LOG_ERROR(("error while reading %u bytes (r = %d)", t->len, r));
+					goto disconnect;
+				}
 					
 				t->pos += r;
 				assert(t->pos <= t->len);
@@ -168,8 +172,10 @@ const int Monitor::run() {
 					assert(estimate > 0);
 			
 					int r = sock->send((char *)(t->data->getPtr()) + t->pos, t->len);
-					if (r == -1 || r == 0) 
-						goto skip_write;
+					if (r == -1 || r == 0) {
+						LOG_ERROR(("error while reading %u bytes (r = %d)", t->len, r));
+						goto disconnect;
+					}
 
 					t->pos += r;
 					assert(t->pos <= t->len);
