@@ -36,7 +36,7 @@ void Monitor::send(const int id, const mrt::Chunk &data) {
 	Task *t = new Task(id, size + 2);
 
 	unsigned short nsize = htons((short)size);
-	memcpy(data.getPtr(), &nsize, 2);
+	memcpy(t->data->getPtr(), &nsize, 2);
 	memcpy((unsigned char *)t->data->getPtr() + 2, data.getPtr(), size);
 	
 	sdlx::AutoMutex m(_connections_mutex);
@@ -104,9 +104,13 @@ const int Monitor::run() {
 
 		mrt::SocketSet set; 
 		for(ConnectionMap::iterator i = _connections.begin(); i != _connections.end(); ++i) {
-			set.add(i->second->sock);
+			int how = mrt::SocketSet::Read | mrt::SocketSet::Exception;
+			if (findTask(_send_q, i->first) != _send_q.end()) 
+				how |= mrt::SocketSet::Write;
+			
+			set.add(i->second->sock, how);
 		}
-		if (set.check(10) == 0)
+		if (set.check(20) == 0)
 			continue;
 		
 		for(ConnectionMap::iterator i = _connections.begin(); i != _connections.end();) {
@@ -128,7 +132,7 @@ const int Monitor::run() {
 					Task *t = new Task(i->first, 2);
 					t->size_task = true;
 					_recv_q.push_back(t);
-				
+					LOG_DEBUG(("added size task to r-queue"));
 					ti = findTask(_recv_q, i->first);
 					assert(ti != _recv_q.end());
 				}
@@ -149,7 +153,7 @@ const int Monitor::run() {
 				if (t->pos == t->len) {
 					if (t->size_task) {
 						unsigned short len = ntohs(*((unsigned short *)(t->data->getPtr())));
-						LOG_DEBUG(("packet size = %u", len));
+						LOG_DEBUG(("added task for %u bytes.", len));
 						eraseTask(_recv_q, ti);
 						
 						Task *t = new Task(i->first, len);
@@ -161,7 +165,6 @@ const int Monitor::run() {
 					}
 				}
 			}
-		skip_read:
 
 			if (set.check(sock, mrt::SocketSet::Write)) {
 				TaskQueue::iterator ti = findTask(_send_q, i->first);
@@ -185,7 +188,6 @@ const int Monitor::run() {
 					}
 				}
 			}
-		skip_write:
 			
 			++i;
 		}
