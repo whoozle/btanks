@@ -29,10 +29,7 @@ void Server::tick(const float dt) {
 		mrt::SocketSet set;
 		set.add(_sock);
 		
-		if (set.check(0) == 0)
-			return;
-	
-		if (set.check(_sock, mrt::SocketSet::Read)) {
+		if (set.check(0) > 0 && set.check(_sock, mrt::SocketSet::Read)) {
 			mrt::TCPSocket *s = NULL;
 			TRY {
 				s = new mrt::TCPSocket;
@@ -49,6 +46,7 @@ void Server::tick(const float dt) {
 				_monitor->send(id, data);
 			} CATCH("accept", { delete s; s = NULL; })
 		}
+
 		mrt::Chunk data;
 		int id;
 		if (_monitor->recv(id, data)) {
