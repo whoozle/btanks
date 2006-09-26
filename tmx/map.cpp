@@ -368,7 +368,11 @@ void IMap::render(sdlx::Surface &window, const sdlx::Rect &dst, const int z1, co
 	int txn = (dst.w - 1) / _tw + 2;
 	int tyn = (dst.h - 1) / _th + 2;
 	
-	for(LayerMap::const_iterator l = _layers.begin(); l != _layers.end(); ++l) if (l->first >= z1 && l->first < z2) {
+	for(LayerMap::const_iterator l = _layers.begin(); l != _layers.end(); ++l) 
+	if (l->first >= z1) {
+		if (l->first >= z2) 
+			break;
+		
 		for(int ty = 0; ty < tyn; ++ty) {
 			for(int tx = 0; tx < txn; ++tx) {
 				int tid = l->second->get(txp + tx, typ + ty);
