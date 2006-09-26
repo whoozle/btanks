@@ -474,6 +474,7 @@ TRY {
 	
 	for(ObjectMap::iterator i = _id2obj.begin(); i != _id2obj.end(); /*haha*/ ) {
 		if (recv_ids.find(i->first) == recv_ids.end()) {
+			delete i->second;
 			_objects.erase(i->second);
 			_id2obj.erase(i++);
 		} else ++i;
