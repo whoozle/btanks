@@ -55,11 +55,11 @@ public:
 	~IGame();
 	
 	//multiplayer stuff. refactor it.
-	void notify(const PlayerState& state);
+	void notify(const int id, const PlayerState& state);
+
 	const int onConnect(Message &message);
-	void onDisconnect(const int id);
-	
 	void onMessage(const int id, const Message &message);
+	void onDisconnect(const int id);
 	
 	//stupid visual effect
 	void shake(const float duration, const int intensity);

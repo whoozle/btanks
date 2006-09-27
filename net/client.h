@@ -11,7 +11,7 @@ public:
 	Client();
 	~Client();
 	void init(const std::string &host, const unsigned port);
-	void notify(const PlayerState &state);
+	void notify(const int id, const PlayerState &state);
 	void tick(const float dt);
 
 protected:

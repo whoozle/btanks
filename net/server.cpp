@@ -69,32 +69,15 @@ void Server::broadcast(const Message &m) {
 }
 
 
-void Server::notify(const PlayerState &state) {
+void Server::notify(const int id, const PlayerState &state) {
 	if (!_monitor)
 		return;
-	
-/*	LOG_DEBUG(("notify my state to clients"));
+
+	mrt::Chunk data;
 	Message m(PlayerEvent);
-	m.data.setSize(1);
-	m.data[0] = state.left?1:0 | state.right?2:0 | state.up ? 4:0 | state.down ? 8:0 | state.fire ? 16:0;
-*/
-/*	for(ConnectionList::iterator i = _connections.begin(); i != _connections.end(); ) {
-			TRY {
-				if ((*i)->sock->ready()) {
-					LOG_DEBUG(("event in connection %p", (void *)*i));
-					Message m;
-					m.recv(*(*i)->sock);
-					if (m.type != PlayerEvent) 
-						throw_ex(("message type %d is not allowed", m.type));
-					
-					Game->onMessage(**i, m);
-				}
-				++i;
-			} CATCH("reading from socket", {
-				LOG_DEBUG(("error, client disconnected"));
-				delete *i;
-				i = _connections.erase(i);
-			} );
-		}
-*/
+	state.serialize2(m.data);
+	m.serialize2(data);
+	
+	LOG_DEBUG(("broadcasting state #%d", id));
+	_monitor->broadcast(data, id);
 }

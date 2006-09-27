@@ -53,10 +53,11 @@ void Monitor::send(const int id, const mrt::Chunk &rawdata) {
 	_send_q.push_back(t);
 }
 
-void Monitor::broadcast(const mrt::Chunk &data) {
+void Monitor::broadcast(const mrt::Chunk &data, const int except) {
 	sdlx::AutoMutex m(_connections_mutex);
 	for(ConnectionMap::iterator i = _connections.begin(); i != _connections.end(); ++i) {
-		send(i->first, data);
+		if (i->first != except)
+			send(i->first, data);
 	}
 }
 
@@ -108,7 +109,7 @@ const int Monitor::run() {
 			n = _connections.size();
 		}
 		if (n == 0) {
-			SDL_Delay(100);
+			SDL_Delay(10);
 			continue;
 		} 
 
@@ -122,7 +123,7 @@ const int Monitor::run() {
 			set.add(i->second->sock, how);
 		}
 		m.unlock();
-		if (set.check(0) == 0) 
+		if (set.check(10) == 0) 
 			continue;
 		
 		m.lock();

@@ -476,7 +476,7 @@ void IGame::run() {
 						PlayerState old_state = state;
 						slot.control_method->updateState(state);
 						if (old_state != state) {
-							notify(state);
+							notify(i, state);
 						}
 					}
 				}
@@ -598,16 +598,11 @@ void IGame::deinit() {
 	_window.free();
 }
 
-void IGame::notify(const PlayerState& state) {
+void IGame::notify(const int id, const PlayerState& state) {
 	if (_client)
-		_client->notify(state);
+		_client->notify(id, state);
 	if (_server) {
-		mrt::Serializator s;
-		World->serialize(s);
-
-		Message message(UpdateWorld);
-		message.data = s.getData();
-		_server->broadcast(message);
+		_server->notify(id, state);
 	}
 }
 

@@ -35,7 +35,7 @@ void Client::init(const std::string &host, const unsigned port) {
 	} CATCH("init", {delete conn; conn = NULL; throw; });
 }
 
-void Client::notify(const PlayerState &state) {
+void Client::notify(const int id, const PlayerState &state) {
 	if (!_monitor)
 		return;
 	
@@ -45,7 +45,8 @@ void Client::notify(const PlayerState &state) {
 	state.serialize2(m.data);
 	m.serialize2(data);
 	
-	_monitor->send(0, data);
+	LOG_DEBUG(("sending state #%d", id));
+	_monitor->send(id, data);
 }
 
 void Client::tick(const float dt) {	
