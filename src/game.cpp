@@ -713,6 +713,7 @@ void IGame::updatePlayers() {
 	for(int i = 0; i < n; ++i) {
 		PlayerSlot &slot = _players[i];
 		if (slot.control_method != NULL) {
+			assert(slot.obj != NULL);
 			PlayerState &state = slot.obj->getPlayerState();
 			PlayerState old_state = state;
 			slot.control_method->updateState(state);
@@ -728,24 +729,32 @@ void IGame::updatePlayers() {
 		_client->notify(_players[_my_index].state);
 		_players[_my_index].need_sync = false;
 	}
+	//cross-players state exchange
 	if (_server && updated) {
 		for(int i = 0; i < n; ++i) {
-			if (i == _my_index) continue;
+			if (i == _my_index || _players[i].obj == NULL) continue;
 			
+			bool send = false;
 			mrt::Serializator s;
 			for(int j = 0; j < n; ++j) {
-				const PlayerSlot &slot = _players[j];
-				if (i == j) continue;
+				if (i == j) 
+					continue;
+				PlayerSlot &slot = _players[j];
 				if (slot.need_sync) {
+					LOG_DEBUG(("object in slot %d: %s (%d) need sync", j, slot.obj->registered_name.c_str(), slot.obj->getID()));
 					s.add(slot.obj->getID());
 					slot.state.serialize(s);
+					send = true;
 				}
 			}
-			if (s.size()) {
+			if (send) {
 				Message m(UpdatePlayers);
 				m.data = s.getData();
 				_server->send(i, m);
 			}
+		}
+		for(int i = 0; i < n; ++i) {
+			_players[i].need_sync = false;
 		}
 	}
 }
