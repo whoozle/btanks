@@ -20,6 +20,7 @@ Help(opts.GenerateHelpText(env))
 debug = False
 
 env.Append(CPPDEFINES = ['USE_GLSDL'])
+env.Append(CPPDEFINES = ['_REENTRANT'])
 
 #print sys.platform
 if sys.platform == "win32":
