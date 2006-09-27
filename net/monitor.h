@@ -18,7 +18,7 @@ public:
 	void add(const int id, Connection *);
 	
 	void send(const int id, const mrt::Chunk &data);
-	void broadcast(const mrt::Chunk &data, const int except = -1);
+	void broadcast(const mrt::Chunk &data);
 	const bool recv(int &id, mrt::Chunk &data);
 	
 	~Monitor();

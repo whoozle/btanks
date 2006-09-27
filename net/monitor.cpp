@@ -67,16 +67,14 @@ void Monitor::send(const int id, const mrt::Chunk &rawdata) {
 	_send_q.push_back(t);
 }
 
-void Monitor::broadcast(const mrt::Chunk &rawdata, const int except) {
+void Monitor::broadcast(const mrt::Chunk &rawdata) {
 	Task *task = createTask(0, rawdata);
 
 	sdlx::AutoMutex m(_send_q_mutex);
 	for(ConnectionMap::iterator i = _connections.begin(); i != _connections.end(); ++i) {
-		if (i->first != except) {
-			Task *t = task->clone();
-			t->id = i->first;
-			_send_q.push_back(t);
-		}
+		Task *t = task->clone();
+		t->id = i->first;
+		_send_q.push_back(t);
 	}
 	delete task;
 }

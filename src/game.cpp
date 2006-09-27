@@ -29,6 +29,8 @@
 #include "controls/keyplayer.h"
 #include "controls/external_control.h"
 
+#include "player_state.h"
+
 #ifndef SDL_OPENGLBLIT
 #define SDL_OPENGLBLIT 0
 // using 0 as OPENGLBLIT value. SDL 1.3 or later
@@ -470,7 +472,6 @@ void IGame::run() {
 			{
 				checkPlayers();
 				
-				//updating all player states.
 				int n = _players.size();
 				for(int i = 0; i < n; ++i) {
 					PlayerSlot &slot = _players[i];
@@ -478,10 +479,16 @@ void IGame::run() {
 						PlayerState &state = slot.obj->getPlayerState();
 						PlayerState old_state = state;
 						slot.control_method->updateState(state);
-						if (old_state != state) {
-							notify(i, state, i == _my_index?-1:i);
+						if (state != old_state) {
+							slot.state = state;
+							slot.need_sync = true;
 						}
 					}
+				}
+				
+				if (_client && _my_index >= 0 && _players[_my_index].need_sync)	{
+					_client->notify(_players[_my_index].state);
+					_players[_my_index].need_sync = false;
 				}
 			}
 #ifdef SHOW_PERFSTATS
@@ -612,14 +619,6 @@ void IGame::deinit() {
 	LOG_DEBUG(("shutting down, freeing surface"));
 	_running = false;
 	_window.free();
-}
-
-void IGame::notify(const int id, const PlayerState& state, const int except) {
-	if (_client)
-		_client->notify(id, state);
-	if (_server) {
-		_server->notify(id, state, except);
-	}
 }
 
 const int IGame::onConnect(Message &message) {

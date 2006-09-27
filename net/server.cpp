@@ -69,7 +69,7 @@ void Server::broadcast(const Message &m) {
 }
 
 
-void Server::notify(const int id, const PlayerState &state, const int except) {
+void Server::notify(const int id, const PlayerState &state) {
 	if (!_monitor)
 		return;
 
@@ -78,6 +78,6 @@ void Server::notify(const int id, const PlayerState &state, const int except) {
 	state.serialize2(m.data);
 	m.serialize2(data);
 	
-	LOG_DEBUG(("broadcasting state #%d, except: #%d", id, except));
-	_monitor->broadcast(data, except);
+	LOG_DEBUG(("broadcasting state #%d", id));
+	_monitor->broadcast(data);
 }

@@ -12,7 +12,7 @@ class Server {
 public:
 	Server(); 
 	void init(const unsigned port);
-	void notify(const int id, const PlayerState &state, const int except = -1);
+	void notify(const int id, const PlayerState &state);
 	void tick(const float dt);
 	void broadcast(const Message &m);
 	~Server();

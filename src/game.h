@@ -26,9 +26,9 @@
 
 #include "menu.h"
 #include "math/v3.h"
+#include "player_state.h"
 
 class Object;
-class PlayerState;
 class Message;
 class Server;
 class Client;
@@ -54,9 +54,6 @@ public:
 	IGame();
 	~IGame();
 	
-	//multiplayer stuff. refactor it.
-	void notify(const int id, const PlayerState& state, const int except = -1);
-
 	const int onConnect(Message &message);
 	void onMessage(const int id, const Message &message);
 	void onDisconnect(const int id);
@@ -76,11 +73,14 @@ private:
 	void loadMap(const std::string &name);	
 	
 	struct PlayerSlot {
-		PlayerSlot() : obj(NULL), control_method(NULL) {}
-		PlayerSlot(Object *obj) : obj(obj), control_method(NULL) {}
+		PlayerSlot() : obj(NULL), control_method(NULL), need_sync(false) {}
+		PlayerSlot(Object *obj) : obj(obj), control_method(NULL), need_sync(false) {}
 		Object * obj;
 		ControlMethod * control_method;
 		v3<int> position;
+		
+		PlayerState state;
+		bool need_sync;
 		
 		void clear();
 		~PlayerSlot();

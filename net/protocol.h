@@ -15,6 +15,7 @@ enum MessageType {
 	None,
 	ServerStatus,
 	PlayerEvent,
+	UpdatePlayers,
 	UpdateWorld
 };
 	

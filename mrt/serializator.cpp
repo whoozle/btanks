@@ -29,6 +29,15 @@ using namespace mrt;
 Serializator::Serializator() : _data(new mrt::Chunk), _pos(0), _owns_data(true) {}
 Serializator::Serializator(const mrt::Chunk *chunk) : _data((mrt::Chunk *)chunk), _pos(0), _owns_data(false) {}
 
+const bool Serializator::empty() const {
+	return _pos < _data->getSize();
+}
+
+const size_t Serializator::size() const {
+	return _data->getSize();
+}
+
+
 Serializator::~Serializator() {
 	if (_owns_data) {
 		delete _data;
