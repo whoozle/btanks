@@ -433,7 +433,9 @@ void IGame::run() {
 			case SDL_KEYDOWN:
 #ifndef WIN32
 				if (event.key.keysym.sym==SDLK_f && event.key.keysym.mod & KMOD_SHIFT) {
-					_window.toggleFullscreen();
+					TRY {
+						_window.toggleFullscreen();
+					} CATCH("main loop", {});
 					break;
 				}
 #endif
