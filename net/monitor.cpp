@@ -21,12 +21,6 @@ Monitor::Task::Task(const int id) : id(id), data(new mrt::Chunk), pos(0), len(0)
 Monitor::Task::Task(const int id, const mrt::Chunk &d) : id(id), data(new mrt::Chunk(d)), pos(0), len(data->getSize()), size_task(false) {}
 Monitor::Task::Task(const int id, const int size) : id(id), data(new mrt::Chunk(size)), pos(0), len(data->getSize()), size_task(false) {}
 void Monitor::Task::clear() { delete data; pos = len = 0; }
-Monitor::Task* Monitor::Task::clone() const { 
-	Monitor::Task * r = new Monitor::Task(*this); 
-	r->data = new mrt::Chunk;
-	*r->data = *data;
-	return r;
-}
 
 Monitor::Monitor() : _running(false), _comp_level(0) {
 }
@@ -63,22 +57,9 @@ Monitor::Task * Monitor::createTask(const int id, const mrt::Chunk &rawdata) {
 void Monitor::send(const int id, const mrt::Chunk &rawdata) {
 	Task *t = createTask(id, rawdata);
 	
-	sdlx::AutoMutex m(_send_q_mutex);
+	sdlx::AutoMutex m(_connections_mutex);
 	_send_q.push_back(t);
 }
-
-void Monitor::broadcast(const mrt::Chunk &rawdata) {
-	Task *task = createTask(0, rawdata);
-
-	sdlx::AutoMutex m(_send_q_mutex);
-	for(ConnectionMap::iterator i = _connections.begin(); i != _connections.end(); ++i) {
-		Task *t = task->clone();
-		t->id = i->first;
-		_send_q.push_back(t);
-	}
-	delete task;
-}
-
 
 Monitor::TaskQueue::iterator Monitor::findTask(TaskQueue &queue, const int conn_id) {
 	Monitor::TaskQueue::iterator i;
@@ -207,7 +188,6 @@ const int Monitor::run() {
 			}
 
 			if (set.check(sock, mrt::SocketSet::Write)) {
-				sdlx::AutoMutex m(_send_q_mutex);
 				TaskQueue::iterator ti = findTask(_send_q, i->first);
 				if (ti != _send_q.end()) {
 					Task *t = *ti;

@@ -40,10 +40,7 @@ void Server::tick(const float dt) {
 				Message msg(ServerStatus);
 				int id = Game->onConnect(msg);
 				_monitor->add(id, new Connection(s));
-				mrt::Chunk data;
-				msg.serialize2(data);
-				
-				_monitor->send(id, data);
+				send(id, msg);
 			} CATCH("accept", { delete s; s = NULL; })
 		}
 
@@ -53,23 +50,16 @@ void Server::tick(const float dt) {
 			Message m;
 			m.deserialize2(data);
 			if (m.type != PlayerEvent) 
-				throw_ex(("message type %d is not allowed", m.type));
+				throw_ex(("message type %s is not allowed", m.getType()));
 	
 			Game->onMessage(id, m);
 		}
 	} CATCH("tick", {});
 }
 
-void Server::broadcast(const Message &m) {
-	TRY {
-		mrt::Chunk data;
-		m.serialize2(data);
-		_monitor->broadcast(data);
-	} CATCH("broadcast", {});
-}
-
 void Server::send(const int id, const Message &m) {
 	TRY {
+		LOG_DEBUG(("sending message '%s' to %d", m.getType(), id));
 		mrt::Chunk data;
 		m.serialize2(data);
 		_monitor->send(id, data);

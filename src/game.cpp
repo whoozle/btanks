@@ -734,7 +734,7 @@ void IGame::updatePlayers() {
 			
 			mrt::Serializator s;
 			for(int j = 0; j < n; ++j) {
-				const PlayerSlot &slot = _players[i];
+				const PlayerSlot &slot = _players[j];
 				if (i == j) continue;
 				if (slot.need_sync) {
 					s.add(slot.obj->getID());

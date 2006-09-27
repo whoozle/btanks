@@ -60,7 +60,7 @@ void Client::tick(const float dt) {
 		Message m;
 		m.deserialize2(data);
 		if (m.type != UpdateWorld && m.type != ServerStatus) 
-			throw_ex(("message type %d is not allowed", m.type));
+			throw_ex(("message type '%s' is not allowed", m.getType()));
 		Game->onMessage(0, m);
 	}
 }

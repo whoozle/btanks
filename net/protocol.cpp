@@ -17,6 +17,18 @@ Message::Message() : type(None) {}
 
 Message::Message(const MessageType type) : type(type) {}
 
+const char * Message::getType() const {
+	switch(type) {
+	case None: return "None";
+	case ServerStatus: return "ServerStatus";
+	case PlayerEvent: return "PlayerEvents";
+	case UpdatePlayers: return "UpdatePlayers";
+	case UpdateWorld: return "UpdateWorld";
+	}
+	return "Unknown/Damaged";
+}
+
+
 void Message::serialize(mrt::Serializator &s) const {
 	s.add((int)type);
 	writeMap(s);
@@ -29,46 +41,6 @@ void Message::deserialize(const mrt::Serializator &s) {
 	type = (MessageType) t;
 	readMap(s);
 	s.get(data);
-}
-
-
-void Message::send(const mrt::TCPSocket &sock) const {
-	mrt::Serializator s; 
-	serialize(s);
-	mrt::Chunk rawdata;
-	{
-		mrt::Chunk cdata;
-		const mrt::Chunk &data = s.getData();
-		mrt::ZStream::compress(cdata, data, 9);
-	
-		int size = cdata.getSize();
-		rawdata.setSize(cdata.getSize() + 2);
-	
-		*(unsigned short *)(rawdata.getPtr()) = htons(size);
-		memcpy((unsigned char *)rawdata.getPtr() + 2, cdata.getPtr(), cdata.getSize());
-	}
-	sock.send(rawdata.getPtr(), rawdata.getSize());	
-	LOG_DEBUG(("message type %d, sent %d bytes (uncompressed: %d)", type, rawdata.getSize(), data.getSize()));
-	//LOG_DEBUG(("message: %s", rawdata.dump().c_str()));
-}
-
-void Message::recv(const mrt::TCPSocket &sock) {
-	unsigned char buf[2];
-	_attrs.clear();
-	int r = sock.recv(buf, 2);
-	if (r != 2) 
-		throw_ex(("fixme: implement handling of fragmented packets. read: %d", r));
-
-	int size = ntohs(*(unsigned short *)buf);
-	mrt::Chunk cdata;
-	cdata.setSize(size);
-	sock.recv(cdata.getPtr(), size);
-	
-	mrt::Chunk data;
-	mrt::ZStream::decompress(data, cdata);
-
-	mrt::Serializator s(&data);
-	deserialize(s);
 }
 
 void Message::writeMap(mrt::Serializator &s) const {

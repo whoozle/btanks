@@ -14,7 +14,6 @@ public:
 	void init(const unsigned port);
 	void send(const int id, const Message &m);
 	void tick(const float dt);
-	void broadcast(const Message &m);
 	~Server();
 	
 private:

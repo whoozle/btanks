@@ -18,7 +18,6 @@ public:
 	void add(const int id, Connection *);
 	
 	void send(const int id, const mrt::Chunk &data);
-	void broadcast(const mrt::Chunk &data);
 	const bool recv(int &id, mrt::Chunk &data);
 	
 	~Monitor();
@@ -34,7 +33,6 @@ private:
 		Task(const int id, const mrt::Chunk &);
 		Task(const int id, const int size);
 		void clear();
-		Task * clone() const;
 		
 		int id;
 		mrt::Chunk *data;
@@ -49,7 +47,7 @@ private:
 	TaskQueue _send_q, _recv_q, _result_q;
 	
 	ConnectionMap _connections;
-	sdlx::Mutex _connections_mutex, _result_mutex, _send_q_mutex;
+	sdlx::Mutex _connections_mutex, _result_mutex;
 	
 	TaskQueue::iterator findTask(TaskQueue &queue, const int conn_id);
 	void eraseTask(TaskQueue &q, const TaskQueue::iterator &i);
