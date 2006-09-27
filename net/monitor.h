@@ -47,7 +47,7 @@ private:
 	TaskQueue _send_q, _recv_q, _result_q;
 	
 	ConnectionMap _connections;
-	sdlx::Mutex _connections_mutex, _result_mutex;
+	sdlx::Mutex _connections_mutex, _result_mutex, _send_q_mutex;
 	
 	TaskQueue::iterator findTask(TaskQueue &queue, const int conn_id);
 	void eraseTask(TaskQueue &q, const TaskQueue::iterator &i);

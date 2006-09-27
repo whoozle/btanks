@@ -16,6 +16,8 @@
 #	include <netdb.h>
 #endif              
 
+#include <set>
+
 
 Monitor::Task::Task(const int id) : id(id), data(new mrt::Chunk), pos(0), len(0), size_task(false) {}
 Monitor::Task::Task(const int id, const mrt::Chunk &d) : id(id), data(new mrt::Chunk(d)), pos(0), len(data->getSize()), size_task(false) {}
@@ -55,9 +57,16 @@ Monitor::Task * Monitor::createTask(const int id, const mrt::Chunk &rawdata) {
 
 	
 void Monitor::send(const int id, const mrt::Chunk &rawdata) {
+	{
+		sdlx::AutoMutex m(_connections_mutex);
+		if (_connections.find(id) == _connections.end()) {
+			LOG_WARN(("sending data to non-existent connection %d", id));
+			return;
+		}
+	}
 	Task *t = createTask(id, rawdata);
 	
-	sdlx::AutoMutex m(_connections_mutex);
+	sdlx::AutoMutex m(_send_q_mutex);
 	_send_q.push_back(t);
 }
 
@@ -102,51 +111,63 @@ const int Monitor::run() {
 	_running = true;
 	LOG_DEBUG(("network monitor thread was started..."));
 	while(_running) {
-		int n;
+		std::set<int> cids;
+		mrt::SocketSet set; 
 		{
 			sdlx::AutoMutex m(_connections_mutex);
-			n = _connections.size();
+			for(ConnectionMap::iterator i = _connections.begin(); i != _connections.end(); ++i) {
+				cids.insert(i->first);
+				int how = mrt::SocketSet::Read | mrt::SocketSet::Exception;
+				if (findTask(_send_q, i->first) != _send_q.end()) 
+					how |= mrt::SocketSet::Write;
+			
+				set.add(i->second->sock, how);
+			}
 		}
-		if (n == 0) {
+		if (cids.empty()) {
 			SDL_Delay(10);
 			continue;
 		} 
 
-		mrt::SocketSet set; 
-		sdlx::AutoMutex m(_connections_mutex);
-		for(ConnectionMap::iterator i = _connections.begin(); i != _connections.end(); ++i) {
-			int how = mrt::SocketSet::Read | mrt::SocketSet::Exception;
-			if (findTask(_send_q, i->first) != _send_q.end()) 
-				how |= mrt::SocketSet::Write;
-			
-			set.add(i->second->sock, how);
-		}
-		m.unlock();
 		if (set.check(10) == 0) 
 			continue;
 		
-		m.lock();
-		for(ConnectionMap::iterator i = _connections.begin(); i != _connections.end();) {
-			const mrt::TCPSocket *sock = i->second->sock;
+		for(std::set<int>::iterator i = cids.begin(); i != cids.end(); ++i) {
+			const int cid = *i;
+			const mrt::TCPSocket *sock = NULL;
+			{
+				sdlx::AutoMutex m(_connections_mutex);
+				ConnectionMap::const_iterator i = _connections.find(cid);
+				if (i == _connections.end())
+					continue;
+				sock = i->second->sock;
+			}
+			
 			if (set.check(sock, mrt::SocketSet::Exception)) {
 				//fixme: notify upper layer 
 			disconnect: 
 				LOG_DEBUG(("client disconnected."));
-				eraseTasks(_send_q, i->first);
-				eraseTasks(_recv_q, i->first);
-				_connections.erase(i++);
+				{ 
+					sdlx::AutoMutex m(_connections_mutex); 
+					_connections.erase(cid);
+				}
+				{ 
+					sdlx::AutoMutex m(_send_q_mutex); 
+					eraseTasks(_send_q, cid);
+				}
+				eraseTasks(_recv_q, cid);
 				continue;
 			}
 
 			if (set.check(sock, mrt::SocketSet::Read)) {
 
-				TaskQueue::iterator ti = findTask(_recv_q, i->first);
+				TaskQueue::iterator ti = findTask(_recv_q, cid);
 				if (ti == _recv_q.end()) {
-					Task *t = new Task(i->first, 3);
+					Task *t = new Task(cid, 3);
 					t->size_task = true;
 					_recv_q.push_back(t);
 					//LOG_DEBUG(("added size task to r-queue"));
-					ti = findTask(_recv_q, i->first);
+					ti = findTask(_recv_q, cid);
 					assert(ti != _recv_q.end());
 				}
 				Task *t = *ti;
@@ -170,7 +191,7 @@ const int Monitor::run() {
 						//LOG_DEBUG(("added task for %u bytes. flags = %02x", len, flags));
 						eraseTask(_recv_q, ti);
 						
-						Task *t = new Task(i->first, len);
+						Task *t = new Task(cid, len);
 						t->flags = flags;
 						_recv_q.push_back(t);
 					} else {
@@ -188,18 +209,20 @@ const int Monitor::run() {
 			}
 
 			if (set.check(sock, mrt::SocketSet::Write)) {
-				TaskQueue::iterator ti = findTask(_send_q, i->first);
+				sdlx::AutoMutex m(_send_q_mutex);
+				TaskQueue::iterator ti = findTask(_send_q, cid);
 				if (ti != _send_q.end()) {
 					Task *t = *ti;
 
 					int estimate = t->len - t->pos;
 					assert(estimate > 0);
-			
+					m.unlock();
 					int r = sock->send((char *)(t->data->getPtr()) + t->pos, t->len);
 					if (r == -1 || r == 0) {
 						LOG_ERROR(("error while reading %u bytes (r = %d)", t->len, r));
 						goto disconnect;
 					}
+					m.lock();
 
 					t->pos += r;
 					assert(t->pos <= t->len);
@@ -209,8 +232,6 @@ const int Monitor::run() {
 					}
 				}
 			}
-			
-			++i;
 		}
 		
 	}
