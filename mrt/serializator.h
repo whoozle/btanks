@@ -19,6 +19,8 @@ public:
 	void add(const bool b);
 	void add(const Chunk &c);
 
+	const bool end() const;
+	
 	void get(int &n) const;
 	void get(size_t &n) const;
 	void get(float &f) const;

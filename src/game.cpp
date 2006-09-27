@@ -668,7 +668,7 @@ void IGame::onMessage(const int id, const Message &message) {
 		if (ex == NULL)
 			throw_ex(("player with id %d uses non-external control method", id));
 		ex->state.deserialize(s);
-	}
+	} else LOG_WARN(("unhandled message: %s\n%s", message.getType(), message.data.dump().c_str()));
 }
 
 void IGame::clear() {

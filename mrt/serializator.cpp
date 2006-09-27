@@ -36,6 +36,10 @@ Serializator::~Serializator() {
 	}
 }
 
+const bool Serializator::end() const {
+	return _pos >= _data->getSize();
+}
+
 void Serializator::add(const int n) {
 	//LOG_DEBUG(("added int %d", n));
 	unsigned char type = INTEGER;
