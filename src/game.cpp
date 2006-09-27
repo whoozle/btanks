@@ -668,6 +668,20 @@ void IGame::onMessage(const int id, const Message &message) {
 		if (ex == NULL)
 			throw_ex(("player with id %d uses non-external control method", id));
 		ex->state.deserialize(s);
+	} else if (message.type == UpdatePlayers) {
+		mrt::Serializator s(&message.data);
+		while(!s.end()) {
+			int id;
+			s.get(id);
+			PlayerState state; 
+			state.deserialize(s);
+			Object *o = World->getObjectByID(id);
+			if (o != NULL) {
+				o->getPlayerState() = state;
+			} else {
+				LOG_WARN(("skipped state update for object id %d", id));
+			}
+		}
 	} else LOG_WARN(("unhandled message: %s\n%s", message.getType(), message.data.dump().c_str()));
 }
 
