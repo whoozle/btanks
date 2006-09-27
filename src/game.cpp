@@ -35,7 +35,7 @@
 #endif
 
 
-//#define SHOW_PERFSTATS
+#define SHOW_PERFSTATS
 
 IMPLEMENT_SINGLETON(Game, IGame)
 
@@ -426,7 +426,10 @@ void IGame::run() {
 	LOG_DEBUG(("fps_limit set to %d, maximum frame delay: %d", fps_limit, max_delay));
 
 	while (_running) {
-		Uint32 t_start = SDL_GetTicks();
+		Uint32 t_start  = SDL_GetTicks();
+#ifdef SHOW_PERFSTATS
+		Uint32 t_tick_n = t_start, t_tick_w = t_start, t_tick_s = t_start, t_tick_c = t_start;
+#endif
 		
 		while (SDL_PollEvent(&event)) {
 			switch(event.type) {
@@ -468,28 +471,40 @@ void IGame::run() {
 				checkPlayers();
 				
 				//updating all player states.
-				size_t n = _players.size();
-				for(size_t i = 0; i < n; ++i) {
+				int n = _players.size();
+				for(int i = 0; i < n; ++i) {
 					PlayerSlot &slot = _players[i];
 					if (slot.control_method != NULL) {
 						PlayerState &state = slot.obj->getPlayerState();
 						PlayerState old_state = state;
 						slot.control_method->updateState(state);
 						if (old_state != state) {
-							notify(i, state);
+							notify(i, state, i == _my_index?-1:i);
 						}
 					}
 				}
 			}
+#ifdef SHOW_PERFSTATS
+			t_tick_n = SDL_GetTicks();
+#endif
 		
 			World->tick(dt);
+#ifdef SHOW_PERFSTATS
+			t_tick_w = SDL_GetTicks();
+#endif
 			
 			if (_server) 
 				_server->tick(dt);
+#ifdef SHOW_PERFSTATS
+			t_tick_s = SDL_GetTicks();
+#endif
 
 			if (_client) 
 				_client->tick(dt);
-				
+
+#ifdef SHOW_PERFSTATS
+			t_tick_c = SDL_GetTicks();
+#endif				
 			
 			if (_players.size()) {
 				const Object * p = _players[_my_index].obj;
@@ -514,7 +529,7 @@ void IGame::run() {
 			}
 		}
 #ifdef SHOW_PERFSTATS
-		Uint32 t_tick = SDL_GetTicks() - tstart;
+		Uint32 t_tick = SDL_GetTicks();
 #endif
 
 		_window.flip();
@@ -523,7 +538,7 @@ void IGame::run() {
 		}
 
 #ifdef SHOW_PERFSTATS
-		Uint32 t_flip = SDL_GetTicks() - t_tick;
+		Uint32 t_flip = SDL_GetTicks();
 #endif
 
 		_window.fillRect(window_size, 0);
@@ -568,13 +583,14 @@ void IGame::run() {
 		}
 
 #ifdef SHOW_PERFSTATS
-		Uint32 t_render = SDL_GetTicks() - t_flip;
+		Uint32 t_render = SDL_GetTicks();
 #endif
 
 		int tdelta = SDL_GetTicks() - t_start;
 
 #ifdef SHOW_PERFSTATS
-		LOG_DEBUG(("tick time: %u, render time: %u, flip time: %u", t_tick, t_render, t_flip));
+		LOG_DEBUG(("tick time: %u, flip time: %u, render time: %u", t_tick - t_start, t_flip - t_tick, t_render - t_flip));
+		LOG_DEBUG(("notify: %u, world: %u, server: %u, client: %u", t_tick_n - t_start, t_tick_w - t_tick_n, t_tick_s - t_tick_w, t_tick_c - t_tick_s));
 #endif
 		if (tdelta < max_delay) {
 #ifdef SHOW_PERFSTATS
@@ -598,11 +614,11 @@ void IGame::deinit() {
 	_window.free();
 }
 
-void IGame::notify(const int id, const PlayerState& state) {
+void IGame::notify(const int id, const PlayerState& state, const int except) {
 	if (_client)
 		_client->notify(id, state);
 	if (_server) {
-		_server->notify(id, state);
+		_server->notify(id, state, except);
 	}
 }
 

@@ -55,7 +55,7 @@ public:
 	~IGame();
 	
 	//multiplayer stuff. refactor it.
-	void notify(const int id, const PlayerState& state);
+	void notify(const int id, const PlayerState& state, const int except = -1);
 
 	const int onConnect(Message &message);
 	void onMessage(const int id, const Message &message);
