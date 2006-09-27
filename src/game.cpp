@@ -469,28 +469,7 @@ void IGame::run() {
 		
 		
 		if (_running && !_paused) {
-			{
-				checkPlayers();
-				
-				int n = _players.size();
-				for(int i = 0; i < n; ++i) {
-					PlayerSlot &slot = _players[i];
-					if (slot.control_method != NULL) {
-						PlayerState &state = slot.obj->getPlayerState();
-						PlayerState old_state = state;
-						slot.control_method->updateState(state);
-						if (state != old_state) {
-							slot.state = state;
-							slot.need_sync = true;
-						}
-					}
-				}
-				
-				if (_client && _my_index >= 0 && _players[_my_index].need_sync)	{
-					_client->notify(_players[_my_index].state);
-					_players[_my_index].need_sync = false;
-				}
-			}
+			updatePlayers();
 #ifdef SHOW_PERFSTATS
 			t_tick_n = SDL_GetTicks();
 #endif
@@ -719,14 +698,55 @@ IGame::PlayerSlot::~PlayerSlot() {
 	clear();
 }
 
-void IGame::checkPlayers() {
-	size_t n = _players.size();
-	for(size_t i = 0; i < n; ++i) {
+void IGame::updatePlayers() {
+	int n = _players.size();
+	for(int i = 0; i < n; ++i) {
 		PlayerSlot &slot = _players[i];
 		if (slot.obj == NULL || World->exists(slot.obj)) 
 			continue;
 		LOG_DEBUG(("player in slot %d is dead. respawning.", i));
 		spawnPlayer(slot, slot.classname, slot.animation);
+	}
+	
+	bool updated = false;
+	
+	for(int i = 0; i < n; ++i) {
+		PlayerSlot &slot = _players[i];
+		if (slot.control_method != NULL) {
+			PlayerState &state = slot.obj->getPlayerState();
+			PlayerState old_state = state;
+			slot.control_method->updateState(state);
+			if (state != old_state) {
+				slot.state = state;
+				slot.need_sync = true;
+				updated = true;
+			}
+		}
+	}
+				
+	if (_client && _my_index >= 0 && _players[_my_index].need_sync)	{
+		_client->notify(_players[_my_index].state);
+		_players[_my_index].need_sync = false;
+	}
+	if (_server && updated) {
+		for(int i = 0; i < n; ++i) {
+			if (i == _my_index) continue;
+			
+			mrt::Serializator s;
+			for(int j = 0; j < n; ++j) {
+				const PlayerSlot &slot = _players[i];
+				if (i == j) continue;
+				if (slot.need_sync) {
+					s.add(slot.obj->getID());
+					slot.state.serialize(s);
+				}
+			}
+			if (s.size()) {
+				Message m(UpdatePlayers);
+				m.data = s.getData();
+				_server->send(i, m);
+			}
+		}
 	}
 }
 
