@@ -37,7 +37,7 @@
 #endif
 
 
-#define SHOW_PERFSTATS
+//#define SHOW_PERFSTATS
 
 IMPLEMENT_SINGLETON(Game, IGame)
 
