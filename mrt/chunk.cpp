@@ -33,30 +33,34 @@ Chunk::Chunk(const Chunk& c) {
 void Chunk::setSize(size_t s) {
 	if (s == 0) {
 		free();
-	} else {
-		void * x = realloc(ptr, s);
-		if (x == NULL) 
-			throw_io(("realloc (%p, %d)", ptr, s));
-		ptr = x;
-		size = s;
+		return;
 	}
+
+	void * x = realloc(ptr, s);
+	if (x == NULL) 
+		throw_io(("realloc (%p, %d)", ptr, s));
+	ptr = x;
+	size = s;
 }
 
 void Chunk::setData(const void *p, const size_t s) {
-	if (p == NULL || s == 0) {
-		free();
-	} else {
-		void *x = realloc(ptr, s);
-		if (x == NULL) 
-			throw_io(("realloc (%p, %d)", ptr, s));
-		ptr = x;
-		memcpy(ptr, p, s);
-		size = s;
-	}
+	if (p == NULL || s == 0)
+		throw_ex(("calling setData(%p, %u) is invalid", p, s));
+
+	void *x = realloc(ptr, s);
+
+	if (x == NULL) 
+		throw_io(("realloc (%p, %d)", ptr, s));
+	ptr = x;
+	memcpy(ptr, p, s);
+	size = s;
 }
 
-void Chunk::setData(void *p, const size_t s, const bool takeOwnership) {
-	if (takeOwnership) {
+void Chunk::setData(void *p, const size_t s, const bool own) {
+	if (p == NULL || s == 0) 
+		throw_ex(("calling setData(%p, %u, %s) is invalid", p, s, own?"true":"false"));
+	
+	if (own) {
 		free();
 		ptr = p;
 		size = s;
@@ -65,6 +69,7 @@ void Chunk::setData(void *p, const size_t s, const bool takeOwnership) {
 		if (x == NULL) 
 			throw_io(("realloc(%p, %d)", ptr, s));
 		ptr = x;
+		size = s;
 		memcpy(ptr, p, s);
 	}
 }

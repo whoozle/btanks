@@ -38,8 +38,8 @@ public:
 	void unlink() { ptr = 0; size = 0; }
 
 	void setSize(size_t s);
-	void setData(const void *ptr, const size_t size);
-	void setData(void *ptr, const size_t size, const bool takeOwnership = false);
+	void setData(const void *p, const size_t s);
+	void setData(void *p, const size_t s, const bool own = false);
 	
 	void append(const Chunk &other);
 	void *reserve(const int more);

@@ -97,6 +97,8 @@ void Serializator::add(const std::string &str) {
 void Serializator::add(const Chunk &c) {
 	int size = c.getSize();
 	add(size);
+	if (size == 0)
+		return;
 
 	unsigned char *ptr = (unsigned char *) _data->reserve(size) + _pos;
 	memcpy(ptr, c.getPtr(), size);
@@ -164,8 +166,13 @@ void Serializator::get(Chunk &c)  const {
 	get(size);
 
 	ASSERT_POS(size);
+	c.setSize(size);
+	
+	if (size == 0) 
+		return;
+	
 	const char * ptr = (const char *) _data->getPtr() + _pos;
-	c.setData(ptr, size);
+	memcpy(c.getPtr(), ptr, size);
 	_pos += size;
 }
 
