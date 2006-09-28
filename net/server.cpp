@@ -46,7 +46,8 @@ void Server::tick(const float dt) {
 
 		mrt::Chunk data;
 		int id;
-		if (_monitor->recv(id, data)) {
+		
+		while(_monitor->recv(id, data)) {
 			Message m;
 			m.deserialize2(data);
 			
@@ -54,6 +55,10 @@ void Server::tick(const float dt) {
 				throw_ex(("message type %s is not allowed", m.getType()));
 	
 			Game->onMessage(id, m);
+		}
+
+		while(_monitor->disconnected(id)) {
+			Game->onDisconnect(id);
 		}
 	} CATCH("tick", {});
 }

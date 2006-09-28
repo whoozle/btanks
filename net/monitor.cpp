@@ -92,6 +92,15 @@ const bool Monitor::recv(int &id, mrt::Chunk &data) {
 	return true;
 }
 
+const bool Monitor::disconnected(int &id) {
+	sdlx::AutoMutex m(_result_mutex);
+	if (_disconnections.empty())
+		return false;
+	id = _disconnections.front();
+	_disconnections.pop_front();
+	return true;
+}
+
 
 void Monitor::eraseTask(TaskQueue &q, const TaskQueue::iterator &i) {
 	(*i)->clear();

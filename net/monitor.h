@@ -19,6 +19,7 @@ public:
 	
 	void send(const int id, const mrt::Chunk &data);
 	const bool recv(int &id, mrt::Chunk &data);
+	const bool disconnected(int &id);
 	
 	~Monitor();
 
@@ -45,6 +46,7 @@ private:
 	
 	typedef std::deque<Task *> TaskQueue;
 	TaskQueue _send_q, _recv_q, _result_q;
+	std::deque<int> _disconnections;
 	
 	ConnectionMap _connections;
 	sdlx::Mutex _connections_mutex, _result_mutex, _send_q_mutex;

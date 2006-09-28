@@ -60,7 +60,7 @@ void Client::tick(const float dt) {
 
 	int id;
 	mrt::Chunk data;
-	if (_monitor->recv(id, data)) {
+	while(_monitor->recv(id, data)) {
 		assert(id == 0);
 		Message m;
 		m.deserialize2(data);
@@ -69,5 +69,8 @@ void Client::tick(const float dt) {
 			m.type != Message::UpdatePlayers && m.type != Message::Pong) 
 			throw_ex(("message type '%s' is not allowed", m.getType()));
 		Game->onMessage(0, m);
+	}
+	while(_monitor->disconnected(id)) {
+		Game->onDisconnect(id);
 	}
 }
