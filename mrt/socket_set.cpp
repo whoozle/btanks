@@ -37,7 +37,7 @@ void SocketSet::add(const TCPSocket &sock, const int how) {
 		LOG_WARN(("skip add in set %d", how));
 		return;
 	}
-	
+
 	if (how & Read) {
 		FD_SET(fd, (fd_set*)_r_set);
 	}
@@ -54,7 +54,7 @@ void SocketSet::add(const TCPSocket &sock, const int how) {
 void SocketSet::add(const TCPSocket *sock, const int how) {
 	if (sock == NULL)
 		throw_ex(("attempt to add NULL socket to set"));
-	add(*sock);
+	add(*sock, how);
 }
 
 
