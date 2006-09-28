@@ -672,7 +672,7 @@ void IGame::onMessage(const int id, const Message &message) {
 	}
 	case Message::UpdateWorld: {
 		mrt::Serializator s(&message.data);
-		World->deserialize(s);
+		World->applyUpdate(s, _trip_time);
 		break;
 	} 
 	case Message::PlayerState: {

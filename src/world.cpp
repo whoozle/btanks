@@ -483,6 +483,15 @@ TRY {
 	//LOG_DEBUG(("deserialization completed successfully"));
 }
 
+void IWorld::generateUpdate(mrt::Serializator &s) {
+
+}
+
+void IWorld::applyUpdate(const mrt::Serializator &s, const int ping) {
+	
+}
+
+
 //BIG PATHFINDING PART
 
 typedef v3<int> vertex;

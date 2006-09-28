@@ -59,6 +59,8 @@ public:
 
 	virtual void serialize(mrt::Serializator &s) const;
 	virtual void deserialize(const mrt::Serializator &s);
+	void generateUpdate(mrt::Serializator &s);
+	void applyUpdate(const mrt::Serializator &s, const int ping);
 private:
 	typedef std::set<Object *> ObjectSet;
 	typedef std::map<const int, Object*> ObjectMap;
