@@ -57,6 +57,7 @@ void Chunk::setData(const void *p, const size_t s) {
 
 void Chunk::setData(void *p, const size_t s, const bool takeOwnership) {
 	if (takeOwnership) {
+		free();
 		ptr = p;
 		size = s;
 	} else {
