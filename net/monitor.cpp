@@ -129,7 +129,7 @@ const int Monitor::run() {
 			continue;
 		} 
 
-		if (set.check(100) == 0) 
+		if (set.check(50) == 0) 
 			continue;
 		
 		for(std::set<int>::iterator i = cids.begin(); i != cids.end(); ++i) {
@@ -230,10 +230,9 @@ const int Monitor::run() {
 						//LOG_DEBUG(("sent %u bytes", t->len));
 						eraseTask(_send_q, ti);
 					}
-				}
+				} else LOG_WARN(("socket was in write-set, but no-event in queue!"));
 			}
 		}
-		LOG_DEBUG(("."));
 	}
 	return 0;
 }
