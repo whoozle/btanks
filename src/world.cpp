@@ -415,40 +415,35 @@ Object * IWorld::spawnGrouped(Object *src, const std::string &classname, const s
 	return obj;
 }
 
+void IWorld::serializeObject(mrt::Serializator &s, const Object *o) const {
+	s.add(o->registered_name);
+	s.add(o->animation);
+	o->serialize(s);
+}
+
+
 void IWorld::serialize(mrt::Serializator &s) const {
 	s.add(_last_id);
 	s.add(_id2obj.size());
 	for(ObjectMap::const_reverse_iterator i = _id2obj.rbegin(); i != _id2obj.rend(); ++i) {
 		const Object *o = i->second;
-		
-		s.add(o->registered_name);
-		s.add(o->animation);
-		o->serialize(s);
+		serializeObject(s, o);
 	}
 }
 
-void IWorld::deserialize(const mrt::Serializator &s) {
-TRY {
-	s.get(_last_id);
-	
-	int size;
-	s.get(size);
-	
-	std::set<int> recv_ids;
-	
-	while(size--) {
+const int IWorld::deserializeObject(const mrt::Serializator &s) {
 		std::string rn, an;
 		s.get(rn);
 		s.get(an);
+		int id;
 		
 		Object *ao = NULL;
 		TRY {
 			ao = ResourceManager->createObject(rn, an);
 			//LOG_DEBUG(("created ('%s', '%s')", rn.c_str(), an.c_str()));
 			ao->deserialize(s);
-			const int id = ao->_id;
-			recv_ids.insert(id);
-			
+			id = ao->_id;
+
 			//LOG_DEBUG(("deserialized %d: %s", ao->_id, ao->classname.c_str()));
 			ObjectMap::iterator i = _id2obj.find(id);
 			if (i != _id2obj.end()) {
@@ -469,7 +464,21 @@ TRY {
 				_objects.insert(ao);
 				ao = NULL;
 			}
-		} CATCH("deserialize", { delete ao; ao = NULL; });
+		} CATCH("deserialize", { delete ao; ao = NULL; throw; });
+	return id;
+}
+
+void IWorld::deserialize(const mrt::Serializator &s) {
+TRY {
+	s.get(_last_id);
+	
+	int size;
+	s.get(size);
+	
+	std::set<int> recv_ids;
+	
+	while(size--) {
+		recv_ids.insert(deserializeObject(s));
 	}
 	
 	for(ObjectMap::iterator i = _id2obj.begin(); i != _id2obj.end(); /*haha*/ ) {

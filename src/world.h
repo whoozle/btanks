@@ -62,6 +62,9 @@ public:
 	void generateUpdate(mrt::Serializator &s);
 	void applyUpdate(const mrt::Serializator &s, const int ping);
 private:
+	void serializeObject(mrt::Serializator &, const Object *) const;
+	const int deserializeObject(const mrt::Serializator &);
+
 	typedef std::set<Object *> ObjectSet;
 	typedef std::map<const int, Object*> ObjectMap;
 	
