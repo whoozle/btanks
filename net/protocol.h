@@ -11,18 +11,19 @@ namespace mrt {
 	class TCPSocket;
 }
 
-enum MessageType {
-	None,
-	ServerStatus,
-	PlayerEvent,
-	UpdatePlayers,
-	UpdateWorld
-};
 	
 class Message : public mrt::Serializable {
 public: 
+	enum Type {
+		None,
+		ServerStatus,
+		PlayerState,
+		UpdatePlayers,
+		UpdateWorld
+	};
+	
 	Message();
-	Message(const MessageType type);
+	Message(const Type type);
 	const char * getType() const;
 
 	virtual void serialize(mrt::Serializator &s) const;
@@ -31,7 +32,7 @@ public:
 	void set(const std::string &key, const std::string &value);
 	const std::string &get(const std::string &key) const;
 	
-	MessageType type;
+	Type type;
 
 	mrt::Chunk data;
 private:

@@ -15,13 +15,13 @@
 
 Message::Message() : type(None) {}
 
-Message::Message(const MessageType type) : type(type) {}
+Message::Message(const Message::Type type) : type(type) {}
 
 const char * Message::getType() const {
 	switch(type) {
 	case None: return "None";
 	case ServerStatus: return "ServerStatus";
-	case PlayerEvent: return "PlayerEvents";
+	case PlayerState: return "PlayerState";
 	case UpdatePlayers: return "UpdatePlayers";
 	case UpdateWorld: return "UpdateWorld";
 	}
@@ -38,7 +38,7 @@ void Message::serialize(mrt::Serializator &s) const {
 void Message::deserialize(const mrt::Serializator &s) {
 	int t;
 	s.get(t);
-	type = (MessageType) t;
+	type = (Message::Type) t;
 	readMap(s);
 	s.get(data);
 }

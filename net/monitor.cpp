@@ -129,7 +129,7 @@ const int Monitor::run() {
 			continue;
 		} 
 
-		if (set.check(10) == 0) 
+		if (set.check(100) == 0) 
 			continue;
 		
 		for(std::set<int>::iterator i = cids.begin(); i != cids.end(); ++i) {
@@ -233,7 +233,7 @@ const int Monitor::run() {
 				}
 			}
 		}
-		
+		LOG_DEBUG(("."));
 	}
 	return 0;
 }

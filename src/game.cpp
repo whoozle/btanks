@@ -519,15 +519,6 @@ void IGame::run() {
 		Uint32 t_tick = SDL_GetTicks();
 #endif
 
-		_window.flip();
-		if (_opengl) {
-			//glFlush_ptr.call();
-		}
-
-#ifdef SHOW_PERFSTATS
-		Uint32 t_flip = SDL_GetTicks();
-#endif
-
 		_window.fillRect(window_size, 0);
 		if (_shake > 0) {
 			viewport.y += _shake_int;
@@ -573,10 +564,20 @@ void IGame::run() {
 		Uint32 t_render = SDL_GetTicks();
 #endif
 
+		_window.flip();
+		if (_opengl) {
+			//glFlush_ptr.call();
+		}
+
+
+#ifdef SHOW_PERFSTATS
+		Uint32 t_flip = SDL_GetTicks();
+#endif
+
 		int tdelta = SDL_GetTicks() - t_start;
 
 #ifdef SHOW_PERFSTATS
-		LOG_DEBUG(("tick time: %u, flip time: %u, render time: %u", t_tick - t_start, t_flip - t_tick, t_render - t_flip));
+		LOG_DEBUG(("tick time: %u, render time: %u, flip time: %u", t_tick - t_start, t_render - t_tick, t_flip - t_render));
 		LOG_DEBUG(("notify: %u, world: %u, server: %u, client: %u", t_tick_n - t_start, t_tick_w - t_tick_n, t_tick_s - t_tick_w, t_tick_c - t_tick_s));
 #endif
 		if (tdelta < max_delay) {
@@ -608,7 +609,7 @@ const int IGame::onConnect(Message &message) {
 	LOG_DEBUG(("client #%d", client_id));
 
 	LOG_DEBUG(("sending server status message..."));
-	message.type = ServerStatus;
+	message.type = Message::ServerStatus;
 	message.set("map", Map->getName());
 	message.set("version", getVersion());
 
@@ -632,8 +633,9 @@ void IGame::onDisconnect(const int id) {
 
 
 void IGame::onMessage(const int id, const Message &message) {
-	//LOG_DEBUG(("incoming message %d", message.type));
-	if (message.type == ServerStatus) {
+	LOG_DEBUG(("incoming message %s", message.getType()));
+	switch(message.type) {
+	case Message::ServerStatus: {
 		LOG_DEBUG(("loading map..."));
 		Map->load(message.get("map"));
 		
@@ -657,11 +659,14 @@ void IGame::onMessage(const int id, const Message &message) {
 		slot.control_method = new KeyPlayer(SDLK_UP, SDLK_DOWN, SDLK_LEFT, SDLK_RIGHT, SDLK_LCTRL, SDLK_LALT);
 
 		LOG_DEBUG(("players = %d", _players.size()));
-		
-	} else if (message.type == UpdateWorld) {
+		break;	
+	}
+	case Message::UpdateWorld: {
 		mrt::Serializator s(&message.data);
 		World->deserialize(s);
-	} else if (message.type == PlayerEvent) {
+		break;
+	} 
+	case Message::PlayerState: {
 		mrt::Serializator s(&message.data);
 		if (id < 0 || (unsigned)id >= _players.size())
 			throw_ex(("player id exceeds players count (%d/%d)", id, _players.size()));
@@ -669,7 +674,9 @@ void IGame::onMessage(const int id, const Message &message) {
 		if (ex == NULL)
 			throw_ex(("player with id %d uses non-external control method", id));
 		ex->state.deserialize(s);
-	} else if (message.type == UpdatePlayers) {
+		break;
+	} 
+	case Message::UpdatePlayers: { 
 		mrt::Serializator s(&message.data);
 		while(!s.end()) {
 			int id;
@@ -683,7 +690,11 @@ void IGame::onMessage(const int id, const Message &message) {
 				LOG_WARN(("skipped state update for object id %d", id));
 			}
 		}
-	} else LOG_WARN(("unhandled message: %s\n%s", message.getType(), message.data.dump().c_str()));
+		break;
+	} 
+	default:
+		LOG_WARN(("unhandled message: %s\n%s", message.getType(), message.data.dump().c_str()));
+	}
 }
 
 void IGame::clear() {
@@ -763,7 +774,7 @@ void IGame::updatePlayers() {
 				}
 			}
 			if (send) {
-				Message m(UpdatePlayers);
+				Message m(Message::UpdatePlayers);
 				m.data = s.getData();
 				_server->send(i, m);
 			}

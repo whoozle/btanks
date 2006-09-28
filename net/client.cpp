@@ -39,9 +39,8 @@ void Client::notify(const PlayerState &state) {
 	if (!_monitor)
 		return;
 	
-	//LOG_DEBUG(("notify from player"));
 	mrt::Chunk data;
-	Message m(PlayerEvent);
+	Message m(Message::PlayerState);
 	state.serialize2(m.data);
 	m.serialize2(data);
 	
@@ -59,7 +58,7 @@ void Client::tick(const float dt) {
 		assert(id == 0);
 		Message m;
 		m.deserialize2(data);
-		if (m.type != UpdateWorld && m.type != ServerStatus && m.type != UpdatePlayers) 
+		if (m.type != Message::UpdateWorld && m.type != Message::ServerStatus && m.type != Message::UpdatePlayers) 
 			throw_ex(("message type '%s' is not allowed", m.getType()));
 		Game->onMessage(0, m);
 	}

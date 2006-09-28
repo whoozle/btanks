@@ -37,7 +37,7 @@ void Server::tick(const float dt) {
 				s->noDelay();
 				
 				LOG_DEBUG(("client connected..."));
-				Message msg(ServerStatus);
+				Message msg(Message::ServerStatus);
 				int id = Game->onConnect(msg);
 				_monitor->add(id, new Connection(s));
 				send(id, msg);
@@ -49,7 +49,7 @@ void Server::tick(const float dt) {
 		if (_monitor->recv(id, data)) {
 			Message m;
 			m.deserialize2(data);
-			if (m.type != PlayerEvent) 
+			if (m.type != Message::PlayerState) 
 				throw_ex(("message type %s is not allowed", m.getType()));
 	
 			Game->onMessage(id, m);
