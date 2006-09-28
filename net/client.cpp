@@ -45,7 +45,7 @@ void Client::notify(const PlayerState &state) {
 }
 
 void Client::send(const Message &m) {
-	LOG_DEBUG(("sending '%s' message", m.getType()));
+	LOG_DEBUG(("sending '%s'", m.getType()));
 
 	mrt::Chunk data;
 	m.serialize2(data);

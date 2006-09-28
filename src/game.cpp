@@ -36,12 +36,13 @@
 // using 0 as OPENGLBLIT value. SDL 1.3 or later
 #endif
 
+#define PING_PERIOD 3000
 
 //#define SHOW_PERFSTATS
 
 IMPLEMENT_SINGLETON(Game, IGame)
 
-IGame::IGame() : _my_index(-1), _address("localhost"), _autojoin(false), _shake(0), _trip_time(0) {
+IGame::IGame() : _my_index(-1), _address("localhost"), _autojoin(false), _shake(0), _trip_time(50) {
 	LOG_DEBUG(("IGame ctor"));
 }
 IGame::~IGame() {}
@@ -65,6 +66,7 @@ void IGame::init(const int argc, char *argv[]) {
 	srand(time(NULL));
 	
 	_server = NULL; _client = NULL;
+	_ping = false;
 #ifdef __linux__
 //	putenv("SDL_VIDEODRIVER=dga");
 #endif
@@ -486,8 +488,13 @@ void IGame::run() {
 			t_tick_s = SDL_GetTicks();
 #endif
 
-			if (_client) 
+			if (_client) {
 				_client->tick(dt);
+				if (_ping && t_start >= _next_ping) {
+					ping();
+					_next_ping = t_start + PING_PERIOD; //fixme: hardcoded value
+				}
+			}
 
 #ifdef SHOW_PERFSTATS
 			t_tick_c = SDL_GetTicks();
@@ -659,11 +666,8 @@ void IGame::onMessage(const int id, const Message &message) {
 		slot.control_method = new KeyPlayer(SDLK_UP, SDLK_DOWN, SDLK_LEFT, SDLK_RIGHT, SDLK_LCTRL, SDLK_LALT);
 
 		LOG_DEBUG(("players = %d", _players.size()));
-		Message m(Message::Ping);
-		unsigned int ts = SDL_GetTicks();
-		LOG_DEBUG(("ping timestamp = %u", ts));
-		m.data.setData(&ts, sizeof(ts));
-		_client->send(m);
+		_next_ping = 0;
+		_ping = true;
 		break;	
 	}
 	case Message::UpdateWorld: {
@@ -698,8 +702,8 @@ void IGame::onMessage(const int id, const Message &message) {
 		break;
 	} 
 	case Message::Ping: {
-		Message m(message);
-		m.type = Message::Pong;
+		Message m(Message::Pong);
+		m.data = message.data;
 		_server->send(id, m);
 		break;
 	}
@@ -709,10 +713,14 @@ void IGame::onMessage(const int id, const Message &message) {
 		if (data.getSize() < sizeof(unsigned int))
 			throw_ex(("invalid pong recv'ed. (size: %u)", data.getSize()));
 		unsigned int ts = * (unsigned int *)data.getPtr();
-		int delta = (int)(SDL_GetTicks() - ts);
+		Uint32 ticks = SDL_GetTicks();
+		int delta = (int)(ticks - ts);
 		if (delta < 0) delta = -delta; //wrapped around.
+		if (delta > 10000)
+			throw_ex(("server returns bogus timestamp value. [%d]", delta));
 		delta /= 2;
 		_trip_time = delta;
+		_next_ping = ticks + PING_PERIOD; //fixme: add configurable parameter here.
 		
 		LOG_DEBUG(("ping = %d", delta));
 		break;
@@ -724,6 +732,7 @@ void IGame::onMessage(const int id, const Message &message) {
 
 void IGame::clear() {
 	LOG_DEBUG(("deleting server/client if exists."));
+	_ping = false;
 	delete _server; _server = NULL;
 	delete _client; _client = NULL;
 
@@ -813,4 +822,12 @@ void IGame::updatePlayers() {
 void IGame::shake(const float duration, const int intensity) {
 	_shake = duration;
 	_shake_int = intensity;
+}
+
+void IGame::ping() {
+	Message m(Message::Ping);
+	unsigned int ts = SDL_GetTicks();
+	LOG_DEBUG(("ping timestamp = %u", ts));
+	m.data.setData(&ts, sizeof(ts));
+	_client->send(m);
 }

@@ -94,6 +94,7 @@ private:
 	const int spawnPlayer(const std::string &classname, const std::string &animation, const std::string &method);
 	void spawnPlayer(PlayerSlot &slot, const std::string &classname, const std::string &animation);
 	void updatePlayers();
+	void ping();
 	
 	std::vector<PlayerSlot> _players;
 	int _my_index;
@@ -111,6 +112,8 @@ private:
 	int _shake_int;
 	
 	int _trip_time;
+	Uint32 _next_ping;
+	bool _ping;
 };
 
 SINGLETON(Game, IGame);
