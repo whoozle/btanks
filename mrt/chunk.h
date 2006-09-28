@@ -26,13 +26,16 @@ namespace mrt {
 
 class Chunk {
 public:
-	Chunk() : ptr(0), size(0) {};
+	Chunk();
+	Chunk(const Chunk&);
 	Chunk(const int size);
+	const Chunk& operator=(const Chunk& c);
 
 	void free();
-	//use unlink only if you know what you doing ;)
+	~Chunk();
+	
+	//use unlink only if you know what you're doing ;)
 	void unlink() { ptr = 0; size = 0; }
-	const Chunk& operator=(const Chunk& c);
 
 	void setSize(size_t s);
 	void setData(const void *ptr, const size_t size);
@@ -44,22 +47,8 @@ public:
 	inline void *getPtr() const { return ptr; }
 	inline const size_t getSize() const { return size; }
 	
-	~Chunk();
-	
-	inline unsigned char& operator[](const unsigned int p) {
-		assert(ptr);
-		assert(p<size);
-	    return *(((unsigned char *)ptr) + p);
-	}
-
-	const unsigned char& operator[](const unsigned int p) const {
-		assert(ptr);
-		assert(p<size);
-	    return *(((unsigned char *)ptr) + p);
-	}
 	
 	const std::string dump() const;
-	Chunk(const Chunk&);
 
 protected:
 	void *ptr;

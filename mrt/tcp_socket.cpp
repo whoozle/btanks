@@ -31,8 +31,12 @@ using namespace mrt;
 
 TCPSocket::TCPSocket() {}
 
-void TCPSocket::listen(const unsigned port) {
+void TCPSocket::listen(const unsigned port, const bool reuse) {
 	create(PF_INET, SOCK_STREAM, 0);
+
+	int on = 1;
+	if (reuse)
+		setsockopt(_sock, SOL_SOCKET, SO_REUSEADDR, (char*)&on, sizeof(on));
 
 	struct sockaddr_in addr;
 	memset(&addr, 0, sizeof(addr));

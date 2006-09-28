@@ -5,10 +5,12 @@ Alarm::Alarm(const float period, const bool repeat) : _period(period), _t(period
 const bool Alarm::tick(const float dt) {
 	if (_t == 0)
 		return true;
-	_t -= dt;
+	int n = (int) (dt / _period);
+	
+	_t -= (dt - (n * _period));
 	
 	if (_t <= 0) {
-		_t = _repeat?_period:0;
+		_t = _repeat?_period + _t:0;
 		return true;
 	}
 	return false;

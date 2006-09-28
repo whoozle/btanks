@@ -39,26 +39,34 @@ void Client::notify(const PlayerState &state) {
 	if (!_monitor)
 		return;
 	
-	mrt::Chunk data;
 	Message m(Message::PlayerState);
 	state.serialize2(m.data);
+	send(m);
+}
+
+void Client::send(const Message &m) {
+	LOG_DEBUG(("sending '%s' message", m.getType()));
+
+	mrt::Chunk data;
 	m.serialize2(data);
 	
-	LOG_DEBUG(("sending state"));
-	_monitor->send(0, data);
+	_monitor->send(0, data);	
 }
+
 
 void Client::tick(const float dt) {	
 	if (_monitor == NULL) 
 		return;
-	
+
 	int id;
 	mrt::Chunk data;
 	if (_monitor->recv(id, data)) {
 		assert(id == 0);
 		Message m;
 		m.deserialize2(data);
-		if (m.type != Message::UpdateWorld && m.type != Message::ServerStatus && m.type != Message::UpdatePlayers) 
+
+		if (m.type != Message::UpdateWorld && m.type != Message::ServerStatus && 
+			m.type != Message::UpdatePlayers && m.type != Message::Pong) 
 			throw_ex(("message type '%s' is not allowed", m.getType()));
 		Game->onMessage(0, m);
 	}

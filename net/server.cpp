@@ -16,7 +16,7 @@ Server::~Server() {
 
 void Server::init(const unsigned port) {
 	LOG_DEBUG(("starting game server at port %d", port));
-	_sock.listen(port);
+	_sock.listen(port, true);
 	_monitor = new Monitor;
 	_monitor->start();
 }
@@ -49,7 +49,8 @@ void Server::tick(const float dt) {
 		if (_monitor->recv(id, data)) {
 			Message m;
 			m.deserialize2(data);
-			if (m.type != Message::PlayerState) 
+			
+			if (m.type != Message::PlayerState && m.type != Message::Ping) 
 				throw_ex(("message type %s is not allowed", m.getType()));
 	
 			Game->onMessage(id, m);

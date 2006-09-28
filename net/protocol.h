@@ -15,7 +15,7 @@ namespace mrt {
 class Message : public mrt::Serializable {
 public: 
 	enum Type {
-		None,
+		None, Ping, Pong,
 		ServerStatus,
 		PlayerState,
 		UpdatePlayers,
@@ -24,6 +24,7 @@ public:
 	
 	Message();
 	Message(const Type type);
+	
 	const char * getType() const;
 
 	virtual void serialize(mrt::Serializator &s) const;

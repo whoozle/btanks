@@ -5,13 +5,19 @@
 
 using namespace mrt;
 
-Chunk::Chunk(const int size) : ptr(0), size(0) {
+Chunk::Chunk(): ptr(NULL), size(0) {}
+
+Chunk::Chunk(const int size) : ptr(NULL), size(0) {
 	setSize(size);
 }
 
 
 const Chunk& Chunk::operator=(const Chunk& c) {
     free();
+    if (c.ptr == NULL || this == &c) 
+    	return *this;
+    assert(c.size > 0);
+    
     if ((ptr = malloc(c.size)) == NULL) 
 		throw_io(("malloc"));
     size = c.size;
@@ -26,7 +32,6 @@ Chunk::Chunk(const Chunk& c) {
 
 void Chunk::setSize(size_t s) {
 	if (s == 0) {
-		if (size == 0) return;
 		free();
 	} else {
 		void * x = realloc(ptr, s);
@@ -80,8 +85,8 @@ void Chunk::free() {
 	if (ptr != NULL) {
 		::free(ptr);
 		ptr = NULL;
+		size = 0;
 	}
-	size = 0;
 }
 
 Chunk::~Chunk() {
@@ -89,7 +94,7 @@ Chunk::~Chunk() {
 }
 
 const std::string Chunk::dump() const {
-	if (size == 0)
+	if (ptr == NULL)
 		return "empty memory chunk";
 	assert(ptr != 0);
 	

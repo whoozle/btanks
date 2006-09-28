@@ -41,7 +41,7 @@
 
 IMPLEMENT_SINGLETON(Game, IGame)
 
-IGame::IGame() : _my_index(-1), _address("localhost"), _autojoin(false), _shake(0) {
+IGame::IGame() : _my_index(-1), _address("localhost"), _autojoin(false), _shake(0), _trip_time(0) {
 	LOG_DEBUG(("IGame ctor"));
 }
 IGame::~IGame() {}
@@ -659,6 +659,11 @@ void IGame::onMessage(const int id, const Message &message) {
 		slot.control_method = new KeyPlayer(SDLK_UP, SDLK_DOWN, SDLK_LEFT, SDLK_RIGHT, SDLK_LCTRL, SDLK_LALT);
 
 		LOG_DEBUG(("players = %d", _players.size()));
+		Message m(Message::Ping);
+		unsigned int ts = SDL_GetTicks();
+		LOG_DEBUG(("ping timestamp = %u", ts));
+		m.data.setData(&ts, sizeof(ts));
+		_client->send(m);
 		break;	
 	}
 	case Message::UpdateWorld: {
@@ -692,6 +697,26 @@ void IGame::onMessage(const int id, const Message &message) {
 		}
 		break;
 	} 
+	case Message::Ping: {
+		Message m(message);
+		m.type = Message::Pong;
+		_server->send(id, m);
+		break;
+	}
+	
+	case Message::Pong: {
+		const mrt::Chunk &data = message.data;
+		if (data.getSize() < sizeof(unsigned int))
+			throw_ex(("invalid pong recv'ed. (size: %u)", data.getSize()));
+		unsigned int ts = * (unsigned int *)data.getPtr();
+		int delta = (int)(SDL_GetTicks() - ts);
+		if (delta < 0) delta = -delta; //wrapped around.
+		delta /= 2;
+		_trip_time = delta;
+		
+		LOG_DEBUG(("ping = %d", delta));
+		break;
+	}
 	default:
 		LOG_WARN(("unhandled message: %s\n%s", message.getType(), message.data.dump().c_str()));
 	}

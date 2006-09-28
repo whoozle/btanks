@@ -27,6 +27,7 @@
 #include "menu.h"
 #include "math/v3.h"
 #include "player_state.h"
+#include "alarm.h"
 
 class Object;
 class Message;
@@ -108,6 +109,8 @@ private:
 
 	float _shake;
 	int _shake_int;
+	
+	int _trip_time;
 };
 
 SINGLETON(Game, IGame);

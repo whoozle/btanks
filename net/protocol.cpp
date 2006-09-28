@@ -20,6 +20,8 @@ Message::Message(const Message::Type type) : type(type) {}
 const char * Message::getType() const {
 	switch(type) {
 	case None: return "None";
+	case Ping: return "Ping";
+	case Pong: return "Pong";
 	case ServerStatus: return "ServerStatus";
 	case PlayerState: return "PlayerState";
 	case UpdatePlayers: return "UpdatePlayers";

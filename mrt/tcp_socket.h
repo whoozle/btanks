@@ -30,7 +30,7 @@ public:
 	
 	void noDelay(const bool value = true);
 	
-	void listen(const unsigned port);
+	void listen(const unsigned port, const bool reuse = false);
 	void connect(const std::string &host, const int port);
 	const int send(const void *data, const int len) const;
 	//void send(const mrt::Chunk &data) const;
