@@ -164,7 +164,11 @@ const int Monitor::run() {
 					sdlx::AutoMutex m(_send_q_mutex); 
 					eraseTasks(_send_q, cid);
 				}
-				eraseTasks(_recv_q, cid);
+				
+				{
+					sdlx::AutoMutex m(_result_mutex);
+					_disconnections.push_back(cid);
+				}
 				continue;
 			}
 
