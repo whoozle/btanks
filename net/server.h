@@ -18,6 +18,7 @@ public:
 	~Server();
 	
 	const bool active() const;
+	void disconnect(const int id);
 	
 private:
 	Monitor *_monitor;

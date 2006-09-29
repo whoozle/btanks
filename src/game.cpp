@@ -651,6 +651,7 @@ void IGame::onDisconnect(const int id) {
 
 
 void IGame::onMessage(const int id, const Message &message) {
+TRY {
 	LOG_DEBUG(("incoming message %s", message.getType()));
 	switch(message.type) {
 	case Message::ServerStatus: {
@@ -745,7 +746,13 @@ void IGame::onMessage(const int id, const Message &message) {
 	}
 	default:
 		LOG_WARN(("unhandled message: %s\n%s", message.getType(), message.data.dump().c_str()));
-	}
+	};
+} CATCH("onMessage", { 
+	if (_server) 
+		_server->disconnect(id);
+	if (_client) 
+		_client->disconnect();
+});
 }
 
 const float IGame::extractPing(const mrt::Chunk &data) const {

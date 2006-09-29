@@ -23,6 +23,8 @@ public:
 	const bool recv(int &id, mrt::Chunk &data);
 	const bool disconnected(int &id);
 	
+	void disconnect(const int id);
+	
 	~Monitor();
 
 private:

@@ -15,6 +15,7 @@ public:
 	void notify(const PlayerState &state);
 	void send(const Message &m);
 	void tick(const float dt);
+	void disconnect();
 
 protected:
 	Monitor *_monitor;

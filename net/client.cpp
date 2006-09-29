@@ -74,3 +74,8 @@ void Client::tick(const float dt) {
 		Game->onDisconnect(id);
 	}
 }
+
+void Client::disconnect() {
+	_monitor->disconnect(0);
+	Game->onDisconnect(0);
+}

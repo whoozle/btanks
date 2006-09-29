@@ -24,6 +24,7 @@ void Server::init(const unsigned port) {
 void Server::tick(const float dt) {
 	if (!_monitor) 
 		return;
+	int id = -1;
 	TRY {
 		//send world coordinated, receive events.
 		mrt::SocketSet set;
@@ -45,7 +46,6 @@ void Server::tick(const float dt) {
 		}
 
 		mrt::Chunk data;
-		int id;
 		
 		while(_monitor->recv(id, data)) {
 			Message m;
@@ -60,7 +60,11 @@ void Server::tick(const float dt) {
 		while(_monitor->disconnected(id)) {
 			Game->onDisconnect(id);
 		}
-	} CATCH("tick", {});
+	} CATCH("tick", {
+		if (id >= 0) {
+			disconnect(id);
+		}
+	});
 }
 
 void Server::send(const int id, const Message &m) {
@@ -83,3 +87,8 @@ void Server::broadcast(const Message &m) {
 
 
 const bool Server::active() const { return _monitor->active(); }
+
+void Server::disconnect(const int id) {
+	_monitor->disconnect(id);
+	Game->onDisconnect(id);
+}

@@ -139,6 +139,25 @@ void Monitor::eraseTasks(TaskQueue &q, const int conn_id) {
 }
 
 
+void Monitor::disconnect(const int cid) {
+	LOG_DEBUG(("disconnecting client %d.", cid));
+	{ 
+		sdlx::AutoMutex m(_connections_mutex); 
+		_connections.erase(cid);
+	}
+	
+	{ 
+		sdlx::AutoMutex m(_send_q_mutex); 
+		eraseTasks(_send_q, cid);
+	}
+				
+	{
+		sdlx::AutoMutex m(_result_mutex);
+		_disconnections.push_back(cid);
+	}
+}
+
+
 const int Monitor::run() {
 	_running = true;
 	LOG_DEBUG(("network monitor thread was started..."));
@@ -178,20 +197,7 @@ const int Monitor::run() {
 			if (set.check(sock, mrt::SocketSet::Exception)) {
 				//fixme: notify upper layer 
 			disconnect: 
-				LOG_DEBUG(("client disconnected."));
-				{ 
-					sdlx::AutoMutex m(_connections_mutex); 
-					_connections.erase(cid);
-				}
-				{ 
-					sdlx::AutoMutex m(_send_q_mutex); 
-					eraseTasks(_send_q, cid);
-				}
-				
-				{
-					sdlx::AutoMutex m(_result_mutex);
-					_disconnections.push_back(cid);
-				}
+				disconnect(cid);
 				continue;
 			}
 
