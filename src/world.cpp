@@ -496,7 +496,8 @@ TRY {
 void IWorld::generateUpdate(mrt::Serializator &s) {
 	size_t c = 0, n = _objects.size();
 	std::set<int> skipped_objects;
-	for(ObjectMap::const_reverse_iterator i = _id2obj.rbegin(); i != _id2obj.rend(); ++i) {
+
+	for(ObjectMap::reverse_iterator i = _id2obj.rbegin(); i != _id2obj.rend(); ++i) {
 		const Object *o = i->second;
 		if (o->need_sync || o->speed != 0) {
 			++c;
