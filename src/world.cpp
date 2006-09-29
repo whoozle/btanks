@@ -478,6 +478,7 @@ void IWorld::cropObjects(const std::set<int> &ids) {
 void IWorld::deserialize(const mrt::Serializator &s) {
 TRY {
 	s.get(_last_id);
+	_last_id += 1000;
 	
 	int size;
 	s.get(size);
