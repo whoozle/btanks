@@ -520,14 +520,14 @@ void IWorld::generateUpdate(mrt::Serializator &s) {
 }
 
 void IWorld::applyUpdate(const mrt::Serializator &s, const float ping) {
-	LOG_DEBUG(("applying world update (ping = %g)", ping));	
+	const float dt = ping / 1000.0;
+	LOG_DEBUG(("applying world update (dt = %g)", dt));	
 	unsigned int n;
 	std::set<int> skipped_objects;
 	s.get(n);
 	while(n--) {
 		Object *o = deserializeObject(s);
 		
-		float dt = ping / 1000.0;
 		tick(*o, dt);
 		skipped_objects.insert(o->_id);
 	}

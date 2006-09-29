@@ -691,10 +691,12 @@ TRY {
 		mrt::Serializator s(&message.data);
 		if (id < 0 || (unsigned)id >= _players.size())
 			throw_ex(("player id exceeds players count (%d/%d)", id, _players.size()));
-		ExternalControl * ex = dynamic_cast<ExternalControl *>(_players[id].control_method);
+		PlayerSlot &slot = _players[id];
+		ExternalControl * ex = dynamic_cast<ExternalControl *>(slot.control_method);
 		if (ex == NULL)
 			throw_ex(("player with id %d uses non-external control method", id));
 		ex->state.deserialize(s);
+		slot.correction += slot.trip_time / 1000.0;
 		break;
 	} 
 	case Message::UpdatePlayers: { 
@@ -740,7 +742,7 @@ TRY {
 	case Message::Pong: {
 		if (id < 0 || (unsigned)id >= _players.size())
 			throw_ex(("player id exceeds players count (%d/%d)", id, _players.size()));
-		float ping = _players[id]._trip_time = extractPing(message.data);
+		float ping = _players[id].trip_time = extractPing(message.data);
 		LOG_DEBUG(("player %d: ping: %g ms", id, ping));		
 		break;
 	}
@@ -820,6 +822,11 @@ void IGame::updatePlayers() {
 				updated = true;
 				slot.state = state;
 				slot.need_sync = true;
+			}
+			if (slot.correction > 0) {
+				LOG_DEBUG(("correcting player %d with dt = %g", i, slot.correction));
+				World->tick(*slot.obj, slot.correction);
+				slot.correction = 0;
 			}
 		}
 	}

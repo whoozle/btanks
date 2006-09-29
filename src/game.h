@@ -74,15 +74,15 @@ private:
 	void loadMap(const std::string &name);	
 	
 	struct PlayerSlot {
-		PlayerSlot() : obj(NULL), control_method(NULL), need_sync(false), _trip_time(50) {}
-		PlayerSlot(Object *obj) : obj(obj), control_method(NULL), need_sync(false), _trip_time(50) {}
+		PlayerSlot() : obj(NULL), control_method(NULL), need_sync(false), trip_time(50), correction(0) {}
+		PlayerSlot(Object *obj) : obj(obj), control_method(NULL), need_sync(false), trip_time(50), correction(0) {}
 		Object * obj;
 		ControlMethod * control_method;
 		v3<int> position;
 		
 		PlayerState state;
 		bool need_sync;
-		float _trip_time;
+		float trip_time, correction;
 		
 		void clear();
 		~PlayerSlot();
