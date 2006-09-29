@@ -700,7 +700,7 @@ TRY {
 		if (ex == NULL)
 			throw_ex(("player with id %d uses non-external control method", id));
 		ex->state.deserialize(s);
-		slot.correction += slot.trip_time / 1000.0;
+		World->tick(*slot.obj, slot.trip_time / 1000.0);
 		break;
 	} 
 	case Message::UpdatePlayers: { 
@@ -827,11 +827,6 @@ void IGame::updatePlayers() {
 				updated = true;
 				slot.state = state;
 				slot.need_sync = true;
-			}
-			if (slot.correction > 0) {
-				LOG_DEBUG(("correcting player %d with dt = %g", i, slot.correction));
-				World->tick(*slot.obj, slot.correction);
-				slot.correction = 0;
 			}
 		}
 	}
