@@ -97,7 +97,7 @@ const float IWorld::getImpassability(Object *obj, const sdlx::Surface &surface, 
 	
 	sdlx::Rect my((int)position.x, (int)position.y,(int)obj->size.x, (int)obj->size.y);
 	float im = 0;
-/*	if (obj->_owner_id != 0 && _id2obj.find(obj->_owner_id) == _id2obj.end()) {
+/*	if (obj->_owner_id != 0 && _id2obj->find(obj->_owner_id) == _id2obj->end()) {
 		obj->_owner_id = 0; //dead object.
 	}
 */	
@@ -175,189 +175,185 @@ void IWorld::getImpassabilityMatrix(Matrix<int> &matrix, const Object *src, cons
 	}
 }
 
-
-void IWorld::tick(const float dt) {
+void IWorld::tick(Object &o, const float dt) {
 	const IMap &map = *IMap::get_instance();
 	v3<int> map_size = map.getSize();
+
+	if (o.ttl > 0) {
+		o.ttl -= dt;
+		if (o.ttl <= 0) {
+			//dead
+			o.emit("death");
+			o.ttl = 0;
+		}
+	}
+	if (o.isDead()) 
+		return;
+		
+	v3<float> old_vel = o._velocity;
+	o.calculate(dt);
+	o.tick(dt);
+		
+	{
+		int f = o._follow;
+		if (f != 0) {
+			ObjectMap::const_iterator o_i = _id2obj.find(f);
+			if (o_i != _id2obj.end()) {
+				const Object *leader = o_i->second;
+				//LOG_DEBUG(("following %d...", f));
+				o._direction = leader->_direction;
+				float z = o._position.z;
+				o._position = leader->_position + o._follow_position;
+				o._position.z = z;
+				o._velocity = leader->_velocity;
+				o.setDirection(leader->getDirection());
+				return;
+			} else {
+				LOG_WARN(("leader for object %d is dead. (leader-id:%d)", o._id, f));
+				o._follow = 0;
+			}
+		}
+	}
+		
+	if (o.speed == 0) {
+		if (o.impassability < 0) {
+			int ow = (int)o.size.x;
+			int oh = (int)o.size.y; 
+			sdlx::Surface osurf;
+		
+			assert(ow != 0 && oh != 0);
+	
+			osurf.createRGB(ow, oh, 24, sdlx::Surface::Software |  sdlx::Surface::Alpha);
+			osurf.convertAlpha();
+			o.renderCopy(osurf); 
+		
+			getImpassability(&o, osurf, o._position.convert<int>());
+		}
+		return;
+	}
+		
+	v3<float> vel = o._velocity;
+	float len = vel.normalize();
+		
+	if (len == 0) {
+		if (o._moving_time > 0) {
+			o._velocity_fadeout = old_vel;
+		}
+		o._moving_time = 0;
+		o._idle_time += dt;
+		if (o._velocity_fadeout.is0()) 
+			return;
+	} else {
+		o._idle_time = 0;
+		o._moving_time += dt;
+		o._direction = o._velocity;
+	}
+
+	const float ac_t = o.mass / 1000.0;
+	if (o.mass > 0 && o._moving_time < ac_t) {
+		vel *= o._moving_time / ac_t * o._moving_time / ac_t;
+	}
+	vel += o._velocity_fadeout;
+
+	//LOG_DEBUG(("im = %f", im));
+	v3<float> dpos = o.speed * vel * dt;
+	v3<int> new_pos((o._position + dpos).convert<int>());
+	v3<int> old_pos = o._position.convert<int>();
+
+	int ow = (int)o.size.x;
+	int oh = (int)o.size.y; 
+
+	sdlx::Surface osurf;
+		
+	assert(ow != 0 && oh != 0);
+	
+	osurf.createRGB(ow, oh, 24, sdlx::Surface::Software |  sdlx::Surface::Alpha);
+	osurf.convertAlpha();
+	o.renderCopy(osurf);
+		
+	//osurf.saveBMP("snapshot.bmp");
+	const Object *stuck_in = NULL;
+	v3<int> stuck_map_pos;
+	bool stuck = map.getImpassability(&o, osurf, old_pos, &stuck_map_pos) == 100 || getImpassability(&o, osurf, old_pos, &stuck_in) == 1.0;
+		
+	float obj_im = getImpassability(&o, osurf, new_pos);
+	//LOG_DEBUG(("obj_im = %f", obj_im));
+	float map_im = 0;
+	if (o.piercing) {
+		if (map.getImpassability(&o, osurf, new_pos) == 100) {
+			o.emit("death"); //fixme
+		}
+	} else {
+		map_im = map.getImpassability(&o, osurf, new_pos) / 100.0;
+	}
+
+	if (obj_im == 1.0 || map_im == 1.0) {
+		if (stuck) {
+			v3<float> allowed_velocity;
+			v3<float> object_center = o._position + o.size / 2;
+			if (map_im == 1.0) {
+				//LOG_DEBUG(("stuck: object: %g %g, map: %d %d", o._position.x, o._position.y, stuck_map_pos.x, stuck_map_pos.y));
+				allowed_velocity = object_center - stuck_map_pos.convert<float>();
+				allowed_velocity.z = 0;
+				//LOG_DEBUG(("allowed-velocity: %g %g", allowed_velocity.x, allowed_velocity.y));
+				if (allowed_velocity.same_sign(vel) || allowed_velocity.is0()) {
+					map_im = 0.5;
+				}
+				goto skip_collision;
+			} else if (obj_im == 1.0) {
+				assert(stuck_in != NULL);
+				allowed_velocity = object_center - (stuck_in->_position + stuck_in->size/2);
+				allowed_velocity.z = 0;
+				//LOG_DEBUG(("allowed: %g %g", allowed_velocity.x, allowed_velocity.y));
+				if (allowed_velocity.same_sign(vel) || allowed_velocity.is0()) {
+					//LOG_DEBUG(("stuck in object: %s, trespassing allowed!", stuck_in->classname.c_str()));
+					obj_im = map_im;
+					goto skip_collision;
+				}
+			}
+		}
+		//LOG_DEBUG(("bang!"));
+		o._velocity_fadeout = -vel;
+		o._velocity.clear();
+		o._moving_time = 0;
+	}
+
+skip_collision:
+
+	if (o.isDead())
+		return;
+		
+	dpos *= (1 - map_im) * (1 - obj_im);
+	if (o._distance > 0) {
+		o._distance -= dpos.length();
+	}
+
+	if (o._position.x + dpos.x < -o.size.x || o._position.x + dpos.x >= map_size.x)
+		dpos.x = 0;
+
+	if (o._position.y + dpos.y < -o.size.y || o._position.y + dpos.y >= map_size.y)
+		dpos.y = 0;
+		
+	o._position += dpos;
+
+	o._velocity_fadeout *= 0.9;
+	//LOG_DEBUG(("vfadeout: %g %g", o._velocity_fadeout.x, o._velocity_fadeout.y));
+	if (o._velocity_fadeout.quick_length() < 0.1) {
+		o._velocity_fadeout.clear();
+	}
+}
+
+
+void IWorld::tick(const float dt) {
 	//LOG_DEBUG(("tick dt = %f", dt));
 	for(ObjectSet::iterator i = _objects.begin(); i != _objects.end(); ) {
-		Object &o = **i;
-		if (o.ttl > 0) {
-			o.ttl -= dt;
-			if (o.ttl <= 0) {
-				//dead
-				o.emit("death");
-				o.ttl = 0;
-			}
-		}
-		if (o.isDead()) {
-			_id2obj.erase((*i)->_id);
-			delete *i;
+		Object *o = *i;
+		tick(*o, dt);
+		if (o->isDead()) {
+			_id2obj.erase(o->_id);
+			delete o;
 			_objects.erase(i++);
-			continue;
-		}
-		
-		
-		v3<float> old_vel = o._velocity;
-		o.calculate(dt);
-		o.tick(dt);
-		
-		{
-			int f = o._follow;
-			if (f != 0) {
-				ObjectMap::const_iterator o_i = _id2obj.find(f);
-				if (o_i != _id2obj.end()) {
-					const Object *leader = o_i->second;
-					//LOG_DEBUG(("following %d...", f));
-					o._direction = leader->_direction;
-					float z = o._position.z;
-					o._position = leader->_position + o._follow_position;
-					o._position.z = z;
-					o._velocity = leader->_velocity;
-					o.setDirection(leader->getDirection());
-					++i;
-					continue;
-				} else {
-					LOG_WARN(("leader for object %d is dead. (leader-id:%d)", o._id, f));
-					o._follow = 0;
-				}
-			}
-		}
-		
-		if (o.speed == 0) {
-			if (o.impassability < 0) {
-				int ow = (int)o.size.x;
-				int oh = (int)o.size.y; 
-	
-				sdlx::Surface osurf;
-		
-				assert(ow != 0 && oh != 0);
-	
-				osurf.createRGB(ow, oh, 24, sdlx::Surface::Software |  sdlx::Surface::Alpha);
-				osurf.convertAlpha();
-				o.renderCopy(osurf); 
-			
-				getImpassability(*i, osurf, o._position.convert<int>());
-			}
-			++i;
-			continue;
-		}
-		
-		v3<float> vel = o._velocity;
-		float len = vel.normalize();
-		
-		if (len == 0) {
-			if (o._moving_time > 0) {
-				o._velocity_fadeout = old_vel;
-			}
-			o._moving_time = 0;
-			o._idle_time += dt;
-			if (o._velocity_fadeout.is0()) {
-				++i;
-				continue;
-			}
-		} else {
-			o._idle_time = 0;
-			o._moving_time += dt;
-			o._direction = o._velocity;
-		}
-
-		const float ac_t = o.mass / 1000.0;
-		if (o.mass > 0 && o._moving_time < ac_t) {
-			vel *= o._moving_time / ac_t * o._moving_time / ac_t;
-		}
-		vel += o._velocity_fadeout;
-
-		//LOG_DEBUG(("im = %f", im));
-		v3<float> dpos = o.speed * vel * dt;
-		v3<int> new_pos((o._position + dpos).convert<int>());
-		v3<int> old_pos = o._position.convert<int>();
-
-		int ow = (int)o.size.x;
-		int oh = (int)o.size.y; 
-
-		sdlx::Surface osurf;
-		
-		assert(ow != 0 && oh != 0);
-	
-		osurf.createRGB(ow, oh, 24, sdlx::Surface::Software |  sdlx::Surface::Alpha);
-		osurf.convertAlpha();
-		o.renderCopy(osurf);
-		
-		//osurf.saveBMP("snapshot.bmp");
-		const Object *stuck_in = NULL;
-		v3<int> stuck_map_pos;
-		bool stuck = map.getImpassability(*i, osurf, old_pos, &stuck_map_pos) == 100 || getImpassability(*i, osurf, old_pos, &stuck_in) == 1.0;
-		
-		float obj_im = getImpassability(*i, osurf, new_pos);
-		//LOG_DEBUG(("obj_im = %f", obj_im));
-		float map_im = 0;
-		if (o.piercing) {
-			if (map.getImpassability(*i, osurf, new_pos) == 100) {
-				o.emit("death"); //fixme
-			}
-		} else {
-			map_im = map.getImpassability(*i, osurf, new_pos) / 100.0;
-		}
-
-		if (obj_im == 1.0 || map_im == 1.0) {
-			if (stuck) {
-				v3<float> allowed_velocity;
-				v3<float> object_center = o._position + o.size / 2;
-				if (map_im == 1.0) {
-					//LOG_DEBUG(("stuck: object: %g %g, map: %d %d", o._position.x, o._position.y, stuck_map_pos.x, stuck_map_pos.y));
-					allowed_velocity = object_center - stuck_map_pos.convert<float>();
-					allowed_velocity.z = 0;
-					//LOG_DEBUG(("allowed-velocity: %g %g", allowed_velocity.x, allowed_velocity.y));
-					if (allowed_velocity.same_sign(vel) || allowed_velocity.is0()) {
-						map_im = 0.5;
-					}
-					goto skip_collision;
-				} else if (obj_im == 1.0) {
-					assert(stuck_in != NULL);
-					allowed_velocity = object_center - (stuck_in->_position + stuck_in->size/2);
-					allowed_velocity.z = 0;
-					//LOG_DEBUG(("allowed: %g %g", allowed_velocity.x, allowed_velocity.y));
-					if (allowed_velocity.same_sign(vel) || allowed_velocity.is0()) {
-						//LOG_DEBUG(("stuck in object: %s, trespassing allowed!", stuck_in->classname.c_str()));
-						obj_im = map_im;
-						goto skip_collision;
-					}
-				}
-			}
-			//LOG_DEBUG(("bang!"));
-			o._velocity_fadeout = -vel;
-			o._velocity.clear();
-			o._moving_time = 0;
-		}
-	skip_collision:
-
-		if (o.isDead()) {
-			_id2obj.erase((*i)->_id);
-			delete *i;
-			_objects.erase(i++);
-			continue;
-		}
-		
-		dpos *= (1 - map_im) * (1 - obj_im);
-		if (o._distance > 0) {
-			o._distance -= dpos.length();
-		}
-
-		if (o._position.x + dpos.x < -o.size.x || o._position.x + dpos.x >= map_size.x)
-			dpos.x = 0;
-
-		if (o._position.y + dpos.y < -o.size.y || o._position.y + dpos.y >= map_size.y)
-			dpos.y = 0;
-		
-		o._position += dpos;
-
-		o._velocity_fadeout *= 0.9;
-		//LOG_DEBUG(("vfadeout: %g %g", o._velocity_fadeout.x, o._velocity_fadeout.y));
-		if (o._velocity_fadeout.quick_length() < 0.1) {
-			o._velocity_fadeout.clear();
-		}
-		++i;
+		} else ++i;
 	}
 }
 
@@ -530,7 +526,9 @@ void IWorld::applyUpdate(const mrt::Serializator &s, const int ping) {
 	s.get(n);
 	while(n--) {
 		Object *o = deserializeObject(s);
-		//add ping correction
+		
+		float dt = ping / 1000.0;
+		tick(*o, dt);
 		skipped_objects.insert(o->_id);
 	}
 	s.get(n);
