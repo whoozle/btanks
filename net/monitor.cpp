@@ -180,7 +180,7 @@ const int Monitor::run() {
 			continue;
 		} 
 
-		if (set.check(50) == 0) 
+		if (set.check(1) == 0) 
 			continue;
 		
 		for(std::set<int>::iterator i = cids.begin(); i != cids.end(); ++i) {
