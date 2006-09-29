@@ -45,6 +45,7 @@ void IWorld::addObject(Object *o, const v3<float> &pos) {
 
 	assert(_id2obj.size() == _objects.size());
 	o->onSpawn();
+	o->need_sync = true;
 	//LOG_DEBUG(("object %d added, objects: %d", o->_id, _objects.size()));
 }
 
