@@ -59,7 +59,7 @@ public:
 	virtual void serialize(mrt::Serializator &s) const;
 	virtual void deserialize(const mrt::Serializator &s);
 	void generateUpdate(mrt::Serializator &s);
-	void applyUpdate(const mrt::Serializator &s, const int ping);
+	void applyUpdate(const mrt::Serializator &s, const float ping);
 private:
 	const float getImpassability(Object *obj, const sdlx::Surface &surface, const v3<int> &position, const Object **collided_with = NULL) const;
 	void tick(Object &o, const float dt);	

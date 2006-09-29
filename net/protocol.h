@@ -15,7 +15,7 @@ namespace mrt {
 class Message : public mrt::Serializable {
 public: 
 	enum Type {
-		None, Ping, Pong,
+		None, Ping, Pang, Pong,
 		ServerStatus,
 		PlayerState,
 		UpdatePlayers,

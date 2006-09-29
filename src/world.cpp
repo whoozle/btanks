@@ -519,8 +519,8 @@ void IWorld::generateUpdate(mrt::Serializator &s) {
 	}
 }
 
-void IWorld::applyUpdate(const mrt::Serializator &s, const int ping) {
-	LOG_DEBUG(("applying world update (ping = %d)", ping));	
+void IWorld::applyUpdate(const mrt::Serializator &s, const float ping) {
+	LOG_DEBUG(("applying world update (ping = %g)", ping));	
 	unsigned int n;
 	std::set<int> skipped_objects;
 	s.get(n);

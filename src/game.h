@@ -74,14 +74,15 @@ private:
 	void loadMap(const std::string &name);	
 	
 	struct PlayerSlot {
-		PlayerSlot() : obj(NULL), control_method(NULL), need_sync(false) {}
-		PlayerSlot(Object *obj) : obj(obj), control_method(NULL), need_sync(false) {}
+		PlayerSlot() : obj(NULL), control_method(NULL), need_sync(false), _trip_time(50) {}
+		PlayerSlot(Object *obj) : obj(obj), control_method(NULL), need_sync(false), _trip_time(50) {}
 		Object * obj;
 		ControlMethod * control_method;
 		v3<int> position;
 		
 		PlayerState state;
 		bool need_sync;
+		float _trip_time;
 		
 		void clear();
 		~PlayerSlot();
@@ -95,6 +96,7 @@ private:
 	void spawnPlayer(PlayerSlot &slot, const std::string &classname, const std::string &animation);
 	void updatePlayers();
 	void ping();
+	const float extractPing(const mrt::Chunk &data) const;
 	
 	std::vector<PlayerSlot> _players;
 	int _my_index;
@@ -111,7 +113,7 @@ private:
 	float _shake;
 	int _shake_int;
 	
-	int _trip_time;
+	float _trip_time;
 	Uint32 _next_ping;
 	bool _ping;
 	Alarm _next_sync;

@@ -21,6 +21,7 @@ const char * Message::getType() const {
 	switch(type) {
 	case None: return "None";
 	case Ping: return "Ping";
+	case Pang: return "Pang";
 	case Pong: return "Pong";
 	case ServerStatus: return "ServerStatus";
 	case PlayerState: return "PlayerState";

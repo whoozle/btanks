@@ -66,7 +66,7 @@ void Client::tick(const float dt) {
 		m.deserialize2(data);
 
 		if (m.type != Message::UpdateWorld && m.type != Message::ServerStatus && 
-			m.type != Message::UpdatePlayers && m.type != Message::Pong) 
+			m.type != Message::UpdatePlayers && m.type != Message::Pang) 
 			throw_ex(("message type '%s' is not allowed", m.getType()));
 		Game->onMessage(0, m);
 	}

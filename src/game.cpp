@@ -713,33 +713,55 @@ void IGame::onMessage(const int id, const Message &message) {
 		break;
 	} 
 	case Message::Ping: {
-		Message m(Message::Pong);
+		Message m(Message::Pang);
 		m.data = message.data;
+		size_t size = m.data.getSize();
+		m.data.reserve(size + sizeof(unsigned int));
+		
+		unsigned int ts = SDL_GetTicks();
+		*(unsigned int *)((unsigned char *)m.data.getPtr() + size) = ts;
 		_server->send(id, m);
 		break;
 	}
 	
-	case Message::Pong: {
+	case Message::Pang: {
 		const mrt::Chunk &data = message.data;
-		if (data.getSize() < sizeof(unsigned int))
-			throw_ex(("invalid pong recv'ed. (size: %u)", data.getSize()));
-		unsigned int ts = * (unsigned int *)data.getPtr();
-		Uint32 ticks = SDL_GetTicks();
-		int delta = (int)(ticks - ts);
-		if (delta < 0) delta = -delta; //wrapped around.
-		if (delta > 10000)
-			throw_ex(("server returns bogus timestamp value. [%d]", delta));
-		delta /= 2;
-		_trip_time = delta;
-		_next_ping = ticks + PING_PERIOD; //fixme: add configurable parameter here.
+		_trip_time = extractPing(data);
+		_next_ping = SDL_GetTicks() + PING_PERIOD; //fixme: add configurable parameter here.
 		
-		LOG_DEBUG(("ping = %d", delta));
+		LOG_DEBUG(("ping = %g", _trip_time));
+		Message m(Message::Pong);
+		m.data.setData((unsigned char *)data.getPtr() + sizeof(unsigned int), data.getSize() - sizeof(unsigned int));
+		_client->send(m);
+		break;
+	}
+	
+	case Message::Pong: {
+		if (id < 0 || (unsigned)id >= _players.size())
+			throw_ex(("player id exceeds players count (%d/%d)", id, _players.size()));
+		float ping = _players[id]._trip_time = extractPing(message.data);
+		LOG_DEBUG(("player %d: ping: %g ms", id, ping));		
 		break;
 	}
 	default:
 		LOG_WARN(("unhandled message: %s\n%s", message.getType(), message.data.dump().c_str()));
 	}
 }
+
+const float IGame::extractPing(const mrt::Chunk &data) const {
+	if (data.getSize() < sizeof(unsigned int))
+		throw_ex(("invalid pong recv'ed. (size: %u)", data.getSize()));
+	
+	unsigned int ts = * (unsigned int *)data.getPtr();
+	Uint32 ticks = SDL_GetTicks();
+	float delta = (int)(ticks - ts);
+	if (delta < 0) delta = -delta; //wrapped around.
+	if (delta > 10000)
+		throw_ex(("server returns bogus timestamp value. [%g]", delta));
+	delta /= 2;
+	return delta;
+}
+
 
 void IGame::clear() {
 	LOG_DEBUG(("deleting server/client if exists."));
