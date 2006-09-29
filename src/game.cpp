@@ -36,7 +36,7 @@
 // using 0 as OPENGLBLIT value. SDL 1.3 or later
 #endif
 
-#define PING_PERIOD 3000
+#define PING_PERIOD 1000
 
 //#define SHOW_PERFSTATS
 
