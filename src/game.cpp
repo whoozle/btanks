@@ -645,8 +645,11 @@ void IGame::onDisconnect(const int id) {
 		LOG_ERROR(("player %d doesnt exists, so cannot disconnect.", id));
 		return;
 	}
-	_players[id].obj->emit("death", NULL);
-	_players[id].clear();
+	PlayerSlot &slot = _players[id];
+	if (slot.obj)
+		slot.obj->emit("death", NULL);
+	
+	slot.clear();
 }
 
 
