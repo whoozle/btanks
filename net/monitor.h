@@ -16,8 +16,10 @@ public:
 	Monitor();
 	void setCompressionLevel(const int level = 3);
 	void add(const int id, Connection *);
+	const bool active() const;
 	
 	void send(const int id, const mrt::Chunk &data);
+	void broadcast(const mrt::Chunk &data);
 	const bool recv(int &id, mrt::Chunk &data);
 	const bool disconnected(int &id);
 	

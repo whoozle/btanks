@@ -114,6 +114,7 @@ private:
 	int _trip_time;
 	Uint32 _next_ping;
 	bool _ping;
+	Alarm _next_sync;
 };
 
 SINGLETON(Game, IGame);

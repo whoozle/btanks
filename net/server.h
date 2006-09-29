@@ -13,8 +13,11 @@ public:
 	Server(); 
 	void init(const unsigned port);
 	void send(const int id, const Message &m);
+	void broadcast(const Message &m);
 	void tick(const float dt);
 	~Server();
+	
+	const bool active() const;
 	
 private:
 	Monitor *_monitor;

@@ -69,5 +69,17 @@ void Server::send(const int id, const Message &m) {
 		mrt::Chunk data;
 		m.serialize2(data);
 		_monitor->send(id, data);
-	} CATCH("broadcast", {});
+	} CATCH("send", throw;);
 }
+
+void Server::broadcast(const Message &m) {
+	TRY {
+		LOG_DEBUG(("broadcasting message '%s'", m.getType()));
+		mrt::Chunk data;
+		m.serialize2(data);
+		_monitor->broadcast(data);
+	} CATCH("broadcast", throw;);
+}
+
+
+const bool Server::active() const { return _monitor->active(); }

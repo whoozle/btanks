@@ -219,6 +219,7 @@ void Object::render(sdlx::Surface &surface, const int x, const int y) {
 		return;
 	} 
 	
+	//fade out feature.
 	sdlx::Surface blended; 
 	blended.createRGB(_tw, _th, 32, 0);
 	
@@ -483,8 +484,10 @@ void Object::groupEmit(const std::string &name, const std::string &event) {
 //effects
 void Object::addEffect(const std::string &name, const float ttl) {
 	_effects[name] = ttl;
+	need_sync = true;
 }
 
 void Object::removeEffect(const std::string &name) {
 	_effects.erase(name);
+	need_sync = true;
 }

@@ -57,6 +57,7 @@ public:
 	void convertToAbsolute(v3<float> &pos, const v3<float> &dpos);
 
 	inline PlayerState & getPlayerState() { return _state; }
+	const bool updatePlayerState(const PlayerState &state);
 
 	void follow(const BaseObject *obj, const GroupType mode = Fixed);
 	void follow(const int id); //add mode
@@ -84,12 +85,14 @@ protected:
 
 	void setZ(const float z); //fixme: remove it ? 
 	void disown();
+	bool need_sync;
 
 private:
 
 	bool _dead;
 	v3<float> _position;
 	int _owner_id;
+	
 	friend class IWorld;
 };
 

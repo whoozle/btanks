@@ -431,7 +431,7 @@ void IWorld::serialize(mrt::Serializator &s) const {
 	}
 }
 
-const int IWorld::deserializeObject(const mrt::Serializator &s) {
+Object * IWorld::deserializeObject(const mrt::Serializator &s) {
 		std::string rn, an;
 		s.get(rn);
 		s.get(an);
@@ -465,7 +465,18 @@ const int IWorld::deserializeObject(const mrt::Serializator &s) {
 				ao = NULL;
 			}
 		} CATCH("deserialize", { delete ao; ao = NULL; throw; });
-	return id;
+	return _id2obj[id];
+}
+
+void IWorld::cropObjects(const std::set<int> &ids) {
+	for(ObjectMap::iterator i = _id2obj.begin(); i != _id2obj.end(); /*haha*/ ) {
+		if (ids.find(i->first) == ids.end()) {
+			delete i->second;
+			_objects.erase(i->second);
+			_id2obj.erase(i++);
+		} else ++i;
+	}
+
 }
 
 void IWorld::deserialize(const mrt::Serializator &s) {
@@ -478,26 +489,57 @@ TRY {
 	std::set<int> recv_ids;
 	
 	while(size--) {
-		recv_ids.insert(deserializeObject(s));
+		recv_ids.insert(deserializeObject(s)->_id);
 	}
-	
-	for(ObjectMap::iterator i = _id2obj.begin(); i != _id2obj.end(); /*haha*/ ) {
-		if (recv_ids.find(i->first) == recv_ids.end()) {
-			delete i->second;
-			_objects.erase(i->second);
-			_id2obj.erase(i++);
-		} else ++i;
-	}
+	cropObjects(recv_ids);	
 } CATCH("World::deserialize()", throw;);
 	//LOG_DEBUG(("deserialization completed successfully"));
 }
 
 void IWorld::generateUpdate(mrt::Serializator &s) {
+	size_t c = 0, n = _objects.size();
+	std::set<int> skipped_objects;
+	for(ObjectSet::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
+		const Object *o = *i;
+		if (o->need_sync || o->speed != 0) {
+			++c;
+		} else skipped_objects.insert(o->_id);
+	}
+	LOG_DEBUG(("generating update %u objects of %u", c, n));
 
+	s.add(c);
+	for(ObjectSet::iterator i = _objects.begin(); i != _objects.end(); ++i) {
+		Object *o = *i;
+		if (o->need_sync || o->speed != 0) {
+			serializeObject(s, o);	
+			if (o->need_sync)
+				o->need_sync = false;
+		}
+	}
+	unsigned int skipped = skipped_objects.size();
+	s.add(skipped);
+	for(std::set<int>::const_iterator i = skipped_objects.begin(); i != skipped_objects.end(); ++i) {
+		s.add(*i);
+	}
 }
 
 void IWorld::applyUpdate(const mrt::Serializator &s, const int ping) {
 	LOG_DEBUG(("applying world update (ping = %d)", ping));	
+	unsigned int n;
+	std::set<int> skipped_objects;
+	s.get(n);
+	while(n--) {
+		Object *o = deserializeObject(s);
+		//add ping correction
+		skipped_objects.insert(o->_id);
+	}
+	s.get(n);
+	while(n--) {
+		int id;
+		s.get(id);
+		skipped_objects.insert(id);
+	}
+	cropObjects(skipped_objects);
 }
 
 

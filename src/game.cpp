@@ -42,7 +42,7 @@
 
 IMPLEMENT_SINGLETON(Game, IGame)
 
-IGame::IGame() : _my_index(-1), _address("localhost"), _autojoin(false), _shake(0), _trip_time(50) {
+IGame::IGame() : _my_index(-1), _address("localhost"), _autojoin(false), _shake(0), _trip_time(50), _next_sync(2.0, true) {
 	LOG_DEBUG(("IGame ctor"));
 }
 IGame::~IGame() {}
@@ -482,8 +482,19 @@ void IGame::run() {
 			t_tick_w = SDL_GetTicks();
 #endif
 			
-			if (_server) 
+			if (_server) {
+				if (_next_sync.tick(dt) && _server->active()) {
+					Message m(Message::UpdateWorld);
+					{
+						mrt::Serializator s;
+						World->generateUpdate(s);
+						m.data = s.getData();
+					}
+					LOG_DEBUG(("sending world update... (size: %u)", m.data.getSize()));
+					_server->broadcast(m);
+				}
 				_server->tick(dt);
+			}
 #ifdef SHOW_PERFSTATS
 			t_tick_s = SDL_GetTicks();
 #endif
@@ -694,7 +705,7 @@ void IGame::onMessage(const int id, const Message &message) {
 			state.deserialize(s);
 			Object *o = World->getObjectByID(id);
 			if (o != NULL) {
-				o->getPlayerState() = state;
+				o->updatePlayerState(state);
 			} else {
 				LOG_WARN(("skipped state update for object id %d", id));
 			}
@@ -774,13 +785,12 @@ void IGame::updatePlayers() {
 		PlayerSlot &slot = _players[i];
 		if (slot.control_method != NULL) {
 			assert(slot.obj != NULL);
-			PlayerState &state = slot.obj->getPlayerState();
-			PlayerState old_state = state;
+			PlayerState state = slot.obj->getPlayerState();
 			slot.control_method->updateState(state);
-			if (state != old_state) {
+			if (slot.obj->updatePlayerState(state)) {
+				updated = true;
 				slot.state = state;
 				slot.need_sync = true;
-				updated = true;
 			}
 		}
 	}
@@ -799,6 +809,7 @@ void IGame::updatePlayers() {
 			for(int j = 0; j < n; ++j) {
 				if (i == j) 
 					continue;
+
 				PlayerSlot &slot = _players[j];
 				if (slot.need_sync) {
 					LOG_DEBUG(("object in slot %d: %s (%d) need sync", j, slot.obj->registered_name.c_str(), slot.obj->getID()));

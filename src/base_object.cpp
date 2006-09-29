@@ -4,7 +4,9 @@
 
 BaseObject::BaseObject(const std::string &classname)
  : mass(1), speed(0), ttl(-1), impassability(1), hp(1), max_hp(1), piercing(false), pierceable(false),
-   classname(classname), _id(0), _follow(0), _direction(1,0,0), _distance(0), _moving_time(0), _idle_time(0), _dead(false), _owner_id(0) {
+   classname(classname), _id(0), _follow(0), _direction(1,0,0), _distance(0), _moving_time(0), _idle_time(0), 
+   need_sync(false),
+   _dead(false), _owner_id(0) {
 	//LOG_DEBUG(("allocated id %ld", _id));
 }
 
@@ -185,7 +187,7 @@ void BaseObject::follow(const BaseObject *obj, const GroupType mode) {
 	_follow = obj->_id;
 	if (mode == Centered) {
 		_follow_position = (obj->size - size) / 2;
-		LOG_DEBUG(("follow: %g %g", _follow_position.x, _follow_position.y));
+		//LOG_DEBUG(("follow: %g %g", _follow_position.x, _follow_position.y));
 	}
 }
 
@@ -200,6 +202,8 @@ void BaseObject::follow(const int id) {
 void BaseObject::addDamage(BaseObject *from, const bool emitDeath) {
 	if (!from->piercing || hp == -1 || from->hp == 0)
 		return;
+	need_sync = true;
+	
 	hp -= from->hp;	
 	LOG_DEBUG(("%s: received %d hp of damage from %s. hp = %d", classname.c_str(), from->hp, from->classname.c_str(), hp));
 	if (emitDeath && hp <= 0) 
@@ -220,6 +224,7 @@ void BaseObject::setZ(const float z) {
 
 const bool BaseObject::take(const BaseObject *obj, const std::string &type) {
 	if (obj->classname == "heal") {
+		need_sync = true;
 		hp += obj->hp;
 		if (hp >= max_hp)
 			hp = max_hp;
@@ -236,4 +241,13 @@ void BaseObject::disown() {
 
 const v3<float> BaseObject::getRelativePos(const BaseObject *obj) const {
 	return obj->_position - _position + size / 2 - obj->size / 2;
+}
+
+const bool BaseObject::updatePlayerState(const PlayerState &state) {
+	bool updated = _state != state;
+	if (updated) {
+		_state = state;
+		need_sync = true;
+	}
+	return updated;
 }

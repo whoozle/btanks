@@ -33,6 +33,12 @@ void Monitor::add(const int id, Connection *c) {
 	_connections[id] = c;
 }
 
+const bool Monitor::active() const {
+	sdlx::AutoMutex m(_connections_mutex);
+	return !_connections.empty();
+}
+
+
 Monitor::Task * Monitor::createTask(const int id, const mrt::Chunk &rawdata) {
 	mrt::Chunk data;
 	unsigned char flags = 0;
@@ -69,6 +75,23 @@ void Monitor::send(const int id, const mrt::Chunk &rawdata) {
 	sdlx::AutoMutex m(_send_q_mutex);
 	_send_q.push_back(t);
 }
+
+void Monitor::broadcast(const mrt::Chunk &data) {
+	std::deque<Task *> tasks;
+	{
+		sdlx::AutoMutex m(_connections_mutex);
+		for(ConnectionMap::const_iterator i = _connections.begin(); i != _connections.end(); ++i) {
+			tasks.push_back(createTask(i->first, data));	
+		}
+	}
+	
+	sdlx::AutoMutex m(_send_q_mutex);
+	while(!tasks.empty()) {
+		_send_q.push_back(tasks.front());
+		tasks.pop_front();
+	}
+}
+
 
 Monitor::TaskQueue::iterator Monitor::findTask(TaskQueue &queue, const int conn_id) {
 	Monitor::TaskQueue::iterator i;
