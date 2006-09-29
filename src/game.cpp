@@ -834,7 +834,7 @@ void IGame::updatePlayers() {
 
 				PlayerSlot &slot = _players[j];
 				if (slot.need_sync) {
-					LOG_DEBUG(("object in slot %d: %s (%d) need sync", j, slot.obj->registered_name.c_str(), slot.obj->getID()));
+					//LOG_DEBUG(("object in slot %d: %s (%d) need sync", j, slot.obj->registered_name.c_str(), slot.obj->getID()));
 					s.add(slot.obj->getID());
 					slot.state.serialize(s);
 					send = true;
