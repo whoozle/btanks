@@ -658,6 +658,7 @@ TRY {
 	LOG_DEBUG(("incoming message %s", message.getType()));
 	switch(message.type) {
 	case Message::ServerStatus: {
+		LOG_DEBUG(("server version: %s", message.get("version").c_str()));
 		LOG_DEBUG(("loading map..."));
 		Map->load(message.get("map"));
 		
