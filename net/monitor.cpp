@@ -217,9 +217,9 @@ const int Monitor::run() {
 				int estimate = t->len - t->pos;
 				assert(estimate > 0);
 			
-				int r = sock->recv((char *)(t->data->getPtr()) + t->pos, t->len);
+				int r = sock->recv((char *)(t->data->getPtr()) + t->pos, estimate);
 				if (r == -1 || r == 0) {
-					LOG_ERROR(("error while reading %u bytes (r = %d)", t->len, r));
+					LOG_ERROR(("error while reading %u bytes (r = %d)", estimate, r));
 					goto disconnect;
 				}
 					
@@ -259,9 +259,9 @@ const int Monitor::run() {
 					int estimate = t->len - t->pos;
 					assert(estimate > 0);
 					m.unlock();
-					int r = sock->send((char *)(t->data->getPtr()) + t->pos, t->len);
+					int r = sock->send((char *)(t->data->getPtr()) + t->pos, estimate);
 					if (r == -1 || r == 0) {
-						LOG_ERROR(("error while reading %u bytes (r = %d)", t->len, r));
+						LOG_ERROR(("error while reading %u bytes (r = %d)", estimate, r));
 						goto disconnect;
 					}
 					m.lock();
