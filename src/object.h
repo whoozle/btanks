@@ -75,6 +75,8 @@ public:
 
 	virtual void onSpawn();
 	void setup(const std::string &animation); //do not use it, needed for resman
+	
+	const bool rotating() const { return _direction_idx != _dst_direction; }
 
 protected:
 
