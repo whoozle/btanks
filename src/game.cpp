@@ -10,6 +10,7 @@
 
 #include "mrt/logger.h"
 #include "mrt/exception.h"
+#include "mrt/random.h"
 
 #include "sdlx/system.h"
 #include "sdlx/sdl_ex.h"
@@ -269,8 +270,6 @@ void IGame::onKey(const Uint8 type, const SDL_keysym key) {
 	}
 }
 
-#include <stdlib.h>
-
 void IGame::onMenu(const std::string &name) {
 	if (name == "quit") 
 		_running = false;
@@ -282,7 +281,7 @@ void IGame::onMenu(const std::string &name) {
 		loadMap("country");
 		
 		static const char * colors[4] = {"green", "red", "yellow", "cyan"};
-		std::string animation = colors[(int) (4.0 * (rand() / (RAND_MAX + 1.0)))];
+		std::string animation = colors[mrt::random(4)];
 		animation += "-" + vehicle;
 		
 		//_my_index = spawnPlayer("tank", "green-tank", "keys");
