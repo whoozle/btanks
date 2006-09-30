@@ -2,6 +2,6 @@ Import('env')
 
 env = env.Copy()
 mrt = env.StaticLibrary('mrt', \
-	['exception.cpp', 'fmt.cpp', 'ioexception.cpp', 'logger.cpp', 'chunk.cpp', \
+	['exception.cpp', 'fmt.cpp', 'ioexception.cpp', 'logger.cpp', 'chunk.cpp', 'random.cpp', \
 	'file.cpp', 'xml.cpp', 'b64.cpp', 'gzip.cpp', 'serializator.cpp', 'serializable.cpp', 
 	'sys_socket.cpp', 'tcp_socket.cpp', 'socket_set.cpp'])
