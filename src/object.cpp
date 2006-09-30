@@ -28,7 +28,7 @@ Object * Object::clone() const {
 
 
 Object::Object(const std::string &classname) : 
-	BaseObject(classname), fadeout_time(0),  _model(0), _surface(0), _direction_idx(0), _pos(0), _rotation_time(-1) {}
+	BaseObject(classname), fadeout_time(0),  _model(0), _surface(0), _direction_idx(0), _pos(0), _rotation_time(0) {}
 
 void Object::init(const std::string &model, const std::string &surface, const int tile_w, const int tile_h) {
 	_events.clear();
@@ -408,27 +408,26 @@ void Object::limitRotation(const float dt, const int dirs, const float speed, co
 		_dst_direction = _velocity.getDirection16() - 1;
 	}
 	if (_dst_direction == _direction_idx) {
-		_rotation_time = -1;
+		_rotation_time = 0;
 		return;
 	}
 		
 	const int half_dirs = dirs / 2;
 
-	if (_rotation_time < 0) {
+	if (_rotation_time <= 0) {
 		//was not rotated.
 		if (allow_backward && (_dst_direction - _direction_idx + dirs) % dirs == half_dirs) {
 			return;
 		}
 		
 		_rotation_time = speed;
-
-		if (rotate_even_stopped) {
-			if (math::abs<float>(_dst_direction - _direction_idx) > 1) {
-				_velocity.clear();
-				return;
-			}
-		} 
 	}
+
+	if (rotate_even_stopped) {
+		if (math::abs<float>(_dst_direction - _direction_idx) > 1) {
+			_velocity.clear();
+		}
+	} 
 	
 	if (_rotation_time > 0) {
 		_rotation_time -= dt;
@@ -452,8 +451,7 @@ void Object::limitRotation(const float dt, const int dirs, const float speed, co
 		}
 	}
 	_direction.fromDirection(_direction_idx, dirs); //fixme. remove it.
-	if (!_velocity.is0()) 
-		_velocity.fromDirection(_direction_idx, dirs); //fixme. remove it.
+	//LOG_DEBUG(("velocity = %g %g", _velocity.x, _velocity.y));
 }
 
 //grouped object stuff
