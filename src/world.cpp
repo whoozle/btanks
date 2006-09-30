@@ -217,6 +217,7 @@ void IWorld::tick(Object &o, const float dt) {
 	}
 		
 	if (o.speed == 0) {
+		o._idle_time += dt;
 		if (o.impassability < 0) {
 			int ow = (int)o.size.x;
 			int oh = (int)o.size.y; 
