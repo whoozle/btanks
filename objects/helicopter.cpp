@@ -14,10 +14,12 @@ public:
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
 		_next_target.serialize(s);
+		s.add(_active);
 	}
 	virtual void deserialize(const mrt::Serializator &s) {
 		Object::deserialize(s);
 		_next_target.deserialize(s);
+		s.get(_active);
 	}
 
 private: 
