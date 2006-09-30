@@ -239,7 +239,9 @@ void IWorld::tick(Object &o, const float dt) {
 		
 	if (len == 0) {
 		if (o._moving_time > 0) {
-			o._velocity_fadeout = old_vel;
+		//use inertia only if object co-directional with velocity. fixme
+			if (!o.rotating())
+				o._velocity_fadeout = old_vel;
 		}
 		o._moving_time = 0;
 		o._idle_time += dt;
