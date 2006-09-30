@@ -423,8 +423,10 @@ void Object::limitRotation(const float dt, const int dirs, const float speed, co
 		_rotation_time = speed;
 
 		if (rotate_even_stopped) {
-			if (math::abs<float>(_dst_direction - _direction_idx) > 1)
+			if (math::abs<float>(_dst_direction - _direction_idx) > 1) {
 				_velocity.clear();
+				return;
+			}
 		} 
 	}
 	
