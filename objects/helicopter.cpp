@@ -50,7 +50,7 @@ void Helicopter::calculate(const float dt) {
 			_velocity = _next_target - pos;
 	}
 	
-	limitRotation(dt, 8, 0.5, true, true);
+	limitRotation(dt, 8, 0.5, true, false);
 }
 
 void Helicopter::emit(const std::string &event, BaseObject * emitter) {
