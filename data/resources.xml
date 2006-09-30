@@ -323,6 +323,7 @@
 	<object class="lodge" hp="1" impassability="1" />
 	<object class="spawn-shield" hp="1000" impassability="1" />
 	<object class="traffic-lights" hp="3" />
+	<object class="helicopter" hp="100" impassability="0" speed="500" mass="1500" />
 
 	<!-- items -->
 	<object class="heal" hp="3" />
