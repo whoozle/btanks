@@ -329,7 +329,7 @@
 	<object class="lodge" hp="1" impassability="1" />
 	<object class="spawn-shield" hp="1000" impassability="1" />
 	<object class="traffic-lights" hp="3" />
-	<object class="helicopter-with-kamikazes" hp="100" impassability="0" speed="500" mass="1500" />
+	<object class="helicopter-with-kamikazes" hp="100" impassability="0" speed="400" mass="1500" />
 	<object class="paratrooper-kamikaze" hp="5" impassability="0" />
 	<object class="kamikaze" hp="2" impassability="1" speed="300" mass="80" />
 
