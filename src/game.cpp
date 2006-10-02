@@ -184,19 +184,15 @@ void IGame::init(const int argc, char *argv[]) {
 	SDL_WM_SetCaption(("Battle tanks - " + getVersion()).c_str(), "btanks");
 	
 	if (_opengl) {
-		if (vsync) {
 #if SDL_VERSION_ATLEAST(1,2,10)
-			LOG_DEBUG(("setting GL swap control..."));
-			int r = SDL_GL_SetAttribute( SDL_GL_SWAP_CONTROL, 1 );
-			if (r == -1) 
-				LOG_WARN(("cannot set SDL_GL_SWAP_CONTROL."));
-#endif
-		}
+		LOG_DEBUG(("setting GL swap control to %d...", vsync?1:0));
+		int r = SDL_GL_SetAttribute( SDL_GL_SWAP_CONTROL, vsync?1:0);
+		if (r == -1) 
+			LOG_WARN(("cannot set SDL_GL_SWAP_CONTROL."));
 
-#if SDL_VERSION_ATLEAST(1,2,10)
 		LOG_DEBUG(("setting GL accelerated visual..."));
 
-		int r = SDL_GL_SetAttribute( SDL_GL_ACCELERATED_VISUAL, 1 );
+		r = SDL_GL_SetAttribute( SDL_GL_ACCELERATED_VISUAL, 1 );
 		if (r == -1) 
 			LOG_WARN(("cannot set SDL_GL_ACCELERATED_VISUAL."));
 #endif
