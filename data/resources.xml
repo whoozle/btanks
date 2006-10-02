@@ -163,6 +163,10 @@
 		<pose id="main" sound="helicopter.ogg">0,1,2</pose>
 	</animation-model>
 
+	<animation-model id="paratrooper-animation" speed="1">
+		<pose id="main">0,1,2,3,4,5,6,7</pose>
+	</animation-model>
+
 	<animation id="damage-digits" tile="../font/small.png" model="single-tile" tile_width="10" tile_height="16" />
 
 	<animation id="spawning" tile="respawn.png" model="spawning-animation" size="128" />
@@ -261,16 +265,18 @@
 	<animation id="bus-stop-left" model="destructable-object-animation" tile="bus_stop_left.png" tile_width="64" tile_height="128" />
 	<animation id="bus-stop-right" model="destructable-object-animation" tile="bus_stop_right.png" tile_width="64" tile_height="128" />
 	<animation id="bus-stop-top" model="destructable-object-animation" tile="bus_stop_top.png" tile_width="128" tile_height="64" />
-	<animation id="stall-left" model="destructable-object-animation" tile="stall_left.png" tile_width="64" tile_height="64" />
-	<animation id="stall-right" model="destructable-object-animation" tile="stall_right.png" tile_width="64" tile_height="64" />
-	<animation id="tent-top" model="destructable-object-animation" tile="tent_top.png" tile_width="64" tile_height="64" />
-	<animation id="tent-left" model="destructable-object-animation" tile="tent_left.png" tile_width="64" tile_height="64" />
-	<animation id="tent-right" model="destructable-object-animation" tile="tent_right.png" tile_width="64" tile_height="64" />
-	<animation id="umbrella" model="destructable-object-animation" tile="umbrella.png" tile_width="64" tile_height="64" />
-	<animation id="van" model="destructable-object-animation" tile="van.png" tile_width="64" tile_height="64" />
-	<animation id="biotoilet" model="destructable-object-animation" tile="biotoilet.png" tile_width="64" tile_height="64" />
-	<animation id="lodge" model="destructable-object-animation" tile="lodge.png" tile_width="64" tile_height="64" />
+	<animation id="stall-left" model="destructable-object-animation" tile="stall_left.png" size="64" />
+	<animation id="stall-right" model="destructable-object-animation" tile="stall_right.png" size="64" />
+	<animation id="tent-top" model="destructable-object-animation" tile="tent_top.png" size="64" />
+	<animation id="tent-left" model="destructable-object-animation" tile="tent_left.png" size="64" />
+	<animation id="tent-right" model="destructable-object-animation" tile="tent_right.png" size="64" />
+	<animation id="umbrella" model="destructable-object-animation" tile="umbrella.png" size="64" />
+	<animation id="van" model="destructable-object-animation" tile="van.png" size="64" />
+	<animation id="biotoilet" model="destructable-object-animation" tile="biotoilet.png" size="64" />
+	<animation id="lodge" model="destructable-object-animation" tile="lodge.png" size="64" />
 	<animation id="helicopter" model="helicopter-animation" tile="helicopter.png" size="128" />
+	<animation id="paratroper" model="paratrooper-animation" tile="paratrooper.png" size="64" />
+	<animation id="kamikaze" model="man-animation" tile="kamikaze.png" size="64" />
 	
 	<!-- basic object with single pose. do not edit. -->
 	<object class="single-pose" impassability="0" />
