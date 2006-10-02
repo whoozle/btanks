@@ -1,10 +1,11 @@
 #include "object.h"
 #include "resource_manager.h"
+#include "alarm.h"
 
 class Kamikaze : public Object {
 public:
 	Kamikaze() : 
-		Object("kamikaze") {}
+		Object("kamikaze"), _reaction(0.1, true) {}
 	
 	virtual void tick(const float dt);
 	virtual void calculate(const float dt);
@@ -12,9 +13,14 @@ public:
 	virtual Object * clone() const;
 	virtual void onSpawn();
 	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
+private: 
+	Alarm _reaction;
 };
 
 void Kamikaze::calculate(const float dt) {
+	if (!_reaction.tick(dt))
+		return;
+	
 	v3<float> vel;
 	if (getNearest("player", _velocity, vel, NULL)) {
 		_velocity.quantize8();
