@@ -164,7 +164,7 @@ void IWorld::getImpassability2(float &old_pos_im, float &new_pos_im, Object *obj
 		return;
 	}
 	
-	
+	v3<int> old_position = 	obj->_position.convert<int>();
 	const Object *result = NULL;
 	sdlx::Rect my_new((int)new_position.x, (int)new_position.y,(int)obj->size.x, (int)obj->size.y);
 	sdlx::Rect my_old((int)obj->_position.x, (int)obj->_position.y,(int)obj->size.x, (int)obj->size.y);
@@ -182,7 +182,7 @@ void IWorld::getImpassability2(float &old_pos_im, float &new_pos_im, Object *obj
 		o->renderCopy(osurf);
 
 	//old position collisions
-		if (collides(obj, surface, obj->_position.convert<int>(), o, osurf)) {
+		if (collides(obj, surface, old_position, o, osurf)) {
 			if (o->impassability > old_pos_im) {
 				old_pos_im = o->impassability;
 				result = o;
