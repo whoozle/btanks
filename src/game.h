@@ -103,7 +103,7 @@ private:
 	
 	Server *_server;
 	Client *_client;
-	bool _vsync, _opengl, _show_fps;
+	bool _opengl, _show_fps;
 	Object *_fps;
 
 	std::string _preload_map;

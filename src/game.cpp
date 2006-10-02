@@ -76,14 +76,14 @@ void IGame::init(const int argc, char *argv[]) {
 	_show_fps = true;
 	bool fullscreen = false;
 	bool dx = false;
-	_vsync = true;
+	bool vsync = true;
 	int w = 800, h = 600;
 	
 	for(int i = 1; i < argc; ++i) {
 		if (strcmp(argv[i], "--no-gl") == 0) _opengl = false;
 		else if (strcmp(argv[i], "--fs") == 0) fullscreen = true;
 		else if (strcmp(argv[i], "--no-fps") == 0) _show_fps = false;
-		else if (strcmp(argv[i], "--no-vsync") == 0) _vsync = false;
+		else if (strcmp(argv[i], "--no-vsync") == 0) vsync = false;
 #ifdef WIN32
 		else if (strcmp(argv[i], "--dx") == 0) { dx = true; _opengl = false; }
 #endif
@@ -103,7 +103,7 @@ void IGame::init(const int argc, char *argv[]) {
 		else throw_ex(("unrecognized option: '%s'", argv[i]));
 	}
 	
-	LOG_DEBUG(("gl: %s, vsync: %s, dx: %s", _opengl?"yes":"no", _vsync?"yes":"no", dx?"yes":"no"));
+	LOG_DEBUG(("gl: %s, vsync: %s, dx: %s", _opengl?"yes":"no", vsync?"yes":"no", dx?"yes":"no"));
 #ifdef WIN32
 	_putenv("SDL_VIDEO_RENDERER=gdi");
 
@@ -175,15 +175,33 @@ void IGame::init(const int argc, char *argv[]) {
 	}
 	
 	int flags = SDL_HWSURFACE | SDL_ANYFORMAT;
-	if (_vsync) flags |= SDL_DOUBLEBUF;
+	//if (doublebuf)
+	flags |= SDL_DOUBLEBUF;
+	
 	if (fullscreen) flags |= SDL_FULLSCREEN;
 
 	LOG_DEBUG(("setting caption..."));		
 	SDL_WM_SetCaption(("Battle tanks - " + getVersion()).c_str(), "btanks");
 	
 	if (_opengl) {
-		if (_vsync) 
-			SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
+		if (vsync) {
+#if SDL_VERSION_ATLEAST(1,2,10)
+			LOG_DEBUG(("setting GL swap control..."));
+			int r = SDL_GL_SetAttribute( SDL_GL_SWAP_CONTROL, 1 );
+			if (r == -1) 
+				LOG_WARN(("cannot set SDL_GL_SWAP_CONTROL."));
+#endif
+		}
+
+#if SDL_VERSION_ATLEAST(1,2,10)
+		LOG_DEBUG(("setting GL accelerated visual..."));
+
+		int r = SDL_GL_SetAttribute( SDL_GL_ACCELERATED_VISUAL, 1 );
+		if (r == -1) 
+			LOG_WARN(("cannot set SDL_GL_ACCELERATED_VISUAL."));
+#endif
+		
+		SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
 		SDL_GL_SetAttribute( SDL_GL_ALPHA_SIZE, 8 );
 	
 		glBlendFunc_ptr.call( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
