@@ -46,7 +46,7 @@ public:
 
 private:
 	Matrix<int> _imp_map;
-	const bool collides(const sdlx::Surface&, const int dx, const int dy, const unsigned tid) const;
+	inline const bool collides(const sdlx::Surface&, const int dx, const int dy, const sdlx::Surface *tile) const;
 
 	int _w, _h, _tw, _th, _firstgid;
 	int _lastz;

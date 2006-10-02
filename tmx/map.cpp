@@ -20,15 +20,12 @@ IMPLEMENT_SINGLETON(Map, IMap)
 
 const int IMap::pathfinding_step = 64;
 
-const bool IMap::collides(const sdlx::Surface &surf, const int dx, const int dy, const unsigned tid) const {
-	if (tid == 0)
+const bool IMap::collides(const sdlx::Surface &surf, const int dx, const int dy, const sdlx::Surface *tile) const {
+	if (tile == NULL)
 		return false;
 	
 	//LOG_DEBUG(("dx: %d, dy: %d, w: %d, h: %d, tid: %d", dx, dy, surf.getWidth(), surf.getHeight(), tid));
-	assert((unsigned)tid < _tiles.size());
-	const sdlx::Surface *bs = _tiles[tid];
-	assert(bs != NULL);
-	int r = SDL_CollidePixel(surf.getSDLSurface(), dx, dy, bs->getSDLSurface(), 0, 0);
+	int r = SDL_CollidePixel(surf.getSDLSurface(), dx, dy, tile->getSDLSurface(), 0, 0);
 	//LOG_DEBUG(("r = %d", r));
 	return r != 0;
 }
@@ -64,7 +61,7 @@ const int IMap::getImpassability(const Object *obj, const sdlx::Surface &s, cons
 		if (layer_im == -1) 
 			continue;
 		//LOG_DEBUG(("im: %d, tile: %d", layer_im, layer->get(xt1, yt1)));
-		if (collides(s, dx1, dy1, layer->get(xt1, yt1)) && im > layer_im) {
+		if (collides(s, dx1, dy1, layer->getSurface(xt1, yt1)) && im > layer_im) {
 			if (tile_pos) {
 				tile_pos->x = xt1;
 				tile_pos->y = yt1;
@@ -72,7 +69,7 @@ const int IMap::getImpassability(const Object *obj, const sdlx::Surface &s, cons
 			im = layer_im;
 		}
 
-		if (yt2 != yt1 && collides(s, dx1, dy2, layer->get(xt1, yt2)) && im > layer_im) {
+		if (yt2 != yt1 && collides(s, dx1, dy2, layer->getSurface(xt1, yt2)) && im > layer_im) {
 			if (tile_pos) {
 				tile_pos->x = xt1;
 				tile_pos->y = yt2;
@@ -80,14 +77,14 @@ const int IMap::getImpassability(const Object *obj, const sdlx::Surface &s, cons
 			im = layer_im;
 		}
 		if (xt2 != xt1) {
-			if (collides(s, dx2, dy1, layer->get(xt2, yt1)) && im > layer_im) {
+			if (collides(s, dx2, dy1, layer->getSurface(xt2, yt1)) && im > layer_im) {
 				im = layer_im;
 				if (tile_pos) {
 					tile_pos->x = xt2;
 					tile_pos->y = yt1;
 				}
 			}
-			if (yt2 != yt1 && collides(s, dx2, dy2, layer->get(xt2, yt2)) && im > layer_im) {
+			if (yt2 != yt1 && collides(s, dx2, dy2, layer->getSurface(xt2, yt2)) && im > layer_im) {
 				if (tile_pos) {
 					tile_pos->x = xt2;
 					tile_pos->y = yt2;
