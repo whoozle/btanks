@@ -8,7 +8,7 @@
 /*
 	SDL surface test if offset (u,v) is a transparent pixel
 */
-static int SDL_CollideTransparentPixelTest(const SDL_Surface *surface , const int u , const int v) {
+static inline int SDL_CollideTransparentPixelTest(const SDL_Surface *surface , const int u , const int v) {
 	int bpp;
 	register Uint8 *p;
 	register Uint32 pixelcolor;
@@ -47,7 +47,7 @@ static int SDL_CollideTransparentPixelTest(const SDL_Surface *surface , const in
 		default: 
 			assert(0);
 	}
-	if (surface->flags && SDL_SRCALPHA) {
+	if ((surface->flags & SDL_SRCALPHA) == SDL_SRCALPHA) {
 		Uint8 r, g, b, a;
 		SDL_GetRGBA(pixelcolor, surface->format, &r, &g, &b, &a); 
 		/*
