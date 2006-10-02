@@ -160,7 +160,7 @@
 	</animation-model>
 
 	<animation-model id="helicopter-animation" speed="15">
-		<pose id="main">0,1,2</pose>
+		<pose id="main" sound="helicopter.ogg">0,1,2</pose>
 	</animation-model>
 
 	<animation id="damage-digits" tile="../font/small.png" model="single-tile" tile_width="10" tile_height="16" />
