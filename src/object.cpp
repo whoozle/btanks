@@ -396,8 +396,10 @@ void Object::renderCopy(sdlx::Surface &surface) {
 
 void Object::limitRotation(const float dt, const int dirs, const float speed, const bool rotate_even_stopped, const bool allow_backward) {
 	assert(dirs == 8 || dirs == 16);
-	if (_velocity.is0()) 
+	if (_velocity.is0()) {
+		_direction.fromDirection(_direction_idx, dirs); 
 		return;
+	}
 	_velocity.normalize();
 	
 	if (dirs == 8) {
@@ -452,7 +454,7 @@ void Object::limitRotation(const float dt, const int dirs, const float speed, co
 		}
 	}
 	_direction.fromDirection(_direction_idx, dirs); //fixme. remove it.
-	//LOG_DEBUG(("velocity = %g %g", _velocity.x, _velocity.y));
+	//LOG_DEBUG(("direction = %g %g, velocity = %g %g", _direction.x, _direction.y, _velocity.x, _velocity.y));
 }
 
 //grouped object stuff

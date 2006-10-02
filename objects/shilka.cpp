@@ -41,6 +41,13 @@ void Shilka::emit(const std::string &event, BaseObject * emitter) {
 }
 
 
+void Shilka::calculate(const float dt) {
+	BaseObject::calculate(dt);	
+	limitRotation(dt, 8, 0.05, true, false);
+
+	//LOG_DEBUG(("_velocity: %g %g", _velocity.x, _velocity.y));
+}
+
 
 void Shilka::tick(const float dt) {
 	Object::tick(dt);
@@ -86,10 +93,6 @@ void Shilka::tick(const float dt) {
 	}
 	
 	_state.fire = false;
-	
-	limitRotation(dt, 8, 0.05, true, false);
-
-	//LOG_DEBUG(("_velocity: %g %g", _velocity.x, _velocity.y));
 }
 
 const bool Shilka::take(const BaseObject *obj, const std::string &type) {

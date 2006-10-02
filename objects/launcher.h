@@ -31,6 +31,7 @@ public:
 	virtual void emit(const std::string &event, BaseObject * emitter);
 	virtual const bool take(const BaseObject *obj, const std::string &type);
 	virtual void tick(const float dt);
+	virtual void calculate(const float dt);
 	virtual void onSpawn();
 	
 private:

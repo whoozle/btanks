@@ -56,9 +56,17 @@ void Launcher::emit(const std::string &event, BaseObject * emitter) {
 }
 
 
+void Launcher::calculate(const float dt) {
+	BaseObject::calculate(dt);
+	//limitRotation(dt, 8, 0.2, false, true);
+	limitRotation(dt, 8, 0.07, true, false);
+	//LOG_DEBUG(("_velocity: %g %g", _velocity.x, _velocity.y));
+}
+
 
 void Launcher::tick(const float dt) {
 	Object::tick(dt);
+
 	bool fire_possible = _fire.tick(dt);
 	
 	if (getState().empty()) {
@@ -85,9 +93,6 @@ void Launcher::tick(const float dt) {
 	}
 
 	_state.fire = false;
-	//limitRotation(dt, 8, 0.2, false, true);
-	limitRotation(dt, 8, 0.07, true, false);
-	//LOG_DEBUG(("_velocity: %g %g", _velocity.x, _velocity.y));
 }
 
 const bool Launcher::take(const BaseObject *obj, const std::string &type) {

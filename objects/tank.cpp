@@ -53,6 +53,10 @@ const bool Tank::take(const BaseObject *obj, const std::string &type) {
 	return BaseObject::take(obj, type);
 }
 
+void Tank::calculate(const float dt) {
+	BaseObject::calculate(dt);
+	limitRotation(dt, 8, 0.05, true, false);
+}
 
 void Tank::tick(const float dt) {
 	Object::tick(dt);
@@ -77,6 +81,7 @@ void Tank::tick(const float dt) {
 		}
 	}
 
+
 	if (_state.fire && fire_possible) {
 		_fire.reset();
 		
@@ -88,10 +93,11 @@ void Tank::tick(const float dt) {
 		//LOG_DEBUG(("vel: %f %f", _state.old_vx, _state.old_vy));
 		//v3<float> v = _velocity.is0()?_direction:_velocity;
 		//v.normalize();
+		std::string bullet("bullet");
 		if (isEffectActive("dirt")) {
-			spawn("dirt-bullet", "dirt-bullet", v3<float>(0,0,-0.1), _direction);
-		} else 
-			spawn("bullet", "bullet", v3<float>(0,0,-0.1), _direction);
+			bullet = "dirt-bullet";
+		}
+		spawn(bullet, bullet, v3<float>(0,0,-0.1), _direction);
 	}
 	if (_state.alt_fire) {
 		groupEmit("missiles", "launch");
@@ -99,8 +105,6 @@ void Tank::tick(const float dt) {
 	
 	_state.fire = false;
 	
-	limitRotation(dt, 8, 0.05, true, false);
-
 	//LOG_DEBUG(("_velocity: %g %g", _velocity.x, _velocity.y));
 }
 
