@@ -89,6 +89,39 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect &viewport) {
 	map.render(surface, viewport, z1, 1000);
 }
 
+const bool IWorld::collides(Object *obj, const sdlx::Surface &surface, const v3<int> &position, Object *o, const sdlx::Surface &osurf) const {
+		if (o == obj || o->impassability == 0 || (obj->piercing && o->pierceable) || (obj->pierceable && o->piercing)) 
+			return false;
+			
+		//skip owner and grouped-leader.
+		if (
+			(obj->_owner_id != 0 && obj->_owner_id == o->_id) || (o->_owner_id != 0 && o->_owner_id == obj->_id) ||
+			(obj->_follow != 0 && obj->_follow == o->_id) || (o->_follow != 0 && o->_follow == obj->_id) 
+		) return false;
+		
+		sdlx::Rect my((int)position.x, (int)position.y,(int)obj->size.x, (int)obj->size.y);
+		sdlx::Rect other((int)o->_position.x, (int)o->_position.y,(int)o->size.x, (int)o->size.y);
+		if (!my.intersects(other)) 
+			return false;
+	
+		v3<int> dpos = o->_position.convert<int>() - position;
+		//LOG_DEBUG(("%s: %d %d", o->classname.c_str(), dpos.x, dpos.y));
+		int r = SDL_CollidePixel(surface.getSDLSurface(), 0, 0, osurf.getSDLSurface(), dpos.x, dpos.y);
+		if (r && (o->impassability < 0 || o->impassability >= 1.0)) { //do not generate collision event if impassability != 1 and impassability != -1
+			//LOG_DEBUG(("collision"));
+			//LOG_DEBUG(("collision %s <-> %s", obj->classname.c_str(), o->classname.c_str()));
+			o->emit("collision", obj);
+			obj->emit("collision", o);
+			
+			if (o->isDead() || obj->isDead() || obj->impassability == 0 || o->impassability == 0) 
+				return false; // no effect.
+			
+			return true;
+		}
+		return false;
+}
+
+
 const float IWorld::getImpassability(Object *obj, const sdlx::Surface &surface, const v3<int> &position, const Object **collided_with) const {
 	if (obj->impassability == 0) {
 		if (collided_with != NULL)
@@ -96,7 +129,6 @@ const float IWorld::getImpassability(Object *obj, const sdlx::Surface &surface, 
 		return 0;
 	}
 	
-	sdlx::Rect my((int)position.x, (int)position.y,(int)obj->size.x, (int)obj->size.y);
 	float im = 0;
 /*	if (obj->_owner_id != 0 && _id2obj->find(obj->_owner_id) == _id2obj->end()) {
 		obj->_owner_id = 0; //dead object.
@@ -106,41 +138,18 @@ const float IWorld::getImpassability(Object *obj, const sdlx::Surface &surface, 
 	
 	for(ObjectSet::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		Object *o = *i;
-		if (o == obj || o->impassability == 0 || (obj->piercing && o->pierceable) || (obj->pierceable && o->piercing)) 
+		sdlx::Surface osurf;
+		osurf.createRGB((int)o->size.x, (int)o->size.y, 24, sdlx::Surface::Software | sdlx::Surface::Alpha );
+		osurf.convertAlpha();
+		o->renderCopy(osurf);
+		if (!collides(obj, surface, position, o, osurf)) 
 			continue;
-			
-		//skip owner and grouped-leader.
-		if (
-			(obj->_owner_id != 0 && obj->_owner_id == o->_id) || (o->_owner_id != 0 && o->_owner_id == obj->_id) ||
-			(obj->_follow != 0 && obj->_follow == o->_id) || (o->_follow != 0 && o->_follow == obj->_id) 
-		) continue;
 		
-		sdlx::Rect other((int)o->_position.x, (int)o->_position.y,(int)o->size.x, (int)o->size.y);
-		if (my.intersects(other)) {
-	
-			sdlx::Surface osurf;
-			osurf.createRGB(other.w, other.h, 24, sdlx::Surface::Software | sdlx::Surface::Alpha );
-			osurf.convertAlpha();
-			o->renderCopy(osurf);
-			
-			v3<int> dpos = o->_position.convert<int>() - position;
-			//LOG_DEBUG(("%s: %d %d", o->classname.c_str(), dpos.x, dpos.y));
-			int r = SDL_CollidePixel(surface.getSDLSurface(), 0, 0, osurf.getSDLSurface(), dpos.x, dpos.y);
-			if (r && (o->impassability < 0 || o->impassability >= 1.0)) { //do not generate collision event if impassability != 1 and impassability != -1
-				//LOG_DEBUG(("collision"));
-				//LOG_DEBUG(("collision %s <-> %s", obj->classname.c_str(), o->classname.c_str()));
-				o->emit("collision", obj);
-				obj->emit("collision", o);
-				
-				if (o->isDead() || obj->isDead() || obj->impassability == 0 || o->impassability == 0) 
-					continue; // no effect.
-				
-				if (o->impassability > im) {
-					im = o->impassability;
-					result = o;
-				}
-			}
+		if (o->impassability > im) {
+			im = o->impassability;
+			result = o;
 		}
+
 	}
 	if (collided_with != NULL)
 		*collided_with = result;

@@ -65,6 +65,7 @@ public:
 
 private:
 	const float getImpassability(Object *obj, const sdlx::Surface &surface, const v3<int> &position, const Object **collided_with = NULL) const;
+	const bool collides(Object *obj, const sdlx::Surface &surface, const v3<int> &position, Object *other, const sdlx::Surface &other_surface) const;
 
 	void serializeObject(mrt::Serializator &, const Object *) const;
 	Object* deserializeObject(const mrt::Serializator &);
