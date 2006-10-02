@@ -99,11 +99,6 @@ const bool IWorld::collides(Object *obj, const sdlx::Surface &surface, const v3<
 			(obj->_follow != 0 && obj->_follow == o->_id) || (o->_follow != 0 && o->_follow == obj->_id) 
 		) return false;
 		
-		sdlx::Rect my((int)position.x, (int)position.y,(int)obj->size.x, (int)obj->size.y);
-		sdlx::Rect other((int)o->_position.x, (int)o->_position.y,(int)o->size.x, (int)o->size.y);
-		if (!my.intersects(other)) 
-			return false;
-	
 		v3<int> dpos = o->_position.convert<int>() - position;
 		//LOG_DEBUG(("%s: %d %d", o->classname.c_str(), dpos.x, dpos.y));
 		int r = SDL_CollidePixel(surface.getSDLSurface(), 0, 0, osurf.getSDLSurface(), dpos.x, dpos.y);
@@ -130,14 +125,16 @@ const float IWorld::getImpassability(Object *obj, const sdlx::Surface &surface, 
 	}
 	
 	float im = 0;
-/*	if (obj->_owner_id != 0 && _id2obj->find(obj->_owner_id) == _id2obj->end()) {
-		obj->_owner_id = 0; //dead object.
-	}
-*/	
 	const Object *result = NULL;
+	sdlx::Rect my((int)position.x, (int)position.y,(int)obj->size.x, (int)obj->size.y);
 	
 	for(ObjectSet::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		Object *o = *i;
+
+		sdlx::Rect other((int)o->_position.x, (int)o->_position.y,(int)o->size.x, (int)o->size.y);
+		if (!my.intersects(other)) 
+			continue;
+
 		sdlx::Surface osurf;
 		osurf.createRGB((int)o->size.x, (int)o->size.y, 24, sdlx::Surface::Software | sdlx::Surface::Alpha );
 		osurf.convertAlpha();
@@ -156,6 +153,53 @@ const float IWorld::getImpassability(Object *obj, const sdlx::Surface &surface, 
 	
 	return im;
 }
+
+void IWorld::getImpassability2(float &old_pos_im, float &new_pos_im, Object *obj, const sdlx::Surface &surface, const v3<int> &new_position, const Object **old_pos_collided_with) const {
+	old_pos_im = 0;
+	new_pos_im = 0;
+
+	if (obj->impassability == 0) {
+		if (old_pos_collided_with != NULL)
+			*old_pos_collided_with = NULL;
+		return;
+	}
+	
+	
+	const Object *result = NULL;
+	sdlx::Rect my_new((int)new_position.x, (int)new_position.y,(int)obj->size.x, (int)obj->size.y);
+	sdlx::Rect my_old((int)obj->_position.x, (int)obj->_position.y,(int)obj->size.x, (int)obj->size.y);
+	
+	for(ObjectSet::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
+		Object *o = *i;
+
+		sdlx::Rect other((int)o->_position.x, (int)o->_position.y,(int)o->size.x, (int)o->size.y);
+		if (!my_old.intersects(other) && !my_new.intersects(other)) 
+			continue;
+
+		sdlx::Surface osurf;
+		osurf.createRGB((int)o->size.x, (int)o->size.y, 24, sdlx::Surface::Software | sdlx::Surface::Alpha );
+		osurf.convertAlpha();
+		o->renderCopy(osurf);
+
+	//old position collisions
+		if (collides(obj, surface, obj->_position.convert<int>(), o, osurf)) {
+			if (o->impassability > old_pos_im) {
+				old_pos_im = o->impassability;
+				result = o;
+			}
+		}
+	//new position collisions
+		if (collides(obj, surface, new_position, o, osurf)) {
+			if (o->impassability > new_pos_im) {
+				new_pos_im = o->impassability;
+			}
+		}
+
+	}
+	if (old_pos_collided_with != NULL)
+		*old_pos_collided_with = result;
+}
+
 
 void IWorld::getImpassabilityMatrix(Matrix<int> &matrix, const Object *src, const Object *dst) const {
 	const v3<int> size = Map->getTileSize();
@@ -287,9 +331,13 @@ void IWorld::tick(Object &o, const float dt) {
 	//osurf.saveBMP("snapshot.bmp");
 	const Object *stuck_in = NULL;
 	v3<int> stuck_map_pos;
-	bool stuck = map.getImpassability(&o, osurf, old_pos, &stuck_map_pos) == 100 || getImpassability(&o, osurf, old_pos, &stuck_in) == 1.0;
-		
-	float obj_im = getImpassability(&o, osurf, new_pos);
+
+	float obj_im_now = 0;
+	// = getImpassability(&o, osurf, old_pos, &stuck_in);
+	float obj_im = 0;// = getImpassability(&o, osurf, new_pos);
+	getImpassability2(obj_im_now, obj_im, &o, osurf, new_pos, &stuck_in);
+
+	bool stuck = map.getImpassability(&o, osurf, old_pos, &stuck_map_pos) == 100 || obj_im_now >= 1.0;
 	//LOG_DEBUG(("obj_im = %f", obj_im));
 	float map_im = 0;
 	if (o.piercing) {
