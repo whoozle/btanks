@@ -23,7 +23,10 @@ private:
 };
 
 
-void Bullet::calculate(const float dt) {
+void Bullet::calculate(const float dt) {}
+
+void Bullet::onSpawn() {
+	play("move", true);
 	_velocity.normalize();
 	
 	int dir = _velocity.getDirection8();
@@ -31,10 +34,6 @@ void Bullet::calculate(const float dt) {
 		setDirection(dir - 1);
 	}
 	_velocity.quantize8();
-}
-
-void Bullet::onSpawn() {
-	play("move", true);
 }
 
 void Bullet::emit(const std::string &event, BaseObject * emitter) {
