@@ -126,7 +126,7 @@ const float IWorld::getImpassability(Object *obj, const sdlx::Surface &surface, 
 			v3<int> dpos = o->_position.convert<int>() - position;
 			//LOG_DEBUG(("%s: %d %d", o->classname.c_str(), dpos.x, dpos.y));
 			int r = SDL_CollidePixel(surface.getSDLSurface(), 0, 0, osurf.getSDLSurface(), dpos.x, dpos.y);
-			if (r) {
+			if (r && (o->impassability < 0 || o->impassability >= 1.0)) { //do not generate collision event if impassability != 1 and impassability != -1
 				//LOG_DEBUG(("collision"));
 				//LOG_DEBUG(("collision %s <-> %s", obj->classname.c_str(), o->classname.c_str()));
 				o->emit("collision", obj);

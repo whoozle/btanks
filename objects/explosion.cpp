@@ -61,10 +61,7 @@ void Explosion::emit(const std::string &event, BaseObject * emitter) {
 		
 		_damaged_objects.insert(id);
 		
-		const bool p = piercing;
-		piercing = true;
-		emitter->addDamage(this);
-		piercing = p;
+		emitter->addDamage(this, hp);
 		
 	} else Object::emit(event, emitter);
 }

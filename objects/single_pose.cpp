@@ -11,7 +11,7 @@ public:
 	virtual void tick(const float dt);
 	virtual void onSpawn();
 	virtual void render(sdlx::Surface &surface, const int x, const int y);
-	virtual void addDamage(BaseObject *from, const bool emitDeath = true);
+	virtual void addDamage(BaseObject *from, const int hp, const bool emitDeath = true);
 
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
@@ -38,16 +38,16 @@ private:
 	bool _repeat, _no_dir, _play_start, _breakable, _broken;
 };
 
-void SinglePose::addDamage(BaseObject *from, const bool emitDeath) {
+void SinglePose::addDamage(BaseObject *from, const int dhp, const bool emitDeath) {
 	if (!_breakable) {
-		BaseObject::addDamage(from, emitDeath);
+		BaseObject::addDamage(from, dhp, emitDeath);
 		return;
 	}
 
 	if (_broken)
 		return;
 
-	BaseObject::addDamage(from, false);
+	BaseObject::addDamage(from, dhp, false);
 	if (hp <= 0) {
 		_broken = true;
 		cancelAll();

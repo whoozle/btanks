@@ -7,7 +7,7 @@ public:
 	virtual void tick(const float dt);
 	virtual Object * clone() const;
 	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
-	virtual void addDamage(BaseObject *from, const bool emitDeath = true);
+	virtual void addDamage(BaseObject *from, const int hp, const bool emitDeath = true);
 
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
@@ -25,11 +25,11 @@ private:
 	bool _broken;
 };
 
-void TrafficLights::addDamage(BaseObject *from, const bool emitDeath) {
+void TrafficLights::addDamage(BaseObject *from, const int dhp, const bool emitDeath) {
 	if (_broken)
 		return;
 
-	BaseObject::addDamage(from, false);
+	BaseObject::addDamage(from, dhp, false);
 	if (hp <= 0) {
 		_broken = true;
 		cancelAll();

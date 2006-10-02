@@ -66,7 +66,7 @@ public:
 	void heal(const int hp);
 	virtual const bool take(const BaseObject *obj, const std::string &type);
 	virtual void addDamage(BaseObject *from, const int hp, const bool emitDeath = true);
-	virtual void addDamage(BaseObject *from, const bool emitDeath = true);
+	void addDamage(BaseObject *from, const bool emitDeath = true);
 	
 	const v3<float> getRelativePos(const BaseObject *obj) const;
 	
