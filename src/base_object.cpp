@@ -202,19 +202,25 @@ void BaseObject::follow(const int id) {
 void BaseObject::addDamage(BaseObject *from, const bool emitDeath) {
 	if (!from->piercing || hp == -1 || from->hp == 0)
 		return;
+
+	addDamage(from, from->hp, emitDeath);
+}
+
+void BaseObject::addDamage(BaseObject *from, const int dhp, const bool emitDeath) {
 	need_sync = true;
 	
-	hp -= from->hp;	
-	LOG_DEBUG(("%s: received %d hp of damage from %s. hp = %d", classname.c_str(), from->hp, from->classname.c_str(), hp));
+	hp -= dhp;	
+	LOG_DEBUG(("%s: received %d hp of damage from %s. hp = %d", classname.c_str(), dhp, from->classname.c_str(), hp));
 	if (emitDeath && hp <= 0) 
 		emit("death", from);
 		
 	//look for a better place for that.
 	Object *o = ResourceManager->createObject("damage-digits", "damage-digits");
-	o->hp = from->hp;
+	o->hp = dhp;
 	if (hp < 0) 
 		o->hp += hp;
 	World->addObject(o, _position);
+	
 }
 
 

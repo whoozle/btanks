@@ -45,7 +45,15 @@ void Kamikaze::onSpawn() {
 }
 
 void Kamikaze::emit(const std::string &event, BaseObject * emitter) {
-	Object::emit(event, emitter);
+	if (event == "death") {
+		spawn("explosion", "explosion", v3<float>(0,0,1), v3<float>());
+		Object::emit(event, emitter);
+	} else if (event == "collision") {
+		if (emitter) 
+			emitter->addDamage(this, hp);
+		emit("death", emitter);
+	} else 
+		Object::emit(event, emitter);
 }
 
 
