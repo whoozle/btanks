@@ -76,14 +76,14 @@ void IGame::init(const int argc, char *argv[]) {
 	_show_fps = true;
 	bool fullscreen = false;
 	bool dx = false;
-	bool vsync = true;
+	bool vsync = false;
 	int w = 800, h = 600;
 	
 	for(int i = 1; i < argc; ++i) {
 		if (strcmp(argv[i], "--no-gl") == 0) _opengl = false;
 		else if (strcmp(argv[i], "--fs") == 0) fullscreen = true;
 		else if (strcmp(argv[i], "--no-fps") == 0) _show_fps = false;
-		else if (strcmp(argv[i], "--no-vsync") == 0) vsync = false;
+		else if (strcmp(argv[i], "--vsync") == 0) vsync = true;
 #ifdef WIN32
 		else if (strcmp(argv[i], "--dx") == 0) { dx = true; _opengl = false; }
 #endif
@@ -191,6 +191,17 @@ void IGame::init(const int argc, char *argv[]) {
 		int r = SDL_GL_SetAttribute( SDL_GL_SWAP_CONTROL, vsync?1:0);
 		if (r == -1) 
 			LOG_WARN(("cannot set SDL_GL_SWAP_CONTROL."));
+#ifdef WIN32
+		if (!vsync) {
+			typedef void (APIENTRY * WGLSWAPINTERVALEXT) (int);
+			WGLSWAPINTERVALEXT wglSwapIntervalEXT = (WGLSWAPINTERVALEXT) 
+			wglGetProcAddress("wglSwapIntervalEXT");
+			if (wglSwapIntervalEXT) {
+				LOG_DEBUG(("disabling vsync with SwapIntervalEXT(0)..."));
+			    wglSwapIntervalEXT(0); // disable vertical synchronisation
+			}
+		}
+#endif
 
 		LOG_DEBUG(("setting GL accelerated visual..."));
 
