@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<map version="0.99b" orientation="orthogonal" width="25" height="20" tilewidth="64" tileheight="64">
+ <tileset name="c1" firstgid="1" tilewidth="64" tileheight="64">
+  <image source="../tiles/terrains_tileset.png"/>
+ </tileset>
+ <tileset name="c2" firstgid="101" tilewidth="64" tileheight="64">
+  <image source="../tiles/city_tileset.png"/>
+ </tileset>
+ <tileset name="c3" firstgid="291" tilewidth="64" tileheight="64">
+  <image source="../tiles/roads_and_grass_tileset.png"/>
+ </tileset>
+ <layer name="Layer 0" width="25" height="20">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAFNhYGBQBWIVGtJ6QKxPY5qW7h/1x6g/Rv0x6o9Rf4z6Y7D7AwDNHz550AcAAA==
+  </data>
+ </layer>
+ <layer name="Layer 4" width="25" height="20">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAALNjYGCwB2I7KO3AQH0AMxtGm9HBDgca2OEBxJ5ItBcN7BgFo2AUjIJRMArIAQAvvvzW0AcAAA==
+  </data>
+ </layer>
+ <layer name="Layer 5" width="25" height="20">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgoAzwA7EAEAtRaA4+IAm1Q4aGdoz6g3gw6g/iwag/iAej/iAejPqDeDCS/AEAhGo2+tAHAAA=
+  </data>
+ </layer>
+ <layer name="Layer 7" width="25" height="20">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgoA7Yg0bTAhxDo2kBjgPxRSA+QUM76AH2MkD8sY8OdtEyzkEA5BdQnNPSL8ehNK39QmsAivNLDEM7/dIj7cLieyiH0ygYBegAAH3+nfDQBwAA
+  </data>
+ </layer>
+ <layer name="Layer 6" width="25" height="20">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgoBx0APEvKpiDCzyB2sHCSDs73kHteE87K8AAZMdPOtjBTMOwgtlBazBqx6gdo3aM2jFqB/F2AABh70uo0AcAAA==
+  </data>
+ </layer>
+ <layer name="Layer 8" width="25" height="20">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgoD5QZqSBoWhAlw52jPqDeDDqD+LBqD+IB6P+IB4MhD8sgHxLRspodTS+Khp/FBAPAM4Tw9zQBwAA
+  </data>
+ </layer>
+ <layer name="Layer 2" width="25" height="20">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3ROQqAMBBG4f/+F3Av3Iu43tAnWgnBINrIPPhIMZAERpIixEiQwmHAiElhtejQe+YlKtRoAu+8Np/n6pk/+fdfy5Cj+PCNu52/0b7zRf6dW5ZlWUcb3ezVdNAHAAA=
+  </data>
+ </layer>
+ <layer name="Layer 2" width="25" height="20">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO2SORKAIAxF//1vppbuhQvYudzB34nIoGHs4M28giETkhANYMFFSStaQ0ZGc1o47nZ6GOeBjnQS5vTVZsY1tKUd7V/esHP6ajPjZqqoxn1+Lr72CytupRue84sN3279RejeS5DsQcyk/04kwjgBQ87nJtAHAAA=
+  </data>
+ </layer>
+ <layer name="Layer 3" width="25" height="20">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3QOQ6AMAwFUd//CkAJlITLsHQsXYA7MAURCFpbovBIT0r3rYjclahQi245iuvdIKBV3kh3Z689zdLdVv/0zOqfvG8degwYjTYmzFiwGm1EbNhxGG14nvffTpv0XOzQBwAA
+  </data>
+ </layer>
+</map>
