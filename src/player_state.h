@@ -2,6 +2,7 @@
 #define __BTANKS_PLAYER_STATE_H__
 
 #include "mrt/serializable.h"
+#include <string>
 
 class PlayerState : public mrt::Serializable {
 public:
@@ -19,6 +20,8 @@ public:
 
 	virtual void serialize(mrt::Serializator &s) const;
 	virtual void deserialize(const mrt::Serializator &s);
+	
+	const std::string dump() const;
 };
 
 #endif

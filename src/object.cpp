@@ -377,8 +377,6 @@ const bool Object::isDriven() const {
 void Object::setup(const std::string &a) {
 	ResourceManager->initMe(this, a);
 	animation = a;
-	
-	_state.clear();
 	_events.clear();
 }
 

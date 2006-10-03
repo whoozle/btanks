@@ -43,7 +43,7 @@
 
 IMPLEMENT_SINGLETON(Game, IGame)
 
-IGame::IGame() : _my_index(-1), _address("localhost"), _autojoin(false), _shake(0), _trip_time(50), _next_sync(1.0, true) {
+IGame::IGame() : _my_index(-1), _address("localhost"), _autojoin(false), _shake(0), _trip_time(10), _next_sync(1.0, true) {
 	LOG_DEBUG(("IGame ctor"));
 }
 IGame::~IGame() {}
@@ -762,7 +762,8 @@ TRY {
 	
 	case Message::Pang: {
 		const mrt::Chunk &data = message.data;
-		_trip_time = extractPing(data);
+		float ping = extractPing(data);
+		_trip_time = (3 * ping + _trip_time) / 4;
 		_next_ping = SDL_GetTicks() + PING_PERIOD; //fixme: add configurable parameter here.
 		
 		LOG_DEBUG(("ping = %g", _trip_time));
@@ -775,7 +776,9 @@ TRY {
 	case Message::Pong: {
 		if (id < 0 || (unsigned)id >= _players.size())
 			throw_ex(("player id exceeds players count (%d/%d)", id, _players.size()));
-		float ping = _players[id].trip_time = extractPing(message.data);
+		float ping = extractPing(message.data);
+		
+		_players[id].trip_time = (3 * ping + _players[id].trip_time) / 4;
 		LOG_DEBUG(("player %d: ping: %g ms", id, ping));		
 		break;
 	}
@@ -850,8 +853,10 @@ void IGame::updatePlayers() {
 		if (slot.control_method != NULL) {
 			assert(slot.obj != NULL);
 			PlayerState state = slot.obj->getPlayerState();
+			PlayerState old_state = state;
 			slot.control_method->updateState(state);
 			if (slot.obj->updatePlayerState(state)) {
+				LOG_DEBUG(("player[%d] updated state: %s -> %s", i, old_state.dump().c_str(), state.dump().c_str()));
 				updated = true;
 				slot.state = state;
 				slot.need_sync = true;

@@ -1,6 +1,7 @@
 #include "player_state.h"
 #include "mrt/serializator.h"
 #include <string.h>
+#include "mrt/fmt.h"
 
 PlayerState::PlayerState() { clear(); } 
 void PlayerState::clear() { left = right = up = down = fire = alt_fire = false; }
@@ -19,4 +20,11 @@ void PlayerState::deserialize(const mrt::Serializator &s) {
 	down = packed & 8;
 	fire = packed & 16;
 	alt_fire = packed & 32;
+}
+
+#define B(b) ((b)?'+':'-')
+
+const std::string PlayerState::dump() const {
+	return mrt::formatString("{ %c%c%c%c%c%c }", 
+		B(left), B(right), B(up), B(down), B(fire), B(alt_fire));
 }
