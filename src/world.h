@@ -64,6 +64,11 @@ public:
 	void tick(Object &o, const float dt);	
 
 private:
+	typedef std::set<Object *> ObjectSet;
+	typedef std::map<const int, Object*> ObjectMap;
+
+	void tick(ObjectSet &objects, const float dt);
+
 	const float getImpassability(Object *obj, const sdlx::Surface &surface, const v3<int> &position, const Object **collided_with = NULL) const;
 	void getImpassability2(float &old_pos_im, float &new_pos_im, Object *obj, const sdlx::Surface &surface, const v3<int> &new_position, const Object **old_pos_collided_with = NULL) const;
 	const bool collides(Object *obj, const sdlx::Surface &surface, const v3<int> &position, Object *other, const sdlx::Surface &other_surface) const;
@@ -73,8 +78,6 @@ private:
 	
 	void cropObjects(const std::set<int> &ids);
 
-	typedef std::set<Object *> ObjectSet;
-	typedef std::map<const int, Object*> ObjectMap;
 	
 	ObjectSet _objects;
 	ObjectMap _id2obj;

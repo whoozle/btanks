@@ -432,17 +432,45 @@ skip_collision:
 
 void IWorld::tick(const float dt) {
 	//LOG_DEBUG(("tick dt = %f", dt));
-	for(ObjectSet::iterator i = _objects.begin(); i != _objects.end(); ) {
+	tick(_objects, dt);
+}
+
+void IWorld::tick(ObjectSet &objects, const float dt) {
+	if (dt > MAX_DT) {
+		float dt2 = dt;
+		while(dt2 > MAX_DT) {
+			tick(objects, MAX_DT);
+			dt2 -= MAX_DT;
+		}
+		if (dt2 > 0) 
+			tick(objects, dt2);
+		return;
+	}
+
+	if (dt < -MAX_DT) {
+		float dt2 = dt;
+		while(dt2 < -MAX_DT) {
+			tick(objects, -MAX_DT);
+			dt2 += MAX_DT;
+		}
+		if (dt2 < 0) 
+			tick(objects, dt2);
+		return;
+	}
+
+	for(ObjectSet::iterator i = objects.begin(); i != objects.end(); ) {
 		Object *o = *i;
 		tick(*o, dt);
 		if (o->isDead()) {
-			_id2obj.erase(o->_id);
+			ObjectMap::iterator m = _id2obj.find(o->_id);
+			if (m != _id2obj.end() && o == m->second) {
+				_id2obj.erase(m);
+			}
 			delete o;
-			_objects.erase(i++);
+			objects.erase(i++);
 		} else ++i;
 	}
 }
-
 
 
 const bool IWorld::exists(const Object *o) const {
@@ -619,9 +647,7 @@ void IWorld::applyUpdate(const mrt::Serializator &s, const float dt) {
 		skipped_objects.insert(id);
 	}
 
-	for(ObjectSet::iterator i = objects.begin(); i != objects.end() ; ++i) {
-		tick(**i, dt);
-	}
+	tick(objects, dt);
 
 	cropObjects(skipped_objects);
 }
