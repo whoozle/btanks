@@ -217,24 +217,24 @@ void Surface::loadImage(const mrt::Chunk &memory) {
 #endif
 
 
-void Surface::copyFrom(const Surface &from, int x, int y) {
+void Surface::copyFrom(const Surface &from, const int x, const int y) {
     SDL_Rect dst;
 	memset(&dst, 0, sizeof(dst));
-    dst.x=x;
-    dst.y=y; //only x, y are used... bla bla bla - see manual
+    dst.x = x;
+    dst.y = y;
     if (SDL_BlitSurface(from.surface, NULL, surface, &dst) == -1) 
 		throw_sdl(("SDL_BlitSurface"));
 }
 
-void Surface::copyFrom(const Surface &from, Rect &fromRect, int x, int y) {
+void Surface::copyFrom(const Surface &from, const Rect &fromRect, const int x, const int y) {
     SDL_Rect dst;
-    dst.x=x;
-    dst.y=y; //only x, y are used... bla bla bla - see manual
-    if (SDL_BlitSurface(from.surface, &fromRect, surface, &dst) == -1) throw_sdl(("SDL_BlitSurface"));
+    dst.x = x;
+    dst.y = y;
+    if (SDL_BlitSurface(from.surface, const_cast<Rect*>(&fromRect), surface, &dst) == -1) throw_sdl(("SDL_BlitSurface"));
 }
 
-void Surface::copyFrom(const Surface &from, Rect &fromRect) {
-    if (SDL_BlitSurface(from.surface, &fromRect, surface, NULL) == -1) throw_sdl(("SDL_BlitSurface"));
+void Surface::copyFrom(const Surface &from, const Rect &fromRect) {
+    if (SDL_BlitSurface(from.surface, const_cast<Rect*>(&fromRect), surface, NULL) == -1) throw_sdl(("SDL_BlitSurface"));
 }
 
 void Surface::update(const Rect &rect) {

@@ -82,10 +82,9 @@ namespace sdlx {
 		 "Only the position is used in the dstrect (the width and height are
 		 ignored)."
 		 */
-		void copyFrom(const Surface &s, int x, int y);
-		/*here should be const Rect&, but SDL as many c-libs dont use const at all :(*/
-		void copyFrom(const Surface &s, Rect &from, int x, int y);
-		void copyFrom(const Surface &s, Rect &from); //to pos 0:0
+		void copyFrom(const Surface &s, const int x, const int y);
+		void copyFrom(const Surface &s, const Rect &from, const int x, const int y);
+		void copyFrom(const Surface &s, const Rect &from); //to pos 0:0
 		
 		void update();
 		void update(const Rect &rect);
