@@ -59,7 +59,7 @@ public:
 	virtual void serialize(mrt::Serializator &s) const;
 	virtual void deserialize(const mrt::Serializator &s);
 	void generateUpdate(mrt::Serializator &s);
-	void applyUpdate(const mrt::Serializator &s, const float ping);
+	void applyUpdate(const mrt::Serializator &s, const float dt);
 
 	void tick(Object &o, const float dt);	
 

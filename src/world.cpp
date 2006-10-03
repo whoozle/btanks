@@ -16,6 +16,8 @@
 
 #include "SDL_collide/SDL_collide.h"
 
+#define MAX_DT 0.02
+
 IMPLEMENT_SINGLETON(World, IWorld)
 
 void IWorld::clear() {
@@ -231,6 +233,16 @@ void IWorld::getImpassabilityMatrix(Matrix<int> &matrix, const Object *src, cons
 }
 
 void IWorld::tick(Object &o, const float dt) {
+	if (dt > MAX_DT) {
+		float dt2 = dt;
+		while(dt2 > MAX_DT) {
+			tick(o, MAX_DT);
+			dt2 -= MAX_DT;
+		}
+		if (dt2 > 0) 
+			tick(o, MAX_DT);
+		return;
+	}
 	const IMap &map = *IMap::get_instance();
 	v3<int> map_size = map.getSize();
 
@@ -583,16 +595,14 @@ void IWorld::generateUpdate(mrt::Serializator &s) {
 	}
 }
 
-void IWorld::applyUpdate(const mrt::Serializator &s, const float ping) {
-	const float dt = ping / 1000.0;
-	LOG_DEBUG(("applying world update (dt = %g)", dt));	
+void IWorld::applyUpdate(const mrt::Serializator &s, const float dt) {
 	unsigned int n;
 	std::set<int> skipped_objects;
+	ObjectSet objects;
 	s.get(n);
 	while(n--) {
 		Object *o = deserializeObject(s);
-		
-		tick(*o, dt);
+		objects.insert(o);
 		skipped_objects.insert(o->_id);
 	}
 	s.get(n);
@@ -601,6 +611,11 @@ void IWorld::applyUpdate(const mrt::Serializator &s, const float ping) {
 		s.get(id);
 		skipped_objects.insert(id);
 	}
+
+	for(ObjectSet::iterator i = objects.begin(); i != objects.end() ; ++i) {
+		tick(**i, dt);
+	}
+
 	cropObjects(skipped_objects);
 }
 

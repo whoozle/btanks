@@ -716,7 +716,7 @@ TRY {
 	}
 	case Message::UpdateWorld: {
 		mrt::Serializator s(&message.data);
-		World->applyUpdate(s, _trip_time);
+		World->applyUpdate(s, _trip_time / 1000.0);
 		break;
 	} 
 	case Message::PlayerState: {
