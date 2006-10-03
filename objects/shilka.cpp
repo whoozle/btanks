@@ -91,8 +91,6 @@ void Shilka::tick(const float dt) {
 		spawn(isEffectActive("dirt")?"dirt-bullet":"shilka-bullet", animation, v3<float>(0,0,-0.1), _direction);
 		_left_fire = ! _left_fire;
 	}
-	
-	_state.fire = false;
 }
 
 const bool Shilka::take(const BaseObject *obj, const std::string &type) {

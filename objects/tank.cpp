@@ -103,8 +103,6 @@ void Tank::tick(const float dt) {
 		groupEmit("missiles", "launch");
 	}
 	
-	_state.fire = false;
-	
 	//LOG_DEBUG(("_velocity: %g %g", _velocity.x, _velocity.y));
 }
 
