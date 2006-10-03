@@ -498,6 +498,7 @@ Object * IWorld::spawnGrouped(Object *src, const std::string &classname, const s
 }
 
 void IWorld::serializeObject(mrt::Serializator &s, const Object *o) const {
+	s.add(o->_id);
 	s.add(o->registered_name);
 	s.add(o->animation);
 	o->serialize(s);
@@ -514,40 +515,34 @@ void IWorld::serialize(mrt::Serializator &s) const {
 }
 
 Object * IWorld::deserializeObject(const mrt::Serializator &s) {
+		int id;
 		std::string rn, an;
+		s.get(id);
 		s.get(rn);
 		s.get(an);
-		int id;
 		
-		Object *ao = NULL;
+		Object *ao = NULL, *result;
 		TRY {
-			ao = ResourceManager->createObject(rn, an);
-			//LOG_DEBUG(("created ('%s', '%s')", rn.c_str(), an.c_str()));
-			ao->deserialize(s);
-			id = ao->_id;
-
-			//LOG_DEBUG(("deserialized %d: %s", ao->_id, ao->classname.c_str()));
 			ObjectMap::iterator i = _id2obj.find(id);
 			if (i != _id2obj.end()) {
 				Object *o = i->second;
-				if (o->registered_name != ao->registered_name) {
-					//replace object with different class
-					delete o; o = NULL;
-					i->second = ao;
-					ao = NULL;
-				} else {
-					//copying object data.
-					*o = *ao;
-					delete ao; ao = NULL;
-				}
+				o->deserialize(s);
+				result = o;
 			} else {
 				//new object.
+				result = ao = ResourceManager->createObject(rn, an);
+				//LOG_DEBUG(("created ('%s', '%s')", rn.c_str(), an.c_str()));
+				ao->deserialize(s);
+				
 				_id2obj[id] = ao;
 				_objects.insert(ao);
 				ao = NULL;
 			}
-		} CATCH("deserialize", { delete ao; ao = NULL; throw; });
-	return _id2obj[id];
+
+			//LOG_DEBUG(("deserialized %d: %s", ao->_id, ao->classname.c_str()));
+		} CATCH("deserializeObject", { delete ao; ao = NULL; throw; });
+	assert(result != NULL);
+	return result;
 }
 
 void IWorld::cropObjects(const std::set<int> &ids) {
