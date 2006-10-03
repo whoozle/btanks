@@ -757,6 +757,7 @@ Disadvantage:
 	 *         driver doesn't have this problem.)
 	 */
 #ifdef STUPID_GL_WORKAROUND
+#error fixme
 	glFlush();	/* Just in case. *heh* */
 	SDL_GL_SwapBuffers();
 	glFinish();	/* And here we kill parallel execution... :-( */
