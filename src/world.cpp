@@ -463,7 +463,8 @@ void IWorld::tick(ObjectSet &objects, const float dt) {
 		tick(*o, dt);
 		if (o->isDead()) {
 			ObjectMap::iterator m = _id2obj.find(o->_id);
-			if (m != _id2obj.end() && o == m->second) {
+			if (m != _id2obj.end()) {
+				assert(o == m->second);
 				_id2obj.erase(m);
 			}
 			delete o;
