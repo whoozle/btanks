@@ -240,9 +240,21 @@ void IWorld::tick(Object &o, const float dt) {
 			dt2 -= MAX_DT;
 		}
 		if (dt2 > 0) 
-			tick(o, MAX_DT);
+			tick(o, dt2);
 		return;
 	}
+
+	if (dt < -MAX_DT) {
+		float dt2 = dt;
+		while(dt2 < -MAX_DT) {
+			tick(o, -MAX_DT);
+			dt2 += MAX_DT;
+		}
+		if (dt2 < 0) 
+			tick(o, dt2);
+		return;
+	}
+	
 	const IMap &map = *IMap::get_instance();
 	v3<int> map_size = map.getSize();
 

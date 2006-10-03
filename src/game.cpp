@@ -407,6 +407,7 @@ const int IGame::spawnPlayer(const std::string &classname, const std::string &an
 		slot.control_method = new KeyPlayer(SDLK_UP, SDLK_DOWN, SDLK_LEFT, SDLK_RIGHT, SDLK_LCTRL, SDLK_LALT);
 	} else if (control_method == "network") {
 		slot.control_method = new ExternalControl;
+		slot.remote = true;
 	} else if (control_method != "ai") {
 		throw_ex(("unknown control method '%s' used", control_method.c_str()));
 	}
@@ -742,6 +743,7 @@ TRY {
 			state.deserialize(s);
 			Object *o = World->getObjectByID(id);
 			if (o != NULL) {
+				World->tick(*o, -_trip_time / 1000.0); //back in time ;)
 				o->updatePlayerState(state);
 				World->tick(*o, _trip_time / 1000.0);
 			} else {
@@ -854,14 +856,21 @@ void IGame::updatePlayers() {
 		PlayerSlot &slot = _players[i];
 		if (slot.control_method != NULL) {
 			assert(slot.obj != NULL);
-			PlayerState state = slot.obj->getPlayerState();
-			PlayerState old_state = state;
+			PlayerState old_state = slot.obj->getPlayerState();
+			PlayerState state = old_state;
 			slot.control_method->updateState(state);
 			if (slot.obj->updatePlayerState(state)) {
 				LOG_DEBUG(("player[%d] updated state: %s -> %s", i, old_state.dump().c_str(), state.dump().c_str()));
 				updated = true;
 				slot.state = state;
 				slot.need_sync = true;
+			}
+			if (slot.need_sync && slot.remote) {
+				LOG_DEBUG(("correcting remote player. "));
+				slot.obj->getPlayerState() = old_state;
+				World->tick(*slot.obj, -slot.trip_time / 1000.0);
+				slot.obj->getPlayerState() = state;
+				World->tick(*slot.obj, slot.trip_time / 1000.0);
 			}
 		}
 	}
