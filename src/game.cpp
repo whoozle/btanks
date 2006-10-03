@@ -151,8 +151,10 @@ void IGame::init(const int argc, char *argv[]) {
 	
 	int default_flags = sdlx::Surface::Hardware | sdlx::Surface::Alpha | (_opengl? SDL_OPENGL: 0) ;
 #ifdef USE_GLSDL
-	default_flags &= ~SDL_OPENGL;
-	default_flags |= SDL_GLSDL;
+	if (_opengl) {
+		default_flags &= ~SDL_OPENGL;
+		default_flags |= SDL_GLSDL;
+	}
 #endif
 
 	sdlx::Surface::setDefaultFlags(default_flags);
