@@ -36,6 +36,7 @@ class Object;
 class IWorld : public mrt::Serializable {
 public:
 	DECLARE_SINGLETON(IWorld);
+	typedef std::set<Object *> ObjectSet;
 	
 	void clear();
 	~IWorld();
@@ -62,12 +63,11 @@ public:
 	void applyUpdate(const mrt::Serializator &s, const float dt);
 
 	void tick(Object &o, const float dt);	
+	void tick(ObjectSet &objects, const float dt);
 
 private:
-	typedef std::set<Object *> ObjectSet;
 	typedef std::map<const int, Object*> ObjectMap;
 
-	void tick(ObjectSet &objects, const float dt);
 
 	const float getImpassability(Object *obj, const sdlx::Surface &surface, const v3<int> &position, const Object **collided_with = NULL) const;
 	void getImpassability2(float &old_pos_im, float &new_pos_im, Object *obj, const sdlx::Surface &surface, const v3<int> &new_position, const Object **old_pos_collided_with = NULL) const;
