@@ -4,7 +4,6 @@
 #include "mrt/socket_set.h"
 #include "game.h"
 #include "protocol.h"
-#include "player_state.h"
 #include "monitor.h"
 #include "connection.h"
 
