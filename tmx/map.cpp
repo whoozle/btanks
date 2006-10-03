@@ -118,44 +118,39 @@ const int IMap::getImpassability(const Object *obj, const sdlx::Surface &s, cons
 }
 
 
-#define PRERENDER_LAYERS
-#undef PRERENDER_LAYERS
-
 void IMap::load(const std::string &name) {
 	clear();
 	
 	LOG_DEBUG(("loading map '%s'", name.c_str()));
 	const std::string file = "data/maps/" + name + ".tmx";
 	parseFile(file);
-#ifdef PRERENDER_LAYERS
-	size_t n = _tiles.size();
-	LOG_DEBUG(("rendering layers..."));
-	for(LayerMap::iterator l = _layers.begin(); l != _layers.end(); ++l) {
-		l->second->surface.createRGB(_w * _tw, _h * _th, 24);
-		l->second->surface.convertAlpha();
-		l->second->surface.convertToHardware();
-		
-		for(int ty = 0; ty < _h; ++ty) {
-			for(int tx = 0; tx < _w; ++tx) {
-				int tid = l->second->get(tx, ty);
-				if (tid == 0) 
-					continue;
-				
-				assert(tid < n);
-				sdlx::Surface * s = _tiles[tid];
-				if (s == NULL) 
-					throw_ex(("invalid tile with id %d found", tid));
-				l->second->surface.copyFrom(*s, tx * _tw, ty * _th);
-			}
-		}
-	}
-#endif
+
 	_name = name;
 	
 	LOG_DEBUG(("optimizing layers..."));
 	for(LayerMap::iterator l = _layers.begin(); l != _layers.end(); ++l) {
 		l->second->optimize(_tiles);
 	}
+
+#ifdef PRERENDER_LAYERS
+	LOG_DEBUG(("rendering layers..."));
+	for(LayerMap::iterator l = _layers.begin(); l != _layers.end(); ++l) {
+		l->second->surface.createRGB(_w * _tw, _h * _th, 24);
+		//l->second->surface.convertAlpha();
+		//l->second->surface.convertToHardware();
+		
+		for(int ty = 0; ty < _h; ++ty) {
+			for(int tx = 0; tx < _w; ++tx) {
+				const sdlx::Surface * s = l->second->getSurface(tx, ty);
+				if (s == NULL) 
+					continue;
+				l->second->surface.copyFrom(*s, tx * _tw, ty * _th);
+			}
+		}
+		//static int i;
+		//l->second->surface.saveBMP(mrt::formatString("layer%d.bmp", i++));
+	}
+#endif
 	
 	_imp_map.setSize(_h * _th / pathfinding_step, _w * _tw / pathfinding_step);
 	LOG_DEBUG(("building map matrix[%d:%d]...", _imp_map.getHeight(), _imp_map.getWidth()));
@@ -357,12 +352,12 @@ void IMap::render(sdlx::Surface &window, const sdlx::Rect &dst, const int z1, co
 		return;
 
 #ifdef PRERENDER_LAYERS
-	int sw = window.getWidth(), sh = window.getHeight();
-	sdlx::Rect src(x, y, sw, sh);
-	
-	for(LayerMap::const_iterator l = _layers.begin(); l != _layers.end(); ++l) {
-		window.copyFrom(l->second->surface, src);
-	}
+	for(LayerMap::const_iterator l = _layers.begin(); l != _layers.end(); ++l) 	
+		if (l->first >= z1) {
+			if (l->first >= z2) 
+				break;
+			window.copyFrom(l->second->surface, dst);
+		}
 #else
 	int txp = dst.x / _tw, typ = dst.y / _th;
 	int xp = - (dst.x % _tw), yp = -(dst.y % _th);

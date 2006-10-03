@@ -5,9 +5,13 @@
 #include "sdlx/surface.h"
 #include <vector>
 
+#define PRERENDER_LAYERS
+#undef PRERENDER_LAYERS
+
+
 class Layer {
 public:
-#ifdef PRERENDERED_LAYERS
+#ifdef PRERENDER_LAYERS
 	sdlx::Surface surface;
 #endif
 	const int impassability;

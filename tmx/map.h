@@ -32,9 +32,6 @@ public:
 	const std::string & getName() const { return _name; }
 	const bool loaded() const;
 	
-	virtual void start(const std::string &name, Attrs &attr);
-	virtual void end(const std::string &name);
-	virtual void charData(const std::string &data);
 	
 	void render(sdlx::Surface &window, const sdlx::Rect &dst, const int z1, const int z2) const;
 	const v3<int> getSize() const;
@@ -45,6 +42,10 @@ public:
 	static const int pathfinding_step;
 
 private:
+	virtual void start(const std::string &name, Attrs &attr);
+	virtual void end(const std::string &name);
+	virtual void charData(const std::string &data);
+
 	Matrix<int> _imp_map;
 	inline const bool collides(const sdlx::Surface&, const int dx, const int dy, const sdlx::Surface *tile) const;
 
