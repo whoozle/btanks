@@ -39,6 +39,7 @@ void IWorld::addObject(Object *o, const v3<float> &pos) {
 	o->_id = ++_last_id;
 	
 	assert (_id2obj.find(o->_id) == _id2obj.end());
+	assert (_objects.find(o) == _objects.end());
 
 	o->_position = pos;
 	
