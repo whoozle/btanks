@@ -728,7 +728,7 @@ TRY {
 		if (ex == NULL)
 			throw_ex(("player with id %d uses non-external control method", id));
 		ex->state.deserialize(s);
-		World->tick(*slot.obj, slot.trip_time / 1000.0);
+		//World->tick(*slot.obj, slot.trip_time / 1000.0);
 		break;
 	} 
 	case Message::UpdatePlayers: { 
@@ -736,6 +736,8 @@ TRY {
 		while(!s.end()) {
 			int id;
 			s.get(id);
+			if (id == _players[_my_index].obj->getID())
+				throw_ex(("server sent update for your state, bug."));
 			PlayerState state; 
 			state.deserialize(s);
 			Object *o = World->getObjectByID(id);
