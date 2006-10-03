@@ -741,7 +741,7 @@ TRY {
 			Object *o = World->getObjectByID(id);
 			if (o != NULL) {
 				o->updatePlayerState(state);
-				World->tick(*o, _trip_time);
+				World->tick(*o, _trip_time / 1000.0);
 			} else {
 				LOG_WARN(("skipped state update for object id %d", id));
 			}
