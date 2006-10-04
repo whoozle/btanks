@@ -40,6 +40,10 @@ void Missile::calculate(const float dt) {
 		if (getNearest("player", pos, vel, NULL)) {
 			_velocity = pos;
 		}
+		if (getNearest("kamikaze", pos, vel, NULL)) {
+			if (_velocity.quick_length() > pos.quick_length()) 
+				_velocity = pos;
+		}
 		limitRotation(dt, 16, 0.2, false, false);
 	}
 }
