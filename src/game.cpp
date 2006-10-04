@@ -314,11 +314,9 @@ void IGame::onMenu(const std::string &name) {
 		static const char * colors[4] = {"green", "red", "yellow", "cyan"};
 		std::string animation = colors[mrt::random(4)];
 		animation += "-" + vehicle;
-		
-		//_my_index = spawnPlayer("tank", "green-tank", "keys");
-		//_my_index = spawnPlayer("launcher", "green-launcher", "keys");
-		//_my_index = spawnPlayer(vehicle, animation, "keys");
-		_my_index = spawnPlayer(vehicle, animation, "mouse");
+
+		GET_CONFIG_VALUE("player.control-method", std::string, cm, "keys");		
+		_my_index = spawnPlayer(vehicle, animation, cm);
 		spawnPlayer("ai-tank", "green-tank", "ai");
 		//spawnPlayer("ai-player", "yellow-tank");
 		//spawnPlayer("ai-player", "cyan-tank");
@@ -327,7 +325,8 @@ void IGame::onMenu(const std::string &name) {
 		clear();
 		loadMap("country");
 
-		_my_index = spawnPlayer("tank", "green-tank", "keys");
+		GET_CONFIG_VALUE("player.control-method", std::string, cm, "keys");		
+		_my_index = spawnPlayer("tank", "green-tank", cm);
 		
 		_server = new Server;
 		_server->init(9876);
@@ -393,19 +392,10 @@ void IGame::loadMap(const std::string &name) {
 	}
 }
 
-const int IGame::spawnPlayer(const std::string &classname, const std::string &animation, const std::string &control_method) {
-	size_t i, n = _players.size();
-	for(i = 0; i < n; ++i) {
-		if (_players[i].obj == NULL)
-			break;
-	}
-	if (i == n) 
-		throw_ex(("no available slots found from %d", n));
-	PlayerSlot &slot = _players[i];
-
+void IGame::createControlMethod(PlayerSlot &slot, const std::string &control_method) {
 	delete slot.control_method;
 	slot.control_method = NULL;
-	
+
 	if (control_method == "keys") {
 		slot.control_method = new KeyPlayer(SDLK_UP, SDLK_DOWN, SDLK_LEFT, SDLK_RIGHT, SDLK_LCTRL, SDLK_LALT);
 	} else if (control_method == "mouse") {
@@ -416,6 +406,20 @@ const int IGame::spawnPlayer(const std::string &classname, const std::string &an
 	} else if (control_method != "ai") {
 		throw_ex(("unknown control method '%s' used", control_method.c_str()));
 	}
+}
+
+const int IGame::spawnPlayer(const std::string &classname, const std::string &animation, const std::string &control_method) {
+	size_t i, n = _players.size();
+	for(i = 0; i < n; ++i) {
+		if (_players[i].obj == NULL)
+			break;
+	}
+	if (i == n) 
+		throw_ex(("no available slots found from %d", n));
+	PlayerSlot &slot = _players[i];
+
+	createControlMethod(slot, control_method);
+	
 	LOG_DEBUG(("player: %s.%s using control method: %s", classname.c_str(), animation.c_str(), control_method.c_str()));
 	spawnPlayer(slot, classname, animation);
 	return i;
@@ -720,7 +724,8 @@ TRY {
 		PlayerSlot &slot = _players[_players.size() - 1];
 		
 		assert(slot.control_method == NULL);
-		slot.control_method = new KeyPlayer(SDLK_UP, SDLK_DOWN, SDLK_LEFT, SDLK_RIGHT, SDLK_LCTRL, SDLK_LALT);
+		GET_CONFIG_VALUE("player.control-method", std::string, control_method, "keys");	
+		createControlMethod(slot, control_method);
 
 		LOG_DEBUG(("players = %d", _players.size()));
 		_next_ping = 0;

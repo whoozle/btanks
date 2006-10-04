@@ -99,7 +99,7 @@ private:
 	
 	void loadMap(const std::string &name);	
 	
-
+	void createControlMethod(PlayerSlot &slot, const std::string &name);
 	const int spawnPlayer(const std::string &classname, const std::string &animation, const std::string &method);
 	void spawnPlayer(PlayerSlot &slot, const std::string &classname, const std::string &animation);
 	void updatePlayers();
