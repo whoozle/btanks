@@ -28,6 +28,7 @@
 
 #include "controls/joyplayer.h"
 #include "controls/keyplayer.h"
+#include "controls/mouse_control.h"
 #include "controls/external_control.h"
 
 #include "player_state.h"
@@ -316,7 +317,8 @@ void IGame::onMenu(const std::string &name) {
 		
 		//_my_index = spawnPlayer("tank", "green-tank", "keys");
 		//_my_index = spawnPlayer("launcher", "green-launcher", "keys");
-		_my_index = spawnPlayer(vehicle, animation, "keys");
+		//_my_index = spawnPlayer(vehicle, animation, "keys");
+		_my_index = spawnPlayer(vehicle, animation, "mouse");
 		spawnPlayer("ai-tank", "green-tank", "ai");
 		//spawnPlayer("ai-player", "yellow-tank");
 		//spawnPlayer("ai-player", "cyan-tank");
@@ -406,6 +408,8 @@ const int IGame::spawnPlayer(const std::string &classname, const std::string &an
 	
 	if (control_method == "keys") {
 		slot.control_method = new KeyPlayer(SDLK_UP, SDLK_DOWN, SDLK_LEFT, SDLK_RIGHT, SDLK_LCTRL, SDLK_LALT);
+	} else if (control_method == "mouse") {
+		slot.control_method = new MouseControl();
 	} else if (control_method == "network") {
 		slot.control_method = new ExternalControl;
 		slot.remote = true;
@@ -438,10 +442,10 @@ void IGame::run() {
 	IMap &map = *IMap::get_instance();
 
 	sdlx::Rect window_size = _window.getSize();
-	sdlx::Rect viewport = _window.getSize();
+	_viewport = _window.getSize();
 	sdlx::Rect passive_viewport;
-	passive_viewport.w = passive_viewport.x = viewport.w / 3;
-	passive_viewport.h = passive_viewport.y = viewport.h / 3;
+	passive_viewport.w = passive_viewport.x = _viewport.w / 3;
+	passive_viewport.h = passive_viewport.y = _viewport.h / 3;
 	sdlx::Rect passive_viewport_stopzone(passive_viewport);
 	
 	{
@@ -490,7 +494,12 @@ void IGame::run() {
 			break;
 			case SDL_MOUSEBUTTONDOWN:
 			case SDL_MOUSEBUTTONUP:
-				mouse_signal.emit(event.button.button, event.button.type, event.button.x, event.button.y);
+				{
+					int bi = (event.button.button == SDL_BUTTON_LEFT)? 0: 
+						((event.button.button == SDL_BUTTON_RIGHT)?1:
+						((event.button.button == SDL_BUTTON_MIDDLE)?2:-1));
+					mouse_signal.emit(bi, event.button.type == SDL_MOUSEBUTTONDOWN, event.button.x, event.button.y);
+				}
 				break;
 		    case SDL_QUIT:
 				_running = false;
@@ -547,8 +556,8 @@ void IGame::run() {
 				v3<float> pos, vel;
 				if (World->getInfo(p, pos, vel)) {
 					//LOG_DEBUG(("player[0] %f, %f", vel.x, vel.y));
-					int wx = (int)pos.x - viewport.x;
-					int wy = (int)pos.y - viewport.y;
+					int wx = (int)pos.x - _viewport.x;
+					int wy = (int)pos.y - _viewport.y;
 					if (passive_viewport_stopzone.in(wx, wy)) {
 						mapvx = 0; 
 						mapvy = 0;
@@ -570,11 +579,11 @@ void IGame::run() {
 
 		_window.fillRect(window_size, 0);
 		if (_shake > 0) {
-			viewport.y += _shake_int;
+			_viewport.y += _shake_int;
 		}		
-		World->render(_window, viewport);
+		World->render(_window, _viewport);
 		if (_shake >0) {
-			viewport.y -= _shake_int;
+			_viewport.y -= _shake_int;
 			_shake_int = -_shake_int;
 			_shake -= dt;
 		}
@@ -595,16 +604,16 @@ void IGame::run() {
 			
 			if (mapx < 0) 
 				mapx = 0;
-			if (mapx + viewport.w > world_size.x) 
-				mapx = world_size.x - viewport.w;
+			if (mapx + _viewport.w > world_size.x) 
+				mapx = world_size.x - _viewport.w;
 
 			if (mapy < 0) 
 				mapy = 0;
-			if (mapy + viewport.h > world_size.y) 
-				mapy = world_size.y - viewport.h;
+			if (mapy + _viewport.h > world_size.y) 
+				mapy = world_size.y - _viewport.h;
 			
-			viewport.x = (Sint16) mapx;
-			viewport.y = (Sint16) mapy;
+			_viewport.x = (Sint16) mapx;
+			_viewport.y = (Sint16) mapy;
 			
 			//LOG_DEBUG(("%f %f", mapx, mapy));
 		}
@@ -931,4 +940,17 @@ void IGame::ping() {
 	LOG_DEBUG(("ping timestamp = %u", ts));
 	m.data.setData(&ts, sizeof(ts));
 	_client->send(m);
+}
+
+const int IGame::getMyPlayerIndex() const {
+	return _my_index;
+}
+
+IGame::PlayerSlot &IGame::getPlayerSlot(const int idx) {
+	return _players[idx];
+}
+
+void IGame::screen2world(v3<float> &pos, const int x, const int y) {
+	pos.x = _viewport.x + x;
+	pos.y = _viewport.y + y;
 }

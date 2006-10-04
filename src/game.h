@@ -40,39 +40,6 @@ class IGame {
 public: 
 	DECLARE_SINGLETON(IGame);
 
-	static const std::string data_dir;
-	//signals
-	sigc::signal2<void, const Uint8, const SDL_keysym> key_signal;
-	sigc::signal4<void, const Uint8, const Uint8, const Uint16, const Uint16> mouse_signal;
-
-	void init(const int argc, char *argv[]);
-	void run();
-	void deinit();
-	
-	void clear();
-
-
-	IGame();
-	~IGame();
-	
-	const int onConnect(Message &message);
-	void onMessage(const int id, const Message &message);
-	void onDisconnect(const int id);
-	
-	//stupid visual effect
-	void shake(const float duration, const int intensity);
-	
-private:
-	void onKey(const Uint8 type, const SDL_keysym sym);
-	void onMenu(const std::string &name);
-
-	bool _running, _paused;
-	sdlx::Surface _window;
-
-	MainMenu _main_menu;
-	
-	void loadMap(const std::string &name);	
-	
 	struct PlayerSlot {
 		PlayerSlot() : obj(NULL), control_method(NULL), need_sync(false), remote(false), trip_time(10) {}
 		PlayerSlot(Object *obj) : obj(obj), control_method(NULL), need_sync(false), remote(false), trip_time(10){}
@@ -92,6 +59,46 @@ private:
 		std::string classname;
 		std::string animation;
 	};
+
+	static const std::string data_dir;
+	//signals
+	sigc::signal2<void, const Uint8, const SDL_keysym> key_signal;
+	sigc::signal4<void, const int, const bool, const int, const int> mouse_signal;
+
+	void init(const int argc, char *argv[]);
+	void run();
+	void deinit();
+	
+	void clear();
+
+
+	IGame();
+	~IGame();
+	
+	const int onConnect(Message &message);
+	void onMessage(const int id, const Message &message);
+	void onDisconnect(const int id);
+	
+	//stupid visual effect
+	void shake(const float duration, const int intensity);
+	
+	//stupid and stub.
+	const int getMyPlayerIndex() const;
+	PlayerSlot & getPlayerSlot(const int idx);
+	void screen2world(v3<float> &pos, const int x, const int y);
+	
+private:
+	void onKey(const Uint8 type, const SDL_keysym sym);
+	void onMenu(const std::string &name);
+
+	bool _running, _paused;
+	sdlx::Surface _window;
+	sdlx::Rect _viewport;
+
+	MainMenu _main_menu;
+	
+	void loadMap(const std::string &name);	
+	
 
 	const int spawnPlayer(const std::string &classname, const std::string &animation, const std::string &method);
 	void spawnPlayer(PlayerSlot &slot, const std::string &classname, const std::string &animation);

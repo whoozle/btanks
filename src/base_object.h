@@ -69,6 +69,7 @@ public:
 	void addDamage(BaseObject *from, const bool emitDeath = true);
 	
 	const v3<float> getRelativePos(const BaseObject *obj) const;
+	inline void getPosition(v3<float> &position) { position = _position; }
 	
 protected:
 	int _id;
@@ -78,7 +79,6 @@ protected:
 	v3<float> _velocity, _direction, _velocity_fadeout;
 	float _distance, _moving_time, _idle_time;
 	
-	inline void getPosition(v3<float> &position) { position = _position; }
 	inline const v3<float> & getPosition() { return _position; }
 	inline void getPosition(v3<int> &position) { position = _position.convert<int>(); }
 
