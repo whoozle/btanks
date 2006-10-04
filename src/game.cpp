@@ -31,6 +31,7 @@
 #include "controls/external_control.h"
 
 #include "player_state.h"
+#include "config.h"
 
 #ifndef SDL_OPENGLBLIT
 #define SDL_OPENGLBLIT 0
@@ -104,6 +105,8 @@ void IGame::init(const int argc, char *argv[]) {
 		}
 		else throw_ex(("unrecognized option: '%s'", argv[i]));
 	}
+	
+	Config->load(data_dir + "/vars.xml");
 	
 	LOG_DEBUG(("gl: %s, vsync: %s, dx: %s", _opengl?"yes":"no", vsync?"yes":"no", dx?"yes":"no"));
 #ifdef WIN32
@@ -644,6 +647,7 @@ void IGame::run() {
 
 void IGame::deinit() {
 	clear();
+	Config->save();
 	LOG_DEBUG(("shutting down, freeing surface"));
 	_running = false;
 	_window.free();

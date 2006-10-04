@@ -2,6 +2,7 @@
 #include "object.h"
 #include "tmx/map.h"
 #include "resource_manager.h"
+#include "config.h"
 #include "utils.h"
 
 #include "mrt/exception.h"
@@ -14,9 +15,9 @@
 #include <assert.h>
 #include <limits>
 
+
 #include "SDL_collide/SDL_collide.h"
 
-#define MAX_DT 0.02
 
 IMPLEMENT_SINGLETON(World, IWorld)
 
@@ -234,22 +235,26 @@ void IWorld::getImpassabilityMatrix(Matrix<int> &matrix, const Object *src, cons
 }
 
 void IWorld::tick(Object &o, const float dt) {
-	if (dt > MAX_DT) {
+	GET_CONFIG_VALUE("engine.max-time-slice", float, max_dt, 0.1);
+	if (max_dt <= 0) 
+		throw_ex(("invalid max-time-slice value %g", max_dt));
+
+	if (dt > max_dt) {
 		float dt2 = dt;
-		while(dt2 > MAX_DT) {
-			tick(o, MAX_DT);
-			dt2 -= MAX_DT;
+		while(dt2 > max_dt) {
+			tick(o, max_dt);
+			dt2 -= max_dt;
 		}
 		if (dt2 > 0) 
 			tick(o, dt2);
 		return;
 	}
 
-	if (dt < -MAX_DT) {
+	if (dt < -max_dt) {
 		float dt2 = dt;
-		while(dt2 < -MAX_DT) {
-			tick(o, -MAX_DT);
-			dt2 += MAX_DT;
+		while(dt2 < -max_dt) {
+			tick(o, -max_dt);
+			dt2 += max_dt;
 		}
 		if (dt2 < 0) 
 			tick(o, dt2);
@@ -437,22 +442,26 @@ void IWorld::tick(const float dt) {
 }
 
 void IWorld::tick(ObjectSet &objects, const float dt) {
-	if (dt > MAX_DT) {
+	GET_CONFIG_VALUE("engine.max-time-slice", float, max_dt, 0.1);
+	if (max_dt <= 0) 
+		throw_ex(("invalid max-time-slice value %g", max_dt));
+
+	if (dt > max_dt) {
 		float dt2 = dt;
-		while(dt2 > MAX_DT) {
-			tick(objects, MAX_DT);
-			dt2 -= MAX_DT;
+		while(dt2 > max_dt) {
+			tick(objects, max_dt);
+			dt2 -= max_dt;
 		}
 		if (dt2 > 0) 
 			tick(objects, dt2);
 		return;
 	}
 
-	if (dt < -MAX_DT) {
+	if (dt < -max_dt) {
 		float dt2 = dt;
-		while(dt2 < -MAX_DT) {
-			tick(objects, -MAX_DT);
-			dt2 += MAX_DT;
+		while(dt2 < -max_dt) {
+			tick(objects, -max_dt);
+			dt2 += max_dt;
 		}
 		if (dt2 < 0) 
 			tick(objects, dt2);
