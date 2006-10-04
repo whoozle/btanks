@@ -46,6 +46,18 @@ void File::readAll(Chunk &ch) const {
 	ch.setSize(size);
 }
 
+void File::writeAll(const Chunk &ch) const {
+	fseek(_f, 0, SEEK_SET);
+	if (fwrite(ch.getPtr(), 1, ch.getSize(), _f) != ch.getSize())
+		throw_io(("fwrite"));
+}
+
+void File::writeAll(const std::string &str) const {
+	fseek(_f, 0, SEEK_SET);
+	if (fwrite(str.c_str(), 1, str.size(), _f) != str.size())
+		throw_io(("fwrite"));
+}
+
 const std::string File::readLine() const {
 	char buf[1024];
 	
