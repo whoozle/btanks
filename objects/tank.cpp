@@ -4,6 +4,7 @@
 #include "world.h"
 #include "game.h"
 #include "tank.h"
+#include "config.h"
 
 REGISTER_OBJECT("tank", Tank, ());
 
@@ -55,7 +56,8 @@ const bool Tank::take(const BaseObject *obj, const std::string &type) {
 
 void Tank::calculate(const float dt) {
 	BaseObject::calculate(dt);
-	limitRotation(dt, 8, 0.05, true, false);
+	GET_CONFIG_VALUE("objects.tank.rotation-time", float, rt, 0.05);
+	limitRotation(dt, 8, rt, true, false);
 }
 
 void Tank::tick(const float dt) {

@@ -3,6 +3,7 @@
 #include "world.h"
 #include "game.h"
 #include "launcher.h"
+#include "config.h"
 
 REGISTER_OBJECT("launcher", Launcher, ());
 
@@ -58,8 +59,8 @@ void Launcher::emit(const std::string &event, BaseObject * emitter) {
 
 void Launcher::calculate(const float dt) {
 	BaseObject::calculate(dt);
-	//limitRotation(dt, 8, 0.2, false, true);
-	limitRotation(dt, 8, 0.07, true, false);
+	GET_CONFIG_VALUE("objects.launcher.rotation-time", float, rt, 0.07);
+	limitRotation(dt, 8, rt, true, false);
 	//LOG_DEBUG(("_velocity: %g %g", _velocity.x, _velocity.y));
 }
 

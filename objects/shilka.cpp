@@ -4,6 +4,7 @@
 #include "world.h"
 #include "game.h"
 #include "shilka.h"
+#include "config.h"
 
 REGISTER_OBJECT("shilka", Shilka, ());
 
@@ -43,7 +44,8 @@ void Shilka::emit(const std::string &event, BaseObject * emitter) {
 
 void Shilka::calculate(const float dt) {
 	BaseObject::calculate(dt);	
-	limitRotation(dt, 8, 0.05, true, false);
+	GET_CONFIG_VALUE("objects.shilka.rotation-time", float, rt, 0.05);
+	limitRotation(dt, 8, rt, true, false);
 
 	//LOG_DEBUG(("_velocity: %g %g", _velocity.x, _velocity.y));
 }
