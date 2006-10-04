@@ -38,8 +38,6 @@
 // using 0 as OPENGLBLIT value. SDL 1.3 or later
 #endif
 
-#define PING_PERIOD 1000
-
 //#define SHOW_PERFSTATS
 
 IMPLEMENT_SINGLETON(Game, IGame)
@@ -535,7 +533,8 @@ void IGame::run() {
 				_client->tick(dt);
 				if (_ping && t_start >= _next_ping) {
 					ping();
-					_next_ping = t_start + PING_PERIOD; //fixme: hardcoded value
+					GET_CONFIG_VALUE("multiplayer.ping-interval", int, ping_interval, 1500);
+					_next_ping = t_start + ping_interval; //fixme: hardcoded value
 				}
 			}
 
@@ -771,8 +770,12 @@ TRY {
 	case Message::Pang: {
 		const mrt::Chunk &data = message.data;
 		float ping = extractPing(data);
-		_trip_time = (3 * ping + _trip_time) / 4;
-		_next_ping = SDL_GetTicks() + PING_PERIOD; //fixme: add configurable parameter here.
+		GET_CONFIG_VALUE("multiplayer.ping-interpolation-multiplier", int, pw, 3);
+		_trip_time = (pw * ping + _trip_time) / (pw + 1);
+		
+		GET_CONFIG_VALUE("multiplayer.ping-interval", int, ping_interval, 1500);
+
+		_next_ping = SDL_GetTicks() + ping_interval; 
 		
 		LOG_DEBUG(("ping = %g", _trip_time));
 		Message m(Message::Pong);
