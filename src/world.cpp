@@ -469,7 +469,9 @@ void IWorld::tick(ObjectSet &objects, const float dt) {
 			_id2obj.erase(m);
 			
 			delete o;
-			_objects.erase(o);
+			//implement more smart way to fix it.
+			if (&objects != &_objects)
+				_objects.erase(o);
 			objects.erase(i++);
 			assert(_id2obj.size() == _objects.size());
 		} else ++i;
