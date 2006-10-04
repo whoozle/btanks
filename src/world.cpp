@@ -464,12 +464,14 @@ void IWorld::tick(ObjectSet &objects, const float dt) {
 		tick(*o, dt);
 		if (o->isDead()) {
 			ObjectMap::iterator m = _id2obj.find(o->_id);
-			assert(m != _id2obj.end())
+			assert(m != _id2obj.end());
 			assert(o == m->second);
 			_id2obj.erase(m);
 			
 			delete o;
+			_objects.erase(o);
 			objects.erase(i++);
+			assert(_id2obj.size() == _objects.size());
 		} else ++i;
 	}
 }
@@ -567,6 +569,7 @@ Object * IWorld::deserializeObject(const mrt::Serializator &s) {
 				_id2obj[id] = ao;
 				_objects.insert(ao);
 				ao = NULL;
+				assert(_id2obj.size() == _objects.size());
 			}
 
 			//LOG_DEBUG(("deserialized %d: %s", ao->_id, ao->classname.c_str()));
@@ -583,7 +586,7 @@ void IWorld::cropObjects(const std::set<int> &ids) {
 			_id2obj.erase(i++);
 		} else ++i;
 	}
-
+	assert(_id2obj.size() == _objects.size());
 }
 
 void IWorld::deserialize(const mrt::Serializator &s) {
