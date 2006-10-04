@@ -42,7 +42,7 @@
 
 IMPLEMENT_SINGLETON(Game, IGame)
 
-IGame::IGame() : _my_index(-1), _address("localhost"), _autojoin(false), _shake(0), _trip_time(10), _next_sync(102.0/103.0, true) {
+IGame::IGame() : _my_index(-1), _address("localhost"), _autojoin(false), _shake(0), _trip_time(10), _next_sync(true) {
 	LOG_DEBUG(("IGame ctor"));
 }
 IGame::~IGame() {}
@@ -820,6 +820,9 @@ const float IGame::extractPing(const mrt::Chunk &data) const {
 
 
 void IGame::clear() {
+	GET_CONFIG_VALUE("multiplayer.sync-interval", float, sync_interval, 103.0/101);
+	_next_sync.set(sync_interval);
+
 	LOG_DEBUG(("deleting server/client if exists."));
 	_ping = false;
 	delete _server; _server = NULL;
