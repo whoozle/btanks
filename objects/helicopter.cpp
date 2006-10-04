@@ -3,13 +3,12 @@
 #include "tmx/map.h"
 #include "mrt/random.h"
 #include "resource_manager.h"
-
-#define SPAWN_RATE 1
+#include "config.h"
 
 class Helicopter : public Object {
 public:
 	Helicopter(const std::string &para) :
-		 Object("helicopter"), _active(false), _spawn(SPAWN_RATE, true), _paratrooper(para) {}
+		 Object("helicopter"), _active(false), _spawn(true), _paratrooper(para) {}
 	virtual void calculate(const float dt);
 	virtual void tick(const float dt);
 	virtual Object * clone() const;
@@ -38,6 +37,8 @@ private:
 
 void Helicopter::onSpawn() {
 	play("main", true);
+	GET_CONFIG_VALUE("objects.helicopter-with-kamikazes.spawn-rate", float, sr, 1.5);
+	_spawn.set(sr);
 }
 
 void Helicopter::tick(const float dt) {
@@ -49,7 +50,8 @@ void Helicopter::tick(const float dt) {
 
 
 void Helicopter::calculate(const float dt) {
-	if (!_active && _idle_time > 2.0) { //2 seconds delay before random target
+	GET_CONFIG_VALUE("objects.helicopter-with-kamikazes.delay-before-next-target", float, delay, 2.0);
+	if (!_active && _idle_time > delay) { 
 		v3<float> pos;
 		getPosition(pos);
 
@@ -69,7 +71,8 @@ void Helicopter::calculate(const float dt) {
 			_velocity = _next_target - pos;
 	}
 	
-	limitRotation(dt, 8, 0.2, true, false);
+	GET_CONFIG_VALUE("objects.helicopter.rotation-time", float, rt, 0.2);
+	limitRotation(dt, 8, rt, true, false);
 }
 
 void Helicopter::emit(const std::string &event, BaseObject * emitter) {
