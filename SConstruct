@@ -16,8 +16,16 @@ opts.Save('options.cache', env.Copy())
 
 Help(opts.GenerateHelpText(env))
 
-#debug = True
+debug = True
 debug = False
+
+if debug:
+	stl_port_debug = True
+else: 
+	stl_port_debug = False
+
+if stl_port_debug: 
+	env.Append(CPPDEFINES = ['_STLP_DEBUG'])
 
 env.Append(CPPDEFINES = ['USE_GLSDL'])
 env.Append(CPPDEFINES = ['_REENTRANT'])
@@ -51,7 +59,10 @@ conf_env = env.Copy()
 conf = Configure(conf_env)
 
 sigc_cpppath = ['/usr/lib/sigc++-2.0/include', '/usr/include/sigc++-2.0', '/usr/local/include/sigc++-2.0', '/usr/local/lib/sigc++-2.0/include']
-sigc_lib = 'sigc-2.0'
+if stl_port_debug:
+	sigc_lib = 'sigc-2.0d'
+else: 
+	sigc_lib = 'sigc-2.0'
 
 conf_env.Append(CPPPATH=sigc_cpppath)
 
