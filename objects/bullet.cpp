@@ -43,7 +43,7 @@ void Bullet::emit(const std::string &event, BaseObject * emitter) {
 			dpos = getRelativePos(emitter) / 2;
 		
 		dpos.z = 1;
-		if (_type == "regular" && event == "collision") {
+		if (_type == "regular") {
 			spawn("explosion", "explosion", dpos, v3<float>(0,0,0));
 		} else if (_type == "dirt") {
 			spawn("dirt", "dirt", dpos, v3<float>(0,0,0));
