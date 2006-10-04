@@ -9,11 +9,11 @@
 REGISTER_OBJECT("tank", Tank, ());
 
 Tank::Tank() 
-: Object("player"), _fire(0.5, false) {
+: Object("player"), _fire(false) {
 }
 
 Tank::Tank(const std::string &animation) 
-: Object("player"), _fire(0.5, false) {
+: Object("player"), _fire(false) {
 	setup(animation);
 }
 
@@ -27,6 +27,9 @@ void Tank::onSpawn() {
 
 	add("missiles", _missiles);
 	add("smoke", _smoke);
+	
+	GET_CONFIG_VALUE("objects.tank.fire-rate", float, fr, 0.5);
+	_fire.set(fr);
 }
 
 Object * Tank::clone() const {

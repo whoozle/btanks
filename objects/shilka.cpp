@@ -9,11 +9,11 @@
 REGISTER_OBJECT("shilka", Shilka, ());
 
 Shilka::Shilka() 
-: Object("player"), _fire(0.1, false), _dirt_fire(1, false), _left_fire(true) {
+: Object("player"), _fire(false), _dirt_fire(false), _left_fire(true) {
 }
 
 Shilka::Shilka(const std::string &animation) 
-: Object("player"), _fire(0.1, false), _dirt_fire(1, false), _left_fire(true) {
+: Object("player"), _fire(false), _dirt_fire(false), _left_fire(true) {
 	setup(animation);
 }
 
@@ -23,6 +23,12 @@ void Shilka::onSpawn() {
 	_smoke->impassability = 0;
 
 	add("smoke", _smoke);
+	
+	GET_CONFIG_VALUE("objects.shilka.fire-rate", float, fr, 0.2);
+	_fire.set(fr);
+
+	GET_CONFIG_VALUE("objects.shilka.special-fire-rate", float, sfr, 0.7);
+	_dirt_fire.set(sfr);
 }
 
 Object * Shilka::clone() const {

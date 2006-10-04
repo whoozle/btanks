@@ -8,11 +8,11 @@
 REGISTER_OBJECT("launcher", Launcher, ());
 
 Launcher::Launcher() 
-: Object("player"), _fire(0.3, false) {
+: Object("player"), _fire(false) {
 }
 
 Launcher::Launcher(const std::string &animation) 
-: Object("player"), _fire(0.3, false) {
+: Object("player"), _fire(false) {
 	setup(animation);
 }
 
@@ -29,6 +29,9 @@ void Launcher::onSpawn() {
 	_missiles->hp = 100000;
 	_missiles->impassability = 0;
 	add("missiles", _missiles);
+	
+	GET_CONFIG_VALUE("objects.launcher.fire-rate", float, fr, 0.3);
+	_fire.set(fr);
 }
 
 
