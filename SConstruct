@@ -139,7 +139,7 @@ bt_sources = 	['src/alarm.cpp', 'src/base_object.cpp',
 	'src/resource_manager.cpp', 'src/world.cpp',
 	'tmx/map.cpp', 'tmx/layer.cpp', 
 	'SDL_collide/SDL_collide.c', 
-	'src/main.cpp', 'src/game.cpp', 
+	'src/main.cpp', 'src/config.cpp', 'src/game.cpp', 
 	vobj
 	]
 

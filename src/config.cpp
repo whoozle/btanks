@@ -93,7 +93,7 @@ void IConfig::end(const std::string &name) {
 		v.fromString(_data);
 	} CATCH("fromString", return;);
 
-	LOG_DEBUG(("read config value %s of type %s (%s)", _name.c_str(), _type.c_str(), _data.c_str()));
+	//LOG_DEBUG(("read config value %s of type %s (%s)", _name.c_str(), _type.c_str(), _data.c_str()));
 	VarMap::iterator i = _map.find(_name);
 	if (i == _map.end()) {
 		_map[_name] = new Var(v);

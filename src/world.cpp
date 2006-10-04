@@ -336,8 +336,10 @@ void IWorld::tick(Object &o, const float dt) {
 		o._moving_time += dt;
 		o._direction = o._velocity;
 	}
+	
+	GET_CONFIG_VALUE("engine.mass-acceleration-divisor", float, ac_div, 1000.0);
 
-	const float ac_t = o.mass / 1000.0;
+	const float ac_t = o.mass / ac_div;
 	if (o.mass > 0 && o._moving_time < ac_t) {
 		vel *= o._moving_time / ac_t * o._moving_time / ac_t;
 	}
@@ -427,8 +429,11 @@ skip_collision:
 		dpos.y = 0;
 		
 	o._position += dpos;
-
-	o._velocity_fadeout *= 0.9;
+	
+	
+	GET_CONFIG_VALUE("engine.velocity-fadeout-multiplier", float, vf_m, 0.9);
+	
+	o._velocity_fadeout *= vf_m;
 	//LOG_DEBUG(("vfadeout: %g %g", o._velocity_fadeout.x, o._velocity_fadeout.y));
 	if (o._velocity_fadeout.quick_length() < 0.1) {
 		o._velocity_fadeout.clear();

@@ -13,7 +13,7 @@
   <property name="object:mines-item:mines-item:1" value="@3,5,-0.1"/>
   <property name="object:nuke-missiles-item:nuke-missiles-item:1" value="@3,4,-0.1"/>
   <property name="object:dirt-bullets-item:dirt-bullets-item:1" value="@4,2,-0.1"/>
-  <property name="object:helicopter-with-kamikazes:helicopter:1" value="@5,5,10"/>
+  <!-- <property name="object:helicopter-with-kamikazes:helicopter:1" value="@5,5,10"/> -->
   <property name="spawn:4" value="-100,-100"/>
   <property name="spawn:3" value="100,-100"/>
  </properties>
