@@ -19,7 +19,7 @@ Shilka::Shilka(const std::string &animation)
 
 
 void Shilka::onSpawn() {
-	Object *_smoke = spawnGrouped("single-pose", "tank-smoke", v3<float>(), Centered);
+	Object *_smoke = spawnGrouped("single-pose", "tank-smoke", v3<float>::empty, Centered);
 	_smoke->impassability = 0;
 
 	add("smoke", _smoke);
@@ -96,7 +96,7 @@ void Shilka::tick(const float dt) {
 		animation += "bullet-";
 		animation += (_left_fire)?"left":"right";
 		
-		spawn(isEffectActive("dirt")?"dirt-bullet":"shilka-bullet", animation, v3<float>(), _direction);
+		spawn(isEffectActive("dirt")?"dirt-bullet":"shilka-bullet", animation, v3<float>::empty, _direction);
 		_left_fire = ! _left_fire;
 	}
 }

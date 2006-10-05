@@ -82,7 +82,7 @@ protected:
 
 	void calculateWayVelocity();
 
-	Object * spawn(const std::string &classname, const std::string &animation, const v3<float> &dpos = v3<float>(), const v3<float> &vel = v3<float>());
+	Object * spawn(const std::string &classname, const std::string &animation, const v3<float> &dpos = v3<float>::empty, const v3<float> &vel = v3<float>::empty);
 	Object * spawnGrouped(const std::string &classname, const std::string &animation, const v3<float> &dpos, const GroupType type);
 
 	const bool getNearest(const std::string &classname, v3<float> &position, v3<float> &velocity, Way * way = NULL) const;
