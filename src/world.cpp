@@ -42,7 +42,11 @@ void IWorld::addObject(Object *o, const v3<float> &pos) {
 	assert (_id2obj.find(o->_id) == _id2obj.end());
 	assert (_objects.find(o) == _objects.end());
 
+	float oz = o->_position.z;
 	o->_position = pos;
+	if (pos.z != 0) {
+		LOG_DEBUG(("overriding z(%g) for object '%s'", pos.z, o->classname.c_str()));
+	} else o->_position.z = oz; //restore original value
 	
 	_objects.insert(o);
 	_id2obj[o->_id] = o;
@@ -526,12 +530,12 @@ Object* IWorld::spawn(Object *src, const std::string &classname, const std::stri
 	
 	//LOG_DEBUG(("spawning %s, position = %g %g dPosition = %g:%g, velocity: %g %g", 
 	//	classname.c_str(), src->_position.x, src->_position.y, dpos.x, dpos.y, vel.x, vel.y));
+	v3<float> pos = src->_position + (src->size / 2)+ dpos - (obj->size / 2);
+	pos.z = 0;
 	if (dpos.z != 0) {
-		LOG_DEBUG(("overriding z(%g) for object '%s'", dpos.z, classname.c_str()));
-		obj->_position.z = dpos.z;
+		pos.z = dpos.z;
 	}
-	
-	addObject(obj, src->_position + (src->size / 2)+ dpos - (obj->size / 2));
+	addObject(obj, pos);
 	//LOG_DEBUG(("result: %f %f", obj->_position.x, obj->_position.y));
 	return obj;
 }
@@ -541,10 +545,6 @@ Object * IWorld::spawnGrouped(Object *src, const std::string &classname, const s
 	assert(obj->_owner_id == 0);
 	obj->_owner_id = src->_id;
 
-	if (dpos.z != 0) {
-		LOG_DEBUG(("overriding z(%g) for grouped-object '%s'", dpos.z, classname.c_str()));
-		obj->_position.z = dpos.z;
-	}
 	
 	obj->_follow_position = dpos;
 	switch(type) {
@@ -555,7 +555,14 @@ Object * IWorld::spawnGrouped(Object *src, const std::string &classname, const s
 			break;
 	}
 	obj->follow(src);
-	addObject(obj, obj->_position + obj->_follow_position);
+
+	v3<float> pos = obj->_position + obj->_follow_position;
+	pos.z = 0;
+	if (dpos.z != 0) {
+		pos.z = dpos.z;
+	}
+	
+	addObject(obj, pos);
 	return obj;
 }
 
