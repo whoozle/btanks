@@ -67,8 +67,10 @@ public:
 
 private:
 	typedef std::map<const int, Object*> ObjectMap;
-
-
+	
+	typedef std::map<const std::pair<int, int>, bool> CollisionMap;
+	mutable CollisionMap _collision_map;
+	
 	const float getImpassability(Object *obj, const sdlx::Surface &surface, const v3<int> &position, const Object **collided_with = NULL) const;
 	void getImpassability2(float &old_pos_im, float &new_pos_im, Object *obj, const sdlx::Surface &surface, const v3<int> &new_position, const Object **old_pos_collided_with = NULL) const;
 	const bool collides(Object *obj, const sdlx::Surface &surface, const v3<int> &position, Object *other, const sdlx::Surface &other_surface) const;

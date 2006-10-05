@@ -92,30 +92,50 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect &viewport) {
 }
 
 const bool IWorld::collides(Object *obj, const sdlx::Surface &surface, const v3<int> &position, Object *o, const sdlx::Surface &osurf) const {
-		if (o == obj || o->impassability == 0 || (obj->piercing && o->pierceable) || (obj->pierceable && o->piercing)) 
+		if (o == obj || o->impassability == 0 || (obj->piercing && o->pierceable) || (obj->pierceable && o->piercing)) {
 			return false;
+		}
 			
 		//skip owner and grouped-leader.
 		if (
 			(obj->_owner_id != 0 && obj->_owner_id == o->_id) || (o->_owner_id != 0 && o->_owner_id == obj->_id) ||
 			(obj->_follow != 0 && obj->_follow == o->_id) || (o->_follow != 0 && o->_follow == obj->_id) 
-		) return false;
+		) {
+			return false;
+		}
+
+		const int id1 = obj->_id;
+		const int id2 = o->_id;
+		
+		CollisionMap::key_type key = (id1 < id2) ? CollisionMap::key_type(id1, id2): CollisionMap::key_type(id2, id1);
+		CollisionMap::iterator i = _collision_map.find(key);
+		if (i != _collision_map.end()) {
+			//LOG_DEBUG(("skipped collision detection for %s<->%s", obj->classname.c_str(), o->classname.c_str()));
+			return i->second;
+		}
+
+
 		
 		v3<int> dpos = o->_position.convert<int>() - position;
 		//LOG_DEBUG(("%s: %d %d", o->classname.c_str(), dpos.x, dpos.y));
 		int r = SDL_CollidePixel(surface.getSDLSurface(), 0, 0, osurf.getSDLSurface(), dpos.x, dpos.y);
-		if (!r)
+		if (!r) {
+			_collision_map.insert(CollisionMap::value_type(key, false));
 			return false;
+		}
 
 		if (o->impassability < 0 || o->impassability >= 1.0) { //do not generate collision event if impassability != 1 and impassability != -1
 			//LOG_DEBUG(("collision"));
 			//LOG_DEBUG(("collision %s <-> %s", obj->classname.c_str(), o->classname.c_str()));
 			o->emit("collision", obj);
 			obj->emit("collision", o);
-			if (o->isDead() || obj->isDead() || obj->impassability == 0 || o->impassability == 0) 
+			if (o->isDead() || obj->isDead() || obj->impassability == 0 || o->impassability == 0) {
+				_collision_map.insert(CollisionMap::value_type(key, false));
 				return false; // no effect.
+			}
 		}
 
+		_collision_map.insert(CollisionMap::value_type(key, true));
 		return true;
 }
 
@@ -261,6 +281,8 @@ void IWorld::tick(Object &o, const float dt) {
 	
 	const IMap &map = *IMap::get_instance();
 	v3<int> map_size = map.getSize();
+	
+	_collision_map.clear();
 
 	if (o.ttl > 0) {
 		o.ttl -= dt;
