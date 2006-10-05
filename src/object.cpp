@@ -364,8 +364,8 @@ void Object::calculateWayVelocity() {
 	while (!_way.empty()) {
 		if (_next_target.is0()) {
 			_next_target = _way.begin()->convert<float>();
-			LOG_DEBUG(("next waypoint: %g %g", _next_target.x, _next_target.y));
 			_next_target_rel = _next_target - getPosition();
+			LOG_DEBUG(("next waypoint: %g %g, relative: %g %g", _next_target.x, _next_target.y, _next_target_rel.x, _next_target_rel.y));
 			_way.erase(_way.begin());
 			break;
 		}
@@ -418,6 +418,7 @@ void Object::limitRotation(const float dt, const int dirs, const float speed, co
 		_velocity.quantize16();
 		_dst_direction = _velocity.getDirection16() - 1;
 	}
+	assert(_dst_direction >= 0);
 	if (_dst_direction == _direction_idx) {
 		_rotation_time = 0;
 		return;
@@ -438,6 +439,9 @@ void Object::limitRotation(const float dt, const int dirs, const float speed, co
 		int d = math::abs<int>(_dst_direction - _direction_idx);
 		if (d > 1 && d != dirs - 1) {
 			_velocity.clear();
+		} else {
+			_direction_idx = _dst_direction;
+			_rotation_time = 0;
 		}
 	} 
 	
