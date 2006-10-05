@@ -1,11 +1,12 @@
 #include "object.h"
 #include "resource_manager.h"
 #include "alarm.h"
+#include "config.h"
 
 class Kamikaze : public Object {
 public:
 	Kamikaze() : 
-		Object("kamikaze"), _reaction(0.1, true) {}
+		Object("kamikaze"), _reaction(true) {}
 	
 	virtual void tick(const float dt);
 	virtual void calculate(const float dt);
@@ -47,6 +48,8 @@ void Kamikaze::tick(const float dt) {
 }
 
 void Kamikaze::onSpawn() {
+	GET_CONFIG_VALUE("objects.kamikaze.reaction-time", float, rt, 0.1);
+	_reaction.set(rt);
 	play("hold", true);
 }
 
