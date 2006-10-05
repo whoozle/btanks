@@ -85,9 +85,7 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect &viewport) {
 		Object &o = *i->second;
 		sdlx::Rect r((int)o._position.x, (int)o._position.y, (int)o.size.x, (int)o.size.y);
 		if (r.intersects(viewport)) {
-			r.x -= viewport.x;
-			r.y -= viewport.y;
-			o.render(surface, r.x, r.y);
+			o.render(surface, r.x - viewport.x, r.y - viewport.y);
 		}
 	}
 	map.render(surface, viewport, z1, 1000);
