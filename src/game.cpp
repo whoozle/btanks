@@ -310,7 +310,8 @@ void IGame::onMenu(const std::string &name) {
 		clear();
 		_main_menu.reset();
 		const std::string vehicle = name.substr(6);
-		loadMap("country");
+		GET_CONFIG_VALUE("stubs.default-map", std::string, map, "survival");
+		loadMap(map);
 		
 		static const char * colors[4] = {"green", "red", "yellow", "cyan"};
 		std::string animation = colors[mrt::random(4)];
@@ -322,7 +323,8 @@ void IGame::onMenu(const std::string &name) {
 	} else if (name == "m-start") {
 		LOG_DEBUG(("start multiplayer server requested"));
 		clear();
-		loadMap("country");
+		GET_CONFIG_VALUE("stubs.default-map", std::string, map, "survival");
+		loadMap(map);
 
 		GET_CONFIG_VALUE("player.control-method", std::string, cm, "keys");		
 		_my_index = spawnPlayer("tank", "green-tank", cm);
