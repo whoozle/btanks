@@ -1,19 +1,36 @@
-#include "ai_tank.h"
+#include "alarm.h"
+#include "tank.h"
 #include "tmx/map.h"
 #include "sdlx/rect.h"
 #include "mrt/logger.h"
 #include "resource_manager.h"
+#include "config.h"
 
-REGISTER_OBJECT("ai-tank", AITank, ());
+class AITank : public Tank {
+public: 
+	AITank();
+	AITank(const std::string &animation);
 
-#define REACTION_TIME (0.100)
-#define PATHFINDING_TIME (0.200)
+	virtual void calculate(const float dt);
+	virtual void onSpawn();
+	virtual Object * clone(const std::string &opt) const;
+private: 
+	Alarm _reaction_time, _refresh_waypoints;
+};
+
+
+void AITank::onSpawn() {
+	GET_CONFIG_VALUE("objects.ai-tank.reaction-time", float, reaction_time, 0.1);
+	_reaction_time.set(reaction_time);
+	GET_CONFIG_VALUE("objects.ai-tank.refreshing-path-interval", float, rpi, 0.3);
+	_refresh_waypoints.set(rpi);
+}
 
 AITank::AITank() : Tank(), 
-	_reaction_time(REACTION_TIME, true), _refresh_waypoints(PATHFINDING_TIME, true) {}
+	_reaction_time(true), _refresh_waypoints(true) {}
 
 AITank::AITank(const std::string &animation) : Tank(animation), 
-	_reaction_time(REACTION_TIME, true), _refresh_waypoints(PATHFINDING_TIME, true)  {
+	_reaction_time(true), _refresh_waypoints(true)  {
 }
 
 void AITank::calculate(const float dt) {	
@@ -107,3 +124,6 @@ Object * AITank::clone(const std::string &opt) const {
 	} CATCH("clone", { delete p; throw; });
 	return p;
 }
+
+
+REGISTER_OBJECT("ai-tank", AITank, ());

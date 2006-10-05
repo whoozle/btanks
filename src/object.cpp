@@ -384,7 +384,9 @@ void Object::setup(const std::string &a) {
 	_events.clear();
 }
 
-void Object::onSpawn() {}
+void Object::onSpawn() {
+	throw_ex(("%s: object MUST define onSpawn() method.", classname.c_str()));
+}
 
 Object * Object::spawnGrouped(const std::string &classname, const std::string &animation, const v3<float> &dpos, const GroupType type) {
 	return World->spawnGrouped(this, classname, animation, dpos, type);

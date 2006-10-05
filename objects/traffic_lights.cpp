@@ -8,6 +8,7 @@ public:
 	virtual Object * clone() const;
 	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
 	virtual void addDamage(BaseObject *from, const int hp, const bool emitDeath = true);
+	virtual void onSpawn();
 
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
@@ -24,6 +25,9 @@ private:
 	int _idx;
 	bool _broken;
 };
+
+
+void TrafficLights::onSpawn() {}
 
 void TrafficLights::addDamage(BaseObject *from, const int dhp, const bool emitDeath) {
 	if (_broken)
