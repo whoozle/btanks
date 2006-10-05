@@ -380,6 +380,7 @@ void IWorld::tick(Object &o, const float dt) {
 	float map_im = 0;
 	if (o.piercing) {
 		int i = map.getImpassability(&o, osurf, new_pos);
+		o._position = new_pos.convert<float>();
 		//LOG_DEBUG(("%d", i));
 		if (i == 100) {
 			o.emit("death"); //fixme
