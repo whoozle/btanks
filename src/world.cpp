@@ -66,10 +66,14 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect &viewport) {
 		Object *o = *i;
 		layers.insert(LayerMap::value_type(o->_position.z, o));
 	}
-	int z1 = -1000;
+	int z1 = -1001;
 	for(LayerMap::iterator i = layers.begin(); i != layers.end(); ++i) {
 		int z2 = (int)i->first;
-		map.render(surface, viewport, z1, z2);
+		//LOG_DEBUG(("world::render(%d, %d)", z1, z2));
+		if (z1 != z2) {
+			//LOG_DEBUG(("calling map::render(%d, %d)", z1, z2));
+			map.render(surface, viewport, z1, z2);
+		}
 		z1 = z2;
 		Object &o = *i->second;
 		sdlx::Rect r((int)o._position.x, (int)o._position.y, (int)o.size.x, (int)o.size.y);

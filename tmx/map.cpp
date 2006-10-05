@@ -368,6 +368,7 @@ void IMap::render(sdlx::Surface &window, const sdlx::Rect &dst, const int z1, co
 	for(LayerMap::const_iterator l = lz1; l != _layers.end(); ++l) {
 		if (l->first >= z2) //much quicker than lower_bound(z2)
 			break;
+		//LOG_DEBUG(("z: %d << %d, layer: %d", z1, z2, l->first));
 		
 		for(int ty = 0; ty < tyn; ++ty) {
 			for(int tx = 0; tx < txn; ++tx) {
