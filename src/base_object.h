@@ -72,6 +72,9 @@ public:
 	inline void getPosition(v3<float> &position) { position = _position; }
 	inline void getPosition(v3<int> &position) { position = _position.convert<int>(); }
 
+	inline void getCenterPosition(v3<float> &position) { position = _position; position += size / 2; }
+	inline void getCenterPosition(v3<int> &position) { position = (_position + size / 2).convert<int>();  }
+
 	void getInfo(v3<float> &pos, v3<float> &vel) const;
 	
 protected:

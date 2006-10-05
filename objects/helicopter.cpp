@@ -2,8 +2,10 @@
 #include "alarm.h"
 #include "tmx/map.h"
 #include "mrt/random.h"
+#include "mrt/logger.h"
 #include "resource_manager.h"
 #include "config.h"
+#include "world.h"
 
 class Helicopter : public Object {
 public:
@@ -44,13 +46,33 @@ void Helicopter::onSpawn() {
 void Helicopter::tick(const float dt) {
 	Object::tick(dt);
 	if (_active && _spawn.tick(dt)) {
-		spawn(_paratrooper, "paratrooper", v3<float>(0,0,-1), v3<float>());
+		Matrix<int> matrix; 
+		World->getImpassabilityMatrix(matrix, this, NULL);
+
+		v3<int> pos, pos2;
+		getCenterPosition(pos); 
+		pos -= IMap::pathfinding_step / 2;
+		
+		pos2 = pos;
+		pos2 += v3<int>(IMap::pathfinding_step - 1, IMap::pathfinding_step - 1, 0);
+
+		pos /= IMap::pathfinding_step;
+		pos2 /= IMap::pathfinding_step;
+		/*
+		LOG_DEBUG(("%d %d", matrix.get(pos.y, pos.x), matrix.get(pos.y, pos2.x)));
+		LOG_DEBUG(("%d %d", matrix.get(pos2.y, pos.x), matrix.get(pos2.y, pos2.x)));
+		*/
+		if (matrix.get(pos.y, pos.x) == -1 || matrix.get(pos.y, pos2.x) == -1 || 
+			matrix.get(pos2.y, pos.x) == -1 || matrix.get(pos2.y, pos2.x) == -1) {
+				LOG_DEBUG(("cannot drop paratrooper, sir!"));
+			} else 
+				spawn(_paratrooper, "paratrooper", v3<float>(0,0,-1), v3<float>());
 	}
 }
 
 
 void Helicopter::calculate(const float dt) {
-	GET_CONFIG_VALUE("objects.helicopter-with-kamikazes.delay-before-next-target", float, delay, 2.0);
+	GET_CONFIG_VALUE("objects.helicopter-with-kamikazes.delay-before-next-target", float, delay, 1.0);
 	if (!_active && _idle_time > delay) { 
 		v3<float> pos;
 		getPosition(pos);
