@@ -19,6 +19,7 @@ private:
 };
 
 void Kamikaze::calculate(const float dt) {
+	calculateWayVelocity();
 	if (!_reaction.tick(dt))
 		return;
 	

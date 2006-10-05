@@ -179,7 +179,7 @@ void IMap::load(const std::string &name) {
 			
 		}
 	}
-	//LOG_DEBUG(("\n%s", _imp_map.dump().c_str()));
+	LOG_DEBUG(("\n%s", _imp_map.dump().c_str()));
 	
 	LOG_DEBUG(("loading completed"));
 }
@@ -364,9 +364,9 @@ void IMap::render(sdlx::Surface &window, const sdlx::Rect &dst, const int z1, co
 	int txn = (dst.w - 1) / _tw + 2;
 	int tyn = (dst.h - 1) / _th + 2;
 	
-	for(LayerMap::const_iterator l = _layers.begin(); l != _layers.end(); ++l) 
-	if (l->first >= z1) {
-		if (l->first >= z2) 
+	LayerMap::const_iterator lz1 = _layers.lower_bound(z1);
+	for(LayerMap::const_iterator l = lz1; l != _layers.end(); ++l) {
+		if (l->first >= z2) //much quicker than lower_bound(z2)
 			break;
 		
 		for(int ty = 0; ty < tyn; ++ty) {
