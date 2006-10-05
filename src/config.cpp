@@ -23,6 +23,8 @@ public:
 		assert(!type.empty());
 		if (type == "int")
 			return mrt::formatString("%d", i);
+		else if (type == "bool") 
+			return b?"true":"false";
 		else if (type == "float") 
 			return mrt::formatString("%g", f);
 		else if (type == "string") 
@@ -36,7 +38,13 @@ public:
 		
 		if (type == "int")
 			i = atoi(str.c_str());
-		else if (type == "float") 
+		else if (type == "bool") {
+			if (str == "true") {
+				b = true;
+			} else if (str == "false") {
+				b = false;
+			} else throw_ex(("'%s' used as boolean value.", str.c_str()));
+		} else if (type == "float") 
 			f = atof(str.c_str());
 		else if (type == "string") 
 			s = str;
@@ -44,6 +52,7 @@ public:
 	}
 	
 	int i;
+	bool b;
 	float f;
 	std::string s;
 };
@@ -131,6 +140,17 @@ void IConfig::get(const std::string &name, int &value, const int& default_value)
 		i->second->check("int");
 	}
 	value = _map[name]->i;
+}
+
+void IConfig::get(const std::string &name, bool &value, const bool& default_value) {
+	VarMap::iterator i = _map.find(name); 
+	if (i == _map.end()) {
+		_map[name] = new Var("bool");
+		_map[name]->i = default_value;
+	} else {
+		i->second->check("bool");
+	}
+	value = _map[name]->b;
 }
 
 void IConfig::get(const std::string &name, std::string &value, const std::string& default_value) {

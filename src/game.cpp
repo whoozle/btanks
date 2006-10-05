@@ -73,7 +73,11 @@ void IGame::init(const int argc, char *argv[]) {
 #endif
 
 	_opengl = true;
-	_show_fps = true;
+	
+	Config->load(data_dir + "/vars.xml");
+	GET_CONFIG_VALUE("engine.show-fps", bool, show_fps, true);
+	
+	_show_fps = show_fps;
 	bool fullscreen = false;
 	bool dx = false;
 	bool vsync = false;
@@ -82,7 +86,6 @@ void IGame::init(const int argc, char *argv[]) {
 	for(int i = 1; i < argc; ++i) {
 		if (strcmp(argv[i], "--no-gl") == 0) _opengl = false;
 		else if (strcmp(argv[i], "--fs") == 0) fullscreen = true;
-		else if (strcmp(argv[i], "--no-fps") == 0) _show_fps = false;
 		else if (strcmp(argv[i], "--vsync") == 0) vsync = true;
 #ifdef WIN32
 		else if (strcmp(argv[i], "--dx") == 0) { dx = true; _opengl = false; }
@@ -104,8 +107,6 @@ void IGame::init(const int argc, char *argv[]) {
 		}
 		else throw_ex(("unrecognized option: '%s'", argv[i]));
 	}
-	
-	Config->load(data_dir + "/vars.xml");
 	
 	LOG_DEBUG(("gl: %s, vsync: %s, dx: %s", _opengl?"yes":"no", vsync?"yes":"no", dx?"yes":"no"));
 #ifdef WIN32
