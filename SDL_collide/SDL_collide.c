@@ -18,11 +18,9 @@ static INLINE int SDL_CollideTransparentPixelTest(const SDL_Surface *surface , c
 	int bpp;
 	register Uint8 *p;
 	register Uint32 pixelcolor;
-	if (u < 0 || v < 0) 
-		return 0;
 	
 	/*assert that (u,v) offsets lie within surface*/
-	assert( u < surface->w && v < surface->h );
+	assert( u >= 0 && v >= 0 && u < surface->w && v < surface->h );
 
 	bpp = surface->format->BytesPerPixel;
 	/*here p is the address to the pixel we want to retrieve*/
