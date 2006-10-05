@@ -33,7 +33,7 @@
   <property name="object:guided-missiles-item:guided-missiles-item:0" value="1024,128,180"/>
   <property name="object:road-sign:road-sign09:1" value="394,1320,1"/>
   <property name="object:road-sign:road-sign08:1" value="1333,430,1"/>
-  <property name="object:helicopter-with-kamikazes:helicopter:1" value="@5,5,10"/>
+  <property name="object:helicopter-with-kamikazes:helicopter:1" value="@5,5,900"/>
   <property name="object:heal:umbrella:2" value="@21,20,410"/>
   <property name="object:tent:tent-top:14" value="572,192,410"/>
   <property name="object:gate:gate:1" value="@20,3,2"/>
