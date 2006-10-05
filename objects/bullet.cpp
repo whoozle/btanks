@@ -5,6 +5,7 @@ class Bullet : public Object {
 public:
 	Bullet(const std::string &type) : Object("bullet"), _type(type) {
 		impassability = 1;
+		piercing = true;
 	}
 	virtual void calculate(const float dt);
 	virtual Object * clone() const;

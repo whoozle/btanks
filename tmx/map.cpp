@@ -32,7 +32,6 @@ const bool IMap::collides(const sdlx::Surface &surf, const int dx, const int dy,
 
 
 const int IMap::getImpassability(const Object *obj, const sdlx::Surface &s, const v3<int>&pos, v3<int> *tile_pos) const {
-	assert(obj != NULL);
 	if (obj->impassability <= 0) {
 		return 0;
 	}
@@ -288,7 +287,7 @@ void IMap::end(const std::string &name) {
 		int z = (_properties.find("z") == _properties.end())?++_lastz:atol(_properties["z"].c_str());
 		_lastz = z;
 		int impassability = (_properties.find("impassability") != _properties.end())?atoi(_properties["impassability"].c_str()):-1;
-		const char pc = _properties["pierceable"].empty()?'t':_properties["pierceable"][0];
+		const char pc = (_properties.find("pierceable") != _properties.end() && _properties["pierceable"].empty())?'t':_properties["pierceable"][0];
 		const bool pierceable = pc == 't' || pc == 'T' || pc == '1';
 
 		LOG_DEBUG(("layer '%s'. %dx%d. z: %d, size: %d, impassability: %d", e.attrs["name"].c_str(), w, h, z, _data.getSize(), impassability));

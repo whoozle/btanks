@@ -311,8 +311,8 @@
 
 	<object class="tank" speed="400" mass="500" hp="40"/>
 	<object class="ai-tank" parent="tank" />
-	<object class="bullet" speed="550" mass="2" piercing="true" ttl="1" hp="10" />
-	<object class="dirt-bullet" speed="400" mass="1" piercing="true" ttl="1" hp="0" />
+	<object class="bullet" speed="550" mass="2" ttl="1" hp="10" />
+	<object class="dirt-bullet" speed="400" mass="1" ttl="1" hp="0" />
 
 	<object class="shilka" speed="450" mass="400" hp="80"/>
 	<object class="shilka-bullet" speed="600" mass="1" piercing="true" ttl="1" hp="5" />
