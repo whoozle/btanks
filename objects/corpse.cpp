@@ -29,7 +29,7 @@ void Corpse::emit(const std::string &event, BaseObject * emitter) {
 			hp -= emitter->hp;
 			if (hp <= 0) {
 				emit("death", emitter);
-				spawn("explosion", "explosion", v3<float>(0,0,1), v3<float>());
+				spawn("explosion", "explosion");
 			}
 		}
 	} else Object::emit(event, emitter);

@@ -77,6 +77,7 @@ public:
 
 	void getInfo(v3<float> &pos, v3<float> &vel) const;
 	void updateStateFromVelocity();
+	void setZ(const float z); 
 	
 protected:
 	int _id;
@@ -90,7 +91,6 @@ protected:
 
 	virtual void calculate(const float dt);
 
-	void setZ(const float z); //fixme: remove it ? 
 	void disown();
 	bool need_sync;
 

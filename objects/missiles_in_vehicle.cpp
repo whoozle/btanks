@@ -100,14 +100,11 @@ void MissilesInVehicle::emit(const std::string &event, BaseObject * emitter) {
 				std::string type = _type.empty()?"guided":_type;
 				std::string object = _object.empty()?"missiles":_object;
 				object = object.substr(0, object.size() - 1); //remove trailing 's' 
-				v3<float> opos(0,0,1);
-				if (_object == "mines") opos.z = -1;
-				World->spawn(dynamic_cast<Object *>(emitter), type + "-" + object, type + "-" + object, opos, v);
+				World->spawn(dynamic_cast<Object *>(emitter), type + "-" + object, type + "-" + object, v3<float>(), v);
 				
 				if (_object != "mines") {
 					const Object * la = ResourceManager.get_const()->getAnimation("missile-launch");
 					v3<float> dpos = (size - la->size).convert<float>();
-					dpos.z = 1;
 					dpos /= 2;
 		
 					Object *o = World->spawn(dynamic_cast<Object *>(emitter), "missile-launch", "missile-launch", dpos, _direction);

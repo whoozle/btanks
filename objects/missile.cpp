@@ -23,7 +23,7 @@ public:
 
 void Missile::onSpawn() {
 	play("main", true);
-	Object *_fire = spawnGrouped("single-pose", "missile-fire", v3<float>(0,0, -0.1), Centered);
+	Object *_fire = spawnGrouped("single-pose", "missile-fire", v3<float>(), Centered);
 	_fire->impassability = 0;
 	add("fire", _fire);
 	
@@ -51,16 +51,15 @@ void Missile::calculate(const float dt) {
 void Missile::emit(const std::string &event, BaseObject * emitter) {
 	if (event == "collision") {
 		v3<float> dpos = getRelativePos(emitter) / 2;
-		dpos.z = 1;
 		emit("death", emitter);
 	} if (event == "death" && type == "smoke") {
-		spawn("smoke-cloud", "smoke-cloud", v3<float>(0,0,8), v3<float>());
+		spawn("smoke-cloud", "smoke-cloud");
 		Object::emit(event, emitter);
 	} else if (event == "death" && type == "nuke") {
-		spawn("nuclear-explosion", "nuclear-explosion", v3<float>(0,0,8), v3<float>());
+		spawn("nuclear-explosion", "nuclear-explosion");
 		Object::emit(event, emitter);
 	} else if (event == "death") {
-		spawn("explosion", "missile-explosion", v3<float>(), v3<float>());
+		spawn("explosion", "missile-explosion");
 		Object::emit(event, emitter);
 	} else Object::emit(event, emitter);
 }

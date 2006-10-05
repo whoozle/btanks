@@ -19,10 +19,10 @@ Tank::Tank(const std::string &animation)
 
 
 void Tank::onSpawn() {
-	Object *_smoke = spawnGrouped("single-pose", "tank-smoke", v3<float>(0,0,0.1), Centered);
+	Object *_smoke = spawnGrouped("single-pose", "tank-smoke", v3<float>(), Centered);
 	_smoke->impassability = 0;
 
-	Object *_missiles = spawnGrouped("missiles-on-tank", "guided-missiles-on-tank", v3<float>(0,0,0.1), Centered);
+	Object *_missiles = spawnGrouped("missiles-on-tank", "guided-missiles-on-tank", v3<float>(), Centered);
 	_missiles->impassability = 0;
 
 	add("missiles", _missiles);
@@ -41,7 +41,7 @@ void Tank::emit(const std::string &event, BaseObject * emitter) {
 		LOG_DEBUG(("dead"));
 		cancelAll();
 		//play("dead", true);
-		spawn("corpse", "dead-" + animation, v3<float>(0,0,-0.5), v3<float>(0,0,0));
+		spawn("corpse", "dead-" + animation);
 		_velocity.x = _velocity.y = _velocity.z = 0;
 		Object::emit(event, emitter);
 	} else Object::emit(event, emitter);
@@ -102,7 +102,7 @@ void Tank::tick(const float dt) {
 		if (isEffectActive("dirt")) {
 			bullet = "dirt-bullet";
 		}
-		spawn(bullet, bullet, v3<float>(0,0,-0.1), _direction);
+		spawn(bullet, bullet, v3<float>(), _direction);
 	}
 	if (_state.alt_fire) {
 		groupEmit("missiles", "launch");

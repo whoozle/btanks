@@ -52,7 +52,7 @@ void Kamikaze::onSpawn() {
 
 void Kamikaze::emit(const std::string &event, BaseObject * emitter) {
 	if (event == "death") {
-		spawn("explosion", "missile-explosion", v3<float>(0,0,1), v3<float>());
+		spawn("explosion", "missile-explosion");
 		Object::emit(event, emitter);
 	} else if (event == "collision") {
 		if (emitter) 

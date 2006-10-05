@@ -29,7 +29,7 @@ void Paratrooper::tick(const float dt) {
 	Object::tick(dt);
 	if (getState().empty()) {	
 		//LOG_DEBUG(("over"));
-		spawn(_spawn_object, _spawn_animation, v3<float>(), v3<float>());
+		spawn(_spawn_object, _spawn_animation);
 		emit("death", this);
 	}
 }

@@ -21,11 +21,11 @@ Object * Launcher::clone() const {
 }
 
 void Launcher::onSpawn() {
-	Object *_smoke = spawnGrouped("single-pose", "launcher-smoke", v3<float>(0,0,0.1), Centered);
+	Object *_smoke = spawnGrouped("single-pose", "launcher-smoke", v3<float>(), Centered);
 	_smoke->hp = 100000;
 	_smoke->impassability = 0;
 	add("smoke", _smoke);
-	Object *_missiles = spawnGrouped("missiles-on-launcher", "guided-missiles-on-launcher", v3<float>(0,0,0.1), Centered);
+	Object *_missiles = spawnGrouped("missiles-on-launcher", "guided-missiles-on-launcher", v3<float>(), Centered);
 	_missiles->hp = 100000;
 	_missiles->impassability = 0;
 	add("missiles", _missiles);
@@ -40,17 +40,16 @@ void Launcher::emit(const std::string &event, BaseObject * emitter) {
 		LOG_DEBUG(("dead"));
 		cancelAll();
 		//play("dead", true);
-		spawn("corpse", "dead-" + animation, v3<float>(0,0,-0.5), v3<float>(0,0,0));
+		spawn("corpse", "dead-" + animation);
 		_velocity.x = _velocity.y = _velocity.z = 0;
 
 		Object::emit(event, emitter);
 	} else if (event == "launch") {
 		v3<float> v = _velocity.is0()?_direction:_velocity;
 		v.normalize();
-		spawn("guided-missile", "guided-missile", v3<float>(0,0,1), v);
+		spawn("guided-missile", "guided-missile", v3<float>(), v);
 		const Object * la = ResourceManager.get_const()->getAnimation("missile-launch");
 		v3<float> dpos = (size - la->size).convert<float>();
-		dpos.z = 1;
 		dpos /= 2;
 
 		Object *o = spawn("missile-launch", "missile-launch", dpos, _direction);

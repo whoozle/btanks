@@ -66,7 +66,7 @@ void Helicopter::tick(const float dt) {
 			matrix.get(pos2.y, pos.x) == -1 || matrix.get(pos2.y, pos2.x) == -1) {
 				LOG_DEBUG(("cannot drop paratrooper, sir!"));
 			} else 
-				spawn(_paratrooper, "paratrooper", v3<float>(0,0,-1), v3<float>());
+				spawn(_paratrooper, "paratrooper");
 	}
 }
 

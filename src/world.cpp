@@ -526,6 +526,10 @@ Object* IWorld::spawn(Object *src, const std::string &classname, const std::stri
 	
 	//LOG_DEBUG(("spawning %s, position = %g %g dPosition = %g:%g, velocity: %g %g", 
 	//	classname.c_str(), src->_position.x, src->_position.y, dpos.x, dpos.y, vel.x, vel.y));
+	if (dpos.z != 0) {
+		LOG_DEBUG(("overriding z(%g) for object '%s'", dpos.z, classname.c_str()));
+		obj->_position.z = dpos.z;
+	}
 	
 	addObject(obj, src->_position + (src->size / 2)+ dpos - (obj->size / 2));
 	//LOG_DEBUG(("result: %f %f", obj->_position.x, obj->_position.y));
@@ -536,6 +540,11 @@ Object * IWorld::spawnGrouped(Object *src, const std::string &classname, const s
 	Object *obj = ResourceManager->createObject(classname, animation);
 	assert(obj->_owner_id == 0);
 	obj->_owner_id = src->_id;
+
+	if (dpos.z != 0) {
+		LOG_DEBUG(("overriding z(%g) for grouped-object '%s'", dpos.z, classname.c_str()));
+		obj->_position.z = dpos.z;
+	}
 	
 	obj->_follow_position = dpos;
 	switch(type) {

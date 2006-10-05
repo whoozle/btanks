@@ -78,8 +78,8 @@ void BaseObject::deserialize(const mrt::Serializator &s) {
 }
 
 const std::string BaseObject::dump() const {
-	return mrt::formatString("object '%s', mass: %g, speed: %g, ttl: %g, impassability: %g, hp: %d, piercing: %s, pierceable: %s, dead: %s",
-		classname.c_str(), mass, speed, ttl, impassability, hp, piercing?"true":"false", pierceable?"true":"false", _dead?"true":"false"
+	return mrt::formatString("object '%s', mass: %g, speed: %g, ttl: %g, impassability: %g, hp: %d, piercing: %s, pierceable: %s, z: %g, dead: %s",
+		classname.c_str(), mass, speed, ttl, impassability, hp, piercing?"true":"false", pierceable?"true":"false", _position.z, _dead?"true":"false"
 	);
 }
 
