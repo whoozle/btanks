@@ -3,7 +3,9 @@
 
 class Bullet : public Object {
 public:
-	Bullet(const std::string &type) : Object("bullet"), _type(type) {}
+	Bullet(const std::string &type) : Object("bullet"), _type(type) {
+		impassability = 1;
+	}
 	virtual void calculate(const float dt);
 	virtual Object * clone() const;
 	virtual void onSpawn();
