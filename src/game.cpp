@@ -558,8 +558,9 @@ void IGame::run() {
 			
 			if (_players.size()) {
 				const Object * p = _players[_my_index].obj;
-				v3<float> pos, vel;
-				if (World->getInfo(p, pos, vel)) {
+				if (p != NULL) {
+					v3<float> pos, vel;
+					p->getInfo(pos, vel);
 					//LOG_DEBUG(("player[0] %f, %f", vel.x, vel.y));
 					int wx = (int)pos.x - _viewport.x;
 					int wy = (int)pos.y - _viewport.y;

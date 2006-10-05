@@ -257,3 +257,10 @@ const bool BaseObject::updatePlayerState(const PlayerState &state) {
 	}
 	return updated;
 }
+
+void BaseObject::getInfo(v3<float> &pos, v3<float> &vel) const {
+	pos = _position;
+	vel = _velocity;
+	
+	vel.normalize();
+}

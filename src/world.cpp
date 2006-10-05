@@ -53,21 +53,6 @@ void IWorld::addObject(Object *o, const v3<float> &pos) {
 	//LOG_DEBUG(("object %d added, objects: %d", o->_id, _objects.size()));
 }
 
-const bool IWorld::getInfo(const Object * po, v3<float> &pos, v3<float> &vel) const {
-	ObjectSet::const_iterator i = _objects.find((Object *)po);
-	if (i == _objects.end())
-		return false;
-		
-	const Object &o = **i;
-	pos = o._position;
-	vel = o._velocity;
-	
-	vel.normalize();
-	
-	return true;
-}
-
-
 void IWorld::render(sdlx::Surface &surface, const sdlx::Rect &viewport) {
 	typedef std::multimap<const float, Object *> LayerMap;
 	LayerMap layers;

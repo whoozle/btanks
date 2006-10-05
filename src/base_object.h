@@ -70,6 +70,9 @@ public:
 	
 	const v3<float> getRelativePos(const BaseObject *obj) const;
 	inline void getPosition(v3<float> &position) { position = _position; }
+	inline void getPosition(v3<int> &position) { position = _position.convert<int>(); }
+
+	void getInfo(v3<float> &pos, v3<float> &vel) const;
 	
 protected:
 	int _id;
@@ -80,7 +83,6 @@ protected:
 	float _distance, _moving_time, _idle_time;
 	
 	inline const v3<float> & getPosition() { return _position; }
-	inline void getPosition(v3<int> &position) { position = _position.convert<int>(); }
 
 	virtual void calculate(const float dt);
 
