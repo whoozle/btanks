@@ -423,9 +423,6 @@ skip_collision:
 		return;
 		
 	dpos *= (1 - map_im) * (1 - obj_im);
-	if (o._distance > 0) {
-		o._distance -= dpos.length();
-	}
 
 	if (o._position.x + dpos.x < -o.size.x || o._position.x + dpos.x >= map_size.x)
 		dpos.x = 0;

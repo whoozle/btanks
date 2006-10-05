@@ -161,20 +161,6 @@ void Object::tick(const float dt) {
 		if (!event.repeat)
 			cancel();
 	} 
-	
-	if (!_way.empty()) {
-		if (_distance > 0) {
-			//moving
-			//LOG_DEBUG(("%g %g %d %d, distance: %g", getPosition().x, getPosition().y, _way.begin()->x, _way.begin()->y, _distance));
-			//LOG_DEBUG(("o_velocity: %g %g", _velocity.x, _velocity.y));
-		} else {
-			_velocity = _way.begin()->convert<float>();
-			//LOG_DEBUG(("next waypoint: %g %g", _velocity.x, _velocity.y));
-			_velocity -= getPosition();
-			_distance = _velocity.length();
-			_way.erase(_way.begin());
-		}
-	}
 }
 
 void Object::render(sdlx::Surface &surface, const int x, const int y) {
@@ -369,10 +355,29 @@ void Object::emit(const std::string &event, BaseObject * emitter) {
 
 void Object::setWay(const Way & way) {
 	_way = way;
-	_distance = 0;
+	_next_target.clear();
 	if (!way.empty()) 
 		LOG_DEBUG(("set %d pending waypoints", _way.size()));
 }
+
+void Object::calculateWayVelocity() {
+	while (!_way.empty()) {
+		if (_next_target.is0()) {
+			_next_target = _way.begin()->convert<float>();
+			LOG_DEBUG(("next waypoint: %g %g", _next_target.x, _next_target.y));
+			_next_target_rel = _next_target - getPosition();
+			_way.erase(_way.begin());
+			break;
+		}
+		
+		_velocity = _next_target - getPosition();
+		if (_velocity.is0() || _velocity.x * _next_target_rel.x < 0 ||  _velocity.y * _next_target_rel.y < 0) {
+			//wiping out way point and restart
+			_next_target.clear();
+		} else break;
+	}
+}
+
 
 const bool Object::isDriven() const {
 	return !_way.empty();

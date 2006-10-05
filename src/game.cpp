@@ -319,8 +319,6 @@ void IGame::onMenu(const std::string &name) {
 		GET_CONFIG_VALUE("player.control-method", std::string, cm, "keys");		
 		_my_index = spawnPlayer(vehicle, animation, cm);
 		spawnPlayer("ai-tank", "green-tank", "ai");
-		//spawnPlayer("ai-player", "yellow-tank");
-		//spawnPlayer("ai-player", "cyan-tank");
 	} else if (name == "m-start") {
 		LOG_DEBUG(("start multiplayer server requested"));
 		clear();

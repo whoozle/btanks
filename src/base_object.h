@@ -83,7 +83,7 @@ protected:
 	v3<float> _follow_position;
 	PlayerState _state;
 	v3<float> _velocity, _direction, _velocity_fadeout;
-	float _distance, _moving_time, _idle_time;
+	float _moving_time, _idle_time;
 	
 	inline const v3<float> & getPosition() { return _position; }
 

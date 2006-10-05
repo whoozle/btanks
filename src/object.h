@@ -80,6 +80,8 @@ public:
 
 protected:
 
+	void calculateWayVelocity();
+
 	Object * spawn(const std::string &classname, const std::string &animation, const v3<float> &dpos, const v3<float> &vel);
 	Object * spawnGrouped(const std::string &classname, const std::string &animation, const v3<float> &dpos, const GroupType type);
 
@@ -124,6 +126,7 @@ private:
 
 	//waypoints stuff
 	Way _way;
+	v3<float> _next_target, _next_target_rel;
 	
 	//rotation stuff
 	float _rotation_time;	

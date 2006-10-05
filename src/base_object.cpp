@@ -4,7 +4,7 @@
 
 BaseObject::BaseObject(const std::string &classname)
  : mass(1), speed(0), ttl(-1), impassability(1), hp(1), max_hp(1), piercing(false), pierceable(false),
-   classname(classname), _id(0), _follow(0), _direction(1,0,0), _distance(0), _moving_time(0), _idle_time(0), 
+   classname(classname), _id(0), _follow(0), _direction(1,0,0),  _moving_time(0), _idle_time(0), 
    need_sync(false),
    _dead(false), _owner_id(0) {
 	//LOG_DEBUG(("allocated id %ld", _id));
@@ -42,7 +42,6 @@ void BaseObject::serialize(mrt::Serializator &s) const {
 	_velocity.serialize(s);
 	_direction.serialize(s);
 	_velocity_fadeout.serialize(s);
-	s.add(_distance);	
 	s.add(_moving_time);	
 	s.add(_idle_time);	
 
@@ -70,7 +69,6 @@ void BaseObject::deserialize(const mrt::Serializator &s) {
 	_velocity.deserialize(s);
 	_direction.deserialize(s);
 	_velocity_fadeout.deserialize(s);
-	s.get(_distance);	
 	s.get(_moving_time);	
 	s.get(_idle_time);	
 

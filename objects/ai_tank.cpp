@@ -13,7 +13,7 @@ public:
 
 	virtual void calculate(const float dt);
 	virtual void onSpawn();
-	virtual Object * clone(const std::string &opt) const;
+	virtual Object * clone() const;
 private: 
 	Alarm _reaction_time, _refresh_waypoints;
 };
@@ -24,17 +24,20 @@ void AITank::onSpawn() {
 	_reaction_time.set(reaction_time);
 	GET_CONFIG_VALUE("objects.ai-tank.refreshing-path-interval", float, rpi, 0.3);
 	_refresh_waypoints.set(rpi);
+	Tank::onSpawn();
 }
 
 AITank::AITank() : Tank(), 
 	_reaction_time(true), _refresh_waypoints(true) {}
 
 AITank::AITank(const std::string &animation) : Tank(animation), 
-	_reaction_time(true), _refresh_waypoints(true)  {
-}
+	_reaction_time(true), _refresh_waypoints(true)  {}
 
 void AITank::calculate(const float dt) {	
 	//LOG_DEBUG(("dt = %f", dt));
+	_state.fire = false;
+	calculateWayVelocity();
+	
 	if (!_reaction_time.tick(dt)) {
 		return;
 	}
@@ -112,17 +115,13 @@ void AITank::calculate(const float dt) {
 	  } else {
 	  	_velocity.clear();
 	  }
-	
+//	LOG_DEBUG(("v: %g %g", _velocity.x, _velocity.y));
+	GET_CONFIG_VALUE("objects.tank.rotation-time", float, rt, 0.05);
+	limitRotation(dt, 8, rt, true, false);
 }
 
-Object * AITank::clone(const std::string &opt) const {
-	AITank *p = NULL;
-	TRY { 
-		//LOG_DEBUG(("cloning player with animation '%s'", opt.c_str()));
-		p = new AITank(*this);
-		p->setup(opt);
-	} CATCH("clone", { delete p; throw; });
-	return p;
+Object * AITank::clone() const {
+	return new AITank(*this);
 }
 
 
