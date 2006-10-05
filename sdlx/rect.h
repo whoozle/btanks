@@ -26,18 +26,15 @@ namespace sdlx {
         typedef const SDL_Rect* pcSDL_Rect;
 */
     public:
-        Rect() {
-            x = y = w = h = 0;
-        }
-        Rect(int _x, int _y, int _w, int _h) {
-            x = _x;
-            y = _y;
-            w = _w;
-            h = _h;
-        }
-	
 	inline void reset() {
 	    x = y = w = h = 0;
+	}
+	
+	Rect() {
+		reset();
+	}
+	Rect(int _x, int _y, int _w, int _h) {
+		x = _x; y = _y; w = _w; h = _h;
 	}
 	
 	inline const bool in(const int _x, const int _y) const {
@@ -45,53 +42,15 @@ namespace sdlx {
 	}
 	
 	inline const bool intersects(const Rect & other) const {
-		int min, max, omin, omax;
-		int iw, ih;
-		
-		/* Horizontal intersection */
-		min = x;
-		max = min + w;
-		omin = other.x;
-		omax = omin + other.w;
-		if(omin > min)
-			min = omin;
-		        
-		//intersection->x = min;
-		
-		if(omax < max)
-			max = omax;
-		
-		iw = max - min > 0 ? max - min : 0;
-		//intersection->w = max - min > 0 ? max - min : 0;
+		int x2 = x + w - 1;
+		int other_x2 = other.x + other.w - 1;
 
-		/* Vertical intersection */
-		min = y;
-		max = min + h;
-		omin = other.y;
-		omax = omin + other.h;
+		int y2 = y + h - 1;
+		int other_y2 = other.y + other.h - 1;
 		
-		if(omin > min)
-			min = omin;
-		//intersection->y = min;
-		
-		if(omax < max)
-	        max = omax;
-	    
-		//intersection->h = max - min > 0 ? max - min : 0;
-		ih = max - min > 0 ? max - min : 0;
-
-		return (iw && ih);
+		return !((other_x2 < x) || (x2 < other.x) || (other_y2 < y) || (y2 < other.y));
 	}
-/*
-        operator pSDL_Rect() {
-            return &rect;
-        }
-
-        operator pcSDL_Rect() const {
-            return &rect;
-        }
-*/
-    };
+};
 }
 
 #endif
