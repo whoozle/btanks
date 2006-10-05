@@ -133,7 +133,7 @@
 
 	<animation-model id="destructable-object-animation" speed="1">
 		<pose id="main">0</pose>
-		<pose id="broken">1</pose>
+		<pose id="broken" z="-1">1</pose>
 	</animation-model>
 
 
@@ -290,10 +290,10 @@
 	<animation id="road-sign09" model="destructable-object-animation" tile="road_sign09.png" size="32" />
 
 	<!-- basic object with single pose. do not edit. -->
-	<object class="single-pose" impassability="0" />
+	<object class="single-pose" impassability="0" z="0" />
 	<!-- end of single-pose ;) -->
 
-	<object class="damage-digits" speed="60" mass="1" ttl="1" />
+	<object class="damage-digits" speed="60" mass="1" ttl="1" z="1500" />
 
 	<alias name="pond" class="single-pose" />
 	<alias name="shilka-bullet" class="bullet" />
@@ -309,46 +309,46 @@
 	<alias name="lodge" class="destructable-object" />
 	<alias name="road-sign" class="destructable-object" />
 
-	<object class="tank" speed="400" mass="500" hp="40"/>
-	<object class="ai-tank" parent="tank" />
-	<object class="bullet" speed="550" mass="2" ttl="1" hp="10" />
-	<object class="dirt-bullet" speed="400" mass="1" ttl="1" hp="0" />
+	<object class="tank" speed="400" mass="500" hp="40" z="0" />
+	<object class="ai-tank" parent="tank" z="0" />
+	<object class="bullet" speed="550" mass="2" ttl="1" hp="10" z="-10" />
+	<object class="dirt-bullet" speed="400" mass="1" ttl="1" hp="0" z="-10" />
 
-	<object class="shilka" speed="450" mass="400" hp="80"/>
-	<object class="shilka-bullet" speed="600" mass="1" piercing="true" ttl="1" hp="5" />
+	<object class="shilka" speed="450" mass="400" hp="80" z="0" />
+	<object class="shilka-bullet" speed="600" mass="1" piercing="true" ttl="1" hp="5" z="-10" />
 
-	<object class="launcher" speed="500" mass="400" hp="20" />
-	<object class="guided-missile" speed="450" mass="100" piercing="true" ttl="5" hp="15" />
-	<object class="smoke-missile" speed="450" mass="100" piercing="true" ttl="1" hp="0" />
-	<object class="smoke-cloud" impassability="0" />
-	<object class="dumb-missile" speed="500" mass="100" piercing="true" ttl="10" hp="40" />
-	<object class="nuke-missile" speed="200" mass="100" piercing="true" ttl="3" hp="1000" />
-	<object class="missile-launch" impassability="0" />
-	<object class="regular-mine" hp="40" impassability="-1" />
+	<object class="launcher" speed="500" mass="400" hp="20" z="0" />
+	<object class="guided-missile" speed="450" mass="100" piercing="true" ttl="5" hp="15" z="250" />
+	<object class="smoke-missile" speed="450" mass="100" piercing="true" ttl="1" hp="0" z="250" />
+	<object class="smoke-cloud" impassability="0" z="250" />
+	<object class="dumb-missile" speed="500" mass="100" piercing="true" ttl="10" hp="40" z="250" />
+	<object class="nuke-missile" speed="200" mass="100" piercing="true" ttl="3" hp="1000" z="250" />
+	<object class="missile-launch" impassability="0" z="260" />
+	<object class="regular-mine" hp="40" impassability="-1" z="0" />
 
-	<object class="corpse" hp="10" ttl="10" fadeout_time="1"/>
-	<object class="explosion" hp="1" />
-	<object class="nuclear-explosion" hp="1000" impassability="-1" />
-	<object class="dirt" impassability="0.7" />
-	<object class="pond" hp="1000" pierceable="true" impassability="1" />
-	<object class="gate" hp="1" impassability="1" />
-	<object class="bus-stop" hp="5" impassability="1" />
-	<object class="stall" hp="5" impassability="1" />
-	<object class="tent" hp="1" impassability="1" />
-	<object class="umbrella" hp="1" impassability="1" />
-	<object class="van" hp="1" impassability="1" />
-	<object class="biotoilet" hp="1" impassability="1" />
-	<object class="lodge" hp="1" impassability="1" />
-	<object class="spawn-shield" hp="1000" impassability="1" />
-	<object class="traffic-lights" hp="3" />
-	<object class="road-sign" hp="1" impassability="1" />
+	<object class="corpse" hp="10" ttl="10" fadeout_time="1" z="0" />
+	<object class="explosion" hp="1" z="580" />
+	<object class="nuclear-explosion" hp="1000" impassability="-1" z="900" />
+	<object class="dirt" impassability="0.7" z="-20" />
+	<object class="pond" hp="1000" pierceable="true" impassability="1" z="150" />
+	<object class="gate" hp="1" impassability="1" z="150" />
+	<object class="bus-stop" hp="5" impassability="1" z="150" />
+	<object class="stall" hp="5" impassability="1" z="150" />
+	<object class="tent" hp="1" impassability="1" z="150" />
+	<object class="umbrella" hp="1" impassability="1" z="150" />
+	<object class="van" hp="1" impassability="1" z="150" />
+	<object class="biotoilet" hp="1" impassability="1" z="150" />
+	<object class="lodge" hp="1" impassability="1" z="150" />
+	<object class="spawn-shield" hp="1000" impassability="1" z="150" />
+	<object class="traffic-lights" hp="3" z="150" />
+	<object class="road-sign" hp="1" impassability="1" z="150" />
 
-	<object class="helicopter-with-kamikazes" hp="100" impassability="0" speed="400" mass="1500" />
-	<object class="paratrooper-kamikaze" hp="5" impassability="0" />
-	<object class="kamikaze" hp="5" impassability="1" speed="70" mass="80" />
+	<object class="helicopter-with-kamikazes" hp="100" impassability="0" speed="400" mass="1500" z="810" />
+	<object class="paratrooper-kamikaze" hp="5" impassability="0" z="0" />
+	<object class="kamikaze" hp="5" impassability="1" speed="70" mass="80" z="0" />
 
 	<!-- items -->
-	<object class="heal" hp="20" />
-	<object class="megaheal" hp="1000" />
+	<object class="heal" hp="20" z="180" />
+	<object class="megaheal" hp="1000" z="180" />
 
 </resources>
