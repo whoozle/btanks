@@ -66,12 +66,12 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 		_pose_id = attr["id"];
 		if (_pose_id.size() == 0) 
 			throw_ex(("pose must have id"));
-			
 		float speed = atof(attr["speed"].c_str());
 		if (speed == 0)
 			speed = _am->default_speed;
-		_pose = new Pose(speed);
-		//nope
+
+		float z = (!attr["z"].empty())?atof(attr["z"].c_str()) : -1001;
+		_pose = new Pose(speed, z);
 	} else if (name == "object") {
 		const std::string classname = attr["class"];
 		if (classname.size() == 0)

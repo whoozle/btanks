@@ -7,9 +7,9 @@
 
 class Pose {
 public:
-	Pose(const float speed) : speed(speed) {}
+	Pose(const float speed, const float z) : speed(speed), z(z) {}
 
-	const float speed;
+	const float speed, z;
 	std::vector<unsigned int> frames;
 };
 

@@ -138,6 +138,10 @@ void Object::tick(const float dt) {
 		return;
 	}
 	
+	if (pose->z > -1000) {
+		setZ(pose->z);
+	}
+	
 	_pos += dt * pose->speed;
 	int n = pose->frames.size();
 	if (n == 0) {
