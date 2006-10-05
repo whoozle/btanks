@@ -76,6 +76,7 @@ public:
 	inline void getCenterPosition(v3<int> &position) { position = (_position + size / 2).convert<int>();  }
 
 	void getInfo(v3<float> &pos, v3<float> &vel) const;
+	void updateStateFromVelocity();
 	
 protected:
 	int _id;

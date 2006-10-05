@@ -262,3 +262,10 @@ void BaseObject::getInfo(v3<float> &pos, v3<float> &vel) const {
 	
 	vel.normalize();
 }
+
+void BaseObject::updateStateFromVelocity() {
+	_state.left = (_velocity.x < 0);
+	_state.right = (_velocity.x > 0);
+	_state.up = (_velocity.y < 0);
+	_state.down = (_velocity.y > 0);
+}
