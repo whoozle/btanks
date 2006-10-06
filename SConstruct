@@ -28,6 +28,7 @@ if stl_port_debug:
 	env.Append(CPPDEFINES = ['_STLP_DEBUG'])
 
 env.Append(CPPDEFINES = ['USE_GLSDL'])
+env.Append(CPPDEFINES = ['V3_DISABLE_Z'])
 env.Append(CPPDEFINES = ['_REENTRANT'])
 
 #print sys.platform

@@ -20,13 +20,17 @@ public:
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
 		_next_target.serialize(s);
+		_next_target_rel.serialize(s);
 		s.add(_active);
+		_spawn.serialize(s);
 		s.add(_paratrooper);
 	}
 	virtual void deserialize(const mrt::Serializator &s) {
 		Object::deserialize(s);
 		_next_target.deserialize(s);
+		_next_target_rel.deserialize(s);
 		s.get(_active);
+		_spawn.deserialize(s);
 		s.get(_paratrooper);
 	}
 
@@ -88,12 +92,14 @@ void Helicopter::calculate(const float dt) {
 	}
 	if (_active) {
 		_velocity = _next_target - pos;
-		if (_velocity.is0() || _velocity.x * _next_target.x < 0 || _velocity.y * _next_target.y < 0 ) {
+		//LOG_DEBUG(("vel: %g %g, rel: %g %g", _velocity.x, _velocity.y, _next_target_rel.x, _next_target_rel.y));
+		if (_velocity.is0() || (_velocity.x * _next_target_rel.x) < 0 || (_velocity.y * _next_target_rel.y) < 0 ) {
 			_active = false; 
 			LOG_DEBUG(("stop"));
 			_velocity.clear();
 		} 
 	} else _velocity.clear();
+	//LOG_DEBUG(("vel: %g %g", _velocity.x, _velocity.y));
 	
 	GET_CONFIG_VALUE("objects.helicopter.rotation-time", float, rt, 0.2);
 	limitRotation(dt, 8, rt, true, false);

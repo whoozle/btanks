@@ -86,7 +86,7 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect &viewport) {
 }
 
 const bool IWorld::collides(Object *obj, const sdlx::Surface &surface, const v3<int> &position, Object *o, const sdlx::Surface &osurf) const {
-		if (o == obj || o->impassability == 0 || (obj->piercing && o->pierceable) || (obj->pierceable && o->piercing)) {
+		if (o == obj || obj->impassability == 0 || o->impassability == 0 || (obj->piercing && o->pierceable) || (obj->pierceable && o->piercing)) {
 			return false;
 		}
 			

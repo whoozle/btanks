@@ -47,14 +47,25 @@ public:
 	}
 	
 	inline const T length() const {
+#ifndef V3_DISABLE_Z		
 		if (x == 0 && y == 0 && z == 0) 
 			return 0;
 		
 		return (T)sqrt(x * x + y * y + z * z);
+#else 
+		if (x == 0 && y == 0) 
+			return 0;
+		
+		return (T)sqrt(x * x + y * y);
+#endif
 	}
 
 	inline const T quick_length() const {
+#ifndef V3_DISABLE_Z		
 		return (T)(x * x + y * y + z * z);
+#else
+		return (T)(x * x + y * y);
+#endif
 	}
 
 	template <typename T2> 
@@ -69,8 +80,12 @@ public:
 	inline const T quick_distance(const v3<T>& other) const {
 		const T dx = x - other.x;
 		const T dy = y - other.y;
+#ifndef V3_DISABLE_Z		
 		const T dz = z - other.z;
 		return (dx * dx + dy * dy + dz * dz);
+#else
+		return (dx * dx + dy * dy);
+#endif
 	}
 
 	inline const bool same_sign(const v3<T> &other) const {
@@ -90,7 +105,7 @@ public:
 			if (other.y * y < 0)
 				return false;
 		}
-
+#ifndef V3_DISABLE_Z		
 		if (z == 0) {
 			if (other.z != 0)
 				return false;
@@ -98,7 +113,7 @@ public:
 			if (other.z * z < 0)
 				return false;
 		}
-		
+#endif		
 		return true;
 	}
 	
