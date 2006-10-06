@@ -1,4 +1,5 @@
 #include "alarm.h"
+#include "mrt/serializator.h"
 
 Alarm::Alarm(const float period, const bool repeat) : _period(period), _t(period), _repeat(repeat) {}
 Alarm::Alarm(const bool repeat): _period(0), _t(0), _repeat(repeat) {}
@@ -26,4 +27,16 @@ void Alarm::set(const float period, const bool reset) {
 
 void Alarm::reset() {
 	_t = _period;
+}
+
+void Alarm::serialize(mrt::Serializator &s) const {
+	s.add(_period);
+	s.add(_t);
+	s.add(_repeat);
+}
+
+void Alarm::deserialize(const mrt::Serializator &s) {
+	s.get(_period);
+	s.get(_t);
+	s.get(_repeat);
 }
