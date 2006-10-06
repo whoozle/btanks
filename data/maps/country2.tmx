@@ -1,19 +1,34 @@
 <?xml version="1.0"?>
 <map version="0.99b" orientation="orthogonal" width="25" height="20" tilewidth="64" tileheight="64">
  <properties>
-  <property name="object:stack:stack:3" value="@8,8,150"/>
-  <property name="object:stack:stack:2" value="@11,13,150"/>
-  <property name="object:stack:stack:14" value="@22,0,150"/>
-  <property name="object:stack:stack:1" value="@14,6,150"/>
   <property name="object:road-sign:road-sign10:0" value="1319,195,450"/>
-  <property name="object:van:van:18" value="1174,954,150"/>
+  <property name="object:dirt-bullets-item:dirt-bullets-item:6" value="800,401,180"/>
+  <property name="object:smoke-missiles-item:smoke-missiles-item:13" value="796,4,180"/>
+  <property name="object:heal:heal:9" value="@8,8,180"/>
+  <property name="object:mines-item:mines-item:0" value="@4,14,180"/>
   <property name="spawn:4" value="@1,17"/>
   <property name="spawn:3" value="@23,18"/>
-  <property name="spawn:2" value="@22,2"/>
   <property name="object:van:lodge:13" value="@20,0,150"/>
-  <property name="object:stack:stack:5" value="@10,3,150"/>
+  <property name="spawn:2" value="@22,2"/>
   <property name="spawn:1" value="@4,1"/>
+  <property name="object:megaheal:megaheal:8" value="@0,4,180"/>
+  <property name="object:nuke-missiles-item:nuke-missiles-item:1" value="@12,11,180"/>
+  <property name="object:helicopter-with-kamikazes:helicopter:1" value="@5,5,900"/>
+  <property name="object:stack:stack:14" value="@22,0,150"/>
+  <property name="object:heal:heal:1" value="@11,13,180"/>
+  <property name="object:heal:heal:10" value="1264,941,180"/>
+  <property name="object:guided-missiles-item:guided-missiles-item:5" value="1008,1162,180"/>
+  <property name="object:mines-item:mines-item:11" value="@10,3,180"/>
+  <property name="object:guided-missiles-item:guided-missiles-item:2" value="@3,9,180"/>
+  <property name="object:dumb-missiles-item:dumb-missiles-item:7" value="@14,6,180"/>
+  <property name="object:dumb-missiles-item:dumb-missiles-item:15" value="224,21,180"/>
+  <property name="object:dumb-missiles-item:dumb-missiles-item:14" value="209,1158,180"/>
+  <property name="object:van:van:18" value="1174,954,150"/>
+  <property name="object:stack:stack:5" value="@10,3,150"/>
   <property name="object:stack:stack:4" value="@3,9,150"/>
+  <property name="object:stack:stack:3" value="@8,8,150"/>
+  <property name="object:stack:stack:2" value="@11,13,150"/>
+  <property name="object:stack:stack:1" value="@14,6,150"/>
  </properties>
  <tileset name="c1" firstgid="1" tilewidth="64" tileheight="64">
   <image source="../tiles/terrains_tileset.png"/>
@@ -165,7 +180,7 @@
    <property name="z" value="500"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgYGCwY2QgCmgD1ekQqZYYYEhFs9BBPNDsBCTzE4HsJEbcfiU2DOgFrKHuobe7qB3HIw2MlPBDz18gQG2/E5v2YXl7pABKy4TBVtYRAwarm6lVh5HjP2x6ADvpkknQBwAA
+   H4sIAAAAAAAAAGNgYGCwY2QgCmgD1ekQqZYYYEhFs9BBPNDsBCTzE4HsJEbcfiU2DOgFrAfIPdSO45EGRkr4oecvEKC234nNk7C8PVIApWXVYCvriAGD1c3UqsPI8R82PQDZdprl0AcAAA==
   </data>
   <tileproperties/>
  </layer>
