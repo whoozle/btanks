@@ -712,6 +712,7 @@ TRY {
 		
 		mrt::Serializator s(&message.data);
 		World->deserialize(s);
+		World->safeMode(true);
 		
 		int my_id;
 		s.get(my_id);
@@ -814,7 +815,7 @@ TRY {
 	}
 	
 	case Message::Respawn: {
-	TRY {
+		TRY {
 		if (id < 0 || (unsigned)id >= _players.size())
 			throw_ex(("player id exceeds players count (%d/%d)", id, _players.size()));
 		PlayerSlot &slot = _players[_my_index];
@@ -823,7 +824,8 @@ TRY {
 		int id;
 		s.get(id);
 		slot.obj = World->getObjectByID(id);
-	} CATCH("message::respawn", throw;);
+		} CATCH("message::respawn", throw;);
+	break;
 	}
 	default:
 		LOG_WARN(("unhandled message: %s\n%s", message.getType(), message.data.dump().c_str()));

@@ -26,9 +26,15 @@ void IWorld::clear() {
 	_objects.clear();
 	_id2obj.clear();
 	_last_id = 0;
+	_safe_mode = false;
 }
 
-IWorld::IWorld() : _last_id(0) {}
+void IWorld::safeMode(const bool safe_mode) {
+	_safe_mode = safe_mode;
+}
+
+
+IWorld::IWorld() : _last_id(0), _safe_mode(false) {}
 
 IWorld::~IWorld() {
 	clear();
@@ -498,7 +504,7 @@ void IWorld::tick(ObjectSet &objects, const float dt) {
 	for(ObjectSet::iterator i = objects.begin(); i != objects.end(); ) {
 		Object *o = *i;
 		tick(*o, dt);
-		if (o->isDead()) {
+		if (o->isDead() && !_safe_mode) {
 			ObjectMap::iterator m = _id2obj.find(o->_id);
 			assert(m != _id2obj.end());
 			assert(o == m->second);
