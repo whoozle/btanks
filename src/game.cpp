@@ -325,9 +325,10 @@ void IGame::onMenu(const std::string &name) {
 		clear();
 		GET_CONFIG_VALUE("stubs.default-mp-map", std::string, map, "country2");
 		loadMap(map);
+		GET_CONFIG_VALUE("stubs.default-mp-vehicle", std::string, vehicle, "tank");
 
 		GET_CONFIG_VALUE("player.control-method", std::string, cm, "keys");		
-		_my_index = spawnPlayer("tank", "green-tank", cm);
+		_my_index = spawnPlayer(vehicle, "green-" + vehicle, cm);
 		
 		_server = new Server;
 		_server->init(9876);
