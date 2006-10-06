@@ -214,7 +214,7 @@ private:
 	}
 
 public:	
-	inline int getDirection8() {
+	inline int getDirection8() const {
 		if (is0())
 			return 0;
 
@@ -222,7 +222,7 @@ public:
 		return (y <= 0 || xx == 1)? xx: 10 - xx;
 	}
 
-	inline int getDirection16() {
+	inline int getDirection16() const {
 		if (is0())
 			return 0;
 
