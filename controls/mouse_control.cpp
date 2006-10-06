@@ -3,7 +3,6 @@
 #include "game.h"
 #include "object.h"
 #include "math/abs.h"
-#include "algo.h"
 #include "object.h"
 
 MouseControl::MouseControl(): _shoot(false) {
