@@ -71,8 +71,13 @@ void Helicopter::tick(const float dt) {
 		if (matrix.get(pos.y, pos.x) == -1 || matrix.get(pos.y, pos2.x) == -1 || 
 			matrix.get(pos2.y, pos.x) == -1 || matrix.get(pos2.y, pos2.x) == -1) {
 				LOG_DEBUG(("cannot drop paratrooper, sir!"));
-			} else 
-				spawn(_paratrooper, "paratrooper");
+			} else {
+				int pt = mrt::random(6);
+				//LOG_DEBUG(("ptype = %d", pt));
+				std::string animation = (pt == 3)? "gay-paratrooper": "paratrooper";
+					
+				spawn(_paratrooper, animation);
+			}
 	} 
 	if (!_active)
 		_velocity.clear();
