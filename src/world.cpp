@@ -298,6 +298,8 @@ void IWorld::tick(Object &o, const float dt) {
 		o._velocity.z = 0; //hack to prevent objects moving up/down.
 		
 	o.tick(dt);
+	if (disable_z)
+		o._velocity.z = 0; 
 		
 	{
 		int f = o._follow;
