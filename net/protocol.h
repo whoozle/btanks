@@ -19,7 +19,8 @@ public:
 		ServerStatus,
 		PlayerState,
 		UpdatePlayers,
-		UpdateWorld
+		UpdateWorld, 
+		Respawn
 	};
 	
 	Message();

@@ -27,6 +27,7 @@ const char * Message::getType() const {
 	case PlayerState: return "PlayerState";
 	case UpdatePlayers: return "UpdatePlayers";
 	case UpdateWorld: return "UpdateWorld";
+	case Respawn: return "Respawn";
 	}
 	return "Unknown/Damaged";
 }

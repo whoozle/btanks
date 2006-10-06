@@ -874,6 +874,10 @@ void IGame::updatePlayers() {
 			continue;
 		LOG_DEBUG(("player in slot %d is dead. respawning.", i));
 		spawnPlayer(slot, slot.classname, slot.animation);
+		if (slot.remote) {
+			Message m(Message::Respawn);
+			_server->send(i, m);
+		}
 	}
 	
 	bool updated = false;
