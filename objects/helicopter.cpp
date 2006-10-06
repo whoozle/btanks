@@ -55,10 +55,12 @@ void Helicopter::tick(const float dt) {
 
 		v3<int> pos, pos2;
 		getCenterPosition(pos); 
-		pos -= IMap::pathfinding_step / 2;
+		v3<int> para_size = ResourceManager->getClass(_paratrooper)->size.convert<int>();
+		pos -= para_size / 2;
 		
 		pos2 = pos;
-		pos2 += v3<int>(IMap::pathfinding_step - 1, IMap::pathfinding_step - 1, 0);
+		pos2 += para_size;
+		pos2 -= 1;
 
 		pos /= IMap::pathfinding_step;
 		pos2 /= IMap::pathfinding_step;

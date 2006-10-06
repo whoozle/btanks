@@ -253,3 +253,11 @@ Object *IResourceManager::createObject(const std::string &classname, const std::
 	r->animation = animation;
 	return r;
 }
+
+const Object *IResourceManager::getClass(const std::string &classname) const {
+	ObjectMap::const_iterator i = _objects.find(classname);
+	if (i == _objects.end())
+		throw_ex(("classname '%s' was not registered", classname.c_str()));
+	return i->second;	
+}
+

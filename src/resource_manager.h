@@ -47,6 +47,7 @@ public:
 	
 	void registerObject(const std::string &classname, Object *);
 	Object *createObject(const std::string &classname, const std::string &animation) const;
+	const Object *getClass(const std::string &classname) const;
 	const Object *getAnimation(const std::string &id) const ;
 
 	const sdlx::Surface *getSurface(const std::string &id) const;
