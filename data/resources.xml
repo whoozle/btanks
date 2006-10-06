@@ -327,7 +327,7 @@
 	<object class="dumb-missile" speed="500" mass="100" piercing="true" ttl="10" hp="40" z="250" />
 	<object class="nuke-missile" speed="30" mass="100" piercing="true" ttl="3" hp="1000" z="250" />
 	<object class="missile-launch" impassability="0" z="260" />
-	<object class="regular-mine" hp="40" impassability="-1" z="30" />
+	<object class="regular-mine" hp="40" impassability="-1" z="-30" />
 
 	<object class="corpse" hp="10" ttl="10" fadeout_time="1" z="0" />
 	<object class="explosion" hp="1" z="580" />
