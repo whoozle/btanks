@@ -322,7 +322,7 @@
 	<object class="smoke-missile" speed="450" mass="100" piercing="true" ttl="1" hp="0" z="250" />
 	<object class="smoke-cloud" impassability="0" z="250" />
 	<object class="dumb-missile" speed="500" mass="100" piercing="true" ttl="10" hp="40" z="250" />
-	<object class="nuke-missile" speed="200" mass="100" piercing="true" ttl="3" hp="1000" z="250" />
+	<object class="nuke-missile" speed="30" mass="100" piercing="true" ttl="3" hp="1000" z="250" />
 	<object class="missile-launch" impassability="0" z="260" />
 	<object class="regular-mine" hp="40" impassability="-1" z="0" />
 
