@@ -877,6 +877,9 @@ void IGame::updatePlayers() {
 		spawnPlayer(slot, slot.classname, slot.animation);
 		if (slot.remote) {
 			Message m(Message::Respawn);
+			mrt::Serializator s;
+			s.add(slot.obj->getID());
+			m.data = s.getData();
 			_server->send(i, m);
 		}
 	}
