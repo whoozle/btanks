@@ -323,7 +323,7 @@ void IGame::onMenu(const std::string &name) {
 	} else if (name == "m-start") {
 		LOG_DEBUG(("start multiplayer server requested"));
 		clear();
-		GET_CONFIG_VALUE("stubs.default-map", std::string, map, "survival");
+		GET_CONFIG_VALUE("stubs.default-mp-map", std::string, map, "country2");
 		loadMap(map);
 
 		GET_CONFIG_VALUE("player.control-method", std::string, cm, "keys");		
