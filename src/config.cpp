@@ -4,15 +4,59 @@
 #include "utils.h"
 #include <assert.h>
 #include <stdlib.h>
+#include "mrt/serializable.h"
+#include "mrt/serializator.h"
 
 IMPLEMENT_SINGLETON(Config, IConfig)
 
+IConfig::IConfig() : _ro(true) {}
 
-class IConfig::Var {
+
+class IConfig::Var : public mrt::Serializable {
 public: 
 	std::string type;
 	Var() {}
 	Var(const std::string & type): type(type) {}
+	
+	virtual void serialize(mrt::Serializator &s) const {
+		if (type.empty()) 
+			throw_ex(("cannot serialize empty variable"));
+		char t = type[0];
+		s.add(t);
+		if (t == 'i') 
+			s.add(i);
+		else if (t == 'b') 
+			s.add(b);
+		else if (t == 's') 
+			s.add(this->s);
+		else if (t == 'f') 
+			s.add(f);
+	}
+	virtual void deserialize(const mrt::Serializator &s) {
+		int t;
+		s.get(t);
+		switch(t) {
+			case 'i': 
+				type = "int";
+				s.get(i);
+			break;
+			case 'b': 
+				type = "bool";
+				s.get(b);
+			break;
+			case 's': 
+				type = "string";
+				s.get(this->s);
+			break;
+			case 'f': 
+				type = "float";
+				s.get(f);
+			break;
+			default:
+				throw_ex(("unknown type %02x recv'ed", t));
+		}
+	}
+	
 	
 	void check(const std::string &t) const {
 		if (type != t)
@@ -62,10 +106,11 @@ void IConfig::load(const std::string &file) {
 	TRY {
 		parseFile(file);
 	} CATCH("load", {}); 
+	_ro = false;
 }
 
 void IConfig::save() const {
-	if (_file.empty())
+	if (_file.empty() || _ro)
 		return;
 	LOG_DEBUG(("saving config to %s...", _file.c_str()));	
 	std::string data = "<config>\n";
@@ -164,6 +209,33 @@ void IConfig::get(const std::string &name, std::string &value, const std::string
 	value = _map[name]->s;
 }
 
+void IConfig::setRO(const bool ro) {
+	_ro = ro;
+}
+
+void IConfig::serialize(mrt::Serializator &s) const {
+	int n = _map.size();
+	s.add(n);
+	for(VarMap::const_iterator i = _map.begin(); i != _map.end(); ++i) {
+		s.add(i->first);
+		i->second->serialize(s);
+	}
+}
+
+void IConfig::deserialize(const mrt::Serializator &s) {
+	int n;
+	s.get(n);
+	while(n--) {
+		std::string name;
+		s.get(name);
+		if (_map[name] == NULL)
+			_map[name] = new Var;
+		_map[name]->deserialize(s);		
+	}
+}
+
+
 IConfig::~IConfig() {
 	std::for_each(_map.begin(), _map.end(), delete_ptr2<VarMap::value_type>());
 }
+

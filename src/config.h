@@ -2,21 +2,28 @@
 #define __BTANKS_CONFIG_H__
 
 #include "mrt/singleton.h"
+#include "mrt/serializable.h"
 #include "mrt/xml.h"
 #include <string>
 #include <map>
 
-class IConfig : public mrt::XMLParser {
+class IConfig : public mrt::XMLParser, mrt::Serializable {
 public:
 	DECLARE_SINGLETON(IConfig);
+	IConfig();
 	void load(const std::string &file);
 	void save() const;
+	void setRO(const bool ro = true);
 
 	void get(const std::string &name, float &value, const float default_value);
 	void get(const std::string &name, int &value, const int default_value);
 	void get(const std::string &name, bool &value, const bool default_value);
 	void get(const std::string &name, std::string &value, const std::string& default_value);
 	~IConfig();
+	
+	virtual void serialize(mrt::Serializator &s) const;
+	virtual void deserialize(const mrt::Serializator &s);
+	
 private: 
 	class Var;
 	
@@ -31,6 +38,7 @@ private:
 	VarMap _map;
 	
 	std::string _name, _type, _data;
+	bool _ro;
 };
 
 SINGLETON(Config, IConfig);
