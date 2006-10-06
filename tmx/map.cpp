@@ -364,9 +364,9 @@ void IMap::render(sdlx::Surface &window, const sdlx::Rect &dst, const int z1, co
 	int txn = (dst.w - 1) / _tw + 2;
 	int tyn = (dst.h - 1) / _th + 2;
 	
-	LayerMap::const_iterator lz1 = _layers.lower_bound(z1);
-	for(LayerMap::const_iterator l = lz1; l != _layers.end(); ++l) {
-		if (l->first >= z2) //much quicker than lower_bound(z2)
+	for(LayerMap::const_iterator l = _layers.begin(); l != _layers.end(); ++l) 
+	if (l->first >= z1) {
+		if (l->first >= z2) 
 			break;
 		//LOG_DEBUG(("z: %d << %d, layer: %d", z1, z2, l->first));
 		
@@ -378,6 +378,7 @@ void IMap::render(sdlx::Surface &window, const sdlx::Rect &dst, const int z1, co
 			}
 		}
 	}
+	//LOG_DEBUG(("====================================="));
 #endif
 }
 
