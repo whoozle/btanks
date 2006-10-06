@@ -318,7 +318,7 @@
 	<object class="shilka-bullet" speed="600" mass="1" piercing="true" ttl="1" hp="5" z="-10" />
 
 	<object class="launcher" speed="500" mass="400" hp="20" z="0" />
-	<object class="guided-missile" speed="450" mass="100" piercing="true" ttl="5" hp="15" z="250" />
+	<object class="guided-missile" speed="150" mass="100" piercing="true" ttl="5" hp="15" z="250" />
 	<object class="smoke-missile" speed="450" mass="100" piercing="true" ttl="1" hp="0" z="250" />
 	<object class="smoke-cloud" impassability="0" z="250" />
 	<object class="dumb-missile" speed="500" mass="100" piercing="true" ttl="10" hp="40" z="250" />
