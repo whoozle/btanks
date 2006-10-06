@@ -269,3 +269,38 @@ void BaseObject::updateStateFromVelocity() {
 	_state.up = (_velocity.y < 0);
 	_state.down = (_velocity.y > 0);
 }
+
+#include "resource_manager.h"
+#include "object.h"
+#include "config.h"
+
+void BaseObject::getTargetPosition8(v3<float> &position, const v3<float> &target, const std::string &weapon) {
+	const Object *wp = ResourceManager->getClass(weapon);
+	float range = wp->ttl * wp->speed;
+	
+	GET_CONFIG_VALUE("engine.targeting-multiplier", float, tm, 0.75);
+	if (tm <= 0 || tm >= 1) 
+		throw_ex(("targeting multiplier must be greater than 0 and less than 1.0 (%g)", tm))
+	range *= tm;
+	float d = (target - _position).length();
+	if (d < range) 
+		range = d;
+	
+	LOG_DEBUG(("searching suitable position (range: %g)", range));
+	float distance = 0;
+	
+	for(int i = 0; i < 8; ++i) {
+		v3<float> pos;
+		pos.fromDirection(i, 8);
+		pos *= range;
+		pos += target;
+		pos -= _position;
+		float d = pos.quick_length();
+		if (i == 0 || d < distance) {
+			distance = d;
+			position = pos;
+		}
+		LOG_DEBUG(("target position: %g %g, distance: %g", pos.x, pos.y, d));
+	}
+	position += _position;
+}

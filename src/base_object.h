@@ -78,6 +78,8 @@ public:
 	void getInfo(v3<float> &pos, v3<float> &vel) const;
 	void updateStateFromVelocity();
 	void setZ(const float z); 
+
+	void getTargetPosition8(v3<float> &position, const v3<float> &target, const std::string &weapon);
 	
 protected:
 	int _id;

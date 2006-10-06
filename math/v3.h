@@ -21,7 +21,11 @@ public:
 
 	inline void clear() { x = y = z = 0; }
 	inline const bool is0() const {
+#ifndef V3_DISABLE_Z		
 		return x== 0 && y == 0 && z == 0;
+#else
+		return x== 0 && y == 0;
+#endif
 	}
 	
 	inline const T normalize() {
