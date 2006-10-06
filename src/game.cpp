@@ -725,6 +725,8 @@ TRY {
 		_players.push_back(player);
 		assert(!_players.empty());
 		PlayerSlot &slot = _players[_players.size() - 1];
+		slot.classname = slot.obj->registered_name;
+		slot.animation = slot.obj->animation;
 		
 		assert(slot.control_method == NULL);
 		GET_CONFIG_VALUE("player.control-method", std::string, control_method, "keys");	
@@ -810,6 +812,19 @@ TRY {
 		LOG_DEBUG(("player %d: ping: %g ms", id, ping));		
 		break;
 	}
+	
+	case Message::Respawn: {
+	TRY {
+		if (id < 0 || (unsigned)id >= _players.size())
+			throw_ex(("player id exceeds players count (%d/%d)", id, _players.size()));
+		PlayerSlot &slot = _players[_my_index];
+		mrt::Serializator s(&message.data);
+		World->applyUpdate(s, _trip_time / 1000.0);
+		int id;
+		s.get(id);
+		slot.obj = World->getObjectByID(id);
+	} CATCH("message::respawn", throw;);
+	}
 	default:
 		LOG_WARN(("unhandled message: %s\n%s", message.getType(), message.data.dump().c_str()));
 	};
@@ -878,6 +893,7 @@ void IGame::updatePlayers() {
 		if (slot.remote) {
 			Message m(Message::Respawn);
 			mrt::Serializator s;
+			World->generateUpdate(s);
 			s.add(slot.obj->getID());
 			m.data = s.getData();
 			_server->send(i, m);

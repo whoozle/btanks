@@ -60,6 +60,8 @@ public:
 	virtual void deserialize(const mrt::Serializator &s);
 	void generateUpdate(mrt::Serializator &s);
 	void applyUpdate(const mrt::Serializator &s, const float dt);
+	void serializeObject(mrt::Serializator &, const Object *) const;
+	Object* deserializeObject(const mrt::Serializator &);
 
 	void tick(Object &o, const float dt);	
 	void tick(ObjectSet &objects, const float dt);
@@ -74,8 +76,6 @@ private:
 	void getImpassability2(float &old_pos_im, float &new_pos_im, Object *obj, const sdlx::Surface &surface, const v3<int> &new_position, const Object **old_pos_collided_with = NULL) const;
 	const bool collides(Object *obj, const sdlx::Surface &surface, const v3<int> &position, Object *other, const sdlx::Surface &other_surface) const;
 
-	void serializeObject(mrt::Serializator &, const Object *) const;
-	Object* deserializeObject(const mrt::Serializator &);
 	
 	void cropObjects(const std::set<int> &ids);
 
