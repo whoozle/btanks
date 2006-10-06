@@ -78,6 +78,7 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect &viewport) {
 		Object &o = *i->second;
 		sdlx::Rect r((int)o._position.x, (int)o._position.y, (int)o.size.x, (int)o.size.y);
 		if (r.intersects(viewport)) {
+			//LOG_DEBUG(("rendering %s with z = %g", o.classname.c_str(), o._position.z));
 			o.render(surface, r.x - viewport.x, r.y - viewport.y);
 		}
 	}
@@ -289,7 +290,13 @@ void IWorld::tick(Object &o, const float dt) {
 		return;
 		
 	v3<float> old_vel = o._velocity;
+
 	o.calculate(dt);
+
+	GET_CONFIG_VALUE("engine.disable-z-velocity", bool, disable_z, true);
+	if (disable_z)
+		o._velocity.z = 0; //hack to prevent objects moving up/down.
+		
 	o.tick(dt);
 		
 	{

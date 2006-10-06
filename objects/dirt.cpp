@@ -11,7 +11,6 @@ public:
 
 void Dirt::onSpawn() {
 	setDirection(0);
-	setZ(-0.5);
 	play("fade-in", false);
 	play("main", true);
 }

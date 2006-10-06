@@ -45,7 +45,7 @@ void Item::emit(const std::string &event, BaseObject * emitter) {
 
 		hp = 0;
 		impassability = 0;
-		setZ(5); //fly up on the vehicle
+		setZ(999); //fly up on the vehicle
 		cancelAll();
 		play("take", false);
 	} else Object::emit(event, emitter);
