@@ -1,5 +1,6 @@
 #include "object.h"
 #include "resource_manager.h"
+#include "config.h"
 
 class Missile : public Object {
 public:
@@ -44,7 +45,8 @@ void Missile::calculate(const float dt) {
 			if (_velocity.quick_length() > pos.quick_length()) 
 				_velocity = pos;
 		}
-		limitRotation(dt, 16, 0.2, false, false);
+		GET_CONFIG_VALUE("objects.guided-missile.rotation-time", float, rotation_time, 0.2);
+		limitRotation(dt, 16, rotation_time, false, false);
 	}
 }
 
