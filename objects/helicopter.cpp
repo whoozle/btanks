@@ -31,7 +31,7 @@ public:
 	}
 
 private: 
-	v3<float> _next_target;
+	v3<float> _next_target, _next_target_rel;
 	bool _active;
 	Alarm _spawn;
 	std::string _paratrooper;
@@ -67,31 +67,33 @@ void Helicopter::tick(const float dt) {
 				LOG_DEBUG(("cannot drop paratrooper, sir!"));
 			} else 
 				spawn(_paratrooper, "paratrooper");
-	}
+	} 
+	if (!_active)
+		_velocity.clear();
 }
 
 
 void Helicopter::calculate(const float dt) {
 	GET_CONFIG_VALUE("objects.helicopter-with-kamikazes.delay-before-next-target", float, delay, 1.0);
+	v3<float> pos = getPosition();
+
 	if (!_active && _idle_time > delay) { 
-		v3<float> pos;
-		getPosition(pos);
 
 		v3<int> size = Map->getSize();
 		_next_target.x = mrt::random(size.x);
 		_next_target.y = mrt::random(size.y);
-		//LOG_DEBUG(("picking up random target: %g %g", _next_target.x, _next_target.x));
+		_next_target_rel = _next_target - pos;
+		LOG_DEBUG(("picking up random target: %g %g", _next_target.x, _next_target.x));
 		_active = true;
 	}
 	if (_active) {
-		v3<float> pos;
-		getPosition(pos);
-		if (pos.quick_distance(_next_target) <= 10000) {
+		_velocity = _next_target - pos;
+		if (_velocity.is0() || _velocity.x * _next_target.x < 0 || _velocity.y * _next_target.y < 0 ) {
 			_active = false; 
+			LOG_DEBUG(("stop"));
 			_velocity.clear();
-		} else 
-			_velocity = _next_target - pos;
-	}
+		} 
+	} else _velocity.clear();
 	
 	GET_CONFIG_VALUE("objects.helicopter.rotation-time", float, rt, 0.2);
 	limitRotation(dt, 8, rt, true, false);

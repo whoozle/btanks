@@ -404,13 +404,15 @@ void Object::renderCopy(sdlx::Surface &surface) {
 }
 
 void Object::limitRotation(const float dt, const int dirs, const float speed, const bool rotate_even_stopped, const bool allow_backward) {
+	if (dirs == 1)
+		return;
+	
 	assert(dirs == 8 || dirs == 16);
 	if (_velocity.is0()) {
 		_direction.fromDirection(_direction_idx, dirs); 
 		return;
 	}
-	_velocity.normalize();
-	
+
 	if (dirs == 8) {
 		_velocity.quantize8();
 		_dst_direction = _velocity.getDirection8() - 1;
@@ -435,15 +437,6 @@ void Object::limitRotation(const float dt, const int dirs, const float speed, co
 		_rotation_time = speed;
 	}
 
-	if (rotate_even_stopped) {
-		int d = math::abs<int>(_dst_direction - _direction_idx);
-		if (d > 1 && d != dirs - 1) {
-			_velocity.clear();
-		} else {
-			_direction_idx = _dst_direction;
-			_rotation_time = 0;
-		}
-	} 
 	
 	if (_rotation_time > 0) {
 		_rotation_time -= dt;
@@ -461,11 +454,16 @@ void Object::limitRotation(const float dt, const int dirs, const float speed, co
 			_rotation_time = (_direction_idx == _dst_direction)? 0: speed;
 			//LOG_DEBUG(("dd = %d, _direction_idx = %d, _dst_direction = %d", dd, _direction_idx, _dst_direction));
 		} 
-		if (!rotate_even_stopped) {
-			_velocity.fromDirection(_direction_idx, dirs);
-			//LOG_DEBUG(("%d -> %g %g", _direction_idx, _velocity.x, _velocity.y));
-		}
+		_velocity.fromDirection(_direction_idx, dirs);
+		//LOG_DEBUG(("%d -> %g %g", _direction_idx, _velocity.x, _velocity.y));
 	}
+
+	if (rotate_even_stopped) {
+		int d = math::abs<int>(_dst_direction - _direction_idx);
+		if (d > 1 && d != dirs - 1) {
+			_velocity.clear();
+		} 
+	} 
 	_direction.fromDirection(_direction_idx, dirs); //fixme. remove it.
 	//LOG_DEBUG(("direction = %g %g, velocity = %g %g", _direction.x, _direction.y, _velocity.x, _velocity.y));
 }
