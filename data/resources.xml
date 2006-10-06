@@ -346,6 +346,10 @@
 	<object class="traffic-lights" hp="3" z="150" />
 	<object class="stack" hp="1" z="150" impassability="1" />
 	<object class="road-sign" hp="1" impassability="1" z="150" />
+	
+	<object class="missiles-on-tank" z="10" />
+	<object class="missiles-on-launcher" z="10" />
+
 
 	<object class="helicopter-with-kamikazes" hp="100" impassability="0" speed="400" mass="1500" z="810" />
 	<object class="paratrooper-kamikaze" hp="5" impassability="0" z="0" />

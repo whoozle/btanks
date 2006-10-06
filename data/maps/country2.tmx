@@ -2,17 +2,18 @@
 <map version="0.99b" orientation="orthogonal" width="25" height="20" tilewidth="64" tileheight="64">
  <properties>
   <property name="object:stack:stack:3" value="@8,8,150"/>
-  <property name="object:stack:stack:14" value="@22,0,150"/>
   <property name="object:stack:stack:2" value="@11,13,150"/>
+  <property name="object:stack:stack:14" value="@22,0,150"/>
   <property name="object:stack:stack:1" value="@14,6,150"/>
+  <property name="object:road-sign:road-sign10:0" value="1319,195,450"/>
   <property name="object:van:van:18" value="1174,954,150"/>
   <property name="spawn:4" value="@1,17"/>
   <property name="spawn:3" value="@23,18"/>
-  <property name="object:stack:stack:5" value="@10,3,150"/>
-  <property name="object:van:lodge:13" value="@20,0,150"/>
   <property name="spawn:2" value="@22,2"/>
-  <property name="object:stack:stack:4" value="@3,9,150"/>
+  <property name="object:van:lodge:13" value="@20,0,150"/>
+  <property name="object:stack:stack:5" value="@10,3,150"/>
   <property name="spawn:1" value="@4,1"/>
+  <property name="object:stack:stack:4" value="@3,9,150"/>
  </properties>
  <tileset name="c1" firstgid="1" tilewidth="64" tileheight="64">
   <image source="../tiles/terrains_tileset.png"/>
@@ -28,8 +29,8 @@
  </tileset>
  <layer name="zerolayer" width="25" height="20">
   <properties>
-   <property name="z" value="-1000"/>
    <property name="impassability" value="40"/>
+   <property name="z" value="-1000"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGAWjYBSMglEwCkbBUAcARPTJAtAHAAA=
@@ -128,8 +129,8 @@
  </layer>
  <layer name="wire stand" width="25" height="20">
   <properties>
-   <property name="z" value="100"/>
    <property name="impassability" value="100"/>
+   <property name="z" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGDpgK+NAu2AU0BuMxvkooAUYTVdDE+zHEm/EimGLc2zqhjIAALyt8TXQBwAA
@@ -150,8 +151,8 @@
  </layer>
  <layer name="borders" width="25" height="20">
   <properties>
-   <property name="z" value="200"/>
    <property name="impassability" value="100"/>
+   <property name="z" value="200"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgoB7Yy0hFwwbYjj10sAcGdkPto6edo2AUjIJRMAqGFwAAoE1XfdAHAAA=
@@ -160,8 +161,8 @@
  </layer>
  <layer name="objects" width="25" height="20">
   <properties>
-   <property name="z" value="500"/>
    <property name="impassability" value="100"/>
+   <property name="z" value="500"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgYGCwY2QgCmgD1ekQqZYYYEhFs9BBPNDsBCTzE4HsJEbcfiU2DOgFrKHuobe7qB3HIw2MlPBDz18gQG2/E5v2YXl7pABKy4TBVtYRAwarm6lVh5HjP2x6ADvpkknQBwAA
