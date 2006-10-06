@@ -121,7 +121,7 @@ void IConfig::charData(const std::string &data) {
 	mrt::trim(_data);
 }
 
-void IConfig::get(const std::string &name, float &value, const float& default_value) {
+void IConfig::get(const std::string &name, float &value, const float default_value) {
 	VarMap::iterator i = _map.find(name); 
 	if (i == _map.end()) {
 		_map[name] = new Var("float");
@@ -131,7 +131,7 @@ void IConfig::get(const std::string &name, float &value, const float& default_va
 	}
 	value = _map[name]->f;
 }
-void IConfig::get(const std::string &name, int &value, const int& default_value) {
+void IConfig::get(const std::string &name, int &value, const int default_value) {
 	VarMap::iterator i = _map.find(name); 
 	if (i == _map.end()) {
 		_map[name] = new Var("int");
@@ -142,11 +142,11 @@ void IConfig::get(const std::string &name, int &value, const int& default_value)
 	value = _map[name]->i;
 }
 
-void IConfig::get(const std::string &name, bool &value, const bool& default_value) {
+void IConfig::get(const std::string &name, bool &value, const bool default_value) {
 	VarMap::iterator i = _map.find(name); 
 	if (i == _map.end()) {
 		_map[name] = new Var("bool");
-		_map[name]->i = default_value;
+		_map[name]->b = default_value;
 	} else {
 		i->second->check("bool");
 	}

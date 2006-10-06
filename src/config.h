@@ -12,9 +12,9 @@ public:
 	void load(const std::string &file);
 	void save() const;
 
-	void get(const std::string &name, float &value, const float& default_value);
-	void get(const std::string &name, int &value, const int& default_value);
-	void get(const std::string &name, bool &value, const bool& default_value);
+	void get(const std::string &name, float &value, const float default_value);
+	void get(const std::string &name, int &value, const int default_value);
+	void get(const std::string &name, bool &value, const bool default_value);
 	void get(const std::string &name, std::string &value, const std::string& default_value);
 	~IConfig();
 private: 
