@@ -274,6 +274,7 @@
 	<animation id="van" model="destructable-object-animation" tile="van.png" />
 	<animation id="biotoilet" model="destructable-object-animation" tile="biotoilet.png" />
 	<animation id="lodge" model="destructable-object-animation" tile="lodge.png" />
+	<animation id="stack" model="destructable-object-animation" tile="stack.png" />
 
 	<animation id="helicopter" model="helicopter-animation" tile="helicopter.png" size="128" />
 	<animation id="paratrooper" model="paratrooper-animation" tile="paratrooper.png" />
@@ -288,6 +289,7 @@
 	<animation id="road-sign07" model="destructable-object-animation" tile="road_sign07.png" size="32" />
 	<animation id="road-sign08" model="destructable-object-animation" tile="road_sign08.png" size="32" />
 	<animation id="road-sign09" model="destructable-object-animation" tile="road_sign09.png" size="32" />
+	<animation id="road-sign10" model="destructable-object-animation" tile="road_sign10.png" size="32" />
 
 	<!-- basic object with single pose. do not edit. -->
 	<object class="single-pose" impassability="0" z="0" />
@@ -307,6 +309,7 @@
 	<alias name="van" class="destructable-object" />
 	<alias name="biotoilet" class="destructable-object" />
 	<alias name="lodge" class="destructable-object" />
+	<alias name="stack" class="destructable-object" />
 	<alias name="road-sign" class="destructable-object" />
 
 	<object class="tank" speed="400" mass="500" hp="40" z="0" />
@@ -324,7 +327,7 @@
 	<object class="dumb-missile" speed="500" mass="100" piercing="true" ttl="10" hp="40" z="250" />
 	<object class="nuke-missile" speed="30" mass="100" piercing="true" ttl="3" hp="1000" z="250" />
 	<object class="missile-launch" impassability="0" z="260" />
-	<object class="regular-mine" hp="40" impassability="-1" z="0" />
+	<object class="regular-mine" hp="40" impassability="-1" z="30" />
 
 	<object class="corpse" hp="10" ttl="10" fadeout_time="1" z="0" />
 	<object class="explosion" hp="1" z="580" />
@@ -341,6 +344,7 @@
 	<object class="lodge" hp="1" impassability="1" z="150" />
 	<object class="spawn-shield" hp="1000" impassability="1" z="150" />
 	<object class="traffic-lights" hp="3" z="150" />
+	<object class="stack" hp="1" z="150" impassability="1" />
 	<object class="road-sign" hp="1" impassability="1" z="150" />
 
 	<object class="helicopter-with-kamikazes" hp="100" impassability="0" speed="400" mass="1500" z="810" />

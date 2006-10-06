@@ -1,8 +1,18 @@
 <?xml version="1.0"?>
 <map version="0.99b" orientation="orthogonal" width="25" height="20" tilewidth="64" tileheight="64">
  <properties>
-  <property name="spawn:2" value="@20,10"/>
-  <property name="spawn:1" value="@5,5"/>
+  <property name="object:stack:stack:3" value="@8,8,150"/>
+  <property name="object:stack:stack:14" value="@22,0,150"/>
+  <property name="object:stack:stack:2" value="@11,13,150"/>
+  <property name="object:stack:stack:1" value="@14,6,150"/>
+  <property name="object:van:van:18" value="1174,954,150"/>
+  <property name="spawn:4" value="@1,17"/>
+  <property name="spawn:3" value="@23,18"/>
+  <property name="object:stack:stack:5" value="@10,3,150"/>
+  <property name="object:van:lodge:13" value="@20,0,150"/>
+  <property name="spawn:2" value="@22,2"/>
+  <property name="object:stack:stack:4" value="@3,9,150"/>
+  <property name="spawn:1" value="@4,1"/>
  </properties>
  <tileset name="c1" firstgid="1" tilewidth="64" tileheight="64">
   <image source="../tiles/terrains_tileset.png"/>
@@ -18,8 +28,8 @@
  </tileset>
  <layer name="zerolayer" width="25" height="20">
   <properties>
-   <property name="impassability" value="40"/>
    <property name="z" value="-1000"/>
+   <property name="impassability" value="40"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGAWjYBSMglEwCkbBUAcARPTJAtAHAAA=
@@ -61,7 +71,7 @@
  </layer>
  <layer name="tracks" width="25" height="20">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAKVU0QrEIAzbPw7OvWzW/f9H3AQDIbTV2wVk6rRJavXecrSnXU+rY3w4a3bq37Sv0pihMT6jaYyIw9PAaE6MmzRFYA7oKcJbFvgz7M6cem8yB+AcZt9dxjXQbG8MDMx8AMg5a1QtUU49DpNxj4eccQzVgppQnpkPaIN+rivVwjwzDt7r7eF/Xs4Uq+cB8J1eWR9xGPUjDx1l8FmyJuKY6WItnEvURFvgyHR17d75A/xG8h28ZF/mI+OP8IuPt+/W6cxFPrI6zqA+enx7ESeD+rBtva5W4Z3HP/De93Pz7y7wBXJ8+4rQBwAA
+   H4sIAAAAAAAAAKVV0Q6EIAzjH0nkXpTB/3/EacKS2myD45oQBWFtx8CeYrS7XXero/8x5mR477CuQh/BMY7ROIbHYWlANCNGB00ekEP1FOItC/wRsjHG3huNKXQfZs9M/epolh0DAzMfCs05amQtXk4tDqH+E09zhjFYi9YE88x8qDbVj3XFWpBnxoFrec1B36ycMVb3A+NybUTzPQ6Bd+vcKsrgkmCOxzHThVowl1oTbYEj0vVot/ZfgXcknsGL1kU+In4Pv/jYvbdOY8zzYdX+CtjHE1824kRgH5LW62oV1n78A+t+P9P7f8z4AozZI2vQBwAA
   </data>
   <tileproperties/>
  </layer>
@@ -70,7 +80,7 @@
    <property name="impassability" value="60"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgGAUjDbgzDrQLqAvcGAeHn+jtDo9B4GdKgT3QDw4U+kMDqF9zCIfFYEm/o2DoAwBaxLIt0AcAAA==
+   H4sIAAAAAAAAAGNgGAUjDbgzDrQLqAvcGAeHn6jtDg2gWZp4zPMYBH6mFNgD/eAwDPxBCRgs6XcUDH0AAOLqf03QBwAA
   </data>
   <tileproperties/>
  </layer>
@@ -112,14 +122,14 @@
  </layer>
  <layer name="tracks high" width="25" height="20">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgIA+EkSlHDIgD4nggTsKjJoFCO4gB9LCD0rAiBiTQwY5RfxAPEuhgRyIQR9DBngQamx/OgL8coAYYLnGOzx/xVLIjAY0PK6upSYPiOxCIQ6F4FBAPAJyvO3bQBwAA
+   H4sIAAAAAAAAAGNgIA+EkSlHDIgD4nggTsKjJoFCO4gB9LCD0rAiBiTQwY6R4g9q+DOBCmYQAolAHEEHexJobH44A/5ygBpgJKTdeCrZkYDGh5XV1KRB8R0IxKFQPAqIBwAjhtnk0AcAAA==
   </data>
   <tileproperties/>
  </layer>
  <layer name="wire stand" width="25" height="20">
   <properties>
-   <property name="impassability" value="100"/>
    <property name="z" value="100"/>
+   <property name="impassability" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGDpgK+NAu2AU0BuMxvkooAUYTVdDE+zHEm/EimGLc2zqhjIAALyt8TXQBwAA
@@ -140,8 +150,8 @@
  </layer>
  <layer name="borders" width="25" height="20">
   <properties>
-   <property name="impassability" value="100"/>
    <property name="z" value="200"/>
+   <property name="impassability" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgoB7Yy0hFwwbYjj10sAcGdkPto6edo2AUjIJRMAqGFwAAoE1XfdAHAAA=
@@ -150,11 +160,11 @@
  </layer>
  <layer name="objects" width="25" height="20">
   <properties>
-   <property name="impassability" value="100"/>
    <property name="z" value="500"/>
+   <property name="impassability" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgYGCwY2QgCmgD1ekQqZYYYEhFs9BBPNDsBCTzE4HsJEbcfiU2DOgFrKHuobe7qB3Hwx3A0hUMjJTwQ89fIEBtvw+2PDlYAKXhMhTDdbC6mVp1GDn+w6YHAGTpdgjQBwAA
+   H4sIAAAAAAAAAGNgYGCwY2QgCmgD1ekQqZYYYEhFs9BBPNDsBCTzE4HsJEbcfiU2DOgFrKHuobe7qB3HIw2MlPBDz18gQG2/E5v2YXl7pABKy4TBVtYRAwarm6lVh5HjP2x6ADvpkknQBwAA
   </data>
   <tileproperties/>
  </layer>
