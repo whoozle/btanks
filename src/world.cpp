@@ -595,7 +595,7 @@ void IWorld::serializeObject(mrt::Serializator &s, const Object *o) const {
 
 void IWorld::serialize(mrt::Serializator &s) const {
 	s.add(_last_id);
-	s.add(_id2obj.size());
+	s.add((unsigned int)_id2obj.size());
 	for(ObjectMap::const_reverse_iterator i = _id2obj.rbegin(); i != _id2obj.rend(); ++i) {
 		const Object *o = i->second;
 		serializeObject(s, o);
@@ -664,7 +664,7 @@ TRY {
 	s.get(_last_id);
 	_last_id += 1000;
 	
-	int size;
+	unsigned int size;
 	s.get(size);
 	
 	std::set<int> recv_ids;
