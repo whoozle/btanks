@@ -33,7 +33,7 @@ public:
 	void writeAll(const Chunk &ch) const;
 	void writeAll(const std::string &str) const;
 
-	const std::string readLine() const;
+	const bool readLine(std::string &str) const;
 	const off_t getSize() const;
 	const size_t read(void *buf, const size_t size) const;
 	void close();

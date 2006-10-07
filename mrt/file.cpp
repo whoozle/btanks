@@ -58,15 +58,16 @@ void File::writeAll(const std::string &str) const {
 		throw_io(("fwrite"));
 }
 
-const std::string File::readLine() const {
+const bool File::readLine(std::string &str) const {
 	char buf[1024];
 	
 	if (_f == NULL)
 		throw_ex(("readLine on closed file"));
 	
 	if (fgets(buf, sizeof(buf), _f) == NULL)
-		throw_io(("fgets"));
-	return buf;
+		return false;
+	str = buf;
+	return true;
 }
 
 const size_t File::read(void *buf, const size_t size) const {
