@@ -7,6 +7,7 @@
 #include "sdlx/color.h"
 #include "mrt/logger.h"
 #include "mrt/exception.h"
+#include "config.h"
 
 void MainMenu::init(const int w, const int h) {
 	deinit();
@@ -16,7 +17,8 @@ void MainMenu::init(const int w, const int h) {
 	_active = true;
 	
 	LOG_DEBUG(("loading font..."));
-	_font.open(Game->data_dir + "/font/Verdana.ttf", 18);
+	GET_CONFIG_VALUE("engine.data-directory", std::string, data_dir, "data");
+	_font.open(data_dir + "/font/Verdana.ttf", 18);
 	
 	LOG_DEBUG(("creating menu..."));
 	_active_item = 0;

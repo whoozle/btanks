@@ -89,3 +89,9 @@ void File::close() {
 		_f = NULL;
 	}
 }
+
+FILE * File::unlink() {
+	FILE * r = _f;
+	_f = NULL;
+	return r;
+}

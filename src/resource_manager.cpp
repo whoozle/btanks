@@ -4,6 +4,7 @@
 #include "object.h"
 #include "animation_model.h"
 #include "utils.h"
+#include "sound/mixer.h"
 
 #include <algorithm>
 
@@ -72,6 +73,9 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 
 		float z = (!attr["z"].empty())?atof(attr["z"].c_str()) : -1001;
 		_pose = new Pose(speed, z);
+		const std::string &sound = attr["sound"];
+		if (!sound.empty())
+			Mixer->loadSample(sound);
 	} else if (name == "object") {
 		const std::string classname = attr["class"];
 		if (classname.size() == 0)
@@ -142,10 +146,10 @@ void IResourceManager::end(const std::string &name) {
 		_am->addPose(_pose_id, _pose);
 		_pose = NULL;
 	} else if (name == "animation-model") {
-		LOG_DEBUG(("adding animation model '%s'", _am_id.c_str()));
 		delete _animation_models[_am_id];
 		_animation_models[_am_id] = _am;
 		_am = NULL;
+		LOG_DEBUG(("added animation model '%s'", _am_id.c_str()));
 	}
 }
 void IResourceManager::charData(const std::string &data) {

@@ -5,6 +5,10 @@
 #include <string>
 #include <map>
 
+namespace mrt{
+class Chunk;
+}
+
 class OggStream;
 class IMixer {
 public:
@@ -12,9 +16,16 @@ public:
 	void init();
 	void loadPlaylist(const std::string &file);
 	void play();
+	
+	//sample part
+	void loadSample(const std::string &filename);
+	
 	IMixer();
 	~IMixer();
 private: 
+	typedef std::map<const std::string, mrt::Chunk *> Sounds;
+	Sounds _sounds;
+
 	typedef std::map<const std::string, bool> PlayList;
 	PlayList _playlist;
 	std::string _now_playing;

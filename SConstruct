@@ -70,7 +70,7 @@ conf_env.Append(CPPPATH=sigc_cpppath)
 #print conf.env['CCFLAGS']
 
 
-if not conf.CheckLibWithHeader(sigc_lib, 'sigc++/sigc++.h', 'c++', "SigC::Signal1<int,int> sig;", False):
+if not conf.CheckLibWithHeader(sigc_lib, 'sigc++/sigc++.h', 'c++', "sigc::signal1<int,int> sig;", False):
 	Exit(1)
 
 if not conf.CheckLibWithHeader('expat', 'expat.h', 'c', "XML_ParserCreate(NULL);", False):

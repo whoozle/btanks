@@ -2,10 +2,14 @@
 #include "mrt/file.h"
 #include "mrt/exception.h"
 #include "mrt/random.h"
+#include "mrt/chunk.h"
 #include <assert.h>
+#include "utils.h"
 
 #include "ogg_stream.h"
 #include <AL/alut.h>
+
+#include "config.h"
 
 #define AL_CHECK(fmt) if (alGetError() != AL_NO_ERROR) \
 	throw_ex(fmt)
@@ -20,11 +24,24 @@ void IMixer::init() {
 	
 	alutInit(NULL, NULL);
 	AL_CHECK(("alutInit"));
+	
+	GET_CONFIG_VALUE("engine.sound.doppler-factor", float, df, 1.0);
+	alDopplerFactor(df);
+	AL_CHECK(("alDopplerFactor"));
+	
+	GET_CONFIG_VALUE("engine.sound.doppler-velocity", float, dv, 1000);
+	alDopplerVelocity(dv);
 }
 
 IMixer::~IMixer() {
 	delete _ogg; 
 	_ogg = NULL;
+	
+	LOG_DEBUG(("cleaning up sounds..."));
+	std::for_each(_sounds.begin(), _sounds.end(), delete_ptr2<Sounds::value_type>());
+	_sounds.clear();
+	LOG_DEBUG(("shutting down openAL.."));
+	
 	alutExit();
 }
 
@@ -73,4 +90,15 @@ void IMixer::play() {
 		_ogg = new OggStream;
 
 	_ogg->open(fname);
+}
+
+void IMixer::loadSample(const std::string &filename) {
+	mrt::Chunk * data = NULL;
+	GET_CONFIG_VALUE("engine.data-directory", std::string, data_dir, "data");
+	TRY {
+		data = new mrt::Chunk;
+		OggStream::decode(*data, data_dir + "/sounds/" + filename);
+		LOG_DEBUG(("sample %s decoded, size: %u", filename.c_str(), data->getSize()));
+		_sounds[filename] = data;
+	} CATCH("loadSample", { delete data; data = NULL; });
 }

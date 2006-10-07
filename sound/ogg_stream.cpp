@@ -3,6 +3,7 @@
 #include "ogg_ex.h"
 #include <assert.h>
 #include "mrt/chunk.h"
+#include "mrt/file.h"
 #include "config.h"
 
 #define AL_CHECK(fmt) if (alGetError() != AL_NO_ERROR) \
@@ -15,18 +16,21 @@ OggStream::OggStream() : _opened(false) {
 
 
 void OggStream::open(const std::string &fname) {
+	close();
 	_filename = fname;
+	_running = true;
 	start();
 }
 
 
 void OggStream::_open(const std::string &fname) {
-	close();
-	
-	_file.open(fname, "rb");
-	int r = ov_open(_file, &_ogg_stream, NULL, 0);
+	mrt::File file;
+	file.open(fname, "rb");
+	int r = ov_open(file, &_ogg_stream, NULL, 0);
 	if (r < 0)
 		throw_ogg(r, ("ov_open('%s')", fname.c_str()));
+	_file = file.unlink();
+	
 	_vorbis_info = ov_info(&_ogg_stream, -1);
 	_vorbis_comment = ov_comment(&_ogg_stream, -1);
 	assert(_vorbis_info != NULL);
@@ -101,7 +105,9 @@ void OggStream::close() {
 	if (!_opened)
 		return;
 	
-	_file.close();
+	_running = false;
+	wait();
+	LOG_DEBUG(("deleting al source/buffers"));
 
 	alSourceStop(_source);
 
@@ -112,6 +118,7 @@ void OggStream::close() {
 	alDeleteBuffers(1, _buffers);
 	AL_CHECK(("alDeleteBuffers"));					    
 
+	LOG_DEBUG(("deleting ogg context."));
 	ov_clear(&_ogg_stream);					   
 	_opened = false;
 }
@@ -154,9 +161,39 @@ const bool OggStream::stream(ALuint buffer) {
     return true;
 }
 
+void OggStream::decode(mrt::Chunk &data, const std::string &fname) {
+	mrt::File file;
+	file.open(fname, "rb");
+
+	OggVorbis_File ogg;
+	int r = ov_open(file, &ogg, NULL, 0);
+	if (r < 0)
+		throw_ogg(r, ("ov_open('%s')", fname.c_str()));
+
+	GET_CONFIG_VALUE("engine.sound.file-buffer-size", int, buffer_size, 32768);
+
+	size_t pos = 0;
+	data.free();
+	int section = 0;
+	
+	do {
+		data.setSize(buffer_size + pos);
+		r = ov_read(&ogg, ((char *)data.getPtr()) + pos, buffer_size, 0, 2, 1, & section);
+    
+		if(r > 0) {
+			pos += r;
+		} else if(r < 0) {
+			ov_clear(&ogg);
+			throw_ogg(r, ("ov_read"));
+		} else break;
+	} while(true);
+	ov_clear(&ogg);
+	data.setSize(pos);
+}
+
 const int OggStream::run() {
 	_open(_filename);
-    while(update()) {
+    while(_running && update()) {
 		if(!playing()) {
 			if(!play()) {
 				LOG_ERROR(("Ogg abruptly stopped."));
@@ -165,5 +202,7 @@ const int OggStream::run() {
 		}
 		SDL_Delay(_delay);
 	}
+	_running = false;
+	LOG_DEBUG(("sound thread exits.."));
 	return 0;
 }

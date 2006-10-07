@@ -40,6 +40,7 @@ public:
 	
 	const bool eof() const;
 	inline operator FILE*() { return _f; }
+	FILE * unlink(); //unlinks FILE* structure from this object
 private: 
 	FILE *_f;
 };

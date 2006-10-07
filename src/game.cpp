@@ -50,8 +50,6 @@ IGame::IGame() : _my_index(-1), _address("localhost"), _autojoin(false), _shake(
 }
 IGame::~IGame() {}
 
-const std::string IGame::data_dir = "data";
-
 typedef void (APIENTRY *glEnable_Func)(GLenum cap);
 typedef void (APIENTRY *glFlush_Func)(void);
 typedef void (APIENTRY *glBlendFunc_Func) (GLenum sfactor, GLenum dfactor );
@@ -76,8 +74,9 @@ void IGame::init(const int argc, char *argv[]) {
 
 	_opengl = true;
 	
-	Config->load(data_dir + "/vars.xml");
+	Config->load("bt.xml");
 	GET_CONFIG_VALUE("engine.show-fps", bool, show_fps, true);
+	GET_CONFIG_VALUE("engine.data-directory", std::string, data_dir, "data");
 	
 	_show_fps = show_fps;
 	bool fullscreen = false;
