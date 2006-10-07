@@ -678,7 +678,7 @@ TRY {
 }
 
 void IWorld::generateUpdate(mrt::Serializator &s) {
-	size_t c = 0, n = _objects.size();
+	unsigned int c = 0, n = _objects.size();
 	std::set<int> skipped_objects;
 
 	for(ObjectMap::reverse_iterator i = _id2obj.rbegin(); i != _id2obj.rend(); ++i) {
