@@ -109,3 +109,15 @@ const bool Shilka::take(const BaseObject *obj, const std::string &type) {
 	return BaseObject::take(obj, type);
 }
 
+void Shilka::serialize(mrt::Serializator &s) const {
+	Object::serialize(s);
+	_fire.serialize(s);
+	_dirt_fire.serialize(s);
+	s.add(_left_fire);
+}
+void Shilka::deserialize(const mrt::Serializator &s) {
+	Object::deserialize(s);
+	_fire.deserialize(s);
+	_dirt_fire.deserialize(s);
+	s.get(_left_fire);
+}

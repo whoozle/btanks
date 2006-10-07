@@ -111,3 +111,11 @@ void Tank::tick(const float dt) {
 	//LOG_DEBUG(("_velocity: %g %g", _velocity.x, _velocity.y));
 }
 
+void Tank::serialize(mrt::Serializator &s) const {
+	Object::serialize(s);
+	_fire.serialize(s);
+}
+void Tank::deserialize(const mrt::Serializator &s) {
+	Object::deserialize(s);
+	_fire.deserialize(s);
+}

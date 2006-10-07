@@ -102,3 +102,13 @@ const bool Launcher::take(const BaseObject *obj, const std::string &type) {
 		return true;
 	return BaseObject::take(obj, type);
 }
+
+void Launcher::serialize(mrt::Serializator &s) const {
+	Object::serialize(s);
+	_fire.serialize(s);
+}
+
+void Launcher::deserialize(const mrt::Serializator &s) {
+	Object::deserialize(s);
+	_fire.deserialize(s);
+}

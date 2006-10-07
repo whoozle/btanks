@@ -33,6 +33,9 @@ public:
 	virtual void calculate(const float dt);
 	virtual void tick(const float dt);
 	virtual const bool take(const BaseObject *obj, const std::string &type);
+
+	virtual void serialize(mrt::Serializator &s) const;
+	virtual void deserialize(const mrt::Serializator &s);
 	
 private:
 	Alarm _fire;

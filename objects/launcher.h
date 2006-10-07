@@ -33,6 +33,8 @@ public:
 	virtual void tick(const float dt);
 	virtual void calculate(const float dt);
 	virtual void onSpawn();
+	virtual void serialize(mrt::Serializator &s) const;
+	virtual void deserialize(const mrt::Serializator &s);
 	
 private:
 	Alarm _fire;

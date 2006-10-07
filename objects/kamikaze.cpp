@@ -14,6 +14,16 @@ public:
 	virtual Object * clone() const;
 	virtual void onSpawn();
 	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
+
+	virtual void serialize(mrt::Serializator &s) const {
+		Object::serialize(s);
+		_reaction.serialize(s);
+	}
+	virtual void deserialize(const mrt::Serializator &s) {
+		Object::deserialize(s);
+		_reaction.deserialize(s);
+	}	
+
 private: 
 	Alarm _reaction;
 };

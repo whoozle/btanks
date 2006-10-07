@@ -14,6 +14,16 @@ public:
 	virtual void calculate(const float dt);
 	virtual void onSpawn();
 	virtual Object * clone() const;
+	virtual void serialize(mrt::Serializator &s) const {
+		Tank::serialize(s);
+		_reaction_time.serialize(s);
+		_refresh_waypoints.serialize(s);
+	}
+	virtual void deserialize(const mrt::Serializator &s) {
+		Tank::deserialize(s);
+		_reaction_time.deserialize(s);
+		_refresh_waypoints.deserialize(s);
+	}	
 private: 
 	Alarm _reaction_time, _refresh_waypoints;
 };
