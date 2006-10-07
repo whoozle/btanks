@@ -49,6 +49,7 @@ private:
 	} 
 
 #define throw_generic(name, str) { name e; e.addMessage(__FILE__, __LINE__); e.addMessage(mrt::formatString str); e.addMessage(e.getCustomMessage()); throw e; }
+#define throw_generic_no_default(name, str, args) { name e args; e.addMessage(__FILE__, __LINE__); e.addMessage(mrt::formatString str); e.addMessage(e.getCustomMessage()); throw e; }
 #define throw_ex(str) throw_generic(mrt::Exception, str)
 
 #define TRY try 

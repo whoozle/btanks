@@ -26,7 +26,7 @@ namespace mrt {
 class Chunk;
 
 class File {
-	public: 
+public: 
 	File();
 	void open(const std::string &fname, const std::string &mode);
 	void readAll(Chunk &ch) const;
@@ -39,8 +39,8 @@ class File {
 	void close();
 	
 	const bool eof() const;
-	
-	private: 
+	inline operator FILE*() { return _f; }
+private: 
 	FILE *_f;
 };
 
