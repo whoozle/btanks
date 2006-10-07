@@ -478,7 +478,7 @@ void IGame::run() {
 	}
 	
 	float mapx = 0, mapy = 0, mapvx = 0, mapvy = 0;
-	int fps_limit = 1000;
+	GET_CONFIG_VALUE("engine.fps-limit", int, fps_limit, 1000);
 	
 	float fr = fps_limit;
 	int max_delay = 1000/fps_limit;
