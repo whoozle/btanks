@@ -19,23 +19,24 @@ public:
 
 	Layer(const int w, const int h, const mrt::Chunk & data, const int impassability, const bool pierceable);
 
-	inline const int get(const int x, const int y) const {
+	inline const Uint32 get(const int x, const int y) const {
 		if (x < 0 || x >= _w || y < 0 || y >= _h) 
 			return 0;	
-		return *((int *) _data.getPtr() + _w * y + x);
+		return *((Uint32 *) _data.getPtr() + _w * y + x);
 	}
 
 	inline const sdlx::Surface* getSurface(const int x, const int y) const {
 		if (x < 0 || x >= _w || y < 0 || y >= _h) 
 			return NULL;
-		return *((sdlx::Surface **) _data_s.getPtr() + _w * y + x);
+		return _s_data[_w * y + x];
 	}
 
 	void optimize(std::vector<sdlx::Surface *> & tilemap);
+	~Layer();
 
 private: 
 	mrt::Chunk _data;
-	mrt::Chunk _data_s;
+	sdlx::Surface **_s_data;
 	int _w, _h;
 };
 
