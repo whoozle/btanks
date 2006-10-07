@@ -13,7 +13,7 @@ public:
 	~Serializator();
 	
 	void add(const int n);
-	void add(const size_t n);
+	void add(const unsigned int n);
 	void add(const float f);
 	void add(const std::string &str);
 	void add(const bool b);
@@ -22,7 +22,7 @@ public:
 	const bool end() const;
 	
 	void get(int &n) const;
-	void get(size_t &n) const;
+	void get(unsigned int &n) const;
 	void get(float &f) const;
 	void get(std::string &str) const;
 	void get(bool &b) const;

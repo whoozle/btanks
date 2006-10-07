@@ -70,11 +70,11 @@ void Serializator::add(const int n) {
 	_pos += len + 1;
 }
 
-void Serializator::add(const size_t n) {
+void Serializator::add(const unsigned int n) {
 	add((int)n);
 }
 
-void Serializator::get(size_t &n) const {
+void Serializator::get(unsigned int &n) const {
 	int *p = (int *)&n;
 	get(*p);
 }
