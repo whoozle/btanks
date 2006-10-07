@@ -34,6 +34,8 @@
 #include "player_state.h"
 #include "config.h"
 
+#include "sound/mixer.h"
+
 #ifndef SDL_OPENGLBLIT
 #define SDL_OPENGLBLIT 0
 // using 0 as OPENGLBLIT value. SDL 1.3 or later
@@ -189,6 +191,10 @@ void IGame::init(const int argc, char *argv[]) {
 
 	LOG_DEBUG(("setting caption..."));		
 	SDL_WM_SetCaption(("Battle tanks - " + getVersion()).c_str(), "btanks");
+	
+	Mixer->init();
+	Mixer->loadPlaylist(data_dir + "/playlist");
+	Mixer->play();
 	
 	if (_opengl) {
 #if SDL_VERSION_ATLEAST(1,2,10)

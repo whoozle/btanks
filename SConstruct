@@ -142,10 +142,13 @@ bt_sources = 	['src/alarm.cpp', 'src/base_object.cpp',
 	'tmx/map.cpp', 'tmx/layer.cpp', 
 	'SDL_collide/SDL_collide.c', 
 	'src/main.cpp', 'src/config.cpp', 'src/game.cpp', 
+
+	'sound/ogg_ex.cpp', 'sound/ogg_stream.cpp', 'sound/mixer.cpp', 
+	
 	vobj
 	]
 
-bt_libs = ['sdlx', 'mrt', sigc_lib, 'SDL_ttf', 'SDL_image', 'SDL', 'expat', 'z']
+bt_libs = ['sdlx', 'mrt', sigc_lib, 'SDL_ttf', 'SDL_image', 'SDL', 'expat', 'z', 'vorbisfile', 'openal', 'alut']
 if sys.platform == "win32":
 #	bt_libs[0:0] = ['SDLmain']
 	bt_libs.append('Ws2_32')
