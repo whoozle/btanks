@@ -109,7 +109,7 @@ void Serializator::add(const Chunk &c) {
 void Serializator::add(const float f) {
 	//LOG_DEBUG(("added float %f", f));
 	char buf[256];
-	size_t len = snprintf(buf, sizeof(buf) -1, "%g", f);
+	unsigned int len = snprintf(buf, sizeof(buf) -1, "%g", f);
 	add(std::string(buf, len));
 }
 
@@ -152,7 +152,7 @@ void Serializator::get(float &f) const {
 }
 
 void Serializator::get(std::string &str)  const {
-	size_t size;
+	unsigned int size;
 	get(size);
 
 	ASSERT_POS(size);
