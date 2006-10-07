@@ -37,7 +37,7 @@ void OggStream::_open(const std::string &fname) {
 		_format = AL_FORMAT_STEREO16;
 	_opened = true;
 		
-	GET_CONFIG_VALUE("engine.sound.buffers", int, bf, 2);
+	GET_CONFIG_VALUE("engine.sound.buffers", int, bf, 8);
 	if (bf < 1 || bf > 32) 
 		throw_ex(("engine.sound.buffers must be in (1,32) range (%d)", bf));
 	_buffers_n = bf;
@@ -129,7 +129,7 @@ const bool OggStream::playing() const {
 const bool OggStream::stream(ALuint buffer) {
 	mrt::Chunk data;
 	
-	GET_CONFIG_VALUE("engine.sound.file-buffer-size", int, buffer_size, 102400);
+	GET_CONFIG_VALUE("engine.sound.file-buffer-size", int, buffer_size, 32768);
 	data.setSize(buffer_size);
 	
 	int  size = 0;
@@ -156,10 +156,6 @@ const bool OggStream::stream(ALuint buffer) {
 
 const int OggStream::run() {
 	_open(_filename);
-	if (!play()) {
-		LOG_ERROR(("ogg refuses to play"));
-		return 1;
-	}
     while(update()) {
 		if(!playing()) {
 			if(!play()) {
