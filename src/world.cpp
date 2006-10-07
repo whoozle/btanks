@@ -614,8 +614,22 @@ Object * IWorld::deserializeObject(const mrt::Serializator &s) {
 			ObjectMap::iterator i = _id2obj.find(id);
 			if (i != _id2obj.end()) {
 				Object *o = i->second;
-				o->deserialize(s);
-				result = o;
+				if (rn == o->registered_name) {
+					o->deserialize(s);
+					result = o;
+				} else {
+					//wrong classtype and maybe storage class
+					_objects.erase(o);
+					delete o;
+					result = ao = ResourceManager->createObject(rn, an);
+					//LOG_DEBUG(("created ('%s', '%s')", rn.c_str(), an.c_str()));
+					ao->deserialize(s);
+						
+					i->second = ao;
+					_objects.insert(ao);
+					ao = NULL;
+					assert(_id2obj.size() == _objects.size());
+				}
 			} else {
 				//new object.
 				result = ao = ResourceManager->createObject(rn, an);
