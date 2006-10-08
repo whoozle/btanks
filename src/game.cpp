@@ -307,6 +307,40 @@ void IGame::onMenu(const std::string &name) {
 		GET_CONFIG_VALUE("player.control-method", std::string, cm, "keys");		
 		_my_index = spawnPlayer(vehicle, animation, cm);
 		spawnPlayer("ai-tank", "green-tank", "ai");
+		_players[_my_index].viewport = _window.getSize();
+		_players[_my_index].visible = true;
+	} else if (name == "s-start") {
+		LOG_DEBUG(("start split screen game requested"));
+		clear();
+		_main_menu.reset();
+		GET_CONFIG_VALUE("stubs.default-vehicle-1", std::string, vehicle1, "tank");
+		GET_CONFIG_VALUE("stubs.default-vehicle-2", std::string, vehicle2, "tank");
+		GET_CONFIG_VALUE("stubs.default-map", std::string, map, "survival");
+		loadMap(map);
+
+		static const char * colors[4] = {"green", "red", "yellow", "cyan"};
+		std::string animation1 = colors[mrt::random(4)];
+		std::string animation2 = colors[mrt::random(4)];
+		animation1 += "-" + vehicle1;
+		animation2 += "-" + vehicle2;
+
+		GET_CONFIG_VALUE("player.control-method", std::string, cm, "keys-1");		
+		GET_CONFIG_VALUE("player.control-method-2", std::string, cm2, "keys-2");
+		
+		int p1 = _my_index = spawnPlayer(vehicle1, animation1, cm);
+		int p2 = spawnPlayer(vehicle2, animation2, cm2);
+
+		_players[p1].viewport = _window.getSize();
+		_players[p1].viewport.w /= 2;
+		_players[p1].visible = true;
+
+		_players[p2].viewport = _window.getSize();
+		_players[p2].viewport.x = _players[_my_index].viewport.w;
+		_players[p2].viewport.w /= 2;
+		_players[p2].visible = true;
+		LOG_DEBUG(("p1: %d %d %d %d", _players[p1].viewport.x, _players[p1].viewport.y, _players[p1].viewport.w, _players[p1].viewport.h));
+		LOG_DEBUG(("p2: %d %d %d %d", _players[p2].viewport.x, _players[p2].viewport.y, _players[p2].viewport.w, _players[p2].viewport.h));
+
 	} else if (name == "m-start") {
 		LOG_DEBUG(("start multiplayer server requested"));
 		clear();
@@ -316,6 +350,8 @@ void IGame::onMenu(const std::string &name) {
 
 		GET_CONFIG_VALUE("player.control-method", std::string, cm, "keys");		
 		_my_index = spawnPlayer(vehicle, "green-" + vehicle, cm);
+		_players[_my_index].viewport = _window.getSize();
+		_players[_my_index].visible = true;
 		
 		_server = new Server;
 		_server->init(9876);
@@ -387,6 +423,10 @@ void IGame::createControlMethod(PlayerSlot &slot, const std::string &control_met
 
 	if (control_method == "keys") {
 		slot.control_method = new KeyPlayer(SDLK_UP, SDLK_DOWN, SDLK_LEFT, SDLK_RIGHT, SDLK_LCTRL, SDLK_LALT);
+	} else if (control_method == "keys-1") {
+		slot.control_method = new KeyPlayer(SDLK_r, SDLK_f, SDLK_d, SDLK_g, SDLK_q, SDLK_a);
+	} else if (control_method == "keys-2") {
+		slot.control_method = new KeyPlayer(SDLK_UP, SDLK_DOWN, SDLK_LEFT, SDLK_RIGHT, SDLK_RCTRL, SDLK_RSHIFT);
 	} else if (control_method == "mouse") {
 		slot.control_method = new MouseControl();
 	} else if (control_method == "network") {
@@ -435,22 +475,7 @@ void IGame::run() {
 	IMap &map = *IMap::get_instance();
 
 	sdlx::Rect window_size = _window.getSize();
-	_viewport = _window.getSize();
-	sdlx::Rect passive_viewport;
-	passive_viewport.w = passive_viewport.x = _viewport.w / 3;
-	passive_viewport.h = passive_viewport.y = _viewport.h / 3;
-	sdlx::Rect passive_viewport_stopzone(passive_viewport);
 	
-	{
-		int xmargin = passive_viewport_stopzone.w / 4;
-		int ymargin = passive_viewport_stopzone.h / 4;
-		passive_viewport_stopzone.x += xmargin;
-		passive_viewport_stopzone.y += ymargin;
-		passive_viewport_stopzone.w -= 2*xmargin;
-		passive_viewport_stopzone.h -= 2*ymargin;
-	}
-	
-	float mapx = 0, mapy = 0, mapvx = 0, mapvy = 0;
 	GET_CONFIG_VALUE("engine.fps-limit", int, fps_limit, 1000);
 	
 	float fr = fps_limit;
@@ -544,30 +569,47 @@ void IGame::run() {
 #ifdef SHOW_PERFSTATS
 			t_tick_c = SDL_GetTicks();
 #endif				
-			
-			if (_players.size() && (unsigned)_my_index < _players.size()) {
-				const Object * p = _players[_my_index].obj;
-				if (p != NULL) {
-					v3<float> pos, vel;
-					p->getInfo(pos, vel);
+			for(unsigned int p = 0; p < _players.size(); ++p) {
+				PlayerSlot &slot = _players[p];
+				const Object * p = slot.obj;
+				if (p == NULL || !slot.visible)
+					continue; 
+					
+				v3<float> pos, vel;
+				p->getInfo(pos, vel);
 
+				if ((int)p == _my_index)
 					Mixer->setListener(pos, vel);
+					
+				sdlx::Rect passive_viewport;
+				passive_viewport.w = passive_viewport.x = slot.viewport.w / 3;
+				passive_viewport.h = passive_viewport.y = slot.viewport.h / 3;
+				sdlx::Rect passive_viewport_stopzone(passive_viewport);
+	
+				{
+					int xmargin = passive_viewport_stopzone.w / 4;
+					int ymargin = passive_viewport_stopzone.h / 4;
+					passive_viewport_stopzone.x += xmargin;
+					passive_viewport_stopzone.y += ymargin;
+					passive_viewport_stopzone.w -= 2*xmargin;
+					passive_viewport_stopzone.h -= 2*ymargin;
+				}
 
-					//LOG_DEBUG(("player[0] %f, %f", vel.x, vel.y));
-					int wx = (int)pos.x - _viewport.x;
-					int wy = (int)pos.y - _viewport.y;
-					if (passive_viewport_stopzone.in(wx, wy)) {
-						mapvx = 0; 
-						mapvy = 0;
-					} else {
-						mapvx = p->speed * 2 * (wx - passive_viewport.x) / passive_viewport.w ;
-						mapvy = p->speed * 2 * (wy - passive_viewport.y) / passive_viewport.h ;
-						/*
-						LOG_DEBUG(("position : %f %f viewport: %d %d(passive:%d %d %d %d) mapv: %f %f", x, y,
-							viewport.x, viewport.y, passive_viewport.x, passive_viewport.y, passive_viewport.w, passive_viewport.h, 
-							mapvx, mapvy));
-						*/
-					}
+
+				//LOG_DEBUG(("player[0] %f, %f", vel.x, vel.y));
+				int wx = (int)pos.x - slot.viewport.x;
+				int wy = (int)pos.y - slot.viewport.y;
+				if (passive_viewport_stopzone.in(wx, wy)) {
+					slot.mapvx = 0; 
+					slot.mapvy = 0;
+				} else {
+					slot.mapvx = p->speed * 2 * (wx - passive_viewport.x) / passive_viewport.w ;
+					slot.mapvy = p->speed * 2 * (wy - passive_viewport.y) / passive_viewport.h ;
+					/*
+					LOG_DEBUG(("position : %f %f viewport: %d %d(passive:%d %d %d %d) mapv: %f %f", x, y,
+						viewport.x, viewport.y, passive_viewport.x, passive_viewport.y, passive_viewport.w, passive_viewport.h, 
+						mapvx, mapvy));
+					*/
 				}
 			}
 		}
@@ -576,16 +618,25 @@ void IGame::run() {
 #endif
 
 		_window.fillRect(window_size, 0);
-		if (_shake > 0) {
-			_viewport.y += _shake_int;
-		}		
-		World->render(_window, _viewport);
-		if (_shake >0) {
-			_viewport.y -= _shake_int;
-			_shake_int = -_shake_int;
-			_shake -= dt;
-		}
+	
+		for(unsigned p = 0; p < _players.size(); ++p) {
+			PlayerSlot &slot = _players[p];
+			if (!slot.visible)
+				continue;
+				
+			if (_shake > 0) {
+				slot.viewport.y += _shake_int;
+			}		
+	
+			World->render(_window, slot.viewport);
+	
+			if (_shake >0) {
+				slot.viewport.y -= _shake_int;
+				_shake_int = -_shake_int;
+				_shake -= dt;
+			}
 
+		}
 		_main_menu.render(_window);
 		
 
@@ -596,24 +647,26 @@ void IGame::run() {
 		
 		if (map.loaded()) {
 			const v3<int> world_size = map.getSize();
-		
-			mapx += mapvx * dt;
-			mapy += mapvy * dt;
+			for(unsigned p = 0; p < _players.size(); ++p) {
+				PlayerSlot &slot = _players[p];
+				slot.mapx += slot.mapvx * dt;
+				slot.mapy += slot.mapvy * dt;
 			
-			if (mapx < 0) 
-				mapx = 0;
-			if (mapx + _viewport.w > world_size.x) 
-				mapx = world_size.x - _viewport.w;
+				if (slot.mapx < 0) 
+					slot.mapx = 0;
+				if (slot.mapx + slot.viewport.w > world_size.x) 
+					slot.mapx = world_size.x - slot.viewport.w;
 
-			if (mapy < 0) 
-				mapy = 0;
-			if (mapy + _viewport.h > world_size.y) 
-				mapy = world_size.y - _viewport.h;
+				if (slot.mapy < 0) 
+					slot.mapy = 0;
+				if (slot.mapy + slot.viewport.h > world_size.y) 
+					slot.mapy = world_size.y - slot.viewport.h;
 			
-			_viewport.x = (Sint16) mapx;
-			_viewport.y = (Sint16) mapy;
+				slot.viewport.x = (Sint16) slot.mapx;
+				slot.viewport.y = (Sint16) slot.mapy;
 			
-			//LOG_DEBUG(("%f %f", mapx, mapy));
+				//LOG_DEBUG(("%f %f", mapx, mapy));
+			}
 		}
 
 #ifdef SHOW_PERFSTATS
@@ -975,7 +1028,8 @@ IGame::PlayerSlot &IGame::getPlayerSlot(const int idx) {
 	return _players[idx];
 }
 
-void IGame::screen2world(v3<float> &pos, const int x, const int y) {
-	pos.x = _viewport.x + x;
-	pos.y = _viewport.y + y;
+void IGame::screen2world(v3<float> &pos, const int p, const int x, const int y) {
+	PlayerSlot &slot = _players[p];
+	pos.x = slot.viewport.x + x;
+	pos.y = slot.viewport.y + y;
 }

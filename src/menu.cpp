@@ -41,6 +41,7 @@ void MainMenu::init(const int w, const int h) {
 
 	_items["multiplayer"].push_back(new MenuItem(_font, "m-start", "command", "START NEW GAME"));
 	_items["multiplayer"].push_back(new MenuItem(_font, "multiplayer-join", "submenu", "JOIN GAME"));
+	_items["multiplayer"].push_back(new MenuItem(_font, "s-start", "command", "SPLIT SCREEN GAME"));
 	_items["multiplayer"].push_back(new MenuItem(_font, "back", "back", "BACK"));
 
 	_items["multiplayer-join"].push_back(new MenuItem(_font, "m-join", "command", "JOIN GAME"));

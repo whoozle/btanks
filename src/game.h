@@ -41,8 +41,8 @@ public:
 	DECLARE_SINGLETON(IGame);
 
 	struct PlayerSlot {
-		PlayerSlot() : obj(NULL), control_method(NULL), need_sync(false), remote(false), trip_time(10) {}
-		PlayerSlot(Object *obj) : obj(obj), control_method(NULL), need_sync(false), remote(false), trip_time(10){}
+		PlayerSlot() : obj(NULL), control_method(NULL), need_sync(false), remote(false), trip_time(10), visible(false) {}
+		PlayerSlot(Object *obj) : obj(obj), control_method(NULL), need_sync(false), remote(false), trip_time(10), visible(false) {}
 		Object * obj;
 		ControlMethod * control_method;
 		v3<int> position;
@@ -51,6 +51,11 @@ public:
 		bool need_sync;
 		bool remote;
 		float trip_time;
+		
+		bool visible;
+		sdlx::Rect viewport;
+		
+		float mapx, mapy, mapvx, mapvy;
 		
 		void clear();
 		~PlayerSlot();
@@ -85,7 +90,7 @@ public:
 	//stupid and stub.
 	const int getMyPlayerIndex() const;
 	PlayerSlot & getPlayerSlot(const int idx);
-	void screen2world(v3<float> &pos, const int x, const int y);
+	void screen2world(v3<float> &pos, const int p, const int x, const int y);
 	
 private:
 	void onKey(const Uint8 type, const SDL_keysym sym);
@@ -93,7 +98,6 @@ private:
 
 	bool _running, _paused;
 	sdlx::Surface _window;
-	sdlx::Rect _viewport;
 
 	MainMenu _main_menu;
 	

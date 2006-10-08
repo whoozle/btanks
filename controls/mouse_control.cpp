@@ -19,7 +19,7 @@ void MouseControl::onMouse(const int button, const bool pressed, const int x, co
 	
 	//LOG_DEBUG(("shoot: %c, move: %c", _shoot?'+':'-', _move?'+':'-'));
 	v3<float> world;
-	Game->screen2world(world, x, y);
+	Game->screen2world(world, 0, x, y); //fixme!! hardcoded player number
 	if (_shoot) 
 		getObject()->getTargetPosition8(_target, world, "bullet");
 	else _target = world;
