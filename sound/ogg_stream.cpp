@@ -196,6 +196,15 @@ void OggStream::decode(Sample &sample, const std::string &fname) {
 	} while(true);
 	ov_clear(&ogg);
 	data.setSize(pos);
+	
+	vorbis_info *info = ov_info(&ogg, -1);
+	assert(info != NULL);
+	
+	if (info->channels == 1) 
+		sample.format = AL_FORMAT_MONO16;
+	else
+		sample.format = AL_FORMAT_STEREO16;
+	
 }
 
 const int OggStream::run() {
