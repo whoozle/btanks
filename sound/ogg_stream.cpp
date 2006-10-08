@@ -5,6 +5,7 @@
 #include "mrt/chunk.h"
 #include "mrt/file.h"
 #include "config.h"
+#include "sample.h"
 
 #define AL_CHECK(fmt) if (alGetError() != AL_NO_ERROR) \
 	throw_ex(fmt)
@@ -161,7 +162,7 @@ const bool OggStream::stream(ALuint buffer) {
     return true;
 }
 
-void OggStream::decode(mrt::Chunk &data, const std::string &fname) {
+void OggStream::decode(Sample &sample, const std::string &fname) {
 	mrt::File file;
 	file.open(fname, "rb");
 
@@ -171,6 +172,8 @@ void OggStream::decode(mrt::Chunk &data, const std::string &fname) {
 		throw_ogg(r, ("ov_open('%s')", fname.c_str()));
 
 	GET_CONFIG_VALUE("engine.sound.file-buffer-size", int, buffer_size, 32768);
+
+	mrt::Chunk &data = sample.data;
 
 	size_t pos = 0;
 	data.free();

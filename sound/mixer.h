@@ -10,6 +10,8 @@ class Chunk;
 }
 
 class OggStream;
+class Sample;
+
 class IMixer {
 public:
 	DECLARE_SINGLETON(IMixer);
@@ -19,13 +21,14 @@ public:
 	
 	//sample part
 	void loadSample(const std::string &filename);
+	void playSample(const std::string &name);
 	
 	IMixer();
 	~IMixer();
 private: 
 	bool _nosound, _nomusic;
 	
-	typedef std::map<const std::string, mrt::Chunk *> Sounds;
+	typedef std::map<const std::string, Sample *> Sounds;
 	Sounds _sounds;
 
 	typedef std::map<const std::string, bool> PlayList;

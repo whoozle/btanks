@@ -12,7 +12,7 @@
 namespace mrt {
 class Chunk;
 }
-
+class Sample;
 class OggStream : public sdlx::Thread {
 public: 
 	void open(const std::string &fname);
@@ -24,7 +24,7 @@ public:
 	OggStream();
 	~OggStream();
 	
-	static void decode(mrt::Chunk &data, const std::string &file);
+	static void decode(Sample &sample, const std::string &file);
 
 private: 
 	virtual const int run(); 

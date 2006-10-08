@@ -7,6 +7,7 @@
 #include "utils.h"
 
 #include "ogg_stream.h"
+#include "sample.h"
 #include <AL/alut.h>
 
 #include "config.h"
@@ -113,12 +114,18 @@ void IMixer::loadSample(const std::string &filename) {
 	if (_nosound) 
 		return;
 
-	mrt::Chunk * data = NULL;
+	Sample * sample = NULL;
 	GET_CONFIG_VALUE("engine.data-directory", std::string, data_dir, "data");
 	TRY {
-		data = new mrt::Chunk;
-		OggStream::decode(*data, data_dir + "/sounds/" + filename);
-		LOG_DEBUG(("sample %s decoded, size: %u", filename.c_str(), data->getSize()));
-		_sounds[filename] = data;
-	} CATCH("loadSample", { delete data; data = NULL; });
+		sample = new Sample;
+		OggStream::decode(*sample, data_dir + "/sounds/" + filename);
+		LOG_DEBUG(("sample %s decoded, size: %u", filename.c_str(), sample->data.getSize()));
+		_sounds[filename] = sample;
+	} CATCH("loadSample", { delete sample; sample = NULL; });
+}
+
+void IMixer::playSample(const std::string &name) {
+	if (_nosound)
+		return;
+	
 }

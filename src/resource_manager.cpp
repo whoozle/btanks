@@ -72,8 +72,8 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 			speed = _am->default_speed;
 
 		float z = (!attr["z"].empty())?atof(attr["z"].c_str()) : -1001;
-		_pose = new Pose(speed, z);
 		const std::string &sound = attr["sound"];
+		_pose = new Pose(speed, z, sound);
 		if (!sound.empty())
 			Mixer->loadSample(sound);
 	} else if (name == "object") {

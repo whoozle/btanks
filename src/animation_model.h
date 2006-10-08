@@ -7,9 +7,10 @@
 
 class Pose {
 public:
-	Pose(const float speed, const float z) : speed(speed), z(z) {}
+	Pose(const float speed, const float z, const std::string &sound) : speed(speed), z(z), sound(sound) {}
 
 	const float speed, z;
+	std::string sound;
 	std::vector<unsigned int> frames;
 };
 
