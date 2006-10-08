@@ -7,6 +7,7 @@ class OggException : public mrt::Exception {
 public:
 	OggException(const int r) : _r(r) {}
 	const std::string getCustomMessage();
+	const int getCode() const throw() { return _r; }
 	virtual ~OggException() throw() {}
 private: 
 	int _r;
