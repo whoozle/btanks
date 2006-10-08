@@ -124,8 +124,27 @@ void IMixer::loadSample(const std::string &filename) {
 	} CATCH("loadSample", { delete sample; sample = NULL; });
 }
 
-void IMixer::playSample(const std::string &name) {
+void IMixer::playSample(const int id, const std::string &name, const bool loop) {
 	if (_nosound)
 		return;
-	
+	LOG_DEBUG(("object: %d requests %s (%s)", id, name.c_str(), loop?"loop":"single"));
+}
+
+void IMixer::cancelSample(const int id, const std::string &name) {
+	if (_nosound)
+		return;
+	LOG_DEBUG(("object %d cancels %s", id, name.c_str()));
+}
+
+void IMixer::cancelAll(const int id) {
+	if (_nosound)
+		return;
+
+}
+
+
+void IMixer::cancelAll() {
+	if (_nosound)
+		return;
+
 }

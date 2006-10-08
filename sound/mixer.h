@@ -21,7 +21,10 @@ public:
 	
 	//sample part
 	void loadSample(const std::string &filename);
-	void playSample(const std::string &name);
+	void playSample(const int id, const std::string &name, const bool loop);
+	void cancelSample(const int id, const std::string &name);
+	void cancelAll(const int id);
+	void cancelAll();
 	
 	IMixer();
 	~IMixer();
