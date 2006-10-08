@@ -93,7 +93,7 @@
 	</animation-model>
 
 	<animation-model id="bullet-animation" speed="1">
-		<pose id="hold">0</pose>
+		<pose id="shot" sound="shot.ogg">0</pose>
 		<pose id="move">0</pose>
 	</animation-model>
 
@@ -106,7 +106,7 @@
 	</animation-model>
 	
 	<animation-model id="missile-explosion-animation" speed="7">
-		<pose id="boom">0,1,2,3</pose>
+		<pose id="boom" sound="explosion.ogg">0,1,2,3</pose>
 	</animation-model>
 
 	<animation-model id="single-tile" speed="1">

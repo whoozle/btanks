@@ -29,6 +29,7 @@ private:
 void Bullet::calculate(const float dt) {}
 
 void Bullet::onSpawn() {
+	play("shot", false);
 	play("move", true);
 	_velocity.normalize();
 	

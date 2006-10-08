@@ -173,8 +173,16 @@ void IMixer::updateObjects() {
 		
 	for(Sources::iterator j = _sources.begin(); j != _sources.end();) {
 		Object *o = World->getObjectByID(j->first);
+		ALuint source = j->second;
 		if (o == NULL) {
-			alDeleteSources(1, &j->second);
+			ALenum state;
+			alGetSourcei(source, AL_SOURCE_STATE, &state);
+			if (state == AL_PLAYING) {
+				++j;
+				continue;
+			}
+			
+			alDeleteSources(1, &source);
 			_sources.erase(j++);
 			continue;
 		}
@@ -211,22 +219,22 @@ void IMixer::setListener(const v3<float> &pos, const v3<float> &vel) {
 void IMixer::cancelSample(const Object *o, const std::string &name) {
 	if (_nosound || name.empty())
 		return;
-	LOG_DEBUG(("object %d cancels %s", o->getID(), name.c_str()));
+/*	LOG_DEBUG(("object %d cancels %s", o->getID(), name.c_str()));
 	Sources::iterator j = _sources.find(o->getID());
 	if (j == _sources.end())
 		return;
 	alSourceStop(j->second);
-}
+*/}
 
 void IMixer::cancelAll(const Object *o) {
 	if (_nosound)
 		return;
 	
-	Sources::iterator j = _sources.find(o->getID());
+/*	Sources::iterator j = _sources.find(o->getID());
 	if (j == _sources.end())
 		return;
 	alSourceStop(j->second);
-}
+*/}
 
 
 void IMixer::cancelAll() {
