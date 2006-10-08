@@ -855,6 +855,7 @@ void IGame::clear() {
 	LOG_DEBUG(("cleaning up world"));
 	World->clear();
 	_paused = false;
+	Mixer->cancelAll();
 }
 
 void IGame::PlayerSlot::clear() {

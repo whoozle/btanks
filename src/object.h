@@ -101,9 +101,11 @@ private:
 	struct Event : public mrt::Serializable {
 		std::string name;
 		bool repeat;
+		std::string sound;
+		bool played;
 		
 		Event();
-		Event(const std::string name, const bool repeat);
+		Event(const std::string name, const bool repeat, const std::string &sound);
 		virtual void serialize(mrt::Serializator &s) const;
 		virtual void deserialize(const mrt::Serializator &s);
 	};

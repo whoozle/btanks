@@ -6,11 +6,12 @@
 #include "resource_manager.h"
 #include "world.h"
 #include "math/abs.h"
+#include "sound/mixer.h"
 
 Object::Event::Event() {}
 
-Object::Event::Event(const std::string name, const bool repeat): 
-	name(name), repeat(repeat) {}
+Object::Event::Event(const std::string name, const bool repeat, const std::string &sound): 
+	name(name), repeat(repeat), sound(sound), played(false) {}
 	
 void Object::Event::serialize(mrt::Serializator &s) const {
 	s.add(name);
@@ -77,17 +78,31 @@ const int Object::getDirection() const {
 void Object::play(const std::string &id, const bool repeat) {
 	if (_events.empty())
 		_pos = 0;
-	_events.push_back(Event(id, repeat));
+	const Pose *pose = _model->getPose(id);
+	if (pose == NULL) {
+		LOG_WARN(("animation model %s does not have pose %s", _model_name.c_str(), id.c_str()));
+		return;
+	}
+
+	_events.push_back(Event(id, repeat, pose->sound));
 }
 
 void Object::playNow(const std::string &id) {
+	const Pose *pose = _model->getPose(id);
+	if (pose == NULL) {
+		LOG_WARN(("animation model %s does not have pose %s", _model_name.c_str(), id.c_str()));
+		return;
+	}
 	_pos = 0;
-	_events.push_front(Event(id, false));
+	_events.push_front(Event(id, false, pose->sound));
 }
 
 void Object::cancel() {
 	if (_events.empty()) 
 		return;
+
+	Mixer->cancelSample(getID(), _events.front().sound);
+
 	_events.pop_front();
 	_pos = 0;
 }
@@ -97,6 +112,7 @@ void Object::cancelRepeatable() {
 		if (i->repeat) {
 			if (i == _events.begin())
 				_pos = 0;
+			Mixer->cancelSample(getID(), i->sound);
 			i = _events.erase(i);
 		} 
 		else ++i;
@@ -105,6 +121,7 @@ void Object::cancelRepeatable() {
 
 
 void Object::cancelAll() {
+	Mixer->cancelAll(getID());
 	_events.clear();
 	_pos = 0;
 }
@@ -128,7 +145,7 @@ void Object::tick(const float dt) {
 	if (_events.empty()) 
 		return;
 	
-	const Event & event = _events.front();
+	Event & event = _events.front();
 	//LOG_DEBUG(("%p: event: %s, pos = %f", (void *)this, event.name.c_str(), _pos));
 	const Pose * pose = _model->getPose(event.name);
 	
@@ -140,6 +157,11 @@ void Object::tick(const float dt) {
 	
 	if (pose->z > -1000) {
 		setZ(pose->z);
+	}
+	
+	if (!event.played) {
+		event.played = true;
+		Mixer->playSample(getID(), event.sound, event.repeat);
 	}
 	
 	_pos += dt * pose->speed;
