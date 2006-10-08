@@ -13,7 +13,7 @@ class OggStream;
 class IMixer {
 public:
 	DECLARE_SINGLETON(IMixer);
-	void init();
+	void init(const bool no_sound, const bool no_music);
 	void loadPlaylist(const std::string &file);
 	void play();
 	
@@ -23,6 +23,8 @@ public:
 	IMixer();
 	~IMixer();
 private: 
+	bool _nosound, _nomusic;
+	
 	typedef std::map<const std::string, mrt::Chunk *> Sounds;
 	Sounds _sounds;
 

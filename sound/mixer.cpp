@@ -16,24 +16,35 @@
 
 IMPLEMENT_SINGLETON(Mixer, IMixer)
 
-IMixer::IMixer() : _ogg(NULL) {}
+IMixer::IMixer() : _nosound(true), _nomusic(true), _ogg(NULL) {}
 
-void IMixer::init() {
+void IMixer::init(const bool nosound, const bool nomusic) {
+	if (nosound && nomusic) {
+		_nosound = _nomusic = true;
+		return;
+	}
+	
 	delete _ogg;
 	_ogg = NULL;
 	
 	alutInit(NULL, NULL);
 	AL_CHECK(("alutInit"));
 	
-	GET_CONFIG_VALUE("engine.sound.doppler-factor", float, df, 1.0);
-	alDopplerFactor(df);
-	AL_CHECK(("alDopplerFactor"));
+	TRY {
+		GET_CONFIG_VALUE("engine.sound.doppler-factor", float, df, 1.0);
+		alDopplerFactor(df);
+		AL_CHECK(("alDopplerFactor"));
 	
-	GET_CONFIG_VALUE("engine.sound.doppler-velocity", float, dv, 1000);
-	alDopplerVelocity(dv);
+		GET_CONFIG_VALUE("engine.sound.doppler-velocity", float, dv, 1000);
+		alDopplerVelocity(dv);
+	} CATCH("init", {});
+	_nosound = nosound;
+	_nomusic = nomusic;
 }
 
 IMixer::~IMixer() {
+	_nosound = true;
+	
 	delete _ogg; 
 	_ogg = NULL;
 	
@@ -47,6 +58,9 @@ IMixer::~IMixer() {
 
 
 void IMixer::loadPlaylist(const std::string &file) {
+	if (_nomusic) 
+		return;
+	
 	_playlist.clear();
 	TRY {
 		mrt::File f;
@@ -62,6 +76,9 @@ void IMixer::loadPlaylist(const std::string &file) {
 }
 
 void IMixer::play() {
+	if (_nomusic) 
+		return;
+
 	int n = _playlist.size();
 	if (n == 0) {
 		LOG_WARN(("nothing to play"));
@@ -93,6 +110,9 @@ void IMixer::play() {
 }
 
 void IMixer::loadSample(const std::string &filename) {
+	if (_nosound) 
+		return;
+
 	mrt::Chunk * data = NULL;
 	GET_CONFIG_VALUE("engine.data-directory", std::string, data_dir, "data");
 	TRY {
