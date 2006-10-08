@@ -50,22 +50,6 @@ IGame::IGame() : _my_index(-1), _address("localhost"), _autojoin(false), _shake(
 }
 IGame::~IGame() {}
 
-#if 0
-typedef void (APIENTRY *glEnable_Func)(GLenum cap);
-typedef void (APIENTRY *glFlush_Func)(void);
-typedef void (APIENTRY *glBlendFunc_Func) (GLenum sfactor, GLenum dfactor );
-
-template <typename FuncPtr> union SharedPointer {
-	FuncPtr call;
-	void *ptr;
-};
-
-static SharedPointer<glEnable_Func> glEnable_ptr;
-static SharedPointer<glBlendFunc_Func> glBlendFunc_ptr;
-static SharedPointer<glFlush_Func> glFlush_ptr;
-
-#endif
-
 void IGame::init(const int argc, char *argv[]) {
 	srand(time(NULL));
 	
@@ -150,21 +134,6 @@ void IGame::init(const int argc, char *argv[]) {
 		if (SDL_GL_LoadLibrary(NULL) == -1) 
 			throw_sdl(("SDL_GL_LoadLibrary"));
 
-#if 0
-		glEnable_ptr.ptr = SDL_GL_GetProcAddress("glEnable");
-		if (!glEnable_ptr.ptr)
-			throw_ex(("cannot get address of glEnable"));
-	
-		glBlendFunc_ptr.ptr = SDL_GL_GetProcAddress("glBlendFunc");
-		if (!glBlendFunc_ptr.ptr)
-			throw_ex(("cannot get address of glBlendFunc"));
-
-		glFlush_ptr.ptr = SDL_GL_GetProcAddress("glFlush");
-		if (!glFlush_ptr.ptr)
-			throw_ex(("cannot get address of glFlush"));
-
-#endif
-
 	}
 	
 	int default_flags = sdlx::Surface::Hardware | sdlx::Surface::Alpha | (_opengl? SDL_OPENGL: 0) ;
@@ -238,10 +207,6 @@ void IGame::init(const int argc, char *argv[]) {
 		SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
 		//SDL_GL_SetAttribute( SDL_GL_ALPHA_SIZE, 8 );
 	
-#if 0
-		glBlendFunc_ptr.call( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
-		glEnable_ptr.call( GL_BLEND ) ;
-#endif
 	
 		//_window.setVideoMode(w, h, 0,  SDL_OPENGL | SDL_OPENGLBLIT | flags );
 #ifdef USE_GLSDL

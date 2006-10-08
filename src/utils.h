@@ -17,5 +17,11 @@ template <class T> struct delete_ptr2 : public std::unary_function<T, void> {
 	}
 };
 
+template <typename FuncPtr> union SharedPointer {
+	FuncPtr call;
+	void *ptr;
+};
+
+
 #endif
 
