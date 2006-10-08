@@ -203,6 +203,7 @@ void OggStream::decode(Sample &sample, const std::string &fname) {
 		sample.format = AL_FORMAT_MONO16;
 	else
 		sample.format = AL_FORMAT_STEREO16;
+	sample.rate = info->rate;
 
 	ov_clear(&ogg);	
 }

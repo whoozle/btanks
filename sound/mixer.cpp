@@ -119,7 +119,10 @@ void IMixer::loadSample(const std::string &filename) {
 	TRY {
 		sample = new Sample;
 		OggStream::decode(*sample, data_dir + "/sounds/" + filename);
-		LOG_DEBUG(("sample %s decoded, size: %u", filename.c_str(), sample->data.getSize()));
+		LOG_DEBUG(("sample %s decoded. rate: %u, size: %u", filename.c_str(), (unsigned)sample->rate, (unsigned)sample->data.getSize()));
+
+		sample->init();
+				
 		_sounds[filename] = sample;
 	} CATCH("loadSample", { delete sample; sample = NULL; });
 }

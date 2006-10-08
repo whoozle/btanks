@@ -106,13 +106,15 @@ Export('env')
 Export('sigc_cpppath')
 Export('sigc_lib')
 
+env.Append(CPPPATH=['.', 'src'])
+env.Append(CPPPATH=sigc_cpppath)
+
 SConscript('mrt/SConscript')
 SConscript('sdlx/SConscript')
+SConscript('net/SConscript')
 
 env = env.Copy()
 env.Append(LIBPATH=['mrt', 'sdlx', 'src'])
-env.Append(CPPPATH=['.', 'src'])
-env.Append(CPPPATH=sigc_cpppath)
 
 svnversion = os.popen('svnversion -n .', 'r')
 version = svnversion.readline()
@@ -131,8 +133,6 @@ bt_sources = 	['src/alarm.cpp', 'src/base_object.cpp',
 	'objects/corpse.cpp', 'objects/item.cpp', 'objects/mine.cpp', 'objects/dirt.cpp', 
 	'objects/damage.cpp', 'objects/helicopter.cpp', 'objects/paratrooper.cpp', 'objects/kamikaze.cpp',
 	
-	'net/protocol.cpp', 'net/server.cpp', 'net/client.cpp', 'net/connection.cpp', 'net/monitor.cpp',
-	
 	'src/player_state.cpp', 
 	'controls/joyplayer.cpp', 'controls/keyplayer.cpp', 'controls/external_control.cpp', 'controls/mouse_control.cpp', 
 
@@ -143,12 +143,14 @@ bt_sources = 	['src/alarm.cpp', 'src/base_object.cpp',
 	'SDL_collide/SDL_collide.c', 
 	'src/main.cpp', 'src/config.cpp', 'src/game.cpp', 
 
-	'sound/ogg_ex.cpp', 'sound/ogg_stream.cpp', 'sound/mixer.cpp', 
+	'sound/ogg_ex.cpp', 'sound/ogg_stream.cpp', 'sound/mixer.cpp', 'sound/sample.cpp', 
 	
 	vobj
 	]
+	
+Import('bt_net')
 
-bt_libs = ['sdlx', 'mrt', sigc_lib, 'SDL_ttf', 'SDL_image', 'SDL', 'expat', 'z', 'vorbisfile', 'openal', 'alut']
+bt_libs = [bt_net, 'sdlx', 'mrt', sigc_lib, 'SDL_ttf', 'SDL_image', 'SDL', 'expat', 'z', 'vorbisfile', 'openal', 'alut']
 if sys.platform == "win32":
 #	bt_libs[0:0] = ['SDLmain']
 	bt_libs.append('Ws2_32')
