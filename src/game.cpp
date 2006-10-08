@@ -46,7 +46,7 @@
 IMPLEMENT_SINGLETON(Game, IGame)
 
 IGame::IGame() : _my_index(-1), _address("localhost"), _autojoin(false), _shake(0), _trip_time(10), _next_sync(true) {
-	LOG_DEBUG(("IGame ctor"));
+	//LOG_DEBUG(("IGame ctor"));
 }
 IGame::~IGame() {}
 

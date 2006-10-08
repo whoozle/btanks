@@ -227,7 +227,7 @@ void IResourceManager::registerObject(const std::string &classname, Object *o) {
 	o->registered_name = classname;
 	delete _objects[classname];
 	_objects[classname] = o;
-	LOG_DEBUG(("classname %s registered at %p", classname.c_str(), (void*)o));
+	//LOG_DEBUG(("classname %s registered at %p", classname.c_str(), (void*)o));
 }
 
 void IResourceManager::createAlias(const std::string &name, const std::string &classname) {
