@@ -324,19 +324,22 @@ void IGame::onMenu(const std::string &name) {
 		animation1 += "-" + vehicle1;
 		animation2 += "-" + vehicle2;
 
-		GET_CONFIG_VALUE("player.control-method", std::string, cm, "keys-1");		
+		GET_CONFIG_VALUE("player.control-method-1", std::string, cm, "keys-1");		
 		GET_CONFIG_VALUE("player.control-method-2", std::string, cm2, "keys-2");
 		
 		int p1 = _my_index = spawnPlayer(vehicle1, animation1, cm);
 		int p2 = spawnPlayer(vehicle2, animation2, cm2);
+		
+		v3<int> ts = Map->getTileSize();
+		int w = _window.getSize().w / ts.x * ts.x;
 
 		_players[p1].viewport = _window.getSize();
-		_players[p1].viewport.w /= 2;
+		_players[p1].viewport.w = w;
 		_players[p1].visible = true;
 
 		_players[p2].viewport = _window.getSize();
 		_players[p2].viewport.x = _players[_my_index].viewport.w;
-		_players[p2].viewport.w /= 2;
+		_players[p2].viewport.w = w;
 		_players[p2].visible = true;
 		LOG_DEBUG(("p1: %d %d %d %d", _players[p1].viewport.x, _players[p1].viewport.y, _players[p1].viewport.w, _players[p1].viewport.h));
 		LOG_DEBUG(("p2: %d %d %d %d", _players[p2].viewport.x, _players[p2].viewport.y, _players[p2].viewport.w, _players[p2].viewport.h));
