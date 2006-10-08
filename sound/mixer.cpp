@@ -125,13 +125,13 @@ void IMixer::loadSample(const std::string &filename) {
 }
 
 void IMixer::playSample(const int id, const std::string &name, const bool loop) {
-	if (_nosound)
+	if (_nosound || name.empty())
 		return;
 	LOG_DEBUG(("object: %d requests %s (%s)", id, name.c_str(), loop?"loop":"single"));
 }
 
 void IMixer::cancelSample(const int id, const std::string &name) {
-	if (_nosound)
+	if (_nosound || name.empty())
 		return;
 	LOG_DEBUG(("object %d cancels %s", id, name.c_str()));
 }
@@ -139,12 +139,11 @@ void IMixer::cancelSample(const int id, const std::string &name) {
 void IMixer::cancelAll(const int id) {
 	if (_nosound)
 		return;
-
 }
 
 
 void IMixer::cancelAll() {
 	if (_nosound)
 		return;
-
+	LOG_DEBUG(("stop playing anything"));
 }
