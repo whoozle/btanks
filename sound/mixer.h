@@ -4,6 +4,8 @@
 #include "mrt/singleton.h"
 #include <string>
 #include <map>
+#include <AL/al.h>
+#include <math/v3.h>
 
 namespace mrt{
 class Chunk;
@@ -11,6 +13,7 @@ class Chunk;
 
 class OggStream;
 class Sample;
+class Object;
 
 class IMixer {
 public:
@@ -20,11 +23,15 @@ public:
 	void play();
 	
 	//sample part
+	void setListener(const v3<float> &pos, const v3<float> &vel);
+	
 	void loadSample(const std::string &filename);
-	void playSample(const int id, const std::string &name, const bool loop);
-	void cancelSample(const int id, const std::string &name);
-	void cancelAll(const int id);
+	void playSample(const Object *o, const std::string &name, const bool loop);
+	void cancelSample(const Object *o, const std::string &name);
+	void cancelAll(const Object *o);
 	void cancelAll();
+	
+	void updateObjects();
 	
 	IMixer();
 	~IMixer();
@@ -33,6 +40,9 @@ private:
 	
 	typedef std::map<const std::string, Sample *> Sounds;
 	Sounds _sounds;
+	
+	typedef std::map<const int, ALuint> Sources;
+	Sources _sources;
 
 	typedef std::map<const std::string, bool> PlayList;
 	PlayList _playlist;

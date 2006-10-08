@@ -510,6 +510,7 @@ void IGame::run() {
 #endif
 		
 			World->tick(dt);
+			Mixer->updateObjects();
 #ifdef SHOW_PERFSTATS
 			t_tick_w = SDL_GetTicks();
 #endif
@@ -544,11 +545,14 @@ void IGame::run() {
 			t_tick_c = SDL_GetTicks();
 #endif				
 			
-			if (_players.size()) {
+			if (_players.size() && (unsigned)_my_index < _players.size()) {
 				const Object * p = _players[_my_index].obj;
 				if (p != NULL) {
 					v3<float> pos, vel;
 					p->getInfo(pos, vel);
+
+					Mixer->setListener(pos, vel);
+
 					//LOG_DEBUG(("player[0] %f, %f", vel.x, vel.y));
 					int wx = (int)pos.x - _viewport.x;
 					int wy = (int)pos.y - _viewport.y;

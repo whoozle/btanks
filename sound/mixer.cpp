@@ -11,6 +11,9 @@
 #include <AL/alut.h>
 
 #include "config.h"
+#include "world.h"
+#include "object.h"
+#include "math/v3.h"
 
 #define AL_CHECK(fmt) if (alGetError() != AL_NO_ERROR) \
 	throw_ex(fmt)
@@ -127,21 +130,102 @@ void IMixer::loadSample(const std::string &filename) {
 	} CATCH("loadSample", { delete sample; sample = NULL; });
 }
 
-void IMixer::playSample(const int id, const std::string &name, const bool loop) {
+void IMixer::playSample(const Object *o, const std::string &name, const bool loop) {
 	if (_nosound || name.empty())
 		return;
+	const int id = o->getID();
 	LOG_DEBUG(("object: %d requests %s (%s)", id, name.c_str(), loop?"loop":"single"));
+	Sounds::const_iterator i = _sounds.find(name);
+	if (i == _sounds.end()) {
+		LOG_WARN(("sound %s was not loaded. skipped.", name.c_str()));
+		return;
+	}
+	const Sample &sample = *i->second;
+	
+	Sources::iterator j = _sources.find(o->getID());
+	ALuint source;
+	if (j == _sources.end()) {
+		alGenSources(1, &source);
+		AL_CHECK(("alGenSources"));
+		_sources[id] = source;
+	} else source = j->second;
+
+	v3<float> pos, vel;
+	o->getInfo(pos, vel);
+
+	GET_CONFIG_VALUE("engine.sound.positioning-divisor", float, k, 200.0);
+	
+	ALfloat al_pos[] = { pos.x / k, -pos.y / k, pos.z / k };
+	ALfloat al_vel[] = { vel.x / k, -vel.y / k, vel.z / k };
+	
+	alSourcei (source, AL_BUFFER,   sample.buffer);
+	alSourcef (source, AL_PITCH,    1.0          );
+	alSourcef (source, AL_GAIN,     1.0          );
+	alSourcefv(source, AL_POSITION, al_pos       );
+	alSourcefv(source, AL_VELOCITY, al_vel       );
+	alSourcei (source, AL_LOOPING,  loop?AL_TRUE:AL_FALSE );
+	alSourcePlay(source);
 }
 
-void IMixer::cancelSample(const int id, const std::string &name) {
+void IMixer::updateObjects() {
+	if (_nosound) 
+		return;
+		
+	for(Sources::iterator j = _sources.begin(); j != _sources.end();) {
+		Object *o = World->getObjectByID(j->first);
+		if (o == NULL) {
+			alDeleteSources(1, &j->second);
+			_sources.erase(j++);
+			continue;
+		}
+		
+		v3<float> pos, vel;
+		o->getInfo(pos, vel);
+		GET_CONFIG_VALUE("engine.sound.positioning-divisor", float, k, 200.0);
+		
+		ALfloat al_pos[] = { pos.x / k, -pos.y / k, pos.z / k };
+		ALfloat al_vel[] = { vel.x / k, -vel.y / k, vel.z / k };
+	
+		alSourcefv(j->second, AL_POSITION, al_pos);
+		alSourcefv(j->second, AL_VELOCITY, al_vel);
+		
+		++j;
+	}
+}
+
+
+void IMixer::setListener(const v3<float> &pos, const v3<float> &vel) {
+	GET_CONFIG_VALUE("engine.sound.positioning-divisor", float, k, 200.0);
+		
+	ALfloat al_pos[] = { pos.x / k, -pos.y / k, pos.z / k };
+	ALfloat al_vel[] = { vel.x / k, -vel.y / k, vel.z / k };
+		
+	alListenerfv(AL_POSITION,    al_pos);
+	alListenerfv(AL_VELOCITY,    al_vel);
+	//alListenerfv(AL_ORIENTATION, al_vel);
+}
+	
+
+
+
+void IMixer::cancelSample(const Object *o, const std::string &name) {
 	if (_nosound || name.empty())
 		return;
-	LOG_DEBUG(("object %d cancels %s", id, name.c_str()));
+	LOG_DEBUG(("object %d cancels %s", o->getID(), name.c_str()));
+	Sources::iterator j = _sources.find(o->getID());
+	if (j == _sources.end())
+		return;
+	alSourceStop(j->second);
 }
 
-void IMixer::cancelAll(const int id) {
+void IMixer::cancelAll(const Object *o) {
 	if (_nosound)
 		return;
+	
+	Sources::iterator j = _sources.find(o->getID());
+	if (j == _sources.end())
+		return;
+	alSourceStop(j->second);
 }
 
 
@@ -149,4 +233,9 @@ void IMixer::cancelAll() {
 	if (_nosound)
 		return;
 	LOG_DEBUG(("stop playing anything"));
+	for(Sources::iterator j = _sources.begin(); j != _sources.end(); ++j) {
+		alSourceStop(j->second);
+		alDeleteSources(1, &j->second);
+	}
+	_sources.clear();
 }

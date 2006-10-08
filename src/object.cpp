@@ -101,7 +101,7 @@ void Object::cancel() {
 	if (_events.empty()) 
 		return;
 
-	Mixer->cancelSample(getID(), _events.front().sound);
+	Mixer->cancelSample(this, _events.front().sound);
 
 	_events.pop_front();
 	_pos = 0;
@@ -112,7 +112,7 @@ void Object::cancelRepeatable() {
 		if (i->repeat) {
 			if (i == _events.begin())
 				_pos = 0;
-			Mixer->cancelSample(getID(), i->sound);
+			Mixer->cancelSample(this, i->sound);
 			i = _events.erase(i);
 		} 
 		else ++i;
@@ -121,7 +121,7 @@ void Object::cancelRepeatable() {
 
 
 void Object::cancelAll() {
-	Mixer->cancelAll(getID());
+	Mixer->cancelAll(this);
 	_events.clear();
 	_pos = 0;
 }
@@ -161,7 +161,7 @@ void Object::tick(const float dt) {
 	
 	if (!event.played) {
 		event.played = true;
-		Mixer->playSample(getID(), event.sound, event.repeat);
+		Mixer->playSample(this, event.sound, event.repeat);
 	}
 	
 	_pos += dt * pose->speed;
