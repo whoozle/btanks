@@ -92,6 +92,15 @@ if not conf.CheckLibWithHeader('SDL_image', 'SDL/SDL_image.h', 'c++', "IMG_Load(
 if not conf.CheckLibWithHeader('SDL_ttf', 'SDL/SDL_ttf.h', 'c++', "TTF_Init();", False):
 	Exit(1)
 
+if not conf.CheckLibWithHeader('openal', 'AL/al.h', 'c++', "ALuint s; alGenSources(1, &s);", False):
+	Exit(1)
+
+if not conf.CheckLibWithHeader('alut', 'AL/alut.h', 'c++', "alutInit(0,0);", False):
+	Exit(1)
+
+if not conf.CheckLibWithHeader('vorbisfile', 'vorbis/vorbisfile.h', 'c++', "ov_open(0, 0, 0, 0);", False):
+	Exit(1)
+
 #if not conf.CheckLibWithHeader('SDL_net', 'SDL/SDL_net.h', 'c++', "SDLNet_Init();", False):
 #	Exit(1)
 
