@@ -42,7 +42,7 @@ void OggStream::_open(const std::string &fname) {
 		_format = AL_FORMAT_STEREO16;
 	_opened = true;
 		
-	GET_CONFIG_VALUE("engine.sound.buffers", int, bf, 8);
+	GET_CONFIG_VALUE("engine.sound.buffers", int, bf, 4);
 	if (bf < 1 || bf > 32) 
 		throw_ex(("engine.sound.buffers must be in (1,32) range (%d)", bf));
 	_buffers_n = bf;
