@@ -182,6 +182,10 @@ void OggStream::decode(Sample &sample, const std::string &fname) {
 	do {
 		data.setSize(buffer_size + pos);
 		r = ov_read(&ogg, ((char *)data.getPtr()) + pos, buffer_size, 0, 2, 1, & section);
+		if (r == OV_HOLE) {
+			LOG_WARN(("hole in ogg data, attempt to recover"));
+			continue;
+		}
     
 		if(r > 0) {
 			pos += r;
