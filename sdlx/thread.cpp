@@ -7,8 +7,11 @@ using namespace sdlx;
 Thread::Thread() : _thread(NULL) {}
 
 static int thread_starter(void *o) {
-	Thread *t = reinterpret_cast<Thread *>(o);
-	return t->run();
+	TRY {
+		Thread *t = reinterpret_cast<Thread *>(o);
+		return t->run();
+	} CATCH("thread::run", );
+	return -1;
 }
 
 Thread::~Thread() {
