@@ -86,6 +86,7 @@ void IMixer::play() {
 	int n = _playlist.size();
 	if (n == 0) {
 		LOG_WARN(("nothing to play"));
+		_nomusic = true;
 		return;
 	}
 	int p = mrt::random(n);
