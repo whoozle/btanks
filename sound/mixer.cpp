@@ -48,6 +48,7 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 
 IMixer::~IMixer() {
 	_nosound = true;
+	_nomusic = true;
 	
 	delete _ogg; 
 	_ogg = NULL;
@@ -117,6 +118,11 @@ void IMixer::play() {
 void IMixer::loadSample(const std::string &filename) {
 	if (_nosound) 
 		return;
+	LOG_DEBUG(("loading sample %s", filename.c_str()));
+	if (_sounds.find(filename) != _sounds.end()) {
+		LOG_DEBUG(("already loaded, skipped."));
+		return;
+	}
 
 	Sample * sample = NULL;
 	GET_CONFIG_VALUE("engine.data-directory", std::string, data_dir, "data");
