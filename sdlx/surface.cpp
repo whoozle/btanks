@@ -207,10 +207,10 @@ void Surface::loadImage(const mrt::Chunk &memory) {
 	if (op == NULL) throw_sdl(("SDL_RWFromMem"));
 	try {
 		surface = IMG_Load_RW(op, 0);
-		if (surface == NULL)
-			throw_sdl(("IMG_Load_RW"));
 		SDL_FreeRW(op);
 		op = NULL;
+		if (surface == NULL)
+			throw_sdl(("IMG_Load_RW"));
 	} CATCH("loadImage", {SDL_FreeRW(op); throw;})
 }
 
@@ -294,7 +294,7 @@ void Surface::convertToDisplay() {
 void Surface::free() {
     if (surface == NULL) return;
     SDL_FreeSurface(surface);
-    surface=NULL;
+    surface = NULL;
 }
 
 void Surface::lock() {
