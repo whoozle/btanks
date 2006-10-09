@@ -28,4 +28,4 @@ void Layer::optimize(std::vector<sdlx::Surface *> & tilemap) {
 	}
 }
 
-Layer::~Layer() { delete _s_data; }
+Layer::~Layer() { delete[] _s_data; }
