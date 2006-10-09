@@ -217,8 +217,9 @@ void BaseObject::addDamage(BaseObject *from, const int dhp, const bool emitDeath
 	o->hp = dhp;
 	if (hp < 0) 
 		o->hp += hp;
-	World->addObject(o, _position);
-	
+	v3<float> pos = _position;
+	pos.z = 0;
+	World->addObject(o, pos);	
 }
 
 
