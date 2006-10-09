@@ -33,6 +33,7 @@ env.Append(CPPDEFINES = ['_REENTRANT'])
 
 #print sys.platform
 if sys.platform == "win32":
+	al_lib = 'openal32'
 	env.Append(CPPDEFINES = ['WIN32', '_WINDOWS']) #, '_UNICODE'
 	env.Append(CCFLAGS = ' /GR /W3 /MD /nologo ')
 	env.Append(CPPFLAGS = ' /GX /GR /W3 /MD /nologo ')
@@ -52,6 +53,7 @@ if sys.platform == "win32":
 #	env.Append(CPPFLAGS = '/Ox /Ot ') #optimizations
 #	env.Prepend(CPPPATH=' C:\\\\STLport-4.6.2\\\\stlport ')
 else:
+	al_lib = 'openal'
 	env.Append(CPPFLAGS=' -Wall -pedantic -Wno-long-long -pipe ')
 	env.Append(CCFLAGS=' -Wall -pedantic -Wno-long-long -pipe ')
 
@@ -92,13 +94,13 @@ if not conf.CheckLibWithHeader('SDL_image', 'SDL/SDL_image.h', 'c++', "IMG_Load(
 if not conf.CheckLibWithHeader('SDL_ttf', 'SDL/SDL_ttf.h', 'c++', "TTF_Init();", False):
 	Exit(1)
 
-if not conf.CheckLibWithHeader('openal', 'AL/al.h', 'c++', "ALuint s; alGenSources(1, &s);", False):
+if not conf.CheckLibWithHeader(al_lib, 'AL/al.h', 'c++', "ALuint s; alGenSources(1, &s);", False):
 	Exit(1)
 
 if not conf.CheckLibWithHeader('vorbisfile', 'vorbis/vorbisfile.h', 'c++', "ov_open(0, 0, 0, 0);", False):
 	Exit(1)
 
-conf.env.Append(LIBS='openal')
+conf.env.Append(LIBS=al_lib)
 if not conf.CheckLibWithHeader('alut', 'AL/alut.h', 'c++', "alutInit(0,0);", False):
 	Exit(1)
 
@@ -161,7 +163,7 @@ bt_sources = 	['src/alarm.cpp', 'src/base_object.cpp',
 	
 Import('bt_net')
 
-bt_libs = [bt_net, 'sdlx', 'mrt', sigc_lib, 'SDL_ttf', 'SDL_image', 'SDL', 'expat', 'z', 'vorbisfile', 'openal', 'alut']
+bt_libs = [bt_net, 'sdlx', 'mrt', sigc_lib, 'SDL_ttf', 'SDL_image', 'SDL', 'expat', 'z', 'vorbisfile', al_lib, 'alut']
 if sys.platform == "win32":
 #	bt_libs[0:0] = ['SDLmain']
 	bt_libs.append('Ws2_32')
