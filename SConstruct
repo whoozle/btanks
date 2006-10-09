@@ -127,7 +127,7 @@ SConscript('sdlx/SConscript')
 SConscript('net/SConscript')
 
 env = env.Copy()
-env.Append(LIBPATH=['mrt', 'sdlx', 'src'])
+env.Append(LIBPATH=['mrt', 'sdlx', 'src', 'net'])
 
 svnversion = os.popen('svnversion -n .', 'r')
 version = svnversion.readline()
@@ -161,9 +161,8 @@ bt_sources = 	['src/alarm.cpp', 'src/base_object.cpp',
 	vobj
 	]
 	
-Import('bt_net')
 
-bt_libs = [bt_net, 'sdlx', 'mrt', sigc_lib, 'SDL_ttf', 'SDL_image', 'SDL', 'expat', 'z', 'vorbisfile', al_lib, 'alut']
+bt_libs = ['bt_net', 'sdlx', 'mrt', sigc_lib, 'SDL_ttf', 'SDL_image', 'SDL', 'expat', 'z', 'vorbisfile', al_lib, 'alut']
 if sys.platform == "win32":
 #	bt_libs[0:0] = ['SDLmain']
 	bt_libs.append('Ws2_32')
