@@ -572,8 +572,8 @@ void IGame::run() {
 #ifdef SHOW_PERFSTATS
 			t_tick_c = SDL_GetTicks();
 #endif				
-			for(unsigned int p = 0; p < _players.size(); ++p) {
-				PlayerSlot &slot = _players[p];
+			for(unsigned int pi = 0; pi < _players.size(); ++pi) {
+				PlayerSlot &slot = _players[pi];
 				const Object * p = slot.obj;
 				if (p == NULL || !slot.visible)
 					continue; 
