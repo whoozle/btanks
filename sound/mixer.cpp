@@ -175,7 +175,7 @@ void IMixer::updateObjects() {
 		return;
 		
 	for(Sources::iterator j = _sources.begin(); j != _sources.end();) {
-	const Object *o2 = NULL;
+	int last_id = -1;
 	TRY {
 		ALuint source = j->second;
 		ALenum state;
@@ -186,13 +186,13 @@ void IMixer::updateObjects() {
 			_sources.erase(j++);
 			continue;
 		}
-			
-		Object *o = World->getObjectByID(j->first);
-		if (o == NULL || o != o2) {
-			o2 = o;
+		if (j->first == last_id) {
 			++j;
 			continue;
 		}
+
+		last_id = j->first;
+		Object *o = World->getObjectByID(j->first);
 		
 		v3<float> pos, vel;
 		o->getInfo(pos, vel);
