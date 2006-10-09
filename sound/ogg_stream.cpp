@@ -170,6 +170,7 @@ void OggStream::decode(Sample &sample, const std::string &fname) {
 	int r = ov_open(file, &ogg, NULL, 0);
 	if (r < 0)
 		throw_ogg(r, ("ov_open('%s')", fname.c_str()));
+	file.unlink();
 
 	GET_CONFIG_VALUE("engine.sound.file-buffer-size", int, buffer_size, 32768);
 
