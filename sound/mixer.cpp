@@ -148,21 +148,18 @@ void IMixer::playSample(const Object *o, const std::string &name, const bool loo
 	}
 	const Sample &sample = *i->second;
 	
-	Sources::iterator j = _sources.find(o->getID());
 	ALuint source;
-	if (j == _sources.end()) {
-		alGenSources(1, &source);
-		AL_CHECK(("alGenSources"));
-		_sources[id] = source;
-	} else source = j->second;
+	alGenSources(1, &source);
+	AL_CHECK(("alGenSources"));
+	_sources.insert(Sources::value_type(id, source));
 
 	v3<float> pos, vel;
 	o->getInfo(pos, vel);
 
 	GET_CONFIG_VALUE("engine.sound.positioning-divisor", float, k, 200.0);
 	
-	ALfloat al_pos[] = { pos.x / k, -pos.y / k, pos.z / k };
-	ALfloat al_vel[] = { vel.x / k, -vel.y / k, vel.z / k };
+	ALfloat al_pos[] = { pos.x / k, -pos.y / k, 0*pos.z / k };
+	ALfloat al_vel[] = { vel.x / k, -vel.y / k, 0*vel.z / k };
 	
 	alSourcei (source, AL_BUFFER,   sample.buffer);
 	alSourcef (source, AL_PITCH,    1.0          );
@@ -178,18 +175,22 @@ void IMixer::updateObjects() {
 		return;
 		
 	for(Sources::iterator j = _sources.begin(); j != _sources.end();) {
-		Object *o = World->getObjectByID(j->first);
+	const Object *o2 = NULL;
+	TRY {
 		ALuint source = j->second;
-		if (o == NULL) {
-			ALenum state;
-			alGetSourcei(source, AL_SOURCE_STATE, &state);
-			if (state == AL_PLAYING) {
-				++j;
-				continue;
-			}
-			
+		ALenum state;
+		alGetSourcei(source, AL_SOURCE_STATE, &state);
+
+		if (state != AL_PLAYING) {
 			alDeleteSources(1, &source);
 			_sources.erase(j++);
+			continue;
+		}
+			
+		Object *o = World->getObjectByID(j->first);
+		if (o == NULL || o != o2) {
+			o2 = o;
+			++j;
 			continue;
 		}
 		
@@ -197,13 +198,13 @@ void IMixer::updateObjects() {
 		o->getInfo(pos, vel);
 		GET_CONFIG_VALUE("engine.sound.positioning-divisor", float, k, 200.0);
 		
-		ALfloat al_pos[] = { pos.x / k, -pos.y / k, pos.z / k };
-		ALfloat al_vel[] = { vel.x / k, -vel.y / k, vel.z / k };
+		ALfloat al_pos[] = { pos.x / k, -pos.y / k, 0*pos.z / k };
+		ALfloat al_vel[] = { vel.x / k, -vel.y / k, 0*vel.z / k };
 	
 		alSourcefv(j->second, AL_POSITION, al_pos);
 		alSourcefv(j->second, AL_VELOCITY, al_vel);
-		
 		++j;
+	} CATCH("updateObjects", {++j; continue;})
 	}
 }
 
