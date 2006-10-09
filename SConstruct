@@ -35,17 +35,17 @@ env.Append(CPPDEFINES = ['_REENTRANT'])
 if sys.platform == "win32":
 	al_lib = 'openal32'
 	env.Append(CPPDEFINES = ['WIN32', '_WINDOWS']) #, '_UNICODE'
-	env.Append(CCFLAGS = ' /GR /W3 /MD /nologo ')
-	env.Append(CPPFLAGS = ' /GX /GR /W3 /MD /nologo ')
+	env.Append(CCFLAGS = ' /GR /W3 /nologo ')
+	env.Append(CPPFLAGS = ' /GX /GR /W3 /nologo ')
 
 	if debug:
-		env.Append(CCFLAGS = ' /Yd /Zi /Ge /GT /GZ /Od /ZI ')
-		env.Append(CPPFLAGS = ' /Yd /Zi /Ge /GT /GZ /Od /ZI  ')
+		env.Append(CCFLAGS = ' /Yd /Zi /Ge /GT /GZ /Od /ZI /MDd ')
+		env.Append(CPPFLAGS = ' /Yd /Zi /Ge /GT /GZ /Od /ZI /MDd ')
 		env.Append(LINKFLAGS = ' /NOLOGO /DEBUG ')
 		env.Append(CPPDEFINES = ['DEBUG'])
 	else:
-		env.Append(CCCFLAGS = ' /Ot /Ob2gity /G6 /GA /GF /Gs /Gy ') #optimizations
-		env.Append(CPPFLAGS = ' /Ot /Ob2gity /G6 /GA /GF /Gs /Gy ') #optimizations
+		env.Append(CCCFLAGS = ' /Ot /Ob2gity /G6 /GA /GF /Gs /Gy /MD ') #optimizations
+		env.Append(CPPFLAGS = ' /Ot /Ob2gity /G6 /GA /GF /Gs /Gy /MD ') #optimizations
 		env.Append(LINKFLAGS = ' /OPT:REF /OPT:ICF /NOLOGO /INCREMENTAL:NO ')
 #		env.Append(CPPDEFINES = ['NDEBUG']) #uncomment on release. (assert will show nice message box even if no DEBUG macro defined
 
