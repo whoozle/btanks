@@ -3,6 +3,7 @@
 
 #include "mrt/exception.h"
 #include <AL/al.h>
+#include <AL/alut.h>
 
 class ALException : public mrt::Exception { 
 public:
