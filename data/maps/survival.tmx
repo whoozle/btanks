@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <map version="0.99b" orientation="orthogonal" width="25" height="22" tilewidth="64" tileheight="64">
  <properties>
-  <property name="object:umbrella:umbrella:1" value="1098,162,290"/>
+  <property name="object:umbrella:umbrella:1" value="1098,182,290"/>
   <property name="object:lodge:lodge:1" value="102,46,410"/>
   <property name="object:traffic-lights:traffic-lights:4" value="@6,7,1"/>
   <property name="object:traffic-lights:traffic-lights:3" value="@3,7,1"/>
@@ -10,8 +10,8 @@
   <property name="object:traffic-lights:traffic-lights:1" value="@3,4,1"/>
   <property name="object:road-sign:road-sign04:1" value="1330,884,1"/>
   <property name="object:van:van:1" value="1450,602,410"/>
+  <property name="object:stall:stall-right:15" value="626,190,415"/>
   <property name="object:stall:stall-left:16" value="517,190,415"/>
-  <property name="object:umbrella:bus-stop-right:1" value="1334,930,410"/>
   <property name="spawn:4" value="@24,20"/>
   <property name="object:mines-item:mines-item:1" value="424,84,180"/>
   <property name="spawn:3" value="@0,20"/>
@@ -24,7 +24,6 @@
   <property name="object:megaheal:megaheal:1" value="920,32,180"/>
   <property name="object:road-sign:road-sign02:1" value="1193,1360,10"/>
   <property name="object:heal:heal:9" value="@15,21,180"/>
-  <property name="object:tent:stall-right:15" value="626,190,415"/>
   <property name="object:bus-stop:bus-stop-left:1" value="192,930,410"/>
   <property name="object:road-sign:road-sign01:2" value="230,1244,1"/>
   <property name="object:heal:heal:1" value="24,1200,180"/>
@@ -34,10 +33,11 @@
   <property name="object:road-sign:road-sign09:1" value="394,1320,1"/>
   <property name="object:road-sign:road-sign08:1" value="1333,430,1"/>
   <property name="object:helicopter-with-kamikazes:helicopter:1" value="@5,5,900"/>
-  <property name="object:heal:umbrella:2" value="@21,20,410"/>
   <property name="object:tent:tent-top:14" value="572,192,410"/>
+  <property name="object:bus-stop:bus-stop-right:1" value="1334,930,410"/>
   <property name="object:gate:gate:1" value="@20,3,2"/>
   <property name="object:bus-stop:bus-stop-top:1" value="870,248,2"/>
+  <property name="object:umbrella:umbrella:2" value="@21,20,410"/>
  </properties>
  <tileset name="city objects" firstgid="1" tilewidth="64" tileheight="64">
   <image source="../tiles/city_objects_tileset.png"/>
@@ -56,8 +56,8 @@
  </tileset>
  <layer name="zerosloy" width="25" height="22">
   <properties>
-   <property name="z" value="-100"/>
    <property name="impassability" value="40"/>
+   <property name="z" value="-100"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGAVDGTAOtANGwSgYBaNgFIwCKgIARi84W5gIAAA=
@@ -120,8 +120,8 @@
  </layer>
  <layer name="city objects" width="25" height="22">
   <properties>
-   <property name="z" value="100"/>
    <property name="impassability" value="100"/>
+   <property name="z" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGAWjYBQMZcAz0A4YBUSD4RJXIkhs7gFzBXH2D5cwH0kAAIzGM1uYCAAA
@@ -130,8 +130,8 @@
  </layer>
  <layer name="borders low" width="25" height="22">
   <properties>
-   <property name="z" value="200"/>
    <property name="impassability" value="100"/>
+   <property name="z" value="200"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGAWjYBSQAwSYqKtuOAM1IsOAWHWjgDIwmnaJB6Npl/4AAC2kMeaYCAAA
@@ -167,8 +167,8 @@
  </layer>
  <layer name="buildings low" width="25" height="22">
   <properties>
-   <property name="impassability" value="100"/>
    <property name="z" value="400"/>
+   <property name="impassability" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAALvGgBuE4pFDBml45AoJ6A0G4hAgjkDCkVjUFUDNqsEiV03AjlggjgNibyScjMOOBjSxdihuJWAHsaATiLuAuAWIJwLxJCDuheJ+KtmBC8wA4pk0tmMUkA7CGXCne2rakcSAPd1TAkrR7KAF6APiZgZIHkykkR2gvAHKl6AyhpbxACvHqB0P2OygJQDFyWh5hR/gqxeRwWwK7IDFdREBdQvpZMciIN4CxEuheAkQLybBDlj9DgBXACjsmAgAAA==
@@ -177,8 +177,8 @@
  </layer>
  <layer name="city objects" width="25" height="22">
   <properties>
-   <property name="impassability" value="100"/>
    <property name="z" value="500"/>
+   <property name="impassability" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGJmAa6AdgAZg7mGhoR20NHsgAOMQNXsgASidMVHJLGYqmTMKhgcYTVejgFoAADljF7iYCAAA
@@ -199,11 +199,11 @@
    <property name="z" value="700"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgGHqAbaAdMAoGDRhNC4MDjMbDKBgF1AODLT/R2z0AFBVTdZgIAAA=
+   H4sIAAAAAAAAAGNgoC0oJEJNCBBHIOFIPGYVATEbmng12a7DBA1o/HYg7gDiViraMQqoB9DTArWBL43NB4FwBvzpnlp20BKw0diOZgZIHkykoR0gACpjaBkPMDtoDehhRz8d7BipgNblGqmAWPcsAuItQLwUipcA8WIS7aoFYgAzVd9bmAgAAA==
   </data>
   <tileproperties/>
  </layer>
- <layer name="trees mid" width="25" height="22">
+ <layer name="trees mid" width="25" height="22" visible="0">
   <properties>
    <property name="z" value="800"/>
   </properties>
@@ -212,7 +212,7 @@
   </data>
   <tileproperties/>
  </layer>
- <layer name="trees high" width="25" height="22">
+ <layer name="trees high" width="25" height="22" visible="0">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgwA66GRkYehhxSCKB9UA1G4hQhw1MBeqbBtXbCKSbgLgZi1k7gWK7yLQDGcD81IvFrMNAsSNUsAPmp+kkmOXGRLm9o4C+AF96pRbAl16pBchJr4QAqDzYSEM3w8qD3TS0A1YeHKWRHbQOIxCgRhjByndcbqVGGBGKz/0UmI+cT/G59SQWcZheQvmc2Hx6GYs8ej1rg6MuwJVPDxMRNsj1LD4A8y8tAbFhBQCgy46CmAgAAA==
   </data>
