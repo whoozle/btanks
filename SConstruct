@@ -156,7 +156,7 @@ bt_sources = 	['src/alarm.cpp', 'src/base_object.cpp',
 	'SDL_collide/SDL_collide.c', 
 	'src/main.cpp', 'src/config.cpp', 'src/game.cpp', 
 
-	'sound/ogg_ex.cpp', 'sound/ogg_stream.cpp', 'sound/mixer.cpp', 'sound/sample.cpp', 
+	'sound/al_ex.cpp', 'sound/ogg_ex.cpp', 'sound/ogg_stream.cpp', 'sound/mixer.cpp', 'sound/sample.cpp', 
 	
 	vobj
 	]

@@ -1,9 +1,7 @@
 #include "sample.h"
 #include <AL/al.h>
 #include "mrt/exception.h"
-
-#define AL_CHECK(fmt) if (alGetError() != AL_NO_ERROR) \
-	throw_ex(fmt)
+#include "al_ex.h"
 
 void Sample::init() {
 	TRY {

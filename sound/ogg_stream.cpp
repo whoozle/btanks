@@ -6,10 +6,8 @@
 #include "mrt/file.h"
 #include "config.h"
 #include "sample.h"
+#include "al_ex.h"
 
-#define AL_CHECK(fmt) if (alGetError() != AL_NO_ERROR) \
-	throw_ex(fmt)
-	
 OggStream::OggStream() : _opened(false) {
 	GET_CONFIG_VALUE("engine.sound.polling-interval", int, delay, 10);
 	_delay = delay;

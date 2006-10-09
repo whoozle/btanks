@@ -7,6 +7,7 @@
 #include "utils.h"
 
 #include "ogg_stream.h"
+#include "al_ex.h"
 #include "sample.h"
 #include <AL/alut.h>
 
@@ -15,8 +16,6 @@
 #include "object.h"
 #include "math/v3.h"
 
-#define AL_CHECK(fmt) if (alGetError() != AL_NO_ERROR) \
-	throw_ex(fmt)
 
 IMPLEMENT_SINGLETON(Mixer, IMixer)
 
