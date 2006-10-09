@@ -504,19 +504,23 @@ void IWorld::tick(ObjectSet &objects, const float dt) {
 	for(ObjectSet::iterator i = objects.begin(); i != objects.end(); ) {
 		Object *o = *i;
 		tick(*o, dt);
-		if (o->isDead() && !_safe_mode) {
-			ObjectMap::iterator m = _id2obj.find(o->_id);
-			assert(m != _id2obj.end());
-			assert(o == m->second);
-			_id2obj.erase(m);
+		if (o->isDead()) {
+			if (!_safe_mode) {
+				ObjectMap::iterator m = _id2obj.find(o->_id);
+				assert(m != _id2obj.end());
+				assert(o == m->second);
+				_id2obj.erase(m);
 			
-			delete o;
-			//implement more smart way to fix it.
-			if (&objects != &_objects)
-				_objects.erase(o);
-			objects.erase(i++);
-			assert(_id2obj.size() == _objects.size());
-		} else ++i;
+				delete o;
+				//implement more smart way to fix it.
+				if (&objects != &_objects)
+					_objects.erase(o);
+				objects.erase(i++);
+				assert(_id2obj.size() == _objects.size());
+				continue;
+			} else LOG_DEBUG(("prevent world from deleting object %d:%s (this will be deleted on next update)", o->getID(), o->classname.c_str()));
+		} 
+		++i;
 	}
 }
 
