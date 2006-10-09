@@ -1,5 +1,6 @@
 #include "ogg_ex.h"
 #include "vorbis/codec.h" 
+#include "mrt/fmt.h"
 
 const std::string OggException::getCustomMessage() {
 	switch(_r) {
@@ -26,6 +27,6 @@ const std::string OggException::getCustomMessage() {
 	case OV_ENOSEEK:
 		return "The given stream is not seekable";
 	default:
-		return "Unknown error";
+		return mrt::formatString("Unknown error: %d", _r);
 	}
 }
