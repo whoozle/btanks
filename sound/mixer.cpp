@@ -193,6 +193,10 @@ void IMixer::updateObjects() {
 
 		last_id = j->first;
 		Object *o = World->getObjectByID(j->first);
+		if (o == NULL)  {
+			++j;
+			continue;
+		}
 		
 		v3<float> pos, vel;
 		o->getInfo(pos, vel);
