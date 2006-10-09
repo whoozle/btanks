@@ -3,7 +3,7 @@
 
 class Mine : public Object {
 public:
-	Mine() : Object("mine") { piercing = true; pierceable = true; }
+	Mine() : Object("mine") { piercing = false; pierceable = true; }
 	virtual Object * clone() const;
 	virtual void onSpawn();
 	virtual void tick(const float dt);
@@ -31,6 +31,7 @@ void Mine::emit(const std::string &event, BaseObject * emitter) {
 		if (getState() == "armed") {
 			spawn("explosion", "explosion");
 			Object::emit("death", emitter);
+			emitter->addDamage(this, hp);
 		} 
 	} else Object::emit(event, emitter);
 }
