@@ -287,9 +287,16 @@ void IMap::end(const std::string &name) {
 		int z = (_properties.find("z") == _properties.end())?++_lastz:atol(_properties["z"].c_str());
 		_lastz = z;
 		int impassability = (_properties.find("impassability") != _properties.end())?atoi(_properties["impassability"].c_str()):-1;
-		const char pc = (_properties.find("pierceable") != _properties.end() && _properties["pierceable"].empty())?'t':_properties["pierceable"][0];
-		const bool pierceable = pc == 't' || pc == 'T' || pc == '1';
-
+		
+		bool pierceable = false;
+		PropertyMap::const_iterator pi = _properties.find("pierceable");
+		if (pi != _properties.end()) {
+			pierceable = true;
+			if (!pi->second.empty()) {
+				unsigned char pc = pi->second[0];
+				pierceable = pc == 't' || pc == 'T' || pc == '1';
+			}
+		}
 		LOG_DEBUG(("layer '%s'. %dx%d. z: %d, size: %d, impassability: %d", e.attrs["name"].c_str(), w, h, z, _data.getSize(), impassability));
 		if (_layers.find(z) != _layers.end())
 			throw_ex(("layer with z %d already exists", z));
