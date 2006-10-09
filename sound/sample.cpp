@@ -6,11 +6,13 @@
 	throw_ex(fmt)
 
 void Sample::init() {
-	alGenBuffers(1, &buffer);
-	AL_CHECK(("alGenBuffers"));
+	TRY {
+		alGenBuffers(1, &buffer);
+		AL_CHECK(("alGenBuffers"));
 	
-	alBufferData(buffer, format, data.getPtr(), data.getSize(), rate);
-	AL_CHECK(("alBufferData"));
+		alBufferData(buffer, format, data.getPtr(), data.getSize(), rate);
+		AL_CHECK(("alBufferData"));
+	} CATCH("init", throw;)
 }
 
 Sample::~Sample() {
