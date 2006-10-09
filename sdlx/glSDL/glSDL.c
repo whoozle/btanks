@@ -50,37 +50,37 @@
 
 static struct
 {
-	void	(*Begin)(GLenum);
-	void	(*BindTexture)(GLenum, GLuint);
-	void	(*BlendFunc)(GLenum, GLenum);
-	void	(*Color4ub)(GLubyte red, GLubyte green, GLubyte blue, GLubyte alpha);
-	void	(*Color3ub)(GLubyte red, GLubyte green, GLubyte blue);
-	void	(*DeleteTextures)(GLsizei n, const GLuint *textures);
-	void	(*Disable)(GLenum cap);
-	void	(*Enable)(GLenum cap);
-	void	(*End)(void);
-	void	(*Flush)(void);
-	void	(*GenTextures)(GLsizei n, GLuint *textures);
-	GLenum	(*GetError)(void);
-	void	(*GetIntegerv)(GLenum pname, GLint *params);
-	void	(*LoadIdentity)(void);
-	void	(*MatrixMode)(GLenum mode);
-	void	(*Ortho)(GLdouble left, GLdouble right, GLdouble bottom,
+	void	(APIENTRY *Begin)(GLenum);
+	void	(APIENTRY *BindTexture)(GLenum, GLuint);
+	void	(APIENTRY *BlendFunc)(GLenum, GLenum);
+	void	(APIENTRY *Color4ub)(GLubyte red, GLubyte green, GLubyte blue, GLubyte alpha);
+	void	(APIENTRY *Color3ub)(GLubyte red, GLubyte green, GLubyte blue);
+	void	(APIENTRY *DeleteTextures)(GLsizei n, const GLuint *textures);
+	void	(APIENTRY *Disable)(GLenum cap);
+	void	(APIENTRY *Enable)(GLenum cap);
+	void	(APIENTRY *End)(void);
+	void	(APIENTRY *Flush)(void);
+	void	(APIENTRY *GenTextures)(GLsizei n, GLuint *textures);
+	GLenum	(APIENTRY *GetError)(void);
+	void	(APIENTRY *GetIntegerv)(GLenum pname, GLint *params);
+	void	(APIENTRY *LoadIdentity)(void);
+	void	(APIENTRY *MatrixMode)(GLenum mode);
+	void	(APIENTRY *Ortho)(GLdouble left, GLdouble right, GLdouble bottom,
 			GLdouble top, GLdouble zNear, GLdouble zFar);
-	void	(*PixelStorei)(GLenum pname, GLint param);
-	void	(*ReadPixels)(GLint x, GLint y, GLsizei width, GLsizei height,
+	void	(APIENTRY *PixelStorei)(GLenum pname, GLint param);
+	void	(APIENTRY *ReadPixels)(GLint x, GLint y, GLsizei width, GLsizei height,
 			GLenum format, GLenum type, GLvoid *pixels);
-	void	(*TexCoord2f)(GLfloat s, GLfloat t);
-	void	(*TexImage2D)(GLenum target, GLint level, GLint internalformat,
+	void	(APIENTRY *TexCoord2f)(GLfloat s, GLfloat t);
+	void	(APIENTRY *TexImage2D)(GLenum target, GLint level, GLint internalformat,
 			GLsizei width, GLsizei height, GLint border,
 			GLenum format, GLenum type, const GLvoid *pixels);
-	void	(*TexParameteri)(GLenum target, GLenum pname, GLint param);
-	void	(*TexSubImage2D)(GLenum target, GLint level,
+	void	(APIENTRY *TexParameteri)(GLenum target, GLenum pname, GLint param);
+	void	(APIENTRY *TexSubImage2D)(GLenum target, GLint level,
 			GLint xoffset, GLint yoffset, GLsizei width, GLsizei height,
 			GLenum format, GLenum type, const GLvoid *pixels);
-	void	(*Translatef)(GLfloat x, GLfloat y, GLfloat z);
-	void	(*Vertex2i)(GLint x, GLint y);
-	void	(*Viewport)(GLint x, GLint y, GLsizei width, GLsizei height);
+	void	(APIENTRY *Translatef)(GLfloat x, GLfloat y, GLfloat z);
+	void	(APIENTRY *Vertex2i)(GLint x, GLint y);
+	void	(APIENTRY *Viewport)(GLint x, GLint y, GLsizei width, GLsizei height);
 } gl;
 
 
