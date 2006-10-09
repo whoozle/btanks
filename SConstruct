@@ -166,7 +166,7 @@ bt_libs = ['bt_net', 'sdlx', 'mrt', sigc_lib, 'SDL_ttf', 'SDL_image', 'SDL', 'ex
 if sys.platform == "win32":
 	bt_libs[0:0] = ['SDLmain']
 	bt_libs.append('Ws2_32')
-#	bt_libs.append('opengl32')
+	bt_libs.append('opengl32')
 #else: 
 #	pass
 #	bt_libs.append('GL')
