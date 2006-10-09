@@ -901,6 +901,8 @@ const float IGame::extractPing(const mrt::Chunk &data) const {
 
 
 void IGame::clear() {
+	Mixer->cancelAll();
+
 	GET_CONFIG_VALUE("multiplayer.sync-interval", float, sync_interval, 103.0/101);
 	_next_sync.set(sync_interval);
 
@@ -915,7 +917,7 @@ void IGame::clear() {
 	LOG_DEBUG(("cleaning up world"));
 	World->clear();
 	_paused = false;
-	Mixer->cancelAll();
+	Map->clear();
 }
 
 void IGame::PlayerSlot::clear() {
