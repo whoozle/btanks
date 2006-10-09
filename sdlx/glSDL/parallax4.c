@@ -188,6 +188,8 @@ int main(int argc, char* argv[])
 	long		tick1,
 			tick2;
 	float		dt;
+	int		tstart;
+	int		frames = 0;
 
 	SDL_Init(SDL_INIT_VIDEO);
 
@@ -219,14 +221,20 @@ int main(int argc, char* argv[])
 			bpp = atoi(&argv[i][1]);
 	}
 
-	if(flags & SDL_GLSDL)
-		printf("Using OpenGL acceleration.\n");
-	if(flags & SDL_DOUBLEBUF)
-		printf("Display is double buffered.\n");
-	if(flags & SDL_FULLSCREEN)
-		printf("Display is fullscreen.\n");
+	if((flags & SDL_GLSDL) == SDL_GLSDL)
+		printf("Requesting glSDL.\n");
+	if(bpp)
+		printf("Requesting %d bpp.\n", bpp);
+	if((flags & SDL_DOUBLEBUF) == SDL_DOUBLEBUF)
+		printf("Requesting double buffered display.\n");
+	if((flags & SDL_FULLSCREEN) == SDL_FULLSCREEN)
+		printf("Requesting fullscreen display.\n");
+	printf("    Display size: %dx%d.\n", SCREEN_W, SCREEN_H);
+	printf("Number of layers: %d.\n", num_of_layers);
+	printf("           Alpha: %d.\n", alpha);
+	printf("         Planets: %s.\n", use_planets ? "On" : "Off");
 
-	layers = (layer_t *) calloc(sizeof(layer_t), num_of_layers);
+	layers = calloc(sizeof(layer_t), num_of_layers);
 	if(!layers)
 	{
 		fprintf(stderr, "Failed to allocate layers!\n");
@@ -307,7 +315,7 @@ int main(int argc, char* argv[])
 	}
 
 	/* Get initial tick for time calculation */
-	tick1 = SDL_GetTicks();
+	tstart = tick1 = SDL_GetTicks();
 
 	while (SDL_PollEvent(&event) >= 0)
 	{
@@ -410,11 +418,13 @@ int main(int argc, char* argv[])
 
 		/* make changes visible */
 		SDL_Flip(screen);
+		++frames;
 
 		/* let operating system breath */
 		SDL_Delay(0);
 	}
 
+	printf("Average fps: %f\n", frames * 1000.0f / (SDL_GetTicks() - tstart));
 	printf("Statistics: (All figures per rendered frame.)\n"
 			"\tblits = %d\n"
 			"\trecursions = %d\n"
