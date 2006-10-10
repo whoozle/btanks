@@ -299,14 +299,14 @@ void Surface::free() {
     surface = NULL;
 }
 
-void Surface::lock() {
+void Surface::lock() const {
 	if (SDL_MUSTLOCK(surface)) {
 		if (SDL_LockSurface(surface) == -1) 
 			throw_sdl(("SDL_LockSurface"));
 	}
 }
 
-void Surface::unlock() {
+void Surface::unlock() const {
 	if (SDL_MUSTLOCK(surface)) {
 		SDL_UnlockSurface(surface);
 	}

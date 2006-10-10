@@ -119,8 +119,8 @@ namespace sdlx {
 
 		void free();
 		
-		void lock();
-		void unlock();
+		void lock() const;
+		void unlock() const;
 
 		~Surface();
 	private:
