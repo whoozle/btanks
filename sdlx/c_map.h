@@ -5,12 +5,13 @@
 
 namespace sdlx {
 class Surface;
+class Rect;
 
 class CollisionMap {
 public:
 	CollisionMap();
 	void init(const Surface * surface);
-	const bool collides(const CollisionMap *other, const int x, const int y) const;
+	const bool collides(const sdlx::Rect &src,  const CollisionMap *other, const sdlx::Rect &other_src) const;
 private: 
 	unsigned int _w, _h;
 	mrt::Chunk _data;

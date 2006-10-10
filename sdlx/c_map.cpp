@@ -7,22 +7,28 @@ using namespace sdlx;
 
 CollisionMap::CollisionMap() : _w(0), _h(0) {}
 
-const bool CollisionMap::collides(const CollisionMap *other, const int bx, const int by) const {
-	int ax1 = 0 + _w * 8 - 1;
-	int ay1 = 0 + _h - 1;
+const bool CollisionMap::collides(const sdlx::Rect &src, const CollisionMap *other, const sdlx::Rect &other_src) const {
+	int w = (src.w > 0)?src.w:(_w * 8); 
+	int h = (src.h > 0)?src.h:_h; 
+
+	int bx = other_src.x;
+	int by = other_src.y;
+
+	int bw = (other_src.w > 0)?other_src.w:(other->_w * 8); 
+	int bh = (other_src.h > 0)?other_src.h:other->_h; 
+	
+	int ax1 = 0 + w - 1;
+	int ay1 = 0 + h - 1;
 	
 	/*b - bottom right co-ordinates*/
-	int bx1 = bx + other->_w * 8 - 1;
-	int by1 = by + other->_h - 1;
+	int bx1 = bx + bw - 1;
+	int by1 = by + bh - 1;
 	
 	int inter_x0, inter_x1, inter_y0, inter_y1, x, y;
 
 	/*check if bounding boxes intersect*/
-	if((bx1 < 0) || (ax1 < bx))
+	if((bx1 < 0) || (ax1 < bx) || (by1 < 0) || (ay1 < by))
 		return 0;
-	if((by1 < 0) || (ay1 < by))
-		return 0;
-
 
 	inter_x0 = math::max(0, bx);
 	inter_x1 = math::min(ax1, bx1);
@@ -40,7 +46,7 @@ const bool CollisionMap::collides(const CollisionMap *other, const int bx, const
 	for(y = inter_y0 ; y <= inter_y1 ; ++y) {
 		for(x = inter_x0 ; x <= inter_x1 ; ++x)	{
 			int pos1 = x / 8 + y * _w;
-			int pos2 = (x - bx) / 8 + (y - bx) * _w;
+			int pos2 = (x - bx) / 8 + (y - by) * other->_w;
 			
 			assert(pos1 >= 0 && pos1 < size1);
 			assert(pos2 >= 0 && pos2 < size2);
@@ -73,7 +79,7 @@ void CollisionMap::init(const sdlx::Surface * surface) {
 	_w = (surface->getWidth() - 1) / 8 + 1;
 	_h = surface->getHeight();
 	_data.setSize(_w * _h);
-	LOG_DEBUG(("got surface %d %d -> %d %d, allocated: %u bytes", surface->getWidth(), surface->getHeight(), _w, _h, (unsigned)_data.getSize()));
+	//LOG_DEBUG(("got surface %d %d -> %d %d, allocated: %u bytes", surface->getWidth(), surface->getHeight(), _w, _h, (unsigned)_data.getSize()));
 	_data.fill(0);
 	
 	surface->lock();
@@ -83,7 +89,9 @@ void CollisionMap::init(const sdlx::Surface * surface) {
 			unsigned int b = 7-(x&7);
 			unsigned int pos = y * _w + x / 8;
 			assert(pos < _data.getSize());
-			data[pos] |= (test_pixel(surface, x, y)?1:0) << b;
+	
+			if (test_pixel(surface, x, y))
+				data[pos] |= 1 << b;
 		}
 	}
 	surface->unlock();	
