@@ -967,12 +967,13 @@ void glSDL_UnlockSurface(SDL_Surface *surface)
 	{
 		glSDL_UploadSurface(surface);
 		if((surface == fake_screen) ||
-				(SDL_GetVideoSurface() == surface))
+				(SDL_GetVideoSurface() == surface)) {
 			glSDL_BlitGL(fake_screen, NULL,
 					SDL_GetVideoSurface(), NULL);
+			return;
+		}
 	}
-	else
-		SDL_UnlockSurface(surface);
+	SDL_UnlockSurface(surface);
 }
 
 
