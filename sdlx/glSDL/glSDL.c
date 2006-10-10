@@ -280,7 +280,8 @@ static int glSDL_BlitGL(SDL_Surface *src, SDL_Rect *srcrect,
 /* Get texinfo for a surface. */
 glSDL_TexInfo *glSDL_GetTexInfo(SDL_Surface *surface)
 {
-	if(texinfotab)
+#error check this fix: unused1 > 0
+	if(texinfotab && (surface->unused1 > 0 || surface->unused1 >= MAX_TEXINFOS))
 		return texinfotab[surface->unused1];
 	else
 		return NULL;
