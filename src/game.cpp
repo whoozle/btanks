@@ -729,6 +729,9 @@ void IGame::deinit() {
 	clear();
 	Config->save();
 	LOG_DEBUG(("shutting down, freeing surface"));
+	delete _fps;
+	_fps = NULL;
+	
 	_running = false;
 	_window.free();
 	
