@@ -1,29 +1,39 @@
 /*(LGPL)
 ------------------------------------------------------------
-	glSDL 0.6 - SDL 2D API on top of OpenGL
+	glSDL 0.7 - SDL 2D API on top of OpenGL
 ------------------------------------------------------------
- * (c) David Olofson, 2001-2003
+ * (c) David Olofson, 2001-2004
  * This code is released under the terms of the GNU LGPL.
  */
 
 #ifndef	_GLSDL_H_
 #define	_GLSDL_H_
 
+#define HAVE_OPENGL
 /*
  * If you don't use GNU autotools or similar, uncomment this to
  * compile with OpenGL enabled:
+ *
+ * NOTE:
+ *	See README about using this glSDL wrapper with
+ *	SDL versions that have the glSDL backend!
  */
-#define HAVE_OPENGL
 
 /* We're still using SDL datatypes here - we just add some stuff. */
 #include "SDL/SDL.h"
+
+/*
+ * Ignore the flag from SDL w/ glSDL backend, since we're going
+ * to use glSDL/wrapper by default.
+ */
+#ifdef	SDL_GLSDL
+#undef	SDL_GLSDL
+#endif
 
 #ifndef HAVE_OPENGL
 
 /* Fakes to make glSDL code compile with SDL. */
 #define SDL_GLSDL		0
-#define	LOGIC_W(s)		( (s)->w )
-#define	LOGIC_H(s)		( (s)->h )
 #define	GLSDL_FIX_SURFACE(s)
 
 #else	/* HAVE_OPENGL */
@@ -53,27 +63,25 @@ typedef enum glSDL_TileModes
 
 typedef struct glSDL_TexInfo
 {
-	/* Size of surface in logic screen pixels */
-	int		lw, lh;
-
 	int		textures;
 	int		*texture;
 	int		texsize;	/* width/height of OpenGL texture */
 	glSDL_TileModes	tilemode;
 	int		tilew, tileh;	/* At least one must equal texsize! */
 	int		tilespertex;
-	SDL_Rect	virt;		/* Total size of assembled surface */
 
 	/* Area of surface to download when/after unlocking */
 	SDL_Rect	invalid_area;
 } glSDL_TexInfo;
 
+glSDL_TexInfo *glSDL_GetTexInfo(SDL_Surface *surface);
+
 #define	GLSDL_FIX_SURFACE(s)	(s)->unused1 = 0;
 #define	IS_GLSDL_SURFACE(s)	((s) && glSDL_GetTexInfo(s))
 
-#define	LOGIC_W(s)	( IS_GLSDL_SURFACE(s) ? TEXINFO(s)->lw : (s)->w )
-#define	LOGIC_H(s)	( IS_GLSDL_SURFACE(s) ? TEXINFO(s)->lh : (s)->h )
-
+#ifdef	SDL_GLSDL
+#undef	SDL_GLSDL	/* In case SDL has the glSDL backend...  */
+#endif
 #define SDL_GLSDL	0x00100000	/* Create an OpenGL 2D rendering context */
 
 
@@ -92,7 +100,7 @@ void glSDL_Quit(void);
 void glSDL_QuitSubSystem(Uint32 flags);
 
 /* Replaces SDL_Quit() entirely, when using the override defines */
-void _glSDL_FullQuit(void);
+void glSDL_FullQuit(void);
 
 SDL_Surface *glSDL_GetVideoSurface(void);
 
@@ -202,38 +210,6 @@ int glSDL_SaveBMP(SDL_Surface *surface, const char *file);
 void glSDL_Invalidate(SDL_Surface *surface, SDL_Rect *area);
 
 /*
- * Set logic width and height of a surface.
- *
- * When used on the screen surface: 
- *	Changes the OpenGL view coordinate system without
- *	changing the screen resolution. This is used to
- *	decouple the rendering coordinate system from the
- *	physical screen resolution, which is needed to
- *	achieve sub-pixel resolution without switching to
- *	float coords.
- *
- * When used on a SDL_Surface:
- *	Normally, surfaces are scaled so that one pixel on
- *	the surface corresponds to one pixel in the current
- *	logic screen resolution. This function makes it
- *	possible to change that relation by specifying the
- *	desired size of the rendered texture in the current
- *	logic screen resolution.
- *
- * BUG?	WRT blitting *to* surfaces, this call affects
- *	the screen surface and other surfaces differently!
- *	As of now, coordinates are *always* treated as real
- *	pixels when blitting to normal surfaces, whereas
- *	they are scaled when blitting to the screen.
- *
- * Of course, this function can also be "abused" just to
- * make rendering code independent of screen resolution,
- * although that can potentially *lower* accuracy, if the
- * real resolution is higher than the logic resolution.
- */
-void glSDL_SetLogicSize(SDL_Surface *surface, int w, int h);
-
-/*
  * Make sure that the texture of the specified surface is up
  * to date in OpenGL texture memory.
  *
@@ -255,13 +231,6 @@ int glSDL_UploadSurface(SDL_Surface *surface);
 void glSDL_UnloadSurface(SDL_Surface *surface);
 
 
-/*
- * Get the clSDL_TexInfo struct associated with a surface.
- */
-glSDL_TexInfo *glSDL_GetTexInfo(SDL_Surface *surface);
-
-
-
 #ifdef __cplusplus
 }
 #endif
@@ -281,7 +250,7 @@ glSDL_TexInfo *glSDL_GetTexInfo(SDL_Surface *surface);
 
 #define	SDL_SetVideoMode		glSDL_SetVideoMode
 #define	SDL_GetVideoSurface		glSDL_GetVideoSurface
-#define	SDL_Quit			_glSDL_FullQuit
+#define	SDL_Quit			glSDL_FullQuit
 #define	SDL_QuitSubSystem		glSDL_QuitSubSystem
 #define	SDL_UpdateRects			glSDL_UpdateRects
 #define	SDL_UpdateRect			glSDL_UpdateRect
