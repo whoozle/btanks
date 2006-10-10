@@ -2,23 +2,26 @@
 #include "surface.h"
 #include "mrt/logger.h"
 #include "math/minmax.h"
+#include "mrt/file.h"
 
 using namespace sdlx;
 
 CollisionMap::CollisionMap() : _w(0), _h(0) {}
 
 const bool CollisionMap::collides(const sdlx::Rect &src, const CollisionMap *other, const sdlx::Rect &other_src) const {
-	int w = (src.w > 0)?src.w:(_w * 8); 
-	int h = (src.h > 0)?src.h:_h; 
+	int subx = src.x;
+	int suby = src.y;
+	
+	int aw = (src.w > 0)?src.w:(_w * 8); 
+	int ah = (src.h > 0)?src.h:_h; 
 
 	int bx = other_src.x;
 	int by = other_src.y;
-
 	int bw = (other_src.w > 0)?other_src.w:(other->_w * 8); 
 	int bh = (other_src.h > 0)?other_src.h:other->_h; 
 	
-	int ax1 = 0 + w - 1;
-	int ay1 = 0 + h - 1;
+	int ax1 = 0 + aw - 1;
+	int ay1 = 0 + ah - 1;
 	
 	/*b - bottom right co-ordinates*/
 	int bx1 = bx + bw - 1;
@@ -45,7 +48,7 @@ const bool CollisionMap::collides(const sdlx::Rect &src, const CollisionMap *oth
 
 	for(y = inter_y0 ; y <= inter_y1 ; ++y) {
 		for(x = inter_x0 ; x <= inter_x1 ; ++x)	{
-			int pos1 = x / 8 + y * _w;
+			int pos1 = (subx + x) / 8 + (suby + y) * _w;
 			int pos2 = (x - bx) / 8 + (y - by) * other->_w;
 			
 			assert(pos1 >= 0 && pos1 < size1);
@@ -98,4 +101,29 @@ void CollisionMap::init(const sdlx::Surface * surface) {
 	//LOG_DEBUG(("built collision map (size: %u): %s", (unsigned)_data.getSize(), _data.dump().c_str()));
 }
 
+void CollisionMap::save(const std::string &fname) const {
+	mrt::File f;
+	f.open(fname + ".raw", "wb");
+	f.writeAll(_data);
+	f.close();
+	
+	sdlx::Surface s;
+	s.createRGB(_w * 8, _h, 8, SDL_SWSURFACE);
+	s.lock();
+	unsigned char *ptr = (unsigned char *)_data.getPtr();
+	unsigned int idx = 0;
+	for(unsigned y = 0; y < _h; ++y) {
+		for(unsigned x = 0; x < _w; ++x) {
+			assert(idx < _data.getSize());
+			unsigned int byte = ptr[idx++];
+			for(int b = 0; b < 8; ++b) {
+				bool c = (byte & (0x80 >> b)) != 0;
+				if (c)
+					s.putPixel(x*8 + b, y, 0xffffffff);
+			}
+		}
+	}
+	s.unlock();
+	s.saveBMP(fname + ".bmp");
+}
 
