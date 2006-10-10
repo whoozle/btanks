@@ -41,7 +41,8 @@ void MenuItem::render(sdlx::TTF &font) {
 	//_inversed.setAlpha(255);
 		
 	//LOG_DEBUG(("inversed: %dx%d:%d", _inversed.getWidth(), _inversed.getHeight(), _inversed.getBPP()));
-
+	_normal.lock();
+	_inversed.lock();
 	int w = _normal.getWidth();
 	int h = _normal.getHeight();
 	for(int y = 0; y < h; ++y) 
@@ -59,6 +60,8 @@ void MenuItem::render(sdlx::TTF &font) {
 			//LOG_DEBUG(("%08x ", (unsigned )c));
 			_inversed.putPixel(x, y, c);
 		}
+	_normal.unlock();
+	_inversed.unlock();
 }
 	
 void MenuItem::render(sdlx::Surface &dst, const int x, const int y, const bool inverse) {
