@@ -41,8 +41,7 @@ const int IMap::pathfinding_step = 64;
 const bool IMap::collides(const Object *obj, const int dx, const int dy, const sdlx::CollisionMap *tile) const {
 	if (tile == NULL)
 		return false;
-	sdlx::Rect tile_rect(-dx, -dy, 0, 0);
-	return obj->collides(tile, tile_rect);
+	return obj->collides(tile, -dx, -dy);
 }
 
 

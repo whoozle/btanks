@@ -8,15 +8,10 @@ using namespace sdlx;
 
 CollisionMap::CollisionMap() : _w(0), _h(0) {}
 
-const bool CollisionMap::collides(const sdlx::Rect &src, const CollisionMap *other, const sdlx::Rect &other_src) const {
-	int subx = src.x;
-	int suby = src.y;
-	
+const bool CollisionMap::collides(const sdlx::Rect &src, const CollisionMap *other, const sdlx::Rect &other_src, const int bx, const int by) const {
 	int aw = (src.w > 0)?src.w:(_w * 8); 
 	int ah = (src.h > 0)?src.h:_h; 
 
-	int bx = other_src.x;
-	int by = other_src.y;
 	int bw = (other_src.w > 0)?other_src.w:(other->_w * 8); 
 	int bh = (other_src.h > 0)?other_src.h:other->_h; 
 	
@@ -48,8 +43,8 @@ const bool CollisionMap::collides(const sdlx::Rect &src, const CollisionMap *oth
 
 	for(y = inter_y0 ; y <= inter_y1 ; ++y) {
 		for(x = inter_x0 ; x <= inter_x1 ; ++x)	{
-			int pos1 = (subx + x) / 8 + (suby + y) * _w;
-			int pos2 = (x - bx) / 8 + (y - by) * other->_w;
+			int pos1 = (src.x + x) / 8 + (src.y + y) * _w;
+			int pos2 = (other_src.x + x - bx) / 8 + (other_src.y + y - by) * other->_w;
 			
 			assert(pos1 >= 0 && pos1 < size1);
 			assert(pos2 >= 0 && pos2 < size2);

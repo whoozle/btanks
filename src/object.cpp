@@ -308,16 +308,14 @@ const bool Object::collides(const Object *other, const int x, const int y) const
 		other_src.x, other_src.y, other_src.w, other_src.h
 		));
 */
-	other_src.x = x;
-	other_src.y = y;
-	return _cmap->collides(src, other->_cmap, other_src);
+	return _cmap->collides(src, other->_cmap, other_src, x, y);
 }
 
-const bool Object::collides(const sdlx::CollisionMap *other, const sdlx::Rect &other_src) const {
+const bool Object::collides(const sdlx::CollisionMap *other, const int x, const int y) const {
 	sdlx::Rect src;
 	if (!getRenderRect(src)) 
 		return false;
-	return _cmap->collides(src, other, other_src);
+	return _cmap->collides(src, other, sdlx::Rect(), x, y);
 }
 
 void Object::serialize(mrt::Serializator &s) const {
