@@ -22,6 +22,7 @@
 
 #include "mrt/chunk.h"
 #include "sdlx/surface.h"
+#include "sdlx/c_map.h"
 #include <vector>
 
 #define PRERENDER_LAYERS
@@ -50,12 +51,19 @@ public:
 		return _s_data[_w * y + x];
 	}
 
-	void optimize(std::vector<sdlx::Surface *> & tilemap);
+	inline const sdlx::CollisionMap* getCollisionMap(const int x, const int y) const {
+		if (x < 0 || x >= _w || y < 0 || y >= _h) 
+			return NULL;
+		return _c_data[_w * y + x];
+	}
+
+	void optimize(std::vector< std::pair< sdlx::Surface *, sdlx::CollisionMap *> > & tilemap);
 	~Layer();
 
 private: 
 	mrt::Chunk _data;
 	sdlx::Surface **_s_data;
+	sdlx::CollisionMap **_c_data;
 	int _w, _h;
 };
 

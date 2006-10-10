@@ -28,34 +28,30 @@
 #include "mrt/exception.h"
 
 #include "sdlx/surface.h"
+#include "sdlx/c_map.h"
 #include "object.h"
 
 #include <assert.h>
 #include <limits>
 
-#include "SDL_collide/SDL_collide.h"
-
 IMPLEMENT_SINGLETON(Map, IMap)
 
 const int IMap::pathfinding_step = 64;
 
-const bool IMap::collides(const sdlx::Surface &surf, const int dx, const int dy, const sdlx::Surface *tile) const {
+const bool IMap::collides(const Object *obj, const int dx, const int dy, const sdlx::CollisionMap *tile) const {
 	if (tile == NULL)
 		return false;
-	
-	//LOG_DEBUG(("dx: %d, dy: %d, w: %d, h: %d, tid: %d", dx, dy, surf.getWidth(), surf.getHeight(), tid));
-	int r = SDL_CollidePixel(surf.getSDLSurface(), dx, dy, tile->getSDLSurface(), 0, 0);
-	//LOG_DEBUG(("r = %d", r));
-	return r != 0;
+	sdlx::Rect tile_rect(-dx, -dy, 0, 0);
+	return obj->collides(tile, tile_rect);
 }
 
 
-const int IMap::getImpassability(const Object *obj, const sdlx::Surface &s, const v3<int>&pos, v3<int> *tile_pos) const {
+const int IMap::getImpassability(const Object *obj, const v3<int>&pos, v3<int> *tile_pos) const {
 	if (obj->impassability <= 0) {
 		return 0;
 	}
 	
-	int w = s.getWidth(), h = s.getHeight();
+	int w = (int)obj->size.x, h = (int)obj->size.y;
 	int x, x1;
 	int y, y1;
 	x = x1 = pos.x;
@@ -79,7 +75,7 @@ const int IMap::getImpassability(const Object *obj, const sdlx::Surface &s, cons
 		if (layer_im == -1) 
 			continue;
 		//LOG_DEBUG(("im: %d, tile: %d", layer_im, layer->get(xt1, yt1)));
-		if (collides(s, dx1, dy1, layer->getSurface(xt1, yt1)) && im > layer_im) {
+		if (collides(obj, dx1, dy1, layer->getCollisionMap(xt1, yt1)) && im > layer_im) {
 			if (tile_pos) {
 				tile_pos->x = xt1;
 				tile_pos->y = yt1;
@@ -87,7 +83,7 @@ const int IMap::getImpassability(const Object *obj, const sdlx::Surface &s, cons
 			im = layer_im;
 		}
 
-		if (yt2 != yt1 && collides(s, dx1, dy2, layer->getSurface(xt1, yt2)) && im > layer_im) {
+		if (yt2 != yt1 && collides(obj, dx1, dy2, layer->getCollisionMap(xt1, yt2)) && im > layer_im) {
 			if (tile_pos) {
 				tile_pos->x = xt1;
 				tile_pos->y = yt2;
@@ -95,14 +91,14 @@ const int IMap::getImpassability(const Object *obj, const sdlx::Surface &s, cons
 			im = layer_im;
 		}
 		if (xt2 != xt1) {
-			if (collides(s, dx2, dy1, layer->getSurface(xt2, yt1)) && im > layer_im) {
+			if (collides(obj, dx2, dy1, layer->getCollisionMap(xt2, yt1)) && im > layer_im) {
 				im = layer_im;
 				if (tile_pos) {
 					tile_pos->x = xt2;
 					tile_pos->y = yt1;
 				}
 			}
-			if (yt2 != yt1 && collides(s, dx2, dy2, layer->getSurface(xt2, yt2)) && im > layer_im) {
+			if (yt2 != yt1 && collides(obj, dx2, dy2, layer->getCollisionMap(xt2, yt2)) && im > layer_im) {
 				if (tile_pos) {
 					tile_pos->x = xt2;
 					tile_pos->y = yt2;
@@ -251,9 +247,12 @@ void IMap::end(const std::string &name) {
 		if (id >= _tiles.size())
 			_tiles.resize(id + 20);
 		
-		sdlx::Surface * &tile = _tiles[id];	
-		assert (tile == NULL);
-		tile = _image;
+		TileMap::value_type &tile = _tiles[id];	
+		if (tile.first != NULL)
+			throw_ex(("duplicate tile %d found", id));
+		tile.second = new sdlx::CollisionMap;
+		tile.second->init(_image);
+		tile.first = _image;
 		
 		_image = NULL;
 
@@ -347,8 +346,15 @@ void IMap::end(const std::string &name) {
 				if ((size_t)(_firstgid + id) >= _tiles.size())
 					_tiles.resize(_firstgid + id + 20);
 				
-				delete _tiles[_firstgid + id];
-				_tiles[_firstgid + id++] = s;
+				delete _tiles[_firstgid + id].first;
+				_tiles[_firstgid + id].first = NULL;
+				delete _tiles[_firstgid + id].second;
+				_tiles[_firstgid + id].second = NULL;
+				
+				_tiles[_firstgid + id].second = new sdlx::CollisionMap;
+				_tiles[_firstgid + id].second->init(s);
+				_tiles[_firstgid + id].first = s;
+				++id;
 				s = NULL;
 			}
 		}
@@ -416,7 +422,8 @@ void IMap::clear() {
 	_layers.clear();
 	
 	for(TileMap::iterator i = _tiles.begin(); i != _tiles.end(); ++i) {
-		delete *i;
+		delete i->first;
+		delete i->second;
 	}
 	_tiles.clear();
 	

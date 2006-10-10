@@ -26,6 +26,7 @@
 
 namespace sdlx {
 	class Surface;
+	class CollisionMap;
 }
 
 class Object;
@@ -52,6 +53,8 @@ public:
 	const Object *getAnimation(const std::string &id) const ;
 
 	const sdlx::Surface *getSurface(const std::string &id) const;
+	const sdlx::CollisionMap *getCollisionMap(const std::string &id) const;
+	
 	void createAlias(const std::string &name, const std::string &classname);
 
 private:
@@ -68,6 +71,9 @@ private:
 
 	typedef std::map<const std::string, sdlx::Surface *> SurfaceMap;
 	SurfaceMap _surfaces;
+
+	typedef std::map<const std::string, sdlx::CollisionMap *> CollisionMap;
+	CollisionMap _cmaps;
 
 	//parser specific stuff	
 	AnimationModel *_am;

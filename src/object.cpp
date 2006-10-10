@@ -19,6 +19,7 @@
 
 #include "object.h"
 #include "sdlx/surface.h"
+#include "sdlx/c_map.h"
 #include "mrt/exception.h"
 #include "mrt/logger.h"
 #include "animation_model.h"
@@ -48,7 +49,7 @@ Object * Object::clone() const {
 
 
 Object::Object(const std::string &classname) : 
-	BaseObject(classname), fadeout_time(0),  _model(0), _surface(0), _direction_idx(0), _pos(0), _rotation_time(0) {}
+	BaseObject(classname), fadeout_time(0),  _model(0), _surface(0), _cmap(0), _direction_idx(0), _pos(0), _rotation_time(0) {}
 
 void Object::init(const std::string &model, const std::string &surface, const int tile_w, const int tile_h) {
 	_events.clear();
@@ -57,6 +58,7 @@ void Object::init(const std::string &model, const std::string &surface, const in
 	_model_name = model;
 
 	_surface = ResourceManager->getSurface(surface);
+	_cmap = ResourceManager->getCollisionMap(surface);
 	_surface_name = surface;
 
 	size.x = _tw = tile_w; size.y = _th = tile_h;
@@ -68,6 +70,7 @@ void Object::init(const Object *a) {
 	_model = a->_model;
 	_model_name = a->_model_name;
 	_surface = a->_surface;
+	_cmap = a->_cmap;
 	_surface_name = a->_surface_name;
 	_events = a->_events;
 	_tw = a->_tw;
@@ -204,25 +207,25 @@ void Object::tick(const float dt) {
 	} 
 }
 
-void Object::render(sdlx::Surface &surface, const int x, const int y) {
+const bool Object::getRenderRect(sdlx::Rect &src) const {
 	if (_events.empty()) {
 		if (!isDead())
 			LOG_WARN(("%s: no animation played. latest position: %g", classname.c_str(), _pos));
-		return;
+		return false;
 	}
+
 	const Pose * pose = _model->getPose(_events.front().name);
 	if (pose == NULL) {
 		LOG_WARN(("%s: pose '%s' is not supported", classname.c_str(), _events.front().name.c_str()));
-		return; 
+		return false;
 	}
 	
 	int frame = (int)_pos;
 	int n = (int)pose->frames.size();
 	if (n == 0) {
 		LOG_WARN(("%s: pose '%s' doesnt have any frames", classname.c_str(), _events.front().name.c_str()));
-		return; 
+		return false;
 	}
-	
 	
 	//this stuff need to be fixed, but I still cannot find cause for overflowing frame
 	if (frame == n)
@@ -230,16 +233,27 @@ void Object::render(sdlx::Surface &surface, const int x, const int y) {
 	
 	if (frame < 0 || frame >= n) {
 		LOG_WARN(("%s: event '%s' frame %d is out of range (position: %g).", classname.c_str(), _events.front().name.c_str(), frame, _pos));
-		return;		
+		return false;	
 	}
+
 	frame = pose->frames[frame];
 	
 	if (frame * _th >= _surface->getHeight()) {
 		LOG_WARN(("%s: event '%s' tile row %d is out of range.", classname.c_str(), _events.front().name.c_str(), frame));
-		return;
+		return false;
 	}
 
-	sdlx::Rect src(_direction_idx * _tw, frame * _th, _tw, _th);
+	src.x = _direction_idx * _tw;
+	src.y = frame * _th;
+	src.w = _tw;
+	src.h = _th;
+	return true;
+}
+
+void Object::render(sdlx::Surface &surface, const int x, const int y) {
+	sdlx::Rect src;
+	if (!getRenderRect(src))
+		return;
 
 	int alpha = 0;
 	if (fadeout_time > 0 && ttl > 0 && ttl < fadeout_time) 
@@ -281,6 +295,30 @@ void Object::render(sdlx::Surface &surface, const int x, const int y) {
 	surface.copyFrom(blended, x, y);
 }
 
+const bool Object::collides(const Object *other, const int x, const int y) const {
+	sdlx::Rect src, other_src;
+	if (!getRenderRect(src)) 
+		return false;
+	if (!other->getRenderRect(other_src)) 
+		return false;
+/*	LOG_DEBUG(("::collide(%s:%d,%d,%d,%d, %s:%d,%d,%d,%d)", 
+		classname.c_str(),
+		src.x, src.y, src.w, src.h, 
+		other->classname.c_str(),
+		other_src.x, other_src.y, other_src.w, other_src.h
+		));
+*/
+	other_src.x = x;
+	other_src.y = y;
+	return _cmap->collides(src, other->_cmap, other_src);
+}
+
+const bool Object::collides(const sdlx::CollisionMap *other, const sdlx::Rect &other_src) const {
+	sdlx::Rect src;
+	if (!getRenderRect(src)) 
+		return false;
+	return _cmap->collides(src, other, other_src);
+}
 
 void Object::serialize(mrt::Serializator &s) const {
 	BaseObject::serialize(s);
@@ -385,6 +423,7 @@ void Object::deserialize(const mrt::Serializator &s) {
 	//additional initialization
 	_model = ResourceManager->getAnimationModel(_model_name);
 	_surface = ResourceManager->getSurface(_surface_name);
+	_cmap = ResourceManager->getCollisionMap(_surface_name);
 }
 
 void Object::emit(const std::string &event, BaseObject * emitter) {
@@ -439,12 +478,6 @@ void Object::onSpawn() {
 
 Object * Object::spawnGrouped(const std::string &classname, const std::string &animation, const v3<float> &dpos, const GroupType type) {
 	return World->spawnGrouped(this, classname, animation, dpos, type);
-}
-
-void Object::renderCopy(sdlx::Surface &surface) {
-	const_cast<sdlx::Surface *>(_surface)->setAlpha(0,0);
-	render(surface, 0, 0);
-	const_cast<sdlx::Surface *>(_surface)->setAlpha(0, SDL_SRCALPHA);
 }
 
 void Object::limitRotation(const float dt, const int dirs, const float speed, const bool rotate_even_stopped, const bool allow_backward) {
@@ -549,3 +582,4 @@ void Object::removeEffect(const std::string &name) {
 	_effects.erase(name);
 	need_sync = true;
 }
+

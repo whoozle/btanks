@@ -35,9 +35,6 @@
 #include <limits>
 
 
-#include "SDL_collide/SDL_collide.h"
-
-
 IMPLEMENT_SINGLETON(World, IWorld)
 
 void IWorld::clear() {
@@ -110,7 +107,7 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect &viewport) {
 	map.render(surface, viewport, z1, 1000);
 }
 
-const bool IWorld::collides(Object *obj, const sdlx::Surface &surface, const v3<int> &position, Object *o, const sdlx::Surface &osurf) const {
+const bool IWorld::collides(Object *obj, const v3<int> &position, Object *o) const {
 		if (o == obj || obj->impassability == 0 || o->impassability == 0 || (obj->piercing && o->pierceable) || (obj->pierceable && o->piercing)) {
 			return false;
 		}
@@ -133,12 +130,12 @@ const bool IWorld::collides(Object *obj, const sdlx::Surface &surface, const v3<
 			return i->second;
 		}
 
-
 		
 		v3<int> dpos = o->_position.convert<int>() - position;
 		//LOG_DEBUG(("%s: %d %d", o->classname.c_str(), dpos.x, dpos.y));
-		int r = SDL_CollidePixel(surface.getSDLSurface(), 0, 0, osurf.getSDLSurface(), dpos.x, dpos.y);
-		if (!r) {
+		const bool collides = obj->collides(o, dpos.x, dpos.y);
+		//LOG_DEBUG(("collision %s <-> %s: %s", obj->classname.c_str(), o->classname.c_str(), collides?"true":"false"));
+		if (!collides) {
 			_collision_map.insert(CollisionMap::value_type(key, false));
 			return false;
 		}
@@ -153,13 +150,13 @@ const bool IWorld::collides(Object *obj, const sdlx::Surface &surface, const v3<
 				return false; // no effect.
 			}
 		}
-
+		//LOG_DEBUG(("collision %s <-> %s: %s", obj->classname.c_str(), o->classname.c_str(), collides?"true":"false"));
 		_collision_map.insert(CollisionMap::value_type(key, true));
 		return true;
 }
 
 
-const float IWorld::getImpassability(Object *obj, const sdlx::Surface &surface, const v3<int> &position, const Object **collided_with) const {
+const float IWorld::getImpassability(Object *obj, const v3<int> &position, const Object **collided_with) const {
 	if (obj->impassability == 0) {
 		if (collided_with != NULL)
 			*collided_with = NULL;
@@ -177,11 +174,7 @@ const float IWorld::getImpassability(Object *obj, const sdlx::Surface &surface, 
 		if (!my.intersects(other)) 
 			continue;
 
-		sdlx::Surface osurf;
-		osurf.createRGB((int)o->size.x, (int)o->size.y, 24, sdlx::Surface::Software | sdlx::Surface::Alpha );
-		osurf.convertAlpha();
-		o->renderCopy(osurf);
-		if (!collides(obj, surface, position, o, osurf)) 
+		if (!collides(obj, position, o)) 
 			continue;
 		
 		if (o->impassability > im) {
@@ -196,7 +189,7 @@ const float IWorld::getImpassability(Object *obj, const sdlx::Surface &surface, 
 	return im;
 }
 
-void IWorld::getImpassability2(float &old_pos_im, float &new_pos_im, Object *obj, const sdlx::Surface &surface, const v3<int> &new_position, const Object **old_pos_collided_with) const {
+void IWorld::getImpassability2(float &old_pos_im, float &new_pos_im, Object *obj, const v3<int> &new_position, const Object **old_pos_collided_with) const {
 	old_pos_im = 0;
 	new_pos_im = 0;
 
@@ -218,20 +211,15 @@ void IWorld::getImpassability2(float &old_pos_im, float &new_pos_im, Object *obj
 		if (!my_old.intersects(other) && !my_new.intersects(other)) 
 			continue;
 
-		sdlx::Surface osurf;
-		osurf.createRGB((int)o->size.x, (int)o->size.y, 24, sdlx::Surface::Software | sdlx::Surface::Alpha );
-		osurf.convertAlpha();
-		o->renderCopy(osurf);
-
 	//old position collisions
-		if (collides(obj, surface, old_position, o, osurf)) {
+		if (collides(obj, old_position, o)) {
 			if (o->impassability > old_pos_im) {
 				old_pos_im = o->impassability;
 				result = o;
 			}
 		}
 	//new position collisions
-		if (collides(obj, surface, new_position, o, osurf)) {
+		if (collides(obj, new_position, o)) {
 			if (o->impassability > new_pos_im) {
 				new_pos_im = o->impassability;
 			}
@@ -272,6 +260,9 @@ void IWorld::getImpassabilityMatrix(Matrix<int> &matrix, const Object *src, cons
 }
 
 void IWorld::tick(Object &o, const float dt) {
+	if (o.isDead()) 
+		return;
+
 	GET_CONFIG_VALUE("engine.max-time-slice", float, max_dt, 0.1);
 	if (max_dt <= 0) 
 		throw_ex(("invalid max-time-slice value %g", max_dt));
@@ -350,17 +341,7 @@ void IWorld::tick(Object &o, const float dt) {
 	if (o.speed == 0) {
 		o._idle_time += dt;
 		if (o.impassability < 0) {
-			int ow = (int)o.size.x;
-			int oh = (int)o.size.y; 
-			sdlx::Surface osurf;
-		
-			assert(ow != 0 && oh != 0);
-	
-			osurf.createRGB(ow, oh, 24, sdlx::Surface::Software |  sdlx::Surface::Alpha);
-			osurf.convertAlpha();
-			o.renderCopy(osurf); 
-		
-			getImpassability(&o, osurf, o._position.convert<int>());
+			getImpassability(&o, o._position.convert<int>());
 		}
 		return;
 	}
@@ -397,17 +378,6 @@ void IWorld::tick(Object &o, const float dt) {
 	v3<int> new_pos((o._position + dpos).convert<int>());
 	v3<int> old_pos = o._position.convert<int>();
 
-	int ow = (int)o.size.x;
-	int oh = (int)o.size.y; 
-
-	sdlx::Surface osurf;
-		
-	assert(ow != 0 && oh != 0);
-	
-	osurf.createRGB(ow, oh, 24, sdlx::Surface::Software |  sdlx::Surface::Alpha);
-	osurf.convertAlpha();
-	o.renderCopy(osurf);
-		
 	//osurf.saveBMP("snapshot.bmp");
 	const Object *stuck_in = NULL;
 	v3<int> stuck_map_pos;
@@ -415,20 +385,20 @@ void IWorld::tick(Object &o, const float dt) {
 	float obj_im_now = 0;
 	// = getImpassability(&o, osurf, old_pos, &stuck_in);
 	float obj_im = 0;// = getImpassability(&o, osurf, new_pos);
-	getImpassability2(obj_im_now, obj_im, &o, osurf, new_pos, &stuck_in);
+	getImpassability2(obj_im_now, obj_im, &o, new_pos, &stuck_in);
 
-	bool stuck = map.getImpassability(&o, osurf, old_pos, &stuck_map_pos) == 100 || obj_im_now >= 1.0;
+	bool stuck = map.getImpassability(&o, old_pos, &stuck_map_pos) == 100 || obj_im_now >= 1.0;
 	//LOG_DEBUG(("obj_im = %f", obj_im));
 	float map_im = 0;
 	if (o.piercing) {
-		int i = map.getImpassability(&o, osurf, new_pos);
+		int i = map.getImpassability(&o, new_pos);
 		o._position += dpos * 2; //BIG FIXME!! find out why collision position significantly differts from spawning from "death" event explosion for ex.
 		//LOG_DEBUG(("%d", i));
 		if (i == 100) {
 			o.emit("death"); //fixme
 		}
 	} else {
-		map_im = map.getImpassability(&o, osurf, new_pos) / 100.0;
+		map_im = map.getImpassability(&o, new_pos) / 100.0;
 	}
 
 	if (obj_im == 1.0 || map_im == 1.0) {

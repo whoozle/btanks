@@ -26,7 +26,9 @@
 #include "object_common.h"
 
 namespace sdlx {
+	class Rect;
 	class Surface;
+	class CollisionMap;
 }
 
 class AnimationModel;
@@ -49,7 +51,8 @@ public:
 	
 	virtual void tick(const float dt);
 	virtual void render(sdlx::Surface &surface, const int x, const int y);
-	void renderCopy(sdlx::Surface &surface);
+	const bool collides(const Object *other, const int x, const int y) const;
+	const bool collides(const sdlx::CollisionMap *other, const sdlx::Rect &other_src) const;
 
 	// animation:
 	void play(const std::string &id, const bool repeat = false);
@@ -80,6 +83,7 @@ public:
 	const bool rotating() const { return _direction_idx != _dst_direction; }
 
 protected:
+	const bool getRenderRect(sdlx::Rect &src) const;
 
 	void calculateWayVelocity();
 
@@ -115,6 +119,7 @@ private:
 	const AnimationModel *_model;
 	std::string _model_name;
 	const sdlx::Surface *_surface;
+	const sdlx::CollisionMap *_cmap;
 	std::string _surface_name;
 	
 	typedef std::deque<Event> EventQueue;

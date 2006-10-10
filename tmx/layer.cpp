@@ -22,29 +22,34 @@
 #include "mrt/exception.h"
 #include <assert.h>
 
-Layer::Layer(const int w, const int h, const mrt::Chunk & data, const int impassability, const bool pierceable) : impassability(impassability), pierceable(pierceable), _s_data(NULL), _w(w), _h(h) {
+Layer::Layer(const int w, const int h, const mrt::Chunk & data, const int impassability, const bool pierceable) : 
+impassability(impassability), pierceable(pierceable), _s_data(NULL), _c_data(NULL), _w(w), _h(h) {
 	_data = data;
 	assert((int)_data.getSize() == (4 * _w * _h));
 }
 
-void Layer::optimize(std::vector<sdlx::Surface *> & tilemap) {
-	int size = _w * _h;
+void Layer::optimize(std::vector< std::pair<sdlx::Surface *, sdlx::CollisionMap *> > & tilemap) {
+	unsigned size = _w * _h;
 	
 	Uint32 *ptr = (Uint32 *)_data.getPtr();
 	delete _s_data;
 	_s_data = new sdlx::Surface*[size];
-	unsigned int i = 0;
-	while(size--) {
+	delete _c_data;
+	_c_data = new sdlx::CollisionMap*[size];
+
+	for(unsigned int i = 0; i < size; ++i) {
 		Uint32 tid = *ptr++;
 
 		if (tid == 0) { 
-			_s_data[i++] = 0;
+			_s_data[i] = 0;
+			_c_data[i] = 0;
 		} else {
 			if ((unsigned)tid >= tilemap.size())
 				throw_ex(("got invalid tile id %d", tid));
-			_s_data[i++] = tilemap[tid];
+			_s_data[i] = tilemap[tid].first;
+			_c_data[i] = tilemap[tid].second;
 		}
 	}
 }
 
-Layer::~Layer() { delete[] _s_data; }
+Layer::~Layer() { delete[] _s_data; delete[] _c_data; }

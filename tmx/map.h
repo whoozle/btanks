@@ -31,6 +31,7 @@
 
 namespace sdlx {
 class Surface;
+class CollisionMap;
 class Rect;
 }
 
@@ -56,7 +57,7 @@ public:
 	const v3<int> getSize() const;
 	const v3<int> getTileSize() const;
 	
-	virtual const int getImpassability(const Object *obj, const sdlx::Surface &object_surf, const v3<int>& pos, v3<int> *tile_pos = NULL) const;
+	virtual const int getImpassability(const Object *obj, const v3<int>& pos, v3<int> *tile_pos = NULL) const;
 	void getImpassabilityMatrix(Matrix<int> &matrix) const { matrix = _imp_map; }
 	static const int pathfinding_step;
 
@@ -66,7 +67,7 @@ private:
 	virtual void charData(const std::string &data);
 
 	Matrix<int> _imp_map;
-	inline const bool collides(const sdlx::Surface&, const int dx, const int dy, const sdlx::Surface *tile) const;
+	inline const bool collides(const Object *obj, const int dx, const int dy, const sdlx::CollisionMap *tile) const;
 
 	int _w, _h, _tw, _th, _firstgid;
 	int _lastz;
@@ -80,7 +81,7 @@ private:
 	LayerMap _layers;
 	bool layer;
 
-	typedef std::vector<sdlx::Surface *> TileMap;
+	typedef std::vector< std::pair<sdlx::Surface *, sdlx::CollisionMap *> > TileMap;
 	TileMap _tiles;
 
 	struct Entity {

@@ -20,6 +20,7 @@
 #include "resource_manager.h"
 #include "mrt/logger.h"
 #include "sdlx/surface.h"
+#include "sdlx/c_map.h"
 #include "object.h"
 #include "animation_model.h"
 #include "utils.h"
@@ -58,19 +59,27 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 		if (sz != 0) tw = th = sz;
 
 		sdlx::Surface *s = NULL;
+		sdlx::CollisionMap *cmap = NULL;
 		TRY { 
 			s = new sdlx::Surface;
 			const std::string fname = "data/tiles/" + attr["tile"];
 			s->loadImage(fname);
 			s->convertAlpha();
+			
+			cmap = new sdlx::CollisionMap;
+			cmap->init(s);
+			
 			s->convertToHardware();
 			_surfaces[attr["tile"]] = s;
 			s = NULL;
 			
+			_cmaps[attr["tile"]] = cmap;
+			cmap = NULL;
+			
 			LOG_DEBUG(("loaded animation '%s' from '%s'", id.c_str(), fname.c_str()));
 			_animations[id] = new Object(id);
 			_animations[id]->init(model, attr["tile"], tw, th);
-		} CATCH("animation", { delete s; s = NULL; });
+		} CATCH("animation", { delete s; s = NULL; delete cmap; cmap = NULL; });
 	} else if (name == "animation-model") {
 		const std::string & id = attr["id"];
 		if (id.size() == 0) 
@@ -211,6 +220,13 @@ const sdlx::Surface *IResourceManager::getSurface(const std::string &id) const  
 	return i->second;
 }
 
+const sdlx::CollisionMap *IResourceManager::getCollisionMap(const std::string &id) const  {
+	CollisionMap::const_iterator i;
+	if ((i = _cmaps.find(id)) == _cmaps.end()) 
+		throw_ex(("could not find collision map with id '%s'", id.c_str()));
+	return i->second;
+}
+
 
 void IResourceManager::init(const std::string &fname) {
 	LOG_DEBUG(("loading resources from file: %s", fname.c_str()));
@@ -232,6 +248,8 @@ void IResourceManager::clear() {
 	_animation_models.clear();
 	std::for_each(_surfaces.begin(), _surfaces.end(), delete_ptr2<SurfaceMap::value_type>());
 	_surfaces.clear();
+	std::for_each(_cmaps.begin(), _cmaps.end(), delete_ptr2<CollisionMap::value_type>());
+	_cmaps.clear();
 	std::for_each(_objects.begin(), _objects.end(), delete_ptr2<ObjectMap::value_type>());
 	_objects.clear();
 
