@@ -13,7 +13,7 @@
 
 #define LEAK_TRACKING
 
-#define	DBG(x)		/*error messages, warnings*/
+#define	DBG(x)	x	/*error messages, warnings*/
 #define	DBG2(x)		/*texture allocation*/
 #define	DBG3(x)		/*chopping/tiling*/
 #define	DBG4(x)		/*texture uploading*/
