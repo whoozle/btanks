@@ -108,13 +108,13 @@ void IGame::init(const int argc, char *argv[]) {
 		else if (strncmp(argv[i], "--connect=", 10) == 0) { _address = argv[i] + 10; _autojoin = true; }
 		else if (strcmp(argv[i], "--no-sound") == 0) { no_sound = true; no_music = true; }
 		else if (strcmp(argv[i], "--help") == 0) { 
-			printf(	"\t--help\tshow this help\n"
-					"\t--no-gl\tdisable GL renderer\n"
-					"\t--dx\tenable directX(tm) renderer (win32 only)\n"
-					"\t-2 -3\tenlarge video mode to 1024x768 or 1280x1024\n"
-					"\t--map=xx\tload xx as map, start single player\n" 
+			printf(	"\t--help\t\t\tshow this help\n"
+					"\t--no-gl\t\t\tdisable GL renderer\n"
+					"\t--dx\t\t\tenable directX(tm) renderer (win32 only)\n"
+					"\t-2 -3\t\t\tenlarge video mode to 1024x768 or 1280x1024\n"
+					"\t--map=xx\t\tload xx as map, start single player\n" 
 					"\t--connect=ip/host\tconnect to given host as mp-client\n" 
-					"\t--no-sound\tdisable sound.\n" 
+					"\t--no-sound\t\tdisable sound.\n" 
 				  );
 			exit(0);
 		}
