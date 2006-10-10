@@ -731,6 +731,8 @@ void IGame::deinit() {
 	LOG_DEBUG(("shutting down, freeing surface"));
 	_running = false;
 	_window.free();
+	
+	_main_menu.deinit();
 }
 
 const int IGame::onConnect(Message &message) {
