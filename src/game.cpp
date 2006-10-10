@@ -581,7 +581,7 @@ void IGame::run() {
 				v3<float> pos, vel;
 				p->getInfo(pos, vel);
 
-				if ((int)p == _my_index)
+				if ((int)pi == _my_index)
 					Mixer->setListener(pos, vel);
 					
 				sdlx::Rect passive_viewport;
