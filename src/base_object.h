@@ -1,5 +1,6 @@
 #ifndef __WORLD_BASE_OBJECT_H__
 #define __WORLD_BASE_OBJECT_H__
+
 /* Battle Tanks Game
  * Copyright (C) 2006 Battle Tanks team
  *

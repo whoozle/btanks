@@ -1,5 +1,6 @@
 #ifndef __SDL_CXX_LAYER_EXCEPTION_H__
 #define __SDL_CXX_LAYER_EXCEPTION_H__
+
 /* Battle Tanks Game
  * Copyright (C) 2006 Battle Tanks team
  *

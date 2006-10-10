@@ -1,5 +1,6 @@
 #ifndef __BTANKS_JOYPLAYER_H__
 #define __BTANKS_JOYPLAYER_H__
+
 /* Battle Tanks Game
  * Copyright (C) 2006 Battle Tanks team
  *

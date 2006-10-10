@@ -1,5 +1,6 @@
 #ifndef __BTANKS_LAUNCHER_H__
 #define __BTANKS_LAUNCHER_H__
+
 /* Battle Tanks Game
  * Copyright (C) 2006 Battle Tanks team
  *

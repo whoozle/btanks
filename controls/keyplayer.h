@@ -1,5 +1,6 @@
 #ifndef __BT_KEYPLAYER_H__
 #define __BT_KEYPLAYER_H__
+
 /* Battle Tanks Game
  * Copyright (C) 2006 Battle Tanks team
  *

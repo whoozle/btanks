@@ -1,5 +1,6 @@
 #ifndef __SDLX_JOYSTICK_H__
 #define __SDLX_JOYSTICK_H__
+
 /* Battle Tanks Game
  * Copyright (C) 2006 Battle Tanks team
  *

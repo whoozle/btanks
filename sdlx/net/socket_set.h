@@ -1,5 +1,6 @@
 #ifndef __SDLX_NET_SOCKET_SET_H__
 #define __SDLX_NET_SOCKET_SET_H__
+
 /* Battle Tanks Game
  * Copyright (C) 2006 Battle Tanks team
  *

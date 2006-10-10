@@ -1,3 +1,6 @@
+#ifndef __SDL_SYSTEM_H__
+#define __SDL_SYSTEM_H__
+
 /* Battle Tanks Game
  * Copyright (C) 2006 Battle Tanks team
  *
@@ -15,8 +18,6 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-#ifndef __SDL_SYSTEM_H__
-#define __SDL_SYSTEM_H__
 
 namespace sdlx {
 	class System {

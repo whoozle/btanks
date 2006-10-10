@@ -1,5 +1,6 @@
 #ifndef ___SDLX_TTF_H__
 #define ___SDLX_TTF_H__
+
 /* Battle Tanks Game
  * Copyright (C) 2006 Battle Tanks team
  *

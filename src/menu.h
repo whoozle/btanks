@@ -1,5 +1,6 @@
 #ifndef __BT_MENU_H__
 #define __BT_MENU_H__
+
 /* Battle Tanks Game
  * Copyright (C) 2006 Battle Tanks team
  *

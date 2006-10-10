@@ -1,5 +1,6 @@
 #ifndef __BTANKS_ANIMATED_OBJECT__
 #define __BTANKS_ANIMATED_OBJECT__
+
 /* Battle Tanks Game
  * Copyright (C) 2006 Battle Tanks team
  *
