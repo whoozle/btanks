@@ -151,7 +151,7 @@ void IMixer::playSample(const Object *o, const std::string &name, const bool loo
 		ALuint source;
 		alGenSources(1, &source);
 		AL_CHECK(("alGenSources"));
-		_sources.insert(Sources::value_type(id, source));
+		_sources.insert(Sources::value_type(Sources::key_type(id, name), source));
 
 		v3<float> pos, vel;
 		o->getInfo(pos, vel);
@@ -177,6 +177,7 @@ void IMixer::updateObjects() {
 		
 	for(Sources::iterator j = _sources.begin(); j != _sources.end();) {
 	int last_id = -1;
+	Object *o = NULL;
 	TRY {
 		ALuint source = j->second;
 		ALenum state;
@@ -187,13 +188,11 @@ void IMixer::updateObjects() {
 			_sources.erase(j++);
 			continue;
 		}
-		if (j->first == last_id) {
-			++j;
-			continue;
+		if (j->first.first != last_id) {
+			last_id = j->first.first;
+			o = World->getObjectByID(j->first.first);
 		}
 
-		last_id = j->first;
-		Object *o = World->getObjectByID(j->first);
 		if (o == NULL)  {
 			++j;
 			continue;
@@ -215,10 +214,11 @@ void IMixer::updateObjects() {
 
 
 void IMixer::setListener(const v3<float> &pos, const v3<float> &vel) {
+	//LOG_DEBUG(("setListener: %g %g", pos.x, pos.y));
 	GET_CONFIG_VALUE("engine.sound.positioning-divisor", float, k, 200.0);
 		
-	ALfloat al_pos[] = { pos.x / k, -pos.y / k, pos.z / k };
-	ALfloat al_vel[] = { vel.x / k, -vel.y / k, vel.z / k };
+	ALfloat al_pos[] = { pos.x / k, -pos.y / k, 0*pos.z / k };
+	ALfloat al_vel[] = { vel.x / k, -vel.y / k, 0*vel.z / k };
 		
 	alListenerfv(AL_POSITION,    al_pos);
 	alListenerfv(AL_VELOCITY,    al_vel);
@@ -231,22 +231,27 @@ void IMixer::setListener(const v3<float> &pos, const v3<float> &vel) {
 void IMixer::cancelSample(const Object *o, const std::string &name) {
 	if (_nosound || name.empty())
 		return;
-/*	LOG_DEBUG(("object %d cancels %s", o->getID(), name.c_str()));
-	Sources::iterator j = _sources.find(o->getID());
-	if (j == _sources.end())
-		return;
-	alSourceStop(j->second);
-*/}
+	//LOG_DEBUG(("object %d cancels %s", o->getID(), name.c_str()));
+	Sources::iterator j1 = _sources.lower_bound(Sources::key_type(o->getID(), name));
+	Sources::iterator j2 = _sources.upper_bound(Sources::key_type(o->getID(), name));
+	for(Sources::iterator j = j1; j != j2; ++j) {
+		alSourcei (j->second, AL_LOOPING, AL_FALSE);
+		AL_CHECK(("alSourcei"));
+	}
+}
 
 void IMixer::cancelAll(const Object *o) {
 	if (_nosound)
 		return;
 	
-/*	Sources::iterator j = _sources.find(o->getID());
-	if (j == _sources.end())
-		return;
-	alSourceStop(j->second);
-*/}
+	const int id = o->getID();
+	for(Sources::iterator j = _sources.begin(); j != _sources.end(); ++j) {
+		if (j->first.first == id) {
+			alSourcei (j->second, AL_LOOPING, AL_FALSE);
+			AL_CHECK(("alSourcei"));
+		}
+	}
+}
 
 
 void IMixer::cancelAll() {

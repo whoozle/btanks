@@ -41,7 +41,7 @@ private:
 	typedef std::map<const std::string, Sample *> Sounds;
 	Sounds _sounds;
 	
-	typedef std::multimap<const int, ALuint> Sources;
+	typedef std::multimap<const std::pair<int, std::string> , ALuint> Sources;
 	Sources _sources;
 
 	typedef std::map<const std::string, bool> PlayList;
