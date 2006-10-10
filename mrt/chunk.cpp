@@ -1,5 +1,6 @@
 #include "chunk.h"
 #include <stdlib.h>
+#include <string.h>
 #include "ioexception.h"
 #include "fmt.h"
 
@@ -11,6 +12,11 @@ Chunk::Chunk(const int size) : ptr(NULL), size(0) {
 	setSize(size);
 }
 
+void Chunk::fill(const int b) {
+	if (ptr == NULL) 
+		return;
+	memset(ptr, b, size);
+}
 
 const Chunk& Chunk::operator=(const Chunk& c) {
     free();

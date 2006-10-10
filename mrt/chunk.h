@@ -40,6 +40,7 @@ public:
 	void setSize(size_t s);
 	void setData(const void *p, const size_t s);
 	void setData(void *p, const size_t s, const bool own = false);
+	void fill(const int b);
 	
 	void append(const Chunk &other);
 	void *reserve(const int more);
