@@ -28,7 +28,7 @@ const bool CollisionMap::collides(const sdlx::Rect &src, const CollisionMap *oth
 
 	/*check if bounding boxes intersect*/
 	if((bx1 < 0) || (ax1 < bx) || (by1 < 0) || (ay1 < by))
-		return 0;
+		return false;
 
 	inter_x0 = math::max(0, bx);
 	inter_x1 = math::min(ax1, bx1);
