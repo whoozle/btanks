@@ -40,6 +40,7 @@ public:
 	
 	void addPose(const std::string &id, Pose *pose);
 	const Pose * getPose(const std::string &id) const;
+	~AnimationModel();
 
 private:
 	typedef std::map<const std::string, Pose *> PoseMap;

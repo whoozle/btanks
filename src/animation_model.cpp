@@ -18,6 +18,7 @@
 
 #include "animation_model.h"
 #include "mrt/logger.h"
+#include "utils.h"
 
 AnimationModel::AnimationModel(const float default_speed) : default_speed(default_speed) {}
 
@@ -32,4 +33,9 @@ const Pose * AnimationModel::getPose(const std::string &id) const {
 	if (i == _poses.end())
 		return NULL;
 	return i->second;
+}
+
+AnimationModel::~AnimationModel() {
+	std::for_each(_poses.begin(), _poses.end(), delete_ptr2<PoseMap::value_type>());
+	_poses.clear();
 }
