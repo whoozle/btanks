@@ -20,7 +20,7 @@
  */
 
 
-#include <SDL/SDL.h>
+#include "sdlx.h"
 #include <SDL/SDL_thread.h>
 
 namespace sdlx {
