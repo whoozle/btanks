@@ -843,6 +843,8 @@ TRY {
 		PlayerSlot &slot = _players[_players.size() - 1];
 		slot.classname = slot.obj->registered_name;
 		slot.animation = slot.obj->animation;
+		slot.viewport = _window.getSize();
+		slot.visible = true;
 		
 		assert(slot.control_method == NULL);
 		GET_CONFIG_VALUE("player.control-method", std::string, control_method, "keys");	
