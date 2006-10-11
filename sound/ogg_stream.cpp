@@ -85,7 +85,7 @@ const bool OggStream::play() {
 	}
 	alSourceQueueBuffers(_source, _buffers_n, _buffers);
 	alSourcePlay(_source);
-	return false;
+	return true;
 }
 
 const bool OggStream::update() {
