@@ -321,6 +321,15 @@ void Surface::convertToHardware() {
 	//LOG_DEBUG(("moving %p to hardware,  result: %s", (void *)surface, ((surface->flags & SDL_HWSURFACE) == SDL_HWSURFACE)?"hardware":"software"));
 }
 
+void Surface::setClipRect(const sdlx::Rect &rect) {
+	SDL_SetClipRect(surface, const_cast<sdlx::Rect*>(&rect));
+}
+void Surface::resetClipRect() {
+	SDL_SetClipRect(surface, NULL);
+}
+void Surface::getClipRect(sdlx::Rect &rect) {
+	SDL_GetClipRect(surface, &rect);
+}
 
 Surface::~Surface() {
     free();

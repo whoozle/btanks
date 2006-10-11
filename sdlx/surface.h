@@ -121,6 +121,10 @@ namespace sdlx {
 		
 		void lock() const;
 		void unlock() const;
+		
+		void setClipRect(const sdlx::Rect &rect);
+		void resetClipRect(); 
+		void getClipRect(sdlx::Rect &rect);
 
 		~Surface();
 	private:
