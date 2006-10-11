@@ -66,18 +66,22 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 }
 
 IMixer::~IMixer() {
-	_nosound = true;
-	_nomusic = true;
 	
 	delete _ogg; 
 	_ogg = NULL;
 	
-	LOG_DEBUG(("cleaning up sounds..."));
-	std::for_each(_sounds.begin(), _sounds.end(), delete_ptr2<Sounds::value_type>());
-	_sounds.clear();
-	LOG_DEBUG(("shutting down openAL.."));
-	
-	alutExit();
+	if (!_nosound) {
+		LOG_DEBUG(("cleaning up sounds..."));
+		std::for_each(_sounds.begin(), _sounds.end(), delete_ptr2<Sounds::value_type>());
+		_sounds.clear();
+	}
+	if (!_nosound || !_nomusic) {
+		LOG_DEBUG(("shutting down openAL.."));
+		alutExit();
+	}
+
+	_nosound = true;
+	_nomusic = true;
 }
 
 
