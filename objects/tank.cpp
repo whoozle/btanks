@@ -123,7 +123,8 @@ void Tank::tick(const float dt) {
 		}
 		spawn(bullet, bullet, v3<float>::empty, _direction);
 	}
-	if (_state.alt_fire) {
+	if (_state.alt_fire && fire_possible) {
+		_fire.reset();
 		groupEmit("missiles", "launch");
 	}
 	
