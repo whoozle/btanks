@@ -828,7 +828,6 @@ TRY {
 		
 		mrt::Serializator s(&message.data);
 		World->deserialize(s);
-		World->safeMode(true);
 		
 		int my_id;
 		s.get(my_id);
@@ -998,6 +997,7 @@ void IGame::PlayerSlot::clear() {
 	}
 	animation.clear();
 	classname.clear();
+	remote = false;
 }
 
 IGame::PlayerSlot::~PlayerSlot() {

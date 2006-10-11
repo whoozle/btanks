@@ -42,15 +42,9 @@ void IWorld::clear() {
 	_objects.clear();
 	_id2obj.clear();
 	_last_id = 0;
-	_safe_mode = false;
 }
 
-void IWorld::safeMode(const bool safe_mode) {
-	_safe_mode = safe_mode;
-}
-
-
-IWorld::IWorld() : _last_id(0), _safe_mode(false) {}
+IWorld::IWorld() : _last_id(0) {}
 
 IWorld::~IWorld() {
 	clear();
@@ -494,7 +488,6 @@ void IWorld::tick(ObjectSet &objects, const float dt) {
 		Object *o = *i;
 		tick(*o, dt);
 		if (o->isDead()) {
-			if (!_safe_mode) {
 				ObjectMap::iterator m = _id2obj.find(o->_id);
 				assert(m != _id2obj.end());
 				assert(o == m->second);
@@ -507,7 +500,6 @@ void IWorld::tick(ObjectSet &objects, const float dt) {
 				objects.erase(i++);
 				assert(_id2obj.size() == _objects.size());
 				continue;
-			} else LOG_DEBUG(("prevent world from deleting object %d:%s (this will be deleted on next update)", o->getID(), o->classname.c_str()));
 		} 
 		++i;
 	}

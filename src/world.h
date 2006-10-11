@@ -43,8 +43,6 @@ public:
 	~IWorld();
 	IWorld();
 	
-	void safeMode(const bool safe_mode = true);
-	
 	void addObject(Object *, const v3<float> &pos);
 	const bool exists(const Object *) const;
 	const Object *getObjectByID(const int id) const;
@@ -86,7 +84,6 @@ private:
 	ObjectSet _objects;
 	ObjectMap _id2obj;
 	int _last_id;
-	bool _safe_mode;
 };
 
 SINGLETON(World, IWorld);
