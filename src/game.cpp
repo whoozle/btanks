@@ -63,7 +63,8 @@
 
 IMPLEMENT_SINGLETON(Game, IGame)
 
-IGame::IGame() : _my_index(-1), _address("localhost"), _autojoin(false), _shake(0), _trip_time(10), _next_sync(true) {
+IGame::IGame() : 
+_check_items(0.5, true), _my_index(-1), _address("localhost"), _autojoin(false), _shake(0), _trip_time(10), _next_sync(true) {
 	//LOG_DEBUG(("IGame ctor"));
 }
 IGame::~IGame() {}
@@ -432,11 +433,48 @@ void IGame::loadMap(const std::string &name) {
 			mrt::split(res, i->first, ":");
 			if (res.size() > 2 && res[0] == "object") {
 				//LOG_DEBUG(("object %s, animation %s, pos: %s", res[1].c_str(), res[2].c_str(), i->second.c_str()));
-				World->addObject(ResourceManager->createObject(res[1], res[2]), pos.convert<float>());
+				Item item;
+				Object *o = ResourceManager->createObject(res[1], res[2]);
+				
+				item.id = o->getID();
+				item.classname = res[1];
+				item.animation = res[2];
+				item.position = pos;
+				item.dead_on = 0;
+				
+				World->addObject(o, pos.convert<float>());
+				_items.push_back(item);
 			}
 		}
 	}
+	LOG_DEBUG(("%u items on map.", (unsigned) _items.size()));
 }
+
+void IGame::checkItems() {
+	for(Items::iterator i = _items.begin(); i != _items.end(); ++i) {
+		Item &item = *i;
+		if (World->getObjectByID(item.id) != NULL)
+			continue;
+		Uint32 ticks = SDL_GetTicks();
+		if (item.dead_on == 0) {
+			item.dead_on = ticks;
+			LOG_DEBUG(("item %s:%s is dead, log dead time.", item.classname.c_str(), item.animation.c_str()));
+			continue;
+		}
+		int rt;
+		Config->get("map." + item.classname + ".respawn-interval", rt, 5); 
+		if (rt == 0) 
+			continue;
+		if (((ticks - item.dead_on) / 1000) >= (unsigned)rt) {
+			//respawning item
+			Object *o = ResourceManager->createObject(item.classname, item.animation);
+			World->addObject(o, item.position.convert<float>());
+			item.id = o->getID();
+			item.dead_on = 0;
+		}
+	}
+}
+
 
 void IGame::createControlMethod(PlayerSlot &slot, const std::string &control_method) {
 	delete slot.control_method;
@@ -551,6 +589,9 @@ void IGame::run() {
 		
 		if (_running && !_paused) {
 			updatePlayers();
+			if (_check_items.tick(dt)) {
+				checkItems();
+			}
 #ifdef SHOW_PERFSTATS
 			t_tick_n = SDL_GetTicks();
 #endif
@@ -938,6 +979,7 @@ void IGame::clear() {
 	_players.clear();
 	_my_index = -1;
 	LOG_DEBUG(("cleaning up world"));
+	_items.clear();
 	World->clear();
 	_paused = false;
 	Map->clear();
@@ -1061,3 +1103,4 @@ void IGame::screen2world(v3<float> &pos, const int p, const int x, const int y) 
 	pos.x = slot.viewport.x + x;
 	pos.y = slot.viewport.y + y;
 }
+

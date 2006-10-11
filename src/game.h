@@ -103,6 +103,16 @@ private:
 	MainMenu _main_menu;
 	
 	void loadMap(const std::string &name);	
+	struct Item {
+		int id;
+		std::string classname, animation;
+		v3<int> position;
+		Uint32 dead_on;
+	};
+	typedef std::deque<Item> Items;
+	Items _items;
+	Alarm _check_items;
+	void checkItems();
 	
 	void createControlMethod(PlayerSlot &slot, const std::string &name);
 	const int spawnPlayer(const std::string &classname, const std::string &animation, const std::string &method);
