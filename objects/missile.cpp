@@ -56,12 +56,13 @@ void Missile::onSpawn() {
 
 void Missile::calculate(const float dt) {
 	if (type == "guided") {
-		v3<float> pos, vel;
-		if (getNearest("player", pos, vel, NULL)) {
+		v3 <float> pos, vel;
+		bool player_found;
+		if ((player_found = getNearest("player", pos, vel, NULL))) {
 			_velocity = pos;
 		}
 		if (getNearest("kamikaze", pos, vel, NULL)) {
-			if (_velocity.quick_length() > pos.quick_length()) 
+			if (!player_found || _velocity.quick_length() > pos.quick_length()) 
 				_velocity = pos;
 		}
 		GET_CONFIG_VALUE("objects.guided-missile.rotation-time", float, rotation_time, 0.2);
