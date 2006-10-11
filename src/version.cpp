@@ -24,6 +24,10 @@
 #endif
 
 const std::string& getVersion() {
+#ifdef DEBUG
+	static std::string version("0.3." VERSION "D");
+#else
 	static std::string version("0.3." VERSION);
+#endif
 	return version;
 }
