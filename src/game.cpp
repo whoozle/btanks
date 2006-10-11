@@ -451,6 +451,9 @@ void IGame::loadMap(const std::string &name) {
 }
 
 void IGame::checkItems() {
+	if (_client != NULL) //no need for multiplayer.
+		return;
+	
 	for(Items::iterator i = _items.begin(); i != _items.end(); ++i) {
 		Item &item = *i;
 		if (World->getObjectByID(item.id) != NULL)
