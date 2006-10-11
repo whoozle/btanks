@@ -73,7 +73,7 @@ void IWorld::addObject(Object *o, const v3<float> &pos) {
 	//LOG_DEBUG(("object %d added, objects: %d", o->_id, _objects.size()));
 }
 
-void IWorld::render(sdlx::Surface &surface, const sdlx::Rect &viewport) {
+void IWorld::render(sdlx::Surface &surface, const sdlx::Rect&src, const sdlx::Rect &dst) {
 	typedef std::multimap<const float, Object *> LayerMap;
 	LayerMap layers;
 	const IMap &map = *Map.get_const();
@@ -88,17 +88,17 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect &viewport) {
 		//LOG_DEBUG(("world::render(%d, %d)", z1, z2));
 		if (z1 != z2) {
 			//LOG_DEBUG(("calling map::render(%d, %d)", z1, z2));
-			map.render(surface, viewport, z1, z2);
+			map.render(surface, src, dst, z1, z2);
 		}
 		z1 = z2;
 		Object &o = *i->second;
 		sdlx::Rect r((int)o._position.x, (int)o._position.y, (int)o.size.x, (int)o.size.y);
-		if (r.intersects(viewport)) {
+		if (r.intersects(src)) {
 			//LOG_DEBUG(("rendering %s with z = %g", o.classname.c_str(), o._position.z));
-			o.render(surface, r.x - viewport.x, r.y - viewport.y);
+			o.render(surface, r.x - src.x + dst.x, r.y - src.y + dst.y);
 		}
 	}
-	map.render(surface, viewport, z1, 1000);
+	map.render(surface, src, dst, z1, 1000);
 }
 
 const bool IWorld::collides(Object *obj, const v3<int> &position, Object *o) const {

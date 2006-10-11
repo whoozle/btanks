@@ -48,7 +48,7 @@ public:
 	const Object *getObjectByID(const int id) const;
 	Object *getObjectByID(const int id);
 	
-	void render(sdlx::Surface &surface, const sdlx::Rect &viewport);
+	void render(sdlx::Surface &surface, const sdlx::Rect &src, const sdlx::Rect &viewport);
 	void tick(const float dt);
 	
 	Object * spawn(Object *src, const std::string &classname, const std::string &animation, const v3<float> &dpos, const v3<float> &vel);

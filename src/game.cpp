@@ -350,7 +350,7 @@ void IGame::onMenu(const std::string &name) {
 		int p2 = spawnPlayer(vehicle2, animation2, cm2);
 		
 		v3<int> ts = Map->getTileSize();
-		int w = _window.getSize().w / ts.x * ts.x;
+		int w = _window.getSize().w / 2 / ts.x * ts.x ;
 
 		_players[p1].viewport = _window.getSize();
 		_players[p1].viewport.w = w;
@@ -664,8 +664,8 @@ void IGame::run() {
 
 
 				//LOG_DEBUG(("player[0] %f, %f", vel.x, vel.y));
-				int wx = (int)pos.x - slot.viewport.x;
-				int wy = (int)pos.y - slot.viewport.y;
+				int wx = (int)(pos.x - slot.mapx);
+				int wy = (int)(pos.y - slot.mapy);
 				if (passive_viewport_stopzone.in(wx, wy)) {
 					slot.mapvx = 0; 
 					slot.mapvy = 0;
@@ -695,7 +695,7 @@ void IGame::run() {
 				slot.viewport.y += _shake_int;
 			}		
 	
-			World->render(_window, slot.viewport);
+			World->render(_window, sdlx::Rect((int)slot.mapx, (int)slot.mapy, slot.viewport.w, slot.viewport.h),  slot.viewport);
 	
 			if (_shake >0) {
 				slot.viewport.y -= _shake_int;
@@ -728,9 +728,6 @@ void IGame::run() {
 					slot.mapy = 0;
 				if (slot.mapy + slot.viewport.h > world_size.y) 
 					slot.mapy = world_size.y - slot.viewport.h;
-			
-				slot.viewport.x = (Sint16) slot.mapx;
-				slot.viewport.y = (Sint16) slot.mapy;
 			
 				//LOG_DEBUG(("%f %f", mapx, mapy));
 			}
@@ -1107,7 +1104,7 @@ IGame::PlayerSlot &IGame::getPlayerSlot(const int idx) {
 
 void IGame::screen2world(v3<float> &pos, const int p, const int x, const int y) {
 	PlayerSlot &slot = _players[p];
-	pos.x = slot.viewport.x + x;
-	pos.y = slot.viewport.y + y;
+	pos.x = slot.mapx + x;
+	pos.y = slot.mapx + y;
 }
 

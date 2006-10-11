@@ -53,7 +53,7 @@ public:
 	const bool loaded() const;
 	
 	
-	void render(sdlx::Surface &window, const sdlx::Rect &dst, const int z1, const int z2) const;
+	void render(sdlx::Surface &window, const sdlx::Rect &src, const sdlx::Rect &dst, const int z1, const int z2) const;
 	const v3<int> getSize() const;
 	const v3<int> getTileSize() const;
 	

@@ -377,7 +377,7 @@ void IMap::charData(const std::string &d) {
 	_stack.top().data = d;
 }
 
-void IMap::render(sdlx::Surface &window, const sdlx::Rect &dst, const int z1, const int z2) const {
+void IMap::render(sdlx::Surface &window, const sdlx::Rect &src, const sdlx::Rect &dst, const int z1, const int z2) const {
 	if (_w == 0 || z1 >= z2)  //not loaded
 		return;
 
@@ -386,14 +386,14 @@ void IMap::render(sdlx::Surface &window, const sdlx::Rect &dst, const int z1, co
 		if (l->first >= z1) {
 			if (l->first >= z2) 
 				break;
-			window.copyFrom(l->second->surface, dst);
+			window.copyFrom(l->second->surface, src);
 		}
 #else
-	int txp = dst.x / _tw, typ = dst.y / _th;
-	int xp = - (dst.x % _tw), yp = -(dst.y % _th);
+	int txp = src.x / _tw, typ = src.y / _th;
+	int xp = - (src.x % _tw), yp = -(src.y % _th);
 	
-	int txn = (dst.w - 1) / _tw + 2;
-	int tyn = (dst.h - 1) / _th + 2;
+	int txn = (src.w - 1) / _tw + 2;
+	int tyn = (src.h - 1) / _th + 2;
 	
 	for(LayerMap::const_iterator l = _layers.begin(); l != _layers.end(); ++l) 
 	if (l->first >= z1) {
@@ -405,7 +405,7 @@ void IMap::render(sdlx::Surface &window, const sdlx::Rect &dst, const int z1, co
 			for(int tx = 0; tx < txn; ++tx) {
 				const sdlx::Surface * s = l->second->getSurface(txp + tx, typ + ty);
 				if (s != NULL) 
-					window.copyFrom(*s, xp + tx * _tw, yp + ty * _th);
+					window.copyFrom(*s, dst.x + xp + tx * _tw, dst.y + yp + ty * _th);
 			}
 		}
 	}
