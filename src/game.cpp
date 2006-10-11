@@ -435,14 +435,15 @@ void IGame::loadMap(const std::string &name) {
 				//LOG_DEBUG(("object %s, animation %s, pos: %s", res[1].c_str(), res[2].c_str(), i->second.c_str()));
 				Item item;
 				Object *o = ResourceManager->createObject(res[1], res[2]);
+				World->addObject(o, pos.convert<float>());
 				
-				item.id = o->getID();
 				item.classname = res[1];
 				item.animation = res[2];
 				item.position = pos;
 				item.dead_on = 0;
 				
-				World->addObject(o, pos.convert<float>());
+				
+				item.id = o->getID();
 				_items.push_back(item);
 			}
 		}
@@ -461,7 +462,7 @@ void IGame::checkItems() {
 		Uint32 ticks = SDL_GetTicks();
 		if (item.dead_on == 0) {
 			item.dead_on = ticks;
-			LOG_DEBUG(("item %s:%s is dead, log dead time.", item.classname.c_str(), item.animation.c_str()));
+			LOG_DEBUG(("item %d:%s:%s is dead, log dead time.", item.id, item.classname.c_str(), item.animation.c_str()));
 			continue;
 		}
 		int rt;
@@ -470,6 +471,7 @@ void IGame::checkItems() {
 			continue;
 		if (((ticks - item.dead_on) / 1000) >= (unsigned)rt) {
 			//respawning item
+			LOG_DEBUG(("respawning item: %s:%s", item.classname.c_str(), item.animation.c_str()));
 			Object *o = ResourceManager->createObject(item.classname, item.animation);
 			World->addObject(o, item.position.convert<float>());
 			item.id = o->getID();
