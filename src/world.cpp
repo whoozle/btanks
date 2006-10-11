@@ -263,7 +263,7 @@ void IWorld::tick(Object &o, const float dt) {
 	if (o.isDead()) 
 		return;
 
-	GET_CONFIG_VALUE("engine.max-time-slice", float, max_dt, 0.1);
+	GET_CONFIG_VALUE("engine.max-time-slice", float, max_dt, 0.05);
 	if (max_dt <= 0) 
 		throw_ex(("invalid max-time-slice value %g", max_dt));
 
@@ -464,7 +464,7 @@ void IWorld::tick(const float dt) {
 }
 
 void IWorld::tick(ObjectSet &objects, const float dt) {
-	GET_CONFIG_VALUE("engine.max-time-slice", float, max_dt, 0.1);
+	GET_CONFIG_VALUE("engine.max-time-slice", float, max_dt, 0.05);
 	if (max_dt <= 0) 
 		throw_ex(("invalid max-time-slice value %g", max_dt));
 
