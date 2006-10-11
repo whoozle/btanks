@@ -700,6 +700,10 @@ void IWorld::applyUpdate(const mrt::Serializator &s, const float dt) {
 	s.get(n);
 	while(n--) {
 		Object *o = deserializeObject(s);
+		if (o == NULL) {
+			LOG_WARN(("some object failed to deserialize. wait for the next update"));
+			continue;
+		}
 		objects.insert(o);
 		skipped_objects.insert(o->_id);
 	}
