@@ -80,7 +80,7 @@ const bool OggStream::play() {
 		return true;
 
 	for(unsigned int i = 0; i <  _buffers_n; ++i) {	
-		if(!stream(_buffers[0]))
+		if(!stream(_buffers[i]))
 			return false;
 	}
 	alSourceQueueBuffers(_source, _buffers_n, _buffers);
