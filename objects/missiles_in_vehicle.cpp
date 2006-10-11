@@ -20,10 +20,41 @@
 #include "object.h"
 #include "resource_manager.h"
 #include "world.h"
+#include "config.h"
 
 class MissilesInVehicle : public Object {
 public:
-	MissilesInVehicle(const std::string &vehicle, const int n) : Object("missiles-in-vehicle"), n(n), max_n(n), hold(true), _vehicle(vehicle) {}
+	void update() {
+		const std::string key = "objects." + _type + "-" + _object + "-on-" + _vehicle;
+		int def_cap = 3;
+		int def_v = 1;
+
+		if (_vehicle == "launcher") {
+			def_v = (_type == "nuke")?2:3;
+			def_cap = 10;
+			
+			if (_type == "guided") 
+				def_cap = 8;
+			else if (_type == "smoke") 
+				def_cap = 10;
+			else if (_type == "dumb") 
+				def_cap = 10;
+			else if (_type == "nuke")
+				def_cap = 3;
+			
+		} else if (_vehicle == "tank") {
+			def_cap = (_type == "nuke")?2:3;
+		}
+		Config->get(key + ".capacity", max_n, def_cap);
+		n = max_n;
+
+		Config->get(key + ".visible-amount", max_v, def_v);
+	}
+
+	MissilesInVehicle(const std::string &type, const std::string &object, const std::string &vehicle) : 
+		Object("missiles-on-vehicle"), hold(true),  _vehicle(vehicle), _object(object), _type(type) {
+		update();
+	}
 	virtual void tick(const float dt);
 	virtual Object * clone() const;
 	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
@@ -37,6 +68,7 @@ public:
 		Object::serialize(s);
 		s.add(n);
 		s.add(max_n);
+		s.add(max_v);
 		s.add(hold);
 		s.add(_vehicle);
 		s.add(_object);
@@ -47,6 +79,7 @@ public:
 		Object::deserialize(s);
 		s.get(n);
 		s.get(max_n);
+		s.get(max_v);
 		s.get(hold);
 		s.get(_vehicle);
 		s.get(_object);
@@ -54,7 +87,7 @@ public:
 	}
 	
 private:
-	int n, max_n;
+	int n, max_v, max_n;
 	bool hold;
 	std::string _vehicle, _object, _type;
 };
@@ -65,12 +98,7 @@ const bool MissilesInVehicle::take(const BaseObject *obj, const std::string &typ
 		_type = type;
 		std::string animation = type + "-" + obj->classname + "-on-" + _vehicle;
 		setup(animation);
-		n = max_n;
-		
-		if (type == "nuke") {
-			if (n > 2)
-				n = 2; //fixme
-		}
+		update();
 		updatePose();
 		LOG_DEBUG(("missiles : %s taken", type.c_str()));
 		return true;
@@ -82,7 +110,7 @@ void MissilesInVehicle::updatePose() {
 	if (n <= 0)
 		return;
 	cancelAll();
-	std::string pose = mrt::formatString("missile-%d%s", n, hold?"-hold":"");
+	std::string pose = mrt::formatString("missile-%d%s", (n > max_v)?max_v:n, hold?"-hold":"");
 	//LOG_DEBUG(("updating pose to '%s'", pose.c_str()));
 	play(pose, true);
 }
@@ -116,10 +144,8 @@ void MissilesInVehicle::emit(const std::string &event, BaseObject * emitter) {
 			{
 				v3<float> v = _velocity.is0()?_direction:_velocity;
 				v.normalize();
-				std::string type = _type.empty()?"guided":_type;
-				std::string object = _object.empty()?"missiles":_object;
-				object = object.substr(0, object.size() - 1); //remove trailing 's' 
-				World->spawn(dynamic_cast<Object *>(emitter), type + "-" + object, type + "-" + object, v3<float>::empty, v);
+				std::string object = _object.substr(0, _object.size() - 1); //remove trailing 's' 
+				World->spawn(dynamic_cast<Object *>(emitter), _type + "-" + object, _type + "-" + object, v3<float>::empty, v);
 				
 				if (_object != "mines") {
 					const Object * la = ResourceManager.get_const()->getAnimation("missile-launch");
@@ -135,7 +161,7 @@ void MissilesInVehicle::emit(const std::string &event, BaseObject * emitter) {
 			updatePose();
 		}
 	} else if (event == "reload") {
-		n = 3;
+		n = max_n;
 		updatePose();
 	} else if (event == "collision") {
 		return;
@@ -147,5 +173,5 @@ Object* MissilesInVehicle::clone() const  {
 	return new MissilesInVehicle(*this);
 }
 
-REGISTER_OBJECT("missiles-on-launcher", MissilesInVehicle, ("launcher", 3));
-REGISTER_OBJECT("missiles-on-tank", MissilesInVehicle, ("tank", 1));
+REGISTER_OBJECT("missiles-on-launcher", MissilesInVehicle, ("guided", "missiles", "launcher"));
+REGISTER_OBJECT("missiles-on-tank", MissilesInVehicle, ("guided", "missiles", "tank"));
