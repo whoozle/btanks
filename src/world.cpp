@@ -769,11 +769,12 @@ const bool IWorld::getNearest(const Object *obj, const std::string &classname, v
 		//LOG_DEBUG(("%s is looking for %s. found: %s", obj->classname.c_str(), classname.c_str(), o->classname.c_str()));
 		if (o->_id == obj->_id || o->classname != classname || o->_owner_id == obj->_id || obj->_owner_id == o->_id) 
 			continue;
-		
-		float d = obj->_position.quick_distance(o->_position);
+
+		v3<float> cpos = o->_position + o->size / 2;
+		float d = obj->_position.quick_distance(cpos);
 		if (d < distance) {
 			distance = d;
-			position = o->_position;
+			position = cpos;
 			velocity = o->_velocity;
 			target = o;
 		}
@@ -781,7 +782,7 @@ const bool IWorld::getNearest(const Object *obj, const std::string &classname, v
 	if (target == NULL) 
 		return false;
 	
-	position -= obj->_position;
+	position -= obj->_position + obj->size / 2;
 	if (way == NULL)
 		return true;
 
