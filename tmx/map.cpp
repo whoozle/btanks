@@ -380,7 +380,6 @@ void IMap::charData(const std::string &d) {
 void IMap::render(sdlx::Surface &window, const sdlx::Rect &src, const sdlx::Rect &dst, const int z1, const int z2) const {
 	if (_w == 0 || z1 >= z2)  //not loaded
 		return;
-
 #ifdef PRERENDER_LAYERS
 	for(LayerMap::const_iterator l = _layers.begin(); l != _layers.end(); ++l) 	
 		if (l->first >= z1) {

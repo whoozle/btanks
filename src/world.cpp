@@ -74,6 +74,8 @@ void IWorld::addObject(Object *o, const v3<float> &pos) {
 }
 
 void IWorld::render(sdlx::Surface &surface, const sdlx::Rect&src, const sdlx::Rect &dst) {
+	surface.setClipRect(dst);
+	
 	typedef std::multimap<const float, Object *> LayerMap;
 	LayerMap layers;
 	const IMap &map = *Map.get_const();
@@ -99,6 +101,7 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect&src, const sdlx::Re
 		}
 	}
 	map.render(surface, src, dst, z1, 1000);
+	surface.resetClipRect();
 }
 
 const bool IWorld::collides(Object *obj, const v3<int> &position, Object *o) const {

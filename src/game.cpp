@@ -350,7 +350,7 @@ void IGame::onMenu(const std::string &name) {
 		int p2 = spawnPlayer(vehicle2, animation2, cm2);
 		
 		v3<int> ts = Map->getTileSize();
-		int w = _window.getSize().w / 2 / ts.x * ts.x ;
+		int w = _window.getSize().w / 2;
 
 		_players[p1].viewport = _window.getSize();
 		_players[p1].viewport.w = w;
