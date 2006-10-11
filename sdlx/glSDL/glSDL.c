@@ -10,9 +10,9 @@
 #include "glSDL.h"
 
 #ifdef HAVE_OPENGL
-
+/*
 #define LEAK_TRACKING
-
+*/
 #define	DBG(x)	x	/*error messages, warnings*/
 #define	DBG2(x)		/*texture allocation*/
 #define	DBG3(x)		/*chopping/tiling*/
@@ -23,7 +23,9 @@
 /*#define	CKSTATS*/	/*colorkey statistics*/
 
 /* Keep this on for now! Makes large surfaces faster. */
+/*
 #define	FAKE_MAXTEXSIZE	256
+*/
 
 #include <string.h>
 #include <stdlib.h>
