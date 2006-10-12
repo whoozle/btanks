@@ -29,6 +29,7 @@
 #include "math/v3.h"
 #include "player_state.h"
 #include "alarm.h"
+#include "window.h"
 
 class Object;
 class Message;
@@ -37,7 +38,7 @@ class Client;
 class Connection;
 class ControlMethod;
 
-class IGame {
+class IGame : public Window {
 public: 
 	DECLARE_SINGLETON(IGame);
 
@@ -98,7 +99,6 @@ private:
 	void onMenu(const std::string &name);
 
 	bool _running, _paused;
-	sdlx::Surface _window;
 
 	MainMenu _main_menu;
 	
@@ -126,7 +126,7 @@ private:
 	
 	Server *_server;
 	Client *_client;
-	bool _opengl, _show_fps;
+	bool _show_fps;
 	Object *_fps;
 
 	std::string _preload_map;
