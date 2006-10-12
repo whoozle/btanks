@@ -1049,7 +1049,10 @@ void IGame::updatePlayers() {
 	}
 				
 	if (_client && _my_index >= 0 && _players[_my_index].need_sync)	{
-		_client->notify(_players[_my_index].state);
+		mrt::Serializator s;
+		_players[_my_index].state.serialize(s);
+		Message m(Message::PlayerState);
+		_client->send(m);
 		_players[_my_index].need_sync = false;
 	}
 	//cross-players state exchange

@@ -54,6 +54,7 @@ void Client::init(const std::string &host, const unsigned port) {
 	} CATCH("init", {delete conn; conn = NULL; throw; });
 }
 
+/*
 void Client::notify(const PlayerState &state) {
 	if (!_monitor)
 		return;
@@ -62,6 +63,7 @@ void Client::notify(const PlayerState &state) {
 	state.serialize2(m.data);
 	send(m);
 }
+*/
 
 void Client::send(const Message &m) {
 	LOG_DEBUG(("sending '%s'", m.getType()));

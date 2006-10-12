@@ -31,7 +31,6 @@ public:
 	Client();
 	~Client();
 	void init(const std::string &host, const unsigned port);
-	void notify(const PlayerState &state);
 	void send(const Message &m);
 	void tick(const float dt);
 	void disconnect();
