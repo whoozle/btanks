@@ -65,8 +65,14 @@ const bool CollisionMap::collides(const sdlx::Rect &src, const CollisionMap *oth
 			int pos1 = (src.x + x) / 8 + (src.y + y) * _w;
 			int pos2 = (other_src.x + x - bx) / 8 + (other_src.y + y - by) * other->_w;
 			
+			/*
 			assert(pos1 >= 0 && pos1 < size1);
 			assert(pos2 >= 0 && pos2 < size2);
+			*/ //collision detection code works in 99% cases. 
+			//this asserts above can be triggered by malicious objects (invalid rectangle returned by getRenderRect)
+			//so skip it. :)
+			if (pos1 < 0 || pos1 >= size1 || pos2 < 0 || pos2 >= size2)
+				continue;
 			
 			unsigned bit1 = 1<<(7 - (x & 7));
 			unsigned bit2 = 1<<(7 - ((x - bx) & 7));
