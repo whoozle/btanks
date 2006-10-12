@@ -111,8 +111,10 @@ const bool IWorld::collides(Object *obj, const v3<int> &position, Object *o) con
 			
 		//skip owner and grouped-leader.
 		if (
-			(obj->_owner_id != 0 && obj->_owner_id == o->_id) || (o->_owner_id != 0 && o->_owner_id == obj->_id) ||
-			(obj->_follow != 0 && obj->_follow == o->_id) || (o->_follow != 0 && o->_follow == obj->_id) 
+			(obj->_owner_id != 0 && (obj->_owner_id == o->_id || obj->_owner_id == o->_owner_id )) || 
+			(o->_owner_id != 0 && o->_owner_id == obj->_id) ||
+			(obj->_follow != 0 && obj->_follow == o->_id) || 
+			(o->_follow != 0 && o->_follow == obj->_id) 
 		) {
 			return false;
 		}
