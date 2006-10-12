@@ -59,9 +59,23 @@ const bool CollisionMap::collides(const sdlx::Rect &src, const CollisionMap *oth
 
 	int size1 = _data.getSize();
 	int size2 = other->_data.getSize();
+	
+	//int steps = 0;
 
-	for(y = inter_y0 ; y <= inter_y1 ; ++y) {
-		for(x = inter_x0 ; x <= inter_x1 ; ++x)	{
+#define INTERLACE_STEP 8
+
+#if INTERLACE_STEP == 8
+	int steps_pos[] = {0, 4, 2, 6, 3, 7, 1, 5};
+#elif INTERLACE_STEP == 4
+	int steps_pos[] = {0, 2, 1, 3};
+#elif INTERLACE_STEP == 2
+	int steps_pos[] = {0, 1};
+#endif
+
+	for(int sy = 0; sy < INTERLACE_STEP; ++sy) 
+	for(int sx = 0; sx < INTERLACE_STEP; ++sx) 
+	for(y = inter_y0 + steps_pos[sy]; y <= inter_y1 ; y += INTERLACE_STEP) {
+		for(x = inter_x0 + steps_pos[sx]; x <= inter_x1 ; x += INTERLACE_STEP)	{
 			int pos1 = (src.x + x) / 8 + (src.y + y) * _w;
 			int pos2 = (other_src.x + x - bx) / 8 + (other_src.y + y - by) * other->_w;
 			
@@ -77,10 +91,14 @@ const bool CollisionMap::collides(const sdlx::Rect &src, const CollisionMap *oth
 			unsigned bit1 = 1<<(7 - (x & 7));
 			unsigned bit2 = 1<<(7 - ((x - bx) & 7));
 			
-			if ( (ptr1[pos1]&bit1) != 0 && (ptr2[pos2]&bit2) != 0)
+			if ( (ptr1[pos1]&bit1) != 0 && (ptr2[pos2]&bit2) != 0) {
+				//LOG_DEBUG(("collision detected: %d steps", steps));
 				return true;
+			}
+			//++steps;
 		}
 	}
+	//LOG_DEBUG(("no collision : %d steps", steps));
 	return false;
 }
 
