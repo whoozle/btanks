@@ -39,7 +39,7 @@ public:
 	virtual void deserialize(const mrt::Serializator &s);
 
 private:
-	Alarm _fire, _dirt_fire;
+	Alarm _fire, _special_fire;
 	bool _left_fire;
 };
 

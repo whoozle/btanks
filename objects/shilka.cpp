@@ -28,11 +28,11 @@
 REGISTER_OBJECT("shilka", Shilka, ());
 
 Shilka::Shilka() 
-: Object("player"), _fire(false), _dirt_fire(false), _left_fire(true) {
+: Object("player"), _fire(false), _special_fire(false), _left_fire(true) {
 }
 
 Shilka::Shilka(const std::string &animation) 
-: Object("player"), _fire(false), _dirt_fire(false), _left_fire(true) {
+: Object("player"), _fire(false), _special_fire(false), _left_fire(true) {
 	setup(animation);
 }
 
@@ -47,7 +47,7 @@ void Shilka::onSpawn() {
 	_fire.set(fr);
 
 	GET_CONFIG_VALUE("objects.shilka.special-fire-rate", float, sfr, 0.7);
-	_dirt_fire.set(sfr);
+	_special_fire.set(sfr);
 }
 
 Object * Shilka::clone() const {
@@ -79,7 +79,8 @@ void Shilka::calculate(const float dt) {
 void Shilka::tick(const float dt) {
 	Object::tick(dt);
 
-	bool fire_possible = isEffectActive("dirt")?(_fire.tick(dt),_dirt_fire.tick(dt)):(_dirt_fire.tick(dt),_fire.tick(dt));
+	bool fire_possible = _fire.tick(dt);
+	bool special_fire_possible = _special_fire.tick(dt);
 	
 	if (getState().empty()) {
 		play("hold", true);
@@ -101,7 +102,6 @@ void Shilka::tick(const float dt) {
 
 	if (_state.fire && fire_possible) {
 		_fire.reset();
-		_dirt_fire.reset();
 		
 		if (getState().substr(0,4) == "fire") 
 			cancel();
@@ -110,12 +110,27 @@ void Shilka::tick(const float dt) {
 		
 		static const std::string left_fire = "shilka-bullet-left";
 		static const std::string right_fire = "shilka-bullet-right";
-		std::string animation = "shilka-";
-		animation += isEffectActive("dirt")?"dirt-":"";
-		animation += "bullet-";
+		std::string animation = "shilka-bullet-";
 		animation += (_left_fire)?"left":"right";
 		
-		spawn(isEffectActive("dirt")?"dirt-bullet":"shilka-bullet", animation, v3<float>::empty, _direction);
+		spawn("shilka-bullet", animation, v3<float>::empty, _direction);
+		_left_fire = ! _left_fire;
+	}
+
+	if (_state.alt_fire && special_fire_possible && isEffectActive("dirt")) {
+		_special_fire.reset();
+		if (getState().substr(0,4) == "fire") 
+			cancel();
+		
+		playNow(_left_fire?"fire-left":"fire-right");
+		
+		static const std::string left_fire = "shilka-bullet-left";
+		static const std::string right_fire = "shilka-bullet-right";
+		std::string animation = "shilka-dirt-bullet-";
+		animation += (_left_fire)?"left":"right";
+
+		spawn("dirt-bullet", animation, v3<float>::empty, _direction);
+
 		_left_fire = ! _left_fire;
 	}
 }
@@ -131,12 +146,12 @@ const bool Shilka::take(const BaseObject *obj, const std::string &type) {
 void Shilka::serialize(mrt::Serializator &s) const {
 	Object::serialize(s);
 	_fire.serialize(s);
-	_dirt_fire.serialize(s);
+	_special_fire.serialize(s);
 	s.add(_left_fire);
 }
 void Shilka::deserialize(const mrt::Serializator &s) {
 	Object::deserialize(s);
 	_fire.deserialize(s);
-	_dirt_fire.deserialize(s);
+	_special_fire.deserialize(s);
 	s.get(_left_fire);
 }
