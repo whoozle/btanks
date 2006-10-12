@@ -110,7 +110,7 @@ void Launcher::tick(const float dt) {
 		}
 	}
 
-	if (_state.alt_fire && fire_possible) {
+	if (_state.fire && fire_possible) {
 		_fire.reset();
 		groupEmit("missiles", "launch");
 	}
