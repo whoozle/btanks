@@ -344,7 +344,7 @@
 
 	<object class="choo-choo-train" speed="200" mass="800" hp="1000" z="0" />
 
-	<object class="corpse" hp="10" ttl="10" fadeout_time="1" z="0" />
+	<object class="corpse" hp="100" ttl="10" fadeout_time="1" z="0" />
 	<object class="explosion" hp="1" z="580" />
 	<object class="nuclear-explosion" hp="1000" impassability="-1" z="900" />
 	<object class="dirt" impassability="0.7" z="-20" />
