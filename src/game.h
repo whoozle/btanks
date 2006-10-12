@@ -37,35 +37,12 @@ class Server;
 class Client;
 class Connection;
 class ControlMethod;
+class PlayerSlot;
 
 class IGame : public Window {
 public: 
 	DECLARE_SINGLETON(IGame);
 
-	struct PlayerSlot {
-		PlayerSlot() : obj(NULL), control_method(NULL), need_sync(false), remote(false), trip_time(10), visible(false) {}
-		PlayerSlot(Object *obj) : obj(obj), control_method(NULL), need_sync(false), remote(false), trip_time(10), visible(false) {}
-		Object * obj;
-		ControlMethod * control_method;
-		v3<int> position;
-		
-		PlayerState state;
-		bool need_sync;
-		bool remote;
-		float trip_time;
-		
-		bool visible;
-		sdlx::Rect viewport;
-		
-		float mapx, mapy, mapvx, mapvy;
-		
-		void clear();
-		~PlayerSlot();
-		
-		//respawn stuff.
-		std::string classname;
-		std::string animation;
-	};
 
 	static const std::string data_dir;
 	//signals

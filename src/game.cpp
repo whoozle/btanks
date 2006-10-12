@@ -53,6 +53,7 @@
 #include "config.h"
 
 #include "sound/mixer.h"
+#include "player_slot.h"
 
 #ifndef SDL_OPENGLBLIT
 #define SDL_OPENGLBLIT 0
@@ -847,21 +848,6 @@ void IGame::clear() {
 	Map->clear();
 }
 
-void IGame::PlayerSlot::clear() {
-	obj = NULL;
-	if (control_method != NULL) {
-		delete control_method; 
-		control_method = NULL;
-	}
-	animation.clear();
-	classname.clear();
-	remote = false;
-}
-
-IGame::PlayerSlot::~PlayerSlot() {
-	clear();
-}
-
 void IGame::updatePlayers() {
 	int n = _players.size();
 	for(int i = 0; i < n; ++i) {
@@ -960,7 +946,7 @@ const int IGame::getMyPlayerIndex() const {
 	return _my_index;
 }
 
-IGame::PlayerSlot &IGame::getPlayerSlot(const int idx) {
+PlayerSlot &IGame::getPlayerSlot(const int idx) {
 	return _players[idx];
 }
 

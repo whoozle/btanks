@@ -20,6 +20,7 @@
 #include "mouse_control.h"
 #include "mrt/logger.h"
 #include "game.h"
+#include "player_slot.h"
 #include "object.h"
 #include "math/abs.h"
 #include "object.h"
@@ -92,13 +93,13 @@ void MouseControl::updateState(PlayerState &state) {
 }
 
 Object * MouseControl::getObject() const {
-	IGame::PlayerSlot &slot = Game->getPlayerSlot(Game->getMyPlayerIndex());
+	PlayerSlot &slot = Game->getPlayerSlot(Game->getMyPlayerIndex());
 	return slot.obj;
 }
 
 
 void MouseControl::getPosition(v3<float>&pos) const {
-	IGame::PlayerSlot &slot = Game->getPlayerSlot(Game->getMyPlayerIndex());
+	PlayerSlot &slot = Game->getPlayerSlot(Game->getMyPlayerIndex());
 	slot.obj->getPosition(pos);
 	pos += slot.obj->size / 2;
 }
