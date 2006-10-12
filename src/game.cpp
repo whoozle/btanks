@@ -290,8 +290,10 @@ void IGame::init(const int argc, char *argv[]) {
 		loadMap(_preload_map);
 		
 		//_my_index = spawnPlayer("tank", "green-tank", "keys");
-		_my_index = spawnPlayer("launcher", "green-launcher", "keys");
+		_my_index = spawnPlayer("shilka", "green-shilka", "keys");
 		spawnPlayer("ai-tank", "green-tank", "ai");
+		_players[_my_index].visible = true;
+		_players[_my_index].viewport = _window.getSize();
 		_main_menu.setActive(false);
 	}
 	if (_autojoin) {
