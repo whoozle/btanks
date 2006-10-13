@@ -25,7 +25,7 @@
 #include "client.h"
 #include "player_state.h"
 #include "protocol.h"
-#include "game.h"
+#include "player_manager.h"
 #include "monitor.h"
 #include "connection.h"
 
@@ -89,14 +89,14 @@ void Client::tick(const float dt) {
 		if (m.type != Message::UpdateWorld && m.type != Message::ServerStatus && 
 			m.type != Message::UpdatePlayers && m.type != Message::Pang && m.type != Message::Respawn) 
 			throw_ex(("message type '%s' is not allowed", m.getType()));
-		Game->onMessage(0, m);
+		PlayerManager->onMessage(0, m);
 	}
 	while(_monitor->disconnected(id)) {
-		Game->onDisconnect(id);
+		PlayerManager->onDisconnect(id);
 	}
 }
 
 void Client::disconnect() {
 	_monitor->disconnect(0);
-	Game->onDisconnect(0);
+	PlayerManager->onDisconnect(0);
 }

@@ -44,16 +44,12 @@
 #include <SDL/SDL_opengl.h>
 #include <SDL/SDL_net.h>
 
-#include "controls/joyplayer.h"
-#include "controls/keyplayer.h"
-#include "controls/mouse_control.h"
-#include "controls/external_control.h"
-
 #include "player_state.h"
 #include "config.h"
 
 #include "sound/mixer.h"
 #include "player_slot.h"
+#include "player_manager.h"
 
 #ifndef SDL_OPENGLBLIT
 #define SDL_OPENGLBLIT 0
@@ -65,16 +61,11 @@
 IMPLEMENT_SINGLETON(Game, IGame)
 
 IGame::IGame() : 
-_check_items(0.5, true), _my_index(-1), _address("localhost"), _autojoin(false), _shake(0), _trip_time(10), _next_sync(true) {
-	//LOG_DEBUG(("IGame ctor"));
-}
+_check_items(0.5, true),  _address("localhost"), _autojoin(false), _shake(0) {}
 IGame::~IGame() {}
 
 void IGame::init(const int argc, char *argv[]) {
 	srand(time(NULL));
-	
-	_server = NULL; _client = NULL;
-	_ping = false;
 	
 	Config->load("bt.xml");
 
@@ -152,11 +143,10 @@ void IGame::init(const int argc, char *argv[]) {
 		LOG_DEBUG(("starting predefined map %s...", _preload_map.c_str()));
 		loadMap(_preload_map);
 		
-		//_my_index = spawnPlayer("tank", "green-tank", "keys");
-		_my_index = spawnPlayer("shilka", "green-shilka", "keys");
-		spawnPlayer("ai-tank", "green-tank", "ai");
-		_players[_my_index].visible = true;
-		_players[_my_index].viewport = _window.getSize();
+		_my_index = PlayerManager->spawnPlayer("shilka", "green-shilka", "keys");
+		assert(_my_index == 0);
+		PlayerManager->spawnPlayer("ai-tank", "green-tank", "ai");
+		PlayerManager->setViewport(_my_index, _window.getSize());
 		_main_menu.setActive(false);
 	}
 	if (_autojoin) {
@@ -189,10 +179,10 @@ void IGame::onMenu(const std::string &name) {
 		animation += "-" + vehicle;
 
 		GET_CONFIG_VALUE("player.control-method", std::string, cm, "keys");		
-		_my_index = spawnPlayer(vehicle, animation, cm);
-		spawnPlayer("ai-tank", "green-tank", "ai");
-		_players[_my_index].viewport = _window.getSize();
-		_players[_my_index].visible = true;
+		_my_index = PlayerManager->spawnPlayer(vehicle, animation, cm);
+		assert(_my_index == 0);
+		PlayerManager->spawnPlayer("ai-tank", "green-tank", "ai");
+		PlayerManager->setViewport(_my_index, _window.getSize());
 	} else if (name == "s-start") {
 		LOG_DEBUG(("start split screen game requested"));
 		clear();
@@ -211,22 +201,23 @@ void IGame::onMenu(const std::string &name) {
 		GET_CONFIG_VALUE("player.control-method-1", std::string, cm, "keys-1");		
 		GET_CONFIG_VALUE("player.control-method-2", std::string, cm2, "keys-2");
 		
-		int p1 = _my_index = spawnPlayer(vehicle1, animation1, cm);
-		int p2 = spawnPlayer(vehicle2, animation2, cm2);
+		_my_index = PlayerManager->spawnPlayer(vehicle1, animation1, cm);
+		assert(_my_index == 0);
+		PlayerManager->spawnPlayer(vehicle2, animation2, cm2);
 		
 		v3<int> ts = Map->getTileSize();
 		int w = _window.getSize().w / 2;
 
-		_players[p1].viewport = _window.getSize();
-		_players[p1].viewport.w = w;
-		_players[p1].visible = true;
+		sdlx::Rect vp1(_window.getSize());
+		sdlx::Rect vp2(_window.getSize());
+		vp1.w = w;
 
-		_players[p2].viewport = _window.getSize();
-		_players[p2].viewport.x = _players[_my_index].viewport.w;
-		_players[p2].viewport.w = w;
-		_players[p2].visible = true;
-		LOG_DEBUG(("p1: %d %d %d %d", _players[p1].viewport.x, _players[p1].viewport.y, _players[p1].viewport.w, _players[p1].viewport.h));
-		LOG_DEBUG(("p2: %d %d %d %d", _players[p2].viewport.x, _players[p2].viewport.y, _players[p2].viewport.w, _players[p2].viewport.h));
+		vp2.x = w;
+		vp2.w = w;
+		LOG_DEBUG(("p1: %d %d %d %d", vp1.x, vp1.y, vp1.w, vp1.h));
+		LOG_DEBUG(("p2: %d %d %d %d", vp2.x, vp2.y, vp2.w, vp2.h));
+		PlayerManager->setViewport(0, vp1);
+		PlayerManager->setViewport(1, vp2);
 
 	} else if (name == "m-start") {
 		LOG_DEBUG(("start multiplayer server requested"));
@@ -236,19 +227,13 @@ void IGame::onMenu(const std::string &name) {
 		GET_CONFIG_VALUE("stubs.default-mp-vehicle", std::string, vehicle, "tank");
 
 		GET_CONFIG_VALUE("player.control-method", std::string, cm, "keys");		
-		_my_index = spawnPlayer(vehicle, "green-" + vehicle, cm);
-		_players[_my_index].viewport = _window.getSize();
-		_players[_my_index].visible = true;
-		
-		_server = new Server;
-		_server->init(9876);
+		_my_index = PlayerManager->spawnPlayer(vehicle, "green-" + vehicle, cm);
+		assert(_my_index == 0);
+		PlayerManager->setViewport(_my_index, _window.getSize());
+		PlayerManager->startServer();
 	} else if (name == "m-join") {
 		clear();
-		unsigned port = 9876;
-		TRY {
-			_client = new Client;
-			_client->init(_address, port);
-		} CATCH("_client.init", { delete _client; _client = NULL; return; });
+		PlayerManager->startClient(_address);
 		
 		_main_menu.setActive(false);
 	}
@@ -261,7 +246,6 @@ void IGame::loadMap(const std::string &name) {
 	map.load(name);
 	
 	const v3<int> size = map.getSize();
-	_players.clear();
 
 	for (IMap::PropertyMap::iterator i = map.properties.begin(); i != map.properties.end(); ++i) {
 		if (i->first.substr(0, 6) != "spawn:" && i->first.substr(0, 7) != "object:") {
@@ -289,10 +273,7 @@ void IGame::loadMap(const std::string &name) {
 
 		if (i->first.substr(0, 6) == "spawn:") {
 			LOG_DEBUG(("spawnpoint: %d,%d", pos.x, pos.y));
-			
-			PlayerSlot slot;
-			slot.position = pos;
-			_players.push_back(slot);
+			PlayerManager->addSlot(pos);
 		} else {
 			std::vector<std::string> res;
 			mrt::split(res, i->first, ":");
@@ -317,7 +298,7 @@ void IGame::loadMap(const std::string &name) {
 }
 
 void IGame::checkItems() {
-	if (_client != NULL) //no need for multiplayer.
+	if (PlayerManager->isClient()) //no need for multiplayer.
 		return;
 	
 	for(Items::iterator i = _items.begin(); i != _items.end(); ++i) {
@@ -346,62 +327,11 @@ void IGame::checkItems() {
 }
 
 
-void IGame::createControlMethod(PlayerSlot &slot, const std::string &control_method) {
-	delete slot.control_method;
-	slot.control_method = NULL;
-
-	if (control_method == "keys") {
-		slot.control_method = new KeyPlayer(SDLK_UP, SDLK_DOWN, SDLK_LEFT, SDLK_RIGHT, SDLK_LCTRL, SDLK_LALT);
-	} else if (control_method == "keys-1") {
-		slot.control_method = new KeyPlayer(SDLK_r, SDLK_f, SDLK_d, SDLK_g, SDLK_q, SDLK_a);
-	} else if (control_method == "keys-2") {
-		slot.control_method = new KeyPlayer(SDLK_UP, SDLK_DOWN, SDLK_LEFT, SDLK_RIGHT, SDLK_RCTRL, SDLK_RSHIFT);
-	} else if (control_method == "mouse") {
-		slot.control_method = new MouseControl();
-	} else if (control_method == "network") {
-		slot.control_method = new ExternalControl;
-		slot.remote = true;
-	} else if (control_method != "ai") {
-		throw_ex(("unknown control method '%s' used", control_method.c_str()));
-	}
-}
-
-const int IGame::spawnPlayer(const std::string &classname, const std::string &animation, const std::string &control_method) {
-	size_t i, n = _players.size();
-	for(i = 0; i < n; ++i) {
-		if (_players[i].obj == NULL)
-			break;
-	}
-	if (i == n) 
-		throw_ex(("no available slots found from %d", n));
-	PlayerSlot &slot = _players[i];
-
-	createControlMethod(slot, control_method);
-	
-	LOG_DEBUG(("player: %s.%s using control method: %s", classname.c_str(), animation.c_str(), control_method.c_str()));
-	spawnPlayer(slot, classname, animation);
-	return i;
-}
-
-void IGame::spawnPlayer(PlayerSlot &slot, const std::string &classname, const std::string &animation) {
-	Object *obj = ResourceManager->createObject(classname, animation);
-	assert(obj != NULL);
-
-	World->addObject(obj, slot.position.convert<float>());
-	Object *spawn = World->spawn(obj, "spawn-shield", "spawning", v3<float>::empty, v3<float>::empty);
-	spawn->follow(obj, Centered);
-
-	slot.obj = obj;
-	slot.classname = classname;
-	slot.animation = animation;
-}
-
 
 
 void IGame::run() {
 	LOG_DEBUG(("entering main loop"));
 	SDL_Event event;
-	IMap &map = *IMap::get_instance();
 
 	sdlx::Rect window_size = _window.getSize();
 	
@@ -433,7 +363,7 @@ void IGame::run() {
 					break;
 				}
 				if (event.key.keysym.sym==SDLK_d && event.key.keysym.mod & KMOD_SHIFT && _my_index >= 0) {
-					_players[_my_index].obj->emit("death", 0);
+					PlayerManager->getSlot(_my_index).obj->emit("death", 0);
 					break;
 				}
 			case SDL_KEYUP:
@@ -458,7 +388,8 @@ void IGame::run() {
 		
 		
 		if (_running && !_paused) {
-			updatePlayers();
+			PlayerManager->updatePlayers();
+			
 			if (_check_items.tick(dt)) {
 				checkItems();
 			}
@@ -471,79 +402,9 @@ void IGame::run() {
 #ifdef SHOW_PERFSTATS
 			t_tick_w = SDL_GetTicks();
 #endif
+
+			PlayerManager->tick(t_start, dt);
 			
-			if (_server) {
-				if (_next_sync.tick(dt) && _server->active()) {
-					Message m(Message::UpdateWorld);
-					{
-						mrt::Serializator s;
-						World->generateUpdate(s);
-						m.data = s.getData();
-					}
-					LOG_DEBUG(("sending world update... (size: %u)", m.data.getSize()));
-					_server->broadcast(m);
-				}
-				_server->tick(dt);
-			}
-#ifdef SHOW_PERFSTATS
-			t_tick_s = SDL_GetTicks();
-#endif
-
-			if (_client) {
-				_client->tick(dt);
-				if (_ping && t_start >= _next_ping) {
-					ping();
-					GET_CONFIG_VALUE("multiplayer.ping-interval", int, ping_interval, 1500);
-					_next_ping = t_start + ping_interval; //fixme: hardcoded value
-				}
-			}
-
-#ifdef SHOW_PERFSTATS
-			t_tick_c = SDL_GetTicks();
-#endif				
-			for(unsigned int pi = 0; pi < _players.size(); ++pi) {
-				PlayerSlot &slot = _players[pi];
-				const Object * p = slot.obj;
-				if (p == NULL || !slot.visible)
-					continue; 
-					
-				v3<float> pos, vel;
-				p->getInfo(pos, vel);
-
-				if ((int)pi == _my_index)
-					Mixer->setListener(pos, vel);
-					
-				sdlx::Rect passive_viewport;
-				passive_viewport.w = passive_viewport.x = slot.viewport.w / 3;
-				passive_viewport.h = passive_viewport.y = slot.viewport.h / 3;
-				sdlx::Rect passive_viewport_stopzone(passive_viewport);
-	
-				{
-					int xmargin = passive_viewport_stopzone.w / 4;
-					int ymargin = passive_viewport_stopzone.h / 4;
-					passive_viewport_stopzone.x += xmargin;
-					passive_viewport_stopzone.y += ymargin;
-					passive_viewport_stopzone.w -= 2*xmargin;
-					passive_viewport_stopzone.h -= 2*ymargin;
-				}
-
-
-				//LOG_DEBUG(("player[0] %f, %f", vel.x, vel.y));
-				int wx = (int)(pos.x - slot.mapx);
-				int wy = (int)(pos.y - slot.mapy);
-				if (passive_viewport_stopzone.in(wx, wy)) {
-					slot.mapvx = 0; 
-					slot.mapvy = 0;
-				} else {
-					slot.mapvx = p->speed * 2 * (wx - passive_viewport.x) / passive_viewport.w ;
-					slot.mapvy = p->speed * 2 * (wy - passive_viewport.y) / passive_viewport.h ;
-					/*
-					LOG_DEBUG(("position : %f %f viewport: %d %d(passive:%d %d %d %d) mapv: %f %f", x, y,
-						viewport.x, viewport.y, passive_viewport.x, passive_viewport.y, passive_viewport.w, passive_viewport.h, 
-						mapvx, mapvy));
-					*/
-				}
-			}
 		}
 #ifdef SHOW_PERFSTATS
 		Uint32 t_tick = SDL_GetTicks();
@@ -551,24 +412,13 @@ void IGame::run() {
 
 		_window.fillRect(window_size, 0);
 	
-		for(unsigned p = 0; p < _players.size(); ++p) {
-			PlayerSlot &slot = _players[p];
-			if (!slot.visible)
-				continue;
-				
-			if (_shake > 0) {
-				slot.viewport.y += _shake_int;
-			}		
-	
-			World->render(_window, sdlx::Rect((int)slot.mapx, (int)slot.mapy, slot.viewport.w, slot.viewport.h),  slot.viewport);
-	
-			if (_shake >0) {
-				slot.viewport.y -= _shake_int;
-				_shake_int = -_shake_int;
-				_shake -= dt;
-			}
+		int vx = 0, vy = 0;
+		if (_shake > 0) {
+			vy += _shake_int;
+		}		
 
-		}
+		PlayerManager->render(_window, vx, vy);
+		
 		_main_menu.render(_window);
 		
 
@@ -577,27 +427,6 @@ void IGame::run() {
 			_fps->render(_window, 0, 0);
 		}		
 		
-		if (map.loaded()) {
-			const v3<int> world_size = map.getSize();
-			for(unsigned p = 0; p < _players.size(); ++p) {
-				PlayerSlot &slot = _players[p];
-				slot.mapx += slot.mapvx * dt;
-				slot.mapy += slot.mapvy * dt;
-			
-				if (slot.mapx < 0) 
-					slot.mapx = 0;
-				if (slot.mapx + slot.viewport.w > world_size.x) 
-					slot.mapx = world_size.x - slot.viewport.w;
-
-				if (slot.mapy < 0) 
-					slot.mapy = 0;
-				if (slot.mapy + slot.viewport.h > world_size.y) 
-					slot.mapy = world_size.y - slot.viewport.h;
-			
-				//LOG_DEBUG(("%f %f", mapx, mapy));
-			}
-		}
-
 #ifdef SHOW_PERFSTATS
 		Uint32 t_render = SDL_GetTicks();
 #endif
@@ -641,205 +470,13 @@ void IGame::deinit() {
 	_main_menu.deinit();
 }
 
-const int IGame::onConnect(Message &message) {
-	const std::string an = "red-tank";
-	LOG_DEBUG(("new client! spawning player:%s", an.c_str()));
-	const int client_id = spawnPlayer("tank", an, "network");
-	LOG_DEBUG(("client #%d", client_id));
-
-	LOG_DEBUG(("sending server status message..."));
-	message.type = Message::ServerStatus;
-	message.set("map", Map->getName());
-	message.set("version", getVersion());
-
-	mrt::Serializator s;
-	World->serialize(s);
-	s.add(_players[client_id].obj->getID());
-
-	message.data = s.getData();
-	LOG_DEBUG(("world: %s", message.data.dump().c_str()));
-	return client_id;
-}
-
-void IGame::onDisconnect(const int id) {
-	if ((unsigned)id >= _players.size()) {
-		LOG_ERROR(("player %d doesnt exists, so cannot disconnect.", id));
-		return;
-	}
-	PlayerSlot &slot = _players[id];
-	if (slot.obj)
-		slot.obj->emit("death", NULL);
-	
-	slot.clear();
-}
-
-
-void IGame::onMessage(const int id, const Message &message) {
-TRY {
-	LOG_DEBUG(("incoming message %s", message.getType()));
-	switch(message.type) {
-	case Message::ServerStatus: {
-		LOG_DEBUG(("server version: %s", message.get("version").c_str()));
-		LOG_DEBUG(("loading map..."));
-		Map->load(message.get("map"));
-		
-		mrt::Serializator s(&message.data);
-		World->deserialize(s);
-		
-		int my_id;
-		s.get(my_id);
-		LOG_DEBUG(("my_id = %d", my_id));
-		_players.clear();
-		_my_index = 0;
-		
-		Object * player = World->getObjectByID(my_id);
-		if (player == NULL) 
-			throw_ex(("invalid object id returned from server. (%d)", my_id));
-		_players.push_back(player);
-		assert(!_players.empty());
-		PlayerSlot &slot = _players[_players.size() - 1];
-		slot.classname = slot.obj->registered_name;
-		slot.animation = slot.obj->animation;
-		slot.viewport = _window.getSize();
-		slot.visible = true;
-		
-		assert(slot.control_method == NULL);
-		GET_CONFIG_VALUE("player.control-method", std::string, control_method, "keys");	
-		createControlMethod(slot, control_method);
-
-		LOG_DEBUG(("players = %d", _players.size()));
-		_next_ping = 0;
-		_ping = true;
-		break;	
-	}
-	case Message::UpdateWorld: {
-		mrt::Serializator s(&message.data);
-		World->applyUpdate(s, _trip_time / 1000.0);
-		break;
-	} 
-	case Message::PlayerState: {
-		mrt::Serializator s(&message.data);
-		if (id < 0 || (unsigned)id >= _players.size())
-			throw_ex(("player id exceeds players count (%d/%d)", id, _players.size()));
-		PlayerSlot &slot = _players[id];
-		ExternalControl * ex = dynamic_cast<ExternalControl *>(slot.control_method);
-		if (ex == NULL)
-			throw_ex(("player with id %d uses non-external control method", id));
-		ex->state.deserialize(s);
-		//World->tick(*slot.obj, slot.trip_time / 1000.0);
-		break;
-	} 
-	case Message::UpdatePlayers: { 
-		mrt::Serializator s(&message.data);
-		while(!s.end()) {
-			int id;
-			s.get(id);
-			if (id == _players[_my_index].obj->getID())
-				throw_ex(("server sent update for your state, bug."));
-			PlayerState state; 
-			state.deserialize(s);
-			Object *o = World->getObjectByID(id);
-			if (o != NULL) {
-				World->tick(*o, -_trip_time / 1000.0); //back in time ;)
-				o->updatePlayerState(state);
-				World->tick(*o, _trip_time / 1000.0);
-			} else {
-				LOG_WARN(("skipped state update for object id %d", id));
-			}
-		}
-		break;
-	} 
-	case Message::Ping: {
-		Message m(Message::Pang);
-		m.data = message.data;
-		size_t size = m.data.getSize();
-		m.data.reserve(size + sizeof(unsigned int));
-		
-		unsigned int ts = SDL_GetTicks();
-		*(unsigned int *)((unsigned char *)m.data.getPtr() + size) = ts;
-		_server->send(id, m);
-		break;
-	}
-	
-	case Message::Pang: {
-		const mrt::Chunk &data = message.data;
-		float ping = extractPing(data);
-		GET_CONFIG_VALUE("multiplayer.ping-interpolation-multiplier", int, pw, 3);
-		_trip_time = (pw * ping + _trip_time) / (pw + 1);
-		
-		GET_CONFIG_VALUE("multiplayer.ping-interval", int, ping_interval, 1500);
-
-		_next_ping = SDL_GetTicks() + ping_interval; 
-		
-		LOG_DEBUG(("ping = %g", _trip_time));
-		Message m(Message::Pong);
-		m.data.setData((unsigned char *)data.getPtr() + sizeof(unsigned int), data.getSize() - sizeof(unsigned int));
-		_client->send(m);
-		break;
-	}
-	
-	case Message::Pong: {
-		if (id < 0 || (unsigned)id >= _players.size())
-			throw_ex(("player id exceeds players count (%d/%d)", id, _players.size()));
-		float ping = extractPing(message.data);
-		
-		_players[id].trip_time = (3 * ping + _players[id].trip_time) / 4;
-		LOG_DEBUG(("player %d: ping: %g ms", id, ping));		
-		break;
-	}
-	
-	case Message::Respawn: {
-		TRY {
-		if (id < 0 || (unsigned)id >= _players.size())
-			throw_ex(("player id exceeds players count (%d/%d)", id, _players.size()));
-		PlayerSlot &slot = _players[_my_index];
-		mrt::Serializator s(&message.data);
-		World->applyUpdate(s, _trip_time / 1000.0);
-		int id;
-		s.get(id);
-		slot.obj = World->getObjectByID(id);
-		} CATCH("message::respawn", throw;);
-	break;
-	}
-	default:
-		LOG_WARN(("unhandled message: %s\n%s", message.getType(), message.data.dump().c_str()));
-	};
-} CATCH("onMessage", { 
-	if (_server) 
-		_server->disconnect(id);
-	if (_client) 
-		_client->disconnect();
-});
-}
-
-const float IGame::extractPing(const mrt::Chunk &data) const {
-	if (data.getSize() < sizeof(unsigned int))
-		throw_ex(("invalid pong recv'ed. (size: %u)", data.getSize()));
-	
-	unsigned int ts = * (unsigned int *)data.getPtr();
-	Uint32 ticks = SDL_GetTicks();
-	float delta = (int)(ticks - ts);
-	if (delta < 0) delta = -delta; //wrapped around.
-	if (delta > 10000)
-		throw_ex(("server returns bogus timestamp value. [%g]", delta));
-	delta /= 2;
-	return delta;
-}
 
 
 void IGame::clear() {
 	Mixer->cancelAll();
 
-	GET_CONFIG_VALUE("multiplayer.sync-interval", float, sync_interval, 103.0/101);
-	_next_sync.set(sync_interval);
+	PlayerManager->clear();
 
-	LOG_DEBUG(("deleting server/client if exists."));
-	_ping = false;
-	delete _server; _server = NULL;
-	delete _client; _client = NULL;
-
-	LOG_DEBUG(("cleaning up players..."));
-	_players.clear();
 	_my_index = -1;
 	LOG_DEBUG(("cleaning up world"));
 	_items.clear();
@@ -848,111 +485,13 @@ void IGame::clear() {
 	Map->clear();
 }
 
-void IGame::updatePlayers() {
-	int n = _players.size();
-	for(int i = 0; i < n; ++i) {
-		PlayerSlot &slot = _players[i];
-		if (slot.obj == NULL || World->exists(slot.obj)) 
-			continue;
-		LOG_DEBUG(("player in slot %d is dead. respawning.", i));
-		spawnPlayer(slot, slot.classname, slot.animation);
-		if (slot.remote) {
-			Message m(Message::Respawn);
-			mrt::Serializator s;
-			World->generateUpdate(s);
-			s.add(slot.obj->getID());
-			m.data = s.getData();
-			_server->send(i, m);
-		}
-	}
-	
-	bool updated = false;
-	
-	for(int i = 0; i < n; ++i) {
-		PlayerSlot &slot = _players[i];
-		if (slot.control_method != NULL) {
-			assert(slot.obj != NULL);
-			PlayerState old_state = slot.obj->getPlayerState();
-			PlayerState state = old_state;
-			slot.control_method->updateState(state);
-			if (slot.obj->updatePlayerState(state)) {
-				LOG_DEBUG(("player[%d] updated state: %s -> %s", i, old_state.dump().c_str(), state.dump().c_str()));
-				updated = true;
-				slot.state = state;
-				slot.need_sync = true;
-			}
-			if (slot.need_sync && slot.remote) {
-				LOG_DEBUG(("correcting remote player. "));
-				slot.obj->getPlayerState() = old_state;
-				World->tick(*slot.obj, -slot.trip_time / 1000.0);
-				slot.obj->getPlayerState() = state;
-				World->tick(*slot.obj, slot.trip_time / 1000.0);
-			}
-		}
-	}
-				
-	if (_client && _my_index >= 0 && _players[_my_index].need_sync)	{
-		mrt::Serializator s;
-		_players[_my_index].state.serialize(s);
-		Message m(Message::PlayerState);
-		_client->send(m);
-		_players[_my_index].need_sync = false;
-	}
-	//cross-players state exchange
-	if (_server && updated) {
-		for(int i = 0; i < n; ++i) {
-			if (i == _my_index || _players[i].obj == NULL) continue;
-			
-			bool send = false;
-			mrt::Serializator s;
-			for(int j = 0; j < n; ++j) {
-				if (i == j) 
-					continue;
-
-				PlayerSlot &slot = _players[j];
-				if (slot.need_sync) {
-					//LOG_DEBUG(("object in slot %d: %s (%d) need sync", j, slot.obj->registered_name.c_str(), slot.obj->getID()));
-					s.add(slot.obj->getID());
-					slot.state.serialize(s);
-					send = true;
-				}
-			}
-			if (send) {
-				Message m(Message::UpdatePlayers);
-				m.data = s.getData();
-				_server->send(i, m);
-			}
-		}
-		for(int i = 0; i < n; ++i) {
-			_players[i].need_sync = false;
-		}
-	}
-}
 
 void IGame::shake(const float duration, const int intensity) {
 	_shake = duration;
 	_shake_int = intensity;
 }
 
-void IGame::ping() {
-	Message m(Message::Ping);
-	unsigned int ts = SDL_GetTicks();
-	LOG_DEBUG(("ping timestamp = %u", ts));
-	m.data.setData(&ts, sizeof(ts));
-	_client->send(m);
-}
-
 const int IGame::getMyPlayerIndex() const {
 	return _my_index;
-}
-
-PlayerSlot &IGame::getPlayerSlot(const int idx) {
-	return _players[idx];
-}
-
-void IGame::screen2world(v3<float> &pos, const int p, const int x, const int y) {
-	PlayerSlot &slot = _players[p];
-	pos.x = slot.mapx + x;
-	pos.y = slot.mapx + y;
 }
 

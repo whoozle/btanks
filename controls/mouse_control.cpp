@@ -19,6 +19,7 @@
 
 #include "mouse_control.h"
 #include "mrt/logger.h"
+#include "player_manager.h"
 #include "game.h"
 #include "player_slot.h"
 #include "object.h"
@@ -39,7 +40,7 @@ void MouseControl::onMouse(const int button, const bool pressed, const int x, co
 	
 	//LOG_DEBUG(("shoot: %c, move: %c", _shoot?'+':'-', _move?'+':'-'));
 	v3<float> world;
-	Game->screen2world(world, 0, x, y); //fixme!! hardcoded player number
+	PlayerManager->screen2world(world, 0, x, y); //fixme!! hardcoded player number
 	if (_shoot) 
 		getObject()->getTargetPosition8(_target, world, "bullet");
 	else _target = world;
@@ -93,13 +94,13 @@ void MouseControl::updateState(PlayerState &state) {
 }
 
 Object * MouseControl::getObject() const {
-	PlayerSlot &slot = Game->getPlayerSlot(Game->getMyPlayerIndex());
+	PlayerSlot &slot = PlayerManager->getSlot(0);
 	return slot.obj;
 }
 
 
 void MouseControl::getPosition(v3<float>&pos) const {
-	PlayerSlot &slot = Game->getPlayerSlot(Game->getMyPlayerIndex());
+	PlayerSlot &slot = PlayerManager->getSlot(0);
 	slot.obj->getPosition(pos);
 	pos += slot.obj->size / 2;
 }

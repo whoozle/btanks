@@ -138,7 +138,10 @@ venv = env.Copy()
 venv.Append(CPPDEFINES=['VERSION="\\"' + version + '\\""'])
 
 vobj = venv.Object('src/version.cpp')
-bt_sources = 	['src/alarm.cpp', 'src/base_object.cpp', 
+bt_sources = 	[
+	'src/alarm.cpp', 'src/base_object.cpp', 
+	
+	'src/player_manager.cpp',
 	
 	'objects/bullet.cpp', 'objects/explosion.cpp', 'objects/single_pose.cpp',
 	'objects/tank.cpp', 'objects/shilka.cpp', 'objects/launcher.cpp', 'objects/ai_tank.cpp',
@@ -154,7 +157,7 @@ bt_sources = 	['src/alarm.cpp', 'src/base_object.cpp',
 	'src/resource_manager.cpp', 'src/world.cpp',
 	'tmx/map.cpp', 'tmx/layer.cpp', 
 	'SDL_collide/SDL_collide.c', 
-	'src/main.cpp', 'src/config.cpp', 'src/player_slot.cpp', 'src/game.cpp', 'src/window.cpp', 
+	'src/main.cpp', 'src/config.cpp', 'src/player_slot.cpp',  'src/game.cpp', 'src/window.cpp', 
 
 	'sound/al_ex.cpp', 'sound/ogg_ex.cpp', 'sound/ogg_stream.cpp', 'sound/mixer.cpp', 'sound/sample.cpp', 
 	

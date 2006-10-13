@@ -59,18 +59,12 @@ public:
 	IGame();
 	~IGame();
 	
-	const int onConnect(Message &message);
-	void onMessage(const int id, const Message &message);
-	void onDisconnect(const int id);
-	
 	//stupid visual effect
 	void shake(const float duration, const int intensity);
 	
 	//stupid and stub.
 	const int getMyPlayerIndex() const;
-	PlayerSlot & getPlayerSlot(const int idx);
-	void screen2world(v3<float> &pos, const int p, const int x, const int y);
-	
+
 private:
 	void onKey(const Uint8 type, const SDL_keysym sym);
 	void onMenu(const std::string &name);
@@ -91,18 +85,6 @@ private:
 	Alarm _check_items;
 	void checkItems();
 	
-	void createControlMethod(PlayerSlot &slot, const std::string &name);
-	const int spawnPlayer(const std::string &classname, const std::string &animation, const std::string &method);
-	void spawnPlayer(PlayerSlot &slot, const std::string &classname, const std::string &animation);
-	void updatePlayers();
-	void ping();
-	const float extractPing(const mrt::Chunk &data) const;
-	
-	std::vector<PlayerSlot> _players;
-	int _my_index;
-	
-	Server *_server;
-	Client *_client;
 	bool _show_fps;
 	Object *_fps;
 
@@ -112,11 +94,7 @@ private:
 
 	float _shake;
 	int _shake_int;
-	
-	float _trip_time;
-	Uint32 _next_ping;
-	bool _ping;
-	Alarm _next_sync;
+	int _my_index;
 };
 
 SINGLETON(Game, IGame);

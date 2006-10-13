@@ -21,7 +21,7 @@
 #include "mrt/logger.h"
 #include "mrt/exception.h"
 #include "mrt/socket_set.h"
-#include "game.h"
+#include "player_manager.h"
 #include "protocol.h"
 #include "monitor.h"
 #include "connection.h"
@@ -57,7 +57,7 @@ void Server::tick(const float dt) {
 				
 				LOG_DEBUG(("client connected..."));
 				Message msg(Message::ServerStatus);
-				int id = Game->onConnect(msg);
+				int id = PlayerManager->onConnect(msg);
 				_monitor->add(id, new Connection(s));
 				send(id, msg);
 			} CATCH("accept", { delete s; s = NULL; })
@@ -72,11 +72,11 @@ void Server::tick(const float dt) {
 			if (m.type != Message::PlayerState && m.type != Message::Ping && m.type != Message::Pong) 
 				throw_ex(("message type %s is not allowed", m.getType()));
 	
-			Game->onMessage(id, m);
+			PlayerManager->onMessage(id, m);
 		}
 
 		while(_monitor->disconnected(id)) {
-			Game->onDisconnect(id);
+			PlayerManager->onDisconnect(id);
 		}
 	} CATCH("tick", {
 		if (id >= 0) {
@@ -108,5 +108,5 @@ const bool Server::active() const { return _monitor->active(); }
 
 void Server::disconnect(const int id) {
 	_monitor->disconnect(id);
-	Game->onDisconnect(id);
+	PlayerManager->onDisconnect(id);
 }
