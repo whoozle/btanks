@@ -1,11 +1,11 @@
 #include "player_slot.h"
 #include "controls/control_method.h"
 
-PlayerSlot::PlayerSlot() : obj(NULL), control_method(NULL), need_sync(false), remote(false), trip_time(10), visible(false), 
+PlayerSlot::PlayerSlot() : id(-1), obj(NULL), control_method(NULL), need_sync(false), remote(false), trip_time(10), visible(false), 
 mapx(0), mapy(0), mapvx(0), mapvy(0)
 {}
 
-PlayerSlot::PlayerSlot(Object *obj) : obj(obj), control_method(NULL), need_sync(false), remote(false), trip_time(10), visible(false), 
+PlayerSlot::PlayerSlot(Object *obj) : id(-1), obj(obj), control_method(NULL), need_sync(false), remote(false), trip_time(10), visible(false), 
 mapx(0), mapy(0), mapvx(0), mapvy(0)
 {}
 

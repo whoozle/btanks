@@ -80,6 +80,7 @@ TRY {
 		_players.push_back(player);
 		assert(!_players.empty());
 		PlayerSlot &slot = _players[_players.size() - 1];
+		slot.id = slot.obj->getID();
 		slot.classname = slot.obj->registered_name;
 		slot.animation = slot.obj->animation;
 		slot.viewport.reset();
@@ -115,6 +116,7 @@ TRY {
 
 		//World->tick(*slot.obj, -slot.trip_time / 1000.0);
 		slot.obj = World->deserializeObject(s);
+		slot.id = slot.obj->getID();
 		slot.obj->updatePlayerState(state);
 		
 		World->tick(*slot.obj, slot.trip_time / 1000.0);
@@ -137,6 +139,7 @@ TRY {
 
 			if (slot < _players.size()) {
 				_players[slot].obj = o;
+				_players[slot].id = o->getID();
 			}
 			World->tick(*o, _trip_time / 1000.0);
 /*			Object *o = World->getObjectByID(id);
@@ -196,9 +199,8 @@ TRY {
 		PlayerSlot &slot = _players[0];
 		mrt::Serializator s(&message.data);
 		World->applyUpdate(s, _trip_time / 1000.0);
-		int id;
-		s.get(id);
-		slot.obj = World->getObjectByID(id);
+		s.get(slot.id);
+		slot.obj = World->getObjectByID(slot.id);
 		} CATCH("message::respawn", throw;);
 	break;
 	}
@@ -228,7 +230,7 @@ void IPlayerManager::updatePlayers() {
 	int n = _players.size();
 	for(int i = 0; i < n; ++i) {
 		PlayerSlot &slot = _players[i];
-		if (slot.obj == NULL || World->exists(slot.obj)) 
+		if (slot.obj == NULL || World->getObjectByID(slot.id) != NULL) 
 			continue;
 		LOG_DEBUG(("player in slot %d is dead. respawning.", i));
 		spawnPlayer(slot, slot.classname, slot.animation);
@@ -236,7 +238,10 @@ void IPlayerManager::updatePlayers() {
 			Message m(Message::Respawn);
 			mrt::Serializator s;
 			World->generateUpdate(s);
-			s.add(slot.obj->getID());
+			
+			assert(slot.obj->getID() == slot.id);
+			
+			s.add(slot.id);
 			m.data = s.getData();
 			_server->send(i, m);
 		}
@@ -294,7 +299,8 @@ void IPlayerManager::updatePlayers() {
 				PlayerSlot &slot = _players[j];
 				if (slot.need_sync) {
 					//LOG_DEBUG(("object in slot %d: %s (%d) need sync", j, slot.obj->registered_name.c_str(), slot.obj->getID()));
-					s.add(slot.obj->getID());
+					assert(slot.id == slot.obj->getID());
+					s.add(slot.id);
 					slot.state.serialize(s);
 					World->serializeObject(s, slot.obj);
 					send = true;
@@ -428,6 +434,7 @@ void IPlayerManager::spawnPlayer(PlayerSlot &slot, const std::string &classname,
 	spawn->follow(obj, Centered);
 
 	slot.obj = obj;
+	slot.id = obj->getID();
 	slot.classname = classname;
 	slot.animation = animation;
 }

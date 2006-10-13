@@ -13,6 +13,7 @@ class PlayerSlot {
 public:
 	PlayerSlot();
 	PlayerSlot(Object *obj);
+	int id;
 	Object * obj;
 	ControlMethod * control_method;
 	v3<int> position;
