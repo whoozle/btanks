@@ -9,7 +9,7 @@
 #include "controls/keyplayer.h"
 #include "controls/joyplayer.h"
 #include "controls/mouse_control.h"
-#include "controls/external_control.h"
+//#include "controls/external_control.h"
 
 #include "net/server.h"
 #include "net/client.h"
@@ -104,11 +104,20 @@ TRY {
 		if (id < 0 || (unsigned)id >= _players.size())
 			throw_ex(("player id exceeds players count (%d/%d)", id, _players.size()));
 		PlayerSlot &slot = _players[id];
-		ExternalControl * ex = dynamic_cast<ExternalControl *>(slot.control_method);
+/*		ExternalControl * ex = dynamic_cast<ExternalControl *>(slot.control_method);
 		if (ex == NULL)
 			throw_ex(("player with id %d uses non-external control method", id));
+		
 		ex->state.deserialize(s);
-		//World->tick(*slot.obj, slot.trip_time / 1000.0);
+		*/
+		PlayerState state;
+		state.deserialize(s);
+
+		//World->tick(*slot.obj, -slot.trip_time / 1000.0);
+		slot.obj = World->deserializeObject(s);
+		slot.obj->updatePlayerState(state);
+		
+		World->tick(*slot.obj, slot.trip_time / 1000.0);
 		break;
 	} 
 	case Message::UpdatePlayers: { 
@@ -250,8 +259,12 @@ void IPlayerManager::updatePlayers() {
 				
 	if (_client && _players.size() != 0 && _players[0].need_sync)	{
 		mrt::Serializator s;
+		
 		_players[0].state.serialize(s);
+		World->serializeObject(s, _players[0].obj);
+		
 		Message m(Message::PlayerState);
+		m.data = s.getData();
 		_client->send(m);
 		_players[0].need_sync = false;
 	}
@@ -368,7 +381,8 @@ void IPlayerManager::createControlMethod(PlayerSlot &slot, const std::string &co
 	} else if (control_method == "mouse") {
 		slot.control_method = new MouseControl();
 	} else if (control_method == "network") {
-		slot.control_method = new ExternalControl;
+		//slot.control_method = new ExternalControl;
+		slot.control_method = NULL;
 		slot.remote = true;
 	} else if (control_method != "ai") {
 		throw_ex(("unknown control method '%s' used", control_method.c_str()));
