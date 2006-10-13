@@ -483,6 +483,9 @@ void IPlayerManager::tick(const float now, const float dt) {
 			const v3<int> world_size = Map->getSize();
 			for(unsigned p = 0; p < _players.size(); ++p) {
 				PlayerSlot &slot = _players[p];
+				if (!slot.visible) 
+					continue;
+				
 				slot.mapx += slot.mapvx * dt;
 				slot.mapy += slot.mapvy * dt;
 			
