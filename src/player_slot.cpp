@@ -11,6 +11,7 @@ mapx(0), mapy(0), mapvx(0), mapvy(0)
 
 void PlayerSlot::clear() {
 	obj = NULL;
+	id = -1;
 	if (control_method != NULL) {
 		delete control_method; 
 		control_method = NULL;
