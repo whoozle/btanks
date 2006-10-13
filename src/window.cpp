@@ -5,6 +5,13 @@
 #include "sdlx/sdl_ex.h"
 #include "version.h"
 
+#include <SDL/SDL_opengl.h>
+#ifndef SDL_OPENGLBLIT
+#define SDL_OPENGLBLIT 0
+// using 0 as OPENGLBLIT value. SDL 1.3 or later
+#endif
+
+
 void Window::init(const int argc, char *argv[]) {
 #ifdef __linux__
 //	putenv("SDL_VIDEODRIVER=dga");

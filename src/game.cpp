@@ -41,8 +41,6 @@
 #include "net/protocol.h"
 #include "net/connection.h"
 
-#include <SDL/SDL_opengl.h>
-#include <SDL/SDL_net.h>
 
 #include "player_state.h"
 #include "config.h"
@@ -50,11 +48,6 @@
 #include "sound/mixer.h"
 #include "player_slot.h"
 #include "player_manager.h"
-
-#ifndef SDL_OPENGLBLIT
-#define SDL_OPENGLBLIT 0
-// using 0 as OPENGLBLIT value. SDL 1.3 or later
-#endif
 
 //#define SHOW_PERFSTATS
 
