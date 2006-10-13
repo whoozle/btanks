@@ -412,6 +412,11 @@ void IGame::run() {
 
 		PlayerManager->render(_window, vx, vy);
 		
+		if (_shake > 0) {
+			_shake_int = -_shake_int;
+			_shake -= dt;
+		}
+		
 		_main_menu.render(_window);
 		
 
