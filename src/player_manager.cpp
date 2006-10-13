@@ -1,3 +1,4 @@
+#include <string>
 #include "player_manager.h"
 #include "player_slot.h"
 #include "object.h"
