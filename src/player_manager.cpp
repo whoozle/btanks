@@ -125,19 +125,29 @@ TRY {
 		while(!s.end()) {
 			int id;
 			s.get(id);
-			if (id == _players[0].obj->getID())
-				throw_ex(("server sent update for your state, bug."));
+			unsigned slot;
+			for(slot = 0; slot < _players.size(); ++slot) {
+				if (_players[slot].obj->getID() == id)
+					break;
+			}
 			PlayerState state; 
 			state.deserialize(s);
-			Object *o = World->getObjectByID(id);
+			Object *o = World->deserializeObject(s);
+			o->updatePlayerState(state);
+
+			if (slot < _players.size()) {
+				_players[slot].obj = o;
+			}
+			World->tick(*o, _trip_time / 1000.0);
+/*			Object *o = World->getObjectByID(id);
 			if (o != NULL) {
-				World->tick(*o, -_trip_time / 1000.0); //back in time ;)
+				//World->tick(*o, -_trip_time / 1000.0); //back in time ;)
 				o->updatePlayerState(state);
 				World->tick(*o, _trip_time / 1000.0);
 			} else {
 				LOG_WARN(("skipped state update for object id %d", id));
 			}
-		}
+*/		}
 		break;
 	} 
 	case Message::Ping: {
@@ -255,6 +265,8 @@ void IPlayerManager::updatePlayers() {
 				World->tick(*slot.obj, slot.trip_time / 1000.0);
 			}
 		}
+		if (slot.need_sync)
+			updated = true;
 	}
 				
 	if (_client && _players.size() != 0 && _players[0].need_sync)	{
@@ -276,14 +288,15 @@ void IPlayerManager::updatePlayers() {
 			bool send = false;
 			mrt::Serializator s;
 			for(int j = 0; j < n; ++j) {
-				if (i == j) 
-					continue;
+				//if (i == j) 
+				//	continue;
 
 				PlayerSlot &slot = _players[j];
 				if (slot.need_sync) {
 					//LOG_DEBUG(("object in slot %d: %s (%d) need sync", j, slot.obj->registered_name.c_str(), slot.obj->getID()));
 					s.add(slot.obj->getID());
 					slot.state.serialize(s);
+					World->serializeObject(s, slot.obj);
 					send = true;
 				}
 			}
