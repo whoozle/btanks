@@ -680,14 +680,17 @@ void IWorld::generateUpdate(mrt::Serializator &s) {
 	LOG_DEBUG(("generating update %u objects of %u", c, n));
 
 	s.add(c);
-	for(ObjectSet::iterator i = _objects.begin(); i != _objects.end(); ++i) {
-		Object *o = *i;
-		if (o->need_sync || o->speed != 0) {
-			serializeObject(s, o);	
-			if (o->need_sync)
-				o->need_sync = false;
-		}
+	for(ObjectMap::reverse_iterator i = _id2obj.rbegin(); i != _id2obj.rend(); ++i) {
+		const int id = i->first;
+		Object *o = i->second;
+		if (skipped_objects.find(id) != skipped_objects.end()) 
+			continue;
+		
+		serializeObject(s, o);	
+		if (o->need_sync)
+			o->need_sync = false;
 	}
+	
 	unsigned int skipped = skipped_objects.size();
 	s.add(skipped);
 	for(std::set<int>::const_iterator i = skipped_objects.begin(); i != skipped_objects.end(); ++i) {
