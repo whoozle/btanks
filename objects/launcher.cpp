@@ -44,10 +44,7 @@ void Launcher::onSpawn() {
 	_smoke->hp = 100000;
 	_smoke->impassability = 0;
 	add("smoke", _smoke);
-	Object *_missiles = spawnGrouped("missiles-on-launcher", "guided-missiles-on-launcher", v3<float>::empty, Centered);
-	_missiles->hp = 100000;
-	_missiles->impassability = 0;
-	add("mod", _missiles);
+	add("mod", spawnGrouped("missiles-on-launcher", "guided-missiles-on-launcher", v3<float>::empty, Centered));
 	
 	GET_CONFIG_VALUE("objects.launcher.fire-rate", float, fr, 0.3);
 	_fire.set(fr);
@@ -122,6 +119,11 @@ const bool Launcher::take(const BaseObject *obj, const std::string &type) {
 		remove("mod");
 		add("mod", spawnGrouped("machinegunner-on-launcher", "machinegunner-on-launcher", v3<float>::empty, Centered));
 		return true;
+	}
+	if (get("mod")->classname != "missiles-on-launcher" && (obj->classname == "missiles" || obj->classname=="mines")) {
+		LOG_DEBUG(("restoring default mod."));
+		remove("mod");
+		add("mod", spawnGrouped("missiles-on-launcher", "guided-missiles-on-launcher", v3<float>::empty, Centered));
 	}
 	if (get("mod")->take(obj, type))
 		return true;

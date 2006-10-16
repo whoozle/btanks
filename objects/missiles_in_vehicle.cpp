@@ -53,6 +53,7 @@ public:
 
 	MissilesInVehicle(const std::string &type, const std::string &object, const std::string &vehicle) : 
 		Object("missiles-on-vehicle"), hold(true),  _vehicle(vehicle), _object(object), _type(type) {
+		impassability = 0;
 		update();
 	}
 	virtual void tick(const float dt);
