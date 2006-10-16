@@ -42,6 +42,9 @@
 	<value name="objects.nuke-missiles-on-tank.visible-amount" type="int">1</value>
 	<value name="objects.regular-mines-on-tank.capacity" type="int">3</value>
 	<value name="objects.regular-mines-on-tank.visible-amount" type="int">1</value>
+	<value name="objects.shilka.fire-rate" type="float">0.2</value>
+	<value name="objects.shilka.rotation-time" type="float">0.05</value>
+	<value name="objects.shilka.special-fire-rate" type="float">0.7</value>
 	<value name="objects.tank.fire-rate" type="float">0.5</value>
 	<value name="objects.tank.rotation-time" type="float">0.05</value>
 	<value name="player.control-method" type="string">keys</value>
