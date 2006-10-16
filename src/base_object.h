@@ -79,6 +79,7 @@ public:
 	void getInfo(v3<float> &pos, v3<float> &vel) const;
 	void updateStateFromVelocity();
 	void setZ(const float z); 
+	void setOwner(const int oid) { _owner_id = oid; }
 
 	void getTargetPosition8(v3<float> &position, const v3<float> &target, const std::string &weapon);
 	
@@ -95,6 +96,7 @@ protected:
 	virtual void calculate(const float dt) = 0;
 
 	void disown();
+	void own(const int oid) { _owner_id = oid; }
 	bool need_sync;
 
 private:
