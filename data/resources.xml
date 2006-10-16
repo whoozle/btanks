@@ -387,6 +387,6 @@
 	<object parent="base-item" class="smoke-missiles-item" />
 	<object parent="base-item" class="mines-item" />
 	<object parent="base-item" class="dirt-bullets-item" />
-	<object parent="base-item" class="machine-gunner-item" />
+	<object parent="base-item" class="machinegunner-item" />
 
 </resources>
