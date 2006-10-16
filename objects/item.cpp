@@ -77,6 +77,8 @@ Object* Item::clone() const  {
 
 /*  note that all heal objects have the same classname. this was done to simplify AI search/logic.*/
 
+REGISTER_OBJECT("base-item", Item, ("dummy"));
+
 REGISTER_OBJECT("heal", Item, ("heal"));
 REGISTER_OBJECT("megaheal", Item, ("heal"));
 
