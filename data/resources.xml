@@ -259,8 +259,11 @@
 	<animation id="smoke-missiles-item" tile="missile02_item.png" model="item-animation" />
 	<animation id="dumb-missiles-item" tile="missile03_item.png" model="item-animation" />
 	<animation id="nuke-missiles-item" tile="missile04_item.png" model="item-animation" />
+	<animation id="boomerang-missiles-item" tile="missile05_item.png" model="item-animation" />
+	<animation id="glue-missiles-item" tile="missile06_item.png" model="item-animation" />
 	<animation id="mines-item" tile="mine_item.png" model="item-animation" />
 	<animation id="dirt-bullets-item" tile="dirt_item.png" model="item-animation" />
+	<animation id="dispersion-bullets-item" tile="dispersion_item.png" model="item-animation" />
 	<animation id="machinegunner-item" tile="machinegunner_item.png" model="item-animation" />
 	
 	<!-- end of items -->
@@ -387,6 +390,9 @@
 	<object parent="base-item" class="smoke-missiles-item" />
 	<object parent="base-item" class="mines-item" />
 	<object parent="base-item" class="dirt-bullets-item" />
+	<object parent="base-item" class="dispersion-bullets-item" />
 	<object parent="base-item" class="machinegunner-item" />
+	<object parent="base-item" class="boomerang-missiles-item" />
+	<object parent="base-item" class="glue-missiles-item" />
 
 </resources>
