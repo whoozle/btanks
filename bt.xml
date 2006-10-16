@@ -45,11 +45,11 @@
 	<value name="objects.tank.fire-rate" type="float">0.5</value>
 	<value name="objects.tank.rotation-time" type="float">0.05</value>
 	<value name="player.control-method" type="string">keys</value>
-	<value name="player.control-method-1" type="string">keys-1</value>
-	<value name="player.control-method-2" type="string">keys-2</value>
-	<value name="stubs.default-map" type="string">survival</value>
+	<value name="player.control-method-1" type="string">joy-1</value>
+	<value name="player.control-method-2" type="string">joy-2</value>
+	<value name="stubs.default-map" type="string">country2</value>
 	<value name="stubs.default-mp-map" type="string">country2</value>
 	<value name="stubs.default-mp-vehicle" type="string">tank</value>
-	<value name="stubs.default-vehicle-1" type="string">tank</value>
-	<value name="stubs.default-vehicle-2" type="string">tank</value>
+	<value name="stubs.default-vehicle-1" type="string">launcher</value>
+	<value name="stubs.default-vehicle-2" type="string">launcher</value>
 </config>
