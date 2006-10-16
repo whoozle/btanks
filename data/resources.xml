@@ -242,6 +242,8 @@
 	<animation id="smoke-missile" tile="missile02.png" model="single-tile" />
 	<animation id="dumb-missile" tile="missile03.png" model="single-tile" />
 	<animation id="nuke-missile" tile="missile04.png" model="single-tile" />
+	<animation id="boomerang-missile" tile="missile05.png" model="single-tile" />
+	<animation id="stun-missile" tile="missile06.png" model="single-tile" />
 	<animation id="missile-fire" tile="missile_fire.png" model="missile-fire-animation" />
 	<animation id="missile-launch" tile="missile_launch.png" model="missile-launch-animation" size="128" />
 	<animation id="regular-mine" tile="mine.png" model="regular-mine-animation" size="32" />

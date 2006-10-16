@@ -55,7 +55,7 @@ void Missile::onSpawn() {
 }
 
 void Missile::calculate(const float dt) {
-	if (type == "guided") {
+	if (type == "guided" || type == "stun") {
 		std::vector<std::string> targets;
 		targets.push_back("player");
 		targets.push_back("kamikaze");
