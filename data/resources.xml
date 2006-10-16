@@ -323,7 +323,6 @@
 
 	<alias name="pond" class="single-pose" />
 	<alias name="shilka-bullet" class="bullet" />
-	<alias name="machinegunner-bullet" class="bullet" />
 	<alias name="spawn-shield" class="single-pose-once-no-directions" />
 	<alias name="smoke-cloud" class="single-pose-with-start" />
 	<alias name="gate" class="destructable-object" />

@@ -22,7 +22,7 @@
 
 class Bullet : public Object {
 public:
-	Bullet(const std::string &type) : Object("bullet"), _type(type) {
+	Bullet(const std::string &type, const int dirs) : Object("bullet"), _type(type), _dirs(dirs) {
 		impassability = 1;
 		piercing = true;
 	}
@@ -34,14 +34,17 @@ public:
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
 		s.add(_type);
+		s.add(_dirs);
 	}
 	virtual void deserialize(const mrt::Serializator &s) {
 		Object::deserialize(s);
 		s.get(_type);
+		s.get(_dirs);
 	}
 
 private: 
 	std::string _type;
+	int _dirs;
 };
 
 
@@ -50,13 +53,19 @@ void Bullet::calculate(const float dt) {}
 void Bullet::onSpawn() {
 	play("shot", false);
 	play("move", true);
-	_velocity.normalize();
 	
-	int dir = _velocity.getDirection8();
+	int dir;
+	if (_dirs == 8) {
+		_velocity.quantize8();
+		dir = _velocity.getDirection8();
+	} else if (_dirs == 16) {
+		_velocity.quantize16();
+		dir = _velocity.getDirection16();	
+	} else throw_ex(("bullet cannot handle %d directions", _dirs));
+	
 	if (dir) {
 		setDirection(dir - 1);
 	}
-	_velocity.quantize8();
 }
 
 void Bullet::emit(const std::string &event, BaseObject * emitter) {
@@ -81,5 +90,6 @@ Object* Bullet::clone() const  {
 	return a;
 }
 
-REGISTER_OBJECT("bullet", Bullet, ("regular"));
-REGISTER_OBJECT("dirt-bullet", Bullet, ("dirt"));
+REGISTER_OBJECT("bullet", Bullet, ("regular", 8));
+REGISTER_OBJECT("dirt-bullet", Bullet, ("dirt", 8));
+REGISTER_OBJECT("machinegunner-bullet", Bullet, ("regular", 16));
