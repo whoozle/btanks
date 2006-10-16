@@ -1,29 +1,29 @@
 <?xml version="1.0"?>
 <map version="0.99b" orientation="orthogonal" width="25" height="22" tilewidth="64" tileheight="64">
  <properties>
-  <property name="object:stun-missiles-item:stun-missiles-item:2" value="674,926,180"/>
   <property name="object:umbrella:umbrella:1" value="1098,182,290"/>
   <property name="object:traffic-lights:traffic-lights:7" value="368,431,150"/>
+  <property name="object:lodge:lodge:1" value="0,28,150"/>
   <property name="object:traffic-lights:traffic-lights:4" value="193,431,150"/>
   <property name="object:traffic-lights:traffic-lights:3" value="368,257,150"/>
   <property name="object:road-sign:road-sign04:2" value="368,1320,1"/>
   <property name="object:traffic-lights:traffic-lights:1" value="@3,4,1"/>
   <property name="object:road-sign:road-sign04:1" value="1330,884,1"/>
-  <property name="object:van:van:1" value="1450,602,410"/>
   <property name="object:stall:stall-right:15" value="626,190,415"/>
+  <property name="object:van:van:1" value="1450,602,410"/>
   <property name="object:stall:stall-left:16" value="517,190,415"/>
-  <property name="spawn:4" value="@24,20"/>
+  <property name="spawn:4" value="@22,18"/>
   <property name="object:mines-item:mines-item:1" value="424,84,180"/>
-  <property name="spawn:3" value="@0,20"/>
-  <property name="spawn:2" value="@22,0"/>
-  <property name="spawn:1" value="@0,1"/>
+  <property name="spawn:3" value="@1,17"/>
+  <property name="spawn:2" value="@16,4"/>
+  <property name="spawn:1" value="@1,2"/>
   <property name="object:nuke-missiles-item:nuke-missiles-item:0" value="@24,10,180"/>
   <property name="object:dumb-missiles-item:dumb-missiles-item:3" value="1000,536,180"/>
   <property name="object:dumb-missiles-item:dumb-missiles-item:2" value="@1,13,180"/>
-  <property name="object:biotoilet:biotoilet:0" value="@8,9,1"/>
   <property name="object:megaheal:megaheal:1" value="920,32,180"/>
   <property name="object:road-sign:road-sign02:1" value="1193,1360,10"/>
   <property name="object:heal:heal:9" value="@15,21,180"/>
+  <property name="object:stun-missiles-item:stun-missiles-item:2" value="674,926,180"/>
   <property name="object:bus-stop:bus-stop-left:1" value="192,930,410"/>
   <property name="object:road-sign:road-sign01:2" value="230,1244,1"/>
   <property name="object:heal:heal:1" value="24,1200,180"/>
@@ -33,11 +33,11 @@
   <property name="object:road-sign:road-sign09:1" value="394,1320,1"/>
   <property name="object:road-sign:road-sign08:1" value="1333,430,1"/>
   <property name="object:dispersion-bullets-item:dispersion-bullets-item:1" value="864,733,180"/>
-  <property name="object:machinegunner-item:machinegunner-item:0" value="123,259,180"/>
   <property name="object:helicopter-with-kamikazes:helicopter:1" value="@12,13,900"/>
   <property name="object:boomerang-missiles-item:boomerang-missiles-item:0" value="672,736"/>
   <property name="object:tent:tent-top:14" value="572,192,410"/>
   <property name="object:bus-stop:bus-stop-right:1" value="1334,930,410"/>
+  <property name="object:machine-gunner-item:machinegunner-item:0" value="865,927,180"/>
   <property name="object:gate:gate:1" value="@20,3,2"/>
   <property name="object:bus-stop:bus-stop-top:1" value="870,248,2"/>
   <property name="object:umbrella:umbrella:2" value="@21,20,410"/>
@@ -59,8 +59,8 @@
  </tileset>
  <layer name="zerosloy" width="25" height="22">
   <properties>
-   <property name="z" value="-100"/>
    <property name="impassability" value="40"/>
+   <property name="z" value="-100"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGAVDGTAOtANGwSgYBaNgFIwCKgIARi84W5gIAAA=
@@ -120,8 +120,8 @@
  </layer>
  <layer name="city objects" width="25" height="22">
   <properties>
-   <property name="z" value="100"/>
    <property name="impassability" value="100"/>
+   <property name="z" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGAWjYBQMZcAz0A4YBUSD4RJXIkhs7gFzBXH2D5cwH0kAAIzGM1uYCAAA
@@ -131,8 +131,8 @@
  <layer name="borders low" width="25" height="22">
   <properties>
    <property name="pierceable" value="false"/>
-   <property name="z" value="200"/>
    <property name="impassability" value="100"/>
+   <property name="z" value="200"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGAWjYBSQAwSYqKtuOAM1IsOAWHWjgDIwmnaJB6Npl/4AAC2kMeaYCAAA
@@ -170,8 +170,8 @@
  </layer>
  <layer name="buildings low" width="25" height="22">
   <properties>
-   <property name="impassability" value="100"/>
    <property name="z" value="400"/>
+   <property name="impassability" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAALvGgBuE4pFDBml45AoJ6A0G4hAgjkDCkVjUFUDNqsEiV03AjlggjgNibyScjMOOBjSxdihuJWAHsaATiLuAuAWIJwLxJCDuheJ+KtmBC8wA4pk0tmMUkA7CGXCne2rakcSAPd1TAkrR7KAF6APiZgZIHkykkR2gvAHKl6AyhpbxACvHqB0P2OygJQDFyWh5hR/gqxeRwWwK7IDFdREBdQvpZMciIN4CxEuheAkQLybBDlj9DgBXACjsmAgAAA==
@@ -180,8 +180,8 @@
  </layer>
  <layer name="city objects" width="25" height="22">
   <properties>
-   <property name="impassability" value="100"/>
    <property name="z" value="500"/>
+   <property name="impassability" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGJmAa6AdgAYGm3uGAmAcaAcMQQBKZ0xUMouZSuaMguEBRtPVKKAWAACwAhzhmAgAAA==
