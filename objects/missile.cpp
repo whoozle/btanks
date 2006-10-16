@@ -87,6 +87,9 @@ void Missile::emit(const std::string &event, BaseObject * emitter) {
 		}
 		v3<float> dpos = getRelativePos(emitter) / 2;
 		dpos.z = 0;
+
+		if (emitter)
+			emitter->addDamage(this);
 		emit("death", emitter);
 	} if (event == "death" && type == "smoke") {
 		spawn("smoke-cloud", "smoke-cloud");

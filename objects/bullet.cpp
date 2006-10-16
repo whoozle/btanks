@@ -79,6 +79,9 @@ void Bullet::emit(const std::string &event, BaseObject * emitter) {
 		} else if (_type == "dirt") {
 			spawn("dirt", "dirt", dpos);
 		}
+	
+		if(emitter)
+			emitter->addDamage(this);
 		Object::emit("death", emitter);
 	} else Object::emit(event, emitter);
 }
