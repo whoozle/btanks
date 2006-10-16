@@ -43,9 +43,11 @@ public:
 
 void Missile::onSpawn() {
 	play("main", true);
-	Object *_fire = spawnGrouped("single-pose", "missile-fire", v3<float>::empty, Centered);
-	_fire->impassability = 0;
-	add("fire", _fire);
+	if (type != "boomerang") {
+		Object *_fire = spawnGrouped("single-pose", "missile-fire", v3<float>::empty, Centered);
+		_fire->impassability = 0;
+		add("fire", _fire);
+	}
 	
 	_velocity.normalize();
 	int dir = _velocity.getDirection16();
@@ -66,8 +68,12 @@ void Missile::calculate(const float dt) {
 			_velocity = pos;
 		}
 
-		GET_CONFIG_VALUE("objects.guided-missile.rotation-time", float, rotation_time, 0.2);
+		GET_CONFIG_VALUE("objects." + type + "-missile.rotation-time", float, rotation_time, 0.2);
 		limitRotation(dt, 16, rotation_time, false, false);
+	} else if (type == "boomerang") {
+		GET_CONFIG_VALUE("objects.boomerang.rotation-speed", float, rs, 30);
+		int dir = ((int)(_moving_time * rs)) % 8;
+		setDirection(dir);
 	}
 }
 
@@ -98,4 +104,4 @@ REGISTER_OBJECT("dumb-missile", Missile, ("dumb"));
 REGISTER_OBJECT("smoke-missile", Missile, ("smoke"));
 REGISTER_OBJECT("nuke-missile", Missile, ("nuke"));
 REGISTER_OBJECT("boomerang-missile", Missile, ("boomerang"));
-REGISTER_OBJECT("stun-missile", Missile, ("boomerang"));
+REGISTER_OBJECT("stun-missile", Missile, ("stun"));
