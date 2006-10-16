@@ -117,6 +117,7 @@ void MissilesInVehicle::updatePose() {
 }
 
 void MissilesInVehicle::onSpawn() {
+	update();
 	updatePose();
 	impassability = 0;
 }
