@@ -38,7 +38,7 @@ void JoyPlayer::updateState(PlayerState &_state) {
 	
 	if (x >= THRESHOLD) _state.right = true;
 	if (x <= -THRESHOLD) _state.left = true;
-	if (y >= THRESHOLD) _state.down = true;;
+	if (y >= THRESHOLD) _state.down = true;
 	if (y <= -THRESHOLD) _state.up = true;
 	_state.fire = _joy.getButton(_fire);
 	_state.alt_fire = _joy.getButton(_alt_fire);
