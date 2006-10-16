@@ -16,7 +16,9 @@
 	<value name="engine.velocity-fadeout-multiplier" type="float">0.9</value>
 	<value name="map.dirt-bullets-item.respawn-interval" type="int">5</value>
 	<value name="map.heal.respawn-interval" type="int">5</value>
+	<value name="map.machinegunner-item.respawn-interval" type="int">5</value>
 	<value name="map.megaheal.respawn-interval" type="int">5</value>
+	<value name="map.mines-item.respawn-interval" type="int">5</value>
 	<value name="map.nuke-missiles-item.respawn-interval" type="int">5</value>
 	<value name="multiplayer.sync-interval" type="float">1.0198</value>
 	<value name="objects.ai-tank.dead-zone-for-target" type="float">2.5</value>
@@ -33,10 +35,13 @@
 	<value name="objects.kamikaze.reaction-time" type="float">0.1</value>
 	<value name="objects.launcher.fire-rate" type="float">0.3</value>
 	<value name="objects.launcher.rotation-time" type="float">0.07</value>
+	<value name="objects.machinegunner.fire-rate" type="float">0.2</value>
 	<value name="objects.nuke-missiles-on-launcher.capacity" type="int">3</value>
 	<value name="objects.nuke-missiles-on-launcher.visible-amount" type="int">2</value>
 	<value name="objects.nuke-missiles-on-tank.capacity" type="int">2</value>
 	<value name="objects.nuke-missiles-on-tank.visible-amount" type="int">1</value>
+	<value name="objects.regular-mines-on-tank.capacity" type="int">3</value>
+	<value name="objects.regular-mines-on-tank.visible-amount" type="int">1</value>
 	<value name="objects.tank.fire-rate" type="float">0.5</value>
 	<value name="objects.tank.rotation-time" type="float">0.05</value>
 	<value name="player.control-method" type="string">keys</value>

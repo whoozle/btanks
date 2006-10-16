@@ -51,21 +51,19 @@ void Machinegunner::tick(const float dt) {
 	}
 }
 void Machinegunner::calculate(const float dt) {
-	v3<float> kpos, kvel, ppos, pvel;
-	bool k_found = getNearest("kamikaze", kpos, kvel);
-	bool p_found = getNearest("player", ppos, pvel);
-	if (!k_found && !p_found) {
-		Object::calculate(dt);
-		_state.fire = false;
-		return;
-	} else if (k_found && p_found) {
-		_direction = (kpos.quick_length() < ppos.quick_length())? kpos:ppos;
-	} else if (k_found) {
-		_direction = kpos;
-	} else if (p_found) {
-		_direction = ppos;	
-	}
+	std::vector<std::string> targets;
+	targets.push_back("missile");
+	targets.push_back("player");
+	targets.push_back("kamikaze");
 	
+	v3<float> pos, vel;
+	
+	if (!getNearest(targets, pos, vel)) {
+		_state.fire = false;
+		Object::calculate(dt);
+		return;
+	}
+	_direction = pos;
 	_state.fire = true;
 	_direction.quantize8();
 	int dir = _direction.getDirection8();

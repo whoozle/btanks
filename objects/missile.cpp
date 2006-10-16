@@ -56,15 +56,17 @@ void Missile::onSpawn() {
 
 void Missile::calculate(const float dt) {
 	if (type == "guided") {
-		v3 <float> pos, vel;
-		bool player_found;
-		if ((player_found = getNearest("player", pos, vel, NULL))) {
+		std::vector<std::string> targets;
+		targets.push_back("missile");
+		targets.push_back("player");
+		targets.push_back("kamikaze");
+	
+		v3<float> pos, vel;
+	
+		if (getNearest(targets, pos, vel)) {
 			_velocity = pos;
 		}
-		if (getNearest("kamikaze", pos, vel, NULL)) {
-			if (!player_found || _velocity.quick_length() > pos.quick_length()) 
-				_velocity = pos;
-		}
+
 		GET_CONFIG_VALUE("objects.guided-missile.rotation-time", float, rotation_time, 0.2);
 		limitRotation(dt, 16, rotation_time, false, false);
 	}
