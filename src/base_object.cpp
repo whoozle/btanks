@@ -206,13 +206,16 @@ void BaseObject::follow(const int id) {
 #include "object.h"
 
 void BaseObject::addDamage(BaseObject *from, const bool emitDeath) {
-	if (!from->piercing || hp == -1 || from->hp == 0)
+	if (!from->piercing)
 		return;
 
 	addDamage(from, from->hp, emitDeath);
 }
 
 void BaseObject::addDamage(BaseObject *from, const int dhp, const bool emitDeath) {
+	if (hp == -1 || dhp == 0)
+		return;
+	
 	need_sync = true;
 	
 	hp -= dhp;	

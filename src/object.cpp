@@ -161,6 +161,9 @@ void Object::tick(const float dt) {
 			_effects.erase(ei++);
 			continue;
 		}
+		if (ei->first == "stunned") {
+			_velocity.clear();
+		}
 		++ei;
 	}
 

@@ -79,6 +79,12 @@ void Missile::calculate(const float dt) {
 
 void Missile::emit(const std::string &event, BaseObject * emitter) {
 	if (event == "collision") {
+		if (emitter != NULL && type == "stun") {
+			GET_CONFIG_VALUE("objects.stun-missile.stun-duration", float, sd, 5);
+			Object *o = dynamic_cast<Object*>(emitter);
+			if (o != NULL)
+				o->addEffect("stunned", sd);
+		}
 		v3<float> dpos = getRelativePos(emitter) / 2;
 		dpos.z = 0;
 		emit("death", emitter);
