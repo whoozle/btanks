@@ -17,31 +17,68 @@
  */
 
 #include "object.h"
+#include "alarm.h"
 #include "resource_manager.h"
+#include "config.h"
 
 class Machinegunner : public Object {
 public:
-	Machinegunner(const std::string &classname) : Object(classname) { impassability = 0; }
+	Machinegunner(const std::string &classname) : Object(classname), _fire(true) { impassability = 0; }
 	virtual Object * clone() const { return new Machinegunner(*this); }
 	virtual void onSpawn();
 	virtual void tick(const float dt);
 	virtual void calculate(const float dt);
 	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
 	virtual const bool take(const BaseObject *obj, const std::string &type);
+private: 
+	Alarm _fire;
 };
 
 void Machinegunner::onSpawn() {
 	play("main", true);
+
+	GET_CONFIG_VALUE("objects.machinegunner.fire-rate", float, fr, 0.2);
+	_fire.set(fr);
 }
 
 void Machinegunner::tick(const float dt) {
-
+	if (_fire.tick(dt) && _state.fire) {
+		int leader = getLeader(); //mod ? 
+		Object *b = spawn("machinegunner-bullet", "machinegunner-bullet", v3<float>::empty, _direction);
+		if (leader >= 0) {
+			b->setOwner(leader);
+		}
+	}
 }
 void Machinegunner::calculate(const float dt) {
-
+	v3<float> kpos, kvel, ppos, pvel;
+	bool k_found = getNearest("kamikaze", kpos, kvel);
+	bool p_found = getNearest("player", ppos, pvel);
+	if (!k_found && !p_found) {
+		Object::calculate(dt);
+		_state.fire = false;
+		return;
+	} else if (k_found && p_found) {
+		_direction = (kpos.quick_length() < ppos.quick_length())? kpos:ppos;
+	} else if (k_found) {
+		_direction = kpos;
+	} else if (p_found) {
+		_direction = ppos;	
+	}
+	
+	_state.fire = true;
+	_direction.quantize8();
+	int dir = _direction.getDirection8();
+	if (dir)
+		setDirection(dir - 1);
+	//LOG_DEBUG(("found! %g %g dir= %d", _direction.x, _direction.y, dir));
 }
 
-void Machinegunner::emit(const std::string &event, BaseObject * emitter) {}
+void Machinegunner::emit(const std::string &event, BaseObject * emitter) {
+	if (event == "hold" || event == "move" || event == "launch")
+		return;
+	Object::emit(event, emitter);
+}
 const bool Machinegunner::take(const BaseObject *obj, const std::string &type) {
 	return false;
 }
