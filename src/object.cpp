@@ -612,3 +612,18 @@ void Object::calculate(const float dt) {
 	
 	_velocity.normalize();
 }
+
+const bool Object::getNearest(const std::vector<std::string> &targets, v3<float> &position, v3<float> &velocity) const {
+	int found = 0;
+	for(size_t i = 0; i < targets.size(); ++i) {
+		v3<float> pos, vel;
+		if (!getNearest(targets[i], pos, vel)) 
+			continue;
+		++found;
+		if (found == 1 || pos.quick_length() < position.quick_length()) {
+			position = pos; velocity = vel;
+		}
+	}
+	
+	return found != 0;	
+}
