@@ -80,8 +80,6 @@ void Bullet::emit(const std::string &event, BaseObject * emitter) {
 			spawn("dirt", "dirt", dpos);
 		}
 	
-		if(emitter)
-			emitter->addDamage(this);
 		Object::emit("death", emitter);
 	} else Object::emit(event, emitter);
 }
