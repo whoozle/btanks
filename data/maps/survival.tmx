@@ -37,7 +37,7 @@
   <property name="object:boomerang-missiles-item:boomerang-missiles-item:0" value="672,736"/>
   <property name="object:tent:tent-top:14" value="572,192,410"/>
   <property name="object:bus-stop:bus-stop-right:1" value="1334,930,410"/>
-  <property name="object:machine-gunner-item:machinegunner-item:0" value="865,927,180"/>
+  <property name="object:machinegunner-item:machinegunner-item:0" value="865,927,180"/>
   <property name="object:gate:gate:1" value="@20,3,2"/>
   <property name="object:bus-stop:bus-stop-top:1" value="870,248,2"/>
   <property name="object:umbrella:umbrella:2" value="@21,20,410"/>
