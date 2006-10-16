@@ -1,39 +1,41 @@
 <?xml version="1.0"?>
 <map version="0.99b" orientation="orthogonal" width="25" height="22" tilewidth="64" tileheight="64">
  <properties>
+  <property name="object:glue-missiles-item:glue-missiles-item:2" value="674,926,180"/>
   <property name="object:umbrella:umbrella:1" value="1098,182,290"/>
   <property name="object:traffic-lights:traffic-lights:7" value="368,431,150"/>
   <property name="object:traffic-lights:traffic-lights:4" value="193,431,150"/>
-  <property name="object:lodge:lodge:1" value="102,46,410"/>
   <property name="object:traffic-lights:traffic-lights:3" value="368,257,150"/>
-  <property name="object:traffic-lights:traffic-lights:1" value="@3,4,1"/>
   <property name="object:road-sign:road-sign04:2" value="368,1320,1"/>
-  <property name="object:stall:stall-right:15" value="626,190,415"/>
-  <property name="object:van:van:1" value="1450,602,410"/>
+  <property name="object:traffic-lights:traffic-lights:1" value="@3,4,1"/>
   <property name="object:road-sign:road-sign04:1" value="1330,884,1"/>
-  <property name="spawn:4" value="@24,20"/>
+  <property name="object:van:van:1" value="1450,602,410"/>
+  <property name="object:stall:stall-right:15" value="626,190,415"/>
   <property name="object:stall:stall-left:16" value="517,190,415"/>
-  <property name="spawn:3" value="@0,20"/>
+  <property name="spawn:4" value="@24,20"/>
   <property name="object:mines-item:mines-item:1" value="424,84,180"/>
+  <property name="spawn:3" value="@0,20"/>
   <property name="spawn:2" value="@22,0"/>
   <property name="spawn:1" value="@0,1"/>
-  <property name="object:dumb-missiles-item:dumb-missiles-item:3" value="1000,536,180"/>
   <property name="object:nuke-missiles-item:nuke-missiles-item:0" value="@24,10,180"/>
+  <property name="object:dumb-missiles-item:dumb-missiles-item:3" value="1000,536,180"/>
   <property name="object:dumb-missiles-item:dumb-missiles-item:2" value="@1,13,180"/>
   <property name="object:biotoilet:biotoilet:0" value="@8,9,1"/>
   <property name="object:megaheal:megaheal:1" value="920,32,180"/>
   <property name="object:road-sign:road-sign02:1" value="1193,1360,10"/>
   <property name="object:heal:heal:9" value="@15,21,180"/>
-  <property name="object:machinegunner-item:machinegunner-item:0" value="123,259,180"/>
   <property name="object:bus-stop:bus-stop-left:1" value="192,930,410"/>
-  <property name="object:stall:stall-right:1" value="194,890,405"/>
-  <property name="object:heal:heal:1" value="24,1200,180"/>
   <property name="object:road-sign:road-sign01:2" value="230,1244,1"/>
+  <property name="object:heal:heal:1" value="24,1200,180"/>
+  <property name="object:stall:stall-right:1" value="194,890,405"/>
   <property name="object:road-sign:road-sign01:1" value="1190,796,1"/>
   <property name="object:guided-missiles-item:guided-missiles-item:0" value="1024,128,180"/>
   <property name="object:road-sign:road-sign09:1" value="394,1320,1"/>
   <property name="object:road-sign:road-sign08:1" value="1333,430,1"/>
+  <property name="object:dispersion-bullets-item:dispersion-bullets-item:1" value="864,733,180"/>
+  <property name="object:machinegunner-item:machinegunner-item:0" value="123,259,180"/>
   <property name="object:helicopter-with-kamikazes:helicopter:1" value="@12,13,900"/>
+  <property name="object:boomerang-missiles-item:boomerang-missiles-item:0" value="672,736"/>
   <property name="object:tent:tent-top:14" value="572,192,410"/>
   <property name="object:bus-stop:bus-stop-right:1" value="1334,930,410"/>
   <property name="object:gate:gate:1" value="@20,3,2"/>
@@ -67,7 +69,7 @@
  </layer>
  <layer name="terrain low" width="25" height="22">
   <properties>
-   <property name="impassability" value="20"/>
+   <property name="impassability" value="40"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAO2VQQ7DIAwE8QUkeglS+yx6bf//gj6h9gFp62AICdwaabVkoxhPBMSTc4HlF/rGSot9Zf9/jnG3rpkc1rOPG1etztZglHcy+5MVwSWPRl6r0+N4sb/p11u5riNz3zocpc/W92lx3FmPgxwyxn4zzD2TQzxX5r7KMSq95kc5sHfMcRxOcFh1McdxojXrahaH3gc6m8Gh97POkAPPkGD0jxyR9upx4BlyhOPsmVj+GVf3h6e9krovHF+G+AwBmAgAAA==
@@ -76,7 +78,7 @@
  </layer>
  <layer name="terrain high" width="25" height="22">
   <properties>
-   <property name="impassability" value="10"/>
+   <property name="impassability" value="45"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAO1V2wrCMAzNfBP8AcG3bb65+f8/pOIF5mUTnGKCCQuhnTrbNwOHbmnas9PTsCwByBFzhI0p5o7gxsmMvnlCzhwzB0faw/ENaP/Mo2OBuZLnqa7g90LlM0d+mbzWuvKukNrC1Ah/qrjkW23u1xCuskfDPz6PHeMQeN8VYo3YIGpEgxgF9qZC3BmAeyeISWCOG+LMz3ROewh/VpXikLO6BuYgHQ/FUUfg0DoaiOO51kH7x/Dc+hGjP6wfMTwXHTF7kHTIP0o8d+kYc38O6VPR0UJ3d9/p2ELXr3r0+TjEjwvX1Wb0rdP36glWGa70mAgAAA==
@@ -84,9 +86,6 @@
   <tileproperties/>
  </layer>
  <layer name="terrain details" width="25" height="22">
-  <properties>
-   <property name="impassability" value="10"/>
-  </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgwA/UGAkogAJJoDoVIJYBYn4gloJiYoAMHnUgM6SBWIgRVb0y1D5VIu1QRlKH7Cdk8d9oblIm0mxigR6VzRsFo4AQ+IfE/kEH+5hG0/igAqNxjh+8pKNdL6D2gehXVDb7L5T+DMSfoPQXKtsBA5+Q8D8CaskFAFxvzSKYCAAA
   </data>
@@ -94,7 +93,7 @@
  </layer>
  <layer name="road" width="25" height="22">
   <properties>
-   <property name="impassability" value="0"/>
+   <property name="impassability" value="20"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgQAXBjAwMIYwMNAWxQPPjaGzHqD9wgxygebmMCDoeiBPRxCily4C4HIkuBuJSNDFiaVx6qRlWxOqlJM6J1Tvqj1F/kAJG/UE8GPUH8WAg/QEAfoW7LZgIAAA=
@@ -146,7 +145,7 @@
    <property name="impassability" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgoB8wYCJOnR1QnS0ThCZWPal2wIApkl22BPRaAuUtmCD0KBgFQmjpQIAJlcalbiQC9DChVN0oGPxAhg5xSQ87kNMkevrEJ4cOSKnThiPgBPqdG4i5oDQPnrAAAHEHDoaYCAAA
+   H4sIAAAAAAAAAGNgoB8wYCJOnR1QnS0ThCZWPal2wIApkl22ROi1AKqxJNGOUTA8gRBaOhBgQqVxqRuJAD1MKFU3CgY/kKFDXNLDDuQ0iZ4+8cmhA1LqtOEIOIF+5wZiLijNgycsAPjhVruYCAAA
   </data>
   <tileproperties/>
  </layer>
@@ -185,7 +184,7 @@
    <property name="z" value="500"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgGJmAa6AdgAZg7mEZUFcMLcA40A4YggCUzpioZBYzlcwZBcMDjKarUUAtAABc6QefmAgAAA==
+   H4sIAAAAAAAAAGNgGJmAa6AdgAYGm3uGAmAcaAcMQQBKZ0xUMouZSuaMguEBRtPVKKAWAACwAhzhmAgAAA==
   </data>
   <tileproperties/>
  </layer>

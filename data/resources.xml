@@ -193,6 +193,8 @@
 	<animation id="dumb-missiles-on-tank" tile="tank_missile03.png" model="missiles-on-tank-animation" />
 	<animation id="nuke-missiles-on-tank" tile="tank_missile04.png" model="missiles-on-tank-animation" />
 	<animation id="regular-mines-on-tank" tile="tank_mine.png" model="missiles-on-tank-animation" />
+	<animation id="boomerang-missiles-on-tank" tile="tank_missile05.png" model="missiles-on-tank-animation" />
+	<animation id="glue-missiles-on-tank" tile="tank_missile06.png" model="missiles-on-tank-animation" />
 
 	<animation id="green-shilka" tile="shilka01.png" model="shilka-animation"/>
 	<animation id="red-shilka" tile="shilka02.png" model="shilka-animation"/>
@@ -220,6 +222,8 @@
 	<animation id="smoke-missiles-on-launcher" tile="launcher_missile02.png" model="missiles-on-launcher-animation" />
 	<animation id="dumb-missiles-on-launcher" tile="launcher_missile03.png" model="missiles-on-launcher-animation" />
 	<animation id="nuke-missiles-on-launcher" tile="launcher_missile04.png" model="missiles-on-launcher-animation" />
+	<animation id="boomerang-missiles-on-launcher" tile="launcher_missile05.png" model="missiles-on-launcher-animation" />
+	<animation id="glue-missiles-on-launcher" tile="launcher_missile06.png" model="missiles-on-launcher-animation" />
 	<animation id="regular-mines-on-launcher" tile="launcher_mine.png" model="missiles-on-launcher-animation" />
 	<animation id="machinegunner-on-launcher" tile="launcher_machinegunner.png" model="single-tile" />
 
