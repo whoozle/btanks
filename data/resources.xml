@@ -194,7 +194,7 @@
 	<animation id="nuke-missiles-on-tank" tile="tank_missile04.png" model="missiles-on-tank-animation" />
 	<animation id="regular-mines-on-tank" tile="tank_mine.png" model="missiles-on-tank-animation" />
 	<animation id="boomerang-missiles-on-tank" tile="tank_missile05.png" model="missiles-on-tank-animation" />
-	<animation id="glue-missiles-on-tank" tile="tank_missile06.png" model="missiles-on-tank-animation" />
+	<animation id="stun-missiles-on-tank" tile="tank_missile06.png" model="missiles-on-tank-animation" />
 
 	<animation id="green-shilka" tile="shilka01.png" model="shilka-animation"/>
 	<animation id="red-shilka" tile="shilka02.png" model="shilka-animation"/>
@@ -223,7 +223,7 @@
 	<animation id="dumb-missiles-on-launcher" tile="launcher_missile03.png" model="missiles-on-launcher-animation" />
 	<animation id="nuke-missiles-on-launcher" tile="launcher_missile04.png" model="missiles-on-launcher-animation" />
 	<animation id="boomerang-missiles-on-launcher" tile="launcher_missile05.png" model="missiles-on-launcher-animation" />
-	<animation id="glue-missiles-on-launcher" tile="launcher_missile06.png" model="missiles-on-launcher-animation" />
+	<animation id="stun-missiles-on-launcher" tile="launcher_missile06.png" model="missiles-on-launcher-animation" />
 	<animation id="regular-mines-on-launcher" tile="launcher_mine.png" model="missiles-on-launcher-animation" />
 	<animation id="machinegunner-on-launcher" tile="launcher_machinegunner.png" model="single-tile" />
 
@@ -264,7 +264,7 @@
 	<animation id="dumb-missiles-item" tile="missile03_item.png" model="item-animation" />
 	<animation id="nuke-missiles-item" tile="missile04_item.png" model="item-animation" />
 	<animation id="boomerang-missiles-item" tile="missile05_item.png" model="item-animation" />
-	<animation id="glue-missiles-item" tile="missile06_item.png" model="item-animation" />
+	<animation id="stun-missiles-item" tile="missile06_item.png" model="item-animation" />
 	<animation id="mines-item" tile="mine_item.png" model="item-animation" />
 	<animation id="dirt-bullets-item" tile="dirt_item.png" model="item-animation" />
 	<animation id="dispersion-bullets-item" tile="dispersion_item.png" model="item-animation" />
@@ -397,6 +397,6 @@
 	<object parent="base-item" class="dispersion-bullets-item" />
 	<object parent="base-item" class="machinegunner-item" />
 	<object parent="base-item" class="boomerang-missiles-item" />
-	<object parent="base-item" class="glue-missiles-item" />
+	<object parent="base-item" class="stun-missiles-item" />
 
 </resources>

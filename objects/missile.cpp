@@ -98,3 +98,5 @@ REGISTER_OBJECT("guided-missile", Missile, ("guided"));
 REGISTER_OBJECT("dumb-missile", Missile, ("dumb"));
 REGISTER_OBJECT("smoke-missile", Missile, ("smoke"));
 REGISTER_OBJECT("nuke-missile", Missile, ("nuke"));
+REGISTER_OBJECT("boomerang-missile", Missile, ("boomerang"));
+REGISTER_OBJECT("stun-missile", Missile, ("boomerang"));

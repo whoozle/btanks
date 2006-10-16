@@ -87,7 +87,7 @@ REGISTER_OBJECT("dumb-missiles-item", Item, ("missiles", "dumb"));
 REGISTER_OBJECT("smoke-missiles-item", Item, ("missiles", "smoke"));
 REGISTER_OBJECT("nuke-missiles-item", Item, ("missiles", "nuke"));
 REGISTER_OBJECT("boomerang-missiles-item", Item, ("missiles", "boomerang"));
-REGISTER_OBJECT("glue-missiles-item", Item, ("missiles", "glue"));
+REGISTER_OBJECT("stun-missiles-item", Item, ("missiles", "stun"));
 
 REGISTER_OBJECT("mines-item", Item, ("mines", "regular"));
 
