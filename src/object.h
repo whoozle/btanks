@@ -82,6 +82,7 @@ public:
 	
 	const bool rotating() const { return _direction_idx != _dst_direction; }
 
+	virtual void calculate(const float dt);
 protected:
 	const bool getRenderRect(sdlx::Rect &src) const;
 
@@ -97,9 +98,13 @@ protected:
 
 	void limitRotation(const float dt, const int dirs, const float speed, const bool rotate_even_stopped, const bool allow_backward);
 	
+	//grouped object handling
 	void add(const std::string &name, Object *obj);
 	Object *get(const std::string &name);
 	const Object *get(const std::string &name) const;
+	const bool has(const std::string &name) const;
+	void remove(const std::string &name);
+	
 	void groupEmit(const std::string &name, const std::string &event);
 	
 private: 

@@ -77,7 +77,7 @@ const bool Tank::take(const BaseObject *obj, const std::string &type) {
 }
 
 void Tank::calculate(const float dt) {
-	BaseObject::calculate(dt);
+	Object::calculate(dt);
 	GET_CONFIG_VALUE("objects.tank.rotation-time", float, rt, 0.05);
 	limitRotation(dt, 8, rt, true, false);
 }

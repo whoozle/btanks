@@ -221,6 +221,7 @@
 	<animation id="dumb-missiles-on-launcher" tile="launcher_missile03.png" model="missiles-on-launcher-animation" />
 	<animation id="nuke-missiles-on-launcher" tile="launcher_missile04.png" model="missiles-on-launcher-animation" />
 	<animation id="regular-mines-on-launcher" tile="launcher_mine.png" model="missiles-on-launcher-animation" />
+	<animation id="machinegunner-on-launcher" tile="launcher_machinegunner.png" model="single-tile" />
 
 	<animation id="green-car" tile="car01.png" model="car-animation"/>
 	<animation id="cyan-car" tile="car02.png" model="car-animation"/>
@@ -365,7 +366,7 @@
 	
 	<object class="missiles-on-tank" z="10" />
 	<object class="missiles-on-launcher" z="10" />
-
+	<object class="machinegunner-on-launcher" z="10" />
 
 	<object class="helicopter-with-kamikazes" hp="100" impassability="0" speed="400" mass="1500" z="810" />
 	<object class="paratrooper-kamikaze" hp="5" impassability="0" z="0" />

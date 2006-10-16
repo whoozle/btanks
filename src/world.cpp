@@ -323,12 +323,10 @@ void IWorld::tick(Object &o, const float dt) {
 			if (o_i != _id2obj.end()) {
 				const Object *leader = o_i->second;
 				//LOG_DEBUG(("following %d...", f));
-				o._direction = leader->_direction;
 				float z = o._position.z;
 				o._position = leader->_position + o._follow_position;
 				o._position.z = z;
 				o._velocity = leader->_velocity;
-				o.setDirection(leader->getDirection());
 				return;
 			} else {
 				LOG_WARN(("leader for object %d is dead. (leader-id:%d)", o._id, f));

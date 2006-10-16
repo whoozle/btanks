@@ -88,3 +88,4 @@ REGISTER_OBJECT("nuke-missiles-item", Item, ("missiles", "nuke"));
 REGISTER_OBJECT("mines-item", Item, ("mines", "regular"));
 
 REGISTER_OBJECT("dirt-bullets-item", Item, ("effects", "dirt"));
+REGISTER_OBJECT("machinegunner-item", Item, ("mod", "machinegunner"));

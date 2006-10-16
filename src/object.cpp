@@ -565,6 +565,19 @@ const Object *Object::get(const std::string &name) const {
 	return i->second;
 }
 
+const bool Object::has(const std::string &name) const {
+	return _group.find(name) != _group.end();
+}
+
+void Object::remove(const std::string &name) {
+	Group::iterator i = _group.find(name); 
+	if (i == _group.end())
+		return;
+	i->second->emit("death", this);
+	_group.erase(i);
+}
+
+
 void Object::groupEmit(const std::string &name, const std::string &event) {
 	Object *o = get(name);
 	o->emit(event, this);
@@ -581,3 +594,21 @@ void Object::removeEffect(const std::string &name) {
 	need_sync = true;
 }
 
+void Object::calculate(const float dt) {
+	if (_follow > 0) {
+		Object *leader = World->getObjectByID(_follow);
+		if (leader) {
+			_direction = leader->_direction;
+			setDirection(leader->getDirection());
+			return;
+		}
+	}
+	_velocity.clear();
+		
+	if (_state.left) _velocity.x -= 1;
+	if (_state.right) _velocity.x += 1;
+	if (_state.up) _velocity.y -= 1;
+	if (_state.down) _velocity.y += 1;
+	
+	_velocity.normalize();
+}

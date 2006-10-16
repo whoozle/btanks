@@ -149,17 +149,6 @@ void BaseObject::convertToAbsolute(v3<float> &pos, const v3<float> &dpos) {
 	pos += dpos;
 }
 
-void BaseObject::calculate(const float dt) {
-	_velocity.clear();
-		
-	if (_state.left) _velocity.x -= 1;
-	if (_state.right) _velocity.x += 1;
-	if (_state.up) _velocity.y -= 1;
-	if (_state.down) _velocity.y += 1;
-	
-	_velocity.normalize();
-}
-
 /*
 
 void BaseObject::pretick() {

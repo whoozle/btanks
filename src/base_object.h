@@ -92,7 +92,7 @@ protected:
 	
 	inline const v3<float> & getPosition() { return _position; }
 
-	virtual void calculate(const float dt);
+	virtual void calculate(const float dt) = 0;
 
 	void disown();
 	bool need_sync;

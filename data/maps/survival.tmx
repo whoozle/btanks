@@ -24,7 +24,7 @@
   <property name="object:megaheal:megaheal:1" value="920,32,180"/>
   <property name="object:road-sign:road-sign02:1" value="1193,1360,10"/>
   <property name="object:heal:heal:9" value="@15,21,180"/>
-  <property name="object:heal:machinegunner-item:0" value="123,259,180"/>
+  <property name="object:machinegunner-item:machinegunner-item:0" value="123,259,180"/>
   <property name="object:bus-stop:bus-stop-left:1" value="192,930,410"/>
   <property name="object:stall:stall-right:1" value="194,890,405"/>
   <property name="object:heal:heal:1" value="24,1200,180"/>

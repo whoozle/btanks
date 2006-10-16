@@ -47,7 +47,7 @@ void Launcher::onSpawn() {
 	Object *_missiles = spawnGrouped("missiles-on-launcher", "guided-missiles-on-launcher", v3<float>::empty, Centered);
 	_missiles->hp = 100000;
 	_missiles->impassability = 0;
-	add("missiles", _missiles);
+	add("mod", _missiles);
 	
 	GET_CONFIG_VALUE("objects.launcher.fire-rate", float, fr, 0.3);
 	_fire.set(fr);
@@ -80,7 +80,7 @@ void Launcher::emit(const std::string &event, BaseObject * emitter) {
 
 
 void Launcher::calculate(const float dt) {
-	BaseObject::calculate(dt);
+	Object::calculate(dt);
 	GET_CONFIG_VALUE("objects.launcher.rotation-time", float, rt, 0.07);
 	limitRotation(dt, 8, rt, true, false);
 	//LOG_DEBUG(("_velocity: %g %g", _velocity.x, _velocity.y));
@@ -94,30 +94,36 @@ void Launcher::tick(const float dt) {
 	
 	if (getState().empty()) {
 		play("hold", true);
-		groupEmit("missiles", "hold");
+		groupEmit("mod", "hold");
 	}
 
 	if (_velocity.is0()) {	
 		cancelRepeatable();
 		play("hold", true);
-		groupEmit("missiles", "hold");
+		groupEmit("mod", "hold");
 	} else {
 		if (getState() == "hold") {
 			cancelAll();
 			//play("start", false);
 			play("move", true);
-			groupEmit("missiles", "move");
+			groupEmit("mod", "move");
 		}
 	}
 
 	if (_state.fire && fire_possible) {
 		_fire.reset();
-		groupEmit("missiles", "launch");
+		groupEmit("mod", "launch");
 	}
 }
 
 const bool Launcher::take(const BaseObject *obj, const std::string &type) {
-	if (get("missiles")->take(obj, type))
+	if (obj->classname == "mod") {
+		LOG_DEBUG(("taking mod: %s", type.c_str()));
+		remove("mod");
+		add("mod", spawnGrouped("machinegunner-on-launcher", "machinegunner-on-launcher", v3<float>::empty, Centered));
+		return true;
+	}
+	if (get("mod")->take(obj, type))
 		return true;
 	return BaseObject::take(obj, type);
 }
