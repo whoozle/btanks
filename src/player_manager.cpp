@@ -399,6 +399,10 @@ void IPlayerManager::createControlMethod(PlayerSlot &slot, const std::string &co
 		slot.control_method = new KeyPlayer(SDLK_UP, SDLK_DOWN, SDLK_LEFT, SDLK_RIGHT, SDLK_RCTRL, SDLK_RSHIFT);
 	} else if (control_method == "mouse") {
 		slot.control_method = new MouseControl();
+	} else if (control_method == "joy-1") {
+		slot.control_method = new JoyPlayer(0, 0, 1);
+	} else if (control_method == "joy-2") {
+		slot.control_method = new JoyPlayer(1, 0, 1);
 	} else if (control_method == "network") {
 		//slot.control_method = new ExternalControl;
 		slot.control_method = NULL;
