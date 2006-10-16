@@ -85,9 +85,7 @@ void Bullet::emit(const std::string &event, BaseObject * emitter) {
 
 
 Object* Bullet::clone() const  {
-	Object *a = new Bullet(*this);
-	a->setDirection(getDirection());
-	return a;
+	return new Bullet(*this);
 }
 
 REGISTER_OBJECT("bullet", Bullet, ("regular", 8));
