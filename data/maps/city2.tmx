@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <map version="0.99b" orientation="orthogonal" width="50" height="40" tilewidth="64" tileheight="64">
  <properties>
-  <property name="object:biotoilet:biotoilet:7" value="@46,1,150"/>
-  <property name="object:pond:pond:6" value="@37,0,150"/>
   <property name="spawn:2" value="@45,2"/>
+  <property name="object:pond:pond:6" value="@37,0,150"/>
+  <property name="object:biotoilet:biotoilet:7" value="@46,1,150"/>
   <property name="spawn:1" value="@2,2"/>
   <property name="object:road-sign:road-sign10:4" value="2890,1630,150"/>
   <property name="object:lodge:lodge:0" value="2836,1601,150"/>
@@ -87,8 +87,8 @@
  </layer>
  <layer name="borders low" width="50" height="40">
   <properties>
-   <property name="impassability" value="100"/>
    <property name="z" value="200"/>
+   <property name="impassability" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAO3YwQkAIAwDwHZlt9CXIzuB+BJKuRsghDwTAUB1I/tkcPfa1/4AAAAAwG8zI1bhL3IX7kYPB9xJsi1AHwAA
@@ -133,8 +133,8 @@
  </layer>
  <layer name="buildings low" width="50" height="40">
   <properties>
-   <property name="impassability" value="100"/>
    <property name="z" value="400"/>
+   <property name="impassability" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAO2ZO0/DMBSFbcPCawLUCapOgFjhjzPAwqMMpAUGIh7iMQISMAADAzCgcqrEwo0MCde+agz+pKM6boZ7/Lx2hPhbXEghLqErOVgOjWvEfAPdysFySNwh3nvoEXqCno3yQ0BedPu/Qe+GXkPrEyWEhBTUQ9znMvvVdaEwjlgnoEn1c10kEolEIsNkDXvs+jfaYMofphj2wS5i3YHaFu0y+Zj27KMjMx/70IFFh0w+5uBjHmpZRMH0sVXQKXRG9FHWJguIdxFatsjVh0/MttDlsjbRfdQkeOHyQUH30RLRxybjfP5NHK4kjPO5Kj7GReown31Rp/Htgh7fJ4H72JP1GN+uHMl6jO//CkeeyAE1V2sR93MuquRqtjyxSdzPh4ktT+Ty4JKDRiIRO/pbR/H5xahL8vX4GNr2uI83VKYqdWVrfC//1jGC90bV1/OHEW+ar8eJBy/63qJhOef3yzPQbKHO9xqfGl6odzTmmbi/vo5BK9BqXtb/mXUca7z2Qr2jKTsTU8/Lnw57lwhAHwAA
@@ -144,8 +144,8 @@
  <layer name="objects" width="50" height="40">
   <properties>
    <property name="pierceable" value="true"/>
-   <property name="impassability" value="100"/>
    <property name="z" value="500"/>
+   <property name="impassability" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAO3ZWw6CMBAFUFiPTzQ+0fiMC3D/i/H2g8QYbKaS4J1yz2/7cWdomwJFwWNSfh+bRsaG5LNHI/Wl1QZ92Sb0JnV+Xy7IdC3je6MR9kgzX/rR9lyGcFaxnzsz5JuTZ7TYoYZ9BnXcUMM9gzpERNiNHZ61ljtuF4w9WRNm+jem+3MsywljZ6Ksv1gZ3ys98bCnKmRcJOa0PKuuUtd0jbkHB/0WvyrH6+vxlr12XIeISK7Yv2cHT+N/IHbLDGoIjqjjBTnI24pAHwAA
@@ -153,6 +153,9 @@
   <tileproperties/>
  </layer>
  <layer name="objects 2" width="50" height="40">
+  <properties>
+   <property name="impassability" value="100"/>
+  </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAO3SsQ3AIBADwP+ZQpu0oWX/ZWCHKAqBO8m9LTkCAAAAAHjDkRElv27xTBv9z5Hr5zuY073Qr+pCWwBgZx0P3OJ4QB8AAA==
   </data>

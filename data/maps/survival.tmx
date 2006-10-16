@@ -24,6 +24,7 @@
   <property name="object:megaheal:megaheal:1" value="920,32,180"/>
   <property name="object:road-sign:road-sign02:1" value="1193,1360,10"/>
   <property name="object:heal:heal:9" value="@15,21,180"/>
+  <property name="object:heal:machinegunner-item:0" value="123,259,180"/>
   <property name="object:bus-stop:bus-stop-left:1" value="192,930,410"/>
   <property name="object:stall:stall-right:1" value="194,890,405"/>
   <property name="object:heal:heal:1" value="24,1200,180"/>
@@ -56,8 +57,8 @@
  </tileset>
  <layer name="zerosloy" width="25" height="22">
   <properties>
-   <property name="impassability" value="40"/>
    <property name="z" value="-100"/>
+   <property name="impassability" value="40"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGAVDGTAOtANGwSgYBaNgFIwCKgIARi84W5gIAAA=
@@ -120,8 +121,8 @@
  </layer>
  <layer name="city objects" width="25" height="22">
   <properties>
-   <property name="impassability" value="100"/>
    <property name="z" value="100"/>
+   <property name="impassability" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGAWjYBQMZcAz0A4YBUSD4RJXIkhs7gFzBXH2D5cwH0kAAIzGM1uYCAAA
@@ -131,8 +132,8 @@
  <layer name="borders low" width="25" height="22">
   <properties>
    <property name="pierceable" value="false"/>
-   <property name="impassability" value="100"/>
    <property name="z" value="200"/>
+   <property name="impassability" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGAWjYBSQAwSYqKtuOAM1IsOAWHWjgDIwmnaJB6Npl/4AAC2kMeaYCAAA
@@ -170,8 +171,8 @@
  </layer>
  <layer name="buildings low" width="25" height="22">
   <properties>
-   <property name="z" value="400"/>
    <property name="impassability" value="100"/>
+   <property name="z" value="400"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAALvGgBuE4pFDBml45AoJ6A0G4hAgjkDCkVjUFUDNqsEiV03AjlggjgNibyScjMOOBjSxdihuJWAHsaATiLuAuAWIJwLxJCDuheJ+KtmBC8wA4pk0tmMUkA7CGXCne2rakcSAPd1TAkrR7KAF6APiZgZIHkykkR2gvAHKl6AyhpbxACvHqB0P2OygJQDFyWh5hR/gqxeRwWwK7IDFdREBdQvpZMciIN4CxEuheAkQLybBDlj9DgBXACjsmAgAAA==
@@ -180,8 +181,8 @@
  </layer>
  <layer name="city objects" width="25" height="22">
   <properties>
-   <property name="z" value="500"/>
    <property name="impassability" value="100"/>
+   <property name="z" value="500"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGJmAa6AdgAZg7mEZUFcMLcA40A4YggCUzpioZBYzlcwZBcMDjKarUUAtAABc6QefmAgAAA==
