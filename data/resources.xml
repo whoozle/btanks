@@ -376,7 +376,17 @@
 	<object class="kamikaze" hp="5" impassability="1" speed="70" mass="80" z="0" />
 
 	<!-- items -->
-	<object class="heal" hp="20" z="180" />
-	<object class="megaheal" hp="1000" z="180" />
+	<object class="base-item" z="180" impassability="-1" />
+
+	<object parent="base-item" class="heal" hp="20" />
+	<object parent="base-item" class="megaheal" hp="1000" />
+
+	<object parent="base-item" class="guided-missiles-item" />
+	<object parent="base-item" class="dumb-missiles-item" />
+	<object parent="base-item" class="nuke-missiles-item" />
+	<object parent="base-item" class="smoke-missiles-item" />
+	<object parent="base-item" class="mines-item" />
+	<object parent="base-item" class="dirt-bullets-item" />
+	<object parent="base-item" class="machine-gunner-item" />
 
 </resources>
