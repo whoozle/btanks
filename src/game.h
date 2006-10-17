@@ -63,8 +63,7 @@ public:
 	//stupid visual effect
 	void shake(const float duration, const int intensity);
 	
-	//stupid and stub.
-	const int getMyPlayerIndex() const;
+	void notifyLoadingBar(const int progress = 1);
 
 private:
 	void onKey(const Uint8 type, const SDL_keysym sym);
@@ -98,6 +97,7 @@ private:
 	int _my_index;
 	
 	Hud *_hud;
+	int _loading_bar_total, _loading_bar_now;
 };
 
 SINGLETON(Game, IGame);

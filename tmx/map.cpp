@@ -30,6 +30,7 @@
 #include "sdlx/surface.h"
 #include "sdlx/c_map.h"
 #include "object.h"
+#include "game.h"
 
 #include <assert.h>
 #include <limits>
@@ -363,6 +364,7 @@ void IMap::end(const std::string &name) {
 	}
 	
 	_stack.pop();
+	Game->notifyLoadingBar();
 }
 
 void IMap::charData(const std::string &d) {

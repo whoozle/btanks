@@ -117,10 +117,21 @@ void IGame::init(const int argc, char *argv[]) {
 	_paused = false;
 	_running = true;
 
-	_window.update();
+	_window.fillRect(_window.getSize(), 0);
+	_window.flip();
+	_window.fillRect(_window.getSize(), 0);
+	_window.flip();
+	_window.fillRect(_window.getSize(), 0);
+	_window.flip(); //clean all buffers.
 	
+	LOG_DEBUG(("initializing hud..."));
+	_hud = new Hud;
+	const std::string resources_xml = data_dir + "/resources.xml";
+
+	mrt::XMLParser::getFileStats(_loading_bar_total, resources_xml);
+	_loading_bar_now = 0;
 	LOG_DEBUG(("initializing resource manager..."));
-	ResourceManager->init("data/resources.xml");
+	ResourceManager->init(resources_xml);
 	
 	if (_show_fps) {
 		LOG_DEBUG(("creating `digits' object..."));
@@ -148,7 +159,6 @@ void IGame::init(const int argc, char *argv[]) {
 		_main_menu.setActive(false);
 	}
 	
-	_hud = new Hud;
 }
 
 void IGame::onKey(const Uint8 type, const SDL_keysym key) {
@@ -237,6 +247,9 @@ void IGame::onMenu(const std::string &name) {
 
 
 void IGame::loadMap(const std::string &name) {
+	mrt::XMLParser::getFileStats(_loading_bar_total, std::string("data/maps/") + name + ".tmx");
+	_loading_bar_now = 0;
+
 	_main_menu.setActive(false);
 	IMap &map = *IMap::get_instance();
 	map.load(name);
@@ -498,7 +511,11 @@ void IGame::shake(const float duration, const int intensity) {
 	_shake_int = intensity;
 }
 
-const int IGame::getMyPlayerIndex() const {
-	return _my_index;
+void IGame::notifyLoadingBar(const int progress) {
+	_loading_bar_now += progress;
+	
+	//_window.fillRect(_window.getSize(), 0);
+	_hud->renderLoadingBar(_window, 1.0 * _loading_bar_now / _loading_bar_total);
+	_window.flip();
 }
 

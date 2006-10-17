@@ -35,12 +35,56 @@ static void XMLCALL endElement(void *userData, const char *name) {
 	p->end(name);
 }
 
+static void XMLCALL startElementStats(void *userData, const char *name, const char **attrs) {}
+
+static void XMLCALL endElementStats(void *userData, const char *name) {
+	int * pr = (int*) userData;
+	++ (*pr);
+}
+
 static void XMLCALL char_data(void *userData, const XML_Char *s, int len) {
 	XMLParser * p = (XMLParser *)userData;
 	p->charData(std::string(s, len));
 }
 
+void XMLParser::getFileStats(int &tags, const std::string &fname) {
+	XML_Parser parser = NULL;
+
+	TRY {
+		parser = XML_ParserCreate("UTF-8");
+		if (parser == NULL)
+			throw_ex(("cannot create parser"));
+
+		tags = 0;
+		XML_SetUserData(parser, &tags);
+		XML_SetElementHandler(parser, startElementStats, endElementStats);
+
+		mrt::File f;
+		f.open(fname, "rt");
+		bool done;
+		do {
+			char buf[16384];
+			size_t len = f.read(buf, sizeof(buf));
+			done = len < sizeof(buf);
+			if (XML_Parse(parser, buf, len, done) == XML_STATUS_ERROR) {
+				mrt::XMLException e;
+				std::string error = mrt::formatString("%s at line %d", XML_ErrorString(XML_GetErrorCode(parser)), XML_GetCurrentLineNumber(parser));
+				e.addMessage("XML error: " + error); throw e; 
+			}
+		} while(!done);
+		XML_ParserFree(parser);
+		parser = NULL;
+		f.close();
+	} CATCH("getFileStats", {
+		if (parser) {
+			XML_ParserFree(parser);
+		}
+	})
+}
+
+
 void XMLParser::parseFile(const std::string &fname) {
+	clear();
 	_parser = XML_ParserCreate("UTF-8");
 	if (_parser == NULL)
 		throw_ex(("cannot create parser"));
@@ -70,4 +114,13 @@ const std::string XMLParser::getErrorMessage() const {
 	
 void XMLParser::charData(const std::string &data) {}
 	
-XMLParser::~XMLParser() {}
+XMLParser::~XMLParser() {
+	clear();
+}
+
+void XMLParser::clear() {
+	if (_parser) {
+		XML_ParserFree(_parser);
+		_parser = NULL;
+	}
+}

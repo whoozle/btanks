@@ -25,6 +25,7 @@
 #include "animation_model.h"
 #include "utils.h"
 #include "sound/mixer.h"
+#include "game.h"
 
 #include <algorithm>
 
@@ -179,6 +180,7 @@ void IResourceManager::end(const std::string &name) {
 		_am = NULL;
 		LOG_DEBUG(("added animation model '%s'", _am_id.c_str()));
 	}
+	Game->notifyLoadingBar();
 }
 void IResourceManager::charData(const std::string &data) {
 	_data = data;

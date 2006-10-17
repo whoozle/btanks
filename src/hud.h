@@ -9,11 +9,13 @@ class Font;
 class Hud {
 public: 
 	Hud();
-	void render(sdlx::Surface &window);
+	void render(sdlx::Surface &window) const;
+	void renderLoadingBar(sdlx::Surface &window, const float progress) const;
+
 	~Hud();
 
 private: 
-	sdlx::Surface _background;
+	sdlx::Surface _background, _loading_border, _loading_item;
 	sdlx::Font _font;
 };
 
