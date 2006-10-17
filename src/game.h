@@ -38,6 +38,7 @@ class Client;
 class Connection;
 class ControlMethod;
 class PlayerSlot;
+class Hud;
 
 class IGame : public Window {
 public: 
@@ -95,6 +96,8 @@ private:
 	float _shake;
 	int _shake_int;
 	int _my_index;
+	
+	Hud *_hud;
 };
 
 SINGLETON(Game, IGame);

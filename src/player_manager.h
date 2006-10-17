@@ -40,6 +40,8 @@ public:
 
 	PlayerSlot &getSlot(const unsigned int idx);
 	const PlayerSlot &getSlot(const unsigned int idx) const;
+	const size_t getSlotsCount() const;
+	
 	void screen2world(v3<float> &pos, const int p, const int x, const int y);
 
 	const int spawnPlayer(const std::string &classname, const std::string &animation, const std::string &method);

@@ -27,7 +27,7 @@ using namespace sdlx;
 
 void TTF::init() {
 	TTF_Init();
-	atexit(TTF_Quit);
+//	atexit(TTF_Quit); leads to various crashes at singleton dtors.
 }
 
 TTF::TTF() : _font(NULL) {}

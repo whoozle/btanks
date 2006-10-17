@@ -570,3 +570,6 @@ void IPlayerManager::screen2world(v3<float> &pos, const int p, const int x, cons
 	pos.y = slot.mapx + y;
 }
 
+const size_t IPlayerManager::getSlotsCount() const {
+	return _players.size();
+}

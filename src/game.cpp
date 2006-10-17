@@ -48,6 +48,7 @@
 #include "sound/mixer.h"
 #include "player_slot.h"
 #include "player_manager.h"
+#include "hud.h"
 
 //#define SHOW_PERFSTATS
 
@@ -146,6 +147,8 @@ void IGame::init(const int argc, char *argv[]) {
 		onMenu("m-join");
 		_main_menu.setActive(false);
 	}
+	
+	_hud = new Hud;
 }
 
 void IGame::onKey(const Uint8 type, const SDL_keysym key) {
@@ -420,10 +423,14 @@ void IGame::run() {
 		_main_menu.render(_window);
 		
 
+		if (Map->loaded()) 
+			_hud->render(_window);
+		
 		if (_show_fps) {
 			_fps->hp = (int)fr;
 			_fps->render(_window, 0, 0);
-		}		
+		}
+		
 		
 #ifdef SHOW_PERFSTATS
 		Uint32 t_render = SDL_GetTicks();
@@ -461,6 +468,8 @@ void IGame::deinit() {
 	Config->save();
 	delete _fps;
 	_fps = NULL;
+	delete _hud;
+	_hud = NULL;
 	
 	_running = false;
 	Window::deinit();
