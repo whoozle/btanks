@@ -74,6 +74,13 @@
 		<pose id="dead">6</pose>
 	</animation-model>
 
+	<animation-model id="thrower-animation" speed="7">
+		<pose id="hold">0</pose>
+		<pose id="walk">1,2,3,2,4,5,6,5</pose>
+		<pose id="run">7,8,9,10</pose>
+		<pose id="fire">11,12,13</pose>
+	</animation-model>
+
 	<animation-model id="pond-animation" speed="10">
 		<pose id="main">0,1,2,3,4,5,6,7,8,9</pose>
 	</animation-model>
@@ -174,6 +181,12 @@
 
 	<animation-model id="paratrooper-animation" speed="2">
 		<pose id="main">0,1,2,3,4,5,6,7</pose>
+	</animation-model>
+
+	<animation-model id="yellow-submarine" speed="10">
+		<pose id="fade-in">0,1,2,3,4</pose>
+		<pose id="main">4,5,4,6</pose>
+		<pose id="fade-out">4,3,2,1,0</pose>
 	</animation-model>
 
 	<animation id="damage-digits" tile="../font/small.png" model="single-tile" tile_width="10" tile_height="16" />
@@ -314,6 +327,10 @@
 	<animation id="road-sign08" model="destructable-object-animation" tile="road_sign08.png" size="32" />
 	<animation id="road-sign09" model="destructable-object-animation" tile="road_sign09.png" size="32" />
 	<animation id="road-sign10" model="destructable-object-animation" tile="road_sign10.png" size="32" />
+
+	<animation id="submarine" model="yellow-submarine" tile="submarine.png" width="192" height="128" />
+
+	<animation id="thrower" model="thrower-animation" tile="thrower.png" />
 
 	<!-- basic object with single pose. do not edit. -->
 	<object class="single-pose" impassability="0" z="0" />
