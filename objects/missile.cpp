@@ -20,6 +20,7 @@
 #include "object.h"
 #include "resource_manager.h"
 #include "config.h"
+#include "world.h"
 
 class Missile : public Object {
 public:
@@ -75,6 +76,27 @@ void Missile::calculate(const float dt) {
 		GET_CONFIG_VALUE("objects.boomerang.rotation-speed", float, rs, 30);
 		int dir = ((int)(_moving_time * rs)) % 8;
 		setDirection(dir);
+
+		Object *leader = World->getObjectByID(getOwner());
+		if (leader == NULL) {
+			return;
+		}
+		_direction.normalize();
+		//LOG_DEBUG(("direction %g %g", _direction.x, _direction.y));
+		_velocity.normalize();
+		v3<float> lpos = getRelativePosition(leader);
+
+		GET_CONFIG_VALUE("objects.boomerang.radius", float, r, 300);
+		GET_CONFIG_VALUE("objects.boomerang.turning-speed", float, ts, 0.1);
+		_velocity = _velocity * r + lpos;
+		_velocity.normalize();
+		
+		lpos.quantize16();
+		dir = lpos.getDirection16();
+		if (dir) {
+			lpos.fromDirection(dir % 16, 16);
+			_velocity += lpos * ts;
+		}
 	}
 }
 
@@ -86,9 +108,6 @@ void Missile::emit(const std::string &event, BaseObject * emitter) {
 			if (o != NULL)
 				o->addEffect("stunned", sd);
 		}
-		v3<float> dpos = getRelativePos(emitter) / 2;
-		dpos.z = 0;
-
 		emit("death", emitter);
 	} if (event == "death" && type == "smoke") {
 		spawn("smoke-cloud", "smoke-cloud");

@@ -255,7 +255,7 @@ void BaseObject::disown() {
 	_owner_id = 0;
 }
 
-const v3<float> BaseObject::getRelativePos(const BaseObject *obj) const {
+const v3<float> BaseObject::getRelativePosition(const BaseObject *obj) const {
 	return obj->_position - _position + size / 2 - obj->size / 2;
 }
 

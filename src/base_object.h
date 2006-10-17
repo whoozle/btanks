@@ -69,7 +69,7 @@ public:
 	virtual void addDamage(BaseObject *from, const int hp, const bool emitDeath = true);
 	void addDamage(BaseObject *from, const bool emitDeath = true);
 	
-	const v3<float> getRelativePos(const BaseObject *obj) const;
+	const v3<float> getRelativePosition(const BaseObject *obj) const;
 	inline void getPosition(v3<float> &position) { position = _position; }
 	inline void getPosition(v3<int> &position) { position = _position.convert<int>(); }
 
@@ -79,8 +79,10 @@ public:
 	void getInfo(v3<float> &pos, v3<float> &vel) const;
 	void updateStateFromVelocity();
 	void setZ(const float z); 
+	
 	void setOwner(const int oid) { _owner_id = oid; }
-
+	const int getOwner() const { return _owner_id; }
+	
 	void getTargetPosition8(v3<float> &position, const v3<float> &target, const std::string &weapon);
 	
 protected:
