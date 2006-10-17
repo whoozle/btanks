@@ -68,7 +68,9 @@ void Tank::emit(const std::string &event, BaseObject * emitter) {
 
 const bool Tank::take(const BaseObject *obj, const std::string &type) {
 	if (obj->classname == "effects") {
-		addEffect(type);
+		float def = 10;
+		GET_CONFIG_VALUE("objects.tank." + type + ".duration", float, d, def);
+		addEffect(type, d);
 		return true;
 	}
 	if (get("missiles")->take(obj, type))
