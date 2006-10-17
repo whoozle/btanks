@@ -60,7 +60,8 @@ void Missile::calculate(const float dt) {
 	if (type == "guided" || type == "stun") {
 		std::vector<std::string> targets;
 		targets.push_back("player");
-		targets.push_back("kamikaze");
+		if (type != "stun")
+			targets.push_back("kamikaze");
 	
 		v3<float> pos, vel;
 	
