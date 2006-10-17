@@ -16,7 +16,7 @@ void Hud::render(sdlx::Surface &window) {
 		if (!slot.visible)
 			continue;
 	
-		std::string hp = mrt::formatString("HP%02d", slot.obj->hp);
+		std::string hp = mrt::formatString("HP%2d", slot.obj->hp);
 		_font.render(window, slot.viewport.x, slot.viewport.y, hp);	
 	}
 }
