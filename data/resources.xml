@@ -284,6 +284,7 @@
 	<animation id="dirt-bullets-item" tile="dirt_item.png" model="item-animation" />
 	<animation id="dispersion-bullets-item" tile="dispersion_item.png" model="item-animation" />
 	<animation id="machinegunner-item" tile="machinegunner_item.png" model="item-animation" />
+	<animation id="thrower-item" tile="thrower_item.png" model="item-animation" />
 	
 	<!-- end of items -->
 
@@ -331,6 +332,7 @@
 	<animation id="submarine" model="yellow-submarine" tile="submarine.png" width="192" height="128" />
 
 	<animation id="thrower" model="thrower-animation" tile="thrower.png" />
+	<animation id="die-thrower" model="die-man-animation" tile="thrower_die.png" />
 
 	<!-- basic object with single pose. do not edit. -->
 	<object class="single-pose" impassability="0" z="0" />
