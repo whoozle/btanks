@@ -86,7 +86,7 @@ void Missile::calculate(const float dt) {
 		_velocity.normalize();
 		v3<float> lpos = getRelativePosition(leader);
 
-		GET_CONFIG_VALUE("objects.boomerang.radius", float, r, 300);
+		GET_CONFIG_VALUE("objects.boomerang.radius", float, r, 3000);
 		GET_CONFIG_VALUE("objects.boomerang.turning-speed", float, ts, 0.1);
 		_velocity = _velocity * r + lpos;
 		_velocity.normalize();
