@@ -66,6 +66,7 @@ void AITank::calculate(const float dt) {
 	//LOG_DEBUG(("dt = %f", dt));
 	_state.fire = false;
 	calculateWayVelocity();
+	_velocity.quantize8();
 	
 	if (!_reaction_time.tick(dt)) {
 		return;
@@ -97,7 +98,7 @@ void AITank::calculate(const float dt) {
 		
 		if (found_bullet && bpos.quick_length() < pos.quick_length()) {
 			//LOG_DEBUG(("bpos: %g, player: %g", bpos.quick_length(), pos.quick_length()));
-			return;
+			goto final;
 		}
 		
 		if (player_close) {
@@ -111,6 +112,8 @@ void AITank::calculate(const float dt) {
 			//LOG_DEBUG(("finding path..."));
 			way.pop_back();
 			setWay(way);
+			calculateWayVelocity();
+			_velocity.quantize8();
 		} else {	
 			if (!isDriven()) {
 				_velocity = pos; //straight to player.
@@ -147,6 +150,7 @@ void AITank::calculate(const float dt) {
 	  	_velocity.clear();
 	  }
 //	LOG_DEBUG(("v: %g %g", _velocity.x, _velocity.y));
+final: 
 	GET_CONFIG_VALUE("objects.tank.rotation-time", float, rt, 0.05);
 	limitRotation(dt, 8, rt, true, false);
 	updateStateFromVelocity();

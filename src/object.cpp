@@ -540,7 +540,7 @@ void Object::limitRotation(const float dt, const int dirs, const float speed, co
 		int d = math::abs<int>(_dst_direction - _direction_idx);
 		if (d > 1 && d != dirs - 1) {
 			_velocity.clear();
-		} 
+		} else _velocity.fromDirection(_direction_idx, dirs);
 	} 
 	_direction.fromDirection(_direction_idx, dirs); //fixme. remove it.
 	//LOG_DEBUG(("direction = %g %g, velocity = %g %g", _direction.x, _direction.y, _velocity.x, _velocity.y));
