@@ -49,7 +49,9 @@ Object * Object::clone() const {
 
 
 Object::Object(const std::string &classname) : 
-	BaseObject(classname), fadeout_time(0),  _model(0), _surface(0), _cmap(0), _direction_idx(0), _pos(0), _rotation_time(0) {}
+	BaseObject(classname), fadeout_time(0),  _model(0), _surface(0), _cmap(0), _direction_idx(0), _pos(0), _rotation_time(0), 
+	_tw(0), _th(0), _dst_direction(0)
+	 {}
 
 void Object::init(const std::string &model, const std::string &surface, const int tile_w, const int tile_h) {
 	_events.clear();
