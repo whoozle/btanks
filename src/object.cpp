@@ -550,6 +550,7 @@ void Object::limitRotation(const float dt, const int dirs, const float speed, co
 //grouped object stuff
 
 void Object::add(const std::string &name, Object *obj) {
+	assert(obj != NULL);
 	if (_group.find(name) != _group.end())
 		throw_ex(("object '%s'(%s) was already added to group", name.c_str(), obj->classname.c_str()));
 	_group.insert(Group::value_type(name, obj));
@@ -559,6 +560,7 @@ Object *Object::get(const std::string &name) {
 	Group::iterator i = _group.find(name);
 	if (i == _group.end())
 		throw_ex(("there's no object '%s' in group", name.c_str()));
+	assert(i->second != NULL);
 	return i->second;
 }
 
@@ -566,6 +568,7 @@ const Object *Object::get(const std::string &name) const {
 	Group::const_iterator i = _group.find(name);
 	if (i == _group.end())
 		throw_ex(("there's no object '%s' in group", name.c_str()));
+	assert(i->second != NULL);
 	return i->second;
 }
 
