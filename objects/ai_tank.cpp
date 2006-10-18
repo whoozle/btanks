@@ -151,6 +151,8 @@ void AITank::calculate(const float dt) {
 	  }
 //	LOG_DEBUG(("v: %g %g", _velocity.x, _velocity.y));
 final: 
+	setDirection(_velocity.getDirection8() - 1);
+
 	GET_CONFIG_VALUE("objects.tank.rotation-time", float, rt, 0.05);
 	limitRotation(dt, 8, rt, true, false);
 	updateStateFromVelocity();

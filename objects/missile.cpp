@@ -51,10 +51,7 @@ void Missile::onSpawn() {
 	}
 	
 	_velocity.normalize();
-	int dir = _velocity.getDirection16();
-	if (dir) {
-		setDirection(dir - 1);
-	}
+	setDirection(_velocity.getDirection16() - 1);
 }
 
 void Missile::calculate(const float dt) {

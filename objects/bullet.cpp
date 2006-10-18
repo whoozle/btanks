@@ -63,9 +63,7 @@ void Bullet::onSpawn() {
 		dir = _velocity.getDirection16();	
 	} else throw_ex(("bullet cannot handle %d directions", _dirs));
 	
-	if (dir) {
-		setDirection(dir - 1);
-	}
+	setDirection(dir - 1);
 }
 
 void Bullet::emit(const std::string &event, BaseObject * emitter) {

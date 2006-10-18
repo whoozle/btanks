@@ -55,9 +55,7 @@ void Kamikaze::calculate(const float dt) {
 	v3<float> vel;
 	if (getNearest("player", _velocity, vel, NULL)) {
 		_velocity.quantize8();
-		int dir = _velocity.getDirection8();
-		if (dir)
-			setDirection(dir-1);
+		setDirection(_velocity.getDirection8() - 1);
 	} else _velocity.clear();
 }
 
