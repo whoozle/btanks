@@ -34,6 +34,10 @@ protected:
 	Chunk *_data;
 	mutable size_t _pos;
 	bool _owns_data;
+
+private:
+	Serializator(const Serializator &s);
+	const Serializator & operator=(const Serializator &s);
 };
 }
 

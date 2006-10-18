@@ -40,6 +40,7 @@ public:
 	virtual void charData(const std::string &data);
 	
 	void clear();
+	XMLParser();
 	virtual ~XMLParser();
 private:
 	const std::string getErrorMessage() const;
