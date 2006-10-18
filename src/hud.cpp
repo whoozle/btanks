@@ -40,10 +40,15 @@ void Hud::renderLoadingBar(sdlx::Surface &window, const float progress) const {
 	
 	window.copyFrom(_loading_border, x, y);
 	assert(progress >= 0 && progress <= 1.0);
-	int n = (int) (progress * (_loading_border.getWidth() - 2 * border) / _loading_item.getWidth());
-	for(int i = 0; i < n; ++i) {
+	int w = (int) (progress * (_loading_border.getWidth() - 2 * border));
+
+	int i, n = w / _loading_item.getWidth();
+	for(i = 0; i < n; ++i) {
 		window.copyFrom(_loading_item, border + x + i * _loading_item.getWidth(), y + border);
 	}
+	w -= n * _loading_item.getWidth();
+	sdlx::Rect src(0, 0, w, _loading_item.getHeight());
+	window.copyFrom(_loading_item, src, border + x + i * _loading_item.getWidth(), y + border);
 }
 
 
