@@ -13,7 +13,7 @@ void Hud::render(sdlx::Surface &window) const {
 	//only one visible player supported
 	for(size_t i = 0; i < n; ++i) {
 		const PlayerSlot &slot = PlayerManager->getSlot(i);
-		if (!slot.visible)
+		if (!slot.visible || slot.obj == NULL)
 			continue;
 	
 		std::string hp = mrt::formatString("HP%2d", slot.obj->hp);
