@@ -440,8 +440,10 @@ void IGame::run() {
 		_main_menu.render(_window);
 		
 
-		if (Map->loaded()) 
+		if (Map->loaded()) {
 			_hud->render(_window);
+			_hud->renderRadar(dt, _window);
+		}
 		
 		if (_show_fps) {
 			_fps->hp = (int)fr;

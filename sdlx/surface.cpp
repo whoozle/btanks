@@ -127,7 +127,8 @@ void Surface::setVideoMode(int w, int h, int bpp, int flags) {
 
 
 void Surface::putPixel(int x, int y, Uint32 pixel) {
-	assert(x >= 0 && y >= 0 && x < surface->w && y < surface->h);
+	if (!(x >= 0 && y >= 0 && x < surface->w && y < surface->h))
+		return;
 	int bpp = surface->format->BytesPerPixel;
 	/* Here p is the address to the pixel we want to set */
 	Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
