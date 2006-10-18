@@ -38,13 +38,21 @@
 #include <set>
 
 
-Monitor::Task::Task(const int id) : id(id), data(new mrt::Chunk), pos(0), len(0), size_task(false) {}
-Monitor::Task::Task(const int id, const mrt::Chunk &d) : id(id), data(new mrt::Chunk(d)), pos(0), len(data->getSize()), size_task(false) {}
-Monitor::Task::Task(const int id, const int size) : id(id), data(new mrt::Chunk(size)), pos(0), len(data->getSize()), size_task(false) {}
+Monitor::Task::Task(const int id) : 
+	id(id), data(new mrt::Chunk), pos(0), len(0), size_task(false), flags(0) {}
+
+Monitor::Task::Task(const int id, const mrt::Chunk &d) : 
+	id(id), data(new mrt::Chunk(d)), pos(0), len(data->getSize()), size_task(false), flags(0) {}
+
+Monitor::Task::Task(const int id, const int size) : 
+	id(id), data(new mrt::Chunk(size)), pos(0), len(data->getSize()), size_task(false), flags(0) {}
 void Monitor::Task::clear() { delete data; pos = len = 0; }
 
-Monitor::Monitor() : _running(false), _comp_level(0) {
-}
+Monitor::Monitor() : _running(false), 
+	_send_q(), _recv_q(), _result_q(), 
+	_disconnections(), _connections(), 
+	_connections_mutex(), _result_mutex(), _send_q_mutex(), 
+	_comp_level(0) {}
 
 void Monitor::add(const int id, Connection *c) {
 	sdlx::AutoMutex m(_connections_mutex);

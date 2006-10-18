@@ -26,7 +26,7 @@
 #include "monitor.h"
 #include "connection.h"
 
-Server::Server()  : _monitor(0) {}
+Server::Server()  : _monitor(NULL), _sock() {}
 Server::~Server() {
 	delete _monitor;
 	_monitor = NULL;

@@ -37,6 +37,9 @@ public:
 
 protected:
 	Monitor *_monitor;
+private: 
+	Client(const Client &);
+	const Client &operator=(const Client&);
 };
 
 

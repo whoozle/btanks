@@ -32,9 +32,9 @@
 #	include <arpa/inet.h>
 #endif
 
-Message::Message() : type(None) {}
+Message::Message() : type(None), data(), _attrs() {}
 
-Message::Message(const Message::Type type) : type(type) {}
+Message::Message(const Message::Type type) : type(type), data(), _attrs() {}
 
 const char * Message::getType() const {
 	switch(type) {

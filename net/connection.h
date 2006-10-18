@@ -30,6 +30,9 @@ public:
 	~Connection();
 		
 	mrt::TCPSocket * sock;
+private: 
+	Connection(const Connection &);
+	const Connection& operator=(const Connection &);
 };
 
 #endif

@@ -40,6 +40,8 @@ public:
 	void disconnect(const int id);
 	
 private:
+	Server(const Server &);
+	const Server& operator=(const Server &);
 	Monitor *_monitor;
 	
 	mrt::TCPSocket _sock;
