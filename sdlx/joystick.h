@@ -38,6 +38,8 @@ public:
 	void close();
 	~Joystick();
 private:
+	Joystick(const Joystick &);
+	const Joystick& operator=(const Joystick &);
 	SDL_Joystick *_joy;
 };
 }

@@ -25,7 +25,7 @@
 
 using namespace sdlx;
 
-CollisionMap::CollisionMap() : _w(0), _h(0) {}
+CollisionMap::CollisionMap() : _w(0), _h(0), _data() {}
 
 const bool CollisionMap::collides(const sdlx::Rect &src, const CollisionMap *other, const sdlx::Rect &other_src, const int bx, const int by) const {
 	int aw = (src.w > 0)?src.w:(_w * 8); 

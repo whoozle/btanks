@@ -39,6 +39,8 @@ public:
 	const int wait();
 	void kill();
 private: 
+	Thread(const Thread &);
+	const Thread& operator=(const Thread &);
 	SDL_Thread * _thread;
 };
 

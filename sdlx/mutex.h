@@ -30,6 +30,9 @@ public:
 	Mutex();
 	~Mutex();
 private: 
+	Mutex(const Mutex &);
+	const Mutex& operator=(const Mutex &);
+	
 	void lock() const;
 	void unlock() const;
 

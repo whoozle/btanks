@@ -3,7 +3,7 @@
 
 using namespace sdlx;
 
-Font::Font() : _surface(NULL) {}
+Font::Font() : _type(), _surface(NULL){}
 
 Font::~Font() {
 	clear();

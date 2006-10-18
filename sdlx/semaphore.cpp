@@ -22,8 +22,8 @@
 
 using namespace sdlx;
 
-Semaphore::Semaphore(const Uint32 value) {
-	if ((_sem = SDL_CreateSemaphore(value)) == NULL) 
+Semaphore::Semaphore(const Uint32 value) : _sem (SDL_CreateSemaphore(value)) {
+	if (_sem == NULL) 
 		throw_sdl(("SDL_CreateSemaphore"));
 }
 

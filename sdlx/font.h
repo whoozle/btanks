@@ -17,6 +17,8 @@ public:
 	void clear();
 
 private:
+	Font(const Font &);
+	const Font& operator=(const Font &);
 	Type _type;
 	sdlx::Surface *_surface;
 };

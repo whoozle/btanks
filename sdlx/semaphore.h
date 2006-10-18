@@ -36,6 +36,8 @@ public:
 	const bool tryWait(); 
 
 private: 
+	Semaphore(const Semaphore &);
+	const Semaphore& operator=(const Semaphore &);
 	SDL_sem *_sem;
 };
 }

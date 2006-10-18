@@ -129,6 +129,7 @@ namespace sdlx {
 		~Surface();
 	private:
 		Surface(const Surface &x);
+		const Surface& operator=(const Surface &x);
 		SDL_Surface *surface;
 		static int default_flags;
 	};

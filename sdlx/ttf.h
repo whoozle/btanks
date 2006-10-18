@@ -35,6 +35,9 @@ public:
 	void renderBlended(sdlx::Surface &result, const std::string &text, const SDL_Color &fg);
 	void close();
 private:
+	TTF(const TTF &);
+	TTF & operator=(const TTF &);
+	
 	TTF_Font * _font;
 };
 
