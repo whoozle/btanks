@@ -38,8 +38,7 @@ IMPLEMENT_SINGLETON(Map, IMap)
 
 const int IMap::pathfinding_step = 64;
 
-IMap::IMap() {
-	_w = _h = _tw = _th = _firstgid = 0;
+IMap::IMap() _w(0), _h(0), _tw(0), _th(0), _firstgid(0) {
 	_lastz = -1000;
 	_image = NULL;
 }
