@@ -26,10 +26,7 @@
 #include <map>
 #include <string>
 #include <deque>
-
-namespace sdlx {
-class Surface;
-}
+#include "sdlx/surface.h"
 
 class MenuItem;
 
@@ -65,6 +62,8 @@ private:
 	typedef std::pair<size_t, std::string> MenuID;
 	std::deque<MenuID> _menu_path;
 	sdlx::Rect _menu_size;
+	
+	sdlx::Surface _background;
 };
 
 

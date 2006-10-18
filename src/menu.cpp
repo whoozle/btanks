@@ -38,6 +38,9 @@ void MainMenu::init(const int w, const int h) {
 	LOG_DEBUG(("loading font..."));
 	GET_CONFIG_VALUE("engine.data-directory", std::string, data_dir, "data");
 	_font.open(data_dir + "/font/Verdana.ttf", 18);
+
+	LOG_DEBUG(("loading background..."));
+	_background.loadImage(data_dir + "/tiles/menu_background.png");
 	
 	LOG_DEBUG(("creating menu..."));
 	_active_item = 0;
@@ -151,6 +154,8 @@ void MainMenu::onKey(const Uint8 type, const SDL_keysym sym) {
 void MainMenu::render(sdlx::Surface &dst) {
 	if (!_active)
 		return;
+		
+	dst.copyFrom(_background, (dst.getWidth() - _background.getWidth()) / 2, (dst.getHeight() - _background.getHeight()) / 2);
 	
 	int x = _menu_size.x;
 	int y = _menu_size.y;
