@@ -419,8 +419,10 @@ void IGame::run() {
 #ifdef SHOW_PERFSTATS
 		Uint32 t_tick = SDL_GetTicks();
 #endif
-
-		_window.fillRect(window_size, 0);
+		
+		if (Map->loaded())
+			_window.fillRect(window_size, 0);
+		else _hud->renderSplash(_window);
 	
 		int vx = 0, vy = 0;
 		if (_shake > 0) {
