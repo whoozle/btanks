@@ -25,7 +25,6 @@
 #include "animation_model.h"
 #include "utils.h"
 #include "sound/mixer.h"
-#include "game.h"
 
 #include <algorithm>
 
@@ -157,6 +156,7 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 			throw_ex(("alias must have both 'name' and 'class' attributes"));
 		createAlias(name, classname);
 	}else LOG_WARN(("unhandled tag: %s", name.c_str()));
+	NotifyingXMLParser::start(name, attr);
 }
 
 void IResourceManager::end(const std::string &name) {
@@ -180,7 +180,7 @@ void IResourceManager::end(const std::string &name) {
 		_am = NULL;
 		LOG_DEBUG(("added animation model '%s'", _am_id.c_str()));
 	}
-	Game->notifyLoadingBar();
+	NotifyingXMLParser::end(name);
 }
 void IResourceManager::charData(const std::string &data) {
 	_data = data;

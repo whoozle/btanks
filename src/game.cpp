@@ -119,19 +119,22 @@ void IGame::init(const int argc, char *argv[]) {
 
 	_window.fillRect(_window.getSize(), 0);
 	_window.flip();
-	_window.fillRect(_window.getSize(), 0);
-	_window.flip();
-	_window.fillRect(_window.getSize(), 0);
-	_window.flip(); //clean all buffers.
 	
 	LOG_DEBUG(("initializing hud..."));
-	_hud = new Hud;
-	const std::string resources_xml = data_dir + "/resources.xml";
+	_hud = new Hud(_window.getWidth(), _window.getHeight());
 
-	mrt::XMLParser::getFileStats(_loading_bar_total, resources_xml);
-	_loading_bar_now = 0;
+	LOG_DEBUG(("installing callbacks..."));
+	key_signal.connect(sigc::mem_fun(this, &IGame::onKey));
+	_main_menu.menu_signal.connect(sigc::mem_fun(this, &IGame::onMenu));
+	
+	Map->reset_progress.connect(sigc::mem_fun(this, &IGame::resetLoadingBar));
+	Map->notify_progress.connect(sigc::mem_fun(this, &IGame::notifyLoadingBar));
+	ResourceManager->reset_progress.connect(sigc::mem_fun(this, &IGame::resetLoadingBar));
+	ResourceManager->notify_progress.connect(sigc::mem_fun(this, &IGame::notifyLoadingBar));
+
+
 	LOG_DEBUG(("initializing resource manager..."));
-	ResourceManager->init(resources_xml);
+	ResourceManager->init(data_dir + "/resources.xml");
 	
 	if (_show_fps) {
 		LOG_DEBUG(("creating `digits' object..."));
@@ -140,9 +143,7 @@ void IGame::init(const int argc, char *argv[]) {
 		_fps->speed = 0;
 	} else _fps = NULL;
 
-	LOG_DEBUG(("installing callbacks..."));
-	key_signal.connect(sigc::mem_fun(this, &IGame::onKey));
-	_main_menu.menu_signal.connect(sigc::mem_fun(this, &IGame::onMenu));
+	
 	
 	if (_preload_map.size()) {
 		LOG_DEBUG(("starting predefined map %s...", _preload_map.c_str()));
@@ -511,10 +512,17 @@ void IGame::shake(const float duration, const int intensity) {
 	_shake_int = intensity;
 }
 
+void IGame::resetLoadingBar(const int total) {
+	_loading_bar_now = 0;
+	_loading_bar_total = total;
+}
+
 void IGame::notifyLoadingBar(const int progress) {
 	_loading_bar_now += progress;
 	
-	//_window.fillRect(_window.getSize(), 0);
+	_window.fillRect(_window.getSize(), 0);
+	//_window.fillRect(_window.getSize(), _window.mapRGB(255, 255, 255));
+
 	_hud->renderLoadingBar(_window, 1.0 * _loading_bar_now / _loading_bar_total);
 	_window.flip();
 }

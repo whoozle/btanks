@@ -21,9 +21,19 @@ void Hud::render(sdlx::Surface &window) const {
 	}
 }
 
+void Hud::renderSplash(sdlx::Surface &window) const {
+	int spx = (window.getWidth() - _splash.getWidth()) / 2;
+	int spy = (window.getHeight() - _splash.getHeight()) / 2;
+	
+	window.copyFrom(_splash, spx, spy);
+}
+
+
 void Hud::renderLoadingBar(sdlx::Surface &window, const float progress) const {
+	renderSplash(window);
+
 	GET_CONFIG_VALUE("hud.loading-bar.position", float, yf, 2.0/3);
-	GET_CONFIG_VALUE("hud.loading-bar.border-size", int, border, 2);
+	GET_CONFIG_VALUE("hud.loading-bar.border-size", int, border, 3);
 	
 	int y = (int)(window.getHeight() * yf);
 	int x = (window.getWidth() - _loading_border.getWidth()) / 2;
@@ -37,12 +47,24 @@ void Hud::renderLoadingBar(sdlx::Surface &window, const float progress) const {
 }
 
 
-Hud::Hud() {
+Hud::Hud(const int w, const int h) {
 	GET_CONFIG_VALUE("engine.data-directory", std::string, data_dir, "data");
 	_background.loadImage(data_dir + "/tiles/hud_line.png");
 	_loading_border.loadImage(data_dir + "/tiles/loading_border.png");
 	_loading_item.loadImage(data_dir + "/tiles/loading_item.png");
 	_font.load(data_dir + "/font/big.png", sdlx::Font::AZ09);
+	
+	LOG_DEBUG(("searching splash... %dx%d", w, h));
+	int sw = 0;
+	int splash_sizes[] = { 1280, 1152, 1024, 800 };
+	for(unsigned i = 0; i < sizeof(splash_sizes) / sizeof(splash_sizes[0]); ++i) {
+		sw = w;
+		if (w >= splash_sizes[i]) {
+			break;
+		}
+	}
+	LOG_DEBUG(("using splash %d", sw));
+	_splash.loadImage(mrt::formatString("%s/tiles/splash_%d.png", data_dir.c_str(), sw));
 }
 
 Hud::~Hud() {}

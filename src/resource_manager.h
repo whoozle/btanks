@@ -21,7 +21,7 @@
 
 #include "mrt/singleton.h"
 #include "mrt/exception.h"
-#include "mrt/xml.h"
+#include "notifying_xml_parser.h"
 #include <map>
 
 namespace sdlx {
@@ -34,7 +34,7 @@ class Object;
 class AnimationModel;
 class Pose;
 
-class IResourceManager : public mrt::XMLParser {
+class IResourceManager : public NotifyingXMLParser {
 public:
 	IResourceManager();
 	~IResourceManager();

@@ -30,7 +30,6 @@
 #include "sdlx/surface.h"
 #include "sdlx/c_map.h"
 #include "object.h"
-#include "game.h"
 
 #include <assert.h>
 #include <limits>
@@ -225,6 +224,7 @@ void IMap::start(const std::string &name, Attrs &attrs) {
 	}
 	
 	_stack.push(e);
+	NotifyingXMLParser::start(name, attrs);
 }
 
 void IMap::end(const std::string &name) {
@@ -364,7 +364,7 @@ void IMap::end(const std::string &name) {
 	}
 	
 	_stack.pop();
-	Game->notifyLoadingBar();
+	NotifyingXMLParser::end(name);
 }
 
 void IMap::charData(const std::string &d) {

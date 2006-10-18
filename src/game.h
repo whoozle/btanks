@@ -63,6 +63,7 @@ public:
 	//stupid visual effect
 	void shake(const float duration, const int intensity);
 	
+	void resetLoadingBar(const int total);
 	void notifyLoadingBar(const int progress = 1);
 
 private:

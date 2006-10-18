@@ -23,11 +23,12 @@
 #include <map>
 #include <string>
 #include <stack>
-#include "mrt/xml.h"
 #include "mrt/chunk.h"
 #include "math/v3.h"
 #include "math/matrix.h"
 #include "mrt/singleton.h"
+
+#include "notifying_xml_parser.h"
 
 namespace sdlx {
 class Surface;
@@ -39,7 +40,7 @@ class TMXEntity;
 class Layer;
 class Object;
 
-class IMap : protected mrt::XMLParser {
+class IMap : public NotifyingXMLParser {
 public:
 	DECLARE_SINGLETON(IMap);
 	
