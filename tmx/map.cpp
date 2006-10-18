@@ -38,6 +38,13 @@ IMPLEMENT_SINGLETON(Map, IMap)
 
 const int IMap::pathfinding_step = 64;
 
+IMap::IMap() {
+	_w = _h = _tw = _th = _firstgid = 0;
+	_lastz = -1000;
+	_image = NULL;
+}
+
+
 const bool IMap::collides(const Object *obj, const int dx, const int dy, const sdlx::CollisionMap *tile) const {
 	if (tile == NULL)
 		return false;

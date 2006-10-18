@@ -47,6 +47,7 @@ public:
 	typedef std::map<const std::string, std::string> PropertyMap;
 	PropertyMap properties;
 
+	IMap(); 
 	~IMap();
 	void clear();
 	void load(const std::string &name);
