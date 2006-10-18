@@ -30,6 +30,7 @@ public:
 	static void sendEvents(const bool enable);
 	
 	Joystick();
+	Joystick(const int idx);
 	void open(const int idx);
 
 	Sint16 getAxis(const int idx) const;

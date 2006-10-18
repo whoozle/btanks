@@ -52,7 +52,7 @@ public:
 	}
 
 	MissilesInVehicle(const std::string &type, const std::string &object, const std::string &vehicle) : 
-		Object("missiles-on-vehicle"), hold(true),  _vehicle(vehicle), _object(object), _type(type) {
+		Object("missiles-on-vehicle"), n(0), max_v(0), max_n(0), hold(true),  _vehicle(vehicle), _object(object), _type(type) {
 		impassability = 0;
 		update();
 	}

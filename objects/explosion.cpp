@@ -25,7 +25,7 @@
 
 class Explosion : public Object {
 public:
-	Explosion(const std::string &classname) : Object(classname) { impassability = 0; }
+	Explosion(const std::string &classname) : Object(classname), _damaged_objects() { impassability = 0; }
 	virtual void tick(const float dt);
 	virtual Object * clone() const;
 	virtual void onSpawn();

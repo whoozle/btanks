@@ -29,7 +29,9 @@
 class Helicopter : public Object {
 public:
 	Helicopter(const std::string &para) :
-		 Object("helicopter"), _active(false), _spawn(true), _paratrooper(para) {}
+		 Object("helicopter"), 
+		 _next_target(), _next_target_rel(),
+		 _active(false), _spawn(true), _paratrooper(para) {}
 	virtual void calculate(const float dt);
 	virtual void tick(const float dt);
 	virtual Object * clone() const;

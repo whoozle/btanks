@@ -84,6 +84,9 @@ private:
 	
 	typedef std::map<const std::string, Object *> ObjectMap;
 	ObjectMap _objects;
+	
+	IResourceManager(const IResourceManager &);
+	const IResourceManager& operator=(const IResourceManager &);
 };
 
 SINGLETON(ResourceManager, IResourceManager);

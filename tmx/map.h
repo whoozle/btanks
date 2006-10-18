@@ -89,13 +89,16 @@ private:
 	struct Entity {
 		mrt::XMLParser::Attrs attrs;
 		std::string data;
-		Entity(const mrt::XMLParser::Attrs & attrs) : attrs(attrs) {}
+		Entity(const mrt::XMLParser::Attrs & attrs) : attrs(attrs), data() {}
 	};
 	
 	typedef std::stack<Entity> EntityStack;
 	EntityStack _stack;
 	
 	std::string _name;
+	
+	IMap(const IMap&);
+	const IMap& operator=(const IMap&);
 };
 
 SINGLETON(Map, IMap);

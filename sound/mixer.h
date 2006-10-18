@@ -66,6 +66,10 @@ private:
 	PlayList _playlist;
 	std::string _now_playing;
 	OggStream * _ogg;
+	
+	
+	IMixer(const IMixer &);
+	const IMixer& operator=(const IMixer &);
 };
 
 SINGLETON(Mixer, IMixer);

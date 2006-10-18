@@ -23,8 +23,7 @@
 #include "mrt/logger.h"
 
 JoyPlayer::JoyPlayer(const int idx, const int fire, const int alt_fire)
-: _fire(fire), _alt_fire(alt_fire) {
-	_joy.open(idx);
+: _joy(idx), _fire(fire), _alt_fire(alt_fire) {
 }
 
 #define THRESHOLD 16384

@@ -25,7 +25,7 @@
 
 template <class T> class Matrix {
 public:
-	Matrix() : _w(0), _h(0), _use_default(false) {}
+	Matrix() : _data(), _w(0), _h(0), _use_default(false), _default() {}
 	Matrix(const int h, const int w, const T v = 0): _use_default(false) {
 		setSize(h, w, v);
 	}

@@ -336,7 +336,7 @@ const float IPlayerManager::extractPing(const mrt::Chunk &data) const {
 
 
 IPlayerManager::IPlayerManager() : 
-	_server(NULL), _client(NULL),  _trip_time(10), _ping(false), _next_sync(true) 
+	_server(NULL), _client(NULL), _players(), _trip_time(10), _next_ping(0), _ping(false), _next_sync(true) 
 {}
 
 IPlayerManager::~IPlayerManager() {}

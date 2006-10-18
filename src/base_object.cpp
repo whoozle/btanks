@@ -21,11 +21,18 @@
 #include "mrt/logger.h"
 #include "world.h"
 
-BaseObject::BaseObject(const std::string &classname)
- : mass(1), speed(0), ttl(-1), impassability(1), hp(1), max_hp(1), piercing(false), pierceable(false),
-   classname(classname), _id(0), _follow(0), _direction(1,0,0),  _moving_time(0), _idle_time(0), 
-   need_sync(false),
-   _dead(false), _owner_id(0) {
+BaseObject::BaseObject(const std::string &classname): 
+	size(), mass(1), speed(0), ttl(-1), impassability(1), hp(1), max_hp(1), 
+ 	piercing(false), pierceable(false),
+	classname(classname), 
+	_id(0), _follow(0), _follow_position(), 
+	_state(), 
+	_velocity(), _direction(1,0,0), _velocity_fadeout(), 
+	_moving_time(0), _idle_time(0), 
+	need_sync(false),
+	_dead(false), 
+	_position(),
+	_owner_id(0) {
 	//LOG_DEBUG(("allocated id %ld", _id));
 }
 

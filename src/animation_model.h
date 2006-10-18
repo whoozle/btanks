@@ -25,7 +25,7 @@
 
 class Pose {
 public:
-	Pose(const float speed, const float z, const std::string &sound) : speed(speed), z(z), sound(sound) {}
+	Pose(const float speed, const float z, const std::string &sound) : speed(speed), z(z), sound(sound), frames() {}
 
 	const float speed, z;
 	std::string sound;

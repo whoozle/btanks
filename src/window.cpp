@@ -173,6 +173,10 @@ void Window::deinit() {
 	_window.free();
 }
 
+Window::~Window() {
+	_window.free();
+}
+
 void Window::flip() {
 	_window.flip();
 	if (_opengl) {

@@ -61,6 +61,8 @@ public:
 	void onDisconnect(const int id);	
 	
 private: 
+	IPlayerManager(const IPlayerManager &);
+	const IPlayerManager& operator=(const IPlayerManager &);
 
 	Server *_server;
 	Client *_client;

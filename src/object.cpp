@@ -28,7 +28,7 @@
 #include "math/abs.h"
 #include "sound/mixer.h"
 
-Object::Event::Event() {}
+Object::Event::Event() : name(), repeat(false), sound(), played(false) {}
 
 Object::Event::Event(const std::string name, const bool repeat, const std::string &sound): 
 	name(name), repeat(repeat), sound(sound), played(false) {}
@@ -47,10 +47,17 @@ Object * Object::clone() const {
 	return NULL;
 }
 
-
 Object::Object(const std::string &classname) : 
-	BaseObject(classname), fadeout_time(0),  _model(0), _surface(0), _cmap(0), _tw(0), _th(0), _direction_idx(0), _pos(0), _rotation_time(0), 
-	_dst_direction(0)
+	BaseObject(classname), 
+	registered_name(), animation(), fadeout_time(0),  
+	_model(0), _model_name(), _surface(0), _cmap(0), _surface_name(), 
+	_events(), _effects(), 
+	_tw(0), _th(0), _direction_idx(0), _pos(0), 
+	_way(), _next_target(), _next_target_rel(), 
+	_rotation_time(0), 
+	_dst_direction(0), 
+	
+	_group()
 	 {}
 
 void Object::init(const std::string &model, const std::string &surface, const int tile_w, const int tile_h) {

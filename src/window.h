@@ -8,6 +8,7 @@ public:
 	void init(const int argc, char *argv[]);
 	void flip();
 	void deinit();
+	virtual ~Window();
 protected:
 	sdlx::Surface _window;
 	bool _opengl;
