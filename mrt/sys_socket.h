@@ -9,7 +9,7 @@ namespace mrt {
 		void create(const int af, int type, int protocol);
 		
 		void close(); 
-		~Socket();
+		virtual ~Socket();
 	protected: 
 		int _sock;
 	};

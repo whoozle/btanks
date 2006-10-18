@@ -40,6 +40,10 @@ public:
 protected: 
 	void * _r_set, *_w_set, *_e_set;
 	int _n;
+private: 
+	SocketSet(const SocketSet &);
+	const SocketSet & operator=(const SocketSet &);
+
 };
 }
 

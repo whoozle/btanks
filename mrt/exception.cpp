@@ -3,7 +3,7 @@
 
 using namespace mrt;
 
-Exception::Exception() {}
+Exception::Exception() : _error() {}
 
 void Exception::addMessage(const char * file, const int line) {
 	char buf[256];

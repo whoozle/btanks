@@ -15,10 +15,7 @@
 
 using namespace mrt;
 
-SocketSet::SocketSet() : _n(0) {
-	_r_set = new fd_set;
-	_w_set = new fd_set;
-	_e_set = new fd_set;
+SocketSet::SocketSet() : _r_set(new fd_set), _w_set(new fd_set), _e_set(new fd_set), _n(0) {
 	reset();
 }
 

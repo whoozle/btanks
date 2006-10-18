@@ -31,7 +31,7 @@ const Chunk& Chunk::operator=(const Chunk& c) {
     return *this;
 }
 
-Chunk::Chunk(const Chunk& c) {
+Chunk::Chunk(const Chunk& c) : ptr(NULL), size(0) { //fix it if you want to.
 	*this = c;
 }
 
