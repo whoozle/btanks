@@ -99,6 +99,7 @@ private:
 	
 	Hud *_hud;
 	int _loading_bar_total, _loading_bar_now;
+	Uint32 t_start;
 };
 
 SINGLETON(Game, IGame);

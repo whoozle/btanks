@@ -305,6 +305,7 @@ void IGame::loadMap(const std::string &name) {
 		}
 	}
 	LOG_DEBUG(("%u items on map.", (unsigned) _items.size()));
+	t_start = SDL_GetTicks();
 }
 
 void IGame::checkItems() {
@@ -352,7 +353,7 @@ void IGame::run() {
 	LOG_DEBUG(("fps_limit set to %d, maximum frame delay: %d", fps_limit, max_delay));
 
 	while (_running) {
-		Uint32 t_start  = SDL_GetTicks();
+		t_start  = SDL_GetTicks();
 #ifdef SHOW_PERFSTATS
 		Uint32 t_tick_n = t_start, t_tick_w = t_start, t_tick_s = t_start, t_tick_c = t_start;
 #endif
