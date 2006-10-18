@@ -90,7 +90,8 @@ const bool Object::getNearest(const std::string &classname, v3<float> &position,
 }
 
 void Object::setDirection(const int dir) {
-	_direction_idx = dir;
+	if (dir >= 0)
+		_direction_idx = dir;
 }
 
 const int Object::getDirection() const {
