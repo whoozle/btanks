@@ -25,7 +25,7 @@ else:
 	stl_port_debug = False
 
 if stl_port_debug: 
-	env.Append(CPPDEFINES = ['_STLP_DEBUG'])
+	env.Append(CPPDEFINES = ['_STLP_DEBUG', '_STLP_DEBUG_UNINITIALIZED'])
 
 env.Append(CPPDEFINES = ['USE_GLSDL'])
 env.Append(CPPDEFINES = ['V3_DISABLE_Z'])
@@ -165,8 +165,11 @@ bt_sources = 	[
 	vobj
 	]
 	
+vorbis = 'vorbisfile'
+if debug and sys.platform == "win32": 
+	vorbis = 'vorbisfile_d'
 
-bt_libs = ['bt_net', 'sdlx', 'mrt', sigc_lib, 'SDL_ttf', 'SDL_image', 'SDL', 'expat', 'z', 'vorbisfile', al_lib, 'alut']
+bt_libs = ['bt_net', 'sdlx', 'mrt', sigc_lib, 'SDL_ttf', 'SDL_image', 'SDL', 'expat', 'z', vorbis, al_lib, 'alut']
 if sys.platform == "win32":
 	bt_libs[0:0] = ['SDLmain']
 	bt_libs.append('Ws2_32')
