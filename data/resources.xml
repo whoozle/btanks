@@ -312,6 +312,7 @@
 	<animation id="biotoilet" model="destructable-object-animation" tile="biotoilet.png" />
 	<animation id="lodge" model="destructable-object-animation" tile="lodge.png" />
 	<animation id="stack" model="destructable-object-animation" tile="stack.png" />
+	<animation id="oil-barrels" model="destructable-object-animation" tile="oil-barrels.png" />
 
 	<animation id="helicopter" model="helicopter-animation" tile="helicopter.png" size="128" />
 	<animation id="paratrooper" model="paratrooper-animation" tile="paratrooper.png" />
@@ -354,6 +355,7 @@
 	<alias name="lodge" class="destructable-object" />
 	<alias name="stack" class="destructable-object" />
 	<alias name="road-sign" class="destructable-object" />
+	<alias name="oil-barrels" class="destructable-object" />
 	<alias name="choo-choo-train" class="tank" />
 
 	<object class="tank" speed="400" mass="500" hp="40" z="0" />
@@ -397,6 +399,7 @@
 	<object class="spawn-shield" hp="1000" impassability="1" z="150" />
 	<object class="traffic-lights" hp="3" z="150" />
 	<object class="stack" hp="1" z="150" impassability="1" />
+	<object class="oil-barrels" hp="10" impassability="1" z="150" />
 	<object class="road-sign" hp="1" impassability="1" z="150" />
 	
 	<object class="missiles-on-tank" z="10" />
