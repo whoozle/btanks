@@ -77,3 +77,4 @@ Object* Corpse::clone() const  {
 }
 
 REGISTER_OBJECT("corpse", Corpse, (10));
+REGISTER_OBJECT("fire", Corpse, (10));
