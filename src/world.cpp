@@ -489,6 +489,7 @@ void IWorld::tick(ObjectSet &objects, const float dt) {
 
 	for(ObjectSet::iterator i = objects.begin(); i != objects.end(); ) {
 		Object *o = *i;
+		assert(o != NULL);
 		tick(*o, dt);
 		if (o->isDead()) {
 				ObjectMap::iterator m = _id2obj.find(o->_id);
@@ -496,12 +497,13 @@ void IWorld::tick(ObjectSet &objects, const float dt) {
 				assert(o == m->second);
 				_id2obj.erase(m);
 			
-				delete o;
 				//implement more smart way to fix it.
 				if (&objects != &_objects)
 					_objects.erase(o);
 				objects.erase(i++);
 				assert(_id2obj.size() == _objects.size());
+
+				delete o;
 				continue;
 		} 
 		++i;
