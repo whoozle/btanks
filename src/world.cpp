@@ -717,10 +717,12 @@ TRY {
 		s.get(id);
 		skipped_objects.insert(id);
 	}
-
-	tick(objects, dt);
-
-	cropObjects(skipped_objects);
+	TRY {
+		tick(objects, dt);
+	} CATCH("applyUpdate::tick", throw;);
+	TRY {
+		cropObjects(skipped_objects);
+	} CATCH("applyUpdate::cropObjects", throw;);
 } CATCH("applyUpdate", throw;)
 }
 
