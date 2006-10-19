@@ -697,6 +697,7 @@ void IWorld::generateUpdate(mrt::Serializator &s) {
 }
 
 void IWorld::applyUpdate(const mrt::Serializator &s, const float dt) {
+TRY {
 	unsigned int n;
 	std::set<int> skipped_objects;
 	ObjectSet objects;
@@ -720,6 +721,7 @@ void IWorld::applyUpdate(const mrt::Serializator &s, const float dt) {
 	tick(objects, dt);
 
 	cropObjects(skipped_objects);
+} CATCH("applyUpdate", throw;)
 }
 
 
