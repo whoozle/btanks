@@ -169,6 +169,12 @@
 		<pose id="1" sound="mine-tick.ogg">7,8,9</pose>
 		<pose id="armed">10</pose>
 	</animation-model>
+	
+	<animation-model id="fire-animation" speed="7">
+		<pose id="fade-in">0,1,2,3,4</pose>
+		<pose id="burn">5,6,7,6</pose>
+		<pose id="fade-out">8,9,10</pose>
+	</animation-model>
 
 	<animation-model id="dirt-animation" speed="15">
 		<pose id="fade-in">0,1,2,3</pose>
@@ -267,6 +273,7 @@
 	<animation id="man" tile="man01.png" model="man-animation"/>
 	<animation id="die-man" tile="man01_die01.png" model="die-man-animation"/>
 
+	<animation id="fire" tile="fire.png" model="fire-animation" />
 	<animation id="smoke-cloud" tile="smoke_cloud.png" model="smoke-cloud-animation" size="192"/>
 	<animation id="dirt" tile="dirt.png" model="dirt-animation" size="128" />
 
@@ -346,16 +353,16 @@
 	<alias name="spawn-shield" class="single-pose-once-no-directions" />
 	<alias name="smoke-cloud" class="single-pose-with-start" />
 	<alias name="gate" class="destructable-object" />
-	<alias name="bus-stop" class="destructable-object" />
-	<alias name="stall" class="destructable-object" />
+	<alias name="bus-stop" class="destructable-object-with-fire" />
+	<alias name="stall" class="destructable-object-with-fire" />
 	<alias name="tent" class="destructable-object" />
 	<alias name="umbrella" class="destructable-object" />
 	<alias name="van" class="destructable-object" />
 	<alias name="biotoilet" class="destructable-object" />
-	<alias name="lodge" class="destructable-object" />
+	<alias name="lodge" class="destructable-object-with-fire" />
 	<alias name="stack" class="destructable-object" />
 	<alias name="road-sign" class="destructable-object" />
-	<alias name="oil-barrels" class="destructable-object" />
+	<alias name="oil-barrels" class="destructable-object-with-fire" />
 	<alias name="choo-choo-train" class="tank" />
 
 	<object class="tank" speed="400" mass="500" hp="40" z="0" />
