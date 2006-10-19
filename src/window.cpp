@@ -174,7 +174,7 @@ void Window::deinit() {
 }
 
 Window::~Window() {
-	_window.free();
+	//_window.free();
 }
 
 void Window::flip() {
