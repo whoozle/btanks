@@ -261,6 +261,7 @@ void IWorld::getImpassabilityMatrix(Matrix<int> &matrix, const Object *src, cons
 void IWorld::tick(Object &o, const float dt) {
 	if (o.isDead()) 
 		return;
+	//LOG_DEBUG(("tick object %p: %d: %s", (void *)&o, o.getID(), o.classname.c_str()));
 
 	GET_CONFIG_VALUE("engine.max-time-slice", float, max_dt, 0.025);
 	if (max_dt <= 0) 
@@ -306,13 +307,18 @@ void IWorld::tick(Object &o, const float dt) {
 		
 	v3<float> old_vel = o._velocity;
 
-	o.calculate(dt);
+	TRY { 
+		o.calculate(dt);
+	} CATCH("calling o.calculate", throw;)
 
 	GET_CONFIG_VALUE("engine.disable-z-velocity", bool, disable_z, true);
 	if (disable_z)
 		o._velocity.z = 0; //hack to prevent objects moving up/down.
 		
-	o.tick(dt);
+	TRY { 
+		o.tick(dt);
+	} CATCH("calling o.tick", throw;)
+
 	if (disable_z)
 		o._velocity.z = 0; 
 		
