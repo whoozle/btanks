@@ -492,7 +492,7 @@ void IWorld::tick(ObjectSet &objects, const float dt) {
 		assert(o != NULL);
 		TRY {
 			tick(*o, dt);
-		} CATCH(mrt::formatString("tick for object %d:%s", o->getID(), o->classname.c_str()).c_str(), throw;);
+		} CATCH(mrt::formatString("tick for object[%p] %d:%s", (void *)o, o->getID(), o->classname.c_str()).c_str(), throw;);
 		if (o->isDead()) {
 				ObjectMap::iterator m = _id2obj.find(o->_id);
 				assert(m != _id2obj.end());
