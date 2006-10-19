@@ -70,11 +70,11 @@ public:
 	void addDamage(BaseObject *from, const bool emitDeath = true);
 	
 	const v3<float> getRelativePosition(const BaseObject *obj) const;
-	inline void getPosition(v3<float> &position) { position = _position; }
-	inline void getPosition(v3<int> &position) { position = _position.convert<int>(); }
+	inline void getPosition(v3<float> &position) const { position = _position; }
+	inline void getPosition(v3<int> &position) const { position = _position.convert<int>(); }
 
-	inline void getCenterPosition(v3<float> &position) { position = _position; position += size / 2; }
-	inline void getCenterPosition(v3<int> &position) { position = (_position + size / 2).convert<int>();  }
+	inline void getCenterPosition(v3<float> &position) const { position = _position; position += size / 2; }
+	inline void getCenterPosition(v3<int> &position) const { position = (_position + size / 2).convert<int>();  }
 
 	void getInfo(v3<float> &pos, v3<float> &vel) const;
 	void updateStateFromVelocity();

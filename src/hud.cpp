@@ -66,11 +66,12 @@ void Hud::renderRadar(const float dt, sdlx::Surface &window) {
 	
 	for(size_t i = 0; i < n; ++i) {
 		PlayerSlot &slot = PlayerManager->getSlot(i);
-		if (slot.obj == NULL) 
+		const Object *obj = slot.getObject();
+		if (obj == NULL) 
 			continue;
 		
 		v3<int> pos;
-		slot.obj->getPosition(pos);
+		obj->getPosition(pos);
 		_radar.putPixel(pos.x * _radar.getWidth() / msize.x, pos.y * _radar.getHeight() / msize.y, index2color(_radar, i + 1, 255));
 		_radar.putPixel(pos.x * _radar.getWidth() / msize.x, pos.y * _radar.getHeight() / msize.y + 1, index2color(_radar, i + 1, 200));
 		_radar.putPixel(pos.x * _radar.getWidth() / msize.x, pos.y * _radar.getHeight() / msize.y - 1, index2color(_radar, i + 1, 200));
@@ -92,10 +93,11 @@ void Hud::render(sdlx::Surface &window) const {
 	//only one visible player supported
 	for(size_t i = 0; i < n; ++i) {
 		const PlayerSlot &slot = PlayerManager->getSlot(i);
-		if (!slot.visible || slot.obj == NULL)
+		if (!slot.visible)
 			continue;
+		const Object *obj = slot.getObject();
 	
-		std::string hp = mrt::formatString("HP%2d", slot.obj->hp);
+		std::string hp = mrt::formatString("HP%2d", (obj)?obj->hp:0);
 		_font.render(window, slot.viewport.x, slot.viewport.y, hp);	
 	}
 }

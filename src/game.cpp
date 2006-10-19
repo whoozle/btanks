@@ -374,7 +374,9 @@ void IGame::run() {
 					break;
 				}
 				if (event.key.keysym.sym==SDLK_d && event.key.keysym.mod & KMOD_SHIFT && _my_index >= 0) {
-					PlayerManager->getSlot(_my_index).obj->emit("death", 0);
+					Object *o = PlayerManager->getSlot(_my_index).getObject();
+					if (o)
+						o->emit("death", 0);
 					break;
 				}
 			case SDL_KEYUP:

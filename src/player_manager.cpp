@@ -37,7 +37,7 @@ const int IPlayerManager::onConnect(Message &message) {
 
 	mrt::Serializator s;
 	World->serialize(s);
-	s.add(_players[client_id].obj->getID());
+	s.add(_players[client_id].id);
 
 	message.data = s.getData();
 	LOG_DEBUG(("world: %s", message.data.dump().c_str()));
@@ -50,8 +50,9 @@ void IPlayerManager::onDisconnect(const int id) {
 		return;
 	}
 	PlayerSlot &slot = _players[id];
-	if (slot.obj)
-		slot.obj->emit("death", NULL);
+	Object *obj = slot.getObject();
+	if (obj)
+		obj->emit("death", NULL);
 	
 	slot.clear();
 }
@@ -77,12 +78,11 @@ TRY {
 		Object * player = World->getObjectByID(my_id);
 		if (player == NULL) 
 			throw_ex(("invalid object id returned from server. (%d)", my_id));
-		_players.push_back(player);
+		_players.push_back(player->getID());
 		assert(!_players.empty());
 		PlayerSlot &slot = _players[_players.size() - 1];
-		slot.id = slot.obj->getID();
-		slot.classname = slot.obj->registered_name;
-		slot.animation = slot.obj->animation;
+		slot.classname = player->registered_name;
+		slot.animation = player->animation;
 		slot.viewport.reset();
 		slot.visible = true;
 		
@@ -115,11 +115,11 @@ TRY {
 		state.deserialize(s);
 
 		//World->tick(*slot.obj, -slot.trip_time / 1000.0);
-		slot.obj = World->deserializeObject(s);
-		slot.id = slot.obj->getID();
-		slot.obj->updatePlayerState(state);
+		Object * obj = World->deserializeObject(s);
+		slot.id = obj->getID();
+		obj->updatePlayerState(state);
 		
-		World->tick(*slot.obj, slot.trip_time / 1000.0);
+		World->tick(*obj, slot.trip_time / 1000.0);
 		break;
 	} 
 	case Message::UpdatePlayers: { 
@@ -129,7 +129,7 @@ TRY {
 			s.get(id);
 			unsigned slot;
 			for(slot = 0; slot < _players.size(); ++slot) {
-				if (_players[slot].obj->getID() == id)
+				if (_players[slot].id == id)
 					break;
 			}
 			PlayerState state; 
@@ -138,8 +138,7 @@ TRY {
 			o->updatePlayerState(state);
 
 			if (slot < _players.size()) {
-				_players[slot].obj = o;
-				_players[slot].id = o->getID();
+				_players[slot].id = o->getID(); // ???
 			}
 			World->tick(*o, _trip_time / 1000.0);
 /*			Object *o = World->getObjectByID(id);
@@ -200,7 +199,6 @@ TRY {
 		mrt::Serializator s(&message.data);
 		World->applyUpdate(s, _trip_time / 1000.0);
 		s.get(slot.id);
-		slot.obj = World->getObjectByID(slot.id);
 		} CATCH("message::respawn", throw;);
 	break;
 	}
@@ -230,7 +228,7 @@ void IPlayerManager::updatePlayers() {
 	int n = _players.size();
 	for(int i = 0; i < n; ++i) {
 		PlayerSlot &slot = _players[i];
-		if (slot.obj == NULL || World->getObjectByID(slot.id) != NULL) 
+		if (slot.id <= 0 || slot.getObject() != NULL) 
 			continue;
 		LOG_DEBUG(("player in slot %d is dead. respawning.", i));
 		spawnPlayer(slot, slot.classname, slot.animation);
@@ -238,8 +236,6 @@ void IPlayerManager::updatePlayers() {
 			Message m(Message::Respawn);
 			mrt::Serializator s;
 			World->generateUpdate(s);
-			
-			assert(slot.obj->getID() == slot.id);
 			
 			s.add(slot.id);
 			m.data = s.getData();
@@ -252,22 +248,25 @@ void IPlayerManager::updatePlayers() {
 	for(int i = 0; i < n; ++i) {
 		PlayerSlot &slot = _players[i];
 		if (slot.control_method != NULL) {
-			assert(slot.obj != NULL);
-			PlayerState old_state = slot.obj->getPlayerState();
+			Object *obj = slot.getObject();
+			assert(obj != NULL);
+			
+			PlayerState old_state = obj->getPlayerState();
 			PlayerState state = old_state;
 			slot.control_method->updateState(state);
-			if (slot.obj->updatePlayerState(state)) {
+			if (obj->updatePlayerState(state)) {
 				LOG_DEBUG(("player[%d] updated state: %s -> %s", i, old_state.dump().c_str(), state.dump().c_str()));
 				updated = true;
 				slot.state = state;
 				slot.need_sync = true;
 			}
+			//this will never happen now, as external control method is not used anymore
 			if (slot.need_sync && slot.remote) {
 				LOG_DEBUG(("correcting remote player. "));
-				slot.obj->getPlayerState() = old_state;
-				World->tick(*slot.obj, -slot.trip_time / 1000.0);
-				slot.obj->getPlayerState() = state;
-				World->tick(*slot.obj, slot.trip_time / 1000.0);
+				obj->getPlayerState() = old_state;
+				World->tick(*obj, -slot.trip_time / 1000.0);
+				obj->getPlayerState() = state;
+				World->tick(*obj, 2 * slot.trip_time / 1000.0);
 			}
 		}
 		if (slot.need_sync)
@@ -278,7 +277,7 @@ void IPlayerManager::updatePlayers() {
 		mrt::Serializator s;
 		
 		_players[0].state.serialize(s);
-		World->serializeObject(s, _players[0].obj);
+		World->serializeObject(s, _players[0].getObject());
 		
 		Message m(Message::PlayerState);
 		m.data = s.getData();
@@ -288,7 +287,7 @@ void IPlayerManager::updatePlayers() {
 	//cross-players state exchange
 	if (_server && updated) {
 		for(int i = 0; i < n; ++i) {
-			if (i == 0 || _players[i].obj == NULL) continue;
+			if (i == 0 || _players[i].getObject() == NULL) continue;
 			
 			bool send = false;
 			mrt::Serializator s;
@@ -299,10 +298,9 @@ void IPlayerManager::updatePlayers() {
 				PlayerSlot &slot = _players[j];
 				if (slot.need_sync) {
 					//LOG_DEBUG(("object in slot %d: %s (%d) need sync", j, slot.obj->registered_name.c_str(), slot.obj->getID()));
-					assert(slot.id == slot.obj->getID());
 					s.add(slot.id);
 					slot.state.serialize(s);
-					World->serializeObject(s, slot.obj);
+					World->serializeObject(s, slot.getObject());
 					send = true;
 				}
 			}
@@ -415,7 +413,7 @@ void IPlayerManager::createControlMethod(PlayerSlot &slot, const std::string &co
 const int IPlayerManager::spawnPlayer(const std::string &classname, const std::string &animation, const std::string &control_method) {
 	size_t i, n = _players.size();
 	for(i = 0; i < n; ++i) {
-		if (_players[i].obj == NULL)
+		if (_players[i].getObject() == NULL)
 			break;
 	}
 	if (i == n) 
@@ -437,7 +435,6 @@ void IPlayerManager::spawnPlayer(PlayerSlot &slot, const std::string &classname,
 	Object *spawn = World->spawn(obj, "spawn-shield", "spawning", v3<float>::empty, v3<float>::empty);
 	spawn->follow(obj, Centered);
 
-	slot.obj = obj;
 	slot.id = obj->getID();
 	slot.classname = classname;
 	slot.animation = animation;
@@ -475,8 +472,12 @@ void IPlayerManager::tick(const float now, const float dt) {
 
 			for(unsigned int pi = 0; pi < _players.size(); ++pi) {
 				PlayerSlot &slot = _players[pi];
-				const Object * p = slot.obj;
-				if (p == NULL || !slot.visible)
+				if (!slot.visible)
+					continue;
+				
+				const Object * p = slot.getObject();
+
+				if (p == NULL)
 					continue; 
 					
 				v3<float> pos, vel;

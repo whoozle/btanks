@@ -12,9 +12,12 @@ class ControlMethod;
 class PlayerSlot {
 public:
 	PlayerSlot();
-	PlayerSlot(Object *obj);
+	PlayerSlot(const int id);
+	
+	Object * getObject(); 
+	const Object * getObject() const;
+
 	int id;
-	Object * obj;
 	ControlMethod * control_method;
 	v3<int> position;
 		

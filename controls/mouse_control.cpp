@@ -95,13 +95,13 @@ void MouseControl::updateState(PlayerState &state) {
 
 Object * MouseControl::getObject() const {
 	PlayerSlot &slot = PlayerManager->getSlot(0);
-	return slot.obj;
+	return slot.getObject();
 }
 
 
 void MouseControl::getPosition(v3<float>&pos) const {
-	PlayerSlot &slot = PlayerManager->getSlot(0);
-	slot.obj->getPosition(pos);
-	pos += slot.obj->size / 2;
+	Object *obj = getObject();
+	obj->getPosition(pos);
+	pos += obj->size / 2;
 }
 
