@@ -447,7 +447,7 @@ void IGame::run() {
 		
 		if (_show_fps) {
 			_fps->hp = (int)fr;
-			_fps->render(_window, 0, 0);
+			_fps->render(_window, _window.getWidth() - (int)(_fps->size.x * 3), 0);
 		}
 		
 		

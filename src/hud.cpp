@@ -136,7 +136,7 @@ Hud::Hud(const int w, const int h) : _update_radar(true) {
 	_background.loadImage(data_dir + "/tiles/hud_line.png");
 	_loading_border.loadImage(data_dir + "/tiles/loading_border.png");
 	_loading_item.loadImage(data_dir + "/tiles/loading_item.png");
-	_font.load(data_dir + "/font/big.png", sdlx::Font::AZ09);
+	_font.load(data_dir + "/font/medium.png", sdlx::Font::AZ09);
 	
 	LOG_DEBUG(("searching splash... %dx%d", w, h));
 	int sw = 0;
