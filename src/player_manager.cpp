@@ -325,7 +325,7 @@ const float IPlayerManager::extractPing(const mrt::Chunk &data) const {
 	Uint32 ticks = SDL_GetTicks();
 	float delta = (int)(ticks - ts);
 	if (delta < 0) delta = -delta; //wrapped around.
-	if (delta > 10000)
+	if (delta > 60000)
 		throw_ex(("server returns bogus timestamp value. [%g]", delta));
 	delta /= 2;
 	return delta;
