@@ -22,15 +22,14 @@
 
 class SinglePose : public Object {
 public:
-	SinglePose(const std::string &pose, const bool repeat, const bool no_directions = false, const bool play_start = false, const bool breakable = false) : 
-		Object("single-pose"), _pose(pose), _repeat(repeat), _no_dir(no_directions), _play_start(play_start), _breakable(breakable), _broken(false) {}
+	SinglePose(const std::string &pose, const bool repeat, const bool no_directions = false, const bool play_start = false) : 
+		Object("single-pose"), _pose(pose), _repeat(repeat), _no_dir(no_directions), _play_start(play_start)  {}
 
 	virtual Object * clone() const;
 	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
 	virtual void tick(const float dt);
 	virtual void onSpawn();
 	virtual void render(sdlx::Surface &surface, const int x, const int y);
-	virtual void addDamage(BaseObject *from, const int hp, const bool emitDeath = true);
 
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
@@ -38,8 +37,6 @@ public:
 		s.add(_repeat);
 		s.add(_no_dir);
 		s.add(_play_start);
-		s.add(_breakable);
-		s.add(_broken);
 	}
 
 	virtual void deserialize(const mrt::Serializator &s) {
@@ -48,32 +45,12 @@ public:
 		s.get(_repeat);
 		s.get(_no_dir);
 		s.get(_play_start);
-		s.get(_breakable);
-		s.get(_broken);
 	}
 
 private:
 	std::string _pose;
-	bool _repeat, _no_dir, _play_start, _breakable, _broken;
+	bool _repeat, _no_dir, _play_start;
 };
-
-void SinglePose::addDamage(BaseObject *from, const int dhp, const bool emitDeath) {
-	if (!_breakable) {
-		BaseObject::addDamage(from, dhp, emitDeath);
-		return;
-	}
-
-	if (_broken)
-		return;
-
-	BaseObject::addDamage(from, dhp, false);
-	if (hp <= 0) {
-		_broken = true;
-		cancelAll();
-		play("fade-out", false); 
-		play("broken", true);
-	}
-}
 
 void SinglePose::emit(const std::string &event, BaseObject * emitter) {
 	Object::emit(event, emitter);
@@ -116,7 +93,5 @@ REGISTER_OBJECT("single-pose-with-start", SinglePose, ("main", true, false, true
 REGISTER_OBJECT("single-pose-once", SinglePose, ("main", false));
 REGISTER_OBJECT("single-pose-no-directions", SinglePose, ("main", true, true));
 REGISTER_OBJECT("single-pose-once-no-directions", SinglePose, ("main", false, true));
-
-REGISTER_OBJECT("destructable-object", SinglePose, ("main", true, false, false, true));
 
 REGISTER_OBJECT("missile-launch", SinglePose, ("launch", false));
