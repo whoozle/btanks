@@ -22,7 +22,7 @@
 
 class Corpse : public Object {
 public:
-	Corpse(const int fc) : Object("corpse"), _fire_cycles(fc) {}
+	Corpse(const int fc, const bool play_dead) : Object("corpse"), _fire_cycles(fc), _play_dead(play_dead) {}
 
 	virtual Object * clone() const;
 	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
@@ -32,14 +32,17 @@ public:
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
 		s.add(_fire_cycles);
+		s.add(_play_dead);
 	}
 	virtual void deserialize(const mrt::Serializator &s) {
 		Object::deserialize(s);
 		s.get(_fire_cycles);
+		s.get(_play_dead);
 	}
 
 private: 
 	int _fire_cycles;
+	bool _play_dead;
 };
 
 void Corpse::emit(const std::string &event, BaseObject * emitter) {
@@ -76,5 +79,5 @@ Object* Corpse::clone() const  {
 	return new Corpse(*this);
 }
 
-REGISTER_OBJECT("corpse", Corpse, (10));
-REGISTER_OBJECT("fire", Corpse, (10));
+REGISTER_OBJECT("corpse", Corpse, (10, true));
+REGISTER_OBJECT("fire", Corpse, (10, false));
