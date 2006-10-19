@@ -148,7 +148,7 @@ private:
 	int _dst_direction;
 	
 	//grouped objects stuff
-	typedef std::map<const std::string, Object *> Group;
+	typedef std::map<const std::string, int> Group;
 	Group _group;
 };
 

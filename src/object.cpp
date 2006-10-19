@@ -375,7 +375,7 @@ void Object::serialize(mrt::Serializator &s) const {
 		Group::const_iterator i = _group.begin();
 		while(en--) {
 			s.add(i->first);
-			s.add(i->second->_id);
+			s.add(i->second);
 		}
 	}
 }
@@ -423,13 +423,7 @@ void Object::deserialize(const mrt::Serializator &s) {
 		int id;
 		s.get(name);
 		s.get(id);
-		Object *obj = World->getObjectByID(id);
-		if (obj == NULL) {
-			throw_ex(("object id %d (%s) was not created. bug in serialization order code.", id, name.c_str()));
-			//LOG_WARN(("object id %d (%s) was not created. get it on next update", id, name.c_str()));
-			continue;
-		}
-		_group[name] = obj;
+		_group[name] = id;
 	}
 	//additional initialization
 	_model = ResourceManager->getAnimationModel(_model_name);
@@ -440,7 +434,10 @@ void Object::deserialize(const mrt::Serializator &s) {
 void Object::emit(const std::string &event, BaseObject * emitter) {
 	if (event == "death") {
 		for(Group::iterator i = _group.begin(); i != _group.end(); ++i) {
-			i->second->emit(event, this);
+			Object * o = World->getObjectByID(i->second);
+			if (o == NULL)
+				continue;
+			o->emit(event, emitter);
 		}
 		_group.clear();
 	}
@@ -562,23 +559,27 @@ void Object::add(const std::string &name, Object *obj) {
 	assert(obj != NULL);
 	if (_group.find(name) != _group.end())
 		throw_ex(("object '%s'(%s) was already added to group", name.c_str(), obj->classname.c_str()));
-	_group.insert(Group::value_type(name, obj));
+	_group.insert(Group::value_type(name, obj->getID()));
 }
 
 Object *Object::get(const std::string &name) {
 	Group::iterator i = _group.find(name);
 	if (i == _group.end())
 		throw_ex(("there's no object '%s' in group", name.c_str()));
-	assert(i->second != NULL);
-	return i->second;
+	Object * o = World->getObjectByID(i->second);
+	if (o == NULL)
+		throw_ex(("%s: world doesnt know anything about '%s' [group]", classname.c_str(), name.c_str()));
+	return o;
 }
 
 const Object *Object::get(const std::string &name) const {
 	Group::const_iterator i = _group.find(name);
 	if (i == _group.end())
 		throw_ex(("there's no object '%s' in group", name.c_str()));
-	assert(i->second != NULL);
-	return i->second;
+	Object * o = World->getObjectByID(i->second);
+	if (o == NULL)
+		throw_ex(("%s: world doesnt know anything about '%s' [group]", classname.c_str(), name.c_str()));
+	return o;
 }
 
 const bool Object::has(const std::string &name) const {
@@ -589,13 +590,21 @@ void Object::remove(const std::string &name) {
 	Group::iterator i = _group.find(name); 
 	if (i == _group.end())
 		return;
-	i->second->emit("death", this);
+	Object * o = World->getObjectByID(i->second);
+	if (o == NULL)
+		throw_ex(("%s: world doesnt know anything about '%s' [group]", classname.c_str(), name.c_str()));
+	o->emit("death", this);
 	_group.erase(i);
 }
 
 
 void Object::groupEmit(const std::string &name, const std::string &event) {
-	Object *o = get(name);
+	Group::const_iterator i = _group.find(name);
+	if (i == _group.end())
+		throw_ex(("there's no object '%s' in group", name.c_str()));
+	Object * o = World->getObjectByID(i->second);
+	if (o == NULL)
+		throw_ex(("%s: world doesnt know anything about '%s' [group]", classname.c_str(), name.c_str()));
 	o->emit(event, this);
 }
 
