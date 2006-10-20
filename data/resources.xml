@@ -368,7 +368,7 @@
 	<object class="tank" speed="400" mass="500" hp="40" z="0" />
 	<object class="ai-tank" parent="tank" z="0" />
 	<object class="bullet" speed="550" mass="2" ttl="1" hp="10" z="-10" />
-	<object class="machinegunner-bullet" speed="550" mass="2" ttl="1" hp="5" z="-10" />
+	<object class="machinegunner-bullet" speed="550" mass="2" ttl="1" hp="1" z="-10" />
 	<object class="dirt-bullet" speed="300" mass="1" ttl="0.5" hp="0" z="-10" />
 
 	<object class="shilka" speed="450" mass="400" hp="80" z="0" />
