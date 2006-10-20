@@ -21,9 +21,9 @@
 
 class DestructableObject : public Object {
 public:
-	DestructableObject(const std::string &object, const std::string &animation) : 
+	DestructableObject(const std::string &object, const std::string &animation, const bool make_pierceable) : 
 		Object("destructable-object"), 
-		_broken(false), 
+		_broken(false), _make_pierceable(make_pierceable),
 		_object(object), _animation(animation) {}
 
 	virtual Object * clone() const;
@@ -35,6 +35,7 @@ public:
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
 		s.add(_broken);
+		s.add(_make_pierceable);
 		s.add(_object);
 		s.add(_animation);
 	}
@@ -42,12 +43,13 @@ public:
 	virtual void deserialize(const mrt::Serializator &s) {
 		Object::deserialize(s);
 		s.get(_broken);
+		s.get(_make_pierceable);
 		s.get(_object);
 		s.get(_animation);
 	}
 
 private:
-	bool _broken;
+	bool _broken, _make_pierceable;
 	std::string _object, _animation;
 };
 
@@ -58,6 +60,8 @@ void DestructableObject::addDamage(BaseObject *from, const int dhp, const bool e
 	BaseObject::addDamage(from, dhp, false);
 	if (hp <= 0) {
 		_broken = true;
+		if (_make_pierceable)
+			pierceable = true;
 		cancelAll();
 		play("fade-out", false); 
 		play("broken", true);
@@ -88,5 +92,7 @@ Object* DestructableObject::clone() const  {
 	return new DestructableObject(*this);
 }
 
-REGISTER_OBJECT("destructable-object", DestructableObject, ("", ""));
-REGISTER_OBJECT("destructable-object-with-fire", DestructableObject, ("fire", "fire"));
+REGISTER_OBJECT("destructable-object", DestructableObject, ("", "", false));
+REGISTER_OBJECT("destructable-object(pierceable)", DestructableObject, ("", "", true));
+REGISTER_OBJECT("destructable-object-with-fire", DestructableObject, ("fire", "fire", false));
+REGISTER_OBJECT("destructable-object-with-fire(pierceable)", DestructableObject, ("fire", "fire", true));
