@@ -8,6 +8,7 @@ opts.Add('CC', 'C compiler')
 opts.Add('CXX', 'C++ compiler')
 opts.Add('CCFLAGS', 'General options that are passed to the C compiler', '')
 opts.Add('CXXFLAGS', 'General options that are passed to the C++ compiler', '')
+opts.Add('LINK', 'Linker program', '')
 opts.Add('LINKFLAGS', 'General options that are passed to the linker', '')
 opts.Add('CPPPATH', 'extra cpp path', '')
 
