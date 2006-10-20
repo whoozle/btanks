@@ -26,6 +26,7 @@
 class ALException : public mrt::Exception { 
 public:
 	ALException(const ALenum code);
+	virtual ~ALException() throw() {};
 	const std::string getCustomMessage();
 private: 
 	ALenum _code;
