@@ -42,7 +42,7 @@ public:
 		int n;
 		s.get(n);
 		_damaged_objects.clear();
-		for(std::set<int>::const_iterator i = _damaged_objects.begin(); i != _damaged_objects.end(); ++i) {
+		while(n--) {
 			int id;
 			s.get(id);
 			_damaged_objects.insert(id);
