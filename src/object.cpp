@@ -340,8 +340,7 @@ void Object::serialize(mrt::Serializator &s) const {
 	int en = _events.size();
 	s.add(en);
 	{
-		EventQueue::const_iterator i = _events.begin();
-		while(en--) {
+		for(EventQueue::const_iterator i = _events.begin(); i != _events.end(); ++i) {
 			i->serialize(s);
 		}
 	}
@@ -349,8 +348,7 @@ void Object::serialize(mrt::Serializator &s) const {
 	en = _effects.size();
 	s.add(en);
 	{
-		EffectMap::const_iterator i = _effects.begin();
-		while(en--) {
+		for(EffectMap::const_iterator i = _effects.begin(); i != _events.end(); ++i) {
 			s.add(i->first);
 			s.add(i->second);
 		}
