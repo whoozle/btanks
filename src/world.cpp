@@ -601,14 +601,15 @@ void IWorld::serialize(mrt::Serializator &s) const {
 }
 
 Object * IWorld::deserializeObject(const mrt::Serializator &s) {
-		int id;
-		std::string rn, an;
+	int id;
+	std::string rn, an;
+	Object *ao = NULL, *result;
+	TRY {
 		s.get(id);
 		s.get(rn);
 		s.get(an);
 		
-		Object *ao = NULL, *result;
-		TRY {
+		{
 			ObjectMap::iterator i = _id2obj.find(id);
 			if (i != _id2obj.end()) {
 				Object *o = i->second;
@@ -641,7 +642,8 @@ Object * IWorld::deserializeObject(const mrt::Serializator &s) {
 			}
 
 			//LOG_DEBUG(("deserialized %d: %s", ao->_id, ao->classname.c_str()));
-		} CATCH("deserializeObject", { delete ao; ao = NULL; throw; });
+		}
+	} CATCH(mrt::formatString("deserializeObject('%d:%s:%s')", id, rn.c_str(), an.c_str()).c_str(), { delete ao; throw; })
 	assert(result != NULL);
 	return result;
 }
