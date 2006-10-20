@@ -348,7 +348,7 @@ void Object::serialize(mrt::Serializator &s) const {
 	en = _effects.size();
 	s.add(en);
 	{
-		for(EffectMap::const_iterator i = _effects.begin(); i != _events.end(); ++i) {
+		for(EffectMap::const_iterator i = _effects.begin(); i != _effects.end(); ++i) {
 			s.add(i->first);
 			s.add(i->second);
 		}
