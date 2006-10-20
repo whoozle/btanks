@@ -560,6 +560,8 @@ void Object::add(const std::string &name, Object *obj) {
 	if (_group.find(name) != _group.end())
 		throw_ex(("object '%s'(%s) was already added to group", name.c_str(), obj->classname.c_str()));
 	_group.insert(Group::value_type(name, obj->getID()));
+	obj->need_sync = true;
+	need_sync = true;
 }
 
 Object *Object::get(const std::string &name) {
@@ -593,8 +595,11 @@ void Object::remove(const std::string &name) {
 	Object * o = World->getObjectByID(i->second);
 	if (o == NULL)
 		throw_ex(("%s: world doesnt know anything about '%s' [group]", classname.c_str(), name.c_str()));
+	
 	o->emit("death", this);
 	_group.erase(i);
+	o->need_sync = true;
+	need_sync = true;
 }
 
 
