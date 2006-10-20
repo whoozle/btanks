@@ -645,6 +645,7 @@ Object * IWorld::deserializeObject(const mrt::Serializator &s) {
 		}
 	} CATCH(mrt::formatString("deserializeObject('%d:%s:%s')", id, rn.c_str(), an.c_str()).c_str(), { delete ao; throw; })
 	assert(result != NULL);
+	LOG_DEBUG(("deserialized object: %d:%s:%s", id, rn.c_str(), an.c_str()));
 	return result;
 }
 
