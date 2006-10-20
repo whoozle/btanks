@@ -414,7 +414,7 @@
 	<object class="machinegunner-on-launcher" z="10" />
 
 	<object class="helicopter-with-kamikazes" hp="100" impassability="0" speed="400" mass="1500" z="810" />
-	<object class="paratrooper-kamikaze" hp="5" impassability="0" z="0" />
+	<object class="paratrooper-kamikaze" hp="5" impassability="0" z="810" />
 	<object class="kamikaze" hp="5" impassability="1" speed="70" mass="80" z="0" />
 
 	<!-- items -->
