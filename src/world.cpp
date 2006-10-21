@@ -337,6 +337,7 @@ void IWorld::tick(Object &o, const float dt) {
 			} else {
 				LOG_WARN(("leader for object %d is dead. (leader-id:%d)", o._id, f));
 				o._follow = 0;
+				o.emit("death", NULL);
 			}
 		}
 	}
