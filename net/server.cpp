@@ -91,7 +91,9 @@ void Server::send(const int id, const Message &m) {
 		mrt::Chunk data;
 		m.serialize2(data);
 		_monitor->send(id, data);
-	} CATCH("send", throw;);
+	} CATCH("send", {
+		disconnect(id);
+	});
 }
 
 void Server::broadcast(const Message &m) {
@@ -100,7 +102,7 @@ void Server::broadcast(const Message &m) {
 		mrt::Chunk data;
 		m.serialize2(data);
 		_monitor->broadcast(data);
-	} CATCH("broadcast", throw;);
+	} CATCH("broadcast", {});
 }
 
 

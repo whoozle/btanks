@@ -20,6 +20,7 @@
 #include "monitor.h"
 #include "mrt/chunk.h"
 #include "mrt/logger.h"
+#include "mrt/exception.h"
 #include "mrt/socket_set.h"
 #include "mrt/tcp_socket.h"
 #include "mrt/gzip.h"
@@ -93,7 +94,7 @@ void Monitor::send(const int id, const mrt::Chunk &rawdata) {
 	{
 		sdlx::AutoMutex m(_connections_mutex);
 		if (_connections.find(id) == _connections.end()) {
-			LOG_WARN(("sending data to non-existent connection %d", id));
+			throw_ex(("sending data to non-existent connection %d", id));
 			return;
 		}
 	}
