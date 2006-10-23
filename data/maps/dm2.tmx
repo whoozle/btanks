@@ -1,0 +1,108 @@
+<?xml version="1.0"?>
+<map version="0.99b" orientation="orthogonal" width="40" height="30" tilewidth="64" tileheight="64">
+ <properties>
+  <property name="object:umbrella:umbrella:1" value="1154,510"/>
+  <property name="object:bus-stop-left:bus-stop-left:4" value="510,1376"/>
+  <property name="object:bus-stop-left:bus-stop-left:3" value="1152,1726"/>
+  <property name="object:bus-stop-left:bus-stop-left:2" value="1146,306"/>
+  <property name="object:bus-stop-left:bus-stop-left:1" value="508,368"/>
+  <property name="object:biotoilet:biotoilet:2" value="804,1692"/>
+  <property name="object:biotoilet:biotoilet:1" value="2222,4"/>
+  <property name="object:dead-orage-bus:dead-orage-bus:1" value="1330,1284"/>
+  <property name="object:dead-yellow-car:dead-yellow-car:1" value="372,860"/>
+  <property name="object:die-man:die-man:8" value="84,1750"/>
+  <property name="object:die-man:die-man:7" value="80,1284"/>
+  <property name="object:stall-right:stall-right:1" value="512,474"/>
+  <property name="object:die-man:die-man:6" value="662,4"/>
+  <property name="object:die-man:die-man:5" value="74,874"/>
+  <property name="object:die-man:die-man:4" value="1168,1266"/>
+  <property name="object:die-man:die-man:3" value="1362,1310"/>
+  <property name="object:die-man:die-man:2" value="726,988"/>
+  <property name="object:die-man:die-man:1" value="1228,488"/>
+  <property name="object:die-thrower:die-thrower:4" value="44,1764"/>
+  <property name="object:die-thrower:die-thrower:3" value="1344,1346"/>
+  <property name="object:die-thrower:die-thrower:2" value="522,1030"/>
+  <property name="object:die-thrower:die-thrower:1" value="794,954"/>
+  <property name="object:bus-stop-right:bus-stop-right:4" value="704,1638"/>
+  <property name="object:pond:pond:3" value="1730,258"/>
+  <property name="object:bus-stop-right:bus-stop-right:3" value="1418,442"/>
+  <property name="object:bus-stop-right:bus-stop-right:2" value="704,442"/>
+  <property name="object:bus-stop-right:bus-stop-right:1" value="1410,1260"/>
+  <property name="object:tent-left:tent-left:1" value="1410,1372"/>
+  <property name="object:road-sign10:road-sign10:1" value="2420,24"/>
+  <property name="object:dead-white-car:dead-white-car:1" value="2380,1064"/>
+  <property name="object:dead-green-car:dead-green-car:1" value="552,1396"/>
+  <property name="object:road-sign05:road-sign05:1" value="1394,20"/>
+  <property name="object:dead-cyan-car:dead-cyan-car:1" value="1172,416"/>
+  <property name="object:road-sign03:road-sign03:1" value="1210,1848"/>
+  <property name="object:oil-barrels:oil-barrels:4" value="834,134"/>
+  <property name="object:dead-yellow-tank:dead-yellow-tank:1" value="254,978"/>
+  <property name="object:oil-barrels:oil-barrels:3" value="990,1564"/>
+  <property name="object:oil-barrels:oil-barrels:2" value="2376,1834"/>
+  <property name="object:oil-barrels:oil-barrels:1" value="350,1240"/>
+  <property name="object:gate:gate:1" value="1856,1410"/>
+ </properties>
+ <tileset name="terrains" firstgid="1" tilewidth="64" tileheight="64">
+  <image source="../tiles/terrains_tileset.png"/>
+ </tileset>
+ <tileset name="borders" firstgid="101" tilewidth="64" tileheight="64">
+  <image source="../tiles/borders_tileset.png"/>
+ </tileset>
+ <tileset name="buildings" firstgid="211" tilewidth="64" tileheight="64">
+  <image source="../tiles/houses_tileset.png"/>
+ </tileset>
+ <tileset name="city objects" firstgid="391" tilewidth="64" tileheight="64">
+  <image source="../tiles/city_objects_tileset.png"/>
+ </tileset>
+ <tileset name="city tiles" firstgid="461" tilewidth="64" tileheight="64">
+  <image source="../tiles/city_tileset.png"/>
+ </tileset>
+ <layer name="Layer 1" width="40" height="30">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO2WwW6DMBBE91wRiSo/AFJyCRL5g/D/f1WQPNIw2TV2cNVLD6ONsVm/jPHanZldMhpWXZO2350jHYex46obaXv2lTRI3+jMteXtV30nYa5LMO8jqZMxmhtjJ2FTPmacKvgiXzCneqe52T+OnnRMaz720PMvF/VZC74uGKd88ETX9y7tT76/Fnzw5Ek899Se6Vnp94eY25ef+Md8T/JvrvSvNZ/nH3ju9r6+tf559e+sf55q/VPGFv7NKT6Im70srX+ehx6fV8Nz+xd8zMTele7fEj7MCz60p8A/Zng4rDXfX297xuh8Q67R/Np6dfon258VXi6PbyiQ8mluHVd6fug5onya81/18tZTVTq2Nm/JXMuqVxJ+857Wd7T2cb1QPvRF9Yjl8Y0B30KMER/E9UL50OfVdL478j4r5YOPHp8yRvf7iCu639byLc47vZM/x3dxoqolH9aeOSM+9lC95LOhJR9/n5DmZr7R8bq39/Pqr/i8M13P1KhWnOFDH0v59O7BbdSe3+B7SX+OT9cREbXnZnEtO8O3iI78U8G/uZJvsXL/1Mecf3qHg381fEfzDrb/H0d8uDv1tr/LazziyynHF/nsrS/7pTHi2/QDAi4eIMASAAA=
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="Layer 7" width="40" height="30">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO1WTQvCMAxt/aN60787vy5Op3jQk6LgVPBgCis8wz4SOrYhfVCaNuleeSTNjGnGyhqztrK4nMXeyR6PjEmLvTPNp8Le0Dwh383+fkPChcgofi84kxX3w1h3hx1bp7DesrWUCxGinxZd66dF1/olZM8V6671c/Xh8z+BfX8n9Gu4ECH68Xr1KKtnDReiLf38HdMaf5/6lWEI+k3pDV6WnF/Q3mzUv34OXiOsV+7TcCFC9PP9wfcQzD/n4/0l9o92+8eV7Iutnw80jsK4XBgr5XrTeDXMDxpPYVwujJVySTDk/PuY+vzD94LnH+/9ErRdv/hecP14LwvlqsI///9pEfWL+nFE/fRciKifngsR9avm+gIkEA7LwBIAAA==
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="Layer 0" width="40" height="30" opacity="0.35">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3UUQ6AIAgGYLtDz96mK3u+1urBOZEfBLUWG1stGF+axRBCbOTsuAwHmBJv3ofUUHVaH9pDzUXrR/ikaeXjvLX14u57fOW88ntE9pUKiY/qfZNv3+5Eamf4uDkzfMhc5J+SntT6qHOVP5Ocpd/n49P0WvnKTJXs8bUcGp8kW77ymgoPC+pDwmJNJAbp3n/Nh9glPvRbGeEbsT9I/eo+rk7rWtnneV48Z1j6VjNqfaPeiwrrHktbax4anq5V4wR0zfISwBIAAA==
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="Layer 2" width="40" height="30">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAN1Yy27CMBDc363KrUKl0EIlXgWJFiQ4UA4cgCu9cuYMfFNnJSxZztqxIbGBkUZO7E088j7sZE5Ev+D83JrYWa5dduq+5vksGbY+9qGQ9FUcNqZ9ResrWtstYZFaQA4mAbbssw+w6bBpgZ+UjYVLEbJ+HPNvYJ3sMdUA3ymbHzGg65PAmlPr64NfZF+/ATikdPqk+NPriIq/IvXZ1sLsz/Mvowz/+tZPnrMNdsBnYfwJ7II9SuNfxgj8BqvC2Av4A44pjT6uaa9nSvUtb1zBN57y+ovCI+2/0rmkrPdf40ffc2AopPfqfVNwJtxzuy5Qhw37K55d0mPFaiocwCN4Si3EwF/k+UK/PzZlCbEgVB/nh/LtLfr3HrGibL2MUSd9IeVM7DxyzSvlTOw8cs1b5vpJdVbfb812S9n926b5knOO/j/KrC2q/Qeqvi3BwBIAAA==
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="Layer 3" width="40" height="30">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO2XTQ6DIBCFuXBdNr1KPYW6c90FHktNOskLGWcqhQwiXzIJAsLjxwc6J+O3mL+xCPVGqLfHxLSDeYNQPip9xYDjOBqLNlYvlNVCuC6lcUZfl01Fej7WAhS4eS9JM6evpL0c+k9OHwm92GXu7668rAUoPCH9iCjf4c5y4uj7yu0LuL8lHWfzUxG2b6kP54rWEduXfIHzrNQ+MjBp7NeS9xY9PJd0nnA0ff9xBX2SH1tzh/+jRqNm6L7wq8dw9wutXoyH0fvkLeQ1K5Ya2pzAEgAA
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="Layer 4" width="40" height="30">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO2Xz04UQRDGqyH8OS7cjOFAIJJAAPUksDGyCIkICjFqOHAg8cwVOAIPAe/gQ7ESyKJL1oOCcIDwTWYqW1t2z0xPZhYOfMkvm6W7ur9hq7qmiZr6BRoR5+AftapkiPrAMzAiGDRUiCbVun/BVQRhzKjxCRPGPAfjoCv6HCvI35Ra9xbUQYcJvV6r+a9MGDNdkB+pGjiLGQ+8dib44DV+5uaqqQtwCU4EpwkxNccaOk/zEK/dEPwW47b/SxBTpdZnOi7Y35XgWo3Z9pU1bnuuvP3VqVkTnG9x/mSN6+cqwl/cmM0f17gkqY7y9Fel+LwKxn+QX11l9UeW55b5ZcurduXfHwpzSUvmly2v2pV/NxTmkpbML1tetSv/HvXwVcbv/gYc0f99h+u+G+M9oNeSI2XPvOH90moFc1dNeFa46p7fKfvVujMmjPdRMP8TeK1weWZ/fFbY6t7lbzajv3XwTrGY4I/PClnz3E/z9hfsNy94C+Yc6yzEeGfF+Vvw9Mf7fQAfBcuWdYL1K8L7E3wOOHjq8Ffx8Cf3W1N8tazzHn9bEt6H1J1Ko+9YHJ9Wer8kfca8L5H34Dccje5Sw+AFeBl9Z/Qdi+PTSu6XVnwelTL2P9/zz1dcT3Fy3bGynH8+Kpl0/lzvwlnOF9ZGirj79Cfl8sr+ZL+RfaZKrXdA/Y7L/g7AoafPLczfBt/AjiOWz1dXn9H92ObP93xm7SJuD2yC/Rh/FdVrZJ/R/Vi+g383zfg7xaZMD8ASAAA=
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="Layer 5" width="40" height="30">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3OQQ0AAAgEIPv/bGM8W3hzgwRUcanTAXhq0gEAAABiFlm2P/7AEgAA
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="Layer 6" width="40" height="30">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO2UyQrCQBBEO/9/NgrugisejIrgwf2gSX7KEiMkYYIoZroi86AYpg8zDxpKxC5tT6TjWf70A8Zwm5TodynvaYfjb9kiS22JNyy0Bb6kib5rGTqvaG6bIRxGBo+iucNRFQJ5dls6N1WjLOydpu03z/VPHfcGck7m2rs8wOOInBKfPs4BUWeGcImQmMiJlau2wI+YVWDXUxLHFTzWJC4mdnDbE/s92MCvhviEnq/ddnH2CP3YuQN6AT5dwBIAAA==
+  </data>
+  <tileproperties/>
+ </layer>
+</map>
