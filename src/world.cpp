@@ -778,6 +778,9 @@ void IWorld::serializeObjectInfo(mrt::Serializator &s, const int id) const {
 Object * IWorld::deserializeObjectInfo(const mrt::Serializator &s, const int id) {
 	Object * o = getObjectByID(id);
 	if (o == NULL) {
+		v3<float> p;
+		p.deserialize(s);
+		p.deserialize(s);
 		return NULL;
 	}
 	v3<float> pos, vel;
