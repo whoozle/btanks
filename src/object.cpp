@@ -590,13 +590,13 @@ void Object::remove(const std::string &name) {
 	Group::iterator i = _group.find(name); 
 	if (i == _group.end())
 		return;
-	Object * o = World->getObjectByID(i->second);
-	if (o == NULL)
-		throw_ex(("%s: world doesnt know anything about '%s', id: %d [group]", classname.c_str(), name.c_str(), i->second ));
 	
-	o->emit("death", this);
+	Object * o = World->getObjectByID(i->second);
+	if (o != NULL) {
+		o->emit("death", this);
+		o->need_sync = true;
+	}
 	_group.erase(i);
-	o->need_sync = true;
 	need_sync = true;
 }
 
@@ -606,8 +606,11 @@ void Object::groupEmit(const std::string &name, const std::string &event) {
 	if (i == _group.end())
 		throw_ex(("there's no object '%s' in group", name.c_str()));
 	Object * o = World->getObjectByID(i->second);
-	if (o == NULL)
-		throw_ex(("%s: world doesnt know anything about '%s', id: %d [group]", classname.c_str(), name.c_str(), i->second));
+	if (o == NULL) {
+		//throw_ex(("%s: world doesnt know anything about '%s', id: %d [group]", classname.c_str(), name.c_str(), i->second));
+		LOG_ERROR(("%s: world doesnt know anything about '%s', id: %d [group] [attempt to recover]", classname.c_str(), name.c_str(), i->second));
+		return;
+	}
 	o->emit(event, this);
 }
 
