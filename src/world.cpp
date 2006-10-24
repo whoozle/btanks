@@ -455,12 +455,21 @@ skip_collision:
 		
 	dpos *= (1 - map_im) * (1 - obj_im);
 
-	if (o._position.x + dpos.x < -o.size.x || o._position.x + dpos.x >= map_size.x)
-		dpos.x = 0;
+	if (o.classname == "player") {
+		if (o._position.x + dpos.x < 0 || o._position.x + dpos.x + o.size.x >= map_size.x)
+			dpos.x = 0;
 
-	if (o._position.y + dpos.y < -o.size.y || o._position.y + dpos.y >= map_size.y)
-		dpos.y = 0;
+		if (o._position.y + dpos.y < 0 || o._position.y + dpos.y + o.size.y >= map_size.y)
+			dpos.y = 0;
 		
+	} else {
+		if (o._position.x + dpos.x < -o.size.x || o._position.x + dpos.x >= map_size.x)
+			dpos.x = 0;
+
+		if (o._position.y + dpos.y < -o.size.y || o._position.y + dpos.y >= map_size.y)
+			dpos.y = 0;
+	
+	}
 	o._position += dpos;
 	
 	
@@ -510,14 +519,12 @@ void IWorld::tick(ObjectSet &objects, const float dt) {
 	for(ObjectSet::iterator i = objects.begin(); i != objects.end(); ) {
 		Object *o = *i;
 		assert(o != NULL);
-		if (o->isDead()) {
-			++i;
-			continue;
-		}
 		TRY {
 			tick(*o, dt);
 		} CATCH(mrt::formatString("tick for object[%p] %d:%s", (void *)o, o->getID(), o->classname.c_str()).c_str(), throw;);
-		if (o->isDead() && !_safe_mode) { //fixme
+		if (o->isDead()) { //fixme
+			if (_safe_mode == false) {
+				//LOG_DEBUG(("object %d:%s is dead. cleaning up. (global map: %s)", o->getID(), o->classname.c_str(), &objects == &_objects?"true":"false" ));
 				ObjectMap::iterator m = _id2obj.find(o->_id);
 				assert(m != _id2obj.end());
 				assert(o == m->second);
@@ -531,6 +538,7 @@ void IWorld::tick(ObjectSet &objects, const float dt) {
 
 				delete o;
 				continue;
+			}
 		} 
 		++i;
 	}

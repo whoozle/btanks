@@ -229,8 +229,13 @@ void IPlayerManager::updatePlayers() {
 	int n = _players.size();
 	for(int i = 0; i < n; ++i) {
 		PlayerSlot &slot = _players[i];
-		if (slot.id <= 0 || slot.getObject() != NULL) 
+		if (slot.id <= 0)
 			continue;
+		
+		Object *o = slot.getObject();
+		if (o != NULL /* && !o->isDead() */) 
+			continue;
+
 		LOG_DEBUG(("player in slot %d is dead. respawning.", i));
 		spawnPlayer(slot, slot.classname, slot.animation);
 		if (slot.remote) {
