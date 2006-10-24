@@ -135,7 +135,7 @@ TRY {
 			}
 			PlayerState state; 
 			state.deserialize(s);
-			Object *o = World->deserializeObjectInfo(s, _players[slot].id);
+			Object *o = World->deserializeObjectInfo(s, id);
 			o->updatePlayerState(state);
 
 			if (slot < _players.size()) {
