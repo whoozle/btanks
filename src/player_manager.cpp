@@ -116,6 +116,10 @@ TRY {
 
 		//World->tick(*slot.obj, -slot.trip_time / 1000.0);
 		Object * obj = World->deserializeObjectInfo(s, slot.id);
+		if (obj == NULL) {
+			LOG_DEBUG(("player state for non-existent object %d recv'ed", slot.id));
+			break;
+		}
 		assert(slot.id == obj->getID());
 		
 		obj->updatePlayerState(state);
@@ -136,6 +140,10 @@ TRY {
 			PlayerState state; 
 			state.deserialize(s);
 			Object *o = World->deserializeObjectInfo(s, id);
+			if (o == NULL) {
+				LOG_DEBUG(("still dont know anything about object %d, skipping for now", id));
+				continue;
+			}
 			o->updatePlayerState(state);
 
 			if (slot < _players.size()) {

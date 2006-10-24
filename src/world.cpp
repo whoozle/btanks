@@ -777,8 +777,9 @@ void IWorld::serializeObjectInfo(mrt::Serializator &s, const int id) const {
 
 Object * IWorld::deserializeObjectInfo(const mrt::Serializator &s, const int id) {
 	Object * o = getObjectByID(id);
-	if (o == NULL) 
-		throw_ex(("deserializeObjectInfo: no object %d", id));
+	if (o == NULL) {
+		return NULL;
+	}
 	v3<float> pos, vel;
 	o->_position.deserialize(s);
 	o->_velocity.deserialize(s);
