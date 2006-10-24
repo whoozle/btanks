@@ -25,6 +25,7 @@
 #include "mrt/tcp_socket.h"
 #include "mrt/gzip.h"
 #include "connection.h"
+#include "config.h"
 
 #ifdef WIN32
 #	include "Winsock2.h"
@@ -52,8 +53,10 @@ void Monitor::Task::clear() { delete data; pos = len = 0; }
 Monitor::Monitor() : _running(false), 
 	_send_q(), _recv_q(), _result_q(), 
 	_disconnections(), _connections(), 
-	_connections_mutex(), _result_mutex(), _send_q_mutex(), 
-	_comp_level(0) {}
+	_connections_mutex(), _result_mutex(), _send_q_mutex() {
+	GET_CONFIG_VALUE("multiplayer.compression-level", int, cl, 0);
+	_comp_level = cl;
+}
 
 void Monitor::add(const int id, Connection *c) {
 	sdlx::AutoMutex m(_connections_mutex);
