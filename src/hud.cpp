@@ -144,8 +144,8 @@ Hud::Hud(const int w, const int h) : _update_radar(true) {
 	int sw = 0;
 	int splash_sizes[] = { 1280, 1152, 1024, 800 };
 	for(unsigned i = 0; i < sizeof(splash_sizes) / sizeof(splash_sizes[0]); ++i) {
-		sw = w;
-		if (w >= splash_sizes[i]) {
+		sw = splash_sizes[i];
+		if (w >= sw) {
 			break;
 		}
 	}
