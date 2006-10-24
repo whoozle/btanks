@@ -740,6 +740,27 @@ TRY {
 } CATCH("applyUpdate", throw;)
 }
 
+void IWorld::serializeObjectInfo(mrt::Serializator &s, const int id) const {
+	const Object * o = getObjectByID(id);
+	if (o == NULL) 
+		throw_ex(("serializeObjectInfo: no object %d", id));
+	v3<float> pos, vel;
+	o->getInfo(pos, vel);
+	pos.serialize(s);
+	vel.serialize(s);
+}
+
+Object * IWorld::deserializeObjectInfo(const mrt::Serializator &s, const int id) {
+	Object * o = getObjectByID(id);
+	if (o == NULL) 
+		throw_ex(("deserializeObjectInfo: no object %d", id));
+	v3<float> pos, vel;
+	o->_position.deserialize(s);
+	o->_velocity.deserialize(s);
+	return o;
+}
+
+
 
 //BIG PATHFINDING PART
 

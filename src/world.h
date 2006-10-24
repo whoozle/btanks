@@ -64,6 +64,9 @@ public:
 	void serializeObject(mrt::Serializator &, const Object *) const;
 	Object* deserializeObject(const mrt::Serializator &);
 
+	void serializeObjectInfo(mrt::Serializator &, const int id) const;
+	Object * deserializeObjectInfo(const mrt::Serializator &, const int id);
+
 	void tick(Object &o, const float dt);	
 	void tick(ObjectSet &objects, const float dt);
 

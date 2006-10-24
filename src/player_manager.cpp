@@ -115,8 +115,9 @@ TRY {
 		state.deserialize(s);
 
 		//World->tick(*slot.obj, -slot.trip_time / 1000.0);
-		Object * obj = World->deserializeObject(s);
-		slot.id = obj->getID();
+		Object * obj = World->deserializeObjectInfo(s, slot.id);
+		assert(slot.id == obj->getID());
+		
 		obj->updatePlayerState(state);
 		
 		World->tick(*obj, slot.trip_time / 1000.0);
@@ -277,7 +278,7 @@ void IPlayerManager::updatePlayers() {
 		mrt::Serializator s;
 		
 		_players[0].state.serialize(s);
-		World->serializeObject(s, _players[0].getObject());
+		World->serializeObjectInfo(s, _players[0].id);
 		
 		Message m(Message::PlayerState);
 		m.data = s.getData();
