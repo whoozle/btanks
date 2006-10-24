@@ -592,7 +592,7 @@ void Object::remove(const std::string &name) {
 		return;
 	Object * o = World->getObjectByID(i->second);
 	if (o == NULL)
-		throw_ex(("%s: world doesnt know anything about '%s' [group]", classname.c_str(), name.c_str()));
+		throw_ex(("%s: world doesnt know anything about '%s', id: %d [group]", classname.c_str(), name.c_str(), i->second ));
 	
 	o->emit("death", this);
 	_group.erase(i);
@@ -607,7 +607,7 @@ void Object::groupEmit(const std::string &name, const std::string &event) {
 		throw_ex(("there's no object '%s' in group", name.c_str()));
 	Object * o = World->getObjectByID(i->second);
 	if (o == NULL)
-		throw_ex(("%s: world doesnt know anything about '%s' [group]", classname.c_str(), name.c_str()));
+		throw_ex(("%s: world doesnt know anything about '%s', id: %d [group]", classname.c_str(), name.c_str(), i->second));
 	o->emit(event, this);
 }
 
