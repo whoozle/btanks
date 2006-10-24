@@ -69,6 +69,8 @@ public:
 
 	void tick(Object &o, const float dt);	
 	void tick(ObjectSet &objects, const float dt);
+	
+	void setSafeMode(const bool safe_mode = true);
 
 private:
 	typedef std::map<const int, Object*> ObjectMap;
@@ -87,6 +89,7 @@ private:
 	ObjectSet _objects;
 	ObjectMap _id2obj;
 	int _last_id;
+	bool _safe_mode;
 };
 
 SINGLETON(World, IWorld);

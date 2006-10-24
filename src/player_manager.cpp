@@ -352,7 +352,7 @@ void IPlayerManager::startServer() {
 void IPlayerManager::startClient(const std::string &address) {
 	delete _client;
 	_client = NULL;
-	
+	World->setSafeMode(true);
 	unsigned port = 9876;
 	TRY {
 		_client = new Client;
