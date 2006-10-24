@@ -135,7 +135,7 @@ TRY {
 			}
 			PlayerState state; 
 			state.deserialize(s);
-			Object *o = World->deserializeObject(s);
+			Object *o = World->deserializeObjectInfo(s, _players[slot].id);
 			o->updatePlayerState(state);
 
 			if (slot < _players.size()) {
@@ -301,7 +301,7 @@ void IPlayerManager::updatePlayers() {
 					//LOG_DEBUG(("object in slot %d: %s (%d) need sync", j, slot.obj->registered_name.c_str(), slot.obj->getID()));
 					s.add(slot.id);
 					slot.state.serialize(s);
-					World->serializeObject(s, slot.getObject());
+					World->serializeObjectInfo(s, slot.id);
 					send = true;
 				}
 			}
