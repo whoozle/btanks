@@ -89,10 +89,15 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect&src, const sdlx::Re
 	
 	for(ObjectSet::iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		Object *o = *i;
+		if (o->isDead())
+			continue;
 		layers.insert(LayerMap::value_type(o->_position.z, o));
 	}
 	int z1 = -1001;
 	for(LayerMap::iterator i = layers.begin(); i != layers.end(); ++i) {
+		if (i->second->isDead())
+			continue;
+		
 		int z2 = (int)i->first;
 		//LOG_DEBUG(("world::render(%d, %d)", z1, z2));
 		if (z1 != z2) {
@@ -112,7 +117,9 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect&src, const sdlx::Re
 }
 
 const bool IWorld::collides(Object *obj, const v3<int> &position, Object *o) const {
-		if (o == obj || obj->impassability == 0 || o->impassability == 0 || (obj->piercing && o->pierceable) || (obj->pierceable && o->piercing)) {
+		if (o == obj || obj->impassability == 0 || o->impassability == 0 || 
+			(obj->piercing && o->pierceable) || (obj->pierceable && o->piercing) ||
+			o->isDead() || obj->isDead() ) {
 			return false;
 		}
 			
@@ -299,8 +306,6 @@ void IWorld::tick(Object &o, const float dt) {
 	const IMap &map = *IMap::get_instance();
 	v3<int> map_size = map.getSize();
 	
-	_collision_map.clear();
-
 	if (o.ttl > 0) {
 		o.ttl -= dt;
 		if (o.ttl <= 0) {
@@ -471,6 +476,7 @@ skip_collision:
 
 void IWorld::tick(const float dt) {
 	//LOG_DEBUG(("tick dt = %f", dt));
+	_collision_map.clear();
 	tick(_objects, dt);
 }
 
