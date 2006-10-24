@@ -53,6 +53,7 @@ IWorld::~IWorld() {
 
 void IWorld::setSafeMode(const bool safe_mode) {
 	_safe_mode = safe_mode;
+	LOG_DEBUG(("set safe mode to %s", _safe_mode?"true":"false"));
 }
 
 
