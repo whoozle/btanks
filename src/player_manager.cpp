@@ -38,9 +38,10 @@ const int IPlayerManager::onConnect(Message &message) {
 	mrt::Serializator s;
 	World->serialize(s);
 	s.add(_players[client_id].id);
+	_players[client_id].position.serialize(s);
 
 	message.data = s.getData();
-	LOG_DEBUG(("world: %s", message.data.dump().c_str()));
+	//LOG_DEBUG(("world: %s", message.data.dump().c_str()));
 	return client_id;
 }
 
@@ -85,6 +86,7 @@ TRY {
 		slot.animation = player->animation;
 		slot.viewport.reset();
 		slot.visible = true;
+		slot.position.deserialize(s);
 		
 		assert(slot.control_method == NULL);
 		GET_CONFIG_VALUE("player.control-method", std::string, control_method, "keys");	
