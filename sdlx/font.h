@@ -13,7 +13,7 @@ public:
 	~Font();
 	
 	void load(const std::string &file, const Type type);
-	void render(sdlx::Surface &window, const int x, const int y, const std::string &str) const;
+	const int render(sdlx::Surface &window, const int x, const int y, const std::string &str) const;
 	void clear();
 
 private:

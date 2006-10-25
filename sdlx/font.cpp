@@ -23,7 +23,7 @@ void Font::load(const std::string &file, const Type type) {
 	_surface->loadImage(file);
 }
 
-void Font::render(sdlx::Surface &window, const int x, const int y, const std::string &str) const {
+const int Font::render(sdlx::Surface &window, const int x, const int y, const std::string &str) const {
 	int fw, fh;
 	fw = fh = _surface->getHeight();
 
@@ -44,5 +44,6 @@ void Font::render(sdlx::Surface &window, const int x, const int y, const std::st
 		
 		window.copyFrom(*_surface, src, x + i * fw, y);
 	}
+	return str.size() * fw;
 }
 
