@@ -44,7 +44,7 @@ void Tank::onSpawn() {
 	Object *_missiles = spawnGrouped("missiles-on-tank", "guided-missiles-on-tank", v3<float>::empty, Centered);
 	_missiles->impassability = 0;
 
-	add("missiles", _missiles);
+	add("mod", _missiles);
 	add("smoke", _smoke);
 	
 	GET_CONFIG_VALUE("objects.tank.fire-rate", float, fr, 0.5);
@@ -73,7 +73,7 @@ const bool Tank::take(const BaseObject *obj, const std::string &type) {
 		addEffect(type, d);
 		return true;
 	}
-	if (get("missiles")->take(obj, type))
+	if (get("mod")->take(obj, type))
 		return true;
 	return BaseObject::take(obj, type);
 }
@@ -97,13 +97,13 @@ void Tank::tick(const float dt) {
 	if (_velocity.is0()) {
 		cancelRepeatable();
 		play("hold", true);
-		groupEmit("missiles", "hold");
+		groupEmit("mod", "hold");
 	} else {
 		if (getState() == "hold") {
 			cancelAll();
 			play("start", false);
 			play("move", true);
-			groupEmit("missiles", "move");
+			groupEmit("mod", "move");
 		}
 	}
 
@@ -127,7 +127,7 @@ void Tank::tick(const float dt) {
 	}
 	if (_state.alt_fire && fire_possible) {
 		_fire.reset();
-		groupEmit("missiles", "launch");
+		groupEmit("mod", "launch");
 	}
 	
 	//LOG_DEBUG(("_velocity: %g %g", _velocity.x, _velocity.y));
