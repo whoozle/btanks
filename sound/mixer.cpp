@@ -50,8 +50,13 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 	delete _ogg;
 	_ogg = NULL;
 	
-	alutInit(NULL, NULL);
-	AL_CHECK(("alutInit"));
+	TRY {
+		alutInit(NULL, NULL);
+		AL_CHECK(("alutInit"));
+	} CATCH("alutInit", {
+		_nosound = _nomusic = true;
+		return;
+	})
 	
 	TRY {
 		GET_CONFIG_VALUE("engine.sound.doppler-factor", float, df, 1.0);
