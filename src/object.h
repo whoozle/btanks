@@ -72,6 +72,7 @@ public:
 	inline const bool isEffectActive(const std::string &name) const {
 		return _effects.find(name) != _effects.end();
 	}
+	const float getEffectTimer(const std::string &name) const;
 	void removeEffect(const std::string &name);
 
 	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
@@ -84,6 +85,13 @@ public:
 	const bool rotating() const { return _direction_idx != _dst_direction; }
 
 	virtual void calculate(const float dt);
+	
+	virtual const std::string getType() const;
+	virtual const int getCount() const;
+
+	const Object *get(const std::string &name) const;
+	const bool has(const std::string &name) const;
+
 protected:
 	const bool getRenderRect(sdlx::Rect &src) const;
 
@@ -103,8 +111,6 @@ protected:
 	//grouped object handling
 	void add(const std::string &name, Object *obj);
 	Object *get(const std::string &name);
-	const Object *get(const std::string &name) const;
-	const bool has(const std::string &name) const;
 	void remove(const std::string &name);
 	
 	void groupEmit(const std::string &name, const std::string &event);

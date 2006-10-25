@@ -620,6 +620,13 @@ void Object::addEffect(const std::string &name, const float ttl) {
 	need_sync = true;
 }
 
+const float Object::getEffectTimer(const std::string &name) const {
+	EffectMap::const_iterator i = _effects.find(name);
+	if (i == _effects.end())
+		throw_ex(("getEffectTimer: object does not have effect '%s'", name.c_str()));
+	return i->second;
+}
+
 void Object::removeEffect(const std::string &name) {
 	_effects.erase(name);
 	need_sync = true;
@@ -657,4 +664,13 @@ const bool Object::getNearest(const std::vector<std::string> &targets, v3<float>
 	}
 	
 	return found != 0;	
+}
+
+const std::string Object::getType() const {
+	static const std::string empty;
+	return empty;
+}
+
+const int Object::getCount() const {
+	return -1;
 }
