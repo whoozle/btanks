@@ -115,8 +115,63 @@ void Hud::render(sdlx::Surface &window) const {
 			continue;
 		const Object *obj = slot.getObject();
 	
-		std::string hp = mrt::formatString("HP%2d", (obj)?obj->hp:0);
-		_font.render(window, slot.viewport.x, slot.viewport.y, hp);	
+		std::string hp = mrt::formatString("HP%-2d ", (obj)?obj->hp:0);
+
+		if (obj == NULL)
+			continue;
+
+		GET_CONFIG_VALUE("hud.icon.width", int, icon_w, 16);
+		GET_CONFIG_VALUE("hud.icon.height", int, icon_h, 24);
+
+		int xp = slot.viewport.x;
+		int yp = slot.viewport.y;
+		xp += _font.render(window, xp, yp, hp);	
+		
+		do {
+			if (!obj->has("mod"))
+				break;
+			
+			const Object *mod = obj->get("mod");
+			int count = mod->getCount();
+			if (count == -1)
+				break;
+			
+			std::string name = "mod:";
+			name += mod->getType();
+			//LOG_DEBUG(("icon name = '%s'", name.c_str()));
+			IconMap::const_iterator i = _icons_map.find(name);
+			if (i == _icons_map.end()) 
+				break;
+				
+			sdlx::Rect src(icon_w * i->second, 0, icon_w, icon_h);
+			window.copyFrom(_icons, src, xp, yp);
+			xp += icon_w;
+			if (count > 0)
+				xp += _font.render(window, xp, yp, mrt::formatString("%-2d ", count));
+			else 
+				xp += _font.render(window, xp, yp, " ");
+
+		} while(0);
+		
+		IconMap::const_iterator a = _icons_map.lower_bound("effect:");
+		for(IconMap::const_iterator ic = a; ic != _icons_map.end(); ++ic) {
+			if (ic->first.substr(0, 7) != "effect:") 
+				break;
+			const std::string name = ic->first.substr(7);
+			
+			//LOG_DEBUG(("%s %s", ic->first.c_str(), name.c_str()));
+			
+			if (obj->isEffectActive(name)) {
+				sdlx::Rect src(icon_w * ic->second, 0, icon_w, icon_h);
+				window.copyFrom(_icons, src, xp, yp);
+				xp += icon_w;
+			
+				int rm = (int)(10 * obj->getEffectTimer(name));
+				if (rm >= 0) {
+					xp += _font.render(window, xp, yp, mrt::formatString("%-2d ", rm));
+				}
+			}
+		}
 	}
 }
 
@@ -156,6 +211,8 @@ Hud::Hud(const int w, const int h) : _update_radar(true) {
 	_background.loadImage(data_dir + "/tiles/hud_line.png");
 	_loading_border.loadImage(data_dir + "/tiles/loading_border.png");
 	_loading_item.loadImage(data_dir + "/tiles/loading_item.png");
+	_icons.loadImage(data_dir + "/tiles/hud_icons.png");
+	
 	_font.load(data_dir + "/font/medium.png", sdlx::Font::AZ09);
 	
 	LOG_DEBUG(("searching splash... %dx%d", w, h));
@@ -172,6 +229,20 @@ Hud::Hud(const int w, const int h) : _update_radar(true) {
 
 	GET_CONFIG_VALUE("hud.radar-update-interval", float, ru, 0.1);
 	_update_radar.set(ru);
+	
+	_icons_map.clear();
+	int i = 0;
+	_icons_map["mod:missiles:guided"] = i++;
+	_icons_map["mod:missiles:smoke"] = i++;
+	_icons_map["mod:missiles:dumb"] = i++;
+	_icons_map["mod:missiles:nuke"] = i++;
+	_icons_map["mod:missiles:boomerang"] = i++;
+	_icons_map["mod:missiles:stun"] = i++;
+	_icons_map["effect:dirt"] = i++;
+	_icons_map["effect:ricochet"] = i++;
+	_icons_map["effect:disperce"] = i++;
+	_icons_map["mod:machinegunner"] = i++;
+	_icons_map["mod:mines:regular"] = i++;
 }
 
 Hud::~Hud() {}

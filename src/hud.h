@@ -22,6 +22,8 @@
 #include "sdlx/surface.h"
 #include "sdlx/font.h"
 #include "alarm.h"
+#include <map>
+#include <string>
 
 class Font;
 
@@ -40,6 +42,9 @@ private:
 	sdlx::Surface _background, _loading_border, _loading_item, _splash, _radar;
 	sdlx::Font _font;
 	Alarm _update_radar;
+	typedef std::map<const std::string, int> IconMap;
+	IconMap _icons_map;
+	sdlx::Surface _icons;
 };
 
 
