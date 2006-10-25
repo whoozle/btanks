@@ -56,6 +56,15 @@ public:
 		impassability = 0;
 		update();
 	}
+	
+	virtual const std::string getType() const {
+		return _object + ":" + _type;
+	}
+
+	virtual const int getCount() const {
+		return n;
+	}
+	
 	virtual void tick(const float dt);
 	virtual Object * clone() const;
 	virtual void emit(const std::string &event, BaseObject * emitter = NULL);

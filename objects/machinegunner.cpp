@@ -30,6 +30,9 @@ public:
 	virtual void calculate(const float dt);
 	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
 	virtual const bool take(const BaseObject *obj, const std::string &type);
+	virtual const std::string getType() const { return "machinegunner"; }
+	virtual const int getCount() const { return 0; }
+
 private: 
 	Alarm _fire;
 };
