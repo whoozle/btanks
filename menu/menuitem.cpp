@@ -23,9 +23,10 @@
 
 MenuItem::MenuItem(sdlx::TTF &font, const std::string &name, const std::string &type, const std::string &text, const std::string &value) : 
 	name(name), type(type), 
-	_font(font), _color(sdlx::Color(255, 255, 255)), 
-	_text(text), _value(value) {
-	render(font);
+	_inverse(false), _text(text), _value(value), _color(sdlx::Color(255, 255, 255)), _bgcolor(sdlx::Color(0,0,128)),
+	_font(font)
+{
+	render();
 }
 
 const std::string MenuItem::getValue() const {
@@ -33,11 +34,11 @@ const std::string MenuItem::getValue() const {
 }
 
 
-void MenuItem::render(sdlx::TTF &font) {
+void MenuItem::render() {
 	_normal.free();
 	_inversed.free();
 
-	font.renderBlended(_normal, _text, _color);
+	_font.renderBlended(_normal, (_text.empty())?" ":_text, _color);
 	_normal.convertAlpha();
 	_normal.convertToHardware();
 	//LOG_DEBUG(("normal  : %dx%d:%d (%d)", _normal.getWidth(), _normal.getHeight(), _normal.getBPP(), _normal.getSDLSurface()->format->BytesPerPixel));
@@ -59,8 +60,11 @@ void MenuItem::render(sdlx::TTF &font) {
 			Uint8 r, g, b, a;
 			_normal.getRGBA(c, r, g, b, a);
 			//LOG_DEBUG(("%02x %02x %02x %02x", a, r, g, b));
-			if (r == 0 && g == 0 && b == 0 || a == 0) {
-				r = 0; g = 0; b = 128; a = 255;
+			if (r == 0 && g == 0 && b == 0) {
+				r = _bgcolor.r; g = _bgcolor.g; b = _bgcolor.b;
+			}
+			if (a == 0) {
+				r = _bgcolor.r; g = _bgcolor.g; b = _bgcolor.b; a = 255;
 			}
 			//LOG_DEBUG(("%02x %02x %02x %02x", a, r, g, b));
 			c = _inversed.mapRGBA(r, g, b, a);
@@ -71,11 +75,23 @@ void MenuItem::render(sdlx::TTF &font) {
 	_inversed.unlock();
 }
 	
-void MenuItem::render(sdlx::Surface &dst, const int x, const int y, const bool inverse) {
-	dst.copyFrom(inverse?_inversed:_normal, x, y);
+void MenuItem::render(sdlx::Surface &dst, const int x, const int y) {
+	dst.copyFrom(_inverse?_inversed:_normal, x, y);
 }
 
 void MenuItem::getSize(int &w, int &h) const {
 	w = _normal.getWidth();
 	h = _normal.getHeight();
+}
+
+const bool MenuItem::onKey(const Uint8 type, const SDL_keysym sym) {
+	return false;
+}
+
+void MenuItem::onFocus() {
+	_inverse = true;
+}
+
+void MenuItem::onLeave() {
+	_inverse = false;
 }

@@ -90,7 +90,6 @@ private:
 	Object *_fps;
 
 	std::string _preload_map;
-	std::string _address;
 	bool _autojoin;
 
 	float _shake;

@@ -43,6 +43,8 @@ public:
 	void render(sdlx::Surface &dst);
 	void reset();
 	const bool back();
+	
+	const std::string getValue(const std::string &menu, const std::string &itemname) const;
 private:
 	void onKey(const Uint8 type, const SDL_keysym sym);
 	

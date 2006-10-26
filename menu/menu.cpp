@@ -17,7 +17,9 @@
  */
 
 #include "menu.h"
+#include "textitem.h"
 #include "menuitem.h"
+#include "proxyitem.h"
 #include "game.h"
 
 #include "sdlx/surface.h"
@@ -65,14 +67,30 @@ void MainMenu::init(const int w, const int h) {
 	_items["multiplayer"].push_back(new MenuItem(_font, "s-start", "command", "SPLIT SCREEN GAME"));
 	_items["multiplayer"].push_back(new MenuItem(_font, "back", "back", "BACK"));
 
-	_items["multiplayer-join"].push_back(new MenuItem(_font, "m-join", "command", "JOIN GAME"));
-	_items["multiplayer-join"].push_back(new MenuItem(_font, "address", "text", "LOCALHOST"));
-	_items["multiplayer-join"].push_back(new MenuItem(_font, "port", "text", "9876"));
+	_items["multiplayer-join"].push_back(new TextItem(_font, "address", "LOCALHOST"));
+	_items["multiplayer-join"].push_back(new ProxyItem(*this, _font, "m-join", "command", "JOIN GAME", "multiplayer-join", "address"));
+	//_items["multiplayer-join"].push_back(new MenuItem(_font, "port", "text", "9876"));
 	_items["multiplayer-join"].push_back(new MenuItem(_font, "back", "back", "BACK"));
+
+	_items[_active_menu][_active_item]->onFocus();
 
 	recalculateSizes();
 
 	Game->key_signal.connect(sigc::mem_fun(this, &MainMenu::onKey));
+}
+
+const std::string MainMenu::getValue(const std::string &menu, const std::string &name) const {
+	MenuMap::const_iterator m = _items.find(menu);
+	if (m == _items.end())
+		throw_ex(("menu '%s' not found", menu.c_str()));
+	const ItemList &items = m->second;
+	for(ItemList::const_iterator i = items.begin(); i != items.end(); ++i) {
+		if ((*i)->name == name) {
+			return (*i)->getValue();
+		}
+	}
+	throw_ex(("no item '%s' in menu '%s'", name.c_str(), menu.c_str()));
+	return "**bug**";
 }
 
 void MainMenu::recalculateSizes() {
@@ -109,27 +127,38 @@ void MainMenu::onKey(const Uint8 type, const SDL_keysym sym) {
 		return;
 	if (type != SDL_KEYDOWN)
 		return;
+	MenuItem * item = _items[_active_menu][_active_item];
+	if (item->onKey(type, sym))
+		return;
+	
 	switch(sym.sym) {
 		case SDLK_UP:
+			_items[_active_menu][_active_item]->onLeave();
+
 			if (_active_item == 0) 
 				_active_item = _items[_active_menu].size() - 1;
 			else --_active_item;
+			_items[_active_menu][_active_item]->onFocus();
 			break;
 
 		case SDLK_DOWN:
+			_items[_active_menu][_active_item]->onLeave();
 			if (_active_item == _items[_active_menu].size() - 1) 
 				_active_item = 0;
 			else ++_active_item;
+			_items[_active_menu][_active_item]->onFocus();
 			break;
 
 		case SDLK_RETURN: {
-				MenuItem * item = _items[_active_menu][_active_item];
+				
 				const std::string &name = item->name;
 				if (item->type == "submenu") {
 					LOG_DEBUG(("entering submenu '%s'", name.c_str()));
 					_menu_path.push_front(MenuID(_active_item, _active_menu));
+					_items[_active_menu][_active_item]->onLeave();
 					_active_menu = name;
 					_active_item = 0;
+					_items[_active_menu][_active_item]->onFocus();
 					recalculateSizes();
 				} else if (item->type == "back") {
 					if (!back()) 
@@ -140,6 +169,8 @@ void MainMenu::onKey(const Uint8 type, const SDL_keysym sym) {
 				} else if (item->type == "iterable") {
 					item->onClick();
 					recalculateSizes();
+				} else if (item->type == "text") {
+					item->onClick();
 				} else throw_ex(("unknown menu item type: %s", item->type.c_str()));
 			}
 			break;
@@ -164,7 +195,7 @@ void MainMenu::render(sdlx::Surface &dst) {
 	for(size_t i = 0; i < n ;++i) {
 		int w,h;
 		items[i]->getSize(w, h);
-		items[i]->render(dst, x + (_menu_size.w - w) / 2, y, i == _active_item);
+		items[i]->render(dst, x + (_menu_size.w - w) / 2, y);
 		y += h + 10;
 	}
 }
@@ -174,18 +205,26 @@ void MainMenu::setActive(const bool a) {
 }
 
 void MainMenu::reset() {
+	_items[_active_menu][_active_item]->onLeave();
 	_menu_path.clear();
 	_active_menu.clear();
 	_active_item = 0;
+	_items[_active_menu][_active_item]->onFocus();
 }
 
 const bool MainMenu::back() {
 	if (_menu_path.size() == 0) 
 		return false;
+	
+	_items[_active_menu][_active_item]->onLeave();
+	
 	_active_item = _menu_path.front().first;
 	_active_menu = _menu_path.front().second;
 	
 	_menu_path.pop_front();
+	
+	_items[_active_menu][_active_item]->onFocus();
+	
 	recalculateSizes();
 	return true;
 }

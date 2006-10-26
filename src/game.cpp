@@ -55,7 +55,7 @@
 IMPLEMENT_SINGLETON(Game, IGame)
 
 IGame::IGame() : 
-_check_items(0.5, true),  _address("localhost"), _autojoin(false), _shake(0) {}
+_check_items(0.5, true),  _autojoin(false), _shake(0) {}
 IGame::~IGame() {}
 
 void IGame::init(const int argc, char *argv[]) {
@@ -72,9 +72,11 @@ void IGame::init(const int argc, char *argv[]) {
 	GET_CONFIG_VALUE("engine.sound.disable-sound", bool, no_sound, false);
 	GET_CONFIG_VALUE("engine.sound.disable-music", bool, no_music, false);
 	
+	std::string address;
+	
 	for(int i = 1; i < argc; ++i) {
 		if (strncmp(argv[i], "--map=", 6) == 0) { _preload_map = argv[i] + 6; }
-		else if (strncmp(argv[i], "--connect=", 10) == 0) { _address = argv[i] + 10; _autojoin = true; }
+		else if (strncmp(argv[i], "--connect=", 10) == 0) { address = argv[i] + 10; _autojoin = true; }
 		else if (strcmp(argv[i], "--no-sound") == 0) { no_sound = true; no_music = true; }
 		else if (strcmp(argv[i], "--help") == 0) { 
 			printf(
@@ -156,7 +158,7 @@ void IGame::init(const int argc, char *argv[]) {
 		_main_menu.setActive(false);
 	}
 	if (_autojoin) {
-		onMenu("m-join", "");
+		onMenu("m-join", address);
 		_main_menu.setActive(false);
 	}
 	
@@ -250,7 +252,7 @@ void IGame::onMenu(const std::string &name, const std::string &value) {
 		PlayerManager->startServer();
 	} else if (name == "m-join") {
 		clear();
-		PlayerManager->startClient(_address);
+		PlayerManager->startClient(value);
 		
 		_main_menu.setActive(false);
 	}

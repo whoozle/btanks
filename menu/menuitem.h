@@ -34,20 +34,27 @@ public:
 	const std::string type;
 	
 	MenuItem(sdlx::TTF &font, const std::string &name, const std::string &type, const std::string &text, const std::string &value = std::string());
-	void render(sdlx::Surface &dst, const int x, const int y, const bool inverse);
+	void render(sdlx::Surface &dst, const int x, const int y);
 	void getSize(int &w, int &h) const;
 
 	virtual void onClick() {}
+
+	virtual void onFocus();
+	virtual void onLeave();
+
+	virtual const bool onKey(const Uint8 type, const SDL_keysym sym);
 	virtual const std::string getValue() const;
 	virtual ~MenuItem() {}
 
-private:
-	void render(sdlx::TTF &);
-	sdlx::TTF & _font;
+protected:
+	bool _inverse;
+	void render();
 		
-	sdlx::Color _color;
-	sdlx::Surface _normal, _inversed;
 	std::string _text, _value;
+	sdlx::Color _color, _bgcolor;
+private:
+	sdlx::TTF & _font;
+	sdlx::Surface _normal, _inversed;
 };
 
 /*
