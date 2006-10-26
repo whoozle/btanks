@@ -534,6 +534,10 @@ void IGame::resetLoadingBar(const int total) {
 }
 
 void IGame::notifyLoadingBar(const int progress) {
+	GET_CONFIG_VALUE("hud.disable-loading-screen", bool, disable_bar, false);
+	if (disable_bar)
+		return;
+	
 	float old_progress = 1.0 * _loading_bar_now / _loading_bar_total;
 	_loading_bar_now += progress;
 	
