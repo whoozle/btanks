@@ -112,8 +112,10 @@ void Shilka::tick(const float dt) {
 		static const std::string right_fire = "shilka-bullet-right";
 		std::string animation = "shilka-bullet-";
 		animation += (_left_fire)?"left":"right";
-		
-		spawn("shilka-bullet", animation, v3<float>::empty, _direction);
+		if (isEffectActive("dispersion")) {
+			spawn("dispersion-bullet", "dispersion-bullet", v3<float>::empty, _direction);
+		} else
+			spawn("shilka-bullet", animation, v3<float>::empty, _direction);
 		_left_fire = ! _left_fire;
 	}
 
