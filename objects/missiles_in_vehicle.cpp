@@ -26,6 +26,10 @@ class MissilesInVehicle : public Object {
 public:
 	void update() {
 		const std::string key = "objects." + _type + "-" + _object + "-on-" + _vehicle;
+		if (_object.empty() || _type.empty()) {
+			max_n = n = 0; 
+			return;
+		}
 		int def_cap = 3;
 		int def_v = 1;
 
@@ -185,4 +189,5 @@ Object* MissilesInVehicle::clone() const  {
 }
 
 REGISTER_OBJECT("missiles-on-launcher", MissilesInVehicle, ("guided", "missiles", "launcher"));
+REGISTER_OBJECT("alt-missiles-on-launcher", MissilesInVehicle, (std::string(), std::string(), "launcher"));
 REGISTER_OBJECT("missiles-on-tank", MissilesInVehicle, ("guided", "missiles", "tank"));

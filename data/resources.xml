@@ -413,6 +413,7 @@
 	
 	<object class="missiles-on-tank" z="10" />
 	<object class="missiles-on-launcher" z="10" />
+	<object class="alt-missiles-on-launcher" z="5" />
 	<object class="machinegunner-on-launcher" z="10" />
 
 	<object class="helicopter-with-kamikazes" hp="100" impassability="0" speed="400" mass="1500" z="810" />

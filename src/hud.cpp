@@ -164,7 +164,7 @@ void Hud::render(sdlx::Surface &window) const {
 		xp += _font.render(window, xp, yp, hp);	
 		
 		renderMod(obj, window, xp, yp, "mod", icon_w, icon_h);
-		renderMod(obj, window, xp, yp, "alt_mod", icon_w, icon_h);
+		renderMod(obj, window, xp, yp, "alt-mod", icon_w, icon_h);
 				
 		IconMap::const_iterator a = _icons_map.lower_bound("effect:");
 		bool any_effect = false;

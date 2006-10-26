@@ -45,6 +45,7 @@ void Launcher::onSpawn() {
 	_smoke->impassability = 0;
 	add("smoke", _smoke);
 	add("mod", spawnGrouped("missiles-on-launcher", "guided-missiles-on-launcher", v3<float>::empty, Centered));
+	add("alt-mod", spawnGrouped("alt-missiles-on-launcher", "guided-missiles-on-launcher", v3<float>(2,2,0), Centered));
 	
 	GET_CONFIG_VALUE("objects.launcher.fire-rate", float, fr, 0.3);
 	_fire.set(fr);
@@ -111,6 +112,10 @@ void Launcher::tick(const float dt) {
 		_fire.reset();
 		groupEmit("mod", "launch");
 	}
+	if (_state.alt_fire && fire_possible) {
+		_fire.reset();
+		groupEmit("alt-mod", "launch");
+	}
 }
 
 const bool Launcher::take(const BaseObject *obj, const std::string &type) {
@@ -125,8 +130,13 @@ const bool Launcher::take(const BaseObject *obj, const std::string &type) {
 		remove("mod");
 		add("mod", spawnGrouped("missiles-on-launcher", "guided-missiles-on-launcher", v3<float>::empty, Centered));
 	}
-	if (get("mod")->take(obj, type))
-		return true;
+	if (type != "smoke" && type != "stun") {
+		if (get("mod")->take(obj, type))
+			return true;
+	} else {
+		if (get("alt-mod")->take(obj, type))
+			return true;		
+	}
 	return BaseObject::take(obj, type);
 }
 
