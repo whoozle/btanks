@@ -156,7 +156,7 @@ void IGame::init(const int argc, char *argv[]) {
 		_main_menu.setActive(false);
 	}
 	if (_autojoin) {
-		onMenu("m-join");
+		onMenu("m-join", "");
 		_main_menu.setActive(false);
 	}
 	
@@ -179,14 +179,15 @@ void IGame::onKey(const Uint8 type, const SDL_keysym key) {
 	}
 }
 
-void IGame::onMenu(const std::string &name) {
+void IGame::onMenu(const std::string &name, const std::string &value) {
 	if (name == "quit") 
 		_running = false;
-	else if (name.substr(0, 6) == "start:") {
-		LOG_DEBUG(("start single player requested"));
+	else if (name == "start") {
+		const std::string &vehicle = value;
+		LOG_DEBUG(("start single player as '%s' requested", vehicle.c_str()));
+
 		clear();
 		_main_menu.reset();
-		const std::string vehicle = name.substr(6);
 		GET_CONFIG_VALUE("stubs.default-map", std::string, map, "survival");
 		loadMap(map);
 		

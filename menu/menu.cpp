@@ -1,4 +1,3 @@
-
 /* Battle Tanks Game
  * Copyright (C) 2006 Battle Tanks team
  *
@@ -52,9 +51,9 @@ void MainMenu::init(const int w, const int h) {
 	_items[""].push_back(new MenuItem(_font, "credits", "command", "CREDITS"));
 	_items[""].push_back(new MenuItem(_font, "quit", "command", "QUIT"));
 	
-	_items["start-game"].push_back(new MenuItem(_font, "start:tank", "command", "USE TANK"));
-	_items["start-game"].push_back(new MenuItem(_font, "start:launcher", "command", "USE LAUNCHER"));
-	_items["start-game"].push_back(new MenuItem(_font, "start:shilka", "command", "USE SHILKA"));
+	_items["start-game"].push_back(new MenuItem(_font, "start", "command", "USE TANK", "tank"));
+	_items["start-game"].push_back(new MenuItem(_font, "start", "command", "USE LAUNCHER", "launcher"));
+	_items["start-game"].push_back(new MenuItem(_font, "start", "command", "USE SHILKA", "shilka"));
 	_items["start-game"].push_back(new MenuItem(_font, "back", "back", "BACK"));
 
 	//_items["options"].push_back(new MenuItem(_font, "player1", "iterable", "PLAYER 1 CONTROL: AI"));
@@ -137,7 +136,7 @@ void MainMenu::onKey(const Uint8 type, const SDL_keysym sym) {
 						throw_ex(("cannot do 'back' command from top-level menu"));
 				} else if (item->type == "command") {
 					LOG_DEBUG(("command: %s", name.c_str()));
-					menu_signal.emit(name);
+					menu_signal.emit(name, item->getValue());
 				} else if (item->type == "iterable") {
 					item->onClick();
 					recalculateSizes();

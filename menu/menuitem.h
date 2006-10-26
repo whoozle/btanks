@@ -33,11 +33,12 @@ public:
 	const std::string name;
 	const std::string type;
 	
-	MenuItem(sdlx::TTF &font, const std::string &name, const std::string &type, const std::string &value);
+	MenuItem(sdlx::TTF &font, const std::string &name, const std::string &type, const std::string &text, const std::string &value = std::string());
 	void render(sdlx::Surface &dst, const int x, const int y, const bool inverse);
 	void getSize(int &w, int &h) const;
 
 	virtual void onClick() {}
+	virtual const std::string getValue() const;
 	virtual ~MenuItem() {}
 
 private:
@@ -46,7 +47,7 @@ private:
 		
 	sdlx::Color _color;
 	sdlx::Surface _normal, _inversed;
-	std::string _value;
+	std::string _text, _value;
 };
 
 /*

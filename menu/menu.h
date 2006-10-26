@@ -32,7 +32,7 @@ class MenuItem;
 
 class MainMenu {
 public:
-	sigc::signal1<void, const std::string &> menu_signal;
+	sigc::signal2<void, const std::string &, const std::string &> menu_signal;
 
 	void init(const int w, const int h);
 	void setActive(const bool a);

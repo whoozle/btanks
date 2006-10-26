@@ -21,16 +21,23 @@
 #include "sdlx/ttf.h"
 #include "mrt/logger.h"
 
-MenuItem::MenuItem(sdlx::TTF &font, const std::string &name, const std::string &type, const std::string &value) : 
-	name(name), type(type), _font(font), _color(sdlx::Color(255, 255, 255)), _value(value) {
+MenuItem::MenuItem(sdlx::TTF &font, const std::string &name, const std::string &type, const std::string &text, const std::string &value) : 
+	name(name), type(type), 
+	_font(font), _color(sdlx::Color(255, 255, 255)), 
+	_text(text), _value(value) {
 	render(font);
 }
+
+const std::string MenuItem::getValue() const {
+	return _value;
+}
+
 
 void MenuItem::render(sdlx::TTF &font) {
 	_normal.free();
 	_inversed.free();
 
-	font.renderBlended(_normal, _value, _color);
+	font.renderBlended(_normal, _text, _color);
 	_normal.convertAlpha();
 	_normal.convertToHardware();
 	//LOG_DEBUG(("normal  : %dx%d:%d (%d)", _normal.getWidth(), _normal.getHeight(), _normal.getBPP(), _normal.getSDLSurface()->format->BytesPerPixel));

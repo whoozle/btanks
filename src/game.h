@@ -68,7 +68,7 @@ public:
 
 private:
 	void onKey(const Uint8 type, const SDL_keysym sym);
-	void onMenu(const std::string &name);
+	void onMenu(const std::string &name, const std::string &value);
 
 	bool _running, _paused;
 
