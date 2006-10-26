@@ -250,7 +250,7 @@ void IWorld::getImpassabilityMatrix(Matrix<int> &matrix, const Object *src, cons
 	Map->getImpassabilityMatrix(matrix);
 	for(ObjectSet::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		Object *o = *i;
-		if (o == src || o == dst)
+		if (o == src || o == dst || o->impassability == 0)
 			continue;
 		
 		int im = (int)(o->impassability * 100);
