@@ -47,6 +47,9 @@ void MainMenu::init(const int w, const int h) {
 	_active_item = 0;
 	_active_menu.clear();
 	
+	std::string address;
+	Config->get("multiplayer.recent-host", address, "LOCALHOST");
+	
 	_items[""].push_back(new MenuItem(_font, "start-game", "submenu", "START GAME"));
 	_items[""].push_back(new MenuItem(_font, "multiplayer", "submenu", "MULTIPLAYER"));
 	_items[""].push_back(new MenuItem(_font, "options", "submenu", "OPTIONS"));
@@ -67,7 +70,7 @@ void MainMenu::init(const int w, const int h) {
 	_items["multiplayer"].push_back(new MenuItem(_font, "s-start", "command", "SPLIT SCREEN GAME"));
 	_items["multiplayer"].push_back(new MenuItem(_font, "back", "back", "BACK"));
 
-	_items["multiplayer-join"].push_back(new TextItem(_font, "address", "LOCALHOST"));
+	_items["multiplayer-join"].push_back(new TextItem(_font, "address", address));
 	_items["multiplayer-join"].push_back(new ProxyItem(*this, _font, "m-join", "command", "JOIN GAME", "multiplayer-join", "address"));
 	//_items["multiplayer-join"].push_back(new MenuItem(_font, "port", "text", "9876"));
 	_items["multiplayer-join"].push_back(new MenuItem(_font, "back", "back", "BACK"));

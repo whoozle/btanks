@@ -252,6 +252,7 @@ void IGame::onMenu(const std::string &name, const std::string &value) {
 		PlayerManager->startServer();
 	} else if (name == "m-join") {
 		clear();
+		Config->set("multiplayer.recent-host", value);
 		PlayerManager->startClient(value);
 		
 		_main_menu.setActive(false);
