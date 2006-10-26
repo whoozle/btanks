@@ -101,6 +101,32 @@ void Hud::renderRadar(const float dt, sdlx::Surface &window) {
 	window.copyFrom(_radar, x, y);
 }
 
+void Hud::renderMod(const Object *obj, sdlx::Surface &window, int &xp, int &yp, const std::string &mod_name, const int icon_w, const int icon_h) const {
+	if (!obj->has(mod_name))
+		return;
+			
+	const Object *mod = obj->get(mod_name);
+	int count = mod->getCount();
+	if (count == 0)
+		return;
+			
+	std::string name = "mod:";
+	name += mod->getType();
+	//LOG_DEBUG(("icon name = '%s'", name.c_str()));
+	IconMap::const_iterator i = _icons_map.find(name);
+	if (i == _icons_map.end()) 
+		return;
+				
+	sdlx::Rect src(icon_w * i->second, 0, icon_w, icon_h);
+	window.copyFrom(_icons, src, xp, yp);
+	xp += icon_w;
+	if (count > 0)
+		xp += _font.render(window, xp, yp, mrt::formatString("%-2d ", count));
+	else 
+		xp += _font.render(window, xp, yp, " ");
+}
+
+
 
 void Hud::render(sdlx::Surface &window) const {
 	
@@ -127,32 +153,9 @@ void Hud::render(sdlx::Surface &window) const {
 		int yp = slot.viewport.y;
 		xp += _font.render(window, xp, yp, hp);	
 		
-		do {
-			if (!obj->has("mod"))
-				break;
-			
-			const Object *mod = obj->get("mod");
-			int count = mod->getCount();
-			if (count == 0)
-				break;
-			
-			std::string name = "mod:";
-			name += mod->getType();
-			//LOG_DEBUG(("icon name = '%s'", name.c_str()));
-			IconMap::const_iterator i = _icons_map.find(name);
-			if (i == _icons_map.end()) 
-				break;
+		renderMod(obj, window, xp, yp, "mod", icon_w, icon_h);
+		renderMod(obj, window, xp, yp, "alt_mod", icon_w, icon_h);
 				
-			sdlx::Rect src(icon_w * i->second, 0, icon_w, icon_h);
-			window.copyFrom(_icons, src, xp, yp);
-			xp += icon_w;
-			if (count > 0)
-				xp += _font.render(window, xp, yp, mrt::formatString("%-2d ", count));
-			else 
-				xp += _font.render(window, xp, yp, " ");
-
-		} while(0);
-		
 		IconMap::const_iterator a = _icons_map.lower_bound("effect:");
 		for(IconMap::const_iterator ic = a; ic != _icons_map.end(); ++ic) {
 			if (ic->first.substr(0, 7) != "effect:") 

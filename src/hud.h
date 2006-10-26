@@ -26,6 +26,7 @@
 #include <string>
 
 class Font;
+class Object;
 
 class Hud {
 public: 
@@ -39,6 +40,9 @@ public:
 	~Hud();
 
 private: 
+
+	void renderMod(const Object *obj, sdlx::Surface &window, int &xp, int &yp, const std::string &name, const int icon_w, const int icon_h) const;
+
 	sdlx::Surface _background, _loading_border, _loading_item, _splash, _radar;
 	sdlx::Font _font;
 	Alarm _update_radar;
