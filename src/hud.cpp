@@ -172,6 +172,21 @@ void Hud::render(sdlx::Surface &window) const {
 				}
 			}
 		}
+		
+		do {
+			if (slot.frags == 0) 
+				break;
+			
+			IconMap::const_iterator ic = _icons_map.find("special:frag");
+			if (ic == _icons_map.end())
+				break;
+
+			sdlx::Rect src(icon_w * ic->second, 0, icon_w, icon_h);
+			window.copyFrom(_icons, src, xp, yp);
+			xp += icon_w;
+			xp += _font.render(window, xp, yp, mrt::formatString("%-2d ", slot.frags));
+			
+		} while(0);
 	}
 }
 
@@ -257,6 +272,7 @@ Hud::Hud(const int w, const int h) : _update_radar(true) {
 	_icons_map["effect:disperce"] = i++;
 	_icons_map["mod:machinegunner"] = i++;
 	_icons_map["mod:mines:regular"] = i++;
+	_icons_map["special:frag"] = i++;
 }
 
 Hud::~Hud() {}
