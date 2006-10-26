@@ -130,7 +130,7 @@ const bool Launcher::take(const BaseObject *obj, const std::string &type) {
 		remove("mod");
 		add("mod", spawnGrouped("missiles-on-launcher", "guided-missiles-on-launcher", v3<float>::empty, Centered));
 	}
-	if (type != "smoke" && type != "stun") {
+	if (type != "smoke" && type != "stun" && obj->classname != "mines") {
 		if (get("mod")->take(obj, type))
 			return true;
 	} else {
