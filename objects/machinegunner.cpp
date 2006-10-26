@@ -33,6 +33,9 @@ public:
 	virtual const std::string getType() const { return "machinegunner"; }
 	virtual const int getCount() const { return 0; }
 
+	virtual void serialize(mrt::Serializator &s) const;
+	virtual void deserialize(const mrt::Serializator &s); 
+
 private: 
 	Alarm _fire;
 };
@@ -81,5 +84,16 @@ void Machinegunner::emit(const std::string &event, BaseObject * emitter) {
 const bool Machinegunner::take(const BaseObject *obj, const std::string &type) {
 	return false;
 }
+
+void Machinegunner::serialize(mrt::Serializator &s) const {
+	Object::serialize(s);
+	_fire.serialize(s);
+}
+
+void Machinegunner::deserialize(const mrt::Serializator &s) {
+	Object::deserialize(s);
+	_fire.deserialize(s);
+}
+
 
 REGISTER_OBJECT("machinegunner-on-launcher", Machinegunner, ("machinegunner-on-launcher"));
