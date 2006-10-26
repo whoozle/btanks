@@ -164,9 +164,18 @@ void IGame::init(const int argc, char *argv[]) {
 
 void IGame::onKey(const Uint8 type, const SDL_keysym key) {
 	if (key.sym == SDLK_ESCAPE && type == SDL_KEYUP) {
+		if (!Map->loaded()) {
+			_main_menu.setActive(true);
+			return;
+		}
+		
 		LOG_DEBUG(("escape hit, paused: %s", _paused?"true":"false"));
-		_paused = !_paused;
-		_main_menu.setActive(_paused);
+		_main_menu.setActive(!_main_menu.isActive());
+		if (PlayerManager->isServer() || PlayerManager->isClient()) {
+			_paused = false;
+		} else {
+			_paused = _main_menu.isActive();
+		}
 	}
 }
 
