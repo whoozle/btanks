@@ -107,23 +107,31 @@ void Hud::renderMod(const Object *obj, sdlx::Surface &window, int &xp, int &yp, 
 			
 	const Object *mod = obj->get(mod_name);
 	int count = mod->getCount();
-	if (count == 0)
+	if (count == 0) {
+		xp += icon_w;
+		xp += _font.render(window, xp, yp, "  ");
 		return;
+	}
 			
 	std::string name = "mod:";
 	name += mod->getType();
 	//LOG_DEBUG(("icon name = '%s'", name.c_str()));
 	IconMap::const_iterator i = _icons_map.find(name);
-	if (i == _icons_map.end()) 
+	if (i == _icons_map.end()) {
+		xp += icon_w;
+		xp += _font.render(window, xp, yp, "  ");
 		return;
+	}
 				
 	sdlx::Rect src(icon_w * i->second, 0, icon_w, icon_h);
 	window.copyFrom(_icons, src, xp, yp);
 	xp += icon_w;
 	if (count > 0)
-		xp += _font.render(window, xp, yp, mrt::formatString("%-2d ", count));
+		xp += _font.render(window, xp, yp, mrt::formatString("%-2d", count));
 	else 
-		xp += _font.render(window, xp, yp, " ");
+		xp += _font.render(window, xp, yp, "  ");
+	window.copyFrom(_splitter, xp, yp);
+	xp += _splitter.getWidth();
 }
 
 
@@ -150,13 +158,17 @@ void Hud::render(sdlx::Surface &window) const {
 		GET_CONFIG_VALUE("hud.icon.height", int, icon_h, 24);
 
 		int xp = slot.viewport.x;
-		int yp = slot.viewport.y;
+
+		int yp = slot.viewport.y + 3;
+
 		xp += _font.render(window, xp, yp, hp);	
 		
 		renderMod(obj, window, xp, yp, "mod", icon_w, icon_h);
 		renderMod(obj, window, xp, yp, "alt_mod", icon_w, icon_h);
 				
 		IconMap::const_iterator a = _icons_map.lower_bound("effect:");
+		bool any_effect = false;
+		int old_xp = xp;
 		for(IconMap::const_iterator ic = a; ic != _icons_map.end(); ++ic) {
 			if (ic->first.substr(0, 7) != "effect:") 
 				break;
@@ -173,7 +185,16 @@ void Hud::render(sdlx::Surface &window) const {
 				if (rm >= 0) {
 					xp += _font.render(window, xp, yp, mrt::formatString("%-2d ", rm));
 				}
+				any_effect = true;
 			}
+		}
+		if (xp - old_xp < 4 * icon_w) {
+			xp = old_xp + 4 * icon_w;
+		}
+
+		if (any_effect) {
+			window.copyFrom(_splitter, xp, yp);
+			xp += _splitter.getWidth();
 		}
 		
 		do {
@@ -244,6 +265,7 @@ Hud::Hud(const int w, const int h) : _update_radar(true) {
 	_loading_border.loadImage(data_dir + "/tiles/loading_border.png");
 	_loading_item.loadImage(data_dir + "/tiles/loading_item.png");
 	_icons.loadImage(data_dir + "/tiles/hud_icons.png");
+	_splitter.loadImage(data_dir + "/tiles/hud_splitter.png");
 	
 	_font.load(data_dir + "/font/medium.png", sdlx::Font::AZ09);
 	
