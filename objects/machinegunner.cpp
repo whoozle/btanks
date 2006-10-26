@@ -31,7 +31,7 @@ public:
 	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
 	virtual const bool take(const BaseObject *obj, const std::string &type);
 	virtual const std::string getType() const { return "machinegunner"; }
-	virtual const int getCount() const { return 0; }
+	virtual const int getCount() const { return -1; }
 
 	virtual void serialize(mrt::Serializator &s) const;
 	virtual void deserialize(const mrt::Serializator &s); 

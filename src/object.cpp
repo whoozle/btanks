@@ -672,5 +672,5 @@ const std::string Object::getType() const {
 }
 
 const int Object::getCount() const {
-	return -1;
+	return 0;
 }

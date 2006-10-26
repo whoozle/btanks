@@ -133,7 +133,7 @@ void Hud::render(sdlx::Surface &window) const {
 			
 			const Object *mod = obj->get("mod");
 			int count = mod->getCount();
-			if (count == -1)
+			if (count == 0)
 				break;
 			
 			std::string name = "mod:";
