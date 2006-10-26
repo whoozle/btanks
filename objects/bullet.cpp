@@ -58,17 +58,18 @@ void Bullet::tick(const float dt) {
 	if (_type == "dispersion") {
 		//LOG_DEBUG(("baaaaaaah!"));
 		if (_clone.tick(dt)) {
+			GET_CONFIG_VALUE("objects.dispersion-bullet.ttl-multiplier", float, ttl_m, 0.8);
 			int d = (getDirection() + 1) % _dirs;
 			v3<float> vel;
 			vel.fromDirection(d, _dirs);
 			Object * b = spawn(registered_name, animation, v3<float>::empty, vel);
-			b->ttl = ttl;
+			b->ttl = ttl * ttl_m;
 			b->setOwner(getOwner());
 			
 			d = (_dirs + getDirection() - 1) % _dirs;
 			vel.fromDirection(d, _dirs);
 			b = spawn(registered_name, animation, v3<float>::empty, vel);
-			b->ttl = ttl;
+			b->ttl = ttl * ttl_m;
 			b->setOwner(getOwner());
 		}
 	}
@@ -78,7 +79,7 @@ void Bullet::tick(const float dt) {
 void Bullet::calculate(const float dt) {}
 
 void Bullet::onSpawn() {
-	GET_CONFIG_VALUE("objects.dispersion-bullet.clone-interval", float, ci, 1.0/3.0);
+	GET_CONFIG_VALUE("objects.dispersion-bullet.clone-interval", float, ci, 0.1);
 	_clone.set(ci);
 
 	play("shot", false);
