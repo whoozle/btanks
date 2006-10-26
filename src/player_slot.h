@@ -55,6 +55,8 @@ public:
 	//respawn stuff.
 	std::string classname;
 	std::string animation;
+	
+	int frags;
 };
 
 #endif
