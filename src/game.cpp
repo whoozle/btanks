@@ -534,12 +534,13 @@ void IGame::resetLoadingBar(const int total) {
 }
 
 void IGame::notifyLoadingBar(const int progress) {
+	float old_progress = 1.0 * _loading_bar_now / _loading_bar_total;
 	_loading_bar_now += progress;
 	
 	_window.fillRect(_window.getSize(), 0);
 	//_window.fillRect(_window.getSize(), _window.mapRGB(255, 255, 255));
 
-	_hud->renderLoadingBar(_window, 1.0 * _loading_bar_now / _loading_bar_total);
-	_window.flip();
+	if (_hud->renderLoadingBar(_window, old_progress, 1.0 * _loading_bar_now / _loading_bar_total))
+		_window.flip();
 }
 
