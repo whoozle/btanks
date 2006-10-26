@@ -69,7 +69,12 @@ void Tank::emit(const std::string &event, BaseObject * emitter) {
 const bool Tank::take(const BaseObject *obj, const std::string &type) {
 	if (obj->classname == "effects") {
 		float def = 10;
-		GET_CONFIG_VALUE("objects.tank." + type + ".duration", float, d, def);
+		if (type == "dispersion") {
+			def = -1;
+			removeEffect("dirt");
+		}
+		float d;
+		Config->get("objects.tank." + type + ".duration", d, def);
 		addEffect(type, d);
 		return true;
 	}
@@ -122,6 +127,8 @@ void Tank::tick(const float dt) {
 		std::string bullet("bullet");
 		if (isEffectActive("dirt")) {
 			bullet = "dirt-bullet";
+		} else if (isEffectActive("dispersion")) {
+			bullet = "dispersion-bullet";
 		}
 		spawn(bullet, bullet, v3<float>::empty, _direction);
 	}

@@ -18,39 +18,69 @@
  */
 
 #include "object.h"
+#include "alarm.h"
+#include "config.h"
 #include "resource_manager.h"
 
 class Bullet : public Object {
 public:
-	Bullet(const std::string &type, const int dirs) : Object("bullet"), _type(type), _dirs(dirs) {
+	Bullet(const std::string &type, const int dirs) : Object("bullet"), _type(type), _dirs(dirs), _clone(true) {
 		impassability = 1;
 		piercing = true;
 	}
 	virtual void calculate(const float dt);
 	virtual Object * clone() const;
 	virtual void onSpawn();
+	virtual void tick(const float dt);
 	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
 
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
 		s.add(_type);
 		s.add(_dirs);
+		_clone.serialize(s);
 	}
 	virtual void deserialize(const mrt::Serializator &s) {
 		Object::deserialize(s);
 		s.get(_type);
 		s.get(_dirs);
+		_clone.deserialize(s);
 	}
 
 private: 
 	std::string _type;
 	int _dirs;
+	Alarm _clone;
 };
+
+void Bullet::tick(const float dt) {
+	Object::tick(dt);
+	if (_type == "dispersion") {
+		//LOG_DEBUG(("baaaaaaah!"));
+		if (_clone.tick(dt)) {
+			int d = (getDirection() + 1) % _dirs;
+			v3<float> vel;
+			vel.fromDirection(d, _dirs);
+			Object * b = spawn(registered_name, animation, v3<float>::empty, vel);
+			b->ttl = ttl;
+			b->setOwner(getOwner());
+			
+			d = (_dirs + getDirection() - 1) % _dirs;
+			vel.fromDirection(d, _dirs);
+			b = spawn(registered_name, animation, v3<float>::empty, vel);
+			b->ttl = ttl;
+			b->setOwner(getOwner());
+		}
+	}
+}
 
 
 void Bullet::calculate(const float dt) {}
 
 void Bullet::onSpawn() {
+	GET_CONFIG_VALUE("objects.dispersion-bullet.clone-interval", float, ci, 1.0/3.0);
+	_clone.set(ci);
+
 	play("shot", false);
 	play("move", true);
 	
@@ -90,3 +120,5 @@ Object* Bullet::clone() const  {
 REGISTER_OBJECT("bullet", Bullet, ("regular", 8));
 REGISTER_OBJECT("dirt-bullet", Bullet, ("dirt", 8));
 REGISTER_OBJECT("machinegunner-bullet", Bullet, ("regular", 16));
+
+REGISTER_OBJECT("dispersion-bullet", Bullet, ("dispersion", 8));
