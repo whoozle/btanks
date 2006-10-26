@@ -25,7 +25,7 @@
 #include <vector>
 #include <sigc++/sigc++.h>
 
-#include "menu.h"
+#include "menu/menu.h"
 #include "math/v3.h"
 #include "player_state.h"
 #include "alarm.h"

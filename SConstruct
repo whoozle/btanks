@@ -127,9 +127,10 @@ env.Append(CPPPATH=sigc_cpppath)
 SConscript('mrt/SConscript')
 SConscript('sdlx/SConscript')
 SConscript('net/SConscript')
+SConscript('menu/SConscript')
 
 env = env.Copy()
-env.Append(LIBPATH=['mrt', 'sdlx', 'src', 'net'])
+env.Append(LIBPATH=['mrt', 'sdlx', 'src', 'net', 'menu'])
 
 svnversion = os.popen('svnversion -n .', 'r')
 version = svnversion.readline()
@@ -155,7 +156,6 @@ bt_sources = 	[
 	'src/player_state.cpp', 
 	'controls/joyplayer.cpp', 'controls/keyplayer.cpp', 'controls/external_control.cpp', 'controls/mouse_control.cpp', 
 
-	'src/menu.cpp', 'src/menuitem.cpp',
 	'src/object.cpp', 'src/animation_model.cpp', 
 	'src/resource_manager.cpp', 'src/world.cpp',
 	'tmx/map.cpp', 'tmx/layer.cpp', 
@@ -171,7 +171,7 @@ vorbis = 'vorbisfile'
 if debug and sys.platform == "win32": 
 	vorbis = 'vorbisfile_d'
 
-bt_libs = ['bt_net', 'sdlx', 'mrt', sigc_lib, 'SDL_ttf', 'SDL_image', 'SDL', 'expat', 'z', vorbis, al_lib, 'alut']
+bt_libs = ['bt_net', 'bt_menu', 'sdlx', 'mrt', sigc_lib, 'SDL_ttf', 'SDL_image', 'SDL', 'expat', 'z', vorbis, al_lib, 'alut']
 if sys.platform == "win32":
 	bt_libs[0:0] = ['SDLmain']
 	bt_libs.append('Ws2_32')
