@@ -189,7 +189,7 @@
 		<pose id="main">0,1,2,3,4,5,6,7</pose>
 	</animation-model>
 
-	<animation-model id="yellow-submarine" speed="10">
+	<animation-model id="yellow-submarine" speed="5">
 		<pose id="hold">0</pose>
 		<pose id="fade-in">0,1,2,3,4</pose>
 		<pose id="main">4,5,4,6</pose>
@@ -339,7 +339,7 @@
 	<animation id="road-sign09" model="destructable-object-animation" tile="road_sign09.png" size="32" />
 	<animation id="road-sign10" model="destructable-object-animation" tile="road_sign10.png" size="32" />
 
-	<animation id="submarine" model="yellow-submarine" tile="submarine.png" width="192" height="128" />
+	<animation id="submarine" model="yellow-submarine" tile="submarine.png" tile_width="192" tile_height="128" />
 
 	<animation id="thrower" model="thrower-animation" tile="thrower.png" />
 	<animation id="die-thrower" model="die-man-animation" tile="thrower_die.png" />
