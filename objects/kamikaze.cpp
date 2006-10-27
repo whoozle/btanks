@@ -53,7 +53,13 @@ void Kamikaze::calculate(const float dt) {
 		return;
 	
 	v3<float> vel;
-	if (getNearest("player", _velocity, vel, NULL)) {
+	static std::vector<std::string> targets;
+	if (targets.empty()) {
+		targets.push_back("train");
+		targets.push_back("player");
+	}
+
+	if (getNearest(targets, _velocity, vel)) {
 		_velocity.quantize8();
 		setDirection(_velocity.getDirection8() - 1);
 	} else _velocity.clear();

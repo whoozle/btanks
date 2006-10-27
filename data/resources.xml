@@ -256,7 +256,7 @@
 	<animation id="dead-yellow-car" tile="car03_crash.png" model="dead-car-animation"/>
 	<animation id="dead-white-car" tile="car04_crash.png" model="dead-car-animation"/>
 	
-	<animation id="choo-choo-train" tile="locomotive.png" model="choo-choo-train-animation" tile_width="128" tile_height="64" />
+	<animation id="choo-choo-train" tile="train.png" model="choo-choo-train-animation" size="128" />
 
 	<animation id="guided-missile" tile="missile01.png" model="single-tile" />
 	<animation id="smoke-missile" tile="missile02.png" model="single-tile" />
@@ -365,7 +365,6 @@
 	<alias name="stack" class="destructable-object-with-fire" />
 	<alias name="road-sign" class="destructable-object" />
 	<alias name="oil-barrels" class="destructable-object-with-fire" />
-	<alias name="choo-choo-train" class="tank" />
 
 	<object class="tank" speed="400" mass="500" hp="40" z="0" />
 	<object class="ai-tank" parent="tank" z="0" />
@@ -391,7 +390,7 @@
 
 	<object class="regular-mine" hp="40" impassability="-1" z="-30" />
 
-	<object class="choo-choo-train" speed="200" mass="800" hp="1000" z="0" />
+	<object class="choo-choo-train" speed="30" mass="800" hp="1000" z="0" />
 
 	<object class="corpse" hp="1000" ttl="10" fadeout_time="1" z="-1" impassability="0" />
 	<object class="explosion" hp="1" z="580" />
@@ -437,5 +436,6 @@
 	<object parent="base-item" class="machinegunner-item" />
 	<object parent="base-item" class="boomerang-missiles-item" />
 	<object parent="base-item" class="stun-missiles-item" />
+	
 
 </resources>

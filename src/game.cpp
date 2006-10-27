@@ -289,11 +289,13 @@ void IGame::loadMap(const std::string &name) {
 			//keep z untouched.
 		}
 
+		/*
 		if (pos.x < 0) 
 			pos.x += size.x;
 		if (pos.y < 0) 
 			pos.y += size.y;
-
+		*/
+		
 		if (i->first.substr(0, 6) == "spawn:") {
 			LOG_DEBUG(("spawnpoint: %d,%d", pos.x, pos.y));
 			PlayerManager->addSlot(pos);

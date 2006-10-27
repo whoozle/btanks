@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <map version="0.99b" orientation="orthogonal" width="10" height="8" tilewidth="128" tileheight="128">
  <properties>
-  <property name="spawn:2" value="-100,100"/>
+  <property name="spawn:2" value="1180,100"/>
   <property name="spawn:1" value="100,100"/>
   <property name="object:traffic-lights:traffic-lights:2" value="750,350,1"/>
   <property name="object:traffic-lights:traffic-lights:1" value="600,200,1"/>
@@ -14,8 +14,8 @@
   <property name="object:nuke-missiles-item:nuke-missiles-item:1" value="@3,4,-0.1"/>
   <property name="object:dirt-bullets-item:dirt-bullets-item:1" value="@4,2,-0.1"/>
   <property name="object:helicopter-with-kamikazes:helicopter:1" value="@5,5,10"/>
-  <property name="spawn:4" value="-100,-100"/>
-  <property name="spawn:3" value="100,-100"/>
+  <property name="spawn:4" value="1180,1180"/>
+  <property name="spawn:3" value="100,1180"/>
  </properties>
  <tileset name="country" firstgid="1" tilewidth="128" tileheight="128">
   <image source="../tiles/test_tileset.png"/>

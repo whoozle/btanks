@@ -33,6 +33,7 @@
   <property name="object:stack:stack:2" value="@11,13,150"/>
   <property name="object:stack:stack:1" value="@14,6,150"/>
   <property name="object:submarine:submarine:1" value="16,0,-700"/>
+  <property name="object:choo-choo-train:choo-choo-train:1" value="1056,-127,100"/>
  </properties>
  <tileset name="c1" firstgid="1" tilewidth="64" tileheight="64">
   <image source="../tiles/terrains_tileset.png"/>

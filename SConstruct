@@ -151,7 +151,7 @@ bt_sources = 	[
 	'objects/traffic_lights.cpp', 'objects/missiles_in_vehicle.cpp', 'objects/missile.cpp',
 	'objects/corpse.cpp', 'objects/item.cpp', 'objects/mine.cpp', 'objects/dirt.cpp', 
 	'objects/damage.cpp', 'objects/helicopter.cpp', 'objects/paratrooper.cpp', 'objects/kamikaze.cpp',
-	'objects/machinegunner.cpp', 'objects/destructable_object.cpp', 'objects/submarine.cpp',
+	'objects/machinegunner.cpp', 'objects/destructable_object.cpp', 'objects/submarine.cpp', 'objects/train.cpp',
 	
 	'src/player_state.cpp', 
 	'controls/joyplayer.cpp', 'controls/keyplayer.cpp', 'controls/external_control.cpp', 'controls/mouse_control.cpp', 
