@@ -256,7 +256,7 @@
 	<animation id="dead-yellow-car" tile="car03_crash.png" model="dead-car-animation"/>
 	<animation id="dead-white-car" tile="car04_crash.png" model="dead-car-animation"/>
 	
-	<animation id="choo-choo-train" tile="locomotive.png" model="choo-choo-train-animation" />
+	<animation id="choo-choo-train" tile="locomotive.png" model="choo-choo-train-animation" tile_width="128" tile_height="64" />
 
 	<animation id="guided-missile" tile="missile01.png" model="single-tile" />
 	<animation id="smoke-missile" tile="missile02.png" model="single-tile" />
@@ -362,7 +362,7 @@
 	<alias name="van" class="destructable-object" />
 	<alias name="biotoilet" class="destructable-object" />
 	<alias name="lodge" class="destructable-object-with-fire" />
-	<alias name="stack" class="destructable-object" />
+	<alias name="stack" class="destructable-object-with-fire" />
 	<alias name="road-sign" class="destructable-object" />
 	<alias name="oil-barrels" class="destructable-object-with-fire" />
 	<alias name="choo-choo-train" class="tank" />
