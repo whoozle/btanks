@@ -119,7 +119,7 @@ void Launcher::tick(const float dt) {
 }
 
 const bool Launcher::take(const BaseObject *obj, const std::string &type) {
-	if (obj->classname == "mod") {
+	if (obj->classname == "mod" && type == "machinegunner") {
 		LOG_DEBUG(("taking mod: %s", type.c_str()));
 		remove("mod");
 		add("mod", spawnGrouped("machinegunner-on-launcher", "machinegunner-on-launcher", v3<float>::empty, Centered));
