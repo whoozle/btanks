@@ -13,8 +13,8 @@
   <property name="object:biotoilet:biotoilet:4" value="704,1761"/>
   <property name="object:biotoilet:biotoilet:3" value="721,1728"/>
   <property name="object:biotoilet:biotoilet:1" value="2222,4"/>
-  <property name="object:road-sign04:road-sign04:2" value="2418,240"/>
   <property name="object:dead-orage-bus:dead-orage-bus:1" value="1330,1284"/>
+  <property name="object:road-sign04:road-sign04:2" value="2418,240"/>
   <property name="object:road-sign04:road-sign04:1" value="2424,1522"/>
   <property name="object:dead-yellow-car:dead-yellow-car:1" value="372,860"/>
   <property name="object:stall-right:stall-right:1" value="512,474"/>
@@ -36,13 +36,13 @@
   <property name="object:road-sign10:road-sign10:1" value="2420,24"/>
   <property name="object:dead-white-car:dead-white-car:1" value="2380,1064"/>
   <property name="object:dead-green-car:dead-green-car:1" value="552,1396"/>
-  <property name="object:road-sign05:road-sign05:1" value="1394,20"/>
   <property name="object:dead-cyan-car:dead-cyan-car:1" value="1172,416"/>
+  <property name="object:road-sign05:road-sign05:1" value="1394,20"/>
   <property name="object:road-sign03:road-sign03:2" value="106,1074"/>
   <property name="object:road-sign03:road-sign03:1" value="1210,1848"/>
   <property name="object:oil-barrels:oil-barrels:4" value="834,134"/>
-  <property name="object:oil-barrels:oil-barrels:3" value="990,1564"/>
   <property name="object:dead-yellow-tank:dead-yellow-tank:1" value="254,978"/>
+  <property name="object:oil-barrels:oil-barrels:3" value="990,1564"/>
   <property name="object:oil-barrels:oil-barrels:2" value="2376,1834"/>
   <property name="object:gate:gate:1" value="1856,1410"/>
  </properties>
@@ -63,6 +63,9 @@
  </tileset>
  <tileset name="grass'n'trees" firstgid="651" tilewidth="64" tileheight="64">
   <image source="../tiles/roads_and_grass_tileset.png"/>
+ </tileset>
+ <tileset name="trees" firstgid="751" tilewidth="64" tileheight="64">
+  <image source="../tiles/trees_tileset.png"/>
  </tileset>
  <layer name="terrain" width="40" height="30">
   <data encoding="base64" compression="gzip">
@@ -96,7 +99,7 @@
  </layer>
  <layer name="grass" width="40" height="30">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAO3WMQoAIQxE0eD9T+C2u/dUuzQqCtFZ+K9N4UgSiFmsnMyetF+P9ta3v8H7szr+5fa8jbRsbd52Mp74l8+2uhOn9oh9XdebHZVd8T31mRR7rZjJU88HAAAwo3Kj9nBvxSq0okN1wBIAAA==
+   H4sIAAAAAAAAAO3WMQ4AEAyF4cb9T8DKPelmIiQo/m/t0CfpS4is5Z1IcPPz1WLZnRr7e3Pc5fS9tWg2vbeZjDveVWcb7cSuHtHXt1nur7J+f9bzAQAA9PAf/FsGAcuhE8ASAAA=
   </data>
   <tileproperties/>
  </layer>
@@ -126,7 +129,7 @@
  </layer>
  <layer name="buildings low" width="40" height="30">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAO2YzS8EMRjGW8J5uToJISE+T9jTrtiDz3VAHCXOrjjiz/FHWUJ8rKwDy+6BeJqZZl6vTqczszNIPMkvm532bZ9k3r5tRwhPTfAAGj6P4E18VUEK0QdGwChhUIpMNEXGfQYvoOUj0CbZvJPSi5kGE6DH/x3PyN88GfcdfIA66JKe1zbrPye9mIWM/FBdRLQrr90RPqLGSKNmgpgs/XApf68hbbeWGC61lp464uj7XMpfi9AmbSbxNcTjsvBXF8Ga0Pmm23h9oWuIEpWnafzZ2ri/PGXyR/P/Spj91cAluCbcZORPSMMzX2F5T/eYhqVfWulcNz2z5X1e60PnuumZLe/zWh//+juy7Yu9P5QbRTKvba/XZ8p+5rOYse+S5WxJ132Yv1IO/qpgU5r3Rb2f2vxVY3rU87n6q4DliP42f5WY/vR862CDsGYYR41fBosOcwyE+CvH8Kf77xrYMYyzgmerxPsQu1Nx+B1Lx7uKzxelLfTb9r2rdzjm36WGwQyY9f9r+B1Lx7uKzhdXhV+4/7nWL1W778B9wvikcq1fYWfhNPVvzyG2E/7i1j+Twrza/Kl3WhPB+dt0Vk/j7xBxR2AfHCfwx7/1KPi3lCT1WesEcafgAJxZ/Kl6uUTQtdq0H9Mz+LkM4j8Bk7PGv8ASAAA=
+   H4sIAAAAAAAAAO2YS0sDMRSFEwXX1a0LEUVB8blSu2rFLnzWhYpLwbVbdan+HH+UVRQflYpotV0onjAJvd5mMq/OqOCBj9JJbnJgbm6SEcJTHTyAmuYRvIvvykkhesEIGCUMSpGKpsi4L+AVNDQCbZLNOym9mGkwAQb073hK/ubJuB/gE1RBl/S8Nln/OenFLKTkh+oioF157Q7wETRGEtVjxKTph0v5e/Npu3XEcKm19NQRR+1zKX8NQpO02cTXEI9Lw19VtNaEyTfTxusLXUOUoDxN4s/Vxv1lKZs/mv9Xwu6vAi7BNeEmJX9CWp5p+eU93WNqjn5JZXLd9syV91mtD5PrtmeuvM9qffzr78i1L/b8UG7kybyuvd6cKfuYz3zKvguOsyVd937+Chn4K4NNad8XzX7q8leO6NHMF9ZfCSwH9Hf5K0X0Z+ZbBxuENcs4avwiWAwxR7+Pv2IEf6b/roUdyzgreLZKvA+xOxWH37FMfFjx+YK0hX7b2rt6h2P6LjUMZsCs/q94Fu13LBMfVnS+qMr9wv0vbP1StfsO3MeMj6uw9cvvLJyk/u2FiO2Ev6j1zyY/ry5/6p1WROv8bTurJ/F3iLgjsA+OY/jj33oU/FtKnPpsdIK4U3AAzhz+VL1cIphabduP6Rn8XLbivwBVFd/nwBIAAA==
   </data>
   <tileproperties/>
  </layer>
@@ -169,6 +172,18 @@
  <layer name="objects" width="40" height="30">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAO2Xuw6CQBBF2f9vgAZQGnk1WKjYmIBCCfwUl4CxEZAlktnNnORWMyxnAsvDMPTHFNO1I2o+Yo09jzE9tvjUlzj80CNDjHWTmbWX6gzDTONJ7h3Z46hifZnH1mxG1Zh7bzEMQwsH+9UlvGdPcAuQM2FH3djzGX7Bua7Eru0dPi+kRCpibm9qeDVIu4Pfv/4Tt6LC92wIx2il5w39mRjuw5TgjDmcCuRJ0E0FOsBAeszAEgAA
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="trees mid" width="40" height="30">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3BMQEAAADCoPVPbQ0PoAAAAADg1wAW4j6/wBIAAA==
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="trees high" width="40" height="30">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3BMQEAAADCoPVPbQ0PoAAAAADg1wAW4j6/wBIAAA==
   </data>
   <tileproperties/>
  </layer>
