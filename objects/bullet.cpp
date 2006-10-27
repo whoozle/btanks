@@ -122,4 +122,4 @@ REGISTER_OBJECT("bullet", Bullet, ("regular", 8));
 REGISTER_OBJECT("dirt-bullet", Bullet, ("dirt", 8));
 REGISTER_OBJECT("machinegunner-bullet", Bullet, ("regular", 16));
 
-REGISTER_OBJECT("dispersion-bullet", Bullet, ("dispersion", 8));
+REGISTER_OBJECT("dispersion-bullet", Bullet, ("dispersion", 16));

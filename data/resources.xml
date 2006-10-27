@@ -300,7 +300,7 @@
 	<animation id="missile-explosion" tile="missile_blast.png" model="missile-explosion-animation" />
 
 	<animation id="bullet" tile="bullet.png" model="bullet-animation"/>
-	<animation id="dispersion-bullet" tile="bullet.png" model="bullet-animation"/>
+	<animation id="dispersion-bullet" tile="bullet16.png" model="bullet-animation"/>
 	<animation id="machinegunner-bullet" tile="machinegunner_bullet.png" model="bullet-animation"/>
 	<animation id="dirt-bullet" tile="dirt_bullet.png" model="bullet-animation"/>
 	<animation id="explosion" tile="explosion.png" model="explosion-animation" />
