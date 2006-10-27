@@ -241,7 +241,7 @@ const bool Object::getRenderRect(sdlx::Rect &src) const {
 	}
 	
 	//this stuff need to be fixed, but I still cannot find cause for overflowing frame
-	if (frame == n)
+	if (frame >= n)
 		frame = n - 1;
 	
 	if (frame < 0 || frame >= n) {
