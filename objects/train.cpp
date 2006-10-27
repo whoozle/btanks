@@ -54,7 +54,7 @@ void Train::tick(const float dt) {
 	Object::tick(dt);
 	v3<int> pos;
 	getPosition(pos);
-	LOG_DEBUG(("pos: %d dst: %d", pos.y, dst_y));
+	//LOG_DEBUG(("pos: %d dst: %d", pos.y, dst_y));
 	if (pos.y  >= dst_y) { //fixme. :)
 		LOG_DEBUG(("escaped!"));
 		emit("death", NULL);
