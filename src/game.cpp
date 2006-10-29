@@ -84,6 +84,7 @@ void IGame::init(const int argc, char *argv[]) {
 					"\t--connect=ip/host\tconnect to given host as mp-client\n" 
 					"\t--no-sound\t\tdisable sound.\n" 
 				);
+			Window::init(argc, argv);
 			exit(0);
 		}
 
