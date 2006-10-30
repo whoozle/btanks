@@ -67,10 +67,12 @@ void Corpse::tick(const float dt) {
 
 void Corpse::onSpawn() {
 	//LOG_DEBUG(("single-pose: play('%s', %s)", _pose.c_str(), _repeat?"true":"false"));
-	play("fade-in", false);
-	for(int i = 0; i < _fire_cycles; ++i)
-		play("burn", false);
-	play("fade-out", false);
+	if (_fire_cycles > 0) {
+		play("fade-in", false);
+		for(int i = 0; i < _fire_cycles; ++i)
+			play("burn", false);
+		play("fade-out", false);
+	}
 	play("dead", true);
 }
 
@@ -80,4 +82,5 @@ Object* Corpse::clone() const  {
 }
 
 REGISTER_OBJECT("corpse", Corpse, (10, true));
+REGISTER_OBJECT("static-corpse", Corpse, (0, true));
 REGISTER_OBJECT("fire", Corpse, (10, false));
