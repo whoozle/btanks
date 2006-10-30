@@ -284,7 +284,7 @@ TRY {
 		TRY {
 		if (id < 0 || (unsigned)id >= _players.size())
 			throw_ex(("player id exceeds players count (%d/%d)", id, _players.size()));
-		PlayerSlot &slot = _players[0];
+		PlayerSlot &slot = _players[_my_idx];
 		mrt::Serializator s(&message.data);
 		World->applyUpdate(s, _trip_time / 1000.0);
 		s.get(slot.id);
@@ -377,16 +377,16 @@ skip_respawn:
 			updated = true;
 	}
 				
-	if (_client && _players.size() != 0 && _players[0].need_sync)	{
+	if (_client && _players.size() != 0 && _players[_my_idx].need_sync)	{
 		mrt::Serializator s;
 		
 		_players[0].state.serialize(s);
-		World->serializeObjectInfo(s, _players[0].id);
+		World->serializeObjectInfo(s, _players[_my_idx].id);
 		
 		Message m(Message::PlayerState);
 		m.data = s.getData();
 		_client->send(m);
-		_players[0].need_sync = false;
+		_players[_my_idx].need_sync = false;
 	}
 	//cross-players state exchange
 	if (_server && updated) {
