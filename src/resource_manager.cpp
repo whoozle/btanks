@@ -160,6 +160,7 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 }
 
 void IResourceManager::end(const std::string &name) {
+	mrt::trim(_data);
 	if (name == "pose") {
 		LOG_DEBUG(("pose frames: %s", _data.c_str()));
 		std::vector<std::string> frames;
@@ -181,9 +182,10 @@ void IResourceManager::end(const std::string &name) {
 		LOG_DEBUG(("added animation model '%s'", _am_id.c_str()));
 	}
 	NotifyingXMLParser::end(name);
+	_data.clear();
 }
 void IResourceManager::charData(const std::string &data) {
-	_data = data;
+	_data += data;
 }
 
 IResourceManager::IResourceManager() : _am(0) {
