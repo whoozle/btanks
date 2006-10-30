@@ -262,9 +262,6 @@ void IGame::onMenu(const std::string &name, const std::string &value) {
 
 
 void IGame::loadMap(const std::string &name) {
-	mrt::XMLParser::getFileStats(_loading_bar_total, std::string("data/maps/") + name + ".tmx");
-	_loading_bar_now = 0;
-
 	_main_menu.setActive(false);
 	IMap &map = *IMap::get_instance();
 	map.load(name);

@@ -69,7 +69,7 @@ void Server::tick(const float dt) {
 			Message m;
 			m.deserialize2(data);
 			
-			if (m.type != Message::PlayerState && m.type != Message::Ping && m.type != Message::Pong) 
+			if (m.type != Message::PlayerState && m.type != Message::Ping && m.type != Message::Pong && m.type != Message::RequestPlayer) 
 				throw_ex(("message type %s is not allowed", m.getType()));
 	
 			PlayerManager->onMessage(id, m);

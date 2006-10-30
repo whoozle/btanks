@@ -689,7 +689,7 @@ void IWorld::cropObjects(const std::set<int> &ids) {
 void IWorld::deserialize(const mrt::Serializator &s) {
 TRY {
 	s.get(_last_id);
-	_last_id += 1000;
+	_last_id += 10000;
 	
 	unsigned int size;
 	s.get(size);
@@ -733,6 +733,7 @@ void IWorld::generateUpdate(mrt::Serializator &s) {
 	for(std::set<int>::const_iterator i = skipped_objects.begin(); i != skipped_objects.end(); ++i) {
 		s.add(*i);
 	}
+	s.add(_last_id);
 }
 
 void IWorld::applyUpdate(const mrt::Serializator &s, const float dt) {
@@ -756,6 +757,8 @@ TRY {
 		s.get(id);
 		skipped_objects.insert(id);
 	}
+	s.get(_last_id);
+	_last_id += 10000;
 	TRY {
 		tick(objects, dt);
 	} CATCH("applyUpdate::tick", throw;);

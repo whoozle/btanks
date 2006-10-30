@@ -51,6 +51,7 @@ public:
 	
 	const bool isClient() const { return _client != NULL; }
 	const bool isServer() const { return _server != NULL; }	
+	const bool isServerActive() const;
 
 	void createControlMethod(PlayerSlot &slot, const std::string &name);
 
@@ -62,6 +63,7 @@ public:
 	
 	void screen2world(v3<float> &pos, const int p, const int x, const int y);
 
+	const int findEmptySlot() const;
 	const int spawnPlayer(const std::string &classname, const std::string &animation, const std::string &method);
 	void spawnPlayer(PlayerSlot &slot, const std::string &classname, const std::string &animation);
 
@@ -79,12 +81,18 @@ public:
 	void onDisconnect(const int id);	
 	
 private: 
+	void serializeSlots(mrt::Serializator &s) const;
+	void deserializeSlots(const mrt::Serializator &s);
+	
+	void broadcast(const Message &m);
+
 	IPlayerManager(const IPlayerManager &);
 	const IPlayerManager& operator=(const IPlayerManager &);
 
 	Server *_server;
 	Client *_client;
 
+	int _my_idx;
 	std::vector<PlayerSlot> _players;
 
 	float _trip_time;

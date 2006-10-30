@@ -66,6 +66,9 @@ public:
 	void resetLoadingBar(const int total);
 	void notifyLoadingBar(const int progress = 1);
 
+	void loadMap(const std::string &name);	
+	void setMyIndex(const int idx) { _my_index = idx; }
+	
 private:
 	void onKey(const Uint8 type, const SDL_keysym sym);
 	void onMenu(const std::string &name, const std::string &value);
@@ -74,7 +77,6 @@ private:
 
 	MainMenu _main_menu;
 	
-	void loadMap(const std::string &name);	
 	struct Item {
 		int id;
 		std::string classname, animation;

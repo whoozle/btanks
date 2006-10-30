@@ -36,6 +36,8 @@ public:
 	enum Type {
 		None, Ping, Pang, Pong,
 		ServerStatus,
+		RequestPlayer,
+		GameJoined,
 		PlayerState,
 		UpdatePlayers,
 		UpdateWorld, 

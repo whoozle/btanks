@@ -38,27 +38,36 @@
 #include "sound/mixer.h"
 
 #include "sdlx/surface.h"
+#include "game.h"
+
+#include "mrt/random.h"
 
 IMPLEMENT_SINGLETON(PlayerManager, IPlayerManager)
 
 
 const int IPlayerManager::onConnect(Message &message) {
+	/*
 	const std::string an = "red-tank";
 	LOG_DEBUG(("new client! spawning player:%s", an.c_str()));
 	const int client_id = spawnPlayer("tank", an, "network");
 	LOG_DEBUG(("client #%d", client_id));
-
+	*/
+	const int client_id = findEmptySlot();
+	
 	LOG_DEBUG(("sending server status message..."));
 	message.type = Message::ServerStatus;
 	message.set("map", Map->getName());
 	message.set("version", getVersion());
 
 	mrt::Serializator s;
-	World->serialize(s);
-	s.add(_players[client_id].id);
-	_players[client_id].position.serialize(s);
+	//World->serialize(s);
+	s.add(client_id);
+	//_players[client_id].position.serialize(s);
+	
+	serializeSlots(s);	
 
 	message.data = s.getData();
+	_players[client_id].reserved = true;
 	//LOG_DEBUG(("world: %s", message.data.dump().c_str()));
 	return client_id;
 }
@@ -84,37 +93,86 @@ TRY {
 	case Message::ServerStatus: {
 		LOG_DEBUG(("server version: %s", message.get("version").c_str()));
 		LOG_DEBUG(("loading map..."));
-		Map->load(message.get("map"));
+		Game->loadMap(message.get("map"));
 		
 		mrt::Serializator s(&message.data);
-		World->deserialize(s);
+		//World->deserialize(s);
 		
-		int my_id;
-		s.get(my_id);
-		LOG_DEBUG(("my_id = %d", my_id));
+		s.get(_my_idx);
+		LOG_DEBUG(("my_idx = %d", _my_idx));
+		Game->setMyIndex(_my_idx);
+		
+		int n;
+		s.get(n);
+		if (_my_idx >= n) 
+			throw_ex(("server returned bogus player index (%d/%d)", _my_idx, n));
+		
 		_players.clear();
+		for(int i = 0; i < n; ++i) {
+			PlayerSlot slot;
+			slot.deserialize(s);
+			_players.push_back(slot);
+		}
 		
-		Object * player = World->getObjectByID(my_id);
-		if (player == NULL) 
-			throw_ex(("invalid object id returned from server. (%d)", my_id));
-		_players.push_back(player->getID());
-		assert(!_players.empty());
-		PlayerSlot &slot = _players[_players.size() - 1];
-		slot.classname = player->registered_name;
-		slot.animation = player->animation;
+		PlayerSlot &slot = _players[_my_idx];
+		
 		slot.viewport.reset();
 		slot.visible = true;
-		slot.position.deserialize(s);
 		
 		assert(slot.control_method == NULL);
 		GET_CONFIG_VALUE("player.control-method", std::string, control_method, "keys");	
 		createControlMethod(slot, control_method);
 
 		LOG_DEBUG(("players = %d", _players.size()));
+		
+		Message m(Message::RequestPlayer);
+
+		GET_CONFIG_VALUE("stubs.default-mp-vehicle", std::string, vehicle, "tank");
+
+		m.set("vehicle", vehicle);
+		_client->send(m);
+		
 		_next_ping = 0;
 		_ping = true;
 		break;	
 	}
+	
+	case Message::RequestPlayer: {
+		int n = (int)_players.size();
+		if (id >= n) 
+			throw_ex(("connection id %d exceedes player count %u", id, n));
+		PlayerSlot &slot = _players[id];
+		if (!slot.reserved) 
+			throw_ex(("RequestPlayer sent over non-reserved slot[%d]. bug/hack.", id));	
+		slot.reserved = false;
+		
+		const std::string &vehicle = message.get("vehicle");
+		
+		static const char * colors[4] = {"green", "red", "yellow", "cyan"};
+		std::string animation = colors[mrt::random(4)];
+		animation += "-" + vehicle;
+
+		spawnPlayer(slot, vehicle, animation);
+
+		mrt::Serializator s;
+		World->serialize(s);
+		serializeSlots(s);
+		
+		Message m(Message::GameJoined);
+		m.data = s.getData();
+		_server->send(id, m);
+
+		break;
+	}
+	
+	case Message::GameJoined: {
+		assert(_my_idx >= 0);
+		mrt::Serializator s(&message.data);
+		World->deserialize(s);
+		deserializeSlots(s);		
+		break;
+	}
+	
 	case Message::UpdateWorld: {
 		mrt::Serializator s(&message.data);
 		World->applyUpdate(s, _trip_time / 1000.0);
@@ -255,6 +313,10 @@ void IPlayerManager::ping() {
 
 void IPlayerManager::updatePlayers() {
 	int n = _players.size();
+
+	if (isClient())
+		goto skip_respawn;
+
 	for(int i = 0; i < n; ++i) {
 		PlayerSlot &slot = _players[i];
 		if (slot.id <= 0)
@@ -279,6 +341,9 @@ void IPlayerManager::updatePlayers() {
 			_server->send(i, m);
 		}
 	}
+
+
+skip_respawn:
 	
 	bool updated = false;
 	
@@ -371,7 +436,7 @@ const float IPlayerManager::extractPing(const mrt::Chunk &data) const {
 
 
 IPlayerManager::IPlayerManager() : 
-	_server(NULL), _client(NULL), _players(), _trip_time(10), _next_ping(0), _ping(false), _next_sync(true) 
+	_server(NULL), _client(NULL), _my_idx(-1), _players(), _trip_time(10), _next_ping(0), _ping(false), _next_sync(true) 
 {}
 
 IPlayerManager::~IPlayerManager() {}
@@ -401,6 +466,7 @@ void IPlayerManager::clear() {
 	_ping = false;
 	delete _server; _server = NULL;
 	delete _client; _client = NULL;
+	_my_idx = -1;
 
 	GET_CONFIG_VALUE("multiplayer.sync-interval", float, sync_interval, 103.0/101);
 	_next_sync.set(sync_interval);
@@ -447,14 +513,19 @@ void IPlayerManager::createControlMethod(PlayerSlot &slot, const std::string &co
 	}
 }
 
-const int IPlayerManager::spawnPlayer(const std::string &classname, const std::string &animation, const std::string &control_method) {
-	size_t i, n = _players.size();
+const int IPlayerManager::findEmptySlot() const {
+	int i, n = _players.size();
 	for(i = 0; i < n; ++i) {
-		if (_players[i].getObject() == NULL)
+		if (_players[i].getObject() == NULL && !_players[i].reserved)
 			break;
 	}
 	if (i == n) 
 		throw_ex(("no available slots found from %d", n));
+	return i;
+}
+
+const int IPlayerManager::spawnPlayer(const std::string &classname, const std::string &animation, const std::string &control_method) {
+	int i = findEmptySlot();
 	PlayerSlot &slot = _players[i];
 
 	createControlMethod(slot, control_method);
@@ -484,7 +555,7 @@ void IPlayerManager::setViewport(const int idx, const sdlx::Rect &rect) {
 
 void IPlayerManager::tick(const float now, const float dt) {
 	if (_server) {
-		if (_next_sync.tick(dt) && _server->active()) {
+		if (_next_sync.tick(dt) && isServerActive()) {
 			Message m(Message::UpdateWorld);
 			{
 				mrt::Serializator s;
@@ -492,7 +563,7 @@ void IPlayerManager::tick(const float now, const float dt) {
 				m.data = s.getData();
 			}
 			LOG_DEBUG(("sending world update... (size: %u)", m.data.getSize()));
-			_server->broadcast(m);
+			broadcast(m);
 		}
 		_server->tick(dt);
 	}
@@ -610,4 +681,45 @@ void IPlayerManager::screen2world(v3<float> &pos, const int p, const int x, cons
 
 const size_t IPlayerManager::getSlotsCount() const {
 	return _players.size();
+}
+
+void IPlayerManager::serializeSlots(mrt::Serializator &s) const {
+	int n = _players.size();
+	s.add(n);
+	for(int i = 0; i < n; ++i) {
+		_players[i].serialize(s);
+	}
+
+}
+
+void IPlayerManager::deserializeSlots(const mrt::Serializator &s) {
+	int n, pn = _players.size();
+	s.get(n);
+	assert(pn == n);
+	
+	for(int i = 0; i < n; ++i) {
+		_players[i].deserialize(s);
+	}		
+}
+
+void IPlayerManager::broadcast(const Message &m) {
+	int n = _players.size();
+	for(int i = 0; i < n; ++i) {
+		const PlayerSlot &slot = _players[i];
+		if (slot.remote && !slot.reserved && slot.id != -1) 
+			_server->send(i, m);
+	}
+}
+
+const bool IPlayerManager::isServerActive() const {
+	if (_server == NULL || !_server->active())
+		return false;
+	
+	int n = _players.size();
+	for(int i = 0; i < n; ++i) {
+		const PlayerSlot &slot = _players[i];
+		if (slot.remote && !slot.reserved && slot.id != -1)
+			return true;
+	}
+	return false;
 }

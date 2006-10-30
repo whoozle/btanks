@@ -37,8 +37,6 @@ void PlayerSlot::serialize(mrt::Serializator &s) const {
 		
 }
 void PlayerSlot::deserialize(const mrt::Serializator &s) {
-	clear();
-	
 	s.get(id);
 	position.deserialize(s);
 }
