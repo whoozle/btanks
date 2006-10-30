@@ -365,6 +365,7 @@
 	<alias name="stack" class="destructable-object-with-fire(pierceable)" />
 	<alias name="road-sign" class="destructable-object" />
 	<alias name="oil-barrels" class="destructable-object-with-fire" />
+	<alias name="passable-static-corpse" class="static-corpse" />
 
 	<object class="tank" speed="400" mass="500" hp="40" z="0" />
 	<object class="ai-tank" parent="tank" z="0" />
@@ -411,6 +412,8 @@
 	<object class="oil-barrels" hp="10" impassability="1" z="150" />
 	<object class="road-sign" hp="1" impassability="1" z="150" />
 	<object class="fire" z="-15" impassability="0" pierceable="true" />
+	<object class="static-corpse" impassability="1" pierceable="true" z="-18" />
+	<object class="passable-static-corpse" impassability="0" pierceable="true" z="-18" />
 	
 	<object class="missiles-on-tank" z="10" />
 	<object class="missiles-on-launcher" z="10" />
