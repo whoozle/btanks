@@ -149,7 +149,7 @@
 
 	<animation-model id="destructable-object-animation" speed="1">
 		<pose id="main">0</pose>
-		<pose id="broken" z="-11">1</pose>
+		<pose id="broken" z="-18">1</pose>
 	</animation-model>
 
 
@@ -410,6 +410,7 @@
 	<object class="stack" hp="1" z="150" impassability="1" />
 	<object class="oil-barrels" hp="10" impassability="1" z="150" />
 	<object class="road-sign" hp="1" impassability="1" z="150" />
+	<object class="fire" z="-15" impassability="0" pierceable="true" />
 	
 	<object class="missiles-on-tank" z="10" />
 	<object class="missiles-on-launcher" z="10" />
@@ -436,6 +437,4 @@
 	<object parent="base-item" class="machinegunner-item" />
 	<object parent="base-item" class="boomerang-missiles-item" />
 	<object parent="base-item" class="stun-missiles-item" />
-	
-
 </resources>
