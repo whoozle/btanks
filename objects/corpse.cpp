@@ -73,7 +73,8 @@ void Corpse::onSpawn() {
 			play("burn", false);
 		play("fade-out", false);
 	}
-	play("dead", true);
+	if (_play_dead)
+		play("dead", true);
 }
 
 
