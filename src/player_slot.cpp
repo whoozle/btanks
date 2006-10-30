@@ -30,6 +30,20 @@ id(id), control_method(NULL), need_sync(false), remote(false), trip_time(10), vi
 mapx(0), mapy(0), mapvx(0), mapvy(0), classname(), animation(), frags(0)
 {}
 
+void PlayerSlot::serialize(mrt::Serializator &s) const {
+	s.add(id);
+	//ControlMethod * control_method;
+	position.serialize(s);
+		
+}
+void PlayerSlot::deserialize(const mrt::Serializator &s) {
+	clear();
+	
+	s.get(id);
+	position.deserialize(s);
+}
+
+
 Object * PlayerSlot::getObject() {
 	if (id < 0) 
 		return NULL;
@@ -53,6 +67,7 @@ void PlayerSlot::clear() {
 	animation.clear();
 	classname.clear();
 	remote = false;
+	frags = 0;
 }
 
 PlayerSlot::~PlayerSlot() {

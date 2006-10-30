@@ -23,11 +23,12 @@
 #include "math/v3.h"
 #include "sdlx/rect.h"
 #include <string>
+#include "mrt/serializable.h"
 
 class Object;
 class ControlMethod;
 
-class PlayerSlot {
+class PlayerSlot : public mrt::Serializable {
 public:
 	PlayerSlot();
 	PlayerSlot(const int id);
@@ -57,6 +58,8 @@ public:
 	std::string animation;
 	
 	int frags;
+	virtual void serialize(mrt::Serializator &s) const;
+	virtual void deserialize(const mrt::Serializator &s);
 };
 
 #endif
