@@ -58,6 +58,7 @@ void TrafficLights::addDamage(BaseObject *from, const int dhp, const bool emitDe
 		cancelAll();
 		play("fade-out", false); 
 		play("broken", true);
+		pierceable = true;
 	}
 }
 
