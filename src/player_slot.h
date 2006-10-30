@@ -49,6 +49,7 @@ public:
 	sdlx::Rect viewport;
 		
 	float mapx, mapy, mapvx, mapvy;
+	
 		
 	void clear();
 	~PlayerSlot();
@@ -58,6 +59,8 @@ public:
 	std::string animation;
 	
 	int frags;
+	bool reserved;
+	
 	virtual void serialize(mrt::Serializator &s) const;
 	virtual void deserialize(const mrt::Serializator &s);
 };
