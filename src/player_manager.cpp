@@ -316,9 +316,7 @@ void IPlayerManager::ping() {
 void IPlayerManager::updatePlayers() {
 	int n = _players.size();
 
-	if (isClient())
-		goto skip_respawn;
-
+	if (!isClient())
 	for(int i = 0; i < n; ++i) {
 		PlayerSlot &slot = _players[i];
 		if (slot.id <= 0)
@@ -343,9 +341,6 @@ void IPlayerManager::updatePlayers() {
 			_server->send(i, m);
 		}
 	}
-
-
-skip_respawn:
 	
 	bool updated = false;
 	
