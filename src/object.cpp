@@ -369,12 +369,9 @@ void Object::serialize(mrt::Serializator &s) const {
 	//Group	
 	en = _group.size();
 	s.add(en);
-	{
-		Group::const_iterator i = _group.begin();
-		while(en--) {
-			s.add(i->first);
-			s.add(i->second);
-		}
+	for(Group::const_iterator i = _group.begin(); i != _group.end(); ++i) {
+		s.add(i->first);
+		s.add(i->second);
 	}
 }
 
