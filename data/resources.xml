@@ -149,7 +149,7 @@
 
 	<animation-model id="destructable-object-animation" speed="1">
 		<pose id="main">0</pose>
-		<pose id="broken" z="-1">1</pose>
+		<pose id="broken" z="-11">1</pose>
 	</animation-model>
 
 
@@ -356,13 +356,13 @@
 	<alias name="smoke-cloud" class="single-pose-with-start" />
 	<alias name="gate" class="destructable-object" />
 	<alias name="bus-stop" class="destructable-object-with-fire" />
-	<alias name="stall" class="destructable-object-with-fire" />
-	<alias name="tent" class="destructable-object" />
-	<alias name="umbrella" class="destructable-object" />
-	<alias name="van" class="destructable-object" />
-	<alias name="biotoilet" class="destructable-object" />
-	<alias name="lodge" class="destructable-object-with-fire" />
-	<alias name="stack" class="destructable-object-with-fire" />
+	<alias name="stall" class="destructable-object-with-fire(pierceable)" />
+	<alias name="tent" class="destructable-object(pierceable)" />
+	<alias name="umbrella" class="destructable-object(pierceable)" />
+	<alias name="van" class="destructable-object(pierceable)" />
+	<alias name="biotoilet" class="destructable-object(pierceable)" />
+	<alias name="lodge" class="destructable-object-with-fire(pierceable)" />
+	<alias name="stack" class="destructable-object-with-fire(pierceable)" />
 	<alias name="road-sign" class="destructable-object" />
 	<alias name="oil-barrels" class="destructable-object-with-fire" />
 
