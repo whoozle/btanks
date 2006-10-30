@@ -183,6 +183,8 @@ TRY {
 		if (id < 0 || (unsigned)id >= _players.size())
 			throw_ex(("player id exceeds players count (%d/%d)", id, _players.size()));
 		PlayerSlot &slot = _players[id];
+		if (slot.reserved) 
+			throw_ex(("player sent PlayerState message before join. bye."));
 /*		ExternalControl * ex = dynamic_cast<ExternalControl *>(slot.control_method);
 		if (ex == NULL)
 			throw_ex(("player with id %d uses non-external control method", id));
