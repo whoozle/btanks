@@ -278,12 +278,14 @@ void IMap::end(const std::string &name) {
 		} else throw_ex(("unknown encoding %s used", enc.c_str()));
 		
 		//LOG_DEBUG(("decoded size: %d", data.getSize()));
+		//LOG_DEBUG(("decoded data: %s -> %s", e.data.c_str(), data.dump().c_str()));
 
 		if (comp == "gzip") {
 			mrt::ZStream::decompress(_data, data);
 		} else if (comp == "none") {
 			_data = data;
 		} else throw_ex(("unknown compression method ('%s') used. ", comp.c_str()));
+		data.free();
 		//LOG_DEBUG(("%s", _data.dump().c_str()));
 	} else if (name == "image") {
 		delete _image;
@@ -375,14 +377,14 @@ void IMap::end(const std::string &name) {
 
 void IMap::charData(const std::string &d) {
 	assert(!_stack.empty());
-	
+	//LOG_DEBUG(("char1 %s", d.c_str()));
 	std::string data(d);
 	mrt::trim(data);
 	if (data.size() == 0)
 		return;
 	
-	//LOG_DEBUG(("char %s", data.c_str()));
-	_stack.top().data = d;
+	//LOG_DEBUG(("char2 %s", data.c_str()));
+	_stack.top().data += d;
 }
 
 void IMap::render(sdlx::Surface &window, const sdlx::Rect &src, const sdlx::Rect &dst, const int z1, const int z2) const {
