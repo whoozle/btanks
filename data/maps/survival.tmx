@@ -37,6 +37,7 @@
   <property name="object:machinegunner-item:machinegunner-item:3" value="771,223"/>
   <property name="object:road-sign:road-sign08:1" value="1333,430,1"/>
   <property name="object:dispersion-bullets-item:dispersion-bullets-item:2" value="542,607"/>
+  <property name="object:ricochet-bullets-item:ricochet-bullets-item:2" value="10,300"/>
   <property name="object:machinegunner-item:machinegunner-item:2" value="769,223"/>
   <property name="object:helicopter-with-kamikazes:helicopter:1" value="@12,13,900"/>
   <property name="object:tent:tent-top:14" value="572,192,410"/>

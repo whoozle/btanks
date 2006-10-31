@@ -21,6 +21,7 @@
 #include "alarm.h"
 #include "config.h"
 #include "resource_manager.h"
+#include "mrt/random.h"
 
 class Bullet : public Object {
 public:
@@ -108,6 +109,21 @@ void Bullet::emit(const std::string &event, BaseObject * emitter) {
 			spawn("explosion", "explosion", dpos);
 		} else if (_type == "dirt") {
 			spawn("dirt", "dirt", dpos);
+		} else if (_type == "ricochet" && emitter == NULL) {
+			if (_dirs != 16) 
+				throw_ex(("%d-directional ricochet not supported yet.", _dirs));
+			
+			//disown(); //BWAHAHHAHA!!!! 
+			
+			int dir = getDirection();
+
+			int sign = (mrt::random(100) & 1) ? 1:-1;
+			int d = sign * (mrt::random(_dirs/4 - 1) + 1) ;
+			dir = ( dir + d + _dirs) % _dirs;
+			
+			setDirection(dir);
+			_velocity.fromDirection(dir, _dirs);
+			return;
 		}
 	
 		Object::emit("death", emitter);
@@ -124,3 +140,4 @@ REGISTER_OBJECT("dirt-bullet", Bullet, ("dirt", 8));
 REGISTER_OBJECT("machinegunner-bullet", Bullet, ("regular", 16));
 
 REGISTER_OBJECT("dispersion-bullet", Bullet, ("dispersion", 16));
+REGISTER_OBJECT("ricochet-bullet", Bullet, ("ricochet", 16));

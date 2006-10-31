@@ -134,6 +134,8 @@ void Tank::tick(const float dt) {
 			bullet = "dirt-bullet";
 		} else if (isEffectActive("dispersion")) {
 			bullet = "dispersion-bullet";
+		} else if (isEffectActive("ricochet")) {
+			bullet = "ricochet-bullet";
 		}
 		spawn(bullet, bullet, v3<float>::empty, _direction);
 	}
