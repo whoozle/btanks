@@ -70,6 +70,8 @@ public:
 	void addDamage(BaseObject *from, const bool emitDeath = true);
 	
 	const v3<float> getRelativePosition(const BaseObject *obj) const;
+
+	inline const v3<float> & getPosition() const { return _position; }
 	inline void getPosition(v3<float> &position) const { position = _position; }
 	inline void getPosition(v3<int> &position) const { position = _position.convert<int>(); }
 
@@ -83,7 +85,7 @@ public:
 	void setOwner(const int oid) { _owner_id = oid; }
 	const int getOwner() const { return _owner_id; }
 	
-	void getTargetPosition8(v3<float> &position, const v3<float> &target, const std::string &weapon);
+	void getTargetPosition(v3<float> &relative_position, const v3<float> &target, const std::string &weapon, const int dirs);
 	
 protected:
 	int _id;
@@ -93,7 +95,6 @@ protected:
 	v3<float> _velocity, _direction, _velocity_fadeout;
 	float _moving_time, _idle_time;
 	
-	inline const v3<float> & getPosition() { return _position; }
 
 	virtual void calculate(const float dt) = 0;
 
