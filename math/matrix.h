@@ -76,7 +76,7 @@ public:
 		for(int y = 0; y < _h; ++y) {
 			result += "[ ";
 			for(int x = 0; x < _w; ++x) {
-				result += mrt::formatString("%3d ", get(y, x));
+				result += mrt::formatString("%-2d ", get(y, x));
 			}
 			result += " ]\n";
 		}
