@@ -109,7 +109,7 @@ void Bullet::emit(const std::string &event, BaseObject * emitter) {
 			spawn("explosion", "explosion", dpos);
 		} else if (_type == "dirt") {
 			spawn("dirt", "dirt", dpos);
-		} else if (_type == "ricochet" && emitter == NULL) {
+		} else if (event == "collision" && _type == "ricochet" && emitter == NULL) {
 			if (_dirs != 16) 
 				throw_ex(("%d-directional ricochet not supported yet.", _dirs));
 			
