@@ -112,7 +112,9 @@ void Shilka::tick(const float dt) {
 		static const std::string right_fire = "shilka-bullet-right";
 		std::string animation = "shilka-bullet-";
 		animation += (_left_fire)?"left":"right";
-		if (isEffectActive("dispersion")) {
+		if (isEffectActive("ricochet")) {
+			spawn("ricochet-bullet", "ricochet-bullet", v3<float>::empty, _direction);
+		} else if (isEffectActive("dispersion")) {
 			spawn("dispersion-bullet", "dispersion-bullet", v3<float>::empty, _direction);
 		} else
 			spawn("shilka-bullet", animation, v3<float>::empty, _direction);
@@ -139,6 +141,11 @@ void Shilka::tick(const float dt) {
 
 const bool Shilka::take(const BaseObject *obj, const std::string &type) {
 	if (obj->classname == "effects") {
+		if (type == "dispersion") {
+			removeEffect("ricochet");
+		} else if (type == "ricochet") {
+			removeEffect("dispersion");
+		}
 		addEffect(type);
 		return true;
 	}
