@@ -121,21 +121,25 @@ void Shilka::tick(const float dt) {
 		_left_fire = ! _left_fire;
 	}
 
-	if (_state.alt_fire && special_fire_possible && isEffectActive("dirt")) {
+	if (_state.alt_fire && special_fire_possible) {
 		_special_fire.reset();
-		if (getState().substr(0,4) == "fire") 
-			cancel();
+		if (isEffectActive("dirt")) {
+			if (getState().substr(0,4) == "fire") 
+				cancel();
 		
-		playNow(_left_fire?"fire-left":"fire-right");
+			playNow(_left_fire?"fire-left":"fire-right");
 		
-		static const std::string left_fire = "shilka-bullet-left";
-		static const std::string right_fire = "shilka-bullet-right";
-		std::string animation = "shilka-dirt-bullet-";
-		animation += (_left_fire)?"left":"right";
+			static const std::string left_fire = "shilka-bullet-left";
+			static const std::string right_fire = "shilka-bullet-right";
+			std::string animation = "shilka-dirt-bullet-";
+			animation += (_left_fire)?"left":"right";
 
-		spawn("dirt-bullet", animation, v3<float>::empty, _direction);
+			spawn("dirt-bullet", animation, v3<float>::empty, _direction);
 
-		_left_fire = ! _left_fire;
+			_left_fire = ! _left_fire;
+		} else if (isEffectActive("machinegunner")) {
+			spawn("machinegunner", "machinegunner", _direction*(size.length()/-2), v3<float>::empty);
+		}
 	}
 }
 
@@ -145,9 +149,16 @@ const bool Shilka::take(const BaseObject *obj, const std::string &type) {
 			removeEffect("ricochet");
 		} else if (type == "ricochet") {
 			removeEffect("dispersion");
+		} else if (type == "dirt") {
+			removeEffect("machinegunner");
 		}
 		addEffect(type);
 		return true;
+	} else if (obj->classname =="mod") {
+		if (type == "machinegunner") {
+			removeEffect("dirt");
+			addEffect("machinegunner");
+		}
 	}
 	return BaseObject::take(obj, type);
 }

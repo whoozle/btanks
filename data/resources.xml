@@ -332,9 +332,12 @@
 	<animation id="oil-barrels" model="destructable-object-animation" tile="oil-barrels.png" />
 
 	<animation id="helicopter" model="helicopter-animation" tile="helicopter.png" size="128" />
+	
+	<!-- troops --> 
 	<animation id="paratrooper" model="paratrooper-animation" tile="paratrooper.png" />
 	<animation id="gay-paratrooper" model="paratrooper-animation" tile="gay_paratrooper.png" />
 	<animation id="kamikaze" model="man-animation" tile="kamikaze.png" />
+	<animation id="machinegunner" model="man-animation" tile="machinegunner.png" />
 
 	<animation id="road-sign01" model="destructable-object-animation" tile="road_sign01.png" size="32" />
 	<animation id="road-sign02" model="destructable-object-animation" tile="road_sign02.png" size="32" />
@@ -350,6 +353,7 @@
 	<animation id="submarine" model="yellow-submarine" tile="submarine.png" tile_width="192" tile_height="128" />
 
 	<animation id="thrower" model="thrower-animation" tile="thrower.png" />
+	<animation id="thrower-missile" model="single-tile" tile="thrower_missile.png" />
 	<animation id="die-thrower" model="die-man-animation" tile="thrower_die.png" />
 	<animation id="die-thrower-static" model="die-man-animation-static" tile="thrower_die.png" />
 
@@ -429,7 +433,8 @@
 
 	<object class="helicopter-with-kamikazes" hp="100" impassability="0" speed="400" mass="1500" z="810" />
 	<object class="paratrooper-kamikaze" hp="5" impassability="0" z="810" />
-	<object class="kamikaze" hp="5" impassability="1" speed="70" mass="80" z="0" />
+	<object class="kamikaze" hp="5" speed="70" mass="80" z="0" />
+	<object class="machinegunner" hp="5" speed="70" mass="80" z="0" />
 
 	<!-- items -->
 	<object class="base-item" z="180" impassability="-1" />
