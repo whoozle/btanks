@@ -412,8 +412,11 @@ void IWorld::tick(Object &o, const float dt) {
 		int i = map.getImpassability(&o, new_pos);
 		if (obj_im_now > 0 && obj_im_now < 1.0)
 			obj_im_now = 0;
-		if (i >= 100) 
+		if (i >= 100) {
+			o._position += dpos;
 			o.emit("collision", NULL); //fixme: emit collisions with map from map::getImpassability
+			o._position -= dpos;
+		}
 	}
 	
 
