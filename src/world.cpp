@@ -405,17 +405,17 @@ void IWorld::tick(Object &o, const float dt) {
 
 	bool stuck = map.getImpassability(&o, old_pos, &stuck_map_pos) == 100 || obj_im_now >= 1.0;
 	//LOG_DEBUG(("obj_im = %f", obj_im));
-	float map_im = 0;
-	if (o.piercing) {
-		int i = map.getImpassability(&o, new_pos);
-		o._position += dpos * 2; //BIG FIXME!! find out why collision position significantly differts from spawning from "death" event explosion for ex.
-		//LOG_DEBUG(("%d", i));
-		if (i == 100) {
-			o.emit("death"); //fixme
-		}
-	} else {
+	float map_im = 0; 
+	if (!o.piercing) 
 		map_im = map.getImpassability(&o, new_pos) / 100.0;
+	else {
+		int i = map.getImpassability(&o, new_pos);
+		if (obj_im_now > 0 && obj_im_now < 1.0)
+			obj_im_now = 0;
+		if (i >= 100) 
+			o.emit("collision", NULL); //fixme: emit collisions with map from map::getImpassability
 	}
+	
 
 	if (obj_im == 1.0 || map_im == 1.0) {
 		if (stuck) {
@@ -452,7 +452,11 @@ skip_collision:
 
 	if (o.isDead())
 		return;
-		
+/*
+	if (o.piercing) {
+		LOG_DEBUG(("%s *** %g,%g", o.dump().c_str(), map_im, obj_im));
+	}
+*/	
 	dpos *= (1 - map_im) * (1 - obj_im);
 
 	if (o.classname == "player") {

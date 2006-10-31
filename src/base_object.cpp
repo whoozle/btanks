@@ -213,7 +213,7 @@ void BaseObject::follow(const int id) {
 #include "object.h"
 
 void BaseObject::addDamage(BaseObject *from, const bool emitDeath) {
-	if (!from->piercing)
+	if (from == NULL || !from->piercing)
 		return;
 
 	addDamage(from, from->hp, emitDeath);
