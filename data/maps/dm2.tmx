@@ -27,6 +27,7 @@
   <property name="object:static-corpse:dead-yellow-launcher:2" value="2199,949"/>
   <property name="object:static-corpse:dead-yellow-launcher:1" value="2450,47"/>
   <property name="object:umbrella:umbrella:1" value="1154,510"/>
+  <property name="waypoint:cars:10" value="1241,145"/>
   <property name="object:bus-stop:bus-stop-right:4" value="704,1638"/>
   <property name="object:bus-stop:bus-stop-right:3" value="1418,442"/>
   <property name="object:bus-stop:bus-stop-right:2" value="704,442"/>
@@ -80,11 +81,20 @@
   <property name="object:passable-static-corpse:die-thrower-static:3" value="1012,1380"/>
   <property name="object:passable-static-corpse:die-thrower-static:2" value="681,1458"/>
   <property name="object:passable-static-corpse:die-thrower-static:1" value="795,833"/>
+  <property name="waypoint:cars:9" value="1380,527"/>
+  <property name="waypoint:cars:8" value="1484,951"/>
   <property name="object:oil-barrels:oil-barrels:5" value="238,1448,160"/>
+  <property name="waypoint:cars:7" value="2340,1348"/>
   <property name="object:oil-barrels:oil-barrels:4" value="834,134"/>
+  <property name="waypoint:cars:6" value="2326,950"/>
   <property name="object:passable-static-corpse:smoke-cloud:1" value="587,927,900"/>
+  <property name="waypoint:cars:5" value="2329,247"/>
   <property name="object:oil-barrels:oil-barrels:2" value="2376,1834"/>
+  <property name="waypoint:cars:4" value="1240,1855"/>
+  <property name="waypoint:cars:3" value="1239,949"/>
+  <property name="waypoint:cars:2" value="665,942"/>
   <property name="object:van:van:1" value="1095,543,150"/>
+  <property name="waypoint:cars:1" value="657,111"/>
   <property name="object:passable-static-corpse:die-man-static:9" value="22,1474,150"/>
   <property name="object:passable-static-corpse:die-man-static:8" value="458,1002"/>
  </properties>
