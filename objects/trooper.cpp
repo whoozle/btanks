@@ -71,13 +71,21 @@ void Trooper::calculate(const float dt) {
 	if (getNearest(targets, pos, vel)) {
 		v3<float> tp;
 		getTargetPosition(tp, pos, _object, 16);
+		LOG_DEBUG(("target: %g %g", tp.x, tp.y));
+		/*
 		Way way;
 		if (findPath(tp, way)) {
 			setWay(way);
 			calculateWayVelocity();
 		}
+		*/
+		_velocity = tp;
+		_velocity.quantize8();
+		setDirection(_velocity.getDirection8() - 1);
+		if (tp.length() < 8)
+			_velocity.clear();
 	}
-	_state.fire = true;
+	_state.fire = _velocity.is0();
 }
 
 void Trooper::tick(const float dt) {
@@ -98,6 +106,7 @@ void Trooper::tick(const float dt) {
 	
 	if (_fire.tick(dt) && _state.fire) {
 		_fire.reset();
+		playNow("fire");
 		spawn(_object, _object, v3<float>::empty, _direction);
 	}
 }

@@ -302,7 +302,8 @@ void BaseObject::getTargetPosition(v3<float> &relative_position, const v3<float>
 		throw_ex(("targeting multiplier must be greater than 0 and less than 1.0 (%g)", tm))
 	range *= tm;
 	double dist = target.length();
-		
+	if (dist > range) 
+		dist = range;
 	//LOG_DEBUG(("searching suitable position (distance: %g, range: %g)", dist, range));
 	double distance = 0;
 	
