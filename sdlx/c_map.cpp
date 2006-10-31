@@ -41,7 +41,7 @@ const bool CollisionMap::collides(const sdlx::Rect &src, const CollisionMap *oth
 	int bx1 = bx + bw - 1;
 	int by1 = by + bh - 1;
 	
-	int inter_x0, inter_x1, inter_y0, inter_y1, x, y;
+	int inter_x0, inter_x1, inter_y0, inter_y1;
 
 	/*check if bounding boxes intersect*/
 	if((bx1 < 0) || (ax1 < bx) || (by1 < 0) || (ay1 < by))
@@ -79,10 +79,12 @@ const bool CollisionMap::collides(const sdlx::Rect &src, const CollisionMap *oth
 */
 	for(int sy = 0; sy < INTERLACE_STEP; ++sy) 
 	for(int sx = 0; sx < INTERLACE_STEP; ++sx) 
-	for(y = inter_y0 + steps_pos[sy]; y <= inter_y1 ; y += INTERLACE_STEP) {
-		for(x = inter_x0 + steps_pos[sx]; x <= inter_x1 ; x += INTERLACE_STEP)	{
-			int pos1 = (src.x + x) / 8 + (src.y + y) * _w;
-			int pos2 = (other_src.x + x - bx) / 8 + (other_src.y + y - by) * other->_w;
+	for(int y = inter_y0 + steps_pos[sy]; y <= inter_y1 ; y += INTERLACE_STEP) {
+		int ybase1 = (src.y + y) * _w;
+		int ybase2 = (other_src.y + y - by) * other->_w;
+		for(int x = inter_x0 + steps_pos[sx]; x <= inter_x1 ; x += INTERLACE_STEP)	{
+			int pos1 = (src.x + x) / 8 + ybase1;
+			int pos2 = (other_src.x + x - bx) / 8 + ybase2;
 			
 			/*
 			assert(pos1 >= 0 && pos1 < size1);
@@ -90,8 +92,11 @@ const bool CollisionMap::collides(const sdlx::Rect &src, const CollisionMap *oth
 			*/ //collision detection code works in 99% cases. 
 			//this asserts above can be triggered by malicious objects (invalid rectangle returned by getRenderRect)
 			//so skip it. :)
-			if (pos1 < 0 || pos1 >= size1 || pos2 < 0 || pos2 >= size2)
+			if (pos1 < 0 || pos2 < 0)
 				continue;
+			
+			if (pos1 >= size1 || pos2 >= size2)
+				break;
 			
 			unsigned bit1 = 1<<(7 - (x & 7));
 			unsigned bit2 = 1<<(7 - ((x - bx) & 7));
