@@ -24,7 +24,7 @@
 
 class Train : public Object {
 public:
-	Train() : Object("train") {}
+	Train() : Object("train"), _smoke(1.0, true) {}
 	virtual Object * clone() const;
 	virtual void onSpawn();
 	virtual void calculate(const float dt);
@@ -42,12 +42,13 @@ public:
 
 private: 
 	int dst_y;
+	Alarm _smoke;
 };
 
 void Train::onSpawn() {
 	play("move", true);
 	v3<int> size = Map->getSize();
-	dst_y = size.y - 1;
+	dst_y = size.y - 1; //fixme. :)
 }
 
 void Train::tick(const float dt) {
@@ -55,9 +56,12 @@ void Train::tick(const float dt) {
 	v3<int> pos;
 	getPosition(pos);
 	//LOG_DEBUG(("pos: %d dst: %d", pos.y, dst_y));
-	if (pos.y  >= dst_y) { //fixme. :)
+	if (pos.y  >= dst_y) { 
 		LOG_DEBUG(("escaped!"));
 		emit("death", NULL);
+	}
+	if (_smoke.tick(dt)) {
+		spawn("train-smoke", "train-smoke", v3<float>::empty, v3<float>::empty);
 	}
 }
 

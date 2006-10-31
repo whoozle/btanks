@@ -23,7 +23,9 @@
 class SinglePose : public Object {
 public:
 	SinglePose(const std::string &pose, const bool repeat, const bool no_directions = false, const bool play_start = false) : 
-		Object("single-pose"), _pose(pose), _repeat(repeat), _no_dir(no_directions), _play_start(play_start)  {}
+		Object("single-pose"), _pose(pose), _repeat(repeat), _no_dir(no_directions), _play_start(play_start)  {
+			impassability = 0;
+		}
 
 	virtual Object * clone() const;
 	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
@@ -95,3 +97,4 @@ REGISTER_OBJECT("single-pose-no-directions", SinglePose, ("main", true, true));
 REGISTER_OBJECT("single-pose-once-no-directions", SinglePose, ("main", false, true));
 
 REGISTER_OBJECT("missile-launch", SinglePose, ("launch", false));
+REGISTER_OBJECT("train-smoke", SinglePose, ("main", false));
