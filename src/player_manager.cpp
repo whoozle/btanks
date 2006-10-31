@@ -93,7 +93,7 @@ TRY {
 	case Message::ServerStatus: {
 		LOG_DEBUG(("server version: %s", message.get("version").c_str()));
 		LOG_DEBUG(("loading map..."));
-		Game->loadMap(message.get("map"));
+		Game->loadMap(message.get("map"), false);
 		
 		mrt::Serializator s(&message.data);
 		//World->deserialize(s);

@@ -66,7 +66,7 @@ public:
 	void resetLoadingBar(const int total);
 	void notifyLoadingBar(const int progress = 1);
 
-	void loadMap(const std::string &name);	
+	void loadMap(const std::string &name, const bool spawn = true);	
 	void setMyIndex(const int idx) { _my_index = idx; }
 	
 private:
