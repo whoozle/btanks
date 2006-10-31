@@ -351,6 +351,9 @@ void IPlayerManager::updatePlayers() {
 		PlayerSlot &slot = _players[i];
 		if (slot.control_method != NULL) {
 			Object *obj = slot.getObject();
+			if (obj == NULL && isClient())
+				continue;
+			
 			assert(obj != NULL);
 			
 			PlayerState old_state = obj->getPlayerState();
