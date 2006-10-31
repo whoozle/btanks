@@ -101,6 +101,7 @@ protected:
 	Object * spawnGrouped(const std::string &classname, const std::string &animation, const v3<float> &dpos, const GroupType type);
 
 	const bool getNearest(const std::string &classname, v3<float> &position, v3<float> &velocity, Way * way = NULL) const;
+	const bool findPath(v3<float> &position, Way &way) const;
 	const bool getNearest(const std::vector<std::string> &targets, v3<float> &position, v3<float> &velocity) const;
 	
 	void setWay(const Way & way);

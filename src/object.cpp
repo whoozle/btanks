@@ -663,6 +663,11 @@ const bool Object::getNearest(const std::vector<std::string> &targets, v3<float>
 	return found != 0;	
 }
 
+const bool Object::findPath(v3<float> &position, Way &way) const {
+	return World->findPath(this, position, way);
+}
+
+
 const std::string Object::getType() const {
 	static const std::string empty;
 	return empty;

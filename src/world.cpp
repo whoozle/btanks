@@ -799,7 +799,38 @@ Object * IWorld::deserializeObjectInfo(const mrt::Serializator &s, const int id)
 	return o;
 }
 
+const bool IWorld::getNearest(const Object *obj, const std::string &classname, v3<float> &position, v3<float> &velocity, Way * way) const {
+	position.clear();
+	velocity.clear();
+	float distance = std::numeric_limits<float>::infinity();
+	const Object *target = NULL;
+	
+	for(ObjectSet::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
+		const Object *o = *i;
+		//LOG_DEBUG(("%s is looking for %s. found: %s", obj->classname.c_str(), classname.c_str(), o->classname.c_str()));
+		if (o->_id == obj->_id || o->classname != classname || 
+			o->_owner_id == obj->_id || obj->_owner_id == o->_id || 
+			(o->_owner_id != 0 && o->_owner_id == obj->_owner_id)
+		) continue;
 
+		v3<float> cpos = o->_position + o->size / 2;
+		float d = obj->_position.quick_distance(cpos);
+		if (d < distance) {
+			distance = d;
+			position = cpos;
+			velocity = o->_velocity;
+			target = o;
+		}
+	}
+	if (target == NULL) 
+		return false;
+	
+	position -= obj->_position + obj->size / 2;
+	if (way == NULL)
+		return true;
+	findPath(obj, position, *way);
+	return true;
+}
 
 //BIG PATHFINDING PART
 
@@ -843,44 +874,17 @@ inline static const int check(const Matrix<int> &imp, const vertex &v, const int
 	return r * 100 / 41;
 }
 
-const bool IWorld::getNearest(const Object *obj, const std::string &classname, v3<float> &position, v3<float> &velocity, Way * way) const {
-	position.clear();
-	velocity.clear();
-	float distance = std::numeric_limits<float>::infinity();
-	const Object *target = NULL;
 	
-	for(ObjectSet::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
-		const Object *o = *i;
-		//LOG_DEBUG(("%s is looking for %s. found: %s", obj->classname.c_str(), classname.c_str(), o->classname.c_str()));
-		if (o->_id == obj->_id || o->classname != classname || 
-			o->_owner_id == obj->_id || obj->_owner_id == o->_id || 
-			(o->_owner_id != 0 && o->_owner_id == obj->_owner_id)
-		) continue;
-
-		v3<float> cpos = o->_position + o->size / 2;
-		float d = obj->_position.quick_distance(cpos);
-		if (d < distance) {
-			distance = d;
-			position = cpos;
-			velocity = o->_velocity;
-			target = o;
-		}
-	}
-	if (target == NULL) 
-		return false;
-	
-	position -= obj->_position + obj->size / 2;
-	if (way == NULL)
-		return true;
-
+const bool IWorld::findPath(const Object *obj, const v3<float>& position, Way & way) const {
 	//finding shortest path.
-
+	v3<float> tposition = obj->_position + position;
+	
 	Matrix<int> imp, path;
-	World->getImpassabilityMatrix(imp, obj, target);
+	World->getImpassabilityMatrix(imp, obj, NULL);
 	//LOG_DEBUG(("imp\n%s", imp.dump().c_str()));
 	
 	v3<int> src = obj->_position.convert<int>() / IMap::pathfinding_step;
-	v3<int> dst = target->_position.convert<int>() / IMap::pathfinding_step;
+	v3<int> dst = tposition.convert<int>() / IMap::pathfinding_step;
 	
 	int w = imp.getWidth(), h = imp.getHeight();
 
@@ -935,14 +939,14 @@ const bool IWorld::getNearest(const Object *obj, const std::string &classname, v
 		return true;
 	}
 
-	way->clear();
+	way.clear();
 	int x = dst.x, y = dst.y;
 	int vi = -10;
 	
 	while ( x != src.x || y != src.y) {
 		assert(imp.get(y, x) != -1);
 		imp.set(y, x, vi--);
-		way->push_front(WayPoint(x, y, 0));
+		way.push_front(WayPoint(x, y, 0));
 		int t = n;
 		int x2 = x, y2 = y;
 
@@ -987,7 +991,7 @@ const bool IWorld::getNearest(const Object *obj, const std::string &classname, v
 	//LOG_DEBUG(("imp\n%s", imp.dump().c_str()));
 	
 	
-	for(Way::iterator i = way->begin(); i != way->end(); ++i) {
+	for(Way::iterator i = way.begin(); i != way.end(); ++i) {
 		(*i) *= IMap::pathfinding_step;
 	}
 	
