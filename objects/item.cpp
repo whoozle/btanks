@@ -93,4 +93,5 @@ REGISTER_OBJECT("mines-item", Item, ("mines", "regular"));
 
 REGISTER_OBJECT("dirt-bullets-item", Item, ("effects", "dirt"));
 REGISTER_OBJECT("dispersion-bullets-item", Item, ("effects", "dispersion"));
+REGISTER_OBJECT("ricochet-bullets-item", Item, ("effects", "ricochet"));
 REGISTER_OBJECT("machinegunner-item", Item, ("mod", "machinegunner"));

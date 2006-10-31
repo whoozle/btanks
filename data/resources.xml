@@ -296,6 +296,7 @@
 	<animation id="mines-item" tile="mine_item.png" model="item-animation" />
 	<animation id="dirt-bullets-item" tile="dirt_item.png" model="item-animation" />
 	<animation id="dispersion-bullets-item" tile="dispersion_item.png" model="item-animation" />
+	<animation id="ricochet-bullets-item" tile="ricochet_item.png" model="item-animation" />
 	<animation id="machinegunner-item" tile="machinegunner_item.png" model="item-animation" />
 	<animation id="thrower-item" tile="thrower_item.png" model="item-animation" />
 	
@@ -443,6 +444,7 @@
 	<object parent="base-item" class="mines-item" />
 	<object parent="base-item" class="dirt-bullets-item" />
 	<object parent="base-item" class="dispersion-bullets-item" />
+	<object parent="base-item" class="ricochet-bullets-item" />
 	<object parent="base-item" class="machinegunner-item" />
 	<object parent="base-item" class="boomerang-missiles-item" />
 	<object parent="base-item" class="stun-missiles-item" />

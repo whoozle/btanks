@@ -181,7 +181,14 @@ void Hud::render(sdlx::Surface &window) const {
 				window.copyFrom(_icons, src, xp, yp);
 				xp += icon_w;
 			
-				int rm = (int)(10 * obj->getEffectTimer(name));
+				float effect_rt = obj->getEffectTimer(name);
+				int rm;
+				if (effect_rt < 10) {
+					rm = (int)(10 * effect_rt);
+				} else {
+					rm = (int)effect_rt;
+				}
+				
 				if (rm >= 0) {
 					xp += _font.render(window, xp, yp, mrt::formatString("%-2d ", rm));
 				}

@@ -72,6 +72,11 @@ const bool Tank::take(const BaseObject *obj, const std::string &type) {
 		if (type == "dispersion") {
 			def = -1;
 			removeEffect("dirt");
+			removeEffect("ricochet");
+		} else if (type == "ricochet") {
+			def = 60;
+			removeEffect("dirt");
+			removeEffect("dispersion");
 		}
 		float d;
 		Config->get("objects.tank." + type + ".duration", d, def);
