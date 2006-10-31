@@ -92,7 +92,7 @@ void Kamikaze::emit(const std::string &event, BaseObject * emitter) {
 		spawn("explosion", "missile-explosion");
 		Object::emit(event, emitter);
 	} else if (event == "collision") {
-		if (emitter->classname == "missile" || emitter->classname == "bullet") {
+		if (emitter->classname != "player" && emitter->classname != "train") {
 			Object::emit(event, emitter);
 			return;
 		}
