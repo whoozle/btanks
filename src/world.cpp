@@ -760,11 +760,11 @@ TRY {
 	s.get(_last_id);
 	_last_id += 10000;
 	TRY {
-		tick(objects, dt);
-	} CATCH("applyUpdate::tick", throw;);
-	TRY {
 		cropObjects(skipped_objects);
 	} CATCH("applyUpdate::cropObjects", throw;);
+	TRY {
+		tick(objects, dt);
+	} CATCH("applyUpdate::tick", throw;);
 } CATCH("applyUpdate", throw;)
 }
 
