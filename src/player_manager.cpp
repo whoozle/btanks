@@ -277,7 +277,8 @@ TRY {
 			throw_ex(("player id exceeds players count (%d/%d)", id, _players.size()));
 		float ping = extractPing(message.data);
 		
-		_players[id].trip_time = (3 * ping + _players[id].trip_time) / 4;
+		GET_CONFIG_VALUE("multiplayer.ping-interpolation-multiplier", int, pw, 3);
+		_players[id].trip_time = (pw * ping + _players[id].trip_time) / (pw + 1);
 		LOG_DEBUG(("player %d: ping: %g ms", id, ping));		
 		break;
 	}
@@ -377,7 +378,7 @@ void IPlayerManager::updatePlayers() {
 	if (_client && _players.size() != 0 && _players[_my_idx].need_sync)	{
 		mrt::Serializator s;
 		
-		_players[0].state.serialize(s);
+		_players[_my_idx].state.serialize(s);
 		World->serializeObjectInfo(s, _players[_my_idx].id);
 		
 		Message m(Message::PlayerState);
@@ -498,6 +499,7 @@ void IPlayerManager::createControlMethod(PlayerSlot &slot, const std::string &co
 	} else if (control_method == "keys-2") {
 		slot.control_method = new KeyPlayer(SDLK_UP, SDLK_DOWN, SDLK_LEFT, SDLK_RIGHT, SDLK_RCTRL, SDLK_RSHIFT);
 	} else if (control_method == "mouse") {
+		throw_ex(("fix mouse control method, then disable this exception ;)"));
 		slot.control_method = new MouseControl();
 	} else if (control_method == "joy-1") {
 		slot.control_method = new JoyPlayer(0, 0, 1);
