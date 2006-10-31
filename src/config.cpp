@@ -162,6 +162,7 @@ void IConfig::end(const std::string &name) {
 
 	Var v(_type);
 	TRY {
+		mrt::trim(_data);
 		v.fromString(_data);
 	} CATCH("fromString", return;);
 
@@ -174,14 +175,14 @@ void IConfig::end(const std::string &name) {
 		i->second = new Var(v);
 	}
 	_name.clear();
+	_data.clear();
 }
 
 void IConfig::charData(const std::string &data) {
 	if (_name.empty())
 		return;
 	
-	_data = data;
-	mrt::trim(_data);
+	_data += data;
 }
 
 void IConfig::get(const std::string &name, float &value, const float default_value) {
