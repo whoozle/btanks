@@ -106,8 +106,7 @@ void Kamikaze::emit(const std::string &event, BaseObject * emitter) {
 
 
 Object* Kamikaze::clone() const  {
-	Object *a = new Kamikaze(*this);
-	return a;
+	return new Kamikaze(*this);
 }
 
 REGISTER_OBJECT("kamikaze", Kamikaze, ());
