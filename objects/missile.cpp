@@ -25,7 +25,9 @@
 class Missile : public Object {
 public:
 	std::string type;
-	Missile(const std::string &type) : Object("missile"), type(type) {}
+	Missile(const std::string &type) : Object("missile"), type(type) {
+		piercing = true;
+	}
 	virtual void calculate(const float dt);
 	virtual Object * clone() const;
 	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
