@@ -74,7 +74,7 @@ void Trooper::calculate(const float dt) {
 	if (getNearest(targets, _target, vel)) {
 		v3<float> tp;
 		getTargetPosition(tp, _target, _object, 16);
-		LOG_DEBUG(("target: %g %g %g", tp.x, tp.y, tp.length()));
+		//LOG_DEBUG(("target: %g %g %g", tp.x, tp.y, tp.length()));
 		/*
 		Way way;
 		if (findPath(tp, way)) {
