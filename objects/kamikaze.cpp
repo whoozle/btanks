@@ -57,6 +57,7 @@ void Kamikaze::calculate(const float dt) {
 	if (targets.empty()) {
 		targets.push_back("train");
 		targets.push_back("player");
+		targets.push_back("trooper");
 	}
 
 	if (getNearest(targets, _velocity, vel)) {
