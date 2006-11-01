@@ -63,6 +63,11 @@ void Explosion::tick(const float dt) {
 
 void Explosion::onSpawn() {
 	setDirection(0);
+	if (classname == "smoke-cloud") {
+		play("start", false);
+		play("main", true);
+	}
+	
 	play("boom", false);
 	if (classname == "nuclear-explosion") 
 		Game->shake(1, 4);
@@ -70,17 +75,33 @@ void Explosion::onSpawn() {
 
 void Explosion::emit(const std::string &event, BaseObject * emitter) {
 	if (event == "collision") {
-		if (classname != "nuclear-explosion" || emitter->pierceable)
+		if (emitter->pierceable)
 			return;
-		//nuke damage.
-		const int id = emitter->getID();
 		
-		if (_damaged_objects.find(id) != _damaged_objects.end())
-			return; //damage was already added for this object.
+		if (classname == "nuclear-explosion") {
+			//nuke damage.
+			const int id = emitter->getID();
 		
-		_damaged_objects.insert(id);
+			if (_damaged_objects.find(id) != _damaged_objects.end())
+				return; //damage was already added for this object.
 		
-		emitter->addDamage(this, hp);
+			_damaged_objects.insert(id);
+		
+			emitter->addDamage(this, max_hp);
+		} else if (classname == "smoke-cloud") {
+			//poison cloud ;)
+			
+			const std::string &ec = emitter->classname;
+			if (ec != "trooper" && ec != "citizen")
+				return;
+			
+			const int id = emitter->getID();
+			if (_damaged_objects.find(id) != _damaged_objects.end())
+				return; //damage was already added for this object.
+			
+			_damaged_objects.insert(id);
+			emitter->addDamage(this, max_hp);
+		}
 		
 	} else Object::emit(event, emitter);
 }
@@ -93,3 +114,4 @@ Object* Explosion::clone() const  {
 
 REGISTER_OBJECT("explosion", Explosion, ("explosion"));
 REGISTER_OBJECT("nuclear-explosion", Explosion, ("nuclear-explosion"));
+REGISTER_OBJECT("smoke-cloud", Explosion, ("smoke-cloud"));
