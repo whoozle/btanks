@@ -828,8 +828,7 @@ const bool IWorld::getNearest(const Object *obj, const std::string &classname, v
 	position -= obj->_position + obj->size / 2;
 	if (way == NULL)
 		return true;
-	findPath(obj, position, *way);
-	return true;
+	return findPath(obj, position, *way);
 }
 
 //BIG PATHFINDING PART
