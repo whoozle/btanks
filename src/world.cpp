@@ -711,7 +711,7 @@ TRY {
 	//LOG_DEBUG(("deserialization completed successfully"));
 }
 
-void IWorld::generateUpdate(mrt::Serializator &s) {
+void IWorld::generateUpdate(mrt::Serializator &s, const bool clean_sync_flag) {
 	unsigned int c = 0, n = _objects.size();
 	std::set<int> skipped_objects;
 
@@ -731,7 +731,7 @@ void IWorld::generateUpdate(mrt::Serializator &s) {
 			continue;
 		
 		serializeObject(s, o);	
-		if (o->need_sync)
+		if (clean_sync_flag && o->need_sync)
 			o->need_sync = false;
 	}
 	

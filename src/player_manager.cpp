@@ -337,7 +337,7 @@ void IPlayerManager::updatePlayers() {
 		if (slot.remote) {
 			Message m(Message::Respawn);
 			mrt::Serializator s;
-			World->generateUpdate(s);
+			World->generateUpdate(s, false);
 			
 			s.add(slot.id);
 			m.data = s.getData();
@@ -563,7 +563,7 @@ void IPlayerManager::tick(const float now, const float dt) {
 			Message m(Message::UpdateWorld);
 			{
 				mrt::Serializator s;
-				World->generateUpdate(s);
+				World->generateUpdate(s, true);
 				m.data = s.getData();
 			}
 			LOG_DEBUG(("sending world update... (size: %u)", m.data.getSize()));
