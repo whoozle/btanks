@@ -337,7 +337,7 @@
 	<animation id="paratrooper" model="paratrooper-animation" tile="paratrooper.png" />
 	<animation id="gay-paratrooper" model="paratrooper-animation" tile="gay_paratrooper.png" />
 	<animation id="kamikaze" model="man-animation" tile="kamikaze.png" />
-	<animation id="machinegunner" model="trooper-animation" tile="machinegunner.png" />
+	<animation id="machinegunner" model="man-animation" tile="machinegunner.png" />
 
 	<animation id="road-sign01" model="destructable-object-animation" tile="road_sign01.png" size="32" />
 	<animation id="road-sign02" model="destructable-object-animation" tile="road_sign02.png" size="32" />
