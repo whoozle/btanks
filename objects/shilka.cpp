@@ -79,8 +79,8 @@ void Shilka::calculate(const float dt) {
 void Shilka::tick(const float dt) {
 	Object::tick(dt);
 
-	bool fire_possible = _fire.tick(dt);
-	bool special_fire_possible = _special_fire.tick(dt);
+	const bool fire_possible = _fire.tick(dt);
+	const bool special_fire_possible = _special_fire.tick(dt);
 	
 	if (getState().empty()) {
 		play("hold", true);
@@ -98,36 +98,39 @@ void Shilka::tick(const float dt) {
 		}
 	}
 	
-	
+	bool play_fire = false;
 
 	if (_state.fire && fire_possible) {
 		_fire.reset();
-		
-		if (getState().substr(0,4) == "fire") 
-			cancel();
-		
-		playNow(_left_fire?"fire-left":"fire-right");
-		
+			
 		static const std::string left_fire = "shilka-bullet-left";
 		static const std::string right_fire = "shilka-bullet-right";
 		std::string animation = "shilka-bullet-";
 		animation += (_left_fire)?"left":"right";
 		if (isEffectActive("ricochet")) {
 			spawn("ricochet-bullet", "ricochet-bullet", v3<float>::empty, _direction);
+			play_fire = true;
 		} else if (isEffectActive("dispersion")) {
-			spawn("dispersion-bullet", "dispersion-bullet", v3<float>::empty, _direction);
-		} else
+			if (special_fire_possible) {
+				_special_fire.reset();
+				spawn("dispersion-bullet", "dispersion-bullet", v3<float>::empty, _direction);
+				play_fire = true;
+				goto skip_left_toggle;
+			};
+		} else { 
 			spawn("shilka-bullet", animation, v3<float>::empty, _direction);
+			play_fire = true;
+		}
 		_left_fire = ! _left_fire;
 	}
+
+skip_left_toggle:
 
 	if (_state.alt_fire && special_fire_possible) {
 		_special_fire.reset();
 		if (isEffectActive("dirt")) {
 			if (getState().substr(0,4) == "fire") 
 				cancel();
-		
-			playNow(_left_fire?"fire-left":"fire-right");
 		
 			static const std::string left_fire = "shilka-bullet-left";
 			static const std::string right_fire = "shilka-bullet-right";
@@ -137,9 +140,18 @@ void Shilka::tick(const float dt) {
 			spawn("dirt-bullet", animation, v3<float>::empty, _direction);
 
 			_left_fire = ! _left_fire;
+			play_fire = true;
 		} else if (isEffectActive("machinegunner")) {
 			spawn("machinegunner", "machinegunner", _direction*(size.length()/-2), v3<float>::empty);
 		}
+	}
+
+
+	if (play_fire) {
+		if (getState().substr(0,4) == "fire") 
+			cancel();
+		
+		playNow(_left_fire?"fire-left":"fire-right");
 	}
 }
 
