@@ -117,7 +117,8 @@ void Trooper::tick(const float dt) {
 	
 	if (_fire.tick(dt) && _state.fire) {
 		_fire.reset();
-		playNow("fire");
+		if (getState() != "fire")
+			playNow("fire");
 		spawn(_object, _object, v3<float>::empty, _target);
 	}
 }
