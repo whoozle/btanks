@@ -34,11 +34,12 @@ void PlayerSlot::serialize(mrt::Serializator &s) const {
 	s.add(id);
 	//ControlMethod * control_method;
 	position.serialize(s);
-		
+	s.add(frags);		
 }
 void PlayerSlot::deserialize(const mrt::Serializator &s) {
 	s.get(id);
 	position.deserialize(s);
+	s.get(frags);		
 }
 
 
