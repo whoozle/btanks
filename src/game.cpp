@@ -387,7 +387,7 @@ void IGame::run() {
 					_window.saveBMP("screenshot.bmp");
 					break;
 				}
-				if (event.key.keysym.sym==SDLK_d && event.key.keysym.mod & KMOD_SHIFT && _my_index >= 0) {
+				if (!PlayerManager->isClient() && event.key.keysym.sym==SDLK_d && event.key.keysym.mod & KMOD_SHIFT && _my_index >= 0) {
 					Object *o = PlayerManager->getSlot(_my_index).getObject();
 					if (o)
 						o->emit("death", 0);
