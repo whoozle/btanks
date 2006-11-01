@@ -46,6 +46,7 @@ void BaseObject::inheritParameters(const BaseObject *other) {
 	piercing = other->piercing;
 	pierceable = other->pierceable;
 	size = other->size;
+	_position.z = other->_position.z;
 }
 
 
