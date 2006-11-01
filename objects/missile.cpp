@@ -61,7 +61,7 @@ void Missile::calculate(const float dt) {
 		std::vector<std::string> targets;
 		targets.push_back("player");
 		if (type != "stun")
-			targets.push_back("kamikaze");
+			targets.push_back("trooper");
 	
 		v3<float> pos, vel;
 	

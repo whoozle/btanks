@@ -65,7 +65,7 @@ void Trooper::calculate(const float dt) {
 
 	targets.push_back("missile");
 	targets.push_back("player");
-	targets.push_back("kamikaze");
+	targets.push_back("trooper");
 	
 	v3<float> pos, vel;
 	if (getNearest(targets, pos, vel)) {

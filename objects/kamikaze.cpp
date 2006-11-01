@@ -25,7 +25,7 @@
 class Kamikaze : public Object {
 public:
 	Kamikaze() : 
-		Object("kamikaze"), _reaction(true) {}
+		Object("trooper"), _reaction(true) {}
 	
 	virtual void tick(const float dt);
 	virtual void calculate(const float dt);

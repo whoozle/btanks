@@ -125,12 +125,13 @@ const bool Launcher::take(const BaseObject *obj, const std::string &type) {
 		add("mod", spawnGrouped("machinegunner-on-launcher", "machinegunner-on-launcher", v3<float>::empty, Centered));
 		return true;
 	}
-	if (get("mod")->classname != "missiles-on-vehicle" && (obj->classname == "missiles" || obj->classname=="mines")) {
+	const bool primary_mod = (type != "smoke" && type != "stun" && obj->classname != "mines" && obj->classname != "effects");
+	if (primary_mod && get("mod")->classname != "missiles-on-vehicle") {
 		LOG_DEBUG(("restoring default mod."));
 		remove("mod");
 		add("mod", spawnGrouped("missiles-on-launcher", "guided-missiles-on-launcher", v3<float>::empty, Centered));
 	}
-	if (type != "smoke" && type != "stun" && obj->classname != "mines") {
+	if (primary_mod) {
 		if (get("mod")->take(obj, type))
 			return true;
 	} else {
