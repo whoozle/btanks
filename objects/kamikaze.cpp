@@ -93,13 +93,15 @@ void Kamikaze::emit(const std::string &event, BaseObject * emitter) {
 		spawn("explosion", "missile-explosion");
 		Object::emit(event, emitter);
 	} else if (event == "collision") {
-		if (emitter->classname != "player" && emitter->classname != "train") {
+		if (emitter->classname != "player" && emitter->classname != "train" && emitter->classname != "trooper") {
 			Object::emit(event, emitter);
 			return;
 		}
 		
+		GET_CONFIG_VALUE("objects.kamikaze.damage", int, kd, 5);
+		
 		if (emitter) 
-			emitter->addDamage(this, hp);
+			emitter->addDamage(this, kd);
 		emit("death", emitter);
 	} else 
 		Object::emit(event, emitter);
