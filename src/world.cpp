@@ -449,8 +449,10 @@ void IWorld::tick(Object &o, const float dt) {
 			}
 		}
 		//LOG_DEBUG(("bang!"));
+		/*
 		o._velocity_fadeout = -vel;
 		o._velocity.clear();
+		*/
 		o._moving_time = 0;
 	}
 
