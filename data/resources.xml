@@ -68,13 +68,13 @@
 		<pose id="run">7,8,9,10</pose>
 	</animation-model>
 
-	<animation-model id="die-man-animation" speed="5">
+	<animation-model id="dead-man-animation" speed="5">
 		<pose id="die">0,1,2,3</pose>
 		<pose id="fade-out">4,5</pose>
 		<pose id="dead">6</pose>
 	</animation-model>
 
-	<animation-model id="die-man-animation-static" speed="5">
+	<animation-model id="dead-man-animation-static" speed="5">
 		<pose id="dead">2</pose>
 	</animation-model>
 
@@ -140,7 +140,7 @@
 		<pose id="green">3</pose>
 		<pose id="flashing-green" speed="1.5">3,0,3,0,3,0</pose>
 		<pose id="fade-out" speed="10">4,5</pose>
-		<pose id="broken">5</pose>
+		<pose id="broken" z="-18">5</pose>
 	</animation-model>
 	
 	<animation-model id="missile-launch-animation" speed="10">
@@ -277,8 +277,8 @@
 	<animation id="dead-orage-bus" tile="bus01_crash.png" model="dead-car-animation"/>
 
 	<animation id="man" tile="man01.png" model="man-animation"/>
-	<animation id="die-man" tile="man01_die01.png" model="die-man-animation"/>
-	<animation id="die-man-static" tile="man01_die01.png" model="die-man-animation-static"/>
+	<animation id="dead-man" tile="man01_dead01.png" model="dead-man-animation"/>
+	<animation id="dead-man-static" tile="man01_dead01.png" model="dead-man-animation-static"/>
 
 	<animation id="fire" tile="fire.png" model="fire-animation" />
 	<animation id="smoke-cloud" tile="smoke_cloud.png" model="smoke-cloud-animation" size="192"/>
@@ -354,8 +354,8 @@
 
 	<animation id="thrower" model="trooper-animation" tile="thrower.png" />
 	<animation id="thrower-missile" model="single-tile" tile="thrower_missile.png" />
-	<animation id="die-thrower" model="die-man-animation" tile="thrower_die.png" />
-	<animation id="die-thrower-static" model="die-man-animation-static" tile="thrower_die.png" />
+	<animation id="dead-thrower" model="dead-man-animation" tile="thrower_dead.png" />
+	<animation id="dead-thrower-static" model="dead-man-animation-static" tile="thrower_dead.png" />
 
 	<object class="damage-digits" speed="60" mass="1" ttl="1" z="1500" />
 

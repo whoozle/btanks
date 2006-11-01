@@ -55,13 +55,13 @@
   <property name="object:bus-stop:bus-stop-left:2" value="1146,306"/>
   <property name="object:bus-stop:bus-stop-left:1" value="508,368"/>
   <property name="object:smoke-missiles-item:smoke-missiles-item:1" value="1146,1230"/>
-  <property name="object:static-corpse:die-thrower-static:7" value="2220,45"/>
-  <property name="object:static-corpse:die-thrower-static:6" value="2085,970"/>
-  <property name="object:static-corpse:die-thrower-static:5" value="344,1143"/>
-  <property name="object:static-corpse:die-thrower-static:4" value="591,12"/>
-  <property name="object:static-corpse:die-thrower-static:3" value="1012,1380"/>
-  <property name="object:static-corpse:die-thrower-static:2" value="681,1458"/>
-  <property name="object:static-corpse:die-thrower-static:1" value="795,833"/>
+  <property name="object:static-corpse:dead-thrower-static:7" value="2220,45"/>
+  <property name="object:static-corpse:dead-thrower-static:6" value="2085,970"/>
+  <property name="object:static-corpse:dead-thrower-static:5" value="344,1143"/>
+  <property name="object:static-corpse:dead-thrower-static:4" value="591,12"/>
+  <property name="object:static-corpse:dead-thrower-static:3" value="1012,1380"/>
+  <property name="object:static-corpse:dead-thrower-static:2" value="681,1458"/>
+  <property name="object:static-corpse:dead-thrower-static:1" value="795,833"/>
   <property name="object:impassable-static-corpse:dead-white-car:1" value="2485,896"/>
   <property name="object:traffic-lights:traffic-lights:9" value="2423,829,150"/>
   <property name="object:traffic-lights:traffic-lights:8" value="2234,828,150"/>
@@ -76,12 +76,12 @@
   <property name="object:machinegunner-item:machinegunner-item:2" value="2036,1164"/>
   <property name="object:machinegunner-item:machinegunner-item:1" value="602,1408"/>
   <property name="object:impassable-static-corpse:dead-cyan-car:1" value="2284,1357"/>
-  <property name="object:static-corpse:die-man:7" value="1318,76,-50"/>
-  <property name="object:static-corpse:die-man:6" value="2476,1354,-50"/>
-  <property name="object:static-corpse:die-man:5" value="930,798,-50"/>
-  <property name="object:static-corpse:die-man:3" value="595,1458"/>
-  <property name="object:static-corpse:die-man:2" value="478,580"/>
-  <property name="object:static-corpse:die-man:1" value="1433,1604"/>
+  <property name="object:static-corpse:dead-man:7" value="1318,76,-50"/>
+  <property name="object:static-corpse:dead-man:6" value="2476,1354,-50"/>
+  <property name="object:static-corpse:dead-man:5" value="930,798,-50"/>
+  <property name="object:static-corpse:dead-man:3" value="595,1458"/>
+  <property name="object:static-corpse:dead-man:2" value="478,580"/>
+  <property name="object:static-corpse:dead-man:1" value="1433,1604"/>
   <property name="object:biotoilet:biotoilet:4" value="704,1761"/>
   <property name="object:biotoilet:biotoilet:3" value="721,1728"/>
   <property name="object:biotoilet:biotoilet:1" value="2222,4"/>
@@ -97,19 +97,19 @@
   <property name="object:dispersion-bullets-item:dispersion-bullets-item:5" value="1182,1662"/>
   <property name="object:dispersion-bullets-item:dispersion-bullets-item:4" value="144,56"/>
   <property name="object:umbrella:umbrella:1" value="1154,510"/>
-  <property name="object:static-corpse:die-man-static:9" value="22,1474,150"/>
+  <property name="object:static-corpse:dead-man-static:9" value="22,1474,150"/>
   <property name="object:dispersion-bullets-item:dispersion-bullets-item:3" value="496,1090"/>
-  <property name="object:static-corpse:die-man-static:8" value="458,1002"/>
+  <property name="object:static-corpse:dead-man-static:8" value="458,1002"/>
   <property name="object:dispersion-bullets-item:dispersion-bullets-item:2" value="2506,98"/>
   <property name="object:dispersion-bullets-item:dispersion-bullets-item:1" value="1380,780"/>
-  <property name="object:static-corpse:die-man-static:7" value="816,1008"/>
-  <property name="object:static-corpse:die-man-static:6" value="550,818"/>
-  <property name="object:static-corpse:die-man-static:5" value="845,520"/>
-  <property name="object:static-corpse:die-man-static:4" value="1177,522"/>
-  <property name="object:static-corpse:die-man-static:3" value="1356,80"/>
-  <property name="object:static-corpse:die-man-static:2" value="1172,1865"/>
-  <property name="object:static-corpse:die-man-static:1" value="1123,1268"/>
-  <property name="object:impassable-static-corpse:die-man:4" value="422,902,-50"/>
+  <property name="object:static-corpse:dead-man-static:7" value="816,1008"/>
+  <property name="object:static-corpse:dead-man-static:6" value="550,818"/>
+  <property name="object:static-corpse:dead-man-static:5" value="845,520"/>
+  <property name="object:static-corpse:dead-man-static:4" value="1177,522"/>
+  <property name="object:static-corpse:dead-man-static:3" value="1356,80"/>
+  <property name="object:static-corpse:dead-man-static:2" value="1172,1865"/>
+  <property name="object:static-corpse:dead-man-static:1" value="1123,1268"/>
+  <property name="object:impassable-static-corpse:dead-man:4" value="422,902,-50"/>
   <property name="object:megaheal:megaheal:1" value="1820,606"/>
   <property name="object:gate:gate:1" value="1856,1410"/>
   <property name="object:stun-missiles-item:stun-missiles-item:2" value="1796,1792"/>
@@ -135,7 +135,7 @@
   <property name="object:impassable-static-corpse:dead-cyan-shilka:2" value="1237,493"/>
   <property name="object:impassable-static-corpse:dead-cyan-shilka:1" value="644,1445"/>
   <property name="object:van:van:1" value="1095,543,150"/>
-  <property name="object:static-corpse:die-man-static:10" value="651,1843"/>
+  <property name="object:static-corpse:dead-man-static:10" value="651,1843"/>
   <property name="waypoint:cars:9" value="1380,527"/>
   <property name="object:traffic-lights:traffic-lights:13" value="505,1012"/>
   <property name="waypoint:cars:8" value="1484,951"/>
