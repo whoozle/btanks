@@ -40,6 +40,7 @@ public:
 		s.add(_object);
 		s.add(_aim_missiles);
 		_fire.serialize(s);
+		_target.serialize(s);
 	}
 	virtual void deserialize(const mrt::Serializator &s) {
 		Object::deserialize(s);
@@ -47,6 +48,7 @@ public:
 		s.get(_object);
 		s.get(_aim_missiles);
 		_fire.deserialize(s);
+		_target.deserialize(s);
 	}	
 
 private: 
@@ -54,6 +56,7 @@ private:
 	std::string _object;
 	bool _aim_missiles;
 	Alarm _fire;
+	v3<float> _target;
 };
 
 void Trooper::calculate(const float dt) {
@@ -67,11 +70,11 @@ void Trooper::calculate(const float dt) {
 	targets.push_back("player");
 	targets.push_back("trooper");
 	
-	v3<float> pos, vel;
-	if (getNearest(targets, pos, vel)) {
+	v3<float> vel;
+	if (getNearest(targets, _target, vel)) {
 		v3<float> tp;
-		getTargetPosition(tp, pos, _object, 16);
-		LOG_DEBUG(("target: %g %g", tp.x, tp.y));
+		getTargetPosition(tp, _target, _object, 16);
+		LOG_DEBUG(("target: %g %g %g", tp.x, tp.y, tp.length()));
 		/*
 		Way way;
 		if (findPath(tp, way)) {
@@ -82,10 +85,18 @@ void Trooper::calculate(const float dt) {
 		_velocity = tp;
 		_velocity.quantize8();
 		setDirection(_velocity.getDirection8() - 1);
-		if (tp.length() < 8)
+		_direction.fromDirection(getDirection(), 8);
+		
+		if (tp.length() < 16)
 			_velocity.clear();
+		
 	}
 	_state.fire = _velocity.is0();
+	if (_state.fire) {
+		_direction = _target;
+		_direction.quantize8();
+		setDirection(_direction.getDirection8() - 1 );
+	}
 }
 
 void Trooper::tick(const float dt) {
@@ -107,7 +118,7 @@ void Trooper::tick(const float dt) {
 	if (_fire.tick(dt) && _state.fire) {
 		_fire.reset();
 		playNow("fire");
-		spawn(_object, _object, v3<float>::empty, _direction);
+		spawn(_object, _object, v3<float>::empty, _target);
 	}
 }
 
