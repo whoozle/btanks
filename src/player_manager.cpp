@@ -177,6 +177,7 @@ TRY {
 	
 	case Message::UpdateWorld: {
 		mrt::Serializator s(&message.data);
+		deserializeSlots(s);
 		World->applyUpdate(s, _trip_time / 1000.0);
 		break;
 	} 
@@ -287,10 +288,9 @@ TRY {
 		TRY {
 		if (id < 0 || (unsigned)id >= _players.size())
 			throw_ex(("player id exceeds players count (%d/%d)", id, _players.size()));
-		PlayerSlot &slot = _players[_my_idx];
 		mrt::Serializator s(&message.data);
+		deserializeSlots(s);
 		World->applyUpdate(s, _trip_time / 1000.0);
-		s.get(slot.id);
 		} CATCH("message::respawn", throw;);
 	break;
 	}
@@ -337,9 +337,9 @@ void IPlayerManager::updatePlayers() {
 		if (slot.remote) {
 			Message m(Message::Respawn);
 			mrt::Serializator s;
+			serializeSlots(s);
 			World->generateUpdate(s, false);
 			
-			s.add(slot.id);
 			m.data = s.getData();
 			_server->send(i, m);
 		}
@@ -563,6 +563,7 @@ void IPlayerManager::tick(const float now, const float dt) {
 			Message m(Message::UpdateWorld);
 			{
 				mrt::Serializator s;
+				serializeSlots(s);
 				World->generateUpdate(s, true);
 				m.data = s.getData();
 			}
