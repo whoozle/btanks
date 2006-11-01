@@ -78,7 +78,7 @@
 		<pose id="dead">2</pose>
 	</animation-model>
 
-	<animation-model id="thrower-animation" speed="7">
+	<animation-model id="trooper-animation" speed="7">
 		<pose id="hold">0</pose>
 		<pose id="walk">1,2,3,2,4,5,6,5</pose>
 		<pose id="run">7,8,9,10</pose>
@@ -337,7 +337,7 @@
 	<animation id="paratrooper" model="paratrooper-animation" tile="paratrooper.png" />
 	<animation id="gay-paratrooper" model="paratrooper-animation" tile="gay_paratrooper.png" />
 	<animation id="kamikaze" model="man-animation" tile="kamikaze.png" />
-	<animation id="machinegunner" model="man-animation" tile="machinegunner.png" />
+	<animation id="machinegunner" model="trooper-animation" tile="machinegunner.png" />
 
 	<animation id="road-sign01" model="destructable-object-animation" tile="road_sign01.png" size="32" />
 	<animation id="road-sign02" model="destructable-object-animation" tile="road_sign02.png" size="32" />
@@ -352,7 +352,7 @@
 
 	<animation id="submarine" model="yellow-submarine" tile="submarine.png" tile_width="192" tile_height="128" />
 
-	<animation id="thrower" model="thrower-animation" tile="thrower.png" />
+	<animation id="thrower" model="trooper-animation" tile="thrower.png" />
 	<animation id="thrower-missile" model="single-tile" tile="thrower_missile.png" />
 	<animation id="die-thrower" model="die-man-animation" tile="thrower_die.png" />
 	<animation id="die-thrower-static" model="die-man-animation-static" tile="thrower_die.png" />
