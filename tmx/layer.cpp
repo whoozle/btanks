@@ -32,9 +32,9 @@ void Layer::optimize(std::vector< std::pair<sdlx::Surface *, sdlx::CollisionMap 
 	unsigned size = _w * _h;
 	
 	Uint32 *ptr = (Uint32 *)_data.getPtr();
-	delete _s_data;
+	delete[] _s_data;
 	_s_data = new sdlx::Surface*[size];
-	delete _c_data;
+	delete[] _c_data;
 	_c_data = new sdlx::CollisionMap*[size];
 
 	for(unsigned int i = 0; i < size; ++i) {
