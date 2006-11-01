@@ -337,7 +337,7 @@
 	<animation id="paratrooper" model="paratrooper-animation" tile="paratrooper.png" />
 	<animation id="gay-paratrooper" model="paratrooper-animation" tile="gay_paratrooper.png" />
 	<animation id="kamikaze" model="man-animation" tile="kamikaze.png" />
-	<animation id="machinegunner" model="man-animation" tile="machinegunner.png" />
+	<animation id="machinegunner" model="trooper-animation" tile="machinegunner.png" />
 
 	<animation id="road-sign01" model="destructable-object-animation" tile="road_sign01.png" size="32" />
 	<animation id="road-sign02" model="destructable-object-animation" tile="road_sign02.png" size="32" />
@@ -407,7 +407,7 @@
 	<object class="corpse" hp="1000" ttl="10" fadeout_time="1" z="-1" impassability="0" />
 	<object class="explosion" hp="1" z="580" />
 	<object class="nuclear-explosion" hp="1000" impassability="-1" z="900" />
-	<object class="dirt" impassability="0.7" z="-20" />
+	<object class="dirt" impassability="0.5" z="-20" ttl="50" fadeout="5" />
 	<object class="pond" hp="1000" pierceable="true" impassability="1" z="150" />
 	<object class="gate" hp="1" impassability="1" z="150" />
 	<object class="bus-stop" hp="5" impassability="1" z="150" />
