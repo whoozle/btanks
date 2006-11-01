@@ -376,7 +376,7 @@
 	<alias name="oil-barrels" class="destructable-object-with-fire(pierceable)" />
 	<alias name="impassable-static-corpse" class="static-corpse" />
 
-	<object class="tank" speed="400" mass="500" hp="40" z="0" />
+	<object class="tank" speed="400" mass="500" hp="80" z="0" />
 	<object class="ai-tank" parent="tank" z="0" />
 	<object class="bullet" speed="1100" mass="2" ttl="1" hp="10" z="-10" />
 	<object class="ricochet-bullet" speed="1100" mass="2" ttl="2" hp="10" z="-10" />
@@ -384,10 +384,10 @@
 	<object class="machinegunner-bullet" speed="1100" mass="2" ttl="1" hp="2" z="-10" />
 	<object class="dirt-bullet" speed="600" mass="1" ttl="0.5" hp="0" z="-10" />
 
-	<object class="shilka" speed="450" mass="400" hp="80" z="0" />
+	<object class="shilka" speed="450" mass="400" hp="60" z="0" />
 	<object class="shilka-bullet" speed="1200" mass="1" piercing="true" ttl="1" hp="5" z="-10" />
 
-	<object class="launcher" speed="500" mass="400" hp="20" z="0" />
+	<object class="launcher" speed="500" mass="400" hp="40" z="0" />
 
 	<object class="guided-missile" speed="450" mass="100" ttl="5" hp="15" z="250" />
 	<object class="smoke-missile" speed="450" mass="100" ttl="1" hp="0" z="250" />
