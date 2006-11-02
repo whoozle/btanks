@@ -83,11 +83,7 @@ void SinglePose::onSpawn() {
 
 
 Object* SinglePose::clone() const  {
-	Object *a = NULL;
-	TRY {
-		a = new SinglePose(*this);
-	} CATCH("clone", { delete a; throw; });
-	return a;
+	return new SinglePose(*this);
 }
 
 REGISTER_OBJECT("single-pose", SinglePose, ("main", true));
