@@ -63,6 +63,10 @@ void Trooper::calculate(const float dt) {
 	calculateWayVelocity();
 	if (!_reaction.tick(dt))
 		return;
+	if (getState() == "fire") {
+		_state.fire = true; //just to be sure.
+		return;
+	}
 	
 	std::vector<std::string> targets;
 
@@ -104,7 +108,7 @@ void Trooper::tick(const float dt) {
 	
 	const std::string state = getState();
 	if (_velocity.is0()) {
-		if (state != "hold") {
+		if (state != "hold" && state != "fire") {
 			cancelAll();
 			play("hold", true);
 		}
