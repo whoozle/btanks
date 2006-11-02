@@ -199,10 +199,9 @@ TRY {
 
 		//World->tick(*slot.obj, -slot.trip_time / 1000.0);
 		Object * obj = World->deserializeObjectInfo(s, slot.id);
-		if (obj == NULL) {
-			LOG_DEBUG(("player state for non-existent object %d recv'ed", slot.id));
-			break;
-		}
+		if (obj == NULL) 
+			throw_ex(("player state for non-existent object %d recv'ed", slot.id));
+		
 		assert(slot.id == obj->getID());
 		
 		slot.need_sync = obj->updatePlayerState(state);
@@ -404,6 +403,7 @@ void IPlayerManager::updatePlayers() {
 				slot.state.serialize(s);
 				World->serializeObjectInfo(s, slot.id);
 				send = true;
+				slot.need_sync = false;
 			}
 		}
 
@@ -412,10 +412,6 @@ void IPlayerManager::updatePlayers() {
 		
 		if (send)
 			broadcast(m);
-
-		for(int i = 0; i < n; ++i) {
-			_players[i].need_sync = false;
-		}
 	}
 }
 
