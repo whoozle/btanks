@@ -309,7 +309,8 @@
 	<animation id="bullet" tile="bullet.png" model="bullet-animation"/>
 	<animation id="dispersion-bullet" tile="bullet16.png" model="bullet-animation"/>
 	<animation id="ricochet-bullet" tile="bullet16.png" model="bullet-animation"/>
-	<animation id="machinegunner-bullet" tile="machinegunner_bullet.png" model="bullet-animation"/>
+	<animation id="vehicle-machinegunner-bullet" tile="machinegunner_bullet.png" model="bullet-animation"/>
+	<animation id="machinegunner-bullet" tile="machinegunner_bullet2.png" model="bullet-animation"/>
 	<animation id="dirt-bullet" tile="dirt_bullet.png" model="bullet-animation"/>
 	<animation id="explosion" tile="explosion.png" model="explosion-animation" />
 	<animation id="nuclear-explosion" tile="nuclear_explosion.png" model="nuclear-explosion-animation" size="448" />
