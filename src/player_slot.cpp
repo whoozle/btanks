@@ -65,6 +65,8 @@ void PlayerSlot::clear() {
 	}
 	animation.clear();
 	classname.clear();
+
+	need_sync = false;
 	remote = false;
 	frags = 0;
 	reserved = false;
