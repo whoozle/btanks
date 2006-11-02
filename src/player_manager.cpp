@@ -213,6 +213,7 @@ TRY {
 	} 
 	case Message::UpdatePlayers: { 
 		mrt::Serializator s(&message.data);
+		std::set<Object *> updated_objects;
 		while(!s.end()) {
 			int id;
 			s.get(id);
@@ -237,8 +238,9 @@ TRY {
 			if (slot < _players.size()) {
 				_players[slot].id = o->getID(); // ???
 			}
-			World->tick(*o, _trip_time / 1000.0);
+			updated_objects.insert(o);
 		}	
+		World->tick(updated_objects, _trip_time / 1000.0);
 		break;
 	} 
 	case Message::Ping: {
