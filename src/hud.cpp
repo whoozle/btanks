@@ -122,12 +122,14 @@ void Hud::renderMod(const Object *obj, sdlx::Surface &window, int &xp, int &yp, 
 		xp += _font.render(window, xp, yp, "  ");
 		return;
 	}
-				
+	
+	const int font_dy = (icon_h - _font.getHeight()) / 2;
+
 	sdlx::Rect src(icon_w * i->second, 0, icon_w, icon_h);
 	window.copyFrom(_icons, src, xp, yp);
 	xp += icon_w;
 	if (count > 0)
-		xp += _font.render(window, xp, yp, mrt::formatString("%-2d", count));
+		xp += _font.render(window, xp, yp + font_dy, mrt::formatString("%-2d", count));
 	else 
 		xp += _font.render(window, xp, yp, "  ");
 	window.copyFrom(_splitter, xp, yp);
@@ -142,6 +144,11 @@ void Hud::render(sdlx::Surface &window) const {
 	
 	size_t n = PlayerManager->getSlotsCount();
 
+	GET_CONFIG_VALUE("hud.icon.width", int, icon_w, 16);
+	GET_CONFIG_VALUE("hud.icon.height", int, icon_h, 24);
+	
+	const int font_dy = (icon_h - _font.getHeight()) / 2;
+
 	//only one visible player supported
 	for(size_t i = 0; i < n; ++i) {
 		const PlayerSlot &slot = PlayerManager->getSlot(i);
@@ -154,14 +161,10 @@ void Hud::render(sdlx::Surface &window) const {
 		if (obj == NULL)
 			continue;
 
-		GET_CONFIG_VALUE("hud.icon.width", int, icon_w, 16);
-		GET_CONFIG_VALUE("hud.icon.height", int, icon_h, 24);
-
 		int xp = slot.viewport.x;
-
 		int yp = slot.viewport.y + 3;
 
-		xp += _font.render(window, xp, yp, hp);	
+		xp += _font.render(window, xp, yp + font_dy, hp);	
 		
 		renderMod(obj, window, xp, yp, "mod", icon_w, icon_h);
 		renderMod(obj, window, xp, yp, "alt-mod", icon_w, icon_h);
@@ -190,7 +193,7 @@ void Hud::render(sdlx::Surface &window) const {
 				}
 				
 				if (rm >= 0) {
-					xp += _font.render(window, xp, yp, mrt::formatString("%-2d ", rm));
+					xp += _font.render(window, xp, yp + font_dy, mrt::formatString("%-2d ", rm));
 				}
 				any_effect = true;
 			}
@@ -215,7 +218,7 @@ void Hud::render(sdlx::Surface &window) const {
 			sdlx::Rect src(icon_w * ic->second, 0, icon_w, icon_h);
 			window.copyFrom(_icons, src, xp, yp);
 			xp += icon_w;
-			xp += _font.render(window, xp, yp, mrt::formatString("%-2d ", slot.frags));
+			xp += _font.render(window, xp, yp + font_dy, mrt::formatString("%-2d ", slot.frags));
 			
 		} while(0);
 	}

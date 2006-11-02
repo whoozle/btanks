@@ -23,6 +23,10 @@ void Font::load(const std::string &file, const Type type) {
 	_surface->loadImage(file);
 }
 
+const int Font::getHeight() const {
+	return _surface->getHeight();
+}
+
 const int Font::render(sdlx::Surface &window, const int x, const int y, const std::string &str) const {
 	int fw, fh;
 	fw = fh = _surface->getHeight();
