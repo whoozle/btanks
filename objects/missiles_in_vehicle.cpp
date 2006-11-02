@@ -38,16 +38,23 @@ public:
 			def_cap = 10;
 			
 			if (_type == "guided") 
-				def_cap = 8;
-			else if (_type == "smoke") 
-				def_cap = 10;
-			else if (_type == "dumb") 
-				def_cap = 10;
+				def_cap = 15;
 			else if (_type == "nuke")
-				def_cap = 3;
+				def_cap = 4;
+			else if (_type == "stun")
+				def_cap = 6;
 			
 		} else if (_vehicle == "tank") {
-			def_cap = (_type == "nuke")?2:3;
+			if (_type == "nuke")
+				def_cap = 3;
+			else if (_type == "boomerang") 
+				def_cap = 6;
+			else if (_type == "dumb") 
+				def_cap = 8;
+			else if (_type == "stun")
+				def_cap = 4;
+				
+			
 		}
 		Config->get(key + ".capacity", max_n, def_cap);
 		n = max_n;

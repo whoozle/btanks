@@ -47,7 +47,7 @@ void Tank::onSpawn() {
 	add("mod", _missiles);
 	add("smoke", _smoke);
 	
-	GET_CONFIG_VALUE("objects.tank.fire-rate", float, fr, 0.5);
+	GET_CONFIG_VALUE("objects.tank.fire-rate", float, fr, 0.3);
 	_fire.set(fr);
 }
 
