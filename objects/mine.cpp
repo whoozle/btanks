@@ -50,7 +50,7 @@ void Mine::emit(const std::string &event, BaseObject * emitter) {
 		if (getState() == "armed") {
 			spawn("explosion", "explosion");
 			Object::emit("death", emitter);
-			emitter->addDamage(this, hp);
+			emitter->addDamage(this, max_hp);
 		} 
 	} else Object::emit(event, emitter);
 }
