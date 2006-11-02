@@ -301,8 +301,8 @@ Hud::Hud(const int w, const int h) : _update_radar(true) {
 	LOG_DEBUG(("searching splash... %dx%d", w, h));
 	int sw = 0;
 	int splash_sizes[] = { 1280, 1152, 1024, 800 };
-	for(unsigned i = 0; i < sizeof(splash_sizes) / sizeof(splash_sizes[0]); ++i) {
-		sw = splash_sizes[i];
+	for(unsigned si = 0; si < sizeof(splash_sizes) / sizeof(splash_sizes[0]); ++si) {
+		sw = splash_sizes[si];
 		if (w >= sw) {
 			break;
 		}
