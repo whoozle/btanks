@@ -108,8 +108,7 @@ void Explosion::emit(const std::string &event, BaseObject * emitter) {
 
 
 Object* Explosion::clone() const  {
-	Object *a = new Explosion(*this);
-	return a;
+	return new Explosion(*this);
 }
 
 REGISTER_OBJECT("explosion", Explosion, ("explosion"));
