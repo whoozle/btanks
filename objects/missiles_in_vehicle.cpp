@@ -30,13 +30,12 @@ public:
 			max_n = n = 0; 
 			return;
 		}
-		int def_cap = 3;
+		int def_cap = 10;
 		int def_v = 1;
 
 		if (_vehicle == "launcher") {
 			def_v = (_type == "nuke")?2:3;
-			def_cap = 10;
-			
+
 			if (_type == "guided") 
 				def_cap = 15;
 			else if (_type == "nuke")
@@ -53,8 +52,7 @@ public:
 				def_cap = 8;
 			else if (_type == "stun")
 				def_cap = 4;
-				
-			
+						
 		}
 		Config->get(key + ".capacity", max_n, def_cap);
 		n = max_n;
