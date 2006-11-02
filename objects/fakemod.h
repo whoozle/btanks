@@ -1,5 +1,5 @@
-#ifndef __BT_SHILKA_H__
-#define __BT_SHILKA_H__
+#ifndef __BTANKS_FAKEMOD_H__
+#define __BTANKS_FAKEMOD_H__
 
 /* Battle Tanks Game
  * Copyright (C) 2006 Battle Tanks team
@@ -18,33 +18,33 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-
-#include <string>
 #include "object.h"
-#include "alarm.h"
-
-class FakeMod;
-
-class Shilka : public Object {
-public:
-	Shilka();
-	Shilka(const std::string &animation);
+#include <string>
+ 
+class FakeMod : public Object {
+public: 
+	FakeMod();
 	virtual Object * clone() const;
-	virtual void onSpawn();
 
-	virtual void emit(const std::string &event, BaseObject * emitter);
-	virtual void tick(const float dt);
-	virtual void calculate(const float dt);
-	virtual const bool take(const BaseObject *obj, const std::string &type);
-	
 	virtual void serialize(mrt::Serializator &s) const;
 	virtual void deserialize(const mrt::Serializator &s);
-	FakeMod *getMod(const std::string &name);
+	
+	virtual void onSpawn();
+	
+	virtual void tick(const float dt);
+	virtual void calculate(const float dt);
+	virtual void render(sdlx::Surface &surface, const int x, const int y);
+	
+	virtual const std::string getType() const;
+	virtual const int getCount() const;
 
-private:
-	Alarm _fire, _special_fire;
-	bool _left_fire;
+	void setCount(const int n);
+	void setType(const std::string &type);
+	void decreaseCount(const int n = 1);
+
+private: 
+	std::string _type;
+	int _n;
 };
 
 #endif
-

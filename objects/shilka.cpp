@@ -24,6 +24,7 @@
 #include "game.h"
 #include "shilka.h"
 #include "config.h"
+#include "fakemod.h"
 
 REGISTER_OBJECT("shilka", Shilka, ());
 
@@ -36,8 +37,18 @@ Shilka::Shilka(const std::string &animation)
 	setup(animation);
 }
 
+FakeMod *Shilka::getMod(const std::string &name) {
+	Object *o = get(name);
+	assert(o != NULL);
+	FakeMod *f = dynamic_cast<FakeMod*>(o);
+	if (f == NULL)
+		throw_ex(("cannot get FakeMod instance. [got %s(%s)]", o->registered_name.c_str(), o->classname.c_str()));
+	return f;
+}
 
 void Shilka::onSpawn() {
+	add("mod", spawnGrouped("fake-mod", "damage-digits", v3<float>::empty, Centered));
+	
 	Object *_smoke = spawnGrouped("single-pose", "tank-smoke", v3<float>::empty, Centered);
 	_smoke->impassability = 0;
 
@@ -128,6 +139,9 @@ skip_left_toggle:
 
 	if (_state.alt_fire && special_fire_possible) {
 		_special_fire.reset();
+		
+		FakeMod * mod = getMod("mod");
+		
 		if (isEffectActive("dirt")) {
 			if (getState().substr(0,4) == "fire") 
 				cancel();
@@ -141,8 +155,11 @@ skip_left_toggle:
 
 			_left_fire = ! _left_fire;
 			play_fire = true;
-		} else if (isEffectActive("machinegunner")) {
-			spawn("machinegunner", "machinegunner", _direction*(size.length()/-2), v3<float>::empty);
+		} else if (mod->getType() == "machinegunner") {
+			if (mod->getCount() > 0) {
+				spawn("machinegunner", "machinegunner", _direction*(size.length()/-2), v3<float>::empty);
+				mod->decreaseCount();
+			}
 		}
 	}
 
@@ -162,14 +179,18 @@ const bool Shilka::take(const BaseObject *obj, const std::string &type) {
 		} else if (type == "ricochet") {
 			removeEffect("dispersion");
 		} else if (type == "dirt") {
-			removeEffect("machinegunner");
+			getMod("mod")->setType(std::string());
 		}
 		addEffect(type);
 		return true;
 	} else if (obj->classname =="mod") {
 		if (type == "machinegunner") {
 			removeEffect("dirt");
-			addEffect("machinegunner");
+			FakeMod *mod = getMod("mod");
+			mod->setType("machinegunner");
+			GET_CONFIG_VALUE("objects.shilka.machinegunner-capacity", int, n, 5);
+			mod->setCount(n);
+			return true;
 		}
 	}
 	return BaseObject::take(obj, type);
