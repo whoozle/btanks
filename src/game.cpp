@@ -319,6 +319,9 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 		}
 		LOG_DEBUG(("%u items on map.", (unsigned) _items.size()));
 	} //if (spawn_objects)
+	
+	_hud->initMap();
+	
 	t_start = SDL_GetTicks();
 }
 

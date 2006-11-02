@@ -41,31 +41,21 @@ static Uint32 index2color(const sdlx::Surface &surface, const unsigned idx, cons
 	return surface.mapRGBA(r, g, b, a);
 }
 
-void Hud::renderRadar(const float dt, sdlx::Surface &window) {
-	if (!Map->loaded()) {
-		_radar.free();
-		return;
-	}
-	
-	if (!_radar.isNull() && !_update_radar.tick(dt)) {
-		const int x = window.getWidth() - _radar.getWidth(), y = _background.getHeight();
-		window.copyFrom(_radar, x, y);
-		return;
-	}
-		
+void Hud::initMap() {
+	_radar.free();
+	_radar_bg.free();
+
+	assert(Map->loaded());
 	
 	Matrix<int> matrix; 
 	Map->getImpassabilityMatrix(matrix);
 	GET_CONFIG_VALUE("hud.radar.zoom", int, zoom, 3);
 
-	if (_radar.isNull() || (zoom * matrix.getWidth() != _radar.getWidth() || zoom * matrix.getHeight() != _radar.getHeight())) {
-		LOG_DEBUG(("creating radar surface..."));
-		_radar.createRGB(zoom * matrix.getWidth(), zoom * matrix.getHeight(), 32);
-		_radar.convertAlpha();
-	}
+	LOG_DEBUG(("creating radar surface..."));
+	_radar_bg.createRGB(zoom * matrix.getWidth(), zoom * matrix.getHeight(), 32);
+	_radar_bg.convertAlpha();
 	//LOG_DEBUG(("rendering radar..."));
-	const int x = window.getWidth() - _radar.getWidth(), y = _background.getHeight();
-	_radar.lock();
+	_radar_bg.lock();
 	//update radar;
 	for(int ry = 0; ry < matrix.getHeight(); ++ry) 
 		for(int rx = 0; rx < matrix.getWidth(); ++rx) {
@@ -75,12 +65,41 @@ void Hud::renderRadar(const float dt, sdlx::Surface &window) {
 			
 			for(int yy = 0; yy < zoom; ++yy) 
 				for(int xx = 0; xx < zoom; ++xx) {
-				_radar.putPixel(rx*zoom + xx, ry*zoom + yy, _radar.mapRGBA(0, v * 255 / 100, 0, 128 + v));
+				_radar_bg.putPixel(rx*zoom + xx, ry*zoom + yy, _radar_bg.mapRGBA(0, v * 255 / 100, 0, 128 + v));
 			}
 		}
+	_radar_bg.unlock();
+	_radar_bg.setAlpha(0, 0);
+}
+
+
+void Hud::renderRadar(const float dt, sdlx::Surface &window) {
+	if (!Map->loaded()) {
+		_radar.free();
+		_radar_bg.free();
+		return;
+	}
+	
+	assert(!_radar_bg.isNull());
+	
+	if (!_radar.isNull() && !_update_radar.tick(dt)) {
+		const int x = window.getWidth() - _radar.getWidth(), y = _background.getHeight();
+		window.copyFrom(_radar, x, y);
+		return;
+	}
+	
+	if (_radar.isNull()) {
+		_radar.createRGB(_radar_bg.getWidth(), _radar_bg.getHeight(), 32);
+		_radar.convertAlpha();
+	}
+
+	const int x = window.getWidth() - _radar.getWidth(), y = _background.getHeight();
 
 	v3<int> msize = Map->getSize();
 	size_t n = PlayerManager->getSlotsCount();
+
+	_radar.copyFrom(_radar_bg, 0, 0);
+	_radar.lock();
 	
 	for(size_t i = 0; i < n; ++i) {
 		PlayerSlot &slot = PlayerManager->getSlot(i);
