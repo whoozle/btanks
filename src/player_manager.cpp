@@ -144,8 +144,6 @@ TRY {
 		PlayerSlot &slot = _players[id];
 		if (!slot.reserved) 
 			throw_ex(("RequestPlayer sent over non-reserved slot[%d]. bug/hack.", id));	
-		slot.reserved = false;
-		slot.remote = true;
 		
 		const std::string &vehicle = message.get("vehicle");
 		
@@ -155,6 +153,9 @@ TRY {
 
 		LOG_DEBUG(("player%d: %s:%s", id, vehicle.c_str(), animation.c_str()));
 		spawnPlayer(slot, vehicle, animation);
+
+		slot.reserved = false;
+		slot.remote = true;
 
 		mrt::Serializator s;
 		World->serialize(s);
