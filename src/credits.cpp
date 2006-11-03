@@ -21,12 +21,14 @@
 #include "math/abs.h"
 #include "math/minmax.h"
 
-Credits::Credits() {
+Credits::Credits() : _w(0), _h(0) {
 	GET_CONFIG_VALUE("engine.data-directory", std::string, data_dir, "data");
 	_font.load(data_dir + "/font/big.png", sdlx::Font::AZ09, false);
+	_medium_font.load(data_dir + "/font/medium.png", sdlx::Font::AZ09, false);
 	
-	int fh = _font.getHeight();
-	std::vector<std::string> lines; 
+	int fh = _font.getHeight(), mfh = _medium_font.getHeight();
+	
+	std::vector<std::string> lines, lines2; 
 	lines.push_back("BATTLE TANKS");
 	lines.push_back("");
 	lines.push_back("PROGRAMMING");
@@ -42,14 +44,24 @@ Credits::Credits() {
 	lines.push_back("GAME DESIGN");
 	lines.push_back("NETIVE MEDIA GROUP 2006");
 
-	_h = fh * lines.size();
+	lines.push_back("");
+	lines.push_back("");
+	
+	lines2.push_back("THE CREDITS HAVE BEEN COMPLETED IN AN ENTIRELY DIFFERENT STYLE");
+	lines2.push_back("AT GREAT EXPENSE AND AT THE LAST MINUTE");
+	lines2.push_back("BY A TEAM OF FORTY OR FIFTY WELL-TRAINED LLAMAS.");
 
-	size_t max_w = 0;
+	_h = fh * lines.size() + mfh * lines2.size();
+
+	//copy-paste ninja was here ;)
 	for(std::vector<std::string>::const_iterator i = lines.begin(); i != lines.end(); ++i) {
-		if (i->size() > max_w)
-			max_w = i->size();
+		if (i->size() * fh > _w)
+			_w = i->size() * fh;
 	}
-	_w = max_w * fh;
+	for(std::vector<std::string>::const_iterator i = lines2.begin(); i != lines2.end(); ++i) {
+		if (i->size() * mfh > _w)
+			_w = i->size() * mfh;
+	}
 	_surface.createRGB(_w, _h, 24);
 	_surface.convertAlpha();
 	
@@ -59,6 +71,11 @@ Credits::Credits() {
 		const std::string &str = lines[i];
 		_font.render(_surface, (_w - str.size() * fh) / 2, i * fh, str);
 	}
+	for(size_t i = 0; i < lines2.size(); ++i) {
+		const std::string &str = lines2[i];
+		_medium_font.render(_surface, (_w - str.size() * mfh) / 2, lines.size() * fh + i * mfh, str);
+	}
+	//copy-paste ninjas have done its evil deed and vanishes.
 	_velocity.x = 2;
 	_velocity.y = 3;
 	_velocity.normalize();
@@ -66,8 +83,8 @@ Credits::Credits() {
 
 void Credits::render(const float dt, sdlx::Surface &surface) {
 	_position += _velocity * dt * 150;
-	int xmargin = math::max(_w - surface.getWidth(), 50);
-	int ymargin = math::max(_h - surface.getHeight(), 50);
+	int xmargin = math::max((int)_w - surface.getWidth(), 96);
+	int ymargin = math::max((int)_h - surface.getHeight(), 96);
 	
 	if (_position.x < -xmargin)
 		_velocity.x = math::abs(_velocity.x);
