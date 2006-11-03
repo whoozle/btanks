@@ -459,10 +459,11 @@ void IWorld::tick(Object &o, const float dt) {
 			}
 		}
 		//LOG_DEBUG(("bang!"));
-		/*
-		o._velocity_fadeout = -vel;
+		GET_CONFIG_VALUE("engine.bounce-velocity-multiplier", float, bvm, 0.5);
+		
+		o._velocity_fadeout = -bvm * vel;
 		o._velocity.clear();
-		*/
+		
 		o._moving_time = 0;
 	}
 
