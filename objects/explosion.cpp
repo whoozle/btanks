@@ -92,7 +92,7 @@ void Explosion::emit(const std::string &event, BaseObject * emitter) {
 			//poison cloud ;)
 			
 			const std::string &ec = emitter->classname;
-			if (ec != "trooper" && ec != "citizen")
+			if (ec != "trooper" && ec != "citizen" && ec != "kamikaze")
 				return;
 			
 			const int id = emitter->getID();
