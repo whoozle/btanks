@@ -761,7 +761,7 @@ void IPlayerManager::onPlayerDeath(const Object *player, const Object *killer) {
 	if (slot == NULL)
 		slot = getSlotByID(killer->getRealOwner());
 
-	if (slot->id == player->getID()) //suicide :)
+	if (slot == NULL || slot->id == player->getID()) //suicide :)
 		return;
 		
 	if (slot != NULL) {
