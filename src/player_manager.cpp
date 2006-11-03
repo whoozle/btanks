@@ -495,6 +495,9 @@ const PlayerSlot &IPlayerManager::getSlot(const unsigned int idx) const {
 }
 
 PlayerSlot *IPlayerManager::getSlotByID(const int id) {
+	if (id <= 0)
+		return NULL;
+	
 	for(std::vector<PlayerSlot>::iterator i = _players.begin(); i != _players.end(); ++i) {
 		PlayerSlot &slot = *i;
 		if (slot.id == id) 
@@ -754,14 +757,13 @@ void IPlayerManager::onPlayerDeath(const Object *player, const Object *killer) {
 	if (isClient())
 		return;
 	
-	int owner = killer->getOwner();
-	if (owner <= 0)
-		owner = killer->getRealOwner();
-	
-	if (owner <= 0 || owner == player->getID())
+	PlayerSlot *slot = getSlotByID(killer->getOwner());
+	if (slot == NULL)
+		slot = getSlotByID(killer->getRealOwner());
+
+	if (slot->id == player->getID()) //suicide :)
 		return;
-	
-	PlayerSlot *slot = getSlotByID(owner);
+		
 	if (slot != NULL) {
 		++(slot->frags);
 		return;
