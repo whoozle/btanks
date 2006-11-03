@@ -590,7 +590,7 @@ Object* IWorld::spawn(Object *src, const std::string &classname, const std::stri
 	Object *obj = ResourceManager->createObject(classname, animation);
 	assert(obj->_owner_id == 0);
 	//LOG_DEBUG(("%s spawns %s", src->classname.c_str(), obj->classname.c_str()));
-	obj->_owner_id = src->_id;
+	obj->_spawned_by = obj->_owner_id = src->_id;
 	obj->_velocity = vel;
 	
 	//LOG_DEBUG(("spawning %s, position = %g %g dPosition = %g:%g, velocity: %g %g", 
@@ -608,7 +608,7 @@ Object* IWorld::spawn(Object *src, const std::string &classname, const std::stri
 Object * IWorld::spawnGrouped(Object *src, const std::string &classname, const std::string &animation, const v3<float> &dpos, const GroupType type) {
 	Object *obj = ResourceManager->createObject(classname, animation);
 	assert(obj->_owner_id == 0);
-	obj->_owner_id = src->_id;
+	obj->_spawned_by = obj->_owner_id = src->_id;
 
 	
 	obj->_follow_position = dpos;

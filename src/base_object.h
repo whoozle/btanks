@@ -82,8 +82,9 @@ public:
 	void updateStateFromVelocity();
 	void setZ(const float z); 
 	
-	void setOwner(const int oid) { _owner_id = oid; }
-	const int getOwner() const { return _owner_id; }
+	inline void setOwner(const int oid) { _owner_id = oid; }
+	inline const int getOwner() const { return _owner_id; }
+	inline const int getRealOwner() const { return _spawned_by; }
 	
 	void getTargetPosition(v3<float> &relative_position, const v3<float> &target, const std::string &weapon, const int dirs);
 	
@@ -106,7 +107,7 @@ private:
 
 	bool _dead;
 	v3<float> _position;
-	int _owner_id;
+	int _owner_id, _spawned_by;
 	
 	friend class IWorld;
 };

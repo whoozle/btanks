@@ -32,7 +32,7 @@ BaseObject::BaseObject(const std::string &classname):
 	need_sync(false),
 	_dead(false), 
 	_position(),
-	_owner_id(0) {
+	_owner_id(0), _spawned_by(0) {
 	//LOG_DEBUG(("allocated id %ld", _id));
 }
 
@@ -75,6 +75,7 @@ void BaseObject::serialize(mrt::Serializator &s) const {
 	s.add(_dead);
 	_position.serialize(s);
 	s.add(_owner_id);
+	s.add(_spawned_by);
 }
 
 void BaseObject::deserialize(const mrt::Serializator &s) {
@@ -102,6 +103,7 @@ void BaseObject::deserialize(const mrt::Serializator &s) {
 	s.get(_dead);
 	_position.deserialize(s);
 	s.get(_owner_id);
+	s.get(_spawned_by);
 }
 
 const std::string BaseObject::dump() const {

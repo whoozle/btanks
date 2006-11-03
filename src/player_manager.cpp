@@ -751,8 +751,14 @@ const bool IPlayerManager::isServerActive() const {
 }
 
 void IPlayerManager::onPlayerDeath(const Object *player, const Object *killer) {
+	if (isClient())
+		return;
+	
 	int owner = killer->getOwner();
 	if (owner <= 0)
+		owner = killer->getRealOwner();
+	
+	if (owner <= 0 || owner == player->getID())
 		return;
 	
 	PlayerSlot *slot = getSlotByID(owner);
