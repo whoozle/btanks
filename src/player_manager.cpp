@@ -224,17 +224,19 @@ TRY {
 					break;
 			}
 			
+			const bool my_state = slot < _players.size() && slot == (unsigned)_my_idx;
 			
 			PlayerState state; 
 			state.deserialize(s);
-			Object *o = World->deserializeObjectInfo(s, id);
+			Object *o = World->deserializeObjectInfo(s, id, my_state);
 			if (o == NULL) {
 				LOG_DEBUG(("still dont know anything about object %d, skipping for now", id));
 				continue;
 			}
-		
-			if (slot < _players.size() && slot != (unsigned)_my_idx) 
-				o->updatePlayerState(state); //update states for all players but me.
+			if (my_state)
+				continue;
+			
+			o->updatePlayerState(state); //update states for all players but me.
 
 			if (slot < _players.size()) {
 				_players[slot].id = o->getID(); // ???
@@ -365,6 +367,7 @@ void IPlayerManager::updatePlayers() {
 				slot.need_sync = true;
 			}
 			//this will never happen now, as external control method is not used anymore
+			/*
 			if (slot.need_sync && slot.remote) {
 				LOG_DEBUG(("correcting remote player. "));
 				obj->getPlayerState() = old_state;
@@ -372,6 +375,7 @@ void IPlayerManager::updatePlayers() {
 				obj->getPlayerState() = state;
 				World->tick(*obj, 2 * slot.trip_time / 1000.0);
 			}
+			*/
 		}
 		if (slot.need_sync)
 			updated = true;

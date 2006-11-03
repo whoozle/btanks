@@ -790,13 +790,13 @@ void IWorld::serializeObjectInfo(mrt::Serializator &s, const int id) const {
 	vel.serialize(s);
 }
 
-Object * IWorld::deserializeObjectInfo(const mrt::Serializator &s, const int id) {
+Object * IWorld::deserializeObjectInfo(const mrt::Serializator &s, const int id, const bool fake) {
 	Object * o = getObjectByID(id);
-	if (o == NULL) {
+	if (o == NULL || fake) {
 		v3<float> p;
 		p.deserialize(s);
 		p.deserialize(s);
-		return NULL;
+		return o;
 	}
 	v3<float> pos, vel;
 	o->_position.deserialize(s);
