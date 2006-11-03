@@ -223,11 +223,11 @@ TRY {
 				if (_players[slot].id == id)
 					break;
 			}
-			
 			const bool my_state = slot < _players.size() && slot == (unsigned)_my_idx;
 			
 			PlayerState state; 
 			state.deserialize(s);
+			LOG_DEBUG(("slot: %d, id: %d, state: %s %s", slot, id, state.dump().c_str(), my_state?"skipped":""));
 			Object *o = World->deserializeObjectInfo(s, id, my_state);
 			if (o == NULL) {
 				LOG_DEBUG(("still dont know anything about object %d, skipping for now", id));
@@ -402,10 +402,12 @@ void IPlayerManager::updatePlayers() {
 		for(int j = 0; j < n; ++j) {
 
 			PlayerSlot &slot = _players[j];
-			if (slot.need_sync) {
+			if (slot.id >= 0 && slot.need_sync) {
 				//LOG_DEBUG(("object in slot %d: %s (%d) need sync", j, slot.obj->registered_name.c_str(), slot.obj->getID()));
 				s.add(slot.id);
-				slot.state.serialize(s);
+				Object * o = World->getObjectByID(slot.id);
+				assert(o != NULL);
+				o->getPlayerState().serialize(s);
 				World->serializeObjectInfo(s, slot.id);
 				send = true;
 				slot.need_sync = false;
