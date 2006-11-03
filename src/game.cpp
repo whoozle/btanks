@@ -49,13 +49,14 @@
 #include "player_slot.h"
 #include "player_manager.h"
 #include "hud.h"
+#include "credits.h"
 
 //#define SHOW_PERFSTATS
 
 IMPLEMENT_SINGLETON(Game, IGame)
 
 IGame::IGame() : 
-_check_items(0.5, true),  _autojoin(false), _shake(0) {}
+_check_items(0.5, true),  _autojoin(false), _shake(0), _credits(NULL) {}
 IGame::~IGame() {}
 
 void IGame::init(const int argc, char *argv[]) {
@@ -257,6 +258,9 @@ void IGame::onMenu(const std::string &name, const std::string &value) {
 		PlayerManager->startClient(value);
 		
 		_main_menu.setActive(false);
+	} else if (name == "credits") {
+		LOG_DEBUG(("show credits."));
+		_credits = new Credits;
 	}
 }
 
@@ -374,6 +378,7 @@ void IGame::run() {
 #ifdef SHOW_PERFSTATS
 		Uint32 t_tick_n = t_start, t_tick_w = t_start, t_tick_s = t_start, t_tick_c = t_start;
 #endif
+
 		
 		while (SDL_PollEvent(&event)) {
 			switch(event.type) {
@@ -396,10 +401,18 @@ void IGame::run() {
 						o->emit("death", 0);
 					break;
 				}
+				if (_credits) {
+					delete _credits;
+					_credits = NULL;
+				}
 			case SDL_KEYUP:
 				key_signal.emit(event.key.type, event.key.keysym);
 			break;
 			case SDL_MOUSEBUTTONDOWN:
+				if (_credits) {
+					delete _credits;
+					_credits = NULL;
+				}
 			case SDL_MOUSEBUTTONUP:
 				{
 					int bi = (event.button.button == SDL_BUTTON_LEFT)? 0: 
@@ -413,11 +426,11 @@ void IGame::run() {
 			break;
     		}
 		}
+
 		
 		const float dt = 1.0/fr;
 		
-		
-		if (_running && !_paused) {
+		if (_credits == NULL && _running && !_paused) {
 			PlayerManager->updatePlayers();
 			
 			if (_check_items.tick(dt)) {
@@ -440,11 +453,17 @@ void IGame::run() {
 		Uint32 t_tick = SDL_GetTicks();
 #endif
 		
-		if (Map->loaded())
+		if (_credits || Map->loaded())
 			_window.fillRect(window_size, 0);
 		else _hud->renderSplash(_window);
-	
+		
 		int vx = 0, vy = 0;
+
+		if (_credits) {
+			_credits->render(dt, _window);
+			goto flip;
+		}
+	
 		if (_shake > 0) {
 			vy += _shake_int;
 		}		
@@ -464,11 +483,12 @@ void IGame::run() {
 			_hud->renderRadar(dt, _window);
 		}
 		
+flip:
 		if (_show_fps) {
 			_fps->hp = (int)fr;
 			_fps->render(_window, _window.getWidth() - (int)(_fps->size.x * 3), 0);
 		}
-		
+
 		
 #ifdef SHOW_PERFSTATS
 		Uint32 t_render = SDL_GetTicks();
@@ -513,6 +533,9 @@ void IGame::deinit() {
 	Window::deinit();
 	
 	_main_menu.deinit();
+
+	delete _credits;
+	_credits = NULL;	
 }
 
 
@@ -528,6 +551,9 @@ void IGame::clear() {
 	World->clear();
 	_paused = false;
 	Map->clear();
+	
+	delete _credits;
+	_credits = NULL;
 }
 
 

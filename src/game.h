@@ -39,6 +39,7 @@ class Connection;
 class ControlMethod;
 class PlayerSlot;
 class Hud;
+class Credits;
 
 class IGame : public Window {
 public: 
@@ -101,6 +102,8 @@ private:
 	Hud *_hud;
 	int _loading_bar_total, _loading_bar_now;
 	Uint32 t_start;
+	
+	Credits *_credits;
 	
 	IGame(const IGame &);
 	const IGame& operator=(const IGame &);

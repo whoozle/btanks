@@ -16,11 +16,14 @@ void Font::clear() {
 	_surface = NULL;
 }
 	
-void Font::load(const std::string &file, const Type type) {
+void Font::load(const std::string &file, const Type type, const bool alpha) {
 	clear();
 	_type = type;
 	_surface = new sdlx::Surface;
 	_surface->loadImage(file);
+	_surface->convertAlpha();
+	if (!alpha)
+		_surface->setAlpha(0, 0);
 }
 
 const int Font::getHeight() const {
