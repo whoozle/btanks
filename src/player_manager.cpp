@@ -330,10 +330,11 @@ void IPlayerManager::updatePlayers() {
 		Object *o = slot.getObject();
 		if (o != NULL /* && !o->isDead() */) 
 			continue;
+			
+		if (slot.frags > 0) 
+			--slot.frags;
 
-		++slot.deaths;
-
-		LOG_DEBUG(("player in slot %d is dead. respawning. frags: %d", i, slot.deaths));
+		LOG_DEBUG(("player in slot %d is dead. respawning. frags: %d", i, slot.frags));
 
 		spawnPlayer(slot, slot.classname, slot.animation);
 		if (slot.remote) {
