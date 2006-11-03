@@ -494,6 +494,24 @@ const PlayerSlot &IPlayerManager::getSlot(const unsigned int idx) const {
 	return _players[idx];
 }
 
+PlayerSlot *IPlayerManager::getSlotByID(const int id) {
+	for(std::vector<PlayerSlot>::iterator i = _players.begin(); i != _players.end(); ++i) {
+		PlayerSlot &slot = *i;
+		if (slot.id == id) 
+			return &*i;
+	}
+	return NULL;
+}
+const PlayerSlot *IPlayerManager::getSlotByID(const int id) const {
+	for(std::vector<PlayerSlot>::const_iterator i = _players.begin(); i != _players.end(); ++i) {
+		const PlayerSlot &slot = *i;
+		if (slot.id == id) 
+			return &*i;
+	}
+	return NULL;
+}
+
+
 void IPlayerManager::createControlMethod(PlayerSlot &slot, const std::string &control_method) {
 	delete slot.control_method;
 	slot.control_method = NULL;
@@ -730,4 +748,16 @@ const bool IPlayerManager::isServerActive() const {
 			return true;
 	}
 	return false;
+}
+
+void IPlayerManager::onPlayerDeath(const Object *player, const Object *killer) {
+	int owner = killer->getOwner();
+	if (owner <= 0)
+		return;
+	
+	PlayerSlot *slot = getSlotByID(owner);
+	if (slot != NULL) {
+		++(slot->frags);
+		return;
+	}
 }

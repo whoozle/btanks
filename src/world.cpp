@@ -21,6 +21,7 @@
 #include "object.h"
 #include "tmx/map.h"
 #include "resource_manager.h"
+#include "player_manager.h"
 #include "config.h"
 #include "utils.h"
 
@@ -161,6 +162,15 @@ const bool IWorld::collides(Object *obj, const v3<int> &position, Object *o) con
 			//LOG_DEBUG(("collision %s <-> %s", obj->classname.c_str(), o->classname.c_str()));
 			o->emit("collision", obj);
 			obj->emit("collision", o);
+			
+			if (o->isDead() && o->classname == "player") {
+				PlayerManager->onPlayerDeath(o, obj);
+			}
+
+			if (obj->isDead() && obj->classname == "player") {
+				PlayerManager->onPlayerDeath(obj, o);
+			}
+			
 			if (o->isDead() || obj->isDead() || obj->impassability == 0 || o->impassability == 0) {
 				_collision_map.insert(CollisionMap::value_type(key, false));
 				return false; // no effect.

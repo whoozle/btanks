@@ -38,6 +38,7 @@ class PlayerSlot;
 class Server;
 class Client;
 class Message;
+class Object;
 
 class IPlayerManager {
 public:
@@ -59,6 +60,10 @@ public:
 
 	PlayerSlot &getSlot(const unsigned int idx);
 	const PlayerSlot &getSlot(const unsigned int idx) const;
+
+	PlayerSlot *getSlotByID(const int id);
+	const PlayerSlot *getSlotByID(const int id) const;
+
 	const size_t getSlotsCount() const;
 	
 	void screen2world(v3<float> &pos, const int p, const int x, const int y);
@@ -79,6 +84,8 @@ public:
 	const int onConnect(Message &message);
 	void onMessage(const int id, const Message &message);
 	void onDisconnect(const int id);	
+	
+	void onPlayerDeath(const Object *player, const Object *killer);
 	
 private: 
 	void serializeSlots(mrt::Serializator &s) const;
