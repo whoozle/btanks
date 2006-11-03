@@ -70,7 +70,9 @@ void Trooper::calculate(const float dt) {
 	
 	std::vector<std::string> targets;
 
-	targets.push_back("missile");
+	if (_aim_missiles)
+		targets.push_back("missile");
+	
 	targets.push_back("player");
 	targets.push_back("trooper");
 	targets.push_back("kamikaze");
@@ -132,8 +134,14 @@ void Trooper::onSpawn() {
 	GET_CONFIG_VALUE("objects.trooper.reaction-time", float, rt, 0.1);
 	_reaction.set(rt);
 
-	GET_CONFIG_VALUE("objects.machinegunner.fire-rate", float, fr, 0.2);
-	_fire.set(fr);
+	if (_object == "thrower-missile") {
+		GET_CONFIG_VALUE("objects.thrower.fire-rate", float, fr, 3);
+		_fire.set(fr);
+	} else {
+		GET_CONFIG_VALUE("objects.machinegunner.fire-rate", float, fr, 0.2);
+		_fire.set(fr);
+	}
+	
 	play("hold", true);
 }
 

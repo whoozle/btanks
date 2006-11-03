@@ -453,4 +453,5 @@
 	<object parent="base-item" class="machinegunner-item" />
 	<object parent="base-item" class="boomerang-missiles-item" />
 	<object parent="base-item" class="stun-missiles-item" />
+	<object parent="base-item" class="thrower-item" />
 </resources>
