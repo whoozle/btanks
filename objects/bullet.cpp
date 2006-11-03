@@ -25,7 +25,7 @@
 
 class Bullet : public Object {
 public:
-	Bullet(const std::string &type, const int dirs) : Object("bullet"), _type(type), _dirs(dirs), _clone(true) {
+	Bullet(const std::string &type, const int dirs) : Object("bullet"), _type(type), _dirs(dirs), _clone(false) {
 		impassability = 1;
 		piercing = true;
 	}
@@ -59,6 +59,9 @@ void Bullet::tick(const float dt) {
 	if (_type == "dispersion") {
 		//LOG_DEBUG(("baaaaaaah!"));
 		if (_clone.tick(dt)) {
+			_clone.set(3600);
+			//LOG_DEBUG(("%d clones...", getID()));
+			
 			GET_CONFIG_VALUE("objects.dispersion-bullet.ttl-multiplier", float, ttl_m, 0.8);
 			int d = (getDirection() + 1) % _dirs;
 			v3<float> vel;
