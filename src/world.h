@@ -43,7 +43,7 @@ public:
 	~IWorld();
 	IWorld();
 	
-	void addObject(Object *, const v3<float> &pos);
+	void addObject(Object *, const v3<float> &pos, const int id = -1);
 	const bool exists(const Object *) const;
 	const Object *getObjectByID(const int id) const;
 	Object *getObjectByID(const int id);

@@ -57,10 +57,10 @@ void IWorld::setSafeMode(const bool safe_mode) {
 }
 
 
-void IWorld::addObject(Object *o, const v3<float> &pos) {
+void IWorld::addObject(Object *o, const v3<float> &pos, const int id) {
 	if (o == NULL) 
 		throw_ex(("adding NULL as world object is not allowed"));
-	o->_id = ++_last_id;
+	o->_id = (id >= 0)?id:++_last_id;
 	
 	assert (_id2obj.find(o->_id) == _id2obj.end());
 	assert (_objects.find(o) == _objects.end());
