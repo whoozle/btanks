@@ -57,7 +57,7 @@ public:
 	std::string classname;
 	std::string animation;
 	
-	int frags;
+	int deaths;
 	bool reserved;
 	
 	virtual void serialize(mrt::Serializator &s) const;

@@ -227,7 +227,7 @@ void Hud::render(sdlx::Surface &window) const {
 		}
 		
 		do {
-			if (slot.frags == 0) 
+			if (slot.deaths == 0) 
 				break;
 			
 			IconMap::const_iterator ic = _icons_map.find("special:frag");
@@ -237,7 +237,7 @@ void Hud::render(sdlx::Surface &window) const {
 			sdlx::Rect src(icon_w * ic->second, 0, icon_w, icon_h);
 			window.copyFrom(_icons, src, xp, yp);
 			xp += icon_w;
-			xp += _font.render(window, xp, yp + font_dy, mrt::formatString("%-2d ", slot.frags));
+			xp += _font.render(window, xp, yp + font_dy, mrt::formatString("%-2d ", slot.deaths));
 			
 		} while(0);
 	}

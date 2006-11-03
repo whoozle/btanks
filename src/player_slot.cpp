@@ -22,24 +22,24 @@
 
 PlayerSlot::PlayerSlot() : 
 id(-1), control_method(NULL), need_sync(false), remote(false), trip_time(10), visible(false), 
-mapx(0), mapy(0), mapvx(0), mapvy(0), classname(), animation(), frags(0), reserved(false)
+mapx(0), mapy(0), mapvx(0), mapvy(0), classname(), animation(), deaths(0), reserved(false)
 {}
 
 PlayerSlot::PlayerSlot(const int id) : 
 id(id), control_method(NULL), need_sync(false), remote(false), trip_time(10), visible(false), 
-mapx(0), mapy(0), mapvx(0), mapvy(0), classname(), animation(), frags(0), reserved(false)
+mapx(0), mapy(0), mapvx(0), mapvy(0), classname(), animation(), deaths(0), reserved(false)
 {}
 
 void PlayerSlot::serialize(mrt::Serializator &s) const {
 	s.add(id);
 	//ControlMethod * control_method;
 	position.serialize(s);
-	s.add(frags);		
+	s.add(deaths);		
 }
 void PlayerSlot::deserialize(const mrt::Serializator &s) {
 	s.get(id);
 	position.deserialize(s);
-	s.get(frags);		
+	s.get(deaths);		
 }
 
 
@@ -68,7 +68,7 @@ void PlayerSlot::clear() {
 
 	need_sync = false;
 	remote = false;
-	frags = 0;
+	deaths = 0;
 	reserved = false;
 }
 
