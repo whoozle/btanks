@@ -69,7 +69,8 @@
 	</animation-model>
 
 	<animation-model id="dead-man-animation" speed="5">
-		<pose id="die">0,1,2,3</pose>
+		<pose id="fade-in">0,1,2,3</pose>
+		<pose id="burn" speed="100">3</pose> <!-- small hack to avoid warnings from corpse object. -->
 		<pose id="fade-out">4,5</pose>
 		<pose id="dead">6</pose>
 	</animation-model>
@@ -339,6 +340,7 @@
 	<animation id="gay-paratrooper" model="paratrooper-animation" tile="gay_paratrooper.png" />
 	<animation id="kamikaze" model="man-animation" tile="kamikaze.png" />
 	<animation id="machinegunner" model="trooper-animation" tile="machinegunner.png" />
+	<animation id="dead-machinegunner" model="dead-man-animation" tile="machinegunner_dead.png" />
 
 	<animation id="road-sign01" model="destructable-object-animation" tile="road_sign01.png" size="32" />
 	<animation id="road-sign02" model="destructable-object-animation" tile="road_sign02.png" size="32" />
@@ -404,7 +406,7 @@
 	<object class="choo-choo-train" speed="30" mass="800" hp="1000" z="0" />
 	<object class="train-smoke" z="100" />
 
-	<object class="corpse" hp="1000" ttl="10" fadeout_time="1" z="-1" impassability="0" />
+	<object class="corpse" hp="1000" ttl="10" fadeout_time="1" z="-5" impassability="0" />
 	<object class="explosion" hp="1" z="580" />
 	<object class="nuclear-explosion" hp="1000" impassability="-1" z="900" />
 	<object class="dirt" impassability="0.5" z="-20" ttl="50" fadeout="5" />

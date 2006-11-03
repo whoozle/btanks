@@ -146,6 +146,9 @@ void Trooper::onSpawn() {
 }
 
 void Trooper::emit(const std::string &event, BaseObject * emitter) {
+	if (event == "death") {
+		spawn("corpse", "dead-machinegunner", v3<float>::empty, v3<float>::empty);
+	}
 	Object::emit(event, emitter);
 }
 
