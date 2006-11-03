@@ -19,7 +19,11 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-FakeMod::FakeMod() : Object("fake-mod"), _type(), _n(0) {}
+FakeMod::FakeMod() : Object("fake-mod"), _type(), _n(0) {
+	impassability = 0;
+	pierceable = true;
+}
+
 Object * FakeMod::clone() const {
 	return new FakeMod(*this);
 }
@@ -46,7 +50,10 @@ void FakeMod::setType(const std::string &type) {
 }
 
 
-void FakeMod::onSpawn() {}
+void FakeMod::onSpawn() {
+	play("main", true);
+}
+
 void FakeMod::render(sdlx::Surface &surface, const int x, const int y) {}
 void FakeMod::tick(const float dt) {}
 void FakeMod::calculate(const float dt) {}
