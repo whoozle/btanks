@@ -395,6 +395,16 @@ void IGame::run() {
 					_window.saveBMP("screenshot.bmp");
 					break;
 				}
+				if (event.key.keysym.sym==SDLK_m && event.key.keysym.mod & KMOD_SHIFT && Map->loaded()) {
+					const v3<int> msize = Map->getSize();
+					LOG_DEBUG(("creating map screenshot %dx%d", msize.x, msize.y));
+					sdlx::Surface screenshot;
+					screenshot.createRGB(msize.x, msize.y, 24, SDL_SWSURFACE);
+					sdlx::Rect viewport(0, 0, msize.x, msize.y);
+					World->render(screenshot, viewport, viewport);
+					screenshot.saveBMP("map.bmp"); //hopefully we're done here.
+					break;
+				}
 				if (!PlayerManager->isClient() && event.key.keysym.sym==SDLK_d && event.key.keysym.mod & KMOD_SHIFT && _my_index >= 0) {
 					Object *o = PlayerManager->getSlot(_my_index).getObject();
 					if (o)
