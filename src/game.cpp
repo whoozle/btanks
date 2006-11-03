@@ -404,6 +404,7 @@ void IGame::run() {
 				if (_credits) {
 					delete _credits;
 					_credits = NULL;
+					break;
 				}
 			case SDL_KEYUP:
 				key_signal.emit(event.key.type, event.key.keysym);
