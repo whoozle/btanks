@@ -47,7 +47,7 @@ void Mine::tick(const float dt) {
 
 void Mine::emit(const std::string &event, BaseObject * emitter) {
 	if (event == "collision") {
-		if (getState() == "armed") {
+		if (emitter != NULL && getState() == "armed") {
 			spawn("explosion", "explosion");
 			Object::emit("death", emitter);
 			emitter->addDamage(this, max_hp);

@@ -46,15 +46,7 @@ private:
 };
 
 void Corpse::emit(const std::string &event, BaseObject * emitter) {
-	if (event == "collision") {
-		if (emitter->classname == "bullet") {
-			hp -= emitter->hp;
-			if (hp <= 0) {
-				emit("death", emitter);
-				spawn("explosion", "explosion");
-			}
-		}
-	} else Object::emit(event, emitter);
+	Object::emit(event, emitter);
 }
 
 void Corpse::tick(const float dt) {

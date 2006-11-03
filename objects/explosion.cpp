@@ -75,7 +75,7 @@ void Explosion::onSpawn() {
 
 void Explosion::emit(const std::string &event, BaseObject * emitter) {
 	if (event == "collision") {
-		if (emitter->pierceable)
+		if (emitter == NULL || emitter->pierceable)
 			return;
 		
 		if (classname == "nuclear-explosion") {

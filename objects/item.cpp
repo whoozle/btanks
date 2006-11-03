@@ -55,7 +55,7 @@ void Item::onSpawn() {
 
 void Item::emit(const std::string &event, BaseObject * emitter) {
 	if (event == "collision") {
-		if (emitter->classname != "player")
+		if (emitter == NULL || emitter->classname != "player")
 			return;
 		
 		if (!emitter->take(this, type)) {
