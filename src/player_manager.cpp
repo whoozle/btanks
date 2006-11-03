@@ -363,7 +363,6 @@ void IPlayerManager::updatePlayers() {
 			slot.control_method->updateState(state);
 			if (obj->updatePlayerState(state)) {
 				updated = true;
-				slot.state = state;
 				slot.need_sync = true;
 			}
 			//this will never happen now, as external control method is not used anymore
@@ -383,9 +382,11 @@ void IPlayerManager::updatePlayers() {
 				
 	if (_client && _players.size() != 0 && _players[_my_idx].need_sync)	{
 		mrt::Serializator s;
+		PlayerSlot &slot = _players[_my_idx];
 		
-		_players[_my_idx].state.serialize(s);
-		World->serializeObjectInfo(s, _players[_my_idx].id);
+		Object * o = World->getObjectByID(slot.id);
+		o->getPlayerState().serialize(s);
+		World->serializeObjectInfo(s, slot.id);
 		
 		Message m(Message::PlayerState);
 		m.data = s.getData();

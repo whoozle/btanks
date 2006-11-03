@@ -40,7 +40,6 @@ public:
 	ControlMethod * control_method;
 	v3<int> position;
 		
-	PlayerState state;
 	bool need_sync;
 	bool remote;
 	float trip_time;
