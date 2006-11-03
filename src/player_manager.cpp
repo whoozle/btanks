@@ -545,7 +545,7 @@ void IPlayerManager::spawnPlayer(PlayerSlot &slot, const std::string &classname,
 	Object *obj = ResourceManager->createObject(classname, animation);
 	assert(obj != NULL);
 
-	World->addObject(obj, slot.position.convert<float>());
+	World->addObject(obj, slot.position.convert<float>(), slot.id);
 	Object *spawn = World->spawn(obj, "spawn-shield", "spawning", v3<float>::empty, v3<float>::empty);
 	spawn->follow(obj, Centered);
 
