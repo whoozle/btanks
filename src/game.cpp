@@ -63,6 +63,23 @@ void IGame::init(const int argc, char *argv[]) {
 	srand(time(NULL));
 	
 	Config->load("bt.xml");
+	
+	{
+		//setup some defaults
+		
+		int r;
+		Config->get("map.boomerang-missiles-item.respawn-interval", r, 15);
+		Config->get("map.dirt-bullets-item.respawn-interval", r, 25);
+		Config->get("map.dispersion-bullets-item.respawn-interval", r, 15);
+		Config->get("map.machinegunner-item.respawn-interval", r, 45);
+		Config->get("map.megaheal.respawn-interval", r, 15);
+		Config->get("map.mines-item.respawn-interval", r, 40);
+		Config->get("map.nuke-missiles-item.respawn-interval", r, 20);
+		Config->get("map.regular-mine.respawn-interval", r, 3600);
+		Config->get("map.ricochet-bullets-item.respawn-interval", r, 20);
+		Config->get("map.smoke-missiles-item.respawn-interval", r, 20);
+		Config->get("map.stun-missiles-item.respawn-interval", r, 20);
+	}
 
 	GET_CONFIG_VALUE("engine.show-fps", bool, show_fps, true);
 	GET_CONFIG_VALUE("engine.data-directory", std::string, data_dir, "data");
