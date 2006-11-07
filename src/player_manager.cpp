@@ -200,8 +200,10 @@ TRY {
 
 		//World->tick(*slot.obj, -slot.trip_time / 1000.0);
 		Object * obj = World->deserializeObjectInfo(s, slot.id);
-		if (obj == NULL) 
-			throw_ex(("player state for non-existent object %d recv'ed", slot.id));
+		if (obj == NULL) {
+			LOG_WARN(("player state for non-existent object %d recv'ed", slot.id));
+			break;
+		}
 		
 		assert(slot.id == obj->getID());
 		
