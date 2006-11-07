@@ -206,8 +206,10 @@ TRY {
 		assert(slot.id == obj->getID());
 		
 		slot.need_sync = obj->updatePlayerState(state);
-		if (slot.need_sync == false)
-			throw_ex(("player %d send duplicate player state. bye-bye", id));
+		if (slot.need_sync == false) {
+			LOG_WARN(("player %d send duplicate player state. %s", id, state.dump().c_str()));
+			slot.need_sync = true;
+		}
 		
 		World->tick(*obj, slot.trip_time / 1000.0);
 		break;
