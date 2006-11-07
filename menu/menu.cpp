@@ -49,13 +49,17 @@ void MainMenu::init(const int w, const int h) {
 	
 	std::string address;
 	Config->get("multiplayer.recent-host", address, "LOCALHOST");
-	
+#ifndef RELEASE
 	_items[""].push_back(new MenuItem(_font, "start-game", "submenu", "START GAME"));
+#endif
 	_items[""].push_back(new MenuItem(_font, "multiplayer", "submenu", "MULTIPLAYER"));
+#ifndef RELEASE
 	_items[""].push_back(new MenuItem(_font, "options", "submenu", "OPTIONS"));
+#endif
 	_items[""].push_back(new MenuItem(_font, "credits", "command", "CREDITS"));
 	_items[""].push_back(new MenuItem(_font, "quit", "command", "QUIT"));
-	
+
+#ifndef RELEASE
 	_items["start-game"].push_back(new MenuItem(_font, "start", "command", "USE TANK", "tank"));
 	_items["start-game"].push_back(new MenuItem(_font, "start", "command", "USE LAUNCHER", "launcher"));
 	_items["start-game"].push_back(new MenuItem(_font, "start", "command", "USE SHILKA", "shilka"));
@@ -64,6 +68,7 @@ void MainMenu::init(const int w, const int h) {
 	//_items["options"].push_back(new MenuItem(_font, "player1", "iterable", "PLAYER 1 CONTROL: AI"));
 	
 	_items["options"].push_back(new MenuItem(_font, "back", "back", "BACK"));
+#endif
 
 	_items["multiplayer"].push_back(new MenuItem(_font, "m-start", "command", "START NEW GAME"));
 	_items["multiplayer"].push_back(new MenuItem(_font, "multiplayer-join", "submenu", "JOIN GAME"));

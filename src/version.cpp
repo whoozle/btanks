@@ -23,11 +23,17 @@
 #pragma comment( user, "Compiled on " __DATE__ " at " __TIME__ ) 
 #endif
 
+#ifdef RELEASE
+#	define RELEASE_NAME " "
+#else
+#	define RELEASE_NAME " technical demo"
+#endif
+
 const std::string& getVersion() {
 #ifdef DEBUG
-	static std::string version("0.3." VERSION "D");
+	static std::string version("0.3." VERSION "D" RELEASE_NAME);
 #else
-	static std::string version("0.3." VERSION);
+	static std::string version("0.3." VERSION RELEASE_NAME);
 #endif
 	return version;
 }
