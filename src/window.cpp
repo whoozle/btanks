@@ -53,7 +53,8 @@ void Window::init(const int argc, char *argv[]) {
 		else if (strcmp(argv[i], "-0") == 0) { w = 640; h = 480; }
 		else if (strcmp(argv[i], "-1") == 0) { w = 800; h = 600; }
 		else if (strcmp(argv[i], "-2") == 0) { w = 1024; h = 768; }
-		else if (strcmp(argv[i], "-3") == 0) { w = 1280; h = 1024; }
+		else if (strcmp(argv[i], "-3") == 0) { w = 1152; h = 864; }
+		else if (strcmp(argv[i], "-4") == 0) { w = 1280; h = 1024; }
 		else if (strcmp(argv[i], "--help") == 0) { 
 			printf(
 					"\t--no-gl\t\t\tdisable GL renderer\n"
