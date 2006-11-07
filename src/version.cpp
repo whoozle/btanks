@@ -24,9 +24,9 @@
 #endif
 
 #ifdef RELEASE
-#	define RELEASE_NAME " "
-#else
 #	define RELEASE_NAME " technical demo"
+#else
+#	define RELEASE_NAME " "
 #endif
 
 const std::string& getVersion() {
