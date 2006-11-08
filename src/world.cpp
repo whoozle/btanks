@@ -418,14 +418,11 @@ void IWorld::tick(Object &o, const float dt) {
 
 	bool stuck = map.getImpassability(&o, old_pos, &stuck_map_pos) == 100 || obj_im_now >= 1.0;
 	//LOG_DEBUG(("obj_im = %f", obj_im));
-	float map_im = 0; 
-	if (!o.piercing) 
-		map_im = map.getImpassability(&o, new_pos) / 100.0;
-	else {
-		int i = map.getImpassability(&o, new_pos);
+	float map_im = map.getImpassability(&o, new_pos) / 100.0;
+	if (o.piercing) {
 		if (obj_im_now > 0 && obj_im_now < 1.0)
 			obj_im_now = 0;
-		if (i >= 100) {
+		if (map_im >= 1.0) {
 			o._position += dpos;
 			o.emit("collision", NULL); //fixme: emit collisions with map from map::getImpassability
 			o._position -= dpos;
