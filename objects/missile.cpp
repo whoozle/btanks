@@ -27,8 +27,7 @@ public:
 	std::string type;
 	Missile(const std::string &type) : Object("missile"), type(type) {
 		piercing = true;
-		if (type == "guided" || type == "stun")
-			setDirectionsNumber(16);
+		setDirectionsNumber(16);
 	}
 	virtual void calculate(const float dt);
 	virtual Object * clone() const;
