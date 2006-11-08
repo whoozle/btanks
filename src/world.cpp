@@ -415,15 +415,19 @@ void IWorld::tick(Object &o, const float dt) {
 	int attempt;
 	for(attempt =0; attempt < 3; ++attempt) {
 		v3<int> pos = new_pos;
-		if (attempt == 1)
+		v3<float> v(o._velocity);
+		if (attempt == 1) {
+			v.x = 0;
 			pos.x = old_pos.x; 
-		else if (attempt == 2) 
+		} else if (attempt == 2) {
+			v.y = 0;
 			pos.y = old_pos.y;
+		}
 		
 		map_im = map.getImpassability(&o, pos) / 100.0;
 		getImpassability2(obj_im_now, obj_im, &o, pos, &stuck_in);
 
-		if (map_im < 1.0 && obj_im < 1.0)
+		if ((map_im < 1.0 && obj_im < 1.0) || o.piercing)
 			break;
 
 		stuck = map.getImpassability(&o, old_pos, &stuck_map_pos) == 100 || obj_im_now >= 1.0;
@@ -431,11 +435,13 @@ void IWorld::tick(Object &o, const float dt) {
 	
 	if (attempt == 1) {
 		o._velocity.x = 0;
-		o._velocity.normalize();
+		len = o._velocity.normalize();
 	} else if (attempt == 2) {
 		o._velocity.y = 0;
-		o._velocity.normalize();
-	} 
+		len = o._velocity.normalize();
+	} else {
+		//
+	}
 
 	dpos = o.speed * o._velocity * dt;
 	new_pos = (o._position + dpos).convert<int>();
