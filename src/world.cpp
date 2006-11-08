@@ -413,15 +413,23 @@ void IWorld::tick(Object &o, const float dt) {
 
 	float map_im = 0, obj_im_now = 0, obj_im = 0;
 	int attempt;
+	
+	int save_dir = o.getDirection();
+	int dirs = o.getDirectionsNumber();
+	
 	for(attempt =0; attempt < 3; ++attempt) {
 		v3<int> pos = new_pos;
 		v3<float> v(o._velocity);
 		if (attempt == 1) {
 			v.x = 0;
 			pos.x = old_pos.x; 
+			v.normalize();
+			o.setDirection(v.getDirection(dirs) - 1);
 		} else if (attempt == 2) {
 			v.y = 0;
 			pos.y = old_pos.y;
+			v.normalize();
+			o.setDirection(v.getDirection(dirs) - 1);
 		}
 		
 		map_im = map.getImpassability(&o, pos) / 100.0;
@@ -440,7 +448,7 @@ void IWorld::tick(Object &o, const float dt) {
 		o._velocity.y = 0;
 		len = o._velocity.normalize();
 	} else {
-		//
+		o.setDirection(save_dir);
 	}
 
 	dpos = o.speed * o._velocity * dt;

@@ -29,6 +29,7 @@
 
 #include <string>
 #include <stdexcept>
+#include "mrt/exception.h"
 #include <typeinfo>
 
 template <typename T> class v3 : public mrt::Serializable {
@@ -266,6 +267,15 @@ public:
 
 		int xx = c2d16(x) + 1;
 		return (y <= 0 || xx == 1)? xx: 18 - xx;
+	}
+	
+	inline int getDirection(int dirs) {
+		switch(dirs) {
+			case 8: return getDirection8();
+			case 16: return getDirection16();
+			case 1: return 1;
+		}
+		return 0; //make msvc happy
 	}
 
 	static inline void quantize8(T &x) {
