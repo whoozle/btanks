@@ -50,7 +50,7 @@ void Missile::onSpawn() {
 	play("main", true);
 	if (type != "boomerang") {
 		Object *_fire = spawnGrouped("single-pose", "missile-fire", v3<float>::empty, Centered);
-		_fire->setDirectionsNumber(getDirectionsNumber());
+		_fire->setDirectionsNumber(16);
 		_fire->impassability = 0;
 		add("fire", _fire);
 	}
