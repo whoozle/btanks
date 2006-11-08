@@ -27,6 +27,8 @@ public:
 	std::string type;
 	Missile(const std::string &type) : Object("missile"), type(type) {
 		piercing = true;
+		if (type == "guided" || type == "stun")
+			setDirectionsNumber(16);
 	}
 	virtual void calculate(const float dt);
 	virtual Object * clone() const;
@@ -46,8 +48,9 @@ public:
 
 void Missile::onSpawn() {
 	play("main", true);
-	if (type != "boomerang") {
+	if (type != "boomerang" && type != "nuke") {
 		Object *_fire = spawnGrouped("single-pose", "missile-fire", v3<float>::empty, Centered);
+		_fire->setDirectionsNumber(getDirectionsNumber());
 		_fire->impassability = 0;
 		add("fire", _fire);
 	}
@@ -72,7 +75,7 @@ void Missile::calculate(const float dt) {
 		}
 
 		GET_CONFIG_VALUE("objects." + type + "-missile.rotation-time", float, rotation_time, 0.2);
-		limitRotation(dt, 16, rotation_time, false, false);
+		limitRotation(dt, rotation_time, false, false);
 	} else if (type == "boomerang") {
 		GET_CONFIG_VALUE("objects.boomerang.rotation-speed", float, rs, 30);
 		int dir = ((int)(_moving_time * rs)) % 8;

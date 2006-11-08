@@ -86,8 +86,6 @@ public:
 	inline const int getOwner() const { return _owner_id; }
 	inline const int getRealOwner() const { return _spawned_by; }
 	
-	void getTargetPosition(v3<float> &relative_position, const v3<float> &target, const std::string &weapon, const int dirs);
-	
 protected:
 	int _id;
 	int _follow;

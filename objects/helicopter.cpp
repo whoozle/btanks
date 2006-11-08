@@ -130,7 +130,7 @@ void Helicopter::calculate(const float dt) {
 	//LOG_DEBUG(("vel: %g %g", _velocity.x, _velocity.y));
 	
 	GET_CONFIG_VALUE("objects.helicopter.rotation-time", float, rt, 0.2);
-	limitRotation(dt, 8, rt, true, false);
+	limitRotation(dt, rt, true, false);
 }
 
 void Helicopter::emit(const std::string &event, BaseObject * emitter) {

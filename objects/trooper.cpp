@@ -80,7 +80,7 @@ void Trooper::calculate(const float dt) {
 	v3<float> vel;
 	if (getNearest(targets, _target, vel)) {
 		v3<float> tp;
-		getTargetPosition(tp, _target, _object, 16);
+		getTargetPosition(tp, _target, _object);
 		//LOG_DEBUG(("target: %g %g %g", tp.x, tp.y, tp.length()));
 		/*
 		Way way;
@@ -90,9 +90,8 @@ void Trooper::calculate(const float dt) {
 		}
 		*/
 		_velocity = tp;
-		_velocity.quantize8();
-		setDirection(_velocity.getDirection8() - 1);
-		_direction.fromDirection(getDirection(), 8);
+		quantizeVelocity();
+		_direction.fromDirection(getDirection(), getDirectionsNumber());
 		
 		if (tp.length() < 16)
 			_velocity.clear();

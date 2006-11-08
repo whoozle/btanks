@@ -80,7 +80,7 @@ void Launcher::emit(const std::string &event, BaseObject * emitter) {
 void Launcher::calculate(const float dt) {
 	Object::calculate(dt);
 	GET_CONFIG_VALUE("objects.launcher.rotation-time", float, rt, 0.07);
-	limitRotation(dt, 8, rt, true, false);
+	limitRotation(dt, rt, true, false);
 	//LOG_DEBUG(("_velocity: %g %g", _velocity.x, _velocity.y));
 }
 

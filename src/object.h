@@ -49,6 +49,8 @@ public:
 
 	void setDirection(const int dir);
 	const int getDirection() const;
+	const int getDirectionsNumber() const;
+	void setDirectionsNumber(const int dirs);
 	
 	virtual void tick(const float dt);
 	virtual void render(sdlx::Surface &surface, const int x, const int y);
@@ -92,7 +94,11 @@ public:
 	const Object *get(const std::string &name) const;
 	const bool has(const std::string &name) const;
 
+	void getTargetPosition(v3<float> &relative_position, const v3<float> &target, const std::string &weapon);
+
 protected:
+	void quantizeVelocity();
+
 	const bool getRenderRect(sdlx::Rect &src) const;
 
 	void calculateWayVelocity();
@@ -107,7 +113,7 @@ protected:
 	void setWay(const Way & way);
 	const bool isDriven() const;
 
-	void limitRotation(const float dt, const int dirs, const float speed, const bool rotate_even_stopped, const bool allow_backward);
+	void limitRotation(const float dt, const float speed, const bool rotate_even_stopped, const bool allow_backward);
 	
 	//grouped object handling
 	void add(const std::string &name, Object *obj);
@@ -143,7 +149,7 @@ private:
 	EffectMap _effects;
 	
 	int _tw, _th;
-	int _direction_idx;
+	int _direction_idx, _directions_n;
 	float _pos;
 
 	//waypoints stuff

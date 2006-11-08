@@ -31,7 +31,10 @@ public:
 };
 
 
-Damage::Damage() : Object("damage-digits") { impassability = 0; }
+Damage::Damage() : Object("damage-digits") { 
+	impassability = 0; 
+	setDirectionsNumber(10);
+}
 Object * Damage::clone() const { return new Damage(*this); } 
 
 void Damage::onSpawn() { 

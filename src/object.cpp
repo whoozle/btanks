@@ -18,6 +18,7 @@
  */
 
 #include "object.h"
+#include "config.h"
 #include "sdlx/surface.h"
 #include "sdlx/c_map.h"
 #include "mrt/exception.h"
@@ -52,7 +53,7 @@ Object::Object(const std::string &classname) :
 	registered_name(), animation(), fadeout_time(0),  
 	_model(0), _model_name(), _surface(0), _cmap(0), _surface_name(), 
 	_events(), _effects(), 
-	_tw(0), _th(0), _direction_idx(0), _pos(0), 
+	_tw(0), _th(0), _direction_idx(0), _directions_n(8), _pos(0), 
 	_way(), _next_target(), _next_target_rel(), 
 	_rotation_time(0), 
 	_dst_direction(0), 
@@ -99,6 +100,8 @@ const bool Object::getNearest(const std::string &classname, v3<float> &position,
 }
 
 void Object::setDirection(const int dir) {
+	if (dir >= _directions_n)
+		LOG_WARN(("%s:%s setDirection(%d) called on object with %d directions", classname.c_str(), animation.c_str(), dir, _directions_n));
 	if (dir >= 0)
 		_direction_idx = dir;
 }
@@ -106,6 +109,28 @@ void Object::setDirection(const int dir) {
 const int Object::getDirection() const {
 	return _direction_idx;
 }
+
+const int Object::getDirectionsNumber() const {
+	return _directions_n;
+}
+
+void Object::setDirectionsNumber(const int dirs) {
+	if (dirs >= 0) 
+		_directions_n = dirs;
+}
+
+void Object::quantizeVelocity() {
+	int dir;
+	if (_directions_n == 8) {
+		_velocity.quantize8();
+		dir = _velocity.getDirection8();
+	} else if (_directions_n == 16) {
+		_velocity.quantize16();
+		dir = _velocity.getDirection16();	
+	} else throw_ex(("%s:%s cannot handle %d directions", classname.c_str(), animation.c_str(), _directions_n));
+	setDirection(dir - 1);
+}
+
 
 void Object::play(const std::string &id, const bool repeat) {
 	if (_events.empty())
@@ -360,6 +385,7 @@ void Object::serialize(mrt::Serializator &s) const {
 	s.add(_tw);
 	s.add(_th);
 	s.add(_direction_idx);
+	s.add(_directions_n);
 	s.add(_pos);
 
 	//add support for waypoints here. AI cannot serialize now.
@@ -406,6 +432,7 @@ void Object::deserialize(const mrt::Serializator &s) {
 	s.get(_tw);
 	s.get(_th);
 	s.get(_direction_idx);
+	s.get(_directions_n);
 	s.get(_pos);
 
 	s.get(_rotation_time);
@@ -483,7 +510,8 @@ Object * Object::spawnGrouped(const std::string &classname, const std::string &a
 	return World->spawnGrouped(this, classname, animation, dpos, type);
 }
 
-void Object::limitRotation(const float dt, const int dirs, const float speed, const bool rotate_even_stopped, const bool allow_backward) {
+void Object::limitRotation(const float dt, const float speed, const bool rotate_even_stopped, const bool allow_backward) {
+	const int dirs = getDirectionsNumber();
 	if (dirs == 1)
 		return;
 	
@@ -675,4 +703,35 @@ const std::string Object::getType() const {
 
 const int Object::getCount() const {
 	return 0;
+}
+
+
+void Object::getTargetPosition(v3<float> &relative_position, const v3<float> &target, const std::string &weapon) {
+	const int dirs = _directions_n;
+	
+	const Object *wp = ResourceManager->getClass(weapon);
+	float range = wp->ttl * wp->speed;
+	
+	GET_CONFIG_VALUE("engine.targeting-multiplier", float, tm, 0.8);
+	if (tm <= 0 || tm >= 1) 
+		throw_ex(("targeting multiplier must be greater than 0 and less than 1.0 (%g)", tm))
+	range *= tm;
+	double dist = target.length();
+	if (dist > range) 
+		dist = range;
+	//LOG_DEBUG(("searching suitable position (distance: %g, range: %g)", dist, range));
+	double distance = 0;
+	
+	for(int i = 0; i < dirs; ++i) {
+		v3<float> pos;
+		pos.fromDirection(i, dirs);
+		pos *= dist;
+		pos += target;
+		double d = pos.quick_length();
+		if (i == 0 || d < distance) {
+			distance = d;
+			relative_position = pos;
+		}
+		//LOG_DEBUG(("target position: %g %g, distance: %g", pos.x, pos.y, d));
+	}
 }

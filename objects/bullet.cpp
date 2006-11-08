@@ -25,9 +25,10 @@
 
 class Bullet : public Object {
 public:
-	Bullet(const std::string &type, const int dirs) : Object("bullet"), _type(type), _dirs(dirs), _clone(false) {
+	Bullet(const std::string &type, const int dirs) : Object("bullet"), _type(type), _clone(false) {
 		impassability = 1;
 		piercing = true;
+		setDirectionsNumber(dirs);
 	}
 	virtual void calculate(const float dt);
 	virtual Object * clone() const;
@@ -38,19 +39,16 @@ public:
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
 		s.add(_type);
-		s.add(_dirs);
 		_clone.serialize(s);
 	}
 	virtual void deserialize(const mrt::Serializator &s) {
 		Object::deserialize(s);
 		s.get(_type);
-		s.get(_dirs);
 		_clone.deserialize(s);
 	}
 
 private: 
 	std::string _type;
-	int _dirs;
 	Alarm _clone;
 };
 
@@ -63,15 +61,16 @@ void Bullet::tick(const float dt) {
 			//LOG_DEBUG(("%d clones...", getID()));
 			
 			GET_CONFIG_VALUE("objects.dispersion-bullet.ttl-multiplier", float, ttl_m, 0.8);
-			int d = (getDirection() + 1) % _dirs;
+			const int dirs = getDirectionsNumber();
+			int d = (getDirection() + 1) % dirs;
 			v3<float> vel;
-			vel.fromDirection(d, _dirs);
+			vel.fromDirection(d, dirs);
 			Object * b = spawn(registered_name, animation, v3<float>::empty, vel);
 			b->ttl = ttl * ttl_m;
 			b->setOwner(getOwner());
 			
-			d = (_dirs + getDirection() - 1) % _dirs;
-			vel.fromDirection(d, _dirs);
+			d = (dirs + getDirection() - 1) % dirs;
+			vel.fromDirection(d, dirs);
 			b = spawn(registered_name, animation, v3<float>::empty, vel);
 			b->ttl = ttl * ttl_m;
 			b->setOwner(getOwner());
@@ -89,16 +88,7 @@ void Bullet::onSpawn() {
 	play("shot", false);
 	play("move", true);
 	
-	int dir;
-	if (_dirs == 8) {
-		_velocity.quantize8();
-		dir = _velocity.getDirection8();
-	} else if (_dirs == 16) {
-		_velocity.quantize16();
-		dir = _velocity.getDirection16();	
-	} else throw_ex(("bullet cannot handle %d directions", _dirs));
-	
-	setDirection(dir - 1);
+	quantizeVelocity();
 }
 
 void Bullet::emit(const std::string &event, BaseObject * emitter) {
@@ -113,19 +103,20 @@ void Bullet::emit(const std::string &event, BaseObject * emitter) {
 		} else if (_type == "dirt") {
 			spawn("dirt", "dirt", dpos);
 		} else if (event == "collision" && _type == "ricochet" && emitter == NULL) {
-			if (_dirs != 16) 
-				throw_ex(("%d-directional ricochet not supported yet.", _dirs));
+			const int dirs = getDirectionsNumber();
+			if (dirs != 16) 
+				throw_ex(("%d-directional ricochet not supported yet.", dirs));
 			
 			//disown(); //BWAHAHHAHA!!!! 
 			
 			int dir = getDirection();
 
 			int sign = (mrt::random(100) & 1) ? 1:-1;
-			int d = sign * (mrt::random(_dirs/4 - 1) + 1) ;
-			dir = ( dir + d + _dirs) % _dirs;
+			int d = sign * (mrt::random(dirs/4 - 1) + 1) ;
+			dir = ( dir + d + dirs) % dirs;
 			
 			setDirection(dir);
-			_velocity.fromDirection(dir, _dirs);
+			_velocity.fromDirection(dir, dirs);
 			return;
 		}
 	

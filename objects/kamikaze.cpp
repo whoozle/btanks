@@ -61,8 +61,7 @@ void Kamikaze::calculate(const float dt) {
 	}
 
 	if (getNearest(targets, _velocity, vel)) {
-		_velocity.quantize8();
-		setDirection(_velocity.getDirection8() - 1);
+		quantizeVelocity();
 	} else _velocity.clear();
 }
 

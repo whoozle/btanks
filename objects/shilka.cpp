@@ -81,7 +81,7 @@ void Shilka::emit(const std::string &event, BaseObject * emitter) {
 void Shilka::calculate(const float dt) {
 	Object::calculate(dt);	
 	GET_CONFIG_VALUE("objects.shilka.rotation-time", float, rt, 0.05);
-	limitRotation(dt, 8, rt, true, false);
+	limitRotation(dt, rt, true, false);
 
 	//LOG_DEBUG(("_velocity: %g %g", _velocity.x, _velocity.y));
 }
