@@ -96,8 +96,8 @@ public:
 
 	void getTargetPosition(v3<float> &relative_position, const v3<float> &target, const std::string &weapon);
 
-protected:
 	void quantizeVelocity();
+protected:
 
 	const bool getRenderRect(sdlx::Rect &src) const;
 
