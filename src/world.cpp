@@ -375,8 +375,7 @@ void IWorld::tick(Object &o, const float dt) {
 		return;
 	}
 		
-	v3<float> vel = o._velocity;
-	float len = vel.normalize();
+	float len = o._velocity.normalize();
 		
 	if (len == 0) {
 		if (o._moving_time > 0) {
@@ -398,12 +397,12 @@ void IWorld::tick(Object &o, const float dt) {
 
 	const float ac_t = o.mass / ac_div;
 	if (o.mass > 0 && o._moving_time < ac_t) {
-		vel *= o._moving_time / ac_t * o._moving_time / ac_t;
+		o._velocity *= o._moving_time / ac_t * o._moving_time / ac_t;
 	}
-	vel += o._velocity_fadeout;
+	o._velocity += o._velocity_fadeout;
 
 	//LOG_DEBUG(("im = %f", im));
-	v3<float> dpos = o.speed * vel * dt;
+	v3<float> dpos = o.speed * o._velocity * dt;
 	v3<int> new_pos((o._position + dpos).convert<int>());
 	v3<int> old_pos = o._position.convert<int>();
 
@@ -439,7 +438,7 @@ void IWorld::tick(Object &o, const float dt) {
 				allowed_velocity = object_center - stuck_map_pos.convert<float>();
 				allowed_velocity.z = 0;
 				//LOG_DEBUG(("allowed-velocity: %g %g", allowed_velocity.x, allowed_velocity.y));
-				if (allowed_velocity.same_sign(vel) || allowed_velocity.is0()) {
+				if (allowed_velocity.same_sign(o._velocity) || allowed_velocity.is0()) {
 					map_im = 0.5;
 				}
 				goto skip_collision;
@@ -448,7 +447,7 @@ void IWorld::tick(Object &o, const float dt) {
 				allowed_velocity = object_center - (stuck_in->_position + stuck_in->size/2);
 				allowed_velocity.z = 0;
 				//LOG_DEBUG(("allowed: %g %g", allowed_velocity.x, allowed_velocity.y));
-				if (allowed_velocity.same_sign(vel) || allowed_velocity.is0()) {
+				if (allowed_velocity.same_sign(o._velocity) || allowed_velocity.is0()) {
 					//LOG_DEBUG(("stuck in object: %s, trespassing allowed!", stuck_in->classname.c_str()));
 					obj_im = map_im;
 					goto skip_collision;
@@ -458,7 +457,7 @@ void IWorld::tick(Object &o, const float dt) {
 		//LOG_DEBUG(("bang!"));
 		GET_CONFIG_VALUE("engine.bounce-velocity-multiplier", float, bvm, 0.5);
 		
-		o._velocity_fadeout = -bvm * vel;
+		o._velocity_fadeout = -bvm * o._velocity;
 		o._velocity.clear();
 		
 		o._moving_time = 0;
