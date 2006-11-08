@@ -55,8 +55,7 @@ void Missile::onSpawn() {
 		add("fire", _fire);
 	}
 	
-	_velocity.normalize();
-	setDirection(_velocity.getDirection16() - 1);
+	quantizeVelocity();
 }
 
 void Missile::calculate(const float dt) {
