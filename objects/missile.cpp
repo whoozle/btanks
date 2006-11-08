@@ -48,7 +48,7 @@ public:
 
 void Missile::onSpawn() {
 	play("main", true);
-	if (type != "boomerang" && type != "nuke") {
+	if (type != "boomerang") {
 		Object *_fire = spawnGrouped("single-pose", "missile-fire", v3<float>::empty, Centered);
 		_fire->setDirectionsNumber(getDirectionsNumber());
 		_fire->impassability = 0;
