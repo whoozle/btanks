@@ -288,63 +288,63 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 	map.load(name);
 	_waypoints.clear();
 	
-	if (spawn_objects) {
-		//const v3<int> size = map.getSize();
-		for (IMap::PropertyMap::iterator i = map.properties.begin(); i != map.properties.end(); ++i) {
-			if (i->first.substr(0, 6) != "spawn:" && i->first.substr(0, 7) != "object:" && 
-				i->first.substr(0, 9) != "waypoint:") {
-				continue;
-			}
-		
-			v3<int> pos;
-			std::string pos_str = i->second;
-			const bool tiled_pos = pos_str[0] == '@';
-			if (tiled_pos) { 
-				pos_str = pos_str.substr(1);
-			}
-			pos.fromString(pos_str);
-			if (tiled_pos) {
-				v3<int> tile_size = Map->getTileSize();
-				pos.x *= tile_size.x;
-				pos.y *= tile_size.y;
-				//keep z untouched.
-			}
+	//const v3<int> size = map.getSize();
+	for (IMap::PropertyMap::iterator i = map.properties.begin(); i != map.properties.end(); ++i) {
+		if (i->first.substr(0, 6) != "spawn:" && i->first.substr(0, 7) != "object:" && 
+			i->first.substr(0, 9) != "waypoint:") {
+			continue;
+		}
+		if (!spawn_objects && i->first.substr(0, 9) != "waypoint:")
+			continue;
 	
-			/*
-			if (pos.x < 0) 
-				pos.x += size.x;
-			if (pos.y < 0) 
-				pos.y += size.y;
-			*/
-			
-			if (i->first.substr(0, 6) == "spawn:") {
-				LOG_DEBUG(("spawnpoint: %d,%d", pos.x, pos.y));
-				PlayerManager->addSlot(pos);
-			} else {
-				std::vector<std::string> res;
-				mrt::split(res, i->first, ":");
-				if (res.size() > 2 && res[0] == "object") {
-					//LOG_DEBUG(("object %s, animation %s, pos: %s", res[1].c_str(), res[2].c_str(), i->second.c_str()));
-					Item item;
-					Object *o = ResourceManager->createObject(res[1], res[2]);
-					World->addObject(o, pos.convert<float>());
-					
-					item.classname = res[1];
-					item.animation = res[2];
-					item.position = pos;
-					item.dead_on = 0;
-					
-					
-					item.id = o->getID();
-					_items.push_back(item);
-				} else if (res.size() > 2 && res[0] == "waypoint") {
-					LOG_DEBUG(("waypoint class %s, name %s : %d,%d", res[1].c_str(), res[2].c_str(), pos.x, pos.y));
-					_waypoints.insert(WaypointMap::value_type(res[1], pos));
-				}
+		v3<int> pos;
+		std::string pos_str = i->second;
+		const bool tiled_pos = pos_str[0] == '@';
+		if (tiled_pos) { 
+			pos_str = pos_str.substr(1);
+		}
+		pos.fromString(pos_str);
+		if (tiled_pos) {
+			v3<int> tile_size = Map->getTileSize();
+			pos.x *= tile_size.x;
+			pos.y *= tile_size.y;
+			//keep z untouched.
+		}
+	
+		/*
+		if (pos.x < 0) 
+			pos.x += size.x;
+		if (pos.y < 0) 
+			pos.y += size.y;
+		*/
+		
+		if (i->first.substr(0, 6) == "spawn:") {
+			LOG_DEBUG(("spawnpoint: %d,%d", pos.x, pos.y));
+			PlayerManager->addSlot(pos);
+		} else {
+			std::vector<std::string> res;
+			mrt::split(res, i->first, ":");
+			if (res.size() > 2 && res[0] == "object") {
+				//LOG_DEBUG(("object %s, animation %s, pos: %s", res[1].c_str(), res[2].c_str(), i->second.c_str()));
+				Item item;
+				Object *o = ResourceManager->createObject(res[1], res[2]);
+				World->addObject(o, pos.convert<float>());
+				
+				item.classname = res[1];
+				item.animation = res[2];
+				item.position = pos;
+				item.dead_on = 0;
+				
+				
+				item.id = o->getID();
+				_items.push_back(item);
+			} else if (res.size() > 2 && res[0] == "waypoint") {
+				LOG_DEBUG(("waypoint class %s, name %s : %d,%d", res[1].c_str(), res[2].c_str(), pos.x, pos.y));
+				_waypoints.insert(WaypointMap::value_type(res[1], pos));
 			}
 		}
-		LOG_DEBUG(("%u items on map.", (unsigned) _items.size()));
-	} //if (spawn_objects)
+	}
+	LOG_DEBUG(("%u items on map.", (unsigned) _items.size()));
 	
 	_hud->initMap();
 	
