@@ -286,11 +286,13 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 	_main_menu.setActive(false);
 	IMap &map = *IMap::get_instance();
 	map.load(name);
+	_waypoints.clear();
 	
 	if (spawn_objects) {
 		//const v3<int> size = map.getSize();
 		for (IMap::PropertyMap::iterator i = map.properties.begin(); i != map.properties.end(); ++i) {
-			if (i->first.substr(0, 6) != "spawn:" && i->first.substr(0, 7) != "object:") {
+			if (i->first.substr(0, 6) != "spawn:" && i->first.substr(0, 7) != "object:" && 
+				i->first.substr(0, 9) != "waypoint:") {
 				continue;
 			}
 		
@@ -335,6 +337,9 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 					
 					item.id = o->getID();
 					_items.push_back(item);
+				} else if (res.size() > 2 && res[0] == "waypoint") {
+					LOG_DEBUG(("waypoint class %s, name %s : %d,%d", res[1].c_str(), res[2].c_str(), pos.x, pos.y));
+					_waypoints.insert(WaypointMap::value_type(res[1], pos));
 				}
 			}
 		}
@@ -610,3 +615,19 @@ void IGame::notifyLoadingBar(const int progress) {
 		_window.flip();
 }
 
+void IGame::getRandomWaypoint(v3<int> &position, const std::string &classname) const {
+	WaypointMap::const_iterator b = _waypoints.lower_bound(classname);
+	if (b == _waypoints.end()) 
+		throw_ex(("no waypoint class '%s' defined", classname.c_str()));
+	
+	WaypointMap::const_iterator e = _waypoints.upper_bound(classname);
+	int wp = mrt::random(_waypoints.size());
+	while(true) {
+		for(WaypointMap::const_iterator i = b; i != e; ++i) {
+			if (wp-- <= 0) {
+				position = i->second;
+				return;
+			}
+		}
+	}
+}

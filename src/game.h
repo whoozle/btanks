@@ -70,6 +70,8 @@ public:
 	void loadMap(const std::string &name, const bool spawn = true);	
 	void setMyIndex(const int idx) { _my_index = idx; }
 	
+	void getRandomWaypoint(v3<int> &position, const std::string &classname) const;
+	
 private:
 	void onKey(const Uint8 type, const SDL_keysym sym);
 	void onMenu(const std::string &name, const std::string &value);
@@ -88,6 +90,9 @@ private:
 	Items _items;
 	Alarm _check_items;
 	void checkItems();
+	
+	typedef std::multimap<const std::string, v3<int> > WaypointMap;
+	WaypointMap _waypoints;
 	
 	bool _show_fps;
 	Object *_fps;
