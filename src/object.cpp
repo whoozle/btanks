@@ -484,7 +484,10 @@ void Object::calculateWayVelocity() {
 		}
 		
 		_velocity = _next_target - getPosition();
-		if (_velocity.quick_length() < 1 /*is0()*/ || _velocity.x * _next_target_rel.x < 0 ||  _velocity.y * _next_target_rel.y < 0) {
+		if ( _velocity.quick_length() < 1 /*is0()*/ || 
+			(_next_target_rel.x != 0 && _velocity.x * _next_target_rel.x <= 0) ||
+			(_next_target_rel.y != 0 && _velocity.y * _next_target_rel.y <= 0)
+		) {
 			//wiping out way point and restart
 			_next_target.clear();
 		} else break;
