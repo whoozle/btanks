@@ -250,6 +250,9 @@ void BaseObject::setZ(const float z) {
 
 const bool BaseObject::take(const BaseObject *obj, const std::string &type) {
 	if (obj->classname == "heal") {
+		if (hp >= max_hp)
+			return false;
+		
 		need_sync = true;
 		hp += obj->hp;
 		if (hp >= max_hp)
