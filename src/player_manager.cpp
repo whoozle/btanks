@@ -335,9 +335,6 @@ void IPlayerManager::updatePlayers() {
 		if (o != NULL /* && !o->isDead() */) 
 			continue;
 			
-		if (slot.frags > 0) 
-			--slot.frags;
-
 		LOG_DEBUG(("player in slot %d is dead. respawning. frags: %d", i, slot.frags));
 
 		spawnPlayer(slot, slot.classname, slot.animation);

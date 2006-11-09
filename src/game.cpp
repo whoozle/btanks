@@ -428,7 +428,11 @@ void IGame::run() {
 					break;
 				}
 				if (!PlayerManager->isClient() && event.key.keysym.sym==SDLK_d && event.key.keysym.mod & KMOD_SHIFT && _my_index >= 0) {
-					Object *o = PlayerManager->getSlot(_my_index).getObject();
+					PlayerSlot &slot = PlayerManager->getSlot(_my_index);
+					if (slot.frags > 0) 
+						--slot.frags;
+
+					Object *o = slot.getObject();
 					if (o)
 						o->emit("death", 0);
 					break;
