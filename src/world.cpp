@@ -983,7 +983,7 @@ const bool IWorld::findPath(const Object *obj, const v3<float>& position, Way & 
 		imp.set(src.y, src.x, imp.get(src.y, src.x) - 100);
 		LOG_DEBUG(("imp\n%s", imp.dump().c_str()));
 		*/
-		return true;
+		return false;
 	}
 
 	way.clear();
