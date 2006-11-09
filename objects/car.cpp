@@ -31,6 +31,7 @@ public:
 	virtual void tick(const float dt);
 	virtual void onSpawn();
 	virtual Object * clone() const;
+	void emit(const std::string &event, BaseObject * emitter);
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
 		_refresh_waypoints.serialize(s);
@@ -42,6 +43,13 @@ public:
 private: 
 	Alarm _refresh_waypoints;
 };
+
+void Car::emit(const std::string &event, BaseObject * emitter) {
+	if (event == "death") {
+		spawn("corpse", "dead-" + animation, v3<float>::empty, v3<float>::empty);
+	}
+	Object::emit(event, emitter);
+}
 
 
 void Car::onSpawn() {
