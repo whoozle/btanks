@@ -389,6 +389,13 @@ void Object::serialize(mrt::Serializator &s) const {
 	s.add(_pos);
 
 	//add support for waypoints here. AI cannot serialize now.
+	en = _way.size();
+	s.add(en);
+	for(Way::const_iterator i = _way.begin(); i != _way.end(); ++i) 
+		i->serialize(s);
+	_next_target.serialize(s);
+	_next_target_rel.serialize(s);
+	
 	s.add(_rotation_time);
 	s.add(_dst_direction);
 
@@ -434,6 +441,17 @@ void Object::deserialize(const mrt::Serializator &s) {
 	s.get(_direction_idx);
 	s.get(_directions_n);
 	s.get(_pos);
+
+	s.get(en);
+	_way.clear();
+	while(en--) {
+		v3<int> wp;
+		wp.deserialize(s);
+		_way.push_back(wp);
+	}
+	_next_target.deserialize(s);
+	_next_target_rel.deserialize(s);
+
 
 	s.get(_rotation_time);
 	s.get(_dst_direction);
