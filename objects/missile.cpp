@@ -115,7 +115,8 @@ void Missile::emit(const std::string &event, BaseObject * emitter) {
 		spawn("smoke-cloud", "smoke-cloud");
 		Object::emit(event, emitter);
 	} else if (event == "death" && type == "nuke") {
-		spawn("nuclear-explosion", "nuclear-explosion");
+		Object *e = spawn("nuclear-explosion", "nuclear-explosion");
+		e->setOwner(getOwner());
 		Object::emit(event, emitter);
 	} else if (event == "death") {
 		spawn("explosion", "missile-explosion");
