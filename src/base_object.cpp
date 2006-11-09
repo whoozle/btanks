@@ -214,6 +214,8 @@ void BaseObject::follow(const int id) {
 
 #include "resource_manager.h"
 #include "object.h"
+#include "config.h"
+#include "mrt/random.h"
 
 void BaseObject::addDamage(BaseObject *from, const bool emitDeath) {
 	if (from == NULL || !from->piercing)
@@ -222,20 +224,27 @@ void BaseObject::addDamage(BaseObject *from, const bool emitDeath) {
 	addDamage(from, from->hp, emitDeath);
 }
 
-void BaseObject::addDamage(BaseObject *from, const int dhp, const bool emitDeath) {
-	if (hp == -1 || dhp == 0)
+void BaseObject::addDamage(BaseObject *from, const int d, const bool emitDeath) {
+	if (hp == -1 || d == 0)
 		return;
+	int damage = d;
+	
+	GET_CONFIG_VALUE("engine.damage-randomization", float, dr, 0.3);
+	int radius = (int)(damage * dr);
+	if (radius > 0) {
+		damage += mrt::random(radius * 2 + 1) - radius;
+	}
 	
 	need_sync = true;
 	
-	hp -= dhp;	
-	LOG_DEBUG(("%s: received %d hp of damage from %s. hp = %d", classname.c_str(), dhp, from->classname.c_str(), hp));
+	hp -= damage;	
+	LOG_DEBUG(("%s: received %d hp of damage from %s. hp = %d", classname.c_str(), damage, from->classname.c_str(), hp));
 	if (emitDeath && hp <= 0) 
 		emit("death", from);
 		
 	//look for a better place for that.
 	Object *o = ResourceManager->createObject("damage-digits", "damage-digits");
-	o->hp = dhp;
+	o->hp = damage;
 	if (hp < 0) 
 		o->hp += hp;
 	v3<float> pos = _position;
