@@ -7,101 +7,11 @@
   <property name="object:dumb-missiles-item:dumb-missiles-item:5" value="408,988"/>
   <property name="object:dumb-missiles-item:dumb-missiles-item:4" value="4,1342"/>
   <property name="object:dumb-missiles-item:dumb-missiles-item:3" value="1378,1660"/>
-  <property name="object:impassable-static-corpse:yellow-car:1" value="419,887"/>
   <property name="object:dumb-missiles-item:dumb-missiles-item:2" value="1676,690"/>
+  <property name="object:static-corpse:dead-man-static:9" value="22,1474,150"/>
   <property name="object:dumb-missiles-item:dumb-missiles-item:1" value="1032,806"/>
   <property name="object:road-sign:road-sign10:1" value="2420,24"/>
-  <property name="object:pond:pond:2" value="1728,254,-25"/>
-  <property name="object:tent:tent-left:1" value="1410,1372"/>
-  <property name="object:bus-stop:bus-stop-right:4" value="704,1638"/>
-  <property name="object:bus-stop:bus-stop-right:3" value="1418,442"/>
-  <property name="object:bus-stop:bus-stop-right:2" value="704,442"/>
-  <property name="object:bus-stop:bus-stop-right:1" value="1410,1260"/>
-  <property name="object:static-corpse:smoke-cloud:1" value="587,927,900"/>
-  <property name="object:impassable-static-corpse:dead-green-car:2" value="617,1491"/>
-  <property name="object:impassable-static-corpse:dead-green-car:1" value="1336,93"/>
-  <property name="object:impassable-static-corpse:dead-yellow-car:2" value="2385,245"/>
-  <property name="object:impassable-static-corpse:dead-yellow-car:1" value="557,1049"/>
-  <property name="object:guided-missiles-item:guided-missiles-item:6" value="566,972"/>
-  <property name="object:guided-missiles-item:guided-missiles-item:5" value="492,198"/>
-  <property name="object:guided-missiles-item:guided-missiles-item:4" value="1960,1452"/>
-  <property name="object:guided-missiles-item:guided-missiles-item:3" value="1080,998"/>
-  <property name="object:impassable-static-corpse:dead-yellow-launcher:5" value="671,400"/>
-  <property name="object:guided-missiles-item:guided-missiles-item:2" value="1808,108"/>
-  <property name="object:impassable-static-corpse:dead-yellow-launcher:4" value="1233,1872"/>
-  <property name="object:guided-missiles-item:guided-missiles-item:1" value="976,232"/>
-  <property name="object:impassable-static-corpse:dead-yellow-launcher:3" value="2266,1889"/>
-  <property name="object:impassable-static-corpse:dead-yellow-launcher:2" value="2199,949"/>
-  <property name="object:impassable-static-corpse:dead-yellow-launcher:1" value="2450,47"/>
-  <property name="object:mines-item:mines-item:2" value="1992,312"/>
-  <property name="object:road-sign:road-sign05:1" value="1394,20"/>
-  <property name="object:mines-item:mines-item:1" value="812,1434"/>
-  <property name="object:heal:heal:16" value="108,464"/>
-  <property name="object:heal:heal:15" value="1572,386"/>
-  <property name="object:heal:heal:14" value="2090,394"/>
-  <property name="object:heal:heal:13" value="2442,534"/>
-  <property name="object:road-sign:road-sign03:2" value="106,1074"/>
-  <property name="object:heal:heal:12" value="2502,1476"/>
-  <property name="object:road-sign:road-sign03:1" value="1210,1848"/>
-  <property name="object:heal:heal:11" value="1948,1694"/>
-  <property name="object:heal:heal:10" value="978,1656"/>
-  <property name="object:regular-mine:regular-mine:4" value="2439,866,-10"/>
-  <property name="object:regular-mine:regular-mine:3" value="2451,1034,-10"/>
-  <property name="object:regular-mine:regular-mine:2" value="527,1041,-10"/>
-  <property name="object:regular-mine:regular-mine:1" value="1896,1891,160"/>
-  <property name="object:impassable-static-corpse:dead-orage-bus:1" value="1368,1261"/>
-  <property name="object:bus-stop:bus-stop-left:4" value="510,1376"/>
-  <property name="object:bus-stop:bus-stop-left:3" value="1152,1726"/>
-  <property name="object:bus-stop:bus-stop-left:2" value="1146,306"/>
-  <property name="object:bus-stop:bus-stop-left:1" value="508,368"/>
-  <property name="object:smoke-missiles-item:smoke-missiles-item:1" value="1146,1230"/>
-  <property name="object:static-corpse:dead-thrower-static:7" value="2220,45"/>
-  <property name="object:static-corpse:dead-thrower-static:6" value="2085,970"/>
-  <property name="object:static-corpse:dead-thrower-static:5" value="344,1143"/>
-  <property name="object:static-corpse:dead-thrower-static:4" value="591,12"/>
-  <property name="object:static-corpse:dead-thrower-static:3" value="1012,1380"/>
-  <property name="object:static-corpse:dead-thrower-static:2" value="681,1458"/>
-  <property name="object:static-corpse:dead-thrower-static:1" value="795,833"/>
-  <property name="object:impassable-static-corpse:dead-white-car:1" value="2485,896"/>
-  <property name="object:traffic-lights:traffic-lights:9" value="2423,829,150"/>
-  <property name="object:traffic-lights:traffic-lights:8" value="2234,828,150"/>
-  <property name="object:impassable-static-corpse:dead-red-shilka:4" value="1926,542"/>
-  <property name="object:impassable-static-corpse:dead-red-shilka:3" value="1116,1365"/>
-  <property name="object:impassable-static-corpse:dead-red-shilka:2" value="92,1438"/>
-  <property name="object:impassable-static-corpse:dead-red-shilka:1" value="715,358"/>
-  <property name="object:traffic-lights:traffic-lights:4" value="1400,1012"/>
-  <property name="object:traffic-lights:traffic-lights:3" value="1396,830"/>
-  <property name="object:traffic-lights:traffic-lights:2" value="1148,1020"/>
-  <property name="object:traffic-lights:traffic-lights:1" value="1146,828"/>
-  <property name="object:machinegunner-item:machinegunner-item:2" value="2036,1164"/>
-  <property name="object:machinegunner-item:machinegunner-item:1" value="602,1408"/>
-  <property name="object:impassable-static-corpse:dead-cyan-car:1" value="2284,1357"/>
-  <property name="object:static-corpse:dead-man:7" value="1318,76,-50"/>
-  <property name="object:static-corpse:dead-man:6" value="2476,1354,-50"/>
-  <property name="object:static-corpse:dead-man:5" value="930,798,-50"/>
-  <property name="object:static-corpse:dead-man:3" value="595,1458"/>
-  <property name="object:static-corpse:dead-man:2" value="478,580"/>
-  <property name="object:static-corpse:dead-man:1" value="1433,1604"/>
-  <property name="object:biotoilet:biotoilet:4" value="704,1761"/>
-  <property name="object:biotoilet:biotoilet:3" value="721,1728"/>
-  <property name="object:biotoilet:biotoilet:1" value="2222,4"/>
-  <property name="object:heal:heal:9" value="232,1496"/>
-  <property name="object:heal:heal:8" value="540,686"/>
-  <property name="object:heal:heal:7" value="50,230"/>
-  <property name="object:heal:heal:6" value="832,244"/>
-  <property name="object:heal:heal:5" value="1212,392"/>
-  <property name="object:heal:heal:4" value="1188,1116"/>
-  <property name="object:heal:heal:3" value="1186,1116"/>
-  <property name="object:heal:heal:1" value="2312,1764"/>
-  <property name="object:dispersion-bullets-item:dispersion-bullets-item:6" value="536,80"/>
-  <property name="object:dispersion-bullets-item:dispersion-bullets-item:5" value="1182,1662"/>
-  <property name="object:dispersion-bullets-item:dispersion-bullets-item:4" value="144,56"/>
-  <property name="object:umbrella:umbrella:1" value="1154,510"/>
-  <property name="object:static-corpse:dead-man-static:9" value="22,1474,150"/>
-  <property name="object:dispersion-bullets-item:dispersion-bullets-item:3" value="496,1090"/>
   <property name="object:static-corpse:dead-man-static:8" value="458,1002"/>
-  <property name="object:dispersion-bullets-item:dispersion-bullets-item:2" value="2506,98"/>
-  <property name="object:dispersion-bullets-item:dispersion-bullets-item:1" value="1380,780"/>
   <property name="object:static-corpse:dead-man-static:7" value="816,1008"/>
   <property name="object:static-corpse:dead-man-static:6" value="550,818"/>
   <property name="object:static-corpse:dead-man-static:5" value="845,520"/>
@@ -109,42 +19,131 @@
   <property name="object:static-corpse:dead-man-static:3" value="1356,80"/>
   <property name="object:static-corpse:dead-man-static:2" value="1172,1865"/>
   <property name="object:static-corpse:dead-man-static:1" value="1123,1268"/>
+  <property name="object:pond:pond:2" value="1728,254,-25"/>
+  <property name="object:impassable-static-corpse:dead-yellow-tank:1" value="1331,1220"/>
+  <property name="object:impassable-static-corpse:dead-orage-bus:29" value="2524,868"/>
+  <property name="object:impassable-static-corpse:dead-orage-bus:28" value="18,991"/>
+  <property name="object:bus-stop:bus-stop-right:4" value="704,1638"/>
+  <property name="object:tent:tent-left:1" value="1410,1372"/>
+  <property name="object:bus-stop:bus-stop-right:3" value="1418,442"/>
+  <property name="object:bus-stop:bus-stop-right:2" value="704,442"/>
+  <property name="object:bus-stop:bus-stop-right:1" value="1410,1260"/>
+  <property name="object:impassable-static-corpse:dead-cyan-shilka:4" value="2465,812"/>
+  <property name="object:impassable-static-corpse:dead-cyan-shilka:3" value="1353,54"/>
+  <property name="object:impassable-static-corpse:dead-cyan-shilka:2" value="1237,493"/>
+  <property name="object:impassable-static-corpse:dead-cyan-shilka:1" value="644,1445"/>
+  <property name="object:impassable-static-corpse:dead-green-car:2" value="617,1491"/>
+  <property name="object:impassable-static-corpse:dead-green-car:1" value="1336,93"/>
+  <property name="object:impassable-static-corpse:dead-yellow-launcher:5" value="671,400"/>
+  <property name="object:impassable-static-corpse:dead-yellow-launcher:4" value="1233,1872"/>
+  <property name="object:impassable-static-corpse:dead-yellow-launcher:3" value="2266,1889"/>
+  <property name="object:impassable-static-corpse:dead-yellow-launcher:2" value="2199,949"/>
+  <property name="object:impassable-static-corpse:dead-yellow-launcher:1" value="2450,47"/>
+  <property name="object:guided-missiles-item:guided-missiles-item:6" value="566,972"/>
+  <property name="object:guided-missiles-item:guided-missiles-item:5" value="492,198"/>
+  <property name="object:guided-missiles-item:guided-missiles-item:4" value="1960,1452"/>
+  <property name="object:guided-missiles-item:guided-missiles-item:3" value="1080,998"/>
+  <property name="object:guided-missiles-item:guided-missiles-item:2" value="1808,108"/>
+  <property name="object:guided-missiles-item:guided-missiles-item:1" value="976,232"/>
+  <property name="object:mines-item:mines-item:2" value="1992,312"/>
+  <property name="object:mines-item:mines-item:1" value="812,1434"/>
+  <property name="object:road-sign:road-sign05:1" value="1394,20"/>
+  <property name="object:heal:heal:16" value="108,464"/>
+  <property name="object:heal:heal:15" value="1572,386"/>
+  <property name="object:heal:heal:14" value="2090,394"/>
   <property name="object:impassable-static-corpse:dead-man:4" value="422,902,-50"/>
+  <property name="object:heal:heal:13" value="2442,534"/>
+  <property name="object:heal:heal:12" value="2502,1476"/>
+  <property name="object:road-sign:road-sign03:2" value="106,1074"/>
+  <property name="object:heal:heal:11" value="1948,1694"/>
+  <property name="object:road-sign:road-sign03:1" value="1210,1848"/>
+  <property name="object:heal:heal:10" value="978,1656"/>
+  <property name="object:regular-mine:regular-mine:4" value="2439,866,-10"/>
+  <property name="object:regular-mine:regular-mine:3" value="2451,1034,-10"/>
+  <property name="object:regular-mine:regular-mine:2" value="527,1041,-10"/>
+  <property name="object:regular-mine:regular-mine:1" value="1896,1891,160"/>
+  <property name="object:bus-stop:bus-stop-left:5" value="1140,1733"/>
+  <property name="object:impassable-static-corpse:dead-orage-bus:1" value="1368,1261"/>
+  <property name="object:bus-stop:bus-stop-left:4" value="510,1376"/>
+  <property name="object:bus-stop:bus-stop-left:2" value="1146,306"/>
+  <property name="object:bus-stop:bus-stop-left:1" value="508,368"/>
+  <property name="object:smoke-missiles-item:smoke-missiles-item:1" value="1146,1230"/>
+  <property name="object:impassable-static-corpse:dead-white-car:1" value="2485,896"/>
+  <property name="object:traffic-lights:traffic-lights:9" value="2423,829,150"/>
+  <property name="object:traffic-lights:traffic-lights:8" value="2234,828,150"/>
+  <property name="object:traffic-lights:traffic-lights:4" value="1400,1012"/>
+  <property name="object:traffic-lights:traffic-lights:3" value="1396,830"/>
+  <property name="object:traffic-lights:traffic-lights:2" value="1148,1020"/>
+  <property name="object:traffic-lights:traffic-lights:1" value="1146,828"/>
+  <property name="object:machinegunner-item:machinegunner-item:2" value="2036,1164"/>
+  <property name="object:machinegunner-item:machinegunner-item:1" value="602,1408"/>
+  <property name="object:static-corpse:dead-man:7" value="1318,76,-50"/>
+  <property name="object:static-corpse:dead-man:6" value="2476,1354,-50"/>
+  <property name="object:static-corpse:dead-man:5" value="930,798,-50"/>
+  <property name="object:biotoilet:biotoilet:4" value="704,1761"/>
+  <property name="object:biotoilet:biotoilet:3" value="721,1728"/>
+  <property name="object:static-corpse:dead-man:3" value="595,1458"/>
+  <property name="object:static-corpse:dead-man:2" value="478,580"/>
+  <property name="object:biotoilet:biotoilet:1" value="2222,4"/>
+  <property name="object:static-corpse:dead-man:1" value="1433,1604"/>
+  <property name="object:heal:heal:9" value="232,1496"/>
+  <property name="object:heal:heal:8" value="540,686"/>
+  <property name="object:heal:heal:7" value="50,230"/>
+  <property name="object:heal:heal:6" value="832,244"/>
+  <property name="object:static-corpse:dead-thrower-static:7" value="2220,45"/>
+  <property name="object:heal:heal:5" value="1212,392"/>
+  <property name="object:static-corpse:dead-thrower-static:6" value="2085,970"/>
+  <property name="object:heal:heal:4" value="1188,1116"/>
+  <property name="object:static-corpse:dead-thrower-static:5" value="344,1143"/>
+  <property name="object:heal:heal:3" value="1186,1116"/>
+  <property name="object:static-corpse:dead-thrower-static:4" value="591,12"/>
+  <property name="object:static-corpse:dead-thrower-static:3" value="1012,1380"/>
+  <property name="object:heal:heal:1" value="2312,1764"/>
+  <property name="object:static-corpse:dead-thrower-static:2" value="681,1458"/>
+  <property name="object:static-corpse:dead-thrower-static:1" value="795,833"/>
+  <property name="object:impassable-static-corpse:white-car:1" value="35,961"/>
+  <property name="object:impassable-static-corpse:dead-yellow-car:2" value="2385,245"/>
+  <property name="object:impassable-static-corpse:dead-yellow-car:1" value="557,1049"/>
+  <property name="object:car:yellow-car:1" value="424,220"/>
+  <property name="object:dispersion-bullets-item:dispersion-bullets-item:6" value="536,80"/>
+  <property name="object:dispersion-bullets-item:dispersion-bullets-item:5" value="1182,1662"/>
+  <property name="object:umbrella:umbrella:1" value="1154,510"/>
+  <property name="object:dispersion-bullets-item:dispersion-bullets-item:4" value="144,56"/>
+  <property name="object:dispersion-bullets-item:dispersion-bullets-item:3" value="496,1090"/>
+  <property name="object:dispersion-bullets-item:dispersion-bullets-item:2" value="2506,98"/>
+  <property name="object:dispersion-bullets-item:dispersion-bullets-item:1" value="1380,780"/>
+  <property name="object:impassable-static-corpse:dead-cyan-car:1" value="2284,1357"/>
   <property name="object:megaheal:megaheal:1" value="1820,606"/>
   <property name="object:gate:gate:1" value="1856,1410"/>
   <property name="object:stun-missiles-item:stun-missiles-item:2" value="1796,1792"/>
   <property name="object:stun-missiles-item:stun-missiles-item:1" value="886,102"/>
   <property name="object:oil-barrels:oil-barrels:5" value="238,1448,160"/>
+  <property name="object:impassable-static-corpse:dead-red-shilka:4" value="1926,542"/>
   <property name="object:oil-barrels:oil-barrels:4" value="834,134"/>
   <property name="object:ricochet-bullets-item:ricochet-bullets-item:2" value="72,770,180"/>
+  <property name="object:impassable-static-corpse:dead-red-shilka:3" value="1116,1365"/>
   <property name="object:ricochet-bullets-item:ricochet-bullets-item:1" value="1996,696,180"/>
+  <property name="object:impassable-static-corpse:dead-red-shilka:2" value="92,1438"/>
   <property name="object:oil-barrels:oil-barrels:2" value="2376,1834"/>
-  <property name="object:impassable-static-corpse:dead-orage-bus:29" value="2524,868"/>
-  <property name="object:impassable-static-corpse:dead-orage-bus:28" value="18,991"/>
+  <property name="object:impassable-static-corpse:dead-red-shilka:1" value="715,358"/>
+  <property name="object:static-corpse:dead-man-static:10" value="651,1843"/>
   <property name="object:road-sign:road-sign04:3" value="2417,1585"/>
   <property name="object:road-sign:road-sign04:2" value="2418,240"/>
-  <property name="object:impassable-static-corpse:dead-yellow-tank:1" value="1331,1220"/>
-  <property name="object:impassable-static-corpse:white-car:1" value="35,961"/>
   <property name="spawn:6" value="@27,19"/>
   <property name="spawn:5" value="@22,2"/>
   <property name="spawn:4" value="@11,3"/>
   <property name="spawn:3" value="@2,20"/>
   <property name="spawn:2" value="@18,23"/>
-  <property name="object:impassable-static-corpse:dead-cyan-shilka:4" value="2465,812"/>
-  <property name="object:impassable-static-corpse:dead-cyan-shilka:3" value="1353,54"/>
-  <property name="object:impassable-static-corpse:dead-cyan-shilka:2" value="1237,493"/>
-  <property name="object:impassable-static-corpse:dead-cyan-shilka:1" value="644,1445"/>
   <property name="object:van:van:1" value="1095,543,150"/>
-  <property name="object:static-corpse:dead-man-static:10" value="651,1843"/>
-  <property name="waypoint:cars:9" value="1380,527"/>
   <property name="object:traffic-lights:traffic-lights:13" value="505,1012"/>
-  <property name="waypoint:cars:8" value="1484,951"/>
+  <property name="waypoint:cars:9" value="1380,527"/>
   <property name="object:traffic-lights:traffic-lights:12" value="505,827"/>
-  <property name="waypoint:cars:7" value="2340,1348"/>
-  <property name="object:traffic-lights:traffic-lights:11" value="698,827"/>
+  <property name="waypoint:cars:8" value="1484,951"/>
   <property name="waypoint:cars:10" value="1241,145"/>
-  <property name="waypoint:cars:6" value="2326,950"/>
+  <property name="object:traffic-lights:traffic-lights:11" value="698,827"/>
+  <property name="waypoint:cars:7" value="2340,1348"/>
   <property name="object:traffic-lights:traffic-lights:10" value="2421,1012,150"/>
+  <property name="waypoint:cars:6" value="2326,950"/>
   <property name="waypoint:cars:5" value="2329,247"/>
   <property name="waypoint:cars:4" value="1240,1855"/>
   <property name="waypoint:cars:3" value="1239,949"/>
@@ -181,7 +180,7 @@
    <property name="z" value="-1000"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAALWXTW6EMAyFPdsKJOYGQepsQKI3gPuv2iMVJCw9Xm0nGdLFkxUSwssX54dRRIZdz12jo0SxI2E9t/3c9TrjUf44leD5y3gPo/qbHWnb6SwfnnqI+nwy2i67vqCs/rx6fh/9JbkymJ0xqTf1h31y2++HyM/D55Orn8Af9q/+rDGhvy7Drzby+6PY+TdLzA89Rvw4vzTnvHorstC/xw/9leYfrpWXUW99a5LrHFt8eUy4Pmr4qReNpfx4jjEfWvKbwU/N+rVyMOJ3J/+SXPOoll/3T/wWoy+c64ifinOyhF9u/+PzA3mVnB8TqXRPepcf8irhx/4mo21ptPh5PEv7fGePj+LdPpiflj0lQ97zSDXv8Jx49xYrp3J5EeVLbVtcvzV5FsWWfVlMSnIiatc6/7Zd66kN4hCMqQctVM/fOfYOvCt2VOYzgKPnbw3GpH2rIn6WL8tjLb81GBP3H/HDc4bHpWrNb5DreZ3jx+PRiP89rfgNcvXHeWrtq+itpz743nmXXwJfqogfcmZu6K8VP08ev+cpvMdguTW/mdqzJ4vfIb2nqD8s8xzcXb/aRlXCj6X8Fon3Wva3STm/1Wjn8eOcxXthKT9WNKbNaWd9Z5C//5YYc/w8eWekx9k6y3U++d/S48fxFw8rGDDAEgAA
+   H4sIAAAAAAAAALWXTY6EIBCF6e1EE/sGmExvMHFuoPdfzRxpMLGS55uqAlpm8VJBEB8fxY9zCGHKemY9smZFkeJAwnpu+5n1OuNR/jgV4flLeQ+j+FsMSdt0lg9PI0R5npS2a9YXlMWfVc/vo78YrgwWY0ziTfxhn9z2O0/Kz8PmU6pP4A/7F3/amNDfUODXGvn9Gfxhzi3B54cePX6cX5JzVr0WWejf4of+avMP18pLqde+lcJ1jjW+PCZcHy38xIvEWn48x5gPPfkt4Kdl/Wo56PG7k38xXPOold/wT/xWpS+ca4+fiHOyhl9p/+PzA3nVnB+JVLsnvcsPedXwY39JaVsbNX4Wz9o+39njvXi3D+YnZUtRkfXcU8s7PCfWvUXLqVJeePnS2hbXb0ueebFnXxqTmpzw2vXOvz1rO7VDnJwxjaCV6vk7x96Bd8WBynwGcLT8bc6YpG+Rx0/zpXls5bc5Y+L+PX54zvC4RL35TeF6Xpf48Xgk4n9PL35TuPrjPNX2VfQ2Uh9877zLL4IvkccPOTM39NeLnyWL3/MU3mOw3JvfQu3Zk8bvkNxTxB+WeQ7url9pI6rhxxJ+a/D3Wva3h3p+m9LO4sc5i/fCWn4sb0y70U77zhT+/ltiLPGzZJ2RFmftLJf55H9Lix/HXyJ1fGzAEgAA
   </data>
   <tileproperties/>
  </layer>
@@ -243,7 +242,7 @@
    <property name="z" value="200"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAO3VQQoAEBCFYbdm7WjWOBOKsrGYxhT1f/U2jHoLNc7dkXtKT93OguC9ZPaW1/tFo1nYSYLZ1/8f/XTop0M/nbET/MzJumd/AAAA4AcNfdWaBcASAAA=
+   H4sIAAAAAAAAAGNgoA44A8RngfgcklgFCfpJUUstMNjd10QjtaOAduAQCWoHe/obdR9lYNR9lIFR91EGQHVCORTjAjD50fpjFIyCUTAYAba+BSnyo2DwAljcjcbfKBgFAwuGYjkKAI64REfAEgAA
   </data>
   <tileproperties/>
  </layer>
@@ -252,7 +251,7 @@
    <property name="impassability" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAO2YzQ7CIAyAeeC9jIkepocd1KteOXvWPZMskYSwFtqtrWH6JYTftYXRwtY7544h9Z88xyPl0jhKvQZ3PFceJL82V1/o06BTGlviJCRHix1jbEvrZ7WnJLG02Vf0tbR+VnFkbQz+0zYdUqb2R7B9w22XYkv7GPJRyflR7m+Uduo9kAskN23bh3QA6lN+EbQD47Hi2UHMit/mGdIrpHFhvxZ3Y33ce8NVyxAErn2Tf8R39433t0XObh4vLeIkFchnrP2opBfyGWs/KunVXD8ojqbnbZ7f3Pz8xmxe8i2S/o/KY0vM3ylnmNjAEgAA
+   H4sIAAAAAAAAAO2YzQ6DIAyA+8C+zBI9uB08bF63K+c92TTRhGBb2lmasfAlhB9rWwgt6AgA16WMW50SiDYnJ+nn0Mpr9WH6c3MNzLMSdIVkOW5GekpxUcjWtH5ee8oST59Dxl5N6+eVR87m4EbddERb+nyH2jfacSv+aR9jMWo5P8n9TTIuvQdqwfTGY/1SBqS/1g9DPyjeJ96dzLxo/CIvZ3vae8NcyhECrX8tPuy5wzFfeuRJKVjMeMcRZxeLGe844ux6r1983qb1E47nN+XzN98i8f+oNLfs9QfaCkaawBIAAA==
   </data>
   <tileproperties/>
  </layer>
@@ -293,7 +292,7 @@
    <property name="z" value="400"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAO2YPUtDMRSGEwVndXUQURQUPye1Uyt28LMOKo6Cs6s6qj/HHyW4CFYUqdV2UHzDvaGn5+bmfjUpBV94EZOcnGc4JzepEIGa8Av8FvoV/hbdGpVCjMGz8BzxlBROtEz2bcCfcCu0wJxkeZdkELMCL8KT4d8FR3wbZN8f+Beuw0MyYG2z9esyiNl0xEP1mDCvWIcTOJL2KKJmjhiXPFyK7ytm7tkSw6V66b0nRNFciq9F3CZzJvEe4nEu+Oqi0xO63vQcP19oD1En1WkRPtsc5/MpEx+t/ycR5fPdH0IaxkK5qvu00rVuGoure5/9oWvdNBZX9z7741+DI1vfj/SpNkokr+1br++U44yz5Ji7bLlb0r6P4yt74KvBR9Lc9/p7auOrZWTU+dLyVeGdhPU2vmpGPp3vAD4k3jfso/avwFspckzE8FUy8NH1Z7Lbp4Z9djG2R9inyXtKy/bG0vFpxfMl6RjrTgj7fPiWmoFX4bXwf+UPEX1j6fi04vkGXUXPL5/nn+/48xSxWffnd+E8559Jcaz95LtC3DV8Ad/0iI//lpLnfNa6RdwdfAnfW/jUeblNTM9q/j2md/AH2Yn/Azx7n3XAEgAA
+   H4sIAAAAAAAAAO2YTUsDMRCGEwXP6tWDiKKg+HlSe2rFgt/1oOJR8OxVPao/xx8leBGsKKLV9qD4ht3QcTabzXZNSsEXHsTNTuY9zMwmFSJSAzyC55gn8Cl+a1AKMQQmwRRhTAovmif7voF30IwRWJMs75yMYhbALBiN/8548rdC9v0C36AO+mTktcXeX5ZRzKonP1R3GevKa3+Gj6w9iqjRQYxPP1zK30fK2oMlhkv10sufOErmUv6ahBZZM4n3EI/z4a8u2j2h602v8flCe4iSVadF/NnWuL+QMvmj9X8vkv5C94eQhmexfNW9q3Stm56l1X3I/tC1bnqWVvch++NfvSNb3w90qTZKJK/tW6/PlMPMZ8mz77LlbEn7Ps1fOYC/GtiX5r7X31Obv1pOjzqfq78q2Mx43+avmtOfzrcL9gg7hn3U/hWw5pBjJMVfJYc/mu+YcWTYZwvPton3cXKf0rLdsXS8q3i+LB3gvUPifTq+S02ARbAU/694Fck7lo53Fc/X6yo6v0LOv9DxJw6xdP65iJ+FO5l/JqV57aa/c8RdgFNwafGn5uWGYw7+W0on81nrCnHX4AzcWPypeblOoLOaf4/pGfxWtuN/AKh+X/LAEgAA
   </data>
   <tileproperties/>
  </layer>
