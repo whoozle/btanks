@@ -377,7 +377,6 @@
 	<alias name="road-sign" class="destructable-object" />
 	<alias name="oil-barrels" class="destructable-object-with-fire(pierceable)" />
 	<alias name="impassable-static-corpse" class="static-corpse" />
-	<alias name="car" class="static-corpse" />
 
 	<object class="tank" speed="400" mass="500" hp="80" z="0" />
 	<object class="ai-tank" parent="tank" z="0" />
@@ -438,6 +437,7 @@
 	<object class="paratrooper-kamikaze" hp="5" impassability="0" z="810" />
 	<object class="kamikaze" hp="5" speed="70" mass="80" z="0" />
 	<object class="machinegunner" hp="10" speed="100" mass="85" z="-1" ttl="30" />
+	<object class="car" hp="20" speed="200" mass="500" />
 
 	<!-- items -->
 	<object class="base-item" z="180" impassability="-1" />
