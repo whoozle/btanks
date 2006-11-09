@@ -193,8 +193,8 @@ void IMap::load(const std::string &name) {
 				im = -1; //inf :)
 			//_imp_map.set(y, x, im);
 			
-			for(int y1 = y * _th / pathfinding_step; y1 < (y + 1) * _th / pathfinding_step; ++y1) 
-				for(int x1 = x * _tw / pathfinding_step; x1 < (x + 1) * _tw / pathfinding_step; ++x1) 
+			for(int y1 = y * _th / pathfinding_step; y1 <= ((y + 1) * _th - 1 ) / pathfinding_step; ++y1) 
+				for(int x1 = x * _tw / pathfinding_step; x1 <= ((x + 1) * _tw - 1) / pathfinding_step; ++x1) 
 					_imp_map.set(y1, x1, im);
 			
 		}
