@@ -267,7 +267,11 @@ void IWorld::getImpassabilityMatrix(Matrix<int> &matrix, const Object *src, cons
 			continue;
 		
 		int im = (int)(o->impassability * 100);
-		if (o->piercing || im <= 0) 
+		if (o->piercing || im <= 0 || 
+		//blacklisted several types of items.
+			o->classname == "missiles" || o->classname == "mines" || o->classname == "mod" || 
+			o->classname == "heal" || o->classname == "effects"
+			) 
 			continue;
 		if (im >= 100)
 			im = -1;
