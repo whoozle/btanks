@@ -17,8 +17,11 @@
   <property name="object:static-corpse:dead-man-static:5" value="845,520"/>
   <property name="object:static-corpse:dead-man-static:4" value="1177,522"/>
   <property name="object:static-corpse:dead-man-static:3" value="1356,80"/>
+  <property name="object:cyan-car:cyan-car:3" value="@21,3"/>
   <property name="object:static-corpse:dead-man-static:2" value="1172,1865"/>
+  <property name="object:cyan-car:cyan-car:2" value="@28,14"/>
   <property name="object:static-corpse:dead-man-static:1" value="1123,1268"/>
+  <property name="object:cyan-car:cyan-car:1" value="@36,6"/>
   <property name="object:pond:pond:2" value="1728,254,-25"/>
   <property name="object:impassable-static-corpse:dead-yellow-tank:1" value="1331,1220"/>
   <property name="object:impassable-static-corpse:dead-orage-bus:29" value="2524,868"/>
@@ -104,11 +107,7 @@
   <property name="object:impassable-static-corpse:white-car:1" value="35,961"/>
   <property name="object:impassable-static-corpse:dead-yellow-car:2" value="2385,245"/>
   <property name="object:impassable-static-corpse:dead-yellow-car:1" value="557,1049"/>
-  <property name="object:car:yellow-car:6" value="2359,1293"/>
-  <property name="object:car:yellow-car:5" value="2286,119"/>
-  <property name="object:car:yellow-car:4" value="1336,256"/>
   <property name="object:car:yellow-car:3" value="502,894"/>
-  <property name="object:car:yellow-car:2" value="1194,1814"/>
   <property name="object:car:yellow-car:1" value="424,220"/>
   <property name="object:dispersion-bullets-item:dispersion-bullets-item:6" value="536,80"/>
   <property name="object:dispersion-bullets-item:dispersion-bullets-item:5" value="1182,1662"/>
@@ -131,6 +130,7 @@
   <property name="object:impassable-static-corpse:dead-red-shilka:2" value="92,1438"/>
   <property name="object:oil-barrels:oil-barrels:2" value="2376,1834"/>
   <property name="object:impassable-static-corpse:dead-red-shilka:1" value="715,358"/>
+  <property name="object:car:white-car:2" value="@21,28"/>
   <property name="object:static-corpse:dead-man-static:10" value="651,1843"/>
   <property name="object:road-sign:road-sign04:3" value="2417,1585"/>
   <property name="object:road-sign:road-sign04:2" value="2418,240"/>
