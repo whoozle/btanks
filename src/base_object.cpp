@@ -228,13 +228,13 @@ void BaseObject::addDamage(BaseObject *from, const int d, const bool emitDeath) 
 	if (hp == -1 || d == 0)
 		return;
 	int damage = d;
-	
+	/*
 	GET_CONFIG_VALUE("engine.damage-randomization", float, dr, 0.3);
 	int radius = (int)(damage * dr);
 	if (radius > 0) {
 		damage += mrt::random(radius * 2 + 1) - radius;
 	}
-	
+	*/
 	need_sync = true;
 	
 	hp -= damage;	
