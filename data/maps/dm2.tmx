@@ -17,11 +17,11 @@
   <property name="object:static-corpse:dead-man-static:5" value="845,520"/>
   <property name="object:static-corpse:dead-man-static:4" value="1177,522"/>
   <property name="object:static-corpse:dead-man-static:3" value="1356,80"/>
-  <property name="object:cyan-car:cyan-car:3" value="@21,3"/>
+  <property name="object:car:cyan-car:3" value="@21,3"/>
   <property name="object:static-corpse:dead-man-static:2" value="1172,1865"/>
-  <property name="object:cyan-car:cyan-car:2" value="@28,14"/>
+  <property name="object:car:cyan-car:2" value="@28,14"/>
   <property name="object:static-corpse:dead-man-static:1" value="1123,1268"/>
-  <property name="object:cyan-car:cyan-car:1" value="@36,6"/>
+  <property name="object:car:cyan-car:1" value="@36,6"/>
   <property name="object:pond:pond:2" value="1728,254,-25"/>
   <property name="object:impassable-static-corpse:dead-yellow-tank:1" value="1331,1220"/>
   <property name="object:impassable-static-corpse:dead-orage-bus:29" value="2524,868"/>
