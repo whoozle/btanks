@@ -82,6 +82,7 @@ public:
 	void updateStateFromVelocity();
 	void setZ(const float z); 
 	
+	void disown();
 	inline void setOwner(const int oid) { _owner_id = oid; }
 	inline const int getOwner() const { return _owner_id; }
 	inline const int getRealOwner() const { return _spawned_by; }
@@ -97,8 +98,6 @@ protected:
 
 	virtual void calculate(const float dt) = 0;
 
-	void disown();
-	void own(const int oid) { _owner_id = oid; }
 	bool need_sync;
 
 private:

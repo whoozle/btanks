@@ -116,8 +116,9 @@ void Missile::emit(const std::string &event, BaseObject * emitter) {
 		Object::emit(event, emitter);
 	} else if (event == "death" && type == "nuke") {
 		//Object *e = 
-		spawn("nuclear-explosion", "nuclear-explosion");
-		//e->setOwner(getOwner());
+		Object *o = World->getObjectByID(getRealOwner()); //player
+		Object * e = World->spawn(o != NULL?o:this, "nuclear-explosion", "nuclear-explosion", v3<float>::empty, v3<float>::empty);
+		e->disown();
 		Object::emit(event, emitter);
 	} else if (event == "death") {
 		spawn("explosion", "missile-explosion");
