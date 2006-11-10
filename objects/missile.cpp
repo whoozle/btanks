@@ -117,7 +117,13 @@ void Missile::emit(const std::string &event, BaseObject * emitter) {
 	} else if (event == "death" && type == "nuke") {
 		//Object *e = 
 		Object *o = World->getObjectByID(getRealOwner()); //player
-		Object * e = World->spawn(o != NULL?o:this, "nuclear-explosion", "nuclear-explosion", v3<float>::empty, v3<float>::empty);
+		v3<float> dpos;
+		if (o != NULL) {
+			dpos = o->getRelativePosition(this);
+			dpos.z = 0;
+		}
+			
+		Object * e = World->spawn(o != NULL?o:this, "nuclear-explosion", "nuclear-explosion", dpos, v3<float>::empty);
 		e->disown();
 		Object::emit(event, emitter);
 	} else if (event == "death") {
