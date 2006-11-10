@@ -35,13 +35,16 @@ public:
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
 		_refresh_waypoints.serialize(s);
+		_waypoint.serialize(s);
 	}
 	virtual void deserialize(const mrt::Serializator &s) {
 		Object::deserialize(s);
 		_refresh_waypoints.deserialize(s);
+		_waypoint.deserialize(s);
 	}	
 private: 
 	Alarm _refresh_waypoints;
+	v3<float> _waypoint;
 };
 
 void Car::emit(const std::string &event, BaseObject * emitter) {
@@ -62,16 +65,18 @@ Car::Car() : Object("car"), _refresh_waypoints(true) {}
 
 void Car::calculate(const float dt) {	
 	const bool refresh_path = _refresh_waypoints.tick(dt);
-	if (!isDriven() && refresh_path) {
-		LOG_DEBUG(("looking for waypoints..."));
-		v3<int> waypoint;
-		Game->getRandomWaypoint(waypoint, "cars");
-		LOG_DEBUG(("next waypoint : %d %d", waypoint.x, waypoint.y));
+	if (refresh_path) {
+		if (!isDriven()) {
+			LOG_DEBUG(("looking for waypoints..."));
+			v3<int> waypoint;
+			Game->getRandomWaypoint(waypoint, "cars");
+			LOG_DEBUG(("next waypoint : %d %d", waypoint.x, waypoint.y));
 		
+			_waypoint = waypoint.convert<float>();
+		}
+
 		Way way;
-		v3<float> w = waypoint.convert<float>();
-		
-		if (!findPath(w, way)) {
+		if (!findPath(_waypoint, way)) {
 			LOG_WARN(("findPath failed. retry later."));
 			_velocity.clear();
 			return;
