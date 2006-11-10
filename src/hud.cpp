@@ -108,7 +108,7 @@ void Hud::renderRadar(const float dt, sdlx::Surface &window) {
 			continue;
 		
 		v3<int> pos;
-		obj->getPosition(pos);
+		obj->getCenterPosition(pos);
 		_radar.putPixel(pos.x * _radar.getWidth() / msize.x, pos.y * _radar.getHeight() / msize.y, index2color(_radar, i + 1, 255));
 		_radar.putPixel(pos.x * _radar.getWidth() / msize.x, pos.y * _radar.getHeight() / msize.y + 1, index2color(_radar, i + 1, 200));
 		_radar.putPixel(pos.x * _radar.getWidth() / msize.x, pos.y * _radar.getHeight() / msize.y - 1, index2color(_radar, i + 1, 200));
