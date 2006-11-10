@@ -52,7 +52,7 @@ void Surface::createRGB(int width, int height, int depth, Uint32 flags) {
 	if (flags == Default) flags = default_flags;
 	if (flags == Default) throw_ex(("setup default flags before using it."));
 
-	Uint32 rmask=0, gmask=0, bmask=0, amask=0;
+	Uint32 rmask, gmask, bmask, amask;
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
 	rmask = 0xff000000;
 	gmask = 0x00ff0000;
@@ -72,8 +72,7 @@ void Surface::createRGB(int width, int height, int depth, Uint32 flags) {
 void Surface::createRGBFrom(void *pixels, int width, int height, int depth,  int pitch) {
 	free();
 
-	Uint32 rmask=0, gmask=0, bmask=0, amask=0; //evil example from sdl doc ;(
-#if 0
+	Uint32 rmask, gmask, bmask, amask; 
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
 	rmask = 0xff000000;
 	gmask = 0x00ff0000;
@@ -84,7 +83,6 @@ void Surface::createRGBFrom(void *pixels, int width, int height, int depth,  int
 	gmask = 0x0000ff00;
 	bmask = 0x00ff0000;
 	amask = 0xff000000;
-#endif
 #endif
 	if (pitch == -1) pitch = width;
 
