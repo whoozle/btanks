@@ -282,11 +282,13 @@ void IWorld::getImpassabilityMatrix(Matrix<int> &matrix, const Object *src, cons
 		
 		for(int y = p1.y/IMap::pathfinding_step; y <= p2.y/IMap::pathfinding_step; ++y) 
 			for(int x = p1.x/IMap::pathfinding_step; x <= p2.x/IMap::pathfinding_step; ++x) {
-				//int old = matrix.get(y, x);
+				int old = matrix.get(y, x);
 				//LOG_DEBUG(("%d %d = %d->%d", y, x, old, im));
-				matrix.set(y, x, im);
+				if (old >= 0 && im > old || im == -1) 
+					matrix.set(y, x, im);
 			}
 	}
+	//LOG_DEBUG(("projected objects:\n%s", matrix.dump().c_str()));
 }
 
 void IWorld::tick(Object &o, const float dt) {
@@ -903,7 +905,7 @@ static inline const bool pop(vertex_queue &buf, vertex &vertex) {
 	buf.pop_front();
 	return true;
 }
-
+/*
 inline static const int check(const Matrix<int> &imp, const vertex &v, const int dx, const int dy) {
 	int w;
 	if ((w = imp.get(v.y, v.x)) == -1)
@@ -924,7 +926,7 @@ inline static const int check(const Matrix<int> &imp, const vertex &v, const int
 	
 	return r * 100 / 41;
 }
-
+*/
 	
 const bool IWorld::findPath(const Object *obj, const v3<float>& position, Way & way) const {
 	//finding shortest path.
@@ -949,8 +951,8 @@ const bool IWorld::findPath(const Object *obj, const v3<float>& position, Way & 
 	vertex v;
 	while(pop(buf, v)) {
 		int n = path.get(v.y, v.x);
-		if (n == -1) 
-			continue;
+		assert(n != -1);
+		
 		int w = imp.get(v.y, v.x);
 		//LOG_DEBUG(("get(%d, %d) = %d, %d", v.y, v.x, w, n));
 		assert(w != -1);
@@ -967,7 +969,8 @@ const bool IWorld::findPath(const Object *obj, const v3<float>& position, Way & 
 			push(path, buf, vertex(v.x + 1, v.y, n));
 		if (imp.get(v.y, v.x - 1) != -1)
 			push(path, buf, vertex(v.x - 1, v.y, n));
-
+/*
+		//disabled diagonals for now
 		if (check(imp, v, 1, 1) != -1)
 			push(path, buf, vertex(v.x + 1, v.y + 1, n));
 		if (check(imp, v, 1, -1) != -1)
@@ -976,6 +979,7 @@ const bool IWorld::findPath(const Object *obj, const v3<float>& position, Way & 
 			push(path, buf, vertex(v.x - 1, v.y + 1, n));
 		if (check(imp, v, -1, -1) != -1)
 			push(path, buf, vertex(v.x - 1, v.y - 1, n));
+*/
 	}
 	
 	int len, n = path.get(dst.y, dst.x);
@@ -1018,6 +1022,7 @@ const bool IWorld::findPath(const Object *obj, const v3<float>& position, Way & 
 			x2 = x - 1; y2 = y; t = w;
 		}
 		//diagonals 
+		/*
 		w = path.get(y + 1, x + 1);
 		if (w != -1 && w < t) {
 			y2 = y + 1; x2 = x + 1; t = w;
@@ -1034,6 +1039,7 @@ const bool IWorld::findPath(const Object *obj, const v3<float>& position, Way & 
 		if (w != -1 && w < t) {
 			y2 = y - 1; x2 = x - 1; t = w;
 		}
+		*/
 		assert(t != -1);
 		
 		x = x2; y = y2; n = t;
