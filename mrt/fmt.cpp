@@ -3,22 +3,38 @@
 #include <stdlib.h>
 #include <stdarg.h>
 
-#if defined WIN32 && !defined vsnprintf
-#define vsnprintf _vsnprintf
+#if defined WIN32 
+#	if !defined vsnprintf
+#		define vsnprintf _vsnprintf
+#	endif
+
+#	include <malloc.h>
+#	if !defined alloca
+#		define alloca _alloca
+#	endif
+
 #endif
 
 using namespace mrt;
 
+#define FORMAT_BUFFER_SIZE 4096
+
+//#include "logger.h"
+
 const std::string mrt::formatString(const char *fmt, ...) {
-	char buf[4096];
-	memset(buf, 0, sizeof(buf));
-	
+	int size = FORMAT_BUFFER_SIZE;
+	char *buf;
 	va_list ap;
-	
-    va_start(ap, fmt);
-    vsnprintf (buf, sizeof(buf)-1, fmt, ap);
-    va_end(ap);
-	return buf;
+
+    while(1) {
+    	buf = (char *)alloca(size);
+	    va_start(ap, fmt);    
+    	int r = vsnprintf (buf, size - 1, fmt, ap);
+	    va_end(ap);
+	    if (r > -1 && r <= size) 
+    		return std::string(buf, r);
+    	size *= 2;
+    }
 }
 
 void mrt::trim(std::string &str, const std::string chars) {
