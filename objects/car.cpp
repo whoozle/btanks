@@ -22,6 +22,7 @@
 #include "config.h"
 #include "object.h"
 #include "game.h"
+#include "item.h"
 
 class Car : public Object {
 public: 
@@ -52,9 +53,13 @@ void Car::emit(const std::string &event, BaseObject * emitter) {
 		spawn("corpse", "dead-" + animation, v3<float>::empty, v3<float>::empty);
 	} else if (event == "collision") {
 		if (emitter != NULL) {
-			GET_CONFIG_VALUE("objects.car.damage", int, d, 5);
-			emitter->addDamage(this, d);
-			emit("death", emitter);
+			Item * item = dynamic_cast<Item *>(emitter);
+			//no items.
+			if (item == NULL) {
+				GET_CONFIG_VALUE("objects.car.damage", int, d, 5);
+				emitter->addDamage(this, d);
+				emit("death", emitter);
+			}
 		}
 	}
 	Object::emit(event, emitter);

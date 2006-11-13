@@ -17,31 +17,8 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include "object.h"
+#include "item.h"
 #include "resource_manager.h"
-
-class Item : public Object {
-public:
-	std::string type;
-	Item(const std::string &classname, const std::string &type = std::string()) : Object(classname), type(type) {
-		pierceable = true;
-		impassability = 1;
-	}
-	virtual Object * clone() const;
-	virtual void onSpawn();
-	virtual void tick(const float dt);
-	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
-
-	virtual void serialize(mrt::Serializator &s) const {
-		Object::serialize(s);
-		s.add(type);
-	}
-	virtual void deserialize(const mrt::Serializator &s) {
-		Object::deserialize(s);
-		s.get(type);
-	}
-
-};
 
 void Item::tick(const float dt) {
 	Object::tick(dt);
