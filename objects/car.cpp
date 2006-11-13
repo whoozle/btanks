@@ -50,6 +50,12 @@ private:
 void Car::emit(const std::string &event, BaseObject * emitter) {
 	if (event == "death") {
 		spawn("corpse", "dead-" + animation, v3<float>::empty, v3<float>::empty);
+	} else if (event == "collision") {
+		if (emitter != NULL) {
+			GET_CONFIG_VALUE("objects.car.damage", int, d, 5);
+			emitter->addDamage(this, d);
+			emit("death", emitter);
+		}
 	}
 	Object::emit(event, emitter);
 }
