@@ -276,6 +276,7 @@ void IWorld::getImpassabilityMatrix(Matrix<int> &matrix, const Object *src, cons
 		if (im >= 100)
 			im = -1;
 		
+/*
 		v3<int> p1, p2;
 		p1 = o->_position.convert<int>();
 		p2 = (o->_position + o->size - 1).convert<int>();
@@ -287,6 +288,14 @@ void IWorld::getImpassabilityMatrix(Matrix<int> &matrix, const Object *src, cons
 				if (old >= 0 && im > old || im == -1) 
 					matrix.set(y, x, im);
 			}
+*/
+		v3<int> p = (o->_position + o->size/2).convert<int>();
+		int y = p.y / IMap::pathfinding_step;
+		int x = p.x / IMap::pathfinding_step;
+		int old = matrix.get(y, x);
+		if (old >= 0 && im > old || im == -1) 
+			matrix.set(y, x, im);
+		
 	}
 	//LOG_DEBUG(("projected objects:\n%s", matrix.dump().c_str()));
 }
@@ -882,7 +891,7 @@ const bool IWorld::getNearest(const Object *obj, const std::string &classname, v
 	position -= obj->_position + obj->size / 2;
 	if (way == NULL)
 		return true;
-	return findPath(obj, position, *way);
+	return findPath(obj, position, *way, target);
 }
 
 //BIG PATHFINDING PART
@@ -928,12 +937,12 @@ inline static const int check(const Matrix<int> &imp, const vertex &v, const int
 }
 */
 	
-const bool IWorld::findPath(const Object *obj, const v3<float>& position, Way & way) const {
+const bool IWorld::findPath(const Object *obj, const v3<float>& position, Way & way, const Object *dst_obj) const {
 	//finding shortest path.
 	v3<float> tposition = obj->_position + position;
 	
 	Matrix<int> imp, path;
-	World->getImpassabilityMatrix(imp, obj, NULL);
+	World->getImpassabilityMatrix(imp, obj, dst_obj);
 	//LOG_DEBUG(("imp\n%s", imp.dump().c_str()));
 	
 	v3<int> src = obj->_position.convert<int>() / IMap::pathfinding_step;
@@ -989,8 +998,10 @@ const bool IWorld::findPath(const Object *obj, const v3<float>& position, Way & 
 		/*
 		imp.set(dst.y, dst.x, -99);
 		imp.set(src.y, src.x, imp.get(src.y, src.x) - 100);
-		LOG_DEBUG(("imp\n%s", imp.dump().c_str()));
 		*/
+		LOG_DEBUG(("path not found from %d:%d -> %d:%d", src.y, src.x, dst.y, dst.x));
+		//LOG_DEBUG(("imp\n%s", imp.dump().c_str()));
+		//LOG_DEBUG(("path\n%s", path.dump().c_str()));
 		return false;
 	}
 

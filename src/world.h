@@ -55,7 +55,7 @@ public:
 	Object * spawnGrouped(Object *src, const std::string &classname, const std::string &animation, const v3<float> &dpos, const GroupType type);
 	
 	const bool getNearest(const Object *obj, const std::string &classname, v3<float> &position, v3<float> &velocity, Way * way = NULL) const;
-	const bool findPath(const Object *obj, const v3<float>& position, Way & way) const;
+	const bool findPath(const Object *obj, const v3<float>& position, Way & way, const Object * dst = NULL) const;
 	void getImpassabilityMatrix(Matrix<int> &matrix, const Object *src, const Object *dst) const;
 
 	virtual void serialize(mrt::Serializator &s) const;
