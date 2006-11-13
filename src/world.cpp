@@ -287,7 +287,7 @@ void IWorld::getImpassabilityMatrix(Matrix<int> &matrix, const Object *src, cons
 		int y = p.y / IMap::pathfinding_step;
 		int x = p.x / IMap::pathfinding_step;
 		int old = matrix.get(y, x);
-		if (old >= 0 && im > old || im == -1) 
+		if ((old >= 0 && im > old) || im == -1) 
 			matrix.set(y, x, im);
 		
 	}
