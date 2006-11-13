@@ -73,13 +73,26 @@ public:
 	const std::string dump() const {
 	//fixme: add template functions for conversion int/float other types to string
 		std::string result;
+		result += "      ";
+		for(int x = 0; x < _w; ++x) 
+			result += mrt::formatString("%-2d ", x);
+		result += "\n";
+		
 		for(int y = 0; y < _h; ++y) {
+			result += mrt::formatString("%-2d ", y);
 			result += "[ ";
 			for(int x = 0; x < _w; ++x) {
-				result += mrt::formatString("%-2d ", get(y, x));
+				result += mrt::formatString("%-2d ", (int)get(y, x));
 			}
-			result += " ]\n";
+			result += " ]";
+			result += mrt::formatString("%-2d\n", y);
 		}
+
+		result += "      ";
+		for(int x = 0; x < _w; ++x) 
+			result += mrt::formatString("%-2d ", x);
+		result += "\n";
+
 		return result;
 	}
 	
