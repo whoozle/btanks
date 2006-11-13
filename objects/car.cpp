@@ -76,12 +76,10 @@ void Car::calculate(const float dt) {
 		}
 
 		Way way;
-		if (!findPath(_waypoint, way)) {
-			LOG_WARN(("findPath failed. retry later."));
-			_velocity.clear();
-			return;
-		}
-		setWay(way);
+		if (findPath(_waypoint, way)) {
+			//way.erase(way.begin());
+			setWay(way);
+		} else LOG_WARN(("findPath failed. retry later."));
 	}
 	calculateWayVelocity();
 	GET_CONFIG_VALUE("objects.car.rotation-time", float, rt, 0.05);

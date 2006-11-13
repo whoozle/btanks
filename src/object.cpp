@@ -495,9 +495,11 @@ void Object::calculateWayVelocity() {
 	while (!_way.empty()) {
 		if (_next_target.is0()) {
 			_next_target = _way.begin()->convert<float>();
-			_next_target_rel = _next_target - getPosition();
-			//LOG_DEBUG(("next waypoint: %g %g, relative: %g %g", _next_target.x, _next_target.y, _next_target_rel.x, _next_target_rel.y));
+			_velocity = _next_target_rel = _next_target - getPosition();
+			
+			//LOG_DEBUG(("%d: next waypoint: %g %g, relative: %g %g", getID(), _next_target.x, _next_target.y, _next_target_rel.x, _next_target_rel.y));
 			_way.erase(_way.begin());
+			//LOG_DEBUG(("waypoints: %d", _way.size()));
 			break;
 		}
 		
@@ -510,6 +512,11 @@ void Object::calculateWayVelocity() {
 			_next_target.clear();
 		} else break;
 	}
+	if (_way.empty())
+		_velocity.clear();
+	else 
+		_velocity.normalize();
+	//LOG_DEBUG(("%d: velocity: %g %g", getID(), _velocity.x, _velocity.y));
 }
 
 
