@@ -31,7 +31,7 @@ public:
 	Exception();
 	void addMessage(const char *file, const int line);
 	void addMessage(const std::string &msg);
-	virtual const std::string getCustomMessage() { return ""; }
+	virtual const std::string getCustomMessage() { return std::string(); }
 	virtual const char* what() const throw() { return _error.c_str(); }
 	virtual ~Exception() throw() {};
 private:
