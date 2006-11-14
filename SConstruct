@@ -135,6 +135,7 @@ env.Append(LIBPATH=['mrt', 'sdlx', 'src', 'net', 'menu'])
 svnversion = os.popen('svnversion -n .', 'r')
 version = svnversion.readline()
 version = version[version.rfind(':') + 1:]
+version = '0.3.%s' %version
 print "version: %s" %version
 
 venv = env.Copy()

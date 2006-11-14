@@ -31,9 +31,9 @@
 
 const std::string& getVersion() {
 #ifdef DEBUG
-	static std::string version("0.3." VERSION "D" RELEASE_NAME);
+	static std::string version(VERSION "D" RELEASE_NAME);
 #else
-	static std::string version("0.3." VERSION RELEASE_NAME);
+	static std::string version(VERSION RELEASE_NAME);
 #endif
 	return version;
 }
