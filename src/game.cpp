@@ -356,7 +356,7 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 		int im = m.get(pos.y, pos.x);
 
 		if (im == -1) {
-			LOG_WARN(("removing invalid waypoint '%s'", i->first.c_str()));
+			LOG_WARN(("removing invalid waypoint '%s' at %d %d", i->first.c_str(), i->second.x, i->second.y));
 			_waypoints.erase(i++);
 			continue;
 		}
