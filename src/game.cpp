@@ -346,6 +346,24 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 	}
 	LOG_DEBUG(("%u items on map.", (unsigned) _items.size()));
 	
+	LOG_DEBUG(("checking waypoints list..."));
+	Matrix<int> m;
+	World->getImpassabilityMatrix(m, NULL, NULL);
+	for(WaypointMap::iterator i = _waypoints.begin(); i != _waypoints.end(); ) {
+		v3<int> pos = i->second;
+		pos.x /= IMap::pathfinding_step;
+		pos.y /= IMap::pathfinding_step;
+		int im = m.get(pos.y, pos.x);
+
+		if (im == -1) {
+			LOG_WARN(("removing invalid waypoint '%s'", i->first.c_str()));
+			_waypoints.erase(i++);
+			continue;
+		}
+		
+		++i;
+	}
+	
 	_hud->initMap();
 	
 	t_start = SDL_GetTicks();
@@ -585,6 +603,7 @@ void IGame::clear() {
 	_my_index = -1;
 	LOG_DEBUG(("cleaning up world"));
 	_items.clear();
+	_waypoints.clear();
 	World->clear();
 	_paused = false;
 	Map->clear();
