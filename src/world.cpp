@@ -1049,7 +1049,7 @@ const bool IWorld::findPath(const Object *obj, const v3<float>& position, Way & 
 		
 		x = x2; y = y2; n = t;
 	}
-	//result.push_front(WayPoint(x, y, 0));
+	//way.push_front(WayPoint(x, y, 0));
 	//LOG_DEBUG(("imp\n%s", imp.dump().c_str()));
 	
 	
