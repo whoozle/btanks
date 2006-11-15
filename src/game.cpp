@@ -644,7 +644,7 @@ void IGame::getRandomWaypoint(v3<int> &position, const std::string &classname) c
 		throw_ex(("no waypoint class '%s' defined", classname.c_str()));
 	
 	WaypointMap::const_iterator e = _waypoints.upper_bound(classname);
-	int wp = mrt::random(_waypoints.size());
+	int wp = mrt::random(_waypoints.size() * 2);
 	while(true) {
 		for(WaypointMap::const_iterator i = b; i != e; ++i) {
 			if (wp-- <= 0) {
