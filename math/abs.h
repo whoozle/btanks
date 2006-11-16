@@ -23,7 +23,7 @@
 namespace math {
 
 template<typename T> 
-	inline T abs(const T v) {
+	inline const T abs(const T v) {
 			return (v < 0) ? -v: v;
 		}
 }
