@@ -119,13 +119,16 @@ void Launcher::tick(const float dt) {
 }
 
 const bool Launcher::take(const BaseObject *obj, const std::string &type) {
+	if (BaseObject::take(obj, type)) 
+		return true;
+
 	if (obj->classname == "mod" && type == "machinegunner") {
 		LOG_DEBUG(("taking mod: %s", type.c_str()));
 		remove("mod");
 		add("mod", spawnGrouped("machinegunner-on-launcher", "machinegunner-on-launcher", v3<float>::empty, Centered));
 		return true;
 	}
-	const bool primary_mod = (type != "smoke" && type != "stun" && obj->classname != "mines" && obj->classname != "effects");
+	const bool primary_mod = (obj->classname == "missiles" && (type != "smoke" && type != "stun"));
 	if (primary_mod && get("mod")->classname != "missiles-on-vehicle") {
 		LOG_DEBUG(("restoring default mod."));
 		remove("mod");
@@ -138,7 +141,8 @@ const bool Launcher::take(const BaseObject *obj, const std::string &type) {
 		if (get("alt-mod")->take(obj, type))
 			return true;		
 	}
-	return BaseObject::take(obj, type);
+	
+	return false;
 }
 
 void Launcher::serialize(mrt::Serializator &s) const {
