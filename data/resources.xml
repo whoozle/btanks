@@ -301,6 +301,7 @@
 	<animation id="ricochet-bullets-item" tile="ricochet_item.png" model="item-animation" />
 	<animation id="machinegunner-item" tile="machinegunner_item.png" model="item-animation" />
 	<animation id="thrower-item" tile="thrower_item.png" model="item-animation" />
+	<animation id="skotobaza" tile="skotobaza.png" model="single-tile" tile_width="128" tile_height="64" />
 	
 	<!-- end of items -->
 
