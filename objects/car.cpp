@@ -135,7 +135,6 @@ const bool Car::findPathDone(Way &way) {
 		LOG_DEBUG(("%d: popping vertex. id=%d, x=%d, y=%d, g=%d, h=%d, f=%d", getID(), 
 			current.id, current.id % _pitch, current.id / _pitch, current.g, current.h, current.g + current.h));
 */	
-		_points[current.id] = current;	
 		_close_list.insert(current.id);
 		const int x = (current.id % _pitch) * _step;
 		const int y = (current.id / _pitch) * _step;
@@ -194,8 +193,14 @@ const bool Car::findPathDone(Way &way) {
 			
 			p.h = h(id, _end_id, _pitch);
 			
+			PointMap::iterator i = _points.find(id);
+			if (i != _points.end()) {
+				if (i->second < p) 
+					i->second = p;
+			} else _points.insert(PointMap::value_type(id, p));
+			
+			
 			if (p.h < 100) {
-				_points[p.id] = p;
 				_end_id = p.id;
 				goto found;
 			}
