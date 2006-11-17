@@ -42,8 +42,8 @@ class Car : public Object {
 	typedef std::set<int> CloseList;
 
 	struct Point {
-		Point() : id(-1), parent(-1) {}
-		int id, g, h, parent;
+		Point() : id(-1), parent(-1), dir(-1) {}
+		int id, g, h, parent, dir;
 
 		const bool operator<(const Point &other) const {
 			return (g + h) > (other.g + other.h);
@@ -113,6 +113,7 @@ void Car::findPath(const v3<int> target, const int step) {
 	p.id = _begin_id;
 	p.g = 0;
 	p.h = h(p.id, _end_id, _pitch);
+	p.dir = getDirection();
 
 	_open_list.push(p);
 	_points[p.id] = p;
@@ -173,8 +174,17 @@ const bool Car::findPathDone(Way &way) {
 			
 			Point p;
 			p.id = id;
+			p.dir = i;
 			p.parent = current.id;
 			p.g = current.g + 100 + (int)(im * 100) + map_im;
+			
+			//add penalty for turning
+			assert(current.dir != -1);
+			int dd = math::abs(i - current.dir);
+			if (dd > dirs/2) 
+				dd = dirs - dd;
+			p.g += 50 * dd;
+			
 			p.h = h(id, _end_id, _pitch);
 			
 			_points[p.id] = p;
