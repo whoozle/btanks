@@ -509,9 +509,9 @@ void Object::calculateWayVelocity() {
 		//	getID(), classname.c_str(), animation.c_str(), _next_target.x, _next_target.y, _next_target_rel.x, _next_target_rel.y));
 		
 		_velocity = _next_target - getPosition();
-		if ((_next_target_rel.x != 0 && _velocity.x * _next_target_rel.x <= 0))
+		if ((_next_target_rel.x != 0 && _velocity.x * _next_target_rel.x <= 0) || (_velocity.x < 1))
 			_velocity.x = 0;
-		if ((_next_target_rel.y != 0 && _velocity.y * _next_target_rel.y <= 0))
+		if ((_next_target_rel.y != 0 && _velocity.y * _next_target_rel.y <= 0) || (_velocity.y < 1))
 			_velocity.y = 0;
 		
 		if (_velocity.is0()) {
