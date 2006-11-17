@@ -140,6 +140,7 @@ const bool Car::findPathDone(Way &way) {
 		const int y = (current.id / _pitch) * _step;
 		
 		//searching surrounds 
+		assert(current.dir != -1);
 		const int dirs = getDirectionsNumber();
 		if (dirs < 4 || dirs > 8)
 			throw_ex(("pathfinding cannot handle directions number: %d", dirs));
@@ -185,7 +186,7 @@ const bool Car::findPathDone(Way &way) {
 			p.g = current.g + (d.x != 0 && d.y != 0)?144:100 + (int)(im * 100) + map_im;
 			
 			//add penalty for turning
-			assert(current.dir != -1);
+			
 			int dd = math::abs(i - current.dir);
 			if (dd > dirs/2) 
 				dd = dirs - dd;
@@ -235,7 +236,7 @@ found:
 		assert(id != -1);
 	}
 	_points.clear();
-	way.pop_front();
+	//way.pop_front();
 	return true;
 
 }
