@@ -175,9 +175,10 @@ const bool IWorld::collides(Object *obj, const v3<int> &position, Object *o, con
 				_collision_map.insert(CollisionMap::value_type(key, false));
 				return false; // no effect.
 			}
+			_collision_map.insert(CollisionMap::value_type(key, true));
 		}
 		//LOG_DEBUG(("collision %s <-> %s: %s", obj->classname.c_str(), o->classname.c_str(), collides?"true":"false"));
-		_collision_map.insert(CollisionMap::value_type(key, true));
+		
 		return true;
 }
 
