@@ -497,7 +497,7 @@ void Object::calculateWayVelocity() {
 			_next_target = _way.begin()->convert<float>();
 			_velocity = _next_target_rel = _next_target - getPosition();
 			
-			//LOG_DEBUG(("%d: next waypoint: %g %g, relative: %g %g", getID(), _next_target.x, _next_target.y, _next_target_rel.x, _next_target_rel.y));
+			//LOG_DEBUG(("%d:%s next waypoint: %g %g, relative: %g %g", getID(), classname.c_str(), _next_target.x, _next_target.y, _next_target_rel.x, _next_target_rel.y));
 			_way.erase(_way.begin());
 			//LOG_DEBUG(("waypoints: %d", _way.size()));
 			break;
