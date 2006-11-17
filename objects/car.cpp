@@ -190,9 +190,9 @@ const bool Car::findPathDone(Way &way) {
 			int dd = math::abs(i - current.dir);
 			if (dd > dirs/2) 
 				dd = dirs - dd;
-			p.g += 50 * dd;
 			
 			p.h = h(id, _end_id, _pitch);
+			p.h += 50 * dd;
 			
 			PointMap::iterator pi = _points.find(id);
 			if (pi != _points.end()) {
