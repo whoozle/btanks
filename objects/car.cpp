@@ -141,10 +141,10 @@ const bool Car::findPathDone(Way &way) {
 		
 		//searching surrounds 
 		const int dirs = getDirectionsNumber();
-		if (dirs > 8)
+		if (dirs < 4 || dirs > 8)
 			throw_ex(("pathfinding cannot handle directions number: %d", dirs));
 		
-		for(int i = 0; i < dirs; i += dirs/4) {
+		for(int i = 0; i < dirs; ++i) {
 			v3<float> d;
 			d.fromDirection(i, dirs);
 			d.x = math::sign(d.x) * _step;
