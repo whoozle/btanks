@@ -215,6 +215,11 @@ const bool Car::findPathDone(Way &way) {
 
 found:
 	way.clear();
+	while(!_open_list.empty())
+		_open_list.pop();
+	
+	_close_list.clear();
+	
 	setDirection(dir_save);
 
 	for(int id = _end_id; id != _begin_id; ) {
@@ -223,6 +228,7 @@ found:
 		id = p.parent;
 		assert(id != -1);
 	}
+	_points.clear();
 	way.erase(way.begin());
 	return true;
 
@@ -275,6 +281,7 @@ void Car::calculate(const float dt) {
 		}
 	}
 	if (isDriven() && _refresh_waypoints.tick(dt)) {
+		_refresh_waypoints.reset();
 		findPath(_waypoint, 16);
 	}
 	
