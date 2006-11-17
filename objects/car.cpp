@@ -27,7 +27,7 @@
 #include <map>
 #include <queue>
 #include "tmx/map.h"
-#include "math/abs.h"
+#include "math/unary.h"
 
 
 static inline const int h(const int src, const int dst, const int pitch) {
@@ -141,12 +141,18 @@ const bool Car::findPathDone(Way &way) {
 		
 		//searching surrounds 
 		const int dirs = getDirectionsNumber();
+		if (dirs > 8)
+			throw_ex(("pathfinding cannot handle directions number: %d", dirs));
+		
 		for(int i = 0; i < dirs; i += dirs/4) {
 			v3<float> d;
 			d.fromDirection(i, dirs);
-			d *= _step;
+			d.x = math::sign(d.x) * _step;
+			d.y = math::sign(d.y) * _step;
+			
 			d.x += x;
 			d.y += y;
+			
 			if (d.x < 0 || d.x > map_size.x || d.y < 0 || d.y > map_size.y)
 				continue;
 			
@@ -176,7 +182,7 @@ const bool Car::findPathDone(Way &way) {
 			p.id = id;
 			p.dir = i;
 			p.parent = current.id;
-			p.g = current.g + 100 + (int)(im * 100) + map_im;
+			p.g = current.g + (d.x != 0 && d.y != 0)?144:100 + (int)(im * 100) + map_im;
 			
 			//add penalty for turning
 			assert(current.dir != -1);
