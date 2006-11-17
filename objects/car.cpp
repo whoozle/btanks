@@ -232,14 +232,16 @@ found:
 	for(int id = _end_id; id != _begin_id; ) {
 		Point &p = _points[id];
 		way.push_front(v3<int>((p.id % _pitch) * _step, (p.id / _pitch) * _step, 0));
+		//LOG_DEBUG(("%dx%d -> %dx%d", p.id % _pitch, p.id / _pitch, way.front().x, way.front().y));
 		assert(id != p.parent);
 		id = p.parent;
 		assert(id != -1);
 	}
 	_points.clear();
-	//way.pop_front();
-	return true;
 
+	if (way.size() > 1)
+		way.pop_front(); 
+	return true;
 }
 
 

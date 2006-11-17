@@ -121,6 +121,7 @@ void Object::setDirectionsNumber(const int dirs) {
 
 void Object::quantizeVelocity() {
 	int dir;
+	_velocity.normalize();
 	if (_directions_n == 8) {
 		_velocity.quantize8();
 		dir = _velocity.getDirection8();
@@ -497,24 +498,28 @@ void Object::calculateWayVelocity() {
 			_next_target = _way.begin()->convert<float>();
 			_next_target_rel = _next_target - getPosition();
 			
-			//LOG_DEBUG(("%d:%s next waypoint: %g %g, relative: %g %g", getID(), classname.c_str(), _next_target.x, _next_target.y, _next_target_rel.x, _next_target_rel.y));
 			_way.pop_front();
+			if (_next_target_rel.quick_length() < 4) {
+				_next_target.clear();
+				continue;
+			}
 			//LOG_DEBUG(("waypoints: %d", _way.size()));
 		}
+		//LOG_DEBUG(("%d:%s:%s next waypoint: %g %g, relative: %g %g", 
+		//	getID(), classname.c_str(), animation.c_str(), _next_target.x, _next_target.y, _next_target_rel.x, _next_target_rel.y));
 		
 		_velocity = _next_target - getPosition();
-		if ( _velocity.quick_length() < 1 /*is0()*/ || 
-			(_next_target_rel.x != 0 && _velocity.x * _next_target_rel.x <= 0) ||
-			(_next_target_rel.y != 0 && _velocity.y * _next_target_rel.y <= 0)
-		) {
+		if ((_next_target_rel.x != 0 && _velocity.x * _next_target_rel.x <= 0))
+			_velocity.x = 0;
+		if ((_next_target_rel.y != 0 && _velocity.y * _next_target_rel.y <= 0))
+			_velocity.y = 0;
+		
+		if (_velocity.is0()) {
 			//wiping out way point and restart
 			_next_target.clear();
 		} else break;
 	}
-	if (_way.empty())
-		_velocity.clear();
-	else 
-		_velocity.normalize();
+	_velocity.normalize();
 	//LOG_DEBUG(("%d: velocity: %g %g", getID(), _velocity.x, _velocity.y));
 }
 
