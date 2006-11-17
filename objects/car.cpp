@@ -123,7 +123,7 @@ void Car::findPath(const v3<int> target, const int step) {
 const bool Car::findPathDone(Way &way) {
 	const v3<int> map_size = Map->getSize();
 	int dir_save = getDirection();
-	GET_CONFIG_VALUE("engine.pathfinding-slice", int, ps, 5);
+	GET_CONFIG_VALUE("engine.pathfinding-slice", int, ps, 10);
 	
 	while(!_open_list.empty() && ps--) {
 		const Point current = _open_list.top();
