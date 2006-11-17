@@ -120,7 +120,7 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect&src, const sdlx::Re
 	surface.resetClipRect();
 }
 
-const bool IWorld::collides(Object *obj, const v3<int> &position, Object *o) const {
+const bool IWorld::collides(Object *obj, const v3<int> &position, Object *o, const bool probe) const {
 		if (o == obj || obj->impassability == 0 || o->impassability == 0 || 
 			(obj->piercing && o->pierceable) || (obj->pierceable && o->piercing) ||
 			o->isDead() || obj->isDead() ) {
@@ -157,7 +157,7 @@ const bool IWorld::collides(Object *obj, const v3<int> &position, Object *o) con
 			return false;
 		}
 
-		if (o->impassability < 0 || o->impassability >= 1.0) { //do not generate collision event if impassability != 1 and impassability != -1
+		if (!probe && (o->impassability < 0 || o->impassability >= 1.0)) { //do not generate collision event if impassability != 1 and impassability != -1
 			//LOG_DEBUG(("collision"));
 			//LOG_DEBUG(("collision %s <-> %s", obj->classname.c_str(), o->classname.c_str()));
 			o->emit("collision", obj);
@@ -182,7 +182,7 @@ const bool IWorld::collides(Object *obj, const v3<int> &position, Object *o) con
 }
 
 
-const float IWorld::getImpassability(Object *obj, const v3<int> &position, const Object **collided_with) const {
+const float IWorld::getImpassability(Object *obj, const v3<int> &position, const Object **collided_with, const bool probe) const {
 	if (obj->impassability == 0) {
 		if (collided_with != NULL)
 			*collided_with = NULL;
@@ -200,7 +200,7 @@ const float IWorld::getImpassability(Object *obj, const v3<int> &position, const
 		if (!my.intersects(other)) 
 			continue;
 
-		if (!collides(obj, position, o)) 
+		if (!collides(obj, position, o, probe)) 
 			continue;
 		
 		if (o->impassability > im) {
