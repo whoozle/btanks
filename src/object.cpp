@@ -26,7 +26,7 @@
 #include "animation_model.h"
 #include "resource_manager.h"
 #include "world.h"
-#include "math/abs.h"
+#include "math/unary.h"
 #include "sound/mixer.h"
 
 Object::Event::Event() : name(), repeat(false), sound(), played(false) {}

@@ -1,5 +1,5 @@
-#ifndef __BTANKS_ABS_H__
-#define __BTANKS_ABS_H__
+#ifndef __BTANKS_UNARY_H__
+#define __BTANKS_UNARY_H__
 
 /* Battle Tanks Game
  * Copyright (C) 2006 Battle Tanks team
@@ -25,6 +25,11 @@ namespace math {
 template<typename T> 
 	inline const T abs(const T v) {
 			return (v < 0) ? -v: v;
+		}
+
+template<typename T> 
+	inline const T sign(const T v) {
+			return (v > 0)?1:((v < 0)?-1:0);
 		}
 }
 

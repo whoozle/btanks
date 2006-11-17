@@ -23,7 +23,7 @@
 #include "game.h"
 #include "player_slot.h"
 #include "object.h"
-#include "math/abs.h"
+#include "math/unary.h"
 #include "object.h"
 
 MouseControl::MouseControl(): _shoot(false) {
