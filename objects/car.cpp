@@ -230,6 +230,7 @@ found:
 	for(int id = _end_id; id != _begin_id; ) {
 		Point &p = _points[id];
 		way.push_front(v3<int>((p.id % _pitch) * _step, (p.id / _pitch) * _step, 0));
+		assert(id != p.parent);
 		id = p.parent;
 		assert(id != -1);
 	}
