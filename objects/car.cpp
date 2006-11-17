@@ -183,7 +183,7 @@ const bool Car::findPathDone(Way &way) {
 			p.id = id;
 			p.dir = i;
 			p.parent = current.id;
-			p.g = current.g + (d.x != 0 && d.y != 0)?144:100 + (int)(im * 100) + map_im;
+			p.g = current.g + (d.x != 0 && d.y != 0)?141:100 + (int)(im * 100) + map_im;
 			
 			//add penalty for turning
 			
