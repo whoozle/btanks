@@ -488,7 +488,7 @@ void Object::setWay(const Way & way) {
 	_way = way;
 	_next_target.clear();
 	if (!way.empty()) 
-		LOG_DEBUG(("set %d pending waypoints", _way.size()));
+		LOG_DEBUG(("%d:%s: set %d pending waypoints", getID(), classname.c_str(), _way.size()));
 }
 
 void Object::calculateWayVelocity() {
