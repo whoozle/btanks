@@ -426,7 +426,7 @@
 	<object class="road-sign" hp="1" impassability="1" z="150" />
 	<object class="fire" z="-15" impassability="0" pierceable="true" />
 	<object class="static-corpse" impassability="0" pierceable="true" z="-18" />
-	<object class="impassable-static-corpse" impassability="1" pierceable="true" z="-18" />
+	<object class="impassable-static-corpse" impassability="1" pierceable="true" z="-18" hp="-1" />
 	
 	<object class="missiles-on-tank" z="10" />
 	<object class="missiles-on-launcher" z="10" />
