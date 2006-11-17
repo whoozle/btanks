@@ -273,7 +273,6 @@ void Car::calculate(const float dt) {
 		Game->getRandomWaypoint(_waypoint, "cars");
 		LOG_DEBUG(("next waypoint : %d %d", _waypoint.x, _waypoint.y));
 		findPath(_waypoint, 16);
-		return;
 	}
 
 	if (!_open_list.empty()) {
@@ -285,6 +284,7 @@ void Car::calculate(const float dt) {
 				LOG_WARN(("findPath failed. retry later."));
 		}
 	}
+
 	if (isDriven() && _refresh_waypoints.tick(dt)) {
 		_refresh_waypoints.reset();
 		findPath(_waypoint, 16);
