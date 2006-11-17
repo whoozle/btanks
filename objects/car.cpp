@@ -122,7 +122,7 @@ void Car::findPath(const v3<int> target, const int step) {
 const bool Car::findPathDone(Way &way) {
 	const v3<int> map_size = Map->getSize();
 	int dir_save = getDirection();
-	GET_CONFIG_VALUE("engine.pathfinding-slice", int, ps, 10);
+	GET_CONFIG_VALUE("engine.pathfinding-slice", int, ps, 5);
 	
 	while(!_open_list.empty() && ps--) {
 		const Point current = _open_list.top();
@@ -174,7 +174,7 @@ const bool Car::findPathDone(Way &way) {
 			Point p;
 			p.id = id;
 			p.parent = current.id;
-			p.g = current.g + 100 + ((int)(im * 100) + map_im) / 2;
+			p.g = current.g + 100 + (int)(im * 100) + map_im;
 			p.h = h(id, _end_id, _pitch);
 			
 			_points[p.id] = p;
