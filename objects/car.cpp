@@ -235,7 +235,7 @@ found:
 		assert(id != -1);
 	}
 	_points.clear();
-	way.erase(way.begin());
+	way.pop_front();
 	return true;
 
 }
