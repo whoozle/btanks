@@ -18,7 +18,7 @@
 
 #include "credits.h"
 #include "config.h"
-#include "math/abs.h"
+#include "math/unary.h"
 #include "math/minmax.h"
 
 Credits::Credits() : _w(0), _h(0) {
