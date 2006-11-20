@@ -184,15 +184,20 @@ const bool Car::findPathDone(Way &way) {
 			p.dir = i;
 			p.parent = current.id;
 			p.g = current.g + (d.x != 0 && d.y != 0)?141:100 + (int)(im * 100) + map_im;
-			
+
 			//add penalty for turning
-			
+
 			int dd = math::abs(i - current.dir);
 			if (dd > dirs/2) 
 				dd = dirs - dd;
+			p.g += 2 * dd * dd;
 			
+			//car-specific penalties.
+			if (im > 20) 
+				p.g += 100;
+
 			p.h = h(id, _end_id, _pitch);
-			p.h += 50 * dd;
+			
 			
 			PointMap::iterator pi = _points.find(id);
 			if (pi != _points.end()) {
