@@ -501,8 +501,8 @@ void Object::calculateWayVelocity() {
 			v3<float> rel = _next_target - getPosition();
 			_way.pop_front();
 			
-			if ((rel.x == 0 || rel.x * _next_target_rel.x < 0) && (rel.y == 0 || rel.y * _next_target_rel.y < 0)) {
-				LOG_DEBUG(("skipped waypoint behind objects' back"));
+			if (!_next_target_rel.is0() && (rel.x == 0 || rel.x * _next_target_rel.x <= 0) && (rel.y == 0 || rel.y * _next_target_rel.y <= 0)) {
+				LOG_DEBUG(("skipped waypoint behind objects' back %g:%g (old %g:%g", rel.x, rel.y, _next_target_rel.x, _next_target_rel.y ));
 				_next_target.clear();
 				continue;
 			}
