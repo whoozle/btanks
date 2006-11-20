@@ -160,34 +160,6 @@ void BaseObject::convertToAbsolute(v3<float> &pos, const v3<float> &dpos) {
 }
 
 /*
-
-void BaseObject::pretick() {
-	if (_stateless)
-		return;
-
-	state2velocity();
-}
-
-void BaseObject::posttick() {
-	//AI player will be easier to implement if operating directly with velocity
-	if (!_stateless || _velocity.is0()) 
-		return;
-	
-	//LOG_DEBUG(("class: %s", classname.c_str()));
-	_velocity.normalize();
-		
-	v3<float>::quantize(_velocity.x);	
-	v3<float>::quantize(_velocity.y);
-	//LOG_DEBUG(("%s: _velocity: %g %g", classname.c_str(), _velocity.x, _velocity.y));
-		
-	_state.left = _velocity.x == -1;
-	_state.right = _velocity.x == 1;
-	_state.up = _velocity.y == -1;
-	_state.down = _velocity.y == 1;
-
-	state2velocity();
-}
-
 void BaseObject::state2velocity() {
 	_velocity.clear();
 		
