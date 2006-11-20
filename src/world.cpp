@@ -115,8 +115,19 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect&src, const sdlx::Re
 			//LOG_DEBUG(("rendering %s with z = %g", o.classname.c_str(), o._position.z));
 			o.render(surface, r.x - src.x + dst.x, r.y - src.y + dst.y);
 		}
+		
+		GET_CONFIG_VALUE("engine.show-waypoints", bool, show_waypoints, false);
+		if (show_waypoints) {
+			const sdlx::Surface * wp_surface = ResourceManager->getSurface("waypoint16x16.png");
+			const Way & way = o.getWay();
+			for(Way::const_iterator wi = way.begin(); wi != way.end(); ++wi) {
+				const v3<int> &wp = *wi;
+				surface.copyFrom(*wp_surface, wp.x - src.x + dst.x, wp.y - src.y + dst.y);
+			}
+		}
 	}
 	map.render(surface, src, dst, z1, 1000);
+	
 	surface.resetClipRect();
 }
 
