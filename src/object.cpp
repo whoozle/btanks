@@ -496,22 +496,29 @@ void Object::calculateWayVelocity() {
 	while (!_way.empty()) {
 		if (_next_target.is0()) {
 			_next_target = _way.begin()->convert<float>();
-			_next_target_rel = _next_target - getPosition();
-			
+			v3<float> rel = _next_target - getPosition();
 			_way.pop_front();
-			if (_next_target_rel.quick_length() < 4) {
+			
+			if ((_next_target_rel.x != 0 && rel.x * _next_target_rel.x <= 0) &&
+				(_next_target_rel.y != 0 && rel.y * _next_target_rel.y <= 0)) {
 				_next_target.clear();
 				continue;
 			}
+			
+			if (rel.quick_length() < 4) {
+				_next_target.clear();
+				continue;
+			}
+			_next_target_rel = rel;
 			//LOG_DEBUG(("waypoints: %d", _way.size()));
 		}
 		//LOG_DEBUG(("%d:%s:%s next waypoint: %g %g, relative: %g %g", 
 		//	getID(), classname.c_str(), animation.c_str(), _next_target.x, _next_target.y, _next_target_rel.x, _next_target_rel.y));
 		
 		_velocity = _next_target - getPosition();
-		if ((_next_target_rel.x != 0 && _velocity.x * _next_target_rel.x <= 0) || (_velocity.x < 1))
+		if ((_next_target_rel.x != 0 && _velocity.x * _next_target_rel.x <= 0) || (math::abs(_velocity.x) < 1))
 			_velocity.x = 0;
-		if ((_next_target_rel.y != 0 && _velocity.y * _next_target_rel.y <= 0) || (_velocity.y < 1))
+		if ((_next_target_rel.y != 0 && _velocity.y * _next_target_rel.y <= 0) || (math::abs(_velocity.y) < 1))
 			_velocity.y = 0;
 		
 		if (_velocity.is0()) {
