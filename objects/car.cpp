@@ -186,13 +186,12 @@ const bool Car::findPathDone(Way &way) {
 			p.g = current.g + (d.x != 0 && d.y != 0)?141:100 + (int)(im * 100) + map_im;
 
 			//add penalty for turning
-/*
+
 			int dd = math::abs(i - current.dir);
 			if (dd > dirs/2) 
 				dd = dirs - dd;
-			if (dd > 1)
-				p.g += 41 * (dd - 1);
-*/
+			p.g += 41 * dd;
+
 			//car-specific penalties.
 			if (map_im > 20 || im > 0.2) 
 				p.g += 100;
