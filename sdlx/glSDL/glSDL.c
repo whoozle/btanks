@@ -1486,11 +1486,17 @@ static int glSDL_BlitGL(SDL_Surface *src, SDL_Rect *srcrect,
 		*dstrect = r;
 
 	/* Make sure we have a source with a valid texture */
-	glSDL_UploadSurface(src);
+	/* glSDL_UploadSurface(src); */
 	txi = glSDL_GetTexInfo(src);
-	if(!txi)
-		return -1;
+	if(!txi) {
+		DBG4(("emergency uploading texture %dx%d at %p\n", src->w, src->h, (void *)src));
+		glSDL_UploadSurface(src);
+	}
 
+	txi = glSDL_GetTexInfo(src);
+	if(!txi) {
+		return -1;
+	}
 	/* Set up blending */
 	if(src->flags & (SDL_SRCALPHA | SDL_SRCCOLORKEY))
 	{
