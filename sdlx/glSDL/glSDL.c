@@ -1697,6 +1697,7 @@ SDL_Surface *glSDL_DisplayFormat(SDL_Surface *surface)
 		if(surface->flags & SDL_SRCALPHA)
 			SDL_SetAlpha(s, SDL_SRCALPHA,
 					surface->format->alpha);
+		glSDL_UploadSurface(s);
 		return s;
 	}
 	else
@@ -1739,6 +1740,7 @@ SDL_Surface *glSDL_DisplayFormatAlpha(SDL_Surface *surface)
 		if(surface->flags & SDL_SRCALPHA)
 			SDL_SetAlpha(s, SDL_SRCALPHA,
 					surface->format->alpha);
+		glSDL_UploadSurface(s);
 		return s;
 	}
 	else
