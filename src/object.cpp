@@ -494,13 +494,15 @@ void Object::setWay(const Way & way) {
 
 void Object::calculateWayVelocity() {
 	while (!_way.empty()) {
+		_velocity.clear();
+		
 		if (_next_target.is0()) {
 			_next_target = _way.begin()->convert<float>();
 			v3<float> rel = _next_target - getPosition();
 			_way.pop_front();
 			
-			if ((_next_target_rel.x != 0 && rel.x * _next_target_rel.x <= 0) &&
-				(_next_target_rel.y != 0 && rel.y * _next_target_rel.y <= 0)) {
+			if ((rel.x == 0 || rel.x * _next_target_rel.x < 0) && (rel.y == 0 || rel.y * _next_target_rel.y < 0)) {
+				LOG_DEBUG(("skipped waypoint behind objects' back"));
 				_next_target.clear();
 				continue;
 			}
