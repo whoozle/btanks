@@ -122,7 +122,8 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect&src, const sdlx::Re
 			const Way & way = o.getWay();
 			for(Way::const_iterator wi = way.begin(); wi != way.end(); ++wi) {
 				const v3<int> &wp = *wi;
-				surface.copyFrom(*wp_surface, wp.x - src.x + dst.x, wp.y - src.y + dst.y);
+				surface.copyFrom(*wp_surface, 
+					wp.x - src.x + dst.x + (int)(o.size.x/2) - 8, wp.y - src.y + dst.y + (int)(o.size.y/2) - 8);
 			}
 		}
 	}
