@@ -191,7 +191,7 @@ const bool Car::findPathDone(Way &way) {
 			int dd = math::abs(i - current.dir);
 			if (dd > dirs/2) 
 				dd = dirs - dd;
-			p.h += 10 * dd;
+			p.h += 41 * dd;
 
 			//car-specific penalties.
 			if (map_im > 10 || im > 0.1) 
