@@ -190,11 +190,11 @@ const bool Car::findPathDone(Way &way) {
 			int dd = math::abs(i - current.dir);
 			if (dd > dirs/2) 
 				dd = dirs - dd;
-			p.g += 41 * dd;
+			p.g += 10 * dd;
 
 			//car-specific penalties.
-			if (map_im > 20 || im > 0.2) 
-				p.g += 100;
+			if (map_im > 10 || im > 0.1) 
+				p.g += 300;
 
 			p.h = h(id, _end_id, _pitch);
 			
