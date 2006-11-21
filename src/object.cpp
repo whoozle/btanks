@@ -504,7 +504,7 @@ void Object::calculateWayVelocity() {
 			v3<float> rel = _next_target - position;
 			_way.pop_front();
 			
-			sdlx::Rect wp_rect((int)_next_target.x, (int)_next_target.y, 16, 16); //fixme. use _step after moving PF to object.
+			sdlx::Rect wp_rect((int)_next_target.x, (int)_next_target.y, (int)size.x, (int)size.y);
 			
 			if (me.intersects(wp_rect)) {
 				_next_target.clear();
