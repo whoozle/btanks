@@ -508,6 +508,7 @@ void Object::calculateWayVelocity() {
 			
 			if (me.intersects(wp_rect)) {
 				_next_target.clear();
+				_velocity.clear();
 				continue;
 			}
 						
@@ -520,6 +521,7 @@ void Object::calculateWayVelocity() {
 			
 			if (rel.quick_length() < 4) {
 				_next_target.clear();
+				_velocity.clear();
 				continue;
 			}
 			_next_target_rel = rel;
