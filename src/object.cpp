@@ -493,14 +493,24 @@ void Object::setWay(const Way & way) {
 }
 
 void Object::calculateWayVelocity() {
+	v3<float> position = getPosition();
+	sdlx::Rect me((int)position.x, (int)position.y, (int)size.x, (int)size.y);
+
 	while (!_way.empty()) {
 		_velocity.clear();
 		
 		if (_next_target.is0()) {
 			_next_target = _way.begin()->convert<float>();
-			v3<float> rel = _next_target - getPosition();
+			v3<float> rel = _next_target - position;
 			_way.pop_front();
 			
+			sdlx::Rect wp_rect((int)_next_target.x, (int)_next_target.y, 16, 16); //fixme. use _step after moving PF to object.
+			
+			if (me.intersects(wp_rect)) {
+				_next_target.clear();
+				continue;
+			}
+						
 			/*if (!_next_target_rel.is0() && (rel.x == 0 || rel.x * _next_target_rel.x <= 0) && (rel.y == 0 || rel.y * _next_target_rel.y <= 0)) {
 				LOG_DEBUG(("skipped waypoint behind objects' back %g:%g (old %g:%g", rel.x, rel.y, _next_target_rel.x, _next_target_rel.y ));
 				_next_target.clear();
@@ -518,7 +528,7 @@ void Object::calculateWayVelocity() {
 		//LOG_DEBUG(("%d:%s:%s next waypoint: %g %g, relative: %g %g", 
 		//	getID(), classname.c_str(), animation.c_str(), _next_target.x, _next_target.y, _next_target_rel.x, _next_target_rel.y));
 		
-		_velocity = _next_target - getPosition();
+		_velocity = _next_target - position;
 		if ((_next_target_rel.x != 0 && _velocity.x * _next_target_rel.x <= 0) || (math::abs(_velocity.x) < 1))
 			_velocity.x = 0;
 		if ((_next_target_rel.y != 0 && _velocity.y * _next_target_rel.y <= 0) || (math::abs(_velocity.y) < 1))
