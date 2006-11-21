@@ -54,8 +54,8 @@ const bool CollisionMap::collides(const sdlx::Rect &src, const CollisionMap *oth
 	inter_y1 = math::min(ay1, by1);
 	/* printf("%d %d :: %d %d\n", inter_x0, inter_y0, inter_x1, inter_y1); */
 
-	unsigned char * ptr1 = (unsigned char *) _data.getPtr();
-	unsigned char * ptr2 = (unsigned char *) other->_data.getPtr();
+	register unsigned char * ptr1 = (unsigned char *) _data.getPtr();
+	register unsigned char * ptr2 = (unsigned char *) other->_data.getPtr();
 
 	int size1 = _data.getSize();
 	int size2 = other->_data.getSize();
