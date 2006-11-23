@@ -74,6 +74,7 @@ const int IMap::getImpassability(const Object *obj, const v3<int>&pos, v3<int> *
 		*hidden = false;
 
 	int im = 101;
+	int result_im = 101;
 	//LOG_DEBUG(("%d:%d:%d:%d --> %d:%d %d:%d", x1, y1, w, h, xt1, yt1, xt2, yt2));
 	for(LayerMap::const_reverse_iterator l = _layers.rbegin(); l != _layers.rend(); ++l) {
 		const Layer *layer = l->second;
@@ -139,6 +140,9 @@ const int IMap::getImpassability(const Object *obj, const v3<int>&pos, v3<int> *
 		}
 		if (hidden && !*hidden && h && l->first > obj_z) 
 			*hidden = true;
+
+		if (result_im == 101 && im < 101) 
+			result_im = im;
 	}
 
 	if (tile_pos) {
@@ -148,11 +152,11 @@ const int IMap::getImpassability(const Object *obj, const v3<int>&pos, v3<int> *
 		tile_pos->y += _th / 2;
 	}
 
-	if (im >= 101) 
-		im = 0;
+	if (result_im >= 101) 
+		result_im = 0;
 
 	//LOG_DEBUG(("im = %d", im));
-	return im;
+	return result_im;
 }
 
 
