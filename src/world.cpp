@@ -438,7 +438,8 @@ void IWorld::tick(Object &o, const float dt) {
 	
 	int save_dir = o.getDirection();
 	int dirs = o.getDirectionsNumber();
-	bool hidden = false;
+	bool hidden_attempt[3];
+	bool hidden;
 	
 	for(attempt =0; attempt < 3; ++attempt) {
 		v3<int> pos = new_pos;
@@ -455,7 +456,7 @@ void IWorld::tick(Object &o, const float dt) {
 			o.setDirection(v.getDirection(dirs) - 1);
 		}
 		
-		map_im = map.getImpassability(&o, pos, NULL, &hidden) / 100.0;
+		map_im = map.getImpassability(&o, pos, NULL, hidden_attempt + attempt) / 100.0;
 		getImpassability2(obj_im_now, obj_im, &o, pos, &stuck_in);
 
 		if ((map_im < 1.0 && obj_im < 1.0) || o.piercing)
@@ -467,11 +468,14 @@ void IWorld::tick(Object &o, const float dt) {
 	if (attempt == 1) {
 		o._velocity.x = 0;
 		len = o._velocity.normalize();
+		hidden = hidden_attempt[1];
 	} else if (attempt == 2) {
 		o._velocity.y = 0;
 		len = o._velocity.normalize();
+		hidden = hidden_attempt[2];
 	} else {
 		o.setDirection(save_dir);
+		hidden = hidden_attempt[0];
 	}
 	
 	if (hidden) {
