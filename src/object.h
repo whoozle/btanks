@@ -100,6 +100,11 @@ public:
 	
 	const Way& getWay() const { return _way; } 
 protected:
+	//grouped object handling
+	void add(const std::string &name, Object *obj);
+	Object *get(const std::string &name);
+	void remove(const std::string &name);
+	void groupEmit(const std::string &name, const std::string &event);
 
 	const bool getRenderRect(sdlx::Rect &src) const;
 
@@ -116,13 +121,6 @@ protected:
 	const bool isDriven() const;
 
 	void limitRotation(const float dt, const float speed, const bool rotate_even_stopped, const bool allow_backward);
-	
-	//grouped object handling
-	void add(const std::string &name, Object *obj);
-	Object *get(const std::string &name);
-	void remove(const std::string &name);
-	
-	void groupEmit(const std::string &name, const std::string &event);
 	
 private: 
 	struct Event : public mrt::Serializable {
@@ -165,6 +163,8 @@ private:
 	//grouped objects stuff
 	typedef std::map<const std::string, int> Group;
 	Group _group;
+	
+	friend class IWorld;
 };
 
 

@@ -438,6 +438,7 @@ void IWorld::tick(Object &o, const float dt) {
 	
 	int save_dir = o.getDirection();
 	int dirs = o.getDirectionsNumber();
+	bool hidden = false;
 	
 	for(attempt =0; attempt < 3; ++attempt) {
 		v3<int> pos = new_pos;
@@ -454,7 +455,7 @@ void IWorld::tick(Object &o, const float dt) {
 			o.setDirection(v.getDirection(dirs) - 1);
 		}
 		
-		map_im = map.getImpassability(&o, pos) / 100.0;
+		map_im = map.getImpassability(&o, pos, NULL, &hidden) / 100.0;
 		getImpassability2(obj_im_now, obj_im, &o, pos, &stuck_in);
 
 		if ((map_im < 1.0 && obj_im < 1.0) || o.piercing)
@@ -471,6 +472,20 @@ void IWorld::tick(Object &o, const float dt) {
 		len = o._velocity.normalize();
 	} else {
 		o.setDirection(save_dir);
+	}
+	
+	if (hidden) {
+		const std::string an = o.registered_name + "-outline";
+		if (!o.has("_outline") && ResourceManager->hasAnimation(an)) {
+			LOG_DEBUG(("%d:%s:%s: adding outline", o._id, o.classname.c_str(), o.animation.c_str()));
+			o.add("_outline", o.spawnGrouped("outline", an, v3<float>::empty, Centered));
+		}
+		//LOG_DEBUG(("%d:%s:%s: whoaaa!!! i'm in domik", o._id, o.classname.c_str(), o.animation.c_str()));
+	} else {
+		if (o.has("_outline")) {
+			LOG_DEBUG(("%d:%s:%s: removing outline", o._id, o.classname.c_str(), o.animation.c_str()));
+			o.remove("_outline");
+		}
 	}
 
 	dpos = o.speed * o._velocity * dt;

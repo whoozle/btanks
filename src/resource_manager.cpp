@@ -191,6 +191,9 @@ void IResourceManager::charData(const std::string &data) {
 IResourceManager::IResourceManager() : _am(0) {
 }
 
+const bool IResourceManager::hasAnimation(const std::string &id) const {
+	return _animations.find(id) != _animations.end();
+}
 
 Object *IResourceManager::getAnimation(const std::string &id) {
 	AnimationMap::iterator i;

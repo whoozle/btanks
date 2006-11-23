@@ -92,5 +92,6 @@ REGISTER_OBJECT("single-pose-once", SinglePose, ("main", false));
 REGISTER_OBJECT("single-pose-no-directions", SinglePose, ("main", true, true));
 REGISTER_OBJECT("single-pose-once-no-directions", SinglePose, ("main", false, true));
 
+REGISTER_OBJECT("outline", SinglePose, ("main", true));
 REGISTER_OBJECT("missile-launch", SinglePose, ("launch", false));
 REGISTER_OBJECT("train-smoke", SinglePose, ("main", false));

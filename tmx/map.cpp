@@ -51,11 +51,12 @@ const bool IMap::collides(const Object *obj, const int dx, const int dy, const s
 }
 
 
-const int IMap::getImpassability(const Object *obj, const v3<int>&pos, v3<int> *tile_pos) const {
+const int IMap::getImpassability(const Object *obj, const v3<int>&pos, v3<int> *tile_pos, bool *hidden) const {
 	if (obj->impassability <= 0) {
 		return 0;
 	}
 	
+	const float obj_z = obj->getPosition().z;
 	int w = (int)obj->size.x, h = (int)obj->size.y;
 	int x, x1;
 	int y, y1;
@@ -68,62 +69,77 @@ const int IMap::getImpassability(const Object *obj, const v3<int>&pos, v3<int> *
 	int yt1 = y1 / _th; int yt2 = y2 / _th; 
 	int dx1 = x - xt1 * _tw; int dx2 = x - xt2 * _tw;
 	int dy1 = y - yt1 * _th; int dy2 = y - yt2 * _th;
+	
+	if (hidden)
+		*hidden = false;
 
 	int im = 101;
 	//LOG_DEBUG(("%d:%d:%d:%d --> %d:%d %d:%d", x1, y1, w, h, xt1, yt1, xt2, yt2));
 	for(LayerMap::const_reverse_iterator l = _layers.rbegin(); l != _layers.rend(); ++l) {
 		const Layer *layer = l->second;
-		if (layer->pierceable && obj->piercing) 
-			continue;
-		
 		int layer_im = layer->impassability;
-		if (layer_im == -1) 
+
+		if (layer_im == -1 || (layer->pierceable && obj->piercing)) {
+			if (hidden && !*hidden && l->first > obj_z) {
+				if (!collides(obj, dx1, dy1, layer->getCollisionMap(xt1, yt1)))
+					continue;
+				if (yt1 != yt2 && !collides(obj, dx1, dy2, layer->getCollisionMap(xt1, yt2)))
+					continue;
+				if (xt1 != xt2) {
+					if (!collides(obj, dx2, dy1, layer->getCollisionMap(xt2, yt1)))
+						continue;
+					if (yt1 != yt2 && !collides(obj, dx2, dy2, layer->getCollisionMap(xt2, yt2)))
+						continue;	
+				}
+				*hidden = true;
+			}
 			continue;
+		}
+		
+		bool h = true;
+		bool c = true;
 		//LOG_DEBUG(("im: %d, tile: %d", layer_im, layer->get(xt1, yt1)));
-		if (collides(obj, dx1, dy1, layer->getCollisionMap(xt1, yt1)) && im > layer_im) {
+		if ((c = collides(obj, dx1, dy1, layer->getCollisionMap(xt1, yt1))) && im > layer_im) {
 			if (tile_pos) {
 				tile_pos->x = xt1;
 				tile_pos->y = yt1;
 			}
 			im = layer_im;
-		}
+		};
+		if (!c) h = false;
 
-		if (yt2 != yt1 && collides(obj, dx1, dy2, layer->getCollisionMap(xt1, yt2)) && im > layer_im) {
+		if (yt2 != yt1 && (c = collides(obj, dx1, dy2, layer->getCollisionMap(xt1, yt2))) && im > layer_im) {
 			if (tile_pos) {
 				tile_pos->x = xt1;
 				tile_pos->y = yt2;
 			}
 			im = layer_im;
 		}
+		if (!c) h = false;
+		
 		if (xt2 != xt1) {
-			if (collides(obj, dx2, dy1, layer->getCollisionMap(xt2, yt1)) && im > layer_im) {
+			c = true;
+			if ((c = collides(obj, dx2, dy1, layer->getCollisionMap(xt2, yt1))) && im > layer_im) {
 				im = layer_im;
 				if (tile_pos) {
 					tile_pos->x = xt2;
 					tile_pos->y = yt1;
 				}
 			}
-			if (yt2 != yt1 && collides(obj, dx2, dy2, layer->getCollisionMap(xt2, yt2)) && im > layer_im) {
+			if (!c) h = false;
+			c = true;
+			if (yt2 != yt1 && (c = collides(obj, dx2, dy2, layer->getCollisionMap(xt2, yt2))) && im > layer_im) {
 				if (tile_pos) {
 					tile_pos->x = xt2;
 					tile_pos->y = yt2;
 				}
 				im = layer_im;
-			}
+			};
+			if (!c) h = false;
 		}
-		if (im < 101) {
-			if (tile_pos) {
-				tile_pos->x *= _tw;
-				tile_pos->y *= _th;
-				tile_pos->x += _tw / 2;
-				tile_pos->y += _th / 2;
-			}
-			//LOG_DEBUG(("im = %d", im));	
-			return im;
-		}
+		if (hidden && !*hidden && h && l->first > obj_z) 
+			*hidden = true;
 	}
-	if (im == 101) 
-		im = 0;
 
 	if (tile_pos) {
 		tile_pos->x *= _tw;
@@ -131,6 +147,9 @@ const int IMap::getImpassability(const Object *obj, const v3<int>&pos, v3<int> *
 		tile_pos->x += _tw / 2;
 		tile_pos->y += _th / 2;
 	}
+
+	if (im >= 101) 
+		im = 0;
 
 	//LOG_DEBUG(("im = %d", im));
 	return im;
