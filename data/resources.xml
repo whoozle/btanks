@@ -252,6 +252,10 @@
 	<animation id="regular-mines-on-launcher" tile="launcher_mine.png" model="missiles-on-launcher-animation" />
 	<animation id="machinegunner-on-launcher" tile="launcher_machinegunner.png" model="single-tile" />
 
+	<animation id="tank-outline" tile="tank_outline.png" model="single-tile" />
+	<animation id="shilka-outline" tile="shilka_outline.png" model="single-tile" />
+	<animation id="launcher-outline" tile="launcher_outline.png" model="single-tile" />
+
 	<animation id="green-car" tile="car01.png" model="car-animation"/>
 	<animation id="cyan-car" tile="car02.png" model="car-animation"/>
 	<animation id="yellow-car" tile="car03.png" model="car-animation"/>
