@@ -334,7 +334,7 @@ void Object::render(sdlx::Surface &surface, const int x, const int y) {
 	surface.copyFrom(blended, x, y);
 }
 
-const bool Object::collides(const Object *other, const int x, const int y) const {
+const bool Object::collides(const Object *other, const int x, const int y, const bool hidden_by_other) const {
 	sdlx::Rect src, other_src;
 	if (!getRenderRect(src)) 
 		return false;
@@ -347,14 +347,14 @@ const bool Object::collides(const Object *other, const int x, const int y) const
 		other_src.x, other_src.y, other_src.w, other_src.h
 		));
 */
-	return _cmap->collides(src, other->_cmap, other_src, x, y);
+	return _cmap->collides(src, other->_cmap, other_src, x, y, hidden_by_other);
 }
 
-const bool Object::collides(const sdlx::CollisionMap *other, const int x, const int y) const {
+const bool Object::collides(const sdlx::CollisionMap *other, const int x, const int y, const bool hidden_by_other) const {
 	sdlx::Rect src;
 	if (!getRenderRect(src)) 
 		return false;
-	return _cmap->collides(src, other, sdlx::Rect(), x, y);
+	return _cmap->collides(src, other, sdlx::Rect(), x, y, hidden_by_other);
 }
 
 void Object::serialize(mrt::Serializator &s) const {

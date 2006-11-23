@@ -70,6 +70,7 @@ private:
 
 	Matrix<int> _imp_map;
 	inline const bool collides(const Object *obj, const int dx, const int dy, const sdlx::CollisionMap *tile) const;
+	inline const bool hiddenBy(const Object *obj, const int dx, const int dy, const sdlx::CollisionMap *tile) const;
 
 	int _w, _h, _tw, _th, _firstgid;
 	int _lastz;

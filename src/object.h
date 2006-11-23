@@ -54,8 +54,8 @@ public:
 	
 	virtual void tick(const float dt);
 	virtual void render(sdlx::Surface &surface, const int x, const int y);
-	const bool collides(const Object *other, const int x, const int y) const;
-	const bool collides(const sdlx::CollisionMap *other, const int x, const int y) const;
+	const bool collides(const Object *other, const int x, const int y, const bool hidden_by_other = false) const;
+	const bool collides(const sdlx::CollisionMap *other, const int x, const int y, const bool hidden_by_other = false) const;
 
 	// animation:
 	void play(const std::string &id, const bool repeat = false);
