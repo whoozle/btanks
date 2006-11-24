@@ -180,9 +180,10 @@ const int IMap::getImpassability(const Object *obj, const v3<int>&pos, v3<int> *
 
 void IMap::load(const std::string &name) {
 	clear();
+	GET_CONFIG_VALUE("engine.data-directory", std::string, data_dir, "data");
 	
 	LOG_DEBUG(("loading map '%s'", name.c_str()));
-	const std::string file = "data/maps/" + name + ".tmx";
+	const std::string file = data_dir + "/maps/" + name + ".tmx";
 	parseFile(file);
 
 	_name = name;
@@ -334,8 +335,10 @@ void IMap::end(const std::string &name) {
 		
 		_image = new sdlx::Surface;
 		std::string source = e.attrs["source"];
+		GET_CONFIG_VALUE("engine.data-directory", std::string, data_dir, "data");
+
 		if (source.size()) {
-			source = "data/tiles/" + source;
+			source = data_dir + "/tiles/" + source;
 			LOG_DEBUG(("loading tileset from single file ('%s')", source.c_str()));
 			_image->loadImage(source);
 			_image_is_tileset = true;
