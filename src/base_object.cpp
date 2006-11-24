@@ -250,7 +250,7 @@ void BaseObject::disown() {
 }
 
 const v3<float> BaseObject::getRelativePosition(const BaseObject *obj) const {
-	return obj->_position - _position + size / 2 - obj->size / 2;
+	return obj->_position - _position - size / 2 + obj->size / 2;
 }
 
 const bool BaseObject::updatePlayerState(const PlayerState &state) {
