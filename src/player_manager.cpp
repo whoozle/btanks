@@ -494,6 +494,17 @@ PlayerSlot &IPlayerManager::getSlot(const unsigned int idx) {
 const PlayerSlot &IPlayerManager::getSlot(const unsigned int idx) const {
 	return _players[idx];
 }
+PlayerSlot &IPlayerManager::getMySlot() {
+	if (_my_idx < 0) 
+		throw_ex(("player manager still doesnt have slot for local player"));
+	return _players[_my_idx];
+}
+const PlayerSlot &IPlayerManager::getMySlot() const {
+	if (_my_idx < 0) 
+		throw_ex(("player manager still doesnt have slot for local player"));
+	return _players[_my_idx];
+}
+
 
 PlayerSlot *IPlayerManager::getSlotByID(const int id) {
 	if (id <= 0)
