@@ -34,6 +34,8 @@
 #include <assert.h>
 #include <limits>
 
+#include "config.h"
+
 IMPLEMENT_SINGLETON(Map, IMap)
 
 const int IMap::pathfinding_step = 64;
@@ -61,6 +63,12 @@ const int IMap::getImpassability(const Object *obj, const v3<int>&pos, v3<int> *
 	if (obj->impassability <= 0) {
 		return 0;
 	}
+	GET_CONFIG_VALUE("engine.disable-outlines", bool, disable_outlines, false);
+	if (disable_outlines && hidden != NULL) {
+		*hidden = false;
+		hidden = NULL;
+	}
+	
 	if (hidden)
 		*hidden = false;
 	
