@@ -92,6 +92,9 @@ void Bullet::onSpawn() {
 }
 
 void Bullet::emit(const std::string &event, BaseObject * emitter) {
+	if (emitter != NULL && emitter->classname == "smoke-cloud")
+		return;
+	
 	if (event == "collision" || event == "death") {
 		v3<float> dpos;
 		if (emitter) {
