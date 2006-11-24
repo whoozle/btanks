@@ -33,6 +33,7 @@ namespace sdlx {
 }
 
 class AnimationModel;
+class Animation;
 class Pose;
 
 class Object : public BaseObject {
@@ -43,8 +44,8 @@ public:
 	float fadeout_time;
 
 	Object(const std::string &classname);
-	void init(const std::string &model, const std::string &surface, const int tile_w, const int tile_h);
-	void init(const Object *other);
+	//void init(const std::string &model, const std::string &surface, const int tile_w, const int tile_h);
+	void init(const Animation *other);
 	virtual Object * clone() const;
 
 	void setDirection(const int dir);

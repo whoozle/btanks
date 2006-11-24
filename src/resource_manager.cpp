@@ -66,6 +66,8 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 		GET_CONFIG_VALUE("engine.data-directory", std::string, data_dir, "data");
 
 		real_load |= preload_all;
+		std::string &tile = attr["tile"];
+		
 		TRY { 
 			
 			if (real_load) {
@@ -81,14 +83,13 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 				LOG_DEBUG(("loaded animation '%s' from '%s'", id.c_str(), fname.c_str()));
 			}
 			
-			_surfaces[attr["tile"]] = s;
+			_surfaces[tile] = s;
 			s = NULL;
 			
-			_cmaps[attr["tile"]] = cmap;
+			_cmaps[tile] = cmap;
 			cmap = NULL;
 			
-			_animations[id] = new Object(id);
-			_animations[id]->init(model, attr["tile"], tw, th);
+			_animations[id] = new Animation(model, tile, tw, th);
 		} CATCH("animation", { delete s; s = NULL; delete cmap; cmap = NULL; });
 	} else if (name == "animation-model") {
 		const std::string & id = attr["id"];
@@ -205,22 +206,18 @@ const bool IResourceManager::hasAnimation(const std::string &id) const {
 	return _animations.find(id) != _animations.end();
 }
 
-Object *IResourceManager::getAnimation(const std::string &id) {
+Animation *IResourceManager::getAnimation(const std::string &id) {
 	AnimationMap::iterator i;
 	if ((i = _animations.find(id)) == _animations.end()) 
 		throw_ex(("could not find animation with id '%s'", id.c_str()));
 	return i->second;
 }
 
-const Object *IResourceManager::getAnimation(const std::string &id) const {
+const Animation *IResourceManager::getAnimation(const std::string &id) const {
 	AnimationMap::const_iterator i;
 	if ((i = _animations.find(id)) == _animations.end()) 
 		throw_ex(("could not find animation with id '%s'", id.c_str()));
 	return i->second;
-}
-
-Object *IResourceManager::createAnimation(const std::string &id) {
-	return new Object(*getAnimation(id));	
 }
 
 AnimationModel *IResourceManager::getAnimationModel(const std::string &id) {
@@ -252,7 +249,7 @@ void IResourceManager::init(const std::string &fname) {
 
 void IResourceManager::initMe(Object *o, const std::string &animation) const {
 	const std::string classname = o->classname;
-	const Object * a = getAnimation(animation);
+	const Animation * a = getAnimation(animation);
 	o->init(a);
 	//o->classname = classname;
 }

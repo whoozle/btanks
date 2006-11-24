@@ -39,3 +39,6 @@ AnimationModel::~AnimationModel() {
 	std::for_each(_poses.begin(), _poses.end(), delete_ptr2<PoseMap::value_type>());
 	_poses.clear();
 }
+
+Animation::Animation(const std::string & model, const std::string &surface, const int tw, const int th) : 
+	model(model), surface(surface), tw(tw), th(th) {}

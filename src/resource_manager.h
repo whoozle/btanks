@@ -1,5 +1,5 @@
-#ifndef __BT_TILEMANAGER_H__
-#define __BT_TILEMANAGER_H__
+#ifndef __BT_RESOURCE_MANAGER_H__
+#define __BT_RESOURCE_MANAGER_H__
 
 /* Battle Tanks Game
  * Copyright (C) 2006 Battle Tanks team
@@ -31,6 +31,7 @@ namespace sdlx {
 
 class Object;
 class Object;
+class Animation;
 class AnimationModel;
 class Pose;
 
@@ -44,13 +45,12 @@ public:
 	void initMe(Object *o, const std::string &animation) const;
 	void clear();
 	
-	Object *createAnimation(const std::string &id);
 	AnimationModel *getAnimationModel(const std::string &id);
 	
 	void registerObject(const std::string &classname, Object *);
 	Object *createObject(const std::string &classname, const std::string &animation) const;
 	const Object *getClass(const std::string &classname) const;
-	const Object *getAnimation(const std::string &id) const ;
+	const Animation *getAnimation(const std::string &id) const;
 	const bool hasAnimation(const std::string &id) const;
 
 	const sdlx::Surface *getSurface(const std::string &id) const;
@@ -61,12 +61,12 @@ public:
 	void checkSurface(const std::string &id, const sdlx::Surface *& surface_ptr, const sdlx::CollisionMap *&cmap);
 
 private:
-	Object *getAnimation(const std::string &id);
+	Animation *getAnimation(const std::string &id);
 	virtual void start(const std::string &name, Attrs &attr);
 	virtual void end(const std::string &name);
 	virtual void charData(const std::string &data);
 	
-	typedef std::map<const std::string, Object *> AnimationMap;
+	typedef std::map<const std::string, Animation*> AnimationMap;
 	AnimationMap _animations;
 
 	typedef std::map<const std::string, AnimationModel *> AnimationModelMap;

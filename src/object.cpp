@@ -61,6 +61,7 @@ Object::Object(const std::string &classname) :
 	_group()
 	 {}
 
+/*
 void Object::init(const std::string &model, const std::string &surface, const int tile_w, const int tile_h) {
 	_events.clear();
 
@@ -75,19 +76,21 @@ void Object::init(const std::string &model, const std::string &surface, const in
 	_direction_idx = 0;
 	_pos = 0;
 }
+*/
 
-void Object::init(const Object *a) {
-	_model = a->_model;
-	_model_name = a->_model_name;
-	_surface = a->_surface;
-	_cmap = a->_cmap;
-	_surface_name = a->_surface_name;
-	_events = a->_events;
-	_tw = a->_tw;
-	_th = a->_th;
-	_pos = a->_pos;
+void Object::init(const Animation *a) {
+	_model_name = a->model;
+	_model = ResourceManager->getAnimationModel(a->model);
+	_surface_name = a->surface;
 	
-	size = a->size;
+	_surface = ResourceManager->getSurface(a->surface);
+	_cmap = ResourceManager->getCollisionMap(a->surface);
+
+	_tw = a->tw;
+	_th = a->th;
+	
+	size.x = _tw;
+	size.y = _th;
 }
 
 

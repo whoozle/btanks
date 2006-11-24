@@ -47,4 +47,13 @@ private:
 	PoseMap _poses;
 };
 
+class Animation {
+public:
+	std::string model, surface;
+	int tw, th;
+	
+	Animation(const std::string & model, const std::string &tile, const int tw, const int th);
+};
+
+
 #endif
