@@ -377,6 +377,8 @@ void IWorld::tick(Object &o, const float dt) {
 				const Object *leader = o_i->second;
 				//LOG_DEBUG(("following %d...", f));
 				float z = o._position.z;
+				o.speed = leader->speed;
+				
 				o._position = leader->_position + o._follow_position;
 				o._position.z = z;
 				o._velocity = leader->_velocity;
