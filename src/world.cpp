@@ -502,7 +502,7 @@ void IWorld::tick(Object &o, const float dt) {
 			o._position += dpos;
 			o.emit("collision", NULL); //fixme: emit collisions with map from map::getImpassability
 			o._position -= dpos;
-		}
+		} else map_im = 0;
 	}
 	
 
