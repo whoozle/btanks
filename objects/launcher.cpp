@@ -61,18 +61,6 @@ void Launcher::emit(const std::string &event, BaseObject * emitter) {
 		_velocity.x = _velocity.y = _velocity.z = 0;
 
 		Object::emit(event, emitter);
-	} else if (event == "launch") {
-		v3<float> v = _velocity.is0()?_direction:_velocity;
-		v.normalize();
-		spawn("guided-missile", "guided-missile", v3<float>::empty, v);
-		const Object * la = ResourceManager.get_const()->getAnimation("missile-launch");
-		v3<float> dpos = (size - la->size).convert<float>();
-		dpos.z = 0;
-		dpos /= 2;
-
-		Object *o = spawn("missile-launch", "missile-launch", dpos, _direction);
-		o->setDirection(getDirection());
-		//LOG_DEBUG(("dir: %d", o->getDirection()));
 	} else Object::emit(event, emitter);
 }
 
