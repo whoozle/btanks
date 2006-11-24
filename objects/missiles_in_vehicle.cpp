@@ -167,15 +167,16 @@ void MissilesInVehicle::emit(const std::string &event, BaseObject * emitter) {
 				std::string object = _object.substr(0, _object.size() - 1); //remove trailing 's' 
 				World->spawn(dynamic_cast<Object *>(emitter), _type + "-" + object, _type + "-" + object, v3<float>::empty, v);
 				
-				if (_object != "mines") {
+/*				if (_object != "mines") {
 					const Object * la = ResourceManager.get_const()->getAnimation("missile-launch");
 					v3<float> dpos = (size - la->size).convert<float>();
 					dpos.z = 0;
 					dpos /= 2;
 		
-					Object *o = World->spawn(dynamic_cast<Object *>(emitter), "missile-launch", "missile-launch", dpos, _direction);
+					Object *o = World->spawn(dynamic_cast<Object *>(emitter), "missile-launch", "missile-launch", dpos, v3<float>::empty);
 					o->setDirection(getDirection());
 				}
+*/
 				//LOG_DEBUG(("dir: %d", o->getDirection()));	
 			}
 			updatePose();
