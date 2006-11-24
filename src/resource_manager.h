@@ -57,6 +57,8 @@ public:
 	const sdlx::CollisionMap *getCollisionMap(const std::string &id) const;
 	
 	void createAlias(const std::string &name, const std::string &classname);
+	
+	void checkSurface(const std::string &id, const sdlx::Surface *& surface_ptr, const sdlx::CollisionMap *&cmap);
 
 private:
 	Object *getAnimation(const std::string &id);

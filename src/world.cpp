@@ -118,7 +118,11 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect&src, const sdlx::Re
 		
 		GET_CONFIG_VALUE("engine.show-waypoints", bool, show_waypoints, false);
 		if (show_waypoints) {
-			const sdlx::Surface * wp_surface = ResourceManager->getSurface("waypoint16x16.png");
+			const std::string wp_name = "waypoint16x16.png";
+			const sdlx::Surface * wp_surface = ResourceManager->getSurface(wp_name);
+			const sdlx::CollisionMap *cmap;
+			ResourceManager->checkSurface(wp_name, wp_surface, cmap);
+			
 			const Way & way = o.getWay();
 			for(Way::const_iterator wi = way.begin(); wi != way.end(); ++wi) {
 				const v3<int> &wp = *wi;

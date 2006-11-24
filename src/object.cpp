@@ -277,6 +277,9 @@ const bool Object::getRenderRect(sdlx::Rect &src) const {
 
 	frame = pose->frames[frame];
 	
+	
+	const_cast<Object*>(this)->checkSurface();
+	
 	if (frame * _th >= _surface->getHeight()) {
 		LOG_WARN(("%s: event '%s' tile row %d is out of range.", classname.c_str(), _events.front().name.c_str(), frame));
 		return false;
@@ -298,6 +301,8 @@ void Object::render(sdlx::Surface &surface, const int x, const int y) {
 	if (fadeout_time > 0 && ttl > 0 && ttl < fadeout_time) 
 		alpha = (int)(255 * (fadeout_time - ttl) / fadeout_time);
 	//LOG_DEBUG(("alpha = %d", alpha));
+	checkSurface();
+	
 	if (alpha == 0) {
 		surface.copyFrom(*_surface, src, x, y);
 		return;
@@ -788,4 +793,12 @@ void Object::getTargetPosition(v3<float> &relative_position, const v3<float> &ta
 		}
 		//LOG_DEBUG(("target position: %g %g, distance: %g", pos.x, pos.y, d));
 	}
+}
+
+void Object::checkSurface() {
+	if (_surface && _cmap) 
+		return;
+	ResourceManager->checkSurface(_surface_name, _surface, _cmap);
+	assert(_surface != NULL);
+	assert(_cmap != NULL);
 }

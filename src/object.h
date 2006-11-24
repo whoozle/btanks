@@ -122,6 +122,8 @@ protected:
 
 	void limitRotation(const float dt, const float speed, const bool rotate_even_stopped, const bool allow_backward);
 	
+	void checkSurface();
+	
 private: 
 	struct Event : public mrt::Serializable {
 		std::string name;

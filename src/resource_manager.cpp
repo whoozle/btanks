@@ -25,6 +25,7 @@
 #include "animation_model.h"
 #include "utils.h"
 #include "sound/mixer.h"
+#include "config.h"
 
 #include <algorithm>
 
@@ -60,23 +61,32 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 
 		sdlx::Surface *s = NULL;
 		sdlx::CollisionMap *cmap = NULL;
+		bool real_load = !attr["persistent"].empty();
+		GET_CONFIG_VALUE("engine.preload-all-resources", bool , preload_all, true);
+		GET_CONFIG_VALUE("engine.data-directory", std::string, data_dir, "data");
+
+		real_load |= preload_all;
 		TRY { 
-			s = new sdlx::Surface;
-			const std::string fname = "data/tiles/" + attr["tile"];
-			s->loadImage(fname);
-			s->convertAlpha();
 			
-			cmap = new sdlx::CollisionMap;
-			cmap->init(s);
+			if (real_load) {
+				const std::string fname = data_dir + "/tiles/" + attr["tile"];
+				s = new sdlx::Surface;
+				s->loadImage(fname);
+				s->convertAlpha();
 			
-			s->convertToHardware();
+				cmap = new sdlx::CollisionMap;
+				cmap->init(s);
+			
+				s->convertToHardware();
+				LOG_DEBUG(("loaded animation '%s' from '%s'", id.c_str(), fname.c_str()));
+			}
+			
 			_surfaces[attr["tile"]] = s;
 			s = NULL;
 			
 			_cmaps[attr["tile"]] = cmap;
 			cmap = NULL;
 			
-			LOG_DEBUG(("loaded animation '%s' from '%s'", id.c_str(), fname.c_str()));
 			_animations[id] = new Object(id);
 			_animations[id]->init(model, attr["tile"], tw, th);
 		} CATCH("animation", { delete s; s = NULL; delete cmap; cmap = NULL; });
@@ -310,3 +320,28 @@ const Object *IResourceManager::getClass(const std::string &classname) const {
 	return i->second;	
 }
 
+void IResourceManager::checkSurface(const std::string &id, const sdlx::Surface *& surface_ptr, const sdlx::CollisionMap *& cmap_ptr) {
+	sdlx::Surface *s = _surfaces[id];
+	sdlx::CollisionMap *cmap = _cmaps[id];
+	GET_CONFIG_VALUE("engine.data-directory", std::string, data_dir, "data");
+
+	const std::string fname = data_dir + "/tiles/" + id;
+	if (s == NULL) {
+		TRY {
+			s = new sdlx::Surface;
+			s->loadImage(fname);
+			s->convertAlpha();
+			s->convertToHardware();
+			LOG_DEBUG(("loaded animation '%s' from '%s'", id.c_str(), fname.c_str()));
+			_surfaces[id] = s;
+		} CATCH("loading surface", { delete s; throw; });
+	}
+	surface_ptr = s;
+	
+	if (cmap == NULL) {			
+		cmap = new sdlx::CollisionMap;
+		cmap->init(s);
+		_cmaps[id] = cmap;
+	}
+	cmap_ptr = cmap;
+}
