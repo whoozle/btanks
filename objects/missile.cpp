@@ -29,6 +29,7 @@ public:
 		piercing = true;
 		setDirectionsNumber(16);
 	}
+	virtual void addDamage(BaseObject *from, const int hp, const bool emitDeath = true) {}
 	virtual void calculate(const float dt);
 	virtual Object * clone() const;
 	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
