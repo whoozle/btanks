@@ -424,7 +424,7 @@ void IGame::run() {
 			switch(event.type) {
 			case SDL_KEYDOWN:
 #ifndef WIN32
-				if (event.key.keysym.sym==SDLK_f && event.key.keysym.mod & KMOD_SHIFT) {
+				if (event.key.keysym.sym==SDLK_RETURN && event.key.keysym.mod & KMOD_CTRL) {
 					TRY {
 						_window.toggleFullscreen();
 					} CATCH("main loop", {});
@@ -445,7 +445,7 @@ void IGame::run() {
 					screenshot.saveBMP("map.bmp"); //hopefully we're done here.
 					break;
 				}
-				if (!PlayerManager->isClient() && event.key.keysym.sym==SDLK_d && event.key.keysym.mod & KMOD_SHIFT && _my_index >= 0) {
+				if (!PlayerManager->isClient() && event.key.keysym.sym==SDLK_F12 && _my_index >= 0) {
 					PlayerSlot &slot = PlayerManager->getSlot(_my_index);
 					if (slot.frags > 0) 
 						--slot.frags;
