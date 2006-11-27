@@ -47,6 +47,8 @@ Uint32 Thread::getID() const {
 
 
 void Thread::start() {
+	if (_thread != NULL) 
+		throw_ex(("thread was already started."));
 	_thread = SDL_CreateThread(thread_starter, reinterpret_cast<void *>(this));
 }
 
