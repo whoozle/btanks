@@ -1,0 +1,13 @@
+0.3.1435: 
+
+*) fixed several random multiplayer disconnects. 
+*) added simple 'sliding' if object cannot move in desired direction.
+*) added car object, introduced new asynchronous configurable pathfinding (A*).
+*) improved Object::setWay, removed almost all glitches.
+*) various frag calculation fixes. 
+*) fixed launcher mods logic. (magic guided missiles appeared in a truck and so on...).
+*) smoke clouds now do not collides with missiles/bullets
+*) added generic outlines support. 
+
+0.3.1298:
+*) first public release.
