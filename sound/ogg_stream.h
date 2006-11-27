@@ -57,7 +57,7 @@ private:
 	vorbis_info * _vorbis_info;
 	vorbis_comment * _vorbis_comment;
 
-	ALuint _buffers_n, _buffers[16];
+	ALuint _buffers_n, _buffers[32];
 	ALuint _source;
 	ALenum _format;
 	
