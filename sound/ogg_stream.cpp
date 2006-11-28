@@ -233,6 +233,7 @@ const int OggStream::run() {
 		if(!playing()) {
 			if(!play()) {
 				LOG_WARN(("Ogg abruptly stopped."));
+				break;
 			} else
 				LOG_WARN(("ogg stream was interrupted.."));
 		} else 
