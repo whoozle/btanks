@@ -308,7 +308,7 @@ Hud::Hud(const int w, const int h) : _update_radar(true) {
 		}
 	}
 	LOG_DEBUG(("using splash %d", sw));
-	_splash.loadImage(mrt::formatString("%s/tiles/splash_%d.png", data_dir.c_str(), sw));
+	_splash.loadImage(mrt::formatString("%s/tiles/splash_%d.jpg", data_dir.c_str(), sw));
 
 	GET_CONFIG_VALUE("hud.radar-update-interval", float, ru, 0.2);
 	_update_radar.set(ru);
