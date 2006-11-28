@@ -162,6 +162,7 @@ const bool OggStream::stream(ALuint buffer) {
 
 	while(size < buffer_size) {
 		int r = ov_read(&_ogg_stream, ((char *)data.getPtr()) + size, buffer_size - size, 0, 2, 1, & section);
+		//LOG_DEBUG(("ov_read(%d) = %d (section: %d)", size, r, section));
     
 		if(r > 0) {
 			size += r;
@@ -234,8 +235,8 @@ const int OggStream::run() {
 				LOG_WARN(("Ogg abruptly stopped."));
 			} else
 				LOG_WARN(("ogg stream was interrupted.."));
-		}
-		SDL_Delay(_delay);
+		} else 
+			SDL_Delay(_delay);
 	}
 	_running = false;
 	LOG_DEBUG(("sound thread exits.."));

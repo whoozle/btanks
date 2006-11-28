@@ -202,6 +202,17 @@ void IMixer::playSample(const Object *o, const std::string &name, const bool loo
 }
 
 void IMixer::updateObjects() {
+	if (!_nomusic) {
+		if (_ogg != NULL && !_ogg->alive()) {
+			delete _ogg;
+			_ogg = NULL;
+		}
+		if (_ogg == NULL) {
+			LOG_DEBUG(("big fixme. remove this ugly sound thread restart..."));
+			play();
+		}
+	}
+
 	if (_nosound) 
 		return;
 		

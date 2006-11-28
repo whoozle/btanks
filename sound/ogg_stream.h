@@ -35,9 +35,8 @@ class OggStream : public sdlx::Thread {
 public: 
 	void open(const std::string &fname);
 	void close();
-	
-	const bool playing() const;
-	const bool play();
+
+	const bool alive() const { return _running; }	
 		
 	OggStream();
 	~OggStream();
@@ -45,6 +44,10 @@ public:
 	static void decode(Sample &sample, const std::string &file);
 
 private: 
+
+
+	const bool playing() const;
+	const bool play();
 	virtual const int run(); 
 	const bool update();
 	void empty();
