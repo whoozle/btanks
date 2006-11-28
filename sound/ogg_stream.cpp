@@ -79,13 +79,17 @@ const bool OggStream::play() {
 	if(playing())
 		return true;
 
-	for(unsigned int i = 0; i <  _buffers_n; ++i) {	
+	unsigned int i;
+	for(i = 0; i < _buffers_n; ++i) {	
 		if(!stream(_buffers[i]))
-			return false;
+			break;
 	}
-	alSourceQueueBuffers(_source, _buffers_n, _buffers);
-	alSourcePlay(_source);
-	return true;
+	if (i > 0) {
+		alSourceQueueBuffers(_source, i, _buffers);
+		alSourcePlay(_source);
+		return true;
+	}
+	return false;
 }
 
 const bool OggStream::update() {
