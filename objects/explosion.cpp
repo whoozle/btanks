@@ -80,6 +80,9 @@ void Explosion::emit(const std::string &event, BaseObject * emitter) {
 		
 		if (classname == "nuclear-explosion") {
 			//nuke damage.
+			if (emitter != NULL && dynamic_cast<Explosion *>(emitter) != NULL)
+				return;
+			
 			const int id = emitter->getID();
 		
 			if (_damaged_objects.find(id) != _damaged_objects.end())
