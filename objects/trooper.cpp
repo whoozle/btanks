@@ -97,7 +97,7 @@ void Trooper::calculate(const float dt) {
 			_velocity.clear();
 		
 	}
-	_state.fire = _velocity.is0();
+	_state.fire = _velocity.is0() && !_target.is0();
 	if (_state.fire) {
 		_direction = _target;
 		_direction.quantize8();
