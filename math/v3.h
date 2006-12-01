@@ -101,6 +101,7 @@ public:
 		return d.length();
 	}
 	
+	
 	inline const T quick_distance(const v3<T>& other) const {
 		const T dx = x - other.x;
 		const T dy = y - other.y;
@@ -109,6 +110,14 @@ public:
 		return (dx * dx + dy * dy + dz * dz);
 #else
 		return (dx * dx + dy * dy);
+#endif
+	}
+
+	inline const T scalar(const v3<T> &other) const {
+#ifndef V3_DISABLE_Z		
+		return (x * other.x + y * other.y + z * other.z);
+#else
+		return (x * other.x + y * other.y);
 #endif
 	}
 
