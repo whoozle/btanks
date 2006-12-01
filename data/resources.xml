@@ -421,19 +421,19 @@
 	<object class="nuclear-explosion" hp="1000" impassability="-1" z="900" />
 	<object class="dirt" impassability="0.5" z="-20" ttl="50" fadeout="5" />
 	<object class="pond" hp="1000" pierceable="true" impassability="1" z="150" />
-	<object class="gate" hp="1" impassability="1" z="150" />
-	<object class="bus-stop" hp="5" impassability="1" z="150" />
-	<object class="stall" hp="5" impassability="1" z="150" />
-	<object class="tent" hp="1" impassability="1" z="150" />
-	<object class="umbrella" hp="1" impassability="1" z="150" />
-	<object class="van" hp="1" impassability="1" z="150" />
-	<object class="biotoilet" hp="1" impassability="1" z="150" />
-	<object class="lodge" hp="1" impassability="1" z="150" />
+	<object class="gate" hp="20" impassability="1" z="150" />
+	<object class="bus-stop" hp="40" impassability="1" z="150" />
+	<object class="stall" hp="15" impassability="1" z="150" />
+	<object class="tent" hp="10" impassability="1" z="150" />
+	<object class="umbrella" hp="10" impassability="1" z="150" />
+	<object class="van" hp="20" impassability="1" z="150" />
+	<object class="biotoilet" hp="5" impassability="1" z="150" />
+	<object class="lodge" hp="30" impassability="1" z="150" />
 	<object class="spawn-shield" hp="1000" impassability="1" z="150" />
-	<object class="traffic-lights" hp="3" z="150" />
-	<object class="stack" hp="1" z="150" impassability="1" />
+	<object class="traffic-lights" hp="15" z="150" />
+	<object class="stack" hp="5" z="150" impassability="1" />
 	<object class="oil-barrels" hp="10" impassability="1" z="150" />
-	<object class="road-sign" hp="1" impassability="1" z="150" />
+	<object class="road-sign" hp="10" impassability="1" z="150" />
 	<object class="fire" z="-15" impassability="0" pierceable="true" />
 	<object class="static-corpse" impassability="0" pierceable="true" z="-18" />
 	<object class="impassable-static-corpse" impassability="1" pierceable="true" z="-18" hp="-1" />
