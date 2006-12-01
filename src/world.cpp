@@ -449,19 +449,28 @@ void IWorld::tick(Object &o, const float dt) {
 	const std::string outline_animation = o.registered_name + "-outline";
 	const bool has_outline = ResourceManager->hasAnimation(outline_animation);
 	
+	v3<float> new_velocity;
 	for(attempt =0; attempt < 3; ++attempt) {
-		v3<int> pos = new_pos;
-		v3<float> v(o._velocity);
-		if (attempt == 1) {
-			v.x = 0;
-			pos.x = old_pos.x; 
-			v.normalize();
-			o.setDirection(v.getDirection(dirs) - 1);
-		} else if (attempt == 2) {
-			v.y = 0;
-			pos.y = old_pos.y;
-			v.normalize();
-			o.setDirection(v.getDirection(dirs) - 1);
+		v3<int> pos;
+		if (attempt > 0) {
+			int dir = save_dir;
+/*			if (dir < 0) { 
+				dir = save_dir;
+			}
+*/				
+			dir = (dir + ((attempt == 1)?-1:1) + dirs ) % dirs;
+			
+			new_velocity.fromDirection(dir, dirs);
+			//int dir_c = new_velocity.getDirection(dirs) - 1;
+			//assert(dir_c == dir);
+			
+			pos = (o._position + o.speed * new_velocity * dt).convert<int>();
+			o.setDirection(dir);
+			//LOG_DEBUG(("%s: %d:trying %d (original: %d, from velocity: %d, dirs: %d)", 
+			//	o.animation.c_str(), attempt, dir, save_dir, o._velocity.getDirection(dirs) -1, dirs ));
+		} else {
+			pos = new_pos;
+			new_velocity = o._velocity;
 		}
 		
 		map_im = map.getImpassability(&o, pos, NULL, has_outline?(hidden_attempt + attempt):NULL) / 100.0;
@@ -474,12 +483,10 @@ void IWorld::tick(Object &o, const float dt) {
 	}
 	
 	if (attempt == 1) {
-		o._velocity.x = 0;
-		len = o._velocity.normalize();
+		o._velocity = new_velocity;
 		hidden = hidden_attempt[1];
 	} else if (attempt == 2) {
-		o._velocity.y = 0;
-		len = o._velocity.normalize();
+		o._velocity = new_velocity;
 		hidden = hidden_attempt[2];
 	} else {
 		o.setDirection(save_dir);
