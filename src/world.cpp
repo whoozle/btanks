@@ -24,6 +24,7 @@
 #include "player_manager.h"
 #include "config.h"
 #include "utils.h"
+#include "math/unary.h"
 
 #include "mrt/exception.h"
 #include "mrt/logger.h"
@@ -158,24 +159,18 @@ const bool IWorld::collides(Object *obj, const v3<int> &position, Object *o, con
 		
 		CollisionMap::key_type key = (id1 < id2) ? CollisionMap::key_type(id1, id2): CollisionMap::key_type(id2, id1);
 		CollisionMap::iterator i = _collision_map.find(key);
-		if (i != _collision_map.end()) {
-			//LOG_DEBUG(("skipped collision detection for %s<->%s", obj->classname.c_str(), o->classname.c_str()));
-			return i->second;
-		}
-
+		bool collision_emitted = i != _collision_map.end();
 		
 		v3<int> dpos = o->_position.convert<int>() - position;
 		//LOG_DEBUG(("%s: %d %d", o->classname.c_str(), dpos.x, dpos.y));
 		const bool collides = obj->collides(o, dpos.x, dpos.y);
 		//LOG_DEBUG(("collision %s <-> %s: %s", obj->classname.c_str(), o->classname.c_str(), collides?"true":"false"));
-		if (!collides) {
-			_collision_map.insert(CollisionMap::value_type(key, false));
-			return false;
-		}
 
-		if (!probe && (o->impassability < 0 || o->impassability >= 1.0)) { //do not generate collision event if impassability != 1 and impassability != -1
+		if (collides && !collision_emitted && !probe && (o->impassability < 0 || o->impassability >= 1.0)) { //do not generate collision event if impassability != 1 and impassability != -1
 			//LOG_DEBUG(("collision"));
 			//LOG_DEBUG(("collision %s <-> %s", obj->classname.c_str(), o->classname.c_str()));
+			_collision_map.insert(CollisionMap::value_type(key, true));
+			
 			o->emit("collision", obj);
 			obj->emit("collision", o);
 			
@@ -188,14 +183,14 @@ const bool IWorld::collides(Object *obj, const v3<int> &position, Object *o, con
 			}
 			
 			if (o->isDead() || obj->isDead() || obj->impassability == 0 || o->impassability == 0) {
-				_collision_map.insert(CollisionMap::value_type(key, false));
+				//_collision_map.insert(CollisionMap::value_type(key, false));
 				return false; // no effect.
 			}
-			_collision_map.insert(CollisionMap::value_type(key, true));
+			
 		}
 		//LOG_DEBUG(("collision %s <-> %s: %s", obj->classname.c_str(), o->classname.c_str(), collides?"true":"false"));
 		
-		return true;
+		return collides;
 }
 
 
@@ -440,6 +435,9 @@ void IWorld::tick(Object &o, const float dt) {
 	bool stuck = false;
 
 	float map_im = 0, obj_im_now = 0, obj_im = 0;
+	
+	obj_im_now = getImpassability(&o, old_pos, &stuck_in);
+	
 	int attempt;
 	
 	int save_dir = o.getDirection();
@@ -450,6 +448,7 @@ void IWorld::tick(Object &o, const float dt) {
 	const bool has_outline = ResourceManager->hasAnimation(outline_animation);
 	
 	v3<float> new_velocity;
+
 	for(attempt =0; attempt < 3; ++attempt) {
 		v3<int> pos;
 		if (attempt > 0) {
@@ -466,20 +465,29 @@ void IWorld::tick(Object &o, const float dt) {
 			
 			pos = (o._position + o.speed * new_velocity * dt).convert<int>();
 			o.setDirection(dir);
-			//LOG_DEBUG(("%s: %d:trying %d (original: %d, from velocity: %d, dirs: %d)", 
-			//	o.animation.c_str(), attempt, dir, save_dir, o._velocity.getDirection(dirs) -1, dirs ));
+			//LOG_DEBUG(("%s: %d:trying %d (original: %d, dirs: %d)", 
+			//	o.animation.c_str(), attempt, dir, save_dir, dirs ));
 		} else {
 			pos = new_pos;
 			new_velocity = o._velocity;
 		}
 		
 		map_im = map.getImpassability(&o, pos, NULL, has_outline?(hidden_attempt + attempt):NULL) / 100.0;
-		getImpassability2(obj_im_now, obj_im, &o, pos, &stuck_in);
+		obj_im = getImpassability(&o, pos); 
+		///obj_im gets cached here. remove collision map cache ? 
 
-		if ((map_im < 1.0 && obj_im < 1.0) || o.piercing)
+		if ((map_im < 1.0 && obj_im < 1.0) || o.piercing) {
+			//LOG_DEBUG(("success"));
+			stuck = false;
 			break;
+		}
 
 		stuck = map.getImpassability(&o, old_pos, &stuck_map_pos) == 100 || obj_im_now >= 1.0;
+		/*
+		LOG_DEBUG(("(%d:%d->%d:%d): (attempt %d) stuck: %s, map_im: %g, obj_im: %g, obj_im_now: %g", 
+				old_pos.x, old_pos.y, (int)pos.x, (int)pos.y, attempt,
+				stuck?"true":"false", map_im, obj_im, obj_im_now));
+		*/
 	}
 	
 	if (attempt == 1) {
@@ -509,7 +517,9 @@ void IWorld::tick(Object &o, const float dt) {
 	}
 
 	dpos = o.speed * o._velocity * dt;
+	//LOG_DEBUG(("%d %d", new_pos.x, new_pos.y));
 	new_pos = (o._position + dpos).convert<int>();
+	//LOG_DEBUG(("%d %d", new_pos.x, new_pos.y));
 
 	if (o.piercing) {
 		if (obj_im_now > 0 && obj_im_now < 1.0)
@@ -565,7 +575,14 @@ skip_collision:
 		LOG_DEBUG(("%s *** %g,%g", o.dump().c_str(), map_im, obj_im));
 	}
 */	
-	dpos *= (1 - map_im) * (1 - obj_im);
+	assert(map_im >= 0 && obj_im >= 0);
+	
+	if (map_im >= 1.0 || obj_im >= 1.0) {
+		dpos.clear();
+	} else 
+		dpos *= (1 - map_im) * (1 - obj_im);
+	
+	//LOG_DEBUG(("%d %d: obj_im: %g, map_im: %g, dpos: %g %g %s", old_pos.x, old_pos.y, obj_im, map_im, dpos.x, dpos.y, stuck?"stuck":""));
 
 	if (o.classname == "player") {
 		if (o._position.x + dpos.x < 0 || o._position.x + dpos.x + o.size.x >= map_size.x)
@@ -583,7 +600,6 @@ skip_collision:
 	
 	}
 	o._position += dpos;
-	
 	
 	GET_CONFIG_VALUE("engine.velocity-fadeout-multiplier", float, vf_m, 0.9);
 	
