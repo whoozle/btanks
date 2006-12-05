@@ -225,8 +225,8 @@ void IGame::onMenu(const std::string &name, const std::string &value) {
 		LOG_DEBUG(("start split screen game requested"));
 		clear();
 		_main_menu.reset();
-		GET_CONFIG_VALUE("stubs.default-vehicle-1", std::string, vehicle1, "tank");
-		GET_CONFIG_VALUE("stubs.default-vehicle-2", std::string, vehicle2, "tank");
+		GET_CONFIG_VALUE("stubs.default-vehicle-1", std::string, vehicle1, "launcher");
+		GET_CONFIG_VALUE("stubs.default-vehicle-2", std::string, vehicle2, "launcher");
 		GET_CONFIG_VALUE("stubs.default-map", std::string, map, "survival");
 		loadMap(map);
 
@@ -262,7 +262,7 @@ void IGame::onMenu(const std::string &name, const std::string &value) {
 		clear();
 		GET_CONFIG_VALUE("stubs.default-mp-map", std::string, map, "country2");
 		loadMap(map);
-		GET_CONFIG_VALUE("stubs.default-mp-vehicle", std::string, vehicle, "tank");
+		GET_CONFIG_VALUE("stubs.default-mp-vehicle", std::string, vehicle, "launcher");
 
 		GET_CONFIG_VALUE("player.control-method", std::string, cm, "keys");		
 		_my_index = PlayerManager->spawnPlayer(vehicle, "green-" + vehicle, cm);
