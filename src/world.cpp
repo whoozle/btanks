@@ -544,9 +544,16 @@ void IWorld::tick(Object &o, const float dt) {
 				if (allowed_velocity.same_sign(o._velocity) || allowed_velocity.is0()) {
 					map_im = 0.5;
 				}
+				GET_CONFIG_VALUE("engine.stuck-fixup", float, l, 2);
+				allowed_velocity.normalize();
+				o._position += l * allowed_velocity;
+				
 				goto skip_collision;
 			} else if (obj_im == 1.0) {
-				assert(stuck_in != NULL);
+				if (stuck_in == NULL) {
+					LOG_WARN(("stuck_in returned 'NULL'"));
+					goto skip_collision;
+				}
 				allowed_velocity = object_center - (stuck_in->_position + stuck_in->size/2);
 				allowed_velocity.z = 0;
 				//LOG_DEBUG(("allowed: %g %g", allowed_velocity.x, allowed_velocity.y));
@@ -555,6 +562,10 @@ void IWorld::tick(Object &o, const float dt) {
 					obj_im = map_im;
 					goto skip_collision;
 				}
+				
+				GET_CONFIG_VALUE("engine.stuck-fixup", float, l, 2);
+				allowed_velocity.normalize();
+				o._position += l * allowed_velocity;
 			}
 		}
 		//LOG_DEBUG(("bang!"));
