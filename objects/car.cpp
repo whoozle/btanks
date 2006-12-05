@@ -78,6 +78,19 @@ public:
 		_waypoint.deserialize(s);
 	}	
 private: 
+	void close(const int vertex) {
+		_close_list.insert(vertex-1);
+		_close_list.insert(vertex);
+		_close_list.insert(vertex+1);
+
+		_close_list.insert(_pitch + vertex-1);
+		_close_list.insert(_pitch + vertex);
+		_close_list.insert(_pitch + vertex+1);
+
+		_close_list.insert(-_pitch + vertex-1);
+		_close_list.insert(-_pitch + vertex);
+		_close_list.insert(-_pitch + vertex+1);
+	}
 	Alarm _refresh_waypoints;
 	v3<int> _waypoint;
 
@@ -170,12 +183,14 @@ const bool Car::findPathDone(Way &way) {
 			v3<int> world_pos(pos.x * _step, pos.y * _step, 0);
 			int map_im = Map->getImpassability(this, world_pos);
 			if (map_im >= 100) {
-				_close_list.insert(id);
+				//_close_list.insert(id);
+				close(id);
 				continue;			
 			}
 			float im = World->getImpassability(this, world_pos, NULL, true);
 			if (im >= 1.0 || im < 0) {
-				_close_list.insert(id);
+				//_close_list.insert(id);
+				close(id);
 				continue;
 			}
 			
@@ -191,7 +206,7 @@ const bool Car::findPathDone(Way &way) {
 			int dd = math::abs(i - current.dir);
 			if (dd > dirs/2) 
 				dd = dirs - dd;
-			p.h += 41 * dd;
+			p.h += 50 * dd;
 
 			//car-specific penalties.
 			if (map_im > 10 || im > 0.1) 
