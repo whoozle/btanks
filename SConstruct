@@ -178,6 +178,7 @@ if sys.platform == "win32":
 	bt_libs[0:0] = ['SDLmain']
 	bt_libs.append('Ws2_32')
 	bt_libs.append('opengl32')
+	bt_libs.append('user32')
 else: 
 #	pass
 	bt_libs.append('GL')

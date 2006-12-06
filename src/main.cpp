@@ -23,6 +23,9 @@
 
 #ifdef WIN32
 #include "sdlx/SDL_main.h"
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+
 #endif
 
 #ifdef __cplusplus
@@ -42,7 +45,9 @@ int main(int argc, char *argv[]) {
 		LOG_DEBUG(("exiting"));
 #ifdef WIN32
 	} catch(const std::exception &e) {
-		MessageBox(NULL, e.what(), "Error", MB_OK | MB_ICONERROR );
+		LOG_ERROR(("main:%s", e.what()));
+		MessageBox(NULL, e.what(), "Error", MB_OK | MB_ICONERROR | MB_TASKMODAL);
+		return 1;
 	}
 #else 
 	} CATCH("main", {return 1;})
