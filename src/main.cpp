@@ -17,7 +17,6 @@
  */
 
 #include "mrt/logger.h"
-#include "mrt/exception.h"
 #include "game.h"
 #include "version.h"
 #include <stdlib.h>
@@ -33,7 +32,7 @@ extern "C"
 
 
 int main(int argc, char *argv[]) {
-	TRY {
+	try {
 		LOG_NOTICE(("starting up... version: %s", getVersion().c_str()));
 		Game->init(argc, argv);
 		TRY {
@@ -41,6 +40,12 @@ int main(int argc, char *argv[]) {
 		} CATCH("run", {});
 		Game->deinit();
 		LOG_DEBUG(("exiting"));
+#ifdef WIN32
+	} catch(const std::exception &e) {
+		MessageBox(NULL, e.what(), "Error", MB_OK | MB_ICONERROR );
+	}
+#else 
 	} CATCH("main", {return 1;})
+#endif
 	return 0;
 }
