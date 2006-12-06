@@ -23,6 +23,8 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <set>
+#include <queue>
 #include "math/v3.h"
 #include "object_common.h"
 
@@ -101,6 +103,26 @@ public:
 	
 	const Way& getWay() const { return _way; } 
 protected:
+	//pathfinding
+	typedef std::set<int> CloseList;
+
+	struct Point {
+		Point() : id(-1), parent(-1), dir(-1) {}
+		int id, g, h, parent, dir;
+
+		const bool operator<(const Point &other) const {
+			return (g + h) > (other.g + other.h);
+			//return g > other.g;
+		}
+	};
+
+	typedef std::priority_queue<Point> OpenList;
+	typedef std::map<const int, Point> PointMap;
+
+	void findPath(const v3<int> target, const int step);
+	const bool findPathDone(Way &way);
+	const bool calculatingPath() const { return !_open_list.empty(); }
+
 	//grouped object handling
 	void add(const std::string &name, Object *obj);
 	Object *get(const std::string &name);
@@ -115,7 +137,7 @@ protected:
 	Object * spawnGrouped(const std::string &classname, const std::string &animation, const v3<float> &dpos, const GroupType type);
 
 	const bool getNearest(const std::string &classname, v3<float> &position, v3<float> &velocity, Way * way = NULL) const;
-	const bool findPath(v3<float> &position, Way &way) const;
+	const bool old_findPath(v3<float> &position, Way &way) const;
 	const bool getNearest(const std::vector<std::string> &targets, v3<float> &position, v3<float> &velocity) const;
 	
 	void setWay(const Way & way);
@@ -126,6 +148,15 @@ protected:
 	void checkSurface();
 	
 private: 
+//pathfinding stuff
+	void close(const int vertex); 
+
+	OpenList _open_list;
+	PointMap _points;
+	CloseList _close_list;
+	int _pitch, _end_id, _begin_id, _step;
+//end of pathfinding stuff
+
 	struct Event : public mrt::Serializable {
 		std::string name;
 		bool repeat;

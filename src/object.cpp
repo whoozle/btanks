@@ -26,6 +26,7 @@
 #include "animation_model.h"
 #include "resource_manager.h"
 #include "world.h"
+#include "tmx/map.h"
 #include "math/unary.h"
 #include "sound/mixer.h"
 
@@ -753,8 +754,8 @@ const bool Object::getNearest(const std::vector<std::string> &targets, v3<float>
 	return found != 0;	
 }
 
-const bool Object::findPath(v3<float> &position, Way &way) const {
-	return World->findPath(this, position, way);
+const bool Object::old_findPath(v3<float> &position, Way &way) const {
+	return World->old_findPath(this, position, way);
 }
 
 
@@ -804,4 +805,185 @@ void Object::checkSurface() {
 	ResourceManager->checkSurface(_surface_name, _surface, _cmap);
 	assert(_surface != NULL);
 	assert(_cmap != NULL);
+}
+
+void Object::close(const int vertex) {
+		_close_list.insert(vertex-1);
+		_close_list.insert(vertex);
+		_close_list.insert(vertex+1);
+
+		_close_list.insert(_pitch + vertex-1);
+		_close_list.insert(_pitch + vertex);
+		_close_list.insert(_pitch + vertex+1);
+
+		_close_list.insert(-_pitch + vertex-1);
+		_close_list.insert(-_pitch + vertex);
+		_close_list.insert(-_pitch + vertex+1);
+}
+
+static inline const int h(const int src, const int dst, const int pitch) {
+	int y1 = src/pitch, y2 = dst/pitch;
+	int x1 = src%pitch, x2 = dst%pitch;
+	return 100 * (math::abs(x1 - x2) + math::abs<int>(y1 - y2));
+}
+
+
+void Object::findPath(const v3<int> target, const int step) {
+	_step = step;
+	v3<int> begin, end = target;
+	const v3<int> map_size = Map->getSize();
+	_pitch = 1 + (map_size.x - 1) / step;
+	
+	getPosition(begin);
+	begin /= step;
+	end /= step;
+	
+	_end_id = end.x + end.y * _pitch;
+	_begin_id = begin.x + begin.y * _pitch;
+	
+	while(!_open_list.empty())
+		_open_list.pop();
+	
+	_close_list.clear();
+	_points.clear();
+	
+	Point p;
+	p.id = _begin_id;
+	p.g = 0;
+	p.h = h(p.id, _end_id, _pitch);
+	p.dir = getDirection();
+
+	_open_list.push(p);
+	_points[p.id] = p;
+
+}
+
+const bool Object::findPathDone(Way &way) {
+	const v3<int> map_size = Map->getSize();
+	int dir_save = getDirection();
+	GET_CONFIG_VALUE("engine.pathfinding-slice", int, ps, 3);
+	
+	while(!_open_list.empty() && ps--) {
+		const Point current = _open_list.top();
+		_open_list.pop();
+		
+		if (_close_list.find(current.id) != _close_list.end())
+			continue;
+/*
+		LOG_DEBUG(("%d: popping vertex. id=%d, x=%d, y=%d, g=%d, h=%d, f=%d", getID(), 
+			current.id, current.id % _pitch, current.id / _pitch, current.g, current.h, current.g + current.h));
+*/		
+		_close_list.insert(current.id);
+		const int x = (current.id % _pitch) * _step;
+		const int y = (current.id / _pitch) * _step;
+		
+		//searching surrounds 
+		assert(current.dir != -1);
+		const int dirs = getDirectionsNumber();
+		if (dirs < 4 || dirs > 8)
+			throw_ex(("pathfinding cannot handle directions number: %d", dirs));
+		
+		for(int i = 0; i < dirs; ++i) {
+			v3<float> d;
+			d.fromDirection(i, dirs);
+			d.x = math::sign(d.x) * _step;
+			d.y = math::sign(d.y) * _step;
+			
+			d.x += x;
+			d.y += y;
+			
+			if (d.x < 0 || d.x > map_size.x || d.y < 0 || d.y > map_size.y)
+				continue;
+			
+			v3<int> pos((int)(d.x / _step), (int)(d.y / _step), 0);
+			
+			const int id = pos.x + pos.y * _pitch;
+			assert( id != current.id );
+			//LOG_DEBUG(("testing id %d, x=%d, y=%d", id, pos.x, pos.y));
+			
+			if (_close_list.find(id) != _close_list.end())
+				continue;
+
+			setDirection(i);
+			v3<int> world_pos(pos.x * _step, pos.y * _step, 0);
+			int map_im = Map->getImpassability(this, world_pos);
+			if (map_im >= 100) {
+				//_close_list.insert(id);
+				close(id);
+				continue;			
+			}
+			float im = World->getImpassability(this, world_pos, NULL, true);
+			if (im >= 1.0 || im < 0) {
+				//_close_list.insert(id);
+				close(id);
+				continue;
+			}
+			
+			Point p;
+			p.id = id;
+			p.dir = i;
+			p.parent = current.id;
+			p.g = current.g + (d.x != 0 && d.y != 0)?141:100 + (int)(im * 100) + map_im;
+			p.h = h(id, _end_id, _pitch);
+
+			//add penalty for turning
+
+			int dd = math::abs(i - current.dir);
+			if (dd > dirs/2) 
+				dd = dirs - dd;
+			p.h += 50 * dd;
+
+			//car-specific penalties.
+			if (map_im > 10 || im > 0.1) 
+				p.g += map_im * 30 + (int)(im * 100) * 30;
+			
+			
+			PointMap::iterator pi = _points.find(id);
+			if (pi != _points.end()) {
+				if (pi->second.g > p.g) {
+					pi->second = p;
+				}
+			} else _points.insert(PointMap::value_type(id, p));
+			
+			
+			if (p.h < 100) {
+				_end_id = p.id;
+				goto found;
+			}
+
+			_open_list.push(p);
+		}
+	}
+	
+	setDirection(dir_save);
+
+	if (ps < 0) {
+		return false;
+	}
+
+	way.clear();
+	return true;
+
+found:
+	way.clear();
+	while(!_open_list.empty())
+		_open_list.pop();
+	
+	_close_list.clear();
+	
+	setDirection(dir_save);
+
+	for(int id = _end_id; id != _begin_id; ) {
+		Point &p = _points[id];
+		way.push_front(v3<int>((p.id % _pitch) * _step, (p.id / _pitch) * _step, 0));
+		//LOG_DEBUG(("%dx%d -> %dx%d", p.id % _pitch, p.id / _pitch, way.front().x, way.front().y));
+		assert(id != p.parent);
+		id = p.parent;
+		assert(id != -1);
+	}
+	_points.clear();
+
+	if (way.size() > 1)
+		way.pop_front(); 
+	return true;
 }
