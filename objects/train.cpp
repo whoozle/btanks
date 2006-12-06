@@ -24,7 +24,7 @@
 
 class Train : public Object {
 public:
-	Train() : Object("train"), _smoke(1.0, true) {}
+	Train() : Object("train"), _smoke(1.0, true) { setDirectionsNumber(1); }
 	virtual Object * clone() const;
 	virtual void onSpawn();
 	virtual void calculate(const float dt);
