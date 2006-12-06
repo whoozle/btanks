@@ -414,7 +414,7 @@
 	<object class="regular-mine" hp="40" impassability="-1" z="-30" />
 
 	<object class="choo-choo-train" speed="30" mass="800" hp="1000" z="0" />
-	<object class="train-smoke" z="100" />
+	<object class="train-smoke" z="101" />
 
 	<object class="corpse" hp="1000" ttl="10" fadeout_time="1" z="-5" impassability="0" />
 	<object class="explosion" hp="1" z="580" />
