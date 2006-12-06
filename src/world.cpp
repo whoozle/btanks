@@ -459,7 +459,10 @@ void IWorld::tick(Object &o, const float dt) {
 */				
 			dir = (dir + ((attempt == 1)?-1:1) + dirs ) % dirs;
 			
-			new_velocity.fromDirection(dir, dirs);
+			if (attempt > 0)
+				new_velocity.fromDirection(dir, dirs);
+			else 
+				new_velocity = o._velocity;
 			//int dir_c = new_velocity.getDirection(dirs) - 1;
 			//assert(dir_c == dir);
 			
@@ -476,7 +479,7 @@ void IWorld::tick(Object &o, const float dt) {
 		obj_im = getImpassability(&o, pos); 
 		///obj_im gets cached here. remove collision map cache ? 
 
-		if ((map_im < 1.0 && obj_im < 1.0) || o.piercing) {
+		if ((map_im < 1.0 && obj_im < 1.0) || o.piercing || dirs == 1) {
 			//LOG_DEBUG(("success"));
 			stuck = false;
 			break;
