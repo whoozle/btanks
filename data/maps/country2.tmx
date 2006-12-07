@@ -32,6 +32,7 @@
   <property name="object:heal:heal:2" value="1303,608,180"/>
   <property name="object:guided-missiles-item:guided-missiles-item:1" value="@1,8,180"/>
   <property name="object:smoke-missiles-item:smoke-missiles-item:13" value="796,4,180"/>
+  <property name="object:machinegunner-item:machinegunner-item:6" value="@24,15"/>
   <property name="object:machinegunner-item:machinegunner-item:5" value="0,145,180"/>
   <property name="object:dispersion-bullets-item:dispersion-bullets-item:3" value="1473,1018,180"/>
   <property name="object:dispersion-bullets-item:dispersion-bullets-item:2" value="909,581,180"/>
@@ -55,8 +56,8 @@
  </tileset>
  <layer name="zerolayer" width="25" height="20">
   <properties>
-   <property name="impassability" value="40"/>
    <property name="z" value="-1000"/>
+   <property name="impassability" value="40"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGAWjYBSMglEwCkbBUAcARPTJAtAHAAA=
@@ -72,7 +73,7 @@
   </data>
   <tileproperties/>
  </layer>
- <layer name="terrain" width="25" height="20" visible="0">
+ <layer name="terrain" width="25" height="20">
   <properties>
    <property name="impassability" value="30"/>
   </properties>
@@ -158,8 +159,8 @@
  </layer>
  <layer name="wire stand" width="25" height="20">
   <properties>
-   <property name="impassability" value="100"/>
    <property name="z" value="100"/>
+   <property name="impassability" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGDpgK+NAu2AU0BuMxvkooAUYTVdDE+zHEm/EimGLc2zqhjIAALyt8TXQBwAA
@@ -180,8 +181,8 @@
  </layer>
  <layer name="borders" width="25" height="20">
   <properties>
-   <property name="impassability" value="100"/>
    <property name="z" value="200"/>
+   <property name="impassability" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgoB7Yy0hFwwbYjj10sAcGdtPZvlEwCkbBKBgFww8AACvC5C3QBwAA
@@ -191,8 +192,8 @@
  <layer name="objects" width="25" height="20">
   <properties>
    <property name="pierceable" value="true"/>
-   <property name="z" value="220"/>
    <property name="impassability" value="100"/>
+   <property name="z" value="220"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgIB5oMzIw6DCSoIEAMKSiWdhAPND8BKgdiUA6icb2URNYD5BbqR3HIw2MlPBDzlswMFB+H2p5exQMH0DrOoxUAABunLar0AcAAA==
