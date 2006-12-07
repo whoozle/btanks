@@ -990,6 +990,6 @@ found:
 
 #include "game.h"
 
-const std::string Object::getNearestWaypoint() const {
-	return Game->getNearestWaypoint(this);
+const std::string Object::getNearestWaypoint(const std::string &name) const {
+	return Game->getNearestWaypoint(this, name);
 }

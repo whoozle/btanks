@@ -72,7 +72,7 @@ public:
 	void setMyIndex(const int idx) { _my_index = idx; }
 	
 	const std::string getRandomWaypoint(const std::string &classname, const std::string &last_wp = std::string()) const;
-	const std::string getNearestWaypoint(const BaseObject *obj) const;
+	const std::string getNearestWaypoint(const BaseObject *obj, const std::string &classname) const;
 	void getWaypoint(v3<int> &wp, const std::string &classname, const std::string &name);
 	
 private:

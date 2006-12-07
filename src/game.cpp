@@ -642,19 +642,21 @@ const std::string IGame::getRandomWaypoint(const std::string &classname, const s
 	return "*bug*";
 }
 
-const std::string IGame::getNearestWaypoint(const BaseObject *obj) const {
+const std::string IGame::getNearestWaypoint(const BaseObject *obj, const std::string &classname) const {
 	v3<int> pos;
 	obj->getPosition(pos);
 	int distance = -1;
 	std::string wp;
 	
-	for(WaypointClassMap::const_iterator i = _waypoints.begin(); i != _waypoints.end(); ++i) {
-		for(WaypointMap::const_iterator j = i->second.begin(); j != i->second.end(); ++j) {
-			int d = j->second.quick_distance(pos);
-			if (distance == -1 || d < distance) {
-				distance = d;
-				wp = j->first;
-			}
+	WaypointClassMap::const_iterator i = _waypoints.find(classname);
+	if (i == _waypoints.end())
+		throw_ex(("no waypoints for '%s' found", classname.c_str()));
+
+	for(WaypointMap::const_iterator j = i->second.begin(); j != i->second.end(); ++j) {
+		int d = j->second.quick_distance(pos);
+		if (distance == -1 || d < distance) {
+			distance = d;
+			wp = j->first;
 		}
 	}
 	return wp;

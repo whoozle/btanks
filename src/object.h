@@ -103,7 +103,7 @@ public:
 	
 	const Way& getWay() const { return _way; } 
 	
-	const std::string getNearestWaypoint() const;
+	const std::string getNearestWaypoint(const std::string &classname) const;
 protected:
 	//pathfinding
 	typedef std::set<int> CloseList;
