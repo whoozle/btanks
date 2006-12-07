@@ -62,8 +62,10 @@
 		<pose id="main">0,1,2,3,4</pose>
 	</animation-model>
 
-	<animation-model id="dead-train-animation" speed="7">
+	<animation-model id="dead-choo-choo-train-animation" speed="7">
 		<pose id="fade-in">0,1,2,3,4</pose>
+		<pose id="burn">5</pose>
+		<pose id="fade-out">5</pose>
 		<pose id="dead">5</pose>
 	</animation-model>
 
@@ -275,7 +277,7 @@
 	<animation id="dead-white-car" tile="car04_crash.png" model="dead-car-animation"/>
 	
 	<animation id="choo-choo-train" tile="train.png" model="choo-choo-train-animation" size="128" />
-	<animation id="dead-train" tile="train_crash.png" model="dead-train-animation" size="128" />
+	<animation id="dead-choo-choo-train" tile="train_crash.png" model="dead-choo-choo-train-animation" size="128" />
 	<animation id="train-smoke" tile="train_smoke.png" model="train-smoke-animation" size="256" />
 
 	<animation id="guided-missile" tile="missile01.png" model="single-tile" />
@@ -419,7 +421,7 @@
 
 	<object class="regular-mine" hp="40" impassability="-1" z="-30" />
 
-	<object class="choo-choo-train" speed="30" mass="800" hp="1000" z="0" />
+	<object class="choo-choo-train" speed="30" mass="800" hp="100" z="0" />
 	<object class="train-smoke" z="101" />
 
 	<object class="corpse" hp="1000" ttl="10" fadeout_time="1" z="-5" impassability="0" />

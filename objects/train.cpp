@@ -29,6 +29,7 @@ public:
 	virtual void onSpawn();
 	virtual void calculate(const float dt);
 	virtual void tick(const float dt);
+	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
 
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
@@ -51,6 +52,13 @@ void Train::onSpawn() {
 	play("move", true);
 	v3<int> size = Map->getSize();
 	dst_y = size.y - 1; //fixme. :)
+}
+
+void Train::emit(const std::string &event, BaseObject * emitter) {
+	if (event == "death") {
+		spawn("corpse", "dead-choo-choo-train", v3<float>::empty, v3<float>::empty);
+	}
+	Object::emit(event, emitter);
 }
 
 void Train::tick(const float dt) {
