@@ -23,6 +23,8 @@
 #include "game.h"
 #include "item.h"
 
+#include "math/unary.h"
+
 class Car : public Object {
 public: 
 	Car();
@@ -93,11 +95,12 @@ void Car::calculate(const float dt) {
 		LOG_DEBUG(("%s[%d] moving to nearest waypoint at %g %g", animation.c_str(), getID(), _waypoint.x, _waypoint.y));
 	}
 	_velocity = _waypoint - position;
+	GET_CONFIG_VALUE("engine.allowed-pathfinding-fault", int, f, 5);
 
-	if (_waypoint_rel.x != 0 && _velocity.x * _waypoint_rel.x <= 0)
+	if ((_waypoint_rel.x != 0 && _velocity.x * _waypoint_rel.x <= 0) || (math::abs(_velocity.x) < f))
 		_velocity.x = 0;
 
-	if (_waypoint_rel.y != 0 && _velocity.y * _waypoint_rel.y <= 0)
+	if ((_waypoint_rel.y != 0 && _velocity.y * _waypoint_rel.y <= 0) || (math::abs(_velocity.y) < f))
 		_velocity.y = 0;
 
 	if (_velocity.is0()) {

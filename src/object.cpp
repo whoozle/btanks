@@ -540,9 +540,10 @@ void Object::calculateWayVelocity() {
 		//	getID(), classname.c_str(), animation.c_str(), _next_target.x, _next_target.y, _next_target_rel.x, _next_target_rel.y));
 		
 		_velocity = _next_target - position;
-		if ((_next_target_rel.x != 0 && _velocity.x * _next_target_rel.x <= 0) || (math::abs(_velocity.x) < 1))
+		GET_CONFIG_VALUE("engine.allowed-pathfinding-fault", int, f, 5);
+		if ((_next_target_rel.x != 0 && _velocity.x * _next_target_rel.x <= 0) || (math::abs(_velocity.x) < f))
 			_velocity.x = 0;
-		if ((_next_target_rel.y != 0 && _velocity.y * _next_target_rel.y <= 0) || (math::abs(_velocity.y) < 1))
+		if ((_next_target_rel.y != 0 && _velocity.y * _next_target_rel.y <= 0) || (math::abs(_velocity.y) < f))
 			_velocity.y = 0;
 		
 		if (_velocity.is0()) {
