@@ -37,15 +37,18 @@ public:
 		Object::serialize(s);
 		_refresh_waypoints.serialize(s);
 		_waypoint.serialize(s);
+		s.add(_waypoint_name);
 	}
 	virtual void deserialize(const mrt::Serializator &s) {
 		Object::deserialize(s);
 		_refresh_waypoints.deserialize(s);
 		_waypoint.deserialize(s);
+		s.get(_waypoint_name);
 	}	
 private: 
 	Alarm _refresh_waypoints;
 	v3<int> _waypoint;
+	std::string _waypoint_name;
 };
 
 
@@ -80,8 +83,9 @@ void Car::calculate(const float dt) {
 	if (!isDriven() && !calculatingPath()) {
 		LOG_DEBUG(("looking for waypoints..."));
 		v3<int> waypoint;
-		Game->getRandomWaypoint(_waypoint, "cars");
-		LOG_DEBUG(("next waypoint : %d %d", _waypoint.x, _waypoint.y));
+		_waypoint_name = Game->getRandomWaypoint("cars", _waypoint_name);
+		Game->getWaypoint(_waypoint, "cars", _waypoint_name);
+		LOG_DEBUG(("next waypoint : '%s' at %d %d", _waypoint_name.c_str(), _waypoint.x, _waypoint.y));
 		findPath(_waypoint, 16);
 	}
 

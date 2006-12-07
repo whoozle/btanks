@@ -340,29 +340,11 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 				_items.push_back(item);
 			} else if (res.size() > 2 && res[0] == "waypoint") {
 				LOG_DEBUG(("waypoint class %s, name %s : %d,%d", res[1].c_str(), res[2].c_str(), pos.x, pos.y));
-				_waypoints.insert(WaypointMap::value_type(res[1], pos));
+				_waypoints[res[1]][res[2]] =  pos;
 			}
 		}
 	}
 	LOG_DEBUG(("%u items on map.", (unsigned) _items.size()));
-	
-	LOG_DEBUG(("checking waypoints list..."));
-	Matrix<int> m;
-	World->getImpassabilityMatrix(m, NULL, NULL);
-	for(WaypointMap::iterator i = _waypoints.begin(); i != _waypoints.end(); ) {
-		v3<int> pos = i->second;
-		pos.x /= IMap::pathfinding_step;
-		pos.y /= IMap::pathfinding_step;
-		int im = m.get(pos.y, pos.x);
-
-		if (im == -1) {
-			LOG_WARN(("removing invalid waypoint '%s' at %d %d", i->first.c_str(), i->second.x, i->second.y));
-			_waypoints.erase(i++);
-			continue;
-		}
-		
-		++i;
-	}
 	
 	_hud->initMap();
 	
@@ -638,19 +620,55 @@ void IGame::notifyLoadingBar(const int progress) {
 		_window.flip();
 }
 
-void IGame::getRandomWaypoint(v3<int> &position, const std::string &classname) const {
-	WaypointMap::const_iterator b = _waypoints.lower_bound(classname);
-	if (b == _waypoints.end()) 
-		throw_ex(("no waypoint class '%s' defined", classname.c_str()));
+const std::string IGame::getRandomWaypoint(const std::string &classname, const std::string &last_wp) const {
+	WaypointClassMap::const_iterator wp_class = _waypoints.find(classname);
+	if (wp_class == _waypoints.end()) 
+		throw_ex(("no waypoints for '%s' defined", classname.c_str()));
 	
-	WaypointMap::const_iterator e = _waypoints.upper_bound(classname);
+	WaypointMap::const_iterator b = wp_class->second.begin();
+	WaypointMap::const_iterator e = wp_class->second.end();
+	if (b == e) 
+		throw_ex(("no waypoints for '%s' defined", classname.c_str()));
+
 	int wp = mrt::random(_waypoints.size() * 2);
 	while(true) {
 		for(WaypointMap::const_iterator i = b; i != e; ++i) {
 			if (wp-- <= 0) {
-				position = i->second;
-				return;
+				return i->first;
 			}
 		}
 	}
+	throw_ex(("getRandomWaypoint(unexpected termination)"));
+	return "*bug*";
 }
+
+const std::string IGame::getNearestWaypoint(const BaseObject *obj) const {
+	v3<int> pos;
+	obj->getPosition(pos);
+	int distance = -1;
+	std::string wp;
+	
+	for(WaypointClassMap::const_iterator i = _waypoints.begin(); i != _waypoints.end(); ++i) {
+		for(WaypointMap::const_iterator j = i->second.begin(); j != i->second.end(); ++j) {
+			int d = j->second.quick_distance(pos);
+			if (distance == -1 || d < distance) {
+				distance = d;
+				wp = j->first;
+			}
+		}
+	}
+	return wp;
+}
+
+
+void IGame::getWaypoint(v3<int> &wp, const std::string &classname, const std::string &name) {
+	WaypointClassMap::const_iterator wp_class = _waypoints.find(classname);
+	if (wp_class == _waypoints.end()) 
+		throw_ex(("no waypoints for '%s' defined", classname.c_str()));
+	
+	WaypointMap::const_iterator i = wp_class->second.find(name);
+	if (i == wp_class->second.end())
+		throw_ex(("no waypoints '%s' defined", name.c_str()));
+	wp = i->second;
+}
+

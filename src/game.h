@@ -31,6 +31,7 @@
 #include "alarm.h"
 #include "window.h"
 
+class BaseObject;
 class Object;
 class Message;
 class Server;
@@ -70,7 +71,9 @@ public:
 	void loadMap(const std::string &name, const bool spawn = true);	
 	void setMyIndex(const int idx) { _my_index = idx; }
 	
-	void getRandomWaypoint(v3<int> &position, const std::string &classname) const;
+	const std::string getRandomWaypoint(const std::string &classname, const std::string &last_wp = std::string()) const;
+	const std::string getNearestWaypoint(const BaseObject *obj) const;
+	void getWaypoint(v3<int> &wp, const std::string &classname, const std::string &name);
 	
 private:
 	void onKey(const Uint8 type, const SDL_keysym sym);
@@ -91,8 +94,10 @@ private:
 	Alarm _check_items;
 	void checkItems();
 	
-	typedef std::multimap<const std::string, v3<int> > WaypointMap;
-	WaypointMap _waypoints;
+	typedef std::map<const std::string, v3<int> > WaypointMap;
+	typedef std::map<const std::string, WaypointMap> WaypointClassMap;
+	
+	WaypointClassMap _waypoints;
 	
 	bool _show_fps;
 	Object *_fps;

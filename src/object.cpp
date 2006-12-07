@@ -987,3 +987,9 @@ found:
 		way.pop_front(); 
 	return true;
 }
+
+#include "game.h"
+
+const std::string Object::getNearestWaypoint() const {
+	return Game->getNearestWaypoint(this);
+}

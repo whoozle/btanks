@@ -102,6 +102,8 @@ public:
 	void quantizeVelocity();
 	
 	const Way& getWay() const { return _way; } 
+	
+	const std::string getNearestWaypoint() const;
 protected:
 	//pathfinding
 	typedef std::set<int> CloseList;
