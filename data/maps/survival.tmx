@@ -24,7 +24,7 @@
   <property name="object:megaheal:megaheal:1" value="920,32,180"/>
   <property name="object:road-sign:road-sign02:1" value="1193,1360,10"/>
   <property name="object:heal:heal:9" value="@15,21,180"/>
-  <property name="object:cars:yellow-car:1" value="@24,5"/>
+  <property name="object:car:yellow-car:1" value="@24,5"/>
   <property name="waypoint:cars:6" value="@0,7"/>
   <property name="waypoint:cars:5" value="@20,6"/>
   <property name="waypoint:cars:4" value="@20,7"/>
@@ -40,7 +40,7 @@
   <property name="object:guided-missiles-item:guided-missiles-item:1" value="1056,1034"/>
   <property name="object:guided-missiles-item:guided-missiles-item:0" value="1024,128,180"/>
   <property name="object:road-sign:road-sign09:1" value="394,1320,1"/>
-  <property name="object:cars:white-car:1" value="@0,6"/>
+  <property name="object:car:white-car:1" value="@0,6"/>
   <property name="object:ricochet-bullets-item:ricochet-bullets-item:3" value="1201,1257,180"/>
   <property name="object:ricochet-bullets-item:ricochet-bullets-item:2" value="10,300"/>
   <property name="object:road-sign:road-sign08:1" value="1333,430,1"/>
