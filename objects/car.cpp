@@ -90,7 +90,7 @@ void Car::calculate(const float dt) {
 		assert(!_waypoint_name.empty());
 		Game->getWaypoint(_waypoint, "car", _waypoint_name);
 		_waypoint_rel = _waypoint - position;
-		LOG_DEBUG(("moving to nearest waypoint at %g %g", _waypoint.x, _waypoint.y));
+		LOG_DEBUG(("%s[%d] moving to nearest waypoint at %g %g", animation.c_str(), getID(), _waypoint.x, _waypoint.y));
 	}
 	_velocity = _waypoint - position;
 
@@ -101,10 +101,11 @@ void Car::calculate(const float dt) {
 		_velocity.y = 0;
 
 	if (_velocity.is0()) {
+		LOG_DEBUG(("%s[%d] reached waypoint '%s'", animation.c_str(), getID(), _waypoint_name.c_str()));
 		_waypoint_name = Game->getRandomWaypoint("car", _waypoint_name);
 		Game->getWaypoint(_waypoint, "car", _waypoint_name);
 		_waypoint_rel = _waypoint - getPosition();
-		LOG_DEBUG(("moving to next waypoint '%s' at %g %g", _waypoint_name.c_str(), _waypoint.x, _waypoint.y));
+		LOG_DEBUG(("%s[%d] moving to next waypoint '%s' at %g %g", animation.c_str(), getID(), _waypoint_name.c_str(), _waypoint.x, _waypoint.y));
 	}
 	
 	GET_CONFIG_VALUE("objects.car.rotation-time", float, rt, 0.05);
