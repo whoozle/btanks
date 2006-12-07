@@ -62,6 +62,11 @@
 		<pose id="main">0,1,2,3,4</pose>
 	</animation-model>
 
+	<animation-model id="dead-train-animation" speed="7">
+		<pose id="fade-in">0,1,2,3,4</pose>
+		<pose id="dead">5</pose>
+	</animation-model>
+
 	<animation-model id="man-animation" speed="7">
 		<pose id="hold">0</pose>
 		<pose id="walk">1,2,3,2,4,5,6,5</pose>
@@ -270,6 +275,7 @@
 	<animation id="dead-white-car" tile="car04_crash.png" model="dead-car-animation"/>
 	
 	<animation id="choo-choo-train" tile="train.png" model="choo-choo-train-animation" size="128" />
+	<animation id="dead-train" tile="train_crash.png" model="dead-train-animation" size="128" />
 	<animation id="train-smoke" tile="train_smoke.png" model="train-smoke-animation" size="256" />
 
 	<animation id="guided-missile" tile="missile01.png" model="single-tile" />
