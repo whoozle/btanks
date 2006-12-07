@@ -25,14 +25,14 @@
   <property name="object:road-sign:road-sign02:1" value="1193,1360,10"/>
   <property name="object:heal:heal:9" value="@15,21,180"/>
   <property name="object:car:yellow-car:1" value="@24,5"/>
-  <property name="waypoint:cars:6" value="@0,7"/>
-  <property name="waypoint:cars:5" value="@20,6"/>
-  <property name="waypoint:cars:4" value="@20,7"/>
+  <property name="waypoint:cars:6" value="@0,6"/>
+  <property name="waypoint:cars:5" value="@20,5"/>
+  <property name="waypoint:cars:4" value="@20,6"/>
   <property name="object:stun-missiles-item:stun-missiles-item:3" value="379,1124"/>
-  <property name="waypoint:cars:3" value="@4,7"/>
+  <property name="waypoint:cars:3" value="@4,6"/>
   <property name="object:bus-stop:bus-stop-left:1" value="192,930,410"/>
-  <property name="waypoint:cars:2" value="@4,6"/>
-  <property name="waypoint:cars:1" value="@24,6"/>
+  <property name="waypoint:cars:2" value="@4,5"/>
+  <property name="waypoint:cars:1" value="@24,5"/>
   <property name="object:road-sign:road-sign01:2" value="230,1244,1"/>
   <property name="object:heal:heal:1" value="24,1200,180"/>
   <property name="object:stall:stall-right:1" value="194,890,405"/>
