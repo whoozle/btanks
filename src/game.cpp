@@ -287,28 +287,33 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 	IMap &map = *IMap::get_instance();
 	map.load(name);
 	_waypoints.clear();
+	_waypoint_edges.clear();
 	
 	//const v3<int> size = map.getSize();
 	for (IMap::PropertyMap::iterator i = map.properties.begin(); i != map.properties.end(); ++i) {
 		if (i->first.substr(0, 6) != "spawn:" && i->first.substr(0, 7) != "object:" && 
-			i->first.substr(0, 9) != "waypoint:") {
+			i->first.substr(0, 9) != "waypoint:" && i->first.substr(0, 5) != "edge:") {
 			continue;
 		}
-		if (!spawn_objects && i->first.substr(0, 9) != "waypoint:")
+		if (!spawn_objects && i->first.substr(0, 9) != "waypoint:" && i->first.substr(0, 5) != "edge:")
 			continue;
 	
 		v3<int> pos;
-		std::string pos_str = i->second;
-		const bool tiled_pos = pos_str[0] == '@';
-		if (tiled_pos) { 
-			pos_str = pos_str.substr(1);
-		}
-		pos.fromString(pos_str);
-		if (tiled_pos) {
-			v3<int> tile_size = Map->getTileSize();
-			pos.x *= tile_size.x;
-			pos.y *= tile_size.y;
-			//keep z untouched.
+		if (i->first.substr(0, 5) != "edge:") {
+			std::string pos_str = i->second;
+			const bool tiled_pos = pos_str[0] == '@';
+			if (tiled_pos) { 
+				pos_str = pos_str.substr(1);
+			}
+			TRY {
+				pos.fromString(pos_str);
+			} CATCH(mrt::formatString("parsing '%s'=>'%s'", i->first.c_str(), i->second.c_str()).c_str() , throw;)
+			if (tiled_pos) {
+				v3<int> tile_size = Map->getTileSize();
+				pos.x *= tile_size.x;
+				pos.y *= tile_size.y;
+				//keep z untouched.
+			}
 		}
 	
 		/*
@@ -341,10 +346,12 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 			} else if (res.size() > 2 && res[0] == "waypoint") {
 				LOG_DEBUG(("waypoint class %s, name %s : %d,%d", res[1].c_str(), res[2].c_str(), pos.x, pos.y));
 				_waypoints[res[1]][res[2]] =  pos;
+			} else if (res.size() > 2 && res[0] == "edge") {
+				_waypoint_edges.insert(WaypointEdgeMap::value_type(res[1], res[2]));
 			}
 		}
 	}
-	LOG_DEBUG(("%u items on map.", (unsigned) _items.size()));
+	LOG_DEBUG(("%u items on map. %u waypoints, %u edges", (unsigned) _items.size(), (unsigned)_waypoints.size(), (unsigned)_waypoint_edges.size()));
 	
 	_hud->initMap();
 	
@@ -586,6 +593,7 @@ void IGame::clear() {
 	LOG_DEBUG(("cleaning up world"));
 	_items.clear();
 	_waypoints.clear();
+	_waypoint_edges.clear();
 	World->clear();
 	_paused = false;
 	Map->clear();
@@ -621,20 +629,23 @@ void IGame::notifyLoadingBar(const int progress) {
 }
 
 const std::string IGame::getRandomWaypoint(const std::string &classname, const std::string &last_wp) const {
+	if (last_wp.empty()) 
+		throw_ex(("getRandomWaypoint('%s', '%s') called with empty name", classname.c_str(), last_wp.c_str()));
+	
 	WaypointClassMap::const_iterator wp_class = _waypoints.find(classname);
 	if (wp_class == _waypoints.end()) 
 		throw_ex(("no waypoints for '%s' defined", classname.c_str()));
-	
-	WaypointMap::const_iterator b = wp_class->second.begin();
-	WaypointMap::const_iterator e = wp_class->second.end();
+		
+	WaypointEdgeMap::const_iterator b = _waypoint_edges.lower_bound(last_wp);
+	WaypointEdgeMap::const_iterator e = _waypoint_edges.upper_bound(last_wp);
 	if (b == e) 
-		throw_ex(("no waypoints for '%s' defined", classname.c_str()));
+		throw_ex(("no edges defined for waypoint '%s'", last_wp.c_str()));
 
-	int wp = mrt::random(_waypoints.size() * 2);
+	int wp = mrt::random(_waypoint_edges.size() * 2);
 	while(true) {
-		for(WaypointMap::const_iterator i = b; i != e; ++i) {
+		for(WaypointEdgeMap::const_iterator i = b; i != e; ++i) {
 			if (wp-- <= 0) {
-				return i->first;
+				return i->second;
 			}
 		}
 	}
@@ -664,6 +675,9 @@ const std::string IGame::getNearestWaypoint(const BaseObject *obj, const std::st
 
 
 void IGame::getWaypoint(v3<float> &wp, const std::string &classname, const std::string &name) {
+	if (name.empty() || classname.empty()) 
+		throw_ex(("getWaypoint('%s', '%s') called with empty classname and/or name", classname.c_str(), name.c_str()));
+	
 	WaypointClassMap::const_iterator wp_class = _waypoints.find(classname);
 	if (wp_class == _waypoints.end()) 
 		throw_ex(("no waypoints for '%s' defined", classname.c_str()));

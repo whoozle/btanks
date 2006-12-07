@@ -86,9 +86,9 @@ void Car::calculate(const float dt) {
 	v3<float> position = getPosition();
 
 	if (_waypoint_name.empty()) {
-		_waypoint_name = getNearestWaypoint("cars");
+		_waypoint_name = getNearestWaypoint("car");
 		assert(!_waypoint_name.empty());
-		Game->getWaypoint(_waypoint, "cars", _waypoint_name);
+		Game->getWaypoint(_waypoint, "car", _waypoint_name);
 		_waypoint_rel = _waypoint - position;
 		LOG_DEBUG(("moving to nearest waypoint at %g %g", _waypoint.x, _waypoint.y));
 	}
@@ -101,8 +101,8 @@ void Car::calculate(const float dt) {
 		_velocity.y = 0;
 
 	if (_velocity.is0()) {
-		_waypoint_name = Game->getRandomWaypoint("cars", _waypoint_name);
-		Game->getWaypoint(_waypoint, "cars", _waypoint_name);
+		_waypoint_name = Game->getRandomWaypoint("car", _waypoint_name);
+		Game->getWaypoint(_waypoint, "car", _waypoint_name);
 		_waypoint_rel = _waypoint - getPosition();
 		LOG_DEBUG(("moving to next waypoint '%s' at %g %g", _waypoint_name.c_str(), _waypoint.x, _waypoint.y));
 	}

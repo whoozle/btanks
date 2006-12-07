@@ -96,8 +96,10 @@ private:
 	
 	typedef std::map<const std::string, v3<int> > WaypointMap;
 	typedef std::map<const std::string, WaypointMap> WaypointClassMap;
+	typedef std::multimap<const std::string, std::string> WaypointEdgeMap;
 	
 	WaypointClassMap _waypoints;
+	WaypointEdgeMap  _waypoint_edges;
 	
 	bool _show_fps;
 	Object *_fps;
