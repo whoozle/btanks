@@ -54,6 +54,12 @@
   <property name="object:bus-stop:bus-stop-top:1" value="870,248,2"/>
   <property name="object:traffic-lights:traffic-lights:11" value="368,422"/>
   <property name="object:umbrella:umbrella:2" value="@21,20,410"/>
+  <property name="edge:1:2" />
+  <property name="edge:2:3" />
+  <property name="edge:3:4" />
+  <property name="edge:4:5" />
+  <property name="edge:5:2" />
+  <property name="edge:6:4" />
  </properties>
  <tileset name="city objects" firstgid="1" tilewidth="64" tileheight="64">
   <image source="../tiles/city_objects_tileset.png"/>
