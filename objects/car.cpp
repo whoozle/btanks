@@ -37,17 +37,20 @@ public:
 		Object::serialize(s);
 		_refresh_waypoints.serialize(s);
 		_waypoint.serialize(s);
+		_waypoint_rel.serialize(s);
 		s.add(_waypoint_name);
 	}
 	virtual void deserialize(const mrt::Serializator &s) {
 		Object::deserialize(s);
 		_refresh_waypoints.deserialize(s);
 		_waypoint.deserialize(s);
+		_waypoint_rel.deserialize(s);
 		s.get(_waypoint_name);
 	}	
 private: 
 	Alarm _refresh_waypoints;
-	v3<int> _waypoint;
+	v3<float> _waypoint;
+	v3<float> _waypoint_rel;
 	std::string _waypoint_name;
 };
 
@@ -80,31 +83,30 @@ void Car::onSpawn() {
 Car::Car() : Object("car"), _refresh_waypoints(false) {}
 
 void Car::calculate(const float dt) {	
-	if (!isDriven() && !calculatingPath()) {
-		LOG_DEBUG(("looking for waypoints..."));
-		v3<int> waypoint;
+	v3<float> position = getPosition();
+
+	if (_waypoint_name.empty()) {
+		_waypoint_name = getNearestWaypoint("cars");
+		assert(!_waypoint_name.empty());
+		Game->getWaypoint(_waypoint, "cars", _waypoint_name);
+		_waypoint_rel = _waypoint - position;
+		LOG_DEBUG(("moving to nearest waypoint at %g %g", _waypoint.x, _waypoint.y));
+	}
+	_velocity = _waypoint - position;
+
+	if (_waypoint_rel.x != 0 && _velocity.x * _waypoint_rel.x <= 0)
+		_velocity.x = 0;
+
+	if (_waypoint_rel.y != 0 && _velocity.y * _waypoint_rel.y <= 0)
+		_velocity.y = 0;
+
+	if (_velocity.is0()) {
 		_waypoint_name = Game->getRandomWaypoint("cars", _waypoint_name);
 		Game->getWaypoint(_waypoint, "cars", _waypoint_name);
-		LOG_DEBUG(("next waypoint : '%s' at %d %d", _waypoint_name.c_str(), _waypoint.x, _waypoint.y));
-		findPath(_waypoint, 16);
-	}
-
-	if (calculatingPath()) {
-		Way way;
-		if (findPathDone(way)) {
-			if (!way.empty()) 
-				setWay(way);
-			else 
-				LOG_WARN(("findPath failed. retry later."));
-		}
-	}
-
-	if (isDriven() && _refresh_waypoints.tick(dt)) {
-		_refresh_waypoints.reset();
-		findPath(_waypoint, 16);
+		_waypoint_rel = _waypoint - getPosition();
+		LOG_DEBUG(("moving to next waypoint '%s' at %g %g", _waypoint_name.c_str(), _waypoint.x, _waypoint.y));
 	}
 	
-	calculateWayVelocity();
 	GET_CONFIG_VALUE("objects.car.rotation-time", float, rt, 0.05);
 	limitRotation(dt, rt, true, false);
 	updateStateFromVelocity();

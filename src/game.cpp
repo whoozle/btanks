@@ -663,7 +663,7 @@ const std::string IGame::getNearestWaypoint(const BaseObject *obj, const std::st
 }
 
 
-void IGame::getWaypoint(v3<int> &wp, const std::string &classname, const std::string &name) {
+void IGame::getWaypoint(v3<float> &wp, const std::string &classname, const std::string &name) {
 	WaypointClassMap::const_iterator wp_class = _waypoints.find(classname);
 	if (wp_class == _waypoints.end()) 
 		throw_ex(("no waypoints for '%s' defined", classname.c_str()));
@@ -671,6 +671,6 @@ void IGame::getWaypoint(v3<int> &wp, const std::string &classname, const std::st
 	WaypointMap::const_iterator i = wp_class->second.find(name);
 	if (i == wp_class->second.end())
 		throw_ex(("no waypoints '%s' defined", name.c_str()));
-	wp = i->second;
+	wp = i->second.convert<float>();
 }
 
