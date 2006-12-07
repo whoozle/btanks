@@ -56,7 +56,8 @@ void Train::onSpawn() {
 
 void Train::emit(const std::string &event, BaseObject * emitter) {
 	if (event == "death") {
-		spawn("corpse", "dead-choo-choo-train", v3<float>::empty, v3<float>::empty);
+		Object * o = spawn("corpse", "dead-choo-choo-train", v3<float>::empty, v3<float>::empty);
+		o->impassability = 1;
 	}
 	Object::emit(event, emitter);
 }
