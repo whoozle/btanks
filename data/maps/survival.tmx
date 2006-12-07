@@ -7,15 +7,15 @@
   <property name="object:traffic-lights:traffic-lights:8" value="367,260"/>
   <property name="object:lodge:lodge:1" value="0,28,150"/>
   <property name="object:road-sign:road-sign04:2" value="368,1320,1"/>
+  <property name="object:road-sign:road-sign04:1" value="1330,884,1"/>
   <property name="object:stall:stall-right:15" value="626,190,415"/>
   <property name="object:van:van:1" value="1450,602,410"/>
-  <property name="object:road-sign:road-sign04:1" value="1330,884,1"/>
-  <property name="spawn:4" value="@22,18"/>
-  <property name="object:mines-item:mines-item:2" value="1351,1351"/>
   <property name="object:stall:stall-left:16" value="517,190,415"/>
+  <property name="object:mines-item:mines-item:2" value="1351,1351"/>
+  <property name="spawn:4" value="@22,18"/>
+  <property name="object:mines-item:mines-item:1" value="424,84,180"/>
   <property name="object:heal:heal:10" value="1439,840"/>
   <property name="spawn:3" value="@1,17"/>
-  <property name="object:mines-item:mines-item:1" value="424,84,180"/>
   <property name="spawn:2" value="@16,4"/>
   <property name="object:dumb-missiles-item:dumb-missiles-item:4" value="977,561"/>
   <property name="spawn:1" value="@1,2"/>
@@ -24,15 +24,23 @@
   <property name="object:megaheal:megaheal:1" value="920,32,180"/>
   <property name="object:road-sign:road-sign02:1" value="1193,1360,10"/>
   <property name="object:heal:heal:9" value="@15,21,180"/>
+  <property name="object:car:yellow-car:1" value="@24,5"/>
+  <property name="waypoint:SPECIAL_waypoint:6" value="@0,7"/>
+  <property name="waypoint:SPECIAL_waypoint:5" value="@20,6"/>
+  <property name="waypoint:SPECIAL_waypoint:4" value="@20,7"/>
   <property name="object:stun-missiles-item:stun-missiles-item:3" value="379,1124"/>
+  <property name="waypoint:SPECIAL_waypoint:3" value="@4,7"/>
   <property name="object:bus-stop:bus-stop-left:1" value="192,930,410"/>
-  <property name="object:stall:stall-right:1" value="194,890,405"/>
-  <property name="object:heal:heal:1" value="24,1200,180"/>
+  <property name="waypoint:SPECIAL_waypoint:2" value="@4,6"/>
+  <property name="waypoint:SPECIAL_waypoint:1" value="@24,6"/>
   <property name="object:road-sign:road-sign01:2" value="230,1244,1"/>
+  <property name="object:heal:heal:1" value="24,1200,180"/>
+  <property name="object:stall:stall-right:1" value="194,890,405"/>
   <property name="object:road-sign:road-sign01:1" value="1190,796,1"/>
   <property name="object:guided-missiles-item:guided-missiles-item:1" value="1056,1034"/>
   <property name="object:guided-missiles-item:guided-missiles-item:0" value="1024,128,180"/>
   <property name="object:road-sign:road-sign09:1" value="394,1320,1"/>
+  <property name="object:car:white-car:1" value="@0,6"/>
   <property name="object:ricochet-bullets-item:ricochet-bullets-item:3" value="1201,1257,180"/>
   <property name="object:ricochet-bullets-item:ricochet-bullets-item:2" value="10,300"/>
   <property name="object:road-sign:road-sign08:1" value="1333,430,1"/>
@@ -64,8 +72,8 @@
  </tileset>
  <layer name="zerosloy" width="25" height="22">
   <properties>
-   <property name="z" value="-100"/>
    <property name="impassability" value="40"/>
+   <property name="z" value="-100"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGAVDGTAOtANGwSgYBaNgFIwCKgIARi84W5gIAAA=
@@ -125,8 +133,8 @@
  </layer>
  <layer name="city objects" width="25" height="22">
   <properties>
-   <property name="z" value="100"/>
    <property name="impassability" value="100"/>
+   <property name="z" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGAWjYBQMZcAz0A4YBUSD4RJXIkhs7gFzBXH2D5cwH0kAAIzGM1uYCAAA
@@ -136,8 +144,8 @@
  <layer name="borders low" width="25" height="22">
   <properties>
    <property name="pierceable" value="false"/>
-   <property name="z" value="200"/>
    <property name="impassability" value="100"/>
+   <property name="z" value="200"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGAWjYBSQA1SYqKtuOAMrIsOAWHWjgDIwmnaJB6Npl/4AAOz3AaWYCAAA
@@ -175,8 +183,8 @@
  </layer>
  <layer name="buildings low" width="25" height="22">
   <properties>
-   <property name="impassability" value="100"/>
    <property name="z" value="400"/>
+   <property name="impassability" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAHvFgBtk4pFDBlV45FoJ6E0H4gwgzkHCuVjUtUDNmoBFrp+AHYVAXATE8Ui4HIcdU9DEZkPxTAJ2EAvmAvE8IJ4BxEuBeBkQL4TixVSyAxdYA8RraWzHKCAdZDPgTvfUtKOMAXu6pwR0otlBC7AIiKczQPJgKY3sAOUNUL4ElTG0jAdYOUbteMBmBy0BKE5Gyyv8AF+9iAzWU2AHLK7bCKjbSic7tgHxCSDeCcU7gHg7CXbA6ncAwbRUH5gIAAA=
@@ -185,8 +193,8 @@
  </layer>
  <layer name="city objects" width="25" height="22">
   <properties>
-   <property name="impassability" value="100"/>
    <property name="z" value="500"/>
+   <property name="impassability" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGJmAa6AdgAYGm3uGAmAcaAcMQQBKZ0xUMouZSuaMguEBRtPVKKAWAACwAhzhmAgAAA==
