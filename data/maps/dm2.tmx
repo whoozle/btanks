@@ -163,30 +163,30 @@
   <property name="object:nuke-missiles-item:nuke-missiles-item:4" value="904,538"/>
   <property name="object:nuke-missiles-item:nuke-missiles-item:3" value="@5,27"/>
   <property name="object:submarine:submarine:5" value="1758,314,-20"/>
-  <property name="edge:1:2" />
-  <property name="edge:2:3" />
-  <property name="edge:3:4" />
-  <property name="edge:4:5" />
-  <property name="edge:5:6" />
-  <property name="edge:6:7" />
-  <property name="edge:7:8" />
-  <property name="edge:8:9" />
-  <property name="edge:9:10" />
-  <property name="edge:10:11" />
-  <property name="edge:11:12" />
-  <property name="edge:12:13" />
-  <property name="edge:13:14" />
-  <property name="edge:14:15" />
-  <property name="edge:15:16" />
-  <property name="edge:16:17" />
-  <property name="edge:17:18" />
-  <property name="edge:18:2" />
-  <property name="edge:2:15" />
-  <property name="edge:3:6" />
-  <property name="edge:6:11" />
-  <property name="edge:11:14" />
-  <property name="edge:15:18" />
-  <property name="edge:14:3" />
+  <property name="edge:1:2" value="" />
+  <property name="edge:2:3" value="" />
+  <property name="edge:3:4" value="" />
+  <property name="edge:4:5" value="" />
+  <property name="edge:5:6" value="" />
+  <property name="edge:6:7" value="" />
+  <property name="edge:7:8" value="" />
+  <property name="edge:8:9" value="" />
+  <property name="edge:9:10" value="" />
+  <property name="edge:10:11" value="" />
+  <property name="edge:11:12" value="" />
+  <property name="edge:12:13" value="" />
+  <property name="edge:13:14" value="" />
+  <property name="edge:14:15" value="" />
+  <property name="edge:15:16" value="" />
+  <property name="edge:16:17" value="" />
+  <property name="edge:17:18" value="" />
+  <property name="edge:18:2" value="" />
+  <property name="edge:2:15" value="" />
+  <property name="edge:3:6" value="" />
+  <property name="edge:6:11" value="" />
+  <property name="edge:11:14" value="" />
+  <property name="edge:15:18" value="" />
+  <property name="edge:14:3" value="" />
  </properties>
  <tileset name="terrains" firstgid="1" tilewidth="64" tileheight="64">
   <image source="../tiles/terrains_tileset.png"/>
