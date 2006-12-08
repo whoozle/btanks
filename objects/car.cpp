@@ -54,6 +54,8 @@ public:
 		s.get(_stop);
 	}	
 private: 
+	virtual const int getPenalty(const int map_im, const int obj_im) const;
+
 	Alarm _reaction_time;
 	bool _stop;
 	//Alarm _refresh_waypoints;
@@ -61,6 +63,11 @@ private:
 	//v3<float> _waypoint_rel;
 	std::string _waypoint_name;
 };
+
+const int Car::getPenalty(const int map_im, const int obj_im) const {
+	if (map_im >= 20 || obj_im >= 20) 
+		return 5000;
+}
 
 
 

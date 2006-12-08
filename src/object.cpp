@@ -946,6 +946,7 @@ const bool Object::findPathDone(Way &way) {
 				p.g += map_im * 30 + (int)(im * 100) * 30;
 			
 			*/
+			p.g += getPenalty(map_im, (int)(im * 100));
 			
 			PointMap::iterator pi = _points.find(id);
 			if (pi != _points.end()) {
@@ -1001,4 +1002,8 @@ found:
 
 const std::string Object::getNearestWaypoint(const std::string &name) const {
 	return Game->getNearestWaypoint(this, name);
+}
+
+const int Object::getPenalty(const int map_im, const int obj_im) const {
+	return 0;
 }
