@@ -38,21 +38,21 @@ public:
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
 		_refresh_waypoints.serialize(s);
-		_waypoint.serialize(s);
-		_waypoint_rel.serialize(s);
+		//_waypoint.serialize(s);
+		//_waypoint_rel.serialize(s);
 		s.add(_waypoint_name);
 	}
 	virtual void deserialize(const mrt::Serializator &s) {
 		Object::deserialize(s);
 		_refresh_waypoints.deserialize(s);
-		_waypoint.deserialize(s);
-		_waypoint_rel.deserialize(s);
+		//_waypoint.deserialize(s);
+		//_waypoint_rel.deserialize(s);
 		s.get(_waypoint_name);
 	}	
 private: 
 	Alarm _refresh_waypoints;
-	v3<float> _waypoint;
-	v3<float> _waypoint_rel;
+	//v3<float> _waypoint;
+	//v3<float> _waypoint_rel;
 	std::string _waypoint_name;
 };
 
@@ -84,6 +84,7 @@ void Car::onSpawn() {
 
 Car::Car() : Object("car"), _refresh_waypoints(false) {}
 
+/*
 void Car::calculate(const float dt) {	
 	v3<float> position = getPosition();
 
@@ -115,6 +116,37 @@ void Car::calculate(const float dt) {
 	limitRotation(dt, rt, true, false);
 	updateStateFromVelocity();
 }
+*/
+
+void Car::calculate(const float dt) {	
+	if (!calculatingPath() && !isDriven()) {
+		v3<float> waypoint;
+		_velocity.clear();
+		if (_waypoint_name.empty()) {
+			_waypoint_name = getNearestWaypoint("cars");
+			assert(!_waypoint_name.empty());
+			Game->getWaypoint(waypoint, "cars", _waypoint_name);
+			LOG_DEBUG(("%s[%d] moving to nearest waypoint at %g %g", animation.c_str(), getID(), waypoint.x, waypoint.y));
+		} else {
+			LOG_DEBUG(("%s[%d] reached waypoint '%s'", animation.c_str(), getID(), _waypoint_name.c_str()));
+			_waypoint_name = Game->getRandomWaypoint("cars", _waypoint_name);
+			Game->getWaypoint(waypoint, "cars", _waypoint_name);
+			LOG_DEBUG(("%s[%d] moving to next waypoint '%s' at %g %g", animation.c_str(), getID(), _waypoint_name.c_str(), waypoint.x, waypoint.y));
+		}
+		findPath(waypoint.convert<int>(), 16);
+		//_velocity = waypoint - getPosition();
+	}
+	Way way;
+	if (calculatingPath() && findPathDone(way)) {
+		setWay(way);
+	}
+
+	calculateWayVelocity();	
+	GET_CONFIG_VALUE("objects.car.rotation-time", float, rt, 0.05);
+	limitRotation(dt, rt, true, false);
+	updateStateFromVelocity();
+}
+
 
 void Car::tick(const float dt) {
 	Object::tick(dt);

@@ -929,15 +929,16 @@ const bool Object::findPathDone(Way &way) {
 
 			//add penalty for turning
 
+			/*
 			int dd = math::abs(i - current.dir);
 			if (dd > dirs/2) 
 				dd = dirs - dd;
 			p.h += 50 * dd;
-
 			//car-specific penalties.
 			if (map_im > 10 || im > 0.1) 
 				p.g += map_im * 30 + (int)(im * 100) * 30;
 			
+			*/
 			
 			PointMap::iterator pi = _points.find(id);
 			if (pi != _points.end()) {
