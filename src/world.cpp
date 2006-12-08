@@ -974,5 +974,15 @@ const bool IWorld::getNearest(const Object *obj, const std::string &classname, v
 	return old_findPath(obj, position, *way, target);
 }
 
+const int IWorld::getChildren(const int id) const {
+	int c = 0;
+	for(ObjectSet::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
+		if ((*i)->_spawned_by == id || (*i)->_owner_id == id) 
+			++c;
+	}
+	return c;
+}
+
+
 
 #include "world_old_pf.cpp"

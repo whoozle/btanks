@@ -76,6 +76,8 @@ public:
 	void setSafeMode(const bool safe_mode = true);
 
 	const float getImpassability(Object *obj, const v3<int> &position, const Object **collided_with = NULL, const bool probe = false) const;
+	
+	const int getChildren(const int id) const;
 private:
 	typedef std::map<const int, Object*> ObjectMap;
 	
