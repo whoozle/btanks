@@ -1,3 +1,7 @@
+*) implemented hybrid waypoints-pathfinding system for ai traffic. more pathfinding fixes.
+*) moved new object-level pathfinding code to base object.
+*) [win32] critical errors appears in messagebox before exit.
+
 0.3.1466: 
 
 *) various small bugfixes.
