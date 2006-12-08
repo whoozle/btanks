@@ -148,7 +148,8 @@ void Car::calculate(const float dt) {
 			Game->getWaypoint(waypoint, "cars", _waypoint_name);
 			LOG_DEBUG(("%s[%d] moving to next waypoint '%s' at %g %g", animation.c_str(), getID(), _waypoint_name.c_str(), waypoint.x, waypoint.y));
 		}
-		findPath(waypoint.convert<int>(), 20);
+		GET_CONFIG_VALUE("object.car.pathfinding-step", int, pfs, 16);
+		findPath(waypoint.convert<int>(), pfs);
 		//_velocity = waypoint - getPosition();
 	}
 	Way way;
