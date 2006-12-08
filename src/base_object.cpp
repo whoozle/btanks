@@ -193,7 +193,7 @@ void BaseObject::addDamage(BaseObject *from, const bool emitDeath) {
 	if (from == NULL || !from->piercing)
 		return;
 
-	addDamage(from, from->hp, emitDeath);
+	addDamage(from, from->max_hp, emitDeath);
 }
 
 void BaseObject::addDamage(BaseObject *from, const int d, const bool emitDeath) {
@@ -215,6 +215,9 @@ void BaseObject::addDamage(BaseObject *from, const int d, const bool emitDeath) 
 		emit("death", from);
 		
 	//look for a better place for that.
+	if (piercing)
+		return;
+	
 	Object *o = ResourceManager->createObject("damage-digits", "damage-digits");
 	o->hp = damage;
 	if (hp < 0) 
