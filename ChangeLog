@@ -1,3 +1,17 @@
+0.3.1466: 
+
+*) various small bugfixes.
+
+0.3.1460: 
+
+*) improved pathfinding
+*) increased damage from 'shilka' and ricochet bullets
+*) most 'stucking' issues fixed.
+*) various collision model improvements/bugfixes.
+*) machinegunners do not shoot in random directions if no target found on map
+*) nuke explosions do not kill each other
+*) moved nuke missiles to alternative mod (launcher)
+*) converted splashes to jpeg format. (-4mb in data/ directory)
 *) made music playback continuous.
 
 0.3.1435: 
