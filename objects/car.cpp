@@ -74,7 +74,7 @@ void Car::emit(const std::string &event, BaseObject * emitter) {
 	if (event == "death") {
 		spawn("corpse", "dead-" + animation, v3<float>::empty, v3<float>::empty);
 	} else if (event == "collision") {
-		if (emitter != NULL) {
+		if (emitter != NULL && emitter->speed > 0) {
 			Item * item = dynamic_cast<Item *>(emitter);
 			//no items.
 			if (item == NULL) {
