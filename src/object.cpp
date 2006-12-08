@@ -102,6 +102,10 @@ Object* Object::spawn(const std::string &classname, const std::string &animation
 const bool Object::getNearest(const std::string &classname, v3<float> &position, v3<float> &velocity, Way * way) const {
 	return World->getNearest(this, classname, position, velocity, way);
 }
+const Object * Object::getNearestObject(const std::string &classname) const {
+	return World->getNearestObject(this, classname);
+}
+
 
 void Object::setDirection(const int dir) {
 	if (dir >= _directions_n)

@@ -934,11 +934,9 @@ Object * IWorld::deserializeObjectInfo(const mrt::Serializator &s, const int id,
 	return o;
 }
 
-const bool IWorld::getNearest(const Object *obj, const std::string &classname, v3<float> &position, v3<float> &velocity, Way * way) const {
-	position.clear();
-	velocity.clear();
+const Object* IWorld::getNearestObject(const Object *obj, const std::string &classname) const {
+	const Object *result = NULL;
 	float distance = std::numeric_limits<float>::infinity();
-	const Object *target = NULL;
 	
 	for(ObjectSet::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		const Object *o = *i;
@@ -952,13 +950,23 @@ const bool IWorld::getNearest(const Object *obj, const std::string &classname, v
 		float d = obj->_position.quick_distance(cpos);
 		if (d < distance) {
 			distance = d;
-			position = cpos;
-			velocity = o->_velocity;
-			target = o;
+			result = o;
 		}
 	}
+	return result;
+}
+
+
+const bool IWorld::getNearest(const Object *obj, const std::string &classname, v3<float> &position, v3<float> &velocity, Way * way) const {
+	position.clear();
+	velocity.clear();
+	const Object *target = getNearestObject(obj, classname);
+	
 	if (target == NULL) 
 		return false;
+
+	position = target->_position;
+	velocity = target->_velocity;
 	
 	position -= obj->_position + obj->size / 2;
 	if (way == NULL)
