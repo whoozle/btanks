@@ -260,7 +260,7 @@ void IGame::onMenu(const std::string &name, const std::string &value) {
 	} else if (name == "m-start") {
 		LOG_DEBUG(("start multiplayer server requested"));
 		clear();
-		GET_CONFIG_VALUE("stubs.default-mp-map", std::string, map, "country2");
+		GET_CONFIG_VALUE("stubs.default-mp-map", std::string, map, "dm2");
 		loadMap(map);
 		GET_CONFIG_VALUE("stubs.default-mp-vehicle", std::string, vehicle, "launcher");
 
