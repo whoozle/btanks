@@ -425,6 +425,7 @@
 	<object class="launcher" speed="500" mass="400" hp="40" z="0" />
 
 	<object class="guided-missile" speed="450" mass="100" ttl="5" hp="15" z="250" />
+	<object class="thrower-missile" speed="450" mass="30" ttl="5" hp="5" z="250" />
 	<object class="smoke-missile" speed="450" mass="100" ttl="1" hp="0" z="250" />
 	<object class="dumb-missile" speed="600" mass="100" ttl="10" hp="40" z="250" />
 	<object class="nuke-missile" speed="150" mass="100" ttl="3" hp="1000" z="250" />
@@ -471,6 +472,7 @@
 	<object class="paratrooper-kamikaze" hp="5" impassability="0" z="810" />
 	<object class="kamikaze" hp="5" speed="70" mass="80" z="0" />
 	<object class="machinegunner" hp="10" speed="100" mass="85" z="-1" ttl="30" />
+	<object class="thrower" hp="10" speed="100" mass="85" z="-1" ttl="30" />
 	<object class="car" hp="20" speed="200" mass="500" />
 	<object class="outline" impassability="0" z="999" />
 
