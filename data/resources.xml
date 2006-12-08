@@ -279,11 +279,11 @@
 	<animation id="shilka-outline" tile="shilka_outline.png" model="single-tile" />
 	<animation id="launcher-outline" tile="launcher_outline.png" model="single-tile" />
 
-	<animation id="green-car" tile="car01.png" model="car-animation"/>
+	<animation id="red-car" tile="car01.png" model="car-animation"/>
 	<animation id="cyan-car" tile="car02.png" model="car-animation"/>
 	<animation id="yellow-car" tile="car03.png" model="car-animation"/>
 	<animation id="white-car" tile="car04.png" model="car-animation"/>
-	<animation id="dead-green-car" tile="car01_crash.png" model="dead-car-animation"/>
+	<animation id="dead-red-car" tile="car01_crash.png" model="dead-car-animation"/>
 	<animation id="dead-cyan-car" tile="car02_crash.png" model="dead-car-animation"/>
 	<animation id="dead-yellow-car" tile="car03_crash.png" model="dead-car-animation"/>
 	<animation id="dead-white-car" tile="car04_crash.png" model="dead-car-animation"/>
@@ -306,7 +306,7 @@
 	<animation id="regular-mine" tile="mine.png" model="regular-mine-animation" size="32" />
 
 	<animation id="orange-bus" tile="bus01.png" model="car-animation"/>
-	<animation id="dead-orage-bus" tile="bus01_crash.png" model="dead-car-animation"/>
+	<animation id="dead-orange-bus" tile="bus01_crash.png" model="dead-car-animation"/>
 
 	<animation id="man" tile="man01.png" model="man-animation"/>
 	<animation id="dead-man" tile="man01_dead01.png" model="dead-man-animation"/>
