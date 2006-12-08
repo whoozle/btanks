@@ -37,20 +37,26 @@ public:
 	void emit(const std::string &event, BaseObject * emitter);
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
-		_refresh_waypoints.serialize(s);
+		_reaction_time.serialize(s);
+		//_refresh_waypoints.serialize(s);
 		//_waypoint.serialize(s);
 		//_waypoint_rel.serialize(s);
 		s.add(_waypoint_name);
+		s.add(_stop);
 	}
 	virtual void deserialize(const mrt::Serializator &s) {
 		Object::deserialize(s);
-		_refresh_waypoints.deserialize(s);
+		_reaction_time.deserialize(s);
+		//_refresh_waypoints.deserialize(s);
 		//_waypoint.deserialize(s);
 		//_waypoint_rel.deserialize(s);
 		s.get(_waypoint_name);
+		s.get(_stop);
 	}	
 private: 
-	Alarm _refresh_waypoints;
+	Alarm _reaction_time;
+	bool _stop;
+	//Alarm _refresh_waypoints;
 	//v3<float> _waypoint;
 	//v3<float> _waypoint_rel;
 	std::string _waypoint_name;
@@ -77,12 +83,15 @@ void Car::emit(const std::string &event, BaseObject * emitter) {
 
 
 void Car::onSpawn() {
-	GET_CONFIG_VALUE("objects.car.refreshing-path-interval", float, rpi, 1);
-	_refresh_waypoints.set(rpi);
+	GET_CONFIG_VALUE("objects.car.reaction-time", float, rt, 0.1);
+	_reaction_time.set(rt);
+	//GET_CONFIG_VALUE("objects.car.refreshing-path-interval", float, rpi, 1);
+	//_refresh_waypoints.set(rpi);
 	play("hold", true);
 }
 
-Car::Car() : Object("car"), _refresh_waypoints(false) {}
+Car::Car() : Object("car"), _reaction_time(true), _stop(false) //_refresh_waypoints(false) 
+{}
 
 /*
 void Car::calculate(const float dt) {	
@@ -142,6 +151,31 @@ void Car::calculate(const float dt) {
 	}
 
 	calculateWayVelocity();	
+	/*
+	if (_reaction_time.tick(dt)) {
+		v3<float> pos, vel;
+		GET_CONFIG_VALUE("objects.car.stop-distance", int, sd, 32);
+		_stop = false;
+		const Object *tl = getNearestObject("traffic-lights");
+		if (tl) {
+			v3<float> rel = getRelativePosition(tl);
+			if (rel.quick_length() < sd * sd) {
+				const std::string tl_state = tl->getState();
+				LOG_DEBUG(("%s[%d] traffic light [%s]", animation.c_str(), getID(), tl_state.c_str()));
+				const bool red = (tl_state == "flashing-red" || tl_state == "red" || tl_state == "yellow");
+				const bool green = (tl_state == "flashing-green" || tl_state == "green" || tl_state == "yellow");
+				if ( (red && _velocity.y != 0) || (green && _velocity.x != 0) ) {
+					LOG_DEBUG(("stop!"));
+					_stop = true;
+				}
+			}
+		}
+	}
+	
+	if (_stop)
+		_velocity.clear();
+	*/
+	
 	GET_CONFIG_VALUE("objects.car.rotation-time", float, rt, 0.05);
 	limitRotation(dt, rt, true, false);
 	updateStateFromVelocity();
