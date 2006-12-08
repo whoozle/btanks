@@ -155,9 +155,9 @@ skip_left_toggle:
 
 			_left_fire = ! _left_fire;
 			play_fire = true;
-		} else if (mod->getType() == "machinegunner") {
+		} else if (!mod->getType().empty()) {
 			if (mod->getCount() > 0) {
-				spawn("machinegunner", "machinegunner", _direction*(size.length()/-2), v3<float>::empty);
+				spawn(mod->getType(), mod->getType(), _direction*(size.length()/-2), v3<float>::empty);
 				mod->decreaseCount();
 			}
 		}
@@ -184,11 +184,12 @@ const bool Shilka::take(const BaseObject *obj, const std::string &type) {
 		addEffect(type);
 		return true;
 	} else if (obj->classname =="mod") {
-		if (type == "machinegunner") {
+		if (type == "machinegunner" || type == "thrower") {
 			removeEffect("dirt");
 			FakeMod *mod = getMod("mod");
-			mod->setType("machinegunner");
-			GET_CONFIG_VALUE("objects.shilka.machinegunner-capacity", int, n, 5);
+			mod->setType(type);
+			int n;
+			Config->get("objects.shilka." + type + "-capacity", n, 5);
 			mod->setCount(n);
 			return true;
 		}
