@@ -65,8 +65,7 @@ private:
 };
 
 const int Car::getPenalty(const int map_im, const int obj_im) const {
-	if (map_im >= 20 || obj_im >= 20) 
-		return 5000;
+	return(map_im >= 20 || obj_im >= 20)?5000:0;
 }
 
 
@@ -149,7 +148,7 @@ void Car::calculate(const float dt) {
 			Game->getWaypoint(waypoint, "cars", _waypoint_name);
 			LOG_DEBUG(("%s[%d] moving to next waypoint '%s' at %g %g", animation.c_str(), getID(), _waypoint_name.c_str(), waypoint.x, waypoint.y));
 		}
-		findPath(waypoint.convert<int>(), 16);
+		findPath(waypoint.convert<int>(), 20);
 		//_velocity = waypoint - getPosition();
 	}
 	Way way;
