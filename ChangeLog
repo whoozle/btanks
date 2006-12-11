@@ -1,3 +1,6 @@
+*) added invulnerability effect. invulnerability on respawn.
+*) added throwers item/throwers for shilka.
+*) limited kamikazes dropped by heli.
 *) implemented hybrid waypoints-pathfinding system for ai traffic. more pathfinding fixes.
 *) moved new object-level pathfinding code to base object.
 *) [win32] critical errors appears in messagebox before exit.
