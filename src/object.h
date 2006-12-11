@@ -20,6 +20,7 @@
  */
 
 #include "base_object.h"
+#include "alarm.h"
 #include <string>
 #include <vector>
 #include <map>
@@ -204,6 +205,8 @@ private:
 	//grouped objects stuff
 	typedef std::map<const std::string, int> Group;
 	Group _group;
+	
+	Alarm _blinking;
 	
 	friend class IWorld;
 };

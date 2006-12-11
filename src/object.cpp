@@ -58,9 +58,11 @@ Object::Object(const std::string &classname) :
 	_way(), _next_target(), _next_target_rel(), 
 	_rotation_time(0), 
 	_dst_direction(0), 
-	
-	_group()
-	 {}
+	_group(), _blinking(true)
+	 {
+	 	GET_CONFIG_VALUE("engine.spawn-invulnerability-blinking-interval", float, ibi, 0.5);
+	 	_blinking.set(ibi);
+	 }
 
 /*
 void Object::init(const std::string &model, const std::string &surface, const int tile_w, const int tile_h) {
@@ -207,6 +209,8 @@ void Object::tick(const float dt) {
 		}
 		if (ei->first == "stunned") {
 			_velocity.clear();
+		} else if (ei->first == "invulnerability") {
+			_blinking.tick(dt);
 		}
 		++ei;
 	}
@@ -309,6 +313,10 @@ void Object::render(sdlx::Surface &surface, const int x, const int y) {
 	if (fadeout_time > 0 && ttl > 0 && ttl < fadeout_time) 
 		alpha = (int)(255 * (fadeout_time - ttl) / fadeout_time);
 	//LOG_DEBUG(("alpha = %d", alpha));
+	if (isEffectActive("invulnerability") && _blinking.get() >= 0.5) {
+		return;
+	}
+	
 	checkSurface();
 	
 	if (alpha == 0) {
@@ -420,6 +428,8 @@ void Object::serialize(mrt::Serializator &s) const {
 		s.add(i->first);
 		s.add(i->second);
 	}
+	
+	_blinking.serialize(s);
 }
 
 void Object::deserialize(const mrt::Serializator &s) {
@@ -479,6 +489,8 @@ void Object::deserialize(const mrt::Serializator &s) {
 		s.get(id);
 		_group[name] = id;
 	}
+	_blinking.deserialize(s);
+
 	//additional initialization
 	_model = ResourceManager->getAnimationModel(_model_name);
 	_surface = ResourceManager->getSurface(_surface_name);
