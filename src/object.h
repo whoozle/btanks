@@ -155,6 +155,8 @@ protected:
 	
 	void checkSurface();
 	
+	virtual const bool skipRendering() const;
+	
 private: 
 //pathfinding stuff
 	void close(const int vertex); 
