@@ -30,7 +30,7 @@ void Item::onSpawn() {
 	play("main", true);
 }
 
-void Item::emit(const std::string &event, BaseObject * emitter) {
+void Item::emit(const std::string &event, Object * emitter) {
 	if (event == "collision") {
 		if (emitter == NULL || emitter->classname != "player")
 			return;

@@ -29,7 +29,7 @@ public:
 	Launcher(const std::string &animation);
 	virtual Object * clone() const;
 
-	virtual void emit(const std::string &event, BaseObject * emitter);
+	virtual void emit(const std::string &event, Object * emitter);
 	virtual const bool take(const BaseObject *obj, const std::string &type);
 	virtual void tick(const float dt);
 	virtual void calculate(const float dt);

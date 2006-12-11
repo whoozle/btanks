@@ -32,7 +32,7 @@ public:
 	virtual void addDamage(BaseObject *from, const int hp, const bool emitDeath = true) {}
 	virtual void calculate(const float dt);
 	virtual Object * clone() const;
-	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
+	virtual void emit(const std::string &event, Object * emitter = NULL);
 	void onSpawn();
 
 	virtual void serialize(mrt::Serializator &s) const {
@@ -103,7 +103,7 @@ void Missile::calculate(const float dt) {
 	}
 }
 
-void Missile::emit(const std::string &event, BaseObject * emitter) {
+void Missile::emit(const std::string &event, Object * emitter) {
 	if (event == "collision") {
 		if (emitter != NULL) { 
 			if (type == "stun") {

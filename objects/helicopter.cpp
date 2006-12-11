@@ -35,7 +35,6 @@ public:
 	virtual void calculate(const float dt);
 	virtual void tick(const float dt);
 	virtual Object * clone() const;
-	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
 	void onSpawn();
 
 	virtual void serialize(mrt::Serializator &s) const {
@@ -135,10 +134,6 @@ void Helicopter::calculate(const float dt) {
 	
 	GET_CONFIG_VALUE("objects.helicopter.rotation-time", float, rt, 0.2);
 	limitRotation(dt, rt, true, false);
-}
-
-void Helicopter::emit(const std::string &event, BaseObject * emitter) {
-	Object::emit(event, emitter);
 }
 
 

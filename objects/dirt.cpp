@@ -25,7 +25,7 @@ public:
 	Dirt() : Object("dirt") { pierceable = true; }
 	virtual Object * clone() const;
 	virtual void onSpawn();
-	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
+	virtual void emit(const std::string &event, Object * emitter = NULL);
 };
 
 void Dirt::onSpawn() {
@@ -34,7 +34,7 @@ void Dirt::onSpawn() {
 	play("main", true);
 }
 
-void Dirt::emit(const std::string &event, BaseObject * emitter) {
+void Dirt::emit(const std::string &event, Object * emitter) {
 	if (event == "collision") {
 		return;
 	} else Object::emit(event, emitter);

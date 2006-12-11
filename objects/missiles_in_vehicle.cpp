@@ -76,7 +76,7 @@ public:
 	
 	virtual void tick(const float dt);
 	virtual Object * clone() const;
-	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
+	virtual void emit(const std::string &event, Object * emitter = NULL);
 	virtual void onSpawn();
 	virtual void render(sdlx::Surface &surface, const int x, const int y);
 	virtual const bool take(const BaseObject *obj, const std::string &type);
@@ -150,7 +150,7 @@ void MissilesInVehicle::tick(const float dt) {
 	Object::tick(dt);
 }
 
-void MissilesInVehicle::emit(const std::string &event, BaseObject * emitter) {
+void MissilesInVehicle::emit(const std::string &event, Object * emitter) {
 	if (event == "move") {
 		hold = false;
 		updatePose();

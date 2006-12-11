@@ -32,7 +32,7 @@ public:
 
 	virtual Object * clone() const;
 	virtual void onSpawn();
-	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
+	virtual void emit(const std::string &event, Object * emitter = NULL);
 
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
@@ -86,7 +86,7 @@ void Kamikaze::onSpawn() {
 	play("hold", true);
 }
 
-void Kamikaze::emit(const std::string &event, BaseObject * emitter) {
+void Kamikaze::emit(const std::string &event, Object * emitter) {
 	if (event == "death") {
 		spawn("explosion", "missile-explosion");
 		Object::emit(event, emitter);

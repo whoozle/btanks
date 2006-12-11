@@ -34,7 +34,7 @@ public:
 	virtual void onSpawn();
 	virtual Object * clone() const;
 	
-	void emit(const std::string &event, BaseObject * emitter);
+	void emit(const std::string &event, Object * emitter);
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
 		_reaction_time.serialize(s);
@@ -70,7 +70,7 @@ const int Car::getPenalty(const int map_im, const int obj_im) const {
 
 
 
-void Car::emit(const std::string &event, BaseObject * emitter) {
+void Car::emit(const std::string &event, Object * emitter) {
 	if (event == "death") {
 		spawn("corpse", "dead-" + animation, v3<float>::empty, v3<float>::empty);
 	} else if (event == "collision") {

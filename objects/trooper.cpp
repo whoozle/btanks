@@ -32,7 +32,7 @@ public:
 
 	virtual Object * clone() const;
 	virtual void onSpawn();
-	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
+	virtual void emit(const std::string &event, Object * emitter = NULL);
 
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
@@ -144,7 +144,7 @@ void Trooper::onSpawn() {
 	play("hold", true);
 }
 
-void Trooper::emit(const std::string &event, BaseObject * emitter) {
+void Trooper::emit(const std::string &event, Object * emitter) {
 	if (event == "death") {
 		spawn("corpse", "dead-machinegunner", v3<float>::empty, v3<float>::empty);
 	}

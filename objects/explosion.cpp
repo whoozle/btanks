@@ -29,7 +29,7 @@ public:
 	virtual void tick(const float dt);
 	virtual Object * clone() const;
 	virtual void onSpawn();
-	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
+	virtual void emit(const std::string &event, Object * emitter = NULL);
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
 		int n = _damaged_objects.size();
@@ -73,7 +73,7 @@ void Explosion::onSpawn() {
 		Game->shake(1, 4);
 }
 
-void Explosion::emit(const std::string &event, BaseObject * emitter) {
+void Explosion::emit(const std::string &event, Object * emitter) {
 	if (event == "collision") {
 		if (emitter == NULL || emitter->pierceable)
 			return;

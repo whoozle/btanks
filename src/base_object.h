@@ -43,7 +43,6 @@ public:
 	
 	virtual void tick(const float dt) = 0;
 	virtual void render(sdlx::Surface &surf, const int x, const int y) = 0;
-	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
 	
 	const float getCollisionTime(const v3<float> &pos, const v3<float> &vel, const float r) const;
 	
@@ -66,8 +65,6 @@ public:
 
 	void heal(const int hp);
 	virtual const bool take(const BaseObject *obj, const std::string &type);
-	virtual void addDamage(BaseObject *from, const int hp, const bool emitDeath = true);
-	void addDamage(BaseObject *from, const bool emitDeath = true);
 	
 	const v3<float> getRelativePosition(const BaseObject *obj) const;
 
@@ -98,11 +95,10 @@ protected:
 
 	virtual void calculate(const float dt) = 0;
 
-	bool need_sync;
+	bool need_sync, _dead;
 
 private:
 
-	bool _dead;
 	v3<float> _position;
 	int _owner_id, _spawned_by;
 	

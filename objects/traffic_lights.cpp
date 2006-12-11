@@ -25,8 +25,7 @@ public:
 	TrafficLights() : Object("traffic-lights"), _idx(-1), _broken(false) {}
 	virtual void tick(const float dt);
 	virtual Object * clone() const;
-	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
-	virtual void addDamage(BaseObject *from, const int hp, const bool emitDeath = true);
+	virtual void addDamage(Object *from, const int hp, const bool emitDeath = true);
 	virtual void onSpawn();
 
 	virtual void serialize(mrt::Serializator &s) const {
@@ -48,11 +47,11 @@ private:
 
 void TrafficLights::onSpawn() {}
 
-void TrafficLights::addDamage(BaseObject *from, const int dhp, const bool emitDeath) {
+void TrafficLights::addDamage(Object *from, const int dhp, const bool emitDeath) {
 	if (_broken)
 		return;
 
-	BaseObject::addDamage(from, dhp, false);
+	Object::addDamage(from, dhp, false);
 	if (hp <= 0) {
 		_broken = true;
 		cancelAll();
@@ -75,11 +74,6 @@ void TrafficLights::tick(const float dt) {
 		play(names[_idx]);
 	}
 }
-
-void TrafficLights::emit(const std::string &event, BaseObject * emitter) {
-	Object::emit(event, emitter);
-}
-
 
 Object* TrafficLights::clone() const  {
 	return new TrafficLights(*this);

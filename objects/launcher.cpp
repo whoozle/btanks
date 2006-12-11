@@ -52,7 +52,7 @@ void Launcher::onSpawn() {
 }
 
 
-void Launcher::emit(const std::string &event, BaseObject * emitter) {
+void Launcher::emit(const std::string &event, Object * emitter) {
 	if (event == "death") {
 		LOG_DEBUG(("dead"));
 		cancelAll();

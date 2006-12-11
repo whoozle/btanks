@@ -28,7 +28,6 @@ public:
 	virtual void tick(const float dt);
 	virtual Object * clone() const;
 	virtual void onSpawn();
-	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
 		s.add(_spawn_object);
@@ -58,11 +57,6 @@ void Paratrooper::onSpawn() {
 	setDirection(0);
 	play("main", false);
 }
-
-void Paratrooper::emit(const std::string &event, BaseObject * emitter) {
-	Object::emit(event, emitter);
-}
-
 
 Object* Paratrooper::clone() const  {
 	Object *a = new Paratrooper(*this);

@@ -485,7 +485,7 @@ void Object::deserialize(const mrt::Serializator &s) {
 	_cmap = ResourceManager->getCollisionMap(_surface_name);
 }
 
-void Object::emit(const std::string &event, BaseObject * emitter) {
+void Object::emit(const std::string &event, Object * emitter) {
 	if (event == "death") {
 		for(Group::iterator i = _group.begin(); i != _group.end(); ++i) {
 			Object * o = World->getObjectByID(i->second);
@@ -494,8 +494,12 @@ void Object::emit(const std::string &event, BaseObject * emitter) {
 			o->emit(event, emitter);
 		}
 		_group.clear();
-	}
-	BaseObject::emit(event, emitter);
+		_velocity.clear();
+		_dead = true;
+	} else if (event == "collision") {
+		addDamage(emitter);
+	} else 
+		LOG_WARN(("%s[%d]: unhandled event '%s'", classname.c_str(), _id, event.c_str()));
 }
 
 void Object::setWay(const Way & way) {
@@ -1006,4 +1010,43 @@ const std::string Object::getNearestWaypoint(const std::string &name) const {
 
 const int Object::getPenalty(const int map_im, const int obj_im) const {
 	return 0;
+}
+
+void Object::addDamage(Object *from, const bool emitDeath) {
+	if (from == NULL || !from->piercing)
+		return;
+
+	addDamage(from, from->max_hp, emitDeath);
+}
+
+void Object::addDamage(Object *from, const int d, const bool emitDeath) {
+	if (hp == -1 || d == 0)
+		return;
+	int damage = d;
+	/*
+	GET_CONFIG_VALUE("engine.damage-randomization", float, dr, 0.3);
+	int radius = (int)(damage * dr);
+	if (radius > 0) {
+		damage += mrt::random(radius * 2 + 1) - radius;
+	}
+	*/
+	need_sync = true;
+	
+	hp -= damage;	
+	LOG_DEBUG(("%s: received %d hp of damage from %s. hp = %d", classname.c_str(), damage, from->classname.c_str(), hp));
+	if (emitDeath && hp <= 0) 
+		emit("death", from);
+		
+	//look for a better place for that.
+	if (piercing)
+		return;
+	
+	Object *o = ResourceManager->createObject("damage-digits", "damage-digits");
+	o->hp = damage;
+	if (hp < 0) 
+		o->hp += hp;
+	v3<float> pos;
+	getPosition(pos);
+	pos.z = 0;
+	World->addObject(o, pos);	
 }

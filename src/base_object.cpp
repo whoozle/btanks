@@ -114,15 +114,6 @@ const std::string BaseObject::dump() const {
 
 BaseObject::~BaseObject() { _dead = true; }
 
-void BaseObject::emit(const std::string &event, BaseObject * emitter) {
-	if (event == "death") {
-		_velocity.clear();
-		_dead = true;
-	} else if (event == "collision") {
-		addDamage(emitter);
-	} else LOG_WARN(("%s[%d]: unhandled event '%s'", classname.c_str(), _id, event.c_str()));
-}
-
 const float BaseObject::getCollisionTime(const v3<float> &dpos, const v3<float> &vel, const float r) const {
 	//v3<float> dpos = pos - _position;
 	float a = vel.x * vel.x + vel.y * vel.y;
@@ -184,48 +175,6 @@ void BaseObject::follow(const int id) {
 }
 
 
-#include "resource_manager.h"
-#include "object.h"
-#include "config.h"
-#include "mrt/random.h"
-
-void BaseObject::addDamage(BaseObject *from, const bool emitDeath) {
-	if (from == NULL || !from->piercing)
-		return;
-
-	addDamage(from, from->max_hp, emitDeath);
-}
-
-void BaseObject::addDamage(BaseObject *from, const int d, const bool emitDeath) {
-	if (hp == -1 || d == 0)
-		return;
-	int damage = d;
-	/*
-	GET_CONFIG_VALUE("engine.damage-randomization", float, dr, 0.3);
-	int radius = (int)(damage * dr);
-	if (radius > 0) {
-		damage += mrt::random(radius * 2 + 1) - radius;
-	}
-	*/
-	need_sync = true;
-	
-	hp -= damage;	
-	LOG_DEBUG(("%s: received %d hp of damage from %s. hp = %d", classname.c_str(), damage, from->classname.c_str(), hp));
-	if (emitDeath && hp <= 0) 
-		emit("death", from);
-		
-	//look for a better place for that.
-	if (piercing)
-		return;
-	
-	Object *o = ResourceManager->createObject("damage-digits", "damage-digits");
-	o->hp = damage;
-	if (hp < 0) 
-		o->hp += hp;
-	v3<float> pos = _position;
-	pos.z = 0;
-	World->addObject(o, pos);	
-}
 
 
 void BaseObject::setZ(const float z) {

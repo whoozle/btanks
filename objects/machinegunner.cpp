@@ -28,7 +28,7 @@ public:
 	virtual void onSpawn();
 	virtual void tick(const float dt);
 	virtual void calculate(const float dt);
-	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
+	virtual void emit(const std::string &event, Object * emitter = NULL);
 	virtual const bool take(const BaseObject *obj, const std::string &type);
 	virtual const std::string getType() const { return "machinegunner"; }
 	virtual const int getCount() const { return -1; }
@@ -77,7 +77,7 @@ void Machinegunner::calculate(const float dt) {
 	//LOG_DEBUG(("found! %g %g dir= %d", _direction.x, _direction.y, dir));
 }
 
-void Machinegunner::emit(const std::string &event, BaseObject * emitter) {
+void Machinegunner::emit(const std::string &event, Object * emitter) {
 	if (event == "hold" || event == "move" || event == "launch")
 		return;
 	Object::emit(event, emitter);

@@ -27,10 +27,9 @@ public:
 		_object(object), _animation(animation) {}
 
 	virtual Object * clone() const;
-	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
 	virtual void tick(const float dt);
 	virtual void onSpawn();
-	virtual void addDamage(BaseObject *from, const int hp, const bool emitDeath = true);
+	virtual void addDamage(Object *from, const int hp, const bool emitDeath = true);
 
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
@@ -53,11 +52,11 @@ private:
 	std::string _object, _animation;
 };
 
-void DestructableObject::addDamage(BaseObject *from, const int dhp, const bool emitDeath) {
+void DestructableObject::addDamage(Object *from, const int dhp, const bool emitDeath) {
 	if (_broken)
 		return;
 
-	BaseObject::addDamage(from, dhp, false);
+	Object::addDamage(from, dhp, false);
 	if (hp <= 0) {
 		_broken = true;
 		if (_make_pierceable)
@@ -69,10 +68,6 @@ void DestructableObject::addDamage(BaseObject *from, const int dhp, const bool e
 		if (!_object.empty() && !_animation.empty())
 			spawn(_object, _animation, v3<float>::empty, v3<float>::empty);
 	}
-}
-
-void DestructableObject::emit(const std::string &event, BaseObject * emitter) {
-	Object::emit(event, emitter);
 }
 
 void DestructableObject::tick(const float dt) {

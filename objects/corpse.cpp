@@ -25,7 +25,6 @@ public:
 	Corpse(const int fc, const bool play_dead) : Object("corpse"), _fire_cycles(fc), _play_dead(play_dead) {}
 
 	virtual Object * clone() const;
-	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
 	virtual void tick(const float dt);
 	virtual void onSpawn();
 
@@ -44,10 +43,6 @@ private:
 	int _fire_cycles;
 	bool _play_dead;
 };
-
-void Corpse::emit(const std::string &event, BaseObject * emitter) {
-	Object::emit(event, emitter);
-}
 
 void Corpse::tick(const float dt) {
 	Object::tick(dt);

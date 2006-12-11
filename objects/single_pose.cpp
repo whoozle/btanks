@@ -28,7 +28,6 @@ public:
 		}
 
 	virtual Object * clone() const;
-	virtual void emit(const std::string &event, BaseObject * emitter = NULL);
 	virtual void tick(const float dt);
 	virtual void onSpawn();
 	virtual void render(sdlx::Surface &surface, const int x, const int y);
@@ -53,10 +52,6 @@ private:
 	std::string _pose;
 	bool _repeat, _no_dir, _play_start;
 };
-
-void SinglePose::emit(const std::string &event, BaseObject * emitter) {
-	Object::emit(event, emitter);
-}
 
 void SinglePose::render(sdlx::Surface &surface, const int x, const int y) {
 	if (_no_dir)

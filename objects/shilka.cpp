@@ -66,7 +66,7 @@ Object * Shilka::clone() const {
 }
 
 
-void Shilka::emit(const std::string &event, BaseObject * emitter) {
+void Shilka::emit(const std::string &event, Object * emitter) {
 	if (event == "death") {
 		LOG_DEBUG(("dead"));
 		cancelAll();

@@ -32,7 +32,7 @@ public:
 	virtual Object * clone() const;
 	virtual void onSpawn();
 
-	virtual void emit(const std::string &event, BaseObject * emitter);
+	virtual void emit(const std::string &event, Object * emitter);
 	virtual void tick(const float dt);
 	virtual void calculate(const float dt);
 	virtual const bool take(const BaseObject *obj, const std::string &type);
