@@ -60,7 +60,7 @@ Object::Object(const std::string &classname) :
 	_dst_direction(0), 
 	_group(), _blinking(true)
 	 {
-	 	GET_CONFIG_VALUE("engine.spawn-invulnerability-blinking-interval", float, ibi, 0.2);
+	 	GET_CONFIG_VALUE("engine.spawn-invulnerability-blinking-interval", float, ibi, 0.3);
 	 	_blinking.set(ibi);
 	 }
 
