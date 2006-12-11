@@ -36,6 +36,11 @@ const bool Alarm::tick(const float dt) {
 	return false;
 }
 
+const float Alarm::get() const {
+	return _t / _period;
+}
+
+
 void Alarm::set(const float period, const bool reset) {
 	_period = period;
 	if (reset)

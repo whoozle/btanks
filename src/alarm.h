@@ -29,6 +29,7 @@ public:
 	const bool tick(const float dt);
 	void reset();
 	void set(const float period, const bool reset = true);
+	const float get() const;
 
 	virtual void serialize(mrt::Serializator &s) const;
 	virtual void deserialize(const mrt::Serializator &s);
