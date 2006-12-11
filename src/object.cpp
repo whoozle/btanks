@@ -1034,6 +1034,9 @@ void Object::addDamage(Object *from, const bool emitDeath) {
 void Object::addDamage(Object *from, const int d, const bool emitDeath) {
 	if (hp == -1 || d == 0)
 		return;
+	if (isEffectActive("invulnerability"))
+		return;
+	
 	int damage = d;
 	/*
 	GET_CONFIG_VALUE("engine.damage-randomization", float, dr, 0.3);
