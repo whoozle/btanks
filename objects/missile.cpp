@@ -108,9 +108,8 @@ void Missile::emit(const std::string &event, Object * emitter) {
 		if (emitter != NULL) { 
 			if (type == "stun") {
 				GET_CONFIG_VALUE("objects.stun-missile.stun-duration", float, sd, 5);
-				Object *o = dynamic_cast<Object*>(emitter);
-				if (o != NULL)
-					o->addEffect("stunned", sd);
+				if (emitter != NULL)
+					emitter->addEffect("stunned", sd);
 			}
 			if (emitter->classname == "smoke-cloud" && type != "smoke")
 				return;
