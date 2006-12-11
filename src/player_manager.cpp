@@ -582,7 +582,7 @@ void IPlayerManager::spawnPlayer(PlayerSlot &slot, const std::string &classname,
 	World->addObject(obj, slot.position.convert<float>(), slot.id);
 	Object *spawn = World->spawn(obj, "spawn-shield", "spawning", v3<float>::empty, v3<float>::empty);
 	spawn->follow(obj, Centered);
-	GET_CONFIG_VALUE("engine.spawn-invulnerability-duration", float, sid, 2);
+	GET_CONFIG_VALUE("engine.spawn-invulnerability-duration", float, sid, 5);
 	obj->addEffect("invulnerability", sid);
 
 	slot.id = obj->getID();
