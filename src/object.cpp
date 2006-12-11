@@ -305,6 +305,11 @@ const bool Object::getRenderRect(sdlx::Rect &src) const {
 }
 
 const bool Object::skipRendering() const {
+	if (_follow != 0) {
+		Object *leader = World->getObjectByID(_follow);
+		if (leader != NULL)
+			return leader->skipRendering();
+	}
 	return isEffectActive("invulnerability") && _blinking.get() >= 0.5;
 }
 
