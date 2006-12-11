@@ -1,9 +1,0 @@
-Import('env')
-
-env = env.Copy()
-env.Append(CPPPATH=['.'])
-gfx_sources = 	[
-	'SDL_framerate.c', 'SDL_gfxPrimitives.c', 'SDL_rotoZoom.c', 'SDL_imageFilter.c'
-]
-
-gfx = env.StaticLibrary('gfx', gfx_sources)
