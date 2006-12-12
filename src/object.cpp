@@ -267,14 +267,14 @@ const bool Object::getRenderRect(sdlx::Rect &src) const {
 
 	const Pose * pose = _model->getPose(_events.front().name);
 	if (pose == NULL) {
-		LOG_WARN(("%s: pose '%s' is not supported", classname.c_str(), _events.front().name.c_str()));
+		LOG_WARN(("%s:%s pose '%s' is not supported", classname.c_str(), animation.c_str(), _events.front().name.c_str()));
 		return false;
 	}
 	
 	int frame = (int)_pos;
 	int n = (int)pose->frames.size();
 	if (n == 0) {
-		LOG_WARN(("%s: pose '%s' doesnt have any frames", classname.c_str(), _events.front().name.c_str()));
+		LOG_WARN(("%s:%s pose '%s' doesnt have any frames", classname.c_str(), animation.c_str(), _events.front().name.c_str()));
 		return false;
 	}
 	
@@ -283,7 +283,7 @@ const bool Object::getRenderRect(sdlx::Rect &src) const {
 		frame = n - 1;
 	
 	if (frame < 0 || frame >= n) {
-		LOG_WARN(("%s: event '%s' frame %d is out of range (position: %g).", classname.c_str(), _events.front().name.c_str(), frame, _pos));
+		LOG_WARN(("%s:%s  event '%s' frame %d is out of range (position: %g).", classname.c_str(), animation.c_str(), _events.front().name.c_str(), frame, _pos));
 		return false;	
 	}
 
@@ -293,7 +293,7 @@ const bool Object::getRenderRect(sdlx::Rect &src) const {
 	const_cast<Object*>(this)->checkSurface();
 	
 	if (frame * _th >= _surface->getHeight()) {
-		LOG_WARN(("%s: event '%s' tile row %d is out of range.", classname.c_str(), _events.front().name.c_str(), frame));
+		LOG_WARN(("%s:%s event '%s' tile row %d is out of range.", classname.c_str(), animation.c_str(), _events.front().name.c_str(), frame));
 		return false;
 	}
 
