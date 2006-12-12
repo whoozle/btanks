@@ -23,7 +23,7 @@
 
 class Machinegunner : public Object {
 public:
-	Machinegunner(const std::string &classname) : Object(classname), _fire(true) { impassability = 0; }
+	Machinegunner(const std::string &classname) : Object(classname), _fire(true) { impassability = 0; setDirectionsNumber(16); }
 	virtual Object * clone() const { return new Machinegunner(*this); }
 	virtual void onSpawn();
 	virtual void tick(const float dt);
