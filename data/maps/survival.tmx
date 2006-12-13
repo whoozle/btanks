@@ -210,6 +210,7 @@
  <layer name="buildings damaged" width="25" height="22">
   <properties>
    <property name="hp" value="20"/>
+   <property name="impassability" value="100"/>
    <property name="damage-for" value="buildings low"/>
   </properties>
   <data encoding="base64" compression="gzip">
