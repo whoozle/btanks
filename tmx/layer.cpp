@@ -22,6 +22,21 @@
 #include "mrt/exception.h"
 #include <assert.h>
 
+void ChainedDestructableLayer::damage(const int x, const int y, const int hp) {
+	int i = _w * y + x;
+	if (i < 0 || i >= _w * _h)
+		return;
+	//LOG_DEBUG(("damage %d to cell %d", hp, i));
+	if (_hp_data[i] > 0) {
+		_hp_data[i] -= hp;
+		if (_hp_data[i] <= 0) {
+			_hp_data[i] = -1; //destructed cell
+			//LOG_DEBUG(("clearing slave cell"));
+			_slave->clear(x, y);
+		}
+	}
+}
+
 
 DestructableLayer::DestructableLayer() : _hp_data(NULL) {}
 
@@ -37,10 +52,6 @@ void DestructableLayer::init(const int w, const int h, const mrt::Chunk & data) 
 	Uint32 *ptr = (Uint32 *)_data.getPtr();
 	for(int i = 0; i < size; ++i) {
 		_hp_data[i] = (ptr[i] != 0) ? hp : 0;
-		//LOG_DEBUG(("cell %d = %u", i, ptr[i]));
-		if (_hp_data[i] != 0) 
-		//if (ptr[i] != 0) 
-			LOG_DEBUG(("destructable cell: %d", i));
 	}
 }
 const Uint32 DestructableLayer::get(const int x, const int y) const {
@@ -99,6 +110,16 @@ const Uint32 Layer::get(const int x, const int y) const {
 		return 0;	
 	return *((Uint32 *) _data.getPtr() + _w * y + x);
 }
+
+void Layer::clear(const int x, const int y) {
+	int i = _w * y + x;
+	if (i < 0 || i >= _w * _h)
+		return;
+	_s_data[i] = NULL;
+	_c_data[i] = NULL;
+	*((Uint32 *) _data.getPtr() + i) = 0;
+}
+
 
 const sdlx::Surface* Layer::getSurface(const int x, const int y) const {
 	if (x < 0 || x >= _w || y < 0 || y >= _h) 

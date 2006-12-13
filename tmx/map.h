@@ -84,7 +84,10 @@ private:
 	
 	typedef std::map<const int, Layer *> LayerMap;
 	LayerMap _layers;
-	bool layer;
+	std::map<const std::string, std::string> _damage4;
+	std::map<const std::string, int> _layer_z;
+	bool _layer;
+	std::string _layer_name;
 
 	typedef std::vector< std::pair<sdlx::Surface *, sdlx::CollisionMap *> > TileMap;
 	TileMap _tiles;

@@ -192,6 +192,21 @@ void IMap::load(const std::string &name) {
 	for(LayerMap::iterator l = _layers.begin(); l != _layers.end(); ++l) {
 		l->second->optimize(_tiles);
 	}
+	
+	for(std::map<const std::string, std::string>::const_iterator i = _damage4.begin(); i != _damage4.end(); ++i) {
+		Layer *dl = NULL, *l = NULL;
+		dl = _layers[_layer_z[i->first]];
+		if (dl == NULL)
+			throw_ex(("layer %s doesnt exits", i->first.c_str()));
+		l = _layers[_layer_z[i->second]];
+		if (l == NULL)
+			throw_ex(("layer %s doesnt exits", i->second.c_str()));
+		LOG_DEBUG(("mapping damage layers: %s -> %s", i->first.c_str(), i->second.c_str()));
+		ChainedDestructableLayer *cl = dynamic_cast<ChainedDestructableLayer *>(dl);
+		if (cl == NULL) 
+			throw_ex(("layer %s is not destructable", i->first.c_str()));
+		cl->setSlave(l);
+	}
 
 #ifdef PRERENDER_LAYERS
 	LOG_DEBUG(("rendering layers..."));
@@ -274,7 +289,10 @@ void IMap::start(const std::string &name, Attrs &attrs) {
 		LOG_DEBUG(("tileset: '%s'. firstgid = %d", e.attrs["name"].c_str(), _firstgid));
 	} else if (name == "layer") {
 		_properties.clear();
-		layer = true;
+		_layer = true;
+		_layer_name = e.attrs["name"];
+		if (_layer_name.empty())
+			throw_ex(("layer name cannot be empty!"));
 	}
 	
 	_stack.push(e);
@@ -383,7 +401,8 @@ void IMap::end(const std::string &name) {
 		}
 		const std::string damage = _properties["damage-for"];
 		if (!damage.empty()) {
-			visible = false;
+			layer = new ChainedDestructableLayer();
+			_damage4[_layer_name] = damage;
 		}
 		LOG_DEBUG(("layer '%s'. %dx%d. z: %d, size: %d, impassability: %d, visible: %s", e.attrs["name"].c_str(), w, h, z, _data.getSize(), impassability, visible?"yes":"no"));
 		if (_layers.find(z) != _layers.end())
@@ -399,10 +418,11 @@ void IMap::end(const std::string &name) {
 		layer->init(w, h, _data); //fixme: fix possible memory leak here, if exception occurs
 		
 		_layers[z] = layer;
+		_layer_z[_layer_name] = z;
 		//LOG_DEBUG(("(1,1) = %d", _layers[z]->get(1,1)));
 		layer = false;
 	} else if (name == "property") {
-		if (layer)
+		if (_layer)
 			_properties[e.attrs["name"]] = e.attrs["value"];
 		else 
 			properties[e.attrs["name"]] = e.attrs["value"];
@@ -517,6 +537,9 @@ void IMap::clear() {
 	_image = NULL;
 	_lastz = -100;
 	_w = _h = _tw = _th = _firstgid = 0;
+
+	_damage4.clear();
+	_layer_z.clear();
 }
 
 IMap::~IMap() {
