@@ -140,6 +140,7 @@
  <layer name="after-blowing" width="25" height="22">
   <properties>
    <property name="visible-if-damaged" value="true"/>
+   <property name="hp" value="20"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGAUjCdQPtANGwSgYBaOASDBaXo1MAADJopFDmAgAAA==

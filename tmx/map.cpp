@@ -367,6 +367,8 @@ void IMap::end(const std::string &name) {
 		bool pierceable = false;
 		bool visible = true;
 		
+		int hp = atoi(_properties["hp"].c_str());
+		
 		PropertyMap::const_iterator pi = _properties.find("pierceable");
 		if (pi != _properties.end()) {
 			pierceable = true;
@@ -375,8 +377,9 @@ void IMap::end(const std::string &name) {
 				pierceable = pc == 't' || pc == 'T' || pc == '1';
 			}
 		}
+		Layer *layer = NULL;
 		if (!_properties["visible-if-damaged"].empty()) {
-			visible = false;
+			layer = new DestructableLayer();
 		}
 		const std::string damage = _properties["damage-for"];
 		if (!damage.empty()) {
@@ -385,7 +388,17 @@ void IMap::end(const std::string &name) {
 		LOG_DEBUG(("layer '%s'. %dx%d. z: %d, size: %d, impassability: %d, visible: %s", e.attrs["name"].c_str(), w, h, z, _data.getSize(), impassability, visible?"yes":"no"));
 		if (_layers.find(z) != _layers.end())
 			throw_ex(("layer with z %d already exists", z));
-		_layers[z] = new Layer(w, h, _data, impassability, pierceable, visible);
+		if(layer == NULL)
+			layer = new Layer;
+		
+		layer->impassability = impassability;
+		layer->pierceable = pierceable;
+		layer->visible = visible;
+		layer->hp = hp;
+
+		layer->init(w, h, _data); //fixme: fix possible memory leak here, if exception occurs
+		
+		_layers[z] = layer;
 		//LOG_DEBUG(("(1,1) = %d", _layers[z]->get(1,1)));
 		layer = false;
 	} else if (name == "property") {
@@ -520,4 +533,14 @@ const v3<int> IMap::getSize() const {
 
 const v3<int> IMap::getTileSize() const {
 	return v3<int>(_tw, _th, 0);
+}
+
+void IMap::damage(const v3<float> &position, const int hp) {
+	v3<int> pos = position.convert<int>();
+	pos.x /= _tw;
+	pos.y /= _th;
+	//LOG_DEBUG(("map damage: %g:%g -> %d:%d for %d hp", position.x, position.y, pos.x, pos.y, hp));
+	for(LayerMap::iterator i = _layers.begin(); i != _layers.end(); ++i) {
+		i->second->damage(pos.x, pos.y, hp);
+	}
 }

@@ -529,6 +529,7 @@ void IWorld::tick(Object &o, const float dt) {
 			obj_im_now = 0;
 		if (map_im >= 1.0) {
 			o._position += dpos;
+			Map->damage(o._position + o.size / 2, o.max_hp);
 			o.emit("collision", NULL); //fixme: emit collisions with map from map::getImpassability
 			o._position -= dpos;
 		} else map_im = 0;

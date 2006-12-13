@@ -31,40 +31,45 @@
 
 class Layer {
 public:
+	typedef std::vector< std::pair< sdlx::Surface *, sdlx::CollisionMap *> > TileData;
 #ifdef PRERENDER_LAYERS
 	sdlx::Surface surface;
 #endif
-	const int impassability;
-	const bool pierceable, visible;
+	int impassability, hp;
+	bool pierceable, visible;
 
-	Layer(const int w, const int h, const mrt::Chunk & data, const int impassability, const bool pierceable, const bool visible);
+	Layer();
+	virtual void init(const int w, const int h, const mrt::Chunk & data);
 
-	inline const Uint32 get(const int x, const int y) const {
-		if (x < 0 || x >= _w || y < 0 || y >= _h) 
-			return 0;	
-		return *((Uint32 *) _data.getPtr() + _w * y + x);
-	}
+	virtual const Uint32 get(const int x, const int y) const; 
+	virtual const sdlx::Surface* getSurface(const int x, const int y) const;
+	virtual const sdlx::CollisionMap* getCollisionMap(const int x, const int y) const;
+	virtual void damage(const int x, const int y, const int hp);
 
-	inline const sdlx::Surface* getSurface(const int x, const int y) const {
-		if (x < 0 || x >= _w || y < 0 || y >= _h) 
-			return NULL;
-		return _s_data[_w * y + x];
-	}
+	void optimize(TileData & tilemap);
+	virtual ~Layer();
 
-	inline const sdlx::CollisionMap* getCollisionMap(const int x, const int y) const {
-		if (x < 0 || x >= _w || y < 0 || y >= _h) 
-			return NULL;
-		return _c_data[_w * y + x];
-	}
-
-	void optimize(std::vector< std::pair< sdlx::Surface *, sdlx::CollisionMap *> > & tilemap);
-	~Layer();
-
-private: 
+protected: 
 	mrt::Chunk _data;
 	sdlx::Surface **_s_data;
 	sdlx::CollisionMap **_c_data;
 	int _w, _h;
+};
+
+class DestructableLayer : public Layer {
+public: 
+	DestructableLayer();
+	virtual void init(const int w, const int h, const mrt::Chunk & data);
+
+	virtual const Uint32 get(const int x, const int y) const; 
+	virtual const sdlx::Surface* getSurface(const int x, const int y) const;
+	virtual const sdlx::CollisionMap* getCollisionMap(const int x, const int y) const;
+
+	virtual void damage(const int x, const int y, const int hp);
+	
+	~DestructableLayer();
+private:
+	int *_hp_data;
 };
 
 #endif

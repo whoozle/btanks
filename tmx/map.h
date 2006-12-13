@@ -62,6 +62,8 @@ public:
 	virtual const int getImpassability(const Object *obj, const v3<int>& pos, v3<int> *tile_pos = NULL, bool *hidden = NULL) const;
 	void getImpassabilityMatrix(Matrix<int> &matrix) const { matrix = _imp_map; }
 	static const int pathfinding_step;
+	
+	void damage(const v3<float> &position, const int hp);
 
 private:
 	virtual void start(const std::string &name, Attrs &attr);
