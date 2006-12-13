@@ -68,7 +68,7 @@ public:
 	virtual const sdlx::CollisionMap* getCollisionMap(const int x, const int y) const;
 
 	virtual void damage(const int x, const int y, const int hp);
-	virtual void onDeath(const int idx) {}
+	virtual void onDeath(const int idx);
 	
 	~DestructableLayer();
 protected:

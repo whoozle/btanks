@@ -21,9 +21,16 @@
 #include <assert.h>
 #include "mrt/exception.h"
 #include <assert.h>
+#include <queue>
+#include <set>
 
 void ChainedDestructableLayer::onDeath(const int idx) {
+	DestructableLayer::onDeath(idx);
 	_slave->clear(idx);
+}
+
+void DestructableLayer::onDeath(const int idx) {
+	_hp_data[idx] = -1;
 }
 
 DestructableLayer::DestructableLayer() : _hp_data(NULL) {}
@@ -64,17 +71,50 @@ const sdlx::CollisionMap* DestructableLayer::getCollisionMap(const int x, const 
 }
 
 void DestructableLayer::damage(const int x, const int y, const int hp) {
-	int i = _w * y + x;
+	const int i = _w * y + x;
 	if (i < 0 || i >= _w * _h)
 		return;
 	//LOG_DEBUG(("damage %d to cell %d", hp, i));
-	if (_hp_data[i] > 0) {
-		_hp_data[i] -= hp;
-		if (_hp_data[i] <= 0) {
-			_hp_data[i] = -1; //destructed cell
-			onDeath(i);
-		}
+	if (_hp_data[i] <= 0) 
+		return;
+	
+	_hp_data[i] -= hp;
+	if (_hp_data[i] > 0)
+		return;
+		
+	//_hp_data[i] = -1; //destructed cell
+	const int size = _w * _h;
+	
+	std::queue<int> queue;
+	std::set<int> visited;
+	queue.push(i);
+	while(!queue.empty()) {
+		int v = queue.front();
+		queue.pop();
+		
+		assert( v >= 0 && v < size );
+		if (visited.find(v) != visited.end())
+			continue;
+		
+		visited.insert(v);
+		
+		int x = v % _w, y = v / _w;
+		//LOG_DEBUG(("checking %d %d -> %d", x, y, get(x, y)));
+		if (Layer::get(x, y) == 0)
+			continue;
+		
+		onDeath(v);
+		
+		if (x > 0)
+			queue.push(v - 1);
+		if (x < _w - 1)
+			queue.push(v + 1);
+		if (y > 0)
+			queue.push(v - _w);
+		if (y < _h - 1)
+			queue.push(v + _w);
 	}
+	//LOG_DEBUG(("cleanup done"));
 }
 
 DestructableLayer::~DestructableLayer() {
