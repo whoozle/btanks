@@ -168,11 +168,12 @@ void Hud::render(sdlx::Surface &window) const {
 	
 	const int font_dy = (icon_h - _font.getHeight()) / 2;
 
-	//only one visible player supported
+	int c = 0;
 	for(size_t i = 0; i < n; ++i) {
 		const PlayerSlot &slot = PlayerManager->getSlot(i);
 		if (!slot.visible)
 			continue;
+		++c;
 		const Object *obj = slot.getObject();
 	
 		std::string hp = mrt::formatString("HP%-2d ", (obj)?obj->hp:0);
@@ -241,6 +242,12 @@ void Hud::render(sdlx::Surface &window) const {
 			
 		} while(0);
 	}
+	
+	if (c >= 2) {
+		//fixme: add more split screen modes ? 
+		//fixme: just draw splitter centered. 
+		window.copyFrom(_screen_splitter, (window.getWidth() - _screen_splitter.getWidth()) / 2, 0);
+	}
 }
 
 void Hud::renderSplash(sdlx::Surface &window) const {
@@ -295,6 +302,7 @@ Hud::Hud(const int w, const int h) : _update_radar(true) {
 	_loading_item.loadImage(data_dir + "/tiles/loading_item.png");
 	_icons.loadImage(data_dir + "/tiles/hud_icons.png");
 	_splitter.loadImage(data_dir + "/tiles/hud_splitter.png");
+	_screen_splitter.loadImage(data_dir + "/tiles/split_line.png");
 	
 	_font.load(data_dir + "/font/medium.png", sdlx::Font::AZ09);
 	
