@@ -19,6 +19,7 @@
 
 #include "object.h"
 #include "resource_manager.h"
+#include "config.h"
 
 class Mine : public Object {
 public:
@@ -48,6 +49,10 @@ void Mine::tick(const float dt) {
 void Mine::emit(const std::string &event, Object * emitter) {
 	if (event == "collision") {
 		if (emitter != NULL && getState() == "armed") {
+			GET_CONFIG_VALUE("object.regular-mine.triggering-mass", int, m, 20);
+			if (emitter->mass < m)
+				return;
+			
 			spawn("explosion", "explosion");
 			Object::emit("death", emitter);
 			emitter->addDamage(this, max_hp);
