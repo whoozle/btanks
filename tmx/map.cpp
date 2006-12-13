@@ -196,6 +196,9 @@ void IMap::load(const std::string &name) {
 #ifdef PRERENDER_LAYERS
 	LOG_DEBUG(("rendering layers..."));
 	for(LayerMap::iterator l = _layers.begin(); l != _layers.end(); ++l) {
+		if (!l->visible)
+			continue;
+		
 		l->second->surface.createRGB(_w * _tw, _h * _th, 24);
 		//l->second->surface.convertAlpha();
 		//l->second->surface.convertToHardware();
@@ -221,6 +224,9 @@ void IMap::load(const std::string &name) {
 		for(int x = 0; x < _w; ++x) {
 			int im = 0;
 			for(LayerMap::reverse_iterator l = _layers.rbegin(); l != _layers.rend(); ++l) {
+				if (!l->second->visible)
+					continue;
+				
 				int tid = l->second->get(x, y);
 				if (tid == 0)
 					continue;
@@ -359,6 +365,8 @@ void IMap::end(const std::string &name) {
 		int impassability = (_properties.find("impassability") != _properties.end())?atoi(_properties["impassability"].c_str()):-1;
 		
 		bool pierceable = false;
+		bool visible = true;
+		
 		PropertyMap::const_iterator pi = _properties.find("pierceable");
 		if (pi != _properties.end()) {
 			pierceable = true;
@@ -367,10 +375,17 @@ void IMap::end(const std::string &name) {
 				pierceable = pc == 't' || pc == 'T' || pc == '1';
 			}
 		}
-		LOG_DEBUG(("layer '%s'. %dx%d. z: %d, size: %d, impassability: %d", e.attrs["name"].c_str(), w, h, z, _data.getSize(), impassability));
+		if (!_properties["visible-if-damaged"].empty()) {
+			visible = false;
+		}
+		const std::string damage = _properties["damage-for"];
+		if (!damage.empty()) {
+			visible = false;
+		}
+		LOG_DEBUG(("layer '%s'. %dx%d. z: %d, size: %d, impassability: %d, visible: %s", e.attrs["name"].c_str(), w, h, z, _data.getSize(), impassability, visible?"yes":"no"));
 		if (_layers.find(z) != _layers.end())
 			throw_ex(("layer with z %d already exists", z));
-		_layers[z] = new Layer(w, h, _data, impassability, pierceable);
+		_layers[z] = new Layer(w, h, _data, impassability, pierceable, visible);
 		//LOG_DEBUG(("(1,1) = %d", _layers[z]->get(1,1)));
 		layer = false;
 	} else if (name == "property") {
@@ -436,6 +451,7 @@ void IMap::render(sdlx::Surface &window, const sdlx::Rect &src, const sdlx::Rect
 		return;
 #ifdef PRERENDER_LAYERS
 	for(LayerMap::const_iterator l = _layers.begin(); l != _layers.end(); ++l) 	
+		
 		if (l->first >= z1) {
 			if (l->first >= z2) 
 				break;
@@ -452,6 +468,9 @@ void IMap::render(sdlx::Surface &window, const sdlx::Rect &src, const sdlx::Rect
 	if (l->first >= z1) {
 		if (l->first >= z2) 
 			break;
+
+		if (!l->second->visible)
+			continue;
 		//LOG_DEBUG(("z: %d << %d, layer: %d", z1, z2, l->first));
 		
 		for(int ty = 0; ty < tyn; ++ty) {

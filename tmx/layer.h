@@ -35,9 +35,9 @@ public:
 	sdlx::Surface surface;
 #endif
 	const int impassability;
-	const bool pierceable;
+	const bool pierceable, visible;
 
-	Layer(const int w, const int h, const mrt::Chunk & data, const int impassability, const bool pierceable);
+	Layer(const int w, const int h, const mrt::Chunk & data, const int impassability, const bool pierceable, const bool visible);
 
 	inline const Uint32 get(const int x, const int y) const {
 		if (x < 0 || x >= _w || y < 0 || y >= _h) 

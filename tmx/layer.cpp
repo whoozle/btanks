@@ -22,8 +22,9 @@
 #include "mrt/exception.h"
 #include <assert.h>
 
-Layer::Layer(const int w, const int h, const mrt::Chunk & data, const int impassability, const bool pierceable) : 
-impassability(impassability), pierceable(pierceable), _s_data(NULL), _c_data(NULL), _w(w), _h(h) {
+Layer::Layer(const int w, const int h, const mrt::Chunk & data, const int impassability, const bool pierceable, const bool visible) : 
+impassability(impassability), pierceable(pierceable), visible(visible), 
+	_s_data(NULL), _c_data(NULL), _w(w), _h(h) {
 	_data = data;
 	assert((int)_data.getSize() == (4 * _w * _h));
 }
