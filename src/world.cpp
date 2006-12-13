@@ -965,7 +965,7 @@ const bool IWorld::getNearest(const Object *obj, const std::string &classname, v
 	if (target == NULL) 
 		return false;
 
-	position = target->_position;
+	position = target->_position + target->size / 2;
 	velocity = target->_velocity;
 	
 	position -= obj->_position + obj->size / 2;
