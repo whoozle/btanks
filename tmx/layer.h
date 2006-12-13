@@ -41,7 +41,8 @@ public:
 	Layer();
 	virtual void init(const int w, const int h, const mrt::Chunk & data);
 
-	virtual void clear(const int x, const int y);
+	void clear(const int idx);
+	
 	virtual const Uint32 get(const int x, const int y) const; 
 	virtual const sdlx::Surface* getSurface(const int x, const int y) const;
 	virtual const sdlx::CollisionMap* getCollisionMap(const int x, const int y) const;
@@ -67,6 +68,7 @@ public:
 	virtual const sdlx::CollisionMap* getCollisionMap(const int x, const int y) const;
 
 	virtual void damage(const int x, const int y, const int hp);
+	virtual void onDeath(const int idx) {}
 	
 	~DestructableLayer();
 protected:
@@ -78,7 +80,7 @@ public:
 	ChainedDestructableLayer() : _slave(NULL) {}
 	void setSlave(Layer *layer) { _slave = layer; }
 
-	virtual void damage(const int x, const int y, const int hp);
+	virtual void onDeath(const int idx);
 private: 
 	Layer *_slave;
 };
