@@ -66,6 +66,7 @@ void Explosion::onSpawn() {
 	if (classname == "smoke-cloud") {
 		play("start", false);
 		play("main", true);
+		return;
 	}
 	
 	play("boom", false);
