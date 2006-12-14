@@ -141,6 +141,8 @@ print "version: %s" %version
 venv = env.Copy()
 venv.Append(CPPDEFINES=['VERSION="\\"' + version + '\\""'])
 
+env.Append(CPPDEFINES = ['RELEASE'])
+
 vobj = venv.Object('src/version.cpp')
 bt_sources = 	[
 	'src/alarm.cpp', 'src/base_object.cpp', 'src/notifying_xml_parser.cpp',
