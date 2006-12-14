@@ -22,8 +22,8 @@
 #include "player_state.h"
 #include "mrt/logger.h"
 
-JoyPlayer::JoyPlayer(const int idx, const int fire, const int alt_fire)
-: _joy(idx), _fire(fire), _alt_fire(alt_fire) {
+JoyPlayer::JoyPlayer(const int idx, const int fire, const int alt_fire, const int leave)
+: _joy(idx), _fire(fire), _alt_fire(alt_fire), _leave(leave) {
 }
 
 #define THRESHOLD 16384
@@ -41,5 +41,6 @@ void JoyPlayer::updateState(PlayerState &_state) {
 	if (y <= -THRESHOLD) _state.up = true;
 	_state.fire = _joy.getButton(_fire);
 	_state.alt_fire = _joy.getButton(_alt_fire);
+	_state.leave = _joy.getButton(_leave);
 }
 
