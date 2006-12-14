@@ -518,13 +518,12 @@ void IGame::run() {
 			_shake -= dt;
 		}
 		
-		_main_menu.render(_window);
-		
-
 		if (Map->loaded()) {
 			_hud->render(_window);
 			_hud->renderRadar(dt, _window);
 		}
+
+		_main_menu.render(_window);
 		
 flip:
 		if (_show_fps) {
