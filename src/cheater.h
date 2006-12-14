@@ -6,8 +6,9 @@
 #include <deque>
 
 #include "sdlx/sdlx.h"
+#include <sigc++/sigc++.h>
 
-class Cheater {
+class Cheater : public sigc::trackable {
 public: 
 	Cheater();
 private: 
