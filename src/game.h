@@ -41,6 +41,7 @@ class ControlMethod;
 class PlayerSlot;
 class Hud;
 class Credits;
+class Cheater;
 
 class IGame : public Window {
 public: 
@@ -116,6 +117,7 @@ private:
 	Uint32 t_start;
 	
 	Credits *_credits;
+	Cheater *_cheater;
 	
 	IGame(const IGame &);
 	const IGame& operator=(const IGame &);

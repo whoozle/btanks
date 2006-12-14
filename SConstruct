@@ -153,7 +153,7 @@ bt_sources = 	[
 	'objects/corpse.cpp', 'objects/item.cpp', 'objects/mine.cpp', 'objects/dirt.cpp', 
 	'objects/damage.cpp', 'objects/helicopter.cpp', 'objects/paratrooper.cpp', 'objects/kamikaze.cpp',
 	'objects/machinegunner.cpp', 'objects/destructable_object.cpp', 'objects/submarine.cpp', 'objects/train.cpp',
-	'objects/trooper.cpp', 'objects/fakemod.cpp', 'objects/car.cpp',
+	'objects/trooper.cpp', 'objects/fakemod.cpp', 'objects/car.cpp', 'objects/tooltip.cpp', 
 	
 	'src/player_state.cpp', 
 	'controls/joyplayer.cpp', 'controls/keyplayer.cpp', 'controls/external_control.cpp', 'controls/mouse_control.cpp', 
@@ -162,7 +162,7 @@ bt_sources = 	[
 	'src/resource_manager.cpp', 'src/world.cpp',
 	'tmx/map.cpp', 'tmx/layer.cpp', 
 	'src/main.cpp', 'src/config.cpp', 'src/player_slot.cpp', 'src/hud.cpp', 'src/game.cpp',  'src/window.cpp', 
-	'src/credits.cpp',
+	'src/credits.cpp', 'src/cheater.cpp', 
 
 	'sound/al_ex.cpp', 'sound/ogg_ex.cpp', 'sound/ogg_stream.cpp', 'sound/mixer.cpp', 'sound/sample.cpp', 
 	

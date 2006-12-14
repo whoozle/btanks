@@ -51,7 +51,7 @@ public:
 	void init(const Animation *other);
 	virtual Object * clone() const;
 
-	void setDirection(const int dir);
+	virtual void setDirection(const int dir);
 	const int getDirection() const;
 	const int getDirectionsNumber() const;
 	void setDirectionsNumber(const int dirs);
@@ -157,6 +157,8 @@ protected:
 	
 	virtual const bool skipRendering() const;
 	
+	const sdlx::Surface * getSurface() const;
+
 private: 
 //pathfinding stuff
 	void close(const int vertex); 

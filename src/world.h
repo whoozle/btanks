@@ -78,6 +78,7 @@ public:
 	const float getImpassability(Object *obj, const v3<int> &position, const Object **collided_with = NULL, const bool probe = false) const;
 	
 	const int getChildren(const int id) const;
+	void setMode(const std::string &mode, const bool value);
 private:
 	typedef std::map<const int, Object*> ObjectMap;
 	
@@ -94,7 +95,7 @@ private:
 	ObjectSet _objects;
 	ObjectMap _id2obj;
 	int _last_id;
-	bool _safe_mode;
+	bool _safe_mode, _atatat;
 };
 
 SINGLETON(World, IWorld);

@@ -45,7 +45,7 @@ void Object::Event::deserialize(const mrt::Serializator &s) {
 }
 
 Object * Object::clone() const {
-	assert(0);
+	throw_ex(("object %s:%s doesnt provide clone() method", classname.c_str(), animation.c_str()));
 	return NULL;
 }
 
@@ -1075,4 +1075,10 @@ void Object::addDamage(Object *from, const int d, const bool emitDeath) {
 	getPosition(pos);
 	pos.z = 0;
 	World->addObject(o, pos);	
+}
+
+const sdlx::Surface * Object::getSurface() const {
+	Object *nc_this = const_cast<Object *>(this);
+	nc_this->checkSurface();
+	return _surface;
 }

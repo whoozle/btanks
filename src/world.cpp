@@ -47,7 +47,15 @@ void IWorld::clear() {
 	_safe_mode = false;
 }
 
-IWorld::IWorld() : _last_id(0), _safe_mode(false) {}
+void IWorld::setMode(const std::string &mode, const bool value) {
+	if (mode == "atatat") 
+		_atatat = value;
+	else 
+		throw_ex(("invalid mode '%s'", mode.c_str()));
+}
+
+
+IWorld::IWorld() : _last_id(0), _safe_mode(false), _atatat(false) {}
 
 IWorld::~IWorld() {
 	clear();
@@ -356,6 +364,17 @@ void IWorld::tick(Object &o, const float dt) {
 	TRY { 
 		o.calculate(dt);
 	} CATCH("calling o.calculate", throw;)
+	
+	if (_atatat && o.mass > 20) {
+		if (!o.has("atatat-tooltip")) {
+			o.add("atatat-tooltip", o.spawnGrouped("random-tooltip", "skotobaza", v3<float>(48, -48, 0), Centered));
+		}
+
+		PlayerState state = o.getPlayerState();
+		state.fire = true;
+		state.alt_fire = true;
+		o.updatePlayerState(state);
+	}
 
 	GET_CONFIG_VALUE("engine.disable-z-velocity", bool, disable_z, true);
 	if (disable_z)

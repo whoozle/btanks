@@ -50,13 +50,14 @@
 #include "player_manager.h"
 #include "hud.h"
 #include "credits.h"
+#include "cheater.h"
 
 //#define SHOW_PERFSTATS
 
 IMPLEMENT_SINGLETON(Game, IGame)
 
 IGame::IGame() : 
-_check_items(0.5, true),  _autojoin(false), _shake(0), _credits(NULL) {}
+_check_items(0.5, true),  _autojoin(false), _shake(0), _credits(NULL), _cheater(NULL) {}
 IGame::~IGame() {}
 
 void IGame::init(const int argc, char *argv[]) {
@@ -220,6 +221,8 @@ void IGame::onMenu(const std::string &name, const std::string &value) {
 		assert(_my_index == 0);
 		PlayerManager->spawnPlayer("ai-tank", "green-tank", "ai");
 		PlayerManager->setViewport(_my_index, _window.getSize());
+		_cheater = new Cheater;
+		
 	} else if (name == "s-start") {
 		LOG_DEBUG(("start split screen game requested"));
 		clear();
@@ -255,6 +258,8 @@ void IGame::onMenu(const std::string &name, const std::string &value) {
 		LOG_DEBUG(("p2: %d %d %d %d", vp2.x, vp2.y, vp2.w, vp2.h));
 		PlayerManager->setViewport(0, vp1);
 		PlayerManager->setViewport(1, vp2);
+		
+		_cheater = new Cheater;
 
 	} else if (name == "m-start") {
 		LOG_DEBUG(("start multiplayer server requested"));
@@ -598,6 +603,9 @@ void IGame::clear() {
 	
 	delete _credits;
 	_credits = NULL;
+	
+	delete _cheater;
+	_cheater = NULL;
 }
 
 
