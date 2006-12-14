@@ -93,12 +93,10 @@ void IGame::init(const int argc, char *argv[]) {
 	std::string address;
 	
 	for(int i = 1; i < argc; ++i) {
-		if (strncmp(argv[i], "--map=", 6) == 0) { _preload_map = argv[i] + 6; }
-		else if (strncmp(argv[i], "--connect=", 10) == 0) { address = argv[i] + 10; _autojoin = true; }
+		if (strncmp(argv[i], "--connect=", 10) == 0) { address = argv[i] + 10; _autojoin = true; }
 		else if (strcmp(argv[i], "--no-sound") == 0) { no_sound = true; no_music = true; }
 		else if (strcmp(argv[i], "--help") == 0) { 
 			printf(
-					"\t--map=xx\t\tload xx as map, start single player\n" 
 					"\t--connect=ip/host\tconnect to given host as mp-client\n" 
 					"\t--no-sound\t\tdisable sound.\n" 
 				);
@@ -165,7 +163,7 @@ void IGame::init(const int argc, char *argv[]) {
 	} else _fps = NULL;
 
 	
-	
+/*	
 	if (_preload_map.size()) {
 		LOG_DEBUG(("starting predefined map %s...", _preload_map.c_str()));
 		loadMap(_preload_map);
@@ -176,6 +174,7 @@ void IGame::init(const int argc, char *argv[]) {
 		PlayerManager->setViewport(_my_index, _window.getSize());
 		_main_menu.setActive(false);
 	}
+*/
 	if (_autojoin) {
 		onMenu("m-join", address);
 		_main_menu.setActive(false);
