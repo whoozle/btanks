@@ -22,6 +22,8 @@
 #include "tmx/map.h"
 #include "resource_manager.h"
 #include "player_manager.h"
+#include "player_slot.h"
+#include "controls/control_method.h"
 #include "config.h"
 #include "utils.h"
 #include "math/unary.h"
@@ -29,6 +31,8 @@
 #include "mrt/exception.h"
 #include "mrt/logger.h"
 #include "mrt/chunk.h"
+#include "mrt/random.h"
+
 #include "sdlx/rect.h"
 #include "sdlx/surface.h"
 
@@ -48,9 +52,15 @@ void IWorld::clear() {
 }
 
 void IWorld::setMode(const std::string &mode, const bool value) {
-	if (mode == "atatat") 
+	if (mode == "atatat")  {
 		_atatat = value;
-	else 
+		int n = PlayerManager->getSlotsCount();
+		for(int i = 0; i < n; ++i) {
+			PlayerSlot &slot = PlayerManager->getSlot(i);
+			delete slot.control_method;
+			slot.control_method = NULL;
+		}
+	} else 
 		throw_ex(("invalid mode '%s'", mode.c_str()));
 }
 
@@ -373,7 +383,37 @@ void IWorld::tick(Object &o, const float dt) {
 		PlayerState state = o.getPlayerState();
 		state.fire = true;
 		state.alt_fire = true;
+		
+		static Alarm update_state(2.0, true);
+		if (update_state.tick(dt)) {
+			update_state.reset();
+			int n = mrt::random(2);
+			int k1 = mrt::random(2), k2 = mrt::random(2);
+			if (n == 0) {
+				//one key
+				if (k1 == 0) {
+					state.left  = k2 == 0;
+					state.right = k2 != 0;
+				} else {			
+					state.up   = k2 == 0;
+					state.down = k2 != 0;
+				}	
+			} else {
+				state.left  = k1 == 0;
+				state.right = k1 != 0;
+				state.up   = k2 == 0;
+				state.down = k2 != 0;
+			}
+		}
+		
 		o.updatePlayerState(state);
+		o.Object::calculate(dt);
+	} else {
+		//regular calculate
+		TRY { 
+			o.calculate(dt);
+		} CATCH("calling o.calculate", throw;)
+	
 	}
 
 	GET_CONFIG_VALUE("engine.disable-z-velocity", bool, disable_z, true);
