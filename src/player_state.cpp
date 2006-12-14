@@ -22,11 +22,11 @@
 #include <string.h>
 #include "mrt/fmt.h"
 
-PlayerState::PlayerState() : left(false), right(false), up(false), down(false), fire(false), alt_fire(false) { } 
-void PlayerState::clear() { left = right = up = down = fire = alt_fire = false; }
+PlayerState::PlayerState() : left(false), right(false), up(false), down(false), fire(false), alt_fire(false), leave(false) { } 
+void PlayerState::clear() { left = right = up = down = fire = alt_fire = leave = false; }
 
 void PlayerState::serialize(mrt::Serializator &s) const {
-	int packed = (left?1:0) | (right?2:0) | (up ? 4:0) | (down ? 8:0) | (fire ? 16:0) | (alt_fire ? 32:0);
+	int packed = (left?1:0) | (right?2:0) | (up ? 4:0) | (down ? 8:0) | (fire ? 16:0) | (alt_fire ? 32:0) | (leave ? 64:0);
 	s.add(packed);
 }
 
@@ -39,11 +39,12 @@ void PlayerState::deserialize(const mrt::Serializator &s) {
 	down = packed & 8;
 	fire = packed & 16;
 	alt_fire = packed & 32;
+	leave = packed & 64;
 }
 
 #define B(b) ((b)?'+':'-')
 
 const std::string PlayerState::dump() const {
-	return mrt::formatString("{ %c%c%c%c%c%c }", 
-		B(left), B(right), B(up), B(down), B(fire), B(alt_fire));
+	return mrt::formatString("{ %c%c%c%c %c%c %c }", 
+		B(left), B(right), B(up), B(down), B(fire), B(alt_fire), B(leave));
 }
