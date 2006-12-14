@@ -173,6 +173,16 @@ public:
 		x -= other.x; y -= other.y; z -= other.z;
 		return *this;
 	}
+
+	inline const v3<T>& operator*=(const v3<T>& other) {
+		x *= other.x; y *= other.y; z *= other.z;
+		return *this;
+	}
+
+	inline const v3<T>& operator/=(const v3<T>& other) {
+		x /= other.x; y /= other.y; z /= other.z;
+		return *this;
+	}
 	
 	inline const v3<T> operator*(const v3<T>& other) const {
 		return v3<T>(x * other.x, y * other.y, z * other.z);
