@@ -1,6 +1,3 @@
-#ifndef __OBJECTS_TOOLTIP_H__
-#define __OBJECTS_TOOLTIP_H__
-
 #include "resource_manager.h"
 #include "object.h"
 #include "config.h"
@@ -40,6 +37,3 @@ private:
 };
 
 REGISTER_OBJECT("random-tooltip", Tooltip, ());
-
-#endif
-
