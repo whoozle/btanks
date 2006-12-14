@@ -1,3 +1,6 @@
+*) implemented destructable map layers and all stuff around it. 
+*) mine now triggered by object with mass >= 20.
+*) fixed in getNearest() - core Object function. various bugs got fixed by that.
 *) added invulnerability effect. invulnerability on respawn.
 *) added throwers item/throwers for shilka.
 *) limited kamikazes dropped by heli.
