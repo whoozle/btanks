@@ -420,7 +420,7 @@ void IMap::end(const std::string &name) {
 		_layers[z] = layer;
 		_layer_z[_layer_name] = z;
 		//LOG_DEBUG(("(1,1) = %d", _layers[z]->get(1,1)));
-		layer = false;
+		_layer = false;
 	} else if (name == "property") {
 		if (_layer)
 			_properties[e.attrs["name"]] = e.attrs["value"];
