@@ -116,6 +116,7 @@ if sys.platform == "win32":
 	env.Append(LIBS=['Ws2_32', 'SDLmain'])
 	env.Append(LINKFLAGS = '/SUBSYSTEM:WINDOWS ')
 
+env.Append(CPPDEFINES = ['RELEASE'])
 
 Export('env')
 Export('sigc_cpppath')
@@ -141,7 +142,6 @@ print "version: %s" %version
 venv = env.Copy()
 venv.Append(CPPDEFINES=['VERSION="\\"' + version + '\\""'])
 
-env.Append(CPPDEFINES = ['RELEASE'])
 
 vobj = venv.Object('src/version.cpp')
 bt_sources = 	[
