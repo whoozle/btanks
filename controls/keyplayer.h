@@ -28,7 +28,7 @@ public:
 	KeyPlayer(SDLKey up, SDLKey down, SDLKey left, SDLKey right, SDLKey fire, SDLKey alt_fire, SDLKey leave);
 	virtual void updateState(PlayerState &state);
 private:
-	SDLKey _up, _down, _left, _right, _fire, _alt_fire, _leave;
+	SDLKey _up, _down, _left, _right, _fire, _alt_fire, leave;
 };
 
 #endif

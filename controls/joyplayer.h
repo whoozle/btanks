@@ -29,7 +29,7 @@ public:
 	
 private:
 	sdlx::Joystick _joy;
-	int _fire, _alt_fire, _leave;
+	int _fire, _alt_fire, leave;
 };
 
 #endif
