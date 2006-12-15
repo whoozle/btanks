@@ -88,7 +88,7 @@ void IWorld::addObject(Object *o, const v3<float> &pos, const int id) {
 	float oz = o->_position.z;
 	o->_position = pos;
 	if (pos.z != 0) {
-		LOG_DEBUG(("overriding z(%g) for object '%s'", pos.z, o->classname.c_str()));
+		//LOG_DEBUG(("overriding z(%g) for object '%s'", pos.z, o->classname.c_str()));
 	} else {
 		o->_position.z = oz; //restore original value
 		//LOG_DEBUG(("using default z(%g) for object '%s'", oz, o->classname.c_str()));
