@@ -423,7 +423,7 @@ void IWorld::tick(Object &o, const float dt) {
 		o._velocity.clear();
 		o.updatePlayerState(PlayerState());
 
-		Object * man = spawn(&o, "machinegunner-player", "machinegunner", v3<float>((o.size.x + o.size.y)/2, 0, 0), v3<float>::empty);
+		Object * man = spawn(&o, "machinegunner-player", "machinegunner", o._direction * (o.size.x + o.size.y) / 4, v3<float>::empty);
 		o.classname = "vehicle";
 
 		man->disown();
