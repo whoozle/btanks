@@ -22,8 +22,8 @@
  </layer>
  <layer name="build" width="10" height="10">
   <properties>
-   <property name="impassability" value="100"/>
    <property name="z" value="280"/>
+   <property name="impassability" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgwASmQGyGRdwTiL2Q+PZA7IBFXTAQh2DR541FLTKIRsLUAheB+BIR6m4D8R00MXT/gsBTIH6GJobuXxA4A8Rngfgccc6EAwB4WDCxkAEAAA==
@@ -53,6 +53,7 @@
  <layer name="Layer 4" width="10" height="10">
   <properties>
    <property name="hp" value="20"/>
+   <property name="impassability" value="100"/>
    <property name="damage-for" value="build"/>
   </properties>
   <data encoding="base64" compression="gzip">
@@ -63,6 +64,7 @@
  <layer name="Layer 5" width="10" height="10">
   <properties>
    <property name="hp" value="20"/>
+   <property name="impassability" value="100"/>
    <property name="damage-for" value="build"/>
   </properties>
   <data encoding="base64" compression="gzip">
