@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<map version="0.99b" orientation="orthogonal" width="10" height="10" tilewidth="64" tileheight="64">
+ <properties>
+  <property name="spawn:2" value="@9,0"/>
+  <property name="spawn:1" value="@1,4"/>
+  <property name="spawn:3" value="@4,9"/>
+ </properties>
+ <tileset name="Untitled" firstgid="1" tilewidth="64" tileheight="64">
+  <image source="../tiles/houses_tileset.png"/>
+ </tileset>
+ <tileset name="Untitled" firstgid="181" tilewidth="64" tileheight="64">
+  <image source="../tiles/destroyed_houses_tileset.png"/>
+ </tileset>
+ <layer name="Layer 0" width="10" height="10">
+  <properties>
+   <property name="impassability" value="20"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAACtjYGAoG8WDBgMA8+G5FZABAAA=
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="build" width="10" height="10">
+  <properties>
+   <property name="impassability" value="100"/>
+   <property name="z" value="280"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgwASmQGyGRdwTiL2Q+PZA7IBFXTAQh2DR541FLTKIRsLUAheB+BIR6m4D8R00MXT/gsBTIH6GJobuXxA4A8Rngfgccc6EAwB4WDCxkAEAAA==
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="build2" width="10" height="10">
+  <properties>
+   <property name="impassability" value="0"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNggAAHBuqDUBqYOdwBAHkjoDyQAQAA
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="damage" width="10" height="10">
+  <properties>
+   <property name="hp" value="20"/>
+   <property name="impassability" value="100"/>
+   <property name="damage-for" value="build"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgwA4u4RBHB3eIVPeMSHUjHQAAXPIe4JABAAA=
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="Layer 4" width="10" height="10">
+  <properties>
+   <property name="hp" value="20"/>
+   <property name="damage-for" value="build"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgwAQXsYhhA7eJVPeUSHWjgIEBAJ1y8TOQAQAA
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="Layer 5" width="10" height="10">
+  <properties>
+   <property name="hp" value="20"/>
+   <property name="damage-for" value="build"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGDzgDBCfBeJzA+2QAQQAgthA3pABAAA=
+  </data>
+  <tileproperties/>
+ </layer>
+</map>
