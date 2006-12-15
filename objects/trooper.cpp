@@ -21,6 +21,7 @@
 #include "resource_manager.h"
 #include "alarm.h"
 #include "config.h"
+#include "world.h"
 
 class Trooper : public Object {
 public:
@@ -135,6 +136,7 @@ void AITrooper::calculate(const float dt) {
 }
 
 void Trooper::tick(const float dt) {
+	setDirection(_velocity.getDirection8() - 1);
 	Object::tick(dt);
 	
 	const std::string state = getState();
@@ -173,6 +175,10 @@ void Trooper::onSpawn() {
 void Trooper::emit(const std::string &event, Object * emitter) {
 	if (event == "death") {
 		spawn("corpse", "dead-machinegunner", v3<float>::empty, v3<float>::empty);
+	} else if (event == "collision" && emitter != NULL && emitter->classname == "vehicle") {
+		if (_velocity.same_sign(getRelativePosition(emitter)) &&
+			World->attachVehicle(this, emitter))
+			return;
 	}
 	Object::emit(event, emitter);
 }

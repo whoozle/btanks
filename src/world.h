@@ -79,6 +79,8 @@ public:
 	
 	const int getChildren(const int id) const;
 	void setMode(const std::string &mode, const bool value);
+	
+	const bool attachVehicle(Object *object, Object *vehicle);
 private:
 	typedef std::map<const int, Object*> ObjectMap;
 	
