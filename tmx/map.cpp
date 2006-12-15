@@ -239,9 +239,6 @@ void IMap::load(const std::string &name) {
 		for(int x = 0; x < _w; ++x) {
 			int im = 0;
 			for(LayerMap::reverse_iterator l = _layers.rbegin(); l != _layers.rend(); ++l) {
-				if (!l->second->visible)
-					continue;
-				
 				int tid = l->second->get(x, y);
 				if (tid == 0)
 					continue;
@@ -383,7 +380,6 @@ void IMap::end(const std::string &name) {
 		int impassability = (_properties.find("impassability") != _properties.end())?atoi(_properties["impassability"].c_str()):-1;
 		
 		bool pierceable = false;
-		bool visible = true;
 		
 		int hp = atoi(_properties["hp"].c_str());
 		
@@ -411,7 +407,7 @@ void IMap::end(const std::string &name) {
 			layer = new ChainedDestructableLayer();
 			_damage4[_layer_name] = damage;
 		}
-		LOG_DEBUG(("layer '%s'. %dx%d. z: %d, size: %d, impassability: %d, visible: %s", e.attrs["name"].c_str(), w, h, z, _data.getSize(), impassability, visible?"yes":"no"));
+		LOG_DEBUG(("layer '%s'. %dx%d. z: %d, size: %d, impassability: %d", e.attrs["name"].c_str(), w, h, z, _data.getSize(), impassability));
 		if (_layers.find(z) != _layers.end())
 			throw_ex(("layer with z %d already exists", z));
 		if(layer == NULL)
@@ -419,7 +415,6 @@ void IMap::end(const std::string &name) {
 		
 		layer->impassability = impassability;
 		layer->pierceable = pierceable;
-		layer->visible = visible;
 		layer->hp = hp;
 
 		layer->init(w, h, _data); //fixme: fix possible memory leak here, if exception occurs
@@ -509,8 +504,6 @@ void IMap::render(sdlx::Surface &window, const sdlx::Rect &src, const sdlx::Rect
 		if (l->first >= z2) 
 			break;
 
-		if (!l->second->visible)
-			continue;
 		//LOG_DEBUG(("z: %d << %d, layer: %d", z1, z2, l->first));
 		
 		for(int ty = 0; ty < tyn; ++ty) {

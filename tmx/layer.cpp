@@ -124,7 +124,7 @@ DestructableLayer::~DestructableLayer() {
 	delete[] _hp_data;
 }
 
-Layer::Layer() : impassability(0), hp(0), pierceable(false), visible(false), _s_data(NULL), _c_data(NULL), _w(0), _h(0) {}
+Layer::Layer() : impassability(0), hp(0), pierceable(false), _s_data(NULL), _c_data(NULL), _w(0), _h(0) {}
 
 void Layer::init(const int w, const int h, const mrt::Chunk & data) {
 	delete[] _s_data;

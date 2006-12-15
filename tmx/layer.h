@@ -36,7 +36,7 @@ public:
 	sdlx::Surface surface;
 #endif
 	int impassability, hp;
-	bool pierceable, visible;
+	bool pierceable;
 
 	Layer();
 	virtual void init(const int w, const int h, const mrt::Chunk & data);
