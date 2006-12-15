@@ -397,10 +397,17 @@ void IMap::end(const std::string &name) {
 		}
 		Layer *layer = NULL;
 		if (!_properties["visible-if-damaged"].empty()) {
-			layer = new DestructableLayer();
+			layer = new DestructableLayer(true);
+		}
+		if (!_properties["invisible-if-damaged"].empty()) {
+			if (layer != NULL) 
+				throw_ex(("visible/invisible options is mutually exclusive"));
+			layer = new DestructableLayer(false);
 		}
 		const std::string damage = _properties["damage-for"];
 		if (!damage.empty()) {
+			if (layer != NULL)
+				throw_ex(("damage-for cannot be combined with (in)visible-if-damaged"));
 			layer = new ChainedDestructableLayer();
 			_damage4[_layer_name] = damage;
 		}
