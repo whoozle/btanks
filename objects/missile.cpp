@@ -134,7 +134,7 @@ void Missile::emit(const std::string &event, Object * emitter) {
 		v3<float> dpos;
 		
 		GET_CONFIG_VALUE("objects.explosion-downwards-z-override", int, edzo, 180)
-		if (_velocity.y > 0)
+		if (_velocity.y >= 0)
 			dpos.z = edzo;
 
 		spawn("explosion", "missile-explosion", dpos);
