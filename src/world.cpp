@@ -540,9 +540,8 @@ void IWorld::tick(Object &o, const float dt) {
 		
 		map_im = map.getImpassability(&o, pos, NULL, has_outline?(hidden_attempt + attempt):NULL) / 100.0;
 		obj_im = getImpassability(&o, pos); 
-		///obj_im gets cached here. remove collision map cache ? 
 
-		if ((map_im < 1.0 && obj_im < 1.0) || o.piercing || dirs == 1) {
+		if ((map_im >= 0 && map_im < 1.0 && obj_im < 1.0) || o.piercing || dirs == 1) {
 			//LOG_DEBUG(("success"));
 			stuck = false;
 			break;
@@ -591,10 +590,10 @@ void IWorld::tick(Object &o, const float dt) {
 		if (obj_im_now > 0 && obj_im_now < 1.0)
 			obj_im_now = 0;
 		if (map_im >= 1.0) {
-			o._position += dpos;
+			o._position += dpos * 4; //terrible terrible terrible hack !!! fix it ASAP
 			Map->damage(o._position + o.size / 2, o.max_hp);
 			o.emit("collision", NULL); //fixme: emit collisions with map from map::getImpassability
-			o._position -= dpos;
+			o._position -= dpos * 4;
 		} else map_im = 0;
 	}
 	
