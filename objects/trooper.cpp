@@ -183,5 +183,6 @@ Object* Trooper::clone() const  {
 }
 
 
+REGISTER_OBJECT("machinegunner-player", Trooper, ("player", "machinegunner-bullet", true));
 REGISTER_OBJECT("machinegunner", AITrooper, ("machinegunner-bullet", true));
 REGISTER_OBJECT("thrower", AITrooper, ("thrower-missile", false));
