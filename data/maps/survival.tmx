@@ -38,28 +38,28 @@
   <property name="object:guided-missiles-item:guided-missiles-item:0" value="1024,128,180"/>
   <property name="object:car:white-car:1" value="@0,6"/>
   <property name="object:road-sign:road-sign09:1" value="394,1320,1"/>
-  <property name="object:ricochet-bullets-item:ricochet-bullets-item:3" value="1201,1257,180"/>
   <property name="waypoint:cars:6" value="@0,6"/>
-  <property name="object:ricochet-bullets-item:ricochet-bullets-item:2" value="10,300"/>
+  <property name="object:ricochet-bullets-item:ricochet-bullets-item:3" value="1201,1257,180"/>
   <property name="waypoint:cars:5" value="@20,5"/>
+  <property name="object:ricochet-bullets-item:ricochet-bullets-item:2" value="10,300"/>
   <property name="waypoint:cars:4" value="@20,6"/>
   <property name="waypoint:cars:3" value="@4,6"/>
   <property name="waypoint:cars:2" value="@4,5"/>
   <property name="waypoint:cars:1" value="@24,5"/>
-  <property name="object:dispersion-bullets-item:dispersion-bullets-item:2" value="542,607"/>
-  <property name="object:machinegunner-item:machinegunner-item:3" value="771,223"/>
   <property name="object:road-sign:road-sign08:1" value="1333,430,1"/>
+  <property name="object:machinegunner-item:machinegunner-item:3" value="771,223"/>
+  <property name="object:dispersion-bullets-item:dispersion-bullets-item:2" value="542,607"/>
   <property name="object:machinegunner-item:machinegunner-item:2" value="769,223"/>
-  <property name="edge:6:4" value=""/>
   <property name="object:helicopter-with-kamikazes:helicopter:1" value="@12,13,900"/>
+  <property name="edge:6:4" value=""/>
   <property name="edge:5:2" value=""/>
   <property name="object:tent:tent-top:14" value="572,192,150"/>
   <property name="object:bus-stop:bus-stop-right:1" value="1334,930,150"/>
   <property name="object:gate:gate:1" value="@20,3,2"/>
   <property name="edge:4:5" value=""/>
   <property name="object:bus-stop:bus-stop-top:1" value="870,248,2"/>
-  <property name="object:umbrella:umbrella:2" value="@21,20"/>
   <property name="object:traffic-lights:traffic-lights:11" value="368,422"/>
+  <property name="object:umbrella:umbrella:2" value="@21,20"/>
  </properties>
  <tileset name="city objects" firstgid="1" tilewidth="64" tileheight="64">
   <image source="../tiles/city_objects_tileset.png"/>
@@ -81,8 +81,8 @@
  </tileset>
  <layer name="zerosloy" width="25" height="22">
   <properties>
-   <property name="z" value="-100"/>
    <property name="impassability" value="40"/>
+   <property name="z" value="-100"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGAVDGTAOtANGwSgYBaNgFIwCKgIARi84W5gIAAA=
@@ -152,8 +152,8 @@
  </layer>
  <layer name="city objects" width="25" height="22">
   <properties>
-   <property name="z" value="100"/>
    <property name="impassability" value="100"/>
+   <property name="z" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGAWjYBQMZcAz0A4YBUSD4RJXIkhs7gFzBXH2D5cwH0kAAIzGM1uYCAAA
@@ -163,8 +163,8 @@
  <layer name="borders low" width="25" height="22">
   <properties>
    <property name="pierceable" value="false"/>
-   <property name="z" value="200"/>
    <property name="impassability" value="100"/>
+   <property name="z" value="200"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGAWjYBSQA1SYqKtuOAMrIsOAWHWjgDIwmnaJB6Npl/4AAOz3AaWYCAAA
@@ -202,8 +202,8 @@
  </layer>
  <layer name="buildings low" width="25" height="22">
   <properties>
-   <property name="impassability" value="100"/>
    <property name="z" value="400"/>
+   <property name="impassability" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAO3VywpBQRwG8HlMNhQLdFhQKCxdshBKoROFWJH7PdaexVP4pjNTk2bOcZmx8tVvdab5FjP/OXeiTgwCEBKEJetykIeC5FvJZX+aCEQhLkhI1hXZXg1oPql7dCQhBUFBVtHRAhsqjM10PTpeTQ/60IExTGDAjDR1qDKFmeGOX8bH+A33qO69rlhEfe91dmSI/N5/kyrUiDOHlua9eYbQJs4Mpg110Nmgc0nfGJPnwN8x3ecg6zAZeib/98o9bv9FMXNYwBJWzBo2L3Twsy57rNvCCc5wEVw/6FC9u7RjBzc4MgfYv9HB/+8PAv+lFZgIAAA=
@@ -213,6 +213,7 @@
  <layer name="buildings-damaged 2" width="25" height="22">
   <properties>
    <property name="hp" value="20"/>
+   <property name="impassability" value="100"/>
    <property name="damage-for" value="buildings low"/>
   </properties>
   <data encoding="base64" compression="gzip">
@@ -233,8 +234,8 @@
  </layer>
  <layer name="city objects" width="25" height="22">
   <properties>
-   <property name="impassability" value="100"/>
    <property name="z" value="500"/>
+   <property name="impassability" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGJmAa6AdgAYGm3uGAmAcaAcMQQBKZ0xUMouZSuaMguEBRtPVKKAWAACwAhzhmAgAAA==
