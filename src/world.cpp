@@ -414,23 +414,11 @@ void IWorld::tick(Object &o, const float dt) {
 			o.calculate(dt);
 		} CATCH("calling o.calculate", throw;)
 	}
+
 	if(o.getPlayerState().leave) {
-		PlayerSlot * slot = PlayerManager->getSlotByID(o.getID());
-		if (slot == NULL || (o.classname == "player" && o.registered_name != "tank" && o.registered_name !="shilka" && o.registered_name != "launcher")) 
-			goto skip_leaving;
-		
-		LOG_DEBUG(("leaving vehicle..."));
-		o._velocity.clear();
-		o.updatePlayerState(PlayerState());
-
-		Object * man = spawn(&o, "machinegunner-player", "machinegunner", o._direction * (o.size.x + o.size.y) / 4, v3<float>::empty);
-		o.classname = "vehicle";
-
-		man->disown();
-		slot->id = man->getID();
+		if (!detachVehicle(&o))
+			o.getPlayerState().leave = false; //do not trigger MP stuff. :)
 	}
-
-skip_leaving:
 
 	GET_CONFIG_VALUE("engine.disable-z-velocity", bool, disable_z, true);
 	if (disable_z)
@@ -1071,6 +1059,24 @@ const bool IWorld::attachVehicle(Object *object, Object *vehicle) {
 	slot->id = vehicle->getID();
 	
 	object->Object::emit("death", vehicle);
+	return true;
+}
+
+const bool IWorld::detachVehicle(Object *object) {
+	PlayerSlot * slot = PlayerManager->getSlotByID(object->getID());
+	if (slot == NULL || 
+		(object->classname == "player" && object->registered_name != "tank" && object->registered_name !="shilka" && object->registered_name != "launcher")) 
+		return false;
+		
+	LOG_DEBUG(("leaving vehicle..."));
+	object->_velocity.clear();
+	object->updatePlayerState(PlayerState());
+
+	Object * man = spawn(object, "machinegunner-player", "machinegunner", object->_direction * (object->size.x + object->size.y) / 4, v3<float>::empty);
+	object->classname = "vehicle";
+
+	man->disown();
+	slot->id = man->getID();
 	return true;
 }
 

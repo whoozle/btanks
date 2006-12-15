@@ -81,6 +81,7 @@ public:
 	void setMode(const std::string &mode, const bool value);
 	
 	const bool attachVehicle(Object *object, Object *vehicle);
+	const bool detachVehicle(Object *object);
 private:
 	typedef std::map<const int, Object*> ObjectMap;
 	
