@@ -541,11 +541,14 @@ void IWorld::tick(Object &o, const float dt) {
 		map_im = map.getImpassability(&o, pos, NULL, has_outline?(hidden_attempt + attempt):NULL) / 100.0;
 		obj_im = getImpassability(&o, pos); 
 
-		if ((map_im >= 0 && map_im < 1.0 && obj_im < 1.0) || o.piercing || dirs == 1) {
-			//LOG_DEBUG(("success"));
+		if (map_im >= 0 && map_im < 1.0 && obj_im < 1.0) {
+			//LOG_DEBUG(("success, %g %g", map_im, obj_im));
 			stuck = false;
 			break;
 		}
+		
+		if (o.piercing || dirs == 1) 
+			break;
 
 		stuck = map.getImpassability(&o, old_pos, &stuck_map_pos) == 100 || obj_im_now >= 1.0;
 		/*

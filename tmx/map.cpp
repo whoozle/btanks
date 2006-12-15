@@ -173,6 +173,7 @@ const int IMap::getImpassability(const Object *obj, const v3<int>&pos, v3<int> *
 	if (result_im >= 101) 
 		result_im = 0;
 
+	assert(result_im >= 0);
 	//LOG_DEBUG(("im = %d", im));
 	return result_im;
 }
