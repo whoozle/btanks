@@ -60,7 +60,7 @@ protected:
 
 class DestructableLayer : public Layer {
 public: 
-	DestructableLayer();
+	DestructableLayer(const bool visible_if_damaged);
 	virtual void init(const int w, const int h, const mrt::Chunk & data);
 
 	virtual const Uint32 get(const int x, const int y) const; 
@@ -73,11 +73,12 @@ public:
 	~DestructableLayer();
 protected:
 	int *_hp_data;
+	bool _visible;
 };
 
 class ChainedDestructableLayer : public DestructableLayer {
 public: 
-	ChainedDestructableLayer() : _slave(NULL) {}
+	ChainedDestructableLayer() : DestructableLayer(true), _slave(NULL) {}
 	void setSlave(Layer *layer) { _slave = layer; }
 
 	virtual void onDeath(const int idx);

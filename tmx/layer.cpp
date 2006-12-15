@@ -33,7 +33,7 @@ void DestructableLayer::onDeath(const int idx) {
 	_hp_data[idx] = -1;
 }
 
-DestructableLayer::DestructableLayer() : _hp_data(NULL) {}
+DestructableLayer::DestructableLayer(const bool visible) : _hp_data(NULL), _visible(visible) {}
 
 void DestructableLayer::init(const int w, const int h, const mrt::Chunk & data) {
 	if (hp <= 0)
@@ -51,21 +51,24 @@ void DestructableLayer::init(const int w, const int h, const mrt::Chunk & data) 
 }
 const Uint32 DestructableLayer::get(const int x, const int y) const {
 	int i = _w * y + x;
-	if (i < 0 || i >= _w * _h || _hp_data[i] != -1)
+	const bool visible = _visible ? (_hp_data[i] == -1) : (_hp_data[i] > 0);
+	if (i < 0 || i >= _w * _h || !visible)
 		return 0;
 	return *((Uint32 *) _data.getPtr() + i);
 }
 
 const sdlx::Surface* DestructableLayer::getSurface(const int x, const int y) const {
 	int i = _w * y + x;
-	if (i < 0 || i >= _w * _h || _hp_data[i] != -1)
+	const bool visible = _visible ? (_hp_data[i] == -1) : (_hp_data[i] > 0);
+	if (i < 0 || i >= _w * _h || !visible)
 		return NULL;
 	return _s_data[i];
 }
 
 const sdlx::CollisionMap* DestructableLayer::getCollisionMap(const int x, const int y) const {
 	int i = _w * y + x;
-	if (i < 0 || i >= _w * _h || _hp_data[i] != -1)
+	const bool visible = _visible ? (_hp_data[i] == -1) : (_hp_data[i] > 0);
+	if (i < 0 || i >= _w * _h || !visible)
 		return NULL;
 	return _c_data[i];
 }
