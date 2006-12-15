@@ -131,7 +131,13 @@ void Missile::emit(const std::string &event, Object * emitter) {
 		e->disown();
 		Object::emit(event, emitter);
 	} else if (event == "death") {
-		spawn("explosion", "missile-explosion");
+		v3<float> dpos;
+		
+		GET_CONFIG_VALUE("objects.explosion-downwards-z-override", int, edzo, 180)
+		if (_velocity.y > 0)
+			dpos.z = edzo;
+
+		spawn("explosion", "missile-explosion", dpos);
 		Object::emit(event, emitter);
 	} else Object::emit(event, emitter);
 }
