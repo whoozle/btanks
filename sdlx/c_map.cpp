@@ -25,9 +25,12 @@
 
 using namespace sdlx;
 
-CollisionMap::CollisionMap() : _w(0), _h(0), _data() {}
+CollisionMap::CollisionMap() : _empty(true), _w(0), _h(0), _data() {}
 
 const bool CollisionMap::collides(const sdlx::Rect &src, const CollisionMap *other, const sdlx::Rect &other_src, const int bx, const int by, const bool hidden_by_other) const {
+	if (_empty || other->_empty)
+		return false;
+	
 	int aw = (src.w > 0)?src.w:(_w * 8); 
 	int ah = (src.h > 0)?src.h:_h; 
 
@@ -126,6 +129,7 @@ static const bool test_pixel(const sdlx::Surface * surface, const unsigned x, co
 }
 
 void CollisionMap::init(const sdlx::Surface * surface) {
+	_empty = true;
 	assert(surface->getWidth() != 0 && surface->getHeight() != 0);
 	_w = (surface->getWidth() - 1) / 8 + 1;
 	_h = surface->getHeight();
@@ -141,12 +145,16 @@ void CollisionMap::init(const sdlx::Surface * surface) {
 			unsigned int pos = y * _w + x / 8;
 			assert(pos < _data.getSize());
 	
-			if (test_pixel(surface, x, y))
+			if (test_pixel(surface, x, y)) {
 				data[pos] |= 1 << b;
+				_empty = false;
+			}
 		}
 	}
 	surface->unlock();	
 	//LOG_DEBUG(("built collision map (size: %u): %s", (unsigned)_data.getSize(), _data.dump().c_str()));
+	//if (_empty)
+	//	LOG_DEBUG(("this collision map is empty"));
 }
 
 void CollisionMap::save(const std::string &fname) const {
