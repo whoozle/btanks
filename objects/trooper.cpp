@@ -24,11 +24,10 @@
 
 class Trooper : public Object {
 public:
-	Trooper(const std::string &object, const bool aim_missiles) : 
-		Object("trooper"), _reaction(true), _object(object), _aim_missiles(aim_missiles), _fire(false) {}
+	Trooper(const std::string &classname, const std::string &object, const bool aim_missiles) : 
+		Object(classname), _object(object), _aim_missiles(aim_missiles), _fire(false) {}
 	
 	virtual void tick(const float dt);
-	virtual void calculate(const float dt);
 
 	virtual Object * clone() const;
 	virtual void onSpawn();
@@ -36,31 +35,61 @@ public:
 
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
-		_reaction.serialize(s);
 		s.add(_object);
 		s.add(_aim_missiles);
 		_fire.serialize(s);
-		_target.serialize(s);
 	}
 	virtual void deserialize(const mrt::Serializator &s) {
 		Object::deserialize(s);
-		_reaction.deserialize(s);
 		s.get(_object);
 		s.get(_aim_missiles);
 		_fire.deserialize(s);
-		_target.deserialize(s);
 	}	
 
-private: 
-	Alarm _reaction;
+protected: 
 	std::string _object;
 	bool _aim_missiles;
 	Alarm _fire;
+};
+
+class AITrooper : public Trooper {
+public:
+	AITrooper(const std::string &object, const bool aim_missiles) : Trooper("trooper", object, aim_missiles), _reaction(true) {}
+	virtual void onSpawn();
+	virtual void serialize(mrt::Serializator &s) const {
+		Trooper::serialize(s);
+		_reaction.serialize(s);
+		_target.serialize(s);
+	}
+	virtual void deserialize(const mrt::Serializator &s) {
+		Trooper::deserialize(s);
+		_reaction.deserialize(s);
+		_target.deserialize(s);
+	}
+	virtual void calculate(const float dt);
+	virtual Object* clone() const;
+	
+private: 
+	Alarm _reaction;
 	v3<float> _target;
 };
 
-void Trooper::calculate(const float dt) {
-	calculateWayVelocity();
+
+void AITrooper::onSpawn() {
+	GET_CONFIG_VALUE("objects.trooper.reaction-time", float, rt, 0.1);
+	_reaction.set(rt);
+	
+	Trooper::onSpawn();
+}
+
+Object* AITrooper::clone() const  {
+	return new AITrooper(*this);
+}
+
+
+void AITrooper::calculate(const float dt) {
+	//calculateWayVelocity();
+	//LOG_DEBUG(("calculate"));
 	if (!_reaction.tick(dt))
 		return;
 	if (getState() == "fire") {
@@ -125,14 +154,11 @@ void Trooper::tick(const float dt) {
 		_fire.reset();
 		if (getState() != "fire")
 			playNow("fire");
-		spawn(_object, _object, v3<float>::empty, _target);
+		spawn(_object, _object, v3<float>::empty, _direction);
 	}
 }
 
 void Trooper::onSpawn() {
-	GET_CONFIG_VALUE("objects.trooper.reaction-time", float, rt, 0.1);
-	_reaction.set(rt);
-
 	if (_object == "thrower-missile") {
 		GET_CONFIG_VALUE("objects.thrower.fire-rate", float, fr, 3);
 		_fire.set(fr);
@@ -156,5 +182,6 @@ Object* Trooper::clone() const  {
 	return new Trooper(*this);
 }
 
-REGISTER_OBJECT("machinegunner", Trooper, ("machinegunner-bullet", true));
-REGISTER_OBJECT("thrower", Trooper, ("thrower-missile", false));
+
+REGISTER_OBJECT("machinegunner", AITrooper, ("machinegunner-bullet", true));
+REGISTER_OBJECT("thrower", AITrooper, ("thrower-missile", false));
