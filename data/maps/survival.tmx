@@ -153,7 +153,7 @@
  <layer name="junk more" width="25" height="22">
   <properties>
    <property name="visible-if-damaged" value="true"/>
-   <property name="hp " value="100"/>
+   <property name="hp" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGAXYQC8TA0MfE23M3gA1dzqQnkEjO0bBKBgFo2AUjIKhCAAsYg2DmAgAAA==
