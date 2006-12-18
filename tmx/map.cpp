@@ -88,7 +88,6 @@ const int IMap::getImpassability(const Object *obj, const v3<int>&pos, v3<int> *
 	
 	int hidden_mask = 0;
 
-	int im = 101;
 	int result_im = 101;
 	//LOG_DEBUG(("%d:%d:%d:%d --> %d:%d %d:%d", x1, y1, w, h, xt1, yt1, xt2, yt2));
 	for(LayerMap::const_reverse_iterator l = _layers.rbegin(); l != _layers.rend(); ++l) {
@@ -116,41 +115,62 @@ const int IMap::getImpassability(const Object *obj, const v3<int>&pos, v3<int> *
 			continue;
 		
 		//LOG_DEBUG(("im: %d, tile: %d", layer_im, layer->get(xt1, yt1)));
-		if (collides(obj, dx1, dy1, layer->getCollisionMap(xt1, yt1)) && im > layer_im) {
-			if (tile_pos) {
-				tile_pos->x = xt1;
-				tile_pos->y = yt1;
-			}
-			im = layer_im;
-		};
+		bool full_contact = true;
+		bool partial_contact = false;
+		int parts_v = 0, parts_h = 0;
+		
+		if (collides(obj, dx1, dy1, layer->getCollisionMap(xt1, yt1))) {
+			partial_contact = true; 
+			parts_h |= 1; //left
+			parts_v |= 1; //up
+		} else full_contact = false;
 
-		if (yt2 != yt1 && collides(obj, dx1, dy2, layer->getCollisionMap(xt1, yt2)) && im > layer_im) {
-			if (tile_pos) {
-				tile_pos->x = xt1;
-				tile_pos->y = yt2;
-			}
-			im = layer_im;
+		if (yt2 != yt1) {
+			if (collides(obj, dx1, dy2, layer->getCollisionMap(xt1, yt2))) {
+				partial_contact = true; 
+				parts_h |= 1;
+				parts_v |= 2;
+			} else full_contact = false;
 		}
 		
 		if (xt2 != xt1) {
-			if (collides(obj, dx2, dy1, layer->getCollisionMap(xt2, yt1)) && im > layer_im) {
-				im = layer_im;
-				if (tile_pos) {
-					tile_pos->x = xt2;
-					tile_pos->y = yt1;
-				}
-			}
-			if (yt2 != yt1 && collides(obj, dx2, dy2, layer->getCollisionMap(xt2, yt2)) && im > layer_im) {
-				if (tile_pos) {
-					tile_pos->x = xt2;
-					tile_pos->y = yt2;
-				}
-				im = layer_im;
+			if (collides(obj, dx2, dy1, layer->getCollisionMap(xt2, yt1))) {
+				partial_contact = true; 
+				parts_h |= 2;
+				parts_v |= 1;
+			} else full_contact = false;
+			if (yt2 != yt1) { 
+				if (collides(obj, dx2, dy2, layer->getCollisionMap(xt2, yt2))) { 
+					parts_h |= 2;
+					parts_v |= 2;
+					partial_contact = true; 
+				} else full_contact = false;
 			};
 		}
 
-		if (result_im == 101 && im < 101) 
-			result_im = im;
+		if (result_im == 101) {
+			if (full_contact) 
+				result_im = layer_im;
+			if (partial_contact && layer_im == 100)
+				result_im = 100;
+				
+			if (partial_contact && tile_pos) {
+				switch(parts_h) {
+					case 1: tile_pos->x = xt1; break;
+					case 2: tile_pos->x = xt2; break;
+					case 3: tile_pos->x = (xt1 + xt2) / 2; break;
+					default: 
+						assert(0);
+				}
+				switch(parts_v) {
+					case 1: tile_pos->y = yt1; break;
+					case 2: tile_pos->y = yt2; break;
+					case 3: tile_pos->y = (yt1 + yt2) / 2; break;
+					default: 
+						assert(0);
+				}
+			}
+		}
 	}
 	
 	if (xt1 == xt2) {
