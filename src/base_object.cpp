@@ -168,7 +168,8 @@ void BaseObject::follow(const BaseObject *obj, const GroupType mode) {
 		_follow_position = (obj->size - size) / 2;
 		//LOG_DEBUG(("follow: %g %g", _follow_position.x, _follow_position.y));
 	}
-	_position = obj->_position;
+	_position.x = obj->_position.x;
+	_position.y = obj->_position.y;
 }
 
 void BaseObject::follow(const int id) {
