@@ -132,7 +132,7 @@ static const bool test_pixel(const sdlx::Surface * surface, const unsigned x, co
 		if ((surface->getFlags() & SDL_SRCALPHA) == SDL_SRCALPHA) {
 			Uint8 r, g, b, a;
 			SDL_GetRGBA(pixelcolor, surface->getPixelFormat(), &r, &g, &b, &a); 
-			return a != 0;
+			return a >= 250;
 		}
 		return (pixelcolor !=  surface->getPixelFormat()->colorkey);
 	}
