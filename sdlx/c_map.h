@@ -35,7 +35,7 @@ public:
 	const bool collides(const sdlx::Rect &src,  const CollisionMap *other, const sdlx::Rect &other_src, const int x, const int y, const bool hidden_by_other) const;
 	void save(const std::string &fname) const;
 private: 
-	bool _empty;
+	bool _empty, _full;
 	unsigned int _w, _h;
 	mrt::Chunk _data;
 };

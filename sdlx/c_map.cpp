@@ -25,7 +25,7 @@
 
 using namespace sdlx;
 
-CollisionMap::CollisionMap() : _empty(true), _w(0), _h(0), _data() {}
+CollisionMap::CollisionMap() : _empty(true), _full(false), _w(0), _h(0), _data() {}
 
 const bool CollisionMap::collides(const sdlx::Rect &src, const CollisionMap *other, const sdlx::Rect &other_src, const int bx, const int by, const bool hidden_by_other) const {
 	if (_empty || other->_empty)
@@ -49,6 +49,9 @@ const bool CollisionMap::collides(const sdlx::Rect &src, const CollisionMap *oth
 	/*check if bounding boxes intersect*/
 	if((bx1 < 0) || (ax1 < bx) || (by1 < 0) || (ay1 < by))
 		return false;
+
+	if (_full && other->_full)
+		return true;
 
 	inter_x0 = math::max(0, bx);
 	inter_x1 = math::min(ax1, bx1);
@@ -142,6 +145,7 @@ static const bool test_pixel(const sdlx::Surface * surface, const unsigned x, co
 
 void CollisionMap::init(const sdlx::Surface * surface, const Type type) {
 	_empty = true;
+	_full = true;
 	assert(surface->getWidth() != 0 && surface->getHeight() != 0);
 	_w = (surface->getWidth() - 1) / 8 + 1;
 	_h = surface->getHeight();
@@ -160,7 +164,7 @@ void CollisionMap::init(const sdlx::Surface * surface, const Type type) {
 			if (test_pixel(surface, x, y, type)) {
 				data[pos] |= 1 << b;
 				_empty = false;
-			}
+			} else _full = false;
 		}
 	}
 	surface->unlock();	
