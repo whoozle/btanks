@@ -55,6 +55,8 @@ void Launcher::onSpawn() {
 void Launcher::emit(const std::string &event, Object * emitter) {
 	if (event == "death") {
 		LOG_DEBUG(("dead"));
+		World->detachVehicle(this);		
+		
 		cancelAll();
 		//play("dead", true);
 		spawn("corpse", "dead-" + animation);
