@@ -2,7 +2,7 @@ Battle Tanks demo version
 (Beta testers may use this file as their manual.)
 
 Installation:
-Unpack the files into any folder (for example, C:\Games\Btanks\ or /usr/local/sbin/btanks/ for Linux guys).
+Unpack the files into any folder (for example, C:\Games\Btanks\).
 
 The game requires OpenAL libraries.  The package includes the openalweax.exe that will install them.
 
