@@ -440,8 +440,9 @@ void IMap::end(const std::string &name) {
 		layer->impassability = impassability;
 		layer->pierceable = pierceable;
 		layer->hp = hp;
-
-		layer->init(w, h, _data); //fixme: fix possible memory leak here, if exception occurs
+		TRY { 
+			layer->init(w, h, _data); //fixme: fix possible memory leak here, if exception occurs
+		} CATCH(mrt::formatString("layer '%s'", _layer_name.c_str()).c_str(), throw);
 		
 		_layers[z] = layer;
 		_layer_z[_layer_name] = z;
