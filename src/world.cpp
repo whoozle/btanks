@@ -1063,6 +1063,7 @@ const bool IWorld::attachVehicle(Object *object, Object *vehicle) {
 	
 	vehicle->classname = "player";
 	slot->id = vehicle->getID();
+	slot->need_sync = true;
 	
 	object->Object::emit("death", vehicle);
 	return true;
@@ -1083,6 +1084,7 @@ const bool IWorld::detachVehicle(Object *object) {
 
 	man->disown();
 	slot->id = man->getID();
+	slot->need_sync = true;
 	return true;
 }
 
