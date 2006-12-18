@@ -28,8 +28,10 @@ class Rect;
 
 class CollisionMap {
 public:
+	enum Type {OnlyOpaque, AnyVisible};
+	
 	CollisionMap();
-	void init(const Surface * surface);
+	void init(const Surface * surface, const Type type);
 	const bool collides(const sdlx::Rect &src,  const CollisionMap *other, const sdlx::Rect &other_src, const int x, const int y, const bool hidden_by_other) const;
 	void save(const std::string &fname) const;
 private: 

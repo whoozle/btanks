@@ -116,19 +116,31 @@ const bool CollisionMap::collides(const sdlx::Rect &src, const CollisionMap *oth
 }
 
 
-static const bool test_pixel(const sdlx::Surface * surface, const unsigned x, const unsigned y) {
+static const bool test_pixel(const sdlx::Surface * surface, const unsigned x, const unsigned y, const CollisionMap::Type type) {
 	register Uint32 pixelcolor = surface->getPixel(x, y);
 	
-	if ((surface->getFlags() & SDL_SRCALPHA) == SDL_SRCALPHA) {
-		Uint8 r, g, b, a;
-		SDL_GetRGBA(pixelcolor, surface->getPixelFormat(), &r, &g, &b, &a); 
-		return a == 255;
-	}
+	switch(type) {
+	case CollisionMap::OnlyOpaque:
+		if ((surface->getFlags() & SDL_SRCALPHA) == SDL_SRCALPHA) {
+			Uint8 r, g, b, a;
+			SDL_GetRGBA(pixelcolor, surface->getPixelFormat(), &r, &g, &b, &a); 
+			return a == 255;
+		}
+		return (pixelcolor !=  surface->getPixelFormat()->colorkey);
 
-	return (pixelcolor !=  surface->getPixelFormat()->colorkey);
+	case CollisionMap::AnyVisible: 
+		if ((surface->getFlags() & SDL_SRCALPHA) == SDL_SRCALPHA) {
+			Uint8 r, g, b, a;
+			SDL_GetRGBA(pixelcolor, surface->getPixelFormat(), &r, &g, &b, &a); 
+			return a != 0;
+		}
+		return (pixelcolor !=  surface->getPixelFormat()->colorkey);
+	}
+	
+	return false;
 }
 
-void CollisionMap::init(const sdlx::Surface * surface) {
+void CollisionMap::init(const sdlx::Surface * surface, const Type type) {
 	_empty = true;
 	assert(surface->getWidth() != 0 && surface->getHeight() != 0);
 	_w = (surface->getWidth() - 1) / 8 + 1;
@@ -145,7 +157,7 @@ void CollisionMap::init(const sdlx::Surface * surface) {
 			unsigned int pos = y * _w + x / 8;
 			assert(pos < _data.getSize());
 	
-			if (test_pixel(surface, x, y)) {
+			if (test_pixel(surface, x, y, type)) {
 				data[pos] |= 1 << b;
 				_empty = false;
 			}

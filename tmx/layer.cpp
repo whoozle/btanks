@@ -62,7 +62,7 @@ const sdlx::Surface* DestructableLayer::getSurface(const int x, const int y) con
 	const bool visible = _visible ? (_hp_data[i] == -1) : (_hp_data[i] > 0);
 	if (i < 0 || i >= _w * _h || !visible)
 		return NULL;
-	return _s_data[i];
+	return _tiles[i].surface;
 }
 
 const sdlx::CollisionMap* DestructableLayer::getCollisionMap(const int x, const int y) const {
@@ -70,7 +70,15 @@ const sdlx::CollisionMap* DestructableLayer::getCollisionMap(const int x, const 
 	const bool visible = _visible ? (_hp_data[i] == -1) : (_hp_data[i] > 0);
 	if (i < 0 || i >= _w * _h || !visible)
 		return NULL;
-	return _c_data[i];
+	return _tiles[i].cmap;
+}
+
+const sdlx::CollisionMap* DestructableLayer::getVisibilityMap(const int x, const int y) const {
+	int i = _w * y + x;
+	const bool visible = _visible ? (_hp_data[i] == -1) : (_hp_data[i] > 0);
+	if (i < 0 || i >= _w * _h || !visible)
+		return NULL;
+	return _tiles[i].vmap;
 }
 
 void DestructableLayer::damage(const int x, const int y, const int hp) {
@@ -124,13 +132,11 @@ DestructableLayer::~DestructableLayer() {
 	delete[] _hp_data;
 }
 
-Layer::Layer() : impassability(0), hp(0), pierceable(false), _s_data(NULL), _c_data(NULL), _w(0), _h(0) {}
+Layer::Layer() : impassability(0), hp(0), pierceable(false), _tiles(NULL), _w(0), _h(0) {}
 
 void Layer::init(const int w, const int h, const mrt::Chunk & data) {
-	delete[] _s_data;
-	_s_data = NULL;
-	delete[] _c_data;
-	_c_data = NULL;
+	delete[] _tiles;
+	_tiles = NULL;
 	_w = w;
 	_h = h;
 	_data = data;
@@ -147,8 +153,8 @@ const Uint32 Layer::get(const int x, const int y) const {
 void Layer::clear(const int i) {
 	if (i < 0 || i >= _w * _h)
 		return;
-	_s_data[i] = NULL;
-	_c_data[i] = NULL;
+	_tiles[i].surface = NULL;
+	_tiles[i].cmap = _tiles[i].vmap = NULL;
 	*((Uint32 *) _data.getPtr() + i) = 0;
 }
 
@@ -156,36 +162,37 @@ void Layer::clear(const int i) {
 const sdlx::Surface* Layer::getSurface(const int x, const int y) const {
 	if (x < 0 || x >= _w || y < 0 || y >= _h) 
 		return NULL;
-	return _s_data[_w * y + x];
+	return _tiles[_w * y + x].surface;
 }
 
 const sdlx::CollisionMap* Layer::getCollisionMap(const int x, const int y) const {
 	if (x < 0 || x >= _w || y < 0 || y >= _h) 
 		return NULL;
-	return _c_data[_w * y + x];
+	return _tiles[_w * y + x].cmap;
+}
+
+const sdlx::CollisionMap* Layer::getVisibilityMap(const int x, const int y) const {
+	if (x < 0 || x >= _w || y < 0 || y >= _h) 
+		return NULL;
+	return _tiles[_w * y + x].vmap;
 }
 
 
-void Layer::optimize(std::vector< std::pair<sdlx::Surface *, sdlx::CollisionMap *> > & tilemap) {
+void Layer::optimize(const IMap::TileMap & tilemap) {
 	unsigned size = _w * _h;
 	
 	Uint32 *ptr = (Uint32 *)_data.getPtr();
-	delete[] _s_data;
-	_s_data = new sdlx::Surface*[size];
-	delete[] _c_data;
-	_c_data = new sdlx::CollisionMap*[size];
+
+	delete[] _tiles;
+	_tiles = new IMap::TileDescriptor[size];
 
 	for(unsigned int i = 0; i < size; ++i) {
 		Uint32 tid = *ptr++;
 
-		if (tid == 0) { 
-			_s_data[i] = 0;
-			_c_data[i] = 0;
-		} else {
+		if (tid != 0) { 
 			if ((unsigned)tid >= tilemap.size())
 				throw_ex(("got invalid tile id %d", tid));
-			_s_data[i] = tilemap[tid].first;
-			_c_data[i] = tilemap[tid].second;
+			_tiles[i] = tilemap[tid];
 		}
 	}
 }
@@ -193,4 +200,4 @@ void Layer::optimize(std::vector< std::pair<sdlx::Surface *, sdlx::CollisionMap 
 void Layer::damage(const int x, const int y, const int hp) {}
 
 
-Layer::~Layer() { delete[] _s_data; delete[] _c_data; }
+Layer::~Layer() { delete[] _tiles; }

@@ -24,6 +24,7 @@
 #include "sdlx/surface.h"
 #include "sdlx/c_map.h"
 #include <vector>
+#include "tmx/map.h"
 
 #define PRERENDER_LAYERS
 #undef PRERENDER_LAYERS
@@ -31,7 +32,6 @@
 
 class Layer {
 public:
-	typedef std::vector< std::pair< sdlx::Surface *, sdlx::CollisionMap *> > TileData;
 #ifdef PRERENDER_LAYERS
 	sdlx::Surface surface;
 #endif
@@ -44,17 +44,19 @@ public:
 	void clear(const int idx);
 	
 	virtual const Uint32 get(const int x, const int y) const; 
+	
 	virtual const sdlx::Surface* getSurface(const int x, const int y) const;
 	virtual const sdlx::CollisionMap* getCollisionMap(const int x, const int y) const;
+	virtual const sdlx::CollisionMap* getVisibilityMap(const int x, const int y) const;
+	
 	virtual void damage(const int x, const int y, const int hp);
 
-	void optimize(TileData & tilemap);
+	void optimize(const IMap::TileMap & tilemap);
 	virtual ~Layer();
 
 protected: 
 	mrt::Chunk _data;
-	sdlx::Surface **_s_data;
-	sdlx::CollisionMap **_c_data;
+	IMap::TileDescriptor *_tiles;
 	int _w, _h;
 };
 
@@ -66,6 +68,7 @@ public:
 	virtual const Uint32 get(const int x, const int y) const; 
 	virtual const sdlx::Surface* getSurface(const int x, const int y) const;
 	virtual const sdlx::CollisionMap* getCollisionMap(const int x, const int y) const;
+	virtual const sdlx::CollisionMap* getVisibilityMap(const int x, const int y) const;
 
 	virtual void damage(const int x, const int y, const int hp);
 	virtual void onDeath(const int idx);

@@ -95,14 +95,14 @@ const int IMap::getImpassability(const Object *obj, const v3<int>&pos, v3<int> *
 		int layer_im = layer->impassability;
 
 		if (hidden && l->first > obj_z) {
-			if (hiddenBy(obj, dx1, dy1, layer->getCollisionMap(xt1, yt1)))
+			if (hiddenBy(obj, dx1, dy1, layer->getVisibilityMap(xt1, yt1)))
 				hidden_mask |= 1;
-			if (yt1 != yt2 && hiddenBy(obj, dx1, dy2, layer->getCollisionMap(xt1, yt2)))
+			if (yt1 != yt2 && hiddenBy(obj, dx1, dy2, layer->getVisibilityMap(xt1, yt2)))
 				hidden_mask |= 2;
 			if (xt1 != xt2) {
-				if (hiddenBy(obj, dx2, dy1, layer->getCollisionMap(xt2, yt1)))
+				if (hiddenBy(obj, dx2, dy1, layer->getVisibilityMap(xt2, yt1)))
 					hidden_mask |= 4;
-				if (yt1 != yt2 && hiddenBy(obj, dx2, dy2, layer->getCollisionMap(xt2, yt2)))
+				if (yt1 != yt2 && hiddenBy(obj, dx2, dy2, layer->getVisibilityMap(xt2, yt2)))
 					hidden_mask |= 8;
 			}
 		}
@@ -338,11 +338,14 @@ void IMap::end(const std::string &name) {
 			_tiles.resize(id + 20);
 		
 		TileMap::value_type &tile = _tiles[id];	
-		if (tile.first != NULL)
+		if (tile.surface != NULL)
 			throw_ex(("duplicate tile %d found", id));
-		tile.second = new sdlx::CollisionMap;
-		tile.second->init(_image);
-		tile.first = _image;
+
+		tile.cmap = new sdlx::CollisionMap;
+		tile.cmap->init(_image, sdlx::CollisionMap::OnlyOpaque);
+		tile.vmap = new sdlx::CollisionMap;
+		tile.vmap->init(_image, sdlx::CollisionMap::AnyVisible);
+		tile.surface = _image;
 		
 		_image = NULL;
 
@@ -469,14 +472,18 @@ void IMap::end(const std::string &name) {
 				if ((size_t)(_firstgid + id) >= _tiles.size())
 					_tiles.resize(_firstgid + id + 20);
 				
-				delete _tiles[_firstgid + id].first;
-				_tiles[_firstgid + id].first = NULL;
-				delete _tiles[_firstgid + id].second;
-				_tiles[_firstgid + id].second = NULL;
+				delete _tiles[_firstgid + id].surface;
+				_tiles[_firstgid + id].surface = NULL;
+				delete _tiles[_firstgid + id].cmap;
+				_tiles[_firstgid + id].cmap = NULL;
+				delete _tiles[_firstgid + id].vmap;
+				_tiles[_firstgid + id].vmap = NULL;
 				
-				_tiles[_firstgid + id].second = new sdlx::CollisionMap;
-				_tiles[_firstgid + id].second->init(s);
-				_tiles[_firstgid + id].first = s;
+				_tiles[_firstgid + id].cmap = new sdlx::CollisionMap;
+				_tiles[_firstgid + id].cmap->init(s, sdlx::CollisionMap::OnlyOpaque);
+				_tiles[_firstgid + id].vmap = new sdlx::CollisionMap;
+				_tiles[_firstgid + id].vmap->init(s, sdlx::CollisionMap::AnyVisible);
+				_tiles[_firstgid + id].surface = s;
 				++id;
 				s = NULL;
 			}
@@ -547,8 +554,9 @@ void IMap::clear() {
 	_layers.clear();
 	
 	for(TileMap::iterator i = _tiles.begin(); i != _tiles.end(); ++i) {
-		delete i->first;
-		delete i->second;
+		delete i->surface;
+		delete i->cmap;
+		delete i->vmap;
 	}
 	_tiles.clear();
 	

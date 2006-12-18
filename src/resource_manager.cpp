@@ -77,7 +77,7 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 				s->convertAlpha();
 			
 				cmap = new sdlx::CollisionMap;
-				cmap->init(s);
+				cmap->init(s, sdlx::CollisionMap::OnlyOpaque);
 			
 				s->convertToHardware();
 				LOG_DEBUG(("loaded animation '%s' from '%s'", id.c_str(), fname.c_str()));
@@ -337,7 +337,7 @@ void IResourceManager::checkSurface(const std::string &id, const sdlx::Surface *
 	
 	if (cmap == NULL) {			
 		cmap = new sdlx::CollisionMap;
-		cmap->init(s);
+		cmap->init(s, sdlx::CollisionMap::OnlyOpaque);
 		_cmaps[id] = cmap;
 	}
 	cmap_ptr = cmap;

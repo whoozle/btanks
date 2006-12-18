@@ -64,6 +64,16 @@ public:
 	static const int pathfinding_step;
 	
 	void damage(const v3<float> &position, const int hp);
+	
+	struct TileDescriptor {
+		TileDescriptor() : surface(0), cmap(0), vmap(0) {}
+		TileDescriptor(sdlx::Surface * surface, sdlx::CollisionMap *cmap, sdlx::CollisionMap *vmap) : 
+			surface(surface), cmap(cmap), vmap(vmap) {}
+		
+		sdlx::Surface * surface;
+		sdlx::CollisionMap *cmap, *vmap;
+	};
+	typedef std::vector< TileDescriptor > TileMap;
 
 private:
 	virtual void start(const std::string &name, Attrs &attr);
@@ -89,7 +99,6 @@ private:
 	bool _layer;
 	std::string _layer_name;
 
-	typedef std::vector< std::pair<sdlx::Surface *, sdlx::CollisionMap *> > TileMap;
 	TileMap _tiles;
 
 	struct Entity {
