@@ -1,5 +1,7 @@
+0.3.1591: 
+
 *) player can now leave vehicle and act as machinegunner. 
-*) implemented destructable map layers and all stuff around it. 
+*) now it's possible to destroy/damage map. have fun :). 
 *) mine now triggered by object with mass >= 20.
 *) fixed in getNearest() - core Object function. various bugs got fixed by that.
 *) added invulnerability effect. invulnerability on respawn.
