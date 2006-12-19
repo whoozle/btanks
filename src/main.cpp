@@ -38,19 +38,22 @@ int main(int argc, char *argv[]) {
 	try {
 		LOG_NOTICE(("starting up... version: %s", getVersion().c_str()));
 		Game->init(argc, argv);
-		TRY {
-			Game->run();
-		} CATCH("run", {});
+		Game->run();
 		Game->deinit();
 		LOG_DEBUG(("exiting"));
 #ifdef WIN32
 	} catch(const std::exception &e) {
 		LOG_ERROR(("main:%s", e.what()));
+		TRY { LOG_DEBUG(("calling Game->deinit()")); Game->deinit(); } CATCH("deinit", {});
+		
 		MessageBox(NULL, e.what(), "Error", MB_OK | MB_ICONERROR | MB_TASKMODAL);
 		return 1;
 	}
 #else 
-	} CATCH("main", {return 1;})
+	} CATCH("main", { 
+		TRY { LOG_DEBUG(("calling Game->deinit()")); Game->deinit(); } CATCH("deinit", {});		
+		return 1;
+	})
 #endif
 	return 0;
 }
