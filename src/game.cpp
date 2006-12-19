@@ -431,8 +431,12 @@ void IGame::run() {
 				if (event.key.keysym.sym==SDLK_m && event.key.keysym.mod & KMOD_SHIFT && Map->loaded()) {
 					const v3<int> msize = Map->getSize();
 					LOG_DEBUG(("creating map screenshot %dx%d", msize.x, msize.y));
+
 					sdlx::Surface screenshot;
-					screenshot.createRGB(msize.x, msize.y, 24, SDL_SWSURFACE);
+					screenshot.createRGB(msize.x, msize.y, 32, SDL_SWSURFACE | SDL_SRCALPHA);
+					screenshot.convertAlpha();
+					screenshot.fillRect(screenshot.getSize(), screenshot.mapRGBA(0,0,0,255));
+
 					sdlx::Rect viewport(0, 0, msize.x, msize.y);
 					World->render(screenshot, viewport, viewport);
 					screenshot.saveBMP("map.bmp"); //hopefully we're done here.
