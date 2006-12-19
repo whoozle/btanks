@@ -210,9 +210,29 @@ void IMap::load(const std::string &name) {
 	_name = name;
 	
 	LOG_DEBUG(("optimizing layers..."));
+	
+	_cover_map.setSize(_h, _w, -10000);
+	_cover_map.useDefault(-10000);
+	
+	unsigned int ot = 0;
 	for(LayerMap::iterator l = _layers.begin(); l != _layers.end(); ++l) {
 		l->second->optimize(_tiles);
+
+		for(int ty = 0; ty < _h; ++ty) {
+			for(int tx = 0; tx < _w; ++tx) {
+				const sdlx::CollisionMap * vmap = l->second->getVisibilityMap(tx, ty);
+				if (vmap == NULL)
+					continue;
+				if (vmap->isFull()) {
+					_cover_map.set(ty, tx, l->first);
+					++ot;
+				}
+			}
+		}
 	}
+	LOG_DEBUG(("created render optimization map. opaque tiles found: %u", ot));
+	//LOG_DEBUG(("rendering optimization map: %s", _cover_map.dump().c_str()));
+	
 	
 	for(std::map<const std::string, std::string>::const_iterator i = _damage4.begin(); i != _damage4.end(); ++i) {
 		Layer *dl = NULL, *l = NULL;
@@ -529,21 +549,32 @@ void IMap::render(sdlx::Surface &window, const sdlx::Rect &src, const sdlx::Rect
 	int txn = (src.w - 1) / _tw + 2;
 	int tyn = (src.h - 1) / _th + 2;
 	
-	for(LayerMap::const_iterator l = _layers.begin(); l != _layers.end(); ++l) 
-	if (l->first >= z1) {
-		if (l->first >= z2) 
+	//unsigned int skipped = 0;
+	
+	for(LayerMap::const_iterator l = _layers.begin(); l != _layers.end(); ++l) {
+		const int z = l->first;
+		if (z < z1) 
+			continue;
+		
+		if (z >= z2) 
 			break;
 
 		//LOG_DEBUG(("z: %d << %d, layer: %d", z1, z2, l->first));
 		
 		for(int ty = 0; ty < tyn; ++ty) {
 			for(int tx = 0; tx < txn; ++tx) {
+				if (z < _cover_map.get(typ + ty, txp + tx)) {//this tile covered by another tile
+					//++skipped;
+					continue;
+				}
+				
 				const sdlx::Surface * s = l->second->getSurface(txp + tx, typ + ty);
 				if (s != NULL) 
 					window.copyFrom(*s, dst.x + xp + tx * _tw, dst.y + yp + ty * _th);
 			}
 		}
 	}
+	//LOG_DEBUG(("blits skipped: %u", skipped));
 	//LOG_DEBUG(("====================================="));
 #endif
 }
@@ -571,6 +602,7 @@ void IMap::clear() {
 
 	_damage4.clear();
 	_layer_z.clear();
+	_cover_map.setSize(0, 0, 0);
 }
 
 IMap::~IMap() {

@@ -94,6 +94,8 @@ private:
 	
 	typedef std::map<const int, Layer *> LayerMap;
 	LayerMap _layers;
+	Matrix<int> _cover_map;
+	
 	std::map<const std::string, std::string> _damage4;
 	std::map<const std::string, int> _layer_z;
 	bool _layer;
