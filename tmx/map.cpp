@@ -449,6 +449,7 @@ void IMap::end(const std::string &name) {
 		//LOG_DEBUG(("(1,1) = %d", _layers[z]->get(1,1)));
 		_layer = false;
 	} else if (name == "property") {
+		mrt::trim(e.attrs["name"]);
 		if (_layer)
 			_properties[e.attrs["name"]] = e.attrs["value"];
 		else 
