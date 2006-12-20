@@ -220,6 +220,7 @@ void MainMenu::reset() {
 	_active_menu.clear();
 	_active_item = 0;
 	_items[_active_menu][_active_item]->onFocus();
+	recalculateSizes();
 }
 
 const bool MainMenu::back() {
