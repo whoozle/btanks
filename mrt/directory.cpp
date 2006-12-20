@@ -38,5 +38,36 @@ void Directory::close() {
 }
 
 #else 
-//
+#include <io.h>
+
+void Directory::open(const std::string &path) {
+	struct _finddata_t filedata;
+	if ((_handle = _findfirst((path + "/*.*").c_str(), &filedata)) == -1) {
+		_handle = 0;
+		throw_io(("findfirst('%s')", path.c_str()));
+	}
+   	_first_value = filedata.name;
+}
+
+const std::string Directory::read() const {
+	if (!_first_value.empty()) {
+		std::string r = _first_value;
+		_first_value.clear();
+		return r;
+	}
+	struct _finddata_t filedata;
+	if (_findnext(_handle, &filedata) == 0) {
+		return filedata.name;
+	}
+	return std::string();
+}
+
+void Directory::close() {
+	if (_handle == 0)
+		return;
+
+	_findclose(_handle);
+	_handle = 0;
+}
+
 #endif

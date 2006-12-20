@@ -23,6 +23,7 @@ private:
 
 #ifdef WIN32
 	typedef long dir_t;
+	mutable std::string _first_value;
 #else
 	typedef DIR * dir_t;
 #endif

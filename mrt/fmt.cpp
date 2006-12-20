@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <ctype.h>
+#include <algorithm>
 
 #if defined WIN32 
 #	if !defined vsnprintf
