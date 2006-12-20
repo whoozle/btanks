@@ -32,6 +32,16 @@ public:
 	virtual Object * clone() const {
 		return new Tooltip(*this);
 	}
+
+	virtual void serialize(mrt::Serializator &s) const {
+		Object::serialize(s);
+		_change.serialize(s);
+	}
+	virtual void deserialize(const mrt::Serializator &s) {
+		Object::deserialize(s);
+		_change.deserialize(s);	
+	}
+
 private: 
 	Alarm _change;
 };
