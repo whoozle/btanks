@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
+#include <ctype.h>
 
 #if defined WIN32 
 #	if !defined vsnprintf
@@ -67,4 +68,24 @@ void mrt::split(std::vector<std::string> & result, const std::string &str, const
 		}
 		pos = p + delimiter.size();
 	}
+}
+
+void toUpper(std::string &str) {
+	std::transform(str.begin(), str.end(), str.begin(), toupper);
+}
+
+void toLower(std::string &str) {
+	std::transform(str.begin(), str.end(), str.begin(), tolower);
+}
+
+const std::string toUpper(const std::string &str) {
+	std::string result = str;
+	std::transform(result.begin(), result.end(), result.begin(), toupper);
+	return result;
+}
+
+const std::string toLower(const std::string &str) {
+	std::string result = str;
+	std::transform(result.begin(), result.end(), result.begin(), tolower);
+	return result;
 }
