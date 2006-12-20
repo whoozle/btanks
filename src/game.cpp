@@ -209,19 +209,9 @@ void IGame::onMenu(const std::string &name, const std::string &value) {
 
 		clear();
 		_main_menu.reset();
-		GET_CONFIG_VALUE("stubs.default-map", std::string, map, "survival");
-		loadMap(map);
-		
-		static const char * colors[4] = {"green", "red", "yellow", "cyan"};
-		std::string animation = colors[mrt::random(4)];
-		animation += "-" + vehicle;
-
-		GET_CONFIG_VALUE("player.control-method", std::string, cm, "keys");		
-		_my_index = PlayerManager->spawnPlayer(vehicle, animation, cm);
-		assert(_my_index == 0);
-		PlayerManager->spawnPlayer("ai-tank", "green-tank", "ai");
-		PlayerManager->setViewport(_my_index, _window.getSize());
 		_cheater = new Cheater;
+		
+		throw_ex(("reimplement me"));
 		
 	} else if (name == "s-start") {
 		LOG_DEBUG(("start split screen game requested"));
@@ -229,7 +219,8 @@ void IGame::onMenu(const std::string &name, const std::string &value) {
 		_main_menu.reset();
 		GET_CONFIG_VALUE("stubs.default-vehicle-1", std::string, vehicle1, "launcher");
 		GET_CONFIG_VALUE("stubs.default-vehicle-2", std::string, vehicle2, "launcher");
-		GET_CONFIG_VALUE("stubs.default-map", std::string, map, "survival");
+		std::string map;
+		Config->get("menu.default-mp-map", map, "survival");
 		loadMap(map);
 
 		static const char * colors[4] = {"green", "red", "yellow", "cyan"};
@@ -264,7 +255,8 @@ void IGame::onMenu(const std::string &name, const std::string &value) {
 	} else if (name == "m-start") {
 		LOG_DEBUG(("start multiplayer server requested"));
 		clear();
-		GET_CONFIG_VALUE("stubs.default-mp-map", std::string, map, "dm2");
+		std::string map;
+		Config->get("menu.default-mp-map", map, "survival");
 		loadMap(map);
 		GET_CONFIG_VALUE("stubs.default-mp-vehicle", std::string, vehicle, "launcher");
 
