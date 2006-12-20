@@ -42,7 +42,7 @@ void Directory::close() {
 
 void Directory::open(const std::string &path) {
 	struct _finddata_t filedata;
-	if ((_handle = _findfirst((path + "/*.*").c_str(), &filedata)) == -1) {
+	if ((_handle = _findfirst((path + "/*").c_str(), &filedata)) == -1) {
 		_handle = 0;
 		throw_io(("findfirst('%s')", path.c_str()));
 	}
