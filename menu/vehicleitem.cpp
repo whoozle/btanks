@@ -2,6 +2,7 @@
 #include "config.h"
 
 #include "resource_manager.h"
+#include <algorithm>
 
 VehicleItem::VehicleItem(sdlx::TTF &font, const std::string &name, const std::string &subkey) :
  MenuItem(font, name, "text", std::string(), std::string()), _active(false), _subkey(subkey) {
