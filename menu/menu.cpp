@@ -21,6 +21,7 @@
 #include "menuitem.h"
 #include "proxyitem.h"
 #include "mapitem.h"
+#include "vehicleitem.h"
 #include "game.h"
 
 #include "sdlx/surface.h"
@@ -75,6 +76,8 @@ void MainMenu::init(const int w, const int h) {
 	_items["multiplayer"].push_back(new MenuItem(_font, "multiplayer-join", "submenu", "JOIN GAME"));
 	_items["multiplayer"].push_back(new MenuItem(_font, "s-start", "command", "SPLIT SCREEN GAME"));
 	_items["multiplayer"].push_back(new MapItem (_font, "map"));
+	_items["multiplayer"].push_back(new VehicleItem(_font, "vehicle 1", "1"));
+	_items["multiplayer"].push_back(new VehicleItem(_font, "vehicle 2", "2"));
 	_items["multiplayer"].push_back(new MenuItem(_font, "back", "back", "BACK"));
 
 	_items["multiplayer-join"].push_back(new TextItem(_font, "address", address));

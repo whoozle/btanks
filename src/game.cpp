@@ -217,8 +217,9 @@ void IGame::onMenu(const std::string &name, const std::string &value) {
 		LOG_DEBUG(("start split screen game requested"));
 		clear();
 		_main_menu.reset();
-		GET_CONFIG_VALUE("stubs.default-vehicle-1", std::string, vehicle1, "launcher");
-		GET_CONFIG_VALUE("stubs.default-vehicle-2", std::string, vehicle2, "launcher");
+		std::string vehicle1, vehicle2;
+		Config->get("menu.default-vehicle-1", vehicle1, "launcher");
+		Config->get("menu.default-vehicle-2", vehicle2, "launcher");
 		std::string map;
 		Config->get("menu.default-mp-map", map, "survival");
 		loadMap(map);

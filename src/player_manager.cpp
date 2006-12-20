@@ -127,7 +127,8 @@ TRY {
 		
 		Message m(Message::RequestPlayer);
 
-		GET_CONFIG_VALUE("stubs.default-mp-vehicle", std::string, vehicle, "tank");
+		std::string vehicle;
+		Config->get("stubs.default-vehicle-1", vehicle, "launcher");
 
 		m.set("vehicle", vehicle);
 		_client->send(m);
