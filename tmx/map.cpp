@@ -90,7 +90,7 @@ const int IMap::getImpassability(const Object *obj, const v3<int>&pos, v3<int> *
 	int hidden_mask = 0;
 
 	int result_im = 101;
-	LOG_DEBUG(("%d:%d:%d:%d (%+d:%+d:%+d:%+d)--> %d:%d %d:%d", x1, y1, w, h, dx1, dy1, dx2, dy2, xt1, yt1, xt2, yt2));
+	//LOG_DEBUG(("%d:%d:%d:%d (%+d:%+d:%+d:%+d)--> %d:%d %d:%d", x1, y1, w, h, dx1, dy1, dx2, dy2, xt1, yt1, xt2, yt2));
 	for(LayerMap::const_reverse_iterator l = _layers.rbegin(); l != _layers.rend(); ++l) {
 		const Layer *layer = l->second;
 		int layer_im = layer->impassability;
@@ -180,8 +180,8 @@ const int IMap::getImpassability(const Object *obj, const v3<int>&pos, v3<int> *
 				}
 			}
 		}
-		LOG_DEBUG(("layer: %d, partial: %s, full: %s, im: %d (collision map: %d:%d)", 
-			l->first, partial_contact?"yes":"no", full_contact?"yes":"no", result_im, parts_h, parts_v));
+		//LOG_DEBUG(("layer: %d, partial: %s, full: %s, im: %d (collision map: %d:%d)", 
+		//	l->first, partial_contact?"yes":"no", full_contact?"yes":"no", result_im, parts_h, parts_v));
 	}
 	
 	if (xt1 == xt2) {
@@ -205,7 +205,7 @@ const int IMap::getImpassability(const Object *obj, const v3<int>&pos, v3<int> *
 		result_im = 0;
 
 	assert(result_im >= 0);
-	LOG_DEBUG(("im = %d", result_im));
+	//LOG_DEBUG(("im = %d", result_im));
 	return result_im;
 }
 
