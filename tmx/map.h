@@ -74,6 +74,8 @@ public:
 		sdlx::CollisionMap *cmap, *vmap;
 	};
 	typedef std::vector< TileDescriptor > TileMap;
+	
+	void invalidateTile(const int xp, const int yp);
 
 private:
 	virtual void start(const std::string &name, Attrs &attr);

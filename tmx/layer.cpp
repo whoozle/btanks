@@ -31,6 +31,7 @@ void ChainedDestructableLayer::onDeath(const int idx) {
 
 void DestructableLayer::onDeath(const int idx) {
 	_hp_data[idx] = -1;
+	Map->invalidateTile(idx % _w, idx / _w);
 }
 
 DestructableLayer::DestructableLayer(const bool visible) : _hp_data(NULL), _visible(visible) {}

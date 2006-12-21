@@ -630,3 +630,7 @@ void IMap::damage(const v3<float> &position, const int hp) {
 		i->second->damage(pos.x, pos.y, hp);
 	}
 }
+
+void IMap::invalidateTile(const int xp, const int yp) {
+	_cover_map.set(yp, xp, -10000);
+}
