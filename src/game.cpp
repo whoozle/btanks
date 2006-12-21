@@ -259,7 +259,8 @@ void IGame::onMenu(const std::string &name, const std::string &value) {
 		std::string map;
 		Config->get("menu.default-mp-map", map, "survival");
 		loadMap(map);
-		GET_CONFIG_VALUE("stubs.default-mp-vehicle", std::string, vehicle, "launcher");
+		std::string vehicle;
+		Config->get("menu.default-vehicle-1", vehicle, "launcher");
 
 		GET_CONFIG_VALUE("player.control-method", std::string, cm, "keys");		
 		_my_index = PlayerManager->spawnPlayer(vehicle, "green-" + vehicle, cm);
