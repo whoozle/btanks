@@ -143,6 +143,19 @@ static const bool test_pixel(const sdlx::Surface * surface, const unsigned x, co
 	return false;
 }
 
+void CollisionMap::create(const unsigned int w, const unsigned int h, const bool bit) {
+	_empty = !bit;
+	_full =   bit;
+	
+	_w = (w - 1) / 8 + 1; 
+	_h = h;
+	
+	
+	_data.setSize(_w * _h);
+	_data.fill(bit?~0:0);
+}
+
+
 void CollisionMap::init(const sdlx::Surface * surface, const Type type) {
 	_empty = true;
 	_full = true;
