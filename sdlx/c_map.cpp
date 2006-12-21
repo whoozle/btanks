@@ -68,7 +68,7 @@ const bool CollisionMap::collides(const sdlx::Rect &src, const CollisionMap *oth
 	
 
 //you can play with it, but 8 seems optimal for me.
-#define INTERLACE_STEP 8 
+#define INTERLACE_STEP 1 
 
 #if INTERLACE_STEP == 16
 	int steps_pos[] = {0, 8, 4, 12,  2, 10, 6, 14,  1, 9, 5, 13,  3, 11, 7, 15};	
@@ -78,6 +78,8 @@ const bool CollisionMap::collides(const sdlx::Rect &src, const CollisionMap *oth
 	int steps_pos[] = {0, 2, 1, 3};
 #elif INTERLACE_STEP == 2
 	int steps_pos[] = {0, 1};
+#elif INTERLACE_STEP == 1
+	int steps_pos[] = {0};
 #endif
 
 /*	int steps = 0;
