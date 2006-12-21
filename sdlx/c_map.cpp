@@ -85,6 +85,8 @@ const bool CollisionMap::collides(const sdlx::Rect &src, const CollisionMap *oth
 /*	int steps = 0;
 	int steps_total = (inter_y1 - inter_y0 + 1) * (inter_x1 - inter_x0 + 1);
 */
+//#define NEW_COLLIDES
+#ifndef NEW_COLLIDES
 	for(int sy = 0; sy < INTERLACE_STEP; ++sy) 
 	for(int sx = 0; sx < INTERLACE_STEP; ++sx) 
 	for(int y = inter_y0 + steps_pos[sy]; y <= inter_y1 ; y += INTERLACE_STEP) {
@@ -116,6 +118,57 @@ const bool CollisionMap::collides(const sdlx::Rect &src, const CollisionMap *oth
 			//++steps;
 		}
 	}
+#else
+	for(int sy = 0; sy < INTERLACE_STEP; ++sy) {
+		for(int y = inter_y0 + steps_pos[sy]; y <= inter_y1; y += INTERLACE_STEP) {
+			const int ybase1 = (src.y + y) * _w;
+			const int ybase2 = (other_src.y + y - by) * other->_w;
+			
+			int aligned_pos1 = (src.x + inter_x0 + 7) / 8;
+			int shift = (other_src.x + aligned_pos1 * 8 - src.x - bx) % 8;
+			assert(shift >= 0 && shift < 8);
+			int aligned_pos2 = (src.x + inter_x1) / 8;
+
+			for(int x = inter_x0 + src.x; x < aligned_pos1 * 8; ++x) {
+				const int other_x = (x - src.x + other_src.x - bx);
+				const int pos1 = x / 8 + ybase1;
+				const int pos2 = other_x / 8 + ybase2;
+				if (pos1 < 0 || pos2 < 0)
+					continue;
+				if (pos1 >= size1 || pos2 >= size2)
+					break;
+				
+				const unsigned char bit1 = 1<<(7 - (x & 7));
+				const unsigned char bit2 = 1<<(7 - (other_x & 7));
+				if ((ptr1[pos1]&bit1) != 0 && (ptr2[pos2]&bit2) != 0) 
+						return true;
+			}
+
+			
+			for(int x = aligned_pos1; x <= aligned_pos2; ++x) {
+				if ((ptr1[x + ybase1] << shift) & ptr2[x - src.x + other_src.x + ybase2])
+					return true;
+			}
+
+			for(int x = aligned_pos2 * 8; x < inter_x1 + src.x; ++x) {
+				const int other_x = (x - src.x + other_src.x - bx);
+				const int pos1 = x / 8 + ybase1;
+				const int pos2 = other_x / 8 + ybase2;
+				if (pos1 < 0 || pos2 < 0)
+					continue;
+				if (pos1 >= size1 || pos2 >= size2)
+					break;
+				
+				const unsigned char bit1 = 1<<(7 - (x & 7));
+				const unsigned char bit2 = 1<<(7 - (other_x & 7));
+				if ((ptr1[pos1]&bit1) != 0 && (ptr2[pos2]&bit2) != 0) 
+						return true;
+			}
+		}
+	}
+
+#endif
+
 	//LOG_DEBUG(("no collision : %d steps", steps));
 	return false;
 }
