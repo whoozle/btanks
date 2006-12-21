@@ -30,9 +30,10 @@
 
 #include "notifying_xml_parser.h"
 
+#include "sdlx/c_map.h"
+
 namespace sdlx {
 class Surface;
-class CollisionMap;
 class Rect;
 }
 
@@ -87,6 +88,8 @@ private:
 	inline const bool hiddenBy(const Object *obj, const int dx, const int dy, const sdlx::CollisionMap *tile) const;
 
 	int _w, _h, _tw, _th, _firstgid;
+	sdlx::CollisionMap _empty_tile, _full_tile;
+	
 	int _lastz;
 	mrt::Chunk _data;
 	sdlx::Surface *_image;
