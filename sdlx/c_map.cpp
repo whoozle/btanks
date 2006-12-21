@@ -88,11 +88,11 @@ const bool CollisionMap::collides(const sdlx::Rect &src, const CollisionMap *oth
 	for(int sy = 0; sy < INTERLACE_STEP; ++sy) 
 	for(int sx = 0; sx < INTERLACE_STEP; ++sx) 
 	for(int y = inter_y0 + steps_pos[sy]; y <= inter_y1 ; y += INTERLACE_STEP) {
-		int ybase1 = (src.y + y) * _w;
-		int ybase2 = (other_src.y + y - by) * other->_w;
+		const int ybase1 = (src.y + y) * _w;
+		const int ybase2 = (other_src.y + y - by) * other->_w;
 		for(int x = inter_x0 + steps_pos[sx]; x <= inter_x1 ; x += INTERLACE_STEP)	{
-			int pos1 = (src.x + x) / 8 + ybase1;
-			int pos2 = (other_src.x + x - bx) / 8 + ybase2;
+			const register int pos1 = (src.x + x) / 8 + ybase1;
+			const register int pos2 = (other_src.x + x - bx) / 8 + ybase2;
 			
 			/*
 			assert(pos1 >= 0 && pos1 < size1);
@@ -106,8 +106,8 @@ const bool CollisionMap::collides(const sdlx::Rect &src, const CollisionMap *oth
 			if (pos1 >= size1 || pos2 >= size2)
 				break;
 			
-			unsigned bit1 = 1<<(7 - (x & 7));
-			unsigned bit2 = 1<<(7 - ((x - bx) & 7));
+			const unsigned bit1 = 1<<(7 - (x & 7));
+			const unsigned bit2 = 1<<(7 - ((x - bx) & 7));
 			
 			if ( (ptr1[pos1]&bit1) != 0 && (ptr2[pos2]&bit2) != 0) {
 				//LOG_DEBUG(("collision detected: %d of %d : %g%", steps, steps_total, 100.0 * steps / steps_total));
