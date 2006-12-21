@@ -96,14 +96,14 @@ const int IMap::getImpassability(const Object *obj, const v3<int>&pos, v3<int> *
 		int layer_im = layer->impassability;
 
 		if (hidden && l->first > obj_z) {
-			if (hiddenBy(obj, dx1, dy1, layer->getVisibilityMap(xt1, yt1)))
+			if (((hidden_mask & 1) == 0) && hiddenBy(obj, dx1, dy1, layer->getVisibilityMap(xt1, yt1)))
 				hidden_mask |= 1;
-			if (yt1 != yt2 && hiddenBy(obj, dx1, dy2, layer->getVisibilityMap(xt1, yt2)))
+			if (yt1 != yt2 && ((hidden_mask & 2) == 0) && hiddenBy(obj, dx1, dy2, layer->getVisibilityMap(xt1, yt2)))
 				hidden_mask |= 2;
 			if (xt1 != xt2) {
-				if (hiddenBy(obj, dx2, dy1, layer->getVisibilityMap(xt2, yt1)))
+				if (((hidden_mask & 4) == 0) && hiddenBy(obj, dx2, dy1, layer->getVisibilityMap(xt2, yt1)))
 					hidden_mask |= 4;
-				if (yt1 != yt2 && hiddenBy(obj, dx2, dy2, layer->getVisibilityMap(xt2, yt2)))
+				if (yt1 != yt2 && ((hidden_mask & 8) == 0) && hiddenBy(obj, dx2, dy2, layer->getVisibilityMap(xt2, yt2)))
 					hidden_mask |= 8;
 			}
 		}
