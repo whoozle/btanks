@@ -44,6 +44,7 @@
 
 #include "player_state.h"
 #include "config.h"
+#include "var.h"
 
 #include "sound/mixer.h"
 #include "player_slot.h"
@@ -301,17 +302,20 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 	_waypoints.clear();
 	_waypoint_edges.clear();
 	
+	Config->clearOverrides();
+	
 	//const v3<int> size = map.getSize();
 	for (IMap::PropertyMap::iterator i = map.properties.begin(); i != map.properties.end(); ++i) {
 		if (i->first.substr(0, 6) != "spawn:" && i->first.substr(0, 7) != "object:" && 
-			i->first.substr(0, 9) != "waypoint:" && i->first.substr(0, 5) != "edge:") {
+			i->first.substr(0, 9) != "waypoint:" && i->first.substr(0, 5) != "edge:" && 
+			i->first.substr(0, 7) != "config:") {
 			continue;
 		}
 		if (!spawn_objects && i->first.substr(0, 9) != "waypoint:" && i->first.substr(0, 5) != "edge:")
 			continue;
 	
 		v3<int> pos;
-		if (i->first.substr(0, 5) != "edge:") {
+		if (i->first.substr(0, 5) != "edge:" && i->first.substr(0,7) != "config:") {
 			std::string pos_str = i->second;
 			const bool tiled_pos = pos_str[0] == '@';
 			if (tiled_pos) { 
@@ -361,10 +365,20 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 				_waypoints[res[1]][res[2]] =  pos;
 			} else if (res.size() > 2 && res[0] == "edge") {
 				_waypoint_edges.insert(WaypointEdgeMap::value_type(res[1], res[2]));
+			} else if (res.size() > 1 && res[0] == "config") {
+				std::vector<std::string> value;
+				mrt::split(value, i->second, ":");
+				if (value[0] != "int" && value[0] != "float" && value[0] != "string")
+					throw_ex(("cannot set config variable of type '%s'", value[0].c_str()));
+				Var var(value[0]);
+				var.fromString(value[1]);
+
+				Config->setOverride(res[1], var);
 			}
 		}
 	}
 	LOG_DEBUG(("%u items on map. %u waypoints, %u edges", (unsigned) _items.size(), (unsigned)_waypoints.size(), (unsigned)_waypoint_edges.size()));
+	Config->invalidateCachedValues();
 	
 	_hud->initMap();
 	

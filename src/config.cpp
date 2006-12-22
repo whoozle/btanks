@@ -31,8 +31,6 @@ IMPLEMENT_SINGLETON(Config, IConfig)
 
 IConfig::IConfig() {}
 
-
-
 void IConfig::load(const std::string &file) {
 	_file = file;
 	TRY {
@@ -99,6 +97,13 @@ void IConfig::charData(const std::string &data) {
 }
 
 void IConfig::get(const std::string &name, float &value, const float default_value) {
+	VarMap::iterator t_i = _temp_map.find(name);
+	if (t_i != _temp_map.end()) { //override found
+		t_i->second->check("float");
+		value = t_i->second->f;
+		return;
+	}
+
 	VarMap::iterator i = _map.find(name); 
 	if (i == _map.end()) {
 		_map[name] = new Var("float");
@@ -109,6 +114,13 @@ void IConfig::get(const std::string &name, float &value, const float default_val
 	value = _map[name]->f;
 }
 void IConfig::get(const std::string &name, int &value, const int default_value) {
+	VarMap::iterator t_i = _temp_map.find(name);
+	if (t_i != _temp_map.end()) { //override found
+		t_i->second->check("int");
+		value = t_i->second->i;
+		return;
+	}
+
 	VarMap::iterator i = _map.find(name); 
 	if (i == _map.end()) {
 		_map[name] = new Var("int");
@@ -120,6 +132,13 @@ void IConfig::get(const std::string &name, int &value, const int default_value) 
 }
 
 void IConfig::get(const std::string &name, bool &value, const bool default_value) {
+	VarMap::iterator t_i = _temp_map.find(name);
+	if (t_i != _temp_map.end()) { //override found
+		t_i->second->check("bool");
+		value = t_i->second->b;
+		return;
+	}
+
 	VarMap::iterator i = _map.find(name); 
 	if (i == _map.end()) {
 		_map[name] = new Var("bool");
@@ -131,6 +150,13 @@ void IConfig::get(const std::string &name, bool &value, const bool default_value
 }
 
 void IConfig::get(const std::string &name, std::string &value, const std::string& default_value) {
+	VarMap::iterator t_i = _temp_map.find(name);
+	if (t_i != _temp_map.end()) { //override found
+		t_i->second->check("string");
+		value = t_i->second->s;
+		return;
+	}
+	
 	VarMap::iterator i = _map.find(name); 
 	if (i == _map.end()) {
 		_map[name] = new Var("string");
@@ -184,7 +210,11 @@ void IConfig::deserialize(const mrt::Serializator &s) {
 
 void IConfig::setOverride(const std::string &name, const Var &var) {
 	LOG_DEBUG(("adding override for '%s'", name.c_str()));
-	
+	Var * v = _temp_map[name];
+	if (v == NULL) 
+		_temp_map[name] = new Var(var);
+	else 
+		*v = var;	
 }
 
 void IConfig::deserializeOverrides(const mrt::Serializator &s) {
@@ -193,11 +223,13 @@ void IConfig::deserializeOverrides(const mrt::Serializator &s) {
 }
 
 void IConfig::clearOverrides() {
+	LOG_DEBUG(("clearing %u overrides...", _temp_map.size()));
 	std::for_each(_temp_map.begin(), _temp_map.end(), delete_ptr2<VarMap::value_type>());
+	_temp_map.clear();
 }
 
 void IConfig::invalidateCachedValues() {
-	LOG_DEBUG(("invalidating %u cached values...", _invalidators.size()));
+	LOG_DEBUG(("invalidating %u cached values (%u overrides)...", _invalidators.size(), _temp_map.size()));
 	for(std::set<bool *>::iterator i = _invalidators.begin(); i != _invalidators.end(); ++i) {
 		*(*i) = false;
 	}
@@ -207,6 +239,7 @@ void IConfig::invalidateCachedValues() {
 
 IConfig::~IConfig() {
 	LOG_DEBUG(("cleaning up config..."));
+	std::for_each(_temp_map.begin(), _temp_map.end(), delete_ptr2<VarMap::value_type>());
 	std::for_each(_map.begin(), _map.end(), delete_ptr2<VarMap::value_type>());
 }
 
