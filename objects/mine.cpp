@@ -31,12 +31,14 @@ public:
 };
 
 void Mine::onSpawn() {
-	play("3", false);
-	play("pause", false);
-	play("2", false);
-	play("pause", false);
-	play("1", false);
-	play("pause", false);
+	if (registered_name != "armed-mine") {
+		play("3", false);
+		play("pause", false);
+		play("2", false);
+		play("pause", false);
+		play("1", false);
+		play("pause", false);
+	}
 	play("armed", true);
 }
 
@@ -66,3 +68,4 @@ Object* Mine::clone() const  {
 }
 
 REGISTER_OBJECT("regular-mine", Mine, ());
+REGISTER_OBJECT("armed-mine", Mine, ());
