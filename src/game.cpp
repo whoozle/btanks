@@ -401,7 +401,7 @@ void IGame::checkItems() {
 		}
 		int rt;
 		Config->get("map." + item.classname + ".respawn-interval", rt, 5); 
-		if (rt == 0) 
+		if (rt < 0) 
 			continue;
 		if (((ticks - item.dead_on) / 1000) >= (unsigned)rt) {
 			//respawning item
