@@ -32,13 +32,16 @@ Credits::Credits() : _w(0), _h(0) {
 	lines.push_back("BATTLE TANKS");
 	lines.push_back("");
 	lines.push_back("PROGRAMMING");
-	lines.push_back("VLADIMIR MENSHAKOV AKA MEGATH");
+	lines.push_back("VLADIMIR 'WHOOZLE' MENSHAKOV");
 	lines.push_back("");
 	lines.push_back("GRAPHICS");
-	lines.push_back("ALEXANDER WAGNER AKA METHOS");
+	lines.push_back("ALEXANDER 'METHOS' WAGNER");
 	lines.push_back("");
 	lines.push_back("LEVEL DESIGN");
-	lines.push_back("VLADIMIR ZHURAVLEV AKA VZ");
+	lines.push_back("VLADIMIR 'VZ' ZHURAVLEV");
+	lines.push_back("");
+	lines.push_back("TOOLS");
+	lines.push_back("VLADIMIR 'GOLD' GOLDOBIN");
 	lines.push_back("");
 	
 	lines.push_back("GAME DESIGN");
