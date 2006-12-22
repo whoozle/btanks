@@ -331,6 +331,7 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 				//LOG_DEBUG(("object %s, animation %s, pos: %s", res[1].c_str(), res[2].c_str(), i->second.c_str()));
 				Item item;
 				Object *o = ResourceManager->createObject(res[1], res[2]);
+				o->setOwner(-7); //fake owner ;)
 				World->addObject(o, pos.convert<float>());
 				
 				item.classname = res[1];
