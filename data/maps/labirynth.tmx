@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <map version="0.99b" orientation="orthogonal" width="20" height="25" tilewidth="64" tileheight="64">
  <properties>
-  <property name="config:map.guided-missile.respawn-interval" value="int:1"/>
+  <property name="config:map.guided-missile.respawn-interval" value="int:0"/>
   <property name="object:guided-missile:guided-missile:1" value="1244,1378"/>
   <property name="object:guided-missile:guided-missile:9" value="184,630"/>
   <property name="object:guided-missile:guided-missile:14" value="740,1062"/>
