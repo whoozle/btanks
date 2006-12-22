@@ -84,7 +84,7 @@ void IGame::init(const int argc, char *argv[]) {
 	{
 		//place for upgrade.
 		int revision;
-		Config->get("engine.revision", revision, getRevision());
+		Config->get("engine.revision", revision, 1638); //this key first time appears in 1638 
 		if (revision < 1639) {
 			int pfs;
 			Config->get("engine.pathfinding-slice", pfs, 1);
