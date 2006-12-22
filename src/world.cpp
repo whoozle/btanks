@@ -44,6 +44,7 @@
 IMPLEMENT_SINGLETON(World, IWorld)
 
 void IWorld::clear() {
+	LOG_DEBUG(("cleaning up world..."));
 	std::for_each(_objects.begin(), _objects.end(), delete_ptr<Object *>());
 	_objects.clear();
 	_id2obj.clear();

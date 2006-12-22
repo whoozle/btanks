@@ -264,6 +264,7 @@ void IConfig::deserialize(const mrt::Serializator &s) {
 
 
 IConfig::~IConfig() {
+	LOG_DEBUG(("cleaning up config..."));
 	std::for_each(_map.begin(), _map.end(), delete_ptr2<VarMap::value_type>());
 }
 

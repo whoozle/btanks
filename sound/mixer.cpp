@@ -72,7 +72,7 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 }
 
 IMixer::~IMixer() {
-	
+	LOG_DEBUG(("cleaning up mixer..."));	
 	delete _ogg; 
 	_ogg = NULL;
 	

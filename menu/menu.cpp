@@ -132,7 +132,10 @@ void MainMenu::deinit() {
 	_active_item = 0;
 }
 
-MainMenu::~MainMenu() { deinit(); }
+MainMenu::~MainMenu() { 
+	LOG_DEBUG(("cleaning up menus..."));
+	deinit(); 
+}
 
 
 void MainMenu::onKey(const Uint8 type, const SDL_keysym sym) {

@@ -586,12 +586,12 @@ void IGame::deinit() {
 
 
 void IGame::clear() {
+	LOG_DEBUG(("cleaning up main game object..."));
 	Mixer->cancelAll();
 
 	PlayerManager->clear();
 
 	_my_index = -1;
-	LOG_DEBUG(("cleaning up world"));
 	_items.clear();
 	_waypoints.clear();
 	_waypoint_edges.clear();

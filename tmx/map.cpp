@@ -620,6 +620,7 @@ void IMap::clear() {
 }
 
 IMap::~IMap() {
+	LOG_DEBUG(("cleaning up map..."));
 	clear();
 }
 
