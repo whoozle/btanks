@@ -25,110 +25,23 @@
 #include "mrt/serializable.h"
 #include "mrt/serializator.h"
 
+#include "var.h"
+
 IMPLEMENT_SINGLETON(Config, IConfig)
 
-IConfig::IConfig() : _ro(true) {}
+IConfig::IConfig() {}
 
 
-class IConfig::Var : public mrt::Serializable {
-public: 
-	std::string type;
-	Var() {}
-	Var(const std::string & type): type(type) {}
-	
-	virtual void serialize(mrt::Serializator &s) const {
-		if (type.empty()) 
-			throw_ex(("cannot serialize empty variable"));
-		char t = type[0];
-		s.add(t);
-		if (t == 'i') 
-			s.add(i);
-		else if (t == 'b') 
-			s.add(b);
-		else if (t == 's') 
-			s.add(this->s);
-		else if (t == 'f') 
-			s.add(f);
-	}
-	virtual void deserialize(const mrt::Serializator &s) {
-		int t;
-		s.get(t);
-		switch(t) {
-			case 'i': 
-				type = "int";
-				s.get(i);
-			break;
-			case 'b': 
-				type = "bool";
-				s.get(b);
-			break;
-			case 's': 
-				type = "string";
-				s.get(this->s);
-			break;
-			case 'f': 
-				type = "float";
-				s.get(f);
-			break;
-			default:
-				throw_ex(("unknown type %02x recv'ed", t));
-		}
-	}
-	
-	
-	void check(const std::string &t) const {
-		if (type != t)
-			throw_ex(("invalid type requested(%s), real type: %s", t.c_str(), type.c_str()));
-	}
-	
-	const std::string toString() const {
-		assert(!type.empty());
-		if (type == "int")
-			return mrt::formatString("%d", i);
-		else if (type == "bool") 
-			return b?"true":"false";
-		else if (type == "float") 
-			return mrt::formatString("%g", f);
-		else if (type == "string") 
-			return mrt::formatString("%s", s.c_str());
-		throw_ex(("cannot convert %s to string", type.c_str()));
-		return "";//stub
-	}
-
-	void fromString(const std::string &str) {
-		assert(!type.empty());
-		
-		if (type == "int")
-			i = atoi(str.c_str());
-		else if (type == "bool") {
-			if (str == "true") {
-				b = true;
-			} else if (str == "false") {
-				b = false;
-			} else throw_ex(("'%s' used as boolean value.", str.c_str()));
-		} else if (type == "float") 
-			f = atof(str.c_str());
-		else if (type == "string") 
-			s = str;
-		else throw_ex(("cannot construct %s from string", type.c_str()));
-	}
-	
-	int i;
-	bool b;
-	float f;
-	std::string s;
-};
 
 void IConfig::load(const std::string &file) {
 	_file = file;
 	TRY {
 		parseFile(file);
 	} CATCH("load", {}); 
-	_ro = false;
 }
 
 void IConfig::save() const {
-	if (_file.empty() || _ro)
+	if (_file.empty())
 		return;
 	LOG_DEBUG(("saving config to %s...", _file.c_str()));	
 	std::string data = "<config>\n";
@@ -244,9 +157,8 @@ void IConfig::set(const std::string &name, const int value) {
 	v->i = value;
 }
 
-
-void IConfig::setRO(const bool ro) {
-	_ro = ro;
+void IConfig::registerInvalidator(bool *ptr) {
+	_invalidators.insert(ptr);
 }
 
 void IConfig::serialize(mrt::Serializator &s) const {
@@ -269,6 +181,28 @@ void IConfig::deserialize(const mrt::Serializator &s) {
 		_map[name]->deserialize(s);		
 	}
 }
+
+void IConfig::setOverride(const std::string &name, const Var &var) {
+	LOG_DEBUG(("adding override for '%s'", name.c_str()));
+	
+}
+
+void IConfig::deserializeOverrides(const mrt::Serializator &s) {
+	throw_ex(("implement me"));
+	invalidateCachedValues();
+}
+
+void IConfig::clearOverrides() {
+	std::for_each(_temp_map.begin(), _temp_map.end(), delete_ptr2<VarMap::value_type>());
+}
+
+void IConfig::invalidateCachedValues() {
+	LOG_DEBUG(("invalidating %u cached values...", _invalidators.size()));
+	for(std::set<bool *>::iterator i = _invalidators.begin(); i != _invalidators.end(); ++i) {
+		*(*i) = false;
+	}
+}
+
 
 
 IConfig::~IConfig() {

@@ -166,7 +166,9 @@ bt_sources = 	[
 	'src/object.cpp', 'src/animation_model.cpp', 
 	'src/resource_manager.cpp', 'src/world.cpp',
 	'tmx/map.cpp', 'tmx/layer.cpp', 
-	'src/main.cpp', 'src/config.cpp', 'src/player_slot.cpp', 'src/hud.cpp', 'src/game.cpp',  'src/window.cpp', 
+	'src/main.cpp', 'src/var.cpp', 'src/config.cpp', 
+	
+	'src/player_slot.cpp', 'src/hud.cpp', 'src/game.cpp',  'src/window.cpp', 
 	'src/credits.cpp', 'src/cheater.cpp', 
 
 	'sound/al_ex.cpp', 'sound/ogg_ex.cpp', 'sound/ogg_stream.cpp', 'sound/mixer.cpp', 'sound/sample.cpp', 

@@ -25,6 +25,9 @@
 #include "mrt/xml.h"
 #include <string>
 #include <map>
+#include <set>
+
+class Var;
 
 class IConfig : public mrt::XMLParser, mrt::Serializable {
 public:
@@ -32,7 +35,6 @@ public:
 	IConfig();
 	void load(const std::string &file);
 	void save() const;
-	void setRO(const bool ro = true);
 
 	void get(const std::string &name, float &value, const float default_value);
 	void get(const std::string &name, int &value, const int default_value);
@@ -46,9 +48,14 @@ public:
 	
 	virtual void serialize(mrt::Serializator &s) const;
 	virtual void deserialize(const mrt::Serializator &s);
+
+	void setOverride(const std::string &name, const Var &var);
+	void deserializeOverrides(const mrt::Serializator &s);
+	void clearOverrides();
+	void invalidateCachedValues();
 	
+	void registerInvalidator(bool *ptr);
 private: 
-	class Var;
 	
 	virtual void start(const std::string &name, Attrs &attr);
 	virtual void end(const std::string &name);
@@ -58,10 +65,11 @@ private:
 
 	std::string _file;
 
-	VarMap _map;
+	VarMap _map, _temp_map;
 	
 	std::string _name, _type, _data;
-	bool _ro;
+	
+	std::set<bool *> _invalidators;
 };
 
 SINGLETON(Config, IConfig);
@@ -73,8 +81,9 @@ SINGLETON(Config, IConfig);
 		static bool i; \
 		static type v; \
 		if (!i) { \
+			Config->registerInvalidator(&i); \
+			Config->get(name, v, default_value); \
 			i = true; \
-			Config->get(name, v, default_value);	\
 		} \
 		value = v; \
 	}
