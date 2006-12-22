@@ -81,6 +81,20 @@ void IGame::init(const int argc, char *argv[]) {
 		Config->get("map.smoke-missiles-item.respawn-interval", r, 20);
 		Config->get("map.stun-missiles-item.respawn-interval", r, 20);
 	}
+	{
+		//place for upgrade.
+		int revision;
+		Config->get("engine.revision", revision, getRevision());
+		if (revision < 1639) {
+			int pfs;
+			Config->get("engine.pathfinding-slice", pfs, 1);
+			if (pfs > 1) {
+				LOG_DEBUG(("upgrading engine.pathfinding-slice value. (reset it to 1)"));
+				Config->set("engine.pathfinding-slice", 1);
+			}
+		}
+		Config->set("engine.revision", getRevision());
+	}
 
 	GET_CONFIG_VALUE("engine.show-fps", bool, show_fps, true);
 	GET_CONFIG_VALUE("engine.data-directory", std::string, data_dir, "data");

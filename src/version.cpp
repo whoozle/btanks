@@ -37,3 +37,7 @@ const std::string& getVersion() {
 #endif
 	return version;
 }
+
+const int getRevision() {
+	return REVISION;
+}

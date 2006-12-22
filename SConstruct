@@ -136,11 +136,14 @@ env.Append(LIBPATH=['mrt', 'sdlx', 'src', 'net', 'menu'])
 svnversion = os.popen('svnversion -n .', 'r')
 version = svnversion.readline()
 version = version[version.rfind(':') + 1:]
+revision = int(version.replace('M', ''))
+
 version = '0.3.%s' %version
 print "version: %s" %version
 
 venv = env.Copy()
 venv.Append(CPPDEFINES=['VERSION="\\"' + version + '\\""'])
+venv.Append(CPPDEFINES=['REVISION=%d' % revision])
 
 
 vobj = venv.Object('src/version.cpp')

@@ -232,8 +232,16 @@ void IConfig::set(const std::string &name, const std::string &value) {
 	Var *v = _map[name];
 	if (v == NULL) {
 		v = _map[name] = new Var("string");
-	}
+	} else v->type = "string";
 	v->s = value;
+}
+
+void IConfig::set(const std::string &name, const int value) {
+	Var *v = _map[name];
+	if (v == NULL) {
+		v = _map[name] = new Var("int");
+	}
+	v->i = value;
 }
 
 

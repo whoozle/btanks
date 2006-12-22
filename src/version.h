@@ -23,6 +23,7 @@
 #include <string>
 
 const std::string & getVersion();
+const int getRevision();
 
 #endif
 
