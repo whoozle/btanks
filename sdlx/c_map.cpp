@@ -125,8 +125,7 @@ const bool CollisionMap::collides(const sdlx::Rect &src, const CollisionMap *oth
 			const int ybase2 = (other_src.y + y - by) * other->_w;
 			
 			int aligned_pos1 = (src.x + inter_x0 + 7) / 8;
-			int shift = (other_src.x + aligned_pos1 * 8 - src.x - bx) % 8;
-			assert(shift >= 0 && shift < 8);
+			int shift = (other_src.x - src.x - bx) & 7;
 			int aligned_pos2 = (src.x + inter_x1) / 8;
 
 			for(int x = inter_x0 + src.x; x < aligned_pos1 * 8; ++x) {
@@ -146,7 +145,14 @@ const bool CollisionMap::collides(const sdlx::Rect &src, const CollisionMap *oth
 
 			
 			for(int x = aligned_pos1; x <= aligned_pos2; ++x) {
-				if ((ptr1[x + ybase1] << shift) & ptr2[x - src.x + other_src.x + ybase2])
+				register const int pos1 = x + ybase1;
+				register const int pos2 = x - src.x + other_src.x + ybase2;
+				if (pos1 < 0 || pos2 < 0)
+					continue;
+				if (pos1 >= size1 || pos2 >= size2)
+					break;
+				
+				if ((ptr1[pos1] << shift) & ptr2[pos2])
 					return true;
 			}
 
