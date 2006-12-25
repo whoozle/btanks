@@ -2,25 +2,31 @@
 <map version="0.99b" orientation="orthogonal" width="35" height="25" tilewidth="64" tileheight="64">
  <properties>
   <property name="object:impassable-static-corpse:dead-green-launcher:1" value="1577,1127"/>
+  <property name="object:biotoilet:biotoilet:1" value="176,94"/>
   <property name="object:gate:gate:1" value="128,1208"/>
+  <property name="object:nuke-missiles-item:nuke-missiles-item:3" value="1174,894"/>
+  <property name="object:nuke-missiles-item:nuke-missiles-item:2" value="2088,56"/>
+  <property name="object:nuke-missiles-item:nuke-missiles-item:1" value="52,1528"/>
+  <property name="object:stun-missiles-item:stun-missiles-item:1" value="1696,738"/>
   <property name="object:impassable-static-corpse:dead-choo-choo-wagon:3" value="1186,249,200"/>
   <property name="object:armed-mine:regular-mine:63" value="2126,604"/>
   <property name="object:armed-mine:regular-mine:62" value="2157,604"/>
   <property name="object:armed-mine:regular-mine:61" value="2192,604"/>
   <property name="object:armed-mine:regular-mine:60" value="2109,627"/>
-  <property name="config:map.smoke-cloud.respawn-interval" value="int:1"/>
   <property name="object:impassable-static-corpse:dead-yellow-car:2" value="627,1001"/>
-  <property name="object:impassable-static-corpse:dead-cyan-tank:1" value="1681,998"/>
+  <property name="config:map.smoke-cloud.respawn-interval" value="int:1"/>
   <property name="object:impassable-static-corpse:dead-yellow-car:1" value="1811,1235"/>
+  <property name="object:impassable-static-corpse:dead-cyan-tank:1" value="1681,998"/>
   <property name="object:impassable-static-corpse:dead-orange-bus:1" value="1929,993"/>
-  <property name="object:umbrella:umbrella:1" value="499,471"/>
   <property name="object:static-corpse:dead-thrower-static:3" value="294,489"/>
   <property name="object:static-corpse:dead-thrower-static:2" value="294,488"/>
   <property name="object:static-corpse:dead-thrower-static:1" value="1184,203"/>
+  <property name="object:dispersion-bullets-item:dispersion-bullets-item:2" value="1836,1378"/>
+  <property name="object:dispersion-bullets-item:dispersion-bullets-item:1" value="188,720"/>
   <property name="object:armed-mine:regular-mine:59" value="2142,627"/>
   <property name="object:armed-mine:regular-mine:58" value="2176,627"/>
-  <property name="object:armed-mine:regular-mine:57" value="2209,627"/>
   <property name="object:impassable-static-corpse:dead-choo-choo-train:3" value="1185,523,-59"/>
+  <property name="object:armed-mine:regular-mine:57" value="2209,627"/>
   <property name="object:armed-mine:regular-mine:56" value="1640,684"/>
   <property name="object:static-corpse:dead-man-static:9" value="1683,603"/>
   <property name="object:armed-mine:regular-mine:55" value="1415,1266"/>
@@ -29,42 +35,69 @@
   <property name="object:static-corpse:dead-man-static:7" value="1708,1010"/>
   <property name="object:armed-mine:regular-mine:53" value="1415,1218"/>
   <property name="object:static-corpse:dead-man-static:6" value="1757,1159"/>
-  <property name="object:static-corpse:dead-man-static:5" value="1405,1361"/>
   <property name="object:armed-mine:regular-mine:52" value="1441,1267"/>
-  <property name="object:static-corpse:dead-man-static:4" value="1446,1198"/>
+  <property name="object:static-corpse:dead-man-static:5" value="1405,1361"/>
   <property name="object:armed-mine:regular-mine:51" value="1441,1241"/>
-  <property name="object:static-corpse:dead-man-static:3" value="1169,1054"/>
+  <property name="object:static-corpse:dead-man-static:4" value="1446,1198"/>
   <property name="object:armed-mine:regular-mine:50" value="1441,1213"/>
-  <property name="object:static-corpse:dead-man-static:2" value="1158,582"/>
+  <property name="object:static-corpse:dead-man-static:3" value="1169,1054"/>
   <property name="object:impassable-static-corpse:dead-red-launcher:2" value="1165,356"/>
-  <property name="object:static-corpse:dead-man-static:1" value="1242,360"/>
+  <property name="object:static-corpse:dead-man-static:2" value="1158,582"/>
   <property name="object:nuclear-explosion:nuclear-explosion:1" value="1926,-256"/>
+  <property name="object:static-corpse:dead-man-static:1" value="1242,360"/>
+  <property name="object:boomerang-missiles-item:boomerang-missiles-item:3" value="1700,90"/>
+  <property name="object:boomerang-missiles-item:boomerang-missiles-item:2" value="200,26"/>
+  <property name="object:boomerang-missiles-item:boomerang-missiles-item:1" value="1450,902"/>
+  <property name="object:ricochet-bullets-item:ricochet-bullets-item:3" value="240,448"/>
+  <property name="object:ricochet-bullets-item:ricochet-bullets-item:2" value="680,1186"/>
+  <property name="object:ricochet-bullets-item:ricochet-bullets-item:1" value="6,756"/>
+  <property name="object:dumb-missiles-item:dumb-missiles-item:3" value="498,684"/>
   <property name="object:armed-mine:regular-mine:49" value="1561,875"/>
+  <property name="object:dumb-missiles-item:dumb-missiles-item:2" value="1580,1546"/>
   <property name="object:armed-mine:regular-mine:48" value="1563,846"/>
+  <property name="object:dumb-missiles-item:dumb-missiles-item:1" value="506,986"/>
   <property name="object:armed-mine:regular-mine:47" value="1564,820"/>
   <property name="object:armed-mine:regular-mine:46" value="1562,793"/>
-  <property name="object:impassable-static-corpse:dead-yellow-shilka:1" value="156,69"/>
   <property name="object:armed-mine:regular-mine:45" value="1562,766"/>
+  <property name="object:impassable-static-corpse:dead-yellow-shilka:1" value="156,69"/>
   <property name="object:armed-mine:regular-mine:44" value="1588,843"/>
   <property name="object:armed-mine:regular-mine:43" value="1592,819"/>
   <property name="object:armed-mine:regular-mine:42" value="1588,794"/>
   <property name="object:armed-mine:regular-mine:41" value="1588,768"/>
   <property name="object:armed-mine:regular-mine:40" value="1586,744"/>
+  <property name="object:dirt-bullets-item:dirt-bullets-item:1" value="1940,932"/>
+  <property name="object:megaheal:megaheal:1" value="1092,1128"/>
+  <property name="object:smoke-missiles-item:smoke-missiles-item:1" value="958,336"/>
+  <property name="object:mines-item:mines-item:2" value="2080,746"/>
+  <property name="object:heal:heal:4" value="464,306"/>
+  <property name="object:mines-item:mines-item:1" value="80,1016"/>
+  <property name="object:heal:heal:3" value="248,612"/>
   <property name="spawn:6" value="1903,131"/>
+  <property name="object:heal:heal:2" value="1852,746"/>
   <property name="spawn:5" value="@2,22"/>
+  <property name="object:heal:heal:1" value="2042,1342"/>
   <property name="spawn:4" value="@24,20"/>
   <property name="spawn:3" value="@6,15"/>
   <property name="spawn:2" value="@27,14"/>
   <property name="spawn:1" value="@7,2"/>
   <property name="object:impassable-static-corpse:dead-green-shilka:1" value="1197,389,-59"/>
+  <property name="object:dirt:dirt:1" value="2162,1526"/>
+  <property name="object:thrower-item:thrower-item:1" value="1382,398"/>
   <property name="object:road-sign:road-sign09:2" value="240,636"/>
   <property name="object:impassable-static-corpse:dead-red-shilka:2" value="154,678"/>
+  <property name="object:smoke-cloud:smoke-cloud:4" value="1196,318"/>
   <property name="object:impassable-static-corpse:dead-red-shilka:1" value="1631,742"/>
   <property name="object:smoke-cloud:smoke-cloud:3" value="1,1422"/>
   <property name="object:smoke-cloud:smoke-cloud:2" value="1986,-30,600"/>
   <property name="object:smoke-cloud:smoke-cloud:1" value="2095,10,600"/>
+  <property name="object:guided-missiles-item:guided-missiles-item:9" value="890,1516"/>
+  <property name="object:guided-missiles-item:guided-missiles-item:8" value="1260,654"/>
+  <property name="object:guided-missiles-item:guided-missiles-item:6" value="2000,1236"/>
+  <property name="object:guided-missiles-item:guided-missiles-item:2" value="266,128"/>
+  <property name="object:machinegunner-item:machinegunner-item:1" value="864,644"/>
   <property name="object:oil-barrels:oil-barrels:11" value="@11,23,-59"/>
   <property name="object:oil-barrels:oil-barrels:10" value="@14,18,-59"/>
+  <property name="object:road-sign:road-sign03:3" value="86,2"/>
   <property name="object:road-sign:road-sign03:2" value="1820,676"/>
   <property name="object:impassable-static-corpse:dead-yellow-tank:2" value="1256,171"/>
   <property name="object:impassable-static-corpse:dead-yellow-tank:1" value="436,1138"/>
@@ -73,10 +106,10 @@
   <property name="object:oil-barrels:oil-barrels:9" value="@21,19,-59"/>
   <property name="object:oil-barrels:oil-barrels:8" value="@16,10,-59"/>
   <property name="object:oil-barrels:oil-barrels:7" value="@24,0,-59"/>
-  <property name="object:impassable-static-corpse:dead-white-car:17" value="96,849"/>
   <property name="object:oil-barrels:oil-barrels:2" value="1131,272"/>
-  <property name="object:impassable-static-corpse:dead-white-car:16" value="111,617"/>
+  <property name="object:impassable-static-corpse:dead-white-car:17" value="96,849"/>
   <property name="object:oil-barrels:oil-barrels:1" value="1663,1140"/>
+  <property name="object:impassable-static-corpse:dead-white-car:16" value="111,617"/>
   <property name="object:static-corpse:dead-man-static:14" value="642,1091,-59"/>
   <property name="object:impassable-static-corpse:dead-white-car:15" value="1163,238"/>
   <property name="object:static-corpse:dead-man-static:13" value="555,425"/>
