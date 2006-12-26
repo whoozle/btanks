@@ -108,8 +108,8 @@ const bool CollisionMap::collides(const sdlx::Rect &src, const CollisionMap *oth
 			if (pos1 >= size1 || pos2 >= size2)
 				break;
 			
-			const unsigned char bit1 = 1<<(7 - (x & 7));
-			const unsigned char bit2 = 1<<(7 - ((x - bx) & 7));
+			const unsigned char bit1 = 1<<(7 - ((x + src.x) & 7));
+			const unsigned char bit2 = 1<<(7 - ((other_src.x + x - bx) & 7));
 			
 			if ( (ptr1[pos1]&bit1) != 0 && (ptr2[pos2]&bit2) != 0) {
 				//LOG_DEBUG(("collision detected: %d of %d : %g%", steps, steps_total, 100.0 * steps / steps_total));
