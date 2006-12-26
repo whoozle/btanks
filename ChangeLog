@@ -1,3 +1,5 @@
+*) map troops do not kill each other
+*) added new 'wastes' map.
 *) at last, added map/vehicle pickers to main menu. ;)
 *) map rendering optimizations.
 *) urgent release fixes/workarounds.
