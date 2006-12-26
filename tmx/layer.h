@@ -29,6 +29,9 @@
 #define PRERENDER_LAYERS
 #undef PRERENDER_LAYERS
 
+#if defined(__GNUC__)
+#define restrict __restrict__
+#endif
 
 class Layer {
 public:
@@ -56,7 +59,7 @@ public:
 
 protected: 
 	mrt::Chunk _data;
-	IMap::TileDescriptor *_tiles;
+	IMap::TileDescriptor* restrict _tiles;
 	int _w, _h;
 };
 
@@ -75,7 +78,7 @@ public:
 	
 	~DestructableLayer();
 protected:
-	int *_hp_data;
+	int* restrict _hp_data;
 	bool _visible;
 };
 
