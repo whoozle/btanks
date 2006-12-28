@@ -181,8 +181,11 @@ void Hud::render(sdlx::Surface &window) const {
 		if (obj == NULL)
 			continue;
 
-		int xp = slot.viewport.x;
-		int yp = slot.viewport.y + 3;
+		GET_CONFIG_VALUE("hud.x-margin", int, xm, 3);
+		GET_CONFIG_VALUE("hud.y-margin", int, ym, 3);
+
+		int xp = slot.viewport.x + xm;
+		int yp = slot.viewport.y + ym;
 
 		xp += _font.render(window, xp, yp + font_dy, hp);	
 		
