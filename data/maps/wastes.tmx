@@ -2,7 +2,7 @@
 <map version="0.99b" orientation="orthogonal" width="35" height="25" tilewidth="64" tileheight="64">
  <properties>
   <property name="object:impassable-static-corpse:dead-green-launcher:1" value="1577,1127"/>
-  <property name="object:biotoilet:biotoilet:1" value="176,94"/>
+  <property name="object:biotoilet:biotoilet:1" value="176,114,510"/>
   <property name="object:gate:gate:1" value="128,1208"/>
   <property name="object:nuke-missiles-item:nuke-missiles-item:3" value="1174,894"/>
   <property name="object:nuke-missiles-item:nuke-missiles-item:2" value="2088,56"/>
@@ -13,10 +13,10 @@
   <property name="object:armed-mine:regular-mine:62" value="2157,604"/>
   <property name="object:armed-mine:regular-mine:61" value="2192,604"/>
   <property name="object:armed-mine:regular-mine:60" value="2109,627"/>
-  <property name="object:impassable-static-corpse:dead-yellow-car:2" value="627,1001"/>
   <property name="config:map.smoke-cloud.respawn-interval" value="int:1"/>
-  <property name="object:impassable-static-corpse:dead-yellow-car:1" value="1811,1235"/>
+  <property name="object:impassable-static-corpse:dead-yellow-car:2" value="627,1001"/>
   <property name="object:impassable-static-corpse:dead-cyan-tank:1" value="1681,998"/>
+  <property name="object:impassable-static-corpse:dead-yellow-car:1" value="1811,1235"/>
   <property name="object:impassable-static-corpse:dead-orange-bus:1" value="1929,993"/>
   <property name="object:static-corpse:dead-thrower-static:3" value="294,489"/>
   <property name="object:static-corpse:dead-thrower-static:2" value="294,488"/>
@@ -25,8 +25,8 @@
   <property name="object:dispersion-bullets-item:dispersion-bullets-item:1" value="188,720"/>
   <property name="object:armed-mine:regular-mine:59" value="2142,627"/>
   <property name="object:armed-mine:regular-mine:58" value="2176,627"/>
-  <property name="object:impassable-static-corpse:dead-choo-choo-train:3" value="1185,523,-59"/>
   <property name="object:armed-mine:regular-mine:57" value="2209,627"/>
+  <property name="object:impassable-static-corpse:dead-choo-choo-train:3" value="1185,523,-59"/>
   <property name="object:armed-mine:regular-mine:56" value="1640,684"/>
   <property name="object:static-corpse:dead-man-static:9" value="1683,603"/>
   <property name="object:armed-mine:regular-mine:55" value="1415,1266"/>
@@ -52,14 +52,14 @@
   <property name="object:ricochet-bullets-item:ricochet-bullets-item:2" value="680,1186"/>
   <property name="object:ricochet-bullets-item:ricochet-bullets-item:1" value="6,756"/>
   <property name="object:dumb-missiles-item:dumb-missiles-item:3" value="498,684"/>
-  <property name="object:armed-mine:regular-mine:49" value="1561,875"/>
   <property name="object:dumb-missiles-item:dumb-missiles-item:2" value="1580,1546"/>
-  <property name="object:armed-mine:regular-mine:48" value="1563,846"/>
+  <property name="object:armed-mine:regular-mine:49" value="1561,875"/>
   <property name="object:dumb-missiles-item:dumb-missiles-item:1" value="506,986"/>
+  <property name="object:armed-mine:regular-mine:48" value="1563,846"/>
   <property name="object:armed-mine:regular-mine:47" value="1564,820"/>
   <property name="object:armed-mine:regular-mine:46" value="1562,793"/>
-  <property name="object:armed-mine:regular-mine:45" value="1562,766"/>
   <property name="object:impassable-static-corpse:dead-yellow-shilka:1" value="156,69"/>
+  <property name="object:armed-mine:regular-mine:45" value="1562,766"/>
   <property name="object:armed-mine:regular-mine:44" value="1588,843"/>
   <property name="object:armed-mine:regular-mine:43" value="1592,819"/>
   <property name="object:armed-mine:regular-mine:42" value="1588,794"/>
@@ -69,13 +69,13 @@
   <property name="object:megaheal:megaheal:1" value="1092,1128"/>
   <property name="object:smoke-missiles-item:smoke-missiles-item:1" value="958,336"/>
   <property name="object:mines-item:mines-item:2" value="2080,746"/>
-  <property name="object:heal:heal:4" value="464,306"/>
   <property name="object:mines-item:mines-item:1" value="80,1016"/>
+  <property name="object:heal:heal:4" value="464,306"/>
   <property name="object:heal:heal:3" value="248,612"/>
-  <property name="spawn:6" value="1903,131"/>
   <property name="object:heal:heal:2" value="1852,746"/>
-  <property name="spawn:5" value="@2,22"/>
+  <property name="spawn:6" value="1903,131"/>
   <property name="object:heal:heal:1" value="2042,1342"/>
+  <property name="spawn:5" value="@2,22"/>
   <property name="spawn:4" value="@24,20"/>
   <property name="spawn:3" value="@6,15"/>
   <property name="spawn:2" value="@27,14"/>
@@ -85,8 +85,8 @@
   <property name="object:thrower-item:thrower-item:1" value="1382,398"/>
   <property name="object:road-sign:road-sign09:2" value="240,636"/>
   <property name="object:impassable-static-corpse:dead-red-shilka:2" value="154,678"/>
-  <property name="object:smoke-cloud:smoke-cloud:4" value="1196,318"/>
   <property name="object:impassable-static-corpse:dead-red-shilka:1" value="1631,742"/>
+  <property name="object:smoke-cloud:smoke-cloud:4" value="1196,318"/>
   <property name="object:smoke-cloud:smoke-cloud:3" value="1,1422"/>
   <property name="object:smoke-cloud:smoke-cloud:2" value="1986,-30,600"/>
   <property name="object:smoke-cloud:smoke-cloud:1" value="2095,10,600"/>
@@ -106,19 +106,19 @@
   <property name="object:oil-barrels:oil-barrels:9" value="@21,19,-59"/>
   <property name="object:oil-barrels:oil-barrels:8" value="@16,10,-59"/>
   <property name="object:oil-barrels:oil-barrels:7" value="@24,0,-59"/>
-  <property name="object:oil-barrels:oil-barrels:2" value="1131,272"/>
   <property name="object:impassable-static-corpse:dead-white-car:17" value="96,849"/>
-  <property name="object:oil-barrels:oil-barrels:1" value="1663,1140"/>
+  <property name="object:oil-barrels:oil-barrels:2" value="1131,272"/>
   <property name="object:impassable-static-corpse:dead-white-car:16" value="111,617"/>
-  <property name="object:static-corpse:dead-man-static:14" value="642,1091,-59"/>
+  <property name="object:oil-barrels:oil-barrels:1" value="1663,1140"/>
   <property name="object:impassable-static-corpse:dead-white-car:15" value="1163,238"/>
+  <property name="object:static-corpse:dead-man-static:14" value="642,1091,-59"/>
   <property name="object:static-corpse:dead-man-static:13" value="555,425"/>
-  <property name="object:static-corpse:dead-man-static:12" value="527,1053"/>
   <property name="object:impassable-static-corpse:dead-cyan-car:3" value="547,497"/>
-  <property name="object:static-corpse:dead-man-static:11" value="1569,860"/>
+  <property name="object:static-corpse:dead-man-static:12" value="527,1053"/>
   <property name="object:impassable-static-corpse:dead-cyan-car:2" value="100,668"/>
-  <property name="object:static-corpse:dead-man-static:10" value="1657,727"/>
+  <property name="object:static-corpse:dead-man-static:11" value="1569,860"/>
   <property name="object:impassable-static-corpse:dead-cyan-car:1" value="2001,1046"/>
+  <property name="object:static-corpse:dead-man-static:10" value="1657,727"/>
  </properties>
  <tileset name="Untitled" firstgid="1" tilewidth="64" tileheight="64">
   <image source="../tiles/city_tileset.png"/>
@@ -146,8 +146,8 @@
  </tileset>
  <layer name="asphalt" width="35" height="25">
   <properties>
-   <property name="z" value="-1000"/>
    <property name="impassability" value="20"/>
+   <property name="z" value="-1000"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAO2WMQ7DMAwDo5/0zfRq/aFPbApEACtr8FBQiwkIhicxF4kJ7LrGXShO0F2hefdxW8/wE3eF4rmZyWhig8KDPxVcVGxQeKiY7HJ5/cELzwrzUM4ubC32oJxd7pt5dOw0bJ3TaX07PW2dVTWXKm8H+VPO707uqvPF7TdnwscQckHqj/R+XMwlfwM4Vzp2Oud+507znHb4+CpnW/5/UMuTj3cDE1b09sfL0dHRvj6i87OtrA0AAA==
@@ -209,8 +209,8 @@
  <layer name="water-details" width="35" height="25">
   <properties>
    <property name="pierceable" value="true"/>
-   <property name="z" value="-50"/>
    <property name="impassability" value="100"/>
+   <property name="z" value="-50"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAO2VQQrAIAwExf9/KvZYes172hyWFhGKbW1WyIA3k2w2ElOakzV7KxiPHD0Wkj6Z/C4PfBnh41tPtkY8Zr505IYflk874uTm7tVny/3HG0DNug/N5wGS2x5+RV3PCyXaA0EwIyz/l+kQgr2CfeKtA7DoCAJWdlreWf+sDQAA
@@ -259,19 +259,19 @@
  <layer name="borders low" width="35" height="25">
   <properties>
    <property name="pierceable" value="true"/>
-   <property name="z" value="200"/>
    <property name="impassability" value="100"/>
+   <property name="z" value="200"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgGAWjYBRQE1gyMTBoMw20K0bBKECAF4wMDPcZEXxlaBodTOnUYBC5ZSgA5DhEjltqA9VBFC/6g8AtLxlJD29LCtwNCn+1QeBvEDBnQi1LyC1DaFHusDNDwlllkIQVyD2DxS1DCbADw4yNCUIPR4BcbpOSPgCOW+4TrA0AAA==
+   H4sIAAAAAAAAAGNgGAWjYBRQE1gyMTBoMw20K/ADh0HuvlFAXfCCkYHhPiOCrwxNo4MpnRoMIrcMBYAch8hxS22gOojiRX8QuOUlI+nhbUmBu0HhrzYI/A0C5kyoZQm5ZQgtyh12Zkg4qwySsAK5Z7C4ZSgBdmCYsTFB6OEIkMttUtIHAM8iGy2sDQAA
   </data>
   <tileproperties/>
  </layer>
  <layer name="objects low" width="35" height="25">
   <properties>
    <property name="pierceable" value="false"/>
-   <property name="z" value="210"/>
    <property name="impassability" value="100"/>
+   <property name="z" value="210"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGAWjYBRQG3AxD7QLRsFAgs9MDAxfmAbaFQwMWkA3/AXif2hukQWmTzkglqdTOhUG2sMBtYsdzU51IF8DiDVH88yAgK/AtPGNQFoVoVPc/Ae5AymdoKdTkBjnAKWTgUqnqsAwURsEZQkIgMoTA6hbQGlisJRzIAAr5+4xDrRLIEAAGD5Co2XaKEADoDwEqg8VSEwbAKJsTBmsDQAA
@@ -301,8 +301,8 @@
  <layer name="buildings" width="35" height="25">
   <properties>
    <property name="pierceable" value="false"/>
-   <property name="impassability" value="100"/>
    <property name="z" value="500"/>
+   <property name="impassability" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAPvHgAr+APFfIBZiZGAQBuIIZgaagXig+QlAnAjESUDshWaXFFDMEygmA6QlgVickXZuQQchaG5RAdodDBRTo6MbBiO4OtAOQAIHBtoBSODxQDsACQwmt7wdaAcggWQalmWkgtxB5JZRMApGAeUgFpin44A4Hog5GSHYb4DyuTC0/eYNtN+HmfZtOWJAKND+MCB2AGI3OroleRC12XJB7UggDhlEbvIdRG4ZBbgBAMsm8ymsDQAA
@@ -337,7 +337,7 @@
    <property name="impassability" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgIAzEmYhQRARYxQihmYHmrWbErU4AKM8NxDxY7JUHiolRyT0gwAu1C588PiBIRbeAADMB9wwFIAp0PzuV/bATT3oBhZkWFvtA7lCgc1jy4ki7gjjcSC83DZTdgxXgCg96hROyPdjsZKNyOUcquIeW3+QpzNMwPw6ndCg6iOJIHlrWoYcvejziA9SOG0rMozS9IMcNLdIcKe7DFTcDAajhBlYmyuOHWmExGMIUBAaLO0CAFLcMJnePAvwAABxWDDasDQAA
+   H4sIAAAAAAAAAGNgIAzEmYhQRAJgBpq3mhG3vABQnhuIebDYKw8UE6Oie3ihduGTxwcEaRA2+NwzFIAo0P3sdPQDKMy0sNgHcocCncOSF0faFcThRnq5aaDsHqwAV3jQK5yQ7cFmJxuVyzlSwT208lmewjwN8+NwSoeigyiO5KFlHXr4oscjPkDtuKHEPErTC3Lc0CLNkeI+XHEzEIAabmBlojx+qBUWgyFMQWCwuAMESHHLYHL3KMAPAPg7RLCsDQAA
   </data>
   <tileproperties/>
  </layer>
