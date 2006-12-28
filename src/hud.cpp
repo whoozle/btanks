@@ -181,8 +181,8 @@ void Hud::render(sdlx::Surface &window) const {
 		if (obj == NULL)
 			continue;
 
-		GET_CONFIG_VALUE("hud.x-margin", int, xm, 3);
-		GET_CONFIG_VALUE("hud.y-margin", int, ym, 3);
+		GET_CONFIG_VALUE("hud.margin.x", int, xm, 3);
+		GET_CONFIG_VALUE("hud.margin.y", int, ym, 3);
 
 		int xp = slot.viewport.x + xm;
 		int yp = slot.viewport.y + ym;
