@@ -30,7 +30,9 @@
 #undef PRERENDER_LAYERS
 
 #if defined(__GNUC__)
-#define restrict __restrict__
+#	define restrict __restrict__
+#elif !defined(restrict)
+#	define restrict
 #endif
 
 class Layer {

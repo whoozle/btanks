@@ -25,6 +25,8 @@
 
 #if defined(__GNUC__)
 #define restrict __restrict__
+#elif !defined(restrict)
+#	define restrict
 #endif
 
 using namespace sdlx;
