@@ -83,6 +83,8 @@ public:
 	const bool attachVehicle(Object *object, Object *vehicle);
 	const bool detachVehicle(Object *object);
 private:
+	void deleteObject(ObjectSet &objects, Object *o);
+
 	typedef std::map<const int, Object*> ObjectMap;
 	
 	typedef std::map<const std::pair<int, int>, bool> CollisionMap;

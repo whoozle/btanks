@@ -431,28 +431,9 @@ void IWorld::tick(Object &o, const float dt) {
 
 	if (disable_z)
 		o._velocity.z = 0; 
-		
-	{
-		int f = o._follow;
-		if (f != 0) {
-			ObjectMap::const_iterator o_i = _id2obj.find(f);
-			if (o_i != _id2obj.end()) {
-				const Object *leader = o_i->second;
-				//LOG_DEBUG(("following %d...", f));
-				float z = o._position.z;
-				o.speed = leader->speed;
-				
-				o._position = leader->_position + o._follow_position;
-				o._position.z = z;
-				o._velocity = leader->_velocity;
-				return;
-			} else {
-				LOG_WARN(("leader for object %d is dead. (leader-id:%d)", o._id, f));
-				o._follow = 0;
-				o.emit("death", NULL);
-			}
-		}
-	}
+	
+	if (o._follow) 
+		return;
 		
 	if (o.speed == 0) {
 		o._idle_time += dt;
@@ -702,6 +683,21 @@ void IWorld::tick(const float dt) {
 	tick(_objects, dt);
 }
 
+void IWorld::deleteObject(ObjectSet &objects, Object *o) {
+	ObjectMap::iterator m = _id2obj.find(o->_id);
+	assert(m != _id2obj.end());
+	assert(o == m->second);
+	_id2obj.erase(m);
+			
+	//implement more smart way to fix it.
+	if (&objects != &_objects)
+		_objects.erase(o);
+	objects.erase(o);
+	assert(_id2obj.size() == _objects.size());
+
+	delete o;
+}
+
 void IWorld::tick(ObjectSet &objects, const float dt) {
 	GET_CONFIG_VALUE("engine.max-time-slice", float, max_dt, 0.025);
 	if (max_dt <= 0) 
@@ -738,22 +734,39 @@ void IWorld::tick(ObjectSet &objects, const float dt) {
 		if (o->isDead()) { //fixme
 			if (_safe_mode == false) {
 				//LOG_DEBUG(("object %d:%s is dead. cleaning up. (global map: %s)", o->getID(), o->classname.c_str(), &objects == &_objects?"true":"false" ));
-				ObjectMap::iterator m = _id2obj.find(o->_id);
-				assert(m != _id2obj.end());
-				assert(o == m->second);
-				_id2obj.erase(m);
-			
-				//implement more smart way to fix it.
-				if (&objects != &_objects)
-					_objects.erase(o);
-				objects.erase(i++);
-				assert(_id2obj.size() == _objects.size());
-
-				delete o;
+				++i;
+				deleteObject(objects, o);
 				continue;
 			}
 		} 
 		++i;
+	}
+	for(ObjectSet::iterator i = objects.begin(); i != objects.end(); ) {
+		Object *o = *i;
+		const int f = o->_follow;
+		if (f == 0) {
+			++i;
+			continue;
+		}
+		
+		ObjectMap::const_iterator o_i = _id2obj.find(f);
+		if (o_i != _id2obj.end()) {
+			const Object *leader = o_i->second;
+			//LOG_DEBUG(("following %d...", f));
+			const float z = o->_position.z;
+			o->speed = leader->speed;
+			
+			o->_position = leader->_position + o->_follow_position;
+			o->_position.z = z;
+			o->_velocity = leader->_velocity;
+			++i;
+		} else {
+			LOG_WARN(("leader for object %d is dead. (leader-id:%d)", o->_id, f));
+			o->_follow = 0;
+			o->emit("death", NULL);
+			++i;
+			deleteObject(objects, o);
+		}
 	}
 }
 
