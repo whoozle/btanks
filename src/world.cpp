@@ -45,9 +45,8 @@ IMPLEMENT_SINGLETON(World, IWorld)
 
 void IWorld::clear() {
 	LOG_DEBUG(("cleaning up world..."));
-	std::for_each(_objects.begin(), _objects.end(), delete_ptr<Object *>());
+	std::for_each(_objects.begin(), _objects.end(), delete_ptr2<ObjectMap::value_type>());
 	_objects.clear();
-	_id2obj.clear();
 	_last_id = 0;
 	_safe_mode = false;
 }
@@ -83,8 +82,7 @@ void IWorld::addObject(Object *o, const v3<float> &pos, const int id) {
 		throw_ex(("adding NULL as world object is not allowed"));
 	o->_id = (id >= 0)?id:++_last_id;
 	
-	assert (_id2obj.find(o->_id) == _id2obj.end());
-	assert (_objects.find(o) == _objects.end());
+	assert (_objects.find(o->_id) == _objects.end());
 
 	float oz = o->_position.z;
 	o->_position = pos;
@@ -95,10 +93,8 @@ void IWorld::addObject(Object *o, const v3<float> &pos, const int id) {
 		//LOG_DEBUG(("using default z(%g) for object '%s'", oz, o->classname.c_str()));
 	}
 	
-	_objects.insert(o);
-	_id2obj[o->_id] = o;
+	_objects[o->_id] = o;
 
-	assert(_id2obj.size() == _objects.size());
 	o->onSpawn();
 	o->need_sync = true;
 	//LOG_DEBUG(("object %d added, objects: %d", o->_id, _objects.size()));
@@ -111,8 +107,8 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect&src, const sdlx::Re
 	LayerMap layers;
 	const IMap &map = *Map.get_const();
 	
-	for(ObjectSet::iterator i = _objects.begin(); i != _objects.end(); ++i) {
-		Object *o = *i;
+	for(ObjectMap::iterator i = _objects.begin(); i != _objects.end(); ++i) {
+		Object *o = i->second;
 		if (o->isDead())
 			continue;
 		layers.insert(LayerMap::value_type(o->_position.z, o));
@@ -224,8 +220,8 @@ const float IWorld::getImpassability(Object *obj, const v3<int> &position, const
 	const Object *result = NULL;
 	sdlx::Rect my((int)position.x, (int)position.y,(int)obj->size.x, (int)obj->size.y);
 	
-	for(ObjectSet::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
-		Object *o = *i;
+	for(ObjectMap::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
+		Object *o = i->second;
 
 		sdlx::Rect other((int)o->_position.x, (int)o->_position.y,(int)o->size.x, (int)o->size.y);
 		if (!my.intersects(other)) 
@@ -261,8 +257,8 @@ void IWorld::getImpassability2(float &old_pos_im, float &new_pos_im, Object *obj
 	sdlx::Rect my_new((int)new_position.x, (int)new_position.y,(int)obj->size.x, (int)obj->size.y);
 	sdlx::Rect my_old((int)obj->_position.x, (int)obj->_position.y,(int)obj->size.x, (int)obj->size.y);
 	
-	for(ObjectSet::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
-		Object *o = *i;
+	for(ObjectMap::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
+		Object *o = i->second;
 
 		sdlx::Rect other((int)o->_position.x, (int)o->_position.y,(int)o->size.x, (int)o->size.y);
 		if (!my_old.intersects(other) && !my_new.intersects(other)) 
@@ -292,8 +288,8 @@ void IWorld::getImpassabilityMatrix(Matrix<int> &matrix, const Object *src, cons
 	const v3<int> size = Map->getTileSize();
 	
 	Map->getImpassabilityMatrix(matrix);
-	for(ObjectSet::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
-		Object *o = *i;
+	for(ObjectMap::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
+		Object *o = i->second;
 		if (o == src || o == dst || o->impassability <= 0 || o->piercing)
 			continue;
 		
@@ -683,22 +679,24 @@ void IWorld::tick(const float dt) {
 	tick(_objects, dt);
 }
 
-void IWorld::deleteObject(ObjectSet &objects, Object *o) {
-	ObjectMap::iterator m = _id2obj.find(o->_id);
-	assert(m != _id2obj.end());
+void IWorld::deleteObject(ObjectMap &objects, Object *o) {
+	ObjectMap::iterator m = objects.find(o->_id);
+	assert(m != _objects.end());
 	assert(o == m->second);
-	_id2obj.erase(m);
+	objects.erase(m);
 			
 	//implement more smart way to fix it.
-	if (&objects != &_objects)
-		_objects.erase(o);
-	objects.erase(o);
-	assert(_id2obj.size() == _objects.size());
-
+	if (&objects != &_objects) {
+		ObjectMap::iterator m = _objects.find(o->_id);
+		assert(m != _objects.end());
+		assert(o == m->second);
+		_objects.erase(m);
+	}
+	
 	delete o;
 }
 
-void IWorld::tick(ObjectSet &objects, const float dt) {
+void IWorld::tick(ObjectMap &objects, const float dt) {
 	GET_CONFIG_VALUE("engine.max-time-slice", float, max_dt, 0.025);
 	if (max_dt <= 0) 
 		throw_ex(("invalid max-time-slice value %g", max_dt));
@@ -725,8 +723,8 @@ void IWorld::tick(ObjectSet &objects, const float dt) {
 		return;
 	}
 
-	for(ObjectSet::iterator i = objects.begin(); i != objects.end(); ) {
-		Object *o = *i;
+	for(ObjectMap::iterator i = objects.begin(); i != objects.end(); ) {
+		Object *o = i->second;
 		assert(o != NULL);
 		TRY {
 			tick(*o, dt);
@@ -741,16 +739,16 @@ void IWorld::tick(ObjectSet &objects, const float dt) {
 		} 
 		++i;
 	}
-	for(ObjectSet::iterator i = objects.begin(); i != objects.end(); ) {
-		Object *o = *i;
+	for(ObjectMap::iterator i = objects.begin(); i != objects.end(); ) {
+		Object *o = i->second;
 		const int f = o->_follow;
 		if (f == 0) {
 			++i;
 			continue;
 		}
 		
-		ObjectMap::const_iterator o_i = _id2obj.find(f);
-		if (o_i != _id2obj.end()) {
+		ObjectMap::const_iterator o_i = _objects.find(f);
+		if (o_i != _objects.end()) {
 			const Object *leader = o_i->second;
 			//LOG_DEBUG(("following %d...", f));
 			const float z = o->_position.z;
@@ -771,20 +769,20 @@ void IWorld::tick(ObjectSet &objects, const float dt) {
 }
 
 
-const bool IWorld::exists(const Object *o) const {
-	return _objects.find((Object *)o) != _objects.end();
+const bool IWorld::exists(const int id) const {
+	return _objects.find(id) != _objects.end();
 }
 
 const Object *IWorld::getObjectByID(const int id) const {
-	ObjectMap::const_iterator i = _id2obj.find(id);
-	if (i != _id2obj.end())
+	ObjectMap::const_iterator i = _objects.find(id);
+	if (i != _objects.end())
 		return i->second;
 	return NULL;
 }
 
 Object *IWorld::getObjectByID(const int id) {
-	ObjectMap::iterator i = _id2obj.find(id);
-	if (i != _id2obj.end())
+	ObjectMap::iterator i = _objects.find(id);
+	if (i != _objects.end())
 		return i->second;
 	return NULL;
 }
@@ -845,8 +843,8 @@ void IWorld::serializeObject(mrt::Serializator &s, const Object *o) const {
 
 void IWorld::serialize(mrt::Serializator &s) const {
 	s.add(_last_id);
-	s.add((unsigned int)_id2obj.size());
-	for(ObjectMap::const_reverse_iterator i = _id2obj.rbegin(); i != _id2obj.rend(); ++i) {
+	s.add((unsigned int)_objects.size());
+	for(ObjectMap::const_reverse_iterator i = _objects.rbegin(); i != _objects.rend(); ++i) {
 		const Object *o = i->second;
 		serializeObject(s, o);
 	}
@@ -862,24 +860,22 @@ Object * IWorld::deserializeObject(const mrt::Serializator &s) {
 		s.get(an);
 		
 		{
-			ObjectMap::iterator i = _id2obj.find(id);
-			if (i != _id2obj.end()) {
+			ObjectMap::iterator i = _objects.find(id);
+			if (i != _objects.end()) {
 				Object *o = i->second;
 				if (rn == o->registered_name) {
 					o->deserialize(s);
 					result = o;
 				} else {
 					//wrong classtype and maybe storage class
-					_objects.erase(o);
-					delete o;
+					_objects.erase(i);
 					result = ao = ResourceManager->createObject(rn, an);
 					//LOG_DEBUG(("created ('%s', '%s')", rn.c_str(), an.c_str()));
 					ao->deserialize(s);
 						
+					delete o;
 					i->second = ao;
-					_objects.insert(ao);
 					ao = NULL;
-					assert(_id2obj.size() == _objects.size());
 				}
 			} else {
 				//new object.
@@ -887,10 +883,8 @@ Object * IWorld::deserializeObject(const mrt::Serializator &s) {
 				//LOG_DEBUG(("created ('%s', '%s')", rn.c_str(), an.c_str()));
 				ao->deserialize(s);
 				
-				_id2obj[id] = ao;
-				_objects.insert(ao);
+				_objects[id] = ao;
 				ao = NULL;
-				assert(_id2obj.size() == _objects.size());
 			}
 
 			//LOG_DEBUG(("deserialized %d: %s", ao->_id, ao->classname.c_str()));
@@ -902,14 +896,12 @@ Object * IWorld::deserializeObject(const mrt::Serializator &s) {
 }
 
 void IWorld::cropObjects(const std::set<int> &ids) {
-	for(ObjectMap::iterator i = _id2obj.begin(); i != _id2obj.end(); /*haha*/ ) {
+	for(ObjectMap::iterator i = _objects.begin(); i != _objects.end(); /*haha*/ ) {
 		if (ids.find(i->first) == ids.end()) {
 			delete i->second;
-			_objects.erase(i->second);
-			_id2obj.erase(i++);
+			_objects.erase(i++);
 		} else ++i;
 	}
-	assert(_id2obj.size() == _objects.size());
 }
 
 void IWorld::deserialize(const mrt::Serializator &s) {
@@ -934,7 +926,7 @@ void IWorld::generateUpdate(mrt::Serializator &s, const bool clean_sync_flag) {
 	unsigned int c = 0, n = _objects.size();
 	std::set<int> skipped_objects;
 
-	for(ObjectMap::reverse_iterator i = _id2obj.rbegin(); i != _id2obj.rend(); ++i) {
+	for(ObjectMap::reverse_iterator i = _objects.rbegin(); i != _objects.rend(); ++i) {
 		const Object *o = i->second;
 		if (o->need_sync || o->speed != 0) {
 			++c;
@@ -943,7 +935,7 @@ void IWorld::generateUpdate(mrt::Serializator &s, const bool clean_sync_flag) {
 	LOG_DEBUG(("generating update %u objects of %u", c, n));
 
 	s.add(c);
-	for(ObjectMap::reverse_iterator i = _id2obj.rbegin(); i != _id2obj.rend(); ++i) {
+	for(ObjectMap::reverse_iterator i = _objects.rbegin(); i != _objects.rend(); ++i) {
 		const int id = i->first;
 		Object *o = i->second;
 		if (skipped_objects.find(id) != skipped_objects.end()) 
@@ -966,7 +958,7 @@ void IWorld::applyUpdate(const mrt::Serializator &s, const float dt) {
 TRY {
 	unsigned int n;
 	std::set<int> skipped_objects;
-	ObjectSet objects;
+	ObjectMap objects;
 	s.get(n);
 	while(n--) {
 		Object *o = deserializeObject(s);
@@ -974,7 +966,7 @@ TRY {
 			LOG_WARN(("some object failed to deserialize. wait for the next update"));
 			continue;
 		}
-		objects.insert(o);
+		objects.insert(ObjectMap::value_type(o->_id, o));
 		skipped_objects.insert(o->_id);
 	}
 	s.get(n);
@@ -1022,8 +1014,8 @@ const Object* IWorld::getNearestObject(const Object *obj, const std::string &cla
 	const Object *result = NULL;
 	float distance = std::numeric_limits<float>::infinity();
 	
-	for(ObjectSet::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
-		const Object *o = *i;
+	for(ObjectMap::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
+		const Object *o = i->second;
 		//LOG_DEBUG(("%s is looking for %s. found: %s", obj->classname.c_str(), classname.c_str(), o->classname.c_str()));
 		if (o->_id == obj->_id || o->classname != classname || 
 			o->_owner_id == obj->_id || obj->_owner_id == o->_id || 
@@ -1060,8 +1052,8 @@ const bool IWorld::getNearest(const Object *obj, const std::string &classname, v
 
 const int IWorld::getChildren(const int id) const {
 	int c = 0;
-	for(ObjectSet::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
-		if ((*i)->_spawned_by == id || (*i)->_owner_id == id) 
+	for(ObjectMap::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
+		if (i->second->_spawned_by == id || i->second->_owner_id == id) 
 			++c;
 	}
 	return c;

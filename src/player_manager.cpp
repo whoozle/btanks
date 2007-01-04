@@ -219,7 +219,7 @@ TRY {
 	} 
 	case Message::UpdatePlayers: { 
 		mrt::Serializator s(&message.data);
-		std::set<Object *> updated_objects;
+		IWorld::ObjectMap updated_objects;
 		while(!s.end()) {
 			int id;
 			s.get(id);
@@ -246,7 +246,7 @@ TRY {
 			if (slot < _players.size()) {
 				_players[slot].id = o->getID(); // ???
 			}
-			updated_objects.insert(o);
+			updated_objects.insert(IWorld::ObjectMap::value_type(o->getID(), o));
 		}	
 		World->tick(updated_objects, _trip_time / 1000.0);
 		break;

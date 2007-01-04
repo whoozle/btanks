@@ -37,14 +37,14 @@ class Object;
 class IWorld : public mrt::Serializable {
 public:
 	DECLARE_SINGLETON(IWorld);
-	typedef std::set<Object *> ObjectSet;
+	typedef std::map<const int, Object*> ObjectMap;
 	
 	void clear();
 	~IWorld();
 	IWorld();
 	
 	void addObject(Object *, const v3<float> &pos, const int id = -1);
-	const bool exists(const Object *) const;
+	const bool exists(const int id) const;
 	const Object *getObjectByID(const int id) const;
 	Object *getObjectByID(const int id);
 	
@@ -71,7 +71,7 @@ public:
 	Object * deserializeObjectInfo(const mrt::Serializator &, const int id, const bool fake = false);
 
 	void tick(Object &o, const float dt);	
-	void tick(ObjectSet &objects, const float dt);
+	void tick(ObjectMap &objects, const float dt);
 	
 	void setSafeMode(const bool safe_mode = true);
 
@@ -83,9 +83,8 @@ public:
 	const bool attachVehicle(Object *object, Object *vehicle);
 	const bool detachVehicle(Object *object);
 private:
-	void deleteObject(ObjectSet &objects, Object *o);
+	void deleteObject(ObjectMap &objects, Object *o);
 
-	typedef std::map<const int, Object*> ObjectMap;
 	
 	typedef std::map<const std::pair<int, int>, bool> CollisionMap;
 	mutable CollisionMap _collision_map;
@@ -96,9 +95,7 @@ private:
 	
 	void cropObjects(const std::set<int> &ids);
 
-	
-	ObjectSet _objects;
-	ObjectMap _id2obj;
+	ObjectMap _objects;
 	int _last_id;
 	bool _safe_mode, _atatat;
 };
