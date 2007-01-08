@@ -22,7 +22,8 @@ void File::open(const std::string &fname, const std::string &mode) {
 const off_t File::getSize() const {
 	struct stat s;
 	int fno = fileno(_f);
-	fstat(fno, &s);
+	if (fstat(fno, &s) != 0)
+		throw_io(("fstat"));
 	return s.st_size;
 }
 
