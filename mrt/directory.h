@@ -14,6 +14,7 @@ public:
 
 	Directory();
 	void open(const std::string &path);
+	const bool opened() const;
 	const std::string read() const;
 	void close();
 	~Directory();

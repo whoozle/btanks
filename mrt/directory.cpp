@@ -9,10 +9,16 @@ Directory::~Directory() {
 	close();
 }
 
+const bool Directory::opened() const {
+	return _handle != 0;
+}
+
 #ifndef WIN32
 
 
 void Directory::open(const std::string &path) {
+	if (path.empty())
+		throw_ex(("Directory::open called with empty path"));
 	_handle = opendir(path.c_str());
 	if (_handle == NULL)
 		throw_io(("opendir('%s')", path.c_str()));
