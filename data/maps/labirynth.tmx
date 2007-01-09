@@ -20,7 +20,7 @@
   <property name="spawn:1" value="@15,24"/>
  </properties>
  <tileset name="Untitled" firstgid="1" tilewidth="64" tileheight="64">
-  <image source="../tiles/city_objects_tileset.png"/>
+  <image source="../tiles/objects_tileset.png"/>
  </tileset>
  <tileset name="Untitled" firstgid="71" tilewidth="64" tileheight="64">
   <image source="../tiles/city_tileset.png"/>

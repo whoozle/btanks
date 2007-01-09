@@ -62,7 +62,7 @@
   <property name="object:traffic-lights:traffic-lights:11" value="368,422"/>
  </properties>
  <tileset name="city objects" firstgid="1" tilewidth="64" tileheight="64">
-  <image source="../tiles/city_objects_tileset.png"/>
+  <image source="../tiles/objects_tileset.png"/>
  </tileset>
  <tileset name="city buildings" firstgid="71" tilewidth="64" tileheight="64">
   <image source="../tiles/houses_tileset.png"/>
