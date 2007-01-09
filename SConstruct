@@ -12,16 +12,19 @@ if sys.platform == "win32":
 	opts.Add('LINK', 'Linker program', '')
 opts.Add('LINKFLAGS', 'General options that are passed to the linker', '')
 opts.Add('CPPPATH', 'extra cpp path', '')
+opts.Add(EnumOption('mode', 'build mode', 'debug', allowed_values=('debug','release')))
 
 opts.Update(env)
 opts.Save('options.cache', env.Copy())
 
+buildmode = env['mode']
+
+
 Help(opts.GenerateHelpText(env))
 
-debug = True
-debug = False
+debug = buildmode == "debug"
 
-if debug:
+if sys.platform == "win32" and debug:
 	stl_port_debug = True
 else: 
 	stl_port_debug = False
@@ -125,13 +128,23 @@ Export('sigc_lib')
 env.Append(CPPPATH=['.', 'src'])
 env.Append(CPPPATH=sigc_cpppath)
 
-SConscript('mrt/SConscript')
-SConscript('sdlx/SConscript')
-SConscript('net/SConscript')
-SConscript('menu/SConscript')
+env.Append(CPPPATH=['#', '#/src'])
 
-env = env.Copy()
-env.Append(LIBPATH=['mrt', 'sdlx', 'src', 'net', 'menu'])
+bt_sublibs = ['mrt', 'sdlx', 'net', 'menu', 'sound']
+
+for dir in bt_sublibs:
+	BuildDir('#/build/' + buildmode + '/' + dir, dir, 0)
+	SConscript('#/build/' + buildmode + '/' + dir + '/SConscript')
+
+for dir in bt_sublibs:
+	env.Append(LIBPATH=['#/build/' + buildmode + '/' + dir])
+
+for dir in ['controls', 'math', 'objects', 'src', 'tmx']:
+	BuildDir('#/build/' + buildmode + '/' + dir, dir, 0)
+
+env.BuildDir('#/build/' + buildmode, '#', 0)
+
+#env = env.Copy()
 
 svnversion = os.popen('svnversion -n .', 'r')
 version = svnversion.readline()
@@ -171,8 +184,6 @@ bt_sources = 	[
 	'src/player_slot.cpp', 'src/hud.cpp', 'src/game.cpp',  'src/window.cpp', 
 	'src/credits.cpp', 'src/cheater.cpp', 
 
-	'sound/al_ex.cpp', 'sound/ogg_ex.cpp', 'sound/ogg_stream.cpp', 'sound/mixer.cpp', 'sound/sample.cpp', 
-	
 	vobj
 	]
 	
@@ -180,7 +191,7 @@ vorbis = 'vorbisfile'
 if debug and sys.platform == "win32": 
 	vorbis = 'vorbisfile_d'
 
-bt_libs = ['bt_net', 'bt_menu', 'sdlx', 'mrt', sigc_lib, 'SDL_ttf', 'SDL_image', 'SDL', 'expat', 'z', vorbis, al_lib, 'alut']
+bt_libs = ['bt_sound', 'bt_net', 'bt_menu', 'sdlx', 'mrt', sigc_lib, 'SDL_ttf', 'SDL_image', 'SDL', 'expat', 'z', vorbis, al_lib, 'alut']
 if sys.platform == "win32":
 	bt_libs[0:0] = ['SDLmain']
 	bt_libs.append('Ws2_32')
