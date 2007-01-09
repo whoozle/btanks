@@ -94,6 +94,8 @@ void Car::onSpawn() {
 	//GET_CONFIG_VALUE("objects.car.refreshing-path-interval", float, rpi, 1);
 	//_refresh_waypoints.set(rpi);
 	play("hold", true);
+	
+	disown(); 
 }
 
 Car::Car() : Object("car"), _reaction_time(true), _stop(false) //_refresh_waypoints(false) 
