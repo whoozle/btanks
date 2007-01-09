@@ -57,3 +57,4 @@ else:
 	bt_libs.append('GL')
 
 bt = env.Program('bt', bt_sources, LIBS=bt_libs, RPATH=['.'])
+Install('#', bt)
