@@ -186,11 +186,12 @@ const bool IWorld::collides(Object *obj, const v3<int> &position, Object *o, con
 			//LOG_DEBUG(("collision %s <-> %s", obj->classname.c_str(), o->classname.c_str()));
 			_collision_map.insert(CollisionMap::value_type(key, true));
 			
+			/*
 			float m = obj->mass / o->mass;
 			if (m > 1.0) 
 				m = 1.0;
 			v3<float> o_vf = o->_velocity * -m, obj_vf = obj->_velocity * (-1/m);
-			
+			*/
 			o->emit("collision", obj);
 			obj->emit("collision", o);
 			
@@ -203,8 +204,8 @@ const bool IWorld::collides(Object *obj, const v3<int> &position, Object *o, con
 			}
 			
 			if ( o->isDead() || obj->isDead() || obj->impassability == 0 || o->impassability == 0) {
-				o->_velocity_fadeout = o_vf;
-				obj->_velocity_fadeout = obj_vf;
+				//o->_velocity_fadeout = o_vf;
+				//obj->_velocity_fadeout = obj_vf;
 				//_collision_map.insert(CollisionMap::value_type(key, false));
 				return false; // no effect.
 			}
