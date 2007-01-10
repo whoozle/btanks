@@ -16,7 +16,7 @@ public:
 	void load(const std::string &file);
 	void create(const Type type, const int layers_num, const unsigned int *layers, const float connection_rate = 1 /*used only in Sparse type*/);
 	
-	void randomize_weights(const fann_type min, const fann_type max);
+	void randomizeWeights(const fann_type min, const fann_type max);
 	
 	fann_type *run(fann_type * input);
 	void train(fann_type *input, fann_type 	*desired_output);

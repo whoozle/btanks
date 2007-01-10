@@ -23,7 +23,7 @@ void Network::create(const Type type, const int layers_num, const unsigned int *
 		throw_fnet(("fann_create_XXX_array(%d, %p, %g) (type %d)", layers_num, (void*)layers, connection_rate, type));
 }
 
-void Network::randomize_weights(const fann_type min, const fann_type max) {
+void Network::randomizeWeights(const fann_type min, const fann_type max) {
 	fann_randomize_weights(network, min, max);
 }
 
