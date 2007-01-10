@@ -1,0 +1,8 @@
+Import('env')
+
+env = env.Copy()
+env.Append(CPPPATH=['..', '.', '../src'])
+fanncxx = env.StaticLibrary('fanncxx', 
+	['network.cpp', 'exception.cpp', ] 
+	)
+
