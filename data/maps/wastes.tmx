@@ -139,7 +139,7 @@
   <image source="../tiles/destroyed_houses_tileset.png"/>
  </tileset>
  <tileset name="roads" firstgid="701" tilewidth="64" tileheight="64">
-  <image source="../tiles/roads_tilset.png"/>
+  <image source="../tiles/roads_tileset.png"/>
  </tileset>
  <layer name="asphalt" width="35" height="25">
   <properties>

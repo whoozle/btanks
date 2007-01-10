@@ -77,7 +77,7 @@
   <image source="../tiles/destroyed_houses_tileset.png"/>
  </tileset>
  <tileset name="roads" firstgid="591" tilewidth="64" tileheight="64">
-  <image source="../tiles/roads_tilset.png"/>
+  <image source="../tiles/roads_tileset.png"/>
  </tileset>
  <tileset name="trees" firstgid="661" tilewidth="64" tileheight="64">
   <image source="../tiles/trees_tileset.png"/>
