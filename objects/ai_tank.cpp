@@ -28,7 +28,6 @@
 class AITank : public Tank {
 public: 
 	AITank();
-	AITank(const std::string &animation);
 
 	virtual void calculate(const float dt);
 	virtual void onSpawn();
@@ -58,9 +57,6 @@ void AITank::onSpawn() {
 
 AITank::AITank() : Tank(), 
 	_reaction_time(true), _refresh_waypoints(true) {}
-
-AITank::AITank(const std::string &animation) : Tank(animation), 
-	_reaction_time(true), _refresh_waypoints(true)  {}
 
 void AITank::calculate(const float dt) {	
 	//LOG_DEBUG(("dt = %f", dt));
