@@ -48,6 +48,16 @@ private:
 		virtual ~name() throw(); \
 	} 
 
+#define DERIVE_EXCEPTION_NO_DEFAULT(name, ctor, data) \
+	class name : public mrt::Exception { \
+		public: \
+		name ctor; \
+		const std::string getCustomMessage(); \
+		virtual ~name() throw(); \
+		private: \
+		data \
+	} 
+
 #define throw_generic(name, str) { name e; e.addMessage(__FILE__, __LINE__); e.addMessage(mrt::formatString str); e.addMessage(e.getCustomMessage()); throw e; }
 #define throw_generic_no_default(name, str, args) { name e args; e.addMessage(__FILE__, __LINE__); e.addMessage(mrt::formatString str); e.addMessage(e.getCustomMessage()); throw e; }
 #define throw_ex(str) throw_generic(mrt::Exception, str)
