@@ -70,6 +70,7 @@ void AILauncher::onSpawn() {
 		} CATCH("create network", { delete[] nums; throw; });
 		delete[] nums;
 	}
+	assert(!_network.isNull());
 }
 
 void AILauncher::emit(const std::string &event, Object * emitter) {
