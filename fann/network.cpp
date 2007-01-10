@@ -64,7 +64,7 @@ void Network::load(const std::string &file) {
 	destroy();
 	network = fann_create_from_file(file.c_str());
 	if (network == NULL)
-		throw_fnet(("fann_create_from_file"));
+		throw_ex(("fann_create_from_file('%s')", file.c_str()));
 }
 
 void Network::save(const std::string &file) {
