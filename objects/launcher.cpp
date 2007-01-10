@@ -30,11 +30,6 @@ Launcher::Launcher()
 : Object("player"), _fire(false) {
 }
 
-Launcher::Launcher(const std::string &animation) 
-: Object("player"), _fire(false) {
-	setup(animation);
-}
-
 Object * Launcher::clone() const {
 	return new Launcher(*this);
 }
