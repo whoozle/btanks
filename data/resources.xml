@@ -141,6 +141,10 @@
 		<pose id="boom">0,1,2</pose>
 	</animation-model>
 
+	<animation-model id="building-explosion-animation" speed="7">
+		<pose id="boom">0,1,2,3,4,5</pose>
+	</animation-model>
+
 	<animation-model id="nuclear-explosion-animation" speed="5">
 		<pose id="boom" sound="nuke-explosion.ogg">5,4,3,2,1,0</pose>
 	</animation-model>
@@ -223,6 +227,7 @@
 		<pose id="main" speed="1">4,5,4,6</pose>
 		<pose id="fade-out">4,3,2,1,0</pose>
 	</animation-model>
+
 
 	<animation id="damage-digits" tile="../font/small.png" model="single-tile" tile_width="10" tile_height="16" />
 
@@ -347,6 +352,7 @@
 	<animation id="machinegunner-bullet" tile="machinegunner_bullet2.png" model="bullet-animation"/>
 	<animation id="dirt-bullet" tile="dirt_bullet.png" model="bullet-animation"/>
 	<animation id="explosion" tile="explosion.png" model="explosion-animation" />
+	<animation id="building-explosion01" tile="building_explosion01.png" model="building-explosion-animation" />
 	<animation id="nuclear-explosion" tile="nuclear_explosion.png" model="nuclear-explosion-animation" size="448" />
 	<animation id="traffic-lights" tile="traffic_lights.png" model="traffic-lights-animation" />
 
@@ -444,6 +450,7 @@
 
 	<object class="corpse" hp="1000" ttl="10" fadeout_time="1" z="-5" impassability="0" />
 	<object class="explosion" hp="1" z="580" />
+	<object class="building-explosion" hp="1" z="580" />
 	<object class="nuclear-explosion" hp="1000" mass="10000" impassability="-1" z="900" />
 	<object class="dirt" impassability="0.5" z="-20" ttl="50" fadeout="5" />
 	<object class="pond" hp="1000" pierceable="true" impassability="1" z="150" />
