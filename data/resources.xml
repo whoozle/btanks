@@ -420,6 +420,9 @@
 
 	<object class="tank" speed="400" mass="500" hp="80" z="0" />
 	<object class="ai-tank" parent="tank" z="0" />
+	<object class="launcher" speed="500" mass="400" hp="40" z="0" />
+	<object class="ai-launcher" parent="launcher" z="0" />
+
 	<object class="bullet" speed="1100" mass="2" ttl="1" hp="10" z="-10" />
 	<object class="ricochet-bullet" speed="1100" mass="2" ttl="2" hp="10" z="-10" />
 	<object class="dispersion-bullet" speed="1000" mass="2" ttl="0.5" hp="10" z="-10" />
@@ -429,7 +432,6 @@
 	<object class="shilka" speed="450" mass="400" hp="60" z="0" />
 	<object class="shilka-bullet" speed="1200" mass="1" piercing="true" ttl="1" hp="10" z="-10" />
 
-	<object class="launcher" speed="500" mass="400" hp="40" z="0" />
 
 	<object class="guided-missile" speed="450" mass="100" ttl="5" hp="15" z="250" />
 	<object class="thrower-missile" speed="450" mass="30" ttl="5" hp="5" z="250" />

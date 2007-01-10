@@ -141,6 +141,7 @@
   <property name="object:impassable-static-corpse:dead-red-shilka:1" value="715,358"/>
   <property name="object:car:white-car:3" value="@19,25"/>
   <property name="object:static-corpse:dead-man-static:10" value="651,1843"/>
+  <property name="object:ai-launcher:green-launcher:200" value="@10,5"/>
   <property name="edge:17:18" value=""/>
   <property name="object:road-sign:road-sign04:3" value="2417,1585"/>
   <property name="object:road-sign:road-sign04:2" value="2418,240"/>
