@@ -4,11 +4,9 @@
 #include "mrt/exception.h"
 #include <fann.h>
 
-namespace fann {
+namespace fanncxx {
 	DERIVE_EXCEPTION_NO_DEFAULT(Exception, (struct fann_error *ferr), std::string msg;);
 }
-
-#define throw_fnet(args) throw_generic_no_default(Exception, args, ((struct fann_error *)network))
 
 #endif
 

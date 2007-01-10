@@ -2,9 +2,15 @@
 #include "mrt/exception.h"
 #include "./exception.h"
 
-using namespace fann;
+using namespace fanncxx;
 
-Network::Network(const Type type, const int layers_num, const unsigned int *layers, const float connection_rate) : network(NULL) {
+#define throw_fnet(args) throw_generic_no_default(Exception, args, ((struct fann_error *)network))
+
+Network::Network() : network(NULL) {}
+
+void Network::create(const Type type, const int layers_num, const unsigned int *layers, const float connection_rate) {
+	destroy();
+	
 	switch(type) {
 		case Standard:
 			network = fann_create_standard_array(layers_num, const_cast<unsigned int *>(layers));
@@ -54,8 +60,8 @@ const unsigned int Network::getTotalConnections() {
 	return fann_get_total_connections(network);
 }
 
-
-Network::Network(const std::string &file) : network(NULL) {
+void Network::load(const std::string &file) {
+	destroy();
 	network = fann_create_from_file(file.c_str());
 	if (network == NULL)
 		throw_fnet(("fann_create_from_file"));
@@ -66,9 +72,13 @@ void Network::save(const std::string &file) {
 		throw_fnet(("fann_save"));
 }
 
-Network::~Network() {
+void Network::destroy() {
 	if (network == NULL)
 		return;
 	fann_destroy(network);
 	network = NULL;
+}
+
+Network::~Network() {
+	destroy();
 }

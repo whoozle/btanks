@@ -1,6 +1,8 @@
 #include "./exception.h"
 
-using namespace fann;
+using namespace fanncxx;
+
+Exception::~Exception() throw() {}
 
 Exception::Exception(struct fann_error *ferr) {
 	const char * errstr = fann_get_errstr(ferr);

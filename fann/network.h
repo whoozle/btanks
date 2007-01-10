@@ -4,13 +4,17 @@
 #include <fann.h>
 #include <string>
 
-namespace fann {
+namespace fanncxx {
 
 class Network {
 public: 
 	enum Type {Standard, Sparse, Shortcut };
-	Network(const std::string &file);
-	Network(const Type type, const int layers_num, const unsigned int *layers, const float connection_rate = 1 /*used only in Sparse type*/);
+	Network();
+	
+	const bool isNull() const { return network == NULL; }
+	
+	void load(const std::string &file);
+	void create(const Type type, const int layers_num, const unsigned int *layers, const float connection_rate = 1 /*used only in Sparse type*/);
 	
 	void randomize_weights(const fann_type min, const fann_type max);
 	
@@ -26,6 +30,7 @@ public:
 	const unsigned int getTotalNeurons();
 	const unsigned int getTotalConnections();
 	
+	void destroy();
 	~Network();
 	
 	void save(const std::string &file);
