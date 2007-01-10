@@ -275,7 +275,9 @@ IResourceManager::~IResourceManager() {
 }
 
 void IResourceManager::registerObject(const std::string &classname, Object *o) {
+	assert(!classname.empty());
 	o->registered_name = classname;
+	assert(!o->registered_name.empty());
 	
 	delete _objects[classname];
 	_objects[classname] = o;
@@ -301,6 +303,7 @@ Object *IResourceManager::createObject(const std::string &classname, const std::
 	if (i == _objects.end())
 		throw_ex(("classname '%s' was not registered", classname.c_str()));
 	Object * r = i->second->clone();
+	assert(!r->registered_name.empty());
 	if (r == NULL)
 		throw_ex(("%s->clone('%s') returns NULL", classname.c_str(), animation.c_str()));
 	r->setup(animation);
