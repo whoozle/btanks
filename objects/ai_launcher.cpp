@@ -88,6 +88,7 @@ void AILauncher::onSpawn() {
 		delete[] nums;
 	}
 	assert(!_network.isNull());
+	//_network.printConnections();
 	Launcher::onSpawn();
 }
 
