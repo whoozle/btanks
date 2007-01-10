@@ -24,9 +24,14 @@ void Network::randomize_weights(const fann_type min, const fann_type max) {
 fann_type *Network::run(fann_type * input) {
 	fann_type * r = fann_run(network, input);
 	if (r == NULL)
-		throw_fnet(("run"));
+		throw_fnet(("fann_run"));
 	return r;
 }
+
+void Network::train(fann_type *input, fann_type 	*desired_output) {
+	fann_train(network, input, desired_output);
+}
+
 
 void Network::printConnections() {
 	fann_print_connections(network);
@@ -49,6 +54,17 @@ const unsigned int Network::getTotalConnections() {
 	return fann_get_total_connections(network);
 }
 
+
+Network::Network(const std::string &file) : network(NULL) {
+	network = fann_create_from_file(file.c_str());
+	if (network == NULL)
+		throw_fnet(("fann_create_from_file"));
+}
+
+void Network::save(const std::string &file) {
+	if (fann_save(network, file.c_str()) != 0)
+		throw_fnet(("fann_save"));
+}
 
 Network::~Network() {
 	if (network == NULL)
