@@ -83,6 +83,7 @@ void AILauncher::onSpawn() {
 		
 		TRY {
 			_network.create(fanncxx::Network::Standard, layers, nums);
+			_network.randomizeWeights(-100, 100);
 		} CATCH("create network", { delete[] nums; throw; });
 		delete[] nums;
 	}
@@ -91,6 +92,10 @@ void AILauncher::onSpawn() {
 }
 
 void AILauncher::emit(const std::string &event, Object * emitter) {
+	GET_CONFIG_VALUE("engine.data-directory", std::string, data_dir, "data");
+	if (event == "death") {
+		_network.save(mrt::formatString("%s/neural/%s", data_dir.c_str(), registered_name.c_str())); //fixme: remove it.
+	}
 	Launcher::emit(event, emitter);
 }
 
