@@ -65,13 +65,19 @@ else:
 conf_env = env.Copy()
 conf = Configure(conf_env)
 
-sigc_cpppath = ['/usr/lib/sigc++-2.0/include', '/usr/include/sigc++-2.0', '/usr/local/include/sigc++-2.0', '/usr/local/lib/sigc++-2.0/include', '/usr/lib64/sigc++-2.0/include']
+if sys.platform != "win32":
+	sigc_cpppath = ['/usr/lib/sigc++-2.0/include', '/usr/include/sigc++-2.0', '/usr/local/include/sigc++-2.0', '/usr/local/lib/sigc++-2.0/include', '/usr/lib64/sigc++-2.0/include']
+else: 
+	sigc_cpppath = []
+
+conf_env.Append(CPPPATH=sigc_cpppath)
+
 if stl_port_debug:
 	sigc_lib = 'sigc-2.0d'
 else: 
 	sigc_lib = 'sigc-2.0'
 
-conf_env.Append(CPPPATH=sigc_cpppath)
+
 
 #print conf.env['CCFLAGS']
 
