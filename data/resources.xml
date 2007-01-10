@@ -352,7 +352,7 @@
 	<animation id="machinegunner-bullet" tile="machinegunner_bullet2.png" model="bullet-animation"/>
 	<animation id="dirt-bullet" tile="dirt_bullet.png" model="bullet-animation"/>
 	<animation id="explosion" tile="explosion.png" model="explosion-animation" />
-	<animation id="building-explosion01" tile="building_explosion01.png" model="building-explosion-animation" />
+	<animation id="building-explosion" tile="building_explosion_128.png" model="building-explosion-animation" size="128" />
 	<animation id="nuclear-explosion" tile="nuclear_explosion.png" model="nuclear-explosion-animation" size="448" />
 	<animation id="traffic-lights" tile="traffic_lights.png" model="traffic-lights-animation" />
 
