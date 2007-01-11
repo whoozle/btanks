@@ -72,10 +72,10 @@
   <property name="object:heal:heal:4" value="464,306"/>
   <property name="object:mines-item:mines-item:1" value="80,1016"/>
   <property name="object:heal:heal:3" value="248,612"/>
-  <property name="spawn:6" value="1903,131"/>
   <property name="object:heal:heal:2" value="1852,746"/>
-  <property name="spawn:5" value="@2,22"/>
+  <property name="spawn:6" value="1903,131"/>
   <property name="object:heal:heal:1" value="2042,1342"/>
+  <property name="spawn:5" value="@2,22"/>
   <property name="spawn:4" value="@24,20"/>
   <property name="spawn:3" value="@6,15"/>
   <property name="spawn:2" value="@27,14"/>
@@ -85,8 +85,8 @@
   <property name="object:thrower-item:thrower-item:1" value="1382,398"/>
   <property name="object:road-sign:road-sign09:2" value="240,636"/>
   <property name="object:impassable-static-corpse:dead-red-shilka:2" value="154,678"/>
-  <property name="object:smoke-cloud:smoke-cloud:4" value="1196,318"/>
   <property name="object:impassable-static-corpse:dead-red-shilka:1" value="1631,742"/>
+  <property name="object:smoke-cloud:smoke-cloud:4" value="1196,318"/>
   <property name="object:smoke-cloud:smoke-cloud:3" value="1,1422"/>
   <property name="object:smoke-cloud:smoke-cloud:2" value="1986,-30,600"/>
   <property name="object:smoke-cloud:smoke-cloud:1" value="2095,10,600"/>
@@ -106,19 +106,19 @@
   <property name="object:oil-barrels:oil-barrels:9" value="@21,19,-59"/>
   <property name="object:oil-barrels:oil-barrels:8" value="@16,10,-59"/>
   <property name="object:oil-barrels:oil-barrels:7" value="@24,0,-59"/>
-  <property name="object:oil-barrels:oil-barrels:2" value="1131,272"/>
   <property name="object:impassable-static-corpse:dead-white-car:17" value="96,849"/>
-  <property name="object:oil-barrels:oil-barrels:1" value="1663,1140"/>
+  <property name="object:oil-barrels:oil-barrels:2" value="1131,272"/>
   <property name="object:impassable-static-corpse:dead-white-car:16" value="111,617"/>
-  <property name="object:static-corpse:dead-man-static:14" value="642,1091,-59"/>
+  <property name="object:oil-barrels:oil-barrels:1" value="1663,1140"/>
   <property name="object:impassable-static-corpse:dead-white-car:15" value="1163,238"/>
+  <property name="object:static-corpse:dead-man-static:14" value="642,1091,-59"/>
   <property name="object:static-corpse:dead-man-static:13" value="555,425"/>
-  <property name="object:static-corpse:dead-man-static:12" value="527,1053"/>
   <property name="object:impassable-static-corpse:dead-cyan-car:3" value="547,497"/>
-  <property name="object:static-corpse:dead-man-static:11" value="1569,860"/>
+  <property name="object:static-corpse:dead-man-static:12" value="527,1053"/>
   <property name="object:impassable-static-corpse:dead-cyan-car:2" value="100,668"/>
-  <property name="object:static-corpse:dead-man-static:10" value="1657,727"/>
+  <property name="object:static-corpse:dead-man-static:11" value="1569,860"/>
   <property name="object:impassable-static-corpse:dead-cyan-car:1" value="2001,1046"/>
+  <property name="object:static-corpse:dead-man-static:10" value="1657,727"/>
  </properties>
  <tileset name="Untitled" firstgid="1" tilewidth="64" tileheight="64">
   <image source="../tiles/houses_tileset.png"/>
@@ -146,8 +146,8 @@
  </tileset>
  <layer name="asphalt" width="35" height="25">
   <properties>
-   <property name="z" value="-1000"/>
    <property name="impassability" value="20"/>
+   <property name="z" value="-1000"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAO1WQQqAMAwr/v953dX9QT/ghAVC7WEgpJcFgtupMSRVN7M26MnT6a7AOdiTJ/TgrgDeu4VzhTc8C+yT8EXlDeuAhsyTVV/u478Wzgr7ocyuJ2QNyuzy3OhHRafZD+52VadZU+y0Mi/Z3oU+ZX5X9q56v2A+ztDBXim1cD5ijlW+xG8A75WKTse9X9lpzmmFDrPvbov/D2pwLl5epveEgdl9atnY2FjHA2LYHYusDQAA
@@ -209,8 +209,8 @@
  <layer name="water-details" width="35" height="25">
   <properties>
    <property name="pierceable" value="true"/>
-   <property name="z" value="-50"/>
    <property name="impassability" value="100"/>
+   <property name="z" value="-50"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGJrAiHGgXUB7oAH0o+Yg8edgCm9NMsKFFuFIaZiYYNEPi3MtEsyGhQfIPFsS9GkQUIscziCz6ZEGYHai+8OWEYFhQIMRexhSC6DbN1DAdhCVA6NgFAxFMFjqL5A7NAZBuQIrTwbaHTAwWNwxCkbBYAUAu9kZWKwNAAA=
@@ -259,8 +259,8 @@
  <layer name="borders low" width="35" height="25">
   <properties>
    <property name="pierceable" value="true"/>
-   <property name="z" value="200"/>
    <property name="impassability" value="100"/>
+   <property name="z" value="200"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGAWjYBRQE6xlZGCYzzjQrsAPtgxy940C6oIYYHwHI8X5dGgaHUzpdMkgcstQAMhxGEzDsJs5iOJl8SBwSywZ4b2WAneDwn/WIPA3CKxmRC1LyC1DaFHuBDNBwnnGIAkrkHsGi1tGweAByOU2KekDAINiDkmsDQAA
@@ -270,8 +270,8 @@
  <layer name="objects low" width="35" height="25">
   <properties>
    <property name="pierceable" value="false"/>
-   <property name="z" value="210"/>
    <property name="impassability" value="100"/>
+   <property name="z" value="210"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGAWjYBRQG4QxDbQLRsFAAntg/DsMgjQwj5GBwRPoDi80t2QC+VlAnE0nN8YD7QmB2hWMZmcxkF8CxKWDILxGInAEhrsTgbBPoFPceAPt8UFKJ+jpFCQWOkDpZKDS6UxgHp7FSF87cQFQebIE6hZQmhgs5RwIwMq5oEESVjFAt8QNkrAZBYMHgPIQqD7MITFtAACWm/5WrA0AAA==
@@ -301,8 +301,8 @@
  <layer name="buildings" width="35" height="25">
   <properties>
    <property name="pierceable" value="false"/>
-   <property name="impassability" value="100"/>
    <property name="z" value="500"/>
+   <property name="impassability" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAO2WMQrCMBhGQy/REzh7A+ve1Q6iOIqHEQpCa3HRVh3UobO384kOaTtYKcmfIQ8ehSzfGxLoVDWZYIQzTPASKGOUWOH5vYN5a2uJGWcrvgucm0vpcGq1rPHI2cZig4uE0gEaBq/m34ykAzRcahlLB2jUDl2Yp0MtHo9nODfe9B0fGKuPB6F3nnzds18E5v/l+lCyX+EWdxZbrvamflJjhrl0iEYqHeDpxQt6XB/+rA0AAA==
