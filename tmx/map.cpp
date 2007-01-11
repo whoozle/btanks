@@ -645,11 +645,11 @@ const bool IMap::loaded() const {
 }
 
 const v3<int> IMap::getSize() const {
-	return v3<int>(_tw * _w,_th * _h, 0);
+	return v3<int>(_tw * _w,_th * _h, 1);
 }
 
 const v3<int> IMap::getTileSize() const {
-	return v3<int>(_tw, _th, 0);
+	return v3<int>(_tw, _th, 1);
 }
 
 void IMap::damage(const v3<float> &position, const int hp) {
