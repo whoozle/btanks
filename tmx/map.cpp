@@ -284,7 +284,7 @@ void IMap::load(const std::string &name) {
 	}
 #endif
 	
-	_imp_map.setSize(_h * _th / pathfinding_step, _w * _tw / pathfinding_step);
+	_imp_map.setSize(_h, _w);
 	LOG_DEBUG(("building map matrix[%d:%d]...", _imp_map.getHeight(), _imp_map.getWidth()));
 	_imp_map.useDefault(-1);
 	
@@ -306,10 +306,7 @@ void IMap::load(const std::string &name) {
 				im = -1; //inf :)
 			//_imp_map.set(y, x, im);
 			
-			for(int y1 = y * _th / pathfinding_step; y1 <= ((y + 1) * _th - 1 ) / pathfinding_step; ++y1) 
-				for(int x1 = x * _tw / pathfinding_step; x1 <= ((x + 1) * _tw - 1) / pathfinding_step; ++x1) 
-					_imp_map.set(y1, x1, im);
-			
+			_imp_map.set(y, x, im);			
 		}
 	}
 	LOG_DEBUG(("\n%s", _imp_map.dump().c_str()));

@@ -48,9 +48,10 @@ const bool IWorld::old_findPath(const Object *obj, const v3<float>& position, Wa
 	Matrix<int> imp, path;
 	World->getImpassabilityMatrix(imp, obj, dst_obj);
 	//LOG_DEBUG(("imp\n%s", imp.dump().c_str()));
-	
-	v3<int> src = obj->_position.convert<int>() / IMap::pathfinding_step;
-	v3<int> dst = tposition.convert<int>() / IMap::pathfinding_step;
+	v3<int> tile_size = Map->getTileSize();
+
+	v3<int> src = obj->_position.convert<int>() / tile_size;
+	v3<int> dst = tposition.convert<int>() / tile_size;
 	
 	int w = imp.getWidth(), h = imp.getHeight();
 
@@ -164,7 +165,7 @@ const bool IWorld::old_findPath(const Object *obj, const v3<float>& position, Wa
 	
 	
 	for(Way::iterator i = way.begin(); i != way.end(); ++i) {
-		(*i) *= IMap::pathfinding_step;
+		(*i) *= tile_size;
 	}
 	
 	//LOG_DEBUG(("getPath: length: %d, \n%s", len, result.dump().c_str()));

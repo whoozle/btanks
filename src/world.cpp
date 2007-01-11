@@ -295,6 +295,8 @@ void IWorld::getImpassability2(float &old_pos_im, float &new_pos_im, Object *obj
 void IWorld::getImpassabilityMatrix(Matrix<int> &matrix, const Object *src, const Object *dst) const {
 	const v3<int> size = Map->getTileSize();
 	
+	const v3<int> tile_size = Map->getTileSize();
+
 	Map->getImpassabilityMatrix(matrix);
 	for(ObjectMap::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		Object *o = i->second;
@@ -319,11 +321,10 @@ void IWorld::getImpassabilityMatrix(Matrix<int> &matrix, const Object *src, cons
 			}
 */
 		v3<int> p = (o->_position + o->size/2).convert<int>();
-		int y = p.y / IMap::pathfinding_step;
-		int x = p.x / IMap::pathfinding_step;
-		int old = matrix.get(y, x);
+		p /= tile_size;
+		int old = matrix.get(p.y, p.x);
 		if ((old >= 0 && im > old) || im == -1) 
-			matrix.set(y, x, im);
+			matrix.set(p.y, p.x, im);
 		
 	}
 	//LOG_DEBUG(("projected objects:\n%s", matrix.dump().c_str()));
