@@ -47,16 +47,20 @@ void Network::printParameters() {
 	fann_print_parameters(network);
 }
 
-const unsigned int Network::getNumInput() {
+const float Network::getMSE() const {
+	return fann_get_MSE(network);
+}
+
+const unsigned int Network::getNumInput() const {
 	return fann_get_num_input(network);
 }
-const unsigned int Network::getNumOutput() {
+const unsigned int Network::getNumOutput() const {
 	return fann_get_num_output(network);
 }
-const unsigned int Network::getTotalNeurons() {
+const unsigned int Network::getTotalNeurons() const {
 	return fann_get_total_neurons(network);
 }
-const unsigned int Network::getTotalConnections() {
+const unsigned int Network::getTotalConnections() const {
 	return fann_get_total_connections(network);
 }
 

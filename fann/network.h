@@ -25,10 +25,11 @@ public:
 	void printConnections();
 	void printParameters();
 	
-	const unsigned int getNumInput();
-	const unsigned int getNumOutput();
-	const unsigned int getTotalNeurons();
-	const unsigned int getTotalConnections();
+	const unsigned int getNumInput() const;
+	const unsigned int getNumOutput() const;
+	const unsigned int getTotalNeurons() const;
+	const unsigned int getTotalConnections() const;
+	const float getMSE() const;
 	
 	void destroy();
 	~Network();
