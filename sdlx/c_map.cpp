@@ -150,7 +150,7 @@ const bool CollisionMap::collides(const sdlx::Rect &src, const CollisionMap *oth
 			}
 
 			
-			for(int x = aligned_pos1; x <= aligned_pos2; ++x) {
+			for(int x = aligned_pos1; x < aligned_pos2; ++x) {
 				register const int pos1 = x + ybase1;
 				register const int pos2 = x - src.x + other_src.x + ybase2;
 				if (pos1 < 0 || pos2 < 0)
