@@ -293,7 +293,7 @@ void IMap::load(const std::string &name) {
 			int im = 0;
 			for(LayerMap::reverse_iterator l = _layers.rbegin(); l != _layers.rend(); ++l) {
 				int tid = l->second->get(x, y);
-				if (tid == 0)
+				if (tid == 0 || l->second->getCollisionMap(x, y)->isEmpty())
 					continue;
 				int l_im = l->second->impassability;
 				if (l_im == -1)
