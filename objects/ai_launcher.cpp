@@ -1,3 +1,4 @@
+#if 0
 /* Battle Tanks Game
  * Copyright (C) 2006 Battle Tanks team
  *
@@ -56,8 +57,8 @@ private:
 };
 
 #define OLEFT 0
-#define OUP 1
-#define ORIGHT 2
+#define ORIGHT 1
+#define OUP 2
 #define ODOWN 3
 #define OFIRE 4
 #define OFIRE2 5
@@ -73,19 +74,20 @@ void AILauncher::movementTraining(float *output, const Matrix<int> &surr) {
 		int p = mc - circle;
 
 		//test horisontals
+		int r = circle * circle;
 		int y = p, x;
 		{
 			float vw = 0;
 			for(x = 0; x < size; ++x) {
 				vw -= 1.0 - surr.get(y, p + x) / 100.0;
 			}
-			v_abs -= vw / size;
+			v_abs -= vw / r;
 			y = vss - p - 1;
 			for(x = 0; x < size; ++x) {
 				vw += 1.0 - surr.get(y, p + x) / 100.0;
 			}
-			v_abs += vw / size;
-			v += vw / size;
+			v_abs += vw / r;
+			v += vw / r;
 		}
 		//test verticals
 		x = p;
@@ -94,24 +96,32 @@ void AILauncher::movementTraining(float *output, const Matrix<int> &surr) {
 			for(y = 0; y < size; ++y) {
 				hw -= 1.0 - surr.get(p + y, x) / 100.0;
 			}
-			h_abs -= hw / size;
+			h_abs -= hw / r;
 			x = vss - p - 1;
 			for(y = 0; y < size; ++y) {
 				hw += 1.0 - surr.get(p + y, x) / 100.0;
 			}
 		
-			h_abs += hw / size;
-			h += hw / size;
+			h_abs += hw / r;
+			h += hw / r;
 		}
 	}
 	LOG_DEBUG(("h = %g, v = %g, [h] = %g, [v] = %g", h, v, h_abs, v_abs));
 	
 	//testing results.
-	if (math::abs(h) > 1.0)
+	/*
+	float t = 0.3;
+	output[OLEFT]  = (h < -t)?1:0;
+	output[ORIGHT] = (h > t)?1:0;
+	output[OUP]    = (v < -t)?1:0;
+	output[ODOWN]  = (v > t)?1:0;
+	*/
+	
+/*	if (math::abs(h) > 1.0)
 		h = math::sign(h);
 	if (math::abs(v) > 1.0)
 		v = math::sign(h);
-	
+*/	
 	if (math::abs(h) < 0.01) {
 		if (h_abs > 1) {
 			output[OLEFT] = (h < 0)?1:0;
@@ -146,6 +156,7 @@ void AILauncher::movementTraining(float *output, const Matrix<int> &surr) {
 			output[OUP] = 1;
 		}
 	}
+
 }
 
 
@@ -171,6 +182,9 @@ static inline void output2state(const float *output, PlayerState &state) {
 void AILauncher::calculate(const float dt) {
 	if (!_reaction.tick(dt))
 		return;
+	bool train_movement = false;
+	if (_velocity.is0())
+		train_movement = true;
 	
 	//getPosition(_old_position);
 	GET_CONFIG_VALUE("objects.ai-launcher.visible-surrounds-matrix-size", int, vss, 5);
@@ -214,10 +228,11 @@ void AILauncher::calculate(const float dt) {
 		//analyzing result
 		output2state(output, _state);
 		LOG_DEBUG(("output = %s", _state.dump().c_str()));
-		bool train_movement = 	
-			(_state.left && _state.right) || 
+		
+		if ((_state.left && _state.right) || 
 			(_state.up && _state.down) || 
-			(!_state.left && !_state.right && !_state.up && !_state.down);
+			(!_state.left && !_state.right && !_state.up && !_state.down))
+				train_movement = true;
 						
 		if (train_movement) {
 			movementTraining(output, m);
@@ -313,3 +328,5 @@ Object * AILauncher::clone() const {
 }
 
 REGISTER_OBJECT("ai-launcher", AILauncher, ());
+
+#endif
