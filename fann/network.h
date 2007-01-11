@@ -21,6 +21,10 @@ public:
 	fann_type *run(fann_type * input);
 	void train(fann_type *input, fann_type 	*desired_output);
 	
+	void setTrainingAlgo(const fann_train_enum a);
+	
+	void setLearningRate(const float lr);
+	const float getLearningRate() const;
 
 	void printConnections();
 	void printParameters();

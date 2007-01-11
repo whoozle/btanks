@@ -38,6 +38,17 @@ void Network::train(fann_type *input, fann_type 	*desired_output) {
 	fann_train(network, input, desired_output);
 }
 
+void Network::setLearningRate(const float lr) {
+	fann_set_learning_rate(network, lr);
+}
+const float Network::getLearningRate() const {
+	return fann_get_learning_rate(network);
+}
+
+
+void Network::setTrainingAlgo(const fann_train_enum a) {
+	fann_set_training_algorithm(network, a);
+}
 
 void Network::printConnections() {
 	fann_print_connections(network);
