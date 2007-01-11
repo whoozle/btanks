@@ -121,11 +121,11 @@ void AILauncher::movementTraining(float *output, const Matrix<int> &surr) {
 		}
 	} else {
 		if (math::sign(h) > 0) {
-			output[ORIGHT] = h;
+			output[ORIGHT] = 1;
 			output[OLEFT] = 0;
 		} else {
 			output[ORIGHT] = 0;
-			output[OLEFT] = -h;		
+			output[OLEFT] = 1;		
 		}
 	}
 
@@ -139,11 +139,11 @@ void AILauncher::movementTraining(float *output, const Matrix<int> &surr) {
 		}
 	} else {
 		if (math::sign(v) > 0) {
-			output[ODOWN] = v;
+			output[ODOWN] = 1;
 			output[OUP] = 0;
 		} else {
 			output[ODOWN] = 0;
-			output[OUP] = -v;
+			output[OUP] = 1;
 		}
 	}
 }
@@ -213,10 +213,11 @@ void AILauncher::calculate(const float dt) {
 
 		//analyzing result
 		output2state(output, _state);
+		LOG_DEBUG(("output = %s", _state.dump().c_str()));
 		bool train_movement = 	
 			(_state.left && _state.right) || 
 			(_state.up && _state.down) || 
-			(_state.left == _state.right == _state.up == _state.down == false);
+			(!_state.left && !_state.right && !_state.up && !_state.down);
 						
 		if (train_movement) {
 			movementTraining(output, m);
@@ -235,6 +236,7 @@ void AILauncher::calculate(const float dt) {
 		_state.fire = _state.alt_fire = false;
 	} CATCH("run", { delete []input; input = NULL;});
 	
+	Launcher::calculate(dt);
 	//LOG_DEBUG(("surrounds: %s", m.dump().c_str()));
 }
 
@@ -253,7 +255,7 @@ void AILauncher::onSpawn() {
 		LOG_WARN(("could not load predefined network for %s", registered_name.c_str())); 
 
 		std::string config;
-		Config->get("neural." + registered_name + ".layers-configuration", config, "10, 10");
+		Config->get("objects." + registered_name + ".layers-configuration", config, "10,10");
 		std::vector<std::string> res;
 		mrt::split(res, config, ",");
 
@@ -276,7 +278,12 @@ void AILauncher::onSpawn() {
 		
 		TRY {
 			_network.create(fanncxx::Network::Standard, n + 2, nums);
-			_network.randomizeWeights(0, 1.0);
+			//_network.randomizeWeights(-0.5, 0.5);
+			//_network.setLearningRate(0.99);
+			//_network.setTrainingAlgo(FANN_TRAIN_QUICKPROP);
+			//_network.setTrainingAlgo(FANN_TRAIN_INCREMENTAL);
+			assert(_network.getNumInput() == (unsigned)(vss*vss - 1));
+			assert(_network.getNumOutput() == 6);
 		} CATCH("create network", { delete[] nums; throw; });
 		delete[] nums;
 	}
