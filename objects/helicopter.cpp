@@ -86,8 +86,10 @@ void Helicopter::tick(const float dt) {
 		pos2 += para_size;
 		pos2 -= 1;
 
-		pos /= IMap::pathfinding_step;
-		pos2 /= IMap::pathfinding_step;
+		const v3<int> tile_size = Map->getTileSize();
+
+		pos /= tile_size;
+		pos2 /= tile_size;
 		/*
 		LOG_DEBUG(("%d %d", matrix.get(pos.y, pos.x), matrix.get(pos.y, pos2.x)));
 		LOG_DEBUG(("%d %d", matrix.get(pos2.y, pos.x), matrix.get(pos2.y, pos2.x)));

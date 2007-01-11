@@ -88,9 +88,12 @@ void AITank::calculate(const float dt) {
 
 	GET_CONFIG_VALUE("objects.ai-tank.dead-zone-for-target", float, deadzone, 2.5);
 	
+	const v3<int> tile_size = Map->getTileSize();
+	const int pathfinding_step = ( tile_size.x + tile_size.y ) / 2; //do not punish me. just quick fix
+	
 	if (getNearest("player", pos, vel, (refresh_path || !isDriven())?&way:0)) {
 		//LOG_DEBUG(("found human: %f %f", pos.x, pos.y));
-		const bool player_close = pos.length() < IMap::pathfinding_step * deadzone;
+		const bool player_close = pos.length() < pathfinding_step * deadzone;
 		
 		if (found_bullet && bpos.quick_length() < pos.quick_length()) {
 			//LOG_DEBUG(("bpos: %g, player: %g", bpos.quick_length(), pos.quick_length()));
@@ -136,7 +139,7 @@ void AITank::calculate(const float dt) {
 			_state.fire = true;
 		}
 		
-		if (pos.length() < 3*IMap::pathfinding_step / 2) {
+		if (pos.length() < 3 * pathfinding_step / 2) {
 			_velocity.clear();
 			return;
 		}
