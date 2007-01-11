@@ -47,7 +47,9 @@ vorbis = 'vorbisfile'
 if debug and sys.platform == "win32": 
 	vorbis = 'vorbisfile_d'
 
-bt_libs = ['fanncxx', 'bt_sound', 'bt_net', 'bt_menu', 'sdlx', 'mrt', sigc_lib, 'SDL_ttf', 'SDL_image', 'SDL', 'expat', 'z', vorbis, al_lib, 'alut']
+#fanncxx
+
+bt_libs = ['bt_sound', 'bt_net', 'bt_menu', 'sdlx', 'mrt', sigc_lib, 'SDL_ttf', 'SDL_image', 'SDL', 'expat', 'z', vorbis, al_lib, 'alut']
 if sys.platform == "win32":
 	bt_libs[0:0] = ['SDLmain']
 	bt_libs.append('Ws2_32')

@@ -114,8 +114,8 @@ conf.env.Append(LIBS=al_lib)
 if not conf.CheckLibWithHeader('alut', 'AL/alut.h', 'c++', "alutInit(0,0);", False):
 	Exit(1)
 
-if not conf.CheckLibWithHeader('fann', 'fann.h', 'c', "fann_create_standard_array(0, 0);", False):
-	Exit(1)
+#if not conf.CheckLibWithHeader('fann', 'fann.h', 'c', "fann_create_standard_array(0, 0);", False):
+#	Exit(1)
 
 #if not conf.CheckLibWithHeader('SDL_net', 'SDL/SDL_net.h', 'c++', "SDLNet_Init();", False):
 #	Exit(1)
@@ -150,7 +150,7 @@ env.Append(CPPPATH=sigc_cpppath)
 
 env.Append(CPPPATH=['#', '#/src'])
 
-bt_sublibs = ['mrt', 'sdlx', 'net', 'menu', 'sound', 'fann']
+bt_sublibs = ['mrt', 'sdlx', 'net', 'menu', 'sound'] #fann
 
 for dir in bt_sublibs:
 	BuildDir('#/build/' + buildmode + '/' + dir, dir, 0)
