@@ -314,6 +314,27 @@ void IMap::load(const std::string &name) {
 	LOG_DEBUG(("loading completed"));
 }
 
+void IMap::getSurroundings(Matrix<int> &matrix, const v3<int> &pos, const int filler) const {
+	if (matrix.getWidth() % 2 == 0 || matrix.getHeight() % 2 == 0)
+		throw_ex(("use only odd values for surrond matrix. (used: %d, %d)", matrix.getHeight(), matrix.getWidth()));
+	
+	int dx = (matrix.getWidth() - 1) / 2;
+	int dy = (matrix.getHeight() - 1) / 2;
+	
+	v3<int> p = pos;
+	p.x /= _tw;
+	p.y /= _th;
+	
+	int y0 = p.y - dy, x0 = p.x - dx;
+	for(int y = y0; y <= p.y + dy; ++y) 
+		for(int x = x0; x <= p.x + dx; ++x) {
+			int i = _imp_map.get(y, x);
+			if (filler != -1 && i == -1)
+				i = filler;
+			matrix.set(y - y0, x - x0, i);
+		}
+}
+
 void IMap::start(const std::string &name, Attrs &attrs) {
 	//LOG_DEBUG(("started %s", name.c_str()));
 	Entity e(attrs);

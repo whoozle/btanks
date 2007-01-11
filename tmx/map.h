@@ -61,7 +61,9 @@ public:
 	const v3<int> getTileSize() const;
 	
 	virtual const int getImpassability(const Object *obj, const v3<int>& pos, v3<int> *tile_pos = NULL, bool *hidden = NULL) const;
+
 	void getImpassabilityMatrix(Matrix<int> &matrix) const { matrix = _imp_map; }
+	void getSurroundings(Matrix<int> &matrix, const v3<int> &pos, const int filler = -1) const;
 	
 	void damage(const v3<float> &position, const int hp);
 	
