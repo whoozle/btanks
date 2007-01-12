@@ -19,8 +19,12 @@ private:
 	
 	//end of preds
 	const bool getPoint(Point &p, const char c);
+	const bool getCounter(int &n, const char c, const char t);
 	
 	//evaluating stuff
+	typedef std::map<const int, std::string> ItemNumbers;
+	ItemNumbers _weapon_name, _effect_name;
+	
 	typedef std::map<const float, std::string> RuleMap;
 
 	const bool eval(const RuleMap &rules);
