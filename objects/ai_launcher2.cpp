@@ -1,6 +1,3 @@
-#ifndef __BTANKS_LAUNCHER_H__
-#define __BTANKS_LAUNCHER_H__
-
 /* Battle Tanks Game
  * Copyright (C) 2006 Battle Tanks team
  *
@@ -19,26 +16,35 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include <string>
-#include "object.h"
-#include "alarm.h"
+#include "launcher.h"
+#include "mrt/exception.h"
+#include "resource_manager.h"
+#include "config.h"
 
-class Launcher : public virtual Object {
-public:
-	Launcher();
-	virtual Object * clone() const;
+#include "ai/base.h" 
 
-	virtual void emit(const std::string &event, Object * emitter);
-	virtual const bool take(const BaseObject *obj, const std::string &type);
-	virtual void tick(const float dt);
-	virtual void calculate(const float dt);
+class AILauncher:  public Launcher, public ai::Base {
+public: 
+	AILauncher() : Object("player") {}
+//	~AILauncher();
 	virtual void onSpawn();
-	virtual void serialize(mrt::Serializator &s) const;
-	virtual void deserialize(const mrt::Serializator &s);
-	
-private:
-	Alarm _fire;
+	virtual void calculate(const float dt);
+
+	virtual Object * clone() const { return new AILauncher(*this); }
+private: 
+
 };
 
-#endif
+void AILauncher::onSpawn() {
+	ai::Base::onSpawn();
+	Launcher::onSpawn();
+}
 
+void AILauncher::calculate(const float dt) {
+	ai::Base::calculate(dt);
+	
+	GET_CONFIG_VALUE("objects.launcher.rotation-time", float, rt, 0.07);
+	limitRotation(dt, rt, true, false);
+}
+
+REGISTER_OBJECT("ai-launcher", AILauncher, ());
