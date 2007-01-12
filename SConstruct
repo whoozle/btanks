@@ -150,7 +150,7 @@ env.Append(CPPPATH=sigc_cpppath)
 
 env.Append(CPPPATH=['#', '#/src'])
 
-bt_sublibs = ['mrt', 'sdlx', 'net', 'menu', 'sound'] #fann
+bt_sublibs = ['mrt', 'sdlx', 'net', 'menu', 'sound', 'ai'] #fann
 
 for dir in bt_sublibs:
 	BuildDir('#/build/' + buildmode + '/' + dir, dir, 0)
