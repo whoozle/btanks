@@ -29,8 +29,8 @@ const std::string Directory::read() const {
 		throw_ex(("Directory::read called on uninitialized object"));
 	struct dirent *dir = readdir(_handle);
 	if (dir == NULL) {
-		if (errno) 
-			throw_io(("readdir"));
+		//if (errno) 
+		//	throw_io(("readdir"));
 		return std::string();
 	}
 	return dir->d_name;
