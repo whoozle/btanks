@@ -30,6 +30,11 @@ void Base::onSpawn() {
 	_reaction_time.set(rt);
 }
 
+const bool Base::isEnemy(const Object *o) const {
+	return _enemies.find(o->classname) != _enemies.end();
+}
+
+
 void Base::calculate(const float dt) {
 	if (!_reaction_time.tick(dt)) {
 		calculateWayVelocity();
@@ -39,18 +44,28 @@ void Base::calculate(const float dt) {
 	const Object *target = World->findTarget(this, _enemies, _bonuses, _traits);
 	if (target != NULL && target->getID() != _target_id) {
 		_target_id = target->getID();
-		
+		_enemy = isEnemy(target);
+				
 		target->getPosition(_target_position);
 		LOG_DEBUG(("next target: %s at %d,%d", target->registered_name.c_str(), _target_position.x, _target_position.y));
-		findPath(_target_position, 24);
+		findPath(_target_position, 16);
 	}
 
 	Way way;
-	if (calculatingPath()) {
+	bool calculating = calculatingPath();
+	bool driven = isDriven();
+	
+	LOG_DEBUG(("calculating: %c, driven: %c", calculating?'+':'-', driven?'+':'-'));
+	
+	if (calculating) {
 		if (findPathDone(way))
 			setWay(way);
 	} else {
-		//_velocity = _target_position.convert<float>() - getPosition();
+		v3<float> dir = _target_position.convert<float>() - getPosition();
+		dir.normalize();
+		setDirection(dir.getDirection(getDirectionsNumber()));
+		if (_enemy) 
+			_state.fire = true;
 	}
 	calculateWayVelocity();
 }

@@ -17,12 +17,14 @@ public:
 protected: 
 	void addEnemyClass(const std::string &classname);
 	void addBonusName(const std::string &rname);
+	const bool isEnemy(const Object *o) const;
 private: 
 	Alarm _reaction_time;
 	ai::Traits _traits;
 	std::set<std::string> _enemies, _bonuses;
 	int _target_id;
 	v3<int> _target_position;
+	bool _enemy;
 };
 }
 
