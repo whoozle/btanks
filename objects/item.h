@@ -24,10 +24,7 @@
 class Item : public Object {
 public:
 	std::string type;
-	Item(const std::string &classname, const std::string &type = std::string()) : Object(classname), type(type) {
-		pierceable = true;
-		impassability = 1;
-	}
+	Item(const std::string &classname, const std::string &type = std::string());
 	virtual Object * clone() const;
 	virtual void onSpawn();
 	virtual void tick(const float dt);

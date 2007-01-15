@@ -20,6 +20,12 @@
 #include "item.h"
 #include "resource_manager.h"
 
+Item::Item(const std::string &classname, const std::string &type) : Object(classname), type(type) {
+	pierceable = true;
+	impassability = 1;
+}
+
+
 void Item::tick(const float dt) {
 	Object::tick(dt);
 	if (getState().empty()) 
