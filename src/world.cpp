@@ -1185,7 +1185,7 @@ const Object * IWorld::findTarget(const Object *src, const std::set<std::string>
 		} else assert(0);
 				
 		if (enemy) {
-			value *= getFirePower(src, traits) / getFirePower(o, traits);
+			value *= (getFirePower(src, traits) + 1) / (getFirePower(o, traits) + 1);
 		}
 		value /= (src->_position.distance(o->_position));
 		LOG_DEBUG(("item: %s, value: %g", o->registered_name.c_str(), value));
