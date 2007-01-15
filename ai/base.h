@@ -3,6 +3,9 @@
 
 #include "object.h"
 #include "traits.h"
+#include <string>
+#include <set>
+#include "alarm.h"
 
 namespace ai {
 class Base : public virtual Object {
@@ -12,28 +15,14 @@ public:
 	virtual void onSpawn();
 	
 protected: 
-	//
+	void addEnemyClass(const std::string &classname);
+	void addBonusName(const std::string &rname);
 private: 
-	//predicates
-	typedef v3<float> Point;
-	
-	//end of preds
-	const bool getPoint(Point &p, const char c);
-	const bool getCounter(int &n, const char c, const char t);
-	
-	//evaluating stuff
-	typedef std::map<const int, std::string> ItemNumbers;
-	ItemNumbers _weapon_name, _effect_name;
-	
-	typedef std::map<const float, std::string> RuleMap;
-
-	const bool eval(const RuleMap &rules);
-	const bool eval(const std::string &program);
-	
-
+	Alarm _reaction_time;
 	ai::Traits _traits;
-	
-	RuleMap _weapon1, _weapon2, _movement;
+	std::set<std::string> _enemies, _bonuses;
+	int _target_id;
+	v3<int> _target_position;
 };
 }
 
