@@ -21,43 +21,17 @@
 #include "resource_manager.h"
 #include "world.h"
 #include "config.h"
+#include "vehicle_traits.h"
 
 class MissilesInVehicle : public Object {
 public:
 	void update() {
-		const std::string key = "objects." + _type + "-" + _object + "-on-" + _vehicle;
 		if (_object.empty() || _type.empty()) {
 			max_n = n = 0; 
 			return;
 		}
-		int def_cap = 10;
-		int def_v = 1;
-
-		if (_vehicle == "launcher") {
-			def_v = (_type == "nuke")?2:3;
-
-			if (_type == "guided") 
-				def_cap = 15;
-			else if (_type == "nuke")
-				def_cap = 4;
-			else if (_type == "stun")
-				def_cap = 6;
-			
-		} else if (_vehicle == "tank") {
-			if (_type == "nuke")
-				def_cap = 3;
-			else if (_type == "boomerang") 
-				def_cap = 6;
-			else if (_type == "dumb") 
-				def_cap = 8;
-			else if (_type == "stun")
-				def_cap = 4;
-						
-		}
-		Config->get(key + ".capacity", max_n, def_cap);
+		VehicleTraits::getWeaponCapacity(max_n, max_v, _vehicle, _object, _type);
 		n = max_n;
-
-		Config->get(key + ".visible-amount", max_v, def_v);
 	}
 
 	MissilesInVehicle(const std::string &type, const std::string &object, const std::string &vehicle) : 

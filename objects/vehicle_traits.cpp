@@ -1,0 +1,37 @@
+#include "vehicle_traits.h"
+#include "config.h"
+#include "mrt/exception.h"
+
+void VehicleTraits::getWeaponCapacity(int &max_n, int &max_v, const std::string &vehicle, const std::string &object, const std::string &type) {
+	if (vehicle.empty() || object.empty() || type.empty())
+		throw_ex(("vehicle/object/type cannot be empty"));
+	
+	const std::string key = "objects." + type + "-" + object + "-on-" + vehicle;
+	
+	int def_cap = 10;
+	int def_v = 1;
+
+	if (vehicle == "launcher") {
+		def_v = (type == "nuke")?2:3;
+		if (type == "guided") 
+			def_cap = 15;
+		else if (type == "nuke")
+			def_cap = 4;
+		else if (type == "stun")
+			def_cap = 6;
+			
+	} else if (vehicle == "tank") {
+		if (type == "nuke")
+			def_cap = 3;
+		else if (type == "boomerang") 
+			def_cap = 6;
+		else if (type == "dumb") 
+			def_cap = 8;
+		else if (type == "stun")
+			def_cap = 4;
+					
+	}
+	Config->get(key + ".capacity", max_n, def_cap);
+
+	Config->get(key + ".visible-amount", max_v, def_v);
+}
