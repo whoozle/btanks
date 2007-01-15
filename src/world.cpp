@@ -36,6 +36,9 @@
 #include "sdlx/rect.h"
 #include "sdlx/surface.h"
 
+#include "objects/vehicle_traits.h"
+#include "ai/traits.h"
+
 #include <math.h>
 #include <assert.h>
 #include <limits>
@@ -1019,6 +1022,12 @@ Object * IWorld::deserializeObjectInfo(const mrt::Serializator &s, const int id,
 	return o;
 }
 
+const bool IWorld::isAlly(const Object *o1, const Object *o2) {
+	return (o1->_id == o2->_id || 
+			o1->_owner_id == o2->_id || o2->_owner_id == o1->_id || 
+			(o1->_owner_id != 0 && o1->_owner_id == o2->_owner_id));
+}
+
 const Object* IWorld::getNearestObject(const Object *obj, const std::string &classname) const {
 	const Object *result = NULL;
 	float distance = std::numeric_limits<float>::infinity();
@@ -1102,5 +1111,92 @@ const bool IWorld::detachVehicle(Object *object) {
 	slot->need_sync = true;
 	return true;
 }
+
+inline const float getFirePower(const Object *o, ai::Traits &traits) {
+	float value = 0;
+	if (o->has("mod")) {
+		const Object *mod = o->get("mod");
+		int c = mod->getCount();
+		if (c > 0) 
+			value += traits.get("value", mod->getType(), 1.0, 1000.0) * c;
+	}
+	if (o->has("alt-mod")) {
+		const Object *mod = o->get("alt-mod");
+		int c = mod->getCount();
+		if (c > 0) 
+			value += traits.get("value", mod->getType(), 1.0, 1000.0) * c;
+	}
+	return value;
+}
+
+const Object * IWorld::findTarget(const Object *src, const std::set<std::string> &enemies, const std::set<std::string> &bonuses, ai::Traits &traits) const {
+	if (src->getType().empty())
+		throw_ex(("findTarget source must always provide its type"));
+	
+	const Object *result = NULL;
+	float result_value = 0;
+	for(ObjectMap::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
+		const Object *o = i->second;
+		if (o->impassability == 0 || o->hp == -1 ||isAlly(src, o)) 
+			continue;
+		const bool enemy = enemies.find(o->classname) != enemies.end();
+		const bool bonus = bonuses.find(o->registered_name) != bonuses.end();
+		if (!enemy && !bonus)
+			continue;
+
+		//bonus!
+		int min = 0, max = 0;
+		std::string mod_type = o->classname;
+		if (!o->getType().empty()) 
+			mod_type += ":" + o->getType();
+		
+		if (o->classname == "missiles" || o->classname == "mines") {
+			if (src->has("mod")) {
+				const Object *mod = src->get("mod");
+				if (mod->getType() == mod_type)
+					min = mod->getCount();
+			}
+	
+			if (src->has("alt-mod")) {
+				const Object *mod = src->get("alt-mod");
+				if (mod->getType() == mod_type)
+					min = mod->getCount();
+			}
+			assert(min >= 0);
+			int max_v;
+			VehicleTraits::getWeaponCapacity(max, max_v, src->getType(), o->classname, o->getType());
+			if (min > max)
+				min = max;
+		} else if (o->classname == "heal") {
+			min = src->hp;
+			max = src->max_hp;
+		}
+		float value = 0;
+		const std::string type = o->getType();
+
+		if (enemy) {
+			value = traits.get("enemy", type.empty()?o->classname:type, 1000.0, 1000.0);
+		} else if (bonus) {
+			if (max == 0) {
+				LOG_WARN(("cannot determine bonus for %s", o->registered_name.c_str()));
+				continue;
+			}
+			value = traits.get("value", mod_type, 1.0, 1000.0) * (max - min);
+		} else assert(0);
+				
+		if (enemy) {
+			value *= getFirePower(src, traits) / getFirePower(o, traits);
+		}
+		value /= (src->_position.distance(o->_position));
+		LOG_DEBUG(("item: %s, value: %g", o->registered_name.c_str(), value));
+		//find most valuable item.
+		if (value > result_value) {
+			result = o;
+			result_value = value;
+		}
+	}
+	return result;
+}
+
 
 #include "world_old_pf.cpp"

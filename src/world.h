@@ -32,6 +32,10 @@ class Surface;
 class Rect;
 }
 
+namespace ai {
+class Traits;
+}
+
 class Object;
 
 class IWorld : public mrt::Serializable {
@@ -82,6 +86,10 @@ public:
 	
 	const bool attachVehicle(Object *object, Object *vehicle);
 	const bool detachVehicle(Object *object);
+	
+	const Object * findTarget(const Object *src, const std::set<std::string> &enemies, const std::set<std::string> &bonuses, ai::Traits &traits) const;
+	
+	static const bool isAlly(const Object *o1, const Object *o2);
 private:
 	void deleteObject(ObjectMap &objects, Object *o);
 

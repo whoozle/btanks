@@ -321,7 +321,7 @@ void AILauncher::emit(const std::string &event, Object * emitter) {
 }
 
 
-AILauncher::AILauncher() : _reaction(true) {}
+AILauncher::AILauncher() : BaseAI("vehicle"), _reaction(true) {}
 
 Object * AILauncher::clone() const {
 	return new AILauncher(*this);

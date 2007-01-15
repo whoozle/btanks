@@ -36,6 +36,21 @@ private:
 };
 
 void AILauncher::onSpawn() {
+	disown();
+
+	addEnemyClass("player");
+	addEnemyClass("trooper");
+	addEnemyClass("kamikaze");
+	
+	addBonusName("heal");
+	addBonusName("megaheal");
+	addBonusName("guided-missiles-item");
+	addBonusName("dumb-missiles-item");
+	addBonusName("nuke-missiles-item");
+	addBonusName("boomerang-missiles-item");
+	addBonusName("stun-missiles-item");
+	addBonusName("mines-item");
+
 	ai::Base::onSpawn();
 	Launcher::onSpawn();
 }

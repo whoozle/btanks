@@ -38,6 +38,8 @@ public:
 		Object::deserialize(s);
 		s.get(type);
 	}
+	virtual const std::string getType() const { return type; }
+	virtual const int getCount() const { return hp; }
 
 };
 

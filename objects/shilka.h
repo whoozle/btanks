@@ -41,6 +41,8 @@ public:
 	virtual void deserialize(const mrt::Serializator &s);
 	FakeMod *getMod(const std::string &name);
 
+	virtual const std::string getType() const { return "shilka"; }
+
 private:
 	Alarm _fire, _special_fire;
 	bool _left_fire;

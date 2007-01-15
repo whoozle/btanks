@@ -35,6 +35,7 @@ public:
 	virtual void onSpawn();
 	virtual void serialize(mrt::Serializator &s) const;
 	virtual void deserialize(const mrt::Serializator &s);
+	virtual const std::string getType() const { return "launcher"; }
 	
 private:
 	Alarm _fire;
