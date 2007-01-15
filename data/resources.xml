@@ -379,6 +379,7 @@
 	<animation id="gay-paratrooper" model="paratrooper-animation" tile="gay_paratrooper.png" />
 	<animation id="kamikaze" model="man-animation" tile="kamikaze.png" />
 	<animation id="machinegunner" model="trooper-animation" tile="machinegunner.png" />
+	<animation id="green-machinegunner-player" model="trooper-animation" tile="machinegunner.png" />
 	<animation id="dead-machinegunner" model="dead-man-animation" tile="machinegunner_dead.png" />
 
 	<animation id="road-sign01" model="destructable-object-animation" tile="road_sign01.png" size="32" />

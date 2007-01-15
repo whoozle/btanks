@@ -62,8 +62,8 @@
  </tileset>
  <layer name="zerolayer" width="25" height="20">
   <properties>
-   <property name="z" value="-1000"/>
    <property name="impassability" value="40"/>
+   <property name="z" value="-1000"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGAWjYBSMglEwCkbBUAcARPTJAtAHAAA=
@@ -90,6 +90,7 @@
  </layer>
  <layer name="swamp" width="25" height="20">
   <properties>
+   <property name="pierceable" value="true"/>
    <property name="impassability" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
@@ -165,8 +166,9 @@
  </layer>
  <layer name="wire stand" width="25" height="20">
   <properties>
-   <property name="z" value="100"/>
+   <property name="pierceable" value="true"/>
    <property name="impassability" value="100"/>
+   <property name="z" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGDrg6EA7YBTQHYzG+SigBRhNV0MTnKdADFucY1M3lAEAhNKEXNAHAAA=
@@ -187,8 +189,8 @@
  </layer>
  <layer name="borders" width="25" height="20">
   <properties>
-   <property name="z" value="200"/>
    <property name="impassability" value="100"/>
+   <property name="z" value="200"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgoB44S0WzBtqOM3SwBwZO09m+UTAKRsEoGAXDDwAA03sbIdAHAAA=
@@ -209,15 +211,15 @@
  <layer name="objects" width="25" height="20">
   <properties>
    <property name="pierceable" value="true"/>
-   <property name="impassability" value="100"/>
    <property name="z" value="220"/>
+   <property name="impassability" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgIB4wMzEwsDCRoIEAeM1IPbOwgf8g86HuZQTSTFR0O63BVxqHDS5A7TgeaWCkhB9y3oKBgfL7UMvbo2D4AFrXYaQCAEUPxrvQBwAA
   </data>
   <tileproperties/>
  </layer>
- <layer name="trees low" width="25" height="20" visible="0">
+ <layer name="trees low" width="25" height="20">
   <properties>
    <property name="z" value="800"/>
   </properties>
@@ -226,13 +228,13 @@
   </data>
   <tileproperties/>
  </layer>
- <layer name="trees mid" width="25" height="20" visible="0">
+ <layer name="trees mid" width="25" height="20">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAANWUNw7DMAxF5dOn2k53bKf3LWVLOUPO5DdoNBQREAP4Aw8cSH2CIkBjmqNWZEwbOpEsJ9GQ9yMY1/i4chKVvF/AssbHlQulLt496EOs1GeC7xRmkCn1WOG7hg1sFf9LW757OFJzgrONF8HMvnu4UnODu40PQQ/fPTypecHbxk+DdydRwpwpDBTnneOdQ6HYY4f3Hg5/3FuI+/79kQ91313Svu8VLcvfdtAHAAA=
   </data>
   <tileproperties/>
  </layer>
- <layer name="trees high" width="25" height="20" visible="0">
+ <layer name="trees high" width="25" height="20">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAO2USQqAUAxD+0+vgrPgLDgd1BTJ3k0EwQfZJpDSmN1EwSyGkmAyKnjXUCPISOGZQRM0Q4sgo4VnJ+onh28BrdAmyujhOwjv6+zwP8QZxPsqxVne1yjO8L7Olzp7wte3gCi34Oc91D/u8Me5w4pM/jh3WLErF4dud8LQBwAA
   </data>
