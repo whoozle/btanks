@@ -160,6 +160,8 @@ void Car::calculate(const float dt) {
 	}
 
 	calculateWayVelocity();	
+	if (!isDriven())
+		_velocity.clear();
 	/*
 	if (_reaction_time.tick(dt)) {
 		v3<float> pos, vel;
