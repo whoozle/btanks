@@ -24,6 +24,13 @@
 #include <queue>
 #include <set>
 
+#include "world.h"
+#include "map.h"
+#include "object.h"
+#include "resource_manager.h"
+#include "animation_model.h"
+#include "mrt/random.h"
+
 void ChainedDestructableLayer::onDeath(const int idx) {
 	DestructableLayer::onDeath(idx);
 	_slave->clear(idx);
@@ -31,7 +38,26 @@ void ChainedDestructableLayer::onDeath(const int idx) {
 
 void DestructableLayer::onDeath(const int idx) {
 	_hp_data[idx] = -1;
-	Map->invalidateTile(idx % _w, idx / _w);
+	const int x = idx % _w, y = idx / _w;
+	Map->invalidateTile(x, y);
+	
+	const sdlx::Surface *s = NULL;
+	const sdlx::CollisionMap *cm = NULL;
+	ResourceManager->checkSurface(ResourceManager.get_const()->getAnimation("building-explosion")->surface, s, cm);
+	assert(s != NULL);
+	
+	Object * o = ResourceManager->createObject("explosion", "building-explosion");
+	v3<int> tsize = Map->getTileSize();
+	v3<float> pos(x * tsize.x + tsize.x/2, y * tsize.y + tsize.y/2, 0); //big fixme.
+	pos -= o->size / 2;
+	
+	int dirs = (s->getWidth() - 1) / (int)o->size.x + 1;
+	int dir = mrt::random(dirs);
+	//LOG_DEBUG(("set dir %d (%d)", dir, dirs));
+	o->setDirectionsNumber(dirs);
+	o->setDirection(dir);
+	
+	World->addObject(o, pos);
 }
 
 DestructableLayer::DestructableLayer(const bool visible) : _hp_data(NULL), _visible(visible) {}
