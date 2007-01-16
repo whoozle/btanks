@@ -45,7 +45,7 @@ void Object::Event::deserialize(const mrt::Serializator &s) {
 }
 
 Object * Object::clone() const {
-	throw_ex(("object %s:%s doesnt provide clone() method", classname.c_str(), animation.c_str()));
+	throw_ex(("object %s:%s doesnt provide clone() method", registered_name.c_str(), animation.c_str()));
 	return NULL;
 }
 
@@ -111,7 +111,7 @@ const Object * Object::getNearestObject(const std::string &classname) const {
 
 void Object::setDirection(const int dir) {
 	if (dir >= _directions_n)
-		LOG_WARN(("%s:%s setDirection(%d) called on object with %d directions", classname.c_str(), animation.c_str(), dir, _directions_n));
+		LOG_WARN(("%s:%s setDirection(%d) called on object with %d directions", registered_name.c_str(), animation.c_str(), dir, _directions_n));
 	if (dir >= 0)
 		_direction_idx = dir;
 }
@@ -138,7 +138,7 @@ void Object::quantizeVelocity() {
 	} else if (_directions_n == 16) {
 		_velocity.quantize16();
 		dir = _velocity.getDirection16();	
-	} else throw_ex(("%s:%s cannot handle %d directions", classname.c_str(), animation.c_str(), _directions_n));
+	} else throw_ex(("%s:%s cannot handle %d directions", registered_name.c_str(), animation.c_str(), _directions_n));
 	setDirection(dir - 1);
 }
 
@@ -261,20 +261,20 @@ void Object::tick(const float dt) {
 const bool Object::getRenderRect(sdlx::Rect &src) const {
 	if (_events.empty()) {
 		if (!isDead())
-			LOG_WARN(("%s: no animation played. latest position: %g", classname.c_str(), _pos));
+			LOG_WARN(("%s: no animation played. latest position: %g", registered_name.c_str(), _pos));
 		return false;
 	}
 
 	const Pose * pose = _model->getPose(_events.front().name);
 	if (pose == NULL) {
-		LOG_WARN(("%s:%s pose '%s' is not supported", classname.c_str(), animation.c_str(), _events.front().name.c_str()));
+		LOG_WARN(("%s:%s pose '%s' is not supported", registered_name.c_str(), animation.c_str(), _events.front().name.c_str()));
 		return false;
 	}
 	
 	int frame = (int)_pos;
 	int n = (int)pose->frames.size();
 	if (n == 0) {
-		LOG_WARN(("%s:%s pose '%s' doesnt have any frames", classname.c_str(), animation.c_str(), _events.front().name.c_str()));
+		LOG_WARN(("%s:%s pose '%s' doesnt have any frames", registered_name.c_str(), animation.c_str(), _events.front().name.c_str()));
 		return false;
 	}
 	
@@ -283,7 +283,7 @@ const bool Object::getRenderRect(sdlx::Rect &src) const {
 		frame = n - 1;
 	
 	if (frame < 0 || frame >= n) {
-		LOG_WARN(("%s:%s  event '%s' frame %d is out of range (position: %g).", classname.c_str(), animation.c_str(), _events.front().name.c_str(), frame, _pos));
+		LOG_WARN(("%s:%s  event '%s' frame %d is out of range (position: %g).", registered_name.c_str(), animation.c_str(), _events.front().name.c_str(), frame, _pos));
 		return false;	
 	}
 
@@ -293,7 +293,7 @@ const bool Object::getRenderRect(sdlx::Rect &src) const {
 	const_cast<Object*>(this)->checkSurface();
 	
 	if (frame * _th >= _surface->getHeight()) {
-		LOG_WARN(("%s:%s event '%s' tile row %d is out of range.", classname.c_str(), animation.c_str(), _events.front().name.c_str(), frame));
+		LOG_WARN(("%s:%s event '%s' tile row %d is out of range.", registered_name.c_str(), animation.c_str(), _events.front().name.c_str(), frame));
 		return false;
 	}
 
@@ -522,14 +522,14 @@ void Object::emit(const std::string &event, Object * emitter) {
 	} else if (event == "collision") {
 		addDamage(emitter);
 	} else 
-		LOG_WARN(("%s[%d]: unhandled event '%s'", classname.c_str(), _id, event.c_str()));
+		LOG_WARN(("%s[%d]: unhandled event '%s'", registered_name.c_str(), _id, event.c_str()));
 }
 
 void Object::setWay(const Way & way) {
 	_way = way;
 	_next_target.clear();
 	if (!way.empty()) 
-		LOG_DEBUG(("%d:%s:%s set %d pending waypoints", getID(), classname.c_str(), animation.c_str(), _way.size()));
+		LOG_DEBUG(("%d:%s:%s set %d pending waypoints", getID(), registered_name.c_str(), animation.c_str(), _way.size()));
 }
 
 void Object::calculateWayVelocity() {
@@ -598,7 +598,7 @@ void Object::setup(const std::string &a) {
 }
 
 void Object::onSpawn() {
-	throw_ex(("%s: object MUST define onSpawn() method.", classname.c_str()));
+	throw_ex(("%s: object MUST define onSpawn() method.", registered_name.c_str()));
 }
 
 Object * Object::spawnGrouped(const std::string &classname, const std::string &animation, const v3<float> &dpos, const GroupType type) {
@@ -688,7 +688,7 @@ Object *Object::get(const std::string &name) {
 		throw_ex(("there's no object '%s' in group", name.c_str()));
 	Object * o = World->getObjectByID(i->second);
 	if (o == NULL)
-		throw_ex(("%s: world doesnt know anything about '%s' [group]", classname.c_str(), name.c_str()));
+		throw_ex(("%s: world doesnt know anything about '%s' [group]", registered_name.c_str(), name.c_str()));
 	return o;
 }
 
@@ -698,7 +698,7 @@ const Object *Object::get(const std::string &name) const {
 		throw_ex(("there's no object '%s' in group", name.c_str()));
 	Object * o = World->getObjectByID(i->second);
 	if (o == NULL)
-		throw_ex(("%s: world doesnt know anything about '%s' [group]", classname.c_str(), name.c_str()));
+		throw_ex(("%s: world doesnt know anything about '%s' [group]", registered_name.c_str(), name.c_str()));
 	return o;
 }
 
@@ -728,7 +728,7 @@ void Object::groupEmit(const std::string &name, const std::string &event) {
 	Object * o = World->getObjectByID(i->second);
 	if (o == NULL) {
 		//throw_ex(("%s: world doesnt know anything about '%s', id: %d [group]", classname.c_str(), name.c_str(), i->second));
-		LOG_ERROR(("%s: world doesnt know anything about '%s', id: %d [group] [attempt to recover]", classname.c_str(), name.c_str(), i->second));
+		LOG_ERROR(("%s: world doesnt know anything about '%s', id: %d [group] [attempt to recover]", registered_name.c_str(), name.c_str(), i->second));
 		return;
 	}
 	o->emit(event, this);
@@ -896,7 +896,7 @@ void Object::findPath(const v3<int> target, const int step) {
 const bool Object::findPathDone(Way &way) {
 	const v3<int> map_size = Map->getSize();
 	int dir_save = getDirection();
-	GET_CONFIG_VALUE("engine.pathfinding-slice", int, ps, 3);
+	GET_CONFIG_VALUE("engine.pathfinding-slice", int, ps, 1);
 	
 	while(!_open_list.empty() && ps--) {
 		const Point current = _open_list.top();
@@ -927,14 +927,14 @@ const bool Object::findPathDone(Way &way) {
 			d.x += x;
 			d.y += y;
 			
-			if (d.x < 0 || d.x > map_size.x || d.y < 0 || d.y > map_size.y)
+			if (d.x < 0 || d.x >= map_size.x || d.y < 0 || d.y >= map_size.y)
 				continue;
 			
 			v3<int> pos((int)(d.x / _step), (int)(d.y / _step), 0);
 			
 			const int id = pos.x + pos.y * _pitch;
 			assert( id != current.id );
-			//LOG_DEBUG(("testing id %d, x=%d, y=%d", id, pos.x, pos.y));
+			//LOG_DEBUG(("%s: testing id %d, x=%d, y=%d, value = g: %d, h: %d", registered_name.c_str(), id, pos.x, pos.y, current.g, current.h));
 			
 			if (_close_list.find(id) != _close_list.end())
 				continue;
@@ -958,7 +958,7 @@ const bool Object::findPathDone(Way &way) {
 			p.id = id;
 			p.dir = i;
 			p.parent = current.id;
-			p.g = current.g + (d.x != 0 && d.y != 0)?141:100 + (int)(im * 100) + map_im;
+			p.g = current.g + ((d.x != 0 && d.y != 0)?141:100) + (int)(im * 100) + map_im;
 			p.h = h(id, _end_id, _pitch);
 
 			//add penalty for turning
@@ -975,12 +975,15 @@ const bool Object::findPathDone(Way &way) {
 			*/
 			p.g += getPenalty(map_im, (int)(im * 100));
 			
+			
 			PointMap::iterator pi = _points.find(id);
+			
 			if (pi != _points.end()) {
 				if (pi->second.g > p.g) {
 					pi->second = p;
 				}
-			} else _points.insert(PointMap::value_type(id, p));
+			} else 
+				_points.insert(PointMap::value_type(id, p));
 			
 			
 			if (p.h < 100) {
@@ -1059,7 +1062,7 @@ void Object::addDamage(Object *from, const int d, const bool emitDeath) {
 	need_sync = true;
 	
 	hp -= damage;	
-	LOG_DEBUG(("%s: received %d hp of damage from %s. hp = %d", classname.c_str(), damage, from->classname.c_str(), hp));
+	LOG_DEBUG(("%s: received %d hp of damage from %s. hp = %d", registered_name.c_str(), damage, from->classname.c_str(), hp));
 	if (emitDeath && hp <= 0) 
 		emit("death", from);
 		
