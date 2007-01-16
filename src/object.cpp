@@ -901,8 +901,9 @@ const bool Object::findPathDone(Way &way) {
 	const v3<int> map_size = Map->getSize();
 	int dir_save = getDirection();
 	GET_CONFIG_VALUE("engine.pathfinding-slice", int, ps, 1);
+	GET_CONFIG_VALUE("engine.pathfinding-throttling", bool, pt, true);
 	
-	while(!_open_list.empty() && ps) {
+	while(!_open_list.empty() && (pt?ps--:ps)) {
 		const Point current = _open_list.top();
 		_open_list.pop();
 		
@@ -1007,7 +1008,8 @@ const bool Object::findPathDone(Way &way) {
 
 			_open_list.push(p);
 		}
-		--ps;
+		if (!pt)
+			--ps;
 	}
 	
 	setDirection(dir_save);
