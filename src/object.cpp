@@ -840,8 +840,9 @@ void Object::checkSurface() {
 }
 
 void Object::close(const int vertex) {
-		_close_list.insert(vertex-1);
 		_close_list.insert(vertex);
+/*
+		_close_list.insert(vertex-1);
 		_close_list.insert(vertex+1);
 
 		_close_list.insert(_pitch + vertex-1);
@@ -851,12 +852,13 @@ void Object::close(const int vertex) {
 		_close_list.insert(-_pitch + vertex-1);
 		_close_list.insert(-_pitch + vertex);
 		_close_list.insert(-_pitch + vertex+1);
+*/
 }
 
 static inline const int h(const int src, const int dst, const int pitch) {
 	int y1 = src/pitch, y2 = dst/pitch;
 	int x1 = src%pitch, x2 = dst%pitch;
-	return 100 * (math::abs(x1 - x2) + math::abs<int>(y1 - y2));
+	return 500 * (math::abs(x1 - x2) + math::abs<int>(y1 - y2));
 }
 
 
@@ -872,6 +874,8 @@ void Object::findPath(const v3<int> target, const int step) {
 	
 	_end_id = end.x + end.y * _pitch;
 	_begin_id = begin.x + begin.y * _pitch;
+	
+	//LOG_DEBUG(("findPath %d:%d -> %d:%d (%d->%d)", begin.x, begin.y, end.x, end.y, _begin_id, _end_id));
 	
 	while(!_open_list.empty())
 		_open_list.pop();
@@ -898,7 +902,7 @@ const bool Object::findPathDone(Way &way) {
 	int dir_save = getDirection();
 	GET_CONFIG_VALUE("engine.pathfinding-slice", int, ps, 1);
 	
-	while(!_open_list.empty() && ps--) {
+	while(!_open_list.empty() && ps) {
 		const Point current = _open_list.top();
 		_open_list.pop();
 		
@@ -912,6 +916,8 @@ const bool Object::findPathDone(Way &way) {
 		const int x = (current.id % _pitch) * _step;
 		const int y = (current.id / _pitch) * _step;
 		
+		//LOG_DEBUG(("%s: testing id %d at %d,%d, value = g: %d, h: %d, f: %d", registered_name.c_str(), current.id, current.id % _pitch, current.id / _pitch, current.g, current.h, current.g + current.h));
+
 		//searching surrounds 
 		assert(current.dir != -1);
 		const int dirs = getDirectionsNumber();
@@ -932,23 +938,29 @@ const bool Object::findPathDone(Way &way) {
 			
 			v3<int> pos((int)(d.x / _step), (int)(d.y / _step), 0);
 			
+			assert(pos.x >= 0 && pos.x < _pitch && pos.y >= 0);
+			
 			const int id = pos.x + pos.y * _pitch;
 			assert( id != current.id );
-			//LOG_DEBUG(("%s: testing id %d, x=%d, y=%d, value = g: %d, h: %d", registered_name.c_str(), id, pos.x, pos.y, current.g, current.h));
 			
 			if (_close_list.find(id) != _close_list.end())
 				continue;
-
+	
+	
 			setDirection(i);
 			v3<int> world_pos(pos.x * _step, pos.y * _step, 0);
 			int map_im = Map->getImpassability(this, world_pos);
+			//LOG_DEBUG(("%d, %d, map: %d", pos.x, pos.y, map_im));
+			assert(map_im >= 0);
 			if (map_im >= 100) {
 				//_close_list.insert(id);
 				close(id);
 				continue;			
 			}
 			float im = World->getImpassability(this, world_pos, NULL, true);
-			if (im >= 1.0 || im < 0) {
+			//LOG_DEBUG(("%d, %d, world: %g", pos.x, pos.y, im));
+			assert(im >= 0);
+			if (im >= 1.0) {
 				//_close_list.insert(id);
 				close(id);
 				continue;
@@ -960,6 +972,7 @@ const bool Object::findPathDone(Way &way) {
 			p.parent = current.id;
 			p.g = current.g + ((d.x != 0 && d.y != 0)?141:100) + (int)(im * 100) + map_im;
 			p.h = h(id, _end_id, _pitch);
+
 
 			//add penalty for turning
 
@@ -975,6 +988,7 @@ const bool Object::findPathDone(Way &way) {
 			*/
 			p.g += getPenalty(map_im, (int)(im * 100));
 			
+			//LOG_DEBUG(("%s: appending %d at %d %d value = g: %d, h: %d, f: %d", registered_name.c_str(), p.id, pos.x, pos.y, p.g, p.h, p.g + p.h));
 			
 			PointMap::iterator pi = _points.find(id);
 			
@@ -993,6 +1007,7 @@ const bool Object::findPathDone(Way &way) {
 
 			_open_list.push(p);
 		}
+		--ps;
 	}
 	
 	setDirection(dir_save);
