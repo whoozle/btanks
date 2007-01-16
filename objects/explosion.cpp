@@ -92,7 +92,6 @@ void Explosion::tick(const float dt) {
 }
 
 void Explosion::onSpawn() {
-	setDirection(0);
 	if (classname == "smoke-cloud") {
 		play("start", false);
 		play("main", true);
