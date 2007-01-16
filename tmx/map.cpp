@@ -44,14 +44,14 @@ IMap::IMap() : _w(0), _h(0), _tw(0), _th(0), _firstgid(0) {
 }
 
 
-const bool IMap::collides(const Object *obj, const int dx, const int dy, const sdlx::CollisionMap *tile) const {
+inline const bool IMap::collides(const Object *obj, const int dx, const int dy, const sdlx::CollisionMap *tile) const {
 	if (tile == NULL) {
 		return false;
 	}
 	return obj->collides(tile, -dx, -dy);
 }
 
-const bool IMap::hiddenBy(const Object *obj, const int dx, const int dy, const sdlx::CollisionMap *tile) const {
+inline const bool IMap::hiddenBy(const Object *obj, const int dx, const int dy, const sdlx::CollisionMap *tile) const {
 	if (tile == NULL)
 		return false;
 	return obj->collides(tile, -dx, -dy, true);
@@ -62,14 +62,15 @@ const int IMap::getImpassability(const Object *obj, const v3<int>&pos, v3<int> *
 	if (obj->impassability <= 0) {
 		return 0;
 	}
-	GET_CONFIG_VALUE("engine.disable-outlines", bool, disable_outlines, false);
-	if (disable_outlines && hidden != NULL) {
-		*hidden = false;
-		hidden = NULL;
-	}
 	
 	if (hidden)
 		*hidden = false;
+
+	GET_CONFIG_VALUE("engine.disable-outlines", bool, disable_outlines, false);
+
+	if (disable_outlines) {
+		hidden = NULL;
+	}
 	
 	const float obj_z = obj->getPosition().z;
 	int w = (int)obj->size.x, h = (int)obj->size.y;
@@ -189,7 +190,7 @@ const int IMap::getImpassability(const Object *obj, const v3<int>&pos, v3<int> *
 		hidden_mask |= 0x0a;
 	}
 	
-	if (hidden_mask & 0x0f && hidden)
+	if (hidden_mask == 0x0f && hidden)
 		*hidden = true;
 
 	if (tile_pos) {
