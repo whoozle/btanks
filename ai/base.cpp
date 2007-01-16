@@ -49,24 +49,37 @@ void Base::calculate(const float dt) {
 		target->getPosition(_target_position);
 		LOG_DEBUG(("next target: %s at %d,%d", target->registered_name.c_str(), _target_position.x, _target_position.y));
 		findPath(_target_position, 16);
+/*		Way way;
+		if (!World->old_findPath(this, _target_position.convert<float>() - getPosition(), way, target))
+			LOG_WARN(("no way"));
+		else setWay(way);
+*/
 	}
 
+
 	Way way;
+	
 	bool calculating = calculatingPath();
 	bool driven = isDriven();
 	
 	LOG_DEBUG(("calculating: %c, driven: %c", calculating?'+':'-', driven?'+':'-'));
 	
 	if (calculating) {
-		if (findPathDone(way))
+		int n = 0;
+		while(!findPathDone(way)) ++n;
+		LOG_DEBUG(("n = %d", n));
+		if (way.empty()) 
+			LOG_WARN(("no path"));
+		//if (findPathDone(way))
 			setWay(way);
 	} else {
 		v3<float> dir = _target_position.convert<float>() - getPosition();
 		dir.normalize();
-		setDirection(dir.getDirection(getDirectionsNumber()));
+		setDirection(dir.getDirection(getDirectionsNumber()) - 1);
 		if (_enemy) 
 			_state.fire = true;
 	}
+	
 	calculateWayVelocity();
 }
 
