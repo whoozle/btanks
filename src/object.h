@@ -73,6 +73,7 @@ public:
 			return empty;
 		return _events.front().name;
 	}
+	const float getStateProgress() const;
 	//effects
 	void addEffect(const std::string &name, const float ttl = -1);
 	inline const bool isEffectActive(const std::string &name) const {

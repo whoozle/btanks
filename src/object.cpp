@@ -1102,3 +1102,18 @@ const sdlx::Surface * Object::getSurface() const {
 	nc_this->checkSurface();
 	return _surface;
 }
+
+const float Object::getStateProgress() const {
+	if (_events.empty()) 
+		return 0;
+
+	const Pose * pose = _model->getPose(_events.front().name);
+	
+	if (pose == NULL) {
+		return 0;
+	}
+	
+	const float progress = _pos / pose->frames.size();
+
+	return progress > 1.0 ? 1.0 : progress;
+}
