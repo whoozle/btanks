@@ -125,12 +125,14 @@ const bool CollisionMap::collides(const sdlx::Rect &src, const CollisionMap *oth
 	if (_full && other->_full)
 		return true;
 
+
 	inter_x0 = math::max(0, bx);
 	inter_x1 = math::min(ax1, bx1);
 
 	inter_y0 = math::max(0, by);
 	inter_y1 = math::min(ay1, by1);
-	/* printf("%d %d :: %d %d\n", inter_x0, inter_y0, inter_x1, inter_y1); */
+
+	//LOG_DEBUG(("%p->collide(%p, src:(%d, %d, %d, %d), osrc:(%d, %d, %d, %d), [%d, %d, %d, %d])", this, other, src.x, src.y, aw, ah, other_src.x, other_src.y, bw, bh, inter_x0, inter_y0, inter_y0, inter_y1));
 
 	unsigned char * restrict ptr1 = (unsigned char *) _data.getPtr();
 	unsigned char * restrict ptr2 = (unsigned char *) other->_data.getPtr();
