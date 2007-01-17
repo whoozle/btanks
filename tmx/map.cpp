@@ -90,16 +90,18 @@ const int IMap::getImpassability(const Object *obj, const v3<int>&pos, v3<int> *
 
 	int result_im = 101;
 	//LOG_DEBUG(("%d:%d:%d:%d (%+d:%+d:%+d:%+d)--> %d:%d %d:%d", x1, y1, w, h, dx1, dy1, dx2, dy2, xt1, yt1, xt2, yt2));
-	int empty_mask = 0;
+	int empty_mask = 0x0f;
 	
-	if (!collides(obj, dx1, dy1, &_full_tile))
-		empty_mask |= 1;
-	if (!collides(obj, dx1, dy2, &_full_tile))
-		empty_mask |= 2;
-	if (!collides(obj, dx2, dy1, &_full_tile))
-		empty_mask |= 4;
-	if (!collides(obj, dx2, dy2, &_full_tile))
-		empty_mask |= 8;
+	if (collides(obj, dx1, dy1, &_full_tile))
+		empty_mask &= ~1;
+	if (dy1 != dy2 && collides(obj, dx1, dy2, &_full_tile))
+		empty_mask &= ~2;
+	if (dx1 != dx2) {
+		if (collides(obj, dx2, dy1, &_full_tile))
+			empty_mask &= ~4;
+		if (dy1 != dy2 && collides(obj, dx2, dy2, &_full_tile))
+			empty_mask &= ~8;
+	}
 	
 	for(LayerMap::const_reverse_iterator l = _layers.rbegin(); l != _layers.rend(); ++l) {
 		const Layer *layer = l->second;
