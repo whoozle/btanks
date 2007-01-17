@@ -199,14 +199,15 @@ TRY {
 		PlayerState state;
 		state.deserialize(s);
 
-		//World->tick(*slot.obj, -slot.trip_time / 1000.0);
-		Object * obj = World->deserializeObjectInfo(s, slot.id);
+		Object * obj = slot.getObject();
 		if (obj == NULL) {
 			LOG_WARN(("player state for non-existent object %d recv'ed", slot.id));
 			break;
 		}
-		
+	
 		assert(slot.id == obj->getID());
+
+		World->tick(*obj, -slot.trip_time / 1000.0);
 		
 		slot.need_sync = obj->updatePlayerState(state);
 		if (slot.need_sync == false) {
@@ -214,7 +215,7 @@ TRY {
 			slot.need_sync = true;
 		}
 		
-		World->tick(*obj, slot.trip_time / 1000.0);
+		World->tick(*obj, 2 * slot.trip_time / 1000.0);
 		break;
 	} 
 	case Message::UpdatePlayers: { 
@@ -233,7 +234,7 @@ TRY {
 			PlayerState state; 
 			state.deserialize(s);
 			LOG_DEBUG(("slot: %d, id: %d, state: %s %s", slot, id, state.dump().c_str(), my_state?"skipped":""));
-			Object *o = World->deserializeObjectInfo(s, id, my_state);
+			Object *o = World->getObjectByID(id);
 			if (o == NULL) {
 				LOG_DEBUG(("still dont know anything about object %d, skipping for now", id));
 				continue;
@@ -241,7 +242,9 @@ TRY {
 			if (my_state)
 				continue;
 			
+			World->tick(*o, -_trip_time / 1000.0);
 			o->updatePlayerState(state); //update states for all players but me.
+			World->tick(*o, _trip_time / 1000.0);
 
 			if (slot < _players.size()) {
 				_players[slot].id = o->getID(); // ???
@@ -389,7 +392,6 @@ void IPlayerManager::updatePlayers() {
 		
 		Object * o = World->getObjectByID(slot.id);
 		o->getPlayerState().serialize(s);
-		World->serializeObjectInfo(s, slot.id);
 		
 		Message m(Message::PlayerState);
 		m.data = s.getData();
@@ -412,7 +414,6 @@ void IPlayerManager::updatePlayers() {
 				Object * o = World->getObjectByID(slot.id);
 				assert(o != NULL);
 				o->getPlayerState().serialize(s);
-				World->serializeObjectInfo(s, slot.id);
 				send = true;
 				slot.need_sync = false;
 			}

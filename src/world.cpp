@@ -998,30 +998,6 @@ TRY {
 } CATCH("applyUpdate", throw;)
 }
 
-void IWorld::serializeObjectInfo(mrt::Serializator &s, const int id) const {
-	const Object * o = getObjectByID(id);
-	if (o == NULL) 
-		throw_ex(("serializeObjectInfo: no object %d", id));
-	v3<float> pos, vel;
-	o->getInfo(pos, vel);
-	pos.serialize(s);
-	vel.serialize(s);
-}
-
-Object * IWorld::deserializeObjectInfo(const mrt::Serializator &s, const int id, const bool fake) {
-	Object * o = getObjectByID(id);
-	if (o == NULL || fake) {
-		v3<float> p;
-		p.deserialize(s);
-		p.deserialize(s);
-		return o;
-	}
-	v3<float> pos, vel;
-	o->_position.deserialize(s);
-	o->_velocity.deserialize(s);
-	return o;
-}
-
 const bool IWorld::isAlly(const Object *o1, const Object *o2) {
 	return (o1->_id == o2->_id || 
 			o1->_owner_id == o2->_id || o2->_owner_id == o1->_id || 
