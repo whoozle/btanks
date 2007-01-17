@@ -68,9 +68,9 @@ static inline const bool bitline_collide(
 	const int pos2_bits_after    = 8 * pos2_aligned_size - line_size - pos2_bits_before;
 	assert(pos2_bits_after >= 0 && pos2_bits_after < 8 && ((line_size - pos2_aligned_size * 8 + pos2_bits_before + pos2_bits_after) %8 == 0));
 
-	int size = std::min(pos1_aligned_size, pos2_aligned_size);
+	int size = math::min(pos1_aligned_size, pos2_aligned_size);
 	int shift = pos2_bits_before - pos1_bits_before;
-	int clean = std::min(pos2_bits_before, pos1_bits_before);
+	int clean = math::min(pos2_bits_before, pos1_bits_before);
 	
 	if (shift < 0) {
 		if (bitline_collide(base1 + pos1_aligned_start, base2 + pos2_aligned_start, clean, -shift, size))
