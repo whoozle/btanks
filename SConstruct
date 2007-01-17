@@ -66,17 +66,18 @@ conf_env = env.Copy()
 conf = Configure(conf_env)
 
 if sys.platform != "win32":
-	sigc_cpppath = ['/usr/lib/sigc++-2.0/include', '/usr/include/sigc++-2.0', '/usr/local/include/sigc++-2.0', '/usr/local/lib/sigc++-2.0/include', '/usr/lib64/sigc++-2.0/include']
+	sigc_p = os.popen('pkg-config --cflags sigc++-2.0', 'r')
+	sigc_flags = sigc_p.readline().strip()
+	sigc_p = os.popen('pkg-config --libs sigc++-2.0', 'r')
+	sigc_lib = sigc_p.readline().strip().replace('-l', '')
+	
 else: 
-	sigc_cpppath = []
+	if stl_port_debug:
+		sigc_lib = 'sigc-2.0d'
+	else: 
+		sigc_lib = 'sigc-2.0'
 
-conf_env.Append(CPPPATH=sigc_cpppath)
-
-if stl_port_debug:
-	sigc_lib = 'sigc-2.0d'
-else: 
-	sigc_lib = 'sigc-2.0'
-
+conf_env.Append(CXXFLAGS=sigc_flags)
 
 
 #print conf.env['CCFLAGS']
@@ -129,7 +130,7 @@ if sys.platform == "win32":
 env.Append(CPPDEFINES = ['RELEASE'])
 
 Export('env')
-Export('sigc_cpppath')
+Export('sigc_flags')
 Export('sigc_lib')
 Export('al_lib')
 
@@ -146,7 +147,7 @@ print "version: %s" %version
 
 
 env.Append(CPPPATH=['.', 'src'])
-env.Append(CPPPATH=sigc_cpppath)
+env.Append(CXXFLAGS=sigc_flags)
 
 env.Append(CPPPATH=['#', '#/src'])
 
