@@ -21,12 +21,13 @@
 #include "resource_manager.h"
 #include "game.h"
 #include "tmx/map.h"
+#include "config.h"
 
 #include <set>
 
 class Explosion : public Object {
 public:
-	Explosion(const std::string &classname) : Object(classname), _damaged_objects() { impassability = 0; }
+	Explosion(const std::string &classname) : Object(classname), _damaged_objects(), _damage_done(false) { impassability = 0; }
 	virtual void tick(const float dt);
 	virtual Object * clone() const;
 	virtual void onSpawn();
@@ -37,6 +38,7 @@ public:
 		s.add(n);
 		for(std::set<int>::const_iterator i = _damaged_objects.begin(); i != _damaged_objects.end(); ++i) 
 			s.add(*i);
+		s.add(_damage_done);
 	}
 	virtual void deserialize(const mrt::Serializator &s) {
 		Object::deserialize(s);
@@ -48,12 +50,14 @@ public:
 			s.get(id);
 			_damaged_objects.insert(id);
 		}
+		s.get(_damage_done);
 	}
 
 	void damageMap() const;
 	
 private:
 	std::set<int> _damaged_objects;
+	bool _damage_done;
 };
 
 void Explosion::damageMap() const {
@@ -82,11 +86,16 @@ void Explosion::damageMap() const {
 
 void Explosion::tick(const float dt) {
 	Object::tick(dt);
-	if (getState().empty()) {	
-		//LOG_DEBUG(("over"));
-		if (classname == "nuclear-explosion") {
-			damageMap();
-		}
+	const std::string &state = getState();
+
+	GET_CONFIG_VALUE("objects.nuclear-explosion.damage-map-after", float, dma, 0.65);
+
+	if (classname == "nuclear-explosion" && !_damage_done && getStateProgress() >= dma && state != "main" && state != "start") {
+		_damage_done = true;
+		damageMap();
+	}
+
+	if (state.empty()) {	
 		emit("death", this);
 	}
 }
