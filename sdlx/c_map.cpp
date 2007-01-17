@@ -33,20 +33,26 @@ using namespace sdlx;
 
 CollisionMap::CollisionMap() : _empty(true), _full(false), _w(0), _h(0), _data() {}
 
-static inline const bool bitline_collide(const unsigned char *ptr1, const unsigned char *ptr2, const int first_bits, const int shift_1, const int size) {
+static inline const bool bitline_collide(const unsigned char *ptr1, const unsigned char *ptr2, const int first_bits, const int last_bits, const int shift_1, const int size) {
 	assert(shift_1 > 0 && shift_1 < 8);	
 	register unsigned int b1 = (ptr1[0]<<8) | ptr1[1];
 	register unsigned int b2 = (ptr2[0]<<8) | ptr2[1];
-	unsigned int mask = (1 << (16 - first_bits)) - 1;
-	if (mask & (b1 << shift_1 ) & b2)
+	unsigned int mask1 = (1 << (16 - first_bits)) - 1;
+	if (mask1 & (b1 << shift_1 ) & b2)
 		return true;
+
+	unsigned int mask2 = (1 << last_bits) - 1;
 	
-	for(int i = 1; i < size - 1; ++i) {
+	register int i;
+	for(i = 1; i < size - 1; ++i) {
 		b1 = (ptr1[i]<<8) | ptr1[i + 1];
 		b2 = (ptr2[i]<<8) | ptr2[i + 1];
 		if ( (b1 << shift_1 ) & b2)
 			return true;
 	}
+	
+	//fixme : use mask2 to process tail
+	
 	return false;
 }
 
@@ -71,13 +77,14 @@ static inline const bool bitline_collide(
 
 	int size = math::min(pos1_aligned_size, pos2_aligned_size);
 	int shift = pos2_bits_before - pos1_bits_before;
-	int clean = math::min(pos2_bits_before, pos1_bits_before);
+	int before = math::min(pos2_bits_before, pos1_bits_before);
+	int after = math::max(pos2_bits_before, pos1_bits_before);
 	
 	if (shift < 0) {
-		if (bitline_collide(base1 + pos1_aligned_start, base2 + pos2_aligned_start, clean, -shift, size))
+		if (bitline_collide(base1 + pos1_aligned_start, base2 + pos2_aligned_start, before, after, -shift, size))
 			return true; 
 	} else if (shift > 0) {
-		if (bitline_collide(base2 + pos2_aligned_start, base1 + pos1_aligned_start, clean, shift, size))
+		if (bitline_collide(base2 + pos2_aligned_start, base1 + pos1_aligned_start, before, after, shift, size))
 			return true;
 	} else {
 		int ln = size / 4;
@@ -95,7 +102,7 @@ static inline const bool bitline_collide(
 				return true;
 		}
 	}
-	//fixme: add tail check.
+	
 	return false;
 }
 
