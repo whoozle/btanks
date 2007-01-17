@@ -1,3 +1,10 @@
+*) spawn explosion on map destruction
+*) great perfomance boost (brand new, rewritten from scratch collision code)
+*) pathfinding and outlines fixes
+*) more tiles for damaged map. destructable fences. :)
+*) tilesets optimizations
+*) cars collides with each other (while troops still do not kill each other)
+*) removed various 'grouped' object bugs (slight missiles-on-vehicle delay)
 *) added outline for machinegunner player
 
 0.3.1651: 
