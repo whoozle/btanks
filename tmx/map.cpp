@@ -62,7 +62,7 @@ const int IMap::getImpassability(const Object *obj, const v3<int>&pos, v3<int> *
 	if (obj->impassability <= 0) {
 		return 0;
 	}
-	
+	//LOG_DEBUG((">>IMap::getImpassability"));
 	if (hidden)
 		*hidden = false;
 
@@ -90,28 +90,39 @@ const int IMap::getImpassability(const Object *obj, const v3<int>&pos, v3<int> *
 
 	int result_im = 101;
 	//LOG_DEBUG(("%d:%d:%d:%d (%+d:%+d:%+d:%+d)--> %d:%d %d:%d", x1, y1, w, h, dx1, dy1, dx2, dy2, xt1, yt1, xt2, yt2));
+	int empty_mask = 0;
+	
+	if (!collides(obj, dx1, dy1, &_full_tile))
+		empty_mask |= 1;
+	if (!collides(obj, dx1, dy2, &_full_tile))
+		empty_mask |= 2;
+	if (!collides(obj, dx2, dy1, &_full_tile))
+		empty_mask |= 4;
+	if (!collides(obj, dx2, dy2, &_full_tile))
+		empty_mask |= 8;
+	
 	for(LayerMap::const_reverse_iterator l = _layers.rbegin(); l != _layers.rend(); ++l) {
 		const Layer *layer = l->second;
 		int layer_im = layer->impassability;
 
 		if (hidden && l->first > obj_z) {
 			if (((hidden_mask & 1) == 0)) {
-				if (hiddenBy(obj, dx1, dy1, layer->getVisibilityMap(xt1, yt1)) ||!collides(obj, dx1, dy1, &_full_tile))
+				if ((empty_mask & 1) || hiddenBy(obj, dx1, dy1, layer->getVisibilityMap(xt1, yt1)))
 					hidden_mask |= 1;
 			}
 			
 			if (yt1 != yt2 && ((hidden_mask & 2) == 0)) {
-				if (hiddenBy(obj, dx1, dy2, layer->getVisibilityMap(xt1, yt2)) || !collides(obj, dx1, dy2, &_full_tile))
+				if ((empty_mask & 2) || hiddenBy(obj, dx1, dy2, layer->getVisibilityMap(xt1, yt2)))
 					hidden_mask |= 2;
 			}
 			
 			if (xt1 != xt2) {
 				if (((hidden_mask & 4) == 0)) {
-					if (hiddenBy(obj, dx2, dy1, layer->getVisibilityMap(xt2, yt1)) || !collides(obj, dx2, dy1, &_full_tile))
+					if ((empty_mask & 4) || hiddenBy(obj, dx2, dy1, layer->getVisibilityMap(xt2, yt1)))
 						hidden_mask |= 4;
 				}
 				if (yt1 != yt2 && ((hidden_mask & 8) == 0)) {
-					if (hiddenBy(obj, dx2, dy2, layer->getVisibilityMap(xt2, yt2)) || !collides(obj, dx2, dy2, &_full_tile))
+					if ((empty_mask & 8) || hiddenBy(obj, dx2, dy2, layer->getVisibilityMap(xt2, yt2)))
 						hidden_mask |= 8;
 				}
 			}
@@ -133,7 +144,7 @@ const int IMap::getImpassability(const Object *obj, const v3<int>&pos, v3<int> *
 		bool partial_contact = false;
 		int parts_v = 0, parts_h = 0;
 		
-		if (collides(obj, dx1, dy1, &_full_tile)) {
+		if (!(empty_mask & 1)) {
 			if (collides(obj, dx1, dy1, layer->getCollisionMap(xt1, yt1))) {
 				partial_contact = true; 
 				parts_h |= 1; //left
@@ -142,7 +153,7 @@ const int IMap::getImpassability(const Object *obj, const v3<int>&pos, v3<int> *
 		}
 
 		if (yt2 != yt1) {
-			if (collides(obj, dx1, dy2, &_full_tile)) {
+			if (!(empty_mask & 2)) {
 			if (collides(obj, dx1, dy2, layer->getCollisionMap(xt1, yt2))) {
 				partial_contact = true; 
 				parts_h |= 1;
@@ -152,7 +163,7 @@ const int IMap::getImpassability(const Object *obj, const v3<int>&pos, v3<int> *
 		}
 		
 		if (xt2 != xt1) {
-			if (collides(obj, dx2, dy1, &_full_tile)) {
+			if (!(empty_mask & 4)) {
 			if (collides(obj, dx2, dy1, layer->getCollisionMap(xt2, yt1))) {
 				partial_contact = true; 
 				parts_h |= 2;
@@ -160,7 +171,7 @@ const int IMap::getImpassability(const Object *obj, const v3<int>&pos, v3<int> *
 			} else full_contact = false;
 			}
 			if (yt2 != yt1) { 
-				if (collides(obj, dx2, dy2, &_full_tile)) {
+				if (!(empty_mask & 8)) {
 				if (collides(obj, dx2, dy2, layer->getCollisionMap(xt2, yt2))) { 
 					parts_h |= 2;
 					parts_v |= 2;
@@ -223,6 +234,7 @@ const int IMap::getImpassability(const Object *obj, const v3<int>&pos, v3<int> *
 
 	assert(result_im >= 0);
 	//LOG_DEBUG(("im = %d", result_im));
+	//LOG_DEBUG(("<<IMap::getImpassability"));
 	return result_im;
 }
 
@@ -237,7 +249,6 @@ void IMap::load(const std::string &name) {
 
 	_name = name;
 	
-	_empty_tile.create(_tw, _th, false);
 	_full_tile.create(_tw, _th, true);
 	
 	LOG_DEBUG(("optimizing layers..."));

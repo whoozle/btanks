@@ -89,7 +89,7 @@ private:
 	inline const bool hiddenBy(const Object *obj, const int dx, const int dy, const sdlx::CollisionMap *tile) const;
 
 	int _w, _h, _tw, _th, _firstgid;
-	sdlx::CollisionMap _empty_tile, _full_tile;
+	sdlx::CollisionMap _full_tile;
 	
 	int _lastz;
 	mrt::Chunk _data;
