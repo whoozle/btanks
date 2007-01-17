@@ -72,6 +72,7 @@ if sys.platform != "win32":
 	sigc_lib = sigc_p.readline().strip().replace('-l', '')
 	
 else: 
+	sigc_flags = ''
 	if stl_port_debug:
 		sigc_lib = 'sigc-2.0d'
 	else: 
