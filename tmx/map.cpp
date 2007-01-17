@@ -180,36 +180,46 @@ const int IMap::getImpassability(const Object *obj, const v3<int>&pos, v3<int> *
 				}
 			};
 		}
+		if (full_contact && !partial_contact) {
+			//no contact at all
+			full_contact = false;
+			/* test for allowed velocity 
+			partial_contact = true; 
+			parts_h = parts_v = 3;
+			*/
+		}
 
 		if (result_im == 101) {
-			if (full_contact) {
-				result_im = layer_im;
-				if (hidden == NULL) break;
-			}
-			if (partial_contact && layer_im == 100) {
-				result_im = 100;
-				if (hidden == NULL) break;
-			}
-				
 			if (partial_contact && tile_pos) {
 				switch(parts_h) {
-					case 1: tile_pos->x = xt1; break;
-					case 2: tile_pos->x = xt2; break;
-					case 3: tile_pos->x = (xt1 + xt2) / 2; break;
+					case 1: tile_pos->x = _tw/2 + _tw * xt1; break;
+					case 2: tile_pos->x = _tw/2 + _tw * xt2; break;
+					case 3: tile_pos->x = _tw/2 + _tw * (xt1 + xt2) / 2; break;
 					default: 
 						assert(0);
 				}
 				switch(parts_v) {
-					case 1: tile_pos->y = yt1; break;
-					case 2: tile_pos->y = yt2; break;
-					case 3: tile_pos->y = (yt1 + yt2) / 2; break;
+					case 1: tile_pos->y = _th/2 + _th * yt1; break;
+					case 2: tile_pos->y = _th/2 + _th * yt2; break;
+					case 3: tile_pos->y = _th/2 + _th * (yt1 + yt2) / 2; break;
 					default: 
 						assert(0);
 				}
 			}
+			
+			if (full_contact) {
+				result_im = layer_im;
+				if (hidden == NULL)
+					break;
+			}
+			if (partial_contact && layer_im == 100) {
+				result_im = 100;
+				if (hidden == NULL)
+					break;
+			}
+				
 		}
-		//LOG_DEBUG(("layer: %d, partial: %s, full: %s, im: %d (collision map: %d:%d)", 
-		//	l->first, partial_contact?"yes":"no", full_contact?"yes":"no", result_im, parts_h, parts_v));
+		//LOG_DEBUG(("layer: %d, partial: %s, full: %s, im: %d (collision map: %d:%d)", l->first, partial_contact?"yes":"no", full_contact?"yes":"no", result_im, parts_h, parts_v));
 	}
 	
 	if (xt1 == xt2) {
@@ -221,13 +231,6 @@ const int IMap::getImpassability(const Object *obj, const v3<int>&pos, v3<int> *
 	
 	if (hidden_mask == 0x0f && hidden)
 		*hidden = true;
-
-	if (tile_pos) {
-		tile_pos->x *= _tw;
-		tile_pos->y *= _th;
-		tile_pos->x += _tw / 2;
-		tile_pos->y += _th / 2;
-	}
 
 	if (result_im >= 101) 
 		result_im = 0;
