@@ -121,8 +121,12 @@ const int IMap::getImpassability(const Object *obj, const v3<int>&pos, v3<int> *
 			continue;
 		}
 		
-		if (result_im != 101)
-			continue;
+		if (result_im != 101) {
+			if (hidden)
+				continue;
+			else 
+				break;
+		}
 		
 		//LOG_DEBUG(("im: %d, tile: %d", layer_im, layer->get(xt1, yt1)));
 		bool full_contact = true;
@@ -167,10 +171,14 @@ const int IMap::getImpassability(const Object *obj, const v3<int>&pos, v3<int> *
 		}
 
 		if (result_im == 101) {
-			if (full_contact) 
+			if (full_contact) {
 				result_im = layer_im;
-			if (partial_contact && layer_im == 100)
+				if (hidden == NULL) break;
+			}
+			if (partial_contact && layer_im == 100) {
 				result_im = 100;
+				if (hidden == NULL) break;
+			}
 				
 			if (partial_contact && tile_pos) {
 				switch(parts_h) {
