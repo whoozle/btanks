@@ -51,18 +51,12 @@ void IWorld::clear() {
 	std::for_each(_objects.begin(), _objects.end(), delete_ptr2<ObjectMap::value_type>());
 	_objects.clear();
 	_last_id = 0;
-	_safe_mode = false;
+	_atatat = _safe_mode = false;
 }
 
 void IWorld::setMode(const std::string &mode, const bool value) {
 	if (mode == "atatat")  {
 		_atatat = value;
-		int n = PlayerManager->getSlotsCount();
-		for(int i = 0; i < n; ++i) {
-			PlayerSlot &slot = PlayerManager->getSlot(i);
-			delete slot.control_method;
-			slot.control_method = NULL;
-		}
 	} else 
 		throw_ex(("invalid mode '%s'", mode.c_str()));
 }
@@ -384,7 +378,7 @@ void IWorld::tick(Object &o, const float dt) {
 		o.calculate(dt);
 	} CATCH("calling o.calculate", throw;)
 	
-	if (_atatat && o.mass > 20) {
+	if (_atatat && !o.piercing && o.mass > 20) {
 		if (!o.has("atatat-tooltip")) {
 			o.add("atatat-tooltip", o.spawnGrouped("random-tooltip", "skotobaza", v3<float>(48, -48, 0), Centered));
 		}
@@ -394,7 +388,7 @@ void IWorld::tick(Object &o, const float dt) {
 		state.alt_fire = true;
 		
 		static Alarm update_state(2.0, true);
-		if (update_state.tick(dt)) {
+		if (o.classname != "player" && update_state.tick(dt)) {
 			update_state.reset();
 			int n = mrt::random(2);
 			int k1 = mrt::random(2), k2 = mrt::random(2);
