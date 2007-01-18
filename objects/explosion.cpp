@@ -72,13 +72,13 @@ void Explosion::damageMap() const {
 	float r = (size.x + size.y) / 4;
 	r *= r;
 	for(p.y = position.y; p.y < position2.y; p.y += tile_size.y) {
-		for(p.x = position.y; p.x < position2.x; p.x += tile_size.x) {
-			if ((p-center).quick_length() > r) {
+		for(p.x = position.x; p.x < position2.x; p.x += tile_size.x) {
+			
+			if ((p-center).quick_length() <= r) {
 				//LOG_DEBUG(("skipped %g %g", p.x, p.y));
-				continue;
+					Map->damage(p, max_hp);
 			}
-			//LOG_DEBUG(("%g %g", p.x, p.y));
-			Map->damage(p, max_hp);
+				//LOG_DEBUG(("%g %g", p.x, p.y));
 		}
 	}
 }
@@ -90,7 +90,7 @@ void Explosion::tick(const float dt) {
 
 	GET_CONFIG_VALUE("objects.nuclear-explosion.damage-map-after", float, dma, 0.65);
 
-	if (classname == "nuclear-explosion" && !_damage_done && getStateProgress() >= dma && state != "main" && state != "start") {
+	if (classname == "nuclear-explosion" && !_damage_done && getStateProgress() >= dma && state != "start") {
 		_damage_done = true;
 		damageMap();
 	}
