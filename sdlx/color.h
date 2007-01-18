@@ -1,7 +1,8 @@
 #ifndef __SDLX_COLOR_H__
 #define __SDLX_COLOR_H__
-/* Battle Tanks Game
- * Copyright (C) 2006 Battle Tanks team
+
+/* sdlx - c++ wrapper for libSDL
+ * Copyright (C) 2005-2007 Vladimir Menshakov
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
