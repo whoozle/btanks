@@ -1,7 +1,7 @@
 #include "controls/external_control.h"
 
 /* Battle Tanks Game
- * Copyright (C) 2006 Battle Tanks team
+ * Copyright (C) 2006-2007 Battle Tanks team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License

@@ -1,7 +1,7 @@
 #ifndef __MRT_BASEFILE__
 #define __MRT_BASEFILE__
 /* M-Runtime for c++
- * Copyright (C) 2005-2006 Vladimir Menshakov
+ * Copyright (C) 2005-2007 Vladimir Menshakov
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
