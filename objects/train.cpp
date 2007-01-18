@@ -22,9 +22,22 @@
 #include "mrt/random.h"
 #include "tmx/map.h"
 
+class Wagon : public Object {
+public: 
+	Wagon() : Object("train") {}
+	virtual void onSpawn() { play("move", true); }	
+	virtual Object * clone() const { return new Wagon(*this); }
+	virtual void emit(const std::string &event, Object * emitter = NULL) {
+		if (event == "death") {
+			spawn("corpse", "dead-choo-choo-wagon", v3<float>::empty, v3<float>::empty);
+		}
+		Object::emit(event, emitter);
+	}
+};
+
 class Train : public Object {
 public:
-	Train() : Object("train"), _smoke(1.0, true) { setDirectionsNumber(1); }
+	Train() : Object("train"), _smoke(1.0, true), _spawned_wagon(false) { setDirectionsNumber(1); }
 	virtual Object * clone() const;
 	virtual void onSpawn();
 	virtual void calculate(const float dt);
@@ -35,17 +48,20 @@ public:
 		Object::serialize(s);
 		s.add(dst_y);
 		_smoke.serialize(s);
+		s.add(_spawned_wagon);
 	}
 
 	virtual void deserialize(const mrt::Serializator &s) {
 		Object::deserialize(s);
 		s.get(dst_y);
 		_smoke.deserialize(s);
+		s.get(_spawned_wagon);
 	}
 
 private: 
 	int dst_y;
 	Alarm _smoke;
+	bool _spawned_wagon;
 };
 
 void Train::onSpawn() {
@@ -66,6 +82,11 @@ void Train::tick(const float dt) {
 	Object::tick(dt);
 	v3<int> pos;
 	getPosition(pos);
+	if (pos.y >= 0 && !_spawned_wagon) {
+		v3<float> dpos(0, -size.y, 0);
+		add("wagon", spawnGrouped("choo-choo-wagon", "choo-choo-wagon", dpos, Fixed));
+		_spawned_wagon = true;
+	}
 	//LOG_DEBUG(("pos: %d dst: %d", pos.y, dst_y));
 	if (pos.y  >= dst_y) { 
 		LOG_DEBUG(("escaped!"));
@@ -86,3 +107,4 @@ Object* Train::clone() const  {
 }
 
 REGISTER_OBJECT("choo-choo-train", Train, ());
+REGISTER_OBJECT("choo-choo-wagon", Wagon, ());
