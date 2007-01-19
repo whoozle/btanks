@@ -129,6 +129,7 @@ namespace sdlx {
 		~Surface();
 		
 		//win32 specific
+		void loadFromResource(const int res_id);
 		void loadFromResource(const std::string &name);
 		
 	private:

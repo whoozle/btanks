@@ -338,7 +338,17 @@ Surface::~Surface() {
     free();
 }
 
+#ifdef WIN32
+#	define WIN32_LEAN_AND_MEAN
+#	include <windows.h>
+#endif
+
+void Surface::loadFromResource(const int res_id) {
+	loadFromResource((std::string)MAKEINTRESOURCE(res_id));
+}
+
 void Surface::loadFromResource(const std::string &name) {
+	free();
 #ifdef WIN32
 	HINSTANCE hInst = GetModuleHandle(NULL);
 	const LPCTSTR lpResName = name.c_str();
