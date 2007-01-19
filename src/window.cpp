@@ -117,6 +117,7 @@ void Window::init(const int argc, char *argv[]) {
 	
 	if (fullscreen) flags |= SDL_FULLSCREEN;
 
+#if 0
 #ifdef WIN32
 	LOG_DEBUG(("loading icon..."));
 	{
@@ -125,7 +126,7 @@ void Window::init(const int argc, char *argv[]) {
 		SDL_WM_SetIcon(icon.getSDLSurface(), NULL);
 	}
 #endif
-	
+#endif
 
 	LOG_DEBUG(("setting caption..."));		
 	SDL_WM_SetCaption(("Battle tanks - " + getVersion()).c_str(), "btanks");
