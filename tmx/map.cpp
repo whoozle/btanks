@@ -318,31 +318,53 @@ void IMap::load(const std::string &name) {
 	}
 #endif
 	
-	_imp_map.setSize(_h, _w);
-	LOG_DEBUG(("building map matrix[%d:%d]...", _imp_map.getHeight(), _imp_map.getWidth()));
-	_imp_map.useDefault(-1);
+	GET_CONFIG_VALUE("map.pathfinding-step", int, ps, 32);
+	
+	const int split = 2 * ((_tw - 1) / 2 + 1) / ps;
+	LOG_DEBUG(("split mode: %dx", split));
+	
+	_imp_map.setSize(_h * split, _w * split, -1);
+
+	const int h = _imp_map.getHeight(), w = _imp_map.getWidth();
+	LOG_DEBUG(("building map matrix[%d:%d]...", h, w));
 	
 	for(int y = 0; y < _h; ++y) {
 		for(int x = 0; x < _w; ++x) {
-			int im = 0;
+
 			for(LayerMap::reverse_iterator l = _layers.rbegin(); l != _layers.rend(); ++l) {
+				int im = l->second->impassability;
+				if (im == -1)
+					continue;
+				
 				int tid = l->second->get(x, y);
 				if (tid == 0 || l->second->getCollisionMap(x, y)->isEmpty())
 					continue;
-				int l_im = l->second->impassability;
-				if (l_im == -1)
-					continue;
 				
-				im = l_im;
-				break;
-			}
-			if (im == 100) 
-				im = -1; //inf :)
-			//_imp_map.set(y, x, im);
+				//break;
+				//if (im == 100) 
+				//	im = -1; //inf :)
+				//_imp_map.set(y, x, im);
 			
-			_imp_map.set(y, x, im);			
+			
+				Matrix<bool> proj;
+				l->second->getCollisionMap(x, y)->project(proj, split, split);
+				//LOG_DEBUG(("projection: %s", proj.dump().c_str()));
+				//_imp_map.set(y, x, im);
+				for(int yy = 0; yy < split; ++yy)
+					for(int xx = 0; xx < split; ++xx) {
+						int yp = y * split + yy, xp = x * split + xx;
+						if (proj.get(yy, xx) && _imp_map.get(yp, xp) == -1) 
+							_imp_map.set(yp, xp, im);
+					}
+				}
 		}
 	}
+	for(int y = 0; y < h; ++y) 
+		for(int x = 0; x < w; ++x) {
+			if (_imp_map.get(y, x) >= 100)
+				_imp_map.set(y, x, -1);
+	}
+	_imp_map.useDefault(-1);
 	LOG_DEBUG(("\n%s", _imp_map.dump().c_str()));
 	
 	LOG_DEBUG(("loading completed"));
