@@ -116,7 +116,12 @@ void Missile::emit(const std::string &event, Object * emitter) {
 		}
 		emit("death", emitter);
 	} if (event == "death" && type == "smoke") {
-		spawn("smoke-cloud", "smoke-cloud");
+		GET_CONFIG_VALUE("objects.explosion-downwards-z-override", int, edzo, 180);
+		v3<float> dpos;
+		if (_velocity.y > 0)
+			dpos.z = edzo;
+		//LOG_DEBUG(("edzo = %d", edzo));
+		spawn("smoke-cloud", "smoke-cloud", dpos);
 		Object::emit(event, emitter);
 	} else if (event == "death" && type == "nuke") {
 		//Object *e = 
@@ -133,7 +138,7 @@ void Missile::emit(const std::string &event, Object * emitter) {
 	} else if (event == "death") {
 		v3<float> dpos;
 		
-		GET_CONFIG_VALUE("objects.explosion-downwards-z-override", int, edzo, 180)
+		GET_CONFIG_VALUE("objects.explosion-downwards-z-override", int, edzo, 180);
 		if (_velocity.y >= 0)
 			dpos.z = edzo;
 
