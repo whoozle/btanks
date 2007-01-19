@@ -51,6 +51,9 @@ if debug and sys.platform == "win32":
 
 bt_libs = ['bt_ai', 'bt_sound', 'bt_net', 'bt_menu', 'sdlx', 'mrt', sigc_lib, 'SDL_ttf', 'SDL_image', 'SDL', 'expat', 'z', vorbis, al_lib, 'alut']
 if sys.platform == "win32":
+	bt_rc = env.RES('src/bt.rc')
+	bt_sources.append(bt_rc)
+
 	bt_libs[0:0] = ['SDLmain']
 	bt_libs.append('Ws2_32')
 	bt_libs.append('opengl32')
