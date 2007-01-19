@@ -145,33 +145,33 @@
   <property name="object:road-sign:road-sign04:3" value="2417,1585"/>
   <property name="object:road-sign:road-sign04:2" value="2418,240"/>
   <property name="spawn:6" value="@27,19"/>
-  <property name="object:traffic-lights:traffic-lights:23" value="2414,999"/>
   <property name="spawn:5" value="@22,2"/>
+  <property name="object:traffic-lights:traffic-lights:23" value="2414,999"/>
   <property name="object:traffic-lights:traffic-lights:22" value="2415,837"/>
-  <property name="object:traffic-lights:traffic-lights:21" value="2246,836"/>
   <property name="spawn:3" value="@2,20"/>
-  <property name="object:traffic-lights:traffic-lights:20" value="1390,999"/>
+  <property name="object:traffic-lights:traffic-lights:21" value="2246,836"/>
   <property name="spawn:2" value="@18,23"/>
+  <property name="object:traffic-lights:traffic-lights:20" value="1390,999"/>
   <property name="spawn:1" value="@11,3"/>
-  <property name="object:traffic-lights:traffic-lights:19" value="1391,837"/>
   <property name="waypoint:cars:18" value="@37,15"/>
-  <property name="object:traffic-lights:traffic-lights:18" value="1158,836"/>
+  <property name="object:traffic-lights:traffic-lights:19" value="1391,837"/>
   <property name="waypoint:cars:17" value="@37,27"/>
-  <property name="object:traffic-lights:traffic-lights:17" value="1158,998"/>
+  <property name="object:traffic-lights:traffic-lights:18" value="1158,836"/>
   <property name="waypoint:cars:16" value="@36,27"/>
-  <property name="edge:13:14" value=""/>
-  <property name="object:traffic-lights:traffic-lights:16" value="518,997"/>
+  <property name="object:traffic-lights:traffic-lights:17" value="1158,998"/>
   <property name="waypoint:cars:15" value="@36,15"/>
-  <property name="object:traffic-lights:traffic-lights:15" value="518,837"/>
+  <property name="object:traffic-lights:traffic-lights:16" value="518,997"/>
+  <property name="edge:13:14" value=""/>
   <property name="waypoint:cars:14" value="@21,15"/>
-  <property name="object:traffic-lights:traffic-lights:14" value="687,837"/>
+  <property name="object:traffic-lights:traffic-lights:15" value="518,837"/>
   <property name="waypoint:cars:13" value="@21,28"/>
-  <property name="waypoint:cars:12" value="@19,28"/>
+  <property name="object:traffic-lights:traffic-lights:14" value="687,837"/>
   <property name="waypoint:cars:9" value="@9,1"/>
-  <property name="waypoint:cars:11" value="@19,15"/>
+  <property name="waypoint:cars:12" value="@19,28"/>
   <property name="waypoint:cars:8" value="@10,1"/>
-  <property name="waypoint:cars:10" value="@9,15"/>
+  <property name="waypoint:cars:11" value="@19,15"/>
   <property name="waypoint:cars:7" value="@10,14"/>
+  <property name="waypoint:cars:10" value="@9,15"/>
   <property name="waypoint:cars:6" value="@19,14"/>
   <property name="waypoint:cars:5" value="@19,2"/>
   <property name="waypoint:cars:4" value="@21,2"/>
@@ -184,8 +184,8 @@
   <property name="object:impassable-static-corpse:dead-red-car:2" value="617,1491"/>
   <property name="object:impassable-static-corpse:dead-red-car:1" value="1336,93"/>
   <property name="object:nuke-missiles-item:nuke-missiles-item:4" value="904,538"/>
-  <property name="object:nuke-missiles-item:nuke-missiles-item:3" value="@5,27"/>
   <property name="edge:5:6" value=""/>
+  <property name="object:nuke-missiles-item:nuke-missiles-item:3" value="@5,27"/>
   <property name="object:submarine:submarine:5" value="1758,314,-20"/>
   <property name="edge:3:6" value=""/>
   <property name="edge:3:4" value=""/>
@@ -216,8 +216,8 @@
  </tileset>
  <layer name="terrain" width="40" height="30">
   <properties>
-   <property name="impassability" value="40"/>
    <property name="z" value="-1000"/>
+   <property name="impassability" value="40"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAALWXTW6FMAyE3W0FEu8GIJVNkHg3gPvfqiBhaZjaTvJIFyMrJITJF+eHSUSGQ69DX4cmQyPFjoT13HY99L7iWf6+NMLzt/EeRvW3ONK26SqfnnqI+jwZbX8OzVBWf149v4/+RrkzWJwxqTf1h316/Dw+ufoE/rB/9WeNCf11GX61kd+fwB/m3CIxP/QY8dP50/J8PfPqrchC/x4/9Bfx0/lL4EUj11vfSnKfY4svjwnXRw0/XMvvCn48x5gPLflZ6zXHz/KX4/ck/0a551Etv+6f+K1GXzjXET8V52QJv9z+h2uCec2S55dIpXvSp/yQVwk/9peMtqXR4ufxLO3zkz0+ik/7YH5a9jQa8p5HqnmH58S7t1g5lcuLKF9q2+L6rcmzKLbsy2JSkhNRu9b5tx/aLu0Qh2BMPWilev7OuXfgXbGjMp8BHD1/WzAm7VsV8bN8WR5r+W3BmLj/iB+eMzwuVWt+g9zP6xw/Ho9G/O9pxW+Quz/OU2tfRW899cH3zqf8RvClivghZ+aG/lrx8+Txe13CewyWW/NbqD17svid0nuK+sMyz8HT9attVCX8WMpvlXivZX+7lPPbjHYeP85ZvBeW8mNFY9qddtZ3Bvn7b4kxx8+Td0Z6nK2zXOeT/y09fhx/AX15sLvAEgAA
@@ -278,8 +278,8 @@
  <layer name="pierceable objects" width="40" height="30">
   <properties>
    <property name="pierceable" value="true"/>
-   <property name="z" value="-16"/>
    <property name="impassability" value="100"/>
+   <property name="z" value="-16"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAO3UIQ4AIAwEwev/3wYWLLyEOgSBSkjYSapWnKv0t2JS9Uu2tmyz39J8ux/2ow4Akd3/AwAAAIBXDI02Ro/AEgAA
@@ -309,8 +309,8 @@
  <layer name="borders low" width="40" height="30">
   <properties>
    <property name="pierceable" value="true"/>
-   <property name="impassability" value="100"/>
    <property name="z" value="200"/>
+   <property name="impassability" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgoA74B8T/QQxGhNgqEvSTopZaYLC7bwuN1I4C2oEvJKgd7Olv1H2UgVH3UQZG3UcZANUJK6EYF4DJj9Yfo2AUYIJHA+2AUQAGoP4Fct8CXQ697zEKhgaAxd1o/I2CUTCwYCiWowBxKUmMwBIAAA==
@@ -389,10 +389,30 @@
   </data>
   <tileproperties/>
  </layer>
+ <layer name="borders once more" width="40" height="30">
+  <properties>
+   <property name="pierceable" value="true"/>
+   <property name="impassability" value="100"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3OoREAIBAEse+/TWgBgQP9BseZZGb9VvHTSg8AAFHjNtMTDzs9AADQHI3LYbvAEgAA
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="borders more" width="40" height="30">
+  <properties>
+   <property name="pierceable" value="true"/>
+   <property name="impassability" value="100"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3OMREAIAwEsPq3hRQ2HLDhol/uEgWpotNKB+ATJx0AaLTTAWCkmw4ADPIAXGfZV8ASAAA=
+  </data>
+  <tileproperties/>
+ </layer>
  <layer name="buildings low" width="40" height="30">
   <properties>
-   <property name="impassability" value="100"/>
    <property name="z" value="400"/>
+   <property name="impassability" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAO2YyS4FQRSGu7wAe0OIMUTMC2JIsDSsRESEkBBjEDOXIGZiioWExNoWSzyO1/BXblUcR1UPt3XHwp98uX2769T5k3tOVdd1nKSqhOMUgVJFCagRzjd14HsnGAYjhAE27rc0SeatwHUlqFU0giaWd0IkY6bAOOhXn2MR+Vsk89bjugEUg2bltY7lXRDJmKWI/FBleuSQXls8xnjNEUay3gpALiHPh58sFuMnLlV/1aQfJGUqT77yXih+xhSxGBoXhb9agq43+SwdZLC8vId4XBT+iklPtIjvz/j6QnuI4lWnYfy5PeP+4pTJn67/bJBj8Bd3fzR61D+v+zj7Q9e66Z6t7uPsD13rpnu2uo+zP/7197WC331DuPd9K2gD7YYaWQlYNzqfHy1j3ByYF+59r98pu8TP+NOA/mS+c7AK1hTrFs8J4s+t723+Ein6uwW7YI+wb/En5z8T5r7X++lv+tP5LsA2Ydbib8fincrN305AfzrfMTghHFn8bYIt9awHn30Wei3+NgP4o/luGNeGeQ5w75B4HxRf56luhdsZS8f7Fc/npUuMuyLeR0XyLDUEpsGM+i4pB3dp5ni/4vn8KMh6ZIuPSnT9CxMflRIB/JnOOokQ/u59xNH1z0ums04q659JNq96frnf6L2G1qLej23v6mH8PSHuGTyAFxd/cr207TN8P+b/paSyPmu9Iu4NPIJ3F39yvaR7zRYZy/dj+g7+Ib7iPwFHtBrwwBIAAA==
@@ -442,30 +462,10 @@
   </data>
   <tileproperties/>
  </layer>
- <layer name="borders more" width="40" height="30">
-  <properties>
-   <property name="pierceable" value="true"/>
-   <property name="impassability" value="100"/>
-  </properties>
-  <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAO3OMREAIAwEsPq3hRQ2HLDhol/uEgWpotNKB+ATJx0AaLTTAWCkmw4ADPIAXGfZV8ASAAA=
-  </data>
-  <tileproperties/>
- </layer>
- <layer name="borders once more" width="40" height="30">
-  <properties>
-   <property name="pierceable" value="true"/>
-   <property name="impassability" value="100"/>
-  </properties>
-  <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAO3OoREAIBAEse+/TWgBgQP9BseZZGb9VvHTSg8AAFHjNtMTDzs9AADQHI3LYbvAEgAA
-  </data>
-  <tileproperties/>
- </layer>
  <layer name="objects low" width="40" height="30">
   <properties>
    <property name="impassability" value="100"/>
-   <property name="z" value="700"/>
+   <property name="z" value="500"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAO3WOwqAMBAE0OT+V7Px0/htFK3EWGohToqAWCloXMM8mEIIcWGXsEr5lWulCu35pze0qK0TXB8RERERfas/7YoxvhNkeGGHjB64s8QdFffbYEzopUFSJPPc1yvzuODMitRIczi/cQaD4GbOvXvWLKi3duZGLffdMwJr+pMdMPR5VMASAAA=
