@@ -49,7 +49,7 @@ void Hud::initMap() {
 	
 	Matrix<int> matrix; 
 	Map->getImpassabilityMatrix(matrix);
-	GET_CONFIG_VALUE("hud.radar.zoom", int, zoom, 4);
+	GET_CONFIG_VALUE("hud.radar.zoom", int, zoom, 2);
 
 	LOG_DEBUG(("creating radar surface..."));
 	_radar_bg.createRGB(zoom * matrix.getWidth(), zoom * matrix.getHeight(), 32);
