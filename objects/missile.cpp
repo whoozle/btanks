@@ -116,10 +116,10 @@ void Missile::emit(const std::string &event, Object * emitter) {
 		}
 		emit("death", emitter);
 	} if (event == "death" && type == "smoke") {
-		GET_CONFIG_VALUE("objects.explosion-downwards-z-override", int, edzo, 180);
+		GET_CONFIG_VALUE("objects.smoke-cloud-downwards-z-override", int, csdzo, 350);
 		v3<float> dpos;
 		if (_velocity.y > 0)
-			dpos.z = edzo;
+			dpos.z = csdzo;
 		//LOG_DEBUG(("edzo = %d", edzo));
 		spawn("smoke-cloud", "smoke-cloud", dpos);
 		Object::emit(event, emitter);
