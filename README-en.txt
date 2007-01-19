@@ -30,8 +30,6 @@ The screen resolution can also be set:
 Game settings:
 
 The demo has a configuration file with lots of various parameters.  Most of parameters have names those explain what is what; however the following ones are the most noticeable:
-"stubs.default-mp-map": sets a map for a multiplayer mode. Three maps are available in the demo: "survival", "dm2", and "country2". 
-"stubs.default-mp-vehicle": sets a default vehicle. Three vehicles are available: "tank", "launcher", and "shilka". 
 "player.control-method": sets the configuration of control keys. The following values are supported:
   "keys":    cursor keys move the vehicle, left Alt and left Ctrl fire primary and secondary weapons
   "keys-1":  rdfg + q + a.
