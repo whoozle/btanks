@@ -156,6 +156,10 @@ void Car::calculate(const float dt) {
 	}
 	Way way;
 	if (calculatingPath() && findPathDone(way)) {
+		if (way.empty()) {
+			//LOG_DEBUG(("no path. commit a suicide."));
+			//emit("death", NULL);
+		}
 		setWay(way);
 	}
 
