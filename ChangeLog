@@ -1,7 +1,7 @@
 0.3.1774: 
 
 *) spawn explosion on map destruction
-*) great perfomance boost (brand new, rewritten from scratch collision code, fixes in map collision handling)
+*) great performance boost (brand new, rewritten from scratch collision code, fixes in map collision handling)
 *) pathfinding and outlines fixes
 *) more tiles for damaged map. destructable fences. :)
 *) tilesets optimizations
