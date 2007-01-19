@@ -343,17 +343,11 @@ Surface::~Surface() {
 #	include <windows.h>
 #endif
 
-void Surface::loadFromResource(const int res_id) {
+void Surface::loadFromResource(const char * lpResName) {
 #ifdef WIN32
-	loadFromResource((std::string)MAKEINTRESOURCE(res_id));
-#endif
-}
-
-void Surface::loadFromResource(const std::string &name) {
 	free();
-#ifdef WIN32
+
 	HINSTANCE hInst = GetModuleHandle(NULL);
-	const LPCTSTR lpResName = name.c_str();
 
 	HBITMAP hBitmap;
 	BITMAP bm;
@@ -363,13 +357,18 @@ void Surface::loadFromResource(const std::string &name) {
 
 	//Load Bitmap From the Resource into HBITMAP
 	hBitmap = (HBITMAP)LoadImage(hInst, lpResName, IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION);
+	if (hBitmap == NULL)
+		throw_ex(("LoadImage(%p, '%p') failed", (void *)hInst, lpResName));
 
 	//Now Get a BITMAP structure for the HBITMAP
-	GetObject(hBitmap, sizeof(bm), &bm);
+	if (GetObject(hBitmap, sizeof(bm), &bm) == 0)
+		throw_ex(("GetObject failed"));
 
 	//create a new surface
 	surf = SDL_CreateRGBSurface(SDL_SWSURFACE, bm.bmWidth, bm.bmHeight, bm.bmBitsPixel,
 					0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000);
+	if (surf == NULL)
+		throw_sdl(("SDL_CreateRGBSurface(%d, %d, %d)", bm.bmWidth, bm.bmHeight, bm.bmBitsPixel));
 
 	bits = new Uint8[bm.bmWidthBytes*bm.bmHeight];
 	temp = new Uint8[bm.bmWidthBytes*bm.bmHeight];
