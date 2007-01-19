@@ -883,8 +883,6 @@ void Object::findPath(const v3<int> target, const int step) {
 	_close_list.clear();
 	_points.clear();
 	
-	if (_begin_id == _end_id) 
-		return;
 	
 	Point p;
 	p.id = _begin_id;
@@ -898,6 +896,10 @@ void Object::findPath(const v3<int> target, const int step) {
 }
 
 const bool Object::findPathDone(Way &way) {
+	if (_begin_id == _end_id) {
+		way.push_back(v3<int>((_begin_id % _pitch) * _step, (_begin_id / _pitch) * _step, 0));
+		return true;
+	}
 	const v3<int> map_size = Map->getSize();
 	int dir_save = getDirection();
 	GET_CONFIG_VALUE("engine.pathfinding-slice", int, ps, 1);
