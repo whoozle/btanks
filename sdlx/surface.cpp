@@ -399,10 +399,8 @@ void Surface::loadFromResource(const std::string &name) {
 	delete[] temp;
 
 	//Finally, convert surface to display format so it displays correctly
-	SDL_Surface *surf2 = SDL_DisplayFormat(surf);
+	surface = SDL_DisplayFormat(surf);
 	SDL_FreeSurface(surf);
-
-	return surf2;
 
 #endif
 }
