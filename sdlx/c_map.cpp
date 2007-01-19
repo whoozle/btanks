@@ -20,6 +20,7 @@
 #include "surface.h"
 #include "mrt/logger.h"
 #include "math/minmax.h"
+#include "math/matrix.h"
 #include "mrt/file.h"
 
 #if defined(__GNUC__)
@@ -310,3 +311,18 @@ void CollisionMap::save(const std::string &fname) const {
 	s.saveBMP(fname + ".bmp");
 }
 
+
+void CollisionMap::project(Matrix<bool> &result, const unsigned w, const unsigned h) const {
+	unsigned xs = _w / w, ys = _h / h;
+	if (xs * w != _w || ys * h != _h) 
+		throw_ex(("cannot project collision map %dx%d (square size: %dx%d)", _w, _h, xs, ys));
+	result.setSize(h, w, false);
+	unsigned char *ptr = (unsigned char *)_data.getPtr();
+	unsigned int size = _data.getSize();
+	for(unsigned int y = 0; y < _h; ++y) 
+		for(unsigned int x = 0; x < _w; ++x) {
+			assert(x + _w * y < size);
+			if (ptr[x + _w * y])
+				result.set(y / ys, x / xs, true);
+		}
+}

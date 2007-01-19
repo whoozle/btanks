@@ -22,6 +22,9 @@
 
 #include "mrt/chunk.h"
 
+template <class T> 
+	class Matrix;
+
 namespace sdlx {
 class Surface;
 class Rect;
@@ -33,6 +36,7 @@ public:
 	CollisionMap();
 	void init(const Surface * surface, const Type type);
 	void create(const unsigned int w, const unsigned int h, const bool bit);
+	void project(Matrix<bool> &result, const unsigned w, const unsigned h) const;
 	const bool collides(const sdlx::Rect &src,  const CollisionMap *other, const sdlx::Rect &other_src, const int x, const int y, const bool hidden_by_other) const;
 	void save(const std::string &fname) const;
 	const bool isEmpty() const { return _empty; }
