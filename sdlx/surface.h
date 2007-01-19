@@ -127,6 +127,10 @@ namespace sdlx {
 		void getClipRect(sdlx::Rect &rect);
 
 		~Surface();
+		
+		//win32 specific
+		void loadFromResource(const std::string &name);
+		
 	private:
 		Surface(const Surface &x);
 		const Surface& operator=(const Surface &x);
