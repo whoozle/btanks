@@ -1,12 +1,20 @@
 import sys
 Import('env')
+Import('debug')
 
 env = env.Copy()
 env.Append(CPPPATH=['..', '.'])
+
+if sys.platform != "win32":
+#ultra optimizations ;)
+	c_map = env.Object('c_map.cpp', CXXFLAGS=['-fforce-addr', '-fprefetch-loop-arrays'])
+else: 
+	c_map = env.Object('c_map.cpp')
+
 sdlx_sources = 	['cursor.cpp', 'sdl_ex.cpp', 'surface.cpp', 'system.cpp', 'joystick.cpp', 'ttf.cpp', 
 #	'tcp_socket.cpp', 'net_ex.cpp', 'socket_set.cpp', 
 	'thread.cpp', 'mutex.cpp', 'semaphore.cpp',
-	'glSDL/glSDL.c', 'c_map.cpp', 'font.cpp',
+	'glSDL/glSDL.c', c_map, 'font.cpp',
 	]
 
 if sys.platform == "win32":
