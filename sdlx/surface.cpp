@@ -344,7 +344,9 @@ Surface::~Surface() {
 #endif
 
 void Surface::loadFromResource(const int res_id) {
+#ifdef WIN32
 	loadFromResource((std::string)MAKEINTRESOURCE(res_id));
+#endif
 }
 
 void Surface::loadFromResource(const std::string &name) {
