@@ -121,7 +121,7 @@ void Window::init(const int argc, char *argv[]) {
 	LOG_DEBUG(("loading icon..."));
 	{
 		sdlx::Surface icon;
-		icon.loadFromResource(1);
+		icon.loadFromResource(MAKEINTRESOURCE(1));
 		SDL_WM_SetIcon(icon.getSDLSurface(), NULL);
 	}
 #endif
