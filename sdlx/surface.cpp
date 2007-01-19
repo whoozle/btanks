@@ -344,6 +344,7 @@ Surface::~Surface() {
 #endif
 
 void Surface::loadFromResource(const char * lpResName) {
+#if 0
 #ifdef WIN32
 	free();
 
@@ -413,6 +414,7 @@ void Surface::loadFromResource(const char * lpResName) {
 	surface = SDL_DisplayFormat(surf);
 	SDL_FreeSurface(surf);
 
+#endif
 #endif
 }
 
