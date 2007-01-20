@@ -22,13 +22,14 @@
 
 using namespace mrt;
 
+//code here derived from base64.sf.net
 /*
 ** Translation Table as described in RFC1113
 */
 static const char cb64[]="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
 /*
-** Translation Table to decode (created by author)
+** Translation Table to decode (created by author) (base64.sf.net)
 */
 static const char cd64[]="|$$$}rstuvwxyz{$$$$$$$>?@ABCDEFGHIJKLMNOPQRSTUVW$$$$$$XYZ[\\]^_`abcdefghijklmnopq";
 
