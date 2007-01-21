@@ -36,6 +36,7 @@ const bool Directory::opened() const {
 
 
 void Directory::open(const std::string &path) {
+	close();
 	if (path.empty())
 		throw_ex(("Directory::open called with empty path"));
 	_handle = opendir(path.c_str());
