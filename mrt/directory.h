@@ -6,10 +6,11 @@
 #	include <dirent.h>
 #endif
 #include <string>
+#include "fs_node.h"
 
 namespace mrt { 
 
-class Directory {
+class Directory : public FSNode {
 public: 
 
 	Directory();

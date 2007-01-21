@@ -20,12 +20,13 @@
 
 #include <string>
 #include <stdio.h>
+#include "fs_node.h"
 
 namespace mrt {
 
 class Chunk;
 
-class File {
+class File : public FSNode {
 public: 
 	File();
 	void open(const std::string &fname, const std::string &mode);
