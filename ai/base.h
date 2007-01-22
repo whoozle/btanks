@@ -37,7 +37,7 @@ protected:
 	void addBonusName(const std::string &rname);
 	const bool isEnemy(const Object *o) const;
 private: 
-	Alarm _reaction_time;
+	Alarm _reaction_time, _refresh_path;
 	ai::Traits _traits;
 	std::set<std::string> _enemies, _bonuses;
 	int _target_id;
