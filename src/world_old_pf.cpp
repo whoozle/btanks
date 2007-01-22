@@ -48,7 +48,8 @@ const bool IWorld::old_findPath(const Object *obj, const v3<float>& position, Wa
 	Matrix<int> imp, path;
 	World->getImpassabilityMatrix(imp, obj, dst_obj);
 	//LOG_DEBUG(("imp\n%s", imp.dump().c_str()));
-	v3<int> tile_size = Map->getTileSize();
+	v3<int> tile_size = Map->getPathTileSize();
+	//LOG_DEBUG(("pathfinding tile size reported: %d %d", tile_size.x, tile_size.y));
 
 	v3<int> src = obj->_position.convert<int>() / tile_size;
 	v3<int> dst = tposition.convert<int>() / tile_size;
