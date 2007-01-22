@@ -59,6 +59,7 @@ public:
 	void render(sdlx::Surface &window, const sdlx::Rect &src, const sdlx::Rect &dst, const int z1, const int z2) const;
 	const v3<int> getSize() const;
 	const v3<int> getTileSize() const;
+	const v3<int> getPathTileSize() const;
 	
 	virtual const int getImpassability(const Object *obj, const v3<int>& pos, v3<int> *tile_pos = NULL, bool *hidden = NULL) const;
 
@@ -88,7 +89,7 @@ private:
 	inline const bool collides(const Object *obj, const int dx, const int dy, const sdlx::CollisionMap *tile) const;
 	inline const bool hiddenBy(const Object *obj, const int dx, const int dy, const sdlx::CollisionMap *tile) const;
 
-	int _w, _h, _tw, _th, _firstgid;
+	int _w, _h, _tw, _th, _ptw, _pth, _firstgid;
 	sdlx::CollisionMap _full_tile;
 	
 	int _lastz;

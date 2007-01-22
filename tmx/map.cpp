@@ -37,7 +37,7 @@
 
 IMPLEMENT_SINGLETON(Map, IMap)
 
-IMap::IMap() : _w(0), _h(0), _tw(0), _th(0), _firstgid(0) {
+IMap::IMap() : _w(0), _h(0), _tw(0), _th(0), _ptw(0), _pth(0), _firstgid(0) {
 	_lastz = -1000;
 	_image = NULL;
 }
@@ -323,6 +323,8 @@ void IMap::load(const std::string &name) {
 	const int split = 2 * ((_tw - 1) / 2 + 1) / ps;
 	LOG_DEBUG(("split mode: %dx", split));
 	
+	_pth = _tw / split;
+	_ptw = _th / split;
 	_imp_map.setSize(_h * split, _w * split, -1);
 
 	const int h = _imp_map.getHeight(), w = _imp_map.getWidth();
@@ -707,6 +709,11 @@ const v3<int> IMap::getSize() const {
 const v3<int> IMap::getTileSize() const {
 	return v3<int>(_tw, _th, 1);
 }
+
+const v3<int> IMap::getPathTileSize() const {
+	return v3<int>(_ptw, _pth, 1);
+}
+
 
 void IMap::damage(const v3<float> &position, const int hp) {
 	v3<int> pos = position.convert<int>();
