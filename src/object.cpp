@@ -786,8 +786,12 @@ const bool Object::getNearest(const std::vector<std::string> &targets, v3<float>
 	return found != 0;	
 }
 
-const bool Object::old_findPath(v3<float> &position, Way &way) const {
+const bool Object::old_findPath(const v3<float> &position, Way &way) const {
 	return World->old_findPath(this, position, way);
+}
+
+const bool Object::old_findPath(const Object *target, Way &way) const {
+	return World->old_findPath(this, getRelativePosition(target), way, target);
 }
 
 
