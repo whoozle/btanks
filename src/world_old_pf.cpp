@@ -1,3 +1,148 @@
+//#define USE_ASTAR
+
+#ifdef USE_ASTAR
+struct Point {
+	Point() {}
+	v3<int> id, parent;
+	int g, h;
+
+	const bool operator<(const Point &other) const {
+		return (g + h) > (other.g + other.h);
+		//return g > other.g;
+	}
+};
+
+typedef std::set<v3<int> > CloseList;
+typedef std::priority_queue<Point> OpenList;
+typedef std::map<const v3<int>, Point> PointMap;
+
+static inline const int h(const v3<int>& src, const v3<int>& dst) {
+	return 500 * (math::abs(src.x - dst.x) + math::abs<int>(src.y - dst.y));
+}
+
+
+const bool IWorld::old_findPath(const Object *obj, const v3<float>& position, Way & way, const Object *dst_obj) const {
+	//finding shortest path.
+	v3<float> tposition = obj->_position + position;
+	
+	Matrix<int> imp, path;
+	World->getImpassabilityMatrix(imp, obj, dst_obj);
+	//LOG_DEBUG(("imp\n%s", imp.dump().c_str()));
+	v3<int> tile_size = Map->getPathTileSize();
+	//LOG_DEBUG(("pathfinding tile size reported: %d %d", tile_size.x, tile_size.y));
+
+	v3<int> src = obj->_position.convert<int>() / tile_size;
+	v3<int> dst = tposition.convert<int>() / tile_size;
+	
+	if (src == dst) {
+		way.push_back(dst);
+		return true;
+	}
+	
+	int max_w = imp.getWidth(), max_h = imp.getHeight();
+
+	way.clear();
+	OpenList _open_list;
+	PointMap _points;
+	CloseList _close_list;
+	
+	Point p;
+	p.id = src;
+	p.g = 0;
+	p.h = h(p.id, dst);
+
+	_open_list.push(p);
+	_points[p.id] = p;
+
+	const int dirs = obj->getDirectionsNumber();
+	if (dirs < 4 || dirs > 8)
+		throw_ex(("pathfinding cannot handle directions number: %d", dirs));
+
+	while(!_open_list.empty()) {
+		const Point current = _open_list.top();
+		_open_list.pop();
+		
+		assert(current.id.x >= 0 && current.id.x < max_w && current.id.y >= 0 && current.id.y < max_h);
+		if (_close_list.find(current.id) != _close_list.end())
+			continue;
+		_close_list.insert(current.id);
+		
+		
+		for(int i = 0; i < dirs; ++i) {
+			v3<float> d;
+			v3<int> id;
+			d.fromDirection(i, dirs);
+			id.x = (int)math::sign(d.x);
+			id.y = (int)math::sign(d.y);
+			id += current.id;
+						
+			if (_close_list.find(id) != _close_list.end())
+				continue;
+			
+			if (id.x >= max_w || id.x < 0 || id.y < 0 || id.y >= max_h)
+				continue;
+
+			int im = imp.get(id.y, id.x);
+			if (im < 0) {
+				_close_list.insert(id);
+				continue;
+			}
+			
+			Point p;
+			p.id = id;
+			p.parent = current.id;
+			p.g = current.g + ((d.x != 0 && d.y != 0)?141:100) + im;
+			p.h = h(id, dst);
+
+			PointMap::iterator pi = _points.find(id);
+			
+			if (pi != _points.end()) {
+				if (pi->second.g > p.g) {
+					pi->second = p;
+				}
+			} else 
+				_points.insert(PointMap::value_type(id, p));
+			
+			
+			if (p.h < 100) {
+				dst = p.id;
+				goto found;
+			}
+
+			_open_list.push(p);
+		}			
+		
+	}
+	
+	way.clear();
+	return false;
+	
+found: 
+	for(v3<int> id = dst; id != src; ) {
+		Point &p = _points[id];
+		way.push_front(p.id);
+		//LOG_DEBUG(("%dx%d -> %dx%d", p.id % _pitch, p.id / _pitch, way.front().x, way.front().y));
+		assert(id != p.parent);
+		id = p.parent;
+	}
+
+
+	//way.push_front(WayPoint(x, y, 0));
+	//LOG_DEBUG(("imp\n%s", imp.dump().c_str()));
+	
+	
+	for(Way::iterator i = way.begin(); i != way.end(); ++i) {
+		(*i) *= tile_size;
+	}
+	
+	//LOG_DEBUG(("getPath: length: %d, \n%s", len, result.dump().c_str()));
+	return true;
+}
+
+
+#else
+
+
 //BIG PATHFINDING PART
 
 #undef DISABLE_PF_DIAGONALS
@@ -177,3 +322,4 @@ const bool IWorld::old_findPath(const Object *obj, const v3<float>& position, Wa
 	//LOG_DEBUG(("getPath: length: %d, \n%s", len, result.dump().c_str()));
 	return true;
 }
+#endif
