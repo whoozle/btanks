@@ -155,7 +155,7 @@ const bool IWorld::collides(Object *obj, const v3<int> &position, Object *o, con
 			o->isDead() || obj->isDead() ) {
 			return false;
 		}
-			
+		
 		//skip owner and grouped-leader.
 		if (
 			(obj->_owner_id != 0 && (obj->_owner_id == o->_id || obj->_owner_id == o->_owner_id )) || 
@@ -165,13 +165,18 @@ const bool IWorld::collides(Object *obj, const v3<int> &position, Object *o, con
 		) {
 			return false;
 		}
+		//LOG_DEBUG(("collides(%p, (%d, %d), %p, %s)", obj, position.x, position.y, o, probe?"true":"false"));
 
 		const int id1 = obj->_id;
 		const int id2 = o->_id;
 		
+		bool collision_emitted = false;
 		CollisionMap::key_type key = (id1 < id2) ? CollisionMap::key_type(id1, id2): CollisionMap::key_type(id2, id1);
-		CollisionMap::iterator i = _collision_map.find(key);
-		bool collision_emitted = i != _collision_map.end();
+		
+		if (!probe) {
+			CollisionMap::iterator i = _collision_map.find(key);
+		 	collision_emitted = i != _collision_map.end();
+		 }
 		
 		v3<int> dpos = o->_position.convert<int>() - position;
 		//LOG_DEBUG(("%s: %d %d", o->classname.c_str(), dpos.x, dpos.y));
