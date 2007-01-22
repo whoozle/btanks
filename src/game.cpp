@@ -364,6 +364,8 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 				LOG_DEBUG(("waypoint class %s, name %s : %d,%d", res[1].c_str(), res[2].c_str(), pos.x, pos.y));
 				_waypoints[res[1]][res[2]] =  pos;
 			} else if (res.size() > 2 && res[0] == "edge") {
+				if (res[1] == res[2])
+					throw_ex(("map contains edge from/to the same vertex"));
 				_waypoint_edges.insert(WaypointEdgeMap::value_type(res[1], res[2]));
 			} else if (res.size() > 1 && res[0] == "config") {
 				std::vector<std::string> value;
