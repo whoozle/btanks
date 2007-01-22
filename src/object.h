@@ -111,11 +111,11 @@ public:
 	const std::string getNearestWaypoint(const std::string &classname) const;
 protected:
 	//pathfinding
-	typedef std::set<int> CloseList;
 
 	struct Point {
-		Point() : id(-1), parent(-1), dir(-1) {}
-		int id, g, h, parent, dir;
+		Point() : dir(-1) {}
+		v3<int> id, parent;
+		int g, h, dir;
 
 		inline const bool operator<(const Point &other) const {
 			return (g + h) > (other.g + other.h);
@@ -123,8 +123,10 @@ protected:
 		}
 	};
 
+	typedef std::set<v3<int> > CloseList;
 	typedef std::priority_queue<Point> OpenList;
-	typedef std::map<const int, Point> PointMap;
+	typedef std::map<const v3<int>, Point> PointMap;
+
 
 	void findPath(const v3<int> target, const int step);
 	const bool findPathDone(Way &way);
@@ -163,12 +165,13 @@ protected:
 
 private: 
 //pathfinding stuff
-	void close(const int vertex); 
+	void close(const v3<int>& vertex); 
 
 	OpenList _open_list;
 	PointMap _points;
 	CloseList _close_list;
-	int _pitch, _end_id, _begin_id, _step;
+	v3<int> _end, _begin;
+	int _step;
 //end of pathfinding stuff
 
 	struct Event : public mrt::Serializable {

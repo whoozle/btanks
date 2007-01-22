@@ -843,7 +843,7 @@ void Object::checkSurface() {
 	assert(_cmap != NULL);
 }
 
-void Object::close(const int vertex) {
+void Object::close(const v3<int> & vertex) {
 		_close_list.insert(vertex);
 /*
 		_close_list.insert(vertex-1);
@@ -859,25 +859,18 @@ void Object::close(const int vertex) {
 */
 }
 
-static inline const int h(const int src, const int dst, const int pitch) {
-	int y1 = src/pitch, y2 = dst/pitch;
-	int x1 = src%pitch, x2 = dst%pitch;
-	return 500 * (math::abs(x1 - x2) + math::abs<int>(y1 - y2));
+static inline const int h(const v3<int>& src, const v3<int>& dst) {
+	return 500 * (math::abs(src.x - dst.x) + math::abs<int>(src.y - dst.y));
 }
 
 
 void Object::findPath(const v3<int> target, const int step) {
 	_step = step;
-	v3<int> begin, end = target;
-	const v3<int> map_size = Map->getSize();
-	_pitch = 1 + (map_size.x - 1) / step;
-	
-	getPosition(begin);
-	begin /= step;
-	end /= step;
-	
-	_end_id = end.x + end.y * _pitch;
-	_begin_id = begin.x + begin.y * _pitch;
+	_end = target;
+	getPosition(_begin);
+
+	_begin /= step;
+	_end /= step;
 	
 	//LOG_DEBUG(("findPath %d:%d -> %d:%d (%d->%d)", begin.x, begin.y, end.x, end.y, _begin_id, _end_id));
 	
@@ -889,9 +882,9 @@ void Object::findPath(const v3<int> target, const int step) {
 	
 	
 	Point p;
-	p.id = _begin_id;
+	p.id = _begin;
 	p.g = 0;
-	p.h = h(p.id, _end_id, _pitch);
+	p.h = h(p.id, _end);
 	p.dir = getDirection();
 
 	_open_list.push(p);
@@ -900,8 +893,8 @@ void Object::findPath(const v3<int> target, const int step) {
 }
 
 const bool Object::findPathDone(Way &way) {
-	if (_begin_id == _end_id) {
-		way.push_back(v3<int>((_begin_id % _pitch) * _step, (_begin_id / _pitch) * _step, 0));
+	if (_begin == _end) {
+		way.push_back(_end);
 		return true;
 	}
 	const v3<int> map_size = Map->getSize();
@@ -920,8 +913,8 @@ const bool Object::findPathDone(Way &way) {
 			current.id, current.id % _pitch, current.id / _pitch, current.g, current.h, current.g + current.h));
 */		
 		_close_list.insert(current.id);
-		const int x = (current.id % _pitch) * _step;
-		const int y = (current.id / _pitch) * _step;
+		const int x = current.id.x * _step;
+		const int y = current.id.y * _step;
 		
 		//LOG_DEBUG(("%s: testing id %d at %d,%d, value = g: %d, h: %d, f: %d", registered_name.c_str(), current.id, current.id % _pitch, current.id / _pitch, current.g, current.h, current.g + current.h));
 
@@ -930,7 +923,7 @@ const bool Object::findPathDone(Way &way) {
 		const int dirs = getDirectionsNumber();
 		if (dirs < 4 || dirs > 8)
 			throw_ex(("pathfinding cannot handle directions number: %d", dirs));
-		
+			
 		for(int i = 0; i < dirs; ++i) {
 			v3<float> d;
 			d.fromDirection(i, dirs);
@@ -943,11 +936,8 @@ const bool Object::findPathDone(Way &way) {
 			if (d.x < 0 || d.x >= map_size.x || d.y < 0 || d.y >= map_size.y)
 				continue;
 			
-			v3<int> pos((int)(d.x / _step), (int)(d.y / _step), 0);
+			v3<int> id((int)(d.x / _step), (int)(d.y / _step), 0);
 			
-			assert(pos.x >= 0 && pos.x < _pitch && pos.y >= 0);
-			
-			const int id = pos.x + pos.y * _pitch;
 			assert( id != current.id );
 			
 			if (_close_list.find(id) != _close_list.end())
@@ -955,7 +945,7 @@ const bool Object::findPathDone(Way &way) {
 	
 	
 			setDirection(i);
-			v3<int> world_pos(pos.x * _step, pos.y * _step, 0);
+			v3<int> world_pos(id.x * _step, id.y * _step, 0);
 			int map_im = Map->getImpassability(this, world_pos);
 			//LOG_DEBUG(("%d, %d, map: %d", pos.x, pos.y, map_im));
 			assert(map_im >= 0);
@@ -978,7 +968,7 @@ const bool Object::findPathDone(Way &way) {
 			p.dir = i;
 			p.parent = current.id;
 			p.g = current.g + ((d.x != 0 && d.y != 0)?141:100) + (int)(im * 100) + map_im;
-			p.h = h(id, _end_id, _pitch);
+			p.h = h(id, _end);
 
 
 			//add penalty for turning
@@ -1008,7 +998,7 @@ const bool Object::findPathDone(Way &way) {
 			
 			
 			if (p.h < 100) {
-				_end_id = p.id;
+				_end = p.id;
 				goto found;
 			}
 
@@ -1036,13 +1026,12 @@ found:
 	
 	setDirection(dir_save);
 
-	for(int id = _end_id; id != _begin_id; ) {
+	for(v3<int> id = _end; id != _begin; ) {
 		Point &p = _points[id];
-		way.push_front(v3<int>((p.id % _pitch) * _step, (p.id / _pitch) * _step, 0));
+		way.push_front(p.id * _step);
 		//LOG_DEBUG(("%dx%d -> %dx%d", p.id % _pitch, p.id / _pitch, way.front().x, way.front().y));
 		assert(id != p.parent);
 		id = p.parent;
-		assert(id != -1);
 	}
 	_points.clear();
 
