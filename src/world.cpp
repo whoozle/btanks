@@ -150,7 +150,9 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect&src, const sdlx::Re
 }
 
 const bool IWorld::collides(Object *obj, const v3<int> &position, Object *o, const bool probe) const {
-		if (o == obj || obj->impassability == 0 || o->impassability == 0 || 
+		if (o == obj || 
+			(obj->impassability < 1.0 && obj->impassability >= 0) || 
+			(o->impassability < 1.0 && o->impassability >= 0) || 
 			(obj->piercing && o->pierceable) || (obj->pierceable && o->piercing) ||
 			o->isDead() || obj->isDead() ) {
 			return false;
@@ -170,48 +172,51 @@ const bool IWorld::collides(Object *obj, const v3<int> &position, Object *o, con
 		const int id1 = obj->_id;
 		const int id2 = o->_id;
 		
-		bool collision_emitted = false;
 		CollisionMap::key_type key = (id1 < id2) ? CollisionMap::key_type(id1, id2): CollisionMap::key_type(id2, id1);
 		
 		if (!probe) {
 			CollisionMap::iterator i = _collision_map.find(key);
-		 	collision_emitted = i != _collision_map.end();
+		 	if (i != _collision_map.end()) {
+		 		//LOG_DEBUG(("skipped collision %p<->%p with result %s", obj, o, i->second?"true":"false"));
+			 	return i->second;
+			}
 		 }
 		
 		v3<int> dpos = o->_position.convert<int>() - position;
 		//LOG_DEBUG(("%s: %d %d", o->classname.c_str(), dpos.x, dpos.y));
 		const bool collides = obj->collides(o, dpos.x, dpos.y);
 		//LOG_DEBUG(("collision %s <-> %s: %s", obj->classname.c_str(), o->classname.c_str(), collides?"true":"false"));
-
-		if (collides && !collision_emitted && !probe && (o->impassability < 0 || o->impassability >= 1.0)) { //do not generate collision event if impassability != 1 and impassability != -1
-			//LOG_DEBUG(("collision"));
-			//LOG_DEBUG(("collision %s <-> %s", obj->classname.c_str(), o->classname.c_str()));
-			_collision_map.insert(CollisionMap::value_type(key, true));
+		if (!probe) {
+			_collision_map.insert(CollisionMap::value_type(key, collides));
+		
+			if (collides) { 
+				//LOG_DEBUG(("collision %s <-> %s", obj->classname.c_str(), o->classname.c_str()));
 			
-			/*
-			float m = obj->mass / o->mass;
-			if (m > 1.0) 
+				/*
+				float m = obj->mass / o->mass;
+				if (m > 1.0) 
 				m = 1.0;
-			v3<float> o_vf = o->_velocity * -m, obj_vf = obj->_velocity * (-1/m);
-			*/
-			o->emit("collision", obj);
-			obj->emit("collision", o);
+				v3<float> o_vf = o->_velocity * -m, obj_vf = obj->_velocity * (-1/m);
+				*/
+				o->emit("collision", obj);
+				obj->emit("collision", o);
 			
-			if (o->isDead() && o->classname == "player") {
-				PlayerManager->onPlayerDeath(o, obj);
-			}
+				if (o->isDead() && o->classname == "player") {
+					PlayerManager->onPlayerDeath(o, obj);
+				}
 
-			if (obj->isDead() && obj->classname == "player") {
-				PlayerManager->onPlayerDeath(obj, o);
+				if (obj->isDead() && obj->classname == "player") {
+					PlayerManager->onPlayerDeath(obj, o);
+				}
+			/*
+				if ( o->isDead() || obj->isDead() || obj->impassability == 0 || o->impassability == 0) {
+					//o->_velocity_fadeout = o_vf;
+					//obj->_velocity_fadeout = obj_vf;
+					//_collision_map.insert(CollisionMap::value_type(key, false));
+					return true;
+				}
+			*/
 			}
-			
-			if ( o->isDead() || obj->isDead() || obj->impassability == 0 || o->impassability == 0) {
-				//o->_velocity_fadeout = o_vf;
-				//obj->_velocity_fadeout = obj_vf;
-				//_collision_map.insert(CollisionMap::value_type(key, false));
-				return false; // no effect.
-			}
-			
 		}
 		//LOG_DEBUG(("collision %s <-> %s: %s", obj->classname.c_str(), o->classname.c_str(), collides?"true":"false"));
 		
