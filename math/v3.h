@@ -151,6 +151,11 @@ public:
 	}
 	
 	//operators 
+	inline const bool operator<(const v3<T> &other) const {
+		return x < other.x && y < other.y && z < other.z;
+	}
+
+
 	inline const v3<T> operator-() const {
 		return v3<T>(-x, -y, -z);
 	}
