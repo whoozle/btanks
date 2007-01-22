@@ -152,7 +152,13 @@ public:
 	
 	//operators 
 	inline const bool operator<(const v3<T> &other) const {
-		return (x < other.x)?true:((y < other.y)?true: (z < other.z));
+		if (x != other.x) {
+			return x < other.x;
+		}
+		if (y != other.y) {
+			return y < other.y;
+		} 
+		return z < other.z;
 	}
 
 
