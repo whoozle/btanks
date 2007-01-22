@@ -294,6 +294,9 @@ void IWorld::getImpassabilityMatrix(Matrix<int> &matrix, const Object *src, cons
 	
 	const v3<int> tile_size = Map->getTileSize();
 
+	GET_CONFIG_VALUE("map.pathfinding-step", int, ps, 32);
+	const int split = 2 * ((tile_size.x - 1) / 2 + 1) / ps;
+
 	Map->getImpassabilityMatrix(matrix);
 	for(ObjectMap::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		Object *o = i->second;
@@ -317,12 +320,19 @@ void IWorld::getImpassabilityMatrix(Matrix<int> &matrix, const Object *src, cons
 					matrix.set(y, x, im);
 			}
 */
-		v3<int> p = (o->_position + o->size/2).convert<int>();
-		p /= tile_size;
-		int old = matrix.get(p.y, p.x);
-		if ((old >= 0 && im > old) || im == -1) 
-			matrix.set(p.y, p.x, im);
-		
+
+		v3<int> p = ((o->_position + o->size/2) / tile_size.convert<float>()).convert<int>();
+		Matrix<bool> proj;
+		o->checkSurface();
+		o->_cmap->project(proj, split, split);
+		//LOG_DEBUG(("projection: %s", proj.dump().c_str()));
+		//_imp_map.set(y, x, im);
+		for(int yy = 0; yy < split; ++yy)
+			for(int xx = 0; xx < split; ++xx) {
+				int yp = p.y * split + yy, xp = p.x * split + xx;
+				if (matrix.get(yp, xp) != -1) 
+					matrix.set(yp, xp, im);
+			}
 	}
 	//LOG_DEBUG(("projected objects:\n%s", matrix.dump().c_str()));
 }
@@ -1158,7 +1168,7 @@ const Object * IWorld::findTarget(const Object *src, const std::set<std::string>
 			value *= (getFirePower(src, traits) + 1) / (getFirePower(o, traits) + 1);
 		}
 		value /= (src->_position.distance(o->_position));
-		LOG_DEBUG(("item: %s, value: %g", o->registered_name.c_str(), value));
+		//LOG_DEBUG(("item: %s, value: %g", o->registered_name.c_str(), value));
 		//find most valuable item.
 		if (value > result_value) {
 			result = o;
