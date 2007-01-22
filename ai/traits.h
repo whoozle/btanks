@@ -20,18 +20,16 @@
  */
 
 
-#include "mrt/serializable.h"
-
 #include <map>
 #include <string>
 
 namespace ai {
-class Traits : public mrt::Serializable, public std::map<const std::string, float> {
+class Traits : public std::map<const std::string, float> {
 public: 
 	const float get(const std::string &value, const std::string& object, const float hint1, const float hint2);
 	
-	virtual void serialize(mrt::Serializator &s) const;
-	virtual void deserialize(const mrt::Serializator &s);
+	const std::string save() const;
+	void load(const std::string &string);
 };
 }
 

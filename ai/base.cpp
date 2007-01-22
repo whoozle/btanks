@@ -25,6 +25,10 @@ using namespace ai;
 
 Base::Base() : Object("player"), _reaction_time(true), _refresh_path(true), _target_id(-1) {}
 
+Base::~Base() {
+	LOG_DEBUG(("traits: \n%s", _traits.save().c_str()));
+}
+
 void Base::addEnemyClass(const std::string &classname) {
 	_enemies.insert(classname);
 }

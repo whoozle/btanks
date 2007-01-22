@@ -29,6 +29,8 @@ namespace ai {
 class Base : public virtual Object {
 public: 
 	Base();
+	virtual ~Base();
+
 	virtual void calculate(const float dt);
 	virtual void onSpawn();
 	

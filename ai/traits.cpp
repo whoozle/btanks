@@ -37,9 +37,14 @@ const float Traits::get(const std::string &value, const std::string & object, co
 }
 
 
-void Traits::serialize(mrt::Serializator &s) const {
-	
+const std::string Traits::save() const {
+	std::string result;
+	for(const_iterator i = begin(); i != end(); ++i) {
+		result += mrt::formatString("%s=%g\n", i->first.c_str(), i->second);
+	}
+	return result;
 }
-void Traits::deserialize(const mrt::Serializator &s) {
 
+void Traits::load(const std::string &string) {
+	
 }
