@@ -1,5 +1,8 @@
 //BIG PATHFINDING PART
 
+#undef DISABLE_PF_DIAGONALS
+
+
 typedef v3<int> vertex;
 typedef std::deque<vertex> vertex_queue;
 
@@ -18,7 +21,8 @@ static inline const bool pop(vertex_queue &buf, vertex &vertex) {
 	buf.pop_front();
 	return true;
 }
-/*
+
+
 inline static const int check(const Matrix<int> &imp, const vertex &v, const int dx, const int dy) {
 	int w;
 	if ((w = imp.get(v.y, v.x)) == -1)
@@ -37,9 +41,9 @@ inline static const int check(const Matrix<int> &imp, const vertex &v, const int
 		return -1;
 	if (w > r) r = w;
 	
-	return r * 100 / 41;
+	return r * 1414 / 1000;
 }
-*/
+
 	
 const bool IWorld::old_findPath(const Object *obj, const v3<float>& position, Way & way, const Object *dst_obj) const {
 	//finding shortest path.
@@ -84,7 +88,7 @@ const bool IWorld::old_findPath(const Object *obj, const v3<float>& position, Wa
 			push(path, buf, vertex(v.x + 1, v.y, n));
 		if (imp.get(v.y, v.x - 1) != -1)
 			push(path, buf, vertex(v.x - 1, v.y, n));
-/*
+#ifndef DISABLE_PF_DIAGONALS
 		//disabled diagonals for now
 		if (check(imp, v, 1, 1) != -1)
 			push(path, buf, vertex(v.x + 1, v.y + 1, n));
@@ -94,7 +98,7 @@ const bool IWorld::old_findPath(const Object *obj, const v3<float>& position, Wa
 			push(path, buf, vertex(v.x - 1, v.y + 1, n));
 		if (check(imp, v, -1, -1) != -1)
 			push(path, buf, vertex(v.x - 1, v.y - 1, n));
-*/
+#endif
 	}
 	
 	int len, n = path.get(dst.y, dst.x);
@@ -139,7 +143,7 @@ const bool IWorld::old_findPath(const Object *obj, const v3<float>& position, Wa
 			x2 = x - 1; y2 = y; t = w;
 		}
 		//diagonals 
-		/*
+#ifndef DISABLE_PF_DIAGONALS
 		w = path.get(y + 1, x + 1);
 		if (w != -1 && w < t) {
 			y2 = y + 1; x2 = x + 1; t = w;
@@ -156,7 +160,8 @@ const bool IWorld::old_findPath(const Object *obj, const v3<float>& position, Wa
 		if (w != -1 && w < t) {
 			y2 = y - 1; x2 = x - 1; t = w;
 		}
-		*/
+#endif
+
 		assert(t != -1);
 		
 		x = x2; y = y2; n = t;
