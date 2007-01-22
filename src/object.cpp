@@ -1042,8 +1042,6 @@ found:
 	}
 	_points.clear();
 
-	if (way.size() > 1)
-		way.pop_front(); 
 	return true;
 }
 
