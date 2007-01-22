@@ -544,7 +544,7 @@ void IWorld::tick(Object &o, const float dt) {
 		
 		map_im = map.getImpassability(&o, pos, NULL, has_outline?(hidden_attempt + attempt):NULL) / 100.0;
 		const Object *other_obj = NULL;
-		obj_im = getImpassability(&o, pos, &other_obj); 
+		obj_im = getImpassability(&o, pos, &other_obj, attempt > 0);  //make sure no cached collision event reported here
 
 		if (map_im >= 0 && map_im < 1.0 && obj_im < 1.0) {
 			//LOG_DEBUG(("success, %g %g", map_im, obj_im));
