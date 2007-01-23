@@ -40,6 +40,8 @@ protected:
 	void addEnemyClass(const std::string &classname);
 	void addBonusName(const std::string &rname);
 	const bool isEnemy(const Object *o) const;
+	
+	const bool checkTarget(const Object * target, const std::string &weapon) const;
 private: 
 	Alarm _reaction_time, _refresh_path;
 	ai::Traits _traits;

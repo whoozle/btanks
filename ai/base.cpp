@@ -61,6 +61,10 @@ const bool Base::isEnemy(const Object *o) const {
 	return _enemies.find(o->classname) != _enemies.end();
 }
 
+const bool Base::checkTarget(const Object * target, const std::string &weapon) const {
+	return false;
+}
+
 
 void Base::calculate(const float dt) {
 	const bool refresh_path = _refresh_path.tick(dt);
@@ -92,11 +96,11 @@ void Base::calculate(const float dt) {
 	if (target == NULL)
 		goto gogogo;
 	{
-		v3<float> tp, p;
-		getPosition(p);
-		target->getPosition(tp);
-	
-		_state.fire = _state.alt_fire = (math::abs(p.x - tp.x) < 10 || math::abs(p.y - tp.y) < 10);
+		const std::string w1 = getWeapon(0), w2 = getWeapon(1);
+		if (!w1.empty())
+			_state.fire = checkTarget(target, w1);
+		if (!w2.empty())
+			_state.alt_fire = checkTarget(target, w2);
 	}
 	
 	//LOG_DEBUG(("w1: %s", getWeapon(0).c_str()));
