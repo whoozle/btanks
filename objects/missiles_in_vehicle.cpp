@@ -137,7 +137,7 @@ void MissilesInVehicle::emit(const std::string &event, Object * emitter) {
 	} else if (event == "launch") {
 		if (n > 0) {
 			--n;
-			LOG_DEBUG(("launching missile!"));
+			//LOG_DEBUG(("launching missile!"));
 			{
 				v3<float> v = _velocity.is0()?_direction:_velocity;
 				v.normalize();
