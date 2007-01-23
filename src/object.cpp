@@ -887,7 +887,7 @@ void Object::findPath(const v3<int> target, const int step) {
 	p.h = h(p.id, _end);
 	p.dir = getDirection();
 
-	_open_list.push(p);
+	_open_list.push(PD(p.g + p.h, p.id));
 	_points[p.id] = p;
 
 }
@@ -903,7 +903,9 @@ const bool Object::findPathDone(Way &way) {
 	GET_CONFIG_VALUE("engine.pathfinding-throttling", bool, pt, true);
 	
 	while(!_open_list.empty() && (pt?ps--:ps)) {
-		const Point current = _open_list.top();
+		PointMap::const_iterator pi = _points.find(_open_list.top().id);
+		assert(pi != _points.end());
+		const Point& current = pi->second;
 		_open_list.pop();
 		
 		if (_close_list.find(current.id) != _close_list.end())
@@ -1002,7 +1004,7 @@ const bool Object::findPathDone(Way &way) {
 				goto found;
 			}
 
-			_open_list.push(p);
+			_open_list.push(PD(p.g + p.h, p.id));
 		}
 		if (!pt)
 			--ps;

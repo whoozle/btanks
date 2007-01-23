@@ -116,15 +116,20 @@ protected:
 		Point() : dir(-1) {}
 		v3<int> id, parent;
 		int g, h, dir;
-
-		inline const bool operator<(const Point &other) const {
-			return (g + h) > (other.g + other.h);
-			//return g > other.g;
+	};
+	
+	struct PD {
+		int f;
+		v3<int> id;
+		PD(const int f, const v3<int> &id) : f(f), id(id) {}
+		
+		inline const bool operator<(const PD &other) const {
+			return f > other.f;
 		}
 	};
 
 	typedef std::set<v3<int> > CloseList;
-	typedef std::priority_queue<Point> OpenList;
+	typedef std::priority_queue<PD> OpenList;
 	typedef std::map<const v3<int>, Point> PointMap;
 
 
