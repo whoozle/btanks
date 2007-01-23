@@ -30,6 +30,9 @@ Tank::Tank(const std::string &classname)
 }
 
 void Tank::onSpawn() {
+	if (registered_name.substr(0, 6) == "static")
+		disown();
+
 	Object *_smoke = spawnGrouped("single-pose", "tank-smoke", v3<float>::empty, Centered);
 	_smoke->impassability = 0;
 

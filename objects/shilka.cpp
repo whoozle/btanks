@@ -41,6 +41,9 @@ FakeMod *Shilka::getMod(const std::string &name) {
 }
 
 void Shilka::onSpawn() {
+	if (registered_name.substr(0, 6) == "static")
+		disown();
+	
 	add("mod", spawnGrouped("fake-mod", "damage-digits", v3<float>::empty, Centered));
 	
 	Object *_smoke = spawnGrouped("single-pose", "tank-smoke", v3<float>::empty, Centered);

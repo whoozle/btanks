@@ -34,6 +34,9 @@ Object * Launcher::clone() const {
 }
 
 void Launcher::onSpawn() {
+	if (registered_name.substr(0, 6) == "static")
+		disown();
+
 	Object *_smoke = spawnGrouped("single-pose", "launcher-smoke", v3<float>::empty, Centered);
 	_smoke->hp = 100000;
 	_smoke->impassability = 0;
