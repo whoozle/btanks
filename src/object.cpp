@@ -960,7 +960,7 @@ const bool Object::findPathDone(Way &way) {
 				close(id);
 				continue;			
 			}
-			float im = World->getImpassability(this, world_pos, NULL, true);
+			float im = World->getImpassability(this, world_pos, NULL, true, true);
 			//LOG_DEBUG(("%d, %d, world: %g", pos.x, pos.y, im));
 			assert(im >= 0);
 			if (im >= 1.0) {

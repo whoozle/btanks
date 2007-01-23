@@ -76,7 +76,7 @@ public:
 	
 	void setSafeMode(const bool safe_mode = true);
 
-	const float getImpassability(Object *obj, const v3<int> &position, const Object **collided_with = NULL, const bool probe = false) const;
+	const float getImpassability(Object *obj, const v3<int> &position, const Object **collided_with = NULL, const bool probe = false, const bool skip_moving = false) const;
 	
 	const int getChildren(const int id) const;
 	void setMode(const std::string &mode, const bool value);
