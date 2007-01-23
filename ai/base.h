@@ -45,6 +45,7 @@ private:
 	int _target_id;
 	v3<int> _target_position;
 	bool _enemy;
+	int _pf_slice;
 };
 }
 

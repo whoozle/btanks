@@ -52,6 +52,7 @@ void Base::onSpawn() {
 	_reaction_time.set(rt);
 	Config->get("objects.ai-" + vehicle + ".refresh-path-interval", rpi, 1);
 	_refresh_path.set(rpi);
+	Config->get("objects.ai-" + vehicle + ".pathfinding-slice", _pf_slice, 10);
 }
 
 const bool Base::isEnemy(const Object *o) const {
@@ -61,53 +62,63 @@ const bool Base::isEnemy(const Object *o) const {
 
 void Base::calculate(const float dt) {
 	const bool refresh_path = _refresh_path.tick(dt);
-	const bool dumb = _reaction_time.tick(dt);
-	if (! dumb && !refresh_path) {
-		calculateWayVelocity();
-		return;
-	}
+	const bool dumb = !_reaction_time.tick(dt);
+	const Object *target = NULL;
+	
+	if (!refresh_path && dumb) 
+		goto gogogo;
 
-	const Object *target = World->findTarget(this, _enemies, _bonuses, _traits);
-	if (target != NULL && (refresh_path || target->getID() != _target_id)) {
+	
+	target = World->findTarget(this, _enemies, _bonuses, _traits);
+	if (target != NULL && ((refresh_path && isEnemy(target)) || target->getID() != _target_id)) {
 		_target_id = target->getID();
 		_enemy = isEnemy(target);
 				
 		target->getPosition(_target_position);
 		LOG_DEBUG(("next target: %s at %d,%d", target->registered_name.c_str(), _target_position.x, _target_position.y));
-		//findPath(_target_position, 16);
-		Way way;
-		if (!old_findPath(target, way))
-			LOG_WARN(("no way"));
-		else setWay(way);
+		findPath(_target_position, 16);
+		//Way way;
+		//if (!old_findPath(target, way))
+		//	LOG_WARN(("no way"));
+		//else setWay(way);
 
 	}
 
-	//Way way;
 	
-//	bool calculating = calculatingPath();
 	//bool driven = isDriven();
 	
 	//LOG_DEBUG(("calculating: %c, driven: %c", calculating?'+':'-', driven?'+':'-'));
+	gogogo:
 	
-/*	if (calculating) {
-		int n = 0;
-		while(!findPathDone(way)) ++n;
-		LOG_DEBUG(("n = %d", n));
-		if (way.empty()) 
-			LOG_WARN(("no path"));
-		//if (findPathDone(way))
-			setWay(way);
+	Way way;
+	
+	if (calculatingPath()) {
+		int n = 1;
+		bool found;
+		while(! (found = findPathDone(way)) && n < _pf_slice)
+			++n;
+		
+		if (found) {
+			//LOG_DEBUG(("n = %d", n));
+			if (!way.empty()) {
+				setWay(way);
+			} else {
+				LOG_WARN(("no path"));
+			}
+		}
 	} else  {
-		v3<float> dir = _target_position.convert<float>() - getPosition();
+		//LOG_DEBUG(("idle"));
+		/*v3<float> dir = _target_position.convert<float>() - getPosition();
 		dir.normalize();
 		setDirection(dir.getDirection(getDirectionsNumber()) - 1);
 		if (_enemy) 
 			_state.fire = true;
+		*/
 	}
-	*/
+	
 	calculateWayVelocity();
 	if (!isDriven()) {
-		LOG_DEBUG(("stop!"));
+		//LOG_DEBUG(("stop!"));
 		_velocity.clear();
 	}
 }
