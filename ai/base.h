@@ -34,6 +34,8 @@ public:
 	virtual void calculate(const float dt);
 	virtual void onSpawn();
 	
+	virtual const std::string getWeapon(const int idx) = 0;
+	
 protected: 
 	void addEnemyClass(const std::string &classname);
 	void addBonusName(const std::string &rname);

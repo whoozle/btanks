@@ -21,6 +21,8 @@
 #include "world.h"
 #include "config.h"
 
+#include "math/unary.h"
+
 using namespace ai;
 
 Base::Base() : Object("player"), _reaction_time(true), _refresh_path(true), _target_id(-1) {}
@@ -84,6 +86,21 @@ void Base::calculate(const float dt) {
 
 	}
 
+	//2 fire or not 2 fire.
+	if (target == NULL)
+		target = World->getObjectByID(_target_id);
+	if (target == NULL)
+		goto gogogo;
+	{
+		v3<float> tp, p;
+		getPosition(p);
+		target->getPosition(tp);
+	
+		_state.fire = _state.alt_fire = (math::abs(p.x - tp.x) < 10 || math::abs(p.y - tp.y) < 10);
+	}
+	
+	//LOG_DEBUG(("w1: %s", getWeapon(0).c_str()));
+	//LOG_DEBUG(("w2: %s", getWeapon(1).c_str()));
 	
 	//bool driven = isDriven();
 	

@@ -31,9 +31,22 @@ public:
 	virtual void calculate(const float dt);
 
 	virtual Object * clone() const { return new AILauncher(*this); }
+
+	virtual const std::string getWeapon(const int idx);
 private: 
 
 };
+
+const std::string AILauncher::getWeapon(const int idx) {
+	switch(idx) {
+	case 0: 
+	case 1:
+		return get( idx ? "alt-mod": "mod")->getType();
+	default: 
+		throw_ex(("weapon %d doesnt supported", idx));
+	}
+}
+
 
 void AILauncher::onSpawn() {
 	disown();
