@@ -438,8 +438,9 @@ void IWorld::tick(Object &o, const float dt) {
 	}
 
 	if(o.getPlayerState().leave) {
-		if (!detachVehicle(&o))
-			o.getPlayerState().leave = false; //do not trigger MP stuff. :)
+		//if (!detachVehicle(&o))
+		//	o.getPlayerState().leave = false; //do not trigger MP stuff. :)
+		detachVehicle(&o);
 	}
 
 	GET_CONFIG_VALUE("engine.disable-z-velocity", bool, disable_z, true);
@@ -1085,7 +1086,7 @@ const bool IWorld::attachVehicle(Object *object, Object *vehicle) {
 const bool IWorld::detachVehicle(Object *object) {
 	PlayerSlot * slot = PlayerManager->getSlotByID(object->getID());
 	if (slot == NULL || 
-		(object->classname == "player" && object->registered_name != "tank" && object->registered_name !="shilka" && object->registered_name != "launcher")) 
+		(object->classname == "player" && object->registered_name == "machinegunner-player")) 
 		return false;
 		
 	LOG_DEBUG(("leaving vehicle..."));
