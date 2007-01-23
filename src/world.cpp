@@ -154,12 +154,9 @@ const bool IWorld::collides(Object *obj, const v3<int> &position, Object *o, con
 			(obj->impassability < 1.0 && obj->impassability >= 0) || 
 			(o->impassability < 1.0 && o->impassability >= 0) || 
 			(obj->piercing && o->pierceable) || (obj->pierceable && o->piercing) ||
-			o->isDead() || obj->isDead() ) {
-			return false;
-		}
-		
-		//skip owner and grouped-leader.
-		if (
+			o->isDead() || obj->isDead() 
+			||
+			//owner stuff
 			(obj->_owner_id != 0 && (obj->_owner_id == o->_id || obj->_owner_id == o->_owner_id )) || 
 			(o->_owner_id != 0 && o->_owner_id == obj->_id) ||
 			(obj->_follow != 0 && obj->_follow == o->_id) || 
