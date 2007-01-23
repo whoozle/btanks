@@ -94,6 +94,14 @@ void IGame::init(const int argc, char *argv[]) {
 				Config->set("engine.pathfinding-slice", 1);
 			}
 		}
+		if (revision < 1852) {
+			int rz;
+			Config->get("hud.radar.zoom", rz, 2);
+			if (rz > 2) {
+				LOG_DEBUG(("decreasing hud.radar.zoom to 2"));
+				Config->set("hud.radar.zoom", 2);
+			}
+		}
 		Config->set("engine.revision", getRevision());
 	}
 
