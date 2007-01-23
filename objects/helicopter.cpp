@@ -62,7 +62,7 @@ private:
 };
 
 void Helicopter::onSpawn() {
-	play("main", true);
+	play("move", true);
 	GET_CONFIG_VALUE("objects.helicopter-with-kamikazes.spawn-rate", float, sr, 1.5);
 	_spawn.set(sr);
 }
