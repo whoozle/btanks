@@ -1,4 +1,4 @@
-//#define USE_ASTAR
+#define USE_ASTAR
 
 #ifdef USE_ASTAR
 struct Point {
@@ -6,14 +6,19 @@ struct Point {
 	v3<int> id, parent;
 	int g, h;
 
-	const bool operator<(const Point &other) const {
-		return (g + h) > (other.g + other.h);
-		//return g > other.g;
+};
+
+struct PD {
+	int f;
+	v3<int> id;
+	PD(const int f, const v3<int> &id) : f(f), id(id) {}
+	const bool operator<(const PD &other) const {
+		return f > (other.f);
 	}
 };
 
 typedef std::set<v3<int> > CloseList;
-typedef std::priority_queue<Point> OpenList;
+typedef std::priority_queue<PD> OpenList;
 typedef std::map<const v3<int>, Point> PointMap;
 
 static inline const int h(const v3<int>& src, const v3<int>& dst) {
@@ -51,7 +56,7 @@ const bool IWorld::old_findPath(const Object *obj, const v3<float>& position, Wa
 	p.g = 0;
 	p.h = h(p.id, dst);
 
-	_open_list.push(p);
+	_open_list.push(PD(p.g + p.h, p.id));
 	_points[p.id] = p;
 
 	const int dirs = obj->getDirectionsNumber();
@@ -59,7 +64,11 @@ const bool IWorld::old_findPath(const Object *obj, const v3<float>& position, Wa
 		throw_ex(("pathfinding cannot handle directions number: %d", dirs));
 
 	while(!_open_list.empty()) {
-		const Point current = _open_list.top();
+		PD pd = _open_list.top();
+		PointMap::const_iterator pi = _points.find(pd.id);
+		assert(pi != _points.end());
+		
+		const Point &current = pi->second;
 		_open_list.pop();
 		
 		assert(current.id.x >= 0 && current.id.x < max_w && current.id.y >= 0 && current.id.y < max_h);
@@ -109,7 +118,7 @@ const bool IWorld::old_findPath(const Object *obj, const v3<float>& position, Wa
 				goto found;
 			}
 
-			_open_list.push(p);
+			_open_list.push(PD(p.g + p.h, p.id));
 		}			
 		
 	}
