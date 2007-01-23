@@ -61,6 +61,21 @@ const bool Base::isEnemy(const Object *o) const {
 	return _enemies.find(o->classname) != _enemies.end();
 }
 
+const std::string Base::convertName(const std::string &weapon) {
+	std::string wc, wt;
+	std::string::size_type p;
+	if ((p = weapon.rfind(':')) != std::string::npos) {
+		wc = weapon.substr(0, p);
+		wt = weapon.substr(p + 1);
+	} else {
+		wt = weapon;
+	}
+	if (wc.empty() || wt.empty()) 
+		return std::string();
+	return wt + "-" + wc.substr(0, wc.size() - 1);
+}
+
+
 const bool Base::checkTarget(const Object * target, const std::string &weapon) const {
 	v3<float> pos = getRelativePosition(target);
 	
@@ -75,7 +90,7 @@ const bool Base::checkTarget(const Object * target, const std::string &weapon) c
 		}
 	}
 
-	LOG_DEBUG(("moo(%s/%s): %g %g", wc.c_str(), wt.c_str(), pos.x, pos.y));
+	//LOG_DEBUG(("moo(%s/%s): %g %g", wc.c_str(), wt.c_str(), pos.x, pos.y));
 	
 	bool codir, codir1;
 	{
@@ -108,12 +123,23 @@ void Base::calculate(const float dt) {
 	if (!refresh_path && dumb) 
 		goto gogogo;
 
+	{
+	const std::string weapon1 = getWeapon(0), weapon2 = getWeapon(1);
+	const int amount1 = getWeaponAmount(0), amount2 = getWeaponAmount(1);
 	
-	target = World->findTarget(this, _enemies, _bonuses, _traits);
+	static const std::set<std::string> empty_enemies;
+	
+	target = World->findTarget(this, (amount1 > 0 || amount2 > 0)?_enemies:empty_enemies, _bonuses, _traits);
 	if (target != NULL && ((refresh_path && isEnemy(target)) || target->getID() != _target_id)) {
 		_target_id = target->getID();
 		_enemy = isEnemy(target);
-				
+
+		if (!weapon1.empty()) {
+			v3<float> r;
+			getTargetPosition(r, target->getPosition(), convertName(weapon1));
+			_target_position = r.convert<int>();
+		}
+		
 		target->getPosition(_target_position);
 		LOG_DEBUG(("next target: %s at %d,%d", target->registered_name.c_str(), _target_position.x, _target_position.y));
 		findPath(_target_position, 16);
@@ -125,16 +151,17 @@ void Base::calculate(const float dt) {
 	}
 
 	//2 fire or not 2 fire.
+
 	if (target == NULL)
 		target = World->getObjectByID(_target_id);
 	if (target == NULL)
 		goto gogogo;
-	{
-		const std::string w1 = getWeapon(0), w2 = getWeapon(1);
-		if (!w1.empty())
-			_state.fire = checkTarget(target, w1);
-		if (!w2.empty())
-			_state.alt_fire = checkTarget(target, w2);
+
+	if (!weapon1.empty())
+		_state.fire = checkTarget(target, weapon1);
+	if (!weapon2.empty())
+		_state.alt_fire = checkTarget(target, weapon2);
+
 	}
 	
 	//LOG_DEBUG(("w1: %s", getWeapon(0).c_str()));

@@ -34,7 +34,9 @@ public:
 	virtual void calculate(const float dt);
 	virtual void onSpawn();
 	
-	virtual const std::string getWeapon(const int idx) = 0;
+	virtual const std::string getWeapon(const int idx) const = 0;
+	virtual const int getWeaponAmount(const int idx) const = 0;
+	static const std::string convertName(const std::string &name);
 	
 protected: 
 	void addEnemyClass(const std::string &classname);

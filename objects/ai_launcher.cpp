@@ -32,16 +32,27 @@ public:
 
 	virtual Object * clone() const { return new AILauncher(*this); }
 
-	virtual const std::string getWeapon(const int idx);
+	virtual const std::string getWeapon(const int idx) const;
+	virtual const int getWeaponAmount(const int idx) const;
 private: 
 
 };
 
-const std::string AILauncher::getWeapon(const int idx) {
+const std::string AILauncher::getWeapon(const int idx) const {
 	switch(idx) {
 	case 0: 
 	case 1:
 		return get( idx ? "alt-mod": "mod")->getType();
+	default: 
+		throw_ex(("weapon %d doesnt supported", idx));
+	}
+}
+
+const int AILauncher::getWeaponAmount(const int idx) const{
+	switch(idx) {
+	case 0: 
+	case 1:
+		return get( idx ? "alt-mod": "mod")->getCount();
 	default: 
 		throw_ex(("weapon %d doesnt supported", idx));
 	}
