@@ -872,10 +872,11 @@ void Object::findPath(const v3<int> target, const int step) {
 	_begin /= step;
 	_end /= step;
 	
-	//LOG_DEBUG(("findPath %d:%d -> %d:%d (%d->%d)", begin.x, begin.y, end.x, end.y, _begin_id, _end_id));
+	LOG_DEBUG(("%s[%d]: findPath %d:%d -> %d:%d", registered_name.c_str(), getID(), _begin.x, _begin.y, _end.x, _end.y));
 	
-	while(!_open_list.empty())
-		_open_list.pop();
+	//while(!_open_list.empty())
+	//	_open_list.pop();
+	_open_list = OpenList();
 	
 	_close_list.clear();
 	_points.clear();
@@ -889,12 +890,13 @@ void Object::findPath(const v3<int> target, const int step) {
 
 	_open_list.push(PD(p.g + p.h, p.id));
 	_points[p.id] = p;
-
 }
 
 const bool Object::findPathDone(Way &way) {
 	if (_begin == _end) {
+		way.clear();
 		way.push_back(_end);
+		LOG_DEBUG(("append %d %d to way. 1 point-way.", _end.x, _end.y));
 		return true;
 	}
 	const v3<int> map_size = Map->getSize();
@@ -902,10 +904,11 @@ const bool Object::findPathDone(Way &way) {
 	GET_CONFIG_VALUE("engine.pathfinding-slice", int, ps, 1);
 	GET_CONFIG_VALUE("engine.pathfinding-throttling", bool, pt, true);
 	
-	while(!_open_list.empty() && (pt?ps--:ps)) {
+	while(!_open_list.empty() && (pt?ps--:ps) > 0) {
 		PointMap::const_iterator pi = _points.find(_open_list.top().id);
 		assert(pi != _points.end());
 		const Point& current = pi->second;
+		assert(pi->first == current.id);
 		_open_list.pop();
 		
 		if (_close_list.find(current.id) != _close_list.end())
@@ -918,7 +921,8 @@ const bool Object::findPathDone(Way &way) {
 		const int x = current.id.x * _step;
 		const int y = current.id.y * _step;
 		
-		//LOG_DEBUG(("%s: testing id %d at %d,%d, value = g: %d, h: %d, f: %d", registered_name.c_str(), current.id, current.id % _pitch, current.id / _pitch, current.g, current.h, current.g + current.h));
+		//if (registered_name.substr(0, 2) == "ai")
+			//LOG_DEBUG(("%s: testing node at %d,%d, value = g: %d, h: %d, f: %d", registered_name.c_str(), current.id.x, current.id.y, current.g, current.h, current.g + current.h));
 
 		//searching surrounds 
 		assert(current.dir != -1);
@@ -1006,8 +1010,11 @@ const bool Object::findPathDone(Way &way) {
 
 			_open_list.push(PD(p.g + p.h, p.id));
 		}
-		if (!pt)
+		if (!pt) { 
 			--ps;
+			if (ps == 0)
+				ps = -1; 
+		} 
 	}
 	
 	setDirection(dir_save);
