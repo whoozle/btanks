@@ -897,6 +897,7 @@ const bool Object::findPathDone(Way &way) {
 		way.clear();
 		way.push_back(_end);
 		LOG_DEBUG(("append %d %d to way. 1 point-way.", _end.x, _end.y));
+		_open_list = OpenList();
 		return true;
 	}
 	const v3<int> map_size = Map->getSize();
@@ -1028,8 +1029,10 @@ const bool Object::findPathDone(Way &way) {
 
 found:
 	way.clear();
-	while(!_open_list.empty())
-		_open_list.pop();
+	
+	_open_list = OpenList();
+	//while(!_open_list.empty())
+	//	_open_list.pop();
 	
 	_close_list.clear();
 	
