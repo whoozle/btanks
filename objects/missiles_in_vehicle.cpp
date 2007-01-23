@@ -41,6 +41,9 @@ public:
 	}
 	
 	virtual const std::string getType() const {
+		if (_object.empty() && _type.empty()) 
+			return std::string();
+		
 		return _object + ":" + _type;
 	}
 
