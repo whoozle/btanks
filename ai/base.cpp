@@ -62,6 +62,40 @@ const bool Base::isEnemy(const Object *o) const {
 }
 
 const bool Base::checkTarget(const Object * target, const std::string &weapon) const {
+	v3<float> pos = getRelativePosition(target);
+	
+	std::string wc, wt;
+	{
+		std::string::size_type p;
+		if ((p = weapon.rfind(':')) != std::string::npos) {
+			wc = weapon.substr(0, p);
+			wt = weapon.substr(p + 1);
+		} else {
+			wt = weapon;
+		}
+	}
+
+	LOG_DEBUG(("moo(%s/%s): %g %g", wc.c_str(), wt.c_str(), pos.x, pos.y));
+	
+	bool codir, codir1;
+	{
+		v3<float> d(pos);
+		d.normalize();
+		int dir = d.getDirection(getDirectionsNumber()) - 1;
+		codir = dir == getDirection();
+		int dd = math::abs(dir - getDirection());
+		codir1 = dd == 1 || dd == 7;
+	}
+	
+	if (wc == "missiles") {
+		if (codir)
+			return true;
+		if (wt == "guided" && codir1)
+			return true;
+	} else if (wc == "mines") {
+		if (!_velocity.is0())
+			return true;
+	}
 	return false;
 }
 
@@ -142,6 +176,7 @@ void Base::calculate(const float dt) {
 		//LOG_DEBUG(("stop!"));
 		_velocity.clear();
 	}
+	updateStateFromVelocity();
 }
 
 
