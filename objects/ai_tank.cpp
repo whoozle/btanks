@@ -55,7 +55,7 @@ void AITank::onSpawn() {
 	Tank::onSpawn();
 }
 
-AITank::AITank() : Tank(), 
+AITank::AITank() : Tank("player"), 
 	_reaction_time(true), _refresh_waypoints(true) {}
 
 void AITank::calculate(const float dt) {	

@@ -24,10 +24,9 @@
 #include "launcher.h"
 #include "config.h"
 
-REGISTER_OBJECT("launcher", Launcher, ());
 
-Launcher::Launcher() 
-: Object("player"), _fire(false) {
+Launcher::Launcher(const std::string &classname) 
+: Object(classname), _fire(false) {
 }
 
 Object * Launcher::clone() const {
@@ -139,3 +138,6 @@ void Launcher::deserialize(const mrt::Serializator &s) {
 	Object::deserialize(s);
 	_fire.deserialize(s);
 }
+
+REGISTER_OBJECT("launcher", Launcher, ("player"));
+REGISTER_OBJECT("static-launcher", Launcher, ("vehicle"));

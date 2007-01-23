@@ -26,15 +26,9 @@
 #include "config.h"
 #include "fakemod.h"
 
-REGISTER_OBJECT("shilka", Shilka, ());
 
-Shilka::Shilka() 
-: Object("player"), _fire(false), _special_fire(false), _left_fire(true) {
-}
-
-Shilka::Shilka(const std::string &animation) 
-: Object("player"), _fire(false), _special_fire(false), _left_fire(true) {
-	setup(animation);
+Shilka::Shilka(const std::string &classname) 
+: Object(classname), _fire(false), _special_fire(false), _left_fire(true) {
 }
 
 FakeMod *Shilka::getMod(const std::string &name) {
@@ -211,3 +205,6 @@ void Shilka::deserialize(const mrt::Serializator &s) {
 	_special_fire.deserialize(s);
 	s.get(_left_fire);
 }
+
+REGISTER_OBJECT("shilka", Shilka, ("player"));
+REGISTER_OBJECT("static-shilka", Shilka, ("vehicle"));

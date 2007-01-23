@@ -25,7 +25,7 @@
 
 class Launcher : public virtual Object {
 public:
-	Launcher();
+	Launcher(const std::string &classname);
 	virtual Object * clone() const;
 
 	virtual void emit(const std::string &event, Object * emitter);

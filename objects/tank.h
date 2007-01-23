@@ -25,8 +25,7 @@
 
 class Tank : public Object {
 public:
-	Tank();
-	Tank(const std::string &animation);
+	Tank(const std::string &classname);
 	virtual Object * clone() const;
 	virtual void onSpawn();
 

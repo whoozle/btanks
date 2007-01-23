@@ -25,7 +25,7 @@
 
 class AILauncher:  public Launcher, public ai::Base {
 public: 
-	AILauncher() : Object("player") {}
+	AILauncher() :  Object("player"),  Launcher("player") {}
 //	~AILauncher();
 	virtual void onSpawn();
 	virtual void calculate(const float dt);

@@ -25,17 +25,9 @@
 #include "tank.h"
 #include "config.h"
 
-REGISTER_OBJECT("tank", Tank, ());
-
-Tank::Tank() 
-: Object("player"), _fire(false) {
+Tank::Tank(const std::string &classname) 
+: Object(classname), _fire(false) {
 }
-
-Tank::Tank(const std::string &animation) 
-: Object("player"), _fire(false) {
-	setup(animation);
-}
-
 
 void Tank::onSpawn() {
 	Object *_smoke = spawnGrouped("single-pose", "tank-smoke", v3<float>::empty, Centered);
@@ -156,3 +148,6 @@ void Tank::deserialize(const mrt::Serializator &s) {
 	Object::deserialize(s);
 	_fire.deserialize(s);
 }
+
+REGISTER_OBJECT("tank", Tank, ("player"));
+REGISTER_OBJECT("static-tank", Tank, ("vehicle"));

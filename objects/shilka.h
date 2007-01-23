@@ -27,8 +27,7 @@ class FakeMod;
 
 class Shilka : public Object {
 public:
-	Shilka();
-	Shilka(const std::string &animation);
+	Shilka(const std::string &classname);
 	virtual Object * clone() const;
 	virtual void onSpawn();
 
