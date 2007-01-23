@@ -214,7 +214,8 @@
 	</animation-model>
 
 	<animation-model id="helicopter-animation" speed="20">
-		<pose id="main" sound="helicopter.ogg">0,1,2</pose>
+		<pose id="hold">0</pose>
+		<pose id="move" sound="helicopter.ogg">0,1,2</pose>
 	</animation-model>
 
 	<animation-model id="paratrooper-animation" speed="2">
