@@ -387,6 +387,13 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 			}
 		}
 	}
+	LOG_DEBUG(("checking waypoint graph..."));
+	for(WaypointEdgeMap::const_iterator i = _waypoint_edges.begin(); i != _waypoint_edges.end(); ++i) {
+		const std::string &dst = i->second;
+		WaypointEdgeMap::const_iterator b = _waypoint_edges.lower_bound(dst);
+		if (b == _waypoint_edges.end() || b->first != dst)
+			throw_ex(("no edges out of waypoint '%s'", dst.c_str()));
+	}
 	LOG_DEBUG(("%u items on map. %u waypoints, %u edges", (unsigned) _items.size(), (unsigned)_waypoints.size(), (unsigned)_waypoint_edges.size()));
 	Config->invalidateCachedValues();
 	
