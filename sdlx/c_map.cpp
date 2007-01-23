@@ -18,10 +18,12 @@
 
 #include "c_map.h"
 #include "surface.h"
+
 #include "mrt/logger.h"
-#include "math/minmax.h"
-#include "math/matrix.h"
 #include "mrt/file.h"
+
+#include "math/binary.h"
+#include "math/matrix.h"
 
 #if defined(__GNUC__)
 #define restrict __restrict__

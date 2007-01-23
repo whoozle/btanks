@@ -19,7 +19,7 @@
 #include "credits.h"
 #include "config.h"
 #include "math/unary.h"
-#include "math/minmax.h"
+#include "math/binary.h"
 
 Credits::Credits() : _w(0), _h(0) {
 	GET_CONFIG_VALUE("engine.data-directory", std::string, data_dir, "data");
