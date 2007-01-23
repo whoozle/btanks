@@ -409,8 +409,8 @@ void IGame::checkItems() {
 			//respawning item
 			LOG_DEBUG(("respawning item: %s:%s", item.classname.c_str(), item.animation.c_str()));
 			Object *o = ResourceManager->createObject(item.classname, item.animation);
-			World->addObject(o, item.position.convert<float>());
 			o->setOwner(-7);
+			World->addObject(o, item.position.convert<float>());
 			item.id = o->getID();
 			item.dead_on = 0;
 		}
