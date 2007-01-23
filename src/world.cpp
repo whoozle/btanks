@@ -1067,6 +1067,37 @@ const int IWorld::getChildren(const int id) const {
 	return c;
 }
 
+void IWorld::swapID(const int id1, const int id2) {
+	if (id1 == id2)
+		throw_ex(("swapID: called with the same id (%d)", id1));
+	ObjectMap::iterator i1 = _objects.find(id1);
+	if (i1 == _objects.end())
+		throw_ex(("swapID: could not find object with id %d", id1));
+	ObjectMap::iterator i2 = _objects.find(id2);
+	if (i2 == _objects.end())
+		throw_ex(("swapID: could not find object with id %d", id2));
+
+	//hope nothing will screw up after this
+	Object *o1 = i1->second;
+	Object *o2 = i2->second;
+	
+	o2->_id = id1;
+	i1->second = o2;
+	
+	o1->_id = id2;
+	i2->second = o1;
+
+	for(ObjectMap::iterator i = _objects.begin(); i != _objects.end(); ++i) {
+		Object *o = i->second;
+		if (o->_follow == id1)
+			o->_follow = id2;
+		else if (o->_follow == id2) 
+			o->_follow = id1;
+	}
+	
+	o1->need_sync = o2->need_sync = true;
+}
+
 const bool IWorld::attachVehicle(Object *object, Object *vehicle) {
 	if (object == NULL || vehicle == NULL || object->classname != "player") 
 		return false;
@@ -1076,8 +1107,9 @@ const bool IWorld::attachVehicle(Object *object, Object *vehicle) {
 		return false;
 	
 	vehicle->classname = "player";
-	slot->id = vehicle->getID();
-	slot->need_sync = true;
+	swapID(object->getID(), vehicle->getID());
+	//slot->id = vehicle->getID();
+	//slot->need_sync = true;
 	
 	object->Object::emit("death", vehicle);
 	return true;
@@ -1097,8 +1129,11 @@ const bool IWorld::detachVehicle(Object *object) {
 	object->classname = "vehicle";
 
 	man->disown();
-	slot->id = man->getID();
-	slot->need_sync = true;
+	
+//	slot->id = man->getID();
+//	slot->need_sync = true;
+
+	swapID(object->getID(), man->getID());
 	return true;
 }
 

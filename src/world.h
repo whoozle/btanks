@@ -87,7 +87,10 @@ public:
 	const Object * findTarget(const Object *src, const std::set<std::string> &enemies, const std::set<std::string> &bonuses, ai::Traits &traits) const;
 	
 	static const bool isAlly(const Object *o1, const Object *o2);
+	
 private:
+	void swapID(const int id1, const int id2); //very dangerous! 
+	
 	void deleteObject(ObjectMap &objects, Object *o);
 
 	
