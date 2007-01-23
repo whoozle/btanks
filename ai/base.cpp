@@ -134,7 +134,7 @@ void Base::calculate(const float dt) {
 		_target_id = target->getID();
 		_enemy = isEnemy(target);
 
-		if (!weapon1.empty()) {
+		if (_enemy && !weapon1.empty()) {
 			v3<float> r;
 			getTargetPosition(r, target->getPosition(), convertName(weapon1));
 			_target_position = r.convert<int>();
