@@ -20,11 +20,14 @@
  */
 
 #include "mrt/singleton.h"
+#include "mrt/serializable.h"
+
 #include <set>
 #include <map>
+#include <sigc++/sigc++.h>
+
 #include "math/v3.h"
 #include "math/matrix.h"
-#include "mrt/serializable.h"
 #include "object_common.h"
 
 namespace sdlx {
@@ -42,6 +45,7 @@ class IWorld : public mrt::Serializable {
 public:
 	DECLARE_SINGLETON(IWorld);
 	typedef std::map<const int, Object*> ObjectMap;
+	sigc::signal2<void, const int, const int> on_id_swapped;
 	
 	void clear();
 	~IWorld();

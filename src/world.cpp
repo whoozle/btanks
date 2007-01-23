@@ -1096,6 +1096,8 @@ void IWorld::swapID(const int id1, const int id2) {
 	}
 	
 	o1->need_sync = o2->need_sync = true;
+
+	on_id_swapped.emit(id1, id2);
 }
 
 const bool IWorld::attachVehicle(Object *object, Object *vehicle) {

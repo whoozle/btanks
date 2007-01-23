@@ -174,7 +174,7 @@ void IGame::init(const int argc, char *argv[]) {
 	Map->notify_progress.connect(sigc::mem_fun(this, &IGame::notifyLoadingBar));
 	ResourceManager->reset_progress.connect(sigc::mem_fun(this, &IGame::resetLoadingBar));
 	ResourceManager->notify_progress.connect(sigc::mem_fun(this, &IGame::notifyLoadingBar));
-
+	World->on_id_swapped.connect(sigc::mem_fun(this, &IGame::onIDSwapped));
 
 	LOG_DEBUG(("initializing resource manager..."));
 	ResourceManager->init(data_dir + "/resources.xml");
@@ -425,8 +425,15 @@ void IGame::checkItems() {
 	}
 }
 
-
-
+void IGame::onIDSwapped(const int id1, const int id2) {
+	for(Items::iterator i = _items.begin(); i != _items.end(); ++i) {
+		Item &item = *i;
+		if (item.id == id1)
+			item.id = id2;
+		else if (item.id == id2)
+			item.id = id1;
+	}
+}
 
 void IGame::run() {
 	LOG_DEBUG(("entering main loop"));
