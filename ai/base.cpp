@@ -84,7 +84,7 @@ const bool Base::checkTarget(const Object * target, const std::string &weapon) c
 		int dir = d.getDirection(getDirectionsNumber()) - 1;
 		codir = dir == getDirection();
 		int dd = math::abs(dir - getDirection());
-		codir1 = dd == 1 || dd == 7;
+		codir1 = dd == 1 || dd == (getDirectionsNumber() - 1);
 	}
 	
 	if (wc == "missiles") {
