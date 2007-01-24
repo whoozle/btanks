@@ -758,7 +758,7 @@ void IWorld::tick(ObjectMap &objects, const float dt) {
 		assert(o != NULL);
 		TRY {
 			tick(*o, dt);
-		} CATCH(mrt::formatString("tick for object[%p] %d:%s", (void *)o, o->getID(), o->classname.c_str()).c_str(), throw;);
+		} CATCH(mrt::formatString("tick for object[%p] id:%d %s:%s:%s", (void *)o, o->getID(), o->registered_name.c_str(), o->classname.c_str(), o->animation.c_str()).c_str(), throw;);
 		if (o->isDead()) { //fixme
 			if (_safe_mode == false) {
 				//LOG_DEBUG(("object %d:%s is dead. cleaning up. (global map: %s)", o->getID(), o->classname.c_str(), &objects == &_objects?"true":"false" ));
