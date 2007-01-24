@@ -219,7 +219,7 @@
 	<animation-model id="fire-animation" speed="7">
 		<pose id="fade-in">0,1,2,3,4</pose>
 		<pose id="burn">5,6,7,6</pose>
-		<pose id="fade-out">8,9,10</pose>
+		<pose id="fade-out">8,9</pose>
 	</animation-model>
 
 	<animation-model id="dirt-animation" speed="15">
