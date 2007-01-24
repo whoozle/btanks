@@ -136,8 +136,8 @@ void Base::calculate(const float dt) {
 
 		if (_enemy && !weapon1.empty()) {
 			v3<float> r;
-			getTargetPosition(r, target->getPosition(), convertName(weapon1));
-			_target_position = r.convert<int>();
+			if (getTargetPosition(r, target->getPosition(), convertName(weapon1)))
+				_target_position = r.convert<int>();
 		}
 		
 		target->getPosition(_target_position);

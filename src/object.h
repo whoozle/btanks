@@ -102,7 +102,7 @@ public:
 	const Object *get(const std::string &name) const;
 	const bool has(const std::string &name) const;
 
-	void getTargetPosition(v3<float> &relative_position, const v3<float> &target, const std::string &weapon);
+	const bool getTargetPosition(v3<float> &relative_position, const v3<float> &target, const std::string &weapon);
 
 	void quantizeVelocity();
 	

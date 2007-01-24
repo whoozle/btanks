@@ -805,7 +805,7 @@ const int Object::getCount() const {
 }
 
 
-void Object::getTargetPosition(v3<float> &relative_position, const v3<float> &target, const std::string &weapon) {
+const bool Object::getTargetPosition(v3<float> &relative_position, const v3<float> &target, const std::string &weapon) {
 	const int dirs = _directions_n;
 	
 	const Object *wp = ResourceManager->getClass(weapon);
@@ -815,11 +815,17 @@ void Object::getTargetPosition(v3<float> &relative_position, const v3<float> &ta
 	if (tm <= 0 || tm >= 1) 
 		throw_ex(("targeting multiplier must be greater than 0 and less than 1.0 (%g)", tm))
 	range *= tm;
+	
 	double dist = target.length();
 	if (dist > range) 
 		dist = range;
+	
 	//LOG_DEBUG(("searching suitable position (distance: %g, range: %g)", dist, range));
 	double distance = 0;
+	bool found = false;
+	
+	v3<int> pfs = Map->getPathTileSize();
+	const Matrix<int> &matrix = Map->getImpassabilityMatrix();
 	
 	for(int i = 0; i < dirs; ++i) {
 		v3<float> pos;
@@ -827,12 +833,16 @@ void Object::getTargetPosition(v3<float> &relative_position, const v3<float> &ta
 		pos *= dist;
 		pos += target;
 		double d = pos.quick_length();
-		if (i == 0 || d < distance) {
+		v3<int> map_pos = (pos + getPosition()).convert<int>() / pfs;
+		
+		if (i == 0 || d < distance && matrix.get(map_pos.y, map_pos.x) != -1) {
 			distance = d;
 			relative_position = pos;
+			found = true;
 		}
 		//LOG_DEBUG(("target position: %g %g, distance: %g", pos.x, pos.y, d));
 	}
+	return found;
 }
 
 void Object::checkSurface() {
