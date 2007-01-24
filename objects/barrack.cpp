@@ -23,9 +23,10 @@
 
 class Barrack : public Object {
 public:
-	Barrack(const std::string &object, const std::string &animation) : 
+	Barrack(const std::string &object, const std::string &animation, const bool pierceable) : 
 		Object("barrack"), 
-		_broken(false), _object(object), _animation(animation), _spawn(true) {}
+		_broken(false), _pierceable(pierceable), 
+		_object(object), _animation(animation), _spawn(true) {}
 
 	virtual Object * clone() const;
 	virtual void tick(const float dt);
@@ -35,6 +36,7 @@ public:
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
 		s.add(_broken);
+		s.add(_pierceable);
 		s.add(_object);
 		s.add(_animation);
 		_spawn.serialize(s);
@@ -43,13 +45,14 @@ public:
 	virtual void deserialize(const mrt::Serializator &s) {
 		Object::deserialize(s);
 		s.get(_broken);
+		s.get(_pierceable);
 		s.get(_object);
 		s.get(_animation);
 		_spawn.deserialize(s);
 	}
 
 private:
-	bool _broken;
+	bool _broken, _pierceable;
 	std::string _object, _animation;
 	Alarm _spawn;
 };
@@ -61,7 +64,9 @@ void Barrack::addDamage(Object *from, const int dhp, const bool emitDeath) {
 	Object::addDamage(from, dhp, false);
 	if (hp <= 0) {
 		_broken = true;
-		pierceable = true;
+
+		if (_pierceable)
+			pierceable = true;
 
 		cancelAll();
 
@@ -103,7 +108,10 @@ Object* Barrack::clone() const  {
 	return new Barrack(*this);
 }
 
-REGISTER_OBJECT("barrack-with-machinegunners", Barrack, ("machinegunner", "machinegunner"));
-REGISTER_OBJECT("barrack-with-throwers", Barrack, ("thrower", "thrower"));
-REGISTER_OBJECT("barrack-with-kamikazes", Barrack, ("kamikaze", "kamikaze"));
+REGISTER_OBJECT("barrack-with-machinegunners", Barrack, ("machinegunner", "machinegunner", false));
+REGISTER_OBJECT("barrack-with-throwers", Barrack, ("thrower", "thrower", false));
+REGISTER_OBJECT("barrack-with-kamikazes", Barrack, ("kamikaze", "kamikaze", false));
 
+REGISTER_OBJECT("tent-with-machinegunners", Barrack, ("machinegunner", "machinegunner", true));
+REGISTER_OBJECT("tent-with-throwers", Barrack, ("thrower", "thrower", true));
+REGISTER_OBJECT("tent-with-kamikazes", Barrack, ("kamikaze", "kamikaze", true));
