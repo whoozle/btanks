@@ -77,6 +77,9 @@ const std::string Base::convertName(const std::string &weapon) {
 
 
 const bool Base::checkTarget(const Object * target, const std::string &weapon) const {
+	if (!isEnemy(target))
+		return false;
+	
 	v3<float> pos = getRelativePosition(target);
 	
 	std::string wc, wt;
@@ -140,7 +143,8 @@ void Base::calculate(const float dt) {
 				_target_position = r.convert<int>();
 		}
 		
-		target->getPosition(_target_position);
+		target->getCenterPosition(_target_position);
+		_target_position -= (size / 2).convert<int>();
 		LOG_DEBUG(("next target: %s at %d,%d", target->registered_name.c_str(), _target_position.x, _target_position.y));
 		findPath(_target_position, 16);
 		//Way way;
@@ -190,18 +194,17 @@ void Base::calculate(const float dt) {
 		}
 	} else  {
 		//LOG_DEBUG(("idle"));
+		
+	}
+	
+	calculateWayVelocity();
+	
+	if (!calculatingPath() && _velocity.is0()) {
 		v3<float> dir = _target_position.convert<float>() - getPosition();
 		dir.normalize();
 		int t_dir = dir.getDirection(getDirectionsNumber()) - 1;
 		if (t_dir != -1 && t_dir != getDirection())
 			_velocity = dir;
-		
-	}
-	
-	calculateWayVelocity();
-	if (!isDriven()) {
-		//LOG_DEBUG(("stop!"));
-		_velocity.clear();
 	}
 	updateStateFromVelocity();
 }
