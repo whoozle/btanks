@@ -292,7 +292,7 @@ void IResourceManager::createAlias(const std::string &name, const std::string &c
 	Object * r = i->second->clone();
 	if (r == NULL)
 		throw_ex(("%s->clone(\"\") returns NULL", classname.c_str()));
-	r->classname = name;
+	r->registered_name = name;
 	delete _objects[name];
 	_objects[name] = r;
 }
