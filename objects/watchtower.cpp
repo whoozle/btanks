@@ -16,14 +16,14 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include "object.h"
+#include "destructable_object.h"
 #include "resource_manager.h"
 
 
-class WatchTower : public Object {
+class WatchTower : public DestructableObject {
 public: 
 	WatchTower(const std::string &object, const std::string &animation) : 
-		Object("watchtower"), _object(object), _animation(animation) {}
+		DestructableObject("watchtower", "fire", "fire", true), _object(object), _animation(animation) {}
 	Object *clone() const { return new WatchTower(*this); }
 private: 
 	std::string _object, _animation;
