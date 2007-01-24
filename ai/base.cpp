@@ -123,12 +123,15 @@ void Base::calculate(const float dt) {
 	const bool dumb = !_reaction_time.tick(dt);
 	const Object *target = NULL;
 	
+	std::string weapon1, weapon2;
+	int amount1, amount2;
+	
 	if (!refresh_path && dumb) 
 		goto gogogo;
 
-	{
-	const std::string weapon1 = getWeapon(0), weapon2 = getWeapon(1);
-	const int amount1 = getWeaponAmount(0), amount2 = getWeaponAmount(1);
+
+	weapon1 = getWeapon(0), weapon2 = getWeapon(1);
+	amount1 = getWeaponAmount(0), amount2 = getWeaponAmount(1);
 	
 	static const std::set<std::string> empty_enemies;
 	
@@ -166,7 +169,6 @@ void Base::calculate(const float dt) {
 	if (!weapon2.empty())
 		_state.alt_fire = checkTarget(target, weapon2);
 
-	}
 	
 	//LOG_DEBUG(("w1: %s", getWeapon(0).c_str()));
 	//LOG_DEBUG(("w2: %s", getWeapon(1).c_str()));
@@ -205,6 +207,12 @@ void Base::calculate(const float dt) {
 		int t_dir = dir.getDirection(getDirectionsNumber()) - 1;
 		if (t_dir != -1 && t_dir != getDirection())
 			_velocity = dir;
+		if (!weapon1.empty() && !_state.fire)
+			_state.fire = checkTarget(target, weapon1);
+		if (!weapon2.empty() && !_state.alt_fire)
+			_state.alt_fire = checkTarget(target, weapon2);
+
+			
 	}
 	updateStateFromVelocity();
 }
