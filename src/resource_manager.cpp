@@ -121,16 +121,14 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 			throw_ex(("tag 'object' must provide its classname id."));
 		ObjectMap::iterator object; 
 		if ((object = _objects.find(classname)) == _objects.end()) {
-			LOG_WARN(("class '%s' was not registered. skipped.", classname.c_str()));
-			return;
+			throw_ex(("class '%s' was not registered. ", classname.c_str()));
 		}
 		LOG_DEBUG(("setting up class '%s'", classname.c_str()));
 	
 		if (attr.find("parent") != attr.end())  {
 			ObjectMap::iterator parent; 
 			if ((parent = _objects.find(attr["parent"])) == _objects.end()) {
-				LOG_WARN(("class '%s' declared as parent of '%s' was not registered. skipped.", attr["parent"].c_str(), classname.c_str()));
-				return;
+				throw_ex(("class '%s' declared as parent of '%s' was not registered. skipped.", attr["parent"].c_str(), classname.c_str()));
 			}
 			object->second->inheritParameters(parent->second);
 		}
