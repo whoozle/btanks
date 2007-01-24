@@ -505,7 +505,6 @@
 	<object class="corpse" hp="1000" ttl="10" fadeout_time="1" z="-5" impassability="0" />
 	<object class="explosion" hp="1" z="580" />
 	<object class="smoke-cloud" impassability="-1" hp="150" z="580" ttl="30" fadeout_time="2" />
-	<object class="building-explosion" hp="1" z="580" />
 	<object class="nuclear-explosion" hp="1000" mass="10000" impassability="-1" z="900" />
 	<object class="dirt" impassability="0.5" z="-20" ttl="50" fadeout="5" />
 	<object class="pond" hp="1000" pierceable="true" impassability="1" z="150" />
