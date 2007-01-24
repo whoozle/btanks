@@ -16,72 +16,44 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include "object.h"
+#include "destructable_object.h"
 #include "config.h"
 #include "resource_manager.h"
 #include "world.h"
 
-class Barrack : public Object {
+class Barrack : public DestructableObject {
 public:
 	Barrack(const std::string &object, const std::string &animation, const bool pierceable) : 
-		Object("barrack"), 
-		_broken(false), _pierceable(pierceable), 
+		DestructableObject("barrack", "fire", "fire", pierceable), 
 		_object(object), _animation(animation), _spawn(true) {}
 
-	virtual Object * clone() const;
+	virtual Object* clone() const  { return new Barrack(*this); }
+	
 	virtual void tick(const float dt);
 	virtual void onSpawn();
-	virtual void addDamage(Object *from, const int hp, const bool emitDeath = true);
 
 	virtual void serialize(mrt::Serializator &s) const {
-		Object::serialize(s);
-		s.add(_broken);
-		s.add(_pierceable);
+		DestructableObject::serialize(s);
 		s.add(_object);
 		s.add(_animation);
 		_spawn.serialize(s);
 	}
 
 	virtual void deserialize(const mrt::Serializator &s) {
-		Object::deserialize(s);
-		s.get(_broken);
-		s.get(_pierceable);
+		DestructableObject::deserialize(s);
 		s.get(_object);
 		s.get(_animation);
 		_spawn.deserialize(s);
 	}
 
 private:
-	bool _broken, _pierceable;
 	std::string _object, _animation;
 	Alarm _spawn;
 };
 
-void Barrack::addDamage(Object *from, const int dhp, const bool emitDeath) {
-	if (_broken)
-		return;
-
-	Object::addDamage(from, dhp, false);
-	if (hp <= 0) {
-		_broken = true;
-
-		if (_pierceable)
-			pierceable = true;
-
-		cancelAll();
-
-		//play("fade-out", false); 
-		play("broken", true);		
-		spawn("fire", "fire", v3<float>::empty, v3<float>::empty);
-	}
-}
-
 void Barrack::tick(const float dt) {
-	Object::tick(dt);
-	if (getState().empty()) {
-		//LOG_DEBUG(("over"));
-		emit("death", this);
-	}
+	DestructableObject::tick(dt);
+	
 	if (!_broken && _spawn.tick(dt)) {
 		int max_c;
 		Config->get("objects." + registered_name + ".maximum-children", max_c, 5);
@@ -104,9 +76,6 @@ void Barrack::onSpawn() {
 }
 
 
-Object* Barrack::clone() const  {
-	return new Barrack(*this);
-}
 
 REGISTER_OBJECT("barrack-with-machinegunners", Barrack, ("machinegunner", "machinegunner", false));
 REGISTER_OBJECT("barrack-with-throwers", Barrack, ("thrower", "thrower", false));
