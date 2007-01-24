@@ -110,6 +110,9 @@ void IMixer::loadPlaylist(const std::string &file) {
 }
 
 const bool IMixer::play(const std::string &fname, const bool continuous) {
+	if (_nomusic) 
+		return false;
+	
 	LOG_DEBUG(("playing %s",fname.c_str()));
 	std::string::size_type dp = fname.rfind('.');
 	std::string ext = "unknown";
