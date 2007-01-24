@@ -447,8 +447,8 @@
 	<object class="tent-with-machinegunners" speed="400" mass="200" hp="80" z="200" />
 	<object class="barrack-with-throwers" speed="200" mass="1000" hp="200" z="200" />
 	<object class="tent-with-throwers" speed="200" mass="200" hp="80" z="200" />
-	<object class="barrack-with-kamikadze" speed="600" mass="1000" hp="200" z="200" />
-	<object class="tent-with-kamikadze" speed="600" mass="200" hp="80" z="200" />
+	<object class="barrack-with-kamikazes" speed="600" mass="1000" hp="200" z="200" />
+	<object class="tent-with-kamikazes" speed="600" mass="200" hp="80" z="200" />
 
 	<object class="tank" speed="400" mass="500" hp="80" z="0" />
 	<object class="ai-tank" parent="tank" z="0" />
