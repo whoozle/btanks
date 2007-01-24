@@ -16,41 +16,29 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include "object.h"
+#include "destructable_object.h"
 #include "resource_manager.h"
 
-class DestructableObject : public Object {
-public:
-	DestructableObject(const std::string &object, const std::string &animation, const bool make_pierceable) : 
+DestructableObject::DestructableObject(const std::string &object, const std::string &animation, const bool make_pierceable) : 
 		Object("destructable-object"), 
 		_broken(false), _make_pierceable(make_pierceable),
 		_object(object), _animation(animation) {}
 
-	virtual Object * clone() const;
-	virtual void tick(const float dt);
-	virtual void onSpawn();
-	virtual void addDamage(Object *from, const int hp, const bool emitDeath = true);
+void DestructableObject::serialize(mrt::Serializator &s) const {
+	Object::serialize(s);
+	s.add(_broken);
+	s.add(_make_pierceable);
+	s.add(_object);
+	s.add(_animation);
+}
 
-	virtual void serialize(mrt::Serializator &s) const {
-		Object::serialize(s);
-		s.add(_broken);
-		s.add(_make_pierceable);
-		s.add(_object);
-		s.add(_animation);
-	}
-
-	virtual void deserialize(const mrt::Serializator &s) {
-		Object::deserialize(s);
-		s.get(_broken);
-		s.get(_make_pierceable);
-		s.get(_object);
-		s.get(_animation);
-	}
-
-private:
-	bool _broken, _make_pierceable;
-	std::string _object, _animation;
-};
+void DestructableObject::deserialize(const mrt::Serializator &s) {
+	Object::deserialize(s);
+	s.get(_broken);
+	s.get(_make_pierceable);
+	s.get(_object);
+	s.get(_animation);
+}
 
 void DestructableObject::addDamage(Object *from, const int dhp, const bool emitDeath) {
 	if (_broken)
