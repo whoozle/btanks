@@ -1,3 +1,17 @@
+*) bugfixes... bugfixes... bugfixes...
+*) calculate map projection with greater precision, more accurate hud. 
+*) a lot of pathfinding fixes... added synchronous A* implementation. improved performance of both A* algos.
+*) improved collision performance / restored collision caching.
+*) implemented first working AI for launcher.
+*) new objects: empty vehicles which could be placed on map, tents/barracks with troopers.
+*) almost fixed sound glitches at the end of background tune.
+
+0.3.1796:
+
+*) updated README's
+*) fixed smoke cloud z-positioning.
+*) added win32 icon and MSI installer :)
+
 0.3.1774: 
 
 *) spawn explosion on map destruction
