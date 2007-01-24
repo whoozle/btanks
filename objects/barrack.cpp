@@ -86,6 +86,7 @@ void Barrack::tick(const float dt) {
 			dpos.y = size.y / 2 + 16; //fixme: use debiloids size here.
 			
 			spawn(_object, _animation, dpos);
+			playNow("spawn");
 		}
 	}
 }
