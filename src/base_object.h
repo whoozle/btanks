@@ -78,6 +78,7 @@ public:
 	void getInfo(v3<float> &pos, v3<float> &vel) const;
 	void updateStateFromVelocity();
 	void setZ(const float z); 
+	inline const float getZ() const { return _position.z; }
 	
 	void disown();
 	inline void setOwner(const int oid) { _owner_id = oid; }
