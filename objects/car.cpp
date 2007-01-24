@@ -101,40 +101,6 @@ void Car::onSpawn() {
 Car::Car() : Object("car"), _reaction_time(true), _stop(false) //_refresh_waypoints(false) 
 {}
 
-/*
-void Car::calculate(const float dt) {	
-	v3<float> position = getPosition();
-
-	if (_waypoint_name.empty()) {
-		_waypoint_name = getNearestWaypoint("cars");
-		assert(!_waypoint_name.empty());
-		Game->getWaypoint(_waypoint, "cars", _waypoint_name);
-		_waypoint_rel = _waypoint - position;
-		LOG_DEBUG(("%s[%d] moving to nearest waypoint at %g %g", animation.c_str(), getID(), _waypoint.x, _waypoint.y));
-	}
-	_velocity = _waypoint - position;
-	GET_CONFIG_VALUE("engine.allowed-pathfinding-fault", int, f, 5);
-
-	if ((_waypoint_rel.x != 0 && _velocity.x * _waypoint_rel.x <= 0) || (math::abs(_velocity.x) < f))
-		_velocity.x = 0;
-
-	if ((_waypoint_rel.y != 0 && _velocity.y * _waypoint_rel.y <= 0) || (math::abs(_velocity.y) < f))
-		_velocity.y = 0;
-
-	if (_velocity.is0()) {
-		LOG_DEBUG(("%s[%d] reached waypoint '%s'", animation.c_str(), getID(), _waypoint_name.c_str()));
-		_waypoint_name = Game->getRandomWaypoint("cars", _waypoint_name);
-		Game->getWaypoint(_waypoint, "cars", _waypoint_name);
-		_waypoint_rel = _waypoint - getPosition();
-		LOG_DEBUG(("%s[%d] moving to next waypoint '%s' at %g %g", animation.c_str(), getID(), _waypoint_name.c_str(), _waypoint.x, _waypoint.y));
-	}
-	
-	GET_CONFIG_VALUE("objects.car.rotation-time", float, rt, 0.05);
-	limitRotation(dt, rt, true, false);
-	updateStateFromVelocity();
-}
-*/
-
 void Car::calculate(const float dt) {	
 	if (!calculatingPath() && !isDriven()) {
 		v3<float> waypoint;
@@ -152,44 +118,17 @@ void Car::calculate(const float dt) {
 		}
 		GET_CONFIG_VALUE("objects.car.pathfinding-step", int, pfs, 16);
 		findPath(waypoint.convert<int>(), pfs);
-		//_velocity = waypoint - getPosition();
 	}
 	Way way;
 	if (calculatingPath() && findPathDone(way)) {
 		if (way.empty()) {
-			//LOG_DEBUG(("no path. commit a suicide."));
+			LOG_DEBUG(("%s:%s[%d] no path. commit a suicide.", registered_name.c_str(), animation.c_str(), getID()));
 			//emit("death", NULL);
 		}
 		setWay(way);
-	}
+	} else _velocity.clear();
 
 	calculateWayVelocity();	
-	if (!isDriven())
-		_velocity.clear();
-	/*
-	if (_reaction_time.tick(dt)) {
-		v3<float> pos, vel;
-		GET_CONFIG_VALUE("objects.car.stop-distance", int, sd, 32);
-		_stop = false;
-		const Object *tl = getNearestObject("traffic-lights");
-		if (tl) {
-			v3<float> rel = getRelativePosition(tl);
-			if (rel.quick_length() < sd * sd) {
-				const std::string tl_state = tl->getState();
-				LOG_DEBUG(("%s[%d] traffic light [%s]", animation.c_str(), getID(), tl_state.c_str()));
-				const bool red = (tl_state == "flashing-red" || tl_state == "red" || tl_state == "yellow");
-				const bool green = (tl_state == "flashing-green" || tl_state == "green" || tl_state == "yellow");
-				if ( (red && _velocity.y != 0) || (green && _velocity.x != 0) ) {
-					LOG_DEBUG(("stop!"));
-					_stop = true;
-				}
-			}
-		}
-	}
-	
-	if (_stop)
-		_velocity.clear();
-	*/
 	
 	GET_CONFIG_VALUE("objects.car.rotation-time", float, rt, 0.05);
 	limitRotation(dt, rt, true, false);
