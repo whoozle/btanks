@@ -219,7 +219,7 @@
 	<animation-model id="fire-animation" speed="7">
 		<pose id="fade-in">0,1,2,3,4</pose>
 		<pose id="burn">5,6,7,6</pose>
-		<pose id="fade-out">8,9</pose>
+		<pose id="fade-out">8,9,10</pose>
 	</animation-model>
 
 	<animation-model id="dirt-animation" speed="15">
@@ -245,7 +245,7 @@
 	<animation-model id="trooper-tent-animation" speed="2">
 		<pose id="main">0</pose>
 		<pose id="spawn">0</pose>
-		<pose id="broken">1</pose>
+		<pose id="broken" z="-18">1</pose>
 	</animation-model>
 
 	<animation-model id="trooper-hut-animation" speed="2">

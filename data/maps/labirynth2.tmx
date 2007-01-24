@@ -6,7 +6,6 @@
   <property name="object:static-corpse:dead-cyan-shilka:1" value="1149,2706,-100"/>
   <property name="object:static-tank:green-tank:1" value="2976,2816"/>
   <property name="object:barrack-with-kamikazes:trooper-hut:1" value="2240,2564"/>
-  <property name="object:tent-with-throwers:trooper-tent:1" value="2640,2871"/>
   <property name="object:static-launcher:yellow-car:1" value="3133,2914"/>
   <property name="spawn:3" value="@35,49"/>
   <property name="spawn:2" value="@34,49"/>
@@ -20,6 +19,7 @@
   <property name="object:static-launcher:green-launcher:1" value="3139,3034"/>
   <property name="object:stall:stall-right:1" value="805,2793"/>
   <property name="object:static-shilka:orange-bus:1" value="2954,2982,0"/>
+  <property name="object:barrack-with-throwers:trooper-tent:1" value="2640,2871"/>
   <property name="object:stack:stack:4" value="2364,3146"/>
   <property name="object:stack:stack:3" value="2372,3112"/>
   <property name="object:stack:stack:2" value="2360,3080"/>
@@ -110,8 +110,8 @@
  </layer>
  <layer name="sand details" width="50" height="50">
   <properties>
-   <property name="z" value="-50"/>
    <property name="impassability" value="60"/>
+   <property name="z" value="-50"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAO3ZOwqAMBAFwL2QYG0n2Pm5/3GMiE3qSD7MwBbpXkhYFjbitcQYttoBCvEebblqBwAAAAAAAGBoc3beUx2pzuhrV2XP2YYSf2cqlKW2Nca4y9cTAHr19OJ83vnLDX5q930QJwAA
@@ -202,8 +202,8 @@
  <layer name="sandbags" width="50" height="50">
   <properties>
    <property name="pierceable" value="true"/>
-   <property name="impassability" value="100"/>
    <property name="z" value="200"/>
+   <property name="impassability" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAO2YwQ6CMAyGMR49euHMg3hSJ94E3/9Z3JIt+dMwGBPpWvclJoAG13V/+29NI4PXgXsE26AljsHG8VQSS6ckDqm0SuZfi7YxDiNU570d89uP2/hr6TULxy+9ZrlYHj4GLfqXnhONXG1ObvZzF5CbfqI+udo1glakQHth1UYlB9cbggZGrw+8x+clM4AfmbrH5xhXpZLLlK+S6LWobzcR7XCBc7o0v9gXS9ov0jkdSF015Jr+lqv+GvBGc+sixBP2gWPkt+G7vSl1XaylS8iFY8rrIphXLlLrzFy+SsjlnPduE9dd0AV3TmKgbyqpN2jlGx9BzxTRz+8NrpulHkZjdnpJrXe/pCe6DP2Y+hIT0UeqdsL79vSQqfumte+UXieknssjrdePlnP50vYlOWyhrwofpyPff58z1o3E8whKv0IzF8b8/AOcfTFn/cfQ0BcRKT3lA24KYt8QJwAA
@@ -255,8 +255,8 @@
  </layer>
  <layer name="buildings" width="50" height="50">
   <properties>
-   <property name="z" value="400"/>
    <property name="impassability" value="100"/>
+   <property name="z" value="400"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAO2XsUvDQBjFk/z3utbBDjroUAcd2lUJIhYLLW1RK+rQdkhBDFQpDdhOfSF35BquQaxwd+H94MHlMvS9XL/7+DyPEEIIIYQQQgghhBBiMwe+5x36pl3sxzH8n0CnUN3hLGfw3oAuoHOHc1zCexNqQVcO50i5hv8bxzMQQgj5f0L0hrsK9IdHZHiqSI4RdKuRS+fUgdeuojE0Eev3wLS7bcq+8T2eX6AHIfk/S9eRZTnUb12shQ94/YS+oO8gO58eFGM9tyxHLLzqanqB/SW0gtZBdj5tKMH6x1COXTNoIrz+5m7q4/3AcH3X8PtHGg+yNp7F3VR2D73i3ZvBHHKW1uVQ7yMb7yEVOUvrckyxN/TzWi6rX9P9XZ2li0TYm/l5LZfVrw39/S+zdFjo4bKGbOznG6Q5FOcQJwAA
