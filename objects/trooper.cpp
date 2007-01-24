@@ -173,10 +173,10 @@ void Trooper::onSpawn() {
 	if (_object == "thrower-missile") {
 		GET_CONFIG_VALUE("objects.thrower.fire-rate", float, fr, 3);
 		_fire.set(fr);
-	} else {
+	} else if (_object == "machinegunner-bullet") {
 		GET_CONFIG_VALUE("objects.machinegunner.fire-rate", float, fr, 0.2);
 		_fire.set(fr);
-	}
+	} else throw_ex(("unsupported weapon %s", _object.c_str()));
 	
 	play("hold", true);
 }
