@@ -33,7 +33,7 @@ public:
 		}
 		
 		DestructableObject::onSpawn();
-		add("machinegunner", spawnGrouped(_object, _animation, v3<float>(0, -5, 0), Centered));
+		add("machinegunner", spawnGrouped(_object, _animation, v3<float>(0, -12, 0), Centered));
 		add("top", spawnGrouped("watchtower-top", "watchtower", v3<float>(0, 0, 0), Centered));
 	}
 	

@@ -55,11 +55,58 @@ protected:
 
 class TrooperInWatchTower : public Trooper {
 public: 
-	TrooperInWatchTower(const std::string &object, const bool aim_missiles) : Trooper("trooper", object, aim_missiles) {}
+	TrooperInWatchTower(const std::string &object, const bool aim_missiles) : Trooper("trooper", object, aim_missiles), _reaction(true) {}
 	virtual Object * clone() const { return new TrooperInWatchTower(*this); }
-	virtual void calculate(const float dt) {
-		
+	
+	virtual void onSpawn() { 
+		GET_CONFIG_VALUE("objects.trooper.reaction-time", float, rt, 0.1);
+		_reaction.set(rt);
+	
+		Trooper::onSpawn();
 	}
+
+	virtual void serialize(mrt::Serializator &s) const {
+		Trooper::serialize(s);
+		_reaction.serialize(s);
+	}
+	virtual void deserialize(const mrt::Serializator &s) {
+		Trooper::deserialize(s);
+		_reaction.deserialize(s);
+	}
+	
+	virtual void calculate(const float dt) {
+		const Object *wp = ResourceManager->getClass(_object);
+		float range = wp->ttl * wp->speed;
+	
+		float tm;
+		Config->get("objects." + registered_name + ".targeting-multiplier", tm, 0.5);
+	
+		if (tm <= 0 || tm >= 1) 
+			throw_ex(("targeting multiplier must be greater than 0 and less than 1.0 (%g)", tm));
+		range *= tm;
+		range *= range;
+		//LOG_DEBUG(("range = %g", range));
+
+		std::vector<std::string> targets;
+
+		if (_aim_missiles)
+			targets.push_back("missile");
+	
+		targets.push_back("player");
+		targets.push_back("trooper");
+		targets.push_back("kamikaze");
+	
+		v3<float> pos, vel;
+		if (getNearest(targets, pos, vel) && pos.quick_length() <= range) {
+			_state.fire = true;
+			_direction = pos;
+			_direction.normalize();
+			setDirection(_direction.getDirection(getDirectionsNumber()) - 1);
+			
+		} else _state.fire = false;
+	}
+private: 
+	Alarm _reaction; 
 };
 
 class AITrooper : public Trooper {
