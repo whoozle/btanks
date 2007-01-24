@@ -293,7 +293,8 @@ void IResourceManager::createAlias(const std::string &name, const std::string &c
 	if (r == NULL)
 		throw_ex(("%s->clone(\"\") returns NULL", classname.c_str()));
 	r->registered_name = name;
-	delete _objects[name];
+	if (_objects[name] != NULL)
+		throw_ex(("attempt to create alias with duplicate name ('%s')", name.c_str()));
 	_objects[name] = r;
 }
 
