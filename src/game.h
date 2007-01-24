@@ -79,6 +79,8 @@ private:
 	void onKey(const Uint8 type, const SDL_keysym sym);
 	void onMenu(const std::string &name, const std::string &value);
 	void onIDSwapped(const int id1, const int id2);	
+	
+	void stopCredits();
 
 	bool _running, _paused;
 

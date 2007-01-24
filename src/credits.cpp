@@ -20,15 +20,22 @@
 #include "config.h"
 #include "math/unary.h"
 #include "math/binary.h"
+#include "sound/mixer.h"
 
 Credits::Credits() : _w(0), _h(0) {
 	GET_CONFIG_VALUE("engine.data-directory", std::string, data_dir, "data");
+	
+	GET_CONFIG_VALUE("engine.credits-tune", std::string, tune, "glory.ogg");
+	Mixer->play(data_dir + "/tunes/" + tune, true);
+	
 	_font.load(data_dir + "/font/big.png", sdlx::Font::AZ09, false);
 	_medium_font.load(data_dir + "/font/medium.png", sdlx::Font::AZ09, false);
 	
 	int fh = _font.getHeight(), mfh = _medium_font.getHeight();
 	
 	std::vector<std::string> lines, lines2; 
+	lines.push_back("");
+	lines.push_back("");
 	lines.push_back("BATTLE TANKS");
 	lines.push_back("");
 	lines.push_back("PROGRAMMING");
@@ -43,6 +50,14 @@ Credits::Credits() : _w(0), _h(0) {
 	lines.push_back("TOOLS");
 	lines.push_back("VLADIMIR 'GOLD' GOLDOBIN");
 	lines.push_back("");
+
+	lines.push_back("TOOLS");
+	lines.push_back("VLADIMIR 'GOLD' GOLDOBIN");
+	lines.push_back("");
+
+	lines.push_back("SOMETHING RESEMBLING MUSIC");
+	lines.push_back("VLADIMIR 'PETROVICH' VOLKOV");
+	lines.push_back("");
 	
 	lines.push_back("GAME DESIGN");
 	lines.push_back("NETIVE MEDIA GROUP 2006-2007");
@@ -53,6 +68,8 @@ Credits::Credits() : _w(0), _h(0) {
 	lines2.push_back("THE CREDITS HAVE BEEN COMPLETED IN AN ENTIRELY DIFFERENT STYLE");
 	lines2.push_back("AT GREAT EXPENSE AND AT THE LAST MINUTE");
 	lines2.push_back("BY A TEAM OF FORTY OR FIFTY WELL-TRAINED LLAMAS.");
+	lines2.push_back("");
+	lines2.push_back("");
 
 	_h = fh * lines.size() + mfh * lines2.size();
 
@@ -102,4 +119,6 @@ void Credits::render(const float dt, sdlx::Surface &surface) {
 	surface.copyFrom(_surface, (int)_position.x, (int)_position.y);
 }
 
-Credits::~Credits() {}
+Credits::~Credits() {
+	Mixer->play();
+}

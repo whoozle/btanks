@@ -296,11 +296,19 @@ void IGame::onMenu(const std::string &name, const std::string &value) {
 		PlayerManager->startClient(value);
 		
 		_main_menu.setActive(false);
-	} else if (name == "credits") {
+	} else if (name == "credits" && !PlayerManager->isServer()) {
 		LOG_DEBUG(("show credits."));
 		_credits = new Credits;
 	}
 }
+
+void IGame::stopCredits() {
+	delete _credits;
+	_credits = NULL;
+	
+	t_start = SDL_GetTicks();
+}
+
 
 
 void IGame::loadMap(const std::string &name, const bool spawn_objects) {
@@ -501,8 +509,7 @@ void IGame::run() {
 					break;
 				}
 				if (_credits) {
-					delete _credits;
-					_credits = NULL;
+					stopCredits();
 					break;
 				}
 			case SDL_KEYUP:
@@ -510,8 +517,7 @@ void IGame::run() {
 			break;
 			case SDL_MOUSEBUTTONDOWN:
 				if (_credits) {
-					delete _credits;
-					_credits = NULL;
+					stopCredits();
 				}
 			case SDL_MOUSEBUTTONUP:
 				{
