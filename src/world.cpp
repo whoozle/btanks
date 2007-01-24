@@ -306,7 +306,7 @@ void IWorld::getImpassabilityMatrix(Matrix<int> &matrix, const Object *src, cons
 	GET_CONFIG_VALUE("map.pathfinding-step", int, ps, 32);
 	const int split = 2 * ((tile_size.x - 1) / 2 + 1) / ps;
 
-	Map->getImpassabilityMatrix(matrix);
+	matrix = Map->getImpassabilityMatrix();
 	for(ObjectMap::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		Object *o = i->second;
 		if (o == src || o == dst || o->impassability <= 0 || o->piercing)

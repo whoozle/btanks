@@ -47,8 +47,7 @@ void Hud::initMap() {
 
 	assert(Map->loaded());
 	
-	Matrix<int> matrix; 
-	Map->getImpassabilityMatrix(matrix);
+	Matrix<int> matrix = Map->getImpassabilityMatrix();
 	GET_CONFIG_VALUE("hud.radar.zoom", int, zoom, 2);
 
 	LOG_DEBUG(("creating radar surface..."));
