@@ -27,26 +27,27 @@
 #include "sample.h"
 #include "al_ex.h"
 
-OggStream::OggStream() : _opened(false) {
+OggStream::OggStream() : _opened(false), _running(false), _repeat(false) {
 	GET_CONFIG_VALUE("engine.sound.polling-interval", int, delay, 10);
 	_delay = delay;
 }
 
 
-void OggStream::open(const std::string &fname) {
+void OggStream::open(const std::string &fname, const bool repeat) {
 	close();
 	_filename = fname;
 	_running = true;
+	_repeat = repeat;
 	start();
 }
 
 
-void OggStream::_open(const std::string &fname) {
+void OggStream::_open() {
 	mrt::File file;
-	file.open(fname, "rb");
+	file.open(_filename, "rb");
 	int r = ov_open(file, &_ogg_stream, NULL, 0);
 	if (r < 0)
-		throw_ogg(r, ("ov_open('%s')", fname.c_str()));
+		throw_ogg(r, ("ov_open('%s')", _filename.c_str()));
 	_file = file.unlink();
 	
 	_vorbis_info = ov_info(&_ogg_stream, -1);
@@ -232,17 +233,30 @@ void OggStream::decode(Sample &sample, const std::string &fname) {
 }
 
 const int OggStream::run() {
-	_open(_filename);
-    while(_running && update()) {
-		if(!playing()) {
-			if(!play()) {
-				LOG_WARN(("Ogg abruptly stopped."));
+	do {
+		_open();
+    	while(_running && update()) {
+			if(!playing()) {
+				if(!play()) {
+					LOG_WARN(("Ogg abruptly stopped."));
+					break;
+				} else
+					LOG_WARN(("ogg stream was interrupted.."));
+			} else 
+				SDL_Delay(_delay);
+		}
+	
+		while(_running) {
+			ALenum state;
+			alGetSourcei(_source, AL_SOURCE_STATE, &state);
+	
+			if (state != AL_PLAYING)
 				break;
-			} else
-				LOG_WARN(("ogg stream was interrupted.."));
-		} else 
-			SDL_Delay(_delay);
-	}
+			else
+				SDL_Delay(_delay);
+		}
+		
+	} while(_running && _repeat);	
 	_running = false;
 	LOG_DEBUG(("sound thread exits.."));
 	return 0;

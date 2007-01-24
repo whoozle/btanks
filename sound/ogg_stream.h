@@ -33,7 +33,7 @@ class Chunk;
 class Sample;
 class OggStream : public sdlx::Thread {
 public: 
-	void open(const std::string &fname);
+	void open(const std::string &fname, const bool continuous);
 	void close();
 
 	const bool alive() const { return _running; }	
@@ -51,7 +51,7 @@ private:
 	virtual const int run(); 
 	const bool update();
 	void empty();
-	void _open(const std::string &fname);
+	void _open();
 	const bool stream(ALuint buffer);
 
 	std::string _filename;
@@ -64,7 +64,7 @@ private:
 	ALuint _source;
 	ALenum _format;
 	
-	bool _opened, _running;
+	bool _opened, _running, _repeat;
 	int _delay;
 };
 

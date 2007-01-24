@@ -39,6 +39,7 @@ public:
 	void init(const bool no_sound, const bool no_music);
 	void loadPlaylist(const std::string &file);
 	void play();
+	const bool play(const std::string &fname, const bool continuous = false);
 	
 	//sample part
 	void setListener(const v3<float> &pos, const v3<float> &vel);

@@ -109,6 +109,26 @@ void IMixer::loadPlaylist(const std::string &file) {
 	LOG_DEBUG(("loaded %d songs in playlist", _playlist.size()));
 }
 
+const bool IMixer::play(const std::string &fname, const bool continuous) {
+	LOG_DEBUG(("playing %s",fname.c_str()));
+	std::string::size_type dp = fname.rfind('.');
+	std::string ext = "unknown";
+	if (dp != std::string::npos)
+		ext = fname.substr(dp + 1);
+	
+	if (ext != "ogg") {
+		LOG_WARN(("cannot play non-ogg files(%s). fixme.", ext.c_str()));
+		return false;
+	}
+
+	if (_ogg == NULL) 
+		_ogg = new OggStream;
+
+	_ogg->open(fname, continuous);
+	return true;
+}
+
+
 void IMixer::play() {
 	if (_nomusic) 
 		return;
@@ -126,22 +146,9 @@ void IMixer::play() {
 	assert(i != _playlist.end());
 	
 	const std::string fname = i->first;
-	LOG_DEBUG(("playing %s",fname.c_str()));
-	std::string::size_type dp = fname.rfind('.');
-	std::string ext = "unknown";
-	if (dp != std::string::npos)
-		ext = fname.substr(dp + 1);
-	
-	if (ext != "ogg") {
-		LOG_WARN(("cannot play non-ogg files(%s). fixme.", ext.c_str()));
+	if (!play(fname))
 		return;
-	}
-
 	i->second = true;
-	if (_ogg == NULL) 
-		_ogg = new OggStream;
-
-	_ogg->open(fname);
 }
 
 void IMixer::loadSample(const std::string &filename) {
