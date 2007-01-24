@@ -94,6 +94,20 @@
 		<pose id="dead">6</pose>
 	</animation-model>
 
+	<animation-model id="ziehharmonikaspieler-animation" speed="7">
+		<pose id="hold">0</pose>
+		<pose id="walk">1,2,3,2,4,5,6,5</pose>
+		<pose id="run">7,8,9,10</pose>
+	</animation-model>
+
+	<animation-model id="dead-ziehharmonikaspieler-animation" speed="5">
+		<pose id="fade-in">0,1,2,3</pose>
+		<pose id="burn" speed="100">3</pose> <!-- small hack to avoid warnings from corpse object. -->
+		<pose id="fade-out">4,5</pose>
+		<pose id="dead">6</pose>
+	</animation-model>
+
+
 	<animation-model id="dead-man-animation-static" speed="5">
 		<pose id="dead">2</pose>
 	</animation-model>
@@ -337,6 +351,9 @@
 	<animation id="man" tile="man01.png" model="man-animation"/>
 	<animation id="dead-man" tile="man01_dead01.png" model="dead-man-animation"/>
 	<animation id="dead-man-static" tile="man01_dead01.png" model="dead-man-animation-static"/>
+
+	<animation id="ziehharmonikaspieler" tile="ziehharmonikaspieler.png" model="ziehharmonikaspieler-animation"/>
+	<animation id="dead-ziehharmonikaspieler" tile="ziehharmonikaspieler_dead.png" model="dead-ziehharmonikaspieler-animation"/>
 
 	<animation id="fire" tile="fire.png" model="fire-animation" />
 	<animation id="smoke-cloud" tile="smoke_cloud.png" model="smoke-cloud-animation" size="192"/>
