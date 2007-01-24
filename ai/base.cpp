@@ -119,6 +119,8 @@ const bool Base::checkTarget(const Object * target, const std::string &weapon) c
 
 
 void Base::calculate(const float dt) {
+	static const std::set<std::string> empty_enemies;
+
 	const bool refresh_path = _refresh_path.tick(dt);
 	const bool dumb = !_reaction_time.tick(dt);
 	const Object *target = NULL;
@@ -133,7 +135,6 @@ void Base::calculate(const float dt) {
 	weapon1 = getWeapon(0), weapon2 = getWeapon(1);
 	amount1 = getWeaponAmount(0), amount2 = getWeaponAmount(1);
 	
-	static const std::set<std::string> empty_enemies;
 	
 	target = World->findTarget(this, (amount1 > 0 || amount2 > 0)?_enemies:empty_enemies, _bonuses, _traits);
 	if (target != NULL && ((refresh_path && isEnemy(target)) || target->getID() != _target_id)) {
