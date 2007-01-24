@@ -493,6 +493,10 @@ void IWorld::tick(Object &o, const float dt) {
 
 	//LOG_DEBUG(("im = %f", im));
 	v3<float> dpos = o.speed * o._velocity * dt;
+	dpos.z = 0;
+	if (dpos.is0()) 
+		return;
+	
 	v3<int> new_pos((o._position + dpos).convert<int>());
 	v3<int> old_pos = o._position.convert<int>();
 
