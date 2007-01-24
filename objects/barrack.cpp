@@ -37,6 +37,7 @@ public:
 		s.add(_broken);
 		s.add(_object);
 		s.add(_animation);
+		_spawn.serialize(s);
 	}
 
 	virtual void deserialize(const mrt::Serializator &s) {
@@ -44,6 +45,7 @@ public:
 		s.get(_broken);
 		s.get(_object);
 		s.get(_animation);
+		_spawn.deserialize(s);
 	}
 
 private:
@@ -75,15 +77,15 @@ void Barrack::tick(const float dt) {
 		//LOG_DEBUG(("over"));
 		emit("death", this);
 	}
-	if (_spawn.tick(dt)) {
+	if (!_broken && _spawn.tick(dt)) {
 		int max_c;
 		Config->get("objects." + registered_name + ".maximum-children", max_c, 5);
 		int n = World->getChildren(getID());
 		if (n < max_c) {
 			v3<float>dpos;
-			dpos.y = size.y;
+			dpos.y = size.y / 2 + 16; //fixme: use debiloids size here.
 			
-			Object *o = spawn(_object, _animation, dpos);
+			spawn(_object, _animation, dpos);
 		}
 	}
 }
