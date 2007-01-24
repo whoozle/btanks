@@ -394,8 +394,8 @@
 
 	<animation id="helicopter" model="helicopter-animation" tile="helicopter.png" size="128" />
 	<animation id="watchtower" model="watchtower-animation" tile="watchtower.png" size="128" />
-	<animation id="trooper-tent" model="trooper-tent-animation" tile="trooper-tent.png" size="128" />
-	<animation id="trooper-hut" model="trooper-hut-animation" tile="trooper-hut.png" tile_width="128" tile_height="192" />
+	<animation id="trooper-tent" model="trooper-tent-animation" tile="trooper_tent.png" size="128" />
+	<animation id="trooper-hut" model="trooper-hut-animation" tile="trooper_hut.png" tile_width="128" tile_height="192" />
 	
 	<!-- troops --> 
 	<animation id="paratrooper" model="paratrooper-animation" tile="paratrooper.png" />
