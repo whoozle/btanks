@@ -19,8 +19,8 @@
 #include "destructable_object.h"
 #include "resource_manager.h"
 
-DestructableObject::DestructableObject(const std::string &object, const std::string &animation, const bool make_pierceable) : 
-		Object("destructable-object"), 
+DestructableObject::DestructableObject(const std::string &classname, const std::string &object, const std::string &animation, const bool make_pierceable) : 
+		Object(classname), 
 		_broken(false), _make_pierceable(make_pierceable),
 		_object(object), _animation(animation) {}
 
@@ -75,7 +75,7 @@ Object* DestructableObject::clone() const  {
 	return new DestructableObject(*this);
 }
 
-REGISTER_OBJECT("destructable-object", DestructableObject, ("", "", false));
-REGISTER_OBJECT("destructable-object(pierceable)", DestructableObject, ("", "", true));
-REGISTER_OBJECT("destructable-object-with-fire", DestructableObject, ("fire", "fire", false));
-REGISTER_OBJECT("destructable-object-with-fire(pierceable)", DestructableObject, ("fire", "fire", true));
+REGISTER_OBJECT("destructable-object", DestructableObject, ("destructable-object", "", "", false));
+REGISTER_OBJECT("destructable-object(pierceable)", DestructableObject, ("destructable-object", "", "", true));
+REGISTER_OBJECT("destructable-object-with-fire", DestructableObject, ("destructable-object", "fire", "fire", false));
+REGISTER_OBJECT("destructable-object-with-fire(pierceable)", DestructableObject, ("destructable-object", "fire", "fire", true));
