@@ -25,9 +25,52 @@ public:
 	WatchTower(const std::string &object, const std::string &animation) : 
 		DestructableObject("watchtower", "fire", "fire", true), _object(object), _animation(animation) {}
 	Object *clone() const { return new WatchTower(*this); }
+	
+	virtual void onSpawn() {
+		if (_object == "top") {
+			play("top", true);
+			return;
+		}
+		
+		DestructableObject::onSpawn();
+		add("machinegunner", spawnGrouped(_object, _animation, v3<float>(0, -5, 0), Centered));
+		add("top", spawnGrouped("watchtower-top", "watchtower", v3<float>(0, 0, 0), Centered));
+	}
+	
+	virtual void tick(const float dt) {
+		DestructableObject::tick(dt);
+		if (_broken) {
+			remove("machinegunner");
+			remove("top");
+		}
+	}
+	
+	virtual void emit(const std::string &event, Object * emitter) {
+		if (_object == "top") {
+			Object::emit(event, emitter);
+			return;
+		}
+		DestructableObject::emit(event, emitter);
+	}
+
+
+	virtual void serialize(mrt::Serializator &s) const {
+		DestructableObject::serialize(s);
+		s.add(_object);
+		s.add(_animation);
+	}
+
+	virtual void deserialize(const mrt::Serializator &s) {
+		DestructableObject::deserialize(s);
+		s.get(_object);
+		s.get(_animation);
+	}
+
+	
 private: 
 	std::string _object, _animation;
 };
 
+REGISTER_OBJECT("watchtower-top", WatchTower, ("top", ""));
 REGISTER_OBJECT("watchtower-with-machinegunner", WatchTower, ("machinegunner-in-watchtower", "machinegunner"));
 REGISTER_OBJECT("watchtower-with-thrower", WatchTower, ("thrower-in-watchtower", "thrower"));

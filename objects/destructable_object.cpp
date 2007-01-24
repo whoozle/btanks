@@ -47,6 +47,7 @@ void DestructableObject::addDamage(Object *from, const int dhp, const bool emitD
 	Object::addDamage(from, dhp, false);
 	if (hp <= 0) {
 		_broken = true;
+		hp = -1;
 		if (_make_pierceable)
 			pierceable = true;
 		cancelAll();
