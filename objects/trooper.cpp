@@ -53,6 +53,15 @@ protected:
 	Alarm _fire;
 };
 
+class TrooperInWatchTower : public Trooper {
+public: 
+	TrooperInWatchTower(const std::string &object, const bool aim_missiles) : Trooper("trooper", object, aim_missiles) {}
+	virtual Object * clone() const { return new TrooperInWatchTower(*this); }
+	virtual void calculate(const float dt) {
+		
+	}
+};
+
 class AITrooper : public Trooper {
 public:
 	AITrooper(const std::string &object, const bool aim_missiles) : Trooper("trooper", object, aim_missiles), _reaction(true) {}
@@ -192,3 +201,6 @@ Object* Trooper::clone() const  {
 REGISTER_OBJECT("machinegunner-player", Trooper, ("player", "machinegunner-bullet", true));
 REGISTER_OBJECT("machinegunner", AITrooper, ("machinegunner-bullet", true));
 REGISTER_OBJECT("thrower", AITrooper, ("thrower-missile", false));
+
+REGISTER_OBJECT("machinegunner-in-watchtower", TrooperInWatchTower, ("machinegunner-bullet", true));
+REGISTER_OBJECT("thrower-in-watchtower", TrooperInWatchTower, ("thrower-missile", false));
