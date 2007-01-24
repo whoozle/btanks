@@ -190,12 +190,12 @@ void Base::calculate(const float dt) {
 		}
 	} else  {
 		//LOG_DEBUG(("idle"));
-		/*v3<float> dir = _target_position.convert<float>() - getPosition();
+		v3<float> dir = _target_position.convert<float>() - getPosition();
 		dir.normalize();
-		setDirection(dir.getDirection(getDirectionsNumber()) - 1);
-		if (_enemy) 
-			_state.fire = true;
-		*/
+		int t_dir = dir.getDirection(getDirectionsNumber()) - 1;
+		if (t_dir != -1 && t_dir != getDirection())
+			_velocity = dir;
+		
 	}
 	
 	calculateWayVelocity();
