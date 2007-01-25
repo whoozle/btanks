@@ -106,6 +106,8 @@ void Bullet::emit(const std::string &event, Object * emitter) {
 			spawn("explosion", "explosion", dpos);
 		} else if (_type == "dirt") {
 			spawn("dirt", "dirt", dpos);
+		} else if (_type == "cannon") {
+			spawn("cannon-explosion", "cannon-explosion", dpos);
 		} else if (event == "collision" && _type == "ricochet" && (emitter == NULL || emitter->hp == -1)) {
 			const int dirs = getDirectionsNumber();
 			if (dirs != 16) 
@@ -139,3 +141,5 @@ REGISTER_OBJECT("machinegunner-bullet", Bullet, ("regular", 16));
 
 REGISTER_OBJECT("dispersion-bullet", Bullet, ("dispersion", 16));
 REGISTER_OBJECT("ricochet-bullet", Bullet, ("ricochet", 16));
+
+REGISTER_OBJECT("cannon-bullet", Bullet, ("cannon", 8));

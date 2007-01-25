@@ -162,6 +162,10 @@
 	<animation-model id="nuclear-explosion-animation" speed="5">
 		<pose id="boom" sound="nuke-explosion.ogg">5,4,3,2,1,0</pose>
 	</animation-model>
+
+	<animation-model id="cannon-explosion-animation" speed="14">
+		<pose id="boom" sound="explosion.ogg">5,4,3,2,1,0</pose>
+	</animation-model>
 	
 	<animation-model id="missile-explosion-animation" speed="7">
 		<pose id="boom" sound="explosion.ogg">0,1,2,3</pose>
@@ -257,13 +261,19 @@
 	</animation-model>
 
 
-	<animation-model id="yellow-submarine" speed="5">
+	<animation-model id="yellow-submarine-animation" speed="5">
 		<pose id="hold">0</pose>
 		<pose id="fade-in">0,1,2,3,4</pose>
 		<pose id="main" speed="1">4,5,4,6</pose>
 		<pose id="fade-out">4,3,2,1,0</pose>
 	</animation-model>
-
+	
+	<animation-model id="cannon-animation" speed="5">
+		<pose id="hold">0</pose>
+		<pose id="fire">1,2,3</pose>
+		<pose id="real-fire">3</pose>
+		<pose id="after-fire">4</pose>
+	</animation-model>
 
 	<animation id="damage-digits" tile="../font/small.png" model="single-tile" tile_width="10" tile_height="16" />
 
@@ -382,17 +392,20 @@
 	<!-- end of items -->
 
 	<animation id="pond" tile="pond.png" model="pond-animation" size="256" />
-	<animation id="missile-explosion" tile="missile_blast.png" model="missile-explosion-animation" />
-
+	
 	<animation id="bullet" tile="bullet.png" model="bullet-animation"/>
 	<animation id="dispersion-bullet" tile="bullet16.png" model="bullet-animation"/>
 	<animation id="ricochet-bullet" tile="bullet16.png" model="bullet-animation"/>
 	<animation id="vehicle-machinegunner-bullet" tile="machinegunner_bullet.png" model="bullet-animation"/>
 	<animation id="machinegunner-bullet" tile="machinegunner_bullet2.png" model="bullet-animation"/>
 	<animation id="dirt-bullet" tile="dirt_bullet.png" model="bullet-animation"/>
+	<animation id="cannon-bullet" tile="cannon_bullet.png" model="bullet-animation"/>
+	
 	<animation id="explosion" tile="explosion.png" model="explosion-animation" />
+	<animation id="missile-explosion" tile="missile_blast.png" model="missile-explosion-animation" />
 	<animation id="building-explosion" tile="building_explosion_128.png" model="building-explosion-animation" size="128" />
 	<animation id="nuclear-explosion" tile="nuclear_explosion.png" model="nuclear-explosion-animation" size="448" />
+	<animation id="cannon-explosion" tile="cannon_explosion.png" model="cannon-explosion-animation" size="128" />
 	<animation id="traffic-lights" tile="traffic_lights.png" model="traffic-lights-animation" />
 
 	<animation id="gate" tile="gate01.png" model="destructable-object-animation" tile_width="128" tile_height="64" />
@@ -415,6 +428,7 @@
 	<animation id="watchtower" model="watchtower-animation" tile="watchtower.png" size="128" />
 	<animation id="trooper-tent" model="trooper-tent-animation" tile="trooper_tent.png" size="128" />
 	<animation id="trooper-hut" model="trooper-hut-animation" tile="trooper_hut.png" tile_width="128" tile_height="192" />
+	<animation id="cannon" model="cannon-animation" tile="cannon.png" size="64" />
 	
 	<!-- troops --> 
 	<animation id="paratrooper" model="paratrooper-animation" tile="paratrooper.png" />
@@ -435,7 +449,7 @@
 	<animation id="road-sign09" model="destructable-object-animation" tile="road_sign09.png" size="32" />
 	<animation id="road-sign10" model="destructable-object-animation" tile="road_sign10.png" size="32" />
 
-	<animation id="submarine" model="yellow-submarine" tile="submarine.png" tile_width="192" tile_height="128" />
+	<animation id="submarine" model="yellow-submarine-animation" tile="submarine.png" tile_width="192" tile_height="128" />
 
 	<animation id="thrower" model="trooper-animation" tile="thrower.png" />
 	<animation id="thrower-missile" model="single-tile" tile="thrower_missile.png" />
@@ -472,6 +486,8 @@
 	<object parent="barrack-with-machinegunners" class="tent-with-machinegunners" speed="400" hp="80" />
 	<object parent="barrack-with-throwers" class="tent-with-throwers" speed="200" hp="80" />
 	<object parent="barrack-with-kamikazes" class="tent-with-kamikazes" speed="600" hp="80" />
+	
+	<object class="cannon" mass="1000" hp="50" z="200" impassability="1" />
 
 	<object class="tank" speed="400" mass="500" hp="80" z="0" />
 	<object class="ai-tank" parent="tank" z="0" />
@@ -485,6 +501,7 @@
 	<object class="dispersion-bullet" speed="1000" mass="2" ttl="0.5" hp="10" z="-10" />
 	<object class="machinegunner-bullet" speed="1100" mass="2" ttl="1" hp="2" z="-10" />
 	<object class="dirt-bullet" speed="600" mass="1" ttl="0.5" hp="0" z="-10" />
+	<object class="cannon-bullet" speed="600" mass="1" ttl="1" hp="0" z="-10" />
 
 	<object class="shilka" speed="450" mass="400" hp="60" z="0" />
 	<object class="static-shilka" parent="shilka" z="0" />
@@ -509,9 +526,12 @@
 	<object class="train-smoke" z="101" />
 
 	<object class="corpse" hp="1000" ttl="10" fadeout_time="1" z="-5" impassability="0" />
+	
 	<object class="explosion" hp="1" z="580" />
 	<object class="smoke-cloud" impassability="-1" hp="150" z="580" ttl="30" fadeout_time="2" />
 	<object class="nuclear-explosion" hp="1000" mass="10000" impassability="-1" z="900" />
+	<object class="cannon-explosion" hp="30" impassability="-1" z="900" />
+	
 	<object class="dirt" impassability="0.5" z="-20" ttl="50" fadeout="5" />
 	<object class="pond" hp="1000" pierceable="true" impassability="1" z="150" />
 	<object class="gate" hp="20" impassability="1" z="150" />

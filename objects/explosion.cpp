@@ -27,7 +27,7 @@
 
 class Explosion : public Object {
 public:
-	Explosion(const std::string &classname) : Object(classname), _damaged_objects(), _damage_done(false) { impassability = 0; }
+	Explosion() : Object("explosion"), _damaged_objects(), _damage_done(false) { impassability = 0; }
 	virtual void tick(const float dt);
 	virtual Object * clone() const;
 	virtual void onSpawn();
@@ -90,7 +90,10 @@ void Explosion::tick(const float dt) {
 
 	GET_CONFIG_VALUE("objects.nuclear-explosion.damage-map-after", float, dma, 0.65);
 
-	if (classname == "nuclear-explosion" && !_damage_done && getStateProgress() >= dma && state != "start") {
+	if  (
+			(registered_name == "nuclear-explosion" || registered_name == "cannon-explosion") && 
+			!_damage_done && getStateProgress() >= dma && state != "start"
+		) {
 		_damage_done = true;
 		damageMap();
 	}
@@ -101,14 +104,14 @@ void Explosion::tick(const float dt) {
 }
 
 void Explosion::onSpawn() {
-	if (classname == "smoke-cloud") {
+	if (registered_name == "smoke-cloud") {
 		play("start", false);
 		play("main", true);
 		return;
 	}
 	
 	play("boom", false);
-	if (classname == "nuclear-explosion") 
+	if (registered_name == "nuclear-explosion") 
 		Game->shake(1, 4);
 }
 
@@ -117,9 +120,11 @@ void Explosion::emit(const std::string &event, Object * emitter) {
 		if (emitter == NULL || emitter->pierceable)
 			return;
 		
-		if (classname == "nuclear-explosion") {
+		if (registered_name == "nuclear-explosion" || registered_name == "cannon-explosion") {
 			//nuke damage.
-			if (emitter == NULL || emitter->classname == "nuclear-explosion")
+			if (emitter == NULL || 
+				emitter->registered_name == "nuclear-explosion" || 
+				emitter->registered_name == "cannon-explosion")
 				return;
 			
 			const int id = emitter->getID();
@@ -130,10 +135,10 @@ void Explosion::emit(const std::string &event, Object * emitter) {
 			_damaged_objects.insert(id);
 		
 			emitter->addDamage(this, max_hp);
-		} else if (classname == "smoke-cloud") {
+		} else if (registered_name == "smoke-cloud") {
 			//poison cloud ;)
 			
-			const std::string &ec = emitter->classname;
+			const std::string &ec = emitter->registered_name;
 			if (ec != "trooper" && ec != "citizen" && ec != "kamikaze")
 				return;
 			
@@ -153,6 +158,7 @@ Object* Explosion::clone() const  {
 	return new Explosion(*this);
 }
 
-REGISTER_OBJECT("explosion", Explosion, ("explosion"));
-REGISTER_OBJECT("nuclear-explosion", Explosion, ("nuclear-explosion"));
-REGISTER_OBJECT("smoke-cloud", Explosion, ("smoke-cloud"));
+REGISTER_OBJECT("explosion", Explosion, ());
+REGISTER_OBJECT("nuclear-explosion", Explosion, ());
+REGISTER_OBJECT("smoke-cloud", Explosion, ());
+REGISTER_OBJECT("cannon-explosion", Explosion, ());
