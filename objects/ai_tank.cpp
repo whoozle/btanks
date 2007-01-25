@@ -97,7 +97,7 @@ void AITank::onSpawn() {
 void AITank::calculate(const float dt) {
 	ai::Base::calculate(dt);
 	
-	GET_CONFIG_VALUE("objects.launcher.rotation-time", float, rt, 0.07);
+	GET_CONFIG_VALUE("objects.tank.rotation-time", float, rt, 0.05);
 	limitRotation(dt, rt, true, false);
 }
 
