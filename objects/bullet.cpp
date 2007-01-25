@@ -67,13 +67,11 @@ void Bullet::tick(const float dt) {
 			vel.fromDirection(d, dirs);
 			Object * b = spawn(registered_name, animation, v3<float>::empty, vel);
 			b->ttl = ttl * ttl_m;
-			b->setOwner(getOwner());
 			
 			d = (dirs + getDirection() - 1) % dirs;
 			vel.fromDirection(d, dirs);
 			b = spawn(registered_name, animation, v3<float>::empty, vel);
 			b->ttl = ttl * ttl_m;
-			b->setOwner(getOwner());
 		}
 	}
 }

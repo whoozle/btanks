@@ -157,8 +157,7 @@ const bool IWorld::collides(Object *obj, const v3<int> &position, Object *o, con
 			o->isDead() || obj->isDead() 
 			||
 			//owner stuff
-			(obj->_owner_id != 0 && (obj->_owner_id == o->_id || obj->_owner_id == o->_owner_id )) || 
-			(o->_owner_id != 0 && o->_owner_id == obj->_id) ||
+			obj->hasSameOwner(o) ||
 			(obj->_follow != 0 && obj->_follow == o->_id) || 
 			(o->_follow != 0 && o->_follow == obj->_id) 
 		) {
@@ -820,9 +819,13 @@ Object *IWorld::getObjectByID(const int id) {
 
 Object* IWorld::spawn(Object *src, const std::string &classname, const std::string &animation, const v3<float> &dpos, const v3<float> &vel) {
 	Object *obj = ResourceManager->createObject(classname, animation);
-	assert(obj->_owner_id == 0);
+	
+	assert(obj->_owners.size() == 0);
+	obj->_owners = src->_owners;
+	obj->addOwner(src->_id);
 	//LOG_DEBUG(("%s spawns %s", src->classname.c_str(), obj->classname.c_str()));
-	obj->_spawned_by = obj->_owner_id = src->_id;
+	obj->_spawned_by = src->_id;
+	
 	obj->_velocity = vel;
 	
 	//LOG_DEBUG(("spawning %s, position = %g %g dPosition = %g:%g, velocity: %g %g", 
@@ -839,8 +842,10 @@ Object* IWorld::spawn(Object *src, const std::string &classname, const std::stri
 
 Object * IWorld::spawnGrouped(Object *src, const std::string &classname, const std::string &animation, const v3<float> &dpos, const GroupType type) {
 	Object *obj = ResourceManager->createObject(classname, animation);
-	assert(obj->_owner_id == 0);
-	obj->_spawned_by = obj->_owner_id = src->_id;
+	assert(obj->_owners.size() == 0);
+	obj->_owners = src->_owners;
+	obj->addOwner(src->_id);
+	obj->_spawned_by = src->_id;
 
 	
 	obj->_follow_position = dpos;
@@ -1016,12 +1021,6 @@ TRY {
 } CATCH("applyUpdate", throw;)
 }
 
-const bool IWorld::isAlly(const Object *o1, const Object *o2) {
-	return (o1->_id == o2->_id || 
-			o1->_owner_id == o2->_id || o2->_owner_id == o1->_id || 
-			(o1->_owner_id != 0 && o1->_owner_id == o2->_owner_id));
-}
-
 const Object* IWorld::getNearestObject(const Object *obj, const std::string &classname) const {
 	const Object *result = NULL;
 	float distance = std::numeric_limits<float>::infinity();
@@ -1029,10 +1028,8 @@ const Object* IWorld::getNearestObject(const Object *obj, const std::string &cla
 	for(ObjectMap::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		const Object *o = i->second;
 		//LOG_DEBUG(("%s is looking for %s. found: %s", obj->classname.c_str(), classname.c_str(), o->classname.c_str()));
-		if (o->_id == obj->_id || o->classname != classname || 
-			o->_owner_id == obj->_id || obj->_owner_id == o->_id || 
-			(o->_owner_id != 0 && o->_owner_id == obj->_owner_id)
-		) continue;
+		if (o->_id == obj->_id || o->classname != classname || o->hasSameOwner(obj))
+			continue;
 
 		v3<float> cpos = o->_position + o->size / 2;
 		float d = obj->_position.quick_distance(cpos);
@@ -1065,7 +1062,7 @@ const bool IWorld::getNearest(const Object *obj, const std::string &classname, v
 const int IWorld::getChildren(const int id) const {
 	int c = 0;
 	for(ObjectMap::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
-		if (i->second->_spawned_by == id || i->second->_owner_id == id) 
+		if (i->second->_spawned_by == id || i->second->hasOwner(id)) 
 			++c;
 	}
 	return c;
@@ -1168,7 +1165,7 @@ const Object * IWorld::findTarget(const Object *src, const std::set<std::string>
 	float result_value = 0;
 	for(ObjectMap::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		const Object *o = i->second;
-		if (o->impassability == 0 || o->hp == -1 ||isAlly(src, o)) 
+		if (o->impassability == 0 || o->hp == -1 || o->_id == src->_id || o->hasSameOwner(src)) 
 			continue;
 		const bool enemy = enemies.find(o->classname) != enemies.end();
 		const bool bonus = bonuses.find(o->registered_name) != bonuses.end();

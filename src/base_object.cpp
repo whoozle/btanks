@@ -32,7 +32,7 @@ BaseObject::BaseObject(const std::string &classname):
 	need_sync(false),
 	_dead(false), 
 	_position(),
-	_owner_id(0), _spawned_by(0) {
+	_owners(), _spawned_by(0) {
 	//LOG_DEBUG(("allocated id %ld", _id));
 }
 
@@ -74,7 +74,12 @@ void BaseObject::serialize(mrt::Serializator &s) const {
 
 	s.add(_dead);
 	_position.serialize(s);
-	s.add(_owner_id);
+	
+	int n = _owners.size();
+	s.add(n);
+	for(std::deque<int>::const_iterator i = _owners.begin(); i != _owners.end(); ++i) 
+		s.add(*i);
+		
 	s.add(_spawned_by);
 }
 
@@ -102,7 +107,16 @@ void BaseObject::deserialize(const mrt::Serializator &s) {
 
 	s.get(_dead);
 	_position.deserialize(s);
-	s.get(_owner_id);
+	
+	_owners.clear();
+	int n;
+	s.get(n);
+	while(n--) {
+		int id;
+		s.get(id);
+		_owners.push_back(id);
+	}
+	
 	s.get(_spawned_by);
 }
 
@@ -200,8 +214,49 @@ const bool BaseObject::take(const BaseObject *obj, const std::string &type) {
 }
 
 void BaseObject::disown() {
-	_owner_id = 0;
+	_owners.clear();
 }
+
+void BaseObject::addOwner(const int oid) {
+	_owners.push_front(oid);
+}
+
+const int BaseObject::_getOwner() const {
+	return *_owners.begin();
+}
+
+const bool BaseObject::hasSameOwner(const BaseObject *other) const {
+	for(std::deque<int>::const_iterator i = _owners.begin(); i != _owners.end(); ++i) {
+		if (*i == other->_id)
+			return true;
+		
+		for(std::deque<int>::const_iterator j = other->_owners.begin(); j != other->_owners.end(); ++j) 
+			if (*i == *j || *j == _id)
+				return true;
+	}
+	return false;
+}
+
+const bool BaseObject::hasOwner(const int oid) const {
+	for(std::deque<int>::const_iterator i = _owners.begin(); i != _owners.end(); ++i)
+		if (*i == oid)
+			return true;
+	return false;
+}
+
+void BaseObject::removeOwner(const int oid) {
+	for(std::deque<int>::iterator i = _owners.begin(); i != _owners.end(); ) {
+		if (*i == oid) {
+			i = _owners.erase(i);
+		} else ++i;
+	}
+}
+
+void BaseObject::truncateOwners(const int n) {
+	if ((int)_owners.size() > n) 
+		_owners.resize(n);
+}
+
 
 const v3<float> BaseObject::getRelativePosition(const BaseObject *obj) const {
 	return obj->_position - _position - size / 2 + obj->size / 2;

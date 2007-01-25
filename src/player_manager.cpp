@@ -773,9 +773,18 @@ void IPlayerManager::onPlayerDeath(const Object *player, const Object *killer) {
 	if (isClient())
 		return;
 	
-	PlayerSlot *slot = getSlotByID(killer->getOwner());
+	PlayerSlot *slot = NULL;
+
+	std::deque<int> owners;
+	killer->getOwners(owners);
+	for(std::deque<int>::const_iterator i = owners.begin(); i != owners.end(); ++i) {
+		slot = getSlotByID(*i);
+		if (slot != NULL) 
+			break;
+	}
+	
 	if (slot == NULL)
-		slot = getSlotByID(killer->getRealOwner());
+		slot = getSlotByID(killer->getSummoner());
 
 	if (slot == NULL)
 		return;

@@ -47,8 +47,7 @@ void Paratrooper::tick(const float dt) {
 	Object::tick(dt);
 	if (getState().empty()) {	
 		//LOG_DEBUG(("over"));
-		Object *o = spawn(_spawn_object, _spawn_animation);
-		o->setOwner(getOwner());
+		spawn(_spawn_object, _spawn_animation);
 		emit("death", this);
 	}
 }

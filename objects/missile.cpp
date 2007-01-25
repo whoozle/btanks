@@ -80,7 +80,7 @@ void Missile::calculate(const float dt) {
 		int dir = ((int)(_moving_time * rs)) % 8;
 		setDirection(dir);
 
-		Object *leader = World->getObjectByID(getOwner());
+		Object *leader = World->getObjectByID(_getOwner());
 		if (leader == NULL) {
 			return;
 		}
@@ -124,8 +124,7 @@ void Missile::emit(const std::string &event, Object * emitter) {
 		spawn("smoke-cloud", "smoke-cloud", dpos);
 		Object::emit(event, emitter);
 	} else if (event == "death" && type == "nuke") {
-		//Object *e = 
-		Object *o = World->getObjectByID(getRealOwner()); //player
+		Object *o = World->getObjectByID(getSummoner()); //player
 		v3<float> dpos;
 		if (o != NULL) {
 			dpos = o->getRelativePosition(this);

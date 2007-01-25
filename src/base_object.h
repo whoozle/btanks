@@ -23,6 +23,7 @@
 #include "mrt/serializable.h" 
 #include "player_state.h"
 #include "object_common.h"
+#include <deque>
 
 namespace sdlx {
 	class Surface;
@@ -81,9 +82,16 @@ public:
 	inline const float getZ() const { return _position.z; }
 	
 	void disown();
-	inline void setOwner(const int oid) { _owner_id = oid; }
-	inline const int getOwner() const { return _owner_id; }
-	inline const int getRealOwner() const { return _spawned_by; }
+
+	void addOwner(const int oid);
+	const int _getOwner() const;
+	const bool hasOwner(const int oid) const;
+	const bool hasSameOwner(const BaseObject *other) const;
+	void removeOwner(const int oid);
+	void truncateOwners(const int n);
+	inline void getOwners(std::deque<int> &owners) const { owners = _owners; }
+	
+	const int getSummoner() const { return _spawned_by; }
 	
 protected:
 	int _id;
@@ -101,7 +109,8 @@ protected:
 private:
 
 	v3<float> _position;
-	int _owner_id, _spawned_by;
+	std::deque<int> _owners;
+	int _spawned_by;
 	
 	friend class IWorld;
 };

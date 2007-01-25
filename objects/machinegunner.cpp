@@ -49,13 +49,10 @@ void Machinegunner::onSpawn() {
 
 void Machinegunner::tick(const float dt) {
 	if (_fire.tick(dt) && _state.fire) {
-		int leader = getLeader(); //mod ? 
-		Object *b = spawn("machinegunner-bullet", "vehicle-machinegunner-bullet", v3<float>::empty, _direction);
-		if (leader >= 0) {
-			b->setOwner(leader);
-		}
+		spawn("machinegunner-bullet", "vehicle-machinegunner-bullet", v3<float>::empty, _direction);
 	}
 }
+
 void Machinegunner::calculate(const float dt) {
 	std::vector<std::string> targets;
 	targets.push_back("missile");

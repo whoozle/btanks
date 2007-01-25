@@ -365,7 +365,7 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 				//LOG_DEBUG(("object %s, animation %s, pos: %s", res[1].c_str(), res[2].c_str(), i->second.c_str()));
 				Item item;
 				Object *o = ResourceManager->createObject(res[1], res[2]);
-				o->setOwner(-7); //fake owner ;)
+				o->addOwner(-7); //fake owner ;)
 				World->addObject(o, pos.convert<float>());
 				
 				item.classname = res[1];
@@ -387,7 +387,7 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 				std::vector<std::string> value;
 				mrt::split(value, i->second, ":");
 				if (value[0] != "int" && value[0] != "float" && value[0] != "string")
-					throw_ex(("cannot set config variable of type '%s'", value[0].c_str()));
+					throw_ex(("cannot set config variable '%s' of type '%s'", res[1].c_str(), value[0].c_str()));
 				Var var(value[0]);
 				var.fromString(value[1]);
 
@@ -432,7 +432,7 @@ void IGame::checkItems() {
 			//respawning item
 			LOG_DEBUG(("respawning item: %s:%s", item.classname.c_str(), item.animation.c_str()));
 			Object *o = ResourceManager->createObject(item.classname, item.animation);
-			o->setOwner(-7);
+			o->addOwner(-7);
 			World->addObject(o, item.position.convert<float>());
 			item.id = o->getID();
 			item.dead_on = 0;
