@@ -33,7 +33,11 @@ void VehicleTraits::getWeaponCapacity(int &max_n, int &max_v, const std::string 
 		else if (type == "stun")
 			def_cap = 4;
 					
+	} else if (vehicle == "boat") {
+		def_v = (type == "nuke")?2:3;
+		def_cap = 5;
 	}
+	
 	Config->get(key + ".capacity", max_n, def_cap);
 
 	Config->get(key + ".visible-amount", max_v, def_v);

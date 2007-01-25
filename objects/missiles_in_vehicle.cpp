@@ -174,3 +174,4 @@ Object* MissilesInVehicle::clone() const  {
 REGISTER_OBJECT("missiles-on-launcher", MissilesInVehicle, ("guided", "missiles", "launcher"));
 REGISTER_OBJECT("alt-missiles-on-launcher", MissilesInVehicle, (std::string(), std::string(), "launcher"));
 REGISTER_OBJECT("missiles-on-tank", MissilesInVehicle, ("guided", "missiles", "tank"));
+REGISTER_OBJECT("missiles-on-boat", MissilesInVehicle, ("guided", "missiles", "boat"));
