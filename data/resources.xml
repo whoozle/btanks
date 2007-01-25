@@ -492,7 +492,7 @@
 
 
 	<object class="guided-missile" speed="450" mass="100" ttl="5" hp="15" z="250" />
-	<object class="thrower-missile" speed="450" mass="30" ttl="5" hp="5" z="250" />
+	<object class="thrower-missile" speed="450" mass="30" ttl="2.5" hp="5" z="250" />
 	<object class="smoke-missile" speed="450" mass="100" ttl="1" hp="0" z="250" />
 	<object class="dumb-missile" speed="600" mass="100" ttl="10" hp="40" z="250" />
 	<object class="nuke-missile" speed="150" mass="100" ttl="3" hp="1000" z="250" />
