@@ -827,18 +827,15 @@ void IPlayerManager::onPlayerDeath(const Object *player, const Object *killer) {
 void IPlayerManager::getDefaultVehicle(std::string &vehicle, std::string &animation) {
 	Config->get("multiplayer.restrict-start-vehicle", vehicle, "");
 	Config->get("multiplayer.restrict-start-animation", animation, "");
-	if (!vehicle.empty()) {
-		if (animation.empty()) {
-			if (vehicle == "tank" || vehicle == "launcher" || vehicle == "shilka") {
-				static const char * colors[4] = {"green", "red", "yellow", "cyan"};
-				animation = colors[mrt::random(4)];
-				animation += "-";
-				animation + vehicle;
-			} else animation = vehicle;
-		}
-		return;
+	if (vehicle.empty()) {
+		Config->get("menu.default-vehicle-1", vehicle, "launcher");
 	}
-	
-	Config->get("menu.default-vehicle-1", vehicle, "launcher");
-	animation = "green-" + vehicle;
+	if (animation.empty()) {
+		if (vehicle == "tank" || vehicle == "launcher" || vehicle == "shilka") {
+			static const char * colors[4] = {"green", "red", "yellow", "cyan"};
+			animation = colors[mrt::random(4)];
+			animation += "-";
+			animation + vehicle;
+		} else animation = vehicle;
+	}
 }
