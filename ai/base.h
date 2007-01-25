@@ -45,6 +45,7 @@ protected:
 	
 	const bool checkTarget(const Object * target, const std::string &weapon) const;
 private: 
+	bool _active;
 	Alarm _reaction_time, _refresh_path;
 	ai::Traits _traits;
 	std::set<std::string> _enemies, _bonuses;

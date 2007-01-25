@@ -22,10 +22,11 @@
 #include "config.h"
 
 #include "math/unary.h"
+#include "player_manager.h"
 
 using namespace ai;
 
-Base::Base() : Object("player"), _reaction_time(true), _refresh_path(false), _target_id(-1) {}
+Base::Base() : Object("player"), _active(false), _reaction_time(true), _refresh_path(false), _target_id(-1) {}
 
 Base::~Base() {
 	LOG_DEBUG(("traits: \n%s", _traits.save().c_str()));
@@ -41,6 +42,10 @@ void Base::addBonusName(const std::string &rname) {
 
 
 void Base::onSpawn() {
+	_active = !PlayerManager->isClient();
+	if (!_active)
+		return;
+	
 	const std::string vehicle = getType();
 	if (vehicle.empty())
 		throw_ex(("vehicle MUST provide its type"));
@@ -120,6 +125,9 @@ const bool Base::checkTarget(const Object * target, const std::string &weapon) c
 
 
 void Base::calculate(const float dt) {
+	if (!_active)
+		return;
+
 	static const std::set<std::string> empty_enemies;
 
 	const bool refresh_path = _refresh_path.tick(dt);
