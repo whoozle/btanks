@@ -909,7 +909,12 @@ void Object::findPath(const v3<int> target, const int step) {
 	_points[p.id] = p;
 }
 
+#include "player_manager.h"
+
 const bool Object::findPathDone(Way &way) {
+	if (PlayerManager->isClient()) 
+		return false;
+	
 	if (_begin == _end) {
 		way.clear();
 		way.push_back(_end);
