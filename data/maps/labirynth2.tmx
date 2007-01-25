@@ -30,8 +30,9 @@
   <property name="object:boomerang-missiles-item:boomerang-missiles-item:1" value="2478,2715,-10"/>
   <property name="object:tent-with-throwers:trooper-tent:1" value="2640,2871"/>
   <property name="config:map.thrower.respawn-interval" value="int:10000"/>
+  <property name="config:multiplayer.restrict-start-vehicle" value="string:machinegunner-player"/>
+  <property name="config:multiplayer.restrict-start-animation" value="string:machinegunner"/>
   <property name="object:dumb-missiles-item:dumb-missiles-item:1" value="3120,2250,-10"/>
-  <property name="config:menu.default-vehicle-1" value="string:machinegunner-player"/>
   <property name="object:submarine:submarine:1" value="867,2226"/>
   <property name="object:static-shilka:cyan-shilka:1" value="3129,2927,-10"/>
   <property name="config:engine.targeting-multiplier" value="float:0.2"/>
