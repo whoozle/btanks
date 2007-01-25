@@ -104,7 +104,7 @@ const bool Base::checkTarget(const Object * target, const std::string &weapon) c
 		codir1 = dd == 1 || dd == (getDirectionsNumber() - 1);
 	}
 
-	LOG_DEBUG(("moo(%s/%s): %g %g codir: %c, codir1: %c", wc.c_str(), wt.c_str(), pos.x, pos.y, codir?'+':'-', codir1?'+':'-'));
+	//LOG_DEBUG(("moo(%s/%s): %g %g codir: %c, codir1: %c", wc.c_str(), wt.c_str(), pos.x, pos.y, codir?'+':'-', codir1?'+':'-'));
 	
 	if (wc == "missiles" || wc == "bullet") {
 		if (codir)
