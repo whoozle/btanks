@@ -6,8 +6,8 @@
   <property name="object:tent-with-machinegunners:trooper-tent:3" value="2503,2794"/>
   <property name="config:menu.default-vehicle-1" value="string:machinegunner-player"/>
   <property name="object:stack:stack:4" value="2364,3146"/>
-  <property name="object:static-launcher:yellow-car:1" value="3133,2914"/>
   <property name="object:stack:stack:3" value="2372,3112"/>
+  <property name="object:static-launcher:yellow-car:1" value="3133,2914"/>
   <property name="object:stack:stack:2" value="2360,3080"/>
   <property name="object:stack:stack:1" value="2366,3040"/>
   <property name="spawn:3" value="@35,49"/>
@@ -19,7 +19,15 @@
   <property name="object:static-tank:green-tank:1" value="2976,2816"/>
   <property name="object:stall:stall-right:1" value="805,2793"/>
   <property name="config:map.machinegunner.respawn-interval" value="int:10000"/>
+  <property name="object:watchtower-with-thrower:watchtower:12" value="2307,1521"/>
   <property name="config:map.thrower.respawn-interval" value="int:10000"/>
+  <property name="object:watchtower-with-thrower:watchtower:11" value="2048,1528"/>
+  <property name="object:watchtower-with-thrower:watchtower:10" value="2945,2094"/>
+  <property name="object:kamikaze:kamikaze:5" value="2704,3024"/>
+  <property name="object:kamikaze:kamikaze:4" value="2755,3104"/>
+  <property name="object:kamikaze:kamikaze:3" value="2756,3104"/>
+  <property name="object:kamikaze:kamikaze:2" value="2776,3053"/>
+  <property name="object:kamikaze:kamikaze:1" value="2822,3090"/>
   <property name="object:stall:stall-left:1" value="2874,2706"/>
   <property name="config:map.kamikaze.respawn-interval" value="int:10000"/>
   <property name="object:tent-with-kamikazes:trooper-tent:2" value="2726,1819"/>
@@ -27,12 +35,17 @@
   <property name="object:watchtower-with-thrower:watchtower:7" value="1981,2164"/>
   <property name="object:watchtower-with-thrower:watchtower:6" value="2434,2166"/>
   <property name="object:oil-barrels:oil-barrels:5" value="2407,2282"/>
-  <property name="object:oil-barrels:oil-barrels:4" value="2381,2867"/>
+  <property name="object:watchtower-with-machinegunner:watchtower:16" value="3011,1457"/>
+  <property name="object:watchtower-with-machinegunner:watchtower:15" value="2751,1459"/>
   <property name="object:static-shilka:orange-bus:1" value="2954,2982,0"/>
+  <property name="object:oil-barrels:oil-barrels:4" value="2381,2867"/>
+  <property name="object:watchtower-with-machinegunner:watchtower:14" value="2501,1575"/>
   <property name="object:oil-barrels:oil-barrels:3" value="3120,2786"/>
   <property name="object:oil-barrels:oil-barrels:2" value="3044,2808"/>
-  <property name="object:barrack-with-machinegunners:trooper-hut:3" value="2013,1690"/>
+  <property name="object:watchtower-with-machinegunner:watchtower:13" value="1855,1772"/>
   <property name="object:impassable-static-corpse:dead-cyan-car:1" value="3010,2744"/>
+  <property name="object:barrack-with-machinegunners:trooper-hut:3" value="2013,1690"/>
+  <property name="object:watchtower-with-machinegunner:watchtower:9" value="2754,2094"/>
   <property name="object:static-shilka:red-shilka:1" value="3137,2972"/>
   <property name="object:watchtower-with-machinegunner:watchtower:8" value="1794,2102"/>
   <property name="object:watchtower-with-machinegunner:watchtower:5" value="2050,2230"/>
@@ -231,7 +244,7 @@
  </layer>
  <layer name="fence details 2" width="50" height="50">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAO3PAQ0AMAjAMO4GGfhXhYkn8KdVsEUAAAAAAAAAsEWe6YI76pMPAOAtDe64RC8QJwAA
+   H4sIAAAAAAAAAO3WsQ0AIAgEQJ1Ax3AM95/K2sLORCR3HaF5QkgoBQAAAOJoda97PfcAALgj+p8VPR+85kbyGUl2OpPMAQD8ZQHoVI9fECcAAA==
   </data>
   <tileproperties/>
  </layer>
@@ -309,7 +322,7 @@
   </data>
   <tileproperties/>
  </layer>
- <layer name="the plan" width="50" height="50" visible="0" opacity="0.39">
+ <layer name="the plan" width="50" height="50" opacity="0.39">
   <properties>
    <property name="visible-if-damaged" value="true"/>
    <property name="hp" value="10000"/>

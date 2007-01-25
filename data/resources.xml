@@ -239,12 +239,16 @@
 		<pose id="broken">2</pose>
 	</animation-model>
 
-
 	<animation-model id="yellow-submarine-animation" speed="5">
 		<pose id="hold">0</pose>
 		<pose id="fade-in">0,1,2,3,4</pose>
 		<pose id="main" speed="1">4,5,4,6</pose>
 		<pose id="fade-out">4,3,2,1,0</pose>
+	</animation-model>
+
+	<animation-model id="rocket-boat-animation" speed="2">
+		<pose id="main">1,0,2,0</pose>
+		<pose id="sink">3,4,5</pose>
 	</animation-model>
 	
 	<animation-model id="cannon-animation" speed="5">
@@ -430,6 +434,7 @@
 	<animation id="road-sign10" model="destructable-object-animation" tile="road_sign10.png" size="32" />
 
 	<animation id="submarine" model="yellow-submarine-animation" tile="submarine.png" tile_width="192" tile_height="128" />
+	<animation id="rocket-boat" model="rocket-boat-animation" tile="rocket_boat.png" size="128" />
 
 	<animation id="thrower" model="trooper-animation" tile="thrower.png" />
 	<animation id="thrower-missile" model="single-tile" tile="thrower_missile.png" />
