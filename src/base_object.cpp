@@ -294,9 +294,19 @@ void BaseObject::getInfo(v3<float> &pos, v3<float> &vel) const {
 	vel.normalize();
 }
 
+#include "player_manager.h"
+#include "player_slot.h"
+
 void BaseObject::updateStateFromVelocity() {
-	_state.left = (_velocity.x < 0);
-	_state.right = (_velocity.x > 0);
-	_state.up = (_velocity.y < 0);
-	_state.down = (_velocity.y > 0);
+	PlayerState state = _state;
+	state.left = (_velocity.x < 0);
+	state.right = (_velocity.x > 0);
+	state.up = (_velocity.y < 0);
+	state.down = (_velocity.y > 0);
+	if (_state != state) {
+		_state = state;
+		PlayerSlot *slot = PlayerManager->getSlotByID(_id);
+		if (slot != NULL)
+			slot->need_sync = true;
+	}
 }
