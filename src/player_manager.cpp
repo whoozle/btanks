@@ -834,8 +834,7 @@ void IPlayerManager::getDefaultVehicle(std::string &vehicle, std::string &animat
 		if (vehicle == "tank" || vehicle == "launcher" || vehicle == "shilka") {
 			static const char * colors[4] = {"green", "red", "yellow", "cyan"};
 			animation = colors[mrt::random(4)];
-			animation += "-";
-			animation + vehicle;
+			animation += "-" + vehicle;
 		} else animation = vehicle;
 	}
 }
