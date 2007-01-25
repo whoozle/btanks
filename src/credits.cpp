@@ -34,21 +34,22 @@ Credits::Credits() : _w(0), _h(0) {
 	int fh = _font.getHeight(), mfh = _medium_font.getHeight();
 	
 	std::vector<std::string> lines, lines2; 
+
 	lines.push_back("");
 	lines.push_back("");
 	lines.push_back("BATTLE TANKS");
 	lines.push_back("");
+
 	lines.push_back("PROGRAMMING");
 	lines.push_back("VLADIMIR 'WHOOZLE' MENSHAKOV");
 	lines.push_back("");
+
 	lines.push_back("GRAPHICS");
 	lines.push_back("ALEXANDER 'METHOS' WAGNER");
 	lines.push_back("");
+
 	lines.push_back("LEVEL DESIGN");
 	lines.push_back("VLADIMIR 'VZ' ZHURAVLEV");
-	lines.push_back("");
-	lines.push_back("TOOLS");
-	lines.push_back("VLADIMIR 'GOLD' GOLDOBIN");
 	lines.push_back("");
 
 	lines.push_back("TOOLS");
