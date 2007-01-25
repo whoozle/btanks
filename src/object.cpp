@@ -805,16 +805,23 @@ const int Object::getCount() const {
 }
 
 
-const bool Object::getTargetPosition(v3<float> &relative_position, const v3<float> &target, const std::string &weapon) {
-	const int dirs = _directions_n;
-	
+const float Object::getWeaponRange(const std::string &weapon) const {
 	const Object *wp = ResourceManager->getClass(weapon);
 	float range = wp->ttl * wp->speed;
 	
-	GET_CONFIG_VALUE("engine.targeting-multiplier", float, tm, 0.8);
+	float tm;
+	Config->get("objects." + registered_name + ".targeting-multiplier", tm, 0.5);
+	
 	if (tm <= 0 || tm >= 1) 
-		throw_ex(("targeting multiplier must be greater than 0 and less than 1.0 (%g)", tm))
-	range *= tm;
+		throw_ex(("targeting multiplier must be greater than 0 and less than 1.0 (%g)", tm));
+	return range * tm;
+}
+
+
+const bool Object::getTargetPosition(v3<float> &relative_position, const v3<float> &target, const std::string &weapon) const {
+	const int dirs = _directions_n;
+	
+	float range = getWeaponRange(weapon);
 	
 	double dist = target.length();
 	if (dist > range) 
