@@ -16,6 +16,7 @@
   <property name="object:watchtower-with-thrower:watchtower:17" value="2560,1134"/>
   <property name="config:map.kamikaze.respawn-interval" value="int:10000"/>
   <property name="object:watchtower-with-thrower:watchtower:11" value="2048,1528"/>
+  <property name="config:multiplayer:game-type" value="string:cooperative"/>
   <property name="object:choo-choo-train:choo-choo-train:2" value="2978,4"/>
   <property name="object:watchtower-with-machinegunner:watchtower:16" value="2754,2150"/>
   <property name="object:watchtower-with-machinegunner:watchtower:15" value="2049,2227"/>
@@ -24,7 +25,6 @@
   <property name="object:static-tank:red-tank:2" value="3132,3006,-10"/>
   <property name="object:tent-with-throwers:trooper-tent:1" value="2640,2871"/>
   <property name="config:map.thrower.respawn-interval" value="int:10000"/>
-  <property name="config:multiplayer.type" value="string:cooperative"/>
   <property name="config:menu.default-vehicle-1" value="string:machinegunner-player"/>
   <property name="object:submarine:submarine:1" value="867,2226"/>
   <property name="object:static-shilka:cyan-shilka:1" value="3129,2927,-10"/>
@@ -36,32 +36,25 @@
   <property name="object:kamikaze:kamikaze:2" value="2857,1218,-10"/>
   <property name="config:map.cannon.respawn-interval" value="int:10000"/>
   <property name="object:stack:stack:3" value="2372,3112"/>
-  <property name="object:kamikaze:kamikaze:1" value="2975,1304,-10"/>
   <property name="object:static-tank:yellow-tank:1" value="2977,2896,-10"/>
+  <property name="object:kamikaze:kamikaze:1" value="2975,1304,-10"/>
   <property name="object:stack:stack:2" value="2360,3080"/>
   <property name="object:stack:stack:1" value="2366,3040"/>
   <property name="object:machinegunner:machinegunner:9" value="2684,1067"/>
   <property name="object:machinegunner:machinegunner:8" value="3044,1125"/>
   <property name="object:machinegunner:machinegunner:7" value="3117,1756"/>
-  <property name="object:machinegunner:machinegunner:5" value="2177,1900"/>
-  <property name="object:machinegunner:machinegunner:4" value="1988,1879"/>
   <property name="spawn:3" value="@35,49"/>
   <property name="spawn:2" value="@34,49"/>
-  <property name="object:machinegunner:machinegunner:1" value="2717,1907"/>
   <property name="object:dirt:dirt:1" value="3072,2748"/>
   <property name="object:tent-with-kamikazes:trooper-tent:2" value="2726,1819"/>
   <property name="object:stall:stall-left:1" value="2874,2706"/>
   <property name="object:machinegunner:machinegunner:11" value="2911,1208,-10"/>
-  <property name="object:machinegunner:machinegunner:10" value="2869,1926,-10"/>
   <property name="object:barrack-with-machinegunners:trooper-hut:5" value="2636,1430"/>
   <property name="object:barrack-with-machinegunners:trooper-hut:4" value="3093,1430"/>
   <property name="object:armed-mine:regular-mine:23" value="1861,1951,-10"/>
   <property name="object:barrack-with-machinegunners:trooper-hut:3" value="2013,1690"/>
-  <property name="object:thrower:thrower:7" value="2910,1837,-10"/>
   <property name="object:armed-mine:regular-mine:22" value="1829,1952,-10"/>
-  <property name="object:thrower:thrower:6" value="2342,2019,-10"/>
   <property name="object:armed-mine:regular-mine:21" value="1811,1929,-10"/>
-  <property name="object:thrower:thrower:5" value="1859,1975,-10"/>
   <property name="object:armed-mine:regular-mine:20" value="1846,1928,-10"/>
   <property name="object:thrower:thrower:4" value="2897,1582"/>
   <property name="object:thrower:thrower:2" value="2375,1809"/>
@@ -72,8 +65,8 @@
   <property name="object:armed-mine:regular-mine:17" value="2412,810,-10"/>
   <property name="object:armed-mine:regular-mine:16" value="2412,781,-10"/>
   <property name="object:armed-mine:regular-mine:15" value="2411,752,-10"/>
-  <property name="object:armed-mine:regular-mine:14" value="2411,726,-10"/>
   <property name="object:tent-with-machinegunners:trooper-tent:3" value="2503,2794"/>
+  <property name="object:armed-mine:regular-mine:14" value="2411,726,-10"/>
   <property name="object:armed-mine:regular-mine:13" value="2410,697,-10"/>
   <property name="object:armed-mine:regular-mine:9" value="2437,637,-10"/>
   <property name="object:armed-mine:regular-mine:12" value="2409,668,-10"/>
