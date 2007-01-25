@@ -86,7 +86,7 @@ void Explosion::damageMap() const {
 
 void Explosion::tick(const float dt) {
 	Object::tick(dt);
-	const std::string &state = getState();
+	const std::string state = getState();
 
 	GET_CONFIG_VALUE("objects.nuclear-explosion.damage-map-after", float, dma, 0.65);
 

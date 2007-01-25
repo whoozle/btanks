@@ -74,7 +74,7 @@ void Boat::tick(const float dt) {
 		remove("mod");
 		return;
 	}
-	const std::string &state = getState();
+	const std::string state = getState();
 	if (state == "reload" && _reload.tick(dt)) {
 		_reload.reset();
 		cancelAll();
