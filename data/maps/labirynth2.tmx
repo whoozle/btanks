@@ -11,6 +11,8 @@
   <property name="object:static-tank:green-tank:1" value="2976,2816"/>
   <property name="object:stall:stall-right:1" value="805,2793"/>
   <property name="object:lodge:lodge:2" value="2858,3056,500"/>
+  <property name="object:watchtower-with-thrower:watchtower:18" value="2304,1128"/>
+  <property name="object:watchtower-with-thrower:watchtower:17" value="2560,1134"/>
   <property name="config:map.kamikaze.respawn-interval" value="int:10000"/>
   <property name="object:watchtower-with-thrower:watchtower:11" value="2048,1528"/>
   <property name="object:choo-choo-train:choo-choo-train:2" value="2978,4"/>
@@ -22,25 +24,23 @@
   <property name="object:tent-with-throwers:trooper-tent:1" value="2640,2871"/>
   <property name="config:map.thrower.respawn-interval" value="int:10000"/>
   <property name="object:static-tank:cyan-tank:1" value="3132,2919,-10"/>
-  <property name="object:watchtower-with-thowers:watchtower:18" value="2304,1128"/>
-  <property name="object:watchtower-with-thowers:watchtower:17" value="2560,1134"/>
   <property name="config:menu.default-vehicle-1" value="string:machinegunner-player"/>
   <property name="object:submarine:submarine:1" value="867,2226"/>
   <property name="object:static-corpse:dead-cyan-shilka:1" value="1149,2706,-100"/>
   <property name="object:stack:stack:5" value="1682,2218"/>
-  <property name="object:kamikaze:kamikaze:2" value="2857,1218,-10"/>
   <property name="object:stack:stack:4" value="2364,3146"/>
-  <property name="object:kamikaze:kamikaze:1" value="2975,1304,-10"/>
-  <property name="object:static-tank:yellow-tank:1" value="2977,2896,-10"/>
+  <property name="object:kamikaze:kamikaze:2" value="2857,1218,-10"/>
   <property name="object:stack:stack:3" value="2372,3112"/>
+  <property name="object:static-tank:yellow-tank:1" value="2977,2896,-10"/>
+  <property name="object:kamikaze:kamikaze:1" value="2975,1304,-10"/>
   <property name="object:stack:stack:2" value="2360,3080"/>
   <property name="object:stack:stack:1" value="2366,3040"/>
+  <property name="object:machinegunner:machinegunner:9" value="2684,1067"/>
+  <property name="object:machinegunner:machinegunner:8" value="3044,1125"/>
   <property name="object:machinegunner:machinegunner:7" value="3117,1756"/>
   <property name="object:machinegunner:machinegunner:6" value="2432,2141"/>
   <property name="object:machinegunner:machinegunner:5" value="2177,1900"/>
-  <property name="object:barack-with-machinegunners:trooper-hut:5" value="2636,1430"/>
   <property name="object:machinegunner:machinegunner:4" value="1988,1879"/>
-  <property name="object:barack-with-machinegunners:trooper-hut:4" value="3093,1430"/>
   <property name="object:machinegunner:machinegunner:3" value="1854,2063"/>
   <property name="spawn:3" value="@35,49"/>
   <property name="object:machinegunner:machinegunner:2" value="2959,2131"/>
@@ -49,6 +49,8 @@
   <property name="object:dirt:dirt:1" value="3072,2748"/>
   <property name="object:tent-with-kamikazes:trooper-tent:2" value="2726,1819"/>
   <property name="object:stall:stall-left:1" value="2874,2706"/>
+  <property name="object:barrack-with-machinegunners:trooper-hut:5" value="2636,1430"/>
+  <property name="object:barrack-with-machinegunners:trooper-hut:4" value="3093,1430"/>
   <property name="object:barrack-with-machinegunners:trooper-hut:3" value="2013,1690"/>
   <property name="object:thrower:thrower:4" value="2897,1582"/>
   <property name="object:thrower:thrower:3" value="2939,2062"/>
@@ -57,30 +59,28 @@
   <property name="config:map.machinegunner.respawn-interval" value="int:10000"/>
   <property name="object:armed-mine:regular-mine:19" value="2330,1657,-10"/>
   <property name="object:armed-mine:regular-mine:18" value="2113,1661,-10"/>
-  <property name="object:green-machinegunner-player:green-machinegunner-player:2" value="3044,1125"/>
   <property name="object:armed-mine:regular-mine:17" value="2412,810,-10"/>
-  <property name="object:green-machinegunner-player:green-machinegunner-player:1" value="2684,1067"/>
   <property name="object:armed-mine:regular-mine:16" value="2412,781,-10"/>
   <property name="object:armed-mine:regular-mine:15" value="2411,752,-10"/>
-  <property name="object:armed-mine:regular-mine:14" value="2411,726,-10"/>
   <property name="object:tent-with-machinegunners:trooper-tent:3" value="2503,2794"/>
-  <property name="object:armed-mine:regular-mine:9" value="2437,637,-10"/>
+  <property name="object:armed-mine:regular-mine:14" value="2411,726,-10"/>
   <property name="object:armed-mine:regular-mine:13" value="2410,697,-10"/>
-  <property name="object:oil-barrels:oil-barrels:6" value="2949,1958"/>
-  <property name="object:armed-mine:regular-mine:8" value="1752,2139"/>
+  <property name="object:armed-mine:regular-mine:9" value="2437,637,-10"/>
   <property name="object:armed-mine:regular-mine:12" value="2409,668,-10"/>
-  <property name="object:oil-barrels:oil-barrels:5" value="2407,2282"/>
-  <property name="object:armed-mine:regular-mine:7" value="1782,2138"/>
+  <property name="object:armed-mine:regular-mine:8" value="1752,2139"/>
+  <property name="object:oil-barrels:oil-barrels:6" value="2949,1958"/>
   <property name="object:armed-mine:regular-mine:11" value="2409,637,-10"/>
+  <property name="object:armed-mine:regular-mine:7" value="1782,2138"/>
+  <property name="object:oil-barrels:oil-barrels:5" value="2407,2282"/>
   <property name="object:armed-mine:regular-mine:10" value="2472,637,-10"/>
   <property name="object:armed-mine:regular-mine:6" value="1750,2162"/>
   <property name="object:oil-barrels:oil-barrels:4" value="2381,2867"/>
-  <property name="object:oil-barrels:oil-barrels:3" value="3120,2786"/>
   <property name="object:armed-mine:regular-mine:5" value="1781,2162"/>
+  <property name="object:oil-barrels:oil-barrels:3" value="3120,2786"/>
   <property name="object:oil-barrels:oil-barrels:2" value="3044,2808"/>
   <property name="object:cannon:cannon:7" value="3139,1105"/>
-  <property name="object:impassable-static-corpse:dead-cyan-car:1" value="3010,2744"/>
   <property name="object:cannon:cannon:6" value="2612,1098"/>
+  <property name="object:impassable-static-corpse:dead-cyan-car:1" value="3010,2744"/>
  </properties>
  <tileset name="terrains" firstgid="1" tilewidth="64" tileheight="64">
   <image source="../tiles/terrains_tileset.png"/>
