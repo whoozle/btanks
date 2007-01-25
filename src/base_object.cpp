@@ -218,6 +218,9 @@ void BaseObject::disown() {
 }
 
 void BaseObject::addOwner(const int oid) {
+	if (hasOwner(oid))
+		return;
+	
 	_owners.push_front(oid);
 }
 
