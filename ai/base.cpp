@@ -25,7 +25,7 @@
 
 using namespace ai;
 
-Base::Base() : Object("player"), _reaction_time(true), _refresh_path(true), _target_id(-1) {}
+Base::Base() : Object("player"), _reaction_time(true), _refresh_path(false), _target_id(-1) {}
 
 Base::~Base() {
 	LOG_DEBUG(("traits: \n%s", _traits.save().c_str()));
@@ -70,8 +70,8 @@ const std::string Base::convertName(const std::string &weapon) {
 	} else {
 		wt = weapon;
 	}
-	if (wc.empty() || wt.empty()) 
-		return std::string();
+	if (wc.empty()) 
+		return wt;
 	return wt + "-" + wc.substr(0, wc.size() - 1);
 }
 
@@ -89,11 +89,10 @@ const bool Base::checkTarget(const Object * target, const std::string &weapon) c
 			wc = weapon.substr(0, p);
 			wt = weapon.substr(p + 1);
 		} else {
-			wt = weapon;
+			wc = weapon;
 		}
 	}
 
-	//LOG_DEBUG(("moo(%s/%s): %g %g", wc.c_str(), wt.c_str(), pos.x, pos.y));
 	
 	bool codir, codir1;
 	{
@@ -104,11 +103,13 @@ const bool Base::checkTarget(const Object * target, const std::string &weapon) c
 		int dd = math::abs(dir - getDirection());
 		codir1 = dd == 1 || dd == (getDirectionsNumber() - 1);
 	}
+
+	LOG_DEBUG(("moo(%s/%s): %g %g codir: %c, codir1: %c", wc.c_str(), wt.c_str(), pos.x, pos.y, codir?'+':'-', codir1?'+':'-'));
 	
-	if (wc == "missiles") {
+	if (wc == "missiles" || wc == "bullet") {
 		if (codir)
 			return true;
-		if (wt == "guided" && codir1)
+		if ((wt == "guided" && codir1) || (wt == "dispersion" && codir1))
 			return true;
 	} else if (wc == "mines") {
 		if (!_velocity.is0())
@@ -127,16 +128,31 @@ void Base::calculate(const float dt) {
 	
 	std::string weapon1, weapon2;
 	int amount1, amount2;
-	
-	if (!refresh_path && dumb) 
-		goto gogogo;
 
+	if (dumb) 
+		goto gogogo;
+	
 
 	weapon1 = getWeapon(0), weapon2 = getWeapon(1);
+	
+	if (target == NULL)
+		target = World->getObjectByID(_target_id);
+	if (target != NULL) {
+
 	amount1 = getWeaponAmount(0), amount2 = getWeaponAmount(1);
+	if (amount1 == -1) 
+		amount1 = 10;
+	if (amount2 == -1) 
+		amount2 = 10;
 	
-	
+	if (!weapon1.empty())
+		_state.fire = checkTarget(target, weapon1);
+	if (!weapon2.empty())
+		_state.alt_fire = checkTarget(target, weapon2);
+	}
+		
 	target = World->findTarget(this, (amount1 > 0 || amount2 > 0)?_enemies:empty_enemies, _bonuses, _traits);
+	
 	if (target != NULL && ((refresh_path && isEnemy(target)) || target->getID() != _target_id)) {
 		_target_id = target->getID();
 		_enemy = isEnemy(target);
@@ -151,24 +167,16 @@ void Base::calculate(const float dt) {
 		_target_position -= (size / 2).convert<int>();
 		LOG_DEBUG(("next target: %s at %d,%d", target->registered_name.c_str(), _target_position.x, _target_position.y));
 		findPath(_target_position, 16);
+		_refresh_path.reset();
+		
 		//Way way;
 		//if (!old_findPath(target, way))
 		//	LOG_WARN(("no way"));
 		//else setWay(way);
-
 	}
 
 	//2 fire or not 2 fire.
 
-	if (target == NULL)
-		target = World->getObjectByID(_target_id);
-	if (target == NULL)
-		goto gogogo;
-
-	if (!weapon1.empty())
-		_state.fire = checkTarget(target, weapon1);
-	if (!weapon2.empty())
-		_state.alt_fire = checkTarget(target, weapon2);
 
 	
 	//LOG_DEBUG(("w1: %s", getWeapon(0).c_str()));
