@@ -1082,11 +1082,19 @@ void IWorld::swapID(const int id1, const int id2) {
 	Object *o1 = i1->second;
 	Object *o2 = i2->second;
 	
+	
 	o2->_id = id1;
 	i1->second = o2;
 	
 	o1->_id = id2;
 	i2->second = o1;
+
+	{
+		std::deque<int> owners;
+		owners = o1->_owners;
+		o1->_owners = o2->_owners;
+		o2->_owners = owners;
+	}
 
 	for(ObjectMap::iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		Object *o = i->second;
@@ -1095,6 +1103,7 @@ void IWorld::swapID(const int id1, const int id2) {
 		else if (o->_follow == id2) 
 			o->_follow = id1;
 	}
+
 	
 	o1->need_sync = o2->need_sync = true;
 
