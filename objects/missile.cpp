@@ -70,7 +70,10 @@ void Missile::calculate(const float dt) {
 		v3<float> pos, vel;
 	
 		if (getNearest(targets, pos, vel)) {
-			_velocity = pos;
+			float est_t = pos.length() / speed;
+			if (est_t > 1)
+				est_t = 1;
+			_velocity = pos + vel * est_t;
 		}
 
 		GET_CONFIG_VALUE("objects." + type + "-missile.rotation-time", float, rotation_time, 0.2);
