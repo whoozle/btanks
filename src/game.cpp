@@ -282,12 +282,15 @@ void IGame::onMenu(const std::string &name, const std::string &value) {
 		std::string map;
 		Config->get("menu.default-mp-map", map, "survival");
 		loadMap(map);
-		std::string vehicle;
-		Config->get("menu.default-vehicle-1", vehicle, "launcher");
 
-		GET_CONFIG_VALUE("player.control-method", std::string, cm, "keys");		
-		_my_index = PlayerManager->spawnPlayer(vehicle, "green-" + vehicle, cm);
+		GET_CONFIG_VALUE("player.control-method", std::string, cm, "keys");
+
+		std::string vehicle, animation;
+		PlayerManager->getDefaultVehicle(vehicle, animation);
+		_my_index = PlayerManager->spawnPlayer(vehicle, animation, cm);
+
 		assert(_my_index == 0);
+
 		PlayerManager->setViewport(_my_index, _window.getSize());
 		PlayerManager->startServer();
 	} else if (name == "m-join") {
