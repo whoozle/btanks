@@ -158,23 +158,29 @@ void AITrooper::calculate(const float dt) {
 	v3<float> vel;
 	if (getNearest(targets, _target, vel)) {
 		v3<float> tp;
-		if (getTargetPosition(tp, _target, _object)) {
-			//LOG_DEBUG(("target: %g %g %g", tp.x, tp.y, tp.length()));
-			/*
-			Way way;
-			if (findPath(tp, way)) {
-				setWay(way);
-				calculateWayVelocity();
-			}
-			*/
-			_velocity = tp;
-			quantizeVelocity();
-			_direction.fromDirection(getDirection(), getDirectionsNumber());
+		float r = getWeaponRange(_object);
+		if (tp.quick_length() > r * r) {
+			_velocity.clear();
+		} else {
+			if (getTargetPosition(tp, _target, _object)) {
+				//LOG_DEBUG(("target: %g %g %g", tp.x, tp.y, tp.length()));
+				/*
+				Way way;
+				if (findPath(tp, way)) {
+					setWay(way);
+					calculateWayVelocity();
+				}
+				*/
+				_velocity = tp;
+				quantizeVelocity();
+				_direction.fromDirection(getDirection(), getDirectionsNumber());
 		
-			if (tp.length() < 16)
-				_velocity.clear();
+				if (tp.length() < 16)
+					_velocity.clear();
+			}
 		}	
 	}
+	
 	_state.fire = _velocity.is0() && !_target.is0();
 	if (_state.fire) {
 		_direction = _target;
