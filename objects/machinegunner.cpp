@@ -54,11 +54,13 @@ void Machinegunner::tick(const float dt) {
 }
 
 void Machinegunner::calculate(const float dt) {
-	std::vector<std::string> targets;
-	targets.push_back("missile");
-	targets.push_back("player");
-	targets.push_back("trooper");
-	targets.push_back("kamikaze");
+	static std::vector<std::string> targets;
+	if (targets.empty()) {
+		targets.push_back("missile");
+		targets.push_back("player");
+		targets.push_back("trooper");
+		targets.push_back("kamikaze");
+	}
 	
 	v3<float> pos, vel;
 	
