@@ -29,6 +29,8 @@ public:
 	
 	virtual void calculate(const float dt);
 	virtual void tick(const float dt);
+	virtual void emit(const std::string &event, Object * emitter);
+
 	virtual void onSpawn();
 
 	virtual void serialize(mrt::Serializator &s) const {
@@ -82,6 +84,14 @@ void Cannon::tick(const float dt) {
 		}
 	}
 }
+
+void Cannon::emit(const std::string &event, Object * emitter) {
+	if (event == "death") {
+		spawn("corpse", "dead-" + registered_name);
+	}
+	Object::emit(event, emitter);
+}
+
 
 void Cannon::onSpawn() {
 	GET_CONFIG_VALUE("objects.cannon.fire-rate", float, fr, 2);
