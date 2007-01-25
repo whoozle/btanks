@@ -18,7 +18,7 @@
   <property name="object:watchtower-with-thrower:watchtower:11" value="2048,1528"/>
   <property name="object:dispersion-bullets-item:dispersion-bullets-item:4" value="2909,1751,-10"/>
   <property name="object:dispersion-bullets-item:dispersion-bullets-item:3" value="2875,2616,-10"/>
-  <property name="config:multiplayer:game-type" value="string:cooperative"/>
+  <property name="config:multiplayer.game-type" value="string:cooperative"/>
   <property name="object:dispersion-bullets-item:dispersion-bullets-item:2" value="2429,2049,-10"/>
   <property name="object:missile-boat:missile-boat:1" value="2,2124,-10"/>
   <property name="object:choo-choo-train:choo-choo-train:2" value="2978,4"/>
