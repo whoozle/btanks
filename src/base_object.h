@@ -84,6 +84,7 @@ public:
 	void disown();
 
 	void addOwner(const int oid);
+	void prependOwner(const int oid); //to avoid truncation of this owner. 
 	const int _getOwner() const;
 	const bool hasOwner(const int oid) const;
 	const bool hasSameOwner(const BaseObject *other) const;

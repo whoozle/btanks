@@ -224,6 +224,14 @@ void BaseObject::addOwner(const int oid) {
 	_owners.push_front(oid);
 }
 
+void BaseObject::prependOwner(const int oid) {
+	if (hasOwner(oid))
+		return;
+	
+	_owners.push_back(oid);
+	LOG_DEBUG(("%s[%d] called prependSlot(%d)", classname.c_str(), _id, oid));
+}
+
 const int BaseObject::_getOwner() const {
 	return *_owners.begin();
 }
