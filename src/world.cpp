@@ -1198,7 +1198,7 @@ const Object * IWorld::findTarget(const Object *src, const std::set<std::string>
 		} else if (o->classname == "heal") {
 			min = src->hp;
 			max = src->max_hp;
-		} else if (o->classname == "effects") {
+		} else if (o->classname == "effects" || o->classname == "mod") {
 			max = 1;
 			traits.get(o->classname, o->getType(), 500.0, 2000.0);
 		}
