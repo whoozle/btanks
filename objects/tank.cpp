@@ -55,7 +55,8 @@ void Tank::emit(const std::string &event, Object * emitter) {
 		LOG_DEBUG(("dead"));
 		cancelAll();
 		//play("dead", true);
-		World->detachVehicle(this);
+		if (registered_name != "ai-tank")
+			World->detachVehicle(this);
 		spawn("corpse", "dead-" + animation);
 		_velocity.clear();
 		Object::emit(event, emitter);

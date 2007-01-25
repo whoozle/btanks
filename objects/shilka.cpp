@@ -66,7 +66,8 @@ Object * Shilka::clone() const {
 void Shilka::emit(const std::string &event, Object * emitter) {
 	if (event == "death") {
 		LOG_DEBUG(("dead"));
-		World->detachVehicle(this);		
+		if (registered_name != "ai-tank")
+			World->detachVehicle(this);		
 		
 		cancelAll();
 		//play("dead", true);
