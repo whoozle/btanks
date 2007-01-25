@@ -22,12 +22,13 @@ bt_sources = 	[
 	
 	'objects/bullet.cpp', 'objects/explosion.cpp', 'objects/single_pose.cpp',
 	'objects/tank.cpp', 'objects/shilka.cpp', 'objects/launcher.cpp', 'objects/ai_tank.cpp',
+	'objects/ai_launcher.cpp', 'objects/ai_shilka.cpp', 
 	'objects/traffic_lights.cpp', 'objects/missiles_in_vehicle.cpp', 'objects/missile.cpp',
 	'objects/corpse.cpp', 'objects/item.cpp', 'objects/mine.cpp', 'objects/dirt.cpp', 
 	'objects/damage.cpp', 'objects/helicopter.cpp', 'objects/paratrooper.cpp', 'objects/kamikaze.cpp',
 	'objects/machinegunner.cpp', 'objects/destructable_object.cpp', 'objects/submarine.cpp', 'objects/train.cpp',
 	'objects/trooper.cpp', 'objects/fakemod.cpp', 'objects/car.cpp', 'objects/tooltip.cpp', 
-	'objects/ai_launcher.cpp', 'objects/vehicle_traits.cpp', 'objects/barrack.cpp', 'objects/watchtower.cpp',
+	'objects/vehicle_traits.cpp', 'objects/barrack.cpp', 'objects/watchtower.cpp',
 	'objects/cannon.cpp', 'objects/boat.cpp', 
 	
 	'src/player_state.cpp', 
