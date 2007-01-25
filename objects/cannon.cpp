@@ -22,7 +22,7 @@
 
 class Cannon : public Object {
 public:
-	Cannon(const int dir) : Object("cannon"), _fire(false) {
+	Cannon(const int dir) : Object("trooper"), _fire(false) {
 		setDirection(dir);
 	}
 	virtual Object* clone() const  { return new Cannon(*this); }
