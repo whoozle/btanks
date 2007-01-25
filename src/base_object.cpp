@@ -303,7 +303,7 @@ void BaseObject::updateStateFromVelocity() {
 	state.right = (_velocity.x > 0);
 	state.up = (_velocity.y < 0);
 	state.down = (_velocity.y > 0);
-	if (_state != state) {
+	if (!PlayerManager->isClient() && _state != state) {
 		_state = state;
 		PlayerSlot *slot = PlayerManager->getSlotByID(_id);
 		if (slot != NULL)
