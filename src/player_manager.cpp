@@ -558,7 +558,7 @@ void IPlayerManager::createControlMethod(PlayerSlot &slot, const std::string &co
 const int IPlayerManager::findEmptySlot() const {
 	int i, n = _players.size();
 	for(i = 0; i < n; ++i) {
-		if (_players[i].getObject() == NULL && !_players[i].reserved)
+		if (_players[i].id == -1 && !_players[i].reserved)
 			break;
 	}
 	if (i == n) 
