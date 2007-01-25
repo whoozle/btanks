@@ -41,8 +41,16 @@ private:
 const std::string AITank::getWeapon(const int idx) const {
 	switch(idx) {
 	case 0: 
+		if (isEffectActive("dirt")) {
+			return "dirt-bullet";
+		} else if (isEffectActive("dispersion")) {
+			return "dispersion-bullet";
+		} else if (isEffectActive("ricochet")) {
+			return "ricochet-bullet";
+		}
+		return "bullet";
 	case 1:
-		return get( idx ? "alt-mod": "mod")->getType();
+		return get( "mod")->getType();
 	default: 
 		throw_ex(("weapon %d doesnt supported", idx));
 	}
