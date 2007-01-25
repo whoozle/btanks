@@ -226,12 +226,16 @@ const int BaseObject::_getOwner() const {
 }
 
 const bool BaseObject::hasSameOwner(const BaseObject *other) const {
+	for(std::deque<int>::const_iterator j = other->_owners.begin(); j != other->_owners.end(); ++j) 
+		if (*j == _id)
+			return true;
+
 	for(std::deque<int>::const_iterator i = _owners.begin(); i != _owners.end(); ++i) {
 		if (*i == other->_id)
 			return true;
 		
 		for(std::deque<int>::const_iterator j = other->_owners.begin(); j != other->_owners.end(); ++j) 
-			if (*i == *j || *j == _id)
+			if (*i == *j)
 				return true;
 	}
 	return false;
