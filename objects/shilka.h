@@ -25,7 +25,7 @@
 
 class FakeMod;
 
-class Shilka : public Object {
+class Shilka : virtual public Object {
 public:
 	Shilka(const std::string &classname);
 	virtual Object * clone() const;
