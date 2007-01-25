@@ -142,12 +142,12 @@ void Base::calculate(const float dt) {
 	
 
 	weapon1 = getWeapon(0), weapon2 = getWeapon(1);
+	amount1 = getWeaponAmount(0), amount2 = getWeaponAmount(1);
 	
 	if (target == NULL)
 		target = World->getObjectByID(_target_id);
 	if (target != NULL) {
 
-	amount1 = getWeaponAmount(0), amount2 = getWeaponAmount(1);
 	if (amount1 == -1) 
 		amount1 = 10;
 	if (amount2 == -1) 
