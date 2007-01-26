@@ -585,6 +585,8 @@ void IGame::run() {
 		}
 
 		_main_menu.render(_window);
+		if (_console)
+			_console->render(_window);
 		
 flip:
 		if (_show_fps) {

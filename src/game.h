@@ -43,7 +43,10 @@ class Credits;
 class Cheater;
 class Console;
 
-class AbortMarshaller {
+
+class IGame : public Window {
+
+class marshaller {
 public: 
 	typedef bool result_type;
 
@@ -59,14 +62,13 @@ public:
     	}
 };
 
-class IGame : public Window {
 public: 
 	DECLARE_SINGLETON(IGame);
 
 
 	static const std::string data_dir;
 	//signals
-	sigc::signal1<bool, const SDL_keysym, AbortMarshaller> key_signal;
+	sigc::signal1<bool, const SDL_keysym, marshaller> key_signal;
 	sigc::signal4<void, const int, const bool, const int, const int> mouse_signal;
 
 	void init(const int argc, char *argv[]);
