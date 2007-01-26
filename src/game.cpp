@@ -168,7 +168,10 @@ void IGame::init(const int argc, char *argv[]) {
 	_hud = new Hud(_window.getWidth(), _window.getHeight());
 	
 	GET_CONFIG_VALUE("engine.enable-console", bool, ec, false);
-	if (ec) _console = new Console;
+	if (ec) {
+		_console = new Console;
+		_console->on_command.connect(sigc::mem_fun(this, &IGame::onConsole));
+	}
 
 	LOG_DEBUG(("installing callbacks..."));
 	key_signal.connect(sigc::mem_fun(this, &IGame::onKey));
@@ -757,3 +760,10 @@ void IGame::getWaypoint(v3<float> &wp, const std::string &classname, const std::
 	wp = i->second.convert<float>();
 }
 
+const std::string IGame::onConsole(const std::string &cmd, const std::string &param) {
+	if (cmd == "quit") {
+		_running = false;
+		return "thank you for playing battle tanks";
+	}
+	return std::string();
+}

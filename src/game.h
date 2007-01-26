@@ -97,6 +97,7 @@ public:
 private:
 	bool onKey(const SDL_keysym sym);
 	void onMenu(const std::string &name, const std::string &value);
+	const std::string onConsole(const std::string &cmd, const std::string &param);
 	
 	void stopCredits();
 
