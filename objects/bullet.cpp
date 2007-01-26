@@ -90,7 +90,7 @@ void Bullet::onSpawn() {
 }
 
 void Bullet::emit(const std::string &event, Object * emitter) {
-	if (emitter != NULL && emitter->classname == "smoke-cloud")
+	if (emitter != NULL && (emitter->classname == "smoke-cloud" || emitter->classname == "bullet") )
 		return;
 	
 	if (event == "collision" || event == "death") {
