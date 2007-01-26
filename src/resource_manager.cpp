@@ -302,7 +302,9 @@ Object *IResourceManager::createObject(const std::string &classname, const std::
 	if (i == _objects.end())
 		throw_ex(("classname '%s' was not registered", classname.c_str()));
 	Object * r = i->second->clone();
-	assert(!r->registered_name.empty());
+
+	assert(!r->registered_name.empty());//this usually happens if you constructed object with default ctor from clone() method. check it! 
+										//clone should look like { return new Object(*this); }
 	if (r == NULL)
 		throw_ex(("%s->clone('%s') returns NULL", classname.c_str(), animation.c_str()));
 	r->setup(animation);
