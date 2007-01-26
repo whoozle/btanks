@@ -105,10 +105,12 @@ const bool OggStream::update() {
 		AL_CHECK(("alSourceUnqueueBuffers"));
 		
 		active = stream(buffer);
+		if (!active) 
+			break;
 		alSourceQueueBuffers(_source, 1, &buffer);
 		AL_CHECK(("alSourceQueueBuffers"));
 	}
-	return active;
+	return true;
 }
 
 
