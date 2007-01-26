@@ -119,9 +119,19 @@ void TCPSocket::accept(TCPSocket &client) {
 void TCPSocket::noDelay(const bool flag) {
 	if (_sock == -1)
 		throw_ex(("noDelay on unitialized socket"));
+
+	if (flag)
+		LOG_DEBUG(("setting NODELAY and TOS_LOWDELAY flags on socket %d", (int)_sock));
 	
 	int value = flag?1:0;
 	int r = setsockopt(_sock, IPPROTO_TCP, TCP_NODELAY, (char *)&value, sizeof(value));
 	if (r < 0) 
 		throw_io(("setsockopt"));
+
+	if (flag) {	
+		value = IPTOS_LOWDELAY;
+		r = setsockopt(_sock, IPPROTO_IP, IP_TOS, (char *)&value, sizeof(value));
+		if (r < 0) 
+			throw_io(("setsockopt"));
+	}
 }
