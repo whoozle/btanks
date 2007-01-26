@@ -246,6 +246,8 @@ const float IWorld::getImpassability(Object *obj, const v3<int> &position, const
 		if (o->impassability > im) {
 			im = o->impassability;
 			result = o;
+			if (im >= 1.0)
+				break;
 		}
 
 	}
