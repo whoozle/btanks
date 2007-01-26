@@ -514,7 +514,7 @@
 	<object class="corpse" hp="1000" ttl="10" fadeout_time="1" z="-5" impassability="0" />
 	
 	<object class="explosion" hp="1" z="580" />
-	<object class="smoke-cloud" impassability="-1" hp="150" z="580" ttl="30" fadeout_time="2" />
+	<object class="smoke-cloud" impassability="-1" hp="5" z="580" ttl="30" fadeout_time="2" />
 	<object class="nuclear-explosion" hp="1000" mass="10000" impassability="-1" z="900" />
 	<object class="cannon-explosion" hp="30" impassability="-1" z="900" />
 	

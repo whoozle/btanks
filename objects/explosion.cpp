@@ -28,8 +28,9 @@
 class Explosion : public Object {
 public:
 	Explosion() : Object("explosion"), _damaged_objects(), _damage_done(false) { impassability = 0; }
+	Object* clone() const  { return new Explosion(*this); }
+
 	virtual void tick(const float dt);
-	virtual Object * clone() const;
 	virtual void onSpawn();
 	virtual void emit(const std::string &event, Object * emitter = NULL);
 	virtual void serialize(mrt::Serializator &s) const {
@@ -104,12 +105,6 @@ void Explosion::tick(const float dt) {
 }
 
 void Explosion::onSpawn() {
-	if (registered_name == "smoke-cloud") {
-		play("start", false);
-		play("main", true);
-		return;
-	}
-	
 	play("boom", false);
 	if (registered_name == "nuclear-explosion") 
 		Game->shake(1, 4);
@@ -135,30 +130,11 @@ void Explosion::emit(const std::string &event, Object * emitter) {
 			_damaged_objects.insert(id);
 		
 			emitter->addDamage(this, max_hp);
-		} else if (registered_name == "smoke-cloud") {
-			//poison cloud ;)
-			
-			const std::string &ec = emitter->registered_name;
-			if (ec != "trooper" && ec != "citizen" && ec != "kamikaze")
-				return;
-			
-			const int id = emitter->getID();
-			if (_damaged_objects.find(id) != _damaged_objects.end())
-				return; //damage was already added for this object.
-			
-			_damaged_objects.insert(id);
-			emitter->addDamage(this, max_hp);
-		}
-		
+		} 		
 	} else Object::emit(event, emitter);
 }
 
 
-Object* Explosion::clone() const  {
-	return new Explosion(*this);
-}
-
 REGISTER_OBJECT("explosion", Explosion, ());
 REGISTER_OBJECT("nuclear-explosion", Explosion, ());
-REGISTER_OBJECT("smoke-cloud", Explosion, ());
 REGISTER_OBJECT("cannon-explosion", Explosion, ());
