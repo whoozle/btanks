@@ -131,18 +131,20 @@ void TCPSocket::accept(TCPSocket &client) {
 #endif
 
 void TCPSocket::noDelay(const bool flag) {
+TRY {
 	if (_sock == -1)
 		throw_ex(("noDelay on unitialized socket"));
 
 	int value = flag?1:0;
 	int r = setsockopt(_sock, IPPROTO_TCP, TCP_NODELAY, (char *)&value, sizeof(value));
 	if (r < 0) 
-		throw_io(("setsockopt"));
+		throw_io(("setsockopt(TCP_NODELAY)"));
 
 	if (flag) {	
 		value = IPTOS_LOWDELAY;
 		r = setsockopt(_sock, IPPROTO_IP, IP_TOS, (char *)&value, sizeof(value));
 		if (r < 0) 
-			throw_io(("setsockopt"));
+			throw_io(("setsockopt(TOS_LOWDELAY)"));
 	}
+} CATCH("noDelay", {});
 }
