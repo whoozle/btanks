@@ -24,7 +24,7 @@
   <property name="object:watchtower-with-machinegunner:watchtower:15" value="2049,2227"/>
   <property name="object:watchtower-with-machinegunner:watchtower:14" value="2304,2223"/>
   <property name="object:watchtower-with-machinegunner:watchtower:13" value="1855,1772"/>
-  <property name="object:static-tank:red-tank:2" value="3132,3006,-10"/>
+  <property name="object:static-tank:red-tank:2" value="3132,3006"/>
   <property name="config:multiplayer.restrict-start-vehicle" value="string:machinegunner-player"/>
   <property name="object:boomerang-missiles-item:boomerang-missiles-item:1" value="2478,2715,-10"/>
   <property name="object:tent-with-throwers:trooper-tent:1" value="2640,2871"/>
@@ -42,7 +42,7 @@
   <property name="object:stack:stack:4" value="2364,3146"/>
   <property name="object:smoke-missiles-item:smoke-missiles-item:2" value="1928,2136,-10"/>
   <property name="object:kamikaze:kamikaze:1" value="2975,1304,-10"/>
-  <property name="object:static-tank:yellow-tank:1" value="2977,2896,-10"/>
+  <property name="object:static-tank:yellow-tank:1" value="2977,2896"/>
   <property name="object:stack:stack:3" value="2372,3112"/>
   <property name="object:smoke-missiles-item:smoke-missiles-item:1" value="2073,2580,-10"/>
   <property name="object:stack:stack:2" value="2360,3080"/>
