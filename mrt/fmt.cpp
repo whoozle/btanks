@@ -74,18 +74,21 @@ void mrt::split(std::vector<std::string> & result, const std::string &str, const
 	
 	while(pos < str.size()) {
 		if (n > 0) {
-			if (n-- == 0) 
-				return;
+			if (n-- == 0) {
+				break;
+			}
 		}
 		p = str.find(delimiter, pos);
 		if (p != std::string::npos) 
 			result.push_back(str.substr(pos, p - pos));
 		else {
 			result.push_back(str.substr(pos));
-			return;
+			break;
 		}
 		pos = p + delimiter.size();
 	}
+	if (limit)
+		result.resize(limit);
 }
 
 void mrt::toUpper(std::string &str) {
