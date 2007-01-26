@@ -140,11 +140,13 @@ TRY {
 	if (r < 0) 
 		throw_io(("setsockopt(TCP_NODELAY)"));
 
+#ifndef WIN32
 	if (flag) {	
 		value = IPTOS_LOWDELAY;
 		r = setsockopt(_sock, IPPROTO_IP, IP_TOS, (char *)&value, sizeof(value));
 		if (r < 0) 
 			throw_io(("setsockopt(TOS_LOWDELAY)"));
 	}
+#endif
 } CATCH("noDelay", {});
 }
