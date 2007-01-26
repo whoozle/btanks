@@ -254,7 +254,7 @@ TRY {
 			
 			World->deserializeObjectPV(s, o);
 
-			//LOG_DEBUG(("slot: %d, id: %d, state: %s %s", slot, id, state.dump().c_str(), my_state?"skipped":""));
+			LOG_DEBUG(("slot: %d, id: %d, state: %s %s", slot, id, state.dump().c_str(), my_state?"skipped":""));
 
 			if (!my_state)
 				o->updatePlayerState(state); //update states for all players but me.
