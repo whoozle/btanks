@@ -3,6 +3,7 @@
 #include "game.h"
 #include "sdlx/color.h"
 #include <vector>
+#include "version.h"
 
 bool Console::onKey(const SDL_keysym sym) {
 	if (!_active) {
@@ -23,10 +24,10 @@ bool Console::onKey(const SDL_keysym sym) {
 		_active = false;
 		break;
 	
-	case SDLK_UP: _pos -= 2;
-	case SDLK_DOWN: ++_pos;
-		if (_pos < 0)
-			_pos = 0;
+	case SDLK_UP: _pos -= 4;
+	case SDLK_DOWN: _pos += 2;
+		if (_pos < 1)
+			_pos = 1;
 		if (_pos >= (int)(_buffer.size())) 
 			_pos = _buffer.size() - 1;
 		_buffer.back().first = (_pos < (int)(_buffer.size() - 1))?_buffer[_pos].first:">";
@@ -42,10 +43,13 @@ bool Console::onKey(const SDL_keysym sym) {
 
 	case SDLK_RETURN: {
 			//LOG_DEBUG(("string: %s", _buffer.back().first.c_str()));
-			std::vector<std::string> r;
-			mrt::split(r, _buffer.back().first.substr(1), " ", 2);
-			LOG_DEBUG(("emit %s('%s')", r[0].c_str(), r[1].c_str()));
-			on_command.emit(r[0], r[1]);
+			std::vector<std::string> cmd;
+			mrt::split(cmd, _buffer.back().first.substr(1), " ", 2);
+			LOG_DEBUG(("emit %s('%s')", cmd[0].c_str(), cmd[1].c_str()));
+			std::string r = on_command.emit(cmd[0], cmd[1]);
+			if (r.empty())
+				r = mrt::formatString("unknown command '%s'", cmd[0].c_str());
+			_buffer.push_back(Buffer::value_type(r, NULL));
 			_buffer.push_back(Buffer::value_type(std::string(">"), NULL));
 			_pos = _buffer.size() - 1;
 		}
@@ -67,6 +71,7 @@ Console::Console() : _active(false), _pos(0) {
 	LOG_DEBUG(("loading background..."));
 	_background.loadImage(data_dir + "/tiles/console_background.png");
 	
+	_buffer.push_back(Buffer::value_type(mrt::formatString("BattleTanks. version: %s", getVersion().c_str()), NULL));
 	_buffer.push_back(Buffer::value_type(std::string(">"), NULL));
 	Game->key_signal.connect(sigc::mem_fun(this, &Console::onKey));	
 }

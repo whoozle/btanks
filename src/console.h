@@ -10,21 +10,21 @@
 class Console {
 class marshaler {
 public: 
-	typedef bool result_type;
+	typedef const std::string result_type;
 
 	template<typename IteratorT>
-    	bool operator()(IteratorT First, IteratorT Last) {
+    	const std::string operator()(IteratorT First, IteratorT Last) {
     		while(First != Last) {
-    			if (*First) {
-    				return true;
-    			}
+    			const std::string r = *First;
+    			if (!r.empty())
+    				return r;
     			++First;
     		}
-    		return false;
+    		return std::string();
     	}
 };
 public: 
-	sigc::signal2<bool, const std::string &, const std::string &, marshaler> on_command;
+	sigc::signal2<const std::string, const std::string &, const std::string &, marshaler> on_command;
 	Console(); 
 	
 	void render(sdlx::Surface &window);
