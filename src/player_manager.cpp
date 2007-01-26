@@ -242,17 +242,19 @@ TRY {
 			const bool my_state = slot < _players.size() && slot == (unsigned)_my_idx;
 			
 			Object *o = World->getObjectByID(id);
-			if (o == NULL) {
-				LOG_DEBUG(("still dont know anything about object %d, skipping for now", id));
-				continue;
-			}
 
 			PlayerState state; 
 			state.deserialize(s);
 			
-			World->tick(*o, -_trip_time / 1000.0);
+			if (o != NULL)
+				World->tick(*o, -_trip_time / 1000.0);
 			
 			World->deserializeObjectPV(s, o);
+			
+			if (o == NULL) {
+				LOG_WARN(("nothing known about object id %d now, skip update", id));
+				continue;
+			}
 
 			LOG_DEBUG(("slot: %d, id: %d, state: %s %s", slot, id, state.dump().c_str(), my_state?"skipped":""));
 
