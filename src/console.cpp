@@ -79,18 +79,30 @@ Console::Console() : _active(false), _pos(0) {
 void Console::render(sdlx::Surface &window) {
 	if (!_active)
 		return;
-	
 	int w = _background.getWidth(), h =  _background.getHeight();
 	int x = window.getWidth() - w, y = window.getHeight() - h;
+
+	const int y_margin = 8;
+	const int x_margin = 8;
+	
 	window.copyFrom(_background, x, y);
-	x += 8; y += 8;
+	window.setClipRect(sdlx::Rect(x, y + y_margin, w, h - 2 * y_margin));
+	int ch = 0;
 	for(Buffer::iterator i = _buffer.begin(); i != _buffer.end(); ++i) {
 		if (i->second == NULL) {
 			i->second = new sdlx::Surface;
 			_font.renderBlended(*i->second, i->first, sdlx::Color(0, 200, 0));
 			i->second->convertAlpha();
 		}
+		ch += i->second->getHeight();
+	}
+
+	y = window.getHeight() - ch - y_margin;
+	x += x_margin; 
+	
+	for(Buffer::iterator i = _buffer.begin(); i != _buffer.end(); ++i) {
 		window.copyFrom(*i->second, x, y);
 		y += i->second->getHeight();
 	}
+	window.resetClipRect();
 }
