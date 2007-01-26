@@ -1,9 +1,15 @@
 *) bugfixes... bugfixes... bugfixes...
+*) new objects: 
+	*) empty vehicles which could be driven (cars, tanks, ..)
+	*) tents/barracks with troopers
+	*) watchtowers with machinegunners and throwers
+	*) patrol boat with missiles.
+*) new multiplayer features (cooperative mode, vehicle selection by server), the most of glitches fixed. AI and pathfinding are now disabled for client side.
+*) guided missiles make simple correction for target velocity
 *) calculate map projection with greater precision, more accurate hud. 
 *) a lot of pathfinding fixes... added synchronous A* implementation. improved performance of both A* algos.
 *) improved collision performance / restored collision caching.
-*) implemented first working AI for launcher.
-*) new objects: empty vehicles which could be placed on map, tents/barracks with troopers.
+*) implemented first working AI(still experimental and available only by hack ;).
 *) almost fixed sound glitches at the end of background tune.
 
 0.3.1796:
