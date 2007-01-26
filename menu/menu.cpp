@@ -138,14 +138,13 @@ MainMenu::~MainMenu() {
 }
 
 
-void MainMenu::onKey(const Uint8 type, const SDL_keysym sym) {
+bool MainMenu::onKey(const SDL_keysym sym) {
 	if (!_active)
-		return;
-	if (type != SDL_KEYDOWN)
-		return;
+		return false;
+	
 	MenuItem * item = _items[_active_menu][_active_item];
-	if (item->onKey(type, sym))
-		return;
+	if (item->onKey(sym))
+		return true;
 	
 	switch(sym.sym) {
 		case SDLK_UP:
@@ -194,6 +193,7 @@ void MainMenu::onKey(const Uint8 type, const SDL_keysym sym) {
 			break;
 	}
 	//LOG_DEBUG(("active item = %u", _active_item));
+	return true;
 }
 
 

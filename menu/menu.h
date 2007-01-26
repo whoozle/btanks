@@ -46,7 +46,7 @@ public:
 	
 	const std::string getValue(const std::string &menu, const std::string &itemname) const;
 private:
-	void onKey(const Uint8 type, const SDL_keysym sym);
+	bool onKey(const SDL_keysym sym);
 	
 	void recalculateSizes();
 

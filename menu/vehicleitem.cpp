@@ -67,8 +67,8 @@ void VehicleItem::updateValue() {
 }
 
 
-const bool VehicleItem::onKey(const Uint8 type, const SDL_keysym sym) {
-	if (!_active || type != SDL_KEYDOWN)
+const bool VehicleItem::onKey(const SDL_keysym sym) {
+	if (!_active)
 		return false;
 	
 	switch(sym.sym) {

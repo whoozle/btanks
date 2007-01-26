@@ -19,10 +19,7 @@ Cheater::Cheater() : _buf_size(0) {
 #include "world.h"
 #include "object.h"
 
-void Cheater::onKey(const Uint8 type, const SDL_keysym sym) {
-	if (type != SDL_KEYUP)
-		return;
-	
+bool Cheater::onKey(const SDL_keysym sym) {
 	size_t n = sizeof(_buf)/sizeof(_buf[0]);
 	
 	if (_buf_size < n - 1) {
@@ -44,10 +41,11 @@ void Cheater::onKey(const Uint8 type, const SDL_keysym sym) {
 		}
 	}
 	if (cheat.empty())
-		return;
+		return false;
 		
 	if (cheat == "skotobaza") {
 		/* SECRET ATATAT MODE !! */
 		World->setMode("atatat", true);
-	}	
+	}
+	return false;
 }

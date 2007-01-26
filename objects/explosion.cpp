@@ -19,9 +19,9 @@
 
 #include "object.h"
 #include "resource_manager.h"
-#include "game.h"
 #include "tmx/map.h"
 #include "config.h"
+#include "game.h"
 
 #include <set>
 

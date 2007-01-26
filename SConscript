@@ -39,7 +39,8 @@ bt_sources = 	[
 	'tmx/map.cpp', 'tmx/layer.cpp', 
 	'src/main.cpp', 'src/var.cpp', 'src/config.cpp', 
 	
-	'src/player_slot.cpp', 'src/hud.cpp', 'src/game.cpp',  'src/window.cpp', 
+	'src/player_slot.cpp', 'src/hud.cpp', 'src/console.cpp',
+	'src/game.cpp',  'src/window.cpp', 
 	'src/credits.cpp', 'src/cheater.cpp', 
 
 	vobj

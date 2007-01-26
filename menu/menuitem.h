@@ -42,7 +42,7 @@ public:
 	virtual void onFocus();
 	virtual void onLeave();
 
-	virtual const bool onKey(const Uint8 type, const SDL_keysym sym);
+	virtual const bool onKey(const SDL_keysym sym);
 	virtual const std::string getValue() const;
 	virtual ~MenuItem() {}
 

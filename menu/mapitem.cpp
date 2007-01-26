@@ -80,8 +80,8 @@ void MapItem::updateValue() {
 }
 
 
-const bool MapItem::onKey(const Uint8 type, const SDL_keysym sym) {
-	if (!_active || type != SDL_KEYDOWN)
+const bool MapItem::onKey(const SDL_keysym sym) {
+	if (!_active)
 		return false;
 	
 	switch(sym.sym) {

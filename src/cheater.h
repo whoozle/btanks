@@ -12,7 +12,7 @@ class Cheater : public sigc::trackable {
 public: 
 	Cheater();
 private: 
-	void onKey(const Uint8 type, const SDL_keysym sym);
+	bool onKey(const SDL_keysym sym);
 	std::vector<std::string> _cheats;
 	size_t _buf_size;
 	char _buf[16];

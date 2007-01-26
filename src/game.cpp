@@ -52,13 +52,14 @@
 #include "hud.h"
 #include "credits.h"
 #include "cheater.h"
+#include "console.h"
 
 //#define SHOW_PERFSTATS
 
 IMPLEMENT_SINGLETON(Game, IGame)
 
 IGame::IGame() : 
-_check_items(0.5, true),  _autojoin(false), _shake(0), _credits(NULL), _cheater(NULL) {}
+_check_items(0.5, true),  _autojoin(false), _shake(0), _credits(NULL), _cheater(NULL), _console(NULL) {}
 IGame::~IGame() {}
 
 void IGame::init(const int argc, char *argv[]) {
@@ -165,6 +166,9 @@ void IGame::init(const int argc, char *argv[]) {
 	
 	LOG_DEBUG(("initializing hud..."));
 	_hud = new Hud(_window.getWidth(), _window.getHeight());
+	
+	GET_CONFIG_VALUE("engine.enable-console", bool, ec, false);
+	if (ec) _console = new Console;
 
 	LOG_DEBUG(("installing callbacks..."));
 	key_signal.connect(sigc::mem_fun(this, &IGame::onKey));
@@ -205,11 +209,11 @@ void IGame::init(const int argc, char *argv[]) {
 	
 }
 
-void IGame::onKey(const Uint8 type, const SDL_keysym key) {
-	if (key.sym == SDLK_ESCAPE && type == SDL_KEYUP) {
+bool IGame::onKey(const SDL_keysym key) {
+	if (key.sym == SDLK_ESCAPE) {
 		if (!Map->loaded()) {
 			_main_menu.setActive(true);
-			return;
+			return true;
 		}
 		
 		LOG_DEBUG(("escape hit, paused: %s", _paused?"true":"false"));
@@ -219,7 +223,10 @@ void IGame::onKey(const Uint8 type, const SDL_keysym key) {
 		} else {
 			_paused = _main_menu.isActive();
 		}
+		return true;
 	}
+
+	return false;
 }
 
 void IGame::onMenu(const std::string &name, const std::string &value) {
@@ -504,8 +511,7 @@ void IGame::run() {
 					stopCredits();
 					break;
 				}
-			case SDL_KEYUP:
-				key_signal.emit(event.key.type, event.key.keysym);
+				key_signal.emit(event.key.keysym);
 			break;
 			case SDL_MOUSEBUTTONDOWN:
 				if (_credits) {
@@ -621,10 +627,15 @@ flip:
 void IGame::deinit() {
 	clear();
 	Config->save();
+	
 	delete _fps;
 	_fps = NULL;
+	
 	delete _hud;
 	_hud = NULL;
+	
+	delete _console;
+	_console = NULL;
 	
 	_running = false;
 	Window::deinit();

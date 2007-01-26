@@ -41,6 +41,23 @@ class PlayerSlot;
 class Hud;
 class Credits;
 class Cheater;
+class Console;
+
+class AbortMarshaller {
+public: 
+	typedef bool result_type;
+
+	template<typename IteratorT>
+    	bool operator()(IteratorT First, IteratorT Last) {
+    		while(First != Last) {
+    			if (*First) {
+    				return true;
+    			}
+    			++First;
+    		}
+    		return false;
+    	}
+};
 
 class IGame : public Window {
 public: 
@@ -49,7 +66,7 @@ public:
 
 	static const std::string data_dir;
 	//signals
-	sigc::signal2<void, const Uint8, const SDL_keysym> key_signal;
+	sigc::signal1<bool, const SDL_keysym, AbortMarshaller> key_signal;
 	sigc::signal4<void, const int, const bool, const int, const int> mouse_signal;
 
 	void init(const int argc, char *argv[]);
@@ -76,7 +93,7 @@ public:
 	void getWaypoint(v3<float> &wp, const std::string &classname, const std::string &name);
 
 private:
-	void onKey(const Uint8 type, const SDL_keysym sym);
+	bool onKey(const SDL_keysym sym);
 	void onMenu(const std::string &name, const std::string &value);
 	
 	void stopCredits();
@@ -119,6 +136,7 @@ private:
 	
 	Credits *_credits;
 	Cheater *_cheater;
+	Console *_console;
 	
 	IGame(const IGame &);
 	const IGame& operator=(const IGame &);

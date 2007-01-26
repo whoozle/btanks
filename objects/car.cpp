@@ -20,8 +20,8 @@
 #include "resource_manager.h"
 #include "config.h"
 #include "object.h"
-#include "game.h"
 #include "item.h"
+#include "game.h"
 
 #include "math/unary.h"
 

@@ -21,7 +21,6 @@
 #include "resource_manager.h"
 #include "object.h"
 #include "world.h"
-#include "game.h"
 #include "shilka.h"
 #include "config.h"
 #include "fakemod.h"

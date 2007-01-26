@@ -20,7 +20,6 @@
 #include "resource_manager.h"
 #include "object.h"
 #include "world.h"
-#include "game.h"
 #include "launcher.h"
 #include "config.h"
 

@@ -84,7 +84,7 @@ void MenuItem::getSize(int &w, int &h) const {
 	h = _normal.getHeight();
 }
 
-const bool MenuItem::onKey(const Uint8 type, const SDL_keysym sym) {
+const bool MenuItem::onKey(const SDL_keysym sym) {
 	return false;
 }
 
