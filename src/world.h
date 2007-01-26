@@ -71,8 +71,11 @@ public:
 	virtual void deserialize(const mrt::Serializator &s);
 	void generateUpdate(mrt::Serializator &s, const bool clean_sync_flag);
 	void applyUpdate(const mrt::Serializator &s, const float dt);
+
 	void serializeObject(mrt::Serializator &, const Object *) const;
 	Object* deserializeObject(const mrt::Serializator &);
+	void serializeObjectPV(mrt::Serializator &, const Object *) const;
+	void deserializeObjectPV(const mrt::Serializator &, Object *);
 
 	void tick(Object &o, const float dt);	
 	void tick(ObjectMap &objects, const float dt);

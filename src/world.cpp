@@ -870,6 +870,23 @@ Object * IWorld::spawnGrouped(Object *src, const std::string &classname, const s
 	return obj;
 }
 
+void IWorld::serializeObjectPV(mrt::Serializator &s, const Object *o) const {
+	o->_position.serialize(s);
+	o->_velocity.serialize(s);
+	o->_velocity_fadeout.serialize(s);
+}
+
+void IWorld::deserializeObjectPV(const mrt::Serializator &s, Object *o) {
+	if (o == NULL) {
+		LOG_WARN(("skipped deserializeObjectPV for NULL object"));
+		return;
+	}
+	o->_position.deserialize(s);
+	o->_velocity.deserialize(s);
+	o->_velocity_fadeout.deserialize(s);	
+}
+
+
 void IWorld::serializeObject(mrt::Serializator &s, const Object *o) const {
 	s.add(o->_id);
 	s.add(o->registered_name);

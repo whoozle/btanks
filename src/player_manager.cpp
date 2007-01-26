@@ -241,24 +241,26 @@ TRY {
 			}
 			const bool my_state = slot < _players.size() && slot == (unsigned)_my_idx;
 			
-			PlayerState state; 
-			state.deserialize(s);
-			LOG_DEBUG(("slot: %d, id: %d, state: %s %s", slot, id, state.dump().c_str(), my_state?"skipped":""));
 			Object *o = World->getObjectByID(id);
 			if (o == NULL) {
 				LOG_DEBUG(("still dont know anything about object %d, skipping for now", id));
 				continue;
 			}
-			if (my_state)
-				continue;
+
+			PlayerState state; 
+			state.deserialize(s);
 			
 			World->tick(*o, -_trip_time / 1000.0);
-			o->updatePlayerState(state); //update states for all players but me.
-			World->tick(*o, _trip_time / 1000.0);
+			
+			World->deserializeObjectPV(s, o);
 
-			if (slot < _players.size()) {
-				_players[slot].id = o->getID(); // ???
-			}
+			LOG_DEBUG(("slot: %d, id: %d, state: %s %s", slot, id, state.dump().c_str(), my_state?"skipped":""));
+
+			if (!my_state)
+				o->updatePlayerState(state); //update states for all players but me.
+			
+			//World->tick(*o, _trip_time / 1000.0);
+
 			updated_objects.insert(IWorld::ObjectMap::value_type(o->getID(), o));
 		}	
 		World->tick(updated_objects, _trip_time / 1000.0);
@@ -424,6 +426,7 @@ void IPlayerManager::updatePlayers() {
 				Object * o = World->getObjectByID(slot.id);
 				assert(o != NULL);
 				o->getPlayerState().serialize(s);
+				World->serializeObjectPV(s, o);
 				send = true;
 				slot.need_sync = false;
 			}
