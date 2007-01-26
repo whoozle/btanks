@@ -24,7 +24,7 @@ public:
     	}
 };
 public: 
-	sigc::signal2<std::string, const std::string &, const std::string &, marshaler> on_command;
+	sigc::signal2<const std::string, const std::string &, const std::string &, marshaler> on_command;
 	Console(); 
 	
 	void render(sdlx::Surface &window);
