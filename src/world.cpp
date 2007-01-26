@@ -380,7 +380,9 @@ void IWorld::tick(Object &o, const float dt) {
 	
 	const IMap &map = *IMap::get_instance();
 	v3<int> map_size = map.getSize();
-	
+
+TRY {
+
 	if (o.ttl > 0) {
 		o.ttl -= dt;
 		if (o.ttl <= 0) {
@@ -391,7 +393,9 @@ void IWorld::tick(Object &o, const float dt) {
 	}
 	if (o.isDead()) 
 		return;
-		
+
+} CATCH("ttl decrementing", throw;);		
+
 	v3<float> old_vel = o._velocity;
 
 	TRY { 
@@ -438,11 +442,13 @@ void IWorld::tick(Object &o, const float dt) {
 		} CATCH("calling o.calculate", throw;)
 	}
 
+TRY {
 	if(o.getPlayerState().leave) {
 		//if (!detachVehicle(&o))
 		//	o.getPlayerState().leave = false; //do not trigger MP stuff. :)
 		detachVehicle(&o);
 	}
+} CATCH("detaching from vehicle", throw;)
 
 	GET_CONFIG_VALUE("engine.disable-z-velocity", bool, disable_z, true);
 	if (disable_z)
@@ -459,10 +465,12 @@ void IWorld::tick(Object &o, const float dt) {
 		return;
 		
 	if (o.speed == 0) {
-		o._idle_time += dt;
-		if (o.impassability < 0) {
-			getImpassability(&o, o._position.convert<int>());
-		}
+		TRY {
+			o._idle_time += dt;
+			if (o.impassability < 0) {
+				getImpassability(&o, o._position.convert<int>());
+			}
+		} CATCH("tick(speed==0)", throw;);
 		return;
 	}
 		
@@ -497,16 +505,20 @@ void IWorld::tick(Object &o, const float dt) {
 	dpos.z = 0;
 	if (dpos.is0()) 
 		return;
-	
-	v3<int> new_pos((o._position + dpos).convert<int>());
-	v3<int> old_pos = o._position.convert<int>();
 
-	//osurf.saveBMP("snapshot.bmp");
+	bool has_outline = false;
+	bool hidden = false;
+	std::string outline_animation;
+
+	v3<int> new_pos = (o._position + dpos).convert<int>();
+	v3<int> old_pos = o._position.convert<int>();
+	float map_im = 0, obj_im_now = 0, obj_im = 0;
+
 	const Object *stuck_in = NULL;
 	v3<int> stuck_map_pos;
 	bool stuck = false;
-
-	float map_im = 0, obj_im_now = 0, obj_im = 0;
+	
+TRY {	
 	
 	obj_im_now = getImpassability(&o, old_pos, &stuck_in);
 	
@@ -515,9 +527,8 @@ void IWorld::tick(Object &o, const float dt) {
 	int save_dir = o.getDirection();
 	int dirs = o.getDirectionsNumber();
 	bool hidden_attempt[3] = { false, false, false };
-	bool hidden;
-	const std::string outline_animation = o.registered_name + "-outline";
-	const bool has_outline = ResourceManager->hasAnimation(outline_animation);
+	outline_animation = o.registered_name + "-outline";
+	has_outline = ResourceManager->hasAnimation(outline_animation);
 	
 	v3<float> new_velocity;
 
@@ -581,7 +592,9 @@ void IWorld::tick(Object &o, const float dt) {
 		o.setDirection(save_dir);
 		hidden = hidden_attempt[0];
 	}
-	
+} CATCH("tick.impassability check", throw;);
+
+TRY {
 	if (has_outline) {
 		if (hidden) {
 			if (has_outline && !o.has("_outline")) {
@@ -596,12 +609,14 @@ void IWorld::tick(Object &o, const float dt) {
 			}
 		}
 	}
+} CATCH("tick.outline", throw;);
 
 	dpos = o.speed * o._velocity * dt;
 	//LOG_DEBUG(("%d %d", new_pos.x, new_pos.y));
 	new_pos = (o._position + dpos).convert<int>();
 	//LOG_DEBUG(("%d %d", new_pos.x, new_pos.y));
 
+TRY {
 	if (o.piercing) {
 		if (obj_im_now > 0 && obj_im_now < 1.0)
 			obj_im_now = 0;
@@ -612,8 +627,8 @@ void IWorld::tick(Object &o, const float dt) {
 			o._position -= dpos * 4;
 		} else map_im = 0;
 	}
-	
-
+} CATCH("tick(damaging map)", throw;)	
+TRY {
 	if (obj_im == 1.0 || map_im == 1.0) {
 		if (stuck) {
 			v3<float> allowed_velocity;
@@ -658,7 +673,7 @@ void IWorld::tick(Object &o, const float dt) {
 		
 		o._moving_time = 0;
 	}
-
+} CATCH("tick(`stuck` case)", throw;);
 skip_collision:
 
 	if (o.isDead())
@@ -668,6 +683,7 @@ skip_collision:
 		LOG_DEBUG(("%s *** %g,%g", o.dump().c_str(), map_im, obj_im));
 	}
 */	
+TRY {
 	assert(map_im >= 0 && obj_im >= 0);
 	
 	if (map_im >= 1.0 || obj_im >= 1.0) {
@@ -701,6 +717,7 @@ skip_collision:
 	if (o._velocity_fadeout.quick_length() < 0.1) {
 		o._velocity_fadeout.clear();
 	}
+} CATCH("tick(final)", throw;);
 }
 
 
