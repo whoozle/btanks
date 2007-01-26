@@ -35,6 +35,8 @@ Server::~Server() {
 void Server::init(const unsigned port) {
 	LOG_DEBUG(("starting game server at port %d", port));
 	_sock.listen(port, true);
+	_sock.noDelay();
+
 	_monitor = new Monitor;
 	_monitor->start();
 }

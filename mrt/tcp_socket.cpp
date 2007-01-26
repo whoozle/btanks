@@ -116,6 +116,18 @@ void TCPSocket::accept(TCPSocket &client) {
 	client._sock = s;
 }
 
+#ifdef WIN32
+#ifndef IP_TOS
+#	define IP_TOS              3
+#endif
+
+#ifndef IPTOS_LOWDELAY
+#	define IPTOS_LOWDELAY		0x10
+#	define IPTOS_THROUGHPUT		0x08
+#	define IPTOS_RELIABILITY	0x04
+#endif
+#endif
+
 void TCPSocket::noDelay(const bool flag) {
 	if (_sock == -1)
 		throw_ex(("noDelay on unitialized socket"));

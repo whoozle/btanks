@@ -53,17 +53,16 @@ private:
 
 void Boat::calculate(const float dt) {
 	GET_CONFIG_VALUE("objects.missile-boat.targeting-range", int, tr, 800);
-	tr *= tr;
 	
 	static std::vector<std::string> targets;
 	if (targets.empty()) {
 		targets.push_back("player");
-		targets.push_back("trooper");
-		targets.push_back("kamikaze");
+		//targets.push_back("trooper");
+		//targets.push_back("kamikaze");
 	}
 
 	v3<float> pos, vel;
-	if (getNearest(targets, pos, vel) && pos.quick_length() < tr) {
+	if (getNearest(targets, pos, vel) && pos.length() < tr) {
 		_state.fire = true;
 	} else _state.fire = false;
 }
