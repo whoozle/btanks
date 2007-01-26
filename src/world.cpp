@@ -895,9 +895,15 @@ void IWorld::serializeObjectPV(mrt::Serializator &s, const Object *o) const {
 
 void IWorld::deserializeObjectPV(const mrt::Serializator &s, Object *o) {
 	if (o == NULL) {
+		v3<float> x;
+		x.deserialize(s);
+		x.deserialize(s);
+		x.deserialize(s);
+		
 		LOG_WARN(("skipped deserializeObjectPV for NULL object"));
 		return;
 	}
+	
 	o->_position.deserialize(s);
 	o->_velocity.deserialize(s);
 	o->_velocity_fadeout.deserialize(s);	
