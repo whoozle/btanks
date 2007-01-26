@@ -80,7 +80,7 @@ void IPlayerManager::onDisconnect(const int id) {
 	PlayerSlot &slot = _players[id];
 	Object *obj = slot.getObject();
 	if (obj)
-		obj->emit("death", NULL);
+		obj->Object::emit("death", NULL);
 	
 	slot.clear();
 }
@@ -815,6 +815,11 @@ void IPlayerManager::onPlayerDeath(const Object *player, const Object *killer) {
 
 	if (slot == NULL)
 		return;
+	
+	if (killer->getID() == slot->id) 
+		return; //skip attachVehicle() call. magic. :)
+	
+	//LOG_DEBUG(("player: %s killed by %s", player->registered_name.c_str(), killer->registered_name.c_str()));
 		
 	if (slot->id == player->getID()) { //suicide
 		--(slot->frags);

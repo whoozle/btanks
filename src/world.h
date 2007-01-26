@@ -45,7 +45,6 @@ class IWorld : public mrt::Serializable {
 public:
 	DECLARE_SINGLETON(IWorld);
 	typedef std::map<const int, Object*> ObjectMap;
-	sigc::signal2<void, const int, const int> on_id_swapped;
 	
 	void clear();
 	~IWorld();
@@ -91,10 +90,8 @@ public:
 	const Object * findTarget(const Object *src, const std::set<std::string> &enemies, const std::set<std::string> &bonuses, ai::Traits &traits) const;
 	
 private:
-	void swapID(const int id1, const int id2); //very dangerous! 
-	
 	void deleteObject(ObjectMap &objects, Object *o);
-
+	void replaceID(const int old_id, const int new_id);
 	
 	typedef std::map<const std::pair<int, int>, bool> CollisionMap;
 	mutable CollisionMap _collision_map;

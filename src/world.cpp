@@ -1068,46 +1068,17 @@ const int IWorld::getChildren(const int id) const {
 	return c;
 }
 
-void IWorld::swapID(const int id1, const int id2) {
-	if (id1 == id2)
-		throw_ex(("swapID: called with the same id (%d)", id1));
-	ObjectMap::iterator i1 = _objects.find(id1);
-	if (i1 == _objects.end())
-		throw_ex(("swapID: could not find object with id %d", id1));
-	ObjectMap::iterator i2 = _objects.find(id2);
-	if (i2 == _objects.end())
-		throw_ex(("swapID: could not find object with id %d", id2));
-
-	//hope nothing will screw up after this
-	Object *o1 = i1->second;
-	Object *o2 = i2->second;
-	
-	
-	o2->_id = id1;
-	i1->second = o2;
-	
-	o1->_id = id2;
-	i2->second = o1;
-
-	{
-		std::deque<int> owners;
-		owners = o1->_owners;
-		o1->_owners = o2->_owners;
-		o2->_owners = owners;
-	}
-
+void IWorld::replaceID(const int old_id, const int new_id) {
 	for(ObjectMap::iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		Object *o = i->second;
-		if (o->_follow == id1)
-			o->_follow = id2;
-		else if (o->_follow == id2) 
-			o->_follow = id1;
+		if(o->_spawned_by == old_id) 
+			o->_spawned_by = new_id;
+		
+		for(std::deque<int>::iterator j = o->_owners.begin(); j != o->_owners.end(); ++j) {
+			if (*j == old_id)
+				*j = new_id;
+		}
 	}
-
-	
-	o1->need_sync = o2->need_sync = true;
-
-	on_id_swapped.emit(id1, id2);
 }
 
 const bool IWorld::attachVehicle(Object *object, Object *vehicle) {
@@ -1119,11 +1090,19 @@ const bool IWorld::attachVehicle(Object *object, Object *vehicle) {
 		return false;
 	
 	vehicle->classname = "player";
-	swapID(object->getID(), vehicle->getID());
-	//slot->id = vehicle->getID();
-	//slot->need_sync = true;
 	
-	object->Object::emit("death", vehicle);
+	int old_id = object->getID();
+	int new_id = vehicle->getID();
+	
+	object->Object::emit("death", NULL); //emit death BEFORE assigning slot.id (avoid to +1 to frags) :)))
+
+	vehicle->_spawned_by = object->_spawned_by;
+	vehicle->_owners = object->_owners;
+
+	replaceID(old_id, new_id);
+	slot->id = new_id;
+	slot->need_sync = true;
+	
 	return true;
 }
 
@@ -1140,12 +1119,15 @@ const bool IWorld::detachVehicle(Object *object) {
 	Object * man = spawn(object, "machinegunner-player", "machinegunner", object->_direction * (object->size.x + object->size.y) / 4, v3<float>::empty);
 	object->classname = "vehicle";
 
-	man->disown();
-	
-//	slot->id = man->getID();
-//	slot->need_sync = true;
+	man->_owners = object->_owners;
+	int old_id = object->getID();
+	int new_id = man->getID();
 
-	swapID(object->getID(), man->getID());
+	replaceID(old_id, new_id);
+
+	slot->id = new_id;
+	slot->need_sync = true;
+	
 	return true;
 }
 

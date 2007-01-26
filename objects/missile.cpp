@@ -83,7 +83,7 @@ void Missile::calculate(const float dt) {
 		int dir = ((int)(_moving_time * rs)) % 8;
 		setDirection(dir);
 
-		Object *leader = World->getObjectByID(_getOwner());
+		Object *leader = World->getObjectByID(getSummoner());
 		if (leader == NULL) {
 			return;
 		}
