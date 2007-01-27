@@ -29,6 +29,9 @@ using namespace ai;
 Base::Base() : Object("player"), _active(false), _reaction_time(true), _refresh_path(false), _target_id(-1) {}
 
 Base::~Base() {
+	if (!_active)
+		return;
+	
 	LOG_DEBUG(("traits: \n%s", _traits.save().c_str()));
 }
 
