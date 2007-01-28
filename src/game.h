@@ -41,8 +41,6 @@ class PlayerSlot;
 class Hud;
 class Credits;
 class Cheater;
-class Console;
-
 
 class IGame : public Window {
 
@@ -139,7 +137,6 @@ private:
 	
 	Credits *_credits;
 	Cheater *_cheater;
-	Console *_console;
 	
 	IGame(const IGame &);
 	const IGame& operator=(const IGame &);

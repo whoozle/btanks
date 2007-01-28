@@ -3,11 +3,12 @@
 
 #include "sdlx/surface.h"
 #include "sdlx/ttf.h"
+#include "mrt/singleton.h"
 #include <deque>
 #include <string>
 #include <sigc++/sigc++.h>
 
-class Console {
+class IConsole {
 class marshaler {
 public: 
 	typedef const std::string result_type;
@@ -24,11 +25,15 @@ public:
     	}
 };
 public: 
+	DECLARE_SINGLETON(IConsole);
+
 	sigc::signal2<const std::string, const std::string &, const std::string &, marshaler> on_command;
-	Console(); 
 	
 	void render(sdlx::Surface &window);
 	bool onKey(const SDL_keysym sym);
+
+protected: 
+	IConsole(); 
 	
 private:
 	bool _active; 
@@ -40,6 +45,8 @@ private:
 	sdlx::TTF _font;
 	sdlx::Surface _background, _foreground;
 };
+
+SINGLETON(Console, IConsole);
 
 #endif
 

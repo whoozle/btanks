@@ -5,8 +5,14 @@
 #include <vector>
 #include "version.h"
 
-bool Console::onKey(const SDL_keysym sym) {
-	if (!_active) {
+IMPLEMENT_SINGLETON(Console, IConsole)
+
+bool IConsole::onKey(const SDL_keysym sym) {
+	GET_CONFIG_VALUE("engine.enable-console", bool, ec, false);
+	if (!ec) 
+		return false;
+
+	if (!_active) {	
 		if (sym.sym == SDLK_BACKQUOTE) {
 			_active = true;
 			return true;
@@ -63,7 +69,7 @@ bool Console::onKey(const SDL_keysym sym) {
 	return true;
 }
 
-Console::Console() : _active(false), _pos(0) {
+IConsole::IConsole() : _active(false), _pos(0) {
 	LOG_DEBUG(("loading font..."));
 	GET_CONFIG_VALUE("engine.data-directory", std::string, data_dir, "data");
 	_font.open(data_dir + "/font/Verdana.ttf", 12);
@@ -73,10 +79,10 @@ Console::Console() : _active(false), _pos(0) {
 	
 	_buffer.push_back(Buffer::value_type(mrt::formatString("BattleTanks. version: %s", getVersion().c_str()), NULL));
 	_buffer.push_back(Buffer::value_type(std::string(">"), NULL));
-	Game->key_signal.connect(sigc::mem_fun(this, &Console::onKey));	
+	Game->key_signal.connect(sigc::mem_fun(this, &IConsole::onKey));	
 }
 
-void Console::render(sdlx::Surface &window) {
+void IConsole::render(sdlx::Surface &window) {
 	if (!_active)
 		return;
 	int w = _background.getWidth(), h =  _background.getHeight();

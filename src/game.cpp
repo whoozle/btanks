@@ -59,7 +59,7 @@
 IMPLEMENT_SINGLETON(Game, IGame)
 
 IGame::IGame() : 
-_check_items(0.5, true),  _autojoin(false), _shake(0), _credits(NULL), _cheater(NULL), _console(NULL) {}
+_check_items(0.5, true),  _autojoin(false), _shake(0), _credits(NULL), _cheater(NULL) {}
 IGame::~IGame() {}
 
 void IGame::init(const int argc, char *argv[]) {
@@ -167,11 +167,7 @@ void IGame::init(const int argc, char *argv[]) {
 	LOG_DEBUG(("initializing hud..."));
 	_hud = new Hud(_window.getWidth(), _window.getHeight());
 	
-	GET_CONFIG_VALUE("engine.enable-console", bool, ec, false);
-	if (ec) {
-		_console = new Console;
-		_console->on_command.connect(sigc::mem_fun(this, &IGame::onConsole));
-	}
+	Console->on_command.connect(sigc::mem_fun(this, &IGame::onConsole));
 
 	LOG_DEBUG(("installing callbacks..."));
 	key_signal.connect(sigc::mem_fun(this, &IGame::onKey));
@@ -588,8 +584,7 @@ void IGame::run() {
 		}
 
 		_main_menu.render(_window);
-		if (_console)
-			_console->render(_window);
+		Console->render(_window);
 		
 flip:
 		if (_show_fps) {
@@ -638,9 +633,6 @@ void IGame::deinit() {
 	
 	delete _hud;
 	_hud = NULL;
-	
-	delete _console;
-	_console = NULL;
 	
 	_running = false;
 	Window::deinit();
