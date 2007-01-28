@@ -9,8 +9,10 @@ IMPLEMENT_SINGLETON(Console, IConsole)
 
 bool IConsole::onKey(const SDL_keysym sym) {
 	GET_CONFIG_VALUE("engine.enable-console", bool, ec, false);
-	if (!ec) 
+	if (!ec) {
+		_active = false; // if engine.enable-console set to false, console wont disappear
 		return false;
+	}
 
 	if (!_active) {	
 		if (sym.sym == SDLK_BACKQUOTE) {
@@ -70,6 +72,7 @@ bool IConsole::onKey(const SDL_keysym sym) {
 }
 
 IConsole::IConsole() : _active(false), _pos(0) {
+	sdlx::TTF::init();
 	LOG_DEBUG(("loading font..."));
 	GET_CONFIG_VALUE("engine.data-directory", std::string, data_dir, "data");
 	_font.open(data_dir + "/font/Verdana.ttf", 12);

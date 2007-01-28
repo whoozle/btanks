@@ -60,6 +60,7 @@ private:
 	virtual void start(const std::string &name, Attrs &attr);
 	virtual void end(const std::string &name);
 	virtual void charData(const std::string &data);
+	const std::string onConsole(const std::string &cmd, const std::string &param);
 
 	typedef std::map<const std::string, Var*> VarMap;
 

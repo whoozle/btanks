@@ -26,6 +26,7 @@
 #include "mrt/serializator.h"
 
 #include "var.h"
+#include "console.h"
 
 IMPLEMENT_SINGLETON(Config, IConfig)
 
@@ -36,6 +37,7 @@ void IConfig::load(const std::string &file) {
 	TRY {
 		parseFile(file);
 	} CATCH("load", {}); 
+	Console->on_command.connect(sigc::mem_fun(this, &IConfig::onConsole));
 }
 
 void IConfig::save() const {
@@ -235,6 +237,30 @@ void IConfig::invalidateCachedValues() {
 	}
 }
 
+const std::string IConfig::onConsole(const std::string &cmd, const std::string &param) {
+	if (cmd != "set") 
+		return std::string();
+		
+	try {
+		std::vector<std::string> par;
+		mrt::split(par, param, " ", 3);
+		if (par.size() < 3 || par[0].empty() || par[1].empty() || par[2].empty())
+			return "usage: set [int|string|bool] name value";
+		
+		Var v(par[0]);
+		v.fromString(par[2]);
+		const std::string &name = par[1];
+		Var * var = _map[name];
+		if  (var == NULL)
+			var = _map[name] = new Var(v);
+		else 
+			*var = v;
+		invalidateCachedValues();
+	} catch(std::exception &e) {
+		return std::string("error") + e.what();
+	}
+	return "ok";
+}
 
 
 IConfig::~IConfig() {
