@@ -73,17 +73,18 @@ void mrt::split(std::vector<std::string> & result, const std::string &str, const
 	int n = limit;
 	
 	while(pos < str.size()) {
-		if (n > 0) {
-			if (n-- == 0) {
-				break;
-			}
-		}
 		p = str.find(delimiter, pos);
 		if (p != std::string::npos) 
 			result.push_back(str.substr(pos, p - pos));
 		else {
 			result.push_back(str.substr(pos));
 			break;
+		}
+		if (n > 0) {
+			if (--n == 0) {
+				result[result.size() - 1] += str.substr(p);
+				break;
+			}
 		}
 		pos = p + delimiter.size();
 	}
