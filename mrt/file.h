@@ -30,6 +30,8 @@ class File : public FSNode {
 public: 
 	File();
 	void open(const std::string &fname, const std::string &mode);
+	
+	int seek(long offset, int whence);
 	void readAll(Chunk &ch) const;
 	void writeAll(const Chunk &ch) const;
 	void writeAll(const std::string &str) const;

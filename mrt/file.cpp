@@ -89,7 +89,10 @@ const bool File::readLine(std::string &str) const {
 }
 
 const size_t File::read(void *buf, const size_t size) const {
-	return fread(buf, 1, size, _f);
+	size_t r = fread(buf, 1, size, _f);
+	if (r == (size_t)-1) 
+		throw_io(("read(%p, %u)", buf, size));
+	return r;
 }
 
 
@@ -112,4 +115,12 @@ FILE * File::unlink() {
 	FILE * r = _f;
 	_f = NULL;
 	return r;
+}
+
+int File::seek(long offset, int whence) {
+	if (_f == NULL)
+		throw_ex(("seek(%ld, %d) on uninitialized file", offset, whence));
+		
+	if (fseek(_f, offset, whence) < 0)
+		throw_io(("seek(%ld, %d)", offset, whence));
 }
