@@ -756,6 +756,17 @@ const std::string IGame::onConsole(const std::string &cmd, const std::string &pa
 	if (cmd == "quit") {
 		_running = false;
 		return "thank you for playing battle tanks";
+	} else if (cmd == "spawnplayer") {
+		std::vector<std::string> par;
+		mrt::split(par, param, " ", 3);
+		if (par.size() < 3 || par[0].empty() || par[1].empty() || par[2].empty())
+			return "usage: spawnPlayer object animation control-method";
+		try {
+			PlayerManager->spawnPlayer(par[0], par[1], par[2]);
+		} catch(const std::exception &e) {
+			return std::string("error: ") + e.what();
+		}
+		return "ok";
 	}
 	return std::string();
 }
