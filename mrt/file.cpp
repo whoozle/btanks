@@ -121,6 +121,8 @@ int File::seek(long offset, int whence) {
 	if (_f == NULL)
 		throw_ex(("seek(%ld, %d) on uninitialized file", offset, whence));
 		
-	if (fseek(_f, offset, whence) < 0)
+	int r = fseek(_f, offset, whence);
+	if (r < 0)
 		throw_io(("seek(%ld, %d)", offset, whence));
+	return r;
 }
