@@ -66,13 +66,17 @@ void File::readAll(Chunk &ch) const {
 
 void File::writeAll(const Chunk &ch) const {
 	fseek(_f, 0, SEEK_SET);
-	if (fwrite(ch.getPtr(), 1, ch.getSize(), _f) != ch.getSize())
-		throw_io(("fwrite"));
+	write(ch);
 }
 
 void File::writeAll(const std::string &str) const {
 	fseek(_f, 0, SEEK_SET);
 	if (fwrite(str.c_str(), 1, str.size(), _f) != str.size())
+		throw_io(("fwrite"));
+}
+
+void File::write(const Chunk &ch) const {
+	if (fwrite(ch.getPtr(), 1, ch.getSize(), _f) != ch.getSize())
 		throw_io(("fwrite"));
 }
 
