@@ -91,7 +91,7 @@ void OldSchoolDestructableObject::tick(const float dt) {
 	
 	if (!_message.empty()) {
 		int dr;
-		Config->get("objects." + registered_name + ".display-range", dr, 300);
+		Config->get("objects." + registered_name + ".display-range", dr, 400);
 		v3<float> pos, vel;
 		if (getNearest("player", pos, vel) && pos.length() < dr) {
 			Game->displayMessage(_message, 5);
