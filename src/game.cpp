@@ -160,6 +160,7 @@ void IGame::init(const int argc, char *argv[]) {
 
 	_paused = false;
 	_running = true;
+	_map_loaded = false;
 
 	_window.fillRect(_window.getSize(), 0);
 	_window.flip();
@@ -210,7 +211,7 @@ void IGame::init(const int argc, char *argv[]) {
 
 bool IGame::onKey(const SDL_keysym key) {
 	if (key.sym == SDLK_ESCAPE) {
-		if (!Map->loaded()) {
+		if (!_map_loaded) {
 			_main_menu.setActive(true);
 			return true;
 		}
@@ -383,7 +384,10 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 				item.animation = res[2];
 				item.position = pos;
 				item.dead_on = 0;
-				
+				item.destroy_for_victory = res[3].substr(0, 19) == "destroy-for-victory";
+				if (item.destroy_for_victory) {
+					LOG_DEBUG(("%s:%s critical for victory", res[1].c_str(), res[2].c_str()));
+				}
 				
 				item.id = o->getID();
 				_items.push_back(item);
@@ -425,17 +429,35 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 	
 	_hud->initMap();
 	
+	_map_loaded = true;
+	_game_over = false;
 	t_start = SDL_GetTicks();
 }
 
-void IGame::checkItems() {
-	if (PlayerManager->isClient()) //no need for multiplayer.
+void IGame::checkItems(const float dt) {
+	std::string game_state = _hud->popState(dt);
+	if (_game_over && game_state == "YOU WIN") {
+		clear();
+	}
+	
+	if (_game_over || !_check_items.tick(dt) || PlayerManager->isClient()) //no need for multiplayer.
 		return;
+	
+	int goal = 0, goal_total = 0;
 	
 	for(Items::iterator i = _items.begin(); i != _items.end(); ++i) {
 		Item &item = *i;
-		if (World->getObjectByID(item.id) != NULL)
+		if (item.destroy_for_victory)
+			++goal_total;
+		Object *o = World->getObjectByID(item.id);
+		if (o != NULL) {
+			if (o->getState() == "broken") 
+				++goal;
 			continue;
+		}
+		if (item.destroy_for_victory)
+			++goal;
+		
 		Uint32 ticks = SDL_GetTicks();
 		if (item.dead_on == 0) {
 			item.dead_on = ticks;
@@ -455,6 +477,10 @@ void IGame::checkItems() {
 			item.id = o->getID();
 			item.dead_on = 0;
 		}
+	}
+	if (goal_total > 0 && goal == goal_total) {
+		_hud->pushState("YOU WIN", 5);
+		_game_over = true;
 	}
 }
 
@@ -492,7 +518,7 @@ void IGame::run() {
 					_window.saveBMP("screenshot.bmp");
 					break;
 				}
-				if (event.key.keysym.sym==SDLK_m && event.key.keysym.mod & KMOD_SHIFT && Map->loaded()) {
+				if (event.key.keysym.sym==SDLK_m && event.key.keysym.mod & KMOD_SHIFT && _map_loaded) {
 					const v3<int> msize = Map->getSize();
 					LOG_DEBUG(("creating map screenshot %dx%d", msize.x, msize.y));
 
@@ -543,12 +569,10 @@ void IGame::run() {
 		
 		const float dt = 1.0/fr;
 		
-		if (_credits == NULL && _running && !_paused) {
+		if (_map_loaded && _credits == NULL && _running && !_paused) {
 			PlayerManager->updatePlayers();
 			
-			if (_check_items.tick(dt)) {
-				checkItems();
-			}
+			checkItems(dt);
 #ifdef SHOW_PERFSTATS
 			t_tick_n = SDL_GetTicks();
 #endif
@@ -566,7 +590,7 @@ void IGame::run() {
 		Uint32 t_tick = SDL_GetTicks();
 #endif
 		
-		if (_credits || Map->loaded())
+		if (_credits || _map_loaded)
 			_window.fillRect(window_size, 0);
 		else _hud->renderSplash(_window);
 		
@@ -588,7 +612,7 @@ void IGame::run() {
 			_shake -= dt;
 		}
 		
-		if (Map->loaded()) {
+		if (_map_loaded) {
 			_hud->render(_window);
 			_hud->renderRadar(dt, _window);
 		}
@@ -645,6 +669,7 @@ void IGame::deinit() {
 	_hud = NULL;
 	
 	_running = false;
+	_map_loaded = false;
 	Window::deinit();
 	
 	_main_menu.deinit();
@@ -667,6 +692,8 @@ void IGame::clear() {
 	_waypoint_edges.clear();
 	World->clear();
 	_paused = false;
+	_map_loaded = false;
+	_game_over = false;
 	Map->clear();
 	
 	delete _credits;
@@ -674,6 +701,8 @@ void IGame::clear() {
 	
 	delete _cheater;
 	_cheater = NULL;
+
+	_main_menu.setActive(true);
 }
 
 

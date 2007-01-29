@@ -308,7 +308,7 @@ void Hud::pushState(const std::string &state, const float time) {
 }
 
 const std::string Hud::popState(const float dt) {
-	if (!_state_timer.tick(dt))
+	if (_state.empty() || !_state_timer.tick(dt))
 		return std::string();
 	std::string r = _state;
 	_state.clear();

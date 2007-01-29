@@ -99,7 +99,7 @@ private:
 	
 	void stopCredits();
 
-	bool _running, _paused;
+	bool _running, _paused, _map_loaded, _game_over;
 
 	MainMenu _main_menu;
 	
@@ -108,11 +108,12 @@ private:
 		std::string classname, animation;
 		v3<int> position;
 		Uint32 dead_on;
+		bool destroy_for_victory;
 	};
 	typedef std::deque<Item> Items;
 	Items _items;
 	Alarm _check_items;
-	void checkItems();
+	void checkItems(const float dt);
 	
 	typedef std::map<const std::string, v3<int> > WaypointMap;
 	typedef std::map<const std::string, WaypointMap> WaypointClassMap;
