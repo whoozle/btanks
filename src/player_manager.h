@@ -90,6 +90,7 @@ public:
 	void onDisconnect(const int id);	
 	
 	void onPlayerDeath(const Object *player, const Object *killer);
+	void gameOver(const std::string &reason, const float time);
 	
 private: 
 	void serializeSlots(mrt::Serializator &s) const;

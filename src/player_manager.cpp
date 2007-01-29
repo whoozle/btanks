@@ -315,8 +315,13 @@ TRY {
 		mrt::Serializator s(&message.data);
 		deserializeSlots(s);
 		World->applyUpdate(s, _trip_time / 1000.0);
-		} CATCH("message::respawn", throw;);
+		} CATCH("on-message(respawn)", throw;);
 	break;
+	}
+	case Message::GameOver: {
+		TRY {
+			Game->gameOver(message.get("message"), atof(message.get("duration").c_str()) - _trip_time / 1000.0);
+		} CATCH("on-message(gameover)", throw; )
 	}
 	default:
 		LOG_WARN(("unhandled message: %s\n%s", message.getType(), message.data.dump().c_str()));
@@ -846,4 +851,13 @@ void IPlayerManager::getDefaultVehicle(std::string &vehicle, std::string &animat
 			animation += "-" + vehicle;
 		} else animation = vehicle;
 	}
+}
+
+void IPlayerManager::gameOver(const std::string &reason, const float time) {
+	if (!isServer())
+		return;
+	Message m(Message::GameOver);
+	m.set("message", reason);
+	m.set("duration", mrt::formatString("%g", time));
+	broadcast(m);
 }

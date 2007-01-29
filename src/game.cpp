@@ -437,6 +437,7 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 void IGame::gameOver(const std::string &state, const float time) {
 	_game_over = true;
 	displayMessage(state, time);
+	PlayerManager->gameOver(state, time);
 }
 
 void IGame::displayMessage(const std::string &message, const float time) {
@@ -594,9 +595,12 @@ void IGame::run() {
 			t_tick_w = SDL_GetTicks();
 #endif
 
-			PlayerManager->tick(t_start, dt);
 			
 		}
+	
+		if (_running && !_paused)
+			PlayerManager->tick(t_start, dt);
+
 #ifdef SHOW_PERFSTATS
 		Uint32 t_tick = SDL_GetTicks();
 #endif
