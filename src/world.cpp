@@ -1199,10 +1199,14 @@ const bool IWorld::detachVehicle(Object *object) {
 	object->classname = "vehicle";
 
 	man->_owners = object->_owners;
+
 	int old_id = object->getID();
 	int new_id = man->getID();
 
+	object->disown();
+
 	replaceID(old_id, new_id);
+
 
 	slot->id = new_id;
 	slot->need_sync = true;
