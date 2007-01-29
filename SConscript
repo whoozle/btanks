@@ -29,7 +29,7 @@ bt_sources = 	[
 	'objects/machinegunner.cpp', 'objects/destructable_object.cpp', 'objects/submarine.cpp', 'objects/train.cpp',
 	'objects/trooper.cpp', 'objects/fakemod.cpp', 'objects/car.cpp', 'objects/tooltip.cpp', 
 	'objects/vehicle_traits.cpp', 'objects/barrack.cpp', 'objects/watchtower.cpp',
-	'objects/cannon.cpp', 'objects/boat.cpp', 'objects/poison.cpp', 
+	'objects/cannon.cpp', 'objects/boat.cpp', 'objects/poison.cpp', 'objects/old_school_destructable.cpp', 
 	
 	'src/player_state.cpp', 
 	'controls/joyplayer.cpp', 'controls/keyplayer.cpp', 'controls/external_control.cpp', 'controls/mouse_control.cpp', 

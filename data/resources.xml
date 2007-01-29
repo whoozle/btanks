@@ -248,7 +248,7 @@
 
 	<animation-model id="spaceport-baykonur-animation" speed="2">
 		<pose id="main">0</pose>
-		<pose id="damaged">1</pose>
+		<pose id="damaged-1">1</pose>
 		<pose id="broken">2</pose>
 	</animation-model>
 
@@ -442,7 +442,7 @@
 
 	<animation id="submarine" model="yellow-submarine-animation" tile="submarine.png" tile_width="192" tile_height="128" />
 	<animation id="missile-boat" model="missile-boat-animation" tile="missile_boat.png" size="128" />
-	<animation id="spaceport-baykonur" model="spaceport-baykonur" tile="spaceport_baykonur.png" tile_width="192" tile_height="256" />
+	<animation id="spaceport-baykonur" model="spaceport-baykonur-animation" tile="baykonur.png" tile_width="192" tile_height="256" />
 
 
 	<animation id="thrower" model="trooper-animation" tile="thrower.png" />
@@ -468,6 +468,7 @@
 	<alias name="road-sign" class="destructable-object" />
 	<alias name="oil-barrels" class="destructable-object-with-fire(pierceable)" />
 	<alias name="impassable-static-corpse" class="static-corpse" />
+	<alias name="spaceport-baykonur" class="old-school-destructable-object-2" />
 	
 	<object class="watchtower-with-machinegunner" mass="1000" hp="20" z="200" impassability="1" />
 	<object class="watchtower-with-thrower" mass="1000" hp="20" z="200" impassability="1" />
@@ -562,6 +563,7 @@
 	<object class="car" hp="20" speed="200" mass="500" />
 	<object class="outline" impassability="0" z="990" />
 	<object class="random-tooltip" z="995" />
+	<object class="spaceport-baykonur" hp="10" z="0"/> 
 
 	<!-- items -->
 	<object class="base-item" z="180" impassability="-1" />
