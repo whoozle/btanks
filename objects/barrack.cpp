@@ -63,12 +63,14 @@ void Barrack::tick(const float dt) {
 	
 	
 	if (!_broken && _spawn.tick(dt)) {
-		int tr;
-		Config->get("objects." + registered_name + ".targeting-range", tr, 500);
+		if (hp == max_hp) { //nothing happens
+			int tr;
+			Config->get("objects." + registered_name + ".targeting-range", tr, 500);
 
-		v3<float> pos, vel;
-		if (getNearest(targets, pos, vel) && pos.length() >= tr)
-			return; //skip spawning
+			v3<float> pos, vel;
+			if (getNearest(targets, pos, vel) && pos.length() >= tr)
+				return; //skip spawning
+		}
 		
 		int max_c;
 		Config->get("objects." + registered_name + ".maximum-children", max_c, 5);
