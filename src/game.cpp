@@ -826,7 +826,7 @@ const std::string IGame::onConsole(const std::string &cmd, const std::string &pa
 		mrt::split(par, param, " ", 3);
 		try {
 			if (par.size() < 3 || par[0].empty() || par[1].empty() || par[2].empty())
-				return "usage: spawn object animation position(x,y pixel  /x,y tile playerX player)";
+				return "usage: spawn object animation position(10,20 /10,20 player5)";
 			if (!_map_loaded)
 				throw_ex(("map was not loaded"));
 			v3<int> pos;

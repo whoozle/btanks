@@ -189,6 +189,8 @@ bool MainMenu::onKey(const SDL_keysym sym) {
 				} else throw_ex(("unknown menu item type: %s", item->type.c_str()));
 			}
 			break;
+		case SDLK_ESCAPE: 
+			return false;
 		default: 
 			break;
 	}
