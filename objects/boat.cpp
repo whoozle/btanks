@@ -37,6 +37,7 @@ public:
 		s.add(_object);
 		_fire.serialize(s);
 		_reload.serialize(s);
+		_reaction.serialize(s);
 	}
 
 	virtual void deserialize(const mrt::Serializator &s) {
@@ -44,6 +45,7 @@ public:
 		s.get(_object);
 		_fire.deserialize(s);
 		_reload.deserialize(s);
+		_reaction.deserialize(s);
 	}
 
 private:
