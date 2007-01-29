@@ -41,14 +41,18 @@ public:
 	void renderRadar(const float dt, sdlx::Surface &window);
 
 	~Hud();
+	
+	void pushState(const std::string &state, const float time);
+	const std::string popState(const float dt);
 
 private: 
 
 	void renderMod(const Object *obj, sdlx::Surface &window, int &xp, int &yp, const std::string &name, const int icon_w, const int icon_h) const;
 
 	sdlx::Surface _background, _loading_border, _loading_item, _splash, _radar_bg, _radar, _splitter, _screen_splitter;
-	sdlx::Font _font;
-	Alarm _update_radar;
+	sdlx::Font _font, _big_font;
+	Alarm _update_radar, _state_timer;
+	std::string _state;
 	typedef std::map<const std::string, int> IconMap;
 	IconMap _icons_map;
 	sdlx::Surface _icons;
