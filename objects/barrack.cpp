@@ -53,8 +53,23 @@ private:
 
 void Barrack::tick(const float dt) {
 	DestructableObject::tick(dt);
+
+	static std::vector<std::string> targets;
+	if (targets.empty()) {
+		targets.push_back("player");
+		targets.push_back("trooper");
+		targets.push_back("kamikaze");
+	}
+	
 	
 	if (!_broken && _spawn.tick(dt)) {
+		int tr;
+		Config->get("objects." + registered_name + ".targeting-range", tr, 500);
+
+		v3<float> pos, vel;
+		if (getNearest(targets, pos, vel) && pos.length() >= tr)
+			return; //skip spawning
+		
 		int max_c;
 		Config->get("objects." + registered_name + ".maximum-children", max_c, 5);
 		int n = World->getChildren(getID());
