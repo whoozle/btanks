@@ -1063,6 +1063,7 @@ TRY {
 } CATCH("applyUpdate", throw;)
 }
 
+
 const Object* IWorld::getNearestObject(const Object *obj, const std::string &classname) const {
 	const Object *result = NULL;
 	float distance = std::numeric_limits<float>::infinity();
@@ -1071,6 +1072,26 @@ const Object* IWorld::getNearestObject(const Object *obj, const std::string &cla
 		const Object *o = i->second;
 		//LOG_DEBUG(("%s is looking for %s. found: %s", obj->classname.c_str(), classname.c_str(), o->classname.c_str()));
 		if (o->_id == obj->_id || o->classname != classname || o->hasSameOwner(obj))
+			continue;
+
+		v3<float> cpos = o->_position + o->size / 2;
+		float d = obj->_position.quick_distance(cpos);
+		if (d < distance) {
+			distance = d;
+			result = o;
+		}
+	}
+	return result;
+}
+
+const Object* IWorld::getNearestObject(const Object *obj, const std::set<std::string> &classnames) const {
+	const Object *result = NULL;
+	float distance = std::numeric_limits<float>::infinity();
+	
+	for(ObjectMap::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
+		const Object *o = i->second;
+		//LOG_DEBUG(("%s is looking for %s. found: %s", obj->classname.c_str(), classname.c_str(), o->classname.c_str()));
+		if (o->_id == obj->_id || classnames.find(o->classname) == classnames.end() || o->hasSameOwner(obj))
 			continue;
 
 		v3<float> cpos = o->_position + o->size / 2;
@@ -1100,6 +1121,22 @@ const bool IWorld::getNearest(const Object *obj, const std::string &classname, v
 		return true;
 	return old_findPath(obj, position, *way, target);
 }
+
+const bool IWorld::getNearest(const Object *obj, const std::set<std::string> &classnames, v3<float> &position, v3<float> &velocity) const {
+	position.clear();
+	velocity.clear();
+	const Object *target = getNearestObject(obj, classnames);
+	
+	if (target == NULL) 
+		return false;
+
+	position = target->_position + target->size / 2;
+	velocity = target->_velocity;
+	
+	position -= obj->_position + obj->size / 2;
+	return true;
+}
+
 
 const int IWorld::getChildren(const int id) const {
 	int c = 0;

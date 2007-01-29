@@ -22,7 +22,6 @@
 #include "base_object.h"
 #include "alarm.h"
 #include <string>
-#include <vector>
 #include <map>
 #include <set>
 #include <queue>
@@ -154,9 +153,11 @@ protected:
 
 	const bool old_findPath(const v3<float> &position, Way &way) const;
 	const bool old_findPath(const Object *target, Way &way) const;
+
+	const Object* getNearestObject(const std::string &classname) const;
+	const Object* getNearestObject(const std::set<std::string> &classnames) const;
 	const bool getNearest(const std::string &classname, v3<float> &position, v3<float> &velocity, Way * way = NULL) const;
-	const bool getNearest(const std::vector<std::string> &targets, v3<float> &position, v3<float> &velocity) const;
-	const Object * getNearestObject(const std::string &classname) const;
+	const bool getNearest(const std::set<std::string> &targets, v3<float> &position, v3<float> &velocity) const;
 	
 	void setWay(const Way & way);
 	const bool isDriven() const;

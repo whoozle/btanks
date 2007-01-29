@@ -53,11 +53,11 @@ void Cannon::calculate(const float dt) {
 	if (!_reaction.tick(dt))
 		return;
 	
-	static std::vector<std::string> targets;
+	static std::set<std::string> targets;
 	if (targets.empty()) {
-		targets.push_back("player");
-		targets.push_back("trooper");
-		targets.push_back("kamikaze");
+		targets.insert("player");
+		targets.insert("trooper");
+		targets.insert("kamikaze");
 	}
 	static float range = getWeaponRange("cannon-bullet");
 	v3<float> pos, vel;

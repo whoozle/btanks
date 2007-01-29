@@ -82,14 +82,14 @@ public:
 		range *= range;
 		//LOG_DEBUG(("range = %g", range));
 
-		std::vector<std::string> targets;
+		std::set<std::string> targets;
 
 		if (_aim_missiles)
-			targets.push_back("missile");
+			targets.insert("missile");
 	
-		targets.push_back("player");
-		targets.push_back("trooper");
-		targets.push_back("kamikaze");
+		targets.insert("player");
+		targets.insert("trooper");
+		targets.insert("kamikaze");
 	
 		v3<float> pos, vel;
 		if (getNearest(targets, pos, vel) && pos.quick_length() <= range) {
@@ -149,14 +149,14 @@ void AITrooper::calculate(const float dt) {
 		return;
 	}
 	
-	std::vector<std::string> targets;
+	std::set<std::string> targets;
 
 	if (_aim_missiles)
-		targets.push_back("missile");
+		targets.insert("missile");
 	
-	targets.push_back("player");
-	targets.push_back("trooper");
-	targets.push_back("kamikaze");
+	targets.insert("player");
+	targets.insert("trooper");
+	targets.insert("kamikaze");
 	
 	v3<float> vel;
 	if (getNearest(targets, _target, vel)) {

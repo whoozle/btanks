@@ -52,11 +52,11 @@ void Kamikaze::calculate(const float dt) {
 		return;
 	
 	v3<float> vel;
-	static std::vector<std::string> targets;
+	static std::set<std::string> targets;
 	if (targets.empty()) {
-		targets.push_back("train");
-		targets.push_back("player");
-		targets.push_back("trooper");
+		targets.insert("train");
+		targets.insert("player");
+		targets.insert("trooper");
 	}
 	
 	GET_CONFIG_VALUE("objects.kamikaze.targeting-range", int, tt, 800);

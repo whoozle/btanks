@@ -101,13 +101,22 @@ Object* Object::spawn(const std::string &classname, const std::string &animation
 	return World->spawn(this, classname, animation, dpos, vel);
 }
 
-const bool Object::getNearest(const std::string &classname, v3<float> &position, v3<float> &velocity, Way * way) const {
-	return World->getNearest(this, classname, position, velocity, way);
-}
-const Object * Object::getNearestObject(const std::string &classname) const {
+
+const Object* Object::getNearestObject(const std::string &classname) const {
 	return World->getNearestObject(this, classname);
 }
 
+const Object* Object::getNearestObject(const std::set<std::string> &classnames) const {
+	return World->getNearestObject(this, classnames);
+}
+
+const bool Object::getNearest(const std::string &cl, v3<float> &position, v3<float> &velocity, Way * way) const {
+	return World->getNearest(this, cl, position, velocity, way);
+}
+
+const bool Object::getNearest(const std::set<std::string> &classnames, v3<float> &position, v3<float> &velocity) const {
+	return World->getNearest(this, classnames, position, velocity);
+}
 
 void Object::setDirection(const int dir) {
 	if (dir >= _directions_n)
@@ -771,20 +780,6 @@ void Object::calculate(const float dt) {
 	_velocity.normalize();
 }
 
-const bool Object::getNearest(const std::vector<std::string> &targets, v3<float> &position, v3<float> &velocity) const {
-	int found = 0;
-	for(size_t i = 0; i < targets.size(); ++i) {
-		v3<float> pos, vel;
-		if (!getNearest(targets[i], pos, vel)) 
-			continue;
-		++found;
-		if (found == 1 || pos.quick_length() < position.quick_length()) {
-			position = pos; velocity = vel;
-		}
-	}
-	
-	return found != 0;	
-}
 
 const bool Object::old_findPath(const v3<float> &position, Way &way) const {
 	return World->old_findPath(this, position, way);
@@ -793,7 +788,6 @@ const bool Object::old_findPath(const v3<float> &position, Way &way) const {
 const bool Object::old_findPath(const Object *target, Way &way) const {
 	return World->old_findPath(this, getRelativePosition(target), way, target);
 }
-
 
 const std::string Object::getType() const {
 	static const std::string empty;

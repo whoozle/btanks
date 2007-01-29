@@ -48,17 +48,20 @@ public:
 
 private:
 	std::string _object;
-	Alarm _fire, _reload;
+	Alarm _fire, _reload, _reaction;
 };
 
 void Boat::calculate(const float dt) {
+	if (!_reaction.tick(dt)) 
+		return;
+	
 	GET_CONFIG_VALUE("objects.missile-boat.targeting-range", int, tr, 800);
 	
-	static std::vector<std::string> targets;
+	static std::set<std::string> targets;
 	if (targets.empty()) {
-		targets.push_back("player");
-		//targets.push_back("trooper");
-		//targets.push_back("kamikaze");
+		targets.insert("player");
+		//targets.insert("trooper");
+		//targets.insert("kamikaze");
 	}
 
 	v3<float> pos, vel;
@@ -96,19 +99,22 @@ void Boat::onSpawn() {
 	DestructableObject::onSpawn();
 	
 	GET_CONFIG_VALUE("objects.missile-boat.fire-rate", float, fr, 0.5);
+	_fire.set(fr);
 	GET_CONFIG_VALUE("objects.missile-boat.reload-rate", float, rl, 3);
+	_reload.set(rl);
+	GET_CONFIG_VALUE("objects.missile-boat.reaction-time", float, rt, 0.15);
+	_reaction.set(rt);
 	
 	add("mod", spawnGrouped("missiles-on-boat", "guided-missiles-on-launcher", v3<float>(size.x/3, 10, 0), Centered));
 
-	_fire.set(fr);
-	_reload.set(rl);
 }
 
 Boat::Boat(const std::string &object) : 
 	DestructableObject("boat", "fire", "fire", false), 
 	_object(object), 
 	_fire(false), 
-	_reload(false) {
+	_reload(false), 
+	_reaction(true) {
 }
 
 

@@ -54,11 +54,11 @@ private:
 void Barrack::tick(const float dt) {
 	DestructableObject::tick(dt);
 
-	static std::vector<std::string> targets;
+	static std::set<std::string> targets;
 	if (targets.empty()) {
-		targets.push_back("player");
-		targets.push_back("trooper");
-		targets.push_back("kamikaze");
+		targets.insert("player");
+		targets.insert("trooper");
+		targets.insert("kamikaze");
 	}
 	
 	

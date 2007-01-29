@@ -61,8 +61,10 @@ public:
 	Object * spawn(Object *src, const std::string &classname, const std::string &animation, const v3<float> &dpos, const v3<float> &vel);
 	Object * spawnGrouped(Object *src, const std::string &classname, const std::string &animation, const v3<float> &dpos, const GroupType type);
 	
-	const bool getNearest(const Object *obj, const std::string &classname, v3<float> &position, v3<float> &velocity, Way * way = NULL) const;
 	const Object* getNearestObject(const Object *obj, const std::string &classname) const;
+	const Object* getNearestObject(const Object *obj, const std::set<std::string> &classnames) const;
+	const bool getNearest(const Object *obj, const std::string &classname, v3<float> &position, v3<float> &velocity, Way * way = NULL) const;
+	const bool getNearest(const Object *obj, const std::set<std::string> &classnames, v3<float> &position, v3<float> &velocity) const;
 	
 	const bool old_findPath(const Object *obj, const v3<float>& position, Way & way, const Object * dst = NULL) const;
 	void getImpassabilityMatrix(Matrix<int> &matrix, const Object *src, const Object *dst) const;
@@ -93,6 +95,7 @@ public:
 	const Object * findTarget(const Object *src, const std::set<std::string> &enemies, const std::set<std::string> &bonuses, ai::Traits &traits) const;
 	
 private:
+
 	void deleteObject(ObjectMap &objects, Object *o);
 	void replaceID(const int old_id, const int new_id);
 	
