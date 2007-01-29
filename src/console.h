@@ -11,7 +11,7 @@
 class IConsole {
 class marshaler {
 public: 
-	typedef const std::string result_type;
+	typedef std::string result_type;
 
 	template<typename IteratorT>
     	const std::string operator()(IteratorT First, IteratorT Last) {
