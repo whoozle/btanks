@@ -434,9 +434,21 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 	t_start = SDL_GetTicks();
 }
 
+void IGame::gameOver(const std::string &state, const float time) {
+	_game_over = true;
+	displayMessage(state, time);
+}
+
+void IGame::displayMessage(const std::string &message, const float time) {
+	if (_hud == NULL)
+		throw(("hud was not initialized"));
+	_hud->pushState(message, time);
+}
+
+
 void IGame::checkItems(const float dt) {
 	std::string game_state = _hud->popState(dt);
-	if (_game_over && game_state == "YOU WIN") {
+	if (_game_over && !game_state.empty()) {
 		clear();
 	}
 	
@@ -479,8 +491,7 @@ void IGame::checkItems(const float dt) {
 		}
 	}
 	if (goal_total > 0 && goal == goal_total) {
-		_hud->pushState("YOU WIN", 5);
-		_game_over = true;
+		gameOver("YOU WIN", 5);
 	}
 }
 

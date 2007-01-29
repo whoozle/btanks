@@ -91,6 +91,9 @@ public:
 	const std::string getRandomWaypoint(const std::string &classname, const std::string &last_wp = std::string()) const;
 	const std::string getNearestWaypoint(const BaseObject *obj, const std::string &classname) const;
 	void getWaypoint(v3<float> &wp, const std::string &classname, const std::string &name);
+	
+	void gameOver(const std::string &state, const float time);
+	void displayMessage(const std::string &message, const float time);
 
 private:
 	bool onKey(const SDL_keysym sym);
