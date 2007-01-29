@@ -562,7 +562,7 @@
 	<object class="car" hp="20" speed="200" mass="500" />
 	<object class="outline" impassability="0" z="990" />
 	<object class="random-tooltip" z="995" />
-	<object class="spaceport-baykonur" hp="10" z="0"/> 
+	<object class="spaceport-baykonur" hp="200" z="0"/> 
 
 	<!-- items -->
 	<object class="base-item" z="180" impassability="-1" />
