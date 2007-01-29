@@ -27,7 +27,9 @@
   <property name="object:stack:stack:2" value="2360,3080"/>
   <property name="object:stack:stack:1" value="2366,3040"/>
   <property name="object:static-tank:yellow-tank:1" value="2977,2896"/>
+  <property name="object:missile-boat:missile-boat:2" value="9,1804"/>
   <property name="object:impassable-static-corpse:dead-green-shilka:1" value="537,1194,-18"/>
+  <property name="object:missile-boat:missile-boat:1" value="8,1804"/>
   <property name="object:static-tank:red-tank:2" value="3132,3006"/>
   <property name="object:impassable-static-corpse:dead-yellow-launcher:1" value="572,1977,-18"/>
   <property name="config:objects.smoke-missiles-on-launcher.capacity" value="int:25"/>
@@ -55,15 +57,15 @@
   <property name="object:armed-mine:regular-mine:23" value="1861,1951,-10"/>
   <property name="object:armed-mine:regular-mine:22" value="1829,1952,-10"/>
   <property name="object:armed-mine:regular-mine:21" value="1811,1929,-10"/>
-  <property name="object:smoke-missiles-item:smoke-missiles-item:5" value="1832,1720"/>
   <property name="object:armed-mine:regular-mine:20" value="1846,1928,-10"/>
+  <property name="object:smoke-missiles-item:smoke-missiles-item:5" value="1832,1720"/>
   <property name="object:smoke-missiles-item:smoke-missiles-item:4" value="1979,1071"/>
   <property name="object:smoke-missiles-item:smoke-missiles-item:3" value="2391,1223"/>
   <property name="object:stall:stall-left:1" value="2874,2706"/>
   <property name="object:smoke-missiles-item:smoke-missiles-item:2" value="1928,2136"/>
   <property name="object:smoke-missiles-item:smoke-missiles-item:1" value="2073,2580"/>
   <property name="config:multiplayer.restrict-start-animation" value="string:machinegunner"/>
-  <property name="config:objects.tank.dispersion.duration" value="float:10000"/>
+  <property name="config:objects.tank.dispersion.duration" value="float:-1"/>
   <property name="object:static-launcher:yellow-launcher:2" value="43,1180"/>
   <property name="object:oil-barrels:oil-barrels:13" value="307,2649"/>
   <property name="config:map.thrower.respawn-interval" value="int:10000"/>
@@ -85,11 +87,19 @@
   <property name="object:armed-mine:regular-mine:13" value="2410,697,-10"/>
   <property name="object:armed-mine:regular-mine:5" value="1781,2162"/>
   <property name="object:watchtower-with-machinegunner:watchtower:24" value="414,2810"/>
+  <property name="object:machinegunner:machinegunner:29" value="100,202"/>
   <property name="object:armed-mine:regular-mine:12" value="2409,668,-10"/>
+  <property name="object:machinegunner:machinegunner:28" value="111,500"/>
   <property name="object:armed-mine:regular-mine:11" value="2409,637,-10"/>
   <property name="object:static-shilka:green-shilka:1" value="1144,1685"/>
   <property name="object:watchtower-with-machinegunner:watchtower:22" value="1481,1909"/>
+  <property name="object:machinegunner:machinegunner:27" value="86,777"/>
   <property name="object:armed-mine:regular-mine:10" value="2472,637,-10"/>
+  <property name="object:machinegunner:machinegunner:26" value="87,777"/>
+  <property name="object:machinegunner:machinegunner:25" value="588,693"/>
+  <property name="object:machinegunner:machinegunner:24" value="200,1518"/>
+  <property name="object:machinegunner:machinegunner:23" value="471,1518"/>
+  <property name="object:machinegunner:machinegunner:22" value="365,1624"/>
   <property name="object:machinegunner:machinegunner:21" value="276,2576"/>
   <property name="object:tent-with-throwers:trooper-tent:4" value="1444,1365"/>
   <property name="object:static-corpse:dead-man:2" value="40,1138,-18"/>
@@ -129,6 +139,7 @@
   <property name="object:machinegunner:machinegunner:14" value="1051,2905"/>
   <property name="object:machinegunner:machinegunner:13" value="1370,1636"/>
   <property name="object:machinegunner:machinegunner:12" value="1370,1443"/>
+  <property name="object:tent-with-kamikazes:trooper-tent:8" value="920,816"/>
   <property name="object:machinegunner:machinegunner:11" value="2911,1208"/>
   <property name="object:tent-with-kamikazes:trooper-tent:7" value="197,418"/>
   <property name="object:static-shilka:cyan-shilka:2" value="1049,1579"/>
@@ -367,7 +378,7 @@
   </data>
   <tileproperties/>
  </layer>
- <layer name="sandbags" width="50" height="50" visible="0">
+ <layer name="sandbags" width="50" height="50">
   <properties>
    <property name="pierceable" value="true"/>
    <property name="z" value="200"/>
@@ -387,19 +398,19 @@
   </data>
   <tileproperties/>
  </layer>
- <layer name="fence details 2" width="50" height="50" visible="0">
+ <layer name="fence details 2" width="50" height="50">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAO3WQQrCMBAF0GlW7vQYHsM7qN2pvf9OcC0OlI8yGIpI0pnhPygppCXzSSdUhIh+dSwip7J2Ff+7aIZrghxELaHfo/c9+h1j9Dxg80TPZfeJfIjyXS3VWfuult4bde5c5rElrGH72q6L50bT87Xz4K5zT70mvb+VeWzJroG67Lp4bqr0/LfzYDO0rd2Trcm6G+pzFFePs6UH9HOmLA9570/0fUKmz2xELUTvFejxv0R+ef/P8l4f0drYI/nsk+zpIUkOIiIiiuUF2H5MVxAnAAA=
   </data>
   <tileproperties/>
  </layer>
- <layer name="fence details" width="50" height="50" visible="0">
+ <layer name="fence details" width="50" height="50">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAO3WOwqAMBCE4ZAb6VV8dD4OoN6/dAuFkEpWxDj+H2wR0mSKWRICAI8uhtDHt19x32QZZoEcwJNU+66WSy0P4OHtQSn9Od/h7XUp+yDvsbfXf94HlU2dnBeb1WY77pSk2fBdjXW1FejrYBlGgRwAAE35HxG4gr823QEAAMA/7f+WnGIQJwAA
   </data>
   <tileproperties/>
  </layer>
- <layer name="barbed wire" width="50" height="50" visible="0">
+ <layer name="barbed wire" width="50" height="50">
   <properties>
    <property name="pierceable" value="true"/>
    <property name="impassability" value="100"/>
@@ -409,13 +420,13 @@
   </data>
   <tileproperties/>
  </layer>
- <layer name="wire on fence" width="50" height="50" visible="0">
+ <layer name="wire on fence" width="50" height="50">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAO2Y2w6CMAyG2dsw8UajXhjifP+nEuKa1LpuQwusSb9kCSflb+kJuk4XvXsv7WixY5g0nuM6JvRqseM6aRzjuim2o6RRmx0XRqs2Ox4ZrZyNLVHj65yNrTDbATVLO1CzjP0ZmP6njWvsf9rzA+qV9vzQ0ONqwfmB58bU/Nhyjb4hzXhuxPMjPd8qY0Ff6XwL+EnfKa6D+9zHx1smTPqejt/Hx7FdQMr+1O9r2NNfPt6bs38pYafnL6V/xiP9QUEsc1CfSPU26hMv6PsaJHt0v4J/OPyCekF9SvPKk2167ZoxC3GV8hfYltJF/wN8EDL+CO6z7krD3feuNOc5Sjlaqtl+Y39wsVVTZ3J5vPV8/0/85rTiuUQSqXdqrG/L3gCkvilrAvJxi/nDu+9+LhlbufrOXfvLDEnzZY+4m6G+454hNwesldsS1L43GYZhGIZhGMYvvABKqL8FECcAAA==
   </data>
   <tileproperties/>
  </layer>
- <layer name="wire on fence2" width="50" height="50" visible="0">
+ <layer name="wire on fence2" width="50" height="50">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAO3YQQ6DIBCFYb1Nx66I7dLW+5+qmEBCyBAXbSw/ed/KhM08ZRjDNDHc5n9X8Buj5HjHHAswyz3W/KjqJn6TZ6z5BazbQ3z/Hi/HCsxW5rDU5xssR4j17qlmS8+kM2t1zilS/dnWOKeOLAGWZRTe3iJq7S2q4PS3pT7pvVfqOVfPQsqMP/ZUmcXrk7P1XpQz2+uTs3URERGRq/X+zysiIiz57nEHzxcD3gW3EO+1S7l+g++pbIQMIlehz5KRaC7KNz53GEp2ECcAAA==
   </data>
@@ -467,7 +478,7 @@
   </data>
   <tileproperties/>
  </layer>
- <layer name="the plan" width="50" height="50" visible="0" opacity="0.39">
+ <layer name="the plan" width="50" height="50" opacity="0.39">
   <properties>
    <property name="visible-if-damaged" value="true"/>
    <property name="hp" value="10000"/>
