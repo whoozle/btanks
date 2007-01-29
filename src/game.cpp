@@ -821,6 +821,38 @@ const std::string IGame::onConsole(const std::string &cmd, const std::string &pa
 			return std::string("error: ") + e.what();
 		}
 		return "ok";
+	} else if (cmd == "spawn") {
+		std::vector<std::string> par;
+		mrt::split(par, param, " ", 3);
+		try {
+			if (par.size() < 3 || par[0].empty() || par[1].empty() || par[2].empty())
+				return "usage: spawn object animation position(x,y pixel  /x,y tile playerX player)";
+			if (!_map_loaded)
+				throw_ex(("map was not loaded"));
+			v3<int> pos;
+			bool tiled_pos = false;
+			if (par[2][0] == '/') {
+				tiled_pos = true;
+				par[2] = par[2].substr(1);
+			} 
+			if (par[2].substr(0, 6) == "player") {
+				int idx = par[2][6] - '0';
+				Object *o = PlayerManager->getSlot(idx).getObject();
+				if (o == NULL)
+					throw_ex(("no object in slot %d", idx));
+				o->getPosition(pos);
+			} else pos.fromString(par[2]);
+			if (tiled_pos) {
+				v3<int> ts = Map->getTileSize();
+				pos *= ts;
+			}
+			Object *o = ResourceManager->createObject(par[0], par[1]);
+			o->addOwner(-42);
+			World->addObject(o, pos.convert<float>());
+			return "ok";
+		} catch(const std::exception &e) {
+			return std::string("error: ") + e.what();
+		}		
 	}
 	return std::string();
 }
