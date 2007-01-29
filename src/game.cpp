@@ -492,7 +492,7 @@ void IGame::checkItems(const float dt) {
 		}
 	}
 	if (goal_total > 0 && goal == goal_total) {
-		gameOver("YOU WIN", 5);
+		gameOver("MISSION COMPLETED", 5);
 	}
 }
 
