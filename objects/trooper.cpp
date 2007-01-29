@@ -75,6 +75,9 @@ public:
 	}
 	
 	virtual void calculate(const float dt) {
+		if (!_reaction.tick(dt))
+			return;
+		
 		float range = getWeaponRange(_object);
 		range *= range;
 		//LOG_DEBUG(("range = %g", range));
