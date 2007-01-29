@@ -330,16 +330,19 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 	
 	//const v3<int> size = map.getSize();
 	for (IMap::PropertyMap::iterator i = map.properties.begin(); i != map.properties.end(); ++i) {
-		if (i->first.substr(0, 6) != "spawn:" && i->first.substr(0, 7) != "object:" && 
-			i->first.substr(0, 9) != "waypoint:" && i->first.substr(0, 5) != "edge:" && 
-			i->first.substr(0, 7) != "config:") {
-			continue;
-		}
-		if (!spawn_objects && i->first.substr(0, 9) != "waypoint:" && i->first.substr(0, 5) != "edge:")
+		std::vector<std::string> res;
+		mrt::split(res, i->first, ":");
+		const std::string &type = res[0];
+		
+		if (type != "spawn" && type != "object" && type != "waypoint" && 
+			type != "edge" && type != "config")
+			throw_ex(("unsupported line: '%s'", i->first.c_str()));
+		
+		if (!spawn_objects && type != "waypoint" && type != "edge")
 			continue;
 	
 		v3<int> pos;
-		if (i->first.substr(0, 5) != "edge:" && i->first.substr(0,7) != "config:") {
+		if (type != "edge" && type != "config") {
 			std::string pos_str = i->second;
 			const bool tiled_pos = pos_str[0] == '@';
 			if (tiled_pos) { 
@@ -363,14 +366,14 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 			pos.y += size.y;
 		*/
 		
-		if (i->first.substr(0, 6) == "spawn:") {
+		if (type == "spawn") {
 			LOG_DEBUG(("spawnpoint: %d,%d", pos.x, pos.y));
 			PlayerManager->addSlot(pos);
 		} else {
-			std::vector<std::string> res;
-			mrt::split(res, i->first, ":");
-			if (res.size() > 2 && res[0] == "object") {
+			if (type == "object") {
 				//LOG_DEBUG(("object %s, animation %s, pos: %s", res[1].c_str(), res[2].c_str(), i->second.c_str()));
+				if (res.size() < 3)
+					throw_ex(("'%s' misses an argument", i->first.c_str()));
 				Item item;
 				Object *o = ResourceManager->createObject(res[1], res[2]);
 				o->addOwner(-42); //fake owner ;)
@@ -384,14 +387,21 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 				
 				item.id = o->getID();
 				_items.push_back(item);
-			} else if (res.size() > 2 && res[0] == "waypoint") {
+			} else if (type == "waypoint") {
+				if (res.size() < 3)
+					throw_ex(("'%s' misses an argument", i->first.c_str()));
 				LOG_DEBUG(("waypoint class %s, name %s : %d,%d", res[1].c_str(), res[2].c_str(), pos.x, pos.y));
 				_waypoints[res[1]][res[2]] =  pos;
-			} else if (res.size() > 2 && res[0] == "edge") {
+			} else if (type == "edge") {
+				if (res.size() < 3)
+					throw_ex(("'%s' misses an argument", i->first.c_str()));
 				if (res[1] == res[2])
 					throw_ex(("map contains edge from/to the same vertex"));
 				_waypoint_edges.insert(WaypointEdgeMap::value_type(res[1], res[2]));
-			} else if (res.size() > 1 && res[0] == "config") {
+			} else if (type == "config") {
+				if (res.size() < 2)
+					throw_ex(("'%s' misses an argument", i->first.c_str()));
+				
 				std::vector<std::string> value;
 				mrt::split(value, i->second, ":");
 				if (value[0] != "int" && value[0] != "float" && value[0] != "string")
