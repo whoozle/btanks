@@ -41,7 +41,8 @@ public:
 		PlayerState,
 		UpdatePlayers,
 		UpdateWorld, 
-		Respawn
+		Respawn, 
+		GameOver
 	};
 	
 	Message();
