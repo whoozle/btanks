@@ -246,21 +246,18 @@ void IGame::onMenu(const std::string &name, const std::string &value) {
 		LOG_DEBUG(("start split screen game requested"));
 		clear();
 		_main_menu.reset();
-		std::string vehicle1, vehicle2;
+		std::string vehicle1, vehicle2, animation1, animation2;
 		Config->get("menu.default-vehicle-1", vehicle1, "launcher");
 		Config->get("menu.default-vehicle-2", vehicle2, "launcher");
 		std::string map;
 		Config->get("menu.default-mp-map", map, "survival");
 		loadMap(map);
 
-		static const char * colors[4] = {"green", "red", "yellow", "cyan"};
-		std::string animation1 = colors[mrt::random(4)];
-		std::string animation2 = colors[mrt::random(4)];
-		animation1 += "-" + vehicle1;
-		animation2 += "-" + vehicle2;
-
 		GET_CONFIG_VALUE("player.control-method-1", std::string, cm, "keys-1");		
 		GET_CONFIG_VALUE("player.control-method-2", std::string, cm2, "keys-2");
+
+		PlayerManager->getDefaultVehicle(vehicle1, animation1);
+		PlayerManager->getDefaultVehicle(vehicle2, animation2);
 		
 		_my_index = PlayerManager->spawnPlayer(vehicle1, animation1, cm);
 		assert(_my_index == 0);
