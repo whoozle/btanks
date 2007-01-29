@@ -38,19 +38,24 @@ protected:
 
 private: 
 	bool _make_pierceable;
+	Alarm _spawn;
 };
 
+#include "mrt/random.h"
+#include "config.h"
 
 OldSchoolDestructableObject::OldSchoolDestructableObject(const int hops, const bool make_pierceable) : 
 		Object("destructable-object"), 
 		_hops(hops),
-		_make_pierceable(make_pierceable) {}
+		_explosions(0), 
+		_make_pierceable(make_pierceable), _spawn(true) {}
 
 void OldSchoolDestructableObject::serialize(mrt::Serializator &s) const {
 	Object::serialize(s);
 	s.add(_hops);
 	s.add(_explosions);
 	s.add(_make_pierceable);
+	_spawn.serialize(s);
 }
 
 void OldSchoolDestructableObject::deserialize(const mrt::Serializator &s) {
@@ -58,6 +63,7 @@ void OldSchoolDestructableObject::deserialize(const mrt::Serializator &s) {
 	s.get(_hops);
 	s.get(_explosions);
 	s.get(_make_pierceable);
+	_spawn.deserialize(s);
 }
 
 void OldSchoolDestructableObject::addDamage(Object *from, const int dhp, const bool emitDeath) {
@@ -66,33 +72,48 @@ void OldSchoolDestructableObject::addDamage(Object *from, const int dhp, const b
 
 	Object::addDamage(from, dhp, false);
 	if (hp <= 0) {
-		--_hops;
-		
-		cancelAll();
-
-		if (_hops == 0) {
-			//completely dead
-			if (_make_pierceable)
-				pierceable = true;
-			hp = -1; 
-			play("broken", true);
-		} else {
-			hp = max_hp;
-			play(mrt::formatString("damaged-%d", _hops), true);
-		}
-
+		Config->get("objects." + registered_name + ".explosions", _explosions, 16);		
+		hp = -1;
 	}
 }
 
 void OldSchoolDestructableObject::tick(const float dt) {
 	Object::tick(dt);
-	if (getState().empty()) {	
-		//LOG_DEBUG(("over"));
-		emit("death", this);
+	
+	int e;
+	Config->get("objects." + registered_name + ".explosions", e, 16);		
+	
+	if (_explosions != 0 && _spawn.tick(dt)) {
+		if (_explosions == (e + 1)/2) {
+			--_hops;
+
+			cancelAll();
+
+			if (_hops == 0) {
+				//completely dead
+				if (_make_pierceable)
+					pierceable = true;
+				hp = -1; 
+				play("broken", true);
+			} else {
+				hp = max_hp;
+				play(mrt::formatString("damaged-%d", _hops), true);
+			}
+		}
+		
+		v3<float> dpos; 
+		dpos.x = mrt::random((int)size.x) - size.x / 2;
+		dpos.y = mrt::random((int)size.y) - size.y / 2;
+		
+		spawn("explosion", "building-explosion", dpos);
+		--_explosions;
 	}
 }
 
 void OldSchoolDestructableObject::onSpawn() {
+	float er; 
+	Config->get("objects." + registered_name + ".explosion-rate", er, 0.1);
+	_spawn.set(er);
 	play("main", true);
 }
 
