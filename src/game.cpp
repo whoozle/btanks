@@ -461,7 +461,7 @@ void IGame::checkItems(const float dt) {
 			++goal_total;
 		Object *o = World->getObjectByID(item.id);
 		if (o != NULL) {
-			if (o->getState() == "broken") 
+			if (item.destroy_for_victory && o->getState() == "broken") 
 				++goal;
 			continue;
 		}
