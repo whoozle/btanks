@@ -22,7 +22,7 @@
 
 class Cannon : public Object {
 public:
-	Cannon(const int dir) : Object("trooper"), _fire(false) {
+	Cannon(const int dir) : Object("trooper"), _fire(false), _reaction(true) {
 		setDirection(dir);
 	}
 	virtual Object* clone() const  { return new Cannon(*this); }
@@ -36,18 +36,23 @@ public:
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
 		_fire.serialize(s);
+		_reaction.serialize(s);
 	}
 
 	virtual void deserialize(const mrt::Serializator &s) {
 		Object::deserialize(s);
 		_fire.deserialize(s);
+		_reaction.deserialize(s);
 	}
 
 private:
-	Alarm _fire;
+	Alarm _fire, _reaction;
 };
 
 void Cannon::calculate(const float dt) {
+	if (!_reaction.tick(dt))
+		return;
+	
 	static std::vector<std::string> targets;
 	if (targets.empty()) {
 		targets.push_back("player");
@@ -96,6 +101,8 @@ void Cannon::emit(const std::string &event, Object * emitter) {
 void Cannon::onSpawn() {
 	GET_CONFIG_VALUE("objects.cannon.fire-rate", float, fr, 2);
 	_fire.set(fr);
+	GET_CONFIG_VALUE("objects.cannon.reaction-time", float, rt, 0.105);
+	_reaction.set(rt);	
 	play("hold", true);
 }
 
