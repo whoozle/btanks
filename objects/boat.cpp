@@ -82,7 +82,7 @@ void Boat::tick(const float dt) {
 	}
 	
 	bool can_fire = _fire.tick(dt);
-	if (can_fire && state != "reload") {
+	if (_state.fire && can_fire && state != "reload") {
 		_fire.reset();
 		groupEmit("mod", "launch");
 		if (get("mod")->getCount() == 0) {
