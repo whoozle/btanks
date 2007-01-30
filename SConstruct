@@ -51,7 +51,7 @@ if sys.platform == "win32":
 		env.Append(CCCFLAGS = ' /Ot /Ob2gity /G6 /GA /GF /Gs /Gy /MD ') #optimizations
 		env.Append(CPPFLAGS = ' /Ot /Ob2gity /G6 /GA /GF /Gs /Gy /MD ') #optimizations
 		env.Append(LINKFLAGS = ' /OPT:REF /OPT:ICF /NOLOGO /INCREMENTAL:NO ')
-		env.Append(CPPDEFINES = ['NDEBUG']) 
+		#env.Append(CPPDEFINES = ['NDEBUG']) 
 
 #	
 #	env.Append(CPPFLAGS = '/Ox /Ot ') #optimizations
