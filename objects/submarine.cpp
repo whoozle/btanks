@@ -55,7 +55,7 @@ void Submarine::tick(const float dt) {
 		play("hold", true);
 	}
 	if (_wakeup.tick(dt)) {
-		LOG_DEBUG(("waking up..."));
+		//LOG_DEBUG(("waking up..."));
 		_wakeup.set(3600);
 		
 		cancelAll();
