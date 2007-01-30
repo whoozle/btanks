@@ -19,6 +19,7 @@
 #include "thread.h"
 #include "sdl_ex.h"
 #include "mrt/logger.h"
+#include <assert.h>
 
 using namespace sdlx;
 
