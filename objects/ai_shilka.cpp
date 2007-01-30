@@ -81,6 +81,8 @@ void AIShilka::onSpawn() {
 	addEnemyClass("player");
 	addEnemyClass("trooper");
 	addEnemyClass("kamikaze");
+	addEnemyClass("boat");
+	addEnemyClass("watchtower");
 	
 	addBonusName("heal");
 	addBonusName("megaheal");
