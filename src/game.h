@@ -30,6 +30,8 @@
 #include "alarm.h"
 #include "window.h"
 
+#include <sdlx/font.h>
+
 class BaseObject;
 class Object;
 class Message;
@@ -96,6 +98,10 @@ public:
 	void displayMessage(const std::string &message, const float time);
 
 private:
+	void pushState(const std::string &state, const float time);
+	const std::string popState(const float dt);
+
+
 	bool onKey(const SDL_keysym sym);
 	void onMenu(const std::string &name, const std::string &value);
 	const std::string onConsole(const std::string &cmd, const std::string &param);
@@ -141,6 +147,10 @@ private:
 	
 	Credits *_credits;
 	Cheater *_cheater;
+	
+	std::string _state;
+	Alarm _state_timer;
+	sdlx::Font _big_font;
 	
 	IGame(const IGame &);
 	const IGame& operator=(const IGame &);

@@ -59,7 +59,7 @@
 IMPLEMENT_SINGLETON(Game, IGame)
 
 IGame::IGame() : 
-_check_items(0.5, true),  _autojoin(false), _shake(0), _credits(NULL), _cheater(NULL) {}
+_check_items(0.5, true),  _autojoin(false), _shake(0), _credits(NULL), _cheater(NULL), _state_timer(false) {}
 IGame::~IGame() {}
 
 void IGame::init(const int argc, char *argv[]) {
@@ -167,6 +167,7 @@ void IGame::init(const int argc, char *argv[]) {
 	
 	LOG_DEBUG(("initializing hud..."));
 	_hud = new Hud(_window.getWidth(), _window.getHeight());
+	_big_font.load(data_dir + "/font/big.png", sdlx::Font::AZ09);
 	
 	Console->on_command.connect(sigc::mem_fun(this, &IGame::onConsole));
 
@@ -299,9 +300,12 @@ void IGame::onMenu(const std::string &name, const std::string &value) {
 	} else if (name == "m-join") {
 		clear();
 		Config->set("multiplayer.recent-host", value);
-		PlayerManager->startClient(value);
+		bool ok = true;
+		TRY {
+			PlayerManager->startClient(value);
+		} CATCH("startClient", { displayMessage("CONNECTION FAILED", 1); ok = false; });
 		
-		_main_menu.setActive(false);
+		_main_menu.setActive(!ok);
 	} else if (name == "credits" && !PlayerManager->isServer()) {
 		LOG_DEBUG(("show credits."));
 		_credits = new Credits;
@@ -438,19 +442,12 @@ void IGame::gameOver(const std::string &state, const float time) {
 }
 
 void IGame::displayMessage(const std::string &message, const float time) {
-	if (_hud == NULL)
-		throw(("hud was not initialized"));
-	_hud->pushState(message, time);
+	pushState(message, time);
 }
 
 
-void IGame::checkItems(const float dt) {
-	std::string game_state = _hud->popState(dt);
-	if (_game_over && !game_state.empty()) {
-		clear();
-	}
-	
-	if (_game_over || !_check_items.tick(dt) || PlayerManager->isClient()) //no need for multiplayer.
+void IGame::checkItems(const float dt) {	
+	if (!_map_loaded || _paused || _game_over || !_check_items.tick(dt) || PlayerManager->isClient()) //no need for multiplayer.
 		return;
 	
 	int goal = 0, goal_total = 0;
@@ -579,9 +576,9 @@ void IGame::run() {
 		const float dt = 1.0/fr;
 		
 		if (_map_loaded && _credits == NULL && _running && !_paused) {
+			checkItems(dt);
 			PlayerManager->updatePlayers();
 			
-			checkItems(dt);
 #ifdef SHOW_PERFSTATS
 			t_tick_n = SDL_GetTicks();
 #endif
@@ -591,12 +588,17 @@ void IGame::run() {
 #ifdef SHOW_PERFSTATS
 			t_tick_w = SDL_GetTicks();
 #endif
-
 			
 		}
 	
-		if (_running && !_paused)
+		if (_running && !_paused) {
+			std::string game_state = popState(dt);
+			if (_game_over && !game_state.empty()) {
+				clear();
+			}
+
 			PlayerManager->tick(t_start, dt);
+		}
 
 #ifdef SHOW_PERFSTATS
 		Uint32 t_tick = SDL_GetTicks();
@@ -630,6 +632,13 @@ void IGame::run() {
 		}
 
 		_main_menu.render(_window);
+		
+		if (!_state.empty()) {
+			int x = (_window.getWidth() - _big_font.getHeight() /*+- same ;)*/ * _state.size()) / 2;
+			int y = (_window.getHeight() - _big_font.getHeight()) / 2;
+			_big_font.render(_window, x, y, _state);
+		}
+		
 		Console->render(_window);
 		
 flip:
@@ -852,4 +861,17 @@ const std::string IGame::onConsole(const std::string &cmd, const std::string &pa
 		}		
 	}
 	return std::string();
+}
+
+void IGame::pushState(const std::string &state, const float time) {
+	_state = state;
+	_state_timer.set(time);
+}
+
+const std::string IGame::popState(const float dt) {
+	if (_state.empty() || !_state_timer.tick(dt))
+		return std::string();
+	std::string r = _state;
+	_state.clear();
+	return r;
 }

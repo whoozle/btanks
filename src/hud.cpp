@@ -250,12 +250,6 @@ void Hud::render(sdlx::Surface &window) const {
 		//fixme: just draw splitter centered. 
 		window.copyFrom(_screen_splitter, (window.getWidth() - _screen_splitter.getWidth()) / 2, 0);
 	}
-	
-	if (!_state.empty()) {
-		int x = (window.getWidth() - _big_font.getHeight() /*+- same ;)*/ * _state.size()) / 2;
-		int y = (window.getHeight() - _big_font.getHeight()) / 2;
-		_big_font.render(window, x, y, _state);
-	}
 }
 
 void Hud::renderSplash(sdlx::Surface &window) const {
@@ -302,20 +296,7 @@ const bool Hud::renderLoadingBar(sdlx::Surface &window, const float old_progress
 	return true;
 }
 
-void Hud::pushState(const std::string &state, const float time) {
-	_state = state;
-	_state_timer.set(time);
-}
-
-const std::string Hud::popState(const float dt) {
-	if (_state.empty() || !_state_timer.tick(dt))
-		return std::string();
-	std::string r = _state;
-	_state.clear();
-	return r;
-}
-
-Hud::Hud(const int w, const int h) : _update_radar(true), _state_timer(false) {
+Hud::Hud(const int w, const int h) : _update_radar(true) {
 	GET_CONFIG_VALUE("engine.data-directory", std::string, data_dir, "data");
 	_background.loadImage(data_dir + "/tiles/hud_line.png");
 	_loading_border.loadImage(data_dir + "/tiles/loading_border.png");
@@ -324,7 +305,6 @@ Hud::Hud(const int w, const int h) : _update_radar(true), _state_timer(false) {
 	_splitter.loadImage(data_dir + "/tiles/hud_splitter.png");
 	_screen_splitter.loadImage(data_dir + "/tiles/split_line.png");
 	
-	_big_font.load(data_dir + "/font/big.png", sdlx::Font::AZ09);
 	_font.load(data_dir + "/font/medium.png", sdlx::Font::AZ09);
 	
 	LOG_DEBUG(("searching splash... %dx%d", w, h));
