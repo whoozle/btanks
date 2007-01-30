@@ -329,8 +329,11 @@ TRY {
 } CATCH("onMessage", { 
 	if (_server) 
 		_server->disconnect(id);
-	if (_client) 
+	if (_client) {
 		_client->disconnect();
+		Game->clear();
+		Game->displayMessage("MULTIPLAYER ERROR. SEE STDERR FOR DETAILS", 3);
+	}
 });
 }
 
