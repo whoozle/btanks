@@ -27,6 +27,7 @@ Thread::Thread() : _thread(NULL) {}
 static int thread_starter(void *o) {
 	TRY {
 		Thread *t = reinterpret_cast<Thread *>(o);
+		assert(t != NULL);
 		return t->run();
 	} CATCH("thread::run", );
 	return -1;
