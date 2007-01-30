@@ -665,13 +665,15 @@ TRY {
 				o._position += l * allowed_velocity;
 			}
 		}
-		//LOG_DEBUG(("bang!"));
+		/*
+		LOG_DEBUG(("bang!"));
 		GET_CONFIG_VALUE("engine.bounce-velocity-multiplier", float, bvm, 0.5);
 		
 		o._velocity_fadeout = -bvm * o._velocity;
 		o._velocity.clear();
 		
 		o._moving_time = 0;
+		*/
 	}
 } CATCH("tick(`stuck` case)", throw;);
 skip_collision:
