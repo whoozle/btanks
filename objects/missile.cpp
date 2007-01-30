@@ -65,6 +65,7 @@ void Missile::calculate(const float dt) {
 		if (type != "stun") {
 			targets.insert("trooper");
 			targets.insert("kamikaze");
+			targets.insert("boat");
 		}
 	
 		v3<float> pos, vel;
