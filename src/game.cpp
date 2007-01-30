@@ -813,6 +813,7 @@ void IGame::getWaypoint(v3<float> &wp, const std::string &classname, const std::
 }
 
 const std::string IGame::onConsole(const std::string &cmd, const std::string &param) {
+try {
 	if (cmd == "quit") {
 		_running = false;
 		return "thank you for playing battle tanks";
@@ -821,16 +822,12 @@ const std::string IGame::onConsole(const std::string &cmd, const std::string &pa
 		mrt::split(par, param, " ", 3);
 		if (par.size() < 3 || par[0].empty() || par[1].empty() || par[2].empty())
 			return "usage: spawnPlayer object animation control-method";
-		try {
-			PlayerManager->spawnPlayer(par[0], par[1], par[2]);
-		} catch(const std::exception &e) {
-			return std::string("error: ") + e.what();
-		}
+		
+		PlayerManager->spawnPlayer(par[0], par[1], par[2]);
 		return "ok";
 	} else if (cmd == "spawn") {
 		std::vector<std::string> par;
 		mrt::split(par, param, " ", 3);
-		try {
 			if (par.size() < 3 || par[0].empty() || par[1].empty() || par[2].empty())
 				return "usage: spawn object animation position(10,20 /10,20 player5)";
 			if (!_map_loaded)
@@ -856,10 +853,20 @@ const std::string IGame::onConsole(const std::string &cmd, const std::string &pa
 			o->addOwner(-42);
 			World->addObject(o, pos.convert<float>());
 			return "ok";
-		} catch(const std::exception &e) {
-			return std::string("error: ") + e.what();
-		}		
+	} else if (cmd == "kill") {
+		if (param.empty())
+			return "usage: kill 0-n (slot number)";
+		int idx = param[0] - '0';
+		Object *o = PlayerManager->getSlot(idx).getObject();
+		if (o == NULL)
+			throw_ex(("no object in slot %d", idx));
+		o->emit("death", NULL);
+		return "ok";
 	}
+
+} catch(const std::exception &e) {
+	return std::string("error: ") + e.what();
+}
 	return std::string();
 }
 
