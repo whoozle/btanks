@@ -33,6 +33,8 @@
 #include <assert.h>
 #include <limits>
 
+#include "math/binary.h"
+
 #include "config.h"
 
 IMPLEMENT_SINGLETON(Map, IMap)
@@ -71,7 +73,10 @@ const int IMap::getImpassability(const Object *obj, const v3<int>&pos, v3<int> *
 		hidden = NULL;
 	}
 	
-	const float obj_z = obj->getPosition().z;
+	v3<float> position, velocity;
+	obj->getInfo(position, velocity);
+	
+	const float obj_z = position.z;
 	int w = (int)obj->size.x, h = (int)obj->size.y;
 	int x, x1;
 	int y, y1;
@@ -87,9 +92,9 @@ const int IMap::getImpassability(const Object *obj, const v3<int>&pos, v3<int> *
 	
 	int hidden_mask = 0;
 
-	int result_im = 101;
 	//LOG_DEBUG(("%d:%d:%d:%d (%+d:%+d:%+d:%+d)--> %d:%d %d:%d", x1, y1, w, h, dx1, dy1, dx2, dy2, xt1, yt1, xt2, yt2));
 	int empty_mask = 0x0f;
+	int im[4] = {101, 101, 101, 101};
 	
 	if (collides(obj, dx1, dy1, &_full_tile))
 		empty_mask &= ~1;
@@ -132,95 +137,93 @@ const int IMap::getImpassability(const Object *obj, const v3<int>&pos, v3<int> *
 		if (layer_im == -1 || (layer->pierceable && obj->piercing)) {
 			continue;
 		}
-		
-		if (result_im != 101) {
-			if (hidden)
-				continue;
-			else 
-				break;
-		}
-		
+
 		//LOG_DEBUG(("im: %d, tile: %d", layer_im, layer->get(xt1, yt1)));
-		bool full_contact = true;
-		bool partial_contact = false;
-		int parts_v = 0, parts_h = 0;
 		
-		if (!(empty_mask & 1)) {
+		if (!(empty_mask & 1) && im[0] == 101) {
 			if (collides(obj, dx1, dy1, layer->getCollisionMap(xt1, yt1))) {
-				partial_contact = true; 
-				parts_h |= 1; //left
-				parts_v |= 1; //up
-			} else full_contact = false;
+				im[0] = layer_im;
+				if (yt1 == yt2 && im[1] == 101)
+					im[1] = layer_im;
+				if (xt1 == xt2) {
+					if (im[2] == 101)
+						im[2] = layer_im;
+					if (yt1 == yt2 && im[3] == 101)
+						im[3] = layer_im;
+				}
+			}
 		}
 
 		if (yt2 != yt1) {
-			if (!(empty_mask & 2)) {
+			if (!(empty_mask & 2) && im[1] == 101) {
 			if (collides(obj, dx1, dy2, layer->getCollisionMap(xt1, yt2))) {
-				partial_contact = true; 
-				parts_h |= 1;
-				parts_v |= 2;
-			} else full_contact = false;
+				im[1] = layer_im;
+				if (xt1 == xt2 && im[3] == 101) 
+					im[3] = layer_im;
+			}
 			}
 		}
 		
 		if (xt2 != xt1) {
-			if (!(empty_mask & 4)) {
+			if (!(empty_mask & 4) && im[2] == 101) {
 			if (collides(obj, dx2, dy1, layer->getCollisionMap(xt2, yt1))) {
-				partial_contact = true; 
-				parts_h |= 2;
-				parts_v |= 1;
-			} else full_contact = false;
+				im[2] = layer_im;
+				if (y1 == yt2 && im[3] == 101)
+					im[3] = layer_im;
+
 			}
-			if (yt2 != yt1) { 
+			}
+			if (yt2 != yt1 && im[3] == 101) { 
 				if (!(empty_mask & 8)) {
 				if (collides(obj, dx2, dy2, layer->getCollisionMap(xt2, yt2))) { 
-					parts_h |= 2;
-					parts_v |= 2;
-					partial_contact = true; 
-				} else full_contact = false;
+					im[3] = layer_im;
 				}
-			};
+				}
+			}
 		}
-		if (full_contact && !partial_contact) {
-			//no contact at all
-			full_contact = false;
-			/* test for allowed velocity 
-			partial_contact = true; 
-			parts_h = parts_v = 3;
-			*/
-		}
+	}
 
-		if (result_im == 101) {
-			if (partial_contact && tile_pos) {
-				switch(parts_h) {
-					case 1: tile_pos->x = _tw/2 + _tw * xt1; break;
-					case 2: tile_pos->x = _tw/2 + _tw * xt2; break;
-					case 3: tile_pos->x = _tw/2 + _tw * (xt1 + xt2) / 2; break;
-					default: 
-						assert(0);
-				}
-				switch(parts_v) {
-					case 1: tile_pos->y = _th/2 + _th * yt1; break;
-					case 2: tile_pos->y = _th/2 + _th * yt2; break;
-					case 3: tile_pos->y = _th/2 + _th * (yt1 + yt2) / 2; break;
-					default: 
-						assert(0);
-				}
-			}
-			
-			if (full_contact) {
-				result_im = layer_im;
-				if (hidden == NULL)
-					break;
-			}
-			if (partial_contact && layer_im == 100) {
-				result_im = 100;
-				if (hidden == NULL)
-					break;
-			}
-				
-		}
-		//LOG_DEBUG(("layer: %d, partial: %s, full: %s, im: %d (collision map: %d:%d)", l->first, partial_contact?"yes":"no", full_contact?"yes":"no", result_im, parts_h, parts_v));
+	int result_im = 0;
+	//LOG_DEBUG(("im : %d %d", im[0], im[2])); 
+	//LOG_DEBUG(("im : %d %d", im[1], im[3]));
+	for(int i = 0; i < 4; ++i) if (im[i] == 101) im[i] = 0;
+	
+	if (tile_pos) {
+		bool v1 = im[0] == 100 || im[1] == 100;
+		bool v2 = im[2] == 100 || im[3] == 100;
+		if (v1 && !v2) {
+			tile_pos->x = tile_pos->x = _tw/2 + _tw * xt1;
+		} else if (v2 && !v1) {
+			tile_pos->x = tile_pos->x = _tw/2 + _tw * xt2;			
+		} else 
+			tile_pos->x = tile_pos->x = _tw/2 + _tw * (xt1 + xt2) / 2;
+		
+		bool h1 = im[0] == 100 || im[2] == 100;
+		bool h2 = im[1] == 100 || im[3] == 100;
+		if (h1 && !h2) {
+			tile_pos->y = _th/2 + _th * yt1;
+		} else if (h2 && !h1) {
+			tile_pos->y = _th/2 + _th * yt2;
+		} else 
+			tile_pos->y = _th/2 + _th * (yt1 + yt2) / 2;
+	}
+	
+	int t;
+	if (velocity.y < 0 && (t = math::max(im[0], im[2])) < 101 ) {
+		result_im = math::max(result_im, t);
+		//LOG_DEBUG(("y<0 : %d", t));
+	}
+	if (velocity.y > 0 && (t = math::max(im[1], im[3])) < 101 ) {
+		result_im = math::max(result_im, t);
+		//LOG_DEBUG(("y>0 : %d", t));
+	}
+	if (velocity.x < 0 && (t = math::max(im[0], im[1])) < 101 ) {
+		result_im = math::max(result_im, t);
+		//LOG_DEBUG(("x<0 : %d", t));
+	}
+	if (velocity.x > 0 && (t = math::max(im[2], im[3])) < 101 ) {
+		result_im = math::max(result_im, t);
+		//LOG_DEBUG(("x>0 : %d", t));
 	}
 	
 	if (xt1 == xt2) {
@@ -233,10 +236,7 @@ const int IMap::getImpassability(const Object *obj, const v3<int>&pos, v3<int> *
 	if (hidden_mask == 0x0f && hidden)
 		*hidden = true;
 
-	if (result_im >= 101) 
-		result_im = 0;
-
-	assert(result_im >= 0);
+	assert(result_im >= 0 && result_im < 101);
 	//LOG_DEBUG(("im = %d", result_im));
 	//LOG_DEBUG(("<<IMap::getImpassability"));
 	return result_im;
