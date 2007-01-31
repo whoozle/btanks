@@ -48,7 +48,7 @@ public:
 	bool visible;
 	sdlx::Rect viewport;
 		
-	v3<float> map_pos, map_vel, map_dst;
+	v3<float> map_pos, map_vel, map_dst, map_dst_vel, map_dst_pos;
 		
 	void clear();
 	~PlayerSlot();

@@ -43,6 +43,7 @@
 #include "mrt/random.h"
 
 #include "math/unary.h"
+#include "math/binary.h"
 
 IMPLEMENT_SINGLETON(PlayerManager, IPlayerManager)
 
@@ -706,52 +707,46 @@ void IPlayerManager::tick(const float now, const float dt) {
 					
 		v3<float> pos, vel;
 		p->getInfo(pos, vel);
+		vel.normalize();
+		
+		float moving, idle;
+		p->getTimes(moving, idle);
 		//vel.fromDirection(p->getDirection(), p->getDirectionsNumber());
 /*
 		if ((int)pi == 0)
 			Mixer->setListener(pos, vel);
-					
+
+*/					
+		//moving /= 2;
+		if (moving >= 1)
+			moving = 1;
+	
 		slot.map_dst = pos;
 		slot.map_dst.x -= slot.viewport.w / 2;
 		slot.map_dst.y -= slot.viewport.h / 2;
-*/		
-/*		slot.map_dst += vel * v3<float>(slot.viewport.w, slot.viewport.h, 0) / 4; 
-		v3<float> dvel = slot.map_dst - slot.map_pos;
-
-		float dist = dvel.normalize();
-		float acc = dist / p->speed * 10;
-
-		LOG_DEBUG(("map_dst: %g %g , map_vel: %g %g dist %g, acc %g", slot.map_dst.x, slot.map_dst.y, slot.map_vel.x, slot.map_vel.y, dist, acc));
-
-		if (acc > 10) 
-			acc = 10;
-
-		if (acc < 0)
-			acc = 0;
-
-		if (math::sign(dvel.x) == -math::sign(vel.x) && math::sign(dvel.y) == -math::sign(vel.y)) {
-			slot.map_vel /= 3;
-		}
-			
-		if (acc < 1) 
-			acc = 0;
 		
-		if (dist < 14) {
-			slot.map_vel.clear();
-			acc = 0;
-		}
+		float look_forward = v3<float>(slot.viewport.w, slot.viewport.h, 0).length() / 3;
+		slot.map_dst += vel * moving * look_forward; 
 
-		slot.map_vel += dvel * acc;
+		slot.map_dst_vel = slot.map_dst - slot.map_dst_pos;
 
-		const float max_speed = p->speed * 2;
-		if (slot.map_vel.length() > max_speed) 
-			slot.map_vel.normalize(max_speed);
+	//	if (slot.map_dst_vel.length() > max_speed * 4)
+	//		slot.map_dst_vel.normalize(max_speed * 4);
+		slot.map_dst_pos += slot.map_dst_vel * math::min<float>(dt * 30, 1);
+
+		//const float max_speed = 2.5 * p->speed;
 		
-		slot.map_pos += slot.map_vel * dt;
-*/
-		slot.map_pos = pos;
-		slot.map_pos.x -= slot.viewport.w/2;
-		slot.map_pos.y -= slot.viewport.h/2;
+		v3<float> dvel = slot.map_dst_pos - slot.map_pos;
+
+		//const int gran = 50;
+		//slot.map_vel = (dvel / (gran / 8)).convert<int>().convert<float>() * gran;
+		slot.map_vel = dvel;
+		
+		//if (slot.map_vel.length() > max_speed)
+		//	slot.map_vel.normalize(max_speed);
+		
+		slot.map_pos += slot.map_vel * math::min<float>(2 * dt, 1);
+		//slot.map_pos = slot.map_dst_pos;
 	}
 
 	validateViewports();
