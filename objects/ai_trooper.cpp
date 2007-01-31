@@ -38,7 +38,7 @@ public:
 	virtual void calculate(const float dt);
 	virtual Object* clone() const;
 
-	virtual void onIdle();
+	virtual void onIdle(const float dt);
 	
 private: 
 	virtual const int getComfortDistance(const Object *other) const;
@@ -48,17 +48,20 @@ private:
 };
 
 const int AITrooper::getComfortDistance(const Object *other) const {
-	GET_CONFIG_VALUE("objects.ai-trooper.comfort-distance", int, cd, 50);
+	GET_CONFIG_VALUE("objects.ai-trooper.comfort-distance", int, cd, 80);
 	return (other == NULL || other->classname == "trooper")?cd:-1;
 }
 
-void AITrooper::onIdle() {
+void AITrooper::onIdle(const float dt) {
 	int summoner = getSummoner();
 	if (summoner != 0 && summoner != -42) {
 		float range = getWeaponRange(_object);
 		ai::Herd::calculateV(_velocity, this, summoner, range);
 	} else _velocity.clear();
 	_state.fire = false;
+
+	GET_CONFIG_VALUE("objects.trooper.rotation-time", float, rt, 0.05);
+	limitRotation(dt, rt, true, false);
 }
 
 void AITrooper::onSpawn() {
@@ -98,7 +101,7 @@ void AITrooper::calculate(const float dt) {
 		v3<float> tp;
 		float r = getWeaponRange(_object);
 		if (_target.quick_length() > r * r) {
-			onIdle();
+			onIdle(dt);
 			return;
 		} else {
 			if (getTargetPosition(tp, _target, _object)) {
@@ -116,7 +119,7 @@ void AITrooper::calculate(const float dt) {
 		
 				if (tp.length() < 16)
 					_velocity.clear();
-			} else onIdle();
+			} else onIdle(dt);
 		}	
 	}
 	

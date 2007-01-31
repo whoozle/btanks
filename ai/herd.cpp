@@ -28,14 +28,16 @@ void ai::Herd::calculateV(v3<float> &velocity, Object *sheep, const int leader, 
 		
 		++n;
 	}
+	
 	const Object * o = World->getObjectByID(leader);
 	if (o != NULL) {
+		//LOG_DEBUG(("leader: %p", o));
 		v3<float> pos = sheep->getRelativePosition(o);
 		int cd = getComfortDistance(NULL);
 		if (pos.quick_length() < cd * cd)
 			velocity -= pos;
 		else 
-			velocity += pos;
+			velocity += pos * n;
 	}
 	//LOG_DEBUG(("%g %g = %g", velocity.x, velocity.y, velocity.quick_length()));
 	if (velocity.quick_length() < 10000)
