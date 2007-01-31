@@ -97,6 +97,8 @@ private:
 	void deserializeSlots(const mrt::Serializator &s);
 	
 	void broadcast(const Message &m);
+	
+	void validateViewports();
 
 	IPlayerManager(const IPlayerManager &);
 	const IPlayerManager& operator=(const IPlayerManager &);

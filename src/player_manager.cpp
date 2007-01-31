@@ -17,12 +17,15 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 #include <string>
+
 #include "player_manager.h"
 #include "player_slot.h"
 #include "object.h"
 #include "world.h"
 #include "config.h"
 #include "resource_manager.h"
+#include "version.h"
+#include "game.h"
 
 #include "controls/keyplayer.h"
 #include "controls/joyplayer.h"
@@ -32,15 +35,14 @@
 #include "net/server.h"
 #include "net/client.h"
 #include "net/protocol.h"
-#include "version.h"
 
-#include "tmx/map.h"
 #include "sound/mixer.h"
-
 #include "sdlx/surface.h"
-#include "game.h"
+#include "tmx/map.h"
 
 #include "mrt/random.h"
+
+#include "math/unary.h"
 
 IMPLEMENT_SINGLETON(PlayerManager, IPlayerManager)
 
@@ -633,8 +635,39 @@ void IPlayerManager::spawnPlayer(PlayerSlot &slot, const std::string &classname,
 }
 
 void IPlayerManager::setViewport(const int idx, const sdlx::Rect &rect) {
-	_players[idx].visible = true;
-	_players[idx].viewport = rect;
+	PlayerSlot &slot = _players[idx];
+	slot.visible = true;
+	slot.viewport = rect;
+	const Object *o = _players[idx].getObject();
+	assert(o != NULL);
+	
+	v3<float> pos, vel;
+	o->getInfo(pos, vel);
+	slot.map_pos.x = (int)pos.x - rect.w / 2;
+	slot.map_pos.y = (int)pos.y - rect.h / 2;
+}
+
+void IPlayerManager::validateViewports() {
+		if (Map->loaded()) {
+			const v3<int> world_size = Map->getSize();
+			for(unsigned p = 0; p < _players.size(); ++p) {
+				PlayerSlot &slot = _players[p];
+				if (!slot.visible) 
+					continue;
+				
+				if (slot.map_pos.x < 0) 
+					slot.map_pos.x = 0;
+				if (slot.map_pos.x + slot.viewport.w > world_size.x) 
+					slot.map_pos.x = world_size.x - slot.viewport.w;
+
+				if (slot.map_pos.y < 0) 
+					slot.map_pos.y = 0;
+				if (slot.map_pos.y + slot.viewport.h > world_size.y) 
+					slot.map_pos.y = world_size.y - slot.viewport.h;
+			
+				//LOG_DEBUG(("%f %f", mapx, mapy));
+			}
+		}
 }
 
 void IPlayerManager::tick(const float now, const float dt) {
@@ -662,79 +695,66 @@ void IPlayerManager::tick(const float now, const float dt) {
 		}
 	}
 
-
-			for(unsigned int pi = 0; pi < _players.size(); ++pi) {
-				PlayerSlot &slot = _players[pi];
-				if (!slot.visible)
-					continue;
-				
-				const Object * p = slot.getObject();
-
-				if (p == NULL)
-					continue; 
+	for(unsigned int pi = 0; pi < _players.size(); ++pi) {
+		PlayerSlot &slot = _players[pi];
+		if (!slot.visible)
+			continue;
+		
+		const Object * p = slot.getObject();
+		if (p == NULL)
+			continue; 
 					
-				v3<float> pos, vel;
-				p->getInfo(pos, vel);
-
-				if ((int)pi == 0)
-					Mixer->setListener(pos, vel);
+		v3<float> pos, vel;
+		p->getInfo(pos, vel);
+		//vel.fromDirection(p->getDirection(), p->getDirectionsNumber());
+/*
+		if ((int)pi == 0)
+			Mixer->setListener(pos, vel);
 					
-				sdlx::Rect passive_viewport;
-				passive_viewport.w = passive_viewport.x = slot.viewport.w / 3;
-				passive_viewport.h = passive_viewport.y = slot.viewport.h / 3;
-				sdlx::Rect passive_viewport_stopzone(passive_viewport);
-	
-				{
-					int xmargin = passive_viewport_stopzone.w / 4;
-					int ymargin = passive_viewport_stopzone.h / 4;
-					passive_viewport_stopzone.x += xmargin;
-					passive_viewport_stopzone.y += ymargin;
-					passive_viewport_stopzone.w -= 2*xmargin;
-					passive_viewport_stopzone.h -= 2*ymargin;
-				}
+		slot.map_dst = pos;
+		slot.map_dst.x -= slot.viewport.w / 2;
+		slot.map_dst.y -= slot.viewport.h / 2;
+*/		
+/*		slot.map_dst += vel * v3<float>(slot.viewport.w, slot.viewport.h, 0) / 4; 
+		v3<float> dvel = slot.map_dst - slot.map_pos;
 
+		float dist = dvel.normalize();
+		float acc = dist / p->speed * 10;
 
-				//LOG_DEBUG(("player[0] %f, %f", vel.x, vel.y));
-				int wx = (int)(pos.x - slot.mapx);
-				int wy = (int)(pos.y - slot.mapy);
-				if (passive_viewport_stopzone.in(wx, wy)) {
-					slot.mapvx = 0; 
-					slot.mapvy = 0;
-				} else {
-					slot.mapvx = p->speed * 2 * (wx - passive_viewport.x) / passive_viewport.w ;
-					slot.mapvy = p->speed * 2 * (wy - passive_viewport.y) / passive_viewport.h ;
-					/*
-					LOG_DEBUG(("position : %f %f viewport: %d %d(passive:%d %d %d %d) mapv: %f %f", x, y,
-						viewport.x, viewport.y, passive_viewport.x, passive_viewport.y, passive_viewport.w, passive_viewport.h, 
-						mapvx, mapvy));
-					*/
-				}
-			}
+		LOG_DEBUG(("map_dst: %g %g , map_vel: %g %g dist %g, acc %g", slot.map_dst.x, slot.map_dst.y, slot.map_vel.x, slot.map_vel.y, dist, acc));
 
-		if (Map->loaded()) {
-			const v3<int> world_size = Map->getSize();
-			for(unsigned p = 0; p < _players.size(); ++p) {
-				PlayerSlot &slot = _players[p];
-				if (!slot.visible) 
-					continue;
-				
-				slot.mapx += slot.mapvx * dt;
-				slot.mapy += slot.mapvy * dt;
+		if (acc > 10) 
+			acc = 10;
+
+		if (acc < 0)
+			acc = 0;
+
+		if (math::sign(dvel.x) == -math::sign(vel.x) && math::sign(dvel.y) == -math::sign(vel.y)) {
+			slot.map_vel /= 3;
+		}
 			
-				if (slot.mapx < 0) 
-					slot.mapx = 0;
-				if (slot.mapx + slot.viewport.w > world_size.x) 
-					slot.mapx = world_size.x - slot.viewport.w;
-
-				if (slot.mapy < 0) 
-					slot.mapy = 0;
-				if (slot.mapy + slot.viewport.h > world_size.y) 
-					slot.mapy = world_size.y - slot.viewport.h;
-			
-				//LOG_DEBUG(("%f %f", mapx, mapy));
-			}
+		if (acc < 1) 
+			acc = 0;
+		
+		if (dist < 14) {
+			slot.map_vel.clear();
+			acc = 0;
 		}
 
+		slot.map_vel += dvel * acc;
+
+		const float max_speed = p->speed * 2;
+		if (slot.map_vel.length() > max_speed) 
+			slot.map_vel.normalize(max_speed);
+		
+		slot.map_pos += slot.map_vel * dt;
+*/
+		slot.map_pos = pos;
+		slot.map_pos.x -= slot.viewport.w/2;
+		slot.map_pos.y -= slot.viewport.h/2;
+	}
+
+	validateViewports();
 }
 
 
@@ -751,7 +771,7 @@ void IPlayerManager::render(sdlx::Surface &window, const int vx, const int vy) {
 			slot.viewport.x += vx;
 			slot.viewport.y += vy;
 	
-			World->render(window, sdlx::Rect((int)slot.mapx, (int)slot.mapy, slot.viewport.w, slot.viewport.h),  slot.viewport);
+			World->render(window, sdlx::Rect((int)slot.map_pos.x, (int)slot.map_pos.y, slot.viewport.w, slot.viewport.h),  slot.viewport);
 	
 			slot.viewport.x -= vx;
 			slot.viewport.y -= vy;
@@ -760,8 +780,8 @@ void IPlayerManager::render(sdlx::Surface &window, const int vx, const int vy) {
 
 void IPlayerManager::screen2world(v3<float> &pos, const int p, const int x, const int y) {
 	PlayerSlot &slot = _players[p];
-	pos.x = slot.mapx + x;
-	pos.y = slot.mapx + y;
+	pos.x = slot.map_pos.x + x;
+	pos.y = slot.map_pos.x + y;
 }
 
 const size_t IPlayerManager::getSlotsCount() const {

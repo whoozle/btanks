@@ -22,12 +22,12 @@
 
 PlayerSlot::PlayerSlot() : 
 id(-1), control_method(NULL), need_sync(false), remote(false), trip_time(10), visible(false), 
-mapx(0), mapy(0), mapvx(0), mapvy(0), classname(), animation(), frags(0), reserved(false)
+classname(), animation(), frags(0), reserved(false)
 {}
 
 PlayerSlot::PlayerSlot(const int id) : 
 id(id), control_method(NULL), need_sync(false), remote(false), trip_time(10), visible(false), 
-mapx(0), mapy(0), mapvx(0), mapvy(0), classname(), animation(), frags(0), reserved(false)
+classname(), animation(), frags(0), reserved(false)
 {}
 
 void PlayerSlot::serialize(mrt::Serializator &s) const {

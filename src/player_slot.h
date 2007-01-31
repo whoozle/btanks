@@ -24,6 +24,7 @@
 #include "sdlx/rect.h"
 #include <string>
 #include "mrt/serializable.h"
+#include "math/v2.h"
 
 class Object;
 class ControlMethod;
@@ -47,8 +48,7 @@ public:
 	bool visible;
 	sdlx::Rect viewport;
 		
-	float mapx, mapy, mapvx, mapvy;
-	
+	v3<float> map_pos, map_vel, map_dst;
 		
 	void clear();
 	~PlayerSlot();
