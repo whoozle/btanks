@@ -52,7 +52,7 @@ public:
 		
 		x /= len;
 		y /= len;
-		return (T)1;
+		return len;
 	}
 
 	inline const T normalize(const T nlen) {
@@ -62,7 +62,7 @@ public:
 		
 		x *= nlen / len;
 		y *= nlen / len;
-		return nlen;
+		return len;
 	}
 	
 	inline const T length() const {
