@@ -76,6 +76,7 @@ void AITank::onSpawn() {
 	addEnemyClass("kamikaze");
 	addEnemyClass("boat");
 	addEnemyClass("watchtower");
+	addEnemyClass("barrack");
 	
 	addBonusName("heal");
 	addBonusName("megaheal");
