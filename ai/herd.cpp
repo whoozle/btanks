@@ -5,6 +5,8 @@
 #include "config.h"
 
 void ai::Herd::calculateV(v3<float> &velocity, Object *sheep, const int leader, const float distance) {
+	velocity.clear();
+	
 	if (leader == 0) 
 		throw_ex(("cannot operate on objects without summoner."));
 	std::set<const Object *> o_set;
@@ -35,7 +37,8 @@ void ai::Herd::calculateV(v3<float> &velocity, Object *sheep, const int leader, 
 		else 
 			velocity += pos;
 	}
-	if (velocity.quick_length() < 100)
+	//LOG_DEBUG(("%g %g = %g", velocity.x, velocity.y, velocity.quick_length()));
+	if (velocity.quick_length() < 10000)
 		velocity.clear();
 }
 
