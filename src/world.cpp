@@ -611,15 +611,11 @@ TRY {
 	}
 } CATCH("tick.outline", throw;);
 
-	dpos = o.speed * o._velocity * dt;
-	//LOG_DEBUG(("%d %d", new_pos.x, new_pos.y));
-	new_pos = (o._position + dpos).convert<int>();
-	//LOG_DEBUG(("%d %d", new_pos.x, new_pos.y));
 
 TRY {
 	if (o.piercing) {
-		if (obj_im_now > 0 && obj_im_now < 1.0)
-			obj_im_now = 0;
+		//if (obj_im_now > 0 && obj_im_now < 1.0)
+		obj_im_now = 0;
 		if (map_im >= 1.0) {
 			o._position += dpos * 4; //terrible terrible terrible hack !!! fix it ASAP
 			Map->damage(o._position + o.size / 2, o.max_hp);
@@ -628,6 +624,12 @@ TRY {
 		} else map_im = 0;
 	}
 } CATCH("tick(damaging map)", throw;)	
+
+	dpos = o.speed * o._velocity * dt;
+	//LOG_DEBUG(("%d %d", new_pos.x, new_pos.y));
+	new_pos = (o._position + dpos).convert<int>();
+	//LOG_DEBUG(("%d %d", new_pos.x, new_pos.y));
+
 TRY {
 	if (obj_im == 1.0 || map_im == 1.0) {
 		if (stuck) {
