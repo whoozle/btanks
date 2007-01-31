@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<map version="0.99b" orientation="orthogonal" width="16" height="16" tilewidth="64" tileheight="64">
+ <properties>
+  <property name="object:machinegunner-item:machinegunner-item:2" value="143,5"/>
+  <property name="object:thrower-item:thrower-item:1" value="12,108"/>
+  <property name="object:machinegunner-item:machinegunner-item:1" value="271,8"/>
+  <property name="object:machinegunner:machinegunner:5" value="788,962"/>
+  <property name="object:machinegunner:machinegunner:4" value="620,866"/>
+  <property name="object:machinegunner:machinegunner:3" value="619,968"/>
+  <property name="spawn:3" value="474,952"/>
+  <property name="object:machinegunner:machinegunner:2" value="782,896"/>
+  <property name="object:machinegunner:machinegunner:1" value="700,929"/>
+  <property name="spawn:2" value="454,91"/>
+ </properties>
+ <tileset name="Untitled" firstgid="1" tilewidth="64" tileheight="64">
+  <image source="../tiles/terrains_tileset.png"/>
+ </tileset>
+ <layer name="Layer 1" width="16" height="16">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGtkYGBoHMWjeBSPSAwAjk3/FgAEAAA=
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="Layer 0" width="16" height="16">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAAtgIB/4A3HAqP5R/VTQH4EkHg6lw5DEkNnY9CdCzQDpTUITY0ASw6UfXT0+e7Hph9mLbgax+skB1NAPAD2k86sABAAA
+  </data>
+  <tileproperties/>
+ </layer>
+</map>
