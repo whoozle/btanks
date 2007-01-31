@@ -317,9 +317,18 @@
 	<animation id="regular-mines-on-launcher" tile="launcher_mine.png" model="missiles-on-launcher-animation" />
 	<animation id="machinegunner-on-launcher" tile="launcher_machinegunner.png" model="single-tile" />
 
+	<!-- a little note on outlines and animations : 
+		it is safe to define more than one animation with the same tile. it wont be loaded more than once. 
+		now outline name constructed from registered name of the class. i.e. tank, static-tank. 
+		it could be easily changed.
+	-->
+
 	<animation id="tank-outline" tile="tank_outline.png" model="single-tile" />
 	<animation id="shilka-outline" tile="shilka_outline.png" model="single-tile" />
 	<animation id="launcher-outline" tile="launcher_outline.png" model="single-tile" />
+	<animation id="static-tank-outline" tile="tank_outline.png" model="single-tile" />
+	<animation id="static-shilka-outline" tile="shilka_outline.png" model="single-tile" />
+	<animation id="static-launcher-outline" tile="launcher_outline.png" model="single-tile" />
 	<animation id="machinegunner-player-outline" tile="machinegunner_outline.png" model="single-tile" />
 
 	<animation id="red-car" tile="car01.png" model="car-animation"/>
