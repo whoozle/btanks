@@ -68,29 +68,35 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 		real_load |= preload_all;
 		std::string &tile = attr["tile"];
 		
-		TRY { 
+		if (_surfaces.find(tile) == _surfaces.end()) {
+			TRY { 		
+				if (real_load) {
+					const std::string fname = data_dir + "/tiles/" + tile;
+					s = new sdlx::Surface;
+					s->loadImage(fname);
+					s->convertAlpha();
 			
-			if (real_load) {
-				const std::string fname = data_dir + "/tiles/" + attr["tile"];
-				s = new sdlx::Surface;
-				s->loadImage(fname);
-				s->convertAlpha();
+					cmap = new sdlx::CollisionMap;
+					cmap->init(s, sdlx::CollisionMap::OnlyOpaque);
 			
-				cmap = new sdlx::CollisionMap;
-				cmap->init(s, sdlx::CollisionMap::OnlyOpaque);
+					s->convertToHardware();
+					LOG_DEBUG(("loaded animation '%s' from '%s'", id.c_str(), fname.c_str()));
+				}
 			
-				s->convertToHardware();
-				LOG_DEBUG(("loaded animation '%s' from '%s'", id.c_str(), fname.c_str()));
-			}
+				_surfaces[tile] = s;
+				s = NULL;
 			
-			_surfaces[tile] = s;
-			s = NULL;
+				_cmaps[tile] = cmap;
+				cmap = NULL;
 			
-			_cmaps[tile] = cmap;
-			cmap = NULL;
-			
-			_animations[id] = new Animation(model, tile, tw, th);
-		} CATCH("animation", { delete s; s = NULL; delete cmap; cmap = NULL; });
+			} CATCH("animation", { delete s; s = NULL; delete cmap; cmap = NULL; });
+		//	
+		} else { 
+			LOG_DEBUG(("tile '%s' was already loaded, skipped.", tile.c_str()));
+		}
+	
+		_animations[id] = new Animation(model, tile, tw, th);
+	
 	} else if (name == "animation-model") {
 		const std::string & id = attr["id"];
 		if (id.size() == 0) 
