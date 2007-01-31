@@ -260,6 +260,10 @@ void Object::tick(const float dt) {
 		_pos -= n;
 		++cycles;
 	}
+	if (_pos < 0) 
+		_pos += n; //dt < 0
+
+	assert(_pos >= 0 && _pos < n);
 	
 	if (cycles) {
 		if (!event.repeat)
