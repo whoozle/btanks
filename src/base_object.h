@@ -93,6 +93,7 @@ public:
 	inline void getOwners(std::deque<int> &owners) const { owners = _owners; }
 	
 	const int getSummoner() const { return _spawned_by; }
+	void getTimes(float &moving, float &idle) const { moving = _moving_time; idle = _idle_time; }
 	
 protected:
 	int _id;
