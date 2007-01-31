@@ -22,36 +22,7 @@
 #include "alarm.h"
 #include "config.h"
 #include "world.h"
-
-class Trooper : public Object {
-public:
-	Trooper(const std::string &classname, const std::string &object, const bool aim_missiles) : 
-		Object(classname), _object(object), _aim_missiles(aim_missiles), _fire(false) {}
-	
-	virtual void tick(const float dt);
-
-	virtual Object * clone() const;
-	virtual void onSpawn();
-	virtual void emit(const std::string &event, Object * emitter = NULL);
-
-	virtual void serialize(mrt::Serializator &s) const {
-		Object::serialize(s);
-		s.add(_object);
-		s.add(_aim_missiles);
-		_fire.serialize(s);
-	}
-	virtual void deserialize(const mrt::Serializator &s) {
-		Object::deserialize(s);
-		s.get(_object);
-		s.get(_aim_missiles);
-		_fire.deserialize(s);
-	}	
-
-protected: 
-	std::string _object;
-	bool _aim_missiles;
-	Alarm _fire;
-};
+#include "trooper.h"
 
 class TrooperInWatchTower : public Trooper {
 public: 
@@ -104,96 +75,6 @@ private:
 	Alarm _reaction; 
 };
 
-class AITrooper : public Trooper {
-public:
-	AITrooper(const std::string &object, const bool aim_missiles) : Trooper("trooper", object, aim_missiles), _reaction(true) {}
-	virtual void onSpawn();
-	virtual void serialize(mrt::Serializator &s) const {
-		Trooper::serialize(s);
-		_reaction.serialize(s);
-		_target.serialize(s);
-	}
-	virtual void deserialize(const mrt::Serializator &s) {
-		Trooper::deserialize(s);
-		_reaction.deserialize(s);
-		_target.deserialize(s);
-	}
-	virtual void calculate(const float dt);
-	virtual Object* clone() const;
-	
-private: 
-	Alarm _reaction;
-	v3<float> _target;
-};
-
-
-void AITrooper::onSpawn() {
-	GET_CONFIG_VALUE("objects.trooper.reaction-time", float, rt, 0.1);
-	_reaction.set(rt);
-	
-	Trooper::onSpawn();
-}
-
-Object* AITrooper::clone() const  {
-	return new AITrooper(*this);
-}
-
-
-void AITrooper::calculate(const float dt) {
-	//calculateWayVelocity();
-	//LOG_DEBUG(("calculate"));
-	if (!_reaction.tick(dt))
-		return;
-	if (getState() == "fire") {
-		_state.fire = true; //just to be sure.
-		return;
-	}
-	
-	std::set<std::string> targets;
-
-	if (_aim_missiles)
-		targets.insert("missile");
-	
-	targets.insert("player");
-	targets.insert("trooper");
-	targets.insert("kamikaze");
-	targets.insert("boat");
-	
-	v3<float> vel;
-	if (getNearest(targets, _target, vel)) {
-		v3<float> tp;
-		float r = getWeaponRange(_object);
-		if (_target.quick_length() > r * r) {
-			_velocity.clear();
-			_state.fire = false;
-			return;
-		} else {
-			if (getTargetPosition(tp, _target, _object)) {
-				//LOG_DEBUG(("target: %g %g %g", tp.x, tp.y, tp.length()));
-				/*
-				Way way;
-				if (findPath(tp, way)) {
-					setWay(way);
-					calculateWayVelocity();
-				}
-				*/
-				_velocity = tp;
-				quantizeVelocity();
-				_direction.fromDirection(getDirection(), getDirectionsNumber());
-		
-				if (tp.length() < 16)
-					_velocity.clear();
-			}
-		}	
-	}
-	
-	_state.fire = _velocity.is0() && !_target.is0();
-	if (_state.fire) {
-		_direction = _target;
-		_direction.quantize8();
-		setDirection(_direction.getDirection8() - 1 );
-	}
-}
 
 void Trooper::tick(const float dt) {
 	setDirection(_velocity.getDirection8() - 1);
@@ -250,8 +131,5 @@ Object* Trooper::clone() const  {
 
 
 REGISTER_OBJECT("machinegunner-player", Trooper, ("player", "machinegunner-bullet", true));
-REGISTER_OBJECT("machinegunner", AITrooper, ("machinegunner-bullet", true));
-REGISTER_OBJECT("thrower", AITrooper, ("thrower-missile", false));
-
 REGISTER_OBJECT("machinegunner-in-watchtower", TrooperInWatchTower, ("machinegunner-bullet", true));
 REGISTER_OBJECT("thrower-in-watchtower", TrooperInWatchTower, ("thrower-missile", false));

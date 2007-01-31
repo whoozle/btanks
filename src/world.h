@@ -91,8 +91,10 @@ public:
 	
 	const bool attachVehicle(Object *object, Object *vehicle);
 	const bool detachVehicle(Object *object);
-	
+
+	//ai stuff:	
 	const Object * findTarget(const Object *src, const std::set<std::string> &enemies, const std::set<std::string> &bonuses, ai::Traits &traits) const;
+	void enumerateObjects(std::set<const Object *> &o_set, const Object *src, const float range);
 	
 private:
 
