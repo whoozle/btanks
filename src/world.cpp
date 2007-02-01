@@ -1209,7 +1209,7 @@ const bool IWorld::detachVehicle(Object *object) {
 	Object * man = spawn(object, "machinegunner-player", "machinegunner", object->_direction * (object->size.x + object->size.y) / 4, v2<float>::empty);
 	object->classname = "vehicle";
 
-	map->copyOwners(object);
+	man->copyOwners(object);
 
 	int old_id = object->getID();
 	int new_id = man->getID();
