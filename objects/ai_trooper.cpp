@@ -98,6 +98,8 @@ void AITrooper::calculate(const float dt) {
 	targets.insert("kamikaze");
 	targets.insert("boat");
 	
+	_state.fire = false;
+	
 	v3<float> vel;
 	_target_dir = getTargetPosition(_velocity, targets, _object);
 	if (_target_dir >= 0) {
@@ -114,21 +116,16 @@ void AITrooper::calculate(const float dt) {
 			_direction.fromDirection(getDirection(), getDirectionsNumber());
 		} else {
 			_velocity.clear();
+			setDirection(_target_dir);
+			LOG_DEBUG(("%d", _target_dir));
+			_direction.fromDirection(_target_dir, getDirectionsNumber());
+			_state.fire = true;
 		}
 	
 	} else {
 		_velocity.clear();
 		_target_dir = -1;
 		onIdle(dt);
-	}
-	
-	_state.fire = _velocity.is0() && _target_dir != -1;
-	if (_state.fire) {
-		//_direction = _target;
-		//_direction.quantize8();
-		setDirection(_target_dir);
-		LOG_DEBUG(("%d", _target_dir));
-		_direction.fromDirection(_target_dir, getDirectionsNumber());
 	}
 }
 //==============================================================================
