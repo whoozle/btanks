@@ -118,7 +118,7 @@ void AITrooper::calculate(const float dt) {
 		} else {
 			_velocity.clear();
 			setDirection(_target_dir);
-			LOG_DEBUG(("%d", _target_dir));
+			//LOG_DEBUG(("%d", _target_dir));
 			_direction.fromDirection(_target_dir, getDirectionsNumber());
 			_state.fire = true;
 		}
