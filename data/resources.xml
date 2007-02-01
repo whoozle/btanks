@@ -482,9 +482,9 @@
 	<object class="watchtower-with-thrower" mass="1000" hp="20" z="200" impassability="1" />
 	<object class="watchtower-top" z="205" impassability="0" />
 
-	<object class="barrack-with-machinegunners" speed="400" mass="1000" hp="200" z="200" impassability="1" />
-	<object class="barrack-with-throwers" speed="200" mass="1000" hp="200" z="200" impassability="1" />
-	<object class="barrack-with-kamikazes" speed="600" mass="1000" hp="200" z="200" impassability="1" />
+	<object class="barrack-with-machinegunners" mass="1000" hp="200" z="200" impassability="1" />
+	<object class="barrack-with-throwers" mass="1000" hp="200" z="200" impassability="1" />
+	<object class="barrack-with-kamikazes" mass="1000" hp="200" z="200" impassability="1" />
 
 	<object parent="barrack-with-machinegunners" class="tent-with-machinegunners" speed="400" hp="80" />
 	<object parent="barrack-with-throwers" class="tent-with-throwers" speed="200" hp="80" />
