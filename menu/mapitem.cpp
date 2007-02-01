@@ -27,7 +27,7 @@ MapItem::MapItem(sdlx::TTF &font, const std::string &name) :
 		
 	std::sort(_maps.begin(), _maps.end());
 
-	Config->get("menu.default-mp-map", map, "survival");
+	Config->get("menu.default-mp-map", map, "lenin_square");
 	for(_index = 0; _index < _maps.size(); ++_index) {
 		if (_maps[_index] == map)
 			break;
