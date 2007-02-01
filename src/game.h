@@ -97,6 +97,8 @@ public:
 	void gameOver(const std::string &state, const float time);
 	void displayMessage(const std::string &message, const float time);
 
+	void resetTimer();
+
 private:
 	void pushState(const std::string &state, const float time);
 	const std::string popState(const float dt);

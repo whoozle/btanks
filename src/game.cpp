@@ -62,6 +62,10 @@ IGame::IGame() :
 _check_items(0.5, true),  _autojoin(false), _shake(0), _credits(NULL), _cheater(NULL), _state_timer(false) {}
 IGame::~IGame() {}
 
+void IGame::resetTimer() {
+	t_start  = SDL_GetTicks();	
+}
+
 void IGame::init(const int argc, char *argv[]) {
 	srand(time(NULL));
 	
@@ -316,7 +320,7 @@ void IGame::stopCredits() {
 	delete _credits;
 	_credits = NULL;
 	
-	t_start = SDL_GetTicks();
+	resetTimer();
 }
 
 
@@ -432,7 +436,8 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 	
 	_map_loaded = true;
 	_game_over = false;
-	t_start = SDL_GetTicks();
+	
+	resetTimer();
 }
 
 void IGame::gameOver(const std::string &state, const float time) {

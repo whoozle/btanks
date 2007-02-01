@@ -179,6 +179,7 @@ TRY {
 		m.data = s.getData();
 		_server->send(id, m);
 
+		Game->resetTimer();
 		break;
 	}
 	
@@ -186,7 +187,9 @@ TRY {
 		assert(_my_idx >= 0);
 		mrt::Serializator s(&message.data);
 		World->deserialize(s);
-		deserializeSlots(s);		
+		deserializeSlots(s);
+
+		Game->resetTimer();
 		break;
 	}
 	
