@@ -49,6 +49,7 @@ const char * Message::getType() const {
 	case UpdatePlayers: return "UpdatePlayers";
 	case UpdateWorld: return "UpdateWorld";
 	case Respawn: return "Respawn";
+	case GameOver: return "GameOver";
 	}
 	return "Unknown/Damaged";
 }
