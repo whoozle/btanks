@@ -253,15 +253,13 @@ void Object::tick(const float dt) {
 		return;
 	}
 		
-	int cycles = (int)(_pos / n);
+	int cycles = (int)_pos / n;
 	//LOG_DEBUG(("%s: _pos: %f, cycles: %d", classname.c_str(), _pos, cycles));
 	_pos -= cycles * n;
-	while((int)_pos >= n) {
+	if (_pos < 0)
+		_pos += n;
+	if (_pos >= n) 
 		_pos -= n;
-		++cycles;
-	}
-	if (_pos < 0) 
-		_pos += n; //dt < 0
 	
 	if (cycles) {
 		if (!event.repeat)
