@@ -152,7 +152,10 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect&src, const sdlx::Re
 }
 
 const bool IWorld::collides(Object *obj, const v2<int> &position, Object *o, const bool probe) const {
-		if (o->_id == obj->_id || 
+		const int id1 = obj->_id;
+		const int id2 = o->_id;
+
+		if (id1 == id2 || 
 			(obj->impassability < 1.0 && obj->impassability >= 0) || 
 			(o->impassability < 1.0 && o->impassability >= 0) || 
 			(obj->piercing && o->pierceable) || (obj->pierceable && o->piercing) ||
@@ -165,8 +168,6 @@ const bool IWorld::collides(Object *obj, const v2<int> &position, Object *o, con
 			return false;
 		}
 
-		const int id1 = obj->_id;
-		const int id2 = o->_id;
 		
 		CollisionMap::key_type key = (id1 < id2) ? CollisionMap::key_type(id1, id2): CollisionMap::key_type(id2, id1);
 		
