@@ -836,6 +836,9 @@ const int Object::getTargetPosition(v3<float> &relative_position, const std::set
 				continue;
 			
 			v3<float> pos, tp = getRelativePosition(o);
+			if (!tp.same_sign(dir))
+				continue;
+			
 			math::getNormalVector(pos, dir, tp);
 			if (pos.quick_length() > tp.quick_length())
 				continue;
@@ -848,10 +851,10 @@ const int Object::getTargetPosition(v3<float> &relative_position, const std::set
 				
 			float dist = pos.quick_length();
 			if (result_dir == -1 || dist < distance) {
-				LOG_DEBUG(("enemy @ %g %g: %s (dir: %d, distance: %g)", pos.x, pos.y, o->registered_name.c_str(), d, distance));
 				result_dir = d;
 				distance = dist;
 				relative_position = pos;
+				//LOG_DEBUG(("enemy @ %g %g: %s (dir: %d, distance: %g)", pos.x, pos.y, o->registered_name.c_str(), d, distance));
 			}
 		}
 	}
