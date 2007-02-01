@@ -156,20 +156,18 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect&src, const sdlx::Re
 }
 
 const bool IWorld::collides(Object *obj, const v3<int> &position, Object *o, const bool probe) const {
-		if (o == obj || 
+		if (o->_id == obj->_id || 
 			(obj->impassability < 1.0 && obj->impassability >= 0) || 
 			(o->impassability < 1.0 && o->impassability >= 0) || 
 			(obj->piercing && o->pierceable) || (obj->pierceable && o->piercing) ||
-			o->isDead() || obj->isDead() 
-			||
+			o->isDead() || obj->isDead() ||
 			//owner stuff
-			obj->hasSameOwner(o) ||
 			(obj->_follow != 0 && obj->_follow == o->_id) || 
-			(o->_follow != 0 && o->_follow == obj->_id) 
+			(o->_follow != 0 && o->_follow == obj->_id) ||
+			obj->hasSameOwner(o) 
 		) {
 			return false;
 		}
-		//LOG_DEBUG(("collides(%p, (%d, %d), %p, %s)", obj, position.x, position.y, o, probe?"true":"false"));
 
 		const int id1 = obj->_id;
 		const int id2 = o->_id;
@@ -183,6 +181,7 @@ const bool IWorld::collides(Object *obj, const v3<int> &position, Object *o, con
 			 	return i->second;
 			}
 		 }
+		//LOG_DEBUG(("collides(%s:%d, (%d, %d), %s:%d, %s)", obj->registered_name.c_str(), obj->_id, position.x, position.y, o->registered_name.c_str(), o->_id, probe?"true":"false"));
 		
 		v3<int> dpos = o->_position.convert<int>() - position;
 		//LOG_DEBUG(("%s: %d %d", o->classname.c_str(), dpos.x, dpos.y));
@@ -239,7 +238,7 @@ const float IWorld::getImpassability(Object *obj, const v3<int> &position, const
 	
 	for(ObjectMap::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		Object *o = i->second;
-		if (o->impassability == 0 || (skip_moving && o->speed != 0))
+		if (obj->_id == o->_id || o->impassability == 0 || (skip_moving && o->speed != 0))
 			continue;
 
 		sdlx::Rect other((int)o->_position.x, (int)o->_position.y,(int)o->size.x, (int)o->size.y);
@@ -280,6 +279,8 @@ void IWorld::getImpassability2(float &old_pos_im, float &new_pos_im, Object *obj
 	
 	for(ObjectMap::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		Object *o = i->second;
+		if (obj->_id == o->_id || o->impassability == 0)
+			continue;
 
 		sdlx::Rect other((int)o->_position.x, (int)o->_position.y,(int)o->size.x, (int)o->size.y);
 		if (!my_old.intersects(other) && !my_new.intersects(other)) 
