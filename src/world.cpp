@@ -516,12 +516,16 @@ TRY {
 	if (dpos.is0()) 
 		return;
 
-	bool has_outline = false;
-	bool hidden = false;
-	std::string outline_animation;
 
 	v3<int> new_pos = (o._position + dpos).convert<int>();
 	v3<int> old_pos = o._position.convert<int>();
+	if (new_pos == old_pos)
+		return;
+
+	bool has_outline = false;
+	bool hidden = false;
+	std::string outline_animation;
+	
 	float map_im = 0, obj_im_now = 0, obj_im = 0;
 
 	const Object *stuck_in = NULL;
