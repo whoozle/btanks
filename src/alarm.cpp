@@ -25,6 +25,9 @@ Alarm::Alarm(const bool repeat): _period(0), _t(0), _repeat(repeat) {}
 
 const bool Alarm::tick(const float dt) {
 	assert(_period != 0);
+	if (dt < 0)
+		return false;
+	
 	if (_t == 0)
 		return true;
 	int n = (int) (dt / _period);
