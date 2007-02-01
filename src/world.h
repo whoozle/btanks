@@ -81,7 +81,6 @@ public:
 	void serializeObjectPV(mrt::Serializator &, const Object *) const;
 	void deserializeObjectPV(const mrt::Serializator &, Object *);
 
-	void tick(Object &o, const float dt);	
 	void tick(ObjectMap &objects, const float dt);
 	
 	void setSafeMode(const bool safe_mode = true);
@@ -99,6 +98,7 @@ public:
 	void enumerateObjects(std::set<const Object *> &o_set, const Object *src, const float range, const std::set<std::string> *classfilter);
 	
 private:
+	void tick(Object &o, const float dt);	
 
 	void deleteObject(ObjectMap &objects, Object *o);
 	void replaceID(const int old_id, const int new_id);

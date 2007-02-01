@@ -358,28 +358,6 @@ void IWorld::tick(Object &o, const float dt) {
 		return;
 	//LOG_DEBUG(("tick object %p: %d: %s", (void *)&o, o.getID(), o.classname.c_str()));
 
-	if (dt > _max_dt) {
-		float dt2 = dt;
-		while(dt2 > _max_dt) {
-			tick(o, _max_dt);
-			dt2 -= _max_dt;
-		}
-		if (dt2 > 0) 
-			tick(o, dt2);
-		return;
-	}
-
-	if (dt < -_max_dt) {
-		float dt2 = dt;
-		while(dt2 < -_max_dt) {
-			tick(o, -_max_dt);
-			dt2 += _max_dt;
-		}
-		if (dt2 < 0) 
-			tick(o, dt2);
-		return;
-	}
-	
 	const IMap &map = *IMap::get_instance();
 	v3<int> map_size = map.getSize();
 
@@ -751,22 +729,29 @@ void IWorld::deleteObject(ObjectMap &objects, Object *o) {
 }
 
 void IWorld::tick(ObjectMap &objects, const float dt) {
-	if (dt > _max_dt) {
+	float max_dt = _max_dt;
+	int n = (int)(dt / max_dt);
+	if (n > 4) {
+		//LOG_DEBUG(("trottling needed (%d)", n));
+		max_dt = dt / 4;
+	}
+
+	if (dt > max_dt) {
 		float dt2 = dt;
-		while(dt2 > _max_dt) {
-			tick(objects, _max_dt);
-			dt2 -= _max_dt;
+		while(dt2 > max_dt) {
+			tick(objects, max_dt);
+			dt2 -= max_dt;
 		}
 		if (dt2 > 0) 
 			tick(objects, dt2);
 		return;
 	}
 
-	if (dt < -_max_dt) {
+	if (dt < -max_dt) {
 		float dt2 = dt;
-		while(dt2 < -_max_dt) {
-			tick(objects, -_max_dt);
-			dt2 += _max_dt;
+		while(dt2 < -max_dt) {
+			tick(objects, -max_dt);
+			dt2 += max_dt;
 		}
 		if (dt2 < 0) 
 			tick(objects, dt2);
