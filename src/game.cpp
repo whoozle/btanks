@@ -268,7 +268,7 @@ void IGame::onMenu(const std::string &name, const std::string &value) {
 		assert(_my_index == 0);
 		PlayerManager->spawnPlayer(vehicle2, animation2, cm2);
 		
-		v3<int> ts = Map->getTileSize();
+		v2<int> ts = Map->getTileSize();
 		int w = _window.getSize().w / 2;
 
 		sdlx::Rect vp1(_window.getSize());
@@ -334,7 +334,7 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 	
 	Config->clearOverrides();
 	
-	//const v3<int> size = map.getSize();
+	//const v2<int> size = map.getSize();
 	for (IMap::PropertyMap::iterator i = map.properties.begin(); i != map.properties.end(); ++i) {
 		std::vector<std::string> res;
 		mrt::split(res, i->first, ":");
@@ -347,7 +347,7 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 		if (!spawn_objects && type != "waypoint" && type != "edge")
 			continue;
 	
-		v3<int> pos;
+		v2<int> pos;
 		if (type != "edge" && type != "config") {
 			std::string pos_str = i->second;
 			const bool tiled_pos = pos_str[0] == '@';
@@ -358,7 +358,7 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 				pos.fromString(pos_str);
 			} CATCH(mrt::formatString("parsing '%s'=>'%s'", i->first.c_str(), i->second.c_str()).c_str() , throw;)
 			if (tiled_pos) {
-				v3<int> tile_size = Map->getTileSize();
+				v2<int> tile_size = Map->getTileSize();
 				pos.x *= tile_size.x;
 				pos.y *= tile_size.y;
 				//keep z untouched.
@@ -533,7 +533,7 @@ void IGame::run() {
 					break;
 				}
 				if (event.key.keysym.sym==SDLK_m && event.key.keysym.mod & KMOD_SHIFT && _map_loaded) {
-					const v3<int> msize = Map->getSize();
+					const v2<int> msize = Map->getSize();
 					LOG_DEBUG(("creating map screenshot %dx%d", msize.x, msize.y));
 
 					sdlx::Surface screenshot;
@@ -786,7 +786,7 @@ const std::string IGame::getRandomWaypoint(const std::string &classname, const s
 }
 
 const std::string IGame::getNearestWaypoint(const BaseObject *obj, const std::string &classname) const {
-	v3<int> pos;
+	v2<int> pos;
 	obj->getPosition(pos);
 	int distance = -1;
 	std::string wp;
@@ -806,7 +806,7 @@ const std::string IGame::getNearestWaypoint(const BaseObject *obj, const std::st
 }
 
 
-void IGame::getWaypoint(v3<float> &wp, const std::string &classname, const std::string &name) {
+void IGame::getWaypoint(v2<float> &wp, const std::string &classname, const std::string &name) {
 	if (name.empty() || classname.empty()) 
 		throw_ex(("getWaypoint('%s', '%s') called with empty classname and/or name", classname.c_str(), name.c_str()));
 	
@@ -840,7 +840,7 @@ try {
 				return "usage: spawn object animation position(10,20 /10,20 player5)";
 			if (!_map_loaded)
 				throw_ex(("map was not loaded"));
-			v3<int> pos;
+			v2<int> pos;
 			bool tiled_pos = false;
 			if (par[2][0] == '/') {
 				tiled_pos = true;
@@ -854,7 +854,7 @@ try {
 				o->getPosition(pos);
 			} else pos.fromString(par[2]);
 			if (tiled_pos) {
-				v3<int> ts = Map->getTileSize();
+				v2<int> ts = Map->getTileSize();
 				pos *= ts;
 			}
 			Object *o = ResourceManager->createObject(par[0], par[1]);

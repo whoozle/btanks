@@ -52,7 +52,7 @@ private:
 	static void movementTraining(float *output, const Matrix<int> &surrounds);
 
 	Alarm _reaction;
-	//v3<float> _old_position;
+	//v2<float> _old_position;
 	fanncxx::Network _network;
 };
 
@@ -190,7 +190,7 @@ void AILauncher::calculate(const float dt) {
 	GET_CONFIG_VALUE("objects.ai-launcher.visible-surrounds-matrix-size", int, vss, 5);
 	Matrix<int> m(vss, vss, 100);
 	
-	v3<int> pos;
+	v2<int> pos;
 	getCenterPosition(pos);
 	Map->getSurroundings(m, pos, 100);
 	

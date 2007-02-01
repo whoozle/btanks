@@ -55,9 +55,7 @@ void DestructableObject::addDamage(Object *from, const int dhp, const bool emitD
 		play("broken", true);
 		
 		if (!_object.empty() && !_animation.empty()) {
-			v3<float> dpos; 
-			dpos.z = getZ() + 1;
-			spawn(_object, _animation, dpos, v3<float>::empty);
+			spawn(_object, _animation, v2<float>::empty, v2<float>::empty, getZ() + 1);
 		}
 	}
 }

@@ -33,8 +33,8 @@ public:
 		}
 		
 		DestructableObject::onSpawn();
-		add("machinegunner", spawnGrouped(_object, _animation, v3<float>(0, -12, 0), Centered));
-		add("top", spawnGrouped("watchtower-top", "watchtower", v3<float>(0, 0, 0), Centered));
+		add("machinegunner", spawnGrouped(_object, _animation, v2<float>(0, -12), Centered));
+		add("top", spawnGrouped("watchtower-top", "watchtower", v2<float>(0, 0), Centered));
 	}
 	
 	virtual void tick(const float dt) {

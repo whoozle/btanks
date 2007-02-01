@@ -49,7 +49,7 @@ void Machinegunner::onSpawn() {
 
 void Machinegunner::tick(const float dt) {
 	if (_fire.tick(dt) && _state.fire) {
-		spawn("machinegunner-bullet", "vehicle-machinegunner-bullet", v3<float>::empty, _direction);
+		spawn("machinegunner-bullet", "vehicle-machinegunner-bullet", v2<float>::empty, _direction);
 	}
 }
 
@@ -63,7 +63,7 @@ void Machinegunner::calculate(const float dt) {
 		targets.insert("boat");
 	}
 	
-	v3<float> pos, vel;
+	v2<float> pos, vel;
 	
 	if (!getNearest(targets, pos, vel)) {
 		_state.fire = false;

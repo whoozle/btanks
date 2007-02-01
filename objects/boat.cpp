@@ -67,7 +67,7 @@ void Boat::calculate(const float dt) {
 		//targets.insert("kamikaze");
 	}
 
-	v3<float> pos, vel;
+	v2<float> pos, vel;
 	if (getNearest(targets, pos, vel) && pos.length() < tr) {
 		_state.fire = true;
 	} else _state.fire = false;
@@ -109,7 +109,7 @@ void Boat::onSpawn() {
 	mrt::randomize(rt, rt/10);
 	_reaction.set(rt);
 	
-	add("mod", spawnGrouped("missiles-on-boat", "guided-missiles-on-launcher", v3<float>(size.x/3, 10, 0), Centered));
+	add("mod", spawnGrouped("missiles-on-boat", "guided-missiles-on-launcher", v2<float>(size.x/3, 10), Centered));
 
 }
 

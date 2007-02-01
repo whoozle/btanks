@@ -97,8 +97,8 @@ void Object::init(const Animation *a) {
 }
 
 
-Object* Object::spawn(const std::string &classname, const std::string &animation, const v3<float> &dpos, const v3<float> &vel) {
-	return World->spawn(this, classname, animation, dpos, vel);
+Object* Object::spawn(const std::string &classname, const std::string &animation, const v2<float> &dpos, const v2<float> &vel, const int z) {
+	return World->spawn(this, classname, animation, dpos, vel, z);
 }
 
 
@@ -110,11 +110,11 @@ const Object* Object::getNearestObject(const std::set<std::string> &classnames) 
 	return World->getNearestObject(this, classnames);
 }
 
-const bool Object::getNearest(const std::string &cl, v3<float> &position, v3<float> &velocity, Way * way) const {
+const bool Object::getNearest(const std::string &cl, v2<float> &position, v2<float> &velocity, Way * way) const {
 	return World->getNearest(this, cl, position, velocity, way);
 }
 
-const bool Object::getNearest(const std::set<std::string> &classnames, v3<float> &position, v3<float> &velocity) const {
+const bool Object::getNearest(const std::set<std::string> &classnames, v2<float> &position, v2<float> &velocity) const {
 	return World->getNearest(this, classnames, position, velocity);
 }
 
@@ -489,7 +489,7 @@ void Object::deserialize(const mrt::Serializator &s) {
 	s.get(en);
 	_way.clear();
 	while(en--) {
-		v3<int> wp;
+		v2<int> wp;
 		wp.deserialize(s);
 		_way.push_back(wp);
 	}
@@ -542,7 +542,7 @@ void Object::setWay(const Way & way) {
 }
 
 void Object::calculateWayVelocity() {
-	v3<float> position = getPosition();
+	v2<float> position = getPosition();
 	sdlx::Rect me((int)position.x, (int)position.y, (int)size.x, (int)size.y);
 
 	while (!_way.empty()) {
@@ -550,7 +550,7 @@ void Object::calculateWayVelocity() {
 		
 		if (_next_target.is0()) {
 			_next_target = _way.begin()->convert<float>();
-			v3<float> rel = _next_target - position;
+			v2<float> rel = _next_target - position;
 			_way.pop_front();
 			
 			sdlx::Rect wp_rect((int)_next_target.x, (int)_next_target.y, (int)size.x, (int)size.y);
@@ -610,7 +610,7 @@ void Object::onSpawn() {
 	throw_ex(("%s: object MUST define onSpawn() method.", registered_name.c_str()));
 }
 
-Object * Object::spawnGrouped(const std::string &classname, const std::string &animation, const v3<float> &dpos, const GroupType type) {
+Object * Object::spawnGrouped(const std::string &classname, const std::string &animation, const v2<float> &dpos, const GroupType type) {
 	return World->spawnGrouped(this, classname, animation, dpos, type);
 }
 
@@ -781,7 +781,7 @@ void Object::calculate(const float dt) {
 }
 
 
-const bool Object::old_findPath(const v3<float> &position, Way &way) const {
+const bool Object::old_findPath(const v2<float> &position, Way &way) const {
 	return World->old_findPath(this, position, way);
 }
 
@@ -813,29 +813,29 @@ const float Object::getWeaponRange(const std::string &weapon) const {
 
 #include "math/vector.h"
 
-const int Object::getTargetPosition(v3<float> &relative_position, const std::set<std::string> &targets, const std::string &weapon) const {
+const int Object::getTargetPosition(v2<float> &relative_position, const std::set<std::string> &targets, const std::string &weapon) const {
 	const int dirs = _directions_n;
 	
 	float range = getWeaponRange(weapon);
 	std::set<const Object *> objects;
 	World->enumerateObjects(objects, this, range, &targets);
 	
-	v3<int> pfs = Map->getPathTileSize();
+	v2<int> pfs = Map->getPathTileSize();
 	const Matrix<int> &matrix = Map->getImpassabilityMatrix();
-//		v3<int> map_pos = (pos + getPosition()).convert<int>() / pfs;
+//		v2<int> map_pos = (pos + getPosition()).convert<int>() / pfs;
 
 	int result_dir = -1;
 	float distance = -1; //no result if it was bug. ;)
 
 	for(int d = 0; d < dirs; ++d) {
-		v3<float> dir;
+		v2<float> dir;
 		dir.fromDirection(d, dirs);
 		for(std::set<const Object *>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
 			const Object *o = *i;
 			if (hasSameOwner(o))
 				continue;
 			
-			v3<float> pos, tp = getRelativePosition(o);
+			v2<float> pos, tp = getRelativePosition(o);
 			if (!tp.same_sign(dir))
 				continue;
 			
@@ -845,7 +845,7 @@ const int Object::getTargetPosition(v3<float> &relative_position, const std::set
 			
 			
 			//skip solid objects
-			v3<int> map_pos = (pos + getPosition()).convert<int>() / pfs;
+			v2<int> map_pos = (pos + getPosition()).convert<int>() / pfs;
 			if (matrix.get(map_pos.y, map_pos.x) == -1)
 				continue;
 				
@@ -862,7 +862,7 @@ const int Object::getTargetPosition(v3<float> &relative_position, const std::set
 }
 
 
-const bool Object::getTargetPosition(v3<float> &relative_position, const v3<float> &target, const std::string &weapon) const {
+const bool Object::getTargetPosition(v2<float> &relative_position, const v2<float> &target, const std::string &weapon) const {
 	const int dirs = _directions_n;
 	
 	float range = getWeaponRange(weapon);
@@ -875,16 +875,16 @@ const bool Object::getTargetPosition(v3<float> &relative_position, const v3<floa
 	double distance = 0;
 	bool found = false;
 	
-	v3<int> pfs = Map->getPathTileSize();
+	v2<int> pfs = Map->getPathTileSize();
 	const Matrix<int> &matrix = Map->getImpassabilityMatrix();
 	
 	for(int i = 0; i < dirs; ++i) {
-		v3<float> pos;
+		v2<float> pos;
 		pos.fromDirection(i, dirs);
 		pos *= dist;
 		pos += target;
 		double d = pos.quick_length();
-		v3<int> map_pos = (pos + getPosition()).convert<int>() / pfs;
+		v2<int> map_pos = (pos + getPosition()).convert<int>() / pfs;
 		if (matrix.get(map_pos.y, map_pos.x) == -1)
 			continue;
 		
@@ -906,7 +906,7 @@ void Object::checkSurface() {
 	assert(_cmap != NULL);
 }
 
-void Object::close(const v3<int> & vertex) {
+void Object::close(const v2<int> & vertex) {
 		_close_list.insert(vertex);
 /*
 		_close_list.insert(vertex-1);
@@ -922,12 +922,12 @@ void Object::close(const v3<int> & vertex) {
 */
 }
 
-static inline const int h(const v3<int>& src, const v3<int>& dst) {
+static inline const int h(const v2<int>& src, const v2<int>& dst) {
 	return 500 * (math::abs(src.x - dst.x) + math::abs<int>(src.y - dst.y));
 }
 
 
-void Object::findPath(const v3<int> target, const int step) {
+void Object::findPath(const v2<int> target, const int step) {
 	_step = step;
 	_end = target;
 	getPosition(_begin);
@@ -968,7 +968,7 @@ const bool Object::findPathDone(Way &way) {
 		_open_list = OpenList();
 		return true;
 	}
-	const v3<int> map_size = Map->getSize();
+	const v2<int> map_size = Map->getSize();
 	int dir_save = getDirection();
 	GET_CONFIG_VALUE("engine.pathfinding-slice", int, ps, 1);
 	GET_CONFIG_VALUE("engine.pathfinding-throttling", bool, pt, true);
@@ -1000,7 +1000,7 @@ const bool Object::findPathDone(Way &way) {
 			throw_ex(("pathfinding cannot handle directions number: %d", dirs));
 			
 		for(int i = 0; i < dirs; ++i) {
-			v3<float> d;
+			v2<float> d;
 			d.fromDirection(i, dirs);
 			d.x = math::sign(d.x) * _step;
 			d.y = math::sign(d.y) * _step;
@@ -1011,7 +1011,7 @@ const bool Object::findPathDone(Way &way) {
 			if (d.x < 0 || d.x >= map_size.x || d.y < 0 || d.y >= map_size.y)
 				continue;
 			
-			v3<int> id((int)(d.x / _step), (int)(d.y / _step), 0);
+			v2<int> id((int)(d.x / _step), (int)(d.y / _step));
 			
 			assert( id != current.id );
 			
@@ -1020,7 +1020,7 @@ const bool Object::findPathDone(Way &way) {
 	
 	
 			setDirection(i);
-			v3<int> world_pos(id.x * _step, id.y * _step, 0);
+			v2<int> world_pos(id.x * _step, id.y * _step);
 			int map_im = Map->getImpassability(this, world_pos);
 			//LOG_DEBUG(("%d, %d, map: %d", pos.x, pos.y, map_im));
 			assert(map_im >= 0);
@@ -1106,7 +1106,7 @@ found:
 	
 	setDirection(dir_save);
 
-	for(v3<int> id = _end; id != _begin; ) {
+	for(v2<int> id = _end; id != _begin; ) {
 		Point &p = _points[id];
 		way.push_front(p.id * _step);
 		//LOG_DEBUG(("%dx%d -> %dx%d", p.id % _pitch, p.id / _pitch, way.front().x, way.front().y));
@@ -1164,9 +1164,8 @@ void Object::addDamage(Object *from, const int d, const bool emitDeath) {
 	o->hp = damage;
 	if (hp < 0) 
 		o->hp += hp;
-	v3<float> pos;
+	v2<float> pos;
 	getPosition(pos);
-	pos.z = 0;
 	World->addObject(o, pos);	
 }
 

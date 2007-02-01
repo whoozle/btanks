@@ -23,7 +23,7 @@
 #include "sdlx/joystick.h"
 #include "control_method.h"
 #include "player_state.h"
-#include "math/v3.h"
+#include "math/v2.h"
 
 class Object;
 class MouseControl : public ControlMethod {
@@ -31,11 +31,11 @@ public:
 	MouseControl(); 
 	virtual void updateState(PlayerState &state);
 private:
-	void getPosition(v3<float>&pos) const;
+	void getPosition(v2<float>&pos) const;
 	Object * getObject() const;
 	
 	void onMouse(const int button, const bool pressed, const int x, const int y);
-	v3<float> _target_rel, _target;
+	v2<float> _target_rel, _target;
 	int _target_dir;
 	bool _shoot;
 };

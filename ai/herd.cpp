@@ -4,7 +4,7 @@
 #include "object.h"
 #include "config.h"
 
-void ai::Herd::calculateV(v3<float> &velocity, Object *sheep, const int leader, const float distance) {
+void ai::Herd::calculateV(v2<float> &velocity, Object *sheep, const int leader, const float distance) {
 	velocity.clear();
 	
 	if (leader == 0) 
@@ -20,7 +20,7 @@ void ai::Herd::calculateV(v3<float> &velocity, Object *sheep, const int leader, 
 		if (cd == -1)
 			continue;
 			
-		v3<float> pos = sheep->getRelativePosition(o);
+		v2<float> pos = sheep->getRelativePosition(o);
 		if (pos.quick_length() < cd * cd)
 			velocity -= pos;
 		else 
@@ -32,7 +32,7 @@ void ai::Herd::calculateV(v3<float> &velocity, Object *sheep, const int leader, 
 	const Object * o = World->getObjectByID(leader);
 	if (o != NULL) {
 		//LOG_DEBUG(("leader: %p", o));
-		v3<float> pos = sheep->getRelativePosition(o);
+		v2<float> pos = sheep->getRelativePosition(o);
 		int cd = getComfortDistance(NULL);
 		if (pos.quick_length() < cd * cd)
 			velocity -= pos;

@@ -25,7 +25,7 @@
 #include <sigc++/sigc++.h>
 
 #include "menu/menu.h"
-#include "math/v3.h"
+#include "math/v2.h"
 #include "player_state.h"
 #include "alarm.h"
 #include "window.h"
@@ -92,7 +92,7 @@ public:
 	
 	const std::string getRandomWaypoint(const std::string &classname, const std::string &last_wp = std::string()) const;
 	const std::string getNearestWaypoint(const BaseObject *obj, const std::string &classname) const;
-	void getWaypoint(v3<float> &wp, const std::string &classname, const std::string &name);
+	void getWaypoint(v2<float> &wp, const std::string &classname, const std::string &name);
 	
 	void gameOver(const std::string &state, const float time);
 	void displayMessage(const std::string &message, const float time);
@@ -117,7 +117,7 @@ private:
 	struct Item {
 		int id;
 		std::string classname, animation;
-		v3<int> position;
+		v2<int> position;
 		Uint32 dead_on;
 		bool destroy_for_victory;
 	};
@@ -126,7 +126,7 @@ private:
 	Alarm _check_items;
 	void checkItems(const float dt);
 	
-	typedef std::map<const std::string, v3<int> > WaypointMap;
+	typedef std::map<const std::string, v2<int> > WaypointMap;
 	typedef std::map<const std::string, WaypointMap> WaypointClassMap;
 	typedef std::multimap<const std::string, std::string> WaypointEdgeMap;
 	

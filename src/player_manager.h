@@ -22,7 +22,7 @@
 #include "mrt/singleton.h"
 #include <vector>
 #include <string>
-#include "math/v3.h"
+#include "math/v2.h"
 #include "alarm.h"
 
 namespace mrt {
@@ -56,7 +56,7 @@ public:
 
 	void createControlMethod(PlayerSlot &slot, const std::string &name);
 
-	void addSlot(const v3<int> &position);
+	void addSlot(const v2<int> &position);
 
 	PlayerSlot &getSlot(const unsigned int idx);
 	const PlayerSlot &getSlot(const unsigned int idx) const;
@@ -68,7 +68,7 @@ public:
 
 	const size_t getSlotsCount() const;
 	
-	void screen2world(v3<float> &pos, const int p, const int x, const int y);
+	void screen2world(v2<float> &pos, const int p, const int x, const int y);
 
 	void getDefaultVehicle(std::string &vehicle, std::string &animation);
 	

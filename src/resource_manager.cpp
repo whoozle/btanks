@@ -116,7 +116,7 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 		if (speed == 0)
 			speed = _am->default_speed;
 
-		float z = (!attr["z"].empty())?atof(attr["z"].c_str()) : -1001;
+		int z = (!attr["z"].empty())?atoi(attr["z"].c_str()) : -1001;
 		const std::string &sound = attr["sound"];
 		_pose = new Pose(speed, z, sound);
 		if (!sound.empty())
@@ -159,7 +159,7 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 			} else if (name == "fadeout_time") {
 				object->second->fadeout_time = atof(value.c_str());
 			} else if (name == "z") {
-				object->second->setZ(atof(value.c_str()));
+				object->second->setZ(atoi(value.c_str()));
 			} else if (name != "class" && name != "parent") 
 				LOG_WARN(("attr '%s' is not supported", name.c_str()));
 		}

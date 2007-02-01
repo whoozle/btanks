@@ -46,7 +46,7 @@ void Trooper::tick(const float dt) {
 		_fire.reset();
 		if (getState() != "fire")
 			playNow("fire");
-		spawn(_object, _object, v3<float>::empty, _direction);
+		spawn(_object, _object, v2<float>::empty, _direction);
 	}
 }
 
@@ -64,7 +64,7 @@ void Trooper::onSpawn() {
 
 void Trooper::emit(const std::string &event, Object * emitter) {
 	if (event == "death") {
-		spawn("corpse", "dead-machinegunner", v3<float>::empty, v3<float>::empty);
+		spawn("corpse", "dead-machinegunner", v2<float>::empty, v2<float>::empty);
 	} else if (event == "collision" && emitter != NULL && emitter->classname == "vehicle") {
 		if (_velocity.same_sign(getRelativePosition(emitter)) &&
 			World->attachVehicle(this, emitter))

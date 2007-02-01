@@ -25,7 +25,7 @@
 #include <map>
 #include <set>
 #include <queue>
-#include "math/v3.h"
+#include "math/v2.h"
 #include "object_common.h"
 
 namespace sdlx {
@@ -103,8 +103,8 @@ public:
 
 	const float getWeaponRange(const std::string &weapon) const;
 
-	const bool getTargetPosition(v3<float> &relative_position, const v3<float> &target, const std::string &weapon) const;
-	const int getTargetPosition(v3<float> &relative_position, const std::set<std::string> &targets, const std::string &weapon) const;
+	const bool getTargetPosition(v2<float> &relative_position, const v2<float> &target, const std::string &weapon) const;
+	const int getTargetPosition(v2<float> &relative_position, const std::set<std::string> &targets, const std::string &weapon) const;
 
 	void quantizeVelocity();
 	
@@ -116,26 +116,26 @@ protected:
 
 	struct Point {
 		Point() : dir(-1) {}
-		v3<int> id, parent;
+		v2<int> id, parent;
 		int g, h, dir;
 	};
 	
 	struct PD {
 		int f;
-		v3<int> id;
-		PD(const int f, const v3<int> &id) : f(f), id(id) {}
+		v2<int> id;
+		PD(const int f, const v2<int> &id) : f(f), id(id) {}
 		
 		inline const bool operator<(const PD &other) const {
 			return f > other.f;
 		}
 	};
 
-	typedef std::set<v3<int> > CloseList;
+	typedef std::set<v2<int> > CloseList;
 	typedef std::priority_queue<PD> OpenList;
-	typedef std::map<const v3<int>, Point> PointMap;
+	typedef std::map<const v2<int>, Point> PointMap;
 
 
-	void findPath(const v3<int> target, const int step);
+	void findPath(const v2<int> target, const int step);
 	const bool findPathDone(Way &way);
 	const bool calculatingPath() const { return !_open_list.empty(); }
 	virtual const int getPenalty(const int map_im, const int obj_im) const;
@@ -150,16 +150,16 @@ protected:
 
 	void calculateWayVelocity();
 
-	Object * spawn(const std::string &classname, const std::string &animation, const v3<float> &dpos = v3<float>::empty, const v3<float> &vel = v3<float>::empty);
-	Object * spawnGrouped(const std::string &classname, const std::string &animation, const v3<float> &dpos, const GroupType type);
+	Object * spawn(const std::string &classname, const std::string &animation, const v2<float> &dpos = v2<float>::empty, const v2<float> &vel = v2<float>::empty, const int z = 0);
+	Object * spawnGrouped(const std::string &classname, const std::string &animation, const v2<float> &dpos, const GroupType type);
 
-	const bool old_findPath(const v3<float> &position, Way &way) const;
+	const bool old_findPath(const v2<float> &position, Way &way) const;
 	const bool old_findPath(const Object *target, Way &way) const;
 
 	const Object* getNearestObject(const std::string &classname) const;
 	const Object* getNearestObject(const std::set<std::string> &classnames) const;
-	const bool getNearest(const std::string &classname, v3<float> &position, v3<float> &velocity, Way * way = NULL) const;
-	const bool getNearest(const std::set<std::string> &targets, v3<float> &position, v3<float> &velocity) const;
+	const bool getNearest(const std::string &classname, v2<float> &position, v2<float> &velocity, Way * way = NULL) const;
+	const bool getNearest(const std::set<std::string> &targets, v2<float> &position, v2<float> &velocity) const;
 	
 	void setWay(const Way & way);
 	const bool isDriven() const;
@@ -174,12 +174,12 @@ protected:
 
 private: 
 //pathfinding stuff
-	void close(const v3<int>& vertex); 
+	void close(const v2<int>& vertex); 
 
 	OpenList _open_list;
 	PointMap _points;
 	CloseList _close_list;
-	v3<int> _end, _begin;
+	v2<int> _end, _begin;
 	int _step;
 //end of pathfinding stuff
 
@@ -214,7 +214,7 @@ private:
 
 	//waypoints stuff
 	Way _way;
-	v3<float> _next_target, _next_target_rel;
+	v2<float> _next_target, _next_target_rel;
 	
 	//rotation stuff
 	float _rotation_time;	

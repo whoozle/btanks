@@ -94,7 +94,7 @@ void Hud::renderRadar(const float dt, sdlx::Surface &window) {
 
 	const int x = window.getWidth() - _radar.getWidth(), y = _background.getHeight();
 
-	v3<int> msize = Map->getSize();
+	v2<int> msize = Map->getSize();
 	size_t n = PlayerManager->getSlotsCount();
 
 	_radar.copyFrom(_radar_bg, 0, 0);
@@ -106,7 +106,7 @@ void Hud::renderRadar(const float dt, sdlx::Surface &window) {
 		if (obj == NULL) 
 			continue;
 		
-		v3<int> pos;
+		v2<int> pos;
 		obj->getCenterPosition(pos);
 		_radar.putPixel(pos.x * _radar.getWidth() / msize.x, pos.y * _radar.getHeight() / msize.y, index2color(_radar, i + 1, 255));
 		_radar.putPixel(pos.x * _radar.getWidth() / msize.x, pos.y * _radar.getHeight() / msize.y + 1, index2color(_radar, i + 1, 200));

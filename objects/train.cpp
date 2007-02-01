@@ -29,7 +29,7 @@ public:
 	virtual Object * clone() const { return new Wagon(*this); }
 	virtual void emit(const std::string &event, Object * emitter = NULL) {
 		if (event == "death") {
-			spawn("corpse", "dead-choo-choo-wagon", v3<float>::empty, v3<float>::empty);
+			spawn("corpse", "dead-choo-choo-wagon", v2<float>::empty, v2<float>::empty);
 		}
 		Object::emit(event, emitter);
 	}
@@ -66,13 +66,13 @@ private:
 
 void Train::onSpawn() {
 	play("move", true);
-	v3<int> size = Map->getSize();
+	v2<int> size = Map->getSize();
 	dst_y = size.y - 1; //fixme. :)
 }
 
 void Train::emit(const std::string &event, Object * emitter) {
 	if (event == "death") {
-		Object * o = spawn("corpse", "dead-choo-choo-train", v3<float>::empty, v3<float>::empty);
+		Object * o = spawn("corpse", "dead-choo-choo-train", v2<float>::empty, v2<float>::empty);
 		o->impassability = 1;
 	}
 	Object::emit(event, emitter);
@@ -80,10 +80,10 @@ void Train::emit(const std::string &event, Object * emitter) {
 
 void Train::tick(const float dt) {
 	Object::tick(dt);
-	v3<int> pos;
+	v2<int> pos;
 	getPosition(pos);
 	if (pos.y >= 0 && !_spawned_wagon) {
-		v3<float> dpos(0, -size.y, 0);
+		v2<float> dpos(0, -size.y);
 		add("wagon", spawnGrouped("choo-choo-wagon", "choo-choo-wagon", dpos, Fixed));
 		_spawned_wagon = true;
 	}
@@ -93,7 +93,7 @@ void Train::tick(const float dt) {
 		emit("death", NULL);
 	}
 	if (_smoke.tick(dt)) {
-		spawn("train-smoke", "train-smoke", v3<float>::empty, v3<float>::empty);
+		spawn("train-smoke", "train-smoke", v2<float>::empty, v2<float>::empty);
 	}
 }
 

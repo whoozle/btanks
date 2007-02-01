@@ -20,10 +20,10 @@
  */
 
 
-#include "math/v3.h"
+#include "math/v2.h"
 #include <deque>
 
-typedef v3<int> WayPoint;
+typedef v2<int> WayPoint;
 typedef std::deque<WayPoint> Way;
 
 enum GroupType { Fixed, Centered };

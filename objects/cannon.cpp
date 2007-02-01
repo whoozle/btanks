@@ -60,7 +60,7 @@ void Cannon::calculate(const float dt) {
 		targets.insert("kamikaze");
 	}
 	static float range = getWeaponRange("cannon-bullet");
-	v3<float> pos, vel;
+	v2<float> pos, vel;
 	if (getNearest(targets, pos, vel) && pos.length() <= range) {
 		pos.normalize();
 		setDirection(pos.getDirection(getDirectionsNumber()) - 1);
@@ -73,7 +73,7 @@ void Cannon::tick(const float dt) {
 	Object::tick(dt);
 	if (getState() == "real-fire") {
 		cancel();
-		spawn("cannon-bullet", "cannon-bullet", v3<float>::empty, _direction);
+		spawn("cannon-bullet", "cannon-bullet", v2<float>::empty, _direction);
 	}
 	
 	bool can_fire = _fire.tick(dt);

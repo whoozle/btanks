@@ -26,7 +26,7 @@
 namespace math {
 
 template<typename T>
-void getNormalVector(v3<T> &result, const v3<T> &line, const v3<T> &point) {
+void getNormalVector(v2<T> &result, const v2<T> &line, const v2<T> &point) {
 	if (line.x == 0) {
 		assert(line.y != 0);
 		result.y = 0;

@@ -514,7 +514,7 @@ void IPlayerManager::clear() {
 	_players.clear();	
 }
 
-void IPlayerManager::addSlot(const v3<int> &position) {
+void IPlayerManager::addSlot(const v2<int> &position) {
 	PlayerSlot slot;
 	slot.position = position;
 	_players.push_back(slot);
@@ -612,7 +612,7 @@ void IPlayerManager::spawnPlayer(PlayerSlot &slot, const std::string &classname,
 	assert(obj != NULL);
 
 	World->addObject(obj, slot.position.convert<float>(), slot.id);
-	Object *spawn = World->spawn(obj, "spawn-shield", "spawning", v3<float>::empty, v3<float>::empty);
+	Object *spawn = World->spawn(obj, "spawn-shield", "spawning", v2<float>::empty, v2<float>::empty);
 	spawn->follow(obj, Centered);
 	GET_CONFIG_VALUE("engine.spawn-invulnerability-duration", float, sid, 3);
 	obj->addEffect("invulnerability", sid);
@@ -646,7 +646,7 @@ void IPlayerManager::setViewport(const int idx, const sdlx::Rect &rect) {
 	const Object *o = _players[idx].getObject();
 	assert(o != NULL);
 	
-	v3<float> pos, vel;
+	v2<float> pos, vel;
 	o->getInfo(pos, vel);
 	slot.map_pos.x = (int)pos.x - rect.w / 2;
 	slot.map_pos.y = (int)pos.y - rect.h / 2;
@@ -654,7 +654,7 @@ void IPlayerManager::setViewport(const int idx, const sdlx::Rect &rect) {
 
 void IPlayerManager::validateViewports() {
 		if (Map->loaded()) {
-			const v3<int> world_size = Map->getSize();
+			const v2<int> world_size = Map->getSize();
 			for(unsigned p = 0; p < _players.size(); ++p) {
 				PlayerSlot &slot = _players[p];
 				if (!slot.visible) 
@@ -709,7 +709,7 @@ void IPlayerManager::tick(const float now, const float dt) {
 		if (p == NULL)
 			continue; 
 					
-		v3<float> pos, vel;
+		v2<float> pos, vel;
 		p->getInfo(pos, vel);
 		vel.normalize();
 		
@@ -729,7 +729,7 @@ void IPlayerManager::tick(const float now, const float dt) {
 		slot.map_dst.x -= slot.viewport.w / 2;
 		slot.map_dst.y -= slot.viewport.h / 2;
 		
-		//float look_forward = v3<float>(slot.viewport.w, slot.viewport.h, 0).length() / 4;
+		//float look_forward = v2<float>(slot.viewport.w, slot.viewport.h, 0).length() / 4;
 		//slot.map_dst += vel * moving * look_forward; 
 
 		slot.map_dst_vel = slot.map_dst - slot.map_dst_pos;
@@ -740,7 +740,7 @@ void IPlayerManager::tick(const float now, const float dt) {
 
 		//const float max_speed = 2.5 * p->speed;
 		
-		v3<float> dvel = slot.map_dst_pos - slot.map_pos;
+		v2<float> dvel = slot.map_dst_pos - slot.map_pos;
 
 		//const int gran = 50;
 		//slot.map_vel = (dvel / (gran / 8)).convert<int>().convert<float>() * gran;
@@ -780,7 +780,7 @@ void IPlayerManager::render(sdlx::Surface &window, const int vx, const int vy) {
 		}
 }
 
-void IPlayerManager::screen2world(v3<float> &pos, const int p, const int x, const int y) {
+void IPlayerManager::screen2world(v2<float> &pos, const int p, const int x, const int y) {
 	PlayerSlot &slot = _players[p];
 	pos.x = slot.map_pos.x + x;
 	pos.y = slot.map_pos.x + y;

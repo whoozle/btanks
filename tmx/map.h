@@ -24,7 +24,7 @@
 #include <string>
 #include <stack>
 #include "mrt/chunk.h"
-#include "math/v3.h"
+#include "math/v2.h"
 #include "math/matrix.h"
 #include "mrt/singleton.h"
 
@@ -57,16 +57,16 @@ public:
 	
 	
 	void render(sdlx::Surface &window, const sdlx::Rect &src, const sdlx::Rect &dst, const int z1, const int z2) const;
-	const v3<int> getSize() const;
-	const v3<int> getTileSize() const;
-	const v3<int> getPathTileSize() const;
+	const v2<int> getSize() const;
+	const v2<int> getTileSize() const;
+	const v2<int> getPathTileSize() const;
 	
-	virtual const int getImpassability(const Object *obj, const v3<int>& pos, v3<int> *tile_pos = NULL, bool *hidden = NULL) const;
+	virtual const int getImpassability(const Object *obj, const v2<int>& pos, v2<int> *tile_pos = NULL, bool *hidden = NULL) const;
 
 	const Matrix<int>& getImpassabilityMatrix() const { return _imp_map; }
-	void getSurroundings(Matrix<int> &matrix, const v3<int> &pos, const int filler = -1) const;
+	void getSurroundings(Matrix<int> &matrix, const v2<int> &pos, const int filler = -1) const;
 	
-	void damage(const v3<float> &position, const int hp);
+	void damage(const v2<float> &position, const int hp);
 	
 	struct TileDescriptor {
 		TileDescriptor() : surface(0), cmap(0), vmap(0) {}

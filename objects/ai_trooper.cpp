@@ -102,7 +102,7 @@ void AITrooper::calculate(const float dt) {
 	
 	_state.fire = false;
 	
-	v3<float> vel;
+	v2<float> vel;
 	_target_dir = getTargetPosition(_velocity, _targets, _object);
 	if (_target_dir >= 0) {
 		//LOG_DEBUG(("target: %g %g %g", tp.x, tp.y, tp.length()));
@@ -170,7 +170,7 @@ public:
 		range *= range;
 		//LOG_DEBUG(("range = %g", range));
 
-		v3<float> pos, vel;
+		v2<float> pos, vel;
 		if (getNearest(_targets, pos, vel) && pos.quick_length() <= range) {
 			_state.fire = true;
 			_direction = pos;

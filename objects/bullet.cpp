@@ -63,14 +63,14 @@ void Bullet::tick(const float dt) {
 			GET_CONFIG_VALUE("objects.dispersion-bullet.ttl-multiplier", float, ttl_m, 0.8);
 			const int dirs = getDirectionsNumber();
 			int d = (getDirection() + 1) % dirs;
-			v3<float> vel;
+			v2<float> vel;
 			vel.fromDirection(d, dirs);
-			Object * b = spawn(registered_name, animation, v3<float>::empty, vel);
+			Object * b = spawn(registered_name, animation, v2<float>::empty, vel);
 			b->ttl = ttl * ttl_m;
 			
 			d = (dirs + getDirection() - 1) % dirs;
 			vel.fromDirection(d, dirs);
-			b = spawn(registered_name, animation, v3<float>::empty, vel);
+			b = spawn(registered_name, animation, v2<float>::empty, vel);
 			b->ttl = ttl * ttl_m;
 		}
 	}
@@ -92,18 +92,18 @@ void Bullet::onSpawn() {
 void Bullet::emit(const std::string &event, Object * emitter) {
 	if (emitter != NULL && (emitter->classname == "smoke-cloud" || emitter->classname == "bullet") )
 		return;
-	
+
+	v2<float> dpos;	
 	if (event == "collision" || event == "death") {
-		v3<float> dpos;
 		if (emitter) {
 			dpos = getRelativePosition(emitter) / 2;
-			dpos.z = 0;
 		}
 		if (_type == "regular") {
 			GET_CONFIG_VALUE("objects.explosion-downwards-z-override", int, edzo, 180)
+			int z = 0;
 			if (_velocity.y >= 0)
-				dpos.z = edzo;
-			spawn("explosion", "explosion", dpos);
+				z = edzo;
+			spawn("explosion", "explosion", dpos, v2<float>::empty, z);
 		} else if (_type == "dirt") {
 			spawn("dirt", "dirt", dpos);
 		} else if (_type == "cannon") {

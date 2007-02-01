@@ -90,7 +90,7 @@ const bool Base::checkTarget(const Object * target, const std::string &weapon) c
 	if (!isEnemy(target))
 		return false;
 	
-	v3<float> pos = getRelativePosition(target);
+	v2<float> pos = getRelativePosition(target);
 	
 	std::string wc, wt;
 	{
@@ -106,7 +106,7 @@ const bool Base::checkTarget(const Object * target, const std::string &weapon) c
 	
 	bool codir, codir1;
 	{
-		v3<float> d(pos);
+		v2<float> d(pos);
 		d.normalize();
 		int dir = d.getDirection(getDirectionsNumber()) - 1;
 		codir = dir == getDirection();
@@ -171,7 +171,7 @@ void Base::calculate(const float dt) {
 		_enemy = isEnemy(target);
 
 		if (_enemy && !weapon1.empty()) {
-			v3<float> r;
+			v2<float> r;
 			if (getTargetPosition(r, target->getPosition(), convertName(weapon1)))
 				_target_position = r.convert<int>();
 		}
@@ -224,7 +224,7 @@ void Base::calculate(const float dt) {
 	calculateWayVelocity();
 	
 	if (!calculatingPath() && _velocity.is0()) {
-		v3<float> dir = _target_position.convert<float>() - getPosition();
+		v2<float> dir = _target_position.convert<float>() - getPosition();
 		dir.normalize();
 		int t_dir = dir.getDirection(getDirectionsNumber()) - 1;
 		if (t_dir != -1 && t_dir != getDirection())

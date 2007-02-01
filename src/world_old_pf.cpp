@@ -3,41 +3,41 @@
 #ifdef USE_ASTAR
 struct Point {
 	Point() {}
-	v3<int> id, parent;
+	v2<int> id, parent;
 	int g, h;
 
 };
 
 struct PD {
 	int f;
-	v3<int> id;
-	PD(const int f, const v3<int> &id) : f(f), id(id) {}
+	v2<int> id;
+	PD(const int f, const v2<int> &id) : f(f), id(id) {}
 	const bool operator<(const PD &other) const {
 		return f > (other.f);
 	}
 };
 
-typedef std::set<v3<int> > CloseList;
+typedef std::set<v2<int> > CloseList;
 typedef std::priority_queue<PD> OpenList;
-typedef std::map<const v3<int>, Point> PointMap;
+typedef std::map<const v2<int>, Point> PointMap;
 
-static inline const int h(const v3<int>& src, const v3<int>& dst) {
+static inline const int h(const v2<int>& src, const v2<int>& dst) {
 	return 500 * (math::abs(src.x - dst.x) + math::abs<int>(src.y - dst.y));
 }
 
 
-const bool IWorld::old_findPath(const Object *obj, const v3<float>& position, Way & way, const Object *dst_obj) const {
+const bool IWorld::old_findPath(const Object *obj, const v2<float>& position, Way & way, const Object *dst_obj) const {
 	//finding shortest path.
-	v3<float> tposition = obj->_position + position;
+	v2<float> tposition = obj->_position + position;
 	
 	Matrix<int> imp, path;
 	World->getImpassabilityMatrix(imp, obj, dst_obj);
 	//LOG_DEBUG(("imp\n%s", imp.dump().c_str()));
-	v3<int> tile_size = Map->getPathTileSize();
+	v2<int> tile_size = Map->getPathTileSize();
 	//LOG_DEBUG(("pathfinding tile size reported: %d %d", tile_size.x, tile_size.y));
 
-	v3<int> src = obj->_position.convert<int>() / tile_size;
-	v3<int> dst = tposition.convert<int>() / tile_size;
+	v2<int> src = obj->_position.convert<int>() / tile_size;
+	v2<int> dst = tposition.convert<int>() / tile_size;
 	
 	if (src == dst) {
 		way.push_back(dst);
@@ -78,8 +78,8 @@ const bool IWorld::old_findPath(const Object *obj, const v3<float>& position, Wa
 		
 		
 		for(int i = 0; i < dirs; ++i) {
-			v3<float> d;
-			v3<int> id;
+			v2<float> d;
+			v2<int> id;
 			d.fromDirection(i, dirs);
 			id.x = (int)math::sign(d.x);
 			id.y = (int)math::sign(d.y);
@@ -127,7 +127,7 @@ const bool IWorld::old_findPath(const Object *obj, const v3<float>& position, Wa
 	return false;
 	
 found: 
-	for(v3<int> id = dst; id != src; ) {
+	for(v2<int> id = dst; id != src; ) {
 		Point &p = _points[id];
 		way.push_front(p.id);
 		//LOG_DEBUG(("%dx%d -> %dx%d", p.id % _pitch, p.id / _pitch, way.front().x, way.front().y));
@@ -157,7 +157,7 @@ found:
 #undef DISABLE_PF_DIAGONALS
 
 
-typedef v3<int> vertex;
+typedef v2<int> vertex;
 typedef std::deque<vertex> vertex_queue;
 
 static inline void push(Matrix<int> &path, vertex_queue &buf, const vertex &vertex) {
@@ -199,18 +199,18 @@ inline static const int check(const Matrix<int> &imp, const vertex &v, const int
 }
 
 	
-const bool IWorld::old_findPath(const Object *obj, const v3<float>& position, Way & way, const Object *dst_obj) const {
+const bool IWorld::old_findPath(const Object *obj, const v2<float>& position, Way & way, const Object *dst_obj) const {
 	//finding shortest path.
-	v3<float> tposition = obj->_position + position;
+	v2<float> tposition = obj->_position + position;
 	
 	Matrix<int> imp, path;
 	World->getImpassabilityMatrix(imp, obj, dst_obj);
 	//LOG_DEBUG(("imp\n%s", imp.dump().c_str()));
-	v3<int> tile_size = Map->getPathTileSize();
+	v2<int> tile_size = Map->getPathTileSize();
 	//LOG_DEBUG(("pathfinding tile size reported: %d %d", tile_size.x, tile_size.y));
 
-	v3<int> src = obj->_position.convert<int>() / tile_size;
-	v3<int> dst = tposition.convert<int>() / tile_size;
+	v2<int> src = obj->_position.convert<int>() / tile_size;
+	v2<int> dst = tposition.convert<int>() / tile_size;
 	
 	int w = imp.getWidth(), h = imp.getHeight();
 

@@ -59,7 +59,7 @@ inline const bool IMap::hiddenBy(const Object *obj, const int dx, const int dy, 
 }
 
 
-const int IMap::getImpassability(const Object *obj, const v3<int>&pos, v3<int> *tile_pos, bool *hidden) const {
+const int IMap::getImpassability(const Object *obj, const v2<int>&pos, v2<int> *tile_pos, bool *hidden) const {
 	if (obj->impassability <= 0) {
 		return 0;
 	}
@@ -73,10 +73,10 @@ const int IMap::getImpassability(const Object *obj, const v3<int>&pos, v3<int> *
 		hidden = NULL;
 	}
 	
-	v3<float> position, velocity;
+	v2<float> position, velocity;
 	obj->getInfo(position, velocity);
 	
-	const float obj_z = position.z;
+	const int obj_z = obj->getZ();
 	int w = (int)obj->size.x, h = (int)obj->size.y;
 	int x, x1;
 	int y, y1;
@@ -374,14 +374,14 @@ void IMap::load(const std::string &name) {
 	LOG_DEBUG(("loading completed"));
 }
 
-void IMap::getSurroundings(Matrix<int> &matrix, const v3<int> &pos, const int filler) const {
+void IMap::getSurroundings(Matrix<int> &matrix, const v2<int> &pos, const int filler) const {
 	if (matrix.getWidth() % 2 == 0 || matrix.getHeight() % 2 == 0)
 		throw_ex(("use only odd values for surrond matrix. (used: %d, %d)", matrix.getHeight(), matrix.getWidth()));
 	
 	int dx = (matrix.getWidth() - 1) / 2;
 	int dy = (matrix.getHeight() - 1) / 2;
 	
-	v3<int> p = pos;
+	v2<int> p = pos;
 	p.x /= _tw;
 	p.y /= _th;
 	
@@ -704,21 +704,21 @@ const bool IMap::loaded() const {
 	return _w != 0;
 }
 
-const v3<int> IMap::getSize() const {
-	return v3<int>(_tw * _w,_th * _h, 1);
+const v2<int> IMap::getSize() const {
+	return v2<int>(_tw * _w,_th * _h);
 }
 
-const v3<int> IMap::getTileSize() const {
-	return v3<int>(_tw, _th, 1);
+const v2<int> IMap::getTileSize() const {
+	return v2<int>(_tw, _th);
 }
 
-const v3<int> IMap::getPathTileSize() const {
-	return v3<int>(_ptw, _pth, 1);
+const v2<int> IMap::getPathTileSize() const {
+	return v2<int>(_ptw, _pth);
 }
 
 
-void IMap::damage(const v3<float> &position, const int hp) {
-	v3<int> pos = position.convert<int>();
+void IMap::damage(const v2<float> &position, const int hp) {
+	v2<int> pos = position.convert<int>();
 	pos.x /= _tw;
 	pos.y /= _th;
 	//LOG_DEBUG(("map damage: %g:%g -> %d:%d for %d hp", position.x, position.y, pos.x, pos.y, hp));

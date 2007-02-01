@@ -55,7 +55,7 @@ public:
 	}
 
 private: 
-	v3<float> _next_target, _next_target_rel;
+	v2<float> _next_target, _next_target_rel;
 	bool _active;
 	Alarm _spawn;
 	std::string _paratrooper;
@@ -77,16 +77,16 @@ void Helicopter::tick(const float dt) {
 		Matrix<int> matrix; 
 		World->getImpassabilityMatrix(matrix, this, NULL);
 
-		v3<int> pos, pos2;
+		v2<int> pos, pos2;
 		getCenterPosition(pos); 
-		v3<int> para_size = ResourceManager->getClass(_paratrooper)->size.convert<int>();
+		v2<int> para_size = ResourceManager->getClass(_paratrooper)->size.convert<int>();
 		pos -= para_size / 2;
 		
 		pos2 = pos;
 		pos2 += para_size;
 		pos2 -= 1;
 
-		const v3<int> tile_size = Map->getTileSize();
+		const v2<int> tile_size = Map->getTileSize();
 
 		pos /= tile_size;
 		pos2 /= tile_size;
@@ -112,11 +112,11 @@ void Helicopter::tick(const float dt) {
 
 void Helicopter::calculate(const float dt) {
 	GET_CONFIG_VALUE("objects.helicopter-with-kamikazes.delay-before-next-target", float, delay, 1.0);
-	v3<float> pos = getPosition();
+	v2<float> pos = getPosition();
 
 	if (!_active && _idle_time > delay) { 
 
-		v3<int> size = Map->getSize();
+		v2<int> size = Map->getSize();
 		_next_target.x = mrt::random(size.x);
 		_next_target.y = mrt::random(size.y);
 		_next_target_rel = _next_target - pos;

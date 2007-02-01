@@ -32,10 +32,10 @@ void Tank::onSpawn() {
 	if (registered_name.substr(0, 6) == "static")
 		disown();
 
-	Object *_smoke = spawnGrouped("single-pose", "tank-smoke", v3<float>::empty, Centered);
+	Object *_smoke = spawnGrouped("single-pose", "tank-smoke", v2<float>::empty, Centered);
 	_smoke->impassability = 0;
 
-	Object *_missiles = spawnGrouped("missiles-on-tank", "guided-missiles-on-tank", v3<float>::empty, Centered);
+	Object *_missiles = spawnGrouped("missiles-on-tank", "guided-missiles-on-tank", v2<float>::empty, Centered);
 	_missiles->impassability = 0;
 
 	add("mod", _missiles);
@@ -123,7 +123,7 @@ void Tank::tick(const float dt) {
 		playNow("fire");
 		
 		//LOG_DEBUG(("vel: %f %f", _state.old_vx, _state.old_vy));
-		//v3<float> v = _velocity.is0()?_direction:_velocity;
+		//v2<float> v = _velocity.is0()?_direction:_velocity;
 		//v.normalize();
 		std::string bullet("bullet");
 		if (isEffectActive("dirt")) {
@@ -133,7 +133,7 @@ void Tank::tick(const float dt) {
 		} else if (isEffectActive("ricochet")) {
 			bullet = "ricochet-bullet";
 		}
-		spawn(bullet, bullet, v3<float>::empty, _direction);
+		spawn(bullet, bullet, v2<float>::empty, _direction);
 	}
 	if (_state.alt_fire && fire_possible) {
 		_fire.reset();

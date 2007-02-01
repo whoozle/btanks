@@ -63,13 +63,13 @@ private:
 
 void Explosion::damageMap() const {
 	//add damage for the map.
-	v3<int> tile_size = Map->getTileSize();
+	v2<int> tile_size = Map->getTileSize();
 	
-	v3<float> position;
+	v2<float> position;
 	getPosition(position);
-	v3<float> position2 = position + size, center = position + size/2;
+	v2<float> position2 = position + size, center = position + size/2;
 	
-	v3<float> p;
+	v2<float> p;
 	float r = (size.x + size.y) / 4;
 	r *= r;
 	for(p.y = position.y; p.y < position2.y; p.y += tile_size.y) {

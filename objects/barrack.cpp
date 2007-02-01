@@ -67,7 +67,7 @@ void Barrack::tick(const float dt) {
 			int tr;
 			Config->get("objects." + registered_name + ".targeting-range", tr, 500);
 
-			v3<float> pos, vel;
+			v2<float> pos, vel;
 			if (getNearest(targets, pos, vel) && pos.length() >= tr)
 				return; //skip spawning
 		}
@@ -76,7 +76,7 @@ void Barrack::tick(const float dt) {
 		Config->get("objects." + registered_name + ".maximum-children", max_c, 5);
 		int n = World->getChildren(getID());
 		if (n < max_c) {
-			v3<float>dpos;
+			v2<float>dpos;
 			dpos.y = size.y / 2 + 16; //fixme: use debiloids size here.
 			
 			spawn(_object, _animation, dpos);

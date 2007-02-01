@@ -50,7 +50,7 @@ private:
 	ai::Traits _traits;
 	std::set<std::string> _enemies, _bonuses;
 	int _target_id;
-	v3<int> _target_position;
+	v2<int> _target_position;
 	bool _enemy;
 	int _pf_slice;
 };

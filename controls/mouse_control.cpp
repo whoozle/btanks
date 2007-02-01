@@ -39,7 +39,7 @@ void MouseControl::onMouse(const int button, const bool pressed, const int x, co
 		return;
 	
 	//LOG_DEBUG(("shoot: %c, move: %c", _shoot?'+':'-', _move?'+':'-'));
-	v3<float> world;
+	v2<float> world;
 	PlayerManager->screen2world(world, 0, x, y); //fixme!! hardcoded player number
 	if (_shoot) {
 		Object *o = getObject();
@@ -48,7 +48,7 @@ void MouseControl::onMouse(const int button, const bool pressed, const int x, co
 	}
 	else _target = world;
 	
-	v3<float> pos;
+	v2<float> pos;
 	getPosition(pos);
 	_target_rel = _target - pos;
 	_target_dir = getObject()->getDirection();
@@ -61,11 +61,11 @@ void MouseControl::onMouse(const int button, const bool pressed, const int x, co
 }
 
 void MouseControl::updateState(PlayerState &state) {
-	v3<float> pos;
+	v2<float> pos;
 	getPosition(pos);
 	
 	{
-		v3<float> velocity = _target - pos;
+		v2<float> velocity = _target - pos;
 
 		if (velocity.x * _target_rel.x <= 0) {
 			_target_rel.x = 0;
@@ -102,7 +102,7 @@ Object * MouseControl::getObject() const {
 }
 
 
-void MouseControl::getPosition(v3<float>&pos) const {
+void MouseControl::getPosition(v2<float>&pos) const {
 	Object *obj = getObject();
 	obj->getPosition(pos);
 	pos += obj->size / 2;

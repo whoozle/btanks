@@ -19,7 +19,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 #include <string>
-#include "math/v3.h"
+#include "math/v2.h"
 #include "mrt/serializable.h" 
 #include "player_state.h"
 #include "object_common.h"
@@ -31,7 +31,7 @@ namespace sdlx {
 
 class BaseObject : public mrt::Serializable {
 public:
-	v3<float> size;
+	v2<float> size;
 	float mass, speed, ttl, impassability;
 	int hp, max_hp;
 	
@@ -45,7 +45,7 @@ public:
 	virtual void tick(const float dt) = 0;
 	virtual void render(sdlx::Surface &surf, const int x, const int y) = 0;
 	
-	const float getCollisionTime(const v3<float> &pos, const v3<float> &vel, const float r) const;
+	const float getCollisionTime(const v2<float> &pos, const v2<float> &vel, const float r) const;
 	
 	inline const bool isDead() const { return _dead; }
 	inline const int getID() const { return _id; }
@@ -55,7 +55,7 @@ public:
 	
 	const std::string dump() const;
 	void inheritParameters(const BaseObject *other);
-	void convertToAbsolute(v3<float> &pos, const v3<float> &dpos);
+	void convertToAbsolute(v2<float> &pos, const v2<float> &dpos);
 
 	inline PlayerState & getPlayerState() { return _state; }
 	const bool updatePlayerState(const PlayerState &state);
@@ -67,19 +67,19 @@ public:
 	void heal(const int hp);
 	virtual const bool take(const BaseObject *obj, const std::string &type);
 	
-	const v3<float> getRelativePosition(const BaseObject *obj) const;
+	const v2<float> getRelativePosition(const BaseObject *obj) const;
 
-	inline const v3<float> & getPosition() const { return _position; }
-	inline void getPosition(v3<float> &position) const { position = _position; }
-	inline void getPosition(v3<int> &position) const { position = _position.convert<int>(); }
+	inline const v2<float> & getPosition() const { return _position; }
+	inline void getPosition(v2<float> &position) const { position = _position; }
+	inline void getPosition(v2<int> &position) const { position = _position.convert<int>(); }
 
-	inline void getCenterPosition(v3<float> &position) const { position = _position; position += size / 2; }
-	inline void getCenterPosition(v3<int> &position) const { position = (_position + size / 2).convert<int>();  }
+	inline void getCenterPosition(v2<float> &position) const { position = _position; position += size / 2; }
+	inline void getCenterPosition(v2<int> &position) const { position = (_position + size / 2).convert<int>();  }
 
-	void getInfo(v3<float> &pos, v3<float> &vel) const;
+	void getInfo(v2<float> &pos, v2<float> &vel) const;
 	void updateStateFromVelocity();
-	void setZ(const float z); 
-	inline const float getZ() const { return _position.z; }
+	void setZ(const int z); 
+	inline const int getZ() const { return _z; }
 	
 	void disown();
 
@@ -98,9 +98,9 @@ public:
 protected:
 	int _id;
 	int _follow;
-	v3<float> _follow_position;
+	v2<float> _follow_position;
 	PlayerState _state;
-	v3<float> _velocity, _direction, _velocity_fadeout;
+	v2<float> _velocity, _direction, _velocity_fadeout;
 	float _moving_time, _idle_time;
 	
 
@@ -110,7 +110,8 @@ protected:
 
 private:
 
-	v3<float> _position;
+	v2<float> _position;
+	int _z;
 	std::deque<int> _owners;
 	int _spawned_by;
 	

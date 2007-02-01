@@ -43,9 +43,9 @@ void Shilka::onSpawn() {
 	if (registered_name.substr(0, 6) == "static")
 		disown();
 	
-	add("mod", spawnGrouped("fake-mod", "damage-digits", v3<float>::empty, Centered));
+	add("mod", spawnGrouped("fake-mod", "damage-digits", v2<float>::empty, Centered));
 	
-	Object *_smoke = spawnGrouped("single-pose", "tank-smoke", v3<float>::empty, Centered);
+	Object *_smoke = spawnGrouped("single-pose", "tank-smoke", v2<float>::empty, Centered);
 	_smoke->impassability = 0;
 
 	add("smoke", _smoke);
@@ -71,7 +71,6 @@ void Shilka::emit(const std::string &event, Object * emitter) {
 		cancelAll();
 		//play("dead", true);
 		spawn("corpse", "dead-" + animation);
-		_velocity.x = _velocity.y = _velocity.z = 0;
 		Object::emit(event, emitter);
 	} else Object::emit(event, emitter);
 }
@@ -118,17 +117,17 @@ void Shilka::tick(const float dt) {
 		std::string animation = "shilka-bullet-";
 		animation += (_left_fire)?"left":"right";
 		if (isEffectActive("ricochet")) {
-			spawn("ricochet-bullet", "ricochet-bullet", v3<float>::empty, _direction);
+			spawn("ricochet-bullet", "ricochet-bullet", v2<float>::empty, _direction);
 			play_fire = true;
 		} else if (isEffectActive("dispersion")) {
 			if (special_fire_possible) {
 				_special_fire.reset();
-				spawn("dispersion-bullet", "dispersion-bullet", v3<float>::empty, _direction);
+				spawn("dispersion-bullet", "dispersion-bullet", v2<float>::empty, _direction);
 				play_fire = true;
 				goto skip_left_toggle;
 			};
 		} else { 
-			spawn("shilka-bullet", animation, v3<float>::empty, _direction);
+			spawn("shilka-bullet", animation, v2<float>::empty, _direction);
 			play_fire = true;
 		}
 		_left_fire = ! _left_fire;
@@ -150,13 +149,13 @@ skip_left_toggle:
 			std::string animation = "shilka-dirt-bullet-";
 			animation += (_left_fire)?"left":"right";
 
-			spawn("dirt-bullet", animation, v3<float>::empty, _direction);
+			spawn("dirt-bullet", animation, v2<float>::empty, _direction);
 
 			_left_fire = ! _left_fire;
 			play_fire = true;
 		} else if (!mod->getType().empty()) {
 			if (mod->getCount() > 0) {
-				spawn(mod->getType(), mod->getType(), _direction*(size.length()/-2), v3<float>::empty);
+				spawn(mod->getType(), mod->getType(), _direction*(size.length()/-2), v2<float>::empty);
 				mod->decreaseCount();
 			}
 		}

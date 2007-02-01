@@ -20,7 +20,7 @@
  */
 
 #include "player_state.h"
-#include "math/v3.h"
+#include "math/v2.h"
 #include "sdlx/rect.h"
 #include <string>
 #include "mrt/serializable.h"
@@ -39,7 +39,7 @@ public:
 
 	int id;
 	ControlMethod * control_method;
-	v3<int> position;
+	v2<int> position;
 		
 	bool need_sync;
 	bool remote;
@@ -48,7 +48,7 @@ public:
 	bool visible;
 	sdlx::Rect viewport;
 		
-	v3<float> map_pos, map_vel, map_dst, map_dst_vel, map_dst_pos;
+	v2<float> map_pos, map_vel, map_dst, map_dst_vel, map_dst_pos;
 		
 	void clear();
 	~PlayerSlot();

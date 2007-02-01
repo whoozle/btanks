@@ -59,8 +59,8 @@ private:
 	Alarm _reaction_time;
 	bool _stop;
 	//Alarm _refresh_waypoints;
-	//v3<float> _waypoint;
-	//v3<float> _waypoint_rel;
+	//v2<float> _waypoint;
+	//v2<float> _waypoint_rel;
 	std::string _waypoint_name;
 };
 
@@ -72,7 +72,7 @@ const int Car::getPenalty(const int map_im, const int obj_im) const {
 
 void Car::emit(const std::string &event, Object * emitter) {
 	if (event == "death") {
-		spawn("corpse", "dead-" + animation, v3<float>::empty, v3<float>::empty);
+		spawn("corpse", "dead-" + animation, v2<float>::empty, v2<float>::empty);
 	} else if (event == "collision") {
 		if (emitter != NULL && emitter->speed > 0) {
 			Item * item = dynamic_cast<Item *>(emitter);
@@ -103,7 +103,7 @@ Car::Car() : Object("car"), _reaction_time(true), _stop(false) //_refresh_waypoi
 
 void Car::calculate(const float dt) {	
 	if (!calculatingPath() && !isDriven()) {
-		v3<float> waypoint;
+		v2<float> waypoint;
 		_velocity.clear();
 		if (_waypoint_name.empty()) {
 			_waypoint_name = getNearestWaypoint("cars");

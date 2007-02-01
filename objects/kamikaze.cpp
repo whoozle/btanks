@@ -52,7 +52,7 @@ void Kamikaze::calculate(const float dt) {
 	if (!_reaction.tick(dt))
 		return;
 	
-	v3<float> vel;
+	v2<float> vel;
 	static std::set<std::string> targets;
 	if (targets.empty()) {
 		targets.insert("train");

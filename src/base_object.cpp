@@ -27,11 +27,11 @@ BaseObject::BaseObject(const std::string &classname):
 	classname(classname), 
 	_id(0), _follow(0), _follow_position(), 
 	_state(), 
-	_velocity(), _direction(1,0,0), _velocity_fadeout(), 
+	_velocity(), _direction(1,0), _velocity_fadeout(), 
 	_moving_time(0), _idle_time(0), 
 	need_sync(false),
 	_dead(false), 
-	_position(),
+	_position(), _z(0), 
 	_owners(), _spawned_by(0) {
 	//LOG_DEBUG(("allocated id %ld", _id));
 }
@@ -46,7 +46,7 @@ void BaseObject::inheritParameters(const BaseObject *other) {
 	piercing = other->piercing;
 	pierceable = other->pierceable;
 	size = other->size;
-	_position.z = other->_position.z;
+	_z = other->_z;
 }
 
 
@@ -121,15 +121,15 @@ void BaseObject::deserialize(const mrt::Serializator &s) {
 }
 
 const std::string BaseObject::dump() const {
-	return mrt::formatString("object '%s', mass: %g, speed: %g, ttl: %g, impassability: %g, hp: %d, piercing: %s, pierceable: %s, z: %g, dead: %s",
-		classname.c_str(), mass, speed, ttl, impassability, hp, piercing?"true":"false", pierceable?"true":"false", _position.z, _dead?"true":"false"
+	return mrt::formatString("object '%s', mass: %g, speed: %g, ttl: %g, impassability: %g, hp: %d, piercing: %s, pierceable: %s, z: %d, dead: %s",
+		classname.c_str(), mass, speed, ttl, impassability, hp, piercing?"true":"false", pierceable?"true":"false", _z, _dead?"true":"false"
 	);
 }
 
 BaseObject::~BaseObject() { _dead = true; }
 
-const float BaseObject::getCollisionTime(const v3<float> &dpos, const v3<float> &vel, const float r) const {
-	//v3<float> dpos = pos - _position;
+const float BaseObject::getCollisionTime(const v2<float> &dpos, const v2<float> &vel, const float r) const {
+	//v2<float> dpos = pos - _position;
 	float a = vel.x * vel.x + vel.y * vel.y;
 	if (a == 0)
 		return -1;
@@ -159,7 +159,7 @@ const float BaseObject::getCollisionTime(const v3<float> &dpos, const v3<float> 
 	return -4;
 }
 
-void BaseObject::convertToAbsolute(v3<float> &pos, const v3<float> &dpos) {
+void BaseObject::convertToAbsolute(v2<float> &pos, const v2<float> &dpos) {
 	pos = _position;
 	pos += dpos;
 }
@@ -190,11 +190,8 @@ void BaseObject::follow(const int id) {
 	_follow = id;
 }
 
-
-
-
-void BaseObject::setZ(const float z) {
-	_position.z = z;
+void BaseObject::setZ(const int z) {
+	_z = z;
 }
 
 const bool BaseObject::take(const BaseObject *obj, const std::string &type) {
@@ -273,7 +270,7 @@ void BaseObject::truncateOwners(const int n) {
 }
 
 
-const v3<float> BaseObject::getRelativePosition(const BaseObject *obj) const {
+const v2<float> BaseObject::getRelativePosition(const BaseObject *obj) const {
 	return obj->_position - _position - size / 2 + obj->size / 2;
 }
 
@@ -287,7 +284,7 @@ const bool BaseObject::updatePlayerState(const PlayerState &state) {
 	return updated;
 }
 
-void BaseObject::getInfo(v3<float> &pos, v3<float> &vel) const {
+void BaseObject::getInfo(v2<float> &pos, v2<float> &vel) const {
 	pos = _position;
 	vel = _velocity;
 	

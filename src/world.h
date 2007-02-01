@@ -26,7 +26,7 @@
 #include <map>
 #include <sigc++/sigc++.h>
 
-#include "math/v3.h"
+#include "math/v2.h"
 #include "math/matrix.h"
 #include "object_common.h"
 
@@ -52,7 +52,7 @@ public:
 	
 	void setTimeSlice(const float ts);
 	
-	void addObject(Object *, const v3<float> &pos, const int id = -1);
+	void addObject(Object *, const v2<float> &pos, const int id = -1);
 	const bool exists(const int id) const;
 	const Object *getObjectByID(const int id) const;
 	Object *getObjectByID(const int id);
@@ -60,15 +60,15 @@ public:
 	void render(sdlx::Surface &surface, const sdlx::Rect &src, const sdlx::Rect &viewport);
 	void tick(const float dt);
 	
-	Object * spawn(Object *src, const std::string &classname, const std::string &animation, const v3<float> &dpos, const v3<float> &vel);
-	Object * spawnGrouped(Object *src, const std::string &classname, const std::string &animation, const v3<float> &dpos, const GroupType type);
+	Object * spawn(Object *src, const std::string &classname, const std::string &animation, const v2<float> &dpos, const v2<float> &vel, const int z = 0);
+	Object * spawnGrouped(Object *src, const std::string &classname, const std::string &animation, const v2<float> &dpos, const GroupType type);
 	
 	const Object* getNearestObject(const Object *obj, const std::string &classname) const;
 	const Object* getNearestObject(const Object *obj, const std::set<std::string> &classnames) const;
-	const bool getNearest(const Object *obj, const std::string &classname, v3<float> &position, v3<float> &velocity, Way * way = NULL) const;
-	const bool getNearest(const Object *obj, const std::set<std::string> &classnames, v3<float> &position, v3<float> &velocity) const;
+	const bool getNearest(const Object *obj, const std::string &classname, v2<float> &position, v2<float> &velocity, Way * way = NULL) const;
+	const bool getNearest(const Object *obj, const std::set<std::string> &classnames, v2<float> &position, v2<float> &velocity) const;
 	
-	const bool old_findPath(const Object *obj, const v3<float>& position, Way & way, const Object * dst = NULL) const;
+	const bool old_findPath(const Object *obj, const v2<float>& position, Way & way, const Object * dst = NULL) const;
 	void getImpassabilityMatrix(Matrix<int> &matrix, const Object *src, const Object *dst) const;
 
 	virtual void serialize(mrt::Serializator &s) const;
@@ -86,7 +86,7 @@ public:
 	
 	void setSafeMode(const bool safe_mode = true);
 
-	const float getImpassability(Object *obj, const v3<int> &position, const Object **collided_with = NULL, const bool probe = false, const bool skip_moving = false) const;
+	const float getImpassability(Object *obj, const v2<int> &position, const Object **collided_with = NULL, const bool probe = false, const bool skip_moving = false) const;
 	
 	const int getChildren(const int id) const;
 	void setMode(const std::string &mode, const bool value);
@@ -106,8 +106,8 @@ private:
 	typedef std::map<const std::pair<int, int>, bool> CollisionMap;
 	mutable CollisionMap _collision_map;
 	
-	void getImpassability2(float &old_pos_im, float &new_pos_im, Object *obj, const v3<int> &new_position, const Object **old_pos_collided_with = NULL) const;
-	const bool collides(Object *obj, const v3<int> &position, Object *other, const bool probe = false) const;
+	void getImpassability2(float &old_pos_im, float &new_pos_im, Object *obj, const v2<int> &new_position, const Object **old_pos_collided_with = NULL) const;
+	const bool collides(Object *obj, const v2<int> &position, Object *other, const bool probe = false) const;
 
 	
 	void cropObjects(const std::set<int> &ids);

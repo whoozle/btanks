@@ -49,7 +49,7 @@ public:
 void Missile::onSpawn() {
 	play("main", true);
 	if (type != "boomerang") {
-		Object *_fire = spawnGrouped("single-pose", "missile-fire", v3<float>::empty, Centered);
+		Object *_fire = spawnGrouped("single-pose", "missile-fire", v2<float>::empty, Centered);
 		_fire->setDirectionsNumber(16);
 		_fire->impassability = 0;
 		add("fire", _fire);
@@ -68,7 +68,7 @@ void Missile::calculate(const float dt) {
 			targets.insert("boat");
 		}
 	
-		v3<float> pos, vel;
+		v2<float> pos, vel;
 	
 		if (getNearest(targets, pos, vel)) {
 			float est_t = pos.length() / speed;
@@ -91,7 +91,7 @@ void Missile::calculate(const float dt) {
 		_direction.normalize();
 		//LOG_DEBUG(("direction %g %g", _direction.x, _direction.y));
 		_velocity.normalize();
-		v3<float> lpos = getRelativePosition(leader);
+		v2<float> lpos = getRelativePosition(leader);
 
 		GET_CONFIG_VALUE("objects.boomerang.radius", float, r, 3000);
 		GET_CONFIG_VALUE("objects.boomerang.turning-speed", float, ts, 0.1);
@@ -121,31 +121,27 @@ void Missile::emit(const std::string &event, Object * emitter) {
 		emit("death", emitter);
 	} if (event == "death" && type == "smoke") {
 		GET_CONFIG_VALUE("objects.smoke-cloud-downwards-z-override", int, csdzo, 350);
-		v3<float> dpos;
-		if (_velocity.y > 0)
-			dpos.z = csdzo;
+		int z = (_velocity.y > 0)? csdzo: 0;
 		//LOG_DEBUG(("edzo = %d", edzo));
-		spawn("smoke-cloud", "smoke-cloud", dpos);
+		spawn("smoke-cloud", "smoke-cloud", v2<float>::empty, v2<float>::empty, z);
 		Object::emit(event, emitter);
 	} else if (event == "death" && type == "nuke") {
 		Object *o = World->getObjectByID(getSummoner()); //player
-		v3<float> dpos;
+		v2<float> dpos;
 		if (o != NULL) {
 			dpos = o->getRelativePosition(this);
-			dpos.z = 0;
 		}
 			
-		Object * e = World->spawn(o != NULL?o:this, "nuclear-explosion", "nuclear-explosion", dpos, v3<float>::empty);
+		Object * e = World->spawn(o != NULL?o:this, "nuclear-explosion", "nuclear-explosion", dpos, v2<float>::empty);
 		e->disown();
 		Object::emit(event, emitter);
 	} else if (event == "death") {
-		v3<float> dpos;
+		v2<float> dpos;
 		
 		GET_CONFIG_VALUE("objects.explosion-downwards-z-override", int, edzo, 180);
-		if (_velocity.y >= 0)
-			dpos.z = edzo;
+		int z = (_velocity.y >= 0)?edzo: 0;
 
-		spawn("explosion", "missile-explosion", dpos);
+		spawn("explosion", "missile-explosion", dpos, v2<float>::empty, z);
 		Object::emit(event, emitter);
 	} else Object::emit(event, emitter);
 }

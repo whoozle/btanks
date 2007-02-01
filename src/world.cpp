@@ -80,21 +80,14 @@ void IWorld::setSafeMode(const bool safe_mode) {
 }
 
 
-void IWorld::addObject(Object *o, const v3<float> &pos, const int id) {
+void IWorld::addObject(Object *o, const v2<float> &pos, const int id) {
 	if (o == NULL) 
 		throw_ex(("adding NULL as world object is not allowed"));
 	o->_id = (id >= 0)?id:++_last_id;
 	
 	assert (_objects.find(o->_id) == _objects.end());
 
-	float oz = o->_position.z;
 	o->_position = pos;
-	if (pos.z != 0) {
-		//LOG_DEBUG(("overriding z(%g) for object '%s'", pos.z, o->classname.c_str()));
-	} else {
-		o->_position.z = oz; //restore original value
-		//LOG_DEBUG(("using default z(%g) for object '%s'", oz, o->classname.c_str()));
-	}
 	
 	_objects[o->_id] = o;
 
@@ -114,7 +107,7 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect&src, const sdlx::Re
 		Object *o = i->second;
 		if (o->isDead())
 			continue;
-		layers.insert(LayerMap::value_type((int)o->_position.z, o));
+		layers.insert(LayerMap::value_type(o->_z, o));
 	}
 	int z1 = -1001;
 	for(LayerMap::iterator i = layers.begin(); i != layers.end(); ++i) {
@@ -144,7 +137,7 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect&src, const sdlx::Re
 			
 			const Way & way = o.getWay();
 			for(Way::const_iterator wi = way.begin(); wi != way.end(); ++wi) {
-				const v3<int> &wp = *wi;
+				const v2<int> &wp = *wi;
 				surface.copyFrom(*wp_surface, 
 					wp.x - src.x + dst.x + (int)(o.size.x/2) - 8, wp.y - src.y + dst.y + (int)(o.size.y/2) - 8);
 			}
@@ -155,7 +148,7 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect&src, const sdlx::Re
 	surface.resetClipRect();
 }
 
-const bool IWorld::collides(Object *obj, const v3<int> &position, Object *o, const bool probe) const {
+const bool IWorld::collides(Object *obj, const v2<int> &position, Object *o, const bool probe) const {
 		if (o->_id == obj->_id || 
 			(obj->impassability < 1.0 && obj->impassability >= 0) || 
 			(o->impassability < 1.0 && o->impassability >= 0) || 
@@ -183,7 +176,7 @@ const bool IWorld::collides(Object *obj, const v3<int> &position, Object *o, con
 		 }
 		//LOG_DEBUG(("collides(%s:%d, (%d, %d), %s:%d, %s)", obj->registered_name.c_str(), obj->_id, position.x, position.y, o->registered_name.c_str(), o->_id, probe?"true":"false"));
 		
-		v3<int> dpos = o->_position.convert<int>() - position;
+		v2<int> dpos = o->_position.convert<int>() - position;
 		//LOG_DEBUG(("%s: %d %d", o->classname.c_str(), dpos.x, dpos.y));
 		const bool collides = obj->collides(o, dpos.x, dpos.y);
 		//LOG_DEBUG(("collision %s <-> %s: %s", obj->classname.c_str(), o->classname.c_str(), collides?"true":"false"));
@@ -197,7 +190,7 @@ const bool IWorld::collides(Object *obj, const v3<int> &position, Object *o, con
 				float m = obj->mass / o->mass;
 				if (m > 1.0) 
 				m = 1.0;
-				v3<float> o_vf = o->_velocity * -m, obj_vf = obj->_velocity * (-1/m);
+				v2<float> o_vf = o->_velocity * -m, obj_vf = obj->_velocity * (-1/m);
 				*/
 				o->emit("collision", obj);
 				obj->emit("collision", o);
@@ -225,7 +218,7 @@ const bool IWorld::collides(Object *obj, const v3<int> &position, Object *o, con
 }
 
 
-const float IWorld::getImpassability(Object *obj, const v3<int> &position, const Object **collided_with, const bool probe, const bool skip_moving) const {
+const float IWorld::getImpassability(Object *obj, const v2<int> &position, const Object **collided_with, const bool probe, const bool skip_moving) const {
 	if (obj->impassability == 0) {
 		if (collided_with != NULL)
 			*collided_with = NULL;
@@ -262,7 +255,7 @@ const float IWorld::getImpassability(Object *obj, const v3<int> &position, const
 	return im;
 }
 
-void IWorld::getImpassability2(float &old_pos_im, float &new_pos_im, Object *obj, const v3<int> &new_position, const Object **old_pos_collided_with) const {
+void IWorld::getImpassability2(float &old_pos_im, float &new_pos_im, Object *obj, const v2<int> &new_position, const Object **old_pos_collided_with) const {
 	old_pos_im = 0;
 	new_pos_im = 0;
 
@@ -272,7 +265,7 @@ void IWorld::getImpassability2(float &old_pos_im, float &new_pos_im, Object *obj
 		return;
 	}
 	
-	v3<int> old_position = 	obj->_position.convert<int>();
+	v2<int> old_position = 	obj->_position.convert<int>();
 	const Object *result = NULL;
 	sdlx::Rect my_new((int)new_position.x, (int)new_position.y,(int)obj->size.x, (int)obj->size.y);
 	sdlx::Rect my_old((int)obj->_position.x, (int)obj->_position.y,(int)obj->size.x, (int)obj->size.y);
@@ -307,9 +300,9 @@ void IWorld::getImpassability2(float &old_pos_im, float &new_pos_im, Object *obj
 
 
 void IWorld::getImpassabilityMatrix(Matrix<int> &matrix, const Object *src, const Object *dst) const {
-	const v3<int> size = Map->getTileSize();
+	const v2<int> size = Map->getTileSize();
 	
-	const v3<int> tile_size = Map->getTileSize();
+	const v2<int> tile_size = Map->getTileSize();
 
 	GET_CONFIG_VALUE("map.pathfinding-step", int, ps, 32);
 	const int split = 2 * ((tile_size.x - 1) / 2 + 1) / ps;
@@ -325,7 +318,7 @@ void IWorld::getImpassabilityMatrix(Matrix<int> &matrix, const Object *src, cons
 			im = -1;
 		
 /*
-		v3<int> p1, p2;
+		v2<int> p1, p2;
 		p1 = o->_position.convert<int>();
 		p2 = (o->_position + o->size - 1).convert<int>();
 		
@@ -338,7 +331,7 @@ void IWorld::getImpassabilityMatrix(Matrix<int> &matrix, const Object *src, cons
 			}
 */
 
-		v3<int> p = ((o->_position + o->size/2) / tile_size.convert<float>()).convert<int>();
+		v2<int> p = ((o->_position + o->size/2) / tile_size.convert<float>()).convert<int>();
 		Matrix<bool> proj;
 		o->checkSurface();
 		o->_cmap->project(proj, split, split);
@@ -391,7 +384,7 @@ void IWorld::tick(Object &o, const float dt) {
 	//LOG_DEBUG(("tick object %p: %d: %s", (void *)&o, o.getID(), o.classname.c_str()));
 
 	const IMap &map = *IMap::get_instance();
-	v3<int> map_size = map.getSize();
+	v2<int> map_size = map.getSize();
 
 TRY {
 
@@ -408,7 +401,7 @@ TRY {
 
 } CATCH("ttl decrementing", throw;);		
 
-	v3<float> old_vel = o._velocity;
+	v2<float> old_vel = o._velocity;
 
 	TRY { 
 		o.calculate(dt);
@@ -416,7 +409,7 @@ TRY {
 	
 	if (_atatat && !o.piercing && o.mass > 20) {
 		if (!o.has("atatat-tooltip")) {
-			o.add("atatat-tooltip", o.spawnGrouped("random-tooltip", "skotobaza", v3<float>(48, -48, 0), Centered));
+			o.add("atatat-tooltip", o.spawnGrouped("random-tooltip", "skotobaza", v2<float>(48, -48), Centered));
 		}
 
 		PlayerState state = o.getPlayerState();
@@ -463,16 +456,11 @@ TRY {
 } CATCH("detaching from vehicle", throw;)
 
 	GET_CONFIG_VALUE("engine.disable-z-velocity", bool, disable_z, true);
-	if (disable_z)
-		o._velocity.z = 0; //hack to prevent objects moving up/down.
 		
 	TRY { 
 		o.tick(dt);
 	} CATCH("calling o.tick", throw;)
 
-	if (disable_z)
-		o._velocity.z = 0; 
-	
 	if (o._follow) 
 		return;
 		
@@ -513,14 +501,13 @@ TRY {
 	o._velocity += o._velocity_fadeout;
 
 	//LOG_DEBUG(("im = %f", im));
-	v3<float> dpos = o.speed * o._velocity * dt;
-	dpos.z = 0;
+	v2<float> dpos = o.speed * o._velocity * dt;
 	if (dpos.is0()) 
 		return;
 
 
-	v3<int> new_pos = (o._position + dpos).convert<int>();
-	v3<int> old_pos = o._position.convert<int>();
+	v2<int> new_pos = (o._position + dpos).convert<int>();
+	v2<int> old_pos = o._position.convert<int>();
 	if (new_pos == old_pos)
 		return;
 
@@ -531,7 +518,7 @@ TRY {
 	float map_im = 0, obj_im = 0;
 
 	const Object *stuck_in = NULL;
-	v3<int> stuck_map_pos;
+	v2<int> stuck_map_pos;
 	bool stuck = false;
 	
 TRY {	
@@ -544,10 +531,10 @@ TRY {
 	outline_animation = o.registered_name + "-outline";
 	has_outline = ResourceManager->hasAnimation(outline_animation);
 	
-	v3<float> new_velocity;
+	v2<float> new_velocity;
 
 	for(attempt =0; attempt < 3; ++attempt) {
-		v3<int> pos;
+		v2<int> pos;
 		if (attempt > 0) {
 			int dir = save_dir;
 /*			if (dir < 0) { 
@@ -613,7 +600,7 @@ TRY {
 		if (hidden) {
 			if (has_outline && !o.has("_outline")) {
 				LOG_DEBUG(("%d:%s:%s: adding outline", o._id, o.classname.c_str(), o.animation.c_str()));
-				o.add("_outline", o.spawnGrouped("outline", outline_animation, v3<float>::empty, Centered));
+				o.add("_outline", o.spawnGrouped("outline", outline_animation, v2<float>::empty, Centered));
 			}
 		//LOG_DEBUG(("%d:%s:%s: whoaaa!!! i'm in domik", o._id, o.classname.c_str(), o.animation.c_str()));
 		} else {
@@ -646,12 +633,11 @@ TRY {
 TRY {
 	if (obj_im == 1.0 || map_im == 1.0) {
 		if (stuck) {
-			v3<float> allowed_velocity;
-			v3<float> object_center = o._position + o.size / 2;
+			v2<float> allowed_velocity;
+			v2<float> object_center = o._position + o.size / 2;
 			if (map_im == 1.0) {
 				//LOG_DEBUG(("stuck: object: %g %g, map: %d %d", o._position.x, o._position.y, stuck_map_pos.x, stuck_map_pos.y));
 				allowed_velocity = object_center - stuck_map_pos.convert<float>();
-				allowed_velocity.z = 0;
 				//LOG_DEBUG(("allowed-velocity: %g %g", allowed_velocity.x, allowed_velocity.y));
 				if (allowed_velocity.same_sign(o._velocity) || allowed_velocity.is0()) {
 					map_im = 0.5;
@@ -667,7 +653,6 @@ TRY {
 					goto skip_collision;
 				}
 				allowed_velocity = object_center - (stuck_in->_position + stuck_in->size/2);
-				allowed_velocity.z = 0;
 				//LOG_DEBUG(("allowed: %g %g", allowed_velocity.x, allowed_velocity.y));
 				if (allowed_velocity.same_sign(o._velocity) || allowed_velocity.is0()) {
 					//LOG_DEBUG(("stuck in object: %s, trespassing allowed!", stuck_in->classname.c_str()));
@@ -819,11 +804,9 @@ void IWorld::tick(ObjectMap &objects, const float dt) {
 		if (o_i != _objects.end()) {
 			const Object *leader = o_i->second;
 			//LOG_DEBUG(("following %d...", f));
-			const float z = o->_position.z;
 			o->speed = leader->speed;
 			
 			o->_position = leader->_position + o->_follow_position;
-			o->_position.z = z;
 			o->_velocity = leader->_velocity;
 			++i;
 		} else {
@@ -856,7 +839,7 @@ Object *IWorld::getObjectByID(const int id) {
 }
 
 
-Object* IWorld::spawn(Object *src, const std::string &classname, const std::string &animation, const v3<float> &dpos, const v3<float> &vel) {
+Object* IWorld::spawn(Object *src, const std::string &classname, const std::string &animation, const v2<float> &dpos, const v2<float> &vel, const int z) {
 	Object *obj = ResourceManager->createObject(classname, animation);
 	
 	assert(obj->_owners.size() == 0);
@@ -869,17 +852,14 @@ Object* IWorld::spawn(Object *src, const std::string &classname, const std::stri
 	
 	//LOG_DEBUG(("spawning %s, position = %g %g dPosition = %g:%g, velocity: %g %g", 
 	//	classname.c_str(), src->_position.x, src->_position.y, dpos.x, dpos.y, vel.x, vel.y));
-	v3<float> pos = src->_position + (src->size / 2)+ dpos - (obj->size / 2);
-	pos.z = 0;
-	if (dpos.z != 0) {
-		pos.z = dpos.z;
-	}
+	v2<float> pos = src->_position + (src->size / 2)+ dpos - (obj->size / 2);
 	addObject(obj, pos);
+	obj->setZ(z);
 	//LOG_DEBUG(("result: %f %f", obj->_position.x, obj->_position.y));
 	return obj;
 }
 
-Object * IWorld::spawnGrouped(Object *src, const std::string &classname, const std::string &animation, const v3<float> &dpos, const GroupType type) {
+Object * IWorld::spawnGrouped(Object *src, const std::string &classname, const std::string &animation, const v2<float> &dpos, const GroupType type) {
 	Object *obj = ResourceManager->createObject(classname, animation);
 	assert(obj->_owners.size() == 0);
 	obj->_owners = src->_owners;
@@ -897,11 +877,7 @@ Object * IWorld::spawnGrouped(Object *src, const std::string &classname, const s
 	}
 	obj->follow(src);
 
-	v3<float> pos = obj->_position + obj->_follow_position;
-	pos.z = 0;
-	if (dpos.z != 0) {
-		pos.z = dpos.z;
-	}
+	v2<float> pos = obj->_position + obj->_follow_position;
 	
 	addObject(obj, pos);
 	return obj;
@@ -915,7 +891,7 @@ void IWorld::serializeObjectPV(mrt::Serializator &s, const Object *o) const {
 
 void IWorld::deserializeObjectPV(const mrt::Serializator &s, Object *o) {
 	if (o == NULL) {
-		v3<float> x;
+		v2<float> x;
 		x.deserialize(s);
 		x.deserialize(s);
 		x.deserialize(s);
@@ -1094,7 +1070,7 @@ const Object* IWorld::getNearestObject(const Object *obj, const std::string &cla
 		if (o->_id == obj->_id || o->classname != classname || o->hasSameOwner(obj))
 			continue;
 
-		v3<float> cpos = o->_position + o->size / 2;
+		v2<float> cpos = o->_position + o->size / 2;
 		float d = obj->_position.quick_distance(cpos);
 		if (d < distance) {
 			distance = d;
@@ -1114,7 +1090,7 @@ const Object* IWorld::getNearestObject(const Object *obj, const std::set<std::st
 		if (o->_id == obj->_id || classnames.find(o->classname) == classnames.end() || o->hasSameOwner(obj))
 			continue;
 
-		v3<float> cpos = o->_position + o->size / 2;
+		v2<float> cpos = o->_position + o->size / 2;
 		float d = obj->_position.quick_distance(cpos);
 		if (d < distance) {
 			distance = d;
@@ -1125,7 +1101,7 @@ const Object* IWorld::getNearestObject(const Object *obj, const std::set<std::st
 }
 
 
-const bool IWorld::getNearest(const Object *obj, const std::string &classname, v3<float> &position, v3<float> &velocity, Way * way) const {
+const bool IWorld::getNearest(const Object *obj, const std::string &classname, v2<float> &position, v2<float> &velocity, Way * way) const {
 	position.clear();
 	velocity.clear();
 	const Object *target = getNearestObject(obj, classname);
@@ -1142,7 +1118,7 @@ const bool IWorld::getNearest(const Object *obj, const std::string &classname, v
 	return old_findPath(obj, position, *way, target);
 }
 
-const bool IWorld::getNearest(const Object *obj, const std::set<std::string> &classnames, v3<float> &position, v3<float> &velocity) const {
+const bool IWorld::getNearest(const Object *obj, const std::set<std::string> &classnames, v2<float> &position, v2<float> &velocity) const {
 	position.clear();
 	velocity.clear();
 	const Object *target = getNearestObject(obj, classnames);
@@ -1215,7 +1191,7 @@ const bool IWorld::detachVehicle(Object *object) {
 	object->_velocity.clear();
 	object->updatePlayerState(PlayerState());
 
-	Object * man = spawn(object, "machinegunner-player", "machinegunner", object->_direction * (object->size.x + object->size.y) / 4, v3<float>::empty);
+	Object * man = spawn(object, "machinegunner-player", "machinegunner", object->_direction * (object->size.x + object->size.y) / 4, v2<float>::empty);
 	object->classname = "vehicle";
 
 	man->_owners = object->_owners;

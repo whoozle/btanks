@@ -92,7 +92,7 @@ void OldSchoolDestructableObject::tick(const float dt) {
 	if (!_message.empty()) {
 		int dr;
 		Config->get("objects." + registered_name + ".display-range", dr, 400);
-		v3<float> pos, vel;
+		v2<float> pos, vel;
 		if (getNearest("player", pos, vel) && pos.length() < dr) {
 			Game->displayMessage(_message, 5);
 			_message.clear();
@@ -120,7 +120,7 @@ void OldSchoolDestructableObject::tick(const float dt) {
 			}
 		}
 		
-		v3<float> dpos; 
+		v2<float> dpos; 
 		dpos.x = mrt::random((int)size.x) - size.x / 2;
 		dpos.y = mrt::random((int)size.y) - size.y / 2;
 		

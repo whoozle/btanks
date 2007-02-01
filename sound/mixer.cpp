@@ -193,13 +193,13 @@ void IMixer::playSample(const Object *o, const std::string &name, const bool loo
 		AL_CHECK(("alGenSources"));
 		_sources.insert(Sources::value_type(Sources::key_type(id, name), source));
 
-		v3<float> pos, vel;
+		v2<float> pos, vel;
 		o->getInfo(pos, vel);
 
 		GET_CONFIG_VALUE("engine.sound.positioning-divisor", float, k, 200.0);
 	
-		ALfloat al_pos[] = { pos.x / k, -pos.y / k, 0*pos.z / k };
-		ALfloat al_vel[] = { vel.x / k, -vel.y / k, 0*vel.z / k };
+		ALfloat al_pos[] = { pos.x / k, -pos.y / k, 0*o->getZ() / k };
+		ALfloat al_vel[] = { vel.x / k, -vel.y / k, 0 };
 	
 		alSourcei (source, AL_BUFFER,   sample.buffer);
 		alSourcef (source, AL_PITCH,    1.0          );
@@ -249,12 +249,12 @@ void IMixer::updateObjects() {
 			continue;
 		}
 		
-		v3<float> pos, vel;
+		v2<float> pos, vel;
 		o->getInfo(pos, vel);
 		GET_CONFIG_VALUE("engine.sound.positioning-divisor", float, k, 200.0);
 		
-		ALfloat al_pos[] = { pos.x / k, -pos.y / k, 0*pos.z / k };
-		ALfloat al_vel[] = { vel.x / k, -vel.y / k, 0*vel.z / k };
+		ALfloat al_pos[] = { pos.x / k, -pos.y / k, 0*o->getZ() / k };
+		ALfloat al_vel[] = { vel.x / k, -vel.y / k, 0 };
 	
 		alSourcefv(j->second, AL_POSITION, al_pos);
 		alSourcefv(j->second, AL_VELOCITY, al_vel);

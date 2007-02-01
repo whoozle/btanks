@@ -47,8 +47,8 @@ void DestructableLayer::onDeath(const int idx) {
 	assert(s != NULL);
 	
 	Object * o = ResourceManager->createObject("explosion", "building-explosion");
-	v3<int> tsize = Map->getTileSize();
-	v3<float> pos(x * tsize.x + tsize.x/2, y * tsize.y + tsize.y/2, 0); //big fixme.
+	v2<int> tsize = Map->getTileSize();
+	v2<float> pos(x * tsize.x + tsize.x/2, y * tsize.y + tsize.y/2); //big fixme.
 	pos -= o->size / 2;
 	
 	int dirs = (s->getWidth() - 1) / (int)o->size.x + 1;
