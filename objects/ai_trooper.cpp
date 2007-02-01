@@ -73,13 +73,14 @@ void AITrooper::onIdle(const float dt) {
 	} else _velocity.clear();
 	_state.fire = false;
 
-	GET_CONFIG_VALUE("objects.trooper.rotation-time", float, rt, 0.05);
+	GET_CONFIG_VALUE("objects.ai-trooper.rotation-time", float, rt, 0.05);
 	limitRotation(dt, rt, true, false);
 }
 
 void AITrooper::onSpawn() {
-	GET_CONFIG_VALUE("objects.trooper.reaction-time", float, rt, 0.1);
-	mrt::randomize(rt, rt / 2);
+	GET_CONFIG_VALUE("objects.ai-trooper.reaction-time", float, rt, 0.3);
+	mrt::randomize(rt, rt / 10);
+	//LOG_DEBUG(("rt = %g", rt));
 	_reaction.set(rt);	
 	Trooper::onSpawn();
 }
@@ -146,6 +147,7 @@ public:
 	
 	virtual void onSpawn() { 
 		GET_CONFIG_VALUE("objects.trooper.reaction-time", float, rt, 0.1);
+		mrt::randomize(rt, rt/10);
 		_reaction.set(rt);
 	
 		Trooper::onSpawn();

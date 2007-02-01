@@ -434,6 +434,9 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 	
 	_hud->initMap();
 	
+	GET_CONFIG_VALUE("engine.max-time-slice", float, mts, 0.025);
+	World->setTimeSlice(mts);
+	
 	_map_loaded = true;
 	_game_over = false;
 	

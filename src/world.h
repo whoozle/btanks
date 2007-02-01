@@ -50,6 +50,8 @@ public:
 	~IWorld();
 	IWorld();
 	
+	void setTimeSlice(const float ts);
+	
 	void addObject(Object *, const v3<float> &pos, const int id = -1);
 	const bool exists(const int id) const;
 	const Object *getObjectByID(const int id) const;
@@ -113,6 +115,7 @@ private:
 	ObjectMap _objects;
 	int _last_id;
 	bool _safe_mode, _atatat;
+	float _max_dt;
 };
 
 SINGLETON(World, IWorld);

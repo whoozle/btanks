@@ -43,8 +43,14 @@
 #include <assert.h>
 #include <limits>
 
-
 IMPLEMENT_SINGLETON(World, IWorld)
+
+void IWorld::setTimeSlice(const float ts) {
+	if (ts <= 0)
+		throw_ex(("invalid timeslice value passed (%g)", ts));
+	_max_dt = ts;
+}
+
 
 void IWorld::clear() {
 	LOG_DEBUG(("cleaning up world..."));
@@ -62,7 +68,7 @@ void IWorld::setMode(const std::string &mode, const bool value) {
 }
 
 
-IWorld::IWorld() : _last_id(0), _safe_mode(false), _atatat(false) {}
+IWorld::IWorld() : _last_id(0), _safe_mode(false), _atatat(false), _max_dt(1) {}
 
 IWorld::~IWorld() {
 	clear();
@@ -352,26 +358,22 @@ void IWorld::tick(Object &o, const float dt) {
 		return;
 	//LOG_DEBUG(("tick object %p: %d: %s", (void *)&o, o.getID(), o.classname.c_str()));
 
-	GET_CONFIG_VALUE("engine.max-time-slice", float, max_dt, 0.025);
-	if (max_dt <= 0) 
-		throw_ex(("invalid max-time-slice value %g", max_dt));
-
-	if (dt > max_dt) {
+	if (dt > _max_dt) {
 		float dt2 = dt;
-		while(dt2 > max_dt) {
-			tick(o, max_dt);
-			dt2 -= max_dt;
+		while(dt2 > _max_dt) {
+			tick(o, _max_dt);
+			dt2 -= _max_dt;
 		}
 		if (dt2 > 0) 
 			tick(o, dt2);
 		return;
 	}
 
-	if (dt < -max_dt) {
+	if (dt < -_max_dt) {
 		float dt2 = dt;
-		while(dt2 < -max_dt) {
-			tick(o, -max_dt);
-			dt2 += max_dt;
+		while(dt2 < -_max_dt) {
+			tick(o, -_max_dt);
+			dt2 += _max_dt;
 		}
 		if (dt2 < 0) 
 			tick(o, dt2);
@@ -749,26 +751,22 @@ void IWorld::deleteObject(ObjectMap &objects, Object *o) {
 }
 
 void IWorld::tick(ObjectMap &objects, const float dt) {
-	GET_CONFIG_VALUE("engine.max-time-slice", float, max_dt, 0.025);
-	if (max_dt <= 0) 
-		throw_ex(("invalid max-time-slice value %g", max_dt));
-
-	if (dt > max_dt) {
+	if (dt > _max_dt) {
 		float dt2 = dt;
-		while(dt2 > max_dt) {
-			tick(objects, max_dt);
-			dt2 -= max_dt;
+		while(dt2 > _max_dt) {
+			tick(objects, _max_dt);
+			dt2 -= _max_dt;
 		}
 		if (dt2 > 0) 
 			tick(objects, dt2);
 		return;
 	}
 
-	if (dt < -max_dt) {
+	if (dt < -_max_dt) {
 		float dt2 = dt;
-		while(dt2 < -max_dt) {
-			tick(objects, -max_dt);
-			dt2 += max_dt;
+		while(dt2 < -_max_dt) {
+			tick(objects, -_max_dt);
+			dt2 += _max_dt;
 		}
 		if (dt2 < 0) 
 			tick(objects, dt2);

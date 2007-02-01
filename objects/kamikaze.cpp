@@ -21,6 +21,7 @@
 #include "resource_manager.h"
 #include "alarm.h"
 #include "config.h"
+#include "mrt/random.h"
 
 class Kamikaze : public Object {
 public:
@@ -84,6 +85,7 @@ void Kamikaze::tick(const float dt) {
 
 void Kamikaze::onSpawn() {
 	GET_CONFIG_VALUE("objects.kamikaze.reaction-time", float, rt, 0.1);
+	mrt::randomize(rt, rt/10);
 	_reaction.set(rt);
 	play("hold", true);
 }
