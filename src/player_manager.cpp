@@ -728,8 +728,8 @@ void IPlayerManager::tick(const float now, const float dt) {
 		slot.map_dst.x -= slot.viewport.w / 2;
 		slot.map_dst.y -= slot.viewport.h / 2;
 		
-		float look_forward = v3<float>(slot.viewport.w, slot.viewport.h, 0).length() / 3;
-		slot.map_dst += vel * moving * look_forward; 
+		//float look_forward = v3<float>(slot.viewport.w, slot.viewport.h, 0).length() / 4;
+		//slot.map_dst += vel * moving * look_forward; 
 
 		slot.map_dst_vel = slot.map_dst - slot.map_dst_pos;
 
@@ -743,14 +743,15 @@ void IPlayerManager::tick(const float now, const float dt) {
 
 		//const int gran = 50;
 		//slot.map_vel = (dvel / (gran / 8)).convert<int>().convert<float>() * gran;
-		if (dvel.length() > p->speed) 
-			dvel.normalize(p->speed);
+		
+		//if (dvel.length() > p->speed) 
+		//	dvel.normalize(p->speed);
 		slot.map_vel = dvel;
 		
 		//if (slot.map_vel.length() > max_speed)
 		//	slot.map_vel.normalize(max_speed);
 		
-		slot.map_pos += slot.map_vel * math::min<float>(2 * dt, 1);
+		slot.map_pos += slot.map_vel * math::min<float>(10 * dt, 1);
 		//slot.map_pos = slot.map_dst_pos;
 	}
 
