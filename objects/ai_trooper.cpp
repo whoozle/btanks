@@ -25,7 +25,15 @@
 class AITrooper : public Trooper, ai::Herd {
 public:
 	AITrooper(const std::string &object, const bool aim_missiles) : 
-		Trooper("trooper", object, aim_missiles), _reaction(true), _target_dir(-1) {}
+		Trooper("trooper", object), _reaction(true), _target_dir(-1) {
+			if (aim_missiles)
+				_targets.insert("missile");
+	
+			_targets.insert("player");
+			_targets.insert("trooper");
+			_targets.insert("kamikaze");
+			_targets.insert("boat");
+	}
 	virtual void onSpawn();
 	virtual void serialize(mrt::Serializator &s) const {
 		Trooper::serialize(s);
@@ -47,6 +55,9 @@ private:
 
 	Alarm _reaction;
 	int _target_dir;
+	
+	//no need for serialize it:
+	std::set<std::string> _targets;
 };
 
 const int AITrooper::getComfortDistance(const Object *other) const {
@@ -88,20 +99,10 @@ void AITrooper::calculate(const float dt) {
 		return;
 	}
 	
-	std::set<std::string> targets;
-
-	if (_aim_missiles)
-		targets.insert("missile");
-	
-	targets.insert("player");
-	targets.insert("trooper");
-	targets.insert("kamikaze");
-	targets.insert("boat");
-	
 	_state.fire = false;
 	
 	v3<float> vel;
-	_target_dir = getTargetPosition(_velocity, targets, _object);
+	_target_dir = getTargetPosition(_velocity, _targets, _object);
 	if (_target_dir >= 0) {
 		//LOG_DEBUG(("target: %g %g %g", tp.x, tp.y, tp.length()));
 		/*
@@ -131,7 +132,16 @@ void AITrooper::calculate(const float dt) {
 //==============================================================================
 class TrooperInWatchTower : public Trooper {
 public: 
-	TrooperInWatchTower(const std::string &object, const bool aim_missiles) : Trooper("trooper", object, aim_missiles), _reaction(true) {}
+	TrooperInWatchTower(const std::string &object, const bool aim_missiles) : 
+		Trooper("trooper", object), _reaction(true) {
+			if (aim_missiles)
+				_targets.insert("missile");
+	
+			_targets.insert("player");
+			_targets.insert("trooper");
+			_targets.insert("kamikaze");
+			_targets.insert("boat");		
+	}
 	virtual Object * clone() const { return new TrooperInWatchTower(*this); }
 	
 	virtual void onSpawn() { 
@@ -158,17 +168,8 @@ public:
 		range *= range;
 		//LOG_DEBUG(("range = %g", range));
 
-		std::set<std::string> targets;
-
-		if (_aim_missiles)
-			targets.insert("missile");
-	
-		targets.insert("player");
-		targets.insert("trooper");
-		targets.insert("kamikaze");
-	
 		v3<float> pos, vel;
-		if (getNearest(targets, pos, vel) && pos.quick_length() <= range) {
+		if (getNearest(_targets, pos, vel) && pos.quick_length() <= range) {
 			_state.fire = true;
 			_direction = pos;
 			_direction.normalize();
@@ -178,6 +179,9 @@ public:
 	}
 private: 
 	Alarm _reaction; 
+
+	//no need to serialize it
+	std::set<std::string> _targets;
 };
 
 REGISTER_OBJECT("machinegunner", AITrooper, ("machinegunner-bullet", true));

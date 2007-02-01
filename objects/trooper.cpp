@@ -79,4 +79,4 @@ Object* Trooper::clone() const  {
 }
 
 
-REGISTER_OBJECT("machinegunner-player", Trooper, ("player", "machinegunner-bullet", true));
+REGISTER_OBJECT("machinegunner-player", Trooper, ("player", "machinegunner-bullet"));

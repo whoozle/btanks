@@ -25,8 +25,8 @@
 
 class Trooper : public Object {
 public:
-	Trooper(const std::string &classname, const std::string &object, const bool aim_missiles) : 
-		Object(classname), _object(object), _aim_missiles(aim_missiles), _fire(false) {}
+	Trooper(const std::string &classname, const std::string &object) : 
+		Object(classname), _object(object), _fire(false) {}
 	
 	virtual void tick(const float dt);
 
@@ -37,19 +37,16 @@ public:
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
 		s.add(_object);
-		s.add(_aim_missiles);
 		_fire.serialize(s);
 	}
 	virtual void deserialize(const mrt::Serializator &s) {
 		Object::deserialize(s);
 		s.get(_object);
-		s.get(_aim_missiles);
 		_fire.deserialize(s);
 	}	
 
 protected: 
 	std::string _object;
-	bool _aim_missiles;
 	Alarm _fire;
 };
 
