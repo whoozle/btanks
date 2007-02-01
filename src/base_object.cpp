@@ -246,8 +246,7 @@ void BaseObject::prependOwner(const int oid) {
 }
 
 const int BaseObject::_getOwner() const {
-	if (_owners.empty())
-		return 0;
+	assert(!_owners.empty());
 	return *_owners.begin();
 }
 
@@ -255,11 +254,16 @@ const bool BaseObject::hasSameOwner(const BaseObject *other) const {
 	std::set<int>::const_iterator i = _owner_set.begin(), j = other->_owner_set.begin();
 	while(i != _owner_set.end() && j != other->_owner_set.end()) {
 		const int l = *i, r = *j;
-		if (l < r) 
+		if (l == r) {
+			return true;
+		}
+		//LOG_DEBUG(("%s: %d: %d : %s", classname.c_str(), l, r, other->classname.c_str()));
+		
+		if (l < r) {
 			++i;
-		else if (l > r)
+		} else {
 			++j;
-		else return true;
+		}
 	}
 
 	return false;
