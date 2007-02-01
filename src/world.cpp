@@ -56,6 +56,9 @@ void IWorld::clear() {
 	LOG_DEBUG(("cleaning up world..."));
 	std::for_each(_objects.begin(), _objects.end(), delete_ptr2<ObjectMap::value_type>());
 	_objects.clear();
+	_collision_map.clear();
+	_static_collision_map.clear();
+	
 	_last_id = 0;
 	_atatat = _safe_mode = false;
 }
@@ -168,20 +171,26 @@ const bool IWorld::collides(Object *obj, const v2<int> &position, Object *o, con
 		CollisionMap::key_type key = (id1 < id2) ? CollisionMap::key_type(id1, id2): CollisionMap::key_type(id2, id1);
 		
 		if (!probe) {
-			CollisionMap::iterator i = _collision_map.find(key);
+			CollisionMap::iterator i = _static_collision_map.find(key);
+		 	if (i != _static_collision_map.end()) {
+			 	return i->second;
+			}
+			i = _collision_map.find(key);
 		 	if (i != _collision_map.end()) {
-		 		//LOG_DEBUG(("skipped collision %p<->%p with result %s", obj, o, i->second?"true":"false"));
 			 	return i->second;
 			}
 		 }
-		//LOG_DEBUG(("collides(%s:%d, (%d, %d), %s:%d, %s)", obj->registered_name.c_str(), obj->_id, position.x, position.y, o->registered_name.c_str(), o->_id, probe?"true":"false"));
+		//LOG_DEBUG(("collides(%s:%d(speed: %g), (%d, %d), %s:%d(speed: %g), %s)", obj->registered_name.c_str(), obj->_id, obj->speed, position.x, position.y, o->registered_name.c_str(), o->_id, o->speed, probe?"true":"false"));
 		
 		v2<int> dpos = o->_position.convert<int>() - position;
 		//LOG_DEBUG(("%s: %d %d", o->classname.c_str(), dpos.x, dpos.y));
 		const bool collides = obj->collides(o, dpos.x, dpos.y);
 		//LOG_DEBUG(("collision %s <-> %s: %s", obj->classname.c_str(), o->classname.c_str(), collides?"true":"false"));
 		if (!probe) {
-			_collision_map.insert(CollisionMap::value_type(key, collides));
+			if (obj->speed == 0 && o->speed == 0)
+				_static_collision_map.insert(CollisionMap::value_type(key, collides));
+			else
+				_collision_map.insert(CollisionMap::value_type(key, collides));
 		
 			if (collides) { 
 				//LOG_DEBUG(("collision %s <-> %s", obj->classname.c_str(), o->classname.c_str()));
