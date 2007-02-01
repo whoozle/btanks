@@ -354,6 +354,36 @@ void IWorld::getImpassabilityMatrix(Matrix<int> &matrix, const Object *src, cons
 }
 
 void IWorld::tick(Object &o, const float dt) {
+	float max_dt = _max_dt;
+	int n = (int)(dt / max_dt);
+	if (n > 4) {
+		//LOG_DEBUG(("trottling needed (%d)", n));
+		max_dt = dt / 4;
+	}
+
+	if (dt > max_dt) {
+		float dt2 = dt;
+		while(dt2 > max_dt) {
+			tick(o, max_dt);
+			dt2 -= max_dt;
+		}
+		if (dt2 > 0) 
+			tick(o, dt2);
+		return;
+	}
+
+	if (dt < -max_dt) {
+		float dt2 = dt;
+		while(dt2 < -max_dt) {
+			tick(o, -max_dt);
+			dt2 += max_dt;
+		}
+		if (dt2 < 0) 
+			tick(o, dt2);
+		return;
+	}
+
+
 	if (o.isDead()) 
 		return;
 	//LOG_DEBUG(("tick object %p: %d: %s", (void *)&o, o.getID(), o.classname.c_str()));
