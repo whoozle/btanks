@@ -21,6 +21,7 @@
 #include "resource_manager.h"
 #include "world.h"
 #include "alarm.h"
+#include "mrt/random.h"
 
 class Boat : public DestructableObject {
 public:
