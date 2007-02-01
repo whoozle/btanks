@@ -73,6 +73,10 @@ void MapItem::finish() {
 void MapItem::updateValue() {
 	_text = _value = _maps[_index];
 	mrt::toUpper(_text);
+	for(size_t i = 0; i < _text.size(); ++i) {
+		if (_text[i] == '_') 
+			_text[i] = ' ';
+	}
 	_text = "MAP: " + _text;
 	Config->set("menu.default-mp-map", _value);
 	MenuItem::render();
