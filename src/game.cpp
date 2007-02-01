@@ -519,7 +519,7 @@ void IGame::run() {
 	while (_running) {
 		t_start  = SDL_GetTicks();
 #ifdef SHOW_PERFSTATS
-		Uint32 t_tick_n = t_start, t_tick_w = t_start, t_tick_s = t_start, t_tick_c = t_start;
+		Uint32 t_tick_n, t_tick_w, t_tick_pm;
 #endif
 
 		
@@ -604,6 +604,9 @@ void IGame::run() {
 #endif
 			
 		}
+#ifdef SHOW_PERFSTATS
+		Uint32 t_tick = SDL_GetTicks();
+#endif
 	
 		if (_running && !_paused) {
 			std::string game_state = popState(dt);
@@ -615,7 +618,7 @@ void IGame::run() {
 		}
 
 #ifdef SHOW_PERFSTATS
-		Uint32 t_tick = SDL_GetTicks();
+		t_tick_pm = SDL_GetTicks();
 #endif
 		
 		if (_credits || _map_loaded)
@@ -672,21 +675,21 @@ flip:
 		Uint32 t_flip = SDL_GetTicks();
 #endif
 
-		int tdelta = SDL_GetTicks() - t_start;
+		int t_delta = SDL_GetTicks() - t_start;
 
 #ifdef SHOW_PERFSTATS
-		LOG_DEBUG(("tick time: %u, render time: %u, flip time: %u", t_tick - t_start, t_render - t_tick, t_flip - t_render));
-		LOG_DEBUG(("notify: %u, world: %u, server: %u, client: %u", t_tick_n - t_start, t_tick_w - t_tick_n, t_tick_s - t_tick_w, t_tick_c - t_tick_s));
+		LOG_DEBUG(("tick time: %u, render time: %u, flip time: %u, total: %u", t_tick - t_start, t_render - t_tick, t_flip - t_render, t_delta));
+		LOG_DEBUG(("notify: %u, world: %u, server/client: %u", t_tick_n - t_start, t_tick_w - t_tick_n, t_tick_pm - t_tick));
 #endif
-		if (tdelta < max_delay) {
+		if (t_delta < max_delay) {
 #ifdef SHOW_PERFSTATS
-			LOG_DEBUG(("tdelta: %d, delay: %d", tdelta, max_delay - tdelta));
+			LOG_DEBUG(("tdelta: %d, delay: %d", t_delta, max_delay - t_delta));
 #endif
-			SDL_Delay(max_delay - tdelta);
+			SDL_Delay(max_delay - t_delta);
 		}
 
-		tdelta = SDL_GetTicks() - t_start;
-		fr = (tdelta != 0)? (1000.0 / tdelta): 1000;
+		t_delta = SDL_GetTicks() - t_start;
+		fr = (t_delta != 0)? (1000.0 / t_delta): 1000;
 	}
 	LOG_DEBUG(("exiting main loop."));
 	if (_running)
