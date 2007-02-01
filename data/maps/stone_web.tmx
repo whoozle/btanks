@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<map version="0.99b" orientation="orthogonal" width="40" height="30" tilewidth="64" tileheight="64">
+ <tileset name="Untitled" firstgid="1" tilewidth="64" tileheight="64">
+  <image source="../tiles/terrains_tileset.png"/>
+ </tileset>
+ <layer name="Layer 0" width="40" height="30" visible="0">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAM2TwQ6AMAhD9//HHfxeL54IhbZDowmJWbQ8aLfXWvsp9FxmTTx75XwuU8fosEdG1IPtizjd3e5QmUanXc0y4Tvri+rpVCYZTx3Gif1NZr7KnMvIzlz5l50p90vhq7RQT0azOu/YnL2wuZvgm2BT7pfLp8ys+F9lWOVj2DoW5Y6pfKpfUedvfF1GvvSXyTu7c4VP3cXf+JjK/om8U/lDbCcznfB1vZFm5e8XfNk3FV+X4VM+pKHkMPu30nb5HEakn7E6fGo/5jy+T+QP9WTviuILy6fcZSeDKhtiZGdQGCf5Oh22D5tpV+fNUtiQD28xKXw3hBPFd8ASAAA=
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="Layer 1" width="40" height="30">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAMWTwQ7AMAhC/f/jvnj3ZgoI20x6qQZfLVZVXc2pIZc8Z6R01GC1UU2ai+Vl+iOu5D8ivaqeO82m/CPqP3FtguVmdgZpO6HOdLpj9BKeY3IbfyT3osupzExv1U8K31TD6E7aG887fB2zq3XeK5qqRzd6ST53V97iS+1y2n8Oz5d8LPNGz+FTGLdaKT63PsXH9lTnit6JtKf7rnfHg+5YPmWGLCOqnfSecqi/E0hL4WPnsuFS2Rie5JnesOFKvaMLZ25vhzIHJpdmUv+IqfnSp4o3/uC7AS/rYh/AEgAA
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="Layer 2" width="40" height="30" visible="0" opacity="0.22">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3PwQkAAAjDQDd3dYdIBcEc9CuxKqeDtzbYx9jH2MfYx9jH2Mds9PXxpX+9zD7GPsY+xj7GPsY+5mPfAAsxvifAEgAA
+  </data>
+  <tileproperties/>
+ </layer>
+</map>
