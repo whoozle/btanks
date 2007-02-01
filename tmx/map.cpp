@@ -325,7 +325,7 @@ void IMap::load(const std::string &name) {
 	
 	_pth = _tw / split;
 	_ptw = _th / split;
-	_imp_map.setSize(_h * split, _w * split, -1);
+	_imp_map.setSize(_h * split, _w * split, 0);
 
 	const int h = _imp_map.getHeight(), w = _imp_map.getWidth();
 	LOG_DEBUG(("building map matrix[%d:%d]...", h, w));
