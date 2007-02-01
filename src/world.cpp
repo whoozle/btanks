@@ -853,7 +853,9 @@ Object* IWorld::spawn(Object *src, const std::string &classname, const std::stri
 	Object *obj = ResourceManager->createObject(classname, animation);
 	
 	assert(obj->_owners.size() == 0);
-	obj->_owners = src->_owners;
+	
+	obj->copyOwners(src);
+		
 	obj->addOwner(src->_id);
 	//LOG_DEBUG(("%s spawns %s", src->classname.c_str(), obj->classname.c_str()));
 	obj->_spawned_by = src->_id;
@@ -871,8 +873,11 @@ Object* IWorld::spawn(Object *src, const std::string &classname, const std::stri
 
 Object * IWorld::spawnGrouped(Object *src, const std::string &classname, const std::string &animation, const v2<float> &dpos, const GroupType type) {
 	Object *obj = ResourceManager->createObject(classname, animation);
+
 	assert(obj->_owners.size() == 0);
-	obj->_owners = src->_owners;
+
+	obj->copyOwners(src);
+
 	obj->addOwner(src->_id);
 	obj->_spawned_by = src->_id;
 
@@ -1158,11 +1163,10 @@ void IWorld::replaceID(const int old_id, const int new_id) {
 		Object *o = i->second;
 		if(o->_spawned_by == old_id) 
 			o->_spawned_by = new_id;
-		
-		for(std::deque<int>::iterator j = o->_owners.begin(); j != o->_owners.end(); ++j) {
-			if (*j == old_id)
-				*j = new_id;
-		}
+		if (o->hasOwner(old_id)) {
+			o->removeOwner(old_id);
+			o->addOwner(new_id);
+		}		
 	}
 }
 
@@ -1182,7 +1186,8 @@ const bool IWorld::attachVehicle(Object *object, Object *vehicle) {
 	object->Object::emit("death", NULL); //emit death BEFORE assigning slot.id (avoid to +1 to frags) :)))
 
 	vehicle->_spawned_by = object->_spawned_by;
-	vehicle->_owners = object->_owners;
+
+	vehicle->copyOwners(object);
 
 	replaceID(old_id, new_id);
 	slot->id = new_id;
@@ -1204,7 +1209,7 @@ const bool IWorld::detachVehicle(Object *object) {
 	Object * man = spawn(object, "machinegunner-player", "machinegunner", object->_direction * (object->size.x + object->size.y) / 4, v2<float>::empty);
 	object->classname = "vehicle";
 
-	man->_owners = object->_owners;
+	map->copyOwners(object);
 
 	int old_id = object->getID();
 	int new_id = man->getID();

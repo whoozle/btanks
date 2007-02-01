@@ -32,7 +32,7 @@ BaseObject::BaseObject(const std::string &classname):
 	need_sync(false),
 	_dead(false), 
 	_position(), _z(0), 
-	_owners(), _spawned_by(0) {
+	_owners(), _owner_set(), _spawned_by(0) {
 	//LOG_DEBUG(("allocated id %ld", _id));
 }
 
@@ -77,8 +77,9 @@ void BaseObject::serialize(mrt::Serializator &s) const {
 	
 	int n = _owners.size();
 	s.add(n);
-	for(std::deque<int>::const_iterator i = _owners.begin(); i != _owners.end(); ++i) 
+	for(std::deque<int>::const_iterator i = _owners.begin(); i != _owners.end(); ++i) {
 		s.add(*i);
+	}
 		
 	s.add(_spawned_by);
 }
@@ -109,12 +110,14 @@ void BaseObject::deserialize(const mrt::Serializator &s) {
 	_position.deserialize(s);
 	
 	_owners.clear();
+	_owner_set.clear();
 	int n;
 	s.get(n);
 	while(n--) {
 		int id;
 		s.get(id);
 		_owners.push_back(id);
+		_owner_set.insert(id);
 	}
 	
 	s.get(_spawned_by);
@@ -212,13 +215,22 @@ const bool BaseObject::take(const BaseObject *obj, const std::string &type) {
 
 void BaseObject::disown() {
 	_owners.clear();
+	_owner_set.clear();
 }
+
+void BaseObject::copyOwners(const BaseObject *from) {
+	_owners = from->_owners;
+	_owner_set = from->_owner_set;
+}
+
 
 void BaseObject::addOwner(const int oid) {
 	if (hasOwner(oid))
 		return;
 	
 	_owners.push_front(oid);
+	_owner_set.insert(oid);
+	assert(_owners.size() == _owner_set.size());
 }
 
 void BaseObject::prependOwner(const int oid) {
@@ -226,45 +238,47 @@ void BaseObject::prependOwner(const int oid) {
 		return;
 	
 	_owners.push_back(oid);
+	_owner_set.insert(oid);
 	LOG_DEBUG(("%s[%d] called prependSlot(%d)", classname.c_str(), _id, oid));
+	assert(_owners.size() == _owner_set.size());
 }
 
 const int BaseObject::_getOwner() const {
+	if (_owners.empty())
+		return 0;
 	return *_owners.begin();
 }
 
 const bool BaseObject::hasSameOwner(const BaseObject *other) const {
-	for(std::deque<int>::const_iterator j = other->_owners.begin(); j != other->_owners.end(); ++j) 
-		if (*j == _id)
-			return true;
-
-	for(std::deque<int>::const_iterator i = _owners.begin(); i != _owners.end(); ++i) {
-		if (*i == other->_id)
-			return true;
-		
-		for(std::deque<int>::const_iterator j = other->_owners.begin(); j != other->_owners.end(); ++j) 
-			if (*i == *j)
-				return true;
+	std::set<int>::const_iterator i = _owner_set.begin(), j = other->_owner_set.begin();
+	while(i != _owner_set.end() && j != other->_owner_set.end()) {
+		const int l = *i, r = *j;
+		if (l < r) 
+			++i;
+		else if (l > r)
+			++j;
+		else return true;
 	}
+
 	return false;
 }
 
 const bool BaseObject::hasOwner(const int oid) const {
-	for(std::deque<int>::const_iterator i = _owners.begin(); i != _owners.end(); ++i)
-		if (*i == oid)
-			return true;
-	return false;
+	return _owner_set.find(oid) != _owner_set.end();
 }
 
 void BaseObject::removeOwner(const int oid) {
+	_owner_set.erase(oid);
 	for(std::deque<int>::iterator i = _owners.begin(); i != _owners.end(); ) {
 		if (*i == oid) {
 			i = _owners.erase(i);
 		} else ++i;
 	}
+	assert(_owners.size() == _owner_set.size());
 }
 
 void BaseObject::truncateOwners(const int n) {
+	assert(0); /*implement me*/
 	if ((int)_owners.size() > n) 
 		_owners.resize(n);
 }

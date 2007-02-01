@@ -24,6 +24,7 @@
 #include "player_state.h"
 #include "object_common.h"
 #include <deque>
+#include <set>
 
 namespace sdlx {
 	class Surface;
@@ -82,7 +83,6 @@ public:
 	inline const int getZ() const { return _z; }
 	
 	void disown();
-
 	void addOwner(const int oid);
 	void prependOwner(const int oid); //to avoid truncation of this owner. 
 	const int _getOwner() const;
@@ -91,6 +91,7 @@ public:
 	void removeOwner(const int oid);
 	void truncateOwners(const int n);
 	inline void getOwners(std::deque<int> &owners) const { owners = _owners; }
+	void copyOwners(const BaseObject *from);
 	
 	const int getSummoner() const { return _spawned_by; }
 	void getTimes(float &moving, float &idle) const { moving = _moving_time; idle = _idle_time; }
@@ -113,6 +114,7 @@ private:
 	v2<float> _position;
 	int _z;
 	std::deque<int> _owners;
+	std::set<int> _owner_set;
 	int _spawned_by;
 	
 	friend class IWorld;
