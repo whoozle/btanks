@@ -717,7 +717,7 @@ void IPlayerManager::tick(const float now, const float dt) {
 			Mixer->setListener(pos, vel);
 
 */					
-		//moving /= 2;
+		moving /= 2;
 		if (moving >= 1)
 			moving = 1;
 	
