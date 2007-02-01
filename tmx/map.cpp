@@ -325,7 +325,7 @@ void IMap::load(const std::string &name) {
 	
 	_pth = _tw / split;
 	_ptw = _th / split;
-	_imp_map.setSize(_h * split, _w * split, 0);
+	_imp_map.setSize(_h * split, _w * split, -2);
 
 	const int h = _imp_map.getHeight(), w = _imp_map.getWidth();
 	LOG_DEBUG(("building map matrix[%d:%d]...", h, w));
@@ -355,7 +355,7 @@ void IMap::load(const std::string &name) {
 				for(int yy = 0; yy < split; ++yy)
 					for(int xx = 0; xx < split; ++xx) {
 						int yp = y * split + yy, xp = x * split + xx;
-						if (proj.get(yy, xx) && _imp_map.get(yp, xp) == -1) 
+						if (proj.get(yy, xx) && _imp_map.get(yp, xp) == -2) 
 							_imp_map.set(yp, xp, im);
 					}
 				}
@@ -363,6 +363,8 @@ void IMap::load(const std::string &name) {
 	}
 	for(int y = 0; y < h; ++y) 
 		for(int x = 0; x < w; ++x) {
+			if (_imp_map.get(y, x) == -2)
+				_imp_map.set(y, x, 0);
 			if (_imp_map.get(y, x) >= 100)
 				_imp_map.set(y, x, -1);
 	}
