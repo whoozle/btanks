@@ -29,7 +29,7 @@ public:
 	virtual Object * clone() const { return new Wagon(*this); }
 	virtual void emit(const std::string &event, Object * emitter = NULL) {
 		if (event == "death") {
-			spawn("corpse", "dead-choo-choo-wagon", v2<float>::empty, v2<float>::empty);
+			spawn("corpse", "dead-choo-choo-wagon");
 		}
 		Object::emit(event, emitter);
 	}
@@ -72,7 +72,7 @@ void Train::onSpawn() {
 
 void Train::emit(const std::string &event, Object * emitter) {
 	if (event == "death") {
-		Object * o = spawn("corpse", "dead-choo-choo-train", v2<float>::empty, v2<float>::empty);
+		Object * o = spawn("corpse", "dead-choo-choo-train");
 		o->impassability = 1;
 	}
 	Object::emit(event, emitter);
@@ -93,7 +93,7 @@ void Train::tick(const float dt) {
 		emit("death", NULL);
 	}
 	if (_smoke.tick(dt)) {
-		spawn("train-smoke", "train-smoke", v2<float>::empty, v2<float>::empty);
+		spawn("train-smoke", "train-smoke");
 	}
 }
 
