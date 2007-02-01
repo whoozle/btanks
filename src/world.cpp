@@ -354,6 +354,9 @@ void IWorld::getImpassabilityMatrix(Matrix<int> &matrix, const Object *src, cons
 }
 
 void IWorld::tick(Object &o, const float dt) {
+	if (o.isDead()) 
+		return;
+
 	float max_dt = _max_dt;
 	int n = (int)(dt / max_dt);
 	if (n > 4) {
@@ -384,8 +387,6 @@ void IWorld::tick(Object &o, const float dt) {
 	}
 
 
-	if (o.isDead()) 
-		return;
 	//LOG_DEBUG(("tick object %p: %d: %s", (void *)&o, o.getID(), o.classname.c_str()));
 
 	const IMap &map = *IMap::get_instance();
