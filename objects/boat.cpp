@@ -105,6 +105,7 @@ void Boat::onSpawn() {
 	GET_CONFIG_VALUE("objects.missile-boat.reload-rate", float, rl, 3);
 	_reload.set(rl);
 	GET_CONFIG_VALUE("objects.missile-boat.reaction-time", float, rt, 0.15);
+	mrt::randomize(rt, rt/10);
 	_reaction.set(rt);
 	
 	add("mod", spawnGrouped("missiles-on-boat", "guided-missiles-on-launcher", v3<float>(size.x/3, 10, 0), Centered));

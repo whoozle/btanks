@@ -59,6 +59,7 @@ void Base::onSpawn() {
 		
 	float rt, rpi;
 	Config->get("objects.ai-" + vehicle + ".reaction-time", rt, 0.1);
+	mrt::randomize(rt, rt/10);
 	_reaction_time.set(rt);
 	Config->get("objects.ai-" + vehicle + ".refresh-path-interval", rpi, 1);
 	_refresh_path.set(rpi);
