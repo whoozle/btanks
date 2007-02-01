@@ -107,8 +107,11 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect&src, const sdlx::Re
 		Object *o = i->second;
 		if (o->isDead())
 			continue;
-		layers.insert(LayerMap::value_type(o->_z, o));
+		sdlx::Rect r((int)o->_position.x, (int)o->_position.y, (int)o->size.x, (int)o->size.y);
+		if (r.intersects(src)) 
+			layers.insert(LayerMap::value_type(o->_z, o));
 	}
+	//LOG_DEBUG(("rendering %d objects", layers.size()));
 	int z1 = -1001;
 	for(LayerMap::iterator i = layers.begin(); i != layers.end(); ++i) {
 		if (i->second->isDead())
@@ -122,11 +125,8 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect&src, const sdlx::Re
 		}
 		z1 = z2;
 		Object &o = *i->second;
-		sdlx::Rect r((int)o._position.x, (int)o._position.y, (int)o.size.x, (int)o.size.y);
-		if (r.intersects(src)) {
 			//LOG_DEBUG(("rendering %s with z = %g", o.classname.c_str(), o._position.z));
-			o.render(surface, r.x - src.x + dst.x, r.y - src.y + dst.y);
-		}
+		o.render(surface, (int)o._position.x - src.x + dst.x, (int)o._position.y - src.y + dst.y);
 		
 		GET_CONFIG_VALUE("engine.show-waypoints", bool, show_waypoints, false);
 		if (show_waypoints) {
