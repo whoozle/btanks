@@ -54,6 +54,8 @@
 #include "cheater.h"
 #include "console.h"
 
+#include "math/v3.h"
+
 //#define SHOW_PERFSTATS
 
 IMPLEMENT_SINGLETON(Game, IGame)
@@ -347,7 +349,7 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 		if (!spawn_objects && type != "waypoint" && type != "edge")
 			continue;
 	
-		v2<int> pos;
+		v3<int> pos;
 		if (type != "edge" && type != "config") {
 			std::string pos_str = i->second;
 			const bool tiled_pos = pos_str[0] == '@';
@@ -374,7 +376,7 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 		
 		if (type == "spawn") {
 			LOG_DEBUG(("spawnpoint: %d,%d", pos.x, pos.y));
-			PlayerManager->addSlot(pos);
+			PlayerManager->addSlot(v2<int>(pos.x, pos.y));
 		} else {
 			if (type == "object") {
 				//LOG_DEBUG(("object %s, animation %s, pos: %s", res[1].c_str(), res[2].c_str(), i->second.c_str()));
@@ -382,12 +384,16 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 					throw_ex(("'%s' misses an argument", i->first.c_str()));
 				Item item;
 				Object *o = ResourceManager->createObject(res[1], res[2]);
+
+				if (pos.z)
+					o->setZ(pos.z);
+				
 				o->addOwner(-42); //fake owner ;)
-				World->addObject(o, pos.convert<float>());
+				World->addObject(o, v2<float>(pos.x, pos.y));
 				
 				item.classname = res[1];
 				item.animation = res[2];
-				item.position = pos;
+				item.position = v2<int>(pos.x, pos.y);
 				item.dead_on = 0;
 				item.destroy_for_victory = res[3].substr(0, 19) == "destroy-for-victory";
 				if (item.destroy_for_victory) {
@@ -400,7 +406,7 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 				if (res.size() < 3)
 					throw_ex(("'%s' misses an argument", i->first.c_str()));
 				LOG_DEBUG(("waypoint class %s, name %s : %d,%d", res[1].c_str(), res[2].c_str(), pos.x, pos.y));
-				_waypoints[res[1]][res[2]] =  pos;
+				_waypoints[res[1]][res[2]] = v2<int>(pos.x, pos.y);
 			} else if (type == "edge") {
 				if (res.size() < 3)
 					throw_ex(("'%s' misses an argument", i->first.c_str()));
