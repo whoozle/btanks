@@ -249,96 +249,8 @@ public:
 		return *this;
 	}
 
-private:
-	static inline int c2d8(const T c) {
-		if (c > 0.9238795325112867385) //cos(22.5)
-			return 0;
-		else if (c > 0.3826834323650898373) //cos(67.5)
-			return 1;
-		else if (c > -0.3826834323650898373)
-			return 2;
-		else if (c > -0.9238795325112867385)
-			return 3;
-		return 4;
-	}
-
-	static inline int c2d16(const T c) {
-		if (c > 0.9807852804032304306) //11.25
-			return 0;
-		else if (c > 0.8314696123025452357) //cos(33.75)
-			return 1;
-		else if (c > 0.5526644777167217804) //cos 56.45
-			return 2;
-		else if (c > 0.1916655539320546719) //cos 78.95
-			return 3;
-		else if (c > -0.1916655539320546719) 
-			return 4;
-		else if (c > -0.5526644777167217804)
-			return 5;
-		else if (c > -0.8314696123025452357)
-			return 6;
-		else if (c > -0.9807852804032304306) //11.25
-			return 7;
-		return 8;
-	}
-
 public:	
-	inline int getDirection8() const {
-		if (is0())
-			return 0;
 
-		int xx = c2d8(x) + 1;
-		return (y <= 0 || xx == 1)? xx: 10 - xx;
-	}
-
-	inline int getDirection16() const {
-		if (is0())
-			return 0;
-
-		int xx = c2d16(x) + 1;
-		return (y <= 0 || xx == 1)? xx: 18 - xx;
-	}
-	
-	inline int getDirection(int dirs) {
-		switch(dirs) {
-			case 8: return getDirection8();
-			case 16: return getDirection16();
-			case 1: return 1;
-		}
-		return 0; //make msvc happy
-	}
-
-	static inline void quantize8(T &x) {
-		if (x > 0.3826834323650898373) {
-			x = 1;
-		} else if (x < -0.3826834323650898373)
-			x = -1;
-		else x = 0;
-	}
-
-	
-	inline void quantize8() {
-		normalize();
-		quantize8(x);
-		quantize8(y);
-		quantize8(z);
-		normalize();
-	}
-
-	inline void quantize16() {
-		static T cos_t[] = {1, 0.9238795325112867385, 0.7071067811865475727, 0.3826834323650898373, 
-						  0, -0.3826834323650898373, -0.7071067811865475727, -0.9238795325112867385, -1};
-		static T sin_t[] = {0, 0.3826834323650898373, 0.7071067811865475727, 0.9238795325112867385, 1,
-						0.9238795325112867385, 0.7071067811865475727, 0.3826834323650898373, 0 };
-		normalize();
-		int xx = c2d16(x);
-		x = cos_t[xx];
-		if (y >= 0) 
-			y = sin_t[xx];
-		else 
-			y = -sin_t[xx];
-	}
-	
 	virtual void serialize(mrt::Serializator &s) const {
 		s.add(x);
 		s.add(y);
@@ -358,29 +270,6 @@ public:
 		} else throw std::invalid_argument("invalid type T. only int allowed for fromString()");
 	}
 	
-	void fromDirection(const int dir, const int total) {
-		static const float cos_vt16[] = {1.0f,0.92388f,0.707107f,0.382683f,0.0f,-0.382683f,-0.707107f,-0.92388f,-1.0f,-0.92388f,-0.707107f,-0.382683f,0.0f,0.382683f,0.707107f,0.92388f,};
-		static const float sin_vt16[] = {0.0f,0.382683f,0.707107f,0.92388f,1.0f,0.92388f,0.707107f,0.382683f,0.0f,-0.382683f,-0.707107f,-0.92388f,-1.0f,-0.92388f,-0.707107f,-0.382683f,};
-		static const float cos_vt8[] = {1.0f,0.707107f,0.0f,-0.707107f,-1.0f,-0.707107f,0.0f,0.707107f,};
-		static const float sin_vt8[] = {0.0f,0.707107f,1.0f,0.707107f,0.0f,-0.707107f,-1.0f,-0.707107f,};
-		
-		if (total != 4 && total != 8 && total != 16)
-			throw std::invalid_argument("fromDirection() supports 4, 8 or 16 directions.");
-		if (dir < 0 || dir >= total)
-			throw std::invalid_argument("direction is greater than total direction count.");
-		z = 0;
-		
-		if (total != 16) {
-			int idx = dir * (8 / total);
-			x = cos_vt8[idx];
-			y = -sin_vt8[idx];
-		} else {
-			x = cos_vt16[dir];
-			y = -sin_vt16[dir];
-		}
-	}
-};
-
 template <typename T> const v3<T> v3<T>::empty;
 
 
