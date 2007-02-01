@@ -220,6 +220,9 @@ void BaseObject::disown() {
 }
 
 void BaseObject::copyOwners(const BaseObject *from) {
+	if (this == from)
+		return;
+	
 	_owners = from->_owners;
 	_owner_set = from->_owner_set;
 	assert(_owners.size() == _owner_set.size());
@@ -251,13 +254,17 @@ const int BaseObject::_getOwner() const {
 }
 
 const bool BaseObject::hasSameOwner(const BaseObject *other) const {
+	assert(this != other);
+	if (hasOwner(other->_id) || other->hasOwner(_id))
+		return true;
+	
 	std::set<int>::const_iterator i = _owner_set.begin(), j = other->_owner_set.begin();
 	while(i != _owner_set.end() && j != other->_owner_set.end()) {
 		const int l = *i, r = *j;
 		if (l == r) {
 			return true;
+			//LOG_DEBUG(("same owner: %s: %d: %d : %s", classname.c_str(), l, r, other->classname.c_str()));
 		}
-		//LOG_DEBUG(("%s: %d: %d : %s", classname.c_str(), l, r, other->classname.c_str()));
 		
 		if (l < r) {
 			++i;
@@ -265,7 +272,16 @@ const bool BaseObject::hasSameOwner(const BaseObject *other) const {
 			++j;
 		}
 	}
-
+	
+	/*
+	LOG_DEBUG(("no same owner: %s(%u): %s(%u)", classname.c_str(), _owner_set.size(), other->classname.c_str(), other->_owner_set.size()));
+	for(std::set<int>::const_iterator i = _owner_set.begin(); i != _owner_set.end(); ++i) {
+		LOG_DEBUG(("%s: %d", classname.c_str(), *i));
+	}
+	for(std::set<int>::const_iterator i = other->_owner_set.begin(); i != other->_owner_set.end(); ++i) {
+		LOG_DEBUG(("%s: %d", other->classname.c_str(), *i));
+	}
+	*/
 	return false;
 }
 
