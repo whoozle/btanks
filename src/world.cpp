@@ -527,15 +527,13 @@ TRY {
 	bool hidden = false;
 	std::string outline_animation;
 	
-	float map_im = 0, obj_im_now = 0, obj_im = 0;
+	float map_im = 0, obj_im = 0;
 
 	const Object *stuck_in = NULL;
 	v3<int> stuck_map_pos;
 	bool stuck = false;
 	
 TRY {	
-	
-	obj_im_now = getImpassability(&o, old_pos, &stuck_in);
 	
 	int attempt;
 	
@@ -586,7 +584,7 @@ TRY {
 		if (o.piercing || dirs == 1) 
 			break;
 
-		stuck = map.getImpassability(&o, old_pos, &stuck_map_pos) == 100 || obj_im_now >= 1.0;
+		stuck = map.getImpassability(&o, old_pos, &stuck_map_pos) == 100 || getImpassability(&o, old_pos, &stuck_in) >= 1.0;
 		
 		if (other_obj != NULL && o.classname == "player" && other_obj->classname == "player")
 			break;
@@ -630,7 +628,6 @@ TRY {
 TRY {
 	if (o.piercing) {
 		//if (obj_im_now > 0 && obj_im_now < 1.0)
-		obj_im_now = 0;
 		if (map_im >= 1.0) {
 			o._position += dpos * 4; //terrible terrible terrible hack !!! fix it ASAP
 			Map->damage(o._position + o.size / 2, o.max_hp);
