@@ -1307,13 +1307,15 @@ const Object * IWorld::findTarget(const Object *src, const std::set<std::string>
 	return result;
 }
 
-void IWorld::enumerateObjects(std::set<const Object *> &id_set, const Object *src, const float range) {
+void IWorld::enumerateObjects(std::set<const Object *> &id_set, const Object *src, const float range, const std::set<std::string> *classfilter) {
 	float r2 = range * range;
 	id_set.clear();
 	
 	for(ObjectMap::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		const Object *o = i->second;
 		if (o->_id == src->_id)
+			continue;
+		if (classfilter != NULL && classfilter->find(o->classname) == classfilter->end())
 			continue;
 		
 		if (src->_position.quick_distance(o->_position) <= r2) 

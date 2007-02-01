@@ -10,7 +10,7 @@ void ai::Herd::calculateV(v3<float> &velocity, Object *sheep, const int leader, 
 	if (leader == 0) 
 		throw_ex(("cannot operate on objects without summoner."));
 	std::set<const Object *> o_set;
-	World->enumerateObjects(o_set, sheep, distance);
+	World->enumerateObjects(o_set, sheep, distance, NULL);
 	int n = 0;
 	for(std::set<const Object *>::iterator i = o_set.begin(); i != o_set.end(); ++i) {
 		const Object *o = *i;

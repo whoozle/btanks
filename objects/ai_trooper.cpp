@@ -20,20 +20,22 @@
 #include "ai/herd.h"
 #include "config.h"
 #include "resource_manager.h"
+#include "mrt/random.h"
 
 class AITrooper : public Trooper, ai::Herd {
 public:
-	AITrooper(const std::string &object, const bool aim_missiles) : Trooper("trooper", object, aim_missiles), _reaction(true) {}
+	AITrooper(const std::string &object, const bool aim_missiles) : 
+		Trooper("trooper", object, aim_missiles), _reaction(true), _target_dir(-1) {}
 	virtual void onSpawn();
 	virtual void serialize(mrt::Serializator &s) const {
 		Trooper::serialize(s);
 		_reaction.serialize(s);
-		_target.serialize(s);
+		s.add(_target_dir);
 	}
 	virtual void deserialize(const mrt::Serializator &s) {
 		Trooper::deserialize(s);
 		_reaction.deserialize(s);
-		_target.deserialize(s);
+		s.get(_target_dir);
 	}
 	virtual void calculate(const float dt);
 	virtual Object* clone() const;
@@ -44,7 +46,7 @@ private:
 	virtual const int getComfortDistance(const Object *other) const;
 
 	Alarm _reaction;
-	v3<float> _target;
+	int _target_dir;
 };
 
 const int AITrooper::getComfortDistance(const Object *other) const {
@@ -66,8 +68,8 @@ void AITrooper::onIdle(const float dt) {
 
 void AITrooper::onSpawn() {
 	GET_CONFIG_VALUE("objects.trooper.reaction-time", float, rt, 0.1);
-	_reaction.set(rt);
-	
+	mrt::randomize(rt, rt / 2);
+	_reaction.set(rt);	
 	Trooper::onSpawn();
 }
 
@@ -97,39 +99,92 @@ void AITrooper::calculate(const float dt) {
 	targets.insert("boat");
 	
 	v3<float> vel;
-	if (getNearest(targets, _target, vel)) {
-		v3<float> tp;
-		float r = getWeaponRange(_object);
-		if (_target.quick_length() > r * r) {
-			onIdle(dt);
-			return;
+	_target_dir = getTargetPosition(_velocity, targets, _object);
+	if (_target_dir >= 0) {
+		//LOG_DEBUG(("target: %g %g %g", tp.x, tp.y, tp.length()));
+		/*
+		Way way;
+		if (findPath(tp, way)) {
+		setWay(way);
+			calculateWayVelocity();
+		}
+		*/
+		if (_velocity.length() >= 16) {
+			quantizeVelocity();
+			_direction.fromDirection(getDirection(), getDirectionsNumber());
 		} else {
-			if (getTargetPosition(tp, _target, _object)) {
-				//LOG_DEBUG(("target: %g %g %g", tp.x, tp.y, tp.length()));
-				/*
-				Way way;
-				if (findPath(tp, way)) {
-					setWay(way);
-					calculateWayVelocity();
-				}
-				*/
-				_velocity = tp;
-				quantizeVelocity();
-				_direction.fromDirection(getDirection(), getDirectionsNumber());
-		
-				if (tp.length() < 16)
-					_velocity.clear();
-			} else onIdle(dt);
-		}	
+			_velocity.clear();
+		}
+	
+	} else {
+		_velocity.clear();
+		_target_dir = -1;
+		onIdle(dt);
 	}
 	
-	_state.fire = _velocity.is0() && !_target.is0();
+	_state.fire = _velocity.is0() && _target_dir != -1;
 	if (_state.fire) {
-		_direction = _target;
-		_direction.quantize8();
-		setDirection(_direction.getDirection8() - 1 );
+		//_direction = _target;
+		//_direction.quantize8();
+		setDirection(_target_dir);
+		LOG_DEBUG(("%d", _target_dir));
+		_direction.fromDirection(_target_dir, getDirectionsNumber());
 	}
 }
+//==============================================================================
+class TrooperInWatchTower : public Trooper {
+public: 
+	TrooperInWatchTower(const std::string &object, const bool aim_missiles) : Trooper("trooper", object, aim_missiles), _reaction(true) {}
+	virtual Object * clone() const { return new TrooperInWatchTower(*this); }
+	
+	virtual void onSpawn() { 
+		GET_CONFIG_VALUE("objects.trooper.reaction-time", float, rt, 0.1);
+		_reaction.set(rt);
+	
+		Trooper::onSpawn();
+	}
+
+	virtual void serialize(mrt::Serializator &s) const {
+		Trooper::serialize(s);
+		_reaction.serialize(s);
+	}
+	virtual void deserialize(const mrt::Serializator &s) {
+		Trooper::deserialize(s);
+		_reaction.deserialize(s);
+	}
+	
+	virtual void calculate(const float dt) {
+		if (!_reaction.tick(dt))
+			return;
+		
+		float range = getWeaponRange(_object);
+		range *= range;
+		//LOG_DEBUG(("range = %g", range));
+
+		std::set<std::string> targets;
+
+		if (_aim_missiles)
+			targets.insert("missile");
+	
+		targets.insert("player");
+		targets.insert("trooper");
+		targets.insert("kamikaze");
+	
+		v3<float> pos, vel;
+		if (getNearest(targets, pos, vel) && pos.quick_length() <= range) {
+			_state.fire = true;
+			_direction = pos;
+			_direction.normalize();
+			setDirection(_direction.getDirection(getDirectionsNumber()) - 1);
+			
+		} else _state.fire = false;
+	}
+private: 
+	Alarm _reaction; 
+};
 
 REGISTER_OBJECT("machinegunner", AITrooper, ("machinegunner-bullet", true));
 REGISTER_OBJECT("thrower", AITrooper, ("thrower-missile", false));
+
+REGISTER_OBJECT("machinegunner-in-watchtower", TrooperInWatchTower, ("machinegunner-bullet", true));
+REGISTER_OBJECT("thrower-in-watchtower", TrooperInWatchTower, ("thrower-missile", false));

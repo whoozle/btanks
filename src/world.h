@@ -94,7 +94,7 @@ public:
 
 	//ai stuff:	
 	const Object * findTarget(const Object *src, const std::set<std::string> &enemies, const std::set<std::string> &bonuses, ai::Traits &traits) const;
-	void enumerateObjects(std::set<const Object *> &o_set, const Object *src, const float range);
+	void enumerateObjects(std::set<const Object *> &o_set, const Object *src, const float range, const std::set<std::string> *classfilter);
 	
 private:
 

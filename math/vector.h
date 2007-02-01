@@ -1,0 +1,54 @@
+#ifndef BTANKS_VECTOR_H__
+#define BTANKS_VECTOR_H__
+
+/* Battle Tanks Game
+ * Copyright (C) 2006-2007 Battle Tanks team
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ */
+
+
+#include "math/v3.h"
+#include <assert.h>
+
+namespace math {
+
+template<typename T>
+void getNormalVector(v3<T> &result, const v3<T> &line, const v3<T> &point) {
+	if (line.x == 0) {
+		assert(line.y != 0);
+		result.y = 0;
+		result.x = point.x;
+		return;
+	}
+	
+	if (line.y == 0) {
+		result.x = 0;
+		result.y = point.y;
+		return;
+	}
+	
+	const T k = line.y / line.x;
+	const T b = point.y + point.x / k;
+	const T x_cross = b / (k + 1 / k);
+	const T y_cross = k * x_cross;
+	result.x = point.x - x_cross;
+	result.y = point.y - y_cross;
+}
+
+}
+
+#endif
+

@@ -24,57 +24,6 @@
 #include "world.h"
 #include "trooper.h"
 
-class TrooperInWatchTower : public Trooper {
-public: 
-	TrooperInWatchTower(const std::string &object, const bool aim_missiles) : Trooper("trooper", object, aim_missiles), _reaction(true) {}
-	virtual Object * clone() const { return new TrooperInWatchTower(*this); }
-	
-	virtual void onSpawn() { 
-		GET_CONFIG_VALUE("objects.trooper.reaction-time", float, rt, 0.1);
-		_reaction.set(rt);
-	
-		Trooper::onSpawn();
-	}
-
-	virtual void serialize(mrt::Serializator &s) const {
-		Trooper::serialize(s);
-		_reaction.serialize(s);
-	}
-	virtual void deserialize(const mrt::Serializator &s) {
-		Trooper::deserialize(s);
-		_reaction.deserialize(s);
-	}
-	
-	virtual void calculate(const float dt) {
-		if (!_reaction.tick(dt))
-			return;
-		
-		float range = getWeaponRange(_object);
-		range *= range;
-		//LOG_DEBUG(("range = %g", range));
-
-		std::set<std::string> targets;
-
-		if (_aim_missiles)
-			targets.insert("missile");
-	
-		targets.insert("player");
-		targets.insert("trooper");
-		targets.insert("kamikaze");
-	
-		v3<float> pos, vel;
-		if (getNearest(targets, pos, vel) && pos.quick_length() <= range) {
-			_state.fire = true;
-			_direction = pos;
-			_direction.normalize();
-			setDirection(_direction.getDirection(getDirectionsNumber()) - 1);
-			
-		} else _state.fire = false;
-	}
-private: 
-	Alarm _reaction; 
-};
-
 
 void Trooper::tick(const float dt) {
 	setDirection(_velocity.getDirection8() - 1);
@@ -131,5 +80,3 @@ Object* Trooper::clone() const  {
 
 
 REGISTER_OBJECT("machinegunner-player", Trooper, ("player", "machinegunner-bullet", true));
-REGISTER_OBJECT("machinegunner-in-watchtower", TrooperInWatchTower, ("machinegunner-bullet", true));
-REGISTER_OBJECT("thrower-in-watchtower", TrooperInWatchTower, ("thrower-missile", false));

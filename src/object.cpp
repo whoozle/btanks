@@ -811,6 +811,53 @@ const float Object::getWeaponRange(const std::string &weapon) const {
 	return range * tm;
 }
 
+#include "math/vector.h"
+
+const int Object::getTargetPosition(v3<float> &relative_position, const std::set<std::string> &targets, const std::string &weapon) const {
+	const int dirs = _directions_n;
+	
+	float range = getWeaponRange(weapon);
+	std::set<const Object *> objects;
+	World->enumerateObjects(objects, this, range, &targets);
+	
+	v3<int> pfs = Map->getPathTileSize();
+	const Matrix<int> &matrix = Map->getImpassabilityMatrix();
+//		v3<int> map_pos = (pos + getPosition()).convert<int>() / pfs;
+
+	int result_dir = -1;
+	float distance = -1; //no result if it was bug. ;)
+
+	for(int d = 0; d < dirs; ++d) {
+		v3<float> dir;
+		dir.fromDirection(d, dirs);
+		for(std::set<const Object *>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
+			const Object *o = *i;
+			if (hasSameOwner(o))
+				continue;
+			
+			v3<float> pos, tp = getRelativePosition(o);
+			math::getNormalVector(pos, dir, tp);
+			if (pos.quick_length() > tp.quick_length())
+				continue;
+			
+			
+			//skip solid objects
+			v3<int> map_pos = (pos + getPosition()).convert<int>() / pfs;
+			if (matrix.get(map_pos.y, map_pos.x) == -1)
+				continue;
+				
+			float dist = pos.quick_length();
+			if (result_dir == -1 || dist < distance) {
+				LOG_DEBUG(("enemy @ %g %g: %s (dir: %d, distance: %g)", pos.x, pos.y, o->registered_name.c_str(), d, distance));
+				result_dir = d;
+				distance = dist;
+				relative_position = pos;
+			}
+		}
+	}
+	return result_dir;
+}
+
 
 const bool Object::getTargetPosition(v3<float> &relative_position, const v3<float> &target, const std::string &weapon) const {
 	const int dirs = _directions_n;
@@ -835,8 +882,10 @@ const bool Object::getTargetPosition(v3<float> &relative_position, const v3<floa
 		pos += target;
 		double d = pos.quick_length();
 		v3<int> map_pos = (pos + getPosition()).convert<int>() / pfs;
+		if (matrix.get(map_pos.y, map_pos.x) == -1)
+			continue;
 		
-		if (i == 0 || d < distance && matrix.get(map_pos.y, map_pos.x) != -1) {
+		if (!found || d < distance) {
 			distance = d;
 			relative_position = pos;
 			found = true;
