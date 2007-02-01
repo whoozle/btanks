@@ -857,7 +857,8 @@ void IPlayerManager::onPlayerDeath(const Object *player, const Object *killer) {
 	//LOG_DEBUG(("player: %s killed by %s", player->registered_name.c_str(), killer->registered_name.c_str()));
 		
 	if (slot->id == player->getID()) { //suicide
-		--(slot->frags);
+		if (slot->frags > 0)
+			--(slot->frags);
 	} else {
 		++(slot->frags);
 	}
