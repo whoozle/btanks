@@ -106,7 +106,7 @@ void IWorld::addObject(Object *o, const v3<float> &pos, const int id) {
 void IWorld::render(sdlx::Surface &surface, const sdlx::Rect&src, const sdlx::Rect &dst) {
 	surface.setClipRect(dst);
 	
-	typedef std::multimap<const float, Object *> LayerMap;
+	typedef std::multimap<const int, Object *> LayerMap;
 	LayerMap layers;
 	const IMap &map = *Map.get_const();
 	
@@ -114,14 +114,14 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect&src, const sdlx::Re
 		Object *o = i->second;
 		if (o->isDead())
 			continue;
-		layers.insert(LayerMap::value_type(o->_position.z, o));
+		layers.insert(LayerMap::value_type((int)o->_position.z, o));
 	}
 	int z1 = -1001;
 	for(LayerMap::iterator i = layers.begin(); i != layers.end(); ++i) {
 		if (i->second->isDead())
 			continue;
 		
-		int z2 = (int)i->first;
+		int z2 = i->first;
 		//LOG_DEBUG(("world::render(%d, %d)", z1, z2));
 		if (z1 != z2) {
 			//LOG_DEBUG(("calling map::render(%d, %d)", z1, z2));
