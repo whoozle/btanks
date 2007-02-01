@@ -743,6 +743,8 @@ void IPlayerManager::tick(const float now, const float dt) {
 
 		//const int gran = 50;
 		//slot.map_vel = (dvel / (gran / 8)).convert<int>().convert<float>() * gran;
+		if (dvel.length() > p->speed) 
+			dvel.normalize(p->speed);
 		slot.map_vel = dvel;
 		
 		//if (slot.map_vel.length() > max_speed)
