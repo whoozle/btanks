@@ -269,6 +269,7 @@ public:
 				throw std::invalid_argument("cannot parse %d,%d,%d from " + str);
 		} else throw std::invalid_argument("invalid type T. only int allowed for fromString()");
 	}
+};
 	
 template <typename T> const v3<T> v3<T>::empty;
 
