@@ -99,8 +99,6 @@ public:
 	void enumerateObjects(std::set<const Object *> &o_set, const Object *src, const float range, const std::set<std::string> *classfilter);
 	
 private:
-
-	void deleteObject(ObjectMap &objects, Object *o);
 	void replaceID(const int old_id, const int new_id);
 	
 	typedef std::map<const std::pair<int, int>, bool> CollisionMap;

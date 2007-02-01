@@ -739,23 +739,6 @@ void IWorld::tick(const float dt) {
 	tick(_objects, dt);
 }
 
-void IWorld::deleteObject(ObjectMap &objects, Object *o) {
-	ObjectMap::iterator m = objects.find(o->_id);
-	assert(m != _objects.end());
-	assert(o == m->second);
-	objects.erase(m);
-			
-	//implement more smart way to fix it.
-	if (&objects != &_objects) {
-		ObjectMap::iterator m = _objects.find(o->_id);
-		assert(m != _objects.end());
-		assert(o == m->second);
-		_objects.erase(m);
-	}
-	
-	delete o;
-}
-
 void IWorld::tick(ObjectMap &objects, const float dt) {
 	float max_dt = _max_dt;
 	int n = (int)(dt / max_dt);
@@ -795,8 +778,9 @@ void IWorld::tick(ObjectMap &objects, const float dt) {
 		if (o->isDead()) { //fixme
 			if (_safe_mode == false) {
 				//LOG_DEBUG(("object %d:%s is dead. cleaning up. (global map: %s)", o->getID(), o->classname.c_str(), &objects == &_objects?"true":"false" ));
-				++i;
-				deleteObject(objects, o);
+				delete o;
+				o = NULL;
+				objects.erase(i++);
 				continue;
 			}
 		} 
@@ -823,8 +807,8 @@ void IWorld::tick(ObjectMap &objects, const float dt) {
 			LOG_WARN(("leader for object %d is dead. (leader-id:%d)", o->_id, f));
 			o->_follow = 0;
 			o->emit("death", NULL);
-			++i;
-			deleteObject(objects, o);
+			delete o; o = NULL;
+			objects.erase(i++);
 		}
 	}
 }
