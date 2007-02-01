@@ -23,6 +23,7 @@
 
 #include "math/unary.h"
 #include "player_manager.h"
+#include "mrt/random.h"
 
 using namespace ai;
 
