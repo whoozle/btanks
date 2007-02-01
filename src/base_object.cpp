@@ -119,7 +119,8 @@ void BaseObject::deserialize(const mrt::Serializator &s) {
 		_owners.push_back(id);
 		_owner_set.insert(id);
 	}
-	
+	assert(_owners.size() == _owner_set.size());
+		
 	s.get(_spawned_by);
 }
 
@@ -221,6 +222,7 @@ void BaseObject::disown() {
 void BaseObject::copyOwners(const BaseObject *from) {
 	_owners = from->_owners;
 	_owner_set = from->_owner_set;
+	assert(_owners.size() == _owner_set.size());
 }
 
 
