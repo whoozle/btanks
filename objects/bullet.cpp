@@ -100,9 +100,7 @@ void Bullet::emit(const std::string &event, Object * emitter) {
 		}
 		if (_type == "regular") {
 			GET_CONFIG_VALUE("objects.explosion-downwards-z-override", int, edzo, 180)
-			int z = 0;
-			if (_velocity.y >= 0)
-				z = edzo;
+			int z = (_velocity.y >= 0) ? edzo : 0;
 			spawn("explosion", "explosion", dpos, v2<float>::empty, z);
 		} else if (_type == "dirt") {
 			spawn("dirt", "dirt", dpos);
