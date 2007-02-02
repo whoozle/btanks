@@ -18,7 +18,7 @@ vobj = venv.Object('src/version.cpp')
 bt_sources = 	[
 	'src/alarm.cpp', 'src/base_object.cpp', 'src/notifying_xml_parser.cpp',
 	
-	'src/player_manager.cpp',
+	'src/player_manager.cpp', 'src/object_grid.cpp',
 	
 	'objects/bullet.cpp', 'objects/explosion.cpp', 'objects/single_pose.cpp',
 	'objects/tank.cpp', 'objects/shilka.cpp', 'objects/launcher.cpp', 'objects/ai_tank.cpp',
