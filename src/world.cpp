@@ -1142,6 +1142,7 @@ const Object* IWorld::getNearestObject(const Object *obj, const std::set<std::st
 const Object* IWorld::getNearestObject(const Object *obj, const std::set<std::string> &classnames, const float range) const {
 	const Object *result = NULL;
 	float distance = std::numeric_limits<float>::infinity();
+	float range2 = range * range;
 
 	for(ObjectMap::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		const Object *o = i->second;
@@ -1151,7 +1152,7 @@ const Object* IWorld::getNearestObject(const Object *obj, const std::set<std::st
 
 		v2<float> cpos = o->_position + o->size / 2;
 		float d = obj->_position.quick_distance(cpos);
-		if (d < range && d < distance) {
+		if (d < range2 && d < distance) {
 			distance = d;
 			result = o;
 		}
