@@ -44,7 +44,7 @@ void Mine::onSpawn() {
 
 void Mine::tick(const float dt) {
 	Object::tick(dt);
-	if (getState() == "armed") 
+	if (hasOwners() && getState() == "armed") 
 		disown();
 }
 
