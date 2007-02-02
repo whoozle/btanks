@@ -38,6 +38,7 @@
 #endif              
 
 #include <set>
+#include <stdint.h>
 
 
 Monitor::Task::Task(const int id) : 
@@ -81,14 +82,13 @@ Monitor::Task * Monitor::createTask(const int id, const mrt::Chunk &rawdata) {
 	} else data = rawdata; //fixme: optimize it somehow.
 
 	int size = data.getSize();
-	assert(size < 65536);
 
-	Task *t = new Task(id, size + 3);
+	Task *t = new Task(id, size + 5);
 
-	unsigned short nsize = htons((short)size);
-	memcpy(t->data->getPtr(), &nsize, 2);
-	*((unsigned char *)t->data->getPtr() + 2) = flags;
-	memcpy((unsigned char *)t->data->getPtr() + 3, data.getPtr(), size);
+	uint32_t nsize = htonl((short)size);
+	memcpy(t->data->getPtr(), &nsize, 4);
+	*((unsigned char *)t->data->getPtr() + 4) = flags;
+	memcpy((unsigned char *)t->data->getPtr() + 5, data.getPtr(), size);
 	
 	return t;
 }
@@ -237,7 +237,7 @@ const int Monitor::run() {
 
 				TaskQueue::iterator ti = findTask(_recv_q, cid);
 				if (ti == _recv_q.end()) {
-					Task *t = new Task(cid, 3);
+					Task *t = new Task(cid, 5);
 					t->size_task = true;
 					_recv_q.push_back(t);
 					//LOG_DEBUG(("added size task to r-queue"));
@@ -260,8 +260,8 @@ const int Monitor::run() {
 			
 				if (t->pos == t->len) {
 					if (t->size_task) {
-						unsigned short len = ntohs(*((unsigned short *)(t->data->getPtr())));
-						unsigned char flags = *((unsigned char *)(t->data->getPtr()) + 2);
+						unsigned short len = ntohl(*((unsigned uint32_t *)(t->data->getPtr())));
+						unsigned char flags = *((unsigned char *)(t->data->getPtr()) + 4);
 						//LOG_DEBUG(("added task for %u bytes. flags = %02x", len, flags));
 						eraseTask(_recv_q, ti);
 						
