@@ -83,6 +83,7 @@ public:
 	inline const int getZ() const { return _z; }
 	
 	void disown();
+	inline const bool hasOwners() const { return !_owner_set.empty(); }
 	void addOwner(const int oid);
 	void prependOwner(const int oid); //to avoid truncation of this owner. 
 	const int _getOwner() const;
