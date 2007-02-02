@@ -762,6 +762,15 @@ void Object::removeEffect(const std::string &name) {
 }
 
 void Object::calculate(const float dt) {
+	if (_follow > 0) {
+		Object *leader = World->getObjectByID(_follow);
+		if (leader) {
+			_direction = leader->_direction;
+			setDirection(leader->getDirection());
+			return;
+		}
+	}
+	
 	_velocity.clear();
 		
 	if (_state.left) _velocity.x -= 1;
