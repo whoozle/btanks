@@ -263,7 +263,7 @@ const float IWorld::getImpassability(Object *obj, const v2<int> &position, const
 
 
 	std::set<int> objects;
-	_grid.collide(objects, obj->_id);
+	_grid.collide(objects, position, obj->size.convert<int>());
 	//consult grid
 
 	for(std::set<int>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
