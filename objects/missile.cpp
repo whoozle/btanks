@@ -69,9 +69,7 @@ void Missile::calculate(const float dt) {
 		}
 	
 		v2<float> pos, vel;
-		const float range = speed * ttl;
-	
-		if (getNearest(targets, range, pos, vel)) {
+		if (getNearest(targets, pos, vel)) {
 			float est_t = pos.length() / speed;
 			if (est_t > 1)
 				est_t = 1;
