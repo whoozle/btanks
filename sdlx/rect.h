@@ -23,18 +23,14 @@
 
 namespace sdlx {
     class Rect : public SDL_Rect {
-/*        typedef SDL_Rect* pSDL_Rect;
-        typedef const SDL_Rect* pcSDL_Rect;
-*/
     public:
 	inline void reset() {
 	    x = y = w = h = 0;
 	}
 	
-	Rect() {
-		reset();
-	}
-	Rect(int _x, int _y, int _w, int _h) {
+	inline Rect() { x = y = w = h = 0; }
+	
+	inline Rect(int _x, int _y, int _w, int _h) {
 		x = _x; y = _y; w = _w; h = _h;
 	}
 	
@@ -43,13 +39,8 @@ namespace sdlx {
 	}
 	
 	inline const bool intersects(const Rect & other) const {
-		int x2 = x + w - 1;
-		int other_x2 = other.x + other.w - 1;
-
-		int y2 = y + h - 1;
-		int other_y2 = other.y + other.h - 1;
-		
-		return !((other_x2 < x) || (x2 < other.x) || (other_y2 < y) || (y2 < other.y));
+		return !( x >= (other.x + w) || (x + w) <= other.x ||
+				y >= (other.y + h) || (y + h) <= other.y );
 	}
 };
 }
