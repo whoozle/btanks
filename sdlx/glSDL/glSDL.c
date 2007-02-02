@@ -30,6 +30,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
+#include <assert.h>
 
 #if HAS_SDL_OPENGL_H
 #include "SDL_opengl.h"
@@ -1698,7 +1699,10 @@ SDL_Surface *glSDL_DisplayFormat(SDL_Surface *surface)
 		if(surface->flags & SDL_SRCALPHA)
 			SDL_SetAlpha(s, SDL_SRCALPHA,
 					surface->format->alpha);
-		glSDL_UploadSurface(s);
+		{
+			int r = glSDL_UploadSurface(s);
+			assert( r == 0 );
+		}
 		return s;
 	}
 	else
