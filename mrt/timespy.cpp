@@ -2,9 +2,22 @@
 #include "ioexception.h"
 #include "logger.h"
 
-#include <time.h>
 
 using namespace mrt;
+
+#if defined(_MSC_VER) || defined(_WINDOWS_)
+   static int gettimeofday(struct timeval* tp, void* tzp) 
+   {
+/*      DWORD t;
+      t = timeGetTime();
+      tp->tv_sec = t / 1000;
+      tp->tv_usec = t % 1000;
+      return 0;
+*/
+		throw_ex(("unimplemented"));
+   }
+#endif
+
 
 TimeSpy::TimeSpy(const std::string &message): message(message) {
 	if (gettimeofday(&tm, NULL) == -1)
