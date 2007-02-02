@@ -848,8 +848,11 @@ Object* IWorld::spawn(Object *src, const std::string &classname, const std::stri
 	//LOG_DEBUG(("spawning %s, position = %g %g dPosition = %g:%g, velocity: %g %g", 
 	//	classname.c_str(), src->_position.x, src->_position.y, dpos.x, dpos.y, vel.x, vel.y));
 	v2<float> pos = src->_position + (src->size / 2)+ dpos - (obj->size / 2);
-	obj->setZ(z);
+	
 	addObject(obj, pos);
+
+	if (z) 
+		obj->setZ(z);
 	//LOG_DEBUG(("result: %f %f", obj->_position.x, obj->_position.y));
 	return obj;
 }
