@@ -39,8 +39,8 @@ namespace sdlx {
 	}
 	
 	inline const bool intersects(const Rect & other) const {
-		return !( x >= (other.x + w) || (x + w) <= other.x ||
-				y >= (other.y + h) || (y + h) <= other.y );
+		return !( x >= (other.x + other.w) || (x + w) <= other.x ||
+				y >= (other.y + other.h) || (y + h) <= other.y );
 	}
 };
 }
