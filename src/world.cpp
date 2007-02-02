@@ -940,7 +940,7 @@ void IWorld::deserializeObjectPV(const mrt::Serializator &s, Object *o) {
 	
 	o->_position.deserialize(s);
 	o->_velocity.deserialize(s);
-	o->_velocity_fadeout.deserialize(s);	
+	o->_velocity_fadeout.deserialize(s);
 }
 
 
@@ -1002,6 +1002,7 @@ Object * IWorld::deserializeObject(const mrt::Serializator &s) {
 		}
 	} CATCH(mrt::formatString("deserializeObject('%d:%s:%s')", id, rn.c_str(), an.c_str()).c_str(), { delete ao; throw; })
 	assert(result != NULL);
+	updateObject(result);
 	//LOG_DEBUG(("deserialized object: %d:%s:%s", id, rn.c_str(), an.c_str()));
 	return result;
 }
@@ -1009,7 +1010,7 @@ Object * IWorld::deserializeObject(const mrt::Serializator &s) {
 void IWorld::cropObjects(const std::set<int> &ids) {
 	for(ObjectMap::iterator i = _objects.begin(); i != _objects.end(); /*haha*/ ) {
 		if (ids.find(i->first) == ids.end()) {
-			delete i->second;
+			deleteObject(i->second);
 			_objects.erase(i++);
 		} else ++i;
 	}
