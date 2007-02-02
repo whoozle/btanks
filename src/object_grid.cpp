@@ -3,25 +3,27 @@
 #include "mrt/logger.h"
 #include <algorithm>
 
+Grid::Grid() : _step(0) {}
+
 void Grid::clear() {
 	_grid.clear();
 	_index.clear();
 	_grid_size.clear();
 }
 
-void Grid::collide(std::set<int> &objects, const int id) {
-	Index::iterator i = _index.find(id);
+void Grid::collide(std::set<int> &objects, const int id) const {
+	Index::const_iterator i = _index.find(id);
 	if (i == _index.end())
 		throw_ex(("nothing known about id %d", id));
 	collide(objects, i->second.pos, i->second.size);
 }
 
-void Grid::collide(std::set<int> &objects, const v2<int>& area_pos, const v2<int>& area_size) {
+void Grid::collide(std::set<int> &objects, const v2<int>& area_pos, const v2<int>& area_size) const {
 	v2<int> start = area_pos / _grid_size;
 	v2<int> end = (area_pos + area_size - 1) / _grid_size;
 	for(int y = start.y; y <= end.y; ++y) 
 		for(int x = start.x; x <= end.x; ++x) {
-			GridMap::iterator i = _grid.find(v2<int>(x, y));
+			GridMap::const_iterator i = _grid.find(v2<int>(x, y));
 			if (i == _grid.end())
 				continue;
 
@@ -30,9 +32,9 @@ void Grid::collide(std::set<int> &objects, const v2<int>& area_pos, const v2<int
 		}	
 }
 
-void Grid::setSize(const int w, const int h, const int step) {
+void Grid::setSize(const v2<int> &size, const int step) {
 	clear();
-	_grid_size = v2<int>(w, h);
+	_grid_size = (size - 1) / step + 1;
 	_step = step;
 }
 

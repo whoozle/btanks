@@ -10,14 +10,14 @@
 class Grid {
 public: 
 	Grid();
-	void setSize(const int w, const int h, const int step);
+	void setSize(const v2<int> &size, const int step);
 
 	void clear();
 	void update(const int id, const v2<int> &pos, const v2<int> &size);
 	void remove(const int id);
 
-	void collide(std::set<int> &objects, const int id);
-	void collide(std::set<int> &objects, const v2<int>& area_pos, const v2<int>& area_size);
+	void collide(std::set<int> &objects, const int id) const;
+	void collide(std::set<int> &objects, const v2<int>& area_pos, const v2<int>& area_size) const;
 	
 private:
 	struct Object {
