@@ -34,9 +34,10 @@ void Grid::collide(std::set<int> &objects, const v2<int>& area_pos, const v2<int
 
 void Grid::setSize(const v2<int> &size, const int step) {
 	clear();
-	_grid_size = (size - 1) / step + 1;
+	//_grid_size = (size - 1) / step + 1;
 	//LOG_DEBUG(("grid_size: %dx%d", _grid_size.x, _grid_size.y));
 	_step = step;
+	_grid_size = v2<int>(step, step);
 }
 
 void Grid::removeFromGrid(const int id, const Object &o) {
