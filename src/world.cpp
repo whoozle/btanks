@@ -51,11 +51,17 @@ void IWorld::setTimeSlice(const float ts) {
 	_max_dt = ts;
 }
 
+void IWorld::initMap() {
+	GET_CONFIG_VALUE("engine.grid-fragment-size", int, gfs, 256);
+	_grid.setSize(Map->getSize(), gfs);
+}
 
 void IWorld::clear() {
 	LOG_DEBUG(("cleaning up world..."));
 	std::for_each(_objects.begin(), _objects.end(), delete_ptr2<ObjectMap::value_type>());
 	_objects.clear();
+	_grid.clear();
+	
 	_collision_map.clear();
 	_static_collision_map.clear();
 	
@@ -84,6 +90,15 @@ void IWorld::setSafeMode(const bool safe_mode) {
 
 void IWorld::deleteObject(const Object *o) {
 	delete o;
+	_grid.remove(o->_id);
+	//place for callbacks
+}
+
+void IWorld::updateObject(const Object *o) {
+	if (o->impassability == 0)
+		return;
+	
+	_grid.update(o->_id, o->_position.convert<int>(), o->size.convert<int>());
 	//place for callbacks
 }
 
@@ -100,6 +115,8 @@ void IWorld::addObject(Object *o, const v2<float> &pos, const int id) {
 
 	o->onSpawn();
 	o->need_sync = true;
+
+	updateObject(o);
 	//LOG_DEBUG(("object %d added, objects: %d", o->_id, _objects.size()));
 }
 
@@ -241,10 +258,21 @@ const float IWorld::getImpassability(Object *obj, const v2<int> &position, const
 
 	float im = 0;
 	const Object *result = NULL;
+	
 	sdlx::Rect my((int)position.x, (int)position.y,(int)obj->size.x, (int)obj->size.y);
 
-	for(ObjectMap::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
-		Object *o = i->second;
+
+	std::set<int> objects;
+	_grid.collide(objects, obj->_id);
+	//consult grid
+
+	for(std::set<int>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
+		ObjectMap::const_iterator o_i = _objects.find(*i);
+		if (o_i == _objects.end())
+			continue;
+			
+		Object *o = o_i->second;
+		
 		if (obj->speed == 0 && o->impassability < 1 && o->impassability >= 0)
 			continue;
 		if (obj->_id == o->_id || o->impassability == 0 || (skip_moving && o->speed != 0))
@@ -521,10 +549,13 @@ TRY {
 
 	v2<int> new_pos = (o._position + dpos).convert<int>();
 	v2<int> old_pos = o._position.convert<int>();
+
 	if (new_pos == old_pos) {
 		o._position += dpos;
 		return;
 	}
+
+	updateObject(&o);
 	
 	bool has_outline = false;
 	bool hidden = false;

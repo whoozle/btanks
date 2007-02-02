@@ -331,6 +331,9 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 	_main_menu.setActive(false);
 	IMap &map = *IMap::get_instance();
 	map.load(name);
+
+	World->initMap();
+
 	_waypoints.clear();
 	_waypoint_edges.clear();
 	

@@ -30,6 +30,8 @@
 #include "math/matrix.h"
 #include "object_common.h"
 
+#include "object_grid.h"
+
 namespace sdlx {
 class Surface;
 class Rect;
@@ -97,8 +99,11 @@ public:
 	//ai stuff:	
 	const Object * findTarget(const Object *src, const std::set<std::string> &enemies, const std::set<std::string> &bonuses, ai::Traits &traits) const;
 	void enumerateObjects(std::set<const Object *> &o_set, const Object *src, const float range, const std::set<std::string> *classfilter);
+
+	void initMap();
 	
 private:
+	void updateObject(const Object *o);
 	void deleteObject(const Object *o);
 	
 	void replaceID(const int old_id, const int new_id);
@@ -114,6 +119,7 @@ private:
 	void cropObjects(const std::set<int> &ids);
 
 	ObjectMap _objects;
+	Grid _grid; //hopefully it'll be our saviour.
 	int _last_id;
 	bool _safe_mode, _atatat;
 	float _max_dt;

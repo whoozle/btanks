@@ -35,6 +35,7 @@ void Grid::collide(std::set<int> &objects, const v2<int>& area_pos, const v2<int
 void Grid::setSize(const v2<int> &size, const int step) {
 	clear();
 	_grid_size = (size - 1) / step + 1;
+	//LOG_DEBUG(("grid_size: %dx%d", _grid_size.x, _grid_size.y));
 	_step = step;
 }
 
@@ -63,6 +64,7 @@ void Grid::update(const int id, const v2<int> &pos, const v2<int> &size) {
 		//insert
 		v2<int> start = pos / _grid_size;
 		v2<int> end = (pos + size - 1) / _grid_size;
+		//LOG_DEBUG(("updating %d (%d, %d) -> (%d, %d) (%d %d)", id, start.x, start.y, end.x, end.y, pos.x, pos.y));
 		for(int y = start.y; y <= end.y; ++y) 
 			for(int x = start.x; x <= end.x; ++x) {
 				_grid[v2<int>(x, y)].insert(id);
