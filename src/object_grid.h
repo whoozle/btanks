@@ -16,22 +16,26 @@ public:
 	void update(const int id, const v2<int> &pos, const v2<int> &size);
 	void remove(const int id);
 
-	void collide(std::set<int> &objects, const int id) const;
 	void collide(std::set<int> &objects, const v2<int>& area_pos, const v2<int>& area_size) const;
 	
 private:
+	typedef std::set<int> IDSet;
+	typedef std::map<const v2<int>, IDSet> GridMap;
+
+
 	struct Object {
 		Object(const v2<int>& pos, const v2<int>& size) : pos(pos), size(size) {}
 		v2<int> pos, size;
 	};
 
-	void removeFromGrid(const int id, const Object &o);
+	void collide(std::set<int> &objects, const GridMap &grid, const v2<int> &grid_size, const v2<int>& area_pos, const v2<int>& area_size) const;
+	void removeFromGrid(GridMap &grid, const v2<int> &grid_size, const int id, const Object &o);
+	void update(GridMap &grid, const v2<int> &grid_size, const int id, const v2<int> &pos, const v2<int> &size);
 
 	v2<int> _grid_size; 
-	int _step;
-	typedef std::set<int> IDSet;
-	typedef std::map<const v2<int>, IDSet> GridMap;
-	GridMap _grid;
+	v2<int> _grid4_size;
+	
+	GridMap _grid, _grid4;
 	
 	typedef std::map<const int, Object> Index;
 	Index _index;

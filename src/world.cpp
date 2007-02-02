@@ -1144,8 +1144,16 @@ const Object* IWorld::getNearestObject(const Object *obj, const std::set<std::st
 	float distance = std::numeric_limits<float>::infinity();
 	float range2 = range * range;
 
-	for(ObjectMap::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
-		const Object *o = i->second;
+	std::set<int> objects;
+	_grid.collide(objects, (obj->_position - range).convert<int>(), v2<int>((int)range * 2, (int)range * 2));
+	//consult grid
+
+	for(std::set<int>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
+		ObjectMap::const_iterator o_i = _objects.find(*i);
+		if (o_i == _objects.end())
+			continue;
+			
+		Object *o = o_i->second;
 		//LOG_DEBUG(("%s is looking for %s. found: %s", obj->classname.c_str(), classname.c_str(), o->classname.c_str()));
 		if (o->_id == obj->_id || classnames.find(o->classname) == classnames.end() || o->hasSameOwner(obj))
 			continue;
@@ -1381,8 +1389,15 @@ void IWorld::enumerateObjects(std::set<const Object *> &id_set, const Object *sr
 	float r2 = range * range;
 	id_set.clear();
 	
-	for(ObjectMap::iterator i = _objects.begin(); i != _objects.end(); ++i) {
-		Object *o = i->second;
+	std::set<int> objects;
+	_grid.collide(objects, (src->_position - range).convert<int>(), v2<int>((int)range * 2, (int)range * 2));
+	//consult grid
+
+	for(std::set<int>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
+		ObjectMap::const_iterator o_i = _objects.find(*i);
+		if (o_i == _objects.end())
+			continue;
+		Object *o = o_i->second;
 		
 		if (o->_id == src->_id)
 			continue;
