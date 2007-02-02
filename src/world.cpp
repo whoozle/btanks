@@ -234,13 +234,15 @@ const float IWorld::getImpassability(Object *obj, const v2<int> &position, const
 			*collided_with = NULL;
 		return 0;
 	}
-	
+
 	float im = 0;
 	const Object *result = NULL;
 	sdlx::Rect my((int)position.x, (int)position.y,(int)obj->size.x, (int)obj->size.y);
-	
+
 	for(ObjectMap::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		Object *o = i->second;
+		if (obj->speed == 0 && o->impassability < 1 && o->impassability >= 0)
+			continue;
 		if (obj->_id == o->_id || o->impassability == 0 || (skip_moving && o->speed != 0))
 			continue;
 
