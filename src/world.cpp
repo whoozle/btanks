@@ -800,8 +800,6 @@ void IWorld::tick(ObjectMap &objects, const float dt) {
 		if (o_i != _objects.end()) {
 			const Object *leader = o_i->second;
 			//LOG_DEBUG(("following %d...", f));
-			o->speed = leader->speed;
-			
 			o->_position = leader->_position + o->_follow_position;
 			o->_velocity = leader->_velocity;
 			++i;
