@@ -82,6 +82,10 @@ void IWorld::setSafeMode(const bool safe_mode) {
 	LOG_DEBUG(("set safe mode to %s", _safe_mode?"true":"false"));
 }
 
+void IWorld::deleteObject(const Object *o) {
+	delete o;
+	//place for callbacks
+}
 
 void IWorld::addObject(Object *o, const v2<float> &pos, const int id) {
 	if (o == NULL) 
@@ -779,7 +783,7 @@ void IWorld::tick(ObjectMap &objects, const float dt) {
 		if (o->isDead()) { //fixme
 			if (_safe_mode == false) {
 				//LOG_DEBUG(("object %d:%s is dead. cleaning up. (global map: %s)", o->getID(), o->classname.c_str(), &objects == &_objects?"true":"false" ));
-				delete o;
+				deleteObject(o);
 				o = NULL;
 				objects.erase(i++);
 				continue;
@@ -806,7 +810,9 @@ void IWorld::tick(ObjectMap &objects, const float dt) {
 			LOG_WARN(("leader for object %d is dead. (leader-id:%d)", o->_id, f));
 			o->_follow = 0;
 			o->emit("death", NULL);
-			delete o; o = NULL;
+			
+			deleteObject(o);
+			o = NULL;
 			objects.erase(i++);
 		}
 	}
