@@ -1342,8 +1342,15 @@ void IWorld::enumerateObjects(std::set<const Object *> &id_set, const Object *sr
 	float r2 = range * range;
 	id_set.clear();
 	
-	for(ObjectMap::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
-		const Object *o = i->second;
+	std::set<int> objects;
+	_grid.collide(objects, (src->_position - range).convert<int>(), v2<int>((int)range * 2, (int)range * 2));
+	
+	for(std::set<int>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
+		ObjectMap::const_iterator o_i = _objects.find(*i);
+		if (o_i == _objects.end())
+			continue;
+		const Object *o = o_i->second;
+		
 		if (o->_id == src->_id)
 			continue;
 		if (classfilter != NULL && classfilter->find(o->classname) == classfilter->end())
