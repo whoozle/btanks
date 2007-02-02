@@ -85,7 +85,7 @@ Monitor::Task * Monitor::createTask(const int id, const mrt::Chunk &rawdata) {
 
 	Task *t = new Task(id, size + 5);
 
-	uint32_t nsize = htonl((short)size);
+	uint32_t nsize = htonl((long)size);
 	memcpy(t->data->getPtr(), &nsize, 4);
 	*((unsigned char *)t->data->getPtr() + 4) = flags;
 	memcpy((unsigned char *)t->data->getPtr() + 5, data.getPtr(), size);
