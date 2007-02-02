@@ -160,6 +160,7 @@ protected:
 	const Object* getNearestObject(const std::set<std::string> &classnames) const;
 	const bool getNearest(const std::string &classname, v2<float> &position, v2<float> &velocity, Way * way = NULL) const;
 	const bool getNearest(const std::set<std::string> &targets, v2<float> &position, v2<float> &velocity) const;
+	const bool getNearest(const std::set<std::string> &classnames, const float range, v2<float> &position, v2<float> &velocity) const;
 	
 	void setWay(const Way & way);
 	const bool isDriven() const;

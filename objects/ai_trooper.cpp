@@ -167,11 +167,10 @@ public:
 			return;
 		
 		float range = getWeaponRange(_object);
-		range *= range;
 		//LOG_DEBUG(("range = %g", range));
 
 		v2<float> pos, vel;
-		if (getNearest(_targets, pos, vel) && pos.quick_length() <= range) {
+		if (getNearest(_targets, range, pos, vel)) {
 			_state.fire = true;
 			_direction = pos;
 			_direction.normalize();

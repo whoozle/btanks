@@ -62,7 +62,7 @@ void Kamikaze::calculate(const float dt) {
 	
 	GET_CONFIG_VALUE("objects.kamikaze.targeting-range", int, tt, 800);
 
-	if (getNearest(targets, _velocity, vel) && _velocity.quick_length() <= tt * tt) {
+	if (getNearest(targets, tt, _velocity, vel)) {
 		quantizeVelocity();
 	} else _velocity.clear();
 }

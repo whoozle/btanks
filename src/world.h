@@ -64,12 +64,18 @@ public:
 	
 	Object * spawn(Object *src, const std::string &classname, const std::string &animation, const v2<float> &dpos, const v2<float> &vel, const int z = 0);
 	Object * spawnGrouped(Object *src, const std::string &classname, const std::string &animation, const v2<float> &dpos, const GroupType type);
-	
+
+//the nearest objects
 	const Object* getNearestObject(const Object *obj, const std::string &classname) const;
-	const Object* getNearestObject(const Object *obj, const std::set<std::string> &classnames) const;
 	const bool getNearest(const Object *obj, const std::string &classname, v2<float> &position, v2<float> &velocity, Way * way = NULL) const;
+
+	const Object* getNearestObject(const Object *obj, const std::set<std::string> &classnames) const;
 	const bool getNearest(const Object *obj, const std::set<std::string> &classnames, v2<float> &position, v2<float> &velocity) const;
-	
+
+	const Object* getNearestObject(const Object *obj, const std::set<std::string> &classnames, const float range) const;
+	const bool getNearest(const Object *obj, const std::set<std::string> &classnames, const float range, v2<float> &position, v2<float> &velocity) const;
+//end of the nearest
+
 	const bool old_findPath(const Object *obj, const v2<float>& position, Way & way, const Object * dst = NULL) const;
 	void getImpassabilityMatrix(Matrix<int> &matrix, const Object *src, const Object *dst) const;
 

@@ -118,6 +118,11 @@ const bool Object::getNearest(const std::set<std::string> &classnames, v2<float>
 	return World->getNearest(this, classnames, position, velocity);
 }
 
+const bool Object::getNearest(const std::set<std::string> &classnames, const float range, v2<float> &position, v2<float> &velocity) const {
+	return World->getNearest(this, classnames, range, position, velocity);
+}
+
+
 void Object::setDirection(const int dir) {
 	if (dir >= _directions_n)
 		LOG_WARN(("%s:%s setDirection(%d) called on object with %d directions", registered_name.c_str(), animation.c_str(), dir, _directions_n));

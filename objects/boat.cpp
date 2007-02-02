@@ -68,7 +68,7 @@ void Boat::calculate(const float dt) {
 	}
 
 	v2<float> pos, vel;
-	if (getNearest(targets, pos, vel) && pos.length() < tr) {
+	if (getNearest(targets, tr, pos, vel)) {
 		_state.fire = true;
 	} else _state.fire = false;
 }

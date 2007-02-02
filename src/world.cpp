@@ -1139,6 +1139,32 @@ const Object* IWorld::getNearestObject(const Object *obj, const std::set<std::st
 	return result;
 }
 
+const Object* IWorld::getNearestObject(const Object *obj, const std::set<std::string> &classnames, const float range) const {
+	const Object *result = NULL;
+	float distance = std::numeric_limits<float>::infinity();
+
+	std::set<int> objects;
+	_grid.collide(objects, (obj->_position - range).convert<int>(), v2<int>((int)range * 2, (int)range * 2));
+	
+	for(std::set<int>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
+		ObjectMap::const_iterator o_i = _objects.find(*i);
+		if (o_i == _objects.end())
+			continue;
+		const Object *o = o_i->second;
+		//LOG_DEBUG(("%s is looking for %s. found: %s", obj->classname.c_str(), classname.c_str(), o->classname.c_str()));
+		if (o->_id == obj->_id || classnames.find(o->classname) == classnames.end() || o->hasSameOwner(obj))
+			continue;
+
+		v2<float> cpos = o->_position + o->size / 2;
+		float d = obj->_position.quick_distance(cpos);
+		if (d < distance) {
+			distance = d;
+			result = o;
+		}
+	}
+	return result;
+}
+
 
 const bool IWorld::getNearest(const Object *obj, const std::string &classname, v2<float> &position, v2<float> &velocity, Way * way) const {
 	position.clear();
@@ -1171,6 +1197,24 @@ const bool IWorld::getNearest(const Object *obj, const std::set<std::string> &cl
 	position -= obj->_position + obj->size / 2;
 	return true;
 }
+
+const bool IWorld::getNearest(const Object *obj, const std::set<std::string> &classnames, const float range, v2<float> &position, v2<float> &velocity) const {
+	position.clear();
+	velocity.clear();
+	const Object *target = getNearestObject(obj, classnames, range);
+	
+	if (target == NULL) 
+		return false;
+
+	position = target->_position + target->size / 2;
+	velocity = target->_velocity;
+	
+	position -= obj->_position + obj->size / 2;
+	return true;
+}
+
+
+
 
 
 const int IWorld::getChildren(const int id) const {
