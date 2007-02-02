@@ -514,15 +514,14 @@ TRY {
 
 	//LOG_DEBUG(("im = %f", im));
 	v2<float> dpos = o.speed * o._velocity * dt;
-	if (dpos.is0()) 
-		return;
-
 
 	v2<int> new_pos = (o._position + dpos).convert<int>();
 	v2<int> old_pos = o._position.convert<int>();
-	if (new_pos == old_pos)
+	if (new_pos == old_pos) {
+		o._position += dpos;
 		return;
-
+	}
+	
 	bool has_outline = false;
 	bool hidden = false;
 	std::string outline_animation;
