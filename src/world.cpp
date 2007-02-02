@@ -52,7 +52,7 @@ void IWorld::setTimeSlice(const float ts) {
 }
 
 void IWorld::initMap() {
-	GET_CONFIG_VALUE("engine.grid-fragment-size", int, gfs, 64);
+	GET_CONFIG_VALUE("engine.grid-fragment-size", int, gfs, 128);
 	_grid.setSize(Map->getSize(), gfs);
 }
 
