@@ -260,7 +260,7 @@ const int Monitor::run() {
 			
 				if (t->pos == t->len) {
 					if (t->size_task) {
-						unsigned long len = ntohl(*((unsigned uint32_t *)(t->data->getPtr())));
+						unsigned long len = ntohl(*((uint32_t *)(t->data->getPtr())));
 						if (len > 262144)
 							throw_ex(("recv'ed packet length of %u. it seems to be far too long for regular packet. so fixme if you want (probably broken/obsoleted client)", (unsigned int)len));
 						unsigned char flags = *((unsigned char *)(t->data->getPtr()) + 4);
