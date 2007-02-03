@@ -73,6 +73,13 @@ void Grid::update(GridMap &grid, const v2<int> &grid_size, const int id, const v
 void Grid::update(const int id, const v2<int> &pos, const v2<int> &size) {
 	Index::iterator i = _index.find(id);
 	if (i != _index.end()) {
+	//skip modification if grid coordinates
+		if (pos / _grid_size == i->second.pos / _grid_size &&
+			(pos + size - 1) / _grid_size == (i->second.pos + size - 1) / _grid_size) {
+			return;	
+		}
+		
+
 		removeFromGrid(_grid, _grid_size, id, i->second);
 		removeFromGrid(_grid4, _grid4_size, id, i->second);
 		i->second.pos = pos;
