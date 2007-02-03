@@ -29,6 +29,7 @@
 #include "mrt/logger.h"
 #include "mrt/exception.h"
 #include "mrt/random.h"
+#include "mrt/timer.h"
 
 #include "sdlx/system.h"
 #include "sdlx/sdl_ex.h"
@@ -688,7 +689,7 @@ flip:
 #ifdef SHOW_PERFSTATS
 			LOG_DEBUG(("tdelta: %d, delay: %d", t_delta, max_delay - t_delta));
 #endif
-			SDL_Delay(max_delay - t_delta);
+			mrt::Timer::nanosleep((max_delay - t_delta) * 1000);
 		}
 
 		t_delta = SDL_GetTicks() - t_start;
