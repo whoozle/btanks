@@ -6,6 +6,7 @@
 #endif
 
 #include <time.h>
+#include <errno.h>
 
 using namespace mrt;
 
@@ -18,7 +19,8 @@ void Timer::nanosleep(const int nanos) {
 	ts.tv_sec = 0;
 	ts.tv_nsec = nanos;
 	do {
-		if (::nanosleep(&ts, &rem) == -1)
+		int r = ::nanosleep(&ts, &rem);
+		if (r == -1 && errno != EINTR)
 			throw_io(("nanosleep"));
 	} while (rem.tv_nsec == 0 && rem.tv_sec == 0);
 #endif
