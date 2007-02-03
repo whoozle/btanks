@@ -10,6 +10,39 @@
 
 using namespace mrt;
 
+void Timer::reset() {
+#ifdef WIN32
+#error implement me
+#else
+	if (gettimeofday(&tm, NULL) == -1)
+		throw_io(("gettimeofday"));
+#endif
+}
+
+const int Timer::getTicks() {
+#ifdef WIN32
+#error implement me
+#else
+	struct timeval now;
+	if (gettimeofday(&now, NULL) == -1)
+		throw_io(("gettimeofday"));
+	return ((now.tv_sec) * 1000000 + now.tv_usec) % 1000000;
+#endif
+}
+
+
+const int Timer::nanodelta() const {
+#ifdef WIN32
+#error implement me
+#else
+	struct timeval now;
+	if (gettimeofday(&now, NULL) == -1)
+		throw_io(("gettimeofday"));
+	return (now.tv_sec - tm.tv_sec) * 1000000 + (now.tv_usec - tm.tv_usec);
+#endif
+}
+
+
 void Timer::nanosleep(const int nanos) {
 #ifdef WIN32
 	Sleep(nanos / 1000);
