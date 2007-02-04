@@ -55,6 +55,7 @@ void Timer::nanosleep(const int nanos) {
 		int r = ::nanosleep(&ts, &rem);
 		if (r == -1 && errno != EINTR)
 			throw_io(("nanosleep"));
+		ts = rem;
 	} while (rem.tv_nsec == 0 && rem.tv_sec == 0);
 #endif
 }
