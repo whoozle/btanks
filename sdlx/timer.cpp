@@ -2,22 +2,33 @@
 #include "mrt/ioexception.h"
 
 #ifdef WIN32
-#include <windows.h>
-#endif
-
-#include <time.h>
-#include <errno.h>
-
-using namespace sdlx;
+#	include <windows.h>
+#else
+#	include <time.h>
+#	include <errno.h>
 
 static clockid_t clock_id = CLOCK_REALTIME;
 
+#endif
+
+using namespace sdlx;
+
+Timer::Timer() {
+	tm = new LARGE_INTEGER;
+	freq = new LARGE_INTEGER;
+}
+
+Timer::~Timer() {
+	delete tm; delete freq;
+}
+
+
 void Timer::reset() {
 #ifdef WIN32
-	if (!QueryPerformanceFrequency(&freq)) 
+	if (!QueryPerformanceFrequency(freq)) 
 		throw_ex(("QueryPerformanceFrequency failed"));
 
-	if (!QueryPerformanceCounter(&tm)) 
+	if (!QueryPerformanceCounter(tm)) 
 		throw_ex(("QueryPerformanceCounter failed"));
 #else
 	if (clock_gettime(clock_id, &tm) != 0)
@@ -31,7 +42,7 @@ const int Timer::microdelta() const {
 	if (!QueryPerformanceCounter(&now)) 
 		throw_ex(("QueryPerformanceCounter failed"));
 	
-	return (now.QuadPart - tm.QuadPart) * 1000000 / freq.QuadPart;
+	return (now.QuadPart - tm->QuadPart) * 1000000 / freq->QuadPart;
 #else
 	struct timespec now;
 	if (clock_gettime(clock_id, &now) != 0)
