@@ -70,11 +70,18 @@ void Server::tick(const float dt) {
 		while(_monitor->recv(id, data)) {
 			Message m;
 			m.deserialize2(data);
-			
-			if (m.type != Message::PlayerState && m.type != Message::Ping && m.type != Message::Pong && m.type != Message::RequestPlayer) 
+
+			switch(m.type) {
+			case Message::PlayerState:
+			case Message::Ping:
+			case Message::Pong:
+			case Message::RequestPlayer:	
+			case Message::TextMessage:	
+				PlayerManager->onMessage(id, m);
+				break;
+			default:
 				throw_ex(("message type %s is not allowed", m.getType()));
-	
-			PlayerManager->onMessage(id, m);
+			}
 		}
 
 		while(_monitor->disconnected(id)) {

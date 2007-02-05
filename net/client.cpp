@@ -86,11 +86,21 @@ void Client::tick(const float dt) {
 		Message m;
 		m.deserialize2(data);
 
-		if (m.type != Message::UpdateWorld && m.type != Message::ServerStatus && 
-			m.type != Message::UpdatePlayers && m.type != Message::Pang && m.type != Message::Respawn && 
-			m.type != Message::GameJoined && m.type != Message::GameOver) 
+		switch(m.type) {
+		case Message::UpdateWorld:
+		case Message::ServerStatus:
+		case Message::UpdatePlayers:
+		case Message::Pang:
+		case Message::Respawn:
+		case Message::GameJoined:
+		case Message::GameOver:
+		case Message::TextMessage:
+			PlayerManager->onMessage(0, m);
+			break;
+
+		default:
 			throw_ex(("message type '%s' is not allowed", m.getType()));
-		PlayerManager->onMessage(0, m);
+		}
 	}
 	while(_monitor->disconnected(id)) {
 		PlayerManager->onDisconnect(id);

@@ -42,7 +42,8 @@ public:
 		UpdatePlayers,
 		UpdateWorld, 
 		Respawn, 
-		GameOver
+		GameOver,
+		TextMessage
 	};
 	
 	Message();
