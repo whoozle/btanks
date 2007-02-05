@@ -152,6 +152,8 @@ void Serializator::get(int &n)  const {
 		n = ntohl(*((unsigned long *)(ptr + _pos)));
 		_pos += sizeof(unsigned long);
 	}
+	if (type & SIGNED_INTEGER) 
+		n = -n;
 }
 
 void Serializator::get(bool &b) const {
