@@ -14,12 +14,16 @@ static clockid_t clock_id = CLOCK_REALTIME;
 using namespace sdlx;
 
 Timer::Timer() {
+#ifdef WIN32
 	tm = new LARGE_INTEGER;
 	freq = new LARGE_INTEGER;
+#endif
 }
 
 Timer::~Timer() {
+#ifdef WIN32
 	delete tm; delete freq;
+#endif
 }
 
 
