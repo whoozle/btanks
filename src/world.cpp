@@ -89,6 +89,9 @@ void IWorld::setSafeMode(const bool safe_mode) {
 }
 
 void IWorld::deleteObject(const Object *o) {
+	if (o == NULL)
+		return;
+	
 	delete o;
 	_grid.remove(o->_id);
 	//place for callbacks
@@ -843,13 +846,15 @@ void IWorld::tick(ObjectMap &objects, const float dt) {
 			o->_velocity = leader->_velocity;
 			++i;
 		} else {
-			LOG_WARN(("leader for object %d is dead. (leader-id:%d)", o->_id, f));
-			o->_follow = 0;
-			o->emit("death", NULL);
+			if (World->_safe_mode == false) {
+				LOG_WARN(("leader for object %d is dead. (leader-id:%d)", o->_id, f));
+				o->_follow = 0;
+				o->emit("death", NULL);
 			
-			deleteObject(o);
-			o = NULL;
-			objects.erase(i++);
+				deleteObject(o);
+				o = NULL;
+				objects.erase(i++);
+			} else ++i;
 		}
 	}
 }
