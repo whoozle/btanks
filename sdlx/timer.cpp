@@ -10,6 +10,8 @@
 
 using namespace sdlx;
 
+static clockid_t clock_id = CLOCK_REALTIME;
+
 void Timer::reset() {
 #ifdef WIN32
 	if (!QueryPerformanceFrequency(&freq)) 
@@ -18,8 +20,8 @@ void Timer::reset() {
 	if (!QueryPerformanceCounter(&tm)) 
 		throw_ex(("QueryPerformanceCounter failed"));
 #else
-	if (gettimeofday(&tm, NULL) == -1)
-		throw_io(("gettimeofday"));
+	if (clock_gettime(clock_id, &tm) != 0)
+		throw_io(("clock_gettime"));
 #endif
 }
 
@@ -31,10 +33,10 @@ const int Timer::microdelta() const {
 	
 	return (now.QuadPart - tm.QuadPart) * 1000000 / freq.QuadPart;
 #else
-	struct timeval now;
-	if (gettimeofday(&now, NULL) == -1)
-		throw_io(("gettimeofday"));
-	return (now.tv_sec - tm.tv_sec) *1000000 + (now.tv_usec - tm.tv_usec) / 1000;
+	struct timespec now;
+	if (clock_gettime(clock_id, &now) != 0)
+		throw_io(("clock_gettime"));
+	return (now.tv_sec - tm.tv_sec) *1000000 + (now.tv_nsec - tm.tv_nsec) / 1000;
 #endif
 }
 

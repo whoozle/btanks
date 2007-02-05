@@ -3,7 +3,9 @@
 
 #ifdef WIN32
 #define WINDOWS_LEAN_AND_MEAN
-#include <windows.h>
+#	include <windows.h>
+#else 
+#	include <time.h>
 #endif
 
 namespace sdlx {
@@ -16,7 +18,7 @@ private:
 #ifdef WIN32
 	LARGE_INTEGER tm, freq;
 #else	
-	timeval tm;
+	struct timespec tm;
 #endif
 };
 }
