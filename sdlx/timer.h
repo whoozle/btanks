@@ -16,7 +16,7 @@
 #endif
 
 
-namespace mrt {
+namespace sdlx {
 class Timer {
 public: 
 	void reset();

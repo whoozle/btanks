@@ -8,7 +8,7 @@
 #include <time.h>
 #include <errno.h>
 
-using namespace mrt;
+using namespace sdlx;
 
 void Timer::reset() {
 #ifdef WIN32
