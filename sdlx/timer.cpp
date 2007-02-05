@@ -54,7 +54,9 @@ const int Timer::microdelta() const {
 
 void Timer::microsleep(const int micros) {
 #ifdef WIN32
+	timeBeginPeriod(1);
 	Sleep(micros);	
+	timeEndPeriod(1);
 #else 
 	struct timespec ts, rem;
 	
