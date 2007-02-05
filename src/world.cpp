@@ -653,13 +653,13 @@ TRY {
 	if (has_outline) {
 		if (hidden) {
 			if (has_outline && !o.has("_outline")) {
-				LOG_DEBUG(("%d:%s:%s: adding outline", o._id, o.classname.c_str(), o.animation.c_str()));
+				//LOG_DEBUG(("%d:%s:%s: adding outline", o._id, o.classname.c_str(), o.animation.c_str()));
 				o.add("_outline", o.spawnGrouped("outline", outline_animation, v2<float>::empty, Centered));
 			}
 		//LOG_DEBUG(("%d:%s:%s: whoaaa!!! i'm in domik", o._id, o.classname.c_str(), o.animation.c_str()));
 		} else {
 			if (o.has("_outline")) {
-				LOG_DEBUG(("%d:%s:%s: removing outline", o._id, o.classname.c_str(), o.animation.c_str()));
+				//LOG_DEBUG(("%d:%s:%s: removing outline", o._id, o.classname.c_str(), o.animation.c_str()));
 				o.remove("_outline");
 			}
 		}
