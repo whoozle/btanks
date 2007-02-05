@@ -57,8 +57,6 @@
 
 #include "math/v3.h"
 
-//#define SHOW_PERFSTATS
-
 IMPLEMENT_SINGLETON(Game, IGame)
 
 IGame::IGame() : 
@@ -66,7 +64,7 @@ _check_items(0.5, true),  _autojoin(false), _shake(0), _credits(NULL), _cheater(
 IGame::~IGame() {}
 
 void IGame::resetTimer() {
-	t_start  = SDL_GetTicks();	
+	_timer.reset();
 }
 
 void IGame::init(const int argc, char *argv[]) {
@@ -517,15 +515,11 @@ void IGame::run() {
 	GET_CONFIG_VALUE("engine.fps-limit", int, fps_limit, 1000);
 	
 	float fr = fps_limit;
-	int max_delay = 1000/fps_limit;
+	int max_delay = 1000000 / fps_limit;
 	LOG_DEBUG(("fps_limit set to %d, maximum frame delay: %d", fps_limit, max_delay));
 
 	while (_running) {
-		t_start  = SDL_GetTicks();
-#ifdef SHOW_PERFSTATS
-		Uint32 t_tick_n, t_tick_w, t_tick_pm;
-#endif
-
+		_timer.reset();
 		
 		while (SDL_PollEvent(&event)) {
 			switch(event.type) {
@@ -597,34 +591,19 @@ void IGame::run() {
 			checkItems(dt);
 			PlayerManager->updatePlayers();
 			
-#ifdef SHOW_PERFSTATS
-			t_tick_n = SDL_GetTicks();
-#endif
-		
 			World->tick(dt);
 			Mixer->updateObjects();
-#ifdef SHOW_PERFSTATS
-			t_tick_w = SDL_GetTicks();
-#endif
-			
 		}
-#ifdef SHOW_PERFSTATS
-		Uint32 t_tick = SDL_GetTicks();
-#endif
-	
+
 		if (_running && !_paused) {
 			std::string game_state = popState(dt);
 			if (_game_over && !game_state.empty()) {
 				clear();
 			}
 
-			PlayerManager->tick(t_start, dt);
+			PlayerManager->tick(SDL_GetTicks(), dt);
 		}
 
-#ifdef SHOW_PERFSTATS
-		t_tick_pm = SDL_GetTicks();
-#endif
-		
 		if (_credits || _map_loaded)
 			_window.fillRect(window_size, 0);
 		else _hud->renderSplash(_window);
@@ -669,31 +648,17 @@ flip:
 		}
 
 		
-#ifdef SHOW_PERFSTATS
-		Uint32 t_render = SDL_GetTicks();
-#endif
-
 		Window::flip();
 
-#ifdef SHOW_PERFSTATS
-		Uint32 t_flip = SDL_GetTicks();
-#endif
+		int t_delta = _timer.microdelta();
 
-		int t_delta = SDL_GetTicks() - t_start;
-
-#ifdef SHOW_PERFSTATS
-		LOG_DEBUG(("tick time: %u, render time: %u, flip time: %u, total: %u", t_tick - t_start, t_render - t_tick, t_flip - t_render, t_delta));
-		LOG_DEBUG(("notify: %u, world: %u, server/client: %u", t_tick_n - t_start, t_tick_w - t_tick_n, t_tick_pm - t_tick));
-#endif
 		if (t_delta < max_delay) {
-#ifdef SHOW_PERFSTATS
 			LOG_DEBUG(("tdelta: %d, delay: %d", t_delta, max_delay - t_delta));
-#endif
-			sdlx::Timer::microsleep((max_delay - t_delta) * 1000);
+			sdlx::Timer::microsleep(max_delay - t_delta);
 		}
 
-		t_delta = SDL_GetTicks() - t_start;
-		fr = (t_delta != 0)? (1000.0 / t_delta): 1000;
+		t_delta = _timer.microdelta();
+		fr = (t_delta != 0)? (1000000.0 / t_delta): 1000000;
 	}
 	LOG_DEBUG(("exiting main loop."));
 	if (_running)

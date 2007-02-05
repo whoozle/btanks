@@ -31,6 +31,7 @@
 #include "window.h"
 
 #include <sdlx/font.h>
+#include "sdlx/timer.h"
 
 class BaseObject;
 class Object;
@@ -145,7 +146,7 @@ private:
 	
 	Hud *_hud;
 	int _loading_bar_total, _loading_bar_now;
-	Uint32 t_start;
+	sdlx::Timer _timer;
 	
 	Credits *_credits;
 	Cheater *_cheater;
