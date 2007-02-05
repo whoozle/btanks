@@ -14,13 +14,11 @@ static clockid_t clock_id = CLOCK_REALTIME;
 using namespace sdlx;
 
 Timer::Timer() {
-	timeBeginPeriod(1);
 	tm = new LARGE_INTEGER;
 	freq = new LARGE_INTEGER;
 }
 
 Timer::~Timer() {
-	timeEndPeriod();
 	delete tm; delete freq;
 }
 
