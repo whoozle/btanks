@@ -12,45 +12,41 @@ using namespace sdlx;
 
 void Timer::reset() {
 #ifdef WIN32
-#error implement me
+	if (!QueryPerformanceFrequency(&freq)) 
+		throw_ex(("QueryPerformanceFrequency failed"));
+
+	if (!QueryPerformanceCounter(&tm)) 
+		throw_ex(("QueryPerformanceCounter failed"));
 #else
 	if (gettimeofday(&tm, NULL) == -1)
 		throw_io(("gettimeofday"));
 #endif
 }
 
-const int Timer::getTicks() {
+const int Timer::microdelta() const {
 #ifdef WIN32
-#error implement me
+	LARGE_INTEGER now;
+	if (!QueryPerformanceCounter(&now)) 
+		throw_ex(("QueryPerformanceCounter failed"));
+	
+	return (now.QuadPart - tm.QuadPart) * 1000000 / freq.QuadPart;
 #else
 	struct timeval now;
 	if (gettimeofday(&now, NULL) == -1)
 		throw_io(("gettimeofday"));
-	return ((now.tv_sec) * 1000000 + now.tv_usec) % 1000000;
+	return (now.tv_sec - tm.tv_sec) *1000000 + (now.tv_usec - tm.tv_usec) / 1000;
 #endif
 }
 
 
-const int Timer::nanodelta() const {
+void Timer::microsleep(const int micros) {
 #ifdef WIN32
-#error implement me
-#else
-	struct timeval now;
-	if (gettimeofday(&now, NULL) == -1)
-		throw_io(("gettimeofday"));
-	return (now.tv_sec - tm.tv_sec) * 1000000 + (now.tv_usec - tm.tv_usec);
-#endif
-}
-
-
-void Timer::nanosleep(const int nanos) {
-#ifdef WIN32
-	Sleep(nanos / 1000);
+	Sleep(micros);	
 #else 
 	struct timespec ts, rem;
 	
 	ts.tv_sec = 0;
-	ts.tv_nsec = nanos;
+	ts.tv_nsec = micros * 1000;
 	do {
 		int r = ::nanosleep(&ts, &rem);
 		if (r == -1 && errno != EINTR)

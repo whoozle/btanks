@@ -689,7 +689,7 @@ flip:
 #ifdef SHOW_PERFSTATS
 			LOG_DEBUG(("tdelta: %d, delay: %d", t_delta, max_delay - t_delta));
 #endif
-			sdlx::Timer::nanosleep((max_delay - t_delta) * 1000);
+			sdlx::Timer::microsleep((max_delay - t_delta) * 1000);
 		}
 
 		t_delta = SDL_GetTicks() - t_start;

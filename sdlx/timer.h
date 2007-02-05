@@ -1,30 +1,21 @@
 #ifndef MRT_TIMER_H_
 #define MRT_TIMER_H_
 
-#if defined(_MSC_VER) || defined(_WINDOWS_)
-   #include <time.h>
-   #if !defined(_WINSOCK2API_) && !defined(_WINSOCKAPI_)
-         struct timeval 
-         {
-            long tv_sec;
-            long tv_usec;
-         };
-   #endif 
-#else
-#	include <sys/time.h>
-#	include <time.h>
-#endif
-
+#define WINDOWS_LEAN_AND_MEAN
+#include <windows.h>
 
 namespace sdlx {
 class Timer {
 public: 
 	void reset();
-	const int getTicks();
-	const int nanodelta() const;
-	static void nanosleep(const int nanos);
+	const int microdelta() const;
+	static void microsleep(const int micros);
 private: 
+#ifdef WIN32
+	LARGE_INTEGER tm, freq;
+#else	
 	timeval tm;
+#endif
 };
 }
 
