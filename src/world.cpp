@@ -193,11 +193,7 @@ const bool IWorld::collides(Object *obj, const v2<int> &position, Object *o, con
 		CollisionMap::key_type key = (id1 < id2) ? CollisionMap::key_type(id1, id2): CollisionMap::key_type(id2, id1);
 		
 		if (!probe) {
-			CollisionMap::iterator i = _static_collision_map.find(key);
-		 	if (i != _static_collision_map.end()) {
-			 	return i->second;
-			}
-			i = _collision_map.find(key);
+			CollisionMap::const_iterator i = _collision_map.find(key);
 		 	if (i != _collision_map.end()) {
 			 	return i->second;
 			}
@@ -206,13 +202,22 @@ const bool IWorld::collides(Object *obj, const v2<int> &position, Object *o, con
 		
 		v2<int> dpos = o->_position.convert<int>() - position;
 		//LOG_DEBUG(("%s: %d %d", o->classname.c_str(), dpos.x, dpos.y));
-		const bool collides = obj->collides(o, dpos.x, dpos.y);
+		
+		bool collides;
+		CollisionMap::iterator static_i;
+		if (obj->speed == 0 && o->speed == 0 && 
+			((static_i = _static_collision_map.find(key)) != _static_collision_map.end())
+			) {		
+			
+			collides = static_i->second;
+			_static_collision_map.insert(CollisionMap::value_type(key, collides));
+		} else {
+			collides = obj->collides(o, dpos.x, dpos.y);
+		}
+
 		//LOG_DEBUG(("collision %s <-> %s: %s", obj->classname.c_str(), o->classname.c_str(), collides?"true":"false"));
 		if (!probe) {
-			if (obj->speed == 0 && o->speed == 0)
-				_static_collision_map.insert(CollisionMap::value_type(key, collides));
-			else
-				_collision_map.insert(CollisionMap::value_type(key, collides));
+			_collision_map.insert(CollisionMap::value_type(key, collides));
 		
 			if (collides) { 
 				//LOG_DEBUG(("collision %s <-> %s", obj->classname.c_str(), o->classname.c_str()));
