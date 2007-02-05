@@ -59,7 +59,40 @@ const int Timer::microdelta() const {
 void Timer::microsleep(const int micros) {
 #ifdef WIN32
 	timeBeginPeriod(1);
-	Sleep(micros / 1000);
+
+	LARGE_INTEGER t1, t2, freq;
+
+	bool done = false;
+	QueryPerformanceFrequency(&freq);
+	QueryPerformanceCounter(&t1);
+	do {
+		QueryPerformanceCounter(&t2);
+                
+		int ticks_passed = (int)((__int64)(t2.QuadPart) - (__int64)(t1.QuadPart));
+		int ticks_left = micros - ticks_passed;
+
+		if (t2.QuadPart < t1.QuadPart)    // time wrap
+			done = true;
+
+        if (ticks_passed >= micros)
+        	done = true;
+                
+		if (!done) {
+			// if > 0.002s left, do Sleep(1), which will actually sleep some 
+            //   steady amount, probably 1-2 ms,
+            //   and do so in a nice way (cpu meter drops; laptop battery spared).
+            // otherwise, do a few Sleep(0)'s, which just give up the timeslice,
+            //   but don't really save cpu or battery, but do pass a tiny
+            //   amount of time.
+            if (ticks_left > (int)(freq.QuadPart) * 2 / 1000)
+     			Sleep(1);
+            else                        
+               for (int i=0; i < 10; i++) 
+                            Sleep(0);  // causes thread to give up its timeslice
+		}
+	} while (!done);        
+	
+	
 	timeEndPeriod(1);
 #else 
 	struct timespec ts, rem;
