@@ -74,6 +74,7 @@ void BaseObject::serialize(mrt::Serializator &s) const {
 
 	s.add(_dead);
 	_position.serialize(s);
+	s.add(_z);
 	
 	int n = _owners.size();
 	s.add(n);
@@ -108,6 +109,7 @@ void BaseObject::deserialize(const mrt::Serializator &s) {
 
 	s.get(_dead);
 	_position.deserialize(s);
+	s.get(_z);
 	
 	_owners.clear();
 	_owner_set.clear();
@@ -119,8 +121,12 @@ void BaseObject::deserialize(const mrt::Serializator &s) {
 		_owners.push_back(id);
 		_owner_set.insert(id);
 	}
-	if (_owners.size() != _owner_set.size())
-		throw_ex(("broken/duplicate owners recv'ed"));
+	if (_owners.size() != _owner_set.size()) { 
+		std::string o;
+		for(std::deque<int>::const_iterator i = _owners.begin(); i != _owners.end(); ++i) 
+			o += mrt::formatString("%d,", *i);
+		throw_ex(("broken/duplicate owners recv'ed: %s", o.substr(0, o.size() - 1).c_str()));
+	}
 		
 	s.get(_spawned_by);
 }
