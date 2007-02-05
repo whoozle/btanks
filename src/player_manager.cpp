@@ -484,6 +484,7 @@ void IPlayerManager::startServer() {
 	delete _client;
 	_client = NULL;
 	delete _server;
+	_server = NULL;
 	 
 	_server = new Server;
 	_server->init(9876);
@@ -495,6 +496,7 @@ void IPlayerManager::startClient(const std::string &address) {
 	
 	delete _client;
 	_client = NULL;
+
 	World->setSafeMode(true);
 	unsigned port = 9876;
 	TRY {
