@@ -60,6 +60,7 @@ void Timer::microsleep(const int micros) {
 #ifdef WIN32
 	timeBeginPeriod(1);
 
+	/*
 	LARGE_INTEGER t1, t2, freq;
 
 	bool done = false;
@@ -91,7 +92,8 @@ void Timer::microsleep(const int micros) {
                             Sleep(0);  // causes thread to give up its timeslice
 		}
 	} while (!done);        
-	
+	*/
+	Sleep(micros / 1000);
 	
 	timeEndPeriod(1);
 #else 
