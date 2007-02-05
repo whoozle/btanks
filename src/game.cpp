@@ -653,7 +653,7 @@ flip:
 		int t_delta = _timer.microdelta();
 
 		if (t_delta < max_delay) {
-			LOG_DEBUG(("tdelta: %d, delay: %d", t_delta, max_delay - t_delta));
+			//LOG_DEBUG(("tdelta: %d, delay: %d", t_delta, max_delay - t_delta));
 			sdlx::Timer::microsleep(max_delay - t_delta);
 		}
 
