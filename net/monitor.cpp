@@ -38,7 +38,11 @@
 #endif              
 
 #include <set>
-#include <stdint.h>
+#ifdef WIN32
+	typedef unsigned __int32 uint32_t;
+#else
+#	include <stdint.h>
+#endif
 
 
 Monitor::Task::Task(const int id) : 
