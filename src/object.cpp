@@ -222,7 +222,10 @@ void Object::tick(const float dt) {
 			continue;
 		}
 		if (ei->first == "stunned") {
-			_velocity.clear();
+			if (!_velocity.is0()) {
+				_direction = _velocity;
+				_velocity.clear();
+			}
 		} else if (ei->first == "invulnerability") {
 			_blinking.tick(dt);
 		}
