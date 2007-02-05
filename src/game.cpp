@@ -325,6 +325,27 @@ void IGame::stopCredits() {
 }
 
 
+template<typename T>
+static void coord2v(T &pos, const std::string &str) {
+	std::string pos_str = str;
+
+	const bool tiled_pos = pos_str[0] == '@';
+	if (tiled_pos) { 
+		pos_str = pos_str.substr(1);
+	}
+
+	TRY {
+		pos.fromString(pos_str);
+	} CATCH(mrt::formatString("parsing '%s'", str.c_str()).c_str() , throw;)
+
+	if (tiled_pos) {
+		v2<int> tile_size = Map->getTileSize();
+		pos.x *= tile_size.x;
+		pos.y *= tile_size.y;
+		//keep z untouched.
+	}
+}
+
 
 void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 	_main_menu.setActive(false);
@@ -345,7 +366,7 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 		const std::string &type = res[0];
 		
 		if (type != "spawn" && type != "object" && type != "waypoint" && 
-			type != "edge" && type != "config")
+			type != "edge" && type != "config" && type != "checkpoint")
 			throw_ex(("unsupported line: '%s'", i->first.c_str()));
 		
 		if (!spawn_objects && type != "waypoint" && type != "edge")
@@ -353,20 +374,7 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 	
 		v3<int> pos;
 		if (type != "edge" && type != "config") {
-			std::string pos_str = i->second;
-			const bool tiled_pos = pos_str[0] == '@';
-			if (tiled_pos) { 
-				pos_str = pos_str.substr(1);
-			}
-			TRY {
-				pos.fromString(pos_str);
-			} CATCH(mrt::formatString("parsing '%s'=>'%s'", i->first.c_str(), i->second.c_str()).c_str() , throw;)
-			if (tiled_pos) {
-				v2<int> tile_size = Map->getTileSize();
-				pos.x *= tile_size.x;
-				pos.y *= tile_size.y;
-				//keep z untouched.
-			}
+			coord2v< v3<int> >(pos, i->second);
 		}
 	
 		/*
@@ -427,6 +435,16 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 				var.fromString(value[1]);
 
 				Config->setOverride(res[1], var);
+			} else if (type == "checkpoint") {
+				LOG_DEBUG(("checkpoint %s %s", i->first.c_str(), i->second.c_str()));
+				std::vector<std::string> value;
+				mrt::split(value, i->second, ":");
+				if (value.size() < 2)
+					throw_ex(("'%s' misses an argument", i->first.c_str()));
+				v2<int> pos, size;
+				coord2v(pos, value[0]);
+				coord2v(size, value[1]);
+				PlayerManager->addCheckpoint(pos, size);
 			}
 		}
 	}

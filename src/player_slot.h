@@ -19,12 +19,15 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include "player_state.h"
-#include "math/v2.h"
-#include "sdlx/rect.h"
 #include <string>
+#include <set>
+
 #include "mrt/serializable.h"
 #include "math/v2.h"
+#include "sdlx/rect.h"
+
+#include "player_state.h"
+
 
 class Object;
 class ControlMethod;
@@ -59,6 +62,8 @@ public:
 	
 	int frags;
 	bool reserved;
+	
+	std::set<int> checkpoints_reached;
 	
 	virtual void serialize(mrt::Serializator &s) const;
 	virtual void deserialize(const mrt::Serializator &s);

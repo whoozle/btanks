@@ -329,7 +329,16 @@ TRY {
 		TRY {
 			Game->gameOver(message.get("message"), atof(message.get("duration").c_str()) - _trip_time / 1000.0);
 		} CATCH("on-message(gameover)", throw; )
+		break;
 	}
+	
+	case Message::TextMessage: {
+		TRY {
+			Game->displayMessage(message.get("message"), atof(message.get("duration").c_str()) - _trip_time / 1000.0);
+		} CATCH("on-message(text-message)", throw; )		
+		break;
+	}
+	
 	default:
 		LOG_WARN(("unhandled message: %s\n%s", message.getType(), message.data.dump().c_str()));
 	};
@@ -365,8 +374,38 @@ void IPlayerManager::updatePlayers() {
 			continue;
 		
 		Object *o = slot.getObject();
-		if (o != NULL /* && !o->isDead() */) 
+		if (o != NULL /* && !o->isDead() */) {
+			//check for checkpoints ;)
+			if (isClient())
+				continue;
+			
+			//server or split screen
+			v2<int> player_pos;
+			o->getCenterPosition(player_pos);
+			
+			size_t cn = _checkpoints.size();
+			for(size_t c = 0; c < cn; ++c) {
+				if (_checkpoints[c].in(player_pos.x, player_pos.y) && slot.checkpoints_reached.find(c) == slot.checkpoints_reached.end()) {
+					LOG_DEBUG(("player[%d] checkpoint %d reached.", i, c));
+					slot.checkpoints_reached.insert(c);
+					
+					v2<int> spawn_pos(_checkpoints[c].x + _checkpoints[c].w / 2, _checkpoints[c].y + _checkpoints[c].h / 2);
+					slot.position = spawn_pos;
+					if (i == 0)
+						Game->displayMessage("CHECKPOINT REACHED", 3);
+
+					slot.need_sync = true;
+
+					if (_server && slot.remote) {
+						Message m(Message::TextMessage);
+						m.set("message", "CHECKPOINT REACHED");
+						m.set("duration", "3");
+						_server->send(i, m);
+					}
+				}
+			}
 			continue;
+		}
 			
 		LOG_DEBUG(("player in slot %d is dead. respawning. frags: %d", i, slot.frags));
 
@@ -525,6 +564,11 @@ void IPlayerManager::addSlot(const v2<int> &position) {
 	_players.push_back(slot);
 }
 
+void IPlayerManager::addCheckpoint(const v2<int> &position, const v2<int> &size) {
+	LOG_DEBUG(("adding checkpoint at %d %d (%dx%d)", position.x, position.y, size.x, size.y));
+	_checkpoints.push_back(sdlx::Rect(position.x, position.y, size.x, size.y));
+}
+
 PlayerSlot &IPlayerManager::getSlot(const unsigned int idx) {
 	return _players[idx];
 }
@@ -616,7 +660,7 @@ void IPlayerManager::spawnPlayer(PlayerSlot &slot, const std::string &classname,
 	Object *obj = ResourceManager->createObject(classname, animation);
 	assert(obj != NULL);
 
-	World->addObject(obj, slot.position.convert<float>(), slot.id);
+	World->addObject(obj, slot.position.convert<float>() - obj->size / 2, slot.id);
 	Object *spawn = World->spawn(obj, "spawn-shield", "spawning", v2<float>::empty, v2<float>::empty);
 	spawn->follow(obj, Centered);
 	GET_CONFIG_VALUE("engine.spawn-invulnerability-duration", float, sid, 3);

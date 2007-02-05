@@ -24,6 +24,7 @@
 #include <string>
 #include "math/v2.h"
 #include "alarm.h"
+#include "sdlx/rect.h"
 
 namespace mrt {
 class Chunk;
@@ -57,6 +58,7 @@ public:
 	void createControlMethod(PlayerSlot &slot, const std::string &name);
 
 	void addSlot(const v2<int> &position);
+	void addCheckpoint(const v2<int> &position, const v2<int> &size);
 
 	PlayerSlot &getSlot(const unsigned int idx);
 	const PlayerSlot &getSlot(const unsigned int idx) const;
@@ -108,6 +110,7 @@ private:
 
 	int _my_idx;
 	std::vector<PlayerSlot> _players;
+	std::vector<sdlx::Rect> _checkpoints;
 
 	float _trip_time;
 	unsigned _next_ping;
