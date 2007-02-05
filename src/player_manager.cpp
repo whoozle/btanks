@@ -490,6 +490,9 @@ void IPlayerManager::startServer() {
 }
 
 void IPlayerManager::startClient(const std::string &address) {
+	delete _server;
+	_server = NULL;
+	
 	delete _client;
 	_client = NULL;
 	World->setSafeMode(true);
