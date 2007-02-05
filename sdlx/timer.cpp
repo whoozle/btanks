@@ -87,7 +87,7 @@ void Timer::microsleep(const int micros) {
             if (ticks_left > (int)(freq.QuadPart) * 2 / 1000)
      			Sleep(1);
             else                        
-               for (int i=0; i < 10; i++) 
+               //for (int i=0; i < 10; i++) 
                             Sleep(0);  // causes thread to give up its timeslice
 		}
 	} while (!done);        
