@@ -854,7 +854,10 @@ void IWorld::tick(ObjectMap &objects, const float dt) {
 				deleteObject(o);
 				o = NULL;
 				objects.erase(i++);
-			} else ++i;
+			} else {
+				i->second->_dead = true;
+				++i;
+			}
 		}
 	}
 }
