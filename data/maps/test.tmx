@@ -4,9 +4,11 @@
   <property name="object:machinegunner-item:machinegunner-item:2" value="143,5"/>
   <property name="object:thrower-item:thrower-item:1" value="12,108"/>
   <property name="object:machinegunner-item:machinegunner-item:1" value="271,8"/>
+  <property name="object:smoke-missiles-item:smoke-missiles-item:1" value="@0,3"/>
   <property name="object:machinegunner:machinegunner:5" value="788,962"/>
   <property name="object:machinegunner:machinegunner:4" value="620,866"/>
   <property name="object:machinegunner:machinegunner:3" value="619,968"/>
+  <property name="object:watchtower-with-machinegunner:watchtower:100" value="@0,13"/>
   <property name="spawn:3" value="474,952"/>
   <property name="object:machinegunner:machinegunner:2" value="782,896"/>
   <property name="object:machinegunner:machinegunner:1" value="700,929"/>
