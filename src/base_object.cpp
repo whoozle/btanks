@@ -119,7 +119,8 @@ void BaseObject::deserialize(const mrt::Serializator &s) {
 		_owners.push_back(id);
 		_owner_set.insert(id);
 	}
-	assert(_owners.size() == _owner_set.size());
+	if (_owners.size() != _owner_set.size())
+		throw_ex(("broken/duplicate owners recv'ed"));
 		
 	s.get(_spawned_by);
 }
