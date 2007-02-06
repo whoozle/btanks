@@ -36,7 +36,6 @@ void Grid::collide(std::set<int> &objects, const GridMap &grid, const v2<int> &g
 				++i;
 				continue;
 			}
-			assert(x == i_pos.x);
 			
 			//++n;
 			//++hit;
