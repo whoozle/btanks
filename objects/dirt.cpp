@@ -29,8 +29,8 @@ public:
 };
 
 void Dirt::onSpawn() {
-	setDirection(0);
-	play("fade-in", false);
+	if (registered_name.substr(0, 7) != "static-")
+		play("fade-in", false);
 	play("main", true);
 }
 
@@ -47,3 +47,4 @@ Object* Dirt::clone() const  {
 }
 
 REGISTER_OBJECT("dirt", Dirt, ());
+REGISTER_OBJECT("static-dirt", Dirt, ());

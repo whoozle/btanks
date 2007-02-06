@@ -66,7 +66,9 @@ void PoisonCloud::onSpawn() {
 	Config->get("objects." + registered_name + ".damage-interval", di, 1);
 	_damage.set(di);
 	
-	play("start", false);
+	if (registered_name.substr(0, 7) != "static-")
+		play("start", false);
+	
 	play("main", true);
 	disown();
 }
@@ -91,3 +93,4 @@ void PoisonCloud::emit(const std::string &event, Object * emitter) {
 }
 
 REGISTER_OBJECT("smoke-cloud", PoisonCloud, ());
+REGISTER_OBJECT("static-smoke-cloud", PoisonCloud, ());
