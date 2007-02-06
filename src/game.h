@@ -119,6 +119,7 @@ private:
 		int id;
 		std::string classname, animation;
 		v2<int> position;
+		int z;
 		Uint32 dead_on;
 		bool destroy_for_victory;
 	};

@@ -404,6 +404,7 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 				item.classname = res[1];
 				item.animation = res[2];
 				item.position = v2<int>(pos.x, pos.y);
+				item.z = pos.z;
 				item.dead_on = 0;
 				item.destroy_for_victory = res[3].substr(0, 19) == "destroy-for-victory";
 				if (item.destroy_for_victory) {
@@ -513,7 +514,10 @@ void IGame::checkItems(const float dt) {
 			//respawning item
 			LOG_DEBUG(("respawning item: %s:%s", item.classname.c_str(), item.animation.c_str()));
 			Object *o = ResourceManager->createObject(item.classname, item.animation);
-			//o->addOwner(-42);
+			if (item.z) 
+				o->setZ(item.z);
+			o->addOwner(-42);
+			
 			World->addObject(o, item.position.convert<float>());
 			item.id = o->getID();
 			item.dead_on = 0;
