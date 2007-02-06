@@ -113,7 +113,7 @@ void AITrooper::calculate(const float dt) {
 			calculateWayVelocity();
 		}
 		*/
-		if (_velocity.length() >= 16) {
+		if (_velocity.length() >= 9) {
 			quantizeVelocity();
 			_direction.fromDirection(getDirection(), getDirectionsNumber());
 		} else {
