@@ -13,18 +13,40 @@ void Grid::clear() {
 	_index.clear();
 }
 
+#define NEW_COLLIDE
+
 void Grid::collide(std::set<int> &objects, const GridMap &grid, const v2<int> &grid_size, const v2<int>& area_pos, const v2<int>& area_size) const {
 	v2<int> start = area_pos / grid_size;
 	v2<int> end = (area_pos + area_size - 1) / grid_size;
+	//static int hit = 0, n = 0, global = 0;
+
+#ifndef NEW_COLLIDE
 	for(int y = start.y; y <= end.y; ++y) 
 		for(int x = start.x; x <= end.x; ++x) {
+//			++n;
 			GridMap::const_iterator i = grid.find(v2<int>(x, y));
 			if (i == grid.end())
 				continue;
-
+//			++hit;
 			std::set_union(objects.begin(), objects.end(), i->second.begin(), i->second.end(), 
 				std::insert_iterator<std::set<int> > (objects, objects.begin()));
 		}	
+#else 
+	//no rb-tree search everytime.
+	GridMap::const_iterator b = grid.lower_bound(start);
+	GridMap::const_iterator e = grid.upper_bound(end);
+	for(GridMap::const_iterator i = b; i != e; ++i) {
+		const v2<int> &pos = i->first;
+		if (pos.x >= start.x && pos.x <= end.x && pos.y >= start.y && pos.y <= end.y) {
+//			++hit;
+			std::set_union(objects.begin(), objects.end(), i->second.begin(), i->second.end(), 
+				std::insert_iterator<std::set<int> > (objects, objects.begin()));
+		}
+//		++n;
+	}
+#endif
+//	++global;
+//	LOG_DEBUG(("%d of %d = %g (of %d) avg:  %g of %g", hit, n, 1.0 * hit / n, global, 1.0 * hit / global, 1.0 * n / global));
 }
 
 void Grid::collide(std::set<int> &objects, const v2<int>& area_pos, const v2<int>& area_size) const {
