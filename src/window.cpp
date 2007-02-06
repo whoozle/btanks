@@ -42,6 +42,7 @@ void Window::init(const int argc, char *argv[]) {
 	bool vsync = false;
 
 	int w = 800, h = 600;
+	int bits = 0;
 	
 	for(int i = 1; i < argc; ++i) {
 		if (strcmp(argv[i], "--no-gl") == 0) _opengl = false;
@@ -55,6 +56,7 @@ void Window::init(const int argc, char *argv[]) {
 		else if (strcmp(argv[i], "-2") == 0) { w = 1024; h = 768; }
 		else if (strcmp(argv[i], "-3") == 0) { w = 1152; h = 864; }
 		else if (strcmp(argv[i], "-4") == 0) { w = 1280; h = 1024; }
+		else if (strcmp(argv[i], "--force-16") == 0) { bits = 16; }
 		else if (strcmp(argv[i], "--help") == 0) { 
 			printf(
 					"\t--no-gl\t\t\tdisable GL renderer\n"
@@ -99,19 +101,19 @@ void Window::init(const int argc, char *argv[]) {
 	}
 	
 	int default_flags = sdlx::Surface::Hardware | sdlx::Surface::Alpha | (_opengl? SDL_OPENGL: 0) ;
-#ifdef USE_GLSDL
 	if (_opengl) {
 		default_flags &= ~SDL_OPENGL;
+#ifdef USE_GLSDL
 		default_flags |= SDL_GLSDL;
-	}
 #endif
+	}
 
 	sdlx::Surface::setDefaultFlags(default_flags);
 
 	LOG_DEBUG(("initializing SDL_ttf..."));
 	sdlx::TTF::init();
 
-	int flags = SDL_HWSURFACE | SDL_ANYFORMAT;
+	int flags = SDL_HWSURFACE | (bits == 0)? SDL_ANYFORMAT: 0;
 	//if (doublebuf)
 	flags |= SDL_DOUBLEBUF;
 	
@@ -164,10 +166,12 @@ void Window::init(const int argc, char *argv[]) {
 #ifdef USE_GLSDL
 		flags |= SDL_GLSDL;
 #endif
-		_window.setVideoMode(w, h, 0, flags );
+		_window.setVideoMode(w, h, bits, flags );
 	} else {
-		_window.setVideoMode(w, h, 0, flags);
+		_window.setVideoMode(w, h, bits, flags);
 	}
+	if (bits != 0 && bits != _window.getBPP())
+		throw_ex(("cannot setup video mode to %d bits (got: %d)", bits, _window.getBPP()));
 	
 	LOG_DEBUG(("created main surface. (%dx%dx%d, %s)", w, h, _window.getBPP(), ((_window.getFlags() & SDL_HWSURFACE) == SDL_HWSURFACE)?"hardware":"software"));
 
