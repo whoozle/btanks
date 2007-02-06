@@ -10,8 +10,10 @@
   <property name="object:static-smoke-cloud:smoke-cloud:14" value="42,610"/>
   <property name="object:dumb-missiles-item:dumb-missiles-item:4" value="906,1790"/>
   <property name="object:static-smoke-cloud:smoke-cloud:13" value="628,278"/>
+  <property name="object:static-dirt:dirt:35" value="1140,724,-10"/>
   <property name="object:dumb-missiles-item:dumb-missiles-item:3" value="376,1148"/>
   <property name="object:static-smoke-cloud:smoke-cloud:12" value="508,282"/>
+  <property name="object:static-dirt:dirt:34" value="1074,696,-10"/>
   <property name="object:dumb-missiles-item:dumb-missiles-item:2" value="910,418"/>
   <property name="object:static-smoke-cloud:smoke-cloud:11" value="458,196"/>
   <property name="object:dumb-missiles-item:dumb-missiles-item:1" value="2154,668"/>
@@ -143,6 +145,7 @@
   <property name="object:ricochet-bullets-item:ricochet-bullets-item:4" value="1446,1816"/>
   <property name="object:ricochet-bullets-item:ricochet-bullets-item:3" value="64,1060"/>
   <property name="object:ricochet-bullets-item:ricochet-bullets-item:2" value="1884,1226"/>
+  <property name="object:oil-barrels:oil-barrels:2" value="258,788,-10"/>
   <property name="object:ricochet-bullets-item:ricochet-bullets-item:1" value="470,1434"/>
   <property name="object:oil-barrels:oil-barrels:1" value="1246,1056,250"/>
   <property name="object:static-smoke-cloud:smoke-cloud:49" value="1822,316"/>
@@ -326,16 +329,6 @@
   </data>
   <tileproperties/>
  </layer>
- <layer name="the plan" width="40" height="30" visible="0" opacity="0.54">
-  <properties>
-   <property name="visible-if-damaged" value="true"/>
-   <property name="hp" value="10000"/>
-  </properties>
-  <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAM2XywrDQAhF/f9lF/nergqDHe9DpVQQgjHXMxPNkIiIV+EB7m16ti2d057DK1O1WY7D5fAxXqU+4+rsdVcvoubeYnsE3Zs2ykPPOvZ532ovd+p0enGiVfWjosf6GOWe86N+W3JM5XP9ie/5VhgVZrZfSPvGh/QZH8pRdJG2wrHJVzFPtXLc0VTZqrx8trh8uY8ZX2dWbnq57lm7wzdxlw/lbfDlZxW+7nxM+687N/88v12+af4WX45X56e7r2ydTPsWr8541oMspvKhXHbGq/Or9OlkNp3/i2yofoevYrzlOVwuW77v6qu9yNa2sT8TNmYOn/sOO/+/yNxZ2+Rze9H5HvzSI10ra/013xsQNs6gwBIAAA==
-  </data>
-  <tileproperties/>
- </layer>
  <layer name="trees" width="40" height="30">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAANVXSU4DQQycHAMP4mPAb1hubLmSD7DcWCQ2iR2JHQm4AEeoFinFstztnu4glJJK0YwnTtntZdI044c5cB48A8//WYuFJXAZvAPvC32sgb0K+zF4Am6Am4b9FXwr1BawDvYT9gPwEDyK2K/BG3AH3K3QsQAuimsvL8QFeAleRezP4EuhNqlpBVwV95g3qVPHEPAAPoJPzbDeY5jqtNNHTal78nyt5yVY7x68ODzEanlUYBw5OrfAbaWpppZPm/x5lpPvPXC/UpPEbdN+nsViYs5mBrRAG/NMxM6G8+xd3e8lvhOLqU3OmGcitxeIfuI7sZhq4dWatHu9UNvTFrxak3Yv323PIwfWucg8SLveRTpf1r5K9UUO9O7ltZUHvcN1vrgHvH2eguzh4EfvXl5bdeTVFvMpfebuCT4ne5h+pD7uYit/+h53Oc9U75Swz735Ql3Wc9TCdwOJ8BtWPcnnuMu9c7fAc8ydj4yZn+E3vPdG6texEalZqGexB8bsxS5zmtKfMws/wK+I7xJ/WlPKn4yTOsLnp9DUxbvkZGfoJxVvyWz1zp/4bn77L+iZGGgq8fNX6BqaSlE673V/jVKLpDX7p8FZx5fuL11rOTo09C4Jurz/crmI1VpMg5Ura5fU6mqL3Dko/2OOK34ARhRW48ASAAA=
@@ -344,7 +337,7 @@
  </layer>
  <layer name="trees 2" width="40" height="30">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAANVXSU4DMRDM///AcmO9wgcg3FikhAvrBQhcSJ5AWUpLrZLb7aUHREkljePxuF3VtjuzWR474K7RV8ICXIL3E489AA875ngGX8DXbfsBfASf6HlRMXYKrMBP8GvbfgPfwQ961rFaY0dQ8kL3fYNrcEPPOtYS5uBVR3yWFxKb55OOtYRb8I6+XZOf2gvtlcTN8Y3sG0FPfqb4tFcSN+dRRO7n8jNi3da3e3ACnqr2b+z5FpyB56oduecFOU9Yl79EzhPWReDll/RH5KCgxRMvv6zzohe1+03e89Yi8UXlYO1+k/e8tUj8UbD0YF3lPW8tPK73PvRg6cpr4bqCx+n7sBfLzG+Wruwv1xVTnH8JVl3Bucaa5uqK3Nhon2v8zdWM1tgInxNqz5EEq2acyuOElvu9VDOyttpz9r+3jhyB1jbNr9fNGtRqsgfuG30X4GVDfFpbvlNYg5Imet4j8NiY7xq8aYhPY8STkXk1vJyKqqsteP56ORVVV1v1m6ezl1MtHpe0iK7felDSwvq/91/wA8uRfUTAEgAA
+   H4sIAAAAAAAAANVXSU4DMRDM///AcmO9wgcg3FikhAvrBQhcSJ5AWUpLrZLb7aUHREkljeNx3K5q2z2zWR474K7RV8ICXIL3E489AA875ngGX8DXbfsBfASf6HlRMXYKrMBP8GvbfgPfwQ961rFaY0dQ8kL3fYNrcEPPOtYS5uBVR3yWFxKb55OOtYRb8I7+uyY/tRfaK4mb4xvZN4Ke/Ezxaa8kbs6jiNzP5WfNumu8isr9E/BUtX9jz7fgDDxX7cg9L8h5wrr8JXKesC4CL7+kf3TvabR44uWXdV70ovackfe8tUh8UTlYu9/kPW8tEn8ULD1YV3nPWwuP670PPVi68lq4ruBx+j7sxTLzm6Ur+8t1xRTnX4JVV3Cusaa5uyo3NtrnGn9zNaM1NsLnhNpzJMGqGafyOKHlfi/VIayt9pz9760jR6C1TfPrdbMGtZrsgftG3wV42RCf1pbvFNagpIme9wg8Nua7Bm8a4tMY8WRkXg0vpyK+J0rw/PVyKqqutuo3T2cvp1o8LmkRXb/1oKSF9b33X/ADFbEHlMASAAA=
   </data>
   <tileproperties/>
  </layer>
