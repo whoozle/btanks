@@ -25,7 +25,7 @@ void Grid::collide(std::set<int> &objects, const GridMap &grid, const v2<int> &g
 #ifdef NEW_OLD_COLLIDE
 
 	for(int y = start.y; y <= end.y; ++y) {
-		GridMap::const_iterator i = grid.find(v2<int>(start.x, y));
+		GridMap::const_iterator i = grid.lower_bound(v2<int>(start.x, y));
 
 		for(int x = start.x; i != grid.end() && i->first.y == y && x <= end.x; ++x) {
 			const v2<int> &i_pos = i->first;
