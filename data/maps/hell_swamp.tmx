@@ -145,7 +145,6 @@
   <property name="object:ricochet-bullets-item:ricochet-bullets-item:4" value="1446,1816"/>
   <property name="object:ricochet-bullets-item:ricochet-bullets-item:3" value="64,1060"/>
   <property name="object:ricochet-bullets-item:ricochet-bullets-item:2" value="1884,1226"/>
-  <property name="object:oil-barrels:oil-barrels:2" value="258,788,-10"/>
   <property name="object:ricochet-bullets-item:ricochet-bullets-item:1" value="470,1434"/>
   <property name="object:oil-barrels:oil-barrels:1" value="1246,1056,250"/>
   <property name="object:static-smoke-cloud:smoke-cloud:49" value="1822,316"/>
