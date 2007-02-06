@@ -32,6 +32,9 @@ void Grid::collide(std::set<int> &objects, const GridMap &grid, const v2<int> &g
 			if (i_pos.x > x) {
 				x = i_pos.x;
 				continue;
+			} else if (i_pos.x < x) {
+				++i;
+				continue;
 			}
 			assert(x == i_pos.x);
 			
