@@ -40,6 +40,7 @@ void Window::init(const int argc, char *argv[]) {
 	bool fullscreen = false;
 	bool dx = false;
 	bool vsync = false;
+	int fsaa = 0;
 
 	int w = 800, h = 600;
 	int bits = 0;
@@ -57,6 +58,7 @@ void Window::init(const int argc, char *argv[]) {
 		else if (strcmp(argv[i], "-3") == 0) { w = 1152; h = 864; }
 		else if (strcmp(argv[i], "-4") == 0) { w = 1280; h = 1024; }
 		else if (strcmp(argv[i], "--force-16") == 0) { bits = 16; }
+		else if (strcmp(argv[i], "--fsaa") == 0) { fsaa = (fsaa)?(fsaa<< 1) : 1; }
 		else if (strcmp(argv[i], "--help") == 0) { 
 			printf(
 					"\t--no-gl\t\t\tdisable GL renderer\n"
@@ -152,7 +154,7 @@ void Window::init(const int argc, char *argv[]) {
 #endif
 
 		LOG_DEBUG(("setting GL accelerated visual..."));
-
+		
 		r = SDL_GL_SetAttribute( SDL_GL_ACCELERATED_VISUAL, 1 );
 		if (r == -1) 
 			LOG_WARN(("cannot set SDL_GL_ACCELERATED_VISUAL."));
@@ -160,7 +162,12 @@ void Window::init(const int argc, char *argv[]) {
 		
 		SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
 		//SDL_GL_SetAttribute( SDL_GL_ALPHA_SIZE, 8 );
-	
+		
+		if (fsaa > 0) {
+			LOG_DEBUG(("fsaa mode: %d", fsaa));
+			SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
+			SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, fsaa);
+		}
 	
 		//_window.setVideoMode(w, h, 0,  SDL_OPENGL | SDL_OPENGLBLIT | flags );
 #ifdef USE_GLSDL
