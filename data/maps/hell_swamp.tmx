@@ -1,23 +1,190 @@
 <?xml version="1.0"?>
 <map version="0.99b" orientation="orthogonal" width="40" height="30" tilewidth="64" tileheight="64">
  <properties>
+  <property name="object:static-smoke-cloud:smoke-cloud:19" value="60,1582"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:18" value="2,1510"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:17" value="176,592"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:16" value="108,676"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:15" value="120,560"/>
+  <property name="object:dumb-missiles-item:dumb-missiles-item:5" value="1220,1370"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:14" value="42,610"/>
+  <property name="object:dumb-missiles-item:dumb-missiles-item:4" value="906,1790"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:13" value="628,278"/>
+  <property name="object:dumb-missiles-item:dumb-missiles-item:3" value="376,1148"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:12" value="508,282"/>
+  <property name="object:dumb-missiles-item:dumb-missiles-item:2" value="910,418"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:11" value="458,196"/>
+  <property name="object:dumb-missiles-item:dumb-missiles-item:1" value="2154,668"/>
+  <property name="object:static-dirt:dirt:33" value="0,1760,-510"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:10" value="576,220"/>
+  <property name="object:static-dirt:dirt:31" value="@0,29,-510"/>
+  <property name="object:static-dirt:dirt:30" value="84,1852,-510"/>
+  <property name="object:impassable-static-corpse:dead-yellow-tank:4" value="2510,570"/>
+  <property name="object:impassable-static-corpse:dead-yellow-tank:3" value="1696,606"/>
+  <property name="object:impassable-static-corpse:dead-yellow-tank:1" value="178,1858"/>
+  <property name="object:static-launcher:red-launcher:2" value="548,1184"/>
+  <property name="object:static-launcher:red-launcher:1" value="1516,226"/>
+  <property name="object:static-dirt:dirt:29" value="48,1786,-510"/>
+  <property name="object:static-launcher:cyan-launcher:2" value="250,152"/>
+  <property name="object:static-dirt:dirt:28" value="28,1682,-510"/>
+  <property name="object:static-launcher:cyan-launcher:1" value="2498,364"/>
+  <property name="object:static-dirt:dirt:27" value="120,1706,-510"/>
+  <property name="object:static-dirt:dirt:26" value="134,1622,-510"/>
+  <property name="object:static-dirt:dirt:25" value="188,1756,-510"/>
+  <property name="object:static-dirt:dirt:24" value="148,1828,-510"/>
+  <property name="object:stack:stack:5" value="1448,1350,10"/>
+  <property name="object:static-dirt:dirt:23" value="1346,1664,-510"/>
+  <property name="object:stack:stack:4" value="1036,1005,10"/>
+  <property name="object:static-dirt:dirt:22" value="390,1458,-510"/>
   <property name="object:stack:stack:3" value="1292,928,10"/>
+  <property name="object:static-dirt:dirt:21" value="136,394,-510"/>
   <property name="object:stack:stack:2" value="1098,766,10"/>
+  <property name="object:static-dirt:dirt:20" value="446,252,-510"/>
   <property name="object:stack:stack:1" value="1070,712,10"/>
-  <property name="object:passable-pond:pond:6" value="1939,836,-700"/>
-  <property name="object:passable-pond:pond:5" value="1738,52,-700"/>
-  <property name="object:passable-pond:pond:4" value="1501,-64,-700"/>
-  <property name="object:passable-pond:pond:3" value="2348,1218,-700"/>
-  <property name="object:passable-pond:pond:2" value="1500,1134,-700"/>
-  <property name="object:choo-choo-wagon:choo-choo-wagon:1" value="1116,668,100"/>
+  <property name="object:impassable-static-corpse:dead-cyan-shilka:2" value="810,1806"/>
+  <property name="object:impassable-static-corpse:dead-cyan-shilka:1" value="1828,1208"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:9" value="646,162"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:8" value="990,1420"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:7" value="1096,1418"/>
+  <property name="object:static-dirt:dirt:19" value="640,56,-510"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:6" value="958,1522"/>
+  <property name="object:static-dirt:dirt:18" value="192,194,-510"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:5" value="400,800"/>
+  <property name="object:static-dirt:dirt:17" value="2046,394,-510"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:4" value="798,1298"/>
+  <property name="object:static-dirt:dirt:16" value="2100,536,-510"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:3" value="770,1150"/>
+  <property name="object:static-dirt:dirt:15" value="754,834,-510"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:2" value="856,1212"/>
+  <property name="object:static-dirt:dirt:14" value="1328,506,-510"/>
+  <property name="object:static-tank:red-tank:1" value="1032,780,250"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:1" value="946,1152"/>
+  <property name="object:static-dirt:dirt:13" value="1138,1224,-510"/>
+  <property name="object:static-dirt:dirt:12" value="1038,1220,-510"/>
+  <property name="object:impassable-static-corpse:dead-yellow-launcher:3" value="594,938"/>
+  <property name="object:static-dirt:dirt:11" value="2288,1668,-510"/>
+  <property name="object:impassable-static-corpse:dead-yellow-launcher:2" value="290,228"/>
+  <property name="object:static-dirt:dirt:10" value="2304,1466,-510"/>
+  <property name="object:impassable-static-corpse:dead-yellow-launcher:1" value="1446,1064"/>
+  <property name="object:mines-item:mines-item:7" value="38,1238"/>
+  <property name="object:mines-item:mines-item:6" value="36,1238"/>
+  <property name="object:mines-item:mines-item:5" value="856,198"/>
+  <property name="object:mines-item:mines-item:4" value="2212,44"/>
+  <property name="object:mines-item:mines-item:3" value="2494,648"/>
+  <property name="object:mines-item:mines-item:2" value="1674,478"/>
+  <property name="object:mines-item:mines-item:1" value="654,846"/>
   <property name="config:map.dirt.respawn-interval" value="int:0"/>
+  <property name="object:static-tank:cyan-tank:1" value="1392,1032,250"/>
+  <property name="object:static-launcher:yellow-launcher:1" value="2136,1392"/>
+  <property name="object:static-dirt:dirt:9" value="2062,1466,-510"/>
+  <property name="object:static-dirt:dirt:8" value="1924,1524,-510"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:89" value="1254,1790"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:88" value="1190,1822"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:87" value="488,1750"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:86" value="440,1692"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:85" value="570,502"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:84" value="1146,44"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:83" value="1220,14"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:82" value="2476,1462"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:81" value="1830,1698"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:80" value="1882,1646"/>
+  <property name="object:heal:heal:7" value="1226,412,250"/>
+  <property name="object:heal:heal:6" value="1808,888,250"/>
+  <property name="object:heal:heal:5" value="2322,1102"/>
+  <property name="object:heal:heal:4" value="400,1722"/>
+  <property name="object:heal:heal:3" value="1172,1632"/>
+  <property name="object:heal:heal:2" value="1926,504"/>
+  <property name="object:heal:heal:1" value="284,846"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:79" value="1666,1496"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:78" value="1642,1574"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:77" value="1566,1528"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:76" value="896,632"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:75" value="826,682"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:74" value="1468,790"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:73" value="1488,718"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:72" value="2264,1512"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:71" value="2182,1542"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:70" value="2062,1504"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:69" value="2222,1432"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:68" value="2160,1468"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:67" value="2146,1376"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:66" value="2072,1418"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:65" value="2002,1378"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:64" value="2410,984"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:63" value="2352,906"/>
+  <property name="object:lodge:lodge:1" value="1190,720,10"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:62" value="2352,898"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:61" value="2352,896"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:60" value="2430,920"/>
+  <property name="object:impassable-static-corpse:dead-yellow-shilka:2" value="1548,1812"/>
+  <property name="object:impassable-static-corpse:dead-yellow-shilka:1" value="2108,28"/>
+  <property name="object:megaheal:megaheal:6" value="82,1502,250"/>
+  <property name="object:megaheal:megaheal:5" value="2430,1746,250"/>
+  <property name="object:passable-pond:pond:6" value="1939,836,-700"/>
+  <property name="object:megaheal:megaheal:4" value="2476,82,250"/>
+  <property name="object:passable-pond:pond:5" value="1738,52,-700"/>
+  <property name="object:megaheal:megaheal:3" value="2476,80,250"/>
+  <property name="object:passable-pond:pond:4" value="1501,-64,-700"/>
+  <property name="object:megaheal:megaheal:2" value="38,44,250"/>
+  <property name="object:passable-pond:pond:3" value="2348,1218,-700"/>
+  <property name="object:megaheal:megaheal:1" value="1214,892"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:59" value="2382,838"/>
+  <property name="object:passable-pond:pond:2" value="1500,1134,-700"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:58" value="2314,8"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:57" value="2356,50"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:56" value="2340,156"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:55" value="2296,70"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:54" value="2296,68"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:53" value="2292,68"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:52" value="2154,306"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:51" value="2004,376"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:50" value="2086,376"/>
+  <property name="object:ricochet-bullets-item:ricochet-bullets-item:5" value="1472,74"/>
+  <property name="object:ricochet-bullets-item:ricochet-bullets-item:4" value="1446,1816"/>
+  <property name="object:ricochet-bullets-item:ricochet-bullets-item:3" value="64,1060"/>
+  <property name="object:ricochet-bullets-item:ricochet-bullets-item:2" value="1884,1226"/>
+  <property name="object:ricochet-bullets-item:ricochet-bullets-item:1" value="470,1434"/>
+  <property name="object:oil-barrels:oil-barrels:1" value="1246,1056,250"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:49" value="1822,316"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:48" value="1912,332"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:47" value="1846,246"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:46" value="1758,228"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:45" value="1756,228"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:44" value="1750,322"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:43" value="1716,406"/>
   <property name="spawn:4" value="@28,22"/>
   <property name="spawn:3" value="@29,7"/>
-  <property name="object:stack:stack:5" value="1448,1350,10"/>
-  <property name="object:lodge:lodge:1" value="1190,720,10"/>
   <property name="spawn:2" value="@11,7"/>
-  <property name="object:stack:stack:4" value="1036,1005,10"/>
   <property name="spawn:1" value="@10,22"/>
+  <property name="object:nuke-missiles-item:nuke-missiles-item:11" value="1882,214,250"/>
+  <property name="object:choo-choo-wagon:choo-choo-wagon:1" value="1116,668,100"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:38" value="1438,1106"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:37" value="1390,506"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:36" value="1378,378"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:35" value="1376,378"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:34" value="1332,442"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:33" value="1420,448"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:32" value="1360,688"/>
+  <property name="config:map.choo-choo-wagon.respawn-interval" value="int:10000"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:31" value="1274,714"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:30" value="1310,630"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:29" value="168,1152"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:28" value="222,1090"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:27" value="158,1104"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:26" value="340,1286"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:25" value="316,1228"/>
+  <property name="object:nuke-missiles-item:nuke-missiles-item:9" value="2402,0,250"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:24" value="316,1226"/>
+  <property name="object:nuke-missiles-item:nuke-missiles-item:8" value="2500,1422,250"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:23" value="290,1370"/>
+  <property name="object:nuke-missiles-item:nuke-missiles-item:7" value="2264,1800,250"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:22" value="86,1670"/>
+  <property name="object:nuke-missiles-item:nuke-missiles-item:6" value="16,1848,250"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:21" value="16,1610"/>
+  <property name="object:nuke-missiles-item:nuke-missiles-item:5" value="706,1510,250"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:20" value="0,1696"/>
+  <property name="object:nuke-missiles-item:nuke-missiles-item:2" value="12,148,250"/>
+  <property name="object:nuke-missiles-item:nuke-missiles-item:1" value="1206,778,250"/>
  </properties>
  <tileset name="terrains" firstgid="1" tilewidth="64" tileheight="64">
   <image source="../tiles/terrains_tileset.png"/>
@@ -99,7 +266,13 @@
    <property name="impassability" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAO2XwQqEMAxE89O9ylz71yJYyBbTlGXTyWIfSKRV8qQyVpHNCkqC3jDGGzVexaXIpxdIHv9IhvXb5MPKHkzeX9URQe2qBkE9PY67Ws/cxhGvYuL1Ppz5LIAtkBSwBQzae4XJ61bT+vZ7CY2eQ7TQA9pRuvOrQvjfc2v9sFJi8xXM/41ZwBYgUWScTTP8Mls9l9H+bAQr/5m5yc7st3ECRVWYqMASAAA=
+   H4sIAAAAAAAAAO2XUQrDIBBE967tFfwN8+ut20KFrWRdG7KOIT4QgybZFwwTI7IYQZqgNozxQo5XcUny6wWSxxWZYf0W//N4t2fg/a3sQef1WbUIctVrEFTTY/v21jOXccSrmHi1N2d+FsAWmBSwBQzKe4XO80ZT6tZ7CY2eQ7TQDtpRquNPD+F/z631w0iJxSGY/xu9gC1AIkk7m3o4M1s9l9b+rAUr/5m5yc7su/EC8MKNVsASAAA=
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="leaves" width="40" height="30">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3WqwoAIAxAUb/XVxN/34UNDFpEMeweuDBMhoWFAI/65j1LRaqazcCJeZ+w1jQAwDtRSr8/gWvsvuDOAABfBvNQGdXAEgAA
   </data>
   <tileproperties/>
  </layer>
@@ -118,7 +291,7 @@
    <property name="z" value="150"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAM1XyU4DMQyd+UiWlgOF0gM70gClSJRybSV+juXKr+BIsWpZTuzxJNAnWaqUpH6x/RxP0/w/pm3TnIGdgJ22tjPXsO/GuLcULsHfldHnOey7cPLbg3P7YGPFDsAOiY8+/Oaw78nJ7xjOTWLOcsbzuYDfz3+QM2vsc/EaxRh7oOWvA7tvtz6kXAbgvrB+xNZQMxRWTWj5ewFbtlsfKW3ivrA+M/jF+/B7cnhqs0Rt4X3oPTGXPP6lcQv/f+eoWcylJf5DYO0tfN+QPihhlNBKLX7vsPbRg/80oRUrP17Hmha+HLGVuHj1U0MfWqxo39RQQx8aPzrPUEi1W1ofKX7S27AQ3hReux5+n7D/J3NG4ud9s/FNkXqCByFHD2CPTn5cR/im9Jltcwg5egVbCfxSswKFpNfUnUuiiz60OEh6Td15KGgsrLNMSb1qvdPTu3L86Ixh+cbAmkj598xpOX5UO5ZvjBo1Yb1Tjb7tAeaR978h33cehJ6/Ft6cSayhLuqe11jtuZpiw3zNSQ1R/VOrPVdTvO1APeXwvYP8fgGQCo9HwBIAAA==
+   H4sIAAAAAAAAAM1X20oDQQzd/ciq1Qd7ffAubGttoV5e9ffE7zEDExpCMpNmZ+oeCBQ221xPkm2a/8e8bZoFyBRk1treeQC9R6NuKdyBvXujzRvQu3X6N4L3zkAuM3IOckFsHOPfBvRenf5dw3uTWLOU8Hpu4ffuBDWz5j6Vr3HMsQe5+nUgq/ZgQ6plAOqF51fsGXKGwsqJXP32IG/twYbGTdQLz5cGuxgPj5PD05slegvjoXFiLXn+S+MJ/v/Z0bNYS0v++8A6W7henzkoYaxwZSj+zRWuWP3jfdxnTmuQfPHypwY/crmiczOHGvzI+UfvGQqpd0v3n+aftBu2wk7hvXsq/7w7G3eKNBM8CDVag7w4/eM8wp1yzG2bQqjRO8iH4J92K1BIfNViLoku2sjlQeKrFnNf0FxYb5mSfMjNTs/sSvlHbwzLNwb2hGbfs5tS/lHuWL4xavSENaYac9EDrCOffzXuhhR+wNaXsHMmsYe6yHveY7XvaopvZmtDeojyn0rtu5ricwD9lMLvAP37Axi4OYfAEgAA
   </data>
   <tileproperties/>
  </layer>
@@ -127,19 +300,29 @@
    <property name="impassability" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgGHkgl5GBIY9xoF2BG2QC3ZY1iN1HLMgc5H4YKPdFMaLS+EDOALgxhRGVxgeSB3kckwoSh5l/RsHgBmGMkHIgGke6G+i6IIERUg6kDlL3DfZ6cqi5L55K7u2ikjno7htsbYoStLw70PkBHdSh5d2Bch/I3pJBFC7IAFT+lgJx2SB1H6j8rQfiBhzuyweKF9DA7fGM+NuAxKalSqCaqgEI23KgnRWDNE5pDaiZz4lNX31Y1IRC0xB6OqJmeZDNSFw/6eoApIXIQV62JBMoWwY7AAA5VzpDwBIAAA==
+   H4sIAAAAAAAAAGNgGHkgl5GBIY9xoF2BG2QC3ZY1iN1HLMgc5H4YKPdFMaLS+EDOALgxhRGVxgeSB3kckwoSh5l/RsHgBmGMkHIgGke6G+i6IIERUg6kDlL3DfZ6cqi5L36QuRfdfYOtTVGClncHOj+ggzq0vDtQ7gPZWzKIwgUZgMrfUiAuG6TuA5W/9UDcgMN9+UDxAhq4PZ4RfxuQ2LRUCVRTNQBhWw60s2KQximtATXzObHpqw+LmlBoGkJPR9QsD7IZiesnXR2AtBA5yMuWZAJly2AHAB8ZSLnAEgAA
   </data>
   <tileproperties/>
  </layer>
  <layer name="fence details" width="40" height="30">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgGBzAm5GBwYeRPnZdBuIrQHyVPtaRDO4C8T0gvg/lHwbiI0ToOwrEx2jlKCTwHIhfAPFLKP8sEJ9DkvcFxqMflrg8D8QXaO04KoLDA+0AAuAsFczAFVcw4A+UC6BSvqRX+iQXDLX0OQpGATWBGI58TqiMGAWogJ5tmVEwuAEt0gIpdTK16u5RMDBgJJW9uOofdDBavqKC0XY1dcBIymswUM5AfL4bjAAAV6fn3cASAAA=
+   H4sIAAAAAAAAAO2WWw7CIBBF6SbclM89+NYFdIE+/qom6qf1U92Fl6QkaIrtAJmCepL70UALHeYyI0QYtBMhOgnPWkfoBJ15liNzgXLoWjyvoHWN9zbQ1mK9ITQizL9Bd+hRPGfQThvv4hx7JWe5hw4W+2sKGXdKXLjJPHzDdFaKPsYGnnxpm59cxJafMZNCY2j+YTxk78VASpzfMvi86o7484prL0Otx5wsoGXTm4gIl1wwxZpSk33Vbp1Q8/Mbc/OX7l5T/Xmnrqeo9Y+Dsj25+slnXy17sgk0hWbC3J9RvGbTV1Nj4sP7VK+pWMkYqTtZP1/9H7jvTLWPqrjIeXV9FyJPy29NEcASAAA=
   </data>
   <tileproperties/>
  </layer>
  <layer name="fence details 2" width="40" height="30">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAOWXSQ7CMAxFe/9LwJZhCxdg2EErARvGDeMGOAK/i0iRlaYOsTuoX3qbDj9u7DhpknRXG7AFOwXvBVhGepzAGVwsPwnfXCnIIj0e4Alelp+Er7T24ACOAe/MwDxiTJMn42Pnjd67ghu4e3yoVmD9Z2xm3MzysfOWkntv8AFfh5dGvmO+rWsagXHdQXg0AdO6g7Ak1T99cuWkaFzaZ+h60sivKydF67hsLRov7Tml4ubRzF/Ve5JrPl17isb66IE+4xpVVX13AIaMa1xJrulQL87zkntkqBe3Dqvoi9wxXHWoea40cTXx7JqrLC7uvNK8+86kkrLj98VK8+47k2qpqTXQRtFaov9CGrUWIlpL9F9Iqtaq6K0xanPN/wCIRvjGwBIAAA==
+   H4sIAAAAAAAAAO2Xyw5BMRCGvRdvwxJbj8PWZcsLuOw4EmxcN64bPIJfcppMJtUzPb1Ewp98CaftdPSfVk+h8LtagCVYBYg9BhPHGDuwBwcSz0fctxIwd4xxAVdwI/Fs45ZBxTGPLK3BBmwtxgzBKEebkvJJ9aW+8bYjOIGzIQ7XFMzSzw2LNpr/nPSlviWs7Q4e4KmJ5aOOuGj+f5nVBb0c4yQ17EN9MMgxLlQN+Do/TdJ58mle7gPfT3n9NUnnyad9nOWDihV6TbmkPqr1o78tRg3o1lO352y8kKoJWoJnXLHO3TboCJ5J5dNP21iS/j7/I21jSeswxp6QzqGrwxD3DCWVV8g5XJSVl3Rdue+mO6lP0fxNuXLfTXdSqYqgZNE/VA3Y5hFaMfY7ryX+LmSqNeVDyHsqryX+LiSpNV2fKqiBevo9xlq76FvPPYlegkACpMASAAA=
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="los objectos" width="40" height="30">
+  <properties>
+   <property name="pierceable" value="true"/>
+   <property name="impassability" value="100"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3Y2w2AIBBEUajKb79RsP9q2IQKNOzL3FPBhOwEllLyO6p3guUMkgP/d8usdeZtK84U0DekY49xz6K8Ed5qkvtKmh06PPoDABlkveu/sN5Zov1xTCDPL1nAEgAA
   </data>
   <tileproperties/>
  </layer>
@@ -155,19 +338,19 @@
  </layer>
  <layer name="trees" width="40" height="30">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAANVXyU4DMQxNj4X/P7Lc2HqlP8ImsSOxFSTgAhzhBXiqZSVxkkmo+qSnasYdz/MSu3Vu+bAGroNn4PmCtYSwBW6Dd+B9pY89cDLAfgyeJOwv4Cv4Vi7tB/vgNGE/AA/Bo4j9GrypfLfEBrgprq28EBfgJXgVsT+Bzw007YC74h7zJnXqGDwewEdw5ub93grUlLon6xv6vgT73ULrOFqDcSxC56nLn2e5+W6JW1c+z0piykWsNrF5Nkk8UxOThdLaTBPPDJ3RMVh1kXbrLPQ4K1ZdpN3Kd4+zEqqLzIO0612k85W7r0qgdy+vQ3nQO1zni3vA2ucl2vTu5XWoj6zeYj6tfZ4L+pG+uItD+dP3uMtZU71TZgP1UQt/G0j4d4T6SX6Pu9yqewswZn76d1i/G6k/lqeWs5AxW7HLnKb058zCd/Az4rvGn9aU8ifjpA7/+SE0jUfOrY7mflLx1vSMVX/iy/2eP69n5U9TjZ9eGAc0/Tf0+eqF2tmvz5futVa6Ws3+WK/VopWuXpD/MZcV379/WbfAEgAA
+   H4sIAAAAAAAAANVXSU4DQQycHAMP4mPAb1hubLmSD7DcWCQ2iR2JHQm4AEeoFinFstztnu4glJJK0YwnTtntZdI044c5cB48A8//WYuFJXAZvAPvC32sgb0K+zF4Am6Am4b9FXwr1BawDvYT9gPwEDyK2K/BG3AH3K3QsQAuimsvL8QFeAleRezP4EuhNqlpBVwV95g3qVPHEPAAPoJPzbDeY5jqtNNHTal78nyt5yVY7x68ODzEanlUYBw5OrfAbaWpppZPm/x5lpPvPXC/UpPEbdN+nsViYs5mBrRAG/NMxM6G8+xd3e8lvhOLqU3OmGcitxeIfuI7sZhq4dWatHu9UNvTFrxak3Yv323PIwfWucg8SLveRTpf1r5K9UUO9O7ltZUHvcN1vrgHvH2eguzh4EfvXl5bdeTVFvMpfebuCT4ne5h+pD7uYit/+h53Oc9U75Swz735Ql3Wc9TCdwOJ8BtWPcnnuMu9c7fAc8ydj4yZn+E3vPdG6texEalZqGexB8bsxS5zmtKfMws/wK+I7xJ/WlPKn4yTOsLnp9DUxbvkZGfoJxVvyWz1zp/4bn77L+iZGGgq8fNX6BqaSlE673V/jVKLpDX7p8FZx5fuL11rOTo09C4Jurz/crmI1VpMg5Ura5fU6mqL3Dko/2OOK34ARhRW48ASAAA=
   </data>
   <tileproperties/>
  </layer>
  <layer name="trees 2" width="40" height="30">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAANVXSW7DMAzM///QNrduubYfSXJJt0vXS9snZASEADEQTVqiXHSAAazYgskZimZWqzrOwHPj3hS24A7cD957CV41vOMJfAZfTusD+AA+0vU2sHcEPsBP8Ou0fgXfwHe61rFae3sw5YW+9w3+gL90rWMdAcsLic3zSccaxZz61F5oryRujq/n3Aha6rPEp72SuLmOMmq/Vp+RvCNeZdX+LbhR6yXO/BzcgfdqnXnmBTVPWJe/RM0T1kXg1Zfc7z17GnM88erL6hetiPYZec7LReLLqsHoeZPnvFwk/ixYerCu8pyXS0bfj8DSlXPhuWJE/9tVfrN0ZW14rhjR/wqsuYJ9Ym1q36olPI74W5sZp/ZmINpHCqyZcZTHBXNyn5pDWFvtOfvfOkf2QGtb3q/zZg2imlyA6864BFpb/qawBlFNrsGbpPg0RtZjFF5NLfVdseDVVFbPaZ3fvJrK8jh7fsuG9X/vv+AINVq8ucASAAA=
+   H4sIAAAAAAAAANVXSU4DMRDM///AcmO9wgcg3FikhAvrBQhcSJ5AWUpLrZLb7aUHREkljePxuF3VtjuzWR474K7RV8ICXIL3E489AA875ngGX8DXbfsBfASf6HlRMXYKrMBP8GvbfgPfwQ961rFaY0dQ8kL3fYNrcEPPOtYS5uBVR3yWFxKb55OOtYRb8I6+XZOf2gvtlcTN8Y3sG0FPfqb4tFcSN+dRRO7n8jNi3da3e3ACnqr2b+z5FpyB56oduecFOU9Yl79EzhPWReDll/RH5KCgxRMvv6zzohe1+03e89Yi8UXlYO1+k/e8tUj8UbD0YF3lPW8tPK73PvRg6cpr4bqCx+n7sBfLzG+Wruwv1xVTnH8JVl3Bucaa5uqK3Nhon2v8zdWM1tgInxNqz5EEq2acyuOElvu9VDOyttpz9r+3jhyB1jbNr9fNGtRqsgfuG30X4GVDfFpbvlNYg5Imet4j8NiY7xq8aYhPY8STkXk1vJyKqqsteP56ORVVV1v1m6ezl1MtHpe0iK7felDSwvq/91/wA8uRfUTAEgAA
   </data>
   <tileproperties/>
  </layer>
  <layer name="trees3" width="40" height="30">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAO1Xu24CMRD0lST/X0NLSAs/wtEACU3CowEaoGUokFbWjdf2rTmQGGmKtbR7K88+fM69JubgAlwaxJqCNTgjds43/8B/cG2Q3w/4C66InfPNPXgAjwb5bcAtuCN2iW/eoOkmbaYpO7fIKaTb1rOZpuycQatRGU/TTdpMU3bOoNVoajxryBq1rg0LSH1Ta+MRkPqW0LJtH/szaAR+G+aX2sfaPhmDE7Ps0vs4dp9Y1mCTlkzf0D6RPpY12KRlTC/6s7lU/zZpyfSVtefPZulTehay+LL2Qu+H0rOQxfdzYfu39F6LjW/5Lk1B7nxuA+0tFHqrNcXI+ecI+WtahN5qd8gYKdrWEf6aFjE1J2OkaCvvKse/NLrqIx99cCDsE3gGL+457moIfgm7Vzn3AX5WXWWko+s7eyMeV18BRr3AEgAA
+   H4sIAAAAAAAAAL1XO05DMRB0SuC6cJ7QJtDCCbhBQgMJNHxCE2iAlkVipZHl2Y/xy0hT7Iu9fm9n1nZK6ced8F64+UeOKdd+Ej4LX5xcK+FaeEvizJps7dPG/L3wXfjh5NoKH4SPJGZrWsC1z/6YmY94Fe6EbyRuram4SaxTz/d0w5hpyp4rtDZRYD5Lt10VM03Z8/odFZ5HMZ+nG8ZMU/acwfNYK5+n0Uigx6KeYRpN8d6ob9QzTKOIt7JAfSOesWqU8UK01vUeciG8NMZna5TtY+88uRJeG79n+y/bx9HzYKSHWloyfa3zE+dE6xNBS8uIT+q9eYr++0VLS6Yveq/em1t9mt3TouPZOPSedV/SWo7q1+i4+l3Y+au19Pq1rkO0v6Pjeu94il7P9u7PWWAdvLuQdVdTYI6e/zvWfE8L666mwBwZbdeB+d5dKOI5zJHRFmsVmT/VXsrAas18nj2no5gLzyH+FH4Jv0u7VqPqpN/pYSFcQnw0K+VYeDJrjx9VJ/3OHvTsPdlzUb/zUDh0f2TRq/sPZnw+UMASAAA=
   </data>
   <tileproperties/>
  </layer>
