@@ -6,6 +6,7 @@
 #include <map>
 #include <set>
 #include <string>
+#include <vector>
 
 class Grid {
 public: 
@@ -20,22 +21,23 @@ public:
 	
 private:
 	typedef std::set<int> IDSet;
-	typedef std::map<const v2<int>, IDSet> GridMap;
-
+	typedef std::vector<IDSet> SetVector;
+	typedef std::vector<SetVector> GridMatrix;
 
 	struct Object {
 		Object(const v2<int>& pos, const v2<int>& size) : pos(pos), size(size) {}
 		v2<int> pos, size;
 	};
 
-	void collide(std::set<int> &objects, const GridMap &grid, const v2<int> &grid_size, const v2<int>& area_pos, const v2<int>& area_size) const;
-	void removeFromGrid(GridMap &grid, const v2<int> &grid_size, const int id, const Object &o);
-	void update(GridMap &grid, const v2<int> &grid_size, const int id, const v2<int> &pos, const v2<int> &size);
+	void collide(std::set<int> &objects, const GridMatrix &grid, const v2<int> &grid_size, const v2<int>& area_pos, const v2<int>& area_size) const;
+	void removeFromGrid(GridMatrix &grid, const v2<int> &grid_size, const int id, const Object &o);
+	void update(GridMatrix &grid, const v2<int> &grid_size, const int id, const v2<int> &pos, const v2<int> &size);
+	void resize(GridMatrix &grid, const v2<int> &grid_size, const v2<int> &map_size);
 
 	v2<int> _grid_size; 
 	v2<int> _grid4_size;
 	
-	GridMap _grid, _grid4;
+	GridMatrix _grid, _grid4;
 	
 	typedef std::map<const int, Object> Index;
 	Index _index;
