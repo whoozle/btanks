@@ -30,10 +30,10 @@
 #include "math/unary.h"
 #include "sound/mixer.h"
 
-Object::Event::Event() : name(), repeat(false), sound(), played(false) {}
+Object::Event::Event() : name(), repeat(false), sound(), played(false), cached_pose(NULL) {}
 
-Object::Event::Event(const std::string name, const bool repeat, const std::string &sound): 
-	name(name), repeat(repeat), sound(sound), played(false) {}
+Object::Event::Event(const std::string name, const bool repeat, const std::string &sound, const Pose * p): 
+	name(name), repeat(repeat), sound(sound), played(false), cached_pose(p) {}
 	
 void Object::Event::serialize(mrt::Serializator &s) const {
 	s.add(name);
@@ -166,7 +166,7 @@ void Object::play(const std::string &id, const bool repeat) {
 		return;
 	}
 
-	_events.push_back(Event(id, repeat, pose->sound));
+	_events.push_back(Event(id, repeat, pose->sound, pose));
 }
 
 void Object::playNow(const std::string &id) {
@@ -176,7 +176,7 @@ void Object::playNow(const std::string &id) {
 		return;
 	}
 	_pos = 0;
-	_events.push_front(Event(id, false, pose->sound));
+	_events.push_front(Event(id, false, pose->sound, pose));
 }
 
 void Object::cancel() {
@@ -237,7 +237,10 @@ void Object::tick(const float dt) {
 	
 	Event & event = _events.front();
 	//LOG_DEBUG(("%p: event: %s, pos = %f", (void *)this, event.name.c_str(), _pos));
-	const Pose * pose = _model->getPose(event.name);
+	const Pose * pose = event.cached_pose;
+	if (pose == NULL) {
+		event.cached_pose = pose = _model->getPose(event.name);
+	}
 	
 	if (pose == NULL) {
 		LOG_WARN(("animation model %s does not have pose %s", _model_name.c_str(), event.name.c_str()));
@@ -282,7 +285,12 @@ const bool Object::getRenderRect(sdlx::Rect &src) const {
 		return false;
 	}
 
-	const Pose * pose = _model->getPose(_events.front().name);
+	const Event & event = _events.front();
+	const Pose * pose = event.cached_pose;
+	if (pose == NULL) {
+		event.cached_pose = pose = _model->getPose(event.name);
+	}
+
 	if (pose == NULL) {
 		LOG_WARN(("%s:%s pose '%s' is not supported", registered_name.c_str(), animation.c_str(), _events.front().name.c_str()));
 		return false;
@@ -1217,7 +1225,12 @@ const float Object::getStateProgress() const {
 	if (_events.empty()) 
 		return 0;
 
-	const Pose * pose = _model->getPose(_events.front().name);
+	const Event & event = _events.front();
+	//LOG_DEBUG(("%p: event: %s, pos = %f", (void *)this, event.name.c_str(), _pos));
+	const Pose * pose = event.cached_pose;
+	if (pose == NULL) { 
+		event.cached_pose = pose = _model->getPose(event.name);
+	}
 	
 	if (pose == NULL) {
 		return 0;

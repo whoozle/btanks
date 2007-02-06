@@ -189,9 +189,10 @@ private:
 		bool repeat;
 		std::string sound;
 		bool played;
+		mutable const Pose * cached_pose;
 		
 		Event();
-		Event(const std::string name, const bool repeat, const std::string &sound);
+		Event(const std::string name, const bool repeat, const std::string &sound, const Pose * cached_pose = NULL);
 		virtual void serialize(mrt::Serializator &s) const;
 		virtual void deserialize(const mrt::Serializator &s);
 	};
