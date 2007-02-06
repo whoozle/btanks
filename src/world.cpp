@@ -766,7 +766,7 @@ TRY {
 	}
 	o._position += dpos;
 	
-	GET_CONFIG_VALUE("engine.velocity-fadeout", float, vf, 0.2);
+	GET_CONFIG_VALUE("engine.velocity-fadeout", float, vf, 0.1);
 	
 	o._velocity_fadeout -= o._velocity_fadeout * math::min(dt / vf, 1.0f);
 	//LOG_DEBUG(("vfadeout: %g %g", o._velocity_fadeout.x, o._velocity_fadeout.y));
