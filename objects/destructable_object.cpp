@@ -53,6 +53,7 @@ void DestructableObject::addDamage(Object *from, const int dhp, const bool emitD
 		cancelAll();
 		play("fade-out", false); 
 		play("broken", true);
+		classname = "debris";
 		
 		if (!_object.empty() && !_animation.empty()) {
 			spawn(_object, _animation, v2<float>::empty, v2<float>::empty, getZ() + 1);
