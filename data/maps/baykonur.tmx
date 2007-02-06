@@ -158,11 +158,11 @@
   <property name="object:machinegunner-item:machinegunner-item:1" value="2489,2703"/>
   <property name="object:ricochet-bullets-item:ricochet-bullets-item:1" value="2382,316"/>
   <property name="object:static-launcher:green-launcher:1" value="961,1577"/>
-  <property name="object:static-corpse:dead-thrower-static:22" value="1567,471,10"/>
+  <property name="object:static-corpse:dead-thrower-static:22" value="1567,471,-10"/>
   <property name="object:dumb-missiles-item:dumb-missiles-item:9" value="2649,177"/>
-  <property name="object:static-corpse:dead-thrower-static:21" value="1756,575,10"/>
+  <property name="object:static-corpse:dead-thrower-static:21" value="1756,575,-10"/>
   <property name="object:dumb-missiles-item:dumb-missiles-item:8" value="1499,307"/>
-  <property name="object:static-corpse:dead-thrower-static:20" value="3099,356,10"/>
+  <property name="object:static-corpse:dead-thrower-static:20" value="3099,356,-10"/>
   <property name="object:dumb-missiles-item:dumb-missiles-item:7" value="2253,968"/>
   <property name="object:dumb-missiles-item:dumb-missiles-item:6" value="235,748"/>
   <property name="object:dumb-missiles-item:dumb-missiles-item:5" value="1296,2779"/>
@@ -173,32 +173,32 @@
   <property name="object:dumb-missiles-item:dumb-missiles-item:1" value="3120,2250"/>
   <property name="object:static-tank:red-tank:3" value="1321,3"/>
   <property name="object:static-tank:red-tank:2" value="3132,3006"/>
-  <property name="object:static-corpse:dead-thrower-static:19" value="2814,281,10"/>
-  <property name="object:static-corpse:dead-thrower-static:18" value="2478,786,10"/>
-  <property name="object:static-corpse:dead-thrower-static:17" value="2302,40,10"/>
-  <property name="object:static-corpse:dead-thrower-static:16" value="2170,261,10"/>
-  <property name="object:static-corpse:dead-thrower-static:15" value="1907,639,10"/>
-  <property name="object:static-corpse:dead-thrower-static:14" value="1104,531,10"/>
+  <property name="object:static-corpse:dead-thrower-static:19" value="2814,281,-10"/>
+  <property name="object:static-corpse:dead-thrower-static:18" value="2478,786,-10"/>
+  <property name="object:static-corpse:dead-thrower-static:17" value="2302,40,-10"/>
+  <property name="object:static-corpse:dead-thrower-static:16" value="2170,261,-10"/>
+  <property name="object:static-corpse:dead-thrower-static:15" value="1907,639,-10"/>
+  <property name="object:static-corpse:dead-thrower-static:14" value="1104,531,-10"/>
   <property name="object:impassable-static-corpse:dead-orange-bus:3" value="604,1130,10"/>
-  <property name="object:static-corpse:dead-thrower-static:13" value="394,583,10"/>
-  <property name="object:static-corpse:dead-thrower-static:12" value="531,1234,10"/>
+  <property name="object:static-corpse:dead-thrower-static:13" value="394,583,-10"/>
+  <property name="object:static-corpse:dead-thrower-static:12" value="531,1234,-10"/>
   <property name="object:impassable-static-corpse:dead-orange-bus:1" value="1978,1855,10"/>
-  <property name="object:static-corpse:dead-thrower-static:11" value="158,1395,10"/>
-  <property name="object:static-corpse:dead-thrower-static:10" value="534,2002,10"/>
+  <property name="object:static-corpse:dead-thrower-static:11" value="158,1395,-10"/>
+  <property name="object:static-corpse:dead-thrower-static:10" value="534,2002,-10"/>
   <property name="object:road-sign:road-sign03:1" value="2388,2854,-10"/>
   <property name="config:map.dumb-missiles-item.respawn-interval" value="int:10000"/>
-  <property name="object:static-corpse:dead-thrower-static:9" value="160,2397,10"/>
-  <property name="object:static-corpse:dead-thrower-static:8" value="273,2696,10"/>
-  <property name="object:static-corpse:dead-thrower-static:7" value="375,2367,10"/>
-  <property name="object:static-corpse:dead-thrower-static:6" value="619,2415,10"/>
-  <property name="object:static-corpse:dead-thrower-static:5" value="982,2588,10"/>
-  <property name="object:static-corpse:dead-thrower-static:4" value="1839,2147,10"/>
+  <property name="object:static-corpse:dead-thrower-static:9" value="160,2397,-10"/>
+  <property name="object:static-corpse:dead-thrower-static:8" value="273,2696,-10"/>
+  <property name="object:static-corpse:dead-thrower-static:7" value="375,2367,-10"/>
+  <property name="object:static-corpse:dead-thrower-static:6" value="619,2415,-10"/>
+  <property name="object:static-corpse:dead-thrower-static:5" value="982,2588,-10"/>
+  <property name="object:static-corpse:dead-thrower-static:4" value="1839,2147,-10"/>
   <property name="object:thrower:thrower:9" value="800,990"/>
-  <property name="object:static-corpse:dead-thrower-static:3" value="2269,2308,10"/>
+  <property name="object:static-corpse:dead-thrower-static:3" value="2269,2308,-10"/>
   <property name="object:thrower:thrower:8" value="291,842"/>
-  <property name="object:static-corpse:dead-thrower-static:2" value="2446,1603,10"/>
+  <property name="object:static-corpse:dead-thrower-static:2" value="2446,1603,-10"/>
   <property name="object:thrower:thrower:7" value="275,382"/>
-  <property name="object:static-corpse:dead-thrower-static:1" value="2825,1732,10"/>
+  <property name="object:static-corpse:dead-thrower-static:1" value="2825,1732,-10"/>
   <property name="object:thrower:thrower:6" value="838,2947"/>
   <property name="object:thrower:thrower:5" value="1199,3090"/>
   <property name="object:thrower:thrower:4" value="2897,1582"/>
@@ -350,20 +350,20 @@
   <property name="object:kamikaze:kamikaze:15" value="150,3149"/>
   <property name="object:watchtower-with-machinegunner:watchtower:26" value="385,1187"/>
   <property name="object:kamikaze:kamikaze:14" value="75,3126"/>
-  <property name="object:static-corpse:dead-man-static:15" value="2186,1048"/>
+  <property name="object:static-corpse:dead-man-static:15" value="2186,1048,-10"/>
   <property name="object:watchtower-with-machinegunner:watchtower:25" value="449,291"/>
-  <property name="object:static-corpse:dead-man-static:14" value="1627,664"/>
+  <property name="object:static-corpse:dead-man-static:14" value="1627,664,-10"/>
   <property name="object:watchtower-with-machinegunner:watchtower:24" value="414,2810"/>
   <property name="object:missile-boat:missile-boat:2" value="9,1804"/>
-  <property name="object:static-corpse:dead-man-static:13" value="1991,787"/>
+  <property name="object:static-corpse:dead-man-static:13" value="1991,787,-10"/>
   <property name="object:static-launcher:yellow-launcher:4" value="2408,1034"/>
-  <property name="object:static-corpse:dead-man-static:12" value="2312,862,10"/>
+  <property name="object:static-corpse:dead-man-static:12" value="2312,862,-10"/>
   <property name="object:missile-boat:missile-boat:1" value="8,1804"/>
   <property name="object:watchtower-with-machinegunner:watchtower:22" value="1481,1909"/>
   <property name="object:static-launcher:yellow-launcher:3" value="2407,1034"/>
-  <property name="object:static-corpse:dead-man-static:11" value="2972,33,10"/>
+  <property name="object:static-corpse:dead-man-static:11" value="2972,33,-10"/>
   <property name="object:static-launcher:yellow-launcher:2" value="43,1180"/>
-  <property name="object:static-corpse:dead-man-static:10" value="2439,664,10"/>
+  <property name="object:static-corpse:dead-man-static:10" value="2439,664,-10"/>
   <property name="config:objects.nuke-missiles-on-tank.capacity" value="int:1"/>
   <property name="object:watchtower-with-machinegunner:watchtower:16" value="2754,2150"/>
   <property name="object:watchtower-with-machinegunner:watchtower:15" value="2049,2227"/>
@@ -374,16 +374,16 @@
   <property name="object:stack:stack:12" value="1818,30"/>
   <property name="object:stack:stack:11" value="2001,220"/>
   <property name="object:stack:stack:10" value="1954,292"/>
-  <property name="object:static-corpse:dead-man-static:9" value="2806,383,10"/>
-  <property name="object:static-corpse:dead-man-static:8" value="2385,36,10"/>
-  <property name="object:static-corpse:dead-man-static:7" value="2043,1385,10"/>
-  <property name="object:static-corpse:dead-man-static:6" value="2538,1216,10"/>
-  <property name="object:static-corpse:dead-man-static:5" value="2254,2231,10"/>
-  <property name="object:static-corpse:dead-man-static:4" value="1030,2992,10"/>
-  <property name="object:static-corpse:dead-man-static:3" value="280,2513,10"/>
-  <property name="object:static-corpse:dead-man-static:2" value="750,1566,10"/>
+  <property name="object:static-corpse:dead-man-static:9" value="2806,383,-10"/>
+  <property name="object:static-corpse:dead-man-static:8" value="2385,36,-10"/>
+  <property name="object:static-corpse:dead-man-static:7" value="2043,1385,-10"/>
+  <property name="object:static-corpse:dead-man-static:6" value="2538,1216,-10"/>
+  <property name="object:static-corpse:dead-man-static:5" value="2254,2231,-10"/>
+  <property name="object:static-corpse:dead-man-static:4" value="1030,2992,-10"/>
+  <property name="object:static-corpse:dead-man-static:3" value="280,2513,-10"/>
+  <property name="object:static-corpse:dead-man-static:2" value="750,1566,-10"/>
   <property name="config:map.thrower.respawn-interval" value="int:10000"/>
-  <property name="object:static-corpse:dead-man-static:1" value="408,1120,10"/>
+  <property name="object:static-corpse:dead-man-static:1" value="408,1120,-10"/>
   <property name="object:impassable-static-corpse:dead-red-car:3" value="821,265,10"/>
   <property name="object:impassable-static-corpse:dead-red-car:2" value="2171,110,10"/>
   <property name="object:impassable-static-corpse:dead-red-car:1" value="1111,3049,10"/>
