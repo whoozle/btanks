@@ -14,13 +14,39 @@ void Grid::clear() {
 }
 
 #define NEW_COLLIDE
+#define NEW_OLD_COLLIDE
 
 void Grid::collide(std::set<int> &objects, const GridMap &grid, const v2<int> &grid_size, const v2<int>& area_pos, const v2<int>& area_size) const {
 	v2<int> start = area_pos / grid_size;
 	v2<int> end = (area_pos + area_size - 1) / grid_size;
 	//static int hit = 0, n = 0, global = 0;
 
-#ifndef NEW_COLLIDE
+//#ifndef NEW_COLLIDE
+#ifdef NEW_OLD_COLLIDE
+
+	for(int y = start.y; y <= end.y; ++y) {
+		GridMap::const_iterator i = grid.find(v2<int>(start.x, y));
+
+		for(int x = start.x; i != grid.end() && x <= end.x; ++x) {
+			const v2<int> &i_pos = i->first;
+			if (i_pos.y != y)
+				break;
+			
+			if (i_pos.x > x) {
+				x = i_pos.x;
+				continue;
+			}
+			assert(x == i_pos.x);
+			
+			//++n;
+			//++hit;
+			std::set_union(objects.begin(), objects.end(), i->second.begin(), i->second.end(), 
+				std::insert_iterator<std::set<int> > (objects, objects.begin()));
+			++i;
+		}	
+	}
+#else
+	//the very simple and straightforward collide.
 	for(int y = start.y; y <= end.y; ++y) 
 		for(int x = start.x; x <= end.x; ++x) {
 //			++n;
@@ -31,8 +57,12 @@ void Grid::collide(std::set<int> &objects, const GridMap &grid, const v2<int> &g
 			std::set_union(objects.begin(), objects.end(), i->second.begin(), i->second.end(), 
 				std::insert_iterator<std::set<int> > (objects, objects.begin()));
 		}	
+
+#endif
+
 #else 
-	//no rb-tree search everytime.
+	//no rb-tree search everytime. (actually 2 times per call) 
+	//O(area_size.y * size.x)
 	GridMap::const_iterator b = grid.lower_bound(start);
 	GridMap::const_iterator e = grid.upper_bound(end);
 	for(GridMap::const_iterator i = b; i != e; ++i) {
