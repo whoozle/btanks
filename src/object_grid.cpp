@@ -13,7 +13,7 @@ void Grid::clear() {
 	_index.clear();
 }
 
-#define NEW_COLLIDE
+//#define NEW_COLLIDE
 #define NEW_OLD_COLLIDE
 
 void Grid::collide(std::set<int> &objects, const GridMap &grid, const v2<int> &grid_size, const v2<int>& area_pos, const v2<int>& area_size) const {
@@ -21,7 +21,7 @@ void Grid::collide(std::set<int> &objects, const GridMap &grid, const v2<int> &g
 	v2<int> end = (area_pos + area_size - 1) / grid_size;
 	//static int hit = 0, n = 0, global = 0;
 
-//#ifndef NEW_COLLIDE
+#ifndef NEW_COLLIDE
 #ifdef NEW_OLD_COLLIDE
 
 	for(int y = start.y; y <= end.y; ++y) {
