@@ -118,10 +118,10 @@ public:
 	
 	//operators 
 	inline const bool operator<(const v2<T> &other) const {
-		if (x != other.x) {
-			return x < other.x;
+		if (y != other.y) {
+			return y < other.y;
 		}
-		return y < other.y;
+		return x < other.x;
 	}
 
 
