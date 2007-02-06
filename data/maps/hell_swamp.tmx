@@ -1,36 +1,23 @@
 <?xml version="1.0"?>
 <map version="0.99b" orientation="orthogonal" width="40" height="30" tilewidth="64" tileheight="64">
  <properties>
-  <property name="object:dirt:dirt:9" value="650,1466,-10"/>
-  <property name="object:dirt:dirt:8" value="17,905,-10"/>
-  <property name="spawn:4" value="@28,22"/>
-  <property name="object:dirt:dirt:7" value="461,750,-10"/>
-  <property name="spawn:3" value="@29,7"/>
-  <property name="object:dirt:dirt:6" value="1281,96,-10"/>
-  <property name="spawn:2" value="@11,7"/>
-  <property name="object:dirt:dirt:5" value="1188,374,-10"/>
-  <property name="spawn:1" value="@10,22"/>
-  <property name="object:dirt:dirt:4" value="2324,4,-10"/>
-  <property name="object:dirt:dirt:3" value="2258,1282,-10"/>
-  <property name="object:dirt:dirt:2" value="1890,190,-10"/>
-  <property name="object:dirt:dirt:1" value="2148,712,-10"/>
-  <property name="object:lodge:lodge:1" value="1190,720,10"/>
-  <property name="object:dirt:dirt:19" value="1429,561,-510"/>
-  <property name="object:dirt:dirt:18" value="990,656,-510"/>
-  <property name="object:dirt:dirt:17" value="1161,1208,-510"/>
-  <property name="object:dirt:dirt:16" value="1552,1029,-510"/>
-  <property name="object:dirt:dirt:15" value="1649,1568,-510"/>
-  <property name="object:dirt:dirt:14" value="1929,1525,-510"/>
-  <property name="object:dirt:dirt:13" value="1109,725,-10"/>
-  <property name="object:dirt:dirt:12" value="590,1045,-10"/>
-  <property name="object:dirt:dirt:11" value="2158,1778,-10"/>
-  <property name="object:dirt:dirt:10" value="1309,1470,-10"/>
-  <property name="object:stack:stack:5" value="1448,1350,10"/>
-  <property name="object:stack:stack:4" value="1036,1005,10"/>
   <property name="object:stack:stack:3" value="1292,928,10"/>
   <property name="object:stack:stack:2" value="1098,766,10"/>
   <property name="object:stack:stack:1" value="1070,712,10"/>
-  <property name="object:choo-choo-wagon:choo-choo-wagon:1" value="1116,668"/>
+  <property name="object:passable-pond:pond:6" value="1939,836,-700"/>
+  <property name="object:passable-pond:pond:5" value="1738,52,-700"/>
+  <property name="object:passable-pond:pond:4" value="1501,-64,-700"/>
+  <property name="object:passable-pond:pond:3" value="2348,1218,-700"/>
+  <property name="object:passable-pond:pond:2" value="1500,1134,-700"/>
+  <property name="object:choo-choo-wagon:choo-choo-wagon:1" value="1116,668,100"/>
+  <property name="config:map.dirt.respawn-interval" value="int:0"/>
+  <property name="spawn:4" value="@28,22"/>
+  <property name="spawn:3" value="@29,7"/>
+  <property name="object:stack:stack:5" value="1448,1350,10"/>
+  <property name="object:lodge:lodge:1" value="1190,720,10"/>
+  <property name="spawn:2" value="@11,7"/>
+  <property name="object:stack:stack:4" value="1036,1005,10"/>
+  <property name="spawn:1" value="@10,22"/>
  </properties>
  <tileset name="terrains" firstgid="1" tilewidth="64" tileheight="64">
   <image source="../tiles/terrains_tileset.png"/>
@@ -44,10 +31,13 @@
  <tileset name="fences" firstgid="341" tilewidth="64" tileheight="64">
   <image source="../tiles/borders_tileset.png"/>
  </tileset>
+ <tileset name="destruction" firstgid="461" tilewidth="64" tileheight="64">
+  <image source="../tiles/destruction_tileset.png"/>
+ </tileset>
  <layer name="grass" width="40" height="30">
   <properties>
-   <property name="impassability" value="20"/>
    <property name="z" value="-1000"/>
+   <property name="impassability" value="20"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAO3SMQoAIAxD0R4mrnr/2+niLmpphj+ELIHCo4qItiLT7ivDuKt98LtvHewqXWTux//hV+2DH34OTvjh59jVPvjh5+CEn5+fkvcvfvtW1p7/+9MT4pH6ZMASAAA=
@@ -57,6 +47,7 @@
  <layer name="dirt" width="40" height="30">
   <properties>
    <property name="impassability" value="20"/>
+   <property name="z" value="-800"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAMVXyU4DMQw1YpXghATXSvAtcC1XuJf1MAgOCATqAQGnsvwxNo0lk/E4niSdPukpncn24tqxByCNCfLcMU7DVLDmHKmpQd5mqWvvNVWYgxJNXdC05eorwXvgB3IFuRMoNXE/t7X3t9b8DvxBjpD7gSD0cT+3JThR9h+L56vC9UsR6yNIffdDCQFdy5nyzqsvZdtJUlFai4ZxesgfLqGtUfpv41xnkSD7kp1YJ8cEnfFxWaIESB/peInen4L//yI8iN/XyBvx7L2nGhg2Xhjee0qz07Kg+X4OZD6piWf4byuKgQuYa7ZqHvYdme9K84jnfFxTcDw8GWP71AhxLGiwzsd3B2vy+N+QtUtuzGp2WUduJeYdIY8z9quBQ+SuY5yWh3OQ8jGqD9eMeV3oc6/HkLEU64vjjOrDgwx9fTQQpC/FsWT1aWt649q6U2rUvQRNu1ef1EB+sgq6r6SwiNwQYwTdvhIjjv8atrbykTfPsi5v7eoFabO+d+/Ad/+Srlr3kkStb/G+9WYK26F9NcZYfbL/rVxOC3uhnSE/O8bMEmvw3C+Y586NwE3Q82gfG1M8/gKeG848wBIAAA==
@@ -66,6 +57,7 @@
  <layer name="Layer 15" width="40" height="30">
   <properties>
    <property name="impassability" value="20"/>
+   <property name="z" value="-600"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAO1XwQ6CMAzdz+L05METgjcDV/ljurjGBlPdGO2K8SUvZBvQB33bOufk0AF7ck3FnVAaDfAQGXABtu6l+aagIRWoJ2j27qnZk/EBOApr+BTjCDwBz8z4AzhJiMqIEfLL6fuDh5S3tnqvlLc0PLsnaKwxJfiWr5r6udi0v6bfuNi038J8sOLBa2S36Kf/qJZWrLewvvHMfbXy6R2vaU/Qyu/aONL57SPXxGm2l/MGrO1zvWa5TsRzQBvbqd7Q8irObTxTpa6HFvYWCxp+BTTXA2lb2b+XdQ228WpFJ0VprSj9TaXzJ/f5GXTyUaDAEgAA
@@ -93,8 +85,8 @@
  <layer name="water" width="40" height="30">
   <properties>
    <property name="pierceable" value="true"/>
-   <property name="impassability" value="100"/>
    <property name="z" value="-500"/>
+   <property name="impassability" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAN2XwQ4DIQhE+Wi7x9aj7Vd3TUo6IaDYKG46CZdmC2/BHZXoP5TOuBlxBNWWdZDpfsbDiLyQDWszYyKdqXI8lXgt5NN6gVxRHF6+yNl51Jvf6p7J705+A7vnp63x2bK8x+M7q/g83uNhLJ//V66ZM0Qmzq1xZkeuMpEL+8b1OXeh71qWnhol6Y3WezNrtEfJuXqejezhL3yRPbw6H66rnnbwYV2uKf04ieei9ybsofQ69Ou8ga3HiGeyHVwo9OPoc0ZdQ5G+P6LKxnv2FbXa93k2rTshR4tv5XksU/tOyKFpZG/X7qZaX1osB9nnM0vM2OOTXo2/eSMrudgLWvKcG0f5sLb0o0Lz/UnLafniFTx7tt7zs9NwwBIAAA==
@@ -122,11 +114,11 @@
  </layer>
  <layer name="green fence" width="40" height="30">
   <properties>
-   <property name="z" value="150"/>
    <property name="impassability" value="100"/>
+   <property name="z" value="150"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAO1XW09CMQw+50eqgA9e0AdQ1OSoCAnCT6dL1tA07dbTbeCDX9KEZB29fl1P110e877rnkAeQB57250V6L0ZdWvhBey9Gm0uQG/p9O8K7l2DzDJyAzIhNsb4twa9H6d/d3DvPtYsJbyeG/i9PUPNrLlP5Wsac+xBrn4DyGd/siHVMgD1wvktO0POUFg5kavfDuS3P9nQuIl64fzZYBfj4XFyeHqzRm9hPDROrCXPf228w/9/OHoWa2nJfwmss4XrlcxBCVOFK3/Fv7nCFat/vI9L5rQGyRcvf1rwI5crOjdzaMGPnH90n6GQerd2/2n+SW/DRnhTeO+eyz/vm41vijQTPAg1+gL5dvrHeYRvypjdNoVQoz3IQfBP2xUoJL5qMdfEEG3k8iDxVYu5FDQX1l2mJh9ys9Mzu1L+0R3D8o2BPaHZ97xNKf8odyzfGC16whpTi7noAdaRz78We8NYrGINQw8Nkfe8x1rv1SmsSQ9R/lNpvVf/owxHx6Jy/8ASAAA=
+   H4sIAAAAAAAAAM1XyU4DMQyd+UiWlgOF0gM70gClSJRybSV+juXKr+BIsWpZTuzxJNAnWaqUpH6x/RxP0/w/pm3TnIGdgJ22tjPXsO/GuLcULsHfldHnOey7cPLbg3P7YGPFDsAOiY8+/Oaw78nJ7xjOTWLOcsbzuYDfz3+QM2vsc/EaxRh7oOWvA7tvtz6kXAbgvrB+xNZQMxRWTWj5ewFbtlsfKW3ivrA+M/jF+/B7cnhqs0Rt4X3oPTGXPP6lcQv/f+eoWcylJf5DYO0tfN+QPihhlNBKLX7vsPbRg/80oRUrP17Hmha+HLGVuHj1U0MfWqxo39RQQx8aPzrPUEi1W1ofKX7S27AQ3hReux5+n7D/J3NG4ud9s/FNkXqCByFHD2CPTn5cR/im9Jltcwg5egVbCfxSswKFpNfUnUuiiz60OEh6Td15KGgsrLNMSb1qvdPTu3L86Ixh+cbAmkj598xpOX5UO5ZvjBo1Yb1Tjb7tAeaR978h33cehJ6/Ft6cSayhLuqe11jtuZpiw3zNSQ1R/VOrPVdTvO1APeXwvYP8fgGQCo9HwBIAAA==
   </data>
   <tileproperties/>
  </layer>
@@ -135,7 +127,7 @@
    <property name="impassability" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAO2Xyw6CMBBFOx+pibpAgi54qCzwuVA/nWlgAZO01giZK3qSpgkh6Wk7M22N+T12ZMyetC3cpOyWAfuFkoLPQctvSf3eR6HguKF+7yMB3+N3iSc2nz/YzKmpAytH3GmfBWtq6sAW1A/9nPw2vwjMV/qh3Skqkbva+SC5i9zV8rPjVkDr0sXW3yO3E6ifrb8Pbk+H34G/lyO4R+S/A4bG0pX/uSms7ZnHvIDu6dgMmeefxNesjSEZR0PWg5x03kkhLMBrS/KitqBTAxnzdfHAEgAA
+   H4sIAAAAAAAAAGNgGHkgl5GBIY9xoF2BG2QC3ZY1iN1HLMgc5H4YKPdFMaLS+EDOALgxhRGVxgeSB3kckwoSh5l/RsHgBmGMkHIgGke6G+i6IIERUg6kDlL3DfZ6cqi5L55K7u2ikjno7htsbYoStLw70PkBHdSh5d2Bch/I3pJBFC7IAFT+lgJx2SB1H6j8rQfiBhzuyweKF9DA7fGM+NuAxKalSqCaqgEI23KgnRWDNE5pDaiZz4lNX31Y1IRC0xB6OqJmeZDNSFw/6eoApIXIQV62JBMoWwY7AAA5VzpDwBIAAA==
   </data>
   <tileproperties/>
  </layer>

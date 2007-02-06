@@ -463,6 +463,7 @@
 	<object class="damage-digits" speed="60" mass="1" ttl="1" z="1500" />
 
 	<alias name="pond" class="single-pose" />
+	<alias name="passable-pond" class="pond" />
 	<alias name="shilka-bullet" class="bullet" />
 	<alias name="spawn-shield" class="single-pose-once-no-directions" />
 	<alias name="gate" class="destructable-object" />
@@ -539,6 +540,7 @@
 	<object class="static-dirt" impassability="0.5" z="-20" />
 	<object class="dirt" parent="static-dirt" ttl="50" fadeout="5" />
 	<object class="pond" hp="1000" pierceable="true" impassability="1" z="150" />
+	<object class="passable-pond" hp="1000" pierceable="true" impassability="0" z="-700" />
 	<object class="gate" hp="20" impassability="1" z="150" />
 	<object class="bus-stop" hp="40" impassability="1" z="150" />
 	<object class="stall" hp="15" impassability="1" z="150" />
