@@ -1,10 +1,6 @@
 <?xml version="1.0"?>
 <map version="0.99b" orientation="orthogonal" width="50" height="50" tilewidth="64" tileheight="64">
  <properties>
-  <property name="checkpoint:1" value="@19,41:@2,2"/>
-  <property name="checkpoint:2" value="@10,17:@3,4"/>
-  <property name="checkpoint:3" value="@18,0:@8,2"/>
-  <property name="checkpoint:4" value="@38,14:@2,3"/>
   <property name="config:objects.tank.dispersion.duration" value="float:-1"/>
   <property name="object:static-shilka:green-shilka:3" value="46,1004"/>
   <property name="object:static-shilka:green-shilka:1" value="1144,1685"/>
@@ -255,8 +251,10 @@
   <property name="object:megaheal:megaheal:4" value="1411,1918"/>
   <property name="object:megaheal:megaheal:3" value="2170,1226"/>
   <property name="object:megaheal:megaheal:2" value="3073,1830"/>
+  <property name="object:static-tank:yellow-tank:5" value="1533,3089"/>
   <property name="object:static-tank:yellow-tank:3" value="1046,1576"/>
   <property name="object:static-tank:yellow-tank:2" value="2948,3023"/>
+  <property name="object:static-tank:cyan-tank:2" value="1481,3012"/>
   <property name="object:static-tank:cyan-tank:1" value="46,1089"/>
   <property name="object:impassable-static-corpse:dead-yellow-car:1" value="1214,421,200"/>
   <property name="object:machinegunner:machinegunner:19" value="696,2401"/>
@@ -336,6 +334,10 @@
   <property name="object:machinegunner:machinegunner:8" value="3044,1125"/>
   <property name="object:dispersion-bullets-item:dispersion-bullets-item:3" value="2875,2616"/>
   <property name="object:machinegunner:machinegunner:7" value="3117,1756"/>
+  <property name="checkpoint:4" value="@38,14:@2,3"/>
+  <property name="checkpoint:3" value="@18,0:@8,2"/>
+  <property name="checkpoint:2" value="@10,17:@3,4"/>
+  <property name="checkpoint:1" value="@19,41:@2,2"/>
   <property name="object:cannon:cannon:19" value="@46,0"/>
   <property name="object:cannon:cannon:18" value="@39,7"/>
   <property name="object:cannon:cannon:17" value="1692,195"/>
@@ -476,8 +478,8 @@
  </layer>
  <layer name="sand details" width="50" height="50">
   <properties>
-   <property name="z" value="-50"/>
    <property name="impassability" value="60"/>
+   <property name="z" value="-50"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAO3ZOwqAMBAFwL2QYG0n2Pm5p6fxSipiI1aixs8MbJEi8ELCEtiIRRHfUKUOsKM/sMd9PEuXOgDwK0PqAAAAAAAA3C7frOupmqnaeNesypzzGc54O9lJWVIr4xtnWXsCwFvNvXj737nKCDDTjF4QJwAA
@@ -562,8 +564,8 @@
  <layer name="sandbags" width="50" height="50">
   <properties>
    <property name="pierceable" value="true"/>
-   <property name="impassability" value="100"/>
    <property name="z" value="200"/>
+   <property name="impassability" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAO1aS07EMAxtNUuWSKgbWMwJ2M6GP5TObjrcngMgEBsEByCRao0xceKk+TSIJ1Vl6JD482zHLmPbNFt1afTq/jT9XBI7iwznlmejerYX6NAjnVNCy/NI9rHJ7wttp3GGLiczZAE9Yugj9Vut6A08WBo+pvsw+WJv4BXEZbdwXSi03Djm5/LtuJD+EO8uuVP5506te4+uh8B9pDmLqwMh+g0Rcv6X4XdUxn7iFo53rC/moa3OmTAwvIU9957rvU+Xxpr8Lf0M2CHZaRz55jlah7k9faD1MfmJwpQDbleK46uDv2w8w7Gg48DXl7kgyRcaHLf+8RsSftWA19ICOPDSHPKTvr8x3/tswn0CMX+trptV4CIRsYkQf5dKj6vCusTqc7r2Z33bks/cWdW1phS+egyMPDQPc3l5JHqZ1u0DcvWGrCW1V+y6BjVfWpdcGB3+T1XXYsmvQXuTWLMJE89T9m7UJrG4Q22Se07l0gPb1GXfXQL7cABeSfIFtSmNq77l54QxOWsC8MpkL9xz2HiBz/u2/h+epcLA7JuTFzFB+b4W+ELDVYNyz8w4bknyjM1fuX1pmjnb+upOyDuIi6XOMfG5qUQPW9tMlALiUZrL5+hL5z6h8ysOPvNdzBuX3lRnHS/SfJcSQ2ueN9JzCXcOkMYOrJeT69K+yXfN2mddud5hpkQ3xU/q82NqgPxLeX8+BzH72n/kwTPy11HBuV/Ie1GoJadK7rMFzF9DwPV0JlxUqmMtKFkXY/5fwF+oixi11JRvm5UyYhAnAAA=
@@ -651,8 +653,8 @@
  </layer>
  <layer name="buildings" width="50" height="50">
   <properties>
-   <property name="z" value="400"/>
    <property name="impassability" value="100"/>
+   <property name="z" value="400"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAO2Vz0sCQRzFd/a/z6sdvHQRoYsXuyRY/qgEw0rQfqgHvSiECxrhQnXqDTtD4zKriIcZ433gsV92D9/3ZvY7EwSEEEIIIYQQQgghhBBCCCGEEPJ/qIsguBGuXRzGNfxfQtUjz3GrckiaeLZE8pRqHNE+yRwdqGtoAk2he2gcuna4SdNYZ3ONZY476BUqKen/TNYzz3KYaz0wcjyifofXBbSCPsJkfx6gCPXSsxyR8tpP5XhD/Yn3a+gb+gmT/WlDMeovRzlO0D9nmc1YeU3nsPGE7z3H851H/1OLB33+PEMvO86hIb6NHOYooPdZRo6uOn/0nPh2DpkU4e88I4dGz/K2+XV9v5fRuwJdWDzM8G4u/mY5a359ud9r6H+1p4e62LzL9Qyl7xof+AXJmcBHECcAAA==
