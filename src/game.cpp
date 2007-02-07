@@ -60,7 +60,7 @@
 IMPLEMENT_SINGLETON(Game, IGame)
 
 IGame::IGame() : 
-_check_items(0.5, true),  _autojoin(false), _shake(0), _credits(NULL), _cheater(NULL), _state_timer(false) {}
+_check_items(0.5, true),  _autojoin(false), _shake(0), _show_radar(true) , _credits(NULL), _cheater(NULL), _state_timer(false){}
 IGame::~IGame() {}
 
 void IGame::resetTimer() {
@@ -572,6 +572,11 @@ void IGame::run() {
 					screenshot.saveBMP("map.bmp"); //hopefully we're done here.
 					break;
 				}
+				if (event.key.keysym.sym == SDLK_TAB) {
+					_show_radar = !_show_radar;
+					break;
+				}
+
 				if (!PlayerManager->isClient() && event.key.keysym.sym==SDLK_F12 && _my_index >= 0) {
 					PlayerSlot &slot = PlayerManager->getSlot(_my_index);
 					if (slot.frags > 0) 
@@ -650,7 +655,9 @@ void IGame::run() {
 		
 		if (_map_loaded) {
 			_hud->render(_window);
-			_hud->renderRadar(dt, _window);
+
+			if (_show_radar)
+				_hud->renderRadar(dt, _window);
 		}
 
 		_main_menu.render(_window);
@@ -723,6 +730,7 @@ void IGame::clear() {
 	_paused = false;
 	_map_loaded = false;
 	_game_over = false;
+	_show_radar = true;
 	Map->clear();
 	
 	delete _credits;

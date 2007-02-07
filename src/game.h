@@ -146,6 +146,7 @@ private:
 	int _my_index;
 	
 	Hud *_hud;
+	bool _show_radar;
 	int _loading_bar_total, _loading_bar_now;
 	sdlx::Timer _timer;
 	
