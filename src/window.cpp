@@ -178,19 +178,19 @@ void Window::init(const int argc, char *argv[]) {
 
 		_window.setVideoMode(w, h, bits, flags );
 
-		r = 0;
-		if (SDL_GL_GetAttribute( SDL_GL_ACCELERATED_VISUAL, &r) == 0) {
-			LOG_DEBUG(("SDL_GL_ACCELERATED_VISUAL = %d", r));
+		int accel = 0;
+		if ((r = SDL_GL_GetAttribute( SDL_GL_ACCELERATED_VISUAL, &accel)) == 0) {
+			LOG_DEBUG(("SDL_GL_ACCELERATED_VISUAL = %d", accel));
 
 		
-			if (!force_soft && r != 1) {
+			if (!force_soft && accel != 1) {
 				throw_ex(("Looks like you don't have a graphics card that is good enough.\n"
 				"Please ensure that your graphics card supports OpenGL and the latest drivers are installed.\n" 
 				"Try --force-soft-gl switch to enable sofware GL renderer."
 				"Or use --no-gl to switch disable GL renderer completely."
 				));
 			}
-		} else LOG_WARN(("SDL_GL_GetAttribute( SDL_GL_ACCELERATED_VISUAL) failed: %s", SDL_GetError()));
+		} else LOG_WARN(("SDL_GL_GetAttribute( SDL_GL_ACCELERATED_VISUAL) failed: %s (%d)", SDL_GetError(), r));
 
 	} else {
 		_window.setVideoMode(w, h, bits, flags);
