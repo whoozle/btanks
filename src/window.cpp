@@ -175,11 +175,10 @@ void Window::init(const int argc, char *argv[]) {
 #ifdef USE_GLSDL
 		flags |= SDL_GLSDL;
 #endif
-		_window.setVideoMode(w, h, bits, flags );
-		
 		r = 0;
 		SDL_GL_GetAttribute( SDL_GL_ACCELERATED_VISUAL, &r);
 		LOG_DEBUG(("SDL_GL_ACCELERATED_VISUAL = %d", r));
+
 		
 		if (!force_soft && r != 1) {
 			throw_ex(("Looks like you don't have a graphics card that is good enough.\n"
@@ -188,6 +187,9 @@ void Window::init(const int argc, char *argv[]) {
 			"Or use --no-gl to switch disable GL renderer completely."
 			));
 		}
+
+		_window.setVideoMode(w, h, bits, flags );
+		
 	} else {
 		_window.setVideoMode(w, h, bits, flags);
 	}
