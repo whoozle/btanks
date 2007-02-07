@@ -556,6 +556,7 @@ void IPlayerManager::clear() {
 
 	LOG_DEBUG(("cleaning up players..."));
 	_players.clear();	
+	_checkpoints.clear();
 }
 
 void IPlayerManager::addSlot(const v2<int> &position) {
