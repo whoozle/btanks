@@ -36,4 +36,5 @@ protected:
 private: 
 	bool _make_pierceable;
 	std::string _object, _animation;
+	int _object_id;
 };
