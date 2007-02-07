@@ -41,6 +41,7 @@ void Window::init(const int argc, char *argv[]) {
 	bool dx = false;
 	bool vsync = false;
 	int fsaa = 0;
+	bool force_soft = false;
 
 	int w = 800, h = 600;
 	int bits = 0;
@@ -59,6 +60,7 @@ void Window::init(const int argc, char *argv[]) {
 		else if (strcmp(argv[i], "-4") == 0) { w = 1280; h = 1024; }
 		else if (strcmp(argv[i], "--force-16") == 0) { bits = 16; }
 		else if (strcmp(argv[i], "--fsaa") == 0) { fsaa = (fsaa)?(fsaa<< 1) : 1; }
+		else if (strcmp(argv[i], "--force-soft-gl") == 0) { force_soft = true; }
 		else if (strcmp(argv[i], "--help") == 0) { 
 			printf(
 					"\t--no-gl\t\t\tdisable GL renderer\n"
@@ -174,6 +176,18 @@ void Window::init(const int argc, char *argv[]) {
 		flags |= SDL_GLSDL;
 #endif
 		_window.setVideoMode(w, h, bits, flags );
+		
+		r = 0;
+		SDL_GL_GetAttribute( SDL_GL_ACCELERATED_VISUAL, &r);
+		LOG_DEBUG(("SDL_GL_ACCELERATED_VISUAL = %d", r));
+		
+		if (!force_soft && r != 1) {
+			throw_ex(("Looks like you don't have a graphics card that is good enough.\n"
+			"Please ensure that your graphics card supports OpenGL and the latest drivers are installed.\n" 
+			"Try --force-soft-gl switch to enable sofware GL renderer."
+			"Or use --no-gl to switch disable GL renderer completely."
+			));
+		}
 	} else {
 		_window.setVideoMode(w, h, bits, flags);
 	}
