@@ -123,12 +123,25 @@ void Serializator::add(const Chunk &c) {
 	_pos += size;
 }
 
+void Serializator::add(const void *raw, const int size) {
+	add(size);
+	if (size == 0)
+		return;
+
+	unsigned char *ptr = (unsigned char *) _data->reserve(size) + _pos;
+	memcpy(ptr, raw, size);
+	_pos += size;
+}
 
 void Serializator::add(const float f) {
+#ifdef IEEE_754_SERIALIZATION
+	add(&f, sizeof(f));
+#else
 	//LOG_DEBUG(("added float %f", f));
 	char buf[256];
 	unsigned int len = snprintf(buf, sizeof(buf) -1, "%g", f);
 	add(std::string(buf, len));
+#endif
 }
 
 void Serializator::get(int &n)  const {
@@ -165,10 +178,18 @@ void Serializator::get(bool &b) const {
 }
 
 void Serializator::get(float &f) const {
+#ifdef IEEE_754_SERIALIZATION
+	int size;
+	get(size);
+	if (size != sizeof(f))
+		throw_ex(("failed to deserialize IEEE 754 float"));	
+	get(&f, size);
+#else
 	std::string str;
 	get(str);
 	if (sscanf(str.c_str(), "%f", &f) != 1)
 		throw_ex(("failed to cast '%s' to float", str.c_str()));
+#endif
 }
 
 void Serializator::get(std::string &str)  const {
@@ -180,6 +201,17 @@ void Serializator::get(std::string &str)  const {
 	str = std::string(ptr, size);
 	_pos += size;
 }
+
+void Serializator::get(void *raw, const int size) {
+	ASSERT_POS(size);
+	if (size == 0) 
+		return;
+	
+	const char * ptr = (const char *) _data->getPtr() + _pos;
+	memcpy(raw, ptr, size);
+	_pos += size;
+}
+
 
 void Serializator::get(Chunk &c)  const {
 	int size;

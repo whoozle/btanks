@@ -46,7 +46,11 @@ public:
 	void get(Chunk &c) const;
 	
 	const Chunk & getData() const;
+
+	void add(const void *raw, const int size); //same as add(chunk)
+
 protected:
+	void get(void *raw, const int size); //this one doesnt check anything, just copy next `size` bytes to pointer.
 
 	Chunk *_data;
 	mutable size_t _pos;
