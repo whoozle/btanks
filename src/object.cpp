@@ -348,6 +348,10 @@ void Object::render(sdlx::Surface &surface, const int x, const int y) {
 	
 	//fade out feature.
 	alpha = 255 - alpha;
+	
+	GET_CONFIG_VALUE("engine.fadeout-strip-alpha-bits", int, strip_alpha_bits, 4);
+	alpha &= ~((1 << strip_alpha_bits) - 1);
+	
 	if (_fadeout_surface != NULL && alpha == _fadeout_alpha) {
 		surface.copyFrom(*_fadeout_surface, x, y);
 		//LOG_DEBUG(("skipped all fadeout stuff"));
