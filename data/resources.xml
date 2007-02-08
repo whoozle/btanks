@@ -266,6 +266,12 @@
 		<pose id="after-fire">4</pose>
 	</animation-model>
 
+	<animation-model id="zombie-animation" speed="5">
+		<pose id="hold">0</pose>
+		<pose id="move">0,1,2,1,0,3,4,3</pose>
+		<pose id="punch">5,0,6</pose>
+	</animation-model>
+
 	<animation id="damage-digits" tile="../font/small.png" model="single-tile" tile_width="10" tile_height="16" />
 
 	<animation id="spawning" tile="respawn.png" model="spawning-animation" size="128" />
@@ -452,6 +458,8 @@
 	<animation id="submarine" model="yellow-submarine-animation" tile="submarine.png" tile_width="192" tile_height="128" />
 	<animation id="missile-boat" model="missile-boat-animation" tile="missile_boat.png" size="128" />
 	<animation id="spaceport-baykonur" model="spaceport-baykonur-animation" tile="baykonur.png" tile_width="192" tile_height="256" />
+	
+	<animation id="zombie" model="zombie-animation" tile="zombak_vasya.png" size="64" />
 
 
 	<animation id="thrower" model="trooper-animation" tile="thrower.png" />
