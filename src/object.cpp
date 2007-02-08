@@ -375,6 +375,10 @@ void Object::render(sdlx::Surface &surface, const int x, const int y) {
 	for(int i = 0; i < size; ++i) {
 		Uint8 r, g, b, a;
 		_fadeout_surface->getRGBA(*p, r, g, b, a);
+		if (a == 0) {
+			++p;
+			continue;
+		}
 		a = (((int)a) * alpha) / 255;
 		*p++ = _fadeout_surface->mapRGBA(r, g, b, a);
 	}
