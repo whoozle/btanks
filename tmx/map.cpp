@@ -508,7 +508,7 @@ void IMap::end(const std::string &name) {
 		_image->convertAlpha();
 		_image->convertToHardware();
 		
-		LOG_DEBUG(("image loaded. (%dx%d) format: %s", _image->getWidth(), _image->getHeight(), e.attrs["format"].c_str()));
+		LOG_DEBUG(("image loaded. (%dx%d)", _image->getWidth(), _image->getHeight()));
 	} else if (name == "layer") {
 		int w = atol(e.attrs["width"].c_str());
 		int h = atol(e.attrs["height"].c_str());
