@@ -52,7 +52,8 @@ Object * Object::clone() const {
 Object::Object(const std::string &classname) : 
 	BaseObject(classname), 
 	registered_name(), animation(), fadeout_time(0),  
-	_model(0), _model_name(), _surface(0), _cmap(0), _surface_name(), 
+	_model(0), _model_name(), 
+	_surface(0), _fadeout_surface(0), _fadeout_alpha(0), _cmap(0), _surface_name(), 
 	_events(), _effects(), 
 	_tw(0), _th(0), _direction_idx(0), _directions_n(8), _pos(0), 
 	_way(), _next_target(), _next_target_rel(), 
@@ -64,22 +65,7 @@ Object::Object(const std::string &classname) :
 	 	_blinking.set(ibi);
 	 }
 
-/*
-void Object::init(const std::string &model, const std::string &surface, const int tile_w, const int tile_h) {
-	_events.clear();
-
-	_model = ResourceManager->getAnimationModel(model);
-	_model_name = model;
-
-	_surface = ResourceManager->getSurface(surface);
-	_cmap = ResourceManager->getCollisionMap(surface);
-	_surface_name = surface;
-
-	size.x = _tw = tile_w; size.y = _th = tile_h;
-	_direction_idx = 0;
-	_pos = 0;
-}
-*/
+Object::~Object() { delete _fadeout_surface; }
 
 void Object::init(const Animation *a) {
 	_model_name = a->model;
@@ -361,34 +347,40 @@ void Object::render(sdlx::Surface &surface, const int x, const int y) {
 	} 
 	
 	//fade out feature.
-	sdlx::Surface blended; 
-	blended.createRGB(_tw, _th, 32, 0);
+	alpha = 255 - alpha;
+	if (_fadeout_surface != NULL && alpha == _fadeout_alpha) {
+		surface.copyFrom(*_fadeout_surface, x, y);
+		//LOG_DEBUG(("skipped all fadeout stuff"));
+		return;
+	}
+	_fadeout_alpha = alpha;
+	
+	if (_fadeout_surface == NULL) {
+		_fadeout_surface = new sdlx::Surface;
+		_fadeout_surface->createRGB(_tw, _th, 32, SDL_SWSURFACE);
+		_fadeout_surface->convertAlpha();
+	}
 	
 	const_cast<sdlx::Surface *>(_surface)->setAlpha(0,0);
-	blended.copyFrom(*_surface, src);
+	_fadeout_surface->copyFrom(*_surface, src);
 	const_cast<sdlx::Surface *>(_surface)->setAlpha(0);
 
-	blended.convertAlpha();
+	SDL_Surface *s = _fadeout_surface->getSDLSurface();
+	assert(s->format->BytesPerPixel > 2);
 
-	const int w = blended.getWidth();
-	const int h = blended.getHeight();
-	
-	alpha = 255 - alpha;
-
-	blended.lock();
+	_fadeout_surface->lock();
 	//optimize it.
-	
-	for(int py = 0; py < h; ++py) {
-		for(int px = 0; px < w; ++px) {
-			Uint8 r, g, b, a;
-			blended.getRGBA(blended.getPixel(px, py), r, g, b, a);
-			a = (((int)a) * alpha) / 255;
-			blended.putPixel(px, py, blended.mapRGBA(r, g, b, a));
-		}
+	Uint32 *p = (Uint32 *)s->pixels;
+	int size = s->h * s->pitch / 4;
+	for(int i = 0; i < size; ++i) {
+		Uint8 r, g, b, a;
+		_fadeout_surface->getRGBA(*p, r, g, b, a);
+		a = (((int)a) * alpha) / 255;
+		*p++ = _fadeout_surface->mapRGBA(r, g, b, a);
 	}
-	blended.unlock();
+	_fadeout_surface->unlock();
 
-	surface.copyFrom(blended, x, y);
+	surface.copyFrom(*_fadeout_surface, x, y);
 }
 
 const bool Object::collides(const Object *other, const int x, const int y, const bool hidden_by_other) const {

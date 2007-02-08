@@ -46,6 +46,8 @@ public:
 	float fadeout_time;
 
 	Object(const std::string &classname);
+	~Object();
+	
 	//void init(const std::string &model, const std::string &surface, const int tile_w, const int tile_h);
 	void init(const Animation *other);
 	virtual Object * clone() const;
@@ -201,6 +203,8 @@ private:
 	const AnimationModel *_model;
 	std::string _model_name;
 	const sdlx::Surface *_surface;
+	sdlx::Surface *_fadeout_surface;
+	int _fadeout_alpha;
 	const sdlx::CollisionMap *_cmap;
 	std::string _surface_name;
 	
