@@ -251,6 +251,8 @@ void IMap::load(const std::string &name) {
 	LOG_DEBUG(("loading map '%s'", name.c_str()));
 	const std::string file = data_dir + "/maps/" + name + ".tmx";
 	parseFile(file);
+	delete _image;
+	_image = NULL;
 
 	_name = name;
 	
@@ -687,6 +689,7 @@ void IMap::clear() {
 	properties.clear();
 	_properties.clear();
 
+	delete _image;
 	_image = NULL;
 	_lastz = -100;
 	_w = _h = _tw = _th = _firstgid = 0;
