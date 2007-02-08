@@ -338,6 +338,18 @@ TRY {
 		} CATCH("on-message(text-message)", throw; )		
 		break;
 	}
+	case Message::DestroyMap: {
+		mrt::Serializator s(&message.data);
+		int n;
+		s.get(n);
+		LOG_DEBUG(("%d destroyed map cells", n));
+		v3<int> cell;
+		while(n--) {
+			cell.deserialize(s);
+			Map->_destroy(cell.z, v2<int>(cell.x, cell.y));
+		}
+		break;
+	}
 	
 	default:
 		LOG_WARN(("unhandled message: %s\n%s", message.getType(), message.data.dump().c_str()));
@@ -936,4 +948,19 @@ void IPlayerManager::gameOver(const std::string &reason, const float time) {
 	m.set("message", reason);
 	m.set("duration", mrt::formatString("%g", time));
 	broadcast(m);
+}
+
+void IPlayerManager::onDestroyMap(const std::set<v3<int> > & cells) {
+	if (!_server)
+		return;
+		
+	mrt::Serializator s;
+	s.add((int)cells.size());
+	for(std::set<v3<int> >::iterator i = cells.begin(); i != cells.end(); ++i) {
+		i->serialize(s);
+	}
+
+	Message m(Message::DestroyMap);
+	m.data = s.getData();
+	broadcast(m);	
 }

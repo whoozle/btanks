@@ -54,7 +54,8 @@ public:
 	virtual const sdlx::CollisionMap* getCollisionMap(const int x, const int y) const;
 	virtual const sdlx::CollisionMap* getVisibilityMap(const int x, const int y) const;
 	
-	virtual void damage(const int x, const int y, const int hp);
+	virtual const bool damage(const int x, const int y, const int hp);
+	virtual void _destroy(const int x, const int y);
 
 	void optimize(const IMap::TileMap & tilemap);
 	virtual ~Layer();
@@ -75,7 +76,8 @@ public:
 	virtual const sdlx::CollisionMap* getCollisionMap(const int x, const int y) const;
 	virtual const sdlx::CollisionMap* getVisibilityMap(const int x, const int y) const;
 
-	virtual void damage(const int x, const int y, const int hp);
+	virtual const bool damage(const int x, const int y, const int hp);
+	virtual void _destroy(const int x, const int y);
 	virtual void onDeath(const int idx);
 	
 	~DestructableLayer();

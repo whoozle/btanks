@@ -22,7 +22,9 @@
 #include "mrt/singleton.h"
 #include <vector>
 #include <string>
+#include <set>
 #include "math/v2.h"
+#include "math/v3.h"
 #include "alarm.h"
 #include "sdlx/rect.h"
 
@@ -93,6 +95,8 @@ public:
 	
 	void onPlayerDeath(const Object *player, const Object *killer);
 	void gameOver(const std::string &reason, const float time);
+	
+	void onDestroyMap(const std::set<v3<int> > & cells);
 	
 private: 
 	void serializeSlots(mrt::Serializator &s) const;

@@ -36,6 +36,7 @@
 #include "math/binary.h"
 
 #include "config.h"
+#include "player_manager.h"
 
 IMPLEMENT_SINGLETON(Map, IMap)
 
@@ -718,13 +719,55 @@ const v2<int> IMap::getPathTileSize() const {
 
 
 void IMap::damage(const v2<float> &position, const int hp) {
+	if (PlayerManager->isClient())
+		return;
+	
 	v2<int> pos = position.convert<int>();
 	pos.x /= _tw;
 	pos.y /= _th;
+	
+	std::set<v3<int> > destroyed_cells;
 	//LOG_DEBUG(("map damage: %g:%g -> %d:%d for %d hp", position.x, position.y, pos.x, pos.y, hp));
 	for(LayerMap::iterator i = _layers.begin(); i != _layers.end(); ++i) {
-		i->second->damage(pos.x, pos.y, hp);
+		if (i->second->damage(pos.x, pos.y, hp))
+			destroyed_cells.insert(v3<int>(pos.x, pos.y, i->first));
 	}
+	if (!destroyed_cells.empty())
+		PlayerManager->onDestroyMap(destroyed_cells);
+}
+
+void IMap::damage(const v2<float> &center, const int hp, const float radius) {
+	if (PlayerManager->isClient())
+		return;
+
+	v2<float> position2 = center + radius, position = center - radius;
+	std::set<v3<int> > destroyed_cells;
+	
+	v2<float> p;
+	float r = radius * radius;
+	for(p.y = position.y; p.y < position2.y; p.y += _th) {
+		for(p.x = position.x; p.x < position2.x; p.x += _tw) {			
+			if (p.quick_distance(center) <= r) {
+				v2<int> pos ((int)(p.x / _tw), (int)(p.y / _th));
+				//LOG_DEBUG(("map damage: %g:%g -> %d:%d for %d hp", position.x, position.y, pos.x, pos.y, hp));
+				for(LayerMap::iterator i = _layers.begin(); i != _layers.end(); ++i) {
+					if (i->second->damage(pos.x, pos.y, hp))
+						destroyed_cells.insert(v3<int>(pos.x, pos.y, i->first));
+				}
+			}
+		}
+	}
+	
+	if (!destroyed_cells.empty())
+		PlayerManager->onDestroyMap(destroyed_cells);
+}
+
+
+void IMap::_destroy(const int z, const v2<int> &cell) {
+	LayerMap::iterator l = _layers.find(z);
+	if (l == _layers.end())
+		throw_ex(("cannot destroy cell at %d %d (z = %d)", cell.x, cell.y, z));
+	l->second->_destroy(cell.x, cell.y);
 }
 
 void IMap::invalidateTile(const int xp, const int yp) {

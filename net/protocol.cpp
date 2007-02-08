@@ -51,6 +51,7 @@ const char * Message::getType() const {
 	case Respawn: return "Respawn";
 	case GameOver: return "GameOver";
 	case TextMessage: return "TextMessage";
+	case DestroyMap: return "DestroyMap";
 	}
 	return "Unknown/Damaged";
 }

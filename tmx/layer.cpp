@@ -108,19 +108,25 @@ const sdlx::CollisionMap* DestructableLayer::getVisibilityMap(const int x, const
 	return _tiles[i].vmap;
 }
 
-void DestructableLayer::damage(const int x, const int y, const int hp) {
+const bool DestructableLayer::damage(const int x, const int y, const int hp) {
 	const int i = _w * y + x;
 	if (i < 0 || i >= _w * _h)
-		return;
+		return false;
 	//LOG_DEBUG(("damage %d to cell %d", hp, i));
 	if (_hp_data[i] <= 0) 
-		return;
+		return false;
 	
 	_hp_data[i] -= hp;
 	if (_hp_data[i] > 0)
-		return;
-		
+		return false;
+	
+	_destroy(x, y);
+	return true;
+}
+
+void DestructableLayer::_destroy(const int x, const int y) {
 	//_hp_data[i] = -1; //destructed cell
+	const int i = _w * y + x;
 	const int size = _w * _h;
 	
 	std::queue<int> queue;
@@ -224,7 +230,8 @@ void Layer::optimize(const IMap::TileMap & tilemap) {
 	}
 }
 
-void Layer::damage(const int x, const int y, const int hp) {}
+const bool Layer::damage(const int x, const int y, const int hp) { return false; }
+void Layer::_destroy(const int x, const int y) {}
 
 
 Layer::~Layer() { delete[] _tiles; }

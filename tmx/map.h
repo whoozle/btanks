@@ -23,6 +23,7 @@
 #include <map>
 #include <string>
 #include <stack>
+#include <set>
 #include "mrt/chunk.h"
 #include "math/v2.h"
 #include "math/matrix.h"
@@ -67,6 +68,8 @@ public:
 	void getSurroundings(Matrix<int> &matrix, const v2<int> &pos, const int filler = -1) const;
 	
 	void damage(const v2<float> &position, const int hp);
+	void damage(const v2<float> &center_position, const int hp, const float radius);
+	void _destroy(const int z, const v2<int> &cell);
 	
 	struct TileDescriptor {
 		TileDescriptor() : surface(0), cmap(0), vmap(0) {}

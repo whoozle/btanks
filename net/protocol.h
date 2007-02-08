@@ -43,7 +43,8 @@ public:
 		UpdateWorld, 
 		Respawn, 
 		GameOver,
-		TextMessage
+		TextMessage, 
+		DestroyMap
 	};
 	
 	Message();

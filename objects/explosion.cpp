@@ -63,25 +63,9 @@ private:
 
 void Explosion::damageMap() const {
 	//add damage for the map.
-	v2<int> tile_size = Map->getTileSize();
-	
-	v2<float> position;
-	getPosition(position);
-	v2<float> position2 = position + size, center = position + size/2;
-	
-	v2<float> p;
-	float r = (size.x + size.y) / 4;
-	r *= r;
-	for(p.y = position.y; p.y < position2.y; p.y += tile_size.y) {
-		for(p.x = position.x; p.x < position2.x; p.x += tile_size.x) {
-			
-			if ((p-center).quick_length() <= r) {
-				//LOG_DEBUG(("skipped %g %g", p.x, p.y));
-					Map->damage(p, max_hp);
-			}
-				//LOG_DEBUG(("%g %g", p.x, p.y));
-		}
-	}
+	v2<float> pos;
+	getCenterPosition(pos);
+	Map->damage(pos, max_hp, (size.x + size.y) / 4);
 }
 
 
