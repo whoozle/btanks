@@ -33,6 +33,7 @@ public:
 			_targets.insert("trooper");
 			_targets.insert("kamikaze");
 			_targets.insert("boat");
+			_targets.insert("monster");
 	}
 	virtual void onSpawn();
 	virtual void serialize(mrt::Serializator &s) const {
