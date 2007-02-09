@@ -831,9 +831,13 @@ const float Object::getWeaponRange(const std::string &weapon) const {
 #include "math/vector.h"
 
 const int Object::getTargetPosition(v2<float> &relative_position, const std::set<std::string> &targets, const std::string &weapon) const {
+	float range = getWeaponRange(weapon);
+	return getTargetPosition(relative_position, targets, range);
+}
+
+const int Object::getTargetPosition(v2<float> &relative_position, const std::set<std::string> &targets, const float range) const {
 	const int dirs = _directions_n;
 	
-	float range = getWeaponRange(weapon);
 	std::set<const Object *> objects;
 	World->enumerateObjects(objects, this, range, &targets);
 	
