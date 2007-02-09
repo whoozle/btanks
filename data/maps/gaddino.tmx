@@ -62,8 +62,8 @@
  </tileset>
  <layer name="zerolayer" width="25" height="20">
   <properties>
-   <property name="z" value="-1000"/>
    <property name="impassability" value="40"/>
+   <property name="z" value="-1000"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGAWjYBSMglEwCkbBUAcARPTJAtAHAAA=
@@ -89,13 +89,24 @@
   </data>
   <tileproperties/>
  </layer>
+ <layer name="Layer 25" width="25" height="20">
+  <properties>
+   <property name="hp" value="50"/>
+   <property name="z" value="-600"/>
+   <property name="damage-for" value="flushing meadows"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAWjYBSMglEwCkbBUAcARPTJAtAHAAA=
+  </data>
+  <tileproperties/>
+ </layer>
  <layer name="Layer 23" width="25" height="20">
   <properties>
    <property name="hp" value="50"/>
    <property name="damage-for" value="flushing meadows"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAO2UzQqAIBCEfR2hm9Wt8tbP+z9QKxUMgyG5GgQNDCHBt+vOljG/viIrbsWduKlUYxYv4lW8FWKm+r7ea+7EfVviufPZK2qwHPEG8ST2Si72Hu6FOYRzTjacAXO5bo7udge5PLNSQm7IwStYuKfYO3Jj83si3BNkabmo1J5o82ZW7BsvmXeY/2iO2SGz5Mxq/P/e1A6exme00AcAAA==
+   H4sIAAAAAAAAAGNgGAWjYBSMAgYGzYF2wCgYBaOAIgAA0WVnFtAHAAA=
   </data>
   <tileproperties/>
  </layer>
@@ -105,17 +116,7 @@
    <property name="damage-for" value="flushing meadows"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgGAWjgHZAE4h1aGQ2zFx3IPaikX1mWMSMcYiTCxygNLLbbXGIkwtg4eOOg01tP2EDyH6iBgCFiwkQmzJgTwvUACDzPIDYE4u5lMYLLv3I4pTGC650hGwupWGGrN8WyVxqxzc2+6gd30MdAADa9qc60AcAAA==
-  </data>
-  <tileproperties/>
- </layer>
- <layer name="Layer 25" width="25" height="20">
-  <properties>
-   <property name="hp" value="50"/>
-   <property name="damage-for" value="flushing meadows"/>
-  </properties>
-  <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgGAWjYBSMJKAJxCZAbArFOjSwwx2IPYDYE4q9qGQuzO243KyJR45YYAvEdkBshkMe5DdK/QMLH2RzQG6nVXzAgDEDfr9RA8DCz4GGdmALv1HAwAAA4BOtMNAHAAA=
+   H4sIAAAAAAAAAGNgGAWjYBTgAmYD7YBRMAooBO4D7YBRQDcAAEIAWrTQBwAA
   </data>
   <tileproperties/>
  </layer>
@@ -173,7 +174,7 @@
  </layer>
  <layer name="swamp plants high" width="25" height="20" visible="0">
   <properties>
-   <property name="z" value="-600"/>
+   <property name="z" value="-500"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGthZEABzUB+CyMm3QvEfWhqiQXo+mBmodOUAphb8QImyuyglltHwSgYBaNgFIwCagIAmsqrQNAHAAA=
