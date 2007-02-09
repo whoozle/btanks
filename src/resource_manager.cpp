@@ -31,6 +31,10 @@
 
 IMPLEMENT_SINGLETON(ResourceManager, IResourceManager)
 
+void IResourceManager::onFile(const std::string &base, const std::string &file) {
+	_base_dir = base;
+}
+
 
 void IResourceManager::start(const std::string &name, Attrs &attr) {	
 	if (name == "resources") {
@@ -63,15 +67,15 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 		sdlx::CollisionMap *cmap = NULL;
 		bool real_load = !attr["persistent"].empty();
 		GET_CONFIG_VALUE("engine.preload-all-resources", bool , preload_all, true);
-		GET_CONFIG_VALUE("engine.data-directory", std::string, data_dir, "data");
 
 		real_load |= preload_all;
 		std::string &tile = attr["tile"];
+		assert(!_base_dir.empty());
 		
 		if (_surfaces.find(tile) == _surfaces.end()) {
 			TRY { 		
 				if (real_load) {
-					const std::string fname = data_dir + "/tiles/" + tile;
+					const std::string fname = _base_dir + "/tiles/" + tile;
 					s = new sdlx::Surface;
 					s->loadImage(fname);
 					s->convertAlpha();
@@ -95,7 +99,7 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 			LOG_DEBUG(("tile '%s' was already loaded, skipped.", tile.c_str()));
 		}
 	
-		_animations[id] = new Animation(model, tile, tw, th);
+		_animations[id] = new Animation(model, _base_dir, tile, tw, th);
 	
 	} else if (name == "animation-model") {
 		const std::string & id = attr["id"];
@@ -195,6 +199,8 @@ void IResourceManager::end(const std::string &name) {
 		_animation_models[_am_id] = _am;
 		_am = NULL;
 		LOG_DEBUG(("added animation model '%s'", _am_id.c_str()));
+	} else if (name == "resources") {
+		//_base_dir.clear();
 	}
 	NotifyingXMLParser::end(name);
 	_data.clear();
@@ -246,9 +252,8 @@ const sdlx::CollisionMap *IResourceManager::getCollisionMap(const std::string &i
 }
 
 
-void IResourceManager::init(const std::string &fname) {
-	LOG_DEBUG(("loading resources from file: %s", fname.c_str()));
-	parseFile(fname);
+void IResourceManager::init(const std::vector<std::pair<std::string, std::string> > &fname) {
+	parseFiles(fname);
 }
 
 void IResourceManager::initMe(Object *o, const std::string &animation) const {
@@ -327,20 +332,24 @@ const Object *IResourceManager::getClass(const std::string &classname) const {
 	return i->second;	
 }
 
-void IResourceManager::checkSurface(const std::string &id, const sdlx::Surface *& surface_ptr, const sdlx::CollisionMap *& cmap_ptr) {
-	sdlx::Surface *s = _surfaces[id];
-	sdlx::CollisionMap *cmap = _cmaps[id];
-	GET_CONFIG_VALUE("engine.data-directory", std::string, data_dir, "data");
+void IResourceManager::checkSurface(const std::string &animation, const sdlx::Surface *& surface_ptr, const sdlx::CollisionMap *& cmap_ptr) {
+	if (surface_ptr != NULL && cmap_ptr != NULL) 
+		return;
 
-	const std::string fname = data_dir + "/tiles/" + id;
+	const Animation * a = getAnimation(animation);
+	
+	sdlx::Surface *s = _surfaces[a->surface];
+	sdlx::CollisionMap *cmap = _cmaps[a->surface];
+
+	const std::string fname = a->base_dir + "/tiles/" + a->surface;
 	if (s == NULL) {
 		TRY {
 			s = new sdlx::Surface;
 			s->loadImage(fname);
 			s->convertAlpha();
 			s->convertToHardware();
-			LOG_DEBUG(("loaded animation '%s' from '%s'", id.c_str(), fname.c_str()));
-			_surfaces[id] = s;
+			LOG_DEBUG(("loaded animation '%s' from '%s'", animation.c_str(), fname.c_str()));
+			_surfaces[a->surface] = s;
 		} CATCH("loading surface", { delete s; throw; });
 	}
 	surface_ptr = s;
@@ -348,7 +357,7 @@ void IResourceManager::checkSurface(const std::string &id, const sdlx::Surface *
 	if (cmap == NULL) {			
 		cmap = new sdlx::CollisionMap;
 		cmap->init(s, sdlx::CollisionMap::OnlyOpaque);
-		_cmaps[id] = cmap;
+		_cmaps[a->surface] = cmap;
 	}
 	cmap_ptr = cmap;
 }

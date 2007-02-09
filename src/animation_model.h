@@ -50,10 +50,10 @@ private:
 
 class Animation {
 public:
-	std::string model, surface;
+	std::string model, base_dir, surface;
 	int tw, th;
 	
-	Animation(const std::string & model, const std::string &tile, const int tw, const int th);
+	Animation(const std::string & model, const std::string &base_dir, const std::string &tile, const int tw, const int th);
 };
 
 

@@ -186,7 +186,11 @@ void IGame::init(const int argc, char *argv[]) {
 	ResourceManager->notify_progress.connect(sigc::mem_fun(this, &IGame::notifyLoadingBar));
 
 	LOG_DEBUG(("initializing resource manager..."));
-	ResourceManager->init(data_dir + "/resources.xml");
+	
+	std::vector<std::pair<std::string, std::string> > files;
+	files.push_back(std::pair<std::string, std::string>(data_dir, data_dir + "/resources.xml"));
+	
+	ResourceManager->init(files);
 	
 	if (_show_fps) {
 		LOG_DEBUG(("creating `digits' object..."));

@@ -40,5 +40,5 @@ AnimationModel::~AnimationModel() {
 	_poses.clear();
 }
 
-Animation::Animation(const std::string & model, const std::string &surface, const int tw, const int th) : 
-	model(model), surface(surface), tw(tw), th(th) {}
+Animation::Animation(const std::string & model, const std::string &base_dir, const std::string &surface, const int tw, const int th) : 
+	model(model), base_dir(base_dir), surface(surface), tw(tw), th(th) {}

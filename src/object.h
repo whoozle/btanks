@@ -207,7 +207,6 @@ private:
 	sdlx::Surface *_fadeout_surface;
 	int _fadeout_alpha;
 	const sdlx::CollisionMap *_cmap;
-	std::string _surface_name;
 	
 	typedef std::deque<Event> EventQueue;
 	EventQueue _events;

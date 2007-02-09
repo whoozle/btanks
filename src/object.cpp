@@ -53,7 +53,7 @@ Object::Object(const std::string &classname) :
 	BaseObject(classname), 
 	registered_name(), animation(), fadeout_time(0),  
 	_model(0), _model_name(), 
-	_surface(0), _fadeout_surface(0), _fadeout_alpha(0), _cmap(0), _surface_name(), 
+	_surface(0), _fadeout_surface(0), _fadeout_alpha(0), _cmap(0), 
 	_events(), _effects(), 
 	_tw(0), _th(0), _direction_idx(0), _directions_n(8), _pos(0), 
 	_way(), _next_target(), _next_target_rel(), 
@@ -70,7 +70,6 @@ Object::~Object() { delete _fadeout_surface; }
 void Object::init(const Animation *a) {
 	_model_name = a->model;
 	_model = ResourceManager->getAnimationModel(a->model);
-	_surface_name = a->surface;
 	
 	_surface = ResourceManager->getSurface(a->surface);
 	_cmap = ResourceManager->getCollisionMap(a->surface);
@@ -439,7 +438,6 @@ void Object::serialize(mrt::Serializator &s) const {
 
 	
 	s.add(_model_name);
-	s.add(_surface_name);
 	s.add(_tw);
 	s.add(_th);
 	s.add(_direction_idx);
@@ -495,7 +493,6 @@ void Object::deserialize(const mrt::Serializator &s) {
 	}
 	
 	s.get(_model_name);
-	s.get(_surface_name);
 	s.get(_tw);
 	s.get(_th);
 	s.get(_direction_idx);
@@ -529,8 +526,6 @@ void Object::deserialize(const mrt::Serializator &s) {
 
 	//additional initialization
 	_model = ResourceManager->getAnimationModel(_model_name);
-	_surface = ResourceManager->getSurface(_surface_name);
-	_cmap = ResourceManager->getCollisionMap(_surface_name);
 }
 
 void Object::emit(const std::string &event, Object * emitter) {
@@ -951,7 +946,7 @@ const bool Object::getTargetPosition(v2<float> &relative_position, const v2<floa
 void Object::checkSurface() {
 	if (_surface && _cmap) 
 		return;
-	ResourceManager->checkSurface(_surface_name, _surface, _cmap);
+	ResourceManager->checkSurface(animation, _surface, _cmap);
 	assert(_surface != NULL);
 	assert(_cmap != NULL);
 }

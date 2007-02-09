@@ -37,7 +37,7 @@ void VehicleItem::render(sdlx::Surface &dst, const int x, const int y) {
 		
 		const sdlx::Surface * surface = ResourceManager.get_const()->getSurface(a->surface);
 		const sdlx::CollisionMap *cmap = NULL;
-		ResourceManager->checkSurface(a->surface, surface, cmap);
+		ResourceManager->checkSurface(name, surface, cmap);
 		int w, h;
 		getSize(w, h);
 		sdlx::Rect src(0, 0, a->tw, a->th);

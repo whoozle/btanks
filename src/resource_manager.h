@@ -23,6 +23,8 @@
 #include "mrt/exception.h"
 #include "notifying_xml_parser.h"
 #include <map>
+#include <vector>
+#include <string>
 
 namespace sdlx {
 	class Surface;
@@ -41,7 +43,7 @@ public:
 	~IResourceManager();
 	DECLARE_SINGLETON(IResourceManager);
 	
-	void init(const std::string &fname);
+	void init(const std::vector<std::pair<std::string, std::string> > &fname);
 	void initMe(Object *o, const std::string &animation) const;
 	void clear();
 	
@@ -58,10 +60,15 @@ public:
 	
 	void createAlias(const std::string &name, const std::string &classname);
 	
-	void checkSurface(const std::string &id, const sdlx::Surface *& surface_ptr, const sdlx::CollisionMap *&cmap);
+	void checkSurface(const std::string &animation, const sdlx::Surface *& surface_ptr, const sdlx::CollisionMap *&cmap);
 
 private:
 	Animation *getAnimation(const std::string &id);
+
+	//xml stuff
+	std::string _base_dir;
+	virtual void onFile(const std::string &base, const std::string &file);
+	
 	virtual void start(const std::string &name, Attrs &attr);
 	virtual void end(const std::string &name);
 	virtual void charData(const std::string &data);

@@ -156,13 +156,13 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect&src, const sdlx::Re
 		o.render(surface, (int)o._position.x - src.x + dst.x, (int)o._position.y - src.y + dst.y);
 		
 		GET_CONFIG_VALUE("engine.show-waypoints", bool, show_waypoints, false);
-		if (show_waypoints) {
-			const std::string wp_name = "waypoint16x16.png";
+		const Way & way = o.getWay();
+		if (show_waypoints && !way.empty()) {
+			static const std::string wp_name = "waypoint-16";
 			const sdlx::Surface * wp_surface = ResourceManager->getSurface(wp_name);
 			const sdlx::CollisionMap *cmap;
 			ResourceManager->checkSurface(wp_name, wp_surface, cmap);
 			
-			const Way & way = o.getWay();
 			for(Way::const_iterator wi = way.begin(); wi != way.end(); ++wi) {
 				const v2<int> &wp = *wi;
 				surface.copyFrom(*wp_surface, 

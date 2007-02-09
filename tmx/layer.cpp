@@ -43,7 +43,7 @@ void DestructableLayer::onDeath(const int idx) {
 	
 	const sdlx::Surface *s = NULL;
 	const sdlx::CollisionMap *cm = NULL;
-	ResourceManager->checkSurface(ResourceManager.get_const()->getAnimation("building-explosion")->surface, s, cm);
+	ResourceManager->checkSurface("building-explosion", s, cm);
 	assert(s != NULL);
 	
 	Object * o = ResourceManager->createObject("explosion", "building-explosion");
