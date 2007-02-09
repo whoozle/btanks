@@ -73,17 +73,20 @@ void Zombie::calculate(const float dt) {
 	GET_CONFIG_VALUE("objects.zombie.targeting-range(stable)", int, trs, 600);
 	GET_CONFIG_VALUE("objects.zombie.targeting-range(alerted)", int, tra, 900);
 	int tt = (hp < max_hp)?tra:trs;
-
+	
 	if (getNearest(targets, tt, _velocity, vel)) {
+		if (_velocity.quick_length() > size.quick_length())
+			_state.fire = false;
+		
 		_velocity.normalize();
-		if (!_velocity.is0()) {
-			_direction = _velocity;
-			setDirection(_direction.getDirection(getDirectionsNumber()) - 1);
-		} else onIdle(dt);
-		quantizeVelocity();
+		quantizeVelocity();		
 	} else {
 		onIdle(dt);
+		_state.fire = false;
 	}
+
+	GET_CONFIG_VALUE("objects.zombie.rotation-time", float, rt, 0.1);
+	limitRotation(dt, rt, true, false);
 }
 
 void Zombie::tick(const float dt) {
@@ -124,13 +127,13 @@ void Zombie::emit(const std::string &event, Object * emitter) {
 		if (getState() != "punch" && emitter->registered_name != "zombie") {
 			_state.fire = true;
 		}	
-		if (_state.fire && _can_punch && getState() == "punch" && emitter->registered_name != "zombie") {
+		if (_state.fire && _can_punch && getStateProgress() >= 0.5 && getState() == "punch" && emitter->registered_name != "zombie") {
 			_can_punch = false;
 			
 			GET_CONFIG_VALUE("objects.zombie.damage", int, kd, 15);
 		
 			if (emitter) 
-				emitter->addDamage(this, kd);		
+				emitter->addDamage(this, kd);
 			
 			return;
 		}
