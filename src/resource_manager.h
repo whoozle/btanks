@@ -37,7 +37,7 @@ class Animation;
 class AnimationModel;
 class Pose;
 
-class IResourceManager : protected NotifyingXMLParser {
+class IResourceManager : public NotifyingXMLParser {
 public:
 	IResourceManager();
 	~IResourceManager();
