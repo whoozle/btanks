@@ -42,7 +42,7 @@ class TMXEntity;
 class Layer;
 class Object;
 
-class IMap : public NotifyingXMLParser {
+class IMap : protected NotifyingXMLParser {
 public:
 	DECLARE_SINGLETON(IMap);
 	
