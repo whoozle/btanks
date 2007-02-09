@@ -70,7 +70,8 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 
 		real_load |= preload_all;
 		std::string &tile = attr["tile"];
-		assert(!_base_dir.empty());
+		if (_base_dir.empty())
+			throw_ex(("base directory was not defined (multiply resources tag ? invalid resource structure?)"));
 		
 		if (_surfaces.find(tile) == _surfaces.end()) {
 			TRY { 		
@@ -200,7 +201,7 @@ void IResourceManager::end(const std::string &name) {
 		_am = NULL;
 		LOG_DEBUG(("added animation model '%s'", _am_id.c_str()));
 	} else if (name == "resources") {
-		//_base_dir.clear();
+		_base_dir.clear();
 	}
 	NotifyingXMLParser::end(name);
 	_data.clear();
