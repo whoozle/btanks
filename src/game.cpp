@@ -29,6 +29,7 @@
 #include "mrt/logger.h"
 #include "mrt/exception.h"
 #include "mrt/random.h"
+#include "mrt/fs_node.h"
 
 #include "sdlx/system.h"
 #include "sdlx/sdl_ex.h"
@@ -189,6 +190,11 @@ void IGame::init(const int argc, char *argv[]) {
 	
 	std::vector<std::pair<std::string, std::string> > files;
 	files.push_back(std::pair<std::string, std::string>(data_dir, data_dir + "/resources.xml"));
+
+	std::string alt_dir = "private/" + data_dir;
+	if (mrt::FSNode::exists(alt_dir)) {
+		files.push_back(std::pair<std::string, std::string>(alt_dir, alt_dir + "/resources.xml"));
+	}
 	
 	ResourceManager->init(files);
 	
