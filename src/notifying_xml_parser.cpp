@@ -1,5 +1,8 @@
 #include "notifying_xml_parser.h"
 
+NotifyingXMLParser::NotifyingXMLParser() : reset_progress(), notify_progress() {}
+
+
 void NotifyingXMLParser::parseFile(const std::string &fname) {
 	int tags;
 	getFileStats(tags, fname);

@@ -7,6 +7,7 @@
 
 class NotifyingXMLParser : public mrt::XMLParser {
 public: 
+	NotifyingXMLParser();
 	sigc::signal1<void, const int> reset_progress;
 	sigc::signal1<void, const int> notify_progress;
 	
