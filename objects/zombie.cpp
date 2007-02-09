@@ -25,7 +25,7 @@
 class Zombie : public Object {
 public:
 	Zombie() : 
-		Object("trooper"), _reaction(true) {}
+		Object("monster"), _reaction(true) {}
 	
 	virtual void tick(const float dt);
 	virtual void calculate(const float dt);
