@@ -278,14 +278,15 @@ const bool Hud::renderLoadingBar(sdlx::Surface &window, const float old_progress
 		return false;
 	}
 
-	renderSplash(window);
-	window.copyFrom(_loading_border, x, y);
-
 	int i, n = w / _loading_item.getWidth(), n_old = w_old / _loading_item.getWidth();
 	if (n == n_old) {
 		//LOG_DEBUG(("skip same frame"));
 		return false;	
 	}
+
+	renderSplash(window);
+	window.copyFrom(_loading_border, x, y);
+
 	for(i = 0; i < n; ++i) {
 		window.copyFrom(_loading_item, border + x + i * _loading_item.getWidth(), y + border);
 	}
