@@ -584,7 +584,7 @@
 	<object class="outline" impassability="0" z="990" />
 	<object class="random-tooltip" z="995" />
 	<object class="spaceport-baykonur" hp="200" z="0"/> 
-	<object class="zombie" hp="100" speed="80" mass="85" z="-1" />
+	<object class="zombie" hp="40" speed="80" mass="85" z="-1" />
 
 	<!-- items -->
 	<object class="base-item" z="180" impassability="-1" />

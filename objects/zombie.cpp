@@ -25,7 +25,7 @@
 class Zombie : public Object {
 public:
 	Zombie() : 
-		Object("monster"), _reaction(true) {}
+		Object("monster"), _reaction(true), _can_punch(true) {}
 	
 	virtual void tick(const float dt);
 	virtual void calculate(const float dt);
@@ -37,15 +37,26 @@ public:
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
 		_reaction.serialize(s);
+		s.add(_can_punch);
 	}
 	virtual void deserialize(const mrt::Serializator &s) {
 		Object::deserialize(s);
 		_reaction.deserialize(s);
+		s.get(_can_punch);
 	}	
+	
+	virtual void onIdle(const float dt);
 
 private: 
 	Alarm _reaction;
+	bool _can_punch;
 };
+
+void Zombie::onIdle(const float dt) {
+	_velocity.clear();
+	_state.fire = false;
+}
+
 
 void Zombie::calculate(const float dt) {
 	if (!_reaction.tick(dt))
@@ -64,24 +75,37 @@ void Zombie::calculate(const float dt) {
 	int tt = (hp < max_hp)?tra:trs;
 
 	if (getNearest(targets, tt, _velocity, vel)) {
+		_velocity.normalize();
+		if (!_velocity.is0()) {
+			_direction = _velocity;
+			setDirection(_direction.getDirection(getDirectionsNumber()) - 1);
+		} else onIdle(dt);
 		quantizeVelocity();
-	} else _velocity.clear();
+	} else {
+		onIdle(dt);
+	}
 }
 
 void Zombie::tick(const float dt) {
-	const std::string state = getState();
+	Object::tick(dt);
+
+	if (_state.fire && getState() != "punch") {
+		_can_punch = true;
+		playNow("punch");
+		return;
+	}
+
 	if (_velocity.is0()) {
-		if (state != "hold") {
+		if (getState() != "hold") {
 			cancelAll();
 			play("hold", true);
 		}
 	} else {
-		if (state == "hold") {
+		if (getState() == "hold") {
 			cancelAll();
 			play("walk", true);
 		}		
 	}
-	Object::tick(dt);
 }
 
 void Zombie::onSpawn() {
@@ -95,19 +119,24 @@ void Zombie::onSpawn() {
 
 void Zombie::emit(const std::string &event, Object * emitter) {
 	if (event == "death") {
-		Object::emit(event, emitter);
-	} else if (event == "collision") {
-		if (emitter == NULL || (emitter->classname != "player" && emitter->classname != "trooper")) {
-			Object::emit(event, emitter);
+		//
+	} else if (emitter != NULL && event == "collision") {
+		if (getState() != "punch" && emitter->registered_name != "zombie") {
+			_state.fire = true;
+		}	
+		if (_state.fire && _can_punch && getState() == "punch" && emitter->registered_name != "zombie") {
+			_can_punch = false;
+			
+			GET_CONFIG_VALUE("objects.zombie.damage", int, kd, 15);
+		
+			if (emitter) 
+				emitter->addDamage(this, kd);		
+			
 			return;
 		}
-		/*
-		GET_CONFIG_VALUE("objects.zombie.damage", int, kd, 15);
-		
-		if (emitter) 
-			emitter->addDamage(this, kd);		
-		*/
-	} else Object::emit(event, emitter);
+
+	}
+	Object::emit(event, emitter);
 }
 
 
