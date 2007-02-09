@@ -56,6 +56,7 @@ void Zombie::calculate(const float dt) {
 	if (targets.empty()) {
 		targets.insert("player");
 		targets.insert("trooper");
+		targets.insert("watchtower");
 	}
 	
 	GET_CONFIG_VALUE("objects.zombie.targeting-range(stable)", int, trs, 600);
@@ -88,6 +89,8 @@ void Zombie::onSpawn() {
 	mrt::randomize(rt, rt/10);
 	_reaction.set(rt);
 	play("hold", true);
+	
+	disown();
 }
 
 void Zombie::emit(const std::string &event, Object * emitter) {
