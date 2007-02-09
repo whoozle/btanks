@@ -57,6 +57,7 @@ void Cannon::calculate(const float dt) {
 	if (targets.empty()) {
 		targets.insert("player");
 		targets.insert("trooper");
+		targets.insert("monster");
 		targets.insert("kamikaze");
 	}
 	static float range = getWeaponRange("cannon-bullet");

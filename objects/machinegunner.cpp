@@ -61,6 +61,7 @@ void Machinegunner::calculate(const float dt) {
 		targets.insert("trooper");
 		targets.insert("kamikaze");
 		targets.insert("boat");
+		targets.insert("monster");
 	}
 	
 	v2<float> pos, vel;

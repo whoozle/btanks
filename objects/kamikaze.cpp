@@ -58,6 +58,7 @@ void Kamikaze::calculate(const float dt) {
 		targets.insert("train");
 		targets.insert("player");
 		targets.insert("trooper");
+		targets.insert("monster");
 	}
 	
 	GET_CONFIG_VALUE("objects.kamikaze.targeting-range", int, tt, 800);

@@ -68,6 +68,7 @@ void AILauncher::onSpawn() {
 	addEnemyClass("boat");
 	addEnemyClass("watchtower");
 	addEnemyClass("barrack");
+	addEnemyClass("monster");
 	
 	addBonusName("heal");
 	addBonusName("megaheal");
