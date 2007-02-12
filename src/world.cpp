@@ -18,6 +18,7 @@
  */
 
 #include "world.h"
+#include "animation_model.h"
 #include "object.h"
 #include "tmx/map.h"
 #include "resource_manager.h"
@@ -158,10 +159,12 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect&src, const sdlx::Re
 		GET_CONFIG_VALUE("engine.show-waypoints", bool, show_waypoints, false);
 		const Way & way = o.getWay();
 		if (show_waypoints && !way.empty()) {
-			static const std::string wp_name = "waypoint-16";
-			const sdlx::Surface * wp_surface = ResourceManager->getSurface(wp_name);
+			const Animation *a = ResourceManager.get_const()->getAnimation("waypoint-16");
+			assert(a != NULL);
+		
+			const sdlx::Surface * wp_surface = ResourceManager.get_const()->getSurface(a->surface);
 			const sdlx::CollisionMap *cmap;
-			ResourceManager->checkSurface(wp_name, wp_surface, cmap);
+			ResourceManager->checkSurface("waypoint-16", wp_surface, cmap);
 			
 			for(Way::const_iterator wi = way.begin(); wi != way.end(); ++wi) {
 				const v2<int> &wp = *wi;
