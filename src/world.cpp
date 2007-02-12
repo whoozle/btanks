@@ -262,6 +262,8 @@ const bool IWorld::collides(Object *obj, const v2<int> &position, Object *o, con
 
 const float IWorld::getImpassability(Object *obj, const v2<int> &position, const Object **collided_with, const bool probe, const bool skip_moving) const {
 TRY {
+	assert(obj != NULL);
+	
 	if (obj->impassability == 0) {
 		if (collided_with != NULL)
 			*collided_with = NULL;

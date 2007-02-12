@@ -62,6 +62,8 @@ inline const bool IMap::hiddenBy(const Object *obj, const int dx, const int dy, 
 
 const int IMap::getImpassability(const Object *obj, const v2<int>&pos, v2<int> *tile_pos, bool *hidden) const {
 TRY {
+	assert(obj != NULL);
+	
 	if (obj->impassability <= 0) {
 		return 0;
 	}
