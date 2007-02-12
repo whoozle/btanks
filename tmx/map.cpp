@@ -61,6 +61,7 @@ inline const bool IMap::hiddenBy(const Object *obj, const int dx, const int dy, 
 
 
 const int IMap::getImpassability(const Object *obj, const v2<int>&pos, v2<int> *tile_pos, bool *hidden) const {
+TRY {
 	if (obj->impassability <= 0) {
 		return 0;
 	}
@@ -241,6 +242,9 @@ const int IMap::getImpassability(const Object *obj, const v2<int>&pos, v2<int> *
 	//LOG_DEBUG(("im = %d", result_im));
 	//LOG_DEBUG(("<<IMap::getImpassability"));
 	return result_im;
+} CATCH(mrt::formatString("Map::getImpassability(%p, (%d:%d), %p, %p)", 
+	(void *)obj, pos.x, pos.y, (void *)tile_pos, (void *)hidden ).c_str(), throw;);
+	return 0;
 }
 
 
