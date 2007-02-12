@@ -88,7 +88,11 @@ const sdlx::Surface* DestructableLayer::getSurface(const int x, const int y) con
 	if (i < 0 || i >= _w * _h)
 		return NULL;
 	const bool visible = _visible ? (_hp_data[i] == -1) : (_hp_data[i] > 0);
-	return visible?_tiles[i].surface : NULL;
+	const IMap::TileDescriptor* tile = getTile(i);
+	if (!visible || tile == NULL)
+		return NULL;
+	
+	return visible?tile->surface : NULL;
 }
 
 const sdlx::CollisionMap* DestructableLayer::getCollisionMap(const int x, const int y) const {
@@ -96,7 +100,11 @@ const sdlx::CollisionMap* DestructableLayer::getCollisionMap(const int x, const 
 	if (i < 0 || i >= _w * _h)
 		return NULL;
 	const bool visible = _visible ? (_hp_data[i] == -1) : (_hp_data[i] > 0);
-	return visible?_tiles[i].cmap : NULL;
+	const IMap::TileDescriptor* tile = getTile(i);
+	if (!visible || tile == NULL)
+		return NULL;
+
+	return visible?tile->cmap : NULL;
 }
 
 const sdlx::CollisionMap* DestructableLayer::getVisibilityMap(const int x, const int y) const {
@@ -104,7 +112,11 @@ const sdlx::CollisionMap* DestructableLayer::getVisibilityMap(const int x, const
 	if (i < 0 || i >= _w * _h)
 		return NULL;
 	const bool visible = _visible ? (_hp_data[i] == -1) : (_hp_data[i] > 0);
-	return visible?_tiles[i].vmap : NULL;
+	const IMap::TileDescriptor* tile = getTile(i);
+	if (!visible || tile == NULL)
+		return NULL;
+
+	return visible?tile->vmap : NULL;
 }
 
 const bool DestructableLayer::damage(const int x, const int y, const int hp) {
@@ -164,7 +176,7 @@ DestructableLayer::~DestructableLayer() {
 	delete[] _hp_data;
 }
 
-Layer::Layer() : impassability(0), hp(0), pierceable(false), _tiles(NULL), _w(0), _h(0) {}
+Layer::Layer() : impassability(0), hp(0), pierceable(false), _w(0), _h(0), _tiles(NULL) {}
 
 void Layer::init(const int w, const int h, const mrt::Chunk & data) {
 	delete[] _tiles;
