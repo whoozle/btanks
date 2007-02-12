@@ -29,7 +29,7 @@ template<typename T>
 
 template<typename T> 
 	inline const T sign(const T v) {
-			return (v > 0)?1:((v < 0)?-1:0);
+			return (v > 0)?(const T)1:((v < 0)?(const T)-1:0);
 		}
 }
 
