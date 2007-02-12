@@ -42,30 +42,28 @@ public:
 #endif
 	int impassability, hp;
 	bool pierceable;
+	bool animated;
 
 	Layer();
 	virtual void init(const int w, const int h, const mrt::Chunk & data);
+	void setAnimation(const int frame_size, const float speed);
+	virtual void tick(const float dt);
 
 	void clear(const int idx);
 	
 	virtual const Uint32 get(const int idx) const; 
 	virtual const Uint32 get(const int x, const int y) const; 
 	
-	virtual const sdlx::Surface* getSurface(const int x, const int y) const;
-	virtual const sdlx::CollisionMap* getCollisionMap(const int x, const int y) const;
-	virtual const sdlx::CollisionMap* getVisibilityMap(const int x, const int y) const;
-	
 	virtual const bool damage(const int x, const int y, const int hp);
 	virtual void _destroy(const int x, const int y);
 
-	void optimize(const IMap::TileMap & tilemap);
 	virtual ~Layer();
 
 protected: 
-	const IMap::TileDescriptor* getTile(const int i) const { return (i >= 0 && i < (_w * _h))? _tiles + i: 0; }
 	int _w, _h;
 private: 
-	IMap::TileDescriptor* restrict _tiles;
+	float pos, speed;
+	int base, frame_size;
 	mrt::Chunk _data; //hands off, you stupid layers! :)
 };
 
@@ -75,9 +73,6 @@ public:
 	virtual void init(const int w, const int h, const mrt::Chunk & data);
 
 	virtual const Uint32 get(const int x, const int y) const; 
-	virtual const sdlx::Surface* getSurface(const int x, const int y) const;
-	virtual const sdlx::CollisionMap* getCollisionMap(const int x, const int y) const;
-	virtual const sdlx::CollisionMap* getVisibilityMap(const int x, const int y) const;
 
 	virtual const bool damage(const int x, const int y, const int hp);
 	virtual void _destroy(const int x, const int y);

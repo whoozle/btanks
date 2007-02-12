@@ -56,7 +56,7 @@ public:
 	const std::string & getName() const { return _name; }
 	const bool loaded() const;
 	
-	
+	void tick(const float dt);
 	void render(sdlx::Surface &window, const sdlx::Rect &src, const sdlx::Rect &dst, const int z1, const int z2) const;
 	const v2<int> getSize() const;
 	const v2<int> getTileSize() const;
@@ -87,6 +87,10 @@ private:
 	virtual void start(const std::string &name, Attrs &attr);
 	virtual void end(const std::string &name);
 	virtual void charData(const std::string &data);
+
+	virtual const sdlx::Surface* getSurface(const Layer *l, const int x, const int y) const;
+	virtual const sdlx::CollisionMap* getCollisionMap(const Layer *l, const int x, const int y) const;
+	virtual const sdlx::CollisionMap* getVisibilityMap(const Layer *l, const int x, const int y) const;
 
 	Matrix<int> _imp_map;
 	inline const bool collides(const Object *obj, const int dx, const int dy, const sdlx::CollisionMap *tile) const;

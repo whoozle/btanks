@@ -114,22 +114,22 @@ const int IMap::getImpassability(const Object *obj, const v2<int>&pos, v2<int> *
 
 		if (hidden && l->first > obj_z) {
 			if (((hidden_mask & 1) == 0)) {
-				if ((empty_mask & 1) || hiddenBy(obj, dx1, dy1, layer->getVisibilityMap(xt1, yt1)))
+				if ((empty_mask & 1) || hiddenBy(obj, dx1, dy1, getVisibilityMap(layer, xt1, yt1)))
 					hidden_mask |= 1;
 			}
 			
 			if (yt1 != yt2 && ((hidden_mask & 2) == 0)) {
-				if ((empty_mask & 2) || hiddenBy(obj, dx1, dy2, layer->getVisibilityMap(xt1, yt2)))
+				if ((empty_mask & 2) || hiddenBy(obj, dx1, dy2, getVisibilityMap(layer, xt1, yt2)))
 					hidden_mask |= 2;
 			}
 			
 			if (xt1 != xt2) {
 				if (((hidden_mask & 4) == 0)) {
-					if ((empty_mask & 4) || hiddenBy(obj, dx2, dy1, layer->getVisibilityMap(xt2, yt1)))
+					if ((empty_mask & 4) || hiddenBy(obj, dx2, dy1, getVisibilityMap(layer, xt2, yt1)))
 						hidden_mask |= 4;
 				}
 				if (yt1 != yt2 && ((hidden_mask & 8) == 0)) {
-					if ((empty_mask & 8) || hiddenBy(obj, dx2, dy2, layer->getVisibilityMap(xt2, yt2)))
+					if ((empty_mask & 8) || hiddenBy(obj, dx2, dy2, getVisibilityMap(layer, xt2, yt2)))
 						hidden_mask |= 8;
 				}
 			}
@@ -142,7 +142,7 @@ const int IMap::getImpassability(const Object *obj, const v2<int>&pos, v2<int> *
 		//LOG_DEBUG(("im: %d, tile: %d", layer_im, layer->get(xt1, yt1)));
 		
 		if (!(empty_mask & 1) && im[0] == 101) {
-			if (collides(obj, dx1, dy1, layer->getCollisionMap(xt1, yt1))) {
+			if (collides(obj, dx1, dy1, getCollisionMap(layer, xt1, yt1))) {
 				im[0] = layer_im;
 				if (yt1 == yt2 && im[1] == 101)
 					im[1] = layer_im;
@@ -157,7 +157,7 @@ const int IMap::getImpassability(const Object *obj, const v2<int>&pos, v2<int> *
 
 		if (yt2 != yt1) {
 			if (!(empty_mask & 2) && im[1] == 101) {
-			if (collides(obj, dx1, dy2, layer->getCollisionMap(xt1, yt2))) {
+			if (collides(obj, dx1, dy2, getCollisionMap(layer, xt1, yt2))) {
 				im[1] = layer_im;
 				if (xt1 == xt2 && im[3] == 101) 
 					im[3] = layer_im;
@@ -167,7 +167,7 @@ const int IMap::getImpassability(const Object *obj, const v2<int>&pos, v2<int> *
 		
 		if (xt2 != xt1) {
 			if (!(empty_mask & 4) && im[2] == 101) {
-			if (collides(obj, dx2, dy1, layer->getCollisionMap(xt2, yt1))) {
+			if (collides(obj, dx2, dy1, getCollisionMap(layer, xt2, yt1))) {
 				im[2] = layer_im;
 				if (y1 == yt2 && im[3] == 101)
 					im[3] = layer_im;
@@ -176,7 +176,7 @@ const int IMap::getImpassability(const Object *obj, const v2<int>&pos, v2<int> *
 			}
 			if (yt2 != yt1 && im[3] == 101) { 
 				if (!(empty_mask & 8)) {
-				if (collides(obj, dx2, dy2, layer->getCollisionMap(xt2, yt2))) { 
+				if (collides(obj, dx2, dy2, getCollisionMap(layer, xt2, yt2))) { 
 					im[3] = layer_im;
 				}
 				}
@@ -265,11 +265,9 @@ void IMap::load(const std::string &name) {
 	
 	unsigned int ot = 0;
 	for(LayerMap::iterator l = _layers.begin(); l != _layers.end(); ++l) {
-		l->second->optimize(_tiles);
-
 		for(int ty = 0; ty < _h; ++ty) {
 			for(int tx = 0; tx < _w; ++tx) {
-				const sdlx::CollisionMap * vmap = l->second->getVisibilityMap(tx, ty);
+				const sdlx::CollisionMap * vmap = getVisibilityMap(l->second, tx, ty);
 				if (vmap == NULL)
 					continue;
 				if (vmap->isFull()) {
@@ -342,7 +340,10 @@ void IMap::load(const std::string &name) {
 					continue;
 				
 				int tid = l->second->get(x, y);
-				if (tid == 0 || l->second->getCollisionMap(x, y)->isEmpty())
+				if (tid == 0)
+					continue;
+				const sdlx::CollisionMap *cmap = getCollisionMap(l->second, x, y);
+				if (cmap == NULL || cmap->isEmpty())
 					continue;
 				
 				//break;
@@ -352,7 +353,7 @@ void IMap::load(const std::string &name) {
 			
 			
 				Matrix<bool> proj;
-				l->second->getCollisionMap(x, y)->project(proj, split, split);
+				cmap->project(proj, split, split);
 				//LOG_DEBUG(("projection: %s", proj.dump().c_str()));
 				//_imp_map.set(y, x, im);
 				for(int yy = 0; yy < split; ++yy)
@@ -544,11 +545,23 @@ void IMap::end(const std::string &name) {
 			layer = new ChainedDestructableLayer();
 			_damage4[_layer_name] = damage;
 		}
+
 		LOG_DEBUG(("layer '%s'. %dx%d. z: %d, size: %d, impassability: %d", e.attrs["name"].c_str(), w, h, z, _data.getSize(), impassability));
 		if (_layers.find(z) != _layers.end())
 			throw_ex(("layer with z %d already exists", z));
 		if(layer == NULL)
 			layer = new Layer;
+
+		const std::string a_frame_size = _properties["animation-frame-size"];
+		const std::string a_speed = _properties["animation-speed"];
+		if (!a_frame_size.empty()) {
+			int fs = atoi(a_frame_size.c_str());
+			float speed = (a_speed.empty())?1:atof(a_speed.c_str());
+			if (a_speed.empty())
+				LOG_WARN(("layer '%s': default speed of 1 used.", e.attrs["name"].c_str()));
+			LOG_DEBUG(("layer '%s': animation-frame-size: %d, animation-speed: %g", e.attrs["name"].c_str(), fs, speed));
+			layer->setAnimation(fs, speed);
+		}
 		
 		layer->impassability = impassability;
 		layer->pierceable = pierceable;
@@ -661,7 +674,7 @@ void IMap::render(sdlx::Surface &window, const sdlx::Rect &src, const sdlx::Rect
 					continue;
 				}
 				
-				const sdlx::Surface * s = l->second->getSurface(txp + tx, typ + ty);
+				const sdlx::Surface * s = getSurface(l->second, txp + tx, typ + ty);
 				if (s != NULL) 
 					window.copyFrom(*s, dst.x + xp + tx * _tw, dst.y + yp + ty * _th);
 			}
@@ -765,6 +778,11 @@ void IMap::damage(const v2<float> &center, const int hp, const float radius) {
 		PlayerManager->onDestroyMap(destroyed_cells);
 }
 
+void IMap::tick(const float dt) {
+	for(LayerMap::iterator i = _layers.begin(); i != _layers.end(); ++i) {
+		i->second->tick(dt);
+	}
+}
 
 void IMap::_destroy(const int z, const v2<int> &cell) {
 	LayerMap::iterator l = _layers.find(z);
@@ -775,4 +793,23 @@ void IMap::_destroy(const int z, const v2<int> &cell) {
 
 void IMap::invalidateTile(const int xp, const int yp) {
 	_cover_map.set(yp, xp, -10000);
+}
+
+const sdlx::Surface* IMap::getSurface(const Layer *l, const int x, const int y) const {
+	Uint32 t = l->get(x, y);
+	if (t == 0 || t >= _tiles.size())
+		return NULL;
+	return _tiles[t].surface;
+}
+const sdlx::CollisionMap* IMap::getCollisionMap(const Layer *l, const int x, const int y) const {
+	Uint32 t = l->get(x, y);
+	if (t == 0 || t >= _tiles.size())
+		return NULL;
+	return _tiles[t].cmap;
+}
+const sdlx::CollisionMap* IMap::getVisibilityMap(const Layer *l, const int x, const int y) const {
+	Uint32 t = l->get(x, y);
+	if (t == 0 || t >= _tiles.size())
+		return NULL;
+	return _tiles[t].vmap;
 }

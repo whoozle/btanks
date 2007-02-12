@@ -83,42 +83,6 @@ const Uint32 DestructableLayer::get(const int x, const int y) const {
 	return visible? Layer::get(i): 0;
 }
 
-const sdlx::Surface* DestructableLayer::getSurface(const int x, const int y) const {
-	int i = _w * y + x;
-	if (i < 0 || i >= _w * _h)
-		return NULL;
-	const bool visible = _visible ? (_hp_data[i] == -1) : (_hp_data[i] > 0);
-	const IMap::TileDescriptor* tile = getTile(i);
-	if (!visible || tile == NULL)
-		return NULL;
-	
-	return visible?tile->surface : NULL;
-}
-
-const sdlx::CollisionMap* DestructableLayer::getCollisionMap(const int x, const int y) const {
-	int i = _w * y + x;
-	if (i < 0 || i >= _w * _h)
-		return NULL;
-	const bool visible = _visible ? (_hp_data[i] == -1) : (_hp_data[i] > 0);
-	const IMap::TileDescriptor* tile = getTile(i);
-	if (!visible || tile == NULL)
-		return NULL;
-
-	return visible?tile->cmap : NULL;
-}
-
-const sdlx::CollisionMap* DestructableLayer::getVisibilityMap(const int x, const int y) const {
-	int i = _w * y + x;
-	if (i < 0 || i >= _w * _h)
-		return NULL;
-	const bool visible = _visible ? (_hp_data[i] == -1) : (_hp_data[i] > 0);
-	const IMap::TileDescriptor* tile = getTile(i);
-	if (!visible || tile == NULL)
-		return NULL;
-
-	return visible?tile->vmap : NULL;
-}
-
 const bool DestructableLayer::damage(const int x, const int y, const int hp) {
 	const int i = _w * y + x;
 	if (i < 0 || i >= _w * _h)
@@ -176,11 +140,32 @@ DestructableLayer::~DestructableLayer() {
 	delete[] _hp_data;
 }
 
-Layer::Layer() : impassability(0), hp(0), pierceable(false), _w(0), _h(0), _tiles(NULL) {}
+Layer::Layer() : impassability(0), hp(0), pierceable(false), _w(0), _h(0), pos(0), speed(1), base(0), frame_size(0) {}
+
+void Layer::setAnimation(const int frame_size, const float speed) {
+	if (frame_size < 1) 
+		throw_ex(("animation frame size %d is invalid", frame_size));
+	if (speed <= 0)
+		throw_ex(("animation speed %g is invalid", speed));
+	this->frame_size = frame_size;
+	this->speed = speed;
+}
+
+void Layer::tick(const float dt) {
+	if (frame_size == 0)
+		return;
+	pos += speed * dt;
+	int n = (_h - 1) / frame_size + 1;
+	int p = (int)(pos / n);
+	pos -= p * n;
+	int f = (int)pos;
+	f %= n;
+
+	//LOG_DEBUG(("pos : %g, n: %d, frame: %d -> base: %d", pos, n, f, base));
+	base = f * frame_size * _w;
+}
 
 void Layer::init(const int w, const int h, const mrt::Chunk & data) {
-	delete[] _tiles;
-	_tiles = NULL;
 	_w = w;
 	_h = h;
 	_data = data;
@@ -189,10 +174,12 @@ void Layer::init(const int w, const int h, const mrt::Chunk & data) {
 
 
 const Uint32 Layer::get(const int idx) const {
-	if (idx < 0 || idx / 4 >= (int)_data.getSize())
+	const int i = idx + base; //haha!
+	if (i < 0 || i / 4 >= (int)_data.getSize())
 		return 0;
-	return *((Uint32 *) _data.getPtr() + idx);
+	return *((Uint32 *) _data.getPtr() + i);
 }
+
 
 const Uint32 Layer::get(const int x, const int y) const {
 	return get(_w * y + x);
@@ -201,52 +188,11 @@ const Uint32 Layer::get(const int x, const int y) const {
 void Layer::clear(const int i) {
 	if (i < 0 || i >= _w * _h)
 		return;
-	_tiles[i].surface = NULL;
-	_tiles[i].cmap = _tiles[i].vmap = NULL;
 	*((Uint32 *) _data.getPtr() + i) = 0;
-}
-
-
-const sdlx::Surface* Layer::getSurface(const int x, const int y) const {
-	if (x < 0 || x >= _w || y < 0 || y >= _h) 
-		return NULL;
-	return _tiles[_w * y + x].surface;
-}
-
-const sdlx::CollisionMap* Layer::getCollisionMap(const int x, const int y) const {
-	if (x < 0 || x >= _w || y < 0 || y >= _h) 
-		return NULL;
-	return _tiles[_w * y + x].cmap;
-}
-
-const sdlx::CollisionMap* Layer::getVisibilityMap(const int x, const int y) const {
-	if (x < 0 || x >= _w || y < 0 || y >= _h) 
-		return NULL;
-	return _tiles[_w * y + x].vmap;
-}
-
-
-void Layer::optimize(const IMap::TileMap & tilemap) {
-	unsigned size = _w * _h;
-	
-	Uint32 *ptr = (Uint32 *)_data.getPtr();
-
-	delete[] _tiles;
-	_tiles = new IMap::TileDescriptor[size];
-
-	for(unsigned int i = 0; i < size; ++i) {
-		Uint32 tid = *ptr++;
-
-		if (tid != 0) { 
-			if ((unsigned)tid >= tilemap.size())
-				throw_ex(("got invalid tile id %d", tid));
-			_tiles[i] = tilemap[tid];
-		}
-	}
 }
 
 const bool Layer::damage(const int x, const int y, const int hp) { return false; }
 void Layer::_destroy(const int x, const int y) {}
 
 
-Layer::~Layer() { delete[] _tiles; }
+Layer::~Layer() { }
