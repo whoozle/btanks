@@ -178,7 +178,8 @@ void Layer::init(const int w, const int h, const mrt::Chunk & data) {
 const Uint32 Layer::get(const int i) const {
 	if (i < 0 || i >= _w * _h)
 		return 0;
-	return base + *((Uint32 *) _data.getPtr() + i);
+	Uint32 id = *((Uint32 *) _data.getPtr() + i);
+	return (id != 0)? base + id: 0;
 }
 
 
