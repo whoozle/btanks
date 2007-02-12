@@ -71,9 +71,8 @@ void DestructableLayer::init(const int w, const int h, const mrt::Chunk & data) 
 	delete[] _hp_data;
 	_hp_data = new int[size];
 
-	Uint32 *ptr = (Uint32 *)_data.getPtr();
 	for(int i = 0; i < size; ++i) {
-		_hp_data[i] = (ptr[i] != 0) ? hp : 0;
+		_hp_data[i] = (Layer::get(i) != 0) ? hp : 0;
 	}
 }
 const Uint32 DestructableLayer::get(const int x, const int y) const {
@@ -81,7 +80,7 @@ const Uint32 DestructableLayer::get(const int x, const int y) const {
 	if (i < 0 || i >= _w * _h)
 		return 0;
 	const bool visible = _visible ? (_hp_data[i] == -1) : (_hp_data[i] > 0);
-	return (visible)?(*((Uint32 *) _data.getPtr() + i)): 0;
+	return visible? Layer::get(i): 0;
 }
 
 const sdlx::Surface* DestructableLayer::getSurface(const int x, const int y) const {
@@ -177,10 +176,14 @@ void Layer::init(const int w, const int h, const mrt::Chunk & data) {
 }
 
 
+const Uint32 Layer::get(const int idx) const {
+	if (idx < 0 || idx / 4 >= (int)_data.getSize())
+		return 0;
+	return *((Uint32 *) _data.getPtr() + idx);
+}
+
 const Uint32 Layer::get(const int x, const int y) const {
-	if (x < 0 || x >= _w || y < 0 || y >= _h) 
-		return 0;	
-	return *((Uint32 *) _data.getPtr() + _w * y + x);
+	return get(_w * y + x);
 }
 
 void Layer::clear(const int i) {

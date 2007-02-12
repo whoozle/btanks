@@ -48,6 +48,7 @@ public:
 
 	void clear(const int idx);
 	
+	virtual const Uint32 get(const int idx) const; 
 	virtual const Uint32 get(const int x, const int y) const; 
 	
 	virtual const sdlx::Surface* getSurface(const int x, const int y) const;
@@ -61,9 +62,10 @@ public:
 	virtual ~Layer();
 
 protected: 
-	mrt::Chunk _data;
 	IMap::TileDescriptor* restrict _tiles;
 	int _w, _h;
+private: 
+	mrt::Chunk _data; //hands off, you stupid layers! :)
 };
 
 class DestructableLayer : public Layer {
