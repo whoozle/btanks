@@ -175,11 +175,10 @@ void Layer::init(const int w, const int h, const mrt::Chunk & data) {
 }
 
 
-const Uint32 Layer::get(const int idx) const {
-	const int i = idx + base; //haha!
-	if (i < 0 || i / 4 >= (int)_data.getSize())
+const Uint32 Layer::get(const int i) const {
+	if (i < 0 || i >= _w * _h)
 		return 0;
-	return *((Uint32 *) _data.getPtr() + i);
+	return base + *((Uint32 *) _data.getPtr() + i);
 }
 
 
