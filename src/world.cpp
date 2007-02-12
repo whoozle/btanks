@@ -179,6 +179,7 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect&src, const sdlx::Re
 }
 
 const bool IWorld::collides(Object *obj, const v2<int> &position, Object *o, const bool probe) const {
+	TRY {
 		const int id1 = obj->_id;
 		const int id2 = o->_id;
 
@@ -257,6 +258,10 @@ const bool IWorld::collides(Object *obj, const v2<int> &position, Object *o, con
 		//LOG_DEBUG(("collision %s <-> %s: %s", obj->classname.c_str(), o->classname.c_str(), collides?"true":"false"));
 		
 		return collides;
+	} CATCH(
+		mrt::formatString("World::collides(%p, (%d:%d), %p, %s)", (void *)obj, position.x, position.y, (void *)o, probe?"true":"false").c_str(), 
+		throw; )
+	return 0;
 }
 
 
