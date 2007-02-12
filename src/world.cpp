@@ -577,10 +577,10 @@ TRY {
 	const Object *stuck_in = NULL;
 	v2<int> stuck_map_pos;
 	bool stuck = false;
+
+	int attempt = -1;
 	
 TRY {	
-	
-	int attempt;
 	
 	int save_dir = o.getDirection();
 	int dirs = o.getDirectionsNumber();
@@ -650,7 +650,9 @@ TRY {
 		o.setDirection(save_dir);
 		hidden = hidden_attempt[0];
 	}
-} CATCH("tick.impassability check", throw;);
+} CATCH(
+	mrt::formatString("tick.impassability check (attempt: %d, stuck_in: %p)", attempt, (void *)stuck_in).c_str(), 
+	throw;);
 
 TRY {
 	if (has_outline) {
