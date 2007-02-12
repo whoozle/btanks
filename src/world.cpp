@@ -261,6 +261,7 @@ const bool IWorld::collides(Object *obj, const v2<int> &position, Object *o, con
 
 
 const float IWorld::getImpassability(Object *obj, const v2<int> &position, const Object **collided_with, const bool probe, const bool skip_moving) const {
+TRY {
 	if (obj->impassability == 0) {
 		if (collided_with != NULL)
 			*collided_with = NULL;
@@ -308,6 +309,10 @@ const float IWorld::getImpassability(Object *obj, const v2<int> &position, const
 		*collided_with = result;
 	
 	return im;
+} CATCH(mrt::formatString("World::getImpassability(%p, (%d, %d), %p, %s, %s)", 
+	(void *)obj, position.x, position.y, (void *)collided_with, probe?"true":"false", skip_moving?"true":"false").c_str(), 
+	throw;);	
+	return 0;
 }
 
 void IWorld::getImpassability2(float &old_pos_im, float &new_pos_im, Object *obj, const v2<int> &new_position, const Object **old_pos_collided_with) const {
