@@ -164,7 +164,7 @@ void Layer::tick(const float dt) {
 	f %= frames;
 
 	base = f * frame_size;
-	LOG_DEBUG(("pos : %g, n: %d, frame: %d -> base: %d", pos, frames, f, base));
+	//LOG_DEBUG(("pos : %g, n: %d, frame: %d -> base: %d", pos, frames, f, base));
 }
 
 void Layer::init(const int w, const int h, const mrt::Chunk & data) {
