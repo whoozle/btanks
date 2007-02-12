@@ -30,6 +30,13 @@
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAFvNwMCwBohXk0mvBeJ1FNDk2jtq/6j9o/ZTbj8ALyMAiAAEAAA=
   </data>
+  
+  <properties>
+   <property name="animation-frame-size" value="4"/>
+   <property name="animation-frames" value="10"/>
+   <property name="animation-speed" value="10"/>
+  </properties>  
+  
   <tileproperties/>
  </layer>
  <layer name="Layer 0" width="16" height="16">

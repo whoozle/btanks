@@ -140,29 +140,31 @@ DestructableLayer::~DestructableLayer() {
 	delete[] _hp_data;
 }
 
-Layer::Layer() : impassability(0), hp(0), pierceable(false), _w(0), _h(0), pos(0), speed(1), base(0), frame_size(0) {}
+Layer::Layer() : impassability(0), hp(0), pierceable(false), _w(0), _h(0), pos(0), speed(1), base(0), frames(0), frame_size(0) {}
 
-void Layer::setAnimation(const int frame_size, const float speed) {
+void Layer::setAnimation(const int frame_size, const int frames, const float speed) {
 	if (frame_size < 1) 
 		throw_ex(("animation frame size %d is invalid", frame_size));
+	if (frames < 1) 
+		throw_ex(("animation frames number %d is invalid", frames));
 	if (speed <= 0)
 		throw_ex(("animation speed %g is invalid", speed));
 	this->frame_size = frame_size;
+	this->frames = frames;
 	this->speed = speed;
 }
 
 void Layer::tick(const float dt) {
-	if (frame_size == 0)
+	if (frames == 0 || frame_size == 0)
 		return;
 	pos += speed * dt;
-	int n = (_h - 1) / frame_size + 1;
-	int p = (int)(pos / n);
-	pos -= p * n;
+	int p = (int)(pos / frames);
+	pos -= p * frames;
 	int f = (int)pos;
-	f %= n;
+	f %= frames;
 
-	//LOG_DEBUG(("pos : %g, n: %d, frame: %d -> base: %d", pos, n, f, base));
-	base = f * frame_size * _w;
+	base = f * frame_size;
+	LOG_DEBUG(("pos : %g, n: %d, frame: %d -> base: %d", pos, frames, f, base));
 }
 
 void Layer::init(const int w, const int h, const mrt::Chunk & data) {

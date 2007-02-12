@@ -42,11 +42,10 @@ public:
 #endif
 	int impassability, hp;
 	bool pierceable;
-	bool animated;
 
 	Layer();
 	virtual void init(const int w, const int h, const mrt::Chunk & data);
-	void setAnimation(const int frame_size, const float speed);
+	void setAnimation(const int frame_size, const int frames, const float speed);
 	virtual void tick(const float dt);
 
 	void clear(const int idx);
@@ -63,7 +62,7 @@ protected:
 	int _w, _h;
 private: 
 	float pos, speed;
-	int base, frame_size;
+	int base, frames, frame_size;
 	mrt::Chunk _data; //hands off, you stupid layers! :)
 };
 
