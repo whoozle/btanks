@@ -62,7 +62,7 @@ public:
 	virtual ~Layer();
 
 protected: 
-	const IMap::TileDescriptor* getTile(const int i) const { return (i >= 0 && i < (_w * _h))?&_tiles[i]:0; }
+	const IMap::TileDescriptor* getTile(const int i) const { return (i >= 0 && i < (_w * _h))? _tiles + i: 0; }
 	int _w, _h;
 private: 
 	IMap::TileDescriptor* restrict _tiles;
