@@ -628,6 +628,7 @@ void IGame::run() {
 			checkItems(dt);
 			PlayerManager->updatePlayers();
 			
+			Map->tick(dt);
 			World->tick(dt);
 			Mixer->updateObjects();
 		}
