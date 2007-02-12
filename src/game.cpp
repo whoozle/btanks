@@ -497,14 +497,20 @@ void IGame::checkItems(const float dt) {
 	
 	int goal = 0, goal_total = 0;
 	
+	_specials.clear();
+	
 	for(Items::iterator i = _items.begin(); i != _items.end(); ++i) {
 		Item &item = *i;
 		if (item.destroy_for_victory)
 			++goal_total;
 		Object *o = World->getObjectByID(item.id);
 		if (o != NULL) {
-			if (item.destroy_for_victory && o->getState() == "broken") 
-				++goal;
+			if (item.destroy_for_victory) {
+				if (o->getState() == "broken") {
+					++goal;
+				} else 
+					_specials.push_back(item.position);
+			} 
 			continue;
 		}
 		if (item.destroy_for_victory)
@@ -667,8 +673,9 @@ void IGame::run() {
 		if (_map_loaded) {
 			_hud->render(_window);
 
-			if (_show_radar)
-				_hud->renderRadar(dt, _window);
+			if (_show_radar) {
+				_hud->renderRadar(dt, _window, _specials);
+			}
 		}
 
 		_main_menu.render(_window);

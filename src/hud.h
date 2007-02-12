@@ -21,9 +21,12 @@
 
 #include "sdlx/surface.h"
 #include "sdlx/font.h"
+#include "math/v2.h"
 #include "alarm.h"
+
 #include <map>
 #include <string>
+#include <vector>
 
 class Font;
 class Object;
@@ -38,7 +41,7 @@ public:
 
 	void renderSplash(sdlx::Surface &window) const;
 	const bool renderLoadingBar(sdlx::Surface &window, const float old_progress, const float progress) const;
-	void renderRadar(const float dt, sdlx::Surface &window);
+	void renderRadar(const float dt, sdlx::Surface &window, std::vector<v2<int> > &specials);
 
 	~Hud();
 	

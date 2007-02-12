@@ -123,8 +123,10 @@ private:
 		Uint32 dead_on;
 		bool destroy_for_victory;
 	};
-	typedef std::deque<Item> Items;
+	typedef std::vector<Item> Items;
 	Items _items;
+	std::vector<v2<int> > _specials;
+	
 	Alarm _check_items;
 	void checkItems(const float dt);
 	

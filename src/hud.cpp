@@ -72,7 +72,7 @@ void Hud::initMap() {
 }
 
 
-void Hud::renderRadar(const float dt, sdlx::Surface &window) {
+void Hud::renderRadar(const float dt, sdlx::Surface &window, std::vector<v2<int> > &specials) {
 	if (!Map->loaded()) {
 		_radar.free();
 		_radar_bg.free();
@@ -113,6 +113,30 @@ void Hud::renderRadar(const float dt, sdlx::Surface &window) {
 		_radar.putPixel(pos.x * _radar.getWidth() / msize.x, pos.y * _radar.getHeight() / msize.y - 1, index2color(_radar, i + 1, 200));
 		_radar.putPixel(pos.x * _radar.getWidth() / msize.x + 1, pos.y * _radar.getHeight() / msize.y, index2color(_radar, i + 1, 200));
 		_radar.putPixel(pos.x * _radar.getWidth() / msize.x - 1, pos.y * _radar.getHeight() / msize.y, index2color(_radar, i + 1, 200));
+	}
+	
+	static bool blink;
+	
+	blink = !blink;
+	if (blink) {
+	//format me
+	n = specials.size();
+	for(size_t i = 0; i < n; ++i) {
+		const v2<int> &pos = specials[i];
+		Uint32 color[2];
+		color[0] = index2color(_radar, i + 1, 255);
+		color[1] = index2color(_radar, i + 1, 200);
+		for(int b = 0; b < 2; ++b) {
+			_radar.putPixel(b + pos.x * _radar.getWidth() / msize.x, pos.y * _radar.getHeight() / msize.y, color[b]);
+			for(int l = 1; l <= 2; ++l) {
+				_radar.putPixel(b + pos.x * _radar.getWidth() / msize.x + l, pos.y * _radar.getHeight() / msize.y + l, color[b]);
+				_radar.putPixel(b + pos.x * _radar.getWidth() / msize.x - l, pos.y * _radar.getHeight() / msize.y - l, color[b]);
+				_radar.putPixel(b + pos.x * _radar.getWidth() / msize.x + l, pos.y * _radar.getHeight() / msize.y - l, color[b]);
+				_radar.putPixel(b + pos.x * _radar.getWidth() / msize.x - l, pos.y * _radar.getHeight() / msize.y + l, color[b]);
+			}
+		}
+	}
+	
 	}
 	
 	_radar.unlock();
