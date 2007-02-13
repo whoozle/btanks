@@ -173,7 +173,7 @@ void IGame::init(const int argc, char *argv[]) {
 	
 	LOG_DEBUG(("initializing hud..."));
 	_hud = new Hud(_window.getWidth(), _window.getHeight());
-	_big_font.load(data_dir + "/font/big.png", sdlx::Font::AZ09);
+	_big_font.load(data_dir + "/font/big.png", sdlx::Font::Ascii);
 	
 	Console->on_command.connect(sigc::mem_fun(this, &IGame::onConsole));
 

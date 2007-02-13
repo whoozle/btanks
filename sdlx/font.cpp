@@ -57,6 +57,11 @@ const int Font::render(sdlx::Surface &window, const int x, const int y, const st
 		int c = str[i];
 		
 		switch(_type) {
+		case Ascii:
+			c -= 32;
+			if (c < 0) 
+				continue;
+		break;
 		case AZ09:
 			c -= '0';
 			if (c > 9)

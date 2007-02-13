@@ -27,7 +27,7 @@ namespace sdlx {
 class Surface;
 class Font {
 public:
-	enum Type { AZ09 };
+	enum Type { AZ09, Ascii };
 	Font();
 	~Font();
 	

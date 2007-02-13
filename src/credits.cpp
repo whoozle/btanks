@@ -28,7 +28,7 @@ Credits::Credits() : _w(0), _h(0) {
 	GET_CONFIG_VALUE("engine.credits-tune", std::string, tune, "glory.ogg");
 	Mixer->play(data_dir + "/tunes/" + tune, true);
 	
-	_font.load(data_dir + "/font/big.png", sdlx::Font::AZ09, false);
+	_font.load(data_dir + "/font/big.png", sdlx::Font::Ascii, false);
 	_medium_font.load(data_dir + "/font/medium.png", sdlx::Font::AZ09, false);
 	
 	int fh = _font.getHeight(), mfh = _medium_font.getHeight();
