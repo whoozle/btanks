@@ -6,7 +6,7 @@
 
 class MapItem : public MenuItem {
 public: 
-	MapItem(sdlx::TTF &font, const std::string &name);
+	MapItem(sdlx::Font &font, const std::string &name);
 	virtual void onClick();
 	virtual const bool onKey(const SDL_keysym sym);
 	void render(sdlx::Surface &dst, const int x, const int y);

@@ -19,7 +19,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include "sdlx/ttf.h"
+#include "sdlx/font.h"
 #include "sdlx/rect.h"
 #include <sigc++/sigc++.h>
 #include <vector>
@@ -52,7 +52,7 @@ private:
 
 	int _screen_w, _screen_h;
 	bool _active;
-	sdlx::TTF _font;
+	sdlx::Font _font;
 	
 	typedef std::vector<MenuItem *> ItemList;
 	typedef std::map<const std::string, ItemList> MenuMap;

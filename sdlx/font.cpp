@@ -1,5 +1,6 @@
 #include "font.h"
 #include "surface.h"
+#include "sdl_ex.h"
 
 /* sdlx - c++ wrapper for libSDL
  * Copyright (C) 2005-2007 Vladimir Menshakov
@@ -76,5 +77,15 @@ const int Font::render(sdlx::Surface &window, const int x, const int y, const st
 		window.copyFrom(*_surface, src, x + i * fw, y);
 	}
 	return str.size() * fw;
+}
+
+const int Font::render(sdlx::Surface &window, const std::string &str) const {
+	if (str.empty())
+		throw_ex(("in method render(new-surface, text), text must be non-empty"));
+	int fw, fh;
+	fw = fh = _surface->getHeight();
+	
+	window.createRGB(fw * str.size(), fw, 32, SDL_SRCALPHA);
+	return render(window, 0, 0, str);
 }
 

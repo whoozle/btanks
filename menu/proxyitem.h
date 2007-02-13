@@ -6,7 +6,7 @@ class MainMenu;
 
 class ProxyItem : public MenuItem {
 public:
-	ProxyItem(const MainMenu &parent, sdlx::TTF &font, const std::string &name, const std::string &type, const std::string &text, 
+	ProxyItem(const MainMenu &parent, sdlx::Font &font, const std::string &name, const std::string &type, const std::string &text, 
 		const std::string &menu, const std::string &itemname);
 	virtual const std::string getValue() const;
 private: 

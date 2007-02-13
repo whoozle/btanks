@@ -3,7 +3,7 @@
 #include <algorithm>
 #include "mrt/directory.h"
 
-MapItem::MapItem(sdlx::TTF &font, const std::string &name) :
+MapItem::MapItem(sdlx::Font &font, const std::string &name) :
  MenuItem(font, name, "text", std::string(), std::string()), _active(false) {
 	//load map.
 	GET_CONFIG_VALUE("engine.data-directory", std::string, data_dir, "data");

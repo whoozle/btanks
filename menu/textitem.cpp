@@ -2,7 +2,7 @@
 #include "mrt/logger.h"
 #include <ctype.h>
 
-TextItem::TextItem(sdlx::TTF &font, const std::string &name, const std::string &value): 
+TextItem::TextItem(sdlx::Font &font, const std::string &name, const std::string &value): 
 MenuItem(font, name, "text", value, value), _active(false), _old_bg(0,0,0)
 {}
 

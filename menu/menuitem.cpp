@@ -18,12 +18,13 @@
  */
 
 #include "menuitem.h"
-#include "sdlx/ttf.h"
+#include "sdlx/font.h"
 #include "mrt/logger.h"
 
-MenuItem::MenuItem(sdlx::TTF &font, const std::string &name, const std::string &type, const std::string &text, const std::string &value) : 
+MenuItem::MenuItem(sdlx::Font &font, const std::string &name, const std::string &type, const std::string &text, const std::string &value) : 
 	name(name), type(type), 
-	_inverse(false), _text(text), _value(value), _color(sdlx::Color(255, 255, 255)), _bgcolor(sdlx::Color(0,0,128)),
+	_inverse(false), _text(text), _value(value),
+	_bgcolor(0, 0, 128), 
 	_font(font)
 {
 	render();
@@ -38,7 +39,7 @@ void MenuItem::render() {
 	_normal.free();
 	_inversed.free();
 
-	_font.renderBlended(_normal, (_text.empty())?" ":_text, _color);
+	_font.render(_normal, (_text.empty())?" ":_text);
 	_normal.convertAlpha();
 	_normal.convertToHardware();
 	//LOG_DEBUG(("normal  : %dx%d:%d (%d)", _normal.getWidth(), _normal.getHeight(), _normal.getBPP(), _normal.getSDLSurface()->format->BytesPerPixel));

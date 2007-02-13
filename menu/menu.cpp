@@ -25,7 +25,7 @@
 #include "game.h"
 
 #include "sdlx/surface.h"
-#include "sdlx/ttf.h"
+#include "sdlx/font.h"
 #include "sdlx/color.h"
 #include "mrt/logger.h"
 #include "mrt/exception.h"
@@ -40,7 +40,7 @@ void MainMenu::init(const int w, const int h) {
 	
 	LOG_DEBUG(("loading font..."));
 	GET_CONFIG_VALUE("engine.data-directory", std::string, data_dir, "data");
-	_font.open(data_dir + "/font/Verdana.ttf", 18);
+	_font.load(data_dir + "/font/big.png", sdlx::Font::Ascii, false);
 
 	LOG_DEBUG(("loading background..."));
 	_background.loadImage(data_dir + "/tiles/menu_background.png");
