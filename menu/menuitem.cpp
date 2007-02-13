@@ -20,6 +20,7 @@
 #include "menuitem.h"
 #include "sdlx/font.h"
 #include "mrt/logger.h"
+#include "math/binary.h"
 
 MenuItem::MenuItem(sdlx::Font &font, const std::string &name, const std::string &type, const std::string &text, const std::string &value) : 
 	name(name), type(type), 
@@ -64,8 +65,13 @@ void MenuItem::render() {
 			if (r == 0 && g == 0 && b == 0) {
 				r = _bgcolor.r; g = _bgcolor.g; b = _bgcolor.b;
 			}
-			if (a == 0) {
-				r = _bgcolor.r; g = _bgcolor.g; b = _bgcolor.b; a = 255;
+			if (a < 255) {
+				int ab = (255 - a);
+				//r = _bgcolor.r; g = _bgcolor.g; b = _bgcolor.b; a = 255;
+				r = math::min(255, ((ab * _bgcolor.r) + (int)a * r) / 255);
+				g = math::min(255, ((ab * _bgcolor.g) + (int)a * g) / 255);
+				b = math::min(255, ((ab * _bgcolor.b) + (int)a * b) / 255);
+				a = 255;
 			}
 			//LOG_DEBUG(("%02x %02x %02x %02x", a, r, g, b));
 			c = _inversed.mapRGBA(r, g, b, a);
