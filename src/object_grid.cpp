@@ -23,8 +23,12 @@ void Grid::collide(std::set<int> &objects, const GridMatrix &grid, const v2<int>
 	for(int y = math::max(0, start.y); y <= math::min((int)grid.size() - 1, end.y); ++y) 
 		for(int x = math::max(0, start.x); x <= math::min((int)grid[y].size() - 1, end.x); ++x) {
 			const IDSet &set = grid[y][x];
-			std::set_union(objects.begin(), objects.end(), set.begin(), set.end(), 
-				std::insert_iterator<std::set<int> > (objects, objects.begin()));
+			//std::set_union(objects.begin(), objects.end(), set.begin(), set.end(), 
+			//	std::insert_iterator<std::set<int> > (objects, objects.begin()));
+			//can cause infinite recursion under win32 :(
+			for(IDSet::const_iterator i = set.begin(); i != set.end(); ++i) {
+				objects.insert(*i);
+			}
 		}	
 }
 
