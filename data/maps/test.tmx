@@ -9,16 +9,19 @@
   <property name="object:zombie:zombie:3" value="619,968"/>
   <property name="object:zombie:zombie:2" value="782,896"/>
   <property name="object:zombie:zombie:1" value="700,929"/>
-  <property name="spawn:3" value="474,952"/>
   <property name="object:watchtower-with-machinegunner:watchtower:100" value="@0,13"/>
-  <property name="spawn:2" value="454,91"/>
+  <property name="spawn:3" value="474,952"/>
   <property name="object:smoke-missiles-item:smoke-missiles-item:1" value="@0,3"/>
+  <property name="spawn:2" value="454,91"/>
  </properties>
  <tileset name="Untitled" firstgid="1" tilewidth="64" tileheight="64">
   <image source="../tiles/terrains_tileset.png"/>
  </tileset>
  <tileset name="animated" firstgid="171" tilewidth="64" tileheight="64">
   <image source="../tiles/water.png"/>
+ </tileset>
+ <tileset name="animation" firstgid="191" tilewidth="64" tileheight="64">
+  <image source="../tiles/animated_tileset.png"/>
  </tileset>
  <layer name="Layer 1" width="16" height="16">
   <data encoding="base64" compression="gzip">
@@ -27,16 +30,14 @@
   <tileproperties/>
  </layer>
  <layer name="Layer 2" width="16" height="16">
-  <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAFvNwMCwBohXk0mvBeJ1FNDk2jtq/6j9o/ZTbj8ALyMAiAAEAAA=
-  </data>
-  
   <properties>
-   <property name="animation-frame-size" value="4"/>
    <property name="animation-frames" value="5"/>
    <property name="animation-speed" value="10"/>
-  </properties>  
-  
+   <property name="animation-frame-size" value="20"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAANvPwMBwAIj3k0mfBOJTFNDk2jtq/6j9o/ZTbj8AEEHJSAAEAAA=
+  </data>
   <tileproperties/>
  </layer>
  <layer name="Layer 0" width="16" height="16">
