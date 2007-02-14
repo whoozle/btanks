@@ -33,7 +33,7 @@
   
   <properties>
    <property name="animation-frame-size" value="4"/>
-   <property name="animation-frames" value="10"/>
+   <property name="animation-frames" value="5"/>
    <property name="animation-speed" value="10"/>
   </properties>  
   
