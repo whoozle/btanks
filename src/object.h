@@ -170,7 +170,7 @@ protected:
 
 	void limitRotation(const float dt, const float speed, const bool rotate_even_stopped, const bool allow_backward);
 	
-	void checkSurface();
+	void checkSurface() const;
 	
 	virtual const bool skipRendering() const;
 	
@@ -200,10 +200,13 @@ private:
 		virtual void deserialize(const mrt::Serializator &s);
 	};
 	
+	void checkAnimation() const;
 	
-	const AnimationModel *_model;
-	std::string _model_name;
-	const sdlx::Surface *_surface;
+	mutable const Animation *_animation;
+	mutable const AnimationModel *_model;
+	
+	mutable const sdlx::Surface *_surface;
+	
 	sdlx::Surface *_fadeout_surface;
 	int _fadeout_alpha;
 	const sdlx::CollisionMap *_cmap;

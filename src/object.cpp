@@ -52,7 +52,7 @@ Object * Object::clone() const {
 Object::Object(const std::string &classname) : 
 	BaseObject(classname), 
 	registered_name(), animation(), fadeout_time(0),  
-	_model(0), _model_name(), 
+	_animation(0), _model(0), 
 	_surface(0), _fadeout_surface(0), _fadeout_alpha(0), _cmap(0), 
 	_events(), _effects(), 
 	_tw(0), _th(0), _direction_idx(0), _directions_n(8), _pos(0), 
@@ -68,7 +68,7 @@ Object::Object(const std::string &classname) :
 Object::~Object() { delete _fadeout_surface; }
 
 void Object::init(const Animation *a) {
-	_model_name = a->model;
+	_animation = a;
 	_model = ResourceManager->getAnimationModel(a->model);
 	
 	_surface = ResourceManager->getSurface(a->surface);
@@ -145,9 +145,10 @@ void Object::quantizeVelocity() {
 void Object::play(const std::string &id, const bool repeat) {
 	if (_events.empty())
 		_pos = 0;
+	checkAnimation();
 	const Pose *pose = _model->getPose(id);
 	if (pose == NULL) {
-		LOG_WARN(("animation model %s does not have pose %s", _model_name.c_str(), id.c_str()));
+		LOG_WARN(("animation model %s does not have pose %s", _animation->model.c_str(), id.c_str()));
 		return;
 	}
 
@@ -155,9 +156,11 @@ void Object::play(const std::string &id, const bool repeat) {
 }
 
 void Object::playNow(const std::string &id) {
+	checkAnimation();
+
 	const Pose *pose = _model->getPose(id);
 	if (pose == NULL) {
-		LOG_WARN(("animation model %s does not have pose %s", _model_name.c_str(), id.c_str()));
+		LOG_WARN(("animation model %s does not have pose %s", _animation->model.c_str(), id.c_str()));
 		return;
 	}
 	_pos = 0;
@@ -224,11 +227,12 @@ void Object::tick(const float dt) {
 	//LOG_DEBUG(("%p: event: %s, pos = %f", (void *)this, event.name.c_str(), _pos));
 	const Pose * pose = event.cached_pose;
 	if (pose == NULL) {
+		checkAnimation();
 		event.cached_pose = pose = _model->getPose(event.name);
 	}
 	
 	if (pose == NULL) {
-		LOG_WARN(("animation model %s does not have pose %s", _model_name.c_str(), event.name.c_str()));
+		LOG_WARN(("animation model %s does not have pose %s", _animation->model.c_str(), event.name.c_str()));
 		cancel();
 		return;
 	}
@@ -245,7 +249,7 @@ void Object::tick(const float dt) {
 	_pos += dt * pose->speed;
 	int n = pose->frames.size();
 	if (n == 0) {
-		LOG_WARN(("animation model %s, pose %s doesnt contain any frames", _model_name.c_str(), event.name.c_str()));
+		LOG_WARN(("animation model %s, pose %s doesnt contain any frames", _animation->model.c_str(), event.name.c_str()));
 		return;
 	}
 		
@@ -273,6 +277,7 @@ const bool Object::getRenderRect(sdlx::Rect &src) const {
 	const Event & event = _events.front();
 	const Pose * pose = event.cached_pose;
 	if (pose == NULL) {
+		checkAnimation();
 		event.cached_pose = pose = _model->getPose(event.name);
 	}
 
@@ -300,7 +305,7 @@ const bool Object::getRenderRect(sdlx::Rect &src) const {
 	frame = pose->frames[frame];
 	
 	
-	const_cast<Object*>(this)->checkSurface();
+	checkSurface();
 	
 	if (frame * _th >= _surface->getHeight()) {
 		LOG_WARN(("%s:%s event '%s' tile row %d is out of range.", registered_name.c_str(), animation.c_str(), _events.front().name.c_str(), frame));
@@ -437,7 +442,6 @@ void Object::serialize(mrt::Serializator &s) const {
 	}
 
 	
-	s.add(_model_name);
 	s.add(_tw);
 	s.add(_th);
 	s.add(_direction_idx);
@@ -492,7 +496,6 @@ void Object::deserialize(const mrt::Serializator &s) {
 		_effects[name] = duration;
 	}
 	
-	s.get(_model_name);
 	s.get(_tw);
 	s.get(_th);
 	s.get(_direction_idx);
@@ -524,8 +527,7 @@ void Object::deserialize(const mrt::Serializator &s) {
 	}
 	_blinking.deserialize(s);
 
-	//additional initialization
-	_model = ResourceManager->getAnimationModel(_model_name);
+	checkAnimation();
 }
 
 void Object::emit(const std::string &event, Object * emitter) {
@@ -943,10 +945,19 @@ const bool Object::getTargetPosition(v2<float> &relative_position, const v2<floa
 	return found;
 }
 
-void Object::checkSurface() {
+void Object::checkAnimation() const {
+	if (_animation && _model)
+		return;
+	_animation = ResourceManager.get_const()->getAnimation(animation);
+	_model = ResourceManager->getAnimationModel(_animation->model);
+}
+
+
+void Object::checkSurface() const {
 	if (_surface && _cmap) 
 		return;
-	ResourceManager->checkSurface(animation, _surface, _cmap);
+	Object *nc_this = const_cast<Object *>(this);
+	ResourceManager->checkSurface(animation, nc_this->_surface, nc_this->_cmap);
 	assert(_surface != NULL);
 	assert(_cmap != NULL);
 }
@@ -1215,8 +1226,7 @@ void Object::addDamage(Object *from, const int d, const bool emitDeath) {
 }
 
 const sdlx::Surface * Object::getSurface() const {
-	Object *nc_this = const_cast<Object *>(this);
-	nc_this->checkSurface();
+	checkSurface();
 	return _surface;
 }
 
@@ -1228,6 +1238,7 @@ const float Object::getStateProgress() const {
 	//LOG_DEBUG(("%p: event: %s, pos = %f", (void *)this, event.name.c_str(), _pos));
 	const Pose * pose = event.cached_pose;
 	if (pose == NULL) { 
+		checkAnimation();
 		event.cached_pose = pose = _model->getPose(event.name);
 	}
 	
