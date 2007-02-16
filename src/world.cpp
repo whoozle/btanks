@@ -1362,6 +1362,8 @@ const Object * IWorld::findTarget(const Object *src, const std::set<std::string>
 		std::string mod_type = o->classname;
 		if (!o->getType().empty()) 
 			mod_type += ":" + o->getType();
+		if (o->isEffectActive("invulnerability"))
+			continue;
 		
 		if (o->classname == "missiles" || o->classname == "mines") {
 			if (src->has("mod")) {
