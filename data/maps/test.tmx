@@ -17,9 +17,6 @@
  <tileset name="Untitled" firstgid="1" tilewidth="64" tileheight="64">
   <image source="../tiles/terrains_tileset.png"/>
  </tileset>
- <tileset name="animated" firstgid="171" tilewidth="64" tileheight="64">
-  <image source="../tiles/water.png"/>
- </tileset>
  <tileset name="animation" firstgid="191" tilewidth="64" tileheight="64">
   <image source="../tiles/animated_tileset.png"/>
  </tileset>
