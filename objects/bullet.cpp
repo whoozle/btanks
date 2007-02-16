@@ -122,6 +122,14 @@ void Bullet::emit(const std::string &event, Object * emitter) {
 			setDirection(dir);
 			_velocity.fromDirection(dir, dirs);
 			return;
+		} else if (event == "collision" && ( 
+			(_type == "ricochet" && emitter != NULL ) ||
+			(_type == "dispersion" && emitter == NULL)
+			)
+		) {
+			GET_CONFIG_VALUE("objects.explosion-downwards-z-override", int, edzo, 180)
+			int z = (_velocity.y >= 0) ? edzo : 0;
+			spawn("explosion", "explosion", dpos, v2<float>::empty, z);			
 		}
 	
 		Object::emit("death", emitter);
