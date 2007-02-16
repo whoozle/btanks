@@ -33,16 +33,16 @@ void Box::render(sdlx::Surface &surface, const int x0, const int y0) {
 	assert(_surface != NULL);
 	
 	sdlx::Rect ul(0,	0,	x1,								y1);
-	sdlx::Rect u (x1,	0,	x2 - x1 + 1, 					y1);
-	sdlx::Rect ur(x2,	0,	_surface->getWidth() - x2 + 1,	y1);
+	sdlx::Rect u (x1,	0,	x2 - x1,	 					y1);
+	sdlx::Rect ur(x2,	0,	_surface->getWidth() - x2,		y1);
 
-	sdlx::Rect cl(0,	y1, x1, 							y2 - y1 + 1);
-	sdlx::Rect c (x1,	y1, x2 - x1 + 1, 					y2 - y1 + 1);
-	sdlx::Rect cr(x2,	y1, _surface->getWidth() - x2 + 1, 	y2 - y1 + 1);
+	sdlx::Rect cl(0,	y1, x1, 							y2 - y1);
+	sdlx::Rect c (x1,	y1, x2 - x1,	 					y2 - y1);
+	sdlx::Rect cr(x2,	y1, _surface->getWidth() - x2, 		y2 - y1);
 
-	sdlx::Rect dl(0,	y2, x1, 							_surface->getHeight() - y2 + 1);
-	sdlx::Rect d (x1,	y2, x2 - x1 + 1, 					_surface->getHeight() - y2 + 1);
-	sdlx::Rect dr(x2,	y2, _surface->getWidth() - x2 + 1, 	_surface->getHeight() - y2 + 1);
+	sdlx::Rect dl(0,	y2, x1, 							_surface->getHeight() - y2);
+	sdlx::Rect d (x1,	y2, x2 - x1,	 					_surface->getHeight() - y2);
+	sdlx::Rect dr(x2,	y2, _surface->getWidth() - x2,	 	_surface->getHeight() - y2);
 	
 	int y = y0;
 	
