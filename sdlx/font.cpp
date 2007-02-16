@@ -132,7 +132,10 @@ const int Font::render(sdlx::Surface *window, const int x, const int y, const st
 		}
 		
 		int x1 = 0, x2 = fw - 1;
-		const int spacing = fw / 16;
+		const int spacing = fw / 8 - 1;
+		if (spacing > 4) 
+			spacing = 4;
+		//const int spacing = 2;
 		
 		if (c < (int)_width_map.size()) {
 			x1 = _width_map[c].first;
