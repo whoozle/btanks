@@ -266,8 +266,8 @@ const sdlx::Surface *IResourceManager::loadSurface(const std::string &id) {
 }
 
 const sdlx::CollisionMap *IResourceManager::getCollisionMap(const std::string &id) const  {
-	CollisionMap::const_iterator i;
-	if ((i = _cmaps.find(id)) == _cmaps.end()) 
+	CollisionMap::const_iterator i = _cmaps.find(id);
+	if (i == _cmaps.end()) 
 		throw_ex(("could not find collision map with id '%s'", id.c_str()));
 	return i->second;
 }
