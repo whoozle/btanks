@@ -93,7 +93,7 @@ void IGame::init(const int argc, char *argv[]) {
 	{
 		//place for upgrade.
 		int revision;
-		Config->get("engine.revision", revision, 1638); //this key first time appears in 1638 
+		Config->get("engine.revision", revision, getRevision()); 
 		if (revision < 1639) {
 			int pfs;
 			Config->get("engine.pathfinding-slice", pfs, 1);
@@ -161,6 +161,8 @@ void IGame::init(const int argc, char *argv[]) {
 		}
 	}
 	
+	Console->init();
+	Console->on_command.connect(sigc::mem_fun(this, &IGame::onConsole));
 
 	if (_main_menu == NULL) {
 		LOG_DEBUG(("initializing menus..."));		
@@ -178,7 +180,6 @@ void IGame::init(const int argc, char *argv[]) {
 	_hud = new Hud(_window.getWidth(), _window.getHeight());
 	_big_font.load(data_dir + "/font/big.png", sdlx::Font::Ascii);
 	
-	Console->on_command.connect(sigc::mem_fun(this, &IGame::onConsole));
 
 	LOG_DEBUG(("installing callbacks..."));
 	key_signal.connect(sigc::mem_fun(this, &IGame::onKey));
@@ -225,7 +226,6 @@ void IGame::init(const int argc, char *argv[]) {
 		onMenu("m-join", address);
 		_main_menu->setActive(false);
 	}
-	
 }
 
 bool IGame::onKey(const SDL_keysym key) {

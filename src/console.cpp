@@ -71,30 +71,39 @@ bool IConsole::onKey(const SDL_keysym sym) {
 	return true;
 }
 
-IConsole::IConsole() : _active(false), _pos(0) {
+IConsole::IConsole() : _active(false), _pos(0) {}
+
+void IConsole::init() {
+	GET_CONFIG_VALUE("engine.enable-console", bool, ec, false);
+	if (!ec) {
+		_active = false; // if engine.enable-console set to false, console wont disappear
+		return;
+	}
+
 	sdlx::TTF::init();
 	LOG_DEBUG(("loading font..."));
 	GET_CONFIG_VALUE("engine.data-directory", std::string, data_dir, "data");
 	_font.open(data_dir + "/font/Verdana.ttf", 12);
 
 	LOG_DEBUG(("loading background..."));
-	_background.loadImage(data_dir + "/tiles/console_background.png");
+	_background.init("menu/background_box.png", 407, 240);
 	
 	_buffer.push_back(Buffer::value_type(mrt::formatString("BattleTanks. version: %s", getVersion().c_str()), NULL));
 	_buffer.push_back(Buffer::value_type(std::string(">"), NULL));
+	LOG_DEBUG(("connecting signal..."));
 	Game->key_signal.connect(sigc::mem_fun(this, &IConsole::onKey));	
 }
 
 void IConsole::render(sdlx::Surface &window) {
 	if (!_active)
 		return;
-	int w = _background.getWidth(), h =  _background.getHeight();
+	int w = _background.w, h =  _background.h;
 	int x = window.getWidth() - w, y = window.getHeight() - h;
 
 	const int y_margin = 8;
 	const int x_margin = 8;
 	
-	window.copyFrom(_background, x, y);
+	_background.render(window, x, y);
 	window.setClipRect(sdlx::Rect(x, y + y_margin, w, h - 2 * y_margin));
 	int ch = 0;
 	for(Buffer::iterator i = _buffer.begin(); i != _buffer.end(); ++i) {

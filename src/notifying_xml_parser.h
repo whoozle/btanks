@@ -5,7 +5,7 @@
 #include <vector>
 #include <sigc++/sigc++.h>
 
-class NotifyingXMLParser : public mrt::XMLParser {
+class NotifyingXMLParser : public sigc::trackable, public mrt::XMLParser {
 public: 
 	NotifyingXMLParser();
 	sigc::signal1<void, const int> reset_progress;

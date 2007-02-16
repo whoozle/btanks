@@ -46,7 +46,7 @@ class Credits;
 class Cheater;
 class MainMenu;
 
-class IGame : public Window {
+class IGame : public sigc::trackable, public Window {
 
 class marshaller {
 public: 

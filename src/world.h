@@ -24,7 +24,6 @@
 
 #include <set>
 #include <map>
-#include <sigc++/sigc++.h>
 
 #include "math/v2.h"
 #include "math/matrix.h"

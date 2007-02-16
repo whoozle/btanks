@@ -31,7 +31,7 @@
 
 class MenuItem;
 
-class MainMenu {
+class MainMenu : public sigc::trackable {
 public:
 	MainMenu();
 

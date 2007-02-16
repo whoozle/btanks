@@ -148,7 +148,7 @@ bool MainMenu::onKey(const SDL_keysym sym) {
 				_active_item = _items[_active_menu].size() - 1;
 			else --_active_item;
 			_items[_active_menu][_active_item]->onFocus();
-			break;
+			return true;
 
 		case SDLK_DOWN:
 			_items[_active_menu][_active_item]->onLeave();
@@ -156,7 +156,7 @@ bool MainMenu::onKey(const SDL_keysym sym) {
 				_active_item = 0;
 			else ++_active_item;
 			_items[_active_menu][_active_item]->onFocus();
-			break;
+			return true;
 
 		case SDLK_RETURN: {
 				
@@ -182,14 +182,14 @@ bool MainMenu::onKey(const SDL_keysym sym) {
 					item->onClick();
 				} else throw_ex(("unknown menu item type: %s", item->type.c_str()));
 			}
-			break;
+			return true;
 		case SDLK_ESCAPE: 
 			return false;
 		default: 
 			break;
 	}
 	//LOG_DEBUG(("active item = %u", _active_item));
-	return true;
+	return false;
 }
 
 

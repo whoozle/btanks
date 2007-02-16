@@ -1,14 +1,14 @@
 #ifndef __CONSOLE_H__
 #define __CONSOLE_H__
 
-#include "sdlx/surface.h"
 #include "sdlx/ttf.h"
 #include "mrt/singleton.h"
 #include <deque>
 #include <string>
 #include <sigc++/sigc++.h>
+#include "menu/box.h"
 
-class IConsole {
+class IConsole : public sigc::trackable {
 class marshaler {
 public: 
 	typedef std::string result_type;
@@ -26,6 +26,8 @@ public:
 };
 public: 
 	DECLARE_SINGLETON(IConsole);
+	
+	void init();
 
 	sigc::signal2<const std::string, const std::string &, const std::string &, marshaler> on_command;
 	
@@ -43,7 +45,7 @@ private:
 
 	int _pos;
 	sdlx::TTF _font;
-	sdlx::Surface _background, _foreground;
+	Box _background;
 };
 
 SINGLETON(Console, IConsole);
