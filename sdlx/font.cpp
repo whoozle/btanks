@@ -64,7 +64,7 @@ void Font::load(const std::string &file, const Type type, const bool alpha) {
 				Uint32 p = _surface->getPixel(x1 + c * w, y);
 				Uint8 r, g, b, a;
 				_surface->getRGBA(p, r, g, b, a);
-				if (a != 0) {
+				if (a > 128) {
 					//LOG_DEBUG(("line %d:%d, break on %d %d %d %d", y, x1, r, g, b, a));
 					break;
 				}
@@ -74,7 +74,7 @@ void Font::load(const std::string &file, const Type type, const bool alpha) {
 				Uint32 p = _surface->getPixel(x2 + c * w, y);
 				Uint8 r, g, b, a;
 				_surface->getRGBA(p, r, g, b, a);
-				if (a != 0) {
+				if (a > 128) {
 					//LOG_DEBUG(("line %d:%d, break on %d %d %d %d", y, x2, r, g, b, a));
 					break;
 				}
@@ -132,7 +132,7 @@ const int Font::render(sdlx::Surface *window, const int x, const int y, const st
 		}
 		
 		int x1 = 0, x2 = fw - 1;
-		//const int spacing = 1;
+		const int spacing = 1;
 		
 		if (c < (int)_width_map.size()) {
 			x1 = _width_map[c].first;
@@ -152,7 +152,7 @@ const int Font::render(sdlx::Surface *window, const int x, const int y, const st
 		
 			window->copyFrom(*_surface, src, x + w, y);
 		}
-		//w += spacing;
+		w += spacing;
 		
 		w += x2 - x1 + 1;
 	}
