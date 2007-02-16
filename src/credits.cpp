@@ -76,12 +76,14 @@ Credits::Credits() : _w(0), _h(0) {
 
 	//copy-paste ninja was here ;)
 	for(std::vector<std::string>::const_iterator i = lines.begin(); i != lines.end(); ++i) {
-		if (i->size() * fh > _w)
-			_w = i->size() * fh;
+		unsigned w = _font.render(NULL, 0, 0, *i);
+		if (w > _w)
+			_w = w;
 	}
 	for(std::vector<std::string>::const_iterator i = lines2.begin(); i != lines2.end(); ++i) {
-		if (i->size() * mfh > _w)
-			_w = i->size() * mfh;
+		unsigned w = _medium_font.render(NULL, 0, 0, *i);
+		if (w > _w)
+			_w = w;
 	}
 	_surface.createRGB(_w, _h, 24);
 	_surface.convertAlpha();
@@ -90,11 +92,13 @@ Credits::Credits() : _w(0), _h(0) {
 	
 	for(size_t i = 0; i < lines.size(); ++i) {	
 		const std::string &str = lines[i];
-		_font.render(_surface, (_w - str.size() * fh) / 2, i * fh, str);
+		int w = _font.render(NULL, 0, 0, str);
+		_font.render(_surface, (_w - w) / 2, i * fh, str);
 	}
 	for(size_t i = 0; i < lines2.size(); ++i) {
 		const std::string &str = lines2[i];
-		_medium_font.render(_surface, (_w - str.size() * mfh) / 2, lines.size() * fh + i * mfh, str);
+		int w = _medium_font.render(NULL, 0, 0, str);
+		_medium_font.render(_surface, (_w - w) / 2, lines.size() * fh + i * mfh, str);
 	}
 	//copy-paste ninjas have done its evil deed and vanishes.
 	_velocity.x = 2;
