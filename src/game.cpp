@@ -57,10 +57,11 @@
 #include "console.h"
 
 #include "math/v3.h"
+#include "menu/menu.h"
 
 IMPLEMENT_SINGLETON(Game, IGame)
 
-IGame::IGame() : 
+IGame::IGame() : _main_menu(NULL),
 _check_items(0.5, true),  _autojoin(false), _shake(0), _show_radar(true) , _credits(NULL), _cheater(NULL), _state_timer(false){}
 IGame::~IGame() {}
 
@@ -161,8 +162,10 @@ void IGame::init(const int argc, char *argv[]) {
 	}
 	
 
-	LOG_DEBUG(("initializing menus..."));		
-	_main_menu.init(_window.getWidth(), _window.getHeight());	
+	if (_main_menu == NULL) {
+		LOG_DEBUG(("initializing menus..."));		
+		_main_menu = new MainMenu;
+	}
 
 	_paused = false;
 	_running = true;
@@ -179,7 +182,7 @@ void IGame::init(const int argc, char *argv[]) {
 
 	LOG_DEBUG(("installing callbacks..."));
 	key_signal.connect(sigc::mem_fun(this, &IGame::onKey));
-	_main_menu.menu_signal.connect(sigc::mem_fun(this, &IGame::onMenu));
+	_main_menu->menu_signal.connect(sigc::mem_fun(this, &IGame::onMenu));
 	
 	Map->reset_progress.connect(sigc::mem_fun(this, &IGame::resetLoadingBar));
 	Map->notify_progress.connect(sigc::mem_fun(this, &IGame::notifyLoadingBar));
@@ -220,7 +223,7 @@ void IGame::init(const int argc, char *argv[]) {
 */
 	if (_autojoin) {
 		onMenu("m-join", address);
-		_main_menu.setActive(false);
+		_main_menu->setActive(false);
 	}
 	
 }
@@ -228,16 +231,16 @@ void IGame::init(const int argc, char *argv[]) {
 bool IGame::onKey(const SDL_keysym key) {
 	if (key.sym == SDLK_ESCAPE) {
 		if (!_map_loaded) {
-			_main_menu.setActive(true);
+			_main_menu->setActive(true);
 			return true;
 		}
 		
 		LOG_DEBUG(("escape hit, paused: %s", _paused?"true":"false"));
-		_main_menu.setActive(!_main_menu.isActive());
+		_main_menu->setActive(!_main_menu->isActive());
 		if (PlayerManager->isServer() || PlayerManager->isClient()) {
 			_paused = false;
 		} else {
-			_paused = _main_menu.isActive();
+			_paused = _main_menu->isActive();
 		}
 		return true;
 	}
@@ -253,7 +256,7 @@ void IGame::onMenu(const std::string &name, const std::string &value) {
 		LOG_DEBUG(("start single player as '%s' requested", vehicle.c_str()));
 
 		clear();
-		_main_menu.reset();
+		_main_menu->reset();
 		_cheater = new Cheater;
 		
 		throw_ex(("reimplement me"));
@@ -261,7 +264,7 @@ void IGame::onMenu(const std::string &name, const std::string &value) {
 	} else if (name == "s-start") {
 		LOG_DEBUG(("start split screen game requested"));
 		clear();
-		_main_menu.reset();
+		_main_menu->reset();
 		std::string vehicle1, vehicle2, animation1, animation2;
 		Config->get("menu.default-vehicle-1", vehicle1, "launcher");
 		Config->get("menu.default-vehicle-2", vehicle2, "launcher");
@@ -320,7 +323,7 @@ void IGame::onMenu(const std::string &name, const std::string &value) {
 			PlayerManager->startClient(value);
 		} CATCH("startClient", { displayMessage("CONNECTION FAILED", 1); ok = false; });
 		
-		_main_menu.setActive(!ok);
+		_main_menu->setActive(!ok);
 	} else if (name == "credits" && !PlayerManager->isServer()) {
 		LOG_DEBUG(("show credits."));
 		_credits = new Credits;
@@ -358,7 +361,7 @@ static void coord2v(T &pos, const std::string &str) {
 
 
 void IGame::loadMap(const std::string &name, const bool spawn_objects) {
-	_main_menu.setActive(false);
+	_main_menu->setActive(false);
 	IMap &map = *IMap::get_instance();
 	map.load(name);
 
@@ -678,7 +681,7 @@ void IGame::run() {
 			}
 		}
 
-		_main_menu.render(_window);
+		_main_menu->render(_window);
 		
 		if (!_state.empty()) {
 			int x = (_window.getWidth() - _big_font.getHeight() /*+- same ;)*/ * _state.size()) / 2;
@@ -726,7 +729,7 @@ void IGame::deinit() {
 	_map_loaded = false;
 	Window::deinit();
 	
-	_main_menu.deinit();
+	_main_menu->deinit();
 
 	delete _credits;
 	_credits = NULL;	
@@ -757,7 +760,7 @@ void IGame::clear() {
 	delete _cheater;
 	_cheater = NULL;
 
-	_main_menu.setActive(true);
+	_main_menu->setActive(true);
 }
 
 

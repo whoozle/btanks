@@ -21,10 +21,10 @@
 
 #include "mrt/singleton.h"
 #include <string>
+#include <map>
 #include <vector>
 #include <sigc++/sigc++.h>
 
-#include "menu/menu.h"
 #include "math/v2.h"
 #include "player_state.h"
 #include "alarm.h"
@@ -44,6 +44,7 @@ class PlayerSlot;
 class Hud;
 class Credits;
 class Cheater;
+class MainMenu;
 
 class IGame : public Window {
 
@@ -113,7 +114,7 @@ private:
 
 	bool _running, _paused, _map_loaded, _game_over;
 
-	MainMenu _main_menu;
+	MainMenu *_main_menu;
 	
 	struct Item {
 		int id;
