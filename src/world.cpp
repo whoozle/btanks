@@ -693,6 +693,7 @@ TRY {
 			o.emit("collision", NULL); //fixme: emit collisions with map from map::getImpassability
 			o._position -= dpos * 4;
 		} else map_im = 0;
+		obj_im = 0; //collision handler was already called.
 	}
 } CATCH("tick(damaging map)", throw;)	
 
