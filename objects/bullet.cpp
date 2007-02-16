@@ -124,7 +124,7 @@ void Bullet::emit(const std::string &event, Object * emitter) {
 			return;
 		} else if (event == "collision" && ( 
 			(_type == "ricochet" && emitter != NULL ) ||
-			(_type == "dispersion" && emitter == NULL)
+			(_type == "dispersion")
 			)
 		) {
 			GET_CONFIG_VALUE("objects.explosion-downwards-z-override", int, edzo, 180)
