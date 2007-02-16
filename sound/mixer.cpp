@@ -180,7 +180,7 @@ void IMixer::playSample(const Object *o, const std::string &name, const bool loo
 	if (_nosound || name.empty())
 		return;
 	const int id = o->getID();
-	LOG_DEBUG(("object: %d requests %s (%s)", id, name.c_str(), loop?"loop":"single"));
+	//LOG_DEBUG(("object: %d requests %s (%s)", id, name.c_str(), loop?"loop":"single"));
 	Sounds::const_iterator i = _sounds.find(name);
 	if (i == _sounds.end()) {
 		LOG_WARN(("sound %s was not loaded. skipped.", name.c_str()));
