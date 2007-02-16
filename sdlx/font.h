@@ -21,6 +21,7 @@
 
 
 #include <string>
+#include <vector>
 
 namespace sdlx {
 
@@ -33,6 +34,8 @@ public:
 	
 	void load(const std::string &file, const Type type, const bool alpha = true);
 	const int getHeight() const;
+	const int getWidth() const; //fixme! returns height ;)
+	const int render(sdlx::Surface *window, const int x, const int y, const std::string &str) const;
 	const int render(sdlx::Surface &window, const int x, const int y, const std::string &str) const;
 
 	//frees window!
@@ -44,6 +47,7 @@ private:
 	const Font& operator=(const Font &);
 	Type _type;
 	sdlx::Surface *_surface;
+	std::vector<std::pair<int, int> > _width_map;
 };
 
 }
