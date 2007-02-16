@@ -123,6 +123,8 @@ const int Font::render(sdlx::Surface *window, const int x, const int y, const st
 				continue;
 		break;
 		case AZ09:
+			if (c == ' ')
+				break;
 			c -= '0';
 			if (c > 9)
 				c -= 7;
@@ -132,10 +134,16 @@ const int Font::render(sdlx::Surface *window, const int x, const int y, const st
 		}
 		
 		int x1 = 0, x2 = fw - 1;
-		const int spacing = fw / 8 - 1;
+		int spacing = fw / 8 - 1;
 		if (spacing > 4) 
 			spacing = 4;
 		//const int spacing = 2;
+
+		if (_type == AZ09 && c == ' ') {
+			w += fw / 3 + spacing;
+			continue;
+		}
+			
 		
 		if (c < (int)_width_map.size()) {
 			x1 = _width_map[c].first;
