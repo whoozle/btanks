@@ -239,10 +239,30 @@ AnimationModel *IResourceManager::getAnimationModel(const std::string &id) {
 }
 
 const sdlx::Surface *IResourceManager::getSurface(const std::string &id) const  {
-	SurfaceMap::const_iterator i;
-	if ((i = _surfaces.find(id)) == _surfaces.end()) 
+	SurfaceMap::const_iterator i = _surfaces.find(id);
+	if (i == _surfaces.end()) 
 		throw_ex(("could not find surface with id '%s'", id.c_str()));
 	return i->second;
+}
+
+const sdlx::Surface *IResourceManager::loadSurface(const std::string &id) {
+	SurfaceMap::iterator i = _surfaces.find(id);
+	if (i != _surfaces.end() && i->second != NULL)
+		return i->second;
+	
+	GET_CONFIG_VALUE("engine.data-directory", std::string, data_dir, "data");
+
+	const std::string fname = data_dir + "/tiles/" + id;
+	sdlx::Surface *s = NULL;
+		TRY {
+			s = new sdlx::Surface;
+			s->loadImage(fname);
+			s->convertAlpha();
+			s->convertToHardware();
+			LOG_DEBUG(("loaded surface '%s' from '%s'", id.c_str(), fname.c_str()));
+			_surfaces[id] = s;
+		} CATCH("loading surface", { delete s; throw; });
+	return s;
 }
 
 const sdlx::CollisionMap *IResourceManager::getCollisionMap(const std::string &id) const  {

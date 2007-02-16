@@ -55,6 +55,7 @@ public:
 	const Animation *getAnimation(const std::string &id) const;
 	const bool hasAnimation(const std::string &id) const;
 
+	const sdlx::Surface *loadSurface(const std::string &id);
 	const sdlx::Surface *getSurface(const std::string &id) const;
 	const sdlx::CollisionMap *getCollisionMap(const std::string &id) const;
 	
