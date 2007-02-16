@@ -26,15 +26,17 @@
 #include <map>
 #include <string>
 #include <deque>
-#include "sdlx/surface.h"
+#include "box.h"
+#include "math/v2.h"
 
 class MenuItem;
 
 class MainMenu {
 public:
+	MainMenu();
+
 	sigc::signal2<void, const std::string &, const std::string &> menu_signal;
 
-	void init(const int w, const int h);
 	void setActive(const bool a);
 	const bool isActive() const { return _active; }
 	void deinit();
@@ -50,7 +52,6 @@ private:
 	
 	void recalculateSizes();
 
-	int _screen_w, _screen_h;
 	bool _active;
 	sdlx::Font _font;
 	
@@ -63,9 +64,9 @@ private:
 	
 	typedef std::pair<size_t, std::string> MenuID;
 	std::deque<MenuID> _menu_path;
-	sdlx::Rect _menu_size;
+	v2<int> _menu_size;	
 	
-	sdlx::Surface _background;
+	Box _background;
 };
 
 

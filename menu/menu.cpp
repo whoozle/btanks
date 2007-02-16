@@ -31,11 +31,7 @@
 #include "mrt/exception.h"
 #include "config.h"
 
-void MainMenu::init(const int w, const int h) {
-	deinit();
-
-	_screen_w = w;
-	_screen_h = h;
+MainMenu::MainMenu() : _active_item(0) {
 	_active = true;
 	
 	LOG_DEBUG(("loading font..."));
@@ -43,7 +39,7 @@ void MainMenu::init(const int w, const int h) {
 	_font.load(data_dir + "/font/big.png", sdlx::Font::Ascii, false);
 
 	LOG_DEBUG(("loading background..."));
-	_background.loadImage(data_dir + "/tiles/menu_background.png");
+	_background.init("menu/background_box.png", 407, 338);
 	
 	LOG_DEBUG(("creating menu..."));
 	_active_item = 0;
@@ -107,16 +103,14 @@ const std::string MainMenu::getValue(const std::string &menu, const std::string 
 }
 
 void MainMenu::recalculateSizes() {
-	_menu_size.w = _menu_size.h = 0;
+	_menu_size.x = _menu_size.y = 0;
 	for(ItemList::const_iterator i = _items[_active_menu].begin(); i != _items[_active_menu].end(); ++i) {
 		int w, h;
 		(*i)->getSize(w, h);
-		if (w > _menu_size.w) 
-			_menu_size.w = w;
-		_menu_size.h += h + 10;
+		if (w > _menu_size.x) 
+			_menu_size.x = w;
+		_menu_size.y += h + 10;
 	}
-	_menu_size.x = (_screen_w - _menu_size.w) / 2;
-	_menu_size.y = (_screen_h - _menu_size.h) / 2;
 }
 
 void MainMenu::deinit() {
@@ -203,17 +197,18 @@ void MainMenu::render(sdlx::Surface &dst) {
 	if (!_active)
 		return;
 		
-	dst.copyFrom(_background, (dst.getWidth() - _background.getWidth()) / 2, (dst.getHeight() - _background.getHeight()) / 2);
+	int base_x = (dst.getWidth() - _background.w) / 2, base_y = (dst.getHeight() - _background.h) / 2;
+	_background.render(dst, base_x, base_y);
 	
-	int x = _menu_size.x;
-	int y = _menu_size.y;
+	int x = (dst.getWidth() - _menu_size.x) /2;
+	int y = (dst.getHeight() - _menu_size.y) / 2;
 	
 	const ItemList & items = _items[_active_menu];
 	size_t n = items.size();
 	for(size_t i = 0; i < n ;++i) {
 		int w,h;
 		items[i]->getSize(w, h);
-		items[i]->render(dst, x + (_menu_size.w - w) / 2, y);
+		items[i]->render(dst, x + (_menu_size.x - w) / 2, y);
 		y += h + 10;
 	}
 }
