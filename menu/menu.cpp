@@ -49,10 +49,10 @@ MainMenu::MainMenu() : _active_item(0) {
 #ifndef RELEASE
 	_items[""].push_back(new MenuItem(_font, "start-game", "submenu", "START GAME"));
 #endif
-	_items[""].push_back(new MenuItem(_font, "multiplayer", "submenu", "MULTIPLAYER"));
-#ifndef RELEASE
+	_items[""].push_back(new MenuItem(_font, "multiplayer", "submenu", "OLD MULTIPLAYER MENU"));
+	_items[""].push_back(new MenuItem(_font, "#start-server", "submenu", "START SERVER"));
+	_items[""].push_back(new MenuItem(_font, "#join-game", "submenu", "JOIN GAME"));
 	_items[""].push_back(new MenuItem(_font, "options", "submenu", "OPTIONS"));
-#endif
 	_items[""].push_back(new MenuItem(_font, "credits", "command", "CREDITS"));
 	_items[""].push_back(new MenuItem(_font, "quit", "command", "QUIT"));
 
@@ -122,6 +122,8 @@ bool MainMenu::onKey(const SDL_keysym sym) {
 	if (!_active)
 		return false;
 	
+	if (_items[_active_menu].empty())
+		throw_ex(("no menu '%s' found", _active_menu.c_str()));
 	MenuItem * item = _items[_active_menu][_active_item];
 	if (item->onKey(sym))
 		return true;
@@ -149,6 +151,8 @@ bool MainMenu::onKey(const SDL_keysym sym) {
 				const std::string &name = item->name;
 				if (item->type == "submenu") {
 					LOG_DEBUG(("entering submenu '%s'", name.c_str()));
+					if (_items[name].empty())
+						throw_ex(("no submenu %s found or it's empty", name.c_str()));
 					_menu_path.push_front(MenuID(_active_item, _active_menu));
 					_items[_active_menu][_active_item]->onLeave();
 					_active_menu = name;
