@@ -27,7 +27,7 @@ void UpperBox::render(sdlx::Surface &surface, const int x, const int y) {
 	if (_server) {
 		wt = _big.render(surface, x + 16, y + 16, "MODE");
 	}
-	_medium.render(surface, x + (w - wt - 32) / 2, y + font_dy, value);
+	_medium.render(surface, x + (w - wt - 32) / 2, y + 16 + font_dy, value);
 	
 	int line2_y = 46;
 	
