@@ -42,7 +42,6 @@ void Font::load(const std::string &file, const Type type, const bool alpha) {
 	_type = type;
 	_surface = new sdlx::Surface;
 	_surface->loadImage(file);
-	_surface->convertAlpha();
 	if (!alpha)
 		_surface->setAlpha(0, 0);
 	
