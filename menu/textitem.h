@@ -12,7 +12,6 @@ private:
 	std::string _config_name;
 	void finish();
 	bool _active;
-	sdlx::Color _old_bg;
 };
 
 

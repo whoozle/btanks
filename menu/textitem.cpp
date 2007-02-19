@@ -4,18 +4,15 @@
 #include "config.h"
 
 TextItem::TextItem(sdlx::Font &font, const std::string &config_name, const std::string &name, const std::string &value): 
-MenuItem(font, name, "text", value, value), _config_name(config_name), _active(false), _old_bg(0,0,0)
+MenuItem(font, name, "text", value, value), _config_name(config_name), _active(false)
 {}
 
 void TextItem::onClick() {
 	_active = true;
-	_old_bg = _bgcolor;
-	_bgcolor = sdlx::Color(128, 0, 0);
 	render();
 }
 
 void TextItem::finish() {
-	_bgcolor = _old_bg;
 	render();
 	_active = false;
 }

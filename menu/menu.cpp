@@ -178,6 +178,7 @@ bool MainMenu::onKey(const SDL_keysym sym) {
 	return false;
 }
 
+#include "resource_manager.h"
 
 void MainMenu::render(sdlx::Surface &dst) {
 	if (!_active)
@@ -194,6 +195,25 @@ void MainMenu::render(sdlx::Surface &dst) {
 	for(size_t i = 0; i < n ;++i) {
 		int w,h;
 		items[i]->getSize(w, h);
+
+		if (_active_item == i) {
+			static const sdlx::Surface* bg;
+			if (bg == NULL) {
+				bg = ResourceManager->loadSurface("menu/highlight_big.png");
+				assert(bg != NULL);
+			}	
+			
+			const int bg_w = bg->getWidth(), bg_h = bg->getHeight();
+			const int bg_n = _background.w / bg_w;
+			const int bg_y = y + (h - bg_h) / 2 - 1;
+			int bg_x = base_x;
+			
+			for(int i = 0; i < bg_n; ++i) {
+				dst.copyFrom(*bg, bg_x, bg_y);
+				bg_x += bg_w;
+			}
+		}
+	
 		items[i]->render(dst, x + (_menu_size.x - w) / 2, y);
 		y += h + 10;
 	}

@@ -47,15 +47,13 @@ public:
 	virtual ~MenuItem() {}
 
 protected:
-	bool _inverse;
 	void render();
 		
 	std::string _text, _value;
 
-	sdlx::Color _bgcolor;
 private:
 	sdlx::Font & _font;
-	sdlx::Surface _normal, _inversed;
+	sdlx::Surface _normal;
 };
 
 #endif

@@ -24,8 +24,7 @@
 
 MenuItem::MenuItem(sdlx::Font &font, const std::string &name, const std::string &type, const std::string &text, const std::string &value) : 
 	name(name), type(type), 
-	_inverse(false), _text(text), _value(value),
-	_bgcolor(0, 0, 128), 
+	_text(text), _value(value),
 	_font(font)
 {
 	render();
@@ -38,52 +37,14 @@ const std::string MenuItem::getValue() const {
 
 void MenuItem::render() {
 	_normal.free();
-	_inversed.free();
 
 	_font.render(_normal, (_text.empty())?" ":_text);
 	_normal.convertAlpha();
 	_normal.convertToHardware();
-	//LOG_DEBUG(("normal  : %dx%d:%d (%d)", _normal.getWidth(), _normal.getHeight(), _normal.getBPP(), _normal.getSDLSurface()->format->BytesPerPixel));
-
-	_inversed.createRGB(_normal.getWidth(), _normal.getHeight(), _normal.getBPP(), SDL_SWSURFACE);
-	_inversed.convertAlpha();
-	_inversed.convertToHardware();
-	//_inversed.setAlpha(255);
-		
-	//LOG_DEBUG(("inversed: %dx%d:%d", _inversed.getWidth(), _inversed.getHeight(), _inversed.getBPP()));
-	_normal.lock();
-	_inversed.lock();
-	int w = _normal.getWidth();
-	int h = _normal.getHeight();
-	for(int y = 0; y < h; ++y) 
-		for(int x = 0; x < w; ++x) {
-			Uint32 c = _normal.getPixel(x, y);
-			//LOG_DEBUG(("%08x ", (unsigned )c));
-			Uint8 r, g, b, a;
-			_normal.getRGBA(c, r, g, b, a);
-			//LOG_DEBUG(("%02x %02x %02x %02x", a, r, g, b));
-			if (r == 0 && g == 0 && b == 0) {
-				r = _bgcolor.r; g = _bgcolor.g; b = _bgcolor.b;
-			}
-			if (a < 255) {
-				int ab = (255 - a);
-				//r = _bgcolor.r; g = _bgcolor.g; b = _bgcolor.b; a = 255;
-				r = math::min(255, ((ab * _bgcolor.r) + (int)a * r) / 255);
-				g = math::min(255, ((ab * _bgcolor.g) + (int)a * g) / 255);
-				b = math::min(255, ((ab * _bgcolor.b) + (int)a * b) / 255);
-				a = 255;
-			}
-			//LOG_DEBUG(("%02x %02x %02x %02x", a, r, g, b));
-			c = _inversed.mapRGBA(r, g, b, a);
-			//LOG_DEBUG(("%08x ", (unsigned )c));
-			_inversed.putPixel(x, y, c);
-		}
-	_normal.unlock();
-	_inversed.unlock();
 }
 	
 void MenuItem::render(sdlx::Surface &dst, const int x, const int y) {
-	dst.copyFrom(_inverse?_inversed:_normal, x, y);
+	dst.copyFrom(_normal, x, y);
 }
 
 void MenuItem::getSize(int &w, int &h) const {
@@ -95,10 +56,5 @@ const bool MenuItem::onKey(const SDL_keysym sym) {
 	return false;
 }
 
-void MenuItem::onFocus() {
-	_inverse = true;
-}
-
-void MenuItem::onLeave() {
-	_inverse = false;
-}
+void MenuItem::onFocus() {}
+void MenuItem::onLeave() {}
