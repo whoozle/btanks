@@ -19,7 +19,6 @@
 #include "menu.h"
 #include "textitem.h"
 #include "menuitem.h"
-#include "proxyitem.h"
 #include "mapitem.h"
 #include "vehicleitem.h"
 #include "game.h"
@@ -76,8 +75,8 @@ MainMenu::MainMenu() : _active_item(0) {
 	_items["multiplayer"].push_back(new VehicleItem(_font, "vehicle 2", "2"));
 	_items["multiplayer"].push_back(new MenuItem(_font, "back", "back", "BACK"));
 
-	_items["multiplayer-join"].push_back(new TextItem(_font, "address", address));
-	_items["multiplayer-join"].push_back(new ProxyItem(*this, _font, "m-join", "command", "JOIN GAME", "multiplayer-join", "address"));
+	_items["multiplayer-join"].push_back(new TextItem(_font, "multiplayer.recent-host", "address", address));
+	_items["multiplayer-join"].push_back(new MenuItem(_font, "m-join", "command", "JOIN GAME"));
 	//_items["multiplayer-join"].push_back(new MenuItem(_font, "port", "text", "9876"));
 	_items["multiplayer-join"].push_back(new MenuItem(_font, "back", "back", "BACK"));
 

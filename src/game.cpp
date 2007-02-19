@@ -317,10 +317,11 @@ void IGame::onMenu(const std::string &name, const std::string &value) {
 		PlayerManager->startServer();
 	} else if (name == "m-join") {
 		clear();
-		Config->set("multiplayer.recent-host", value);
+		std::string address;
+		Config->get("multiplayer.recent-host", address, "LOCALHOST");
 		bool ok = true;
 		TRY {
-			PlayerManager->startClient(value);
+			PlayerManager->startClient(address);
 		} CATCH("startClient", { displayMessage("CONNECTION FAILED", 1); ok = false; });
 		
 		_main_menu->setActive(!ok);

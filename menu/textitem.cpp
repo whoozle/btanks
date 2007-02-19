@@ -1,9 +1,10 @@
 #include "textitem.h"
 #include "mrt/logger.h"
 #include <ctype.h>
+#include "config.h"
 
-TextItem::TextItem(sdlx::Font &font, const std::string &name, const std::string &value): 
-MenuItem(font, name, "text", value, value), _active(false), _old_bg(0,0,0)
+TextItem::TextItem(sdlx::Font &font, const std::string &config_name, const std::string &name, const std::string &value): 
+MenuItem(font, name, "text", value, value), _config_name(config_name), _active(false), _old_bg(0,0,0)
 {}
 
 void TextItem::onClick() {
@@ -32,6 +33,7 @@ const bool TextItem::onKey(const SDL_keysym sym) {
 
 	case SDLK_RETURN: 
 		_value = _text;
+		Config->set(_config_name, _value);
 		finish();
 		break;
 		
