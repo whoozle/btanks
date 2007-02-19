@@ -73,6 +73,14 @@
 		<pose id="dead">6</pose>
 	</animation-model>
 
+	<animation-model id="dead-zombie-animation" speed="5">
+		<pose id="fade-in">0,1</pose>
+		<pose id="burn">2,3,4,5</pose>
+		<pose id="fade-out">4,5</pose>
+		<pose id="dead">6</pose>
+	</animation-model>
+
+
 	<animation-model id="ziehharmonikaspieler-animation" speed="7">
 		<pose id="hold">0</pose>
 		<pose id="walk">1,2,3,2,4,5,6,5</pose>
@@ -460,7 +468,7 @@
 	<animation id="spaceport-baykonur" model="spaceport-baykonur-animation" tile="baykonur.png" tile_width="192" tile_height="256" />
 	
 	<animation id="zombie" model="zombie-animation" tile="zombak_vasya.png" size="64" />
-	<animation id="dead-zombie" model="dead-man-animation" tile="zombak_vasya_dead.png" size="64" />
+	<animation id="dead-zombie" model="dead-zombie-animation" tile="zombak_vasya_dead.png" size="64" />
 
 	<animation id="thrower" model="trooper-animation" tile="thrower.png" />
 	<animation id="thrower-missile" model="single-tile" tile="thrower_missile.png" />
