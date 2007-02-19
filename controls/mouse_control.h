@@ -34,7 +34,7 @@ private:
 	void getPosition(v2<float>&pos) const;
 	Object * getObject() const;
 	
-	void onMouse(const int button, const bool pressed, const int x, const int y);
+	bool onMouse(const int button, const bool pressed, const int x, const int y);
 	v2<float> _target_rel, _target;
 	int _target_dir;
 	bool _shoot;

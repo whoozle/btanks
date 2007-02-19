@@ -85,20 +85,7 @@ MainMenu::MainMenu() : _active_item(0) {
 	recalculateSizes();
 
 	Game->key_signal.connect(sigc::mem_fun(this, &MainMenu::onKey));
-}
-
-const std::string MainMenu::getValue(const std::string &menu, const std::string &name) const {
-	MenuMap::const_iterator m = _items.find(menu);
-	if (m == _items.end())
-		throw_ex(("menu '%s' not found", menu.c_str()));
-	const ItemList &items = m->second;
-	for(ItemList::const_iterator i = items.begin(); i != items.end(); ++i) {
-		if ((*i)->name == name) {
-			return (*i)->getValue();
-		}
-	}
-	throw_ex(("no item '%s' in menu '%s'", name.c_str(), menu.c_str()));
-	return "**bug**";
+	Game->mouse_signal.connect(sigc::mem_fun(this, &MainMenu::onMouse));
 }
 
 void MainMenu::recalculateSizes() {
@@ -239,5 +226,13 @@ const bool MainMenu::back() {
 	_items[_active_menu][_active_item]->onFocus();
 	
 	recalculateSizes();
+	return true;
+}
+
+bool MainMenu::onMouse(const int button, const bool pressed, const int x, const int y) {
+	if (!_active || !pressed)
+		return false;
+	
+	LOG_DEBUG(("%d %c %d %d", button, pressed?'+':'-', x, y));
 	return true;
 }

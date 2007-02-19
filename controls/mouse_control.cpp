@@ -30,13 +30,13 @@ MouseControl::MouseControl(): _shoot(false) {
 	Game->mouse_signal.connect(sigc::mem_fun(this, &MouseControl::onMouse));
 } 
 
-void MouseControl::onMouse(const int button, const bool pressed, const int x, const int y) {
+bool MouseControl::onMouse(const int button, const bool pressed, const int x, const int y) {
 	//LOG_DEBUG(("button %d,%d %d: %c", x, y, button, pressed?'+':'-'));
 	if (button == 1) { //fixme: hardcoded
 		_shoot = pressed;
 	}
 	if (!pressed)
-		return;
+		return false;
 	
 	//LOG_DEBUG(("shoot: %c, move: %c", _shoot?'+':'-', _move?'+':'-'));
 	v2<float> world;
@@ -58,6 +58,7 @@ void MouseControl::onMouse(const int button, const bool pressed, const int x, co
 		LOG_DEBUG(("target_dir = %d", _target_dir));
 		assert(_target_dir >= 0);
 	}
+	return true;
 }
 
 void MouseControl::updateState(PlayerState &state) {

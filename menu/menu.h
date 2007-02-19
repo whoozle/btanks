@@ -46,9 +46,9 @@ public:
 	void reset();
 	const bool back();
 	
-	const std::string getValue(const std::string &menu, const std::string &itemname) const;
 private:
 	bool onKey(const SDL_keysym sym);
+	bool onMouse(const int button, const bool pressed, const int x, const int y);
 	
 	void recalculateSizes();
 
