@@ -3,6 +3,7 @@
 
 #include <string>
 #include "box.h"
+#include <sdlx/font.h>
 
 class UpperBox : public Box {
 public: 
@@ -12,6 +13,8 @@ public:
 	virtual void render(sdlx::Surface &surface, const int x, const int y);
 private: 
 	bool _server;	
+	const sdlx::Surface *_checkbox;
+	sdlx::Font _big, _medium;
 };
 
 #endif
