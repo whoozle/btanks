@@ -66,7 +66,9 @@ void Machinegunner::calculate(const float dt) {
 	
 	v2<float> pos, vel;
 	
-	const float range = getWeaponRange("machinegunner-bullet");
+
+	GET_CONFIG_VALUE("objects.machinegunner-on-launcher.targeting-range", int, range, (int)getWeaponRange("machinegunner-bullet"));
+
 	
 	if (!getNearest(targets, range, pos, vel)) {
 		_state.fire = false;
