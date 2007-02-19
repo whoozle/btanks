@@ -1,8 +1,3 @@
-#include "font.h"
-#include "surface.h"
-#include "sdl_ex.h"
-#include <assert.h>
-
 /* sdlx - c++ wrapper for libSDL
  * Copyright (C) 2005-2007 Vladimir Menshakov
  *
@@ -20,6 +15,12 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+
+#include "font.h"
+#include "surface.h"
+#include "sdl_ex.h"
+#include <assert.h>
+#include <ctype.h>
 
 
 using namespace sdlx;
@@ -124,6 +125,7 @@ const int Font::render(sdlx::Surface *window, const int x, const int y, const st
 		case AZ09:
 			if (c == ' ')
 				break;
+			c = toupper(c);
 			c -= '0';
 			if (c > 9)
 				c -= 7;
