@@ -1,17 +1,16 @@
 #include "start_server_menu.h"
 #include "sdlx/surface.h"
 #include "mrt/logger.h"
+#include "mrt/exception.h"
 
-StartServerMenu::StartServerMenu() {
-	_upper_box.init(500, 80, true);
-}
+StartServerMenu::StartServerMenu(const int w, const int h) : _w(w), _h(h) {
+	UpperBox * upper_box = NULL;
+	TRY {
+		upper_box = new UpperBox; 
+		upper_box->init(500, 80, true);
 
-
-void StartServerMenu::render(sdlx::Surface &dst) {
-	_upper_box.render(dst, (dst.getWidth() - _upper_box.w) / 2, 32);
-}
-
-bool StartServerMenu::onKey(const SDL_keysym sym) {
-	LOG_DEBUG(("key"));
-	return false;
+		sdlx::Rect r((w - upper_box->w) / 2, 32, upper_box->w, upper_box->h);
+		add(r, upper_box);
+		upper_box = NULL;
+	} CATCH("StartServerMenu", {delete upper_box; throw; });
 }

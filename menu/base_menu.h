@@ -2,17 +2,10 @@
 #define BTANKS_BASE_MENU_H__
 
 #include "sdlx/sdlx.h"
+#include "container.h"
 
-namespace sdlx {
-	class Surface;
-}
-
-
-class BaseMenu {
+class BaseMenu : public Container {
 public:
-	virtual void render(sdlx::Surface &dst) = 0;
-	virtual bool onKey(const SDL_keysym sym) = 0;
-
 	virtual ~BaseMenu() {}
 };
 

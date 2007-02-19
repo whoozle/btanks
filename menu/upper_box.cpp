@@ -32,7 +32,7 @@ void UpperBox::render(sdlx::Surface &surface, const int x, const int y) {
 	int line2_y = 46;
 	
 	wt = _big.render(surface, x + 16, y + line2_y, "SPLIT SCREEN");
-	wt += 60;
+	wt += 96;
 	
 	int cw = _checkbox->getWidth() / 2;
 	
@@ -41,12 +41,40 @@ void UpperBox::render(sdlx::Surface &surface, const int x, const int y) {
 	
 	bool split;
 	Config->get("multiplayer.split-screen-mode", split, false);
-
+	
+	_off_area.x = wt;
+	_off_area.y = line2_y;
+	_off_area.w = wt;
+	_off_area.h = 16;
+	
 	surface.copyFrom(*_checkbox, split?off:on, x + wt, y + line2_y);
 	wt += cw;
 	wt += 16 + _medium.render(surface, x + wt, y + line2_y + font_dy - 2, "OFF");
+	_off_area.w = wt - _off_area.w + 1;
 
+	_on_area.x = wt;
+	_on_area.y = line2_y;
+	_on_area.w = wt;
+	_on_area.h = 16;
 	surface.copyFrom(*_checkbox, split?on:off, x + wt, y + line2_y);
 	wt += cw;
-	_medium.render(surface, x + wt, y + line2_y + font_dy - 2, "ON");
+	wt += 16 + _medium.render(surface, x + wt, y + line2_y + font_dy - 2, "ON");
+	_on_area.w = wt - _on_area.w + 1;
+}
+
+bool UpperBox::onKey(const SDL_keysym sym) {
+	return false;
+}
+
+bool UpperBox::onMouse(const int button, const bool pressed, const int x, const int y) {
+	if (_on_area.in(x, y)) {
+		//LOG_DEBUG(("split screen on!"));
+		Config->set("multiplayer.split-screen-mode", true);
+		return true;
+	} else if (_off_area.in(x, y)) {
+		//LOG_DEBUG(("split screen off!"));
+		Config->set("multiplayer.split-screen-mode", false);
+		return true;
+	}
+	return false;
 }

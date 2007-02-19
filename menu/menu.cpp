@@ -31,7 +31,7 @@
 #include "mrt/exception.h"
 #include "config.h"
 
-MainMenu::MainMenu() : _active_item(0) {
+MainMenu::MainMenu(const int w, const int h) : _active_item(0) {
 	_active = true;
 	
 	LOG_DEBUG(("loading font..."));
@@ -83,7 +83,7 @@ MainMenu::MainMenu() : _active_item(0) {
 
 	_items[_active_menu][_active_item]->onFocus();
 	
-	_special_menus["#start-server"] = new StartServerMenu();
+	_special_menus["#start-server"] = new StartServerMenu(w, h);
 
 	recalculateSizes();
 
@@ -202,7 +202,7 @@ void MainMenu::render(sdlx::Surface &dst) {
 		
 	BaseMenu * sm = getMenu(_active_menu);
 	if (sm != NULL) {
-		sm->render(dst);
+		sm->render(dst, 0, 0);
 		return;
 	}
 
@@ -283,7 +283,12 @@ bool MainMenu::onMouse(const int button, const bool pressed, const int x, const 
 	if (!_active || !pressed)
 		return false;
 	
-	LOG_DEBUG(("%d %c %d %d", button, pressed?'+':'-', x, y));
+	BaseMenu * bm = getMenu(_active_menu);
+	if (bm != NULL) {
+		return bm->onMouse(button, pressed, x, y);
+	}
+	
+	//LOG_DEBUG(("%d %c %d %d", button, pressed?'+':'-', x, y));
 	return true;
 }
 

@@ -166,7 +166,7 @@ void IGame::init(const int argc, char *argv[]) {
 
 	if (_main_menu == NULL) {
 		LOG_DEBUG(("initializing menus..."));		
-		_main_menu = new MainMenu;
+		_main_menu = new MainMenu(_window.getWidth(), _window.getHeight());
 	}
 
 	_paused = false;

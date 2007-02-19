@@ -4,7 +4,7 @@ env = env.Copy()
 env.Append(CPPPATH=['..', '.', '../src'])
 bt_menu = env.StaticLibrary('bt_menu', 
 	['menuitem.cpp', 'textitem.cpp', 'mapitem.cpp', 'vehicleitem.cpp', 'menu.cpp', 'box.cpp', 
-	'upper_box.cpp', 'base_menu.cpp', 'start_server_menu.cpp', 
+	'upper_box.cpp', 'base_menu.cpp', 'start_server_menu.cpp', 'container.cpp', 
 	] 
 	)
 
