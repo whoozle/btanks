@@ -12,9 +12,11 @@ public:
 	Box() : _surface(0) {}
 	int w, h;
 
-	void init(const std::string &tile, int w, int h);
 	const bool inited() const { return _surface != 0; }
-	void render(sdlx::Surface &surface, const int x, const int y);
+	void init(const std::string &tile, int w, int h);
+	
+	virtual void render(sdlx::Surface &surface, const int x, const int y);
+	virtual ~Box() {}
 private: 
 	int x1, x2, y1, y2, xn, yn;
 	

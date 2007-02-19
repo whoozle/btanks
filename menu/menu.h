@@ -30,6 +30,7 @@
 #include "math/v2.h"
 
 class MenuItem;
+class BaseMenu;
 
 class MainMenu : public sigc::trackable {
 public:
@@ -47,6 +48,9 @@ public:
 	const bool back();
 	
 private:
+	std::map<const std::string, BaseMenu *> _special_menus;
+	BaseMenu *getMenu(const std::string &menu);
+
 	bool onKey(const SDL_keysym sym);
 	bool onMouse(const int button, const bool pressed, const int x, const int y);
 	

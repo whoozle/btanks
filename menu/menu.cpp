@@ -22,6 +22,7 @@
 #include "mapitem.h"
 #include "vehicleitem.h"
 #include "game.h"
+#include "start_server_menu.h"
 
 #include "sdlx/surface.h"
 #include "sdlx/font.h"
@@ -81,6 +82,8 @@ MainMenu::MainMenu() : _active_item(0) {
 	_items["multiplayer-join"].push_back(new MenuItem(_font, "back", "back", "BACK"));
 
 	_items[_active_menu][_active_item]->onFocus();
+	
+	_special_menus["#start-server"] = new StartServerMenu();
 
 	recalculateSizes();
 
@@ -121,6 +124,11 @@ MainMenu::~MainMenu() {
 bool MainMenu::onKey(const SDL_keysym sym) {
 	if (!_active)
 		return false;
+		
+	BaseMenu * bm = getMenu(_active_menu);
+	if (bm != NULL) {
+		return bm->onKey(sym);
+	}
 	
 	if (_items[_active_menu].empty())
 		throw_ex(("no menu '%s' found", _active_menu.c_str()));
@@ -151,6 +159,10 @@ bool MainMenu::onKey(const SDL_keysym sym) {
 				const std::string &name = item->name;
 				if (item->type == "submenu") {
 					LOG_DEBUG(("entering submenu '%s'", name.c_str()));
+					if (name[0] == '#') {
+						_active_menu = name;
+						return true;
+					}
 					if (_items[name].empty())
 						throw_ex(("no submenu %s found or it's empty", name.c_str()));
 					_menu_path.push_front(MenuID(_active_item, _active_menu));
@@ -188,6 +200,12 @@ void MainMenu::render(sdlx::Surface &dst) {
 	if (!_active)
 		return;
 		
+	BaseMenu * sm = getMenu(_active_menu);
+	if (sm != NULL) {
+		sm->render(dst);
+		return;
+	}
+
 	int base_x = (dst.getWidth() - _background.w) / 2, base_y = (dst.getHeight() - _background.h) / 2;
 	_background.render(dst, base_x, base_y);
 	
@@ -267,4 +285,8 @@ bool MainMenu::onMouse(const int button, const bool pressed, const int x, const 
 	
 	LOG_DEBUG(("%d %c %d %d", button, pressed?'+':'-', x, y));
 	return true;
+}
+
+BaseMenu *MainMenu::getMenu(const std::string &menu) {
+	return _special_menus[menu];
 }
