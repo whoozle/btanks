@@ -185,6 +185,14 @@ void IConfig::set(const std::string &name, const int value) {
 	v->i = value;
 }
 
+void IConfig::set(const std::string &name, const bool value) {
+	Var *v = _map[name];
+	if (v == NULL) {
+		v = _map[name] = new Var("bool");
+	}
+	v->b = value;
+}
+
 void IConfig::registerInvalidator(bool *ptr) {
 	_invalidators.insert(ptr);
 }
