@@ -54,7 +54,7 @@ void Font::load(const std::string &file, const Type type, const bool alpha) {
 	_width_map.resize(n);
 	
 	for(int c = 0; c < n; ++c) {
-		_width_map[c].first = w - 1 ;
+		_width_map[c].first = w;
 		_width_map[c].second = 0;
 		
 		for(int y = 0; y < h; ++y) {
@@ -129,6 +129,7 @@ const int Font::render(sdlx::Surface *window, const int x, const int y, const st
 			c -= '0';
 			if (c > 9)
 				c -= 7;
+			//LOG_DEBUG(("az09: char '%c' (code: %d)", str[i], c));
 			if (c < 0 || c > 36) 	
 				continue;
 		break;
@@ -140,13 +141,14 @@ const int Font::render(sdlx::Surface *window, const int x, const int y, const st
 			spacing = 4;
 		//const int spacing = 2;
 
-		if (_type == AZ09 && c == ' ') {
+		if (_type == AZ09 && str[i] == ' ') {
 			w += fw / 3 + spacing;
 			continue;
 		}
 			
 		
 		if (c < (int)_width_map.size()) {
+			//LOG_DEBUG(("char '%c' (code: %d), %d<->%d", str[i], c, x1, x2));
 			x1 = _width_map[c].first;
 			x2 = _width_map[c].second;
 			/*
