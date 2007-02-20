@@ -3,6 +3,7 @@
 
 #include "container.h"
 #include <vector>
+#include <string>
 
 class ScrollList;
 class MapDetails;

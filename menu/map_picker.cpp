@@ -4,6 +4,7 @@
 #include "mrt/exception.h"
 #include "mrt/directory.h"
 #include "config.h"
+#include <algorithm>
 
 void MapPicker::scan(const std::string &path) {
 	if (!mrt::Directory::exists(path))
