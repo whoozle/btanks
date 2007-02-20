@@ -7,7 +7,7 @@
 #include "math/unary.h"
 #include "math/binary.h"
 
-ScrollList::ScrollList(const int w, const int h) : _item_h(1), _client_w(64), _client_h(64), _pos(0), _current_item(0) {
+ScrollList::ScrollList(const int w, const int h) : _item_h(1), _client_w(64), _client_h(64), _pos(0), _vel(0), _current_item(0) {
 	_background.init("menu/background_box.png", "menu/highlight_medium.png", w, h);
 	GET_CONFIG_VALUE("engine.data-directory", std::string, data_dir, "data");
 	_font.load(data_dir + "/font/medium.png", sdlx::Font::AZ09, true);
@@ -19,9 +19,13 @@ ScrollList::ScrollList(const int w, const int h) : _item_h(1), _client_w(64), _c
 void ScrollList::tick(const float dt) {
 	int scroll_marg = _client_h / 3;
 	int yp = _current_item * _item_h;
+	if (_vel != 0) {
+		if ((int)(math::max(yp - _client_h / 2, 0) - _pos) < _item_h)
+			_vel = 0;
+	}
 	if (yp < _pos + scroll_marg || yp > _pos + _client_h - scroll_marg) {
-		int dir = math::sign<int>((int)(math::max(yp - _client_h / 2, 0) - _pos));
-		_pos += dir * 120 * dt;
+		_vel = 120 * math::sign<int>((int)(math::max(yp - _client_h / 2, 0) - _pos));
+		_pos += _vel * dt;
 	}
 	if (_pos < 0) 
 		_pos = 0;

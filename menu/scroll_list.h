@@ -26,7 +26,7 @@ private:
 	typedef std::deque<std::string> List;
 	List _list;
 
-	float _pos;
+	float _pos, _vel;
 	int _current_item;
 };
 
