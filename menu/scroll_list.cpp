@@ -24,7 +24,8 @@ void ScrollList::tick(const float dt) {
 			_vel = 0;
 	}
 	if (yp < _pos + scroll_marg || yp > _pos + _client_h - scroll_marg) {
-		_vel = 120 * math::sign<int>((int)(math::max(yp - _client_h / 2, 0) - _pos));
+		int dpos = (int)(math::max(yp - _client_h / 2, 0) - _pos);
+		_vel = math::max(math::abs(dpos), 120) * math::sign<int>(dpos);
 		_pos += _vel * dt;
 	}
 	if (_pos < 0) {
@@ -109,7 +110,7 @@ bool ScrollList::onMouse(const int button, const bool pressed, const int x, cons
 	//implement dragging of scroller here.
 	//LOG_DEBUG(("boo %d %d %d %d", button, pressed, x, y));
 	
-	if (!pressed)
+	if (!pressed || button == SDL_BUTTON_MIDDLE) //skip accidental wheel clicks
 		return false;
 	
 	if (_items_area.in(x, y)) {
