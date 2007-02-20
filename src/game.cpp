@@ -224,23 +224,28 @@ void IGame::init(const int argc, char *argv[]) {
 */
 	if (_autojoin) {
 		onMenu("m-join", address);
-		_main_menu->setActive(false);
+		if (_main_menu)
+			_main_menu->setActive(false);
 	}
 }
 
 bool IGame::onKey(const SDL_keysym key) {
 	if (key.sym == SDLK_ESCAPE) {
 		if (!_map_loaded) {
-			_main_menu->setActive(true);
+			if (_main_menu)
+				_main_menu->setActive(true);
 			return true;
 		}
 		
 		LOG_DEBUG(("escape hit, paused: %s", _paused?"true":"false"));
-		_main_menu->setActive(!_main_menu->isActive());
+		if (_main_menu)
+			_main_menu->setActive(!_main_menu->isActive());
+		
 		if (PlayerManager->isServer() || PlayerManager->isClient()) {
 			_paused = false;
 		} else {
-			_paused = _main_menu->isActive();
+			if (_main_menu)
+				_paused = _main_menu->isActive();
 		}
 		return true;
 	}
@@ -256,7 +261,8 @@ void IGame::onMenu(const std::string &name, const std::string &value) {
 		LOG_DEBUG(("start single player as '%s' requested", vehicle.c_str()));
 
 		clear();
-		_main_menu->reset();
+		if (_main_menu)
+			_main_menu->reset();
 		_cheater = new Cheater;
 		
 		throw_ex(("reimplement me"));
@@ -264,7 +270,8 @@ void IGame::onMenu(const std::string &name, const std::string &value) {
 	} else if (name == "s-start") {
 		LOG_DEBUG(("start split screen game requested"));
 		clear();
-		_main_menu->reset();
+		if (_main_menu)
+			_main_menu->reset();
 		std::string vehicle1, vehicle2, animation1, animation2;
 		Config->get("menu.default-vehicle-1", vehicle1, "launcher");
 		Config->get("menu.default-vehicle-2", vehicle2, "launcher");
@@ -324,7 +331,8 @@ void IGame::onMenu(const std::string &name, const std::string &value) {
 			PlayerManager->startClient(address);
 		} CATCH("startClient", { displayMessage("CONNECTION FAILED", 1); ok = false; });
 		
-		_main_menu->setActive(!ok);
+		if (_main_menu)	
+			_main_menu->setActive(!ok);
 	} else if (name == "credits" && !PlayerManager->isServer()) {
 		LOG_DEBUG(("show credits."));
 		_credits = new Credits;
@@ -362,7 +370,8 @@ static void coord2v(T &pos, const std::string &str) {
 
 
 void IGame::loadMap(const std::string &name, const bool spawn_objects) {
-	_main_menu->setActive(false);
+	if (_main_menu)
+		_main_menu->setActive(false);
 	IMap &map = *IMap::get_instance();
 	map.load(name);
 
@@ -649,7 +658,8 @@ void IGame::run() {
 			PlayerManager->tick(SDL_GetTicks(), dt);
 		}
 		
-		_main_menu->tick(dt);
+		if (_main_menu)
+			_main_menu->tick(dt);
 
 		if (_credits || _map_loaded)
 			_window.fillRect(window_size, 0);
@@ -681,7 +691,8 @@ void IGame::run() {
 			}
 		}
 
-		_main_menu->render(_window);
+		if (_main_menu)
+			_main_menu->render(_window);
 		
 		if (!_state.empty()) {
 			int x = (_window.getWidth() - _big_font.getHeight() /*+- same ;)*/ * _state.size()) / 2;
@@ -729,7 +740,8 @@ void IGame::deinit() {
 	_map_loaded = false;
 	Window::deinit();
 	
-	_main_menu->deinit();
+	if (_main_menu)
+		_main_menu->deinit();
 
 	delete _credits;
 	_credits = NULL;	
@@ -760,7 +772,8 @@ void IGame::clear() {
 	delete _cheater;
 	_cheater = NULL;
 
-	_main_menu->setActive(true);
+	if (_main_menu)
+		_main_menu->setActive(true);
 }
 
 
