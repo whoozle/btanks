@@ -25,7 +25,7 @@ private:
 	List _list;
 
 	int _pos;
-	size_t _current_item;
+	int _current_item;
 };
 
 #endif

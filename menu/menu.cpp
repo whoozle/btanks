@@ -39,7 +39,7 @@ MainMenu::MainMenu(const int w, const int h) : _active_item(0) {
 	_font.load(data_dir + "/font/big.png", sdlx::Font::Ascii, false);
 
 	LOG_DEBUG(("loading background..."));
-	_background.init("menu/background_box.png", 407, 338);
+	_background.init("menu/background_box.png", "menu/highlight_big.png", 407, 338);
 	
 	LOG_DEBUG(("creating menu..."));
 	_active_item = 0;
@@ -219,29 +219,7 @@ void MainMenu::render(sdlx::Surface &dst) {
 		items[i]->getSize(w, h);
 
 		if (_active_item == i) {
-			//rendering active item background
-			static const sdlx::Surface* bg;
-			if (bg == NULL) {
-				bg = ResourceManager->loadSurface("menu/highlight_big.png");
-				assert(bg != NULL);
-			}	
-			
-			const int bg_w = bg->getWidth(), bg_h = bg->getHeight();
-			const int bg_n = _background.w / (bg_w / 3);
-			const int bg_y = y + (h - bg_h) / 2 - 1;
-			int bg_x = base_x;
-			
-			sdlx::Rect src(0, 0, bg_w/3, bg_h);
-			dst.copyFrom(*bg, src, bg_x, bg_y);
-			bg_x += bg_w / 3;
-			src.x = bg_w / 3;
-			for(int i = 0; i < bg_n - 2; ++i) {
-				dst.copyFrom(*bg, src, bg_x, bg_y);
-				bg_x += bg_w / 3;
-			}
-			src.x = 2 * bg_w / 3;
-			dst.copyFrom(*bg, src, bg_x, bg_y);
-			bg_x += bg_w / 3;
+			_background.renderHL(dst, base_x, y + h / 2);
 		}
 	
 		items[i]->render(dst, x + (_menu_size.x - w) / 2, y);

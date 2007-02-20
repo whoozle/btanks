@@ -3,9 +3,10 @@
 #include "sdlx/rect.h"
 #include "sdlx/surface.h"
 #include "resource_manager.h"
+#include <assert.h>
 
 ScrollList::ScrollList(const int w, const int h) : _pos(0), _current_item(0) {
-	_background.init("menu/background_box.png", w, h);
+	_background.init("menu/background_box.png", "menu/highlight_medium.png", w, h);
 	GET_CONFIG_VALUE("engine.data-directory", std::string, data_dir, "data");
 	_font.load(data_dir + "/font/medium.png", sdlx::Font::AZ09, true);
 	_scrollers = ResourceManager->loadSurface("menu/v_scroller.png");
@@ -37,13 +38,16 @@ void ScrollList::render(sdlx::Surface &surface, const int x, const int y) {
 //main list
 	
 	surface.setClipRect(sdlx::Rect(x + mx, y + my, client_w, client_h));
-	
+
+	assert(client_h > 0);
 	int n = (client_h - 1)/ item_h + 2;
 	if (n >= (int)_list.size()) 
 		n = _list.size() - 1;
 	
-	int yp = my + y;
+	int yp = my + y - _pos % item_h;
 	for(int p = _pos / item_h; p < n; ++p) {
+		if (p == _current_item) 
+			_background.renderHL(surface, x - 3 * mx, yp + item_h / 2);
 		_font.render(surface, x + mx, yp, _list[p]);
 		yp += item_h;
 	}
@@ -64,11 +68,13 @@ bool ScrollList::onMouse(const int button, const bool pressed, const int x, cons
 	if (_up_area.in(x, y)) {
 		if (_current_item > 0 ) 
 			--_current_item;
+		//LOG_DEBUG(("up: %u", _current_item));
 		return true;
 	} else if (_down_area.in(x, y)) {
 		++_current_item;
-		if (_current_item >= _list.size()) 
+		if (_current_item >= (int)_list.size()) 
 			_current_item = _list.size() - 1;
+		//LOG_DEBUG(("down: %u", _current_item));
 		return true;
 	}
 	return false;
