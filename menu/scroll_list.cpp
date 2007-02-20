@@ -61,6 +61,7 @@ void ScrollList::render(sdlx::Surface &surface, const int x, const int y) {
 	surface.copyFrom(*_scrollers, sdlx::Rect(0, 0, scroller_w, scroller_h), x + (int)_up_area.x, y + (int)_up_area.y);
 	_down_area = sdlx::Rect(_up_area.x, my + _client_h - scroller_h, scroller_w, scroller_h);
 	surface.copyFrom(*_scrollers, sdlx::Rect(scroller_w, 0, scroller_w, scroller_h), x + (int)_down_area.x, y + (int)_down_area.y);
+	_items_area = sdlx::Rect(mx, my, _client_w, _client_h);
 
 //main list
 	
@@ -121,6 +122,12 @@ bool ScrollList::onMouse(const int button, const bool pressed, const int x, cons
 			_current_item = _list.size() - 1;
 		//LOG_DEBUG(("down: %u", _current_item));
 		return true;
+	} else if (_items_area.in(x, y)) {
+		int item = (y + (int)_pos) / _item_h;
+		if (item >= 0 && item < (int)_list.size())
+			_current_item = item;
+		return true;
 	}
+		
 	return false;
 }
