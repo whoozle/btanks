@@ -619,10 +619,7 @@ void IGame::run() {
 				}
 			case SDL_MOUSEBUTTONUP:
 				{
-					int bi = (event.button.button == SDL_BUTTON_LEFT)? 0: 
-						((event.button.button == SDL_BUTTON_RIGHT)?1:
-						((event.button.button == SDL_BUTTON_MIDDLE)?2:-1));
-					mouse_signal.emit(bi, event.button.type == SDL_MOUSEBUTTONDOWN, event.button.x, event.button.y);
+					mouse_signal.emit(event.button.button, event.button.type == SDL_MOUSEBUTTONDOWN, event.button.x, event.button.y);
 				}
 				break;
 		    case SDL_QUIT:

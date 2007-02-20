@@ -32,7 +32,7 @@ MouseControl::MouseControl(): _shoot(false) {
 
 bool MouseControl::onMouse(const int button, const bool pressed, const int x, const int y) {
 	//LOG_DEBUG(("button %d,%d %d: %c", x, y, button, pressed?'+':'-'));
-	if (button == 1) { //fixme: hardcoded
+	if (button == SDL_BUTTON_RIGHT) { //fixme: hardcoded
 		_shoot = pressed;
 	}
 	if (!pressed)

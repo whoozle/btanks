@@ -107,27 +107,36 @@ bool ScrollList::onKey(const SDL_keysym sym) {
 
 bool ScrollList::onMouse(const int button, const bool pressed, const int x, const int y) {
 	//implement dragging of scroller here.
+	//LOG_DEBUG(("boo %d %d %d %d", button, pressed, x, y));
 	
 	if (!pressed)
 		return false;
 	
+	if (_items_area.in(x, y)) {
+		if (button == SDL_BUTTON_WHEELUP)
+			goto up;
+		if (button == SDL_BUTTON_WHEELDOWN)
+			goto down;
+		
+		int item = (y + (int)_pos) / _item_h;
+		if (item >= 0 && item < (int)_list.size())
+			_current_item = item;
+		return true;
+	}	
+	
 	if (_up_area.in(x, y)) {
+	up: //fix it 
 		if (_current_item > 0 ) 
 			--_current_item;
 		//LOG_DEBUG(("up: %u", _current_item));
 		return true;
 	} else if (_down_area.in(x, y)) {
+	down: 
 		++_current_item;
 		if (_current_item >= (int)_list.size()) 
 			_current_item = _list.size() - 1;
 		//LOG_DEBUG(("down: %u", _current_item));
 		return true;
-	} else if (_items_area.in(x, y)) {
-		int item = (y + (int)_pos) / _item_h;
-		if (item >= 0 && item < (int)_list.size())
-			_current_item = item;
-		return true;
-	}
-		
+	} else 
 	return false;
 }
