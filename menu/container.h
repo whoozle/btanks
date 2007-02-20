@@ -5,8 +5,6 @@
 #include <list>
 #include "sdlx/rect.h"
 
-class Control;
-
 class Container : public Control {
 public: 
 	virtual void render(sdlx::Surface &surface, const int x, const int y);

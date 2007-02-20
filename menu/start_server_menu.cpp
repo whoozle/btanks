@@ -2,6 +2,7 @@
 #include "sdlx/surface.h"
 #include "mrt/logger.h"
 #include "mrt/exception.h"
+#include "map_picker.h"
 
 StartServerMenu::StartServerMenu(const int w, const int h) : _w(w), _h(h) {
 	UpperBox * upper_box = NULL;
@@ -13,4 +14,5 @@ StartServerMenu::StartServerMenu(const int w, const int h) : _w(w), _h(h) {
 		add(r, upper_box);
 		upper_box = NULL;
 	} CATCH("StartServerMenu", {delete upper_box; throw; });
+	add(sdlx::Rect(64, 128, w - 128, h - 128), new MapPicker(w, h));
 }
