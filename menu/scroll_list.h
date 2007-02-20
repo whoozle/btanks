@@ -5,6 +5,7 @@
 #include "box.h"
 #include <deque>
 #include "sdlx/font.h"
+#include "sdlx/rect.h"
 
 class ScrollList : public Control {
 public: 
@@ -16,12 +17,15 @@ public:
 	virtual bool onMouse(const int button, const bool pressed, const int x, const int y);
 private:
 	Box _background;
+	const sdlx::Surface *_scrollers;
+	sdlx::Rect _up_area, _down_area;
 	sdlx::Font _font;
 
 	typedef std::deque<std::string> List;
 	List _list;
 
 	int _pos;
+	size_t _current_item;
 };
 
 #endif
