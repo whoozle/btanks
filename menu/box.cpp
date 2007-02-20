@@ -4,6 +4,13 @@
 #include <assert.h>
 
 void Box::init(const std::string &tile, int _w, int _h) {
+	init(tile, std::string(), _w, _h);
+}
+
+
+void Box::init(const std::string &tile, const std::string &highlight, int _w, int _h) {
+	_highlight = (!highlight.empty())? ResourceManager->loadSurface(highlight): NULL;
+		
 	_surface = ResourceManager->loadSurface(tile);
 	x1 = _surface->getWidth() / 3;
 	x2 = _surface->getWidth() - x1;
@@ -73,6 +80,31 @@ void Box::render(sdlx::Surface &surface, const int x0, const int y0) {
 		surface.copyFrom(*_surface, d, x, y);
 	surface.copyFrom(*_surface, dr, x, y);
 	
+}
+
+void Box::renderHL(sdlx::Surface &surface, const int x, const int y) {
+	const sdlx::Surface *bg = _highlight;
+	if (bg == NULL)
+		throw_ex(("highlight background was not loaded."));
+	
+	const int bg_w = bg->getWidth(), bg_h = bg->getHeight();
+	const int bg_n = this->w / (bg_w / 3);
+	const int bg_y = y - bg_h / 2 - 1;
+	int bg_x = x;
+			
+	sdlx::Rect src(0, 0, bg_w/3, bg_h);
+	surface.copyFrom(*bg, src, bg_x, bg_y);
+	bg_x += bg_w / 3;
+	src.x = bg_w / 3;
+	
+	for(int i = 0; i < bg_n - 2; ++i) {
+		surface.copyFrom(*bg, src, bg_x, bg_y);
+		bg_x += bg_w / 3;
+	}
+	
+	src.x = 2 * bg_w / 3;
+	surface.copyFrom(*bg, src, bg_x, bg_y);
+	bg_x += bg_w / 3;
 }
 
 void Box::getMargins(int &v, int &h) const {

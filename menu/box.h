@@ -14,15 +14,17 @@ public:
 
 	const bool inited() const { return _surface != 0; }
 	void init(const std::string &tile, int w, int h);
+	void init(const std::string &tile, const std::string &highlight_tile, int w, int h);
 	
 	virtual void render(sdlx::Surface &surface, const int x, const int y);
+	virtual void renderHL(sdlx::Surface &surface, const int x, const int y);
 	virtual ~Box() {}
 	
 	void getMargins(int &v, int &h) const;
 private: 
 	int x1, x2, y1, y2, xn, yn;
 	
-	const sdlx::Surface *_surface;
+	const sdlx::Surface *_surface, *_highlight;
 };
 
 #endif
