@@ -27,10 +27,14 @@ void ScrollList::tick(const float dt) {
 		_vel = 120 * math::sign<int>((int)(math::max(yp - _client_h / 2, 0) - _pos));
 		_pos += _vel * dt;
 	}
-	if (_pos < 0) 
+	if (_pos < 0) {
 		_pos = 0;
-	if (_pos + _client_h /2 > _list.size() * _item_h) 
+		_vel = 0;
+	}
+	if (_pos + _client_h > _list.size() * _item_h) {
 		_pos = _list.size() * _item_h - _client_h;
+		_vel = 0;
+	}
 	//LOG_DEBUG(("yp: %d, _pos : %g, (margin: %d)", yp, _pos, scroll_marg));
 }
 
