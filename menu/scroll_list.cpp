@@ -63,12 +63,13 @@ void ScrollList::render(sdlx::Surface &surface, const int x, const int y) {
 	surface.setClipRect(sdlx::Rect(x + mx, y + my, _client_w, _client_h));
 
 	assert(_client_h > 0);
-	int n = (_client_h - 1) / _item_h + 2;
+	int p = ((int)_pos) / _item_h;
+	int n = p + (_client_h - 1) / _item_h + 2;
 	if (n > (int)_list.size()) 
 		n = _list.size();
 	
 	int yp = my + y - ((int)_pos) % _item_h;
-	for(int p = ((int)_pos) / _item_h; p < n; ++p) {
+	for(; p < n; ++p) {
 		if (p == _current_item) 
 			_background.renderHL(surface, x - 3 * mx, yp + _item_h / 2);
 		_font.render(surface, x + mx, yp, _list[p]);
