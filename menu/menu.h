@@ -43,6 +43,7 @@ public:
 	void deinit();
 	~MainMenu();
 	
+	void tick(const float dt);
 	void render(sdlx::Surface &dst);
 	void reset();
 	const bool back();

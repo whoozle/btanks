@@ -651,6 +651,8 @@ void IGame::run() {
 
 			PlayerManager->tick(SDL_GetTicks(), dt);
 		}
+		
+		_main_menu->tick(dt);
 
 		if (_credits || _map_loaded)
 			_window.fillRect(window_size, 0);

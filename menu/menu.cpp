@@ -102,6 +102,17 @@ void MainMenu::recalculateSizes() {
 	}
 }
 
+void MainMenu::tick(const float dt) {
+	if (!_active)
+		return;
+	
+	for(std::map<const std::string, BaseMenu *>::iterator i = _special_menus.begin(); i != _special_menus.end(); ++i) {
+		if (i->second)
+			i->second->tick(dt);
+	}
+}
+
+
 void MainMenu::deinit() {
 	for(MenuMap::iterator m = _items.begin(); m != _items.end(); ++m) {
 		for(ItemList::iterator i = m->second.begin(); i != m->second.end(); ++i) {

@@ -1,11 +1,19 @@
 #include "container.h"
 
+void Container::tick(const float dt) {
+	for(ControlList::iterator i = _controls.begin(); i != _controls.end(); ++i) {
+		i->second->tick(dt);
+	}
+}
+
+
 void Container::render(sdlx::Surface &surface, const int x, const int y) {
 	for(ControlList::iterator i = _controls.begin(); i != _controls.end(); ++i) {
 		const sdlx::Rect &dst = i->first;
 		i->second->render(surface, x + dst.x, y + dst.y);
 	}
 }
+
 bool Container::onKey(const SDL_keysym sym) {
 	for(ControlList::iterator i = _controls.begin(); i != _controls.end(); ++i) {
 		if (i->second->onKey(sym))
