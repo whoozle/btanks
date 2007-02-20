@@ -17,6 +17,8 @@ public:
 	
 	virtual void render(sdlx::Surface &surface, const int x, const int y);
 	virtual ~Box() {}
+	
+	void getMargins(int &v, int &h) const;
 private: 
 	int x1, x2, y1, y2, xn, yn;
 	

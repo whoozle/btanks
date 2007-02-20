@@ -9,6 +9,8 @@ MapPicker::MapPicker(const int w, const int h) {
 	ScrollList *list = NULL;
 	TRY {
 		list = new ScrollList(list_pos.w, list_pos.h);
+		for(char i = 'A'; i < 'Z'; ++i)
+			list->add(mrt::formatString("item %c", i));
 		add(list_pos, list);
 	} CATCH("MapPicker::ctor", {delete list; throw; });
 }

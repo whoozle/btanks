@@ -74,3 +74,8 @@ void Box::render(sdlx::Surface &surface, const int x0, const int y0) {
 	surface.copyFrom(*_surface, dr, x, y);
 	
 }
+
+void Box::getMargins(int &v, int &h) const {
+	v = x1;
+	h = y1;
+}
