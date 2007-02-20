@@ -12,6 +12,7 @@ public:
 	ScrollList(const int w, const int h);
 	void add(const std::string &item);
 	const int getPosition() const { return _current_item; }
+	void setPosition(const int idx) { _current_item = idx; }
 	
 	virtual void tick(const float dt);
 	virtual void render(sdlx::Surface &surface, const int x, const int y);
