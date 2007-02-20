@@ -10,7 +10,8 @@
 class ScrollList : public Control {
 public: 
 	ScrollList(const int w, const int h);
-	void add(const std::string &item) { _list.push_back(item); }
+	void add(const std::string &item);
+	const int getPosition() const { return _current_item; }
 	
 	virtual void tick(const float dt);
 	virtual void render(sdlx::Surface &surface, const int x, const int y);

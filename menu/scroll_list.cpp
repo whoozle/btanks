@@ -7,7 +7,7 @@
 #include "math/unary.h"
 #include "math/binary.h"
 
-ScrollList::ScrollList(const int w, const int h) : _item_h(1), _client_w(64), _client_h(64), _pos(0), _vel(0), _current_item(0) {
+ScrollList::ScrollList(const int w, const int h) : _item_h(0), _client_w(64), _client_h(64), _pos(0), _vel(0), _current_item(0) {
 	_background.init("menu/background_box.png", "menu/highlight_medium.png", w, h);
 	GET_CONFIG_VALUE("engine.data-directory", std::string, data_dir, "data");
 	_font.load(data_dir + "/font/medium.png", sdlx::Font::AZ09, true);
@@ -16,27 +16,38 @@ ScrollList::ScrollList(const int w, const int h) : _item_h(1), _client_w(64), _c
 	_item_h = _font.getHeight() + 3;
 }
 
+void ScrollList::add(const std::string &item) {
+	_list.push_back(item);
+}
+
+
 void ScrollList::tick(const float dt) {
+	if (_list.empty() || _item_h == 0)
+		return;
+	
 	int scroll_marg = _client_h / 3;
 	int yp = _current_item * _item_h;
 	if (_vel != 0) {
-		if (math::abs((int)(math::max(yp - _client_h / 2, 0) - _pos)) < _item_h)
+		if (math::abs((int)(math::max<int>(yp - _client_h / 2, 0) - _pos)) < _item_h)
 			_vel = 0;
 	}
+
 	if (yp < _pos + scroll_marg || yp > _pos + _client_h - scroll_marg) {
-		int dpos = (int)(math::max(yp - _client_h / 2, 0) - _pos);
-		_vel = math::max(math::abs(dpos), 120) * math::sign<int>(dpos);
+		int dpos = (int)(math::max<int>(yp - _client_h / 2, 0) - _pos);
+		_vel = 120 * math::sign<int>(dpos);
 		_pos += _vel * dt;
 	}
+
+	if (_pos  > _list.size() * _item_h - _client_h) {
+		_pos = _list.size() * _item_h - _client_h;
+		_vel = 0;
+	}
+
 	if (_pos < 0) {
 		_pos = 0;
 		_vel = 0;
 	}
-	if (_pos + _client_h > _list.size() * _item_h) {
-		_pos = _list.size() * _item_h - _client_h;
-		_vel = 0;
-	}
-	//LOG_DEBUG(("yp: %d, _pos : %g, (margin: %d)", yp, _pos, scroll_marg));
+
 }
 
 
@@ -50,8 +61,8 @@ void ScrollList::render(sdlx::Surface &surface, const int x, const int y) {
 	int mx, my;
 	_background.getMargins(mx, my);
 	
-	_client_h = _background.h - my * 2;
 	_client_w = _background.w - mx * 2;
+	_client_h = _background.h - my * 2;
 
 // scrollers' area
 
@@ -62,17 +73,18 @@ void ScrollList::render(sdlx::Surface &surface, const int x, const int y) {
 	surface.copyFrom(*_scrollers, sdlx::Rect(0, 0, scroller_w, scroller_h), x + (int)_up_area.x, y + (int)_up_area.y);
 	_down_area = sdlx::Rect(_up_area.x, my + _client_h - scroller_h, scroller_w, scroller_h);
 	surface.copyFrom(*_scrollers, sdlx::Rect(scroller_w, 0, scroller_w, scroller_h), x + (int)_down_area.x, y + (int)_down_area.y);
-	_items_area = sdlx::Rect(mx, my, _client_w, _client_h);
+	_items_area = sdlx::Rect(mx, my, _client_w - 2 * mx, _client_h);
 
 //main list
 	
-	surface.setClipRect(sdlx::Rect(x + mx, y + my, _client_w, _client_h));
+	surface.setClipRect(sdlx::Rect(x + mx, y + my, _items_area.w, _items_area.h));
 
 	assert(_client_h > 0);
 	int p = ((int)_pos) / _item_h;
 	int n = p + (_client_h - 1) / _item_h + 2;
 	if (n > (int)_list.size()) 
 		n = _list.size();
+	assert(p>= 0 && p < (int)_list.size());
 	
 	int yp = my + y - ((int)_pos) % _item_h;
 	for(; p < n; ++p) {
@@ -112,14 +124,17 @@ bool ScrollList::onMouse(const int button, const bool pressed, const int x, cons
 	
 	if (!pressed || button == SDL_BUTTON_MIDDLE) //skip accidental wheel clicks
 		return false;
+
+	int mx, my;
+	_background.getMargins(mx, my);
 	
 	if (_items_area.in(x, y)) {
 		if (button == SDL_BUTTON_WHEELUP)
 			goto up;
 		if (button == SDL_BUTTON_WHEELDOWN)
 			goto down;
-		
-		int item = (y + (int)_pos) / _item_h;
+		//LOG_DEBUG(("%d %d -> %d", x, y, y + (int)_pos - my));
+		int item = (y - my + (int)_pos) / _item_h;
 		if (item >= 0 && item < (int)_list.size())
 			_current_item = item;
 		return true;
