@@ -14,5 +14,5 @@ StartServerMenu::StartServerMenu(const int w, const int h) : _w(w), _h(h) {
 		add(r, upper_box);
 		upper_box = NULL;
 	} CATCH("StartServerMenu", {delete upper_box; throw; });
-	add(sdlx::Rect(64, 128, w - 128, h - 128), new MapPicker(w, h));
+	add(sdlx::Rect(0, 128, w, h - 128), new MapPicker(w, h - 128));
 }
