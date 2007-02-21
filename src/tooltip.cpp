@@ -64,7 +64,7 @@ Tooltip::Tooltip(const std::string &_text) {
 
 	for(i = 0; i < words.size(); ) {
 		int l, line_size = 0;
-		for(l = 0; l < xsize && i < words.size(); l += lens[i], ++i) {
+		for(l = 0; l <= xsize && i < words.size(); l += lens[i], ++i) {
 			line_size += font->render(NULL, 0, 0, words[i] + " ");
 		}
 		if (line_size > width)
