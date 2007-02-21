@@ -119,8 +119,11 @@ const int Font::render(sdlx::Surface *window, const int x, const int y, const st
 		switch(_type) {
 		case Ascii:
 			c -= 32;
+			if (c * fw >= _surface->getWidth())
+				c = toupper(c) - 32;
 			if (c < 0) 
 				continue;
+				
 		break;
 		case AZ09:
 			if (c == ' ')
