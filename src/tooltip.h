@@ -3,6 +3,7 @@
 
 #include "sdlx/surface.h"
 #include <vector>
+#include "menu/box.h"
 
 class Tooltip {
 public: 
@@ -13,6 +14,7 @@ public:
 private: 
 	sdlx::Surface _surface;
 	std::vector<int> _lines;
+	Box _background;
 };
 
 #endif

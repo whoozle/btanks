@@ -19,6 +19,7 @@
 #include "player_slot.h"
 #include "world.h"
 #include "controls/control_method.h"
+#include "tooltip.h"
 
 PlayerSlot::PlayerSlot() : 
 id(-1), control_method(NULL), need_sync(false), remote(false), trip_time(10), visible(false), 
@@ -70,6 +71,13 @@ void PlayerSlot::clear() {
 	remote = false;
 	frags = 0;
 	reserved = false;
+	
+	checkpoints_reached.clear();
+	hints_reached.clear();
+	while(!tooltips.empty()) {
+		delete tooltips.front().second;
+		tooltips.pop();
+	}
 }
 
 PlayerSlot::~PlayerSlot() {

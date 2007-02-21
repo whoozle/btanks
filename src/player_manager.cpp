@@ -26,6 +26,8 @@
 #include "resource_manager.h"
 #include "version.h"
 #include "game.h"
+#include "tooltip.h"
+#include "i18n.h"
 
 #include "controls/keyplayer.h"
 #include "controls/joyplayer.h"
@@ -394,6 +396,8 @@ void IPlayerManager::updatePlayers() {
 			for(size_t h = 0; h < hn ; ++h) {
 				if (_hints[h].first.in(player_pos.x, player_pos.y) && slot.hints_reached.find(h) == slot.hints_reached.end()) {
 					LOG_DEBUG(("player[%d] hint %d reached.", i, h));
+					GET_CONFIG_VALUE("engine.tooltip-duration", float, td, 3);
+					slot.tooltips.push(PlayerSlot::Tooltips::value_type(td, new Tooltip(I18n->get(_hints[h].second.first, _hints[h].second.second))));
 					slot.hints_reached.insert(h);
 				}
 			}
@@ -592,9 +596,9 @@ void IPlayerManager::addCheckpoint(const v2<int> &position, const v2<int> &size)
 	_checkpoints.push_back(sdlx::Rect(position.x, position.y, size.x, size.y));
 }
 
-void IPlayerManager::addHint(const v2<int> &position, const v2<int> &size, const std::string &name) {
-	LOG_DEBUG(("adding hint '%s' at %d %d (%dx%d)", name.c_str(), position.x, position.y, size.x, size.y));
-	_hints.push_back(Hints::value_type(sdlx::Rect(position.x, position.y, size.x, size.y), name));
+void IPlayerManager::addHint(const v2<int> &position, const v2<int> &size, const std::string &area, const std::string &name) {
+	LOG_DEBUG(("adding hint '%s'(area: '%s') at %d %d (%dx%d)", name.c_str(), area.c_str(), position.x, position.y, size.x, size.y));
+	_hints.push_back(Hints::value_type(sdlx::Rect(position.x, position.y, size.x, size.y), std::pair<std::string, std::string>(area, name)));
 }
 
 
@@ -834,6 +838,16 @@ void IPlayerManager::tick(const float now, const float dt) {
 		
 		slot.map_pos += slot.map_vel * math::min<float>(10 * dt, 1);
 		//slot.map_pos = slot.map_dst_pos;
+		
+		//VALIDATING TOOLTIPS
+		PlayerSlot::Tooltips & tooltips = slot.tooltips;
+		if (!tooltips.empty()) {
+			tooltips.front().first -= dt;
+			if (tooltips.front().first < 0) {
+				delete tooltips.front().second;
+				tooltips.pop();
+			}
+		}
 	}
 
 	validateViewports();
@@ -869,6 +883,13 @@ void IPlayerManager::render(sdlx::Surface &window, const int vx, const int vy) {
 					pos.y -= (int)slot.map_pos.y;
 					window.fillRect(pos, window.mapRGBA(0, 0, 255, 32));
 				}
+			}
+			
+			if (!slot.tooltips.empty()) {
+				Tooltip *t = slot.tooltips.front().second;
+				int w, h;
+				t->getSize(w, h);
+				t->render(window, slot.viewport.x, slot.viewport.h - h);
 			}
 	
 			slot.viewport.x -= vx;

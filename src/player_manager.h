@@ -61,7 +61,7 @@ public:
 
 	void addSlot(const v2<int> &position);
 	void addCheckpoint(const v2<int> &position, const v2<int> &size);
-	void addHint(const v2<int> &position, const v2<int> &size, const std::string &name);
+	void addHint(const v2<int> &position, const v2<int> &size, const std::string &area, const std::string &name);
 
 	PlayerSlot &getSlot(const unsigned int idx);
 	const PlayerSlot &getSlot(const unsigned int idx) const;
@@ -116,7 +116,7 @@ private:
 	int _my_idx;
 	std::vector<PlayerSlot> _players;
 	std::vector<sdlx::Rect> _checkpoints;
-	typedef std::vector<std::pair<sdlx::Rect, std::string> > Hints; 
+	typedef std::vector<std::pair<sdlx::Rect, std::pair<std::string, std::string> > > Hints; 
 	Hints _hints;
 
 	float _trip_time;

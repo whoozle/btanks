@@ -33,12 +33,15 @@ Tooltip::Tooltip(const std::string &_text) {
 		lens[i] = l;
 		lens_dump += mrt::formatString("%s%u", (i == 0)?"":", ", l);
 	}
+	
+	_background.init("menu/background_box.png", 200, 60);
 }
 
 void Tooltip::render(sdlx::Surface &surface, const int x, const int y) {
-	
+	_background.render(surface, x, y);
 }
 
 void Tooltip::getSize(int &w, int &h) {
-	
+	w = _background.w;
+	h = _background.h;
 }

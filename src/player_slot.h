@@ -21,6 +21,7 @@
 
 #include <string>
 #include <set>
+#include <queue>
 
 #include "mrt/serializable.h"
 #include "math/v2.h"
@@ -31,6 +32,7 @@
 
 class Object;
 class ControlMethod;
+class Tooltip;
 
 class PlayerSlot : public mrt::Serializable {
 public:
@@ -64,6 +66,9 @@ public:
 	bool reserved;
 	
 	std::set<int> checkpoints_reached, hints_reached;
+	
+	typedef std::queue<std::pair<float, Tooltip *> > Tooltips;
+	Tooltips tooltips;
 	
 	virtual void serialize(mrt::Serializator &s) const;
 	virtual void deserialize(const mrt::Serializator &s);

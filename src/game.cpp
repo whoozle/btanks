@@ -480,7 +480,7 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 				} else if (type == "hint") {
 					if (res.size() < 2)
 						throw_ex(("hint must contain name."));
-					PlayerManager->addHint(pos, size, "hints/" + name + "/" + res[1]);
+					PlayerManager->addHint(pos, size, "hints/" + name, res[1]);
 				} else assert(0);
 			} 
 		}
