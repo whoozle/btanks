@@ -2,7 +2,7 @@
 #include "mrt/exception.h"
 #include <assert.h>
 
-SINGLETON(I18n, II18n);
+IMPLEMENT_SINGLETON(I18n, II18n);
 
 II18n::II18n() {}
 

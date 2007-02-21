@@ -11,9 +11,10 @@
 Tooltip::Tooltip(const std::string &_text) {
 	std::string text;
 	bool space = true;
-	for(size_t i = 0; i < _text.size(); ++i) {
+	size_t i;
+	for(i = 0; i < _text.size(); ++i) {
 		const int c = _text[i];
-		const bool c_space = isblank(c) || isspace(c);
+		const bool c_space = c == ' ' || c == '\n' || c == '\r' || c == '\t' || c == '\v' || c == '\f';
 		//LOG_DEBUG(("%d '%c': %s %s", c, c, space?"true":"false", c_space?"true":"false"));
 		if (space) {
 			if (c_space)
@@ -38,7 +39,7 @@ Tooltip::Tooltip(const std::string &_text) {
 
 	std::string lens_dump;
 	size_t sum = 0;
-	for(size_t i = 0; i < words.size(); ++i) {
+	for(i = 0; i < words.size(); ++i) {
 		unsigned int l = words[i].size();
 		lens[i] = l;
 		sum += l;
@@ -60,8 +61,8 @@ Tooltip::Tooltip(const std::string &_text) {
 
 	int width = 0;
 	std::deque<size_t> lines;
-	
-	for(size_t i = 0; i < words.size(); ) {
+
+	for(i = 0; i < words.size(); ) {
 		int l, line_size = 0;
 		for(l = 0; l < xsize && i < words.size(); l += lens[i], ++i) {
 			line_size += font->render(NULL, 0, 0, words[i] + " ");
@@ -70,6 +71,8 @@ Tooltip::Tooltip(const std::string &_text) {
 			width = line_size;
 		lines.push_back(i);
 	}
+
+
 	LOG_DEBUG(("line width: %d, lines: %u", width, lines.size()));
 	_background.init("menu/background_box.png", width + 2 * mx, line_h * lines.size() + 2 * my);
 	
@@ -77,12 +80,13 @@ Tooltip::Tooltip(const std::string &_text) {
 	_surface.convertAlpha();
 	
 	int yp = my;
-	size_t i = 0;
+	i = 0;
 	while(!lines.empty()) {
 		int xp = mx;
 		size_t n = lines.front();
-		for(; i < n; ++i) {
+		while(i < n) {
 			xp += font->render(_surface, xp, yp, words[i] + " ");
+			++i;
 		} 
 		yp += line_h;
 		lines.pop_front();
