@@ -13,16 +13,19 @@ Tooltip::Tooltip(const std::string &_text) {
 	bool space = true;
 	for(size_t i = 0; i < _text.size(); ++i) {
 		const int c = _text[i];
-		const bool c_space = isspace(c) != 0;
+		const bool c_space = isblank(c) || isspace(c);
+		//LOG_DEBUG(("%d '%c': %s %s", c, c, space?"true":"false", c_space?"true":"false"));
 		if (space) {
 			if (c_space)
 				continue;
 			space = false;
 			text += c;
 		} else {
-			if (!c_space)
-				space = false;
-			text += c;
+			if (c_space) {
+				space = true;
+				text += ' ';
+			} else 
+				text += c;
 		}
 	}
 	
