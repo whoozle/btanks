@@ -395,7 +395,8 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 		const std::string &type = res[0];
 		
 		if (type != "spawn" && type != "object" && type != "waypoint" && 
-			type != "edge" && type != "config" && type != "checkpoint")
+			type != "edge" && type != "config" && type != "checkpoint" &&
+			type != "hint")
 			throw_ex(("unsupported line: '%s'", i->first.c_str()));
 		
 		if (!spawn_objects && type != "waypoint" && type != "edge")
@@ -465,8 +466,8 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 				var.fromString(value[1]);
 
 				Config->setOverride(res[1], var);
-			} else if (type == "checkpoint") {
-				LOG_DEBUG(("checkpoint %s %s", i->first.c_str(), i->second.c_str()));
+			} else if (type == "checkpoint" || type == "hint") {
+				LOG_DEBUG(("%s %s %s", type.c_str(), i->first.c_str(), i->second.c_str()));
 				std::vector<std::string> value;
 				mrt::split(value, i->second, ":");
 				if (value.size() < 2)
@@ -474,8 +475,14 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 				v2<int> pos, size;
 				coord2v(pos, value[0]);
 				coord2v(size, value[1]);
-				PlayerManager->addCheckpoint(pos, size);
-			}
+				if (type == "checkpoint") {
+					PlayerManager->addCheckpoint(pos, size);
+				} else if (type == "hint") {
+					if (res.size() < 2)
+						throw_ex(("hint must contain name."));
+					PlayerManager->addHint(pos, size, "hints/" + name + "/" + res[1]);
+				} else assert(0);
+			} 
 		}
 	}
 	LOG_DEBUG(("checking waypoint graph..."));

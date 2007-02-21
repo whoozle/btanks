@@ -569,6 +569,7 @@ void IPlayerManager::clear() {
 	LOG_DEBUG(("cleaning up players..."));
 	_players.clear();	
 	_checkpoints.clear();
+	_hints.clear();
 }
 
 void IPlayerManager::addSlot(const v2<int> &position) {
@@ -581,6 +582,12 @@ void IPlayerManager::addCheckpoint(const v2<int> &position, const v2<int> &size)
 	LOG_DEBUG(("adding checkpoint at %d %d (%dx%d)", position.x, position.y, size.x, size.y));
 	_checkpoints.push_back(sdlx::Rect(position.x, position.y, size.x, size.y));
 }
+
+void IPlayerManager::addHint(const v2<int> &position, const v2<int> &size, const std::string &name) {
+	LOG_DEBUG(("adding hint '%s' at %d %d (%dx%d)", name.c_str(), position.x, position.y, size.x, size.y));
+	_hints.push_back(Hints::value_type(sdlx::Rect(position.x, position.y, size.x, size.y), name));
+}
+
 
 PlayerSlot &IPlayerManager::getSlot(const unsigned int idx) {
 	return _players[idx];

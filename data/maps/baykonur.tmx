@@ -120,6 +120,7 @@
   <property name="spawn:4" value="@33,49"/>
   <property name="spawn:3" value="@35,49"/>
   <property name="spawn:2" value="@34,49"/>
+  <property name="hint:start" value="@34,49:@3,3" />
   <property name="object:impassable-static-corpse:dead-cyan-car:2" value="1168,511,200"/>
   <property name="object:impassable-static-corpse:dead-cyan-car:1" value="3010,2744"/>
   <property name="config:multiplayer.restrict-start-vehicle" value="string:machinegunner-player"/>
