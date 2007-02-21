@@ -243,14 +243,14 @@ const bool IWorld::collides(Object *obj, const v2<int> &position, Object *o, con
 				if (obj->isDead() && obj->classname == "player") {
 					PlayerManager->onPlayerDeath(obj, o);
 				}
-			/*
+			
 				if ( o->isDead() || obj->isDead() || obj->impassability == 0 || o->impassability == 0) {
 					//o->_velocity_fadeout = o_vf;
 					//obj->_velocity_fadeout = obj_vf;
 					//_collision_map.insert(CollisionMap::value_type(key, false));
-					return true;
+					return false; //the most common case is the bullet which collides with object.
 				}
-			*/
+			
 			}
 		}
 		//LOG_DEBUG(("collision %s <-> %s: %s", obj->classname.c_str(), o->classname.c_str(), collides?"true":"false"));
