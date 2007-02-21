@@ -396,9 +396,9 @@ void IPlayerManager::updatePlayers() {
 			for(size_t h = 0; h < hn ; ++h) {
 				if (_hints[h].first.in(player_pos.x, player_pos.y) && slot.hints_reached.find(h) == slot.hints_reached.end()) {
 					LOG_DEBUG(("player[%d] hint %d reached.", i, h));
-					GET_CONFIG_VALUE("engine.tooltip-speed", float, td, 0.3);
+					GET_CONFIG_VALUE("engine.tooltip-speed", float, td, 20);
 					const std::string text = I18n->get(_hints[h].second.first, _hints[h].second.second);
-					slot.tooltips.push(PlayerSlot::Tooltips::value_type(td * text.size(), new Tooltip(text)));
+					slot.tooltips.push(PlayerSlot::Tooltips::value_type(text.size() / td, new Tooltip(text)));
 					slot.hints_reached.insert(h);
 				}
 			}
