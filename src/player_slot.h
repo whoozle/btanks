@@ -63,7 +63,7 @@ public:
 	int frags;
 	bool reserved;
 	
-	std::set<int> checkpoints_reached;
+	std::set<int> checkpoints_reached, hints_reached;
 	
 	virtual void serialize(mrt::Serializator &s) const;
 	virtual void deserialize(const mrt::Serializator &s);

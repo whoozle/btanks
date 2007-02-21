@@ -387,13 +387,21 @@ void IPlayerManager::updatePlayers() {
 		
 		Object *o = slot.getObject();
 		if (o != NULL /* && !o->isDead() */) {
-			//check for checkpoints ;)
-			if (isClient())
-				continue;
-			
 			//server or split screen
 			v2<int> player_pos;
 			o->getCenterPosition(player_pos);
+			size_t hn = _hints.size();
+			for(size_t h = 0; h < hn ; ++h) {
+				if (_hints[h].first.in(player_pos.x, player_pos.y) && slot.hints_reached.find(h) == slot.hints_reached.end()) {
+					LOG_DEBUG(("player[%d] hint %d reached.", i, h));
+					slot.hints_reached.insert(h);
+				}
+			}
+
+			if (isClient())
+				continue;
+			
+			//check for checkpoints ;)
 			
 			size_t cn = _checkpoints.size();
 			for(size_t c = 0; c < cn; ++c) {
@@ -416,6 +424,7 @@ void IPlayerManager::updatePlayers() {
 					}
 				}
 			}
+			
 			continue;
 		}
 			
@@ -845,6 +854,22 @@ void IPlayerManager::render(sdlx::Surface &window, const int vx, const int vy) {
 			slot.viewport.y += vy;
 	
 			World->render(window, sdlx::Rect((int)slot.map_pos.x, (int)slot.map_pos.y, slot.viewport.w, slot.viewport.h),  slot.viewport);
+
+			GET_CONFIG_VALUE("engine.show-special-zones", bool, ssz, false);
+			if (ssz) {		
+				for(size_t i = 0; i < _checkpoints.size(); ++i) {
+					sdlx::Rect pos = _checkpoints[i];
+					pos.x -= (int)slot.map_pos.x;
+					pos.y -= (int)slot.map_pos.y;
+					window.fillRect(pos, window.mapRGBA(0, 255, 0, 32));
+				}
+				for(size_t i = 0; i < _hints.size(); ++i) {
+					sdlx::Rect pos = _hints[i].first;
+					pos.x -= (int)slot.map_pos.x;
+					pos.y -= (int)slot.map_pos.y;
+					window.fillRect(pos, window.mapRGBA(0, 0, 255, 32));
+				}
+			}
 	
 			slot.viewport.x -= vx;
 			slot.viewport.y -= vy;
