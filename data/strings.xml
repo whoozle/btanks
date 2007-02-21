@@ -7,7 +7,8 @@
 		<string id="be-careful">Shhh... Be careful!</string>
 		<area id="baykonur">
 			<string id="start">This is your first cooperative mission, comrade. :)
-				Look at your radar, there's red cross around upper-right corner of the map. 
+				Look at your radar (you can switch radar on and off with the TAB key) , 
+				there's red cross around upper-right corner of the map. 
 				This is spaceport Baykonur. You must destroy it by any means.
 				Quickly run to backyard at your right and grab any vehicle you want.
 			</string>
