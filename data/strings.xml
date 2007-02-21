@@ -1,0 +1,16 @@
+<strings>
+	<area id="menu">
+		<string id="start-game">START GAME</string>
+		<string id="start-game" lang="ru">NACHAT IGRU</string>
+	</area>
+	<area id="hints">
+		<string id="be-careful">Shhh... Be careful!</string>
+		<area id="baykonur">
+			<string id="start">This is your first cooperative mission, comrade. :)
+				Look at your radar, there's red cross around upper-right corner of the map. 
+				This is spaceport Baykonur. You must destroy it by any means.
+				Quickly run to backyard at your right and grab any vehicle you want.
+			</string>
+		</area>
+	</area>
+</strings>

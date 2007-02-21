@@ -58,6 +58,7 @@
 
 #include "math/v3.h"
 #include "menu/menu.h"
+#include "i18n.h"
 
 IMPLEMENT_SINGLETON(Game, IGame)
 
@@ -73,6 +74,7 @@ void IGame::init(const int argc, char *argv[]) {
 	srand(time(NULL));
 	
 	Config->load("bt.xml");
+
 	
 	{
 		//setup some defaults
@@ -114,7 +116,6 @@ void IGame::init(const int argc, char *argv[]) {
 	}
 
 	GET_CONFIG_VALUE("engine.show-fps", bool, show_fps, true);
-	GET_CONFIG_VALUE("engine.data-directory", std::string, data_dir, "data");
 	
 	_show_fps = show_fps;
 
@@ -122,10 +123,11 @@ void IGame::init(const int argc, char *argv[]) {
 	GET_CONFIG_VALUE("engine.sound.disable-sound", bool, no_sound, false);
 	GET_CONFIG_VALUE("engine.sound.disable-music", bool, no_music, false);
 	
-	std::string address;
+	std::string address, lang;
 	
 	for(int i = 1; i < argc; ++i) {
 		if (strncmp(argv[i], "--connect=", 10) == 0) { address = argv[i] + 10; _autojoin = true; }
+		else if (strncmp(argv[i], "--lang=", 7) == 0) { lang = argv[i] + 7; }
 		else if (strcmp(argv[i], "--no-sound") == 0) { no_sound = true; no_music = true; }
 		else if (strcmp(argv[i], "--help") == 0) { 
 			printf(
@@ -137,6 +139,10 @@ void IGame::init(const int argc, char *argv[]) {
 		}
 
 	}
+	
+	GET_CONFIG_VALUE("engine.data-directory", std::string, data_dir, "data");
+
+	I18n->load(data_dir + "/strings.xml", lang);
 	
 	
 	Window::init(argc, argv);

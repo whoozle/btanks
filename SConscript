@@ -41,7 +41,7 @@ bt_sources = 	[
 	'src/main.cpp', 'src/var.cpp', 'src/config.cpp', 
 	
 	'src/player_slot.cpp', 'src/hud.cpp', 'src/console.cpp',
-	'src/game.cpp',  'src/window.cpp', 
+	'src/i18n.cpp', 'src/game.cpp', 'src/window.cpp', 
 	'src/credits.cpp', 'src/cheater.cpp', 
 
 	vobj
