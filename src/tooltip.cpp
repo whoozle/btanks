@@ -74,7 +74,7 @@ Tooltip::Tooltip(const std::string &_text) {
 
 
 	LOG_DEBUG(("line width: %d, lines: %u", width, lines.size()));
-	_background.init("menu/background_box.png", width + 2 * mx, line_h * lines.size() + 2 * my);
+	_background.init("menu/background_box.png", width +  mx, line_h * lines.size() +  my);
 	
 	_surface.createRGB(_background.w, _background.h, SDL_SRCALPHA);
 	_surface.convertAlpha();
