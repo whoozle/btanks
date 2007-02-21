@@ -5,7 +5,7 @@
 MapDetails::MapDetails(const int w, const int h) {
 	_background.init("menu/background_box.png", w, h);
 	GET_CONFIG_VALUE("engine.data-directory", std::string, data_dir, "data");
-	_font.load(data_dir + "/font/small.png", sdlx::Font::AZ09, true);
+	_font.load(data_dir + "/font/small.png", sdlx::Font::Ascii, true);
 }
 
 void MapDetails::set(const std::string &base, const std::string &map, const std::string &comments) {

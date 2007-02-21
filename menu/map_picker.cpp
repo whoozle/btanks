@@ -29,7 +29,7 @@ void MapPicker::scan(const std::string &path) {
 void MapPicker::tick(const float dt) {
 	if (_index != _list->getPosition()) {
 		_index = _list->getPosition();
-		_details->set(_maps[_index].first, _maps[_index].second, "blah blah blah");
+		_details->set(_maps[_index].first, _maps[_index].second, "BLAH!!");
 	}
 	Container::tick(dt);
 }
