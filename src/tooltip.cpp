@@ -46,8 +46,8 @@ Tooltip::Tooltip(const std::string &_text) {
 		lens_dump += mrt::formatString("%s%u", (i == 0)?"":", ", l);
 	}
 	LOG_DEBUG(("sum: %u, words: %s", sum, lens_dump.c_str()));
-	int cell = (int)(sqrt(sum / 15.0) + 1);
-	int xsize = cell * 5;
+	int cell = (int)(sqrt(sum / 2.0) + 0.5);
+	int xsize = cell * 2;
 	LOG_DEBUG(("approx size : %dx%d", xsize, cell * 3));
 
 	const sdlx::Font *font = ResourceManager->loadFont("small", false);
