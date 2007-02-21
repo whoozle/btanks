@@ -3,7 +3,7 @@
 #include <ctype.h>
 #include "config.h"
 
-TextItem::TextItem(sdlx::Font &font, const std::string &config_name, const std::string &name, const std::string &value): 
+TextItem::TextItem(const sdlx::Font *font, const std::string &config_name, const std::string &name, const std::string &value): 
 MenuItem(font, name, "text", value, value), _config_name(config_name), _active(false)
 {}
 

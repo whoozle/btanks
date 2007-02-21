@@ -28,6 +28,7 @@
 
 namespace sdlx {
 	class Surface;
+	class Font;
 	class CollisionMap;
 }
 
@@ -58,6 +59,7 @@ public:
 	const sdlx::Surface *loadSurface(const std::string &id);
 	const sdlx::Surface *getSurface(const std::string &id) const;
 	const sdlx::CollisionMap *getCollisionMap(const std::string &id) const;
+	const sdlx::Font *loadFont(const std::string &id, const bool alpha);
 	
 	void createAlias(const std::string &name, const std::string &classname);
 	
@@ -82,6 +84,9 @@ private:
 
 	typedef std::map<const std::string, sdlx::Surface *> SurfaceMap;
 	SurfaceMap _surfaces;
+
+	typedef std::map<const std::pair<std::string, bool>, sdlx::Font *> FontMap;
+	FontMap _fonts;
 
 	typedef std::map<const std::string, sdlx::CollisionMap *> CollisionMap;
 	CollisionMap _cmaps;

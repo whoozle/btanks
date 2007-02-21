@@ -6,7 +6,7 @@
 
 class VehicleItem : public MenuItem {
 public: 
-	VehicleItem(sdlx::Font &font, const std::string &name, const std::string &subkey);
+	VehicleItem(const sdlx::Font *font, const std::string &name, const std::string &subkey);
 	virtual void onClick();
 	virtual const bool onKey(const SDL_keysym sym);
 	void render(sdlx::Surface &dst, const int x, const int y);

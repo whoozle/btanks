@@ -1,11 +1,12 @@
 #include "map_details.h"
 #include "mrt/exception.h"
 #include "config.h"
+#include "resource_manager.h"
 
 MapDetails::MapDetails(const int w, const int h) {
 	_background.init("menu/background_box.png", w, h);
 	GET_CONFIG_VALUE("engine.data-directory", std::string, data_dir, "data");
-	_font.load(data_dir + "/font/small.png", sdlx::Font::Ascii, true);
+	_font = ResourceManager->loadFont("small", true);
 }
 
 void MapDetails::set(const std::string &base, const std::string &map, const std::string &comments) {
@@ -28,7 +29,7 @@ void MapDetails::render(sdlx::Surface &surface, const int x, const int y) {
 		surface.copyFrom(_screenshot, x + xs, y + yp);
 		yp += _screenshot.getHeight() + 16;
 	}
-	_font.render(surface, x + mx, y + yp, _comments);
+	_font->render(surface, x + mx, y + yp, _comments);
 }
 
 bool MapDetails::onKey(const SDL_keysym sym) {

@@ -19,7 +19,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include "sdlx/font.h"
 #include "sdlx/rect.h"
 #include <sigc++/sigc++.h>
 #include <vector>
@@ -28,6 +27,10 @@
 #include <deque>
 #include "box.h"
 #include "math/v2.h"
+
+namespace sdlx {
+	class Font;
+}
 
 class MenuItem;
 class BaseMenu;
@@ -58,7 +61,7 @@ private:
 	void recalculateSizes();
 
 	bool _active;
-	sdlx::Font _font;
+	const sdlx::Font *_font;
 	
 	typedef std::vector<MenuItem *> ItemList;
 	typedef std::map<const std::string, ItemList> MenuMap;

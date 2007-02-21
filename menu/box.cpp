@@ -82,6 +82,14 @@ void Box::render(sdlx::Surface &surface, const int x0, const int y0) {
 	
 }
 
+void Box::copyTo(sdlx::Surface &surface, const int x, const int y) {
+	//terrible terrible hack. do not try it at home.
+	const_cast<sdlx::Surface *>(_surface)->setAlpha(0,0);
+	render(surface, x, y);
+	const_cast<sdlx::Surface *>(_surface)->setAlpha(0);
+}
+
+
 void Box::renderHL(sdlx::Surface &surface, const int x, const int y) {
 	const sdlx::Surface *bg = _highlight;
 	if (bg == NULL)

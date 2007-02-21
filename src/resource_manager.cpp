@@ -20,6 +20,7 @@
 #include "resource_manager.h"
 #include "mrt/logger.h"
 #include "sdlx/surface.h"
+#include "sdlx/font.h"
 #include "sdlx/c_map.h"
 #include "object.h"
 #include "animation_model.h"
@@ -264,6 +265,26 @@ const sdlx::Surface *IResourceManager::loadSurface(const std::string &id) {
 		} CATCH("loading surface", { delete s; throw; });
 	return s;
 }
+
+const sdlx::Font *IResourceManager::loadFont(const std::string &name, const bool alpha) {
+	std::pair<std::string, bool> id(name, alpha);
+	FontMap::iterator i = _fonts.find(id);
+	if (i != _fonts.end() && i->second != NULL)
+		return i->second;
+	
+	GET_CONFIG_VALUE("engine.data-directory", std::string, data_dir, "data");
+
+	const std::string fname = data_dir + "/font/" + name + ".png";
+	sdlx::Font *f = NULL;
+		TRY {
+			f = new sdlx::Font;
+			f->load(fname, sdlx::Font::Ascii, alpha);
+			LOG_DEBUG(("loaded font '%s' from '%s'", name.c_str(), fname.c_str()));
+			_fonts[id] = f;
+		} CATCH("loading font", { delete f; throw; });
+	return f;
+}
+
 
 const sdlx::CollisionMap *IResourceManager::getCollisionMap(const std::string &id) const  {
 	CollisionMap::const_iterator i = _cmaps.find(id);

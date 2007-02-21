@@ -1,6 +1,7 @@
 #include "tooltip.h"
 #include "mrt/logger.h"
 #include <ctype.h>
+#include "menu/box.h"
 
 Tooltip::Tooltip(const std::string &_text) {
 	std::string text;
@@ -33,15 +34,20 @@ Tooltip::Tooltip(const std::string &_text) {
 		lens[i] = l;
 		lens_dump += mrt::formatString("%s%u", (i == 0)?"":", ", l);
 	}
+	LOG_DEBUG(("words: %s", lens_dump.c_str()));
 	
-	_background.init("menu/background_box.png", 200, 60);
+	Box background;
+	background.init("menu/background_box.png", 200, 60);
+	_surface.createRGB(background.w, background.h, SDL_SRCALPHA);
+	_surface.convertAlpha();
+	background.copyTo(_surface, 0, 0);
 }
 
 void Tooltip::render(sdlx::Surface &surface, const int x, const int y) {
-	_background.render(surface, x, y);
+	surface.copyFrom(_surface, x, y);
 }
 
 void Tooltip::getSize(int &w, int &h) {
-	w = _background.w;
-	h = _background.h;
+	w = _surface.getWidth();
+	h = _surface.getHeight();
 }

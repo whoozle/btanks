@@ -17,6 +17,7 @@ public:
 	void init(const std::string &tile, const std::string &highlight_tile, int w, int h);
 	
 	virtual void render(sdlx::Surface &surface, const int x, const int y);
+	void copyTo(sdlx::Surface &surface, const int x, const int y);
 	virtual void renderHL(sdlx::Surface &surface, const int x, const int y);
 	virtual ~Box() {}
 	

@@ -19,7 +19,7 @@ private:
 	Box _background;
 	
 	sdlx::Surface _screenshot;
-	sdlx::Font _font;
+	const sdlx::Font *_font;
 	std::string _comments;
 };
 

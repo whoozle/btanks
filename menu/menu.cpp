@@ -30,13 +30,14 @@
 #include "mrt/logger.h"
 #include "mrt/exception.h"
 #include "config.h"
+#include "resource_manager.h"
 
 MainMenu::MainMenu(const int w, const int h) : _active_item(0) {
 	_active = true;
 	
 	LOG_DEBUG(("loading font..."));
 	GET_CONFIG_VALUE("engine.data-directory", std::string, data_dir, "data");
-	_font.load(data_dir + "/font/big.png", sdlx::Font::Ascii, false);
+	_font = ResourceManager->loadFont("big", false);
 
 	LOG_DEBUG(("loading background..."));
 	_background.init("menu/background_box.png", "menu/highlight_big.png", 407, 338);

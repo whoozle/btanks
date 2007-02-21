@@ -22,7 +22,7 @@
 #include "mrt/logger.h"
 #include "math/binary.h"
 
-MenuItem::MenuItem(sdlx::Font &font, const std::string &name, const std::string &type, const std::string &text, const std::string &value) : 
+MenuItem::MenuItem(const sdlx::Font *font, const std::string &name, const std::string &type, const std::string &text, const std::string &value) : 
 	name(name), type(type), 
 	_text(text), _value(value),
 	_font(font)
@@ -38,7 +38,7 @@ const std::string MenuItem::getValue() const {
 void MenuItem::render() {
 	_normal.free();
 
-	_font.render(_normal, (_text.empty())?" ":_text);
+	_font->render(_normal, (_text.empty())?" ":_text);
 	_normal.convertAlpha();
 	_normal.convertToHardware();
 }

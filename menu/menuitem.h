@@ -33,7 +33,7 @@ public:
 	const std::string name;
 	const std::string type;
 	
-	MenuItem(sdlx::Font &font, const std::string &name, const std::string &type, const std::string &text, const std::string &value = std::string());
+	MenuItem(const sdlx::Font *font, const std::string &name, const std::string &type, const std::string &text, const std::string &value = std::string());
 	virtual void render(sdlx::Surface &dst, const int x, const int y);
 	void getSize(int &w, int &h) const;
 
@@ -52,7 +52,7 @@ protected:
 	std::string _text, _value;
 
 private:
-	sdlx::Font & _font;
+	const sdlx::Font * _font;
 	sdlx::Surface _normal;
 };
 

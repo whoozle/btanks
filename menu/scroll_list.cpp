@@ -10,10 +10,10 @@
 ScrollList::ScrollList(const int w, const int h) : _item_h(0), _client_w(64), _client_h(64), _pos(0), _vel(0), _current_item(0) {
 	_background.init("menu/background_box.png", "menu/highlight_medium.png", w, h);
 	GET_CONFIG_VALUE("engine.data-directory", std::string, data_dir, "data");
-	_font.load(data_dir + "/font/medium.png", sdlx::Font::AZ09, true);
+	_font = ResourceManager->loadFont("medium", true);
 	_scrollers = ResourceManager->loadSurface("menu/v_scroller.png");
 
-	_item_h = _font.getHeight() + 3;
+	_item_h = _font->getHeight() + 4;
 }
 
 void ScrollList::add(const std::string &item) {
@@ -90,7 +90,7 @@ void ScrollList::render(sdlx::Surface &surface, const int x, const int y) {
 	for(; p < n; ++p) {
 		if (p == _current_item) 
 			_background.renderHL(surface, x - 3 * mx, yp + _item_h / 2);
-		_font.render(surface, x + mx, yp, _list[p]);
+		_font->render(surface, x + mx, yp, _list[p]);
 		yp += _item_h;
 	}
 

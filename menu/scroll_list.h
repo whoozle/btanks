@@ -22,7 +22,7 @@ private:
 	Box _background;
 	const sdlx::Surface *_scrollers;
 	sdlx::Rect _up_area, _down_area, _items_area;
-	sdlx::Font _font;
+	const sdlx::Font *_font;
 	int _item_h, _client_w, _client_h;
 
 	typedef std::deque<std::string> List;
