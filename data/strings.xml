@@ -12,5 +12,8 @@
 				Quickly run to backyard at your right and grab any vehicle you want.
 			</string>
 		</area>
+		<area id="test">
+			<string id="start">Enjoy this tasty zombies, fry it with your missiles, or let your troppers do it for you!</string>
+		</area>
 	</area>
 </strings>
