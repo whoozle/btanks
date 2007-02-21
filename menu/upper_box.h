@@ -4,8 +4,10 @@
 #include <string>
 #include "box.h"
 #include "control.h"
-#include "sdlx/font.h"
 #include "sdlx/rect.h"
+namespace sdlx {
+	class Font;
+}
 
 class UpperBox : public Control, public Box {
 public: 
@@ -18,7 +20,7 @@ public:
 private: 
 	bool _server;	
 	const sdlx::Surface *_checkbox;
-	sdlx::Font _big, _medium;
+	const sdlx::Font *_big, *_medium;
 	sdlx::Rect _on_area, _off_area;
 };
 
