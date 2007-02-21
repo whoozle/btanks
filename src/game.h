@@ -158,7 +158,7 @@ private:
 	
 	std::string _state;
 	Alarm _state_timer;
-	sdlx::Font _big_font;
+	const sdlx::Font *_big_font;
 	
 	IGame(const IGame &);
 	const IGame& operator=(const IGame &);

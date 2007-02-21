@@ -21,6 +21,7 @@
 #include "math/unary.h"
 #include "math/binary.h"
 #include "sound/mixer.h"
+#include "resource_manager.h"
 
 Credits::Credits() : _w(0), _h(0) {
 	GET_CONFIG_VALUE("engine.data-directory", std::string, data_dir, "data");
@@ -28,10 +29,10 @@ Credits::Credits() : _w(0), _h(0) {
 	GET_CONFIG_VALUE("engine.credits-tune", std::string, tune, "glory.ogg");
 	Mixer->play(data_dir + "/tunes/" + tune, true);
 	
-	_font.load(data_dir + "/font/big.png", sdlx::Font::Ascii, false);
-	_medium_font.load(data_dir + "/font/medium.png", sdlx::Font::AZ09, false);
+	_font = ResourceManager->loadFont("big", false);
+	_medium_font = ResourceManager->loadFont("medium", false);
 	
-	int fh = _font.getHeight(), mfh = _medium_font.getHeight();
+	int fh = _font->getHeight(), mfh = _medium_font->getHeight();
 	
 	std::vector<std::string> lines, lines2; 
 
@@ -76,12 +77,12 @@ Credits::Credits() : _w(0), _h(0) {
 
 	//copy-paste ninja was here ;)
 	for(std::vector<std::string>::const_iterator i = lines.begin(); i != lines.end(); ++i) {
-		unsigned w = _font.render(NULL, 0, 0, *i);
+		unsigned w = _font->render(NULL, 0, 0, *i);
 		if (w > _w)
 			_w = w;
 	}
 	for(std::vector<std::string>::const_iterator i = lines2.begin(); i != lines2.end(); ++i) {
-		unsigned w = _medium_font.render(NULL, 0, 0, *i);
+		unsigned w = _medium_font->render(NULL, 0, 0, *i);
 		if (w > _w)
 			_w = w;
 	}
@@ -92,13 +93,13 @@ Credits::Credits() : _w(0), _h(0) {
 	
 	for(size_t i = 0; i < lines.size(); ++i) {	
 		const std::string &str = lines[i];
-		int w = _font.render(NULL, 0, 0, str);
-		_font.render(_surface, (_w - w) / 2, i * fh, str);
+		int w = _font->render(NULL, 0, 0, str);
+		_font->render(_surface, (_w - w) / 2, i * fh, str);
 	}
 	for(size_t i = 0; i < lines2.size(); ++i) {
 		const std::string &str = lines2[i];
-		int w = _medium_font.render(NULL, 0, 0, str);
-		_medium_font.render(_surface, (_w - w) / 2, lines.size() * fh + i * mfh, str);
+		int w = _medium_font->render(NULL, 0, 0, str);
+		_medium_font->render(_surface, (_w - w) / 2, lines.size() * fh + i * mfh, str);
 	}
 	//copy-paste ninjas have done its evil deed and vanishes.
 	_velocity.x = 2;

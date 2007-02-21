@@ -184,7 +184,7 @@ void IGame::init(const int argc, char *argv[]) {
 	
 	LOG_DEBUG(("initializing hud..."));
 	_hud = new Hud(_window.getWidth(), _window.getHeight());
-	_big_font.load(data_dir + "/font/big.png", sdlx::Font::Ascii);
+	_big_font = ResourceManager->loadFont("big", true);
 	
 
 	LOG_DEBUG(("installing callbacks..."));
@@ -708,9 +708,9 @@ void IGame::run() {
 			_main_menu->render(_window);
 		
 		if (!_state.empty()) {
-			int x = (_window.getWidth() - _big_font.getHeight() /*+- same ;)*/ * _state.size()) / 2;
-			int y = (_window.getHeight() - _big_font.getHeight()) / 2;
-			_big_font.render(_window, x, y, _state);
+			int x = (_window.getWidth() - _big_font->getWidth() /*+- same ;)*/ * _state.size()) / 2;
+			int y = (_window.getHeight() - _big_font->getHeight()) / 2;
+			_big_font->render(_window, x, y, _state);
 		}
 		
 		Console->render(_window);

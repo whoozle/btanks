@@ -30,7 +30,7 @@ public:
 	~Credits();
 private: 
 	unsigned int _w, _h;
-	sdlx::Font _font, _medium_font;
+	const sdlx::Font *_font, *_medium_font;
 	sdlx::Surface _surface;
 	v3<float> _position;
 	v3<float> _velocity;

@@ -24,6 +24,7 @@
 #include "object.h"
 #include "tmx/map.h"
 #include "src/player_manager.h"
+#include "src/resource_manager.h"
 
 static Uint32 index2color(const sdlx::Surface &surface, const unsigned idx, const Uint8 a) {
 	unsigned rgb = idx & 7;
@@ -151,7 +152,7 @@ void Hud::renderMod(const Object *obj, sdlx::Surface &window, int &xp, int &yp, 
 	int count = mod->getCount();
 	if (count == 0) {
 		xp += icon_w;
-		xp += _font.render(window, xp, yp, "  ");
+		xp += _font->render(window, xp, yp, "  ");
 		return;
 	}
 			
@@ -161,19 +162,19 @@ void Hud::renderMod(const Object *obj, sdlx::Surface &window, int &xp, int &yp, 
 	IconMap::const_iterator i = _icons_map.find(name);
 	if (i == _icons_map.end()) {
 		xp += icon_w;
-		xp += _font.render(window, xp, yp, "  ");
+		xp += _font->render(window, xp, yp, "  ");
 		return;
 	}
 	
-	const int font_dy = (icon_h - _font.getHeight()) / 2;
+	const int font_dy = (icon_h - _font->getHeight()) / 2;
 
 	sdlx::Rect src(icon_w * i->second, 0, icon_w, icon_h);
 	window.copyFrom(_icons, src, xp, yp);
 	xp += icon_w;
 	if (count > 0)
-		xp += _font.render(window, xp, yp + font_dy, mrt::formatString("%-2d", count));
+		xp += _font->render(window, xp, yp + font_dy, mrt::formatString("%-2d", count));
 	else 
-		xp += _font.render(window, xp, yp, "  ");
+		xp += _font->render(window, xp, yp, "  ");
 	window.copyFrom(_splitter, xp, yp);
 	xp += _splitter.getWidth();
 }
@@ -189,7 +190,7 @@ void Hud::render(sdlx::Surface &window) const {
 	GET_CONFIG_VALUE("hud.icon.width", int, icon_w, 16);
 	GET_CONFIG_VALUE("hud.icon.height", int, icon_h, 24);
 	
-	const int font_dy = (icon_h - _font.getHeight()) / 2;
+	const int font_dy = (icon_h - _font->getHeight()) / 2;
 
 	int c = 0;
 	for(size_t i = 0; i < n; ++i) {
@@ -210,7 +211,7 @@ void Hud::render(sdlx::Surface &window) const {
 		int xp = slot.viewport.x + xm;
 		int yp = slot.viewport.y + ym;
 
-		xp += _font.render(window, xp, yp + font_dy, hp);	
+		xp += _font->render(window, xp, yp + font_dy, hp);	
 		
 		renderMod(obj, window, xp, yp, "mod", icon_w, icon_h);
 		renderMod(obj, window, xp, yp, "alt-mod", icon_w, icon_h);
@@ -239,7 +240,7 @@ void Hud::render(sdlx::Surface &window) const {
 				}
 				
 				if (rm >= 0) {
-					xp += _font.render(window, xp, yp + font_dy, mrt::formatString("%-2d ", rm));
+					xp += _font->render(window, xp, yp + font_dy, mrt::formatString("%-2d ", rm));
 				}
 				any_effect = true;
 			}
@@ -264,7 +265,7 @@ void Hud::render(sdlx::Surface &window) const {
 			sdlx::Rect src(icon_w * ic->second, 0, icon_w, icon_h);
 			window.copyFrom(_icons, src, xp, yp);
 			xp += icon_w;
-			xp += _font.render(window, xp, yp + font_dy, mrt::formatString("%-2d ", slot.frags));
+			xp += _font->render(window, xp, yp + font_dy, mrt::formatString("%-2d ", slot.frags));
 			
 		} while(0);
 	}
@@ -330,7 +331,7 @@ Hud::Hud(const int w, const int h) : _update_radar(true) {
 	_splitter.loadImage(data_dir + "/tiles/hud_splitter.png");
 	_screen_splitter.loadImage(data_dir + "/tiles/split_line.png");
 	
-	_font.load(data_dir + "/font/medium.png", sdlx::Font::AZ09);
+	_font = ResourceManager->loadFont("medium", true);
 	
 	LOG_DEBUG(("searching splash... %dx%d", w, h));
 	int sw = 0;
