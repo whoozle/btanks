@@ -1299,8 +1299,10 @@ const bool IWorld::attachVehicle(Object *object, Object *vehicle) {
 const bool IWorld::detachVehicle(Object *object) {
 	PlayerSlot * slot = PlayerManager->getSlotByID(object->getID());
 	if (slot == NULL || 
-		(object->classname == "player" && object->registered_name == "machinegunner-player")) 
-		return false;
+		(object->classname == "player" && 
+			(object->registered_name == "machinegunner-player" || object->registered_name == "civilian-player")
+	   )) 
+	   	return false;
 		
 	LOG_DEBUG(("leaving vehicle..."));
 	object->_velocity.clear();

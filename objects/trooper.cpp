@@ -42,7 +42,7 @@ void Trooper::tick(const float dt) {
 		}		
 	}
 	
-	if (_fire.tick(dt) && _state.fire) {
+	if (!_object.empty() && _fire.tick(dt) && _state.fire ) {
 		_fire.reset();
 		if (getState() != "fire")
 			playNow("fire");
@@ -51,7 +51,9 @@ void Trooper::tick(const float dt) {
 }
 
 void Trooper::onSpawn() {
-	if (_object == "thrower-missile") {
+	if (_object.empty()) {
+		//nothing to do
+	} else if (_object == "thrower-missile") {
 		GET_CONFIG_VALUE("objects.thrower.fire-rate", float, fr, 3);
 		_fire.set(fr);
 	} else if (_object == "machinegunner-bullet") {
