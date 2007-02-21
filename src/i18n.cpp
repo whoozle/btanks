@@ -66,9 +66,11 @@ void II18n::start(const std::string &name, Attrs &attr) {
 void II18n::end(const std::string &name) {
 	if (name == "string") {
 		std::string path;
+		{ //damn this msvc!
 		for(size_t i = 0; i < _path.size(); ++i) {
 			path += _path[i];
 			path += "/";
+		}
 		}
 		path += _string_id;
 		Strings::iterator i = _strings.find(path);
