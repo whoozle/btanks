@@ -18,7 +18,7 @@ public:
 private: 
 	Box _background;
 	
-	sdlx::Surface _screenshot;
+	sdlx::Surface _screenshot, _null_screenshot;
 	const sdlx::Font *_font;
 	std::string _comments;
 };

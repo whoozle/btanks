@@ -5,7 +5,10 @@
 
 MapDetails::MapDetails(const int w, const int h) {
 	_background.init("menu/background_box.png", w, h);
+
 	GET_CONFIG_VALUE("engine.data-directory", std::string, data_dir, "data");
+	_null_screenshot.loadImage(data_dir + "/maps/null.png");
+
 	_font = ResourceManager->loadFont("small", true);
 }
 
@@ -24,11 +27,13 @@ void MapDetails::render(sdlx::Surface &surface, const int x, const int y) {
 	_background.getMargins(mx, my);
 	
 	int yp = my * 3 / 2;
-	if (!_screenshot.isNull()) {
-		int xs = (_background.w - _screenshot.getWidth()) / 2;
-		surface.copyFrom(_screenshot, x + xs, y + yp);
-		yp += _screenshot.getHeight() + 16;
-	}
+
+	const sdlx::Surface &screenshot = _screenshot.isNull()?_null_screenshot:_screenshot;
+	int xs = (_background.w - screenshot.getWidth()) / 2;
+	surface.copyFrom(screenshot, x + xs, y + yp);
+	int ys = screenshot.getHeight();
+	yp += (ys < 152)?152:ys;
+
 	_font->render(surface, x + mx, y + yp, _comments);
 }
 
