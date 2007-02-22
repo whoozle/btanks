@@ -2,6 +2,7 @@
 #include "mrt/exception.h"
 #include "config.h"
 #include "resource_manager.h"
+#include "mrt/fs_node.h"
 
 MapDetails::MapDetails(const int w, const int h) {
 	_background.init("menu/background_box.png", w, h);
@@ -15,8 +16,11 @@ MapDetails::MapDetails(const int w, const int h) {
 void MapDetails::set(const std::string &base, const std::string &map, const std::string &comments) {
 	TRY {
 		_screenshot.free();
-		_screenshot.loadImage(base + "/" + map + ".jpg");
-		_screenshot.convertAlpha();
+		const std::string fname = base + "/" + map + ".jpg";
+		if (mrt::FSNode::exists(fname)) {
+			_screenshot.loadImage(fname);
+			_screenshot.convertAlpha();
+		}
 	} CATCH("loading screenshot", {});
 	_comments = comments;
 }
