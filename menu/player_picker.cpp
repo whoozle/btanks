@@ -12,9 +12,10 @@ public :
 		h = _font->getHeight();
 	}
 	virtual void render(sdlx::Surface &surface, const int x, const int y) {
-		_font->render(surface, x, y, _label);
+		int xp = _font->render(surface, x, y, _label);
+		Container::render(surface, x + xp, y);
 	}
-	
+
 private: 
 	const sdlx::Font *_font;
 	std::string _label;
