@@ -24,7 +24,7 @@
 #endif
 
 #ifdef RELEASE
-#	define RELEASE_NAME " technical demo"
+#	define RELEASE_NAME " beta"
 #else
 #	define RELEASE_NAME " "
 #endif
