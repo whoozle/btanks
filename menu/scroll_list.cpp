@@ -88,7 +88,7 @@ void ScrollList::render(sdlx::Surface &surface, const int x, const int y) {
 	
 	int yp = my + y - ((int)_pos) % _item_h;
 	for(; p < n; ++p) {
-		if (p == _current_item) 
+		if (p == (int)_current_item) 
 			_background.renderHL(surface, x - 3 * mx, yp + _item_h / 2);
 		_font->render(surface, x + mx, yp, _list[p]);
 		yp += _item_h;
@@ -107,7 +107,7 @@ bool ScrollList::onKey(const SDL_keysym sym) {
 
 	case SDLK_DOWN:
 		++_current_item;
-		if (_current_item >= (int)_list.size()) 
+		if (_current_item >= _list.size()) 
 			_current_item = _list.size() - 1;
 		//LOG_DEBUG(("down: %u", _current_item));
 		return true;
@@ -149,7 +149,7 @@ bool ScrollList::onMouse(const int button, const bool pressed, const int x, cons
 	} else if (_down_area.in(x, y)) {
 	down: 
 		++_current_item;
-		if (_current_item >= (int)_list.size()) 
+		if (_current_item >= _list.size()) 
 			_current_item = _list.size() - 1;
 		//LOG_DEBUG(("down: %u", _current_item));
 		return true;

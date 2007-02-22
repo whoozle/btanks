@@ -1,5 +1,6 @@
 #include "map_picker.h"
 #include "map_details.h"
+#include "player_picker.h"
 #include "scroll_list.h"
 #include "mrt/exception.h"
 #include "mrt/directory.h"
@@ -76,5 +77,13 @@ MapPicker::MapPicker(const int w, const int h) : _index(0) {
 		_details->set(_maps[_index].first, _maps[_index].second, "blah blah");
 		add(map_pos, _details);
 	} CATCH("MapPicker::ctor", {delete _details; throw; });
+
+
+	sdlx::Rect pp_pos(map_pos.x + map_pos.w + 16, 0, w - map_pos.x - map_pos.w - 16, h - 128);
+	_picker = NULL;
+	TRY {
+		_picker = new PlayerPicker(pp_pos.w, pp_pos.h);
+		add(pp_pos, _picker);
+	} CATCH("PlayerPicker::ctor", {delete _picker; throw; });
 
 }

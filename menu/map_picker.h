@@ -7,6 +7,7 @@
 
 class ScrollList;
 class MapDetails;
+class PlayerPicker;
 
 class MapPicker : public Container {
 public: 
@@ -23,6 +24,7 @@ private:
 	
 	ScrollList *_list;
 	MapDetails *_details;
+	PlayerPicker *_picker;
 };
 
 #endif
