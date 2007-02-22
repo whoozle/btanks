@@ -82,7 +82,7 @@ MapPicker::MapPicker(const int w, const int h) : _index(0) {
 	sdlx::Rect pp_pos(map_pos.x + map_pos.w + 16, 0, w - map_pos.x - map_pos.w - 16, h - 128);
 	_picker = NULL;
 	TRY {
-		_picker = new PlayerPicker(pp_pos.w, pp_pos.h);
+		_picker = new PlayerPicker(pp_pos.w, pp_pos.h, 2);
 		add(pp_pos, _picker);
 	} CATCH("PlayerPicker::ctor", {delete _picker; throw; });
 

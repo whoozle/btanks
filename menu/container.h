@@ -18,7 +18,8 @@ public:
 private: 
 	Container(const Container &);
 	const Container& operator=(const Container &);
-	
+
+protected:
 	typedef std::list<std::pair<sdlx::Rect, Control *> > ControlList;
 	ControlList _controls;
 };
