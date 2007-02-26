@@ -30,7 +30,7 @@ Tooltip::Tooltip(const std::string &_text, const bool use_background, const int 
 		}
 	}
 	
-	LOG_DEBUG(("trimmed string : '%s'", text.c_str()));
+	//LOG_DEBUG(("trimmed string : '%s'", text.c_str()));
 		
 	std::vector<int> lens;
 	std::vector<std::string> words;
@@ -45,10 +45,11 @@ Tooltip::Tooltip(const std::string &_text, const bool use_background, const int 
 		sum += l;
 		lens_dump += mrt::formatString("%s%u", (i == 0)?"":", ", l);
 	}
-	LOG_DEBUG(("sum: %u, words: %s", sum, lens_dump.c_str()));
+//	LOG_DEBUG(("sum: %u, words: %s", sum, lens_dump.c_str()));
+
 	int cell = (int)(sqrt(sum / 2.0) + 0.5);
 	int xsize = cell * 2;
-	LOG_DEBUG(("approx size : %dx%d", xsize, cell * 3));
+	//LOG_DEBUG(("approx size : %dx%d", xsize, cell * 3));
 
 	const sdlx::Font *font = ResourceManager->loadFont("small", false);
 	assert(font != NULL);
@@ -78,7 +79,7 @@ Tooltip::Tooltip(const std::string &_text, const bool use_background, const int 
 	}
 
 
-	LOG_DEBUG(("line width: %d, lines: %u", width, lines.size()));
+	//LOG_DEBUG(("line width: %d, lines: %u", width, lines.size()));
 	if (_use_background) {
 		_background.init("menu/background_box.png", width +  mx, line_h * lines.size() +  my);
 		_surface.createRGB(_background.w, _background.h, SDL_SRCALPHA);
