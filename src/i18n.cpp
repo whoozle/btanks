@@ -6,6 +6,31 @@ IMPLEMENT_SINGLETON(I18n, II18n)
 
 II18n::II18n() {}
 
+const bool II18n::has(const std::string &_area, const std::string &id) const {
+	if (id.empty())
+		return false;
+		
+	Strings::const_iterator i;
+	std::string area = _area;
+	do {
+		i = _strings.find(area + "/" + id);
+		if (i != _strings.end())
+			return true;
+		
+		if (area.empty())
+			return false;
+		
+		size_t p = area.rfind('/');
+		if (p == area.npos)
+			area.clear();
+		else 
+			area = area.substr(0, p - 1);
+	} while (true);
+	
+	return false;
+}
+
+
 const std::string& II18n::get(const std::string &_area, const std::string &id) const {
 	if (id.empty())
 		throw_ex(("I18n->get(/empty-id/) is not allowed"));

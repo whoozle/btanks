@@ -15,6 +15,7 @@ public:
 	void load(const std::string &file, const std::string &language);
 	
 	const std::string& get(const std::string &area, const std::string &message) const;
+	const bool has(const std::string &area, const std::string &message) const;
 	
 private: 
 
