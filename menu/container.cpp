@@ -36,6 +36,10 @@ void Container::add(const sdlx::Rect &r, Control *ctrl) {
 }
 
 Container::~Container() {
+	clear();
+}
+
+void Container::clear() {
 	for(ControlList::iterator i = _controls.begin(); i != _controls.end(); ++i) {
 		delete i->second;
 	}

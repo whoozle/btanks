@@ -14,6 +14,8 @@ public:
 	virtual bool onMouse(const int button, const bool pressed, const int x, const int y);
 
 	void add(const sdlx::Rect &r, Control *ctrl);
+	void clear();
+	
 	~Container();
 private: 
 	Container(const Container &);
