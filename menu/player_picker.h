@@ -5,6 +5,10 @@
 #include "box.h"
 #include <string>
 
+namespace sdlx {
+	class Surface;
+}
+
 class PlayerPicker : public Container {
 public: 
 	PlayerPicker(const int w, const int h);
@@ -16,6 +20,7 @@ private:
 	Box _background;
 	int _slots;
 	std::string _object;
+	const sdlx::Surface *_vehicles;
 };
 
 #endif

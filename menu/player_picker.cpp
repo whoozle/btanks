@@ -2,27 +2,43 @@
 #include "container.h"
 #include "sdlx/font.h"
 #include "resource_manager.h"
+#include "chooser.h"
+#include "label.h"
 
 class SlotLine : public Container {
 public : 
-	int h;
+	int h, ch;
 	
-	SlotLine(const int i) : _label(mrt::formatString("%d", i)) {
+	SlotLine(const int i) {
 		_font = ResourceManager->loadFont("medium", true);
 		h = _font->getHeight();
-	}
-	virtual void render(sdlx::Surface &surface, const int x, const int y) {
-		int xp = _font->render(surface, x, y, _label);
-		Container::render(surface, x + xp, y);
+		int w = _font->getWidth();
+
+		ImageChooser *ic = new ImageChooser("menu/vehicles.png", 5);
+		int cw;
+		ic->getSize(cw, ch);
+
+		add(sdlx::Rect(0, (ch - h) / 3, w, h), new Label(_font, mrt::formatString("%d", i)));
+
+
+		sdlx::Rect p;
+		p.x = w * 2;
+		//p.y = (_font->getHeight() - ch) / 2;
+		p.w = cw;
+		p.h = ch;
+		if (ch > h) 
+			h = ch;
+		
+		add(p, ic);
 	}
 
 private: 
 	const sdlx::Font *_font;
-	std::string _label;
 };
 
 PlayerPicker::PlayerPicker(const int w, const int h)  : _slots(0) {
 	_background.init("menu/background_box.png", w, h);
+	_vehicles = ResourceManager->loadSurface("menu/vehicles.png");
 }
 
 void PlayerPicker::set(const int slots, const std::string &object) {
@@ -47,9 +63,9 @@ void PlayerPicker::render(sdlx::Surface &surface, const int x, const int y) {
 }
 
 bool PlayerPicker::onKey(const SDL_keysym sym) {
-	return false;
+	return Container::onKey(sym);
 }
 
 bool PlayerPicker::onMouse(const int button, const bool pressed, const int x, const int y)  {
-	return false;
+	return Container::onMouse(button, pressed, x, y);
 }
