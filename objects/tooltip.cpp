@@ -4,9 +4,9 @@
 #include "mrt/random.h"
 #include "sdlx/surface.h"
 
-class Tooltip : public Object {
+class TooltipObject : public Object {
 public:
-	Tooltip() : Object("tooltip"), _change(true) { impassability = 0; }
+	TooltipObject() : Object("tooltip"), _change(true) { impassability = 0; }
 	virtual void onSpawn() {
 		GET_CONFIG_VALUE("objects.random-tooltip.show-time", float, st, 3.0);
 		_change.set(st);
@@ -30,7 +30,7 @@ public:
 	virtual void setDirection(const int dir) {}
 
 	virtual Object * clone() const {
-		return new Tooltip(*this);
+		return new TooltipObject(*this);
 	}
 
 	virtual void serialize(mrt::Serializator &s) const {
@@ -46,4 +46,4 @@ private:
 	Alarm _change;
 };
 
-REGISTER_OBJECT("random-tooltip", Tooltip, ());
+REGISTER_OBJECT("random-tooltip", TooltipObject, ());
