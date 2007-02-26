@@ -8,7 +8,7 @@
 #include <assert.h>
 #include <deque>
 
-Tooltip::Tooltip(const std::string &_text) {
+Tooltip::Tooltip(const std::string &_text, const bool use_background, const int w)  : _use_background(use_background) {
 	std::string text;
 	bool space = true;
 	size_t i;
@@ -53,9 +53,11 @@ Tooltip::Tooltip(const std::string &_text) {
 	const sdlx::Font *font = ResourceManager->loadFont("small", false);
 	assert(font != NULL);
 
-	_background.init("menu/background_box.png", 200, 60);
-	int mx, my;
-	_background.getMargins(mx, my);
+	int mx = 0, my = 0;
+	if (_use_background) {
+		_background.init("menu/background_box.png", 200, 60);
+		_background.getMargins(mx, my);
+	}
 	
 	int line_h = font->getHeight() + 2;
 
@@ -64,8 +66,11 @@ Tooltip::Tooltip(const std::string &_text) {
 
 	for(i = 0; i < words.size(); ) {
 		int l, line_size = 0;
-		for(l = 0; l <= xsize && i < words.size(); l += lens[i], ++i) {
-			line_size += font->render(NULL, 0, 0, words[i] + " ");
+		for(l = 0; (w != 0?line_size < w: l < xsize) && i < words.size(); l += lens[i], ++i) {
+			int lw = font->render(NULL, 0, 0, words[i] + " ");
+			if (w != 0 && lw + line_size > w) 
+				break;
+			line_size += lw;
 		}
 		if (line_size > width)
 			width = line_size;
@@ -74,9 +79,12 @@ Tooltip::Tooltip(const std::string &_text) {
 
 
 	LOG_DEBUG(("line width: %d, lines: %u", width, lines.size()));
-	_background.init("menu/background_box.png", width +  mx, line_h * lines.size() +  my);
-	
-	_surface.createRGB(_background.w, _background.h, SDL_SRCALPHA);
+	if (_use_background) {
+		_background.init("menu/background_box.png", width +  mx, line_h * lines.size() +  my);
+		_surface.createRGB(_background.w, _background.h, SDL_SRCALPHA);
+	} else {
+		_surface.createRGB(w, line_h * (lines.size() + 2/*magic! */), SDL_SRCALPHA);
+	}
 	_surface.convertAlpha();
 	
 	int yp = my;
@@ -94,7 +102,8 @@ Tooltip::Tooltip(const std::string &_text) {
 }
 
 void Tooltip::render(sdlx::Surface &surface, const int x, const int y) {
-	_background.render(surface, x, y);
+	if (_use_background)
+		_background.render(surface, x, y);
 	surface.copyFrom(_surface, x, y);
 }
 
