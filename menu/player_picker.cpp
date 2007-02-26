@@ -21,14 +21,19 @@ private:
 	std::string _label;
 };
 
-PlayerPicker::PlayerPicker(const int w, const int h, const int slots)  : _slots(slots) {
+PlayerPicker::PlayerPicker(const int w, const int h)  : _slots(0) {
 	_background.init("menu/background_box.png", w, h);
+}
+
+void PlayerPicker::set(const int slots, const std::string &object) {
+	clear();
 	int mx, my;
 	_background.getMargins(mx, my);
-	
+	_slots = slots;
+	_object = object;
 	for(int i = 0; i < _slots; ++i) {
 		SlotLine *line = new SlotLine(i + 1);
-		sdlx::Rect pos(mx, my + i * (line->h + 6), w - mx, line->h);
+		sdlx::Rect pos(mx, my + i * (line->h + 6), _background.w - 2 * mx, line->h);
 		add(pos, line);
 	}
 }

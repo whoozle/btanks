@@ -73,6 +73,7 @@ void MapPicker::tick(const float dt) {
 	if (_index != _list->getPosition()) {
 		_index = _list->getPosition();
 		_details->set(_maps[_index].base, _maps[_index].name, _maps[_index].desc );
+		_picker->set(_maps[_index].slots, _maps[_index].object);
 	}
 	Container::tick(dt);
 }
@@ -124,7 +125,8 @@ MapPicker::MapPicker(const int w, const int h) : _index(0) {
 	sdlx::Rect pp_pos(map_pos.x + map_pos.w + 16, 0, w - map_pos.x - map_pos.w - 16, h - 128);
 	_picker = NULL;
 	TRY {
-		_picker = new PlayerPicker(pp_pos.w, pp_pos.h, 2);
+		_picker = new PlayerPicker(pp_pos.w, pp_pos.h);
+		_picker->set(_maps[_index].slots, _maps[_index].object);
 		add(pp_pos, _picker);
 	} CATCH("PlayerPicker::ctor", {delete _picker; throw; });
 
