@@ -2,6 +2,17 @@
 	<area id="menu">
 		<string id="start-game">START GAME</string>
 		<string id="start-game" lang="ru">NACHAT IGRU</string>
+		
+	</area>
+	<area id="maps/descriptions">
+		<string id="baykonur">Huge cooperative map with tons of troopers, very defensive military base and big boss inside(tm)</string>
+		<string id="curfew">Very hot city multiplayer map with the lots of weapons and stuff.</string>
+		<string id="gaddino">Country map with railway road.</string>
+		<string id="hell_swamp">Complex and tricky map covered with clouds of poisonous gas.</string>
+		<string id="lenin_square">Square with heli, kamikazes and city traffic.</string>
+		<string id="test">Testy zombiez )))</string>
+		<string id="wastes">Wastes. Nuclear desert.</string>
+		<string id="(default)">Sorry, no description was provided by the author of this map...</string>
 	</area>
 	<area id="hints">
 		<string id="be-careful">Shhh... Be careful!</string>
