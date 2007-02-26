@@ -19,7 +19,14 @@ private:
 	void scan(const std::string &dir);
 
 	size_t _index;
-	typedef std::vector<std::pair<std::string, std::string> > MapList;
+	struct MapDesc {
+		std::string base, name, desc;
+		int slots;
+		MapDesc(const std::string &base, const std::string &name, const int slots) : 
+			base(base), name(name), desc("blah-blah-blah...."), slots(slots) {}
+		const bool operator<(const MapDesc &other) const;
+	};
+	typedef std::vector<MapDesc > MapList;
 	MapList _maps;
 	
 	ScrollList *_list;

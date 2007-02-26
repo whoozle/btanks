@@ -4,8 +4,38 @@
 #include "scroll_list.h"
 #include "mrt/exception.h"
 #include "mrt/directory.h"
+#include "mrt/xml.h"
 #include "config.h"
 #include <algorithm>
+
+const bool MapPicker::MapDesc::operator<(const MapPicker::MapDesc & other) const {
+	if (base != other.base)
+		return base < other.base;
+	return name < other.name;	
+} 
+
+struct MapScanner : mrt::XMLParser {
+	MapScanner() : slots(0) {}
+	std::string desc;
+	int slots;
+
+	void scan(const std::string &name) {
+		parseFile(name);
+		LOG_DEBUG(("parser: slots: %d", slots));
+	}
+private: 
+	virtual void start(const std::string &name, Attrs &attr) {
+		if (name == "property") {
+			if (attr["name"].substr(0, 6) == "spawn:")
+				++slots;
+		}
+	}
+	virtual void end(const std::string &name) {
+	
+	}
+//	virtual void charData(const std::string &data);
+};
+
 
 void MapPicker::scan(const std::string &path) {
 	if (!mrt::Directory::exists(path))
@@ -13,15 +43,21 @@ void MapPicker::scan(const std::string &path) {
 	
 	mrt::Directory dir;
 	dir.open(path);
+	std::string fname;
 
-	std::string map;
-	while(!(map = dir.read()).empty()) {
+	while(!(fname = dir.read()).empty()) {
+		std::string map = fname;
+		
 		mrt::toLower(map);
 		if (map.size() < 5 || map.substr(map.size() - 4) != ".tmx")
 			continue;
 		map = map.substr(0, map.size() - 4);
 		LOG_DEBUG(("found map: %s", map.c_str()));
-		_maps.push_back(MapList::value_type(path, map));
+		TRY {
+			MapScanner m;
+			m.scan(path + "/" + fname);
+		} CATCH("scanning map", {});
+		_maps.push_back(MapList::value_type(path, map, 3));
 	}	
 	dir.close();
 
@@ -30,7 +66,7 @@ void MapPicker::scan(const std::string &path) {
 void MapPicker::tick(const float dt) {
 	if (_index != _list->getPosition()) {
 		_index = _list->getPosition();
-		_details->set(_maps[_index].first, _maps[_index].second, "BLAH!!");
+		_details->set(_maps[_index].base, _maps[_index].name, _maps[_index].desc);
 	}
 	Container::tick(dt);
 }
@@ -51,7 +87,7 @@ MapPicker::MapPicker(const int w, const int h) : _index(0) {
 
 	Config->get("menu.default-mp-map", map, "lenin_square");
 	for(_index = 0; _index < _maps.size(); ++_index) {
-		if (_maps[_index].second == map)
+		if (_maps[_index].name == map)
 			break;
 	}
 	if (_index >= _maps.size())
@@ -63,7 +99,7 @@ MapPicker::MapPicker(const int w, const int h) : _index(0) {
 	TRY {
 		_list = new ScrollList(list_pos.w, list_pos.h);
 		for(MapList::const_iterator i = _maps.begin(); i != _maps.end(); ++i) {
-			_list->add(i->second);
+			_list->add(i->name);
 		}
 		add(list_pos, _list);
 		_list->setPosition(_index);
@@ -74,7 +110,7 @@ MapPicker::MapPicker(const int w, const int h) : _index(0) {
 	_details = NULL;	
 	TRY {
 		_details = new MapDetails(map_pos.w, map_pos.h);
-		_details->set(_maps[_index].first, _maps[_index].second, "blah blah");
+		_details->set(_maps[_index].base, _maps[_index].name, _maps[_index].desc);
 		add(map_pos, _details);
 	} CATCH("MapPicker::ctor", {delete _details; throw; });
 
