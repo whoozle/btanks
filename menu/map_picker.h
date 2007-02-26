@@ -20,10 +20,10 @@ private:
 
 	size_t _index;
 	struct MapDesc {
-		std::string base, name, desc;
+		std::string base, name, desc, object;
 		int slots;
-		MapDesc(const std::string &base, const std::string &name, const int slots) : 
-			base(base), name(name), desc("blah-blah-blah...."), slots(slots) {}
+		MapDesc(const std::string &base, const std::string &name, const std::string &desc, const std::string &object, const int slots) : 
+			base(base), name(name), desc(desc), object(object), slots(slots) {}
 		const bool operator<(const MapDesc &other) const;
 	};
 	typedef std::vector<MapDesc > MapList;

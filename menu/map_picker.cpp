@@ -8,6 +8,8 @@
 #include "config.h"
 #include <algorithm>
 
+#include "i18n.h"
+
 const bool MapPicker::MapDesc::operator<(const MapPicker::MapDesc & other) const {
 	if (base != other.base)
 		return base < other.base;
@@ -16,23 +18,25 @@ const bool MapPicker::MapDesc::operator<(const MapPicker::MapDesc & other) const
 
 struct MapScanner : mrt::XMLParser {
 	MapScanner() : slots(0) {}
-	std::string desc;
+	std::string object;
 	int slots;
+	std::string object_restriction;
 
 	void scan(const std::string &name) {
 		parseFile(name);
-		LOG_DEBUG(("parser: slots: %d", slots));
+		LOG_DEBUG(("parser: slots: %d, object_restriction: '%s'", slots, object_restriction.c_str()));
 	}
 private: 
 	virtual void start(const std::string &name, Attrs &attr) {
 		if (name == "property") {
 			if (attr["name"].substr(0, 6) == "spawn:")
 				++slots;
+			else if (attr["name"] == "config:multiplayer.restrict-start-vehicle" && attr["value"].substr(0, 7) == "string:") {
+				object_restriction = attr["value"].substr(7);
+			}	
 		}
 	}
-	virtual void end(const std::string &name) {
-	
-	}
+	virtual void end(const std::string &name) {}
 //	virtual void charData(const std::string &data);
 };
 
@@ -53,11 +57,13 @@ void MapPicker::scan(const std::string &path) {
 			continue;
 		map = map.substr(0, map.size() - 4);
 		LOG_DEBUG(("found map: %s", map.c_str()));
+		MapScanner m;
 		TRY {
-			MapScanner m;
 			m.scan(path + "/" + fname);
 		} CATCH("scanning map", {});
-		_maps.push_back(MapList::value_type(path, map, 3));
+		const std::string &comments = I18n->has("maps/descriptions", map)?I18n->get("maps/descriptions", map): 
+			I18n->get("maps/descriptions", "(default)");
+		_maps.push_back(MapList::value_type(path, map, comments, m.object, m.slots));
 	}	
 	dir.close();
 
@@ -66,7 +72,7 @@ void MapPicker::scan(const std::string &path) {
 void MapPicker::tick(const float dt) {
 	if (_index != _list->getPosition()) {
 		_index = _list->getPosition();
-		_details->set(_maps[_index].base, _maps[_index].name, _maps[_index].desc);
+		_details->set(_maps[_index].base, _maps[_index].name, _maps[_index].desc );
 	}
 	Container::tick(dt);
 }

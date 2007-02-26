@@ -1,19 +1,17 @@
 #include "map_details.h"
 #include "mrt/exception.h"
 #include "config.h"
-#include "resource_manager.h"
 #include "mrt/fs_node.h"
+#include "tooltip.h"
 
-MapDetails::MapDetails(const int w, const int h) {
+MapDetails::MapDetails(const int w, const int h) : _map_desc(0) {
 	_background.init("menu/background_box.png", w, h);
 
 	GET_CONFIG_VALUE("engine.data-directory", std::string, data_dir, "data");
 	_null_screenshot.loadImage(data_dir + "/maps/null.png");
-
-	_font = ResourceManager->loadFont("small", true);
 }
 
-void MapDetails::set(const std::string &base, const std::string &map, const std::string &comments) {
+void MapDetails::set(const std::string &base, const std::string &map, const std::string &comment) {
 	TRY {
 		_screenshot.free();
 		const std::string fname = base + "/" + map + ".jpg";
@@ -22,7 +20,13 @@ void MapDetails::set(const std::string &base, const std::string &map, const std:
 			_screenshot.convertAlpha();
 		}
 	} CATCH("loading screenshot", {});
-	_comments = comments;
+	delete _map_desc; 
+	_map_desc = NULL;
+	
+	int mx, my;
+	_background.getMargins(mx, my);
+	
+	_map_desc = new Tooltip(comment, false, _background.w - 2 * mx);
 }
 
 void MapDetails::render(sdlx::Surface &surface, const int x, const int y) {
@@ -38,7 +42,8 @@ void MapDetails::render(sdlx::Surface &surface, const int x, const int y) {
 	int ys = screenshot.getHeight();
 	yp += (ys < 152)?152:ys;
 
-	_font->render(surface, x + mx, y + yp, _comments);
+	if (_map_desc)
+		_map_desc->render(surface, x + mx, y + yp);
 }
 
 bool MapDetails::onKey(const SDL_keysym sym) {

@@ -6,6 +6,8 @@
 #include "sdlx/surface.h"
 #include "sdlx/font.h"
 
+class Tooltip;
+
 class MapDetails : public Control {
 public: 
 	MapDetails(const int w, const int h);
@@ -14,13 +16,12 @@ public:
 	virtual bool onKey(const SDL_keysym sym);
 	virtual bool onMouse(const int button, const bool pressed, const int x, const int y);
 	
-	void set(const std::string &base, const std::string &map, const std::string &comments);
+	void set(const std::string &base, const std::string &map, const std::string &comment_id);
 private: 
 	Box _background;
+	Tooltip *_map_desc;
 	
 	sdlx::Surface _screenshot, _null_screenshot;
-	const sdlx::Font *_font;
-	std::string _comments;
 };
 
 #endif
