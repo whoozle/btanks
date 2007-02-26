@@ -68,6 +68,7 @@ void Train::onSpawn() {
 	play("move", true);
 	v2<int> size = Map->getSize();
 	dst_y = size.y - 1; //fixme. :)
+	disown();
 }
 
 void Train::emit(const std::string &event, Object * emitter) {
