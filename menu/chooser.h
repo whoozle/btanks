@@ -3,6 +3,7 @@
 
 #include "container.h"
 #include "sdlx/rect.h"
+#include <string>
 
 namespace sdlx {
 class Surface;

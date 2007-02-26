@@ -12,10 +12,10 @@ class Font;
 class Label : public Control {
 public: 
 	Label(const sdlx::Font *font, const std::string &label);
-	virtual void render(sdlx::Surface&, int, int);
+	virtual void render(sdlx::Surface& surface, const int x, const int y);
 
-	virtual bool onKey(SDL_keysym) {return false; }
-	virtual bool onMouse(int, bool, int, int) {return false;}
+	virtual bool onKey(const SDL_keysym sym) {return false; }
+	virtual bool onMouse(const int b, const bool p, const int x, const int y) {return false;}
 private: 
 	const sdlx::Font * _font;
 	const std::string _label;
