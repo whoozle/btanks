@@ -1,4 +1,5 @@
 #include "container.h"
+#include "mrt/logger.h"
 
 void Container::tick(const float dt) {
 	for(ControlList::iterator i = _controls.begin(); i != _controls.end(); ++i) {
@@ -23,10 +24,14 @@ bool Container::onKey(const SDL_keysym sym) {
 }
 
 bool Container::onMouse(const int button, const bool pressed, const int x, const int y) {
+	//LOG_DEBUG(("%p: entering onMouse handler. (%d, %d)", (void *)this, x , y));
 	for(ControlList::iterator i = _controls.begin(); i != _controls.end(); ++i) {
 		const sdlx::Rect &dst = i->first;
-		if (dst.in(x, y) && i->second->onMouse(button, pressed, x - dst.x, y - dst.y))
+		//LOG_DEBUG(("%p: checking control %p (%d, %d, %d, %d)", (void *)this, (void *)i->second, dst.x, dst.y, dst.w, dst.h));
+		if (dst.in(x, y) && i->second->onMouse(button, pressed, x - dst.x, y - dst.y)) {
+			//LOG_DEBUG(("%p: control %p returning true", (void *)this, (void *)i->second));
 			return true;
+		}
 	}
 	return false;
 }
