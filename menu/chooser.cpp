@@ -54,9 +54,7 @@ void Chooser::render(sdlx::Surface &surface, const int x, const int y) {
 	
 	surface.copyFrom(*_left_right, sdlx::Rect(lrw, 0, lrw, lrh), x +  _right_area.x, y + _right_area.y);
 }
-bool Chooser::onKey(const SDL_keysym sym) {
-	return false;
-}
+
 bool Chooser::onMouse(const int button, const bool pressed, const int x, const int y) {
 	//LOG_DEBUG(("click: %d %d", x, y));
 	if (_left_area.in(x, y)) {

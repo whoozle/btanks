@@ -15,7 +15,6 @@ public:
 
 	virtual void init(int w, int h, const bool server);
 	virtual void render(sdlx::Surface &surface, const int x, const int y);
-	virtual bool onKey(const SDL_keysym sym);
 	virtual bool onMouse(const int button, const bool pressed, const int x, const int y);
 private: 
 	bool _server;	

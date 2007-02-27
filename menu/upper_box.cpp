@@ -62,10 +62,6 @@ void UpperBox::render(sdlx::Surface &surface, const int x, const int y) {
 	_on_area.w = wt - _on_area.w + 1;
 }
 
-bool UpperBox::onKey(const SDL_keysym sym) {
-	return false;
-}
-
 bool UpperBox::onMouse(const int button, const bool pressed, const int x, const int y) {
 	if (_on_area.in(x, y)) {
 		//LOG_DEBUG(("split screen on!"));

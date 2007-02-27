@@ -46,10 +46,3 @@ void MapDetails::render(sdlx::Surface &surface, const int x, const int y) {
 		_map_desc->render(surface, x + mx, y + yp);
 }
 
-bool MapDetails::onKey(const SDL_keysym sym) {
-	return false;
-}
-bool MapDetails::onMouse(const int button, const bool pressed, const int x, const int y) {
-	return false;
-}
-

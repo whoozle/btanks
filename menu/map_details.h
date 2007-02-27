@@ -13,8 +13,6 @@ public:
 	MapDetails(const int w, const int h);
 
 	virtual void render(sdlx::Surface &surface, const int x, const int y);
-	virtual bool onKey(const SDL_keysym sym);
-	virtual bool onMouse(const int button, const bool pressed, const int x, const int y);
 	
 	void set(const std::string &base, const std::string &map, const std::string &comment_id);
 private: 

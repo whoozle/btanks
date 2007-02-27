@@ -14,8 +14,6 @@ public:
 	Label(const sdlx::Font *font, const std::string &label);
 	virtual void render(sdlx::Surface& surface, const int x, const int y);
 
-	virtual bool onKey(const SDL_keysym sym) {return false; }
-	virtual bool onMouse(const int b, const bool p, const int x, const int y) {return false;}
 private: 
 	const sdlx::Font * _font;
 	const std::string _label;
