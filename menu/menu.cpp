@@ -84,7 +84,7 @@ MainMenu::MainMenu(const int w, const int h) : _active_item(0) {
 
 	_items[_active_menu][_active_item]->onFocus();
 	
-	_special_menus["#start-server"] = new StartServerMenu(w, h);
+	_special_menus["#start-server"] = new StartServerMenu(this, w, h);
 
 	recalculateSizes();
 
@@ -107,10 +107,14 @@ void MainMenu::tick(const float dt) {
 	if (!_active)
 		return;
 	
-	for(std::map<const std::string, BaseMenu *>::iterator i = _special_menus.begin(); i != _special_menus.end(); ++i) {
+/*	for(std::map<const std::string, BaseMenu *>::iterator i = _special_menus.begin(); i != _special_menus.end(); ++i) {
 		if (i->second)
 			i->second->tick(dt);
 	}
+*/
+	std::map<const std::string, BaseMenu *>::iterator i = _special_menus.find(_active_menu);
+	if (i != _special_menus.end() && i->second != NULL)
+		i->second->tick(dt);
 }
 
 
@@ -172,6 +176,7 @@ bool MainMenu::onKey(const SDL_keysym sym) {
 				if (item->type == "submenu") {
 					LOG_DEBUG(("entering submenu '%s'", name.c_str()));
 					if (name[0] == '#') {
+						_menu_path.push_front(MenuID(_active_item, _active_menu));
 						_active_menu = name;
 						return true;
 					}
@@ -256,14 +261,16 @@ const bool MainMenu::back() {
 	if (_menu_path.size() == 0) 
 		return false;
 	
-	_items[_active_menu][_active_item]->onLeave();
+	if (_active_menu[0] != '#')
+		_items[_active_menu][_active_item]->onLeave();
 	
 	_active_item = _menu_path.front().first;
 	_active_menu = _menu_path.front().second;
 	
 	_menu_path.pop_front();
 	
-	_items[_active_menu][_active_item]->onFocus();
+	if (_active_menu[0] != '#')
+		_items[_active_menu][_active_item]->onFocus();
 	
 	recalculateSizes();
 	return true;
