@@ -21,6 +21,7 @@ struct MapScanner : mrt::XMLParser {
 	std::string object;
 	int slots;
 	std::string object_restriction;
+	std::string game_type;
 
 	void scan(const std::string &name) {
 		parseFile(name);
@@ -33,7 +34,9 @@ private:
 				++slots;
 			else if (attr["name"] == "config:multiplayer.restrict-start-vehicle" && attr["value"].substr(0, 7) == "string:") {
 				object_restriction = attr["value"].substr(7);
-			}	
+			} else if (attr["name"] == "config:multiplayer.game-type" && attr["value"].substr(0, 7) == "string:") {
+				game_type = attr["value"].substr(7);
+			}
 		}
 	}
 	virtual void end(const std::string &name) {}
@@ -63,7 +66,7 @@ void MapPicker::scan(const std::string &path) {
 		} CATCH("scanning map", {});
 		const std::string &comments = I18n->has("maps/descriptions", map)?I18n->get("maps/descriptions", map): 
 			I18n->get("maps/descriptions", "(default)");
-		_maps.push_back(MapList::value_type(path, map, comments, m.object, m.slots));
+		_maps.push_back(MapList::value_type(path, map, comments, m.object, m.game_type, m.slots));
 	}	
 	dir.close();
 
