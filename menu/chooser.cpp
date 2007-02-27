@@ -2,18 +2,35 @@
 #include "resource_manager.h"
 #include "math/binary.h"
 #include "sdlx/surface.h"
+#include "sdlx/font.h"
 
-ImageChooser::ImageChooser(const std::string &surface, const int n) : _i(0), _n(n), index(0) {
+Chooser::Chooser(const std::string &font, const std::vector<std::string> &options) : 
+_options(options), _i(0), _n(options.size()), _surface(NULL), _w(0) {
+	_left_right = ResourceManager->loadSurface("menu/left_right.png");
+	_font = ResourceManager->loadFont(font, true);
+	for(size_t i =0; i < options.size(); ++i) {
+		int w = _font->render(NULL, 0, 0, options[i]);
+		if (w > _w)
+			_w = w;
+	}
+}
+
+Chooser::Chooser(const std::string &surface, const int n) : _i(0), _n(n), _font(NULL) {
 	_surface = ResourceManager->loadSurface(surface);
 	_left_right = ResourceManager->loadSurface("menu/left_right.png");
 }
 
-void ImageChooser::getSize(int &w, int &h) {
-	w = _left_right->getWidth() + _surface->getWidth() / _n;
-	h = math::max(_left_right->getHeight(), _surface->getHeight());
+void Chooser::getSize(int &w, int &h) {
+	if (_surface != NULL) {
+		w = _left_right->getWidth() + _surface->getWidth() / _n;
+		h = math::max(_left_right->getHeight(), _surface->getHeight());
+	} else {
+		w = _left_right->getWidth() + _w;
+		h = math::max(_left_right->getHeight(), _font->getHeight());
+	}
 }
 
-void ImageChooser::render(sdlx::Surface &surface, const int x, const int y) {
+void Chooser::render(sdlx::Surface &surface, const int x, const int y) {
 	Container::render(surface, x, y);
 	int lrw = _left_right->getWidth() / 2;
 	int lrh = _left_right->getHeight();
@@ -26,16 +43,21 @@ void ImageChooser::render(sdlx::Surface &surface, const int x, const int y) {
 	
 	surface.copyFrom(*_left_right, sdlx::Rect(0, 0, lrw, lrh), x + _left_area.x, y + _left_area.y);
 	
-	surface.copyFrom(*_surface, 
-		sdlx::Rect(_i * _surface->getWidth() / _n, 0, _surface->getWidth() / _n, _surface->getHeight()), 
-		x + _left_area.x + lrw, y + (_left_area.h - _surface->getHeight())/ 2);
+	if (_surface) {
+		surface.copyFrom(*_surface, 
+			sdlx::Rect(_i * _surface->getWidth() / _n, 0, _surface->getWidth() / _n, _surface->getHeight()), 
+			x + _left_area.x + lrw, y + (_left_area.h - _surface->getHeight())/ 2);
+	} else { 
+		int tw = _font->render(NULL, 0, 0, _options[_i]);
+		_font->render(surface, x + _left_area.x + (w - tw) / 2, y + (_left_area.h - _font->getHeight())/ 2, _options[_i]);
+	} 
 	
 	surface.copyFrom(*_left_right, sdlx::Rect(lrw, 0, lrw, lrh), x +  _right_area.x, y + _right_area.y);
 }
-bool ImageChooser::onKey(const SDL_keysym sym) {
+bool Chooser::onKey(const SDL_keysym sym) {
 	return false;
 }
-bool ImageChooser::onMouse(const int button, const bool pressed, const int x, const int y) {
+bool Chooser::onMouse(const int button, const bool pressed, const int x, const int y) {
 	if (_left_area.in(x, y)) {
 		--_i;
 		if (_i < 0)

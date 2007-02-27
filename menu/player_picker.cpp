@@ -14,7 +14,13 @@ public :
 		h = _font->getHeight();
 		int w = _font->getWidth();
 
-		ImageChooser *ic = new ImageChooser("menu/vehicles.png", 5);
+		std::vector<std::string> options;
+		options.push_back("PLAYER");
+		options.push_back("AI");
+
+		Chooser *ic = new Chooser("medium", options);
+
+		//ic = new Chooser("menu/vehicles.png", 5);
 		int cw;
 		ic->getSize(cw, ch);
 

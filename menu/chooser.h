@@ -4,14 +4,17 @@
 #include "container.h"
 #include "sdlx/rect.h"
 #include <string>
+#include <vector>
 
 namespace sdlx {
 class Surface;
+class Font;
 }
 
-class ImageChooser : public Container {
+class Chooser : public Container {
 public: 
-	ImageChooser(const std::string &surface, const int n);
+	Chooser(const std::string &surface, const int n);
+	Chooser(const std::string &font, const std::vector<std::string> &options);
 	void getSize(int &w, int &h);
 
 	virtual void render(sdlx::Surface &surface, const int x, const int y);
@@ -19,9 +22,14 @@ public:
 	virtual bool onMouse(const int button, const bool pressed, const int x, const int y);
 
 private: 
+	std::vector<std::string> _options;
 	int _i, _n;
 	const sdlx::Surface *_surface, *_left_right;
-	int index;
+
+	//textual chooser: 
+	const sdlx::Font *_font;
+	int _w;
+
 	sdlx::Rect _left_area, _right_area;
 };
 
