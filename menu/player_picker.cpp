@@ -15,6 +15,7 @@ public :
 		int w = _font->getWidth();
 
 		std::vector<std::string> options;
+		options.push_back("?");
 		options.push_back("PLAYER");
 		options.push_back("AI");
 
