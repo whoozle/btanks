@@ -19,23 +19,34 @@ public :
 		options.push_back("AI");
 
 		Chooser *ic = new Chooser("medium", options);
-
-		//ic = new Chooser("menu/vehicles.png", 5);
+		Chooser *vc = new Chooser("menu/vehicles.png", 5);
+		
 		int cw;
 		ic->getSize(cw, ch);
 
 		add(sdlx::Rect(0, (ch - h) / 3, w, h), new Label(_font, mrt::formatString("%d", i)));
 
 
-		sdlx::Rect p;
-		p.x = w * 2;
-		//p.y = (_font->getHeight() - ch) / 2;
-		p.w = cw;
-		p.h = ch;
+		sdlx::Rect p1;
+		p1.x = w * 2;
+		//p1.y = (_font->getHeight() - ch) / 2;
+		p1.w = cw;
+		p1.h = ch;
 		if (ch > h) 
 			h = ch;
 		
-		add(p, ic);
+		add(p1, ic);
+		
+		sdlx::Rect p2;
+		p2.x = p1.x + p1.w + _font->getWidth();
+
+		int vcw, vch;
+		vc->getSize(vcw, vch);
+		if (vch > h) 
+			h = vch;
+		p2.w = vcw; p2.h = vch;
+
+		add(p2, vc);
 	}
 
 private: 

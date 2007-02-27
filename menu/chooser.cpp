@@ -58,6 +58,7 @@ bool Chooser::onKey(const SDL_keysym sym) {
 	return false;
 }
 bool Chooser::onMouse(const int button, const bool pressed, const int x, const int y) {
+	//LOG_DEBUG(("click: %d %d", x, y));
 	if (_left_area.in(x, y)) {
 		--_i;
 		if (_i < 0)
