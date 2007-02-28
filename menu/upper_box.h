@@ -13,7 +13,7 @@ class UpperBox : public Control, public Box {
 public: 
 	std::string value;
 
-	virtual void init(int w, int h, const bool server);
+	UpperBox(int w, int h, const bool server);
 	virtual void render(sdlx::Surface &surface, const int x, const int y);
 	virtual bool onMouse(const int button, const bool pressed, const int x, const int y);
 private: 

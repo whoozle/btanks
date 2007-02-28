@@ -5,8 +5,7 @@
 #include "sdlx/font.h"
 
 
-void UpperBox::init(int w, int h, const bool server) {
-	_server = server;
+UpperBox::UpperBox(int w, int h, const bool server): _server(server) {
 	_checkbox = ResourceManager->loadSurface("menu/radio.png");
 	if (_server) {
 		Config->get("multiplayer.game-type", value, "deathmatch");
