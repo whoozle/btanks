@@ -17,6 +17,8 @@ public:
 	virtual void render(sdlx::Surface &surface, const int x, const int y);
 	virtual bool onKey(const SDL_keysym sym) ;
 	virtual bool onMouse(const int button, const bool pressed, const int x, const int y);
+	
+	const std::string getVariant() const;
 private: 
 	Box _background;
 	int _slots;

@@ -90,6 +90,13 @@ PlayerPicker::PlayerPicker(const int w, const int h)  : _slots(0) {
 	_vehicles = ResourceManager->loadSurface("menu/vehicles.png");
 }
 
+const std::string PlayerPicker::getVariant() const {
+	bool split;
+	Config->get("multiplayer.split-screen-mode", split, false);
+	return split?"split":std::string();
+}
+
+
 void PlayerPicker::set(const MapDesc &map) {
 	clear();
 	int mx, my;
@@ -99,9 +106,7 @@ void PlayerPicker::set(const MapDesc &map) {
 
 	std::vector<SlotConfig> config;
 
-	bool split;
-	Config->get("multiplayer.split-screen-mode", split, false);
-	const std::string variant =  split?"split":std::string();
+	std::string variant = getVariant();
 	
 	MenuConfig->fill(map.name, variant, config);
 	config.resize(_slots);

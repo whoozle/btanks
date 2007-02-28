@@ -14,6 +14,8 @@
 #include "upper_box.h"
 #include "game.h"
 #include <assert.h>
+#include "tmx/map.h"
+#include "menu_config.h"
 
 struct MapScanner : mrt::XMLParser {
 	MapScanner() : slots(0) {}
@@ -147,15 +149,48 @@ MapPicker::MapPicker(const int w, const int h) : _index(0) {
 void MapPicker::fillSlots() const {
 	bool split;
 	Config->get("multiplayer.split-screen-mode", split, false);
+
+
+	std::vector<SlotConfig> config;
+	MenuConfig->fill(_maps[_index].name, _picker->getVariant(), config);
+	for(size_t i = 0; i < config.size(); ++i) {
+		PlayerSlot &slot = PlayerManager->getSlot(i);
+		std::string object, animation;
+		PlayerManager->getDefaultVehicle(object, animation);
+		std::string type = config[i].type;
+		mrt::toLower(type);
+		if (type == "ai")
+			object = "ai-" + object;
+
+		std::string cm = "ai";
+		if (!split) {
+			if (type == "player")
+				Config->get("player.control-method", cm, "keys");
+		} else {
+			if (type == "player-1")
+				Config->get("player.control-method-1", cm, "keys-1");		
+			if (type == "player-2")
+				Config->get("player.control-method-2", cm, "keys-2");
+		}
+		PlayerManager->createControlMethod(slot, cm);
+		PlayerManager->spawnPlayer(slot, object, animation);
+	}
+
 	if (!split) {	
-		GET_CONFIG_VALUE("player.control-method", std::string, cm, "keys");
+		PlayerManager->setViewport(0, Game->getSize());
+	} else {
+		v2<int> ts = Map->getTileSize();
+		int w = Game->getSize().w / 2;
 
-		std::string vehicle, animation;
-		PlayerManager->getDefaultVehicle(vehicle, animation);
-		int idx = PlayerManager->spawnPlayer(vehicle, animation, cm);
-		assert(idx == 0);
+		sdlx::Rect vp1(Game->getSize());
+		sdlx::Rect vp2(Game->getSize());
+		vp1.w = w;
 
-		PlayerManager->setViewport(idx, Game->getSize());
-	} else 
-		throw_ex(("split screen mode is unimplemented"));
+		vp2.x = w;
+		vp2.w = w;
+		LOG_DEBUG(("p1: %d %d %d %d", vp1.x, vp1.y, vp1.w, vp1.h));
+		LOG_DEBUG(("p2: %d %d %d %d", vp2.x, vp2.y, vp2.w, vp2.h));
+		PlayerManager->setViewport(0, vp1);
+		PlayerManager->setViewport(1, vp2);
+	}
 }
