@@ -22,8 +22,13 @@ public:
 
 	void set(const int i);
 	void set(const std::string &name);
+	const std::string& getValue() const;
+	
+	const bool changed() const { return _changed; }
+	void reset() { _changed = false; }
 
 private: 
+	bool _changed;
 	std::vector<std::string> _options;
 	int _i, _n;
 	const sdlx::Surface *_surface, *_left_right;

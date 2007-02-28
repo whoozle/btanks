@@ -5,7 +5,7 @@
 #include "sdlx/font.h"
 
 Chooser::Chooser(const std::string &font, const std::vector<std::string> &options) : 
-_options(options), _i(0), _n(options.size()), _surface(NULL), _w(0) {
+_changed(false), _options(options), _i(0), _n(options.size()), _surface(NULL), _w(0) {
 	_left_right = ResourceManager->loadSurface("menu/left_right.png");
 	_font = ResourceManager->loadFont(font, true);
 	for(size_t i =0; i < options.size(); ++i) {
@@ -15,10 +15,17 @@ _options(options), _i(0), _n(options.size()), _surface(NULL), _w(0) {
 	}
 }
 
-Chooser::Chooser(const std::string &surface, const int n) : _i(0), _n(n), _font(NULL) {
+Chooser::Chooser(const std::string &surface, const int n) : _changed(false), _i(0), _n(n), _font(NULL) {
 	_surface = ResourceManager->loadSurface(surface);
 	_left_right = ResourceManager->loadSurface("menu/left_right.png");
 }
+
+const std::string& Chooser::getValue() const {
+	if (_options.size() == 0)
+		throw_ex(("getValue() on non-text Chooser is invalid"));
+	return _options[_i];
+}
+
 
 void Chooser::getSize(int &w, int &h) {
 	if (_surface != NULL) {
@@ -61,11 +68,13 @@ bool Chooser::onMouse(const int button, const bool pressed, const int x, const i
 		--_i;
 		if (_i < 0)
 			_i = _n - 1;
+		_changed = true;
 		return true;
 	} else if (_right_area.in(x, y)) {
 		++_i;
 		if (_i >= _n)
 			_i = 0;
+		_changed = true;
 		return true;
 	} 
 	return Container::onMouse(button, pressed, x, y);
@@ -75,12 +84,14 @@ void Chooser::set(const int i) {
 	if (i < 0 || i >= _n)
 		throw_ex(("set(%d) is greater than available options (%d)", i, _n));
 	_i = i;
+	_changed = true;
 }
 
 void Chooser::set(const std::string &name) {
 	for(int i = 0; i < _n; ++i) {
 		if (strcasecmp(name.c_str(), _options[i].c_str()) == 0) {
 			_i = i;
+			_changed = true;
 			return;
 		}
 	}

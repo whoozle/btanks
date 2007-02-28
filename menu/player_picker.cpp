@@ -9,10 +9,16 @@
 #include "config.h"
 
 class SlotLine : public Container {
+	Chooser *_type, *_vehicle;
 public : 
 	int h, ch;
+	std::string map, variant;
+	int slot;
+	SlotConfig config;
 	
-	SlotLine(const int i, const std::string &variant, const SlotConfig &config) {
+	SlotLine(const std::string &map, const std::string &variant, const int i, const SlotConfig &config) : 
+	map(map), variant(variant), slot(i), config(config) {
+		
 		_font = ResourceManager->loadFont("medium", true);
 		h = _font->getHeight();
 		int w = _font->getWidth();
@@ -29,13 +35,13 @@ public :
 			options.push_back("AI");
 		}
 
-		Chooser *ic = new Chooser("medium", options);
+		_type = new Chooser("medium", options);
 		if(!config.type.empty())
-			ic->set(config.type);
-		Chooser *vc = new Chooser("menu/vehicles.png", 5);
+			_type->set(config.type);
+		_vehicle = new Chooser("menu/vehicles.png", 5);
 		
 		int cw;
-		ic->getSize(cw, ch);
+		_type->getSize(cw, ch);
 
 		add(sdlx::Rect(0, (ch - h) / 3, w, h), new Label(_font, mrt::formatString("%d", i + 1)));
 
@@ -48,18 +54,31 @@ public :
 		if (ch > h) 
 			h = ch;
 		
-		add(p1, ic);
+		add(p1, _type);
 		
 		sdlx::Rect p2;
 		p2.x = p1.x + p1.w + _font->getWidth();
 
 		int vcw, vch;
-		vc->getSize(vcw, vch);
+		_vehicle->getSize(vcw, vch);
 		if (vch > h) 
 			h = vch;
 		p2.w = vcw; p2.h = vch;
 
-		add(p2, vc);
+		add(p2, _vehicle);
+	}
+
+	void tick(const float dt) {
+		if (_type->changed()) {
+			_type->reset();
+			config.type = _type->getValue();
+			MenuConfig->update(map, variant, slot, config);
+			//LOG_DEBUG(("type changed"));
+		}
+		if (_vehicle->changed()) {
+			_vehicle->reset();
+			//LOG_DEBUG(("vehicle changed"));
+		}
 	}
 
 private: 
@@ -88,7 +107,7 @@ void PlayerPicker::set(const MapDesc &map) {
 	config.resize(_slots);
 
 	for(int i = 0; i < _slots; ++i) {
-		SlotLine *line = new SlotLine(i, variant, config[i]);
+		SlotLine *line = new SlotLine(map.name, variant, i, config[i]);
 		sdlx::Rect pos(mx, my + i * (line->h + 6), _background.w - 2 * mx, line->h);
 		add(pos, line);
 	}
