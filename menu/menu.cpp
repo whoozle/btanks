@@ -31,8 +31,11 @@
 #include "mrt/exception.h"
 #include "config.h"
 #include "resource_manager.h"
+#include "menu_config.h"
 
 MainMenu::MainMenu(const int w, const int h) : _active_item(0) {
+	MenuConfig->load();
+	
 	_active = true;
 	
 	LOG_DEBUG(("loading font..."));
@@ -133,6 +136,8 @@ void MainMenu::deinit() {
 	_menu_path.clear();
 	_active_menu.clear();
 	_active_item = 0;
+	
+	MenuConfig->save();
 }
 
 MainMenu::~MainMenu() { 

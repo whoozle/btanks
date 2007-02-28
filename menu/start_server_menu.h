@@ -11,6 +11,7 @@ class MainMenu;
 class StartServerMenu : public BaseMenu {
 public:
 	StartServerMenu(MainMenu *parent, const int w, const int h);
+	~StartServerMenu();
 	
 	void tick(const float dt);
 private: 

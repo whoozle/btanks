@@ -49,3 +49,5 @@ void StartServerMenu::tick(const float dt) {
 	}
 
 }
+
+StartServerMenu::~StartServerMenu() {}

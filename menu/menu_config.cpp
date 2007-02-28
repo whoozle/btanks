@@ -3,6 +3,8 @@
 #include "mrt/chunk.h"
 #include "mrt/logger.h"
 #include "mrt/random.h"
+#include "mrt/b64.h"
+#include "config.h"
 
 void SlotConfig::serialize(mrt::Serializator &s) const {
 	s.add(type);
@@ -59,16 +61,25 @@ void IMenuConfig::update(const std::string &map, const std::string &variant, con
 	_config[map][variant][idx] = slot;
 }
 
+void IMenuConfig::load() {
+	mrt::Chunk data;
+	std::string src;
+	Config->get("menu.state", src, "");
+	if (src.empty())
+		return;
+	mrt::Base64::decode(data, src);
+	data.reserve(1); //bug in base64 ?
+	deserialize2(data);
+}
+
+
 void IMenuConfig::save() {
 	mrt::Chunk data;
 	serialize2(data);
-	std::string hex;
-	size_t n = data.getSize();
-	unsigned char *ptr = (unsigned char *)data.getPtr();
-	for(size_t i = 0; i < n; ++i) {
-		hex += mrt::formatString("%02x", ptr[i]);
-	}
-	LOG_DEBUG(("hex view: %s", hex.c_str()));
+	std::string dump;
+	mrt::Base64::encode(dump, data);
+	//LOG_DEBUG(("dump: %s", dump.c_str()));
+	Config->set("menu.state", dump);
 }
 
 void IMenuConfig::serialize(mrt::Serializator &s) const {
@@ -95,6 +106,22 @@ void IMenuConfig::deserialize(const mrt::Serializator &s) {
 	while(n--) {
 		std::string map;
 		s.get(map);
-		
+		VariantMap &vmap = _config[map];
+
+		int vn;
+		s.get(vn);
+		while(vn--) {
+			std::string variant;
+			s.get(variant);
+
+			std::vector<SlotConfig> &slots = vmap[variant];
+			int sn;
+			s.get(sn);
+			
+			slots.resize(sn);
+			for(int i = 0; i < sn; ++i) {
+				slots[i].deserialize(s);
+			}
+		}
 	}
 }

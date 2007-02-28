@@ -25,6 +25,7 @@ public:
 	void update(const std::string &map, const std::string &variant, const int idx, const SlotConfig &slot);
 
 	void save();
+	void load();
 
 	virtual void serialize(mrt::Serializator &s) const;
 	virtual void deserialize(const mrt::Serializator &s);
