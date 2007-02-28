@@ -24,6 +24,20 @@ StartServerMenu::StartServerMenu(MainMenu *parent, const int w, const int h) : _
 	add(sdlx::Rect(w - 64 - bw, h - 96, bw, bh), _start);
 }
 
+void StartServerMenu::start() {
+	_parent->back();
+	const MapDesc &map = _map_picker->getCurrentMap();
+
+	LOG_DEBUG(("start multiplayer server requested"));
+	Game->clear();
+	Game->loadMap(map.name);
+		
+	_map_picker->fillSlots();
+	
+	PlayerManager->startServer();
+	MenuConfig->save();
+}
+
 void StartServerMenu::tick(const float dt) {
 	Container::tick(dt);
 	if (_back->clicked()) {
@@ -33,21 +47,19 @@ void StartServerMenu::tick(const float dt) {
 		MenuConfig->save();
 	}
 	if (_start->clicked()) {
-		LOG_DEBUG(("[start] clicked..."));
 		_start->reset();
-		_parent->back();
-		const MapDesc &map = _map_picker->getCurrentMap();
-
-		LOG_DEBUG(("start multiplayer server requested"));
-		Game->clear();
-		Game->loadMap(map.name);
-		
-		_map_picker->fillSlots();
-		
-		PlayerManager->startServer();
-		MenuConfig->save();
+		start();
 	}
 
 }
+
+bool StartServerMenu::onKey(const SDL_keysym sym) {
+	if (sym.sym == SDLK_RETURN) {
+		start();
+		return true;
+	}
+	return false;
+}
+
 
 StartServerMenu::~StartServerMenu() {}

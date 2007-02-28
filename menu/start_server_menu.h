@@ -12,8 +12,11 @@ class StartServerMenu : public BaseMenu {
 public:
 	StartServerMenu(MainMenu *parent, const int w, const int h);
 	~StartServerMenu();
-	
+
+	void start();	
 	void tick(const float dt);
+	virtual bool onKey(const SDL_keysym sym);
+	
 private: 
 	MainMenu *_parent;
 	int _w, _h;
