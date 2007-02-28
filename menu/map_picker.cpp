@@ -79,7 +79,10 @@ void MapPicker::tick(const float dt) {
 
 	if (_upper_box->changed() || _index != _list->getPosition()) {
 		_upper_box->reset();
+
 		_index = _list->getPosition();
+
+		Config->set("menu.default-mp-map", _maps[_index].name);
 		_details->set(_maps[_index].base, _maps[_index].name, _maps[_index].desc );
 		_picker->set(_maps[_index]);
 	}
@@ -150,9 +153,9 @@ void MapPicker::fillSlots() const {
 	bool split;
 	Config->get("multiplayer.split-screen-mode", split, false);
 
-
 	std::vector<SlotConfig> config;
 	MenuConfig->fill(_maps[_index].name, _picker->getVariant(), config);
+	int idx1 = -1, idx2 = -1;
 	for(size_t i = 0; i < config.size(); ++i) {
 		PlayerSlot &slot = PlayerManager->getSlot(i);
 		std::string object, animation;
@@ -164,20 +167,26 @@ void MapPicker::fillSlots() const {
 
 		std::string cm = "ai";
 		if (!split) {
-			if (type == "player")
+			if (type == "player") {
+				idx1 = i;
 				Config->get("player.control-method", cm, "keys");
+			}
 		} else {
-			if (type == "player-1")
+			if (type == "player-1") {
+				idx1 = i;
 				Config->get("player.control-method-1", cm, "keys-1");		
-			if (type == "player-2")
+			}
+			if (type == "player-2") {
+				idx2 = i;
 				Config->get("player.control-method-2", cm, "keys-2");
+			}
 		}
 		PlayerManager->createControlMethod(slot, cm);
 		PlayerManager->spawnPlayer(slot, object, animation);
 	}
 
 	if (!split) {	
-		PlayerManager->setViewport(0, Game->getSize());
+		PlayerManager->setViewport((idx1 == -1)?0:idx1, Game->getSize());
 	} else {
 		v2<int> ts = Map->getTileSize();
 		int w = Game->getSize().w / 2;
@@ -190,7 +199,7 @@ void MapPicker::fillSlots() const {
 		vp2.w = w;
 		LOG_DEBUG(("p1: %d %d %d %d", vp1.x, vp1.y, vp1.w, vp1.h));
 		LOG_DEBUG(("p2: %d %d %d %d", vp2.x, vp2.y, vp2.w, vp2.h));
-		PlayerManager->setViewport(0, vp1);
-		PlayerManager->setViewport(1, vp2);
+		PlayerManager->setViewport((idx1 == -1)?0:idx1, vp1);
+		PlayerManager->setViewport((idx2 == -1)?(idx1 != 1?1:0):idx2, vp2); //avoid duplication of viewports
 	}
 }
