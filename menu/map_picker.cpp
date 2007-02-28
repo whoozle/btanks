@@ -9,6 +9,9 @@
 #include <algorithm>
 
 #include "i18n.h"
+#include "player_manager.h"
+#include "game.h"
+#include <assert.h>
 
 const bool MapPicker::MapDesc::operator<(const MapPicker::MapDesc & other) const {
 	if (base != other.base)
@@ -133,4 +136,20 @@ MapPicker::MapPicker(const int w, const int h) : _index(0) {
 		add(pp_pos, _picker);
 	} CATCH("PlayerPicker::ctor", {delete _picker; throw; });
 
+}
+
+void MapPicker::fillSlots() const {
+	bool split;
+	Config->get("multiplayer.split-screen-mode", split, false);
+	if (!split) {	
+		GET_CONFIG_VALUE("player.control-method", std::string, cm, "keys");
+
+		std::string vehicle, animation;
+		PlayerManager->getDefaultVehicle(vehicle, animation);
+		int idx = PlayerManager->spawnPlayer(vehicle, animation, cm);
+		assert(idx == 0);
+
+		PlayerManager->setViewport(idx, Game->getSize());
+	} else 
+		throw_ex(("split screen mode is unimplemented"));
 }

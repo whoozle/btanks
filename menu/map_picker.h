@@ -27,6 +27,7 @@ public:
 	virtual void tick(const float dt);
 	
 	const MapDesc &getCurrentMap() const { return _maps[_index]; }
+	void fillSlots() const;
 
 private:
 	void loadScreenshot();

@@ -45,16 +45,10 @@ void StartServerMenu::tick(const float dt) {
 		LOG_DEBUG(("start multiplayer server requested"));
 		Game->clear();
 		Game->loadMap(map.name);
-
-		GET_CONFIG_VALUE("player.control-method", std::string, cm, "keys");
-
-		std::string vehicle, animation;
-		PlayerManager->getDefaultVehicle(vehicle, animation);
-		int idx = PlayerManager->spawnPlayer(vehicle, animation, cm);
-
-		assert(idx == 0);
-
-		PlayerManager->setViewport(idx, Game->getSize());
+		
+		_map_picker->fillSlots();
+		
 		PlayerManager->startServer();
 	}
+
 }
