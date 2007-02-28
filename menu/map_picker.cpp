@@ -10,14 +10,9 @@
 
 #include "i18n.h"
 #include "player_manager.h"
+#include "map_desc.h"
 #include "game.h"
 #include <assert.h>
-
-const bool MapPicker::MapDesc::operator<(const MapPicker::MapDesc & other) const {
-	if (base != other.base)
-		return base < other.base;
-	return name < other.name;	
-} 
 
 struct MapScanner : mrt::XMLParser {
 	MapScanner() : slots(0) {}
@@ -79,7 +74,7 @@ void MapPicker::tick(const float dt) {
 	if (_index != _list->getPosition()) {
 		_index = _list->getPosition();
 		_details->set(_maps[_index].base, _maps[_index].name, _maps[_index].desc );
-		_picker->set(_maps[_index].slots, _maps[_index].object);
+		_picker->set(_maps[_index]);
 	}
 	Container::tick(dt);
 }
@@ -132,7 +127,7 @@ MapPicker::MapPicker(const int w, const int h) : _index(0) {
 	_picker = NULL;
 	TRY {
 		_picker = new PlayerPicker(pp_pos.w, pp_pos.h);
-		_picker->set(_maps[_index].slots, _maps[_index].object);
+		_picker->set(_maps[_index]);
 		add(pp_pos, _picker);
 	} CATCH("PlayerPicker::ctor", {delete _picker; throw; });
 

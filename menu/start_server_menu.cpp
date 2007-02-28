@@ -10,6 +10,7 @@
 #include "config.h"
 #include "player_manager.h"
 #include "menu_config.h"
+#include "map_desc.h"
 
 StartServerMenu::StartServerMenu(MainMenu *parent, const int w, const int h) : _parent(parent), _w(w), _h(h) {
 	TRY {
@@ -29,7 +30,7 @@ StartServerMenu::StartServerMenu(MainMenu *parent, const int w, const int h) : _
 }
 
 void StartServerMenu::tick(const float dt) {
-	const MapPicker::MapDesc &map = _map_picker->getCurrentMap();
+	const MapDesc &map = _map_picker->getCurrentMap();
 	_upper_box->value = map.game_type;
 	Container::tick(dt);
 	if (_back->clicked()) {
@@ -42,7 +43,7 @@ void StartServerMenu::tick(const float dt) {
 		LOG_DEBUG(("[start] clicked..."));
 		_start->reset();
 		_parent->back();
-		const MapPicker::MapDesc &map = _map_picker->getCurrentMap();
+		const MapDesc &map = _map_picker->getCurrentMap();
 
 		LOG_DEBUG(("start multiplayer server requested"));
 		Game->clear();

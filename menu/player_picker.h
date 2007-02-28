@@ -9,10 +9,11 @@ namespace sdlx {
 	class Surface;
 }
 
+struct MapDesc;
 class PlayerPicker : public Container {
 public: 
 	PlayerPicker(const int w, const int h);
-	void set(const int slots, const std::string &object);
+	void set(const MapDesc &map);
 	virtual void render(sdlx::Surface &surface, const int x, const int y);
 	virtual bool onKey(const SDL_keysym sym) ;
 	virtual bool onMouse(const int button, const bool pressed, const int x, const int y);

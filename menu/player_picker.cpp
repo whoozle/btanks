@@ -4,6 +4,7 @@
 #include "resource_manager.h"
 #include "chooser.h"
 #include "label.h"
+#include "map_desc.h"
 
 class SlotLine : public Container {
 public : 
@@ -59,12 +60,12 @@ PlayerPicker::PlayerPicker(const int w, const int h)  : _slots(0) {
 	_vehicles = ResourceManager->loadSurface("menu/vehicles.png");
 }
 
-void PlayerPicker::set(const int slots, const std::string &object) {
+void PlayerPicker::set(const MapDesc &map) {
 	clear();
 	int mx, my;
 	_background.getMargins(mx, my);
-	_slots = slots;
-	_object = object;
+	_slots = map.slots;
+	_object = map.object;
 	for(int i = 0; i < _slots; ++i) {
 		SlotLine *line = new SlotLine(i + 1);
 		sdlx::Rect pos(mx, my + i * (line->h + 6), _background.w - 2 * mx, line->h);
