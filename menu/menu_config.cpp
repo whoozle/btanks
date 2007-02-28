@@ -6,6 +6,8 @@
 #include "mrt/b64.h"
 #include "config.h"
 
+IMPLEMENT_SINGLETON(MenuConfig, IMenuConfig)
+
 void SlotConfig::serialize(mrt::Serializator &s) const {
 	s.add(type);
 	s.add(vehicle);
