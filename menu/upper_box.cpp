@@ -5,7 +5,7 @@
 #include "sdlx/font.h"
 
 
-UpperBox::UpperBox(int w, int h, const bool server): _server(server) {
+UpperBox::UpperBox(int w, int h, const bool server): _server(server), _changed(false) {
 	_checkbox = ResourceManager->loadSurface("menu/radio.png");
 	if (_server) {
 		Config->get("multiplayer.game-type", value, "deathmatch");
@@ -17,6 +17,11 @@ UpperBox::UpperBox(int w, int h, const bool server): _server(server) {
 	_medium = ResourceManager->loadFont("medium", true);
 	_big = ResourceManager->loadFont("big", true);
 }
+
+void UpperBox::reset() {
+	_changed = false;
+}
+
 
 void UpperBox::render(sdlx::Surface &surface, const int x, const int y) {
 	Box::render(surface, x, y);
@@ -65,10 +70,12 @@ bool UpperBox::onMouse(const int button, const bool pressed, const int x, const 
 	if (_on_area.in(x, y)) {
 		//LOG_DEBUG(("split screen on!"));
 		Config->set("multiplayer.split-screen-mode", true);
+		_changed = true;
 		return true;
 	} else if (_off_area.in(x, y)) {
 		//LOG_DEBUG(("split screen off!"));
 		Config->set("multiplayer.split-screen-mode", false);
+		_changed = true;
 		return true;
 	}
 	return false;

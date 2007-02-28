@@ -11,6 +11,7 @@
 #include "i18n.h"
 #include "player_manager.h"
 #include "map_desc.h"
+#include "upper_box.h"
 #include "game.h"
 #include <assert.h>
 
@@ -71,7 +72,11 @@ void MapPicker::scan(const std::string &path) {
 }
 
 void MapPicker::tick(const float dt) {
-	if (_index != _list->getPosition()) {
+	const MapDesc &map = getCurrentMap();
+	_upper_box->value = map.game_type;
+
+	if (_upper_box->changed() || _index != _list->getPosition()) {
+		_upper_box->reset();
 		_index = _list->getPosition();
 		_details->set(_maps[_index].base, _maps[_index].name, _maps[_index].desc );
 		_picker->set(_maps[_index]);
@@ -101,8 +106,14 @@ MapPicker::MapPicker(const int w, const int h) : _index(0) {
 	if (_index >= _maps.size())
 		_index = 0;
 	LOG_DEBUG(("map index: %d", _index));
+	
+	TRY {
+		_upper_box = new UpperBox(500, 80, true);
+		sdlx::Rect r((w - _upper_box->w) / 2, 32, _upper_box->w, _upper_box->h);
+		add(r, _upper_box);
+	} CATCH("StartServerMenu", {delete _upper_box; throw; });
 
-	sdlx::Rect list_pos(0, 0, (w - 64)/3, h - 128);
+	sdlx::Rect list_pos(0, 128, (w - 64)/3, h - 256);
 	_list = NULL;
 	TRY {
 		_list = new ScrollList(list_pos.w, list_pos.h);
@@ -113,7 +124,7 @@ MapPicker::MapPicker(const int w, const int h) : _index(0) {
 		_list->setPosition(_index);
 	} CATCH("MapPicker::ctor", {delete _list; throw; });
 
-	sdlx::Rect map_pos(list_pos.w + 16, 0, (w - 64) / 3, h - 128);
+	sdlx::Rect map_pos(list_pos.w + 16, 128, (w - 64) / 3, h - 256);
 
 	_details = NULL;	
 	TRY {
@@ -123,7 +134,7 @@ MapPicker::MapPicker(const int w, const int h) : _index(0) {
 	} CATCH("MapPicker::ctor", {delete _details; throw; });
 
 
-	sdlx::Rect pp_pos(map_pos.x + map_pos.w + 16, 0, w - map_pos.x - map_pos.w - 16, h - 128);
+	sdlx::Rect pp_pos(map_pos.x + map_pos.w + 16, 128, w - map_pos.x - map_pos.w - 16, h - 256);
 	_picker = NULL;
 	TRY {
 		_picker = new PlayerPicker(pp_pos.w, pp_pos.h);

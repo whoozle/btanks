@@ -9,6 +9,7 @@ class ScrollList;
 class MapDetails;
 class PlayerPicker;
 struct MapDesc;
+class UpperBox;
 
 class MapPicker : public Container {
 public: 
@@ -27,6 +28,7 @@ private:
 	typedef std::vector<MapDesc > MapList;
 	MapList _maps;
 	
+	UpperBox * _upper_box;
 	ScrollList *_list;
 	MapDetails *_details;
 	PlayerPicker *_picker;

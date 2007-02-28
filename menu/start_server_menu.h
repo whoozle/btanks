@@ -5,7 +5,6 @@
 #include "base_menu.h"
 
 class MapPicker;
-class UpperBox;
 class Button;
 class MainMenu;
 
@@ -17,7 +16,6 @@ public:
 private: 
 	MainMenu *_parent;
 	int _w, _h;
-	UpperBox * _upper_box;
 	MapPicker *_map_picker;
 	Button *_back, *_start;
 };

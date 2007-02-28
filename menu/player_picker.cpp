@@ -5,20 +5,28 @@
 #include "chooser.h"
 #include "label.h"
 #include "map_desc.h"
+#include "menu_config.h"
+#include "config.h"
 
 class SlotLine : public Container {
 public : 
 	int h, ch;
 	
-	SlotLine(const int i) {
+	SlotLine(const int i, const std::string &variant, const SlotConfig &config) {
 		_font = ResourceManager->loadFont("medium", true);
 		h = _font->getHeight();
 		int w = _font->getWidth();
 
 		std::vector<std::string> options;
 		options.push_back("?");
-		options.push_back("PLAYER");
-		options.push_back("AI");
+		if (variant =="split") {
+			options.push_back("PLAYER-1");
+			options.push_back("PLAYER-2");			
+			options.push_back("AI");
+		} else {
+			options.push_back("PLAYER");
+			options.push_back("AI");
+		}
 
 		Chooser *ic = new Chooser("medium", options);
 		Chooser *vc = new Chooser("menu/vehicles.png", 5);
@@ -26,7 +34,7 @@ public :
 		int cw;
 		ic->getSize(cw, ch);
 
-		add(sdlx::Rect(0, (ch - h) / 3, w, h), new Label(_font, mrt::formatString("%d", i)));
+		add(sdlx::Rect(0, (ch - h) / 3, w, h), new Label(_font, mrt::formatString("%d", i + 1)));
 
 
 		sdlx::Rect p1;
@@ -66,8 +74,18 @@ void PlayerPicker::set(const MapDesc &map) {
 	_background.getMargins(mx, my);
 	_slots = map.slots;
 	_object = map.object;
+
+	std::vector<SlotConfig> config;
+
+	bool split;
+	Config->get("multiplayer.split-screen-mode", split, false);
+	const std::string variant =  split?"split":std::string();
+	
+	MenuConfig->fill(map.name, variant, config);
+	config.resize(_slots);
+
 	for(int i = 0; i < _slots; ++i) {
-		SlotLine *line = new SlotLine(i + 1);
+		SlotLine *line = new SlotLine(i, variant, config[i]);
 		sdlx::Rect pos(mx, my + i * (line->h + 6), _background.w - 2 * mx, line->h);
 		add(pos, line);
 	}
