@@ -90,7 +90,6 @@ public:
 	void notifyLoadingBar(const int progress = 1);
 
 	void loadMap(const std::string &name, const bool spawn = true);	
-	void setMyIndex(const int idx) { _my_index = idx; }
 	
 	const std::string getRandomWaypoint(const std::string &classname, const std::string &last_wp = std::string()) const;
 	const std::string getNearestWaypoint(const BaseObject *obj, const std::string &classname) const;
@@ -146,7 +145,6 @@ private:
 
 	float _shake;
 	int _shake_int;
-	int _my_index;
 	
 	Hud *_hud;
 	bool _show_radar;

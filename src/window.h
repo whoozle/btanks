@@ -26,6 +26,7 @@ class Window {
 public: 
 	void init(const int argc, char *argv[]);
 	void flip();
+	const sdlx::Rect getSize() const { return _window.getSize(); }
 	void deinit();
 	virtual ~Window();
 protected:

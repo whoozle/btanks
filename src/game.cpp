@@ -291,8 +291,7 @@ void IGame::onMenu(const std::string &name, const std::string &value) {
 		PlayerManager->getDefaultVehicle(vehicle1, animation1);
 		PlayerManager->getDefaultVehicle(vehicle2, animation2);
 		
-		_my_index = PlayerManager->spawnPlayer(vehicle1, animation1, cm);
-		assert(_my_index == 0);
+		PlayerManager->spawnPlayer(vehicle1, animation1, cm);
 		PlayerManager->spawnPlayer(vehicle2, animation2, cm2);
 		
 		v2<int> ts = Map->getTileSize();
@@ -322,11 +321,11 @@ void IGame::onMenu(const std::string &name, const std::string &value) {
 
 		std::string vehicle, animation;
 		PlayerManager->getDefaultVehicle(vehicle, animation);
-		_my_index = PlayerManager->spawnPlayer(vehicle, animation, cm);
+		int idx = PlayerManager->spawnPlayer(vehicle, animation, cm);
 
-		assert(_my_index == 0);
+		assert(idx == 0);
 
-		PlayerManager->setViewport(_my_index, _window.getSize());
+		PlayerManager->setViewport(idx, _window.getSize());
 		PlayerManager->startServer();
 	} else if (name == "m-join") {
 		clear();
@@ -619,8 +618,8 @@ void IGame::run() {
 					break;
 				}
 
-				if (!PlayerManager->isClient() && event.key.keysym.sym==SDLK_F12 && _my_index >= 0) {
-					PlayerSlot &slot = PlayerManager->getSlot(_my_index);
+				if (!PlayerManager->isClient() && event.key.keysym.sym==SDLK_F12 && PlayerManager->getSlotsCount() > 0) {
+					PlayerSlot &slot = PlayerManager->getMySlot();
 					if (slot.frags > 0) 
 						--slot.frags;
 
@@ -768,7 +767,6 @@ void IGame::clear() {
 
 	PlayerManager->clear();
 
-	_my_index = -1;
 	_items.clear();
 	_waypoints.clear();
 	_waypoint_edges.clear();

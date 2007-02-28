@@ -105,7 +105,6 @@ TRY {
 		
 		s.get(_my_idx);
 		LOG_DEBUG(("my_idx = %d", _my_idx));
-		Game->setMyIndex(_my_idx);
 		
 		int n;
 		s.get(n);
