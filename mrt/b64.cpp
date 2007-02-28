@@ -98,7 +98,7 @@ void Base64::decode(mrt::Chunk &dst, const std::string &src) {
 **
 ** encode 3 8-bit binary bytes as 4 '6-bit' characters
 */
-/*
+
 static inline void encodeblock( unsigned char in[3], unsigned char out[4], int len )
 {
     out[0] = cb64[ in[0] >> 2 ];
@@ -106,23 +106,27 @@ static inline void encodeblock( unsigned char in[3], unsigned char out[4], int l
     out[2] = (unsigned char) (len > 1 ? cb64[ ((in[1] & 0x0f) << 2) | ((in[2] & 0xc0) >> 6) ] : '=');
     out[3] = (unsigned char) (len > 2 ? cb64[ in[2] & 0x3f ] : '=');
 }
-*/
+
 /*
 ** encode
 **
 ** base64 encode a stream adding padding and line breaks as per spec.
 */
-/*
-void encode( FILE *infile, FILE *outfile, int linesize )
-{
+
+void Base64::encode(std::string &dst, const mrt::Chunk &src, int linesize ) {
     unsigned char in[3], out[4];
     int i, len, blocksout = 0;
 
-    while( !feof( infile ) ) {
+	unsigned char *src_ptr = (unsigned char *)src.getPtr();
+	size_t src_i = 0, src_size = src.getSize();
+	
+	dst.clear();
+	
+    while( src_i < src_size) {
         len = 0;
         for( i = 0; i < 3; i++ ) {
-            in[i] = (unsigned char) getc( infile );
-            if( !feof( infile ) ) {
+            in[i] = src_ptr[src_i++];
+            if( src_i < src_size ) {
                 len++;
             }
             else {
@@ -131,17 +135,15 @@ void encode( FILE *infile, FILE *outfile, int linesize )
         }
         if( len ) {
             encodeblock( in, out, len );
-            for( i = 0; i < 4; i++ ) {
-                putc( out[i], outfile );
-            }
+            dst += std::string((const char *)out, 4);
             blocksout++;
         }
-        if( blocksout >= (linesize/4) || feof( infile ) ) {
+        if(linesize != 0 && blocksout >= (linesize/4)) {
             if( blocksout ) {
-                fprintf( outfile, "\r\n" );
+                dst += "\r\n";
             }
             blocksout = 0;
         }
     }
 }
-*/
+
