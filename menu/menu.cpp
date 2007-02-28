@@ -126,6 +126,10 @@ void MainMenu::deinit() {
 		}
 	}
 	_items.clear();
+	for(std::map<const std::string, BaseMenu *>::iterator i = _special_menus.begin(); i != _special_menus.end(); ++i) {
+		delete i->second;
+	}
+	_special_menus.clear();
 	_menu_path.clear();
 	_active_menu.clear();
 	_active_item = 0;

@@ -20,6 +20,9 @@ public:
 	virtual void render(sdlx::Surface &surface, const int x, const int y);
 	virtual bool onMouse(const int button, const bool pressed, const int x, const int y);
 
+	void set(const int i);
+	void set(const std::string &name);
+
 private: 
 	std::vector<std::string> _options;
 	int _i, _n;

@@ -740,7 +740,6 @@ flip:
 
 void IGame::deinit() {
 	clear();
-	Config->save();
 	
 	delete _fps;
 	_fps = NULL;
@@ -757,6 +756,8 @@ void IGame::deinit() {
 
 	delete _credits;
 	_credits = NULL;	
+
+	Config->save();
 }
 
 

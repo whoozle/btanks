@@ -70,3 +70,19 @@ bool Chooser::onMouse(const int button, const bool pressed, const int x, const i
 	} 
 	return Container::onMouse(button, pressed, x, y);
 }
+
+void Chooser::set(const int i) {
+	if (i < 0 || i >= _n)
+		throw_ex(("set(%d) is greater than available options (%d)", i, _n));
+	_i = i;
+}
+
+void Chooser::set(const std::string &name) {
+	for(int i = 0; i < _n; ++i) {
+		if (strcasecmp(name.c_str(), _options[i].c_str()) == 0) {
+			_i = i;
+			return;
+		}
+	}
+	throw_ex(("chooser doesnt contain option '%s'", name.c_str()));
+}

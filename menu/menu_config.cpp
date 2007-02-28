@@ -52,6 +52,7 @@ void IMenuConfig::fillDefaults(const std::string &map, const std::string &varian
 		slots[1].type = "ai";
 		slots[1].vehicle = vehicles[mrt::random(3)];
 	}
+	config = slots;
 }
 
 void IMenuConfig::update(const std::string &map, const std::string &variant, const int idx, const SlotConfig &slot) {

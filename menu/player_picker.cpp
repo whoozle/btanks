@@ -19,6 +19,7 @@ public :
 
 		std::vector<std::string> options;
 		options.push_back("?");
+
 		if (variant =="split") {
 			options.push_back("PLAYER-1");
 			options.push_back("PLAYER-2");			
@@ -29,6 +30,8 @@ public :
 		}
 
 		Chooser *ic = new Chooser("medium", options);
+		if(!config.type.empty())
+			ic->set(config.type);
 		Chooser *vc = new Chooser("menu/vehicles.png", 5);
 		
 		int cw;
