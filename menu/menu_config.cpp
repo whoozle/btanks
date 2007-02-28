@@ -58,7 +58,11 @@ void IMenuConfig::fillDefaults(const std::string &map, const std::string &varian
 }
 
 void IMenuConfig::update(const std::string &map, const std::string &variant, const int idx, const SlotConfig &slot) {
-	_config[map][variant][idx] = slot;
+	std::vector<SlotConfig> &slots = _config[map][variant];
+	if (idx >= (int)slots.size())
+		slots.resize(idx + 1);
+
+	slots[idx] = slot;
 }
 
 void IMenuConfig::load() {
@@ -68,7 +72,7 @@ void IMenuConfig::load() {
 	if (src.empty())
 		return;
 	mrt::Base64::decode(data, src);
-	data.reserve(1); //bug in base64 ?
+	data.reserve(3); //bug in base64 ?
 	deserialize2(data);
 }
 
