@@ -161,6 +161,9 @@ void MapPicker::fillSlots() const {
 		std::string object, animation;
 		PlayerManager->getDefaultVehicle(object, animation);
 		std::string type = config[i].type;
+		if (type.empty() || type == "?")
+			continue;
+		
 		mrt::toLower(type);
 		if (type == "ai")
 			object = "ai-" + object;
