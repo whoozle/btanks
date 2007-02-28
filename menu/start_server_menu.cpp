@@ -9,6 +9,7 @@
 #include "game.h"
 #include "config.h"
 #include "player_manager.h"
+#include "menu_config.h"
 
 StartServerMenu::StartServerMenu(MainMenu *parent, const int w, const int h) : _parent(parent), _w(w), _h(h) {
 	TRY {
@@ -35,6 +36,7 @@ void StartServerMenu::tick(const float dt) {
 		LOG_DEBUG(("[back] clicked"));
 		_back->reset();
 		_parent->back();
+		MenuConfig->save();
 	}
 	if (_start->clicked()) {
 		LOG_DEBUG(("[start] clicked..."));
@@ -49,6 +51,7 @@ void StartServerMenu::tick(const float dt) {
 		_map_picker->fillSlots();
 		
 		PlayerManager->startServer();
+		MenuConfig->save();
 	}
 
 }
