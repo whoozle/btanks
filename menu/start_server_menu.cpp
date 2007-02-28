@@ -58,7 +58,7 @@ bool StartServerMenu::onKey(const SDL_keysym sym) {
 		start();
 		return true;
 	}
-	return false;
+	return Container::onKey(sym);
 }
 
 

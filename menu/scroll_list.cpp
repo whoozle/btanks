@@ -99,16 +99,21 @@ void ScrollList::render(sdlx::Surface &surface, const int x, const int y) {
 
 bool ScrollList::onKey(const SDL_keysym sym) {
 	switch(sym.sym) {
+	case SDLK_PAGEUP:
+		_current_item -= 9;
 	case SDLK_UP:
-		if (_current_item > 0 ) 
-			--_current_item;
+		--_current_item;
+		if (_current_item < 0 ) 
+			_current_item = 0;
 		//LOG_DEBUG(("up: %u", _current_item));
 		return true;
 
+	case SDLK_PAGEDOWN:
+		_current_item += 9;
 	case SDLK_DOWN:
 		++_current_item;
-		if (_current_item >= _list.size()) 
-			_current_item = _list.size() - 1;
+		if (_current_item >= (int)_list.size()) 
+			_current_item = (int)_list.size() - 1;
 		//LOG_DEBUG(("down: %u", _current_item));
 		return true;
 	default: 
@@ -149,8 +154,8 @@ bool ScrollList::onMouse(const int button, const bool pressed, const int x, cons
 	} else if (_down_area.in(x, y)) {
 	down: 
 		++_current_item;
-		if (_current_item >= _list.size()) 
-			_current_item = _list.size() - 1;
+		if (_current_item >= (int)_list.size()) 
+			_current_item = (int)_list.size() - 1;
 		//LOG_DEBUG(("down: %u", _current_item));
 		return true;
 	} else 

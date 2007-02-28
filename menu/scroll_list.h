@@ -11,8 +11,8 @@ class ScrollList : public Control {
 public: 
 	ScrollList(const int w, const int h);
 	void add(const std::string &item);
-	const size_t getPosition() const { return _current_item; }
-	void setPosition(const size_t idx) { _current_item = idx; }
+	const int getPosition() const { return _current_item; }
+	void setPosition(const int idx) { _current_item = idx; }
 	
 	virtual void tick(const float dt);
 	virtual void render(sdlx::Surface &surface, const int x, const int y);
@@ -29,7 +29,7 @@ private:
 	List _list;
 
 	float _pos, _vel;
-	size_t _current_item;
+	int _current_item;
 };
 
 #endif
