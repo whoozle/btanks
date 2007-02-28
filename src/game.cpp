@@ -619,7 +619,7 @@ void IGame::run() {
 				}
 
 				if (!PlayerManager->isClient() && event.key.keysym.sym==SDLK_F12 && PlayerManager->getSlotsCount() > 0) {
-					PlayerSlot &slot = PlayerManager->getMySlot();
+					PlayerSlot &slot = PlayerManager->getSlot(0);
 					if (slot.frags > 0) 
 						--slot.frags;
 
