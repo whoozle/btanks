@@ -66,6 +66,7 @@ void IMenuConfig::update(const std::string &map, const std::string &variant, con
 }
 
 void IMenuConfig::load() {
+TRY {
 	mrt::Chunk data;
 	std::string src;
 	Config->get("menu.state", src, "");
@@ -74,6 +75,7 @@ void IMenuConfig::load() {
 	mrt::Base64::decode(data, src);
 	data.reserve(3); //bug in base64 ?
 	deserialize2(data);
+} CATCH("load", {});
 }
 
 
