@@ -4,6 +4,10 @@
 #include "sdlx/surface.h"
 #include "sdlx/font.h"
 
+#ifdef WIN32
+#	define strcasecmp _stricmp
+#endif
+
 Chooser::Chooser(const std::string &font, const std::vector<std::string> &options) : 
 _changed(false), _options(options), _i(0), _n(options.size()), _surface(NULL), _w(0) {
 	_left_right = ResourceManager->loadSurface("menu/left_right.png");
