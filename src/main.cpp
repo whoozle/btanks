@@ -22,9 +22,18 @@
 #include <stdlib.h>
 
 #ifdef WIN32
-#include "sdlx/SDL_main.h"
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
+#	include "sdlx/SDL_main.h"
+#	define WIN32_LEAN_AND_MEAN
+#	include <windows.h>
+#else 
+#	include <signal.h>
+#	include <unistd.h>
+
+static void crash_handler(int sno) {
+	fprintf(stderr, "btanks crashed with signal %d. use gdb -p %d to debug it. zzZzzZZzz...\n\n", sno, getpid());
+	sleep(3600);
+}
+
 
 #endif
 
@@ -37,6 +46,23 @@ extern "C"
 int main(int argc, char *argv[]) {
 	try {
 		LOG_NOTICE(("starting up... version: %s", getVersion().c_str()));
+#ifndef WIN32
+		struct sigaction sa;
+		memset(&sa, 0, sizeof(sa));
+		sa.sa_handler = crash_handler;
+		
+		if (sigaction(SIGSEGV, &sa, NULL) == -1) 
+			perror("sigaction");
+		if (sigaction(SIGABRT, &sa, NULL) == -1) 
+			perror("sigaction");
+		if (sigaction(SIGFPE, &sa, NULL) == -1) 
+			perror("sigaction");
+		if (sigaction(SIGILL, &sa, NULL) == -1) 
+			perror("sigaction");
+		if (sigaction(SIGBUS, &sa, NULL) == -1) 
+			perror("sigaction");
+
+#endif		
 		Game->init(argc, argv);
 		Game->run();
 		Game->deinit();
