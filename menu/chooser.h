@@ -20,6 +20,8 @@ public:
 	virtual bool onMouse(const int button, const bool pressed, const int x, const int y);
 
 	void set(const int i);
+	const int get() const { return _i; }
+	const int size() const { return _n; }
 	void set(const std::string &name);
 	const std::string& getValue() const;
 	

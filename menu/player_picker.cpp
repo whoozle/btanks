@@ -59,6 +59,20 @@ public :
 				_vehicle->set(config.vehicle);
 		} CATCH("SlotLine ctor (set)", {});
 		
+		//LOG_DEBUG(("restriction: %s", map.object_restriction.c_str()));
+		if (map.object_restriction.empty()) {
+			_vehicle->disable(4);
+		} else {
+			TRY {
+				_vehicle->set(map.object_restriction);
+				int p = _vehicle->get();
+				for(int i = 0; i < _vehicle->size(); ++i) {
+					if (i != p)
+						_vehicle->disable(i);
+				}
+			} CATCH("set_restriction", {});
+		}
+		
 		int cw;
 		_type->getSize(cw, ch);
 
@@ -238,7 +252,6 @@ void PlayerPicker::set(const MapDesc &map) {
 	clear();
 	int mx, my;
 	_background.getMargins(mx, my);
-	_object = map.object;
 
 	std::vector<SlotConfig> config;
 

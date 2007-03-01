@@ -10,6 +10,7 @@
 
 Chooser::Chooser(const std::string &font, const std::vector<std::string> &options, const std::string &surface) : 
 _options(options), _i(0), _n(options.size()), _surface(NULL), _w(0) {
+	_disabled.resize(_n);
 	if (!surface.empty())
 		_surface = ResourceManager->loadSurface(surface);
 	
@@ -95,16 +96,20 @@ void Chooser::set(const std::string &name) {
 }
 
 void Chooser::left() {
-	--_i;
-	if (_i < 0)
-		_i = _n - 1;
+	do {
+		--_i;
+		if (_i < 0)
+			_i = _n - 1;
+	} while(_disabled[_i]);
 	_changed = true;	
 }
 
 void Chooser::right() {
-	++_i;
-	if (_i >= _n)
-		_i = 0;
+	do {
+		++_i;
+		if (_i >= _n)
+			_i = 0;
+	} while(_disabled[_i]);
 	_changed = true;
 }
 
@@ -112,4 +117,6 @@ void Chooser::disable(const int i, const bool value) {
 	if (i < 0 || i >= _n)
 		throw_ex(("disable(%d) called (n = %d)", i, _n));
 	_disabled[i] = value;
+	if (_disabled[_i])
+		right();
 }

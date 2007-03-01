@@ -29,7 +29,6 @@ private:
 	const bool changeSlotTypesExcept(const std::string &what, const std::string &to, const int e, const int skip);
 
 	Box _background;
-	std::string _object;
 	const sdlx::Surface *_vehicles;
 	std::vector<SlotLine *> _slots;
 };

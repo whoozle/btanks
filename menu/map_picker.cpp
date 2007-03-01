@@ -19,7 +19,6 @@
 
 struct MapScanner : mrt::XMLParser {
 	MapScanner() : slots(0) {}
-	std::string object;
 	int slots;
 	std::string object_restriction;
 	std::string game_type;
@@ -67,7 +66,7 @@ void MapPicker::scan(const std::string &path) {
 		} CATCH("scanning map", {});
 		const std::string &comments = I18n->has("maps/descriptions", map)?I18n->get("maps/descriptions", map): 
 			I18n->get("maps/descriptions", "(default)");
-		_maps.push_back(MapList::value_type(path, map, comments, m.object, m.game_type, m.slots));
+		_maps.push_back(MapList::value_type(path, map, comments, m.object_restriction, m.game_type, m.slots));
 	}	
 	dir.close();
 
