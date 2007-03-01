@@ -91,7 +91,7 @@ void Train::tick(const float dt) {
 	//LOG_DEBUG(("pos: %d dst: %d", pos.y, dst_y));
 	if (pos.y  >= dst_y) { 
 		LOG_DEBUG(("escaped!"));
-		emit("death", NULL);
+		Object::emit("death", NULL);
 	}
 	if (_smoke.tick(dt)) {
 		spawn("train-smoke", "train-smoke");
