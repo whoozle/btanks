@@ -21,7 +21,7 @@ bt_sources = 	[
 	
 	'objects/bullet.cpp', 'objects/explosion.cpp', 'objects/single_pose.cpp',
 	'objects/tank.cpp', 'objects/shilka.cpp', 'objects/launcher.cpp', 'objects/ai_tank.cpp',
-	'objects/ai_launcher.cpp', 'objects/ai_shilka.cpp', 'objects/ai_trooper.cpp',
+	'objects/ai_launcher.cpp', 'objects/ai_shilka.cpp', 'objects/ai_trooper.cpp', 'objects/ai_machinegunner_player.cpp', 
 	'objects/traffic_lights.cpp', 'objects/missiles_in_vehicle.cpp', 'objects/missile.cpp',
 	'objects/corpse.cpp', 'objects/item.cpp', 'objects/mine.cpp', 'objects/dirt.cpp', 
 	'objects/damage.cpp', 'objects/helicopter.cpp', 'objects/paratrooper.cpp', 'objects/kamikaze.cpp',

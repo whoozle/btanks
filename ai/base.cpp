@@ -103,7 +103,6 @@ const bool Base::checkTarget(const Object * target, const std::string &weapon) c
 		}
 	}
 
-	
 	bool codir, codir1;
 	{
 		v2<float> d(pos);
@@ -153,17 +152,17 @@ void Base::calculate(const float dt) {
 	
 	if (target == NULL)
 		target = World->getObjectByID(_target_id);
-	if (target != NULL) {
 
 	if (amount1 == -1) 
 		amount1 = 10;
 	if (amount2 == -1) 
 		amount2 = 10;
 	
-	if (!weapon1.empty())
-		_state.fire = checkTarget(target, weapon1);
-	if (!weapon2.empty())
-		_state.alt_fire = checkTarget(target, weapon2);
+	if (target != NULL) {
+		if (!weapon1.empty())
+			_state.fire = checkTarget(target, weapon1);
+		if (!weapon2.empty())
+			_state.alt_fire = checkTarget(target, weapon2);
 	}
 		
 	target = World->findTarget(this, (amount1 > 0 || amount2 > 0)?_enemies:empty_enemies, _bonuses, _traits);
@@ -231,11 +230,13 @@ void Base::calculate(const float dt) {
 		int t_dir = dir.getDirection(getDirectionsNumber()) - 1;
 		if (t_dir != -1 && t_dir != getDirection())
 			_velocity = dir;
-		if (!weapon1.empty() && !_state.fire)
-			_state.fire = checkTarget(target, weapon1);
-		if (!weapon2.empty() && !_state.alt_fire)
-			_state.alt_fire = checkTarget(target, weapon2);
-
+		//LOG_DEBUG(("fire? (target: %p, w1: %s, w2: %s)", target, weapon1.c_str(), weapon2.c_str()));
+		if (target != NULL) {
+			if (!weapon1.empty() && !_state.fire)
+				_state.fire = checkTarget(target, weapon1);
+			if (!weapon2.empty() && !_state.alt_fire)
+				_state.alt_fire = checkTarget(target, weapon2);
+		}
 			
 	}
 	updateStateFromVelocity();
