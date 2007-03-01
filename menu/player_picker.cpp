@@ -47,6 +47,7 @@ public :
 		options.push_back("tank");
 		options.push_back("shilka");
 		options.push_back("machinegunner-player");
+		options.push_back("civilian-player");
 		
 		_vehicle = new Chooser("medium", options, "menu/vehicles.png");
 		TRY {
@@ -61,7 +62,8 @@ public :
 		
 		//LOG_DEBUG(("restriction: %s", map.object_restriction.c_str()));
 		if (map.object_restriction.empty()) {
-			_vehicle->disable(4);
+			for(int i = 4; i < _vehicle->size(); ++i)
+				_vehicle->disable(i);
 		} else {
 			TRY {
 				_vehicle->set(map.object_restriction);
