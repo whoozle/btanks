@@ -157,11 +157,14 @@ void MapPicker::fillSlots() const {
 	int idx1 = -1, idx2 = -1;
 	for(size_t i = 0; i < config.size(); ++i) {
 		PlayerSlot &slot = PlayerManager->getSlot(i);
-		std::string object, animation;
-		PlayerManager->getDefaultVehicle(object, animation);
 		std::string type = config[i].type;
 		if (type.empty() || type == "?")
 			continue;
+		std::string object = config[i].vehicle, animation; //fixme: random vehicle selection.
+		mrt::toLower(object);
+		LOG_DEBUG(("before: %s:%s", object.c_str(), animation.c_str()));
+		PlayerManager->getDefaultVehicle(object, animation);
+		LOG_DEBUG(("after: %s:%s", object.c_str(), animation.c_str()));
 		
 		mrt::toLower(type);
 		if (type == "ai")

@@ -982,18 +982,23 @@ void IPlayerManager::onPlayerDeath(const Object *player, const Object *killer) {
 }
 
 void IPlayerManager::getDefaultVehicle(std::string &vehicle, std::string &animation) {
-	Config->get("multiplayer.restrict-start-vehicle", vehicle, "");
-	Config->get("multiplayer.restrict-start-animation", animation, "");
-	if (vehicle.empty()) {
-		Config->get("menu.default-vehicle-1", vehicle, "launcher");
-	}
-	if (animation.empty()) {
-		if (vehicle == "tank" || vehicle == "launcher" || vehicle == "shilka") {
-			static const char * colors[4] = {"green", "red", "yellow", "cyan"};
-			animation = colors[mrt::random(4)];
-			animation += "-" + vehicle;
-		} else animation = vehicle;
-	}
+	std::string rv, ra;
+	Config->get("multiplayer.restrict-start-vehicle", rv, "");
+	Config->get("multiplayer.restrict-start-animation", ra, "");
+	if (rv.empty()) {
+		if (vehicle.empty()) 
+			Config->get("menu.default-vehicle-1", vehicle, "launcher");
+	} else vehicle = rv;
+	
+	if (ra.empty()) {
+		if (animation.empty()) {
+			if (vehicle == "tank" || vehicle == "launcher" || vehicle == "shilka") {
+				static const char * colors[4] = {"green", "red", "yellow", "cyan"};
+				animation = colors[mrt::random(4)];
+				animation += "-" + vehicle;
+			} else animation = vehicle;
+		}
+	} else animation = ra;
 }
 
 void IPlayerManager::gameOver(const std::string &reason, const float time) {

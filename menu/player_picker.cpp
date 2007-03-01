@@ -44,8 +44,8 @@ public :
 		options.clear();
 		options.push_back("?");
 		options.push_back("launcher");
-		options.push_back("tank");
 		options.push_back("shilka");
+		options.push_back("tank");
 		options.push_back("machinegunner-player");
 		options.push_back("civilian-player");
 		
