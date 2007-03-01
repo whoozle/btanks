@@ -13,7 +13,7 @@ ScrollList::ScrollList(const int w, const int h) : _item_h(0), _client_w(64), _c
 	_font = ResourceManager->loadFont("medium", true);
 	_scrollers = ResourceManager->loadSurface("menu/v_scroller.png");
 
-	_item_h = _font->getHeight() + 4;
+	_item_h = _font->getHeight() + 5;
 }
 
 void ScrollList::add(const std::string &item) {
