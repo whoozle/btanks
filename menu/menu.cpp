@@ -23,6 +23,7 @@
 #include "vehicleitem.h"
 #include "game.h"
 #include "start_server_menu.h"
+#include "join_server_menu.h"
 
 #include "sdlx/surface.h"
 #include "sdlx/font.h"
@@ -55,7 +56,7 @@ MainMenu::MainMenu(const int w, const int h) : _active_item(0) {
 #endif
 	_items[""].push_back(new MenuItem(_font, "multiplayer", "submenu", "OLD MULTIPLAYER MENU"));
 	_items[""].push_back(new MenuItem(_font, "#start-server", "submenu", "START SERVER"));
-	_items[""].push_back(new MenuItem(_font, "#join-game", "submenu", "JOIN GAME"));
+	_items[""].push_back(new MenuItem(_font, "#join-server", "submenu", "JOIN GAME"));
 	_items[""].push_back(new MenuItem(_font, "options", "submenu", "OPTIONS"));
 	_items[""].push_back(new MenuItem(_font, "credits", "command", "CREDITS"));
 	_items[""].push_back(new MenuItem(_font, "quit", "command", "QUIT"));
@@ -87,6 +88,7 @@ MainMenu::MainMenu(const int w, const int h) : _active_item(0) {
 	_items[_active_menu][_active_item]->onFocus();
 	
 	_special_menus["#start-server"] = new StartServerMenu(this, w, h);
+	_special_menus["#join-server"] = new JoinServerMenu(this, w, h);
 
 	recalculateSizes();
 
