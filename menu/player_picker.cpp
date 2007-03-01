@@ -73,10 +73,12 @@ public :
 			_type->reset();
 			config.type = _type->getValue();
 			MenuConfig->update(map, variant, slot, config);
+			_changed = true;
 			//LOG_DEBUG(("type changed"));
 		}
 		if (_vehicle->changed()) {
 			_vehicle->reset();
+			_changed = true;
 			//LOG_DEBUG(("vehicle changed"));
 		}
 	}
@@ -96,6 +98,20 @@ const std::string PlayerPicker::getVariant() const {
 	return split?"split":std::string();
 }
 
+void PlayerPicker::tick(const float dt) {
+	bool validate = false;
+	for(size_t i = 0; i < _slots.size(); ++i) {
+		SlotLine *slot = _slots[i];
+		if (slot->changed()) {
+			slot->reset();
+			validate = true;
+		}
+	}
+	if (validate) {
+		LOG_DEBUG(("validation!"));
+	}
+	Container::tick(dt);
+}
 
 void PlayerPicker::set(const MapDesc &map) {
 	clear();
