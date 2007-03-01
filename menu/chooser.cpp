@@ -8,8 +8,11 @@
 #	define strcasecmp _stricmp
 #endif
 
-Chooser::Chooser(const std::string &font, const std::vector<std::string> &options) : 
+Chooser::Chooser(const std::string &font, const std::vector<std::string> &options, const std::string &surface) : 
 _options(options), _i(0), _n(options.size()), _surface(NULL), _w(0) {
+	if (!surface.empty())
+		_surface = ResourceManager->loadSurface(surface);
+	
 	_left_right = ResourceManager->loadSurface("menu/left_right.png");
 	_font = ResourceManager->loadFont(font, true);
 	for(size_t i =0; i < options.size(); ++i) {
@@ -17,11 +20,6 @@ _options(options), _i(0), _n(options.size()), _surface(NULL), _w(0) {
 		if (w > _w)
 			_w = w;
 	}
-}
-
-Chooser::Chooser(const std::string &surface, const int n) : _i(0), _n(n), _font(NULL) {
-	_surface = ResourceManager->loadSurface(surface);
-	_left_right = ResourceManager->loadSurface("menu/left_right.png");
 }
 
 const std::string& Chooser::getValue() const {
