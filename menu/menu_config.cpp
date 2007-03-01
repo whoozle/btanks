@@ -75,7 +75,7 @@ TRY {
 	if (src.empty())
 		return;
 	mrt::Base64::decode(data, src);
-	data.reserve(3); //bug in base64 ?
+	//data.reserve(3); //bug in base64 ?
 	deserialize2(data);
 } CATCH("load", {});
 }
