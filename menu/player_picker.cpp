@@ -19,6 +19,7 @@ public :
 	SlotConfig config;
 	
 	SlotLine(const std::string &map, const std::string &variant, const int i, const SlotConfig &config) : 
+	_type(NULL), _vehicle(NULL), 
 	map(map), variant(variant), slot(i), config(config) {
 		
 		_font = ResourceManager->loadFont("medium", true);
