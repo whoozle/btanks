@@ -40,7 +40,16 @@ public :
 		_type = new Chooser("medium", options);
 		if(!config.type.empty())
 			_type->set(config.type);
-		_vehicle = new Chooser("menu/vehicles.png", 5);
+			
+		options.resize(1);
+		options.push_back("tank");
+		options.push_back("launcher");
+		options.push_back("shilka");
+		options.push_back("machinegunner");
+		
+		_vehicle = new Chooser("medium", options, "menu/vehicles.png");
+		if(!config.vehicle.empty())
+			_vehicle->set(config.vehicle);
 		
 		int cw;
 		_type->getSize(cw, ch);
@@ -74,15 +83,18 @@ public :
 		if (_type->changed()) {
 			_type->reset();
 			config.type = _type->getValue();
-			MenuConfig->update(map, variant, slot, config);
 			_changed = true;
 			//LOG_DEBUG(("type changed"));
 		}
 		if (_vehicle->changed()) {
 			_vehicle->reset();
+			config.vehicle = _vehicle->getValue();
 			_changed = true;
 			//LOG_DEBUG(("vehicle changed"));
 		}
+
+		if (_changed)
+			MenuConfig->update(map, variant, slot, config);
 	}
 
 private: 
