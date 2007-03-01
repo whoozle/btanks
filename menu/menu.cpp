@@ -150,6 +150,41 @@ MainMenu::~MainMenu() {
 	deinit(); 
 }
 
+void MainMenu::activateSelectedItem() {
+	MenuItem * item = _items[_active_menu][_active_item];
+	assert(item != NULL);
+		
+	const std::string &name = item->name;
+	if (item->type == "submenu") {
+		LOG_DEBUG(("entering submenu '%s'", name.c_str()));
+		if (name[0] == '#') {
+			_menu_path.push_front(MenuID(_active_item, _active_menu));
+			_active_menu = name;
+			return;
+		}
+		if (_items[name].empty())
+			throw_ex(("no submenu %s found or it's empty", name.c_str()));
+
+		_menu_path.push_front(MenuID(_active_item, _active_menu));
+		_items[_active_menu][_active_item]->onLeave();
+		_active_menu = name;
+		_active_item = 0;
+		_items[_active_menu][_active_item]->onFocus();
+		recalculateSizes();
+	} else if (item->type == "back") {
+		if (!back()) 
+			throw_ex(("cannot do 'back' command from top-level menu"));
+	} else if (item->type == "command") {
+		LOG_DEBUG(("command: %s", name.c_str()));
+		menu_signal.emit(name, item->getValue());
+	} else if (item->type == "iterable") {
+		item->onClick();
+		recalculateSizes();
+	} else if (item->type == "text") {
+		item->onClick();
+	} else throw_ex(("unknown menu item type: %s", item->type.c_str()));
+}
+
 
 bool MainMenu::onKey(const SDL_keysym sym) {
 	if (!_active)
@@ -184,37 +219,8 @@ bool MainMenu::onKey(const SDL_keysym sym) {
 			_items[_active_menu][_active_item]->onFocus();
 			return true;
 
-		case SDLK_RETURN: {
-				
-				const std::string &name = item->name;
-				if (item->type == "submenu") {
-					LOG_DEBUG(("entering submenu '%s'", name.c_str()));
-					if (name[0] == '#') {
-						_menu_path.push_front(MenuID(_active_item, _active_menu));
-						_active_menu = name;
-						return true;
-					}
-					if (_items[name].empty())
-						throw_ex(("no submenu %s found or it's empty", name.c_str()));
-					_menu_path.push_front(MenuID(_active_item, _active_menu));
-					_items[_active_menu][_active_item]->onLeave();
-					_active_menu = name;
-					_active_item = 0;
-					_items[_active_menu][_active_item]->onFocus();
-					recalculateSizes();
-				} else if (item->type == "back") {
-					if (!back()) 
-						throw_ex(("cannot do 'back' command from top-level menu"));
-				} else if (item->type == "command") {
-					LOG_DEBUG(("command: %s", name.c_str()));
-					menu_signal.emit(name, item->getValue());
-				} else if (item->type == "iterable") {
-					item->onClick();
-					recalculateSizes();
-				} else if (item->type == "text") {
-					item->onClick();
-				} else throw_ex(("unknown menu item type: %s", item->type.c_str()));
-			}
+		case SDLK_RETURN: 
+			activateSelectedItem();
 			return true;
 		case SDLK_ESCAPE: 
 			return false;
@@ -312,6 +318,7 @@ bool MainMenu::onMouse(const int button, const bool pressed, const int x, const 
 			if (item_area.in(x, y)) {
 				_active_item = i;
 				LOG_DEBUG(("clicked item %d", i));
+				activateSelectedItem();
 				return true;
 			}
 

@@ -59,6 +59,7 @@ private:
 	bool onMouse(const int button, const bool pressed, const int x, const int y);
 	
 	void recalculateSizes();
+	void activateSelectedItem();
 
 	bool _active;
 	const sdlx::Font *_font;
