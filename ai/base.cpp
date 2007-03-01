@@ -121,6 +121,8 @@ const bool Base::checkTarget(const Object * target, const std::string &weapon) c
 			return true;
 		if ((wt == "guided" && codir1) || (wt == "dispersion" && codir1))
 			return true;
+		if (wt == "boomerang")
+			return true;
 	} else if (wc == "mines") {
 		if (!_velocity.is0())
 			return true;
