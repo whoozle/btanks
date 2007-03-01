@@ -13,7 +13,7 @@ class Font;
 
 class Chooser : public Container {
 public: 
-	Chooser(const std::string &font, const std::vector<std::string> &options, const std::string &surface = std::string());
+	Chooser(const std::string &font, const std::vector<std::string> &options, const std::string &surface = std::string(), const int tw = 1);
 	void getSize(int &w, int &h);
 
 	virtual void render(sdlx::Surface &surface, const int x, const int y);
@@ -28,7 +28,7 @@ public:
 
 private: 
 	std::vector<std::string> _options;
-	int _i, _n;
+	int _i, _n, _tw;
 	const sdlx::Surface *_surface, *_left_right;
 
 	//textual chooser: 
