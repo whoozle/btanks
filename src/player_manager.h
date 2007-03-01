@@ -99,13 +99,14 @@ public:
 	
 	void onDestroyMap(const std::set<v3<int> > & cells);
 	
+	void validateViewports();
+
 private: 
 	void serializeSlots(mrt::Serializator &s) const;
 	void deserializeSlots(const mrt::Serializator &s);
 	
 	void broadcast(const Message &m);
 	
-	void validateViewports();
 
 	IPlayerManager(const IPlayerManager &);
 	const IPlayerManager& operator=(const IPlayerManager &);
