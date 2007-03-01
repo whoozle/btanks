@@ -22,6 +22,7 @@
 #include "game.h"
 #include "version.h"
 #include "world.h"
+#include "finder.h"
 #include "resource_manager.h"
 
 #include "tmx/map.h"
@@ -140,15 +141,13 @@ void IGame::init(const int argc, char *argv[]) {
 
 	}
 	
-	GET_CONFIG_VALUE("engine.data-directory", std::string, data_dir, "data");
-
-	I18n->load(data_dir + "/strings.xml", lang);
+	I18n->load(Finder->find("strings.xml"), lang);
 	
 	
 	Window::init(argc, argv);
 	Mixer->init(no_sound, no_music);
 	
-	Mixer->loadPlaylist(data_dir + "/playlist");
+	Mixer->loadPlaylist(Finder->find("playlist"));
 	Mixer->play();
 
 	LOG_DEBUG(("probing for joysticks"));
@@ -199,12 +198,7 @@ void IGame::init(const int argc, char *argv[]) {
 	LOG_DEBUG(("initializing resource manager..."));
 	
 	std::vector<std::pair<std::string, std::string> > files;
-	files.push_back(std::pair<std::string, std::string>(data_dir, data_dir + "/resources.xml"));
-
-	std::string alt_dir = "private/" + data_dir;
-	if (mrt::FSNode::exists(alt_dir)) {
-		files.push_back(std::pair<std::string, std::string>(alt_dir, alt_dir + "/resources.xml"));
-	}
+	Finder->findAll(files, "resources.xml");
 	
 	ResourceManager->init(files);
 	

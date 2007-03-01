@@ -16,6 +16,8 @@ venv.Append(CPPDEFINES=['REVISION=%d' % revision])
 
 vobj = venv.Object('src/version.cpp')
 bt_sources = 	[
+	'src/finder.cpp', 
+	
 	'src/alarm.cpp', 'src/base_object.cpp', 'src/notifying_xml_parser.cpp',
 	'src/tooltip.cpp', 'src/player_manager.cpp', 'src/object_grid.cpp',
 	

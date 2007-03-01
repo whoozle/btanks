@@ -4,6 +4,7 @@
 #include "sdlx/color.h"
 #include <vector>
 #include "version.h"
+#include "finder.h"
 
 IMPLEMENT_SINGLETON(Console, IConsole)
 
@@ -82,8 +83,7 @@ void IConsole::init() {
 
 	sdlx::TTF::init();
 	LOG_DEBUG(("loading font..."));
-	GET_CONFIG_VALUE("engine.data-directory", std::string, data_dir, "data");
-	_font.open(data_dir + "/font/Verdana.ttf", 12);
+	_font.open(Finder->find("/font/Verdana.ttf"), 12);
 
 	LOG_DEBUG(("loading background..."));
 	_background.init("menu/background_box.png", 407, 240);

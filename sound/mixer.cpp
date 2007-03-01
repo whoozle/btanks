@@ -35,7 +35,7 @@
 #include "world.h"
 #include "object.h"
 #include "math/v3.h"
-
+#include "finder.h"
 
 IMPLEMENT_SINGLETON(Mixer, IMixer)
 
@@ -164,10 +164,9 @@ void IMixer::loadSample(const std::string &filename) {
 	}
 
 	Sample * sample = NULL;
-	GET_CONFIG_VALUE("engine.data-directory", std::string, data_dir, "data");
 	TRY {
 		sample = new Sample;
-		OggStream::decode(*sample, data_dir + "/sounds/" + filename);
+		OggStream::decode(*sample, Finder->find("sounds/" + filename));
 		LOG_DEBUG(("sample %s decoded. rate: %u, size: %u", filename.c_str(), (unsigned)sample->rate, (unsigned)sample->data.getSize()));
 
 		sample->init();

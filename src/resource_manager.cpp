@@ -27,6 +27,7 @@
 #include "utils.h"
 #include "sound/mixer.h"
 #include "config.h"
+#include "finder.h"
 
 #include <algorithm>
 
@@ -251,9 +252,7 @@ const sdlx::Surface *IResourceManager::loadSurface(const std::string &id) {
 	if (i != _surfaces.end() && i->second != NULL)
 		return i->second;
 	
-	GET_CONFIG_VALUE("engine.data-directory", std::string, data_dir, "data");
-
-	const std::string fname = data_dir + "/tiles/" + id;
+	const std::string fname = Finder->find("tiles/" + id);
 	sdlx::Surface *s = NULL;
 		TRY {
 			s = new sdlx::Surface;
@@ -272,9 +271,7 @@ const sdlx::Font *IResourceManager::loadFont(const std::string &name, const bool
 	if (i != _fonts.end() && i->second != NULL)
 		return i->second;
 	
-	GET_CONFIG_VALUE("engine.data-directory", std::string, data_dir, "data");
-
-	const std::string fname = data_dir + "/font/" + name + ".png";
+	const std::string fname = Finder->find("font/" + name + ".png");
 	sdlx::Font *f = NULL;
 		TRY {
 			f = new sdlx::Font;

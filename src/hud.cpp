@@ -83,7 +83,7 @@ void Hud::renderRadar(const float dt, sdlx::Surface &window, std::vector<v2<int>
 	assert(!_radar_bg.isNull());
 	
 	if (!_radar.isNull() && !_update_radar.tick(dt)) {
-		const int x = window.getWidth() - _radar.getWidth(), y = _background.getHeight();
+		const int x = window.getWidth() - _radar.getWidth(), y = _background->getHeight();
 		window.copyFrom(_radar, x, y);
 		return;
 	}
@@ -93,7 +93,7 @@ void Hud::renderRadar(const float dt, sdlx::Surface &window, std::vector<v2<int>
 		_radar.convertAlpha();
 	}
 
-	const int x = window.getWidth() - _radar.getWidth(), y = _background.getHeight();
+	const int x = window.getWidth() - _radar.getWidth(), y = _background->getHeight();
 
 	v2<int> msize = Map->getSize();
 	size_t n = PlayerManager->getSlotsCount();
@@ -169,21 +169,21 @@ void Hud::renderMod(const Object *obj, sdlx::Surface &window, int &xp, int &yp, 
 	const int font_dy = (icon_h - _font->getHeight()) / 2;
 
 	sdlx::Rect src(icon_w * i->second, 0, icon_w, icon_h);
-	window.copyFrom(_icons, src, xp, yp);
+	window.copyFrom(*_icons, src, xp, yp);
 	xp += icon_w;
 	if (count > 0)
 		xp += _font->render(window, xp, yp + font_dy, mrt::formatString("%-2d", count));
 	else 
 		xp += _font->render(window, xp, yp, "  ");
-	window.copyFrom(_splitter, xp, yp);
-	xp += _splitter.getWidth();
+	window.copyFrom(*_splitter, xp, yp);
+	xp += _splitter->getWidth();
 }
 
 
 
 void Hud::render(sdlx::Surface &window) const {
 	
-	window.copyFrom(_background, 0, 0);
+	window.copyFrom(*_background, 0, 0);
 	
 	size_t n = PlayerManager->getSlotsCount();
 
@@ -228,7 +228,7 @@ void Hud::render(sdlx::Surface &window) const {
 			
 			if (obj->isEffectActive(name)) {
 				sdlx::Rect src(icon_w * ic->second, 0, icon_w, icon_h);
-				window.copyFrom(_icons, src, xp, yp);
+				window.copyFrom(*_icons, src, xp, yp);
 				xp += icon_w;
 			
 				float effect_rt = obj->getEffectTimer(name);
@@ -250,8 +250,8 @@ void Hud::render(sdlx::Surface &window) const {
 		}
 
 		if (any_effect) {
-			window.copyFrom(_splitter, xp, yp);
-			xp += _splitter.getWidth();
+			window.copyFrom(*_splitter, xp, yp);
+			xp += _splitter->getWidth();
 		}
 		
 		do {
@@ -263,7 +263,7 @@ void Hud::render(sdlx::Surface &window) const {
 				break;
 
 			sdlx::Rect src(icon_w * ic->second, 0, icon_w, icon_h);
-			window.copyFrom(_icons, src, xp, yp);
+			window.copyFrom(*_icons, src, xp, yp);
 			xp += icon_w;
 			xp += _font->render(window, xp, yp + font_dy, mrt::formatString("%-2d ", slot.frags));
 			
@@ -273,15 +273,15 @@ void Hud::render(sdlx::Surface &window) const {
 	if (c >= 2) {
 		//fixme: add more split screen modes ? 
 		//fixme: just draw splitter centered. 
-		window.copyFrom(_screen_splitter, (window.getWidth() - _screen_splitter.getWidth()) / 2, 0);
+		window.copyFrom(*_screen_splitter, (window.getWidth() - _screen_splitter->getWidth()) / 2, 0);
 	}
 }
 
 void Hud::renderSplash(sdlx::Surface &window) const {
-	int spx = (window.getWidth() - _splash.getWidth()) / 2;
-	int spy = (window.getHeight() - _splash.getHeight()) / 2;
+	int spx = (window.getWidth() - _splash->getWidth()) / 2;
+	int spy = (window.getHeight() - _splash->getHeight()) / 2;
 	
-	window.copyFrom(_splash, spx, spy);
+	window.copyFrom(*_splash, spx, spy);
 }
 
 
@@ -294,26 +294,26 @@ const bool Hud::renderLoadingBar(sdlx::Surface &window, const float old_progress
 	GET_CONFIG_VALUE("hud.loading-bar.border-size", int, border, 3);
 	
 	int y = (int)(window.getHeight() * yf);
-	int x = (window.getWidth() - _loading_border.getWidth()) / 2;
+	int x = (window.getWidth() - _loading_border->getWidth()) / 2;
 	
-	int w = (int) (progress * (_loading_border.getWidth() - 2 * border));
-	int w_old = (int) (old_progress * (_loading_border.getWidth() - 2 * border));
+	int w = (int) (progress * (_loading_border->getWidth() - 2 * border));
+	int w_old = (int) (old_progress * (_loading_border->getWidth() - 2 * border));
 	if (w == w_old) {
 		//LOG_DEBUG(("skip same frame"));
 		return false;
 	}
 
-	int i, n = w / _loading_item.getWidth(), n_old = w_old / _loading_item.getWidth();
+	int i, n = w / _loading_item->getWidth(), n_old = w_old / _loading_item->getWidth();
 	if (n == n_old) {
 		//LOG_DEBUG(("skip same frame"));
 		return false;	
 	}
 
 	renderSplash(window);
-	window.copyFrom(_loading_border, x, y);
+	window.copyFrom(*_loading_border, x, y);
 
 	for(i = 0; i < n; ++i) {
-		window.copyFrom(_loading_item, border + x + i * _loading_item.getWidth(), y + border);
+		window.copyFrom(*_loading_item, border + x + i * _loading_item->getWidth(), y + border);
 	}
 /*	w -= n * _loading_item.getWidth();
 	sdlx::Rect src(0, 0, w, _loading_item.getHeight());
@@ -323,13 +323,12 @@ const bool Hud::renderLoadingBar(sdlx::Surface &window, const float old_progress
 }
 
 Hud::Hud(const int w, const int h) : _update_radar(true) {
-	GET_CONFIG_VALUE("engine.data-directory", std::string, data_dir, "data");
-	_background.loadImage(data_dir + "/tiles/hud_line.png");
-	_loading_border.loadImage(data_dir + "/tiles/loading_border.png");
-	_loading_item.loadImage(data_dir + "/tiles/loading_item.png");
-	_icons.loadImage(data_dir + "/tiles/hud_icons.png");
-	_splitter.loadImage(data_dir + "/tiles/hud_splitter.png");
-	_screen_splitter.loadImage(data_dir + "/tiles/split_line.png");
+	_background = ResourceManager->loadSurface("hud/hud_line.png");
+	_loading_border = ResourceManager->loadSurface("hud/loading_border.png");
+	_loading_item = ResourceManager->loadSurface("hud/loading_item.png");
+	_icons = ResourceManager->loadSurface("hud/hud_icons.png");
+	_splitter = ResourceManager->loadSurface("hud/hud_splitter.png");
+	_screen_splitter = ResourceManager->loadSurface("hud/split_line.png");
 	
 	_font = ResourceManager->loadFont("medium", true);
 	
@@ -343,7 +342,7 @@ Hud::Hud(const int w, const int h) : _update_radar(true) {
 		}
 	}
 	LOG_DEBUG(("using splash %d", sw));
-	_splash.loadImage(mrt::formatString("%s/tiles/splash_%d.jpg", data_dir.c_str(), sw));
+	_splash = ResourceManager->loadSurface(mrt::formatString("splash_%d.jpg", sw));
 
 	GET_CONFIG_VALUE("hud.radar-update-interval", float, ru, 0.2);
 	_update_radar.set(ru);

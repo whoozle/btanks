@@ -3,12 +3,12 @@
 #include "config.h"
 #include "mrt/fs_node.h"
 #include "tooltip.h"
+#include "finder.h"
 
 MapDetails::MapDetails(const int w, const int h) : _map_desc(0) {
 	_background.init("menu/background_box.png", w, h);
 
-	GET_CONFIG_VALUE("engine.data-directory", std::string, data_dir, "data");
-	_null_screenshot.loadImage(data_dir + "/maps/null.png");
+	_null_screenshot.loadImage(Finder->find("maps/null.png"));
 }
 
 void MapDetails::set(const std::string &base, const std::string &map, const std::string &comment) {

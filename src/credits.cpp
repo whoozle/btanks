@@ -22,12 +22,11 @@
 #include "math/binary.h"
 #include "sound/mixer.h"
 #include "resource_manager.h"
+#include "finder.h"
 
 Credits::Credits() : _w(0), _h(0) {
-	GET_CONFIG_VALUE("engine.data-directory", std::string, data_dir, "data");
-	
 	GET_CONFIG_VALUE("engine.credits-tune", std::string, tune, "glory.ogg");
-	Mixer->play(data_dir + "/tunes/" + tune, true);
+	Mixer->play(Finder->find("tunes/" + tune), true);
 	
 	_font = ResourceManager->loadFont("big", false);
 	_medium_font = ResourceManager->loadFont("medium", false);

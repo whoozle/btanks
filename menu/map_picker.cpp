@@ -16,6 +16,7 @@
 #include <assert.h>
 #include "tmx/map.h"
 #include "menu_config.h"
+#include "finder.h"
 
 struct MapScanner : mrt::XMLParser {
 	MapScanner() : slots(0) {}
@@ -90,10 +91,11 @@ void MapPicker::tick(const float dt) {
 
 
 MapPicker::MapPicker(const int w, const int h) : _index(0) {
-	GET_CONFIG_VALUE("engine.data-directory", std::string, data_dir, "data");
-
-	scan(data_dir + "/maps");
-	scan("private/" + data_dir + "/maps");
+	std::vector<std::string> path;
+	Finder->getPath(path);
+	for(size_t i = 0; i < path.size(); ++i) {
+		scan(path[i] + "/maps");
+	}
 	
 	if (_maps.empty())
 		throw_ex(("no maps found. sorry. install some maps/reinstall game."));

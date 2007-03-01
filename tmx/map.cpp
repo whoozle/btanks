@@ -37,6 +37,7 @@
 
 #include "config.h"
 #include "player_manager.h"
+#include "finder.h"
 
 IMPLEMENT_SINGLETON(Map, IMap)
 
@@ -252,10 +253,9 @@ TRY {
 
 void IMap::load(const std::string &name) {
 	clear();
-	GET_CONFIG_VALUE("engine.data-directory", std::string, data_dir, "data");
-	
+
 	LOG_DEBUG(("loading map '%s'", name.c_str()));
-	const std::string file = data_dir + "/maps/" + name + ".tmx";
+	const std::string file = Finder->find("maps/" + name + ".tmx");
 	parseFile(file);
 	delete _image;
 	_image = NULL;
@@ -500,11 +500,9 @@ void IMap::end(const std::string &name) {
 		
 		_image = new sdlx::Surface;
 		std::string source = e.attrs["source"];
-		GET_CONFIG_VALUE("engine.data-directory", std::string, data_dir, "data");
-
 		if (source.size()) {
-			source = data_dir + "/tiles/" + source;
 			LOG_DEBUG(("loading tileset from single file ('%s')", source.c_str()));
+			source = Finder->find("tiles/" + source);
 			_image->loadImage(source);
 			_image_is_tileset = true;
 		} else {

@@ -67,8 +67,6 @@ public:
 public: 
 	DECLARE_SINGLETON(IGame);
 
-
-	static const std::string data_dir;
 	//signals
 	sigc::signal1<bool, const SDL_keysym, marshaller> key_signal;
 	sigc::signal4<bool, const int, const bool, const int, const int, marshaller> mouse_signal;
