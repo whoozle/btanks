@@ -631,6 +631,7 @@ void IGame::run() {
 			case SDL_MOUSEBUTTONDOWN:
 				if (_credits) {
 					stopCredits();
+					break;
 				}
 			case SDL_MOUSEBUTTONUP:
 				{
