@@ -137,6 +137,10 @@ const std::string PlayerPicker::getVariant() const {
 }
 
 const bool PlayerPicker::validateSlots(const int changed) {
+	GET_CONFIG_VALUE("menu.skip-player-validation", bool, spv, false);
+	if (spv)
+		return false;
+	
 	const std::string variant = getVariant();
 	if (variant == "split") {
 		int p1 = 0, p2 = 0;
