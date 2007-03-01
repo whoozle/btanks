@@ -406,31 +406,31 @@
   <property name="config:objects.shilka.dispersion.duration" value="float:10000"/>
  </properties>
  <tileset name="terrains" firstgid="1" tilewidth="64" tileheight="64">
-  <image source="../tiles/terrains_tileset.png"/>
+  <image source="../tilesets/terrains.png"/>
  </tileset>
  <tileset name="roads" firstgid="171" tilewidth="64" tileheight="64">
-  <image source="../tiles/roads_tileset.png"/>
+  <image source="../tilesets/roads.png"/>
  </tileset>
- <tileset name="borders" firstgid="241" tilewidth="64" tileheight="64">
-  <image source="../tiles/borders_tileset.png"/>
+ <tileset name="fences" firstgid="241" tilewidth="64" tileheight="64">
+  <image source="../tilesets/fences.png"/>
  </tileset>
  <tileset name="buildings" firstgid="361" tilewidth="64" tileheight="64">
-  <image source="../tiles/houses_tileset.png"/>
+  <image source="../tilesets/houses.png"/>
  </tileset>
  <tileset name="destruction" firstgid="541" tilewidth="64" tileheight="64">
-  <image source="../tiles/destruction_tileset.png"/>
+  <image source="../tilesets/destruction.png"/>
  </tileset>
  <tileset name="trees" firstgid="571" tilewidth="64" tileheight="64">
-  <image source="../tiles/trees_tileset.png"/>
+  <image source="../tilesets/trees.png"/>
  </tileset>
  <tileset name="buildings destructed" firstgid="691" tilewidth="64" tileheight="64">
-  <image source="../tiles/destroyed_houses_tileset.png"/>
+  <image source="../tilesets/destroyed_houses.png"/>
  </tileset>
  <tileset name="objects" firstgid="791" tilewidth="64" tileheight="64">
-  <image source="../tiles/objects_tileset.png"/>
+  <image source="../tilesets/objects.png"/>
  </tileset>
  <tileset name="animated" firstgid="861" tilewidth="64" tileheight="64">
-  <image source="../tiles/animated_tileset.png"/>
+  <image source="../tilesets/animated.png"/>
  </tileset>
  <layer name="grass" width="50" height="50">
   <properties>

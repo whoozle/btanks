@@ -120,31 +120,31 @@
   <property name="object:static-corpse:dead-man-static:10" value="1657,727"/>
  </properties>
  <tileset name="Untitled" firstgid="1" tilewidth="64" tileheight="64">
-  <image source="../tiles/houses_tileset.png"/>
+  <image source="../tilesets/houses.png"/>
  </tileset>
  <tileset name="Untitled" firstgid="181" tilewidth="64" tileheight="64">
-  <image source="../tiles/terrains_tileset.png"/>
+  <image source="../tilesets/terrains.png"/>
  </tileset>
  <tileset name="Untitled" firstgid="351" tilewidth="64" tileheight="64">
-  <image source="../tiles/borders_tileset.png"/>
+  <image source="../tilesets/fences.png"/>
  </tileset>
  <tileset name="Untitled" firstgid="471" tilewidth="64" tileheight="64">
-  <image source="../tiles/trees_tileset.png"/>
+  <image source="../tilesets/trees.png"/>
  </tileset>
  <tileset name="Untitled" firstgid="591" tilewidth="64" tileheight="64">
-  <image source="../tiles/objects_tileset.png"/>
+  <image source="../tilesets/objects.png"/>
  </tileset>
  <tileset name="destruction" firstgid="661" tilewidth="64" tileheight="64">
-  <image source="../tiles/destroyed_houses_tileset.png"/>
+  <image source="../tilesets/destroyed_houses.png"/>
  </tileset>
  <tileset name="roads" firstgid="761" tilewidth="64" tileheight="64">
-  <image source="../tiles/roads_tileset.png"/>
+  <image source="../tilesets/roads.png"/>
  </tileset>
  <tileset name="destructed objects" firstgid="831" tilewidth="64" tileheight="64">
-  <image source="../tiles/destruction_tileset.png"/>
+  <image source="../tilesets/destruction.png"/>
  </tileset>
  <tileset name="animated" firstgid="861" tilewidth="64" tileheight="64">
-  <image source="../tiles/animated_tileset.png"/>
+  <image source="../tilesets/animated.png"/>
  </tileset>
  <layer name="asphalt" width="35" height="25">
   <properties>
@@ -281,7 +281,7 @@
   </data>
   <tileproperties/>
  </layer>
- <layer name="borders low" width="35" height="25">
+ <layer name="fences low" width="35" height="25">
   <properties>
    <property name="pierceable" value="true"/>
    <property name="z" value="200"/>
@@ -334,7 +334,7 @@
   </data>
   <tileproperties/>
  </layer>
- <layer name="borders" width="35" height="25">
+ <layer name="fences" width="35" height="25">
   <properties>
    <property name="pierceable" value="false"/>
    <property name="impassability" value="100"/>
@@ -344,29 +344,29 @@
   </data>
   <tileproperties/>
  </layer>
- <layer name="borders damage" width="35" height="25">
+ <layer name="fences damage" width="35" height="25">
   <properties>
    <property name="hp" value="50"/>
    <property name="impassability" value="100"/>
-   <property name="damage-for" value="borders"/>
+   <property name="damage-for" value="fences"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgoD/wYCasxhWoxo0IdZSCIDrYQSqIBropZhC6i1jgSGe3Bw6ysIoEuidqELlpsIXPKCAOOI3G26AGoHJuNI5GASHgDUwjPqPpZBSMAqKAJzCveI3mFwwAAPzWUp2sDQAA
   </data>
   <tileproperties/>
  </layer>
- <layer name="borders damage 2" width="35" height="25">
+ <layer name="fences damage 2" width="35" height="25">
   <properties>
    <property name="hp" value="50"/>
    <property name="impassability" value="100"/>
-   <property name="damage-for" value="borders"/>
+   <property name="damage-for" value="fences"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGAWRzLjl3PHIjYLBDRyBceczSOLPd5C4YxSMAnKANzD9ho2m4UELvAdRWTcKRsEoGAWjgLoAAFQfbEusDQAA
   </data>
   <tileproperties/>
  </layer>
- <layer name="borders pierceable" width="35" height="25">
+ <layer name="fences pierceable" width="35" height="25">
   <properties>
    <property name="pierceable" value="true"/>
    <property name="impassability" value="100"/>
@@ -376,13 +376,13 @@
   </data>
   <tileproperties/>
  </layer>
- <layer name="borders details" width="35" height="25">
+ <layer name="fences details" width="35" height="25">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgIAy2MDIwrGMkQiGNwUSgG/YB8Y5B4JZRgB2sBcbNtkESP9uB7jgwAG6ZOEj8PwpIA4OlnAOB4VjOEcoXQy3fbB3gsq4AaHchFO+nQlkXz8TAkMBEubsojUdqpIOBjhtkQI24GSxgNFxHwSgYGAAASrwqGawNAAA=
   </data>
   <tileproperties/>
  </layer>
- <layer name="borders details #2" width="35" height="25">
+ <layer name="fences details #2" width="35" height="25">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAO3UwQ0AEBBE0dV/LZwIJ1pjowYx5L8KfrKZNcMPYjDL4XbFVldHF2kBXlWENj1ENu1/Lgl0OP9zTaRFAbcBgDMmr0qLz6wNAAA=
   </data>

@@ -16,10 +16,10 @@
   <property name="hint:start:1" value="422,59:128,128"/>
  </properties>
  <tileset name="Untitled" firstgid="1" tilewidth="64" tileheight="64">
-  <image source="../tiles/terrains_tileset.png"/>
+  <image source="../tilesets/terrains.png"/>
  </tileset>
  <tileset name="animation" firstgid="191" tilewidth="64" tileheight="64">
-  <image source="../tiles/animated_tileset.png"/>
+  <image source="../tilesets/animated.png"/>
  </tileset>
  <layer name="Layer 1" width="16" height="16">
   <data encoding="base64" compression="gzip">

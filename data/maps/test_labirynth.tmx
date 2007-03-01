@@ -20,10 +20,10 @@
   <property name="object:guided-missile:guided-missile:2" value="1206,1334"/>
  </properties>
  <tileset name="Untitled" firstgid="1" tilewidth="64" tileheight="64">
-  <image source="../tiles/objects_tileset.png"/>
+  <image source="../tilesets/objects_tileset.png"/>
  </tileset>
  <tileset name="Untitled" firstgid="71" tilewidth="64" tileheight="64">
-  <image source="../tiles/roads_tileset.png"/>
+  <image source="../tilesets/roads_tileset.png"/>
  </tileset>
  <layer name="surface" width="20" height="25">
   <properties>

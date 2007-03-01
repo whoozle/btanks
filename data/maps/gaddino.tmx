@@ -43,25 +43,25 @@
   <property name="object:oil-barrels:oil-barrels:5" value="1446,298"/>
  </properties>
  <tileset name="c1" firstgid="1" tilewidth="64" tileheight="64">
-  <image source="../tiles/terrains_tileset.png"/>
+  <image source="../tilesets/terrains.png"/>
  </tileset>
- <tileset name="borders" firstgid="171" tilewidth="64" tileheight="64">
-  <image source="../tiles/borders_tileset.png"/>
+ <tileset name="fences" firstgid="171" tilewidth="64" tileheight="64">
+  <image source="../tilesets/fences.png"/>
  </tileset>
  <tileset name="roads" firstgid="291" tilewidth="64" tileheight="64">
-  <image source="../tiles/roads_tileset.png"/>
+  <image source="../tilesets/roads.png"/>
  </tileset>
  <tileset name="trees" firstgid="361" tilewidth="64" tileheight="64">
-  <image source="../tiles/trees_tileset.png"/>
+  <image source="../tilesets/trees.png"/>
  </tileset>
  <tileset name="objects" firstgid="481" tilewidth="64" tileheight="64">
-  <image source="../tiles/objects_tileset.png"/>
+  <image source="../tilesets/objects.png"/>
  </tileset>
  <tileset name="destruction" firstgid="551" tilewidth="64" tileheight="64">
-  <image source="../tiles/destruction_tileset.png"/>
+  <image source="../tilesets/destruction.png"/>
  </tileset>
  <tileset name="animation" firstgid="581" tilewidth="64" tileheight="64">
-  <image source="../tiles/animated_tileset.png"/>
+  <image source="../tilesets/animated.png"/>
  </tileset>
  <layer name="zerolayer" width="25" height="20">
   <properties>
@@ -228,7 +228,7 @@
   </data>
   <tileproperties/>
  </layer>
- <layer name="borders" width="25" height="20">
+ <layer name="fences" width="25" height="20">
   <properties>
    <property name="z" value="200"/>
    <property name="impassability" value="100"/>
@@ -238,11 +238,11 @@
   </data>
   <tileproperties/>
  </layer>
- <layer name="borders damage" width="25" height="20">
+ <layer name="fences damage" width="25" height="20">
   <properties>
    <property name="hp" value="50"/>
    <property name="impassability" value="100"/>
-   <property name="damage-for" value="borders"/>
+   <property name="damage-for" value="fences"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgoB7QZ6KiYTiAJR3sAAEnOtkDAs5Au1zoaN8oGAWjYBSMguEHANYG3M3QBwAA

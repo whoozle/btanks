@@ -62,28 +62,28 @@
   <property name="object:traffic-lights:traffic-lights:11" value="368,422"/>
  </properties>
  <tileset name="city objects" firstgid="1" tilewidth="64" tileheight="64">
-  <image source="../tiles/objects_tileset.png"/>
+  <image source="../tilesets/objects.png"/>
  </tileset>
  <tileset name="city buildings" firstgid="71" tilewidth="64" tileheight="64">
-  <image source="../tiles/houses_tileset.png"/>
+  <image source="../tilesets/houses.png"/>
  </tileset>
  <tileset name="terrains" firstgid="251" tilewidth="64" tileheight="64">
-  <image source="../tiles/terrains_tileset.png"/>
+  <image source="../tilesets/terrains.png"/>
  </tileset>
- <tileset name="borders" firstgid="401" tilewidth="64" tileheight="64">
-  <image source="../tiles/borders_tileset.png"/>
+ <tileset name="fences" firstgid="401" tilewidth="64" tileheight="64">
+  <image source="../tilesets/fences.png"/>
  </tileset>
  <tileset name="destruction" firstgid="521" tilewidth="64" tileheight="64">
-  <image source="../tiles/destroyed_houses_tileset.png"/>
+  <image source="../tilesets/destroyed_houses.png"/>
  </tileset>
  <tileset name="roads" firstgid="621" tilewidth="64" tileheight="64">
-  <image source="../tiles/roads_tileset.png"/>
+  <image source="../tilesets/roads.png"/>
  </tileset>
  <tileset name="trees" firstgid="691" tilewidth="64" tileheight="64">
-  <image source="../tiles/trees_tileset.png"/>
+  <image source="../tilesets/trees.png"/>
  </tileset>
  <tileset name="destructed objects" firstgid="811" tilewidth="64" tileheight="64">
-  <image source="../tiles/destruction_tileset.png"/>
+  <image source="../tilesets/destruction.png"/>
  </tileset>
  <layer name="zerosloy" width="25" height="22">
   <properties>
@@ -176,7 +176,7 @@
   </data>
   <tileproperties/>
  </layer>
- <layer name="borders low" width="25" height="22">
+ <layer name="fences low" width="25" height="22">
   <properties>
    <property name="pierceable" value="false"/>
    <property name="z" value="200"/>
@@ -187,7 +187,7 @@
   </data>
   <tileproperties/>
  </layer>
- <layer name="borders mid" width="25" height="22">
+ <layer name="fences mid" width="25" height="22">
   <properties>
    <property name="pierceable" value="false"/>
    <property name="impassability" value="100"/>
@@ -197,29 +197,29 @@
   </data>
   <tileproperties/>
  </layer>
- <layer name="borders mid damage" width="25" height="22">
+ <layer name="fences mid damage" width="25" height="22">
   <properties>
    <property name="hp" value="50"/>
    <property name="impassability" value="100"/>
-   <property name="damage-for" value="borders mid"/>
+   <property name="damage-for" value="fences mid"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgoB+wYiZOnQ1UnRuR6qkBXKB2eRCw0xEob0FHd42CUTAKRsEoGPrAnZlw/TIKIAAADpkB6pgIAAA=
   </data>
   <tileproperties/>
  </layer>
- <layer name="borders mid damage 2" width="25" height="22">
+ <layer name="fences mid damage 2" width="25" height="22">
   <properties>
    <property name="hp" value="50"/>
    <property name="impassability" value="100"/>
-   <property name="damage-for" value="borders mid"/>
+   <property name="damage-for" value="fences mid"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGJzAmZk8ffpk6HOF6nEn085RMApGwSgYBaNgFFAHAADd/6LHmAgAAA==
   </data>
   <tileproperties/>
  </layer>
- <layer name="borders high" width="25" height="22">
+ <layer name="fences high" width="25" height="22">
   <properties>
    <property name="pierceable" value="true"/>
    <property name="impassability" value="100"/>
