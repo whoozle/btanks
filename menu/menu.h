@@ -75,6 +75,7 @@ private:
 	v2<int> _menu_size;	
 	
 	Box _background;
+	sdlx::Rect _background_area;
 };
 
 

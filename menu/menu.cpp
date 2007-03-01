@@ -34,6 +34,8 @@
 #include "resource_manager.h"
 #include "menu_config.h"
 
+#define ITEM_SPACING 10
+
 MainMenu::MainMenu(const int w, const int h) : _active_item(0) {
 	MenuConfig->load();
 	
@@ -44,6 +46,8 @@ MainMenu::MainMenu(const int w, const int h) : _active_item(0) {
 
 	LOG_DEBUG(("loading background..."));
 	_background.init("menu/background_box.png", "menu/highlight_big.png", 407, 338);
+	_background_area.w = _background.w;
+	_background_area.h = _background.h;
 	
 	LOG_DEBUG(("creating menu..."));
 	_active_item = 0;
@@ -103,7 +107,7 @@ void MainMenu::recalculateSizes() {
 		(*i)->getSize(w, h);
 		if (w > _menu_size.x) 
 			_menu_size.x = w;
-		_menu_size.y += h + 10;
+		_menu_size.y += h + ITEM_SPACING;
 	}
 }
 
@@ -238,6 +242,9 @@ void MainMenu::render(sdlx::Surface &dst) {
 	
 	int x = (dst.getWidth() - _menu_size.x) /2;
 	int y = (dst.getHeight() - _menu_size.y) / 2;
+
+	_background_area.x = x;
+	_background_area.y = y;
 	
 	const ItemList & items = _items[_active_menu];
 	size_t n = items.size();
@@ -250,7 +257,7 @@ void MainMenu::render(sdlx::Surface &dst) {
 		}
 	
 		items[i]->render(dst, x + (_menu_size.x - w) / 2, y);
-		y += h + 10;
+		y += h + ITEM_SPACING;
 	}
 }
 
@@ -294,9 +301,26 @@ bool MainMenu::onMouse(const int button, const bool pressed, const int x, const 
 	if (bm != NULL) {
 		return bm->onMouse(button, pressed, x, y);
 	}
-	
+	if (_background_area.in(x, y)) {
+		sdlx::Rect item_area = _background_area;
+		const ItemList & items = _items[_active_menu];
+		for(size_t i = 0; i < items.size() ;++i) {
+			int w, h;
+			items[i]->getSize(w, h);
+			item_area.h = h;
+			
+			if (item_area.in(x, y)) {
+				_active_item = i;
+				LOG_DEBUG(("clicked item %d", i));
+				return true;
+			}
+
+			item_area.y += h + ITEM_SPACING;
+		}
+		return false;
+	}
 	//LOG_DEBUG(("%d %c %d %d", button, pressed?'+':'-', x, y));
-	return true;
+	return false;
 }
 
 BaseMenu *MainMenu::getMenu(const std::string &menu) {
