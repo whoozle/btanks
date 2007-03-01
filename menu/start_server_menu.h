@@ -19,7 +19,6 @@ public:
 	
 private: 
 	MainMenu *_parent;
-	int _w, _h;
 	MapPicker *_map_picker;
 	Button *_back, *_start;
 };

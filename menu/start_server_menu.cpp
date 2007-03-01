@@ -1,18 +1,14 @@
 #include "start_server_menu.h"
-#include "sdlx/surface.h"
-#include "mrt/logger.h"
-#include "mrt/exception.h"
-#include "map_picker.h"
-#include "upper_box.h"
 #include "button.h"
+#include "mrt/logger.h"
 #include "menu.h"
-#include "game.h"
-#include "config.h"
-#include "player_manager.h"
 #include "menu_config.h"
+#include "map_picker.h"
+#include "game.h"
 #include "map_desc.h"
+#include "player_manager.h"
 
-StartServerMenu::StartServerMenu(MainMenu *parent, const int w, const int h) : _parent(parent), _w(w), _h(h) {
+StartServerMenu::StartServerMenu(MainMenu *parent, const int w, const int h) : _parent(parent)  {
 	add(sdlx::Rect(0, 0, w, h - 128), _map_picker = new MapPicker(w, h));
 	_back = new Button("big", "BACK");
 	int bw, bh;
@@ -54,11 +50,21 @@ void StartServerMenu::tick(const float dt) {
 }
 
 bool StartServerMenu::onKey(const SDL_keysym sym) {
-	if (sym.sym == SDLK_RETURN) {
+	switch(sym.sym) {
+
+	case SDLK_RETURN:
 		start();
 		return true;
+
+	case SDLK_ESCAPE: 
+		_parent->back();
+		MenuConfig->save();
+		return true;
+
+	default: 
+		return Container::onKey(sym);
 	}
-	return Container::onKey(sym);
+	return false;
 }
 
 
