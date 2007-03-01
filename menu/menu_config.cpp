@@ -18,6 +18,15 @@ void SlotConfig::deserialize(const mrt::Serializator &s) {
 	s.get(vehicle);
 }
 
+#ifdef WIN32
+#	define strcasecmp _stricmp
+#endif
+
+const bool SlotConfig::hasType(const std::string &t) const {
+	return strcasecmp(type.c_str(), t.c_str()) == 0;
+}
+
+
 const bool IMenuConfig::empty(const std::string &map, const std::string &variant) const {
 	ConfigMap::const_iterator i = _config.find(map);
 	if (i == _config.end())

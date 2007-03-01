@@ -9,8 +9,10 @@
 #include "config.h"
 
 class SlotLine : public Container {
-	Chooser *_type, *_vehicle;
 public : 
+
+	Chooser *_type, *_vehicle;
+
 	int h, ch;
 	std::string map, variant;
 	int slot;
@@ -98,17 +100,116 @@ const std::string PlayerPicker::getVariant() const {
 	return split?"split":std::string();
 }
 
+const bool PlayerPicker::validateSlots(const int changed) {
+	const std::string variant = getVariant();
+	if (variant == "split") {
+		int p1 = 0, p2 = 0;
+		bool changed_p1 =  _slots[changed]->config.hasType("player-1");
+		bool changed_p2 =  _slots[changed]->config.hasType("player-2");
+
+		for(size_t i = 0; i < _slots.size(); ++i) {
+			SlotLine *slot = _slots[i];
+			if (slot->config.hasType("player-1"))
+				++p1;
+			if (slot->config.hasType("player-2"))
+				++p2;
+		}
+
+		if (p1 == 1 && p2 == 1) 
+			return false;
+		
+		if (p1 > 1) {
+			if (changed_p1) 
+				changeSlotTypesExcept("player-1", "ai", changed, 0);
+			else 
+				changeSlotTypesExcept("player-1", "ai", -1, 1);
+		}
+
+		if (p2 > 1) {
+			if (changed_p2) 
+				changeSlotTypesExcept("player-2", "ai", changed, 0);
+			else 
+				changeSlotTypesExcept("player-2", "ai", -1, 1);
+		}
+
+		if (p1 > 1 || p2 > 1)
+			return true;
+
+		if (p1 == 0) {
+			if (!changeAnySlotTypeExcept("ai", "player-1", changed))
+				changeAnySlotTypeExcept("?", "player-1", changed);
+		}
+
+		if (p2 == 0) {
+			if (!changeAnySlotTypeExcept("ai", "player-2", changed))
+				changeAnySlotTypeExcept("?", "player-2", changed);
+		}
+	} else {
+		int p1 = 0;
+		bool changed_p1 =  _slots[changed]->config.hasType("player");
+		
+		for(size_t i = 0; i < _slots.size(); ++i) {
+			SlotLine *slot = _slots[i];
+			if (slot->config.hasType("player"))
+				++p1;
+		}
+		if (p1 == 0) {
+			if (!changeAnySlotTypeExcept("ai", "player", changed))
+				changeAnySlotTypeExcept("?", "player", changed);
+		} else if (p1 > 1) {
+			if (changed_p1) 
+				changeSlotTypesExcept("player", "ai", changed, 0);
+			else 
+				changeSlotTypesExcept("player", "ai", -1, 1);
+		}
+	}
+
+	return false;
+}
+
+const bool PlayerPicker::changeAnySlotTypeExcept(const std::string &what, const std::string &to, const int e) {
+	for(int i = 0; i < (int)_slots.size(); ++i) {
+		if (i == e) 
+			continue;
+		
+		SlotLine *slot = _slots[i];
+		if (slot->config.hasType(what)) {
+			slot->_type->set(to);
+			return true;
+		}
+	}
+	return false;
+}
+
+
+const bool PlayerPicker::changeSlotTypesExcept(const std::string &what, const std::string &to, const int e, const int skip) {
+	int s = skip;
+	
+	bool found = false;
+	for(int i = 0; i < (int)_slots.size(); ++i) {
+		if (skip == 0 && i == e) 
+			continue;
+
+		if (s && s--) 
+			continue;
+		
+		
+		SlotLine *slot = _slots[i];
+		if (slot->config.hasType(what)) {
+			slot->_type->set(to);
+			found = true;
+		}
+	}
+	return found;	
+}
+
 void PlayerPicker::tick(const float dt) {
-	bool validate = false;
 	for(size_t i = 0; i < _slots.size(); ++i) {
 		SlotLine *slot = _slots[i];
 		if (slot->changed()) {
 			slot->reset();
-			validate = true;
+			validateSlots(i);
 		}
-	}
-	if (validate) {
-		LOG_DEBUG(("validation!"));
 	}
 	Container::tick(dt);
 }

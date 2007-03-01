@@ -24,6 +24,10 @@ public:
 	
 	const std::string getVariant() const;
 private: 
+	const bool validateSlots(const int changed);
+	const bool changeAnySlotTypeExcept(const std::string &what, const std::string &to, const int e);
+	const bool changeSlotTypesExcept(const std::string &what, const std::string &to, const int e, const int skip);
+
 	Box _background;
 	std::string _object;
 	const sdlx::Surface *_vehicles;

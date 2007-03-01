@@ -12,7 +12,8 @@ struct SlotConfig : public mrt::Serializable {
 
 	virtual void serialize(mrt::Serializator &s) const;
 	virtual void deserialize(const mrt::Serializator &s);
-	
+
+	const bool hasType(const std::string &t) const;	
 };
 
 class IMenuConfig : public mrt::Serializable {
