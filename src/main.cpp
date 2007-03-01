@@ -30,7 +30,7 @@
 #	include <unistd.h>
 
 static void crash_handler(int sno) {
-	fprintf(stderr, "btanks crashed with signal %d. use gdb -p %d to debug it. zzZzzZZzz...\n\n", sno, getpid());
+	fprintf(stdout, "btanks crashed with signal %d. use gdb -p %d to debug it. zzZzzZZzz...\n\n", sno, getpid());
 	sleep(3600);
 }
 
