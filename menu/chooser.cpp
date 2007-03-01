@@ -69,16 +69,10 @@ void Chooser::render(sdlx::Surface &surface, const int x, const int y) {
 bool Chooser::onMouse(const int button, const bool pressed, const int x, const int y) {
 	//LOG_DEBUG(("click: %d %d", x, y));
 	if (_left_area.in(x, y)) {
-		--_i;
-		if (_i < 0)
-			_i = _n - 1;
-		_changed = true;
+		left();
 		return true;
 	} else if (_right_area.in(x, y)) {
-		++_i;
-		if (_i >= _n)
-			_i = 0;
-		_changed = true;
+		right();
 		return true;
 	} 
 	return Container::onMouse(button, pressed, x, y);
@@ -100,4 +94,18 @@ void Chooser::set(const std::string &name) {
 		}
 	}
 	throw_ex(("chooser doesnt contain option '%s'", name.c_str()));
+}
+
+void Chooser::left() {
+	--_i;
+	if (_i < 0)
+		_i = _n - 1;
+	_changed = true;	
+}
+
+void Chooser::right() {
+	++_i;
+	if (_i >= _n)
+		_i = 0;
+	_changed = true;
 }

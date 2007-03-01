@@ -26,6 +26,9 @@ public:
 	
 	const bool changed() const { return _changed; }
 	void reset() { _changed = false; }
+	
+	void left();
+	void right();
 
 private: 
 	bool _changed;
