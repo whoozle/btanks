@@ -15,8 +15,6 @@ public:
 	Button(const std::string &font, const std::string &label);
 	void getSize(int &w, int &h) const;
 	virtual void render(sdlx::Surface& surface, const int x, const int y);
-	const bool clicked() const { return _clicked; };
-	void reset();
 	virtual bool onMouse(const int button, const bool pressed, const int x, const int y);
 	
 private: 
@@ -24,7 +22,6 @@ private:
 	Box _background;
 	const sdlx::Font * _font;
 	const std::string _label;
-	bool _clicked;
 };
 
 #endif

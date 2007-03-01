@@ -1,5 +1,8 @@
 #include "control.h"
 
+Control::Control() : _changed(false) {}
+
+
 void Control::tick(const float dt) {}
 
 bool Control::onKey(const SDL_keysym sym) {

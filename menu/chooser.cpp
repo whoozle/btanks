@@ -9,7 +9,7 @@
 #endif
 
 Chooser::Chooser(const std::string &font, const std::vector<std::string> &options) : 
-_changed(false), _options(options), _i(0), _n(options.size()), _surface(NULL), _w(0) {
+_options(options), _i(0), _n(options.size()), _surface(NULL), _w(0) {
 	_left_right = ResourceManager->loadSurface("menu/left_right.png");
 	_font = ResourceManager->loadFont(font, true);
 	for(size_t i =0; i < options.size(); ++i) {
@@ -19,7 +19,7 @@ _changed(false), _options(options), _i(0), _n(options.size()), _surface(NULL), _
 	}
 }
 
-Chooser::Chooser(const std::string &surface, const int n) : _changed(false), _i(0), _n(n), _font(NULL) {
+Chooser::Chooser(const std::string &surface, const int n) : _i(0), _n(n), _font(NULL) {
 	_surface = ResourceManager->loadSurface(surface);
 	_left_right = ResourceManager->loadSurface("menu/left_right.png");
 }

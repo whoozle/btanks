@@ -24,7 +24,7 @@ private:
 	void loadScreenshot();
 	void scan(const std::string &dir);
 
-	size_t _index;
+	int _index;
 	typedef std::vector<MapDesc > MapList;
 	MapList _maps;
 	

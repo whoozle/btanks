@@ -104,11 +104,11 @@ MapPicker::MapPicker(const int w, const int h) : _index(0) {
 	std::string map;
 
 	Config->get("menu.default-mp-map", map, "lenin_square");
-	for(_index = 0; _index < _maps.size(); ++_index) {
+	for(_index = 0; _index < (int)_maps.size(); ++_index) {
 		if (_maps[_index].name == map)
 			break;
 	}
-	if (_index >= _maps.size())
+	if (_index >= (int)_maps.size())
 		_index = 0;
 	LOG_DEBUG(("map index: %d", _index));
 	
@@ -205,4 +205,5 @@ void MapPicker::fillSlots() const {
 		PlayerManager->setViewport((idx1 == -1)?0:idx1, vp1);
 		PlayerManager->setViewport((idx2 == -1)?(idx1 != 1?1:0):idx2, vp2); //avoid duplication of viewports
 	}
+	PlayerManager->validateViewports();
 }

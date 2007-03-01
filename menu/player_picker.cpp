@@ -85,7 +85,7 @@ private:
 	const sdlx::Font *_font;
 };
 
-PlayerPicker::PlayerPicker(const int w, const int h)  : _slots(0) {
+PlayerPicker::PlayerPicker(const int w, const int h)  {
 	_background.init("menu/background_box.png", w, h);
 	_vehicles = ResourceManager->loadSurface("menu/vehicles.png");
 }
@@ -101,7 +101,6 @@ void PlayerPicker::set(const MapDesc &map) {
 	clear();
 	int mx, my;
 	_background.getMargins(mx, my);
-	_slots = map.slots;
 	_object = map.object;
 
 	std::vector<SlotConfig> config;
@@ -109,10 +108,13 @@ void PlayerPicker::set(const MapDesc &map) {
 	std::string variant = getVariant();
 	
 	MenuConfig->fill(map.name, variant, config);
-	config.resize(_slots);
+	config.resize(map.slots);
 
-	for(int i = 0; i < _slots; ++i) {
+	_slots.clear();
+	
+	for(int i = 0; i < map.slots; ++i) {
 		SlotLine *line = new SlotLine(map.name, variant, i, config[i]);
+		_slots.push_back(line);
 		sdlx::Rect pos(mx, my + i * (line->h + 6), _background.w - 2 * mx, line->h);
 		add(pos, line);
 	}

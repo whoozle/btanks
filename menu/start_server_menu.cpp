@@ -40,13 +40,13 @@ void StartServerMenu::start() {
 
 void StartServerMenu::tick(const float dt) {
 	Container::tick(dt);
-	if (_back->clicked()) {
+	if (_back->changed()) {
 		LOG_DEBUG(("[back] clicked"));
 		_back->reset();
 		_parent->back();
 		MenuConfig->save();
 	}
-	if (_start->clicked()) {
+	if (_start->changed()) {
 		_start->reset();
 		start();
 	}
