@@ -125,8 +125,8 @@ void Base64::encode(std::string &dst, const mrt::Chunk &src, int linesize ) {
     while( src_i < src_size) {
         len = 0;
         for( i = 0; i < 3; i++ ) {
-            in[i] = src_ptr[src_i++];
-            if( src_i <= src_size ) {
+            if( src_i < src_size ) {
+	            in[i] = src_ptr[src_i++];
                 ++len;
             } else {
                 in[i] = 0;
