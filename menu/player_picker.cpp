@@ -39,18 +39,23 @@ public :
 		}
 
 		_type = new Chooser("medium", options);
-		if(!config.type.empty())
-			_type->set(config.type);
 			
 		options.resize(1);
 		options.push_back("tank");
 		options.push_back("launcher");
 		options.push_back("shilka");
-		options.push_back("machinegunner");
+		//options.push_back("machinegunner");
 		
-		_vehicle = new Chooser("medium", options, "menu/vehicles.png");
-		if(!config.vehicle.empty())
-			_vehicle->set(config.vehicle);
+		_vehicle = new Chooser("medium", options, "menu/vehicles.png", 31);
+		TRY {
+			if(!config.type.empty())
+				_type->set(config.type);
+		} CATCH("SlotLine ctor (set)", {});
+
+		TRY {
+			if(!config.vehicle.empty()) 
+				_vehicle->set(config.vehicle);
+		} CATCH("SlotLine ctor (set)", {});
 		
 		int cw;
 		_type->getSize(cw, ch);
