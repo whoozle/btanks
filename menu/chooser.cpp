@@ -8,8 +8,8 @@
 #	define strcasecmp _stricmp
 #endif
 
-Chooser::Chooser(const std::string &font, const std::vector<std::string> &options, const std::string &surface, const int tw) : 
-_options(options), _i(0), _n(options.size()), _tw(tw), _surface(NULL), _w(0) {
+Chooser::Chooser(const std::string &font, const std::vector<std::string> &options, const std::string &surface) : 
+_options(options), _i(0), _n(options.size()), _surface(NULL), _w(0) {
 	if (!surface.empty())
 		_surface = ResourceManager->loadSurface(surface);
 	
@@ -31,7 +31,7 @@ const std::string& Chooser::getValue() const {
 
 void Chooser::getSize(int &w, int &h) {
 	if (_surface != NULL) {
-		w = _left_right->getWidth() + _tw;
+		w = _left_right->getWidth() + _surface->getWidth() / _n;
 		h = math::max(_left_right->getHeight(), _surface->getHeight());
 	} else {
 		w = _left_right->getWidth() + _w;
@@ -54,7 +54,7 @@ void Chooser::render(sdlx::Surface &surface, const int x, const int y) {
 	
 	if (_surface) {
 		surface.copyFrom(*_surface, 
-			sdlx::Rect(_i * _tw, 0, _tw, _surface->getHeight()), 
+			sdlx::Rect(_i * _surface->getWidth() / _n, 0, _surface->getWidth() / _n, _surface->getHeight()), 
 			x + _left_area.x + lrw, y + (_left_area.h - _surface->getHeight())/ 2);
 	} else { 
 		int tw = _font->render(NULL, 0, 0, _options[_i]);

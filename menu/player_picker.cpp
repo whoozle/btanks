@@ -13,12 +13,13 @@ public :
 
 	Chooser *_type, *_vehicle;
 
+	MapDesc map;
 	int h, ch;
-	std::string map, variant;
+	std::string variant;
 	int slot;
 	SlotConfig config;
 	
-	SlotLine(const std::string &map, const std::string &variant, const int i, const SlotConfig &config) : 
+	SlotLine(const MapDesc &map, const std::string &variant, const int i, const SlotConfig &config) : 
 	_type(NULL), _vehicle(NULL), 
 	map(map), variant(variant), slot(i), config(config) {
 		
@@ -39,14 +40,15 @@ public :
 		}
 
 		_type = new Chooser("medium", options);
-			
-		options.resize(1);
-		options.push_back("tank");
-		options.push_back("launcher");
-		options.push_back("shilka");
-		//options.push_back("machinegunner");
 		
-		_vehicle = new Chooser("medium", options, "menu/vehicles.png", 31);
+		options.clear();
+		options.push_back("?");
+		options.push_back("launcher");
+		options.push_back("tank");
+		options.push_back("shilka");
+		options.push_back("machinegunner-player");
+		
+		_vehicle = new Chooser("medium", options, "menu/vehicles.png");
 		TRY {
 			if(!config.type.empty())
 				_type->set(config.type);
@@ -100,7 +102,7 @@ public :
 		}
 
 		if (_changed)
-			MenuConfig->update(map, variant, slot, config);
+			MenuConfig->update(map.name, variant, slot, config);
 	}
 
 private: 
@@ -248,7 +250,7 @@ void PlayerPicker::set(const MapDesc &map) {
 	_slots.clear();
 	
 	for(int i = 0; i < map.slots; ++i) {
-		SlotLine *line = new SlotLine(map.name, variant, i, config[i]);
+		SlotLine *line = new SlotLine(map, variant, i, config[i]);
 		_slots.push_back(line);
 		sdlx::Rect pos(mx, my + i * (line->h + 6), _background.w - 2 * mx, line->h);
 		add(pos, line);
