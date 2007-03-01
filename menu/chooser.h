@@ -25,9 +25,12 @@ public:
 	
 	void left();
 	void right();
+	
+	void disable(const int i, const bool value = true);
 
 private: 
 	std::vector<std::string> _options;
+	std::vector<bool> _disabled;
 	int _i, _n;
 	const sdlx::Surface *_surface, *_left_right;
 

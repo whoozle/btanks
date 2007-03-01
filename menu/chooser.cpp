@@ -107,3 +107,9 @@ void Chooser::right() {
 		_i = 0;
 	_changed = true;
 }
+
+void Chooser::disable(const int i, const bool value) {
+	if (i < 0 || i >= _n)
+		throw_ex(("disable(%d) called (n = %d)", i, _n));
+	_disabled[i] = value;
+}
