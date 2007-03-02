@@ -22,7 +22,7 @@ void Container::render(sdlx::Surface &surface, const int x, const int y) {
 }
 
 bool Container::onKey(const SDL_keysym sym) {
-	for(ControlList::iterator i = _controls.begin(); i != _controls.end(); ++i) {
+	for(ControlList::reverse_iterator i = _controls.rbegin(); i != _controls.rend(); ++i) {
 		if (i->second->hidden())
 			continue;
 
@@ -34,7 +34,7 @@ bool Container::onKey(const SDL_keysym sym) {
 
 bool Container::onMouse(const int button, const bool pressed, const int x, const int y) {
 	//LOG_DEBUG(("%p: entering onMouse handler. (%d, %d)", (void *)this, x , y));
-	for(ControlList::iterator i = _controls.begin(); i != _controls.end(); ++i) {
+	for(ControlList::reverse_iterator i = _controls.rbegin(); i != _controls.rend(); ++i) {
 		if (i->second->hidden())
 			continue;
 
