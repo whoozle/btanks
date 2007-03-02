@@ -6,6 +6,7 @@
 #include "scroll_list.h"
 #include "map_details.h"
 #include "prompt.h"
+#include "text_control.h"
 
 JoinServerMenu::JoinServerMenu(MainMenu *parent, const int w, const int h) : _parent(parent) {
 	_back = new Button("big", "BACK");
@@ -13,7 +14,7 @@ JoinServerMenu::JoinServerMenu(MainMenu *parent, const int w, const int h) : _pa
 	_scan = new Button("big", "SCAN");
 	_join = new Button("big", "JOIN");
 	_upper_box = new UpperBox(500, 80, false);
-	_add_dialog = new Prompt(w / 2, 96);
+	_add_dialog = new Prompt(w / 2, 96, new HostTextControl("medium"));
 
 	int bw, bh, xp;
 
@@ -92,7 +93,11 @@ bool JoinServerMenu::onKey(const SDL_keysym sym) {
 	case SDLK_RETURN:
 		join();
 		return true;
-
+	
+	case SDLK_a: 
+		_add_dialog->hide(false);
+		return true;
+	
 	case SDLK_ESCAPE: 
 		MenuConfig->save();
 		_parent->back();
