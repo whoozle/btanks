@@ -54,7 +54,7 @@ bool TextControl::onKey(const SDL_keysym sym) {
 		
 	default: {
 		int c = sym.unicode;
-		LOG_DEBUG(("%d", c));
+		//LOG_DEBUG(("%d", c));
 		if (c >= SDLK_SPACE && c < 128) {
 			if (validate(c))
 				_text += (char)c;
