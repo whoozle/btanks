@@ -7,6 +7,7 @@
 #include "game.h"
 #include "map_desc.h"
 #include "player_manager.h"
+#include "i18n.h"
 
 StartServerMenu::StartServerMenu(MainMenu *parent, const int w, const int h) : _parent(parent)  {
 	add(sdlx::Rect(0, 0, w, h - 128), _map_picker = new MapPicker(w, h));
@@ -21,8 +22,11 @@ StartServerMenu::StartServerMenu(MainMenu *parent, const int w, const int h) : _
 }
 
 void StartServerMenu::start() {
-	_parent->back();
 	const MapDesc &map = _map_picker->getCurrentMap();
+	if (map.slots < 1) {
+		Game->displayMessage(I18n->get("menu", "no-slots-in-map"), 1);
+		return;
+	}
 
 	LOG_DEBUG(("start multiplayer server requested"));
 	Game->clear();
@@ -32,6 +36,9 @@ void StartServerMenu::start() {
 	
 	PlayerManager->startServer();
 	MenuConfig->save();
+
+	_parent->back();
+	return;
 }
 
 void StartServerMenu::tick(const float dt) {
