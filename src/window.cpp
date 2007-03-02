@@ -93,10 +93,11 @@ void Window::init(const int argc, char *argv[]) {
 #endif
 
 	LOG_DEBUG(("initializing SDL..."));
+	Uint32 subsystems = SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_JOYSTICK;
 #ifdef DEBUG
-	sdlx::System::init(SDL_INIT_EVERYTHING & (~SDL_INIT_AUDIO) | SDL_INIT_NOPARACHUTE);
+	sdlx::System::init(subsystems | SDL_INIT_NOPARACHUTE);
 #else
-	sdlx::System::init(SDL_INIT_EVERYTHING & (~SDL_INIT_AUDIO));
+	sdlx::System::init(subsystems);
 #endif
 
 	if (_opengl) {
