@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<map version="0.99b" orientation="orthogonal" width="30" height="30" tilewidth="64" tileheight="64">
+ <tileset name="terrains" firstgid="1" tilewidth="64" tileheight="64">
+  <image source="../tilesets/terrains.png"/>
+ </tileset>
+ <tileset name="buildings" firstgid="211" tilewidth="64" tileheight="64">
+  <image source="../tilesets/houses.png"/>
+ </tileset>
+ <tileset name="roads" firstgid="391" tilewidth="64" tileheight="64">
+  <image source="../tilesets/roads.png"/>
+ </tileset>
+ <tileset name="animation" firstgid="481" tilewidth="64" tileheight="64">
+  <image source="../tilesets/animated.png"/>
+ </tileset>
+ <tileset name="destructed houses" firstgid="581" tilewidth="64" tileheight="64">
+  <image source="../tilesets/destroyed_houses.png"/>
+ </tileset>
+ <tileset name="destruction" firstgid="681" tilewidth="64" tileheight="64">
+  <image source="../tilesets/destruction.png"/>
+ </tileset>
+ <tileset name="fences" firstgid="711" tilewidth="64" tileheight="64">
+  <image source="../tilesets/fences.png"/>
+ </tileset>
+ <layer name="asphalt" width="30" height="30">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3PsREAIAzEsB8ltLD/fmSKQKHC51qVZHU1/N2dB5928vLy8vLy8vLy8vLy/uq9Y2m3vxAOAAA=
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="roads" width="30" height="30">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO2UwQqAIAyG9emla9QpqlNRp6JesAlBYpuxGBWxD34GS+f+hRqjKIqiKO9TWGNKe0QHyuw5Lx0bUBvEClQjeU6Ma2DrYjrI9UiewwT7Z2aNO3skaqjfZ879q98B8iPyTcov1TvlS8ov9eY5or6UX+rN81oZfoe951jUv+LOjPLr+8kRZVEfqVmmoPwuwZyuVH34/m7yp++mEA4AAA==
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="dirt#1" width="30" height="30" visible="0">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3PsQqAMAyE4e4a0MEWJ9//Lb3BQoZSOnjb/8GRZDpSyv9u5Ug5B7fDpuxKfLPvYe69Jr1h7O3/5s68u/8dxdn7KFVpkwkAAABg3Qt6gvwXEA4AAA==
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="dirt#2" width="30" height="30">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgoA3gBmIeJMyLxqYVMAZiOyC2R7OXl8b22iLZy4vFDbS2FxnD3EBLe92B2AOIPbHQ4lQw/xgTFQwZYuDPCPTzKBgFo2AUjIJRMApGwSgYWAAAkHhgExAOAAA=
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="water#1" width="30" height="30">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3SQQrAIAxEUb3/Ke1WD1FBQmFoXE12/0EIIhhHbM1r9lNr19j19G9P105xtva40yqaG2drj9lVmbO8f/mdsrza3W45h3Guvtst5zTOrfyjAAAAQOYF+34vUBAOAAA=
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="dirt#3" width="30" height="30">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO2TOw6AMAiGibs3cXbzsfm4oq5ewtGTWRJJkFjq20G+hNAm8P+lVYA1uYuC5RCynmday30sejE6F7WLXvHmGlTfbGSuIc8he9tFu1K8uWcLfjLFV+vlfUc96ew1bM+fBvrkXe311PRQowzUZuB/C2SMznlr81Kd9LoKag4ukos6OPN0cO7iJu8zfOVN/1Tore/E950+zZtehmEYhmH8kxkievQsEA4AAA==
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="water#2" width="30" height="30">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO2RQQrAIAwE9f+vTK7tI+pZWBNl1R52QAIadCdaLcXbMlARqN+Sdzxt/624IlD/KM9KzXj6IH90HnlHfSiPd++y54Ly9H8/673q+5fK9mXNhcWsL4us7y4i310g31Oc8hRCCCHEfT4/qs5EEA4AAA==
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="dirt#4" width="30" height="30">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3NsQ0AIAhEUXayRktx/4W8AkYgWvyX/HAdZr2Gmmrlrd3NH/3dKtTJWxsAAAAAfnMBOqwwMhAOAAA=
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="buildings" width="30" height="30">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO2UTU7DMBCFnXIdtnTVxl2FpKuyh7twD9j2RHCALkDqj9RuKn42iBcplp5GY8emhrDokz5FsmfmTSTPWGOM7SjBA6hBAx7pnLEEx8uvy9fkcpuOOd1NhQfjeuR4qeuAdyjX5fE/Oj/ZY0jy/21ELvcc848xtcrI+KlJ/8eQd50Qe6rff9HlQL7LgbztQN5ub/z1u8kxG2edlaJJgR0umBX+e77rUyhngbM70BBziqvo/BbcKDW03kvKux/pvlotTZXoyelK6b3pqemrlaKU3nMq1PsKvEbUaONeCM5Zg01iT0/gOSJuC/bEge7ewHsm34l450fwQXz+kq98E19g1zHC+QXd/cTXIL/wzG/0W/TU8M1vSDlmoK1RK/Ttq1y+2u6Q+8+pEntsZfxzJN+g9D2l/9ActftwnOD7DfYHG94QDgAA
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="ways" width="30" height="30">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAWjYPCAd0wMDH+AeD3TQLtkYMCuEervUTAKRgFxQJyZgUGCmfrmETJXESinhEOeWDOwmYfPXHqYMVBAG+henQFwMzXsJccMU6B6MwrtpYYZ5ICBiquB8u9gBuSUNdQAg6WsISctEhtmAB2QqnoQDgAA
+  </data>
+  <tileproperties/>
+ </layer>
+</map>
