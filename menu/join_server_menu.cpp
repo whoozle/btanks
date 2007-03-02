@@ -10,13 +10,13 @@ JoinServerMenu::JoinServerMenu(MainMenu *parent, const int w, const int h) : _pa
 	_back = new Button("big", "BACK");
 	int bw, bh, xp;
 	_back->getSize(bw, bh);
-	add(sdlx::Rect(xp = 64, h - 96, bw, bh), _back);
-	xp += 32 + bw;
+	add(sdlx::Rect(xp = 16, h - 96, bw, bh), _back);
+	xp += 16 + bw;
 	
 	_add = new Button("big", "ADD");
 	_add->getSize(bw, bh);
 	add(sdlx::Rect(xp, h - 96, bw, bh), _add);
-	xp += 32 + bw;
+	xp += 16 + bw;
 
 	_scan = new Button("big", "SCAN");
 	_scan->getSize(bw, bh);
