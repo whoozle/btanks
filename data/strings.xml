@@ -2,7 +2,7 @@
 	<area id="menu">
 		<string id="start-game">START GAME</string>
 		<string id="start-game" lang="ru">NACHAT IGRU</string>
-		
+		<string id="no-slots-in-map">No slots in map</string>
 	</area>
 	<area id="maps/descriptions">
 		<string id="baykonur">Huge cooperative map with tons of troopers, very defensive military base and big boss inside(tm)</string>
