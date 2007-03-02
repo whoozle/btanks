@@ -151,6 +151,9 @@ MapPicker::MapPicker(const int w, const int h) : _index(0) {
 }
 
 void MapPicker::fillSlots() const {
+	if (PlayerManager->getSlotsCount() < 1)
+		return;
+
 	bool split;
 	Config->get("multiplayer.split-screen-mode", split, false);
 
