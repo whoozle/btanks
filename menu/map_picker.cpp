@@ -158,7 +158,7 @@ void MapPicker::fillSlots() const {
 	MenuConfig->fill(_maps[_index].name, _picker->getVariant(), config);
 	int idx1 = -1, idx2 = -1;
 	for(size_t i = 0; i < config.size(); ++i) {
-		if (i >= _maps[_index].slots)
+		if (i >= (size_t)_maps[_index].slots)
 			break;
 		
 		PlayerSlot &slot = PlayerManager->getSlot(i);
