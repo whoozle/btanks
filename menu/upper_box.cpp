@@ -7,11 +7,7 @@
 
 UpperBox::UpperBox(int w, int h, const bool server): _server(server) {
 	_checkbox = ResourceManager->loadSurface("menu/radio.png");
-	if (_server) {
-		Config->get("multiplayer.game-type", value, "deathmatch");
-	} else {
-		Config->get("multiplayer.recent-host", value, "localhost");
-	}
+	Config->get("multiplayer.game-type", value, "deathmatch");
 	Box::init("menu/background_box.png", w, h);
 
 	_medium = ResourceManager->loadFont("medium", true);
@@ -24,9 +20,7 @@ void UpperBox::render(sdlx::Surface &surface, const int x, const int y) {
 	int font_dy = (_big->getHeight() - _medium->getHeight()) / 2;
 	
 	int wt = 0;
-	if (_server) {
-		wt = _big->render(surface, x + 16, y + 16, "MODE");
-	}
+	wt = _big->render(surface, x + 16, y + 16, "MODE");
 	_medium->render(surface, x + (w - wt - 32) / 2, y + 16 + font_dy, value);
 	
 	int line2_y = 46;
