@@ -16,10 +16,14 @@ public:
 	virtual bool onMouse(const int button, const bool pressed, const int x, const int y);
 	virtual ~Control() {}
 	
-	const bool changed() const { return _changed; } 
-	void reset() { _changed = false; }
+	inline const bool changed() const { return _changed; } 
+	inline void reset() { _changed = false; }
+	
+	inline void hide(const bool hide = true) { _hidden = hide; }
+	inline const bool hidden() const { return _hidden; }
 protected: 
 	bool _changed;
+	bool _hidden;
 };
 
 #endif

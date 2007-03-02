@@ -1,6 +1,6 @@
 #include "control.h"
 
-Control::Control() : _changed(false) {}
+Control::Control() : _changed(false), _hidden(false) {}
 
 
 void Control::tick(const float dt) {}
