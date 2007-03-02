@@ -100,6 +100,8 @@ void Window::init(const int argc, char *argv[]) {
 	sdlx::System::init(subsystems);
 #endif
 
+	SDL_EnableUNICODE(1);
+
 	if (_opengl) {
 		LOG_DEBUG(("loading GL library"));
 		if (SDL_GL_LoadLibrary(NULL) == -1) 
