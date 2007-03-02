@@ -2,6 +2,23 @@
 #include "resource_manager.h"
 #include "sdlx/font.h"
 
+HostTextControl::HostTextControl(const std::string &font) : TextControl(font) {}
+
+const bool HostTextControl::validate(const int c) const {
+	if (c >= 'a' && c <= 'z')
+		return true;
+
+	if (c >= '0' && c <= '9')
+		return true;
+
+	if (c == '.' || c == '-') 
+		return true;
+
+	return false;
+}
+
+/////////////////////////////////////////////////////////////
+
 TextControl::TextControl(const std::string &font) {
 	_font = ResourceManager->loadFont(font, true);
 }
@@ -36,9 +53,11 @@ bool TextControl::onKey(const SDL_keysym sym) {
 		break;
 		
 	default: {
-		int c = sym.sym;
+		int c = sym.unicode;
+		LOG_DEBUG(("%d", c));
 		if (c >= SDLK_SPACE && c < 128) {
-			_text += (char)c;
+			if (validate(c))
+				_text += (char)c;
 		}
 	}
 	}
