@@ -702,8 +702,10 @@ void IGame::run() {
 			_main_menu->render(_window);
 		
 		if (!_state.empty()) {
-			int x = (_window.getWidth() - _big_font->getWidth() /*+- same ;)*/ * _state.size()) / 2;
+			int w = _big_font->render(NULL, 0, 0, _state);
+			int x = (_window.getWidth() - w) / 2;
 			int y = (_window.getHeight() - _big_font->getHeight()) / 2;
+			
 			_big_font->render(_window, x, y, _state);
 		}
 		
