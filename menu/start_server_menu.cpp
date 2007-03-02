@@ -50,6 +50,9 @@ void StartServerMenu::tick(const float dt) {
 }
 
 bool StartServerMenu::onKey(const SDL_keysym sym) {
+	if (Container::onKey(sym))
+		return true;
+
 	switch(sym.sym) {
 
 	case SDLK_RETURN:
@@ -61,8 +64,7 @@ bool StartServerMenu::onKey(const SDL_keysym sym) {
 		MenuConfig->save();
 		return true;
 
-	default: 
-		return Container::onKey(sym);
+	default: ;
 	}
 	return false;
 }

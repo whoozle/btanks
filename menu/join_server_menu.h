@@ -9,6 +9,7 @@ class Button;
 class MainMenu;
 class ScrollList;
 class MapDetails;
+class Prompt;
 
 class JoinServerMenu : public BaseMenu {
 public:
@@ -25,6 +26,7 @@ private:
 	UpperBox *_upper_box;
 	ScrollList *_hosts;
 	MapDetails *_details;
+	Prompt *_add_dialog;
 	Button *_back, *_add, *_scan, *_join;
 };
 
