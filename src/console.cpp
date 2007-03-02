@@ -66,7 +66,8 @@ bool IConsole::onKey(const SDL_keysym sym) {
 
 	default: {
 		std::string &line = _buffer.back().first;
-		line += (char)sym.sym;	
+		if (sym.unicode >= SDLK_SPACE && sym.unicode < 128)
+			line += (char)sym.unicode;	
 		}
 	} 
 	return true;
