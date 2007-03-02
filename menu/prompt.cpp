@@ -30,7 +30,7 @@ void Prompt::getSize(int &w , int &h) const {
 }
 
 
-void Prompt::render(sdlx::Surface& surface, int x, int y) {
+void Prompt::render(sdlx::Surface& surface, const int x, const int y) {
 	_background.render(surface, x, y);
 	Container::render(surface, x, y);
 }

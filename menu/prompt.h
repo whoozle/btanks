@@ -15,7 +15,7 @@ public:
 	void set(const std::string &value);
 	const std::string &get() const;
 
-	virtual void render(sdlx::Surface& surface, int x, int y);
+	virtual void render(sdlx::Surface& surface, const int x, const int y);
 	virtual void tick(const float dt);
 
 private: 
