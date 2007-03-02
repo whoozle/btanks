@@ -3,9 +3,12 @@
 
 #include "sdlx/rect.h"
 #include "base_menu.h"
+#include "upper_box.h"
 
 class Button;
 class MainMenu;
+class ScrollList;
+class MapDetails;
 
 class JoinServerMenu : public BaseMenu {
 public:
@@ -19,7 +22,10 @@ public:
 
 private: 
 	MainMenu *_parent;
-	Button *_back, *_scan, *_join;
+	UpperBox *_upper_box;
+	ScrollList *_hosts;
+	MapDetails *_details;
+	Button *_back, *_add, *_scan, *_join;
 };
 
 #endif

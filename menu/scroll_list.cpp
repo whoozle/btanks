@@ -74,6 +74,8 @@ void ScrollList::render(sdlx::Surface &surface, const int x, const int y) {
 	surface.copyFrom(*_scrollers, sdlx::Rect(scroller_w, 0, scroller_w, scroller_h), x + (int)_down_area.x, y + (int)_down_area.y);
 	_items_area = sdlx::Rect(mx, my, _client_w - 2 * mx, _client_h);
 
+	if (_list.empty())
+		return;
 //main list
 	
 	surface.setClipRect(sdlx::Rect(x + mx, y + my, _items_area.w, _items_area.h));
