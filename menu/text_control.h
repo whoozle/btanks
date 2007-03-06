@@ -13,6 +13,7 @@ public:
 	TextControl(const std::string &font);
 	void set(const std::string &value);
 	const std::string &get() const;
+	void getSize(int &w, int &h) const;
 	virtual bool onKey(const SDL_keysym sym);
 	virtual void render(sdlx::Surface &surface, const int x, const int y);
 

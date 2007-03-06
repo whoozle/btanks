@@ -67,3 +67,8 @@ bool TextControl::onKey(const SDL_keysym sym) {
 void TextControl::render(sdlx::Surface &surface, const int x, const int y) {
 	_font->render(surface, x, y, _text.empty()?" ": _text);
 }
+
+void TextControl::getSize(int &w, int &h) const {
+	h = _font->getHeight();
+	w = (_text.empty())?0:_font->render(NULL, 0, 0, _text);
+}

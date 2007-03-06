@@ -6,6 +6,7 @@
 #include <string>
 
 class TextControl;
+class Button;
 
 class Prompt : public Container {
 public: 
@@ -17,9 +18,13 @@ public:
 
 	virtual void render(sdlx::Surface& surface, const int x, const int y);
 	virtual void tick(const float dt);
+	virtual bool onKey(const SDL_keysym sym);
 
+	~Prompt();
 private: 
 	Box _background;
+	sdlx::Rect _text_rect;
+	Button *_b_ok, *_b_back;
 	TextControl * _text;
 };
 
