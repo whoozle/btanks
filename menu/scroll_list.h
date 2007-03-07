@@ -10,8 +10,10 @@
 class ScrollList : public Control {
 public: 
 	ScrollList(const int w, const int h);
-	void clear();
-	void add(const std::string &item);
+	
+	virtual void clear();
+	virtual void add(const std::string &item);
+	
 	const int getPosition() const { return _current_item; }
 	void setPosition(const int idx) { _current_item = idx; }
 	
@@ -26,10 +28,12 @@ private:
 	const sdlx::Font *_font;
 	int _item_h, _client_w, _client_h;
 
-	typedef std::deque<std::string> List;
-	List _list;
 
 	float _pos, _vel;
+protected:
+
+	typedef std::deque<std::string> List;
+	List _list;
 	int _current_item;
 };
 
