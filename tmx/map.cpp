@@ -139,7 +139,7 @@ TRY {
 			}
 		}
 
-		if (layer_im == -1 || (layer->pierceable && obj->piercing)) {
+		if (layer_im == -1 || (layer->pierceable && (obj->piercing || obj->pierceable))) {
 			continue;
 		}
 
