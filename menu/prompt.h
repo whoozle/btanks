@@ -24,9 +24,10 @@ public:
 	~Prompt();
 private: 
 	Box _background;
-	sdlx::Rect _text_rect;
+sdlx::Rect _text_rect;
 	Button *_b_ok, *_b_back;
 	TextControl * _text;
+	std::string value;
 };
 
 

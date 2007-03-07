@@ -6,7 +6,7 @@ Prompt::~Prompt() {
 	delete _text;
 }
 
-Prompt::Prompt(const int w, const int h, TextControl * text) : _text(text) {
+Prompt::Prompt(const int w, const int h, TextControl * text) : _text(text), value(text->get()) {
 	_background.init("menu/background_box.png", "menu/highlight_medium.png", w, h);
 	int mx, my;
 	_background.getMargins(mx, my);
@@ -26,10 +26,11 @@ Prompt::Prompt(const int w, const int h, TextControl * text) : _text(text) {
 
 void Prompt::set(const std::string &value) {
 	_text->set(value);
+	this->value = value;
 }
 
 const std::string &Prompt::get() const {
-	return _text->get();
+	return value;
 }
 
 void Prompt::tick(const float dt) {
@@ -37,6 +38,16 @@ void Prompt::tick(const float dt) {
 	Container::tick(dt);
 	if (_text->changed()) {
 		_text->reset();
+		_changed = true;
+		value = _text->get();
+	}
+	if (_b_ok->changed()) {
+		_b_ok->reset();
+		value = _text->get();
+		_changed = true;
+	} else if (_b_back->changed()) {
+		_b_back->reset();
+		_text->set(value);
 		_changed = true;
 	}
 }
