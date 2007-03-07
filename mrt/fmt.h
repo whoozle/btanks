@@ -30,7 +30,8 @@ namespace mrt {
 
 const std::string formatString(const char *fmt, ...) __attribute__((format(printf, 1, 2)));
 void trim(std::string &str, const std::string chars = "\t\n\r ");
-void split(std::vector<std::string> & result, const std::string &str, const std::string &delimiter, const int limit = 0);
+void split(std::vector<std::string> & result, const std::string &str, const std::string &delimiter, const size_t limit = 0);
+void join(std::string &result, const std::vector<std::string>& array, const std::string &delimiter, const size_t limit = 0);
 
 void toUpper(std::string &str);
 void toLower(std::string &str);

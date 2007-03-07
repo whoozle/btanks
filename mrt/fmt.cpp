@@ -66,11 +66,23 @@ void mrt::trim(std::string &str, const std::string chars) {
 		str.erase(i + 1, str.size());
 }
 
-void mrt::split(std::vector<std::string> & result, const std::string &str, const std::string &delimiter, const int limit) {
+void mrt::join(std::string &result, const std::vector<std::string>& array, const std::string &delimiter, const size_t limit) {
+	result.clear();
+	size_t n = (limit > 0)?limit:array.size();
+	--n;
+	for(size_t i = 0; i < n; ++i) {
+		result += array[i];
+		result += delimiter;
+	}
+	result += array[n];
+}
+
+
+void mrt::split(std::vector<std::string> & result, const std::string &str, const std::string &delimiter, const size_t limit) {
 	result.clear();
 	
 	std::string::size_type pos = 0, p;
-	int n = limit;
+	size_t n = limit;
 	
 	while(pos < str.size()) {
 		do {
