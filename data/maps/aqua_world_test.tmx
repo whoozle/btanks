@@ -1,16 +1,31 @@
 <?xml version="1.0"?>
 <map version="0.99b" orientation="orthogonal" width="30" height="30" tilewidth="64" tileheight="64">
  <properties>
+  <property name="object:traffic-lights:traffic-lights:3" value="368,837,-850"/>
+  <property name="object:traffic-lights:traffic-lights:2" value="1288,1000,-850"/>
+  <property name="object:traffic-lights:traffic-lights:1" value="1454,998,-850"/>
+  <property name="object:single-pose:stall-left:1" value="377,1412,-855"/>
+  <property name="object:underwater-zombie:zombie:14" value="595,1832,-850"/>
+  <property name="spawn:2" value="1182,1818"/>
+  <property name="object:underwater-zombie:zombie:13" value="595,1831,-850"/>
+  <property name="spawn:1" value="63,1754"/>
+  <property name="object:underwater-zombie:zombie:12" value="594,1622,-850"/>
+  <property name="object:underwater-zombie:zombie:11" value="639,1722,-850"/>
+  <property name="object:underwater-zombie:zombie:9" value="591,1471,-850"/>
+  <property name="object:underwater-zombie:zombie:10" value="665,1612,-850"/>
+  <property name="object:underwater-zombie:zombie:8" value="324,1388,-850"/>
+  <property name="object:single-pose:bus-stop-right:2" value="1474,1784,-850"/>
+  <property name="object:underwater-zombie:zombie:7" value="352,1588,-850"/>
+  <property name="object:single-pose:bus-stop-right:1" value="381,1444,-850"/>
+  <property name="object:underwater-zombie:zombie:6" value="261,1511,-850"/>
+  <property name="object:underwater-zombie:zombie:5" value="258,1611,-850"/>
+  <property name="object:single-pose:bus-stop-left:1" value="579,1693,-850"/>
+  <property name="object:underwater-zombie:zombie:4" value="305,1517,-850"/>
   <property name="object:underwater-zombie:zombie:3" value="218,1574,-840"/>
   <property name="object:underwater-zombie:zombie:2" value="345,1629,-840"/>
-  <property name="object:underwater-zombie:zombie:4" value="345,1429,-840"/>
-  <property name="object:underwater-zombie:zombie:5" value="245,1229,-840"/>
-  <property name="object:single-pose:bus-stop-left:1" value="579,1693,-850"/>
-  <property name="object:single-pose:stall-left:1" value="377,1412,-855"/>
-  <property name="object:single-pose:bus-stop-right:2" value="1474,1784,-850"/>
-  <property name="object:single-pose:bus-stop-right:1" value="381,1444,-850"/>
-  <property name="spawn:2" value="1182,1818"/>
-  <property name="spawn:1" value="63,1754"/>
+  <property name="object:traffic-lights:traffic-lights:6" value="367,1001,-850"/>
+  <property name="object:traffic-lights:traffic-lights:5" value="198,1005,-850"/>
+  <property name="object:traffic-lights:traffic-lights:4" value="199,838,-850"/>
  </properties>
  <tileset name="terrains" firstgid="1" tilewidth="64" tileheight="64">
   <image source="../tilesets/terrains.png"/>
@@ -39,18 +54,24 @@
  <tileset name="trees" firstgid="901" tilewidth="64" tileheight="64">
   <image source="../tilesets/trees.png"/>
  </tileset>
- <layer name="asphalt" width="30" height="30">
+ <layer name="impassable" width="30" height="30">
   <properties>
    <property name="pierceable" value="true"/>
    <property name="z" value="-1000"/>
    <property name="impassability" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO2UQQrDMAwE7Z/k2enVfkN6S+1b+6xikEFZJNWC0ku1sJA40o7shKQUCoVCoVDoH7WBf5Wh9ayse7m85sgpvcj37J9nZjzJVgZ3ZXV71uusLJ5RgKv13RTuQbNr++PPJK7Ux89C446skuX31dgzi4vnvxvcqQrZUziTxcV1D/fM1/4V7lxv1D/cHVzpenW/kroxk4c7+1a5XBtY4/KaamR/g1voW0Rug7MZ9w9yN7g8A/9XWrbU/2l21Bv71dQnEA4AAA==
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="asphalt" width="30" height="30" visible="0">
+  <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAO3PsREAIAzEsB8ltLD/fmSKQKHC51qVZHU1/N2dB5928vLy8vLy8vLy8vLy/uq9Y2m3vxAOAAA=
   </data>
   <tileproperties/>
  </layer>
- <layer name="roads" width="30" height="30">
+ <layer name="roads" width="30" height="30" visible="0">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAO1V0QqDMAy0X198nMynMn2auCfF/eASSLGERllpo2weHAGVXi5HalVdOBpPo6s1kN6kqItas1l70AJq1cA70Cr7fQA7oAM2xKFwDzzfG3EurMvz9br/4HehnHvgW9GvJiaFmSJwT1uzVhvsb1uw+vx8dcH+9omVnxH7jiNHvilZ5cg35YzLr47ur/od4fkr8i6XX6l3yVcuv9KdZ4Xzc/mV7rxO+LdJfkfqmVPK6tuZSX6xnybCmvWxNcstSH6XYE57dCfe3w+CKMiLEA4AAA==
   </data>
@@ -88,10 +109,10 @@
  </layer>
  <layer name="water#0" width="30" height="30">
   <properties>
-   <property name="animation-speed" value="8"/>
    <property name="animation-frames" value="5"/>
-   <property name="z" value="-800"/>
+   <property name="animation-speed" value="8"/>
    <property name="animation-frame-size" value="20"/>
+   <property name="z" value="-800"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAO2X0QrAIAhF6/+/Ul+3j1gve5FdddFElkHcMCmPWRD11nh0Aooa8ifnGsewnx0rashfi2dGPZysxG/NW9yWH4qHxb6r84LikWf/lnuWN4uu5s2el+It3uL9lld741fzRuVZ2jLkebe6QnUWzXuPdznfp3qnH/PW/Y3j9f5XLL0Aws15RxAOAAA=
@@ -116,24 +137,48 @@
   </data>
   <tileproperties/>
  </layer>
+ <layer name="passable roof" width="30" height="30">
+  <properties>
+   <property name="impassability" value="20"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAWjYBSMJKDNzMCgw0x/e02BdpoNgL0jzb+jYHgAf0bsGJ88OWbTwl5cZsCwMx49pLifVLeTYhYpgBpmDCV7hxIYaXFDzfQ8UPkIHx5M9vpSsbyiBSDVXgAGp7aKEA4AAA==
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="ponds" width="30" height="30">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAWjYBSMglEwCkbBKBgFo4B+wJIZwbZixq2O2kAbaFcjAwSb0dFe0wGyF9m/OiPA3oEKZ3OovSBgQUd7qQUAwOaBPxAOAAA=
+  </data>
+  <tileproperties/>
+ </layer>
  <layer name="Layer 12" width="30" height="30">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAO3NsQkAMAhFwQ/uP2VIGSyDnU4Ribxb4CQAXZZJ296/p07nHfveOqPhBQAA/0nBexypEA4AAA==
+   H4sIAAAAAAAAAGNgGAWjYBQMFHjMzMDwlJn+9r4F2vl+1N5ha+93oJ0/B8DeUTAKRsEoIAVoD1A5ZTpA9o76d3jbO1DhTA0AANPoHNwQDgAA
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="ponds#2" width="30" height="30">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3QwQkAIAwEwUDK0a/2X5oWIQnITAPLXQQAANSaGTGyvrtvczV07f272/XzCwderE08EA4AAA==
   </data>
   <tileproperties/>
  </layer>
  <layer name="dirt#3" width="30" height="30">
+  <properties>
+   <property name="impasssability" value="40"/>
+  </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgQAV2QGyPRBMC6OqRaRgbnc+LpheEZwOxBxDPwWM3shkw9Z5YaGQz0N2BrtcLarY7HruR7fRiwA1s8diLTy+yPlLthLndgwG7/80I6EMPK2LtxGceyAwHAmptGXDHBTkAZjc+/8LUUWoXNjOXArEOFc0kFtiPQLtheYpQXFMTUCudkgroadcoGAWjYHCCF0D8cgDs/QbE30ftpT1gBCLGgbB4FAw38I6JgWEnE3l6ATjCcLQQDgAA
+   H4sIAAAAAAAAAGNgQAV2QGyPRBMC6OqRaRgbnc+LpheEZwOxBxDPwWM3shkw9Z5YaGQz0N2BrtcLarY7HruR7fRiwA1s8diLTy+yPlLthLndgwG7/80I6EMPK2LtxGceyAwHAmptGXDHBTkAZjc+/8LUUWoXNjOXArEOFc0kFtiPQLtheYpQXFMTUCudkgroadcoGAWjYHCCF0D8cgDs/QbE32lshxUzsA5hpr+9ZswQTG97xbH4l4ERiBhpZ6cl1D50/9IamEPtw/AvHYAEtnCmE6B3OCODd0wMDDuZyNMLANYgfJYQDgAA
   </data>
   <tileproperties/>
  </layer>
  <layer name="water#1" width="30" height="30">
   <properties>
-   <property name="animation-speed" value="10"/>
    <property name="animation-frames" value="5"/>
-   <property name="z" value="-600"/>
+   <property name="animation-speed" value="10"/>
    <property name="animation-frame-size" value="20"/>
+   <property name="z" value="-600"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAO2XSwrAIAxE9f6nTLbtIeqmm8DkI6kEGkEGNMS8UQLSHIPXJKBooHhy5rjW+j2xooHitXp21MPJSv3WvsVtxaF6WJyb7QuqR959lHuXt4pm81b3pXmbt3m/5dV6fDbvKZ/lWgWf//aumrd5mzfGe9oPK3+kz3r+Ma8+1V+LBhAOAAA=
@@ -143,15 +188,6 @@
  <layer name="dirt#4" width="30" height="30">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgoC0wBmI7ILaH0jA2rYHtANnrDsQeQOwJpWHsUTAKRsEoGAWjYBQwMCgxD7QLRsEoGAWjYBQgAwBd4AddEA4AAA==
-  </data>
-  <tileproperties/>
- </layer>
- <layer name="roof" width="30" height="30">
-  <properties>
-   <property name="impassability" value="20"/>
-  </properties>
-  <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgGAWjYBSMJKDNzMCgw0x/e02BdpoNgL0jzb+jYHgAf0bsGJ88OWbTwl5cZsCwMx49pLifVLeTYhYpgBpmDCV7hxIYaXFDzfQ8UPkIHx5M9vpSsbyiBSDVXgAGp7aKEA4AAA==
   </data>
   <tileproperties/>
  </layer>
@@ -173,12 +209,12 @@
   </data>
   <tileproperties/>
  </layer>
- <layer name="ways" width="30" height="30">
+ <layer name="bridges" width="30" height="30">
   <properties>
    <property name="impassability" value="40"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgGAWjYBQMFLBkZmCwYqa/vdpAO3VG7aU5MAXaaTYA9poD7bQYAHtHAW3BOyYGBnFgvEoA8WMm6pqHz9wfQDFFoJwSEL9lIs8MXObhMpcQoIYZIDCUy2By3E4Ne8kxgxpl4UCVp6P1x+AA5JQ11ADUKmvoBXYB3faHCRI2pIQZALlWDZoQDgAA
+   H4sIAAAAAAAAAGNgGAWjYBQMFLBkZmCwYqa/vdpAO3VG7aU5MAXaaTYA9poD7bQYAHtHAW3BOyYGBnFgvEoA8WMm6pqHz9wfQDFFoJwSEL9lIs8MXObhMpcQoIYZIDCUy2By3E4Ne8kxgxplITlmUKMsHK0/Bgcgp6yhBqBWWUMvsAvotj9MkLAhJcwAjHi6sxAOAAA=
   </data>
   <tileproperties/>
  </layer>
