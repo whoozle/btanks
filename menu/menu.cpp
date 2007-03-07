@@ -24,6 +24,7 @@
 #include "game.h"
 #include "start_server_menu.h"
 #include "join_server_menu.h"
+#include "options_menu.h"
 
 #include "sdlx/surface.h"
 #include "sdlx/font.h"
@@ -55,26 +56,13 @@ MainMenu::MainMenu(const int w, const int h) : _active_item(0) {
 	
 	std::string address;
 	Config->get("multiplayer.recent-host", address, "LOCALHOST");
-#ifndef RELEASE
-	_items[""].push_back(new MenuItem(_font, "start-game", "submenu", "START GAME"));
-#endif
+
 	_items[""].push_back(new MenuItem(_font, "multiplayer", "submenu", "OLD MULTIPLAYER MENU"));
 	_items[""].push_back(new MenuItem(_font, "#start-server", "submenu", "START SERVER"));
 	_items[""].push_back(new MenuItem(_font, "#join-server", "submenu", "JOIN GAME"));
-	_items[""].push_back(new MenuItem(_font, "options", "submenu", "OPTIONS"));
+	_items[""].push_back(new MenuItem(_font, "#options", "submenu", "OPTIONS"));
 	_items[""].push_back(new MenuItem(_font, "credits", "command", "CREDITS"));
 	_items[""].push_back(new MenuItem(_font, "quit", "command", "QUIT"));
-
-#ifndef RELEASE
-	_items["start-game"].push_back(new MenuItem(_font, "start", "command", "USE TANK", "tank"));
-	_items["start-game"].push_back(new MenuItem(_font, "start", "command", "USE LAUNCHER", "launcher"));
-	_items["start-game"].push_back(new MenuItem(_font, "start", "command", "USE SHILKA", "shilka"));
-	_items["start-game"].push_back(new MenuItem(_font, "back", "back", "BACK"));
-
-	//_items["options"].push_back(new MenuItem(_font, "player1", "iterable", "PLAYER 1 CONTROL: AI"));
-	
-	_items["options"].push_back(new MenuItem(_font, "back", "back", "BACK"));
-#endif
 
 	_items["multiplayer"].push_back(new MenuItem(_font, "m-start", "command", "START NEW GAME"));
 	_items["multiplayer"].push_back(new MenuItem(_font, "multiplayer-join", "submenu", "JOIN GAME"));
@@ -93,6 +81,7 @@ MainMenu::MainMenu(const int w, const int h) : _active_item(0) {
 	
 	_special_menus["#start-server"] = new StartServerMenu(this, w, h);
 	_special_menus["#join-server"] = new JoinServerMenu(this, w, h);
+	_special_menus["#options"] = new OptionsMenu(this, w, h);
 
 	recalculateSizes();
 
