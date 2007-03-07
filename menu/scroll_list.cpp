@@ -166,3 +166,7 @@ bool ScrollList::onMouse(const int button, const bool pressed, const int x, cons
 	} else 
 	return false;
 }
+
+void ScrollList::getSize(int &w, int &h) const {
+	w = _background.w; h = _background.h;
+}

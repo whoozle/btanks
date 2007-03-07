@@ -115,8 +115,7 @@ MapPicker::MapPicker(const int w, const int h) : _index(0) {
 	
 	TRY {
 		_upper_box = new UpperBox(500, 80, true);
-		sdlx::Rect r((w - _upper_box->w) / 2, 32, _upper_box->w, _upper_box->h);
-		add(r, _upper_box);
+		add((w - _upper_box->w) / 2, 32, _upper_box);
 	} CATCH("StartServerMenu", {delete _upper_box; throw; });
 
 	sdlx::Rect list_pos(0, 128, (w - 64)/3, h - 256);
@@ -126,7 +125,7 @@ MapPicker::MapPicker(const int w, const int h) : _index(0) {
 		for(MapList::const_iterator i = _maps.begin(); i != _maps.end(); ++i) {
 			_list->add(i->name);
 		}
-		add(list_pos, _list);
+		add(list_pos.x, list_pos.y, _list);
 		_list->set(_index);
 	} CATCH("MapPicker::ctor", {delete _list; throw; });
 
@@ -136,16 +135,15 @@ MapPicker::MapPicker(const int w, const int h) : _index(0) {
 	TRY {
 		_details = new MapDetails(map_pos.w, map_pos.h);
 		_details->set(_maps[_index].base, _maps[_index].name, _maps[_index].desc);
-		add(map_pos, _details);
+		add(map_pos.x, map_pos.y, _details);
 	} CATCH("MapPicker::ctor", {delete _details; throw; });
 
 
-	sdlx::Rect pp_pos(map_pos.x + map_pos.w + 16, 128, w - map_pos.x - map_pos.w - 16, h - 256);
 	_picker = NULL;
 	TRY {
-		_picker = new PlayerPicker(pp_pos.w, pp_pos.h);
+		_picker = new PlayerPicker(w - map_pos.x - map_pos.w - 16, h - 256);
 		_picker->set(_maps[_index]);
-		add(pp_pos, _picker);
+		add(map_pos.x + map_pos.w + 16, 128, _picker);
 	} CATCH("PlayerPicker::ctor", {delete _picker; throw; });
 
 }

@@ -30,7 +30,7 @@ const std::string& Chooser::getValue() const {
 }
 
 
-void Chooser::getSize(int &w, int &h) {
+void Chooser::getSize(int &w, int &h) const {
 	if (_surface != NULL) {
 		w = _left_right->getWidth() + _surface->getWidth() / _n;
 		h = math::max(_left_right->getHeight(), _surface->getHeight());

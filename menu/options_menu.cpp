@@ -10,17 +10,19 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 	_b_ok->getSize(bw, bh);
 
 	int yb = 120;
-	add(sdlx::Rect(_background.w / 4, h - yb, bw, bh), _b_ok);
+	add(_background.w / 4 - bw / 2, h - yb, _b_ok);
 	
 	_b_back = new Button("big", "BACK");
 	_b_back->getSize(bw, bh);
-	add(sdlx::Rect(3 * _background.w / 4, h - yb, bw, bh), _b_back);
+	add(3 * _background.w / 4 - bw / 2, h - yb, _b_back);
 	
 	_bx = ( w - _background.w ) / 2;
 	_by = ( h - _background.h ) / 2;
+	
+	reload();
 }
 
-void OptionsMenu::getSize(int &w, int &h) {
+void OptionsMenu::getSize(int &w, int &h) const {
 	w = _background.w;
 	h = _background.h;
 }

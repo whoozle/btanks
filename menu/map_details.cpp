@@ -11,6 +11,11 @@ MapDetails::MapDetails(const int w, const int h) : _map_desc(0) {
 	_null_screenshot.loadImage(Finder->find("maps/null.png"));
 }
 
+void MapDetails::getSize(int &w, int &h) const {
+	w = _background.w; h = _background.h;
+}
+
+
 void MapDetails::set(const std::string &base, const std::string &map, const std::string &comment) {
 	TRY {
 		_screenshot.free();

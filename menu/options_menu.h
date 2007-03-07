@@ -7,13 +7,14 @@
 
 class Button;
 class MainMenu;
+class ControlPicker;
 
 class OptionsMenu : public BaseMenu {
 public:
 	OptionsMenu(MainMenu *parent, const int w, const int h);
 	~OptionsMenu();
 	
-	void getSize(int &w, int &h);
+	void getSize(int &w, int &h) const;
 	void tick(const float dt);
 	
 	void reload();
@@ -24,6 +25,7 @@ public:
 
 private: 
 	MainMenu *_parent;
+	ControlPicker *sp, *sp1, *sp2;
 
 	Box _background;
 	int _bx, _by;

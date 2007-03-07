@@ -14,7 +14,7 @@ class Font;
 class Chooser : public Container {
 public: 
 	Chooser(const std::string &font, const std::vector<std::string> &options, const std::string &surface = std::string());
-	void getSize(int &w, int &h);
+	void getSize(int &w, int &h) const;
 
 	virtual void render(sdlx::Surface &surface, const int x, const int y);
 	virtual bool onMouse(const int button, const bool pressed, const int x, const int y);

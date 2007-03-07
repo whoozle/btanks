@@ -3,6 +3,7 @@
 
 #include "container.h"
 #include "box.h"
+#include "sdlx/rect.h"
 #include <string>
 
 class TextControl;
@@ -24,7 +25,7 @@ public:
 	~Prompt();
 private: 
 	Box _background;
-sdlx::Rect _text_rect;
+	sdlx::Rect _text_rect;
 	Button *_b_ok, *_b_back;
 	TextControl * _text;
 	std::string value;

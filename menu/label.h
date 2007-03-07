@@ -13,6 +13,7 @@ class Label : public Control {
 public: 
 	Label(const sdlx::Font *font, const std::string &label);
 	virtual void render(sdlx::Surface& surface, const int x, const int y);
+	virtual void getSize(int &w, int &h) const;
 
 private: 
 	const sdlx::Font * _font;

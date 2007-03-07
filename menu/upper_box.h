@@ -16,7 +16,9 @@ public:
 	UpperBox(int w, int h, const bool server);
 	virtual void render(sdlx::Surface &surface, const int x, const int y);
 	virtual bool onMouse(const int button, const bool pressed, const int x, const int y);
+	void getSize(int &w, int &h) const;
 private: 
+	int _w, _h;
 	bool _server;	
 	const sdlx::Surface *_checkbox;
 	const sdlx::Font *_big, *_medium;

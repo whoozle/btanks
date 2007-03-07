@@ -5,7 +5,7 @@
 #include "sdlx/font.h"
 
 
-UpperBox::UpperBox(int w, int h, const bool server): _server(server) {
+UpperBox::UpperBox(int w, int h, const bool server): _w(w), _h(h), _server(server) {
 	_checkbox = ResourceManager->loadSurface("menu/radio.png");
 	Config->get("multiplayer.game-type", value, "deathmatch");
 	Box::init("menu/background_box.png", w, h);
@@ -13,6 +13,11 @@ UpperBox::UpperBox(int w, int h, const bool server): _server(server) {
 	_medium = ResourceManager->loadFont("medium", true);
 	_big = ResourceManager->loadFont("big", true);
 }
+
+void UpperBox::getSize(int &w, int &h) const {
+	w = _w; h = _h;
+}
+
 
 void UpperBox::render(sdlx::Surface &surface, const int x, const int y) {
 	Box::render(surface, x, y);

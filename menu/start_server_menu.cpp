@@ -10,15 +10,14 @@
 #include "i18n.h"
 
 StartServerMenu::StartServerMenu(MainMenu *parent, const int w, const int h) : _parent(parent)  {
-	add(sdlx::Rect(0, 0, w, h - 128), _map_picker = new MapPicker(w, h));
+	add(0, 0, _map_picker = new MapPicker(w, h));
 	_back = new Button("big", "BACK");
-	int bw, bh;
-	_back->getSize(bw, bh);
-	add(sdlx::Rect(64, h - 96, bw, bh), _back);
+	add(64, h - 96, _back);
 	
 	_start = new Button("big", "START");
+	int bw, bh;
 	_start->getSize(bw, bh);
-	add(sdlx::Rect(w - 64 - bw, h - 96, bw, bh), _start);
+	add(w - 64 - bw, h - 96, _start);
 }
 
 void StartServerMenu::start() {

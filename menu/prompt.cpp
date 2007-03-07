@@ -12,16 +12,16 @@ Prompt::Prompt(const int w, const int h, TextControl * text) : _text(text), valu
 	_background.getMargins(mx, my);
 	_text_rect = sdlx::Rect(mx, my, w - mx * 2, h - my * 2);
 	//add(_text_rect, _text = text);
-	_b_ok = new Button("medium_dark", "OK");
-
 	int bw, bh;
+
+	_b_ok = new Button("medium_dark", "OK");
 	_b_ok->getSize(bw, bh);
 
-	add(sdlx::Rect(w / 4 - bw / 2, h/2, bw, bh), _b_ok);
+	add(w / 4 - bw / 2, h/2, _b_ok);
 
 	_b_back = new Button("medium_dark", "BACK");
 	_b_back->getSize(bw, bh);
-	add(sdlx::Rect(3 * w /4 - bw / 2, h/2, bw, bh), _b_back);
+	add(3 * w / 4 - bw / 2, h/2, _b_back);
 }
 
 void Prompt::set(const std::string &value) {

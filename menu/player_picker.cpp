@@ -78,7 +78,7 @@ public :
 		int cw;
 		_type->getSize(cw, ch);
 
-		add(sdlx::Rect(0, (ch - h) / 3, w, h), new Label(_font, mrt::formatString("%d", i + 1)));
+		add(0, (ch - h) / 3, new Label(_font, mrt::formatString("%d", i + 1)));
 
 
 		sdlx::Rect p1;
@@ -89,7 +89,7 @@ public :
 		if (ch > h) 
 			h = ch;
 		
-		add(p1, _type);
+		add(p1.x, p1.y, _type);
 		
 		sdlx::Rect p2;
 		p2.x = p1.x + p1.w + _font->getWidth();
@@ -100,7 +100,7 @@ public :
 			h = vch;
 		p2.w = vcw; p2.h = vch;
 
-		add(p2, _vehicle);
+		add(p2.x, p2.y, _vehicle);
 	}
 
 	void tick(const float dt) {
@@ -271,8 +271,7 @@ void PlayerPicker::set(const MapDesc &map) {
 	for(int i = 0; i < map.slots; ++i) {
 		SlotLine *line = new SlotLine(map, variant, i, config[i]);
 		_slots.push_back(line);
-		sdlx::Rect pos(mx, my + i * (line->h + 6), _background.w - 2 * mx, line->h);
-		add(pos, line);
+		add(mx, my + i * (line->h + 6), line);
 	}
 }
 

@@ -13,6 +13,7 @@ public:
 	MapDetails(const int w, const int h);
 
 	virtual void render(sdlx::Surface &surface, const int x, const int y);
+	virtual void getSize(int &w, int &h) const;
 	
 	void set(const std::string &base, const std::string &map, const std::string &comment_id);
 private: 
