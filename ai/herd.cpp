@@ -7,14 +7,12 @@
 void ai::Herd::calculateV(v2<float> &velocity, Object *sheep, const int leader, const float distance) {
 	velocity.clear();
 	
-	if (leader == 0) 
-		throw_ex(("cannot operate on objects without summoner."));
 	std::set<const Object *> o_set;
 	World->enumerateObjects(o_set, sheep, distance, NULL);
 	int n = 0;
 	for(std::set<const Object *>::iterator i = o_set.begin(); i != o_set.end(); ++i) {
 		const Object *o = *i;
-		if (o->getSummoner() != leader) 
+		if (leader && o->getSummoner() != leader) 
 			continue;
 		int cd = getComfortDistance(o);
 		if (cd == -1)
@@ -28,7 +26,7 @@ void ai::Herd::calculateV(v2<float> &velocity, Object *sheep, const int leader, 
 		
 		++n;
 	}
-	
+		
 	const Object * o = World->getObjectByID(leader);
 	if (o != NULL) {
 		//LOG_DEBUG(("leader: %p", o));
