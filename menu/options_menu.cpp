@@ -1,6 +1,8 @@
 #include "options_menu.h"
 #include "button.h"
 #include "menu.h"
+#include "control_picker.h"
+#include "i18n.h"
 
 OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(parent) {
 	_background.init("menu/background_box.png", w - 100, h - 100);
@@ -18,6 +20,27 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 	
 	_bx = ( w - _background.w ) / 2;
 	_by = ( h - _background.h ) / 2;
+	int mx, my;
+	_background.getMargins(mx, my);
+	int width = _background.w - 2 * mx;
+
+	int sw, sh;
+	int yp = my * 2 + _by;
+	
+	sp = new ControlPicker(width, "big", I18n->get("menu", "single-player"), "player.control-method", std::string());
+	sp->getSize(sw, sh);
+	add(_bx + mx, yp, sp);
+	yp += sh + 10;
+
+	sp1 = new ControlPicker(width, "big", I18n->get("menu", "split-player-1"), "player.control-method-1", "split");
+	sp1->getSize(sw, sh);
+	add(_bx + mx, yp, sp1);
+	yp += sh + 10;
+
+	sp2 = new ControlPicker(width, "big", I18n->get("menu", "split-player-2"), "player.control-method-2", "split");
+	sp2->getSize(sw, sh);
+	add(_bx + mx, yp, sp2);
+	yp += sh + 10;
 	
 	reload();
 }
@@ -29,10 +52,16 @@ void OptionsMenu::getSize(int &w, int &h) const {
 
 void OptionsMenu::reload() {
 	LOG_DEBUG(("reloading options..."));
+	sp->reload();
+	sp1->reload();
+	sp2->reload();
 }
 
 void OptionsMenu::save() {
 	LOG_DEBUG(("saving options..."));
+	sp->save();
+	sp1->save();
+	sp2->save();
 }
 
 
