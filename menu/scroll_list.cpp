@@ -7,9 +7,9 @@
 #include "math/unary.h"
 #include "math/binary.h"
 
-ScrollList::ScrollList(const int w, const int h) : _item_h(0), _client_w(64), _client_h(64), _pos(0), _vel(0), _current_item(0) {
+ScrollList::ScrollList(const std::string &font, const int w, const int h) : _item_h(0), _client_w(64), _client_h(64), _pos(0), _vel(0), _current_item(0) {
 	_background.init("menu/background_box.png", "menu/highlight_medium.png", w, h);
-	_font = ResourceManager->loadFont("medium", true);
+	_font = ResourceManager->loadFont(font, true);
 	_scrollers = ResourceManager->loadSurface("menu/v_scroller.png");
 
 	_item_h = _font->getHeight() + 5;

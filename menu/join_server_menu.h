@@ -7,7 +7,7 @@
 
 class Button;
 class MainMenu;
-class ScrollList;
+class HostList;
 class MapDetails;
 class Prompt;
 
@@ -24,7 +24,7 @@ public:
 private: 
 	MainMenu *_parent;
 	UpperBox *_upper_box;
-	ScrollList *_hosts;
+	HostList *_hosts;
 	MapDetails *_details;
 	Prompt *_add_dialog;
 	Button *_back, *_add, *_scan, *_join;

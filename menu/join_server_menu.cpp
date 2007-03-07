@@ -3,7 +3,7 @@
 #include "mrt/logger.h"
 #include "menu.h"
 #include "menu_config.h"
-#include "scroll_list.h"
+#include "host_list.h"
 #include "map_details.h"
 #include "prompt.h"
 #include "text_control.h"
@@ -37,7 +37,7 @@ JoinServerMenu::JoinServerMenu(MainMenu *parent, const int w, const int h) : _pa
 
 	sdlx::Rect list_pos(0, 128, (w - 64)/3, h - 256);
 
-	_hosts = new ScrollList(list_pos.w, list_pos.h);
+	_hosts = new HostList("multiplayer.recent-hosts", list_pos.w, list_pos.h);
 	add(list_pos, _hosts);
 	
 	sdlx::Rect map_pos(list_pos.x + list_pos.w + 16, 128, (w - 64) / 3, h - 256);
@@ -69,6 +69,8 @@ void JoinServerMenu::tick(const float dt) {
 	if (_add_dialog->changed()) {
 		_add_dialog->reset();
 		_add_dialog->hide();
+		_hosts->add(_add_dialog->get());
+		_add_dialog->set(std::string());
 	}
 
 

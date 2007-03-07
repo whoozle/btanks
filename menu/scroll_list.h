@@ -9,7 +9,7 @@
 
 class ScrollList : public Control {
 public: 
-	ScrollList(const int w, const int h);
+	ScrollList(const std::string &font, const int w, const int h);
 	
 	virtual void clear();
 	virtual void add(const std::string &item);

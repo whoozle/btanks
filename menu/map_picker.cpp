@@ -122,7 +122,7 @@ MapPicker::MapPicker(const int w, const int h) : _index(0) {
 	sdlx::Rect list_pos(0, 128, (w - 64)/3, h - 256);
 	_list = NULL;
 	TRY {
-		_list = new ScrollList(list_pos.w, list_pos.h);
+		_list = new ScrollList("medium", list_pos.w, list_pos.h);
 		for(MapList::const_iterator i = _maps.begin(); i != _maps.end(); ++i) {
 			_list->add(i->name);
 		}
