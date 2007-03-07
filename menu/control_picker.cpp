@@ -22,7 +22,7 @@ ControlPicker::ControlPicker(const int w, const std::string &font, const std::st
 	
 	int n = sdlx::Joystick::getCount();
 	for(int i = 0; i < n; ++i) {
-		_values.push_back(mrt::formatString("joy-%d", i));
+		_values.push_back(mrt::formatString("joy-%d", i + 1));
 	}
 
 	int cw, ch;
