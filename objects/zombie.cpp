@@ -21,11 +21,12 @@
 #include "alarm.h"
 #include "config.h"
 #include "mrt/random.h"
+#include "ai/herd.h"
 
-class Zombie : public Object {
+class Zombie : public Object, public ai::Herd{
 public:
-	Zombie() : 
-		Object("monster"), _reaction(true), _can_punch(true) {}
+	Zombie(const std::string &classname) : 
+		Object(classname), _reaction(true), _can_punch(true) {}
 	
 	virtual void tick(const float dt);
 	virtual void calculate(const float dt);
@@ -47,14 +48,28 @@ public:
 	
 	virtual void onIdle(const float dt);
 
+	const int getComfortDistance(const Object *other) const;
+
 private: 
 	Alarm _reaction;
 	bool _can_punch;
 };
 
+const int Zombie::getComfortDistance(const Object *other) const {
+	GET_CONFIG_VALUE("objects.zombie.comfort-distance", int, cd, 100);
+	return (other == NULL || other->registered_name == registered_name)?cd:-1; //fixme names if you want
+}
+
+
 void Zombie::onIdle(const float dt) {
 	_velocity.clear();
 	_state.fire = false;
+	
+	GET_CONFIG_VALUE("objects.zombie.targeting-range(stable)", int, trs, 600);
+	GET_CONFIG_VALUE("objects.zombie.targeting-range(alerted)", int, tra, 900);
+	int tt = (hp < max_hp)?tra:trs;
+
+	ai::Herd::calculateV(_velocity, this, 0, tt);
 }
 
 
@@ -147,4 +162,5 @@ Object* Zombie::clone() const  {
 	return new Zombie(*this);
 }
 
-REGISTER_OBJECT("zombie", Zombie, ());
+REGISTER_OBJECT("zombie", Zombie, ("monster"));
+REGISTER_OBJECT("underwater-zombie", Zombie, ("creature"));
