@@ -7,6 +7,9 @@
 #include "map_details.h"
 #include "prompt.h"
 #include "text_control.h"
+#include "player_manager.h"
+#include "i18n.h"
+#include "game.h"
 
 JoinServerMenu::JoinServerMenu(MainMenu *parent, const int w, const int h) : _parent(parent) {
 	_back = new Button("big", "BACK");
@@ -35,7 +38,7 @@ JoinServerMenu::JoinServerMenu(MainMenu *parent, const int w, const int h) : _pa
 	sdlx::Rect r((w - _upper_box->w) / 2, 32, _upper_box->w, _upper_box->h);
 	add(r, _upper_box);
 
-	sdlx::Rect list_pos(0, 128, (w - 64)/3, h - 256);
+	sdlx::Rect list_pos(0, 128, (w - 64)/3 + 80, h - 256);
 
 	_hosts = new HostList("multiplayer.recent-hosts", list_pos.w, list_pos.h);
 	add(list_pos, _hosts);
@@ -52,6 +55,19 @@ JoinServerMenu::JoinServerMenu(MainMenu *parent, const int w, const int h) : _pa
 
 void JoinServerMenu::join() {
 	LOG_DEBUG(("join requested"));
+	std::string host = _hosts->getValue();
+	
+	bool ok = true;
+	TRY {
+		PlayerManager->startClient(host);
+	} CATCH("join", { 
+		std::string msg = I18n->get("menu", "connection-failed");
+		Game->displayMessage(msg, 1.5); 
+		ok = false; 
+	});
+		
+	if (_parent)	
+		_parent->setActive(!ok);
 }
 
 void JoinServerMenu::tick(const float dt) {

@@ -77,10 +77,10 @@ void MapPicker::tick(const float dt) {
 	const MapDesc &map = getCurrentMap();
 	_upper_box->value = map.game_type;
 
-	if (_upper_box->changed() || _index != _list->getPosition()) {
+	if (_upper_box->changed() || _index != _list->get()) {
 		_upper_box->reset();
 
-		_index = _list->getPosition();
+		_index = _list->get();
 
 		Config->set("menu.default-mp-map", _maps[_index].name);
 		_details->set(_maps[_index].base, _maps[_index].name, _maps[_index].desc );
@@ -127,7 +127,7 @@ MapPicker::MapPicker(const int w, const int h) : _index(0) {
 			_list->add(i->name);
 		}
 		add(list_pos, _list);
-		_list->setPosition(_index);
+		_list->set(_index);
 	} CATCH("MapPicker::ctor", {delete _list; throw; });
 
 	sdlx::Rect map_pos(list_pos.w + 16, 128, (w - 64) / 3, h - 256);

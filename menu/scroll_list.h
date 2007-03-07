@@ -14,8 +14,9 @@ public:
 	virtual void clear();
 	virtual void add(const std::string &item);
 	
-	const int getPosition() const { return _current_item; }
-	void setPosition(const int idx) { _current_item = idx; }
+	const int get() const { return _current_item; }
+	const std::string getValue() const { return _list[_current_item]; }
+	void set(const int idx) { _current_item = idx; }
 	
 	virtual void tick(const float dt);
 	virtual void render(sdlx::Surface &surface, const int x, const int y);
