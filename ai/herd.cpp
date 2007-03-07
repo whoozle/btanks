@@ -3,8 +3,10 @@
 #include "world.h"
 #include "object.h"
 #include "config.h"
+#include "mrt/random.h"
 
 void ai::Herd::calculateV(v2<float> &velocity, Object *sheep, const int leader, const float distance) {
+	bool was_stopped = velocity.is0();
 	velocity.clear();
 	
 	std::set<const Object *> o_set;
@@ -19,10 +21,12 @@ void ai::Herd::calculateV(v2<float> &velocity, Object *sheep, const int leader, 
 			continue;
 			
 		v2<float> pos = sheep->getRelativePosition(o);
+		float r = pos.length();
+		if (r < 0.001) r = 0.001;
 		if (pos.quick_length() < cd * cd)
-			velocity -= pos;
+			velocity -= pos / r;
 		else 
-			velocity += pos;
+			velocity += pos / r;
 		
 		++n;
 	}
@@ -37,7 +41,9 @@ void ai::Herd::calculateV(v2<float> &velocity, Object *sheep, const int leader, 
 		else 
 			velocity += pos * n;
 	}
-	if (velocity.normalize() < 100)
+	float v = velocity.normalize();
+
+	if (v < (was_stopped?0.5:0.0001)) 
 		velocity.clear();
 }
 
