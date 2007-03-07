@@ -23,3 +23,16 @@ void HostList::add(const std::string &_item) {
 	
 	_list.push_front(item);
 }
+
+HostList::~HostList() {
+	std::vector<std::string> hosts;
+	
+	//change it .
+	
+	for(List::iterator i = _list.begin(); i != _list.end(); ++i) {
+		hosts.push_back(*i);
+	}
+	std::string str;
+	mrt::join(str, hosts, " ");
+	Config->set(_config_key, str);
+}
