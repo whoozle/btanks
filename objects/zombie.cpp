@@ -53,16 +53,18 @@ public:
 private: 
 	Alarm _reaction;
 	bool _can_punch;
+	
+	//no need for serialization : 
+	std::set<std::string> _targets;
 };
 
 const int Zombie::getComfortDistance(const Object *other) const {
-	GET_CONFIG_VALUE("objects.zombie.comfort-distance", int, cd, 100);
+	GET_CONFIG_VALUE("objects.zombie.comfort-distance", int, cd, 80);
 	return (other == NULL || other->registered_name == registered_name)?cd:-1; //fixme names if you want
 }
 
 
 void Zombie::onIdle(const float dt) {
-	_velocity.clear();
 	_state.fire = false;
 	
 	GET_CONFIG_VALUE("objects.zombie.targeting-range(stable)", int, trs, 600);
@@ -78,18 +80,12 @@ void Zombie::calculate(const float dt) {
 		return;
 	
 	v2<float> vel;
-	static std::set<std::string> targets;
-	if (targets.empty()) {
-		targets.insert("player");
-		targets.insert("trooper");
-		targets.insert("watchtower");
-	}
 	
 	GET_CONFIG_VALUE("objects.zombie.targeting-range(stable)", int, trs, 600);
 	GET_CONFIG_VALUE("objects.zombie.targeting-range(alerted)", int, tra, 900);
 	int tt = (hp < max_hp)?tra:trs;
 	
-	if (getNearest(targets, tt, _velocity, vel)) {
+	if (getNearest(_targets, tt, _velocity, vel)) {
 		if (_velocity.quick_length() > size.quick_length())
 			_state.fire = false;
 		
@@ -127,10 +123,22 @@ void Zombie::tick(const float dt) {
 }
 
 void Zombie::onSpawn() {
-	GET_CONFIG_VALUE("objects.zombie.reaction-time", float, rt, 0.1);
+	float rt, drt = 0.1;
+	if (registered_name == "underwater_zombie") 
+		drt = 0.5;
+	
+	Config->get("objects." + registered_name + ".reaction-time", rt, drt);
 	mrt::randomize(rt, rt/10);
 	_reaction.set(rt);
 	play("hold", true);
+	
+	if (registered_name == "underwater-zombie") {
+		_targets.clear();
+	} else {
+		_targets.insert("player");
+		_targets.insert("trooper");
+		_targets.insert("watchtower");
+	}
 	
 	disown();
 }

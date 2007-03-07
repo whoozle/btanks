@@ -3,13 +3,13 @@
  <properties>
   <property name="object:underwater-zombie:zombie:3" value="218,1574,-840"/>
   <property name="object:underwater-zombie:zombie:2" value="345,1629,-840"/>
+  <property name="object:underwater-zombie:zombie:4" value="345,1429,-840"/>
+  <property name="object:underwater-zombie:zombie:5" value="245,1229,-840"/>
   <property name="object:single-pose:bus-stop-left:1" value="579,1693,-850"/>
   <property name="object:single-pose:stall-left:1" value="377,1412,-855"/>
-  <property name="config:objects.zombie.targeting-range(stable)" value="int:10"/>
   <property name="object:single-pose:bus-stop-right:2" value="1474,1784,-850"/>
   <property name="object:single-pose:bus-stop-right:1" value="381,1444,-850"/>
   <property name="spawn:2" value="1182,1818"/>
-  <property name="config:objects.zombie.targeting-range(alerted)" value="int:5"/>
   <property name="spawn:1" value="63,1754"/>
  </properties>
  <tileset name="terrains" firstgid="1" tilewidth="64" tileheight="64">

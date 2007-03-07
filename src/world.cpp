@@ -1150,6 +1150,9 @@ const Object* IWorld::getNearestObject(const Object *obj, const std::string &cla
 }
 
 const Object* IWorld::getNearestObject(const Object *obj, const std::set<std::string> &classnames) const {
+	if (classnames.empty())
+		return NULL;
+	
 	const Object *result = NULL;
 	float distance = std::numeric_limits<float>::infinity();
 	
@@ -1170,6 +1173,9 @@ const Object* IWorld::getNearestObject(const Object *obj, const std::set<std::st
 }
 
 const Object* IWorld::getNearestObject(const Object *obj, const std::set<std::string> &classnames, const float range) const {
+	if (classnames.empty())
+		return NULL;
+
 	const Object *result = NULL;
 	float distance = std::numeric_limits<float>::infinity();
 	float range2 = range * range;
@@ -1420,8 +1426,12 @@ const Object * IWorld::findTarget(const Object *src, const std::set<std::string>
 }
 
 void IWorld::enumerateObjects(std::set<const Object *> &id_set, const Object *src, const float range, const std::set<std::string> *classfilter) {
-	float r2 = range * range;
 	id_set.clear();
+
+	if (classfilter != NULL && classfilter->empty())
+		return;
+
+	float r2 = range * range;
 	
 	std::set<int> objects;
 	_grid.collide(objects, (src->_position - range).convert<int>(), v2<int>((int)range * 2, (int)range * 2));
