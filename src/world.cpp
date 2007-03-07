@@ -1127,6 +1127,7 @@ TRY {
 } CATCH("applyUpdate", throw;)
 }
 
+#define PIERCEABLE_PAIR(o1, o2) ((o1->piercing && o2->pierceable) || (o2->piercing && o1->pierceable))
 
 const Object* IWorld::getNearestObject(const Object *obj, const std::string &classname) const {
 	const Object *result = NULL;
@@ -1135,7 +1136,7 @@ const Object* IWorld::getNearestObject(const Object *obj, const std::string &cla
 	for(ObjectMap::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		const Object *o = i->second;
 		//LOG_DEBUG(("%s is looking for %s. found: %s", obj->classname.c_str(), classname.c_str(), o->classname.c_str()));
-		if (o->_id == obj->_id || o->classname != classname || o->hasSameOwner(obj))
+		if (o->_id == obj->_id || o->classname != classname || o->hasSameOwner(obj) || PIERCEABLE_PAIR(obj, o))
 			continue;
 
 		v2<float> cpos = o->_position + o->size / 2;
@@ -1155,7 +1156,7 @@ const Object* IWorld::getNearestObject(const Object *obj, const std::set<std::st
 	for(ObjectMap::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		const Object *o = i->second;
 		//LOG_DEBUG(("%s is looking for %s. found: %s", obj->classname.c_str(), classname.c_str(), o->classname.c_str()));
-		if (o->_id == obj->_id || classnames.find(o->classname) == classnames.end() || o->hasSameOwner(obj))
+		if (o->_id == obj->_id || PIERCEABLE_PAIR(obj, o) || classnames.find(o->classname) == classnames.end() || o->hasSameOwner(obj))
 			continue;
 
 		v2<float> cpos = o->_position + o->size / 2;
@@ -1184,7 +1185,7 @@ const Object* IWorld::getNearestObject(const Object *obj, const std::set<std::st
 			
 		Object *o = o_i->second;
 		//LOG_DEBUG(("%s is looking for %s. found: %s", obj->classname.c_str(), classname.c_str(), o->classname.c_str()));
-		if (o->_id == obj->_id || classnames.find(o->classname) == classnames.end() || o->hasSameOwner(obj))
+		if (o->_id == obj->_id || PIERCEABLE_PAIR(obj, o) || classnames.find(o->classname) == classnames.end() || o->hasSameOwner(obj))
 			continue;
 
 		v2<float> cpos = o->_position + o->size / 2;
