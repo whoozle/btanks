@@ -55,6 +55,11 @@ void Prompt::getSize(int &w , int &h) const {
 	w = _background.w; h = _background.h;
 }
 
+bool Prompt::onMouse(const int button, const bool pressed, const int x, const int y) {
+	Container::onMouse(button, pressed, x, y);
+	return true;
+}
+
 
 #include "mrt/logger.h"
 
