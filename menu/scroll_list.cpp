@@ -19,6 +19,10 @@ void ScrollList::add(const std::string &item) {
 	_list.push_back(item);
 }
 
+void ScrollList::clear() {
+	_list.clear();
+}
+
 
 void ScrollList::tick(const float dt) {
 	if (_list.empty() || _item_h == 0)

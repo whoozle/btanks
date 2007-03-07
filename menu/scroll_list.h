@@ -10,6 +10,7 @@
 class ScrollList : public Control {
 public: 
 	ScrollList(const int w, const int h);
+	void clear();
 	void add(const std::string &item);
 	const int getPosition() const { return _current_item; }
 	void setPosition(const int idx) { _current_item = idx; }
