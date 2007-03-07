@@ -27,7 +27,7 @@ void ai::Herd::calculateV(v2<float> &velocity, Object *sheep, const int leader, 
 		++n;
 	}
 		
-	const Object * o = World->getObjectByID(leader);
+	const Object * o = leader?World->getObjectByID(leader): NULL;
 	if (o != NULL) {
 		//LOG_DEBUG(("leader: %p", o));
 		v2<float> pos = sheep->getRelativePosition(o);
@@ -37,8 +37,7 @@ void ai::Herd::calculateV(v2<float> &velocity, Object *sheep, const int leader, 
 		else 
 			velocity += pos * n;
 	}
-	//LOG_DEBUG(("%g %g = %g", velocity.x, velocity.y, velocity.quick_length()));
-	if (velocity.quick_length() < 10000)
+	if (velocity.normalize() < 100)
 		velocity.clear();
 }
 
