@@ -7,7 +7,7 @@
 class Chooser;
 class ControlPicker : public Container {
 public: 
-	ControlPicker(const int w, const int h, const std::string &font, const std::string &label, const std::string &config_key, const std::string &variant);
+	ControlPicker(const int w, const std::string &font, const std::string &label, const std::string &config_key, const std::string &variant);
 	void save(); 
 	void reload();
 private: 

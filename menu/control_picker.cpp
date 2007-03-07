@@ -5,7 +5,7 @@
 #include "config.h"
 #include "sdlx/joystick.h"
 
-ControlPicker::ControlPicker(const int w, const int h, const std::string &font, const std::string &label, const std::string &config_key, const std::string &variant) 
+ControlPicker::ControlPicker(const int w, const std::string &font, const std::string &label, const std::string &config_key, const std::string &variant) 
 : _config_key(config_key) {
 	int bw, bh;
 	
