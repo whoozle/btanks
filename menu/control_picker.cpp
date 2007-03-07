@@ -25,7 +25,10 @@ ControlPicker::ControlPicker(const int w, const std::string &font, const std::st
 		_values.push_back(mrt::formatString("joy-%d", i));
 	}
 
+	int cw, ch;
 	_controls = new Chooser("medium", _values);
+	_controls->getSize(cw, ch);
+	add(w - 100 - cw/2, 0, _controls);
 	
 	reload();
 }
