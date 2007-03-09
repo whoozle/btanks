@@ -4,10 +4,10 @@
 
 void VehicleTraits::getWeaponCapacity(int &max_n, int &max_v, const std::string &vehicle, const std::string &object, const std::string &type) {
 	if (vehicle.empty() || object.empty() || type.empty())
-		throw_ex(("vehicle/object/type cannot be empty"));
+		throw_ex(("vehicle(%s)/object(%s)/type(%s) cannot be empty", vehicle.c_str(), object.c_str(),type.c_str()));
 
 	if (object != "missiles" && object != "mines")
-		throw(("`weapon` must be missiles or mines."));
+		throw_ex(("`weapon` must be missiles or mines."));
 	
 	const std::string key = "objects." + type + "-" + object + "-on-" + vehicle;
 	
