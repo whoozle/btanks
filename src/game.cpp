@@ -92,6 +92,7 @@ void IGame::init(const int argc, char *argv[]) {
 		Config->get("map.ricochet-bullets-item.respawn-interval", r, 20);
 		Config->get("map.smoke-missiles-item.respawn-interval", r, 20);
 		Config->get("map.stun-missiles-item.respawn-interval", r, 20);
+		Config->get("map.thrower-item.respawn-interval", r, 45);
 	}
 	{
 		//place for upgrade.
@@ -112,6 +113,11 @@ void IGame::init(const int argc, char *argv[]) {
 				LOG_DEBUG(("decreasing hud.radar.zoom to 2"));
 				Config->set("hud.radar.zoom", 2);
 			}
+		} 
+		if (revision < 2614) {
+			LOG_DEBUG(("upgrading map.thrower-item.respawn-interval and objects.shilka.special-fire-rate"));
+			Config->set("map.thrower-item.respawn-interval", (int)45);
+			Config->set("objects.shilka.special-fire-rate", (float)0.4);
 		}
 		Config->set("engine.revision", getRevision());
 	}

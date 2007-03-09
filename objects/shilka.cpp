@@ -53,7 +53,7 @@ void Shilka::onSpawn() {
 	GET_CONFIG_VALUE("objects.shilka.fire-rate", float, fr, 0.2);
 	_fire.set(fr);
 
-	GET_CONFIG_VALUE("objects.shilka.special-fire-rate", float, sfr, 0.7);
+	GET_CONFIG_VALUE("objects.shilka.special-fire-rate", float, sfr, 0.4);
 	_special_fire.set(sfr);
 }
 
