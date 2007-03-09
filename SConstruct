@@ -150,7 +150,7 @@ revision = int(version.replace('M', ''))
 Export('version')
 Export('revision')
 
-version = '0.3.%s' %version
+version = '0.4.%s' %version
 print "version: %s" %version
 
 
