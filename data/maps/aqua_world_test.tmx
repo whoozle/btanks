@@ -1,9 +1,6 @@
 <?xml version="1.0"?>
 <map version="0.99b" orientation="orthogonal" width="30" height="30" tilewidth="64" tileheight="64">
  <properties>
-  <property name="object:traffic-lights:traffic-lights:3" value="368,837,-850"/>
-  <property name="object:traffic-lights:traffic-lights:2" value="1288,1000,-850"/>
-  <property name="object:traffic-lights:traffic-lights:1" value="1454,998,-850"/>
   <property name="object:single-pose:stall-left:1" value="377,1412,-855"/>
   <property name="object:underwater-zombie:zombie:14" value="595,1832,-850"/>
   <property name="spawn:2" value="1182,1818"/>
@@ -12,20 +9,23 @@
   <property name="object:underwater-zombie:zombie:12" value="594,1622,-850"/>
   <property name="object:underwater-zombie:zombie:11" value="639,1722,-850"/>
   <property name="object:underwater-zombie:zombie:9" value="591,1471,-850"/>
+  <property name="object:single-pose:bus-stop-right:2" value="1474,1784,-850"/>
   <property name="object:underwater-zombie:zombie:10" value="665,1612,-850"/>
   <property name="object:underwater-zombie:zombie:8" value="324,1388,-850"/>
-  <property name="object:single-pose:bus-stop-right:2" value="1474,1784,-850"/>
-  <property name="object:underwater-zombie:zombie:7" value="352,1588,-850"/>
   <property name="object:single-pose:bus-stop-right:1" value="381,1444,-850"/>
+  <property name="object:underwater-zombie:zombie:7" value="352,1588,-850"/>
   <property name="object:underwater-zombie:zombie:6" value="261,1511,-850"/>
-  <property name="object:underwater-zombie:zombie:5" value="258,1611,-850"/>
   <property name="object:single-pose:bus-stop-left:1" value="579,1693,-850"/>
+  <property name="object:underwater-zombie:zombie:5" value="258,1611,-850"/>
   <property name="object:underwater-zombie:zombie:4" value="305,1517,-850"/>
   <property name="object:underwater-zombie:zombie:3" value="218,1574,-840"/>
   <property name="object:underwater-zombie:zombie:2" value="345,1629,-840"/>
-  <property name="object:traffic-lights:traffic-lights:6" value="367,1001,-850"/>
-  <property name="object:traffic-lights:traffic-lights:5" value="198,1005,-850"/>
-  <property name="object:traffic-lights:traffic-lights:4" value="199,838,-850"/>
+  <property name="object:single-pose:traffic-lights:6" value="367,1001,-850"/>
+  <property name="object:single-pose:traffic-lights:5" value="198,1005,-850"/>
+  <property name="object:single-pose:traffic-lights:4" value="199,838,-850"/>
+  <property name="object:single-pose:traffic-lights:3" value="368,837,-850"/>
+  <property name="object:single-pose:traffic-lights:2" value="1288,1000,-850"/>
+  <property name="object:single-pose:traffic-lights:1" value="1454,998,-850"/>
  </properties>
  <tileset name="terrains" firstgid="1" tilewidth="64" tileheight="64">
   <image source="../tilesets/terrains.png"/>
@@ -57,8 +57,8 @@
  <layer name="impassable" width="30" height="30">
   <properties>
    <property name="pierceable" value="true"/>
-   <property name="z" value="-1000"/>
    <property name="impassability" value="100"/>
+   <property name="z" value="-1000"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAO2UQQrDMAwE7Z/k2enVfkN6S+1b+6xikEFZJNWC0ku1sJA40o7shKQUCoVCoVDoH7WBf5Wh9ayse7m85sgpvcj37J9nZjzJVgZ3ZXV71uusLJ5RgKv13RTuQbNr++PPJK7Ux89C446skuX31dgzi4vnvxvcqQrZUziTxcV1D/fM1/4V7lxv1D/cHVzpenW/kroxk4c7+1a5XBtY4/KaamR/g1voW0Rug7MZ9w9yN7g8A/9XWrbU/2l21Bv71dQnEA4AAA==
@@ -109,10 +109,10 @@
  </layer>
  <layer name="water#0" width="30" height="30">
   <properties>
-   <property name="animation-frames" value="5"/>
    <property name="animation-speed" value="8"/>
-   <property name="animation-frame-size" value="20"/>
+   <property name="animation-frames" value="5"/>
    <property name="z" value="-800"/>
+   <property name="animation-frame-size" value="20"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAO2X0QrAIAhF6/+/Ul+3j1gve5FdddFElkHcMCmPWRD11nh0Aooa8ifnGsewnx0rashfi2dGPZysxG/NW9yWH4qHxb6r84LikWf/lnuWN4uu5s2el+It3uL9lld741fzRuVZ2jLkebe6QnUWzXuPdznfp3qnH/PW/Y3j9f5XLL0Aws15RxAOAAA=
@@ -175,10 +175,10 @@
  </layer>
  <layer name="water#1" width="30" height="30">
   <properties>
-   <property name="animation-frames" value="5"/>
    <property name="animation-speed" value="10"/>
-   <property name="animation-frame-size" value="20"/>
+   <property name="animation-frames" value="5"/>
    <property name="z" value="-600"/>
+   <property name="animation-frame-size" value="20"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAO2XSwrAIAxE9f6nTLbtIeqmm8DkI6kEGkEGNMS8UQLSHIPXJKBooHhy5rjW+j2xooHitXp21MPJSv3WvsVtxaF6WJyb7QuqR959lHuXt4pm81b3pXmbt3m/5dV6fDbvKZ/lWgWf//aumrd5mzfGe9oPK3+kz3r+Ma8+1V+LBhAOAAA=
