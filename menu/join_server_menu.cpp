@@ -15,33 +15,39 @@
 
 JoinServerMenu::JoinServerMenu(MainMenu *parent, const int w, const int h) : _parent(parent) {
 	_back = new Button("big", I18n->get("menu", "back"));
-	_add = new Button("big",  I18n->get("menu", "add"));
+	_add = new Button("medium_dark",  I18n->get("menu", "add"));
+	_del = new Button("medium_dark",  I18n->get("menu", "delete"));
 	_scan = new Button("big", I18n->get("menu", "scan"));
 	_join = new Button("big", I18n->get("menu", "join"));
 	_upper_box = new UpperBox(500, 80, false);
 	_add_dialog = new Prompt(w / 2, 96, new HostTextControl("medium"));
 
-	int bw, bh, xp;
+	const int host_list_w = (w - 64)/3 + 80;
+
+	int bw, bh, xp = 32;
+
+	_add->getSize(bw, bh);
+	add(xp, h - 80 - bh, _add);
+
+	_del->getSize(bw, bh);
+	add(host_list_w - 32 - bw, h - 80 - bh, _del);
 
 	_back->getSize(bw, bh);
-	add(xp = 32, h - 96, _back);
+	add(xp, h - 16 - bh, _back);
 	xp += 16 + bw;
 	
-	_add->getSize(bw, bh);
-	add(xp, h - 96, _add);
-	xp += 16 + bw;
 
 #ifndef RELEASE
 	_scan->getSize(bw, bh);
-	add(xp, h - 96, _scan);
+	add(xp, h - 16 - bh, _scan);
 #endif
 	
 	_join->getSize(bw, bh);
-	add(w - 64 - bw, h - 96, _join);
+	add(w - 64 - bw, h - 16 - bh, _join);
 	
 	add((w - _upper_box->w) / 2, 32, _upper_box);
 
-	sdlx::Rect list_pos(0, 128, (w - 64)/3 + 80, h - 256);
+	sdlx::Rect list_pos(0, 128, host_list_w, h - 256);
 
 	_hosts = new HostList("multiplayer.recent-hosts", list_pos.w, list_pos.h);
 	add(list_pos.x, list_pos.y, _hosts);
@@ -118,6 +124,12 @@ void JoinServerMenu::tick(const float dt) {
 		_add->reset();
 		_add_dialog->hide(false);
 	}
+	
+	if (_del->changed()) {
+		_del->reset();
+		_hosts->remove(_hosts->get());
+	}
+	
 	if (_add_dialog->changed()) {
 		_add_dialog->reset();
 		_add_dialog->hide();

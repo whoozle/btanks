@@ -170,3 +170,17 @@ bool ScrollList::onMouse(const int button, const bool pressed, const int x, cons
 void ScrollList::getSize(int &w, int &h) const {
 	w = _background.w; h = _background.h;
 }
+
+void ScrollList::remove(const int idx) {
+	if (idx < 0 || idx >= (int)_list.size()) {
+		return;
+	}
+
+	int n = idx;
+	List::iterator i;
+	for (i = _list.begin(); n--; ++i);
+	_list.erase(i);
+
+	if (_current_item >= (int)_list.size()) 
+		_current_item = (int)_list.size() - 1;
+}

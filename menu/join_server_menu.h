@@ -19,6 +19,7 @@ public:
 
 	void tick(const float dt);
 	void join();
+	void remove();
 	
 	virtual bool onKey(const SDL_keysym sym);
 
@@ -29,7 +30,7 @@ private:
 	MapDetails *_details;
 	Prompt *_add_dialog;
 	Chooser *_vehicle;
-	Button *_back, *_add, *_scan, *_join;
+	Button *_back, *_add, *_del, *_scan, *_join;
 };
 
 #endif

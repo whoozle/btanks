@@ -6,6 +6,7 @@
 		<string id="scan">SCAN</string>
 		<string id="join">JOIN</string>
 		<string id="start">START</string>
+		<string id="delete">DELETE</string>
 	
 		<string id="start-game">START GAME</string>
 		<string id="start-game" lang="ru">NACHAT IGRU</string>
