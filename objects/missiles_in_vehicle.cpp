@@ -27,17 +27,24 @@ class MissilesInVehicle : public Object {
 public:
 	void update() {
 		if (_object.empty() || _type.empty()) {
-			max_n = n = 0; 
-			return;
+			if (_install_default) {
+				if (_object.empty())
+					Config->get("objects." + registered_name + ".default-weapon", _object, "missiles");
+				if (_type.empty())
+					Config->get("objects." + registered_name + ".default-weapon-type", _type, "guided");
+			} else {
+				max_n = n = 0; 
+				return;
+			}
 		}
 		VehicleTraits::getWeaponCapacity(max_n, max_v, _vehicle, _object, _type);
 		n = max_n;
 	}
 
-	MissilesInVehicle(const std::string &type, const std::string &object, const std::string &vehicle) : 
-		Object("missiles-on-vehicle"), n(0), max_v(0), max_n(0), hold(true),  _vehicle(vehicle), _object(object), _type(type) {
+	MissilesInVehicle(const std::string &vehicle, bool install_default = true) : 
+		Object("missiles-on-vehicle"), n(0), max_v(0), max_n(0), hold(true),  _vehicle(vehicle), _install_default(install_default) {
+		// _object(object), _type(type)
 		impassability = 0;
-		update();
 	}
 	
 	virtual const std::string getType() const {
@@ -86,6 +93,9 @@ private:
 	int n, max_v, max_n;
 	bool hold;
 	std::string _vehicle, _object, _type;
+	
+	//serialization is not needed: 
+	bool _install_default;
 };
 
 const bool MissilesInVehicle::take(const BaseObject *obj, const std::string &type) {
@@ -114,7 +124,6 @@ void MissilesInVehicle::updatePose() {
 void MissilesInVehicle::onSpawn() {
 	update();
 	updatePose();
-	impassability = 0;
 }
 
 void MissilesInVehicle::render(sdlx::Surface &surface, const int x, const int y) {
@@ -171,7 +180,7 @@ Object* MissilesInVehicle::clone() const  {
 	return new MissilesInVehicle(*this);
 }
 
-REGISTER_OBJECT("missiles-on-launcher", MissilesInVehicle, ("guided", "missiles", "launcher"));
-REGISTER_OBJECT("alt-missiles-on-launcher", MissilesInVehicle, (std::string(), std::string(), "launcher"));
-REGISTER_OBJECT("missiles-on-tank", MissilesInVehicle, ("guided", "missiles", "tank"));
-REGISTER_OBJECT("missiles-on-boat", MissilesInVehicle, ("guided", "missiles", "boat"));
+REGISTER_OBJECT("missiles-on-launcher", MissilesInVehicle, ("launcher"));
+REGISTER_OBJECT("alt-missiles-on-launcher", MissilesInVehicle, ("launcher", false));
+REGISTER_OBJECT("missiles-on-tank", MissilesInVehicle, ("tank"));
+REGISTER_OBJECT("missiles-on-boat", MissilesInVehicle, ("boat"));
