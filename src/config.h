@@ -44,6 +44,7 @@ public:
 	//dont use set(...) in conjunction with GET_CONFIG_VALUE macro
 	void set(const std::string &name, const bool value);
 	void set(const std::string &name, const int value);
+	void set(const std::string &name, const float value);
 	void set(const std::string &name, const std::string &value);
 	~IConfig();
 	

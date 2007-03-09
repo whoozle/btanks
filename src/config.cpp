@@ -169,6 +169,14 @@ void IConfig::get(const std::string &name, std::string &value, const std::string
 	value = _map[name]->s;
 }
 
+void IConfig::set(const std::string &name, const float value) {
+	Var *v = _map[name];
+	if (v == NULL) {
+		v = _map[name] = new Var("float");
+	} else v->type = "float";
+	v->f = value;
+}
+
 void IConfig::set(const std::string &name, const std::string &value) {
 	Var *v = _map[name];
 	if (v == NULL) {
