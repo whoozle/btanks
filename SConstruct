@@ -133,7 +133,8 @@ if sys.platform == "win32":
 	env.Append(LIBS=['Ws2_32', 'SDLmain'])
 	env.Append(LINKFLAGS = '/SUBSYSTEM:WINDOWS ')
 
-env.Append(CPPDEFINES = ['RELEASE'])
+if not debug: 
+	env.Append(CPPDEFINES = ['RELEASE'])
 
 Export('env')
 Export('sigc_flags')
