@@ -10,6 +10,8 @@
 #include "player_manager.h"
 #include "i18n.h"
 #include "game.h"
+#include "chooser.h"
+#include "config.h"
 
 JoinServerMenu::JoinServerMenu(MainMenu *parent, const int w, const int h) : _parent(parent) {
 	_back = new Button("big", I18n->get("menu", "back"));
@@ -52,11 +54,32 @@ JoinServerMenu::JoinServerMenu(MainMenu *parent, const int w, const int h) : _pa
 	_add_dialog->getSize(bw, bh);
 	add(w / 3, (h - bh) / 2, _add_dialog);
 	_add_dialog->hide();
+	
+	//client vehicle stub.
+	std::vector<std::string> options;
+
+	options.clear();
+	options.push_back("?");
+	options.push_back("launcher");
+	options.push_back("shilka");
+	options.push_back("tank");
+	options.push_back("machinegunner-player");
+	options.push_back("civilian-player");
+		
+	_vehicle = new Chooser("medium", options, "menu/vehicles.png");
+	_vehicle->disable(0);
+	for(int i = 4; i < _vehicle->size(); ++i)
+		_vehicle->disable(i);
+	_vehicle->getSize(bw, bh);
+		
+	add(map_pos.x + map_pos.w / 2 - bw / 2, map_pos.y + map_pos.h - bh * 2, _vehicle);
 }
 
 void JoinServerMenu::join() {
 	LOG_DEBUG(("join requested"));
 	std::string host = _hosts->getValue();
+
+	Config->set("menu.default-vehicle-1", _vehicle->getValue());
 	
 	bool ok = true;
 	TRY {
@@ -73,6 +96,11 @@ void JoinServerMenu::join() {
 
 void JoinServerMenu::tick(const float dt) {
 	Container::tick(dt);
+	if (_vehicle->changed()) {
+		_vehicle->reset();
+		Config->set("menu.default-vehicle-1", _vehicle->getValue());
+	}
+	
 	if (_back->changed()) {
 		LOG_DEBUG(("[back] clicked"));
 		MenuConfig->save();

@@ -10,6 +10,7 @@ class MainMenu;
 class HostList;
 class MapDetails;
 class Prompt;
+class Chooser;
 
 class JoinServerMenu : public BaseMenu {
 public:
@@ -27,6 +28,7 @@ private:
 	HostList *_hosts;
 	MapDetails *_details;
 	Prompt *_add_dialog;
+	Chooser *_vehicle;
 	Button *_back, *_add, *_scan, *_join;
 };
 
