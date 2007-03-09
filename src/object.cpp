@@ -408,13 +408,19 @@ const bool Object::collides(const Object *other, const int x, const int y, const
 		other_src.x, other_src.y, other_src.w, other_src.h
 		));
 */
+	checkSurface();
+	other->checkSurface();
+	
 	return _cmap->collides(src, other->_cmap, other_src, x, y, hidden_by_other);
 }
 
 const bool Object::collides(const sdlx::CollisionMap *other, const int x, const int y, const bool hidden_by_other) const {
+	assert(other != NULL);
 	sdlx::Rect src;
 	if (!getRenderRect(src)) 
 		return false;
+
+	checkSurface();
 	return _cmap->collides(src, other, sdlx::Rect(), x, y, hidden_by_other);
 }
 
