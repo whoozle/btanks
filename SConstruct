@@ -46,7 +46,6 @@ if sys.platform == "win32":
 		env.Append(CCFLAGS = ' /Yd /Zi /Ge /GT /GZ /Od /ZI /MDd ')
 		env.Append(CPPFLAGS = ' /Yd /Zi /Ge /GT /GZ /Od /ZI /MDd ')
 		env.Append(LINKFLAGS = ' /NOLOGO /DEBUG ')
-		env.Append(CPPDEFINES = ['DEBUG'])
 	else:
 		env.Append(CCCFLAGS = ' /Ot /Ob2gity /G6 /GA /GF /Gs /Gy /MD ') #optimizations
 		env.Append(CPPFLAGS = ' /Ot /Ob2gity /G6 /GA /GF /Gs /Gy /MD ') #optimizations
@@ -133,7 +132,9 @@ if sys.platform == "win32":
 	env.Append(LIBS=['Ws2_32', 'SDLmain'])
 	env.Append(LINKFLAGS = '/SUBSYSTEM:WINDOWS ')
 
-if not debug: 
+if debug: 
+	env.Append(CPPDEFINES = ['DEBUG'])
+else:
 	env.Append(CPPDEFINES = ['RELEASE'])
 
 Export('env')
