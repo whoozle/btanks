@@ -59,11 +59,11 @@ void IMenuConfig::fillDefaults(const std::string &map, const std::string &varian
 		slots[1].type = "player-2";
 		slots[1].vehicle = vehicles[mrt::random(3)];
 	} else {
-		slots.resize(2);
+		slots.resize(1);
 		slots[0].type = "player";
 		slots[0].vehicle = vehicles[mrt::random(3)];
-		slots[1].type = "ai";
-		slots[1].vehicle = vehicles[mrt::random(3)];
+		//slots[1].type = "ai";
+		//slots[1].vehicle = vehicles[mrt::random(3)];
 	}
 	config = slots;
 }
