@@ -64,7 +64,7 @@
 IMPLEMENT_SINGLETON(Game, IGame)
 
 IGame::IGame() : _main_menu(NULL),
-_check_items(0.5, true),  _autojoin(false), _shake(0), _show_radar(true) , _credits(NULL), _cheater(NULL), _state_timer(false){}
+_check_items(0.5, true),  _autojoin(false), _shake(0), _show_radar(true) , _show_stats(false), _credits(NULL), _cheater(NULL), _state_timer(false){}
 IGame::~IGame() {}
 
 void IGame::resetTimer() {
@@ -580,6 +580,12 @@ void IGame::run() {
 		
 		while (SDL_PollEvent(&event)) {
 			switch(event.type) {
+			case SDL_KEYUP:
+				if (event.key.keysym.sym == SDLK_TAB) {
+					_show_stats = false;
+				}
+			break;
+			
 			case SDL_KEYDOWN:
 #ifndef WIN32
 				if (event.key.keysym.sym==SDLK_RETURN && event.key.keysym.mod & KMOD_CTRL) {
@@ -610,6 +616,9 @@ void IGame::run() {
 				if (event.key.keysym.sym == SDLK_m && !_main_menu->isActive()) {
 					_show_radar = !_show_radar;
 					break;
+				}
+				if (event.key.keysym.sym == SDLK_TAB) {
+					_show_stats = true;
 				}
 
 				if (!PlayerManager->isClient() && event.key.keysym.sym==SDLK_F12 && PlayerManager->getSlotsCount() > 0) {
@@ -696,6 +705,9 @@ void IGame::run() {
 			if (_show_radar) {
 				_hud->renderRadar(dt, _window, _specials);
 			}
+			if (_main_menu && !_main_menu->isActive() && _show_stats) {
+				_hud->renderStats(_window);
+			}
 		}
 
 		if (_main_menu)
@@ -773,6 +785,7 @@ void IGame::clear() {
 	_map_loaded = false;
 	_game_over = false;
 	_show_radar = true;
+	_show_stats = false;
 	Map->clear();
 	
 	delete _credits;

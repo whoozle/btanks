@@ -25,6 +25,7 @@
 #include "tmx/map.h"
 #include "src/player_manager.h"
 #include "src/resource_manager.h"
+#include "menu/box.h"
 
 static Uint32 index2color(const sdlx::Surface &surface, const unsigned idx, const Uint8 a) {
 	unsigned rgb = idx & 7;
@@ -71,6 +72,47 @@ void Hud::initMap() {
 	_radar_bg.unlock();
 	_radar_bg.setAlpha(0, 0);
 }
+
+void Hud::renderStats(sdlx::Surface &surface) {
+	unsigned n = PlayerManager->getSlotsCount();
+	if (n == 0)
+		return;
+	
+	Box background;
+	const sdlx::Font *font = ResourceManager->loadFont("medium", true);
+	const int item_h = 10 + font->getHeight() ;
+	
+	
+	background.init("menu/background_box.png", 300, item_h * n + 2 * item_h);
+	int mx, my;
+	background.getMargins(mx, my);
+	
+	int xp = (surface.getWidth() - background.w) / 2;
+	int yp = (surface.getHeight() - background.h) / 2;
+
+	background.render(surface, xp, yp);
+
+	xp += mx;
+	yp += (background.h - item_h * n) / 2;
+
+	int box_h = font->getHeight();
+	int box_w2 = font->getWidth();
+	int box_w1 = box_w2 * 3 / 4;
+	
+	for(unsigned p = 0; p < n; ++p) {
+		PlayerSlot &slot = PlayerManager->getSlot(p);
+		if (slot.id == -1)
+			continue;
+		surface.fillRect(sdlx::Rect(xp, yp, box_w1, box_h), index2color(surface, p + 1, 255));
+		font->render(surface, xp + box_w2, yp, mrt::formatString("%s", slot.animation.c_str()));
+		std::string score = mrt::formatString("%d", slot.frags);
+		int sw = font->render(NULL, 0, 0, score);
+		font->render(surface, xp + background.w - 2 * mx - sw, yp, score);
+		yp += item_h;
+	}
+	
+}
+
 
 
 void Hud::renderRadar(const float dt, sdlx::Surface &window, std::vector<v2<int> > &specials) {
