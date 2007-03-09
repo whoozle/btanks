@@ -14,6 +14,7 @@
   <property name="spawn:3" value="@23,18"/>
   <property name="spawn:2" value="@22,2"/>
   <property name="object:mines-item:mines-item:0" value="@4,14,180"/>
+  <property name="object:static-tank:cyan-tank:1" value="953,1"/>
   <property name="object:submarine:submarine:1" value="16,0,-700"/>
   <property name="object:nuke-missiles-item:nuke-missiles-item:1" value="@12,11,180"/>
   <property name="spawn:1" value="@4,3"/>
@@ -30,11 +31,13 @@
   <property name="object:guided-missiles-item:guided-missiles-item:5" value="1008,1162,180"/>
   <property name="object:stun-missiles-item:stun-missiles-item:1" value="1029,83,180"/>
   <property name="object:heal:heal:2" value="1303,608,180"/>
+  <property name="object:static-launcher:red-launcher:1" value="892,1211"/>
   <property name="object:guided-missiles-item:guided-missiles-item:1" value="@1,8,180"/>
   <property name="object:smoke-missiles-item:smoke-missiles-item:13" value="796,4,180"/>
   <property name="object:machinegunner-item:machinegunner-item:6" value="@24,15"/>
   <property name="object:machinegunner-item:machinegunner-item:5" value="0,145,180"/>
   <property name="object:dispersion-bullets-item:dispersion-bullets-item:3" value="1473,1018,180"/>
+  <property name="object:static-shilka:yellow-shilka:1" value="5,763"/>
   <property name="object:dispersion-bullets-item:dispersion-bullets-item:2" value="909,581,180"/>
   <property name="object:dirt-bullets-item:dirt-bullets-item:6" value="800,401,180"/>
   <property name="object:helicopter-with-kamikazes:helicopter:1" value="@5,5,900"/>
@@ -65,8 +68,8 @@
  </tileset>
  <layer name="zerolayer" width="25" height="20">
   <properties>
-   <property name="z" value="-1000"/>
    <property name="impassability" value="40"/>
+   <property name="z" value="-1000"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGAWjYBSMglEwCkbBUAcARPTJAtAHAAA=
@@ -130,8 +133,8 @@
  </layer>
  <layer name="Layer 23" width="25" height="20">
   <properties>
-   <property name="animation-speed" value="10"/>
    <property name="animation-frames" value="5"/>
+   <property name="animation-speed" value="10"/>
    <property name="animation-frame-size" value="20"/>
   </properties>
   <data encoding="base64" compression="gzip">
@@ -208,8 +211,8 @@
  <layer name="wire stand" width="25" height="20">
   <properties>
    <property name="pierceable" value="true"/>
-   <property name="impassability" value="100"/>
    <property name="z" value="100"/>
+   <property name="impassability" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGDqAkXGgXTAK6A1G43wU0AKMpquhCbixxBuxYtjiHJu6oQwAVfTt0NAHAAA=
@@ -230,8 +233,8 @@
  </layer>
  <layer name="fences" width="25" height="20">
   <properties>
-   <property name="impassability" value="100"/>
    <property name="z" value="200"/>
+   <property name="impassability" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgoB7gZKSiYQNsBwcd7IEBdjrbNwpGwSgYBaNg+AEAfGmWQtAHAAA=
@@ -252,8 +255,8 @@
  <layer name="objects" width="25" height="20">
   <properties>
    <property name="pierceable" value="true"/>
-   <property name="z" value="220"/>
    <property name="impassability" value="100"/>
+   <property name="z" value="220"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgIB7EMjEwxDGRoIEAcKWiWdhAJND8KKgd0UA6hsb2URP4D5BbqR3HIw2MlPBDzlswMFB+H2p5exQMH0DrOoxUAAD0Ok9J0AcAAA==
