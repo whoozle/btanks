@@ -22,15 +22,15 @@ JoinServerMenu::JoinServerMenu(MainMenu *parent, const int w, const int h) : _pa
 	_upper_box = new UpperBox(500, 80, false);
 	_add_dialog = new Prompt(w / 2, 96, new HostTextControl("medium"));
 
-	const int host_list_w = (w - 64)/3 + 80;
+	const int host_list_w = 2 * (w - 64)/3;
 
-	int bw, bh, xp = 32;
+	int bw, bh, xp = 48;
 
 	_add->getSize(bw, bh);
-	add(xp, h - 80 - bh, _add);
+	add(16, h - 80 - bh, _add);
 
 	_del->getSize(bw, bh);
-	add(host_list_w - 32 - bw, h - 80 - bh, _del);
+	add(xp + host_list_w - 32 - bw, h - 80 - bh, _del);
 
 	_back->getSize(bw, bh);
 	add(xp, h - 16 - bh, _back);
@@ -47,7 +47,7 @@ JoinServerMenu::JoinServerMenu(MainMenu *parent, const int w, const int h) : _pa
 	
 	add((w - _upper_box->w) / 2, 32, _upper_box);
 
-	sdlx::Rect list_pos(0, 128, host_list_w, h - 256);
+	sdlx::Rect list_pos(16, 128, host_list_w, h - 256);
 
 	_hosts = new HostList("multiplayer.recent-hosts", list_pos.w, list_pos.h);
 	add(list_pos.x, list_pos.y, _hosts);
