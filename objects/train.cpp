@@ -25,7 +25,7 @@
 class Wagon : public Object {
 public: 
 	Wagon() : Object("train") {}
-	virtual void onSpawn() { play("move", true); }	
+	virtual void onSpawn() { play("move", true); disown(); }	
 	virtual Object * clone() const { return new Wagon(*this); }
 	virtual void emit(const std::string &event, Object * emitter = NULL) {
 		if (event == "death") {
