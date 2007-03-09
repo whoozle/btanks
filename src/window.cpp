@@ -183,6 +183,8 @@ void Window::init(const int argc, char *argv[]) {
 
 		_window.setVideoMode(w, h, bits, flags );
 
+#if SDL_VERSION_ATLEAST(1,2,10)
+
 		int accel = 0;
 		if ((r = SDL_GL_GetAttribute( SDL_GL_ACCELERATED_VISUAL, &accel)) == 0) {
 			LOG_DEBUG(("SDL_GL_ACCELERATED_VISUAL = %d", accel));
@@ -196,6 +198,7 @@ void Window::init(const int argc, char *argv[]) {
 				));
 			}
 		} else LOG_WARN(("SDL_GL_GetAttribute( SDL_GL_ACCELERATED_VISUAL) failed: %s (%d)", SDL_GetError(), r));
+#endif
 
 	} else {
 		_window.setVideoMode(w, h, bits, flags);
