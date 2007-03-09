@@ -71,7 +71,9 @@ void mrt::join(std::string &result, const std::vector<std::string>& array, const
 	if (array.empty())
 		return;
 	
-	size_t n = (limit > 0)?limit:array.size();
+	size_t n = array.size();
+	if (limit > 0 && limit < n) 
+		n = limit;
 	--n;
 	for(size_t i = 0; i < n; ++i) {
 		result += array[i];
