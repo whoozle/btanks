@@ -74,16 +74,21 @@ void Hud::initMap() {
 }
 
 void Hud::renderStats(sdlx::Surface &surface) {
-	unsigned n = PlayerManager->getSlotsCount();
-	if (n == 0)
-		return;
+	unsigned active_slots = 0, slots = PlayerManager->getSlotsCount();
+	
+	for(unsigned p = 0; p < slots; ++p) {
+		PlayerSlot &slot = PlayerManager->getSlot(p);
+		if (slot.id == -1)
+			continue;
+		++active_slots;
+	}
 	
 	Box background;
 	const sdlx::Font *font = ResourceManager->loadFont("medium", true);
 	const int item_h = 10 + font->getHeight() ;
 	
 	
-	background.init("menu/background_box.png", 300, item_h * n + 2 * item_h);
+	background.init("menu/background_box.png", 300, item_h * active_slots + 2 * item_h);
 	int mx, my;
 	background.getMargins(mx, my);
 	
@@ -93,13 +98,13 @@ void Hud::renderStats(sdlx::Surface &surface) {
 	background.render(surface, xp, yp);
 
 	xp += mx;
-	yp += (background.h - item_h * n) / 2;
+	yp += (background.h - item_h * active_slots) / 2;
 
 	int box_h = font->getHeight();
 	int box_w2 = font->getWidth();
 	int box_w1 = box_w2 * 3 / 4;
 	
-	for(unsigned p = 0; p < n; ++p) {
+	for(unsigned p = 0; p < slots; ++p) {
 		PlayerSlot &slot = PlayerManager->getSlot(p);
 		if (slot.id == -1)
 			continue;
