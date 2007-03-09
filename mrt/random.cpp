@@ -17,7 +17,12 @@
  */
 #include <stdlib.h>
 #include "random.h"
+#include <time.h>
 
 const int mrt::random(const int max) {
 	return (int) (max * (rand() / (RAND_MAX + 1.0)));
+}
+
+void mrt::init_seed() {
+	srand(time(NULL));
 }

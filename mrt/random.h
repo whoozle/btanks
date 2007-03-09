@@ -19,6 +19,7 @@
  */
 
 namespace mrt {
+	void init_seed();
 	const int random(const int max);
 	template<typename T>
 		void randomize(T &value, const T error) {
