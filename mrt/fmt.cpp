@@ -68,6 +68,9 @@ void mrt::trim(std::string &str, const std::string chars) {
 
 void mrt::join(std::string &result, const std::vector<std::string>& array, const std::string &delimiter, const size_t limit) {
 	result.clear();
+	if (array.empty())
+		return;
+	
 	size_t n = (limit > 0)?limit:array.size();
 	--n;
 	for(size_t i = 0; i < n; ++i) {
