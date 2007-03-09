@@ -607,7 +607,7 @@ void IGame::run() {
 					screenshot.saveBMP("map.bmp"); //hopefully we're done here.
 					break;
 				}
-				if (event.key.keysym.sym == SDLK_m) {
+				if (event.key.keysym.sym == SDLK_m && !_main_menu->isActive()) {
 					_show_radar = !_show_radar;
 					break;
 				}
