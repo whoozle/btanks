@@ -11,10 +11,10 @@
 
 StartServerMenu::StartServerMenu(MainMenu *parent, const int w, const int h) : _parent(parent)  {
 	add(0, 0, _map_picker = new MapPicker(w, h));
-	_back = new Button("big", "BACK");
+	_back = new Button("big", I18n->get("menu", "back"));
 	add(64, h - 96, _back);
 	
-	_start = new Button("big", "START");
+	_start = new Button("big", I18n->get("menu", "start"));
 	int bw, bh;
 	_start->getSize(bw, bh);
 	add(w - 64 - bw, h - 96, _start);

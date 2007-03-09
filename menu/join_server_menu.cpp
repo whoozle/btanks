@@ -12,10 +12,10 @@
 #include "game.h"
 
 JoinServerMenu::JoinServerMenu(MainMenu *parent, const int w, const int h) : _parent(parent) {
-	_back = new Button("big", "BACK");
-	_add = new Button("big", "ADD");
-	_scan = new Button("big", "SCAN");
-	_join = new Button("big", "JOIN");
+	_back = new Button("big", I18n->get("menu", "back"));
+	_add = new Button("big",  I18n->get("menu", "add"));
+	_scan = new Button("big", I18n->get("menu", "scan"));
+	_join = new Button("big", I18n->get("menu", "join"));
 	_upper_box = new UpperBox(500, 80, false);
 	_add_dialog = new Prompt(w / 2, 96, new HostTextControl("medium"));
 

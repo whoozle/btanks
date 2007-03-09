@@ -1,5 +1,12 @@
 <strings>
 	<area id="menu">
+		<string id="back">BACK</string>
+		<string id="ok">OK</string>
+		<string id="add">ADD</string>
+		<string id="scan">SCAN</string>
+		<string id="join">JOIN</string>
+		<string id="start">START</string>
+	
 		<string id="start-game">START GAME</string>
 		<string id="start-game" lang="ru">NACHAT IGRU</string>
 		<string id="no-slots-in-map">No slots in map</string>

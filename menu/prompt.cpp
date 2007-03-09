@@ -2,6 +2,8 @@
 #include "text_control.h"
 #include "button.h"
 #include "sdlx/surface.h"
+#include "i18n.h"
+
 Prompt::~Prompt() {
 	delete _text;
 }
@@ -14,11 +16,11 @@ Prompt::Prompt(const int w, const int h, TextControl * text) : _text(text), valu
 	//add(_text_rect, _text = text);
 	int bw, bh;
 
-	_b_back = new Button("medium_dark", "BACK");
+	_b_back = new Button("medium_dark", I18n->get("menu", "back"));
 	_b_back->getSize(bw, bh);
 	add(w / 4 - bw / 2, h/2, _b_back);
 
-	_b_ok = new Button("medium_dark", "OK");
+	_b_ok = new Button("medium_dark", I18n->get("menu", "ok"));
 	_b_ok->getSize(bw, bh);
 
 	add(3 * w / 4 - bw / 2, h/2, _b_ok);

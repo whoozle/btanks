@@ -13,13 +13,13 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 	_bx = ( w - _background.w ) / 2;
 	_by = ( h - _background.h ) / 2;
 
-	_b_back = new Button("big", "BACK");
+	_b_back = new Button("big", I18n->get("menu", "back"));
 	_b_back->getSize(bw, bh);
 
 	int yb = 200;
 	add(_bx + mx + _background.w / 4 - bw / 2, _by + my +h - yb, _b_back);
 	
-	_b_ok = new Button("big", "OK");
+	_b_ok = new Button("big", I18n->get("menu", "ok"));
 	_b_ok->getSize(bw, bh);
 	add(_by + my + 3 * _background.w / 4 - bw / 2, _by + my + h - yb, _b_ok);
 	
