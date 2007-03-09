@@ -70,6 +70,13 @@ JoinServerMenu::JoinServerMenu(MainMenu *parent, const int w, const int h) : _pa
 	_vehicle->disable(0);
 	for(int i = 4; i < _vehicle->size(); ++i)
 		_vehicle->disable(i);
+
+	TRY {
+		std::string def_v;
+		Config->get("menu.default-vehicle-1", def_v, "launcher");
+		_vehicle->set(def_v);
+	} CATCH("_vehicle->set()", {})
+
 	_vehicle->getSize(bw, bh);
 		
 	add(map_pos.x + map_pos.w / 2 - bw / 2, map_pos.y + map_pos.h - bh * 2, _vehicle);
