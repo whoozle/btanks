@@ -502,6 +502,11 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 	_map_loaded = true;
 	_game_over = false;
 	
+	delete _cheater;
+	_cheater = NULL;
+	if (!PlayerManager->isClient())
+		_cheater = new Cheater; 
+	
 	resetTimer();
 }
 
