@@ -1,5 +1,8 @@
+0.4.2623: 
+
+*) added game statistics shown by 'TAB' key.
 *) reworked all UI: menus, player/map pickers with usual controls. map descriptions. added mouse handling everywhere.
-*) you can assign 'alpha AI units' to players right from menu. 
+*) you can assign experimental AI units to players right from menu. 
 *) fixed long standing bug with bullets sticking to each other. 
 *) animated tiles support (map), animated water tileset. (added an all maps where possible ;)
 *) map can provide hints, useful for tutorial or in-game messages. 
