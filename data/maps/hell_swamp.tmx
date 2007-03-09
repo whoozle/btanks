@@ -6,67 +6,67 @@
   <property name="object:static-smoke-cloud:smoke-cloud:17" value="176,592"/>
   <property name="object:static-smoke-cloud:smoke-cloud:16" value="108,676"/>
   <property name="object:static-smoke-cloud:smoke-cloud:15" value="120,560"/>
-  <property name="object:static-smoke-cloud:smoke-cloud:14" value="42,610"/>
   <property name="object:dumb-missiles-item:dumb-missiles-item:5" value="1220,1370"/>
-  <property name="object:static-smoke-cloud:smoke-cloud:13" value="628,278"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:14" value="42,610"/>
   <property name="object:dumb-missiles-item:dumb-missiles-item:4" value="906,1790"/>
-  <property name="object:static-smoke-cloud:smoke-cloud:12" value="508,282"/>
-  <property name="object:dumb-missiles-item:dumb-missiles-item:3" value="376,1148"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:13" value="628,278"/>
   <property name="object:static-dirt:dirt:35" value="1140,724,-10"/>
-  <property name="object:dumb-missiles-item:dumb-missiles-item:2" value="910,418"/>
-  <property name="object:static-dirt:dirt:34" value="1074,696,-10"/>
+  <property name="object:dumb-missiles-item:dumb-missiles-item:3" value="376,1148"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:12" value="508,282"/>
   <property name="object:static-smoke-cloud:smoke-cloud:11" value="458,196"/>
-  <property name="object:dumb-missiles-item:dumb-missiles-item:1" value="2154,668"/>
-  <property name="object:static-dirt:dirt:33" value="0,1760,-510"/>
+  <property name="object:static-dirt:dirt:34" value="1074,696,-10"/>
+  <property name="object:dumb-missiles-item:dumb-missiles-item:2" value="910,418"/>
   <property name="object:static-smoke-cloud:smoke-cloud:10" value="576,220"/>
+  <property name="object:static-dirt:dirt:33" value="0,1760,-510"/>
+  <property name="object:dumb-missiles-item:dumb-missiles-item:1" value="2154,668"/>
   <property name="object:static-dirt:dirt:31" value="@0,29,-510"/>
   <property name="object:static-dirt:dirt:30" value="84,1852,-510"/>
   <property name="object:impassable-static-corpse:dead-yellow-tank:4" value="2510,570"/>
   <property name="object:impassable-static-corpse:dead-yellow-tank:3" value="1696,606"/>
-  <property name="object:impassable-static-corpse:dead-yellow-tank:1" value="178,1858"/>
   <property name="object:static-launcher:red-launcher:2" value="548,1184"/>
+  <property name="object:impassable-static-corpse:dead-yellow-tank:1" value="178,1858"/>
   <property name="object:static-launcher:red-launcher:1" value="1516,226"/>
   <property name="object:static-dirt:dirt:29" value="48,1786,-510"/>
-  <property name="object:static-launcher:cyan-launcher:2" value="250,152"/>
   <property name="object:static-dirt:dirt:28" value="28,1682,-510"/>
-  <property name="object:static-launcher:cyan-launcher:1" value="2498,364"/>
+  <property name="object:static-launcher:cyan-launcher:2" value="250,152"/>
   <property name="object:static-dirt:dirt:27" value="120,1706,-510"/>
+  <property name="object:static-launcher:cyan-launcher:1" value="2498,364"/>
   <property name="object:static-dirt:dirt:26" value="134,1622,-510"/>
   <property name="object:static-dirt:dirt:25" value="188,1756,-510"/>
   <property name="object:static-dirt:dirt:24" value="148,1828,-510"/>
-  <property name="object:stack:stack:5" value="1448,1350,10"/>
   <property name="object:static-dirt:dirt:23" value="1346,1664,-510"/>
-  <property name="object:stack:stack:4" value="1036,1005,10"/>
+  <property name="object:stack:stack:5" value="1448,1350,10"/>
   <property name="object:static-dirt:dirt:22" value="390,1458,-510"/>
-  <property name="object:stack:stack:3" value="1292,928,10"/>
+  <property name="object:stack:stack:4" value="1036,1005,10"/>
   <property name="object:static-dirt:dirt:21" value="136,394,-510"/>
-  <property name="object:stack:stack:2" value="1098,766,10"/>
+  <property name="object:stack:stack:3" value="1292,928,10"/>
   <property name="object:static-dirt:dirt:20" value="446,252,-510"/>
+  <property name="object:stack:stack:2" value="1098,766,10"/>
   <property name="object:stack:stack:1" value="1070,712,10"/>
   <property name="object:impassable-static-corpse:dead-cyan-shilka:2" value="810,1806"/>
   <property name="object:impassable-static-corpse:dead-cyan-shilka:1" value="1828,1208"/>
   <property name="object:static-smoke-cloud:smoke-cloud:9" value="646,162"/>
   <property name="object:static-smoke-cloud:smoke-cloud:8" value="990,1420"/>
-  <property name="object:static-smoke-cloud:smoke-cloud:7" value="1096,1418"/>
   <property name="object:static-dirt:dirt:19" value="640,56,-510"/>
-  <property name="object:static-smoke-cloud:smoke-cloud:6" value="958,1522"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:7" value="1096,1418"/>
   <property name="object:static-dirt:dirt:18" value="192,194,-510"/>
-  <property name="object:static-smoke-cloud:smoke-cloud:5" value="400,800"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:6" value="958,1522"/>
   <property name="object:static-dirt:dirt:17" value="2046,394,-510"/>
-  <property name="object:static-smoke-cloud:smoke-cloud:4" value="798,1298"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:5" value="400,800"/>
   <property name="object:static-dirt:dirt:16" value="2100,536,-510"/>
-  <property name="object:static-smoke-cloud:smoke-cloud:3" value="770,1150"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:4" value="798,1298"/>
   <property name="object:static-dirt:dirt:15" value="754,834,-510"/>
-  <property name="object:static-smoke-cloud:smoke-cloud:2" value="856,1212"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:3" value="770,1150"/>
   <property name="object:static-dirt:dirt:14" value="1328,506,-510"/>
-  <property name="object:static-tank:red-tank:1" value="1032,780,250"/>
-  <property name="object:static-smoke-cloud:smoke-cloud:1" value="946,1152"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:2" value="856,1212"/>
+  <property name="object:static-tank:red-tank:1" value="1032,780"/>
   <property name="object:static-dirt:dirt:13" value="1138,1224,-510"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:1" value="946,1152"/>
   <property name="object:static-dirt:dirt:12" value="1038,1220,-510"/>
-  <property name="object:impassable-static-corpse:dead-yellow-launcher:3" value="594,938"/>
   <property name="object:static-dirt:dirt:11" value="2288,1668,-510"/>
-  <property name="object:impassable-static-corpse:dead-yellow-launcher:2" value="290,228"/>
+  <property name="object:impassable-static-corpse:dead-yellow-launcher:3" value="594,938"/>
   <property name="object:static-dirt:dirt:10" value="2304,1466,-510"/>
+  <property name="object:impassable-static-corpse:dead-yellow-launcher:2" value="290,228"/>
   <property name="object:impassable-static-corpse:dead-yellow-launcher:1" value="1446,1064"/>
   <property name="object:mines-item:mines-item:7" value="38,1238"/>
   <property name="object:mines-item:mines-item:6" value="36,1238"/>
@@ -76,7 +76,7 @@
   <property name="object:mines-item:mines-item:2" value="1674,478"/>
   <property name="object:mines-item:mines-item:1" value="654,846"/>
   <property name="config:map.dirt.respawn-interval" value="int:0"/>
-  <property name="object:static-tank:cyan-tank:1" value="1392,1032,250"/>
+  <property name="object:static-tank:cyan-tank:1" value="1392,1032"/>
   <property name="object:static-launcher:yellow-launcher:1" value="2136,1392"/>
   <property name="object:static-dirt:dirt:9" value="2062,1466,-510"/>
   <property name="object:static-dirt:dirt:8" value="1924,1524,-510"/>
@@ -113,8 +113,8 @@
   <property name="object:static-smoke-cloud:smoke-cloud:66" value="2072,1418"/>
   <property name="object:static-smoke-cloud:smoke-cloud:65" value="2002,1378"/>
   <property name="object:static-smoke-cloud:smoke-cloud:64" value="2410,984"/>
-  <property name="object:static-smoke-cloud:smoke-cloud:63" value="2352,906"/>
   <property name="object:lodge:lodge:1" value="1190,720,10"/>
+  <property name="object:static-smoke-cloud:smoke-cloud:63" value="2352,906"/>
   <property name="object:static-smoke-cloud:smoke-cloud:62" value="2352,898"/>
   <property name="object:static-smoke-cloud:smoke-cloud:61" value="2352,896"/>
   <property name="object:static-smoke-cloud:smoke-cloud:60" value="2430,920"/>
@@ -125,8 +125,8 @@
   <property name="object:megaheal:megaheal:4" value="2476,82,250"/>
   <property name="object:megaheal:megaheal:3" value="2476,80,250"/>
   <property name="object:megaheal:megaheal:2" value="38,44,250"/>
-  <property name="object:megaheal:megaheal:1" value="1214,892"/>
   <property name="object:static-smoke-cloud:smoke-cloud:59" value="2382,838"/>
+  <property name="object:megaheal:megaheal:1" value="1214,892"/>
   <property name="object:static-smoke-cloud:smoke-cloud:58" value="2314,8"/>
   <property name="object:static-smoke-cloud:smoke-cloud:57" value="2356,50"/>
   <property name="object:static-smoke-cloud:smoke-cloud:56" value="2340,156"/>
@@ -161,8 +161,8 @@
   <property name="object:static-smoke-cloud:smoke-cloud:35" value="1376,378"/>
   <property name="object:static-smoke-cloud:smoke-cloud:34" value="1332,442"/>
   <property name="object:static-smoke-cloud:smoke-cloud:33" value="1420,448"/>
-  <property name="config:map.choo-choo-wagon.respawn-interval" value="int:10000"/>
   <property name="object:static-smoke-cloud:smoke-cloud:32" value="1360,688"/>
+  <property name="config:map.choo-choo-wagon.respawn-interval" value="int:10000"/>
   <property name="object:static-smoke-cloud:smoke-cloud:31" value="1274,714"/>
   <property name="object:static-smoke-cloud:smoke-cloud:30" value="1310,630"/>
   <property name="object:static-smoke-cloud:smoke-cloud:29" value="168,1152"/>
