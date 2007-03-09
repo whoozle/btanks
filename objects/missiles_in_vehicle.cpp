@@ -76,6 +76,7 @@ public:
 		s.add(_vehicle);
 		s.add(_object);
 		s.add(_type);
+		s.add(_install_default);
 	}
 
 	virtual void deserialize(const mrt::Serializator &s) {
@@ -87,6 +88,7 @@ public:
 		s.get(_vehicle);
 		s.get(_object);
 		s.get(_type);
+		s.get(_install_default);
 	}
 	
 private:
