@@ -1,3 +1,18 @@
+*) reworked all UI: menus, player/map pickers with usual controls. map descriptions. added mouse handling everywhere.
+*) you can assign 'alpha AI units' to players right from menu. 
+*) fixed long standing bug with bullets sticking to each other. 
+*) animated tiles support (map), animated water tileset. (added an all maps where possible ;)
+*) map can provide hints, useful for tutorial or in-game messages. 
+*) zombie unit added :)
+*) new tune (gameboy)
+*) preliminary internationalization support.
+*) fonts now scanned to properly calculate letters' widths.
+*) synchronize map damage between server/clients.
+*) minimap could be now switched on and off with 'M' key. (also minimap shows important targets)
+*) removed useless SDL subsystems from initialization (audio, cdrom)
+*) caching 'fadeout' surfaces to improve fadeout feature performance.
+*) cleaned code from direct loadImage() calls, do all stuff via ResourceManager.
+
 0.3.2234: 
 
 *) bugfixes... bugfixes... bugfixes...
