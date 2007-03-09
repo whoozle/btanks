@@ -98,7 +98,7 @@ void Hud::renderStats(sdlx::Surface &surface) {
 	background.render(surface, xp, yp);
 
 	xp += mx;
-	yp += (background.h - item_h * active_slots) / 2;
+	yp += (background.h - item_h * active_slots) / 2 + font->getHeight() / 4;
 
 	int box_h = font->getHeight();
 	int box_w2 = font->getWidth();
