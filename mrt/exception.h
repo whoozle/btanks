@@ -73,9 +73,12 @@ private:
 		}
 #endif
 
-#define CATCH(where, code)  catch(const std::exception &_e) {\
-	LOG_ERROR(("%s: %s", where, _e.what())); \
-	code;\
+#define CATCH(where, code)  catch(const char * _e) {\
+		LOG_ERROR(("%s: (const char*) %s", where, _e)); \
+		code;\
+	} catch(const std::exception &_e) {\
+		LOG_ERROR(("%s: %s", where, _e.what())); \
+		code;\
 	} CATCH_D(where, code)
 
 #endif
