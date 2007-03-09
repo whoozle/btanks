@@ -7,6 +7,9 @@ HostList::HostList(const std::string &config_key, const int w, const int h) : Sc
 	std::vector<std::string> hosts;
 	mrt::split(hosts, str_hosts, " ");
 	for(size_t i = 0; i < hosts.size(); ++i) {
+		if (hosts[i].empty())
+			continue;
+		
 		mrt::toLower(hosts[i]);
 		ScrollList::add(hosts[i]);
 	}
