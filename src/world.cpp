@@ -180,6 +180,7 @@ const bool IWorld::collides(Object *obj, const v2<int> &position, Object *o, con
 	TRY {
 		const int id1 = obj->_id;
 		const int id2 = o->_id;
+		assert(obj != NULL && o != NULL);
 
 		if (id1 == id2 || 
 			(obj->impassability < 1.0 && obj->impassability >= 0) || 
