@@ -195,6 +195,7 @@ void Monitor::disconnect(const int cid) {
 
 
 const int Monitor::run() {
+TRY {
 	_running = true;
 	LOG_DEBUG(("network monitor thread was started..."));
 	while(_running) {
@@ -315,6 +316,8 @@ const int Monitor::run() {
 		}
 	}
 	return 0;
+} CATCH("net::Monitor::run", {})
+	return 1;
 }
 
 
