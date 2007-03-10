@@ -235,6 +235,7 @@ void OggStream::decode(Sample &sample, const std::string &fname) {
 }
 
 const int OggStream::run() {
+TRY {
 	do {
 		_open();
     	while(_running && update()) {
@@ -262,4 +263,6 @@ const int OggStream::run() {
 	_running = false;
 	LOG_DEBUG(("sound thread exits.."));
 	return 0;
+} CATCH("OggStream::run", {})
+return 1;
 }
