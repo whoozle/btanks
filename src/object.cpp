@@ -397,6 +397,7 @@ void Object::render(sdlx::Surface &surface, const int x, const int y) {
 
 const bool Object::collides(const Object *other, const int x, const int y, const bool hidden_by_other) const {
 	sdlx::Rect src, other_src;
+	assert(other != NULL);
 	if (!getRenderRect(src)) 
 		return false;
 	if (!other->getRenderRect(other_src)) 
