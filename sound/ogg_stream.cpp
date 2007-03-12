@@ -105,7 +105,7 @@ TRY {
 	if (processed != 0)
 		LOG_DEBUG(("source=%u, processed = %d", (unsigned)_source, processed));
 
-	while(processed--) {
+	while(processed-- > 0) {
 		ALuint buffer;
 		alSourceUnqueueBuffers(_source, 1, &buffer);
 		AL_CHECK(("alSourceUnqueueBuffers"));
