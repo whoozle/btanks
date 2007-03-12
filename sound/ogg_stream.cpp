@@ -240,7 +240,10 @@ void OggStream::decode(Sample &sample, const std::string &fname) {
 const int OggStream::run() {
 TRY {
 	do {
-		_open();
+		TRY {
+			_open();
+		} CATCH("run::_open", throw;)
+	TRY {
     	while(_running && update()) {
 			if(!playing()) {
 				if(!play()) {
@@ -251,7 +254,8 @@ TRY {
 			} else 
 				SDL_Delay(_delay);
 		}
-	
+	} CATCH("run(main loop)", throw;)
+	TRY { 
 		while(_running) {
 			ALenum state;
 			alGetSourcei(_source, AL_SOURCE_STATE, &state);
@@ -261,6 +265,7 @@ TRY {
 			else
 				SDL_Delay(_delay);
 		}
+	} CATCH("run(flush)", throw;)
 		
 	} while(_running && _repeat);	
 	_running = false;
