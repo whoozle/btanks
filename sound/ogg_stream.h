@@ -64,7 +64,7 @@ private:
 	ALuint _source;
 	ALenum _format;
 	
-	bool _opened, _running, _repeat;
+	volatile bool _opened, _running, _repeat;
 	int _delay;
 };
 
