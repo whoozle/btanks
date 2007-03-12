@@ -102,8 +102,12 @@ TRY {
 
 	alGetSourcei(_source, AL_BUFFERS_PROCESSED, &processed);
 	AL_CHECK(("alGetSourcei(processed: %d)", processed));
-	if (processed != 0)
+	if (processed != 0) {
 		LOG_DEBUG(("source=%u, processed = %d", (unsigned)_source, processed));
+		for(unsigned i = 0; i < _buffers_n; ++i) {
+			LOG_DEBUG(("buffer[%d] = %u", i, _buffers[i]));
+		}
+	}
 
 	while(processed-- > 0) {
 		ALuint buffer;
@@ -111,7 +115,9 @@ TRY {
 		AL_CHECK(("alSourceUnqueueBuffers"));
 		LOG_DEBUG(("unqueued buffer: %u", (unsigned) buffer));
 		
-		active = stream(buffer);
+		TRY { 
+			active = stream(buffer);
+		} CATCH("update(stream)", throw;);
 		if (!active) 
 			break;
 		alSourceQueueBuffers(_source, 1, &buffer);
