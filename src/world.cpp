@@ -321,6 +321,7 @@ TRY {
 	return 0;
 }
 
+/*
 void IWorld::getImpassability2(float &old_pos_im, float &new_pos_im, Object *obj, const v2<int> &new_position, const Object **old_pos_collided_with) const {
 	old_pos_im = 0;
 	new_pos_im = 0;
@@ -363,7 +364,7 @@ void IWorld::getImpassability2(float &old_pos_im, float &new_pos_im, Object *obj
 	if (old_pos_collided_with != NULL)
 		*old_pos_collided_with = result;
 }
-
+*/
 
 void IWorld::getImpassabilityMatrix(Matrix<int> &matrix, const Object *src, const Object *dst) const {
 	const v2<int> size = Map->getTileSize();

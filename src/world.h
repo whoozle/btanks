@@ -117,7 +117,7 @@ private:
 	mutable CollisionMap _collision_map;
 	mutable CollisionMap _static_collision_map;
 	
-	void getImpassability2(float &old_pos_im, float &new_pos_im, Object *obj, const v2<int> &new_position, const Object **old_pos_collided_with = NULL) const;
+	//void getImpassability2(float &old_pos_im, float &new_pos_im, Object *obj, const v2<int> &new_position, const Object **old_pos_collided_with = NULL) const;
 	const bool collides(Object *obj, const v2<int> &position, Object *other, const bool probe = false) const;
 
 	
