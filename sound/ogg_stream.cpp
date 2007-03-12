@@ -159,6 +159,9 @@ const bool OggStream::playing() const {
 }
 
 const bool OggStream::stream(ALuint buffer) {
+	if (!_opened)
+		return false;
+	
 	mrt::Chunk data;
 	
 	GET_CONFIG_VALUE("engine.sound.file-buffer-size", int, buffer_size, 32768);
