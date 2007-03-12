@@ -97,10 +97,11 @@ TRY {
 
 const bool OggStream::update() {
 TRY {
-	int processed;
+	int processed = 0;
 	bool active = true;
 
 	alGetSourcei(_source, AL_BUFFERS_PROCESSED, &processed);
+	AL_CHECK(("alGetSourcei(processed: %d)", processed));
 
 	while(processed--) {
 		ALuint buffer;
