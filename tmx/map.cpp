@@ -83,18 +83,22 @@ TRY {
 	
 	const int obj_z = obj->getZ();
 	int w = (int)obj->size.x, h = (int)obj->size.y;
-	int x, x1;
-	int y, y1;
-	x = x1 = pos.x;
-	y = y1 = pos.y;
+	int dx1, dx2, dy1, dy2;
+	int xt1, xt2, yt1, yt2;
+	{
+		//hide x1 and other common ids into {} block :)
+		int x, x1;
+		int y, y1;
+		x = x1 = pos.x;
+		y = y1 = pos.y;
 	
-	int x2 = x1 + w - 1; int y2 = y1 + h - 1;
+		int x2 = x1 + w - 1; int y2 = y1 + h - 1;
 	
-	int xt1 = x1 / _tw; int xt2 = x2 / _tw;
-	int yt1 = y1 / _th; int yt2 = y2 / _th; 
-	int dx1 = x - xt1 * _tw; int dx2 = x - xt2 * _tw;
-	int dy1 = y - yt1 * _th; int dy2 = y - yt2 * _th;
-	
+		xt1 = x1 / _tw; xt2 = x2 / _tw;
+		yt1 = y1 / _th; yt2 = y2 / _th; 
+		dx1 = x - xt1 * _tw; dx2 = x - xt2 * _tw;
+		dy1 = y - yt1 * _th; dy2 = y - yt2 * _th;
+	}
 	int hidden_mask = 0;
 
 	//LOG_DEBUG(("%d:%d:%d:%d (%+d:%+d:%+d:%+d)--> %d:%d %d:%d", x1, y1, w, h, dx1, dy1, dx2, dy2, xt1, yt1, xt2, yt2));
@@ -173,7 +177,7 @@ TRY {
 			if (!(empty_mask & 4) && im[2] == 101) {
 			if (collides(obj, dx2, dy1, getCollisionMap(layer, xt2, yt1))) {
 				im[2] = layer_im;
-				if (y1 == yt2 && im[3] == 101)
+				if (yt1 == yt2 && im[3] == 101)
 					im[3] = layer_im;
 
 			}
@@ -189,9 +193,23 @@ TRY {
 	}
 
 	int result_im = 0;
+
+	if (empty_mask & 1) 
+		im[0] = 0;
+	if (empty_mask & 2) 
+		im[1] = 0;
+	if (empty_mask & 4) 
+		im[2] = 0;
+	if (empty_mask & 8) 
+		im[3] = 0;
+
 	//LOG_DEBUG(("im : %d %d", im[0], im[2])); 
 	//LOG_DEBUG(("im : %d %d", im[1], im[3]));
-	for(int i = 0; i < 4; ++i) if (im[i] == 101) im[i] = 0;
+	//LOG_DEBUG(("empty_mask: 0x%02x", empty_mask));
+	GET_CONFIG_VALUE("map.default-impassability", int, def_im, 0);
+	for(int i = 0; i < 4; ++i) 
+		if (im[i] == 101) 
+			im[i] = def_im; //default im value for a layer.
 	
 	if (tile_pos) {
 		bool v1 = im[0] == 100 || im[1] == 100;
