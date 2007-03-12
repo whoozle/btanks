@@ -103,17 +103,19 @@ TRY {
 	alGetSourcei(_source, AL_BUFFERS_PROCESSED, &processed);
 	AL_CHECK(("alGetSourcei(processed: %d)", processed));
 	if (processed != 0)
-		LOG_DEBUG(("processed = %d", processed));
+		LOG_DEBUG(("source=%u, processed = %d", (unsigned)_source, processed));
 
 	while(processed--) {
 		ALuint buffer;
 		alSourceUnqueueBuffers(_source, 1, &buffer);
 		AL_CHECK(("alSourceUnqueueBuffers"));
+		LOG_DEBUG(("unqueued buffer: %u", (unsigned) buffer));
 		
 		active = stream(buffer);
 		if (!active) 
 			break;
 		alSourceQueueBuffers(_source, 1, &buffer);
+		LOG_DEBUG(("queued buffer: %u", (unsigned) buffer));
 		AL_CHECK(("alSourceQueueBuffers"));
 	}
 } CATCH("update()", throw;)
