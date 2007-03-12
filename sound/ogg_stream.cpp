@@ -279,6 +279,6 @@ TRY {
 	_running = false;
 	LOG_DEBUG(("sound thread exits.."));
 	return 0;
-} CATCH("OggStream::run", {})
+} CATCH("OggStream::run", { _running = false; })
 return 1;
 }
