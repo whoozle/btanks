@@ -21,7 +21,7 @@
 
 using namespace sdlx;
 
-const bool Cursor::isEnabled() {
+const bool Cursor::enabled() {
     return SDL_ShowCursor(SDL_QUERY) == SDL_ENABLE;
 }
 void Cursor::Disable() {

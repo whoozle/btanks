@@ -22,7 +22,7 @@
 namespace sdlx {
     class Cursor {
 	public:
-	static const bool isEnabled();
+	static const bool enabled();
 	static void Disable();
 	static void Enable();
 	static void setPosition(const int x, const int y);
