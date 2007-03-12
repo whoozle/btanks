@@ -102,27 +102,30 @@ TRY {
 
 	alGetSourcei(_source, AL_BUFFERS_PROCESSED, &processed);
 	AL_CHECK(("alGetSourcei(processed: %d)", processed));
+	/*
 	if (processed != 0) {
 		LOG_DEBUG(("source=%u, processed = %d", (unsigned)_source, processed));
 		for(unsigned i = 0; i < _buffers_n; ++i) {
 			LOG_DEBUG(("buffer[%d] = %u", i, _buffers[i]));
 		}
 	}
-
+	*/
+	
 	while(processed-- > 0) {
 		ALuint buffer;
 		alSourceUnqueueBuffers(_source, 1, &buffer);
 		AL_CHECK(("alSourceUnqueueBuffers"));
-		LOG_DEBUG(("unqueued buffer: %u", (unsigned) buffer));
+		//LOG_DEBUG(("unqueued buffer: %u", (unsigned) buffer));
 		
 		TRY { 
 			active = stream(buffer);
 		} CATCH("update(stream)", throw;);
-		LOG_DEBUG(("stream returned %s", active?"true":"false"));
-		//if (!active) 
-		//	continue;
+		//LOG_DEBUG(("stream returned %s", active?"true":"false"));
+		if (!active) 
+			continue;
+		
 		alSourceQueueBuffers(_source, 1, &buffer);
-		LOG_DEBUG(("queued buffer: %u", (unsigned) buffer));
+		//LOG_DEBUG(("queued buffer: %u", (unsigned) buffer));
 		AL_CHECK(("alSourceQueueBuffers"));
 	}
 } CATCH("update()", throw;)
@@ -191,7 +194,7 @@ TRY {
 
 	while(size < buffer_size) {
 		int r = ov_read(&_ogg_stream, ((char *)data.getPtr()) + size, buffer_size - size, 0, 2, 1, & section);
-		LOG_DEBUG(("ov_read(%d) = %d (section: %d)", size, r, section));
+		//LOG_DEBUG(("ov_read(%d) = %d (section: %d)", size, r, section));
     
 		if(r > 0) {
 			size += r;
