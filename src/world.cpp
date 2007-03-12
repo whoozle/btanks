@@ -737,6 +737,7 @@ TRY {
 				o._position += l * allowed_velocity;
 			}
 		}
+	skip_collision: ; 
 		/*
 		LOG_DEBUG(("bang!"));
 		GET_CONFIG_VALUE("engine.bounce-velocity-multiplier", float, bvm, 0.5);
@@ -748,7 +749,6 @@ TRY {
 		*/
 	}
 } CATCH("tick(`stuck` case)", throw;);
-skip_collision:
 
 	if (o.isDead())
 		return;
