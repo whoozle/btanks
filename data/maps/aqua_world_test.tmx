@@ -26,6 +26,7 @@
   <property name="object:single-pose:traffic-lights:3" value="368,837,-850"/>
   <property name="object:single-pose:traffic-lights:2" value="1288,1000,-850"/>
   <property name="object:single-pose:traffic-lights:1" value="1454,998,-850"/>
+  <property name="config:map.default-impassability" value="int:100"/>
  </properties>
  <tileset name="terrains" firstgid="1" tilewidth="64" tileheight="64">
   <image source="../tilesets/terrains.png"/>
@@ -57,7 +58,6 @@
  <layer name="impassable" width="30" height="30">
   <properties>
    <property name="pierceable" value="true"/>
-   <property name="impassability" value="100"/>
    <property name="z" value="-1000"/>
   </properties>
   <data encoding="base64" compression="gzip">
