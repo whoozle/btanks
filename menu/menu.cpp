@@ -257,8 +257,15 @@ void MainMenu::render(sdlx::Surface &dst) {
 	}
 }
 
+#include "sdlx/cursor.h"
+
 void MainMenu::setActive(const bool a) {
 	_active = a;
+	if (a) {
+		sdlx::Cursor::Enable();
+	} else {
+		sdlx::Cursor::Disable();
+	}
 }
 
 void MainMenu::reset() {
