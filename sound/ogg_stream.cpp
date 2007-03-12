@@ -120,7 +120,7 @@ TRY {
 		} CATCH("update(stream)", throw;);
 		LOG_DEBUG(("stream returned %s", active?"true":"false"));
 		if (!active) 
-			break;
+			continue;
 		alSourceQueueBuffers(_source, 1, &buffer);
 		LOG_DEBUG(("queued buffer: %u", (unsigned) buffer));
 		AL_CHECK(("alSourceQueueBuffers"));
