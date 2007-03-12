@@ -102,6 +102,8 @@ TRY {
 
 	alGetSourcei(_source, AL_BUFFERS_PROCESSED, &processed);
 	AL_CHECK(("alGetSourcei(processed: %d)", processed));
+	if (processed != 0)
+		LOG_DEBUG(("processed = %d", processed));
 
 	while(processed--) {
 		ALuint buffer;
