@@ -207,6 +207,9 @@ TRY {
 	//LOG_DEBUG(("im : %d %d", im[1], im[3]));
 	//LOG_DEBUG(("empty_mask: 0x%02x", empty_mask));
 	GET_CONFIG_VALUE("map.default-impassability", int, def_im, 0);
+	if (obj->piercing) 
+		def_im = 0;
+	
 	for(int i = 0; i < 4; ++i) 
 		if (im[i] == 101) 
 			im[i] = def_im; //default im value for a layer.
