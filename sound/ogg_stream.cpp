@@ -66,6 +66,13 @@ void OggStream::_open() {
 	_buffers_n = bf;
 	alGenBuffers(bf, _buffers);
 	AL_CHECK(("alGenBuffers(%d)", bf));
+	for(int i = 0; i < _buffers_n; ++i) {
+		if (alIsBuffer(_buffers[i] == AL_FALSE)) {
+			LOG_WARN(("buffer #%d is invalid. reducing buffers' counter to %d", i + 1, i));
+			_buffers_n = i;
+			break;
+		}
+	}
     alGenSources(1, &_source);
 	AL_CHECK(("alGenSources(oggsource)"));
 
