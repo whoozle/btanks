@@ -77,6 +77,7 @@ void OggStream::_open() {
 }
 
 const bool OggStream::play() {
+TRY {
 	if(playing())
 		return true;
 
@@ -90,10 +91,12 @@ const bool OggStream::play() {
 		alSourcePlay(_source);
 		return true;
 	}
+} CATCH("play()", throw;)
 	return false;
 }
 
 const bool OggStream::update() {
+TRY {
 	int processed;
 	bool active = true;
 
@@ -110,6 +113,7 @@ const bool OggStream::update() {
 		alSourceQueueBuffers(_source, 1, &buffer);
 		AL_CHECK(("alSourceQueueBuffers"));
 	}
+} CATCH("update()", throw;)
 	return true;
 }
 
@@ -153,12 +157,15 @@ OggStream::~OggStream() {
 }
 
 const bool OggStream::playing() const {
+TRY {
 	ALenum state;
 	alGetSourcei(_source, AL_SOURCE_STATE, &state);
 	return (state == AL_PLAYING);
+} CATCH("playing()", throw; )
 }
 
 const bool OggStream::stream(ALuint buffer) {
+TRY {
 	if (!_opened)
 		return false;
 	
@@ -186,7 +193,7 @@ const bool OggStream::stream(ALuint buffer) {
  
 	alBufferData(buffer, _format, data.getPtr(), size, _vorbis_info->rate);
 	AL_CHECK(("alBufferData"));
- 
+} CATCH("stream", throw;)
     return true;
 }
 
