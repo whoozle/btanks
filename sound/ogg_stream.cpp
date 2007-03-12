@@ -119,8 +119,8 @@ TRY {
 			active = stream(buffer);
 		} CATCH("update(stream)", throw;);
 		LOG_DEBUG(("stream returned %s", active?"true":"false"));
-		if (!active) 
-			continue;
+		//if (!active) 
+		//	continue;
 		alSourceQueueBuffers(_source, 1, &buffer);
 		LOG_DEBUG(("queued buffer: %u", (unsigned) buffer));
 		AL_CHECK(("alSourceQueueBuffers"));
