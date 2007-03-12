@@ -118,6 +118,7 @@ TRY {
 		TRY { 
 			active = stream(buffer);
 		} CATCH("update(stream)", throw;);
+		LOG_DEBUG(("stream returned %s", active?"true":"false"));
 		if (!active) 
 			break;
 		alSourceQueueBuffers(_source, 1, &buffer);
@@ -190,7 +191,7 @@ TRY {
 
 	while(size < buffer_size) {
 		int r = ov_read(&_ogg_stream, ((char *)data.getPtr()) + size, buffer_size - size, 0, 2, 1, & section);
-		//LOG_DEBUG(("ov_read(%d) = %d (section: %d)", size, r, section));
+		LOG_DEBUG(("ov_read(%d) = %d (section: %d)", size, r, section));
     
 		if(r > 0) {
 			size += r;
@@ -198,6 +199,7 @@ TRY {
 			throw_ogg(r, ("ov_read"));
 		} else break;
 	}
+	assert(size <= buffer_size);
 	
 	if(size == 0)
 		return false;
