@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <map version="0.99b" orientation="orthogonal" width="30" height="30" tilewidth="64" tileheight="64">
  <properties>
+  <property name="object:teleport-a:teleport:1" value="475,1038"/>
   <property name="object:single-pose:stall-left:1" value="377,1412,-1855"/>
   <property name="object:underwater-zombie:zombie:14" value="595,1832,-1850"/>
   <property name="spawn:2" value="1182,1818"/>
