@@ -932,7 +932,7 @@ Object* IWorld::spawn(Object *src, const std::string &classname, const std::stri
 
 	obj->_z -= ZBox::getBoxBase(obj->_z);
 	obj->_z += ZBox::getBoxBase(src->_z);
-	LOG_DEBUG(("spawn: %s: %d, parent: %s, %d", obj->animation.c_str(), obj->_z, src->animation.c_str(), src->_z));
+	//LOG_DEBUG(("spawn: %s: %d, parent: %s, %d", obj->animation.c_str(), obj->_z, src->animation.c_str(), src->_z));
 
 	//LOG_DEBUG(("result: %f %f", obj->_position.x, obj->_position.y));
 	return obj;
@@ -963,7 +963,7 @@ Object * IWorld::spawnGrouped(Object *src, const std::string &classname, const s
 	
 	obj->_z -= ZBox::getBoxBase(obj->_z);
 	obj->_z += ZBox::getBoxBase(src->_z);
-	LOG_DEBUG(("spawnGrouped: %s: %d, parent: %s, %d", obj->animation.c_str(), obj->_z, src->animation.c_str(), src->_z));
+	//LOG_DEBUG(("spawnGrouped: %s: %d, parent: %s, %d", obj->animation.c_str(), obj->_z, src->animation.c_str(), src->_z));
 
 	addObject(obj, pos);
 
