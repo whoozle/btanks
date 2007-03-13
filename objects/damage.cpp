@@ -40,7 +40,6 @@ Object * Damage::clone() const { return new Damage(*this); }
 void Damage::onSpawn() { 
 	play("main", true); 
 	_state.up = true; 
-	setZ(999); 
 } 
 /*
 void Damage::tick(const float dt) {
