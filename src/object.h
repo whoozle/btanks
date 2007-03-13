@@ -114,6 +114,9 @@ public:
 	const Way& getWay() const { return _way; } 
 	
 	const std::string getNearestWaypoint(const std::string &classname) const;
+
+	void setZBox(const int z);
+
 protected:
 	//pathfinding
 

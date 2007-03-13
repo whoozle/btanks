@@ -1257,3 +1257,21 @@ const float Object::getStateProgress() const {
 
 	return progress > 1.0 ? 1.0 : progress;
 }
+
+#include "zbox.h"
+
+void Object::setZBox(const int zb) {
+	need_sync = true;
+	
+	LOG_DEBUG(("%s::setZBox(%d)", registered_name.c_str(), zb));
+	int z = getZ();
+	z -= ZBox::getBoxBase(z); //removing current box
+	z += ZBox::getBoxBase(zb);
+	setZ(z);
+	
+	for(Group::const_iterator i = _group.begin(); i != _group.end(); ++i) {
+		Object *o = World->getObjectByID(i->second);
+		if (o != NULL)
+			o->setZBox(zb);
+	}
+}
