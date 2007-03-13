@@ -1146,7 +1146,9 @@ const Object* IWorld::getNearestObject(const Object *obj, const std::string &cla
 	for(ObjectMap::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		const Object *o = i->second;
 		//LOG_DEBUG(("%s is looking for %s. found: %s", obj->classname.c_str(), classname.c_str(), o->classname.c_str()));
-		if (o->_id == obj->_id || o->classname != classname || o->hasSameOwner(obj) || PIERCEABLE_PAIR(obj, o))
+		if (o->_id == obj->_id || o->classname != classname || 
+			PIERCEABLE_PAIR(obj, o) || !ZBox::sameBox(obj->getZ(), o->getZ())
+			|| o->hasSameOwner(obj))
 			continue;
 
 		v2<float> cpos = o->_position + o->size / 2;
@@ -1169,7 +1171,8 @@ const Object* IWorld::getNearestObject(const Object *obj, const std::set<std::st
 	for(ObjectMap::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		const Object *o = i->second;
 		//LOG_DEBUG(("%s is looking for %s. found: %s", obj->classname.c_str(), classname.c_str(), o->classname.c_str()));
-		if (o->_id == obj->_id || PIERCEABLE_PAIR(obj, o) || classnames.find(o->classname) == classnames.end() || o->hasSameOwner(obj))
+		if (o->_id == obj->_id || PIERCEABLE_PAIR(obj, o) || !ZBox::sameBox(obj->getZ(), o->getZ()) ||
+			classnames.find(o->classname) == classnames.end() || o->hasSameOwner(obj) )
 			continue;
 
 		v2<float> cpos = o->_position + o->size / 2;
@@ -1201,7 +1204,8 @@ const Object* IWorld::getNearestObject(const Object *obj, const std::set<std::st
 			
 		Object *o = o_i->second;
 		//LOG_DEBUG(("%s is looking for %s. found: %s", obj->classname.c_str(), classname.c_str(), o->classname.c_str()));
-		if (o->_id == obj->_id || PIERCEABLE_PAIR(obj, o) || classnames.find(o->classname) == classnames.end() || o->hasSameOwner(obj))
+		if (o->_id == obj->_id || PIERCEABLE_PAIR(obj, o) || !ZBox::sameBox(obj->getZ(), o->getZ()) ||
+			classnames.find(o->classname) == classnames.end() || o->hasSameOwner(obj))
 			continue;
 
 		v2<float> cpos = o->_position + o->size / 2;
@@ -1369,7 +1373,9 @@ const Object * IWorld::findTarget(const Object *src, const std::set<std::string>
 	float result_value = 0;
 	for(ObjectMap::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		const Object *o = i->second;
-		if (o->impassability == 0 || o->hp == -1 || o->_id == src->_id || o->hasSameOwner(src)) 
+		if (o->impassability == 0 || o->hp == -1 || o->_id == src->_id ||
+			!ZBox::sameBox(src->getZ(), o->getZ()) || 
+			o->hasSameOwner(src) )
 			continue;
 		const bool enemy = enemies.find(o->classname) != enemies.end();
 		const bool bonus = bonuses.find(o->registered_name) != bonuses.end();
@@ -1453,8 +1459,9 @@ void IWorld::enumerateObjects(std::set<const Object *> &id_set, const Object *sr
 			continue;
 		Object *o = o_i->second;
 		
-		if (o->_id == src->_id)
+		if (o->_id == src->_id || !ZBox::sameBox(src->getZ(), o->getZ()))
 			continue;
+
 		if (classfilter != NULL && classfilter->find(o->classname) == classfilter->end())
 			continue;
 		
