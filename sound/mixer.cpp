@@ -71,7 +71,7 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 	_nomusic = nomusic;
 }
 
-IMixer::~IMixer() {
+void IMixer::deinit() {
 	LOG_DEBUG(("cleaning up mixer..."));	
 	delete _ogg; 
 	_ogg = NULL;
@@ -89,6 +89,8 @@ IMixer::~IMixer() {
 	_nosound = true;
 	_nomusic = true;
 }
+
+IMixer::~IMixer() {}
 
 
 void IMixer::loadPlaylist(const std::string &file) {

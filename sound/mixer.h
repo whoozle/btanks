@@ -37,6 +37,7 @@ class IMixer {
 public:
 	DECLARE_SINGLETON(IMixer);
 	void init(const bool no_sound, const bool no_music);
+	void deinit();
 	void loadPlaylist(const std::string &file);
 	void play();
 	const bool play(const std::string &fname, const bool continuous = false);
