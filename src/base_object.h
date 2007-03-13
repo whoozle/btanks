@@ -79,7 +79,7 @@ public:
 
 	void getInfo(v2<float> &pos, v2<float> &vel) const;
 	void updateStateFromVelocity();
-	void setZ(const int z); 
+	void setZ(const int z, const bool absolute = false); 
 	inline const int getZ() const { return _z; }
 	
 	void disown();

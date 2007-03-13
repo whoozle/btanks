@@ -20,6 +20,7 @@
 #include "base_object.h"
 #include "mrt/logger.h"
 #include "world.h"
+#include "zbox.h"
 
 BaseObject::BaseObject(const std::string &classname): 
 	size(), mass(1), speed(0), ttl(-1), impassability(1), hp(1), max_hp(1), 
@@ -201,8 +202,19 @@ void BaseObject::follow(const int id) {
 	_follow = id;
 }
 
-void BaseObject::setZ(const int z) {
-	_z = z;
+void BaseObject::setZ(const int z0, const bool absolute) {
+	if (absolute) {
+		_z = z0;
+		return;
+	}
+
+	int z = z0;
+	
+	if (z < -1000 || z >= 1000) {
+		LOG_WARN(("setZ(%d, !absolute) called. call setZBox to change z-box instead", z));
+		z -= ZBox::getBoxBase(z);
+	}
+	_z = ZBox::getBoxBase(_z) + z; //do not change box;
 }
 
 const bool BaseObject::take(const BaseObject *obj, const std::string &type) {
