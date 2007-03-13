@@ -119,6 +119,9 @@ void IGame::init(const int argc, char *argv[]) {
 			Config->set("map.thrower-item.respawn-interval", (int)45);
 			Config->set("objects.shilka.special-fire-rate", (float)0.4);
 		}
+		if (revision < 2664) {
+			Config->set("objects.zombie.reaction-time", (float)0.5);
+		}
 		Config->set("engine.revision", getRevision());
 	}
 

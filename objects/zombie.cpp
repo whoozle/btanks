@@ -123,22 +123,16 @@ void Zombie::tick(const float dt) {
 }
 
 void Zombie::onSpawn() {
-	float rt, drt = 0.1;
-	if (registered_name == "underwater_zombie") 
-		drt = 0.5;
+	float rt, drt = 0.5;
 	
 	Config->get("objects." + registered_name + ".reaction-time", rt, drt);
 	mrt::randomize(rt, rt/10);
 	_reaction.set(rt);
 	play("hold", true);
 	
-	if (registered_name == "underwater-zombie") {
-		_targets.clear();
-	} else {
-		_targets.insert("player");
-		_targets.insert("trooper");
-		_targets.insert("watchtower");
-	}
+	_targets.insert("player");
+	_targets.insert("trooper");
+	_targets.insert("watchtower");
 	
 	disown();
 }
@@ -171,4 +165,3 @@ Object* Zombie::clone() const  {
 }
 
 REGISTER_OBJECT("zombie", Zombie, ("monster"));
-REGISTER_OBJECT("underwater-zombie", Zombie, ("creature"));

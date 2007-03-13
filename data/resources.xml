@@ -595,8 +595,6 @@
 	<object class="spaceport-baykonur" hp="200" z="0"/> 
 	<object class="zombie" hp="40" speed="80" mass="85" z="-1" />	
 	
-	<object class="underwater-zombie" parent="zombie" />
-	
 	<object class="teleport" impassability="-1" z="-1"/>
 	<object class="teleport-a" parent="teleport" />
 
