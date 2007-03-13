@@ -939,12 +939,25 @@ try {
 	} else if (cmd == "kill") {
 		if (param.empty())
 			return "usage: kill 0-n (slot number)";
-		int idx = param[0] - '0';
+		int idx = atoi(param.c_str());
 		Object *o = PlayerManager->getSlot(idx).getObject();
 		if (o == NULL)
 			throw_ex(("no object in slot %d", idx));
 		o->emit("death", NULL);
 		return "ok";
+	} else if (cmd == "setz") {		
+		std::vector<std::string> p;
+		mrt::split(p, param, " ");
+		if (p.size() < 2)
+			return "usage: setz <slot> <new z>";
+
+		int idx = atoi(p[0].c_str());
+		Object *o = PlayerManager->getSlot(idx).getObject();
+		if (o == NULL)
+			throw_ex(("no object in slot %d", idx));
+		int z = atoi(p[1].c_str());
+		o->setZ(z);
+		return mrt::formatString("setting z %d for object %d", z, o->getID());
 	}
 
 } catch(const std::exception &e) {
