@@ -1267,7 +1267,7 @@ void Object::setZBox(const int zb) {
 	int z = getZ();
 	z -= ZBox::getBoxBase(z); //removing current box
 	z += ZBox::getBoxBase(zb);
-	setZ(z);
+	setZ(z, true);
 	
 	for(Group::const_iterator i = _group.begin(); i != _group.end(); ++i) {
 		Object *o = World->getObjectByID(i->second);

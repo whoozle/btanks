@@ -428,7 +428,7 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 				Object *o = ResourceManager->createObject(res[1], res[2]);
 
 				if (pos.z)
-					o->setZ(pos.z);
+					o->setZ(pos.z, true);
 				
 				o->addOwner(-42); //fake owner ;)
 				World->addObject(o, v2<float>(pos.x, pos.y));
@@ -564,7 +564,7 @@ void IGame::checkItems(const float dt) {
 			LOG_DEBUG(("respawning item: %s:%s", item.classname.c_str(), item.animation.c_str()));
 			Object *o = ResourceManager->createObject(item.classname, item.animation);
 			if (item.z) 
-				o->setZ(item.z);
+				o->setZ(item.z, true);
 			o->addOwner(-42);
 			
 			World->addObject(o, item.position.convert<float>());
@@ -959,7 +959,7 @@ try {
 		if (o == NULL)
 			throw_ex(("no object in slot %d", idx));
 		int z = atoi(p[1].c_str());
-		o->setZ(z);
+		o->setZ(z, true);
 		return mrt::formatString("setting z %d for object %d", z, o->getID());
 	} else if (cmd == "position") {
 		if (param.empty())
