@@ -7,7 +7,10 @@
 
 class Teleport : public Object {
 public: 
-	Teleport() : Object("teleport"), track(0) {}
+	Teleport() : Object("teleport"), track(0) {
+		impassability = -1;
+		setZ(-1);
+	}
 
 	virtual void onSpawn();
 	virtual Object * clone() const;
@@ -32,6 +35,7 @@ public:
 		if (pos.quick_distance(tpos) >= size.x * size.y) {
 			LOG_DEBUG(("dropped target %d", track));
 			track = 0;
+			need_sync = true;
 		}
 	}
 	
