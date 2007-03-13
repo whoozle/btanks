@@ -119,6 +119,7 @@ private:
 	int _spawned_by;
 	
 	friend class IWorld;
+	friend class Teleport;
 };
 
 #endif
