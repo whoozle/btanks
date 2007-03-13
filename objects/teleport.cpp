@@ -110,10 +110,13 @@ Object * Teleport::clone() const {
 	return new Teleport(*this);
 }
 
-REGISTER_OBJECT("teleport", Teleport, ());
 REGISTER_OBJECT("teleport-a", Teleport, ());
 REGISTER_OBJECT("teleport-b", Teleport, ());
 REGISTER_OBJECT("teleport-c", Teleport, ());
 REGISTER_OBJECT("teleport-d", Teleport, ());
+
 REGISTER_OBJECT("teleport-e", Teleport, ());
 REGISTER_OBJECT("teleport-f", Teleport, ());
+REGISTER_OBJECT("teleport-g", Teleport, ());
+REGISTER_OBJECT("teleport-h", Teleport, ());
+
