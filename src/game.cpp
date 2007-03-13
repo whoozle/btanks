@@ -958,6 +958,15 @@ try {
 		int z = atoi(p[1].c_str());
 		o->setZ(z);
 		return mrt::formatString("setting z %d for object %d", z, o->getID());
+	} else if (cmd == "position") {
+		if (param.empty())
+			return "usage: position <slot>";
+		int idx = atoi(param.c_str());
+		Object *o = PlayerManager->getSlot(idx).getObject();
+		if (o == NULL)
+			throw_ex(("no object in slot %d", idx));
+		LOG_NOTICE(("%g %g", o->getPosition().x, o->getPosition().y));
+		return mrt::formatString("%g %g", o->getPosition().x, o->getPosition().y);
 	}
 
 } catch(const std::exception &e) {
