@@ -1,5 +1,8 @@
 #include "object.h"
 #include "resource_manager.h"
+#include "sdlx/rect.h"
+#include "mrt/random.h"
+#include "zbox.h"
 
 class Teleport : public Object {
 public: 
@@ -7,11 +10,56 @@ public:
 
 	virtual void onSpawn();
 	virtual Object * clone() const;
-	
+
+	virtual void emit(const std::string &event, Object * emitter = NULL);
+	~Teleport();
+private: 
+	typedef std::multimap<const std::string, const Teleport *> TeleportMap;
+	static TeleportMap _teleports;
 };
+
+Teleport::TeleportMap Teleport::_teleports;
+
+void Teleport::emit(const std::string &event, Object * emitter) {
+	if (event == "collision" && emitter != NULL) {
+		v2<int> epos, pos;
+		emitter->getCenterPosition(epos);
+		getPosition(pos);
+		int dx = (int)(size.x / 6), dy = (int)(size.y / 6);
+		sdlx::Rect r(pos.x + dx, pos.y + dy, (int)size.x - dx, (int)size.y - dy);
+
+		std::vector<const Teleport *> teleports;
+		if (r.in(epos.x, epos.y)) {
+			//LOG_DEBUG(("collided: %s", emitter->animation.c_str()));
+			for(TeleportMap::const_iterator i = _teleports.lower_bound(registered_name); i != _teleports.upper_bound(registered_name); ++i) {
+				if (i->second != this)
+					teleports.push_back(i->second);
+			}
+		}
+
+		if (teleports.empty())
+			return;
+
+		const Teleport *dst = teleports[teleports.size() == 1?0: mrt::random(teleports.size())];
+		dst->getCenterPosition(emitter->_position);
+
+		emitter->_position -= emitter->size / 2;
+		//LOG_DEBUG(("dst z = %d, dst box base = %d", dst->getZ(), ZBox::getBoxBase(dst->getZ())));
+		emitter->setZBox(ZBox::getBoxBase(dst->getZ()));
+	} else Object::emit(event, emitter);
+}
+
+Teleport::~Teleport() {
+	for(TeleportMap::iterator i = _teleports.begin(); i != _teleports.end(); ) {
+		if (i->second == this)
+			_teleports.erase(i++);
+		else ++i;
+	}
+}
 
 void Teleport::onSpawn() {
 	play("main", true);
+	_teleports.insert(TeleportMap::value_type(registered_name, this));
 }
 
 Object * Teleport::clone() const {
@@ -20,4 +68,8 @@ Object * Teleport::clone() const {
 
 REGISTER_OBJECT("teleport", Teleport, ());
 REGISTER_OBJECT("teleport-a", Teleport, ());
-
+REGISTER_OBJECT("teleport-b", Teleport, ());
+REGISTER_OBJECT("teleport-c", Teleport, ());
+REGISTER_OBJECT("teleport-d", Teleport, ());
+REGISTER_OBJECT("teleport-e", Teleport, ());
+REGISTER_OBJECT("teleport-f", Teleport, ());
