@@ -3,7 +3,7 @@
  <properties>
   <property name="object:teleport-a:teleport:1" value="475,1038"/>
   <property name="object:teleport-a:teleport:2" value="275,938,-2001"/>
-  <property name="object:single-pose:stall-left:1" value="377,1412,-1855"/>
+  <property name="object:stall:stall-left:1" value="377,1412,-1855"/>
   <property name="object:zombie:zombie:14" value="595,1832,-1850"/>
   <property name="spawn:2" value="1182,1818"/>
   <property name="object:zombie:zombie:13" value="595,1831,-1850"/>
@@ -11,13 +11,13 @@
   <property name="object:zombie:zombie:12" value="594,1622,-1850"/>
   <property name="object:zombie:zombie:11" value="639,1722,-1850"/>
   <property name="object:zombie:zombie:9" value="591,1471,-1850"/>
-  <property name="object:single-pose:bus-stop-right:2" value="1474,1784,-1850"/>
+  <property name="object:bus-stop:bus-stop-right:2" value="1474,1784,-1850"/>
   <property name="object:zombie:zombie:10" value="665,1612,-1850"/>
   <property name="object:zombie:zombie:8" value="324,1388,-1850"/>
-  <property name="object:single-pose:bus-stop-right:1" value="381,1444,-1850"/>
+  <property name="object:bus-stop:bus-stop-right:1" value="381,1444,-1850"/>
   <property name="object:zombie:zombie:7" value="352,1588,-1850"/>
   <property name="object:zombie:zombie:6" value="261,1511,-1850"/>
-  <property name="object:single-pose:bus-stop-left:1" value="579,1693,-1850"/>
+  <property name="object:bus-stop:bus-stop-left:1" value="579,1693,-1850"/>
   <property name="object:zombie:zombie:5" value="258,1611,-1850"/>
   <property name="object:zombie:zombie:4" value="305,1517,-1850"/>
   <property name="object:zombie:zombie:3" value="218,1574,-1840"/>
