@@ -39,6 +39,7 @@
 
 #include "objects/vehicle_traits.h"
 #include "ai/traits.h"
+#include "zbox.h"
 
 #include <math.h>
 #include <assert.h>
@@ -140,7 +141,7 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect&src, const sdlx::Re
 			layers.insert(LayerMap::value_type(o->_z, o));
 	}
 	//LOG_DEBUG(("rendering %d objects", layers.size()));
-	int z1 = -1001;
+	int z1 = -10001;
 	for(LayerMap::iterator i = layers.begin(); i != layers.end(); ++i) {
 		if (i->second->isDead())
 			continue;
@@ -295,6 +296,8 @@ TRY {
 			continue;
 		if (obj->_id == o->_id || o->impassability == 0 || (skip_moving && o->speed != 0))
 			continue;
+		if (!ZBox::sameBox(obj->_z, o->_z))
+			continue;
 
 		sdlx::Rect other((int)o->_position.x, (int)o->_position.y,(int)o->size.x, (int)o->size.y);
 		if (!my.intersects(other)) 
@@ -378,6 +381,8 @@ void IWorld::getImpassabilityMatrix(Matrix<int> &matrix, const Object *src, cons
 	for(ObjectMap::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		Object *o = i->second;
 		if (o == src || o == dst || o->impassability <= 0 || o->piercing)
+			continue;
+		if (src != NULL && !ZBox::sameBox(src->_z, o->_z))
 			continue;
 		
 		int im = (int)(o->impassability * 100);
@@ -921,6 +926,7 @@ Object* IWorld::spawn(Object *src, const std::string &classname, const std::stri
 
 	if (z) 
 		obj->setZ(z);
+	obj->_z += ZBox::getBoxBase(src->_z);
 	//LOG_DEBUG(("result: %f %f", obj->_position.x, obj->_position.y));
 	return obj;
 }
@@ -948,6 +954,8 @@ Object * IWorld::spawnGrouped(Object *src, const std::string &classname, const s
 
 	v2<float> pos = obj->_position + obj->_follow_position;
 	
+	obj->_z += ZBox::getBoxBase(src->_z);
+
 	addObject(obj, pos);
 	return obj;
 }

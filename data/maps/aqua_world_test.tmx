@@ -1,31 +1,31 @@
 <?xml version="1.0"?>
 <map version="0.99b" orientation="orthogonal" width="30" height="30" tilewidth="64" tileheight="64">
  <properties>
-  <property name="object:single-pose:stall-left:1" value="377,1412,-855"/>
-  <property name="object:underwater-zombie:zombie:14" value="595,1832,-850"/>
+  <property name="object:single-pose:stall-left:1" value="377,1412,-1855"/>
+  <property name="object:underwater-zombie:zombie:14" value="595,1832,-1850"/>
   <property name="spawn:2" value="1182,1818"/>
-  <property name="object:underwater-zombie:zombie:13" value="595,1831,-850"/>
+  <property name="object:underwater-zombie:zombie:13" value="595,1831,-1850"/>
   <property name="spawn:1" value="63,1754"/>
-  <property name="object:underwater-zombie:zombie:12" value="594,1622,-850"/>
-  <property name="object:underwater-zombie:zombie:11" value="639,1722,-850"/>
-  <property name="object:underwater-zombie:zombie:9" value="591,1471,-850"/>
-  <property name="object:single-pose:bus-stop-right:2" value="1474,1784,-850"/>
-  <property name="object:underwater-zombie:zombie:10" value="665,1612,-850"/>
-  <property name="object:underwater-zombie:zombie:8" value="324,1388,-850"/>
-  <property name="object:single-pose:bus-stop-right:1" value="381,1444,-850"/>
-  <property name="object:underwater-zombie:zombie:7" value="352,1588,-850"/>
-  <property name="object:underwater-zombie:zombie:6" value="261,1511,-850"/>
-  <property name="object:single-pose:bus-stop-left:1" value="579,1693,-850"/>
-  <property name="object:underwater-zombie:zombie:5" value="258,1611,-850"/>
-  <property name="object:underwater-zombie:zombie:4" value="305,1517,-850"/>
-  <property name="object:underwater-zombie:zombie:3" value="218,1574,-840"/>
-  <property name="object:underwater-zombie:zombie:2" value="345,1629,-840"/>
-  <property name="object:single-pose:traffic-lights:6" value="367,1001,-850"/>
-  <property name="object:single-pose:traffic-lights:5" value="198,1005,-850"/>
-  <property name="object:single-pose:traffic-lights:4" value="199,838,-850"/>
-  <property name="object:single-pose:traffic-lights:3" value="368,837,-850"/>
-  <property name="object:single-pose:traffic-lights:2" value="1288,1000,-850"/>
-  <property name="object:single-pose:traffic-lights:1" value="1454,998,-850"/>
+  <property name="object:underwater-zombie:zombie:12" value="594,1622,-1850"/>
+  <property name="object:underwater-zombie:zombie:11" value="639,1722,-1850"/>
+  <property name="object:underwater-zombie:zombie:9" value="591,1471,-1850"/>
+  <property name="object:single-pose:bus-stop-right:2" value="1474,1784,-1850"/>
+  <property name="object:underwater-zombie:zombie:10" value="665,1612,-1850"/>
+  <property name="object:underwater-zombie:zombie:8" value="324,1388,-1850"/>
+  <property name="object:single-pose:bus-stop-right:1" value="381,1444,-1850"/>
+  <property name="object:underwater-zombie:zombie:7" value="352,1588,-1850"/>
+  <property name="object:underwater-zombie:zombie:6" value="261,1511,-1850"/>
+  <property name="object:single-pose:bus-stop-left:1" value="579,1693,-1850"/>
+  <property name="object:underwater-zombie:zombie:5" value="258,1611,-1850"/>
+  <property name="object:underwater-zombie:zombie:4" value="305,1517,-1850"/>
+  <property name="object:underwater-zombie:zombie:3" value="218,1574,-1840"/>
+  <property name="object:underwater-zombie:zombie:2" value="345,1629,-1840"/>
+  <property name="object:single-pose:traffic-lights:6" value="367,1001,-1850"/>
+  <property name="object:single-pose:traffic-lights:5" value="198,1005,-1850"/>
+  <property name="object:single-pose:traffic-lights:4" value="199,838,-1850"/>
+  <property name="object:single-pose:traffic-lights:3" value="368,837,-1850"/>
+  <property name="object:single-pose:traffic-lights:2" value="1288,1000,-1850"/>
+  <property name="object:single-pose:traffic-lights:1" value="1454,998,-1850"/>
   <property name="config:map.default-impassability" value="int:100"/>
  </properties>
  <tileset name="terrains" firstgid="1" tilewidth="64" tileheight="64">
@@ -57,8 +57,8 @@
  </tileset>
  <layer name="impassable" width="30" height="30">
   <properties>
-   <property name="pierceable" value="true"/>
-   <property name="z" value="-1000"/>
+   <property name="z" value="-3000"/>
+   <property name="impassability" value="0"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAO2UQQrDMAwE7Z/k2enVfkN6S+1b+6xikEFZJNWC0ku1sJA40o7shKQUCoVCoVDoH7WBf5Wh9ayse7m85sgpvcj37J9nZjzJVgZ3ZXV71uusLJ5RgKv13RTuQbNr++PPJK7Ux89C446skuX31dgzi4vnvxvcqQrZUziTxcV1D/fM1/4V7lxv1D/cHVzpenW/kroxk4c7+1a5XBtY4/KaamR/g1voW0Rug7MZ9w9yN7g8A/9XWrbU/2l21Bv71dQnEA4AAA==
@@ -69,6 +69,9 @@
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAO3PsREAIAzEsB8ltLD/fmSKQKHC51qVZHU1/N2dB5928vLy8vLy8vLy8vLy/uq9Y2m3vxAOAAA=
   </data>
+  <properties>
+   <property name="impassability" value="0"/>
+  </properties>
   <tileproperties/>
  </layer>
  <layer name="roads" width="30" height="30" visible="0">

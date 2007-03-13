@@ -38,6 +38,7 @@
 #include "config.h"
 #include "player_manager.h"
 #include "finder.h"
+#include "zbox.h"
 
 IMPLEMENT_SINGLETON(Map, IMap)
 
@@ -117,6 +118,7 @@ TRY {
 	}
 	
 	for(LayerMap::const_reverse_iterator l = _layers.rbegin(); l != _layers.rend(); ++l) {
+		
 		const Layer *layer = l->second;
 		int layer_im = layer->impassability;
 
@@ -143,11 +145,10 @@ TRY {
 			}
 		}
 
-		if (layer_im == -1 || (layer->pierceable && (obj->piercing || obj->pierceable))) {
+		if (layer_im == -1 || 
+			(layer->pierceable && (obj->piercing || obj->pierceable)) || 
+			!ZBox::sameBox(l->first, obj->getZ()))
 			continue;
-		}
-
-		//LOG_DEBUG(("im: %d, tile: %d", layer_im, layer->get(xt1, yt1)));
 		
 		if (!(empty_mask & 1) && im[0] == 101) {
 			if (collides(obj, dx1, dy1, getCollisionMap(layer, xt1, yt1))) {

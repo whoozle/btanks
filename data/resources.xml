@@ -476,7 +476,7 @@
 	<animation id="dead-thrower-static" model="dead-man-animation-static" tile="thrower_dead.png" />
 	<animation id="waypoint-16" model="single-tile" tile="waypoint16x16.png" />
 
-	<object class="damage-digits" speed="60" mass="1" ttl="1" z="1500" />
+	<object class="damage-digits" speed="60" mass="1" ttl="1" z="10000" />
 
 	<alias name="pond" class="single-pose" />
 	<alias name="shilka-bullet" class="bullet" />
