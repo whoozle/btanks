@@ -572,7 +572,7 @@ void IMap::end(const std::string &name) {
 			_damage4[_layer_name] = damage;
 		}
 
-		LOG_DEBUG(("layer '%s'. %dx%d. z: %d, size: %d, impassability: %d", e.attrs["name"].c_str(), w, h, z, _data.getSize(), impassability));
+		LOG_DEBUG(("layer '%s'. %dx%d. z: %d, size: %u, impassability: %d", e.attrs["name"].c_str(), w, h, z, (unsigned)_data.getSize(), impassability));
 		if (_layers.find(z) != _layers.end())
 			throw_ex(("layer with z %d already exists", z));
 		if(layer == NULL)

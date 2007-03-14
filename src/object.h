@@ -48,8 +48,9 @@ public:
 	Object(const std::string &classname);
 	~Object();
 	
-	//void init(const std::string &model, const std::string &surface, const int tile_w, const int tile_h);
 	void init(const Animation *other);
+	void init(const std::string &animation); //do not use it, needed for resman
+
 	virtual Object * clone() const;
 
 	virtual void setDirection(const int dir);
@@ -91,7 +92,6 @@ public:
 	virtual void deserialize(const mrt::Serializator &s);
 
 	virtual void onSpawn();
-	void setup(const std::string &animation); //do not use it, needed for resman
 	
 	const bool rotating() const { return _direction_idx != _dst_direction; }
 

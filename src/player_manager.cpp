@@ -127,7 +127,7 @@ TRY {
 		GET_CONFIG_VALUE("player.control-method", std::string, control_method, "keys");	
 		createControlMethod(slot, control_method);
 
-		LOG_DEBUG(("players = %d", _players.size()));
+		LOG_DEBUG(("players = %u", (unsigned)_players.size()));
 		
 		Message m(Message::RequestPlayer);
 
@@ -203,7 +203,7 @@ TRY {
 	case Message::PlayerState: {
 		mrt::Serializator s(&message.data);
 		if (id < 0 || (unsigned)id >= _players.size())
-			throw_ex(("player id exceeds players count (%d/%d)", id, _players.size()));
+			throw_ex(("player id exceeds players count (%d/%d)", id, (int)_players.size()));
 		PlayerSlot &slot = _players[id];
 		if (slot.reserved) 
 			throw_ex(("player sent PlayerState message before join. bye."));
@@ -308,7 +308,7 @@ TRY {
 	
 	case Message::Pong: {
 		if (id < 0 || (unsigned)id >= _players.size())
-			throw_ex(("player id exceeds players count (%d/%d)", id, _players.size()));
+			throw_ex(("player id exceeds players count (%d/%d)", id, (int)_players.size()));
 		float ping = extractPing(message.data);
 		
 		GET_CONFIG_VALUE("multiplayer.ping-interpolation-multiplier", int, pw, 3);
@@ -320,7 +320,7 @@ TRY {
 	case Message::Respawn: {
 		TRY {
 		if (id < 0 || (unsigned)id >= _players.size())
-			throw_ex(("player id exceeds players count (%d/%d)", id, _players.size()));
+			throw_ex(("player id exceeds players count (%d/%d)", id, (int)_players.size()));
 		mrt::Serializator s(&message.data);
 		deserializeSlots(s);
 		World->applyUpdate(s, _trip_time / 1000.0);
@@ -395,7 +395,7 @@ void IPlayerManager::updatePlayers() {
 			size_t hn = _hints.size();
 			for(size_t h = 0; h < hn ; ++h) {
 				if (_hints[h].first.in(player_pos.x, player_pos.y) && slot.hints_reached.find(h) == slot.hints_reached.end()) {
-					LOG_DEBUG(("player[%d] hint %d reached.", i, h));
+					LOG_DEBUG(("player[%d] hint %d reached.", i, (int)h));
 					GET_CONFIG_VALUE("engine.tooltip-speed", float, td, 20);
 					const std::string text = I18n->get(_hints[h].second.first, _hints[h].second.second);
 					slot.tooltips.push(PlayerSlot::Tooltips::value_type(text.size() / td, new Tooltip(text, true)));
@@ -411,7 +411,7 @@ void IPlayerManager::updatePlayers() {
 			size_t cn = _checkpoints.size();
 			for(size_t c = 0; c < cn; ++c) {
 				if (_checkpoints[c].in(player_pos.x, player_pos.y) && slot.checkpoints_reached.find(c) == slot.checkpoints_reached.end()) {
-					LOG_DEBUG(("player[%d] checkpoint %d reached.", i, c));
+					LOG_DEBUG(("player[%d] checkpoint %u reached.", i, (unsigned)c));
 					slot.checkpoints_reached.insert(c);
 					
 					v2<int> spawn_pos(_checkpoints[c].x + _checkpoints[c].w / 2, _checkpoints[c].y + _checkpoints[c].h / 2);
@@ -525,7 +525,7 @@ void IPlayerManager::updatePlayers() {
 
 const float IPlayerManager::extractPing(const mrt::Chunk &data) const {
 	if (data.getSize() < sizeof(unsigned int))
-		throw_ex(("invalid pong recv'ed. (size: %u)", data.getSize()));
+		throw_ex(("invalid pong recv'ed. (size: %u)", (unsigned)data.getSize()));
 	
 	unsigned int ts = * (unsigned int *)data.getPtr();
 	Uint32 ticks = SDL_GetTicks();
@@ -697,8 +697,6 @@ void IPlayerManager::spawnPlayer(PlayerSlot &slot, const std::string &classname,
 	v2<int> tile_size = Map->getTileSize();
 	
 	World->addObject(obj, (tile_size/2 + slot.position).convert<float>(), slot.id);
-	Object *spawn = World->spawn(obj, "spawn-shield", "spawning", v2<float>::empty, v2<float>::empty);
-	spawn->follow(obj, Centered);
 	GET_CONFIG_VALUE("engine.spawn-invulnerability-duration", float, sid, 3);
 	obj->addEffect("invulnerability", sid);
 
@@ -770,7 +768,7 @@ void IPlayerManager::tick(const float now, const float dt) {
 				World->generateUpdate(s, true);
 				m.data = s.getData();
 			}
-			LOG_DEBUG(("sending world update... (size: %u)", m.data.getSize()));
+			LOG_DEBUG(("sending world update... (size: %u)", (unsigned)m.data.getSize()));
 			broadcast(m);
 		}
 		_server->tick(dt);

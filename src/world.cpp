@@ -1018,7 +1018,6 @@ void IWorld::deserializeObjectPV(const mrt::Serializator &s, Object *o) {
 void IWorld::serializeObject(mrt::Serializator &s, const Object *o) const {
 	s.add(o->_id);
 	s.add(o->registered_name);
-	s.add(o->animation);
 	o->serialize(s);
 }
 
@@ -1039,7 +1038,6 @@ Object * IWorld::deserializeObject(const mrt::Serializator &s) {
 	TRY {
 		s.get(id);
 		s.get(rn);
-		s.get(an);
 		
 		{
 			ObjectMap::iterator i = _objects.find(id);
@@ -1053,10 +1051,11 @@ Object * IWorld::deserializeObject(const mrt::Serializator &s) {
 				} else {
 					//wrong classtype and maybe storage class
 					_objects.erase(i);
-					result = ao = ResourceManager->createObject(rn, an);
+					result = ao = ResourceManager->createObject(rn);
 					//LOG_DEBUG(("created ('%s', '%s')", rn.c_str(), an.c_str()));
 					ao->deserialize(s);
-						
+					ao->init(ao->animation);
+					
 					delete o;
 					o = NULL;
 					i->second = ao;
@@ -1066,9 +1065,10 @@ Object * IWorld::deserializeObject(const mrt::Serializator &s) {
 				result->_interpolation_position_backup = pos;
 			} else {
 				//new object.
-				result = ao = ResourceManager->createObject(rn, an);
+				result = ao = ResourceManager->createObject(rn);
 				//LOG_DEBUG(("created ('%s', '%s')", rn.c_str(), an.c_str()));
 				ao->deserialize(s);
+				ao->init(ao->animation);
 				
 				_objects[id] = ao;
 				ao = NULL;

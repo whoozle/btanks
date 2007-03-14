@@ -119,7 +119,7 @@ const bool MissilesInVehicle::take(const BaseObject *obj, const std::string &typ
 		_object = obj->classname;
 		_type = type;
 		std::string animation = type + "-" + obj->classname + "-on-" + _vehicle;
-		setup(animation);
+		init(animation);
 		update();
 		updatePose();
 		LOG_DEBUG(("missiles : %s taken", type.c_str()));

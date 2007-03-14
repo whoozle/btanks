@@ -45,12 +45,12 @@ public:
 	DECLARE_SINGLETON(IResourceManager);
 	
 	void init(const std::vector<std::pair<std::string, std::string> > &fname);
-	void initMe(Object *o, const std::string &animation) const;
 	void clear();
 	
 	AnimationModel *getAnimationModel(const std::string &id);
 	
 	void registerObject(const std::string &classname, Object *);
+	Object *createObject(const std::string &classname) const;
 	Object *createObject(const std::string &classname, const std::string &animation) const;
 	const Object *getClass(const std::string &classname) const;
 	const Animation *getAnimation(const std::string &id) const;

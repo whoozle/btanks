@@ -558,7 +558,7 @@ void Object::setWay(const Way & way) {
 	_way = way;
 	_next_target.clear();
 	if (!way.empty()) 
-		LOG_DEBUG(("%d:%s:%s set %d pending waypoints", getID(), registered_name.c_str(), animation.c_str(), _way.size()));
+		LOG_DEBUG(("%d:%s:%s set %u pending waypoints", getID(), registered_name.c_str(), animation.c_str(), (unsigned)_way.size()));
 }
 
 void Object::calculateWayVelocity() {
@@ -620,10 +620,9 @@ const bool Object::isDriven() const {
 	return !_way.empty();
 }
 
-void Object::setup(const std::string &a) {
-	ResourceManager->initMe(this, a);
+void Object::init(const std::string &a) {
+	init(ResourceManager.get_const()->getAnimation(a));
 	animation = a;
-	_events.clear();
 }
 
 void Object::onSpawn() {

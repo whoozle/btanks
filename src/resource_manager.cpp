@@ -295,13 +295,6 @@ void IResourceManager::init(const std::vector<std::pair<std::string, std::string
 	parseFiles(fname);
 }
 
-void IResourceManager::initMe(Object *o, const std::string &animation) const {
-	const std::string classname = o->classname;
-	const Animation * a = getAnimation(animation);
-	o->init(a);
-	//o->classname = classname;
-}
-
 void IResourceManager::clear() {
 	LOG_DEBUG(("freeing resources"));
 	std::for_each(_animations.begin(), _animations.end(), delete_ptr2<AnimationMap::value_type>());
@@ -346,8 +339,7 @@ void IResourceManager::createAlias(const std::string &name, const std::string &c
 	_objects[name] = r;
 }
 
-
-Object *IResourceManager::createObject(const std::string &classname, const std::string &animation) const {
+Object *IResourceManager::createObject(const std::string &classname) const {
 	ObjectMap::const_iterator i = _objects.find(classname);
 	if (i == _objects.end())
 		throw_ex(("classname '%s' was not registered", classname.c_str()));
@@ -356,8 +348,16 @@ Object *IResourceManager::createObject(const std::string &classname, const std::
 	assert(!r->registered_name.empty());//this usually happens if you constructed object with default ctor from clone() method. check it! 
 										//clone should look like { return new Object(*this); }
 	if (r == NULL)
-		throw_ex(("%s->clone('%s') returns NULL", classname.c_str(), animation.c_str()));
-	r->setup(animation);
+		throw_ex(("%s->clone() returns NULL", classname.c_str()));
+
+	return r;
+}
+
+
+Object *IResourceManager::createObject(const std::string &classname, const std::string &animation) const {
+	Object *r = createObject(classname);
+	
+	r->init(animation);
 	//LOG_DEBUG(("base: %s", i->second->dump().c_str()));
 	//LOG_DEBUG(("clone: %s", r->dump().c_str()));
 	r->animation = animation;
