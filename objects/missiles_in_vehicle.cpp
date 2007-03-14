@@ -39,6 +39,7 @@ public:
 		}
 		VehicleTraits::getWeaponCapacity(max_n, max_v, _vehicle, _object, _type);
 		n = max_n;
+		need_sync = true;
 	}
 
 	MissilesInVehicle(const std::string &vehicle, bool install_default = true) : 
@@ -89,6 +90,7 @@ public:
 		s.get(_object);
 		s.get(_type);
 		s.get(_install_default);
+		updatePose();
 	}
 	
 private:
