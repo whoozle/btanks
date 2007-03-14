@@ -115,7 +115,7 @@ private:
 	v2<float> _position;
 	
 	//do not serialize interpolation stuff.
-	v2<float> _interpolation_vector;
+	v2<float> _interpolation_vector, _interpolation_position_backup;
 	float _interpolation_progress;
 	
 	int _z;

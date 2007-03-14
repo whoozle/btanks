@@ -274,6 +274,7 @@ TRY {
 			updated_objects.insert(IWorld::ObjectMap::value_type(o->getID(), o));
 		}	
 		World->tick(updated_objects, _trip_time / 1000.0);
+		World->interpolateObjects(updated_objects);
 		break;
 	} 
 	case Message::Ping: {

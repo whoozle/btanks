@@ -84,9 +84,10 @@ public:
 	void applyUpdate(const mrt::Serializator &s, const float dt);
 
 	void serializeObject(mrt::Serializator &, const Object *) const;
-	Object* deserializeObject(const mrt::Serializator &, const bool update);
+	Object* deserializeObject(const mrt::Serializator &);
 	void serializeObjectPV(mrt::Serializator &, const Object *) const;
 	void deserializeObjectPV(const mrt::Serializator &, Object *);
+	static void interpolateObjects(ObjectMap &objects);
 
 	void tick(Object &o, const float dt);	
 	void tick(ObjectMap &objects, const float dt);

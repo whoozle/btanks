@@ -719,6 +719,7 @@ TRY {
 		
 	} else if (iv_len != 0) {
 		o._interpolation_vector.clear();
+		o._interpolation_position_backup.clear();
 		o._interpolation_progress = 0;
 	}
 	
@@ -1007,11 +1008,9 @@ void IWorld::deserializeObjectPV(const mrt::Serializator &s, Object *o) {
 		LOG_WARN(("skipped deserializeObjectPV for NULL object"));
 		return;
 	}
+	o->_interpolation_position_backup = o->_position;
 	
-	o->_interpolation_vector.deserialize(s);
-	o->_interpolation_vector -= o->_position;
-	o->_interpolation_progress = 0;
-	
+	o->_position.deserialize(s);
 	o->_velocity.deserialize(s);
 	o->_velocity_fadeout.deserialize(s);
 }
@@ -1034,7 +1033,7 @@ void IWorld::serialize(mrt::Serializator &s) const {
 	}
 }
 
-Object * IWorld::deserializeObject(const mrt::Serializator &s, const bool update) {
+Object * IWorld::deserializeObject(const mrt::Serializator &s) {
 	int id;
 	std::string rn, an;
 	Object *ao = NULL, *result;
@@ -1047,7 +1046,7 @@ Object * IWorld::deserializeObject(const mrt::Serializator &s, const bool update
 			ObjectMap::iterator i = _objects.find(id);
 			if (i != _objects.end()) {
 				Object *o = i->second;
-				v2<float> pos = o->_position;
+				o->_interpolation_position_backup = o->_position;
 				
 				if (rn == o->registered_name) {
 					o->deserialize(s);
@@ -1064,13 +1063,6 @@ Object * IWorld::deserializeObject(const mrt::Serializator &s, const bool update
 					ao = NULL;
 				}
 				assert(result != NULL);
-				
-				if (update) {
-					result->_interpolation_vector = result->_position;
-					result->_interpolation_vector -= pos;
-					result->_position = pos;
-					result->_interpolation_progress = 0;
-				}
 				
 			} else {
 				//new object.
@@ -1113,7 +1105,7 @@ TRY {
 	std::set<int> recv_ids;
 	
 	while(size--) {
-		Object *obj = deserializeObject(s, false);
+		Object *obj = deserializeObject(s);
 		if (obj != NULL)
 			recv_ids.insert(obj->_id);
 	}
@@ -1154,6 +1146,19 @@ void IWorld::generateUpdate(mrt::Serializator &s, const bool clean_sync_flag) {
 	s.add(_last_id);
 }
 
+void IWorld::interpolateObjects(ObjectMap &objects) {
+	for(ObjectMap::iterator i = objects.begin(); i != objects.end(); ++i) {
+		Object *o = i->second;
+		if (o->_interpolation_position_backup.is0()) //newly deserialized object
+			continue;
+
+		o->_interpolation_vector = o->_position - o->_interpolation_position_backup;
+		o->_position = o->_interpolation_position_backup;
+		o->_interpolation_position_backup.clear();
+		o->_interpolation_progress = 0;
+	}
+}
+
 void IWorld::applyUpdate(const mrt::Serializator &s, const float dt) {
 TRY {
 	unsigned int n;
@@ -1161,7 +1166,7 @@ TRY {
 	ObjectMap objects;
 	s.get(n);
 	while(n--) {
-		Object *o = deserializeObject(s, true);
+		Object *o = deserializeObject(s);
 		if (o == NULL) {
 			LOG_WARN(("some object failed to deserialize. wait for the next update"));
 			continue;
@@ -1183,6 +1188,8 @@ TRY {
 	TRY {
 		tick(objects, dt);
 	} CATCH("applyUpdate::tick", throw;);
+	
+	interpolateObjects(objects);
 } CATCH("applyUpdate", throw;)
 }
 
