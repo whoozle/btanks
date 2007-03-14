@@ -763,6 +763,7 @@ flip:
 
 void IGame::deinit() {
 	clear();
+	Mixer->deinit();
 	
 	delete _fps;
 	_fps = NULL;
@@ -788,7 +789,6 @@ void IGame::deinit() {
 void IGame::clear() {
 	LOG_DEBUG(("cleaning up main game object..."));
 	Mixer->cancelAll();
-	Mixer->deinit();
 
 	PlayerManager->clear();
 
