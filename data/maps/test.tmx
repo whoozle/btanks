@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <map version="0.99b" orientation="orthogonal" width="16" height="16" tilewidth="64" tileheight="64">
  <properties>
+  <property name="hint:start:1" value="422,59:128,128"/>
   <property name="object:machinegunner-item:machinegunner-item:2" value="143,5"/>
   <property name="object:thrower-item:thrower-item:1" value="12,108"/>
   <property name="object:machinegunner-item:machinegunner-item:1" value="271,8"/>
@@ -9,16 +10,15 @@
   <property name="object:zombie:zombie:3" value="619,968"/>
   <property name="object:zombie:zombie:2" value="782,896"/>
   <property name="object:zombie:zombie:1" value="700,929"/>
-  <property name="object:watchtower-with-machinegunner:watchtower:100" value="@0,13"/>
   <property name="spawn:3" value="474,952"/>
-  <property name="object:smoke-missiles-item:smoke-missiles-item:1" value="@0,3"/>
+  <property name="object:watchtower-with-machinegunner:watchtower:100" value="@0,13"/>
   <property name="spawn:2" value="454,91"/>
-  <property name="hint:start:1" value="422,59:128,128"/>
+  <property name="object:smoke-missiles-item:smoke-missiles-item:1" value="@0,3"/>
  </properties>
  <tileset name="Untitled" firstgid="1" tilewidth="64" tileheight="64">
   <image source="../tilesets/terrains.png"/>
  </tileset>
- <tileset name="animation" firstgid="191" tilewidth="64" tileheight="64">
+ <tileset name="animation" firstgid="211" tilewidth="64" tileheight="64">
   <image source="../tilesets/animated.png"/>
  </tileset>
  <layer name="Layer 1" width="16" height="16">
@@ -32,9 +32,10 @@
    <property name="animation-frames" value="5"/>
    <property name="animation-speed" value="10"/>
    <property name="animation-frame-size" value="20"/>
+   <property name="z" value="9"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAANvPwMBwAIj3k0mfBOJTFNDk2jtq/6j9o/ZTbj8AEEHJSAAEAAA=
+   H4sIAAAAAAAAALvMwMBwBYgvk0nfBeJ7FNDk2jtq/6j9o/ZTbj8AhlWGlQAEAAA=
   </data>
   <tileproperties/>
  </layer>
