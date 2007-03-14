@@ -727,7 +727,8 @@ void IPlayerManager::setViewport(const int idx, const sdlx::Rect &rect) {
 	slot.visible = true;
 	slot.viewport = rect;
 	const Object *o = _players[idx].getObject();
-	assert(o != NULL);
+	if (o == NULL)
+		throw_ex(("setViewport %d called on empty slot.", idx));
 	
 	v2<float> pos, vel;
 	o->getInfo(pos, vel);
