@@ -118,7 +118,7 @@ const bool Base::checkTarget(const Object * target, const std::string &weapon) c
 	if (wc == "missiles" || wc == "bullet") {
 		if (codir)
 			return true;
-		if ((wt == "guided" && codir1) || (wt == "dispersion" && codir1))
+		if ((wt == "guided" && codir1) || wt == "dispersion")
 			return true;
 		if (wt == "boomerang")
 			return true;
