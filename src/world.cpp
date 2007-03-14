@@ -708,8 +708,7 @@ TRY {
 	
 	
 	//interpolation stuff
-	v2<float> interpolation_vector = o._interpolation_position - o._position;
-	float iv_len = interpolation_vector.length();
+	float iv_len = o._interpolation_vector.length();
 	if (iv_len >= 1 && o._interpolation_progress < 1) {
 		GET_CONFIG_VALUE("multiplayer.interpolation-duration", float, mid, 0.2);	
 		if (mid <= 0)
@@ -720,7 +719,7 @@ TRY {
 			dp = dp_max;
 		
 		o._interpolation_progress += dp;
-		dpos += interpolation_vector * dp;
+		dpos += o._interpolation_vector * dp;
 		
 	} else {
 		o._interpolation_progress = 1;
@@ -1066,7 +1065,7 @@ Object * IWorld::deserializeObject(const mrt::Serializator &s) {
 					ao = NULL;
 				}
 				assert(result != NULL);
-				result->_interpolation_position = o->_position;
+				result->_interpolation_vector = o->_position - o->_interpolation_position_backup;
 				result->_position = o->_interpolation_position_backup;
 				result->_interpolation_progress = 0;
 				
@@ -1158,7 +1157,7 @@ void IWorld::interpolateObjects(ObjectMap &objects) {
 		if (o->_interpolation_position_backup.is0()) //newly deserialized object
 			continue;
 
-		o->_interpolation_position = o->_position;
+		o->_interpolation_vector = o->_position - o->_interpolation_position_backup;
 		o->_position = o->_interpolation_position_backup;
 		o->_interpolation_position_backup.clear();
 		o->_interpolation_progress = 0;
