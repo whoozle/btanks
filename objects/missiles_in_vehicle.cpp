@@ -90,6 +90,7 @@ public:
 		s.get(_object);
 		s.get(_type);
 		s.get(_install_default);
+		update();
 		updatePose();
 	}
 	
