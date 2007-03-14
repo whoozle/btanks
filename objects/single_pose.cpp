@@ -82,6 +82,7 @@ Object* SinglePose::clone() const  {
 }
 
 REGISTER_OBJECT("single-pose", SinglePose, ("main", true));
+REGISTER_OBJECT("destructed-object", SinglePose, ("broken", true));
 REGISTER_OBJECT("single-pose-with-start", SinglePose, ("main", true, false, true));
 REGISTER_OBJECT("single-pose-once", SinglePose, ("main", false));
 REGISTER_OBJECT("single-pose-no-directions", SinglePose, ("main", true, true));
