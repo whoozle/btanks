@@ -131,8 +131,11 @@ const bool Base::checkTarget(const Object * target, const std::string &weapon) c
 
 
 void Base::calculate(const float dt) {
-	if (!_active)
+	if (!_active) {
+		if (isDriven()) 
+			calculateWayVelocity();
 		return;
+	}
 
 	static const std::set<std::string> empty_enemies;
 
