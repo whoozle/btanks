@@ -9,6 +9,8 @@ class Teleport : public Object {
 public: 
 	Teleport() : Object("teleport"), track(0) {
 		impassability = -1;
+		hp = -1;
+		pierceable = true;
 		setZ(-1);
 	}
 
