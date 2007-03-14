@@ -90,8 +90,10 @@ public:
 		s.get(_object);
 		s.get(_type);
 		s.get(_install_default);
+		LOG_DEBUG(("deserialize. max: %d, max visible: %d, quantity: %d", max_n, max_v, n));
 		update();
 		updatePose();
+		LOG_DEBUG(("update. max: %d, max visible: %d, quantity: %d", max_n, max_v, n));
 	}
 	
 private:
