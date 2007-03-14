@@ -713,7 +713,11 @@ TRY {
 		GET_CONFIG_VALUE("multiplayer.interpolation-duration", float, mid, 0.2);	
 		if (mid <= 0)
 			throw_ex(("multiplayer.interpolation-duration must be greater than zero"));
-		float dp = dt / mid;
+		
+		float dp = dt / mid, dp_max = 1 - o._interpolation_progress;
+		if (dp > dp_max) 
+			dp = dp_max;
+		
 		o._interpolation_progress += dp;
 		dpos += o._interpolation_vector * dp;
 		
