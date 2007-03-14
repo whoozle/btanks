@@ -134,6 +134,7 @@ void Base::calculate(const float dt) {
 	if (!_active) {
 		if (isDriven()) 
 			calculateWayVelocity();
+		updateStateFromVelocity();
 		return;
 	}
 
