@@ -708,8 +708,7 @@ TRY {
 	
 	
 	//interpolation stuff
-	float iv_len = o._interpolation_vector.length();
-	if (iv_len >= 1 && o._interpolation_progress < 1) {
+	if (o._interpolation_progress < 1) {
 		GET_CONFIG_VALUE("multiplayer.interpolation-duration", float, mid, 0.2);	
 		if (mid <= 0)
 			throw_ex(("multiplayer.interpolation-duration must be greater than zero"));
@@ -721,9 +720,7 @@ TRY {
 		o._interpolation_progress += dp;
 		dpos += o._interpolation_vector * dp;
 		
-	} else {
-		o._interpolation_progress = 1;
-	}
+	} 
 	
 	//LOG_DEBUG(("%d %d", new_pos.x, new_pos.y));
 	new_pos = (o._position + dpos).convert<int>();
