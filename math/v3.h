@@ -72,15 +72,17 @@ public:
 	
 	inline const T length() const {
 #ifndef V3_DISABLE_Z		
-		if (x == 0 && y == 0 && z == 0) 
-			return 0;
+		const T ql = x * x + y * y + z * z;
+		if (ql == (T)0 || ql == (T)1) 
+			return ql;
 		
-		return (T)sqrt(x * x + y * y + z * z);
+		return (T)sqrt(ql);
 #else 
-		if (x == 0 && y == 0) 
-			return 0;
+		const T ql = x * x + y * y;
+		if (ql == (T)0 || ql == (T)1) 
+			return ql;
 		
-		return (T)sqrt(x * x + y * y);
+		return (T)sqrt(ql);
 #endif
 	}
 

@@ -66,10 +66,11 @@ public:
 	}
 	
 	inline const T length() const {
-		if (x == 0 && y == 0) 
-			return 0;
+		const T ql = x * x + y * y;
+		if (ql == (T)0 || ql == (T)1) 
+			return ql;
 		
-		return (T)sqrt(x * x + y * y);
+		return (T)sqrt(ql);
 	}
 
 	inline const T quick_length() const {
