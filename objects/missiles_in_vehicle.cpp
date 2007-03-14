@@ -46,6 +46,7 @@ public:
 		Object("missiles-on-vehicle"), n(0), max_v(0), max_n(0), hold(true),  _vehicle(vehicle), _install_default(install_default) {
 		// _object(object), _type(type)
 		impassability = 0;
+		hp = -1;
 	}
 	
 	virtual const std::string getType() const {
@@ -59,11 +60,11 @@ public:
 		return n;
 	}
 	
-	virtual void tick(const float dt);
 	virtual Object * clone() const;
 	virtual void emit(const std::string &event, Object * emitter = NULL);
 	virtual void onSpawn();
-	virtual void render(sdlx::Surface &surface, const int x, const int y);
+
+	virtual const bool skipRendering() const;
 	virtual const bool take(const BaseObject *obj, const std::string &type);
 	
 	void updatePose();
@@ -106,6 +107,13 @@ private:
 	bool _install_default;
 };
 
+const bool MissilesInVehicle::skipRendering() const {
+	if (n == 0)
+		return true;
+	return Object::skipRendering();
+}
+
+
 const bool MissilesInVehicle::take(const BaseObject *obj, const std::string &type) {
 	if (obj->classname == "missiles" || obj->classname == "mines") {
 		_object = obj->classname;
@@ -132,16 +140,6 @@ void MissilesInVehicle::updatePose() {
 void MissilesInVehicle::onSpawn() {
 	update();
 	updatePose();
-}
-
-void MissilesInVehicle::render(sdlx::Surface &surface, const int x, const int y) {
-	if (n == 0) 
-		return;
-	Object::render(surface, x, y);
-}
-
-void MissilesInVehicle::tick(const float dt) {
-	Object::tick(dt);
 }
 
 void MissilesInVehicle::emit(const std::string &event, Object * emitter) {
