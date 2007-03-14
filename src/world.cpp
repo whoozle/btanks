@@ -1045,7 +1045,7 @@ Object * IWorld::deserializeObject(const mrt::Serializator &s) {
 			ObjectMap::iterator i = _objects.find(id);
 			if (i != _objects.end()) {
 				Object *o = i->second;
-				o->_interpolation_position_backup = o->_position;
+				v2<float> pos = o->_position;
 				
 				if (rn == o->registered_name) {
 					o->deserialize(s);
@@ -1058,14 +1058,12 @@ Object * IWorld::deserializeObject(const mrt::Serializator &s) {
 					ao->deserialize(s);
 						
 					delete o;
+					o = NULL;
 					i->second = ao;
 					ao = NULL;
 				}
 				assert(result != NULL);
-				result->_interpolation_vector = o->_position - o->_interpolation_position_backup;
-				result->_position = o->_interpolation_position_backup;
-				result->_interpolation_progress = 0;
-				
+				result->_interpolation_position_backup = pos;
 			} else {
 				//new object.
 				result = ao = ResourceManager->createObject(rn, an);
