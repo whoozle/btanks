@@ -705,6 +705,23 @@ TRY {
 } CATCH("tick(damaging map)", throw;)	
 
 	dpos = o.speed * o._velocity * dt;
+	
+	
+	//interpolation stuff
+	float iv_len = o._interpolation_vector.length();
+	if (iv_len >= 1 && o._interpolation_progress < 1) {
+		GET_CONFIG_VALUE("multiplayer.interpolation-duration", float, mid, 0.2);	
+		if (mid <= 0)
+			throw_ex(("multiplayer.interpolation-duration must be greater than zero"));
+		float dp = dt / mid;
+		o._interpolation_progress += dp;
+		dpos += o._interpolation_vector * dp;
+		
+	} else if (iv_len != 0) {
+		o._interpolation_vector.clear();
+		o._interpolation_progress = 0;
+	}
+	
 	//LOG_DEBUG(("%d %d", new_pos.x, new_pos.y));
 	new_pos = (o._position + dpos).convert<int>();
 	//LOG_DEBUG(("%d %d", new_pos.x, new_pos.y));
@@ -991,7 +1008,10 @@ void IWorld::deserializeObjectPV(const mrt::Serializator &s, Object *o) {
 		return;
 	}
 	
-	o->_position.deserialize(s);
+	o->_interpolation_vector.deserialize(s);
+	o->_interpolation_vector -= o->_position;
+	o->_interpolation_progress = 0;
+	
 	o->_velocity.deserialize(s);
 	o->_velocity_fadeout.deserialize(s);
 }
@@ -1014,7 +1034,7 @@ void IWorld::serialize(mrt::Serializator &s) const {
 	}
 }
 
-Object * IWorld::deserializeObject(const mrt::Serializator &s) {
+Object * IWorld::deserializeObject(const mrt::Serializator &s, const bool update) {
 	int id;
 	std::string rn, an;
 	Object *ao = NULL, *result;
@@ -1027,6 +1047,8 @@ Object * IWorld::deserializeObject(const mrt::Serializator &s) {
 			ObjectMap::iterator i = _objects.find(id);
 			if (i != _objects.end()) {
 				Object *o = i->second;
+				v2<float> pos = o->_position;
+				
 				if (rn == o->registered_name) {
 					o->deserialize(s);
 					result = o;
@@ -1041,6 +1063,15 @@ Object * IWorld::deserializeObject(const mrt::Serializator &s) {
 					i->second = ao;
 					ao = NULL;
 				}
+				assert(result != NULL);
+				
+				if (update) {
+					result->_interpolation_vector = result->_position;
+					result->_interpolation_vector -= pos;
+					result->_position = pos;
+					result->_interpolation_progress = 0;
+				}
+				
 			} else {
 				//new object.
 				result = ao = ResourceManager->createObject(rn, an);
@@ -1053,7 +1084,9 @@ Object * IWorld::deserializeObject(const mrt::Serializator &s) {
 
 			//LOG_DEBUG(("deserialized %d: %s", ao->_id, ao->classname.c_str()));
 		}
-	} CATCH(mrt::formatString("deserializeObject('%d:%s:%s')", id, rn.c_str(), an.c_str()).c_str(), { delete ao; throw; })
+	} CATCH(mrt::formatString("deserializeObject('%d:%s:%s')", id, rn.c_str(), an.c_str()).c_str(), { 
+			delete ao; throw; 
+		})
 	assert(result != NULL);
 	updateObject(result);
 	//LOG_DEBUG(("deserialized object: %d:%s:%s", id, rn.c_str(), an.c_str()));
@@ -1080,7 +1113,9 @@ TRY {
 	std::set<int> recv_ids;
 	
 	while(size--) {
-		recv_ids.insert(deserializeObject(s)->_id);
+		Object *obj = deserializeObject(s, false);
+		if (obj != NULL)
+			recv_ids.insert(obj->_id);
 	}
 	cropObjects(recv_ids);	
 } CATCH("World::deserialize()", throw;);
@@ -1126,7 +1161,7 @@ TRY {
 	ObjectMap objects;
 	s.get(n);
 	while(n--) {
-		Object *o = deserializeObject(s);
+		Object *o = deserializeObject(s, true);
 		if (o == NULL) {
 			LOG_WARN(("some object failed to deserialize. wait for the next update"));
 			continue;

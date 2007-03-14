@@ -113,6 +113,11 @@ protected:
 private:
 
 	v2<float> _position;
+	
+	//do not serialize interpolation stuff.
+	v2<float> _interpolation_vector;
+	float _interpolation_progress;
+	
 	int _z;
 	std::deque<int> _owners;
 	std::set<int> _owner_set;

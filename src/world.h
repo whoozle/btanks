@@ -84,7 +84,7 @@ public:
 	void applyUpdate(const mrt::Serializator &s, const float dt);
 
 	void serializeObject(mrt::Serializator &, const Object *) const;
-	Object* deserializeObject(const mrt::Serializator &);
+	Object* deserializeObject(const mrt::Serializator &, const bool update);
 	void serializeObjectPV(mrt::Serializator &, const Object *) const;
 	void deserializeObjectPV(const mrt::Serializator &, Object *);
 
