@@ -708,12 +708,12 @@ TRY {
 	
 	
 	//interpolation stuff
-	if (o._interpolation_progress < 1) {
+	if (o._interpolation_progress < 0.99) {
 		GET_CONFIG_VALUE("multiplayer.interpolation-duration", float, mid, 0.2);	
 		if (mid <= 0)
 			throw_ex(("multiplayer.interpolation-duration must be greater than zero"));
 		
-		float dp = dt / mid, dp_max = 1 - o._interpolation_progress;
+		float dp = dt / mid, dp_max = 1.0 - o._interpolation_progress;
 		if (dp > dp_max) 
 			dp = dp_max;
 		
