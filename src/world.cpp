@@ -134,8 +134,10 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect&src, const sdlx::Re
 	
 	for(ObjectMap::iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		Object *o = i->second;
-		if (o->isDead())
+		if (o->isDead()) {
+			//LOG_DEBUG(("render: skipped dead object: %s", o->registered_name.c_str()));
 			continue;
+		}
 		sdlx::Rect r((int)o->_position.x, (int)o->_position.y, (int)o->size.x, (int)o->size.y);
 		if (r.intersects(src)) 
 			layers.insert(LayerMap::value_type(o->_z, o));
@@ -867,10 +869,11 @@ void IWorld::tick(ObjectMap &objects, const float dt) {
 			//LOG_DEBUG(("following %d...", f));
 			o->_position = leader->_position + o->_follow_position;
 			o->_velocity = leader->_velocity;
+			o->_dead = false;
 			++i;
 		} else {
 			if (World->_safe_mode == false) {
-				LOG_WARN(("leader for object %d is dead. (leader-id:%d)", o->_id, f));
+				//LOG_WARN(("leader for object %d is dead. (leader-id:%d)", o->_id, f));
 				o->_follow = 0;
 				o->emit("death", NULL);
 			
@@ -878,8 +881,8 @@ void IWorld::tick(ObjectMap &objects, const float dt) {
 				o = NULL;
 				objects.erase(i++);
 			} else {
-				i->second->_dead = true;
 				++i;
+				o->_dead = true;
 			}
 		}
 	}
