@@ -869,7 +869,8 @@ void IWorld::tick(ObjectMap &objects, const float dt) {
 			//LOG_DEBUG(("following %d...", f));
 			o->_position = leader->_position + o->_follow_position;
 			o->_velocity = leader->_velocity;
-			o->_dead = false;
+			if (World->_safe_mode)
+				o->_dead = false;
 			++i;
 		} else {
 			if (World->_safe_mode == false) {
