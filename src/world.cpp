@@ -1048,9 +1048,11 @@ Object * IWorld::deserializeObject(const mrt::Serializator &s) {
 				if (rn == o->registered_name) {
 					o->deserialize(s);
 					result = o;
+					assert(result != NULL);
+					result->_interpolation_position_backup = pos;
 				} else {
 					//wrong classtype and maybe storage class
-					_objects.erase(i);
+					//_objects.erase(i); // WTF?!!
 					result = ao = ResourceManager->createObject(rn);
 					//LOG_DEBUG(("created ('%s', '%s')", rn.c_str(), an.c_str()));
 					ao->deserialize(s);
@@ -1061,8 +1063,6 @@ Object * IWorld::deserializeObject(const mrt::Serializator &s) {
 					i->second = ao;
 					ao = NULL;
 				}
-				assert(result != NULL);
-				result->_interpolation_position_backup = pos;
 			} else {
 				//new object.
 				result = ao = ResourceManager->createObject(rn);
