@@ -32,7 +32,7 @@ BaseObject::BaseObject(const std::string &classname):
 	_moving_time(0), _idle_time(0), 
 	need_sync(false),
 	_dead(false), 
-	_position(), _interpolation_progress(0), _z(0), 
+	_position(), _interpolation_progress(1), _z(0), 
 	_owners(), _owner_set(), _spawned_by(0) {
 	//LOG_DEBUG(("allocated id %ld", _id));
 }
