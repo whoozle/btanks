@@ -108,7 +108,7 @@ void IMixer::loadPlaylist(const std::string &file) {
 		}
 		f.close();
 	} CATCH("loadPlayList", {});
-	LOG_DEBUG(("loaded %d songs in playlist", _playlist.size()));
+	LOG_DEBUG(("loaded %u songs in playlist", (unsigned)_playlist.size()));
 }
 
 const bool IMixer::play(const std::string &fname, const bool continuous) {

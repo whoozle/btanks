@@ -126,7 +126,7 @@ void BaseObject::deserialize(const mrt::Serializator &s) {
 		std::string o;
 		for(std::deque<int>::const_iterator i = _owners.begin(); i != _owners.end(); ++i) 
 			o += mrt::formatString("%d,", *i);
-		throw_ex(("broken/duplicate owners recv'ed: %s [%u/%u]", o.substr(0, o.size() - 1).c_str(), _owners.size(), _owner_set.size()));
+		throw_ex(("broken/duplicate owners recv'ed: %s [%u/%u]", o.substr(0, o.size() - 1).c_str(), (unsigned)_owners.size(), (unsigned)_owner_set.size()));
 	}
 		
 	s.get(_spawned_by);
