@@ -87,7 +87,9 @@ public:
 	Object* deserializeObject(const mrt::Serializator &);
 	void serializeObjectPV(mrt::Serializator &, const Object *) const;
 	void deserializeObjectPV(const mrt::Serializator &, Object *);
+
 	static void interpolateObjects(ObjectMap &objects);
+	static void uninterpolate(Object *o);
 
 	void tick(Object &o, const float dt);	
 	void tick(ObjectMap &objects, const float dt);

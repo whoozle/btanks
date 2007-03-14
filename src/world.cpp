@@ -1146,6 +1146,11 @@ void IWorld::generateUpdate(mrt::Serializator &s, const bool clean_sync_flag) {
 	s.add(_last_id);
 }
 
+void IWorld::uninterpolate(Object *o) {
+	float ip = 1.0 - o->_interpolation_progress;
+	o->_position += o->_interpolation_vector * ip;
+}
+
 void IWorld::interpolateObjects(ObjectMap &objects) {
 	for(ObjectMap::iterator i = objects.begin(); i != objects.end(); ++i) {
 		Object *o = i->second;
