@@ -1059,6 +1059,7 @@ Object * IWorld::deserializeObject(const mrt::Serializator &s) {
 void IWorld::cropObjects(const std::set<int> &ids) {
 	for(ObjectMap::iterator i = _objects.begin(); i != _objects.end(); /*haha*/ ) {
 		if (ids.find(i->first) == ids.end()) {
+			LOG_DEBUG(("cropping object %d:%s:%s", i->first, i->second->registered_name.c_str(), i->second->animation.c_str()));
 			deleteObject(i->second);
 			_objects.erase(i++);
 		} else ++i;
