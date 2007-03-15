@@ -266,7 +266,7 @@ TRY {
 
 			LOG_DEBUG(("slot: %d, id: %d, state: %s %s (my state: %s) %s", 
 				slot, id, state.dump().c_str(), my_state?"[skipped]":"", o->getPlayerState().dump().c_str(), 
-				(state != o->getPlayerState())?"**DIFFERS**":""));
+				(my_state && state != o->getPlayerState())?"**DIFFERS**":""));
 
 			//if (!my_state)
 				o->updatePlayerState(state); //update states for all players but me.
