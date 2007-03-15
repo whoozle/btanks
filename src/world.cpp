@@ -1120,7 +1120,7 @@ void IWorld::generateUpdate(mrt::Serializator &s, const bool clean_sync_flag) {
 
 	for(ObjectMap::reverse_iterator i = _objects.rbegin(); i != _objects.rend(); ++i) {
 		const Object *o = i->second;
-		if (o->need_sync || o->speed != 0) {
+		if (o->need_sync || o->speed != 0 || o->_follow != 0) { //leader need for missiles on vehicle or such
 			++c;
 		} else skipped_objects.insert(o->_id);
 	}
