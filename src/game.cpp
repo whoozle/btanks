@@ -756,7 +756,7 @@ flip:
 			_fps->render(_window, _window.getWidth() - (int)(_fps->size.x * 3), 0);
 		}
 		if (_show_log_lines) {
-			_log_lines->hp = Logger->getLinesCounter();
+			_log_lines->hp = mrt::Logger->getLinesCounter();
 			_log_lines->render(_window, _window.getWidth() - (int)(_log_lines->size.x * 3), 20);
 		}
 
