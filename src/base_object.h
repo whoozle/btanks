@@ -58,7 +58,7 @@ public:
 	void inheritParameters(const BaseObject *other);
 	void convertToAbsolute(v2<float> &pos, const v2<float> &dpos);
 
-	inline PlayerState & getPlayerState() { return _state; }
+	inline const PlayerState & getPlayerState() const { return _state; }
 	const bool updatePlayerState(const PlayerState &state);
 
 	void follow(const BaseObject *obj, const GroupType mode = Fixed);
