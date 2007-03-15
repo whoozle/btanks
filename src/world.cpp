@@ -1194,11 +1194,11 @@ TRY {
 	TRY {
 		cropObjects(skipped_objects);
 	} CATCH("applyUpdate::cropObjects", throw;);
-/*
+
 	TRY {
 		tick(objects, dt);
 	} CATCH("applyUpdate::tick", throw;);
-*/	
+	
 	interpolateObjects(objects);
 } CATCH("applyUpdate", throw;)
 }
