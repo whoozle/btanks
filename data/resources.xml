@@ -494,6 +494,7 @@
 	<alias name="road-sign" class="destructable-object" />
 	<alias name="oil-barrels" class="destructable-object-with-fire(pierceable)" />
  	<alias name="impassable-static-corpse" class="static-corpse" />
+	<alias name="pierceable-broken-object" class="broken-object" />
 	
 	<object class="watchtower-with-machinegunner" mass="1000" hp="20" z="200" impassability="1" />
 	<object class="watchtower-with-thrower" mass="1000" hp="20" z="200" impassability="1" />
@@ -546,6 +547,7 @@
 	<object class="train-smoke" z="101" />
 
 	<object class="corpse" hp="1000" ttl="10" fadeout_time="1" z="-5" impassability="0" />
+	<object class="pierceable-broken-object" pierceable="true" />
 	
 	<object class="explosion" hp="1" z="580" />
 	<object class="static-smoke-cloud" impassability="-1" hp="5" z="580" />
