@@ -27,9 +27,6 @@
 #include "math/v2.h"
 #include "sdlx/rect.h"
 
-#include "player_state.h"
-
-
 class Object;
 class ControlMethod;
 class Tooltip;
