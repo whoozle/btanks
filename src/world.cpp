@@ -1152,6 +1152,10 @@ void IWorld::uninterpolate(Object *o) {
 }
 
 void IWorld::interpolateObjects(ObjectMap &objects) {
+	GET_CONFIG_VALUE("multiplayer.disable-interpolation", bool, di, false);
+	if (di)
+		return;
+	
 	for(ObjectMap::iterator i = objects.begin(); i != objects.end(); ++i) {
 		Object *o = i->second;
 		if (o->_interpolation_position_backup.is0()) //newly deserialized object
