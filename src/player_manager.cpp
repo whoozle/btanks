@@ -268,10 +268,8 @@ TRY {
 				slot, id, state.dump().c_str(), my_state?"[skipped]":"", o->getPlayerState().dump().c_str(), 
 				(my_state && state != o->getPlayerState())?"**DIFFERS**":""));
 
-			//if (!my_state)
+			if (!my_state)
 				o->updatePlayerState(state); //update states for all players but me.
-			
-			//World->tick(*o, _trip_time / 1000.0);
 
 			updated_objects.insert(IWorld::ObjectMap::value_type(o->getID(), o));
 		}	
