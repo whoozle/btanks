@@ -135,8 +135,8 @@ private:
 	WaypointClassMap _waypoints;
 	WaypointEdgeMap  _waypoint_edges;
 	
-	bool _show_fps;
-	Object *_fps;
+	bool _show_fps, _show_log_lines;
+	Object *_fps, *_log_lines;
 
 	std::string _preload_map;
 	bool _autojoin;

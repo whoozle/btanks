@@ -130,9 +130,10 @@ void IGame::init(const int argc, char *argv[]) {
 	}
 
 	GET_CONFIG_VALUE("engine.show-fps", bool, show_fps, true);
+	GET_CONFIG_VALUE("engine.show-log-lines", bool, show_log_lines, false);
 	
 	_show_fps = show_fps;
-
+	_show_log_lines = show_log_lines;
 
 	GET_CONFIG_VALUE("engine.sound.disable-sound", bool, no_sound, false);
 	GET_CONFIG_VALUE("engine.sound.disable-music", bool, no_music, false);
@@ -221,6 +222,13 @@ void IGame::init(const int argc, char *argv[]) {
 		_fps->onSpawn();
 		_fps->speed = 0;
 	} else _fps = NULL;
+
+	if (_show_log_lines) {
+		LOG_DEBUG(("creating `digits' object..."));
+		_log_lines = ResourceManager->createObject("damage-digits", "damage-digits");
+		_log_lines->onSpawn();
+		_log_lines->speed = 0;
+	} else _log_lines = NULL;
 
 	
 /*	
@@ -747,6 +755,10 @@ flip:
 			_fps->hp = (int)fr;
 			_fps->render(_window, _window.getWidth() - (int)(_fps->size.x * 3), 0);
 		}
+		if (_show_log_lines) {
+			_log_lines->hp = Logger->getLinesCounter();
+			_log_lines->render(_window, _window.getWidth() - (int)(_log_lines->size.x * 3), 20);
+		}
 
 		
 		Window::flip();
@@ -772,6 +784,9 @@ void IGame::deinit() {
 	
 	delete _fps;
 	_fps = NULL;
+
+	delete _log_lines;
+	_log_lines = NULL;
 	
 	delete _hud;
 	_hud = NULL;
