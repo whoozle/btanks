@@ -674,6 +674,15 @@ void IGame::run() {
 		
 		const float dt = 1.0/fr;
 		
+		if (_running && !_paused) {
+			std::string game_state = popState(dt);
+			if (_game_over && !game_state.empty()) {
+				clear();
+			}
+
+			PlayerManager->tick(SDL_GetTicks(), dt);
+		}
+
 		if (_map_loaded && _credits == NULL && _running && !_paused) {
 			checkItems(dt);
 			PlayerManager->updatePlayers();
@@ -683,14 +692,6 @@ void IGame::run() {
 			Mixer->updateObjects();
 		}
 
-		if (_running && !_paused) {
-			std::string game_state = popState(dt);
-			if (_game_over && !game_state.empty()) {
-				clear();
-			}
-
-			PlayerManager->tick(SDL_GetTicks(), dt);
-		}
 		
 		if (_main_menu)
 			_main_menu->tick(dt);
