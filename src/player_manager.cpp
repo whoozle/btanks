@@ -254,13 +254,6 @@ TRY {
 			state.deserialize(s);
 			
 			if (o != NULL) { 
-				if (state != o->getPlayerState()) {
-					LOG_WARN(("server state is outdated. skipping update"));			
-					World->deserializeObjectPV(s, NULL);
-					continue;
-				}
-			
-			
 				World->tick(*o, -_trip_time / 1000.0);
 			}
 			
