@@ -458,8 +458,7 @@ void IPlayerManager::updatePlayers() {
 			
 			assert(obj != NULL);
 			
-			PlayerState old_state = obj->getPlayerState();
-			PlayerState state = old_state;
+			PlayerState state = obj->getPlayerState();
 			slot.control_method->updateState(state);
 			if (obj->updatePlayerState(state)) {
 				updated = true;
