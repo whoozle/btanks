@@ -65,7 +65,7 @@ private:
 };
 
 const int Car::getPenalty(const int map_im, const int obj_im) const {
-	return(map_im >= 20 || obj_im >= 20)?5000:0;
+	return (map_im >= 20 || obj_im >= 20)?5000:0;
 }
 
 

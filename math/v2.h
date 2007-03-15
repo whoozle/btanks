@@ -248,7 +248,7 @@ public:
 			return 0;
 
 		int xx = c2d8(x) + 1;
-		return (y <= 0 || xx == 1)? xx: 10 - xx;
+		return (y <= 0 || xx == 1)? xx: (10 - xx);
 	}
 
 	inline int getDirection16() const {
@@ -256,7 +256,7 @@ public:
 			return 0;
 
 		int xx = c2d16(x) + 1;
-		return (y <= 0 || xx == 1)? xx: 18 - xx;
+		return (y <= 0 || xx == 1)? xx: (18 - xx);
 	}
 	
 	inline int getDirection(int dirs) {

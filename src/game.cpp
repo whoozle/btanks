@@ -758,7 +758,7 @@ flip:
 		}
 		if (_show_log_lines) {
 			_log_lines->hp = mrt::Logger->getLinesCounter();
-			int size = (_log_lines->hp > 0? (int)log10((double)_log_lines->hp) + 1:1);
+			int size = (_log_lines->hp > 0)? (int)log10((double)_log_lines->hp) + 1:1;
 			_log_lines->render(_window, _window.getWidth() - (int)(_log_lines->size.x * size), 20);
 		}
 

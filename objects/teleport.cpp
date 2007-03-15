@@ -84,7 +84,7 @@ void Teleport::emit(const std::string &event, Object * emitter) {
 		if (teleports.empty())
 			return;
 
-		Teleport *dst = teleports[teleports.size() == 1?0: mrt::random(teleports.size())];
+		Teleport *dst = teleports[(teleports.size() == 1)?0: mrt::random(teleports.size())];
 		dst->getCenterPosition(emitter->_position);
 
 		emitter->_position -= emitter->size / 2;
