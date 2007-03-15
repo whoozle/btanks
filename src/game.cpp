@@ -84,7 +84,6 @@ void IGame::init(const int argc, char *argv[]) {
 		Config->get("map.boomerang-missiles-item.respawn-interval", r, 15);
 		Config->get("map.dirt-bullets-item.respawn-interval", r, 25);
 		Config->get("map.dispersion-bullets-item.respawn-interval", r, 15);
-		Config->get("map.machinegunner-item.respawn-interval", r, 45);
 		Config->get("map.megaheal.respawn-interval", r, 15);
 		Config->get("map.mines-item.respawn-interval", r, 40);
 		Config->get("map.nuke-missiles-item.respawn-interval", r, 20);
@@ -92,7 +91,8 @@ void IGame::init(const int argc, char *argv[]) {
 		Config->get("map.ricochet-bullets-item.respawn-interval", r, 20);
 		Config->get("map.smoke-missiles-item.respawn-interval", r, 20);
 		Config->get("map.stun-missiles-item.respawn-interval", r, 20);
-		Config->get("map.thrower-item.respawn-interval", r, 45);
+		Config->get("map.machinegunner-item.respawn-interval", r, 20);
+		Config->get("map.thrower-item.respawn-interval", r, 20);
 	}
 	{
 		//place for upgrade.
@@ -121,6 +121,10 @@ void IGame::init(const int argc, char *argv[]) {
 		}
 		if (revision < 2664) {
 			Config->set("objects.zombie.reaction-time", (float)0.5);
+		}
+		if (revision < 2711) {
+			Config->set("map.machinegunner-item.respawn-interval", 20);
+			Config->set("map.thrower-item.respawn-interval", 20);		
 		}
 		Config->set("engine.revision", getRevision());
 	}
