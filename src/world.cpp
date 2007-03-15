@@ -1046,7 +1046,12 @@ Object * IWorld::deserializeObject(const mrt::Serializator &s) {
 				v2<float> pos = o->_position;
 				
 				if (rn == o->registered_name) {
+					PlayerState state = o->getPlayerState();
 					o->deserialize(s);
+					if (state != o->getPlayerState()) {
+						LOG_WARN(("player state changed from %s to %s after deserialization.", 
+							state.dump().c_str(), o->getPlayerState().dump().c_str()));
+					}
 					result = o;
 					assert(result != NULL);
 					result->_interpolation_position_backup = pos;
