@@ -60,6 +60,7 @@
 #include "math/v3.h"
 #include "menu/menu.h"
 #include "i18n.h"
+#include <math.h>
 
 IMPLEMENT_SINGLETON(Game, IGame)
 
@@ -757,7 +758,8 @@ flip:
 		}
 		if (_show_log_lines) {
 			_log_lines->hp = mrt::Logger->getLinesCounter();
-			_log_lines->render(_window, _window.getWidth() - (int)(_log_lines->size.x * 3), 20);
+			int size = (_log_lines->hp > 0? (int)log10(_log_lines->hp) + 1:1);
+			_log_lines->render(_window, _window.getWidth() - (int)(_log_lines->size.x * size), 20);
 		}
 
 		
