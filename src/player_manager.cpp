@@ -505,7 +505,7 @@ void IPlayerManager::updatePlayers() {
 			if (slot.id >= 0 && slot.need_sync) {
 				//LOG_DEBUG(("object in slot %d: %s (%d) need sync", j, slot.obj->registered_name.c_str(), slot.obj->getID()));
 				s.add(slot.id);
-				Object * o = World->getObjectByID(slot.id);
+				Object * o = slot.getObject();
 				assert(o != NULL);
 				o->getPlayerState().serialize(s);
 				World->serializeObjectPV(s, o);
@@ -514,11 +514,11 @@ void IPlayerManager::updatePlayers() {
 			}
 		}
 
-		Message m(Message::UpdatePlayers);
-		m.data = s.getData();
-		
-		if (send)
+		if (send) {
+			Message m(Message::UpdatePlayers);
+			m.data = s.getData();
 			broadcast(m);
+		}
 	}
 }
 
