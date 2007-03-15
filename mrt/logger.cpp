@@ -22,7 +22,7 @@ using namespace mrt;
 
 IMPLEMENT_SINGLETON(Logger, ILogger)
 
-ILogger::ILogger():_level(LL_DEBUG) {}
+ILogger::ILogger() : _level(LL_DEBUG), _lines(0) {}
 
 ILogger::~ILogger() {}
 
@@ -43,6 +43,7 @@ const char * ILogger::getLogLevelName(const int level) {
 
 void ILogger::log(const int level, const char *file, const int line, const std::string &str) {
 	if (level < _level) return;
+	++_lines;
 	fprintf(stderr, "[%s:%d]\t [%s] %s\n", file, line, getLogLevelName(level), str.c_str());
 }
 

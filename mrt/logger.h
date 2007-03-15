@@ -39,9 +39,11 @@ public:
 	const char * getLogLevelName(const int level);
 
 	void log(const int level, const char *file, const int line, const std::string &str);
+	const unsigned getLinesCounter() const { return _lines; }
 
 private:
 	int _level;
+	unsigned _lines;
 };
 
 SINGLETON(Logger, ILogger);
