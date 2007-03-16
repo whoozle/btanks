@@ -453,30 +453,22 @@ void IPlayerManager::updatePlayers() {
 	
 	for(int i = 0; i < n; ++i) {
 		PlayerSlot &slot = _players[i];
-		if (slot.control_method != NULL) {
-			Object *obj = slot.getObject();
-			if (obj == NULL && isClient())
-				continue;
-			
-			assert(obj != NULL);
-			
+		Object *obj = slot.getObject();
+
+		if (slot.control_method != NULL && obj != NULL) {
 			PlayerState state = obj->getPlayerState();
 			slot.control_method->updateState(state);
 			if (obj->updatePlayerState(state)) {
 				updated = true;
 				slot.need_sync = true;
 			}
-			//this will never happen now, as external control method is not used anymore
-			/*
-			if (slot.need_sync && slot.remote) {
-				LOG_DEBUG(("correcting remote player. "));
-				obj->getPlayerState() = old_state;
-				World->tick(*obj, -slot.trip_time / 1000.0);
-				obj->getPlayerState() = state;
-				World->tick(*obj, 2 * slot.trip_time / 1000.0);
+		} else if (slot.control_method == NULL && obj != NULL) {
+			if (obj->getPlayerState() != slot.old_state) {
+				slot.old_state = obj->getPlayerState();
+				slot.need_sync = true;
 			}
-			*/
 		}
+		
 		if (slot.need_sync)
 			updated = true;
 	}
