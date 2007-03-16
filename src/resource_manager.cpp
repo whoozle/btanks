@@ -317,7 +317,7 @@ IResourceManager::~IResourceManager() {
 
 void IResourceManager::registerObject(const std::string &classname, Object *o) {
 	assert(!classname.empty());
-	o->registered_name = classname;
+	*const_cast<std::string *>(&o->registered_name) = classname;
 	assert(!o->registered_name.empty());
 	
 	delete _objects[classname];
@@ -328,14 +328,18 @@ void IResourceManager::registerObject(const std::string &classname, Object *o) {
 void IResourceManager::createAlias(const std::string &name, const std::string &classname) {
 	LOG_DEBUG(("creating alias '%s' -> '%s'", name.c_str(), classname.c_str()));
 	ObjectMap::const_iterator i = _objects.find(classname);
+
 	if (i == _objects.end())
 		throw_ex(("object %s was not registered", classname.c_str()));
+
+	if (_objects.find(name) != _objects.end())
+		throw_ex(("attempt to create alias with duplicate name ('%s')", name.c_str()));
+
 	Object * r = i->second->clone();
 	if (r == NULL)
 		throw_ex(("%s->clone(\"\") returns NULL", classname.c_str()));
-	r->registered_name = name;
-	if (_objects[name] != NULL)
-		throw_ex(("attempt to create alias with duplicate name ('%s')", name.c_str()));
+
+	*const_cast<std::string *>(&r->registered_name) = name;
 	_objects[name] = r;
 }
 
