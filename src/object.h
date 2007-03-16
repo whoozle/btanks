@@ -40,7 +40,7 @@ class Pose;
 
 class Object : public BaseObject {
 public:
-	std::string registered_name; //for resource manager only. dont use it.
+	const std::string registered_name; 
 	
 	std::string animation;
 	float fadeout_time;

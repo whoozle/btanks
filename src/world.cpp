@@ -529,6 +529,27 @@ TRY {
 } CATCH("detaching from vehicle", throw;)
 
 	GET_CONFIG_VALUE("engine.disable-z-velocity", bool, disable_z, true);
+
+	//interpolation stuff
+	if (o._interpolation_progress < 1.0) {
+		v2<float> interpolation_vector = o._interpolation_position - o._position;
+		GET_CONFIG_VALUE("multiplayer.interpolation-duration", float, mid, 0.2);	
+		if (mid <= 0)
+			throw_ex(("multiplayer.interpolation-duration must be greater than zero"));
+		
+		float dp = dt / mid, dp_max = 1.0 - o._interpolation_progress;
+		o._interpolation_progress += dp;
+		
+		if (dp > dp_max)
+			dp = dp_max;
+		
+		o._position += interpolation_vector * (dp / dp_max);
+		if (o._interpolation_progress >= 1.0) {
+			o._position = o._interpolation_position; // avoid any float-related errors.
+		}
+	} 
+	
+
 		
 	TRY { 
 		o.tick(dt);
@@ -704,23 +725,6 @@ TRY {
 } CATCH("tick(damaging map)", throw;)	
 
 	dpos = o.speed * o._velocity * dt;
-	
-	
-	//interpolation stuff
-	if (o._interpolation_progress < 1.0) {
-		GET_CONFIG_VALUE("multiplayer.interpolation-duration", float, mid, 0.2);	
-		if (mid <= 0)
-			throw_ex(("multiplayer.interpolation-duration must be greater than zero"));
-		
-		float dp = dt / mid, dp_max = 1.0 - o._interpolation_progress;
-
-		o._interpolation_progress += dp;
-
-		if (dp > dp_max) 
-			dp = dp_max;
-		
-		dpos += o._interpolation_vector * dp;
-	} 
 	
 	//LOG_DEBUG(("%d %d", new_pos.x, new_pos.y));
 	new_pos = (o._position + dpos).convert<int>();
@@ -1155,8 +1159,7 @@ void IWorld::generateUpdate(mrt::Serializator &s, const bool clean_sync_flag) {
 }
 
 void IWorld::uninterpolate(Object *o) {
-	float ip = 1.0 - o->_interpolation_progress;
-	o->_position += o->_interpolation_vector * ip;
+	o->_position = o->_interpolation_position;
 }
 
 void IWorld::interpolateObjects(ObjectMap &objects) {
@@ -1169,7 +1172,7 @@ void IWorld::interpolateObjects(ObjectMap &objects) {
 		if (o->_interpolation_position_backup.is0()) //newly deserialized object
 			continue;
 
-		o->_interpolation_vector = o->_position - o->_interpolation_position_backup;
+		o->_interpolation_position = o->_position;
 		o->_position = o->_interpolation_position_backup;
 		o->_interpolation_position_backup.clear();
 		o->_interpolation_progress = 0;
