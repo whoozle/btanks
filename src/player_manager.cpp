@@ -246,6 +246,8 @@ TRY {
 				if (_players[slot].id == id)
 					break;
 			}
+			if (slot >= _players.size()) 
+				LOG_WARN(("object id %u was not found in slots", slot));
 			const bool my_state = slot < _players.size() && slot == (unsigned)_my_idx;
 			
 			Object *o = World->getObjectByID(id);
