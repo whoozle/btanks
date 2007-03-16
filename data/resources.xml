@@ -515,12 +515,12 @@
 
 	<object class="tank" speed="400" mass="500" hp="80" z="0" />
 	<object class="ai-tank" parent="tank" z="0" />
-	<object class="static-tank" parent="tank" z="0" speed="0" />
+	<object class="static-tank" parent="tank" z="0" />
 	<object class="launcher" speed="500" mass="400" hp="40" z="0" />
 	<object class="ai-launcher" parent="launcher" z="0" />
-	<object class="static-launcher" parent="launcher" z="0" speed="0" />
+	<object class="static-launcher" parent="launcher" z="0" />
 	<object class="shilka" speed="450" mass="400" hp="60" z="0" />
-	<object class="static-shilka" parent="shilka" z="0" speed="0" />
+	<object class="static-shilka" parent="shilka" z="0" />
 	<object class="ai-shilka" parent="shilka" z="0" />
 
 	<object class="bullet" speed="1100" mass="2" ttl="1" hp="10" z="210" />
