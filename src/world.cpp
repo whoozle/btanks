@@ -707,18 +707,19 @@ TRY {
 	
 	
 	//interpolation stuff
-	if (o._interpolation_progress < 0.99) {
+	if (o._interpolation_progress < 1.0) {
 		GET_CONFIG_VALUE("multiplayer.interpolation-duration", float, mid, 0.2);	
 		if (mid <= 0)
 			throw_ex(("multiplayer.interpolation-duration must be greater than zero"));
 		
 		float dp = dt / mid, dp_max = 1.0 - o._interpolation_progress;
+
+		o._interpolation_progress += dp;
+
 		if (dp > dp_max) 
 			dp = dp_max;
 		
-		o._interpolation_progress += dp;
 		dpos += o._interpolation_vector * dp;
-		
 	} 
 	
 	//LOG_DEBUG(("%d %d", new_pos.x, new_pos.y));
@@ -758,7 +759,7 @@ TRY {
 				GET_CONFIG_VALUE("engine.stuck-fixup", float, l, 2);
 				allowed_velocity.normalize();
 				o._position += l * allowed_velocity;
-			}
+			} else LOG_WARN(("%d:%s:%s: bogus 'stuck' flag!", o.getID(), o.registered_name.c_str(), o.animation.c_str()));
 		}
 	skip_collision: ; 
 		/*
