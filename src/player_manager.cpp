@@ -437,7 +437,7 @@ void IPlayerManager::updatePlayers() {
 		LOG_DEBUG(("player in slot %d is dead. respawning. frags: %d", i, slot.frags));
 
 		spawnPlayer(slot, slot.classname, slot.animation);
-		if (slot.remote) {
+		if (isServer() && slot.remote) {
 			Message m(Message::Respawn);
 			mrt::Serializator s;
 			serializeSlots(s);
@@ -476,13 +476,15 @@ void IPlayerManager::updatePlayers() {
 		mrt::Serializator s;
 		PlayerSlot &slot = _players[_my_idx];
 		
-		Object * o = World->getObjectByID(slot.id);
-		o->getPlayerState().serialize(s);
+		const Object * o = slot.getObject();
+		if (o != NULL) {
+			o->getPlayerState().serialize(s);
 		
-		Message m(Message::PlayerState);
-		m.data = s.getData();
-		_client->send(m);
-		_players[_my_idx].need_sync = false;
+			Message m(Message::PlayerState);
+			m.data = s.getData();
+			_client->send(m);
+			_players[_my_idx].need_sync = false;
+		}
 	}
 	//cross-players state exchange
 
