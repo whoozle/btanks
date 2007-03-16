@@ -383,7 +383,6 @@ void IPlayerManager::ping() {
 void IPlayerManager::updatePlayers() {
 	int n = _players.size();
 
-	if (!isClient())
 	for(int i = 0; i < n; ++i) {
 		PlayerSlot &slot = _players[i];
 		if (slot.id <= 0)
