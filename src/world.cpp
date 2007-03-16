@@ -90,10 +90,11 @@ void IWorld::setSafeMode(const bool safe_mode) {
 	LOG_DEBUG(("set safe mode to %s", _safe_mode?"true":"false"));
 }
 
-void IWorld::deleteObject(const Object *o) {
+void IWorld::deleteObject(Object *o) {
 	if (o == NULL)
 		return;
-	
+	if (!o->isDead())
+		o->Object::emit("death", NULL);
 	delete o;
 	_grid.remove(o->_id);
 	//place for callbacks

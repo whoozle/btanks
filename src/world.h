@@ -112,7 +112,7 @@ public:
 	
 private:
 	void updateObject(const Object *o);
-	void deleteObject(const Object *o);
+	void deleteObject(Object *o);
 	
 	void replaceID(const int old_id, const int new_id);
 	
