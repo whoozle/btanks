@@ -26,7 +26,11 @@
 class Zombie : public Object, public ai::Herd{
 public:
 	Zombie(const std::string &classname) : 
-		Object(classname), _reaction(true), _can_punch(true) {}
+		Object(classname), _reaction(true), _can_punch(true) {
+	_targets.insert("player");
+	_targets.insert("trooper");
+	_targets.insert("watchtower");
+	}
 	
 	virtual void tick(const float dt);
 	virtual void calculate(const float dt);
@@ -54,7 +58,7 @@ private:
 	Alarm _reaction;
 	bool _can_punch;
 	
-	//no need for serialization : 
+	//no need for serialization (ONLY IF TARGETS INIT'ED IN CTOR AND DOESNT MODIFIED ANYWHERE
 	std::set<std::string> _targets;
 };
 
@@ -129,10 +133,6 @@ void Zombie::onSpawn() {
 	mrt::randomize(rt, rt/10);
 	_reaction.set(rt);
 	play("hold", true);
-	
-	_targets.insert("player");
-	_targets.insert("trooper");
-	_targets.insert("watchtower");
 	
 	disown();
 }
