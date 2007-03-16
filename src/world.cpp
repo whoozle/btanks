@@ -796,17 +796,17 @@ TRY {
 	//LOG_DEBUG(("%d %d: obj_im: %g, map_im: %g, dpos: %g %g %s", old_pos.x, old_pos.y, obj_im, map_im, dpos.x, dpos.y, stuck?"stuck":""));
 
 	if (o.classname == "player") {
-		if (o._position.x + dpos.x < 0 || (dpos.x > 0 && o._position.x + dpos.x + o.size.x >= map_size.x))
+		if ((dpos.x < 0 && o._position.x + dpos.x < 0) || (dpos.x > 0 && o._position.x + dpos.x + o.size.x >= map_size.x))
 			dpos.x = 0;
 
-		if (o._position.y + dpos.y < 0 || (dpos.y > 0 && o._position.y + dpos.y + o.size.y >= map_size.y))
+		if ((dpos.y < 0 && o._position.y + dpos.y < 0) || (dpos.y > 0 && o._position.y + dpos.y + o.size.y >= map_size.y))
 			dpos.y = 0;
 		
 	} else {
-		if (o._position.x + dpos.x < -o.size.x || (dpos.x > 0 && o._position.x + dpos.x >= map_size.x))
+		if ((dpos.x < 0 && o._position.x + dpos.x < -o.size.x) || (dpos.x > 0 && o._position.x + dpos.x >= map_size.x))
 			dpos.x = 0;
 
-		if (o._position.y + dpos.y < -o.size.y || (dpos.y > 0 && o._position.y + dpos.y >= map_size.y))
+		if ((dpos.y < 0 && o._position.y + dpos.y < -o.size.y) || (dpos.y > 0 && o._position.y + dpos.y >= map_size.y))
 			dpos.y = 0;
 	
 	}
