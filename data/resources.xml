@@ -110,6 +110,10 @@
 		<pose id="main">0,1,2,3,4,5,6,7,8,9</pose>
 	</animation-model>
 
+	<animation-model id="teleport-animation" speed="10">
+		<pose id="main">0,1,2,3,4</pose>
+	</animation-model>
+
 	<animation-model id="item-animation" speed="10">
 		<pose id="main">0,1,2,3,4</pose>
 		<pose id="take" speed="8">5,6,7</pose>
@@ -475,7 +479,7 @@
 	<animation id="dead-thrower" model="dead-man-animation" tile="thrower_dead.png" />
 	<animation id="dead-thrower-static" model="dead-man-animation-static" tile="thrower_dead.png" />
 	<animation id="waypoint-16" model="single-tile" tile="waypoint16x16.png" />
-	<animation id="teleport" model="single-tile" tile="teleport.png" />
+	<animation id="teleport" model="teleport-animation" tile="teleport.png" />
 
 	<object class="damage-digits" speed="60" mass="1" ttl="1" z="999" />
 
