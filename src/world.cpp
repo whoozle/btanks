@@ -1171,6 +1171,11 @@ void IWorld::interpolateObjects(ObjectMap &objects) {
 		Object *o = i->second;
 		if (o->_interpolation_position_backup.is0()) //newly deserialized object
 			continue;
+		
+		if (o->_interpolation_position.quick_distance(o->_position) < 4) {
+			o->_interpolation_position_backup.clear();
+			continue;
+		}
 
 		o->_interpolation_position = o->_position;
 		o->_position = o->_interpolation_position_backup;
