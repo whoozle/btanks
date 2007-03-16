@@ -109,6 +109,7 @@ void BaseObject::deserialize(const mrt::Serializator &s) {
 	s.get(_idle_time);	
 
 	s.get(_dead);
+	_interpolation_position_backup = _position;
 	_position.deserialize(s);
 	s.get(_z);
 	

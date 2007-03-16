@@ -1034,7 +1034,7 @@ void IWorld::serialize(mrt::Serializator &s) const {
 Object * IWorld::deserializeObject(const mrt::Serializator &s) {
 	int id;
 	std::string rn, an;
-	Object *ao = NULL, *result;
+	Object *ao = NULL, *result = NULL;
 	TRY {
 		s.get(id);
 		s.get(rn);
@@ -1042,8 +1042,8 @@ Object * IWorld::deserializeObject(const mrt::Serializator &s) {
 		{
 			ObjectMap::iterator i = _objects.find(id);
 			if (i != _objects.end()) {
+				//object with given ID exists in map.
 				Object *o = i->second;
-				v2<float> pos = o->_position;
 				
 				if (rn == o->registered_name) {
 					PlayerState state = o->getPlayerState();
@@ -1054,7 +1054,6 @@ Object * IWorld::deserializeObject(const mrt::Serializator &s) {
 					}
 					result = o;
 					assert(result != NULL);
-					result->_interpolation_position_backup = pos;
 				} else {
 					//wrong classtype and maybe storage class
 					//_objects.erase(i); // WTF?!!
