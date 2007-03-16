@@ -732,7 +732,7 @@ TRY {
 			v2<float> allowed_velocity;
 			v2<float> object_center = o._position + o.size / 2;
 			if (map_im >= 1.0) {
-				LOG_DEBUG(("stuck: object: %g %g, map: %d %d", o._position.x, o._position.y, stuck_map_pos.x, stuck_map_pos.y));
+				//LOG_DEBUG(("stuck: object: %g %g, map: %d %d", o._position.x, o._position.y, stuck_map_pos.x, stuck_map_pos.y));
 				allowed_velocity = object_center - stuck_map_pos.convert<float>();
 				//LOG_DEBUG(("allowed-velocity: %g %g", allowed_velocity.x, allowed_velocity.y));
 				if (allowed_velocity.same_sign(o._velocity) || allowed_velocity.is0()) {
