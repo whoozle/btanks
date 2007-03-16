@@ -17,6 +17,8 @@
  */
 #include "logger.h"
 #include <stdio.h>
+#define WINDOWS_LEAN_AND_MEAN
+#include <windows.h>
 
 using namespace mrt;
 
@@ -44,6 +46,12 @@ const char * ILogger::getLogLevelName(const int level) {
 void ILogger::log(const int level, const char *file, const int line, const std::string &str) {
 	if (level < _level) return;
 	++_lines;
-	fprintf(stderr, "[%s:%d]\t [%s] %s\n", file, line, getLogLevelName(level), str.c_str());
+	int h = 0, m = 0, s = 0, ms = 0;
+#ifdef WIN32
+	struct _SYSTEMTIME st;
+	GetSystemTime(&st);
+	h = st.wHour; m = st.wMinute; s = st.wSecond; ms = st.wMilliseconds;
+#endif	
+	fprintf(stderr, "[%02d:%02d:%02d.%03d][%s:%d]\t [%s] %s\n", h, m, s, ms, file, line, getLogLevelName(level), str.c_str());
 }
 
