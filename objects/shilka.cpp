@@ -86,14 +86,15 @@ void Shilka::calculate(const float dt) {
 
 
 void Shilka::tick(const float dt) {
+	if (getState().empty()) {
+		play("hold", true);
+	}
+
 	Object::tick(dt);
 
 	const bool fire_possible = _fire.tick(dt);
 	const bool special_fire_possible = _special_fire.tick(dt);
 	
-	if (getState().empty()) {
-		play("hold", true);
-	}
 
 	_velocity.normalize();
 	if (_velocity.is0()) {
