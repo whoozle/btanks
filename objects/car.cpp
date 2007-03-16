@@ -109,12 +109,12 @@ void Car::calculate(const float dt) {
 			_waypoint_name = getNearestWaypoint("cars");
 			assert(!_waypoint_name.empty());
 			Game->getWaypoint(waypoint, "cars", _waypoint_name);
-			LOG_DEBUG(("%s[%d] moving to nearest waypoint at %g %g", animation.c_str(), getID(), waypoint.x, waypoint.y));
+			//LOG_DEBUG(("%s[%d] moving to nearest waypoint at %g %g", animation.c_str(), getID(), waypoint.x, waypoint.y));
 		} else {
-			LOG_DEBUG(("%s[%d] reached waypoint '%s'", animation.c_str(), getID(), _waypoint_name.c_str()));
+			//LOG_DEBUG(("%s[%d] reached waypoint '%s'", animation.c_str(), getID(), _waypoint_name.c_str()));
 			_waypoint_name = Game->getRandomWaypoint("cars", _waypoint_name);
 			Game->getWaypoint(waypoint, "cars", _waypoint_name);
-			LOG_DEBUG(("%s[%d] moving to next waypoint '%s' at %g %g", animation.c_str(), getID(), _waypoint_name.c_str(), waypoint.x, waypoint.y));
+			//LOG_DEBUG(("%s[%d] moving to next waypoint '%s' at %g %g", animation.c_str(), getID(), _waypoint_name.c_str(), waypoint.x, waypoint.y));
 		}
 		GET_CONFIG_VALUE("objects.car.pathfinding-step", int, pfs, 16);
 		findPath(waypoint.convert<int>(), pfs);
@@ -122,7 +122,7 @@ void Car::calculate(const float dt) {
 	Way way;
 	if (calculatingPath() && findPathDone(way)) {
 		if (way.empty()) {
-			LOG_DEBUG(("%s:%s[%d] no path. commit a suicide.", registered_name.c_str(), animation.c_str(), getID()));
+			LOG_DEBUG(("%s:%s[%d] no path. maybe commit a suicide?", registered_name.c_str(), animation.c_str(), getID()));
 			//emit("death", NULL);
 		}
 		setWay(way);
