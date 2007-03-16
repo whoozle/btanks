@@ -732,7 +732,7 @@ TRY {
 			v2<float> allowed_velocity;
 			v2<float> object_center = o._position + o.size / 2;
 			if (map_im >= 1.0) {
-				//LOG_DEBUG(("stuck: object: %g %g, map: %d %d", o._position.x, o._position.y, stuck_map_pos.x, stuck_map_pos.y));
+				LOG_DEBUG(("stuck: object: %g %g, map: %d %d", o._position.x, o._position.y, stuck_map_pos.x, stuck_map_pos.y));
 				allowed_velocity = object_center - stuck_map_pos.convert<float>();
 				//LOG_DEBUG(("allowed-velocity: %g %g", allowed_velocity.x, allowed_velocity.y));
 				if (allowed_velocity.same_sign(o._velocity) || allowed_velocity.is0()) {
@@ -744,13 +744,13 @@ TRY {
 				
 				goto skip_collision;
 			} else if (obj_im >= 1.0) {
-				if (stuck_in == NULL && other_obj == NULL) {
-					LOG_WARN(("%d:%s:%s: stuck_in returned 'NULL' (map_im = %g)", o.getID(), o.registered_name.c_str(), o.animation.c_str(), map_im));
-					goto skip_collision;
-				}
-				
-				if (stuck_in == NULL)
+				if (stuck_in == NULL) {
+					LOG_WARN(("%d:%s:%s: stuck_in returned 'NULL', other_obj: %s (map_im = %g)", o.getID(), o.registered_name.c_str(), o.animation.c_str(), other_obj?other_obj->registered_name.c_str():"NULL", map_im));
+					if (other_obj == NULL)
+						goto skip_collision;
+
 					stuck_in = other_obj;
+				}
 			
 				allowed_velocity = object_center - (stuck_in->_position + stuck_in->size/2);
 				//LOG_DEBUG(("allowed: %g %g", allowed_velocity.x, allowed_velocity.y));
