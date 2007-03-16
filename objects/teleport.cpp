@@ -112,6 +112,8 @@ Object * Teleport::clone() const {
 	return new Teleport(*this);
 }
 
+//fixme: remove this!! :))))))))
+
 REGISTER_OBJECT("teleport-a", Teleport, ());
 REGISTER_OBJECT("teleport-b", Teleport, ());
 REGISTER_OBJECT("teleport-c", Teleport, ());
@@ -122,3 +124,25 @@ REGISTER_OBJECT("teleport-f", Teleport, ());
 REGISTER_OBJECT("teleport-g", Teleport, ());
 REGISTER_OBJECT("teleport-h", Teleport, ());
 
+REGISTER_OBJECT("teleport-i", Teleport, ());
+REGISTER_OBJECT("teleport-j", Teleport, ());
+REGISTER_OBJECT("teleport-k", Teleport, ());
+REGISTER_OBJECT("teleport-l", Teleport, ());
+
+REGISTER_OBJECT("teleport-m", Teleport, ());
+REGISTER_OBJECT("teleport-n", Teleport, ());
+REGISTER_OBJECT("teleport-o", Teleport, ());
+REGISTER_OBJECT("teleport-p", Teleport, ());
+
+REGISTER_OBJECT("teleport-q", Teleport, ());
+REGISTER_OBJECT("teleport-r", Teleport, ());
+REGISTER_OBJECT("teleport-s", Teleport, ());
+REGISTER_OBJECT("teleport-t", Teleport, ());
+
+REGISTER_OBJECT("teleport-u", Teleport, ());
+REGISTER_OBJECT("teleport-v", Teleport, ());
+REGISTER_OBJECT("teleport-w", Teleport, ());
+REGISTER_OBJECT("teleport-x", Teleport, ());
+
+REGISTER_OBJECT("teleport-y", Teleport, ());
+REGISTER_OBJECT("teleport-z", Teleport, ());
