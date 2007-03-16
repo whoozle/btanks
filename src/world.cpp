@@ -744,7 +744,7 @@ TRY {
 				goto skip_collision;
 			} else if (obj_im == 1.0) {
 				if (stuck_in == NULL) {
-					LOG_WARN(("stuck_in returned 'NULL'"));
+					LOG_WARN(("%d:%s:%s: stuck_in returned 'NULL'", o.getID(), o.registered_name.c_str(), o.animation.c_str()));
 					goto skip_collision;
 				}
 				allowed_velocity = object_center - (stuck_in->_position + stuck_in->size/2);
