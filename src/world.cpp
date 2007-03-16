@@ -814,7 +814,7 @@ TRY {
 	
 	GET_CONFIG_VALUE("engine.velocity-fadeout", float, vf, 0.1);
 	
-	o._velocity_fadeout -= o._velocity_fadeout * math::min(dt / vf, 1.0f);
+	o._velocity_fadeout -= o._velocity_fadeout * math::min(math::abs(dt / vf), 1.0f) * math::sign(dt);
 	//LOG_DEBUG(("vfadeout: %g %g", o._velocity_fadeout.x, o._velocity_fadeout.y));
 	if (o._velocity_fadeout.quick_length() < 0.1) {
 		o._velocity_fadeout.clear();

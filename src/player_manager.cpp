@@ -813,7 +813,7 @@ void IPlayerManager::tick(const float now, const float dt) {
 
 	//	if (slot.map_dst_vel.length() > max_speed * 4)
 	//		slot.map_dst_vel.normalize(max_speed * 4);
-		slot.map_dst_pos += slot.map_dst_vel * math::min<float>(dt * 30, 1);
+		slot.map_dst_pos += slot.map_dst_vel * math::min<float>(math::abs(dt * 30), 1.0f) * math::sign(dt);
 
 		//const float max_speed = 2.5 * p->speed;
 		
@@ -829,7 +829,7 @@ void IPlayerManager::tick(const float now, const float dt) {
 		//if (slot.map_vel.length() > max_speed)
 		//	slot.map_vel.normalize(max_speed);
 		
-		slot.map_pos += slot.map_vel * math::min<float>(10 * dt, 1);
+		slot.map_pos += slot.map_vel * math::min<float>(math::abs(10 * dt), 1) * math::sign(dt);
 		//slot.map_pos = slot.map_dst_pos;
 		
 		//VALIDATING TOOLTIPS
