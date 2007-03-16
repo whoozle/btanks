@@ -286,7 +286,7 @@ TRY {
 			} else 
 				SDL_Delay(_delay);
 		}
-	} CATCH("run(main loop)", throw;)
+	} CATCH("run(main loop)", continue;)
 	TRY { 
 		while(_running) {
 			ALenum state;
@@ -297,7 +297,7 @@ TRY {
 			else
 				SDL_Delay(_delay);
 		}
-	} CATCH("run(flush)", throw;)
+	} CATCH("run(flush)", continue;)
 		
 	} while(_running && _repeat);	
 	_running = false;
