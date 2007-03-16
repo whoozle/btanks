@@ -1085,7 +1085,7 @@ Object * IWorld::deserializeObject(const mrt::Serializator &s) {
 		})
 	assert(result != NULL);
 	updateObject(result);
-	//LOG_DEBUG(("deserialized object: %d:%s:%s", id, rn.c_str(), an.c_str()));
+	LOG_DEBUG(("deserialized object: %d:%s:%s", id, result->registered_name.c_str(), result->animation.c_str()));
 	return result;
 }
 
@@ -1101,7 +1101,7 @@ void IWorld::cropObjects(const std::set<int> &ids) {
 void IWorld::deserialize(const mrt::Serializator &s) {
 TRY {
 	s.get(_last_id);
-	_last_id += 10000;
+	//_last_id += 10000;
 	
 	unsigned int size;
 	s.get(size);
@@ -1194,7 +1194,7 @@ TRY {
 		skipped_objects.insert(id);
 	}
 	s.get(_last_id);
-	_last_id += 10000;
+	//_last_id += 10000;
 	TRY {
 		cropObjects(skipped_objects);
 	} CATCH("applyUpdate::cropObjects", throw;);
