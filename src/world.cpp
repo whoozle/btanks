@@ -592,6 +592,7 @@ TRY {
 	
 	float map_im = 0, obj_im = 0;
 
+	const Object *other_obj = NULL;
 	const Object *stuck_in = NULL;
 	v2<int> stuck_map_pos;
 	bool stuck = false;
@@ -635,7 +636,6 @@ TRY {
 		}
 		
 		map_im = map.getImpassability(&o, pos, NULL, has_outline?(hidden_attempt + attempt):NULL) / 100.0;
-		const Object *other_obj = NULL;
 		obj_im = getImpassability(&o, pos, &other_obj, attempt > 0);  //make sure no cached collision event reported here
 
 		if (map_im >= 0 && map_im < 1.0 && obj_im < 1.0) {
@@ -744,10 +744,14 @@ TRY {
 				
 				goto skip_collision;
 			} else if (obj_im >= 1.0) {
-				if (stuck_in == NULL) {
+				if (stuck_in == NULL && other_obj == NULL) {
 					LOG_WARN(("%d:%s:%s: stuck_in returned 'NULL' (map_im = %g)", o.getID(), o.registered_name.c_str(), o.animation.c_str(), map_im));
 					goto skip_collision;
 				}
+				
+				if (stuck_in == NULL)
+					stuck_in = other_obj;
+			
 				allowed_velocity = object_center - (stuck_in->_position + stuck_in->size/2);
 				//LOG_DEBUG(("allowed: %g %g", allowed_velocity.x, allowed_velocity.y));
 				if (allowed_velocity.same_sign(o._velocity) || allowed_velocity.is0()) {
