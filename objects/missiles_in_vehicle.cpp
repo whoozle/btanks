@@ -26,6 +26,7 @@
 class MissilesInVehicle : public Object {
 public:
 	void update() {
+		need_sync = true;
 		if (_object.empty() || _type.empty()) {
 			if (_install_default) {
 				if (_object.empty())
@@ -39,7 +40,6 @@ public:
 		}
 		VehicleTraits::getWeaponCapacity(max_n, max_v, _vehicle, _object, _type);
 		n = max_n;
-		need_sync = true;
 	}
 
 	MissilesInVehicle(const std::string &vehicle, bool install_default = true) : 
