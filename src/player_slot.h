@@ -26,6 +26,7 @@
 #include "mrt/serializable.h"
 #include "math/v2.h"
 #include "sdlx/rect.h"
+#include "player_state.h"
 
 class Object;
 class ControlMethod;
@@ -41,6 +42,8 @@ public:
 
 	int id;
 	ControlMethod * control_method;
+	PlayerState old_state; //help broadcast AI state changes.
+	
 	v2<int> position;
 		
 	bool need_sync;
