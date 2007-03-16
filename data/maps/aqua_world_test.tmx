@@ -25,11 +25,12 @@
   <property name="object:static-corpse:dead-thrower-static:2" value="253,1293,-2020"/>
   <property name="object:static-corpse:dead-thrower-static:1" value="1399,1288,-2020"/>
   <property name="object:teleport-l:teleport:46" value="1291,553,-2002"/>
+  <property name="object:dispersion-bullets-item:dispersion-bullets-item:1" value="289,1329,-1650"/>
   <property name="object:teleport-l:teleport:44" value="1203,569,-2"/>
   <property name="object:bus-stop:bus-stop-right:3" value="370,1332,-1850"/>
   <property name="object:bus-stop:bus-stop-right:2" value="1474,1784,-1850"/>
   <property name="object:static-corpse:dead-thrower:1" value="1443,677,-1850"/>
-  <property name="object:static-launcher:red-launcher:2" value="2,803,-1850"/>
+  <property name="object:static-launcher:red-launcher:3" value="1,811,-1650"/>
   <property name="object:static-launcher:red-launcher:1" value="1418,1315,-2000"/>
   <property name="object:static-corpse:dead-man-static:9" value="439,328,-2020"/>
   <property name="object:static-corpse:dead-man-static:8" value="269,156,-2020"/>
@@ -46,79 +47,93 @@
   <property name="object:static-corpse:dead-man-static:2" value="582,1678,-2020"/>
   <property name="object:static-corpse:dead-man-static:1" value="581,1678,-2020"/>
   <property name="object:broken-object:traffic-lights:2" value="1288,1000,-1850"/>
+  <property name="object:ricochet-bullets-item:ricochet-bullets-item:2" value="1259,366,-1650"/>
+  <property name="object:ricochet-bullets-item:ricochet-bullets-item:1" value="1570,1438,-1650"/>
+  <property name="object:dumb-missiles-item:dumb-missiles-item:7" value="30,88"/>
+  <property name="object:dumb-missiles-item:dumb-missiles-item:6" value="1677,90"/>
   <property name="object:impassable-static-corpse:dead-cyan-shilka:1" value="220,1059,-1800"/>
   <property name="object:static-corpse:dead-man:3" value="594,543,-2020"/>
-  <property name="object:static-tank:cyan-tank:1" value="890,313,-2000"/>
+  <property name="object:dumb-missiles-item:dumb-missiles-item:5" value="1047,504"/>
   <property name="object:static-corpse:dead-man:2" value="1116,825,-2020"/>
+  <property name="object:static-tank:cyan-tank:1" value="890,313,-2000"/>
+  <property name="object:dumb-missiles-item:dumb-missiles-item:4" value="501,1201"/>
   <property name="object:static-corpse:dead-man:1" value="1297,1243,-2020"/>
+  <property name="object:dumb-missiles-item:dumb-missiles-item:2" value="1777,311,-1750"/>
+  <property name="object:dumb-missiles-item:dumb-missiles-item:1" value="1260,1409,-1750"/>
   <property name="object:bus-stop:bus-stop-left:1" value="579,1693,-1850"/>
   <property name="object:impassable-static-corpse:dead-yellow-shilka:2" value="417,1849,-2000"/>
   <property name="object:impassable-static-corpse:dead-yellow-shilka:1" value="603,1301,-1700"/>
   <property name="object:teleport-g:teleport:21" value="1825,6,-2"/>
   <property name="object:teleport-g:teleport:20" value="@10,29,-2002"/>
+  <property name="object:static-shilka:cyan-shilka:3" value="738,1298,-1650"/>
   <property name="object:teleport-j:teleport:31" value="666,730,-2002"/>
-  <property name="object:static-shilka:cyan-shilka:1" value="735,1303,-1850"/>
   <property name="object:teleport-j:teleport:30" value="1163,1799,-2"/>
   <property name="object:static-shilka:yellow-shilka:1" value="582,612,-2000"/>
+  <property name="object:megaheal:megaheal:1" value="1418,740,-1750"/>
   <property name="object:impassable-static-corpse:dead-white-car:2" value="798,788,-1700"/>
-  <property name="object:static-tank:yellow-tank:1" value="1338,1852,-1850"/>
   <property name="object:impassable-static-corpse:dead-white-car:1" value="614,1323,-1700"/>
   <property name="object:impassable-static-corpse:dead-red-tank:1" value="1371,678,-1700"/>
+  <property name="object:static-tank:yellow-tank:1" value="1338,1852,-1850"/>
   <property name="spawn:8" value="800,430,-2"/>
   <property name="spawn:7" value="856,1036,-2"/>
+  <property name="object:heal:heal:3" value="1451,379,-1650"/>
   <property name="spawn:6" value="@16,6,-2"/>
+  <property name="object:heal:heal:2" value="423,636,-1650"/>
   <property name="spawn:5" value="@13,27,-2"/>
-  <property name="spawn:4" value="161,163,-2"/>
+  <property name="object:heal:heal:1" value="589,1351,-1650"/>
   <property name="object:traffic-lights:traffic-lights:7" value="188,815,-1850"/>
+  <property name="spawn:4" value="161,163,-2"/>
   <property name="spawn:3" value="@25,28,-2"/>
   <property name="spawn:2" value="1825,331,-2"/>
   <property name="spawn:1" value="275,1743,-2"/>
   <property name="object:teleport-a:teleport:5" value="460,1037,-2"/>
   <property name="object:teleport-m:teleport:39" value="1327,1177,-2002"/>
   <property name="object:teleport-m:teleport:38" value="1857,1051,-2"/>
-  <property name="object:road-sign:road-sign06:1" value="1458,724,-2150"/>
   <property name="object:teleport-e:teleport:17" value="1826,548,-2"/>
+  <property name="object:road-sign:road-sign06:1" value="1458,724,-2150"/>
   <property name="object:teleport-e:teleport:16" value="1345,181,-2002"/>
   <property name="object:road-sign:road-sign05:1" value="369,556,-2150"/>
   <property name="object:impassable-static-corpse:dead-yellow-launcher:2" value="584,683,-1700"/>
-  <property name="object:impassable-static-corpse:dead-yellow-launcher:1" value="309,1285,-1800"/>
   <property name="object:teleport-h:teleport:25" value="@29,13,-2002"/>
+  <property name="object:impassable-static-corpse:dead-yellow-launcher:1" value="309,1285,-1800"/>
   <property name="object:teleport-h:teleport:24" value="@0,0,-2"/>
-  <property name="object:impassable-static-corpse:dead-cannon:5" value="1389,612,-1850"/>
   <property name="object:road-sign:road-sign04:2" value="1457,1398,-2150"/>
-  <property name="object:impassable-static-corpse:dead-cannon:4" value="1323,598,-1850"/>
+  <property name="object:impassable-static-corpse:dead-cannon:5" value="1389,612,-1850"/>
   <property name="object:road-sign:road-sign04:1" value="370,1657,-2150"/>
+  <property name="object:impassable-static-corpse:dead-cannon:4" value="1323,598,-1850"/>
   <property name="object:impassable-static-corpse:dead-cannon:3" value="679,1319,-1800"/>
   <property name="object:impassable-static-corpse:dead-cannon:2" value="215,1234,-1800"/>
-  <property name="object:teleport-k:teleport:34" value="1,1766,-2"/>
   <property name="object:impassable-static-corpse:dead-cannon:1" value="213,1234,-1800"/>
-  <property name="object:static-launcher:cyan-launcher:1" value="1679,240,-2000"/>
+  <property name="object:teleport-k:teleport:34" value="1,1766,-2"/>
   <property name="object:teleport-k:teleport:33" value="1863,436,-2002"/>
+  <property name="object:static-launcher:cyan-launcher:1" value="1679,240,-2000"/>
   <property name="object:impassable-static-corpse:dead-red-car:5" value="1494,366,-1800"/>
-  <property name="object:impassable-static-corpse:dead-yellow-tank:1" value="164,1883,-1990"/>
   <property name="object:impassable-static-corpse:dead-red-car:4" value="1302,1326,-1800"/>
-  <property name="object:teleport-c:teleport:11" value="21,1504,-2002"/>
+  <property name="object:impassable-static-corpse:dead-yellow-tank:1" value="164,1883,-1990"/>
   <property name="object:impassable-static-corpse:dead-red-car:3" value="239,1673,-1800"/>
-  <property name="object:teleport-i:teleport:43" value="1589,1207,-2"/>
-  <property name="object:teleport-c:teleport:10" value="479,1502,-2"/>
+  <property name="object:teleport-c:teleport:11" value="21,1504,-2002"/>
   <property name="object:impassable-static-corpse:dead-red-car:2" value="651,1446,-1800"/>
-  <property name="object:teleport-i:teleport:42" value="1651,1328,-2002"/>
+  <property name="object:teleport-c:teleport:10" value="479,1502,-2"/>
+  <property name="object:teleport-i:teleport:43" value="1589,1207,-2"/>
   <property name="object:impassable-static-corpse:dead-red-car:1" value="202,1195,-1800"/>
+  <property name="object:teleport-i:teleport:42" value="1651,1328,-2002"/>
   <property name="object:broken-object:watchtower:3" value="216,1139,-1750"/>
   <property name="object:broken-object:watchtower:2" value="1251,1204,-1750"/>
-  <property name="object:teleport-a:teleport:22" value="@6,17,-2002"/>
   <property name="object:broken-object:watchtower:1" value="1241,572,-1750"/>
+  <property name="object:teleport-a:teleport:22" value="@6,17,-2002"/>
+  <property name="object:road-sign:road-sign01:1" value="380,110,-1750"/>
   <property name="object:impassable-static-corpse:dead-cyan-car:6" value="1399,688,-1690"/>
+  <property name="object:oil-barrels:oil-barrels:1" value="401,218,-1650"/>
   <property name="object:impassable-static-corpse:dead-cyan-car:5" value="416,1869,-1990"/>
-  <property name="object:impassable-static-corpse:dead-cyan-car:4" value="237,1565,-1800"/>
   <property name="object:static-corpse:dead-man-static:13" value="1398,899,-1850"/>
-  <property name="object:teleport-b:teleport:3" value="1206,1034,-2"/>
-  <property name="object:impassable-static-corpse:dead-cyan-car:3" value="1257,1187,-1800"/>
+  <property name="object:impassable-static-corpse:dead-cyan-car:4" value="237,1565,-1800"/>
   <property name="object:static-corpse:dead-man-static:12" value="885,1142,-2020"/>
-  <property name="object:impassable-static-corpse:dead-cyan-car:2" value="927,261,-1800"/>
+  <property name="object:impassable-static-corpse:dead-cyan-car:3" value="1257,1187,-1800"/>
+  <property name="object:teleport-b:teleport:3" value="1206,1034,-2"/>
   <property name="object:static-corpse:dead-man-static:11" value="663,1372,-2020"/>
-  <property name="object:impassable-static-corpse:dead-cyan-car:1" value="475,636,-1800"/>
+  <property name="object:impassable-static-corpse:dead-cyan-car:2" value="927,261,-1800"/>
   <property name="object:static-corpse:dead-man-static:10" value="720,355,-2020"/>
+  <property name="object:impassable-static-corpse:dead-cyan-car:1" value="475,636,-1800"/>
  </properties>
  <tileset name="terrains" firstgid="1" tilewidth="64" tileheight="64">
   <image source="../tilesets/terrains.png"/>
