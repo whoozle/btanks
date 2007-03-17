@@ -34,6 +34,9 @@ const bool Directory::opened() const {
 
 #ifndef WIN32
 
+#include <sys/types.h>
+#include <sys/stat.h>
+		  
 
 void Directory::open(const std::string &path) {
 	close();
@@ -72,7 +75,7 @@ const std::string Directory::getHome(const std::string &base_dir) {
 }
 
 void Directory::create(const std::string &path) {
-	
+	mkdir(path.c_str(), S_IRUSR | S_IWUSR | S_IXUSR);
 }
 
 
@@ -112,6 +115,10 @@ void Directory::close() {
 const std::string Directory::getHome(const std::string &base_dir) {
 	throw_ex(("implement me -> http://support.microsoft.com/kb/101507"));
 	return std::string();
+}
+
+void Directory::create(const std::string &path) {
+	throw_ex(("implement me"));	
 }
 
 #endif
