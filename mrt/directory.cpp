@@ -106,7 +106,7 @@ void Directory::close() {
 }
 
 const std::string Directory::getHome() {
-	throw_ex(("implement me"));
+	throw_ex(("implement me -> http://support.microsoft.com/kb/101507"));
 	return std::string();
 }
 
