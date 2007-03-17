@@ -71,11 +71,17 @@ const std::string Directory::getHome(const std::string &base_dir) {
 	if (home_env == NULL) 
 		throw_ex(("getting home directory now is possible only via HOME variable. fix it if you want."));
 
-	return base_dir.empty()?home_env:std::string(home_env) + "/." + base_dir;
+	if (base_dir.empty())
+		return home_env;
+	std::string path = std::string(home_env) + "/." + base_dir;
+	if (!exists(path)) 
+		create(path);
+	return path;
 }
 
 void Directory::create(const std::string &path) {
-	mkdir(path.c_str(), S_IRUSR | S_IWUSR | S_IXUSR);
+	if (mkdir(path.c_str(), S_IRUSR | S_IWUSR | S_IXUSR) == -1)
+		throw_io(("mkdir"));
 }
 
 
