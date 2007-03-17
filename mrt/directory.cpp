@@ -19,7 +19,7 @@
 #include "directory.h"
 #include "ioexception.h"
 #include <errno.h>
-
+#include <stdlib.h>
 
 using namespace mrt;
 
@@ -63,6 +63,15 @@ void Directory::close() {
 	}
 }
 
+const std::string Directory::getHome() {
+	const char *home_env = getenv("HOME");
+	if (home_env != NULL)
+		return home_env;
+	throw_ex(("getting home directory now is possible only via HOME variable. fix it if you want."));
+	return std::string();
+}
+
+
 #else 
 #include <io.h>
 
@@ -94,6 +103,11 @@ void Directory::close() {
 
 	_findclose(_handle);
 	_handle = 0;
+}
+
+const std::string Directory::getHome() {
+	throw_ex(("implement me"));
+	return std::string();
 }
 
 #endif

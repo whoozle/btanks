@@ -20,6 +20,8 @@ public:
 	void close();
 	~Directory();
 	
+	static const std::string getHome();
+
 private: 
 
 
