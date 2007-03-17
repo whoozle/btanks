@@ -1093,7 +1093,7 @@ Object * IWorld::deserializeObject(const mrt::Serializator &s) {
 		})
 	assert(result != NULL);
 	updateObject(result);
-	LOG_DEBUG(("deserialized object: %d:%s:%s", id, result->registered_name.c_str(), result->animation.c_str()));
+	//LOG_DEBUG(("deserialized object: %d:%s:%s", id, result->registered_name.c_str(), result->animation.c_str()));
 	return result;
 }
 
