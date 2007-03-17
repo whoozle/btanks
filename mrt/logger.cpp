@@ -17,6 +17,7 @@
  */
 #include "logger.h"
 #include <stdio.h>
+#include "ioexception.h"
 
 #ifdef WIN32
 #	define WINDOWS_LEAN_AND_MEAN
@@ -31,9 +32,25 @@ using namespace mrt;
 
 IMPLEMENT_SINGLETON(Logger, ILogger)
 
-ILogger::ILogger() : _level(LL_DEBUG), _lines(0) {}
+ILogger::ILogger() : _level(LL_DEBUG), _lines(0), fd(NULL) {}
 
-ILogger::~ILogger() {}
+void ILogger::assign(const std::string &file) {
+	close();
+	fd = fopen(file.c_str(), "wt");	
+	if (fd == NULL)
+		throw_io(("fopen('%s', 'wt')", file.c_str()));
+}
+
+void ILogger::close() {
+	if (fd != NULL) {
+		fclose(fd);
+		fd = NULL;
+	}
+}
+
+ILogger::~ILogger() {
+	close();
+}
 
 void ILogger::setLogLevel(const int level) {
 	_level = level;
@@ -71,6 +88,6 @@ void ILogger::log(const int level, const char *file, const int line, const std::
 	s = tm.tm_sec;
 	ms = tv.tv_usec / 1000;
 #endif
-	fprintf(stderr, "[%02d:%02d:%02d.%03d][%s:%d]\t [%s] %s\n", h, m, s, ms, file, line, getLogLevelName(level), str.c_str());
+	fprintf(fd?fd:stderr, "[%02d:%02d:%02d.%03d][%s:%d]\t [%s] %s\n", h, m, s, ms, file, line, getLogLevelName(level), str.c_str());
 }
 

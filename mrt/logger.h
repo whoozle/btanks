@@ -20,6 +20,7 @@
 
 #include "singleton.h"
 #include "fmt.h"
+#include <stdio.h>
 
 #define LL_DEBUG 0
 #define LL_NOTICE 1
@@ -35,6 +36,9 @@ public:
 	ILogger();
 	virtual ~ILogger();
 
+	void assign(const std::string &file);
+	void close();
+
 	void setLogLevel(const int level);
 	const char * getLogLevelName(const int level);
 
@@ -44,6 +48,8 @@ public:
 private:
 	int _level;
 	unsigned _lines;
+	
+	FILE *fd;
 };
 
 SINGLETON(Logger, ILogger);
