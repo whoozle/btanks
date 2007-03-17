@@ -63,12 +63,16 @@ void Directory::close() {
 	}
 }
 
-const std::string Directory::getHome() {
+const std::string Directory::getHome(const std::string &base_dir) {
 	const char *home_env = getenv("HOME");
-	if (home_env != NULL)
-		return home_env;
-	throw_ex(("getting home directory now is possible only via HOME variable. fix it if you want."));
-	return std::string();
+	if (home_env == NULL) 
+		throw_ex(("getting home directory now is possible only via HOME variable. fix it if you want."));
+
+	return base_dir.empty()?home_env:std::string(home_env) + "/." + base_dir;
+}
+
+void Directory::create(const std::string &path) {
+	
 }
 
 
@@ -105,7 +109,7 @@ void Directory::close() {
 	_handle = 0;
 }
 
-const std::string Directory::getHome() {
+const std::string Directory::getHome(const std::string &base_dir) {
 	throw_ex(("implement me -> http://support.microsoft.com/kb/101507"));
 	return std::string();
 }
