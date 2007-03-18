@@ -97,6 +97,8 @@ public:
 	const int getSummoner() const { return _spawned_by; }
 	void getTimes(float &moving, float &idle) const { moving = _moving_time; idle = _idle_time; }
 	
+	void uninterpolate();
+	
 protected:
 	int _id;
 	int _follow;
@@ -115,7 +117,7 @@ private:
 	v2<float> _position;
 	
 	//do not serialize interpolation stuff.
-	v2<float> _interpolation_position, _interpolation_position_backup;
+	v2<float> _interpolation_vector, _interpolation_position_backup;
 	float _interpolation_progress;
 	
 	int _z;
