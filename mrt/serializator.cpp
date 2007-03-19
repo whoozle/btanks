@@ -31,6 +31,7 @@
 #include <limits.h>
 #include "exception.h"
 
+#define IEEE_754_SERIALIZATION
 
 using namespace mrt;
 
@@ -183,7 +184,7 @@ void Serializator::get(float &f) const {
 	get(size);
 	if (size != sizeof(f))
 		throw_ex(("failed to deserialize IEEE 754 float"));	
-	get(&f, size);
+	get((void *)&f, size);
 #else
 	std::string str;
 	get(str);
@@ -202,7 +203,7 @@ void Serializator::get(std::string &str)  const {
 	_pos += size;
 }
 
-void Serializator::get(void *raw, const int size) {
+void Serializator::get(void *raw, const int size) const {
 	ASSERT_POS(size);
 	if (size == 0) 
 		return;
