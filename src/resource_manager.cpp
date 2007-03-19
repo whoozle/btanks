@@ -305,6 +305,8 @@ void IResourceManager::clear() {
 	_surfaces.clear();
 	std::for_each(_cmaps.begin(), _cmaps.end(), delete_ptr2<CollisionMap::value_type>());
 	_cmaps.clear();
+	std::for_each(_fonts.begin(), _fonts.end(), delete_ptr2<FontMap::value_type>());
+	_fonts.clear();
 	std::for_each(_objects.begin(), _objects.end(), delete_ptr2<ObjectMap::value_type>());
 	_objects.clear();
 
