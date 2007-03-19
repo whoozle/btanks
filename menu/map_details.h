@@ -16,6 +16,7 @@ public:
 	virtual void getSize(int &w, int &h) const;
 	
 	void set(const std::string &base, const std::string &map, const std::string &comment_id);
+	~MapDetails();
 private: 
 	Box _background;
 	Tooltip *_map_desc;

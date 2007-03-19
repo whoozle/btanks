@@ -52,3 +52,6 @@ void MapDetails::render(sdlx::Surface &surface, const int x, const int y) {
 		_map_desc->render(surface, x + mx, y + yp);
 }
 
+MapDetails::~MapDetails() {
+	delete _map_desc;
+}
