@@ -66,14 +66,15 @@ void Directory::close() {
 	}
 }
 
-const std::string Directory::getHome(const std::string &base_dir) {
+const std::string Directory::getHome() {
 	const char *home_env = getenv("HOME");
 	if (home_env == NULL) 
 		throw_ex(("getting home directory now is possible only via HOME variable. fix it if you want."));
+	return home_env;
+}
 
-	if (base_dir.empty())
-		return home_env;
-	std::string path = std::string(home_env) + "/." + base_dir;
+const std::string Directory::getAppDir(const std::string &name) {
+	std::string path = getHome() + "/." + name;
 	if (!exists(path)) 
 		create(path);
 	return path;
@@ -118,7 +119,7 @@ void Directory::close() {
 	_handle = 0;
 }
 
-const std::string Directory::getHome(const std::string &base_dir) {
+const std::string Directory::getHome() {
 	throw_ex(("implement me -> http://support.microsoft.com/kb/101507"));
 	return std::string();
 }

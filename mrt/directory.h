@@ -20,7 +20,8 @@ public:
 	void close();
 	~Directory();
 	
-	static const std::string getHome(const std::string &base_dir = std::string());
+	static const std::string getHome();
+	static const std::string getAppDir(const std::string &name);
 	static void create(const std::string &path);
 
 private: 
