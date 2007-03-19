@@ -9,6 +9,7 @@ const bool ZBox::operator<(const ZBox &other) const {
 		return position < other.position;
 	if (size != other.size)
 		return size < other.size;
+	return false;
 }
 
 const bool ZBox::in(const v3<int> &p) const {
