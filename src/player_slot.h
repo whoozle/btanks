@@ -25,6 +25,7 @@
 
 #include "mrt/serializable.h"
 #include "math/v2.h"
+#include "math/v3.h"
 #include "sdlx/rect.h"
 #include "player_state.h"
 
@@ -44,7 +45,7 @@ public:
 	ControlMethod * control_method;
 	PlayerState old_state; //help broadcast AI state changes.
 	
-	v2<int> position;
+	v3<int> position;
 		
 	bool need_sync;
 	bool remote;

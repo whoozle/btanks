@@ -26,7 +26,7 @@
 #include "math/v2.h"
 #include "math/v3.h"
 #include "alarm.h"
-#include "sdlx/rect.h"
+#include "zbox.h"
 
 namespace mrt {
 class Chunk;
@@ -59,9 +59,9 @@ public:
 
 	void createControlMethod(PlayerSlot &slot, const std::string &name);
 
-	void addSlot(const v2<int> &position);
-	void addCheckpoint(const v2<int> &position, const v2<int> &size);
-	void addHint(const v2<int> &position, const v2<int> &size, const std::string &area, const std::string &name);
+	void addSlot(const v3<int> &position);
+	void addCheckpoint(const v3<int> &position, const v2<int> &size);
+	void addHint(const v3<int> &position, const v2<int> &size, const std::string &area, const std::string &name);
 
 	PlayerSlot &getSlot(const unsigned int idx);
 	const PlayerSlot &getSlot(const unsigned int idx) const;
@@ -116,8 +116,8 @@ private:
 
 	int _my_idx;
 	std::vector<PlayerSlot> _players;
-	std::vector<sdlx::Rect> _checkpoints;
-	typedef std::vector<std::pair<sdlx::Rect, std::pair<std::string, std::string> > > Hints; 
+	std::vector<ZBox> _checkpoints;
+	typedef std::vector<std::pair<ZBox, std::pair<std::string, std::string> > > Hints; 
 	Hints _hints;
 
 	float _trip_time;

@@ -391,11 +391,18 @@ void IPlayerManager::updatePlayers() {
 		Object *o = slot.getObject();
 		if (o != NULL /* && !o->isDead() */) {
 			//server or split screen
-			v2<int> player_pos;
-			o->getCenterPosition(player_pos);
+			v3<int> player_pos;
+			{
+				v2<int> p;
+				o->getCenterPosition(p);
+				player_pos.x = p.x;
+				player_pos.y = p.y;
+				player_pos.z = o->getZ();
+			}
+			
 			size_t hn = _hints.size();
 			for(size_t h = 0; h < hn ; ++h) {
-				if (_hints[h].first.in(player_pos.x, player_pos.y) && slot.hints_reached.find(h) == slot.hints_reached.end()) {
+				if (_hints[h].first.in(player_pos) && slot.hints_reached.find(h) == slot.hints_reached.end()) {
 					LOG_DEBUG(("player[%d] hint %d reached.", i, (int)h));
 					GET_CONFIG_VALUE("engine.tooltip-speed", float, td, 20);
 					const std::string text = I18n->get(_hints[h].second.first, _hints[h].second.second);
@@ -411,11 +418,11 @@ void IPlayerManager::updatePlayers() {
 			
 			size_t cn = _checkpoints.size();
 			for(size_t c = 0; c < cn; ++c) {
-				if (_checkpoints[c].in(player_pos.x, player_pos.y) && slot.checkpoints_reached.find(c) == slot.checkpoints_reached.end()) {
+				if (_checkpoints[c].in(player_pos) && slot.checkpoints_reached.find(c) == slot.checkpoints_reached.end()) {
 					LOG_DEBUG(("player[%d] checkpoint %u reached.", i, (unsigned)c));
 					slot.checkpoints_reached.insert(c);
 					
-					v2<int> spawn_pos(_checkpoints[c].x + _checkpoints[c].w / 2, _checkpoints[c].y + _checkpoints[c].h / 2);
+					v3<int> spawn_pos(_checkpoints[c].position + _checkpoints[c].size.convert2v3(0) / 2);
 					slot.position = spawn_pos;
 					if (i == 0)
 						Game->displayMessage("CHECKPOINT REACHED", 3);
@@ -580,20 +587,20 @@ void IPlayerManager::clear() {
 	_hints.clear();
 }
 
-void IPlayerManager::addSlot(const v2<int> &position) {
+void IPlayerManager::addSlot(const v3<int> &position) {
 	PlayerSlot slot;
 	slot.position = position;
 	_players.push_back(slot);
 }
 
-void IPlayerManager::addCheckpoint(const v2<int> &position, const v2<int> &size) {
+void IPlayerManager::addCheckpoint(const v3<int> &position, const v2<int> &size) {
 	LOG_DEBUG(("adding checkpoint at %d %d (%dx%d)", position.x, position.y, size.x, size.y));
-	_checkpoints.push_back(sdlx::Rect(position.x, position.y, size.x, size.y));
+	_checkpoints.push_back(ZBox(position, size));
 }
 
-void IPlayerManager::addHint(const v2<int> &position, const v2<int> &size, const std::string &area, const std::string &name) {
+void IPlayerManager::addHint(const v3<int> &position, const v2<int> &size, const std::string &area, const std::string &name) {
 	LOG_DEBUG(("adding hint '%s'(area: '%s') at %d %d (%dx%d)", name.c_str(), area.c_str(), position.x, position.y, size.x, size.y));
-	_hints.push_back(Hints::value_type(sdlx::Rect(position.x, position.y, size.x, size.y), std::pair<std::string, std::string>(area, name)));
+	_hints.push_back(Hints::value_type(ZBox(position, size), std::pair<std::string, std::string>(area, name)));
 }
 
 
@@ -690,7 +697,9 @@ void IPlayerManager::spawnPlayer(PlayerSlot &slot, const std::string &classname,
 
 	v2<int> tile_size = Map->getTileSize();
 	
-	World->addObject(obj, (tile_size/2 + slot.position).convert<float>(), slot.id);
+	obj->setZBox(slot.position.z);
+	World->addObject(obj, (tile_size/2 + v2<int>(slot.position.x, slot.position.y)).convert<float>(), slot.id);
+
 	GET_CONFIG_VALUE("engine.spawn-invulnerability-duration", float, sid, 3);
 	obj->addEffect("invulnerability", sid);
 
@@ -866,13 +875,13 @@ void IPlayerManager::render(sdlx::Surface &window, const int vx, const int vy) {
 			GET_CONFIG_VALUE("engine.show-special-zones", bool, ssz, false);
 			if (ssz) {		
 				for(size_t i = 0; i < _checkpoints.size(); ++i) {
-					sdlx::Rect pos = _checkpoints[i];
+					sdlx::Rect pos(_checkpoints[i].position.x, _checkpoints[i].position.y, _checkpoints[i].size.x, _checkpoints[i].size.y);
 					pos.x -= (int)slot.map_pos.x;
 					pos.y -= (int)slot.map_pos.y;
 					window.fillRect(pos, window.mapRGBA(0, 255, 0, 32));
 				}
 				for(size_t i = 0; i < _hints.size(); ++i) {
-					sdlx::Rect pos = _hints[i].first;
+					sdlx::Rect pos(_hints[i].first.position.x, _hints[i].first.position.y, _hints[i].first.size.x, _hints[i].first.size.y);
 					pos.x -= (int)slot.map_pos.x;
 					pos.y -= (int)slot.map_pos.y;
 					window.fillRect(pos, window.mapRGBA(0, 0, 255, 32));

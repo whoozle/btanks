@@ -430,8 +430,8 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 		*/
 		
 		if (type == "spawn") {
-			LOG_DEBUG(("spawnpoint: %d,%d", pos.x, pos.y));
-			PlayerManager->addSlot(v2<int>(pos.x, pos.y));
+			LOG_DEBUG(("spawnpoint: %d,%d,%d", pos.x, pos.y, pos.z));
+			PlayerManager->addSlot(pos);
 		} else {
 			if (type == "object") {
 				//LOG_DEBUG(("object %s, animation %s, pos: %s", res[1].c_str(), res[2].c_str(), i->second.c_str()));
@@ -487,7 +487,8 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 				mrt::split(value, i->second, ":");
 				if (value.size() < 2)
 					throw_ex(("'%s' misses an argument", i->first.c_str()));
-				v2<int> pos, size;
+				v3<int> pos;
+				v2<int> size;
 				coord2v(pos, value[0]);
 				coord2v(size, value[1]);
 				if (type == "checkpoint") {
