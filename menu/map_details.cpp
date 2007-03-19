@@ -30,7 +30,8 @@ void MapDetails::set(const std::string &base, const std::string &map, const std:
 	
 	int mx, my;
 	_background.getMargins(mx, my);
-	
+
+	delete _map_desc;	
 	_map_desc = new Tooltip(comment, false, _background.w - 2 * mx);
 }
 
