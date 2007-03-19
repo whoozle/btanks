@@ -74,18 +74,18 @@
   <property name="object:impassable-static-corpse:dead-white-car:1" value="614,1323,-1700"/>
   <property name="object:impassable-static-corpse:dead-red-tank:1" value="1371,678,-1700"/>
   <property name="object:static-tank:yellow-tank:1" value="1338,1852,-1850"/>
-  <property name="spawn:8" value="800,430,-2"/>
-  <property name="spawn:7" value="856,1036,-2"/>
+  <property name="spawn:8" value="800,430,-2002"/>
+  <property name="spawn:7" value="856,1036,-2002"/>
   <property name="object:heal:heal:3" value="1451,379,-1650"/>
-  <property name="spawn:6" value="@16,6,-2"/>
+  <property name="spawn:6" value="@16,6,-2002"/>
   <property name="object:heal:heal:2" value="423,636,-1650"/>
-  <property name="spawn:5" value="@13,27,-2"/>
+  <property name="spawn:5" value="@13,27,-2002"/>
   <property name="object:heal:heal:1" value="589,1351,-1650"/>
   <property name="object:traffic-lights:traffic-lights:7" value="188,815,-1850"/>
-  <property name="spawn:4" value="161,163,-2"/>
-  <property name="spawn:3" value="@25,28,-2"/>
-  <property name="spawn:2" value="1825,331,-2"/>
-  <property name="spawn:1" value="275,1743,-2"/>
+  <property name="spawn:4" value="161,163,-2002"/>
+  <property name="spawn:3" value="@25,28,-2002"/>
+  <property name="spawn:2" value="1825,331,-2002"/>
+  <property name="spawn:1" value="275,1743,-2002"/>
   <property name="object:teleport-a:teleport:5" value="460,1037,-2"/>
   <property name="object:teleport-m:teleport:39" value="1327,1177,-2002"/>
   <property name="object:teleport-m:teleport:38" value="1857,1051,-2"/>
