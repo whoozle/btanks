@@ -1,3 +1,15 @@
+*) a lotta of various bugfixes everywhere (mostly multiplayer, several crashes)
+*) interpolation support in multiplayer. 
+*) preliminary and experimental weather support 
+*) added proper player placement into checkpoint.
+*) added `teleport' object which easily could be extended with `telefrag' support.
+*) added new major feature : isolated z-boxes (different worlds, checkpoints, hints and spawns in one map)
+*) show/hide mouse pointer if needed
+*) reduces respawn intervals for machinegunner/thrower items.
+*) added several commands to console : setz, position
+*) introduced default impassability for a map. 
+*) timestamps in logs
+
 0.4.2623: 
 
 *) added game statistics shown by 'TAB' key.
