@@ -15,6 +15,18 @@ HostList::HostList(const std::string &config_key, const int w, const int h) : Sc
 	}
 }
 
+void HostList::promote(const size_t i) {
+	if (i >= _list.size())
+		throw_ex(("promote(%u) is out of range", (unsigned)i));
+	
+	List::iterator li = _list.begin();
+	
+	for(size_t n = i; n--; ++li);
+	std::string host = *li;
+	_list.erase(li);	
+	_list.push_front(host);
+	_current_item = 0;
+}
 
 void HostList::add(const std::string &_item) {
 	std::string item = _item;

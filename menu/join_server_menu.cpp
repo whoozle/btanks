@@ -91,6 +91,7 @@ JoinServerMenu::JoinServerMenu(MainMenu *parent, const int w, const int h) : _pa
 void JoinServerMenu::join() {
 	LOG_DEBUG(("join requested"));
 	std::string host = _hosts->getValue();
+	_hosts->promote(_hosts->get());
 
 	Config->set("menu.default-vehicle-1", _vehicle->getValue());
 	

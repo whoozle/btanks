@@ -7,6 +7,7 @@ class HostList : public ScrollList {
 public:
 	HostList(const std::string &config_key, const int w, const int h);
 	virtual void add(const std::string &item);
+	void promote(const size_t i);
 	~HostList();
 
 private: 
