@@ -28,6 +28,7 @@ Mutex::Mutex() : _mutex(SDL_CreateMutex()) {
 
 Mutex::~Mutex() {
 	SDL_DestroyMutex(_mutex);
+	_mutex = NULL;
 }
 
 void Mutex::lock() const {
