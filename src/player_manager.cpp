@@ -425,7 +425,7 @@ void IPlayerManager::updatePlayers() {
 					const v2<int> &checkpoint_size = _checkpoints[c].size;
 					const v3<int> &checkpoint_pos  = _checkpoints[c].position;
 					{
-						int yn = (int) sqrt(checkpoint_size.y * _players.size() / checkpoint_size.x);
+						int yn = (int) sqrt((double)(checkpoint_size.y * _players.size() / checkpoint_size.x));
 						int xn = (_players.size() - 1) / yn + 1;
 						int n = xn * yn;
 						
