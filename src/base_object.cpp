@@ -67,7 +67,6 @@ void BaseObject::serialize(mrt::Serializator &s) const {
 	
 	s.add(_follow);
 	_follow_position.serialize(s);
-	_state.serialize(s);
 	_velocity.serialize(s);
 	_direction.serialize(s);
 	_velocity_fadeout.serialize(s);
@@ -103,7 +102,6 @@ void BaseObject::deserialize(const mrt::Serializator &s) {
 	
 	s.get(_follow);
 	_follow_position.deserialize(s);
-	_state.deserialize(s);
 	_velocity.deserialize(s);
 	_direction.deserialize(s);
 	_velocity_fadeout.deserialize(s);
