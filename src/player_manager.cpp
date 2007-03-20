@@ -422,9 +422,25 @@ void IPlayerManager::updatePlayers() {
 					LOG_DEBUG(("player[%d] checkpoint %u reached.", i, (unsigned)c));
 					slot.checkpoints_reached.insert(c);
 					
-					v3<int> spawn_pos(_checkpoints[c].position + _checkpoints[c].size.convert2v3(0) / 2);
-					slot.position = spawn_pos;
-					if (i == 0)
+					const v2<int> &checkpoint_size = _checkpoints[c].size;
+					const v3<int> &checkpoint_pos  = _checkpoints[c].position;
+					{
+						int yn = (int) sqrt(checkpoint_size.y * _players.size() / checkpoint_size.x);
+						int xn = (_players.size() - 1) / yn + 1;
+						int n = xn * yn;
+						
+						int ysize = checkpoint_size.y / yn;
+						int xsize = checkpoint_size.x / xn;
+						LOG_DEBUG(("position in checkpoint: %d %d of %d[%dx%d]. cell size: %dx%d.", i % xn, i / xn, n, xn, yn, xsize, ysize));
+
+						slot.position.x = checkpoint_pos.x + xsize * (i % xn) + xsize / 2;
+						slot.position.y = checkpoint_pos.y + ysize * (i / xn) + ysize / 2;
+						slot.position.z = checkpoint_pos.z;
+					}
+					
+					//v3<int> spawn_pos(_checkpoints[c].position + checkpoint_size.convert2v3(0) / 2);
+					//slot.position = spawn_pos;
+					if (slot.visible)
 						Game->displayMessage("CHECKPOINT REACHED", 3);
 
 					slot.need_sync = true;
@@ -594,11 +610,15 @@ void IPlayerManager::addSlot(const v3<int> &position) {
 }
 
 void IPlayerManager::addCheckpoint(const v3<int> &position, const v2<int> &size) {
+	if (size.x == 0 || size.y == 0)
+		throw_ex(("checkpoint size cannot be 0"));
 	LOG_DEBUG(("adding checkpoint at %d %d (%dx%d)", position.x, position.y, size.x, size.y));
 	_checkpoints.push_back(ZBox(position, size));
 }
 
 void IPlayerManager::addHint(const v3<int> &position, const v2<int> &size, const std::string &area, const std::string &name) {
+	if (size.x == 0 || size.y == 0)
+		throw_ex(("checkpoint size cannot be 0"));
 	LOG_DEBUG(("adding hint '%s'(area: '%s') at %d %d (%dx%d)", name.c_str(), area.c_str(), position.x, position.y, size.x, size.y));
 	_hints.push_back(Hints::value_type(ZBox(position, size), std::pair<std::string, std::string>(area, name)));
 }
@@ -695,10 +715,8 @@ void IPlayerManager::spawnPlayer(PlayerSlot &slot, const std::string &classname,
 	Object *obj = ResourceManager->createObject(classname, animation);
 	assert(obj != NULL);
 
-	v2<int> tile_size = Map->getTileSize();
-	
 	obj->setZBox(slot.position.z);
-	World->addObject(obj, (tile_size/2 + v2<int>(slot.position.x, slot.position.y)).convert<float>(), slot.id);
+	World->addObject(obj, v2<float>(slot.position.x, slot.position.y) - obj->size / 2, slot.id);
 
 	GET_CONFIG_VALUE("engine.spawn-invulnerability-duration", float, sid, 3);
 	obj->addEffect("invulnerability", sid);

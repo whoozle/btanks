@@ -431,6 +431,9 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 		
 		if (type == "spawn") {
 			LOG_DEBUG(("spawnpoint: %d,%d,%d", pos.x, pos.y, pos.z));
+			v2<int> tile_size = Map->getTileSize();
+			pos.x += tile_size.x / 2;
+			pos.y += tile_size.y / 2;
 			PlayerManager->addSlot(pos);
 		} else {
 			if (type == "object") {
