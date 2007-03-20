@@ -47,7 +47,7 @@ public:
 	~Monitor();
 
 private:
-	bool _running;
+	volatile bool _running;
 	
 	virtual const int run();
 	typedef std::map<const int, Connection *> ConnectionMap;
