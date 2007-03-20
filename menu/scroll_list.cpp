@@ -122,6 +122,18 @@ bool ScrollList::onKey(const SDL_keysym sym) {
 		//LOG_DEBUG(("down: %u", _current_item));
 		return true;
 	default: 
+		//LOG_DEBUG(("%d", sym.sym));
+		size_t i;
+		int c = tolower(sym.sym);
+		for(i = 0; i < _list.size(); ++i) {
+			int fc = tolower(_list[i][0]);
+			if (fc == c) 
+				break;
+		}
+		if (i < _list.size()) {
+			_current_item = i;
+			return true;
+		}
 		return false;
 	}
 
