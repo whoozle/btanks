@@ -93,13 +93,19 @@ void TextControl::render(sdlx::Surface &surface, const int x, const int y) {
 	if (!_text.empty())
 		xp += _font->render(surface, xp, y, _text.substr(0, _cursor_position));
 	
-	xp += _font->render(_cursor_visible?&surface:NULL, xp, y, "|");
+	int xc = xp; 
+	int cw = 0, curw = 0;
+	if (_cursor_position < (int)_text.size() && _cursor_visible) {
+		cw = _font->render(NULL, 0, 0, std::string(&_text[_cursor_position], 1));
+		curw = _font->render(NULL, 0, 0, "_");
+	}
 	
-	if (_cursor_position >= (int)_text.size())
-		return;
-	
-	if (!_text.empty())
+	if (!_text.empty() && _cursor_position < (int)_text.size())
 		_font->render(surface, xp, y, _text.substr(_cursor_position));
+
+	if (_cursor_visible) {
+		_font->render(surface, xc + (cw - curw) / 2 , y+ 4, "_");
+	}
 }
 
 void TextControl::getSize(int &w, int &h) const {
