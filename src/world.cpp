@@ -729,7 +729,7 @@ TRY {
 
 TRY {
 	if (obj_im == 1.0 || map_im == 1.0) {
-		if (stuck) {
+		if (stuck && !PlayerManager->isClient()) {
 			v2<float> allowed_velocity;
 			v2<float> object_center = o._position + o.size / 2;
 			if (map_im >= 1.0) {
