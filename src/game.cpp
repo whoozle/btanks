@@ -414,7 +414,7 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 			type != "hint")
 			throw_ex(("unsupported line: '%s'", i->first.c_str()));
 		
-		if (!spawn_objects && type != "waypoint" && type != "edge")
+		if (!spawn_objects && type != "waypoint" && type != "edge" && type != "config")
 			continue;
 	
 		v3<int> pos;
