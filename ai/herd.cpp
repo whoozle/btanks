@@ -4,6 +4,7 @@
 #include "object.h"
 #include "config.h"
 #include "mrt/random.h"
+#include "zbox.h"
 
 void ai::Herd::calculateV(v2<float> &velocity, Object *sheep, const int leader, const float distance) {
 	bool was_stopped = velocity.is0();
@@ -32,6 +33,9 @@ void ai::Herd::calculateV(v2<float> &velocity, Object *sheep, const int leader, 
 	}
 		
 	const Object * o = leader?World->getObjectByID(leader): NULL;
+	if (o != NULL && !ZBox::sameBox(o->getZ(), sheep->getZ())) 
+		o = NULL;
+	
 	if (o != NULL) {
 		//LOG_DEBUG(("leader: %p", o));
 		v2<float> pos = sheep->getRelativePosition(o);
