@@ -378,6 +378,9 @@ void BaseObject::getImpassabilityPenalty(const float impassability, float &base,
 }
 
 const float BaseObject::getEffectiveImpassability(const float impassability) const {
+	if (impassability >= 1.0f)
+		return 1.0f;
+	
 	float base = 0, base_value = 0, penalty = 1.0f;
 	getImpassabilityPenalty(impassability, base, base_value, penalty);
 	if (base > impassability)
