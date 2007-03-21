@@ -59,7 +59,7 @@ bool TextControl::onKey(const SDL_keysym sym) {
 		break;
 
 	case SDLK_RIGHT: 
-		if (_cursor_position < (int)_text.size()) 
+		if (_cursor_position < _text.size()) 
 			++_cursor_position;
 		break;
 		
@@ -70,7 +70,7 @@ bool TextControl::onKey(const SDL_keysym sym) {
 		break;
 
 	case SDLK_DELETE:
-		if (_cursor_position < (int)_text.size())
+		if (_cursor_position < _text.size())
 			_text.erase(_cursor_position, 1);
 		break;
 		
@@ -95,12 +95,12 @@ void TextControl::render(sdlx::Surface &surface, const int x, const int y) {
 	
 	int xc = xp; 
 	int cw = 0, curw = 0;
-	if (_cursor_position < (int)_text.size() && _cursor_visible) {
+	if (_cursor_visible && _cursor_position < _text.size()) {
 		cw = _font->render(NULL, 0, 0, std::string(&_text[_cursor_position], 1));
 		curw = _font->render(NULL, 0, 0, "_");
 	}
 	
-	if (!_text.empty() && _cursor_position < (int)_text.size())
+	if (!_text.empty() && _cursor_position < _text.size())
 		_font->render(surface, xp, y, _text.substr(_cursor_position));
 
 	if (_cursor_visible) {
