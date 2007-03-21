@@ -8,7 +8,6 @@
 *) improved menu controls: hotkeys, usual text control with cursor.
 *) show/hide mouse pointer if needed
 *) added several commands to console : setz, position
-*) introduced default impassability for a map. 
 *) timestamps in logs
 
 0.4.2623: 
