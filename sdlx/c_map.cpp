@@ -37,8 +37,8 @@ CollisionMap::CollisionMap() : _empty(true), _full(false), _w(0), _h(0), _data()
 
 static inline const bool bitline_collide(const unsigned char *ptr1, const unsigned char *ptr2, const int first_bits, const int last_bits, const int shift_1, const int size) {
 	assert(shift_1 > 0 && shift_1 < 8);	
-	register unsigned int b1 = (ptr1[0]<<8) | ptr1[1];
-	register unsigned int b2 = (ptr2[0]<<8) | ptr2[1];
+	register unsigned int b1 = (ptr1[0]<<8) | ((size > 1)?ptr1[1] : 0);
+	register unsigned int b2 = (ptr2[0]<<8) | ((size > 1)?ptr2[1] : 0);
 	unsigned int mask1 = (1 << (16 - first_bits)) - 1;
 	if (mask1 & (b1 << shift_1 ) & b2)
 		return true;
@@ -78,6 +78,7 @@ static inline const bool bitline_collide(
 	assert(pos2_bits_after >= 0 && pos2_bits_after < 8 && ((line_size - pos2_aligned_size * 8 + pos2_bits_before + pos2_bits_after) %8 == 0));
 
 	int size = math::min(pos1_aligned_size, pos2_aligned_size);
+	assert(size > 0);
 	int shift = pos2_bits_before - pos1_bits_before;
 	int before = math::min(pos2_bits_before, pos1_bits_before);
 	int after = math::max(pos2_bits_before, pos1_bits_before);
