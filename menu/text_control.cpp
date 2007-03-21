@@ -20,7 +20,7 @@ const bool HostTextControl::validate(const int c) const {
 
 /////////////////////////////////////////////////////////////
 
-TextControl::TextControl(const std::string &font) : _blink(true), _cursor_visible(false) {
+TextControl::TextControl(const std::string &font) : _blink(true), _cursor_visible(false), _cursor_position(0) {
 	_font = ResourceManager->loadFont(font, true);
 	GET_CONFIG_VALUE("menu.cursor-blinking-interval", float, cbi, 0.4);
 	_blink.set(cbi);
@@ -28,6 +28,7 @@ TextControl::TextControl(const std::string &font) : _blink(true), _cursor_visibl
 
 void TextControl::set(const std::string &value) {
 	_value = _text = value;
+	_cursor_position = value.size();
 }
 const std::string& TextControl::get() const {
 	return _text;
@@ -51,22 +52,36 @@ bool TextControl::onKey(const SDL_keysym sym) {
 		_value = _text;
 		_changed = true;
 		break;
+
+	case SDLK_LEFT: 
+		if (_cursor_position > 0) 
+			--_cursor_position;
+		break;
+
+	case SDLK_RIGHT: 
+		if (_cursor_position < (int)_text.size()) 
+			++_cursor_position;
+		break;
 		
 	case SDLK_BACKSPACE:
-		if (!_text.empty()) 
-			_text = _text.substr(0, _text.size() - 1);
+		if (!_text.empty() && _cursor_position > 0) {
+			_text = _text.erase(--_cursor_position, 1);
+		}
 		break;
 
 	case SDLK_DELETE:
-		_text.clear();
+		if (_cursor_position < (int)_text.size())
+			_text.erase(_cursor_position, 1);
 		break;
 		
 	default: {
 		int c = sym.unicode;
 		//LOG_DEBUG(("%d", c));
 		if (c >= SDLK_SPACE && c < 128) {
-			if (validate(c))
-				_text += (char)c;
+			if (validate(c)) {
+				_text.insert(_cursor_position, 1, (char)c);
+				_cursor_position += 1;
+			}
 		}
 	}
 	}
@@ -74,9 +89,17 @@ bool TextControl::onKey(const SDL_keysym sym) {
 }
 
 void TextControl::render(sdlx::Surface &surface, const int x, const int y) {
-	int w = _font->render(surface, x, y, _text.empty()?" ": _text);
-	if (_cursor_visible) 
-		_font->render(surface, x + w, y, "|");
+	int xp = x;
+	if (!_text.empty())
+		xp += _font->render(surface, xp, y, _text.substr(0, _cursor_position));
+	
+	xp += _font->render(_cursor_visible?&surface:NULL, xp, y, "|");
+	
+	if (_cursor_position >= (int)_text.size())
+		return;
+	
+	if (!_text.empty())
+		_font->render(surface, xp, y, _text.substr(_cursor_position));
 }
 
 void TextControl::getSize(int &w, int &h) const {

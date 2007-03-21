@@ -27,6 +27,7 @@ private:
 	std::string _text, _value;
 	Alarm _blink;
 	bool _cursor_visible;
+	int _cursor_position;
 };
 
 class HostTextControl : public TextControl {
