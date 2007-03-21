@@ -23,15 +23,10 @@
 #include "mrt/random.h"
 #include "ai/herd.h"
 
-class Zombie : public Object, public ai::Herd{
+class Cow : public Object, public ai::Herd{
 public:
-	Zombie(const std::string &classname) : 
-	Object(classname), _reaction(true), _can_punch(true) {
-		_targets.insert("player");
-		_targets.insert("trooper");
-		_targets.insert("watchtower");
-		_targets.insert("creature");
-	}
+	Cow(const std::string &classname) : 
+		Object(classname), _reaction(true) {}
 	
 	virtual void tick(const float dt);
 	virtual void calculate(const float dt);
@@ -43,12 +38,10 @@ public:
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
 		_reaction.serialize(s);
-		s.add(_can_punch);
 	}
 	virtual void deserialize(const mrt::Serializator &s) {
 		Object::deserialize(s);
 		_reaction.deserialize(s);
-		s.get(_can_punch);
 	}	
 	
 	virtual void onIdle(const float dt);
@@ -57,62 +50,33 @@ public:
 
 private: 
 	Alarm _reaction;
-	bool _can_punch;
-	
-	//no need for serialization (ONLY IF TARGETS INIT'ED IN CTOR AND DOESNT MODIFIED ANYWHERE
-	std::set<std::string> _targets;
 };
 
-const int Zombie::getComfortDistance(const Object *other) const {
-	GET_CONFIG_VALUE("objects.zombie.comfort-distance", int, cd, 120);
+const int Cow::getComfortDistance(const Object *other) const {
+	GET_CONFIG_VALUE("objects.cow.comfort-distance", int, cd, 200);
 	return (other == NULL || other->registered_name == registered_name)?cd:-1; //fixme names if you want
 }
 
 
-void Zombie::onIdle(const float dt) {
-	_state.fire = false;
-	
-	GET_CONFIG_VALUE("objects.zombie.targeting-range(stable)", int, trs, 600);
-	GET_CONFIG_VALUE("objects.zombie.targeting-range(alerted)", int, tra, 900);
-	int tt = (hp < max_hp)?tra:trs;
-
+void Cow::onIdle(const float dt) {
+	int tt;
+	Config->get("objects." + registered_name + ".targeting-range", tt, 400);
 	ai::Herd::calculateV(_velocity, this, 0, tt);
 }
 
 
-void Zombie::calculate(const float dt) {
+void Cow::calculate(const float dt) {
 	if (!_reaction.tick(dt))
 		return;
 	
-	v2<float> vel;
-	
-	GET_CONFIG_VALUE("objects.zombie.targeting-range(stable)", int, trs, 600);
-	GET_CONFIG_VALUE("objects.zombie.targeting-range(alerted)", int, tra, 900);
-	int tt = (hp < max_hp)?tra:trs;
-	
-	if (getNearest(_targets, tt, _velocity, vel)) {
-		if (_velocity.quick_length() > size.quick_length())
-			_state.fire = false;
-		
-		_velocity.normalize();
-		quantizeVelocity();		
-	} else {
-		_state.fire = false;
-		onIdle(dt);
-	}
+	onIdle(dt);
 
-	GET_CONFIG_VALUE("objects.zombie.rotation-time", float, rt, 0.1);
+	GET_CONFIG_VALUE("objects.cow.rotation-time", float, rt, 0.2);
 	limitRotation(dt, rt, true, false);
 }
 
-void Zombie::tick(const float dt) {
+void Cow::tick(const float dt) {
 	Object::tick(dt);
-
-	if (_state.fire && getState() != "punch") {
-		_can_punch = true;
-		playNow("punch");
-		return;
-	}
 
 	if (_velocity.is0()) {
 		if (getState() != "hold") {
@@ -127,8 +91,8 @@ void Zombie::tick(const float dt) {
 	}
 }
 
-void Zombie::onSpawn() {
-	float rt, drt = 0.5;
+void Cow::onSpawn() {
+	float rt, drt = 1;
 	
 	Config->get("objects." + registered_name + ".reaction-time", rt, drt);
 	mrt::randomize(rt, rt/10);
@@ -138,31 +102,17 @@ void Zombie::onSpawn() {
 	disown();
 }
 
-void Zombie::emit(const std::string &event, Object * emitter) {
+void Cow::emit(const std::string &event, Object * emitter) {
 	if (event == "death") {
-		spawn("corpse", "dead-zombie", v2<float>::empty, v2<float>::empty);
+		//spawn("corpse", "dead-Cow", v2<float>::empty, v2<float>::empty);
 	} else if (emitter != NULL && event == "collision") {
-		if (getState() != "punch" && emitter->registered_name != "zombie") {
-			_state.fire = true;
-		}	
-		if (_state.fire && _can_punch && getStateProgress() >= 0.5 && getState() == "punch" && emitter->registered_name != "zombie") {
-			_can_punch = false;
-			
-			GET_CONFIG_VALUE("objects.zombie.damage", int, kd, 15);
-		
-			if (emitter) 
-				emitter->addDamage(this, kd);
-			
-			return;
-		}
-
 	}
 	Object::emit(event, emitter);
 }
 
 
-Object* Zombie::clone() const  {
-	return new Zombie(*this);
+Object* Cow::clone() const  {
+	return new Cow(*this);
 }
 
-REGISTER_OBJECT("zombie", Zombie, ("monster"));
+REGISTER_OBJECT("cow", Cow, ("creature"));
