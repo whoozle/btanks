@@ -28,6 +28,7 @@ public:
 		const Object *o = World->getObjectByID(track);
 		if (o == NULL) {
 			track = 0;
+			need_sync = true;
 			return;
 		}
 		
@@ -48,7 +49,13 @@ public:
 	virtual void deserialize(const mrt::Serializator &s) {
 		Object::deserialize(s);
 		s.get(track);
-	}	
+		
+		for(TeleportMap::const_iterator i = _teleports.lower_bound(registered_name); i != _teleports.upper_bound(registered_name); ++i) {
+			if (i->second == this) 
+				return;
+		}
+		_teleports.insert(TeleportMap::value_type(registered_name, this));
+	}
 
 
 private: 
