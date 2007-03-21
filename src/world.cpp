@@ -527,8 +527,6 @@ TRY {
 	}
 } CATCH("detaching from vehicle", throw;)
 
-	GET_CONFIG_VALUE("engine.disable-z-velocity", bool, disable_z, true);
-
 	//interpolation stuff
 	if (o._interpolation_progress < 1.0) {
 		GET_CONFIG_VALUE("multiplayer.interpolation-duration", float, mid, 0.2);	
