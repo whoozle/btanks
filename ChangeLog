@@ -1,6 +1,5 @@
 *) a lot of various bugfixes everywhere (mostly multiplayer, several crashes)
 *) interpolation support in multiplayer. 
-*) preliminary and experimental weather support 
 *) added proper player placement into checkpoint.
 *) added `teleport' object which easily could be extended with `telefrag' support.
 *) added new major feature : isolated z-boxes (different worlds, checkpoints, hints and spawns in one map)
