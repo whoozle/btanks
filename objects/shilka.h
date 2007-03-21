@@ -41,6 +41,8 @@ public:
 	FakeMod *getMod(const std::string &name);
 
 	virtual const std::string getType() const { return "shilka"; }
+	void getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const;
+
 
 private:
 	Alarm _fire, _special_fire;

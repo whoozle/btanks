@@ -25,6 +25,9 @@
 #include "config.h"
 #include "fakemod.h"
 
+void Shilka::getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const {
+	penalty = 0.8;
+}
 
 Shilka::Shilka(const std::string &classname) 
 : Object(classname), _fire(false), _special_fire(false), _left_fire(true) {
