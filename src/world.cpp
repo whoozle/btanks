@@ -791,8 +791,11 @@ TRY {
 	
 	if (map_im >= 1.0 || obj_im >= 1.0) {
 		dpos.clear();
-	} else 
-		dpos *= (1 - map_im) * (1 - obj_im);
+	} else {
+		map_im = o.getEffectiveImpassability(map_im);
+		obj_im = o.getEffectiveImpassability(obj_im);
+		dpos *= (1.0f - map_im) * (1.0f - obj_im);
+	}
 	
 	//LOG_DEBUG(("%d %d: obj_im: %g, map_im: %g, dpos: %g %g %s", old_pos.x, old_pos.y, obj_im, map_im, dpos.x, dpos.y, stuck?"stuck":""));
 

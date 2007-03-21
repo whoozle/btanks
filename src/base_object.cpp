@@ -370,3 +370,22 @@ void BaseObject::uninterpolate() {
 	
 	_position += _interpolation_vector * (1.0 - _interpolation_progress);
 }
+
+void BaseObject::getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const {
+	base = 0;
+	base_value = 0;
+	penalty = 1;
+}
+
+const float BaseObject::getEffectiveImpassability(const float impassability) const {
+	float base = 0, base_value = 0, penalty = 1.0f;
+	getImpassabilityPenalty(impassability, base, base_value, penalty);
+	if (base > impassability)
+		throw_ex(("invalid impassability penalty returned for %g: base: %g, penalry: %g (base is out of range)", impassability, base, penalty));
+	float eim = base_value + (impassability - base) * penalty;
+	if (eim < 0)
+		eim = 0;
+	if (eim > 1) 
+		eim = 1;
+	return eim;
+}
