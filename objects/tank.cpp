@@ -24,6 +24,15 @@
 #include "tank.h"
 #include "config.h"
 
+void Tank::getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const {
+	if (impassability > 0.4) {
+		penalty = 0;
+		base_value = 0.3;
+	} else {
+		penalty = 0.3/0.4;
+	}
+}
+
 Tank::Tank(const std::string &classname) 
 : Object(classname), _fire(false) {
 }

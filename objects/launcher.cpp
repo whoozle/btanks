@@ -24,6 +24,15 @@
 #include "config.h"
 
 
+void Launcher::getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const {
+	if (impassability > 0.2) {
+		base_value = 0.2;
+		base = 0.2;
+		penalty = 2;
+	}
+}
+
+
 Launcher::Launcher(const std::string &classname) 
 : Object(classname), _fire(false) {
 }

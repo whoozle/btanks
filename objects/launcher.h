@@ -36,6 +36,8 @@ public:
 	virtual void serialize(mrt::Serializator &s) const;
 	virtual void deserialize(const mrt::Serializator &s);
 	virtual const std::string getType() const { return "launcher"; }
+
+	void getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const;
 	
 private:
 	Alarm _fire;
