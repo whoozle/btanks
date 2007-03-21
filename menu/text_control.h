@@ -3,6 +3,7 @@
 
 #include "control.h"
 #include <string>
+#include "alarm.h"
 
 namespace sdlx {
 class Font;
@@ -11,6 +12,8 @@ class Font;
 class TextControl : public Control {
 public: 
 	TextControl(const std::string &font);
+
+	virtual void tick(const float dt);
 	void set(const std::string &value);
 	const std::string &get() const;
 	void getSize(int &w, int &h) const;
@@ -22,6 +25,8 @@ public:
 private: 
 	const sdlx::Font *_font; 
 	std::string _text, _value;
+	Alarm _blink;
+	bool _cursor_visible;
 };
 
 class HostTextControl : public TextControl {
