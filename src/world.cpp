@@ -729,7 +729,10 @@ TRY {
 
 TRY {
 	if (obj_im == 1.0 || map_im == 1.0) {
-		if (stuck && !PlayerManager->isClient()) {
+		if (PlayerManager->isClient()) 
+			goto skip_collision;
+			
+		if (stuck) {
 			v2<float> allowed_velocity;
 			v2<float> object_center = o._position + o.size / 2;
 			if (map_im >= 1.0) {
@@ -788,6 +791,7 @@ TRY {
 */	
 TRY {
 	assert(map_im >= 0 && obj_im >= 0);
+	//LOG_DEBUG(("%s: %d %d: obj_im: %g, map_im: %g, dpos: %g %g %s", o.animation.c_str(), old_pos.x, old_pos.y, obj_im, map_im, dpos.x, dpos.y, stuck?"stuck":""));
 	
 	if (map_im >= 1.0 || obj_im >= 1.0) {
 		dpos.clear();
@@ -797,7 +801,6 @@ TRY {
 		dpos *= (1.0f - map_im) * (1.0f - obj_im);
 	}
 	
-	//LOG_DEBUG(("%d %d: obj_im: %g, map_im: %g, dpos: %g %g %s", old_pos.x, old_pos.y, obj_im, map_im, dpos.x, dpos.y, stuck?"stuck":""));
 
 	if (o.classname == "player") {
 		if ((dpos.x < 0 && o._position.x + dpos.x < 0) || (dpos.x > 0 && o._position.x + dpos.x + o.size.x >= map_size.x))
