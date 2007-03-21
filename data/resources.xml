@@ -284,6 +284,11 @@
 		<pose id="punch">5,0,6</pose>
 	</animation-model>
 
+	<animation-model id="cow-animation" speed="5">
+		<pose id="hold">0</pose>
+		<pose id="walk">0,1,2,3,2,1</pose>
+	</animation-model>
+
 	<animation id="damage-digits" tile="../font/digits.png" model="single-tile" tile_width="10" tile_height="16" />
 
 	<animation id="spawning" tile="respawn.png" model="spawning-animation" size="128" />
@@ -479,7 +484,9 @@
 	<animation id="dead-thrower" model="dead-man-animation" tile="thrower_dead.png" />
 	<animation id="dead-thrower-static" model="dead-man-animation-static" tile="thrower_dead.png" />
 	<animation id="waypoint-16" model="single-tile" tile="waypoint16x16.png" />
+
 	<animation id="teleport" model="teleport-animation" tile="teleport.png" />
+	<animation id="cow" model="cow-animation" tile="cow.png" />
 
 	<object class="damage-digits" speed="60" mass="1" ttl="1" z="999" />
 
@@ -599,6 +606,7 @@
 	<object class="random-tooltip" z="995" />
 	<object class="spaceport-baykonur" hp="200" z="0"/> 
 	<object class="zombie" hp="40" speed="80" mass="85" z="-1" />	
+	<object class="cow" hp="40" speed="80" mass="120" z="-1" />	
 	
 	<!-- items -->
 	<object class="base-item" z="180" impassability="-1" />
