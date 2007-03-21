@@ -224,7 +224,7 @@ TRY {
 	
 		assert(slot.id == obj->getID());
 
-		World->tick(*obj, -slot.trip_time / 1000.0);
+		World->tick(*obj, -slot.trip_time / 1000.0, false);
 		
 		slot.need_sync = obj->updatePlayerState(state);
 		if (slot.need_sync == false) {
@@ -232,7 +232,7 @@ TRY {
 			slot.need_sync = true;
 		}
 		
-		World->tick(*obj, slot.trip_time / 1000.0);
+		World->tick(*obj, slot.trip_time / 1000.0, false);
 		break;
 	} 
 	case Message::UpdatePlayers: { 
@@ -256,7 +256,7 @@ TRY {
 			state.deserialize(s);
 			
 			if (o != NULL) { 
-				World->tick(*o, -_trip_time / 1000.0);
+				World->tick(*o, -_trip_time / 1000.0, false);
 			}
 			
 			World->deserializeObjectPV(s, o);
@@ -275,7 +275,7 @@ TRY {
 
 			updated_objects.insert(IWorld::ObjectMap::value_type(o->getID(), o));
 		}	
-		World->tick(updated_objects, _trip_time / 1000.0);
+		World->tick(updated_objects, _trip_time / 1000.0, false);
 		World->interpolateObjects(updated_objects);
 		break;
 	} 

@@ -90,8 +90,8 @@ public:
 
 	static void interpolateObjects(ObjectMap &objects);
 
-	void tick(Object &o, const float dt);	
-	void tick(ObjectMap &objects, const float dt);
+	void tick(Object &o, const float dt, const bool do_calculate = true);
+	void tick(ObjectMap &objects, const float dt, const bool do_calculate = true);
 	
 	void setSafeMode(const bool safe_mode = true);
 

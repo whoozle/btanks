@@ -419,7 +419,7 @@ void IWorld::getImpassabilityMatrix(Matrix<int> &matrix, const Object *src, cons
 	//LOG_DEBUG(("projected objects:\n%s", matrix.dump().c_str()));
 }
 
-void IWorld::tick(Object &o, const float dt) {
+void IWorld::tick(Object &o, const float dt, const bool do_calculate) {
 	if (o.isDead()) 
 		return;
 
@@ -433,22 +433,22 @@ void IWorld::tick(Object &o, const float dt) {
 	if (dt > max_dt) {
 		float dt2 = dt;
 		while(dt2 > max_dt) {
-			tick(o, max_dt);
+			tick(o, max_dt, do_calculate);
 			dt2 -= max_dt;
 		}
 		if (dt2 > 0) 
-			tick(o, dt2);
+			tick(o, dt2, do_calculate);
 		return;
 	}
 
 	if (dt < -max_dt) {
 		float dt2 = dt;
 		while(dt2 < -max_dt) {
-			tick(o, -max_dt);
+			tick(o, -max_dt, do_calculate);
 			dt2 += max_dt;
 		}
 		if (dt2 < 0) 
-			tick(o, dt2);
+			tick(o, dt2, do_calculate);
 		return;
 	}
 
@@ -513,10 +513,12 @@ TRY {
 		o.updatePlayerState(state);
 		o.Object::calculate(dt);
 	} else {
-		//regular calculate
-		TRY { 
-			o.calculate(dt);
-		} CATCH("calling o.calculate", throw;)
+		if (do_calculate) {
+			//regular calculate
+			TRY { 
+				o.calculate(dt);
+			} CATCH("calling o.calculate", throw;)
+		}
 	}
 
 TRY {
@@ -825,10 +827,10 @@ TRY {
 void IWorld::tick(const float dt) {
 	//LOG_DEBUG(("tick dt = %f", dt));
 	_collision_map.clear();
-	tick(_objects, dt);
+	tick(_objects, dt, true);
 }
 
-void IWorld::tick(ObjectMap &objects, const float dt) {
+void IWorld::tick(ObjectMap &objects, const float dt, const bool do_calculate) {
 	float max_dt = _max_dt;
 	int n = (int)(dt / max_dt);
 	if (n > 4) {
@@ -839,22 +841,22 @@ void IWorld::tick(ObjectMap &objects, const float dt) {
 	if (dt > max_dt) {
 		float dt2 = dt;
 		while(dt2 > max_dt) {
-			tick(objects, max_dt);
+			tick(objects, max_dt, do_calculate);
 			dt2 -= max_dt;
 		}
 		if (dt2 > 0) 
-			tick(objects, dt2);
+			tick(objects, dt2, do_calculate);
 		return;
 	}
 
 	if (dt < -max_dt) {
 		float dt2 = dt;
 		while(dt2 < -max_dt) {
-			tick(objects, -max_dt);
+			tick(objects, -max_dt, do_calculate);
 			dt2 += max_dt;
 		}
 		if (dt2 < 0) 
-			tick(objects, dt2);
+			tick(objects, dt2, do_calculate);
 		return;
 	}
 
@@ -862,7 +864,7 @@ void IWorld::tick(ObjectMap &objects, const float dt) {
 		Object *o = i->second;
 		assert(o != NULL);
 		TRY {
-			tick(*o, dt);
+			tick(*o, dt, do_calculate);
 		} CATCH(mrt::formatString("tick for object[%p] id:%d %s:%s:%s", (void *)o, o->getID(), o->registered_name.c_str(), o->classname.c_str(), o->animation.c_str()).c_str(), throw;);
 		if (o->isDead()) { //fixme
 			if (_safe_mode == false) {
@@ -1205,7 +1207,7 @@ TRY {
 	GET_CONFIG_VALUE("multiplayer.time-correction-for-updates", bool, pcfu, true);
 	if (pcfu) {
 		TRY {
-			tick(objects, dt);
+			tick(objects, dt, false);
 		} CATCH("applyUpdate::tick", throw;);
 	}
 	
