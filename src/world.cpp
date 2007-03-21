@@ -1182,6 +1182,8 @@ void IWorld::interpolateObjects(ObjectMap &objects) {
 
 void IWorld::applyUpdate(const mrt::Serializator &s, const float dt) {
 TRY {
+	_collision_map.clear();
+
 	unsigned int n;
 	std::set<int> skipped_objects;
 	ObjectMap objects;
