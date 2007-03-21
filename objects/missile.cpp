@@ -21,6 +21,7 @@
 #include "resource_manager.h"
 #include "config.h"
 #include "world.h"
+#include "zbox.h"
 
 class Missile : public Object {
 public:
@@ -84,10 +85,14 @@ void Missile::calculate(const float dt) {
 		int dir = ((int)(_moving_time * rs)) % 8;
 		setDirection(dir);
 
-		Object *leader = World->getObjectByID(getSummoner());
+		const Object *leader = World->getObjectByID(getSummoner());
 		if (leader == NULL) {
 			return;
 		}
+		if (!ZBox::sameBox(leader->getZ(), getZ())) {
+			setZBox(leader->getZ());
+		}
+		
 		_direction.normalize();
 		//LOG_DEBUG(("direction %g %g", _direction.x, _direction.y));
 		_velocity.normalize();
