@@ -624,6 +624,8 @@ TRY {
 	has_outline = ResourceManager->hasAnimation(outline_animation);
 	
 	v2<float> new_velocity;
+	
+	GET_CONFIG_VALUE("engine.disable-sliding", bool, ds, false);
 
 	for(attempt =0; attempt < 3; ++attempt) {
 		v2<int> pos;
@@ -660,7 +662,7 @@ TRY {
 			break;
 		}
 		
-		if (o.piercing || dirs == 1) 
+		if (o.piercing || dirs == 1 || ds) 
 			break;
 
 		stuck = map.getImpassability(&o, old_pos, &stuck_map_pos) == 100 || getImpassability(&o, old_pos, &stuck_in) >= 1.0;
@@ -727,7 +729,7 @@ TRY {
 
 TRY {
 	if (obj_im == 1.0 || map_im == 1.0) {
-		if (stuck && !PlayerManager->isClient()) {
+		if (stuck) {
 			v2<float> allowed_velocity;
 			v2<float> object_center = o._position + o.size / 2;
 			if (map_im >= 1.0) {
