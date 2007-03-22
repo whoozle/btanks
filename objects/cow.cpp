@@ -104,7 +104,7 @@ void Cow::onSpawn() {
 
 void Cow::emit(const std::string &event, Object * emitter) {
 	if (event == "death") {
-		//spawn("corpse", "dead-Cow", v2<float>::empty, v2<float>::empty);
+		spawn("corpse", "dead-cow", v2<float>::empty, v2<float>::empty);
 	} else if (emitter != NULL && event == "collision") {
 	}
 	Object::emit(event, emitter);
