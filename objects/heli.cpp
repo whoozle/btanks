@@ -1,4 +1,3 @@
-
 /* Battle Tanks Game
  * Copyright (C) 2006-2007 Battle Tanks team
  *
@@ -17,78 +16,24 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include "object.h"
+#include "heli.h"
 #include "resource_manager.h"
 #include "alarm.h"
 #include "config.h"
-#include "mrt/random.h"
-#include "tmx/map.h"
-#include "player_manager.h"
 
-class Heli : public Object {
-public:
-	Heli() : 
-		Object("helicopter"), _reaction(true), _fire(false), _alt_fire(false), _left(false) {
-		impassability = -1;	
-	}
-	
-	virtual void tick(const float dt);
-	virtual void calculate(const float dt);
+Heli::Heli(const std::string &classname) : 
+	Object(classname), _fire(false), _alt_fire(false), _left(false) {
+	impassability = -1;	
+}
 
-	virtual Object * clone() const;
-	virtual void onSpawn();
-	virtual void emit(const std::string &event, Object * emitter = NULL);
-
-	virtual void serialize(mrt::Serializator &s) const {
-		Object::serialize(s);
-		_reaction.serialize(s);
-		_fire.serialize(s);
-		_alt_fire.serialize(s);
-		s.add(_left);
-	}
-	virtual void deserialize(const mrt::Serializator &s) {
-		Object::deserialize(s);
-		_reaction.deserialize(s);
-		_fire.deserialize(s);
-		_alt_fire.deserialize(s);
-		s.get(_left);
-	}	
-
-private: 
-	Alarm _reaction, _fire, _alt_fire;
-	bool _left;
-};
 
 void Heli::calculate(const float dt) {
-	if (!_reaction.tick(dt))
-		return;
-		
-	_state.fire = true;
-	
-	GET_CONFIG_VALUE("engine.mass-acceleration-divisor", float, ac_div, 1000.0);
-
-	const float ac_t = mass / ac_div * 0.8;
-	_state.alt_fire = _moving_time >= ac_t;
-
-	if (!isDriven() && !PlayerManager->isClient()) { 
-		Way way;
-		v2<int> size = Map->getSize();
-		
-		for(int i = 0; i < 3; ++i) {
-			v2<int> next_target;
-			next_target.x = mrt::random(size.x);
-			next_target.y = mrt::random(size.y);
-			way.push_back(next_target);		
-		}
-		setWay(way);
-	}
-	
-	calculateWayVelocity();
-	updateStateFromVelocity();
+	Object::calculate(dt);
 
 	GET_CONFIG_VALUE("objects.helicopter.rotation-time", float, rt, 0.2);
-	limitRotation(dt, rt, true, false);	
+	limitRotation(dt, rt, true, true);	
 }
+
 
 void Heli::tick(const float dt) {
 	Object::tick(dt);
@@ -105,10 +50,6 @@ void Heli::tick(const float dt) {
 }
 
 void Heli::onSpawn() {
-	GET_CONFIG_VALUE("objects.helicopter.reaction-time", float, rt, 0.1);
-	mrt::randomize(rt, rt/10);
-	_reaction.set(rt);
-
 	GET_CONFIG_VALUE("objects.helicopter.fire-rate", float, fr, 0.1);
 	_fire.set(fr);
 
@@ -132,4 +73,4 @@ Object* Heli::clone() const  {
 	return new Heli(*this);
 }
 
-REGISTER_OBJECT("helicopter", Heli, ());
+REGISTER_OBJECT("helicopter-player", Heli, ("player"));
