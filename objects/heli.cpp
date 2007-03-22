@@ -67,7 +67,7 @@ void Heli::calculate(const float dt) {
 	
 	GET_CONFIG_VALUE("engine.mass-acceleration-divisor", float, ac_div, 1000.0);
 
-	const float ac_t = mass / ac_div / 2;
+	const float ac_t = mass / ac_div * 0.8;
 	_state.alt_fire = _moving_time >= ac_t;
 
 	if (!isDriven() && !PlayerManager->isClient()) { 
