@@ -63,7 +63,12 @@ void Heli::calculate(const float dt) {
 	if (!_reaction.tick(dt))
 		return;
 		
-	_state.fire = _state.alt_fire = true;
+	_state.fire = true;
+	
+	GET_CONFIG_VALUE("engine.mass-acceleration-divisor", float, ac_div, 1000.0);
+
+	const float ac_t = mass / ac_div / 2;
+	_state.alt_fire = _moving_time >= ac_t;
 
 	if (!isDriven() && !PlayerManager->isClient()) { 
 		Way way;
