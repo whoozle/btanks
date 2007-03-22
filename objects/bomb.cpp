@@ -54,9 +54,9 @@ void Bomb::calculate(const float dt) {
 }
 
 void Bomb::tick(const float dt) {
+	Object::tick(dt);
 	if (getState().empty())
 		emit("death", this);
-	Object::tick(dt);
 }
 
 void Bomb::emit(const std::string &event, Object * emitter) {
