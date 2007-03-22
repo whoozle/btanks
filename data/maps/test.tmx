@@ -38,18 +38,6 @@
   </data>
   <tileproperties/>
  </layer>
- <layer name="Layer 2" width="16" height="16">
-  <properties>
-   <property name="animation-speed" value="10"/>
-   <property name="animation-frames" value="5"/>
-   <property name="z" value="9"/>
-   <property name="animation-frame-size" value="20"/>
-  </properties>
-  <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAALvMwMBwBYgvk0nfBeJ7FNDk2jtq/6j9o/ZTbj8AhlWGlQAEAAA=
-  </data>
-  <tileproperties/>
- </layer>
  <layer name="Layer 0" width="16" height="16">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAAtgIB/4A3HAqP5R/VTQH4EkHg6lw5DEkNnY9CdCzQDpTUITY0ASw6UfXT0+e7Hph9mLbgax+skB1NAPAD2k86sABAAA
