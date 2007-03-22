@@ -75,6 +75,7 @@ void AITank::onSpawn() {
 	addEnemyClass("trooper");
 	addEnemyClass("kamikaze");
 	addEnemyClass("boat");
+	addEnemyClass("helicopter");
 	addEnemyClass("watchtower");
 	addEnemyClass("barrack");
 	addEnemyClass("monster");

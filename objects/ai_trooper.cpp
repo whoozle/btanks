@@ -33,6 +33,7 @@ public:
 			_targets.insert("trooper");
 			_targets.insert("kamikaze");
 			_targets.insert("boat");
+			_targets.insert("helicopter");
 			_targets.insert("monster");
 	}
 	virtual void onSpawn();
@@ -143,6 +144,7 @@ public:
 			_targets.insert("trooper");
 			_targets.insert("kamikaze");
 			_targets.insert("boat");		
+			_targets.insert("helicopter");
 	}
 	virtual Object * clone() const { return new TrooperInWatchTower(*this); }
 	
