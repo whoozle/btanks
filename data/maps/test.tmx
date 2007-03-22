@@ -14,6 +14,7 @@
   <property name="object:watchtower-with-machinegunner:watchtower:100" value="@0,13"/>
   <property name="spawn:2" value="454,91"/>
   <property name="spawn:1" value="554,91"/>
+  <property name="object:helicopter:helicopter:1" value="@1,1,900"/>
   <property name="object:smoke-missiles-item:smoke-missiles-item:1" value="@0,3"/>
  </properties>
  <tileset name="Untitled" firstgid="1" tilewidth="64" tileheight="64">

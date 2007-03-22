@@ -227,6 +227,10 @@
 		<pose id="move" sound="helicopter.ogg">0,1,2</pose>
 	</animation-model>
 
+	<animation-model id="bomb-animation" speed="2">
+		<pose id="main">0,1,2,3,4</pose>
+	</animation-model>
+
 	<animation-model id="paratrooper-animation" speed="2">
 		<pose id="main">0,1,2,3,4,5,6,7</pose>
 	</animation-model>
@@ -380,6 +384,7 @@
 	<animation id="missile-fire" tile="missile_fire.png" model="missile-fire-animation" />
 	<animation id="missile-launch" tile="missile_launch.png" model="missile-launch-animation" size="128" />
 	<animation id="regular-mine" tile="mine.png" model="regular-mine-animation" size="32" />
+	<animation id="bomb" tile="aviabomb.png" model="bomb-animation" />
 
 	<animation id="orange-bus" tile="bus01.png" model="car-animation"/>
 	<animation id="dead-orange-bus" tile="bus01_crash.png" model="dead-vehicle-animation"/>
@@ -556,7 +561,9 @@
 	<object class="missile-launch" impassability="0" z="260" />
 
 	<object class="regular-mine" hp="40" impassability="-1" z="-30" />
-	<object class="armed-mine" hp="40" impassability="-1" z="-30" />
+	<object class="armed-mine" parent="regular-mine" />
+	
+	<object class="bomb" hp="1" impassability="-1" speed="100" />
 
 	<object class="choo-choo-train" speed="30" mass="5000" hp="100" z="0" />
 	<object class="choo-choo-wagon" speed="30" mass="5000" hp="100" z="0" impassability="1" />
