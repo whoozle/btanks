@@ -7,7 +7,14 @@
 
 class AIHeli : public Heli {
 public:
-	AIHeli() : Heli("helicopter"), _reaction(true) {}
+	AIHeli() : Heli("helicopter"), _reaction(true), _target_dir(-1) {
+			_targets.insert("missile");	
+			_targets.insert("player");
+			_targets.insert("trooper");
+			_targets.insert("kamikaze");
+			_targets.insert("boat");		
+			_targets.insert("helicopter");
+	}
 	virtual void onSpawn();
 	void calculate(const float dt);
 	virtual void serialize(mrt::Serializator &s) const {
@@ -20,10 +27,31 @@ public:
 	}
 
 	virtual Object * clone() const { return new AIHeli(*this); }
+	virtual void onIdle(const float dt);
 	
 private: 
 	Alarm _reaction;	
+	int _target_dir;
+	
+	std::set<std::string> _targets;
 };
+
+void AIHeli::onIdle(const float dt) {
+	if (PlayerManager->isClient())
+		return;
+
+	Way way;
+	v2<int> size = Map->getSize();
+	
+	for(int i = 0; i < 3; ++i) {
+		v2<int> next_target;
+		next_target.x = mrt::random(size.x);
+		next_target.y = mrt::random(size.y);
+		way.push_back(next_target);		
+	}
+	setWay(way);
+}
+
 
 void AIHeli::onSpawn() {
 	GET_CONFIG_VALUE("objects.helicopter.reaction-time", float, rt, 0.1);
@@ -33,32 +61,48 @@ void AIHeli::onSpawn() {
 }
 
 void AIHeli::calculate(const float dt) {
-	if (!_reaction.tick(dt))
+	v2<float> vel;
+	if (!_reaction.tick(dt) || isDriven())
 		goto done;
 		
 	_state.fire = true;
 	
-	GET_CONFIG_VALUE("engine.mass-acceleration-divisor", float, ac_div, 1000.0);
 
-	{
-		const float ac_t = mass / ac_div * 0.8;
-		_state.alt_fire = _moving_time >= ac_t;
+	_state.fire = false;
+	
+	_target_dir = getTargetPosition(_velocity, _targets, "helicopter-bullet");
+	if (_target_dir >= 0) {
+		//LOG_DEBUG(("target: %g %g %g", tp.x, tp.y, tp.length()));
+		/*
+		Way way;
+		if (findPath(tp, way)) {
+		setWay(way);
+			calculateWayVelocity();
+		}
+		*/
+		_state.fire = true;
+		if (_velocity.length() >= 9) {
+			quantizeVelocity();
+			_direction.fromDirection(getDirection(), getDirectionsNumber());
+		} else {
+			_velocity.clear();
+			setDirection(_target_dir);
+			//LOG_DEBUG(("%d", _target_dir));
+			_direction.fromDirection(_target_dir, getDirectionsNumber());
+		}
+	
+	} else {
+		_velocity.clear();
+		_target_dir = -1;
+		onIdle(dt);
 	}
 	
-	if (!isDriven() && !PlayerManager->isClient()) { 
-		Way way;
-		v2<int> size = Map->getSize();
-		
-		for(int i = 0; i < 3; ++i) {
-			v2<int> next_target;
-			next_target.x = mrt::random(size.x);
-			next_target.y = mrt::random(size.y);
-			way.push_back(next_target);		
-		}
-		setWay(way);
-	}
-
 done: 	
+	GET_CONFIG_VALUE("engine.mass-acceleration-divisor", float, ac_div, 1000.0);
+
+	const float ac_t = mass / ac_div * 0.8;
+	_state.alt_fire = _moving_time >= ac_t;
+
 	calculateWayVelocity();
 	updateStateFromVelocity();
 
