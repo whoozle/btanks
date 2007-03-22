@@ -646,10 +646,14 @@ void Object::limitRotation(const float dt, const float speed, const bool rotate_
 
 	if (dirs == 8) {
 		_velocity.quantize8();
-		_dst_direction = _velocity.getDirection8() - 1;
+		int d = _velocity.getDirection8() - 1;
+		if (d >= 0) 
+			_dst_direction = d;
 	} else {
 		_velocity.quantize16();
-		_dst_direction = _velocity.getDirection16() - 1;
+		int d = _velocity.getDirection16() - 1;
+		if (d >= 0) 
+			_dst_direction = d;
 	}
 	assert(_dst_direction >= 0);
 	if (_dst_direction == _direction_idx) {
