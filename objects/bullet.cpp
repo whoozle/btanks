@@ -121,6 +121,7 @@ void Bullet::emit(const std::string &event, Object * emitter) {
 			
 			setDirection(dir);
 			_velocity.fromDirection(dir, dirs);
+			Object::emit(event, emitter);
 			return;
 		} else if (event == "collision" && ( 
 			(_type == "ricochet" && emitter != NULL ) ||
@@ -131,7 +132,7 @@ void Bullet::emit(const std::string &event, Object * emitter) {
 			int z = (_velocity.y >= 0) ? edzo : 0;
 			spawn("explosion", "explosion", dpos, v2<float>::empty, z);			
 		}
-	
+		Object::emit(event, emitter);
 		Object::emit("death", emitter);
 	} else Object::emit(event, emitter);
 }

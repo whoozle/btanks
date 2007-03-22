@@ -549,7 +549,9 @@ void Object::emit(const std::string &event, Object * emitter) {
 		_velocity.clear();
 		_dead = true;
 	} else if (event == "collision") {
-		addDamage(emitter);
+		if (piercing && emitter != NULL)
+			emitter->addDamage(this);
+		//addDamage(emitter);
 	} else 
 		LOG_WARN(("%s[%d]: unhandled event '%s'", registered_name.c_str(), _id, event.c_str()));
 }
