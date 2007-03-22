@@ -207,6 +207,9 @@ void Shilka::serialize(mrt::Serializator &s) const {
 }
 void Shilka::deserialize(const mrt::Serializator &s) {
 	Object::deserialize(s);
+	if (registered_name == "static-shilka")
+		_state.clear();
+	
 	_fire.deserialize(s);
 	_special_fire.deserialize(s);
 	s.get(_left_fire);

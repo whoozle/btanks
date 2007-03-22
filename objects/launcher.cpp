@@ -146,6 +146,8 @@ void Launcher::serialize(mrt::Serializator &s) const {
 
 void Launcher::deserialize(const mrt::Serializator &s) {
 	Object::deserialize(s);
+	if (registered_name == "static-launcher")
+		_state.clear();
 	_fire.deserialize(s);
 }
 

@@ -158,6 +158,8 @@ void Tank::serialize(mrt::Serializator &s) const {
 }
 void Tank::deserialize(const mrt::Serializator &s) {
 	Object::deserialize(s);
+	if (registered_name == "static-tank")
+		_state.clear();
 	_fire.deserialize(s);
 }
 
