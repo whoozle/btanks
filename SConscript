@@ -32,6 +32,7 @@ bt_sources = 	[
 	'objects/vehicle_traits.cpp', 'objects/barrack.cpp', 'objects/watchtower.cpp',
 	'objects/cannon.cpp', 'objects/boat.cpp', 'objects/poison.cpp', 'objects/old_school_destructable.cpp', 
 	'objects/zombie.cpp', 'objects/civilian.cpp', 'objects/teleport.cpp', 'objects/cow.cpp', 
+	'objects/heli.cpp', 
 	
 	'src/player_state.cpp', 
 	'controls/joyplayer.cpp', 'controls/keyplayer.cpp', 'controls/external_control.cpp', 'controls/mouse_control.cpp', 
