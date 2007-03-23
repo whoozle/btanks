@@ -4,6 +4,8 @@
 #include "mrt/random.h"
 #include "zbox.h"
 #include "world.h"
+#include "player_manager.h"
+#include "player_slot.h"
 
 class Teleport : public Object {
 public: 
@@ -22,7 +24,7 @@ public:
 
 	virtual void tick(const float dt) {
 		Object::tick(dt);
-		if (!track)
+		if (!track || PlayerManager->isClient())
 			return;
 		
 		const Object *o = World->getObjectByID(track);
@@ -30,6 +32,10 @@ public:
 			track = 0;
 			need_sync = true;
 			return;
+		}
+		PlayerSlot *slot = PlayerManager->getSlotByID(track);
+		if (slot != NULL) {
+			slot->need_sync = true;
 		}
 		
 		v2<int> pos, tpos;
@@ -67,7 +73,7 @@ private:
 Teleport::TeleportMap Teleport::_teleports;
 
 void Teleport::emit(const std::string &event, Object * emitter) {
-	if (event == "collision" && emitter != NULL) {
+	if (!PlayerManager->isClient() && event == "collision" && emitter != NULL) {
 		v2<int> epos, pos;
 		emitter->getCenterPosition(epos);
 		getPosition(pos);
