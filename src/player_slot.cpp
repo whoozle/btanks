@@ -22,12 +22,12 @@
 #include "tooltip.h"
 
 PlayerSlot::PlayerSlot() : 
-id(-1), control_method(NULL), need_sync(false), remote(false), trip_time(10), visible(false), 
+id(-1), control_method(NULL), need_sync(false), dont_interpolate(false), remote(false), trip_time(10), visible(false), 
 classname(), animation(), frags(0), reserved(false)
 {}
 
 PlayerSlot::PlayerSlot(const int id) : 
-id(id), control_method(NULL), need_sync(false), remote(false), trip_time(10), visible(false), 
+id(id), control_method(NULL), need_sync(false), dont_interpolate(false), remote(false), trip_time(10), visible(false), 
 classname(), animation(), frags(0), reserved(false)
 {}
 

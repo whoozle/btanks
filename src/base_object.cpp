@@ -369,6 +369,7 @@ void BaseObject::uninterpolate() {
 		return;
 	
 	_position += _interpolation_vector * (1.0 - _interpolation_progress);
+	_interpolation_position_backup.clear();
 }
 
 void BaseObject::getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const {

@@ -35,6 +35,7 @@ public:
 		}
 		PlayerSlot *slot = PlayerManager->getSlotByID(track);
 		if (slot != NULL) {
+			slot->dont_interpolate = true;
 			slot->need_sync = true;
 		}
 		

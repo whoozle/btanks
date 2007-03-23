@@ -237,7 +237,7 @@ TRY {
 	} 
 	case Message::UpdatePlayers: { 
 		mrt::Serializator s(&message.data);
-		IWorld::ObjectMap updated_objects;
+		IWorld::ObjectMap updated_objects, interpolated_objects;
 		while(!s.end()) {
 			int id;
 			s.get(id);
@@ -260,6 +260,8 @@ TRY {
 			}
 			
 			World->deserializeObjectPV(s, o);
+			bool dont_interpolate;
+			s.get(dont_interpolate);
 			
 			if (o == NULL) {
 				LOG_WARN(("nothing known about object id %d now, skip update", id));
@@ -274,9 +276,12 @@ TRY {
 				o->updatePlayerState(state); //update states for all players but me.
 
 			updated_objects.insert(IWorld::ObjectMap::value_type(o->getID(), o));
+			if (!dont_interpolate)
+				interpolated_objects.insert(IWorld::ObjectMap::value_type(o->getID(), o));
+			else o->uninterpolate();
 		}	
 		World->tick(updated_objects, _trip_time / 1000.0, false);
-		World->interpolateObjects(updated_objects);
+		World->interpolateObjects(interpolated_objects);
 		break;
 	} 
 	case Message::Ping: {
@@ -526,8 +531,10 @@ void IPlayerManager::updatePlayers() {
 				assert(o != NULL);
 				o->getPlayerState().serialize(s);
 				World->serializeObjectPV(s, o);
+				s.add(slot.dont_interpolate);
 				send = true;
 				slot.need_sync = false;
+				slot.dont_interpolate = false;
 			}
 		}
 
