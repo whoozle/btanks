@@ -454,8 +454,8 @@
 	<animation id="oil-barrels" model="destructable-object-animation" tile="oil-barrels.png" />
 
 	<animation id="helicopter" model="helicopter-animation" tile="helicopter.png" size="128" />
-	<animation id="helicopter-bullet-right" tile="shilka_bullet1.png" model="bullet-animation"/>
-	<animation id="helicopter-bullet-left" tile="shilka_bullet2.png" model="bullet-animation"/>
+	<animation id="helicopter-bullet-right" tile="helicopter_bullet1.png" model="bullet-animation"/>
+	<animation id="helicopter-bullet-left" tile="helicopter_bullet2.png" model="bullet-animation"/>
 
 	<animation id="watchtower" model="watchtower-animation" tile="watchtower.png" size="128" />
 	<animation id="trooper-tent" model="trooper-tent-animation" tile="trooper_tent.png" size="128" />
