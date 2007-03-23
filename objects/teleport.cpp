@@ -103,7 +103,6 @@ void Teleport::emit(const std::string &event, Object * emitter) {
 		emitter->_position -= emitter->size / 2;
 		//LOG_DEBUG(("dst z = %d, dst box base = %d", dst->getZ(), ZBox::getBoxBase(dst->getZ())));
 		emitter->setZBox(ZBox::getBoxBase(dst->getZ()));
-		emitter->addEffect("teleported", 0.5);
 		dst->track = emitter->getID();
 		dst->need_sync = true;
 	} else Object::emit(event, emitter);
