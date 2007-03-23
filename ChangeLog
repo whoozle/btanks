@@ -1,8 +1,10 @@
+*) added new map : 'Aqua World' with two separated levels: underwater and rooftops
 *) a lot of various bugfixes everywhere (mostly multiplayer, several crashes)
 *) interpolation support in multiplayer. 
 *) added proper player placement into checkpoint.
 *) added `teleport' object which easily could be extended with `telefrag' support.
 *) added new major feature : isolated z-boxes (different worlds, checkpoints, hints and spawns in one map)
+*) added various penalties for vehicles: launcher slower on sands, tank is stable on every surface. 
 *) reduces respawn intervals for machinegunner/thrower items.
 *) improved menu controls: hotkeys, usual text control with cursor.
 *) show/hide mouse pointer if needed
