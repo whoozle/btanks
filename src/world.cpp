@@ -172,7 +172,7 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect&src, const sdlx::Re
 			}
 		}
 	}
-	map.render(surface, src, dst, z1, 1000);
+	map.render(surface, src, dst, z1, 10000);
 	
 	surface.resetClipRect();
 }
