@@ -1365,7 +1365,7 @@ const bool IWorld::getNearest(const Object *obj, const std::set<std::string> &cl
 const int IWorld::getChildren(const int id) const {
 	int c = 0;
 	for(ObjectMap::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
-		if (i->second->_spawned_by == id || i->second->hasOwner(id)) 
+		if (i->first != id && i->second->_spawned_by == id || i->second->hasOwner(id)) 
 			++c;
 	}
 	return c;
