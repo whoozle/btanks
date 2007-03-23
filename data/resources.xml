@@ -573,7 +573,7 @@
 	<object class="broken-object" impassability="1" pierceable="true" hp="-1" />
 	
 	<object class="explosion" hp="1" z="580" />
-	<object class="static-smoke-cloud" impassability="-1" hp="5" z="580" />
+	<object class="static-smoke-cloud" impassability="-1" hp="1000" z="580" />
 	<object class="smoke-cloud" parent="static-smoke-cloud" ttl="30" fadeout_time="1" />
 	<object class="nuclear-explosion" hp="1000" mass="10000" impassability="-1" z="900" />
 	<object class="cannon-explosion" hp="30" impassability="-1" z="900" />
