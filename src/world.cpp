@@ -1006,14 +1006,17 @@ void IWorld::serializeObjectPV(mrt::Serializator &s, const Object *o) const {
 	o->_position.serialize(s);
 	o->_velocity.serialize(s);
 	o->_velocity_fadeout.serialize(s);
+	s.add(o->getZ());
 }
 
 void IWorld::deserializeObjectPV(const mrt::Serializator &s, Object *o) {
+	int z;
 	if (o == NULL) {
 		v2<float> x;
 		x.deserialize(s);
 		x.deserialize(s);
 		x.deserialize(s);
+		s.get(z);
 		
 		LOG_WARN(("skipped deserializeObjectPV for NULL object"));
 		return;
@@ -1023,6 +1026,9 @@ void IWorld::deserializeObjectPV(const mrt::Serializator &s, Object *o) {
 	o->_position.deserialize(s);
 	o->_velocity.deserialize(s);
 	o->_velocity_fadeout.deserialize(s);
+	s.get(z);
+	if (!ZBox::sameBox(o->getZ(), z))
+		o->setZBox(z);
 }
 
 
