@@ -1,3 +1,5 @@
+0.4.2902: 
+
 *) added new map : 'Aqua World' with two separated levels: underwater and rooftops
 *) a lot of various bugfixes everywhere (mostly multiplayer, several crashes)
 *) interpolation support in multiplayer. 
