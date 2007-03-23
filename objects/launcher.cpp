@@ -28,7 +28,7 @@ void Launcher::getImpassabilityPenalty(const float impassability, float &base, f
 	if (impassability > 0.2) {
 		base_value = 0.2;
 		base = 0.2;
-		penalty = 2;
+		penalty = 1.5;
 	}
 }
 
