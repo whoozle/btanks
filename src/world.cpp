@@ -695,7 +695,9 @@ TRY {
 		if (hidden) {
 			if (has_outline && !o.has("_outline")) {
 				//LOG_DEBUG(("%d:%s:%s: adding outline", o._id, o.classname.c_str(), o.animation.c_str()));
-				o.add("_outline", o.spawnGrouped("outline", outline_animation, v2<float>::empty, Centered));
+				Object *outline = o.spawnGrouped("outline", outline_animation, v2<float>::empty, Centered);
+				outline->setZ(9999, true);
+				o.add("_outline", outline);
 			}
 		//LOG_DEBUG(("%d:%s:%s: whoaaa!!! i'm in domik", o._id, o.classname.c_str(), o.animation.c_str()));
 		} else {
