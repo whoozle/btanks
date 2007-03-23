@@ -24,6 +24,7 @@
 #include "shilka.h"
 #include "config.h"
 #include "fakemod.h"
+#include "world.h"
 
 void Shilka::getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const {
 	penalty = 0.8;
@@ -143,6 +144,7 @@ skip_left_toggle:
 		_special_fire.reset();
 		
 		FakeMod * mod = getMod("mod");
+		std::string mod_type = mod->getType();
 		
 		if (isEffectActive("dirt")) {
 			if (getState().substr(0,4) == "fire") 
@@ -157,9 +159,12 @@ skip_left_toggle:
 
 			_left_fire = ! _left_fire;
 			play_fire = true;
-		} else if (!mod->getType().empty()) {
-			if (mod->getCount() > 0) {
-				spawn(mod->getType(), mod->getType(), _direction*(size.length()/-2), v2<float>::empty);
+		} else if (!mod_type.empty()) {
+			int n;
+			Config->get("objects.shilka.units-limit", n, 10); //fixme: add type restrictions
+			n += 2; //fake mod and unidentified object ;)
+			if (mod->getCount() > 0 && World->getChildren(getID()) < n) {
+				spawn(mod_type, mod_type, _direction*(size.length()/-2), v2<float>::empty);
 				mod->decreaseCount();
 			}
 		}
