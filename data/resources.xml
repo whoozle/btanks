@@ -228,7 +228,7 @@
 	</animation-model>
 
 	<animation-model id="bomb-animation" speed="2">
-		<pose id="main">0,1</pose>
+		<pose id="main">0,1,2,3,4</pose>
 	</animation-model>
 
 	<animation-model id="paratrooper-animation" speed="2">
@@ -384,7 +384,7 @@
 	<animation id="missile-fire" tile="missile_fire.png" model="missile-fire-animation" />
 	<animation id="missile-launch" tile="missile_launch.png" model="missile-launch-animation" size="128" />
 	<animation id="regular-mine" tile="mine.png" model="regular-mine-animation" size="32" />
-	<animation id="bomb" tile="biotoilet.png" model="bomb-animation" />
+	<animation id="bomb" tile="aviabomb.png" model="bomb-animation" />
 
 	<animation id="orange-bus" tile="bus01.png" model="car-animation"/>
 	<animation id="dead-orange-bus" tile="bus01_crash.png" model="dead-vehicle-animation"/>
