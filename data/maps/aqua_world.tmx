@@ -89,7 +89,6 @@
   <property name="object:static-corpse:dead-man:3" value="594,543,-2020"/>
   <property name="object:static-corpse:dead-man:2" value="1116,825,-2020"/>
   <property name="object:static-corpse:dead-man:1" value="1297,1243,-2020"/>
-  <property name="object:boomerang-missiles-item:boomerang-missiles-item:1" value="@28,27"/>
   <property name="object:teleport-d:teleport:15" value="295,207,-2002"/>
   <property name="object:teleport-d:teleport:13" value="161,358,-2"/>
   <property name="object:static-corpse:dead-thrower-static:8" value="606,1759,-2020"/>
