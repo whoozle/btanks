@@ -627,7 +627,13 @@ void IGame::run() {
 				}
 #endif
 				if (event.key.keysym.sym==SDLK_s && event.key.keysym.mod & KMOD_SHIFT) {
-					_window.saveBMP("screenshot.bmp");
+					static int n = 0; 
+					std::string fname;
+					do {
+						fname = mrt::formatString("screenshot%02d.bmp", n++);
+					} while(mrt::FSNode::exists(fname));
+					LOG_DEBUG(("saving screenshot to %s", fname.c_str()));
+					_window.saveBMP(fname);
 					break;
 				}
 				if (event.key.keysym.sym==SDLK_m && event.key.keysym.mod & KMOD_SHIFT && _map_loaded) {
