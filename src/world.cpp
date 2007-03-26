@@ -655,6 +655,10 @@ TRY {
 		
 		map_im = map.getImpassability(&o, pos, NULL, has_outline?(hidden_attempt + attempt):NULL) / 100.0;
 		obj_im = getImpassability(&o, pos, &other_obj, attempt > 0);  //make sure no cached collision event reported here
+		GET_CONFIG_VALUE("engine.no-clip", bool, no_clip, false);
+		if (no_clip) {
+			map_im = obj_im = 0;
+		}
 
 		if (map_im >= 0 && map_im < 1.0 && obj_im < 1.0) {
 			//LOG_DEBUG(("success, %g %g", map_im, obj_im));
