@@ -165,25 +165,28 @@ TRY {
 		if (!(empty_mask & 1) && im[0] == 101) {
 			if (collides(obj, dx1, dy1, getCollisionMap(layer, xt1, yt1))) {
 				im[0] = layer_im;
+				LOG_DEBUG(("im[0] = %d", layer_im));
 			}
 		}
 
 		if (!(empty_mask & 2) && im[1] == 101) {
 			if (collides(obj, dx1, dy2, getCollisionMap(layer, xt1, yt2))) {
 				im[1] = layer_im;
+				LOG_DEBUG(("im[1] = %d", layer_im));
 			}
 		}
 		
 		if (!(empty_mask & 4) && im[2] == 101) {
 			if (collides(obj, dx2, dy1, getCollisionMap(layer, xt2, yt1))) {
 				im[2] = layer_im;
-
+				LOG_DEBUG(("im[2] = %d", layer_im));
 			}
 		}
 		
 		if (!(empty_mask & 8) && im[3] == 101) {
 			if (collides(obj, dx2, dy2, getCollisionMap(layer, xt2, yt2))) { 
 				im[3] = layer_im;
+				LOG_DEBUG(("im[3] = %d", layer_im));
 			}
 		}
 	}
@@ -732,7 +735,7 @@ void IMap::render(sdlx::Surface &window, const sdlx::Rect &src, const sdlx::Rect
 		
 		for(int ty = 0; ty < tyn; ++ty) {
 			for(int tx = 0; tx < txn; ++tx) {
-				if (z < _cover_map.get(typ + ty, txp + tx)) {//this tile covered by another tile
+				if (!strip_alpha && z < _cover_map.get(typ + ty, txp + tx)) {//this tile covered by another tile
 					//++skipped;
 					continue;
 				}
