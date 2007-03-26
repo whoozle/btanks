@@ -99,10 +99,10 @@ TRY {
 		yt1 = y1 / _th; yt2 = y2 / _th; 
 		dx1 = x - xt1 * _tw; dx2 = x - xt2 * _tw;
 		dy1 = y - yt1 * _th; dy2 = y - yt2 * _th;
+		LOG_DEBUG(("%d:%d:%d:%d (%+d:%+d:%+d:%+d)--> %d:%d %d:%d", x1, y1, w, h, dx1, dy1, dx2, dy2, xt1, yt1, xt2, yt2));
 	}
 	int hidden_mask = 0;
 
-	//LOG_DEBUG(("%d:%d:%d:%d (%+d:%+d:%+d:%+d)--> %d:%d %d:%d", x1, y1, w, h, dx1, dy1, dx2, dy2, xt1, yt1, xt2, yt2));
 	int empty_mask = 0x0f;
 	int im[4] = {101, 101, 101, 101};
 	
@@ -204,10 +204,11 @@ TRY {
 	if (empty_mask & 8) 
 		im[3] = 0;
 
-	//LOG_DEBUG(("im : %d %d", im[0], im[2])); 
-	//LOG_DEBUG(("im : %d %d", im[1], im[3]));
-	//LOG_DEBUG(("empty_mask: 0x%02x", empty_mask));
+	LOG_DEBUG(("im : %d %d", im[0], im[2])); 
+	LOG_DEBUG(("im : %d %d", im[1], im[3]));
 	GET_CONFIG_VALUE("map.default-impassability", int, def_im, 0);
+	LOG_DEBUG(("empty_mask: 0x%02x, default im: %d", empty_mask, def_im));
+	
 	if (obj->piercing) 
 		def_im = 0;
 	
