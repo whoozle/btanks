@@ -715,6 +715,11 @@ void IMap::render(sdlx::Surface &window, const sdlx::Rect &src, const sdlx::Rect
 		if (z >= z2) 
 			break;
 
+		GET_CONFIG_VALUE("engine.strip-alpha-from-map-tiles", bool, strip_alpha, false);
+
+		if (strip_alpha && l->second->impassability <= 0)
+			continue;
+		
 		//LOG_DEBUG(("z: %d << %d, layer: %d", z1, z2, l->first));
 		
 		for(int ty = 0; ty < tyn; ++ty) {
