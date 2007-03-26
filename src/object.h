@@ -144,7 +144,6 @@ protected:
 	void findPath(const v2<int> target, const int step);
 	const bool findPathDone(Way &way);
 	const bool calculatingPath() const { return !_open_list.empty(); }
-	virtual const int getPenalty(const int map_im, const int obj_im) const;
 
 	//grouped object handling
 	void add(const std::string &name, Object *obj);

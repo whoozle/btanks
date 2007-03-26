@@ -1126,7 +1126,6 @@ const bool Object::findPathDone(Way &way) {
 				p.g += map_im * 30 + (int)(im * 100) * 30;
 			
 			*/
-			p.g += getPenalty(map_im, (int)(im * 100));
 			
 			//LOG_DEBUG(("%s: appending %d at %d %d value = g: %d, h: %d, f: %d", registered_name.c_str(), p.id, pos.x, pos.y, p.g, p.h, p.g + p.h));
 			
@@ -1190,10 +1189,6 @@ found:
 
 const std::string Object::getNearestWaypoint(const std::string &name) const {
 	return Game->getNearestWaypoint(this, name);
-}
-
-const int Object::getPenalty(const int map_im, const int obj_im) const {
-	return 0;
 }
 
 void Object::addDamage(Object *from, const bool emitDeath) {

@@ -266,7 +266,7 @@ TRY {
 	assert(result_im >= 0 && result_im < 101);
 	//LOG_DEBUG(("im = %d", result_im));
 	//LOG_DEBUG(("<<IMap::getImpassability"));
-	return result_im;
+	return (int)(100 * obj->getEffectiveImpassability(result_im / 100.0f));
 } CATCH(mrt::formatString("Map::getImpassability(%p, (%d:%d), %p, %p)", 
 	(void *)obj, pos.x, pos.y, (void *)tile_pos, (void *)hidden ).c_str(), throw;);
 	return 0;

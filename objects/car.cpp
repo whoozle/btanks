@@ -54,7 +54,7 @@ public:
 		s.get(_stop);
 	}	
 private: 
-	virtual const int getPenalty(const int map_im, const int obj_im) const;
+	virtual void getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const;
 
 	Alarm _reaction_time;
 	bool _stop;
@@ -64,11 +64,18 @@ private:
 	std::string _waypoint_name;
 };
 
+void Car::getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const {
+	if (impassability >= 0.2) {
+		base = 0.2;
+		base_value = 0.8;
+		return;
+	}
+}
+/*
 const int Car::getPenalty(const int map_im, const int obj_im) const {
 	return (map_im >= 20 || obj_im >= 20)?5000:0;
 }
-
-
+*/
 
 void Car::emit(const std::string &event, Object * emitter) {
 	if (event == "death") {

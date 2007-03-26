@@ -317,7 +317,7 @@ TRY {
 	if (collided_with != NULL)
 		*collided_with = result;
 	
-	return im;
+	return obj->getEffectiveImpassability(im);
 } CATCH(mrt::formatString("World::getImpassability(%p, (%d, %d), %p, %s, %s)", 
 	(void *)obj, position.x, position.y, (void *)collided_with, probe?"true":"false", skip_moving?"true":"false").c_str(), 
 	throw;);	
@@ -798,8 +798,8 @@ TRY {
 	if (map_im >= 1.0 || obj_im >= 1.0) {
 		dpos.clear();
 	} else {
-		map_im = o.getEffectiveImpassability(map_im);
-		obj_im = o.getEffectiveImpassability(obj_im);
+		//map_im = o.getEffectiveImpassability(map_im);
+		//obj_im = o.getEffectiveImpassability(obj_im);
 		dpos *= (1.0f - map_im) * (1.0f - obj_im);
 	}
 	
