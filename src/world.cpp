@@ -637,10 +637,7 @@ TRY {
 */				
 			dir = (dir + ((attempt == 1)?-1:1) + dirs ) % dirs;
 			
-			if (attempt > 0)
-				new_velocity.fromDirection(dir, dirs);
-			else 
-				new_velocity = o._velocity;
+			new_velocity.fromDirection(dir, dirs);
 			//int dir_c = new_velocity.getDirection(dirs) - 1;
 			//assert(dir_c == dir);
 			
