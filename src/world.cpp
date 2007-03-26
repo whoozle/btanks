@@ -657,6 +657,7 @@ TRY {
 		obj_im = getImpassability(&o, pos, &other_obj, attempt > 0);  //make sure no cached collision event reported here
 		GET_CONFIG_VALUE("engine.no-clip", bool, no_clip, false);
 		if (no_clip) {
+			LOG_DEBUG(("map im: %g, obj im: %g", map_im, obj_im));
 			map_im = obj_im = 0;
 		}
 
