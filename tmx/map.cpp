@@ -623,6 +623,14 @@ void IMap::end(const std::string &name) {
 
 				sdlx::Rect from(x, y, _tw, _th);
 				s->copyFrom(*_image, from);
+				GET_CONFIG_VALUE("engine.mark-map-tiles", bool, marks, false);
+				if (marks) {
+					Uint32 color = s->mapRGBA(255,0,255,255);
+					s->putPixel(0, 0, color);
+					s->putPixel(1, 0, color);
+					s->putPixel(0, 1, color);
+				}
+
 				//s->saveBMP(mrt::formatString("tile-%d.bmp", id));
 
 				//LOG_DEBUG(("cut tile %d from tileset [%d:%d, %d:%d]", _firstgid + id, x, y, _tw, _th));
