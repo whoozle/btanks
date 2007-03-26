@@ -92,6 +92,8 @@ TRY {
 	v2<float> position, velocity;
 	obj->getInfo(position, velocity);
 	
+	GET_CONFIG_VALUE("engine.debug-map-collision-code", bool, debug, false);
+	
 	const int obj_z = obj->getZ();
 	int w = (int)obj->size.x, h = (int)obj->size.y;
 	int dx1, dx2, dy1, dy2;
@@ -109,7 +111,8 @@ TRY {
 		yt1 = y1 / _th; yt2 = y2 / _th; 
 		dx1 = x - xt1 * _tw; dx2 = x - xt2 * _tw;
 		dy1 = y - yt1 * _th; dy2 = y - yt2 * _th;
-		//LOG_DEBUG(("%d:%d:%d:%d (%+d:%+d:%+d:%+d)--> %d:%d %d:%d", x1, y1, w, h, dx1, dy1, dx2, dy2, xt1, yt1, xt2, yt2));
+		if (debug)
+			LOG_DEBUG(("%d:%d:%d:%d (%+d:%+d:%+d:%+d)--> %d:%d %d:%d", x1, y1, w, h, dx1, dy1, dx2, dy2, xt1, yt1, xt2, yt2));
 	}
 	int hidden_mask = 0;
 
@@ -155,7 +158,7 @@ TRY {
 		}
 
 		if (layer_im == -1 || 
-			(layer->pierceable && (obj->piercing || obj->pierceable)) || 
+			(layer->pierceable && obj->piercing) || 
 			!ZBox::sameBox(l->first, obj->getZ()))
 			continue;
 		
@@ -196,10 +199,13 @@ TRY {
 	if (empty_mask & 8) 
 		im[3] = -1;
 
-	//LOG_DEBUG(("im : %d %d", im[0], im[2])); 
-	//LOG_DEBUG(("im : %d %d", im[1], im[3]));
 	GET_CONFIG_VALUE("map.default-impassability", int, def_im, 0);
-	//LOG_DEBUG(("empty_mask: 0x%02x, default im: %d", empty_mask, def_im));
+
+	if (debug) {
+		LOG_DEBUG(("im : %d %d", im[0], im[2])); 
+		LOG_DEBUG(("im : %d %d", im[1], im[3]));
+		LOG_DEBUG(("empty_mask: 0x%02x, default im: %d", empty_mask, def_im));
+	}
 	
 	if (obj->piercing) 
 		def_im = 0;
@@ -267,7 +273,9 @@ TRY {
 		*hidden = true;
 
 	assert(result_im >= 0 && result_im < 101);
-	//LOG_DEBUG(("im = %d", result_im));
+
+	if (debug)
+		LOG_DEBUG(("im = %d", result_im));
 	//LOG_DEBUG(("<<IMap::getImpassability"));
 	return (int)(100 * obj->getEffectiveImpassability(result_im / 100.0f));
 } CATCH(mrt::formatString("Map::getImpassability(%p, (%d:%d), %p, %p)", 
