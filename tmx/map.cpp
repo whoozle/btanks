@@ -630,6 +630,16 @@ void IMap::end(const std::string &name) {
 					s->putPixel(1, 0, color);
 					s->putPixel(0, 1, color);
 				}
+				GET_CONFIG_VALUE("engine.strip-alpha-from-map-tiles", bool, strip_alpha, false);
+				if (strip_alpha) {
+					Uint8 r,g,b,a;
+					for(int y = 0; y < s->getHeight(); ++y) 
+						for(int x = 0; x < s->getWidth(); ++x) {
+							s->getRGBA(s->getPixel(x, y), r, g, b, a);
+							if (a != 255)
+								s->putPixel(x, y, s->mapRGBA(0,0,0,0));
+						}
+				}
 
 				//s->saveBMP(mrt::formatString("tile-%d.bmp", id));
 
