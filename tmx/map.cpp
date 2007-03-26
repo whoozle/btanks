@@ -61,6 +61,16 @@ inline const bool IMap::hiddenBy(const Object *obj, const int dx, const int dy, 
 	return obj->collides(tile, -dx, -dy, true);
 }
 
+/*
+static const int im2(const int im1, const int im2) {
+	assert(im1 < 101 && im2 < 101);
+	if (im1 == -1)
+		return im2;
+	if (im2 == -1) 
+		return im1;
+	return math::max(im1, im2);
+}
+*/
 
 const int IMap::getImpassability(const Object *obj, const v2<int>&pos, v2<int> *tile_pos, bool *hidden) const {
 TRY {
@@ -99,7 +109,7 @@ TRY {
 		yt1 = y1 / _th; yt2 = y2 / _th; 
 		dx1 = x - xt1 * _tw; dx2 = x - xt2 * _tw;
 		dy1 = y - yt1 * _th; dy2 = y - yt2 * _th;
-		LOG_DEBUG(("%d:%d:%d:%d (%+d:%+d:%+d:%+d)--> %d:%d %d:%d", x1, y1, w, h, dx1, dy1, dx2, dy2, xt1, yt1, xt2, yt2));
+		//LOG_DEBUG(("%d:%d:%d:%d (%+d:%+d:%+d:%+d)--> %d:%d %d:%d", x1, y1, w, h, dx1, dy1, dx2, dy2, xt1, yt1, xt2, yt2));
 	}
 	int hidden_mask = 0;
 
@@ -107,14 +117,14 @@ TRY {
 	int im[4] = {101, 101, 101, 101};
 	
 	if (collides(obj, dx1, dy1, &_full_tile))
-		empty_mask &= ~1;
+		empty_mask &= ~0x01;
 	if (dy1 != dy2 && collides(obj, dx1, dy2, &_full_tile))
-		empty_mask &= ~2;
+		empty_mask &= ~0x02;
 	if (dx1 != dx2) {
 		if (collides(obj, dx2, dy1, &_full_tile))
-			empty_mask &= ~4;
+			empty_mask &= ~0x04;
 		if (dy1 != dy2 && collides(obj, dx2, dy2, &_full_tile))
-			empty_mask &= ~8;
+			empty_mask &= ~0x08;
 	}
 	
 	for(LayerMap::const_reverse_iterator l = _layers.rbegin(); l != _layers.rend(); ++l) {
@@ -123,25 +133,24 @@ TRY {
 		int layer_im = layer->impassability;
 
 		if (hidden && l->first > obj_z) {
-			if (((hidden_mask & 1) == 0)) {
+			if (!(hidden_mask & 1)) {
 				if ((empty_mask & 1) || hiddenBy(obj, dx1, dy1, getVisibilityMap(layer, xt1, yt1)))
 					hidden_mask |= 1;
 			}
 			
-			if (yt1 != yt2 && ((hidden_mask & 2) == 0)) {
+			if (!(hidden_mask & 2)) {
 				if ((empty_mask & 2) || hiddenBy(obj, dx1, dy2, getVisibilityMap(layer, xt1, yt2)))
 					hidden_mask |= 2;
 			}
 			
-			if (xt1 != xt2) {
-				if (((hidden_mask & 4) == 0)) {
-					if ((empty_mask & 4) || hiddenBy(obj, dx2, dy1, getVisibilityMap(layer, xt2, yt1)))
-						hidden_mask |= 4;
-				}
-				if (yt1 != yt2 && ((hidden_mask & 8) == 0)) {
-					if ((empty_mask & 8) || hiddenBy(obj, dx2, dy2, getVisibilityMap(layer, xt2, yt2)))
-						hidden_mask |= 8;
-				}
+			if (!(hidden_mask & 4)) {
+				if ((empty_mask & 4) || hiddenBy(obj, dx2, dy1, getVisibilityMap(layer, xt2, yt1)))
+					hidden_mask |= 4;
+			}
+			
+			if (!(hidden_mask & 8)) {
+				if ((empty_mask & 8) || hiddenBy(obj, dx2, dy2, getVisibilityMap(layer, xt2, yt2)))
+					hidden_mask |= 8;
 			}
 		}
 
@@ -153,42 +162,25 @@ TRY {
 		if (!(empty_mask & 1) && im[0] == 101) {
 			if (collides(obj, dx1, dy1, getCollisionMap(layer, xt1, yt1))) {
 				im[0] = layer_im;
-				if (yt1 == yt2 && im[1] == 101)
-					im[1] = layer_im;
-				if (xt1 == xt2) {
-					if (im[2] == 101)
-						im[2] = layer_im;
-					if (yt1 == yt2 && im[3] == 101)
-						im[3] = layer_im;
-				}
 			}
 		}
 
-		if (yt2 != yt1) {
-			if (!(empty_mask & 2) && im[1] == 101) {
+		if (!(empty_mask & 2) && im[1] == 101) {
 			if (collides(obj, dx1, dy2, getCollisionMap(layer, xt1, yt2))) {
 				im[1] = layer_im;
-				if (xt1 == xt2 && im[3] == 101) 
-					im[3] = layer_im;
-			}
 			}
 		}
 		
-		if (xt2 != xt1) {
-			if (!(empty_mask & 4) && im[2] == 101) {
+		if (!(empty_mask & 4) && im[2] == 101) {
 			if (collides(obj, dx2, dy1, getCollisionMap(layer, xt2, yt1))) {
 				im[2] = layer_im;
-				if (yt1 == yt2 && im[3] == 101)
-					im[3] = layer_im;
 
 			}
-			}
-			if (yt2 != yt1 && im[3] == 101) { 
-				if (!(empty_mask & 8)) {
-				if (collides(obj, dx2, dy2, getCollisionMap(layer, xt2, yt2))) { 
-					im[3] = layer_im;
-				}
-				}
+		}
+		
+		if (!(empty_mask & 8) && im[3] == 101) {
+			if (collides(obj, dx2, dy2, getCollisionMap(layer, xt2, yt2))) { 
+				im[3] = layer_im;
 			}
 		}
 	}
@@ -196,18 +188,18 @@ TRY {
 	int result_im = 0;
 
 	if (empty_mask & 1) 
-		im[0] = 0;
+		im[0] = -1;
 	if (empty_mask & 2) 
-		im[1] = 0;
+		im[1] = -1;
 	if (empty_mask & 4) 
-		im[2] = 0;
+		im[2] = -1;
 	if (empty_mask & 8) 
-		im[3] = 0;
+		im[3] = -1;
 
-	LOG_DEBUG(("im : %d %d", im[0], im[2])); 
-	LOG_DEBUG(("im : %d %d", im[1], im[3]));
+	//LOG_DEBUG(("im : %d %d", im[0], im[2])); 
+	//LOG_DEBUG(("im : %d %d", im[1], im[3]));
 	GET_CONFIG_VALUE("map.default-impassability", int, def_im, 0);
-	LOG_DEBUG(("empty_mask: 0x%02x, default im: %d", empty_mask, def_im));
+	//LOG_DEBUG(("empty_mask: 0x%02x, default im: %d", empty_mask, def_im));
 	
 	if (obj->piercing) 
 		def_im = 0;
@@ -236,22 +228,32 @@ TRY {
 			tile_pos->y = _th/2 + _th * (yt1 + yt2) / 2;
 	}
 	
-	int t;
-	if (velocity.y < 0 && (t = math::max(im[0], im[2])) < 101 ) {
-		result_im = math::max(result_im, t);
+	/*
+	const int im_l = im2(im[0], im[1]);
+	const int im_r = im2(im[2], im[3]);
+	const int im_u = im2(im[0], im[2]);
+	const int im_d = im2(im[1], im[3]);
+	
+	if (velocity.y < 0 && im_u < 101 ) {
+		result_im = math::max(result_im, im_u);
 		//LOG_DEBUG(("y<0 : %d", t));
 	}
-	if (velocity.y > 0 && (t = math::max(im[1], im[3])) < 101 ) {
-		result_im = math::max(result_im, t);
+	if (velocity.y > 0 && im_d < 101 ) {
+		result_im = math::max(result_im, im_d);
 		//LOG_DEBUG(("y>0 : %d", t));
 	}
-	if (velocity.x < 0 && (t = math::max(im[0], im[1])) < 101 ) {
-		result_im = math::max(result_im, t);
+	if (velocity.x < 0 && im_l < 101 ) {
+		result_im = math::max(result_im, im_l);
 		//LOG_DEBUG(("x<0 : %d", t));
 	}
-	if (velocity.x > 0 && (t = math::max(im[2], im[3])) < 101 ) {
-		result_im = math::max(result_im, t);
+	if (velocity.x > 0 && im_r < 101 ) {
+		result_im = math::max(result_im, im_r);
 		//LOG_DEBUG(("x>0 : %d", t));
+	}
+	*/
+	for(int i = 0; i < 4; ++i) {
+		if (im[i] > result_im) 
+			result_im = im[i];
 	}
 	
 	if (xt1 == xt2) {
@@ -265,7 +267,7 @@ TRY {
 		*hidden = true;
 
 	assert(result_im >= 0 && result_im < 101);
-	LOG_DEBUG(("im = %d", result_im));
+	//LOG_DEBUG(("im = %d", result_im));
 	//LOG_DEBUG(("<<IMap::getImpassability"));
 	return (int)(100 * obj->getEffectiveImpassability(result_im / 100.0f));
 } CATCH(mrt::formatString("Map::getImpassability(%p, (%d:%d), %p, %p)", 
@@ -623,13 +625,6 @@ void IMap::end(const std::string &name) {
 
 				sdlx::Rect from(x, y, _tw, _th);
 				s->copyFrom(*_image, from);
-				GET_CONFIG_VALUE("engine.mark-map-tiles", bool, marks, false);
-				if (marks) {
-					Uint32 color = s->mapRGBA(255,0,255,255);
-					s->putPixel(0, 0, color);
-					s->putPixel(1, 0, color);
-					s->putPixel(0, 1, color);
-				}
 				GET_CONFIG_VALUE("engine.strip-alpha-from-map-tiles", bool, strip_alpha, false);
 				if (strip_alpha) {
 					Uint8 r,g,b,a;
@@ -639,6 +634,14 @@ void IMap::end(const std::string &name) {
 							if (a != 255)
 								s->putPixel(x, y, s->mapRGBA(0,0,0,0));
 						}
+				}
+
+				GET_CONFIG_VALUE("engine.mark-map-tiles", bool, marks, false);
+				if (marks) {
+					Uint32 color = s->mapRGBA(255,0,255,249); //magic value to avoid Collision map confusing
+					s->putPixel(0, 0, color);
+					s->putPixel(1, 0, color);
+					s->putPixel(0, 1, color);
 				}
 
 				//s->saveBMP(mrt::formatString("tile-%d.bmp", id));
