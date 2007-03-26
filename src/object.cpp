@@ -1090,7 +1090,7 @@ const bool Object::findPathDone(Way &way) {
 			setDirection(i);
 			v2<int> world_pos(id.x * _step, id.y * _step);
 			int map_im = Map->getImpassability(this, world_pos);
-			//LOG_DEBUG(("%d, %d, map: %d", pos.x, pos.y, map_im));
+			//LOG_DEBUG(("%d, %d, map: %d", world_pos.x, world_pos.y, map_im));
 			assert(map_im >= 0);
 			if (map_im >= 100) {
 				//_close_list.insert(id);
