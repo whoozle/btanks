@@ -275,7 +275,7 @@ TRY {
 	assert(result_im >= 0 && result_im < 101);
 
 	if (debug)
-		LOG_DEBUG(("im = %d", result_im));
+		LOG_DEBUG(("*** im = %d", result_im));
 	//LOG_DEBUG(("<<IMap::getImpassability"));
 	return (int)(100 * obj->getEffectiveImpassability(result_im / 100.0f));
 } CATCH(mrt::formatString("Map::getImpassability(%p, (%d:%d), %p, %p)", 
