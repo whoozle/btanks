@@ -1,22 +1,26 @@
+#include <assert.h>
+#include <algorithm>
+
 #include "map_picker.h"
 #include "map_details.h"
 #include "player_picker.h"
 #include "scroll_list.h"
-#include "mrt/exception.h"
-#include "mrt/directory.h"
-#include "mrt/xml.h"
-#include "config.h"
-#include <algorithm>
-
 #include "i18n.h"
 #include "player_manager.h"
 #include "map_desc.h"
 #include "upper_box.h"
 #include "game.h"
-#include <assert.h>
-#include "tmx/map.h"
 #include "menu_config.h"
 #include "finder.h"
+
+#include "mrt/exception.h"
+#include "mrt/directory.h"
+#include "mrt/xml.h"
+#include "mrt/random.h"
+
+#include "config.h"
+
+#include "tmx/map.h"
 
 struct MapScanner : mrt::XMLParser {
 	MapScanner() : slots(0) {}
@@ -166,7 +170,13 @@ void MapPicker::fillSlots() const {
 		std::string type = config[i].type;
 		if (type.empty() || type == "?")
 			continue;
-		std::string object = config[i].vehicle, animation; //fixme: random vehicle selection.
+		std::string object = config[i].vehicle;
+		if (object == "?") {
+			static const char *objects[] = {"launcher", "shilka", "tank"};
+			object = objects[mrt::random(sizeof(objects) / sizeof(objects[0]))];
+		}
+		
+		std::string animation;
 		mrt::toLower(object);
 		LOG_DEBUG(("before: %s:%s", object.c_str(), animation.c_str()));
 		PlayerManager->getDefaultVehicle(object, animation);
