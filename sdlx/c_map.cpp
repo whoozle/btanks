@@ -183,7 +183,7 @@ const bool CollisionMap::collides(const sdlx::Rect &src, const CollisionMap *oth
 /*	int steps = 0;
 	int steps_total = (inter_y1 - inter_y0 + 1) * (inter_x1 - inter_x0 + 1);
 */
-#define NEW_COLLIDES
+//#define NEW_COLLIDES
 #ifndef NEW_COLLIDES
 	for(int sy = 0; sy < INTERLACE_STEP; ++sy) 
 	for(int sx = 0; sx < INTERLACE_STEP; ++sx) 
