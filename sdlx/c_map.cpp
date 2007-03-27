@@ -36,9 +36,10 @@ using namespace sdlx;
 CollisionMap::CollisionMap() : _empty(true), _full(false), _w(0), _h(0), _data() {}
 
 static inline const bool bitline_collide(const unsigned char *ptr1, const unsigned char *ptr2, const int first_bits, const int last_bits, const int shift_1, const int size) {
-	assert(shift_1 > 0 && shift_1 < 8 && last_bits >= 0 && last_bits < 8 );	
+	assert(shift_1 > 0 && shift_1 < 8 && last_bits >= 0 && last_bits < 8);	
 	register unsigned int b1 = (ptr1[0]<<8) | ((size > 1)?ptr1[1] : 0);
 	register unsigned int b2 = (ptr2[0]<<8) | ((size > 1)?ptr2[1] : 0);
+	//LOG_DEBUG(("first_bits: %d, shift: %d", first_bits, shift_1));
 	unsigned int mask1 = (1 << (16 - first_bits)) - 1;
 	if (mask1 & (b1 << shift_1 ) & b2)
 		return true;
@@ -55,7 +56,9 @@ static inline const bool bitline_collide(const unsigned char *ptr1, const unsign
 	if (last_bits == 0) 	
 		return false;
 	
-	//fixme : use mask2 to process tail
+	unsigned int mask2 = ~((1 << (8 - last_bits)) - 1);
+	if ((ptr1[size - 1] << shift_1) & mask2 & ptr2[size - 1])
+		return true;
 	
 	return false;
 }
@@ -83,7 +86,7 @@ static inline const bool bitline_collide(
 	assert(size > 0);
 	int shift = pos2_bits_before - pos1_bits_before;
 	int before = math::min(pos2_bits_before, pos1_bits_before);
-	int after = math::max(pos2_bits_before, pos1_bits_before);
+	int after = math::min(pos2_bits_after, pos1_bits_after);
 	
 	if (shift < 0) {
 		if (bitline_collide(base1 + pos1_aligned_start, base2 + pos2_aligned_start, before, after, -shift, size))
