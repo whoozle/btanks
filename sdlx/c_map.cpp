@@ -107,14 +107,14 @@ static inline const bool bitline_collide(
 			return true;
 	} else {
 		//LOG_DEBUG(("quick compare, aligned data. %d afterbits: %d %d", size, pos1_bits_after, pos2_bits_after));
-		int ln = size / 4;
+		int ln = size / sizeof(unsigned long);
 		unsigned long *p1 = (unsigned long *)(base1 + pos1_aligned_start);
 		unsigned long *p2 = (unsigned long *)(base2 + pos2_aligned_start);
 		while(ln--) {
 			if ((*p1++) & (*p2++)) 
 				return true;
 		}
-		int cn = size % 4;
+		int cn = size % sizeof(unsigned long);
 		unsigned char *pc1 = (unsigned char *) p1;
 		unsigned char *pc2 = (unsigned char *) p2;
 		while(cn--) {		
