@@ -36,14 +36,13 @@ using namespace sdlx;
 CollisionMap::CollisionMap() : _empty(true), _full(false), _w(0), _h(0), _data() {}
 
 static inline const bool bitline_collide(const unsigned char *ptr1, const unsigned char *ptr2, const int first_bits, const int last_bits, const int shift_1, const int size) {
-	assert(shift_1 > 0 && shift_1 < 8);	
+	assert(shift_1 > 0 && shift_1 < 8 && last_bits >= 0 && last_bits < 8 );	
 	register unsigned int b1 = (ptr1[0]<<8) | ((size > 1)?ptr1[1] : 0);
 	register unsigned int b2 = (ptr2[0]<<8) | ((size > 1)?ptr2[1] : 0);
 	unsigned int mask1 = (1 << (16 - first_bits)) - 1;
 	if (mask1 & (b1 << shift_1 ) & b2)
 		return true;
 
-	unsigned int mask2 = (1 << last_bits) - 1;
 	
 	register int i;
 	for(i = 1; i < size - 1; ++i) {
@@ -52,6 +51,9 @@ static inline const bool bitline_collide(const unsigned char *ptr1, const unsign
 		if ( (b1 << shift_1 ) & b2)
 			return true;
 	}
+
+	if (last_bits == 0) 	
+		return false;
 	
 	//fixme : use mask2 to process tail
 	
