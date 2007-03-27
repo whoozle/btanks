@@ -39,8 +39,8 @@ static inline const bool bitline_collide(const unsigned char *ptr1, const unsign
 	assert(shift_1 > 0 && shift_1 < 8 && last_bits >= 0 && last_bits < 8);	
 	register unsigned int b1 = (ptr1[0]<<8) | ((size > 1)?ptr1[1] : 0);
 	register unsigned int b2 = (ptr2[0]<<8) | ((size > 1)?ptr2[1] : 0);
-	//LOG_DEBUG(("first_bits: %d, shift: %d", first_bits, shift_1));
-	unsigned int mask1 = (1 << (16 - first_bits)) - 1;
+	//LOG_DEBUG(("first_bits: %d, last_bits: %d, shift: %d, size: %d", first_bits, shift_1, last_bits, size));
+	unsigned int mask1 = (1 << first_bits) - 1;
 	if (mask1 & (b1 << shift_1 ) & b2)
 		return true;
 
@@ -53,7 +53,7 @@ static inline const bool bitline_collide(const unsigned char *ptr1, const unsign
 			return true;
 	}
 
-	if (last_bits == 0) 	
+	if (last_bits == 0)
 		return false;
 	
 	unsigned int mask2 = ~((1 << (8 - last_bits)) - 1);
@@ -71,22 +71,31 @@ static inline const bool bitline_collide(
 		return false;
 	
 	const int pos1_aligned_start = pos1 / 8;
-	const int pos1_bits_before   = pos1 % 8;
-	const int pos1_aligned_size  = (line_size + pos1_bits_before + 7) / 8;
-	const int pos1_bits_after    = 8 * pos1_aligned_size - line_size - pos1_bits_before;
-	assert(pos1_bits_after >= 0 && pos1_bits_after < 8 && ((line_size - pos1_aligned_size * 8 + pos1_bits_before + pos1_bits_after) %8 == 0));
+	const int pos1_bits_before   = math::min(pos1 % 8, line_size);
+	const int pos1_aligned_size  = (line_size - pos1_bits_before) / 8;
+	int pos1_bits_after    = line_size - 8 * pos1_aligned_size  - pos1_bits_before;
+	if (pos1_bits_after < 0)
+		pos1_bits_after = 0;
+	assert(pos1_bits_after >= 0 && pos1_bits_after < 8 && pos1_aligned_size >= 0);
 
 	const int pos2_aligned_start = pos2 / 8;
-	const int pos2_bits_before   = pos2 % 8;
-	const int pos2_aligned_size  = (line_size + pos2_bits_before + 7) / 8;
-	const int pos2_bits_after    = 8 * pos2_aligned_size - line_size - pos2_bits_before;
-	assert(pos2_bits_after >= 0 && pos2_bits_after < 8 && ((line_size - pos2_aligned_size * 8 + pos2_bits_before + pos2_bits_after) %8 == 0));
+	const int pos2_bits_before   = math::min(pos2 % 8, line_size);
+	const int pos2_aligned_size  = (line_size - pos2_bits_before) / 8;
+	int pos2_bits_after    = line_size - 8 * pos2_aligned_size - pos2_bits_before;
+	if (pos2_bits_after < 0)
+		pos2_bits_after = 0;
+	assert(pos2_bits_after >= 0 && pos2_bits_after < 8 && pos2_aligned_size >= 0);
 
-	int size = math::min(pos1_aligned_size, pos2_aligned_size);
-	assert(size > 0);
+	int size = 1 + math::min(pos1_aligned_size, pos2_aligned_size); //firs/last byte
+	assert(size > 0 /* && size <= size1 && size <= size2 */);
+	if (size > math::min(size1, size2)) 
+		size = math::min(size1, size2);
+	
 	int shift = pos2_bits_before - pos1_bits_before;
-	int before = math::min(pos2_bits_before, pos1_bits_before);
-	int after = math::min(pos2_bits_after, pos1_bits_after);
+	//int before = math::min(pos2_bits_before, pos1_bits_before);
+	//int after = math::max(pos2_bits_after, pos1_bits_after);
+	int before = pos2_bits_before;
+	int after =  pos2_bits_after;
 	
 	if (shift < 0) {
 		if (bitline_collide(base1 + pos1_aligned_start, base2 + pos2_aligned_start, before, after, -shift, size))
