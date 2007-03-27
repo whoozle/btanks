@@ -35,25 +35,30 @@ using namespace sdlx;
 
 CollisionMap::CollisionMap() : _empty(true), _full(false), _w(0), _h(0), _data() {}
 
-static inline const bool bitline_collide(const unsigned char *ptr1, const unsigned char *ptr2, const int first_bits, const int last_bits, const int shift_1, const int size) {
+/*
+	[-----+++] (size - 2) * [++++++++] [+++++++-]
+	before 5                            after 7
+*/
+
+static inline const bool bitline_collide(const unsigned char *ptr1, const unsigned char *ptr2, const int first_bits, const int last_bits, const int shift_1, const int size, const int line_size) {
 	assert(shift_1 > 0 && shift_1 < 8 && last_bits >= 0 && last_bits < 8);	
-	register unsigned int b1 = (ptr1[0]<<8) | ((size > 1)?ptr1[1] : 0);
-	register unsigned int b2 = (ptr2[0]<<8) | ((size > 1)?ptr2[1] : 0);
-	//LOG_DEBUG(("first_bits: %d, last_bits: %d, shift: %d, size: %d", first_bits, shift_1, last_bits, size));
+	register unsigned int b1 = (ptr1[0]<<8) | ((size > 0)?ptr1[1] : 0);
+	register unsigned int b2 = (ptr2[0]<<8) | ((size > 0)?ptr2[1] : 0);
+	//LOG_DEBUG(("first_bits: %d, last_bits: %d, shift: %d, size: %d", first_bits, last_bits, shift_1, size));
 	unsigned int mask1 = (1 << (16 - first_bits)) - 1;
 	if (mask1 & (b1 << shift_1 ) & b2)
 		return true;
 
 	
 	register int i;
-	for(i = 1; i < size - 1; ++i) {
+	for(i = 1; i <= size - 2; ++i) {
 		b1 = (ptr1[i]<<8) | ptr1[i + 1];
 		b2 = (ptr2[i]<<8) | ptr2[i + 1];
 		if ( (b1 << shift_1 ) & b2)
 			return true;
 	}
 
-	if (last_bits == 0)
+	if (last_bits == 0 || size < 2)
 		return false;
 	
 	unsigned int mask2 = ~((1 << (8 - last_bits)) - 1);
@@ -67,43 +72,41 @@ static inline const bool bitline_collide(
  const unsigned char *base1, const int size1, const int pos1, 
  const unsigned char *base2, const int size2, const int pos2, 
  int line_size) {
-	if (size1 < 0 || size2 < 0) 
+	if (size1 <= 0 || size2 <= 0) 
 		return false;
 	
 	const int pos1_aligned_start = pos1 / 8;
 	const int pos1_bits_before   = math::min(pos1 % 8, line_size);
 	const int pos1_aligned_size  = (line_size - pos1_bits_before) / 8;
 	int pos1_bits_after    = line_size - 8 * pos1_aligned_size  - pos1_bits_before;
-	if (pos1_bits_after < 0)
-		pos1_bits_after = 0;
 	assert(pos1_bits_after >= 0 && pos1_bits_after < 8 && pos1_aligned_size >= 0);
 
 	const int pos2_aligned_start = pos2 / 8;
 	const int pos2_bits_before   = math::min(pos2 % 8, line_size);
 	const int pos2_aligned_size  = (line_size - pos2_bits_before) / 8;
 	int pos2_bits_after    = line_size - 8 * pos2_aligned_size - pos2_bits_before;
-	if (pos2_bits_after < 0)
-		pos2_bits_after = 0;
 	assert(pos2_bits_after >= 0 && pos2_bits_after < 8 && pos2_aligned_size >= 0);
+	
+	//LOG_DEBUG(("1: start: %d, bits before: %d, aligned size: %d, bits after: %d", pos1_aligned_start, pos1_bits_before, pos1_aligned_size, pos1_bits_after));
+	//LOG_DEBUG(("2: start: %d, bits before: %d, aligned size: %d, bits after: %d", pos2_aligned_start, pos2_bits_before, pos2_aligned_size, pos2_bits_after));
 
-	int size = 1 + math::min(pos1_aligned_size, pos2_aligned_size); //firs/last byte
-	assert(size > 0 /* && size <= size1 && size <= size2 */);
+	int size = math::min(pos1_aligned_size, pos2_aligned_size); //first byte
+	assert(size >= 0 /* && size <= size1 && size <= size2 */);
 	if (size > math::min(size1, size2)) 
 		size = math::min(size1, size2);
 	
 	int shift = pos2_bits_before - pos1_bits_before;
 	//int before = math::min(pos2_bits_before, pos1_bits_before);
 	//int after = math::max(pos2_bits_after, pos1_bits_after);
-	int before = pos2_bits_before;
-	int after =  pos2_bits_after;
 	
 	if (shift < 0) {
-		if (bitline_collide(base1 + pos1_aligned_start, base2 + pos2_aligned_start, before, after, -shift, size))
+		if (bitline_collide(base1 + pos1_aligned_start, base2 + pos2_aligned_start, pos2_bits_before, pos2_bits_after, -shift, size, line_size))
 			return true; 
 	} else if (shift > 0) {
-		if (bitline_collide(base2 + pos2_aligned_start, base1 + pos1_aligned_start, before, after, shift, size))
+		if (bitline_collide(base2 + pos2_aligned_start, base1 + pos1_aligned_start, pos1_bits_before, pos1_bits_after, shift, size, line_size))
 			return true;
 	} else {
+		//LOG_DEBUG(("quick compare, aligned data. %d afterbits: %d %d", size, pos1_bits_after, pos2_bits_after));
 		int ln = size / 4;
 		unsigned long *p1 = (unsigned long *)(base1 + pos1_aligned_start);
 		unsigned long *p2 = (unsigned long *)(base2 + pos2_aligned_start);
@@ -183,7 +186,7 @@ const bool CollisionMap::collides(const sdlx::Rect &src, const CollisionMap *oth
 /*	int steps = 0;
 	int steps_total = (inter_y1 - inter_y0 + 1) * (inter_x1 - inter_x0 + 1);
 */
-//#define NEW_COLLIDES
+#define NEW_COLLIDES
 #ifndef NEW_COLLIDES
 	for(int sy = 0; sy < INTERLACE_STEP; ++sy) 
 	for(int sx = 0; sx < INTERLACE_STEP; ++sx) 
