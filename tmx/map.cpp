@@ -165,28 +165,32 @@ TRY {
 		if (!(empty_mask & 1) && im[0] == 101) {
 			if (collides(obj, dx1, dy1, getCollisionMap(layer, xt1, yt1))) {
 				im[0] = layer_im;
-				LOG_DEBUG(("im[0] = %d", layer_im));
+				if (debug)
+					LOG_DEBUG(("%d: im[0] = %d", l->first, layer_im));
 			}
 		}
 
 		if (!(empty_mask & 2) && im[1] == 101) {
 			if (collides(obj, dx1, dy2, getCollisionMap(layer, xt1, yt2))) {
 				im[1] = layer_im;
-				LOG_DEBUG(("im[1] = %d", layer_im));
+				if (debug)
+					LOG_DEBUG(("%d: im[1] = %d", l->first, layer_im));
 			}
 		}
 		
 		if (!(empty_mask & 4) && im[2] == 101) {
 			if (collides(obj, dx2, dy1, getCollisionMap(layer, xt2, yt1))) {
 				im[2] = layer_im;
-				LOG_DEBUG(("im[2] = %d", layer_im));
+				if (debug)
+					LOG_DEBUG(("%d: im[2] = %d", l->first, layer_im));
 			}
 		}
 		
 		if (!(empty_mask & 8) && im[3] == 101) {
 			if (collides(obj, dx2, dy2, getCollisionMap(layer, xt2, yt2))) { 
 				im[3] = layer_im;
-				LOG_DEBUG(("im[3] = %d", layer_im));
+				if (debug)
+					LOG_DEBUG(("%d: im[3] = %d", l->first, layer_im));
 			}
 		}
 	}
