@@ -40,7 +40,7 @@ static inline const bool bitline_collide(const unsigned char *ptr1, const unsign
 	register unsigned int b1 = (ptr1[0]<<8) | ((size > 1)?ptr1[1] : 0);
 	register unsigned int b2 = (ptr2[0]<<8) | ((size > 1)?ptr2[1] : 0);
 	//LOG_DEBUG(("first_bits: %d, last_bits: %d, shift: %d, size: %d", first_bits, shift_1, last_bits, size));
-	unsigned int mask1 = (1 << first_bits) - 1;
+	unsigned int mask1 = (1 << (16 - first_bits)) - 1;
 	if (mask1 & (b1 << shift_1 ) & b2)
 		return true;
 
