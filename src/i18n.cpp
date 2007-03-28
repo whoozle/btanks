@@ -53,7 +53,7 @@ const std::string& II18n::get(const std::string &_area, const std::string &id) c
 	} while (true);
 	
 
-	throw_ex(("message with id %s could not be found.", id.c_str()));
+	throw_ex(("message with id %s could not be found. (initial area: %s)", id.c_str(), _area.c_str()));
 
 	static const std::string empty; //make some stupid compilers happy.
 	return empty;
@@ -62,7 +62,7 @@ const std::string& II18n::get(const std::string &_area, const std::string &id) c
 
 void II18n::load(const std::string &file, const std::string &language) {
 	_lang = language;
-	_strings.clear();
+	//_strings.clear();
 	_unlocalized.clear();
 	LOG_DEBUG(("loading file '%s' with language: %s", file.c_str(), language.empty()?"default":language.c_str()));
 	

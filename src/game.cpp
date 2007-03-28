@@ -158,7 +158,10 @@ void IGame::init(const int argc, char *argv[]) {
 
 	}
 	
-	I18n->load(Finder->find("strings.xml"), lang);
+	IFinder::FindResult strings_files;
+	Finder->findAll(strings_files, "strings.xml");
+	for(size_t i = 0; i < strings_files.size(); ++i) 
+		I18n->load(strings_files[i].second, lang);
 	
 	
 	Window::init(argc, argv);
@@ -437,7 +440,7 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 		} else {
 			if (type == "object") {
 				//LOG_DEBUG(("object %s, animation %s, pos: %s", res[1].c_str(), res[2].c_str(), i->second.c_str()));
-				if (res.size() < 3)
+				if (res.size() < 4)
 					throw_ex(("'%s' misses an argument", i->first.c_str()));
 				Item item(res[1], res[2], v2<int>(pos.x, pos.y), pos.z);
 				item.destroy_for_victory = res[3].substr(0, 19) == "destroy-for-victory";
@@ -475,8 +478,9 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 				v2<int> size;
 				coord2v(pos, value[0]);
 				coord2v(size, value[1]);
+				res.resize(4);
 				
-				SpecialZone zone(SpecialZone(ZBox(pos, size), res[1], res[2]));
+				SpecialZone zone(SpecialZone(ZBox(pos, size), res[1], res[2], res[3]));
 				zone.area = "hints/" + name;
 				PlayerManager->addSpecialZone(zone);
 			} 
