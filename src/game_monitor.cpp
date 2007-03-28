@@ -10,12 +10,16 @@
 
 IMPLEMENT_SINGLETON(GameMonitor, IGameMonitor)
 
-IGameMonitor::IGameMonitor() : _game_over(false), _check_items(0.5, true), _state_timer(false), _timer(false) {}
+IGameMonitor::IGameMonitor() : _game_over(false), _check_items(0.5, true), _state_timer(false), _timer(0) {}
 
 void IGameMonitor::checkItems(const float dt) {	
-	if (!_timer_message.empty() && _timer.tick(dt)) {
-		gameOver(_timer_message_area, _timer_message, 5);
-		return;
+	if (!_timer_message.empty() && _timer > 0) {
+		_timer -= dt;
+		if (_timer <= 0) {
+			gameOver(_timer_message_area, _timer_message, 5);
+			_timer = 0;
+			return;
+		}
 	}
 	
 	if (_game_over || !_check_items.tick(dt))
@@ -113,19 +117,20 @@ void IGameMonitor::displayMessage(const std::string &area, const std::string &me
 void IGameMonitor::setTimer(const std::string &area, const std::string &message, const float time) {
 	_timer_message_area = area;
 	_timer_message = message;
-	_timer.set(time);
+	_timer = time;
 }
 
 void IGameMonitor::resetTimer() {
 	_timer_message.clear();
-	_timer.reset();
+	_timer = 0;
 }
 
 
 void IGameMonitor::clear() {
+	resetTimer();
+
 	_game_over = false;
 	_state.clear();
-	_timer_message.clear();
 	
 	_items.clear();
 	_specials.clear();

@@ -43,6 +43,7 @@ public:
 	void displayMessage(const std::string &area, const std::string &message, const float time);
 	void setTimer(const std::string &area, const std::string &message, const float time);
 	void resetTimer();
+	const float getTimer() const { return _timer; }
 
 	void clear();
 	
@@ -68,7 +69,7 @@ private:
 	Alarm _state_timer;
 	
 	std::string _timer_message, _timer_message_area;
-	Alarm _timer;
+	float _timer;
 };
 
 SINGLETON(GameMonitor, IGameMonitor);

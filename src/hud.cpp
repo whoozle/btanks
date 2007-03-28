@@ -26,6 +26,7 @@
 #include "src/player_manager.h"
 #include "src/resource_manager.h"
 #include "menu/box.h"
+#include "game_monitor.h"
 
 static Uint32 index2color(const sdlx::Surface &surface, const unsigned idx, const Uint8 a) {
 	unsigned rgb = idx & 7;
@@ -84,8 +85,7 @@ void Hud::renderStats(sdlx::Surface &surface) {
 	}
 	
 	Box background;
-	const sdlx::Font *font = ResourceManager->loadFont("medium", true);
-	const int item_h = 10 + font->getHeight() ;
+	const int item_h = 10 + _font->getHeight() ;
 	
 	
 	background.init("menu/background_box.png", 300, item_h * active_slots + 2 * item_h);
@@ -98,10 +98,10 @@ void Hud::renderStats(sdlx::Surface &surface) {
 	background.render(surface, xp, yp);
 
 	xp += mx;
-	yp += (background.h - item_h * active_slots) / 2 + font->getHeight() / 4;
+	yp += (background.h - item_h * active_slots) / 2 + _font->getHeight() / 4;
 
-	int box_h = font->getHeight();
-	int box_w2 = font->getWidth();
+	int box_h = _font->getHeight();
+	int box_w2 = _font->getWidth();
 	int box_w1 = box_w2 * 3 / 4;
 	
 	for(unsigned p = 0; p < slots; ++p) {
@@ -109,10 +109,10 @@ void Hud::renderStats(sdlx::Surface &surface) {
 		if (slot.id == -1)
 			continue;
 		surface.fillRect(sdlx::Rect(xp, yp, box_w1, box_h), index2color(surface, p + 1, 255));
-		font->render(surface, xp + box_w2, yp, mrt::formatString("%s", slot.animation.c_str()));
+		_font->render(surface, xp + box_w2, yp, mrt::formatString("%s", slot.animation.c_str()));
 		std::string score = mrt::formatString("%d", slot.frags);
-		int sw = font->render(NULL, 0, 0, score);
-		font->render(surface, xp + background.w - 2 * mx - sw, yp, score);
+		int sw = _font->render(NULL, 0, 0, score);
+		_font->render(surface, xp + background.w - 2 * mx - sw, yp, score);
 		yp += item_h;
 	}
 	
@@ -322,6 +322,15 @@ void Hud::render(sdlx::Surface &window) const {
 		//fixme: just draw splitter centered. 
 		window.copyFrom(*_screen_splitter, (window.getWidth() - _screen_splitter->getWidth()) / 2, 0);
 	}
+	
+	float timer = GameMonitor->getTimer();
+	if (timer > 0) {
+		const std::string timer_str = mrt::formatString("%2d.%d", (int)timer, (int)(10 * (timer - (int)timer)));
+		int tw = _big_font->getWidth() * 3;
+		_big_font->render(window, window.getWidth() - tw - _big_font->getWidth(), 
+			 window.getHeight() -_background->getHeight() - _big_font->getHeight(), 
+			 timer_str);
+	}
 }
 
 void Hud::renderSplash(sdlx::Surface &window) const {
@@ -378,6 +387,7 @@ Hud::Hud(const int w, const int h) : _update_radar(true) {
 	_screen_splitter = ResourceManager->loadSurface("hud/split_line.png");
 	
 	_font = ResourceManager->loadFont("medium", true);
+	_big_font = ResourceManager->loadFont("big", true);
 	
 	LOG_DEBUG(("searching splash... %dx%d", w, h));
 	int sw = 0;

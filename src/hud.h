@@ -52,7 +52,7 @@ private:
 
 	const sdlx::Surface *_background, *_loading_border, *_loading_item, *_splash, *_splitter, *_screen_splitter, *_icons;
 	sdlx::Surface _radar_bg, _radar;
-	const sdlx::Font *_font;
+	const sdlx::Font *_font, *_big_font;
 	Alarm _update_radar;
 	typedef std::map<const std::string, int> IconMap;
 	IconMap _icons_map;
