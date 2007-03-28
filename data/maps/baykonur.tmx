@@ -220,7 +220,7 @@
   <property name="object:machinegunner:machinegunner:32" value="785,422"/>
   <property name="object:machinegunner:machinegunner:31" value="786,168"/>
   <property name="object:machinegunner:machinegunner:30" value="925,420"/>
-  <property name="hint:start" value="@34,49:@3,3"/>
+  <property name="zone:hint:start" value="@31,49:@6,3"/>
   <property name="object:impassable-static-corpse:dead-cyan-tank:2" value="1248,1134,200"/>
   <property name="object:impassable-static-corpse:dead-cyan-tank:1" value="1692,1512,200"/>
   <property name="config:map.thrower-item.respawn-interval" value="int:10000"/>

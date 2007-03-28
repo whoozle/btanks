@@ -56,6 +56,7 @@
 #include "credits.h"
 #include "cheater.h"
 #include "console.h"
+#include "special_zone.h"
 
 #include "math/v3.h"
 #include "menu/menu.h"
@@ -410,8 +411,7 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 		const std::string &type = res[0];
 		
 		if (type != "spawn" && type != "object" && type != "waypoint" && 
-			type != "edge" && type != "config" && type != "checkpoint" &&
-			type != "hint")
+			type != "edge" && type != "config" && type != "zone")
 			throw_ex(("unsupported line: '%s'", i->first.c_str()));
 		
 		if (!spawn_objects && type != "waypoint" && type != "edge" && type != "config")
@@ -484,7 +484,7 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 				var.fromString(value[1]);
 
 				Config->setOverride(res[1], var);
-			} else if (type == "checkpoint" || type == "hint") {
+			} else if (type == "zone") {
 				LOG_DEBUG(("%s %s %s", type.c_str(), i->first.c_str(), i->second.c_str()));
 				std::vector<std::string> value;
 				mrt::split(value, i->second, ":");
@@ -494,13 +494,10 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 				v2<int> size;
 				coord2v(pos, value[0]);
 				coord2v(size, value[1]);
-				if (type == "checkpoint") {
-					PlayerManager->addCheckpoint(pos, size, i->first.substr(11));
-				} else if (type == "hint") {
-					if (res.size() < 2)
-						throw_ex(("hint must contain name."));
-					PlayerManager->addHint(pos, size, "hints/" + name, res[1]);
-				} else assert(0);
+				
+				SpecialZone zone(SpecialZone(ZBox(pos, size), res[1], res[2]));
+				zone.area = "hints/" + name;
+				PlayerManager->addSpecialZone(zone);
 			} 
 		}
 	}

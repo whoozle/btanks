@@ -26,9 +26,8 @@
 #include "resource_manager.h"
 #include "version.h"
 #include "game.h"
+#include "special_zone.h"
 #include "tooltip.h"
-#include "checkpoint.h"
-#include "i18n.h"
 
 #include "controls/keyplayer.h"
 #include "controls/joyplayer.h"
@@ -406,64 +405,18 @@ void IPlayerManager::updatePlayers() {
 				player_pos.z = o->getZ();
 			}
 			
-			size_t hn = _hints.size();
-			for(size_t h = 0; h < hn ; ++h) {
-				if (_hints[h].first.in(player_pos) && slot.hints_reached.find(h) == slot.hints_reached.end()) {
-					LOG_DEBUG(("player[%d] hint %d reached.", i, (int)h));
-					GET_CONFIG_VALUE("engine.tooltip-speed", float, td, 20);
-					const std::string text = I18n->get(_hints[h].second.first, _hints[h].second.second);
-					slot.tooltips.push(PlayerSlot::Tooltips::value_type(text.size() / td, new Tooltip(text, true)));
-					slot.hints_reached.insert(h);
-				}
-			}
-
 			if (isClient())
 				continue;
 			
-			//check for checkpoints ;)
+			//check for Special Zones ;)
 			
-			size_t cn = _checkpoints.size();
+			size_t cn = _zones.size();
 			for(size_t c = 0; c < cn; ++c) {
-				if (_checkpoints[c].in(player_pos) && slot.checkpoints_reached.find(c) == slot.checkpoints_reached.end()) {
-					LOG_DEBUG(("player[%d] checkpoint %u reached.", i, (unsigned)c));
-					slot.checkpoints_reached.insert(c);
+				if (_zones[c].in(player_pos) && slot.zones_reached.find(c) == slot.zones_reached.end()) {
+					LOG_DEBUG(("player[%d] zone %u reached.", i, (unsigned)c));
+					slot.zones_reached.insert(c);
 					
-					const v2<int> &checkpoint_size = _checkpoints[c].size;
-					const v3<int> &checkpoint_pos  = _checkpoints[c].position;
-					{
-						int yn = (int) sqrt((double)checkpoint_size.y * _players.size() / checkpoint_size.x);
-						if (yn < 1) 
-							yn = 1;
-						
-						int xn = (_players.size() - 1) / yn + 1;
-						int n = xn * yn;
-						
-						int ysize = checkpoint_size.y / yn;
-						int xsize = checkpoint_size.x / xn;
-						LOG_DEBUG(("position in checkpoint: %d %d of %d[%dx%d]. cell size: %dx%d.", i % xn, i / xn, n, xn, yn, xsize, ysize));
-
-						slot.position.x = checkpoint_pos.x + xsize * (i % xn) + xsize / 2;
-						slot.position.y = checkpoint_pos.y + ysize * (i / xn) + ysize / 2;
-						slot.position.z = checkpoint_pos.z;
-					}
-					
-					//v3<int> spawn_pos(_checkpoints[c].position + checkpoint_size.convert2v3(0) / 2);
-					//slot.position = spawn_pos;
-					if (slot.visible) {
-						if (_checkpoints[c].final()) 
-							Game->gameOver("messages", "mission-accomplished", 5);
-						else 
-							Game->displayMessage("messages", "checkpoint-reached", 3);
-					}
-
-					slot.need_sync = true;
-
-					if (_server && slot.remote) {
-						Message m(Message::TextMessage);
-						m.set("message", "checkpoint-reached");
-						m.set("duration", "3");
-						_server->send(i, m);
-					}
+					_zones[c].onEnter(i);
 				}
 			}
 			
@@ -614,8 +567,7 @@ void IPlayerManager::clear() {
 
 	LOG_DEBUG(("cleaning up players..."));
 	_players.clear();	
-	_checkpoints.clear();
-	_hints.clear();
+	_zones.clear();
 }
 
 void IPlayerManager::addSlot(const v3<int> &position) {
@@ -624,20 +576,12 @@ void IPlayerManager::addSlot(const v3<int> &position) {
 	_players.push_back(slot);
 }
 
-void IPlayerManager::addCheckpoint(const v3<int> &position, const v2<int> &size, const std::string &name) {
-	if (size.x == 0 || size.y == 0)
-		throw_ex(("checkpoint size cannot be 0"));
-	LOG_DEBUG(("adding checkpoint '%s' at %d %d (%dx%d)", name.c_str(), position.x, position.y, size.x, size.y));
-	_checkpoints.push_back(Checkpoint(ZBox(position, size), name));
+void IPlayerManager::addSpecialZone(const SpecialZone &zone) {
+	if (zone.size.x == 0 || zone.size.y == 0)
+		throw_ex(("zone size cannot be 0"));
+	LOG_DEBUG(("adding zone '%s' named '%s' at %d %d (%dx%d)", zone.type.c_str(), zone.name.c_str(), zone.position.x, zone.position.y, zone.size.x, zone.size.y));
+	_zones.push_back(zone);
 }
-
-void IPlayerManager::addHint(const v3<int> &position, const v2<int> &size, const std::string &area, const std::string &name) {
-	if (size.x == 0 || size.y == 0)
-		throw_ex(("checkpoint size cannot be 0"));
-	LOG_DEBUG(("adding hint '%s'(area: '%s') at %d %d (%dx%d)", name.c_str(), area.c_str(), position.x, position.y, size.x, size.y));
-	_hints.push_back(Hints::value_type(ZBox(position, size), std::pair<std::string, std::string>(area, name)));
-}
-
 
 PlayerSlot &IPlayerManager::getSlot(const unsigned int idx) {
 	return _players[idx];
@@ -907,17 +851,11 @@ void IPlayerManager::render(sdlx::Surface &window, const int vx, const int vy) {
 
 			GET_CONFIG_VALUE("engine.show-special-zones", bool, ssz, false);
 			if (ssz) {		
-				for(size_t i = 0; i < _checkpoints.size(); ++i) {
-					sdlx::Rect pos(_checkpoints[i].position.x, _checkpoints[i].position.y, _checkpoints[i].size.x, _checkpoints[i].size.y);
+				for(size_t i = 0; i < _zones.size(); ++i) {
+					sdlx::Rect pos(_zones[i].position.x, _zones[i].position.y, _zones[i].size.x, _zones[i].size.y);
 					pos.x -= (int)slot.map_pos.x;
 					pos.y -= (int)slot.map_pos.y;
 					window.fillRect(pos, window.mapRGBA(0, 255, 0, 32));
-				}
-				for(size_t i = 0; i < _hints.size(); ++i) {
-					sdlx::Rect pos(_hints[i].first.position.x, _hints[i].first.position.y, _hints[i].first.size.x, _hints[i].first.size.y);
-					pos.x -= (int)slot.map_pos.x;
-					pos.y -= (int)slot.map_pos.y;
-					window.fillRect(pos, window.mapRGBA(0, 0, 255, 32));
 				}
 			}
 			
@@ -970,6 +908,13 @@ void IPlayerManager::broadcast(const Message &m) {
 			_server->send(i, m);
 	}
 }
+
+void IPlayerManager::send(const int id, const Message & msg) {
+	if (_server == NULL)
+		throw_ex(("PlayerManager->send() allowed only in server mode"));
+	_server->send(id, msg);
+}
+
 
 const bool IPlayerManager::isServerActive() const {
 	if (_server == NULL || !_server->active())

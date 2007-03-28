@@ -24,7 +24,7 @@
   <property name="object:zombie:zombie:3" value="619,968"/>
   <property name="object:zombie:zombie:2" value="782,896"/>
   <property name="object:zombie:zombie:1" value="700,929"/>
-  <property name="hint:start:1" value="422,59:128,128"/>
+  <property name="zone:hint:start:1" value="422,59:@4,2"/>
  </properties>
  <tileset name="Untitled" firstgid="1" tilewidth="64" tileheight="64">
   <image source="../tilesets/terrains.png"/>

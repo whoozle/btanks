@@ -38,7 +38,7 @@ class Surface;
 }
 
 class PlayerSlot;
-class Checkpoint;
+class SpecialZone;
 class Server;
 class Client;
 class Message;
@@ -61,8 +61,7 @@ public:
 	void createControlMethod(PlayerSlot &slot, const std::string &name);
 
 	void addSlot(const v3<int> &position);
-	void addCheckpoint(const v3<int> &position, const v2<int> &size, const std::string &name);
-	void addHint(const v3<int> &position, const v2<int> &size, const std::string &area, const std::string &name);
+	void addSpecialZone(const SpecialZone& zone);
 
 	PlayerSlot &getSlot(const unsigned int idx);
 	const PlayerSlot &getSlot(const unsigned int idx) const;
@@ -101,6 +100,9 @@ public:
 	void onDestroyMap(const std::set<v3<int> > & cells);
 	
 	void validateViewports();
+	
+	//for special zones
+	void send(const int id, const Message & msg);
 
 private: 
 	void serializeSlots(mrt::Serializator &s) const;
@@ -117,9 +119,7 @@ private:
 
 	int _my_idx;
 	std::vector<PlayerSlot> _players;
-	std::vector<Checkpoint> _checkpoints;
-	typedef std::vector<std::pair<ZBox, std::pair<std::string, std::string> > > Hints; 
-	Hints _hints;
+	std::vector<SpecialZone> _zones;
 
 	float _trip_time;
 	unsigned _next_ping;

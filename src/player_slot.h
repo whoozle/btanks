@@ -66,7 +66,7 @@ public:
 	int frags;
 	bool reserved;
 	
-	std::set<int> checkpoints_reached, hints_reached;
+	std::set<int> zones_reached;
 	
 	typedef std::queue<std::pair<float, Tooltip *> > Tooltips;
 	Tooltips tooltips;

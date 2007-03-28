@@ -77,8 +77,7 @@ void PlayerSlot::clear() {
 	frags = 0;
 	reserved = false;
 	
-	checkpoints_reached.clear();
-	hints_reached.clear();
+	zones_reached.clear();
 	while(!tooltips.empty()) {
 		delete tooltips.front().second;
 		tooltips.pop();
