@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <string>
+#include <set>
 
 #include "mrt/singleton.h"
 #include "alarm.h"
@@ -53,6 +54,9 @@ public:
 	const std::string popState(const float dt);
 	
 	void render(sdlx::Surface &window);
+	
+	const bool disabled(const std::string &classname) const;
+	void disable(const std::string &classname, const bool value = true);
 
 private:
 
@@ -70,6 +74,8 @@ private:
 	
 	std::string _timer_message, _timer_message_area;
 	float _timer;
+	
+	std::set<std::string> _disabled;
 };
 
 SINGLETON(GameMonitor, IGameMonitor);

@@ -87,23 +87,36 @@ Object* Object::spawn(const std::string &classname, const std::string &animation
 }
 
 
+#include "game_monitor.h"
+
 const Object* Object::getNearestObject(const std::string &classname) const {
+	if (GameMonitor->disabled(classname))
+		return NULL;
 	return World->getNearestObject(this, classname);
 }
 
 const Object* Object::getNearestObject(const std::set<std::string> &classnames) const {
+	if (GameMonitor->disabled(classname))
+		return NULL;
 	return World->getNearestObject(this, classnames);
 }
 
 const bool Object::getNearest(const std::string &cl, v2<float> &position, v2<float> &velocity, Way * way) const {
+	if (GameMonitor->disabled(classname))
+		return false;
 	return World->getNearest(this, cl, position, velocity, way);
 }
 
 const bool Object::getNearest(const std::set<std::string> &classnames, v2<float> &position, v2<float> &velocity) const {
+	if (GameMonitor->disabled(classname))
+		return false;
 	return World->getNearest(this, classnames, position, velocity);
 }
 
 const bool Object::getNearest(const std::set<std::string> &classnames, const float range, v2<float> &position, v2<float> &velocity) const {
+	if (GameMonitor->disabled(classname))
+		return false;
+	
 	return World->getNearest(this, classnames, range, position, velocity);
 }
 

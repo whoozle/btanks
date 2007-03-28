@@ -158,3 +158,16 @@ void IGameMonitor::render(sdlx::Surface &window) {
 	}
 }
 
+
+const bool IGameMonitor::disabled(const std::string &classname) const {
+	return _disabled.find(classname) != _disabled.end();
+}
+
+void IGameMonitor::disable(const std::string &classname, const bool value) {
+	LOG_DEBUG(("%s ai for classname %s", value?"disable":"enable", classname.c_str()));
+	if (value) {
+		_disabled.insert(classname);
+	} else {
+		_disabled.erase(classname);
+	}
+}

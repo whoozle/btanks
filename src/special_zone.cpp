@@ -19,6 +19,8 @@ SpecialZone::SpecialZone(const ZBox & zbox, const std::string &type, const std::
 		allowed_types.insert("timer-lose");
 		allowed_types.insert("timer-win");
 		allowed_types.insert("reset-timer");
+		allowed_types.insert("disable-ai");
+		allowed_types.insert("enable-ai");
 	}
 	
 	if (allowed_types.find(type) == allowed_types.end()) 
@@ -52,6 +54,10 @@ void SpecialZone::onEnter(const int slot_id) {
 		onTimer(true);
 	else if (type == "reset-timer") 
 		GameMonitor->resetTimer();
+	else if (type == "disable-ai") 
+		GameMonitor->disable(name);
+	else if (type == "enable-ai") 
+		GameMonitor->disable(name, false);
 	else 
 		throw_ex(("unhandled type '%s'", type.c_str()));
 }
