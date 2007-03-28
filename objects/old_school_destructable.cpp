@@ -98,7 +98,7 @@ void OldSchoolDestructableObject::tick(const float dt) {
 			targets.insert("player");
 		
 		if (getNearest(targets, dr, pos, vel)) {
-			Game->displayMessage(_message, 5);
+			Game->displayMessage("messages", _message, 5);
 			_message.clear();
 		}
 	}
@@ -141,5 +141,5 @@ void OldSchoolDestructableObject::onSpawn() {
 }
 
 REGISTER_OBJECT("old-school-destructable-object-2", OldSchoolDestructableObject, (2, false));
-REGISTER_OBJECT("spaceport-baykonur", OldSchoolDestructableObject, (2, false, "DESTROY SPACEPORT"));
+REGISTER_OBJECT("spaceport-baykonur", OldSchoolDestructableObject, (2, false, "destroy-spaceport"));
 REGISTER_OBJECT("old-school-destructable-object-3", OldSchoolDestructableObject, (3, false));

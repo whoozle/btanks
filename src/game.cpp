@@ -350,7 +350,7 @@ void IGame::onMenu(const std::string &name, const std::string &value) {
 		bool ok = true;
 		TRY {
 			PlayerManager->startClient(address);
-		} CATCH("startClient", { displayMessage("CONNECTION FAILED", 1); ok = false; });
+		} CATCH("startClient", { displayMessage("errors", "connection-failed", 1); ok = false; });
 		
 		if (_main_menu)	
 			_main_menu->setActive(!ok);
@@ -530,14 +530,14 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 	resetTimer();
 }
 
-void IGame::gameOver(const std::string &state, const float time) {
+void IGame::gameOver(const std::string &area, const std::string &message, const float time) {
 	_game_over = true;
-	displayMessage(state, time);
-	PlayerManager->gameOver(state, time);
+	displayMessage(area, message, time);
+	PlayerManager->gameOver(message, time);
 }
 
-void IGame::displayMessage(const std::string &message, const float time) {
-	pushState(message, time);
+void IGame::displayMessage(const std::string &area, const std::string &message, const float time) {
+	pushState(I18n->get(area, message), time);
 }
 
 
@@ -590,7 +590,7 @@ void IGame::checkItems(const float dt) {
 		}
 	}
 	if (goal_total > 0 && goal == goal_total) {
-		gameOver("MISSION ACCOMPLISHED", 5);
+		gameOver("messages", "mission-accomplished", 5);
 	}
 }
 

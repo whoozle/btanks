@@ -93,8 +93,8 @@ public:
 	const std::string getNearestWaypoint(const BaseObject *obj, const std::string &classname) const;
 	void getWaypoint(v2<float> &wp, const std::string &classname, const std::string &name);
 	
-	void gameOver(const std::string &state, const float time);
-	void displayMessage(const std::string &message, const float time);
+	void gameOver(const std::string &area, const std::string &message, const float time);
+	void displayMessage(const std::string &area, const std::string &message, const float time);
 
 	void resetTimer();
 

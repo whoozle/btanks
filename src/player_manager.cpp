@@ -337,14 +337,14 @@ TRY {
 	}
 	case Message::GameOver: {
 		TRY {
-			Game->gameOver(message.get("message"), atof(message.get("duration").c_str()) - _trip_time / 1000.0);
+			Game->gameOver("messages", message.get("message"), atof(message.get("duration").c_str()) - _trip_time / 1000.0);
 		} CATCH("on-message(gameover)", throw; )
 		break;
 	}
 	
 	case Message::TextMessage: {
 		TRY {
-			Game->displayMessage(message.get("message"), atof(message.get("duration").c_str()) - _trip_time / 1000.0);
+			Game->displayMessage("messages", message.get("message"), atof(message.get("duration").c_str()) - _trip_time / 1000.0);
 		} CATCH("on-message(text-message)", throw; )		
 		break;
 	}
@@ -370,7 +370,7 @@ TRY {
 	if (_client) {
 		_client->disconnect();
 		Game->clear();
-		Game->displayMessage("MULTIPLAYER ERROR. SEE STDERR FOR DETAILS", 3);
+		Game->displayMessage("errors", "multiplayer-exception", 1);
 	}
 });
 }
@@ -449,14 +449,18 @@ void IPlayerManager::updatePlayers() {
 					
 					//v3<int> spawn_pos(_checkpoints[c].position + checkpoint_size.convert2v3(0) / 2);
 					//slot.position = spawn_pos;
-					if (slot.visible)
-						Game->displayMessage("CHECKPOINT REACHED", 3);
+					if (slot.visible) {
+						if (_checkpoints[c].final()) 
+							Game->gameOver("messages", "mission-accomplished", 5);
+						else 
+							Game->displayMessage("messages", "checkpoint-reached", 3);
+					}
 
 					slot.need_sync = true;
 
 					if (_server && slot.remote) {
 						Message m(Message::TextMessage);
-						m.set("message", "CHECKPOINT REACHED");
+						m.set("message", "checkpoint-reached");
 						m.set("duration", "3");
 						_server->send(i, m);
 					}

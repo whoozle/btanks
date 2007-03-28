@@ -43,4 +43,14 @@
 			fry it with your missiles, or let your troppers do it for you!</string>
 		</area>
 	</area>
+	<area id="messages">
+		<string id="game-over">GAME OVER</string>
+		<string id="mission-accomplished">MISSION ACCOMPLISHED</string>
+		<string id="checkpoint-reached">CHECKPOINT REACHED</string>
+		<string id="destroy-spaceport">DESTROY SPACEPORT</string>
+	</area>
+	<area id="errors">
+		<string id="connection-failed">Connection failed</string>
+		<string id="multiplayer-exception">Multiplayer error. Look logs for details.</string>
+	</area>
 </strings>

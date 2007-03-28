@@ -23,7 +23,7 @@ StartServerMenu::StartServerMenu(MainMenu *parent, const int w, const int h) : _
 void StartServerMenu::start() {
 	const MapDesc &map = _map_picker->getCurrentMap();
 	if (map.slots < 1) {
-		Game->displayMessage(I18n->get("menu", "no-slots-in-map"), 1);
+		Game->displayMessage("menu", "no-slots-in-map", 1);
 		return;
 	}
 

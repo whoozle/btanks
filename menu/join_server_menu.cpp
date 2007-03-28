@@ -8,10 +8,10 @@
 #include "prompt.h"
 #include "text_control.h"
 #include "player_manager.h"
-#include "i18n.h"
 #include "game.h"
 #include "chooser.h"
 #include "config.h"
+#include "i18n.h"
 
 JoinServerMenu::JoinServerMenu(MainMenu *parent, const int w, const int h) : _parent(parent) {
 	_back = new Button("big", I18n->get("menu", "back"));
@@ -99,8 +99,7 @@ void JoinServerMenu::join() {
 	TRY {
 		PlayerManager->startClient(host);
 	} CATCH("join", { 
-		std::string msg = I18n->get("menu", "connection-failed");
-		Game->displayMessage(msg, 1.5); 
+		Game->displayMessage("menu", "connection-failed", 1.5); 
 		ok = false; 
 	});
 		
