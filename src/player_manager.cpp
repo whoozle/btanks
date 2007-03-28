@@ -423,7 +423,16 @@ void IPlayerManager::updatePlayers() {
 			
 			continue;
 		}
-			
+		
+		if (slot.spawn_limit > 0) {
+			if (--slot.spawn_limit <= 0) {
+				slot.clear();
+				GameMonitor->gameOver("messages", "game-over", 5);
+				continue;
+			}
+			LOG_DEBUG(("%d lives left", slot.spawn_limit));
+		}
+		
 		LOG_DEBUG(("player in slot %d is dead. respawning. frags: %d", i, slot.frags));
 
 		spawnPlayer(slot, slot.classname, slot.animation);

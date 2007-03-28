@@ -78,6 +78,8 @@ void PlayerSlot::clear() {
 	reserved = false;
 	
 	zones_reached.clear();
+	spawn_limit = 0;
+	
 	while(!tooltips.empty()) {
 		delete tooltips.front().second;
 		tooltips.pop();
