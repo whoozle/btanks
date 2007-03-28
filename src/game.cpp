@@ -495,7 +495,7 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 				coord2v(pos, value[0]);
 				coord2v(size, value[1]);
 				if (type == "checkpoint") {
-					PlayerManager->addCheckpoint(pos, size);
+					PlayerManager->addCheckpoint(pos, size, i->first.substr(11));
 				} else if (type == "hint") {
 					if (res.size() < 2)
 						throw_ex(("hint must contain name."));

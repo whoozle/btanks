@@ -38,6 +38,7 @@ class Surface;
 }
 
 class PlayerSlot;
+class Checkpoint;
 class Server;
 class Client;
 class Message;
@@ -60,7 +61,7 @@ public:
 	void createControlMethod(PlayerSlot &slot, const std::string &name);
 
 	void addSlot(const v3<int> &position);
-	void addCheckpoint(const v3<int> &position, const v2<int> &size);
+	void addCheckpoint(const v3<int> &position, const v2<int> &size, const std::string &name);
 	void addHint(const v3<int> &position, const v2<int> &size, const std::string &area, const std::string &name);
 
 	PlayerSlot &getSlot(const unsigned int idx);
@@ -116,7 +117,7 @@ private:
 
 	int _my_idx;
 	std::vector<PlayerSlot> _players;
-	std::vector<ZBox> _checkpoints;
+	std::vector<Checkpoint> _checkpoints;
 	typedef std::vector<std::pair<ZBox, std::pair<std::string, std::string> > > Hints; 
 	Hints _hints;
 

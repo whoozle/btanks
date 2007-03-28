@@ -19,8 +19,9 @@ bt_sources = 	[
 	'src/finder.cpp', 'src/zbox.cpp', 
 	
 	'src/alarm.cpp', 'src/base_object.cpp', 'src/notifying_xml_parser.cpp',
-	'src/tooltip.cpp', 'src/player_manager.cpp', 'src/object_grid.cpp',
-	
+	'src/tooltip.cpp', 'src/checkpoint.cpp', 
+	'src/player_manager.cpp', 'src/object_grid.cpp', 
+		
 	'objects/bullet.cpp', 'objects/explosion.cpp', 'objects/single_pose.cpp',
 	'objects/tank.cpp', 'objects/shilka.cpp', 'objects/launcher.cpp', 'objects/ai_tank.cpp',
 	'objects/ai_launcher.cpp', 'objects/ai_shilka.cpp', 'objects/ai_trooper.cpp', 'objects/ai_machinegunner_player.cpp', 

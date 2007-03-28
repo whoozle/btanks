@@ -27,6 +27,7 @@
 #include "version.h"
 #include "game.h"
 #include "tooltip.h"
+#include "checkpoint.h"
 #include "i18n.h"
 
 #include "controls/keyplayer.h"
@@ -619,11 +620,11 @@ void IPlayerManager::addSlot(const v3<int> &position) {
 	_players.push_back(slot);
 }
 
-void IPlayerManager::addCheckpoint(const v3<int> &position, const v2<int> &size) {
+void IPlayerManager::addCheckpoint(const v3<int> &position, const v2<int> &size, const std::string &name) {
 	if (size.x == 0 || size.y == 0)
 		throw_ex(("checkpoint size cannot be 0"));
-	LOG_DEBUG(("adding checkpoint at %d %d (%dx%d)", position.x, position.y, size.x, size.y));
-	_checkpoints.push_back(ZBox(position, size));
+	LOG_DEBUG(("adding checkpoint '%s' at %d %d (%dx%d)", name.c_str(), position.x, position.y, size.x, size.y));
+	_checkpoints.push_back(Checkpoint(ZBox(position, size), name));
 }
 
 void IPlayerManager::addHint(const v3<int> &position, const v2<int> &size, const std::string &area, const std::string &name) {
