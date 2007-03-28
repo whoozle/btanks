@@ -18,6 +18,7 @@ void IGameMonitor::checkItems(const float dt) {
 		
 	if (_timer.tick(dt)) {
 		gameOver(_timer_message_area, _timer_message, 5);
+		return;
 	}
 	
 	int goal = 0, goal_total = 0;
