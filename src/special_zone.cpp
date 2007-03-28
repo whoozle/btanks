@@ -7,11 +7,19 @@
 #include "config.h"
 #include "i18n.h"
 #include "tooltip.h"
+#include <set>
 
-SpecialZone::SpecialZone(const ZBox & zbox, const std::string &type, const std::string &name) :
-	 ZBox(zbox), type(type), name(name) {
-
-	if (type != "checkpoint" && type != "hint") 
+SpecialZone::SpecialZone(const ZBox & zbox, const std::string &type, const std::string &name, const std::string &subname) :
+	 ZBox(zbox), type(type), name(name), subname(subname) {
+	static std::set<std::string> allowed_types; 
+	if (allowed_types.empty()) {
+		allowed_types.insert("checkpoint");
+		allowed_types.insert("hint");
+		allowed_types.insert("timer-lose");
+		allowed_types.insert("timer-win");
+	}
+	
+	if (allowed_types.find(type) == allowed_types.end()) 
 		throw_ex(("unhanled type '%s'", type.c_str()));	
 }
 
@@ -19,11 +27,27 @@ const bool SpecialZone::final() const {
 	return type == "checkpoint" && name == "final";
 }
 
+void SpecialZone::onTimer(const bool win) {
+	float duration = atof(subname.c_str());
+	LOG_DEBUG(("activating timer %s for %g seconds", name.c_str(), duration));
+	if (win) 
+		GameMonitor->setTimer("messages", "mission-accomplished", duration);
+	else 
+		GameMonitor->setTimer("messages", "game-over", duration);
+		
+	GameMonitor->displayMessage(area, name, 3);
+}
+
+
 void SpecialZone::onEnter(const int slot_id) {
 	if (type == "checkpoint") 
 		onCheckpoint(slot_id);
 	else if (type == "hint") 
 		onHint(slot_id);
+	else if (type == "timer-lose") 
+		onTimer(false);
+	else if (type == "timer-win") 
+		onTimer(true);
 	else 
 		throw_ex(("unhandled type '%s'", type.c_str()));
 }

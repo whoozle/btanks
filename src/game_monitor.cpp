@@ -13,14 +13,14 @@ IMPLEMENT_SINGLETON(GameMonitor, IGameMonitor)
 IGameMonitor::IGameMonitor() : _game_over(false), _check_items(0.5, true), _state_timer(false), _timer(false) {}
 
 void IGameMonitor::checkItems(const float dt) {	
-	if (_game_over || !_check_items.tick(dt))
-		return;
-		
-	if (_timer.tick(dt)) {
+	if (!_timer_message.empty() && _timer.tick(dt)) {
 		gameOver(_timer_message_area, _timer_message, 5);
 		return;
 	}
 	
+	if (_game_over || !_check_items.tick(dt))
+		return;
+		
 	int goal = 0, goal_total = 0;
 	
 	_specials.clear();

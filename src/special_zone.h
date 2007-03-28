@@ -6,9 +6,9 @@
 
 class SpecialZone : public ZBox {
 public: 
-	std::string type, name, area;
+	std::string area, type, name, subname;
 
-	SpecialZone(const ZBox & zbox, const std::string &type, const std::string &name);
+	SpecialZone(const ZBox & zbox, const std::string &type, const std::string &name, const std::string &subname);
 
 	void onEnter(const int slot_id);
 
@@ -16,6 +16,7 @@ public:
 private: 
 	void onCheckpoint(const int slot_id);
 	void onHint(const int slot_id);
+	void onTimer(const bool win);
 };
 
 #endif
