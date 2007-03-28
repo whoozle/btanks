@@ -7,6 +7,7 @@
 #include "config.h"
 #include "i18n.h"
 #include "tooltip.h"
+#include "object.h"
 #include <set>
 
 SpecialZone::SpecialZone(const ZBox & zbox, const std::string &type, const std::string &name, const std::string &subname) :
@@ -88,9 +89,14 @@ void SpecialZone::onCheckpoint(const int slot_id) {
 	//v3<int> spawn_pos(_zones[c].position + checkpoint_size.convert2v3(0) / 2);
 	//slot.position = spawn_pos;
 	if (slot.visible) {
-		if (final()) 
+		if (final()) {
+			Object *o = slot.getObject();
+			if (o != NULL) {
+				o->addEffect("invulnerability", -1);
+			}
+
 			GameMonitor->gameOver("messages", "mission-accomplished", 5);
-		else 
+		} else 
 			GameMonitor->displayMessage("messages", "checkpoint-reached", 3);
 	}
 
