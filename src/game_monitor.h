@@ -9,6 +9,10 @@
 #include "math/v2.h"
 #include "sdlx/sdlx.h"
 
+namespace sdlx {
+class Surface;
+}
+
 struct Item {
 	Item(const std::string &classname, const std::string &animation, const v2<int> position, const int z = 0) :
 		classname(classname), animation(animation), position(position), z(z), id(-1), dead_on(0), destroy_for_victory(false) 
@@ -34,16 +38,33 @@ public:
 	
 	const std::vector<v2<int> >& getSpecials() const { return _specials; }
 	const size_t getItemsCount() const { return _items.size(); }
-	
+
+	void gameOver(const std::string &area, const std::string &message, const float time);
+	void displayMessage(const std::string &area, const std::string &message, const float time);
+
 	void clear();
+	
+	void tick(const float dt);
+
+	void pushState(const std::string &state, const float time);
+	const std::string popState(const float dt);
+	
+	void render(sdlx::Surface &window);
 
 private:
+
+	bool _game_over;
+
 	typedef std::vector<Item> Items;
 	Items _items;
 	std::vector<v2<int> > _specials;
 
 	Alarm _check_items;
-	
+
+	//displaying messages	
+	std::string _state;
+	Alarm _state_timer;
+
 };
 
 SINGLETON(GameMonitor, IGameMonitor);

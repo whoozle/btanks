@@ -9,6 +9,7 @@
 #include "text_control.h"
 #include "player_manager.h"
 #include "game.h"
+#include "game_monitor.h"
 #include "chooser.h"
 #include "config.h"
 #include "i18n.h"
@@ -99,7 +100,7 @@ void JoinServerMenu::join() {
 	TRY {
 		PlayerManager->startClient(host);
 	} CATCH("join", { 
-		Game->displayMessage("menu", "connection-failed", 1.5); 
+		GameMonitor->displayMessage("menu", "connection-failed", 1.5); 
 		ok = false; 
 	});
 		

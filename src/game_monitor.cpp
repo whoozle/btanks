@@ -3,14 +3,38 @@
 #include "config.h"
 #include "world.h"
 #include "resource_manager.h"
+#include "player_manager.h"
 #include "game.h"
+#include "i18n.h"
+#include "sdlx/font.h"
 
 IMPLEMENT_SINGLETON(GameMonitor, IGameMonitor)
 
-IGameMonitor::IGameMonitor() : _check_items(0.5, true) {}
+IGameMonitor::IGameMonitor() : _game_over(false), _check_items(0.5, true), _state_timer(false) {}
+
+void IGameMonitor::tick(const float dt) {	
+	std::string game_state = popState(dt);
+	if (_game_over && !game_state.empty()) {
+		Game->clear();
+	}
+}
+
+void IGameMonitor::render(sdlx::Surface &window) {
+	static const sdlx::Font * _big_font;
+	if (_big_font == NULL)
+		_big_font = ResourceManager->loadFont("big", true);
+
+	if (!_state.empty()) {
+		int w = _big_font->render(NULL, 0, 0, _state);
+		int x = (window.getWidth() - w) / 2;
+		int y = (window.getHeight() - _big_font->getHeight()) / 2;
+		
+		_big_font->render(window, x, y, _state);
+	}
+}
 
 void IGameMonitor::checkItems(const float dt) {	
-	if (!_check_items.tick(dt))
+	if (_game_over || !_check_items.tick(dt))
 		return;
 	
 	int goal = 0, goal_total = 0;
@@ -58,7 +82,7 @@ void IGameMonitor::checkItems(const float dt) {
 		}
 	}
 	if (goal_total > 0 && goal == goal_total) {
-		Game->gameOver("messages", "mission-accomplished", 5);
+		gameOver("messages", "mission-accomplished", 5);
 	}
 }
 
@@ -79,7 +103,33 @@ void IGameMonitor::add(const Item &item_) {
 	_items.push_back(item);
 }
 
+void IGameMonitor::pushState(const std::string &state, const float time) {
+	_state = state;
+	_state_timer.set(time);
+}
+
+const std::string IGameMonitor::popState(const float dt) {
+	if (_state.empty() || !_state_timer.tick(dt))
+		return std::string();
+	std::string r = _state;
+	_state.clear();
+	return r;
+}
+
+void IGameMonitor::gameOver(const std::string &area, const std::string &message, const float time) {
+	_game_over = true;
+	displayMessage(area, message, time);
+	PlayerManager->gameOver(message, time);
+}
+
+void IGameMonitor::displayMessage(const std::string &area, const std::string &message, const float time) {
+	pushState(I18n->get(area, message), time);
+}
+
 void IGameMonitor::clear() {
+	_game_over = false;
+	_state.clear();
+	
 	_items.clear();
 	_specials.clear();
 	_check_items.reset();

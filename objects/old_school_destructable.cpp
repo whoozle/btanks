@@ -81,7 +81,7 @@ void OldSchoolDestructableObject::addDamage(Object *from, const int dhp, const b
 	}
 }
 
-#include "game.h"
+#include "game_monitor.h"
 
 void OldSchoolDestructableObject::tick(const float dt) {
 	Object::tick(dt);
@@ -98,7 +98,7 @@ void OldSchoolDestructableObject::tick(const float dt) {
 			targets.insert("player");
 		
 		if (getNearest(targets, dr, pos, vel)) {
-			Game->displayMessage("messages", _message, 5);
+			GameMonitor->displayMessage("messages", _message, 5);
 			_message.clear();
 		}
 	}

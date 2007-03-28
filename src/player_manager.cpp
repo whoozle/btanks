@@ -26,6 +26,7 @@
 #include "resource_manager.h"
 #include "version.h"
 #include "game.h"
+#include "game_monitor.h"
 #include "special_zone.h"
 #include "tooltip.h"
 
@@ -336,14 +337,14 @@ TRY {
 	}
 	case Message::GameOver: {
 		TRY {
-			Game->gameOver("messages", message.get("message"), atof(message.get("duration").c_str()) - _trip_time / 1000.0);
+			GameMonitor->gameOver("messages", message.get("message"), atof(message.get("duration").c_str()) - _trip_time / 1000.0);
 		} CATCH("on-message(gameover)", throw; )
 		break;
 	}
 	
 	case Message::TextMessage: {
 		TRY {
-			Game->displayMessage("messages", message.get("message"), atof(message.get("duration").c_str()) - _trip_time / 1000.0);
+			GameMonitor->displayMessage("messages", message.get("message"), atof(message.get("duration").c_str()) - _trip_time / 1000.0);
 		} CATCH("on-message(text-message)", throw; )		
 		break;
 	}
@@ -369,7 +370,7 @@ TRY {
 	if (_client) {
 		_client->disconnect();
 		Game->clear();
-		Game->displayMessage("errors", "multiplayer-exception", 1);
+		GameMonitor->displayMessage("errors", "multiplayer-exception", 1);
 	}
 });
 }

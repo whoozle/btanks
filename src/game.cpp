@@ -67,7 +67,7 @@
 IMPLEMENT_SINGLETON(Game, IGame)
 
 IGame::IGame() : _main_menu(NULL),
- _autojoin(false), _shake(0), _show_radar(true) , _show_stats(false), _credits(NULL), _cheater(NULL), _state_timer(false){}
+ _autojoin(false), _shake(0), _show_radar(true) , _show_stats(false), _credits(NULL), _cheater(NULL) {}
 IGame::~IGame() {}
 
 void IGame::resetTimer() {
@@ -200,8 +200,6 @@ void IGame::init(const int argc, char *argv[]) {
 	
 	LOG_DEBUG(("initializing hud..."));
 	_hud = new Hud(_window.getWidth(), _window.getHeight());
-	_big_font = ResourceManager->loadFont("big", true);
-	
 
 	LOG_DEBUG(("installing callbacks..."));
 	key_signal.connect(sigc::mem_fun(this, &IGame::onKey));
@@ -352,7 +350,7 @@ void IGame::onMenu(const std::string &name, const std::string &value) {
 		bool ok = true;
 		TRY {
 			PlayerManager->startClient(address);
-		} CATCH("startClient", { displayMessage("errors", "connection-failed", 1); ok = false; });
+		} CATCH("startClient", { GameMonitor->displayMessage("errors", "connection-failed", 1); ok = false; });
 		
 		if (_main_menu)	
 			_main_menu->setActive(!ok);
@@ -500,7 +498,6 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 	World->setTimeSlice(mts);
 	
 	_map_loaded = true;
-	_game_over = false;
 	
 	delete _cheater;
 	_cheater = NULL;
@@ -509,17 +506,6 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 	
 	resetTimer();
 }
-
-void IGame::gameOver(const std::string &area, const std::string &message, const float time) {
-	_game_over = true;
-	displayMessage(area, message, time);
-	PlayerManager->gameOver(message, time);
-}
-
-void IGame::displayMessage(const std::string &area, const std::string &message, const float time) {
-	pushState(I18n->get(area, message), time);
-}
-
 
 
 void IGame::run() {
@@ -622,16 +608,12 @@ void IGame::run() {
 		const float dt = 1.0/fr;
 		
 		if (_running && !_paused) {
-			std::string game_state = popState(dt);
-			if (_game_over && !game_state.empty()) {
-				clear();
-			}
-
+			GameMonitor->tick(dt);
 			PlayerManager->tick(SDL_GetTicks(), dt);
 		}
 
 		if (_map_loaded && _credits == NULL && _running && !_paused) {
-			if (!_game_over && !PlayerManager->isClient()) //no need for multiplayer.
+			if (!PlayerManager->isClient()) //no need for multiplayer.
 				GameMonitor->checkItems(dt);
 			PlayerManager->updatePlayers();
 			
@@ -680,14 +662,7 @@ void IGame::run() {
 		if (_main_menu)
 			_main_menu->render(_window);
 		
-		if (!_state.empty()) {
-			int w = _big_font->render(NULL, 0, 0, _state);
-			int x = (_window.getWidth() - w) / 2;
-			int y = (_window.getHeight() - _big_font->getHeight()) / 2;
-			
-			_big_font->render(_window, x, y, _state);
-		}
-		
+		GameMonitor->render(_window);		
 		Console->render(_window);
 		
 flip:
@@ -759,7 +734,6 @@ void IGame::clear() {
 	World->clear();
 	_paused = false;
 	_map_loaded = false;
-	_game_over = false;
 	_show_radar = true;
 	_show_stats = false;
 	Map->clear();
@@ -940,15 +914,3 @@ try {
 	return std::string();
 }
 
-void IGame::pushState(const std::string &state, const float time) {
-	_state = state;
-	_state_timer.set(time);
-}
-
-const std::string IGame::popState(const float dt) {
-	if (_state.empty() || !_state_timer.tick(dt))
-		return std::string();
-	std::string r = _state;
-	_state.clear();
-	return r;
-}

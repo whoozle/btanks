@@ -2,7 +2,7 @@
 #include "player_manager.h"
 #include "player_slot.h"
 #include "net/protocol.h"
-#include "game.h"
+#include "game_monitor.h"
 #include "player_manager.h"
 #include "config.h"
 #include "i18n.h"
@@ -65,9 +65,9 @@ void SpecialZone::onCheckpoint(const int slot_id) {
 	//slot.position = spawn_pos;
 	if (slot.visible) {
 		if (final()) 
-			Game->gameOver("messages", "mission-accomplished", 5);
+			GameMonitor->gameOver("messages", "mission-accomplished", 5);
 		else 
-			Game->displayMessage("messages", "checkpoint-reached", 3);
+			GameMonitor->displayMessage("messages", "checkpoint-reached", 3);
 	}
 
 	slot.need_sync = true;

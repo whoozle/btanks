@@ -5,6 +5,7 @@
 #include "menu_config.h"
 #include "map_picker.h"
 #include "game.h"
+#include "game_monitor.h"
 #include "map_desc.h"
 #include "player_manager.h"
 #include "i18n.h"
@@ -23,7 +24,7 @@ StartServerMenu::StartServerMenu(MainMenu *parent, const int w, const int h) : _
 void StartServerMenu::start() {
 	const MapDesc &map = _map_picker->getCurrentMap();
 	if (map.slots < 1) {
-		Game->displayMessage("menu", "no-slots-in-map", 1);
+		GameMonitor->displayMessage("menu", "no-slots-in-map", 1);
 		return;
 	}
 

@@ -30,7 +30,6 @@
 #include "alarm.h"
 #include "window.h"
 
-#include <sdlx/font.h>
 #include "sdlx/timer.h"
 
 class BaseObject;
@@ -93,23 +92,16 @@ public:
 	const std::string getNearestWaypoint(const BaseObject *obj, const std::string &classname) const;
 	void getWaypoint(v2<float> &wp, const std::string &classname, const std::string &name);
 	
-	void gameOver(const std::string &area, const std::string &message, const float time);
-	void displayMessage(const std::string &area, const std::string &message, const float time);
-
 	void resetTimer();
 
 private:
-	void pushState(const std::string &state, const float time);
-	const std::string popState(const float dt);
-
-
 	bool onKey(const SDL_keysym sym);
 	void onMenu(const std::string &name, const std::string &value);
 	const std::string onConsole(const std::string &cmd, const std::string &param);
 	
 	void stopCredits();
 
-	bool _running, _paused, _map_loaded, _game_over;
+	bool _running, _paused, _map_loaded;
 
 	MainMenu *_main_menu;
 	
@@ -136,10 +128,6 @@ private:
 	
 	Credits *_credits;
 	Cheater *_cheater;
-	
-	std::string _state;
-	Alarm _state_timer;
-	const sdlx::Font *_big_font;
 	
 	IGame(const IGame &);
 	const IGame& operator=(const IGame &);
