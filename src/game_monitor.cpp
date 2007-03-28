@@ -10,32 +10,15 @@
 
 IMPLEMENT_SINGLETON(GameMonitor, IGameMonitor)
 
-IGameMonitor::IGameMonitor() : _game_over(false), _check_items(0.5, true), _state_timer(false) {}
-
-void IGameMonitor::tick(const float dt) {	
-	std::string game_state = popState(dt);
-	if (_game_over && !game_state.empty()) {
-		Game->clear();
-	}
-}
-
-void IGameMonitor::render(sdlx::Surface &window) {
-	static const sdlx::Font * _big_font;
-	if (_big_font == NULL)
-		_big_font = ResourceManager->loadFont("big", true);
-
-	if (!_state.empty()) {
-		int w = _big_font->render(NULL, 0, 0, _state);
-		int x = (window.getWidth() - w) / 2;
-		int y = (window.getHeight() - _big_font->getHeight()) / 2;
-		
-		_big_font->render(window, x, y, _state);
-	}
-}
+IGameMonitor::IGameMonitor() : _game_over(false), _check_items(0.5, true), _state_timer(false), _timer(false) {}
 
 void IGameMonitor::checkItems(const float dt) {	
 	if (_game_over || !_check_items.tick(dt))
 		return;
+		
+	if (_timer.tick(dt)) {
+		gameOver(_timer_message_area, _timer_message, 5);
+	}
 	
 	int goal = 0, goal_total = 0;
 	
@@ -126,11 +109,46 @@ void IGameMonitor::displayMessage(const std::string &area, const std::string &me
 	pushState(I18n->get(area, message), time);
 }
 
+void IGameMonitor::setTimer(const std::string &area, const std::string &message, const float time) {
+	_timer_message_area = area;
+	_timer_message = message;
+	_timer.set(time);
+}
+
+void IGameMonitor::resetTimer() {
+	_timer_message.clear();
+	_timer.reset();
+}
+
+
 void IGameMonitor::clear() {
 	_game_over = false;
 	_state.clear();
+	_timer_message.clear();
 	
 	_items.clear();
 	_specials.clear();
 	_check_items.reset();
 }
+
+void IGameMonitor::tick(const float dt) {	
+	std::string game_state = popState(dt);
+	if (_game_over && !game_state.empty()) {
+		Game->clear();
+	}
+}
+
+void IGameMonitor::render(sdlx::Surface &window) {
+	static const sdlx::Font * _big_font;
+	if (_big_font == NULL)
+		_big_font = ResourceManager->loadFont("big", true);
+
+	if (!_state.empty()) {
+		int w = _big_font->render(NULL, 0, 0, _state);
+		int x = (window.getWidth() - w) / 2;
+		int y = (window.getHeight() - _big_font->getHeight()) / 2;
+		
+		_big_font->render(window, x, y, _state);
+	}
+}
+
