@@ -67,6 +67,7 @@ public:
 	bool reserved;
 	
 	std::set<int> zones_reached;
+	int spawn_limit;
 	
 	typedef std::queue<std::pair<float, Tooltip *> > Tooltips;
 	Tooltips tooltips;

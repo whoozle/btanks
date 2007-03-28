@@ -31,12 +31,14 @@ const bool SpecialZone::final() const {
 	return type == "checkpoint" && name == "final";
 }
 
-void SpecialZone::onTimer(const bool win) {
+void SpecialZone::onTimer(const int slot_id, const bool win) {
 	float duration = atof(subname.c_str());
 	LOG_DEBUG(("activating timer %s for %g seconds", name.c_str(), duration));
-	if (win) 
+	if (win) {
+		PlayerSlot &slot = PlayerManager->getSlot(slot_id);
+		slot.spawn_limit = 1;
 		GameMonitor->setTimer("messages", "mission-accomplished", duration);
-	else 
+	} else 
 		GameMonitor->setTimer("messages", "game-over", duration);
 		
 	GameMonitor->displayMessage(area, name, 3);
@@ -49,9 +51,9 @@ void SpecialZone::onEnter(const int slot_id) {
 	else if (type == "hint") 
 		onHint(slot_id);
 	else if (type == "timer-lose") 
-		onTimer(false);
+		onTimer(slot_id, false);
 	else if (type == "timer-win") 
-		onTimer(true);
+		onTimer(slot_id, true);
 	else if (type == "reset-timer") 
 		GameMonitor->resetTimer();
 	else if (type == "disable-ai") 

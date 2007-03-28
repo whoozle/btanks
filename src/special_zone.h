@@ -16,7 +16,7 @@ public:
 private: 
 	void onCheckpoint(const int slot_id);
 	void onHint(const int slot_id);
-	void onTimer(const bool win);
+	void onTimer(const int slot_id, const bool win);
 };
 
 #endif
