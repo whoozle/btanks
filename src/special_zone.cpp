@@ -18,6 +18,7 @@ SpecialZone::SpecialZone(const ZBox & zbox, const std::string &type, const std::
 		allowed_types.insert("hint");
 		allowed_types.insert("timer-lose");
 		allowed_types.insert("timer-win");
+		allowed_types.insert("reset-timer");
 	}
 	
 	if (allowed_types.find(type) == allowed_types.end()) 
@@ -49,6 +50,8 @@ void SpecialZone::onEnter(const int slot_id) {
 		onTimer(false);
 	else if (type == "timer-win") 
 		onTimer(true);
+	else if (type == "reset-timer") 
+		GameMonitor->resetTimer();
 	else 
 		throw_ex(("unhandled type '%s'", type.c_str()));
 }
