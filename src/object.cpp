@@ -325,7 +325,11 @@ const bool Object::skipRendering() const {
 		if (leader != NULL)
 			return leader->skipRendering();
 	}
-	return isEffectActive("invulnerability") && _blinking.get() >= 0.5;
+	if (!isEffectActive("invulnerability"))
+		return false;
+	if (getEffectTimer("invulnerability") == -1) 
+		return false;
+	return _blinking.get() >= 0.5;
 }
 
 
