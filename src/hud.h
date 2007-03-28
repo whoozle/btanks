@@ -41,7 +41,7 @@ public:
 
 	void renderSplash(sdlx::Surface &window) const;
 	const bool renderLoadingBar(sdlx::Surface &window, const float old_progress, const float progress) const;
-	void renderRadar(const float dt, sdlx::Surface &window, std::vector<v2<int> > &specials);
+	void renderRadar(const float dt, sdlx::Surface &window, const std::vector<v2<int> > &specials);
 	void renderStats(sdlx::Surface &surface);
 
 	~Hud();

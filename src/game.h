@@ -113,21 +113,6 @@ private:
 
 	MainMenu *_main_menu;
 	
-	struct Item {
-		int id;
-		std::string classname, animation;
-		v2<int> position;
-		int z;
-		Uint32 dead_on;
-		bool destroy_for_victory;
-	};
-	typedef std::vector<Item> Items;
-	Items _items;
-	std::vector<v2<int> > _specials;
-	
-	Alarm _check_items;
-	void checkItems(const float dt);
-	
 	typedef std::map<const std::string, v2<int> > WaypointMap;
 	typedef std::map<const std::string, WaypointMap> WaypointClassMap;
 	typedef std::multimap<const std::string, std::string> WaypointEdgeMap;

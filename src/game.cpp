@@ -24,6 +24,7 @@
 #include "world.h"
 #include "finder.h"
 #include "resource_manager.h"
+#include "game_monitor.h"
 
 #include "tmx/map.h"
 
@@ -66,7 +67,7 @@
 IMPLEMENT_SINGLETON(Game, IGame)
 
 IGame::IGame() : _main_menu(NULL),
-_check_items(0.5, true),  _autojoin(false), _shake(0), _show_radar(true) , _show_stats(false), _credits(NULL), _cheater(NULL), _state_timer(false){}
+ _autojoin(false), _shake(0), _show_radar(true) , _show_stats(false), _credits(NULL), _cheater(NULL), _state_timer(false){}
 IGame::~IGame() {}
 
 void IGame::resetTimer() {
@@ -440,27 +441,9 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 				//LOG_DEBUG(("object %s, animation %s, pos: %s", res[1].c_str(), res[2].c_str(), i->second.c_str()));
 				if (res.size() < 3)
 					throw_ex(("'%s' misses an argument", i->first.c_str()));
-				Item item;
-				Object *o = ResourceManager->createObject(res[1], res[2]);
-
-				if (pos.z)
-					o->setZ(pos.z, true);
-				
-				o->addOwner(-42); //fake owner ;)
-				World->addObject(o, v2<float>(pos.x, pos.y));
-				
-				item.classname = res[1];
-				item.animation = res[2];
-				item.position = v2<int>(pos.x, pos.y);
-				item.z = pos.z;
-				item.dead_on = 0;
+				Item item(res[1], res[2], v2<int>(pos.x, pos.y), pos.z);
 				item.destroy_for_victory = res[3].substr(0, 19) == "destroy-for-victory";
-				if (item.destroy_for_victory) {
-					LOG_DEBUG(("%s:%s critical for victory", res[1].c_str(), res[2].c_str()));
-				}
-				
-				item.id = o->getID();
-				_items.push_back(item);
+				GameMonitor->add(item);
 			} else if (type == "waypoint") {
 				if (res.size() < 3)
 					throw_ex(("'%s' misses an argument", i->first.c_str()));
@@ -508,7 +491,7 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 		if (b == _waypoint_edges.end() || b->first != dst)
 			throw_ex(("no edges out of waypoint '%s'", dst.c_str()));
 	}
-	LOG_DEBUG(("%u items on map. %u waypoints, %u edges", (unsigned) _items.size(), (unsigned)_waypoints.size(), (unsigned)_waypoint_edges.size()));
+	LOG_DEBUG(("%u items on map, %u waypoints, %u edges", GameMonitor->getItemsCount(), (unsigned)_waypoints.size(), (unsigned)_waypoint_edges.size()));
 	Config->invalidateCachedValues();
 	
 	_hud->initMap();
@@ -538,58 +521,6 @@ void IGame::displayMessage(const std::string &area, const std::string &message, 
 }
 
 
-void IGame::checkItems(const float dt) {	
-	if (!_map_loaded || _paused || _game_over || !_check_items.tick(dt) || PlayerManager->isClient()) //no need for multiplayer.
-		return;
-	
-	int goal = 0, goal_total = 0;
-	
-	_specials.clear();
-	
-	for(Items::iterator i = _items.begin(); i != _items.end(); ++i) {
-		Item &item = *i;
-		if (item.destroy_for_victory)
-			++goal_total;
-		Object *o = World->getObjectByID(item.id);
-		if (o != NULL) {
-			if (item.destroy_for_victory) {
-				if (o->getState() == "broken") {
-					++goal;
-				} else 
-					_specials.push_back(item.position);
-			} 
-			continue;
-		}
-		if (item.destroy_for_victory)
-			++goal;
-		
-		Uint32 ticks = SDL_GetTicks();
-		if (item.dead_on == 0) {
-			item.dead_on = ticks;
-			LOG_DEBUG(("item %d:%s:%s is dead, log dead time.", item.id, item.classname.c_str(), item.animation.c_str()));
-			continue;
-		}
-		int rt;
-		Config->get("map." + item.classname + ".respawn-interval", rt, 5); 
-		if (rt < 0) 
-			continue;
-		if (((ticks - item.dead_on) / 1000) >= (unsigned)rt) {
-			//respawning item
-			LOG_DEBUG(("respawning item: %s:%s", item.classname.c_str(), item.animation.c_str()));
-			Object *o = ResourceManager->createObject(item.classname, item.animation);
-			if (item.z) 
-				o->setZ(item.z, true);
-			o->addOwner(-42);
-			
-			World->addObject(o, item.position.convert<float>());
-			item.id = o->getID();
-			item.dead_on = 0;
-		}
-	}
-	if (goal_total > 0 && goal == goal_total) {
-		gameOver("messages", "mission-accomplished", 5);
-	}
-}
 
 void IGame::run() {
 	LOG_DEBUG(("entering main loop"));
@@ -700,7 +631,8 @@ void IGame::run() {
 		}
 
 		if (_map_loaded && _credits == NULL && _running && !_paused) {
-			checkItems(dt);
+			if (!_game_over && !PlayerManager->isClient()) //no need for multiplayer.
+				GameMonitor->checkItems(dt);
 			PlayerManager->updatePlayers();
 			
 			Map->tick(dt);
@@ -738,7 +670,7 @@ void IGame::run() {
 			_hud->render(_window);
 
 			if (_show_radar) {
-				_hud->renderRadar(dt, _window, _specials);
+				_hud->renderRadar(dt, _window, GameMonitor->getSpecials());
 			}
 			if (_main_menu && !_main_menu->isActive() && _show_stats) {
 				_hud->renderStats(_window);
@@ -821,7 +753,7 @@ void IGame::clear() {
 
 	PlayerManager->clear();
 
-	_items.clear();
+	GameMonitor->clear();
 	_waypoints.clear();
 	_waypoint_edges.clear();
 	World->clear();

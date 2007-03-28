@@ -120,7 +120,7 @@ void Hud::renderStats(sdlx::Surface &surface) {
 
 
 
-void Hud::renderRadar(const float dt, sdlx::Surface &window, std::vector<v2<int> > &specials) {
+void Hud::renderRadar(const float dt, sdlx::Surface &window, const std::vector<v2<int> > &specials) {
 	if (!Map->loaded()) {
 		_radar.free();
 		_radar_bg.free();
