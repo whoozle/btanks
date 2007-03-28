@@ -908,8 +908,15 @@ try {
 		Object *o = PlayerManager->getSlot(idx).getObject();
 		if (o == NULL)
 			throw_ex(("no object in slot %d", idx));
-		LOG_NOTICE(("%g %g", o->getPosition().x, o->getPosition().y));
-		return mrt::formatString("%g %g", o->getPosition().x, o->getPosition().y);
+
+		v2<float> position;
+		o->getCenterPosition(position);
+
+		v2<int> tile_size = Map->getTileSize();
+		v2<int> tiled = position.convert<int>() / tile_size;
+		const std::string posstr = mrt::formatString("%g %g @%d,%d", position.x, position.y, tiled.x, tiled.y);
+		LOG_NOTICE(("%s", posstr.c_str()));
+		return posstr;
 	}
 
 } catch(const std::exception &e) {
