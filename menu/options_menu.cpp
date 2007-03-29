@@ -48,10 +48,10 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 	yp += sh + 10;
 	
 	float volume;
-	Config->get("sound.volume.music", volume, 1);
+	Config->get("engine.sound.volume.music", volume, 1);
 	
 	Label *l = new Label("medium", I18n->get("menu", "music-volume"));
-	Slider *s = new Slider(volume);
+	Slider *s = _music = new Slider(volume);
 
 	add(_bx + mx, yp, l);
 	l->getSize(sw, sh);
@@ -66,10 +66,10 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 	yp += sh + 10;
 
 
-	Config->get("sound.volume.music", volume, 1);
+	Config->get("engine.sound.volume.fx", volume, 1);
 	
 	l = new Label("medium", I18n->get("menu", "fx-volume"));
-	s = new Slider(volume);
+	s = _fx = new Slider(volume);
 	add(_bx + mx, yp, l);
 	l->getSize(sw, sh);
 	{
@@ -96,6 +96,13 @@ void OptionsMenu::reload() {
 	sp->reload();
 	sp1->reload();
 	sp2->reload();
+	
+	float volume;
+	Config->get("engine.sound.volume.music", volume, 1);
+	_music->set(volume);
+
+	Config->get("engine.sound.volume.fx", volume, 1);
+	_fx->set(volume);
 }
 
 void OptionsMenu::save() {
@@ -103,6 +110,9 @@ void OptionsMenu::save() {
 	sp->save();
 	sp1->save();
 	sp2->save();
+	
+	Config->set("engine.sound.volume.fx", _fx->get());
+	Config->set("engine.sound.volume.music", _music->get());
 }
 
 
