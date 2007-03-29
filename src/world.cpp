@@ -473,7 +473,9 @@ TRY {
 
 } CATCH("ttl decrementing", throw;);		
 
+
 	v2<float> old_vel = o._velocity;
+	bool drifting = false;
 
 	if (_atatat && !o.piercing && o.mass > 20) {
 		if (!o.has("atatat-tooltip")) {
@@ -510,6 +512,7 @@ TRY {
 		o.Object::calculate(dt);
 	} else if (o.isEffectActive("drifting")) {
 		//drifting
+		drifting = true;
 		//LOG_DEBUG(("drifting! %s", o.animation.c_str()));
 		GET_CONFIG_VALUE("engine.drifting-duration", float, dd, 0.1);
 	//	GET_CONFIG_VALUE("engine.drifting-rotation", float, dr, 0.03);
@@ -618,14 +621,14 @@ TRY {
 	bool hidden = false;
 	std::string outline_animation;
 	
-	float map_im = 0, obj_im = 0;
-
 	const Object *other_obj = NULL;
 	const Object *stuck_in = NULL;
 	v2<int> stuck_map_pos;
 	bool stuck = false;
 
 	int attempt = -1;
+
+	float map_im = 0, obj_im = 0;
 	
 TRY {	
 	
@@ -808,6 +811,9 @@ TRY {
 TRY {
 	assert(map_im >= 0 && obj_im >= 0);
 	//LOG_DEBUG(("%s: %d %d: obj_im: %g, map_im: %g, dpos: %g %g %s", o.animation.c_str(), old_pos.x, old_pos.y, obj_im, map_im, dpos.x, dpos.y, stuck?"stuck":""));
+	GET_CONFIG_VALUE("engine.drifting-impassability", float, dim, 0.4);
+	if (drifting && obj_im < dim)
+		obj_im = dim;
 	
 	if (map_im >= 1.0 || obj_im >= 1.0) {
 		dpos.clear();
