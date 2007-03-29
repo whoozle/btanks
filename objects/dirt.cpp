@@ -19,6 +19,7 @@
 
 #include "object.h"
 #include "resource_manager.h"
+#include "config.h"
 
 class Dirt : public Object {
 public:
@@ -32,11 +33,14 @@ void Dirt::onSpawn() {
 	if (registered_name.substr(0, 7) != "static-")
 		play("fade-in", false);
 	play("main", true);
+	disown();
 }
 
 void Dirt::emit(const std::string &event, Object * emitter) {
-	if (event == "collision") {
-		return;
+	if (emitter != NULL && emitter->speed != 0 && event == "collision") {
+		GET_CONFIG_VALUE("engine.drifting-duration", float, dd, 0.1);
+		if (!emitter->isEffectActive("drifting"))
+			emitter->addEffect("drifting", dd);
 	} else Object::emit(event, emitter);
 }
 

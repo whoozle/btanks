@@ -578,7 +578,7 @@
 	<object class="nuclear-explosion" hp="1000" mass="10000" impassability="-1" z="900" />
 	<object class="cannon-explosion" hp="30" impassability="-1" z="900" />
 	
-	<object class="static-dirt" impassability="0.5" z="-20" />
+	<object class="static-dirt" impassability="-1" z="-20" />
 	<object class="dirt" parent="static-dirt" ttl="50" fadeout="1" />
 	<object class="pond" hp="1000" pierceable="true" impassability="1" z="150" />
 	<object class="gate" hp="20" impassability="1" z="150" />

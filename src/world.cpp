@@ -510,7 +510,20 @@ TRY {
 		o.Object::calculate(dt);
 	} else if (o.isEffectActive("drifting")) {
 		//drifting
-		LOG_DEBUG(("drifting! %s", o.animation.c_str()));
+		//LOG_DEBUG(("drifting! %s", o.animation.c_str()));
+		GET_CONFIG_VALUE("engine.drifting-duration", float, dd, 0.1);
+	//	GET_CONFIG_VALUE("engine.drifting-rotation", float, dr, 0.03);
+
+		float t = o.getEffectTimer("drifting");
+		//LOG_DEBUG(("%g", t));
+		if (t == dd) {
+			TRY { 
+				o.calculate(dt);
+			} CATCH("calling o.calculate", throw;)
+		}
+		if (o._velocity.is0()) 
+			o._velocity.fromDirection(o._direction_idx, o.getDirectionsNumber());
+				
 	} else {
 		if (do_calculate) {
 			//regular calculate
