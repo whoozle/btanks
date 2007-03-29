@@ -12,6 +12,8 @@ public:
 	virtual void getSize(int &w, int &h) const;
 	bool onMouse(const int button, const bool pressed, const int x, const int y);
 	const float get() const { return _value; }
+	void set(const float value);
+	void validate(); 
 
 private: 
 	bool onMouseMotion(const int state, const int x, const int y, const int xrel, const int yrel);
