@@ -773,9 +773,31 @@ void IPlayerManager::tick(const float now, const float dt) {
 			_next_ping = (int)(now + ping_interval); //fixme: hardcoded value
 		}
 	}
-	bool listener_set = false;
+	//bool listener_set = false;
+	v2<float> listener_pos, listener_vel;
+	float listeners = 0;
+	for(size_t pi = 0; pi < _players.size(); ++pi) {
+		PlayerSlot &slot = _players[pi];
+		if (!slot.visible)
+			continue;
+		const Object * o = slot.getObject();
+		if (o == NULL)
+			continue;
 
-	for(unsigned int pi = 0; pi < _players.size(); ++pi) {
+		v2<float> pos, vel;
+		o->getInfo(pos, vel);
+		listener_pos += pos;
+		listener_vel += vel;
+		listeners += 1;
+	}
+
+	if (listeners > 0) {
+		listener_pos /= listeners;
+		listener_vel /= listeners;
+		Mixer->setListener(listener_pos.convert2v3(0), listener_vel.convert2v3(0));
+	}
+
+	for(size_t pi = 0; pi < _players.size(); ++pi) {
 		PlayerSlot &slot = _players[pi];
 		if (!slot.visible)
 			continue;
@@ -792,10 +814,6 @@ void IPlayerManager::tick(const float now, const float dt) {
 		p->getTimes(moving, idle);
 		//vel.fromDirection(p->getDirection(), p->getDirectionsNumber());
 
-		if (!listener_set) {
-			Mixer->setListener(pos.convert2v3(p->getZ()), vel.convert2v3(p->getZ()));
-			listener_set = true;
-		}
 		
 		moving /= 2;
 		if (moving >= 1)
