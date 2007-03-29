@@ -58,7 +58,7 @@ Object::Object(const std::string &classname) :
 	_tw(0), _th(0), _direction_idx(0), _directions_n(8), _pos(0), 
 	_way(), _next_target(), _next_target_rel(), 
 	_rotation_time(0), 
-	_dst_direction(0), 
+	_dst_direction(-1), 
 	_group(), _blinking(true)
 	 {
 	 	GET_CONFIG_VALUE("engine.spawn-invulnerability-blinking-interval", float, ibi, 0.3);
@@ -674,7 +674,9 @@ void Object::limitRotation(const float dt, const float speed, const bool rotate_
 		if (d >= 0) 
 			_dst_direction = d;
 	}
-	assert(_dst_direction >= 0);
+	if (_dst_direction < 0)
+		return;
+	
 	if (_dst_direction == _direction_idx) {
 		_rotation_time = 0;
 		return;
