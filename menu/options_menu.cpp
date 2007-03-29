@@ -6,9 +6,14 @@
 #include "label.h"
 #include "slider.h"
 #include "config.h"
+#include "sound/mixer.h"
+#include "resource_manager.h"
+#include "object.h"
 
-
-OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(parent) {
+OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(parent), _shoot(0.5f, false) {
+	Mixer->loadSample("shot.ogg");
+	_shooter = ResourceManager->createObject("outline");
+	
 	_background.init("menu/background_box.png", w - 100, h - 100);
 	int bw, bh;
 
@@ -117,6 +122,18 @@ void OptionsMenu::save() {
 
 
 void OptionsMenu::tick(const float dt) {
+	if (_fx->changed() || _fx->tracking()) {
+		_fx->reset();
+		Mixer->setFXVolume(_fx->get());
+		if (_shoot.tick(dt)) {
+			Mixer->playSample(_shooter, "shot.ogg", false);
+			_shoot.reset();
+		}
+	}
+	if (_music->changed()) {
+		_music->reset();
+		Mixer->setMusicVolume(_music->get());
+	}
 	if (_b_ok->changed()) {
 		_b_ok->reset();
 		_parent->back();
@@ -154,5 +171,8 @@ bool OptionsMenu::onKey(const SDL_keysym sym) {
 	return false;
 }
 
-OptionsMenu::~OptionsMenu() {}
+OptionsMenu::~OptionsMenu() {
+	if (_shooter)
+		delete _shooter;
+}
 

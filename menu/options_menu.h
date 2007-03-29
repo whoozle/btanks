@@ -4,11 +4,14 @@
 #include "sdlx/rect.h"
 #include "base_menu.h"
 #include "box.h"
+#include "alarm.h"
+
 
 class Button;
 class Slider;
 class MainMenu;
 class ControlPicker;
+class Object;
 
 class OptionsMenu : public BaseMenu {
 public:
@@ -32,6 +35,9 @@ private:
 	int _bx, _by;
 	Button *_b_ok, *_b_back;
 	Slider *_fx, *_music;
+
+	Object *_shooter; //hack to allow mixer playing sample
+	Alarm _shoot;
 };
 
 #endif

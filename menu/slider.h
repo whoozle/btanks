@@ -14,6 +14,7 @@ public:
 	const float get() const { return _value; }
 	void set(const float value);
 	void validate(); 
+	const bool tracking() const { return _grab; }
 
 private: 
 	bool onMouseMotion(const int state, const int x, const int y, const int xrel, const int yrel);
