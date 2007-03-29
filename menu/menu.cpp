@@ -55,7 +55,7 @@ MainMenu::MainMenu(const int w, const int h) : _active_item(0) {
 	_active_menu.clear();
 
 	//_items[""].push_back(new MenuItem(_font, "multiplayer", "submenu", "OLD MULTIPLAYER MENU"));
-	_items[""].push_back(new MenuItem(_font, "#start-server", "submenu", "START SERVER"));
+	_items[""].push_back(new MenuItem(_font, "#start-server", "submenu", "START GAME"));
 	_items[""].push_back(new MenuItem(_font, "#join-server", "submenu", "JOIN GAME"));
 	_items[""].push_back(new MenuItem(_font, "#options", "submenu", "OPTIONS"));
 	_items[""].push_back(new MenuItem(_font, "credits", "command", "CREDITS"));
