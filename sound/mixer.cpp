@@ -209,7 +209,7 @@ void IMixer::playSample(const Object *o, const std::string &name, const bool loo
 	
 		alSourcei (source, AL_BUFFER,   sample.buffer);
 		alSourcef (source, AL_PITCH,    1.0          );
-		alSourcef (source, AL_GAIN,     1.0          );
+		alSourcef (source, AL_GAIN,     _volume_fx   );
 		alSourcefv(source, AL_POSITION, al_pos       );
 		alSourcefv(source, AL_VELOCITY, al_vel       );
 		alSourcei (source, AL_LOOPING,  loop?AL_TRUE:AL_FALSE );
