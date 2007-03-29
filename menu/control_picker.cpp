@@ -20,13 +20,22 @@ ControlPicker::ControlPicker(const int w, const std::string &font, const std::st
 		_values.push_back("keys");
 	}
 	
+
+	int base = _values.size();
+	
 	int n = sdlx::Joystick::getCount();
-	for(int i = 0; i < n; ++i) {
+	for(int i = 0; i < 4; ++i) {
 		_values.push_back(mrt::formatString("joy-%d", i + 1));
 	}
 
+	_controls = new Chooser("medium", _values, variant == "split"?"menu/controls_split.png":"menu/controls.png");
+
+	for(int i = 0; i < (int)_values.size(); ++i) {
+		if (i >= base + n) 
+			_controls->disable(i);
+	}
+
 	int cw, ch;
-	_controls = new Chooser("medium", _values);
 	_controls->getSize(cw, ch);
 	add(w - 100 - cw/2, 0, _controls);
 	
