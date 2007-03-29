@@ -23,7 +23,7 @@
 
 class Dirt : public Object {
 public:
-	Dirt() : Object("dirt") { pierceable = true; }
+	Dirt() : Object("dirt") { pierceable = true; hp = -1; }
 	virtual Object * clone() const;
 	virtual void onSpawn();
 	virtual void emit(const std::string &event, Object * emitter = NULL);
