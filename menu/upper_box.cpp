@@ -61,6 +61,9 @@ void UpperBox::render(sdlx::Surface &surface, const int x, const int y) {
 }
 
 bool UpperBox::onMouse(const int button, const bool pressed, const int x, const int y) {
+	if (!pressed) 
+		return false;
+	
 	if (_on_area.in(x, y)) {
 		//LOG_DEBUG(("split screen on!"));
 		Config->set("multiplayer.split-screen-mode", true);
