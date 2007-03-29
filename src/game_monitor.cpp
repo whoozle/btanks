@@ -106,6 +106,7 @@ const std::string IGameMonitor::popState(const float dt) {
 
 void IGameMonitor::gameOver(const std::string &area, const std::string &message, const float time) {
 	_game_over = true;
+	resetTimer();
 	displayMessage(area, message, time);
 	PlayerManager->gameOver(message, time);
 }
