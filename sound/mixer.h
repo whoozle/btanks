@@ -53,6 +53,9 @@ public:
 	
 	void updateObjects();
 	
+	void setFXVolume(const float volume);
+	void setMusicVolume(const float volume);
+	
 	IMixer();
 	~IMixer();
 private: 
@@ -69,6 +72,7 @@ private:
 	std::string _now_playing;
 	OggStream * _ogg;
 	
+	float _volume_fx, _volume_music;
 	
 	IMixer(const IMixer &);
 	const IMixer& operator=(const IMixer &);

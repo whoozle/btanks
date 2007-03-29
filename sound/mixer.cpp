@@ -39,13 +39,17 @@
 
 IMPLEMENT_SINGLETON(Mixer, IMixer)
 
-IMixer::IMixer() : _nosound(true), _nomusic(true), _ogg(NULL) {}
+IMixer::IMixer() : _nosound(true), _nomusic(true), _ogg(NULL), 
+	_volume_fx(1.0f), _volume_music(1.0f) {}
 
 void IMixer::init(const bool nosound, const bool nomusic) {
 	if (nosound && nomusic) {
 		_nosound = _nomusic = true;
 		return;
 	}
+
+	Config->get("engine.sound.volume.fx", _volume_fx, 1.0f);
+	Config->get("engine.sound.volume.music", _volume_music, 1.0f);
 	
 	delete _ogg;
 	_ogg = NULL;
@@ -130,6 +134,7 @@ const bool IMixer::play(const std::string &fname, const bool continuous) {
 		_ogg = new OggStream;
 
 	_ogg->open(fname, continuous);
+	_ogg->setVolume(_volume_music);
 	return true;
 }
 
@@ -211,6 +216,29 @@ void IMixer::playSample(const Object *o, const std::string &name, const bool loo
 		alSourcePlay(source);
 	} CATCH("playSample", {});
 }
+
+void IMixer::setFXVolume(const float volume) {
+	if (volume < 0 || volume > 1) 
+		throw_ex(("volume value %g is out of range [0-1]", volume));	
+
+	for(Sources::iterator i = _sources.begin(); i != _sources.end(); ++i) {
+		alSourcef(i->second, AL_GAIN, volume);
+		AL_CHECK(("alSourcef(AL_GAIN, %g)", volume));
+	}
+
+	_volume_fx = volume;
+}
+
+void IMixer::setMusicVolume(const float volume) {
+	if (volume < 0 || volume > 1) 
+		throw_ex(("volume value %g is out of range [0-1]", volume));	
+	
+	if (_ogg)
+		_ogg->setVolume(volume);
+
+	_volume_music = volume;	
+}
+
 
 void IMixer::updateObjects() {
 	if (!_nomusic) {

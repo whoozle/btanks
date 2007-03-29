@@ -42,6 +42,7 @@ public:
 	~OggStream();
 	
 	static void decode(Sample &sample, const std::string &file);
+	void setVolume(const float v);
 
 private: 
 

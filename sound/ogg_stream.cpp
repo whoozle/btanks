@@ -306,3 +306,11 @@ TRY {
 } CATCH("OggStream::run", { _running = false; })
 return 1;
 }
+
+void OggStream::setVolume(const float volume) {
+	if (volume < 0 || volume > 1) 
+		throw_ex(("volume value %g is out of range [0-1]", volume));	
+	
+	alSourcef(_source, AL_GAIN, volume);
+	AL_CHECK(("alSourcef(AL_GAIN, %g)", volume));
+}
