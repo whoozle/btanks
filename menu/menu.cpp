@@ -297,13 +297,16 @@ const bool MainMenu::back() {
 }
 
 bool MainMenu::onMouse(const int button, const bool pressed, const int x, const int y) {
-	if (!_active || !pressed)
+	if (!_active)
 		return false;
 	
 	BaseMenu * bm = getMenu(_active_menu);
 	if (bm != NULL) {
 		return bm->onMouse(button, pressed, x, y);
 	}
+	if (!pressed)
+		return false;
+	
 	if (_background_area.in(x, y)) {
 		sdlx::Rect item_area = _background_area;
 		const ItemList & items = _items[_active_menu];
