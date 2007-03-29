@@ -2,8 +2,9 @@
 #define BTANKS_MENU_SLIDER_H__
 
 #include "control.h"
+#include <sigc++/sigc++.h>
 
-class Slider : public Control {
+class Slider : public Control, public sigc::trackable {
 public: 
 	Slider(const float value);
 
@@ -12,9 +13,14 @@ public:
 	bool onMouse(const int button, const bool pressed, const int x, const int y);
 
 private: 
+	bool onMouseMotion(const int state, const int x, const int y, const int xrel, const int yrel);
+
 	const sdlx::Surface * _tiles;
 	int _n;
 	float _value;
+
+	bool _grab;
+	int _grab_state;
 };
 
 #endif

@@ -1,11 +1,15 @@
 #include "slider.h"
 #include "sdlx/surface.h"
 #include "resource_manager.h"
+#include "game.h"
+#include "sdlx/sdlx.h"
 
-Slider::Slider(const float value) : _n(10), _value(value) {
+Slider::Slider(const float value) : _n(10), _value(value), _grab(false) {
 	if (value > 1.0f) 
 		throw_ex(("slider accepts only values between 0 and 1 (inclusive)"));
 	_tiles = ResourceManager->loadSurface("menu/slider.png");
+
+	Game->mouse_motion_signal.connect(sigc::mem_fun(this, &Slider::onMouseMotion));	
 }
 
 
@@ -24,6 +28,25 @@ void Slider::getSize(int &w, int &h) const {
 }
 
 bool Slider::onMouse(const int button, const bool pressed, const int x, const int y) {
-	LOG_DEBUG(("%s", pressed?"+":"-"));
+	if (!pressed && _grab) {
+		_grab = false;
+		return true;
+	}
+	if (pressed && !_grab) {
+		_grab = true;
+		_grab_state = SDL_GetMouseState(NULL, NULL);
+	}	
 	return false;
+}
+
+bool Slider::onMouseMotion(const int state, const int x, const int y, const int xrel, const int yrel) {
+	if (!_grab) 	
+		return false;
+	if (state != _grab_state) {
+		_grab = false;
+		return true;
+	}
+	//LOG_DEBUG(("tracking mouse: %d %d %d %d", x, y, xrel, yrel));
+	
+	return true;
 }
