@@ -16,6 +16,9 @@
 		<string id="single-player">Single player</string>
 		<string id="split-player-1">Split screen player 1</string>
 		<string id="split-player-2">Split screen player 2</string>
+
+		<string id="fx-volume">Effects volume</string>
+		<string id="music-volume">Music volume</string>
 	</area>
 	<area id="maps/descriptions">
 		<string id="baykonur">Huge cooperative map with tons of troopers, very defensive military base and big boss inside(tm)</string>

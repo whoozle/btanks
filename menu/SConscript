@@ -10,7 +10,7 @@ bt_menu = env.StaticLibrary('bt_menu',
 	'map_picker.cpp', 'scroll_list.cpp', 'control.cpp', 'map_details.cpp', 'player_picker.cpp', 
 	'chooser.cpp', 'label.cpp', 'button.cpp', 'menu_config.cpp', 'map_desc.cpp', 
 	'prompt.cpp', 'text_control.cpp', 'host_list.cpp', 'options_menu.cpp', 'control_picker.cpp',
-	
+	'slider.cpp',
 	] 
 	)
 

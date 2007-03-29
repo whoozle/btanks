@@ -3,6 +3,10 @@
 #include "menu.h"
 #include "control_picker.h"
 #include "i18n.h"
+#include "label.h"
+#include "slider.h"
+#include "config.h"
+
 
 OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(parent) {
 	_background.init("menu/background_box.png", w - 100, h - 100);
@@ -41,6 +45,42 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 	sp2 = new ControlPicker(width, "big", I18n->get("menu", "split-player-2"), "player.control-method-2", "split");
 	sp2->getSize(sw, sh);
 	add(_bx + mx, yp, sp2);
+	yp += sh + 10;
+	
+	float volume;
+	Config->get("sound.volume.music", volume, 1);
+	
+	Label *l = new Label("medium", I18n->get("menu", "music-volume"));
+	Slider *s = new Slider(volume);
+
+	add(_bx + mx, yp, l);
+	l->getSize(sw, sh);
+	{
+		int w, h;
+		s->getSize(w, h);
+		add(_bx + _background.w / 2, yp + (sh - h) / 2, s);
+		if (h > sh) 
+			sh = h;
+	}
+	
+	yp += sh + 10;
+
+
+	Config->get("sound.volume.music", volume, 1);
+	
+	l = new Label("medium", I18n->get("menu", "fx-volume"));
+	s = new Slider(volume);
+	add(_bx + mx, yp, l);
+	l->getSize(sw, sh);
+	{
+		int w, h;
+		s->getSize(w, h);
+		add(_bx + _background.w / 2, yp + (sh - h) / 2, s);
+		if (h > sh) 
+			sh = h;
+	}
+
+
 	yp += sh + 10;
 	
 	reload();

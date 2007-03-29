@@ -29,7 +29,7 @@ private:
 
 	Box _background;
 	int _bx, _by;
-	Button *_b_ok, *_b_back;	
+	Button *_b_ok, *_b_back;
 };
 
 #endif
