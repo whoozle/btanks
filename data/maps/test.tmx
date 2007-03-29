@@ -21,10 +21,26 @@
   <property name="object:static-dirt:dirt:26" value="@9,6"/>
   <property name="object:static-dirt:dirt:27" value="@9,7"/>
   <property name="object:static-dirt:dirt:28" value="@9,8"/>
-  <property name="object:static-dirt:dirt:5" value="@11,5"/>
-  <property name="object:static-dirt:dirt:6" value="@11,6"/>
-  <property name="object:static-dirt:dirt:7" value="@11,7"/>
-  <property name="object:static-dirt:dirt:8" value="@11,8"/>
+  <property name="object:static-dirt:dirt:35" value="@11,5"/>
+  <property name="object:static-dirt:dirt:36" value="@11,6"/>
+  <property name="object:static-dirt:dirt:37" value="@11,7"/>
+  <property name="object:static-dirt:dirt:38" value="@11,8"/>
+  <property name="object:static-dirt:dirt:31" value="@5,9"/>
+  <property name="object:static-dirt:dirt:32" value="@5,10"/>
+  <property name="object:static-dirt:dirt:33" value="@5,11"/>
+  <property name="object:static-dirt:dirt:34" value="@5,12"/>
+  <property name="object:static-dirt:dirt:41" value="@7,9"/>
+  <property name="object:static-dirt:dirt:42" value="@7,10"/>
+  <property name="object:static-dirt:dirt:43" value="@7,11"/>
+  <property name="object:static-dirt:dirt:44" value="@7,12"/>
+  <property name="object:static-dirt:dirt:45" value="@9,9"/>
+  <property name="object:static-dirt:dirt:46" value="@9,10"/>
+  <property name="object:static-dirt:dirt:47" value="@9,11"/>
+  <property name="object:static-dirt:dirt:48" value="@9,12"/>
+  <property name="object:static-dirt:dirt:55" value="@11,9"/>
+  <property name="object:static-dirt:dirt:56" value="@11,10"/>
+  <property name="object:static-dirt:dirt:57" value="@11,11"/>
+  <property name="object:static-dirt:dirt:58" value="@11,12"/>
   <property name="object:thrower-item:thrower-item:1" value="12,108"/>
   <property name="object:watchtower-with-machinegunner:watchtower:100" value="@0,13"/>
   <property name="spawn:3" value="474,952"/>
