@@ -475,10 +475,6 @@ TRY {
 
 	v2<float> old_vel = o._velocity;
 
-	TRY { 
-		o.calculate(dt);
-	} CATCH("calling o.calculate", throw;)
-	
 	if (_atatat && !o.piercing && o.mass > 20) {
 		if (!o.has("atatat-tooltip")) {
 			o.add("atatat-tooltip", o.spawnGrouped("random-tooltip", "skotobaza", v2<float>(48, -48), Centered));
@@ -512,6 +508,9 @@ TRY {
 		
 		o.updatePlayerState(state);
 		o.Object::calculate(dt);
+	} else if (o.isEffectActive("drifting")) {
+		//drifting
+		LOG_DEBUG(("drifting! %s", o.animation.c_str()));
 	} else {
 		if (do_calculate) {
 			//regular calculate
