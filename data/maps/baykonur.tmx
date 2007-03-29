@@ -341,11 +341,11 @@
   <property name="object:machinegunner:machinegunner:7" value="3117,1756"/>
   <property name="object:dispersion-bullets-item:dispersion-bullets-item:3" value="2875,2616"/>
   <property name="object:barrack-with-kamikazes:trooper-hut:10" value="347,1275,210"/>
-  <property name="checkpoint:4" value="@38,14:@2,3"/>
-  <property name="checkpoint:3" value="@18,0:@8,2"/>
-  <property name="checkpoint:2" value="@10,17:@3,4"/>
+  <property name="zone:checkpoint:4" value="@38,14:@2,3"/>
+  <property name="zone:checkpoint:3" value="@18,0:@8,2"/>
+  <property name="zone:checkpoint:2" value="@10,17:@3,4"/>
   <property name="object:cannon:cannon:19" value="@46,0"/>
-  <property name="checkpoint:1" value="@19,41:@2,2"/>
+  <property name="zone:checkpoint:1" value="@19,41:@2,2"/>
   <property name="object:cannon:cannon:18" value="@39,7"/>
   <property name="object:cannon:cannon:17" value="1692,195"/>
   <property name="object:cannon:cannon:16" value="2334,716"/>
