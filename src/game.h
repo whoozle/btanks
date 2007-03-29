@@ -69,6 +69,7 @@ public:
 	//signals
 	sigc::signal1<bool, const SDL_keysym, marshaller> key_signal;
 	sigc::signal4<bool, const int, const bool, const int, const int, marshaller> mouse_signal;
+	sigc::signal5<bool, const int, const int, const int, const int, const int> mouse_motion_signal;
 
 	void init(const int argc, char *argv[]);
 	void run();
