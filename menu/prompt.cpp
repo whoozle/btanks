@@ -9,7 +9,7 @@ Prompt::~Prompt() {
 }
 
 Prompt::Prompt(const int w, const int h, TextControl * text) : _text(text), value(text->get()) {
-	_background.init("menu/background_box.png", "menu/highlight_medium.png", w, h);
+	_background.init("menu/background_box_dark.png", "menu/highlight_medium.png", w, h);
 	int mx, my;
 	_background.getMargins(mx, my);
 	_text_rect = sdlx::Rect(mx, my, w - mx * 2, h - my * 2);

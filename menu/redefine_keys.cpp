@@ -6,7 +6,7 @@
 RedefineKeys::RedefineKeys() {
 	_bg_table = ResourceManager->loadSurface("menu/keys_table.png");
 	_font = ResourceManager->loadFont("medium", true);
-	_background.init("menu/background_box.png", _bg_table->getWidth() + 32, _bg_table->getHeight() + 32);
+	_background.init("menu/background_box_dark.png", _bg_table->getWidth() + 32, _bg_table->getHeight() + 32);
 	
 	_actions.push_back("up");
 	_actions.push_back("down");
@@ -24,7 +24,7 @@ void RedefineKeys::render(sdlx::Surface &surface, const int x, const int y) {
 	
 	int yp = y + dy + 50;
 	for(size_t i = 0; i < _actions.size(); ++i) {
-		_font->render(surface, x + 48, yp, _actions[i]);
+		_font->render(surface, x + 36, yp, _actions[i]);
 		yp += 30;
 	}
 }
