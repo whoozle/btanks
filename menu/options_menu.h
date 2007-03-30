@@ -12,6 +12,7 @@ class Slider;
 class MainMenu;
 class ControlPicker;
 class Object;
+class RedefineKeys;
 
 class OptionsMenu : public BaseMenu {
 public:
@@ -38,6 +39,8 @@ private:
 
 	Object *_shooter; //hack to allow mixer playing sample
 	Alarm _shoot;
+	
+	RedefineKeys * _keys;
 };
 
 #endif

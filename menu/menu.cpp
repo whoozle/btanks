@@ -317,7 +317,7 @@ bool MainMenu::onMouse(const int button, const bool pressed, const int x, const 
 			
 			if (item_area.in(x, y)) {
 				_active_item = i;
-				LOG_DEBUG(("clicked item %d", i));
+				LOG_DEBUG(("clicked item %u", (unsigned)i));
 				activateSelectedItem();
 				return true;
 			}

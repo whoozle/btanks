@@ -9,6 +9,7 @@
 #include "sound/mixer.h"
 #include "resource_manager.h"
 #include "object.h"
+#include "redefine_keys.h"
 
 OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(parent), _shoot(0.5f, false) {
 	Mixer->loadSample("shot.ogg");
@@ -89,6 +90,11 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 	yp += sh + 10;
 	
 	reload();
+	
+	_keys = new RedefineKeys;
+	_keys->getSize(sw, sh);
+	add((w - sw) / 2, (h - sh) / 2, _keys);
+	_keys->hide();
 }
 
 void OptionsMenu::getSize(int &w, int &h) const {
@@ -165,6 +171,10 @@ bool OptionsMenu::onKey(const SDL_keysym sym) {
 	case SDLK_ESCAPE: 
 		_parent->back();
 		reload();
+		return true;
+
+	case SDLK_r: 
+		_keys->hide(false);
 		return true;
 
 	default: ;
