@@ -11,7 +11,7 @@ if sys.platform == "win32":
 	opts.Add('LINK', 'Linker program', '')
 opts.Add('LINKFLAGS', 'General options that are passed to the linker', '')
 opts.Add('CPPPATH', 'extra cpp path', '')
-opts.Add(EnumOption('mode', 'build mode', 'debug', allowed_values=('debug','release')))
+opts.Add(EnumOption('mode', 'build mode', 'release', allowed_values=('debug','release')))
 
 opts.Update(env)
 opts.Save('options.cache', env.Copy())
