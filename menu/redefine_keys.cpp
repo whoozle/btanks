@@ -5,6 +5,9 @@
 #include "sdlx/rect.h"
 #include "config.h"
 
+static const std::string variants[] = {"keys", "keys-1", "keys-2"};
+
+
 RedefineKeys::RedefineKeys() : _active_row(-1), _active_col(-1) {
 	_bg_table = ResourceManager->loadSurface("menu/keys_table.png");
 	_font = ResourceManager->loadFont("medium", true);
@@ -26,7 +29,6 @@ RedefineKeys::RedefineKeys() : _active_row(-1), _active_col(-1) {
 	_labels.push_back("alt-fire");
 	_labels.push_back("disembark");
 	
-	static const std::string variants[] = {"keys", "keys-1", "keys-2"};
 
 	for(size_t i = 0; i < _labels.size(); ++i) {
 		_actions.push_back(Actions::value_type(_labels[i], sdlx::Rect()));
@@ -57,8 +59,8 @@ void RedefineKeys::render(sdlx::Surface &surface, const int x, const int y) {
 		_font->render(surface, x + 36, yp, _actions[i].first);
 		
 		for(size_t j = 0; j < 3; ++j) {
-			const char *cname = SDL_GetKeyName((SDLKey)_keys[j][i]);
-			std::string name = (cname)?cname:"?";
+			const char *cname = _keys[j][i] ? SDL_GetKeyName((SDLKey)_keys[j][i]): NULL;
+			std::string name = (cname)?cname:"???";
 			_small_font->render(surface, x + dx + 155 + 110 * j, yp + (_font->getHeight() - _small_font->getHeight()) / 2, name);
 		}
 		
@@ -75,6 +77,7 @@ bool RedefineKeys::onKey(const SDL_keysym sym) {
 	switch(sym.sym) {
 
 	case SDLK_ESCAPE: 
+		save();
 		hide(true);
 		return true;
 		
@@ -84,10 +87,33 @@ bool RedefineKeys::onKey(const SDL_keysym sym) {
 	if (_active_row == -1 || _active_col == -1) 
 		return true;
 	
-	LOG_DEBUG(("key: %s", SDL_GetKeyName(sym.sym)));
-		
+	//LOG_DEBUG(("key: %s", SDL_GetKeyName(sym.sym)));
+	int old_key = _keys[_active_col][_active_row];
+	_keys[_active_col][_active_row] = sym.sym;
+	//validation
+	for(int i = 0; i < 3; ++i) 
+		for(int j = 0; j < 7; ++j) {
+			if (i == _active_col && j == _active_row)
+				continue;
+			if (_keys[i][j] == sym.sym)
+				_keys[i][j] = old_key;
+		}
 	
 	return true;
+}
+
+void RedefineKeys::save() {
+	for(int i = 0; i < 3; ++i) 
+		for(int j = 0; j < 7; ++j) {
+			if (_keys[i][j] == 0)
+				throw_ex(("invalid key code. (0)"));
+	}
+
+	for(size_t i = 0; i < _labels.size(); ++i) {
+		for(size_t j = 0; j < 3; ++j) {
+			Config->set("player-controls." + variants[j] + "." + _labels[i], _keys[j][i]);
+		}
+	}	
 }
 
 bool RedefineKeys::onMouseMotion(const int state, const int x, const int y, const int xrel, const int yrel) {

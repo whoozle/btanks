@@ -22,6 +22,8 @@ public:
 	virtual bool onKey(const SDL_keysym sym);
 	virtual bool onMouseMotion(const int state, const int x, const int y, const int xrel, const int yrel);
 
+	void save(); 
+
 private: 
 	
 	const sdlx::Surface *_bg_table;
