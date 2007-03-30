@@ -88,6 +88,7 @@ MainMenu::MainMenu(const int w, const int h) : _active_item(0) {
 
 	Game->key_signal.connect(sigc::mem_fun(this, &MainMenu::onKey));
 	Game->mouse_signal.connect(sigc::mem_fun(this, &MainMenu::onMouse));
+	Game->mouse_motion_signal.connect(sigc::mem_fun(this, &MainMenu::onMouseMotion));
 }
 
 void MainMenu::recalculateSizes() {
@@ -294,6 +295,17 @@ const bool MainMenu::back() {
 	
 	recalculateSizes();
 	return true;
+}
+
+bool MainMenu::onMouseMotion(const int state, const int x, const int y, const int xrel, const int yrel) {
+	if (!_active)
+		return false;
+	
+	BaseMenu * bm = getMenu(_active_menu);
+	if (bm != NULL) {
+		return bm->onMouseMotion(state, x, y, xrel, yrel);
+	}
+	return false;
 }
 
 bool MainMenu::onMouse(const int button, const bool pressed, const int x, const int y) {
