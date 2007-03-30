@@ -26,7 +26,7 @@ public:
 
 private: 
 	
-	const sdlx::Surface *_bg_table;
+	const sdlx::Surface *_bg_table, *_selection;
 	const sdlx::Font * _font, *_small_font;
 	Box _background;
 	

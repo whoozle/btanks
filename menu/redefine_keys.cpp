@@ -10,6 +10,7 @@ static const std::string variants[] = {"keys", "keys-1", "keys-2"};
 
 RedefineKeys::RedefineKeys() : _active_row(-1), _active_col(-1) {
 	_bg_table = ResourceManager->loadSurface("menu/keys_table.png");
+	_selection = ResourceManager->loadSurface("menu/keys_selection.png");
 	_font = ResourceManager->loadFont("medium", true);
 	_small_font = ResourceManager->loadFont("small", true);
 	_background.init("menu/background_box_dark.png", "menu/highlight_medium.png", _bg_table->getWidth() + 32, _bg_table->getHeight() + 32);
@@ -56,6 +57,11 @@ void RedefineKeys::render(sdlx::Surface &surface, const int x, const int y) {
 		if (_active_row == (int)i) {
 			_background.renderHL(surface, x, yp + _font->getHeight() / 2 + 1);
 		}
+
+		if (_active_row == (int)i && _active_col != -1) {
+			surface.copyFrom(*_selection, x + 173 + 110 * _active_col, yp - 6);
+		}
+
 		_font->render(surface, x + 36, yp, _actions[i].first);
 		
 		for(size_t j = 0; j < 3; ++j) {
