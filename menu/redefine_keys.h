@@ -4,6 +4,13 @@
 #include "control.h"
 #include "box.h"
 
+#include <vector>
+#include <string>
+
+namespace sdlx {
+	class Font;
+}
+
 class RedefineKeys : public Control {
 public: 
 	RedefineKeys();
@@ -14,7 +21,10 @@ public:
 
 private: 
 	const sdlx::Surface *_bg_table;
+	const sdlx::Font * _font;
 	Box _background;
+	
+	std::vector<std::string> _actions;
 };
 
 #endif
