@@ -33,7 +33,7 @@ RedefineKeys::RedefineKeys() : _active_row(-1), _active_col(-1) {
 	for(size_t i = 0; i < _labels.size(); ++i) {
 		_actions.push_back(Actions::value_type(_labels[i], sdlx::Rect()));
 		for(size_t j = 0; j < 3; ++j) {
-			Config->get("player-controls." + variants[j] + "." + _labels[i], _keys[j][i], _keys[j][i]);
+			Config->get("player.controls." + variants[j] + "." + _labels[i], _keys[j][i], _keys[j][i]);
 		}
 	}
 	
@@ -91,14 +91,22 @@ bool RedefineKeys::onKey(const SDL_keysym sym) {
 	int old_key = _keys[_active_col][_active_row];
 	_keys[_active_col][_active_row] = sym.sym;
 	//validation
-	for(int i = 0; i < 3; ++i) 
+	if (_active_col == 0) {
 		for(int j = 0; j < 7; ++j) {
-			if (i == _active_col && j == _active_row)
+			if (j == _active_row)
 				continue;
-			if (_keys[i][j] == sym.sym)
-				_keys[i][j] = old_key;
+			if (_keys[0][j] == sym.sym)
+				_keys[0][j] = old_key;
 		}
-	
+	} else {
+		for(int i = 1; i < 3; ++i) 
+			for(int j = 0; j < 7; ++j) {
+				if (i == _active_col && j == _active_row)
+					continue;
+				if (_keys[i][j] == sym.sym)
+					_keys[i][j] = old_key;
+			}
+	}
 	return true;
 }
 
@@ -111,7 +119,7 @@ void RedefineKeys::save() {
 
 	for(size_t i = 0; i < _labels.size(); ++i) {
 		for(size_t j = 0; j < 3; ++j) {
-			Config->set("player-controls." + variants[j] + "." + _labels[i], _keys[j][i]);
+			Config->set("player.controls." + variants[j] + "." + _labels[i], _keys[j][i]);
 		}
 	}	
 }
