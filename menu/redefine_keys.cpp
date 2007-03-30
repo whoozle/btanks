@@ -14,7 +14,7 @@ RedefineKeys::RedefineKeys() {
 	_actions.push_back("right");
 	_actions.push_back("fire");
 	_actions.push_back("alt-fire");
-	_actions.push_back("exit");
+	_actions.push_back("disembark");
 }
 
 void RedefineKeys::render(sdlx::Surface &surface, const int x, const int y) {
