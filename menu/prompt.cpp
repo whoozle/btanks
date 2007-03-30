@@ -22,6 +22,7 @@ Prompt::Prompt(const int w, const int h, TextControl * text) : _text(text), valu
 
 	_b_ok = new Button("medium_dark", I18n->get("menu", "ok"));
 	_b_ok->getSize(bw, bh);
+	_text_rect.h -= bh;
 
 	add(3 * w / 4 - bw / 2, h/2, _b_ok);
 }
@@ -89,7 +90,7 @@ void Prompt::render(sdlx::Surface& surface, const int x, const int y) {
 	surface.setClipRect(clip);
 	int w, h;
 	_text->getSize(w, h);
-	_text->render(surface, x + _text_rect.x + ((w > _text_rect.w)?(_text_rect.w - w):0), y + _text_rect.y );
+	_text->render(surface, x + _text_rect.x + ((w > _text_rect.w)?(_text_rect.w - w):0), y + _text_rect.y + (_text_rect.h - h) / 2);
 	surface.setClipRect(old_clip);
 	Container::render(surface, x, y);
 }
