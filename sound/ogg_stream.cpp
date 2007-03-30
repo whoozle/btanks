@@ -33,11 +33,14 @@ OggStream::OggStream() : _opened(false), _running(false), _repeat(false) {
 }
 
 
-void OggStream::open(const std::string &fname, const bool repeat) {
+void OggStream::open(const std::string &fname, const bool repeat, const float volume) {
 	close();
 	_filename = fname;
 	_running = true;
 	_repeat = repeat;
+
+	_volume = volume;
+
 	start();
 }
 
@@ -275,6 +278,9 @@ TRY {
 		TRY {
 			_open();
 		} CATCH("run::_open", throw;)
+		TRY {
+			setVolume(_volume);
+		} CATCH("run::setVolume", )
 	TRY {
     	while(_running && update()) {
 			if(!playing()) {

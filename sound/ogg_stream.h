@@ -33,7 +33,7 @@ class Chunk;
 class Sample;
 class OggStream : public sdlx::Thread {
 public: 
-	void open(const std::string &fname, const bool continuous);
+	void open(const std::string &fname, const bool continuous, const float volume);
 	void close();
 
 	const bool alive() const { return _running; }	
@@ -67,6 +67,8 @@ private:
 	
 	volatile bool _opened, _running, _repeat;
 	int _delay;
+	
+	float _volume;
 };
 
 #endif

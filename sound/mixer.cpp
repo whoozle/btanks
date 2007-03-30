@@ -50,6 +50,7 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 
 	Config->get("engine.sound.volume.fx", _volume_fx, 1.0f);
 	Config->get("engine.sound.volume.music", _volume_music, 1.0f);
+	LOG_DEBUG(("volumes: music: %g, fx: %g", _volume_music, _volume_fx));
 	
 	delete _ogg;
 	_ogg = NULL;
@@ -133,8 +134,7 @@ const bool IMixer::play(const std::string &fname, const bool continuous) {
 	if (_ogg == NULL) 
 		_ogg = new OggStream;
 
-	_ogg->open(fname, continuous);
-	_ogg->setVolume(_volume_music);
+	_ogg->open(fname, continuous, _volume_music);
 	return true;
 }
 
