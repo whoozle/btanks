@@ -13,6 +13,7 @@ public:
 	virtual void getSize(int &w, int &h) const;
 	virtual bool onKey(const SDL_keysym sym);
 	virtual bool onMouse(const int button, const bool pressed, const int x, const int y);
+	virtual bool onMouseMotion(const int state, const int x, const int y, const int xrel, const int yrel);
 
 	void add(const int x, const int y, Control *ctrl);
 	void clear();

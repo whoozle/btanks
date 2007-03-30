@@ -70,6 +70,21 @@ bool Container::onMouse(const int button, const bool pressed, const int x, const
 	return false;
 }
 
+bool Container::onMouseMotion(const int state, const int x, const int y, const int xrel, const int yrel) {
+	for(ControlList::reverse_iterator i = _controls.rbegin(); i != _controls.rend(); ++i) {
+		if (i->second->hidden())
+			continue;
+		int bw, bh;
+		i->second->getSize(bw, bh);
+		
+		const sdlx::Rect dst(i->first.x, i->first.y, bw, bh);
+		if (dst.in(x, y) && i->second->onMouseMotion(state, x - dst.x, y - dst.y, xrel, yrel)) {
+			return true;
+		}
+	}
+}
+
+
 void Container::add(const int x, const int y, Control *ctrl) {
 	_controls.push_back(ControlList::value_type(v2<int>(x, y), ctrl));
 }
