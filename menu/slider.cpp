@@ -18,13 +18,13 @@ void Slider::render(sdlx::Surface &surface, const int x, const int y) {
 	int w = _tiles->getWidth() / 2, h = _tiles->getHeight();
 	sdlx::Rect bound(0, 0, w, h), pointer(w, 0, w, h);
 	for(int i = 0; i < _n; ++i) 
-		surface.copyFrom(*_tiles, bound, x + i * w, y);
-	int xp = x + (int)(_value * _n * w) - w / 2;
+		surface.copyFrom(*_tiles, bound, w / 2 + x + i * w, y);
+	int xp = x + (int)(_value * _n * w);
 	surface.copyFrom(*_tiles, pointer, xp, y);
 }
 
 void Slider::getSize(int &w, int &h) const {
-	w = (_tiles->getWidth() / 2) * _n;
+	w = (_tiles->getWidth() / 2) * (_n + 1);
 	h = _tiles->getHeight();
 }
 
@@ -35,7 +35,7 @@ bool Slider::onMouse(const int button, const bool pressed, const int x, const in
 	}
 	if (pressed && !_grab) {
 		int w = _tiles->getWidth() / 2;
-		int xp = (int)(_value * _n * w);
+		int xp = (int)(_value * _n * w + w/2);
 		if (math::abs(x - xp) < w / 2) {
 			_grab = true;
 			_grab_state = SDL_GetMouseState(NULL, NULL);
