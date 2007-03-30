@@ -3,19 +3,39 @@
 #include "sdlx/surface.h"
 #include "sdlx/font.h"
 #include "sdlx/rect.h"
+#include "config.h"
 
 RedefineKeys::RedefineKeys() : _active_row(-1), _active_col(-1) {
 	_bg_table = ResourceManager->loadSurface("menu/keys_table.png");
 	_font = ResourceManager->loadFont("medium", true);
+	_small_font = ResourceManager->loadFont("small", true);
 	_background.init("menu/background_box_dark.png", "menu/highlight_medium.png", _bg_table->getWidth() + 32, _bg_table->getHeight() + 32);
 	
-	_actions.push_back(Actions::value_type("up", sdlx::Rect()));
-	_actions.push_back(Actions::value_type("down", sdlx::Rect()));
-	_actions.push_back(Actions::value_type("left", sdlx::Rect()));
-	_actions.push_back(Actions::value_type("right", sdlx::Rect()));
-	_actions.push_back(Actions::value_type("fire", sdlx::Rect()));
-	_actions.push_back(Actions::value_type("alt-fire", sdlx::Rect()));
-	_actions.push_back(Actions::value_type("disembark", sdlx::Rect()));
+	static int keys[3][7] = {
+		{SDLK_UP, SDLK_DOWN, SDLK_LEFT, SDLK_RIGHT, SDLK_LCTRL, SDLK_LALT, SDLK_F1},
+		{SDLK_r, SDLK_f, SDLK_d, SDLK_g, SDLK_q, SDLK_a, SDLK_F1},
+		{SDLK_UP, SDLK_DOWN, SDLK_LEFT, SDLK_RIGHT, SDLK_RCTRL, SDLK_RSHIFT, SDLK_F2},
+	};
+	memcpy(_keys, keys, sizeof(_keys));
+	
+	_labels.push_back("up");
+	_labels.push_back("down");
+	_labels.push_back("right");
+	_labels.push_back("left");
+	_labels.push_back("fire");
+	_labels.push_back("alt-fire");
+	_labels.push_back("disembark");
+	
+	static const std::string variants[] = {"keys", "keys-1", "keys-2"};
+
+	for(size_t i = 0; i < _labels.size(); ++i) {
+		_actions.push_back(Actions::value_type(_labels[i], sdlx::Rect()));
+		for(size_t j = 0; j < 3; ++j) {
+			Config->get("player-controls." + variants[j] + "." + _labels[i], _keys[j][i], _keys[j][i]);
+		}
+	}
+	
+//	Config->get("controls.keys.up", );
 }
 
 void RedefineKeys::render(sdlx::Surface &surface, const int x, const int y) {
@@ -35,6 +55,13 @@ void RedefineKeys::render(sdlx::Surface &surface, const int x, const int y) {
 			_background.renderHL(surface, x, yp + _font->getHeight() / 2 + 1);
 		}
 		_font->render(surface, x + 36, yp, _actions[i].first);
+		
+		for(size_t j = 0; j < 3; ++j) {
+			const char *cname = SDL_GetKeyName((SDLKey)_keys[j][i]);
+			std::string name = (cname)?cname:"?";
+			_small_font->render(surface, x + dx + 155 + 110 * j, yp + (_font->getHeight() - _small_font->getHeight()) / 2, name);
+		}
+		
 		yp += 30;
 	}
 }

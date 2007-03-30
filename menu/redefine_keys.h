@@ -6,6 +6,7 @@
 
 #include <vector>
 #include <string>
+#include <map>
 
 namespace sdlx {
 	class Font;
@@ -22,14 +23,18 @@ public:
 	virtual bool onMouseMotion(const int state, const int x, const int y, const int xrel, const int yrel);
 
 private: 
+	
 	const sdlx::Surface *_bg_table;
-	const sdlx::Font * _font;
+	const sdlx::Font * _font, *_small_font;
 	Box _background;
 	
 	int _active_row, _active_col;
 	
+	std::vector<std::string> _labels;
 	typedef std::vector<std::pair<std::string, sdlx::Rect> > Actions; 
 	Actions _actions;
+	
+	int _keys[3][7];
 };
 
 #endif
