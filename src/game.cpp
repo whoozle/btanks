@@ -74,6 +74,11 @@ void IGame::resetTimer() {
 	_timer.reset();
 }
 
+void IGame::pause() {
+	if (!PlayerManager->isServerActive())
+		_paused = true;
+}
+
 void IGame::init(const int argc, char *argv[]) {
 	srand(time(NULL));
 	
@@ -493,7 +498,7 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 		if (b == _waypoint_edges.end() || b->first != dst)
 			throw_ex(("no edges out of waypoint '%s'", dst.c_str()));
 	}
-	LOG_DEBUG(("%u items on map, %u waypoints, %u edges", GameMonitor->getItemsCount(), (unsigned)_waypoints.size(), (unsigned)_waypoint_edges.size()));
+	LOG_DEBUG(("%u items on map, %u waypoints, %u edges", (unsigned)GameMonitor->getItemsCount(), (unsigned)_waypoints.size(), (unsigned)_waypoint_edges.size()));
 	Config->invalidateCachedValues();
 	
 	_hud->initMap();
@@ -544,6 +549,10 @@ void IGame::run() {
 					break;
 				}
 #endif
+				if (event.key.keysym.sym == SDLK_ESCAPE && _paused) {
+					_paused = false;
+					continue;
+				}
 				if (event.key.keysym.sym==SDLK_s && event.key.keysym.mod & KMOD_SHIFT) {
 					static int n = 0; 
 					std::string fname;

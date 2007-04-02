@@ -76,7 +76,7 @@ public:
 	void deinit();
 	
 	void clear();
-
+	void pause();
 
 	IGame();
 	~IGame();
