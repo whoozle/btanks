@@ -65,9 +65,6 @@ void AIHeli::calculate(const float dt) {
 	if (!_reaction.tick(dt) || isDriven())
 		goto done;
 		
-	_state.fire = true;
-	
-
 	_state.fire = false;
 	
 	_target_dir = getTargetPosition(_velocity, _targets, "helicopter-bullet");
