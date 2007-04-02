@@ -22,10 +22,11 @@
 #include "control_method.h"
 #include "player_state.h"
 #include "sdlx/sdlx.h"
+#include <string>
 
 class KeyPlayer : public ControlMethod {
 public:
-	KeyPlayer(SDLKey up, SDLKey down, SDLKey left, SDLKey right, SDLKey fire, SDLKey alt_fire, SDLKey leave);
+	KeyPlayer(const std::string &variant);
 	virtual void updateState(PlayerState &state);
 private:
 	SDLKey _up, _down, _left, _right, _fire, _alt_fire, leave;

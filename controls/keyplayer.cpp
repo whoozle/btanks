@@ -18,16 +18,43 @@
  */
 
 #include <string.h>
+#include <assert.h>
 
 #include "mrt/logger.h"
 
 #include "keyplayer.h"
 #include "object.h"
 #include "world.h"
-#include <assert.h>
+#include "config.h"
 
-KeyPlayer::KeyPlayer(SDLKey up, SDLKey down, SDLKey left, SDLKey right, SDLKey fire, SDLKey alt_fire, SDLKey leave): 
-	_up(up), _down(down), _left(left), _right(right), _fire(fire), _alt_fire(alt_fire), leave(leave) {
+KeyPlayer::KeyPlayer(const std::string &variant) {
+	int up, down, left, right, fire, alt_fire, leave;
+
+#include "controls/default_keys.cpp"
+	int i = 0;
+	if (variant == "keys") 
+		i = 0;
+	else if (variant == "keys-1")
+		i = 1;
+	else if (variant == "keys-2") 
+		i = 2;
+	else throw_ex(("unknown keyboard variant used (%s)", variant.c_str()));
+
+	Config->get("player.controls." + variant + ".up", up, keys[i][0]);
+	Config->get("player.controls." + variant + ".down", down, keys[i][1]);
+	Config->get("player.controls." + variant + ".left", left, keys[i][2]);
+	Config->get("player.controls." + variant + ".right", right, keys[i][3]);
+	Config->get("player.controls." + variant + ".fire", fire, keys[i][4]);
+	Config->get("player.controls." + variant + ".alt-fire", alt_fire, keys[i][5]);
+	Config->get("player.controls." + variant + ".disembark", leave, keys[i][6]);
+
+	_up = (SDLKey)up;
+	_down = (SDLKey)down;
+	_left = (SDLKey)left;
+	_right = (SDLKey)right;
+	_fire = (SDLKey)fire;
+	_alt_fire = (SDLKey)alt_fire;
+	this->leave = (SDLKey)leave;
 }
 
 void KeyPlayer::updateState(PlayerState &state) {
