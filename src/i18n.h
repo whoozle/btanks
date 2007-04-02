@@ -7,6 +7,18 @@
 #include <deque>
 #include <string>
 
+
+struct lessnocase
+{
+	bool operator()(const std::string& s1, const std::string& s2) const {
+#ifdef WIN32
+		return _stricmp(s1.c_str(), s2.c_str()) < 0;
+#endif
+		return strcasecmp(s1.c_str(), s2.c_str()) < 0;
+	}
+};
+
+
 class II18n : public mrt::XMLParser {
 public:
 	DECLARE_SINGLETON(II18n);
@@ -25,7 +37,7 @@ private:
 	
 	std::deque<std::string> _path;
 
-	typedef std::map<const std::string, std::string> Strings;
+	typedef std::map<const std::string, std::string, lessnocase> Strings;
 	std::string _lang, _string_id, _string_lang, _cdata;
 	Strings _strings;
 	
