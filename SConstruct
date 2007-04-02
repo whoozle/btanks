@@ -13,6 +13,7 @@ opts.Add('LINKFLAGS', 'General options that are passed to the linker', '')
 opts.Add('CPPPATH', 'extra cpp path', '')
 if sys.platform != "win32":
 	opts.Add('prefix', 'prefix for **nix packaging', '/usr/local')
+	opts.Add('resources_dir', 'resources directory (default: prefix/share)', '')
 opts.Add(EnumOption('mode', 'build mode', 'release', allowed_values=('debug','release')))
 
 opts.Update(env)
@@ -155,6 +156,13 @@ try :
 	version_file = file('.svnversion', 'r')
 	version = version_file.readline().strip()
 	env.Append(CPPDEFINES='PREFIX="\\"' + env['prefix'] + '\\""')
+	
+	if len(env['resources_dir']):
+		resources_dir = env['resources_dir']
+	else: 
+		resources_dir = prefix + "/share"
+	
+	env.Append(CPPDEFINES='RESOURCES_DIR="\\"' + resources_dir + '\\""')
 except : 
 	svnversion = os.popen('svnversion -n .', 'r')
 	version = svnversion.readline().strip()
