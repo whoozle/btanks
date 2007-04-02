@@ -149,8 +149,13 @@ Export('sigc_flags')
 Export('sigc_lib')
 Export('al_lib')
 
-svnversion = os.popen('svnversion -n .', 'r')
-version = svnversion.readline()
+try : 
+	version_file = file('.svnversion', 'r')
+	version = version_file.readline().strip()
+except: 
+	svnversion = os.popen('svnversion -n .', 'r')
+	version = svnversion.readline().strip()
+
 version = version[version.rfind(':') + 1:]
 revision = int(version.replace('M', ''))
 	
