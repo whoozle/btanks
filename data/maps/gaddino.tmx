@@ -13,7 +13,7 @@
   <property name="object:stack:stack:1" value="@14,6,150"/>
   <property name="spawn:3" value="@23,18"/>
   <property name="object:mines-item:mines-item:0" value="@4,14,180"/>
-  <property name="config:objects.missiles-on-tank.default-weapon" value="string:"/>
+  <property name="config:objects.missiles-on-tank.default-weapon" value="605,624"/>
   <property name="spawn:2" value="@22,2"/>
   <property name="object:nuke-missiles-item:nuke-missiles-item:1" value="@12,11,180"/>
   <property name="object:static-tank:cyan-tank:1" value="953,1"/>
@@ -42,7 +42,6 @@
   <property name="object:dispersion-bullets-item:dispersion-bullets-item:2" value="909,581,180"/>
   <property name="object:dirt-bullets-item:dirt-bullets-item:6" value="800,401,180"/>
   <property name="object:helicopter-with-kamikazes:helicopter:1" value="@5,5,900"/>
-  <property name="object:boomerang-missiles-item:boomerang-missiles-item:1" value="605,624"/>
   <property name="object:oil-barrels:oil-barrels:6" value="1207,1"/>
   <property name="object:oil-barrels:oil-barrels:5" value="1446,298"/>
  </properties>
