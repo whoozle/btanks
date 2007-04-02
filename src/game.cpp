@@ -472,6 +472,7 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 				
 				std::vector<std::string> value;
 				mrt::split(value, i->second, ":");
+				value.resize(2);
 				if (value[0] != "int" && value[0] != "float" && value[0] != "string")
 					throw_ex(("cannot set config variable '%s' of type '%s'", res[1].c_str(), value[0].c_str()));
 				Var var(value[0]);
