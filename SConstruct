@@ -154,7 +154,7 @@ Export('al_lib')
 try : 
 	version_file = file('.svnversion', 'r')
 	version = version_file.readline().strip()
-	env.Append(CPPFLAGS='PREFIX="' + env['prefix'] + '"')
+	env.Append(CPPDEFINES='PREFIX="' + env['prefix'] + '"')
 except : 
 	svnversion = os.popen('svnversion -n .', 'r')
 	version = svnversion.readline().strip()
