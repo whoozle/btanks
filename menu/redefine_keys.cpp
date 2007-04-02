@@ -10,11 +10,8 @@
 static const std::string variants[] = {"keys", "keys-1", "keys-2"};
 
 void RedefineKeys::initDefaults() {
-	static int keys[3][7] = {
-		{SDLK_UP, SDLK_DOWN, SDLK_LEFT, SDLK_RIGHT, SDLK_LCTRL, SDLK_LALT, SDLK_F1},
-		{SDLK_r, SDLK_f, SDLK_d, SDLK_g, SDLK_q, SDLK_a, SDLK_F1},
-		{SDLK_UP, SDLK_DOWN, SDLK_LEFT, SDLK_RIGHT, SDLK_RCTRL, SDLK_RSHIFT, SDLK_F2},
-	};
+#include "controls/default_keys.cpp"
+
 	memcpy(_keys, keys, sizeof(_keys));
 }
 
@@ -31,8 +28,8 @@ RedefineKeys::RedefineKeys() : _active_row(-1), _active_col(-1) {
 	
 	_labels.push_back("up");
 	_labels.push_back("down");
-	_labels.push_back("right");
 	_labels.push_back("left");
+	_labels.push_back("right");
 	_labels.push_back("fire");
 	_labels.push_back("alt-fire");
 	_labels.push_back("disembark");
