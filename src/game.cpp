@@ -81,8 +81,12 @@ void IGame::pause() {
 
 void IGame::init(const int argc, char *argv[]) {
 	srand(time(NULL));
-	
-	Config->load("bt.xml");
+
+	std::string path;
+#ifdef PREFIX
+	path = mrt::Directory::getAppDir("btanks") + "/";
+#endif	
+	Config->load(path + "bt.xml");
 
 	
 	{
