@@ -172,18 +172,19 @@ except :
 	svnversion = os.popen('svnversion -n .', 'r')
 	version = svnversion.readline().strip()
 
-	prefix = env['prefix']
-	res_dir = env['resources_dir'] 
+	if sys.platform != "win32":
+		prefix = env['prefix']
+		res_dir = env['resources_dir'] 
 	
-	if len(prefix) or len(res_dir): 	
-		env.Append(CPPDEFINES='PREFIX="\\"' + prefix + '\\""')
+		if len(prefix) or len(res_dir): 	
+			env.Append(CPPDEFINES='PREFIX="\\"' + prefix + '\\""')
 	
-		if len(env['resources_dir']):
-			resources_dir = env['resources_dir']
-		else: 
-			resources_dir = prefix + "/share/btanks"
+			if len(env['resources_dir']):
+				resources_dir = env['resources_dir']
+			else: 
+				resources_dir = prefix + "/share/btanks"
 
-		env.Append(CPPDEFINES='RESOURCES_DIR="\\"' + resources_dir + '\\""')
+			env.Append(CPPDEFINES='RESOURCES_DIR="\\"' + resources_dir + '\\""')
 
 version = version[version.rfind(':') + 1:]
 revision = int(version.replace('M', ''))
