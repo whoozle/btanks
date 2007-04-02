@@ -164,6 +164,7 @@ void OptionsMenu::tick(const float dt) {
 		_b_redefine->reset();
 		_keys->hide(false);
 	}
+	Container::tick(dt);
 }
 
 void OptionsMenu::render(sdlx::Surface &surface, const int x, const int y) {
