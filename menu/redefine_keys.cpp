@@ -134,16 +134,15 @@ void RedefineKeys::getSize(int &w, int &h) const {
 }
 
 bool RedefineKeys::onKey(const SDL_keysym sym) {
-/*	switch(sym.sym) {
+	switch(sym.sym) {
 
 	case SDLK_ESCAPE: 
-		save();
 		hide(true);
 		return true;
 		
 	default: ;
 	}
-*/	
+	
 	if (_active_row == -1 || _active_col == -1) 
 		return true;
 	
