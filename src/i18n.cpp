@@ -4,6 +4,15 @@
 
 IMPLEMENT_SINGLETON(I18n, II18n)
 
+bool lessnocase::operator()(const std::string& s1, const std::string& s2) const {
+#ifdef WIN32
+		return _stricmp(s1.c_str(), s2.c_str()) < 0;
+#else
+		return strcasecmp(s1.c_str(), s2.c_str()) < 0;
+#endif
+}
+
+
 II18n::II18n() {}
 
 const bool II18n::has(const std::string &_area, const std::string &id) const {
