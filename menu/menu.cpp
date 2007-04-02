@@ -25,6 +25,7 @@
 #include "start_server_menu.h"
 #include "join_server_menu.h"
 #include "options_menu.h"
+#include "i18n.h"
 
 #include "sdlx/surface.h"
 #include "sdlx/font.h"
@@ -54,30 +55,12 @@ MainMenu::MainMenu(const int w, const int h) : _active_item(0) {
 	_active_item = 0;
 	_active_menu.clear();
 
-	//_items[""].push_back(new MenuItem(_font, "multiplayer", "submenu", "OLD MULTIPLAYER MENU"));
-	_items[""].push_back(new MenuItem(_font, "#start-server", "submenu", "START GAME"));
-	_items[""].push_back(new MenuItem(_font, "#join-server", "submenu", "JOIN GAME"));
-	_items[""].push_back(new MenuItem(_font, "#options", "submenu", "OPTIONS"));
-	_items[""].push_back(new MenuItem(_font, "credits", "command", "CREDITS"));
-	_items[""].push_back(new MenuItem(_font, "quit", "command", "QUIT"));
+	_items[""].push_back(new MenuItem(_font, "#start-server", "submenu", I18n->get("menu", "start-game")));
+	_items[""].push_back(new MenuItem(_font, "#join-server", "submenu", I18n->get("menu", "join-game")));
+	_items[""].push_back(new MenuItem(_font, "#options", "submenu", I18n->get("menu", "options")));
+	_items[""].push_back(new MenuItem(_font, "credits", "command", I18n->get("menu", "credits")));
+	_items[""].push_back(new MenuItem(_font, "quit", "command", I18n->get("menu", "quit")));
 
-/*
-
-	std::string address;
-	Config->get("multiplayer.recent-host", address, "LOCALHOST");
-	_items["multiplayer"].push_back(new MenuItem(_font, "m-start", "command", "START NEW GAME"));
-	_items["multiplayer"].push_back(new MenuItem(_font, "multiplayer-join", "submenu", "JOIN GAME"));
-	_items["multiplayer"].push_back(new MenuItem(_font, "s-start", "command", "SPLIT SCREEN GAME"));
-	_items["multiplayer"].push_back(new MapItem (_font, "map"));
-	_items["multiplayer"].push_back(new VehicleItem(_font, "vehicle 1", "1"));
-	_items["multiplayer"].push_back(new VehicleItem(_font, "vehicle 2", "2"));
-	_items["multiplayer"].push_back(new MenuItem(_font, "back", "back", "BACK"));
-
-	_items["multiplayer-join"].push_back(new TextItem(_font, "multiplayer.recent-host", "address", address));
-	_items["multiplayer-join"].push_back(new MenuItem(_font, "m-join", "command", "JOIN GAME"));
-	//_items["multiplayer-join"].push_back(new MenuItem(_font, "port", "text", "9876"));
-	_items["multiplayer-join"].push_back(new MenuItem(_font, "back", "back", "BACK"));
-*/
 	_items[_active_menu][_active_item]->onFocus();
 	
 	_special_menus["#start-server"] = new StartServerMenu(this, w, h);

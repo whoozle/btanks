@@ -10,6 +10,12 @@
 	
 		<string id="start-game">START GAME</string>
 		<string id="start-game" lang="ru">NACHAT IGRU</string>
+		
+		<string id="join-game">JOIN GAME</string>
+		<string id="options">OPTIONS</string>
+		<string id="credits">CREDITS</string>
+		<string id="quit">QUIT</string>
+		
 		<string id="no-slots-in-map">No slots in map</string>
 		<string id="connection-failed">Connection failed.</string>
 
