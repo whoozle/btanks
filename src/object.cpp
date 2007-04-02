@@ -864,6 +864,9 @@ const int Object::getTargetPosition(v2<float> &relative_position, const std::set
 }
 
 const int Object::getTargetPosition(v2<float> &relative_position, const std::set<std::string> &targets, const float range) const {
+	if (GameMonitor->disabled(classname))
+		return -1;
+
 	const int dirs = _directions_n;
 	
 	std::set<const Object *> objects;
