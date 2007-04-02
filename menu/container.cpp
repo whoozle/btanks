@@ -82,6 +82,7 @@ bool Container::onMouseMotion(const int state, const int x, const int y, const i
 			return true;
 		}
 	}
+	return false;
 }
 
 
