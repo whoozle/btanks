@@ -12,7 +12,7 @@ if sys.platform == "win32":
 opts.Add('LINKFLAGS', 'General options that are passed to the linker', '')
 opts.Add('CPPPATH', 'extra cpp path', '')
 if sys.platform != "win32":
-	opts.Add('prefix', 'prefix for **nix packaging', '/usr/local')
+	opts.Add('prefix', 'prefix for **nix packaging', '')
 	opts.Add('resources_dir', 'resources directory (default: prefix/share)', '')
 opts.Add(EnumOption('mode', 'build mode', 'release', allowed_values=('debug','release')))
 
@@ -171,6 +171,19 @@ try :
 except : 
 	svnversion = os.popen('svnversion -n .', 'r')
 	version = svnversion.readline().strip()
+
+	prefix = env['prefix']
+	res_dir = env['resources_dir'] 
+	
+	if len(prefix) or len(res_dir): 	
+		env.Append(CPPDEFINES='PREFIX="\\"' + prefix + '\\""')
+	
+		if len(env['resources_dir']):
+			resources_dir = env['resources_dir']
+		else: 
+			resources_dir = prefix + "/share/btanks"
+
+		env.Append(CPPDEFINES='RESOURCES_DIR="\\"' + resources_dir + '\\""')
 
 version = version[version.rfind(':') + 1:]
 revision = int(version.replace('M', ''))
