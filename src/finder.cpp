@@ -7,7 +7,7 @@ IMPLEMENT_SINGLETON(Finder, IFinder)
 
 IFinder::IFinder() {
 #ifdef PREFIX
-	GET_CONFIG_VALUE("engine.path", std::string, path, PREFIX "/private/data:" PREFIX "/data");
+	GET_CONFIG_VALUE("engine.path", std::string, path, PREFIX "/share/btanks/private/data:" PREFIX "/share/btanks/data");
 #else
 	GET_CONFIG_VALUE("engine.path", std::string, path, "private/data:data");
 #endif
