@@ -78,7 +78,7 @@ void II18n::load(const std::string &file, const std::string &language) {
 	parseFile(file);
 	
 	for(std::set<std::string>::const_iterator i = _unlocalized.begin(); i != _unlocalized.end(); ++i) {
-		LOG_WARN(("unlocalized message with id %s", i->c_str()));
+		LOG_WARN(("unlocalized message \"%s\"", i->c_str()));
 	}
 	_unlocalized.clear();	
 }
