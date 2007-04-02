@@ -32,6 +32,7 @@
 #include "mrt/exception.h"
 #include "mrt/random.h"
 #include "mrt/fs_node.h"
+#include "mrt/directory.h"
 
 #include "sdlx/system.h"
 #include "sdlx/sdl_ex.h"
