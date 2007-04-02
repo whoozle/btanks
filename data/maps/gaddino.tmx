@@ -12,11 +12,12 @@
   <property name="spawn:4" value="@1,17"/>
   <property name="object:stack:stack:1" value="@14,6,150"/>
   <property name="spawn:3" value="@23,18"/>
-  <property name="spawn:2" value="@22,2"/>
   <property name="object:mines-item:mines-item:0" value="@4,14,180"/>
+  <property name="config:objects.missiles-on-tank.default-weapon" value="string:"/>
+  <property name="spawn:2" value="@22,2"/>
+  <property name="object:nuke-missiles-item:nuke-missiles-item:1" value="@12,11,180"/>
   <property name="object:static-tank:cyan-tank:1" value="953,1"/>
   <property name="object:submarine:submarine:1" value="16,0,-500"/>
-  <property name="object:nuke-missiles-item:nuke-missiles-item:1" value="@12,11,180"/>
   <property name="spawn:1" value="@4,3"/>
   <property name="object:van:lodge:13" value="@20,0,150"/>
   <property name="object:dumb-missiles-item:dumb-missiles-item:18" value="1270,918,180"/>
@@ -29,10 +30,10 @@
   <property name="object:heal:heal:6" value="542,282,180"/>
   <property name="object:guided-missiles-item:guided-missiles-item:6" value="1207,187,180"/>
   <property name="object:guided-missiles-item:guided-missiles-item:5" value="1008,1162,180"/>
-  <property name="object:stun-missiles-item:stun-missiles-item:1" value="1029,83,180"/>
   <property name="object:heal:heal:2" value="1303,608,180"/>
-  <property name="object:guided-missiles-item:guided-missiles-item:1" value="@1,8,180"/>
+  <property name="object:stun-missiles-item:stun-missiles-item:1" value="1029,83,180"/>
   <property name="object:static-launcher:red-launcher:1" value="892,1211"/>
+  <property name="object:guided-missiles-item:guided-missiles-item:1" value="@1,8,180"/>
   <property name="object:smoke-missiles-item:smoke-missiles-item:13" value="796,4,180"/>
   <property name="object:machinegunner-item:machinegunner-item:6" value="@24,15"/>
   <property name="object:machinegunner-item:machinegunner-item:5" value="0,145,180"/>
@@ -60,22 +61,22 @@
  <tileset name="objects" firstgid="541" tilewidth="64" tileheight="64">
   <image source="../tilesets/objects.png"/>
  </tileset>
- <tileset name="destruction" firstgid="611" tilewidth="64" tileheight="64">
+ <tileset name="destruction" firstgid="631" tilewidth="64" tileheight="64">
   <image source="../tilesets/destruction.png"/>
  </tileset>
- <tileset name="animation" firstgid="641" tilewidth="64" tileheight="64">
+ <tileset name="animation" firstgid="661" tilewidth="64" tileheight="64">
   <image source="../tilesets/animated.png"/>
  </tileset>
- <tileset name="_rain" firstgid="741" tilewidth="64" tileheight="64">
+ <tileset name="_rain" firstgid="761" tilewidth="64" tileheight="64">
   <image source="../tiles/rain.png"/>
  </tileset>
- <tileset name="_rain_drops" firstgid="757" tilewidth="64" tileheight="64">
+ <tileset name="_rain_drops" firstgid="809" tilewidth="64" tileheight="64">
   <image source="../tiles/rain_drops.png"/>
  </tileset>
  <layer name="zerolayer" width="25" height="20">
   <properties>
-   <property name="z" value="-1000"/>
    <property name="impassability" value="40"/>
+   <property name="z" value="-1000"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGAWjYBSMglEwCkbBUAcARPTJAtAHAAA=
@@ -139,12 +140,12 @@
  </layer>
  <layer name="Layer 23" width="25" height="20">
   <properties>
-   <property name="animation-speed" value="10"/>
    <property name="animation-frames" value="5"/>
+   <property name="animation-speed" value="10"/>
    <property name="animation-frame-size" value="20"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGtkYmBoAuJGEmhSQTdQTw8TggYBZD42mlSA7s5RMApGwSgYBaNgJAEA0lSfBdAHAAA=
+   H4sIAAAAAAAAAJvKxMAwDYinkkCTCuYD9SxgQtAggMzHRpMK0N05CkbBKBgFo2AUjCQAAHqyZW/QBwAA
   </data>
   <tileproperties/>
  </layer>
@@ -214,22 +215,11 @@
   </data>
   <tileproperties/>
  </layer>
- <layer name="_rain_drops" width="25" height="20">
-  <properties>
-   <property name="animation-speed" value="20"/>
-   <property name="animation-frames" value="4"/>
-   <property name="animation-frame-size" value="4"/>
-  </properties>
-  <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgGPzgKxMDwzcm/DSl4DvQjB9M+Gli3EEpTYw7KKVH/THqj1F/jPpj1B9D3x/oYgAjJ1Zs0AcAAA==
-  </data>
-  <tileproperties/>
- </layer>
  <layer name="wire stand" width="25" height="20">
   <properties>
    <property name="pierceable" value="true"/>
-   <property name="impassability" value="100"/>
    <property name="z" value="100"/>
+   <property name="impassability" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGDqAkXGgXTAK6A1G43wU0AKMpquhCbixxBuxYtjiHJu6oQwAVfTt0NAHAAA=
@@ -250,8 +240,8 @@
  </layer>
  <layer name="fences" width="25" height="20">
   <properties>
-   <property name="impassability" value="100"/>
    <property name="z" value="200"/>
+   <property name="impassability" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgoB7gZKSiYQNsBwcd7IEBdjrbNwpGwSgYBaNg+AEAfGmWQtAHAAA=
@@ -265,15 +255,15 @@
    <property name="damage-for" value="fences"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgoB7IZqKiYThAKR3sAIE6OtkDAvVAuxroaN8oGAWjYBSMguEHAB7q89DQBwAA
+   H4sIAAAAAAAAAGNgoB6oZ6KiYThAJx3sAIFJdLIHBCYD7ZpCR/tGwSgYBaNgFAw/AADdNQ8i0AcAAA==
   </data>
   <tileproperties/>
  </layer>
  <layer name="objects" width="25" height="20">
   <properties>
    <property name="pierceable" value="true"/>
-   <property name="z" value="220"/>
    <property name="impassability" value="100"/>
+   <property name="z" value="220"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgIB7EMjEwxDGRoIEAcKWiWdhAJND8KKgd0UA6hsb2URP4D5BbqR3HIw2MlPBDzlswMFB+H2p5exQMH0DrOoxUAAD0Ok9J0AcAAA==
@@ -298,17 +288,6 @@
  <layer name="trees high" width="25" height="20">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAO2USQqAUAxD++9/ShWcBWfBCVMkezcRBB9km0BKY3YTBbMYSoLJqOBdQ40gI4VnBk3QDC2CjBaenaifHL4FtEKbKKOH7yC8r7PD/xBnEO+rFGd5X6M4w/s6X+rsCV/fAqLcgp/3UP+4wx/nDisy+ePcYcWuXNML4P3QBwAA
-  </data>
-  <tileproperties/>
- </layer>
- <layer name="_rain" width="25" height="20">
-  <properties>
-   <property name="animation-speed" value="20"/>
-   <property name="animation-frames" value="4"/>
-   <property name="animation-frame-size" value="4"/>
-  </properties>
-  <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAHvKxMDwDIif0pB+DsQvaEzT0v2j/hgc/njKRHt/PGcajY9Rfwx9fzyjgz9ejMbHoPMHAIE3uHbQBwAA
   </data>
   <tileproperties/>
  </layer>
