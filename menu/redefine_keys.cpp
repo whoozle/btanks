@@ -4,8 +4,19 @@
 #include "sdlx/font.h"
 #include "sdlx/rect.h"
 #include "config.h"
+#include "i18n.h"
+#include "button.h"
 
 static const std::string variants[] = {"keys", "keys-1", "keys-2"};
+
+void RedefineKeys::initDefaults() {
+	static int keys[3][7] = {
+		{SDLK_UP, SDLK_DOWN, SDLK_LEFT, SDLK_RIGHT, SDLK_LCTRL, SDLK_LALT, SDLK_F1},
+		{SDLK_r, SDLK_f, SDLK_d, SDLK_g, SDLK_q, SDLK_a, SDLK_F1},
+		{SDLK_UP, SDLK_DOWN, SDLK_LEFT, SDLK_RIGHT, SDLK_RCTRL, SDLK_RSHIFT, SDLK_F2},
+	};
+	memcpy(_keys, keys, sizeof(_keys));
+}
 
 
 RedefineKeys::RedefineKeys() : _active_row(-1), _active_col(-1) {
@@ -13,14 +24,10 @@ RedefineKeys::RedefineKeys() : _active_row(-1), _active_col(-1) {
 	_selection = ResourceManager->loadSurface("menu/keys_selection.png");
 	_font = ResourceManager->loadFont("medium", true);
 	_small_font = ResourceManager->loadFont("small", true);
-	_background.init("menu/background_box_dark.png", "menu/highlight_medium.png", _bg_table->getWidth() + 32, _bg_table->getHeight() + 32);
+
+	_background.init("menu/background_box_dark.png", "menu/highlight_medium.png", _bg_table->getWidth() + 32, _bg_table->getHeight() + 140);
 	
-	static int keys[3][7] = {
-		{SDLK_UP, SDLK_DOWN, SDLK_LEFT, SDLK_RIGHT, SDLK_LCTRL, SDLK_LALT, SDLK_F1},
-		{SDLK_r, SDLK_f, SDLK_d, SDLK_g, SDLK_q, SDLK_a, SDLK_F1},
-		{SDLK_UP, SDLK_DOWN, SDLK_LEFT, SDLK_RIGHT, SDLK_RCTRL, SDLK_RSHIFT, SDLK_F2},
-	};
-	memcpy(_keys, keys, sizeof(_keys));
+	initDefaults();
 	
 	_labels.push_back("up");
 	_labels.push_back("down");
@@ -30,9 +37,50 @@ RedefineKeys::RedefineKeys() : _active_row(-1), _active_col(-1) {
 	_labels.push_back("alt-fire");
 	_labels.push_back("disembark");
 	
+	_b_ok = new Button("medium_dark", I18n->get("menu", "ok"));
+	_b_back = new Button("medium_dark", I18n->get("menu", "back"));
+	_b_default = new Button("medium_dark", I18n->get("menu", "default-keys"));
+	
+	int w, h;
+	int mx, my;
+	_background.getMargins(mx, my);
+	
+	_b_ok->getSize(w, h);
+	int ym = 32;
+	int yp = _background.h - h - ym;
+	add (_background.w - mx - w, yp, _b_ok);
+
+	_b_back->getSize(w, h);
+	yp = _background.h - h - ym;
+	add (mx, yp, _b_back);
+
+	_b_default->getSize(w, h);
+	yp = _background.h - h - ym;
+	add (_background.w / 2 - w / 2, yp, _b_default);
+	
 	reload();
-//	Config->get("controls.keys.up", );
 }
+
+void RedefineKeys::tick(const float dt) {
+	Container::tick(dt);
+	if (_b_back->changed()) {
+		_b_back->reset();
+		reload();
+		hide();
+	}
+	
+	if (_b_ok->changed()) {
+		_b_ok->reset();
+		save();
+		hide();
+	}
+	
+	if (_b_default->changed()) {
+		_b_default->reset();
+		initDefaults();
+	}
+}
+
 
 void RedefineKeys::reload() {
 	_actions.clear();
@@ -75,11 +123,17 @@ void RedefineKeys::render(sdlx::Surface &surface, const int x, const int y) {
 		
 		yp += 30;
 	}
+	Container::render(surface, x, y);
 }
 
 void RedefineKeys::getSize(int &w, int &h) const {
-	w = _background.w;
-	h = _background.h;
+	Container::getSize(w, h);
+	
+	if (_background.w > w)
+		w = _background.w;
+	
+	if (_background.h > h)
+		h = _background.h;
 }
 
 bool RedefineKeys::onKey(const SDL_keysym sym) {
@@ -132,6 +186,12 @@ void RedefineKeys::save() {
 		}
 	}	
 }
+
+bool RedefineKeys::onMouse(const int button, const bool pressed, const int x, const int y) {
+	Container::onMouse(button, pressed, x, y);
+	return true;
+}
+
 
 bool RedefineKeys::onMouseMotion(const int state, const int x, const int y, const int xrel, const int yrel) {
 	_active_col = _active_row = -1;
