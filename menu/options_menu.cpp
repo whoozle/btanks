@@ -53,6 +53,14 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 	add(_bx + mx, yp, sp2);
 	yp += sh + 10;
 	
+	
+	_b_redefine = new Button("medium_dark", I18n->get("menu", "redefine-keys"));
+	_b_redefine->getSize(sw, sh);
+	add((w - sw) / 2, yp + 6, _b_redefine);
+
+	yp += sh + 20;
+	//volume controls 
+	
 	float volume;
 	Config->get("engine.sound.volume.music", volume, 1);
 	
@@ -89,12 +97,12 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 
 	yp += sh + 10;
 	
-	reload();
-	
 	_keys = new RedefineKeys;
 	_keys->getSize(sw, sh);
 	add((w - sw) / 2, (h - sh) / 2, _keys);
 	_keys->hide();
+	
+	reload();
 }
 
 void OptionsMenu::getSize(int &w, int &h) const {
@@ -114,6 +122,8 @@ void OptionsMenu::reload() {
 
 	Config->get("engine.sound.volume.fx", volume, 1);
 	_fx->set(volume);
+	
+	_keys->reload();
 }
 
 void OptionsMenu::save() {
@@ -149,6 +159,10 @@ void OptionsMenu::tick(const float dt) {
 		_b_back->reset();
 		_parent->back();
 		reload();
+	}
+	if (_b_redefine->changed()) {
+		_b_redefine->reset();
+		_keys->hide(false);
 	}
 }
 

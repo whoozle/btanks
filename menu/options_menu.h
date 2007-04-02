@@ -36,6 +36,7 @@ private:
 	int _bx, _by;
 	Button *_b_ok, *_b_back;
 	Slider *_fx, *_music;
+	Button *_b_redefine;
 
 	Object *_shooter; //hack to allow mixer playing sample
 	Alarm _shoot;
