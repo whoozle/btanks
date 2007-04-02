@@ -636,12 +636,8 @@ void IPlayerManager::createControlMethod(PlayerSlot &slot, const std::string &co
 	delete slot.control_method;
 	slot.control_method = NULL;
 
-	if (control_method == "keys") {
-		slot.control_method = new KeyPlayer(SDLK_UP, SDLK_DOWN, SDLK_LEFT, SDLK_RIGHT, SDLK_LCTRL, SDLK_LALT, SDLK_F1);
-	} else if (control_method == "keys-1") {
-		slot.control_method = new KeyPlayer(SDLK_r, SDLK_f, SDLK_d, SDLK_g, SDLK_q, SDLK_a, SDLK_F1);
-	} else if (control_method == "keys-2") {
-		slot.control_method = new KeyPlayer(SDLK_UP, SDLK_DOWN, SDLK_LEFT, SDLK_RIGHT, SDLK_RCTRL, SDLK_RSHIFT, SDLK_F2);
+	if (control_method == "keys" || control_method == "keys-1" || control_method == "keys-2") {
+		slot.control_method = new KeyPlayer(control_method);
 	} else if (control_method == "mouse") {
 		throw_ex(("fix mouse control method, then disable this exception ;)"));
 		slot.control_method = new MouseControl();
