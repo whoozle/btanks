@@ -30,15 +30,18 @@ RedefineKeys::RedefineKeys() : _active_row(-1), _active_col(-1) {
 	_labels.push_back("alt-fire");
 	_labels.push_back("disembark");
 	
+	reload();
+//	Config->get("controls.keys.up", );
+}
 
+void RedefineKeys::reload() {
+	_actions.clear();
 	for(size_t i = 0; i < _labels.size(); ++i) {
 		_actions.push_back(Actions::value_type(_labels[i], sdlx::Rect()));
 		for(size_t j = 0; j < 3; ++j) {
 			Config->get("player.controls." + variants[j] + "." + _labels[i], _keys[j][i], _keys[j][i]);
 		}
 	}
-	
-//	Config->get("controls.keys.up", );
 }
 
 void RedefineKeys::render(sdlx::Surface &surface, const int x, const int y) {
