@@ -56,6 +56,13 @@ if sys.platform == "win32":
 #	env.Append(CPPFLAGS = '/Ox /Ot ') #optimizations
 #	env.Prepend(CPPPATH=' C:\\\\STLport-4.6.2\\\\stlport ')
 else:
+	if debug:
+		env.Append(CCFLAGS='-ggdb ')
+		env.Append(CPPFLAGS='-ggdb ')
+	else: 
+		env.Append(CCFLAGS='-O3 ')
+		env.Append(CPPFLAGS='-O3 ')
+		
 	al_lib = 'openal'
 	env.Append(CPPFLAGS=' -Wall -pedantic -Wno-long-long -pipe ')
 	env.Append(CCFLAGS=' -Wall -pedantic -Wno-long-long -pipe ')
