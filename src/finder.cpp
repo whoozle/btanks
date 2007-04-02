@@ -6,7 +6,11 @@
 IMPLEMENT_SINGLETON(Finder, IFinder)
 
 IFinder::IFinder() {
+#ifdef PREFIX
+	GET_CONFIG_VALUE("engine.path", std::string, path, PREFIX "/private/data:" PREFIX "/data");
+#else
 	GET_CONFIG_VALUE("engine.path", std::string, path, "private/data:data");
+#endif
 	std::vector<std::string> r;
 	mrt::split(r, path, ":");
 	for(size_t i = 0; i < r.size(); ++i) {

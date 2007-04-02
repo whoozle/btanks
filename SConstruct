@@ -11,6 +11,8 @@ if sys.platform == "win32":
 	opts.Add('LINK', 'Linker program', '')
 opts.Add('LINKFLAGS', 'General options that are passed to the linker', '')
 opts.Add('CPPPATH', 'extra cpp path', '')
+if sys.platform != "win32":
+	opts.Add('prefix', 'prefix for **nix packaging', '/usr/local')
 opts.Add(EnumOption('mode', 'build mode', 'release', allowed_values=('debug','release')))
 
 opts.Update(env)
@@ -152,8 +154,8 @@ Export('al_lib')
 try : 
 	version_file = file('.svnversion', 'r')
 	version = version_file.readline().strip()
-	env.Append(CPPFLAGS='EXPORTED_VERSION')
-except: 
+	env.Append(CPPFLAGS='PREFIX="' + env['prefix'] + '"')
+except : 
 	svnversion = os.popen('svnversion -n .', 'r')
 	version = svnversion.readline().strip()
 
