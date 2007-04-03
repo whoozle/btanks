@@ -19,6 +19,7 @@ bool MapDetails::onMouse(const int button, const bool pressed, const int x, cons
 	_tactics.free();
 	if (!pressed) 
 		return true;
+	
 	TRY {
 		const std::string fname = base + "/" + map + "_tactics.jpg";
 		if (mrt::FSNode::exists(fname)) {
