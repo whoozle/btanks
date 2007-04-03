@@ -22,13 +22,14 @@ IFinder::IFinder() {
 		throw_ex(("non of the directories listed in engine.path('%s') exist", path.c_str()));
 }
 
-const std::string IFinder::find(const std::string &name) const {
+const std::string IFinder::find(const std::string &name, const bool strict) const {
 	for(size_t i = 0; i < _path.size(); ++i) {
 		std::string file = _path[i] + "/" + name;
 		if (mrt::FSNode::exists(file))
 			return file;
 	}
-	throw_ex(("file '%s' not found", name.c_str()));
+	if (strict)
+		throw_ex(("file '%s' not found", name.c_str()));
 	return std::string();
 }
 
