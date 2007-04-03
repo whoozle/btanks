@@ -845,15 +845,7 @@ void IPlayerManager::tick(const float now, const float dt) {
 		slot.map_pos += slot.map_vel * math::min<float>(math::abs(10 * dt), 1) * math::sign(dt);
 		//slot.map_pos = slot.map_dst_pos;
 		
-		//VALIDATING TOOLTIPS
-		PlayerSlot::Tooltips & tooltips = slot.tooltips;
-		if (!tooltips.empty()) {
-			tooltips.front().first -= dt;
-			if (tooltips.front().first < 0) {
-				delete tooltips.front().second;
-				tooltips.pop();
-			}
-		}
+		slot.tick(dt);
 	}
 
 	validateViewports();
