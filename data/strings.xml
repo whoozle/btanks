@@ -56,6 +56,7 @@
 		</area>
 	</area>
 	<area id="messages">
+		<string id="game-paused">GAME PAUSED</string>
 		<string id="game-over">GAME OVER</string>
 		<string id="mission-accomplished">MISSION ACCOMPLISHED</string>
 		<string id="checkpoint-reached">CHECKPOINT REACHED</string>

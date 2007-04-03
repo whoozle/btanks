@@ -76,6 +76,11 @@ void IGame::resetTimer() {
 }
 
 void IGame::pause() {
+	if (_paused) {
+		_paused = false;
+		return;
+	}
+	
 	if (!PlayerManager->isServerActive())
 		_paused = true;
 }
@@ -555,8 +560,8 @@ void IGame::run() {
 					break;
 				}
 #endif
-				if (event.key.keysym.sym == SDLK_ESCAPE && _paused) {
-					_paused = false;
+				if (event.key.keysym.sym == SDLK_PAUSE) {
+					pause();
 					continue;
 				}
 				if (event.key.keysym.sym==SDLK_s && event.key.keysym.mod & KMOD_SHIFT) {
@@ -697,7 +702,15 @@ flip:
 			int size = (_log_lines->hp > 0)? (int)log10((double)_log_lines->hp) + 2:2;
 			_log_lines->render(_window, _window.getWidth() - (int)(_log_lines->size.x * size), 20);
 		}
-
+		
+		if (_paused) {
+			static const sdlx::Font * font;
+			if (font == NULL) 
+				font = ResourceManager->loadFont("medium_dark", true);
+			std::string pstr = I18n->get("messages", "game-paused");
+			int w = font->render(NULL, 0, 0, pstr);
+			font->render(_window, (_window.getWidth() - w) / 2, (_window.getHeight() - font->getHeight()) / 2, pstr);
+		}
 		
 		Window::flip();
 
