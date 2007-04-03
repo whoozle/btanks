@@ -74,6 +74,11 @@ public:
 	
 	virtual void serialize(mrt::Serializator &s) const;
 	virtual void deserialize(const mrt::Serializator &s);
+	
+	void displayLast();
+	void tick(const float dt);
+private: 
+	Tooltip * last_tooltip;
 };
 
 #endif
