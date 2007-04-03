@@ -455,10 +455,15 @@ void IPlayerManager::updatePlayers() {
 
 		if (slot.control_method != NULL && obj != NULL) {
 			PlayerState state = obj->getPlayerState();
+			bool hint = state.hint_control;
 			slot.control_method->updateState(state);
+			
 			if (obj->updatePlayerState(state)) {
 				updated = true;
 				slot.need_sync = true;
+				if (state.hint_control && !hint) {
+					slot.displayLast();
+				}
 			}
 		} else if (slot.control_method == NULL && obj != NULL) {
 			if (obj->getPlayerState() != slot.old_state) {
@@ -469,10 +474,8 @@ void IPlayerManager::updatePlayers() {
 		
 		if (slot.need_sync)
 			updated = true;
-			
-		if (obj && obj->getPlayerState().hint_control) {
-			slot.displayLast();
-		}
+		
+		
 	}
 				
 	if (_client && _players.size() != 0 && _players[_my_idx].need_sync)	{

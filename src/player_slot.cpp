@@ -89,14 +89,23 @@ void PlayerSlot::clear() {
 }
 
 void PlayerSlot::displayLast() {
-	if (remote || !tooltips.empty())
+	if (remote)
 		return;
-	tooltips.push(Tooltips::value_type(last_tooltip->getReadingTime(), last_tooltip));
-	last_tooltip = NULL;
+	if (tooltips.empty() && last_tooltip != NULL) {
+		tooltips.push(Tooltips::value_type(last_tooltip->getReadingTime(), last_tooltip));
+		last_tooltip = NULL;
+	} else if (!tooltips.empty()) {
+		delete last_tooltip;
+		last_tooltip = tooltips.front().second;
+		tooltips.pop();
+	}
 }
 
 void PlayerSlot::tick(const float dt) {
-	if (!remote && !tooltips.empty()) {
+	if (remote)
+		return;
+	
+	if (!tooltips.empty()) {
 		tooltips.front().first -= dt;
 		if (tooltips.front().first < 0) {
 			delete last_tooltip;
