@@ -70,7 +70,9 @@ void SpecialZone::onHint(const int slot_id) {
 
 	GET_CONFIG_VALUE("engine.tooltip-speed", float, td, 20);
 	const std::string text = I18n->get(area, name);
-	slot.tooltips.push(PlayerSlot::Tooltips::value_type(text.size() / td, new Tooltip(text, true)));
+	
+	Tooltip *tooltip = new Tooltip(text, true);
+	slot.tooltips.push(PlayerSlot::Tooltips::value_type(tooltip->getReadingTime(), tooltip));
 	//Game->pause();
 }
 
