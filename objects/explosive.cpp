@@ -3,12 +3,18 @@
 
 class Explosive : public DestructableObject {
 public: 
-	
-	Explosive() : DestructableObject("explosive-object", "fire", "fire", true) {}
+	Explosive();
+	virtual void onBreak();
 
-	virtual void onBreak() {
-		spawn("cannon-explosion", "cannon-explosion");
+	Object* clone() const  {
+		return new Explosive(*this);
 	}
 };
+
+Explosive::Explosive() : DestructableObject("explosive-object", "fire", "fire", true) {}
+
+void Explosive::onBreak() {
+	spawn("cannon-explosion", "cannon-explosion");
+}
 
 REGISTER_OBJECT("explosive", Explosive, ());

@@ -43,6 +43,10 @@ void DestructableObject::deserialize(const mrt::Serializator &s) {
 	s.get(_object_id);
 }
 
+void DestructableObject::onBreak() {
+}
+
+
 void DestructableObject::addDamage(Object *from, const int dhp, const bool emitDeath) {
 	if (_broken)
 		return;
