@@ -14,14 +14,16 @@ public:
 
 	virtual void render(sdlx::Surface &surface, const int x, const int y);
 	virtual void getSize(int &w, int &h) const;
+	virtual bool onMouse(const int button, const bool pressed, const int x, const int y);
 	
 	void set(const std::string &base, const std::string &map, const std::string &comment_id);
 	~MapDetails();
 private: 
 	Box _background;
 	Tooltip *_map_desc;
+	std::string base, map;
 	
-	sdlx::Surface _screenshot, _null_screenshot;
+	sdlx::Surface _screenshot, _tactics, _null_screenshot;
 };
 
 #endif
