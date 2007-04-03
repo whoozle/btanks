@@ -11,7 +11,6 @@
 #include "i18n.h"
 
 StartServerMenu::StartServerMenu(MainMenu *parent, const int w, const int h) : _parent(parent)  {
-	add(0, 0, _map_picker = new MapPicker(w, h));
 	_back = new Button("big", I18n->get("menu", "back"));
 	add(64, h - 96, _back);
 	
@@ -19,6 +18,8 @@ StartServerMenu::StartServerMenu(MainMenu *parent, const int w, const int h) : _
 	int bw, bh;
 	_start->getSize(bw, bh);
 	add(w - 64 - bw, h - 96, _start);
+
+	add(0, 0, _map_picker = new MapPicker(w, h));
 }
 
 void StartServerMenu::start() {
