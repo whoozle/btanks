@@ -62,6 +62,7 @@ void DestructableObject::addDamage(Object *from, const int dhp, const bool emitD
 			Object *o = spawn(_object, _animation, v2<float>::empty, v2<float>::empty, getZ() + 1);
 			_object_id = o->getID();
 		}
+		onBreak();
 	}
 }
 
