@@ -28,7 +28,7 @@
 #include "config.h"
 
 KeyPlayer::KeyPlayer(const std::string &variant) {
-	int up, down, left, right, fire, alt_fire, leave;
+	int up, down, left, right, fire, alt_fire, leave, hint_control;
 
 #include "controls/default_keys.cpp"
 	int i = 0;
@@ -47,6 +47,7 @@ KeyPlayer::KeyPlayer(const std::string &variant) {
 	Config->get("player.controls." + variant + ".fire", fire, keys[i][4]);
 	Config->get("player.controls." + variant + ".alt-fire", alt_fire, keys[i][5]);
 	Config->get("player.controls." + variant + ".disembark", leave, keys[i][6]);
+	Config->get("player.controls." + variant + ".hint-control", hint_control, keys[i][7]);
 
 	_up = (SDLKey)up;
 	_down = (SDLKey)down;
@@ -55,6 +56,7 @@ KeyPlayer::KeyPlayer(const std::string &variant) {
 	_fire = (SDLKey)fire;
 	_alt_fire = (SDLKey)alt_fire;
 	this->leave = (SDLKey)leave;
+	_hint_control = (SDLKey)hint_control;
 }
 
 void KeyPlayer::updateState(PlayerState &state) {
@@ -66,4 +68,5 @@ void KeyPlayer::updateState(PlayerState &state) {
 	state.fire = keys[_fire] != 0;
 	state.alt_fire = keys[_alt_fire] != 0;
 	state.leave = keys[leave] != 0;
+	state.hint_control = keys[_hint_control] != 0;
 }

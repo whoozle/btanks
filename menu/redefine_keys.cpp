@@ -33,6 +33,7 @@ RedefineKeys::RedefineKeys() : _active_row(-1), _active_col(-1) {
 	_labels.push_back("fire");
 	_labels.push_back("alt-fire");
 	_labels.push_back("disembark");
+	_labels.push_back("hint-ctrl");
 	
 	_b_ok = new Button("medium_dark", I18n->get("menu", "ok"));
 	_b_back = new Button("medium_dark", I18n->get("menu", "back"));

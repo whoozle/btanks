@@ -89,14 +89,14 @@ void PlayerSlot::clear() {
 }
 
 void PlayerSlot::displayLast() {
-	if (!tooltips.empty())
+	if (remote || !tooltips.empty())
 		return;
 	tooltips.push(Tooltips::value_type(last_tooltip->getReadingTime(), last_tooltip));
 	last_tooltip = NULL;
 }
 
 void PlayerSlot::tick(const float dt) {
-	if (!tooltips.empty()) {
+	if (!remote && !tooltips.empty()) {
 		tooltips.front().first -= dt;
 		if (tooltips.front().first < 0) {
 			delete last_tooltip;

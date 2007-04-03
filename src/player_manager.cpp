@@ -469,6 +469,10 @@ void IPlayerManager::updatePlayers() {
 		
 		if (slot.need_sync)
 			updated = true;
+			
+		if (obj && obj->getPlayerState().hint_control) {
+			slot.displayLast();
+		}
 	}
 				
 	if (_client && _players.size() != 0 && _players[_my_idx].need_sync)	{

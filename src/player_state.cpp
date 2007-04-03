@@ -22,12 +22,17 @@
 #include <string.h>
 #include "mrt/fmt.h"
 
-PlayerState::PlayerState() : left(false), right(false), up(false), down(false), fire(false), alt_fire(false), leave(false) { } 
-void PlayerState::clear() { left = right = up = down = fire = alt_fire = leave = false; }
+PlayerState::PlayerState() : left(false), right(false), up(false), down(false), fire(false), alt_fire(false), leave(false), hint_control(false) { } 
+void PlayerState::clear() { left = right = up = down = fire = alt_fire = leave = hint_control = false; }
 
 void PlayerState::serialize(mrt::Serializator &s) const {
-	int packed = (left?1:0) | (right?2:0) | (up ? 4:0) | (down ? 8:0) | (fire ? 16:0) | (alt_fire ? 32:0) | (leave ? 64:0);
+	int packed = (left?1:0) | (right?2:0) | (up ? 4:0) | (down ? 8:0) | (fire ? 16:0) | (alt_fire ? 32:0) | (leave ? 64:0) | (hint_control ? 128:0);
 	s.add(packed);
+}
+
+const bool PlayerState::operator==(const PlayerState &other) const {
+	return left == other.left && right == other.right && up == other.up && down == other.down &&
+		fire == other.fire && alt_fire == other.alt_fire && leave == other.leave && hint_control && other.hint_control;
 }
 
 void PlayerState::deserialize(const mrt::Serializator &s) {
@@ -40,11 +45,12 @@ void PlayerState::deserialize(const mrt::Serializator &s) {
 	fire = packed & 16;
 	alt_fire = packed & 32;
 	leave = packed & 64;
+	hint_control = packed & 128;
 }
 
 #define B(b) ((b)?'+':'-')
 
 const std::string PlayerState::dump() const {
-	return mrt::formatString("{ %c%c%c%c %c%c %c }", 
-		B(left), B(right), B(up), B(down), B(fire), B(alt_fire), B(leave));
+	return mrt::formatString("{ %c%c%c%c %c%c %c %c}", 
+		B(left), B(right), B(up), B(down), B(fire), B(alt_fire), B(leave), B(hint_control));
 }

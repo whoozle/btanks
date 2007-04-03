@@ -44,7 +44,7 @@ private:
 	typedef std::vector<std::pair<std::string, sdlx::Rect> > Actions; 
 	Actions _actions;
 	
-	int _keys[3][7];
+	int _keys[3][8];
 	
 	Button *_b_ok, *_b_default, *_b_back;
 };

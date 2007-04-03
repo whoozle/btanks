@@ -29,7 +29,7 @@ public:
 	KeyPlayer(const std::string &variant);
 	virtual void updateState(PlayerState &state);
 private:
-	SDLKey _up, _down, _left, _right, _fire, _alt_fire, leave;
+	SDLKey _up, _down, _left, _right, _fire, _alt_fire, leave, _hint_control;
 };
 
 #endif
