@@ -8,7 +8,7 @@
 #include "i18n.h"
 #include "tooltip.h"
 #include "object.h"
-#include "game.h"
+//#include "game.h"
 #include <set>
 
 SpecialZone::SpecialZone(const ZBox & zbox, const std::string &type, const std::string &name, const std::string &subname) :
@@ -71,7 +71,7 @@ void SpecialZone::onHint(const int slot_id) {
 	GET_CONFIG_VALUE("engine.tooltip-speed", float, td, 20);
 	const std::string text = I18n->get(area, name);
 	slot.tooltips.push(PlayerSlot::Tooltips::value_type(text.size() / td, new Tooltip(text, true)));
-	Game->pause();
+	//Game->pause();
 }
 
 void SpecialZone::onCheckpoint(const int slot_id) {
