@@ -135,6 +135,13 @@ MapPicker::MapPicker(const int w, const int h) : _index(0) {
 
 	sdlx::Rect map_pos(list_pos.w + 16, 128, (w - 64) / 3, h - 256);
 
+	_picker = NULL;
+	TRY {
+		_picker = new PlayerPicker(w - map_pos.x - map_pos.w - 16, h - 256);
+		_picker->set(_maps[_index]);
+		add(map_pos.x + map_pos.w + 16, 128, _picker);
+	} CATCH("PlayerPicker::ctor", {delete _picker; throw; });
+
 	_details = NULL;	
 	TRY {
 		_details = new MapDetails(map_pos.w, map_pos.h);
@@ -142,13 +149,6 @@ MapPicker::MapPicker(const int w, const int h) : _index(0) {
 		add(map_pos.x, map_pos.y, _details);
 	} CATCH("MapPicker::ctor", {delete _details; throw; });
 
-
-	_picker = NULL;
-	TRY {
-		_picker = new PlayerPicker(w - map_pos.x - map_pos.w - 16, h - 256);
-		_picker->set(_maps[_index]);
-		add(map_pos.x + map_pos.w + 16, 128, _picker);
-	} CATCH("PlayerPicker::ctor", {delete _picker; throw; });
 
 }
 
