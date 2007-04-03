@@ -24,6 +24,7 @@ private:
 	std::string base, map;
 	
 	sdlx::Surface _screenshot, _tactics, _null_screenshot;
+	const sdlx::Font *_small_font;
 };
 
 #endif

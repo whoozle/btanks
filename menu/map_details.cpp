@@ -4,11 +4,14 @@
 #include "mrt/fs_node.h"
 #include "tooltip.h"
 #include "finder.h"
+#include "resource_manager.h"
+#include "i18n.h"
 
 MapDetails::MapDetails(const int w, const int h) : _map_desc(0) {
 	_background.init("menu/background_box.png", w, h);
 
 	_null_screenshot.loadImage(Finder->find("maps/null.png"));
+	_small_font = ResourceManager->loadFont("small", true);
 }
 
 void MapDetails::getSize(int &w, int &h) const {
@@ -64,7 +67,15 @@ void MapDetails::render(sdlx::Surface &surface, const int x, const int y) {
 	int xs = (_background.w - screenshot.getWidth()) / 2;
 	surface.copyFrom(screenshot, x + xs, y + yp);
 	int ys = screenshot.getHeight();
-	yp += (ys < 152)?152:ys;
+	yp += (ys < 140)?140:ys;
+	
+	const std::string fname = base + "/" + map + "_tactics.jpg";
+	if (mrt::FSNode::exists(fname)) {
+		std::string click_here = I18n->get("menu", "view-map");
+		int w = _small_font->render(NULL, 0, 0, click_here);
+		_small_font->render(surface, x + (_background.w - w) / 2, y + yp, click_here);
+	}
+	yp += _small_font->getHeight() + 12;
 
 	if (_map_desc)
 		_map_desc->render(surface, x + mx, y + yp);

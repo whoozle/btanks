@@ -28,6 +28,8 @@
 		
 		<string id="redefine-keys">Redefine keys</string>
 		<string id="default-keys">Default keys</string>
+		
+		<string id="view-map">[click here to view tactics map]</string>
 	</area>
 	<area id="maps/descriptions">
 		<string id="baykonur">Huge cooperative map with tons of troopers, very defensive military base and big boss inside(tm)</string>
