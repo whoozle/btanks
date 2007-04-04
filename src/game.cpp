@@ -457,8 +457,11 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 				//LOG_DEBUG(("object %s, animation %s, pos: %s", res[1].c_str(), res[2].c_str(), i->second.c_str()));
 				if (res.size() < 4)
 					throw_ex(("'%s' misses an argument", i->first.c_str()));
+				res.resize(5);
 				Item item(res[1], res[2], v2<int>(pos.x, pos.y), pos.z);
 				item.destroy_for_victory = res[3].substr(0, 19) == "destroy-for-victory";
+				if (res[3] == "save-for-victory")
+					item.save_for_victory = res[4];
 				GameMonitor->add(item);
 			} else if (type == "waypoint") {
 				if (res.size() < 3)
