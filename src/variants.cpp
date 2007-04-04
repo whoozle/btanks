@@ -41,6 +41,22 @@ const std::string Variants::dump() const {
 	return result;
 }
 
+const bool Variants::same(const Variants &other) const {
+	std::set<std::string>::const_iterator i = vars.begin(), j = other.vars.begin();
+	while(i != vars.end() && j != other.vars.end()) {
+		const std::string l = *i, r = *j;
+		if (l == r) 
+			return true;
+		
+		if (l < r) {
+			++i;
+		} else {
+			++j;
+		}
+	}
+	return true;
+}
+
 const bool Variants::has(const std::string &name) const {
 	return vars.find(name) != vars.end();
 }

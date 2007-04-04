@@ -9,10 +9,12 @@ class Variants : public mrt::Serializable {
 public: 
 	Variants();
 	const std::string parse(const std::string &name);
+	void update(const Variants &other);
 	const std::string dump() const;
 
 	const bool has(const std::string &name) const;
 	const bool empty() const { return vars.empty(); }
+	const bool same(const Variants &variant) const;
 
 	void add(const std::string &name);
 	void remove(const std::string &name);
