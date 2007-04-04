@@ -100,8 +100,9 @@ void Explosion::emit(const std::string &event, Object * emitter) {
 		
 		//nuke damage.
 		if (emitter == NULL || 
-			emitter->registered_name.size() < 9 ||
+			(emitter->registered_name.size() >= 9 && 
 			emitter->registered_name.substr(emitter->registered_name.size() - 9, 9) == "explosion")
+			)
 			return;
 			
 		const int id = emitter->getID();
