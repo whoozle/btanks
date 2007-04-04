@@ -39,17 +39,20 @@ public:
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
 		s.add(_type);
-		_clone.serialize(s);
+		s.add(_clone);
+		s.add(_vel_backup);
 	}
 	virtual void deserialize(const mrt::Serializator &s) {
 		Object::deserialize(s);
 		s.get(_type);
-		_clone.deserialize(s);
+		s.get(_clone);
+		s.get(_vel_backup);
 	}
 
 private: 
 	std::string _type;
 	Alarm _clone;
+	v2<float> _vel_backup;
 };
 
 void Bullet::tick(const float dt) {
@@ -77,7 +80,17 @@ void Bullet::tick(const float dt) {
 }
 
 
-void Bullet::calculate(const float dt) {}
+void Bullet::calculate(const float dt) {
+	if (_type == "mortar") {
+		float idle, moving;
+		getTimes(moving, idle);
+		float real_ttl = ttl + moving + idle;
+		GET_CONFIG_VALUE("objects.mortar-bullet.g", float, g, 2.0f);
+		float v0 = real_ttl * g / 2;
+		float t = real_ttl - ttl;
+		_velocity = v2<float>(0, g * t - v0) + _vel_backup;
+	}
+}
 
 void Bullet::onSpawn() {
 	GET_CONFIG_VALUE("objects.dispersion-bullet.clone-interval", float, ci, 0.1);
@@ -88,6 +101,7 @@ void Bullet::onSpawn() {
 	
 	if (_type != "mortar")
 		quantizeVelocity();
+	_vel_backup = _direction = _velocity;
 }
 
 void Bullet::emit(const std::string &event, Object * emitter) {
