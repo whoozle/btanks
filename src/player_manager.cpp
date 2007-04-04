@@ -709,6 +709,8 @@ void IPlayerManager::spawnPlayer(PlayerSlot &slot, const std::string &classname,
 			if (other_slot.id == -1 || slot.id == other_slot.id) 
 				continue;
 			Object *o1 = slot.getObject(), *o2 = other_slot.getObject();
+			if (o1 == NULL || o2 == NULL)
+				continue;
 			o1->prependOwner(other_slot.id);
 			o2->prependOwner(slot.id);
 		}
