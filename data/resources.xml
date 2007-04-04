@@ -341,6 +341,7 @@
 	<animation id="dead-yellow-launcher" tile="launcher03_crash.png" model="dead-vehicle-animation"/>
 	<animation id="dead-cyan-launcher" tile="launcher04_crash.png" model="dead-vehicle-animation"/>
 	<animation id="launcher-smoke" tile="launcher_smoke.png" model="smoke-animation" />
+
 	<animation id="guided-missiles-on-launcher" tile="launcher_missile01.png" model="missiles-on-launcher-animation" />
 	<animation id="smoke-missiles-on-launcher" tile="launcher_missile02.png" model="missiles-on-launcher-animation" />
 	<animation id="dumb-missiles-on-launcher" tile="launcher_missile03.png" model="missiles-on-launcher-animation" />
@@ -349,6 +350,15 @@
 	<animation id="stun-missiles-on-launcher" tile="launcher_missile06.png" model="missiles-on-launcher-animation" />
 	<animation id="regular-mines-on-launcher" tile="launcher_mine.png" model="missiles-on-launcher-animation" />
 	<animation id="machinegunner-on-launcher" tile="launcher_machinegunner.png" model="single-tile" />
+
+	<animation id="green-mortar" tile="mortar.png" model="mortar-animation"/>
+	<animation id="red-mortar" tile="mortar.png" model="mortar-animation"/>
+	<animation id="yellow-mortar" tile="mortar.png" model="mortar-animation"/>
+	<animation id="cyan-mortar" tile="mortar.png" model="mortar-animation"/>
+	<animation id="dead-green-mortar" tile="mortar_crash.png" model="dead-vehicle-animation"/>
+	<animation id="dead-red-mortar" tile="mortar_crash.png" model="dead-vehicle-animation"/>
+	<animation id="dead-yellow-mortar" tile="mortar_crash.png" model="dead-vehicle-animation"/>
+	<animation id="dead-cyan-mortar" tile="mortar_crash.png" model="dead-vehicle-animation"/>
 
 	<!-- a little note on outlines and animations : 
 		it is safe to define more than one animation with the same tile. it wont be loaded more than once. 
