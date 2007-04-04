@@ -366,9 +366,11 @@
 	<animation id="tank-outline" tile="tank_outline.png" model="single-tile" />
 	<animation id="shilka-outline" tile="shilka_outline.png" model="single-tile" />
 	<animation id="launcher-outline" tile="launcher_outline.png" model="single-tile" />
+	<animation id="mortar-outline" tile="mortar_outline.png" model="single-tile" />
 	<animation id="static-tank-outline" tile="tank_outline.png" model="single-tile" />
 	<animation id="static-shilka-outline" tile="shilka_outline.png" model="single-tile" />
 	<animation id="static-launcher-outline" tile="launcher_outline.png" model="single-tile" />
+	<animation id="static-mortar-outline" tile="mortar_outline.png" model="single-tile" />
 	<animation id="machinegunner-player-outline" tile="machinegunner_outline.png" model="single-tile" />
 
 	<animation id="red-car" tile="car01.png" model="car-animation"/>
