@@ -48,6 +48,9 @@ public:
 	const Chunk & getData() const;
 
 	void add(const void *raw, const int size); //same as add(chunk)
+	
+	template <class T> void add(const T& t) { t.serialize(*this); }
+	template <class T> void get(T& t) const { t.deserialize(*this); }
 
 protected:
 	void get(void *raw, const int size) const; //this one doesnt check anything, just copy next `size` bytes to pointer.
@@ -60,6 +63,7 @@ private:
 	Serializator(const Serializator &s);
 	const Serializator & operator=(const Serializator &s);
 };
+
 }
 
 #endif
