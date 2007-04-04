@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <map version="0.99b" orientation="orthogonal" width="50" height="50" tilewidth="64" tileheight="64">
  <properties>
+  <property name="object:static-mortar:green-mortar:1" value="@34,47"/>
   <property name="config:objects.tank.dispersion.duration" value="float:-1"/>
   <property name="object:static-shilka:green-shilka:3" value="46,1004"/>
   <property name="object:static-shilka:green-shilka:1" value="1144,1685"/>
