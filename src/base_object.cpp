@@ -399,5 +399,5 @@ const float BaseObject::getEffectiveImpassability(const float impassability) con
 }
 
 void BaseObject::updateVariants(const Variants &vars) {
-	_variants = vars;
+	_variants.update(vars);
 }
