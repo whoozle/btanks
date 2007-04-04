@@ -20,26 +20,19 @@
 #include "resource_manager.h"
 #include "world.h"
 
-DestructableObject::DestructableObject(const std::string &classname, const std::string &object, const std::string &animation, const bool make_pierceable) : 
+DestructableObject::DestructableObject(const std::string &classname) : 
 		Object(classname), 
-		_broken(false), _make_pierceable(make_pierceable),
-		_object(object), _animation(animation), _object_id(0) {}
+		_object_id(0) {}
 
 void DestructableObject::serialize(mrt::Serializator &s) const {
 	Object::serialize(s);
 	s.add(_broken);
-	s.add(_make_pierceable);
-	s.add(_object);
-	s.add(_animation);
 	s.add(_object_id);
 }
 
 void DestructableObject::deserialize(const mrt::Serializator &s) {
 	Object::deserialize(s);
 	s.get(_broken);
-	s.get(_make_pierceable);
-	s.get(_object);
-	s.get(_animation);
 	s.get(_object_id);
 }
 
@@ -55,16 +48,16 @@ void DestructableObject::addDamage(Object *from, const int dhp, const bool emitD
 	if (hp <= 0) {
 		_broken = true;
 		hp = -1;
-		if (_make_pierceable || _variants.has("make-pierceable"))
+		if (_variants.has("make-pierceable"))
 			pierceable = true;
 		cancelAll();
 		play("fade-out", false); 
 		play("broken", true);
 		classname = "debris";
 		
-		if (!_object.empty() && !_animation.empty()) {
-			Object *o = spawn(_object, _animation, v2<float>::empty, v2<float>::empty, getZ() + 1);
-			_object_id = o->getID();
+		if (_variants.has("with-fire")) {
+			Object *o = spawn("fire", "fire", v2<float>::empty, v2<float>::empty, getZ() + 1);
+			_object_id = o->getID();			
 		}
 		onBreak();
 	}
@@ -94,5 +87,4 @@ Object* DestructableObject::clone() const  {
 	return new DestructableObject(*this);
 }
 
-REGISTER_OBJECT("destructable-object", DestructableObject, ("destructable-object", "", "", false));
-REGISTER_OBJECT("destructable-object-with-fire", DestructableObject, ("destructable-object", "fire", "fire", false));
+REGISTER_OBJECT("destructable-object", DestructableObject, ("destructable-object"));

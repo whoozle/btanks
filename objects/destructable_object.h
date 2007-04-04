@@ -20,7 +20,7 @@
 
 class DestructableObject : public Object {
 public:
-	DestructableObject(const std::string &classname, const std::string &object, const std::string &animation, const bool make_pierceable);
+	DestructableObject(const std::string &classname);
 
 	virtual Object * clone() const;
 	virtual void tick(const float dt);
@@ -35,7 +35,5 @@ protected:
 	bool _broken;
 
 private: 
-	bool _make_pierceable;
-	std::string _object, _animation;
 	int _object_id;
 };

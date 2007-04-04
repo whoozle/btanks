@@ -114,11 +114,12 @@ void Boat::onSpawn() {
 }
 
 Boat::Boat(const std::string &object) : 
-	DestructableObject("boat", "fire", "fire", false), 
+	DestructableObject("boat"), 
 	_object(object), 
 	_fire(false), 
 	_reload(false), 
 	_reaction(true) {
+	_variants.add("with-fire");
 }
 
 

@@ -29,7 +29,10 @@ public:
 	}
 };
 
-Explosive::Explosive() : DestructableObject("explosive-object", "fire", "fire", true) {}
+Explosive::Explosive() : DestructableObject("explosive-object") {
+	_variants.add("with-fire");
+	_variants.add("make-pierceable");
+}
 
 void Explosive::onBreak() {
 	spawn("cannon-explosion", "cannon-explosion");

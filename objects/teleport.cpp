@@ -57,21 +57,17 @@ public:
 		Object::deserialize(s);
 		s.get(track);
 		
-		for(TeleportMap::const_iterator i = _teleports.lower_bound(registered_name); i != _teleports.upper_bound(registered_name); ++i) {
-			if (i->second == this) 
-				return;
-		}
-		_teleports.insert(TeleportMap::value_type(registered_name, this));
+		_teleports.insert(this);
 	}
 
 
 private: 
-	typedef std::multimap<const std::string, Teleport *> TeleportMap;
-	static TeleportMap _teleports;
+	typedef std::set<Teleport *> Teleports;
+	static Teleports _teleports;
 	int track;
 };
 
-Teleport::TeleportMap Teleport::_teleports;
+Teleport::Teleports Teleport::_teleports;
 
 void Teleport::emit(const std::string &event, Object * emitter) {
 	if (!PlayerManager->isClient() && event == "collision" && emitter != NULL) {
@@ -89,9 +85,9 @@ void Teleport::emit(const std::string &event, Object * emitter) {
 		std::vector<Teleport *> teleports;
 		if (r.in(epos.x, epos.y)) {
 			//LOG_DEBUG(("collided: %s", emitter->animation.c_str()));
-			for(TeleportMap::const_iterator i = _teleports.lower_bound(registered_name); i != _teleports.upper_bound(registered_name); ++i) {
-				if (i->second != this)
-					teleports.push_back(i->second);
+			for(Teleports::const_iterator i = _teleports.begin(); i != _teleports.end(); ++i) {
+				if (*i != this && _variants.same((*i)->_variants))
+					teleports.push_back(*i);
 			}
 		}
 
@@ -110,53 +106,16 @@ void Teleport::emit(const std::string &event, Object * emitter) {
 }
 
 Teleport::~Teleport() {
-	for(TeleportMap::iterator i = _teleports.begin(); i != _teleports.end(); ) {
-		if (i->second == this)
-			_teleports.erase(i++);
-		else ++i;
-	}
+	_teleports.erase(this);
 }
 
 void Teleport::onSpawn() {
 	play("main", true);
-	_teleports.insert(TeleportMap::value_type(registered_name, this));
+	_teleports.insert(this);
 }
 
 Object * Teleport::clone() const {
 	return new Teleport(*this);
 }
 
-//fixme: remove this!! :))))))))
-
-REGISTER_OBJECT("teleport-a", Teleport, ());
-REGISTER_OBJECT("teleport-b", Teleport, ());
-REGISTER_OBJECT("teleport-c", Teleport, ());
-REGISTER_OBJECT("teleport-d", Teleport, ());
-
-REGISTER_OBJECT("teleport-e", Teleport, ());
-REGISTER_OBJECT("teleport-f", Teleport, ());
-REGISTER_OBJECT("teleport-g", Teleport, ());
-REGISTER_OBJECT("teleport-h", Teleport, ());
-
-REGISTER_OBJECT("teleport-i", Teleport, ());
-REGISTER_OBJECT("teleport-j", Teleport, ());
-REGISTER_OBJECT("teleport-k", Teleport, ());
-REGISTER_OBJECT("teleport-l", Teleport, ());
-
-REGISTER_OBJECT("teleport-m", Teleport, ());
-REGISTER_OBJECT("teleport-n", Teleport, ());
-REGISTER_OBJECT("teleport-o", Teleport, ());
-REGISTER_OBJECT("teleport-p", Teleport, ());
-
-REGISTER_OBJECT("teleport-q", Teleport, ());
-REGISTER_OBJECT("teleport-r", Teleport, ());
-REGISTER_OBJECT("teleport-s", Teleport, ());
-REGISTER_OBJECT("teleport-t", Teleport, ());
-
-REGISTER_OBJECT("teleport-u", Teleport, ());
-REGISTER_OBJECT("teleport-v", Teleport, ());
-REGISTER_OBJECT("teleport-w", Teleport, ());
-REGISTER_OBJECT("teleport-x", Teleport, ());
-
-REGISTER_OBJECT("teleport-y", Teleport, ());
-REGISTER_OBJECT("teleport-z", Teleport, ());
+REGISTER_OBJECT("teleport", Teleport, ());

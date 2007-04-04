@@ -23,7 +23,10 @@
 class WatchTower : public DestructableObject {
 public: 
 	WatchTower(const std::string &object, const std::string &animation) : 
-		DestructableObject("watchtower", "fire", "fire", true), _object(object), _animation(animation) {}
+		DestructableObject("watchtower"), _object(object), _animation(animation) {
+			_variants.add("make-pierceable");
+			_variants.add("with-fire");
+		}
 	Object *clone() const { return new WatchTower(*this); }
 	
 	virtual void onSpawn() {

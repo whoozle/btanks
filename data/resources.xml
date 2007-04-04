@@ -519,14 +519,14 @@
 	<alias name="helicopter-bullet" class="bullet" />
 	<alias name="spawn-shield" class="single-pose-once-no-directions" />
 	<alias name="gate" class="destructable-object" />
-	<alias name="bus-stop" class="destructable-object-with-fire" />
-	<alias name="stall" class="destructable-object-with-fire(make-pierceable)" />
+	<alias name="bus-stop" class="destructable-object(with-fire)" />
+	<alias name="stall" class="destructable-object(with-fire)(make-pierceable)" />
 	<alias name="tent" class="destructable-object(make-pierceable)" />
 	<alias name="umbrella" class="destructable-object(make-pierceable)" />
 	<alias name="van" class="destructable-object(make-pierceable)" />
 	<alias name="biotoilet" class="destructable-object(make-pierceable)" />
-	<alias name="lodge" class="destructable-object-with-fire(make-pierceable)" />
-	<alias name="stack" class="destructable-object-with-fire(make-pierceable)" />
+	<alias name="lodge" class="destructable-object(with-fire)(make-pierceable)" />
+	<alias name="stack" class="destructable-object(with-fire)(make-pierceable)" />
 	<alias name="road-sign" class="destructable-object" />
 	<alias name="oil-barrels" class="explosive" />
  	<alias name="impassable-static-corpse" class="static-corpse" />

@@ -24,8 +24,12 @@
 class Barrack : public DestructableObject {
 public:
 	Barrack(const std::string &object, const std::string &animation, const bool pierceable) : 
-		DestructableObject("barrack", "fire", "fire", pierceable), 
-		_object(object), _animation(animation), _spawn(true) {}
+		DestructableObject("barrack"), 
+		_object(object), _animation(animation), _spawn(true) {
+			_variants.add("with-fire");
+			if (pierceable)
+				_variants.add("make-pierceable");
+		}
 
 	virtual Object* clone() const  { return new Barrack(*this); }
 	
