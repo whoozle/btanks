@@ -32,7 +32,7 @@ void PlayerState::serialize(mrt::Serializator &s) const {
 
 const bool PlayerState::operator==(const PlayerState &other) const {
 	return left == other.left && right == other.right && up == other.up && down == other.down &&
-		fire == other.fire && alt_fire == other.alt_fire && leave == other.leave && hint_control && other.hint_control;
+		fire == other.fire && alt_fire == other.alt_fire && leave == other.leave && hint_control == other.hint_control;
 }
 
 void PlayerState::deserialize(const mrt::Serializator &s) {
