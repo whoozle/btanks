@@ -565,9 +565,6 @@ TRY {
 		o.tick(dt);
 	} CATCH("calling o.tick", throw;)
 
-	if (o._follow) 
-		return;
-		
 	if (o.speed == 0) {
 		TRY {
 			o._idle_time += dt;
