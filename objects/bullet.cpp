@@ -86,7 +86,8 @@ void Bullet::onSpawn() {
 	play("shot", false);
 	play("move", true);
 	
-	quantizeVelocity();
+	if (_type != "mortar")
+		quantizeVelocity();
 }
 
 void Bullet::emit(const std::string &event, Object * emitter) {
@@ -152,4 +153,4 @@ REGISTER_OBJECT("dispersion-bullet", Bullet, ("dispersion", 16));
 REGISTER_OBJECT("ricochet-bullet", Bullet, ("ricochet", 16));
 
 REGISTER_OBJECT("cannon-bullet", Bullet, ("cannon", 8));
-REGISTER_OBJECT("mortar-bullet", Bullet, ("mortar", 8));
+REGISTER_OBJECT("mortar-bullet", Bullet, ("mortar", 1));

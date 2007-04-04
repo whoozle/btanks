@@ -147,6 +147,11 @@
 		<pose id="move">0</pose>
 	</animation-model>
 
+	<animation-model id="mortar-bullet-animation" speed="10">
+		<pose id="shot" sound="shot.ogg">0</pose>
+		<pose id="move">0,1,2,3,4,5</pose>
+	</animation-model>
+
 	<animation-model id="explosion-animation" speed="7">
 		<pose id="boom">0,1,2</pose>
 	</animation-model>
@@ -443,7 +448,7 @@
 	<animation id="machinegunner-bullet" tile="machinegunner_bullet2.png" model="bullet-animation"/>
 	<animation id="dirt-bullet" tile="dirt_bullet.png" model="bullet-animation"/>
 	<animation id="cannon-bullet" tile="cannon_bullet.png" model="bullet-animation"/>
-	<animation id="mortar-bullet" tile="dirt_bullet.png" model="bullet-animation"/>
+	<animation id="mortar-bullet" tile="mortar_bullet.png" model="mortar-bullet-animation"/>
 	
 	<animation id="explosion" tile="explosion.png" model="explosion-animation" />
 	<animation id="missile-explosion" tile="missile_blast.png" model="missile-explosion-animation" />
@@ -556,7 +561,7 @@
 	<object class="shilka" speed="450" mass="400" hp="60" z="0" />
 	<object class="static-shilka" parent="shilka" z="0" />
 	<object class="ai-shilka" parent="shilka" z="0" />
-	<object class="mortar" speed="300" mass="400" hp="100" z="0" />
+	<object class="mortar" speed="100" mass="400" hp="100" z="0" />
 	<object class="static-mortar" parent="mortar" />
 	<object class="ai-shilka" parent="mortar" />
 
