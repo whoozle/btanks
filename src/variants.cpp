@@ -25,6 +25,11 @@ const std::string Variants::parse(const std::string &name) {
 	return result;
 }
 
+void Variants::update(const Variants &other) {
+	for(std::set<std::string>::const_iterator i = other.vars.begin(); i != other.vars.end(); ++i) 
+		vars.insert(*i);
+}
+
 const std::string Variants::dump() const {
 	std::string result;
 	for(std::set<std::string>::const_iterator i = vars.begin(); i != vars.end(); ++i) {
