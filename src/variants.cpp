@@ -5,6 +5,8 @@
 Variants::Variants() : vars() {}
 
 const std::string Variants::parse(const std::string &name) {
+	vars.clear();
+	
 	std::string result, in(name);
 	size_t pos1;
 	while(!in.empty() && (pos1 = in.find('(')) != in.npos) {
