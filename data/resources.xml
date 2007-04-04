@@ -401,7 +401,7 @@
 	<animation id="boomerang-missile" tile="missile05.png" model="single-tile" />
 	<animation id="stun-missile" tile="missile06.png" model="single-tile" />
 	<animation id="missile-fire" tile="missile_fire.png" model="missile-fire-animation" />
-	<animation id="missile-launch" tile="missile_launch.png" model="missile-launch-animation" size="128" />
+	<!-- <animation id="missile-launch" tile="missile_launch.png" model="missile-launch-animation" size="128" /> -->
 	<animation id="regular-mine" tile="mine.png" model="regular-mine-animation" size="32" />
 	<animation id="bomb" tile="aviabomb.png" model="bomb-animation" />
 
@@ -524,7 +524,7 @@
 	<alias name="pond" class="single-pose" />
 	<alias name="shilka-bullet" class="bullet" />
 	<alias name="helicopter-bullet" class="bullet" />
-	<alias name="spawn-shield" class="single-pose-once-no-directions" />
+	<alias name="spawn-shield" class="single-pose(once)(no-directions)" />
 	<alias name="gate" class="destructable-object" />
 	<alias name="bus-stop" class="destructable-object(with-fire)" />
 	<alias name="stall" class="destructable-object(with-fire)(make-pierceable)" />
@@ -583,7 +583,7 @@
 	<object class="boomerang-missile" speed="500" mass="100" hp="15" z="250" />
 	<object class="stun-missile" speed="600" mass="100" ttl="5" hp="0" z="250" />
 
-	<object class="missile-launch" impassability="0" z="260" />
+	<!-- <object class="missile-launch" impassability="0" z="260" /> -->
 
 	<object class="regular-mine" hp="40" impassability="-1" z="-30" />
 	<object class="armed-mine" parent="regular-mine" />

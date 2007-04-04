@@ -94,7 +94,7 @@ void Train::tick(const float dt) {
 		Object::emit("death", NULL);
 	}
 	if (_smoke.tick(dt)) {
-		spawn("train-smoke", "train-smoke");
+		spawn("single-pose(once)", "train-smoke");
 	}
 }
 
