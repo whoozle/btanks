@@ -24,7 +24,7 @@
 void Var::serialize(mrt::Serializator &s) const {
 		if (type.empty()) 
 			throw_ex(("cannot serialize empty variable"));
-		char t = type[0];
+		int t = type[0];
 		s.add(t);
 		if (t == 'i') 
 			s.add(i);
