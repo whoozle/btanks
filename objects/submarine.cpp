@@ -30,12 +30,12 @@ public:
 
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
-		_wakeup.serialize(s);
+		s.add(_wakeup);
 	}
 
 	virtual void deserialize(const mrt::Serializator &s) {
 		Object::deserialize(s);
-		_wakeup.deserialize(s);
+		s.get(_wakeup);
 	}
 
 protected:

@@ -47,14 +47,14 @@ public:
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
 		s.add(dst_y);
-		_smoke.serialize(s);
+		s.add(_smoke);
 		s.add(_spawned_wagon);
 	}
 
 	virtual void deserialize(const mrt::Serializator &s) {
 		Object::deserialize(s);
 		s.get(dst_y);
-		_smoke.deserialize(s);
+		s.get(_smoke);
 		s.get(_spawned_wagon);
 	}
 

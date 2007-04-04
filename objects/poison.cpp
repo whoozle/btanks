@@ -33,7 +33,7 @@ public:
 		s.add((int)_damaged_objects.size());
 		for(std::set<int>::const_iterator i = _damaged_objects.begin(); i != _damaged_objects.end(); ++i) 
 			s.add(*i);
-		_damage.serialize(s);
+		s.add(_damage);
 	}
 
 	virtual void deserialize(const mrt::Serializator &s) {
@@ -45,7 +45,7 @@ public:
 			s.get(id);
 			_damaged_objects.insert(id);
 		}
-		_damage.deserialize(s);
+		s.get(_damage);
 	}
 
 private: 

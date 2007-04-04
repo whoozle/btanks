@@ -37,11 +37,11 @@ public:
 	void calculate(const float dt);
 	virtual void serialize(mrt::Serializator &s) const {
 		Heli::serialize(s);
-		_reaction.serialize(s);
+		s.add(_reaction);
 	}
 	virtual void deserialize(const mrt::Serializator &s) {
 		Heli::deserialize(s);
-		_reaction.deserialize(s);
+		s.get(_reaction);
 	}
 
 	virtual Object * clone() const { return new AIHeli(*this); }

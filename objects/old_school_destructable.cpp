@@ -58,7 +58,7 @@ void OldSchoolDestructableObject::serialize(mrt::Serializator &s) const {
 	s.add(_explosions);
 	s.add(_make_pierceable);
 	s.add(_message);
-	_spawn.serialize(s);
+	s.add(_spawn);
 }
 
 void OldSchoolDestructableObject::deserialize(const mrt::Serializator &s) {
@@ -67,7 +67,7 @@ void OldSchoolDestructableObject::deserialize(const mrt::Serializator &s) {
 	s.get(_explosions);
 	s.get(_make_pierceable);
 	s.get(_message);
-	_spawn.deserialize(s);
+	s.get(_spawn);
 }
 
 void OldSchoolDestructableObject::addDamage(Object *from, const int dhp, const bool emitDeath) {

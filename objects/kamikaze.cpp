@@ -37,11 +37,11 @@ public:
 
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
-		_reaction.serialize(s);
+		s.add(_reaction);
 	}
 	virtual void deserialize(const mrt::Serializator &s) {
 		Object::deserialize(s);
-		_reaction.deserialize(s);
+		s.get(_reaction);
 	}	
 
 private: 

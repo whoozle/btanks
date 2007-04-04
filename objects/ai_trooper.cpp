@@ -166,11 +166,11 @@ public:
 
 	virtual void serialize(mrt::Serializator &s) const {
 		Trooper::serialize(s);
-		_reaction.serialize(s);
+		s.add(_reaction);
 	}
 	virtual void deserialize(const mrt::Serializator &s) {
 		Trooper::deserialize(s);
-		_reaction.deserialize(s);
+		s.get(_reaction);
 	}
 	
 	virtual void calculate(const float dt) {

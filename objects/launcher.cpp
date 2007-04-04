@@ -141,14 +141,14 @@ const bool Launcher::take(const BaseObject *obj, const std::string &type) {
 
 void Launcher::serialize(mrt::Serializator &s) const {
 	Object::serialize(s);
-	_fire.serialize(s);
+	s.add(_fire);
 }
 
 void Launcher::deserialize(const mrt::Serializator &s) {
 	Object::deserialize(s);
 	if (registered_name == "static-launcher")
 		_state.clear();
-	_fire.deserialize(s);
+	s.get(_fire);
 }
 
 REGISTER_OBJECT("launcher", Launcher, ("player"));

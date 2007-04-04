@@ -36,17 +36,17 @@ public:
 	virtual void serialize(mrt::Serializator &s) const {
 		DestructableObject::serialize(s);
 		s.add(_object);
-		_fire.serialize(s);
-		_reload.serialize(s);
-		_reaction.serialize(s);
+		s.add(_fire);
+		s.add(_reload);
+		s.add(_reaction);
 	}
 
 	virtual void deserialize(const mrt::Serializator &s) {
 		DestructableObject::deserialize(s);
 		s.get(_object);
-		_fire.deserialize(s);
-		_reload.deserialize(s);
-		_reaction.deserialize(s);
+		s.get(_fire);
+		s.get(_reload);
+		s.get(_reaction);
 	}
 
 private:

@@ -206,8 +206,8 @@ const bool Shilka::take(const BaseObject *obj, const std::string &type) {
 
 void Shilka::serialize(mrt::Serializator &s) const {
 	Object::serialize(s);
-	_fire.serialize(s);
-	_special_fire.serialize(s);
+	s.add(_fire);
+	s.add(_special_fire);
 	s.add(_left_fire);
 }
 void Shilka::deserialize(const mrt::Serializator &s) {
@@ -215,8 +215,8 @@ void Shilka::deserialize(const mrt::Serializator &s) {
 	if (registered_name == "static-shilka")
 		_state.clear();
 	
-	_fire.deserialize(s);
-	_special_fire.deserialize(s);
+	s.get(_fire);
+	s.get(_special_fire);
 	s.get(_left_fire);
 }
 

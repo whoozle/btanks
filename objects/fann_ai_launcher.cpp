@@ -42,11 +42,11 @@ public:
 	virtual Object * clone() const;
 	virtual void serialize(mrt::Serializator &s) const {
 		Launcher::serialize(s);
-		_reaction.serialize(s);
+		s.add(_reaction);
 	}
 	virtual void deserialize(const mrt::Serializator &s) {
 		Launcher::deserialize(s);
-		_reaction.deserialize(s);
+		s.get(_reaction);
 	}	
 private: 
 	static void movementTraining(float *output, const Matrix<int> &surrounds);

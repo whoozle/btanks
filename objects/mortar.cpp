@@ -101,13 +101,13 @@ void Mortar::tick(const float dt) {
 
 void Mortar::serialize(mrt::Serializator &s) const {
 	Object::serialize(s);
-	_fire.serialize(s);
+	s.add(_fire);
 }
 void Mortar::deserialize(const mrt::Serializator &s) {
 	Object::deserialize(s);
 	if (registered_name == "static-mortar")
 		_state.clear();
-	_fire.deserialize(s);
+	s.get(_fire);
 }
 
 REGISTER_OBJECT("mortar", Mortar, ("player"));

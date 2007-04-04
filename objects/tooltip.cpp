@@ -53,11 +53,11 @@ public:
 
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
-		_change.serialize(s);
+		s.add(_change);
 	}
 	virtual void deserialize(const mrt::Serializator &s) {
 		Object::deserialize(s);
-		_change.deserialize(s);	
+		s.get(_change);	
 	}
 
 private: 

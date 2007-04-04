@@ -31,14 +31,14 @@ public:
 
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
-		_fire.serialize(s);
-		_alt_fire.serialize(s);
+		s.add(_fire);
+		s.add(_alt_fire);
 		s.add(_left);
 	}
 	virtual void deserialize(const mrt::Serializator &s) {
 		Object::deserialize(s);
-		_fire.deserialize(s);
-		_alt_fire.deserialize(s);
+		s.get(_fire);
+		s.get(_alt_fire);
 		s.get(_left);
 	}	
 

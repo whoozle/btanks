@@ -37,19 +37,13 @@ public:
 	void emit(const std::string &event, Object * emitter);
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
-		_reaction_time.serialize(s);
-		//_refresh_waypoints.serialize(s);
-		//_waypoint.serialize(s);
-		//_waypoint_rel.serialize(s);
+		s.add(_reaction_time);
 		s.add(_waypoint_name);
 		s.add(_stop);
 	}
 	virtual void deserialize(const mrt::Serializator &s) {
 		Object::deserialize(s);
-		_reaction_time.deserialize(s);
-		//_refresh_waypoints.deserialize(s);
-		//_waypoint.deserialize(s);
-		//_waypoint_rel.deserialize(s);
+		s.get(_reaction_time);
 		s.get(_waypoint_name);
 		s.get(_stop);
 	}	
@@ -58,9 +52,6 @@ private:
 
 	Alarm _reaction_time;
 	bool _stop;
-	//Alarm _refresh_waypoints;
-	//v2<float> _waypoint;
-	//v2<float> _waypoint_rel;
 	std::string _waypoint_name;
 };
 

@@ -39,18 +39,18 @@ public:
 
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
-		_next_target.serialize(s);
-		_next_target_rel.serialize(s);
+		s.add(_next_target);
+		s.add(_next_target_rel);
 		s.add(_active);
-		_spawn.serialize(s);
+		s.add(_spawn);
 		s.add(_paratrooper);
 	}
 	virtual void deserialize(const mrt::Serializator &s) {
 		Object::deserialize(s);
-		_next_target.deserialize(s);
-		_next_target_rel.deserialize(s);
+		s.get(_next_target);
+		s.get(_next_target_rel);
 		s.get(_active);
-		_spawn.deserialize(s);
+		s.get(_spawn);
 		s.get(_paratrooper);
 	}
 

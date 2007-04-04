@@ -37,12 +37,12 @@ public:
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
 		s.add(_object);
-		_fire.serialize(s);
+		s.add(_fire);
 	}
 	virtual void deserialize(const mrt::Serializator &s) {
 		Object::deserialize(s);
 		s.get(_object);
-		_fire.deserialize(s);
+		s.get(_fire);
 	}	
 
 protected: 
