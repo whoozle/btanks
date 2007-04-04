@@ -565,6 +565,9 @@ TRY {
 		o.tick(dt);
 	} CATCH("calling o.tick", throw;)
 
+	if (o._follow) 
+		return;
+		
 	if (o.speed == 0) {
 		TRY {
 			o._idle_time += dt;
@@ -918,6 +921,7 @@ void IWorld::tick(ObjectMap &objects, const float dt, const bool do_calculate) {
 			o->_velocity = leader->_velocity;
 			if (World->_safe_mode)
 				o->_dead = false;
+			updateObject(o);
 			++i;
 		} else {
 			if (World->_safe_mode == false) {
