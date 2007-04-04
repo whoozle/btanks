@@ -100,14 +100,13 @@ void Tank::calculate(const float dt) {
 }
 
 void Tank::tick(const float dt) {
-	Object::tick(dt);
-
-	bool fire_possible = _fire.tick(dt);
-	
 	if (getState().empty()) {
 		play("hold", true);
 	}
 
+	Object::tick(dt);
+
+	bool fire_possible = _fire.tick(dt);
 	_velocity.normalize();
 	if (_velocity.is0()) {
 		cancelRepeatable();
