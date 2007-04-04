@@ -161,7 +161,7 @@ void Object::play(const std::string &id, const bool repeat) {
 	checkAnimation();
 	const Pose *pose = _model->getPose(id);
 	if (pose == NULL) {
-		LOG_WARN(("animation model %s does not have pose %s", _animation->model.c_str(), id.c_str()));
+		LOG_WARN(("animation model %s does not have pose '%s'", _animation->model.c_str(), id.c_str()));
 		return;
 	}
 

@@ -537,6 +537,7 @@
 	<alias name="road-sign" class="destructable-object" />
 	<alias name="oil-barrels" class="explosive" />
  	<alias name="impassable-static-corpse" class="static-corpse" />
+ 	<alias name="train-smoke" class="single-pose(once)" />
 	
 	<object class="watchtower-with-machinegunner" mass="1000" hp="20" z="200" impassability="1" />
 	<object class="watchtower-with-thrower" mass="1000" hp="20" z="200" impassability="1" />
@@ -594,7 +595,8 @@
 	<object class="choo-choo-wagon" speed="30" mass="5000" hp="100" z="0" impassability="1" />
 	<object class="train-smoke" z="101" />
 
-	<object class="corpse" hp="1000" ttl="10" fadeout_time="1" z="-5" impassability="0" />
+	<object class="corpse" hp="-1" ttl="10" fadeout_time="1" z="-5" impassability="0" />
+	<object class="impassable-corpse" parent="corpse" impassability="1" />
 	<object class="broken-object" impassability="1" pierceable="true" hp="-1" />
 	
 	<object class="explosion" hp="5" z="580" />

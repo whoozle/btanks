@@ -23,7 +23,7 @@
 class SinglePose : public Object {
 public:
 	SinglePose(const std::string &pose) : 
-		Object("single-pose") {
+		Object("single-pose"), _pose(pose) {
 			impassability = 0;
 		}
 
