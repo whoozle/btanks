@@ -74,6 +74,8 @@ void BaseObject::serialize(mrt::Serializator &s) const {
 	s.add(_idle_time);	
 
 	s.add(_dead);
+	s.add(_variants);
+	
 	_position.serialize(s);
 	s.add(_z);
 	
@@ -109,6 +111,8 @@ void BaseObject::deserialize(const mrt::Serializator &s) {
 	s.get(_idle_time);	
 
 	s.get(_dead);
+	s.get(_variants);
+	
 	_interpolation_position_backup = _position;
 	_position.deserialize(s);
 	s.get(_z);
@@ -385,11 +389,15 @@ const float BaseObject::getEffectiveImpassability(const float impassability) con
 	float base = 0, base_value = 0, penalty = 1.0f;
 	getImpassabilityPenalty(impassability, base, base_value, penalty);
 	if (base > impassability)
-		throw_ex(("invalid impassability penalty returned for %g: base: %g, penalry: %g (base is out of range)", impassability, base, penalty));
+		throw_ex(("invalid impassability penalty returned for %g: base: %g, penalty: %g (base is out of range)", impassability, base, penalty));
 	float eim = base_value + (impassability - base) * penalty;
 	if (eim < 0)
 		eim = 0;
 	if (eim > 1) 
 		eim = 1;
 	return eim;
+}
+
+void BaseObject::updateVariants(const Variants &vars) {
+	_variants = vars;
 }

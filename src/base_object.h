@@ -23,6 +23,7 @@
 #include "mrt/serializable.h" 
 #include "player_state.h"
 #include "object_common.h"
+#include "variants.h"
 #include <deque>
 #include <set>
 
@@ -42,6 +43,8 @@ public:
 	
 	BaseObject(const std::string &classname);
 	virtual ~BaseObject();
+	
+	void updateVariants(const Variants &vars);
 	
 	virtual void tick(const float dt) = 0;
 	virtual void render(sdlx::Surface &surf, const int x, const int y) = 0;
@@ -111,10 +114,10 @@ protected:
 	v2<float> _velocity, _direction, _velocity_fadeout;
 	float _moving_time, _idle_time;
 	
-
 	virtual void calculate(const float dt) = 0;
 
 	bool need_sync, _dead;
+	Variants _variants;
 
 private:
 
