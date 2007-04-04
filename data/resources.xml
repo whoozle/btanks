@@ -27,6 +27,11 @@
 		<pose id="move">0,1,0</pose>
 	</animation-model>
 
+	<animation-model id="mortar-animation" speed="5">
+		<pose id="hold">0</pose>
+		<pose id="move">1,2,3,4</pose>
+	</animation-model>
+
 	<animation-model id="car-animation" speed="10">
 		<pose id="hold">0</pose>
 		<pose id="move">0,1</pose>
