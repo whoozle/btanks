@@ -318,6 +318,11 @@ IResourceManager::~IResourceManager() {
 }
 
 void IResourceManager::registerObject(const std::string &classname, Object *o) {
+	Variants vars;
+	vars.parse(classname);
+	if (!vars.empty())
+		throw_ex(("registering object with variants ('%s') is prohibited", classname.c_str()));
+	
 	assert(!classname.empty());
 	*const_cast<std::string *>(&o->registered_name) = classname;
 	assert(!o->registered_name.empty());
@@ -327,8 +332,15 @@ void IResourceManager::registerObject(const std::string &classname, Object *o) {
 	//LOG_DEBUG(("classname %s registered at %p", classname.c_str(), (void*)o));
 }
 
-void IResourceManager::createAlias(const std::string &name, const std::string &classname) {
-	LOG_DEBUG(("creating alias '%s' -> '%s'", name.c_str(), classname.c_str()));
+void IResourceManager::createAlias(const std::string &name, const std::string &_classname) {
+	Variants vars;
+	vars.parse(name);
+	if (!vars.empty())
+		throw_ex(("registering object with variants ('%s') is prohibited", name.c_str()));
+
+	std::string classname = vars.parse(_classname);
+
+	LOG_DEBUG(("creating alias '%s' -> '%s' (variants: '%s')", name.c_str(), classname.c_str(), vars.dump().c_str()));
 	ObjectMap::const_iterator i = _objects.find(classname);
 
 	if (i == _objects.end())
@@ -342,10 +354,15 @@ void IResourceManager::createAlias(const std::string &name, const std::string &c
 		throw_ex(("%s->clone(\"\") returns NULL", classname.c_str()));
 
 	*const_cast<std::string *>(&r->registered_name) = name;
+
+	r->updateVariants(vars);
 	_objects[name] = r;
 }
 
-Object *IResourceManager::createObject(const std::string &classname) const {
+Object *IResourceManager::createObject(const std::string &_classname) const {
+	Variants vars;
+	std::string classname = vars.parse(_classname);
+	
 	ObjectMap::const_iterator i = _objects.find(classname);
 	if (i == _objects.end())
 		throw_ex(("classname '%s' was not registered", classname.c_str()));
@@ -355,6 +372,8 @@ Object *IResourceManager::createObject(const std::string &classname) const {
 										//clone should look like { return new Object(*this); }
 	if (r == NULL)
 		throw_ex(("%s->clone() returns NULL", classname.c_str()));
+
+	r->updateVariants(vars);
 
 	return r;
 }
