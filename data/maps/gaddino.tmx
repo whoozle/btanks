@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <map version="0.99b" orientation="orthogonal" width="25" height="20" tilewidth="64" tileheight="64">
  <properties>
-  <property name="object:choo-choo-train:choo-choo-train:1" value="1056,-127,100"/>
+  <property name="object:choo-choo-train:choo-choo-train:save-for-victory:bugaga" value="1056,-127,100"/>
   <property name="object:road-sign:road-sign10:0" value="1319,195,450"/>
   <property name="object:stack:stack:14" value="@22,0,150"/>
   <property name="object:stack:stack:5" value="@10,3,150"/>
