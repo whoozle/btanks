@@ -153,13 +153,13 @@ void Tank::tick(const float dt) {
 
 void Tank::serialize(mrt::Serializator &s) const {
 	Object::serialize(s);
-	_fire.serialize(s);
+	s.add(_fire);
 }
 void Tank::deserialize(const mrt::Serializator &s) {
 	Object::deserialize(s);
 	if (registered_name == "static-tank")
 		_state.clear();
-	_fire.deserialize(s);
+	s.get(_fire);
 }
 
 REGISTER_OBJECT("tank", Tank, ("player"));

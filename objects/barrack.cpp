@@ -36,14 +36,14 @@ public:
 		DestructableObject::serialize(s);
 		s.add(_object);
 		s.add(_animation);
-		_spawn.serialize(s);
+		s.add(_spawn);
 	}
 
 	virtual void deserialize(const mrt::Serializator &s) {
 		DestructableObject::deserialize(s);
 		s.get(_object);
 		s.get(_animation);
-		_spawn.deserialize(s);
+		s.get(_spawn);
 	}
 
 private:
