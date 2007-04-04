@@ -34,7 +34,8 @@ class Surface;
 
 struct Item {
 	Item(const std::string &classname, const std::string &animation, const v2<int> position, const int z = 0) :
-		classname(classname), animation(animation), position(position), z(z), id(-1), dead_on(0), destroy_for_victory(false) 
+		classname(classname), animation(animation), position(position), z(z), id(-1), dead_on(0), 
+		destroy_for_victory(false)
 		{}
 
 	std::string classname, animation;
@@ -44,6 +45,7 @@ struct Item {
 	int id;
 	Uint32 dead_on;
 	bool destroy_for_victory;
+	std::string save_for_victory;
 };
 
 

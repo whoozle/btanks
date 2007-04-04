@@ -61,6 +61,10 @@ void IGameMonitor::checkItems(const float dt) {
 			} 
 			continue;
 		}
+		if (!item.save_for_victory.empty()) {
+			gameOver("messages", item.save_for_victory, 5);
+			return;
+		}
 		if (item.destroy_for_victory)
 			++goal;
 		
@@ -101,7 +105,7 @@ void IGameMonitor::add(const Item &item_) {
 	o->addOwner(-42); //fake owner ;)
 	World->addObject(o, v2<float>(item.position.x, item.position.y));
 	
-	if (item.destroy_for_victory) {
+	if (item.destroy_for_victory || !item.save_for_victory.empty()) {
 		LOG_DEBUG(("%s:%s critical for victory", item.classname.c_str(), item.animation.c_str()));
 	}
 		
