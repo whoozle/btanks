@@ -355,10 +355,7 @@
 	<animation id="red-mortar" tile="mortar.png" model="mortar-animation"/>
 	<animation id="yellow-mortar" tile="mortar.png" model="mortar-animation"/>
 	<animation id="cyan-mortar" tile="mortar.png" model="mortar-animation"/>
-	<animation id="dead-green-mortar" tile="mortar_crash.png" model="dead-vehicle-animation"/>
-	<animation id="dead-red-mortar" tile="mortar_crash.png" model="dead-vehicle-animation"/>
-	<animation id="dead-yellow-mortar" tile="mortar_crash.png" model="dead-vehicle-animation"/>
-	<animation id="dead-cyan-mortar" tile="mortar_crash.png" model="dead-vehicle-animation"/>
+	<animation id="dead-mortar" tile="mortar_crash.png" model="dead-vehicle-animation"/>
 
 	<!-- a little note on outlines and animations : 
 		it is safe to define more than one animation with the same tile. it wont be loaded more than once. 
@@ -444,12 +441,14 @@
 	<animation id="machinegunner-bullet" tile="machinegunner_bullet2.png" model="bullet-animation"/>
 	<animation id="dirt-bullet" tile="dirt_bullet.png" model="bullet-animation"/>
 	<animation id="cannon-bullet" tile="cannon_bullet.png" model="bullet-animation"/>
+	<animation id="mortar-bullet" tile="dirt_bullet.png" model="bullet-animation"/>
 	
 	<animation id="explosion" tile="explosion.png" model="explosion-animation" />
 	<animation id="missile-explosion" tile="missile_blast.png" model="missile-explosion-animation" />
 	<animation id="building-explosion" tile="building_explosion_128.png" model="building-explosion-animation" size="128" />
 	<animation id="nuclear-explosion" tile="nuclear_explosion.png" model="nuclear-explosion-animation" size="448" />
 	<animation id="cannon-explosion" tile="cannon_explosion.png" model="cannon-explosion-animation" size="128" />
+	<animation id="mortar-explosion" tile="cannon_explosion.png" model="cannon-explosion-animation" size="128" />
 	<animation id="traffic-lights" tile="traffic_lights.png" model="traffic-lights-animation" />
 
 	<animation id="gate" tile="gate01.png" model="destructable-object-animation" tile_width="128" tile_height="64" />
@@ -555,6 +554,9 @@
 	<object class="shilka" speed="450" mass="400" hp="60" z="0" />
 	<object class="static-shilka" parent="shilka" z="0" />
 	<object class="ai-shilka" parent="shilka" z="0" />
+	<object class="mortar" speed="300" mass="400" hp="100" z="0" />
+	<object class="static-mortar" parent="mortar" />
+	<object class="ai-shilka" parent="mortar" />
 
 	<object class="bullet" speed="1100" mass="2" ttl="1" hp="10" z="210" />
 	<object class="ricochet-bullet" speed="1100" mass="2" ttl="2" hp="10" z="210" />
@@ -563,6 +565,7 @@
 	<object class="dirt-bullet" speed="600" mass="1" ttl="0.5" hp="0" z="-10" />
 	<object class="cannon-bullet" speed="600" mass="1" ttl="1" hp="0" z="-10" />
 	<object class="shilka-bullet" speed="1200" mass="1" piercing="true" ttl="1" hp="10" z="-10" />
+	<object class="mortar-bullet" speed="600" mass="1" ttl="0.7" hp="0" z="-10" />
 	<object class="helicopter-bullet" speed="1200" mass="1" piercing="true" ttl="1" hp="10" z="-10" />
 
 	<object class="guided-missile" speed="450" mass="100" ttl="5" hp="15" z="250" />
@@ -587,11 +590,12 @@
 	<object class="corpse" hp="1000" ttl="10" fadeout_time="1" z="-5" impassability="0" />
 	<object class="broken-object" impassability="1" pierceable="true" hp="-1" />
 	
-	<object class="explosion" hp="1" z="580" />
+	<object class="explosion" hp="5" z="580" />
 	<object class="static-smoke-cloud" impassability="-1" hp="1000" z="580" />
 	<object class="smoke-cloud" parent="static-smoke-cloud" ttl="30" fadeout_time="1" />
 	<object class="nuclear-explosion" hp="1000" mass="10000" impassability="-1" z="900" />
 	<object class="cannon-explosion" hp="30" impassability="-1" z="900" />
+	<object class="mortar-explosion" hp="30" impassability="-1" z="900" />
 	
 	<object class="static-dirt" impassability="-1" z="-20" />
 	<object class="dirt" parent="static-dirt" ttl="50" fadeout="1" />
