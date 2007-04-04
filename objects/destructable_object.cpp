@@ -55,7 +55,7 @@ void DestructableObject::addDamage(Object *from, const int dhp, const bool emitD
 	if (hp <= 0) {
 		_broken = true;
 		hp = -1;
-		if (_make_pierceable)
+		if (_make_pierceable || _variants.has("make-pierceable"))
 			pierceable = true;
 		cancelAll();
 		play("fade-out", false); 
@@ -95,6 +95,4 @@ Object* DestructableObject::clone() const  {
 }
 
 REGISTER_OBJECT("destructable-object", DestructableObject, ("destructable-object", "", "", false));
-REGISTER_OBJECT("destructable-object(pierceable)", DestructableObject, ("destructable-object", "", "", true));
 REGISTER_OBJECT("destructable-object-with-fire", DestructableObject, ("destructable-object", "fire", "fire", false));
-REGISTER_OBJECT("destructable-object-with-fire(pierceable)", DestructableObject, ("destructable-object", "fire", "fire", true));
