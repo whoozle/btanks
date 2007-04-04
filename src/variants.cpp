@@ -54,7 +54,7 @@ const bool Variants::same(const Variants &other) const {
 			++j;
 		}
 	}
-	return true;
+	return false;
 }
 
 const bool Variants::has(const std::string &name) const {
