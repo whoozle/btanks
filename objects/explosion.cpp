@@ -76,7 +76,6 @@ void Explosion::tick(const float dt) {
 	GET_CONFIG_VALUE("objects.nuclear-explosion.damage-map-after", float, dma, 0.65);
 
 	if  (
-			(registered_name == "nuclear-explosion" || registered_name == "cannon-explosion") && 
 			!_damage_done && getStateProgress() >= dma && state != "start"
 		) {
 		_damage_done = true;
@@ -99,22 +98,20 @@ void Explosion::emit(const std::string &event, Object * emitter) {
 		if (emitter == NULL || emitter->pierceable)
 			return;
 		
-		if (registered_name == "nuclear-explosion" || registered_name == "cannon-explosion") {
-			//nuke damage.
-			if (emitter == NULL || 
-				emitter->registered_name == "nuclear-explosion" || 
-				emitter->registered_name == "cannon-explosion")
-				return;
+		//nuke damage.
+		if (emitter == NULL || 
+			emitter->registered_name.size() < 9 ||
+			emitter->registered_name.substr(emitter->registered_name.size() - 9, 9) == "explosion")
+			return;
 			
-			const int id = emitter->getID();
+		const int id = emitter->getID();
 		
-			if (_damaged_objects.find(id) != _damaged_objects.end())
-				return; //damage was already added for this object.
+		if (_damaged_objects.find(id) != _damaged_objects.end())
+			return; //damage was already added for this object.
 		
-			_damaged_objects.insert(id);
-		
-			emitter->addDamage(this, max_hp);
-		} 		
+		_damaged_objects.insert(id);
+		emitter->addDamage(this, max_hp);
+		need_sync = true;
 	} else Object::emit(event, emitter);
 }
 
@@ -122,3 +119,4 @@ void Explosion::emit(const std::string &event, Object * emitter) {
 REGISTER_OBJECT("explosion", Explosion, ());
 REGISTER_OBJECT("nuclear-explosion", Explosion, ());
 REGISTER_OBJECT("cannon-explosion", Explosion, ());
+REGISTER_OBJECT("mortar-explosion", Explosion, ());
