@@ -20,6 +20,7 @@
 #include "object.h"
 #include "resource_manager.h"
 #include "config.h"
+#include "tmx/map.h"
 
 class Mine : public Object {
 public:
@@ -47,6 +48,28 @@ void Mine::tick(const float dt) {
 	if (hasOwners() && getState() == "armed") 
 		disown();
 	if (getState() == "armed" && registered_name == "bomberman-mine") {
+		v2<float> tile_size = Map->getTileSize().convert<float>();
+		v2<float> path_tile_size = Map->getPathTileSize().convert<float>();
+		LOG_DEBUG(("tile_size: %g, %g", tile_size.x, tile_size.y));
+		spawn("bomberman-explosion", "cannon-explosion");
+		const Matrix<int>& matrix = Map->getImpassabilityMatrix();
+		for (int d = 0; d < 4; ++d) {
+			for(int i = 1; i <= 2; ++i) {
+				v2<float> dpos;
+				dpos.fromDirection(d, 4);
+				dpos *= tile_size * i;
+				
+				v2<float>tile_pos;
+				getCenterPosition(tile_pos);
+				tile_pos += dpos;
+				tile_pos /= path_tile_size;
+				LOG_DEBUG(("get(%d, %d) = %d", (int)tile_pos.y, (int)tile_pos.x, matrix.get((int)tile_pos.y, (int)tile_pos.x)));
+				if (matrix.get((int)tile_pos.y, (int)tile_pos.x) == -1)
+					break;
+				
+				spawn("bomberman-explosion", "cannon-explosion", dpos);
+			}
+		}
 		emit("death", NULL);
 	}
 }
