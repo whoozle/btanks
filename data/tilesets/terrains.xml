@@ -9,4 +9,6 @@
 
 	<background id="grey-soil" width="2" height="1">61,62</background>
 	<background id="sand" width="2" height="1">65,66</background>
+	
+	<background id="metal" size="1">128</background>
 </tileset>
