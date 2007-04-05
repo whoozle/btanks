@@ -591,7 +591,7 @@
 
 	<object class="regular-mine" hp="40" impassability="-1" z="-30" />
 	<object class="armed-mine" parent="regular-mine" />
-	<object class="bomberman-mine" parent="regular-mine" />
+	<object class="bomberman-mine" parent="regular-mine" pierceable="false" />
 	
 	<object class="bomb" hp="1" impassability="-1" speed="100" />
 
