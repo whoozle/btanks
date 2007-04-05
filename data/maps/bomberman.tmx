@@ -11,7 +11,7 @@
  </tileset>
  <layer name="ground" width="16" height="12">
   <properties>
-   <property name="generator:1:fill" value="terrains:?"/>
+   <property name="generator:1:fill" value="terrains:grass"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGAWjYOQCABX0oPUAAwAA
@@ -21,6 +21,7 @@
  <layer name="bricks" width="16" height="12">
   <properties>
    <property name="impassability" value="100"/>
+   <property name="generator:1:fill-pattern" value="terrains:metal:2x2:0001"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGAWjYOQCABX0oPUAAwAA
