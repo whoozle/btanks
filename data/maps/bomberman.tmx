@@ -10,6 +10,9 @@
   <image source="../tilesets/terrains.png"/>
  </tileset>
  <layer name="ground" width="16" height="12">
+  <properties>
+   <property name="generator:1:fill" value="terrains:?"/>
+  </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGAWjYOQCABX0oPUAAwAA
   </data>

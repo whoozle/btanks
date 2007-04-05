@@ -40,9 +40,11 @@
 #include "finder.h"
 #include "zbox.h"
 
+#include "generator.h"
+
 IMPLEMENT_SINGLETON(Map, IMap)
 
-IMap::IMap() : _w(0), _h(0), _tw(0), _th(0), _ptw(0), _pth(0), _firstgid(0) {
+IMap::IMap() : _w(0), _h(0), _tw(0), _th(0), _ptw(0), _pth(0), _firstgid(0), _generator(new MapGenerator) {
 	_lastz = -1000;
 	_image = NULL;
 }
@@ -539,7 +541,7 @@ void IMap::end(const std::string &name) {
 		_image = NULL;
 		
 		_image = new sdlx::Surface;
-		std::string source = e.attrs["source"];
+		std::string source = _image_name = e.attrs["source"];
 		if (source.size()) {
 			LOG_DEBUG(("loading tileset from single file ('%s')", source.c_str()));
 			source = Finder->find("tiles/" + source);
@@ -613,8 +615,19 @@ void IMap::end(const std::string &name) {
 		layer->pierceable = pierceable;
 		layer->hp = hp;
 		TRY { 
-			layer->init(w, h, _data); //fixme: fix possible memory leak here, if exception occurs
-		} CATCH(mrt::formatString("layer '%s'", _layer_name.c_str()).c_str(), throw);
+			layer->init(w, h, _data); 
+		} CATCH(mrt::formatString("layer '%s'", _layer_name.c_str()).c_str(), 
+			{delete layer; layer = NULL; throw; }
+		);
+		
+		for(PropertyMap::iterator i = _properties.begin(); i != _properties.end(); ++i) {
+			if (i->first.compare(0, 10, "generator:") != 0)
+				continue;
+			
+			TRY {
+				_generator->exec(layer, i->first.substr(i->first.find(":", 11) + 1), i->second);
+			} CATCH("executing generator's commands", {})
+		}
 		
 		_layers[z] = layer;
 		_layer_z[_layer_name] = z;
@@ -628,6 +641,8 @@ void IMap::end(const std::string &name) {
 			properties[e.attrs["name"]] = e.attrs["value"];
 	} else if (name == "tileset" && _image != NULL && _image_is_tileset) {
 		//fixme: do not actualy chop image in many tiles at once, use `tile' wrapper
+		_generator->tileset(_image_name, _firstgid);
+
 		_image->setAlpha(0, 0);
 		int w = _image->getWidth(), h = _image->getHeight();
 		int id = 0;
@@ -780,6 +795,8 @@ void IMap::clear() {
 	_damage4.clear();
 	_layer_z.clear();
 	_cover_map.setSize(0, 0, 0);
+	
+	_generator->clear();
 }
 
 IMap::~IMap() {

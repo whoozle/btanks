@@ -41,6 +41,7 @@ class Rect;
 class TMXEntity;
 class Layer;
 class Object;
+class MapGenerator;
 
 class IMap : public NotifyingXMLParser {
 public:
@@ -101,6 +102,7 @@ private:
 	
 	int _lastz;
 	mrt::Chunk _data;
+	std::string _image_name;
 	sdlx::Surface *_image;
 	bool _image_is_tileset;
 
@@ -130,6 +132,8 @@ private:
 	
 	IMap(const IMap&);
 	const IMap& operator=(const IMap&);
+	
+	MapGenerator *_generator;
 };
 
 SINGLETON(Map, IMap);
