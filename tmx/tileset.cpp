@@ -44,7 +44,7 @@ const GeneratorObject *Tileset::getObject(const std::string &name) const {
 	}
 	
 	Objects::const_iterator i = _objects.find(name);
-	if (i == _objects.end());
+	if (i == _objects.end())
 		return NULL;
 
 	assert(i->second != NULL);
