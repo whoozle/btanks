@@ -63,7 +63,7 @@ void Mine::tick(const float dt) {
 				getCenterPosition(tile_pos);
 				tile_pos += dpos;
 				tile_pos /= path_tile_size;
-				LOG_DEBUG(("get(%d, %d) = %d", (int)tile_pos.y, (int)tile_pos.x, matrix.get((int)tile_pos.y, (int)tile_pos.x)));
+				//LOG_DEBUG(("get(%d, %d) = %d", (int)tile_pos.y, (int)tile_pos.x, matrix.get((int)tile_pos.y, (int)tile_pos.x)));
 				if (matrix.get((int)tile_pos.y, (int)tile_pos.x) == -1)
 					break;
 				
