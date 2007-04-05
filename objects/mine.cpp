@@ -48,6 +48,12 @@ void Mine::tick(const float dt) {
 	if (hasOwners() && getState() == "armed") 
 		disown();
 	if (getState() == "armed" && registered_name == "bomberman-mine") {
+		emit("death", NULL);
+	}
+}
+
+void Mine::emit(const std::string &event, Object * emitter) {
+	if (event == "death" && registered_name == "bomberman-mine") {
 		v2<float> tile_size = Map->getTileSize().convert<float>();
 		v2<float> path_tile_size = Map->getPathTileSize().convert<float>();
 		LOG_DEBUG(("tile_size: %g, %g", tile_size.x, tile_size.y));
@@ -70,12 +76,8 @@ void Mine::tick(const float dt) {
 				spawn("bomberman-explosion", "cannon-explosion", dpos);
 			}
 		}
-		emit("death", NULL);
-	}
-}
-
-void Mine::emit(const std::string &event, Object * emitter) {
-	if (event == "collision") {
+		Object::emit(event, emitter);	
+	} if (event == "collision") {
 		if (emitter != NULL && getState() == "armed") {
 			GET_CONFIG_VALUE("objects.regular-mine.triggering-mass", int, m, 20);
 			if (emitter->mass < m)
