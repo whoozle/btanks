@@ -540,6 +540,7 @@
 	<alias name="oil-barrels" class="explosive" />
  	<alias name="impassable-static-corpse" class="static-corpse" />
  	<alias name="train-smoke" class="single-pose(once)" />
+ 	<alias name="bomberman-explosion" class="cannon-explosion" />
 	
 	<object class="watchtower-with-machinegunner" mass="1000" hp="20" z="200" impassability="1" />
 	<object class="watchtower-with-thrower" mass="1000" hp="20" z="200" impassability="1" />
@@ -608,6 +609,7 @@
 	<object class="nuclear-explosion" hp="1000" mass="10000" impassability="-1" z="900" />
 	<object class="cannon-explosion" hp="30" impassability="-1" z="900" />
 	<object class="mortar-explosion" hp="30" impassability="-1" z="900" />
+	<object class="bomberman-explosion" hp="100" impassability="-1" z="900" />
 	
 	<object class="static-dirt" impassability="-1" z="-20" />
 	<object class="dirt" parent="static-dirt" ttl="50" fadeout="1" />
