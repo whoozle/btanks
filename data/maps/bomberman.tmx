@@ -5,6 +5,11 @@
   <property name="spawn:5" value="@0,11"/>
   <property name="spawn:4" value="@15,0"/>
   <property name="spawn:3" value="@15,11"/>
+  <property name="config:multiplayer.restrict-start-vehicle" value="string:launcher"/>
+  <property name="config:objects.missiles-on-launcher.default-weapon" value="string:"/>
+  <property name="config:objects.missiles-on-launcher.default-weapon-type" value="string:"/>
+  <property name="config:objects.alt-missiles-on-launcher.default-weapon" value="string:mines"/>
+  <property name="config:objects.alt-missiles-on-launcher.default-weapon-type" value="string:bomberman"/>
  </properties>
  <tileset name="Untitled" firstgid="1" tilewidth="64" tileheight="64">
   <image source="../tilesets/terrains.png"/>
