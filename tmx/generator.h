@@ -19,7 +19,8 @@ public:
 
 private: 
 
-	void fill(Layer *layer, const std::vector<std::string> &value);
+	void fill(Layer *layer, const std::vector<std::string> &args);
+	void fillPattern(Layer *layer, const std::vector<std::string> &args);
 	
 	const GeneratorObject *getObject(const std::string &tileset, const std::string &name) const;
 	
