@@ -46,6 +46,9 @@ void Mine::tick(const float dt) {
 	Object::tick(dt);
 	if (hasOwners() && getState() == "armed") 
 		disown();
+	if (getState() == "armed" && registered_name == "bomberman-mine") {
+		emit("death", NULL);
+	}
 }
 
 void Mine::emit(const std::string &event, Object * emitter) {
@@ -67,5 +70,6 @@ Object* Mine::clone() const  {
 	return new Mine(*this);
 }
 
+REGISTER_OBJECT("bomberman-mine", Mine, ());
 REGISTER_OBJECT("regular-mine", Mine, ());
 REGISTER_OBJECT("armed-mine", Mine, ());
