@@ -99,6 +99,9 @@ void IGame::init(const int argc, char *argv[]) {
 		//setup some defaults
 		
 		int r;
+		std::string s;
+		Config->get("objects.alt-missiles-on-launcher.default-weapon", s, std::string());
+		Config->get("objects.alt-missiles-on-launcher.default-weapon-type", s, std::string());
 		Config->get("map.boomerang-missiles-item.respawn-interval", r, 15);
 		Config->get("map.dirt-bullets-item.respawn-interval", r, 25);
 		Config->get("map.dispersion-bullets-item.respawn-interval", r, 15);
