@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<map version="0.99b" orientation="orthogonal" width="16" height="12" tilewidth="64" tileheight="64">
+ <tileset name="Untitled" firstgid="1" tilewidth="64" tileheight="64">
+  <image source="../tilesets/terrains.png"/>
+ </tileset>
+ <layer name="ground" width="16" height="12">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAWjYOQCABX0oPUAAwAA
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="bricks" width="16" height="12">
+  <properties>
+   <property name="impassability" value="100"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAWjYOQCABX0oPUAAwAA
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="wood 1" width="16" height="12">
+  <properties>
+   <property name="invisible-if-damaged" value="true"/>
+   <property name="hp" value="100"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAWjYOQCABX0oPUAAwAA
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="wood 2" width="16" height="12">
+  <properties>
+   <property name="invisible-if-damaged" value="true"/>
+   <property name="hp" value="100"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAWjYOQCABX0oPUAAwAA
+  </data>
+  <tileproperties/>
+ </layer>
+</map>
