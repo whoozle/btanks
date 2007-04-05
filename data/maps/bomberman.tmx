@@ -1,5 +1,11 @@
 <?xml version="1.0"?>
 <map version="0.99b" orientation="orthogonal" width="16" height="12" tilewidth="64" tileheight="64">
+ <properties>
+  <property name="spawn:1" value="@0,0"/>
+  <property name="spawn:5" value="@0,11"/>
+  <property name="spawn:4" value="@15,0"/>
+  <property name="spawn:3" value="@15,11"/>
+ </properties>
  <tileset name="Untitled" firstgid="1" tilewidth="64" tileheight="64">
   <image source="../tilesets/terrains.png"/>
  </tileset>
