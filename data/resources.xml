@@ -354,6 +354,7 @@
 	<animation id="boomerang-missiles-on-launcher" tile="launcher_missile05.png" model="missiles-on-launcher-animation" />
 	<animation id="stun-missiles-on-launcher" tile="launcher_missile06.png" model="missiles-on-launcher-animation" />
 	<animation id="regular-mines-on-launcher" tile="launcher_mine.png" model="missiles-on-launcher-animation" />
+	<animation id="bomberman-mines-on-launcher" tile="launcher_mine.png" model="missiles-on-launcher-animation" />
 	<animation id="machinegunner-on-launcher" tile="launcher_machinegunner.png" model="single-tile" />
 
 	<animation id="green-mortar" tile="mortar.png" model="mortar-animation"/>
@@ -403,6 +404,7 @@
 	<animation id="missile-fire" tile="missile_fire.png" model="missile-fire-animation" />
 	<!-- <animation id="missile-launch" tile="missile_launch.png" model="missile-launch-animation" size="128" /> -->
 	<animation id="regular-mine" tile="mine.png" model="regular-mine-animation" size="32" />
+	<animation id="bomberman-mine" tile="mine.png" model="regular-mine-animation" size="32" />
 	<animation id="bomb" tile="aviabomb.png" model="bomb-animation" />
 
 	<animation id="orange-bus" tile="bus01.png" model="car-animation"/>
@@ -588,6 +590,7 @@
 
 	<object class="regular-mine" hp="40" impassability="-1" z="-30" />
 	<object class="armed-mine" parent="regular-mine" />
+	<object class="bomberman-mine" parent="regular-mine" />
 	
 	<object class="bomb" hp="1" impassability="-1" speed="100" />
 
