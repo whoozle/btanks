@@ -31,6 +31,8 @@ public:
 		//LOG_DEBUG(("render(%d, %d, %d)", first_gid, x, y));
 		for(int dy = 0; dy < h; ++dy) 
 			for(int dx = 0; dx < w; ++dx) {
+				if (tiles[dy * w + dx] == 0)
+					continue;
 				if (layer->get(x + dx, y + dy) == 0)
 					layer->set(x + dx, y + dy, first_gid + tiles[dy * w + dx]);
 			}
