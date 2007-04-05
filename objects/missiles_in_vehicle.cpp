@@ -28,22 +28,17 @@ public:
 	void update() {
 		need_sync = true;
 		if (_object.empty() || _type.empty()) {
-			if (_install_default) {
-				if (_object.empty())
-					Config->get("objects." + registered_name + ".default-weapon", _object, "missiles");
-				if (_type.empty())
-					Config->get("objects." + registered_name + ".default-weapon-type", _type, "guided");
-			} else {
-				max_n = n = 0; 
-				return;
-			}
+			if (_object.empty())
+				Config->get("objects." + registered_name + ".default-weapon", _object, "missiles");
+			if (_type.empty())
+				Config->get("objects." + registered_name + ".default-weapon-type", _type, "guided");
 		}
 		VehicleTraits::getWeaponCapacity(max_n, max_v, _vehicle, _object, _type);
 		n = max_n;
 	}
 
-	MissilesInVehicle(const std::string &vehicle, bool install_default = true) : 
-		Object("missiles-on-vehicle"), n(0), max_v(0), max_n(0), hold(true),  _vehicle(vehicle), _install_default(install_default) {
+	MissilesInVehicle(const std::string &vehicle) : 
+		Object("missiles-on-vehicle"), n(0), max_v(0), max_n(0), hold(true),  _vehicle(vehicle) {
 		// _object(object), _type(type)
 		impassability = 0;
 		hp = -1;
@@ -78,7 +73,6 @@ public:
 		s.add(_vehicle);
 		s.add(_object);
 		s.add(_type);
-		s.add(_install_default);
 	}
 
 	virtual void deserialize(const mrt::Serializator &s) {
@@ -90,7 +84,6 @@ public:
 		s.get(_vehicle);
 		s.get(_object);
 		s.get(_type);
-		s.get(_install_default);
 		//LOG_DEBUG(("deserialize. max: %d, max visible: %d, quantity: %d", max_n, max_v, n));
 		updatePose();
 		//LOG_DEBUG(("update. max: %d, max visible: %d, quantity: %d", max_n, max_v, n));
@@ -186,6 +179,6 @@ Object* MissilesInVehicle::clone() const  {
 }
 
 REGISTER_OBJECT("missiles-on-launcher", MissilesInVehicle, ("launcher"));
-REGISTER_OBJECT("alt-missiles-on-launcher", MissilesInVehicle, ("launcher", false));
+REGISTER_OBJECT("alt-missiles-on-launcher", MissilesInVehicle, ("launcher"));
 REGISTER_OBJECT("missiles-on-tank", MissilesInVehicle, ("tank"));
 REGISTER_OBJECT("missiles-on-boat", MissilesInVehicle, ("boat"));
