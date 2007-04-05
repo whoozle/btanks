@@ -1,10 +1,12 @@
 <tileset>
 	<background id="cobbles" size="1">9</background>
+
+	<background id="concrete" size="2">31,32,41,42</background>
 	<background id="grass" size="2">35,36,45,46</background>
 
-	<background id="brown-soil" size="2">11,12,21,22</background>
-	<background id="grey-soil" size="2">51,52,61,62</background>
+	<background id="brown-soil" width="2" height="1">11,12</background>
+	<background id="black-soil" width="2" height="1">15,16</background>
 
-	<background id="black-soil" size="2">15,16,25,26</background>
-	<background id="sand" size="2">55,56,65,66</background>
+	<background id="grey-soil" width="2" height="1">61,62</background>
+	<background id="sand" width="2" height="1">65,66</background>
 </tileset>
