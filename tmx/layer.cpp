@@ -187,6 +187,18 @@ const Uint32 Layer::get(const int x, const int y) const {
 	return get(_w * y + x);
 }
 
+void Layer::set(const int x, const int y, const Uint32 tid) {
+	set(_w * y + x, tid);
+}
+
+void Layer::set(const int i, const Uint32 tid) {
+	if (i < 0 || i >= _w * _h)
+		return;
+	Uint32 *id = (Uint32 *) _data.getPtr() + i;
+	*id = tid;
+}
+
+
 void Layer::clear(const int i) {
 	if (i < 0 || i >= _w * _h)
 		return;

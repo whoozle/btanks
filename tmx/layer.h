@@ -58,6 +58,13 @@ public:
 
 	virtual ~Layer();
 
+
+	const int getWidth() const {return _w; } 
+	const int getHeight() const {return _h; } 
+
+	void set(const int x, const int y, const Uint32 tid);
+	void set(const int idx, const Uint32 tid);
+
 protected: 
 	int _w, _h;
 private: 

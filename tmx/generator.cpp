@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "generator.h"
 #include "layer.h"
 #include "tileset.h"
@@ -13,6 +14,17 @@ void MapGenerator::fill(Layer *layer, const std::vector<std::string> &args) {
 	if (args.size() < 2) 
 		throw_ex(("fill command takes 2 arguments."));
 	LOG_DEBUG(("type: %s, name: %s",args[0].c_str(), args[1].c_str()));
+	const GeneratorObject *obj = getObject(args[0], args[1]);
+}
+
+const GeneratorObject* MapGenerator::getObject(const std::string &tileset, const std::string &name) const {
+	Tilesets::const_iterator i = _tilesets.find(tileset);
+	if (i == _tilesets.end())
+		throw_ex(("no tileset %s found", tileset.c_str()));
+	const GeneratorObject *o = i->second->getObject(name);
+	if (o == NULL)
+		throw_ex(("no object %s found in tileset %s", name.c_str(), tileset.c_str()));
+	return o;
 }
 
 void MapGenerator::tileset(const std::string &fname, const int gid) {
@@ -48,6 +60,7 @@ void MapGenerator::exec(Layer *layer, const std::string &command, const std::str
 
 void MapGenerator::clear() {
 	first_gid.clear();
+	//std::for_each(_objects.begin(), _objects.end(), delete_ptr2<ObjectMap::value_type>());
 }
 
 const std::string MapGenerator::getName(const std::string &fname) {

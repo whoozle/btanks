@@ -541,10 +541,10 @@ void IMap::end(const std::string &name) {
 		_image = NULL;
 		
 		_image = new sdlx::Surface;
-		std::string source = _image_name = e.attrs["source"];
+		std::string source = e.attrs["source"];
 		if (source.size()) {
 			LOG_DEBUG(("loading tileset from single file ('%s')", source.c_str()));
-			source = Finder->find("tiles/" + source);
+			_image_name = source = Finder->find("tiles/" + source);
 			_image->loadImage(source);
 			_image_is_tileset = true;
 		} else {
@@ -614,6 +614,7 @@ void IMap::end(const std::string &name) {
 		layer->impassability = impassability;
 		layer->pierceable = pierceable;
 		layer->hp = hp;
+
 		TRY { 
 			layer->init(w, h, _data); 
 		} CATCH(mrt::formatString("layer '%s'", _layer_name.c_str()).c_str(), 
@@ -628,6 +629,7 @@ void IMap::end(const std::string &name) {
 				_generator->exec(layer, i->first.substr(i->first.find(":", 11) + 1), i->second);
 			} CATCH("executing generator's commands", {})
 		}
+
 		
 		_layers[z] = layer;
 		_layer_z[_layer_name] = z;
