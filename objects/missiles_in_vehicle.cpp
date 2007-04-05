@@ -27,12 +27,16 @@ class MissilesInVehicle : public Object {
 public:
 	void update() {
 		need_sync = true;
-		if (_object.empty() || _type.empty()) {
-			if (_object.empty())
-				Config->get("objects." + registered_name + ".default-weapon", _object, "missiles");
-			if (_type.empty())
-				Config->get("objects." + registered_name + ".default-weapon-type", _type, "guided");
+		if (_object.empty() && _type.empty()) {
+			Config->get("objects." + registered_name + ".default-weapon", _object, "missiles");
+			Config->get("objects." + registered_name + ".default-weapon-type", _type, "guided");
 		}
+
+		if (!_type.empty() && !_object.empty()) {	
+			const std::string animation = _type + "-" + _object + "-on-" + _vehicle;
+			init(animation);
+		}
+		
 		VehicleTraits::getWeaponCapacity(max_n, max_v, _vehicle, _object, _type);
 		n = max_n;
 	}
@@ -110,8 +114,6 @@ const bool MissilesInVehicle::take(const BaseObject *obj, const std::string &typ
 	if (obj->classname == "missiles" || obj->classname == "mines") {
 		_object = obj->classname;
 		_type = type;
-		std::string animation = type + "-" + obj->classname + "-on-" + _vehicle;
-		init(animation);
 		update();
 		updatePose();
 		LOG_DEBUG(("missiles : %s taken", type.c_str()));
