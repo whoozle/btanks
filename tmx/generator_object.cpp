@@ -7,6 +7,8 @@
 
 #include "layer.h"
 
+GeneratorObject::GeneratorObject() : w(0), h(0) {}
+
 class Background : public GeneratorObject {
 public: 
 	void init(const std::map<const std::string, std::string>& attrs, const std::string &data) {
@@ -27,8 +29,8 @@ public:
 
 	void render(Layer *layer, const int first_gid, const int x, const int y) const {
 		//LOG_DEBUG(("render(%d, %d, %d)", first_gid, x, y));
-		for(int dy = 0; dy < w; ++dy) 
-			for(int dx = 0; dx < h; ++dx) {
+		for(int dy = 0; dy < h; ++dy) 
+			for(int dx = 0; dx < w; ++dx) {
 				if (layer->get(x + dx, y + dy) == 0)
 					layer->set(x + dx, y + dy, first_gid + tiles[dy * w + dx]);
 			}
@@ -37,9 +39,19 @@ public:
 
 void GeneratorObject::init(const std::map<const std::string, std::string>& attrs, const std::string &data)  {
 	int size = atoi(get(attrs, "size").c_str());
-	if (size > 0) 
+	if (size > 0) {
 		w = h = size;
-	
+		return;
+	}
+
+	int w = atoi(get(attrs, "width").c_str());
+	if (w > 0) 
+		this->w = w;
+	int h = atoi(get(attrs, "height").c_str());
+	if (h > 0) 
+		this->h = h;
+	if (w == 0 || h == 0) 
+		throw_ex(("you must specify size or width+height of every object"));
 }
 
 GeneratorObject *GeneratorObject::create(const std::string &name, const std::map<const std::string, std::string>& attrs, const std::string &data) {
