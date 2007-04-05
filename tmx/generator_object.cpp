@@ -1,9 +1,11 @@
-#include "generator_object.h"
-#include "mrt/logger.h"
-#include "mrt/exception.h"
 #include <stdlib.h>
 #include <vector>
 
+#include "generator_object.h"
+#include "mrt/logger.h"
+#include "mrt/exception.h"
+
+#include "layer.h"
 
 class Background : public GeneratorObject {
 public: 
@@ -16,9 +18,21 @@ public:
 		for(size_t i = 0; i < ts.size(); ++i) {
 			mrt::trim(ts[i]);
 			tiles.push_back(atoi(ts[i].c_str()));
+			//LOG_DEBUG(("tiles[%u] = %d", (unsigned)i, tiles[i]));
 		}
+		if (tiles.size() != (unsigned)w * h)
+			throw_ex(("you must provide exact %d tile ids (%u provided)", w * h, (unsigned)tiles.size()))
 	}
 	std::vector<int> tiles;
+
+	void render(Layer *layer, const int first_gid, const int x, const int y) const {
+		//LOG_DEBUG(("render(%d, %d, %d)", first_gid, x, y));
+		for(int dy = 0; dy < w; ++dy) 
+			for(int dx = 0; dx < h; ++dx) {
+				if (layer->get(x + dx, y + dy) == 0)
+					layer->set(x + dx, y + dy, first_gid + tiles[dy * w + dx]);
+			}
+	}
 };
 
 void GeneratorObject::init(const std::map<const std::string, std::string>& attrs, const std::string &data)  {
