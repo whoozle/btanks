@@ -50,8 +50,8 @@ public:
 
 	void clear(const int idx);
 	
-	virtual const Uint32 get(const int idx) const; 
-	virtual void set(const int idx, const Uint32 tid);
+	virtual const Uint32 _get(const int idx) const; 
+	virtual void _set(const int idx, const Uint32 tid);
 
 	const Uint32 get(const int x, const int y) const; 
 	void set(const int x, const int y, const Uint32 tid);
@@ -79,8 +79,8 @@ public:
 	DestructableLayer(const bool visible_if_damaged);
 	virtual void init(const int w, const int h, const mrt::Chunk & data);
 
-	virtual const Uint32 get(const int idx) const; 
-	virtual void set(const int idx, const Uint32 tid);
+	virtual const Uint32 _get(const int idx) const; 
+	virtual void _set(const int idx, const Uint32 tid);
 
 	virtual const bool damage(const int x, const int y, const int hp);
 	virtual void _destroy(const int x, const int y);

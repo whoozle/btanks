@@ -37,6 +37,7 @@ void ChainedDestructableLayer::onDeath(const int idx) {
 }
 
 void DestructableLayer::onDeath(const int idx) {
+	//LOG_DEBUG(("onDeath(%d)", idx));
 	_hp_data[idx] = -1;
 	const int x = idx % _w, y = idx / _w;
 	Map->invalidateTile(x, y);
@@ -72,21 +73,21 @@ void DestructableLayer::init(const int w, const int h, const mrt::Chunk & data) 
 	_hp_data = new int[size];
 
 	for(int i = 0; i < size; ++i) {
-		_hp_data[i] = (Layer::get(i) != 0) ? hp : 0;
+		_hp_data[i] = (Layer::_get(i) != 0) ? hp : 0;
 	}
 }
-const Uint32 DestructableLayer::get(const int i) const {
+const Uint32 DestructableLayer::_get(const int i) const {
 	if (i < 0 || i >= _w * _h)
 		return 0;
 	const bool visible = _visible ? (_hp_data[i] == -1) : (_hp_data[i] > 0);
-	return visible? Layer::get(i): 0;
+	return visible? Layer::_get(i): 0;
 }
 
-void DestructableLayer::set(const int idx, const Uint32 tid) {
+void DestructableLayer::_set(const int idx, const Uint32 tid) {
 	if (idx < 0 || idx >= _w * _h)
 		return;
 	_hp_data[idx] = hp;
-	Layer::set(idx, tid);
+	Layer::_set(idx, tid);
 }
 
 
@@ -94,9 +95,10 @@ const bool DestructableLayer::damage(const int x, const int y, const int hp) {
 	const int i = _w * y + x;
 	if (i < 0 || i >= _w * _h)
 		return false;
-	//LOG_DEBUG(("damage %d to cell %d", hp, i));
+	//LOG_DEBUG(("damage %d to cell %d (hpdata[] = %d)", hp, i, _hp_data[i]));
 	if (_hp_data[i] <= 0) 
 		return false;
+	//LOG_DEBUG(("damage %d to cell %d (hpdata[] = %d)", hp, i, _hp_data[i]));
 	
 	_hp_data[i] -= hp;
 	if (_hp_data[i] > 0)
@@ -108,6 +110,7 @@ const bool DestructableLayer::damage(const int x, const int y, const int hp) {
 
 void DestructableLayer::_destroy(const int x, const int y) {
 	//_hp_data[i] = -1; //destructed cell
+	//LOG_DEBUG(("_destroy(%d, %d)", x, y));
 	const int i = _w * y + x;
 	const int size = _w * _h;
 	
@@ -125,8 +128,7 @@ void DestructableLayer::_destroy(const int x, const int y) {
 		visited.insert(v);
 		
 		int x = v % _w, y = v / _w;
-		//LOG_DEBUG(("checking %d %d -> %d", x, y, get(x, y)));
-		if (Layer::get(x, y) == 0)
+		if (Layer::_get(x + _w * y) == 0)
 			continue;
 		
 		onDeath(v);
@@ -182,7 +184,7 @@ void Layer::init(const int w, const int h, const mrt::Chunk & data) {
 }
 
 
-const Uint32 Layer::get(const int i) const {
+const Uint32 Layer::_get(const int i) const {
 	if (i < 0 || i >= _w * _h)
 		return 0;
 	Uint32 id = *((Uint32 *) _data.getPtr() + i);
@@ -191,14 +193,14 @@ const Uint32 Layer::get(const int i) const {
 
 
 const Uint32 Layer::get(const int x, const int y) const {
-	return get(_w * y + x);
+	return _get(_w * y + x);
 }
 
 void Layer::set(const int x, const int y, const Uint32 tid) {
-	set(_w * y + x, tid);
+	_set(_w * y + x, tid);
 }
 
-void Layer::set(const int i, const Uint32 tid) {
+void Layer::_set(const int i, const Uint32 tid) {
 	if (i < 0 || i >= _w * _h)
 		return;
 	Uint32 *id = (Uint32 *) _data.getPtr() + i;
