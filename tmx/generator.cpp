@@ -8,6 +8,7 @@
 #include "utils.h"
 
 #include "mrt/logger.h"
+#include "mrt/random.h"
 #include "mrt/exception.h"
 #include "mrt/fs_node.h"
 #include "mrt/xml.h"
@@ -56,6 +57,22 @@ void MapGenerator::fillPattern(Layer *layer, const std::vector<std::string> &arg
 	if (args.size() < 4) 
 		throw_ex(("fill-pattern command takes 4 arguments."));
 
+	bool random = false;
+	int percentage;
+	if (args.size() >= 5) {
+		std::string s = args[4];
+		if (s.empty())
+			throw_ex(("filling percentage cannot be empty"));
+		if (s[s.size() - 1] != '%')
+			throw_ex(("fill-pattern: only percents allowed in 5th argument"))
+		s.resize(s.size() - 1);
+		percentage = atoi(s.c_str());
+		if (percentage == 0)
+			throw_ex(("fill-pattern: 0%% is not allowed"));
+		random = true;
+	}
+		
+	
 	const int gid = first_gid[args[0]];
 	if (gid == 0) 
 		throw_ex(("unknown layer %s", args[0].c_str()));
@@ -79,6 +96,10 @@ void MapGenerator::fillPattern(Layer *layer, const std::vector<std::string> &arg
 
 	for(int y = 0; y < h; y += obj->h) 
 		for(int x = 0; x < w; x += obj->w) {
+			if (random) {
+				if (percentage < mrt::random(100) + 1)
+					continue;
+			}
 			int pid = (x / obj->w) % px + px * ((y / obj->h) % py);
 			if (pattern[pid] != '0' && pattern[pid] != ' ')
 				obj->render(this, gid, x, y);
