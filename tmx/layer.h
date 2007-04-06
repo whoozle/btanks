@@ -50,11 +50,11 @@ public:
 
 	void clear(const int idx);
 	
-	const Uint32 get(const int idx) const; 
-	virtual const Uint32 get(const int x, const int y) const; 
-
-	void set(const int x, const int y, const Uint32 tid);
+	virtual const Uint32 get(const int idx) const; 
 	virtual void set(const int idx, const Uint32 tid);
+
+	const Uint32 get(const int x, const int y) const; 
+	void set(const int x, const int y, const Uint32 tid);
 	
 	virtual const bool damage(const int x, const int y, const int hp);
 	virtual void _destroy(const int x, const int y);
