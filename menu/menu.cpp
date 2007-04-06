@@ -273,7 +273,7 @@ const bool MainMenu::back() {
 	
 	_menu_path.pop_front();
 	
-	if (_active_menu[0] != '#')
+	if (!_active_menu.empty() && _active_menu[0] != '#')
 		_items[_active_menu][_active_item]->onFocus();
 	
 	recalculateSizes();
