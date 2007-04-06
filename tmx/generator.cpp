@@ -5,6 +5,7 @@
 #include "layer.h"
 #include "tileset.h"
 #include "generator_object.h"
+#include "utils.h"
 
 #include "mrt/logger.h"
 #include "mrt/exception.h"
@@ -18,16 +19,23 @@ void MapGenerator::fill(Layer *layer, const std::vector<std::string> &args) {
 		throw_ex(("fill command takes 2 arguments."));
 	//LOG_DEBUG(("type: %s, name: %s",args[0].c_str(), args[1].c_str()));
 	const GeneratorObject *obj = getObject(args[0], args[1]);
+	const int gid = first_gid[args[0]];
+	if (gid == 0) 
+		throw_ex(("unknown layer %s", args[0].c_str()));
 	int w = layer->getWidth(), h = layer->getHeight();
 	for(int y = 0; y < h; y += obj->h) 
 		for(int x = 0; x < w; x += obj->w) {
-			obj->render(layer, first_gid[args[0]], x, y);	
+			obj->render(layer, gid, x, y);	
 	}
 }
 
 void MapGenerator::fillPattern(Layer *layer, const std::vector<std::string> &args) {
 	if (args.size() < 4) 
 		throw_ex(("fill-pattern command takes 4 arguments."));
+
+	const int gid = first_gid[args[0]];
+	if (gid == 0) 
+		throw_ex(("unknown layer %s", args[0].c_str()));
 
 	std::vector<std::string> sizes;
 	mrt::split(sizes, args[2], "x");
@@ -45,11 +53,12 @@ void MapGenerator::fillPattern(Layer *layer, const std::vector<std::string> &arg
 
 	const GeneratorObject *obj = getObject(args[0], args[1]);
 	int w = layer->getWidth(), h = layer->getHeight();
+
 	for(int y = 0; y < h; y += obj->h) 
 		for(int x = 0; x < w; x += obj->w) {
 			int pid = (x / obj->w) % px + px * ((y / obj->h) % py);
 			if (pattern[pid] != '0' && pattern[pid] != ' ')
-				obj->render(layer, first_gid[args[0]], x, y);
+				obj->render(layer, gid, x, y);
 	}
 	
 }
@@ -102,8 +111,12 @@ void MapGenerator::exec(Layer *layer, const std::string &command, const std::str
 
 void MapGenerator::clear() {
 	first_gid.clear();
-	//std::for_each(_objects.begin(), _objects.end(), delete_ptr2<ObjectMap::value_type>());
 }
+
+MapGenerator::~MapGenerator() {
+	std::for_each(_tilesets.begin(), _tilesets.end(), delete_ptr2<Tilesets::value_type>());
+}
+
 
 const std::string MapGenerator::getName(const std::string &fname) {
 	size_t end = fname.rfind(".");

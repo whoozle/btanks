@@ -804,6 +804,7 @@ void IMap::clear() {
 IMap::~IMap() {
 	LOG_DEBUG(("cleaning up map..."));
 	clear();
+	delete _generator;
 }
 
 const bool IMap::loaded() const {

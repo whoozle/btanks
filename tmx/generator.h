@@ -12,6 +12,7 @@ class GeneratorObject;
 class MapGenerator {
 public: 
 	MapGenerator();
+	~MapGenerator();
 
 	void exec(Layer *layer, const std::string &command, const std::string &value);
 	void tileset(const std::string &name, const int gid);

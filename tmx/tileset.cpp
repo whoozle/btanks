@@ -1,7 +1,9 @@
 #include <assert.h>
+#include <algorithm>
 #include "tileset.h"
 #include "generator_object.h"
 #include "mrt/random.h"
+#include "utils.h"
 
 void Tileset::start(const std::string &name, Attrs &attr) {
 	if (name == "tileset")
@@ -50,4 +52,8 @@ const GeneratorObject *Tileset::getObject(const std::string &name) const {
 	assert(i->second != NULL);
 	
 	return i->second;
+}
+
+Tileset::~Tileset() {
+	std::for_each(_objects.begin(), _objects.end(), delete_ptr2<Objects::value_type>());
 }

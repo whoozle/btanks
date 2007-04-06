@@ -8,6 +8,7 @@ class Tileset : public mrt::XMLParser {
 public: 
 
 	const GeneratorObject *getObject(const std::string &name) const;
+	~Tileset();
 
 private: 
 	virtual void start(const std::string &name, Attrs &attr);
