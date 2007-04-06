@@ -445,7 +445,7 @@ void IMap::getSurroundings(Matrix<int> &matrix, const v2<int> &pos, const int fi
 	for(int y = y0; y <= p.y + dy; ++y) 
 		for(int x = x0; x <= p.x + dx; ++x) {
 			int i = _imp_map.get(y, x);
-			if (filler != -1 && i == -1)
+			if (filler != -1 && i < 0)
 				i = filler;
 			matrix.set(y - y0, x - x0, i);
 		}
