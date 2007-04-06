@@ -123,10 +123,10 @@ const bool MissilesInVehicle::take(const BaseObject *obj, const std::string &typ
 }
 
 void MissilesInVehicle::updatePose() {
-	if (n <= 0)
+	if (n == 0)
 		return;
 	cancelAll();
-	std::string pose = mrt::formatString("missile-%d%s", (n > max_v)?max_v:n, hold?"-hold":"");
+	std::string pose = mrt::formatString("missile-%d%s", (n > max_v || n == -1)?max_v:n, hold?"-hold":"");
 	//LOG_DEBUG(("updating pose to '%s'", pose.c_str()));
 	play(pose, true);
 }
@@ -144,8 +144,9 @@ void MissilesInVehicle::emit(const std::string &event, Object * emitter) {
 		hold = true;
 		updatePose();
 	} else if (event == "launch") {
-		if (n > 0) {
-			--n;
+		if (n != 0) {
+			if (n > 0)
+				--n;
 			//LOG_DEBUG(("launching missile!"));
 			{
 				v2<float> v = _velocity.is0()?_direction:_velocity;
