@@ -70,10 +70,11 @@ void Mine::emit(const std::string &event, Object * emitter) {
 				tile_pos += dpos;
 				tile_pos /= path_tile_size;
 				//LOG_DEBUG(("get(%d, %d) = %d", (int)tile_pos.y, (int)tile_pos.x, matrix.get((int)tile_pos.y, (int)tile_pos.x)));
+				spawn("bomberman-explosion", "cannon-explosion", dpos);
+
 				if (matrix.get((int)tile_pos.y, (int)tile_pos.x) == -1)
 					break;
 				
-				spawn("bomberman-explosion", "cannon-explosion", dpos);
 			}
 		}
 		Object::emit(event, emitter);	

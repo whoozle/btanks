@@ -412,7 +412,7 @@ void IWorld::getImpassabilityMatrix(Matrix<int> &matrix, const Object *src, cons
 		for(int yy = 0; yy < split; ++yy)
 			for(int xx = 0; xx < split; ++xx) {
 				int yp = p.y * split + yy, xp = p.x * split + xx;
-				if (proj.get(yy, xx) && matrix.get(yp, xp) != -1) 
+				if (proj.get(yy, xx) && matrix.get(yp, xp) >= 0) 
 					matrix.set(yp, xp, im);
 			}
 	}

@@ -253,23 +253,23 @@ const bool IWorld::old_findPath(const Object *obj, const v2<float>& position, Wa
 
 		n += w + 1;
 		
-		if (imp.get(v.y + 1, v.x) != -1)
+		if (imp.get(v.y + 1, v.x) >= 0)
 			push(path, buf, vertex(v.x, v.y + 1, n));
-		if (imp.get(v.y - 1, v.x) != -1)
+		if (imp.get(v.y - 1, v.x) >= 0)
 			push(path, buf, vertex(v.x, v.y - 1, n));
-		if (imp.get(v.y, v.x + 1) != -1)
+		if (imp.get(v.y, v.x + 1) >= 0)
 			push(path, buf, vertex(v.x + 1, v.y, n));
-		if (imp.get(v.y, v.x - 1) != -1)
+		if (imp.get(v.y, v.x - 1) >= 0)
 			push(path, buf, vertex(v.x - 1, v.y, n));
 #ifndef DISABLE_PF_DIAGONALS
 		//disabled diagonals for now
-		if (check(imp, v, 1, 1) != -1)
+		if (check(imp, v, 1, 1) >= 0)
 			push(path, buf, vertex(v.x + 1, v.y + 1, n));
-		if (check(imp, v, 1, -1) != -1)
+		if (check(imp, v, 1, -1) >= 0)
 			push(path, buf, vertex(v.x + 1, v.y - 1, n));
-		if (check(imp, v, -1, 1) != -1)
+		if (check(imp, v, -1, 1) >= 0)
 			push(path, buf, vertex(v.x - 1, v.y + 1, n));
-		if (check(imp, v, -1, -1) != -1)
+		if (check(imp, v, -1, -1) >= 0)
 			push(path, buf, vertex(v.x - 1, v.y - 1, n));
 #endif
 	}

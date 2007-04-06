@@ -898,7 +898,7 @@ const int Object::getTargetPosition(v2<float> &relative_position, const std::set
 			
 			//skip solid objects
 			v2<int> map_pos = (pos + getPosition()).convert<int>() / pfs;
-			if (matrix.get(map_pos.y, map_pos.x) == -1)
+			if (matrix.get(map_pos.y, map_pos.x) < 0)
 				continue;
 			
 			float dist = pos.quick_length();
@@ -922,7 +922,7 @@ const int Object::getTargetPosition(v2<float> &relative_position, const std::set
 				map1 += dp;
 				v2<int> map_pos = map1.convert<int>() / pfs;
 				//LOG_DEBUG(("%dx%d: %d", map_pos.x, map_pos.y, matrix.get(map_pos.y, map_pos.x)));
-				if (matrix.get(map_pos.y, map_pos.x) == -1)
+				if (matrix.get(map_pos.y, map_pos.x) < 0)
 					goto failed;
 			} while(true);
 			//end of map proj
@@ -966,7 +966,7 @@ const bool Object::getTargetPosition(v2<float> &relative_position, const v2<floa
 		pos += target;
 		double d = pos.quick_length();
 		v2<int> map_pos = (pos + getPosition()).convert<int>() / pfs;
-		if (matrix.get(map_pos.y, map_pos.x) == -1)
+		if (matrix.get(map_pos.y, map_pos.x) < 0)
 			continue;
 		
 		if (!found || d < distance) {

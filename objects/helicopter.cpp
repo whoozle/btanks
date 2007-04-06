@@ -94,8 +94,8 @@ void Helicopter::tick(const float dt) {
 		LOG_DEBUG(("%d %d", matrix.get(pos.y, pos.x), matrix.get(pos.y, pos2.x)));
 		LOG_DEBUG(("%d %d", matrix.get(pos2.y, pos.x), matrix.get(pos2.y, pos2.x)));
 		*/
-		if (matrix.get(pos.y, pos.x) == -1 || matrix.get(pos.y, pos2.x) == -1 || 
-			matrix.get(pos2.y, pos.x) == -1 || matrix.get(pos2.y, pos2.x) == -1) {
+		if (matrix.get(pos.y, pos.x) < 0 || matrix.get(pos.y, pos2.x) < 0 || 
+			matrix.get(pos2.y, pos.x) < 0 || matrix.get(pos2.y, pos2.x) < 0) {
 				LOG_DEBUG(("cannot drop paratrooper, sir!"));
 			} else {
 				int pt = mrt::random(6);
