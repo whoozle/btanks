@@ -58,7 +58,7 @@
    <property name="invisible-if-damaged" value="true"/>
    <property name="hp" value="99"/>
    <property name="impassability" value="100"/>
-   <property name="generator:1:fill-pattern" value="terrains:cobbles:2x2:0110"/>
+   <property name="generator:1:fill-pattern" value="terrains:cobbles:2x2:0110:70%"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGAWjYOQCABX0oPUAAwAA
@@ -70,7 +70,7 @@
    <property name="invisible-if-damaged" value="true"/>
    <property name="hp" value="99"/>
    <property name="impassability" value="100"/>
-   <property name="generator:1:fill-pattern" value="terrains:cobbles:2x2:1001"/>
+   <property name="generator:1:fill-pattern" value="terrains:cobbles:2x2:1001:70%"/>
    <property name="generator:2:pop-matrix" value=""/>
   </properties>
   <data encoding="base64" compression="gzip">
