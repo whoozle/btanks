@@ -63,8 +63,6 @@ void Launcher::emit(const std::string &event, Object * emitter) {
 		if (registered_name != "ai-launcher")
 			World->detachVehicle(this);		
 		
-		cancelAll();
-		//play("dead", true);
 		spawn("corpse", "dead-" + animation);
 		Object::emit(event, emitter);
 	} else Object::emit(event, emitter);
