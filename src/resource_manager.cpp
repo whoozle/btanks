@@ -314,7 +314,6 @@ void IResourceManager::clear() {
 }
 
 IResourceManager::~IResourceManager() {
-	clear();
 }
 
 void IResourceManager::registerObject(const std::string &classname, Object *o) {

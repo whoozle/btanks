@@ -758,6 +758,7 @@ void IGame::deinit() {
 	delete _credits;
 	_credits = NULL;	
 
+	ResourceManager->clear();
 	Config->save();
 }
 
