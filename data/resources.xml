@@ -363,6 +363,8 @@
 	<animation id="cyan-mortar" tile="mortar.png" model="mortar-animation"/>
 	<animation id="dead-mortar" tile="mortar_crash.png" model="dead-vehicle-animation"/>
 
+	<animation id="guided-missiles-on-boat" tile="launcher_missile01.png" model="missiles-on-launcher-animation" />
+
 	<!-- a little note on outlines and animations : 
 		it is safe to define more than one animation with the same tile. it wont be loaded more than once. 
 		now outline name constructed from registered name of the class. i.e. tank, static-tank. 
