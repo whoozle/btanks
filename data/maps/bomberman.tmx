@@ -26,7 +26,8 @@
  <layer name="bricks" width="16" height="12">
   <properties>
    <property name="impassability" value="100"/>
-   <property name="generator:1:fill-pattern" value="terrains:metal:2x2:0001"/>
+   <property name="generator:1:push-matrix" value=""/>
+   <property name="generator:2:fill-pattern" value="terrains:metal:2x2:0001"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGAWjYOQCABX0oPUAAwAA
@@ -36,7 +37,9 @@
  <layer name="wood 1" width="16" height="12">
   <properties>
    <property name="invisible-if-damaged" value="true"/>
-   <property name="hp" value="100"/>
+   <property name="hp" value="99"/>
+   <property name="impassability" value="100"/>
+   <property name="generator:1:fill-pattern" value="terrains:cobbles:2x2:0110"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGAWjYOQCABX0oPUAAwAA
@@ -46,7 +49,10 @@
  <layer name="wood 2" width="16" height="12">
   <properties>
    <property name="invisible-if-damaged" value="true"/>
-   <property name="hp" value="100"/>
+   <property name="hp" value="99"/>
+   <property name="impassability" value="100"/>
+   <property name="generator:1:fill-pattern" value="terrains:cobbles:2x2:1001"/>
+   <property name="generator:2:pop-matrix" value=""/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGAWjYOQCABX0oPUAAwAA
