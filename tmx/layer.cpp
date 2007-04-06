@@ -75,13 +75,20 @@ void DestructableLayer::init(const int w, const int h, const mrt::Chunk & data) 
 		_hp_data[i] = (Layer::get(i) != 0) ? hp : 0;
 	}
 }
-const Uint32 DestructableLayer::get(const int x, const int y) const {
-	int i = _w * y + x;
+const Uint32 DestructableLayer::get(const int i) const {
 	if (i < 0 || i >= _w * _h)
 		return 0;
 	const bool visible = _visible ? (_hp_data[i] == -1) : (_hp_data[i] > 0);
 	return visible? Layer::get(i): 0;
 }
+
+void DestructableLayer::set(const int idx, const Uint32 tid) {
+	if (idx < 0 || idx >= _w * _h)
+		return;
+	_hp_data[idx] = hp;
+	Layer::set(idx, tid);
+}
+
 
 const bool DestructableLayer::damage(const int x, const int y, const int hp) {
 	const int i = _w * y + x;

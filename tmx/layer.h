@@ -50,8 +50,11 @@ public:
 
 	void clear(const int idx);
 	
-	virtual const Uint32 get(const int idx) const; 
+	const Uint32 get(const int idx) const; 
 	virtual const Uint32 get(const int x, const int y) const; 
+
+	void set(const int x, const int y, const Uint32 tid);
+	virtual void set(const int idx, const Uint32 tid);
 	
 	virtual const bool damage(const int x, const int y, const int hp);
 	virtual void _destroy(const int x, const int y);
@@ -62,8 +65,6 @@ public:
 	const int getWidth() const {return _w; } 
 	const int getHeight() const {return _h; } 
 
-	void set(const int x, const int y, const Uint32 tid);
-	void set(const int idx, const Uint32 tid);
 
 protected: 
 	int _w, _h;
@@ -78,7 +79,8 @@ public:
 	DestructableLayer(const bool visible_if_damaged);
 	virtual void init(const int w, const int h, const mrt::Chunk & data);
 
-	virtual const Uint32 get(const int x, const int y) const; 
+	virtual const Uint32 get(const int idx) const; 
+	virtual void set(const int idx, const Uint32 tid);
 
 	virtual const bool damage(const int x, const int y, const int hp);
 	virtual void _destroy(const int x, const int y);
