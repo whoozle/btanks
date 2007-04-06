@@ -804,13 +804,14 @@ void IMap::clear() {
 	_layer_z.clear();
 	_cover_map.setSize(0, 0, 0);
 	
-	LOG_DEBUG(("deleting map generator..."));
+	LOG_DEBUG(("clearing map generator..."));
 	_generator->clear();
 }
 
 IMap::~IMap() {
 	LOG_DEBUG(("cleaning up map..."));
 	clear();
+	LOG_DEBUG(("clear() succeedes, deleting map generator..."));
 	delete _generator;
 }
 
