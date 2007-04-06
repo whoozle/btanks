@@ -404,6 +404,10 @@ void IMap::load(const std::string &name) {
 				cmap->project(proj, split, split);
 				//LOG_DEBUG(("projection: %s", proj.dump().c_str()));
 				//_imp_map.set(y, x, im);
+				const bool destructable = dynamic_cast<const DestructableLayer *>(l->second) != NULL;
+				if (destructable)
+					im = -100;
+				
 				for(int yy = 0; yy < split; ++yy)
 					for(int xx = 0; xx < split; ++xx) {
 						int yp = y * split + yy, xp = x * split + xx;
