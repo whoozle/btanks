@@ -56,7 +56,7 @@ void Mine::emit(const std::string &event, Object * emitter) {
 	if (event == "death" && registered_name == "bomberman-mine") {
 		v2<float> tile_size = Map->getTileSize().convert<float>();
 		v2<float> path_tile_size = Map->getPathTileSize().convert<float>();
-		LOG_DEBUG(("tile_size: %g, %g", tile_size.x, tile_size.y));
+		//LOG_DEBUG(("tile_size: %g, %g", tile_size.x, tile_size.y));
 		spawn("bomberman-explosion", "cannon-explosion");
 		const Matrix<int>& matrix = Map->getImpassabilityMatrix();
 		for (int d = 0; d < 4; ++d) {
