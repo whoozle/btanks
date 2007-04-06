@@ -32,6 +32,9 @@ public:
 };
 
 void Mine::onSpawn() {
+	if (registered_name == "bomberman-mine")
+		disown();
+	
 	if (registered_name != "armed-mine") {
 		play("3", false);
 		play("pause", false);
@@ -70,9 +73,12 @@ void Mine::emit(const std::string &event, Object * emitter) {
 				tile_pos += dpos;
 				tile_pos /= path_tile_size;
 				//LOG_DEBUG(("get(%d, %d) = %d", (int)tile_pos.y, (int)tile_pos.x, matrix.get((int)tile_pos.y, (int)tile_pos.x)));
+				if (matrix.get((int)tile_pos.y, (int)tile_pos.x) == -1)
+					break;
+
 				spawn("bomberman-explosion", "cannon-explosion", dpos);
 
-				if (matrix.get((int)tile_pos.y, (int)tile_pos.x) == -1)
+				if (matrix.get((int)tile_pos.y, (int)tile_pos.x) < 0)
 					break;
 				
 			}
