@@ -12,7 +12,7 @@
 #include "mrt/fs_node.h"
 #include "mrt/xml.h"
 
-MapGenerator::MapGenerator() {}
+MapGenerator::MapGenerator() : _layer(NULL) {}
 
 void MapGenerator::fill(Layer *layer, const std::vector<std::string> &args) {
 	if (args.size() < 2) 
@@ -25,7 +25,7 @@ void MapGenerator::fill(Layer *layer, const std::vector<std::string> &args) {
 	int w = layer->getWidth(), h = layer->getHeight();
 	for(int y = 0; y < h; y += obj->h) 
 		for(int x = 0; x < w; x += obj->w) {
-			obj->render(layer, gid, x, y);	
+			obj->render(this, gid, x, y);	
 	}
 }
 
@@ -58,11 +58,20 @@ void MapGenerator::fillPattern(Layer *layer, const std::vector<std::string> &arg
 		for(int x = 0; x < w; x += obj->w) {
 			int pid = (x / obj->w) % px + px * ((y / obj->h) % py);
 			if (pattern[pid] != '0' && pattern[pid] != ' ')
-				obj->render(layer, gid, x, y);
+				obj->render(this, gid, x, y);
 	}
-	
 }
 
+void MapGenerator::pushMatrix(Layer *layer, const std::vector<std::string> &args) {
+	IntMatrix m;
+	m.setSize(layer->getHeight(), layer->getWidth(), 0);
+	m.useDefault(0);
+	_matrix_stack.push(m);
+}
+
+void MapGenerator::popMatrix(Layer *layer, const std::vector<std::string> &args) {
+	_matrix_stack.pop();
+}
 
 const GeneratorObject* MapGenerator::getObject(const std::string &tileset, const std::string &name) const {
 	Tilesets::const_iterator i = _tilesets.find(tileset);
@@ -97,7 +106,30 @@ void MapGenerator::tileset(const std::string &fname, const int gid) {
 }
 
 
+const Uint32 MapGenerator::get(const int x, const int y) const {
+	if (_layer == NULL)
+		throw_ex(("no layer to operate. (malicious external code?)"));
+	Uint32 t = _layer->get(x, y);
+	if (t != 0)
+		return t;
+	if (_matrix_stack.empty())
+		return 0;
+	
+	return _matrix_stack.top().get(y, x);
+}
+
+void MapGenerator::set(const int x, const int y, const Uint32 tid) {
+	if (_layer == NULL)
+		throw_ex(("no layer to operate. (malicious external code?)"));
+	_layer->set(x, y, tid);
+	if (tid != 0 && !_matrix_stack.empty()) 
+		_matrix_stack.top().set(y, x, tid);
+}
+
+
 void MapGenerator::exec(Layer *layer, const std::string &command, const std::string &value) {
+	assert(layer != NULL);
+	_layer = layer;
 	LOG_DEBUG(("executing command '%s'...", command.c_str()));
 	std::vector<std::string> args;
 	mrt::split(args, value, ":");
@@ -106,7 +138,12 @@ void MapGenerator::exec(Layer *layer, const std::string &command, const std::str
 		fill(layer, args);
 	else if (command == "fill-pattern") 
 		fillPattern(layer, args);
+	else if (command == "push-matrix") 
+		pushMatrix(layer, args);
+	else if (command == "pop-matrix") 
+		popMatrix(layer, args);
 	else throw_ex(("unknown command '%s'", command.c_str()));
+	_layer = NULL;
 }
 
 void MapGenerator::clear() {

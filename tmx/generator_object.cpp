@@ -5,7 +5,7 @@
 #include "mrt/logger.h"
 #include "mrt/exception.h"
 
-#include "layer.h"
+#include "generator.h"
 
 GeneratorObject::GeneratorObject() : w(0), h(0) {}
 
@@ -27,14 +27,14 @@ public:
 	}
 	std::vector<int> tiles;
 
-	void render(Layer *layer, const int first_gid, const int x, const int y) const {
+	void render(MapGenerator *gen, const int first_gid, const int x, const int y) const {
 		//LOG_DEBUG(("render(%d, %d, %d)", first_gid, x, y));
 		for(int dy = 0; dy < h; ++dy) 
 			for(int dx = 0; dx < w; ++dx) {
 				if (tiles[dy * w + dx] == 0)
 					continue;
-				if (layer->get(x + dx, y + dy) == 0)
-					layer->set(x + dx, y + dy, first_gid + tiles[dy * w + dx]);
+				if (gen->get(x + dx, y + dy) == 0)
+					gen->set(x + dx, y + dy, first_gid + tiles[dy * w + dx]);
 			}
 	}
 };
