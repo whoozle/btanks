@@ -10,6 +10,7 @@
   <property name="config:objects.missiles-on-launcher.default-weapon-type" value="string:"/>
   <property name="config:objects.alt-missiles-on-launcher.default-weapon" value="string:mines"/>
   <property name="config:objects.alt-missiles-on-launcher.default-weapon-type" value="string:bomberman"/>
+  <property name="config:objects.bomberman-mines-on-launcher.capacity" value="int:-1"/>
  </properties>
  <tileset name="Untitled" firstgid="1" tilewidth="64" tileheight="64">
   <image source="../tilesets/terrains.png"/>
@@ -26,8 +27,26 @@
  <layer name="bricks" width="16" height="12">
   <properties>
    <property name="impassability" value="100"/>
-   <property name="generator:1:push-matrix" value=""/>
-   <property name="generator:2:fill-pattern" value="terrains:metal:2x2:0001"/>
+   <!-- hello, basic -->
+   <property name="generator:10:push-matrix" value=""/>
+
+   <property name="generator:11:exclude" value="0,0"/>
+   <property name="generator:12:exclude" value="0,1"/>
+   <property name="generator:13:exclude" value="1,0"/>
+
+   <property name="generator:21:exclude" value="-1,-1"/>
+   <property name="generator:22:exclude" value="-1,-2"/>
+   <property name="generator:23:exclude" value="-2,-1"/>
+
+   <property name="generator:31:exclude" value="-1,0"/>
+   <property name="generator:32:exclude" value="-1,1"/>
+   <property name="generator:33:exclude" value="-2,0"/>
+
+   <property name="generator:41:exclude" value="0,-1"/>
+   <property name="generator:42:exclude" value="0,-2"/>
+   <property name="generator:43:exclude" value="1,-1"/>
+
+   <property name="generator:50:fill-pattern" value="terrains:metal:2x2:0001"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGAWjYOQCABX0oPUAAwAA
