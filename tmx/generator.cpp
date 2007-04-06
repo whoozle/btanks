@@ -12,6 +12,29 @@
 #include "mrt/fs_node.h"
 #include "mrt/xml.h"
 
+void MapGenerator::exec(Layer *layer, const std::string &command, const std::string &value) {
+	assert(layer != NULL);
+	_layer = layer;
+	LOG_DEBUG(("executing command '%s'...", command.c_str()));
+	std::vector<std::string> args;
+	mrt::split(args, value, ":");
+	
+	if (command == "fill") 
+		fill(layer, args);
+	else if (command == "fill-pattern") 
+		fillPattern(layer, args);
+	else if (command == "push-matrix") 
+		pushMatrix(layer, args);
+	else if (command == "pop-matrix") 
+		popMatrix(layer, args);
+	else if (command == "exclude") 
+		exclude(layer, args);
+	else throw_ex(("unknown command '%s'", command.c_str()));
+	_layer = NULL;
+}
+
+
+
 MapGenerator::MapGenerator() : _layer(NULL) {}
 
 void MapGenerator::fill(Layer *layer, const std::vector<std::string> &args) {
@@ -73,6 +96,24 @@ void MapGenerator::popMatrix(Layer *layer, const std::vector<std::string> &args)
 	_matrix_stack.pop();
 }
 
+void MapGenerator::exclude(Layer *layer, const std::vector<std::string> &args) {
+	if (args.size() < 1) 
+		throw_ex(("exclude command takes 1 arguments."));
+	
+	if (_matrix_stack.empty())
+		throw_ex(("exclude cannot operate on empty matrix stack"));
+	
+	v2<int> pos;
+	pos.fromString(args[0]);
+	if (pos.x < 0) 
+		pos.x += layer->getWidth();
+
+	if (pos.y < 0) 
+		pos.y += layer->getHeight();
+	
+	_matrix_stack.top().set(pos.y, pos.x, 1);
+}
+
 const GeneratorObject* MapGenerator::getObject(const std::string &tileset, const std::string &name) const {
 	Tilesets::const_iterator i = _tilesets.find(tileset);
 	if (i == _tilesets.end())
@@ -126,25 +167,6 @@ void MapGenerator::set(const int x, const int y, const Uint32 tid) {
 		_matrix_stack.top().set(y, x, tid);
 }
 
-
-void MapGenerator::exec(Layer *layer, const std::string &command, const std::string &value) {
-	assert(layer != NULL);
-	_layer = layer;
-	LOG_DEBUG(("executing command '%s'...", command.c_str()));
-	std::vector<std::string> args;
-	mrt::split(args, value, ":");
-	
-	if (command == "fill") 
-		fill(layer, args);
-	else if (command == "fill-pattern") 
-		fillPattern(layer, args);
-	else if (command == "push-matrix") 
-		pushMatrix(layer, args);
-	else if (command == "pop-matrix") 
-		popMatrix(layer, args);
-	else throw_ex(("unknown command '%s'", command.c_str()));
-	_layer = NULL;
-}
 
 void MapGenerator::clear() {
 	first_gid.clear();
