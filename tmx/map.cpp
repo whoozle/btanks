@@ -774,11 +774,13 @@ void IMap::render(sdlx::Surface &window, const sdlx::Rect &src, const sdlx::Rect
 
 
 void IMap::clear() {
+	LOG_DEBUG(("clearing layers..."));
 	for(LayerMap::iterator i = _layers.begin(); i != _layers.end(); ++i) {
 		delete i->second;
 	}
 	_layers.clear();
 	
+	LOG_DEBUG(("clearing surfaces and collision maps..."));
 	for(TileMap::iterator i = _tiles.begin(); i != _tiles.end(); ++i) {
 		delete i->surface;
 		delete i->cmap;
@@ -786,18 +788,23 @@ void IMap::clear() {
 	}
 	_tiles.clear();
 	
+	LOG_DEBUG(("clearing properties..."));
 	properties.clear();
 	_properties.clear();
 
+	LOG_DEBUG(("deleting intermediate parser objects..."));
 	delete _image;
 	_image = NULL;
 	_lastz = -100;
 	_w = _h = _tw = _th = _firstgid = 0;
+	
+	LOG_DEBUG(("clearing damage layers and optimization maps..."));
 
 	_damage4.clear();
 	_layer_z.clear();
 	_cover_map.setSize(0, 0, 0);
 	
+	LOG_DEBUG(("deleting map generator..."));
 	_generator->clear();
 }
 
