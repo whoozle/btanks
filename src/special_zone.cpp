@@ -35,6 +35,7 @@ SpecialZone::SpecialZone(const ZBox & zbox, const std::string &type, const std::
 	if (allowed_types.empty()) {
 		allowed_types.insert("checkpoint");
 		allowed_types.insert("hint");
+		allowed_types.insert("message");
 		allowed_types.insert("timer-lose");
 		allowed_types.insert("timer-win");
 		allowed_types.insert("reset-timer");
@@ -69,6 +70,8 @@ void SpecialZone::onEnter(const int slot_id) {
 		onCheckpoint(slot_id);
 	else if (type == "hint") 
 		onHint(slot_id);
+	else if (type == "message") 
+		onMessage(slot_id);
 	else if (type == "timer-lose") 
 		onTimer(slot_id, false);
 	else if (type == "timer-win") 
@@ -83,10 +86,13 @@ void SpecialZone::onEnter(const int slot_id) {
 		throw_ex(("unhandled type '%s'", type.c_str()));
 }
 
+void SpecialZone::onMessage(const int slot_id) {
+	GameMonitor->displayMessage(area, name, 3);
+}
+
 void SpecialZone::onHint(const int slot_id) {
 	PlayerSlot &slot = PlayerManager->getSlot(slot_id);
 
-	GET_CONFIG_VALUE("engine.tooltip-speed", float, td, 20);
 	const std::string text = I18n->get(area, name);
 	
 	Tooltip *tooltip = new Tooltip(text, true);
