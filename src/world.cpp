@@ -623,7 +623,7 @@ TRY {
 	
 	const Object *other_obj = NULL;
 	const Object *stuck_in = NULL;
-	v2<int> stuck_map_pos;
+	IMap::TilePosition stuck_map_pos;
 	bool stuck = false;
 
 	int attempt = -1;
@@ -740,12 +740,6 @@ TRY {
 	}
 } CATCH("tick(damaging map)", throw;)	
 
-	dpos = o.speed * o._velocity * dt;
-	
-	//LOG_DEBUG(("%d %d", new_pos.x, new_pos.y));
-	new_pos = (o._position + dpos).convert<int>();
-	//LOG_DEBUG(("%d %d", new_pos.x, new_pos.y));
-
 TRY {
 	if (obj_im == 1.0 || map_im == 1.0) {
 		if (PlayerManager->isClient()) 
@@ -754,16 +748,51 @@ TRY {
 		if (stuck) {
 			v2<float> allowed_velocity;
 			v2<float> object_center = o._position + o.size / 2;
+
 			if (map_im >= 1.0) {
-				//LOG_DEBUG(("stuck: object: %g %g, map: %d %d", o._position.x, o._position.y, stuck_map_pos.x, stuck_map_pos.y));
-				allowed_velocity = object_center - stuck_map_pos.convert<float>();
-				//LOG_DEBUG(("allowed-velocity: %g %g", allowed_velocity.x, allowed_velocity.y));
-				if (allowed_velocity.same_sign(o._velocity) || allowed_velocity.is0()) {
-					map_im = 0.5;
+				//allowed_velocity = object_center - stuck_map_pos.position.convert<float>();
+				//LOG_DEBUG(("allowed velocity = %g %g", allowed_velocity.x, allowed_velocity.y));
+
+				v2<int> map_tile_size = Map->getPathTileSize();
+				const Matrix<int> &matrix = Map->getImpassabilityMatrix();
+				GET_CONFIG_VALUE("engine.stuck-tile-lookup", int, n, 3);
+				int a, d = -1;
+				v2<float> pos;
+				
+				int d0 = o._velocity.getDirection(8) - 1;
+				if (d0 < 0) 
+					d0 = 0;
+				
+				for(a = 1; a <= n; ++a) {
+					for(d = 0; d < 8; ++d) {
+						allowed_velocity.fromDirection((d * 2 + d / 4 + d0) % 8, 8);
+						pos = allowed_velocity;
+						pos *= (map_tile_size * a).convert<float>();
+						//LOG_DEBUG(("probe: %d,%d -> %g %g (%d)", a, d, pos.x, pos.y, matrix.get((int)pos.y, (int)pos.x)));
+						pos += object_center;
+						pos /= map_tile_size.convert<float>();
+						if (matrix.get((int)pos.y, (int)pos.x) >= 0) {
+							goto found;
+						}
+					}
 				}
-				GET_CONFIG_VALUE("engine.stuck-fixup", float, l, 2);
+			found: 
+				if (a <= n && d >= 0) {
+					//LOG_DEBUG(("found: %d,%d -> %g %g (%d)", a, d, pos.x, pos.y, matrix.get((int)pos.y, (int)pos.x)));
+				} else {
+					LOG_WARN(("object is really stuck and cannot move out. emitting death. :("));
+					o.emit("death", NULL);
+					return;
+				}
+
+				//LOG_DEBUG(("allowed velocity = %g %g", allowed_velocity.x, allowed_velocity.y));
+
+				map_im = stuck_map_pos.prev_im / 100.0;
+
 				allowed_velocity.normalize();
-				o._position += l * allowed_velocity;
+				//o._position += allowed_velocity * o.speed * dt;
+				o._velocity = allowed_velocity;
+				//LOG_DEBUG(("resulting map_im = %g", map_im));
 				
 				goto skip_collision;
 			} else if (obj_im >= 1.0) {
@@ -803,6 +832,13 @@ TRY {
 
 	if (o.isDead())
 		return;
+
+	dpos = o.speed * o._velocity * dt;
+	
+	//LOG_DEBUG(("%d %d", new_pos.x, new_pos.y));
+	new_pos = (o._position + dpos).convert<int>();
+	//LOG_DEBUG(("%d %d", new_pos.x, new_pos.y));
+
 /*
 	if (o.piercing) {
 		LOG_DEBUG(("%s *** %g,%g", o.dump().c_str(), map_im, obj_im));
