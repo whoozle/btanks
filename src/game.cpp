@@ -375,7 +375,7 @@ void IGame::onMenu(const std::string &name, const std::string &value) {
 		
 		if (_main_menu)	
 			_main_menu->setActive(!ok);
-	} else if (name == "credits" && !PlayerManager->isServer()) {
+	} else if (name == "credits" && !PlayerManager->isServerActive()) {
 		LOG_DEBUG(("show credits."));
 		_credits = new Credits;
 	}
