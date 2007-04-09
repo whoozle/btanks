@@ -762,10 +762,11 @@ TRY {
 				int d0 = o._velocity.getDirection(8) - 1;
 				if (d0 < 0) 
 					d0 = 0;
+				static int directions[] = {0, 4, 3, 5, 2, 6, 1, 7};
 				
 				for(a = 1; a <= n; ++a) {
 					for(d = 0; d < 8; ++d) {
-						allowed_velocity.fromDirection((d * 2 + d / 4 + d0) % 8, 8);
+						allowed_velocity.fromDirection((directions[d] + d0) % 8, 8);
 						pos = allowed_velocity;
 						pos *= (map_tile_size * a).convert<float>();
 						//LOG_DEBUG(("probe: %d,%d -> %g %g (%d)", a, d, pos.x, pos.y, matrix.get((int)pos.y, (int)pos.x)));
