@@ -859,19 +859,20 @@ TRY {
 		dpos *= (1.0f - map_im) * (1.0f - obj_im);
 	}
 	
+	v2<float> new_pos = o._position + dpos;
 
 	if (o.classname == "player") {
-		if ((dpos.x < 0 && o._position.x + dpos.x < 0) || (dpos.x > 0 && o._position.x + dpos.x + o.size.x >= map_size.x))
+		if ((dpos.x < 0 && new_pos.x < -o.size.x / 2) || (dpos.x > 0 && new_pos.x + o.size.x / 2 >= map_size.x))
 			dpos.x = 0;
 
-		if ((dpos.y < 0 && o._position.y + dpos.y < 0) || (dpos.y > 0 && o._position.y + dpos.y + o.size.y >= map_size.y))
+		if ((dpos.y < 0 && new_pos.y < -o.size.y / 2) || (dpos.y > 0 && new_pos.y + o.size.y / 2 >= map_size.y))
 			dpos.y = 0;
 		
 	} else {
-		if ((dpos.x < 0 && o._position.x + dpos.x < -o.size.x) || (dpos.x > 0 && o._position.x + dpos.x >= map_size.x))
+		if ((dpos.x < 0 && new_pos.x < -o.size.x) || (dpos.x > 0 && new_pos.x >= map_size.x))
 			dpos.x = 0;
 
-		if ((dpos.y < 0 && o._position.y + dpos.y < -o.size.y) || (dpos.y > 0 && o._position.y + dpos.y >= map_size.y))
+		if ((dpos.y < 0 && new_pos.y < -o.size.y) || (dpos.y > 0 && new_pos.y >= map_size.y))
 			dpos.y = 0;
 	
 	}
