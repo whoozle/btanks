@@ -47,6 +47,7 @@ public:
 	~Hud();
 	
 private: 
+	void generateRadarBG();
 
 	void renderMod(const Object *obj, sdlx::Surface &window, int &xp, int &yp, const std::string &name, const int icon_w, const int icon_h) const;
 

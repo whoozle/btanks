@@ -48,12 +48,16 @@ void Hud::initMap() {
 	_radar.free();
 	_radar_bg.free();
 
+	LOG_DEBUG(("creating radar surface..."));
+	generateRadarBG();
+}
+
+void Hud::generateRadarBG() {
 	assert(Map->loaded());
 	
-	Matrix<int> matrix = Map->getImpassabilityMatrix();
+	const Matrix<int>& matrix = Map->getImpassabilityMatrix();
 	GET_CONFIG_VALUE("hud.radar.zoom", int, zoom, 2);
 
-	LOG_DEBUG(("creating radar surface..."));
 	_radar_bg.createRGB(zoom * matrix.getWidth(), zoom * matrix.getHeight(), 32);
 	_radar_bg.convertAlpha();
 	//LOG_DEBUG(("rendering radar..."));
@@ -127,13 +131,13 @@ void Hud::renderRadar(const float dt, sdlx::Surface &window, const std::vector<v
 		return;
 	}
 	
-	assert(!_radar_bg.isNull());
-	
 	if (!_radar.isNull() && !_update_radar.tick(dt)) {
 		const int x = window.getWidth() - _radar.getWidth(), y = _background->getHeight();
 		window.copyFrom(_radar, x, y);
 		return;
 	}
+	
+	generateRadarBG(); //needed for destructable layers. 
 	
 	if (_radar.isNull()) {
 		_radar.createRGB(_radar_bg.getWidth(), _radar_bg.getHeight(), 32);
