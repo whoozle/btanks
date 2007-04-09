@@ -46,6 +46,12 @@ class MapGenerator;
 class IMap : public NotifyingXMLParser {
 public:
 	DECLARE_SINGLETON(IMap);
+	struct TilePosition {
+		v2<int> position;
+		bool merged_x;
+		bool merged_y;
+		int prev_im;
+	};
 	
 	typedef std::map<const std::string, std::string> PropertyMap;
 	PropertyMap properties;
@@ -63,7 +69,7 @@ public:
 	const v2<int> getTileSize() const;
 	const v2<int> getPathTileSize() const;
 	
-	virtual const int getImpassability(const Object *obj, const v2<int>& pos, v2<int> *tile_pos = NULL, bool *hidden = NULL) const;
+	virtual const int getImpassability(const Object *obj, const v2<int>& pos, TilePosition *tile_pos = NULL, bool *hidden = NULL) const;
 
 	const Matrix<int>& getImpassabilityMatrix() const { return _imp_map; }
 	void getSurroundings(Matrix<int> &matrix, const v2<int> &pos, const int filler = -1) const;

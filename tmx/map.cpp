@@ -74,7 +74,7 @@ static const int im2(const int im1, const int im2) {
 }
 */
 
-const int IMap::getImpassability(const Object *obj, const v2<int>&pos, v2<int> *tile_pos, bool *hidden) const {
+const int IMap::getImpassability(const Object *obj, const v2<int>&pos, TilePosition *tile_pos, bool *hidden) const {
 TRY {
 	assert(obj != NULL);
 	
@@ -116,7 +116,7 @@ TRY {
 		if (debug)
 			LOG_DEBUG(("%d:%d:%d:%d (%+d:%+d:%+d:%+d)--> %d:%d %d:%d", x1, y1, w, h, dx1, dy1, dx2, dy2, xt1, yt1, xt2, yt2));
 	}
-	int hidden_mask = 0;
+	int hidden_mask = 0, prev_im = 0;
 
 	int empty_mask = 0x0f;
 	int im[4] = {101, 101, 101, 101};
@@ -167,6 +167,8 @@ TRY {
 		if (!(empty_mask & 1) && im[0] == 101) {
 			if (collides(obj, dx1, dy1, getCollisionMap(layer, xt1, yt1))) {
 				im[0] = layer_im;
+				if (layer_im < 100 && layer_im > prev_im) 
+					prev_im = layer_im;
 				if (debug)
 					LOG_DEBUG(("%d: im[0] = %d", l->first, layer_im));
 			}
@@ -175,6 +177,8 @@ TRY {
 		if (!(empty_mask & 2) && im[1] == 101) {
 			if (collides(obj, dx1, dy2, getCollisionMap(layer, xt1, yt2))) {
 				im[1] = layer_im;
+				if (layer_im < 100 && layer_im > prev_im) 
+					prev_im = layer_im;
 				if (debug)
 					LOG_DEBUG(("%d: im[1] = %d", l->first, layer_im));
 			}
@@ -183,6 +187,8 @@ TRY {
 		if (!(empty_mask & 4) && im[2] == 101) {
 			if (collides(obj, dx2, dy1, getCollisionMap(layer, xt2, yt1))) {
 				im[2] = layer_im;
+				if (layer_im < 100 && layer_im > prev_im) 
+					prev_im = layer_im;
 				if (debug)
 					LOG_DEBUG(("%d: im[2] = %d", l->first, layer_im));
 			}
@@ -191,6 +197,8 @@ TRY {
 		if (!(empty_mask & 8) && im[3] == 101) {
 			if (collides(obj, dx2, dy2, getCollisionMap(layer, xt2, yt2))) { 
 				im[3] = layer_im;
+				if (layer_im < 100 && layer_im > prev_im) 
+					prev_im = layer_im;
 				if (debug)
 					LOG_DEBUG(("%d: im[3] = %d", l->first, layer_im));
 			}
@@ -224,23 +232,31 @@ TRY {
 			im[i] = def_im; //default im value for a layer.
 	
 	if (tile_pos) {
+		tile_pos->prev_im = prev_im;
+		tile_pos->merged_x = tile_pos->merged_y = false;
+		
 		bool v1 = im[0] == 100 || im[1] == 100;
 		bool v2 = im[2] == 100 || im[3] == 100;
+		
 		if (v1 && !v2) {
-			tile_pos->x = tile_pos->x = _tw/2 + _tw * xt1;
+			tile_pos->position.x = _tw/2 + _tw * xt1;
 		} else if (v2 && !v1) {
-			tile_pos->x = tile_pos->x = _tw/2 + _tw * xt2;			
-		} else 
-			tile_pos->x = tile_pos->x = _tw/2 + _tw * (xt1 + xt2) / 2;
+			tile_pos->position.x = _tw/2 + _tw * xt2;			
+		} else {
+			tile_pos->position.x = _tw/2 + _tw * (xt1 + xt2) / 2;
+			tile_pos->merged_x = true;
+		}
 		
 		bool h1 = im[0] == 100 || im[2] == 100;
 		bool h2 = im[1] == 100 || im[3] == 100;
 		if (h1 && !h2) {
-			tile_pos->y = _th/2 + _th * yt1;
+			tile_pos->position.y = _th/2 + _th * yt1;
 		} else if (h2 && !h1) {
-			tile_pos->y = _th/2 + _th * yt2;
-		} else 
-			tile_pos->y = _th/2 + _th * (yt1 + yt2) / 2;
+			tile_pos->position.y = _th/2 + _th * yt2;
+		} else {
+			tile_pos->merged_y = true;
+			tile_pos->position.y = _th/2 + _th * (yt1 + yt2) / 2;
+		}
 	}
 	
 	/*
