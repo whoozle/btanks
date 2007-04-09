@@ -22,6 +22,7 @@
 
 DestructableObject::DestructableObject(const std::string &classname) : 
 		Object(classname), 
+		_broken(false),
 		_object_id(0) {}
 
 void DestructableObject::serialize(mrt::Serializator &s) const {
