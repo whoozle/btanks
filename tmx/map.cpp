@@ -1,4 +1,4 @@
-/* Battle Tanks Game
+/* Battle Tanks_imp_map.get(yp, xp) Game
  * Copyright (C) 2006-2007 Battle Tanks team
  *
  * This program is free software; you can redistribute it and/or
@@ -44,7 +44,7 @@
 
 IMPLEMENT_SINGLETON(Map, IMap)
 
-IMap::IMap() : _w(0), _h(0), _tw(0), _th(0), _ptw(0), _pth(0), _firstgid(0), _generator(new MapGenerator) {
+IMap::IMap() : _w(0), _h(0), _tw(0), _th(0), _ptw(0), _pth(0), _firstgid(0), _split(0), _generator(new MapGenerator) {
 	_lastz = -1000;
 	_image = NULL;
 }
@@ -308,6 +308,56 @@ TRY {
 	return 0;
 }
 
+void IMap::updateMatrix(const int x, const int y) {
+	if (x < 0 || x >= _w || y < 0 || y >= _h)
+		return;
+	//LOG_DEBUG(("updating matrix at [%d,%d]", y, x));
+	for(LayerMap::reverse_iterator l = _layers.rbegin(); l != _layers.rend(); ++l) {
+				int im = l->second->impassability;
+				if (im == -1)
+					continue;
+				
+				int tid = l->second->get(x, y);
+				if (tid == 0)
+					continue;
+				const sdlx::CollisionMap *cmap = getCollisionMap(l->second, x, y);
+				if (cmap == NULL || cmap->isEmpty())
+					continue;
+				
+				//break;
+				//if (im == 100) 
+				//	im = -1; //inf :)
+				//_imp_map.set(y, x, im);
+			
+			
+				Matrix<bool> proj;
+				cmap->project(proj, _split, _split);
+				//LOG_DEBUG(("projection: %s", proj.dump().c_str()));
+				//_imp_map.set(y, x, im);
+				const bool destructable = dynamic_cast<const DestructableLayer *>(l->second) != NULL;
+				if (destructable)
+					im = -100;
+				
+				for(int yy = 0; yy < _split; ++yy)
+					for(int xx = 0; xx < _split; ++xx) {
+						int yp = y * _split + yy, xp = x * _split + xx;
+						if (proj.get(yy, xx) && _imp_map.get(yp, xp) == -2) 
+							_imp_map.set(yp, xp, im);
+					}
+	}
+
+	for(int yy = 0; yy < _split; ++yy)
+		for(int xx = 0; xx < _split; ++xx) {
+			int yp = y * _split + yy, xp = x * _split + xx;
+			
+			if (_imp_map.get(yp, xp) == -2)
+				_imp_map.set(yp, xp, 0);
+	
+			if (_imp_map.get(yp, xp) >= 100)
+				_imp_map.set(yp, xp, -1);
+	}
+}
+
 
 void IMap::load(const std::string &name) {
 	clear();
@@ -385,60 +435,20 @@ void IMap::load(const std::string &name) {
 	
 	GET_CONFIG_VALUE("map.pathfinding-step", int, ps, 32);
 	
-	const int split = 2 * ((_tw - 1) / 2 + 1) / ps;
-	LOG_DEBUG(("split mode: %dx", split));
+	_split = 2 * ((_tw - 1) / 2 + 1) / ps;
+	LOG_DEBUG(("split mode: %dx", _split));
 	
-	_pth = _tw / split;
-	_ptw = _th / split;
-	_imp_map.setSize(_h * split, _w * split, -2);
+	_pth = _tw / _split;
+	_ptw = _th / _split;
+	_imp_map.setSize(_h * _split, _w * _split, -2);
 
 	const int h = _imp_map.getHeight(), w = _imp_map.getWidth();
 	LOG_DEBUG(("building map matrix[%d:%d]...", h, w));
 	
 	for(int y = 0; y < _h; ++y) {
 		for(int x = 0; x < _w; ++x) {
-
-			for(LayerMap::reverse_iterator l = _layers.rbegin(); l != _layers.rend(); ++l) {
-				int im = l->second->impassability;
-				if (im == -1)
-					continue;
-				
-				int tid = l->second->get(x, y);
-				if (tid == 0)
-					continue;
-				const sdlx::CollisionMap *cmap = getCollisionMap(l->second, x, y);
-				if (cmap == NULL || cmap->isEmpty())
-					continue;
-				
-				//break;
-				//if (im == 100) 
-				//	im = -1; //inf :)
-				//_imp_map.set(y, x, im);
-			
-			
-				Matrix<bool> proj;
-				cmap->project(proj, split, split);
-				//LOG_DEBUG(("projection: %s", proj.dump().c_str()));
-				//_imp_map.set(y, x, im);
-				const bool destructable = dynamic_cast<const DestructableLayer *>(l->second) != NULL;
-				if (destructable)
-					im = -100;
-				
-				for(int yy = 0; yy < split; ++yy)
-					for(int xx = 0; xx < split; ++xx) {
-						int yp = y * split + yy, xp = x * split + xx;
-						if (proj.get(yy, xx) && _imp_map.get(yp, xp) == -2) 
-							_imp_map.set(yp, xp, im);
-					}
-				}
+			updateMatrix(x, y);
 		}
-	}
-	for(int y = 0; y < h; ++y) 
-		for(int x = 0; x < w; ++x) {
-			if (_imp_map.get(y, x) == -2)
-				_imp_map.set(y, x, 0);
-			if (_imp_map.get(y, x) >= 100)
-				_imp_map.set(y, x, -1);
 	}
 	_imp_map.useDefault(-1);
 	LOG_DEBUG(("\n%s", _imp_map.dump().c_str()));
@@ -910,8 +920,15 @@ void IMap::_destroy(const int z, const v2<int> &cell) {
 	l->second->_destroy(cell.x, cell.y);
 }
 
-void IMap::invalidateTile(const int xp, const int yp) {
-	_cover_map.set(yp, xp, -10000);
+void IMap::invalidateTile(const int x, const int y) {
+	_cover_map.set(y, x, -10000);
+	for(int yy = 0; yy < _split; ++yy)
+		for(int xx = 0; xx < _split; ++xx) {
+			int yp = y * _split + yy, xp = x * _split + xx;
+			
+			_imp_map.set(yp, xp, -2);
+	}
+	updateMatrix(x, y);
 }
 
 const sdlx::Surface* IMap::getSurface(const Layer *l, const int x, const int y) const {

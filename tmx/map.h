@@ -91,6 +91,8 @@ public:
 	void invalidateTile(const int xp, const int yp);
 
 private:
+	void updateMatrix(const int x, const int y);
+
 	virtual void start(const std::string &name, Attrs &attr);
 	virtual void end(const std::string &name);
 	virtual void charData(const std::string &data);
@@ -103,7 +105,7 @@ private:
 	inline const bool collides(const Object *obj, const int dx, const int dy, const sdlx::CollisionMap *tile) const;
 	inline const bool hiddenBy(const Object *obj, const int dx, const int dy, const sdlx::CollisionMap *tile) const;
 
-	int _w, _h, _tw, _th, _ptw, _pth, _firstgid;
+	int _w, _h, _tw, _th, _ptw, _pth, _firstgid, _split;
 	sdlx::CollisionMap _full_tile;
 	
 	int _lastz;
