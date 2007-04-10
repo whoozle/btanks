@@ -31,6 +31,7 @@ class MainMenu;
 class ControlPicker;
 class Object;
 class RedefineKeys;
+class GamepadSetup;
 
 class OptionsMenu : public BaseMenu {
 public:
@@ -60,6 +61,7 @@ private:
 	Alarm _shoot;
 	
 	RedefineKeys * _keys;
+	GamepadSetup * _gamepad;
 };
 
 #endif

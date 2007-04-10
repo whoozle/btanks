@@ -28,6 +28,7 @@
 #include "resource_manager.h"
 #include "object.h"
 #include "redefine_keys.h"
+#include "gamepad_setup.h"
 
 OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(parent), _shoot(0.5f, false) {
 	Mixer->loadSample("shot.ogg");
@@ -120,6 +121,11 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 	add((w - sw) / 2, (h - sh) / 2, _keys);
 	_keys->hide();
 	
+	_gamepad = new GamepadSetup(w, h);
+	_gamepad->getSize(sw, sh);
+	add((w - sw) / 2, (h - sh) / 2, _gamepad);
+	_gamepad->hide();
+	
 	reload();
 }
 
@@ -204,6 +210,11 @@ bool OptionsMenu::onKey(const SDL_keysym sym) {
 	case SDLK_ESCAPE: 
 		_parent->back();
 		reload();
+		return true;
+
+	case SDLK_j: 
+	case SDLK_g: 
+		_gamepad->hide(false);
 		return true;
 
 	case SDLK_r: 
