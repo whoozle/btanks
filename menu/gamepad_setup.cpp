@@ -35,6 +35,7 @@ void GamepadSetup::tick(const float dt) {
 		int i = _current_pad->get();
 		load(sdlx::Joystick::getName(i));
 	}
+	Container::tick(dt);
 }
 
 void GamepadSetup::load(const std::string &profile) {
@@ -76,10 +77,11 @@ bool GamepadSetup::onKey(const SDL_keysym sym) {
 	default: 
 		return true;
 	}
-	
+	Container::onKey(sym);
 	return true;
 }
 
 bool GamepadSetup::onMouse(const int button, const bool pressed, const int x, const int y) {
+	Container::onMouse(button, pressed, x, y);
 	return true;
 }
