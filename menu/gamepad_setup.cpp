@@ -6,6 +6,7 @@
 
 #include "sdlx/surface.h"
 #include "sdlx/joystick.h"
+#include "i18n.h"
 
 GamepadSetup::GamepadSetup(const int w, const int h) : _current_pad(NULL) {
 	int mx, my;
@@ -20,9 +21,9 @@ GamepadSetup::GamepadSetup(const int w, const int h) : _current_pad(NULL) {
 	//LOG_DEBUG(("%d joystick(s) found", n));
 	std::vector<std::string> names;
 	for(int i = 0; i < n; ++i) {
-		std::string name = sdlx::Joystick::getName(i);
+		std::string name = mrt::formatString("%s %d: %s", I18n->get("menu", "joystick").c_str(), i + 1, sdlx::Joystick::getName(i).c_str());
 		if (i == 0)
-			load(name);
+			load(sdlx::Joystick::getName(i));
 		names.push_back(name);
 	}
 	
