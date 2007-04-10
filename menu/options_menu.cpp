@@ -214,8 +214,10 @@ bool OptionsMenu::onKey(const SDL_keysym sym) {
 
 	case SDLK_j: 
 	case SDLK_g: 
-		if (sdlx::Joystick::getCount() && _keys->hidden())
+		if (sdlx::Joystick::getCount() && _keys->hidden()) {
+			_gamepad->reload();
 			_gamepad->hide(false);
+		}
 			
 		return true;
 

@@ -15,6 +15,7 @@ public:
 	GamepadSetup(const int w, const int h);
 	
 	void load(const std::string &profile);
+	void reload();
 	void save();
 	void tick(const float dt);
 

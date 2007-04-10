@@ -67,8 +67,12 @@ void GamepadSetup::tick(const float dt) {
 
 void GamepadSetup::load(const std::string &profile) {
 	LOG_DEBUG(("loading profile '%s'", profile.c_str()));
+	_profile = profile;	
+}
+
+void GamepadSetup::reload() {
+	joy.close();
 	joy.open(_current_pad?_current_pad->get():0);
-	_profile = profile;
 }
 
 void GamepadSetup::save() {
