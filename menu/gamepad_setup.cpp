@@ -16,7 +16,7 @@ GamepadSetup::GamepadSetup(const int w, const int h) : _current_pad(NULL) {
 	_background.getMargins(mx, my);
 
 	int n = sdlx::Joystick::getCount();
-	LOG_DEBUG(("%d joystick(s) found", n));
+	//LOG_DEBUG(("%d joystick(s) found", n));
 	std::vector<std::string> names;
 	for(int i = 0; i < n; ++i) {
 		std::string name = sdlx::Joystick::getName(i);
@@ -32,21 +32,26 @@ GamepadSetup::GamepadSetup(const int w, const int h) : _current_pad(NULL) {
 	add((w - sw - mx * 2) / 2, my, _current_pad);
 }
 
+void GamepadSetup::renderIcon(sdlx::Surface &surface, const int idx, const int x, const int y) {
+	const int w = _gamepad_buttons->getWidth() / 7;
+	const int h = _gamepad_buttons->getHeight();
+
+	const sdlx::Rect src(w * idx, 0, w, h);
+	
+	surface.copyFrom(*_gamepad_buttons, src, _gamepad_bg_pos.x + x, _gamepad_bg_pos.y + y);
+}
+
 void GamepadSetup::renderButton(sdlx::Surface &surface, const int b, const int x, const int y) {
 	assert(b >= 0 && b < 10);
 
 	int idx = (b >= 4)?((b >= 8)?5:0):6;
-	const int w = _gamepad_buttons->getWidth() / 7;
-	const int h = _gamepad_buttons->getHeight();
 
-	int xp[10] = {332, 299, 366, 332,  70, 70, -104, -104,  172, 242,  };
-	int yp[10] = {226, 194, 193, 162,  43, 69,  43,   69,  198, 198,  };
+	static int xp[10] = {332, 299, 366, 332,  70, 70, -120, -120,  172, 242,  };
+	static int yp[10] = {226, 194, 193, 162,  43, 69,  43,   69,  198, 198,  };
 	
-	const sdlx::Rect src(w * idx, 0, w, h);
-	
-	surface.copyFrom(*_gamepad_buttons, src, 
-		x + (xp[b] >= 0?_gamepad_bg_pos.x + xp[b]:_gamepad_bg->getWidth() + xp[b]), 
-		y + (yp[b] >= 0?_gamepad_bg_pos.y + yp[b]:_gamepad_bg->getHeight() + yp[b]));
+	renderIcon(surface, idx, 
+		x + (xp[b] >= 0?xp[b]:_gamepad_bg->getWidth() + xp[b]), 
+		y + (yp[b] >= 0?yp[b]:_gamepad_bg->getHeight() + yp[b]));
 }
 
 
@@ -69,6 +74,25 @@ void GamepadSetup::save() {
 	joy.close();
 }
 
+void GamepadSetup::renderAxis(sdlx::Surface &surface, const int an, const int ai, const int value, const int x, const int y) {
+	if (an == 2 || (an >= 6 && ai >= 4)) {
+		//d-pad
+		int idx = (an == 2)?ai:ai-4;
+		//LOG_DEBUG(("idx"));
+		static const int xp[] =   { 62,  98, 85,  85};
+		static const int yp[] =   {193, 193, 170, 206};
+		static const int icon[] = {2,  4,  1,  3 };
+		const int treshold = 3276; //10% of SDL maximum value
+		int dir = (value > treshold)?1:((value < -treshold)?-1:0);
+		if (dir == 0)
+			return;
+		
+		const int i = idx * 2 + (dir + 1) / 2;
+		//LOG_DEBUG(("%d: %d", idx, i));
+		renderIcon(surface, icon[i], xp[i], yp[i]);
+	}
+}
+
 void GamepadSetup::render(sdlx::Surface &surface, const int x, const int y) {
 	_background.render(surface, x, y);
 	int mx, my;
@@ -84,6 +108,11 @@ void GamepadSetup::render(sdlx::Surface &surface, const int x, const int y) {
 			renderButton(surface, i, x, y);
 	}
 
+	n = math::min(joy.getNumAxes(), 6);
+	for(int i = 0; i < n; ++i) {
+		//LOG_DEBUG(("%d %d", i, joy.getAxis(i)));
+		renderAxis(surface, n, i, joy.getAxis(i), x, y);
+	}
 }
 
 void GamepadSetup::getSize(int &w, int &h) const {

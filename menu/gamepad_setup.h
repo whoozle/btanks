@@ -24,7 +24,9 @@ public:
 	virtual bool onMouse(const int button, const bool pressed, const int x, const int y);
 
 private: 
+	void renderIcon(sdlx::Surface &surface, const int idx, const int x, const int y);
 	void renderButton(sdlx::Surface &surface, const int b, const int x, const int y);
+	void renderAxis(sdlx::Surface &surface, const int an, const int ai, const int value, const int x, const int y);
 
 	Box _background; 
 	Chooser *_current_pad;
