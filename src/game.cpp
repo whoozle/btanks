@@ -76,6 +76,9 @@ void IGame::resetTimer() {
 }
 
 void IGame::pause() {
+	if (_main_menu->isActive())
+		return;
+	
 	if (_paused) {
 		_paused = false;
 		return;
@@ -558,6 +561,11 @@ void IGame::run() {
 				if (event.key.keysym.sym == SDLK_TAB) {
 					_show_stats = false;
 				}
+			break;
+			
+			case SDL_JOYBUTTONDOWN:
+				if (event.jbutton.button == 9) 
+					Game->pause();
 			break;
 			
 			case SDL_KEYDOWN:
