@@ -3,6 +3,8 @@
 
 #include "container.h"
 #include "box.h"
+#include "math/v2.h"
+
 namespace sdlx {
 	class Surface;
 }
@@ -18,12 +20,13 @@ public:
 	virtual void render(sdlx::Surface &surface, const int x, const int y);
 	virtual void getSize(int &w, int &h) const;
 	virtual bool onKey(const SDL_keysym sym);
+	virtual bool onMouse(const int button, const bool pressed, const int x, const int y);
 
 private: 
 	Box _background; 
 	Chooser *_current_pad;
 	const sdlx::Surface *_gamepad_bg;
-	int _gamepad_bg_y;
+	v2<int> _gamepad_bg_pos;
 	std::string _profile;
 };
 
