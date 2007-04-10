@@ -118,3 +118,31 @@ void PlayerSlot::tick(const float dt) {
 PlayerSlot::~PlayerSlot() {
 	clear();
 }
+
+
+#include "controls/keyplayer.h"
+#include "controls/joyplayer.h"
+#include "controls/mouse_control.h"
+//#include "controls/external_control.h"
+
+void PlayerSlot::createControlMethod(const std::string &control_method_name) {
+	delete control_method;
+	control_method = NULL;
+
+	if (control_method_name == "keys" || control_method_name == "keys-1" || control_method_name == "keys-2") {
+		control_method = new KeyPlayer(control_method_name);
+	} else if (control_method_name == "mouse") {
+		throw_ex(("fix mouse control method, then disable this exception ;)"));
+		control_method = new MouseControl();
+	} else if (control_method_name == "joy-1") {
+		control_method = new JoyPlayer(0, 0, 1, 2, 3);
+	} else if (control_method_name == "joy-2") {
+		control_method = new JoyPlayer(1, 0, 1, 2, 3);
+	} else if (control_method_name == "network") {
+		//slot.control_method = new ExternalControl;
+		control_method = NULL;
+		remote = true;
+	} else if (control_method_name != "ai") {
+		throw_ex(("unknown control method '%s' used", control_method_name.c_str()));
+	}
+}

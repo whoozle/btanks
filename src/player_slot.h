@@ -77,6 +77,9 @@ public:
 	
 	void displayLast();
 	void tick(const float dt);
+	
+	void createControlMethod(const std::string &name);
+	
 private: 
 	Tooltip * last_tooltip;
 };

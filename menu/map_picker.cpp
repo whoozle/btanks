@@ -24,6 +24,7 @@
 #include "player_picker.h"
 #include "scroll_list.h"
 #include "i18n.h"
+#include "player_slot.h"
 #include "player_manager.h"
 #include "map_desc.h"
 #include "upper_box.h"
@@ -220,7 +221,7 @@ void MapPicker::fillSlots() const {
 				Config->get("player.control-method-2", cm, "keys-2");
 			}
 		}
-		PlayerManager->createControlMethod(slot, cm);
+		slot.createControlMethod(cm);
 		PlayerManager->spawnPlayer(slot, object, animation);
 	}
 

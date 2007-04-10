@@ -30,10 +30,7 @@
 #include "special_zone.h"
 #include "tooltip.h"
 
-#include "controls/keyplayer.h"
-#include "controls/joyplayer.h"
-#include "controls/mouse_control.h"
-//#include "controls/external_control.h"
+#include "controls/control_method.h"
 
 #include "net/server.h"
 #include "net/client.h"
@@ -126,7 +123,7 @@ TRY {
 		
 		assert(slot.control_method == NULL);
 		GET_CONFIG_VALUE("player.control-method", std::string, control_method, "keys");	
-		createControlMethod(slot, control_method);
+		slot.createControlMethod(control_method);
 
 		LOG_DEBUG(("players = %u", (unsigned)_players.size()));
 		
@@ -639,28 +636,6 @@ const PlayerSlot *IPlayerManager::getSlotByID(const int id) const {
 }
 
 
-void IPlayerManager::createControlMethod(PlayerSlot &slot, const std::string &control_method) {
-	delete slot.control_method;
-	slot.control_method = NULL;
-
-	if (control_method == "keys" || control_method == "keys-1" || control_method == "keys-2") {
-		slot.control_method = new KeyPlayer(control_method);
-	} else if (control_method == "mouse") {
-		throw_ex(("fix mouse control method, then disable this exception ;)"));
-		slot.control_method = new MouseControl();
-	} else if (control_method == "joy-1") {
-		slot.control_method = new JoyPlayer(0, 0, 1, 2, 3);
-	} else if (control_method == "joy-2") {
-		slot.control_method = new JoyPlayer(1, 0, 1, 2, 3);
-	} else if (control_method == "network") {
-		//slot.control_method = new ExternalControl;
-		slot.control_method = NULL;
-		slot.remote = true;
-	} else if (control_method != "ai") {
-		throw_ex(("unknown control method '%s' used", control_method.c_str()));
-	}
-}
-
 const int IPlayerManager::findEmptySlot() const {
 	int i, n = _players.size();
 	for(i = 0; i < n; ++i) {
@@ -676,7 +651,7 @@ const int IPlayerManager::spawnPlayer(const std::string &classname, const std::s
 	int i = findEmptySlot();
 	PlayerSlot &slot = _players[i];
 
-	createControlMethod(slot, control_method);
+	slot.createControlMethod(control_method);
 	
 	LOG_DEBUG(("player: %s.%s using control method: %s", classname.c_str(), animation.c_str(), control_method.c_str()));
 	spawnPlayer(slot, classname, animation);
