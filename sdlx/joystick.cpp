@@ -58,13 +58,28 @@ Joystick::Joystick(const int idx) : _joy (SDL_JoystickOpen(idx)) {
 
 
 Sint16 Joystick::getAxis(const int idx) const {
+	if (_joy == NULL)
+		throw_ex(("getAxis(%d) on uninitialized joystick", idx));
 	return SDL_JoystickGetAxis(_joy, idx);
 }
 
 const bool Joystick::getButton(const int idx) const {
+	if (_joy == NULL)
+		throw_ex(("getButton(%d) on uninitialized joystick", idx));
 	return SDL_JoystickGetButton(_joy, idx) != 0;
 }
 
+const int Joystick::getNumAxes() const {
+	if (_joy == NULL)
+		throw_ex(("getNumAxes() on uninitialized joystick"));
+	return SDL_JoystickNumAxes(_joy);
+}
+
+const int Joystick::getNumButtons() const {
+	if (_joy == NULL)
+		throw_ex(("getNumButtons() on uninitialized joystick"));
+	return SDL_JoystickNumButtons(_joy);
+}
 
 void Joystick::close() {
 	if (_joy == NULL) 

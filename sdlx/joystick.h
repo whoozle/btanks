@@ -36,6 +36,9 @@ public:
 	Sint16 getAxis(const int idx) const;
 	const bool getButton(const int idx) const;
 
+	const int getNumAxes() const;
+	const int getNumButtons() const;
+
 	void close();
 	~Joystick();
 private:
