@@ -26,6 +26,7 @@
 #include <set>
 #include <queue>
 #include "math/v2.h"
+#include "math/matrix.h"
 #include "object_common.h"
 
 namespace sdlx {
@@ -177,6 +178,7 @@ protected:
 	virtual const bool skipRendering() const;
 	
 	const sdlx::Surface * getSurface() const;
+	const Matrix<int> &getImpassabilityMatrix() const;
 
 private: 
 //pathfinding stuff

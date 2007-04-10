@@ -873,7 +873,7 @@ const int Object::getTargetPosition(v2<float> &relative_position, const std::set
 	World->enumerateObjects(objects, this, range, &targets);
 	
 	v2<int> pfs = Map->getPathTileSize();
-	const Matrix<int> &matrix = Map->getImpassabilityMatrix();
+	const Matrix<int> &matrix = getImpassabilityMatrix();
 //		v2<int> map_pos = (pos + getPosition()).convert<int>() / pfs;
 
 	int result_dir = -1;
@@ -957,7 +957,7 @@ const bool Object::getTargetPosition(v2<float> &relative_position, const v2<floa
 	bool found = false;
 	
 	v2<int> pfs = Map->getPathTileSize();
-	const Matrix<int> &matrix = Map->getImpassabilityMatrix();
+	const Matrix<int> &matrix = getImpassabilityMatrix();
 	
 	for(int i = 0; i < dirs; ++i) {
 		v2<float> pos;
@@ -1296,4 +1296,8 @@ void Object::setZBox(const int zb) {
 		if (o != NULL)
 			o->setZBox(zb);
 	}
+}
+
+const Matrix<int> &Object::getImpassabilityMatrix() const {
+	return Map->getImpassabilityMatrix(getZ());
 }
