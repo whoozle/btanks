@@ -146,3 +146,42 @@ void PlayerSlot::createControlMethod(const std::string &control_method_name) {
 		throw_ex(("unknown control method '%s' used", control_method_name.c_str()));
 	}
 }
+
+#include "resource_manager.h"
+#include "object.h"
+#include "config.h"
+#include "player_manager.h"
+
+void PlayerSlot::spawnPlayer(const std::string &classname, const std::string &animation) {
+	Object *obj = ResourceManager->createObject(classname, animation);
+	assert(obj != NULL);
+
+	obj->setZBox(position.z);
+	World->addObject(obj, v2<float>(position.x, position.y) - obj->size / 2, id);
+
+	GET_CONFIG_VALUE("engine.spawn-invulnerability-duration", float, sid, 3);
+	obj->addEffect("invulnerability", sid);
+
+	id = obj->getID();
+	this->classname = classname;
+	this->animation = animation;
+	
+	std::string type;
+	Config->get("multiplayer.game-type", type, "deathmatch");
+	if (type == "deathmatch")
+		return;
+	else if (type == "cooperative") {
+		LOG_DEBUG(("prepending cooperative owners."));
+		int i, n = PlayerManager->getSlotsCount();
+		for(i = 0; i < n; ++i) {
+			PlayerSlot &other_slot = PlayerManager->getSlot(i);
+			if (other_slot.id == -1 || id == other_slot.id) 
+				continue;
+			Object *o1 = getObject(), *o2 = other_slot.getObject();
+			if (o1 == NULL || o2 == NULL)
+				continue;
+			o1->prependOwner(other_slot.id);
+			o2->prependOwner(id);
+		}
+	} else throw_ex(("unknown multiplayer type '%s' used", type.c_str()));
+}

@@ -222,7 +222,7 @@ void MapPicker::fillSlots() const {
 			}
 		}
 		slot.createControlMethod(cm);
-		PlayerManager->spawnPlayer(slot, object, animation);
+		slot.spawnPlayer(object, animation);
 	}
 
 	if (!split) {	

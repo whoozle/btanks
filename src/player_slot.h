@@ -79,6 +79,7 @@ public:
 	void tick(const float dt);
 	
 	void createControlMethod(const std::string &name);
+	void spawnPlayer(const std::string &classname, const std::string &animation);
 	
 private: 
 	Tooltip * last_tooltip;

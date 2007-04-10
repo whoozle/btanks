@@ -165,7 +165,7 @@ TRY {
 		} 
 
 		LOG_DEBUG(("player%d: %s:%s", id, vehicle.c_str(), animation.c_str()));
-		spawnPlayer(slot, vehicle, animation);
+		slot.spawnPlayer(vehicle, animation);
 
 		slot.reserved = false;
 		slot.remote = true;
@@ -432,7 +432,8 @@ void IPlayerManager::updatePlayers() {
 		
 		LOG_DEBUG(("player in slot %d is dead. respawning. frags: %d", i, slot.frags));
 
-		spawnPlayer(slot, slot.classname, slot.animation);
+		slot.spawnPlayer(slot.classname, slot.animation);
+		
 		if (isServer() && slot.remote) {
 			Message m(Message::Respawn);
 			mrt::Serializator s;
@@ -654,43 +655,10 @@ const int IPlayerManager::spawnPlayer(const std::string &classname, const std::s
 	slot.createControlMethod(control_method);
 	
 	LOG_DEBUG(("player: %s.%s using control method: %s", classname.c_str(), animation.c_str(), control_method.c_str()));
-	spawnPlayer(slot, classname, animation);
+	slot.spawnPlayer(classname, animation);
 	return i;
 }
 
-void IPlayerManager::spawnPlayer(PlayerSlot &slot, const std::string &classname, const std::string &animation) {
-	Object *obj = ResourceManager->createObject(classname, animation);
-	assert(obj != NULL);
-
-	obj->setZBox(slot.position.z);
-	World->addObject(obj, v2<float>(slot.position.x, slot.position.y) - obj->size / 2, slot.id);
-
-	GET_CONFIG_VALUE("engine.spawn-invulnerability-duration", float, sid, 3);
-	obj->addEffect("invulnerability", sid);
-
-	slot.id = obj->getID();
-	slot.classname = classname;
-	slot.animation = animation;
-	
-	std::string type;
-	Config->get("multiplayer.game-type", type, "deathmatch");
-	if (type == "deathmatch")
-		return;
-	else if (type == "cooperative") {
-		LOG_DEBUG(("prepending cooperative owners."));
-		int i, n = _players.size();
-		for(i = 0; i < n; ++i) {
-			PlayerSlot &other_slot = _players[i];
-			if (other_slot.id == -1 || slot.id == other_slot.id) 
-				continue;
-			Object *o1 = slot.getObject(), *o2 = other_slot.getObject();
-			if (o1 == NULL || o2 == NULL)
-				continue;
-			o1->prependOwner(other_slot.id);
-			o2->prependOwner(slot.id);
-		}
-	} else throw_ex(("unknown multiplayer type '%s' used", type.c_str()));
-}
 
 void IPlayerManager::setViewport(const int idx, const sdlx::Rect &rect) {
 	PlayerSlot &slot = _players[idx];
