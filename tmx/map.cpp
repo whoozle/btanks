@@ -57,7 +57,7 @@ const Matrix<int>& IMap::getImpassabilityMatrix(const int z) {
 
 	Matrix<int> map;
 	GET_CONFIG_VALUE("map.default-impassability", int, def_im, 0);
-	map.setSize(_w * _split, _h * _split, def_im);
+	map.setSize(_h * _split, _w * _split, def_im);
 	map.useDefault(-1);
 	_imp_map.insert(MatrixMap::value_type(box, map));
 	return _imp_map[box];
@@ -342,7 +342,7 @@ void IMap::updateMatrix(const int x, const int y) {
 				MatrixMap::const_iterator i = _imp_map.find(box);
 				if (i == _imp_map.end()) {
 					Matrix<int> map;
-					map.setSize(_w * _split, _h * _split, -2);
+					map.setSize( _h * _split, _w * _split, -2);
 					map.useDefault(-1);
 					_imp_map.insert(MatrixMap::value_type(box, map));
 				}
