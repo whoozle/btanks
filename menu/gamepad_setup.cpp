@@ -21,7 +21,9 @@ GamepadSetup::GamepadSetup(const int w, const int h) : _current_pad(NULL) {
 	//LOG_DEBUG(("%d joystick(s) found", n));
 	std::vector<std::string> names;
 	for(int i = 0; i < n; ++i) {
-		std::string name = mrt::formatString("%s %d: %s", I18n->get("menu", "joystick").c_str(), i + 1, sdlx::Joystick::getName(i).c_str());
+		std::string name = mrt::formatString("%s %d %s %d: %s", 
+			I18n->get("menu", "joystick").c_str(), i + 1, 
+			I18n->get("menu", "of").c_str(), n, sdlx::Joystick::getName(i).c_str());
 		if (i == 0)
 			load(sdlx::Joystick::getName(i));
 		names.push_back(name);
