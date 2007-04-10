@@ -4,6 +4,7 @@
 #include "container.h"
 #include "box.h"
 #include "math/v2.h"
+#include "sdlx/joystick.h"
 
 namespace sdlx {
 	class Surface;
@@ -23,11 +24,15 @@ public:
 	virtual bool onMouse(const int button, const bool pressed, const int x, const int y);
 
 private: 
+	void renderButton(sdlx::Surface &surface, const int b, const int x, const int y);
+
 	Box _background; 
 	Chooser *_current_pad;
-	const sdlx::Surface *_gamepad_bg;
+	const sdlx::Surface *_gamepad_bg, *_gamepad_buttons;
 	v2<int> _gamepad_bg_pos;
 	std::string _profile;
+	
+	sdlx::Joystick joy;
 };
 
 #endif

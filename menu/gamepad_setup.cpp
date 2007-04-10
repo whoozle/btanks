@@ -2,13 +2,16 @@
 #include "resource_manager.h"
 #include "chooser.h"
 
+#include "math/binary.h"
+
 #include "sdlx/surface.h"
 #include "sdlx/joystick.h"
 
-GamepadSetup::GamepadSetup(const int w, const int h) {
+GamepadSetup::GamepadSetup(const int w, const int h) : _current_pad(NULL) {
 	int mx, my;
 
 	_gamepad_bg = ResourceManager->loadSurface("menu/gamepad.png");
+	_gamepad_buttons = ResourceManager->loadSurface("menu/gamepad_buttons.png");
 	_background.init("menu/background_box_dark.png", w, h);
 	_background.getMargins(mx, my);
 
@@ -29,6 +32,24 @@ GamepadSetup::GamepadSetup(const int w, const int h) {
 	add((w - sw - mx * 2) / 2, my, _current_pad);
 }
 
+void GamepadSetup::renderButton(sdlx::Surface &surface, const int b, const int x, const int y) {
+	assert(b >= 0 && b < 10);
+
+	int idx = (b >= 4)?((b >= 8)?5:0):6;
+	const int w = _gamepad_buttons->getWidth() / 7;
+	const int h = _gamepad_buttons->getHeight();
+
+	int xp[10] = {332, 299, 366, 332,  70, 70, -104, -104,  172, 242,  };
+	int yp[10] = {226, 194, 193, 162,  43, 69,  43,   69,  198, 198,  };
+	
+	const sdlx::Rect src(w * idx, 0, w, h);
+	
+	surface.copyFrom(*_gamepad_buttons, src, 
+		x + (xp[b] >= 0?_gamepad_bg_pos.x + xp[b]:_gamepad_bg->getWidth() + xp[b]), 
+		y + (yp[b] >= 0?_gamepad_bg_pos.y + yp[b]:_gamepad_bg->getHeight() + yp[b]));
+}
+
+
 void GamepadSetup::tick(const float dt) {
 	if (_current_pad->changed()) {
 		_current_pad->reset();
@@ -40,11 +61,12 @@ void GamepadSetup::tick(const float dt) {
 
 void GamepadSetup::load(const std::string &profile) {
 	LOG_DEBUG(("loading profile '%s'", profile.c_str()));
+	joy.open(_current_pad?_current_pad->get():0);
 	_profile = profile;
 }
 
 void GamepadSetup::save() {
-	
+	joy.close();
 }
 
 void GamepadSetup::render(sdlx::Surface &surface, const int x, const int y) {
@@ -53,6 +75,15 @@ void GamepadSetup::render(sdlx::Surface &surface, const int x, const int y) {
 	_background.getMargins(mx, my);
 	surface.copyFrom(*_gamepad_bg, x + _gamepad_bg_pos.x, y + _gamepad_bg_pos.y);
 	Container::render(surface, x, y);
+
+	SDL_JoystickUpdate();
+
+	int n = math::min(joy.getNumButtons(), 10);
+	for(int i = 0; i < n; ++i)  {
+		if (joy.getButton(i))
+			renderButton(surface, i, x, y);
+	}
+
 }
 
 void GamepadSetup::getSize(int &w, int &h) const {
