@@ -508,6 +508,9 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects) {
 			} 
 		}
 	}
+	LOG_DEBUG(("generating matrixes"));
+	Map->generateMatrixes();
+	
 	LOG_DEBUG(("checking waypoint graph..."));
 	for(WaypointEdgeMap::const_iterator i = _waypoint_edges.begin(); i != _waypoint_edges.end(); ++i) {
 		const std::string &dst = i->second;

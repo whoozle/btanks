@@ -61,7 +61,7 @@ void Mine::emit(const std::string &event, Object * emitter) {
 		v2<float> path_tile_size = Map->getPathTileSize().convert<float>();
 		//LOG_DEBUG(("tile_size: %g, %g", tile_size.x, tile_size.y));
 		spawn("bomberman-explosion", "cannon-explosion");
-		const Matrix<int>& matrix = Map->getImpassabilityMatrix();
+		const Matrix<int>& matrix = getImpassabilityMatrix();
 		for (int d = 0; d < 4; ++d) {
 			for(int i = 1; i <= 2; ++i) {
 				v2<float> dpos;

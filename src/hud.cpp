@@ -54,26 +54,42 @@ void Hud::initMap() {
 
 void Hud::generateRadarBG() {
 	assert(Map->loaded());
-	
-	const Matrix<int>& matrix = Map->getImpassabilityMatrix();
-	GET_CONFIG_VALUE("hud.radar.zoom", int, zoom, 2);
 
+	std::set<int> layers;
+	Map->getZBoxes(layers);
+
+	GET_CONFIG_VALUE("hud.radar.zoom", int, zoom, 2);
+	const Matrix<int>& matrix = Map->getImpassabilityMatrix(0);
+	
 	_radar_bg.createRGB(zoom * matrix.getWidth(), zoom * matrix.getHeight(), 32);
 	_radar_bg.convertAlpha();
-	//LOG_DEBUG(("rendering radar..."));
 	_radar_bg.lock();
-	//update radar;
-	for(int ry = 0; ry < matrix.getHeight(); ++ry) 
-		for(int rx = 0; rx < matrix.getWidth(); ++rx) {
-			int v = matrix.get(ry, rx);
-			if (v < 0 || v > 100) 
-				v = 100;
+	//LOG_DEBUG(("rendering radar..."));
+
+	int n = 0;
+	for(std::set<int>::iterator i = layers.begin(); i != layers.end(); ++i, ++n) {
+		const Matrix<int>& matrix = Map->getImpassabilityMatrix((*i) * 2000);
+
+		//update radar;
+		for(int ry = 0; ry < matrix.getHeight(); ++ry) 
+			for(int rx = 0; rx < matrix.getWidth(); ++rx) {
+				int v = matrix.get(ry, rx);
+				if (v < 0 || v > 100) 
+					v = 100;
 			
-			for(int yy = 0; yy < zoom; ++yy) 
-				for(int xx = 0; xx < zoom; ++xx) {
-				_radar_bg.putPixel(rx*zoom + xx, ry*zoom + yy, _radar_bg.mapRGBA(0, v * 255 / 100, 0, 128 + v));
+				for(int yy = 0; yy < zoom; ++yy) 
+					for(int xx = 0; xx < zoom; ++xx) {
+					Uint8 r, g, b, a;
+					Uint8 rc, gc, bc, ac;
+					
+					_radar_bg.getRGBA(_radar_bg.getPixel(rx*zoom + xx, ry*zoom + yy), r, g, b, a);
+					_radar_bg.getRGBA(index2color(_radar_bg, n + 4, (128 + v) / layers.size()), rc, gc, bc, ac);
+					
+					Uint32 color = _radar_bg.mapRGBA(r + v * rc / 100 / layers.size(), g + v * gc / 100 / layers.size(), b + v * bc / 100 / layers.size(), a + (128 + v) / layers.size());
+					_radar_bg.putPixel(rx*zoom + xx, ry*zoom + yy, color);
+				}
 			}
-		}
+	}
 	_radar_bg.unlock();
 	_radar_bg.setAlpha(0, 0);
 }

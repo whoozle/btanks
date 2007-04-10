@@ -371,13 +371,15 @@ void IWorld::getImpassability2(float &old_pos_im, float &new_pos_im, Object *obj
 
 void IWorld::getImpassabilityMatrix(Matrix<int> &matrix, const Object *src, const Object *dst) const {
 	const v2<int> size = Map->getTileSize();
-	
 	const v2<int> tile_size = Map->getTileSize();
+	int z = 0;
+	if (src)
+		z = src->getZ();
 
 	GET_CONFIG_VALUE("map.pathfinding-step", int, ps, 32);
 	const int split = 2 * ((tile_size.x - 1) / 2 + 1) / ps;
 
-	matrix = Map->getImpassabilityMatrix();
+	matrix = Map->getImpassabilityMatrix(z);
 	for(ObjectMap::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		Object *o = i->second;
 		if (o == src || o == dst || o->impassability <= 0 || o->piercing)
@@ -754,7 +756,7 @@ TRY {
 				//LOG_DEBUG(("allowed velocity = %g %g", allowed_velocity.x, allowed_velocity.y));
 
 				v2<int> map_tile_size = Map->getPathTileSize();
-				const Matrix<int> &matrix = Map->getImpassabilityMatrix();
+				const Matrix<int> &matrix = o.getImpassabilityMatrix();
 				GET_CONFIG_VALUE("engine.stuck-tile-lookup", int, n, 3);
 				int a, d = -1;
 				v2<float> pos;
