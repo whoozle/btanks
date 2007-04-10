@@ -16,7 +16,10 @@ GamepadSetup::GamepadSetup(const int w, const int h) {
 	LOG_DEBUG(("%d joystick(s) found", n));
 	std::vector<std::string> names;
 	for(int i = 0; i < n; ++i) {
-		names.push_back(sdlx::Joystick::getName(i));
+		std::string name = sdlx::Joystick::getName(i);
+		if (i == 0)
+			load(name);
+		names.push_back(name);
 	}
 	
 	int sw, sh;
@@ -24,6 +27,23 @@ GamepadSetup::GamepadSetup(const int w, const int h) {
 	_current_pad->getSize(sw, sh);
 	_gamepad_bg_y = my + sh + 10;
 	add((w - sw - mx * 2) / 2, my, _current_pad);
+}
+
+void GamepadSetup::tick(const float dt) {
+	if (_current_pad->changed()) {
+		_current_pad->reset();
+		int i = _current_pad->get();
+		load(sdlx::Joystick::getName(i));
+	}
+}
+
+void GamepadSetup::load(const std::string &profile) {
+	LOG_DEBUG(("loading profile '%s'", profile.c_str()));
+	_profile = profile;
+}
+
+void GamepadSetup::save() {
+	
 }
 
 void GamepadSetup::render(sdlx::Surface &surface, const int x, const int y) {
@@ -48,14 +68,11 @@ bool GamepadSetup::onKey(const SDL_keysym sym) {
 	switch(sym.sym) {
 
 	case SDLK_RETURN:
-		hide();
-		//save();
-		return true;
-
 	case SDLK_ESCAPE: 
 		hide();
-		//reload();
+		save();
 		return true;
+
 	default: 
 		return true;
 	}

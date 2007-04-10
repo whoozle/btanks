@@ -10,6 +10,11 @@ class Chooser;
 class GamepadSetup : public Container {
 public: 
 	GamepadSetup(const int w, const int h);
+	
+	void load(const std::string &profile);
+	void save();
+	void tick(const float dt);
+
 	virtual void render(sdlx::Surface &surface, const int x, const int y);
 	virtual void getSize(int &w, int &h) const;
 	virtual bool onKey(const SDL_keysym sym);
@@ -19,6 +24,7 @@ private:
 	Chooser *_current_pad;
 	const sdlx::Surface *_gamepad_bg;
 	int _gamepad_bg_y;
+	std::string _profile;
 };
 
 #endif

@@ -214,11 +214,13 @@ bool OptionsMenu::onKey(const SDL_keysym sym) {
 
 	case SDLK_j: 
 	case SDLK_g: 
-		_gamepad->hide(false);
+		if (_keys->hidden())
+			_gamepad->hide(false);
 		return true;
 
 	case SDLK_r: 
-		_keys->hide(false);
+		if (_gamepad->hidden())
+			_keys->hide(false);
 		return true;
 
 	default: ;
