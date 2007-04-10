@@ -101,6 +101,8 @@ public:
 	
 	//for special zones
 	void send(const int id, const Message & msg);
+	
+	void updateControls(); //recreates control methods.
 
 private: 
 	void serializeSlots(mrt::Serializator &s) const;

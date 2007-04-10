@@ -1007,3 +1007,38 @@ void IPlayerManager::onDestroyMap(const std::set<v3<int> > & cells) {
 	m.data = s.getData();
 	broadcast(m);	
 }
+
+void IPlayerManager::updateControls() {
+	int n = _players.size();
+	int pn = 0;
+	int p1 = -1, p2 = -1;
+	
+	for(int i = 0; i < n; ++i) {
+		const PlayerSlot &slot = _players[i];
+		if (slot.visible) {
+			++pn;
+			if (p1 == -1) {
+				p1 = i;
+				continue;
+			}
+			if (p2 == -1) {
+				p2 = i;
+				continue;
+			}
+		}
+	}
+	//LOG_DEBUG(("p1: %d, p2: %d", p1, p2));
+	std::string cm1, cm2;
+	switch(pn) {
+	case 2: 
+		Config->get("player.control-method-1", cm1, "keys-1");	
+		Config->get("player.control-method-2", cm2, "keys-2");	
+		_players[p1].createControlMethod(cm1);
+		_players[p2].createControlMethod(cm2);
+	break;
+	case 1: 
+		Config->get("player.control-method", cm1, "keys");	
+		_players[p1].createControlMethod(cm1);
+	break;	
+	}
+}
