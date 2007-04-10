@@ -56,6 +56,9 @@ Joystick::Joystick(const int idx) : _joy (SDL_JoystickOpen(idx)) {
 		throw_sdl(("SDL_JoystickOpen(%d)", idx));
 }
 
+const bool Joystick::opened() const {
+	return _joy != NULL;
+}
 
 Sint16 Joystick::getAxis(const int idx) const {
 	if (_joy == NULL)

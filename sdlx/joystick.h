@@ -31,6 +31,7 @@ public:
 	
 	Joystick();
 	Joystick(const int idx);
+	const bool opened() const;
 	void open(const int idx);
 
 	Sint16 getAxis(const int idx) const;
