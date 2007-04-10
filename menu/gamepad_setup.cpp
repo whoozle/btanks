@@ -12,6 +12,7 @@ GamepadSetup::GamepadSetup(const int w, const int h) : _current_pad(NULL) {
 
 	_gamepad_bg = ResourceManager->loadSurface("menu/gamepad.png");
 	_gamepad_buttons = ResourceManager->loadSurface("menu/gamepad_buttons.png");
+	_gamepad_ministick = ResourceManager->loadSurface("menu/gamepad_ministick.png");
 	_background.init("menu/background_box_dark.png", w, h);
 	_background.getMargins(mx, my);
 
@@ -93,6 +94,19 @@ void GamepadSetup::renderAxis(sdlx::Surface &surface, const int an, const int ai
 	}
 }
 
+void GamepadSetup::renderMinistick(sdlx::Surface &surface, const int ai, const int x, const int y) {
+	const int r = 16;
+	const int xa = joy.getAxis(ai) * r / 32767;
+	const int ya = joy.getAxis(ai + 1) * r / 32767;
+	
+	int idx = ai / 2;
+	assert(idx < 2);
+	int xp[] = { 95, 220};
+	int yp[] = {203, 203};
+
+	surface.copyFrom(*_gamepad_ministick, _gamepad_bg_pos.x + xp[idx] + xa + _gamepad_ministick->getWidth() / 2, _gamepad_bg_pos.y + yp[idx] + ya + _gamepad_ministick->getHeight() / 2);
+}
+
 void GamepadSetup::render(sdlx::Surface &surface, const int x, const int y) {
 	_background.render(surface, x, y);
 	int mx, my;
@@ -113,6 +127,11 @@ void GamepadSetup::render(sdlx::Surface &surface, const int x, const int y) {
 		//LOG_DEBUG(("%d %d", i, joy.getAxis(i)));
 		renderAxis(surface, n, i, joy.getAxis(i), x, y);
 	}
+	if (n >= 4) 
+		renderMinistick(surface, 0, x, y);
+
+	if (n >= 6) 
+		renderMinistick(surface, 2, x, y);
 }
 
 void GamepadSetup::getSize(int &w, int &h) const {

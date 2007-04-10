@@ -27,10 +27,11 @@ private:
 	void renderIcon(sdlx::Surface &surface, const int idx, const int x, const int y);
 	void renderButton(sdlx::Surface &surface, const int b, const int x, const int y);
 	void renderAxis(sdlx::Surface &surface, const int an, const int ai, const int value, const int x, const int y);
+	void renderMinistick(sdlx::Surface &surface, const int ai, const int x, const int y);
 
 	Box _background; 
 	Chooser *_current_pad;
-	const sdlx::Surface *_gamepad_bg, *_gamepad_buttons;
+	const sdlx::Surface *_gamepad_bg, *_gamepad_buttons, *_gamepad_ministick;
 	v2<int> _gamepad_bg_pos;
 	std::string _profile;
 	
