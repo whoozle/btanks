@@ -649,9 +649,9 @@ void IPlayerManager::createControlMethod(PlayerSlot &slot, const std::string &co
 		throw_ex(("fix mouse control method, then disable this exception ;)"));
 		slot.control_method = new MouseControl();
 	} else if (control_method == "joy-1") {
-		slot.control_method = new JoyPlayer(0, 0, 1, 2);
+		slot.control_method = new JoyPlayer(0, 0, 1, 2, 3);
 	} else if (control_method == "joy-2") {
-		slot.control_method = new JoyPlayer(1, 0, 1, 2);
+		slot.control_method = new JoyPlayer(1, 0, 1, 2, 3);
 	} else if (control_method == "network") {
 		//slot.control_method = new ExternalControl;
 		slot.control_method = NULL;
