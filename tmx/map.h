@@ -71,8 +71,8 @@ public:
 	
 	virtual const int getImpassability(const Object *obj, const v2<int>& pos, TilePosition *tile_pos = NULL, bool *hidden = NULL) const;
 
-	const Matrix<int>& getImpassabilityMatrix() const { return _imp_map; }
-	void getSurroundings(Matrix<int> &matrix, const v2<int> &pos, const int filler = -1) const;
+	const Matrix<int>& getImpassabilityMatrix(const int z);
+	//void getSurroundings(Matrix<int> &matrix, const v2<int> &pos, const int filler = -1) const;
 	
 	void damage(const v2<float> &position, const int hp);
 	void damage(const v2<float> &center_position, const int hp, const float radius);
@@ -90,6 +90,9 @@ public:
 	
 	void invalidateTile(const int xp, const int yp);
 
+	void generateMatrixes();
+	void getZBoxes(std::set<int> &layers);
+
 private:
 	void updateMatrix(const int x, const int y);
 
@@ -101,7 +104,9 @@ private:
 	virtual const sdlx::CollisionMap* getCollisionMap(const Layer *l, const int x, const int y) const;
 	virtual const sdlx::CollisionMap* getVisibilityMap(const Layer *l, const int x, const int y) const;
 
-	Matrix<int> _imp_map;
+	typedef std::map<const int, Matrix<int> > MatrixMap;
+	MatrixMap _imp_map;
+	
 	inline const bool collides(const Object *obj, const int dx, const int dy, const sdlx::CollisionMap *tile) const;
 	inline const bool hiddenBy(const Object *obj, const int dx, const int dy, const sdlx::CollisionMap *tile) const;
 

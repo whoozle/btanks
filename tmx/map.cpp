@@ -49,6 +49,19 @@ IMap::IMap() : _w(0), _h(0), _tw(0), _th(0), _ptw(0), _pth(0), _firstgid(0), _sp
 	_image = NULL;
 }
 
+const Matrix<int>& IMap::getImpassabilityMatrix(const int z) {
+	const int box = ZBox::getBox(z);
+	MatrixMap::const_iterator i = _imp_map.find(box);
+	if (i != _imp_map.end())
+		i->second;
+
+	Matrix<int> map;
+	GET_CONFIG_VALUE("map.default-impassability", int, def_im, 0);
+	map.setSize(_w * _split, _h * _split, def_im);
+	map.useDefault(-1);
+	_imp_map.insert(MatrixMap::value_type(box, map));
+	return _imp_map[box];
+}
 
 inline const bool IMap::collides(const Object *obj, const int dx, const int dy, const sdlx::CollisionMap *tile) const {
 	if (tile == NULL) {
@@ -312,6 +325,7 @@ void IMap::updateMatrix(const int x, const int y) {
 	if (x < 0 || x >= _w || y < 0 || y >= _h)
 		return;
 	//LOG_DEBUG(("updating matrix at [%d,%d]", y, x));
+	
 	for(LayerMap::reverse_iterator l = _layers.rbegin(); l != _layers.rend(); ++l) {
 				int im = l->second->impassability;
 				if (im == -1)
@@ -323,6 +337,17 @@ void IMap::updateMatrix(const int x, const int y) {
 				const sdlx::CollisionMap *cmap = getCollisionMap(l->second, x, y);
 				if (cmap == NULL || cmap->isEmpty())
 					continue;
+
+				int box = ZBox::getBox(l->first);
+				MatrixMap::const_iterator i = _imp_map.find(box);
+				if (i == _imp_map.end()) {
+					Matrix<int> map;
+					map.setSize(_w * _split, _h * _split, -2);
+					map.useDefault(-1);
+					_imp_map.insert(MatrixMap::value_type(box, map));
+				}
+		
+				Matrix<int> &imp_map = _imp_map[box];
 				
 				//break;
 				//if (im == 100) 
@@ -341,20 +366,25 @@ void IMap::updateMatrix(const int x, const int y) {
 				for(int yy = 0; yy < _split; ++yy)
 					for(int xx = 0; xx < _split; ++xx) {
 						int yp = y * _split + yy, xp = x * _split + xx;
-						if (proj.get(yy, xx) && _imp_map.get(yp, xp) == -2) 
-							_imp_map.set(yp, xp, im);
+						if (proj.get(yy, xx) && imp_map.get(yp, xp) == -2) 
+							imp_map.set(yp, xp, im);
 					}
 	}
 
-	for(int yy = 0; yy < _split; ++yy)
-		for(int xx = 0; xx < _split; ++xx) {
-			int yp = y * _split + yy, xp = x * _split + xx;
+	GET_CONFIG_VALUE("map.default-impassability", int, def_im, 0);
+
+	for(MatrixMap::iterator i = _imp_map.begin(); i != _imp_map.end(); ++i) {
+		Matrix<int>& imp_map = i->second;
+		for(int yy = 0; yy < _split; ++yy)
+			for(int xx = 0; xx < _split; ++xx) {
+				int yp = y * _split + yy, xp = x * _split + xx;
 			
-			if (_imp_map.get(yp, xp) == -2)
-				_imp_map.set(yp, xp, 0);
+				if (imp_map.get(yp, xp) == -2)
+					imp_map.set(yp, xp, def_im);
 	
-			if (_imp_map.get(yp, xp) >= 100)
-				_imp_map.set(yp, xp, -1);
+				if (imp_map.get(yp, xp) >= 100)
+					imp_map.set(yp, xp, -1);
+				}
 	}
 }
 
@@ -440,22 +470,31 @@ void IMap::load(const std::string &name) {
 	
 	_pth = _tw / _split;
 	_ptw = _th / _split;
-	_imp_map.setSize(_h * _split, _w * _split, -2);
-
-	const int h = _imp_map.getHeight(), w = _imp_map.getWidth();
-	LOG_DEBUG(("building map matrix[%d:%d]...", h, w));
 	
+	
+	LOG_DEBUG(("loading completed"));
+}
+
+void IMap::generateMatrixes() {
 	for(int y = 0; y < _h; ++y) {
 		for(int x = 0; x < _w; ++x) {
 			updateMatrix(x, y);
 		}
 	}
-	_imp_map.useDefault(-1);
-	LOG_DEBUG(("\n%s", _imp_map.dump().c_str()));
-	
-	LOG_DEBUG(("loading completed"));
+	for(MatrixMap::const_iterator i = _imp_map.begin(); i != _imp_map.end(); ++i) {
+		LOG_DEBUG(("z: %d\n%s", i->first, i->second.dump().c_str()));
+	}
 }
 
+void IMap::getZBoxes(std::set<int> &layers) {
+	layers.clear();
+	for(MatrixMap::const_iterator i = _imp_map.begin(); i != _imp_map.end(); ++i) {
+		layers.insert(i->first);
+	}
+}
+
+
+/*
 void IMap::getSurroundings(Matrix<int> &matrix, const v2<int> &pos, const int filler) const {
 	if (matrix.getWidth() % 2 == 0 || matrix.getHeight() % 2 == 0)
 		throw_ex(("use only odd values for surrond matrix. (used: %d, %d)", matrix.getHeight(), matrix.getWidth()));
@@ -476,6 +515,7 @@ void IMap::getSurroundings(Matrix<int> &matrix, const v2<int> &pos, const int fi
 			matrix.set(y - y0, x - x0, i);
 		}
 }
+*/
 
 void IMap::start(const std::string &name, Attrs &attrs) {
 	//LOG_DEBUG(("started %s", name.c_str()));
@@ -830,7 +870,8 @@ void IMap::clear() {
 	_w = _h = _tw = _th = _firstgid = 0;
 	
 	//LOG_DEBUG(("clearing damage layers and optimization maps..."));
-
+	
+	_imp_map.clear();
 	_damage4.clear();
 	_layer_z.clear();
 	_cover_map.setSize(0, 0, 0);
@@ -922,12 +963,13 @@ void IMap::_destroy(const int z, const v2<int> &cell) {
 
 void IMap::invalidateTile(const int x, const int y) {
 	_cover_map.set(y, x, -10000);
-	for(int yy = 0; yy < _split; ++yy)
-		for(int xx = 0; xx < _split; ++xx) {
-			int yp = y * _split + yy, xp = x * _split + xx;
+	for(MatrixMap::iterator i = _imp_map.begin(); i != _imp_map.end(); ++i) 
+		for(int yy = 0; yy < _split; ++yy)
+			for(int xx = 0; xx < _split; ++xx) {
+				int yp = y * _split + yy, xp = x * _split + xx;
 			
-			_imp_map.set(yp, xp, -2);
-	}
+				i->second.set(yp, xp, -2);
+		}
 	updateMatrix(x, y);
 }
 
