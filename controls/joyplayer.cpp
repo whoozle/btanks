@@ -48,7 +48,7 @@ void JoyPlayer::updateState(PlayerSlot &slot, PlayerState &_state) {
 	_state.hint_control = _joy.getButton(_hint_control);
 
 	int r;
-	Config->get("player.controls.camera-maximum-slide", r, 100);
+	Config->get("player.controls.maximum-camera-slide", r, 200);
 	int n = _joy.getNumAxes();
 	if (n >= 4) {
 #ifdef WIN32
