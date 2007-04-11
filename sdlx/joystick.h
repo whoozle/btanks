@@ -39,6 +39,8 @@ public:
 
 	const int getNumAxes() const;
 	const int getNumButtons() const;
+	const int getNumBalls() const;
+	const int getNumHats() const;
 
 	void close();
 	~Joystick();

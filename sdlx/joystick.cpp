@@ -84,6 +84,19 @@ const int Joystick::getNumButtons() const {
 	return SDL_JoystickNumButtons(_joy);
 }
 
+const int Joystick::getNumBalls() const {
+	if (_joy == NULL)
+		throw_ex(("getNumBalls() on uninitialized joystick"));
+	return SDL_JoystickNumBalls(_joy);
+}
+
+const int Joystick::getNumHats() const {
+	if (_joy == NULL)
+		throw_ex(("getNumBalls() on uninitialized joystick"));
+	return SDL_JoystickNumHats(_joy);
+}
+
+
 void Joystick::close() {
 	if (_joy == NULL) 
 		return;
