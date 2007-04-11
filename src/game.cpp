@@ -198,12 +198,14 @@ void IGame::init(const int argc, char *argv[]) {
 		//sdlx::Joystick::sendEvents(true);
 		
 		for(int i = 0; i < jc; ++i) {
-			LOG_DEBUG(("%d: %s", i, sdlx::Joystick::getName(i).c_str()));
-/*			sdlx::Joystick j;
+			sdlx::Joystick j;
 			j.open(i);
+			LOG_DEBUG(("%d: %s axes: %d, buttons: %d, hats: %d, balls: %d", 
+				i, sdlx::Joystick::getName(i).c_str(), 
+				j.getNumAxes(), j.getNumButtons(), j.getNumHats(), j.getNumBalls()
+				));
 			
 			j.close();
-*/
 		}
 	}
 	
