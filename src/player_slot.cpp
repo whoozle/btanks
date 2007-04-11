@@ -20,6 +20,7 @@
 #include "world.h"
 #include "controls/control_method.h"
 #include "tooltip.h"
+#include "tmx/map.h"
 
 PlayerSlot::PlayerSlot() : 
 id(-1), control_method(NULL), need_sync(false), dont_interpolate(false), remote(false), trip_time(10), visible(false), 
@@ -135,9 +136,9 @@ void PlayerSlot::createControlMethod(const std::string &control_method_name) {
 		throw_ex(("fix mouse control method, then disable this exception ;)"));
 		control_method = new MouseControl();
 	} else if (control_method_name == "joy-1") {
-		control_method = new JoyPlayer(0, 0, 1, 2, 3);
+		control_method = new JoyPlayer(0, 0, 1, 2, 3, 4, 5);
 	} else if (control_method_name == "joy-2") {
-		control_method = new JoyPlayer(1, 0, 1, 2, 3);
+		control_method = new JoyPlayer(1, 0, 1, 2, 3, 4, 5);
 	} else if (control_method_name == "network") {
 		//slot.control_method = new ExternalControl;
 		control_method = NULL;
@@ -184,4 +185,19 @@ void PlayerSlot::spawnPlayer(const std::string &classname, const std::string &an
 			o2->prependOwner(id);
 		}
 	} else throw_ex(("unknown multiplayer type '%s' used", type.c_str()));
+}
+
+void PlayerSlot::validatePosition(v2<float>& position) {
+	const v2<int> world_size = Map->getSize();
+	if (position.x < 0) 
+			position.x = 0;
+	if (position.x + viewport.w > world_size.x) 
+		position.x = world_size.x - viewport.w;
+
+	if (position.y < 0) 
+		position.y = 0;
+	if (position.y + viewport.h > world_size.y) 
+		position.y = world_size.y - viewport.h;
+	
+	//LOG_DEBUG(("%f %f", mapx, mapy));
 }

@@ -53,8 +53,9 @@ public:
 	
 	bool visible;
 	sdlx::Rect viewport;
-		
+	
 	v2<float> map_pos, map_vel, map_dst, map_dst_vel, map_dst_pos;
+	v2<int> map_dpos;
 		
 	void clear();
 	~PlayerSlot();
@@ -80,6 +81,7 @@ public:
 	
 	void createControlMethod(const std::string &name);
 	void spawnPlayer(const std::string &classname, const std::string &animation);
+	void validatePosition(v2<float>& position);
 	
 private: 
 	Tooltip * last_tooltip;

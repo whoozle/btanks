@@ -454,7 +454,7 @@ void IPlayerManager::updatePlayers() {
 		if (slot.control_method != NULL && obj != NULL) {
 			PlayerState state = obj->getPlayerState();
 			bool hint = state.hint_control;
-			slot.control_method->updateState(state);
+			slot.control_method->updateState(slot, state);
 			
 			if (obj->updatePlayerState(state)) {
 				updated = true;
@@ -676,23 +676,12 @@ void IPlayerManager::setViewport(const int idx, const sdlx::Rect &rect) {
 
 void IPlayerManager::validateViewports() {
 		if (Map->loaded()) {
-			const v2<int> world_size = Map->getSize();
 			for(unsigned p = 0; p < _players.size(); ++p) {
 				PlayerSlot &slot = _players[p];
 				if (!slot.visible) 
 					continue;
 				
-				if (slot.map_pos.x < 0) 
-					slot.map_pos.x = 0;
-				if (slot.map_pos.x + slot.viewport.w > world_size.x) 
-					slot.map_pos.x = world_size.x - slot.viewport.w;
-
-				if (slot.map_pos.y < 0) 
-					slot.map_pos.y = 0;
-				if (slot.map_pos.y + slot.viewport.h > world_size.y) 
-					slot.map_pos.y = world_size.y - slot.viewport.h;
-			
-				//LOG_DEBUG(("%f %f", mapx, mapy));
+				slot.validatePosition(slot.map_pos);				
 			}
 		}
 }
@@ -816,8 +805,10 @@ void IPlayerManager::render(sdlx::Surface &window, const int vx, const int vy) {
 				
 			slot.viewport.x += vx;
 			slot.viewport.y += vy;
-	
-			World->render(window, sdlx::Rect((int)slot.map_pos.x, (int)slot.map_pos.y, slot.viewport.w, slot.viewport.h),  slot.viewport);
+			v2<float> pos = slot.map_pos + slot.map_dpos.convert<float>();
+			slot.validatePosition(pos);
+			
+			World->render(window, sdlx::Rect((int)pos.x, (int)pos.y, slot.viewport.w, slot.viewport.h),  slot.viewport);
 
 			GET_CONFIG_VALUE("engine.show-special-zones", bool, ssz, false);
 			if (ssz) {		
