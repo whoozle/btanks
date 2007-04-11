@@ -36,6 +36,8 @@ public:
 
 	Sint16 getAxis(const int idx) const;
 	const bool getButton(const int idx) const;
+	const int getHat(const int idx) const;
+	void getBall(const int idx, int &dx, int &dy) const;
 
 	const int getNumAxes() const;
 	const int getNumButtons() const;

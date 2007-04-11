@@ -72,6 +72,20 @@ const bool Joystick::getButton(const int idx) const {
 	return SDL_JoystickGetButton(_joy, idx) != 0;
 }
 
+const int Joystick::getHat(const int idx) const {
+	if (_joy == NULL)
+		throw_ex(("getHat(%d) on uninitialized joystick", idx));
+	return SDL_JoystickGetHat(_joy, idx);
+}
+
+void Joystick::getBall(const int idx, int &dx, int &dy) const {
+	if (_joy == NULL)
+		throw_ex(("getBall(%d) on uninitialized joystick", idx));
+	if (SDL_JoystickGetBall(_joy, idx, &dx, &dy) == -1)	
+		throw_sdl(("SDL_JoystickGetBall(%d)", idx));
+}
+
+
 const int Joystick::getNumAxes() const {
 	if (_joy == NULL)
 		throw_ex(("getNumAxes() on uninitialized joystick"));
@@ -95,7 +109,6 @@ const int Joystick::getNumHats() const {
 		throw_ex(("getNumBalls() on uninitialized joystick"));
 	return SDL_JoystickNumHats(_joy);
 }
-
 
 void Joystick::close() {
 	if (_joy == NULL) 
