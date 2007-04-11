@@ -29,7 +29,7 @@ class Object;
 class MouseControl : public ControlMethod {
 public:
 	MouseControl(); 
-	virtual void updateState(PlayerState &state);
+	virtual void updateState(PlayerSlot &slot, PlayerState &state);
 private:
 	void getPosition(v2<float>&pos) const;
 	Object * getObject() const;

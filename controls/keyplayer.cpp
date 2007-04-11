@@ -59,7 +59,7 @@ KeyPlayer::KeyPlayer(const std::string &variant) {
 	_hint_control = (SDLKey)hint_control;
 }
 
-void KeyPlayer::updateState(PlayerState &state) {
+void KeyPlayer::updateState(PlayerSlot &slot, PlayerState &state) {
 	static const Uint8 *keys = SDL_GetKeyState(0);
 	state.left = keys[_left] != 0;
 	state.right = keys[_right] != 0;

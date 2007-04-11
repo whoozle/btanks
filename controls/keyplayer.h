@@ -27,7 +27,7 @@
 class KeyPlayer : public ControlMethod {
 public:
 	KeyPlayer(const std::string &variant);
-	virtual void updateState(PlayerState &state);
+	virtual void updateState(PlayerSlot &slot, PlayerState &state);
 private:
 	SDLKey _up, _down, _left, _right, _fire, _alt_fire, leave, _hint_control;
 };

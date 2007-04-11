@@ -21,10 +21,11 @@
 
 
 class PlayerState;
+class PlayerSlot;
 
 class ControlMethod {
 public:
-	virtual void updateState(PlayerState &state) = 0;
+	virtual void updateState(PlayerSlot &slot, PlayerState &state) = 0;
 	virtual ~ControlMethod() {}
 };
 

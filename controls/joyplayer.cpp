@@ -20,15 +20,17 @@
 #include "sdlx/sdlx.h"
 #include "joyplayer.h"
 #include "player_state.h"
+#include "player_slot.h"
 #include "mrt/logger.h"
+#include "config.h"
 
-JoyPlayer::JoyPlayer(const int idx, const int fire, const int alt_fire, const int leave, const int hint_control)
-: _joy(idx), _fire(fire), _alt_fire(alt_fire), leave(leave), _hint_control(hint_control) {
+JoyPlayer::JoyPlayer(const int idx, const int fire, const int alt_fire, const int leave, const int hint_control, const int fire2, const int alt_fire2)
+: _joy(idx), _fire(fire), _alt_fire(alt_fire), leave(leave), _hint_control(hint_control), _fire2(fire2), _alt_fire2(alt_fire2) {
 }
 
 #define THRESHOLD 16384
 
-void JoyPlayer::updateState(PlayerState &_state) {
+void JoyPlayer::updateState(PlayerSlot &slot, PlayerState &_state) {
 	SDL_JoystickUpdate();
 	Sint16 x = _joy.getAxis(0);
 	Sint16 y = _joy.getAxis(1);
@@ -40,9 +42,19 @@ void JoyPlayer::updateState(PlayerState &_state) {
 	if (y >= THRESHOLD) _state.down = true;
 	if (y <= -THRESHOLD) _state.up = true;
 	
-	_state.fire = _joy.getButton(_fire);
-	_state.alt_fire = _joy.getButton(_alt_fire);
+	_state.fire = _joy.getButton(_fire) || _joy.getButton(_fire2);
+	_state.alt_fire = _joy.getButton(_alt_fire)  || _joy.getButton(_alt_fire2);
 	_state.leave = _joy.getButton(leave);
 	_state.hint_control = _joy.getButton(_hint_control);
+
+	int r;
+	Config->get("player.controls.camera-maximum-slide", r, 100);
+	int n = _joy.getNumAxes();
+	if (n > 4) {
+		int xa = _joy.getAxis(2);
+		int ya = _joy.getAxis(3);
+		slot.map_dpos.x = (xa * r) / 32767;
+		slot.map_dpos.y = (ya * r) / 32767;
+	}
 }
 

@@ -19,6 +19,6 @@
  */
 
 
-void ExternalControl::updateState(PlayerState &s) {
+void ExternalControl::updateState(PlayerSlot &slot, PlayerState &s) {
 	s = state; 
 }

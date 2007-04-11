@@ -61,7 +61,7 @@ bool MouseControl::onMouse(const int button, const bool pressed, const int x, co
 	return true;
 }
 
-void MouseControl::updateState(PlayerState &state) {
+void MouseControl::updateState(PlayerSlot &slot, PlayerState &state) {
 	v2<float> pos;
 	getPosition(pos);
 	
