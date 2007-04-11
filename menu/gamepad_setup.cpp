@@ -135,7 +135,7 @@ void GamepadSetup::render(sdlx::Surface &surface, const int x, const int y) {
 		}
 	}
 
-	if (axes >= ((hats)?6:4)) {
+	if (axes >= ((hats)?4:6)) {
 		renderMinistick(surface, 0, x, y);
 		renderMinistick(surface, 2, x, y);
 	}
