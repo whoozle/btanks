@@ -82,35 +82,30 @@ void GamepadSetup::save() {
 	joy.close();
 }
 
-void GamepadSetup::renderAxis(sdlx::Surface &surface, const int an, const int ai, const int value, const int x, const int y) {
-	if (an == 2 || (an >= 6 && ai >= 4)) {
-		//d-pad
-		int idx = (an == 2)?ai:ai-4;
-		//LOG_DEBUG(("idx"));
-		static const int xp[] =   { 62,  98, 85,  85};
-		static const int yp[] =   {193, 193, 170, 206};
-		static const int icon[] = {2,  4,  1,  3 };
-		const int treshold = 3276; //10% of SDL maximum value
-		int dir = (value > treshold)?1:((value < -treshold)?-1:0);
-		if (dir == 0)
-			return;
-		
-		const int i = idx * 2 + (dir + 1) / 2;
-		//LOG_DEBUG(("%d: %d", idx, i));
-		renderIcon(surface, icon[i], xp[i], yp[i]);
-	}
+void GamepadSetup::renderDPad(sdlx::Surface &surface, const bool left, const bool right, const bool up, const bool down, const int x, const int y) {
+	static const int xp[] =   { 62,  98, 85,  85};
+	static const int yp[] =   {193, 193, 170, 206};
+	static const int icon[] = {2,  4,  1,  3 };
+
+	if (left) 
+		renderIcon(surface, icon[0], xp[0], yp[0]);
+	if (right) 
+		renderIcon(surface, icon[1], xp[1], yp[1]);
+	if (up) 
+		renderIcon(surface, icon[2], xp[2], yp[2]);
+	if (down) 
+		renderIcon(surface, icon[3], xp[3], yp[3]);
 }
 
 void GamepadSetup::renderMinistick(sdlx::Surface &surface, const int ai, const int x, const int y) {
 	const int r = 16;
 	const int xa = joy.getAxis(ai) * r / 32767;
 	const int ya = joy.getAxis(ai + 1) * r / 32767;
-	
 	int idx = ai / 2;
 	assert(idx < 2);
 	int xp[] = { 95, 220};
 	int yp[] = {203, 203};
-
+	
 	surface.copyFrom(*_gamepad_ministick, _gamepad_bg_pos.x + xp[idx] + xa + _gamepad_ministick->getWidth() / 2, _gamepad_bg_pos.y + yp[idx] + ya + _gamepad_ministick->getHeight() / 2);
 }
 
@@ -122,23 +117,34 @@ void GamepadSetup::render(sdlx::Surface &surface, const int x, const int y) {
 	Container::render(surface, x, y);
 
 	SDL_JoystickUpdate();
+	
+	int hats = joy.getNumHats();
+	int axes = joy.getNumAxes();
+	
+	if (hats) {
+		//assume first hat as D-PAD
+		int hat = joy.getHat(0);
+		renderDPad(surface, hat & SDL_HAT_LEFT, hat & SDL_HAT_RIGHT, hat & SDL_HAT_UP, hat & SDL_HAT_DOWN, x, y);
+	} else {
+		if (axes >= 6 || axes == 2) {
+			//no hats. axe 4,5 - DPAD
+			int base = (axes == 2)?0:4;
+			int xa = joy.getAxis(base), ya = joy.getAxis(base + 1);
+			static const int threshold = 3276;
+			renderDPad(surface, xa < -threshold, xa > threshold, ya < -threshold, ya > threshold, x, y);
+		}
+	}
+
+	if (axes >= ((hats)?6:4)) {
+		renderMinistick(surface, 0, x, y);
+		renderMinistick(surface, 2, x, y);
+	}
 
 	int n = math::min(joy.getNumButtons(), 10);
 	for(int i = 0; i < n; ++i)  {
 		if (joy.getButton(i))
 			renderButton(surface, i, x, y);
 	}
-
-	n = math::min(joy.getNumAxes(), 6);
-	for(int i = 0; i < n; ++i) {
-		//LOG_DEBUG(("%d %d", i, joy.getAxis(i)));
-		renderAxis(surface, n, i, joy.getAxis(i), x, y);
-	}
-	if (n >= 4) 
-		renderMinistick(surface, 0, x, y);
-
-	if (n >= 6) 
-		renderMinistick(surface, 2, x, y);
 }
 
 void GamepadSetup::getSize(int &w, int &h) const {
