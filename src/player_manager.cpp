@@ -755,8 +755,10 @@ void IPlayerManager::tick(const float now, const float dt) {
 		moving /= 2;
 		if (moving >= 1)
 			moving = 1;
+		
+		GET_CONFIG_VALUE("player.controls.immediate-camera-sliding", bool, ics, false);
 	
-		slot.map_dst = pos;
+		slot.map_dst = ics?pos:pos + slot.map_dpos.convert<float>();
 		slot.map_dst.x -= slot.viewport.w / 2;
 		slot.map_dst.y -= slot.viewport.h / 2;
 		
@@ -805,7 +807,10 @@ void IPlayerManager::render(sdlx::Surface &window, const int vx, const int vy) {
 				
 			slot.viewport.x += vx;
 			slot.viewport.y += vy;
-			v2<float> pos = slot.map_pos + slot.map_dpos.convert<float>();
+
+			GET_CONFIG_VALUE("player.controls.immediate-camera-sliding", bool, ics, false);		
+			
+			v2<float> pos = ics?slot.map_pos + slot.map_dpos.convert<float>() : slot.map_pos;
 			slot.validatePosition(pos);
 			
 			World->render(window, sdlx::Rect((int)pos.x, (int)pos.y, slot.viewport.w, slot.viewport.h),  slot.viewport);
