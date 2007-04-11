@@ -97,10 +97,10 @@ void GamepadSetup::renderDPad(sdlx::Surface &surface, const bool left, const boo
 		renderIcon(surface, icon[3], xp[3], yp[3]);
 }
 
-void GamepadSetup::renderMinistick(sdlx::Surface &surface, const int ai, const int x, const int y) {
+void GamepadSetup::renderMinistick(sdlx::Surface &surface, const int ai, const int x, const int y, const bool swap) {
 	const int r = 16;
-	const int xa = joy.getAxis(ai) * r / 32767;
-	const int ya = joy.getAxis(ai + 1) * r / 32767;
+	const int xa = joy.getAxis(ai + (swap?0:1)) * r / 32767;
+	const int ya = joy.getAxis(ai + (swap?1:0)) * r / 32767;
 	int idx = ai / 2;
 	assert(idx < 2);
 	int xp[] = { 95, 220};
@@ -137,7 +137,11 @@ void GamepadSetup::render(sdlx::Surface &surface, const int x, const int y) {
 
 	if (axes >= ((hats)?4:6)) {
 		renderMinistick(surface, 0, x, y);
+#ifdef WIN32
+		renderMinistick(surface, 2, x, y, true);
+#else
 		renderMinistick(surface, 2, x, y);
+#endif
 	}
 
 	int n = math::min(joy.getNumButtons(), 10);

@@ -50,9 +50,14 @@ void JoyPlayer::updateState(PlayerSlot &slot, PlayerState &_state) {
 	int r;
 	Config->get("player.controls.camera-maximum-slide", r, 100);
 	int n = _joy.getNumAxes();
-	if (n > 4) {
+	if (n >= 4) {
+#ifdef WIN32
+		int xa = _joy.getAxis(3);
+		int ya = _joy.getAxis(2);
+#else
 		int xa = _joy.getAxis(2);
 		int ya = _joy.getAxis(3);
+#endif
 		slot.map_dpos.x = (xa * r) / 32767;
 		slot.map_dpos.y = (ya * r) / 32767;
 	}
