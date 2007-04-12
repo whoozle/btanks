@@ -1,11 +1,17 @@
+*) added "mortar" vehicle, mortar bullet.
+*) added "hint control" key. (skips current hing, replay last)
+*) added custom "tactical map" in map picker.
+*) various linux packaging fixes, attempt to add ebuild to gentoo.
+*) added "redefine keys" dialog
 *) name screenshot files with numbers to allow taking more than one screenshot at ones
 *) added random vehicle selection (?)
 *) added various debug options : no-clip, tiles marks on map, stripping alpha from objects and tiles 
 *) added icons for controls setup dialog
-*) internationalized menu and in-game messages
-*) implemented special zones with timers (win, lose), disable/enable ai switches, hints and checkpoints. added spawn limit (lives)
+*) implemented special zones with timers (win, lose), disable/enable ai switches, hints and checkpoints. added spawn limit (lives). 
 *) implemented volume sliders in 'options' dialog. fixed listener positioning.
+*) object variants instead of tons similar objects registered.
 *) mods could provide its own localized messages 
+*) internationalized menu and in-game messages
 *) finishing level makes you invulnerable
 *) changed dirt to experimental 'drifting' implementation. 
 
