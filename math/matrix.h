@@ -32,15 +32,19 @@ public:
 	
 	void useDefault(const T d) { _default = d; _use_default = true; }
 	
+	void fill(const T v) {
+		T *ptr = (T*) _data.getPtr();
+		for(int i = 0; i < _w * _h; ++i) {
+			*ptr++ = v;
+		}	
+	}
+	
 	void setSize(const int h, const int w, const T v = 0) {
 		_w = w;
 		_h = h;
 		_data.setSize(w * h * sizeof(T));
 
-		T *ptr = (T*) _data.getPtr();
-		for(int i = 0; i < w*h; ++i) {
-			*ptr++ = v;
-		}
+		fill(v);
 	}
 	
 	inline const T get(const int y, const int x) const {
