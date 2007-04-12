@@ -49,6 +49,20 @@ IMap::IMap() : _w(0), _h(0), _tw(0), _th(0), _ptw(0), _pth(0), _firstgid(0), _sp
 	_image = NULL;
 }
 
+const Matrix<int>& IMap::getAreaMatrix(const std::string &name) {
+	ObjectAreaMap::const_iterator i = _area_map.find(name);
+	if (i != _area_map.end())
+		return i->second;
+
+	Matrix<int> map;
+	GET_CONFIG_VALUE("map.default-impassability", int, def_im, 0);
+	map.setSize(_h * _split, _w * _split, def_im);
+	map.useDefault(-1);
+	_area_map.insert(ObjectAreaMap::value_type(name, map));
+	return _area_map[name];
+}
+
+
 const Matrix<int>& IMap::getImpassabilityMatrix(const int z) {
 	const int box = ZBox::getBox(z);
 	MatrixMap::const_iterator i = _imp_map.find(box);
@@ -872,6 +886,8 @@ void IMap::clear() {
 	//LOG_DEBUG(("clearing damage layers and optimization maps..."));
 	
 	_imp_map.clear();
+	_area_map.clear();
+	
 	_damage4.clear();
 	_layer_z.clear();
 	_cover_map.setSize(0, 0, 0);

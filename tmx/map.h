@@ -72,6 +72,7 @@ public:
 	virtual const int getImpassability(const Object *obj, const v2<int>& pos, TilePosition *tile_pos = NULL, bool *hidden = NULL) const;
 
 	const Matrix<int>& getImpassabilityMatrix(const int z);
+	const Matrix<int>& getAreaMatrix(const std::string &name);
 	//void getSurroundings(Matrix<int> &matrix, const v2<int> &pos, const int filler = -1) const;
 	
 	void damage(const v2<float> &position, const int hp);
@@ -106,6 +107,8 @@ private:
 
 	typedef std::map<const int, Matrix<int> > MatrixMap;
 	MatrixMap _imp_map;
+	typedef std::map<const std::string, Matrix<int> > ObjectAreaMap;
+	ObjectAreaMap _area_map;
 	
 	inline const bool collides(const Object *obj, const int dx, const int dy, const sdlx::CollisionMap *tile) const;
 	inline const bool hiddenBy(const Object *obj, const int dx, const int dy, const sdlx::CollisionMap *tile) const;
