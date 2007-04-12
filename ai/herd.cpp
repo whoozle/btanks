@@ -24,6 +24,7 @@
 #include "config.h"
 #include "mrt/random.h"
 #include "zbox.h"
+#include "tmx/map.h"
 
 void ai::Herd::calculateV(v2<float> &velocity, Object *sheep, const int leader, const float distance) {
 	bool was_stopped = velocity.is0();
@@ -50,6 +51,20 @@ void ai::Herd::calculateV(v2<float> &velocity, Object *sheep, const int leader, 
 		
 		++n;
 	}
+	const v2<int> tile_size = Map->getPathTileSize();
+	v2<float> pos, vel;
+	sheep->getInfo(pos, vel);
+	pos /= tile_size.convert<float>();
+	
+	const Matrix<int> &hint = Map->getAreaMatrix(sheep->registered_name);
+	int w = hint.getWidth(), h = hint.getHeight();
+	for(int y = 0; y < h; ++y) 
+		for(int x = 0; x < w; ++x) {
+			if (hint.get(y, x)) {
+				float r = pos.distance(v2<float>(x, y));
+				velocity += 1 / r;
+			}
+		}
 		
 	const Object * o = leader?World->getObjectByID(leader): NULL;
 	if (o != NULL && !ZBox::sameBox(o->getZ(), sheep->getZ())) 
