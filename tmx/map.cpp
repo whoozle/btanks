@@ -53,7 +53,7 @@ const Matrix<int>& IMap::getImpassabilityMatrix(const int z) {
 	const int box = ZBox::getBox(z);
 	MatrixMap::const_iterator i = _imp_map.find(box);
 	if (i != _imp_map.end())
-		i->second;
+		return i->second;
 
 	Matrix<int> map;
 	GET_CONFIG_VALUE("map.default-impassability", int, def_im, 0);
