@@ -1,0 +1,5 @@
+<tileset>
+	<background id="water" size="2">0,1,10,11</background>
+	<background id="rain" size="2">2,3,12,13</background>
+	<background id="rain-drops" size="2">4,5,14,15</background>
+</tileset>
