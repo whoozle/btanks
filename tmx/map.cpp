@@ -401,6 +401,28 @@ void IMap::updateMatrix(const int x, const int y) {
 	}
 }
 
+void IMap::updateMatrix(Matrix<int> &imp_map, const Layer *layer) {
+	for(int y = 0; y < layer->getHeight(); ++y) 
+		for(int x = 0; x < layer->getWidth(); ++x) {
+			int tid = layer->get(x, y);
+			if (tid == 0)
+				continue;
+
+			const sdlx::CollisionMap *cmap = getCollisionMap(layer, x, y);
+			if (cmap == NULL || cmap->isEmpty())
+				continue;
+
+			Matrix<bool> proj;
+			cmap->project(proj, _split, _split);
+
+			for(int yy = 0; yy < _split; ++yy)
+				for(int xx = 0; xx < _split; ++xx) {
+					int yp = y * _split + yy, xp = x * _split + xx;
+					if (proj.get(yy, xx)) 
+						imp_map.set(yp, xp, 1);
+				}
+		}	
+}
 
 void IMap::load(const std::string &name) {
 	clear();
@@ -476,14 +498,6 @@ void IMap::load(const std::string &name) {
 	}
 #endif
 	
-	GET_CONFIG_VALUE("map.pathfinding-step", int, ps, 32);
-	
-	_split = 2 * ((_tw - 1) / 2 + 1) / ps;
-	LOG_DEBUG(("split mode: %dx", _split));
-	
-	_pth = _tw / _split;
-	_ptw = _th / _split;
-	
 	
 	LOG_DEBUG(("loading completed"));
 }
@@ -500,6 +514,9 @@ void IMap::generateMatrixes() {
 	}
 	for(MatrixMap::const_iterator i = _imp_map.begin(); i != _imp_map.end(); ++i) {
 		LOG_DEBUG(("z: %d\n%s", i->first, i->second.dump().c_str()));
+	}
+	for(ObjectAreaMap::const_iterator i = _area_map.begin(); i != _area_map.end(); ++i) {
+		LOG_DEBUG(("hint for '%s'\n%s", i->first.c_str(), i->second.dump().c_str()));
 	}
 }
 
@@ -545,6 +562,14 @@ void IMap::start(const std::string &name, Attrs &attrs) {
 		_tw = atol(e.attrs["tilewidth"].c_str());
 		_th = atol(e.attrs["tileheight"].c_str());
 		
+		GET_CONFIG_VALUE("map.pathfinding-step", int, ps, 32);
+	
+		_split = 2 * ((_tw - 1) / 2 + 1) / ps;
+		LOG_DEBUG(("split mode: %dx", _split));
+	
+		_pth = _tw / _split;
+		_ptw = _th / _split;
+
 		if (_tw < 1 || _th < 1 || _w < 1 || _h < 1)
 			throw_ex(("invalid map parameters. %dx%d tile: %dx%d", _w, _h, _tw, _th));
 		
@@ -709,12 +734,18 @@ void IMap::end(const std::string &name) {
 		);
 		
 		for(PropertyMap::iterator i = _properties.begin(); i != _properties.end(); ++i) {
-			if (i->first.compare(0, 10, "generator:") != 0)
-				continue;
-			
-			TRY {
-				_generator->exec(layer, i->first.substr(i->first.find(":", 11) + 1), i->second);
-			} CATCH("executing generator's commands", {})
+			if (i->first.compare(0, 10, "generator:") == 0) {		
+				TRY {
+					_generator->exec(layer, i->first.substr(i->first.find(":", 11) + 1), i->second);
+				} CATCH("executing generator's commands", {})
+			}
+		}
+		
+		for(PropertyMap::iterator i = _properties.begin(); i != _properties.end(); ++i) {
+			if (i->first.compare(0, 8, "ai-hint:") == 0) {
+				LOG_DEBUG(("layer provide hint for %s", i->second.c_str()));
+				updateMatrix(getMatrix(i->second), layer);
+			}
 		}
 
 		

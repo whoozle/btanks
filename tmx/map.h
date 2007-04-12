@@ -99,6 +99,7 @@ private:
 	Matrix<int> &getMatrix(const std::string &name);
 
 	void updateMatrix(const int x, const int y);
+	void updateMatrix(Matrix<int> &matrix, const Layer *layer);
 
 	virtual void start(const std::string &name, Attrs &attr);
 	virtual void end(const std::string &name);
