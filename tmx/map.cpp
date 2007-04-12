@@ -49,32 +49,40 @@ IMap::IMap() : _w(0), _h(0), _tw(0), _th(0), _ptw(0), _pth(0), _firstgid(0), _sp
 	_image = NULL;
 }
 
-const Matrix<int>& IMap::getAreaMatrix(const std::string &name) {
-	ObjectAreaMap::const_iterator i = _area_map.find(name);
-	if (i != _area_map.end())
-		return i->second;
-
-	Matrix<int> map;
-	GET_CONFIG_VALUE("map.default-impassability", int, def_im, 0);
-	map.setSize(_h * _split, _w * _split, def_im);
-	map.useDefault(-1);
-	_area_map.insert(ObjectAreaMap::value_type(name, map));
-	return _area_map[name];
-}
-
-
-const Matrix<int>& IMap::getImpassabilityMatrix(const int z) {
+Matrix<int> &IMap::getMatrix(int z) {
 	const int box = ZBox::getBox(z);
-	MatrixMap::const_iterator i = _imp_map.find(box);
+	MatrixMap::iterator i = _imp_map.find(box);
 	if (i != _imp_map.end())
 		return i->second;
 
 	Matrix<int> map;
 	GET_CONFIG_VALUE("map.default-impassability", int, def_im, 0);
-	map.setSize(_h * _split, _w * _split, def_im);
+	map.setSize(_h * _split, _w * _split, 0);
 	map.useDefault(-1);
-	_imp_map.insert(MatrixMap::value_type(box, map));
-	return _imp_map[box];
+	std::pair<MatrixMap::iterator, bool> r = _imp_map.insert(MatrixMap::value_type(box, map));
+	return r.first->second;
+}
+
+Matrix<int> &IMap::getMatrix(const std::string &name) {
+	ObjectAreaMap::iterator i = _area_map.find(name);
+	if (i != _area_map.end())
+		return i->second;
+
+	Matrix<int> map;
+	map.setSize(_h * _split, _w * _split, 0);
+	map.useDefault(0);
+	std::pair<ObjectAreaMap::iterator, bool> r =_area_map.insert(ObjectAreaMap::value_type(name, map));
+	return r.first->second;
+}
+
+
+const Matrix<int>& IMap::getAreaMatrix(const std::string &name) {
+	return getMatrix(name);
+}
+
+
+const Matrix<int>& IMap::getImpassabilityMatrix(const int z) {
+	return getMatrix(z);
 }
 
 inline const bool IMap::collides(const Object *obj, const int dx, const int dy, const sdlx::CollisionMap *tile) const {
@@ -352,16 +360,7 @@ void IMap::updateMatrix(const int x, const int y) {
 				if (cmap == NULL || cmap->isEmpty())
 					continue;
 
-				int box = ZBox::getBox(l->first);
-				MatrixMap::const_iterator i = _imp_map.find(box);
-				if (i == _imp_map.end()) {
-					Matrix<int> map;
-					map.setSize( _h * _split, _w * _split, -2);
-					map.useDefault(-1);
-					_imp_map.insert(MatrixMap::value_type(box, map));
-				}
-		
-				Matrix<int> &imp_map = _imp_map[box];
+				Matrix<int> &imp_map = getMatrix(l->first);
 				
 				//break;
 				//if (im == 100) 
@@ -490,6 +489,10 @@ void IMap::load(const std::string &name) {
 }
 
 void IMap::generateMatrixes() {
+	_imp_map.clear();
+	for(LayerMap::const_iterator i = _layers.begin(); i != _layers.end(); ++i) {
+		getMatrix(i->first).fill(-2);
+	}
 	for(int y = 0; y < _h; ++y) {
 		for(int x = 0; x < _w; ++x) {
 			updateMatrix(x, y);

@@ -95,6 +95,9 @@ public:
 	void getZBoxes(std::set<int> &layers);
 
 private:
+	Matrix<int> &getMatrix(int z);
+	Matrix<int> &getMatrix(const std::string &name);
+
 	void updateMatrix(const int x, const int y);
 
 	virtual void start(const std::string &name, Attrs &attr);
