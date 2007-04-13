@@ -293,6 +293,7 @@
 	<animation-model id="cow-animation" speed="5">
 		<pose id="hold">0</pose>
 		<pose id="walk">0,1,2,3,2,1</pose>
+		<pose id="graze">4,5,6,5</pose>
 	</animation-model>
 
 	<animation id="damage-digits" tile="../font/digits.png" model="single-tile" tile_width="10" tile_height="16" />
