@@ -1,12 +1,13 @@
 #ifndef MRT_EXPORT_MACRO_H__
 #define MRT_EXPORT_MACRO_H__
 
-# pragma warning(disable:4251)  /* needs to have dll-interface used by client */
-# pragma warning(disable:4275)  /* non dll-interface struct */
-# pragma warning(disable:4786) /* debug info exceedes 255 bytes */
-
 // Shared library support
 #ifdef WIN32
+
+#	pragma warning(disable:4251)  /* needs to have dll-interface used by client */
+#	pragma warning(disable:4275)  /* non dll-interface struct */
+#	pragma warning(disable:4786) /* debug info exceedes 255 bytes */
+
 #	define DLLIMPORT __declspec(dllimport)
 #	define DLLEXPORT __declspec(dllexport)
 #	define DLLDLLLOCAL
