@@ -59,14 +59,14 @@ void ai::Herd::calculateV(v2<float> &velocity, Object *sheep, const int leader, 
 	const Matrix<int> &hint = Map->getAreaMatrix(sheep->registered_name);
 	int w = hint.getWidth(), h = hint.getHeight();
 
-	GET_CONFIG_VALUE("objects.ai.hint-gravity", float, hgc, 1.0f);
+	GET_CONFIG_VALUE("objects.ai.hint-gravity", float, hgc, 10.0f);
 	for(int y = 0; y < h; ++y) 
 		for(int x = 0; x < w; ++x) {
 			if (hint.get(y, x)) {
 				v2<float> dpos = v2<float>(x, y) - pos;
 				//LOG_DEBUG(("%d:%s %g %g, %g", sheep->getID(), sheep->registered_name.c_str(), dpos.x, dpos.y, dpos.length()));
 				float r = dpos.normalize();
-				velocity += dpos * hgc / r / r;
+				velocity += dpos * hgc / r;
 			}
 		}
 		
