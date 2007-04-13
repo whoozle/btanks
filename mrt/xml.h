@@ -28,7 +28,7 @@
 
 namespace mrt {
 
-DERIVE_EXCEPTION(XMLException);
+DERIVE_EXCEPTION(MRTAPI, XMLException);
 
 class MRTAPI XMLParser {
 public:

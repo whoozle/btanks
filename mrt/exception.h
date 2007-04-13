@@ -41,16 +41,16 @@ private:
 
 }
 
-#define DERIVE_EXCEPTION(name) \
-	class MRTAPI name : public mrt::Exception { \
+#define DERIVE_EXCEPTION(export, name) \
+	class export name : public mrt::Exception { \
 		public: \
 		name(); \
 		const std::string getCustomMessage(); \
 		virtual ~name() throw(); \
 	} 
 
-#define DERIVE_EXCEPTION_NO_DEFAULT(name, ctor, data) \
-	class MRTAPI name : public mrt::Exception { \
+#define DERIVE_EXCEPTION_NO_DEFAULT(export, name, ctor, data) \
+	class export name : public mrt::Exception { \
 		public: \
 		name ctor; \
 		const std::string getCustomMessage(); \

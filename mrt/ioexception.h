@@ -22,7 +22,7 @@
 
 namespace mrt {
 
-DERIVE_EXCEPTION(IOException);
+DERIVE_EXCEPTION(MRTAPI, IOException);
 
 }
 

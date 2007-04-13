@@ -3,13 +3,11 @@ Import('env')
 
 env = env.Copy()
 env.Append(CPPDEFINES=['MRTAPI=DLLEXPORT'])
-libs = ['expat']
+
+libs = ['expat', 'z']
 
 if sys.platform == "win32":
 	libs.append('Ws2_32')
-	libs.append('user32')
-	libs.append('winmm')
-	libs.append('z')
 
 mrt = env.SharedLibrary('mrt', \
 	['exception.cpp', 'fmt.cpp', 'ioexception.cpp', 'logger.cpp', 'chunk.cpp', 'random.cpp', \
