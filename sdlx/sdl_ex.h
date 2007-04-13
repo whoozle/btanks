@@ -25,7 +25,7 @@
 #include "mrt/exception.h"
 
 namespace sdlx {
-DERIVE_EXCEPTION(Exception);
+DERIVE_EXCEPTION(SDLXAPI, Exception);
 }
 
 #define throw_sdl(s) throw_generic(sdlx::Exception, s);
