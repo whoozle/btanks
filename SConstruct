@@ -203,6 +203,11 @@ env.Append(CPPPATH=['#', '#/src'])
 
 bt_sublibs = ['mrt', 'sdlx', 'net', 'menu', 'sound', 'ai'] #fann
 
+if (os.path.exists('private')):
+	dir = 'private'
+	BuildDir('#/build/' + buildmode + '/' + dir, dir, 0)
+	SConscript('#/build/' + buildmode + '/' + dir + '/SConscript')	
+
 for dir in bt_sublibs:
 	BuildDir('#/build/' + buildmode + '/' + dir, dir, 0)
 	SConscript('#/build/' + buildmode + '/' + dir + '/SConscript')
