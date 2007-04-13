@@ -22,8 +22,8 @@
 #	endif
 #endif
 
-#ifdef BUILD_DLL
-#	ifdef DLL_EXPORTS
+#ifdef SHARED_LIBRARY
+#	ifdef BUILD_DLL
 #		define DLLAPI DLLEXPORT
 #	else
 #		define DLLAPI DLLIMPORT
