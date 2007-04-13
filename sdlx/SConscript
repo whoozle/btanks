@@ -25,3 +25,4 @@ sdlx_sources = 	['cursor.cpp', 'sdl_ex.cpp', 'surface.cpp', 'system.cpp', 'joyst
 
 
 sdlx = env.SharedLibrary('sdlx', sdlx_sources, LIBS=libs)
+Install('#', sdlx)

@@ -15,3 +15,4 @@ mrt = env.SharedLibrary('mrt', \
 	'sys_socket.cpp', 'tcp_socket.cpp', 'socket_set.cpp', 'directory.cpp', 'fs_node.cpp', 
 	'timespy.cpp'
 	], LIBS=libs)
+Install('#', mrt)
