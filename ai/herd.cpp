@@ -61,8 +61,10 @@ void ai::Herd::calculateV(v2<float> &velocity, Object *sheep, const int leader, 
 	for(int y = 0; y < h; ++y) 
 		for(int x = 0; x < w; ++x) {
 			if (hint.get(y, x)) {
-				float r = pos.distance(v2<float>(x, y));
-				velocity += 1 / r;
+				v2<float> dpos = v2<float>(x, y) - pos;
+				//LOG_DEBUG(("%d:%s %g %g, %g", sheep->getID(), sheep->registered_name.c_str(), dpos.x, dpos.y, dpos.length()));
+				float r = dpos.normalize();
+				velocity += dpos * 10 / r / r;
 			}
 		}
 		
