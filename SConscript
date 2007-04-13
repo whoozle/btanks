@@ -63,7 +63,7 @@ if debug and sys.platform == "win32":
 bt_libs = ['bt_ai', 'bt_sound', 'bt_net', 'bt_menu', 'sdlx', 'mrt', sigc_lib, 'SDL', vorbis, al_lib, 'alut']
 
 if sys.platform == "win32":
-	bt_sources.append('SDL_win32_main.c')
+	bt_sources.append('sdlx/SDL_win32_main.c')
 
 if sys.platform == "win32":
 	env.Append(LINKFLAGS=' /STACK:0x400000 ')
@@ -72,6 +72,8 @@ if sys.platform == "win32":
 
 	bt_libs[0:0] = ['SDLmain']
 	bt_libs.append('opengl32')
+	bt_libs.append('user32')
+	bt_libs.append('Ws2_32')
 	#bt_libs.append('gdi32')
 else: 
 	bt_libs.append('rt')

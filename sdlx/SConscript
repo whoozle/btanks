@@ -23,6 +23,5 @@ sdlx_sources = 	['cursor.cpp', 'sdl_ex.cpp', 'surface.cpp', 'system.cpp', 'joyst
 	'glSDL/glSDL.c', c_map, 'font.cpp', 'timer.cpp', 
 	]
 
-
 sdlx = env.SharedLibrary('sdlx', sdlx_sources, LIBS=libs)
 Install('#', sdlx)

@@ -25,7 +25,7 @@
 #endif
 
 /* Include the SDL main definition header */
-#include "sdlx.h"
+#include "SDL/SDL.h"
 #include "SDL_main.h"
 
 #ifdef main
