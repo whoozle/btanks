@@ -602,7 +602,7 @@ TRY {
 
 	const float ac_t = o.mass / ac_div;
 	if (o.mass > 0 && o._moving_time < ac_t) {
-		o._velocity *= o._moving_time / ac_t * o._moving_time / ac_t;
+		o._velocity *= o._moving_time / ac_t;
 	}
 	o._velocity += o._velocity_fadeout;
 
@@ -864,7 +864,7 @@ TRY {
 	
 	v2<float> new_pos = o._position + dpos;
 
-	if (o.classname == "player") {
+	if (!o.pierceable) {
 		if ((dpos.x < 0 && new_pos.x < -o.size.x / 2) || (dpos.x > 0 && new_pos.x + o.size.x / 2 >= map_size.x))
 			dpos.x = 0;
 
