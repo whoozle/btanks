@@ -1,8 +1,11 @@
 <?xml version="1.0"?>
 <map version="0.99b" orientation="orthogonal" width="25" height="20" tilewidth="64" tileheight="64">
  <properties>
+  <property name="object:cow:cow:14" value="379,616"/>
   <property name="object:cow:cow:8" value="1387,1223"/>
+  <property name="object:cow:cow:13" value="377,663"/>
   <property name="object:cow:cow:7" value="1337,1171"/>
+  <property name="object:cow:cow:12" value="@5,10"/>
   <property name="object:cow:cow:6" value="292,256"/>
   <property name="object:cow:cow:11" value="1502,647"/>
   <property name="object:cow:cow:5" value="386,215"/>
@@ -39,21 +42,26 @@
   <property name="object:heal:heal:6" value="542,282,180"/>
   <property name="object:guided-missiles-item:guided-missiles-item:6" value="1207,187,180"/>
   <property name="object:guided-missiles-item:guided-missiles-item:5" value="1008,1162,180"/>
-  <property name="object:stun-missiles-item:stun-missiles-item:1" value="1029,83,180"/>
   <property name="object:heal:heal:2" value="1303,608,180"/>
-  <property name="object:guided-missiles-item:guided-missiles-item:1" value="@1,8,180"/>
+  <property name="object:stun-missiles-item:stun-missiles-item:1" value="1029,83,180"/>
   <property name="object:static-launcher:red-launcher:1" value="892,1211"/>
+  <property name="object:guided-missiles-item:guided-missiles-item:1" value="@1,8,180"/>
   <property name="object:smoke-missiles-item:smoke-missiles-item:13" value="796,4,180"/>
   <property name="object:machinegunner-item:machinegunner-item:6" value="@24,15"/>
   <property name="object:machinegunner-item:machinegunner-item:5" value="0,145,180"/>
   <property name="object:dispersion-bullets-item:dispersion-bullets-item:3" value="1473,1018,180"/>
-  <property name="object:static-shilka:yellow-shilka:1" value="5,763"/>
   <property name="object:dispersion-bullets-item:dispersion-bullets-item:2" value="909,581,180"/>
+  <property name="object:static-shilka:yellow-shilka:1" value="5,763"/>
   <property name="object:dirt-bullets-item:dirt-bullets-item:6" value="800,401,180"/>
   <property name="object:helicopter-with-kamikazes:helicopter:1" value="@5,5,900"/>
   <property name="object:boomerang-missiles-item:boomerang-missiles-item:1" value="584,621"/>
   <property name="object:oil-barrels:oil-barrels:6" value="1207,1"/>
   <property name="object:oil-barrels:oil-barrels:5" value="1446,298"/>
+  <property name="object:cow:cow:19" value="451,610"/>
+  <property name="object:cow:cow:18" value="271,617"/>
+  <property name="object:cow:cow:17" value="269,617"/>
+  <property name="object:cow:cow:16" value="301,679"/>
+  <property name="object:cow:cow:15" value="438,646"/>
   <property name="object:cow:cow:9" value="1386,1223"/>
  </properties>
  <tileset name="c1" firstgid="1" tilewidth="64" tileheight="64">
@@ -79,8 +87,8 @@
  </tileset>
  <layer name="zerolayer" width="25" height="20">
   <properties>
-   <property name="impassability" value="40"/>
    <property name="z" value="-1000"/>
+   <property name="impassability" value="40"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGAWjYBSMglEwCkbBUAcARPTJAtAHAAA=
@@ -147,8 +155,8 @@
  </layer>
  <layer name="Layer 23" width="25" height="20">
   <properties>
-   <property name="animation-frames" value="5"/>
    <property name="animation-speed" value="10"/>
+   <property name="animation-frames" value="5"/>
    <property name="animation-frame-size" value="20"/>
   </properties>
   <data encoding="base64" compression="gzip">
@@ -225,8 +233,8 @@
  <layer name="wire stand" width="25" height="20">
   <properties>
    <property name="pierceable" value="true"/>
-   <property name="z" value="100"/>
    <property name="impassability" value="100"/>
+   <property name="z" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGDqAkXGgXTAK6A1G43wU0AKMpquhCbixxBuxYtjiHJu6oQwAVfTt0NAHAAA=
@@ -247,8 +255,8 @@
  </layer>
  <layer name="fences" width="25" height="20">
   <properties>
-   <property name="z" value="200"/>
    <property name="impassability" value="100"/>
+   <property name="z" value="200"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgoB7gZKSiYQNsBwcd7IEBdjrbNwpGwSgYBaNg+AEAfGmWQtAHAAA=
@@ -269,8 +277,8 @@
  <layer name="objects" width="25" height="20">
   <properties>
    <property name="pierceable" value="true"/>
-   <property name="impassability" value="100"/>
    <property name="z" value="220"/>
+   <property name="impassability" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgIB7EMjEwxDGRoIEAcKWiWdhAJND8KKgd0UA6hsb2URP4D5BbqR3HIw2MlPBDzlswMFB+H2p5exQMH0DrOoxUAAD0Ok9J0AcAAA==
