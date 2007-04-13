@@ -1,9 +1,19 @@
 <?xml version="1.0"?>
 <map version="0.99b" orientation="orthogonal" width="25" height="20" tilewidth="64" tileheight="64">
  <properties>
-  <property name="object:choo-choo-train:choo-choo-train:555" value="1056,-127,100"/>
+  <property name="object:cow:cow:8" value="1387,1223"/>
+  <property name="object:cow:cow:7" value="1337,1171"/>
+  <property name="object:cow:cow:6" value="292,256"/>
+  <property name="object:cow:cow:11" value="1502,647"/>
+  <property name="object:cow:cow:5" value="386,215"/>
   <property name="object:road-sign:road-sign10:0" value="1319,195,450"/>
+  <property name="object:cow:cow:10" value="1549,460"/>
+  <property name="object:cow:cow:4" value="601,1107"/>
+  <property name="object:cow:cow:3" value="509,1207"/>
+  <property name="object:cow:cow:2" value="372,1137"/>
+  <property name="object:cow:cow:1" value="310,1103"/>
   <property name="object:stack:stack:14" value="@22,0,150"/>
+  <property name="object:choo-choo-train:choo-choo-train:555" value="1056,-127,100"/>
   <property name="object:stack:stack:5" value="@10,3,150"/>
   <property name="object:stack:stack:4" value="@3,9,150"/>
   <property name="object:stack:stack:3" value="@8,8,150"/>
@@ -37,13 +47,14 @@
   <property name="object:machinegunner-item:machinegunner-item:6" value="@24,15"/>
   <property name="object:machinegunner-item:machinegunner-item:5" value="0,145,180"/>
   <property name="object:dispersion-bullets-item:dispersion-bullets-item:3" value="1473,1018,180"/>
-  <property name="object:dispersion-bullets-item:dispersion-bullets-item:2" value="909,581,180"/>
   <property name="object:static-shilka:yellow-shilka:1" value="5,763"/>
+  <property name="object:dispersion-bullets-item:dispersion-bullets-item:2" value="909,581,180"/>
   <property name="object:dirt-bullets-item:dirt-bullets-item:6" value="800,401,180"/>
   <property name="object:helicopter-with-kamikazes:helicopter:1" value="@5,5,900"/>
   <property name="object:boomerang-missiles-item:boomerang-missiles-item:1" value="584,621"/>
   <property name="object:oil-barrels:oil-barrels:6" value="1207,1"/>
   <property name="object:oil-barrels:oil-barrels:5" value="1446,298"/>
+  <property name="object:cow:cow:9" value="1386,1223"/>
  </properties>
  <tileset name="c1" firstgid="1" tilewidth="64" tileheight="64">
   <image source="../tilesets/terrains.png"/>
@@ -66,16 +77,10 @@
  <tileset name="animation" firstgid="661" tilewidth="64" tileheight="64">
   <image source="../tilesets/animated.png"/>
  </tileset>
- <tileset name="_rain" firstgid="761" tilewidth="64" tileheight="64">
-  <image source="../tiles/rain.png"/>
- </tileset>
- <tileset name="_rain_drops" firstgid="809" tilewidth="64" tileheight="64">
-  <image source="../tiles/rain_drops.png"/>
- </tileset>
  <layer name="zerolayer" width="25" height="20">
   <properties>
-   <property name="z" value="-1000"/>
    <property name="impassability" value="40"/>
+   <property name="z" value="-1000"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGAWjYBSMglEwCkbBUAcARPTJAtAHAAA=
@@ -132,6 +137,9 @@
   <tileproperties/>
  </layer>
  <layer name="terrain details" width="25" height="20">
+  <properties>
+   <property name="ai-hint:1" value="cow"/>
+  </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAL2VzWvCQBDF5+hN8Cb0JnhXQehB20PB2JNXc9V+H2oVFbWK4EehYFv/477ADlnXMZ2UxAc/spls5uUxCSEi6oAuWFKoBR1qaBiBNvBBDVyb6xVQB1fmGNTvwL3TJ/Aog6ZVK5namI7VALfW2jP9A6rgFfScez6FPrYkH8mXc0zA1HqOQJztATyCJ0VPycNz+patNWd7A30wUPQsRFyTcnO2GXgHc4VHWsoo963A2jrXzJN1ody3A18x+v5HnOMZvCTQryjU4ubIOue5E3VbnKOl6L8FH06NZ5KPuI9z+AqPH7BX7HPlvldpSJrHKmVP1s2ZfJLWhsLZaNdx9U3hbLTrKEn/B+n7+CvHZYSH9H/4BbrKVkPQBwAA
   </data>
@@ -139,8 +147,8 @@
  </layer>
  <layer name="Layer 23" width="25" height="20">
   <properties>
-   <property name="animation-speed" value="10"/>
    <property name="animation-frames" value="5"/>
+   <property name="animation-speed" value="10"/>
    <property name="animation-frame-size" value="20"/>
   </properties>
   <data encoding="base64" compression="gzip">
@@ -217,8 +225,8 @@
  <layer name="wire stand" width="25" height="20">
   <properties>
    <property name="pierceable" value="true"/>
-   <property name="impassability" value="100"/>
    <property name="z" value="100"/>
+   <property name="impassability" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGDqAkXGgXTAK6A1G43wU0AKMpquhCbixxBuxYtjiHJu6oQwAVfTt0NAHAAA=
@@ -239,8 +247,8 @@
  </layer>
  <layer name="fences" width="25" height="20">
   <properties>
-   <property name="impassability" value="100"/>
    <property name="z" value="200"/>
+   <property name="impassability" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgoB7gZKSiYQNsBwcd7IEBdjrbNwpGwSgYBaNg+AEAfGmWQtAHAAA=
@@ -261,8 +269,8 @@
  <layer name="objects" width="25" height="20">
   <properties>
    <property name="pierceable" value="true"/>
-   <property name="z" value="220"/>
    <property name="impassability" value="100"/>
+   <property name="z" value="220"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgIB7EMjEwxDGRoIEAcKWiWdhAJND8KKgd0UA6hsb2URP4D5BbqR3HIw2MlPBDzlswMFB+H2p5exQMH0DrOoxUAAD0Ok9J0AcAAA==
