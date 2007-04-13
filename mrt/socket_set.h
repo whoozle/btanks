@@ -26,7 +26,9 @@ namespace mrt {
 class TCPSocket;
 class MRTAPI SocketSet {
 public: 
-	static const int Read = 1, Write = 2, Exception = 4;
+	static const int Read;
+	static const int Write;
+	static const int Exception;
 
 	SocketSet();
 	void add(const TCPSocket &sock, const int how = Read | Write | Exception);

@@ -32,6 +32,11 @@
 
 using namespace mrt;
 
+const int SocketSet::Read = 1;
+const int SocketSet::Write = 2;
+const int SocketSet::Exception = 4;
+
+
 SocketSet::SocketSet() : _r_set(new fd_set), _w_set(new fd_set), _e_set(new fd_set), _n(0) {
 	reset();
 }
