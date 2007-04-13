@@ -13,7 +13,6 @@
 #	define DLLDLLLOCAL
 #	define DLLDLLPUBLIC
 #else
-#	define DLLIMPORT
 #	ifdef GCC_HASCLASSVISIBILITY
 #		define DLLIMPORT __attribute__ ((visibility("default")))
 #		define DLLEXPORT __attribute__ ((visibility("default")))
