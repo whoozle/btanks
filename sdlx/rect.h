@@ -22,7 +22,7 @@
 #include "sdlx.h"
 
 namespace sdlx {
-    class Rect : public SDL_Rect {
+    class SDLXAPI Rect : public SDL_Rect {
     public:
 	inline void reset() {
 	    x = y = w = h = 0;

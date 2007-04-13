@@ -26,6 +26,7 @@
 #	include <SDL/SDL.h>
 #endif
 
+#include "sdlx/export.h"
 
 #endif
 

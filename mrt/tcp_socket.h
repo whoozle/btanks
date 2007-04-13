@@ -21,11 +21,12 @@
 
 #include <string>
 #include "sys_socket.h"
+#include "export.h"
 
 namespace mrt {
 class Chunk;
 
-class TCPSocket : public Socket {
+class MRTAPI TCPSocket : public Socket {
 public:
 	TCPSocket();
 	

@@ -31,7 +31,7 @@ namespace sdlx {
 	typedef SDL_PixelFormat PixelFormat;
 	typedef SDL_Palette Palette;
 
-	class Surface {
+	class SDLXAPI Surface {
 	public:
 		static void setDefaultFlags(const Uint32 flags);
 	

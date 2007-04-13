@@ -23,7 +23,7 @@
 #include <SDL/SDL_thread.h>
 
 namespace sdlx {
-class Semaphore {
+class SDLXAPI Semaphore {
 public:
 	Semaphore(const Uint32 value = 0);
 	~Semaphore();

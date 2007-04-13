@@ -17,9 +17,10 @@
 
 #include <string>
 #include "fmt.h"
+#include "export.h"
 
 namespace mrt {
-class TimeSpy {
+class MRTAPI TimeSpy {
 public: 
 	TimeSpy(const std::string &message);
 	~TimeSpy();

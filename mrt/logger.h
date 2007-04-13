@@ -21,6 +21,7 @@
 #include "singleton.h"
 #include "fmt.h"
 #include <stdio.h>
+#include "export.h"
 
 #define LL_DEBUG 0
 #define LL_NOTICE 1
@@ -29,7 +30,7 @@
 
 namespace mrt {
 
-class ILogger {
+class MRTAPI ILogger {
 public:
 	DECLARE_SINGLETON(ILogger);
 	

@@ -20,10 +20,11 @@
 
 #include <sys/types.h>
 #include <string>
+#include "export.h"
 
 namespace mrt {
 class Chunk;
-class Serializator {
+class DLLEXPORT Serializator {
 public:
 	Serializator();
 	Serializator(const mrt::Chunk *chunk);

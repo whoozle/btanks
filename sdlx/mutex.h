@@ -25,7 +25,7 @@
 
 namespace sdlx {
 
-class Mutex {
+class SDLXAPI Mutex {
 public: 
 	Mutex();
 	~Mutex();
@@ -41,7 +41,7 @@ private:
 	friend class AutoMutex;
 };
 
-class AutoMutex {
+class SDLXAPI AutoMutex {
 public: 
 	AutoMutex(const Mutex &m, const bool lock = true);
 	void lock() const;

@@ -23,10 +23,11 @@
 #include <exception>
 #include "fmt.h"
 #include "logger.h"
+#include "export.h"
 
 namespace mrt {
 
-class Exception : public std::exception {
+class MRTAPI Exception : public std::exception {
 public:
 	Exception();
 	void addMessage(const char *file, const int line);
@@ -41,7 +42,7 @@ private:
 }
 
 #define DERIVE_EXCEPTION(name) \
-	class name : public mrt::Exception { \
+	class MRTAPI name : public mrt::Exception { \
 		public: \
 		name(); \
 		const std::string getCustomMessage(); \
@@ -49,7 +50,7 @@ private:
 	} 
 
 #define DERIVE_EXCEPTION_NO_DEFAULT(name, ctor, data) \
-	class name : public mrt::Exception { \
+	class MRTAPI name : public mrt::Exception { \
 		public: \
 		name ctor; \
 		const std::string getCustomMessage(); \

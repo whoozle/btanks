@@ -21,12 +21,13 @@
 #include <string>
 #include <stdio.h>
 #include "fs_node.h"
+#include "export.h"
 
 namespace mrt {
 
 class Chunk;
 
-class File : public FSNode {
+class MRTAPI File : public FSNode {
 public: 
 	File();
 	void open(const std::string &fname, const std::string &mode);

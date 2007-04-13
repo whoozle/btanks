@@ -7,10 +7,11 @@
 #endif
 #include <string>
 #include "fs_node.h"
+#include "export.h"
 
 namespace mrt { 
 
-class Directory : public FSNode {
+class MRTAPI Directory : public FSNode {
 public: 
 
 	Directory();

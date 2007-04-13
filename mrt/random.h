@@ -18,9 +18,11 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+#include "export.h"
+
 namespace mrt {
-	void init_seed();
-	const int random(const int max);
+	void MRTAPI init_seed();
+	const int MRTAPI random(const int max);
 	template<typename T>
 		void randomize(T &value, const T error) {
 			value += error * random(20000) / 10000.0 - error;

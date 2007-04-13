@@ -20,6 +20,7 @@
 
 #include <string>
 #include <vector>
+#include "export.h"
 
 #if !(defined(__GNUC__) || defined(__GNUG__) || defined(__attribute__))
 #	define __attribute__(p) /* nothing */
@@ -28,13 +29,13 @@
 namespace mrt {
 
 
-const std::string formatString(const char *fmt, ...) __attribute__((format(printf, 1, 2)));
-void trim(std::string &str, const std::string chars = "\t\n\r ");
-void split(std::vector<std::string> & result, const std::string &str, const std::string &delimiter, const size_t limit = 0);
-void join(std::string &result, const std::vector<std::string>& array, const std::string &delimiter, const size_t limit = 0);
+const std::string MRTAPI formatString(const char *fmt, ...) __attribute__((format(printf, 1, 2)));
+void MRTAPI trim(std::string &str, const std::string chars = "\t\n\r ");
+void MRTAPI split(std::vector<std::string> & result, const std::string &str, const std::string &delimiter, const size_t limit = 0);
+void MRTAPI join(std::string &result, const std::vector<std::string>& array, const std::string &delimiter, const size_t limit = 0);
 
-void toUpper(std::string &str);
-void toLower(std::string &str);
+void MRTAPI toUpper(std::string &str);
+void MRTAPI toLower(std::string &str);
 
 }
 

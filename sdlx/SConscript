@@ -4,12 +4,13 @@ Import('debug')
 
 env = env.Copy()
 env.Append(CPPPATH=['..', '.'])
+env.Append(CPPDEFINES=['SDLXAPI=DLLEXPORT'])
 
 if sys.platform != "win32":
 #ultra optimizations ;)
-	c_map = env.Object('c_map.cpp', CXXFLAGS=['-fforce-addr', '-fprefetch-loop-arrays'])
+	c_map = env.SharedObject('c_map.cpp', CXXFLAGS=['-fforce-addr', '-fprefetch-loop-arrays'])
 else: 
-	c_map = env.Object('c_map.cpp')
+	c_map = env.SharedObject('c_map.cpp')
 
 sdlx_sources = 	['cursor.cpp', 'sdl_ex.cpp', 'surface.cpp', 'system.cpp', 'joystick.cpp', 'ttf.cpp', 
 #	'tcp_socket.cpp', 'net_ex.cpp', 'socket_set.cpp', 
@@ -20,4 +21,4 @@ sdlx_sources = 	['cursor.cpp', 'sdl_ex.cpp', 'surface.cpp', 'system.cpp', 'joyst
 if sys.platform == "win32":
 	sdlx_sources.append('SDL_win32_main.c')
 
-sdlx = env.StaticLibrary('sdlx', sdlx_sources)
+sdlx = env.SharedLibrary('sdlx', sdlx_sources)

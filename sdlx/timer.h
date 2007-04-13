@@ -7,9 +7,10 @@
 #	include <time.h>
 #endif
 
+#include "export.h"
 
 namespace sdlx {
-class Timer {
+class SDLXAPI Timer {
 public: 
 	Timer();
 	~Timer();

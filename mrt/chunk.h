@@ -21,10 +21,11 @@
 #include <assert.h>
 #include <sys/types.h>
 #include <string>
+#include "export.h"
 
 namespace mrt {
 
-class Chunk {
+class MRTAPI Chunk {
 public:
 	Chunk();
 	Chunk(const Chunk&);

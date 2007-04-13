@@ -21,10 +21,11 @@
 
 #include "SDL/SDL_ttf.h"
 #include <string>
+#include "export.h"
 
 namespace sdlx {
 class Surface;
-class TTF {
+class SDLXAPI TTF {
 public: 
 	static void init();
 	

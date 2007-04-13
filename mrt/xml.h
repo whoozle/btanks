@@ -21,15 +21,16 @@
 
 #include <map>
 #include <string>
+#include <expat.h>
 
 #include "exception.h"
-#include "expat.h"
+#include "export.h"
 
 namespace mrt {
 
 DERIVE_EXCEPTION(XMLException);
 
-class XMLParser {
+class MRTAPI XMLParser {
 public:
 	typedef std::map<const std::string, std::string> Attrs;
 

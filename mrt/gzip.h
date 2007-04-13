@@ -19,12 +19,13 @@
  */
 
 #include <zlib.h>
+#include "export.h"
 
 namespace mrt {
 
 class Chunk;
 
-class ZStream {
+class MRTAPI ZStream {
 public:
 	static void decompress(mrt::Chunk &dst, const mrt::Chunk &src);
 	static void compress(mrt::Chunk &dst, const mrt::Chunk &src, const int level = 3);

@@ -19,10 +19,12 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+#include "export.h"
+
 namespace mrt {
 
 class TCPSocket;
-class SocketSet {
+class MRTAPI SocketSet {
 public: 
 	static const int Read = 1, Write = 2, Exception = 4;
 

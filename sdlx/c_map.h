@@ -21,6 +21,7 @@
 
 
 #include "mrt/chunk.h"
+#include "export.h"
 
 template <class T> 
 	class Matrix;
@@ -29,7 +30,7 @@ namespace sdlx {
 class Surface;
 class Rect;
 
-class CollisionMap {
+class SDLXAPI CollisionMap {
 public:
 	enum Type {OnlyOpaque, AnyVisible};
 	

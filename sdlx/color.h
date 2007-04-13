@@ -22,7 +22,7 @@
 #include "sdlx.h"
 
 namespace sdlx {
-class Color : public SDL_Color {
+class SDLXAPI Color : public SDL_Color {
 public:
 	Color(Uint8 r, Uint8 g, Uint8 b) {
 		SDL_Color::r = r;

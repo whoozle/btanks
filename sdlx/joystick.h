@@ -23,7 +23,7 @@
 #include "sdlx.h"
 
 namespace sdlx {
-class Joystick {
+class SDLXAPI Joystick {
 public: 
 	static const int getCount();
 	static const std::string getName(const int idx);

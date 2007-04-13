@@ -2,10 +2,11 @@
 #define __MRT_FS_NODE_H__
 
 #include <string>
+#include "export.h"
 
 namespace mrt {
 
-class FSNode {
+class MRTAPI FSNode {
 public:
 static const bool exists(const std::string &fname);
 };

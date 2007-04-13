@@ -24,7 +24,7 @@
 
 namespace sdlx {
 
-class Thread {
+class SDLXAPI Thread {
 public:
 	Thread();
 	virtual ~Thread();

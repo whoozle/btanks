@@ -22,11 +22,12 @@
 
 #include <string>
 #include <vector>
+#include "export.h"
 
 namespace sdlx {
 
 class Surface;
-class Font {
+class SDLXAPI Font {
 public:
 	enum Type { AZ09, Ascii };
 	Font();

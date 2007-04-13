@@ -24,6 +24,7 @@
 #include <set>
 
 #include "mrt/singleton.h"
+#include "mrt/export.h"
 #include "alarm.h"
 #include "math/v2.h"
 #include "sdlx/sdlx.h"
@@ -49,7 +50,7 @@ struct Item {
 };
 
 
-class IGameMonitor {
+class DLLEXPORT IGameMonitor {
 public:
 	IGameMonitor();
 	DECLARE_SINGLETON(IGameMonitor);

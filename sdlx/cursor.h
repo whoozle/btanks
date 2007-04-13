@@ -19,8 +19,10 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+#include "export.h"
+
 namespace sdlx {
-    class Cursor {
+    class SDLXAPI Cursor {
 	public:
 	static const bool enabled();
 	static void Disable();

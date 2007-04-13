@@ -1,7 +1,8 @@
 Import('env')
 
 env = env.Copy()
-mrt = env.StaticLibrary('mrt', \
+env.Append(CPPDEFINES=['MRTAPI=DLLEXPORT'])
+mrt = env.SharedLibrary('mrt', \
 	['exception.cpp', 'fmt.cpp', 'ioexception.cpp', 'logger.cpp', 'chunk.cpp', 'random.cpp', \
 	'file.cpp', 'xml.cpp', 'b64.cpp', 'gzip.cpp', 'serializator.cpp', 'serializable.cpp', 
 	'sys_socket.cpp', 'tcp_socket.cpp', 'socket_set.cpp', 'directory.cpp', 'fs_node.cpp', 

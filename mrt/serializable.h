@@ -18,11 +18,13 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+#include "export.h"
+
 namespace mrt {
 class Serializator;
 class Chunk;
 
-class Serializable {
+class MRTAPI Serializable {
 public:
 	virtual void serialize(Serializator &s) const = 0;
 	virtual void deserialize(const Serializator &s) = 0;
