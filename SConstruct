@@ -59,6 +59,7 @@ if sys.platform == "win32":
 #	env.Append(CPPFLAGS = '/Ox /Ot ') #optimizations
 #	env.Prepend(CPPPATH=' C:\\\\STLport-4.6.2\\\\stlport ')
 else:
+	env.Prepend(LINKFLAGS = "-Wl,-rpath . ")
 	if debug:
 		env.Append(CCFLAGS='-ggdb ')
 		env.Append(CPPFLAGS='-ggdb ')
