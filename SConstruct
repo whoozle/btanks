@@ -15,6 +15,7 @@ if sys.platform != "win32":
 	opts.Add('prefix', 'prefix for **nix packaging', '')
 	opts.Add('resources_dir', 'resources directory (default: prefix/share)', '')
 opts.Add(EnumOption('mode', 'build mode', 'release', allowed_values=('debug','release')))
+opts.Add(BoolOption('gcc_visibility', 'gcc visibility', 'true'))
 
 opts.Update(env)
 opts.Save('options.cache', env.Copy())
@@ -60,6 +61,9 @@ if sys.platform == "win32":
 #	env.Prepend(CPPPATH=' C:\\\\STLport-4.6.2\\\\stlport ')
 else:
 	env.Prepend(LINKFLAGS = "-Wl,-rpath . ")
+	if env['gcc_visibility']: 
+		env.Append(CCFLAGS=' -fvisibility-inlines-hidden -fvisibility=hidden ');
+		env.Append(CPPFLAGS=' -fvisibility-inlines-hidden -fvisibility=hidden ');
 	if debug:
 		env.Append(CCFLAGS='-ggdb ')
 		env.Append(CPPFLAGS='-ggdb ')
