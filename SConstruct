@@ -15,7 +15,7 @@ if sys.platform != "win32":
 	opts.Add('prefix', 'prefix for **nix packaging', '')
 	opts.Add('resources_dir', 'resources directory (default: prefix/share)', '')
 opts.Add(EnumOption('mode', 'build mode', 'release', allowed_values=('debug','release')))
-opts.Add(BoolOption('gcc_visibility', 'gcc visibility', 'true'))
+opts.Add(BoolOption('gcc_visibility', 'gcc visibility', 'false'))
 
 opts.Update(env)
 opts.Save('options.cache', env.Copy())
@@ -26,6 +26,9 @@ buildmode = env['mode']
 debug = buildmode == "debug"
 Export('debug')
 
+if (env['gcc_visibility']): 
+	env.Append(CCFLAGS=' -fvisibility-inlines-hidden -fvisibility=hidden -DGCC_HASCLASSVISIBILITY ')
+	env.Append(CXXFLAGS=' -fvisibility-inlines-hidden -fvisibility=hidden -DGCC_HASCLASSVISIBILITY ')
 
 if sys.platform == "win32" and debug:
 	stl_port_debug = True
