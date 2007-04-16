@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include "export.h"
+#include "export_mrt.h"
 
 namespace mrt {
 	void MRTAPI init_seed();

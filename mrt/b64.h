@@ -19,7 +19,7 @@
  */
 
 #include <string>
-#include "export.h"
+#include "export_mrt.h"
 
 namespace mrt {
 

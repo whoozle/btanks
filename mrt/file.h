@@ -21,7 +21,7 @@
 #include <string>
 #include <stdio.h>
 #include "fs_node.h"
-#include "export.h"
+#include "export_mrt.h"
 
 namespace mrt {
 

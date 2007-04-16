@@ -21,7 +21,7 @@
 
 #include <string>
 #include "sys_socket.h"
-#include "export.h"
+#include "export_mrt.h"
 
 namespace mrt {
 class Chunk;

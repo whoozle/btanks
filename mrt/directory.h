@@ -7,7 +7,7 @@
 #endif
 #include <string>
 #include "fs_node.h"
-#include "export.h"
+#include "export_mrt.h"
 
 namespace mrt { 
 

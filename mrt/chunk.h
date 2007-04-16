@@ -21,7 +21,7 @@
 #include <assert.h>
 #include <sys/types.h>
 #include <string>
-#include "export.h"
+#include "export_mrt.h"
 
 namespace mrt {
 

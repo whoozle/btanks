@@ -1,5 +1,8 @@
 #ifndef __STACKVM_SINGLETON_H__
 #define __STACKVM_SINGLETON_H__
+
+#include "mrt/export_mrt.h"
+
 /* M-runtime for c++
  * Copyright (C) 2005-2007 Vladimir Menshakov
  *
@@ -21,19 +24,21 @@
 namespace mrt {
 	template <class S> class Accessor {
 	public:
+
 		inline S* operator->() const {
 			static S * p = S::get_instance();
 			return p;
 		}
+
 		inline const S* get_const() const {
-			static const S * p = S::get_instance();
+			static S * p = S::get_instance();
 			return p;
 		}
 	};
 }
 
-#define SINGLETON(name, class) \
-	extern const mrt::Accessor<class> name
+#define SINGLETON(e, name, class) \
+	extern e const mrt::Accessor<class> name
 
 #define DECLARE_SINGLETON(class) \
 	static inline class * get_instance() { \
@@ -42,7 +47,7 @@ namespace mrt {
 	} 
 
 #define IMPLEMENT_SINGLETON(name, class) \
-	const mrt::Accessor<class> name = mrt::Accessor<class>(); \
+	const mrt::Accessor<class> name = mrt::Accessor<class>();
 
 
 #endif

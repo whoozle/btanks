@@ -2,7 +2,7 @@
 #define __MRT_FS_NODE_H__
 
 #include <string>
-#include "export.h"
+#include "export_mrt.h"
 
 namespace mrt {
 

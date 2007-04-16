@@ -24,7 +24,7 @@
 #include <expat.h>
 
 #include "exception.h"
-#include "export.h"
+#include "export_mrt.h"
 
 namespace mrt {
 

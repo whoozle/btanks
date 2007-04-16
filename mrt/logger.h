@@ -21,7 +21,7 @@
 #include "singleton.h"
 #include "fmt.h"
 #include <stdio.h>
-#include "export.h"
+#include "export_mrt.h"
 
 #define LL_DEBUG 0
 #define LL_NOTICE 1
@@ -53,7 +53,7 @@ private:
 	FILE *fd;
 };
 
-SINGLETON(Logger, ILogger);
+SINGLETON(MRTAPI, Logger, ILogger);
 }
 
 #define LOG_DEBUG(msg) mrt::ILogger::get_instance()->log(LL_DEBUG, __FILE__, __LINE__, mrt::formatString msg)

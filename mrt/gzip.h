@@ -19,7 +19,7 @@
  */
 
 #include <zlib.h>
-#include "export.h"
+#include "export_mrt.h"
 
 namespace mrt {
 

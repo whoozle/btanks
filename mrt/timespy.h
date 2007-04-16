@@ -17,7 +17,7 @@
 
 #include <string>
 #include "fmt.h"
-#include "export.h"
+#include "export_mrt.h"
 
 namespace mrt {
 class MRTAPI TimeSpy {
