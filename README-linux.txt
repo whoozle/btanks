@@ -1,7 +1,7 @@
 random notes about linux compilation: 
 
 1) This game must be built with scons build system, no matter you like it or not. You 
-have no choice. Autotools & family is stupid shit and I hope it'll die soon. 
+have no choice. Autotools & family is stupid crap and I hope it'll die soon. 
 
 2) if you have some cheap audio hardware without hardware mixer, ALSA project 
 might help you. Just put this lines into your ~/.openalrc or /etc/openalrc : 
@@ -15,7 +15,7 @@ usually "alutInit: There was an error opening the ALC device" error message
 indicates such problems.
 
 3) build requirements (you need development packages for this libraries too, 
-consult your distro's documentation for details): 3
+consult your distro's documentation for details): 
 
 	`) g++ (at least 3.x, 4.x recommended)
 	a) SDL >= 1.2.10 (you can use any version lower down to 1.2.5. 
@@ -25,7 +25,7 @@ consult your distro's documentation for details): 3
 	d) openal (and alut)
 	e) libvorbis and family
 
-4) you can add something like this in 'options.cache' file 
+4) you could add something like this in 'options.cache' file 
 (located in trunk/ directory): 
 
 CCFLAGS = ' -O -march=YOUR_CPU -mtune=YOUR_CPU  '
