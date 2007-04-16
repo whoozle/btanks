@@ -19,6 +19,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+#include "export_menu.h"
 #include "sdlx/rect.h"
 #include <sigc++/sigc++.h>
 #include <vector>
@@ -35,7 +36,7 @@ namespace sdlx {
 class MenuItem;
 class BaseMenu;
 
-class MainMenu : public sigc::trackable {
+class BTMENUAPI MainMenu : public sigc::trackable {
 public:
 	MainMenu(const int w, const int h);
 

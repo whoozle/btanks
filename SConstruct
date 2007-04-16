@@ -149,11 +149,14 @@ conf.Finish()
 if sys.platform == "win32":
 	env.Append(LIBS=['Ws2_32', 'SDLmain'])
 	env.Append(LINKFLAGS = '/SUBSYSTEM:WINDOWS ')
+else: 
+	env.Prepend(LINKFLAGS = " -Wl,-rpath-link . ")
 
 if debug: 
 	env.Append(CPPDEFINES = ['DEBUG'])
 else:
 	env.Append(CPPDEFINES = ['RELEASE'])
+
 
 Export('env')
 Export('sigc_flags')
@@ -209,7 +212,7 @@ env.Append(CXXFLAGS=sigc_flags)
 
 env.Append(CPPPATH=['#', '#/src'])
 
-bt_sublibs = ['mrt', 'sdlx', 'net', 'menu', 'sound', 'ai'] #fann
+bt_sublibs = ['mrt', 'sdlx', 'net', 'menu', 'sound'] #fann
 
 if (os.path.exists('private')):
 	dir = 'private'

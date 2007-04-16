@@ -2,7 +2,10 @@ Import('env')
 
 env = env.Copy()
 env.Append(CPPPATH=['..', '.', '../src'])
-bt_menu = env.StaticLibrary('bt_menu', 
+env.Append(LIBPATH=['../sdlx'])
+env.Append(LIBPATH=['../mrt'])
+
+bt_menu = env.SharedLibrary('bt_menu', 
 	[
 	'start_server_menu.cpp', 'join_server_menu.cpp', 
 	'menuitem.cpp', 'textitem.cpp', 'mapitem.cpp', 'vehicleitem.cpp', 'menu.cpp', 'box.cpp', 
@@ -11,6 +14,9 @@ bt_menu = env.StaticLibrary('bt_menu',
 	'chooser.cpp', 'label.cpp', 'button.cpp', 'menu_config.cpp', 'map_desc.cpp', 
 	'prompt.cpp', 'text_control.cpp', 'host_list.cpp', 'options_menu.cpp', 'control_picker.cpp',
 	'slider.cpp', 'redefine_keys.cpp', 'gamepad_setup.cpp',
-	] 
+	], 
+	LIBS=['sdlx', 'mrt']
 	)
+
+Install('#', bt_menu)
 

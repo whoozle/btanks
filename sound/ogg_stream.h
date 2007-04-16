@@ -26,12 +26,15 @@
 #include <vorbis/vorbisenc.h>
 #include <vorbis/vorbisfile.h>
 
+#include "export_sound.h"
 #include "sdlx/thread.h"
+
 namespace mrt {
 class Chunk;
 }
 class Sample;
-class OggStream : public sdlx::Thread {
+
+class BTSOUNDAPI OggStream : public sdlx::Thread {
 public: 
 	void open(const std::string &fname, const bool continuous, const float volume);
 	void close();

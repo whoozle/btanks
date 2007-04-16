@@ -23,6 +23,7 @@
 #include <sys/types.h>
 #include <map>
 #include <string>
+#include "export_net.h"
 #include "mrt/serializable.h"
 #include "mrt/chunk.h"
 
@@ -31,7 +32,7 @@ namespace mrt {
 }
 
 	
-class Message : public mrt::Serializable {
+class BTNETAPI Message : public mrt::Serializable {
 public: 
 	enum Type {
 		None, Ping, Pang, Pong,

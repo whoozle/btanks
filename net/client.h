@@ -21,12 +21,13 @@
 
 
 #include <string>
+#include "export_net.h"
 
 class PlayerState;
 class Monitor;
 class Message;
 
-class Client {
+class BTNETAPI Client {
 public:
 	Client();
 	~Client();

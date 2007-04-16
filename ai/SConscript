@@ -1,8 +1,0 @@
-Import('env')
-
-env = env.Copy()
-env.Append(CPPPATH=['..', '.', '../src'])
-bt_ai = env.StaticLibrary('bt_ai', 
-	['base.cpp', 'traits.cpp', 'herd.cpp'] 
-	)
-

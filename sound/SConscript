@@ -1,8 +1,19 @@
+import sys
+
 Import('env')
+Import('al_lib')
 
 env = env.Copy()
 env.Append(CPPPATH=['..', '.', '../src'])
-bt_sound = env.StaticLibrary('bt_sound', 
-	['al_ex.cpp', 'mixer.cpp', 'ogg_ex.cpp', 'ogg_stream.cpp', 'sample.cpp']
+
+vorbis = 'vorbisfile'
+if env['mode'] == 'debug' and sys.platform == "win32": 
+	vorbis = 'vorbisfile_d'
+
+
+bt_sound = env.SharedLibrary('bt_sound', 
+	['al_ex.cpp', 'mixer.cpp', 'ogg_ex.cpp', 'ogg_stream.cpp', 'sample.cpp'], 
+	LIBS=[al_lib, vorbis, 'alut']
 	)
 
+env.Install('#', bt_sound)
