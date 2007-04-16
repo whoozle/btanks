@@ -66,10 +66,6 @@ if debug and sys.platform == "win32":
 bt_libs = ['mrt', 'bt_ai', 'bt_sound', 'bt_net', 'bt_menu', 'sdlx',  sigc_lib, 'SDL', vorbis, al_lib, 'alut']
 
 if sys.platform == "win32":
-	env.Append(LINKFLAGS=' /STACK:0x400000 ')
-	bt_rc = env.RES('src/bt.rc')
-	bt_sources.append(bt_rc)
-
 	bt_libs[0:0] = ['SDLmain']
 	bt_libs.append('opengl32')
 	bt_libs.append('user32')
@@ -88,6 +84,9 @@ bt_main_sources = ['src/main.cpp']
 
 if sys.platform == "win32":
 	bt_main_sources.append('sdlx/SDL_win32_main.c')
+	bt_rc = env.RES('src/bt.rc')
+	bt_main_sources.append(bt_rc)
+
 
 bt_main = bt_env.Program('bt', bt_main_sources, LIBS=['mrt', 'bt', 'SDL', 'user32'], RPATH=['.'])
 Install('#', bt_main)
