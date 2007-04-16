@@ -19,7 +19,7 @@ else:
 	libs.append('user32')
 
 sdlx_sources = 	['cursor.cpp', 'sdl_ex.cpp', 'surface.cpp', 'system.cpp', 'joystick.cpp', 'ttf.cpp', 
-	'thread.cpp', 'mutex.cpp', 'semaphore.cpp',
+	'thread.cpp', 'mutex.cpp', 'semaphore.cpp', 'color.cpp',
 	'glSDL/glSDL.c', c_map, 'font.cpp', 'timer.cpp', 
 	]
 

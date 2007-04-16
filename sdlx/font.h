@@ -22,7 +22,7 @@
 
 #include <string>
 #include <vector>
-#include "export.h"
+#include "export_sdlx.h"
 
 namespace sdlx {
 

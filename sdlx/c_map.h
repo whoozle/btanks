@@ -21,7 +21,7 @@
 
 
 #include "mrt/chunk.h"
-#include "export.h"
+#include "export_sdlx.h"
 
 template <class T> 
 	class Matrix;

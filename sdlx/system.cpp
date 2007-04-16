@@ -29,7 +29,6 @@ void System::init(int system) {
 	LOG_DEBUG(("calling SDL_init('%08x')", (unsigned)system));
 	if (SDL_Init(system) == -1) 
 		throw_sdl(("SDL_Init"));
-	atexit(::SDL_Quit);
 }
 
 void System::probeVideoMode() {
