@@ -31,6 +31,7 @@
 #include "window.h"
 
 #include "sdlx/timer.h"
+#include "export_btanks.h"
 
 class BaseObject;
 class Object;
@@ -45,7 +46,7 @@ class Credits;
 class Cheater;
 class MainMenu;
 
-class IGame : public sigc::trackable, public Window {
+class BTANKSAPI IGame : public sigc::trackable, public Window {
 
 class marshaller {
 public: 
@@ -134,7 +135,7 @@ private:
 	const IGame& operator=(const IGame &);
 };
 
-SINGLETON(Game, IGame);
+SINGLETON(BTANKSAPI, Game, IGame);
 
 #endif
 

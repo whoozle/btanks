@@ -75,7 +75,7 @@ private:
 	std::set<bool *> _invalidators;
 };
 
-SINGLETON(Config, IConfig);
+SINGLETON(, Config, IConfig);
 
 
 #define GET_CONFIG_VALUE(name, type, value, default_value) \

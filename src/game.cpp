@@ -773,6 +773,9 @@ void IGame::deinit() {
 
 	ResourceManager->clear();
 	Config->save();
+
+	//TTF_Quit();
+	//SDL_Quit();
 }
 
 

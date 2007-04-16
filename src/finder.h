@@ -40,7 +40,7 @@ private:
 	std::vector<std::string> _path;
 };
 
-SINGLETON(Finder, IFinder);
+SINGLETON(, Finder, IFinder);
 
 #endif
 

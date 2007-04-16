@@ -57,7 +57,7 @@ private:
 
 };
 
-SINGLETON(MenuConfig, IMenuConfig);
+SINGLETON(, MenuConfig, IMenuConfig);
 
 #endif
 

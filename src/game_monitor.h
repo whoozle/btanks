@@ -24,10 +24,10 @@
 #include <set>
 
 #include "mrt/singleton.h"
-#include "mrt/export.h"
 #include "alarm.h"
 #include "math/v2.h"
 #include "sdlx/sdlx.h"
+#include "export_btanks.h"
 
 namespace sdlx {
 class Surface;
@@ -50,7 +50,7 @@ struct Item {
 };
 
 
-class DLLEXPORT IGameMonitor {
+class BTANKSAPI IGameMonitor {
 public:
 	IGameMonitor();
 	DECLARE_SINGLETON(IGameMonitor);
@@ -99,7 +99,7 @@ private:
 	std::set<std::string> _disabled;
 };
 
-SINGLETON(GameMonitor, IGameMonitor);
+SINGLETON(BTANKSAPI, GameMonitor, IGameMonitor);
 
 #endif
 

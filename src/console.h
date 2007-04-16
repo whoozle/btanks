@@ -66,7 +66,7 @@ private:
 	Box _background;
 };
 
-SINGLETON(Console, IConsole);
+SINGLETON(, Console, IConsole);
 
 #endif
 

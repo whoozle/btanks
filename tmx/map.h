@@ -156,7 +156,7 @@ private:
 	MapGenerator *_generator;
 };
 
-SINGLETON(Map, IMap);
+SINGLETON(, Map, IMap);
 
 #endif
 

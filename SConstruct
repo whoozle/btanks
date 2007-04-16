@@ -223,5 +223,7 @@ for dir in bt_sublibs:
 for dir in bt_sublibs:
 	env.Append(LIBPATH=['#/build/' + buildmode + '/' + dir])
 
+env.Append(LIBPATH=['#/build/' + buildmode])
+
 env.BuildDir('#/build/' + buildmode, '#', 0)
 SConscript('#/build/' + buildmode + '/' + 'SConscript')

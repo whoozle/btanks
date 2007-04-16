@@ -126,7 +126,7 @@ private:
 	Alarm _next_sync;
 };
 
-SINGLETON(PlayerManager, IPlayerManager);
+SINGLETON(, PlayerManager, IPlayerManager);
 
 #endif
 	

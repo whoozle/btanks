@@ -8,11 +8,14 @@ Import('sigc_lib')
 Import('al_lib')
 
 env = env.Copy()
-
 venv = env.Copy()
+bt_env = env.Copy()
+
 venv.Append(CPPDEFINES=['VERSION="\\"' + version + '\\""'])
 venv.Append(CPPDEFINES=['REVISION=%d' % revision])
 
+venv.Append(CPPDEFINES=['BTANKSAPI=DLLEXPORT']);
+env.Append(CPPDEFINES=['BTANKSAPI=DLLEXPORT']);
 
 vobj = venv.Object('src/version.cpp')
 bt_sources = 	[
@@ -45,7 +48,7 @@ bt_sources = 	[
 	'tmx/generator_object.cpp', 'tmx/tileset.cpp', 'tmx/generator.cpp', 
 	'tmx/map.cpp', 'tmx/layer.cpp',
 	
-	'src/main.cpp', 'src/var.cpp', 'src/config.cpp', 
+	'src/var.cpp', 'src/config.cpp', 
 	
 	'src/player_slot.cpp', 'src/hud.cpp', 'src/console.cpp',
 	'src/i18n.cpp', 'src/game.cpp', 'src/window.cpp', 
@@ -60,10 +63,7 @@ if debug and sys.platform == "win32":
 
 #fanncxx
 
-bt_libs = ['bt_ai', 'bt_sound', 'bt_net', 'bt_menu', 'sdlx', 'mrt', sigc_lib, 'SDL', vorbis, al_lib, 'alut']
-
-if sys.platform == "win32":
-	bt_sources.append('sdlx/SDL_win32_main.c')
+bt_libs = ['mrt', 'bt_ai', 'bt_sound', 'bt_net', 'bt_menu', 'sdlx',  sigc_lib, 'SDL', vorbis, al_lib, 'alut']
 
 if sys.platform == "win32":
 	env.Append(LINKFLAGS=' /STACK:0x400000 ')
@@ -79,5 +79,15 @@ else:
 	bt_libs.append('rt')
 	bt_libs.append('GL')
 
-bt = env.Program('bt', bt_sources, LIBS=bt_libs, RPATH=['.'])
+
+bt = env.SharedLibrary('bt', bt_sources, LIBS=bt_libs, RPATH=['.'])
 Install('#', bt)
+
+
+bt_main_sources = ['src/main.cpp']
+
+if sys.platform == "win32":
+	bt_main_sources.append('sdlx/SDL_win32_main.c')
+
+bt_main = bt_env.Program('bt', bt_main_sources, LIBS=['mrt', 'bt', 'SDL', 'user32'], RPATH=['.'])
+Install('#', bt_main)

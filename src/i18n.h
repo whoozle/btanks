@@ -57,6 +57,6 @@ private:
 	std::set<std::string> _unlocalized;
 };
 
-SINGLETON(I18n, II18n);
+SINGLETON(, I18n, II18n);
 
 #endif

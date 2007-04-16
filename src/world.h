@@ -132,6 +132,6 @@ private:
 	float _max_dt;
 };
 
-SINGLETON(World, IWorld);
+SINGLETON(, World, IWorld);
 
 #endif

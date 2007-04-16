@@ -21,9 +21,10 @@
 
 
 #include <string>
+#include "export_btanks.h"
 
-const std::string & getVersion();
-const int getRevision();
+BTANKSAPI const std::string & getVersion();
+BTANKSAPI const int getRevision();
 
 #endif
 

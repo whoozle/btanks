@@ -105,7 +105,7 @@ private:
 	const IResourceManager& operator=(const IResourceManager &);
 };
 
-SINGLETON(ResourceManager, IResourceManager);
+SINGLETON(, ResourceManager, IResourceManager);
 
 #define CONCATENATE(x, y) CONCATENATE_DIRECT(x, y) 
 #define CONCATENATE_DIRECT(x, y) x##y

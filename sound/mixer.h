@@ -78,6 +78,6 @@ private:
 	const IMixer& operator=(const IMixer &);
 };
 
-SINGLETON(Mixer, IMixer);
+SINGLETON(, Mixer, IMixer);
 
 #endif
