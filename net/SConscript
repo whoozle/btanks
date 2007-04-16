@@ -2,8 +2,7 @@ Import('env')
 
 env = env.Copy()
 env.Append(CPPPATH=['..', '.', '../src'])
-env.Append(CPPDEFINES='BTNETAPI=DLLEXPORT')
-bt_net = env.SharedLibrary('bt_net', 
+bt_net = env.StaticLibrary('bt_net', 
 	['protocol.cpp', 'server.cpp', 'client.cpp', 'connection.cpp', 'monitor.cpp'] 
 	)
 

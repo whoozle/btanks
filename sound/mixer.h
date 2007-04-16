@@ -19,7 +19,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include "export_sound.h"
 #include "mrt/singleton.h"
 #include <string>
 #include <map>
@@ -34,7 +33,7 @@ class OggStream;
 class Sample;
 class Object;
 
-class BTSOUNDAPI IMixer {
+class IMixer {
 public:
 	DECLARE_SINGLETON(IMixer);
 	void init(const bool no_sound, const bool no_music);

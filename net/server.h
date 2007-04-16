@@ -19,7 +19,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include "export_net.h"
+
 #include "mrt/tcp_socket.h"
 #include <deque>
 
@@ -27,7 +27,7 @@ class PlayerState;
 class Message;
 class Monitor;
 
-class BTNETAPI Server {
+class Server {
 public:
 	Server(); 
 	void init(const unsigned port);

@@ -22,7 +22,6 @@
 
 #include <deque>
 #include <map>
-#include "export_net.h"
 #include "sdlx/thread.h"
 #include "sdlx/mutex.h"
 
@@ -31,7 +30,7 @@ namespace mrt {
 }
 
 class Connection;
-class BTNETAPI Monitor : public sdlx::Thread {
+class Monitor : public sdlx::Thread {
 public:
 	Monitor();
 	void setCompressionLevel(const int level = 3);

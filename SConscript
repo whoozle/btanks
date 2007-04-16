@@ -17,15 +17,13 @@ venv.Append(CPPDEFINES=['REVISION=%d' % revision])
 venv.Append(CPPDEFINES=['BTANKSAPI=DLLEXPORT']);
 env.Append(CPPDEFINES=['BTANKSAPI=DLLEXPORT']);
 
-vobj = venv.SharedObject('src/version.cpp')
+vobj = venv.Object('src/version.cpp')
 bt_sources = 	[
 	'src/finder.cpp', 'src/zbox.cpp', 
 	
 	'src/alarm.cpp', 'src/base_object.cpp', 'src/notifying_xml_parser.cpp',
 	'src/tooltip.cpp', 'src/special_zone.cpp', 'src/game_monitor.cpp', 
 	'src/player_manager.cpp', 'src/object_grid.cpp', 'src/variants.cpp', 
-	
-	'ai/base.cpp', 'ai/traits.cpp', 'ai/herd.cpp',
 		
 	'objects/bullet.cpp', 'objects/explosion.cpp', 'objects/single_pose.cpp',
 	'objects/tank.cpp', 'objects/shilka.cpp', 'objects/launcher.cpp', 'objects/ai_tank.cpp',
@@ -59,11 +57,16 @@ bt_sources = 	[
 	vobj
 	]
 	
+vorbis = 'vorbisfile'
+if debug and sys.platform == "win32": 
+	vorbis = 'vorbisfile_d'
+
 #fanncxx
 
-bt_libs = ['mrt', 'bt_sound', 'bt_net', 'bt_menu', 'sdlx',  sigc_lib, 'SDL']
+bt_libs = ['mrt', 'bt_ai', 'bt_sound', 'bt_net', 'bt_menu', 'sdlx',  sigc_lib, 'SDL', vorbis, al_lib, 'alut']
 
 if sys.platform == "win32":
+	env.Append(LINKFLAGS=' /STACK:0x400000 ')
 	bt_rc = env.RES('src/bt.rc')
 	bt_sources.append(bt_rc)
 
@@ -83,16 +86,8 @@ Install('#', bt)
 
 bt_main_sources = ['src/main.cpp']
 
-bt_main_libs = ['mrt', 'bt', 'SDL']
-
 if sys.platform == "win32":
 	bt_main_sources.append('sdlx/SDL_win32_main.c')
-	bt_rc = env.RES('src/bt.rc')
-	bt_main_sources.append(bt_rc)
 
-#	bt_main_libs[0:0] = ['SDLmain']
-#	bt_main_libs.append('opengl32')
-	bt_main_libs.append('user32')
-
-bt_main = bt_env.Program('bt', bt_main_sources, LIBS=bt_main_libs, RPATH=['.'])
+bt_main = bt_env.Program('bt', bt_main_sources, LIBS=['mrt', 'bt', 'SDL', 'user32'], RPATH=['.'])
 Install('#', bt_main)
