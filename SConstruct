@@ -209,7 +209,7 @@ env.Append(CXXFLAGS=sigc_flags)
 
 env.Append(CPPPATH=['#', '#/src'])
 
-bt_sublibs = ['mrt', 'sdlx', 'net', 'menu', 'sound', 'ai'] #fann
+bt_sublibs = ['mrt', 'sdlx', 'net', 'menu', 'sound'] #fann
 
 if (os.path.exists('private')):
 	dir = 'private'
