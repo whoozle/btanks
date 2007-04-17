@@ -1,6 +1,18 @@
 import os, sys
 
+#builder for static libraries
 env = Environment()
+
+picLibBuilder = Builder(
+		action = Action('$ARCOM'),
+		emitter = '$LIBEMITTER',
+		prefix = '$LIBPREFIX',
+		suffix = '$LIBSUFFIX',
+		src_suffix = '$OBJSUFFIX',
+		src_builder = 'SharedObject')
+
+env['BUILDERS']['StaticLibrary'] = picLibBuilder
+env['BUILDERS']['Library'] = picLibBuilder
 
 opts = Options(['options.cache'])
 opts.Add('CC', 'C compiler')
