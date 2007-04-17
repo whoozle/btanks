@@ -949,7 +949,7 @@ void IPlayerManager::getDefaultVehicle(std::string &vehicle, std::string &animat
 }
 
 void IPlayerManager::gameOver(const std::string &reason, const float time) {
-	if (!isServer())
+	if (!isServerActive())
 		return;
 	Message m(Message::GameOver);
 	m.set("message", reason);
