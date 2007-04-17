@@ -75,7 +75,6 @@ if sys.platform == "win32":
 #	env.Append(CPPFLAGS = '/Ox /Ot ') #optimizations
 #	env.Prepend(CPPPATH=' C:\\\\STLport-4.6.2\\\\stlport ')
 else:
-	env.Prepend(LINKFLAGS = "-Wl,-rpath . ")
 	if env['gcc_visibility']: 
 		env.Append(CCFLAGS=' -fvisibility-inlines-hidden -fvisibility=hidden ');
 		env.Append(CPPFLAGS=' -fvisibility-inlines-hidden -fvisibility=hidden ');
