@@ -17,7 +17,7 @@ venv.Append(CPPDEFINES=['REVISION=%d' % revision])
 venv.Append(CPPDEFINES=['BTANKSAPI=DLLEXPORT']);
 env.Append(CPPDEFINES=['BTANKSAPI=DLLEXPORT']);
 
-vobj = venv.Object('src/version.cpp')
+vobj = venv.SharedObject('src/version.cpp')
 bt_sources = 	[
 	'src/finder.cpp', 'src/zbox.cpp', 
 	
