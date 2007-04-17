@@ -22,7 +22,7 @@
 #include "control.h"
 #include <sigc++/sigc++.h>
 
-class Slider : public Control, public sigc::trackable {
+class Slider : public sigc::trackable, public Control {
 public: 
 	Slider(const float value);
 
