@@ -23,6 +23,7 @@
 
 #include "math/unary.h"
 #include "player_manager.h"
+#include "game_monitor.h"
 #include "mrt/random.h"
 
 using namespace ai;
@@ -131,6 +132,10 @@ const bool Base::checkTarget(const Object * target, const std::string &weapon) c
 
 
 void Base::calculate(const float dt) {
+	if (GameMonitor->disabled(registered_name)) {
+		return;
+	}
+	
 	if (!_active) {
 		if (isDriven()) 
 			calculateWayVelocity();
