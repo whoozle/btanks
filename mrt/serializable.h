@@ -32,7 +32,7 @@ public:
 	void serialize2(mrt::Chunk &s) const;
 	void deserialize2(const mrt::Chunk &s);
 
-	virtual ~Serializable() {}
+	virtual ~Serializable();
 };
 }
 
