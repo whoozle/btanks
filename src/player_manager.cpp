@@ -59,11 +59,12 @@ const int IPlayerManager::onConnect(Message &message) {
 	
 	LOG_DEBUG(("sending server status message..."));
 	message.type = Message::ServerStatus;
-	message.set("map", Map->getName());
 	message.set("version", getVersion());
 
 	mrt::Serializator s;
 	//World->serialize(s);
+	Map->serialize(s);
+	
 	s.add(client_id);
 	//_players[client_id].position.serialize(s);
 	
@@ -96,9 +97,9 @@ TRY {
 	case Message::ServerStatus: {
 		LOG_DEBUG(("server version: %s", message.get("version").c_str()));
 		LOG_DEBUG(("loading map..."));
-		Game->loadMap(message.get("map"), false);
 		
 		mrt::Serializator s(&message.data);
+		Map->deserialize(s);
 		//World->deserialize(s);
 		
 		s.get(_my_idx);
