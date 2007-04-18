@@ -290,10 +290,9 @@
 		<pose id="punch">5,0,6</pose>
 	</animation-model>
 
-	<animation-model id="cow-animation" speed="5">
-		<pose id="hold">0</pose>
+	<animation-model id="cow-animation" speed="4">
+		<pose id="hold">4,5,6,5,4,6</pose>
 		<pose id="walk">0,1,2,3,2,1</pose>
-		<pose id="graze">4,5,6,5</pose>
 	</animation-model>
 
 	<animation id="damage-digits" tile="../font/digits.png" model="single-tile" tile_width="10" tile_height="16" />
