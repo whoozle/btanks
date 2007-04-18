@@ -24,6 +24,7 @@ consult your distro's documentation for details):
 	c) SDL_ttf 		 
 	d) openal (and alut)
 	e) libvorbis and family
+	f) sigc++ 2.x (1.x is not supported)
 
 4) you could add something like this in 'options.cache' file 
 (located in trunk/ directory): 
