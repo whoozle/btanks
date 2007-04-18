@@ -21,6 +21,7 @@
 
 
 #include "mrt/chunk.h"
+#include "mrt/serializable.h"
 #include "sdlx/surface.h"
 #include "sdlx/c_map.h"
 #include <vector>
@@ -35,7 +36,7 @@
 #	define restrict
 #endif
 
-class Layer {
+class Layer : public mrt::Serializable {
 public:
 #ifdef PRERENDER_LAYERS
 	sdlx::Surface surface;
@@ -65,9 +66,12 @@ public:
 	const int getWidth() const {return _w; } 
 	const int getHeight() const {return _h; } 
 
+	virtual void serialize(mrt::Serializator &s) const;
+	virtual void deserialize(const mrt::Serializator &s);
 
 protected: 
 	int _w, _h;
+
 private: 
 	float pos, speed;
 	int base, frames, frame_size;
@@ -87,6 +91,10 @@ public:
 	virtual void onDeath(const int idx);
 	
 	~DestructableLayer();
+
+	virtual void serialize(mrt::Serializator &s) const;
+	virtual void deserialize(const mrt::Serializator &s);
+
 protected:
 	int* restrict _hp_data;
 	bool _visible;

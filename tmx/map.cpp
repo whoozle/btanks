@@ -1041,3 +1041,15 @@ const sdlx::CollisionMap* IMap::getVisibilityMap(const Layer *l, const int x, co
 		return NULL;
 	return _tiles[t].vmap;
 }
+
+void IMap::serialize(mrt::Serializator &s) const {
+	for(LayerMap::const_iterator i = _layers.begin(); i != _layers.end(); ++i) {
+		s.add(i->first);
+		s.add(*i->second);
+	}
+}
+
+void IMap::deserialize(const mrt::Serializator &s) {
+	throw_ex(("implement me"));
+}
+	

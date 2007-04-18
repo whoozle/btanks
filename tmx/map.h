@@ -43,7 +43,7 @@ class Layer;
 class Object;
 class MapGenerator;
 
-class IMap : public NotifyingXMLParser {
+class IMap : public NotifyingXMLParser, public mrt::Serializable {
 public:
 	DECLARE_SINGLETON(IMap);
 	struct TilePosition {
@@ -93,6 +93,9 @@ public:
 
 	void generateMatrixes();
 	void getZBoxes(std::set<int> &layers);
+	
+	virtual void serialize(mrt::Serializator &s) const;
+	virtual void deserialize(const mrt::Serializator &s);
 
 private:
 	Matrix<int> &getMatrix(int z);

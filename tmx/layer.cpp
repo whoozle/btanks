@@ -76,6 +76,27 @@ void DestructableLayer::init(const int w, const int h, const mrt::Chunk & data) 
 		_hp_data[i] = (Layer::_get(i) != 0) ? hp : 0;
 	}
 }
+
+void DestructableLayer::serialize(mrt::Serializator &s) const {
+	Layer::serialize(s);
+	
+	int size = _w * _h;
+	for(int i = 0; i < size; ++i) {
+		s.add(_hp_data[i]);
+	}
+}
+
+void DestructableLayer::deserialize(const mrt::Serializator &s) {
+	Layer::deserialize(s);
+	delete[] _hp_data;
+
+	int size = _w * _h;
+	_hp_data = new int[size];
+	for(int i = 0; i < size; ++i) {
+		s.get(_hp_data[i]);
+	}
+}
+
 const Uint32 DestructableLayer::_get(const int i) const {
 	if (i < 0 || i >= _w * _h)
 		return 0;
@@ -217,5 +238,26 @@ void Layer::clear(const int i) {
 const bool Layer::damage(const int x, const int y, const int hp) { return false; }
 void Layer::_destroy(const int x, const int y) {}
 
+void Layer::serialize(mrt::Serializator &s) const {
+	s.add(_w); 
+	s.add(_h);
+	s.add(pos);
+	s.add(speed);
+	s.add(base);
+	s.add(frames);
+	s.add(frame_size);
+	s.add(_data);
+}
+
+void Layer::deserialize(const mrt::Serializator &s) {
+	s.get(_w); 
+	s.get(_h);
+	s.get(pos);
+	s.get(speed);
+	s.get(base);
+	s.get(frames);
+	s.get(frame_size);
+	s.get(_data);
+}
 
 Layer::~Layer() { }
