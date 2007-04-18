@@ -416,11 +416,17 @@ static void coord2v(T &pos, const std::string &str) {
 }
 
 
-void IGame::loadMap(const std::string &name, const bool spawn_objects) {
+void IGame::loadMap(const std::string &name, const bool spawn_objects, const bool skip_loadmap) {
 	if (_main_menu)
 		_main_menu->setActive(false);
 	IMap &map = *IMap::get_instance();
-	map.load(name);
+
+	if (!skip_loadmap) {
+		map.load(name);
+	} else {
+		if (!map.loaded())
+			throw_ex(("loadMap() called with skip Map::load() flag. Map must be initialized at this point."));
+	}
 
 	World->initMap();
 
