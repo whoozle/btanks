@@ -19,10 +19,10 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
+#include "export_btanks.h"
 #include "mrt/serializable.h"
 
-class Alarm : public mrt::Serializable {
+class BTANKSAPI Alarm : public mrt::Serializable {
 public:
 	Alarm(const float period, const bool repeat);
 	Alarm(const bool repeat);
