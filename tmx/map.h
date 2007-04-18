@@ -98,6 +98,8 @@ public:
 	virtual void deserialize(const mrt::Serializator &s);
 
 private:
+	void addTiles(sdlx::Surface *image, const int first_gid);
+
 	Matrix<int> &getMatrix(int z);
 	Matrix<int> &getMatrix(const std::string &name);
 

@@ -656,7 +656,7 @@ void IMap::end(const std::string &name) {
 		std::string source = e.attrs["source"];
 		if (source.size()) {
 			LOG_DEBUG(("loading tileset from single file ('%s')", source.c_str()));
-			_image_name = source = Finder->find("tiles/" + source);
+			_image_name = source = Finder->find("tilesets/" + source);
 			_image->loadImage(source);
 			_image_is_tileset = true;
 		} else {
@@ -763,59 +763,7 @@ void IMap::end(const std::string &name) {
 		//fixme: do not actualy chop image in many tiles at once, use `tile' wrapper
 		_generator->tileset(_image_name, _firstgid);
 
-		_image->setAlpha(0, 0);
-		int w = _image->getWidth(), h = _image->getHeight();
-		int id = 0;
-		for(int y = 0; y < h; y += _th) {
-			for(int x = 0; x < w; x += _tw) {
-				sdlx::Surface *s = new sdlx::Surface;
-				s->createRGB(_tw, _th, 24);
-				s->convertAlpha();
-				s->convertToHardware();
-
-				sdlx::Rect from(x, y, _tw, _th);
-				s->copyFrom(*_image, from);
-				GET_CONFIG_VALUE("engine.strip-alpha-from-map-tiles", bool, strip_alpha, false);
-				if (strip_alpha) {
-					Uint8 r,g,b,a;
-					for(int y = 0; y < s->getHeight(); ++y) 
-						for(int x = 0; x < s->getWidth(); ++x) {
-							s->getRGBA(s->getPixel(x, y), r, g, b, a);
-							if (a != 255)
-								s->putPixel(x, y, s->mapRGBA(0,0,0,0));
-						}
-				}
-
-				GET_CONFIG_VALUE("engine.mark-map-tiles", bool, marks, false);
-				if (marks) {
-					Uint32 color = s->mapRGBA(255,0,255,249); //magic value to avoid Collision map confusing
-					s->putPixel(0, 0, color);
-					s->putPixel(1, 0, color);
-					s->putPixel(0, 1, color);
-				}
-
-				//s->saveBMP(mrt::formatString("tile-%d.bmp", id));
-
-				//LOG_DEBUG(("cut tile %d from tileset [%d:%d, %d:%d]", _firstgid + id, x, y, _tw, _th));
-				if ((size_t)(_firstgid + id) >= _tiles.size())
-					_tiles.resize(_firstgid + id + 20);
-				
-				delete _tiles[_firstgid + id].surface;
-				_tiles[_firstgid + id].surface = NULL;
-				delete _tiles[_firstgid + id].cmap;
-				_tiles[_firstgid + id].cmap = NULL;
-				delete _tiles[_firstgid + id].vmap;
-				_tiles[_firstgid + id].vmap = NULL;
-				
-				_tiles[_firstgid + id].cmap = new sdlx::CollisionMap;
-				_tiles[_firstgid + id].cmap->init(s, sdlx::CollisionMap::OnlyOpaque);
-				_tiles[_firstgid + id].vmap = new sdlx::CollisionMap;
-				_tiles[_firstgid + id].vmap->init(s, sdlx::CollisionMap::AnyVisible);
-				_tiles[_firstgid + id].surface = s;
-				++id;
-				s = NULL;
-			}
-		}
+		addTiles(_image, _firstgid);
 
 		delete _image;
 		_image = NULL;
@@ -1086,3 +1034,60 @@ void IMap::deserialize(const mrt::Serializator &s) {
 	}
 }
 	
+void IMap::addTiles(sdlx::Surface *image, const int first_gid) {
+	image->setAlpha(0, 0);
+	int w = image->getWidth(), h = image->getHeight();
+
+	int id = 0;
+	for(int y = 0; y < h; y += _th) {
+		for(int x = 0; x < w; x += _tw) {
+			sdlx::Surface *s = new sdlx::Surface;
+			s->createRGB(_tw, _th, 24);
+			s->convertAlpha();
+			s->convertToHardware();
+
+			sdlx::Rect from(x, y, _tw, _th);
+			s->copyFrom(*image, from);
+			GET_CONFIG_VALUE("engine.strip-alpha-from-map-tiles", bool, strip_alpha, false);
+			if (strip_alpha) {
+				Uint8 r,g,b,a;
+				for(int y = 0; y < s->getHeight(); ++y) 
+					for(int x = 0; x < s->getWidth(); ++x) {
+						s->getRGBA(s->getPixel(x, y), r, g, b, a);
+						if (a != 255)
+							s->putPixel(x, y, s->mapRGBA(0,0,0,0));
+					}
+			}
+
+			GET_CONFIG_VALUE("engine.mark-map-tiles", bool, marks, false);
+			if (marks) {
+				Uint32 color = s->mapRGBA(255,0,255,249); //magic value to avoid Collision map confusing
+				s->putPixel(0, 0, color);
+				s->putPixel(1, 0, color);
+				s->putPixel(0, 1, color);
+			}
+
+			//s->saveBMP(mrt::formatString("tile-%d.bmp", id));
+
+			//LOG_DEBUG(("cut tile %d from tileset [%d:%d, %d:%d]", first_gid + id, x, y, _tw, _th));
+			if ((size_t)(first_gid + id) >= _tiles.size())
+				_tiles.resize(first_gid + id + 20);
+				
+			delete _tiles[first_gid + id].surface;
+			_tiles[first_gid + id].surface = NULL;
+			delete _tiles[first_gid + id].cmap;
+			_tiles[first_gid + id].cmap = NULL;
+			delete _tiles[first_gid + id].vmap;
+			_tiles[first_gid + id].vmap = NULL;
+				
+			_tiles[first_gid + id].cmap = new sdlx::CollisionMap;
+			_tiles[first_gid + id].cmap->init(s, sdlx::CollisionMap::OnlyOpaque);
+			_tiles[first_gid + id].vmap = new sdlx::CollisionMap;
+			_tiles[first_gid + id].vmap->init(s, sdlx::CollisionMap::AnyVisible);
+			_tiles[first_gid + id].surface = s;
+			++id;
+			s = NULL;
+		}
+	}
+	
+}
