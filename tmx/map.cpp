@@ -1043,13 +1043,46 @@ const sdlx::CollisionMap* IMap::getVisibilityMap(const Layer *l, const int x, co
 }
 
 void IMap::serialize(mrt::Serializator &s) const {
+	s.add((int)_layers.size());
 	for(LayerMap::const_iterator i = _layers.begin(); i != _layers.end(); ++i) {
 		s.add(i->first);
+		const DestructableLayer *dl = dynamic_cast<DestructableLayer *>(i->second);
+		const int type = (dl != NULL)? 'd':'l';
+		s.add(type);
 		s.add(*i->second);
 	}
 }
 
 void IMap::deserialize(const mrt::Serializator &s) {
-	throw_ex(("implement me"));
+	clear();
+	
+	int n;
+	s.get(n);
+	while(n--) {
+		int z;
+		int type;
+		s.get(z);
+		s.get(type);
+
+		Layer *layer = NULL;
+		TRY {
+			switch(type) {
+			case 'd': 
+				layer = new DestructableLayer(true);
+				break;
+			case 't': 
+				layer = new Layer;
+				break;
+			default: 
+				throw_ex(("unknown layer type '%02x'", type));
+			}
+			layer->deserialize(s);
+			_layers.insert(LayerMap::value_type(z, layer));
+		} CATCH("deserialize", {
+			delete layer;
+			throw;
+		});
+		
+	}
 }
 	
