@@ -124,6 +124,7 @@ private:
 	unsigned _next_ping;
 	bool _ping;
 	Alarm _next_sync;
+	bool _game_joined;
 };
 
 SINGLETON(, PlayerManager, IPlayerManager);

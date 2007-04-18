@@ -62,7 +62,6 @@ const int IPlayerManager::onConnect(Message &message) {
 	message.set("version", getVersion());
 
 	mrt::Serializator s;
-	//World->serialize(s);
 	Map->serialize(s);
 	
 	s.add(client_id);
@@ -71,6 +70,7 @@ const int IPlayerManager::onConnect(Message &message) {
 	serializeSlots(s);	
 
 	message.data = s.getData();
+	LOG_DEBUG(("server status message size = %u", (unsigned) message.data.getSize()));
 	_players[client_id].reserved = true;
 	//LOG_DEBUG(("world: %s", message.data.dump().c_str()));
 	return client_id;
@@ -100,7 +100,7 @@ TRY {
 		
 		mrt::Serializator s(&message.data);
 		Map->deserialize(s);
-		//World->deserialize(s);
+		Game->loadMap(Map->getName(), false, true);
 		
 		s.get(_my_idx);
 		LOG_DEBUG(("my_idx = %d", _my_idx));
@@ -190,6 +190,7 @@ TRY {
 		deserializeSlots(s);
 
 		Game->resetTimer();
+		_game_joined = true;
 		break;
 	}
 	
@@ -385,6 +386,9 @@ void IPlayerManager::ping() {
 
 
 void IPlayerManager::updatePlayers() {
+	if (_client && !_game_joined)
+		return;
+	
 	int n = _players.size();
 
 	for(int i = 0; i < n; ++i) {
@@ -541,7 +545,7 @@ const float IPlayerManager::extractPing(const mrt::Chunk &data) const {
 
 
 IPlayerManager::IPlayerManager() : 
-	_server(NULL), _client(NULL), _my_idx(-1), _players(), _trip_time(10), _next_ping(0), _ping(false), _next_sync(true) 
+	_server(NULL), _client(NULL), _my_idx(-1), _players(), _trip_time(10), _next_ping(0), _ping(false), _next_sync(true), _game_joined(false)
 {}
 
 IPlayerManager::~IPlayerManager() {}
@@ -574,6 +578,7 @@ void IPlayerManager::startClient(const std::string &address) {
 void IPlayerManager::clear() {
 	LOG_DEBUG(("deleting server/client if exists."));
 	_ping = false;
+	_game_joined = false;
 	delete _server; _server = NULL;
 	delete _client; _client = NULL;
 	_my_idx = -1;
