@@ -60,7 +60,6 @@ public:
 	~IMap();
 	void clear();
 	void load(const std::string &name);
-	const std::string & getName() const { return _name; }
 	const bool loaded() const;
 	
 	void tick(const float dt);
@@ -96,6 +95,8 @@ public:
 	
 	virtual void serialize(mrt::Serializator &s) const;
 	virtual void deserialize(const mrt::Serializator &s);
+	
+	const std::string &getName() const { return _name; }
 
 private:
 	void addTiles(sdlx::Surface *image, const int first_gid);
@@ -127,7 +128,7 @@ private:
 	
 	int _lastz;
 	mrt::Chunk _data;
-	std::string _image_name;
+	std::string _image_name, _image_source;
 	sdlx::Surface *_image;
 	bool _image_is_tileset;
 
@@ -153,12 +154,14 @@ private:
 	typedef std::stack<Entity> EntityStack;
 	EntityStack _stack;
 	
-	std::string _name;
-	
 	IMap(const IMap&);
 	const IMap& operator=(const IMap&);
 	
 	MapGenerator *_generator;
+	
+	typedef std::vector<std::pair<std::string, int> > Tilesets;
+	Tilesets _tilesets;
+	std::string _name;
 };
 
 SINGLETON(, Map, IMap);

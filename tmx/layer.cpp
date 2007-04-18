@@ -241,6 +241,10 @@ const bool Layer::damage(const int x, const int y, const int hp) { return false;
 void Layer::_destroy(const int x, const int y) {}
 
 void Layer::serialize(mrt::Serializator &s) const {
+	s.add(impassability);
+	s.add(hp);
+	s.add(pierceable);
+
 	s.add(_w); 
 	s.add(_h);
 	s.add(pos);
@@ -252,6 +256,10 @@ void Layer::serialize(mrt::Serializator &s) const {
 }
 
 void Layer::deserialize(const mrt::Serializator &s) {
+	s.get(impassability);
+	s.get(hp);
+	s.get(pierceable);
+
 	s.get(_w); 
 	s.get(_h);
 	s.get(pos);

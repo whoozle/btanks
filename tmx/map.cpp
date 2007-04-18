@@ -433,31 +433,9 @@ void IMap::load(const std::string &name) {
 	delete _image;
 	_image = NULL;
 
-	_name = name;
-	
 	_full_tile.create(_tw, _th, true);
 	
 	LOG_DEBUG(("optimizing layers..."));
-	
-	_cover_map.setSize(_h, _w, -10000);
-	_cover_map.useDefault(-10000);
-	
-	unsigned int ot = 0;
-	for(LayerMap::iterator l = _layers.begin(); l != _layers.end(); ++l) {
-		for(int ty = 0; ty < _h; ++ty) {
-			for(int tx = 0; tx < _w; ++tx) {
-				const sdlx::CollisionMap * vmap = getVisibilityMap(l->second, tx, ty);
-				if (vmap == NULL)
-					continue;
-				if (vmap->isFull()) {
-					_cover_map.set(ty, tx, l->first);
-					++ot;
-				}
-			}
-		}
-	}
-	LOG_DEBUG(("created render optimization map. opaque tiles found: %u", ot));
-	//LOG_DEBUG(("rendering optimization map: %s", _cover_map.dump().c_str()));
 	
 	
 	for(std::map<const std::string, std::string>::const_iterator i = _damage4.begin(); i != _damage4.end(); ++i) {
@@ -498,11 +476,31 @@ void IMap::load(const std::string &name) {
 	}
 #endif
 	
-	
+	_name = name;
 	LOG_DEBUG(("loading completed"));
 }
 
 void IMap::generateMatrixes() {
+	_cover_map.setSize(_h, _w, -10000);
+	_cover_map.useDefault(-10000);
+	
+	unsigned int ot = 0;
+	for(LayerMap::iterator l = _layers.begin(); l != _layers.end(); ++l) {
+		for(int ty = 0; ty < _h; ++ty) {
+			for(int tx = 0; tx < _w; ++tx) {
+				const sdlx::CollisionMap * vmap = getVisibilityMap(l->second, tx, ty);
+				if (vmap == NULL)
+					continue;
+				if (vmap->isFull()) {
+					_cover_map.set(ty, tx, l->first);
+					++ot;
+				}
+			}
+		}
+	}
+
+	LOG_DEBUG(("created render optimization map. opaque tiles found: %u", ot));
+
 	_imp_map.clear();
 	for(LayerMap::const_iterator i = _layers.begin(); i != _layers.end(); ++i) {
 		getMatrix(i->first).fill(-2);
@@ -656,6 +654,7 @@ void IMap::end(const std::string &name) {
 		std::string source = e.attrs["source"];
 		if (source.size()) {
 			LOG_DEBUG(("loading tileset from single file ('%s')", source.c_str()));
+			_image_source = source;
 			_image_name = source = Finder->find("tilesets/" + source);
 			_image->loadImage(source);
 			_image_is_tileset = true;
@@ -760,9 +759,10 @@ void IMap::end(const std::string &name) {
 		else 
 			properties[e.attrs["name"]] = e.attrs["value"];
 	} else if (name == "tileset" && _image != NULL && _image_is_tileset) {
-		//fixme: do not actualy chop image in many tiles at once, use `tile' wrapper
+		LOG_DEBUG(("tileset: %s, first_gid: %d", _image_source.c_str(), _firstgid));
 		_generator->tileset(_image_name, _firstgid);
 
+		_tilesets.push_back(Tilesets::value_type(_image_source, _firstgid));
 		addTiles(_image, _firstgid);
 
 		delete _image;
@@ -876,6 +876,9 @@ void IMap::clear() {
 	
 	LOG_DEBUG(("clearing map generator..."));
 	_generator->clear();
+	
+	_tilesets.clear();
+	_name.clear();
 }
 
 IMap::~IMap() {
@@ -991,6 +994,18 @@ const sdlx::CollisionMap* IMap::getVisibilityMap(const Layer *l, const int x, co
 }
 
 void IMap::serialize(mrt::Serializator &s) const {
+	s.add(_name);
+	s.add(_w); s.add(_h);
+	s.add(_tw); s.add(_th);
+	s.add(_ptw); s.add(_pth);
+	s.add(_split);
+	
+	s.add((int)_tilesets.size());
+	for(size_t i = 0; i < _tilesets.size(); ++i ) {
+		s.add(_tilesets[i].first);	
+		s.add(_tilesets[i].second);	
+	}
+	
 	s.add((int)_layers.size());
 	for(LayerMap::const_iterator i = _layers.begin(); i != _layers.end(); ++i) {
 		s.add(i->first);
@@ -1003,8 +1018,38 @@ void IMap::serialize(mrt::Serializator &s) const {
 
 void IMap::deserialize(const mrt::Serializator &s) {
 	clear();
+
+	s.get(_name);
+	s.get(_w); s.get(_h);
+	s.get(_tw); s.get(_th);
+	s.get(_ptw); s.get(_pth);
+	s.get(_split);
+
 	
 	int n;
+
+	s.get(n);
+	while(n--) {
+		Tilesets::value_type t;
+		s.get(t.first);	
+		s.get(t.second);	
+		sdlx::Surface *image  = NULL;
+		TRY {
+			std::string fname = Finder->find("tilesets/" + t.first);
+			
+			image = new sdlx::Surface;
+			image->loadImage(fname);
+			image->convertAlpha();
+			
+			addTiles(image, t.second);
+			
+			delete image;
+			image = NULL;
+		} CATCH("deserialize", { delete image; throw; });
+		
+		_tilesets.push_back(t);
+	}
+	
 	s.get(n);
 	while(n--) {
 		int z;
@@ -1018,11 +1063,11 @@ void IMap::deserialize(const mrt::Serializator &s) {
 			case 'd': 
 				layer = new DestructableLayer(true);
 				break;
-			case 't': 
+			case 'l': 
 				layer = new Layer;
 				break;
 			default: 
-				throw_ex(("unknown layer type '%02x'", type));
+				throw_ex(("unknown layer type '%02x'(%c)", type, (type >= 0x20)?type:' '));
 			}
 			layer->deserialize(s);
 			_layers.insert(LayerMap::value_type(z, layer));
