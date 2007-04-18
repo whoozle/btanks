@@ -41,6 +41,7 @@
 #include "zbox.h"
 
 #include "generator.h"
+#include "game.h"
 
 IMPLEMENT_SINGLETON(Map, IMap);
 
@@ -1001,12 +1002,13 @@ void IMap::serialize(mrt::Serializator &s) const {
 	s.add(_split);
 	
 	s.add((int)_tilesets.size());
+	s.add((int)_layers.size());
+	
 	for(size_t i = 0; i < _tilesets.size(); ++i ) {
 		s.add(_tilesets[i].first);	
 		s.add(_tilesets[i].second);	
 	}
 	
-	s.add((int)_layers.size());
 	for(LayerMap::const_iterator i = _layers.begin(); i != _layers.end(); ++i) {
 		s.add(i->first);
 		const DestructableLayer *dl = dynamic_cast<DestructableLayer *>(i->second);
@@ -1026,10 +1028,13 @@ void IMap::deserialize(const mrt::Serializator &s) {
 	s.get(_split);
 
 	
-	int n;
+	int tn, ln;
 
-	s.get(n);
-	while(n--) {
+	s.get(tn);
+	s.get(ln);
+	Game->resetLoadingBar(tn + ln);
+	
+	while(tn--) {
 		Tilesets::value_type t;
 		s.get(t.first);	
 		s.get(t.second);	
@@ -1048,10 +1053,10 @@ void IMap::deserialize(const mrt::Serializator &s) {
 		} CATCH("deserialize", { delete image; throw; });
 		
 		_tilesets.push_back(t);
+		Game->notifyLoadingBar();
 	}
 	
-	s.get(n);
-	while(n--) {
+	while(ln--) {
 		int z;
 		int type;
 		s.get(z);
@@ -1076,6 +1081,7 @@ void IMap::deserialize(const mrt::Serializator &s) {
 			throw;
 		});
 		
+		Game->notifyLoadingBar();		
 	}
 }
 	
