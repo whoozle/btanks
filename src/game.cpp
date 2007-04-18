@@ -65,7 +65,7 @@
 #include "i18n.h"
 #include <math.h>
 
-IMPLEMENT_SINGLETON(Game, IGame)
+IMPLEMENT_SINGLETON(Game, IGame);
 
 IGame::IGame() : _main_menu(NULL),
  _autojoin(false), _shake(0), _show_radar(true) , _show_stats(false), _credits(NULL), _cheater(NULL) {}

@@ -28,7 +28,7 @@
 #include "var.h"
 #include "console.h"
 
-IMPLEMENT_SINGLETON(Config, IConfig)
+IMPLEMENT_SINGLETON(Config, IConfig);
 
 IConfig::IConfig() {}
 

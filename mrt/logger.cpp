@@ -30,7 +30,7 @@
 
 using namespace mrt;
 
-IMPLEMENT_SINGLETON(mrt::Logger, ILogger)
+IMPLEMENT_SINGLETON(mrt::Logger, ILogger);
 
 ILogger::ILogger() : _level(LL_DEBUG), _lines(0), fd(NULL) {}
 

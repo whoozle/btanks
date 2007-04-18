@@ -26,7 +26,7 @@
 #include "i18n.h"
 #include "sdlx/font.h"
 
-IMPLEMENT_SINGLETON(GameMonitor, IGameMonitor)
+IMPLEMENT_SINGLETON(GameMonitor, IGameMonitor);
 
 IGameMonitor::IGameMonitor() : _game_over(false), _check_items(0.5, true), _state_timer(false), _timer(0) {}
 

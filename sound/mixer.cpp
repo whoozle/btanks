@@ -37,7 +37,7 @@
 #include "math/v3.h"
 #include "finder.h"
 
-IMPLEMENT_SINGLETON(Mixer, IMixer)
+IMPLEMENT_SINGLETON(Mixer, IMixer);
 
 IMixer::IMixer() : _nosound(true), _nomusic(true), _ogg(NULL), 
 	_volume_fx(1.0f), _volume_music(1.0f) {}

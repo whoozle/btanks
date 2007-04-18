@@ -20,7 +20,7 @@
 #include "mrt/exception.h"
 #include <assert.h>
 
-IMPLEMENT_SINGLETON(I18n, II18n)
+IMPLEMENT_SINGLETON(I18n, II18n);
 
 bool lessnocase::operator()(const std::string& s1, const std::string& s2) const {
 #ifdef WIN32

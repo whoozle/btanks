@@ -31,7 +31,7 @@
 
 #include <algorithm>
 
-IMPLEMENT_SINGLETON(ResourceManager, IResourceManager)
+IMPLEMENT_SINGLETON(ResourceManager, IResourceManager);
 
 void IResourceManager::onFile(const std::string &base, const std::string &file) {
 	_base_dir = base;

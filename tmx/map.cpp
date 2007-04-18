@@ -42,7 +42,7 @@
 
 #include "generator.h"
 
-IMPLEMENT_SINGLETON(Map, IMap)
+IMPLEMENT_SINGLETON(Map, IMap);
 
 IMap::IMap() : _w(0), _h(0), _tw(0), _th(0), _ptw(0), _pth(0), _firstgid(0), _split(0), _generator(new MapGenerator) {
 	_lastz = -1000;

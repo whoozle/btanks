@@ -21,7 +21,7 @@
 #include "mrt/fs_node.h"
 #include "mrt/fmt.h"
 
-IMPLEMENT_SINGLETON(Finder, IFinder)
+IMPLEMENT_SINGLETON(Finder, IFinder);
 
 IFinder::IFinder() {
 #ifdef PREFIX

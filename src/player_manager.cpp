@@ -45,7 +45,7 @@
 #include "math/unary.h"
 #include "math/binary.h"
 
-IMPLEMENT_SINGLETON(PlayerManager, IPlayerManager)
+IMPLEMENT_SINGLETON(PlayerManager, IPlayerManager);
 
 
 const int IPlayerManager::onConnect(Message &message) {

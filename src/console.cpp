@@ -24,7 +24,7 @@
 #include "version.h"
 #include "finder.h"
 
-IMPLEMENT_SINGLETON(Console, IConsole)
+IMPLEMENT_SINGLETON(Console, IConsole);
 
 bool IConsole::onKey(const SDL_keysym sym) {
 	GET_CONFIG_VALUE("engine.enable-console", bool, ec, false);

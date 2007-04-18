@@ -53,12 +53,11 @@ public:
 	typedef bool result_type;
 
 	template<typename IteratorT>
-    	bool operator()(IteratorT First, IteratorT Last) {
-    		while(First != Last) {
+    	result_type operator()(IteratorT First, IteratorT Last) {
+    		for(; First != Last; ++First) {
     			if (*First) {
     				return true;
     			}
-    			++First;
     		}
     		return false;
     	}

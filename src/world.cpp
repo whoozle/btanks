@@ -45,7 +45,7 @@
 #include <assert.h>
 #include <limits>
 
-IMPLEMENT_SINGLETON(World, IWorld)
+IMPLEMENT_SINGLETON(World, IWorld);
 
 void IWorld::setTimeSlice(const float ts) {
 	if (ts <= 0)
