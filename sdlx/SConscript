@@ -7,7 +7,7 @@ env.Append(CPPPATH=['..', '.'])
 env.Append(LIBPATH=['../mrt'])
 env.Append(CPPDEFINES=['SDLXAPI=DLLEXPORT'])
 
-libs = ['mrt', 'SDL', 'SDL_image', 'SDL_ttf']
+libs = ['mrt', 'SDL', 'SDL_image', 'SDL_ttf', 'rt']
 
 if sys.platform != "win32":
 	c_map_env= env.Copy()

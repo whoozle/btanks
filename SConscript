@@ -73,7 +73,6 @@ if sys.platform == "win32":
 	bt_libs.append('Ws2_32')
 	#bt_libs.append('gdi32')
 else: 
-	bt_libs.append('rt')
 	bt_libs.append('GL')
 
 
