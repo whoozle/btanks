@@ -41,13 +41,15 @@ namespace mrt {
 	extern e const mrt::Accessor<class> name
 
 #define DECLARE_SINGLETON(class) \
-	static inline class * get_instance() { \
-		static class instance; \
-		return &instance; \
-	} 
+	static class * get_instance()
 
 #define IMPLEMENT_SINGLETON(name, class) \
-	const mrt::Accessor<class> name = mrt::Accessor<class>();
+	class * class::get_instance() { \
+		static class instance; \
+		return &instance; \
+	} \
+	\
+	const mrt::Accessor<class> name = mrt::Accessor<class>()
 
 
 #endif
