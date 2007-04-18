@@ -84,6 +84,7 @@ void DestructableLayer::serialize(mrt::Serializator &s) const {
 	for(int i = 0; i < size; ++i) {
 		s.add(_hp_data[i]);
 	}
+	s.add(_visible);
 }
 
 void DestructableLayer::deserialize(const mrt::Serializator &s) {
@@ -95,6 +96,7 @@ void DestructableLayer::deserialize(const mrt::Serializator &s) {
 	for(int i = 0; i < size; ++i) {
 		s.get(_hp_data[i]);
 	}
+	s.get(_visible);
 }
 
 const Uint32 DestructableLayer::_get(const int i) const {
