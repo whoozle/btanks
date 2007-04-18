@@ -1016,6 +1016,12 @@ void IMap::serialize(mrt::Serializator &s) const {
 		s.add(type);
 		s.add(*i->second);
 	}
+	
+	s.add((int)properties.size());
+	for(PropertyMap::const_iterator i = properties.begin(); i != properties.end(); ++i) {
+		s.add(i->first);
+		s.add(i->second);
+	}
 }
 
 void IMap::deserialize(const mrt::Serializator &s) {
@@ -1082,6 +1088,15 @@ void IMap::deserialize(const mrt::Serializator &s) {
 		});
 		
 		Game->notifyLoadingBar();		
+	}
+	
+	int pn;
+	s.get(pn);
+	while(pn--) {
+		std::string name, value;
+		s.get(name);
+		s.get(value);
+		properties.insert(PropertyMap::value_type(name, value));
 	}
 }
 	
