@@ -20,10 +20,11 @@
  */
 
 
+#include "export_btanks.h"
 #include "mrt/serializable.h"
 #include <string>
 
-class PlayerState : public mrt::Serializable {
+class BTANKSAPI PlayerState : public mrt::Serializable {
 public:
 	bool left, right, up, down, fire, alt_fire, leave, hint_control;
 	PlayerState();

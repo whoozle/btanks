@@ -19,11 +19,12 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+#include "export_btanks.h"
 #include "mrt/singleton.h"
 #include <string>
 #include <vector>
 
-class IFinder {
+class BTANKSAPI IFinder {
 public: 
 	typedef std::vector<std::pair<std::string, std::string> > FindResult;
 
@@ -40,7 +41,7 @@ private:
 	std::vector<std::string> _path;
 };
 
-SINGLETON(, Finder, IFinder);
+SINGLETON(BTANKSAPI, Finder, IFinder);
 
 #endif
 

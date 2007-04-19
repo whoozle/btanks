@@ -19,19 +19,21 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 #include <string>
+#include <deque>
+#include <set>
+
+#include "export_btanks.h"
 #include "math/v2.h"
 #include "mrt/serializable.h" 
 #include "player_state.h"
 #include "object_common.h"
 #include "variants.h"
-#include <deque>
-#include <set>
 
 namespace sdlx {
 	class Surface;
 }
 
-class BaseObject : public mrt::Serializable {
+class BTANKSAPI BaseObject : public mrt::Serializable {
 public:
 	v2<float> size;
 	float mass, speed, ttl, impassability;

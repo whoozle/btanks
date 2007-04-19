@@ -37,7 +37,7 @@
 #include "sdlx/rect.h"
 #include "sdlx/surface.h"
 
-#include "objects/vehicle_traits.h"
+#include "vehicle_traits.h"
 #include "ai/traits.h"
 #include "zbox.h"
 

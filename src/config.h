@@ -26,10 +26,11 @@
 #include <string>
 #include <map>
 #include <set>
+#include "export_btanks.h"
 
 class Var;
 
-class IConfig : public mrt::XMLParser, mrt::Serializable {
+class BTANKSAPI IConfig : public mrt::XMLParser, mrt::Serializable {
 public:
 	DECLARE_SINGLETON(IConfig);
 	IConfig();
@@ -75,7 +76,7 @@ private:
 	std::set<bool *> _invalidators;
 };
 
-SINGLETON(, Config, IConfig);
+SINGLETON(BTANKSAPI, Config, IConfig);
 
 
 #define GET_CONFIG_VALUE(name, type, value, default_value) \

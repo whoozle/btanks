@@ -19,12 +19,14 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include "base_object.h"
-#include "alarm.h"
 #include <string>
 #include <map>
 #include <set>
 #include <queue>
+
+#include "export_btanks.h"
+#include "base_object.h"
+#include "alarm.h"
 #include "math/v2.h"
 #include "math/matrix.h"
 #include "object_common.h"
@@ -39,7 +41,7 @@ class AnimationModel;
 class Animation;
 class Pose;
 
-class Object : public BaseObject {
+class BTANKSAPI Object : public BaseObject {
 public:
 	const std::string registered_name; 
 	

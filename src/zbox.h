@@ -21,8 +21,9 @@
 
 #include "math/v2.h"
 #include "math/v3.h"
+#include "export_btanks.h"
 
-class ZBox {
+class BTANKSAPI ZBox {
 public: 
 	v3<int> position;
 	v2<int> size;

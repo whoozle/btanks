@@ -19,6 +19,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+#include "export_btanks.h"
 #include "mrt/singleton.h"
 #include <vector>
 #include <string>
@@ -44,7 +45,7 @@ class Client;
 class Message;
 class Object;
 
-class IPlayerManager {
+class BTANKSAPI IPlayerManager {
 public:
 	IPlayerManager();
 	DECLARE_SINGLETON(IPlayerManager);
@@ -127,7 +128,7 @@ private:
 	bool _game_joined;
 };
 
-SINGLETON(, PlayerManager, IPlayerManager);
+SINGLETON(BTANKSAPI, PlayerManager, IPlayerManager);
 
 #endif
 	

@@ -20,6 +20,8 @@
  */
 
 
+#include "export_btanks.h"
+
 #include <map>
 #include <string>
 #include <stack>
@@ -43,7 +45,7 @@ class Layer;
 class Object;
 class MapGenerator;
 
-class IMap : public NotifyingXMLParser, public mrt::Serializable {
+class BTANKSAPI IMap : public NotifyingXMLParser, public mrt::Serializable {
 public:
 	DECLARE_SINGLETON(IMap);
 	struct TilePosition {
@@ -164,7 +166,7 @@ private:
 	std::string _name;
 };
 
-SINGLETON(, Map, IMap);
+SINGLETON(BTANKSAPI, Map, IMap);
 
 #endif
 

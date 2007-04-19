@@ -19,6 +19,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+#include "export_btanks.h"
 #include "mrt/singleton.h"
 #include "mrt/serializable.h"
 
@@ -42,7 +43,7 @@ class Traits;
 
 class Object;
 
-class IWorld : public mrt::Serializable {
+class BTANKSAPI IWorld : public mrt::Serializable {
 public:
 	DECLARE_SINGLETON(IWorld);
 	typedef std::map<const int, Object*> ObjectMap;
@@ -132,6 +133,6 @@ private:
 	float _max_dt;
 };
 
-SINGLETON(, World, IWorld);
+SINGLETON(BTANKSAPI, World, IWorld);
 
 #endif

@@ -3,9 +3,10 @@
 
 #include <set>
 #include <string>
+#include "export_btanks.h"
 #include "mrt/serializable.h"
 
-class Variants : public mrt::Serializable {
+class BTANKSAPI Variants : public mrt::Serializable {
 public: 
 	Variants();
 	const std::string parse(const std::string &name);

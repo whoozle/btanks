@@ -21,12 +21,13 @@
 
 
 #include "math/v2.h"
+#include "export_btanks.h"
 
 class Object;
 
 namespace ai {
 
-class Herd {
+class BTANKSAPI Herd {
 public:
 	virtual ~Herd() {}
 	void calculateV(v2<float> &velocity, Object *sheep, const int leader, const float distance);

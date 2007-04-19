@@ -19,6 +19,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+#include "export_btanks.h"
 #include "mrt/singleton.h"
 #include "mrt/exception.h"
 #include "notifying_xml_parser.h"
@@ -38,7 +39,7 @@ class Animation;
 class AnimationModel;
 class Pose;
 
-class IResourceManager : public NotifyingXMLParser {
+class BTANKSAPI IResourceManager : public NotifyingXMLParser {
 public:
 	IResourceManager();
 	~IResourceManager();
@@ -105,7 +106,7 @@ private:
 	const IResourceManager& operator=(const IResourceManager &);
 };
 
-SINGLETON(, ResourceManager, IResourceManager);
+SINGLETON(BTANKSAPI, ResourceManager, IResourceManager);
 
 #define CONCATENATE(x, y) CONCATENATE_DIRECT(x, y) 
 #define CONCATENATE_DIRECT(x, y) x##y

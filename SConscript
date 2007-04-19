@@ -27,20 +27,6 @@ bt_sources = 	[
 
 	'ai/base.cpp', 'ai/herd.cpp', 'ai/traits.cpp',
 		
-	'objects/bullet.cpp', 'objects/explosion.cpp', 'objects/single_pose.cpp',
-	'objects/tank.cpp', 'objects/shilka.cpp', 'objects/launcher.cpp', 'objects/ai_tank.cpp',
-	'objects/ai_launcher.cpp', 'objects/ai_shilka.cpp', 'objects/ai_trooper.cpp', 'objects/ai_machinegunner_player.cpp', 
-	'objects/ai_heli.cpp', 	
-	'objects/traffic_lights.cpp', 'objects/missiles_in_vehicle.cpp', 'objects/missile.cpp',
-	'objects/corpse.cpp', 'objects/item.cpp', 'objects/mine.cpp', 'objects/dirt.cpp', 
-	'objects/damage.cpp', 'objects/helicopter.cpp', 'objects/paratrooper.cpp', 'objects/kamikaze.cpp',
-	'objects/machinegunner.cpp', 'objects/destructable_object.cpp', 'objects/submarine.cpp', 'objects/train.cpp',
-	'objects/trooper.cpp', 'objects/fakemod.cpp', 'objects/car.cpp', 'objects/tooltip.cpp', 
-	'objects/vehicle_traits.cpp', 'objects/barrack.cpp', 'objects/watchtower.cpp',
-	'objects/cannon.cpp', 'objects/boat.cpp', 'objects/poison.cpp', 'objects/old_school_destructable.cpp', 
-	'objects/zombie.cpp', 'objects/civilian.cpp', 'objects/teleport.cpp', 'objects/cow.cpp', 
-	'objects/heli.cpp', 'objects/bomb.cpp', 'objects/explosive.cpp', 'objects/mortar.cpp',
-	
 	'src/player_state.cpp', 
 	'controls/joyplayer.cpp', 'controls/keyplayer.cpp', 'controls/external_control.cpp', 'controls/mouse_control.cpp', 
 
@@ -55,7 +41,7 @@ bt_sources = 	[
 	'src/player_slot.cpp', 'src/hud.cpp', 'src/console.cpp',
 	'src/i18n.cpp', 'src/game.cpp', 'src/window.cpp', 
 	'src/credits.cpp', 'src/cheater.cpp', 
-
+	'src/vehicle_traits.cpp', 
 	vobj
 	]
 	
@@ -81,7 +67,7 @@ Install('#', bt)
 
 
 bt_main_sources = ['src/main.cpp']
-bt_main_libs =  ['mrt', 'bt', 'SDL']
+bt_main_libs =  ['mrt', 'bt', 'bt_objects', 'SDL']
 
 if sys.platform == "win32":
 	bt_main_sources.append('sdlx/SDL_win32_main.c')
@@ -93,6 +79,7 @@ if sys.platform == "win32":
 if sys.platform != 'win32':
 	bt_env.Append(LINKFLAGS=' -Wl,-rpath . -Wl,-rpath-link build/' + env['mode'] + '/mrt')
 	bt_env.Append(LINKFLAGS=' -Wl,-rpath . -Wl,-rpath-link build/' + env['mode'] + '/sdlx')
+	bt_env.Append(LINKFLAGS=' -Wl,-rpath . -Wl,-rpath-link build/' + env['mode'] + '/objects')
 
 bt_main = bt_env.Program('bt', bt_main_sources, LIBS=bt_main_libs, RPATH=['.'])
 Install('#', bt_main)

@@ -19,6 +19,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+#include "export_btanks.h"
 #include "object.h"
 #include "traits.h"
 #include <string>
@@ -26,7 +27,7 @@
 #include "alarm.h"
 
 namespace ai {
-class Base : public virtual Object {
+class BTANKSAPI Base : public virtual Object {
 public: 
 	Base();
 	virtual ~Base();

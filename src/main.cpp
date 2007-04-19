@@ -21,6 +21,9 @@
 #include "version.h"
 #include <stdlib.h>
 
+DLLIMPORT void btanks_objects_dummy_exp_method(void);
+
+
 #ifdef WIN32
 #	include "sdlx/SDL_main.h"
 #	define WIN32_LEAN_AND_MEAN
@@ -46,6 +49,7 @@ extern "C"
 int main(int argc, char *argv[]) {
 	try {
 		LOG_NOTICE(("starting up... version: %s", getVersion().c_str()));
+		btanks_objects_dummy_exp_method();
 #ifndef WIN32
 		struct sigaction sa;
 		memset(&sa, 0, sizeof(sa));

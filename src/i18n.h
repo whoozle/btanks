@@ -20,6 +20,7 @@
  */
 
 #include "mrt/xml.h"
+#include "export_btanks.h"
 #include <map>
 #include <set>
 #include <deque>
@@ -32,7 +33,7 @@ struct lessnocase
 };
 
 
-class II18n : public mrt::XMLParser {
+class BTANKSAPI II18n : public mrt::XMLParser {
 public:
 	DECLARE_SINGLETON(II18n);
 	II18n();
@@ -57,6 +58,6 @@ private:
 	std::set<std::string> _unlocalized;
 };
 
-SINGLETON(, I18n, II18n);
+SINGLETON(BTANKSAPI, I18n, II18n);
 
 #endif
