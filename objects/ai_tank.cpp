@@ -69,8 +69,6 @@ const int AITank::getWeaponAmount(const int idx) const{
 
 
 void AITank::onSpawn() {
-	removeOwner(-42);
-
 	addEnemyClass("player");
 	addEnemyClass("trooper");
 	addEnemyClass("kamikaze");

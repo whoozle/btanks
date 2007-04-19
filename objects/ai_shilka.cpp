@@ -76,8 +76,6 @@ const int AIShilka::getWeaponAmount(const int idx) const{
 
 
 void AIShilka::onSpawn() {
-	removeOwner(-42);
-
 	addEnemyClass("player");
 	addEnemyClass("trooper");
 	addEnemyClass("kamikaze");

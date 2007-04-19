@@ -65,8 +65,6 @@ const int AIMachinegunnerPlayer::getWeaponAmount(const int idx) const{
 
 
 void AIMachinegunnerPlayer::onSpawn() {
-	removeOwner(-42);
-
 	addEnemyClass("player");
 	addEnemyClass("trooper");
 	addEnemyClass("kamikaze");

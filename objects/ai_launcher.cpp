@@ -60,8 +60,6 @@ const int AILauncher::getWeaponAmount(const int idx) const{
 
 
 void AILauncher::onSpawn() {
-	removeOwner(-42);
-
 	addEnemyClass("player");
 	addEnemyClass("trooper");
 	addEnemyClass("kamikaze");
