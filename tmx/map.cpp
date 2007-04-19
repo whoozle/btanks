@@ -1033,6 +1033,7 @@ void IMap::deserialize(const mrt::Serializator &s) {
 	s.get(_ptw); s.get(_pth);
 	s.get(_split);
 
+	_full_tile.create(_tw, _th, true);
 	
 	int tn, ln;
 
