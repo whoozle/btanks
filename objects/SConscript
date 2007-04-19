@@ -1,0 +1,27 @@
+import sys
+Import('env')
+
+env = env.Copy()
+buildmode = env['mode']
+
+libs = ['bt', 'sdlx', 'mrt']
+env.Prepend(LIBPATH=['#/build/' + buildmode])
+
+sources = [
+	'bullet.cpp', 'explosion.cpp', 'single_pose.cpp',
+	'tank.cpp', 'shilka.cpp', 'launcher.cpp', 'ai_tank.cpp',
+	'ai_launcher.cpp', 'ai_shilka.cpp', 'ai_trooper.cpp', 'ai_machinegunner_player.cpp', 
+	'ai_heli.cpp', 	
+	'traffic_lights.cpp', 'missiles_in_vehicle.cpp', 'missile.cpp',
+	'corpse.cpp', 'item.cpp', 'mine.cpp', 'dirt.cpp', 
+	'damage.cpp', 'helicopter.cpp', 'paratrooper.cpp', 'kamikaze.cpp',
+	'machinegunner.cpp', 'destructable_object.cpp', 'submarine.cpp', 'train.cpp',
+	'trooper.cpp', 'fakemod.cpp', 'car.cpp', 'tooltip.cpp', 
+	'barrack.cpp', 'watchtower.cpp',
+	'cannon.cpp', 'boat.cpp', 'poison.cpp', 'old_school_destructable.cpp', 
+	'zombie.cpp', 'civilian.cpp', 'teleport.cpp', 'cow.cpp', 
+	'heli.cpp', 'bomb.cpp', 'explosive.cpp', 'mortar.cpp',
+]
+
+bt_obj = env.SharedLibrary('bt_objects', sources, LIBS=libs)
+Install('#', bt_obj)
