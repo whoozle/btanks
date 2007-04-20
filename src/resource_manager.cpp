@@ -177,7 +177,14 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 		if (name.empty() || classname.empty())
 			throw_ex(("alias must have both 'name' and 'class' attributes"));
 		createAlias(name, classname);
-	}else LOG_WARN(("unhandled tag: %s", name.c_str()));
+	} else if (name == "sound") {
+		std::string file = attr["file"];
+		if (file.empty())
+			throw_ex(("sound.file MUST not be empty."));
+		TRY {
+			Mixer->loadSample(file, attr["class"]);
+		} CATCH("loadSample", {});
+	} else LOG_WARN(("unhandled tag: %s", name.c_str()));
 	NotifyingXMLParser::start(name, attr);
 }
 
