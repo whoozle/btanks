@@ -675,7 +675,7 @@ void IGame::run() {
 			
 			Map->tick(dt);
 			World->tick(dt);
-			Mixer->updateObjects();
+			Mixer->tick(dt);
 		}
 
 		
