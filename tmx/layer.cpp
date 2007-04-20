@@ -47,7 +47,7 @@ void DestructableLayer::onDeath(const int idx) {
 	ResourceManager->checkSurface("building-explosion", s, cm);
 	assert(s != NULL);
 	
-	Object * o = ResourceManager->createObject("explosion", "building-explosion");
+	Object * o = ResourceManager->createObject("explosion(building)", "building-explosion");
 	v2<int> tsize = Map->getTileSize();
 	v2<float> pos(x * tsize.x + tsize.x/2, y * tsize.y + tsize.y/2); //big fixme.
 	pos -= o->size / 2;
