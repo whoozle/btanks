@@ -54,8 +54,9 @@ void Missile::onSpawn() {
 		_fire->setDirectionsNumber(16);
 		_fire->impassability = 0;
 		add("fire", _fire);
-	}
+	} 
 	
+	playSound(type + "-missile", false);
 	quantizeVelocity();
 }
 
