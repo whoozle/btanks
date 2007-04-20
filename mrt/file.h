@@ -32,7 +32,8 @@ public:
 	File();
 	void open(const std::string &fname, const std::string &mode);
 	
-	int seek(long offset, int whence);
+	int seek(long offset, int whence) const;
+	long tell() const;
 	void write(const Chunk &ch) const;
 
 	void readAll(Chunk &ch) const;

@@ -121,7 +121,7 @@ FILE * File::unlink() {
 	return r;
 }
 
-int File::seek(long offset, int whence) {
+int File::seek(long offset, int whence) const {
 	if (_f == NULL)
 		throw_ex(("seek(%ld, %d) on uninitialized file", offset, whence));
 		
@@ -129,4 +129,10 @@ int File::seek(long offset, int whence) {
 	if (r < 0)
 		throw_io(("seek(%ld, %d)", offset, whence));
 	return r;
+}
+
+long File::tell() const {
+	if (_f == NULL)
+		throw_ex(("tell() on uninitialized file"));
+	return ftell(_f);
 }
