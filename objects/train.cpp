@@ -21,6 +21,7 @@
 #include "resource_manager.h"
 #include "mrt/random.h"
 #include "tmx/map.h"
+#include "game_monitor.h"
 
 class Wagon : public Object {
 public: 
@@ -91,6 +92,8 @@ void Train::tick(const float dt) {
 	//LOG_DEBUG(("pos: %d dst: %d", pos.y, dst_y));
 	if (pos.y  >= dst_y) { 
 		LOG_DEBUG(("escaped!"));
+		if (_variants.has("win-on-exit")) 
+			GameMonitor->gameOver("messages", "train-saved", 5);
 		Object::emit("death", NULL);
 	}
 	if (_smoke.tick(dt)) {
