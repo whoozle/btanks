@@ -1,8 +1,0 @@
-Import('env')
-
-env = env.Copy()
-env.Append(CPPPATH=['..', '.', '../src'])
-bt_sound = env.StaticLibrary('bt_sound', 
-	['al_ex.cpp', 'mixer.cpp', 'ogg_ex.cpp', 'ogg_stream.cpp', 'sample.cpp']
-	)
-

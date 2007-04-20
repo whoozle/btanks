@@ -33,7 +33,7 @@ class OggStream;
 class Sample;
 class Object;
 
-class IMixer {
+class BTANKSAPI IMixer {
 public:
 	DECLARE_SINGLETON(IMixer);
 	void init(const bool no_sound, const bool no_music);
@@ -78,6 +78,6 @@ private:
 	const IMixer& operator=(const IMixer &);
 };
 
-SINGLETON(, Mixer, IMixer);
+SINGLETON(BTANKSAPI, Mixer, IMixer);
 
 #endif
