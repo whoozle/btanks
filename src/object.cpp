@@ -65,7 +65,7 @@ Object::Object(const std::string &classname) :
 	 	_blinking.set(ibi);
 	 }
 
-Object::~Object() { delete _fadeout_surface; }
+Object::~Object() { Mixer->cancelAll(this); delete _fadeout_surface; }
 
 void Object::init(const Animation *a) {
 	_animation = a;
