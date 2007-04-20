@@ -56,7 +56,8 @@ public:
 
 	virtual Object * clone() const;
 	
-	void playSound(const std::string &name, const bool loop = false);
+	void playSound(const std::string &name, const bool loop);
+	void playRandomSound(const std::string &classname, const bool loop);
 
 	virtual void setDirection(const int dir);
 	const int getDirection() const;

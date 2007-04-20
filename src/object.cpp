@@ -284,6 +284,10 @@ void Object::playSound(const std::string &name, const bool loop) {
 	Mixer->playSample(this, name + ".ogg", loop);
 }
 
+void Object::playRandomSound(const std::string &classname, const bool loop) {
+	Mixer->playRandomSample(this, classname, loop);
+}
+
 
 const bool Object::getRenderRect(sdlx::Rect &src) const {
 	if (_events.empty()) {
