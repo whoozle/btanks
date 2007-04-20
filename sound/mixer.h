@@ -45,7 +45,7 @@ public:
 	//sample part
 	void setListener(const v3<float> &pos, const v3<float> &vel);
 	
-	void loadSample(const std::string &filename);
+	void loadSample(const std::string &filename, const std::string &classname = std::string());
 	void playSample(const Object *o, const std::string &name, const bool loop);
 	void cancelSample(const Object *o, const std::string &name);
 	void cancelAll(const Object *o);

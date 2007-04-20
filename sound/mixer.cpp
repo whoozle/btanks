@@ -161,7 +161,7 @@ void IMixer::play() {
 	i->second = true;
 }
 
-void IMixer::loadSample(const std::string &filename) {
+void IMixer::loadSample(const std::string &filename, const std::string &classname) {
 	if (_nosound) 
 		return;
 	LOG_DEBUG(("loading sample %s", filename.c_str()));
