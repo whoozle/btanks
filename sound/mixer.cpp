@@ -322,8 +322,8 @@ void IMixer::tick(const float dt) {
 		ALfloat al_pos[] = { pos.x / k, -pos.y / k, 0*o->getZ() / k };
 		ALfloat al_vel[] = { vel.x / k, -vel.y / k, 0 };
 	
-		alSourcefv(j->second, AL_POSITION, al_pos);
-		alSourcefv(j->second, AL_VELOCITY, al_vel);
+		alSourcefv(source, AL_POSITION, al_pos);
+		alSourcefv(source, AL_VELOCITY, al_vel);
 		++j;
 	} CATCH("updateObjects", {++j; continue;})
 	}
