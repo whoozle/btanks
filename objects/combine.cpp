@@ -79,14 +79,14 @@ void Combine::calculate(const float dt) {
 		v2<float> waypoint;
 		_velocity.clear();
 		if (_waypoint_name.empty()) {
-			_waypoint_name = getNearestWaypoint("combines");
+			_waypoint_name = getNearestWaypoint(registered_name + "s");
 			assert(!_waypoint_name.empty());
-			Game->getWaypoint(waypoint, "combines", _waypoint_name);
+			Game->getWaypoint(waypoint, registered_name + "s", _waypoint_name);
 			//LOG_DEBUG(("%s[%d] moving to nearest waypoint at %g %g", animation.c_str(), getID(), waypoint.x, waypoint.y));
 		} else {
 			//LOG_DEBUG(("%s[%d] reached waypoint '%s'", animation.c_str(), getID(), _waypoint_name.c_str()));
-			_waypoint_name = Game->getRandomWaypoint("combines", _waypoint_name);
-			Game->getWaypoint(waypoint, "combines", _waypoint_name);
+			_waypoint_name = Game->getRandomWaypoint(registered_name + "s", _waypoint_name);
+			Game->getWaypoint(waypoint, registered_name + "s", _waypoint_name);
 			//LOG_DEBUG(("%s[%d] moving to next waypoint '%s' at %g %g", animation.c_str(), getID(), _waypoint_name.c_str(), waypoint.x, waypoint.y));
 		}
 		GET_CONFIG_VALUE("objects.combine.pathfinding-step", int, pfs, 16);
