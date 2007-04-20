@@ -55,6 +55,8 @@ public:
 	void init(const std::string &animation); //do not use it, needed for resman
 
 	virtual Object * clone() const;
+	
+	void playSound(const std::string &name, const bool loop = false);
 
 	virtual void setDirection(const int dir);
 	const int getDirection() const;

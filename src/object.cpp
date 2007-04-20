@@ -280,6 +280,11 @@ void Object::tick(const float dt) {
 	} 
 }
 
+void Object::playSound(const std::string &name, const bool loop) {
+	Mixer->playSample(this, name + ".ogg", loop);
+}
+
+
 const bool Object::getRenderRect(sdlx::Rect &src) const {
 	if (_events.empty()) {
 		if (!isDead())
