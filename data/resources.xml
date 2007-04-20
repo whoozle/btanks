@@ -302,6 +302,10 @@
 	<sound file="boomerang-missile.ogg" />
 	<sound file="guided-missile.ogg" class="missile" />
 	<sound file="dumb-missile.ogg" class="missile" />
+	
+	<sound file="building-explosion1.ogg" class="building-explosion" />
+	<sound file="building-explosion2.ogg" class="building-explosion" />
+	<sound file="building-explosion3.ogg" class="building-explosion" />
 
 	<animation id="damage-digits" tile="../font/digits.png" model="single-tile" tile_width="10" tile_height="16" />
 
