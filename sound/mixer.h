@@ -25,6 +25,7 @@
 #include <set>
 #include <AL/al.h>
 #include <math/v3.h>
+#include "alarm.h"
 
 namespace mrt{
 class Chunk;
@@ -53,7 +54,7 @@ public:
 	void cancelAll(const Object *o);
 	void cancelAll();
 	
-	void updateObjects();
+	void tick(const float dt);
 	
 	void setFXVolume(const float volume);
 	void setMusicVolume(const float volume);
@@ -62,6 +63,7 @@ public:
 	~IMixer();
 private: 
 	bool _nosound, _nomusic;
+	Alarm _update_objects;
 	
 	typedef std::map<const std::string, Sample *> Sounds;
 	Sounds _sounds;

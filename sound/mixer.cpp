@@ -39,7 +39,7 @@
 
 IMPLEMENT_SINGLETON(Mixer, IMixer);
 
-IMixer::IMixer() : _nosound(true), _nomusic(true), _ogg(NULL), 
+IMixer::IMixer() : _nosound(true), _nomusic(true), _update_objects(true), _ogg(NULL), 
 	_volume_fx(1.0f), _volume_music(1.0f) {}
 
 void IMixer::init(const bool nosound, const bool nomusic) {
@@ -50,6 +50,9 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 
 	Config->get("engine.sound.volume.fx", _volume_fx, 1.0f);
 	Config->get("engine.sound.volume.music", _volume_music, 1.0f);
+	GET_CONFIG_VALUE("engine.sound.update-objects-interval", float, uoi, 0.1);
+	_update_objects.set(uoi);
+	
 	LOG_DEBUG(("volumes: music: %g, fx: %g", _volume_music, _volume_fx));
 	
 	delete _ogg;
@@ -95,7 +98,9 @@ void IMixer::deinit() {
 	_nomusic = true;
 }
 
-IMixer::~IMixer() {}
+IMixer::~IMixer() {
+	_nosound = _nomusic = true;
+}
 
 
 void IMixer::loadPlaylist(const std::string &file) {
@@ -220,7 +225,7 @@ void IMixer::playSample(const Object *o, const std::string &name, const bool loo
 		LOG_WARN(("sound %s was not loaded. skipped.", name.c_str()));
 		return;
 	}
-	const Sample &sample = *i->second;
+	const Sample &sample = *(i->second);
 	TRY {
 		ALuint source;
 		alGenSources(1, &source);
@@ -268,7 +273,7 @@ void IMixer::setMusicVolume(const float volume) {
 }
 
 
-void IMixer::updateObjects() {
+void IMixer::tick(const float dt) {
 	if (!_nomusic) {
 		if (_ogg != NULL && !_ogg->alive()) {
 			delete _ogg;
@@ -281,6 +286,9 @@ void IMixer::updateObjects() {
 	}
 
 	if (_nosound) 
+		return;
+		
+	if (!_update_objects.tick(dt))
 		return;
 		
 	for(Sources::iterator j = _sources.begin(); j != _sources.end();) {
@@ -302,6 +310,7 @@ void IMixer::updateObjects() {
 		}
 
 		if (o == NULL)  {
+			alSourcei (source, AL_LOOPING, AL_FALSE);
 			++j;
 			continue;
 		}
