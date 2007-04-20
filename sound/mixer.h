@@ -22,6 +22,7 @@
 #include "mrt/singleton.h"
 #include <string>
 #include <map>
+#include <set>
 #include <AL/al.h>
 #include <math/v3.h>
 
@@ -47,6 +48,7 @@ public:
 	
 	void loadSample(const std::string &filename, const std::string &classname = std::string());
 	void playSample(const Object *o, const std::string &name, const bool loop);
+	void playRandomSample(const Object *o, const std::string &classname, const bool loop);
 	void cancelSample(const Object *o, const std::string &name);
 	void cancelAll(const Object *o);
 	void cancelAll();
@@ -66,6 +68,9 @@ private:
 	
 	typedef std::multimap<const std::pair<int, std::string> , ALuint> Sources;
 	Sources _sources;
+	
+	typedef std::map<const std::string, std::set<std::string> > Classes;
+	Classes _classes;
 
 	typedef std::map<const std::string, bool> PlayList;
 	PlayList _playlist;

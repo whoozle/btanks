@@ -165,7 +165,12 @@ void IMixer::loadSample(const std::string &filename, const std::string &classnam
 	if (_nosound) 
 		return;
 	LOG_DEBUG(("loading sample %s", filename.c_str()));
+	
+	
 	if (_sounds.find(filename) != _sounds.end()) {
+		//fix classname anyway to allow one sample have multiply classes.
+		if (!classname.empty())
+			_classes[classname].insert(filename);
 		LOG_DEBUG(("already loaded, skipped."));
 		return;
 	}
@@ -180,6 +185,29 @@ void IMixer::loadSample(const std::string &filename, const std::string &classnam
 				
 		_sounds[filename] = sample;
 	} CATCH("loadSample", { delete sample; sample = NULL; });
+
+	if (!classname.empty())
+		_classes[classname].insert(filename);
+}
+
+void IMixer::playRandomSample(const Object *o, const std::string &classname, const bool loop) {
+	Classes::const_iterator i = _classes.find(classname);
+	if (i == _classes.end()) {
+		LOG_WARN(("no samples class '%s' registered", classname.c_str()));
+		return;
+	}
+	const std::set<std::string> &samples = i->second;
+	if (samples.empty()) {
+		LOG_WARN(("samples class '%s' has no samples inside. bug.", classname.c_str()));
+		return;		
+	}
+	int n = mrt::random(samples.size());
+	std::set<std::string>::const_iterator s = samples.begin();
+	while(n-- && s != samples.end())
+		++s;
+
+	assert(s != samples.end());
+	playSample(o, *s, loop);
 }
 
 void IMixer::playSample(const Object *o, const std::string &name, const bool loop) {
