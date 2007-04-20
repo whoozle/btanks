@@ -552,6 +552,7 @@
  	<alias name="impassable-static-corpse" class="static-corpse" />
  	<alias name="train-smoke" class="single-pose(once)" />
  	<alias name="bomberman-explosion" class="cannon-explosion" />
+ 	<alias name="tractor" class="combine" />
 	
 	<object class="watchtower-with-machinegunner" mass="1000" hp="20" z="200" impassability="1" />
 	<object class="watchtower-with-thrower" mass="1000" hp="20" z="200" impassability="1" />
@@ -609,6 +610,9 @@
 	<object class="choo-choo-train" speed="30" mass="5000" hp="100" z="0" />
 	<object class="choo-choo-wagon" speed="30" mass="5000" hp="100" z="0" impassability="1" />
 	<object class="train-smoke" z="101" />
+
+	<object class="combine" speed="100" mass="2000" hp="100" z="0" />
+	<object class="tractor" speed="100" mass="2000" hp="100" z="0" />
 
 	<object class="corpse" hp="-1" ttl="10" fadeout_time="1" z="-5" impassability="0" />
 	<object class="impassable-corpse" parent="corpse" impassability="1" />
