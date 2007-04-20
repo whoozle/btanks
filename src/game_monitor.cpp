@@ -158,6 +158,7 @@ void IGameMonitor::clear() {
 	_items.clear();
 	_specials.clear();
 	_check_items.reset();
+	_disabled.clear();
 }
 
 void IGameMonitor::tick(const float dt) {	
