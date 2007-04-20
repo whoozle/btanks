@@ -51,6 +51,9 @@ void Trooper::tick(const float dt) {
 }
 
 void Trooper::onSpawn() {
+	if (_variants.has("disembark")) {
+		playSound("disembark", false);
+	}
 	if (_object.empty()) {
 		//nothing to do
 	} else if (_object == "thrower-missile") {

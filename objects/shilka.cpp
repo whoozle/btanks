@@ -164,7 +164,7 @@ skip_left_toggle:
 			Config->get("objects.shilka.units-limit", n, 10); //fixme: add type restrictions
 			n += 2; //fake mod and unidentified object ;)
 			if (mod->getCount() > 0 && World->getChildren(getID()) < n) {
-				spawn(mod_type, mod_type, _direction*(size.length()/-2), v2<float>::empty);
+				spawn(mod_type + "(disembark)", mod_type, _direction*(size.length()/-2), v2<float>::empty);
 				mod->decreaseCount();
 			}
 		}
