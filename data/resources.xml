@@ -298,6 +298,7 @@
 	<!-- 
 		sound tag allows you to load sample that doesn't reside in any animation model.
 	-->
+	<sound file="respawn.ogg" />
 	<sound file="nuke-missile.ogg" />
 	<sound file="boomerang-missile.ogg" />
 	<sound file="guided-missile.ogg" class="missile" />

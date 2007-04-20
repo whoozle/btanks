@@ -438,6 +438,10 @@ void IPlayerManager::updatePlayers() {
 		LOG_DEBUG(("player in slot %d is dead. respawning. frags: %d", i, slot.frags));
 
 		slot.spawnPlayer(slot.classname, slot.animation);
+
+		if (slot.getObject()) {
+			Mixer->playSample(slot.getObject(), "respawn.ogg", false);
+		}
 		
 		if (isServer() && slot.remote) {
 			Message m(Message::Respawn);
