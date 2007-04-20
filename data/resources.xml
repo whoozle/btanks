@@ -214,7 +214,7 @@
 	</animation-model>
 	
 	<animation-model id="fire-animation" speed="7">
-		<pose id="fade-in">0,1,2,3,4</pose>
+		<pose id="fade-in" sound="fire.ogg">0,1,2,3,4</pose>
 		<pose id="burn">5,6,7,6</pose>
 		<pose id="fade-out">8,9</pose>
 	</animation-model>
@@ -294,6 +294,12 @@
 		<pose id="hold">4,5,6,5,4,6</pose>
 		<pose id="walk">0,1,2,3,2,1</pose>
 	</animation-model>
+	
+	<!-- 
+		sound tag allows you to load sample that doesn't reside in any animation model.
+	-->
+	<sound file="nuke.ogg" />
+	<sound file="boomerang.ogg" />
 
 	<animation id="damage-digits" tile="../font/digits.png" model="single-tile" tile_width="10" tile_height="16" />
 
