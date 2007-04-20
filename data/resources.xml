@@ -39,7 +39,7 @@
 
 	<animation-model id="choo-choo-train-animation" speed="10">
 		<pose id="hold">0</pose>
-		<pose id="move">0,1,2,3,4,3,2,1</pose>
+		<pose id="move" sound="train.ogg">0,1,2,3,4,3,2,1</pose>
 	</animation-model>
 
 	<animation-model id="train-smoke-animation" speed="10">
