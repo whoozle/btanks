@@ -150,7 +150,7 @@ void IGame::init(const int argc, char *argv[]) {
 			Config->set("map.machinegunner-item.respawn-interval", 20);
 			Config->set("map.thrower-item.respawn-interval", 20);		
 		}
-		if (revision < 3311) {
+		if (revision < 3323) {
 			Config->set("engine.sound.polling-interval", 1);
 			Config->set("engine.sound.positioning-divisor", 40);
 		}
