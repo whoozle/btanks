@@ -102,6 +102,7 @@ void Teleport::emit(const std::string &event, Object * emitter) {
 		emitter->setZBox(ZBox::getBoxBase(dst->getZ()));
 		dst->track = emitter->getID();
 		dst->need_sync = true;
+		dst->playSound("teleport", false);
 	} else Object::emit(event, emitter);
 }
 
