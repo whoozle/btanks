@@ -131,6 +131,14 @@ bool ScrollList::onKey(const SDL_keysym sym) {
 		//LOG_DEBUG(("up: %u", _current_item));
 		return true;
 
+	case SDLK_HOME: 
+		_current_item = 0;
+		return true;
+
+	case SDLK_END: 
+		_current_item = (int)_list.size() - 1;
+		return true;
+
 	case SDLK_PAGEDOWN:
 		_current_item += 9;
 	case SDLK_DOWN:
