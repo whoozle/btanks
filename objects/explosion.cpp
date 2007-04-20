@@ -89,6 +89,9 @@ void Explosion::tick(const float dt) {
 
 void Explosion::onSpawn() {
 	play("boom", false);
+	if (_variants.has("building")) {
+		playRandomSound("building-explosion", false);
+	}
 	if (registered_name == "nuclear-explosion") 
 		Game->shake(1, 4);
 }
