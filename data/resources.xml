@@ -298,8 +298,10 @@
 	<!-- 
 		sound tag allows you to load sample that doesn't reside in any animation model.
 	-->
-	<sound file="nuke.ogg" />
-	<sound file="boomerang.ogg" />
+	<sound file="nuke-missile.ogg" />
+	<sound file="boomerang-missile.ogg" />
+	<sound file="guided-missile.ogg" class="missile" />
+	<sound file="dumb-missile.ogg" class="missile" />
 
 	<animation id="damage-digits" tile="../font/digits.png" model="single-tile" tile_width="10" tile_height="16" />
 
