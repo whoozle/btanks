@@ -67,8 +67,8 @@ private:
 
 void Train::onSpawn() {
 	play("move", true);
-	v2<int> size = Map->getSize();
-	dst_y = size.y - 1; //fixme. :)
+	v2<int> map_size = Map->getSize();
+	dst_y = map_size.y - (int)(size.y) / 2 - 4; //fixme. :)
 	disown();
 }
 
