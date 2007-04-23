@@ -196,7 +196,7 @@ void IMixer::loadSample(const std::string &filename, const std::string &classnam
 }
 
 void IMixer::playRandomSample(const Object *o, const std::string &classname, const bool loop) {
-	if (_nosound || classnamename.empty())
+	if (_nosound || classname.empty())
 		return;
 	
 	Classes::const_iterator i = _classes.find(classname);
