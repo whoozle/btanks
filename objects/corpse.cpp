@@ -73,7 +73,7 @@ Object* Corpse::clone() const  {
 	return new Corpse(*this);
 }
 
-REGISTER_OBJECT("corpse", Corpse, (10, true));
-REGISTER_OBJECT("impassable-corpse", Corpse, (10, true));
+REGISTER_OBJECT("corpse", Corpse, (16, true));
+REGISTER_OBJECT("impassable-corpse", Corpse, (16, true));
 REGISTER_OBJECT("static-corpse", Corpse, (0, true));
-REGISTER_OBJECT("fire", Corpse, (10, false));
+REGISTER_OBJECT("fire", Corpse, (16, false));
