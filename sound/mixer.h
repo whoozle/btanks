@@ -55,6 +55,7 @@ public:
 	void cancelAll();
 	
 	void tick(const float dt);
+	void updateObject(const Object *o);
 	
 	void setFXVolume(const float volume);
 	void setMusicVolume(const float volume);

@@ -97,7 +97,11 @@ void IWorld::deleteObject(const Object *o) {
 	delete o;
 }
 
+#include "sound/mixer.h"
+//fixme: port to callbacks!
+
 void IWorld::updateObject(const Object *o) {
+	Mixer->updateObject(o);
 	if (o->impassability == 0)
 		return;
 	

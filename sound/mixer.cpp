@@ -276,6 +276,25 @@ void IMixer::setMusicVolume(const float volume) {
 }
 
 
+void IMixer::updateObject(const Object *o) {
+	v2<float> pos, vel;
+	o->getInfo(pos, vel);
+	GET_CONFIG_VALUE("engine.sound.positioning-divisor", float, k, 200.0);
+	
+	ALfloat al_pos[] = { pos.x / k, -pos.y / k, 0*o->getZ() / k };
+	ALfloat al_vel[] = { vel.x / k, -vel.y / k, 0 };
+	
+	const int id = o->getID();
+
+	for(Sources::iterator i = _sources.begin(); i != _sources.end(); ++i) {
+		if (i->first.first == id) {
+			ALuint source = i->second;
+			alSourcefv(source, AL_POSITION, al_pos);
+			alSourcefv(source, AL_VELOCITY, al_vel);
+		}
+	}
+}
+
 void IMixer::tick(const float dt) {
 	if (!_nomusic) {
 		if (_ogg != NULL && !_ogg->alive()) {
@@ -295,8 +314,6 @@ void IMixer::tick(const float dt) {
 		return;
 		
 	for(Sources::iterator j = _sources.begin(); j != _sources.end();) {
-	int last_id = -1;
-	Object *o = NULL;
 	TRY {
 		ALuint source = j->second;
 		ALenum state;
@@ -307,26 +324,6 @@ void IMixer::tick(const float dt) {
 			_sources.erase(j++);
 			continue;
 		}
-		if (j->first.first != last_id) {
-			last_id = j->first.first;
-			o = World->getObjectByID(j->first.first);
-		}
-
-		if (o == NULL)  {
-			alSourcei (source, AL_LOOPING, AL_FALSE);
-			++j;
-			continue;
-		}
-		
-		v2<float> pos, vel;
-		o->getInfo(pos, vel);
-		GET_CONFIG_VALUE("engine.sound.positioning-divisor", float, k, 200.0);
-		
-		ALfloat al_pos[] = { pos.x / k, -pos.y / k, 0*o->getZ() / k };
-		ALfloat al_vel[] = { vel.x / k, -vel.y / k, 0 };
-	
-		alSourcefv(source, AL_POSITION, al_pos);
-		alSourcefv(source, AL_VELOCITY, al_vel);
 		++j;
 	} CATCH("updateObjects", {++j; continue;})
 	}
