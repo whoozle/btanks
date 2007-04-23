@@ -314,6 +314,10 @@
 	<sound file="deadman2.ogg" class="human-death" />
 	<sound file="deadman3.ogg" class="human-death" />
 
+	<sound file="cannon1.ogg" class="cannon" />
+	<sound file="cannon2.ogg" class="cannon" />
+	<sound file="cannon3.ogg" class="cannon" />
+
 	<animation id="damage-digits" tile="../font/digits.png" model="single-tile" tile_width="10" tile_height="16" />
 
 	<animation id="spawning" tile="respawn.png" model="spawning-animation" size="128" />
