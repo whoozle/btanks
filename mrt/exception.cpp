@@ -21,6 +21,11 @@
 using namespace mrt;
 
 Exception::Exception() : _error() {}
+Exception::~Exception() throw() {}
+
+const std::string Exception::getCustomMessage() { return std::string(); }
+const char* Exception::what() const throw() { return _error.c_str(); }
+
 
 void Exception::addMessage(const char * file, const int line) {
 	char buf[256];

@@ -32,9 +32,9 @@ public:
 	Exception();
 	void addMessage(const char *file, const int line);
 	void addMessage(const std::string &msg);
-	virtual const std::string getCustomMessage() { return std::string(); }
-	virtual const char* what() const throw() { return _error.c_str(); }
-	virtual ~Exception() throw() {};
+	virtual const std::string getCustomMessage();
+	virtual const char* what() const throw();
+	virtual ~Exception() throw();
 private:
 	std::string _error;
 };

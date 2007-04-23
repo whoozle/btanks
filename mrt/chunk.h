@@ -35,9 +35,6 @@ public:
 	void free();
 	~Chunk();
 	
-	//use unlink only if you know what you're doing ;)
-	void unlink() { ptr = 0; size = 0; }
-
 	void setSize(size_t s);
 	void setData(const void *p, const size_t s);
 	void setData(void *p, const size_t s, const bool own = false);
@@ -46,9 +43,11 @@ public:
 	void append(const Chunk &other);
 	void *reserve(const int more);
 
-	inline void *getPtr() const { return ptr; }
-	inline const size_t getSize() const { return size; }
+	void *getPtr() const;
+	const size_t getSize() const;
 	
+	//use unlink only if you know what you're doing ;)
+	void unlink();
 	
 	const std::string dump() const;
 

@@ -164,3 +164,9 @@ const std::string Chunk::dump() const {
 	}
 	return result;
 }
+
+void *Chunk::getPtr() const { return ptr; }
+const size_t Chunk::getSize() const { return size; }
+
+//use unlink only if you know what you're doing ;)
+void Chunk::unlink() { ptr = 0; size = 0; }
