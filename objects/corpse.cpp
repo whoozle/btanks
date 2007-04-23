@@ -54,6 +54,10 @@ void Corpse::tick(const float dt) {
 
 void Corpse::onSpawn() {
 	//LOG_DEBUG(("single-pose: play('%s', %s)", _pose.c_str(), _repeat?"true":"false"));
+	if (_variants.has("human-death")) {
+		playRandomSound("human-death", false);
+	}
+	
 	if (_fire_cycles > 0) {
 		play("fade-in", false);
 		for(int i = 0; i < _fire_cycles; ++i)
