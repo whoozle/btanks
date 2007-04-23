@@ -256,7 +256,13 @@ void Object::tick(const float dt) {
 	
 	if (!event.played) {
 		event.played = true;
-		Mixer->playSample(this, event.sound, event.repeat);
+		if (!event.sound.empty()) {
+			if (event.sound[0] != '@') {
+				Mixer->playSample(this, event.sound, event.repeat);
+			} else {
+				Mixer->playRandomSample(this, event.sound.substr(1), event.repeat);
+			}
+		}
 	}
 	
 	_pos += dt * pose->speed;
