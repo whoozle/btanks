@@ -310,6 +310,10 @@
 	<sound file="building-explosion2.ogg" class="building-explosion" />
 	<sound file="building-explosion3.ogg" class="building-explosion" />
 
+	<sound file="deadman1.ogg" class="human-death" />
+	<sound file="deadman2.ogg" class="human-death" />
+	<sound file="deadman3.ogg" class="human-death" />
+
 	<animation id="damage-digits" tile="../font/digits.png" model="single-tile" tile_width="10" tile_height="16" />
 
 	<animation id="spawning" tile="respawn.png" model="spawning-animation" size="128" />
