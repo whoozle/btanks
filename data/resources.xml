@@ -280,7 +280,7 @@
 	
 	<animation-model id="cannon-animation" speed="5">
 		<pose id="hold">0</pose>
-		<pose id="fire">1,2,3</pose>
+		<pose id="fire" sound="@cannon">1,2,3</pose>
 		<pose id="real-fire">3</pose>
 		<pose id="after-fire">4</pose>
 	</animation-model>
