@@ -26,9 +26,11 @@ void GamepadSetup::onEvent(const SDL_Event &event) {
 			const SDL_JoyHatEvent &je = event.jhat;
 		}
 	break;
-	case SDL_JOYBUTTONDOWN:
+	case SDL_JOYBUTTONUP:
 		{
 			const SDL_JoyButtonEvent &je = event.jbutton;
+			LOG_DEBUG(("button %d up", je.button));
+			setupNextControl();
 		}
 	break;
 	
@@ -38,7 +40,20 @@ void GamepadSetup::onEvent(const SDL_Event &event) {
 }
 
 void GamepadSetup::setup() {
-	blinkControl(tButton, 0);
+	_wait = true;
+
+	_blink.reset();
+	_wait_control = tButton;
+	_control_id = 0;
+}
+
+void GamepadSetup::setupNextControl() {
+	switch(_wait_control) {
+	case tButton:
+		++_control_id;
+		if (_control_id >= 10 || _control_id >= joy.getNumButtons())
+			_wait = false;
+	}
 }
 
 void GamepadSetup::renderSetup(sdlx::Surface &surface, const int x, const int y) {
@@ -50,16 +65,7 @@ void GamepadSetup::renderSetup(sdlx::Surface &surface, const int x, const int y)
 	};
 }
 
-
-void GamepadSetup::blinkControl(const ControlType type, const int id) {
-	_wait = true;
-
-	_blink.reset();
-	_wait_control = type;
-	_control_id = id;
-}
-
-GamepadSetup::GamepadSetup(const int w, const int h) : _current_pad(NULL), _blink(0.7, true) {
+GamepadSetup::GamepadSetup(const int w, const int h) : _current_pad(NULL), _wait(false), _blink(0.7, true) {
 	int mx, my;
 
 	_gamepad_bg = ResourceManager->loadSurface("menu/gamepad.png");

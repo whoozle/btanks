@@ -51,7 +51,7 @@ private:
 
 //interactive setup part
 	void setup();
-	void blinkControl(const ControlType type, const int id);
+	void setupNextControl();
 
 	bool _wait;
 	Alarm _blink;
