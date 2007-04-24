@@ -3,6 +3,7 @@
 
 #include "container.h"
 #include "box.h"
+#include "alarm.h"
 #include "math/v2.h"
 #include "sdlx/joystick.h"
 
@@ -25,6 +26,7 @@ public:
 	virtual void getSize(int &w, int &h) const;
 
 private: 
+	virtual void renderSetup(sdlx::Surface &surface, const int x, const int y);
 	virtual bool onKey(const SDL_keysym sym);
 	virtual bool onMouse(const int button, const bool pressed, const int x, const int y);
 	virtual void onEvent(const SDL_Event &event);
@@ -34,6 +36,10 @@ private:
 	void renderButton(sdlx::Surface &surface, const int b, const int x, const int y);
 	void renderMinistick(sdlx::Surface &surface, const int ai, const int x, const int y, const bool swap = false);
 
+	enum ControlType {
+		tButton = 1, tAxis = 2, tHat = 3
+	};
+	
 	Box _background; 
 	Chooser *_current_pad;
 	Button *_setup, *_back;
@@ -42,6 +48,15 @@ private:
 	std::string _profile;
 	
 	sdlx::Joystick joy;
+
+//interactive setup part
+	void setup();
+	void blinkControl(const ControlType type, const int id);
+
+	bool _wait;
+	Alarm _blink;
+	ControlType _wait_control, _got_control;
+	int _control_id;
 };
 
 #endif

@@ -12,6 +12,9 @@
 #include "game.h"
 
 void GamepadSetup::onEvent(const SDL_Event &event) {
+	if (!_wait)
+		return;
+	
 	switch(event.type) {
 	case SDL_JOYAXISMOTION: 
 		{
@@ -34,7 +37,29 @@ void GamepadSetup::onEvent(const SDL_Event &event) {
 	}
 }
 
-GamepadSetup::GamepadSetup(const int w, const int h) : _current_pad(NULL) {
+void GamepadSetup::setup() {
+	blinkControl(tButton, 0);
+}
+
+void GamepadSetup::renderSetup(sdlx::Surface &surface, const int x, const int y) {
+	switch(_wait_control) {
+	case tButton: 
+		if (_blink.get() < 0.5f)
+			renderButton(surface, _control_id, x, y);
+		break;
+	};
+}
+
+
+void GamepadSetup::blinkControl(const ControlType type, const int id) {
+	_wait = true;
+
+	_blink.reset();
+	_wait_control = type;
+	_control_id = id;
+}
+
+GamepadSetup::GamepadSetup(const int w, const int h) : _current_pad(NULL), _blink(0.7, true) {
 	int mx, my;
 
 	_gamepad_bg = ResourceManager->loadSurface("menu/gamepad.png");
@@ -103,6 +128,9 @@ void GamepadSetup::renderButton(sdlx::Surface &surface, const int b, const int x
 
 
 void GamepadSetup::tick(const float dt) {
+	if (_wait)
+		_blink.tick(dt);
+	
 	if (_current_pad->changed()) {
 		_current_pad->reset();
 		int i = _current_pad->get();
@@ -110,7 +138,7 @@ void GamepadSetup::tick(const float dt) {
 	}
 	if (_setup->changed()) {
 		_setup->reset();
-		LOG_DEBUG(("reset clicked"));
+		setup();
 	}
 	if (_back->changed()) {
 		_back->reset();
@@ -166,6 +194,11 @@ void GamepadSetup::render(sdlx::Surface &surface, const int x, const int y) {
 	_background.getMargins(mx, my);
 	surface.copyFrom(*_gamepad_bg, x + _gamepad_bg_pos.x, y + _gamepad_bg_pos.y);
 	Container::render(surface, x, y);
+	
+	if (_wait) {
+		renderSetup(surface, x, y);
+		return;
+	}
 
 	SDL_JoystickUpdate();
 	
