@@ -659,7 +659,8 @@ void IGame::run() {
 			break;
     		}
 		}
-
+		
+		event_signal.emit(event);
 		
 		const float dt = 1.0/fr;
 		

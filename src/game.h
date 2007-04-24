@@ -67,6 +67,7 @@ public:
 	DECLARE_SINGLETON(IGame);
 
 	//signals
+	sigc::signal1<void, const SDL_Event& > event_signal;
 	sigc::signal1<bool, const SDL_keysym, marshaller> key_signal;
 	sigc::signal4<bool, const int, const bool, const int, const int, marshaller> mouse_signal;
 	sigc::signal5<bool, const int, const int, const int, const int, const int, marshaller> mouse_motion_signal;
