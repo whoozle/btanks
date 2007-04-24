@@ -554,7 +554,6 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects, const boo
 
 void IGame::run() {
 	LOG_DEBUG(("entering main loop"));
-	SDL_Event event;
 
 	sdlx::Rect window_size = _window.getSize();
 	
@@ -564,6 +563,8 @@ void IGame::run() {
 	int max_delay = 1000000 / fps_limit;
 	LOG_DEBUG(("fps_limit set to %d, maximum frame delay: %d", fps_limit, max_delay));
 
+	{
+	SDL_Event event;
 	while (_running) {
 		_timer.reset();
 		
@@ -661,6 +662,7 @@ void IGame::run() {
 			break;
     		}
 		}
+		} //hiding event
 		
 		const float dt = 1.0/fr;
 		
