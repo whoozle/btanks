@@ -24,7 +24,7 @@
 #include "player_manager.h"
 #include "config.h"
 #include "i18n.h"
-#include "tooltip.h"
+#include "menu/tooltip.h"
 #include "object.h"
 //#include "game.h"
 #include <set>

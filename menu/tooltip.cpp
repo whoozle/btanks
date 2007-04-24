@@ -132,7 +132,7 @@ void Tooltip::render(sdlx::Surface &surface, const int x, const int y) {
 	surface.copyFrom(_surface, x, y);
 }
 
-void Tooltip::getSize(int &w, int &h) {
+void Tooltip::getSize(int &w, int &h) const {
 	w = _surface.getWidth();
 	h = _surface.getHeight();
 }

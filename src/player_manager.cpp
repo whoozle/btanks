@@ -28,7 +28,7 @@
 #include "game.h"
 #include "game_monitor.h"
 #include "special_zone.h"
-#include "tooltip.h"
+#include "menu/tooltip.h"
 
 #include "controls/control_method.h"
 

@@ -21,13 +21,14 @@
 
 #include "sdlx/surface.h"
 #include <vector>
-#include "menu/box.h"
+#include "box.h"
+#include "control.h"
 
-class Tooltip {
+class Tooltip : public Control {
 public: 
 	Tooltip(const std::string &text, const bool use_background, const int w = 0);
 	void render(sdlx::Surface &surface, const int x, const int y);
-	void getSize(int &w, int &h);
+	void getSize(int &w, int &h) const;
 	const float getReadingTime() const { return _time; }
 
 private: 

@@ -19,7 +19,7 @@
 #include "player_slot.h"
 #include "world.h"
 #include "controls/control_method.h"
-#include "tooltip.h"
+#include "menu/tooltip.h"
 #include "tmx/map.h"
 
 PlayerSlot::PlayerSlot() : 
