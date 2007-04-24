@@ -1,6 +1,7 @@
 #include "gamepad_setup.h"
 #include "resource_manager.h"
 #include "chooser.h"
+#include "tooltip.h"
 
 #include "math/binary.h"
 
@@ -34,6 +35,9 @@ GamepadSetup::GamepadSetup(const int w, const int h) : _current_pad(NULL) {
 	_current_pad->getSize(sw, sh);
 	_gamepad_bg_pos = v2<int>(mx, my + sh + 10);
 	add((w - sw - mx * 2) / 2, my, _current_pad);
+	Tooltip * t = new Tooltip(I18n->get("menu", "test-gamepad"), false, w - 2 * mx - _gamepad_bg->getHeight() - 60);
+	t->getSize(sw, sh);
+	add(w - mx - sw, _gamepad_bg_pos.y, t);
 }
 
 void GamepadSetup::renderIcon(sdlx::Surface &surface, const int idx, const int x, const int y) {
