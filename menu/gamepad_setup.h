@@ -34,7 +34,7 @@ private:
 
 	Box _background; 
 	Chooser *_current_pad;
-	Button *_setup;
+	Button *_setup, *_back;
 	const sdlx::Surface *_gamepad_bg, *_gamepad_buttons, *_gamepad_ministick;
 	v2<int> _gamepad_bg_pos;
 	std::string _profile;

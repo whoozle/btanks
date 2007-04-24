@@ -42,8 +42,15 @@ GamepadSetup::GamepadSetup(const int w, const int h) : _current_pad(NULL) {
 	
 	_setup = new Button("medium_dark", I18n->get("menu", "setup-gamepad"));
 	int bw, bh;
+	int yp =  _gamepad_bg_pos.y + sh + 16;
 	_setup->getSize(bw, bh);
-	add(w - mx - sw / 2 - bw / 2, _gamepad_bg_pos.y + sh + 10 + bh / 2, _setup);
+	add(w - mx - sw / 2 - bw / 2, yp, _setup);
+	yp += bh + 16;
+
+	_back = new Button("medium_dark", I18n->get("menu", "back"));
+	_back->getSize(bw, bh);
+	add(w - mx - sw / 2 - bw / 2, yp, _back);
+	yp += bh;
 }
 
 void GamepadSetup::renderIcon(sdlx::Surface &surface, const int idx, const int x, const int y) {
@@ -78,6 +85,10 @@ void GamepadSetup::tick(const float dt) {
 	if (_setup->changed()) {
 		_setup->reset();
 		LOG_DEBUG(("reset clicked"));
+	}
+	if (_back->changed()) {
+		_back->reset();
+		hide();
 	}
 	Container::tick(dt);
 }
