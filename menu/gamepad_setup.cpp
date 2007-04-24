@@ -140,12 +140,12 @@ void GamepadSetup::render(sdlx::Surface &surface, const int x, const int y) {
 	}
 
 	if (axes >= ((hats)?4:6)) {
-		renderMinistick(surface, 0, x, y);
 #ifdef WIN32
-		renderMinistick(surface, 2, x, y, true);
+		renderMinistick(surface, 0, x, y);
 #else
-		renderMinistick(surface, 2, x, y);
+		renderMinistick(surface, 0, x, y, true);
 #endif
+		renderMinistick(surface, 2, x, y, true);
 	}
 
 	int n = math::min(joy.getNumButtons(), 10);
