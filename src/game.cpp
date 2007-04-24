@@ -568,6 +568,8 @@ void IGame::run() {
 		_timer.reset();
 		
 		while (SDL_PollEvent(&event)) {
+			event_signal.emit(event);
+		
 			switch(event.type) {
 			case SDL_KEYUP:
 				if (event.key.keysym.sym == SDLK_TAB) {
@@ -659,8 +661,6 @@ void IGame::run() {
 			break;
     		}
 		}
-		
-		event_signal.emit(event);
 		
 		const float dt = 1.0/fr;
 		
