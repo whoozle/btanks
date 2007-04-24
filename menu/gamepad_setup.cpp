@@ -2,6 +2,7 @@
 #include "resource_manager.h"
 #include "chooser.h"
 #include "tooltip.h"
+#include "button.h"
 
 #include "math/binary.h"
 
@@ -38,6 +39,11 @@ GamepadSetup::GamepadSetup(const int w, const int h) : _current_pad(NULL) {
 	Tooltip * t = new Tooltip(I18n->get("menu", "test-gamepad"), false, w - 2 * mx - _gamepad_bg->getHeight() - 60);
 	t->getSize(sw, sh);
 	add(w - mx - sw, _gamepad_bg_pos.y, t);
+	
+	_setup = new Button("medium_dark", I18n->get("menu", "setup-gamepad"));
+	int bw, bh;
+	_setup->getSize(bw, bh);
+	add(w - mx - sw / 2 - bw / 2, _gamepad_bg_pos.y + sh + 10 + bh / 2, _setup);
 }
 
 void GamepadSetup::renderIcon(sdlx::Surface &surface, const int idx, const int x, const int y) {
@@ -68,6 +74,10 @@ void GamepadSetup::tick(const float dt) {
 		_current_pad->reset();
 		int i = _current_pad->get();
 		load(sdlx::Joystick::getName(i));
+	}
+	if (_setup->changed()) {
+		_setup->reset();
+		LOG_DEBUG(("reset clicked"));
 	}
 	Container::tick(dt);
 }

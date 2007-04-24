@@ -10,6 +10,8 @@ namespace sdlx {
 	class Surface;
 }
 class Chooser;
+class Button;
+
 class GamepadSetup : public Container {
 public: 
 	GamepadSetup(const int w, const int h);
@@ -32,6 +34,7 @@ private:
 
 	Box _background; 
 	Chooser *_current_pad;
+	Button *_setup;
 	const sdlx::Surface *_gamepad_bg, *_gamepad_buttons, *_gamepad_ministick;
 	v2<int> _gamepad_bg_pos;
 	std::string _profile;
