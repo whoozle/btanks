@@ -9,6 +9,22 @@
 #include "sdlx/surface.h"
 #include "sdlx/joystick.h"
 #include "i18n.h"
+#include "game.h"
+
+void GamepadSetup::onEvent(const SDL_Event &event) {
+	switch(event.type) {
+	case SDL_JOYAXISMOTION: 
+	break;
+	case SDL_JOYHATMOTION:
+	break;
+	case SDL_JOYBUTTONDOWN:
+	//LOG_DEBUG(("event"));
+	break;
+	
+	default: 
+		return;
+	}
+}
 
 GamepadSetup::GamepadSetup(const int w, const int h) : _current_pad(NULL) {
 	int mx, my;
@@ -51,6 +67,8 @@ GamepadSetup::GamepadSetup(const int w, const int h) : _current_pad(NULL) {
 	_back->getSize(bw, bh);
 	add(w - mx - sw / 2 - bw / 2, yp, _back);
 	yp += bh;
+	
+	Game->event_signal.connect(sigc::mem_fun(this, &GamepadSetup::onEvent));
 }
 
 void GamepadSetup::renderIcon(sdlx::Surface &surface, const int idx, const int x, const int y) {

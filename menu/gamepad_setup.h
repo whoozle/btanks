@@ -23,10 +23,12 @@ public:
 
 	virtual void render(sdlx::Surface &surface, const int x, const int y);
 	virtual void getSize(int &w, int &h) const;
-	virtual bool onKey(const SDL_keysym sym);
-	virtual bool onMouse(const int button, const bool pressed, const int x, const int y);
 
 private: 
+	virtual bool onKey(const SDL_keysym sym);
+	virtual bool onMouse(const int button, const bool pressed, const int x, const int y);
+	virtual void onEvent(const SDL_Event &event);
+
 	void renderIcon(sdlx::Surface &surface, const int idx, const int x, const int y);
 	void renderDPad(sdlx::Surface &surface, const bool left, const bool right, const bool up, const bool down, const int x, const int y);
 	void renderButton(sdlx::Surface &surface, const int b, const int x, const int y);
