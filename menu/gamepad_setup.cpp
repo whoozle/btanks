@@ -14,11 +14,19 @@
 void GamepadSetup::onEvent(const SDL_Event &event) {
 	switch(event.type) {
 	case SDL_JOYAXISMOTION: 
+		{
+			const SDL_JoyAxisEvent &je = event.jaxis;
+		}
 	break;
 	case SDL_JOYHATMOTION:
+		{
+			const SDL_JoyHatEvent &je = event.jhat;
+		}
 	break;
 	case SDL_JOYBUTTONDOWN:
-	//LOG_DEBUG(("event"));
+		{
+			const SDL_JoyButtonEvent &je = event.jbutton;
+		}
 	break;
 	
 	default: 
