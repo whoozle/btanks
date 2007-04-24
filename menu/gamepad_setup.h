@@ -7,6 +7,8 @@
 #include "math/v2.h"
 #include "sdlx/joystick.h"
 
+#include <map>
+
 namespace sdlx {
 	class Surface;
 }
@@ -57,6 +59,7 @@ private:
 	Alarm _blink;
 	ControlType _wait_control, _got_control;
 	int _control_id;
+	std::map<const int, int> _button_bindings;
 };
 
 #endif

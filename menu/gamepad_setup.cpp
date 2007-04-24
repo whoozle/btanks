@@ -26,10 +26,14 @@ void GamepadSetup::onEvent(const SDL_Event &event) {
 			const SDL_JoyHatEvent &je = event.jhat;
 		}
 	break;
-	case SDL_JOYBUTTONUP:
+	case SDL_JOYBUTTONDOWN:
 		{
 			const SDL_JoyButtonEvent &je = event.jbutton;
-			LOG_DEBUG(("button %d up", je.button));
+			if (_button_bindings.find(je.button) != _button_bindings.end()) 
+				break;
+			
+			_button_bindings[je.button] = _control_id;
+			LOG_DEBUG(("button %d -> %d", je.button, _control_id));
 			setupNextControl();
 		}
 	break;
@@ -252,6 +256,11 @@ void GamepadSetup::getSize(int &w, int &h) const {
 }
 
 bool GamepadSetup::onKey(const SDL_keysym sym) {
+	if (_wait && sym.sym == SDLK_ESCAPE) {
+		setupNextControl();
+		return true;
+	}
+	
 	switch(sym.sym) {
 
 	case SDLK_RETURN:
