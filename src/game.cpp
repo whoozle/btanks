@@ -614,7 +614,7 @@ void IGame::run() {
 
 					sdlx::Rect viewport(0, 0, msize.x, msize.y);
 					World->render(screenshot, viewport, viewport);
-					screenshot.saveBMP("map.bmp"); //hopefully we're done here.
+					screenshot.saveBMP("map.bmp");
 					break;
 				}
 				if (event.key.keysym.sym == SDLK_m && !_main_menu->isActive()) {
