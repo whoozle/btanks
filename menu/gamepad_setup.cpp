@@ -14,6 +14,12 @@
 #include "game.h"
 #include "config.h"
 
+void GamepadSetup::save() {
+	_bindings.save();
+	joy.close();
+	hide();
+}
+
 void GamepadSetup::onEvent(const SDL_Event &event) {
 	if (!_wait)
 		return;
@@ -22,6 +28,8 @@ void GamepadSetup::onEvent(const SDL_Event &event) {
 	case SDL_JOYAXISMOTION: 
 		{
 			const SDL_JoyAxisEvent &je = event.jaxis;
+			if (_bindings.has(tAxis, je.axis))
+				break;
 			int v = math::abs(je.value);
 			if (v < 3276) 
 				v = 0;
@@ -31,7 +39,7 @@ void GamepadSetup::onEvent(const SDL_Event &event) {
 			if (v > v0) 
 				v0 = v;
 
-			//LOG_DEBUG(("value = %d", v));
+			//LOG_DEBUG(("axis %d, value = %d", je.axis, v));
 			int axis = -1;
 			int max = 0;
 			
@@ -46,7 +54,7 @@ void GamepadSetup::onEvent(const SDL_Event &event) {
 
 				LOG_DEBUG(("axis %d -> %d", je.axis, _control_id));
 
-				_bindings.insert(Bindings::value_type(Bindings::key_type(tAxis, je.axis), _control_id));
+				_bindings.set(tAxis, je.axis, _control_id);
 				setupNextControl();
 			}
 		}
@@ -55,17 +63,17 @@ void GamepadSetup::onEvent(const SDL_Event &event) {
 		{
 			const SDL_JoyHatEvent &je = event.jhat;
 			LOG_DEBUG(("hat id = %d", je.hat));
-			_bindings.insert(Bindings::value_type(Bindings::key_type(tHat, je.hat), _control_id));
+			_bindings.set(tHat, je.hat, _control_id);
 			setupNextControl();
 		}
 	break;
 	case SDL_JOYBUTTONDOWN:
 		{
 			const SDL_JoyButtonEvent &je = event.jbutton;
-			if (_bindings.find(Bindings::key_type(tButton, je.button)) != _bindings.end()) 
+			if (_bindings.has(tButton, je.button)) 
 				break;
 			
-			_bindings.insert(Bindings::value_type(Bindings::key_type(tButton, je.button), _control_id));
+			_bindings.set(tButton, je.button, _control_id);
 			LOG_DEBUG(("button %d -> %d", je.button, _control_id));
 
 			setupNextControl();
@@ -258,7 +266,7 @@ void GamepadSetup::tick(const float dt) {
 	}
 	if (_back->changed()) {
 		_back->reset();
-		hide();
+		save();
 	}
 	Container::tick(dt);
 }
@@ -266,15 +274,13 @@ void GamepadSetup::tick(const float dt) {
 void GamepadSetup::load(const std::string &profile) {
 	LOG_DEBUG(("loading profile '%s'", profile.c_str()));
 	_profile = profile;	
+	reload();
+	_bindings.load(profile, joy.getNumButtons(), joy.getNumAxes(), joy.getNumHats());
 }
 
 void GamepadSetup::reload() {
 	joy.close();
 	joy.open(_current_pad?_current_pad->get():0);
-}
-
-void GamepadSetup::save() {
-	joy.close();
 }
 
 void GamepadSetup::renderDPad(sdlx::Surface &surface, const bool left, const bool right, const bool up, const bool down, const int x, const int y) {
@@ -370,8 +376,8 @@ bool GamepadSetup::onKey(const SDL_keysym sym) {
 
 	case SDLK_RETURN:
 	case SDLK_ESCAPE: 
-		hide();
 		save();
+		hide();
 		return true;
 
 	default: 

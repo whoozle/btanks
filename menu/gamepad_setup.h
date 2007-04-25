@@ -6,6 +6,7 @@
 #include "alarm.h"
 #include "math/v2.h"
 #include "sdlx/joystick.h"
+#include "controls/joy_bindings.h"
 
 #include <map>
 
@@ -38,10 +39,6 @@ private:
 	void renderButton(sdlx::Surface &surface, const int b, const int x, const int y);
 	void renderMinistick(sdlx::Surface &surface, const int ai, const int x, const int y);
 
-	enum ControlType {
-		tButton = 1, tAxis = 2, tHat = 3
-	};
-	
 	Box _background; 
 	Chooser *_current_pad;
 	Button *_setup, *_back;
@@ -57,12 +54,11 @@ private:
 
 	bool _wait;
 	Alarm _blink;
-	ControlType _wait_control, _got_control;
+	JoyControlType _wait_control, _got_control;
 	int _control_id;
 
-	typedef std::map<const std::pair<ControlType, int> , int> Bindings;
 	Bindings _bindings;
-	
+
 	std::map<const int, int> _axes;
 	int _axis_value;
 };
