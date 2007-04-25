@@ -145,9 +145,11 @@ void GamepadSetup::renderSetup(sdlx::Surface &surface, const int x, const int y)
 		if (_blink.get() < 0.5f)
 			renderButton(surface, _control_id, x, y);
 		break;
-	case tHat: 
-		if (_blink.get() < 0.5f)
-			renderDPad(surface, true, true, true, true, x, y);
+	case tHat: {
+			bool b[4] = {false, false, false, false };
+			b[(int)(_blink.get() * 3.99)] = true;
+			renderDPad(surface, b[0], b[2], b[3], b[1], x, y);
+		}
 		break;
 	case tAxis: {
 			if (_control_id >= 4) {
@@ -155,7 +157,6 @@ void GamepadSetup::renderSetup(sdlx::Surface &surface, const int x, const int y)
 				const bool horizontal = _control_id == 4;
 				const bool flash = _blink.get() < 0.5f;
 				renderDPad(surface, horizontal && flash, horizontal && !flash, !horizontal && flash, !horizontal && !flash, x, y);
-				
 				break;
 			}
 			bool f_ax = (_control_id % 2) == 0;
