@@ -47,6 +47,15 @@ void Bindings::save() {
 	}
 }
 
+const int Bindings::get(const JoyControlType type, const int virt_id) const {
+	for(BaseBindings::const_iterator i = _bindings.begin(); i != _bindings.end(); ++i) {
+		if (i->first.first == type && i->second == virt_id)
+			return i->first.second;
+	}
+	return virt_id;
+}
+
+
 void Bindings::set(const JoyControlType type, const int hard_id, const int virt_id) {
 	if (hard_id == virt_id)
 		return;

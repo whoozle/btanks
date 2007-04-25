@@ -16,6 +16,7 @@ public:
 	void clear();
 	
 	void set(const JoyControlType type, const int hard_id, const int virt_id);
+	const int get(const JoyControlType type, const int virt_id) const;
 	const bool has(const JoyControlType type, const int hard_id) const;
 
 private: 
