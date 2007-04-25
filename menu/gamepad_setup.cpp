@@ -87,6 +87,7 @@ void GamepadSetup::onEvent(const SDL_Event &event) {
 
 void GamepadSetup::setup() {
 	_wait = true;
+	_bindings.clear();
 
 	_blink.reset();
 	_wait_control = tButton;
