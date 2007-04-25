@@ -21,15 +21,16 @@
 
 #include "control_method.h"
 #include "sdlx/joystick.h"
+#include "joy_bindings.h"
 
 class JoyPlayer :public ControlMethod {
 public:
-	JoyPlayer(const int idx, const int fire, const int alt_fire, const int leave, const int hint_control, const int fire2, const int alt_fire2);
+	JoyPlayer(const int idx);
 	virtual void updateState(PlayerSlot &slot, PlayerState &state);
 	
 private:
 	sdlx::Joystick _joy;
-	int _fire, _alt_fire, leave, _hint_control, _fire2, _alt_fire2;
+	Bindings _bindings;
 };
 
 #endif
