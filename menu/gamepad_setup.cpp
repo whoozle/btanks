@@ -301,8 +301,6 @@ void GamepadSetup::renderDPad(sdlx::Surface &surface, const bool left, const boo
 
 void GamepadSetup::renderMinistick(sdlx::Surface &surface, const int ai, const int x, const int y) {
 	const int r = 16;
-	//const int xa = joy.getAxis(ai + (swap?0:1)) * r / 32767;
-	//const int ya = joy.getAxis(ai + (swap?1:0)) * r / 32767;
 	const int xa = x * r / 32767;
 	const int ya = y * r / 32767;
 
@@ -333,26 +331,26 @@ void GamepadSetup::render(sdlx::Surface &surface, const int x, const int y) {
 	
 	if (hats) {
 		//assume first hat as D-PAD
-		int hat = joy.getHat(0);
+		int hat = joy.getHat(_bindings.get(tHat, 0));
 		renderDPad(surface, hat & SDL_HAT_LEFT, hat & SDL_HAT_RIGHT, hat & SDL_HAT_UP, hat & SDL_HAT_DOWN, x, y);
 	} else {
 		if (axes >= 6 || axes == 2) {
 			//no hats. axe 4,5 - DPAD
 			int base = (axes == 2)?0:4;
-			int xa = joy.getAxis(base), ya = joy.getAxis(base + 1);
+			int xa = joy.getAxis(_bindings.get(tAxis, base)), ya = joy.getAxis(_bindings.get(tAxis, base + 1));
 			static const int threshold = 3276;
 			renderDPad(surface, xa < -threshold, xa > threshold, ya < -threshold, ya > threshold, x, y);
 		}
 	}
 
 	if (axes >= ((hats)?4:6)) {
-		renderMinistick(surface, 0, joy.getAxis(0), joy.getAxis(1));
-		renderMinistick(surface, 2, joy.getAxis(2), joy.getAxis(3));
+		renderMinistick(surface, 0, joy.getAxis(_bindings.get(tAxis, 0)), joy.getAxis(_bindings.get(tAxis, 1)));
+		renderMinistick(surface, 2, joy.getAxis(_bindings.get(tAxis, 2)), joy.getAxis(_bindings.get(tAxis, 3)));
 	}
 
 	int n = math::min(joy.getNumButtons(), 10);
 	for(int i = 0; i < n; ++i)  {
-		if (joy.getButton(i))
+		if (joy.getButton(_bindings.get(tButton, i)))
 			renderButton(surface, i, x, y);
 	}
 }
