@@ -12,6 +12,7 @@
 #include "sdlx/joystick.h"
 #include "i18n.h"
 #include "game.h"
+#include "config.h"
 
 void GamepadSetup::onEvent(const SDL_Event &event) {
 	if (!_wait)
@@ -42,7 +43,9 @@ void GamepadSetup::onEvent(const SDL_Event &event) {
 					}
 				}
 				assert(axis >= 0);
+
 				LOG_DEBUG(("axis %d -> %d", je.axis, _control_id));
+
 				_bindings.insert(Bindings::value_type(Bindings::key_type(tAxis, je.axis), _control_id));
 				setupNextControl();
 			}
@@ -52,6 +55,7 @@ void GamepadSetup::onEvent(const SDL_Event &event) {
 		{
 			const SDL_JoyHatEvent &je = event.jhat;
 			LOG_DEBUG(("hat id = %d", je.hat));
+			_bindings.insert(Bindings::value_type(Bindings::key_type(tHat, je.hat), _control_id));
 			setupNextControl();
 		}
 	break;
@@ -63,6 +67,7 @@ void GamepadSetup::onEvent(const SDL_Event &event) {
 			
 			_bindings.insert(Bindings::value_type(Bindings::key_type(tButton, je.button), _control_id));
 			LOG_DEBUG(("button %d -> %d", je.button, _control_id));
+
 			setupNextControl();
 		}
 	break;
