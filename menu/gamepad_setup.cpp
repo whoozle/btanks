@@ -24,15 +24,17 @@ void GamepadSetup::onEvent(const SDL_Event &event) {
 	case SDL_JOYHATMOTION:
 		{
 			const SDL_JoyHatEvent &je = event.jhat;
+			LOG_DEBUG(("hat id = %d", je.hat));
+			setupNextControl();
 		}
 	break;
 	case SDL_JOYBUTTONDOWN:
 		{
 			const SDL_JoyButtonEvent &je = event.jbutton;
-			if (_button_bindings.find(je.button) != _button_bindings.end()) 
+			if (_bindings.find(Bindings::key_type(tButton, je.button)) != _bindings.end()) 
 				break;
 			
-			_button_bindings[je.button] = _control_id;
+			_bindings.insert(Bindings::value_type(Bindings::key_type(tButton, je.button), _control_id));
 			LOG_DEBUG(("button %d -> %d", je.button, _control_id));
 			setupNextControl();
 		}
@@ -54,16 +56,19 @@ void GamepadSetup::setup() {
 void GamepadSetup::setupNextControl() {
 	if (!_wait) 
 		return;
+
+	int hats = joy.getNumHats();
+	int axes = joy.getNumAxes();
 	
+	++_control_id;
 	switch(_wait_control) {
 	case tButton:
-		++_control_id;
 		if (_control_id >= 10 || _control_id >= joy.getNumButtons()) {
-			if (joy.getNumAxes()) {
+			if (axes) {
 				_wait_control = tAxis;
 				_control_id = 0;
 				break;
-			} else if (joy.getNumHats()) {
+			} else if (hats) {
 				_wait_control = tHat;
 				_control_id = 0;
 				break;
@@ -72,9 +77,8 @@ void GamepadSetup::setupNextControl() {
 	break;
 
 	case tAxis: 
-		++_control_id;
-		if (_control_id >= 6 || _control_id >= joy.getNumAxes()) {
-			if (joy.getNumHats()) {
+		if (_control_id >= (hats?4:6) || _control_id >= axes) {
+			if (hats) {
 				_wait_control = tHat;
 				_control_id = 0;
 				break;
@@ -83,8 +87,7 @@ void GamepadSetup::setupNextControl() {
 	break;
 	
 	case tHat: 
-		++_control_id;
-		if (_control_id >= 1 || _control_id >= joy.getNumHats()) 
+		if (_control_id >= 1 || _control_id >= hats) 
 			_wait = false;
 	break;
 	}
@@ -106,11 +109,31 @@ void GamepadSetup::setupNextControl() {
 	}
 }
 
+#include "math/unary.h"
+
 void GamepadSetup::renderSetup(sdlx::Surface &surface, const int x, const int y) {
 	switch(_wait_control) {
 	case tButton: 
 		if (_blink.get() < 0.5f)
 			renderButton(surface, _control_id, x, y);
+		break;
+	case tHat: 
+		if (_blink.get() < 0.5f)
+			renderDPad(surface, true, true, true, true, x, y);
+		break;
+	case tAxis: {
+			if (_control_id >= 4) {
+				//dpad as axis.
+				const bool horizontal = _control_id == 4;
+				const bool flash = _blink.get() < 0.5f;
+				renderDPad(surface, horizontal && flash, horizontal && !flash, !horizontal && flash, !horizontal && !flash, x, y);
+				
+				break;
+			}
+			bool f_ax = (_control_id % 2) == 0;
+			int bpos = (int)(math::abs(_blink.get() - 0.5) * 65534 - 32767);
+			renderMinistick(surface, _control_id, f_ax?bpos:0, !f_ax?bpos:0);
+		}
 		break;
 	};
 }
@@ -232,10 +255,13 @@ void GamepadSetup::renderDPad(sdlx::Surface &surface, const bool left, const boo
 		renderIcon(surface, icon[3], xp[3], yp[3]);
 }
 
-void GamepadSetup::renderMinistick(sdlx::Surface &surface, const int ai, const int x, const int y, const bool swap) {
+void GamepadSetup::renderMinistick(sdlx::Surface &surface, const int ai, const int x, const int y) {
 	const int r = 16;
-	const int xa = joy.getAxis(ai + (swap?0:1)) * r / 32767;
-	const int ya = joy.getAxis(ai + (swap?1:0)) * r / 32767;
+	//const int xa = joy.getAxis(ai + (swap?0:1)) * r / 32767;
+	//const int ya = joy.getAxis(ai + (swap?1:0)) * r / 32767;
+	const int xa = x * r / 32767;
+	const int ya = y * r / 32767;
+
 	int idx = ai / 2;
 	assert(idx < 2);
 	int xp[] = { 95, 220};
@@ -276,12 +302,8 @@ void GamepadSetup::render(sdlx::Surface &surface, const int x, const int y) {
 	}
 
 	if (axes >= ((hats)?4:6)) {
-#ifdef WIN32
-		renderMinistick(surface, 0, x, y);
-#else
-		renderMinistick(surface, 0, x, y, true);
-#endif
-		renderMinistick(surface, 2, x, y, true);
+		renderMinistick(surface, 0, joy.getAxis(0), joy.getAxis(1));
+		renderMinistick(surface, 2, joy.getAxis(2), joy.getAxis(3));
 	}
 
 	int n = math::min(joy.getNumButtons(), 10);

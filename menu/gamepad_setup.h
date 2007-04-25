@@ -36,7 +36,7 @@ private:
 	void renderIcon(sdlx::Surface &surface, const int idx, const int x, const int y);
 	void renderDPad(sdlx::Surface &surface, const bool left, const bool right, const bool up, const bool down, const int x, const int y);
 	void renderButton(sdlx::Surface &surface, const int b, const int x, const int y);
-	void renderMinistick(sdlx::Surface &surface, const int ai, const int x, const int y, const bool swap = false);
+	void renderMinistick(sdlx::Surface &surface, const int ai, const int x, const int y);
 
 	enum ControlType {
 		tButton = 1, tAxis = 2, tHat = 3
@@ -59,7 +59,8 @@ private:
 	Alarm _blink;
 	ControlType _wait_control, _got_control;
 	int _control_id;
-	std::map<const int, int> _button_bindings;
+	typedef std::map<const std::pair<ControlType, int> , int> Bindings;
+	Bindings _bindings;
 };
 
 #endif
