@@ -52,11 +52,57 @@ void GamepadSetup::setup() {
 }
 
 void GamepadSetup::setupNextControl() {
+	if (!_wait) 
+		return;
+	
 	switch(_wait_control) {
 	case tButton:
 		++_control_id;
-		if (_control_id >= 10 || _control_id >= joy.getNumButtons())
+		if (_control_id >= 10 || _control_id >= joy.getNumButtons()) {
+			if (joy.getNumAxes()) {
+				_wait_control = tAxis;
+				_control_id = 0;
+				break;
+			} else if (joy.getNumHats()) {
+				_wait_control = tHat;
+				_control_id = 0;
+				break;
+			} else _wait = false;
+		}
+	break;
+
+	case tAxis: 
+		++_control_id;
+		if (_control_id >= 6 || _control_id >= joy.getNumAxes()) {
+			if (joy.getNumHats()) {
+				_wait_control = tHat;
+				_control_id = 0;
+				break;
+			} else _wait = false;
+		}
+	break;
+	
+	case tHat: 
+		++_control_id;
+		if (_control_id >= 1 || _control_id >= joy.getNumHats()) 
 			_wait = false;
+	break;
+	}
+
+	if (_wait) {
+		std::string name;
+		switch(_wait_control) {
+		case tButton: 
+			name = "button";
+			break;
+		case tAxis: 
+			name = "axis";
+			break;
+		case tHat: 
+			name = "hat";
+			break;
+		}
+		LOG_DEBUG(("wait control %s:%d", name.c_str(), _control_id));
 	}
 }
 
