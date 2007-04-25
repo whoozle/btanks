@@ -59,8 +59,12 @@ private:
 	Alarm _blink;
 	ControlType _wait_control, _got_control;
 	int _control_id;
+
 	typedef std::map<const std::pair<ControlType, int> , int> Bindings;
 	Bindings _bindings;
+	
+	std::map<const int, int> _axes;
+	int _axis_value;
 };
 
 #endif

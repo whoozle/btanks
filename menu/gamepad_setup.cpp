@@ -1,3 +1,4 @@
+#include <string.h>
 #include "gamepad_setup.h"
 #include "resource_manager.h"
 #include "chooser.h"
@@ -5,6 +6,7 @@
 #include "button.h"
 
 #include "math/binary.h"
+#include "math/unary.h"
 
 #include "sdlx/surface.h"
 #include "sdlx/joystick.h"
@@ -19,6 +21,31 @@ void GamepadSetup::onEvent(const SDL_Event &event) {
 	case SDL_JOYAXISMOTION: 
 		{
 			const SDL_JoyAxisEvent &je = event.jaxis;
+			int v = math::abs(je.value);
+			if (v < 3276) 
+				v = 0;
+			
+			_axis_value += v;
+			int &v0 = _axes[je.axis];
+			if (v > v0) 
+				v0 = v;
+
+			//LOG_DEBUG(("value = %d", v));
+			int axis = -1;
+			int max = 0;
+			
+			if (_axis_value >= 300000) {
+				for(std::map<const int, int>::const_iterator i = _axes.begin(); i != _axes.end(); ++i) {
+					if (i->second > max) {
+						max = i->second;
+						axis = i->first;
+					}
+				}
+				assert(axis >= 0);
+				LOG_DEBUG(("axis %d -> %d", je.axis, _control_id));
+				_bindings.insert(Bindings::value_type(Bindings::key_type(tAxis, je.axis), _control_id));
+				setupNextControl();
+			}
 		}
 	break;
 	case SDL_JOYHATMOTION:
@@ -56,6 +83,9 @@ void GamepadSetup::setup() {
 void GamepadSetup::setupNextControl() {
 	if (!_wait) 
 		return;
+
+	_axes.clear();
+	_axis_value = 0;
 
 	int hats = joy.getNumHats();
 	int axes = joy.getNumAxes();
@@ -109,8 +139,6 @@ void GamepadSetup::setupNextControl() {
 	}
 }
 
-#include "math/unary.h"
-
 void GamepadSetup::renderSetup(sdlx::Surface &surface, const int x, const int y) {
 	switch(_wait_control) {
 	case tButton: 
@@ -139,6 +167,9 @@ void GamepadSetup::renderSetup(sdlx::Surface &surface, const int x, const int y)
 }
 
 GamepadSetup::GamepadSetup(const int w, const int h) : _current_pad(NULL), _wait(false), _blink(0.7, true) {
+	_axes.clear();
+	_axis_value = 0;
+	
 	int mx, my;
 
 	_gamepad_bg = ResourceManager->loadSurface("menu/gamepad.png");
