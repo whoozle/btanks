@@ -98,6 +98,13 @@ void IConfig::charData(const std::string &data) {
 	_data += data;
 }
 
+const bool IConfig::has(const std::string &name) const {
+	if (_temp_map.find(name) != _temp_map.end())
+		return true;
+
+	return (_map.find(name) != _map.end());
+}
+
 void IConfig::get(const std::string &name, float &value, const float default_value) {
 	VarMap::iterator t_i = _temp_map.find(name);
 	if (t_i != _temp_map.end()) { //override found
