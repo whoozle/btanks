@@ -161,10 +161,14 @@ void Window::init(const int argc, char *argv[]) {
 #endif
 
 		LOG_DEBUG(("setting GL accelerated visual..."));
-		
-		r = SDL_GL_SetAttribute( SDL_GL_ACCELERATED_VISUAL, 1 );
+
+#ifdef WIN32
+		//SIGSEGV in SDL under linux if no GLX visual present. (debian sid, fc6)
+		r = SDL_GL_SetAttribute( SDL_GL_ACCELERATED_VISUAL, 1);
 		if (r == -1) 
 			LOG_WARN(("cannot set SDL_GL_ACCELERATED_VISUAL."));
+#endif
+
 #endif
 		
 		SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
