@@ -27,7 +27,7 @@ bt_sources = 	[
 
 	'ai/base.cpp', 'ai/herd.cpp', 'ai/traits.cpp',
 		
-	'src/player_state.cpp', 
+	'src/player_state.cpp', 'controls/joy_bindings.cpp', 
 	'controls/joyplayer.cpp', 'controls/keyplayer.cpp', 'controls/external_control.cpp', 'controls/mouse_control.cpp', 
 
 	'src/object.cpp', 'src/animation_model.cpp', 
