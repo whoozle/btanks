@@ -75,6 +75,11 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 		GET_CONFIG_VALUE("engine.sound.doppler-velocity", float, dv, 1000);
 		alDopplerVelocity(dv);
 	} CATCH("init", {});
+	
+	TRY {
+		alDistanceModel(AL_LINEAR_DISTANCE_CLAMPED);
+	} CATCH("setting distance model", {})
+	
 	_nosound = nosound;
 	_nomusic = nomusic;
 }
@@ -232,17 +237,22 @@ void IMixer::playSample(const Object *o, const std::string &name, const bool loo
 	TRY {
 		ALuint source;
 		alGenSources(1, &source);
+
 		AL_CHECK(("alGenSources"));
 		_sources.insert(Sources::value_type(Sources::key_type(id, name), source));
 
 		v2<float> pos, vel;
 		o->getInfo(pos, vel);
 
-		GET_CONFIG_VALUE("engine.sound.positioning-divisor", float, k, 200.0);
+		GET_CONFIG_VALUE("engine.sound.positioning-divisor", float, k, 40.0);
 	
 		ALfloat al_pos[] = { pos.x / k, -pos.y / k, 0*o->getZ() / k };
 		ALfloat al_vel[] = { vel.x / k, -vel.y / k, 0 };
 	
+		alSourcef (source, AL_REFERENCE_DISTANCE, (o->size.x + o->size.y) / k / 2);
+		//GET_CONFIG_VALUE("engine.sound.maximum-distance", float, max_dist, 800.0);
+		//float max_dist_al = max_dist / k;
+				
 		alSourcei (source, AL_BUFFER,   sample.buffer);
 		alSourcef (source, AL_PITCH,    1.0          );
 		alSourcef (source, AL_GAIN,     _volume_fx   );
@@ -279,7 +289,7 @@ void IMixer::setMusicVolume(const float volume) {
 void IMixer::updateObject(const Object *o) {
 	v2<float> pos, vel;
 	o->getInfo(pos, vel);
-	GET_CONFIG_VALUE("engine.sound.positioning-divisor", float, k, 200.0);
+	GET_CONFIG_VALUE("engine.sound.positioning-divisor", float, k, 40.0);
 	
 	ALfloat al_pos[] = { pos.x / k, -pos.y / k, 0*o->getZ() / k };
 	ALfloat al_vel[] = { vel.x / k, -vel.y / k, 0 };
@@ -332,7 +342,7 @@ void IMixer::tick(const float dt) {
 
 void IMixer::setListener(const v3<float> &pos, const v3<float> &vel) {
 	//LOG_DEBUG(("setListener: %g %g", pos.x, pos.y));
-	GET_CONFIG_VALUE("engine.sound.positioning-divisor", float, k, 200.0);
+	GET_CONFIG_VALUE("engine.sound.positioning-divisor", float, k, 40.0);
 		
 	ALfloat al_pos[] = { pos.x / k, -pos.y / k, 0*pos.z / k };
 	ALfloat al_vel[] = { vel.x / k, -vel.y / k, 0*vel.z / k };
