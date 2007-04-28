@@ -49,6 +49,9 @@ public:
 	void set(const std::string &name, const int value);
 	void set(const std::string &name, const float value);
 	void set(const std::string &name, const std::string &value);
+	
+	void remove(const std::string &name);
+	
 	~IConfig();
 	
 	virtual void serialize(mrt::Serializator &s) const;

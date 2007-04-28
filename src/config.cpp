@@ -208,6 +208,11 @@ void IConfig::set(const std::string &name, const bool value) {
 	v->b = value;
 }
 
+void IConfig::remove(const std::string &name) {
+	_map.erase(name);
+}
+
+
 void IConfig::registerInvalidator(bool *ptr) {
 	_invalidators.insert(ptr);
 }
