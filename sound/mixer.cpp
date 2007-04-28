@@ -366,8 +366,6 @@ void IMixer::playSample(const Object *o, const std::string &name, const bool loo
 		
 		alSourceStop(source);
 		
-		_sources.insert(Sources::value_type(Sources::key_type(id, name), source));
-	
 		if (o) {
 			ALfloat al_pos[] = { pos.x / k, -pos.y / k, 0*o->getZ() / k };
 			ALfloat al_vel[] = { vel.x / k, -vel.y / k, 0 };
@@ -385,11 +383,14 @@ void IMixer::playSample(const Object *o, const std::string &name, const bool loo
 		//float max_dist_al = max_dist / k;
 				
 		alSourcei (source, AL_BUFFER,   sample.buffer);
-		//alSourcef (source, AL_PITCH,    1.0          );
+		alSourcef (source, AL_PITCH,    1.0          );
 		alSourcef (source, AL_GAIN,     _volume_fx   );
 		alSourcei (source, AL_LOOPING,  loop?AL_TRUE:AL_FALSE );
 		alSourcePlay(source);
 		AL_CHECK(("alSourcePlay('%s', %s)", name.c_str(), loop?"loop":"once"));
+
+		_sources.insert(Sources::value_type(Sources::key_type(id, name), source));
+	
 	} CATCH("playSample", {});
 }
 
