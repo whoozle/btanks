@@ -287,14 +287,14 @@ const bool IMixer::generateSource(ALuint &source) {
 	alGetListenerfv(AL_POSITION, l_pos);
 	//LOG_DEBUG(("listener position : %g %g %g", (float)l_pos[0], (float)l_pos[1], (float)l_pos[2]));
 	
-	v3<float> listener_pos((float)l_pos[0], (float)l_pos[1], (float)l_pos[2]);
+	v2<float> listener_pos((float)l_pos[0], (float)l_pos[1]);
 
 	Sources::iterator victim = _sources.end();
 	float max_d = 0;
 	for(Sources::iterator i = _sources.begin(); i != _sources.end(); ++i) {
 		ALfloat s_pos[] = { 0, 0, 0 };
 		alGetSourcefv(i->second, AL_POSITION, s_pos);
-		v3<float> source_pos((float)s_pos[0], (float)s_pos[1], (float)s_pos[2]);
+		v2<float> source_pos((float)s_pos[0], (float)s_pos[1]);
 		float d = source_pos.distance(listener_pos);
 		//LOG_DEBUG(("source position : %g %g %g, distance = %g", (float)s_pos[0], (float)s_pos[1], (float)s_pos[2], d));
 		if (d > max_d) {
@@ -323,13 +323,27 @@ void IMixer::deleteSource(const ALuint source) {
 void IMixer::playSample(const Object *o, const std::string &name, const bool loop) {
 	if (_nosound || name.empty())
 		return;
-	const int id = o->getID();
+
+	const int id = (o)?o->getID():0;
 	//LOG_DEBUG(("object: %d requests %s (%s)", id, name.c_str(), loop?"loop":"single"));
 	Sounds::const_iterator i = _sounds.find(name);
 	if (i == _sounds.end()) {
 		LOG_WARN(("sound %s was not loaded. skipped.", name.c_str()));
 		return;
 	}
+
+	v2<float> pos, vel;
+	if (o) {
+		o->getInfo(pos, vel);
+		ALfloat l_pos[] = { 0, 0, 0 };
+		alGetListenerfv(AL_POSITION, l_pos);
+		//LOG_DEBUG(("listener position : %g %g %g", (float)l_pos[0], (float)l_pos[1], (float)l_pos[2]));
+		GET_CONFIG_VALUE("engine.sound.maximum-distance", float, md, 60.0f);
+		v2<float> listener_pos((float)l_pos[0], (float)l_pos[1]);
+		if (pos.quick_distance(listener_pos) > (md * md) )
+			return;
+	}
+	
 	const Sample &sample = *(i->second);
 	TRY {
 		ALuint source;
@@ -340,26 +354,28 @@ void IMixer::playSample(const Object *o, const std::string &name, const bool loo
 
 		AL_CHECK(("alGenSources"));
 		_sources.insert(Sources::value_type(Sources::key_type(id, name), source));
-
-		v2<float> pos, vel;
-		o->getInfo(pos, vel);
-
-		GET_CONFIG_VALUE("engine.sound.positioning-divisor", float, k, 40.0);
 	
-		ALfloat al_pos[] = { pos.x / k, -pos.y / k, 0*o->getZ() / k };
-		ALfloat al_vel[] = { vel.x / k, -vel.y / k, 0 };
+		if (o) {
+			GET_CONFIG_VALUE("engine.sound.positioning-divisor", float, k, 40.0);
+			ALfloat al_pos[] = { pos.x / k, -pos.y / k, 0*o->getZ() / k };
+			ALfloat al_vel[] = { vel.x / k, -vel.y / k, 0 };
+			alSourcefv(source, AL_POSITION, al_pos       );
+			alSourcefv(source, AL_VELOCITY, al_vel       );
+		} else {
+			alSourcef (source, AL_ROLLOFF_FACTOR,  0.0          );
+			alSourcei (source, AL_SOURCE_RELATIVE, AL_TRUE      );
+		}
 	
 		//alSourcef (source, AL_REFERENCE_DISTANCE, (o->size.x + o->size.y) / k / 2);
 		//GET_CONFIG_VALUE("engine.sound.maximum-distance", float, max_dist, 800.0);
 		//float max_dist_al = max_dist / k;
 				
 		alSourcei (source, AL_BUFFER,   sample.buffer);
-		alSourcef (source, AL_PITCH,    1.0          );
+		//alSourcef (source, AL_PITCH,    1.0          );
 		alSourcef (source, AL_GAIN,     _volume_fx   );
-		alSourcefv(source, AL_POSITION, al_pos       );
-		alSourcefv(source, AL_VELOCITY, al_vel       );
 		alSourcei (source, AL_LOOPING,  loop?AL_TRUE:AL_FALSE );
 		alSourcePlay(source);
+		AL_CHECK(("alSourcePlay"));
 	} CATCH("playSample", {});
 }
 
