@@ -38,7 +38,7 @@ public:
 
 	const bool alive() const { return _running; }	
 		
-	OggStream();
+	OggStream(const ALuint source);
 	~OggStream();
 	
 	static void decode(Sample &sample, const std::string &file);

@@ -147,8 +147,11 @@ const bool IMixer::play(const std::string &fname, const bool continuous) {
 		return false;
 	}
 
-	if (_ogg == NULL) 
-		_ogg = new OggStream;
+	if (_ogg == NULL) {
+		ALuint source;
+		if (generateSource(source))
+			_ogg = new OggStream(source);
+	}
 
 	_ogg->open(fname, continuous, _volume_music);
 	return true;
@@ -274,6 +277,7 @@ const bool IMixer::generateSource(ALuint &source) {
 		return true;
 	}
 	
+	LOG_WARN(("cannot allocate any sources."));
 	return false;
 }
 

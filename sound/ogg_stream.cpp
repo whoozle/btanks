@@ -27,7 +27,7 @@
 #include "sample.h"
 #include "al_ex.h"
 
-OggStream::OggStream() : _opened(false), _running(false), _repeat(false) {
+OggStream::OggStream(const ALuint source) : _source(source), _opened(false), _running(false), _repeat(false)  {
 	GET_CONFIG_VALUE("engine.sound.polling-interval", int, delay, 10);
 	_delay = delay;
 }
@@ -78,8 +78,6 @@ void OggStream::_open() {
 			break;
 		}
 	}
-    alGenSources(1, &_source);
-	AL_CHECK(("alGenSources(oggsource)"));
 
 	alSource3f(_source, AL_POSITION,        0.0, 0.0, 0.0);
 	alSource3f(_source, AL_VELOCITY,        0.0, 0.0, 0.0);
