@@ -82,6 +82,7 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 	
 	TRY {
 		alDistanceModel(AL_EXPONENT_DISTANCE_CLAMPED);
+		AL_CHECK(("alDistanceModel"));
 	} CATCH("setting distance model", {})
 	
 	_nosound = nosound;
