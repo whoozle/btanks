@@ -22,8 +22,15 @@
 #include <AL/al.h>
 
 ALException::ALException(const ALenum code): _code(code) {}
+
 const std::string ALException::getCustomMessage() {
-	//const char * err = alGetErrorString(_code);
-	//assert(err != NULL);
+	return mrt::formatString("openAL error: %08x", (unsigned)_code);
+}
+
+ALUTException::ALUTException(const ALenum code): _code(code) {}
+
+const std::string ALUTException::getCustomMessage() {
+	const char * err = alutGetErrorString(_code);
+	assert(err != NULL);
 	return mrt::formatString("openAL error: %08x", (unsigned)_code);
 }
