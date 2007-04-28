@@ -374,6 +374,10 @@ void IMixer::playSample(const Object *o, const std::string &name, const bool loo
 			alSourcef (source, AL_ROLLOFF_FACTOR,  1.0          );
 			alSourcei (source, AL_SOURCE_RELATIVE, AL_FALSE     );
 		} else {
+			alSource3f(source, AL_POSITION,        0.0, 0.0, 0.0);
+			alSource3f(source, AL_VELOCITY,        0.0, 0.0, 0.0);
+			alSource3f(source, AL_DIRECTION,       0.0, 0.0, 0.0);
+				
 			alSourcef (source, AL_ROLLOFF_FACTOR,  0.0          );
 			alSourcei (source, AL_SOURCE_RELATIVE, AL_TRUE      );
 		}
@@ -387,7 +391,7 @@ void IMixer::playSample(const Object *o, const std::string &name, const bool loo
 		alSourcef (source, AL_GAIN,     _volume_fx   );
 		alSourcei (source, AL_LOOPING,  loop?AL_TRUE:AL_FALSE );
 		alSourcePlay(source);
-		AL_CHECK(("alSourcePlay('%s', %s)", name.c_str(), loop?"loop":"once"));
+		AL_CHECK(("alSourcePlay(%08x, '%s', %s)", (unsigned)source, name.c_str(), loop?"loop":"once"));
 
 		_sources.insert(Sources::value_type(Sources::key_type(id, name), source));
 	
