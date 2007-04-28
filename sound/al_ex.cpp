@@ -19,11 +19,11 @@
 
 #include "al_ex.h"
 #include <assert.h>
-#include <AL/alut.h>
+#include <AL/al.h>
 
 ALException::ALException(const ALenum code): _code(code) {}
 const std::string ALException::getCustomMessage() {
-	const char * err = alutGetErrorString(_code);
-	assert(err != NULL);
-	return err;
+	//const char * err = alGetErrorString(_code);
+	//assert(err != NULL);
+	return mrt::formatString("openAL error: %d %08x", (int)_code, (unsigned)_code);
 }
