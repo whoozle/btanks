@@ -69,21 +69,27 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 #	endif
 		if (preallocate) {
 			LOG_DEBUG(("preallocate sources..."));
+			GET_CONFIG_VALUE("engine.sound.maximum-sources", int, max_sources, 32);
+			
 			_no_more_sources = true;
-			ALuint sources[32];
+			ALuint *sources = new ALuint[max_sources];
 			int n;
-			for(n = 32; n >= 4; --n) {
+			
+			for(n = max_sources; n >= 4; --n) {
 				alGenSources(n, sources);
 				if (alGetError() == AL_NO_ERROR)
 					break;
 			}
-			if (n < 4) 
+			if (n < 4) {
+				delete[] sources;
 				throw_ex(("cannot generate enough sources."));
+			}
 		
 			LOG_DEBUG(("%d sources allocated.", n));
 			for(int i = 0; i < n; ++i) {
 				_free_sources.insert(sources[i]);
 			}
+			delete[] sources;
 		}
 	} CATCH("alutInit", {
 		LOG_DEBUG(("there was error(s) during initialization, disabling sounds."));
