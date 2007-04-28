@@ -106,6 +106,8 @@ TRY {
 }
 
 const bool OggStream::update() {
+if (!_running)
+	return;
 TRY {
 	int processed = 0;
 	bool active = true;
@@ -120,11 +122,11 @@ TRY {
 		}
 	}
 	*/
-	
-	while(processed-- > 0) {
+	int n = processed;
+	while(n-- > 0) {
 		ALuint buffer;
 		alSourceUnqueueBuffers(_source, 1, &buffer);
-		AL_CHECK(("alSourceUnqueueBuffers"));
+		AL_CHECK(("alSourceUnqueueBuffers(%d of %d)", processed - n, processed));
 		//LOG_DEBUG(("unqueued buffer: %u", (unsigned) buffer));
 		
 		TRY { 
