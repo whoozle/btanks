@@ -39,7 +39,7 @@
 
 IMPLEMENT_SINGLETON(Mixer, IMixer);
 
-IMixer::IMixer() : _no_more_sources(true), _nosound(true), _nomusic(true), _update_objects(true), _ogg(NULL), 
+IMixer::IMixer() : _no_more_sources(false), _nosound(true), _nomusic(true), _update_objects(true), _ogg(NULL), 
 	_volume_fx(1.0f), _volume_music(1.0f) {}
 
 void IMixer::init(const bool nosound, const bool nomusic) {
@@ -77,10 +77,10 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 		AL_CHECK(("setting speed of sound"));
 	} CATCH("init", {});
 	
-	TRY {
-		alDistanceModel(AL_EXPONENT_DISTANCE_CLAMPED);
-		AL_CHECK(("alDistanceModel"));
-	} CATCH("setting distance model", {})
+	//TRY {
+	//	alDistanceModel(AL_EXPONENT_DISTANCE_CLAMPED);
+	//	AL_CHECK(("alDistanceModel"));
+	//} CATCH("setting distance model", {})
 	
 	_nosound = nosound;
 	_nomusic = nomusic;
@@ -234,6 +234,7 @@ const bool IMixer::generateSource(ALuint &source) {
 	if (!_free_sources.empty()) {
 		source = *_free_sources.begin();
 		_free_sources.erase(_free_sources.begin());
+		//LOG_DEBUG(("source %08x has been taken from free sources.", (unsigned)source));
 		return true;
 	}
 	
@@ -295,8 +296,10 @@ void IMixer::playSample(const Object *o, const std::string &name, const bool loo
 	const Sample &sample = *(i->second);
 	TRY {
 		ALuint source;
-		if (!generateSource(source))
+		if (!generateSource(source)) {
+			LOG_WARN(("cannot generate source. skip sound %s", name.c_str()));
 			return;
+		}
 
 		AL_CHECK(("alGenSources"));
 		_sources.insert(Sources::value_type(Sources::key_type(id, name), source));
