@@ -35,7 +35,7 @@ private:
 #define throw_al(r, str) throw_generic_no_default(ALException, str, (r));
 
 #define AL_CHECK(fmt) { ALenum r; \
-	if ((r = alutGetError()) != AL_NO_ERROR) \
+	if ((r = alGetError()) != AL_NO_ERROR) \
 	throw_al(r, fmt); \
 }
 
