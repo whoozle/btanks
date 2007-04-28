@@ -317,7 +317,7 @@ const bool IMixer::generateSource(ALuint &source) {
 void IMixer::deleteSource(const ALuint source) {
 	//alDeleteSources(1, &source);
 	_free_sources.insert(source);
-	LOG_DEBUG(("mark source %08x as free", (unsigned)source));
+	//LOG_DEBUG(("mark source %08x as free", (unsigned)source));
 }
 
 void IMixer::playSample(const Object *o, const std::string &name, const bool loop) {
