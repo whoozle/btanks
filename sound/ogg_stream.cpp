@@ -167,8 +167,6 @@ void OggStream::close() {
 
 	empty();
 
-	alDeleteSources(1, &_source);
-	AL_CHECK(("alDeleteSources"));
 	alDeleteBuffers(_buffers_n, _buffers);
 	AL_CHECK(("alDeleteBuffers"));					    
 
