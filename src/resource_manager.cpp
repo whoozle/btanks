@@ -126,7 +126,7 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 		int z = (!attr["z"].empty())?atoi(attr["z"].c_str()) : -1001;
 		const std::string &sound = attr["sound"];
 		_pose = new Pose(speed, z, sound);
-		if (!sound.empty())
+		if (!sound.empty() && sound[0] != '@')
 			Mixer->loadSample(sound);
 	} else if (name == "object") {
 		const std::string classname = attr["class"];
