@@ -25,15 +25,12 @@
 #include "slider.h"
 #include "config.h"
 #include "sound/mixer.h"
-#include "resource_manager.h"
-#include "object.h"
 #include "redefine_keys.h"
 #include "gamepad_setup.h"
 #include "player_manager.h"
 
 OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(parent), _shoot(0.5f, false) {
 	Mixer->loadSample("shot.ogg");
-	_shooter = ResourceManager->createObject("outline");
 	
 	_background.init("menu/background_box.png", w - 100, h - 100);
 	int bw, bh;
@@ -169,7 +166,7 @@ void OptionsMenu::tick(const float dt) {
 		Mixer->setFXVolume(_fx->get());
 		if (_shoot.tick(dt)) {
 			Mixer->setListener(v3<float>::empty, v3<float>::empty, 64);
-			Mixer->playSample(_shooter, "shot.ogg", false);
+			Mixer->playSample(NULL, "shot.ogg", false);
 			_shoot.reset();
 		}
 	}
@@ -233,8 +230,4 @@ bool OptionsMenu::onKey(const SDL_keysym sym) {
 	return false;
 }
 
-OptionsMenu::~OptionsMenu() {
-	if (_shooter)
-		delete _shooter;
-}
-
+OptionsMenu::~OptionsMenu() {}
