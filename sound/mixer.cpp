@@ -60,7 +60,7 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 	
 	TRY {
 		alutInit(NULL, NULL);
-		AL_CHECK(("alutInit"));
+		ALUT_CHECK(("alutInit"));
 	} CATCH("alutInit", {
 		LOG_DEBUG(("there was error(s) during initialization, disabling sounds."));
 		_nosound = _nomusic = true;
