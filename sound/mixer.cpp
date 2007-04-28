@@ -386,7 +386,7 @@ void IMixer::playSample(const Object *o, const std::string &name, const bool loo
 		alSourcef (source, AL_GAIN,     _volume_fx   );
 		alSourcei (source, AL_LOOPING,  loop?AL_TRUE:AL_FALSE );
 		alSourcePlay(source);
-		AL_CHECK(("alSourcePlay"));
+		AL_CHECK(("alSourcePlay('%s', %s)", name.c_str(), loop?"loop":"once"));
 	} CATCH("playSample", {});
 }
 
