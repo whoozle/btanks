@@ -45,7 +45,7 @@ public:
 	const bool play(const std::string &fname, const bool continuous = false);
 	
 	//sample part
-	void setListener(const v3<float> &pos, const v3<float> &vel);
+	void setListener(const v3<float> &pos, const v3<float> &vel, const float r);
 	
 	void loadSample(const std::string &filename, const std::string &classname = std::string());
 	void playSample(const Object *o, const std::string &name, const bool loop);

@@ -721,7 +721,7 @@ void IPlayerManager::tick(const float now, const float dt) {
 		}
 	}
 	//bool listener_set = false;
-	v2<float> listener_pos, listener_vel;
+	v2<float> listener_pos, listener_vel, listener_size;
 	float listeners = 0;
 	for(size_t pi = 0; pi < _players.size(); ++pi) {
 		PlayerSlot &slot = _players[pi];
@@ -736,12 +736,14 @@ void IPlayerManager::tick(const float now, const float dt) {
 		listener_pos += pos;
 		listener_vel += vel;
 		listeners += 1;
+		listener_size += o->size;
 	}
 
 	if (listeners > 0) {
 		listener_pos /= listeners;
 		listener_vel /= listeners;
-		Mixer->setListener(listener_pos.convert2v3(0), listener_vel.convert2v3(0));
+		listener_size /= listeners;
+		Mixer->setListener(listener_pos.convert2v3(0), listener_vel.convert2v3(0), listener_size.length());
 	}
 
 	for(size_t pi = 0; pi < _players.size(); ++pi) {

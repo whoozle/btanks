@@ -77,7 +77,7 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 	} CATCH("init", {});
 	
 	TRY {
-		alDistanceModel(AL_LINEAR_DISTANCE_CLAMPED);
+		alDistanceModel(AL_EXPONENT_DISTANCE_CLAMPED);
 	} CATCH("setting distance model", {})
 	
 	_nosound = nosound;
@@ -340,7 +340,7 @@ void IMixer::tick(const float dt) {
 }
 
 
-void IMixer::setListener(const v3<float> &pos, const v3<float> &vel) {
+void IMixer::setListener(const v3<float> &pos, const v3<float> &vel, const float r) {
 	//LOG_DEBUG(("setListener: %g %g", pos.x, pos.y));
 	GET_CONFIG_VALUE("engine.sound.positioning-divisor", float, k, 40.0);
 		
@@ -349,6 +349,7 @@ void IMixer::setListener(const v3<float> &pos, const v3<float> &vel) {
 		
 	alListenerfv(AL_POSITION,    al_pos);
 	alListenerfv(AL_VELOCITY,    al_vel);
+	alSourcef (source, AL_REFERENCE_DISTANCE, r / k);
 	//alListenerfv(AL_ORIENTATION, al_vel);
 }
 	
