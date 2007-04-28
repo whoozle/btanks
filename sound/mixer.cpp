@@ -72,9 +72,6 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 		alDopplerFactor(df);
 		AL_CHECK(("alDopplerFactor"));
 	
-		GET_CONFIG_VALUE("engine.sound.doppler-velocity", float, dv, 1000);
-		alDopplerVelocity(dv);
-
 		GET_CONFIG_VALUE("engine.sound.speed-of-sound", float, sos, 2000);
 		alSpeedOfSound(sos);
 		AL_CHECK(("setting speed of sound"));
