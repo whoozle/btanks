@@ -251,7 +251,7 @@ void IMixer::playSample(const Object *o, const std::string &name, const bool loo
 		ALfloat al_pos[] = { pos.x / k, -pos.y / k, 0*o->getZ() / k };
 		ALfloat al_vel[] = { vel.x / k, -vel.y / k, 0 };
 	
-		alSourcef (source, AL_REFERENCE_DISTANCE, (o->size.x + o->size.y) / k / 2);
+		//alSourcef (source, AL_REFERENCE_DISTANCE, (o->size.x + o->size.y) / k / 2);
 		//GET_CONFIG_VALUE("engine.sound.maximum-distance", float, max_dist, 800.0);
 		//float max_dist_al = max_dist / k;
 				
@@ -351,7 +351,7 @@ void IMixer::setListener(const v3<float> &pos, const v3<float> &vel, const float
 		
 	alListenerfv(AL_POSITION,    al_pos);
 	alListenerfv(AL_VELOCITY,    al_vel);
-	alListenerf (AL_REFERENCE_DISTANCE, r / k);
+	//alListenerf (AL_REFERENCE_DISTANCE, r / k);
 	//alListenerfv(AL_ORIENTATION, al_vel);
 }
 	
