@@ -61,11 +61,36 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 	TRY {
 		alutInit(NULL, NULL);
 		ALUT_CHECK(("alutInit"));
+
+#	ifdef WIN32
+		GET_CONFIG_VALUE("engine.sound.preallocate-sources", bool, preallocate, true);
+#	else
+		GET_CONFIG_VALUE("engine.sound.preallocate-sources", bool, preallocate, false);
+#	endif
+		if (preallocate) {
+			LOG_DEBUG(("preallocate sources..."));
+			_no_more_sources = true;
+			ALuint sources[32];
+			int n;
+			for(n = 32; n >= 4; --n) {
+				alGenSources(n, sources);
+				if (alGetError() == AL_NO_ERROR)
+					break;
+			}
+			if (n < 4) 
+				throw_ex(("cannot generate enough sources."));
+		
+			LOG_DEBUG(("%d sources allocated.", n));
+			for(int i = 0; i < n; ++i) {
+				_free_sources.insert(sources[i]);
+			}
+		}
 	} CATCH("alutInit", {
 		LOG_DEBUG(("there was error(s) during initialization, disabling sounds."));
 		_nosound = _nomusic = true;
 		return;
 	})
+	
 	
 	TRY {
 		GET_CONFIG_VALUE("engine.sound.doppler-factor", float, df, 1.0);
