@@ -39,7 +39,7 @@
 
 IMPLEMENT_SINGLETON(Mixer, IMixer);
 
-IMixer::IMixer() : _nosound(true), _nomusic(true), _update_objects(true), _ogg(NULL), 
+IMixer::IMixer() : _no_more_sources(true), _nosound(true), _nomusic(true), _update_objects(true), _ogg(NULL), 
 	_volume_fx(1.0f), _volume_music(1.0f) {}
 
 void IMixer::init(const bool nosound, const bool nomusic) {
@@ -90,6 +90,10 @@ void IMixer::deinit() {
 	LOG_DEBUG(("cleaning up mixer..."));	
 	delete _ogg; 
 	_ogg = NULL;
+	
+	for(std::set<ALuint>::iterator i = _free_sources.begin(); i != _free_sources.end(); ++i) {
+		alDeleteSources(1, &*i);
+	}
 	
 	if (!_nosound) {
 		LOG_DEBUG(("cleaning up sounds..."));
@@ -225,6 +229,59 @@ void IMixer::playRandomSample(const Object *o, const std::string &classname, con
 	playSample(o, *s, loop);
 }
 
+const bool IMixer::generateSource(ALuint &source) {
+	//always return generated source first
+	if (!_free_sources.empty()) {
+		source = *_free_sources.begin();
+		_free_sources.erase(_free_sources.begin());
+		return true;
+	}
+	
+	if (!_no_more_sources) { //if we was not reached upper sources limit, generate one more source.
+		alGenSources(1, &source);
+		if (alGetError() == AL_NO_ERROR)
+			return true;
+	
+		_no_more_sources = true; //oops.
+		LOG_DEBUG(("sources limit reached. dynamic sources: %u", (unsigned)(_free_sources.size() + _sources.size())));
+	}
+	
+	LOG_DEBUG(("searching source victim."));
+	ALfloat l_pos[] = { 0, 0, 0 };
+	alGetListenerfv(AL_POSITION, l_pos);
+	LOG_DEBUG(("listener position : %g %g %g", (float)l_pos[0], (float)l_pos[1], (float)l_pos[2]));
+	
+	v3<float> listener_pos((float)l_pos[0], (float)l_pos[1], (float)l_pos[2]);
+
+	Sources::iterator victim = _sources.end();
+	float max_d = 0;
+	for(Sources::iterator i = _sources.begin(); i != _sources.end(); ++i) {
+		ALfloat s_pos[] = { 0, 0, 0 };
+		alGetSourcefv(i->second, AL_POSITION, s_pos);
+		v3<float> source_pos((float)s_pos[0], (float)s_pos[1], (float)s_pos[2]);
+		float d = source_pos.distance(listener_pos);
+		if (d > max_d) {
+			max_d = d;
+			victim = i;
+		}
+	}
+	if (victim != _sources.end()) {
+		ALuint v_source = victim->second;
+		LOG_DEBUG(("killing source %08x with distance %g", (unsigned)v_source, max_d));
+		alSourceStop(v_source);
+		source = v_source;
+		return true;
+	}
+	
+	return false;
+}
+
+void IMixer::deleteSource(const ALuint source) {
+	//alDeleteSources(1, &source);
+	_free_sources.insert(source);
+	LOG_DEBUG(("mark source %08x as free", (unsigned)source));
+}
+
 void IMixer::playSample(const Object *o, const std::string &name, const bool loop) {
 	if (_nosound || name.empty())
 		return;
@@ -238,7 +295,8 @@ void IMixer::playSample(const Object *o, const std::string &name, const bool loo
 	const Sample &sample = *(i->second);
 	TRY {
 		ALuint source;
-		alGenSources(1, &source);
+		if (!generateSource(source))
+			return;
 
 		AL_CHECK(("alGenSources"));
 		_sources.insert(Sources::value_type(Sources::key_type(id, name), source));
@@ -332,7 +390,7 @@ void IMixer::tick(const float dt) {
 		alGetSourcei(source, AL_SOURCE_STATE, &state);
 
 		if (state != AL_PLAYING) {
-			alDeleteSources(1, &source);
+			deleteSource(source);
 			_sources.erase(j++);
 			continue;
 		}
@@ -390,7 +448,7 @@ void IMixer::cancelAll() {
 	LOG_DEBUG(("stop playing anything"));
 	for(Sources::iterator j = _sources.begin(); j != _sources.end(); ++j) {
 		alSourceStop(j->second);
-		alDeleteSources(1, &j->second);
+		deleteSource(j->second);
 	}
 	_sources.clear();
 }

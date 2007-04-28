@@ -62,7 +62,15 @@ public:
 	
 	IMixer();
 	~IMixer();
-private: 
+
+private:
+
+	std::set<ALuint> _free_sources;
+	bool _no_more_sources;
+	
+	const bool generateSource(ALuint &source);
+	void deleteSource(const ALuint source);
+
 	bool _nosound, _nomusic;
 	Alarm _update_objects;
 	
