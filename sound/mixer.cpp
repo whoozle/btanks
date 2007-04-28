@@ -305,7 +305,8 @@ const bool IMixer::generateSource(ALuint &source) {
 	if (victim != _sources.end()) {
 		ALuint v_source = victim->second;
 		//LOG_DEBUG(("killing source %08x with distance %g", (unsigned)v_source, max_d));
-		alSourceStop(v_source);
+		//alSourceStop(v_source);
+		_sources.erase(victim);
 		source = v_source;
 		return true;
 	}
@@ -365,6 +366,8 @@ void IMixer::playSample(const Object *o, const std::string &name, const bool loo
 			ALfloat al_vel[] = { vel.x / k, -vel.y / k, 0 };
 			alSourcefv(source, AL_POSITION, al_pos       );
 			alSourcefv(source, AL_VELOCITY, al_vel       );
+			alSourcef (source, AL_ROLLOFF_FACTOR,  1.0          );
+			alSourcei (source, AL_SOURCE_RELATIVE, AL_FALSE     );
 		} else {
 			alSourcef (source, AL_ROLLOFF_FACTOR,  0.0          );
 			alSourcei (source, AL_SOURCE_RELATIVE, AL_TRUE      );
