@@ -349,7 +349,7 @@ void IMixer::setListener(const v3<float> &pos, const v3<float> &vel, const float
 		
 	alListenerfv(AL_POSITION,    al_pos);
 	alListenerfv(AL_VELOCITY,    al_vel);
-	alSourcef (source, AL_REFERENCE_DISTANCE, r / k);
+	alListenerf (AL_REFERENCE_DISTANCE, r / k);
 	//alListenerfv(AL_ORIENTATION, al_vel);
 }
 	
