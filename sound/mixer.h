@@ -87,6 +87,7 @@ private:
 	PlayList _playlist;
 	std::string _now_playing;
 	OggStream * _ogg;
+	ALuint _ogg_source;
 	
 	float _volume_fx, _volume_music;
 	

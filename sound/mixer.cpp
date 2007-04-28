@@ -39,7 +39,7 @@
 
 IMPLEMENT_SINGLETON(Mixer, IMixer);
 
-IMixer::IMixer() : _no_more_sources(false), _nosound(true), _nomusic(true), _update_objects(true), _ogg(NULL), 
+IMixer::IMixer() : _no_more_sources(false), _nosound(true), _nomusic(true), _update_objects(true), _ogg(NULL), _ogg_source(0),
 	_volume_fx(1.0f), _volume_music(1.0f) {}
 
 void IMixer::init(const bool nosound, const bool nomusic) {
@@ -91,11 +91,16 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 			}
 			delete[] sources;
 		}
+
+		if (!generateSource(_ogg_source))
+			throw_ex(("cannot generate source for music stream"));
+		
 	} CATCH("alutInit", {
 		LOG_DEBUG(("there was error(s) during initialization, disabling sounds."));
 		_nosound = _nomusic = true;
 		return;
 	})
+	
 	
 	
 	TRY {
@@ -179,9 +184,7 @@ const bool IMixer::play(const std::string &fname, const bool continuous) {
 	}
 
 	if (_ogg == NULL) {
-		ALuint source;
-		if (generateSource(source))
-			_ogg = new OggStream(source);
+		_ogg = new OggStream(_ogg_source);
 	}
 
 	_ogg->open(fname, continuous, _volume_music);
