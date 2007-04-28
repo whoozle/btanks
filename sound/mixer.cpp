@@ -515,9 +515,11 @@ void IMixer::cancelAll(const Object *o) {
 void IMixer::cancelAll() {
 	if (_nosound)
 		return;
-	LOG_DEBUG(("stop playing anything"));
-	for(Sources::iterator j = _sources.begin(); j != _sources.end(); ++j) {
-		deleteSource(j->second);
+	if (!_sources.empty()) {
+		LOG_DEBUG(("stop playing anything"));
+		for(Sources::iterator j = _sources.begin(); j != _sources.end(); ++j) {
+			deleteSource(j->second);
+		}
 	}
 	_sources.clear();
 }
