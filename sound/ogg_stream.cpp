@@ -107,7 +107,7 @@ TRY {
 
 const bool OggStream::update() {
 if (!_running)
-	return;
+	return false;
 TRY {
 	int processed = 0;
 	bool active = true;
