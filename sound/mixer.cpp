@@ -305,7 +305,7 @@ const bool IMixer::generateSource(ALuint &source) {
 	if (victim != _sources.end()) {
 		ALuint v_source = victim->second;
 		//LOG_DEBUG(("killing source %08x with distance %g", (unsigned)v_source, max_d));
-		//alSourceStop(v_source);
+		alSourceStop(v_source);
 		_sources.erase(victim);
 		source = v_source;
 		return true;
@@ -317,6 +317,7 @@ const bool IMixer::generateSource(ALuint &source) {
 
 void IMixer::deleteSource(const ALuint source) {
 	//alDeleteSources(1, &source);
+	alSourceStop(source);
 	_free_sources.insert(source);
 	//LOG_DEBUG(("mark source %08x as free", (unsigned)source));
 }
@@ -338,11 +339,13 @@ void IMixer::playSample(const Object *o, const std::string &name, const bool loo
 	v2<float> pos, vel;
 	if (o) {
 		o->getInfo(pos, vel);
+		
 		ALfloat l_pos[] = { 0, 0, 0 };
 		alGetListenerfv(AL_POSITION, l_pos);
+		v2<float> listener_pos((float)l_pos[0], (float)l_pos[1]), source_pos;
+		
 		//LOG_DEBUG(("listener position : %g %g %g", (float)l_pos[0], (float)l_pos[1], (float)l_pos[2]));
 		GET_CONFIG_VALUE("engine.sound.maximum-distance", float, md, 60.0f);
-		v2<float> listener_pos((float)l_pos[0], (float)l_pos[1]), source_pos;
 		source_pos.x /= k;
 		source_pos.y /= -k;
 		
@@ -357,8 +360,9 @@ void IMixer::playSample(const Object *o, const std::string &name, const bool loo
 			LOG_WARN(("cannot generate source. skip sound %s", name.c_str()));
 			return;
 		}
-
-		AL_CHECK(("alGenSources"));
+		
+		alSourceStop(source);
+		
 		_sources.insert(Sources::value_type(Sources::key_type(id, name), source));
 	
 		if (o) {
@@ -510,7 +514,6 @@ void IMixer::cancelAll() {
 		return;
 	LOG_DEBUG(("stop playing anything"));
 	for(Sources::iterator j = _sources.begin(); j != _sources.end(); ++j) {
-		alSourceStop(j->second);
 		deleteSource(j->second);
 	}
 	_sources.clear();
