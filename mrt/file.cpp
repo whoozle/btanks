@@ -36,6 +36,10 @@ void File::open(const std::string &fname, const std::string &mode) {
 		throw_io(("fopen(\"%s\", \"%s\")", fname.c_str(), mode.c_str()))
 }
 
+const bool File::opened() const {
+	return _f != NULL;
+}
+
 const off_t File::getSize() const {
 	struct stat s;
 	int fno = fileno(_f);

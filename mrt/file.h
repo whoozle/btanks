@@ -31,6 +31,7 @@ class MRTAPI File : public FSNode {
 public: 
 	File();
 	void open(const std::string &fname, const std::string &mode);
+	const bool opened() const;
 	
 	int seek(long offset, int whence) const;
 	long tell() const;
