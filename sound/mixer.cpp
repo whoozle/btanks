@@ -345,13 +345,13 @@ void IMixer::playSample(const Object *o, const std::string &name, const bool loo
 		
 		ALfloat l_pos[] = { 0, 0, 0 };
 		alGetListenerfv(AL_POSITION, l_pos);
-		v2<float> listener_pos((float)l_pos[0], (float)l_pos[1]), source_pos;
+		v2<float> listener_pos((float)l_pos[0], (float)l_pos[1]), source_pos = pos;
 		
 		//LOG_DEBUG(("listener position : %g %g %g", (float)l_pos[0], (float)l_pos[1], (float)l_pos[2]));
-		GET_CONFIG_VALUE("engine.sound.maximum-distance", float, md, 60.0f);
 		source_pos.x /= k;
 		source_pos.y /= -k;
 		
+		GET_CONFIG_VALUE("engine.sound.maximum-distance", float, md, 60.0f);
 		if (source_pos.quick_distance(listener_pos) > (md * md) )
 			return;
 	}
