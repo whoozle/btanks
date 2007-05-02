@@ -126,6 +126,11 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 		int z = (!attr["z"].empty())?atoi(attr["z"].c_str()) : -1001;
 		const std::string &sound = attr["sound"];
 		_pose = new Pose(speed, z, sound);
+		const std::string &gain = attr["gain"];
+		if (!gain.empty()) {
+			_pose->gain = atof(gain.c_str());
+			LOG_DEBUG(("adjusting gain for sample %s to %g", sound.c_str(), _pose->gain));
+		}
 		if (!sound.empty() && sound[0] != '@')
 			Mixer->loadSample(sound);
 	} else if (name == "object") {

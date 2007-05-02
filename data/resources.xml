@@ -154,7 +154,7 @@
 	</animation-model>
 
 	<animation-model id="nuclear-explosion-animation" speed="5">
-		<pose id="boom" sound="nuke-explosion.ogg">5,4,3,2,1,0</pose>
+		<pose id="boom" sound="nuke-explosion.ogg" gain="20">5,4,3,2,1,0</pose>
 	</animation-model>
 
 	<animation-model id="cannon-explosion-animation" speed="14">

@@ -48,8 +48,8 @@ public:
 	void setListener(const v3<float> &pos, const v3<float> &vel, const float r);
 	
 	void loadSample(const std::string &filename, const std::string &classname = std::string());
-	void playSample(const Object *o, const std::string &name, const bool loop);
-	void playRandomSample(const Object *o, const std::string &classname, const bool loop);
+	void playSample(const Object *o, const std::string &name, const bool loop, const float gain = 1.0);
+	void playRandomSample(const Object *o, const std::string &classname, const bool loop, const float gain = 1.0);
 	void cancelSample(const Object *o, const std::string &name);
 	void cancelAll(const Object *o);
 	void cancelAll();

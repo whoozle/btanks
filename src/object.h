@@ -56,8 +56,8 @@ public:
 
 	virtual Object * clone() const;
 	
-	void playSound(const std::string &name, const bool loop);
-	void playRandomSound(const std::string &classname, const bool loop);
+	void playSound(const std::string &name, const bool loop, const float gain = 1.0);
+	void playRandomSound(const std::string &classname, const bool loop, const float gain = 1.0);
 
 	virtual void setDirection(const int dir);
 	const int getDirection() const;
@@ -200,11 +200,12 @@ private:
 		std::string name;
 		bool repeat;
 		std::string sound;
+		float gain;
 		bool played;
 		mutable const Pose * cached_pose;
 		
 		Event();
-		Event(const std::string name, const bool repeat, const std::string &sound, const Pose * cached_pose = NULL);
+		Event(const std::string name, const bool repeat, const std::string &sound, const float gain, const Pose * cached_pose = NULL);
 		virtual void serialize(mrt::Serializator &s) const;
 		virtual void deserialize(const mrt::Serializator &s);
 	};

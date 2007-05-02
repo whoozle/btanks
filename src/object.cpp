@@ -30,10 +30,10 @@
 #include "math/unary.h"
 #include "sound/mixer.h"
 
-Object::Event::Event() : name(), repeat(false), sound(), played(false), cached_pose(NULL) {}
+Object::Event::Event() : name(), repeat(false), sound(), gain(1.0f), played(false), cached_pose(NULL) {}
 
-Object::Event::Event(const std::string name, const bool repeat, const std::string &sound, const Pose * p): 
-	name(name), repeat(repeat), sound(sound), played(false), cached_pose(p) {}
+Object::Event::Event(const std::string name, const bool repeat, const std::string &sound, const float gain, const Pose * p): 
+	name(name), repeat(repeat), sound(sound), gain(gain), played(false), cached_pose(p) {}
 	
 void Object::Event::serialize(mrt::Serializator &s) const {
 	s.add(name);
@@ -165,7 +165,7 @@ void Object::play(const std::string &id, const bool repeat) {
 		return;
 	}
 
-	_events.push_back(Event(id, repeat, pose->sound, pose));
+	_events.push_back(Event(id, repeat, pose->sound, pose->gain, pose));
 }
 
 void Object::playNow(const std::string &id) {
@@ -177,7 +177,7 @@ void Object::playNow(const std::string &id) {
 		return;
 	}
 	_pos = 0;
-	_events.push_front(Event(id, false, pose->sound, pose));
+	_events.push_front(Event(id, false, pose->sound, pose->gain, pose));
 }
 
 void Object::cancel() {
@@ -258,9 +258,9 @@ void Object::tick(const float dt) {
 		event.played = true;
 		if (!event.sound.empty()) {
 			if (event.sound[0] != '@') {
-				Mixer->playSample(this, event.sound, event.repeat);
+				Mixer->playSample(this, event.sound, event.repeat, event.gain);
 			} else {
-				Mixer->playRandomSample(this, event.sound.substr(1), event.repeat);
+				Mixer->playRandomSample(this, event.sound.substr(1), event.repeat, event.gain);
 			}
 		}
 	}
@@ -286,12 +286,12 @@ void Object::tick(const float dt) {
 	} 
 }
 
-void Object::playSound(const std::string &name, const bool loop) {
-	Mixer->playSample(this, name + ".ogg", loop);
+void Object::playSound(const std::string &name, const bool loop, const float gain) {
+	Mixer->playSample(this, name + ".ogg", loop, gain);
 }
 
-void Object::playRandomSound(const std::string &classname, const bool loop) {
-	Mixer->playRandomSample(this, classname, loop);
+void Object::playRandomSound(const std::string &classname, const bool loop, const float gain) {
+	Mixer->playRandomSample(this, classname, loop, gain);
 }
 
 

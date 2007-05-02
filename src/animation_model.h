@@ -25,11 +25,12 @@
 
 class Pose {
 public:
-	Pose(const float speed, const int z, const std::string &sound) : speed(speed), z(z), sound(sound), frames() {}
+	Pose(const float speed, const int z, const std::string &sound) : speed(speed), z(z), sound(sound), gain(1.0f), frames() {}
 
 	const float speed;
 	int z;
 	std::string sound;
+	float gain;
 	std::vector<unsigned int> frames;
 };
 

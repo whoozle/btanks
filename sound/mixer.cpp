@@ -243,7 +243,7 @@ void IMixer::loadSample(const std::string &filename, const std::string &classnam
 		_classes[classname].insert(filename);
 }
 
-void IMixer::playRandomSample(const Object *o, const std::string &classname, const bool loop) {
+void IMixer::playRandomSample(const Object *o, const std::string &classname, const bool loop, const float gain) {
 	if (_nosound || classname.empty())
 		return;
 	
@@ -263,7 +263,7 @@ void IMixer::playRandomSample(const Object *o, const std::string &classname, con
 		++s;
 
 	assert(s != samples.end());
-	playSample(o, *s, loop);
+	playSample(o, *s, loop, gain);
 }
 
 const bool IMixer::generateSource(ALuint &source) {
@@ -325,7 +325,7 @@ void IMixer::deleteSource(const ALuint source) {
 	//LOG_DEBUG(("mark source %08x as free", (unsigned)source));
 }
 
-void IMixer::playSample(const Object *o, const std::string &name, const bool loop) {
+void IMixer::playSample(const Object *o, const std::string &name, const bool loop, const float gain) {
 	if (_nosound || name.empty())
 		return;
 
@@ -352,8 +352,11 @@ void IMixer::playSample(const Object *o, const std::string &name, const bool loo
 		source_pos.y /= -k;
 		
 		GET_CONFIG_VALUE("engine.sound.maximum-distance", float, md, 60.0f);
-		if (source_pos.quick_distance(listener_pos) > (md * md) )
+		float d = source_pos.distance(listener_pos);
+		if (d > md) {
+			LOG_DEBUG(("sound %s was skipped (distance: %g)", name.c_str(), d));
 			return;
+		}
 	}
 	
 	const Sample &sample = *(i->second);
@@ -388,8 +391,9 @@ void IMixer::playSample(const Object *o, const std::string &name, const bool loo
 				
 		alSourcei (source, AL_BUFFER,   sample.buffer);
 		alSourcef (source, AL_PITCH,    1.0          );
-		alSourcef (source, AL_GAIN,     _volume_fx   );
+		alSourcef (source, AL_GAIN,     _volume_fx * gain  );
 		alSourcei (source, AL_LOOPING,  loop?AL_TRUE:AL_FALSE );
+		LOG_DEBUG(("playSample('%s', %s, %g)", name.c_str(), loop?"loop":"once", _volume_fx * gain));
 		alSourcePlay(source);
 		AL_CHECK(("alSourcePlay(%08x, '%s', %s)", (unsigned)source, name.c_str(), loop?"loop":"once"));
 
