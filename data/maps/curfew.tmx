@@ -64,11 +64,11 @@
   <property name="object:car:orange-bus:3" value="2351,1743"/>
   <property name="object:heal:heal:10" value="978,1656"/>
   <property name="object:car:orange-bus:2" value="1328,1821"/>
-  <property name="object:regular-mine:regular-mine:4" value="2439,866,-10"/>
-  <property name="object:regular-mine:regular-mine:3" value="2451,1034,-10"/>
-  <property name="object:regular-mine:regular-mine:2" value="527,1041,-10"/>
+  <property name="object:armed-mine:regular-mine:4" value="2439,866,-10"/>
+  <property name="object:armed-mine:regular-mine:3" value="2451,1034,-10"/>
+  <property name="object:armed-mine:regular-mine:2" value="527,1041,-10"/>
   <property name="edge:15:18" value=""/>
-  <property name="object:regular-mine:regular-mine:1" value="1896,1891,160"/>
+  <property name="object:armed-mine:regular-mine:1" value="1896,1891,160"/>
   <property name="edge:15:16" value=""/>
   <property name="object:bus-stop:bus-stop-left:5" value="1140,1733"/>
   <property name="object:bus-stop:bus-stop-left:4" value="510,1376"/>
