@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <map version="0.99b" orientation="orthogonal" width="25" height="20" tilewidth="64" tileheight="64">
  <properties>
+  <property name="ambient-sound" value="country.ogg"/>
   <property name="object:cow:cow:14" value="379,616"/>
   <property name="object:cow:cow:8" value="1387,1223"/>
   <property name="object:cow:cow:13" value="377,663"/>

@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <map version="0.99b" orientation="orthogonal" width="25" height="22" tilewidth="64" tileheight="64">
  <properties>
+  <property name="ambient-sound" value="city.ogg"/>
   <property name="object:umbrella:umbrella:1" value="1098,182"/>
   <property name="object:traffic-lights:traffic-lights:10" value="198,422"/>
   <property name="object:static-launcher:yellow-launcher:1" value="1411,4"/>

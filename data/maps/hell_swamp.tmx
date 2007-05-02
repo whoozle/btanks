@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <map version="0.99b" orientation="orthogonal" width="40" height="30" tilewidth="64" tileheight="64">
  <properties>
+  <property name="ambient-sound" value="swamp.ogg"/>
   <property name="object:static-dirt:dirt:35" value="1140,724,-10"/>
   <property name="object:static-dirt:dirt:34" value="1074,696,-10"/>
   <property name="object:nuke-missiles-item:nuke-missiles-item:11" value="1882,214,250"/>

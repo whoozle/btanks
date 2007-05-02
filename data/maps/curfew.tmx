@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <map version="0.99b" orientation="orthogonal" width="40" height="30" tilewidth="64" tileheight="64">
  <properties>
+  <property name="ambient-sound" value="city.ogg"/>
   <property name="edge:1:2" value=""/>
   <property name="object:stall:stall-right:1" value="512,474"/>
   <property name="object:dumb-missiles-item:dumb-missiles-item:7" value="2270,446"/>
