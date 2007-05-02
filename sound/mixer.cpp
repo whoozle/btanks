@@ -562,7 +562,9 @@ void IMixer::startAmbient(const std::string &fname) {
 		return;
 	if (_ambient == NULL)
 		_ambient = new OggStream(_ambient_source);
-	_ambient->play(Finder->find("sounds/ambient/" + fname), true, 1.0f);
+	TRY {
+		_ambient->play(Finder->find("sounds/ambient/" + fname), true, 1.0f);
+	} CATCH("startAmbient", {});
 }
 
 void IMixer::stopAmbient() {

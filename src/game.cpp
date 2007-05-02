@@ -452,11 +452,16 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects, const boo
 		const std::string &type = res[0];
 		
 		if (type != "spawn" && type != "object" && type != "waypoint" && 
-			type != "edge" && type != "config" && type != "zone")
+			type != "edge" && type != "config" && type != "zone" && type != "ambient-sound")
 			throw_ex(("unsupported line: '%s'", i->first.c_str()));
 		
 		if (!spawn_objects && type != "waypoint" && type != "edge" && type != "config")
 			continue;
+	
+		if (type == "ambient-sound") {
+			Mixer->startAmbient(i->second);
+			continue;
+		}
 	
 		v3<int> pos;
 		if (type != "edge" && type != "config") {
