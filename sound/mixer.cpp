@@ -286,6 +286,7 @@ const bool IMixer::generateSource(ALuint &source) {
 	//LOG_DEBUG(("searching source victim."));
 	ALfloat l_pos[] = { 0, 0, 0 };
 	alGetListenerfv(AL_POSITION, l_pos);
+	AL_CHECK(("alGetListenerfv(AL_POSITION)"));
 	LOG_DEBUG(("finding distant sources, listener position : %g %g %g", (float)l_pos[0], (float)l_pos[1], (float)l_pos[2]));
 	
 	v2<float> listener_pos((float)l_pos[0], (float)l_pos[1]);
@@ -295,6 +296,7 @@ const bool IMixer::generateSource(ALuint &source) {
 	for(Sources::iterator i = _sources.begin(); i != _sources.end(); ++i) {
 		ALfloat s_pos[] = { 0, 0, 0 };
 		alGetSourcefv(i->second, AL_POSITION, s_pos);
+		AL_CHECK(("alGetSourcefv(%08x, AL_POSITION)", (unsigned)i->second));
 		v2<float> source_pos((float)s_pos[0], (float)s_pos[1]);
 		float d = source_pos.distance(listener_pos);
 		LOG_DEBUG(("source position : %g %g %g, distance = %g", (float)s_pos[0], (float)s_pos[1], (float)s_pos[2], d));
@@ -307,6 +309,7 @@ const bool IMixer::generateSource(ALuint &source) {
 		source = victim->second;
 		LOG_DEBUG(("killing source %08x with distance %g", (unsigned)source, max_d));
 		alSourceStop(source);
+		AL_CHECK_NON_FATAL(("alSourceStop(%08x)", source));
 		_sources.erase(victim);
 		return true;
 	}
@@ -318,6 +321,10 @@ const bool IMixer::generateSource(ALuint &source) {
 void IMixer::deleteSource(const ALuint source) {
 	//alDeleteSources(1, &source);
 	alSourceStop(source);
+	AL_CHECK_NON_FATAL(("alSourceStop(%08x)", source));
+	alSourcei(source, AL_BUFFER, AL_NONE);
+	AL_CHECK_NON_FATAL(("alSourcei(%08x, AL_BUFFER, AL_NONE)", source));
+	
 	_free_sources.insert(source);
 	LOG_DEBUG(("source %08x freed", (unsigned)source));
 }
@@ -342,6 +349,8 @@ void IMixer::playSample(const Object *o, const std::string &name, const bool loo
 		
 		ALfloat l_pos[] = { 0, 0, 0 };
 		alGetListenerfv(AL_POSITION, l_pos);
+		AL_CHECK(("alGetListenerfv(AL_POSITION)"));
+
 		v2<float> listener_pos((float)l_pos[0], (float)l_pos[1]), source_pos = pos;
 		
 		//LOG_DEBUG(("listener position : %g %g %g", (float)l_pos[0], (float)l_pos[1], (float)l_pos[2]));
@@ -357,29 +366,40 @@ void IMixer::playSample(const Object *o, const std::string &name, const bool loo
 	}
 	
 	const Sample &sample = *(i->second);
+	ALuint source;
+	if (!generateSource(source)) {
+		LOG_WARN(("cannot generate source. skip sound %s", name.c_str()));
+		return;
+	}
 	TRY {
-		ALuint source;
-		if (!generateSource(source)) {
-			LOG_WARN(("cannot generate source. skip sound %s", name.c_str()));
-			return;
-		}
+		LOG_DEBUG(("playSample('%s', %s, %g)", name.c_str(), loop?"loop":"once", _volume_fx * gain));
 		
 		alSourceStop(source);
-		
+		AL_CHECK_NON_FATAL(("alSourceStop(%08x)", source));
+
 		if (o) {
 			ALfloat al_pos[] = { pos.x / k, -pos.y / k, 0*o->getZ() / k };
 			ALfloat al_vel[] = { vel.x / k, -vel.y / k, 0 };
 			alSourcefv(source, AL_POSITION, al_pos       );
+			AL_CHECK(("alSourcefv(%08x, AL_POSITION)", source));
 			alSourcefv(source, AL_VELOCITY, al_vel       );
-			alSourcef (source, AL_ROLLOFF_FACTOR,  1.0          );
+			AL_CHECK(("alSourcefv(%08x, AL_VELOCITY)", source));
+			alSourcef (source, AL_ROLLOFF_FACTOR,  1.0   );
+			AL_CHECK(("alSourcef(%08x, AL_ROLLOFF_FACTOR, 1.0)", source));
 			alSourcei (source, AL_SOURCE_RELATIVE, AL_FALSE     );
+			AL_CHECK(("alSourcei(%08x, AL_SOURCE_RELATIVE, AL_FALSE)", source));
 		} else {
 			alSource3f(source, AL_POSITION,        0.0, 0.0, 0.0);
+			AL_CHECK(("alSource3f(%08x, AL_POSITION)", source));
 			alSource3f(source, AL_VELOCITY,        0.0, 0.0, 0.0);
+			AL_CHECK(("alSource3f(%08x, AL_VELOCITY)", source));
 			alSource3f(source, AL_DIRECTION,       0.0, 0.0, 0.0);
+			AL_CHECK(("alSource3f(%08x, AL_DIRECTION)", source));
 				
 			alSourcef (source, AL_ROLLOFF_FACTOR,  0.0          );
+			AL_CHECK(("alSourcef(%08x, AL_ROLLOFF_FACTOR, 0.0)", source));
 			alSourcei (source, AL_SOURCE_RELATIVE, AL_TRUE      );
+			AL_CHECK(("alSourcei(%08x, AL_SOURCE_RELATIVE, AL_TRUE)", source));
 		}
 	
 		//alSourcef (source, AL_REFERENCE_DISTANCE, (o->size.x + o->size.y) / k / 2);
@@ -390,15 +410,20 @@ void IMixer::playSample(const Object *o, const std::string &name, const bool loo
 		AL_CHECK(("alSourcei(%08x, AL_BUFFER, %08x)", (unsigned)source, (unsigned)sample.buffer));
 		
 		alSourcef (source, AL_PITCH,    1.0          );
+		AL_CHECK(("alSourcef(%08x, AL_PITCH, 1.0)", source));
 		alSourcef (source, AL_GAIN,     _volume_fx * gain  );
+		AL_CHECK(("alSourcef(%08x, AL_GAIN, %g)", source, _volume_fx * gain));
 		alSourcei (source, AL_LOOPING,  loop?AL_TRUE:AL_FALSE );
-		LOG_DEBUG(("playSample('%s', %s, %g)", name.c_str(), loop?"loop":"once", _volume_fx * gain));
+		AL_CHECK(("alSourcei(%08x, AL_LOOPING, %s)", source, loop?"AL_TRUE":"AL_FALSE"));
+
 		_sources.insert(Sources::value_type(Sources::key_type(id, name), source));
-		
-		alSourcePlay(source);
-		AL_CHECK(("alSourcePlay(%08x, '%s', %s)", (unsigned)source, name.c_str(), loop?"loop":"once"));
+
+		TRY {
+			alSourcePlay(source);
+			AL_CHECK(("alSourcePlay(%08x, '%s', %s)", (unsigned)source, name.c_str(), loop?"loop":"once"));
+		} CATCH("playSound", {});
 	
-	} CATCH("playSample", {});
+	} CATCH("playSample", {deleteSource(source);});
 }
 
 void IMixer::setFXVolume(const float volume) {
@@ -438,7 +463,9 @@ void IMixer::updateObject(const Object *o) {
 		if (i->first.first == id) {
 			ALuint source = i->second;
 			alSourcefv(source, AL_POSITION, al_pos);
+			AL_CHECK_NON_FATAL(("alSourcefv(%08x, AL_POSITION, {%g,%g,%g})", source, al_pos[0], al_pos[1], al_pos[2] ));
 			alSourcefv(source, AL_VELOCITY, al_vel);
+			AL_CHECK_NON_FATAL(("alSourcefv(%08x, AL_VELOCITY, {%g,%g,%g})", source, al_vel[0], al_vel[1], al_vel[2] ));
 		}
 	}
 }
@@ -462,9 +489,13 @@ void IMixer::tick(const float dt) {
 	TRY {
 		ALuint source = j->second;
 		ALenum state;
+		
 		alGetSourcei(source, AL_SOURCE_STATE, &state);
+		ALenum r = alGetError();
 
-		if (state != AL_PLAYING) {
+		if (r != AL_NO_ERROR || state != AL_PLAYING) {
+			if (r != AL_NO_ERROR)
+				LOG_ERROR(("alGetSourcei(%08x, AL_SOURCE_STATE): error %08x", source, (unsigned)r));
 			deleteSource(source);
 			_sources.erase(j++);
 			continue;
@@ -483,7 +514,9 @@ void IMixer::setListener(const v3<float> &pos, const v3<float> &vel, const float
 	ALfloat al_vel[] = { vel.x / k, -vel.y / k, 0*vel.z / k };
 		
 	alListenerfv(AL_POSITION,    al_pos);
+	AL_CHECK_NON_FATAL(("alListenerfv(AL_POSITION, {%g,%g,%g})", al_pos[0], al_pos[1], al_pos[2] ));
 	alListenerfv(AL_VELOCITY,    al_vel);
+	AL_CHECK_NON_FATAL(("alListenerfv(AL_VELOCITY, {%g,%g,%g})", al_vel[0], al_vel[1], al_vel[2] ));
 	//alListenerf (AL_REFERENCE_DISTANCE, r / k);
 	//alListenerfv(AL_ORIENTATION, al_vel);
 }
