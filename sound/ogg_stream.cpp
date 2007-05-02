@@ -80,10 +80,15 @@ void OggStream::_open() {
 	}
 
 	alSource3f(_source, AL_POSITION,        0.0, 0.0, 0.0);
+	AL_CHECK(("alSource3f(%08x, AL_POSITION, {0,0,0})", (unsigned)_source));
 	alSource3f(_source, AL_VELOCITY,        0.0, 0.0, 0.0);
+	AL_CHECK(("alSource3f(%08x, AL_VELOCITY, {0,0,0})", (unsigned)_source));
 	alSource3f(_source, AL_DIRECTION,       0.0, 0.0, 0.0);
+	AL_CHECK(("alSource3f(%08x, AL_DIRECTION, {0,0,0})", (unsigned)_source));
 	alSourcef (_source, AL_ROLLOFF_FACTOR,  0.0          );
+	AL_CHECK(("alSourcef(%08x, AL_ROLLOFF_FACTOR, 0.0)", (unsigned)_source));
 	alSourcei (_source, AL_SOURCE_RELATIVE, AL_TRUE      );
+	AL_CHECK(("alSourcei(%08x, AL_SOURCE_RELATIVE, AL_TRUE)", (unsigned)_source));
 }
 
 const bool OggStream::play() {
@@ -98,7 +103,9 @@ TRY {
 	}
 	if (i > 0) {
 		alSourceQueueBuffers(_source, i, _buffers);
+		AL_CHECK(("alSourceQueueBuffers(%08x, %d, %p)", _source, i, (const void *)_buffers));
 		alSourcePlay(_source);
+		AL_CHECK(("alSourcePlay(%08x)", _source));
 		return true;
 	}
 } CATCH("play()", throw;)
@@ -148,12 +155,11 @@ TRY {
 void OggStream::empty() {
 	int n = 0;
 	alGetSourcei(_source, AL_BUFFERS_QUEUED, &n);
+	AL_CHECK(("alGetSourcei(%08x, AL_BUFFERS_QUEUED)", _source));
 	while(n--) {
 		ALuint buffer;
 		alSourceUnqueueBuffers(_source, 1, &buffer);
-		TRY {
-			AL_CHECK(("alSourceUnqueueBuffers"));
-		} CATCH("empty", {})
+		AL_CHECK_NON_FATAL(("alSourceUnqueueBuffers(%08x, 1)", _source));
 	}					
 }
 
@@ -166,11 +172,14 @@ void OggStream::close() {
 	LOG_DEBUG(("deleting al source/buffers"));
 
 	alSourceStop(_source);
+	AL_CHECK_NON_FATAL(("alSourceStop(%08x)", (unsigned)_source));
 
-	empty();
+	TRY {
+		empty();
+	} CATCH("close", {});
 
 	alDeleteBuffers(_buffers_n, _buffers);
-	AL_CHECK(("alDeleteBuffers"));					    
+	AL_CHECK_NON_FATAL(("alDeleteBuffers"));
 
 	LOG_DEBUG(("deleting ogg context."));
 	ov_clear(&_ogg_stream);					   
@@ -185,6 +194,7 @@ const bool OggStream::playing() const {
 TRY {
 	ALenum state;
 	alGetSourcei(_source, AL_SOURCE_STATE, &state);
+	AL_CHECK(("alGetSourcei(%08x, AL_SOURCE_STATE)", _source));
 	return (state == AL_PLAYING);
 } CATCH("playing()", throw; )
 }
@@ -218,7 +228,7 @@ TRY {
 		return false;
  
 	alBufferData(buffer, _format, data.getPtr(), size, _vorbis_info->rate);
-	AL_CHECK(("alBufferData"));
+	AL_CHECK(("alBufferData(size: %d, rate: %ld)", size, _vorbis_info->rate));
 } CATCH("stream", throw;)
     return true;
 }
@@ -295,6 +305,7 @@ TRY {
 		while(_running) {
 			ALenum state;
 			alGetSourcei(_source, AL_SOURCE_STATE, &state);
+			AL_CHECK(("alGetSourcei(%08x, AL_SOURCE_STATE)", (unsigned)_source));
 	
 			if (state != AL_PLAYING)
 				break;
