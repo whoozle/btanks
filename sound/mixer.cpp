@@ -391,10 +391,10 @@ void IMixer::playSample(const Object *o, const std::string &name, const bool loo
 		alSourcef (source, AL_GAIN,     _volume_fx * gain  );
 		alSourcei (source, AL_LOOPING,  loop?AL_TRUE:AL_FALSE );
 		LOG_DEBUG(("playSample('%s', %s, %g)", name.c_str(), loop?"loop":"once", _volume_fx * gain));
+		_sources.insert(Sources::value_type(Sources::key_type(id, name), source));
+		
 		alSourcePlay(source);
 		AL_CHECK(("alSourcePlay(%08x, '%s', %s)", (unsigned)source, name.c_str(), loop?"loop":"once"));
-
-		_sources.insert(Sources::value_type(Sources::key_type(id, name), source));
 	
 	} CATCH("playSample", {});
 }
