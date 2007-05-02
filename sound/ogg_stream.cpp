@@ -176,16 +176,19 @@ void OggStream::empty() {
 }
 
 void OggStream::stop() {
+	LOG_DEBUG(("stop()"));
 	sdlx::AutoMutex m(_lock);
 	_running = false;
 	_filename.clear();
 }
 
 OggStream::~OggStream() {
+	sdlx::AutoMutex m(_lock);
 	_alive = false;
 	stop();
 	if (_idle)
 		_idle_sem.post();
+	m.unlock();
 	wait();
 }
 
