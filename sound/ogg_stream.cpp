@@ -27,7 +27,7 @@
 #include "sample.h"
 #include "al_ex.h"
 
-OggStream::OggStream(const ALuint source) : _source(source), _opened(false), _running(false), _repeat(false), _alive(true), _idle(true)  {
+OggStream::OggStream(const ALuint source) : _source(source), _opened(false), _running(false), _repeat(false), _alive(true), _idle(false)  {
 	GET_CONFIG_VALUE("engine.sound.polling-interval", int, delay, 10);
 	_delay = delay;
 	start();
@@ -35,6 +35,7 @@ OggStream::OggStream(const ALuint source) : _source(source), _opened(false), _ru
 
 
 void OggStream::play(const std::string &fname, const bool repeat, const float volume) {
+	LOG_DEBUG(("play('%s', %s, %g)", fname.c_str(), repeat?"loop":"once", volume));
 	stop();
 	_filename = fname;
 	_repeat = repeat;
@@ -50,6 +51,7 @@ void OggStream::play(const std::string &fname, const bool repeat, const float vo
 
 
 void OggStream::_open() {
+	LOG_DEBUG(("_open()"));
 	mrt::File file;
 	file.open(_filename, "rb");
 	int r = ov_open(file, &_ogg_stream, NULL, 0);
@@ -66,7 +68,8 @@ void OggStream::_open() {
 	else
 		_format = AL_FORMAT_STEREO16;
 	_opened = true;
-		
+	_filename.clear();
+			
 	GET_CONFIG_VALUE("engine.sound.buffers", int, bf, 4);
 	if (bf < 1 || bf > 32) 
 		throw_ex(("engine.sound.buffers must be in (1,32) range (%d)", bf));
@@ -326,13 +329,15 @@ void OggStream::playTune() {
 const int OggStream::run() {
 TRY {
 	while(_alive) {
-		LOG_DEBUG(("sound thread idle..."));
-		_idle = true;
-		_idle_sem.wait();
-		_idle = false;
+		if (_filename.empty()) {
+			LOG_DEBUG(("sound thread idle..."));
+			_idle = true;
+			_idle_sem.wait();
+			_idle = false;
+			LOG_DEBUG(("sound thread woke up..."));
+		}
 		if (!_alive)
 			break;
-		LOG_DEBUG(("sound thread woke up..."));
 		
 		do {
 			playTune();	
