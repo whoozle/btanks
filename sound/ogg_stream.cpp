@@ -183,9 +183,9 @@ void OggStream::stop() {
 }
 
 OggStream::~OggStream() {
+	stop();
 	sdlx::AutoMutex m(_lock);
 	_alive = false;
-	stop();
 	if (_idle)
 		_idle_sem.post();
 	m.unlock();
@@ -338,6 +338,7 @@ void OggStream::playTune() {
 const int OggStream::run() {
 TRY {
 	while(_alive) {
+		{
 		sdlx::AutoMutex m(_lock);
 
 		if (_filename.empty()) {
@@ -353,7 +354,8 @@ TRY {
 				LOG_ERROR(("idle handler exits with no filename set. weird."));
 				continue;
 			}
-		} else m.unlock();
+		}
+		} //end of lock
 		
 		if (!_alive)
 			break;
