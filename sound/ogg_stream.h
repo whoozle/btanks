@@ -33,10 +33,11 @@ class Chunk;
 class Sample;
 class OggStream : public sdlx::Thread {
 public: 
-	void open(const std::string &fname, const bool continuous, const float volume);
-	void close();
+	void play(const std::string &fname, const bool continuous, const float volume);
+	void stop();
 
 	const bool alive() const { return _running; }	
+	void backFromTheDead();
 		
 	OggStream(const ALuint source);
 	~OggStream();

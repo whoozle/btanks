@@ -185,7 +185,7 @@ const bool IMixer::play(const std::string &fname, const bool continuous) {
 		_ogg = new OggStream(_ogg_source);
 	}
 
-	_ogg->open(fname, continuous, _volume_music);
+	_ogg->play(fname, continuous, _volume_music);
 	return true;
 }
 

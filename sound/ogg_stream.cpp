@@ -33,8 +33,8 @@ OggStream::OggStream(const ALuint source) : _source(source), _opened(false), _ru
 }
 
 
-void OggStream::open(const std::string &fname, const bool repeat, const float volume) {
-	close();
+void OggStream::play(const std::string &fname, const bool repeat, const float volume) {
+	stop();
 	_filename = fname;
 	_running = true;
 	_repeat = repeat;
@@ -163,7 +163,7 @@ void OggStream::empty() {
 	}					
 }
 
-void OggStream::close() {
+void OggStream::stop() {
 	if (!_opened)
 		return;
 	
@@ -187,7 +187,7 @@ void OggStream::close() {
 }
 
 OggStream::~OggStream() {
-	close();
+	stop();
 }
 
 const bool OggStream::playing() const {
@@ -316,7 +316,7 @@ TRY {
 		
 	} while(_running && _repeat);	
 	_running = false;
-	LOG_DEBUG(("sound thread exits.."));
+	LOG_DEBUG(("sound thread idle.."));
 	return 0;
 } CATCH("OggStream::run", { _running = false; })
 return 1;
@@ -328,4 +328,8 @@ void OggStream::setVolume(const float volume) {
 	
 	alSourcef(_source, AL_GAIN, volume);
 	AL_CHECK(("alSourcef(AL_GAIN, %g)", volume));
+}
+
+void OggStream::backFromTheDead() {
+	
 }
