@@ -39,7 +39,7 @@
 
 IMPLEMENT_SINGLETON(Mixer, IMixer);
 
-IMixer::IMixer() : _no_more_sources(false), _nosound(true), _nomusic(true), _update_objects(true), _ogg(NULL), _ogg_source(0),
+IMixer::IMixer() : _no_more_sources(false), _nosound(true), _nomusic(true), _ogg(NULL), _ogg_source(0),
 	_volume_fx(1.0f), _volume_music(1.0f) {}
 
 void IMixer::init(const bool nosound, const bool nomusic) {
@@ -50,8 +50,6 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 
 	Config->get("engine.sound.volume.fx", _volume_fx, 1.0f);
 	Config->get("engine.sound.volume.music", _volume_music, 1.0f);
-	GET_CONFIG_VALUE("engine.sound.update-objects-interval", float, uoi, 0.1);
-	_update_objects.set(uoi);
 	
 	LOG_DEBUG(("volumes: music: %g, fx: %g", _volume_music, _volume_fx));
 	
@@ -306,11 +304,10 @@ const bool IMixer::generateSource(ALuint &source) {
 		}
 	}
 	if (victim != _sources.end()) {
-		ALuint v_source = victim->second;
-		LOG_DEBUG(("killing source %08x with distance %g", (unsigned)v_source, max_d));
-		alSourceStop(v_source);
+		source = victim->second;
+		LOG_DEBUG(("killing source %08x with distance %g", (unsigned)source, max_d));
+		alSourceStop(source);
 		_sources.erase(victim);
-		source = v_source;
 		return true;
 	}
 	
@@ -322,7 +319,7 @@ void IMixer::deleteSource(const ALuint source) {
 	//alDeleteSources(1, &source);
 	alSourceStop(source);
 	_free_sources.insert(source);
-	//LOG_DEBUG(("mark source %08x as free", (unsigned)source));
+	LOG_DEBUG(("source %08x freed", (unsigned)source));
 }
 
 void IMixer::playSample(const Object *o, const std::string &name, const bool loop, const float gain) {
@@ -457,9 +454,6 @@ void IMixer::tick(const float dt) {
 	}
 
 	if (_nosound) 
-		return;
-		
-	if (!_update_objects.tick(dt))
 		return;
 		
 	for(Sources::iterator j = _sources.begin(); j != _sources.end();) {

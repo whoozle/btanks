@@ -72,7 +72,6 @@ private:
 	void deleteSource(const ALuint source);
 
 	bool _nosound, _nomusic;
-	Alarm _update_objects;
 	
 	typedef std::map<const std::string, Sample *> Sounds;
 	Sounds _sounds;
