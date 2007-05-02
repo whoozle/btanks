@@ -532,8 +532,6 @@ void IMixer::cancelSample(const Object *o, const std::string &name) {
 }
 
 void IMixer::cancelAll(const Object *o) {
-	stopAmbient();
-	
 	if (_nosound)
 		return;
 	
@@ -548,8 +546,11 @@ void IMixer::cancelAll(const Object *o) {
 
 
 void IMixer::cancelAll() {
+	stopAmbient();
+	
 	if (_nosound)
 		return;
+
 	if (!_sources.empty()) {
 		LOG_DEBUG(("stop playing anything"));
 		for(Sources::iterator j = _sources.begin(); j != _sources.end(); ++j) {
