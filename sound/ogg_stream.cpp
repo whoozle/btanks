@@ -71,7 +71,8 @@ void OggStream::_open() {
 	else
 		_format = AL_FORMAT_STEREO16;
 	_opened = true;
-	_filename.clear();
+	if (!_repeat)
+		_filename.clear();
 	
 	GET_CONFIG_VALUE("engine.sound.buffers", int, bf, 4);
 	if (bf < 1 || bf > 32) 
@@ -174,7 +175,9 @@ void OggStream::empty() {
 }
 
 void OggStream::stop() {
+	sdlx::AutoMutex m(_lock);
 	_running = false;
+	_filename.clear();
 }
 
 OggStream::~OggStream() {
@@ -326,7 +329,6 @@ void OggStream::playTune() {
 	LOG_DEBUG(("deleting ogg context."));
 	ov_clear(&_ogg_stream);					   
 	_opened = false;
-	_running = false;
 }
 
 const int OggStream::run() {
