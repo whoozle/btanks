@@ -27,21 +27,25 @@
 #include "sample.h"
 #include "al_ex.h"
 
-OggStream::OggStream(const ALuint source) : _source(source), _opened(false), _running(false), _repeat(false)  {
+OggStream::OggStream(const ALuint source) : _source(source), _opened(false), _running(false), _repeat(false), _alive(true), _idle(true)  {
 	GET_CONFIG_VALUE("engine.sound.polling-interval", int, delay, 10);
 	_delay = delay;
+	start();
 }
 
 
 void OggStream::play(const std::string &fname, const bool repeat, const float volume) {
 	stop();
 	_filename = fname;
-	_running = true;
 	_repeat = repeat;
 
 	_volume = volume;
-
-	start();
+	if (_idle) {
+		_idle_sem.post();
+		_running = true;
+	} else {
+		_running = false;
+	}
 }
 
 
@@ -164,30 +168,15 @@ void OggStream::empty() {
 }
 
 void OggStream::stop() {
-	if (!_opened)
-		return;
-	
 	_running = false;
-	wait();
-	LOG_DEBUG(("deleting al source/buffers"));
-
-	alSourceStop(_source);
-	AL_CHECK_NON_FATAL(("alSourceStop(%08x)", (unsigned)_source));
-
-	TRY {
-		empty();
-	} CATCH("close", {});
-
-	alDeleteBuffers(_buffers_n, _buffers);
-	AL_CHECK_NON_FATAL(("alDeleteBuffers"));
-
-	LOG_DEBUG(("deleting ogg context."));
-	ov_clear(&_ogg_stream);					   
-	_opened = false;
 }
 
 OggStream::~OggStream() {
+	_alive = false;
 	stop();
+	if (_idle)
+		_idle_sem.post();
+	wait();
 }
 
 const bool OggStream::playing() const {
@@ -214,7 +203,7 @@ TRY {
 
 	while(size < buffer_size) {
 		int r = ov_read(&_ogg_stream, ((char *)data.getPtr()) + size, buffer_size - size, 0, 2, 1, & section);
-		//LOG_DEBUG(("ov_read(%d) = %d (section: %d)", size, r, section));
+		//LOG_DEBUG(("ov_read(%d) = %d (section: %d)", buffer_size - size, r, section));
     
 		if(r > 0) {
 			size += r;
@@ -280,17 +269,18 @@ void OggStream::decode(Sample &sample, const std::string &fname) {
 	ov_clear(&ogg);	
 }
 
-const int OggStream::run() {
-TRY {
-	do {
-		TRY {
-			_open();
-		} CATCH("run::_open", throw;)
-		TRY {
-			setVolume(_volume);
-		} CATCH("run::setVolume", )
+void OggStream::playTune() {
+	_running = true;
 	TRY {
-    	while(_running && update()) {
+		_open();
+	} CATCH("playTune::_open", throw;)
+
+	TRY {
+		setVolume(_volume);
+	} CATCH("playTune::setVolume", )
+
+	TRY {
+    	while(_alive && _running && update()) {
 			if(!playing()) {
 				if(!play()) {
 					LOG_WARN(("Ogg abruptly stopped."));
@@ -300,9 +290,10 @@ TRY {
 			} else 
 				SDL_Delay(_delay);
 		}
-	} CATCH("run(main loop)", throw;)
+	} CATCH("playTune(main loop)", throw;)
+
 	TRY { 
-		while(_running) {
+		while(_alive && _running) {
 			ALenum state;
 			alGetSourcei(_source, AL_SOURCE_STATE, &state);
 			AL_CHECK(("alGetSourcei(%08x, AL_SOURCE_STATE)", (unsigned)_source));
@@ -312,13 +303,44 @@ TRY {
 			else
 				SDL_Delay(_delay);
 		}
-	} CATCH("run(flush)", throw;)
-		
-	} while(_running && _repeat);	
+	} CATCH("playTune(flush)", throw;)
+
+	LOG_DEBUG(("deleting al source/buffers"));
+
+	alSourceStop(_source);
+	AL_CHECK_NON_FATAL(("alSourceStop(%08x)", (unsigned)_source));
+
+	TRY {
+		empty();
+	} CATCH("close", {});
+
+	alDeleteBuffers(_buffers_n, _buffers);
+	AL_CHECK_NON_FATAL(("alDeleteBuffers"));
+
+	LOG_DEBUG(("deleting ogg context."));
+	ov_clear(&_ogg_stream);					   
+	_opened = false;
 	_running = false;
-	LOG_DEBUG(("sound thread idle.."));
+}
+
+const int OggStream::run() {
+TRY {
+	while(_alive) {
+		LOG_DEBUG(("sound thread idle..."));
+		_idle = true;
+		_idle_sem.wait();
+		_idle = false;
+		if (!_alive)
+			break;
+		LOG_DEBUG(("sound thread woke up..."));
+		
+		do {
+			playTune();	
+		} while(_running && _repeat);	
+		_running = false;
+	}
 	return 0;
-} CATCH("OggStream::run", { _running = false; })
+} CATCH("OggStream::run", { _alive = false; _running = false; })
 return 1;
 }
 
@@ -330,6 +352,3 @@ void OggStream::setVolume(const float volume) {
 	AL_CHECK(("alSourcef(AL_GAIN, %g)", volume));
 }
 
-void OggStream::backFromTheDead() {
-	
-}

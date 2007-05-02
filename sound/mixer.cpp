@@ -469,12 +469,8 @@ void IMixer::updateObject(const Object *o) {
 
 void IMixer::tick(const float dt) {
 	if (!_nomusic) {
-		if (_ogg != NULL && !_ogg->alive()) {
-			delete _ogg;
-			_ogg = NULL;
-		}
-		if (_ogg == NULL) {
-			LOG_DEBUG(("big fixme. remove this ugly sound thread restart..."));
+		if (_ogg != NULL && _ogg->idle()) {
+			//LOG_DEBUG(("sound thread idle"));
 			play();
 		}
 	}

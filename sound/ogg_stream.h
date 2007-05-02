@@ -27,6 +27,8 @@
 #include <vorbis/vorbisfile.h>
 
 #include "sdlx/thread.h"
+#include "sdlx/semaphore.h"
+
 namespace mrt {
 class Chunk;
 }
@@ -36,8 +38,7 @@ public:
 	void play(const std::string &fname, const bool continuous, const float volume);
 	void stop();
 
-	const bool alive() const { return _running; }	
-	void backFromTheDead();
+	const bool idle() const { return _idle; }	
 		
 	OggStream(const ALuint source);
 	~OggStream();
@@ -46,7 +47,8 @@ public:
 	void setVolume(const float v);
 
 private: 
-
+	
+	void playTune();
 
 	const bool playing() const;
 	const bool play();
@@ -66,7 +68,8 @@ private:
 	ALuint _source;
 	ALenum _format;
 	
-	volatile bool _opened, _running, _repeat;
+	volatile bool _opened, _running, _repeat, _alive, _idle;
+	sdlx::Semaphore _idle_sem;
 	int _delay;
 	
 	float _volume;
