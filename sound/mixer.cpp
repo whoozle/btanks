@@ -374,9 +374,6 @@ void IMixer::playSample(const Object *o, const std::string &name, const bool loo
 	TRY {
 		LOG_DEBUG(("playSample('%s', %s, %g)", name.c_str(), loop?"loop":"once", _volume_fx * gain));
 		
-		alSourceStop(source);
-		AL_CHECK_NON_FATAL(("alSourceStop(%08x)", source));
-
 		if (o) {
 			ALfloat al_pos[] = { pos.x / k, -pos.y / k, 0*o->getZ() / k };
 			ALfloat al_vel[] = { vel.x / k, -vel.y / k, 0 };
