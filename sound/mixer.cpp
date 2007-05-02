@@ -124,6 +124,8 @@ void IMixer::deinit() {
 	LOG_DEBUG(("cleaning up mixer..."));	
 	delete _ogg; 
 	_ogg = NULL;
+	delete _ambient; 
+	_ambient = NULL;
 	
 	for(std::set<ALuint>::iterator i = _free_sources.begin(); i != _free_sources.end(); ++i) {
 		alDeleteSources(1, &*i);
