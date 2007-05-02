@@ -74,7 +74,7 @@ void OggStream::_open() {
 	if (!_repeat)
 		_filename.clear();
 	
-	GET_CONFIG_VALUE("engine.sound.buffers", int, bf, 4);
+	GET_CONFIG_VALUE("engine.sound.buffers", int, bf, 8);
 	if (bf < 1 || bf > 32) 
 		throw_ex(("engine.sound.buffers must be in (1,32) range (%d)", bf));
 	_buffers_n = bf;
@@ -204,7 +204,7 @@ TRY {
 	
 	mrt::Chunk data;
 	
-	GET_CONFIG_VALUE("engine.sound.file-buffer-size", int, buffer_size, 32768);
+	GET_CONFIG_VALUE("engine.sound.file-buffer-size", int, buffer_size, 8192);
 	data.setSize(buffer_size);
 	
 	int  size = 0;
