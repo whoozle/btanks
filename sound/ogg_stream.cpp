@@ -36,8 +36,9 @@ OggStream::OggStream(const ALuint source) : _source(source), _opened(false), _ru
 
 void OggStream::play(const std::string &fname, const bool repeat, const float volume) {
 	LOG_DEBUG(("play('%s', %s, %g)", fname.c_str(), repeat?"loop":"once", volume));
-	sdlx::AutoMutex m(_lock);
 	stop();
+
+	sdlx::AutoMutex m(_lock);
 	_filename = fname;
 	_repeat = repeat;
 
@@ -344,6 +345,11 @@ TRY {
 			_idle_sem.wait();
 			_idle = false;
 			LOG_DEBUG(("sound thread woke up..."));
+			m.lock();
+			if (_filename.empty()) {
+				LOG_ERROR(("idle handler exits with no filename set. weird."));
+				continue;
+			}
 		} else m.unlock();
 		
 		if (!_alive)
