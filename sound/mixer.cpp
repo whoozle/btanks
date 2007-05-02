@@ -387,6 +387,8 @@ void IMixer::playSample(const Object *o, const std::string &name, const bool loo
 		//float max_dist_al = max_dist / k;
 				
 		alSourcei (source, AL_BUFFER,   sample.buffer);
+		AL_CHECK(("alSourcei(%08x, AL_BUFFER, %08x)", (unsigned)source, (unsigned)sample.buffer));
+		
 		alSourcef (source, AL_PITCH,    1.0          );
 		alSourcef (source, AL_GAIN,     _volume_fx * gain  );
 		alSourcei (source, AL_LOOPING,  loop?AL_TRUE:AL_FALSE );
