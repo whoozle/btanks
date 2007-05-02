@@ -49,9 +49,9 @@ private:
 	throw_al(r, fmt); \
 }
 
-#define AL_CHECK_NON_FATAL(fmt) { \
-	if (alGetError() != AL_NO_ERROR) \
-		LOG_ERROR(fmt); \
+#define AL_CHECK_NON_FATAL(fmt) { ALenum r; \
+	if ((r = alGetError()) != AL_NO_ERROR) \
+		LOG_ERROR(("%s: error %08x", (mrt::formatString fmt ).c_str(), (unsigned)r)); \
 }
 
 #define ALUT_CHECK(fmt) { ALenum r; \
