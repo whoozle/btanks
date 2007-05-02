@@ -62,6 +62,9 @@ public:
 	
 	IMixer();
 	~IMixer();
+	
+	void startAmbient(const std::string &fname);
+	void stopAmbient();
 
 private:
 
@@ -85,8 +88,8 @@ private:
 	typedef std::map<const std::string, bool> PlayList;
 	PlayList _playlist;
 	std::string _now_playing;
-	OggStream * _ogg;
-	ALuint _ogg_source;
+	OggStream * _ogg, *_ambient;
+	ALuint _ogg_source, _ambient_source;
 	
 	float _volume_fx, _volume_music;
 	

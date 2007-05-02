@@ -39,7 +39,7 @@
 
 IMPLEMENT_SINGLETON(Mixer, IMixer);
 
-IMixer::IMixer() : _no_more_sources(false), _nosound(true), _nomusic(true), _ogg(NULL), _ogg_source(0),
+IMixer::IMixer() : _no_more_sources(false), _nosound(true), _nomusic(true), _ogg(NULL), _ambient(NULL), _ogg_source(0),
 	_volume_fx(1.0f), _volume_music(1.0f) {}
 
 void IMixer::init(const bool nosound, const bool nomusic) {
@@ -92,14 +92,14 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 
 		if (!generateSource(_ogg_source))
 			throw_ex(("cannot generate source for music stream"));
+		if (!generateSource(_ambient_source))
+			throw_ex(("cannot generate source for ambient stream"));
 		
 	} CATCH("alutInit", {
 		LOG_DEBUG(("there was error(s) during initialization, disabling sounds."));
 		_nosound = _nomusic = true;
 		return;
-	})
-	
-	
+	})	
 	
 	TRY {
 		GET_CONFIG_VALUE("engine.sound.doppler-factor", float, df, 1.0);
@@ -530,6 +530,8 @@ void IMixer::cancelSample(const Object *o, const std::string &name) {
 }
 
 void IMixer::cancelAll(const Object *o) {
+	stopAmbient();
+	
 	if (_nosound)
 		return;
 	
@@ -553,4 +555,18 @@ void IMixer::cancelAll() {
 		}
 	}
 	_sources.clear();
+}
+
+void IMixer::startAmbient(const std::string &fname) {
+	if (_nosound) 
+		return;
+	if (_ambient == NULL)
+		_ambient = new OggStream(_ambient_source);
+	_ambient->play(Finder->find("sounds/ambient/" + fname), true, 1.0f);
+}
+
+void IMixer::stopAmbient() {
+	if (_nosound || _ambient == NULL) 
+		return;
+	_ambient->stop();
 }
