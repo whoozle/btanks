@@ -28,6 +28,7 @@
 
 #include "sdlx/thread.h"
 #include "sdlx/semaphore.h"
+#include "sdlx/mutex.h"
 
 namespace mrt {
 class Chunk;
@@ -57,6 +58,8 @@ private:
 	void empty();
 	void _open();
 	const bool stream(ALuint buffer);
+
+	sdlx::Mutex _lock;
 
 	std::string _filename;
 	FILE * _file;

@@ -36,6 +36,7 @@ OggStream::OggStream(const ALuint source) : _source(source), _opened(false), _ru
 
 void OggStream::play(const std::string &fname, const bool repeat, const float volume) {
 	LOG_DEBUG(("play('%s', %s, %g)", fname.c_str(), repeat?"loop":"once", volume));
+	sdlx::AutoMutex m(_lock);
 	stop();
 	_filename = fname;
 	_repeat = repeat;
@@ -51,6 +52,8 @@ void OggStream::play(const std::string &fname, const bool repeat, const float vo
 
 
 void OggStream::_open() {
+	sdlx::AutoMutex m(_lock);
+
 	LOG_DEBUG(("_open()"));
 	mrt::File file;
 	file.open(_filename, "rb");
@@ -69,7 +72,7 @@ void OggStream::_open() {
 		_format = AL_FORMAT_STEREO16;
 	_opened = true;
 	_filename.clear();
-			
+	
 	GET_CONFIG_VALUE("engine.sound.buffers", int, bf, 4);
 	if (bf < 1 || bf > 32) 
 		throw_ex(("engine.sound.buffers must be in (1,32) range (%d)", bf));
@@ -329,13 +332,18 @@ void OggStream::playTune() {
 const int OggStream::run() {
 TRY {
 	while(_alive) {
+		sdlx::AutoMutex m(_lock);
+
 		if (_filename.empty()) {
+			m.unlock();
+			
 			LOG_DEBUG(("sound thread idle..."));
 			_idle = true;
 			_idle_sem.wait();
 			_idle = false;
 			LOG_DEBUG(("sound thread woke up..."));
-		}
+		} else m.unlock();
+		
 		if (!_alive)
 			break;
 		

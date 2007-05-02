@@ -48,11 +48,15 @@ AutoMutex::AutoMutex(const Mutex &m, const bool lock) : _mutex(m), _locked(lock)
 }
 
 void AutoMutex::lock() const {
+	if (_locked)
+		throw_ex(("lock called on locked automutex"));
 	_mutex.lock();
 	_locked = true;
 }
 
 void AutoMutex::unlock() const {
+	if (!_locked)
+		throw_ex(("unlock called on unlocked automutex"));
 	_mutex.unlock();
 	_locked = false;
 }
