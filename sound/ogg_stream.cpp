@@ -28,6 +28,17 @@
 #include "al_ex.h"
 
 OggStream::OggStream(const ALuint source) : _source(source), _opened(false), _running(false), _repeat(false), _alive(true), _idle(false)  {
+	alSourcei (_source, AL_SOURCE_RELATIVE, AL_TRUE      );
+	AL_CHECK(("alSourcei(%08x, AL_SOURCE_RELATIVE, AL_TRUE)", (unsigned)_source));
+	alSource3f(_source, AL_POSITION,        0.0, 0.0, 0.0);
+	AL_CHECK(("alSource3f(%08x, AL_POSITION, {0,0,0})", (unsigned)_source));
+	alSource3f(_source, AL_VELOCITY,        0.0, 0.0, 0.0);
+	AL_CHECK(("alSource3f(%08x, AL_VELOCITY, {0,0,0})", (unsigned)_source));
+	alSource3f(_source, AL_DIRECTION,       0.0, 0.0, 0.0);
+	AL_CHECK(("alSource3f(%08x, AL_DIRECTION, {0,0,0})", (unsigned)_source));
+	alSourcef (_source, AL_ROLLOFF_FACTOR,  0.0          );
+	AL_CHECK(("alSourcef(%08x, AL_ROLLOFF_FACTOR, 0.0)", (unsigned)_source));
+
 	GET_CONFIG_VALUE("engine.sound.polling-interval", int, delay, 10);
 	_delay = delay;
 	start();
@@ -92,16 +103,6 @@ void OggStream::_open() {
 		}
 	}
 
-	alSource3f(_source, AL_POSITION,        0.0, 0.0, 0.0);
-	AL_CHECK(("alSource3f(%08x, AL_POSITION, {0,0,0})", (unsigned)_source));
-	alSource3f(_source, AL_VELOCITY,        0.0, 0.0, 0.0);
-	AL_CHECK(("alSource3f(%08x, AL_VELOCITY, {0,0,0})", (unsigned)_source));
-	alSource3f(_source, AL_DIRECTION,       0.0, 0.0, 0.0);
-	AL_CHECK(("alSource3f(%08x, AL_DIRECTION, {0,0,0})", (unsigned)_source));
-	alSourcef (_source, AL_ROLLOFF_FACTOR,  0.0          );
-	AL_CHECK(("alSourcef(%08x, AL_ROLLOFF_FACTOR, 0.0)", (unsigned)_source));
-	alSourcei (_source, AL_SOURCE_RELATIVE, AL_TRUE      );
-	AL_CHECK(("alSourcei(%08x, AL_SOURCE_RELATIVE, AL_TRUE)", (unsigned)_source));
 	LOG_DEBUG(("_open succedes"));
 }
 
