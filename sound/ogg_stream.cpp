@@ -354,6 +354,10 @@ TRY {
 			_idle = true;
 			m.unlock();
 			_idle_sem.wait();
+
+			if (!_alive)
+				break;
+				
 			m.lock();
 			_idle = false;
 			LOG_DEBUG(("sound thread woke up..."));
