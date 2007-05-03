@@ -1425,14 +1425,13 @@ const bool IWorld::getNearest(const Object *obj, const std::set<std::string> &cl
 	return true;
 }
 
-
-
-
-
-const int IWorld::getChildren(const int id) const {
+const int IWorld::getChildren(const int id, const std::string &classname) const {
 	int c = 0;
 	for(ObjectMap::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
-		if (i->first != id && i->second->_spawned_by == id || i->second->hasOwner(id)) 
+		if (i->first != id && 
+			(i->second->_spawned_by == id || i->second->hasOwner(id)) &&
+		   	(classname.empty() || (classname == i->second->classname))
+		  ) 
 			++c;
 	}
 	return c;

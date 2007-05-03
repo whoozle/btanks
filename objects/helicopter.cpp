@@ -71,7 +71,7 @@ void Helicopter::tick(const float dt) {
 	Object::tick(dt);
 	GET_CONFIG_VALUE("objects.helicopter-with-kamikazes.maximum-children", int, max_c, 10);
 	if (_active && _spawn.tick(dt)) {
-		if (World->getChildren(getID()) >= max_c) 
+		if (World->getChildren(getID(), "kamikaze") >= max_c) 
 			return;
 		
 		Matrix<int> matrix; 

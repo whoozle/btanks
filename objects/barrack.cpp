@@ -79,7 +79,7 @@ void Barrack::tick(const float dt) {
 		
 		int max_c;
 		Config->get("objects." + registered_name + ".maximum-children", max_c, 5);
-		int n = World->getChildren(getID());
+		int n = World->getChildren(getID(), std::string());
 		if (n < max_c) {
 			v2<float>dpos;
 			dpos.y = size.y / 2 + 16; //fixme: use debiloids size here.

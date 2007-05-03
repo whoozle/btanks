@@ -162,8 +162,7 @@ skip_left_toggle:
 		} else if (!mod_type.empty()) {
 			int n;
 			Config->get("objects.shilka.units-limit", n, 10); //fixme: add type restrictions
-			n += 2; //fake mod and unidentified object ;)
-			if (mod->getCount() > 0 && World->getChildren(getID()) < n) {
+			if (mod->getCount() > 0 && World->getChildren(getID(), "trooper") < n) {
 				spawn(mod_type + "(disembark)", mod_type, _direction*(size.length()/-2), v2<float>::empty);
 				mod->decreaseCount();
 			}
