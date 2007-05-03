@@ -86,8 +86,8 @@ else:
 		env.Append(CPPFLAGS='-O3 ')
 		
 	al_lib = 'openal'
-	env.Append(CPPFLAGS=' -Wall -pedantic -Wno-long-long -pipe ')
-	env.Append(CCFLAGS=' -Wall -pedantic -Wno-long-long -pipe ')
+	env.Append(CPPFLAGS=' -Wall -pedantic -Wno-long-long -pipe -pthread ')
+	env.Append(CCFLAGS=' -Wall -pedantic -Wno-long-long -pipe -pthread ')
 
 
 conf_env = env.Copy()
