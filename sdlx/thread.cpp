@@ -21,18 +21,24 @@
 #include "mrt/logger.h"
 #include <assert.h>
 
-using namespace sdlx;
-
-Thread::Thread() : _thread(NULL) {}
-
-static int thread_starter(void *o) {
+int sdlx_thread_starter(void *o) {
 	TRY {
-		Thread *t = reinterpret_cast<Thread *>(o);
+		sdlx::Thread *t = reinterpret_cast<sdlx::Thread *>(o);
 		assert(t != NULL);
-		return t->run();
+		return t->runWrap();
 	} CATCH("thread::run", );
 	return -1;
 }
+
+using namespace sdlx;
+
+const int Thread::runWrap() {
+	_starter.post();
+	return run();
+}
+
+Thread::Thread() : _thread(NULL) {}
+
 
 Thread::~Thread() {
 	if (_thread != NULL) 
@@ -50,7 +56,8 @@ Uint32 Thread::getID() const {
 void Thread::start() {
 	if (_thread != NULL) 
 		throw_ex(("thread was already started."));
-	_thread = SDL_CreateThread(thread_starter, reinterpret_cast<void *>(this));
+	_thread = SDL_CreateThread(sdlx_thread_starter, reinterpret_cast<void *>(this));
+	_starter.wait();
 }
 
 const int Thread::wait() {

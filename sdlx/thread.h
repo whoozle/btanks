@@ -21,6 +21,9 @@
 
 #include "sdlx.h"
 #include <SDL/SDL_thread.h>
+#include "semaphore.h"
+
+int sdlx_thread_starter(void *o);
 
 namespace sdlx {
 
@@ -31,16 +34,21 @@ public:
 
 	void start();
 
-	virtual const int run() = 0;
 
 	Uint32 getID() const;
 	
 	const int wait();
 	void kill();
+protected: 
+	virtual const int run() = 0;
+	friend int ::sdlx_thread_starter(void *o);
 private: 
+	const int runWrap();
+	
 	Thread(const Thread &);
 	const Thread& operator=(const Thread &);
 	SDL_Thread * _thread;
+	sdlx::Semaphore _starter;
 };
 
 }
