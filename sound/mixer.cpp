@@ -89,9 +89,10 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 			}
 			delete[] sources;
 		}
-
-		if (!generateSource(_ogg_source))
-			throw_ex(("cannot generate source for music stream"));
+		if (!nomusic) {
+			if (!generateSource(_ogg_source))
+				throw_ex(("cannot generate source for music stream"));
+		}
 		if (!generateSource(_ambient_source))
 			throw_ex(("cannot generate source for ambient stream"));
 		
@@ -110,13 +111,24 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 		alSpeedOfSound(sos);
 		AL_CHECK(("setting speed of sound"));
 	} CATCH("init", {});
+
+	_nosound = nosound;
+	
+	TRY {
+		if (!nomusic)
+			_ogg = new OggStream(_ogg_source);
+	} CATCH("music thread startup", { _nomusic = true; return; })
+
+	TRY {
+		if (!nosound)
+			_ambient = new OggStream(_ambient_source);
+	} CATCH("ambient thread startup", {})
 	
 	//TRY {
 	//	alDistanceModel(AL_EXPONENT_DISTANCE_CLAMPED);
 	//	AL_CHECK(("alDistanceModel"));
 	//} CATCH("setting distance model", {})
 	
-	_nosound = nosound;
 	_nomusic = nomusic;
 }
 
@@ -169,7 +181,7 @@ void IMixer::loadPlaylist(const std::string &file) {
 }
 
 const bool IMixer::play(const std::string &fname, const bool continuous) {
-	if (_nomusic) 
+	if (_ogg == NULL) 
 		return false;
 	
 	LOG_DEBUG(("playing %s",fname.c_str()));
@@ -181,10 +193,6 @@ const bool IMixer::play(const std::string &fname, const bool continuous) {
 	if (ext != "ogg") {
 		LOG_WARN(("cannot play non-ogg files(%s). fixme.", ext.c_str()));
 		return false;
-	}
-
-	if (_ogg == NULL) {
-		_ogg = new OggStream(_ogg_source);
 	}
 
 	_ogg->play(fname, continuous, _volume_music);
@@ -470,11 +478,9 @@ void IMixer::updateObject(const Object *o) {
 }
 
 void IMixer::tick(const float dt) {
-	if (!_nomusic) {
-		if (_ogg != NULL && _ogg->idle()) {
-			//LOG_DEBUG(("sound thread idle"));
-			play();
-		}
+	if (_ogg != NULL && _ogg->idle()) {
+		//LOG_DEBUG(("sound thread idle"));
+		play();
 	}
 
 	if (_nosound) 
@@ -563,15 +569,14 @@ void IMixer::cancelAll() {
 void IMixer::startAmbient(const std::string &fname) {
 	if (_nosound) 
 		return;
-	if (_ambient == NULL)
-		_ambient = new OggStream(_ambient_source);
 	TRY {
-		_ambient->play(Finder->find("sounds/ambient/" + fname), true, 1.0f);
+		if (_ambient)
+			_ambient->play(Finder->find("sounds/ambient/" + fname), true, 1.0f);
 	} CATCH("startAmbient", {});
 }
 
 void IMixer::stopAmbient() {
-	if (_nosound || _ambient == NULL) 
+	if (_ambient == NULL) 
 		return;
 	_ambient->stop();
 }
