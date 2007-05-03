@@ -55,7 +55,7 @@ void OggStream::play(const std::string &fname, const bool repeat, const float vo
 void OggStream::_open() {
 	sdlx::AutoMutex m(_lock);
 
-	LOG_DEBUG(("_open()"));
+	LOG_DEBUG(("_open(%s)", _filename.c_str()));
 	mrt::File file;
 	file.open(_filename, "rb");
 	int r = ov_open(file, &_ogg_stream, NULL, 0);
@@ -74,7 +74,8 @@ void OggStream::_open() {
 	_opened = true;
 	if (!_repeat)
 		_filename.clear();
-	
+
+	LOG_DEBUG(("generating openAL buffers..."));
 	GET_CONFIG_VALUE("engine.sound.buffers", int, bf, 8);
 	if (bf < 1 || bf > 32) 
 		throw_ex(("engine.sound.buffers must be in (1,32) range (%d)", bf));
@@ -101,6 +102,7 @@ void OggStream::_open() {
 	AL_CHECK(("alSourcef(%08x, AL_ROLLOFF_FACTOR, 0.0)", (unsigned)_source));
 	alSourcei (_source, AL_SOURCE_RELATIVE, AL_TRUE      );
 	AL_CHECK(("alSourcei(%08x, AL_SOURCE_RELATIVE, AL_TRUE)", (unsigned)_source));
+	LOG_DEBUG(("_open succedes"));
 }
 
 const bool OggStream::play() {
@@ -108,6 +110,7 @@ TRY {
 	if(playing())
 		return true;
 
+	sdlx::AutoMutex m(_lock);
 	unsigned int i;
 	for(i = 0; i < _buffers_n; ++i) {	
 		if(!stream(_buffers[i]))
@@ -128,6 +131,7 @@ const bool OggStream::update() {
 if (!_running)
 	return false;
 TRY {
+	sdlx::AutoMutex m(_lock);
 	int processed = 0;
 	bool active = true;
 
@@ -165,6 +169,7 @@ TRY {
 
 
 void OggStream::empty() {
+	sdlx::AutoMutex m(_lock);
 	int n = 0;
 	alGetSourcei(_source, AL_BUFFERS_QUEUED, &n);
 	AL_CHECK(("alGetSourcei(%08x, AL_BUFFERS_QUEUED)", _source));
@@ -194,6 +199,7 @@ OggStream::~OggStream() {
 
 const bool OggStream::playing() const {
 TRY {
+	sdlx::AutoMutex m(_lock);
 	ALenum state;
 	alGetSourcei(_source, AL_SOURCE_STATE, &state);
 	AL_CHECK(("alGetSourcei(%08x, AL_SOURCE_STATE)", _source));
@@ -203,6 +209,7 @@ TRY {
 
 const bool OggStream::stream(ALuint buffer) {
 TRY {
+	sdlx::AutoMutex m(_lock);
 	if (!_opened)
 		return false;
 	
@@ -342,14 +349,14 @@ TRY {
 		sdlx::AutoMutex m(_lock);
 
 		if (_filename.empty()) {
-			m.unlock();
 			
 			LOG_DEBUG(("sound thread idle..."));
 			_idle = true;
+			m.unlock();
 			_idle_sem.wait();
+			m.lock();
 			_idle = false;
 			LOG_DEBUG(("sound thread woke up..."));
-			m.lock();
 			if (_filename.empty()) {
 				LOG_ERROR(("idle handler exits with no filename set. weird."));
 				continue;
@@ -371,6 +378,7 @@ return 1;
 }
 
 void OggStream::setVolume(const float volume) {
+	sdlx::AutoMutex m(_lock);
 	if (volume < 0 || volume > 1) 
 		throw_ex(("volume value %g is out of range [0-1]", volume));	
 	
