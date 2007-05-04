@@ -23,15 +23,17 @@
 #include "sdlx/sdl_ex.h"
 #include "version.h"
 
+IMPLEMENT_SINGLETON(Window, IWindow);
+
 #include <SDL/SDL_opengl.h>
 #ifndef SDL_OPENGLBLIT
 #define SDL_OPENGLBLIT 0
 // using 0 as OPENGLBLIT value. SDL 1.3 or later
 #endif
 
-Window::Window() : _fr(10.0f) {}
+IWindow::IWindow() : _fr(10.0f) {}
 
-void Window::init(const int argc, char *argv[]) {
+void IWindow::init(const int argc, char *argv[]) {
 #ifdef __linux__
 //	putenv("SDL_VIDEODRIVER=dga");
 #endif
@@ -241,7 +243,7 @@ void Window::init(const int argc, char *argv[]) {
 	_running = true;
 }
 
-void Window::run() {
+void IWindow::run() {
 
 	GET_CONFIG_VALUE("engine.fps-limit", int, fps_limit, 1000);
 	
@@ -283,9 +285,9 @@ void Window::run() {
 		
 		const float dt = 1.0/_fr;
 		
-		tick(dt);
+		tick_signal.emit(dt);
 		
-		Window::flip();
+		IWindow::flip();
 
 		int t_delta = _timer.microdelta();
 
@@ -303,18 +305,23 @@ void Window::run() {
 
 }
 
-void Window::deinit() {
+void IWindow::deinit() {
+	_running = false;
 	LOG_DEBUG(("shutting down, freeing surface"));
 	_window.free();
 }
 
-Window::~Window() {
+IWindow::~IWindow() {
 	//_window.free();
 }
 
-void Window::flip() {
+void IWindow::flip() {
 	_window.flip();
 	if (_opengl) {
 		//glFlush_ptr.call();
 	}
+}
+
+void IWindow::resetTimer() {
+	_timer.reset();
 }

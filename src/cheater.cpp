@@ -17,11 +17,12 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 #include "cheater.h"
-#include "game.h"
+#include "window.h"
 #include <string.h>
+#include <assert.h>
 
 Cheater::Cheater() : _buf_size(0) {
-	Game->key_signal.connect(sigc::mem_fun(this, &Cheater::onKey));
+	Window->key_signal.connect(sigc::mem_fun(this, &Cheater::onKey));
 	_cheats.push_back("skotobaza");
 	
 	//scan cheats.

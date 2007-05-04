@@ -11,7 +11,7 @@
 #include "sdlx/surface.h"
 #include "sdlx/joystick.h"
 #include "i18n.h"
-#include "game.h"
+#include "window.h"
 #include "config.h"
 
 void GamepadSetup::save() {
@@ -226,7 +226,7 @@ GamepadSetup::GamepadSetup(const int w, const int h) : _current_pad(NULL), _wait
 	add(w - mx - sw / 2 - bw / 2, yp, _back);
 	yp += bh;
 	
-	Game->event_signal.connect(sigc::mem_fun(this, &GamepadSetup::onEvent));
+	Window->event_signal.connect(sigc::mem_fun(this, &GamepadSetup::onEvent));
 }
 
 void GamepadSetup::renderIcon(sdlx::Surface &surface, const int idx, const int x, const int y) {

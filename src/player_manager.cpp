@@ -26,6 +26,7 @@
 #include "resource_manager.h"
 #include "version.h"
 #include "game.h"
+#include "window.h"
 #include "game_monitor.h"
 #include "special_zone.h"
 #include "menu/tooltip.h"
@@ -179,7 +180,7 @@ TRY {
 		m.data = s.getData();
 		_server->send(id, m);
 
-		Game->resetTimer();
+		Window->resetTimer();
 		break;
 	}
 	
@@ -189,7 +190,7 @@ TRY {
 		World->deserialize(s);
 		deserializeSlots(s);
 
-		Game->resetTimer();
+		Window->resetTimer();
 		_game_joined = true;
 		break;
 	}

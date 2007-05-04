@@ -24,9 +24,10 @@
 #include <sigc++/sigc++.h>
 #include "sdlx/timer.h"
 #include "export_btanks.h"
+#include "mrt/singleton.h"
 
 
-class BTANKSAPI Window : public sigc::trackable {
+class BTANKSAPI IWindow : public sigc::trackable {
 class marshaller {
 public: 
 	typedef bool result_type;
@@ -42,30 +43,39 @@ public:
     	}
 };
 public: 
+	DECLARE_SINGLETON(IWindow);
 
 	//signals
 	sigc::signal1<void, const SDL_Event& > event_signal;
+	sigc::signal1<void, const float> tick_signal;
 	sigc::signal2<bool, const SDL_keysym, const bool, marshaller> key_signal;
 	sigc::signal3<void, const int, const int, const bool> joy_button_signal;
 	sigc::signal4<bool, const int, const bool, const int, const int, marshaller> mouse_signal;
 	sigc::signal5<bool, const int, const int, const int, const int, const int, marshaller> mouse_motion_signal;
 
-	Window();
+	IWindow();
 	void init(const int argc, char *argv[]);
 	void run(); 
+	const bool running() const { return _running; }
+	void stop() { _running = false; }
 	void deinit();
-	virtual ~Window();
+	virtual ~IWindow();
 
 	const sdlx::Rect getSize() const { return _window.getSize(); }
 	const float getFrameRate() const { return _fr; }
-
-protected:
-	virtual void tick(const float dt) = 0;
+	
+	void resetTimer();
+	sdlx::Surface &getSurface() { return _window; }
+	
 	void flip();
+
+private:
 	sdlx::Surface _window;
 	bool _opengl, _running;
 	sdlx::Timer _timer;	
 	float _fr;
 };
+
+SINGLETON(BTANKSAPI, Window, IWindow);
 
 #endif

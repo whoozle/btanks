@@ -27,10 +27,9 @@
 #include "math/v2.h"
 #include "player_state.h"
 #include "alarm.h"
-#include "window.h"
 
-#include "sdlx/timer.h"
 #include "export_btanks.h"
+#include "sdlx/sdlx.h"
 
 class BaseObject;
 class Object;
@@ -45,13 +44,13 @@ class Credits;
 class Cheater;
 class MainMenu;
 
-class BTANKSAPI IGame : public Window {
+class BTANKSAPI IGame {
 
 public: 
 	DECLARE_SINGLETON(IGame);
 
 	void init(const int argc, char *argv[]);
-	void tick(const float dt);
+	void run();
 	void deinit();
 	
 	void clear();
@@ -72,9 +71,8 @@ public:
 	const std::string getNearestWaypoint(const BaseObject *obj, const std::string &classname) const;
 	void getWaypoint(v2<float> &wp, const std::string &classname, const std::string &name);
 	
-	void resetTimer();
-
 private:
+	void onTick(const float dt);
 	bool onKey(const SDL_keysym sym, const bool pressed);
 	void onJoyButton(const int joy, const int id, const bool pressed);
 	bool onMouse(const int button, const bool pressed, const int x, const int y);

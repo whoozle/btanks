@@ -19,7 +19,7 @@
 #include "slider.h"
 #include "sdlx/surface.h"
 #include "resource_manager.h"
-#include "game.h"
+#include "window.h"
 #include "sdlx/sdlx.h"
 #include "math/unary.h"
 
@@ -28,7 +28,7 @@ Slider::Slider(const float value) : _n(10), _value(value), _grab(false) {
 		throw_ex(("slider accepts only values between 0 and 1 (inclusive)"));
 	_tiles = ResourceManager->loadSurface("menu/slider.png");
 
-	Game->mouse_motion_signal.connect(sigc::mem_fun(this, &Slider::onMouseMotion));	
+	Window->mouse_motion_signal.connect(sigc::mem_fun(this, &Slider::onMouseMotion));	
 }
 
 

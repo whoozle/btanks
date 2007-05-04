@@ -28,7 +28,7 @@
 #include "player_manager.h"
 #include "map_desc.h"
 #include "upper_box.h"
-#include "game.h"
+#include "window.h"
 #include "menu_config.h"
 #include "finder.h"
 
@@ -226,13 +226,14 @@ void MapPicker::fillSlots() const {
 	}
 
 	if (!split) {	
-		PlayerManager->setViewport((idx1 == -1)?0:idx1, Game->getSize());
+		PlayerManager->setViewport((idx1 == -1)?0:idx1, Window->getSize());
 	} else {
 		v2<int> ts = Map->getTileSize();
-		int w = Game->getSize().w / 2;
+		sdlx::Rect window_size = Window->getSize();
+		int w = window_size.w / 2;
 
-		sdlx::Rect vp1(Game->getSize());
-		sdlx::Rect vp2(Game->getSize());
+		sdlx::Rect vp1(window_size);
+		sdlx::Rect vp2(window_size);
 		vp1.w = w;
 
 		vp2.x = w;

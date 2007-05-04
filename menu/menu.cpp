@@ -21,7 +21,7 @@
 #include "menuitem.h"
 #include "mapitem.h"
 #include "vehicleitem.h"
-#include "game.h"
+#include "window.h"
 #include "start_server_menu.h"
 #include "join_server_menu.h"
 #include "options_menu.h"
@@ -69,9 +69,9 @@ MainMenu::MainMenu(const int w, const int h) : _active_item(0) {
 
 	recalculateSizes();
 
-	Game->key_signal.connect(sigc::mem_fun(this, &MainMenu::onKey));
-	Game->mouse_signal.connect(sigc::mem_fun(this, &MainMenu::onMouse));
-	Game->mouse_motion_signal.connect(sigc::mem_fun(this, &MainMenu::onMouseMotion));
+	Window->key_signal.connect(sigc::mem_fun(this, &MainMenu::onKey));
+	Window->mouse_signal.connect(sigc::mem_fun(this, &MainMenu::onMouse));
+	Window->mouse_motion_signal.connect(sigc::mem_fun(this, &MainMenu::onMouseMotion));
 }
 
 void MainMenu::recalculateSizes() {

@@ -18,8 +18,9 @@
  */
 #include "console.h"
 #include "config.h"
-#include "game.h"
+#include "window.h"
 #include "sdlx/color.h"
+#include "sdlx/surface.h"
 #include <vector>
 #include "version.h"
 #include "finder.h"
@@ -113,7 +114,7 @@ void IConsole::init() {
 	_buffer.push_back(Buffer::value_type(mrt::formatString("BattleTanks. version: %s", getVersion().c_str()), NULL));
 	_buffer.push_back(Buffer::value_type(std::string(">"), NULL));
 	LOG_DEBUG(("connecting signal..."));
-	Game->key_signal.connect(sigc::mem_fun(this, &IConsole::onKey));	
+	Window->key_signal.connect(sigc::mem_fun(this, &IConsole::onKey));	
 }
 
 void IConsole::render(sdlx::Surface &window) {

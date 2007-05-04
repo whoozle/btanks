@@ -20,14 +20,14 @@
 #include "mouse_control.h"
 #include "mrt/logger.h"
 #include "player_manager.h"
-#include "game.h"
+#include "window.h"
 #include "player_slot.h"
 #include "object.h"
 #include "math/unary.h"
 #include "object.h"
 
 MouseControl::MouseControl(): _shoot(false) {
-	Game->mouse_signal.connect(sigc::mem_fun(this, &MouseControl::onMouse));
+	Window->mouse_signal.connect(sigc::mem_fun(this, &MouseControl::onMouse));
 } 
 
 bool MouseControl::onMouse(const int button, const bool pressed, const int x, const int y) {

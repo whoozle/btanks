@@ -25,6 +25,7 @@
 #include "game.h"
 #include "i18n.h"
 #include "sdlx/font.h"
+#include "sdlx/surface.h"
 
 IMPLEMENT_SINGLETON(GameMonitor, IGameMonitor);
 

@@ -59,6 +59,7 @@
 #include "cheater.h"
 #include "console.h"
 #include "special_zone.h"
+#include "window.h"
 
 #include "math/v3.h"
 #include "menu/menu.h"
@@ -71,8 +72,8 @@ IGame::IGame() : _main_menu(NULL),
  _autojoin(false), _shake(0), _show_radar(true) , _show_stats(false), _credits(NULL), _cheater(NULL) {}
 IGame::~IGame() {}
 
-void IGame::resetTimer() {
-	_timer.reset();
+void IGame::run() {
+	Window->run();
 }
 
 void IGame::pause() {
@@ -183,7 +184,7 @@ void IGame::init(const int argc, char *argv[]) {
 					"\t--connect=ip/host\tconnect to given host as mp-client\n" 
 					"\t--no-sound\t\tdisable sound.\n" 
 				);
-			Window::init(argc, argv);
+			Window->init(argc, argv);
 			exit(0);
 		}
 
@@ -195,7 +196,7 @@ void IGame::init(const int argc, char *argv[]) {
 		I18n->load(strings_files[i].second, lang);
 	
 	
-	Window::init(argc, argv);
+	Window->init(argc, argv);
 	Mixer->init(no_sound, no_music);
 	
 	Mixer->loadPlaylist(Finder->find("playlist"));
@@ -222,25 +223,26 @@ void IGame::init(const int argc, char *argv[]) {
 	Console->init();
 	Console->on_command.connect(sigc::mem_fun(this, &IGame::onConsole));
 
+	sdlx::Rect window_size = Window->getSize();
 	if (_main_menu == NULL) {
 		LOG_DEBUG(("initializing menus..."));		
-		_main_menu = new MainMenu(_window.getWidth(), _window.getHeight());
+		_main_menu = new MainMenu(window_size.w, window_size.h);
 	}
 
 	_paused = false;
 	_map_loaded = false;
 
-	_window.fillRect(_window.getSize(), 0);
-	_window.flip();
+	Window->getSurface().fillRect(window_size, 0);
+	Window->getSurface().flip();
 	
 	LOG_DEBUG(("initializing hud..."));
-	_hud = new Hud(_window.getWidth(), _window.getHeight());
+	_hud = new Hud(window_size.w, window_size.h);
 
 	LOG_DEBUG(("installing callbacks..."));
 	
-	key_signal.connect(sigc::mem_fun(this, &IGame::onKey));
-	mouse_signal.connect(sigc::mem_fun(this, &IGame::onMouse));
-	joy_button_signal.connect(sigc::mem_fun(this, &IGame::onJoyButton));
+	Window->key_signal.connect(sigc::mem_fun(this, &IGame::onKey));
+	Window->mouse_signal.connect(sigc::mem_fun(this, &IGame::onMouse));
+	Window->joy_button_signal.connect(sigc::mem_fun(this, &IGame::onJoyButton));
 	
 	_main_menu->menu_signal.connect(sigc::mem_fun(this, &IGame::onMenu));
 	
@@ -248,6 +250,8 @@ void IGame::init(const int argc, char *argv[]) {
 	Map->notify_progress.connect(sigc::mem_fun(this, &IGame::notifyLoadingBar));
 	ResourceManager->reset_progress.connect(sigc::mem_fun(this, &IGame::resetLoadingBar));
 	ResourceManager->notify_progress.connect(sigc::mem_fun(this, &IGame::notifyLoadingBar));
+
+	Window->tick_signal.connect(sigc::mem_fun(this, &IGame::onTick));
 
 	LOG_DEBUG(("initializing resource manager..."));
 	
@@ -279,7 +283,7 @@ void IGame::init(const int argc, char *argv[]) {
 		_my_index = PlayerManager->spawnPlayer("shilka", "green-shilka", "keys");
 		assert(_my_index == 0);
 		PlayerManager->spawnPlayer("ai-tank", "green-tank", "ai");
-		PlayerManager->setViewport(_my_index, _window.getSize());
+		PlayerManager->setViewport(_my_index, Window->getSurface().getSize());
 		_main_menu.setActive(false);
 	}
 */
@@ -314,7 +318,7 @@ bool IGame::onKey(const SDL_keysym key, const bool pressed) {
 #	ifndef WIN32
 	if (key.sym==SDLK_RETURN && key.mod & KMOD_CTRL) {
 		TRY {
-			_window.toggleFullscreen();
+			Window->getSurface().toggleFullscreen();
 		} CATCH("main loop", {});
 		return true;
 	}
@@ -330,7 +334,7 @@ bool IGame::onKey(const SDL_keysym key, const bool pressed) {
 			fname = mrt::formatString("screenshot%02d.bmp", n++);
 		} while(mrt::FSNode::exists(fname));
 		LOG_DEBUG(("saving screenshot to %s", fname.c_str()));
-		_window.saveBMP(fname);
+		Window->getSurface().saveBMP(fname);
 		return true;
 	}
 	if (key.sym==SDLK_m && key.mod & KMOD_SHIFT && _map_loaded) {
@@ -411,7 +415,7 @@ void IGame::onJoyButton(const int joy, const int id, const bool pressed) {
 
 void IGame::onMenu(const std::string &name, const std::string &value) {
 	if (name == "quit") 
-		_running = false;
+		Window->stop();
 	else if (name == "start") {
 		const std::string &vehicle = value;
 		LOG_DEBUG(("start single player as '%s' requested", vehicle.c_str()));
@@ -445,10 +449,10 @@ void IGame::onMenu(const std::string &name, const std::string &value) {
 		PlayerManager->spawnPlayer(vehicle2, animation2, cm2);
 		
 		v2<int> ts = Map->getTileSize();
-		int w = _window.getSize().w / 2;
+		int w = Window->getSurface().getSize().w / 2;
 
-		sdlx::Rect vp1(_window.getSize());
-		sdlx::Rect vp2(_window.getSize());
+		sdlx::Rect vp1(Window->getSurface().getSize());
+		sdlx::Rect vp2(Window->getSurface().getSize());
 		vp1.w = w;
 
 		vp2.x = w;
@@ -475,7 +479,7 @@ void IGame::onMenu(const std::string &name, const std::string &value) {
 
 		assert(idx == 0);
 
-		PlayerManager->setViewport(idx, _window.getSize());
+		PlayerManager->setViewport(idx, Window->getSurface().getSize());
 		PlayerManager->startServer();
 	} else if (name == "m-join") {
 		clear();
@@ -498,7 +502,7 @@ void IGame::stopCredits() {
 	delete _credits;
 	_credits = NULL;
 	
-	resetTimer();
+	Window->resetTimer();
 }
 
 
@@ -657,17 +661,16 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects, const boo
 	if (!PlayerManager->isClient())
 		_cheater = new Cheater; 
 	
-	resetTimer();
+	Window->resetTimer();
 }
 
-
-void IGame::tick(const float dt) {
-		if (_running && !_paused) {
+void IGame::onTick(const float dt) {
+		if (Window->running() && !_paused) {
 			GameMonitor->tick(dt);
 			PlayerManager->tick(SDL_GetTicks(), dt);
 		}
 
-		if (_map_loaded && _credits == NULL && _running && !_paused) {
+		if (_map_loaded && _credits == NULL && Window->running() && !_paused) {
 			if (!PlayerManager->isClient()) //no need for multiplayer.
 				GameMonitor->checkItems(dt);
 			PlayerManager->updatePlayers();
@@ -683,13 +686,13 @@ void IGame::tick(const float dt) {
 			_main_menu->tick(dt);
 
 		if (_credits || _map_loaded)
-			_window.fillRect(_window.getSize(), 0);
-		else _hud->renderSplash(_window);
+			Window->getSurface().fillRect(Window->getSurface().getSize(), 0);
+		else _hud->renderSplash(Window->getSurface());
 		
 		int vx = 0, vy = 0;
 
 		if (_credits) {
-			_credits->render(dt, _window);
+			_credits->render(dt, Window->getSurface());
 			goto flip;
 		}
 	
@@ -697,7 +700,7 @@ void IGame::tick(const float dt) {
 			vy += _shake_int;
 		}		
 
-		PlayerManager->render(_window, vx, vy);
+		PlayerManager->render(Window->getSurface(), vx, vy);
 		
 		if (_shake > 0) {
 			_shake_int = -_shake_int;
@@ -705,32 +708,32 @@ void IGame::tick(const float dt) {
 		}
 		
 		if (_map_loaded) {
-			_hud->render(_window);
+			_hud->render(Window->getSurface());
 
 			if (_show_radar) {
-				_hud->renderRadar(dt, _window, GameMonitor->getSpecials());
+				_hud->renderRadar(dt, Window->getSurface(), GameMonitor->getSpecials());
 			}
 			if (_main_menu && !_main_menu->isActive() && _show_stats) {
-				_hud->renderStats(_window);
+				_hud->renderStats(Window->getSurface());
 			}
 		}
 
 		if (_main_menu)
-			_main_menu->render(_window);
+			_main_menu->render(Window->getSurface());
 		
-		GameMonitor->render(_window);		
-		Console->render(_window);
+		GameMonitor->render(Window->getSurface());		
+		Console->render(Window->getSurface());
 		
 flip:
-		float fr = getFrameRate();
+		float fr = Window->getFrameRate();
 		if (_show_fps) {
 			_fps->hp = (int)fr;
-			_fps->render(_window, _window.getWidth() - (int)(_fps->size.x * 3), 0);
+			_fps->render(Window->getSurface(), Window->getSurface().getWidth() - (int)(_fps->size.x * 3), 0);
 		}
 		if (_show_log_lines) {
 			_log_lines->hp = mrt::Logger->getLinesCounter();
 			int size = (_log_lines->hp > 0)? (int)log10((double)_log_lines->hp) + 2:2;
-			_log_lines->render(_window, _window.getWidth() - (int)(_log_lines->size.x * size), 20);
+			_log_lines->render(Window->getSurface(), Window->getSurface().getWidth() - (int)(_log_lines->size.x * size), 20);
 		}
 		
 		if (_paused) {
@@ -739,7 +742,7 @@ flip:
 				font = ResourceManager->loadFont("medium_dark", true);
 			std::string pstr = I18n->get("messages", "game-paused");
 			int w = font->render(NULL, 0, 0, pstr);
-			font->render(_window, (_window.getWidth() - w) / 2, (_window.getHeight() - font->getHeight()) / 2, pstr);
+			font->render(Window->getSurface(), (Window->getSurface().getWidth() - w) / 2, (Window->getSurface().getHeight() - font->getHeight()) / 2, pstr);
 		}
 }
 
@@ -756,9 +759,7 @@ void IGame::deinit() {
 	delete _hud;
 	_hud = NULL;
 	
-	_running = false;
 	_map_loaded = false;
-	Window::deinit();
 	
 	if (_main_menu)
 		_main_menu->deinit();
@@ -767,6 +768,8 @@ void IGame::deinit() {
 	_credits = NULL;	
 
 	ResourceManager->clear();
+	Window->deinit();
+
 	Config->save();
 
 	//TTF_Quit();
@@ -820,11 +823,11 @@ void IGame::notifyLoadingBar(const int progress) {
 	float old_progress = 1.0 * _loading_bar_now / _loading_bar_total;
 	_loading_bar_now += progress;
 	
-	_window.fillRect(_window.getSize(), 0);
-	//_window.fillRect(_window.getSize(), _window.mapRGB(255, 255, 255));
+	Window->getSurface().fillRect(Window->getSurface().getSize(), 0);
+	//Window->getSurface().fillRect(Window->getSurface().getSize(), Window->getSurface().mapRGB(255, 255, 255));
 
-	if (_hud->renderLoadingBar(_window, old_progress, 1.0 * _loading_bar_now / _loading_bar_total))
-		_window.flip();
+	if (_hud->renderLoadingBar(Window->getSurface(), old_progress, 1.0 * _loading_bar_now / _loading_bar_total))
+		Window->flip();
 }
 
 const std::string IGame::getRandomWaypoint(const std::string &classname, const std::string &last_wp) const {
@@ -890,7 +893,7 @@ void IGame::getWaypoint(v2<float> &wp, const std::string &classname, const std::
 const std::string IGame::onConsole(const std::string &cmd, const std::string &param) {
 try {
 	if (cmd == "quit") {
-		_running = false;
+		Window->stop();
 		return "thank you for playing battle tanks";
 	} else if (cmd == "spawnplayer") {
 		std::vector<std::string> par;
