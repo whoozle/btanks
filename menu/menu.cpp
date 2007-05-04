@@ -160,6 +160,24 @@ void MainMenu::activateSelectedItem() {
 }
 
 
+void MainMenu::up() {
+			_items[_active_menu][_active_item]->onLeave();
+
+			if (_active_item == 0) 
+				_active_item = _items[_active_menu].size() - 1;
+			else --_active_item;
+			_items[_active_menu][_active_item]->onFocus();
+
+}
+
+void MainMenu::down() {
+			_items[_active_menu][_active_item]->onLeave();
+			if (_active_item == _items[_active_menu].size() - 1) 
+				_active_item = 0;
+			else ++_active_item;
+			_items[_active_menu][_active_item]->onFocus();
+}
+
 bool MainMenu::onKey(const SDL_keysym sym, const bool pressed) {
 	if (!_active || !pressed)
 		return false;
@@ -177,20 +195,11 @@ bool MainMenu::onKey(const SDL_keysym sym, const bool pressed) {
 	
 	switch(sym.sym) {
 		case SDLK_UP:
-			_items[_active_menu][_active_item]->onLeave();
-
-			if (_active_item == 0) 
-				_active_item = _items[_active_menu].size() - 1;
-			else --_active_item;
-			_items[_active_menu][_active_item]->onFocus();
+			up();
 			return true;
 
 		case SDLK_DOWN:
-			_items[_active_menu][_active_item]->onLeave();
-			if (_active_item == _items[_active_menu].size() - 1) 
-				_active_item = 0;
-			else ++_active_item;
-			_items[_active_menu][_active_item]->onFocus();
+			down();
 			return true;
 
 		case SDLK_RETURN: 
@@ -301,7 +310,15 @@ bool MainMenu::onMouse(const int button, const bool pressed, const int x, const 
 	}
 	if (!pressed)
 		return false;
-	
+
+	if (button == SDL_BUTTON_WHEELUP) {
+		up();
+		return true;
+	} else if (button == SDL_BUTTON_WHEELDOWN) {
+		down();		
+		return true;
+	}
+
 	if (_background_area.in(x, y)) {
 		sdlx::Rect item_area = _background_area;
 		const ItemList & items = _items[_active_menu];

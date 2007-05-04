@@ -51,6 +51,9 @@ public:
 	void reset();
 	const bool back();
 	
+	void up();
+	void down();
+	
 private:
 	std::map<const std::string, BaseMenu *> _special_menus;
 	BaseMenu *getMenu(const std::string &menu);
