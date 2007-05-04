@@ -27,6 +27,8 @@
 #include "src/resource_manager.h"
 #include "menu/box.h"
 #include "game_monitor.h"
+#include "finder.h"
+#include "mrt/random.h"
 
 static Uint32 index2color(const sdlx::Surface &surface, const unsigned idx, const Uint8 a) {
 	unsigned rgb = idx & 7;
@@ -419,7 +421,15 @@ Hud::Hud(const int w, const int h) : _update_radar(true) {
 		}
 	}
 	LOG_DEBUG(("using splash %d", sw));
-	_splash = ResourceManager->loadSurface(mrt::formatString("splash_%d.jpg", sw));
+	int idx;
+	std::vector<int> indexes;
+	for(idx = 1; idx <= 9; ++idx) {
+		std::string fname = Finder->find(mrt::formatString("tiles/splash_%d_%d.jpg", sw, idx), false);
+		if (!fname.empty())
+			indexes.push_back(idx);
+	}
+	idx = indexes[mrt::random(indexes.size())];
+	_splash = ResourceManager->loadSurface(mrt::formatString("splash_%d_%d.jpg", sw, idx));
 
 	GET_CONFIG_VALUE("hud.radar-update-interval", float, ru, 0.2);
 	_update_radar.set(ru);
