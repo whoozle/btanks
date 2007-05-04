@@ -55,7 +55,7 @@ private:
 	std::map<const std::string, BaseMenu *> _special_menus;
 	BaseMenu *getMenu(const std::string &menu);
 
-	bool onKey(const SDL_keysym sym);
+	bool onKey(const SDL_keysym sym, const bool pressed);
 	bool onMouse(const int button, const bool pressed, const int x, const int y);
 	bool onMouseMotion(const int state, const int x, const int y, const int xrel, const int yrel);
 	

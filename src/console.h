@@ -50,7 +50,7 @@ public:
 	sigc::signal2<const std::string, const std::string &, const std::string &, marshaler> on_command;
 	
 	void render(sdlx::Surface &window);
-	bool onKey(const SDL_keysym sym);
+	bool onKey(const SDL_keysym sym, const bool pressed);
 
 protected: 
 	IConsole(); 

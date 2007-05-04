@@ -23,7 +23,6 @@
 #include <string>
 #include <map>
 #include <vector>
-#include <sigc++/sigc++.h>
 
 #include "math/v2.h"
 #include "player_state.h"
@@ -46,34 +45,13 @@ class Credits;
 class Cheater;
 class MainMenu;
 
-class BTANKSAPI IGame : public sigc::trackable, public Window {
-
-class marshaller {
-public: 
-	typedef bool result_type;
-
-	template<typename IteratorT>
-    	result_type operator()(IteratorT First, IteratorT Last) {
-    		for(; First != Last; ++First) {
-    			if (*First) {
-    				return true;
-    			}
-    		}
-    		return false;
-    	}
-};
+class BTANKSAPI IGame : public Window {
 
 public: 
 	DECLARE_SINGLETON(IGame);
 
-	//signals
-	sigc::signal1<void, const SDL_Event& > event_signal;
-	sigc::signal1<bool, const SDL_keysym, marshaller> key_signal;
-	sigc::signal4<bool, const int, const bool, const int, const int, marshaller> mouse_signal;
-	sigc::signal5<bool, const int, const int, const int, const int, const int, marshaller> mouse_motion_signal;
-
 	void init(const int argc, char *argv[]);
-	void run();
+	void tick(const float dt);
 	void deinit();
 	
 	void clear();
@@ -97,13 +75,15 @@ public:
 	void resetTimer();
 
 private:
-	bool onKey(const SDL_keysym sym);
+	bool onKey(const SDL_keysym sym, const bool pressed);
+	void onJoyButton(const int joy, const int id, const bool pressed);
+	bool onMouse(const int button, const bool pressed, const int x, const int y);
 	void onMenu(const std::string &name, const std::string &value);
 	const std::string onConsole(const std::string &cmd, const std::string &param);
 	
 	void stopCredits();
 
-	bool _running, _paused, _map_loaded;
+	bool _paused, _map_loaded;
 
 	MainMenu *_main_menu;
 	
@@ -126,7 +106,6 @@ private:
 	Hud *_hud;
 	bool _show_radar, _show_stats;
 	int _loading_bar_total, _loading_bar_now;
-	sdlx::Timer _timer;
 	
 	Credits *_credits;
 	Cheater *_cheater;

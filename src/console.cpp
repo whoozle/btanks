@@ -26,7 +26,10 @@
 
 IMPLEMENT_SINGLETON(Console, IConsole);
 
-bool IConsole::onKey(const SDL_keysym sym) {
+bool IConsole::onKey(const SDL_keysym sym, const bool pressed) {
+	if (!pressed)
+		return false;
+	
 	GET_CONFIG_VALUE("engine.enable-console", bool, ec, false);
 	if (!ec) {
 		_active = false; // if engine.enable-console set to false, console wont disappear

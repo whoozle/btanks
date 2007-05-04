@@ -21,17 +21,51 @@
 
 
 #include "sdlx/surface.h"
+#include <sigc++/sigc++.h>
+#include "sdlx/timer.h"
+#include "export_btanks.h"
 
-class Window {
+
+class BTANKSAPI Window : public sigc::trackable {
+class marshaller {
 public: 
+	typedef bool result_type;
+
+	template<typename IteratorT>
+    	result_type operator()(IteratorT First, IteratorT Last) {
+    		for(; First != Last; ++First) {
+    			if (*First) {
+    				return true;
+    			}
+    		}
+    		return false;
+    	}
+};
+public: 
+
+	//signals
+	sigc::signal1<void, const SDL_Event& > event_signal;
+	sigc::signal2<bool, const SDL_keysym, const bool, marshaller> key_signal;
+	sigc::signal3<void, const int, const int, const bool> joy_button_signal;
+	sigc::signal4<bool, const int, const bool, const int, const int, marshaller> mouse_signal;
+	sigc::signal5<bool, const int, const int, const int, const int, const int, marshaller> mouse_motion_signal;
+
+	Window();
 	void init(const int argc, char *argv[]);
-	void flip();
-	const sdlx::Rect getSize() const { return _window.getSize(); }
+	void run(); 
 	void deinit();
 	virtual ~Window();
+
+	const sdlx::Rect getSize() const { return _window.getSize(); }
+	const float getFrameRate() const { return _fr; }
+
 protected:
+	virtual void tick(const float dt) = 0;
+	void flip();
 	sdlx::Surface _window;
-	bool _opengl;
+	bool _opengl, _running;
+	sdlx::Timer _timer;	
+	float _fr;
 };
 
 #endif

@@ -228,7 +228,6 @@ void IGame::init(const int argc, char *argv[]) {
 	}
 
 	_paused = false;
-	_running = true;
 	_map_loaded = false;
 
 	_window.fillRect(_window.getSize(), 0);
@@ -238,7 +237,11 @@ void IGame::init(const int argc, char *argv[]) {
 	_hud = new Hud(_window.getWidth(), _window.getHeight());
 
 	LOG_DEBUG(("installing callbacks..."));
+	
 	key_signal.connect(sigc::mem_fun(this, &IGame::onKey));
+	mouse_signal.connect(sigc::mem_fun(this, &IGame::onMouse));
+	joy_button_signal.connect(sigc::mem_fun(this, &IGame::onJoyButton));
+	
 	_main_menu->menu_signal.connect(sigc::mem_fun(this, &IGame::onMenu));
 	
 	Map->reset_progress.connect(sigc::mem_fun(this, &IGame::resetLoadingBar));
@@ -287,7 +290,87 @@ void IGame::init(const int argc, char *argv[]) {
 	}
 }
 
-bool IGame::onKey(const SDL_keysym key) {
+bool IGame::onKey(const SDL_keysym key, const bool pressed) {
+	if (_credits) {
+		if (pressed)
+			stopCredits();
+		return true;
+	}
+
+	if (!pressed) {
+		if (key.sym == SDLK_TAB) {
+			_show_stats = false;
+			return true;
+		}
+		return false;
+	}
+/*
+-			case SDL_JOYBUTTONDOWN:
+-				if (event.jbutton.button == 9) 
+-					Game->pause();
+-			break;
+-			
+*/
+#	ifndef WIN32
+	if (key.sym==SDLK_RETURN && key.mod & KMOD_CTRL) {
+		TRY {
+			_window.toggleFullscreen();
+		} CATCH("main loop", {});
+		return true;
+	}
+#	endif
+	if (key.sym == SDLK_PAUSE) {
+		pause();
+		return true;
+	}
+	if (key.sym==SDLK_s && key.mod & KMOD_SHIFT) {
+		static int n = 0; 
+		std::string fname;
+		do {
+			fname = mrt::formatString("screenshot%02d.bmp", n++);
+		} while(mrt::FSNode::exists(fname));
+		LOG_DEBUG(("saving screenshot to %s", fname.c_str()));
+		_window.saveBMP(fname);
+		return true;
+	}
+	if (key.sym==SDLK_m && key.mod & KMOD_SHIFT && _map_loaded) {
+		const v2<int> msize = Map->getSize();
+		LOG_DEBUG(("creating map screenshot %dx%d", msize.x, msize.y));
+
+		sdlx::Surface screenshot;
+		screenshot.createRGB(msize.x, msize.y, 32, SDL_SWSURFACE | SDL_SRCALPHA);
+		screenshot.convertAlpha();
+		screenshot.fillRect(screenshot.getSize(), screenshot.mapRGBA(0,0,0,255));
+
+		sdlx::Rect viewport(0, 0, msize.x, msize.y);
+		World->render(screenshot, viewport, viewport);
+		screenshot.saveBMP("map.bmp");
+		return true;
+	}
+
+	if (key.sym == SDLK_m && !_main_menu->isActive()) {
+		_show_radar = !_show_radar;
+		return true;
+	}
+
+	if (key.sym == SDLK_TAB) {
+		_show_stats = true;
+	}
+
+	if (!PlayerManager->isClient() && key.sym==SDLK_F12 && PlayerManager->getSlotsCount() > 0) {
+		PlayerSlot &slot = PlayerManager->getSlot(0);
+		if (slot.frags > 0) 
+			--slot.frags;
+
+		Object *o = slot.getObject();
+		if (o)
+			o->emit("death", 0);
+		return true;
+	}
+
+/*
+*/
+
 	if (key.sym == SDLK_ESCAPE) {
 		if (!_map_loaded) {
 			if (_main_menu)
@@ -310,6 +393,21 @@ bool IGame::onKey(const SDL_keysym key) {
 
 	return false;
 }
+
+bool IGame::onMouse(const int button, const bool pressed, const int x, const int y) {
+	if (pressed && _credits) {
+		stopCredits();
+		return true;
+	}
+	return false;
+}
+
+void IGame::onJoyButton(const int joy, const int id, const bool pressed) {
+	if (pressed && id == 9) {
+		pause();
+	}
+}
+
 
 void IGame::onMenu(const std::string &name, const std::string &value) {
 	if (name == "quit") 
@@ -563,118 +661,7 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects, const boo
 }
 
 
-void IGame::run() {
-	LOG_DEBUG(("entering main loop"));
-
-	sdlx::Rect window_size = _window.getSize();
-	
-	GET_CONFIG_VALUE("engine.fps-limit", int, fps_limit, 1000);
-	
-	float fr = fps_limit;
-	int max_delay = 1000000 / fps_limit;
-	LOG_DEBUG(("fps_limit set to %d, maximum frame delay: %d", fps_limit, max_delay));
-
-	SDL_Event event;
-	while (_running) {
-		_timer.reset();
-		
-		while (SDL_PollEvent(&event)) {
-			event_signal.emit(event);
-		
-			switch(event.type) {
-			case SDL_KEYUP:
-				if (event.key.keysym.sym == SDLK_TAB) {
-					_show_stats = false;
-				}
-			break;
-			
-			case SDL_JOYBUTTONDOWN:
-				if (event.jbutton.button == 9) 
-					Game->pause();
-			break;
-			
-			case SDL_KEYDOWN:
-#ifndef WIN32
-				if (event.key.keysym.sym==SDLK_RETURN && event.key.keysym.mod & KMOD_CTRL) {
-					TRY {
-						_window.toggleFullscreen();
-					} CATCH("main loop", {});
-					break;
-				}
-#endif
-				if (event.key.keysym.sym == SDLK_PAUSE) {
-					pause();
-					continue;
-				}
-				if (event.key.keysym.sym==SDLK_s && event.key.keysym.mod & KMOD_SHIFT) {
-					static int n = 0; 
-					std::string fname;
-					do {
-						fname = mrt::formatString("screenshot%02d.bmp", n++);
-					} while(mrt::FSNode::exists(fname));
-					LOG_DEBUG(("saving screenshot to %s", fname.c_str()));
-					_window.saveBMP(fname);
-					break;
-				}
-				if (event.key.keysym.sym==SDLK_m && event.key.keysym.mod & KMOD_SHIFT && _map_loaded) {
-					const v2<int> msize = Map->getSize();
-					LOG_DEBUG(("creating map screenshot %dx%d", msize.x, msize.y));
-
-					sdlx::Surface screenshot;
-					screenshot.createRGB(msize.x, msize.y, 32, SDL_SWSURFACE | SDL_SRCALPHA);
-					screenshot.convertAlpha();
-					screenshot.fillRect(screenshot.getSize(), screenshot.mapRGBA(0,0,0,255));
-
-					sdlx::Rect viewport(0, 0, msize.x, msize.y);
-					World->render(screenshot, viewport, viewport);
-					screenshot.saveBMP("map.bmp");
-					break;
-				}
-				if (event.key.keysym.sym == SDLK_m && !_main_menu->isActive()) {
-					_show_radar = !_show_radar;
-					break;
-				}
-				if (event.key.keysym.sym == SDLK_TAB) {
-					_show_stats = true;
-				}
-
-				if (!PlayerManager->isClient() && event.key.keysym.sym==SDLK_F12 && PlayerManager->getSlotsCount() > 0) {
-					PlayerSlot &slot = PlayerManager->getSlot(0);
-					if (slot.frags > 0) 
-						--slot.frags;
-
-					Object *o = slot.getObject();
-					if (o)
-						o->emit("death", 0);
-					break;
-				}
-				if (_credits) {
-					stopCredits();
-					break;
-				}
-				key_signal.emit(event.key.keysym);
-			break;
-			case SDL_MOUSEBUTTONDOWN:
-				if (_credits) {
-					stopCredits();
-					break;
-				}
-			case SDL_MOUSEBUTTONUP:
-				{
-					mouse_signal.emit(event.button.button, event.button.type == SDL_MOUSEBUTTONDOWN, event.button.x, event.button.y);
-				}
-				break;
-			case SDL_MOUSEMOTION:
-				mouse_motion_signal.emit(event.motion.state, event.motion.x, event.motion.y, event.motion.xrel, event.motion.yrel);
-				break;
-		    case SDL_QUIT:
-				_running = false;
-			break;
-    		}
-		}
-		
-		const float dt = 1.0/fr;
-		
+void IGame::tick(const float dt) {
 		if (_running && !_paused) {
 			GameMonitor->tick(dt);
 			PlayerManager->tick(SDL_GetTicks(), dt);
@@ -696,7 +683,7 @@ void IGame::run() {
 			_main_menu->tick(dt);
 
 		if (_credits || _map_loaded)
-			_window.fillRect(window_size, 0);
+			_window.fillRect(_window.getSize(), 0);
 		else _hud->renderSplash(_window);
 		
 		int vx = 0, vy = 0;
@@ -735,6 +722,7 @@ void IGame::run() {
 		Console->render(_window);
 		
 flip:
+		float fr = getFrameRate();
 		if (_show_fps) {
 			_fps->hp = (int)fr;
 			_fps->render(_window, _window.getWidth() - (int)(_fps->size.x * 3), 0);
@@ -753,22 +741,6 @@ flip:
 			int w = font->render(NULL, 0, 0, pstr);
 			font->render(_window, (_window.getWidth() - w) / 2, (_window.getHeight() - font->getHeight()) / 2, pstr);
 		}
-		
-		Window::flip();
-
-		int t_delta = _timer.microdelta();
-
-		if (t_delta < max_delay) {
-			//LOG_DEBUG(("tdelta: %d, delay: %d", t_delta, max_delay - t_delta));
-			sdlx::Timer::microsleep(max_delay - t_delta);
-		}
-
-		t_delta = _timer.microdelta();
-		fr = (t_delta != 0)? (1000000.0 / t_delta): 1000000;
-	}
-	LOG_DEBUG(("exiting main loop."));
-	if (_running)
-		throw_sdl(("SDL_WaitEvent"));
 }
 
 void IGame::deinit() {

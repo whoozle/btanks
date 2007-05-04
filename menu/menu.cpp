@@ -160,8 +160,8 @@ void MainMenu::activateSelectedItem() {
 }
 
 
-bool MainMenu::onKey(const SDL_keysym sym) {
-	if (!_active)
+bool MainMenu::onKey(const SDL_keysym sym, const bool pressed) {
+	if (!_active || !pressed)
 		return false;
 		
 	BaseMenu * bm = getMenu(_active_menu);

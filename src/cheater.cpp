@@ -37,7 +37,10 @@ Cheater::Cheater() : _buf_size(0) {
 #include "world.h"
 #include "object.h"
 
-bool Cheater::onKey(const SDL_keysym sym) {
+bool Cheater::onKey(const SDL_keysym sym, const bool pressed) {
+	if (!pressed)
+		return false;
+	
 	size_t n = sizeof(_buf)/sizeof(_buf[0]);
 	
 	if (_buf_size < n - 1) {

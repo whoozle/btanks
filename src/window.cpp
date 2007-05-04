@@ -29,6 +29,7 @@
 // using 0 as OPENGLBLIT value. SDL 1.3 or later
 #endif
 
+Window::Window() : _fr(10.0f) {}
 
 void Window::init(const int argc, char *argv[]) {
 #ifdef __linux__
@@ -236,6 +237,70 @@ void Window::init(const int argc, char *argv[]) {
 		}
 	}
 #endif
+
+	_running = true;
+}
+
+void Window::run() {
+
+	GET_CONFIG_VALUE("engine.fps-limit", int, fps_limit, 1000);
+	
+	_fr = fps_limit;
+	int max_delay = 1000000 / fps_limit;
+	LOG_DEBUG(("fps_limit set to %d, maximum frame delay: %d", fps_limit, max_delay));
+
+	SDL_Event event;
+	while (_running) {
+		_timer.reset();
+		
+		while (SDL_PollEvent(&event)) {
+			event_signal.emit(event);
+		
+			switch(event.type) {
+			case SDL_JOYBUTTONDOWN:
+				joy_button_signal.emit(event.jbutton.which, event.jbutton.button, event.jbutton.type == SDL_JOYBUTTONDOWN);
+			break;
+			
+			case SDL_KEYUP:			
+			case SDL_KEYDOWN:
+				key_signal.emit(event.key.keysym, event.type == SDL_KEYDOWN);
+			break;
+			
+			case SDL_MOUSEBUTTONDOWN:
+			case SDL_MOUSEBUTTONUP:
+				mouse_signal.emit(event.button.button, event.button.type == SDL_MOUSEBUTTONDOWN, event.button.x, event.button.y);
+				break;
+			
+			case SDL_MOUSEMOTION:
+				mouse_motion_signal.emit(event.motion.state, event.motion.x, event.motion.y, event.motion.xrel, event.motion.yrel);
+				break;
+			
+		    case SDL_QUIT:
+				_running = false;
+			break;
+    		}
+		}
+		
+		const float dt = 1.0/_fr;
+		
+		tick(dt);
+		
+		Window::flip();
+
+		int t_delta = _timer.microdelta();
+
+		if (t_delta < max_delay) {
+			//LOG_DEBUG(("tdelta: %d, delay: %d", t_delta, max_delay - t_delta));
+			sdlx::Timer::microsleep(max_delay - t_delta);
+		}
+
+		t_delta = _timer.microdelta();
+		_fr = (t_delta != 0)? (1000000.0 / t_delta): 1000000;
+	}
+	LOG_DEBUG(("exiting main loop."));
+	if (_running)
+		throw_sdl(("SDL_WaitEvent"));
+
 }
 
 void Window::deinit() {

@@ -30,7 +30,7 @@ class Cheater : public sigc::trackable {
 public: 
 	Cheater();
 private: 
-	bool onKey(const SDL_keysym sym);
+	bool onKey(const SDL_keysym sym, const bool pressed);
 	std::vector<std::string> _cheats;
 	size_t _buf_size;
 	char _buf[16];
