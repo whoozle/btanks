@@ -47,7 +47,7 @@
 	</animation-model>
 
 	<animation-model id="dead-choo-choo-train-animation" speed="7">
-		<pose id="fade-in">0,1,2,3,4</pose>
+		<pose id="fade-in" sound="nuke-explosion.ogg" gain="15">0,1,2,3,4</pose>
 		<pose id="burn">5</pose>
 		<pose id="fade-out">5</pose>
 		<pose id="dead">5</pose>
@@ -59,9 +59,9 @@
 	</animation-model>
 
 	<animation-model id="dead-choo-choo-wagon-animation" speed="7">
-		<pose id="fade-in">0,1,2</pose>
-		<pose id="burn">3,4,5,6</pose>
-		<pose id="fade-out">7,8</pose>
+		<pose id="fade-in" sound="@building-exolsion" gain="15">0,1,2</pose>
+		<pose id="burn" sound="fire.ogg">3,4,5,6</pose>
+		<pose id="fade-out" sound="fire-fadeout.ogg">7,8</pose>
 		<pose id="dead">9</pose>
 	</animation-model>
 
@@ -136,12 +136,12 @@
 	</animation-model>
 
 	<animation-model id="bullet-animation" speed="1">
-		<pose id="shot" sound="shot.ogg">0</pose>
+		<pose id="shot" sound="@cannon">0</pose>
 		<pose id="move">0</pose>
 	</animation-model>
 
 	<animation-model id="mortar-bullet-animation" speed="10">
-		<pose id="shot" sound="shot.ogg">0</pose>
+		<pose id="shot" sound="@cannon">0</pose>
 		<pose id="move">0,1,2,3,4,5</pose>
 	</animation-model>
 
@@ -154,15 +154,15 @@
 	</animation-model>
 
 	<animation-model id="nuclear-explosion-animation" speed="5">
-		<pose id="boom" sound="nuke-explosion.ogg" gain="20">5,4,3,2,1,0</pose>
+		<pose id="boom" sound="nuke-explosion.ogg" gain="15">5,4,3,2,1,0</pose>
 	</animation-model>
 
 	<animation-model id="cannon-explosion-animation" speed="14">
-		<pose id="boom" sound="explosion.ogg">5,4,3,2,1,0</pose>
+		<pose id="boom" sound="@vehicle-explosion">5,4,3,2,1,0</pose>
 	</animation-model>
 	
 	<animation-model id="missile-explosion-animation" speed="7">
-		<pose id="boom" sound="explosion.ogg">0,1,2,3</pose>
+		<pose id="boom" sound="@vehicle-explosion">0,1,2,3</pose>
 	</animation-model>
 
 	<animation-model id="single-tile" speed="1">
@@ -189,7 +189,7 @@
 
 	<animation-model id="destructable-object-animation" speed="1">
 		<pose id="main">0</pose>
-		<pose id="broken" z="-18">1</pose>
+		<pose id="broken" z="-18" sound="@building-explosion">1</pose>
 	</animation-model>
 
 	<animation-model id="destructable-object-animation-no-z" speed="1">
@@ -215,8 +215,8 @@
 	</animation-model>
 	
 	<animation-model id="fire-animation" speed="7">
-		<pose id="fade-in">0,1,2,3,4</pose>
-		<pose id="burn" sound="fire.ogg">5,6,7,6</pose>
+ 		<pose id="fade-in" sound="fire.ogg">0,1,2,3,4</pose>
+		<pose id="burn">5,6,7,6</pose>
 		<pose id="fade-out" sound="fire-fadeout.ogg">8,9</pose>
 	</animation-model>
 
@@ -319,6 +319,9 @@
 	<sound file="cannon1.ogg" class="cannon" />
 	<sound file="cannon2.ogg" class="cannon" />
 	<sound file="cannon3.ogg" class="cannon" />
+
+	<sound file="vehicle-explosion.ogg" class="vehicle-explosion" />
+	<sound file="vehicle-explosion2.ogg" class="vehicle-explosion" />
 
 	<animation id="damage-digits" tile="../font/digits.png" model="single-tile" tile_width="10" tile_height="16" />
 
