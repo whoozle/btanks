@@ -823,11 +823,10 @@ void IGame::notifyLoadingBar(const int progress) {
 	float old_progress = 1.0 * _loading_bar_now / _loading_bar_total;
 	_loading_bar_now += progress;
 	
-	Window->getSurface().fillRect(Window->getSurface().getSize(), 0);
-	//Window->getSurface().fillRect(Window->getSurface().getSize(), Window->getSurface().mapRGB(255, 255, 255));
-
-	if (_hud->renderLoadingBar(Window->getSurface(), old_progress, 1.0 * _loading_bar_now / _loading_bar_total))
+	if (_hud->renderLoadingBar(Window->getSurface(), old_progress, 1.0 * _loading_bar_now / _loading_bar_total)) {
 		Window->flip();
+		Window->getSurface().fillRect(Window->getSurface().getSize(), 0);
+	}
 }
 
 const std::string IGame::getRandomWaypoint(const std::string &classname, const std::string &last_wp) const {
