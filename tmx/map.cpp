@@ -41,7 +41,6 @@
 #include "zbox.h"
 
 #include "generator.h"
-#include "game.h"
 
 IMPLEMENT_SINGLETON(Map, IMap);
 
@@ -1039,7 +1038,7 @@ void IMap::deserialize(const mrt::Serializator &s) {
 
 	s.get(tn);
 	s.get(ln);
-	Game->resetLoadingBar(tn + ln);
+	reset_progress.emit(tn + ln);
 	
 	while(tn--) {
 		Tilesets::value_type t;
@@ -1060,7 +1059,7 @@ void IMap::deserialize(const mrt::Serializator &s) {
 		} CATCH("deserialize", { delete image; throw; });
 		
 		_tilesets.push_back(t);
-		Game->notifyLoadingBar();
+		notify_progress.emit(1);
 	}
 	
 	while(ln--) {
@@ -1088,7 +1087,7 @@ void IMap::deserialize(const mrt::Serializator &s) {
 			throw;
 		});
 		
-		Game->notifyLoadingBar();		
+		notify_progress.emit(1);
 	}
 	
 	int pn;
