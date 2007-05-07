@@ -49,7 +49,6 @@ extern "C"
 int main(int argc, char *argv[]) {
 	try {
 		LOG_NOTICE(("starting up... version: %s", getVersion().c_str()));
-		btanks_objects_dummy_exp_method();
 #ifndef WIN32
 		struct sigaction sa;
 		memset(&sa, 0, sizeof(sa));
@@ -67,6 +66,8 @@ int main(int argc, char *argv[]) {
 			perror("sigaction");
 
 #endif		
+		btanks_objects_dummy_exp_method();
+		
 		Game->init(argc, argv);
 		Game->run();
 		Game->deinit();
