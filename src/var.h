@@ -20,9 +20,10 @@
  */
 
 #include "mrt/serializable.h"
+#include "export_btanks.h"
 #include <string>
 
-class Var : public mrt::Serializable {
+class BTANKSAPI Var : public mrt::Serializable {
 public: 
 	std::string type;
 	Var() {}
