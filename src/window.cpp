@@ -126,7 +126,6 @@ void IWindow::init(const int argc, char *argv[]) {
 	sdlx::TTF::init();
 
 	int flags = SDL_HWSURFACE | (bits == 0)? SDL_ANYFORMAT: 0;
-	//if (doublebuf)
 	flags |= SDL_DOUBLEBUF;
 	
 	if (fullscreen) flags |= SDL_FULLSCREEN;
