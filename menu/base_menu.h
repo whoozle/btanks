@@ -23,8 +23,9 @@
 
 #include "sdlx/sdlx.h"
 #include "container.h"
+#include "export_btanks.h"
 
-class BaseMenu : public Container {
+class BTANKSAPI BaseMenu : public Container {
 public:
 	virtual ~BaseMenu() {}
 };

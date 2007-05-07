@@ -24,8 +24,9 @@
 #include <deque>
 #include "sdlx/font.h"
 #include "sdlx/rect.h"
+#include "export_btanks.h"
 
-class ScrollList : public Control {
+class BTANKSAPI ScrollList : public Control {
 public: 
 	ScrollList(const std::string &font, const int w, const int h);
 	

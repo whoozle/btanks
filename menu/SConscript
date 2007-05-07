@@ -2,11 +2,11 @@ Import('env')
 
 env = env.Copy()
 env.Append(CPPPATH=['..', '.', '../src'])
+env.Append(CPPDEFINES=['BTANKSAPI=DLLEXPORT']);
 bt_menu = env.StaticLibrary('bt_menu', 
 	[
-	'start_server_menu.cpp', 'join_server_menu.cpp', 
-	'menuitem.cpp', 'textitem.cpp', 'mapitem.cpp', 'vehicleitem.cpp', 'menu.cpp', 'box.cpp', 
-	'upper_box.cpp', 'base_menu.cpp', 'container.cpp', 
+	'start_server_menu.cpp', 'join_server_menu.cpp', 'menu.cpp', 'box.cpp', 
+	'upper_box.cpp', 'base_menu.cpp', 'container.cpp', 'menuitem.cpp',
 	'map_picker.cpp', 'scroll_list.cpp', 'control.cpp', 'map_details.cpp', 'player_picker.cpp', 
 	'chooser.cpp', 'label.cpp', 'button.cpp', 'menu_config.cpp', 'map_desc.cpp', 
 	'prompt.cpp', 'text_control.cpp', 'host_list.cpp', 'options_menu.cpp', 'control_picker.cpp',

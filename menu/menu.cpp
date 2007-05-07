@@ -17,11 +17,8 @@
  */
 
 #include "menu.h"
-#include "textitem.h"
-#include "menuitem.h"
-#include "mapitem.h"
-#include "vehicleitem.h"
 #include "window.h"
+#include "menuitem.h"
 #include "start_server_menu.h"
 #include "join_server_menu.h"
 #include "options_menu.h"

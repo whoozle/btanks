@@ -21,6 +21,7 @@
 
 #include "container.h"
 #include <string>
+#include "export_btanks.h"
 
 class Chooser;
 class ControlPicker : public Container {

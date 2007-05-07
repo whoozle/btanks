@@ -23,11 +23,12 @@
 #include "box.h"
 #include "sdlx/rect.h"
 #include <string>
+#include "export_btanks.h"
 
 class TextControl;
 class Button;
 
-class Prompt : public Container {
+class BTANKSAPI Prompt : public Container {
 public: 
 	Prompt(const int w, const int h, TextControl *text);
 	void getSize(int &w , int &h) const;

@@ -20,8 +20,9 @@
  */
 
 #include "scroll_list.h"
+#include "export_btanks.h"
 
-class HostList : public ScrollList {
+class BTANKSAPI HostList : public ScrollList {
 public:
 	HostList(const std::string &config_key, const int w, const int h);
 	virtual void add(const std::string &item);

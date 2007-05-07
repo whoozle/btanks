@@ -20,12 +20,13 @@
  */
 
 #include <string>
+#include "export_btanks.h"
 
 namespace sdlx {
 class Surface;
 }
 
-class Box {
+class BTANKSAPI Box {
 public: 
 	Box() : _surface(0) {}
 	int w, h;

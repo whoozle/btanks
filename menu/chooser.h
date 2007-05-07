@@ -23,13 +23,14 @@
 #include "sdlx/rect.h"
 #include <string>
 #include <vector>
+#include "export_btanks.h"
 
 namespace sdlx {
 class Surface;
 class Font;
 }
 
-class Chooser : public Container {
+class BTANKSAPI Chooser : public Container {
 public: 
 	Chooser(const std::string &font, const std::vector<std::string> &options, const std::string &surface = std::string());
 	void getSize(int &w, int &h) const;

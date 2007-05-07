@@ -23,8 +23,9 @@
 #include <vector>
 #include "box.h"
 #include "control.h"
+#include "export_btanks.h"
 
-class Tooltip : public Control {
+class BTANKSAPI Tooltip : public Control {
 public: 
 	Tooltip(const std::string &text, const bool use_background, const int w = 0);
 	void render(sdlx::Surface &surface, const int x, const int y);

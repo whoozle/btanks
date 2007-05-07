@@ -21,8 +21,9 @@
 
 #include "control.h"
 #include <sigc++/sigc++.h>
+#include "export_btanks.h"
 
-class Slider : public sigc::trackable, public Control {
+class BTANKSAPI Slider : public sigc::trackable, public Control {
 public: 
 	Slider(const float value);
 

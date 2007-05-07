@@ -28,8 +28,9 @@ class Font;
 #include <string>
 #include "control.h"
 #include "box.h"
+#include "export_btanks.h"
 
-class Button : public Control {
+class BTANKSAPI Button : public Control {
 public: 
 	Button(const std::string &font, const std::string &label);
 	void getSize(int &w, int &h) const;

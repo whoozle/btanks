@@ -22,8 +22,9 @@
 #include "control.h"
 #include <list>
 #include <math/v2.h>
+#include "export_btanks.h"
 
-class Container : public Control {
+class BTANKSAPI Container : public Control {
 public: 
 	Container() {}
 	virtual void tick(const float dt);

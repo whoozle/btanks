@@ -26,8 +26,9 @@ class Font;
 
 #include <string>
 #include "control.h"
+#include "export_btanks.h"
 
-class Label : public Control {
+class BTANKSAPI Label : public Control {
 public: 
 	Label(const sdlx::Font *font, const std::string &label);
 	Label(const std::string &font, const std::string &label);

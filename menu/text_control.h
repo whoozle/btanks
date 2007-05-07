@@ -22,12 +22,13 @@
 #include "control.h"
 #include <string>
 #include "alarm.h"
+#include "export_btanks.h"
 
 namespace sdlx {
 class Font;
 }
 
-class TextControl : public Control {
+class BTANKSAPI TextControl : public Control {
 public: 
 	TextControl(const std::string &font);
 

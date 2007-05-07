@@ -20,12 +20,13 @@
  */
 
 #include "sdlx/sdlx.h"
+#include "export_btanks.h"
 
 namespace sdlx {
 	class Surface;
 }
 
-class Control {
+class BTANKSAPI Control {
 public: 
 	Control();
 	virtual void tick(const float dt);
