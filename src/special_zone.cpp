@@ -29,6 +29,8 @@
 //#include "game.h"
 #include <set>
 
+SpecialZone::~SpecialZone() {}
+
 SpecialZone::SpecialZone(const ZBox & zbox, const std::string &type, const std::string &name, const std::string &subname) :
 	 ZBox(zbox), type(type), name(name), subname(subname) {
 	static std::set<std::string> allowed_types; 

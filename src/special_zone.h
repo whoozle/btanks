@@ -31,6 +31,7 @@ public:
 	void onEnter(const int slot_id);
 
 	const bool final() const;
+	~SpecialZone();
 private: 
 	void onCheckpoint(const int slot_id);
 	void onHint(const int slot_id);
