@@ -304,6 +304,18 @@ const bool IMixer::generateSource(ALuint &source) {
 	Sources::iterator victim = _sources.end();
 	float max_d = 0;
 	for(Sources::iterator i = _sources.begin(); i != _sources.end(); ++i) {
+	TRY {
+		ALenum state;
+		alGetSourcei(source, AL_SOURCE_STATE, &state);
+		ALenum r = alGetError();
+
+		if (r != AL_NO_ERROR || state != AL_PLAYING) {
+			if (r != AL_NO_ERROR)
+				LOG_ERROR(("alGetSourcei(%08x, AL_SOURCE_STATE): error %08x", source, (unsigned)r));
+			victim = i;
+			break;
+		}
+
 		ALfloat s_pos[] = { 0, 0, 0 };
 		alGetSourcefv(i->second, AL_POSITION, s_pos);
 		AL_CHECK(("alGetSourcefv(%08x, AL_POSITION)", (unsigned)i->second));
@@ -314,6 +326,7 @@ const bool IMixer::generateSource(ALuint &source) {
 			max_d = d;
 			victim = i;
 		}
+	} CATCH(mrt::formatString("id %d, sound: %s", i->first.first, i->first.second.c_str()).c_str(), );
 	}
 	if (victim != _sources.end()) {
 		source = victim->second;
