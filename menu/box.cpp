@@ -20,10 +20,23 @@
 #include "sdlx/surface.h"
 #include <assert.h>
 
+Box::Box(const std::string &tile, int w, int h) {
+	init(tile, std::string(), w, h);
+}
+
+Box::Box(const std::string &tile, const std::string &highlight, int w, int h) {
+	init(tile, highlight, w, h);
+}
+
+
 void Box::init(const std::string &tile, int _w, int _h) {
 	init(tile, std::string(), _w, _h);
 }
 
+void Box::getSize(int &w, int &h) const {
+	w = this->w;
+	h = this->h;
+}
 
 void Box::init(const std::string &tile, const std::string &highlight, int _w, int _h) {
 	_highlight = (!highlight.empty())? ResourceManager->loadSurface(highlight): NULL;

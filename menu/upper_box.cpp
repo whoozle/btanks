@@ -32,11 +32,6 @@ UpperBox::UpperBox(int w, int h, const bool server): _w(w), _h(h), _server(serve
 	_big = ResourceManager->loadFont("big", true);
 }
 
-void UpperBox::getSize(int &w, int &h) const {
-	w = _w; h = _h;
-}
-
-
 void UpperBox::render(sdlx::Surface &surface, const int x, const int y) {
 	Box::render(surface, x, y);
 	

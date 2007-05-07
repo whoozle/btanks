@@ -21,14 +21,18 @@
 
 #include <string>
 #include "export_btanks.h"
+#include "control.h"
 
 namespace sdlx {
 class Surface;
 }
 
-class BTANKSAPI Box {
+class BTANKSAPI Box : public Control{
 public: 
 	Box() : _surface(0) {}
+	Box(const std::string &tile, int w, int h);
+	Box(const std::string &tile, const std::string &highlight, int w, int h);
+	virtual void getSize(int &w, int &h) const;
 	int w, h;
 
 	const bool inited() const { return _surface != 0; }
