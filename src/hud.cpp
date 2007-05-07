@@ -363,10 +363,9 @@ void Hud::renderSplash(sdlx::Surface &window) const {
 }
 
 
-const bool Hud::renderLoadingBar(sdlx::Surface &window, const float old_progress, const float progress) const {
+const bool Hud::renderLoadingBar(sdlx::Surface &window, const float old_progress, const float progress, const bool render_splash) const {
 	assert(old_progress >= 0 && old_progress <= 1.0);
 	assert(progress >= 0 && progress <= 1.0);
-
 
 	GET_CONFIG_VALUE("hud.loading-bar.position", float, yf, 2.0/3);
 	GET_CONFIG_VALUE("hud.loading-bar.border-size", int, border, 3);
@@ -381,16 +380,18 @@ const bool Hud::renderLoadingBar(sdlx::Surface &window, const float old_progress
 		return false;
 	}
 
-	int i, n = w / _loading_item->getWidth(), n_old = w_old / _loading_item->getWidth();
+	int n = w / _loading_item->getWidth(), n_old = w_old / _loading_item->getWidth();
 	if (n == n_old) {
 		//LOG_DEBUG(("skip same frame"));
 		return false;	
 	}
 
-	renderSplash(window);
+	if (render_splash)
+		renderSplash(window);
+	
 	window.copyFrom(*_loading_border, x, y);
 
-	for(i = 0; i < n; ++i) {
+	for(int i = 0; i < n; ++i) {
 		window.copyFrom(*_loading_item, border + x + i * _loading_item->getWidth(), y + border);
 	}
 /*	w -= n * _loading_item.getWidth();
