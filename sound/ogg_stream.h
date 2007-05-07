@@ -71,7 +71,7 @@ private:
 	ALuint _source;
 	ALenum _format;
 	
-	volatile bool _opened, _running, _repeat, _alive, _idle;
+	volatile bool _opened, _running, _repeat, _alive, _idle, _eof_reached;
 	sdlx::Semaphore _idle_sem;
 	int _delay;
 	

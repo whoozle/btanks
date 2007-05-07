@@ -27,7 +27,7 @@
 #include "sample.h"
 #include "al_ex.h"
 
-OggStream::OggStream(const ALuint source) : _source(source), _opened(false), _running(false), _repeat(false), _alive(true), _idle(false)  {
+OggStream::OggStream(const ALuint source) : _source(source), _opened(false), _running(false), _repeat(false), _alive(true), _idle(false), _eof_reached(true) {
 	alSourcei (_source, AL_SOURCE_RELATIVE, AL_TRUE      );
 	AL_CHECK(("alSourcei(%08x, AL_SOURCE_RELATIVE, AL_TRUE)", (unsigned)_source));
 	alSource3f(_source, AL_POSITION,        0.0, 0.0, 0.0);
@@ -102,14 +102,14 @@ void OggStream::_open() {
 			break;
 		}
 	}
-
+	_eof_reached = false;
 	LOG_DEBUG(("_open succedes"));
 }
 
 const bool OggStream::play() {
 TRY {
-	if(playing())
-		return true;
+//	if(playing())
+//		return true;
 
 	sdlx::AutoMutex m(_lock);
 	unsigned int i;
@@ -200,11 +200,13 @@ OggStream::~OggStream() {
 
 const bool OggStream::playing() const {
 TRY {
-	sdlx::AutoMutex m(_lock);
+/*	sdlx::AutoMutex m(_lock);
 	ALenum state;
 	alGetSourcei(_source, AL_SOURCE_STATE, &state);
 	AL_CHECK(("alGetSourcei(%08x, AL_SOURCE_STATE)", _source));
 	return (state == AL_PLAYING);
+*/
+	return _opened && !_eof_reached;	
 } CATCH("playing()", throw; )
 }
 
@@ -234,8 +236,10 @@ TRY {
 	}
 	assert(size <= buffer_size);
 	
-	if(size == 0)
+	if(size == 0) {
+		_eof_reached = true;
 		return false;
+	}
  
 	alBufferData(buffer, _format, data.getPtr(), size, _vorbis_info->rate);
 	AL_CHECK(("alBufferData(size: %d, rate: %ld)", size, _vorbis_info->rate));
@@ -301,13 +305,21 @@ void OggStream::playTune() {
 	} CATCH("playTune::setVolume", )
 
 	TRY {
+		play();
+	} CATCH("playTune::play", throw;)
+	
+	TRY {
     	while(_alive && _running && update()) {
 			if(!playing()) {
-				if(!play()) {
-					LOG_WARN(("Ogg abruptly stopped."));
-					break;
-				} else
-					LOG_WARN(("ogg stream was interrupted.."));
+				//update();
+				//alSourcePlay(_source);
+				//AL_CHECK(("alSourcePlay"));
+				//if(!play()) {
+				//	LOG_WARN(("Ogg abruptly stopped."));
+				//	break;
+				//} else
+				//LOG_WARN(("ogg stream was interrupted.."));
+				break;
 			} else 
 				SDL_Delay(_delay);
 		}
