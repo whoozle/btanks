@@ -322,6 +322,11 @@
 
 	<sound file="vehicle-explosion.ogg" class="vehicle-explosion" />
 	<sound file="vehicle-explosion2.ogg" class="vehicle-explosion" />
+	
+	<sound file="klaxon.ogg" class="klaxon" />
+	<sound file="klaxon-funny.ogg" class="klaxon" />
+
+	<!-- animation tiles -->
 
 	<animation id="damage-digits" tile="../font/digits.png" model="single-tile" tile_width="10" tile_height="16" />
 
