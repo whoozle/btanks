@@ -402,6 +402,8 @@ const bool Hud::renderLoadingBar(sdlx::Surface &window, const float old_progress
 }
 
 Hud::Hud(const int w, const int h) : _update_radar(true) {
+	Map->load_map_final_signal.connect(sigc::mem_fun(this, &Hud::initMap));
+
 	_background = ResourceManager->loadSurface("hud/hud_line.png");
 	_loading_border = ResourceManager->loadSurface("hud/loading_border.png");
 	_loading_item = ResourceManager->loadSurface("hud/loading_item.png");

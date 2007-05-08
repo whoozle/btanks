@@ -478,6 +478,7 @@ void IMap::load(const std::string &name) {
 	
 	_name = name;
 	LOG_DEBUG(("loading completed"));
+	load_map_signal.emit();
 }
 
 void IMap::generateMatrixes() {
@@ -516,6 +517,7 @@ void IMap::generateMatrixes() {
 	for(ObjectAreaMap::const_iterator i = _area_map.begin(); i != _area_map.end(); ++i) {
 		LOG_DEBUG(("hint for '%s'\n%s", i->first.c_str(), i->second.dump().c_str()));
 	}
+	load_map_final_signal.emit();
 }
 
 void IMap::getZBoxes(std::set<int> &layers) {

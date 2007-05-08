@@ -108,9 +108,10 @@ public:
 	const Object * findTarget(const Object *src, const std::set<std::string> &enemies, const std::set<std::string> &bonuses, ai::Traits &traits) const;
 	void enumerateObjects(std::set<const Object *> &o_set, const Object *src, const float range, const std::set<std::string> *classfilter);
 
-	void initMap();
 	
 private:
+	void initMap();
+	
 	void updateObject(const Object *o);
 	void deleteObject(const Object *o);
 	

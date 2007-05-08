@@ -20,6 +20,7 @@
  */
 
 
+#include <sigc++/sigc++.h>
 #include "export_btanks.h"
 
 #include <map>
@@ -47,6 +48,9 @@ class MapGenerator;
 
 class BTANKSAPI IMap : public NotifyingXMLParser, public mrt::Serializable {
 public:
+	sigc::signal0<void> load_map_signal;
+	sigc::signal0<void> load_map_final_signal;
+
 	DECLARE_SINGLETON(IMap);
 	struct TilePosition {
 		v2<int> position;
@@ -55,6 +59,9 @@ public:
 		int prev_im;
 	};
 	
+	typedef std::vector<std::pair<std::string, int> > Tilesets;
+	const Tilesets & getTilesets() const { return _tilesets; }
+
 	typedef std::map<const std::string, std::string> PropertyMap;
 	PropertyMap properties;
 
@@ -161,7 +168,6 @@ private:
 	
 	MapGenerator *_generator;
 	
-	typedef std::vector<std::pair<std::string, int> > Tilesets;
 	Tilesets _tilesets;
 	std::string _name;
 };

@@ -540,8 +540,6 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects, const boo
 			throw_ex(("loadMap() called with skip Map::load() flag. Map must be initialized at this point."));
 	}
 
-	World->initMap();
-
 	_waypoints.clear();
 	_waypoint_edges.clear();
 	
@@ -648,8 +646,6 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects, const boo
 	}
 	LOG_DEBUG(("%u items on map, %u waypoints, %u edges", (unsigned)GameMonitor->getItemsCount(), (unsigned)_waypoints.size(), (unsigned)_waypoint_edges.size()));
 	Config->invalidateCachedValues();
-	
-	_hud->initMap();
 	
 	GET_CONFIG_VALUE("engine.max-time-slice", float, mts, 0.025);
 	World->setTimeSlice(mts);

@@ -2,6 +2,7 @@
 #define BTANKS_TILESET_H__
 
 #include "mrt/xml.h"
+#include <map>
 
 class GeneratorObject;
 class Tileset : public mrt::XMLParser {
