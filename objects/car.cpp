@@ -22,7 +22,8 @@
 #include "object.h"
 #include "item.h"
 #include "game.h"
-
+#include "world.h"
+#include "mrt/random.h"
 #include "math/unary.h"
 
 class Car : public Object {
@@ -40,12 +41,14 @@ public:
 		s.add(_reaction_time);
 		s.add(_waypoint_name);
 		s.add(_stop);
+		s.add(_obstacle);
 	}
 	virtual void deserialize(const mrt::Serializator &s) {
 		Object::deserialize(s);
 		s.get(_reaction_time);
 		s.get(_waypoint_name);
 		s.get(_stop);
+		s.get(_obstacle);
 	}	
 private: 
 	virtual void getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const;
@@ -53,6 +56,7 @@ private:
 	Alarm _reaction_time;
 	bool _stop;
 	std::string _waypoint_name;
+	int _obstacle;
 };
 
 void Car::getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const {
@@ -78,6 +82,7 @@ void Car::emit(const std::string &event, Object * emitter) {
 			if (item == NULL) {
 				GET_CONFIG_VALUE("objects.car.damage", int, d, 5);
 				emitter->addDamage(this, d);
+				emitter->addEffect("stunned", 0.1f);
 				emit("death", emitter);
 			}
 		}
@@ -89,6 +94,7 @@ void Car::emit(const std::string &event, Object * emitter) {
 void Car::onSpawn() {
 	GET_CONFIG_VALUE("objects.car.reaction-time", float, rt, 0.1);
 	_reaction_time.set(rt);
+	mrt::randomize(rt, rt / 10);
 	//GET_CONFIG_VALUE("objects.car.refreshing-path-interval", float, rpi, 1);
 	//_refresh_waypoints.set(rpi);
 	play("hold", true);
@@ -96,10 +102,50 @@ void Car::onSpawn() {
 	disown(); 
 }
 
-Car::Car() : Object("car"), _reaction_time(true), _stop(false) //_refresh_waypoints(false) 
+Car::Car() : Object("car"), _reaction_time(true), _stop(false), _obstacle(0)
 {}
 
-void Car::calculate(const float dt) {	
+void Car::calculate(const float dt) {
+	if (_reaction_time.tick(dt)) {
+		static std::set<std::string> filter;
+		if (filter.empty()) {
+			filter.insert("car");
+			filter.insert("civilian");
+			filter.insert("trooper");
+			filter.insert("player");
+		}
+	
+		std::set<const Object *> objs;
+		World->enumerateObjects(objs, this, (size.x + size.y) * 2 / 3, &filter);
+		std::set<const Object *>::const_iterator i;
+		for(i = objs.begin(); i != objs.end(); ++i) {
+			if ((*i)->speed == 0)
+				continue;
+			
+			v2<float> dpos = getRelativePosition(*i);
+			if (dpos.same_sign(_direction)) {
+				if (_obstacle == 0)
+					_obstacle = 1; //keep obstacle value incrementing
+				_velocity.clear();
+				break;
+			}
+		}
+		if (i == objs.end())
+			_obstacle = 0;
+		
+		if (_obstacle) {
+			if ((_obstacle % 21) == 1) { //approx once per 5 second
+				playRandomSound("klaxon", false);
+			}
+			++_obstacle;
+		}
+	}
+	
+	if (_obstacle) {
+		_velocity.clear();
+		return;
+	}
+	
 	if (!calculatingPath() && !isDriven()) {
 		v2<float> waypoint;
 		_velocity.clear();
