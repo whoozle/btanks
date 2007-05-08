@@ -305,9 +305,21 @@ const bool IMixer::generateSource(ALuint &source) {
 	float max_d = 0;
 	for(Sources::iterator i = _sources.begin(); i != _sources.end(); ++i) {
 	TRY {
+		ALenum loop;
+		alGetSourcei(source, AL_LOOPING, &loop);
+		ALenum r = alGetError();
+		if (r != AL_NO_ERROR) {
+			LOG_ERROR(("alGetSourcei(%08x, AL_LOOPING) error: %x", (unsigned)source, (unsigned)r));
+			victim = i; //error - invalid source, instant kill.
+			break;
+		}
+		
+		if (loop == AL_TRUE)
+			continue; //skip looping sounds, heli, car, submarine and others.
+		
 		ALenum state;
 		alGetSourcei(source, AL_SOURCE_STATE, &state);
-		ALenum r = alGetError();
+		r = alGetError();
 
 		if (r != AL_NO_ERROR || state != AL_PLAYING) {
 			if (r != AL_NO_ERROR)
