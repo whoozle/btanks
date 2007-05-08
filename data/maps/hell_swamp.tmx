@@ -1,11 +1,10 @@
 <?xml version="1.0"?>
 <map version="0.99b" orientation="orthogonal" width="40" height="30" tilewidth="64" tileheight="64">
  <properties>
-  <property name="ambient-sound" value="swamp.ogg"/>
   <property name="object:static-dirt:dirt:35" value="1140,724,-10"/>
   <property name="object:static-dirt:dirt:34" value="1074,696,-10"/>
-  <property name="object:nuke-missiles-item:nuke-missiles-item:11" value="1882,214,250"/>
   <property name="object:static-dirt:dirt:33" value="0,1760,-510"/>
+  <property name="object:nuke-missiles-item:nuke-missiles-item:11" value="1882,214,250"/>
   <property name="object:static-dirt:dirt:31" value="@0,29,-510"/>
   <property name="object:static-dirt:dirt:30" value="84,1852,-510"/>
   <property name="object:nuke-missiles-item:nuke-missiles-item:9" value="2402,0,250"/>
@@ -35,8 +34,8 @@
   <property name="object:static-dirt:dirt:16" value="2100,536,-510"/>
   <property name="object:static-dirt:dirt:15" value="754,834,-510"/>
   <property name="object:static-dirt:dirt:14" value="1328,506,-510"/>
-  <property name="object:static-dirt:dirt:13" value="1138,1224,-510"/>
   <property name="config:map.dirt.respawn-interval" value="int:0"/>
+  <property name="object:static-dirt:dirt:13" value="1138,1224,-510"/>
   <property name="object:static-dirt:dirt:12" value="1038,1220,-510"/>
   <property name="object:static-dirt:dirt:11" value="2288,1668,-510"/>
   <property name="object:static-dirt:dirt:10" value="2304,1466,-510"/>
@@ -48,8 +47,8 @@
   <property name="object:destructable-object(with-fire):choo-choo-wagon:1" value="1116,668,100"/>
   <property name="object:impassable-static-corpse:dead-cyan-shilka:2" value="810,1806"/>
   <property name="object:impassable-static-corpse:dead-cyan-shilka:1" value="1828,1208"/>
-  <property name="object:dumb-missiles-item:dumb-missiles-item:5" value="1220,1370"/>
   <property name="object:static-tank:cyan-tank:1" value="1392,1032"/>
+  <property name="object:dumb-missiles-item:dumb-missiles-item:5" value="1220,1370"/>
   <property name="object:dumb-missiles-item:dumb-missiles-item:4" value="906,1790"/>
   <property name="object:dumb-missiles-item:dumb-missiles-item:3" value="376,1148"/>
   <property name="object:dumb-missiles-item:dumb-missiles-item:2" value="910,418"/>
@@ -63,21 +62,21 @@
   <property name="object:megaheal:megaheal:2" value="38,44,250"/>
   <property name="object:megaheal:megaheal:1" value="1214,892"/>
   <property name="object:stack:stack:5" value="1448,1350,10"/>
-  <property name="object:mines-item:mines-item:7" value="38,1238"/>
   <property name="object:stack:stack:4" value="1036,1005,10"/>
-  <property name="object:mines-item:mines-item:6" value="36,1238"/>
+  <property name="object:mines-item:mines-item:7" value="38,1238"/>
   <property name="object:stack:stack:3" value="1292,928,10"/>
-  <property name="object:mines-item:mines-item:5" value="856,198"/>
+  <property name="object:mines-item:mines-item:6" value="36,1238"/>
   <property name="object:stack:stack:2" value="1098,766,10"/>
-  <property name="object:mines-item:mines-item:4" value="2212,44"/>
-  <property name="object:stack:stack:1" value="1070,712,10"/>
+  <property name="object:mines-item:mines-item:5" value="856,198"/>
   <property name="object:heal:heal:7" value="1226,412,250"/>
-  <property name="object:mines-item:mines-item:3" value="2494,648"/>
+  <property name="object:stack:stack:1" value="1070,712,10"/>
+  <property name="object:mines-item:mines-item:4" value="2212,44"/>
   <property name="object:heal:heal:6" value="1808,888,250"/>
-  <property name="object:mines-item:mines-item:2" value="1674,478"/>
+  <property name="object:mines-item:mines-item:3" value="2494,648"/>
   <property name="object:heal:heal:5" value="2322,1102"/>
-  <property name="object:mines-item:mines-item:1" value="654,846"/>
+  <property name="object:mines-item:mines-item:2" value="1674,478"/>
   <property name="object:heal:heal:4" value="400,1722"/>
+  <property name="object:mines-item:mines-item:1" value="654,846"/>
   <property name="object:heal:heal:3" value="1172,1632"/>
   <property name="object:heal:heal:2" value="1926,504"/>
   <property name="object:heal:heal:1" value="284,846"/>
@@ -85,20 +84,22 @@
   <property name="spawn:3" value="@29,7"/>
   <property name="spawn:2" value="@11,7"/>
   <property name="spawn:1" value="@10,22"/>
+  <property name="ambient-sound" value="swamp.ogg"/>
   <property name="object:static-launcher:yellow-launcher:1" value="2136,1392"/>
   <property name="config:map.choo-choo-wagon.respawn-interval" value="int:10000"/>
   <property name="config:objects.missiles-on-launcher.default-weapon" value="string:"/>
   <property name="object:impassable-static-corpse:dead-yellow-launcher:3" value="594,938"/>
   <property name="object:impassable-static-corpse:dead-yellow-launcher:2" value="290,228"/>
   <property name="object:impassable-static-corpse:dead-yellow-launcher:1" value="1446,1064"/>
+  <property name="object:static-mortar:yellow-mortar:1" value="@18,8"/>
   <property name="object:static-launcher:cyan-launcher:2" value="250,152"/>
   <property name="object:static-launcher:cyan-launcher:1" value="2498,364"/>
   <property name="object:impassable-static-corpse:dead-yellow-tank:4" value="2510,570"/>
   <property name="object:impassable-static-corpse:dead-yellow-tank:3" value="1696,606"/>
   <property name="object:impassable-static-corpse:dead-yellow-tank:1" value="178,1858"/>
   <property name="config:objects.missiles-on-tank.default-weapon" value="string:"/>
-  <property name="object:oil-barrels:oil-barrels:1" value="1246,1056,250"/>
   <property name="object:static-dirt:dirt:9" value="2062,1466,-510"/>
+  <property name="object:oil-barrels:oil-barrels:1" value="1246,1056,250"/>
   <property name="object:static-dirt:dirt:8" value="1924,1524,-510"/>
  </properties>
  <tileset name="terrains" firstgid="1" tilewidth="64" tileheight="64">
@@ -131,8 +132,8 @@
  </layer>
  <layer name="grass" width="40" height="30">
   <properties>
-   <property name="impassability" value="20"/>
    <property name="z" value="-1000"/>
+   <property name="impassability" value="20"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAO3SMQoAIAxD0R4mrnr/2+niLmpphj+ELIHCo4qItiLT7ivDuKt98LtvHewqXWTux//hV+2DH34OTvjh59jVPvjh5+CEn5+fkvcvfvtW1p7/+9MT4pH6ZMASAAA=
@@ -141,8 +142,8 @@
  </layer>
  <layer name="dirt" width="40" height="30">
   <properties>
-   <property name="z" value="-800"/>
    <property name="impassability" value="20"/>
+   <property name="z" value="-800"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAMVXuU4EMQw14pSgQgJKJPgWaJcW+uUsBkGBQKAtEFAtxx9js7FkMh7Hk2Rnn/SUncn14rVjD0AaY+S5Y5yGiWDNOVJTg7zNUtfea6IwByWauqBpy9VXgvfAD+QScitQauJ+bmvvb635HfiD3EfuBoLQx/3cluBE2X8knq8K1y9FrI8g9d0PJQR0LWfKO6++lG3HSUVpLRpG6SF/uIS2Rum/jXOdeYLsS3ZinRwTdMbHRYkSIH2k4yV6fwr+/4vwIH5fI2/Es/eeamDYeGF47ynNTouC5vs5kPmkJp7hv60oBi5gptmqedh3ZL4rzSOe83FNwfHwZIztUyPEsaDBOh/fHazJ439D1i65MavZZRW5kZh3hDzO2K8GDpHbjnFaHs5ByseoPlwx5nWhz70eQ8ZSrC+OM6oPDzL09dFAkL4Ux5LVp63pjWvrTqlR9xI07V59UgP5yTLovpLCPHJDDPKTPdB9JUYc/zVsbeUjb55lXd7a1QvSZn3v3oHv/iVdte4liVrf4n3rzRQ2Q/tqjLH6ZP9buZwWdkI7RX52jJkm1uC5XzDLnWuB66Dn0T42ppj8BVmtELTAEgAA
@@ -151,8 +152,8 @@
  </layer>
  <layer name="_rain_drops" width="40" height="30">
   <properties>
-   <property name="animation-frames" value="4"/>
    <property name="animation-speed" value="20"/>
+   <property name="animation-frames" value="4"/>
    <property name="animation-frame-size" value="10"/>
    <property name="generator:1:fill" value="animated:rain-drops"/>
   </properties>
@@ -163,10 +164,10 @@
  </layer>
  <layer name="animated water" width="40" height="30">
   <properties>
-   <property name="animation-frames" value="5"/>
    <property name="animation-speed" value="10"/>
-   <property name="animation-frame-size" value="20"/>
+   <property name="animation-frames" value="5"/>
    <property name="z" value="-700"/>
+   <property name="animation-frame-size" value="20"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAL2WXQrDQAiES6+Vvqb3P1LzEpBl1E/dVAjbpPg3jq7H+/X6XM/x4DnROa/n+/A50clyoZLZuW2tsWR6WS5UMju3rTXvqf8qd6b61fpVuTPVJ/gp7jzZ37ZnCX6KO//q8/V7Z4bZ90gIt5QPK50ZZt8n3L3jsXZ3cMvDieLoxdnl1mrXw4nOWC9u9Y3gczr/0RlfiZvgp2JR2E3vqAg3hV/3bqEz1oub5EB3BcVl2k9R7TLsKQ729xS/9czwo3aq/PPwI3dFxPtdO8AEv4z73b3H2qnygPif7o0WW3VvTbmwE0Piz/qleeysh5q7nbpVOV21a2cf4U2FB2RO7eAC4YWKX/Gc8qsr0V5yBP4iDu4UMp9JTp6trlT2aE9HndU+pn1Hakh6s9rH2fkDfWEjSsASAAA=
@@ -175,8 +176,8 @@
  </layer>
  <layer name="Layer 15" width="40" height="30">
   <properties>
-   <property name="z" value="-600"/>
    <property name="impassability" value="20"/>
+   <property name="z" value="-600"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAN1Xyw6CMBDcn8XqyYMnBG8GrvrHbmM3biCF8tgHTjJp2obuwGzpFkAODbJlbSmejNKokKfEiBuyhp/mh4KGUpCeqDnAV3NQ1tAh+8zcGXlBXvXkjPBCvifmo7+W+o6KKd89rDvnu7d1jwqpPNgLc35Z6s/F5uOW+ZaLzcc97AcvOXhPbAbj/BtZaaV6i+qbXJ1g5WcA/dpFAlr+ro0j7W+buCZOtb+cEai2X5prnutEugfUqV+aG1q5Snub7lSl/0MPZ4sHDf8C7nXH+l7O72FdQ31qvejk2ForSr/T1v2z9PkPXlkRHMASAAA=
@@ -204,8 +205,8 @@
  <layer name="water" width="40" height="30">
   <properties>
    <property name="pierceable" value="true"/>
-   <property name="impassability" value="100"/>
    <property name="z" value="-500"/>
+   <property name="impassability" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAN2XwQ4DIQhE+Wi7x9aj7Vd3TUo6IaDYKG46CZdmC2/BHZXoP5TOuBlxBNWWdZDpfsbDiLyQDWszYyKdqXI8lXgt5NN6gVxRHF6+yNl51Jvf6p7J705+A7vnp63x2bK8x+M7q/g83uNhLJ//V66ZM0Qmzq1xZkeuMpEL+8b1OXeh71qWnhol6Y3WezNrtEfJuXqejezhL3yRPbw6H66rnnbwYV2uKf04ieei9ybsofQ69Ou8ga3HiGeyHVwo9OPoc0ZdQ5G+P6LKxnv2FbXa93k2rTshR4tv5XksU/tOyKFpZG/X7qZaX1osB9nnM0vM2OOTXo2/eSMrudgLWvKcG0f5sLb0o0Lz/UnLafniFTx7tt7zs9NwwBIAAA==
@@ -239,8 +240,8 @@
  </layer>
  <layer name="green fence" width="40" height="30">
   <properties>
-   <property name="z" value="150"/>
    <property name="impassability" value="100"/>
+   <property name="z" value="150"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAO1XW24CMQzcvf85eH8AhX7Q8qi0LRSkPo5UR4q1VmTHqZMUkDqSv+JsJrbH8TbNfWLXNs2+vTYLGRvg9mTkN4B9Q7CpYiOwsfGME+x7N+6dw74F2FqxJdjDFXKUGvtn8NkKfhMfYwu0/HVgr21/hpRL9HPrs2Bt5WNsgZa/D7DPtj9DyiX6ufXHgnm21OYZ/C8Vag1zGca/NA7w/RfDGZjLkvHnENNKDDl9kMNE0Mqt8FsJWrHyy+nTEjguVv3U0IcWK9o3NdTQh8YP++Yy8OFqt3T9Sfy4eenMvClh7f4VP+ubjW9kzixE4XL0BnY08gt1hG9kqVnI5egL7JvhJ80KFJxepTuXROfP0OLA6VW6cy5oLFJnmZJ60HqnpXfF+NEZI+UfA2tCOt/yNsX4Ue2k/GPUqInUO9XoixZgHsP+V2Nu+C12Poeuhjqv+7DGas/VMZxIDVH9U6s9V/8jDz8vzP+XwBIAAA==
@@ -321,8 +322,8 @@
  </layer>
  <layer name="_rain" width="40" height="30">
   <properties>
-   <property name="animation-frames" value="4"/>
    <property name="animation-speed" value="20"/>
+   <property name="animation-frames" value="4"/>
    <property name="animation-frame-size" value="10"/>
    <property name="generator:1:fill" value="animated:rain"/>
   </properties>
