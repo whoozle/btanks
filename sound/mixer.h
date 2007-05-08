@@ -79,7 +79,15 @@ private:
 	typedef std::map<const std::string, Sample *> Sounds;
 	Sounds _sounds;
 	
-	typedef std::multimap<const std::pair<int, std::string> , ALuint> Sources;
+	struct SourceInfo {
+		int id;
+		std::string name;
+		bool loop;
+		SourceInfo(const int id, const std::string &name, const bool loop);
+		const bool operator<(const SourceInfo &other) const;
+	};
+	
+	typedef std::multimap<SourceInfo, ALuint> Sources;
 	Sources _sources;
 	
 	typedef std::map<const std::string, std::set<std::string> > Classes;

@@ -39,6 +39,19 @@
 
 IMPLEMENT_SINGLETON(Mixer, IMixer);
 
+IMixer::SourceInfo::SourceInfo(const int id, const std::string &name, const bool loop) : id(id), name(name), loop(loop) {}
+
+const bool IMixer::SourceInfo::operator<(const SourceInfo &other) const {
+	if (id != other.id) 
+		return id < other.id;
+
+	if (name != other.name);
+		return name < other.name;
+
+	return loop < other.loop;
+}
+
+
 IMixer::IMixer() : _no_more_sources(false), _nosound(true), _nomusic(true), _ogg(NULL), _ambient(NULL), _ogg_source(0),
 	_volume_fx(1.0f), _volume_music(1.0f) {}
 
@@ -305,21 +318,13 @@ const bool IMixer::generateSource(ALuint &source) {
 	float max_d = 0;
 	for(Sources::iterator i = _sources.begin(); i != _sources.end(); ++i) {
 	TRY {
-		ALenum loop;
-		alGetSourcei(source, AL_LOOPING, &loop);
-		ALenum r = alGetError();
-		if (r != AL_NO_ERROR) {
-			LOG_ERROR(("alGetSourcei(%08x, AL_LOOPING) error: %x", (unsigned)source, (unsigned)r));
-			victim = i; //error - invalid source, instant kill.
-			break;
-		}
-		
-		if (loop == AL_TRUE)
-			continue; //skip looping sounds, heli, car, submarine and others.
-		
+		const SourceInfo &info = i->first;
+		if (info.loop)
+			continue;
+
 		ALenum state;
 		alGetSourcei(source, AL_SOURCE_STATE, &state);
-		r = alGetError();
+		ALenum r = alGetError();
 
 		if (r != AL_NO_ERROR || state != AL_PLAYING) {
 			if (r != AL_NO_ERROR)
@@ -338,7 +343,7 @@ const bool IMixer::generateSource(ALuint &source) {
 			max_d = d;
 			victim = i;
 		}
-	} CATCH(mrt::formatString("id %d, sound: %s", i->first.first, i->first.second.c_str()).c_str(), );
+	} CATCH(mrt::formatString("id %d, sound: %s", i->first.id, i->first.name.c_str()).c_str(), );
 	}
 	if (victim != _sources.end()) {
 		source = victim->second;
@@ -448,7 +453,7 @@ void IMixer::playSample(const Object *o, const std::string &name, const bool loo
 		alSourcei (source, AL_LOOPING,  loop?AL_TRUE:AL_FALSE );
 		AL_CHECK(("alSourcei(%08x, AL_LOOPING, %s)", source, loop?"AL_TRUE":"AL_FALSE"));
 
-		_sources.insert(Sources::value_type(Sources::key_type(id, name), source));
+		_sources.insert(Sources::value_type(Sources::key_type(id, name, loop), source));
 
 		TRY {
 			alSourcePlay(source);
@@ -492,7 +497,7 @@ void IMixer::updateObject(const Object *o) {
 	const int id = o->getID();
 
 	for(Sources::iterator i = _sources.begin(); i != _sources.end(); ++i) {
-		if (i->first.first == id) {
+		if (i->first.id == id) {
 			ALuint source = i->second;
 			alSourcefv(source, AL_POSITION, al_pos);
 			AL_CHECK_NON_FATAL(("alSourcefv(%08x, AL_POSITION, {%g,%g,%g})", source, al_pos[0], al_pos[1], al_pos[2] ));
@@ -554,9 +559,11 @@ void IMixer::cancelSample(const Object *o, const std::string &name) {
 	if (_nosound || name.empty())
 		return;
 	//LOG_DEBUG(("object %d cancels %s", o->getID(), name.c_str()));
-	Sources::iterator j1 = _sources.lower_bound(Sources::key_type(o->getID(), name));
-	Sources::iterator j2 = _sources.upper_bound(Sources::key_type(o->getID(), name));
-	for(Sources::iterator j = j1; j != j2; ++j) {
+	for(Sources::iterator j = _sources.begin(); j != _sources.end(); ++j) {
+		const SourceInfo &info = j->first;
+		if (info.id != o->getID() || info.name != name || !info.loop)
+			continue;
+		
 		alSourcei (j->second, AL_LOOPING, AL_FALSE);
 		AL_CHECK(("alSourcei"));
 	}
@@ -568,7 +575,7 @@ void IMixer::cancelAll(const Object *o) {
 	
 	const int id = o->getID();
 	for(Sources::iterator j = _sources.begin(); j != _sources.end(); ++j) {
-		if (j->first.first == id) {
+		if (j->first.id == id && j->first.loop) {
 			alSourcei (j->second, AL_LOOPING, AL_FALSE);
 			AL_CHECK(("alSourcei"));
 		}
