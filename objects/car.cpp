@@ -123,7 +123,10 @@ void Car::calculate(const float dt) {
 				continue;
 			
 			v2<float> dpos = getRelativePosition(*i);
-			if (dpos.same_sign(_direction)) {
+			dpos.normalize();
+			int odir = dpos.getDirection(getDirectionsNumber()) - 1;
+			//LOG_DEBUG(("%s: (%g %g)dir = %d, my_dir = %d", animation.c_str(), dpos.x, dpos.y, odir, getDirection()));
+			if (odir == getDirection()) {
 				if (_obstacle == 0)
 					_obstacle = 1; //keep obstacle value incrementing
 				_velocity.clear();
