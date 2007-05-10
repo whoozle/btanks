@@ -156,9 +156,9 @@ void IGame::init(const int argc, char *argv[]) {
 			Config->set("engine.sound.positioning-divisor", 40.0f);
 			Config->remove("engine.sound.doppler-velocity");
 		}
-		if (revision < 3451) {	
+		if (revision < 3518) {	
 			Config->remove("engine.sound.update-objects-interval");
-			Config->set("engine.sound.file-buffer-size", 8192);
+			Config->set("engine.sound.file-buffer-size", 262144);
 			Config->set("engine.sound.buffers", 8);
 		}
 		Config->set("engine.revision", getRevision());
