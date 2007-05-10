@@ -959,6 +959,9 @@ const int Object::getTargetPosition(v2<float> &relative_position, const std::set
 
 
 const bool Object::getTargetPosition(v2<float> &relative_position, const v2<float> &target, const std::string &weapon) const {
+	if (GameMonitor->disabled(this))
+		return -1;
+
 	const int dirs = _directions_n;
 	
 	float range = getWeaponRange(weapon);
