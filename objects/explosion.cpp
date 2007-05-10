@@ -22,6 +22,8 @@
 #include "tmx/map.h"
 #include "config.h"
 #include "game.h"
+#include "i18n.h"
+#include "game_monitor.h"
 
 #include <set>
 
@@ -126,6 +128,12 @@ void Explosion::emit(const std::string &event, Object * emitter) {
 			}
 		}
 		need_sync = true;
+	} else if (event == "death") {
+		if (_players_killed > 1) {
+			std::string combo = I18n->get("messages", "combo");
+			GameMonitor->pushState(mrt::formatString("%dx %s", _players_killed, combo.c_str()), 2);
+		}
+		Object::emit(event, emitter);
 	} else Object::emit(event, emitter);
 }
 

@@ -68,6 +68,7 @@
 		<string id="mission-accomplished">MISSION ACCOMPLISHED</string>
 		<string id="checkpoint-reached">CHECKPOINT REACHED</string>
 		<string id="destroy-spaceport">DESTROY SPACEPORT</string>
+		<string id="combo">COMBO !</string>
 	</area>
 	<area id="errors">
 		<string id="connection-failed">Connection failed</string>
