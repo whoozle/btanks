@@ -399,7 +399,7 @@ void IMixer::playSample(const Object *o, const std::string &name, const bool loo
 		
 		GET_CONFIG_VALUE("engine.sound.maximum-distance", float, md, 60.0f);
 		float d = source_pos.distance(listener_pos);
-		if (d > md) {
+		if (!loop && d > md) {
 			LOG_DEBUG(("sound %s was skipped (distance: %g)", name.c_str(), d));
 			return;
 		}
