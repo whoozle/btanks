@@ -111,13 +111,13 @@ TRY {
 //	if(playing())
 //		return true;
 
-	sdlx::AutoMutex m(_lock);
 	unsigned int i;
 	for(i = 0; i < _buffers_n; ++i) {	
 		if(!stream(_buffers[i]))
 			break;
 	}
 	if (i > 0) {
+		sdlx::AutoMutex m(_lock);
 		alSourceQueueBuffers(_source, i, _buffers);
 		AL_CHECK(("alSourceQueueBuffers(%08x, %d, %p)", _source, i, (const void *)_buffers));
 		alSourcePlay(_source);
