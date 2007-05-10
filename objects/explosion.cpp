@@ -27,7 +27,7 @@
 
 class Explosion : public Object {
 public:
-	Explosion() : Object("explosion"), _damaged_objects(), _damage_done(false) { impassability = 0; }
+	Explosion() : Object("explosion"), _damaged_objects(), _players_killed(0), _damage_done(false) { impassability = 0; }
 	Object* clone() const  { return new Explosion(*this); }
 
 	virtual void tick(const float dt);
@@ -40,6 +40,7 @@ public:
 		for(std::set<int>::const_iterator i = _damaged_objects.begin(); i != _damaged_objects.end(); ++i) 
 			s.add(*i);
 		s.add(_damage_done);
+		s.add(_players_killed);
 	}
 	virtual void deserialize(const mrt::Serializator &s) {
 		Object::deserialize(s);
@@ -52,12 +53,14 @@ public:
 			_damaged_objects.insert(id);
 		}
 		s.get(_damage_done);
+		s.get(_players_killed);
 	}
 
 	void damageMap() const;
 	
 private:
 	std::set<int> _damaged_objects;
+	int _players_killed;
 	bool _damage_done;
 };
 
@@ -113,8 +116,15 @@ void Explosion::emit(const std::string &event, Object * emitter) {
 		if (_damaged_objects.find(id) != _damaged_objects.end())
 			return; //damage was already added for this object.
 		
-		_damaged_objects.insert(id);
 		emitter->addDamage(this, max_hp);
+		_damaged_objects.insert(id);
+		
+		if (emitter->isDead() && emitter->classname == "player") {
+			++_players_killed;
+			if (_players_killed == 2) {
+				playRandomSound("laugh", false);
+			}
+		}
 		need_sync = true;
 	} else Object::emit(event, emitter);
 }
