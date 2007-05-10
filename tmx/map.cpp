@@ -1100,6 +1100,7 @@ void IMap::deserialize(const mrt::Serializator &s) {
 		s.get(value);
 		properties.insert(PropertyMap::value_type(name, value));
 	}
+	load_map_signal.emit();
 }
 	
 void IMap::addTiles(sdlx::Surface *image, const int first_gid) {
