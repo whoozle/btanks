@@ -77,16 +77,14 @@ bool IConsole::onKey(const SDL_keysym sym, const bool pressed) {
 			std::vector<std::string> cmd;
 			mrt::split(cmd, _buffer.back().first.substr(1), " ", 2);
 			if (cmd[0].empty()) {
-				_buffer.push_back(Buffer::value_type("moo :)", NULL));
-				_buffer.push_back(Buffer::value_type(">", NULL));
+				print("moo :)");
 				break;		
 			}
-			LOG_DEBUG(("emit %s('%s')", cmd[0].c_str(), cmd[1].c_str()));
+			//LOG_DEBUG(("emit %s('%s')", cmd[0].c_str(), cmd[1].c_str()));
 			std::string r = on_command.emit(cmd[0], cmd[1]);
 			if (r.empty())
 				r = mrt::formatString("unknown command '%s'", cmd[0].c_str());
-			_buffer.push_back(Buffer::value_type(r, NULL));
-			_buffer.push_back(Buffer::value_type(">", NULL));
+			print(r);
 			_pos = _buffer.size() - 1;
 		}
 		break;
@@ -100,8 +98,10 @@ bool IConsole::onKey(const SDL_keysym sym, const bool pressed) {
 	return true;
 }
 
-void IConsole::print(const std::string &msg);
-
+void IConsole::print(const std::string &msg) {
+	_buffer.push_back(Buffer::value_type(msg, NULL));
+	_buffer.push_back(Buffer::value_type(">", NULL));	
+}
 
 IConsole::IConsole() : _active(false), _pos(0) {}
 

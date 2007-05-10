@@ -50,12 +50,14 @@ public:
 	sigc::signal2<const std::string, const std::string &, const std::string &, marshaler> on_command;
 	
 	void render(sdlx::Surface &window);
-	bool onKey(const SDL_keysym sym, const bool pressed);
+	
+	void print(const std::string &msg);
 
 protected: 
 	IConsole(); 
 	
 private:
+	bool onKey(const SDL_keysym sym, const bool pressed);
 	bool _active; 
 
 	typedef std::deque<std::pair<std::string, sdlx::Surface *> > Buffer;
