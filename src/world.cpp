@@ -1130,6 +1130,7 @@ Object * IWorld::deserializeObject(const mrt::Serializator &s) {
 			if (i != _objects.end()) {
 				//object with given ID exists in map.
 				Object *o = i->second;
+				assert(o != NULL);
 				
 				if (rn == o->registered_name) {
 					PlayerState state = o->getPlayerState();
@@ -1157,6 +1158,8 @@ Object * IWorld::deserializeObject(const mrt::Serializator &s) {
 				//new object.
 				result = ao = ResourceManager->createObject(rn);
 				//LOG_DEBUG(("created ('%s', '%s')", rn.c_str(), an.c_str()));
+				assert(ao != NULL);
+				
 				ao->deserialize(s);
 				ao->init(ao->animation);
 				
