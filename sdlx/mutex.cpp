@@ -21,12 +21,16 @@
 
 using namespace sdlx;
 
-Mutex::Mutex() : _mutex(SDL_CreateMutex()) {
+Mutex::Mutex() : _mutex(NULL) {
+	_mutex = SDL_CreateMutex();
 	if (_mutex == NULL)
 		throw_sdl(("SDL_CreateMutex"));
 }
 
 Mutex::~Mutex() {
+	if (_mutex == NULL)
+		return;
+	
 	SDL_DestroyMutex(_mutex);
 	_mutex = NULL;
 }
