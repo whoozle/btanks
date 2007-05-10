@@ -326,6 +326,9 @@
 	<sound file="klaxon.ogg" class="klaxon" />
 	<sound file="klaxon-funny.ogg" class="klaxon" />
 
+	<sound file="laugh01.ogg" class="laugh" />
+	<sound file="laugh02.ogg" class="laugh" />
+
 	<!-- animation tiles -->
 
 	<animation id="damage-digits" tile="../font/digits.png" model="single-tile" tile_width="10" tile_height="16" />
