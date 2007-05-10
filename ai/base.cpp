@@ -132,7 +132,7 @@ const bool Base::checkTarget(const Object * target, const std::string &weapon) c
 
 
 void Base::calculate(const float dt) {
-	if (GameMonitor->disabled(registered_name)) {
+	if (GameMonitor->disabled(this)) {
 		return;
 	}
 	

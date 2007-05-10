@@ -33,6 +33,8 @@ namespace sdlx {
 class Surface;
 }
 
+class Object;
+
 struct Item {
 	Item(const std::string &classname, const std::string &animation, const v2<int> position, const int z = 0) :
 		classname(classname), animation(animation), position(position), z(z), id(-1), dead_on(0), 
@@ -76,7 +78,7 @@ public:
 	
 	void render(sdlx::Surface &window);
 	
-	const bool disabled(const std::string &classname) const;
+	const bool disabled(const Object *o) const;
 	void disable(const std::string &classname, const bool value = true);
 
 private:

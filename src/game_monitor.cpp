@@ -184,8 +184,8 @@ void IGameMonitor::render(sdlx::Surface &window) {
 }
 
 
-const bool IGameMonitor::disabled(const std::string &classname) const {
-	return _disabled.find(classname) != _disabled.end();
+const bool IGameMonitor::disabled(const Object *o) const {
+	return _disabled.find(o->classname) != _disabled.end() || _disabled.find(o->registered_name) != _disabled.end();
 }
 
 void IGameMonitor::disable(const std::string &classname, const bool value) {
