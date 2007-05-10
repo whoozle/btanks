@@ -189,7 +189,7 @@ const bool IGameMonitor::disabled(const std::string &classname) const {
 }
 
 void IGameMonitor::disable(const std::string &classname, const bool value) {
-	LOG_DEBUG(("%s ai for classname %s", value?"disable":"enable", classname.c_str()));
+	LOG_DEBUG(("%s ai for classname %s", value?"disabling":"enabling", classname.c_str()));
 	if (value) {
 		_disabled.insert(classname);
 	} else {
