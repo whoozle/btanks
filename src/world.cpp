@@ -870,7 +870,7 @@ TRY {
 	
 	v2<float> new_pos = o._position + dpos;
 
-	if (!o.pierceable) {
+	if (!o.piercing) {
 		if ((dpos.x < 0 && new_pos.x < -o.size.x / 2) || (dpos.x > 0 && new_pos.x + o.size.x / 2 >= map_size.x))
 			dpos.x = 0;
 
@@ -878,10 +878,10 @@ TRY {
 			dpos.y = 0;
 		
 	} else {
-		if ((dpos.x < 0 && new_pos.x < -o.size.x) || (dpos.x > 0 && new_pos.x >= map_size.x))
+		if ((dpos.x < 0 && new_pos.x < -1.5 * o.size.x) || (dpos.x > 0 && new_pos.x >= map_size.x + 1.5 * o.size.x))
 			dpos.x = 0;
 
-		if ((dpos.y < 0 && new_pos.y < -o.size.y) || (dpos.y > 0 && new_pos.y >= map_size.y))
+		if ((dpos.y < 0 && new_pos.y < -1.5 * o.size.y) || (dpos.y > 0 && new_pos.y >= map_size.y + 1.5 * o.size.y))
 			dpos.y = 0;
 	
 	}
