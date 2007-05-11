@@ -86,10 +86,11 @@ void Car::onObstacle(const int idx) {
 }
 
 void Car::onSpawn() {
-	obstacle_filter.insert("car");
-	obstacle_filter.insert("civilian");
-	obstacle_filter.insert("trooper");
-	obstacle_filter.insert("player");
+	//obstacle_filter.insert("car");
+	//obstacle_filter.insert("civilian");
+	//obstacle_filter.insert("trooper");
+	//obstacle_filter.insert("player");
+	_avoid_obstacles = true;
 
 	ai::Waypoints::onSpawn(this);
 	//GET_CONFIG_VALUE("objects.car.refreshing-path-interval", float, rpi, 1);

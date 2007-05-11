@@ -40,6 +40,9 @@ public:
 	virtual void deserialize(const mrt::Serializator &s) {
 		Object::deserialize(s);
 	}	
+	
+	virtual void onObstacle(const int idx);
+
 };
 
 void Combine::emit(const std::string &event, Object * emitter) {
@@ -49,8 +52,15 @@ void Combine::emit(const std::string &event, Object * emitter) {
 	Object::emit(event, emitter);
 }
 
+void Combine::onObstacle(const int idx) {
+	if ((idx % 21) == 1) { //approx once per 5 second
+		playSound("klaxon", false);
+	}
+}
+
 
 void Combine::onSpawn() {
+	_avoid_obstacles = true;
 	ai::Waypoints::onSpawn(this);
 	
 	play("hold", true);
