@@ -328,7 +328,7 @@ const bool IMixer::generateSource(ALuint &source) {
 
 		if (r != AL_NO_ERROR || state != AL_PLAYING) {
 			if (r != AL_NO_ERROR)
-				LOG_ERROR(("alGetSourcei(%08x, AL_SOURCE_STATE): error %08x, state returned: %d", source, (unsigned)r, (int)state));
+				LOG_ERROR(("alGetSourcei(%08x, AL_SOURCE_STATE): error %08x, state returned: %08xx", source, (unsigned)r, (unsigned)state));
 			victim = i;
 			break;
 		}
