@@ -443,6 +443,15 @@
 	<animation id="civilian-1" tile="man01.png" model="man-animation"/>
 	<animation id="dead-civilian-1" tile="man01_dead01.png" model="dead-man-animation"/>
 	<animation id="dead-civilian-static-1" tile="man01_dead01.png" model="dead-man-animation-static"/>
+	<animation id="civilian-2" tile="man02.png" model="man-animation"/>
+	<animation id="dead-civilian-2" tile="man02_dead01.png" model="dead-man-animation"/>
+	<animation id="dead-civilian-static-2" tile="man02_dead01.png" model="dead-man-animation-static"/>
+	<animation id="civilian-3" tile="man03.png" model="man-animation"/>
+	<animation id="dead-civilian-3" tile="man03_dead01.png" model="dead-man-animation"/>
+	<animation id="dead-civilian-static-3" tile="man03_dead01.png" model="dead-man-animation-static"/>
+	<animation id="civilian-4" tile="man04.png" model="man-animation"/>
+	<animation id="dead-civilian-4" tile="man04_dead01.png" model="dead-man-animation"/>
+	<animation id="dead-civilian-static-4" tile="man04_dead01.png" model="dead-man-animation-static"/>
 
 	<animation id="ziehharmonikaspieler" tile="ziehharmonikaspieler.png" model="ziehharmonikaspieler-animation"/>
 	<animation id="dead-ziehharmonikaspieler" tile="ziehharmonikaspieler_dead.png" model="dead-man-animation"/>
