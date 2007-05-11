@@ -162,30 +162,30 @@
   <property name="spawn:2" value="@18,23"/>
   <property name="spawn:1" value="@11,3"/>
   <property name="object:traffic-lights:traffic-lights:19" value="1391,837"/>
-  <property name="waypoint:cars:18" value="@37,15"/>
+  <property name="waypoint:car:18" value="@37,15"/>
   <property name="object:traffic-lights:traffic-lights:18" value="1158,836"/>
-  <property name="waypoint:cars:17" value="@37,27"/>
+  <property name="waypoint:car:17" value="@37,27"/>
   <property name="object:traffic-lights:traffic-lights:17" value="1158,998"/>
-  <property name="waypoint:cars:16" value="@36,27"/>
+  <property name="waypoint:car:16" value="@36,27"/>
   <property name="edge:13:14" value=""/>
   <property name="object:traffic-lights:traffic-lights:16" value="518,997"/>
-  <property name="waypoint:cars:15" value="@36,15"/>
+  <property name="waypoint:car:15" value="@36,15"/>
   <property name="object:traffic-lights:traffic-lights:15" value="518,837"/>
-  <property name="waypoint:cars:14" value="@21,15"/>
+  <property name="waypoint:car:14" value="@21,15"/>
   <property name="object:traffic-lights:traffic-lights:14" value="687,837"/>
-  <property name="waypoint:cars:13" value="@21,28"/>
-  <property name="waypoint:cars:12" value="@19,28"/>
-  <property name="waypoint:cars:9" value="@9,1"/>
-  <property name="waypoint:cars:11" value="@19,15"/>
-  <property name="waypoint:cars:8" value="@10,1"/>
-  <property name="waypoint:cars:10" value="@9,15"/>
-  <property name="waypoint:cars:7" value="@10,14"/>
-  <property name="waypoint:cars:6" value="@19,14"/>
-  <property name="waypoint:cars:5" value="@19,2"/>
-  <property name="waypoint:cars:4" value="@21,2"/>
-  <property name="waypoint:cars:3" value="@21,14"/>
-  <property name="waypoint:cars:2" value="@36,14"/>
-  <property name="waypoint:cars:1" value="@36,2"/>
+  <property name="waypoint:car:13" value="@21,28"/>
+  <property name="waypoint:car:12" value="@19,28"/>
+  <property name="waypoint:car:9" value="@9,1"/>
+  <property name="waypoint:car:11" value="@19,15"/>
+  <property name="waypoint:car:8" value="@10,1"/>
+  <property name="waypoint:car:10" value="@9,15"/>
+  <property name="waypoint:car:7" value="@10,14"/>
+  <property name="waypoint:car:6" value="@19,14"/>
+  <property name="waypoint:car:5" value="@19,2"/>
+  <property name="waypoint:car:4" value="@21,2"/>
+  <property name="waypoint:car:3" value="@21,14"/>
+  <property name="waypoint:car:2" value="@36,14"/>
+  <property name="waypoint:car:1" value="@36,2"/>
   <property name="object:impassable-static-corpse:dead-orange-bus:29" value="2524,868"/>
   <property name="object:impassable-static-corpse:dead-orange-bus:28" value="18,991"/>
   <property name="edge:7:8" value=""/>

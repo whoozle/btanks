@@ -42,14 +42,14 @@
   <property name="object:guided-missiles-item:guided-missiles-item:0" value="1024,128,180"/>
   <property name="object:car:white-car:1" value="@0,6"/>
   <property name="object:road-sign:road-sign09:1" value="394,1320,1"/>
-  <property name="waypoint:cars:6" value="@0,6"/>
+  <property name="waypoint:car:6" value="@0,6"/>
   <property name="object:ricochet-bullets-item:ricochet-bullets-item:3" value="1201,1257,180"/>
-  <property name="waypoint:cars:5" value="@20,5"/>
+  <property name="waypoint:car:5" value="@20,5"/>
   <property name="object:ricochet-bullets-item:ricochet-bullets-item:2" value="10,300"/>
-  <property name="waypoint:cars:4" value="@20,6"/>
-  <property name="waypoint:cars:3" value="@4,6"/>
-  <property name="waypoint:cars:2" value="@4,5"/>
-  <property name="waypoint:cars:1" value="@24,5"/>
+  <property name="waypoint:car:4" value="@20,6"/>
+  <property name="waypoint:car:3" value="@4,6"/>
+  <property name="waypoint:car:2" value="@4,5"/>
+  <property name="waypoint:car:1" value="@24,5"/>
   <property name="object:road-sign:road-sign08:1" value="1333,430,1"/>
   <property name="object:dispersion-bullets-item:dispersion-bullets-item:2" value="542,607"/>
   <property name="object:machinegunner-item:machinegunner-item:3" value="771,223"/>
