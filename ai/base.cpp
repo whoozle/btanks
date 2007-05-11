@@ -38,7 +38,8 @@ Base::~Base() {
 	if (!active())
 		return;
 	
-	LOG_DEBUG(("traits: \n%s", _traits.save().c_str()));
+	if (!_traits.empty())
+		LOG_DEBUG(("traits: \n%s", _traits.save().c_str()));
 }
 
 void Base::addEnemyClass(const std::string &classname) {
