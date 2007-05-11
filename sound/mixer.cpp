@@ -322,13 +322,13 @@ const bool IMixer::generateSource(ALuint &source) {
 		if (info.loop)
 			continue;
 
-		ALenum state;
+		ALenum state = 0;
 		alGetSourcei(source, AL_SOURCE_STATE, &state);
 		ALenum r = alGetError();
 
 		if (r != AL_NO_ERROR || state != AL_PLAYING) {
 			if (r != AL_NO_ERROR)
-				LOG_ERROR(("alGetSourcei(%08x, AL_SOURCE_STATE): error %08x", source, (unsigned)r));
+				LOG_ERROR(("alGetSourcei(%08x, AL_SOURCE_STATE): error %08x, state returned: %d", source, (unsigned)r, (int)state));
 			victim = i;
 			break;
 		}
