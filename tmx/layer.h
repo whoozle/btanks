@@ -22,6 +22,7 @@
 
 #include "mrt/chunk.h"
 #include "mrt/serializable.h"
+#include "export_btanks.h"
 #include "sdlx/surface.h"
 #include "sdlx/c_map.h"
 #include <vector>
@@ -36,7 +37,7 @@
 #	define restrict
 #endif
 
-class Layer : public mrt::Serializable {
+class BTANKSAPI Layer : public mrt::Serializable {
 public:
 #ifdef PRERENDER_LAYERS
 	sdlx::Surface surface;
