@@ -47,7 +47,7 @@ public:
 
 	const int getItemY(const int idx) const;
 	const int getItemIndex(const int yp) const;
-
+	
 	~ScrollList();
 private:
 	Box _background;

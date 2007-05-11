@@ -48,10 +48,6 @@ void ScrollList::add(Control *control) {
 	_list.push_back(control);
 }
 
-void ScrollList::clear() {
-	_list.clear();
-}
-
 const int ScrollList::getItemY(const int idx) const {
 	int y = 0;
 	for(int i = 0; i < idx; ++i) {
@@ -272,8 +268,14 @@ void ScrollList::remove(const int idx) {
 		_current_item = (int)_list.size() - 1;
 }
 
-ScrollList::~ScrollList() {
+void ScrollList::clear() {
+	_current_item = 0;
 	for(size_t i = 0; i < _list.size(); ++i) {
 		delete _list[i];
 	}
+	_list.clear();
+}
+
+ScrollList::~ScrollList() {
+	clear();
 }
