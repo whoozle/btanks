@@ -28,10 +28,14 @@
 
 using namespace ai;
 
-Base::Base() : _active(false), _reaction_time(true), _refresh_path(false), _target_id(-1) {}
+Base::Base() : _reaction_time(true), _refresh_path(false), _target_id(-1) {}
+
+const bool Base::active() const {
+	return !PlayerManager->isClient();
+}
 
 Base::~Base() {
-	if (!_active)
+	if (!active())
 		return;
 	
 	LOG_DEBUG(("traits: \n%s", _traits.save().c_str()));
@@ -47,8 +51,7 @@ void Base::addBonusName(const std::string &rname) {
 
 
 void Base::onSpawn(const Object *object) {
-	_active = !PlayerManager->isClient();
-	if (!_active)
+	if (!active())
 		return;
 	
 	const std::string vehicle = object->getType();
@@ -136,7 +139,7 @@ void Base::calculate(Object *object, const float dt) {
 		return;
 	}
 	
-	if (!_active) {
+	if (!active()) {
 		if (object->isDriven()) 
 			object->calculateWayVelocity();
 		object->updateStateFromVelocity();

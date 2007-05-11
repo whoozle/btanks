@@ -38,6 +38,8 @@ public:
 	virtual const std::string getWeapon(const int idx) const = 0;
 	virtual const int getWeaponAmount(const int idx) const = 0;
 	static const std::string convertName(const std::string &name);
+
+	const bool active() const;
 	
 protected: 
 	void addEnemyClass(const std::string &classname);
@@ -46,7 +48,7 @@ protected:
 	
 	const bool checkTarget(const Object *obj, const Object * target, const std::string &weapon) const;
 private: 
-	bool _active;
+
 	Alarm _reaction_time, _refresh_path;
 	ai::Traits _traits;
 	std::set<std::string> _enemies, _bonuses;

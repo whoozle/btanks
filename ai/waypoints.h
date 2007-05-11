@@ -22,10 +22,13 @@ public:
 	virtual void onObstacle(const int idx) {}
 
 	virtual ~Waypoints() {}
+	
+	const bool active() const;
 protected:
 	std::set<std::string> obstacle_filter;
 	
 private: 
+	bool _active;
 	Alarm _reaction_time;
 	bool _stop;
 	std::string _waypoint_name;

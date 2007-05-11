@@ -5,12 +5,24 @@
 #include "config.h"
 #include "mrt/random.h"
 #include "game.h"
+#include "player_manager.h"
 
 using namespace ai;
 
 Waypoints::Waypoints() : _reaction_time(true), _stop(false), _obstacle(0) {}
 
+const bool Waypoints::active() const {
+	return !PlayerManager->isClient();
+}
+
 void Waypoints::calculate(Object *object, const float dt) {
+	if (!active()) {
+		if (object->isDriven()) 
+			object->calculateWayVelocity();
+		object->updateStateFromVelocity();
+		return;
+	}
+
 	if (!obstacle_filter.empty() && _reaction_time.tick(dt)) {
 		std::set<const Object *> objs;
 		World->enumerateObjects(objs, object, (object->size.x + object->size.y) * 2 / 3, &obstacle_filter);
