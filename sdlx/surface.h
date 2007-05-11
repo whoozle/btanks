@@ -73,6 +73,7 @@ namespace sdlx {
 		void getVideo();
 		void setVideoMode(int w, int h, int bpp, int flags = Default);
 
+		void loadBMP(const std::string &fname);
 		void saveBMP(const std::string &fname) const;
 #ifndef NO_SDL_IMAGE
 		void loadImage(const std::string &fname);
