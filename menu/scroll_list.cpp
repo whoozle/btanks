@@ -234,10 +234,14 @@ bool ScrollList::onMouse(const int button, const bool pressed, const int x, cons
 	_background.getMargins(mx, my);
 	
 	if (_items_area.in(x, y)) {
-		if (button == SDL_BUTTON_WHEELUP)
+		if (button == SDL_BUTTON_WHEELUP) {
 			up();
-		if (button == SDL_BUTTON_WHEELDOWN)
+			return true;
+		}
+		if (button == SDL_BUTTON_WHEELDOWN) {
 			down();
+			return true;
+		}
 		//LOG_DEBUG(("%d %d -> %d", x, y, y + (int)_pos - my));
 		int item = getItemIndex(y - my + (int)_pos);
 		if (item >= 0 && item < (int)_list.size())
