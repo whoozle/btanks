@@ -22,6 +22,7 @@
 #include "sdlx/ttf.h"
 #include "sdlx/sdl_ex.h"
 #include "version.h"
+#include "finder.h"
 
 IMPLEMENT_SINGLETON(Window, IWindow);
 
@@ -140,6 +141,15 @@ void IWindow::init(const int argc, char *argv[]) {
 	}
 #endif
 #endif
+
+	std::string icon_file = Finder->find("tiles/icon.bmp", false);
+	SDL_Surface *icon_surface;
+	if (!icon_file.empty() && (icon_surface = SDL_LoadBMP(icon_file.c_str())) != NULL) {
+		Uint32 key = SDL_MapRGB(icon_surface->format, 0xff, 0xff, 0xff);
+		SDL_SetColorKey(icon_surface, SDL_SRCCOLORKEY | SDL_RLEACCEL, key);
+		SDL_WM_SetIcon(icon_surface, NULL);
+	}
+
 
 	LOG_DEBUG(("setting caption..."));		
 	SDL_WM_SetCaption(("Battle tanks - " + getVersion()).c_str(), "btanks");
