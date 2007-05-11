@@ -25,7 +25,7 @@ bt_sources = 	[
 	'src/special_zone.cpp', 'src/game_monitor.cpp', 
 	'src/player_manager.cpp', 'src/object_grid.cpp', 'src/variants.cpp', 
 
-	'ai/base.cpp', 'ai/herd.cpp', 'ai/traits.cpp',
+	'ai/base.cpp', 'ai/herd.cpp', 'ai/traits.cpp', 'ai/waypoints.cpp', 
 		
 	'src/player_state.cpp', 'controls/joy_bindings.cpp', 
 	'controls/joyplayer.cpp', 'controls/keyplayer.cpp', 'controls/external_control.cpp', 'controls/mouse_control.cpp', 
