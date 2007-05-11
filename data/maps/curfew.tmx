@@ -11,16 +11,16 @@
   <property name="edge:9:10" value=""/>
   <property name="object:dumb-missiles-item:dumb-missiles-item:2" value="1676,690"/>
   <property name="object:dumb-missiles-item:dumb-missiles-item:1" value="1032,806"/>
-  <property name="object:static-corpse:dead-man-static:9" value="22,1474,150"/>
-  <property name="object:static-corpse:dead-man-static:8" value="458,1002"/>
+  <property name="object:static-corpse:dead-civilian-static-1:9" value="22,1474,150"/>
+  <property name="object:static-corpse:dead-civilian-static-1:8" value="458,1002"/>
   <property name="object:road-sign:road-sign10:1" value="2420,24"/>
-  <property name="object:static-corpse:dead-man-static:7" value="816,1008"/>
-  <property name="object:static-corpse:dead-man-static:6" value="550,818"/>
-  <property name="object:static-corpse:dead-man-static:5" value="845,520"/>
-  <property name="object:static-corpse:dead-man-static:4" value="1177,522"/>
-  <property name="object:static-corpse:dead-man-static:3" value="1356,80"/>
-  <property name="object:static-corpse:dead-man-static:2" value="1172,1865"/>
-  <property name="object:static-corpse:dead-man-static:1" value="1123,1268"/>
+  <property name="object:static-corpse:dead-civilian-static-1:7" value="816,1008"/>
+  <property name="object:static-corpse:dead-civilian-static-1:6" value="550,818"/>
+  <property name="object:static-corpse:dead-civilian-static-1:5" value="845,520"/>
+  <property name="object:static-corpse:dead-civilian-static-1:4" value="1177,522"/>
+  <property name="object:static-corpse:dead-civilian-static-1:3" value="1356,80"/>
+  <property name="object:static-corpse:dead-civilian-static-1:2" value="1172,1865"/>
+  <property name="object:static-corpse:dead-civilian-static-1:1" value="1123,1268"/>
   <property name="object:pond:pond:2" value="1728,254,-25"/>
   <property name="object:impassable-static-corpse:dead-yellow-tank:1" value="1331,1220"/>
   <property name="object:static-launcher:cyan-launcher:1" value="3,1510"/>
@@ -81,17 +81,17 @@
   <property name="object:armed-mine:regular-mine:2" value="527,1041,-10"/>
   <property name="edge:8:9" value=""/>
   <property name="object:armed-mine:regular-mine:1" value="1896,1891,160"/>
-  <property name="object:static-corpse:dead-man:7" value="1318,76,-50"/>
-  <property name="object:static-corpse:dead-man:6" value="2476,1354,-50"/>
+  <property name="object:static-corpse:dead-civilian-1:7" value="1318,76,-50"/>
+  <property name="object:static-corpse:dead-civilian-1:6" value="2476,1354,-50"/>
   <property name="object:thrower-item:thrower-item:1" value="1820,114"/>
-  <property name="object:static-corpse:dead-man:5" value="930,798,-50"/>
-  <property name="object:static-corpse:dead-man:4" value="422,902,-50"/>
+  <property name="object:static-corpse:dead-civilian-1:5" value="930,798,-50"/>
+  <property name="object:static-corpse:dead-civilian-1:4" value="422,902,-50"/>
   <property name="object:biotoilet:biotoilet:4" value="704,1761"/>
   <property name="edge:6:7" value=""/>
-  <property name="object:static-corpse:dead-man:3" value="595,1458"/>
+  <property name="object:static-corpse:dead-civilian-1:3" value="595,1458"/>
   <property name="object:biotoilet:biotoilet:3" value="721,1728"/>
-  <property name="object:static-corpse:dead-man:2" value="478,580"/>
-  <property name="object:static-corpse:dead-man:1" value="1433,1604"/>
+  <property name="object:static-corpse:dead-civilian-1:2" value="478,580"/>
+  <property name="object:static-corpse:dead-civilian-1:1" value="1433,1604"/>
   <property name="object:biotoilet:biotoilet:1" value="2222,4"/>
   <property name="object:static-tank:green-tank:1" value="0,160"/>
   <property name="edge:11:14" value=""/>
@@ -146,7 +146,7 @@
   <property name="object:ricochet-bullets-item:ricochet-bullets-item:1" value="1996,696,180"/>
   <property name="object:impassable-static-corpse:dead-red-shilka:1" value="715,358"/>
   <property name="object:car:white-car:3" value="@19,25"/>
-  <property name="object:static-corpse:dead-man-static:10" value="651,1843"/>
+  <property name="object:static-corpse:dead-civilian-static-1:10" value="651,1843"/>
   <property name="edge:17:18" value=""/>
   <property name="object:static-shilka:yellow-shilka:1" value="1817,547"/>
   <property name="object:static-mortar:yellow-mortar:1" value="@39,3"/>

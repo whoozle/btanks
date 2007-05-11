@@ -29,24 +29,24 @@
   <property name="object:impassable-static-corpse:dead-choo-choo-train:3" value="1185,523,-29"/>
   <property name="object:armed-mine:regular-mine:57" value="2209,627"/>
   <property name="object:armed-mine:regular-mine:56" value="1640,684"/>
-  <property name="object:static-corpse:dead-man-static:9" value="1683,603"/>
+  <property name="object:static-corpse:dead-civilian-static-1:9" value="1683,603"/>
   <property name="object:armed-mine:regular-mine:55" value="1415,1266"/>
-  <property name="object:static-corpse:dead-man-static:8" value="1682,603"/>
+  <property name="object:static-corpse:dead-civilian-static-1:8" value="1682,603"/>
   <property name="object:static-tank:red-tank:1" value="136,569"/>
   <property name="object:armed-mine:regular-mine:54" value="1415,1243"/>
-  <property name="object:static-corpse:dead-man-static:7" value="1708,1010"/>
+  <property name="object:static-corpse:dead-civilian-static-1:7" value="1708,1010"/>
   <property name="object:armed-mine:regular-mine:53" value="1415,1218"/>
-  <property name="object:static-corpse:dead-man-static:6" value="1757,1159"/>
+  <property name="object:static-corpse:dead-civilian-static-1:6" value="1757,1159"/>
   <property name="object:armed-mine:regular-mine:52" value="1441,1267"/>
-  <property name="object:static-corpse:dead-man-static:5" value="1405,1361"/>
+  <property name="object:static-corpse:dead-civilian-static-1:5" value="1405,1361"/>
   <property name="object:armed-mine:regular-mine:51" value="1441,1241"/>
-  <property name="object:static-corpse:dead-man-static:4" value="1446,1198"/>
+  <property name="object:static-corpse:dead-civilian-static-1:4" value="1446,1198"/>
   <property name="object:armed-mine:regular-mine:50" value="1441,1213"/>
-  <property name="object:static-corpse:dead-man-static:3" value="1169,1054"/>
+  <property name="object:static-corpse:dead-civilian-static-1:3" value="1169,1054"/>
   <property name="object:impassable-static-corpse:dead-red-launcher:2" value="1165,356"/>
-  <property name="object:static-corpse:dead-man-static:2" value="1158,582"/>
+  <property name="object:static-corpse:dead-civilian-static-1:2" value="1158,582"/>
   <property name="object:nuclear-explosion:nuclear-explosion:1" value="1926,-256"/>
-  <property name="object:static-corpse:dead-man-static:1" value="1242,360"/>
+  <property name="object:static-corpse:dead-civilian-static-1:1" value="1242,360"/>
   <property name="object:boomerang-missiles-item:boomerang-missiles-item:3" value="1700,90"/>
   <property name="object:boomerang-missiles-item:boomerang-missiles-item:2" value="200,26"/>
   <property name="object:boomerang-missiles-item:boomerang-missiles-item:1" value="1450,902"/>
@@ -117,14 +117,14 @@
   <property name="object:impassable-static-corpse:dead-white-car:17" value="96,849"/>
   <property name="object:oil-barrels:oil-barrels:1" value="1663,1140"/>
   <property name="object:impassable-static-corpse:dead-white-car:16" value="111,617"/>
-  <property name="object:static-corpse:dead-man-static:14" value="642,1091,-59"/>
+  <property name="object:static-corpse:dead-civilian-static-1:14" value="642,1091,-59"/>
   <property name="object:impassable-static-corpse:dead-white-car:15" value="1163,238"/>
-  <property name="object:static-corpse:dead-man-static:13" value="555,425"/>
-  <property name="object:static-corpse:dead-man-static:12" value="527,1053"/>
+  <property name="object:static-corpse:dead-civilian-static-1:13" value="555,425"/>
+  <property name="object:static-corpse:dead-civilian-static-1:12" value="527,1053"/>
   <property name="object:impassable-static-corpse:dead-cyan-car:3" value="547,497"/>
-  <property name="object:static-corpse:dead-man-static:11" value="1569,860"/>
+  <property name="object:static-corpse:dead-civilian-static-1:11" value="1569,860"/>
   <property name="object:impassable-static-corpse:dead-cyan-car:2" value="100,668"/>
-  <property name="object:static-corpse:dead-man-static:10" value="1657,727"/>
+  <property name="object:static-corpse:dead-civilian-static-1:10" value="1657,727"/>
   <property name="object:impassable-static-corpse:dead-cyan-car:1" value="2001,1046"/>
  </properties>
  <tileset name="Untitled" firstgid="1" tilewidth="64" tileheight="64">

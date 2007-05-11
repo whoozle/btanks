@@ -7,17 +7,17 @@
   <property name="object:dumb-missiles-item:dumb-missiles-item:5" value="1047,504"/>
   <property name="object:dumb-missiles-item:dumb-missiles-item:4" value="501,1201"/>
   <property name="object:dumb-missiles-item:dumb-missiles-item:2" value="1777,311,-1750"/>
-  <property name="object:static-corpse:dead-man-static:9" value="439,328,-2020"/>
+  <property name="object:static-corpse:dead-civilian-static-1:9" value="439,328,-2020"/>
   <property name="object:dumb-missiles-item:dumb-missiles-item:1" value="1260,1409,-1750"/>
   <property name="object:impassable-static-corpse:dead-green-tank:1" value="1750,0,-10"/>
-  <property name="object:static-corpse:dead-man-static:8" value="269,156,-2020"/>
-  <property name="object:static-corpse:dead-man-static:7" value="959,750,-2020"/>
-  <property name="object:static-corpse:dead-man-static:6" value="401,1441,-2020"/>
-  <property name="object:static-corpse:dead-man-static:5" value="201,1672,-2020"/>
-  <property name="object:static-corpse:dead-man-static:4" value="178,1224,-2020"/>
-  <property name="object:static-corpse:dead-man-static:3" value="280,1198,-2020"/>
-  <property name="object:static-corpse:dead-man-static:2" value="582,1678,-2020"/>
-  <property name="object:static-corpse:dead-man-static:1" value="581,1678,-2020"/>
+  <property name="object:static-corpse:dead-civilian-static-1:8" value="269,156,-2020"/>
+  <property name="object:static-corpse:dead-civilian-static-1:7" value="959,750,-2020"/>
+  <property name="object:static-corpse:dead-civilian-static-1:6" value="401,1441,-2020"/>
+  <property name="object:static-corpse:dead-civilian-static-1:5" value="201,1672,-2020"/>
+  <property name="object:static-corpse:dead-civilian-static-1:4" value="178,1224,-2020"/>
+  <property name="object:static-corpse:dead-civilian-static-1:3" value="280,1198,-2020"/>
+  <property name="object:static-corpse:dead-civilian-static-1:2" value="582,1678,-2020"/>
+  <property name="object:static-corpse:dead-civilian-static-1:1" value="581,1678,-2020"/>
   <property name="object:broken-object:traffic-lights:6" value="367,1001,-1850"/>
   <property name="object:broken-object:traffic-lights:5" value="198,1005,-1850"/>
   <property name="object:teleport(d):teleport:15" value="295,207,-2002"/>
@@ -80,9 +80,9 @@
   <property name="object:thrower-item:thrower-item:5" value="1316,1796,-1750"/>
   <property name="object:thrower-item:thrower-item:4" value="1379,923,-1750"/>
   <property name="object:thrower-item:thrower-item:3" value="422,370,-1750"/>
-  <property name="object:static-corpse:dead-man:3" value="594,543,-2020"/>
-  <property name="object:static-corpse:dead-man:2" value="1116,825,-2020"/>
-  <property name="object:static-corpse:dead-man:1" value="1297,1243,-2020"/>
+  <property name="object:static-corpse:dead-civilian-1:3" value="594,543,-2020"/>
+  <property name="object:static-corpse:dead-civilian-1:2" value="1116,825,-2020"/>
+  <property name="object:static-corpse:dead-civilian-1:1" value="1297,1243,-2020"/>
   <property name="object:teleport(j):teleport:31" value="666,730,-2002"/>
   <property name="object:teleport(j):teleport:30" value="1163,1799,-2"/>
   <property name="object:teleport(e):teleport:17" value="1826,548,-2"/>
@@ -125,17 +125,17 @@
   <property name="object:teleport(h):teleport:25" value="@29,13,-2002"/>
   <property name="object:teleport(h):teleport:24" value="@0,0,-2"/>
   <property name="object:oil-barrels:oil-barrels:5" value="605,276,150"/>
-  <property name="object:static-corpse:dead-man-static:17" value="1551,865,-2010"/>
+  <property name="object:static-corpse:dead-civilian-static-1:17" value="1551,865,-2010"/>
   <property name="object:ricochet-bullets-item:ricochet-bullets-item:2" value="1259,366,-1650"/>
-  <property name="object:static-corpse:dead-man-static:16" value="1882,174,-10"/>
+  <property name="object:static-corpse:dead-civilian-static-1:16" value="1882,174,-10"/>
   <property name="object:ricochet-bullets-item:ricochet-bullets-item:1" value="1570,1438,-1650"/>
-  <property name="object:static-corpse:dead-man-static:15" value="509,37,-10"/>
+  <property name="object:static-corpse:dead-civilian-static-1:15" value="509,37,-10"/>
   <property name="object:oil-barrels:oil-barrels:1" value="401,218,-1650"/>
-  <property name="object:static-corpse:dead-man-static:14" value="819,26,-10"/>
-  <property name="object:static-corpse:dead-man-static:13" value="1398,899,-1850"/>
-  <property name="object:static-corpse:dead-man-static:12" value="885,1142,-2020"/>
-  <property name="object:static-corpse:dead-man-static:11" value="663,1372,-2020"/>
-  <property name="object:static-corpse:dead-man-static:10" value="720,355,-2020"/>
+  <property name="object:static-corpse:dead-civilian-static-1:14" value="819,26,-10"/>
+  <property name="object:static-corpse:dead-civilian-static-1:13" value="1398,899,-1850"/>
+  <property name="object:static-corpse:dead-civilian-static-1:12" value="885,1142,-2020"/>
+  <property name="object:static-corpse:dead-civilian-static-1:11" value="663,1372,-2020"/>
+  <property name="object:static-corpse:dead-civilian-static-1:10" value="720,355,-2020"/>
   <property name="object:static-shilka:yellow-shilka:1" value="582,612,-2000"/>
   <property name="object:teleport(m):teleport:39" value="1327,1177,-2002"/>
   <property name="object:teleport(m):teleport:38" value="1857,1051,-2"/>

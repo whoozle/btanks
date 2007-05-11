@@ -440,9 +440,9 @@
 	<animation id="orange-bus" tile="bus01.png" model="car-animation"/>
 	<animation id="dead-orange-bus" tile="bus01_crash.png" model="dead-vehicle-animation"/>
 
-	<animation id="man" tile="man01.png" model="man-animation"/>
-	<animation id="dead-man" tile="man01_dead01.png" model="dead-man-animation"/>
-	<animation id="dead-man-static" tile="man01_dead01.png" model="dead-man-animation-static"/>
+	<animation id="civilian-1" tile="man01.png" model="man-animation"/>
+	<animation id="dead-civilian-1" tile="man01_dead01.png" model="dead-man-animation"/>
+	<animation id="dead-civilian-static-1" tile="man01_dead01.png" model="dead-man-animation-static"/>
 
 	<animation id="ziehharmonikaspieler" tile="ziehharmonikaspieler.png" model="ziehharmonikaspieler-animation"/>
 	<animation id="dead-ziehharmonikaspieler" tile="ziehharmonikaspieler_dead.png" model="dead-man-animation"/>
