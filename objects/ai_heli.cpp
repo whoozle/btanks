@@ -123,6 +123,7 @@ done:
 
 	GET_CONFIG_VALUE("objects.helicopter.rotation-time", float, rt, 0.2);
 	limitRotation(dt, rt, true, true);	
+	updateStateFromVelocity();
 }
 
 REGISTER_OBJECT("helicopter", AIHeli, ());

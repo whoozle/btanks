@@ -102,6 +102,7 @@ void AITank::calculate(const float dt) {
 	
 	GET_CONFIG_VALUE("objects.tank.rotation-time", float, rt, 0.05);
 	limitRotation(dt, rt, true, false);
+	updateStateFromVelocity();	
 }
 
 REGISTER_OBJECT("ai-tank", AITank, ());

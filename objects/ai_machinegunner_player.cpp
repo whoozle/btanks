@@ -92,6 +92,7 @@ void AIMachinegunnerPlayer::calculate(const float dt) {
 	
 	GET_CONFIG_VALUE("objects.trooper.rotation-time", float, rt, 0.07);
 	limitRotation(dt, rt, true, false);
+	updateStateFromVelocity();	
 }
 
 REGISTER_OBJECT("ai-machinegunner-player", AIMachinegunnerPlayer, ());

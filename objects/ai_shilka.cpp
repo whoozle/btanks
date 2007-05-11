@@ -105,6 +105,7 @@ void AIShilka::calculate(const float dt) {
 	
 	GET_CONFIG_VALUE("objects.shilka.rotation-time", float, rt, 0.05);
 	limitRotation(dt, rt, true, false);
+	updateStateFromVelocity();	
 }
 
 REGISTER_OBJECT("ai-shilka", AIShilka, ());

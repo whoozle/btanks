@@ -77,6 +77,7 @@ void AITrooper::onIdle(const float dt) {
 
 	GET_CONFIG_VALUE("objects.ai-trooper.rotation-time", float, rt, 0.05);
 	limitRotation(dt, rt, true, false);
+	updateStateFromVelocity();	
 }
 
 void AITrooper::onSpawn() {
