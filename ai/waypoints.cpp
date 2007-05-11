@@ -9,7 +9,7 @@
 
 using namespace ai;
 
-Waypoints::Waypoints() : _reaction_time(true), _stop(false), _obstacle(0) {}
+Waypoints::Waypoints() : _avoid_obstacles(false), _reaction_time(true), _stop(false), _obstacle(0) {}
 
 const bool Waypoints::active() const {
 	return !PlayerManager->isClient();
@@ -23,9 +23,9 @@ void Waypoints::calculate(Object *object, const float dt) {
 		return;
 	}
 
-	if (!obstacle_filter.empty() && _reaction_time.tick(dt)) {
+	if (_avoid_obstacles && _reaction_time.tick(dt)) {
 		std::set<const Object *> objs;
-		World->enumerateObjects(objs, object, (object->size.x + object->size.y) * 2 / 3, &obstacle_filter);
+		World->enumerateObjects(objs, object, (object->size.x + object->size.y) * 2 / 3, NULL /* &obstacle_filter */);
 		std::set<const Object *>::const_iterator i;
 		for(i = objs.begin(); i != objs.end(); ++i) {
 			if ((*i)->speed == 0)

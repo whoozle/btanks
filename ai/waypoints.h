@@ -2,7 +2,7 @@
 #define BTANKS_AI_WAYPOINTS_H__
 
 #include <string>
-#include <set>
+//#include <set>
 #include "alarm.h"
 #include "mrt/serializable.h"
 #include "export_btanks.h"
@@ -25,10 +25,10 @@ public:
 	
 	const bool active() const;
 protected:
-	std::set<std::string> obstacle_filter;
+	//std::set<std::string> obstacle_filter;
+	bool _avoid_obstacles;
 	
 private: 
-	bool _active;
 	Alarm _reaction_time;
 	bool _stop;
 	std::string _waypoint_name;
