@@ -54,7 +54,7 @@ void Combine::emit(const std::string &event, Object * emitter) {
 
 void Combine::onObstacle(const int idx) {
 	if ((idx % 21) == 1) { //approx once per 5 second
-		playSound("klaxon", false);
+		playRandomSound("klaxon", false);
 	}
 }
 
