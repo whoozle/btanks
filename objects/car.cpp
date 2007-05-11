@@ -21,12 +21,9 @@
 #include "config.h"
 #include "object.h"
 #include "item.h"
-#include "game.h"
-#include "world.h"
-#include "mrt/random.h"
-#include "math/unary.h"
+#include "ai/waypoints.h"
 
-class Car : public Object {
+class Car : public Object, public ai::Waypoints {
 public: 
 	Car();
 
@@ -36,27 +33,19 @@ public:
 	virtual Object * clone() const;
 	
 	void emit(const std::string &event, Object * emitter);
+	
+	virtual void onObstacle(const int idx);
+	
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
-		s.add(_reaction_time);
-		s.add(_waypoint_name);
-		s.add(_stop);
-		s.add(_obstacle);
+		//ai::Waypoints::serialize(s);
 	}
 	virtual void deserialize(const mrt::Serializator &s) {
 		Object::deserialize(s);
-		s.get(_reaction_time);
-		s.get(_waypoint_name);
-		s.get(_stop);
-		s.get(_obstacle);
-	}	
+		//ai::Waypoints::deserialize(s);
+	}
 private: 
 	virtual void getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const;
-
-	Alarm _reaction_time;
-	bool _stop;
-	std::string _waypoint_name;
-	int _obstacle;
 };
 
 void Car::getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const {
@@ -90,11 +79,19 @@ void Car::emit(const std::string &event, Object * emitter) {
 	Object::emit(event, emitter);
 }
 
+void Car::onObstacle(const int idx) {
+	if ((idx % 21) == 1) { //approx once per 5 second
+		playRandomSound("klaxon", false);
+	}
+}
 
 void Car::onSpawn() {
-	GET_CONFIG_VALUE("objects.car.reaction-time", float, rt, 0.1);
-	_reaction_time.set(rt);
-	mrt::randomize(rt, rt / 10);
+	obstacle_filter.insert("car");
+	obstacle_filter.insert("civilian");
+	obstacle_filter.insert("trooper");
+	obstacle_filter.insert("player");
+
+	ai::Waypoints::onSpawn(this);
 	//GET_CONFIG_VALUE("objects.car.refreshing-path-interval", float, rpi, 1);
 	//_refresh_waypoints.set(rpi);
 	play("hold", true);
@@ -102,82 +99,13 @@ void Car::onSpawn() {
 	disown(); 
 }
 
-Car::Car() : Object("car"), _reaction_time(true), _stop(false), _obstacle(0)
-{}
+Car::Car() : Object("car") {}
 
 void Car::calculate(const float dt) {
-	if (_reaction_time.tick(dt)) {
-		static std::set<std::string> filter;
-		if (filter.empty()) {
-			filter.insert("car");
-			filter.insert("civilian");
-			filter.insert("trooper");
-			filter.insert("player");
-		}
-	
-		std::set<const Object *> objs;
-		World->enumerateObjects(objs, this, (size.x + size.y) * 2 / 3, &filter);
-		std::set<const Object *>::const_iterator i;
-		for(i = objs.begin(); i != objs.end(); ++i) {
-			if ((*i)->speed == 0)
-				continue;
-			
-			v2<float> dpos = getRelativePosition(*i);
-			dpos.normalize();
-			int odir = dpos.getDirection(getDirectionsNumber()) - 1;
-			//LOG_DEBUG(("%s: (%g %g)dir = %d, my_dir = %d", animation.c_str(), dpos.x, dpos.y, odir, getDirection()));
-			if (odir == getDirection()) {
-				if (_obstacle == 0)
-					_obstacle = 1; //keep obstacle value incrementing
-				_velocity.clear();
-				break;
-			}
-		}
-		if (i == objs.end())
-			_obstacle = 0;
-		
-		if (_obstacle) {
-			if ((_obstacle % 21) == 1) { //approx once per 5 second
-				playRandomSound("klaxon", false);
-			}
-			++_obstacle;
-		}
-	}
-	
-	if (_obstacle) {
-		_velocity.clear();
-		return;
-	}
-	
-	if (!calculatingPath() && !isDriven()) {
-		v2<float> waypoint;
-		_velocity.clear();
-		if (_waypoint_name.empty()) {
-			_waypoint_name = getNearestWaypoint("cars");
-			assert(!_waypoint_name.empty());
-			Game->getWaypoint(waypoint, "cars", _waypoint_name);
-			//LOG_DEBUG(("%s[%d] moving to nearest waypoint at %g %g", animation.c_str(), getID(), waypoint.x, waypoint.y));
-		} else {
-			//LOG_DEBUG(("%s[%d] reached waypoint '%s'", animation.c_str(), getID(), _waypoint_name.c_str()));
-			_waypoint_name = Game->getRandomWaypoint("cars", _waypoint_name);
-			Game->getWaypoint(waypoint, "cars", _waypoint_name);
-			//LOG_DEBUG(("%s[%d] moving to next waypoint '%s' at %g %g", animation.c_str(), getID(), _waypoint_name.c_str(), waypoint.x, waypoint.y));
-		}
-		GET_CONFIG_VALUE("objects.car.pathfinding-step", int, pfs, 16);
-		findPath(waypoint.convert<int>(), pfs);
-	}
-	Way way;
-	if (calculatingPath() && findPathDone(way)) {
-		if (way.empty()) {
-			LOG_DEBUG(("%s:%s[%d] no path. maybe commit a suicide?", registered_name.c_str(), animation.c_str(), getID()));
-			//emit("death", NULL);
-		}
-		setWay(way);
-	} else _velocity.clear();
+	ai::Waypoints::calculate(this, dt);
 
-	calculateWayVelocity();	
-	
-	GET_CONFIG_VALUE("objects.car.rotation-time", float, rt, 0.05);
+	float rt;
+	Config->get("objects." + registered_name + ".rotation-time", rt, 0.05f);
 	limitRotation(dt, rt, true, false);
 	updateStateFromVelocity();
 }
