@@ -60,12 +60,12 @@ const int ScrollList::getItemY(const int idx) const {
 }
 
 const int ScrollList::getItemIndex(const int yp) const {
-	int y = 0;
+	int y = -2;
 	for(int i = 0; i < (int)_list.size(); ++i) {
 		int w, h;
 		_list[i]->getSize(w, h);
 		h += 5;
-		if (y >= yp && y < yp + h)
+		if (yp >= y && yp < y + h)
 			return i; 
 		y += h;
 	}
@@ -210,6 +210,19 @@ bool ScrollList::onKey(const SDL_keysym sym) {
 	return false;
 }
 
+void ScrollList::up() {
+		if (_current_item > 0 ) 
+			--_current_item;
+		//LOG_DEBUG(("up: %u", _current_item));
+}
+
+void ScrollList::down() {
+		++_current_item;
+		if (_current_item >= (int)_list.size()) 
+			_current_item = (int)_list.size() - 1;
+		//LOG_DEBUG(("down: %u", _current_item));
+}
+
 bool ScrollList::onMouse(const int button, const bool pressed, const int x, const int y) {
 	//implement dragging of scroller here.
 	//LOG_DEBUG(("boo %d %d %d %d", button, pressed, x, y));
@@ -222,9 +235,9 @@ bool ScrollList::onMouse(const int button, const bool pressed, const int x, cons
 	
 	if (_items_area.in(x, y)) {
 		if (button == SDL_BUTTON_WHEELUP)
-			goto up;
+			up();
 		if (button == SDL_BUTTON_WHEELDOWN)
-			goto down;
+			down();
 		//LOG_DEBUG(("%d %d -> %d", x, y, y + (int)_pos - my));
 		int item = getItemIndex(y - my + (int)_pos);
 		if (item >= 0 && item < (int)_list.size())
@@ -233,19 +246,12 @@ bool ScrollList::onMouse(const int button, const bool pressed, const int x, cons
 	}	
 	
 	if (_up_area.in(x, y)) {
-	up: //fix it 
-		if (_current_item > 0 ) 
-			--_current_item;
-		//LOG_DEBUG(("up: %u", _current_item));
+		up();
 		return true;
 	} else if (_down_area.in(x, y)) {
-	down: 
-		++_current_item;
-		if (_current_item >= (int)_list.size()) 
-			_current_item = (int)_list.size() - 1;
-		//LOG_DEBUG(("down: %u", _current_item));
+		down();
 		return true;
-	} else 
+	}
 	return false;
 }
 

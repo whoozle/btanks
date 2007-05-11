@@ -49,6 +49,9 @@ public:
 	const int getItemIndex(const int yp) const;
 	
 	~ScrollList();
+	
+	void up();
+	void down();
 private:
 	Box _background;
 	const sdlx::Surface *_scrollers;
