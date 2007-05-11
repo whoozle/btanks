@@ -25,7 +25,7 @@
 
 class AITank:  public Tank, public ai::Base {
 public: 
-	AITank() :  Object("player"), Tank("player") {}
+	AITank() : Tank("player") {}
 //	~AITank();
 	virtual void onSpawn();
 	virtual void calculate(const float dt);
@@ -93,12 +93,12 @@ void AITank::onSpawn() {
 	addBonusName("stun-missiles-item");
 	addBonusName("mines-item");
 
-	ai::Base::onSpawn();
+	ai::Base::onSpawn(this);
 	Tank::onSpawn();
 }
 
 void AITank::calculate(const float dt) {
-	ai::Base::calculate(dt);
+	ai::Base::calculate(this, dt);
 	
 	GET_CONFIG_VALUE("objects.tank.rotation-time", float, rt, 0.05);
 	limitRotation(dt, rt, true, false);

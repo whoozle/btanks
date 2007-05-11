@@ -21,7 +21,7 @@
 
 class Civilian : public Trooper {
 public: 
-	Civilian() : Object("player"), Trooper("player", std::string()) {} 
+	Civilian() : Trooper("player", std::string()) {} 
 };
 
 REGISTER_OBJECT("civilian-player", Civilian, ());

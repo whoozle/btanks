@@ -25,7 +25,7 @@
 
 class AIMachinegunnerPlayer:  public Trooper, public ai::Base {
 public: 
-	AIMachinegunnerPlayer() :  Object("player"),  Trooper("player", "machinegunner-bullet") {}
+	AIMachinegunnerPlayer() :  Trooper("player", "machinegunner-bullet") {}
 //	~AIMachinegunnerPlayer();
 	virtual const std::string getType() const { return "machinegunner"; }
 	virtual void onSpawn();
@@ -83,12 +83,12 @@ void AIMachinegunnerPlayer::onSpawn() {
 	//addBonusName("stun-missiles-item");
 	//addBonusName("mines-item");
 
-	ai::Base::onSpawn();
+	ai::Base::onSpawn(this);
 	Trooper::onSpawn();
 }
 
 void AIMachinegunnerPlayer::calculate(const float dt) {
-	ai::Base::calculate(dt);
+	ai::Base::calculate(this, dt);
 	
 	GET_CONFIG_VALUE("objects.trooper.rotation-time", float, rt, 0.07);
 	limitRotation(dt, rt, true, false);

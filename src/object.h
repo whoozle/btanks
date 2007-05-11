@@ -246,6 +246,7 @@ private:
 	Alarm _blinking;
 	
 	friend class IWorld;
+	friend class ai::Base;
 };
 
 

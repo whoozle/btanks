@@ -23,7 +23,7 @@
 #include "object.h"
 #include "alarm.h"
 
-class Tank : virtual public Object {
+class Tank : public Object {
 public:
 	Tank(const std::string &classname);
 	virtual Object * clone() const;

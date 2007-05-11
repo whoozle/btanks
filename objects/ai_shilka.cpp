@@ -25,7 +25,7 @@
 
 class AIShilka:  public Shilka, public ai::Base {
 public: 
-	AIShilka() :  Object("player"), Shilka("player") {}
+	AIShilka() : Shilka("player") {}
 //	~AIShilka();
 	virtual void onSpawn();
 	virtual void calculate(const float dt);
@@ -96,12 +96,12 @@ void AIShilka::onSpawn() {
 	addBonusName("machinegunner-item");
 	addBonusName("thrower-item");
 
-	ai::Base::onSpawn();
+	ai::Base::onSpawn(this);
 	Shilka::onSpawn();
 }
 
 void AIShilka::calculate(const float dt) {
-	ai::Base::calculate(dt);
+	ai::Base::calculate(this, dt);
 	
 	GET_CONFIG_VALUE("objects.shilka.rotation-time", float, rt, 0.05);
 	limitRotation(dt, rt, true, false);

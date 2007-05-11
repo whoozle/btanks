@@ -23,7 +23,7 @@
 #include "object.h"
 #include "alarm.h"
 
-class Mortar : virtual public Object {
+class Mortar : public Object {
 public:
 	Mortar(const std::string &classname);
 	virtual Object * clone() const;

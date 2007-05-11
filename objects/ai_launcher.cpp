@@ -25,7 +25,7 @@
 
 class AILauncher:  public Launcher, public ai::Base {
 public: 
-	AILauncher() :  Object("player"),  Launcher("player") {}
+	AILauncher() : Launcher("player") {}
 //	~AILauncher();
 	virtual void onSpawn();
 	virtual void calculate(const float dt);
@@ -78,12 +78,12 @@ void AILauncher::onSpawn() {
 	addBonusName("stun-missiles-item");
 	addBonusName("mines-item");
 
-	ai::Base::onSpawn();
+	ai::Base::onSpawn(this);
 	Launcher::onSpawn();
 }
 
 void AILauncher::calculate(const float dt) {
-	ai::Base::calculate(dt);
+	ai::Base::calculate(this, dt);
 	
 	GET_CONFIG_VALUE("objects.launcher.rotation-time", float, rt, 0.07);
 	limitRotation(dt, rt, true, false);

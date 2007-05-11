@@ -23,7 +23,7 @@
 #include "object.h"
 #include "alarm.h"
 
-class Launcher : public virtual Object {
+class Launcher : public Object {
 public:
 	Launcher(const std::string &classname);
 	virtual Object * clone() const;

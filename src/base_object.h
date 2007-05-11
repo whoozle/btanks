@@ -33,6 +33,10 @@ namespace sdlx {
 	class Surface;
 }
 
+namespace ai {
+	class Base;
+}
+
 class BTANKSAPI BaseObject : public mrt::Serializable {
 public:
 	v2<float> size;
@@ -136,6 +140,7 @@ private:
 	
 	friend class IWorld;
 	friend class Teleport;
+	friend class ai::Base;
 };
 
 #endif

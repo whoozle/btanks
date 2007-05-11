@@ -28,7 +28,7 @@
 
 using namespace ai;
 
-Base::Base() : Object("player"), _active(false), _reaction_time(true), _refresh_path(false), _target_id(-1) {}
+Base::Base() : _active(false), _reaction_time(true), _refresh_path(false), _target_id(-1) {}
 
 Base::~Base() {
 	if (!_active)
@@ -46,12 +46,12 @@ void Base::addBonusName(const std::string &rname) {
 }
 
 
-void Base::onSpawn() {
+void Base::onSpawn(const Object *object) {
 	_active = !PlayerManager->isClient();
 	if (!_active)
 		return;
 	
-	const std::string vehicle = getType();
+	const std::string vehicle = object->getType();
 	if (vehicle.empty())
 		throw_ex(("vehicle MUST provide its type"));
 	
@@ -87,11 +87,11 @@ const std::string Base::convertName(const std::string &weapon) {
 }
 
 
-const bool Base::checkTarget(const Object * target, const std::string &weapon) const {
+const bool Base::checkTarget(const Object *object, const Object * target, const std::string &weapon) const {
 	if (!isEnemy(target))
 		return false;
 	
-	v2<float> pos = getRelativePosition(target);
+	v2<float> pos = object->getRelativePosition(target);
 	
 	std::string wc, wt;
 	{
@@ -108,10 +108,10 @@ const bool Base::checkTarget(const Object * target, const std::string &weapon) c
 	{
 		v2<float> d(pos);
 		d.normalize();
-		int dir = d.getDirection(getDirectionsNumber()) - 1;
-		codir = dir == getDirection();
-		int dd = math::abs(dir - getDirection());
-		codir1 = dd == 1 || dd == (getDirectionsNumber() - 1);
+		int dir = d.getDirection(object->getDirectionsNumber()) - 1;
+		codir = dir == object->getDirection();
+		int dd = math::abs(dir - object->getDirection());
+		codir1 = dd == 1 || dd == (object->getDirectionsNumber() - 1);
 	}
 
 	//LOG_DEBUG(("moo(%s/%s): %g %g codir: %c, codir1: %c", wc.c_str(), wt.c_str(), pos.x, pos.y, codir?'+':'-', codir1?'+':'-'));
@@ -124,22 +124,22 @@ const bool Base::checkTarget(const Object * target, const std::string &weapon) c
 		if (wt == "boomerang")
 			return true;
 	} else if (wc == "mines") {
-		if (!_velocity.is0())
+		if (!object->_velocity.is0())
 			return true;
 	}
 	return false;
 }
 
 
-void Base::calculate(const float dt) {
-	if (GameMonitor->disabled(this)) {
+void Base::calculate(Object *object, const float dt) {
+	if (GameMonitor->disabled(object)) {
 		return;
 	}
 	
 	if (!_active) {
-		if (isDriven()) 
-			calculateWayVelocity();
-		updateStateFromVelocity();
+		if (object->isDriven()) 
+			object->calculateWayVelocity();
+		object->updateStateFromVelocity();
 		return;
 	}
 
@@ -169,12 +169,12 @@ void Base::calculate(const float dt) {
 	
 	if (target != NULL) {
 		if (!weapon1.empty())
-			_state.fire = checkTarget(target, weapon1);
+			object->_state.fire = checkTarget(object, target, weapon1);
 		if (!weapon2.empty())
-			_state.alt_fire = checkTarget(target, weapon2);
+			object->_state.alt_fire = checkTarget(object, target, weapon2);
 	}
 		
-	target = World->findTarget(this, (amount1 > 0 || amount2 > 0)?_enemies:empty_enemies, _bonuses, _traits);
+	target = World->findTarget(object, (amount1 > 0 || amount2 > 0)?_enemies:empty_enemies, _bonuses, _traits);
 	
 	if (target != NULL && ((refresh_path && isEnemy(target)) || target->getID() != _target_id)) {
 		_target_id = target->getID();
@@ -182,14 +182,14 @@ void Base::calculate(const float dt) {
 
 		if (_enemy && !weapon1.empty()) {
 			v2<float> r;
-			if (getTargetPosition(r, target->getPosition(), convertName(weapon1)))
+			if (object->getTargetPosition(r, target->getPosition(), convertName(weapon1)))
 				_target_position = r.convert<int>();
 		}
 		
 		target->getCenterPosition(_target_position);
-		_target_position -= (size / 2).convert<int>();
+		_target_position -= (object->size / 2).convert<int>();
 		LOG_DEBUG(("next target: %s at %d,%d", target->registered_name.c_str(), _target_position.x, _target_position.y));
-		findPath(_target_position, 16);
+		object->findPath(_target_position, 16);
 		_refresh_path.reset();
 		
 		//Way way;
@@ -212,16 +212,16 @@ void Base::calculate(const float dt) {
 	
 	Way way;
 	
-	if (calculatingPath()) {
+	if (object->calculatingPath()) {
 		int n = 1;
 		bool found;
-		while(! (found = findPathDone(way)) && n < _pf_slice)
+		while(! (found = object->findPathDone(way)) && n < _pf_slice)
 			++n;
 		
 		if (found) {
 			//LOG_DEBUG(("n = %d", n));
 			if (!way.empty()) {
-				setWay(way);
+				object->setWay(way);
 			} else {
 				LOG_WARN(("no path"));
 			}
@@ -231,24 +231,24 @@ void Base::calculate(const float dt) {
 		
 	}
 	
-	calculateWayVelocity();
+	object->calculateWayVelocity();
 	
-	if (!calculatingPath() && _velocity.is0()) {
-		v2<float> dir = _target_position.convert<float>() - getPosition();
+	if (!object->calculatingPath() && object->_velocity.is0()) {
+		v2<float> dir = _target_position.convert<float>() - object->getPosition();
 		dir.normalize();
-		int t_dir = dir.getDirection(getDirectionsNumber()) - 1;
-		if (t_dir != -1 && t_dir != getDirection())
-			_velocity = dir;
+		int t_dir = dir.getDirection(object->getDirectionsNumber()) - 1;
+		if (t_dir != -1 && t_dir != object->getDirection())
+			object->_velocity = dir;
 		//LOG_DEBUG(("fire? (target: %p, w1: %s, w2: %s)", target, weapon1.c_str(), weapon2.c_str()));
 		if (target != NULL) {
-			if (!weapon1.empty() && !_state.fire)
-				_state.fire = checkTarget(target, weapon1);
-			if (!weapon2.empty() && !_state.alt_fire)
-				_state.alt_fire = checkTarget(target, weapon2);
+			if (!weapon1.empty() && !object->_state.fire)
+				object->_state.fire = checkTarget(object, target, weapon1);
+			if (!weapon2.empty() && !object->_state.alt_fire)
+				object->_state.alt_fire = checkTarget(object, target, weapon2);
 		}
 			
 	}
-	updateStateFromVelocity();
+	object->updateStateFromVelocity();
 }
 
 

@@ -23,7 +23,7 @@
 #include "object.h"
 #include "alarm.h"
 
-class Trooper : virtual public Object {
+class Trooper : public Object {
 public:
 	Trooper(const std::string &classname, const std::string &object) : 
 		Object(classname), _object(object), _fire(false) {}

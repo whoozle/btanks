@@ -25,7 +25,7 @@
 class AITrooper : public Trooper, ai::Herd {
 public:
 	AITrooper(const std::string &object, const bool aim_missiles) : 
-		Object("trooper"), Trooper("trooper", object), _reaction(true), _target_dir(-1) {
+		Trooper("trooper", object), _reaction(true), _target_dir(-1) {
 			if (aim_missiles)
 				_targets.insert("missile");
 	
@@ -144,7 +144,7 @@ void AITrooper::calculate(const float dt) {
 class TrooperInWatchTower : public Trooper {
 public: 
 	TrooperInWatchTower(const std::string &object, const bool aim_missiles) : 
-		Object("trooper"), Trooper("trooper", object), _reaction(true) {
+		Trooper("trooper", object), _reaction(true) {
 			if (aim_missiles)
 				_targets.insert("missile");
 	

@@ -27,13 +27,13 @@
 #include "alarm.h"
 
 namespace ai {
-class BTANKSAPI Base : public virtual Object {
+class BTANKSAPI Base {
 public: 
 	Base();
 	virtual ~Base();
 
-	virtual void calculate(const float dt);
-	virtual void onSpawn();
+	virtual void calculate(Object *obj, const float dt);
+	virtual void onSpawn(const Object *obj);
 	
 	virtual const std::string getWeapon(const int idx) const = 0;
 	virtual const int getWeaponAmount(const int idx) const = 0;
@@ -44,7 +44,7 @@ protected:
 	void addBonusName(const std::string &rname);
 	const bool isEnemy(const Object *o) const;
 	
-	const bool checkTarget(const Object * target, const std::string &weapon) const;
+	const bool checkTarget(const Object *obj, const Object * target, const std::string &weapon) const;
 private: 
 	bool _active;
 	Alarm _reaction_time, _refresh_path;
