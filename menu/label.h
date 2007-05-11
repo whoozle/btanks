@@ -34,6 +34,7 @@ public:
 	Label(const std::string &font, const std::string &label);
 	virtual void render(sdlx::Surface& surface, const int x, const int y);
 	virtual void getSize(int &w, int &h) const;
+	const std::string get() const { return _label; }
 
 private: 
 	const sdlx::Font * _font;

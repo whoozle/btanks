@@ -34,7 +34,7 @@ public:
 	virtual void add(const std::string &item);
 	
 	const int get() const { return _current_item; }
-	const std::string getValue() const { return _list[_current_item]; }
+	const std::string getValue() const;
 	void set(const int idx) { _current_item = idx; }
 	void remove(const int idx);
 	
@@ -44,18 +44,20 @@ public:
 	virtual bool onMouse(const int button, const bool pressed, const int x, const int y);
 	virtual void getSize(int &w, int &h) const;
 
+	const int getItemY(const int idx) const;
+	const int getItemIndex(const int yp) const;
+
 private:
 	Box _background;
 	const sdlx::Surface *_scrollers;
 	sdlx::Rect _up_area, _down_area, _items_area;
-	const sdlx::Font *_font;
-	int _item_h, _client_w, _client_h;
+	int _client_w, _client_h;
 
 
 	float _pos, _vel;
 protected:
-
-	typedef std::deque<std::string> List;
+	const sdlx::Font *_font;
+	typedef std::deque<Control *> List;
 	List _list;
 	int _current_item;
 };

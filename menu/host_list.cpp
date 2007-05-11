@@ -18,6 +18,7 @@
  */
 #include "host_list.h"
 #include "config.h"
+#include "label.h"
 
 HostList::HostList(const std::string &config_key, const int w, const int h) : ScrollList("medium_dark", w, h), _config_key(config_key) {
 	std::string str_hosts;
@@ -40,7 +41,7 @@ void HostList::promote(const size_t i) {
 	List::iterator li = _list.begin();
 	
 	for(size_t n = i; n--; ++li);
-	std::string host = *li;
+	Control * host = *li;
 	_list.erase(li);	
 	_list.push_front(host);
 	_current_item = 0;
@@ -50,11 +51,16 @@ void HostList::add(const std::string &_item) {
 	std::string item = _item;
 	mrt::toLower(item);
 	
-	for(List::iterator i = _list.begin(); i != _list.end(); ++i) 
-		if (item == *i)
+	for(List::iterator i = _list.begin(); i != _list.end(); ++i) {
+		Label *l = dynamic_cast<Label *>(*i);
+		if (l == NULL || l->get().empty()) 
+			continue;
+		
+		if (item == l->get())
 			return;
+	}
 	
-	_list.push_front(item);
+	_list.push_front(new Label(_font, item));
 }
 
 HostList::~HostList() {
@@ -63,7 +69,10 @@ HostList::~HostList() {
 	//change it .
 	
 	for(List::iterator i = _list.begin(); i != _list.end(); ++i) {
-		hosts.push_back(*i);
+		Label *l = dynamic_cast<Label *>(*i);
+		if (l == NULL || l->get().empty()) 
+			continue;
+		hosts.push_back(l->get());
 	}
 	std::string str;
 	mrt::join(str, hosts, " ");
