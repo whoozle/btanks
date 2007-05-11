@@ -764,7 +764,7 @@ void IMap::end(const std::string &name) {
 		LOG_DEBUG(("tileset: %s, first_gid: %d", _image_source.c_str(), _firstgid));
 		_generator->tileset(_image_name, _firstgid);
 
-		_tilesets.push_back(Tilesets::value_type(_image_source, _firstgid));
+		_tilesets.add(_image_source, _firstgid);
 		addTiles(_image, _firstgid);
 
 		delete _image;
@@ -1043,24 +1043,25 @@ void IMap::deserialize(const mrt::Serializator &s) {
 	reset_progress.emit(tn + ln);
 	
 	while(tn--) {
-		Tilesets::value_type t;
-		s.get(t.first);	
-		s.get(t.second);	
+		std::string name;
+		int gid;
+		s.get(name);	
+		s.get(gid);	
 		sdlx::Surface *image  = NULL;
 		TRY {
-			std::string fname = Finder->find("tilesets/" + t.first);
+			std::string fname = Finder->find("tilesets/" + name);
 			
 			image = new sdlx::Surface;
 			image->loadImage(fname);
 			image->convertAlpha();
 			
-			addTiles(image, t.second);
+			addTiles(image, gid);
 			
 			delete image;
 			image = NULL;
 		} CATCH("deserialize", { delete image; throw; });
 		
-		_tilesets.push_back(t);
+		_tilesets.add(name, gid);
 		notify_progress.emit(1);
 	}
 	

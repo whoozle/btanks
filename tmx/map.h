@@ -35,6 +35,7 @@
 #include "notifying_xml_parser.h"
 
 #include "sdlx/c_map.h"
+#include "tileset_list.h"
 
 namespace sdlx {
 class Surface;
@@ -59,8 +60,7 @@ public:
 		int prev_im;
 	};
 	
-	typedef std::vector<std::pair<std::string, int> > Tilesets;
-	const Tilesets & getTilesets() const { return _tilesets; }
+	const TilesetList & getTilesets() const { return _tilesets; }
 
 	typedef std::map<const std::string, std::string> PropertyMap;
 	PropertyMap properties;
@@ -168,7 +168,7 @@ private:
 	
 	MapGenerator *_generator;
 	
-	Tilesets _tilesets;
+	TilesetList _tilesets;
 	std::string _name;
 };
 

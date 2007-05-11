@@ -33,7 +33,7 @@ bt_sources = 	[
 	'src/object.cpp', 'src/animation_model.cpp', 
 	'src/resource_manager.cpp', 'src/world.cpp',
 	
-	'tmx/generator_object.cpp', 'tmx/tileset.cpp', 'tmx/generator.cpp', 
+	'tmx/generator_object.cpp', 'tmx/tileset.cpp', 'tmx/generator.cpp', 'tmx/tileset_list.cpp',  
 	'tmx/map.cpp', 'tmx/layer.cpp',
 	
 	'src/var.cpp', 'src/config.cpp', 
