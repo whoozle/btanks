@@ -20,12 +20,11 @@
 #include "resource_manager.h"
 #include "config.h"
 #include "object.h"
-#include "item.h"
-#include "game.h"
+#include "ai/waypoints.h"
 
 #include "math/unary.h"
 
-class Combine : public Object {
+class Combine : public Object, public ai::Waypoints {
 public: 
 	Combine();
 
@@ -37,21 +36,10 @@ public:
 	void emit(const std::string &event, Object * emitter);
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
-		s.add(_reaction_time);
-		s.add(_waypoint_name);
-		s.add(_stop);
 	}
 	virtual void deserialize(const mrt::Serializator &s) {
 		Object::deserialize(s);
-		s.get(_reaction_time);
-		s.get(_waypoint_name);
-		s.get(_stop);
 	}	
-private: 
-
-	Alarm _reaction_time;
-	bool _stop;
-	std::string _waypoint_name;
 };
 
 void Combine::emit(const std::string &event, Object * emitter) {
@@ -63,47 +51,20 @@ void Combine::emit(const std::string &event, Object * emitter) {
 
 
 void Combine::onSpawn() {
-	GET_CONFIG_VALUE("objects.combine.reaction-time", float, rt, 0.5);
-	_reaction_time.set(rt);
-
+	ai::Waypoints::onSpawn(this);
+	
 	play("hold", true);
 	
 	disown(); 
 }
 
-Combine::Combine() : Object("combine"), _reaction_time(true), _stop(false) //_refresh_waypoints(false) 
-{}
+Combine::Combine() : Object("combine") {}
 
 void Combine::calculate(const float dt) {	
-	if (!calculatingPath() && !isDriven()) {
-		v2<float> waypoint;
-		_velocity.clear();
-		if (_waypoint_name.empty()) {
-			_waypoint_name = getNearestWaypoint(registered_name);
-			assert(!_waypoint_name.empty());
-			Game->getWaypoint(waypoint, registered_name, _waypoint_name);
-			//LOG_DEBUG(("%s[%d] moving to nearest waypoint at %g %g", animation.c_str(), getID(), waypoint.x, waypoint.y));
-		} else {
-			//LOG_DEBUG(("%s[%d] reached waypoint '%s'", animation.c_str(), getID(), _waypoint_name.c_str()));
-			_waypoint_name = Game->getRandomWaypoint(registered_name, _waypoint_name);
-			Game->getWaypoint(waypoint, registered_name, _waypoint_name);
-			//LOG_DEBUG(("%s[%d] moving to next waypoint '%s' at %g %g", animation.c_str(), getID(), _waypoint_name.c_str(), waypoint.x, waypoint.y));
-		}
-		GET_CONFIG_VALUE("objects.combine.pathfinding-step", int, pfs, 16);
-		findPath(waypoint.convert<int>(), pfs);
-	}
-	Way way;
-	if (calculatingPath() && findPathDone(way)) {
-		if (way.empty()) {
-			LOG_DEBUG(("%s:%s[%d] no path. maybe commit a suicide?", registered_name.c_str(), animation.c_str(), getID()));
-			//emit("death", NULL);
-		}
-		setWay(way);
-	} else _velocity.clear();
-
-	calculateWayVelocity();	
+	ai::Waypoints::calculate(this, dt);
 	
-	GET_CONFIG_VALUE("objects.combine.rotation-time", float, rt, 0.1);
+	float rt;
+	Config->get("objects." + registered_name + ".rotation-time", rt, 0.1f);
 	limitRotation(dt, rt, true, false);
 	updateStateFromVelocity();
 }
