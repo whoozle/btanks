@@ -32,6 +32,7 @@ public:
 	
 	virtual void clear();
 	virtual void add(const std::string &item);
+	virtual void add(Control *control);
 	
 	const int get() const { return _current_item; }
 	const std::string getValue() const;
@@ -47,6 +48,7 @@ public:
 	const int getItemY(const int idx) const;
 	const int getItemIndex(const int yp) const;
 
+	~ScrollList();
 private:
 	Box _background;
 	const sdlx::Surface *_scrollers;

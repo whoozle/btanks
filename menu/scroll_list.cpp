@@ -44,6 +44,10 @@ void ScrollList::add(const std::string &item) {
 	_list.push_back(new Label(_font, item));
 }
 
+void ScrollList::add(Control *control) {
+	_list.push_back(control);
+}
+
 void ScrollList::clear() {
 	_list.clear();
 }
@@ -261,8 +265,15 @@ void ScrollList::remove(const int idx) {
 	int n = idx;
 	List::iterator i;
 	for (i = _list.begin(); n--; ++i);
+	delete *i;
 	_list.erase(i);
 
 	if (_current_item >= (int)_list.size()) 
 		_current_item = (int)_list.size() - 1;
+}
+
+ScrollList::~ScrollList() {
+	for(size_t i = 0; i < _list.size(); ++i) {
+		delete _list[i];
+	}
 }
