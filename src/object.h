@@ -247,6 +247,7 @@ private:
 	
 	friend class IWorld;
 	friend class ai::Base;
+	friend class ai::Waypoints;
 };
 
 

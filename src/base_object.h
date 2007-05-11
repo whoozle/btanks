@@ -35,6 +35,7 @@ namespace sdlx {
 
 namespace ai {
 	class Base;
+	class Waypoints;
 }
 
 class BTANKSAPI BaseObject : public mrt::Serializable {
@@ -141,6 +142,7 @@ private:
 	friend class IWorld;
 	friend class Teleport;
 	friend class ai::Base;
+	friend class ai::Waypoints;
 };
 
 #endif
