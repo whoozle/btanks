@@ -26,7 +26,7 @@
 #	define strcasecmp _stricmp
 #endif
 
-Chooser::Chooser(const std::string &font, const std::string &label, const std::vector<std::string> &options, const std::string &surface) : 
+Chooser::Chooser(const std::string &font, const std::vector<std::string> &options, const std::string &surface) : 
 _options(options), _i(0), _n(options.size()), _surface(NULL), _w(0) {
 	_disabled.resize(_n);
 	if (!surface.empty())

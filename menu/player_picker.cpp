@@ -57,7 +57,7 @@ public :
 			options.push_back("AI");
 		}
 
-		_type = new Chooser("medium", std::string(), options);
+		_type = new Chooser("medium", options);
 		
 		options.clear();
 		options.push_back("?");
@@ -67,7 +67,7 @@ public :
 		options.push_back("machinegunner-player");
 		options.push_back("civilian-player");
 		
-		_vehicle = new Chooser("medium", std::string(), options, "menu/vehicles.png");
+		_vehicle = new Chooser("medium", options, "menu/vehicles.png");
 		TRY {
 			if(!config.type.empty())
 				_type->set(config.type);

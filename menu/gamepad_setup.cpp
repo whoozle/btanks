@@ -206,7 +206,7 @@ GamepadSetup::GamepadSetup(const int w, const int h) : _current_pad(NULL), _wait
 	}
 	
 	int sw, sh;
-	_current_pad = new Chooser("small", std::string(), names);
+	_current_pad = new Chooser("small", names);
 	_current_pad->getSize(sw, sh);
 	_gamepad_bg_pos = v2<int>(mx, my + sh + 10);
 	add((w - sw - mx * 2) / 2, my, _current_pad);

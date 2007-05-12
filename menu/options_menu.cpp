@@ -18,6 +18,7 @@
  */
 #include "options_menu.h"
 #include "button.h"
+#include "chooser.h"
 #include "menu.h"
 #include "control_picker.h"
 #include "i18n.h"
@@ -124,6 +125,21 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 	add((w - sw) / 2, (h - sh) / 2, _gamepad);
 	_gamepad->hide();
 	
+	std::vector<std::string> res;
+	res.push_back("640x480");
+	res.push_back("800x600");
+	res.push_back("1024x768");
+	res.push_back("1152x864");
+	res.push_back("1280x1024");
+
+	_c_res = new Chooser("medium", res);
+	TRY {
+		GET_CONFIG_VALUE("engine.window.width", int, w, 800);
+		GET_CONFIG_VALUE("engine.window.height", int, h, 600);
+		_c_res->set(mrt::formatString("%dx%d", w, h));
+	} CATCH("default resolution setup", );
+	add(_background.w / 2, yp, _c_res);
+	
 	reload();
 }
 
@@ -146,6 +162,12 @@ void OptionsMenu::reload() {
 	_fx->set(volume);
 	
 	_keys->reload();
+
+	TRY {
+		GET_CONFIG_VALUE("engine.window.width", int, w, 800);
+		GET_CONFIG_VALUE("engine.window.height", int, h, 600);
+		_c_res->set(mrt::formatString("%dx%d", w, h));
+	} CATCH("default resolution setup", );
 }
 
 void OptionsMenu::save() {
@@ -156,6 +178,21 @@ void OptionsMenu::save() {
 	
 	Config->set("engine.sound.volume.fx", _fx->get());
 	Config->set("engine.sound.volume.music", _music->get());
+	int r = _c_res->get();
+	static const int r_dim[5][2] = {
+		{640, 480}, 
+		{800, 600}, 
+		{1024, 768}, 
+		{1152, 864},
+		{1280, 1024}, 
+	};
+	if (r < 5) {
+		Config->set("engine.window.width", r_dim[r][0]);
+		Config->set("engine.window.height", r_dim[r][1]);
+		TRY {
+			Window->deinit();
+		} CATCH("", );
+	}
 	PlayerManager->updateControls();
 }
 

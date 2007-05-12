@@ -32,6 +32,7 @@ class ControlPicker;
 class Object;
 class RedefineKeys;
 class GamepadSetup;
+class Chooser;
 
 class OptionsMenu : public BaseMenu {
 public:
@@ -56,6 +57,7 @@ private:
 	Button *_b_ok, *_b_back;
 	Slider *_fx, *_music;
 	Button *_b_redefine;
+	Chooser *_c_res;
 
 	Alarm _shoot;
 	
