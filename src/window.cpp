@@ -46,8 +46,9 @@ void IWindow::init(const int argc, char *argv[]) {
 	bool vsync = false;
 	int fsaa = 0;
 	bool force_soft = false;
-
-	int w = 800, h = 600;
+	GET_CONFIG_VALUE("engine.window.width", int, w, 800);
+	GET_CONFIG_VALUE("engine.window.height", int, h, 600);
+	//int w = 800, h = 600;
 	int bits = 0;
 	
 	for(int i = 1; i < argc; ++i) {
