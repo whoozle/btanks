@@ -46,7 +46,7 @@ ControlPicker::ControlPicker(const int w, const std::string &font, const std::st
 		_values.push_back(mrt::formatString("joy-%d", i + 1));
 	}
 
-	_controls = new Chooser("medium", _values, variant == "split"?"menu/controls_split.png":"menu/controls.png");
+	_controls = new Chooser("medium", std::string(), _values, variant == "split"?"menu/controls_split.png":"menu/controls.png");
 
 	for(int i = 0; i < (int)_values.size(); ++i) {
 		if (i >= base + n) 

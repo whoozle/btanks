@@ -91,7 +91,7 @@ JoinServerMenu::JoinServerMenu(MainMenu *parent, const int w, const int h) : _pa
 	options.push_back("machinegunner-player");
 	options.push_back("civilian-player");
 		
-	_vehicle = new Chooser("medium", options, "menu/vehicles.png");
+	_vehicle = new Chooser("medium", std::string(), options, "menu/vehicles.png");
 	_vehicle->disable(0);
 	for(int i = 4; i < _vehicle->size(); ++i)
 		_vehicle->disable(i);

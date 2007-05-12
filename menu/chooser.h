@@ -32,7 +32,7 @@ class Font;
 
 class BTANKSAPI Chooser : public Container {
 public: 
-	Chooser(const std::string &font, const std::vector<std::string> &options, const std::string &surface = std::string());
+	Chooser(const std::string &font, const std::string &label, const std::vector<std::string> &options, const std::string &surface = std::string());
 	void getSize(int &w, int &h) const;
 
 	virtual void render(sdlx::Surface &surface, const int x, const int y);
