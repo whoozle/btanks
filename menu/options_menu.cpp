@@ -171,6 +171,8 @@ void OptionsMenu::reload() {
 	} CATCH("default resolution setup", );
 }
 
+#include "window.h"
+
 void OptionsMenu::save() {
 	LOG_DEBUG(("saving options..."));
 	sp->save();
@@ -190,13 +192,16 @@ void OptionsMenu::save() {
 	if (r < 5) {
 		Config->set("engine.window.width", r_dim[r][0]);
 		Config->set("engine.window.height", r_dim[r][1]);
-/*
+
 	//this doesnt work without restart.
+	/*
 		TRY {
 			Window->deinit();
+			SDL_Quit();
+			Window->initSDL();
 			Window->createMainWindow();
 		} CATCH("", );
-*/
+	*/
 		GameMonitor->displayMessage("messages", "restart-game", 2.0f);
 	}
 	PlayerManager->updateControls();
