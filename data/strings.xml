@@ -63,6 +63,7 @@
 		</area>
 	</area>
 	<area id="messages">
+		<string id="restart-game">Restart game to see changes.</string>
 		<string id="game-paused">GAME PAUSED</string>
 		<string id="game-over">GAME OVER</string>
 		<string id="mission-accomplished">MISSION ACCOMPLISHED</string>

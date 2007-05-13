@@ -29,6 +29,7 @@
 #include "redefine_keys.h"
 #include "gamepad_setup.h"
 #include "player_manager.h"
+#include "game_monitor.h"
 
 OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(parent), _shoot(0.5f, false) {
 	Mixer->loadSample("shot.ogg");
@@ -189,9 +190,14 @@ void OptionsMenu::save() {
 	if (r < 5) {
 		Config->set("engine.window.width", r_dim[r][0]);
 		Config->set("engine.window.height", r_dim[r][1]);
+/*
+	//this doesnt work without restart.
 		TRY {
 			Window->deinit();
+			Window->createMainWindow();
 		} CATCH("", );
+*/
+		GameMonitor->displayMessage("messages", "restart-game", 2.0f);
 	}
 	PlayerManager->updateControls();
 }
