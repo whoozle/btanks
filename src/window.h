@@ -56,6 +56,7 @@ public:
 	IWindow();
 	void init(const int argc, char *argv[]);
 	void createMainWindow();
+	void initSDL();
 	void run(); 
 	const bool running() const { return _running; }
 	void stop() { _running = false; }
@@ -72,7 +73,7 @@ public:
 
 private:
 	sdlx::Surface _window;
-	bool _fullscreen, _vsync, _opengl, _fsaa, _force_soft, _running;
+	bool _fullscreen, _vsync, _opengl, _dx, _fsaa, _force_soft, _running;
 	int _w, _h;
 	sdlx::Timer _timer;	
 	float _fr;

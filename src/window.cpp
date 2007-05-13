@@ -34,54 +34,12 @@ IMPLEMENT_SINGLETON(Window, IWindow);
 
 IWindow::IWindow() : _fr(10.0f) {}
 
-void IWindow::init(const int argc, char *argv[]) {
-#ifdef __linux__
-//	putenv("SDL_VIDEODRIVER=dga");
-#endif
-
-	_opengl = true;
-	
-	_fullscreen = false;
-	_vsync = false;
-	_fsaa = 0;
-
-	bool dx = false;
-	_force_soft = false;
-	Config->get("engine.window.width", _w, 800);
-	Config->get("engine.window.height", _h, 600);
-	//int w = 800, h = 600;
-	
-	for(int i = 1; i < argc; ++i) {
-		if (strcmp(argv[i], "--no-gl") == 0) _opengl = false;
-		else if (strcmp(argv[i], "--fs") == 0) _fullscreen = true;
-		else if (strcmp(argv[i], "--vsync") == 0) _vsync = true;
-#ifdef WIN32
-		else if (strcmp(argv[i], "--dx") == 0) { dx = true; _opengl = false; }
-#endif
-		else if (strcmp(argv[i], "--320x200") == 0) { _w = 320; _h = 200; }
-		else if (strcmp(argv[i], "--320x240") == 0) { _w = 320; _h = 240; }
-		else if (strcmp(argv[i], "-0") == 0) { _w = 640; _h = 480; }
-		else if (strcmp(argv[i], "-1") == 0) { _w = 800; _h = 600; }
-		else if (strcmp(argv[i], "-2") == 0) { _w = 1024; _h = 768; }
-		else if (strcmp(argv[i], "-3") == 0) { _w = 1152; _h = 864; }
-		else if (strcmp(argv[i], "-4") == 0) { _w = 1280; _h = 1024; }
-		else if (strcmp(argv[i], "--fsaa") == 0) { _fsaa = (_fsaa)?(_fsaa<< 1) : 1; }
-		else if (strcmp(argv[i], "--force-soft-gl") == 0) { _force_soft = true; }
-		else if (strcmp(argv[i], "--help") == 0) { 
-			printf(
-					"\t--no-gl\t\t\tdisable GL renderer\n"
-					"\t--dx\t\t\tenable directX(tm) renderer (win32 only)\n"
-					"\t-2 -3\t\t\tenlarge video mode to 1024x768 or 1280x1024\n"
-				  );
-			exit(0);
-		}
-	}
-	
-	LOG_DEBUG(("gl: %s, vsync: %s, dx: %s", _opengl?"yes":"no", _vsync?"yes":"no", dx?"yes":"no"));
+void IWindow::initSDL() {
+	LOG_DEBUG(("gl: %s, vsync: %s, dx: %s", _opengl?"yes":"no", _vsync?"yes":"no", _dx?"yes":"no"));
 #ifdef WIN32
 	_putenv("SDL_VIDEO_RENDERER=gdi");
 
-	if (dx) 
+	if (_dx) 
 #if SDL_MAJOR_VERSION >= 1 && SDL_MINOR_VERSION >= 3
 		_putenv("SDL_VIDEO_RENDERER=d3d");
 #else
@@ -125,7 +83,52 @@ void IWindow::init(const int argc, char *argv[]) {
 
 	LOG_DEBUG(("initializing SDL_ttf..."));
 	sdlx::TTF::init();
+}
 
+void IWindow::init(const int argc, char *argv[]) {
+#ifdef __linux__
+//	putenv("SDL_VIDEODRIVER=dga");
+#endif
+
+	_opengl = true;
+	
+	_fullscreen = false;
+	_vsync = false;
+	_fsaa = 0;
+
+	_dx = false;
+	_force_soft = false;
+	Config->get("engine.window.width", _w, 800);
+	Config->get("engine.window.height", _h, 600);
+	//int w = 800, h = 600;
+	
+	for(int i = 1; i < argc; ++i) {
+		if (strcmp(argv[i], "--no-gl") == 0) _opengl = false;
+		else if (strcmp(argv[i], "--fs") == 0) _fullscreen = true;
+		else if (strcmp(argv[i], "--vsync") == 0) _vsync = true;
+#ifdef WIN32
+		else if (strcmp(argv[i], "--dx") == 0) { dx = true; _opengl = false; }
+#endif
+		else if (strcmp(argv[i], "--320x200") == 0) { _w = 320; _h = 200; }
+		else if (strcmp(argv[i], "--320x240") == 0) { _w = 320; _h = 240; }
+		else if (strcmp(argv[i], "-0") == 0) { _w = 640; _h = 480; }
+		else if (strcmp(argv[i], "-1") == 0) { _w = 800; _h = 600; }
+		else if (strcmp(argv[i], "-2") == 0) { _w = 1024; _h = 768; }
+		else if (strcmp(argv[i], "-3") == 0) { _w = 1152; _h = 864; }
+		else if (strcmp(argv[i], "-4") == 0) { _w = 1280; _h = 1024; }
+		else if (strcmp(argv[i], "--fsaa") == 0) { _fsaa = (_fsaa)?(_fsaa<< 1) : 1; }
+		else if (strcmp(argv[i], "--force-soft-gl") == 0) { _force_soft = true; }
+		else if (strcmp(argv[i], "--help") == 0) { 
+			printf(
+					"\t--no-gl\t\t\tdisable GL renderer\n"
+					"\t--dx\t\t\tenable directX(tm) renderer (win32 only)\n"
+					"\t-2 -3\t\t\tenlarge video mode to 1024x768 or 1280x1024\n"
+				  );
+			exit(0);
+		}
+	}
+	
+	initSDL();
 
 #if 0
 #ifdef WIN32
