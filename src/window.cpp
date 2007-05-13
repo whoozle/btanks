@@ -41,33 +41,32 @@ void IWindow::init(const int argc, char *argv[]) {
 
 	_opengl = true;
 	
-	bool fullscreen = false;
+	_fullscreen = false;
+	_vsync = false;
+	_fsaa = 0;
+
 	bool dx = false;
-	bool vsync = false;
-	int fsaa = 0;
-	bool force_soft = false;
-	GET_CONFIG_VALUE("engine.window.width", int, w, 800);
-	GET_CONFIG_VALUE("engine.window.height", int, h, 600);
+	_force_soft = false;
+	Config->get("engine.window.width", _w, 800);
+	Config->get("engine.window.height", _h, 600);
 	//int w = 800, h = 600;
-	int bits = 0;
 	
 	for(int i = 1; i < argc; ++i) {
 		if (strcmp(argv[i], "--no-gl") == 0) _opengl = false;
-		else if (strcmp(argv[i], "--fs") == 0) fullscreen = true;
-		else if (strcmp(argv[i], "--vsync") == 0) vsync = true;
+		else if (strcmp(argv[i], "--fs") == 0) _fullscreen = true;
+		else if (strcmp(argv[i], "--vsync") == 0) _vsync = true;
 #ifdef WIN32
 		else if (strcmp(argv[i], "--dx") == 0) { dx = true; _opengl = false; }
 #endif
-		else if (strcmp(argv[i], "--320x200") == 0) { w = 320; h = 200; }
-		else if (strcmp(argv[i], "--320x240") == 0) { w = 320; h = 240; }
-		else if (strcmp(argv[i], "-0") == 0) { w = 640; h = 480; }
-		else if (strcmp(argv[i], "-1") == 0) { w = 800; h = 600; }
-		else if (strcmp(argv[i], "-2") == 0) { w = 1024; h = 768; }
-		else if (strcmp(argv[i], "-3") == 0) { w = 1152; h = 864; }
-		else if (strcmp(argv[i], "-4") == 0) { w = 1280; h = 1024; }
-		else if (strcmp(argv[i], "--force-16") == 0) { bits = 16; }
-		else if (strcmp(argv[i], "--fsaa") == 0) { fsaa = (fsaa)?(fsaa<< 1) : 1; }
-		else if (strcmp(argv[i], "--force-soft-gl") == 0) { force_soft = true; }
+		else if (strcmp(argv[i], "--320x200") == 0) { _w = 320; _h = 200; }
+		else if (strcmp(argv[i], "--320x240") == 0) { _w = 320; _h = 240; }
+		else if (strcmp(argv[i], "-0") == 0) { _w = 640; _h = 480; }
+		else if (strcmp(argv[i], "-1") == 0) { _w = 800; _h = 600; }
+		else if (strcmp(argv[i], "-2") == 0) { _w = 1024; _h = 768; }
+		else if (strcmp(argv[i], "-3") == 0) { _w = 1152; _h = 864; }
+		else if (strcmp(argv[i], "-4") == 0) { _w = 1280; _h = 1024; }
+		else if (strcmp(argv[i], "--fsaa") == 0) { _fsaa = (_fsaa)?(_fsaa<< 1) : 1; }
+		else if (strcmp(argv[i], "--force-soft-gl") == 0) { _force_soft = true; }
 		else if (strcmp(argv[i], "--help") == 0) { 
 			printf(
 					"\t--no-gl\t\t\tdisable GL renderer\n"
@@ -78,7 +77,7 @@ void IWindow::init(const int argc, char *argv[]) {
 		}
 	}
 	
-	LOG_DEBUG(("gl: %s, vsync: %s, dx: %s", _opengl?"yes":"no", vsync?"yes":"no", dx?"yes":"no"));
+	LOG_DEBUG(("gl: %s, vsync: %s, dx: %s", _opengl?"yes":"no", _vsync?"yes":"no", dx?"yes":"no"));
 #ifdef WIN32
 	_putenv("SDL_VIDEO_RENDERER=gdi");
 
@@ -127,10 +126,6 @@ void IWindow::init(const int argc, char *argv[]) {
 	LOG_DEBUG(("initializing SDL_ttf..."));
 	sdlx::TTF::init();
 
-	int flags = SDL_HWSURFACE | (bits == 0)? SDL_ANYFORMAT: 0;
-	flags |= SDL_DOUBLEBUF;
-	
-	if (fullscreen) flags |= SDL_FULLSCREEN;
 
 #if 0
 #ifdef WIN32
@@ -155,10 +150,19 @@ void IWindow::init(const int argc, char *argv[]) {
 	LOG_DEBUG(("setting caption..."));		
 	SDL_WM_SetCaption(("Battle tanks - " + getVersion()).c_str(), "btanks");
 
+	createMainWindow();
+}
+
+void IWindow::createMainWindow() {
+	int flags = SDL_HWSURFACE | SDL_ANYFORMAT;
+	flags |= SDL_DOUBLEBUF;
+	
+	if (_fullscreen) flags |= SDL_FULLSCREEN;
+
 	if (_opengl) {
 #if SDL_VERSION_ATLEAST(1,2,10)
-		LOG_DEBUG(("setting GL swap control to %d...", vsync?1:0));
-		int r = SDL_GL_SetAttribute( SDL_GL_SWAP_CONTROL, vsync?1:0);
+		LOG_DEBUG(("setting GL swap control to %d...", _vsync?1:0));
+		int r = SDL_GL_SetAttribute( SDL_GL_SWAP_CONTROL, _vsync?1:0);
 		if (r == -1) 
 			LOG_WARN(("cannot set SDL_GL_SWAP_CONTROL."));
 #ifdef WIN32
@@ -187,10 +191,10 @@ void IWindow::init(const int argc, char *argv[]) {
 		SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
 		//SDL_GL_SetAttribute( SDL_GL_ALPHA_SIZE, 8 );
 		
-		if (fsaa > 0) {
-			LOG_DEBUG(("fsaa mode: %d", fsaa));
+		if (_fsaa > 0) {
+			LOG_DEBUG(("fsaa mode: %d", _fsaa));
 			SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
-			SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, fsaa);
+			SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, _fsaa);
 		}
 	
 		//_window.setVideoMode(w, h, 0,  SDL_OPENGL | SDL_OPENGLBLIT | flags );
@@ -198,7 +202,7 @@ void IWindow::init(const int argc, char *argv[]) {
 		flags |= SDL_GLSDL;
 #endif
 
-		_window.setVideoMode(w, h, bits, flags );
+		_window.setVideoMode(_w, _h, 0, flags );
 
 #if SDL_VERSION_ATLEAST(1,2,10)
 
@@ -207,7 +211,7 @@ void IWindow::init(const int argc, char *argv[]) {
 			LOG_DEBUG(("SDL_GL_ACCELERATED_VISUAL = %d", accel));
 
 		
-			if (!force_soft && accel != 1) {
+			if (!_force_soft && accel != 1) {
 				throw_ex(("Looks like you don't have a graphics card that is good enough.\n"
 				"Please ensure that your graphics card supports OpenGL and the latest drivers are installed.\n" 
 				"Try --force-soft-gl switch to enable sofware GL renderer."
@@ -218,12 +222,10 @@ void IWindow::init(const int argc, char *argv[]) {
 #endif
 
 	} else {
-		_window.setVideoMode(w, h, bits, flags);
+		_window.setVideoMode(_w, _h, 0, flags);
 	}
-	if (bits != 0 && bits != _window.getBPP())
-		throw_ex(("cannot setup video mode to %d bits (got: %d)", bits, _window.getBPP()));
-	
-	LOG_DEBUG(("created main surface. (%dx%dx%d, %s)", w, h, _window.getBPP(), ((_window.getFlags() & SDL_HWSURFACE) == SDL_HWSURFACE)?"hardware":"software"));
+
+	LOG_DEBUG(("created main surface. (%dx%dx%d, %s)", _w, _h, _window.getBPP(), ((_window.getFlags() & SDL_HWSURFACE) == SDL_HWSURFACE)?"hardware":"software"));
 
 	sdlx::System::probeVideoMode();	
 #if 0
