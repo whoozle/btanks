@@ -11,6 +11,7 @@ bt_menu = env.StaticLibrary('bt_menu',
 	'chooser.cpp', 'label.cpp', 'button.cpp', 'menu_config.cpp', 'map_desc.cpp', 
 	'prompt.cpp', 'text_control.cpp', 'host_list.cpp', 'options_menu.cpp', 'control_picker.cpp',
 	'slider.cpp', 'redefine_keys.cpp', 'gamepad_setup.cpp', 'tooltip.cpp', 
+	'checkbox.cpp', 
 	] 
 	)
 
