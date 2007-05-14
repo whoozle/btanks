@@ -35,6 +35,7 @@
 
 		<string id="test-gamepad">Test your gamepad. If it behaves different that you expected click [setup] button.</string>
 		<string id="setup-gamepad">setup gamepad</string>
+		<string id="screen-resolution">screen size</string>
 	</area>
 	<area id="maps/descriptions">
 		<string id="baykonur">Huge cooperative map with tons of troopers, very defensive military base and big boss inside(tm)</string>

@@ -112,10 +112,39 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 		if (h > sh) 
 			sh = h;
 	}
-
-
+	
 	yp += sh + 10;
 	
+	l = new Label("medium", I18n->get("menu", "screen-resolution"));
+
+	{
+		std::vector<std::string> res;
+		res.push_back("640x480");
+		res.push_back("800x600");
+		res.push_back("1024x768");
+		res.push_back("1152x864");
+		res.push_back("1280x1024");
+
+		_c_res = new Chooser("medium", res);
+	}
+
+	add(_bx + mx, yp, l);
+	l->getSize(sw, sh);
+	{
+		int w, h;
+		_c_res->getSize(w, h);
+		add(_bx + _background.w / 2, yp + (sh - h) / 2, _c_res);
+		if (h > sh) 
+			sh = h;
+	}
+	yp += sh + 10;
+
+	TRY {
+		GET_CONFIG_VALUE("engine.window.width", int, w, 800);
+		GET_CONFIG_VALUE("engine.window.height", int, h, 600);
+		_c_res->set(mrt::formatString("%dx%d", w, h));
+	} CATCH("default resolution setup", );
+
 	_keys = new RedefineKeys;
 	_keys->getSize(sw, sh);
 	add((w - sw) / 2, (h - sh) / 2, _keys);
@@ -126,20 +155,7 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 	add((w - sw) / 2, (h - sh) / 2, _gamepad);
 	_gamepad->hide();
 	
-	std::vector<std::string> res;
-	res.push_back("640x480");
-	res.push_back("800x600");
-	res.push_back("1024x768");
-	res.push_back("1152x864");
-	res.push_back("1280x1024");
 
-	_c_res = new Chooser("medium", res);
-	TRY {
-		GET_CONFIG_VALUE("engine.window.width", int, w, 800);
-		GET_CONFIG_VALUE("engine.window.height", int, h, 600);
-		_c_res->set(mrt::formatString("%dx%d", w, h));
-	} CATCH("default resolution setup", );
-	add(_background.w / 2, yp, _c_res);
 	
 	reload();
 }
