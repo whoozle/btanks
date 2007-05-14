@@ -25,6 +25,7 @@
 #include "label.h"
 #include "slider.h"
 #include "config.h"
+#include "checkbox.h"
 #include "sound/mixer.h"
 #include "redefine_keys.h"
 #include "gamepad_setup.h"
@@ -115,7 +116,6 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 	
 	yp += sh + 10;
 	
-	l = new Label("medium", I18n->get("menu", "screen-resolution"));
 
 	{
 		std::vector<std::string> res;
@@ -128,6 +128,7 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 		_c_res = new Chooser("medium", res);
 	}
 
+	l = new Label("medium", I18n->get("menu", "screen-resolution"));
 	add(_bx + mx, yp, l);
 	l->getSize(sw, sh);
 	{
@@ -140,10 +141,28 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 	yp += sh + 10;
 
 	TRY {
-		GET_CONFIG_VALUE("engine.window.width", int, w, 800);
-		GET_CONFIG_VALUE("engine.window.height", int, h, 600);
+		int w, h;
+		Config->get("engine.window.width", w, 800);
+		Config->get("engine.window.height", h, 600);
 		_c_res->set(mrt::formatString("%dx%d", w, h));
 	} CATCH("default resolution setup", );
+
+	l = new Label("medium", I18n->get("menu", "fullscreen-mode"));
+	add(_bx + mx, yp, l);
+	l->getSize(sw, sh);
+	
+	_fsmode = new Checkbox();
+	{
+		int w, h;
+		_fsmode->getSize(w, h);
+		add(_bx + _background.w / 2, yp + (sh - h) / 2, _fsmode);
+		if (h > sh) 
+			sh = h;
+	}
+	yp += sh + 10;
+
+
+	//dialogs
 
 	_keys = new RedefineKeys;
 	_keys->getSize(sw, sh);
@@ -181,10 +200,15 @@ void OptionsMenu::reload() {
 	_keys->reload();
 
 	TRY {
-		GET_CONFIG_VALUE("engine.window.width", int, w, 800);
-		GET_CONFIG_VALUE("engine.window.height", int, h, 600);
+		int w, h;
+		Config->get("engine.window.width", w, 800);
+		Config->get("engine.window.height", h, 600);
 		_c_res->set(mrt::formatString("%dx%d", w, h));
 	} CATCH("default resolution setup", );
+
+	bool fs;
+	Config->get("engine.window.fullscreen", fs, false);
+	_fsmode->set(fs);	
 }
 
 #include "window.h"
@@ -205,9 +229,17 @@ void OptionsMenu::save() {
 		{1152, 864},
 		{1280, 1024}, 
 	};
+	
+	bool need_restart = false;
 	if (r < 5) {
-		Config->set("engine.window.width", r_dim[r][0]);
-		Config->set("engine.window.height", r_dim[r][1]);
+		int w, h;
+		Config->get("engine.window.width", w, 800);
+		Config->get("engine.window.height", h, 600);
+		if (w != r_dim[r][0] || h != r_dim[r][1]) {
+			Config->set("engine.window.width", r_dim[r][0]);
+			Config->set("engine.window.height", r_dim[r][1]);
+			need_restart = true;
+		}
 
 	//this doesnt work without restart.
 	/*
@@ -218,9 +250,19 @@ void OptionsMenu::save() {
 			Window->createMainWindow();
 		} CATCH("", );
 	*/
-		GameMonitor->displayMessage("messages", "restart-game", 2.0f);
 	}
+
+	bool fsmode;
+	Config->get("engine.window.fullscreen", fsmode, false);
+	if (fsmode != _fsmode->get()) {
+		Config->set("engine.window.fullscreen", _fsmode->get());
+		need_restart = true;
+	}
+	
 	PlayerManager->updateControls();
+
+	if (need_restart) 
+		GameMonitor->displayMessage("messages", "restart-game", 2.0f);
 }
 
 
