@@ -234,29 +234,34 @@ void OptionsMenu::save() {
 	
 	Config->set("engine.sound.volume.fx", _fx->get());
 	Config->set("engine.sound.volume.music", _music->get());
-	int r = _c_res->get();
 	
 	bool need_restart = false;
-	if (r < 5) {
+	TRY {
+		int screen_w, screen_h;
+		Config->get("engine.window.width", screen_w, 800);
+		Config->get("engine.window.height", screen_h, 600);
+		std::vector<std::string> res;
+		mrt::split(res, _c_res->getValue(), "x", 2);
+		res.resize(2);
 		int w, h;
-		Config->get("engine.window.width", w, 800);
-		Config->get("engine.window.height", h, 600);
-		if (w != r_dim[r][0] || h != r_dim[r][1]) {
-			Config->set("engine.window.width", r_dim[r][0]);
-			Config->set("engine.window.height", r_dim[r][1]);
+		w = atoi(res[0].c_str());
+		h = atoi(res[1].c_str());
+		LOG_DEBUG(("parsed window size: %dx%d", w, h));
+		
+		if (w > 0 && h > 0 && (w != screen_w || h != screen_h)) {
+			Config->set("engine.window.width", w);
+			Config->set("engine.window.height", h);
 			need_restart = true;
 		}
 
 	//this doesnt work without restart.
 	/*
-		TRY {
-			Window->deinit();
-			SDL_Quit();
-			Window->initSDL();
-			Window->createMainWindow();
-		} CATCH("", );
+		Window->deinit();
+		SDL_Quit();
+		Window->initSDL();
+		Window->createMainWindow();
 	*/
-	}
+	} CATCH("setting video mode", );
 
 	bool fsmode;
 	Config->get("engine.window.fullscreen", fsmode, false);
