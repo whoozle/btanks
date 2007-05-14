@@ -10,6 +10,11 @@ const bool Checkbox::get() const {
 	return _state;
 }
 
+void Checkbox::set(const bool value) {
+	_state = value;
+}
+
+
 bool Checkbox::onMouse(const int button, const bool pressed, const int x, const int y) {
 	if (pressed) 
 		return true;

@@ -7,6 +7,7 @@ class BTANKSAPI Checkbox : public Control {
 public: 
 	Checkbox(const bool state = false);
 	const bool get() const;
+	void set(const bool value); 
 
 	virtual void render(sdlx::Surface &surface, const int x, const int y);
 	virtual void getSize(int &w, int &h) const;
