@@ -32,6 +32,15 @@
 #include "player_manager.h"
 #include "game_monitor.h"
 
+static const int r_dim[5][2] = {
+	{640, 480}, 
+	{800, 600}, 
+	{1024, 768}, 
+	{1152, 864},
+	{1280, 1024}, 
+};
+
+
 OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(parent), _shoot(0.5f, false) {
 	Mixer->loadSample("shot.ogg");
 	
@@ -117,13 +126,20 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 	yp += sh + 10;
 	
 
+	int screen_w, screen_h;
+	Config->get("engine.window.width", screen_w, 800);
+	Config->get("engine.window.height", screen_h, 600);
+
 	{
 		std::vector<std::string> res;
-		res.push_back("640x480");
-		res.push_back("800x600");
-		res.push_back("1024x768");
-		res.push_back("1152x864");
-		res.push_back("1280x1024");
+		bool standard = false;
+		for(unsigned i = 0; i < sizeof(r_dim) / sizeof(r_dim[0]); ++i) {
+			if (w == r_dim[i][0] && h == r_dim[i][1]) 
+				standard = true;
+			res.push_back(mrt::formatString("%ux%u", r_dim[i][0], r_dim[i][1]));
+		}
+		if (!standard) 
+			res.push_back(mrt::formatString("%ux%u", screen_w, screen_h));
 
 		_c_res = new Chooser("medium", res);
 	}
@@ -141,10 +157,7 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 	yp += sh + 10;
 
 	TRY {
-		int w, h;
-		Config->get("engine.window.width", w, 800);
-		Config->get("engine.window.height", h, 600);
-		_c_res->set(mrt::formatString("%dx%d", w, h));
+		_c_res->set(mrt::formatString("%dx%d", screen_w, screen_h));
 	} CATCH("default resolution setup", );
 
 	l = new Label("medium", I18n->get("menu", "fullscreen-mode"));
@@ -222,13 +235,6 @@ void OptionsMenu::save() {
 	Config->set("engine.sound.volume.fx", _fx->get());
 	Config->set("engine.sound.volume.music", _music->get());
 	int r = _c_res->get();
-	static const int r_dim[5][2] = {
-		{640, 480}, 
-		{800, 600}, 
-		{1024, 768}, 
-		{1152, 864},
-		{1280, 1024}, 
-	};
 	
 	bool need_restart = false;
 	if (r < 5) {
