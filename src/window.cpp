@@ -100,7 +100,7 @@ void IWindow::init(const int argc, char *argv[]) {
 	_force_soft = false;
 	Config->get("engine.window.width", _w, 800);
 	Config->get("engine.window.height", _h, 600);
-	//int w = 800, h = 600;
+	Config->get("engine.window.fullscreen", _fullscreen, false);
 	
 	for(int i = 1; i < argc; ++i) {
 		if (strcmp(argv[i], "--no-gl") == 0) _opengl = false;
