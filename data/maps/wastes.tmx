@@ -45,7 +45,7 @@
   <property name="object:static-corpse:dead-civilian-static-1:3" value="1169,1054"/>
   <property name="object:impassable-static-corpse:dead-red-launcher:2" value="1165,356"/>
   <property name="object:static-corpse:dead-civilian-static-1:2" value="1158,582"/>
-  <property name="object:nuclear-explosion:nuclear-explosion:1" value="1926,-256"/>
+  <property name="object:nuclear-explosion(no-shaking):nuclear-explosion:1" value="1926,-256"/>
   <property name="object:static-corpse:dead-civilian-static-1:1" value="1242,360"/>
   <property name="object:boomerang-missiles-item:boomerang-missiles-item:3" value="1700,90"/>
   <property name="object:boomerang-missiles-item:boomerang-missiles-item:2" value="200,26"/>
