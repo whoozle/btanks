@@ -167,6 +167,7 @@
  <layer name="sand" width="35" height="25">
   <properties>
    <property name="impassability" value="50"/>
+   <property name="ai-hint:1" value="sandworm"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAOWWwQ6AIAxD+f/P9aBXPRrSsSItkNiEGNiBRzdwpYzpfMb14YvWRrUjC8sRxRRCLHWsxaJUzYJibj+iPSNf3Aw9Qlw7aCcWtUbzfxhZUD285868MO/ojDuccSFf3Dzsv8cpdP5VLBEPWpuh2pNVb31Wm39kmd0fZSyML659mX5NmZueXjXiULBknrdqQ5kP5txMr6/QDT0MghOsDQAA
