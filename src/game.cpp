@@ -764,12 +764,11 @@ void IGame::deinit() {
 	_credits = NULL;	
 
 	ResourceManager->clear();
-	Window->deinit();
 
 	Config->save();
 
 	//TTF_Quit();
-	//SDL_Quit();
+	Window->deinit();
 }
 
 
