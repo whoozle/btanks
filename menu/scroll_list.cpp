@@ -247,7 +247,8 @@ bool ScrollList::onMouse(const int button, const bool pressed, const int x, cons
 		int item = getItemIndex(y - my + (int)_pos);
 		if (item >= 0 && item < (int)_list.size()) {
 			int ybase = getItemY(item);
-			if (_list[item]->onMouse(button, pressed, x - _items_area.x, y - ybase))
+			//LOG_DEBUG(("%d %d", x - _items_area.x, y - ybase - _items_area.y));
+			if (_list[item]->onMouse(button, pressed, x - _items_area.x, y - ybase - _items_area.y))
 				return true;
 			_current_item = item;
 		}
