@@ -125,7 +125,7 @@ public:
 		}
 		
 		LOG_DEBUG(("searching random hint area..."));
-		const Matrix<int> &hint = Map->getAreaMatrix("sandworm"); //check
+		const Matrix<int> &hint = Map->getAreaMatrix("sandworm"); 
 		const v2<int> tile_size = Map->getPathTileSize();
 
 		int w = hint.getWidth(), h = hint.getHeight();
@@ -206,9 +206,14 @@ void SandWormHead::tick(const float dt) {
 
 void SandWormHead::emit(const std::string &event, Object * emitter) {
 	if (event == "collision") {
-		if (emitter == NULL || emitter->piercing)
+		if (emitter == NULL)
 			return;
-
+		if (emitter->piercing) {
+			if (emitter->registered_name == "mortar-bullet")
+				emit("death", emitter);
+			return;
+		}
+		
 		GET_CONFIG_VALUE("objects.sandworm-head.damage-after", float, da, 0.4);
 		if (getStateProgress() < da)
 			return;
