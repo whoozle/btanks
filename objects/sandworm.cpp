@@ -32,9 +32,21 @@ public:
 	virtual void onSpawn() {
 		disown();
 		play("main", true);
-		GET_CONFIG_VALUE("object.sandworm.reaction-time", float, rt, 0.1);
+		GET_CONFIG_VALUE("objects.sandworm.reaction-time", float, rt, 0.1);
 		mrt::randomize(rt, rt/10);
 		_reaction_time.set(rt);
+		
+		GET_CONFIG_VALUE("objects.sandworm.initial-length", int, il, 3);
+		int i;
+		for(i = 0; i < il; ++i) {
+			if (_variants.has(mrt::formatString("%d", i))) {
+				//LOG_DEBUG(("this is tail #%d", i));
+				break;
+			}
+		}
+		//LOG_DEBUG(("spawning tail #%d", i - 1));
+		if (i > 0)
+			spawn(mrt::formatString("sandworm(%d)", i - 1), "sandworm");
 	}
 	
 	virtual void calculate(const float dt) {
