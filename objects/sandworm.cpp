@@ -26,7 +26,7 @@
 
 class SandWorm : public Object {
 public: 
-	SandWorm(): Object("monster"), _reaction_time(true) {
+	SandWorm(): Object("monster"), _reaction_time(true), _head_id(0) {
 		setDirectionsNumber(1);
 	}
 	virtual void onSpawn() {
@@ -44,20 +44,35 @@ public:
 				break;
 			}
 		}
+		if (i < il) 
+			speed = speed * 1.5;
 		//LOG_DEBUG(("spawning tail #%d", i - 1));
 		if (i > 0)
 			spawn(mrt::formatString("sandworm(%d)", i - 1), "sandworm");
 	}
 	
 	virtual void calculate(const float dt) {
-		int sid = getSummoner();
-		if (isDriven() || !_reaction_time.tick(dt)) {
-			if (sid <= 0) {
+		const bool active = _reaction_time.tick(dt);
+		//head spawned
+		if (_head_id) {
+			_velocity.clear();
+			if (!active)
+				return;
+			if (World->getObjectByID(_head_id) == NULL) {
+				_head_id = 0;
+				need_sync = true;
+			}
+		}
+		
+		if (!active || isDriven()) {
+			if (isDriven()) {
 				calculateWayVelocity();
 				updateStateFromVelocity();
-			} //save velocity of tails
+			} 
+			//else LOG_DEBUG(("tail <-> parent: velocity: %g %g", _velocity.x, _velocity.y));
 			return;
 		}
+		int sid = getSummoner();
 
 		if (sid > 0) {
 			//tail following its predecessor.
@@ -66,10 +81,27 @@ public:
 				emit("death", NULL);
 				return;
 			}
-			_velocity = summoner->getRelativePosition(this);
+/*			
+			if (getRelativePosition(summoner).length() > (size.x  + size.y) / 2) {
+				Way way = getWay();
+				v2<int> hpos; 
+				getCenterPosition(hpos);
+				way.push_back(WayPoint(hpos));
+				setWay(way);
+			}
+*/
+			_velocity = getRelativePosition(summoner);
 			float l = _velocity.normalize();
-			if (l < 64)
+			if (l < (size.x  + size.y) / 2)
 				_velocity.clear();
+			//else _velocity.quantize8();
+			
+			/*
+			v2<float> pos;
+			getCenterPosition(pos);
+			
+			LOG_DEBUG(("tail %g %g<-> parent: %g, velocity: %g %g", pos.x, pos.y, l, _velocity.x, _velocity.y));
+			*/
 			return;
 		}
 		
@@ -116,6 +148,7 @@ public:
 	
 private:
 	Alarm _reaction_time; 
+	int _head_id;
 };
 
 REGISTER_OBJECT("sandworm", SandWorm, ());
