@@ -44,7 +44,9 @@
 
 IMPLEMENT_SINGLETON(Map, IMap);
 
-IMap::IMap() : _w(0), _h(0), _tw(0), _th(0), _ptw(0), _pth(0), _firstgid(0), _split(0), _generator(new MapGenerator) {
+IMap::IMap() : _w(0), _h(0), _tw(0), _th(0), _ptw(0), _pth(0), _firstgid(0), _split(0), 
+	_generator(new MapGenerator), _solo_aware(false) 
+{
 	_lastz = -1000;
 	_image = NULL;
 }
@@ -453,29 +455,6 @@ void IMap::load(const std::string &name) {
 		cl->setSlave(l);
 	}
 
-#ifdef PRERENDER_LAYERS
-	LOG_DEBUG(("rendering layers..."));
-	for(LayerMap::iterator l = _layers.begin(); l != _layers.end(); ++l) {
-		if (!l->visible)
-			continue;
-		
-		l->second->surface.createRGB(_w * _tw, _h * _th, 24);
-		//l->second->surface.convertAlpha();
-		//l->second->surface.convertToHardware();
-		
-		for(int ty = 0; ty < _h; ++ty) {
-			for(int tx = 0; tx < _w; ++tx) {
-				const sdlx::Surface * s = l->second->getSurface(tx, ty);
-				if (s == NULL) 
-					continue;
-				l->second->surface.copyFrom(*s, tx * _tw, ty * _th);
-			}
-		}
-		//static int i;
-		//l->second->surface.saveBMP(mrt::formatString("layer%d.bmp", i++));
-	}
-#endif
-	
 	_name = name;
 	LOG_DEBUG(("loading completed"));
 	load_map_signal.emit();
@@ -791,15 +770,7 @@ void IMap::charData(const std::string &d) {
 void IMap::render(sdlx::Surface &window, const sdlx::Rect &src, const sdlx::Rect &dst, const int z1, const int z2) const {
 	if (_w == 0 || z1 >= z2)  //not loaded
 		return;
-#ifdef PRERENDER_LAYERS
-	for(LayerMap::const_iterator l = _layers.begin(); l != _layers.end(); ++l) 	
-		
-		if (l->first >= z1) {
-			if (l->first >= z2) 
-				break;
-			window.copyFrom(l->second->surface, src);
-		}
-#else
+
 	int txp = src.x / _tw, typ = src.y / _th;
 	int xp = - (src.x % _tw), yp = -(src.y % _th);
 	
@@ -807,9 +778,18 @@ void IMap::render(sdlx::Surface &window, const sdlx::Rect &src, const sdlx::Rect
 	int tyn = (src.h - 1) / _th + 2;
 	
 	//unsigned int skipped = 0;
+	bool _solo_layer = false;
+	if (_solo_aware) {
+		for(LayerMap::const_iterator l = _layers.begin(); l != _layers.end(); ++l) 
+			if (l->second->solo)
+				_solo_layer = true;
+	}
 	
 	for(LayerMap::const_iterator l = _layers.begin(); l != _layers.end(); ++l) {
 		const int z = l->first;
+		if (_solo_layer && !l->second->solo)
+			continue;
+		
 		if (!l->second->visible || z < z1) 
 			continue;
 		
@@ -838,7 +818,6 @@ void IMap::render(sdlx::Surface &window, const sdlx::Rect &src, const sdlx::Rect
 	}
 	//LOG_DEBUG(("blits skipped: %u", skipped));
 	//LOG_DEBUG(("====================================="));
-#endif
 }
 
 
@@ -1175,4 +1154,8 @@ Layer* IMap::getLayer(const int z) {
 	if (i == _layers.end())
 		throw_ex(("getLayer(%d) could not find layer with given z", z));
 	return i->second;
+}
+
+void IMap::setSoloAwareMode(const bool value) {
+	_solo_aware = value;
 }

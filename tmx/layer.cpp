@@ -173,7 +173,7 @@ DestructableLayer::~DestructableLayer() {
 }
 
 Layer::Layer() : 
-name(), visible(true), 
+name(), visible(true), solo(false), 
 impassability(0), hp(0), pierceable(false), 
 _w(0), _h(0), pos(0), speed(1), base(0), frames(0), frame_size(0) {}
 

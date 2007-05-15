@@ -109,6 +109,8 @@ public:
 	
 	const std::string &getName() const { return _name; }
 
+	void setSoloAwareMode(const bool value = true);
+	
 private:
 	void addTiles(sdlx::Surface *image, const int first_gid);
 
@@ -172,6 +174,8 @@ private:
 	
 	TilesetList _tilesets;
 	std::string _name;
+	
+	bool _solo_aware;
 };
 
 SINGLETON(BTANKSAPI, Map, IMap);
