@@ -28,7 +28,7 @@
 
 class BTANKSAPI ScrollList : public Control {
 public: 
-	ScrollList(const std::string &font, const int w, const int h);
+	ScrollList(const std::string &font, const int w, const int h, const int spacing = 5);
 	
 	virtual void clear();
 	virtual void add(const std::string &item);
@@ -65,6 +65,7 @@ protected:
 	typedef std::deque<Control *> List;
 	List _list;
 	int _current_item;
+	int _spacing;
 };
 
 #endif

@@ -26,7 +26,8 @@
 #include "math/binary.h"
 #include "menu/label.h"
 
-ScrollList::ScrollList(const std::string &font, const int w, const int h) : _client_w(64), _client_h(64), _pos(0), _vel(0), _current_item(0) {
+ScrollList::ScrollList(const std::string &font, const int w, const int h, const int spacing) : 
+_client_w(64), _client_h(64), _pos(0), _vel(0), _current_item(0), _spacing(spacing) {
 	_background.init("menu/background_box.png", "menu/highlight_medium.png", w, h);
 	_font = ResourceManager->loadFont(font, true);
 	_scrollers = ResourceManager->loadSurface("menu/v_scroller.png");
@@ -53,18 +54,18 @@ const int ScrollList::getItemY(const int idx) const {
 	for(int i = 0; i < idx; ++i) {
 		int w, h;
 		_list[i]->getSize(w, h);
-		h += 5;
+		h += _spacing;
 		y += h;
 	}
 	return y;
 }
 
 const int ScrollList::getItemIndex(const int yp) const {
-	int y = -2;
+	int y = - _spacing/2;
 	for(int i = 0; i < (int)_list.size(); ++i) {
 		int w, h;
 		_list[i]->getSize(w, h);
-		h += 5;
+		h += _spacing;
 		if (yp >= y && yp < y + h)
 			return i; 
 		y += h;
@@ -148,10 +149,10 @@ void ScrollList::render(sdlx::Surface &surface, const int x, const int y) {
 	for(; p < n; ++p) {
 		int w, h;
 		_list[p]->getSize(w, h);
-		h += 5;
+		h += _spacing;
 
 		if (p == (int)_current_item) {
-			_background.renderHL(surface, x - 3 * mx, yp + h / 2 - 1);
+			_background.renderHL(surface, x - 3 * mx, yp + h / 2 - _spacing / 2 + 1);
 		}
 		//_font->render(surface, x + mx, yp, _list[p]);
 		_list[p]->render(surface, x + mx, yp);
@@ -244,8 +245,12 @@ bool ScrollList::onMouse(const int button, const bool pressed, const int x, cons
 		}
 		//LOG_DEBUG(("%d %d -> %d", x, y, y + (int)_pos - my));
 		int item = getItemIndex(y - my + (int)_pos);
-		if (item >= 0 && item < (int)_list.size())
+		if (item >= 0 && item < (int)_list.size()) {
+			int ybase = getItemY(item);
+			if (_list[item]->onMouse(button, pressed, x - _items_area.x, y - ybase))
+				return true;
 			_current_item = item;
+		}
 		return true;
 	}	
 	
