@@ -75,7 +75,7 @@ public:
 				std::set<const Object *> objects;
 				GET_CONFIG_VALUE("objects.sandworm.snatch-range", float, sr, 32.0f);
 				World->enumerateObjects(objects, this, sr, NULL);
-				LOG_DEBUG(("%u objects around", (unsigned) objects.size()));
+				//LOG_DEBUG(("%u objects around", (unsigned) objects.size()));
 				if (!objects.empty()) {
 					Object *head = spawn("sandworm-head", "sandworm-head");
 					_head_id = head->getID();
