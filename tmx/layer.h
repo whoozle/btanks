@@ -42,6 +42,7 @@ public:
 #ifdef PRERENDER_LAYERS
 	sdlx::Surface surface;
 #endif
+	std::string name;
 	int impassability, hp;
 	bool pierceable;
 
