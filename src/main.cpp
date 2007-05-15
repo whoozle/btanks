@@ -17,6 +17,7 @@
  */
 
 #include "mrt/logger.h"
+#include "sdlx/system.h"
 #include "game.h"
 #include "version.h"
 #include <stdlib.h>
@@ -78,13 +79,16 @@ int main(int argc, char *argv[]) {
 		TRY { LOG_DEBUG(("calling Game->deinit()")); Game->deinit(); } CATCH("deinit", {});
 		
 		MessageBox(NULL, e.what(), "Error", MB_OK | MB_ICONERROR | MB_TASKMODAL);
+		sdlx::System::deinit();
 		return 1;
 	}
 #else 
 	} CATCH("main", { 
 		TRY { LOG_DEBUG(("calling Game->deinit()")); Game->deinit(); } CATCH("deinit", {});		
+		sdlx::System::deinit();
 		return 1;
 	})
 #endif
+	sdlx::System::deinit();
 	return 0;
 }
