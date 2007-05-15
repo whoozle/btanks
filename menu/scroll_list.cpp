@@ -228,21 +228,26 @@ bool ScrollList::onMouse(const int button, const bool pressed, const int x, cons
 	//implement dragging of scroller here.
 	//LOG_DEBUG(("boo %d %d %d %d", button, pressed, x, y));
 	
-	if (!pressed || button == SDL_BUTTON_MIDDLE) //skip accidental wheel clicks
+	if (button == SDL_BUTTON_MIDDLE) //skip accidental wheel clicks
 		return false;
+
+	if (button == SDL_BUTTON_WHEELUP) {
+		if (pressed)
+			up();
+		return true;
+	}
+
+	if (button == SDL_BUTTON_WHEELDOWN) {
+		if (pressed)
+			down();
+		return true;
+	}
+
 
 	int mx, my;
 	_background.getMargins(mx, my);
 	
 	if (_items_area.in(x, y)) {
-		if (button == SDL_BUTTON_WHEELUP) {
-			up();
-			return true;
-		}
-		if (button == SDL_BUTTON_WHEELDOWN) {
-			down();
-			return true;
-		}
 		//LOG_DEBUG(("%d %d -> %d", x, y, y + (int)_pos - my));
 		int item = getItemIndex(y - my + (int)_pos);
 		if (item >= 0 && item < (int)_list.size()) {
@@ -250,18 +255,23 @@ bool ScrollList::onMouse(const int button, const bool pressed, const int x, cons
 			//LOG_DEBUG(("%d %d", x - _items_area.x, y - ybase - _items_area.y));
 			if (_list[item]->onMouse(button, pressed, x - _items_area.x, y - ybase - _items_area.y))
 				return true;
-			_current_item = item;
+	
+			if (pressed)
+				_current_item = item;
 		}
 		return true;
 	}	
 	
 	if (_up_area.in(x, y)) {
-		up();
+		if (pressed)
+			up();
 		return true;
 	} else if (_down_area.in(x, y)) {
-		down();
+		if (pressed)
+			down();
 		return true;
 	}
+	
 	return false;
 }
 
