@@ -707,7 +707,7 @@
 	<object class="spaceport-baykonur" hp="200" z="0"/> 
 	<object class="zombie" hp="40" speed="80" mass="85" z="-1" />	
 	<object class="cow" hp="40" speed="80" mass="120" z="-1" />	
-	<object class="sandworm" speed="150" mass="1000" z="-1" impassability="0" />
+	<object class="sandworm" speed="150" mass="10" z="-1" impassability="0" />
 	
 	<!-- items -->
 	<object class="base-item" z="180" impassability="-1" />
