@@ -97,7 +97,7 @@ void Explosion::onSpawn() {
 	if (_variants.has("building")) {
 		playRandomSound("building-explosion", false);
 	}
-	if (registered_name == "nuclear-explosion") 
+	if (registered_name == "nuclear-explosion" && !_variants.has("no-shaking")) 
 		Game->shake(1, 4);
 }
 
