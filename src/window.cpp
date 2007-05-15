@@ -61,6 +61,7 @@ void IWindow::initSDL() {
 #else
 	sdlx::System::init(subsystems);
 #endif
+	atexit(SDL_Quit);
 
 	SDL_EnableUNICODE(1);
 
