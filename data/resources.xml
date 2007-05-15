@@ -568,7 +568,7 @@
 	<animation id="dead-cow-static" model="dead-man-animation" tile="cow_dead.png" />
 	
 	<animation id="sandworm-head" model="sandworm-head-animation" tile="sandworm.png" size="128" />
-	<animation id="sandworm-body" model="sandworm-body-animation" tile="sandworm_body.png" />
+	<animation id="sandworm" model="sandworm-body-animation" tile="sandworm_body.png" />
 
 	<object class="damage-digits" speed="60" mass="1" ttl="1" z="999" />
 
@@ -707,6 +707,7 @@
 	<object class="spaceport-baykonur" hp="200" z="0"/> 
 	<object class="zombie" hp="40" speed="80" mass="85" z="-1" />	
 	<object class="cow" hp="40" speed="80" mass="120" z="-1" />	
+	<object class="sandworm" speed="300" mass="1000" z="-1" impassability="0" />
 	
 	<!-- items -->
 	<object class="base-item" z="180" impassability="-1" />

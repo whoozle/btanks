@@ -21,14 +21,21 @@
 
 class SandWorm : public Object {
 public: 
-	SandWorm(): Object("monster") {}
+	SandWorm(): Object("monster"), _moving(true) {}
 	virtual void onSpawn() {
 		disown();
+		play("main", true);
+	}
+	
+	const bool skipRendering() {
+		return _moving;
 	}
 	
 	Object* clone() const  {
 		return new SandWorm(*this);
 	}
+private: 
+	bool _moving;
 };
 
 REGISTER_OBJECT("sandworm", SandWorm, ());

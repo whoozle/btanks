@@ -126,6 +126,7 @@
   <property name="object:impassable-static-corpse:dead-cyan-car:2" value="100,668"/>
   <property name="object:static-corpse:dead-civilian-static-1:10" value="1657,727"/>
   <property name="object:impassable-static-corpse:dead-cyan-car:1" value="2001,1046"/>
+  <property name="object:sandworm:sandworm:1" value="@21,15"/>
  </properties>
  <tileset name="Untitled" firstgid="1" tilewidth="64" tileheight="64">
   <image source="../tilesets/houses.png"/>
