@@ -232,6 +232,7 @@ void SandWormHead::emit(const std::string &event, Object * emitter) {
 		Object * summoner = World->getObjectByID(sid);
 		if (summoner)
 			summoner->emit("death", this);
+		Object::emit("death", emitter);
 	} else 
 		Object::emit(event, emitter);
 }
