@@ -319,6 +319,8 @@ const bool IMixer::generateSource(ALuint &r_source) {
 	for(Sources::iterator i = _sources.begin(); i != _sources.end(); ++i) {
 	TRY {
 		const SourceInfo &info = i->first;
+		if (info.loop)
+			continue;
 
 		ALenum state = 0;
 		alGetSourcei(i->second, AL_SOURCE_STATE, &state);
@@ -559,7 +561,7 @@ void IMixer::cancelSample(const Object *o, const std::string &name) {
 	//LOG_DEBUG(("object %d cancels %s", o->getID(), name.c_str()));
 	for(Sources::iterator j = _sources.begin(); j != _sources.end(); ++j) {
 		const SourceInfo &info = j->first;
-		if (info.id != o->getID() || info.name != name || !info.loop)
+		if (info.id != o->getID() || info.name != name)
 			continue;
 		
 		alSourcei (j->second, AL_LOOPING, AL_FALSE);
@@ -573,7 +575,7 @@ void IMixer::cancelAll(const Object *o) {
 	
 	const int id = o->getID();
 	for(Sources::iterator j = _sources.begin(); j != _sources.end(); ++j) {
-		if (j->first.id == id && j->first.loop) {
+		if (j->first.id == id) {
 			alSourcei (j->second, AL_LOOPING, AL_FALSE);
 			AL_CHECK(("alSourcei"));
 		}
