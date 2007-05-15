@@ -85,7 +85,6 @@ public:
 		
 		Way way;
 		way.push_back(WayPoint(i->first * tile_size.x + tile_size.x / 2, i->second * tile_size.y + tile_size.y / 2));
-		way.push_back(WayPoint(i->first * tile_size.x + tile_size.x / 2, i->second * tile_size.y + tile_size.y / 2));
 		setWay(way);
 	}
 	
