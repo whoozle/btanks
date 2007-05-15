@@ -18,24 +18,93 @@
 
 #include "object.h"
 #include "resource_manager.h"
+#include "math/matrix.h"
+#include "tmx/map.h"
+#include "mrt/random.h"
+#include "config.h"
+#include "world.h"
 
 class SandWorm : public Object {
 public: 
-	SandWorm(): Object("monster"), _moving(true) {}
+	SandWorm(): Object("monster"), _reaction_time(true) {
+		setDirectionsNumber(1);
+	}
 	virtual void onSpawn() {
 		disown();
 		play("main", true);
+		GET_CONFIG_VALUE("object.sandworm.reaction-time", float, rt, 0.1);
+		mrt::randomize(rt, rt/10);
+		_reaction_time.set(rt);
 	}
 	
-	const bool skipRendering() {
-		return _moving;
+	virtual void calculate(const float dt) {
+		int sid = getSummoner();
+		if (isDriven() || !_reaction_time.tick(dt)) {
+			if (sid <= 0) {
+				calculateWayVelocity();
+				updateStateFromVelocity();
+			} //save velocity of tails
+			return;
+		}
+
+		if (sid > 0) {
+			//tail following its predecessor.
+			Object *summoner = World->getObjectByID(sid);
+			if (summoner == NULL) {
+				emit("death", NULL);
+				return;
+			}
+			_velocity = summoner->getRelativePosition(this);
+			float l = _velocity.normalize();
+			if (l < 64)
+				_velocity.clear();
+			return;
+		}
+		
+		LOG_DEBUG(("searching random hint area..."));
+		const Matrix<int> &hint = Map->getAreaMatrix("sandworm"); //check
+		const v2<int> tile_size = Map->getPathTileSize();
+
+		int w = hint.getWidth(), h = hint.getHeight();
+		std::set<std::pair<int, int> > coords;
+		for(int y = 0; y < h; ++y) 
+			for(int x = 0; x < w; ++x) {
+				if (hint.get(y, x))
+					coords.insert(std::pair<int, int>(x, y));
+		}
+		
+		if (coords.empty()) {
+			LOG_ERROR(("no hint area defined... committing suicide"));
+			emit("death", NULL);
+			return;
+		}
+		
+		int n = mrt::random(coords.size());
+		std::set<std::pair<int, int> >::const_iterator i = coords.begin();
+		while(n--) ++i;
+		
+		Way way;
+		way.push_back(WayPoint(i->first * tile_size.x + tile_size.x / 2, i->second * tile_size.y + tile_size.y / 2));
+		way.push_back(WayPoint(i->first * tile_size.x + tile_size.x / 2, i->second * tile_size.y + tile_size.y / 2));
+		setWay(way);
 	}
 	
 	Object* clone() const  {
 		return new SandWorm(*this);
 	}
-private: 
-	bool _moving;
+	
+	virtual void serialize(mrt::Serializator &s) const {
+		Object::serialize(s);
+		s.add(_reaction_time);
+	}
+
+	virtual void deserialize(const mrt::Serializator &s) {
+		Object::deserialize(s);
+		s.get(_reaction_time);
+	}
+	
+private:
+	Alarm _reaction_time; 
 };
 
 REGISTER_OBJECT("sandworm", SandWorm, ());
