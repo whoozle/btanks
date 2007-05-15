@@ -296,6 +296,14 @@
 		<pose id="walk">0,1,2,3,2,1</pose>
 	</animation-model>
 	
+	<animation-model id="sandworm-head-animation" speed="4"> 
+		<pose id="snatch">0,1,2,3,4,5,6,7</pose>
+	</animation-model>
+
+	<animation-model id="sandworm-body-animation" speed="4"> 
+		<pose id="main">0,1,2</pose>
+	</animation-model>
+	
 	<!-- 
 		sound tag allows you to load sample that doesn't reside in any animation model.
 	-->
@@ -558,6 +566,9 @@
 	<animation id="cow" model="cow-animation" tile="cow.png" />
 	<animation id="dead-cow" model="dead-man-animation" tile="cow_dead.png" />
 	<animation id="dead-cow-static" model="dead-man-animation" tile="cow_dead.png" />
+	
+	<animation id="sandworm-head" model="sandworm-head-animation" tile="sandworm.png" size="128" />
+	<animation id="sandworm-body" model="sandworm-body-animation" tile="sandworm_body.png" />
 
 	<object class="damage-digits" speed="60" mass="1" ttl="1" z="999" />
 
