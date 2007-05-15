@@ -296,7 +296,7 @@
 		<pose id="walk">0,1,2,3,2,1</pose>
 	</animation-model>
 	
-	<animation-model id="sandworm-head-animation" speed="4"> 
+	<animation-model id="sandworm-head-animation" speed="6"> 
 		<pose id="snatch">0,1,2,3,4,5,6,7</pose>
 	</animation-model>
 
@@ -708,6 +708,7 @@
 	<object class="zombie" hp="40" speed="80" mass="85" z="-1" />	
 	<object class="cow" hp="40" speed="80" mass="120" z="-1" />	
 	<object class="sandworm" speed="150" mass="10" z="-1" impassability="0" />
+	<object class="sandworm-head" speed="0" mass="10" z="-1" impassability="-1" hp="500" />
 	
 	<!-- items -->
 	<object class="base-item" z="180" impassability="-1" />

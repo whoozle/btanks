@@ -64,6 +64,26 @@ public:
 			}
 		}
 		
+		int sid = getSummoner();
+
+		if (active && sid <= 0) {
+			GET_CONFIG_VALUE("objects.sandworm.minimum-snatch-distance", float, msd, 100.0f);
+			v2<float> cpos; 
+			getCenterPosition(cpos);
+		
+			if (cpos.distance(_last_snatch) > msd) {
+				std::set<const Object *> objects;
+				GET_CONFIG_VALUE("objects.sandworm.snatch-range", float, sr, 32.0f);
+				World->enumerateObjects(objects, this, sr, NULL);
+				LOG_DEBUG(("%u objects around", (unsigned) objects.size()));
+				if (!objects.empty()) {
+					Object *head = spawn("sandworm-head", "sandworm-head");
+					_head_id = head->getID();
+					_last_snatch = cpos;
+				}
+			}
+		}
+		
 		if (!active || isDriven()) {
 			if (isDriven()) {
 				calculateWayVelocity();
@@ -72,7 +92,6 @@ public:
 			//else LOG_DEBUG(("tail <-> parent: velocity: %g %g", _velocity.x, _velocity.y));
 			return;
 		}
-		int sid = getSummoner();
 
 		if (sid > 0) {
 			//tail following its predecessor.
@@ -139,16 +158,79 @@ public:
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
 		s.add(_reaction_time);
+		s.add(_head_id);
+		s.add(_last_snatch);
 	}
 
 	virtual void deserialize(const mrt::Serializator &s) {
 		Object::deserialize(s);
 		s.get(_reaction_time);
+		s.get(_head_id);
+		s.get(_last_snatch);
 	}
 	
 private:
 	Alarm _reaction_time; 
 	int _head_id;
+	v2<float> _last_snatch;
 };
 
 REGISTER_OBJECT("sandworm", SandWorm, ());
+
+
+//sandworm head
+
+class SandWormHead : public Object {
+public:
+	SandWormHead() : Object("monster") {}
+	Object* clone() const  { return new SandWormHead(*this); }
+
+	virtual void onSpawn();
+	virtual void tick(const float dt);
+	virtual void emit(const std::string &event, Object * emitter = NULL);
+};
+
+void SandWormHead::onSpawn() {
+	play("snatch", false);
+}
+
+void SandWormHead::tick(const float dt) {
+	Object::tick(dt);
+
+	if (getState().empty()) {
+		Object::emit("death", NULL);
+		return;
+	};
+}
+
+
+void SandWormHead::emit(const std::string &event, Object * emitter) {
+	if (event == "collision") {
+		if (emitter == NULL || emitter->pierceable)
+			return;
+
+		GET_CONFIG_VALUE("objects.sandworm-head.damage-after", float, da, 0.4);
+		if (getStateProgress() < da)
+			return;
+		
+		//nuke damage.
+		if (emitter == NULL || registered_name == "explosion" || 
+			(emitter->registered_name.size() >= 9 && 
+			emitter->registered_name.substr(emitter->registered_name.size() - 9, 9) == "explosion")
+			)
+			return;
+			
+		emitter->Object::emit("death", this);
+	} else if (event == "death") {
+		//worm killed.
+		int sid = getSummoner();
+		Object * summoner = World->getObjectByID(sid);
+		if (summoner)
+			summoner->emit("death", this);
+	} else 
+		Object::emit(event, emitter);
+}
+
+
+REGISTER_OBJECT("sandworm-head", SandWormHead, ());
+
