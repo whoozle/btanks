@@ -43,6 +43,7 @@ public:
 	sdlx::Surface surface;
 #endif
 	std::string name;
+	bool visible;
 	int impassability, hp;
 	bool pierceable;
 

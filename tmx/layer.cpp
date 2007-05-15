@@ -172,7 +172,10 @@ DestructableLayer::~DestructableLayer() {
 	delete[] _hp_data;
 }
 
-Layer::Layer() : impassability(0), hp(0), pierceable(false), _w(0), _h(0), pos(0), speed(1), base(0), frames(0), frame_size(0) {}
+Layer::Layer() : 
+name(), visible(true), 
+impassability(0), hp(0), pierceable(false), 
+_w(0), _h(0), pos(0), speed(1), base(0), frames(0), frame_size(0) {}
 
 void Layer::setAnimation(const int frame_size, const int frames, const float speed) {
 	if (frame_size < 1) 

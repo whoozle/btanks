@@ -810,7 +810,7 @@ void IMap::render(sdlx::Surface &window, const sdlx::Rect &src, const sdlx::Rect
 	
 	for(LayerMap::const_iterator l = _layers.begin(); l != _layers.end(); ++l) {
 		const int z = l->first;
-		if (z < z1) 
+		if (!l->second->visible || z < z1) 
 			continue;
 		
 		if (z >= z2) 
