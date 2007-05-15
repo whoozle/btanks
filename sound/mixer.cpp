@@ -45,7 +45,7 @@ const bool IMixer::SourceInfo::operator<(const SourceInfo &other) const {
 	if (id != other.id) 
 		return id < other.id;
 
-	if (name != other.name);
+	if (name != other.name)
 		return name < other.name;
 
 	return loop < other.loop;
