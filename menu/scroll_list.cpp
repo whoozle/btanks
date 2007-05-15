@@ -103,6 +103,9 @@ void ScrollList::tick(const float dt) {
 		_vel = 0;
 	}
 
+	for(List::iterator i = _list.begin(); i != _list.end(); ++i) {
+		(*i)->tick(dt);
+	}
 }
 
 
