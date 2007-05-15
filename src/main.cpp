@@ -78,16 +78,13 @@ int main(int argc, char *argv[]) {
 		TRY { LOG_DEBUG(("calling Game->deinit()")); Game->deinit(); } CATCH("deinit", {});
 		
 		MessageBox(NULL, e.what(), "Error", MB_OK | MB_ICONERROR | MB_TASKMODAL);
-		SDL_Quit();
 		return 1;
 	}
 #else 
 	} CATCH("main", { 
 		TRY { LOG_DEBUG(("calling Game->deinit()")); Game->deinit(); } CATCH("deinit", {});		
-		SDL_Quit();
 		return 1;
 	})
 #endif
-	SDL_Quit();
 	return 0;
 }
