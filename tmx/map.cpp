@@ -710,6 +710,7 @@ void IMap::end(const std::string &name) {
 			throw_ex(("layer with z %d already exists", z));
 		if(layer == NULL)
 			layer = new Layer;
+		layer->name = e.attrs["name"];
 
 		const std::string a_frame_size = _properties["animation-frame-size"];
 		const std::string a_frames = _properties["animation-frames"];
@@ -1160,4 +1161,18 @@ void IMap::addTiles(sdlx::Surface *image, const int first_gid) {
 		}
 	}
 	
+}
+
+void IMap::getLayers(std::set<int> &layers_z) const {
+	layers_z.clear();
+	for(LayerMap::const_iterator i = _layers.begin(); i != _layers.end(); ++i) {
+		layers_z.insert(i->first);
+	}
+}
+
+Layer* IMap::getLayer(const int z) {
+	LayerMap::iterator i = _layers.find(z);
+	if (i == _layers.end())
+		throw_ex(("getLayer(%d) could not find layer with given z", z));
+	return i->second;
 }

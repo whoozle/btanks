@@ -61,6 +61,8 @@ public:
 	};
 	
 	const TilesetList & getTilesets() const { return _tilesets; }
+	void getLayers(std::set<int> &layers_z) const;
+	Layer* getLayer(const int z);
 
 	typedef std::map<const std::string, std::string> PropertyMap;
 	PropertyMap properties;
