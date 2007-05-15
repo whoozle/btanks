@@ -319,8 +319,6 @@ const bool IMixer::generateSource(ALuint &r_source) {
 	for(Sources::iterator i = _sources.begin(); i != _sources.end(); ++i) {
 	TRY {
 		const SourceInfo &info = i->first;
-		if (info.loop)
-			continue;
 
 		ALenum state = 0;
 		alGetSourcei(i->second, AL_SOURCE_STATE, &state);
