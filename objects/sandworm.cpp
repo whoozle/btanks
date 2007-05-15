@@ -206,7 +206,7 @@ void SandWormHead::tick(const float dt) {
 
 void SandWormHead::emit(const std::string &event, Object * emitter) {
 	if (event == "collision") {
-		if (emitter == NULL || emitter->pierceable)
+		if (emitter == NULL || emitter->piercing)
 			return;
 
 		GET_CONFIG_VALUE("objects.sandworm-head.damage-after", float, da, 0.4);
