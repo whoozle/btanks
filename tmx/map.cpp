@@ -1165,3 +1165,9 @@ Layer* IMap::getLayer(const int z) {
 void IMap::setSoloAwareMode(const bool value) {
 	_solo_aware = value;
 }
+
+const IMap::TileDescriptor & IMap::getTile(const size_t idx) const {
+	if (idx >= _tiles.size())
+		throw_ex(("getTile(%u) is out of range 0-%u", (unsigned)idx, (unsigned)_tiles.size()));
+	return _tiles[idx];
+}

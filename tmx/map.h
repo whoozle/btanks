@@ -99,6 +99,8 @@ public:
 	};
 	typedef std::vector< TileDescriptor > TileMap;
 	
+	const TileDescriptor & getTile(const size_t idx) const;
+	
 	void invalidateTile(const int xp, const int yp);
 
 	void generateMatrixes();
