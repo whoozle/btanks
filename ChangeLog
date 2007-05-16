@@ -1,6 +1,6 @@
-0.?.3616:
+?.?.3618:
 
-*) adding auto-aiming support for tank's and shilka's bullet.
+*) adding auto-aiming support for tank's and shilka's bullets.
 *) many new sounds, completely rewritten sound subsystem. ambient sounds thread.(forest, swamp, city and country ambient loops).
 *) added secret "mortar" vehicle on every map (!). 
 *) added 'sandworm' creature inspired by famous 'dune' series.
