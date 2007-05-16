@@ -489,6 +489,7 @@
 	<animation id="pond" tile="pond.png" model="pond-animation" size="256" />
 	
 	<animation id="bullet" tile="bullet.png" model="bullet-animation"/>
+	<animation id="tank-bullet" tile="bullet.png" model="bullet-animation"/>
 	<animation id="dispersion-bullet" tile="bullet16.png" model="bullet-animation"/>
 	<animation id="ricochet-bullet" tile="bullet16.png" model="bullet-animation"/>
 	<animation id="vehicle-machinegunner-bullet" tile="machinegunner_bullet.png" model="bullet-animation"/>
@@ -573,7 +574,8 @@
 	<object class="damage-digits" speed="60" mass="1" ttl="1" z="999" />
 
 	<alias name="pond" class="single-pose" />
-	<alias name="shilka-bullet" class="bullet" />
+	<alias name="shilka-bullet" class="bullet(auto-aim)" />
+	<alias name="tank-bullet" class="bullet(auto-aim)" />
 	<alias name="helicopter-bullet" class="bullet" />
 	<alias name="spawn-shield" class="single-pose(once)(no-directions)" />
 	<alias name="gate" class="destructable-object" />
@@ -620,6 +622,7 @@
 	<object class="ai-shilka" parent="mortar" />
 
 	<object class="bullet" speed="1100" mass="2" ttl="1" hp="10" z="210" />
+	<object class="tank-bullet" parent="bullet" />
 	<object class="ricochet-bullet" speed="1100" mass="2" ttl="2" hp="10" z="210" />
 	<object class="dispersion-bullet" speed="1000" mass="2" ttl="0.5" hp="10" z="210" />
 	<object class="machinegunner-bullet" speed="1100" mass="2" ttl="1" hp="2" z="210" />

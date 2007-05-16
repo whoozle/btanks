@@ -133,15 +133,17 @@ void Tank::tick(const float dt) {
 		//LOG_DEBUG(("vel: %f %f", _state.old_vx, _state.old_vy));
 		//v2<float> v = _velocity.is0()?_direction:_velocity;
 		//v.normalize();
-		std::string bullet("bullet");
+		std::string bullet("tank-bullet");
+		std::string var;
 		if (isEffectActive("dirt")) {
 			bullet = "dirt-bullet";
 		} else if (isEffectActive("dispersion")) {
 			bullet = "dispersion-bullet";
 		} else if (isEffectActive("ricochet")) {
 			bullet = "ricochet-bullet";
+			var = "(auto-aim)";
 		}
-		spawn(bullet, bullet, v2<float>::empty, _direction);
+		spawn(bullet + var, bullet, v2<float>::empty, _direction);
 	}
 	if (_state.alt_fire && fire_possible) {
 		_fire.reset();

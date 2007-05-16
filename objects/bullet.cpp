@@ -22,6 +22,8 @@
 #include "config.h"
 #include "resource_manager.h"
 #include "mrt/random.h"
+#include "world.h"
+#include "player_manager.h"
 
 class Bullet : public Object {
 public:
@@ -90,11 +92,59 @@ void Bullet::calculate(const float dt) {
 		float t = real_ttl - ttl;
 		_velocity = v2<float>(0, g * t - v0) + _vel_backup;
 	}
+	GET_CONFIG_VALUE("engine.auto-aim.enabled", bool, aa, true);
+	if (aa && !PlayerManager->isClient() && _variants.has("auto-aim") && !_velocity.is0()) {
+		if (!_clone.tick(dt)) 
+			return;
+		GET_CONFIG_VALUE("engine.auto-aim.range", float, aar, 128.0f);
+		std::set<const Object *> objects;
+		static std::set<std::string> targets;
+		if (targets.empty()) {
+			targets.insert("missile");	
+			targets.insert("player");
+			targets.insert("trooper");
+			targets.insert("kamikaze");
+			targets.insert("boat");
+			targets.insert("helicopter");
+			targets.insert("monster");
+		}
+		
+		World->enumerateObjects(objects, this, aar, &targets);
+		GET_CONFIG_VALUE("engine.auto-aim.minimum-cosine", float, min_cos, 0.939692f);
+		const Object *target = NULL;
+		
+		for(std::set<const Object *>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
+			const Object *o = *i;
+			if (hasSameOwner(o))
+				continue;
+			v2<float> rel = getRelativePosition(o);
+			if (rel.is0())
+				continue;
+
+			v2<float> m = rel * _velocity;
+			float cos_v = (m.x + m.y) / _velocity.length() / rel.length();
+			if (cos_v >= min_cos) {
+				min_cos = cos_v;
+				target = o;
+			}
+		}
+		if (target)	{
+			if (_vel_backup.is0())
+				_vel_backup = _velocity;
+			_velocity = getRelativePosition(target);
+			//LOG_DEBUG(("target: %s, cos: %g", target->animation.c_str(), min_cos));
+		} else _velocity = _vel_backup;
+	}
 }
 
 void Bullet::onSpawn() {
-	GET_CONFIG_VALUE("objects.dispersion-bullet.clone-interval", float, ci, 0.1);
-	_clone.set(ci);
+	if (_type == "dispersion") {
+		GET_CONFIG_VALUE("objects.dispersion-bullet.clone-interval", float, ci, 0.1f);
+		_clone.set(ci);
+	} else {
+		GET_CONFIG_VALUE("objects.dispersion-bullet.clone-interval", float, ci, 0.05f);
+		_clone.set(ci);
+	}
 
 	play("shot", false);
 	play("move", true);

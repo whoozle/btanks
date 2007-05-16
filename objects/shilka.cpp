@@ -122,7 +122,7 @@ void Shilka::tick(const float dt) {
 		std::string animation = "shilka-bullet-";
 		animation += (_left_fire)?"left":"right";
 		if (isEffectActive("ricochet")) {
-			spawn("ricochet-bullet", "ricochet-bullet", v2<float>::empty, _direction);
+			spawn("ricochet-bullet(auto-aim)", "ricochet-bullet", v2<float>::empty, _direction);
 			play_fire = true;
 		} else if (isEffectActive("dispersion")) {
 			if (special_fire_possible) {
