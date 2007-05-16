@@ -52,7 +52,7 @@ public:
 	}
 	
 	virtual void tick(const float dt) {
-		if (_state.fire) {
+		if (_state.fire && _head_id == 0) {
 			GET_CONFIG_VALUE("objects.sandworm.minimum-snatch-distance", float, msd, 100.0f);
 			v2<float> cpos; 
 			getCenterPosition(cpos);
