@@ -1,8 +1,17 @@
-*) added "mortar" vehicle, mortar bullet.
-*) added "hint control" key. (skips current hing, replay last)
+0.?.3616:
+
+*) adding auto-aiming support for tank's and shilka's bullet.
+*) many new sounds, completely rewritten sound subsystem. ambient sounds thread.(forest, swamp, city and country ambient loops).
+*) added secret "mortar" vehicle on every map (!). 
+*) added 'sandworm' creature inspired by famous 'dune' series.
+*) cars stop and beeps instead of crashing. :)
+*) added screen resolution/full screen mode to options screen.
+*) "bomberman" map - stupid map generator test.
+*) now you don't need to have your copy of map, it downloaded from game server automatically.
 *) added custom "tactical map" in map picker.
-*) various linux packaging fixes, attempt to add ebuild to gentoo.
-*) added "redefine keys" dialog
+*) changed dirt to experimental 'drifting' implementation. 
+*) added "redefine keys" and "gamepad setup" dialogs. Improved gamepad handing (second ministick used for controlling the camera)
+*) added "hint control" key. (skips current hing, replay last)
 *) name screenshot files with numbers to allow taking more than one screenshot at ones
 *) added random vehicle selection (?)
 *) added various debug options : no-clip, tiles marks on map, stripping alpha from objects and tiles 
@@ -13,7 +22,8 @@
 *) mods could provide its own localized messages 
 *) internationalized menu and in-game messages
 *) finishing level makes you invulnerable
-*) changed dirt to experimental 'drifting' implementation. 
+*) various linux packaging fixes, attempt to add ebuild to gentoo.
+*) split engine into separate dll's.
 
 0.4.2902: 
 
