@@ -51,22 +51,8 @@ public:
 			spawn(mrt::formatString("sandworm(%d)", i - 1), "sandworm");
 	}
 	
-	virtual void calculate(const float dt) {
-		const bool active = _reaction_time.tick(dt);
-		//head spawned
-		if (_head_id) {
-			_velocity.clear();
-			if (!active)
-				return;
-			if (World->getObjectByID(_head_id) == NULL) {
-				_head_id = 0;
-				need_sync = true;
-			}
-		}
-		
-		int sid = getSummoner();
-
-		if (active && sid <= 0) {
+	virtual void tick(const float dt) {
+		if (_state.fire) {
 			GET_CONFIG_VALUE("objects.sandworm.minimum-snatch-distance", float, msd, 100.0f);
 			v2<float> cpos; 
 			getCenterPosition(cpos);
@@ -82,6 +68,27 @@ public:
 					_last_snatch = cpos;
 				}
 			}
+		}
+	}
+	
+	virtual void calculate(const float dt) {
+		const bool active = _reaction_time.tick(dt);
+		//head spawned
+		if (_head_id) {
+			_velocity.clear();
+			if (!active)
+				return;
+			if (World->getObjectByID(_head_id) == NULL) {
+				_head_id = 0;
+				need_sync = true;
+			}
+		}
+		
+		int sid = getSummoner();
+		_state.fire = false;
+
+		if (active && sid <= 0) {
+			_state.fire = true;
 		}
 		
 		if (!active || isDriven()) {
