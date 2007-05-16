@@ -96,7 +96,7 @@ void Bullet::calculate(const float dt) {
 	if (aa && !PlayerManager->isClient() && _variants.has("auto-aim") && !_velocity.is0()) {
 		if (!_clone.tick(dt)) 
 			return;
-		GET_CONFIG_VALUE("engine.auto-aim.range", float, aar, 128.0f);
+		GET_CONFIG_VALUE("engine.auto-aim.range", float, aar, 192.0f);
 		std::set<const Object *> objects;
 		static std::set<std::string> targets;
 		if (targets.empty()) {
@@ -110,7 +110,7 @@ void Bullet::calculate(const float dt) {
 		}
 		
 		World->enumerateObjects(objects, this, aar, &targets);
-		GET_CONFIG_VALUE("engine.auto-aim.minimum-cosine", float, min_cos, 0.939692f);
+		GET_CONFIG_VALUE("engine.auto-aim.minimum-cosine", float, min_cos, 0.9848f); //~cos(10')
 		const Object *target = NULL;
 		
 		for(std::set<const Object *>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
