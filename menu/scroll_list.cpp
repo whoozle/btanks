@@ -168,8 +168,12 @@ void ScrollList::render(sdlx::Surface &surface, const int x, const int y) {
 bool ScrollList::onKey(const SDL_keysym sym) {
 	switch(sym.sym) {
 	case SDLK_PAGEUP:
+		if (_current_item > 0)
+			_changed = true;
 		_current_item -= 9;
 	case SDLK_UP:
+		if (_current_item > 0)
+			_changed = true;
 		--_current_item;
 		if (_current_item < 0 ) 
 			_current_item = 0;
@@ -177,16 +181,24 @@ bool ScrollList::onKey(const SDL_keysym sym) {
 		return true;
 
 	case SDLK_HOME: 
+		if (_current_item > 0)
+			_changed = true;
 		_current_item = 0;
 		return true;
 
 	case SDLK_END: 
+		if (_current_item != (int)_list.size() - 1)
+			_changed = true;
 		_current_item = (int)_list.size() - 1;
 		return true;
 
 	case SDLK_PAGEDOWN:
+		if (_current_item != (int)_list.size() - 1)
+			_changed = true;
 		_current_item += 9;
 	case SDLK_DOWN:
+		if (_current_item != (int)_list.size() - 1)
+			_changed = true;
 		++_current_item;
 		if (_current_item >= (int)_list.size()) 
 			_current_item = (int)_list.size() - 1;
@@ -205,6 +217,8 @@ bool ScrollList::onKey(const SDL_keysym sym) {
 			}
 		}
 		if (i < _list.size()) {
+			if (_current_item != (int)i)
+				_changed = true;
 			_current_item = i;
 			return true;
 		}
@@ -215,15 +229,18 @@ bool ScrollList::onKey(const SDL_keysym sym) {
 }
 
 void ScrollList::up() {
-		if (_current_item > 0 ) 
+		if (_current_item > 0 ) {
 			--_current_item;
+			_changed = true;
+		}
 		//LOG_DEBUG(("up: %u", _current_item));
 }
 
 void ScrollList::down() {
-		++_current_item;
-		if (_current_item >= (int)_list.size()) 
-			_current_item = (int)_list.size() - 1;
+		if (_current_item + 1 < (int)_list.size()) {
+			++_current_item;
+			_changed = true;
+		}
 		//LOG_DEBUG(("down: %u", _current_item));
 }
 
@@ -259,8 +276,11 @@ bool ScrollList::onMouse(const int button, const bool pressed, const int x, cons
 			if (_list[item]->onMouse(button, pressed, x - _items_area.x, y - _items_area.y + (int)_pos - ybase))
 				return true;
 	
-			if (pressed)
+			if (pressed) {
+				if (_current_item != item)
+					_changed = true;
 				_current_item = item;
+			}
 		}
 		return true;
 	}	
@@ -295,9 +315,11 @@ void ScrollList::remove(const int idx) {
 
 	if (_current_item >= (int)_list.size()) 
 		_current_item = (int)_list.size() - 1;
+	_changed = true;
 }
 
 void ScrollList::clear() {
+	_changed = true;
 	_current_item = 0;
 	for(size_t i = 0; i < _list.size(); ++i) {
 		delete _list[i];
