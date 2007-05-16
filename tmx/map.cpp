@@ -785,8 +785,10 @@ void IMap::render(sdlx::Surface &window, const sdlx::Rect &src, const sdlx::Rect
 	bool _solo_layer = false;
 	if (_solo_aware) {
 		for(LayerMap::const_iterator l = _layers.begin(); l != _layers.end(); ++l) 
-			if (l->second->solo)
+			if (l->second->solo) {
 				_solo_layer = true;
+				break;
+			}
 	}
 	
 	for(LayerMap::const_iterator l = _layers.begin(); l != _layers.end(); ++l) {
