@@ -11,10 +11,11 @@ void Tileset::start(const std::string &name, Attrs &attr) {
 	
 	_cdata.clear();
 	_attr = attr;
-	if (attr["id"].empty()) {
-		if (name == "background")
+	if (name == "background" && attr["id"].empty()) {
 			throw_ex(("empty id for element %s", name.c_str()));
 	}
+	if (name == "box" && ( (attr["in"].empty()?1:0) ^ (attr["out"].empty()?1:0) ) == 0)
+		throw_ex(("box must provide one of 'in'/'out' attrs."));
 }
 
 void Tileset::charData(const std::string &data) {
