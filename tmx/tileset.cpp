@@ -11,8 +11,10 @@ void Tileset::start(const std::string &name, Attrs &attr) {
 	
 	_cdata.clear();
 	_attr = attr;
-	if (attr["id"].empty())
-		throw_ex(("empty id for element %s", name.c_str()));
+	if (attr["id"].empty()) {
+		if (name == "background")
+			throw_ex(("empty id for element %s", name.c_str()));
+	}
 }
 
 void Tileset::charData(const std::string &data) {

@@ -39,6 +39,13 @@ public:
 	}
 };
 
+class Box : public GeneratorObject {
+	void init(const std::map<const std::string, std::string>& attrs, const std::string &data) {
+	}
+	void render(MapGenerator *gen, const int first_gid, const int x, const int y) const {
+	}
+};
+
 void GeneratorObject::init(const std::map<const std::string, std::string>& attrs, const std::string &data)  {
 	int size = atoi(get(attrs, "size").c_str());
 	if (size > 0) {
@@ -67,6 +74,8 @@ GeneratorObject *GeneratorObject::create(const std::string &name) {
 	if (name == "background") {
 		//create background
 		return new Background;
+	} else if (name == "box") {
+		return new Box;
 	} else throw_ex(("cannot handle '%s' object", name.c_str()));
 }
 
