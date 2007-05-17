@@ -85,7 +85,7 @@ public:
 	
 	void setViewport(const int idx, const sdlx::Rect &rect);
 	
-	void tick(const int now, const float dt);
+	void tick(const unsigned int now, const float dt);
 	void render(sdlx::Surface &window, const int x, const int y);
 	
 	const int onConnect(Message &message);
