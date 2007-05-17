@@ -39,7 +39,7 @@ public:
 	}
 };
 
-class Box : public GeneratorObject {
+class TileBox : public GeneratorObject {
 	void init(const std::map<const std::string, std::string>& attrs, const std::string &data) {
 	}
 	void render(MapGenerator *gen, const int first_gid, const int x, const int y) const {
@@ -75,7 +75,7 @@ GeneratorObject *GeneratorObject::create(const std::string &name) {
 		//create background
 		return new Background;
 	} else if (name == "box") {
-		return new Box;
+		return new TileBox;
 	} else throw_ex(("cannot handle '%s' object", name.c_str()));
 }
 
