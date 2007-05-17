@@ -42,11 +42,12 @@ const std::string ScrollList::getValue() const {
 }
 
 void ScrollList::add(const std::string &item) {
-	_list.push_back(new Label(_font, item));
+	add(new Label(_font, item));
 }
 
 void ScrollList::add(Control *control) {
 	_list.push_back(control);
+	_changed = true;
 }
 
 const int ScrollList::getItemY(const int idx) const {
