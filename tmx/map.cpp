@@ -464,6 +464,7 @@ void IMap::generateMatrixes() {
 	_cover_map.setSize(_h, _w, -10000);
 	_cover_map.useDefault(-10000);
 	
+	if (!_solo_aware) {
 	unsigned int ot = 0;
 	for(LayerMap::iterator l = _layers.begin(); l != _layers.end(); ++l) {
 		for(int ty = 0; ty < _h; ++ty) {
@@ -480,6 +481,7 @@ void IMap::generateMatrixes() {
 	}
 
 	LOG_DEBUG(("created render optimization map. opaque tiles found: %u", ot));
+	}
 
 	_imp_map.clear();
 	for(LayerMap::const_iterator i = _layers.begin(); i != _layers.end(); ++i) {
