@@ -697,7 +697,7 @@ void IPlayerManager::validateViewports() {
 		}
 }
 
-void IPlayerManager::tick(const unsigned int now, const float dt) {
+void IPlayerManager::tick(const int now, const float dt) {
 	if (_server) {
 		if (_next_sync.tick(dt) && isServerActive()) {
 			Message m(Message::UpdateWorld);
