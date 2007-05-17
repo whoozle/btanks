@@ -1,0 +1,111 @@
+<?xml version="1.0"?>
+<map version="0.99b" orientation="orthogonal" width="22" height="25" tilewidth="64" tileheight="64">
+ <properties>
+  <property name="object:impassable-static-corpse:dead-red-tank:1" value="1308,16,-100"/>
+  <property name="object:road-sign:road-sign10:1" value="902,916,-660"/>
+  <property name="object:impassable-static-corpse:dead-red-launcher:3" value="537,1244,-100"/>
+  <property name="object:static-corpse:dead-civilian-static-2:1" value="994,667,-100"/>
+  <property name="object:static-corpse:dead-ziehharmonikaspieler-static:1" value="236,1137,-100"/>
+  <property name="object:static-corpse:dead-civilian-static-3:1" value="248,108,-100"/>
+  <property name="spawn:9" value="@11,12"/>
+  <property name="spawn:8" value="@9,12"/>
+  <property name="spawn:7" value="@10,13"/>
+  <property name="spawn:5" value="@10,11"/>
+  <property name="object:road-sign:road-sign07:1" value="82,272,-660"/>
+ </properties>
+ <tileset name="terrains" firstgid="1" tilewidth="64" tileheight="64">
+  <image source="../tilesets/terrains.png"/>
+ </tileset>
+ <tileset name="fences" firstgid="211" tilewidth="64" tileheight="64">
+  <image source="../tilesets/fences.png"/>
+ </tileset>
+ <tileset name="objects" firstgid="331" tilewidth="64" tileheight="64">
+  <image source="../tilesets/objects.png"/>
+ </tileset>
+ <tileset name="buildings" firstgid="421" tilewidth="64" tileheight="64">
+  <image source="../tilesets/houses.png"/>
+ </tileset>
+ <tileset name="destroyed buildings" firstgid="601" tilewidth="64" tileheight="64">
+  <image source="../tilesets/destroyed_houses.png"/>
+ </tileset>
+ <tileset name="destruction" firstgid="701" tilewidth="64" tileheight="64">
+  <image source="../tilesets/destruction.png"/>
+ </tileset>
+ <tileset name="trees" firstgid="801" tilewidth="64" tileheight="64">
+  <image source="../tilesets/trees.png"/>
+ </tileset>
+ <tileset name="animation" firstgid="921" tilewidth="64" tileheight="64">
+  <image source="../tilesets/animated.png"/>
+ </tileset>
+ <layer name="zerolayer" width="22" height="25">
+  <properties>
+   <property name="z" value="-1000"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAWjYBSMglEwCkbBKBgcAADB2841mAgAAA==
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="water" width="22" height="25">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAWUgnooHirm0tJsWrp5FCAALeOO2maPpolRQEswlMqx0bxAHAAAHHxjspgIAAA=
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="waste" width="22" height="25">
+  <properties>
+   <property name="z" value="-800"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAALNjYGCwB2K7UZps2m6ImTvU3T2SaHsqmoMeR+his4F4DoXmY5NfCsTLyDAXl9vR0xkhddjCk1hzaZEvhpq5I7F8gOUFapsLywsD7b/BTgMAOzMdYZgIAAA=
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="Layer 7" width="22" height="25">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAWjYBSMglEwCkbBKBgcAADB2841mAgAAA==
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="Sand" width="22" height="25">
+  <properties>
+   <property name="z" value="-700"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAH1VMU4DMRDcIAQ/CAUFEj1SoOE4aO6SLoRv8AgeAs1FSkAiz8SWPMp4GMfS6uzzejye3bXHiBiT9VG3x2TLMveb7EBjfNHn8ZRsS3MrwrwrOLxuKbitPZgDxouCu072WvbldaNgTOSH/kb4jsIZWjg8+Pfk15t18PtOdim8lTOfv4U7GC4aQ46f4q8Ih8+6NhyU92B8OE8WZe/c7+isDlfzy+WF88H4Keq4t/B5Lsd9E7Xubk/osY1aOxhwkENvpLurC/RPxYdjrm2IY21xHjNf+Om5JuKXW67Druh3IG0538Ab/qy949rywd6Yx78u6pjzOs1JV9ucw5z/Lu6an9w4DvABN+bveDI+agT2Y/x5DfizTvNkV1HfR+6udXnF92QXPkaac+5+0LyB9qor+M+ijrvyO3VPqfbgfxb1e5PtoxjjZX7XxI9z4j7ZQ0MjPsd7MZd/qAPwvUl2W/qM+xnH2H0ZXfnNuiC99J2ZNXTC3vP4f29pjLTWM+Ze1um+fFbFQIyQV8/FXsp/fpN3yc4FV+vT/Xdx+QOPfDXImAgAAA==
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="Sand 2" width="22" height="25">
+  <properties>
+   <property name="z" value="-650"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAJVVSW7DMAzkhwT4lti3LLeoeUPbfzlX55k1UQ48ZUjGHUCQLInDVbRIjQOt53U83Pk1kGlvOBUnWk+BnrvNfR0f9s3w38DN7j/MtpM774VsBfiudi7reNL+ZOtDIKcYbFa50Z3dTc7beSVefwYsxB1B5TQeXf7GETnL7AU3r9lulbu80VvhSHyjbH6o3LngVl98/SmiehuNk3MF9EAGcfL8zfZgMzgH2WLKiGI6BzaI25uDc0YU06yOYYNyVjWCHLTEvswGcE7F3Uyft8XrVs6op+DuXj3enyW6KL8+cc4qHVmOEGfUCPQr96eNClk9MSfPz528/wH629c6vm2v6i1Ak62OuF/zO9pTW5CHj5l9N9obTFeUs1le32aEqD9kUN14c1wLmd8ePpcerbAH/amRPN/ric69b7v6F8DXI42IM+o11b8gq2+dfwDQI7NjmAgAAA==
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="Layer 7" width="22" height="25">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgIB2EkaGHGJBAI3MTgTgOiOOBOIJGdtAqTIZaWMfSyNzhDqxoZO5yGpk73IAuEBuQqRefPnMG1LidC8TzyLQHGTgCsQsSHxTPK6hgrjcQ+1HBnFEwCmCAnDQPAJ8uh5uYCAAA
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="rocks" width="22" height="25">
+  <properties>
+   <property name="pierceable" value="true"/>
+   <property name="impassability" value="100"/>
+   <property name="z" value="200"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgQID9QHwQiA8xUBecBOLTQHyGyuaCwGogXkcDc0FuJte9tHLTViDeQUBNNyMDQw8jaeaC4n0DEK8hz1k4ASgMT0HxUAO0iD8QAMVfLYnxQwygdp6FAVrk2VEAAd00SAe47CG1TKA1GMgykhwAKyOp7WZCdSM54URMfCOX+dT0E8g/O4F4GwP2eCDWPwD3JbkemAgAAA==
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="Layer 5" width="22" height="25">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGFhQx0hb9aNgYIAFEFsCscFAO2QIAXLT9mieGLlgNO5HwUADWqRBAFcjdfGYCAAA
+  </data>
+  <tileproperties/>
+ </layer>
+</map>
