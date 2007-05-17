@@ -61,9 +61,9 @@
   </data>
   <tileproperties/>
  </layer>
- <layer name="Layer 7" width="22" height="25">
+ <layer name="details" width="22" height="25">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgGAWjYBSMglEwCkbBKBgcAADB2841mAgAAA==
+   H4sIAAAAAAAAAGNgGHkgfwDNzQDiTCg7i4rmFgFxMZHmkWIuOYBW5o4C8kEtEjuVRL0g9WlUdAsMgNJJAQ3MxQcyCSsZEEBq3h01dxQMZwAAilSzV5gIAAA=
   </data>
   <tileproperties/>
  </layer>
@@ -73,6 +73,12 @@
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAH1VMU4DMRDcIAQ/CAUFEj1SoOE4aO6SLoRv8AgeAs1FSkAiz8SWPMp4GMfS6uzzejye3bXHiBiT9VG3x2TLMveb7EBjfNHn8ZRsS3MrwrwrOLxuKbitPZgDxouCu072WvbldaNgTOSH/kb4jsIZWjg8+Pfk15t18PtOdim8lTOfv4U7GC4aQ46f4q8Ih8+6NhyU92B8OE8WZe/c7+isDlfzy+WF88H4Keq4t/B5Lsd9E7Xubk/osY1aOxhwkENvpLurC/RPxYdjrm2IY21xHjNf+Om5JuKXW67Druh3IG0538Ab/qy949rywd6Yx78u6pjzOs1JV9ucw5z/Lu6an9w4DvABN+bveDI+agT2Y/x5DfizTvNkV1HfR+6udXnF92QXPkaac+5+0LyB9qor+M+ijrvyO3VPqfbgfxb1e5PtoxjjZX7XxI9z4j7ZQ0MjPsd7MZd/qAPwvUl2W/qM+xnH2H0ZXfnNuiC99J2ZNXTC3vP4f29pjLTWM+Ze1um+fFbFQIyQV8/FXsp/fpN3yc4FV+vT/Xdx+QOPfDXImAgAAA==
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="details 2" width="22" height="25">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGBhQzIjEBuJ8WtgxxMylBcgC4iogrgbiGiCuHVjnjIJRMApGAdkgl5GwmlEw9AEAjsnpPJgIAAA=
   </data>
   <tileproperties/>
  </layer>
@@ -91,11 +97,17 @@
   </data>
   <tileproperties/>
  </layer>
+ <layer name="tracks" width="22" height="25">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAALVViwrDIAzMN259DMZqtv//iCpUlmannmUeBGk05yVGKyJylzO2aCHaRzg8o02Hzcb/IuN7MYo35XEbyJ1qM5mRwTJIzyheLfhnOeffW2dWr+/lFhT4VuBje247DN0dtFevXgRUm5JelFsJCnxeb+Ir5VsCoxft3UKKCfI9gwBGq7PVUyuIyaj1Q4u3Nl/rB23wvqM9CnP5/UH3jrlbfk2qja0L0s3wJs2hEnOV10PdNzo/v4aB15L/hfatW+T37bcjo5fZm8GVs2agf1qTsQNoUW2CmAgAAA==
+  </data>
+  <tileproperties/>
+ </layer>
  <layer name="rocks" width="22" height="25">
   <properties>
    <property name="pierceable" value="true"/>
-   <property name="impassability" value="100"/>
    <property name="z" value="200"/>
+   <property name="impassability" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgQID9QHwQiA8xUBecBOLTQHyGyuaCwGogXkcDc0FuJte9tHLTViDeQUBNNyMDQw8jaeaC4n0DEK8hz1k4ASgMT0HxUAO0iD8QAMVfLYnxQwygdp6FAVrk2VEAAd00SAe47CG1TKA1GMgykhwAKyOp7WZCdSM54URMfCOX+dT0E8g/O4F4GwP2eCDWPwD3JbkemAgAAA==
@@ -105,6 +117,12 @@
  <layer name="Layer 5" width="22" height="25">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGFhQx0hb9aNgYIAFEFsCscFAO2QIAXLT9mieGLlgNO5HwUADWqRBAFcjdfGYCAAA
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="trees" width="22" height="25">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAWjYBSMglEwCkbBKBgcAADB2841mAgAAA==
   </data>
   <tileproperties/>
  </layer>
