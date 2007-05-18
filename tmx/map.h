@@ -113,6 +113,8 @@ public:
 
 	void setSoloAwareMode(const bool value = true);
 	
+	void generateXML(std::string &result);
+	
 private:
 	void addTiles(sdlx::Surface *image, const int first_gid);
 

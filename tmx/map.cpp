@@ -1181,3 +1181,17 @@ const IMap::TileDescriptor & IMap::getTile(const size_t idx) const {
 		throw_ex(("getTile(%u) is out of range 0-%u", (unsigned)idx, (unsigned)_tiles.size()));
 	return _tiles[idx];
 }
+
+void IMap::generateXML(std::string &result) {
+	result = mrt::formatString(
+		"<?xml version=\"1.0\"?>\n"
+		"<map version=\"0.99b\" orientation=\"orthogonal\" width=\"%d\" height=\"%d\" tilewidth=\"%d\" tileheight=\"%d\">\n", 
+		_w, _h, _tw, _th
+		);
+	result += "\t<properties>\n";
+	for(PropertyMap::const_iterator i = properties.begin(); i != properties.end(); ++i) {
+		result += mrt::formatString("\t\t<property name=\"%s\" value=\"%s\"/>\n", i->first.c_str(), i->second.c_str());
+	}
+	result += "\t</properties>\n";
+	result += "</map>\n";
+}
