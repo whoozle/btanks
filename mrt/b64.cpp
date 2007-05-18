@@ -1,6 +1,7 @@
 #include "b64.h"
 #include "chunk.h"
 #include <assert.h>
+#include "mrt/exception.h"
 
 /* M-runtime for c++
  * Copyright (C) 2005-2007 Vladimir Menshakov
@@ -22,127 +23,90 @@
 
 using namespace mrt;
 
-//code here derived from base64.sf.net
-/*
-** Translation Table as described in RFC1113
-*/
-static const char cb64[]="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-
-/*
-** Translation Table to decode (created by author) (base64.sf.net)
-*/
-static const char cd64[]="|$$$}rstuvwxyz{$$$$$$$>?@ABCDEFGHIJKLMNOPQRSTUVW$$$$$$XYZ[\\]^_`abcdefghijklmnopq";
-
-/*
-** decodeblock
-**
-** decode 4 '6-bit' characters into 3 8-bit binary bytes
-*/
-static inline void decodeblock( unsigned char in[4], unsigned char out[3] )
-{   
-    out[ 0 ] = (unsigned char ) (in[0] << 2 | in[1] >> 4);
-    out[ 1 ] = (unsigned char ) (in[1] << 4 | in[2] >> 2);
-    out[ 2 ] = (unsigned char ) (((in[2] << 6) & 0xc0) | in[3]);
-}
-
-/*
-** decode
-**
-** decode a base64 encoded stream discarding padding, line breaks and noise
-*/
-void Base64::decode(mrt::Chunk &dst, const std::string &src) {
-    unsigned char in[4], out[3], v;
-    int i, len;
-	
-	std::string::const_iterator fi = src.begin();
-	dst.setSize(src.size());
-	unsigned char *dst_p = static_cast<unsigned char *>(dst.getPtr());
-	assert(dst_p != NULL);
-	
-	size_t dst_l = 0;
-
-    while( fi != src.end() ) {
-        for( len = 0, i = 0; i < 4 && fi != src.end(); i++ ) {
-            v = 0;
-            while( fi != src.end() && v == 0 ) {
-                v = *fi++;
-                v = (unsigned char) ((v < 43 || v > 122) ? 0 : cd64[ v - 43 ]);
-                if( v ) {
-                    v = (unsigned char) ((v == '$') ? 0 : v - 61);
-                }
-            }
-            if( fi != src.end() ) {
-                len++;
-                if( v ) {
-                    in[ i ] = (unsigned char) (v - 1);
-                }
-            }
-            else {
-                in[i] = 0;
-            }
-        }
-        if( len ) {
-            decodeblock( in, out );
-            for( i = 0; i < len - 1; i++ ) {
-				*dst_p++ = out[i];
-				++dst_l;
-            }
-        }
-    }
-	dst.setSize(dst_l);
-}
-
-
-/*
-** encodeblock
-**
-** encode 3 8-bit binary bytes as 4 '6-bit' characters
-*/
-
-static inline void encodeblock( unsigned char in[3], unsigned char out[4], int len )
-{
-    out[0] = cb64[ in[0] >> 2 ];
-    out[1] = cb64[ ((in[0] & 0x03) << 4) | ((in[1] & 0xf0) >> 4) ];
-    out[2] = (unsigned char) (len > 1 ? cb64[ ((in[1] & 0x0f) << 2) | ((in[2] & 0xc0) >> 6) ] : '=');
-    out[3] = (unsigned char) (len > 2 ? cb64[ in[2] & 0x3f ] : '=');
-}
-
-/*
-** encode
-**
-** base64 encode a stream adding padding and line breaks as per spec.
-*/
-
-void Base64::encode(std::string &dst, const mrt::Chunk &src, int linesize ) {
-    unsigned char in[3], out[4];
-    int i, len, blocksout = 0;
-
-	unsigned char *src_ptr = (unsigned char *)src.getPtr();
-	size_t src_i = 0, src_size = src.getSize();
-	
+void Base64::encode(std::string &dst, const mrt::Chunk &src, int linesize) {
+	const unsigned char * p_src = (const unsigned char *)src.getPtr();
+	size_t size = src.getSize();
 	dst.clear();
-	
-    while( src_i < src_size) {
-        len = 0;
-        for( i = 0; i < 3; i++ ) {
-            if( src_i < src_size ) {
-	            in[i] = src_ptr[src_i++];
-                ++len;
-            } else {
-                in[i] = 0;
-            }
-        }
-        if( len ) {
-            encodeblock( in, out, len );
-            dst += std::string((const char *)out, 4);
-            blocksout++;
-        }
-        if(linesize != 0 && blocksout >= (linesize/4)) {
-            if( blocksout ) {
-                dst += "\r\n";
-            }
-            blocksout = 0;
-        }
-    }
+	int lost = 0;
+	while(size) {
+		//process next 3 bytes.	
+		static const char *zoo = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+		unsigned int src24 = 0;
+		for(int i = 0; i < 3; ++i) {
+			src24 <<= 8;
+			if (size) {
+				src24 |= *p_src;
+				--size;
+			} else ++lost;
+		}
+		assert(lost < 3);
+		//LOG_DEBUG(("encode %08x [%d]", src24, lost));
+		dst += 				   zoo[(src24 & 0xfc0000) >> 18];
+		dst += 				   zoo[(src24 & 0x03f000) >> 12];
+		dst += lost > 1 ? '=': zoo[(src24 & 0x000fc0) >> 6 ];
+		dst += lost > 0 ? '=': zoo[(src24 & 0x00003f)];
+	}
 }
 
+void Base64::decode(mrt::Chunk &dst, const std::string &src) {
+	dst.setSize(3 * src.size() / 4);
+
+	unsigned char * p_dst = (unsigned char *)dst.getPtr();
+	unsigned int p_idx = 0;
+
+	size_t size = src.size(), dst_size = dst.getSize();
+
+	unsigned int dst24 = 0;
+	int got = 0, padded = 0;
+	for(size_t i = 0; i < size; ++i) {
+		if (got < 4) {
+			//decode next char
+			char c = src[i];
+			//ABCDE FGHIJ KLMNO PQRST UVWXY Zabcd efghi jklmn opqrs tuvwx yz012 34567 89+/
+			if (c >= 'A' && c <= 'Z') {
+				dst24 = (dst24 << 6) | (c - 'A');
+				++got;
+			} else if (c >= 'a' && c <= 'z') {
+				dst24 = (dst24 << 6) | (c - 'a' + 26);
+				++got;
+			} else if (c >= '0' && c <= '9') {
+				dst24 = (dst24 << 6) | (c - '0' + 52);
+				++got;
+			} else if (c == '+') {
+				dst24 = (dst24 << 6) | 62;
+				++got;
+			} else if (c == '/') {
+				dst24 = (dst24 << 6) | 63;
+				++got;
+			} else if (c == '=') {
+				dst24 <<= 6;
+				++got;
+				++padded;
+			}
+			if (got < 4) 	
+				continue;
+		}
+		//LOG_DEBUG(("storing %08x", dst24));
+		if (padded > 2) 
+			throw_ex(("invalid padding used (%d)", padded));
+		
+		assert(p_idx < dst_size);
+		p_dst[p_idx++] = dst24 >> 16;
+		
+		if (padded < 2) {
+			assert(p_idx < dst_size);
+			p_dst[p_idx++] = (dst24 >> 8) & 0xff;
+		}
+		
+		if (padded < 1) {
+			assert(p_idx < dst_size);
+			p_dst[p_idx++] = dst24 & 0xff;
+		}
+		dst24 = 0;
+		got = 0;
+		
+		if (padded) 
+			break;
+	}
+	dst.setSize(p_idx);
+}

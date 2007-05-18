@@ -29,6 +29,7 @@ class MRTAPI Base64 {
 public:
 	static void encode(std::string &dst, const mrt::Chunk &src, int linesize = 0);
 	static void decode(mrt::Chunk &dst, const std::string &src);
+private: 
 };
 
 }
