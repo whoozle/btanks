@@ -47,6 +47,9 @@ public:
 	int impassability, hp;
 	bool pierceable;
 
+	typedef std::map<const std::string, std::string> PropertyMap;
+	PropertyMap properties; //doesnt used at runtime.
+
 	Layer();
 	virtual void init(const int w, const int h, const mrt::Chunk & data);
 	void setAnimation(const int frame_size, const int frames, const float speed);
@@ -71,6 +74,8 @@ public:
 
 	virtual void serialize(mrt::Serializator &s) const;
 	virtual void deserialize(const mrt::Serializator &s);
+
+	void generateXML(std::string &result) const;
 
 protected: 
 	int _w, _h;

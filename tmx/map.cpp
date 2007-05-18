@@ -659,7 +659,7 @@ void IMap::end(const std::string &name) {
 		
 		bool pierceable = false;
 		
-		int hp = atoi(_properties["hp"].c_str());
+		int hp = (_properties.find("hp") != _properties.end())?atoi(_properties["hp"].c_str()):0;
 		
 		PropertyMap::const_iterator pi = _properties.find("pierceable");
 		if (pi != _properties.end()) {
@@ -701,6 +701,7 @@ void IMap::end(const std::string &name) {
 			LOG_DEBUG(("visible = %d", visible));
 			if (visible == 0)
 				layer->visible = false;
+			layer->properties = _properties;
 		}
 		
 		layer->name = e.attrs["name"];
@@ -1182,16 +1183,24 @@ const IMap::TileDescriptor & IMap::getTile(const size_t idx) const {
 	return _tiles[idx];
 }
 
-void IMap::generateXML(std::string &result) {
+void IMap::generateXML(std::string &result) const {
 	result = mrt::formatString(
 		"<?xml version=\"1.0\"?>\n"
 		"<map version=\"0.99b\" orientation=\"orthogonal\" width=\"%d\" height=\"%d\" tilewidth=\"%d\" tileheight=\"%d\">\n", 
 		_w, _h, _tw, _th
 		);
-	result += "\t<properties>\n";
-	for(PropertyMap::const_iterator i = properties.begin(); i != properties.end(); ++i) {
-		result += mrt::formatString("\t\t<property name=\"%s\" value=\"%s\"/>\n", i->first.c_str(), i->second.c_str());
+	if (!properties.empty()) {
+		result += "\t<properties>\n";
+		for(PropertyMap::const_iterator i = properties.begin(); i != properties.end(); ++i) {
+			result += mrt::formatString("\t\t<property name=\"%s\" value=\"%s\"/>\n", i->first.c_str(), i->second.c_str());
+		}
 	}
 	result += "\t</properties>\n";
+	
+	for(LayerMap::const_iterator i = _layers.begin(); i != _layers.end(); ++i) {
+		std::string layer;
+		i->second->generateXML(layer);
+		result += layer;
+	}
 	result += "</map>\n";
 }
