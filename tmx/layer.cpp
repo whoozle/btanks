@@ -280,7 +280,7 @@ void Layer::deserialize(const mrt::Serializator &s) {
 Layer::~Layer() { }
 
 void Layer::generateXML(std::string &result) const {
-	result = mrt::formatString("\t<layer name=\"tracks\" width=\"%d\" height=\"%d\"%s>\n", _w, _h, visible?"":" visible=\"0\"");
+	result = mrt::formatString("\t<layer name=\"%s\" width=\"%d\" height=\"%d\"%s>\n", name.c_str(), _w, _h, visible?"":" visible=\"0\"");
 
 	if (!properties.empty()) {
 		result += "\t\t<properties>\n";
