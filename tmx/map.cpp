@@ -1197,6 +1197,14 @@ void IMap::generateXML(std::string &result) const {
 	}
 	result += "\t</properties>\n";
 	
+	size_t n = _tilesets.size();
+	for(size_t i = 0; i < n; ++i) {
+		const TilesetList::value_type &ts = _tilesets[i];
+		result += mrt::formatString("\t<tileset name=\"Untitled\" firstgid=\"%d\" tilewidth=\"%d\" tileheight=\"%d\">\n", ts.second, _tw, _th);
+		result += mrt::formatString("\t\t<image source=\"%s\"/>\n", ts.first.c_str());
+		result += "\t</tileset>\n";	
+	}
+	
 	for(LayerMap::const_iterator i = _layers.begin(); i != _layers.end(); ++i) {
 		std::string layer;
 		i->second->generateXML(layer);
