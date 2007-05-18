@@ -695,6 +695,14 @@ void IMap::end(const std::string &name) {
 			throw_ex(("layer with z %d already exists", z));
 		if(layer == NULL)
 			layer = new Layer;
+			
+		if (_solo_aware) {
+			int visible = (!e.attrs["visible"].empty())?atoi(e.attrs["visible"].c_str()):-1;
+			LOG_DEBUG(("visible = %d", visible));
+			if (visible == 0)
+				layer->visible = false;
+		}
+		
 		layer->name = e.attrs["name"];
 
 		const std::string a_frame_size = _properties["animation-frame-size"];
