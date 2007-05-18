@@ -21,6 +21,7 @@
 
 
 #include <algorithm>
+#include <functional>
 
 template <class T> struct delete_ptr : public std::unary_function<T, void> {
 	void operator()(const T &x) {
@@ -40,6 +41,32 @@ template <typename FuncPtr> union SharedPointer {
 	FuncPtr call;
 	void *ptr;
 };
+
+
+template <typename A, typename B, typename C> 
+struct ternary {
+	A first;
+	B second;
+	C third;
+	
+	ternary() : first(), second(), third() {}
+	ternary(const A & a, const B &b, const C &c) : first(a), second(b), third(c) {}
+};
+
+template <typename A, typename B, typename C>
+inline bool operator<(const ternary<A, B, C>& a, const ternary<A, B, C> &b) { 
+	if (a.first < b.first)
+		return true;
+	if (b.first < a.first)
+		return false;
+	if (a.second < b.second)
+		return true;
+	if (b.second < a.second)
+		return false;
+	if (a.third < b.third)
+		return true;
+	return false;
+}
 
 
 #endif
