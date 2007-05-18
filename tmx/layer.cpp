@@ -30,6 +30,8 @@
 #include "resource_manager.h"
 #include "animation_model.h"
 #include "mrt/random.h"
+#include "mrt/gzip.h"
+#include "mrt/b64.h"
 
 void ChainedDestructableLayer::onDeath(const int idx) {
 	DestructableLayer::onDeath(idx);
@@ -287,6 +289,16 @@ void Layer::generateXML(std::string &result) const {
 		}
 		result += "\t\t</properties>\n";
 	}
+	
+	result += "\t\t<data encoding=\"base64\" compression=\"gzip\">\n\t\t\t";
+	{
+		mrt::Chunk zipped_data;
+		mrt::ZStream::compress(zipped_data, _data);
+		std::string base64; 
+		mrt::Base64::encode(base64, zipped_data);
+		result += base64;
+	}
+	result += "\n\t\t</data>\n";
 
 	result += "\t</layer>\n";
 }
