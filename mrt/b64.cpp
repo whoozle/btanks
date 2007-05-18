@@ -35,7 +35,7 @@ void Base64::encode(std::string &dst, const mrt::Chunk &src, int linesize) {
 		for(int i = 0; i < 3; ++i) {
 			src24 <<= 8;
 			if (size) {
-				src24 |= *p_src;
+				src24 |= *p_src++;
 				--size;
 			} else ++lost;
 		}
