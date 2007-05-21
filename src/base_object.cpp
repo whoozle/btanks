@@ -287,7 +287,8 @@ const bool BaseObject::hasSameOwner(const BaseObject *other, const bool skip_coo
 	while(i != _owner_set.end() && j != other->_owner_set.end()) {
 		const int l = *i, r = *j;
 		if (l == r) {
-			if (skip_cooperative && l == OWNER_COOPERATIVE) {
+			if (skip_cooperative && l == OWNER_COOPERATIVE && 
+				!piercing && !other->piercing) {
 				++i; ++j;
 				continue;
 			}
