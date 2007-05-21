@@ -423,4 +423,7 @@ void Surface::loadFromResource(const char * lpResName) {
 #endif
 }
 
-
+void Surface::setColorKey(Uint32 key, Uint32 flag) {
+	if (SDL_SetColorKey(surface, flag, key) != 0)
+		throw_sdl(("SDL_SetColorKey"));
+}
