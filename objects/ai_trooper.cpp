@@ -151,6 +151,7 @@ public:
 				_targets.insert("missile");
 	
 			_targets.insert("player");
+			_targets.insert("monster");
 			_targets.insert("trooper");
 			_targets.insert("kamikaze");
 			_targets.insert("boat");		
