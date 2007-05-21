@@ -44,6 +44,7 @@
 #include <math.h>
 #include <assert.h>
 #include <limits>
+#include "special_owners.h"
 
 IMPLEMENT_SINGLETON(World, IWorld);
 
@@ -121,6 +122,10 @@ void IWorld::addObject(Object *o, const v2<float> &pos, const int id) {
 	o->_position = pos;
 	
 	_objects[o->_id] = o;
+	if (o->_variants.has("ally")) {
+		o->removeOwner(OWNER_MAP);
+		o->prependOwner(OWNER_COOPERATIVE);
+	}
 
 	o->onSpawn();
 	o->need_sync = true;
