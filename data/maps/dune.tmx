@@ -7,7 +7,7 @@
   <property name="config:objects.thrower.targeting-range(alerted)" value="int:700"/>
   <property name="object:nuke-missiles-item:nuke-missiles-item:1" value="@21,4"/>
   <property name="object:stun-missiles-item:stun-missiles-item:2" value="577,975"/>
-  <property name="zone:timer-win:defend-base:300:1" value="@7,9:@6,6"/>
+  <property name="zone:timer-win:defend-base:5:1" value="@7,9:@6,6"/>
   <property name="object:dispersion-bullets-item:dispersion-bullets-item:4" value="1204,22"/>
   <property name="object:dispersion-bullets-item:dispersion-bullets-item:3" value="73,708"/>
   <property name="config:objects.machinegunner.targeting-range(alerted)" value="int:700"/>
