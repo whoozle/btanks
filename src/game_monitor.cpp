@@ -26,6 +26,7 @@
 #include "i18n.h"
 #include "sdlx/font.h"
 #include "sdlx/surface.h"
+#include "special_owners.h"
 
 IMPLEMENT_SINGLETON(GameMonitor, IGameMonitor);
 
@@ -85,7 +86,7 @@ void IGameMonitor::checkItems(const float dt) {
 			Object *o = ResourceManager->createObject(item.classname, item.animation);
 			if (item.z) 
 				o->setZ(item.z, true);
-			o->addOwner(-42);
+			o->addOwner(OWNER_MAP);
 			
 			World->addObject(o, item.position.convert<float>());
 			item.id = o->getID();
@@ -103,7 +104,7 @@ void IGameMonitor::add(const Item &item_) {
 	if (item.z)
 		o->setZ(item.z, true);
 	
-	o->addOwner(-42); //fake owner ;)
+	o->addOwner(OWNER_MAP);
 	World->addObject(o, v2<float>(item.position.x, item.position.y));
 	
 	if (item.destroy_for_victory || !item.save_for_victory.empty()) {

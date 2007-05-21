@@ -65,6 +65,7 @@
 #include "menu/menu.h"
 #include "i18n.h"
 #include <math.h>
+#include "special_owners.h"
 
 IMPLEMENT_SINGLETON(Game, IGame);
 
@@ -922,7 +923,7 @@ try {
 				pos *= ts;
 			}
 			Object *o = ResourceManager->createObject(par[0], par[1]);
-			o->addOwner(-42);
+			o->addOwner(OWNER_MAP);
 			World->addObject(o, pos.convert<float>());
 			return "ok";
 	} else if (cmd == "kill") {

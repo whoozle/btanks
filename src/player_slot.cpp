@@ -21,6 +21,7 @@
 #include "controls/control_method.h"
 #include "menu/tooltip.h"
 #include "tmx/map.h"
+#include "special_owners.h"
 
 PlayerSlot::PlayerSlot() : 
 id(-1), control_method(NULL), need_sync(false), dont_interpolate(false), remote(false), trip_time(10), visible(false), 
@@ -172,6 +173,7 @@ void PlayerSlot::spawnPlayer(const std::string &classname, const std::string &an
 	if (type == "deathmatch")
 		return;
 	else if (type == "cooperative") {
+		/*
 		LOG_DEBUG(("prepending cooperative owners."));
 		int i, n = PlayerManager->getSlotsCount();
 		for(i = 0; i < n; ++i) {
@@ -184,6 +186,10 @@ void PlayerSlot::spawnPlayer(const std::string &classname, const std::string &an
 			o1->prependOwner(other_slot.id);
 			o2->prependOwner(id);
 		}
+		*/
+		Object *o = getObject();
+		assert(o != NULL);
+		o->prependOwner(OWNER_COOPERATIVE);
 	} else throw_ex(("unknown multiplayer type '%s' used", type.c_str()));
 }
 
