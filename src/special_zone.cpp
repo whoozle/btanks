@@ -56,9 +56,11 @@ const bool SpecialZone::final() const {
 void SpecialZone::onTimer(const int slot_id, const bool win) {
 	float duration = atof(subname.c_str());
 	LOG_DEBUG(("activating timer %s for %g seconds", name.c_str(), duration));
+	PlayerSlot &slot = PlayerManager->getSlot(slot_id);
+	if (Config->has("timer." + name))
+		Config->get("timer." + name, slot.spawn_limit, 1);
+	
 	if (win) {
-		PlayerSlot &slot = PlayerManager->getSlot(slot_id);
-		slot.spawn_limit = 1;
 		GameMonitor->setTimer("messages", "mission-accomplished", duration);
 	} else 
 		GameMonitor->setTimer("messages", "game-over", duration);
