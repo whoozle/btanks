@@ -63,6 +63,9 @@
 			<string id="start">Enjoy this tasty zombies, 
 			fry it with your missiles, or let your troppers do it for you!</string>
 		</area>
+		<area id="dune">
+			<string id="defend-base">DEFEND YOUR BASE!</string>
+		</area>
 	</area>
 	<area id="messages">
 		<string id="restart-game">Restart game to see changes.</string>
@@ -72,6 +75,7 @@
 		<string id="checkpoint-reached">CHECKPOINT REACHED</string>
 		<string id="destroy-spaceport">DESTROY SPACEPORT</string>
 		<string id="combo">COMBO !</string>
+		<string id="base-destroyed">YOUR BASE WAS DESTROYED. GAME OVER.</string>
 	</area>
 	<area id="errors">
 		<string id="connection-failed">Connection failed</string>
