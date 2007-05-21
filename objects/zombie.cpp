@@ -140,7 +140,7 @@ void Zombie::onSpawn() {
 
 void Zombie::emit(const std::string &event, Object * emitter) {
 	if (event == "death") {
-		spawn("corpse", "dead-zombie", v2<float>::empty, v2<float>::empty);
+		spawn("corpse(zombie-death)", "dead-zombie", v2<float>::empty, v2<float>::empty);
 	} else if (emitter != NULL && event == "collision") {
 		if (getState() != "punch" && emitter->registered_name != "zombie") {
 			_state.fire = true;

@@ -56,6 +56,8 @@ void Corpse::onSpawn() {
 	//LOG_DEBUG(("single-pose: play('%s', %s)", _pose.c_str(), _repeat?"true":"false"));
 	if (_variants.has("human-death")) {
 		playRandomSound("human-death", false);
+	} else if (_variants.has("zombie-death")) {
+		playRandomSound("zombie-death", false);
 	}
 	
 	if (_fire_cycles > 0) {
