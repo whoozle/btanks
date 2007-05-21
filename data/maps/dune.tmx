@@ -22,6 +22,7 @@
   <property name="object:zombie:zombie:7" value="792,11"/>
   <property name="object:zombie:zombie:6" value="1261,152"/>
   <property name="object:zombie:zombie:4" value="47,905"/>
+  <property name="config:map.thrower.respawn-interval" value="int:1"/>
   <property name="object:zombie:zombie:2" value="102,1441"/>
   <property name="object:watchtower-with-machinegunner(ally):watchtower:9" value="1056,776,250"/>
   <property name="object:zombie:zombie:1" value="198,1513"/>
@@ -68,6 +69,8 @@
   <property name="object:machinegunner-item:machinegunner-item:1" value="@0,21"/>
   <property name="object:static-mortar:yellow-mortar:2" value="1288,1371"/>
   <property name="config:multiplayer.game-type" value="string:cooperative"/>
+  <property name="config:map.zombie.respawn-interval" value="int:1"/>
+  <property name="config:map.machinegunner.respawn-interval" value="int:1"/>
   <property name="config:objects.thrower.targeting-range(stable)" value="int:600"/>
   <property name="object:barrack-with-machinegunners(ally):trooper-hut:save-for-victory:base-destroyed:((" value="608,694,150"/>
   <property name="config:objects.tank.dispersion.duration" value="float:10"/>
