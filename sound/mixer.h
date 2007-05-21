@@ -101,6 +101,8 @@ private:
 	
 	float _volume_fx, _volume_music;
 	
+	bool _debug;
+	
 	IMixer(const IMixer &);
 	const IMixer& operator=(const IMixer &);
 };
