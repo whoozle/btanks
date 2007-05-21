@@ -159,6 +159,16 @@ skip_left_toggle:
 
 			_left_fire = ! _left_fire;
 			play_fire = true;
+		} else if (mod_type.substr(0, 6) == "mines:") {
+			std::vector<std::string> res;
+			mrt::split(res, mod_type, ":", 2);
+			res[0].resize(res[0].size() - 1);
+			std::string name = res[1] + "-" + res[0];
+			if (mod->getCount() > 0) {
+				spawn(name, name, _direction*(size.length()/-2), v2<float>::empty);
+				mod->decreaseCount();
+			}
+			
 		} else if (!mod_type.empty()) {
 			int n;
 			Config->get("objects.shilka.units-limit", n, 10); //fixme: add type restrictions
@@ -199,6 +209,14 @@ const bool Shilka::take(const BaseObject *obj, const std::string &type) {
 			mod->setCount(n);
 			return true;
 		}
+	} else if (obj->classname == "mines") {
+		removeEffect("dirt");
+		FakeMod *mod = getMod("mod");
+		mod->setType(obj->classname + ":" + type);
+		int n;
+		Config->get("objects.shilka." + type + "-" + obj->classname + "-capacity", n, 7);
+		mod->setCount(n);
+		return true;		
 	}
 	return BaseObject::take(obj, type);
 }
