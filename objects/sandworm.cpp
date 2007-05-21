@@ -26,7 +26,7 @@
 
 class SandWorm : public Object {
 public: 
-	SandWorm(): Object("monster"), _reaction_time(true), _head_id(0), _fire(false) {
+	SandWorm(): Object("monster"), _reaction_time(true), _fire(false), _head_id(0)  {
 		setDirectionsNumber(1);
 	}
 	virtual void onSpawn() {
@@ -77,7 +77,8 @@ public:
 				//LOG_DEBUG(("%u objects around", (unsigned) objects.size()));
 				bool snatch = false;
 				for(std::set<const Object *>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
-					if ((*i)->speed != 0) {
+					const Object *o = *i;
+					if (o->speed != 0 && !o->piercing) {
 						snatch = true;
 						break;
 					}
