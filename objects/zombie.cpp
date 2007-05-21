@@ -135,6 +135,8 @@ void Zombie::onSpawn() {
 	_reaction.set(rt);
 	play("hold", true);
 	
+	playSound("zombie", true);
+	
 	disown();
 }
 
