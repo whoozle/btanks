@@ -1,76 +1,82 @@
 <?xml version="1.0"?>
 <map version="0.99b" orientation="orthogonal" width="22" height="25" tilewidth="64" tileheight="64">
  <properties>
-  <property name="object:machinegunner:machinegunner:17" value="1279,703"/>
-  <property name="config:multiplayer.game-type" value="string:cooperative"/>
   <property name="object:road-sign:road-sign10:1" value="902,916,-660"/>
   <property name="object:zombie:zombie:11" value="1189,66"/>
-  <property name="object:machinegunner:machinegunner:13" value="715,1510"/>
   <property name="object:zombie:zombie:10" value="642,1"/>
-  <property name="object:barrack-with-machinegunners(ally):trooper-hut:save-for-victory:base-destroyed:((" value="608,694,150"/>
+  <property name="config:objects.thrower.targeting-range(alerted)" value="int:800"/>
+  <property name="object:gate:gate:1" value="900,908,-651"/>
+  <property name="object:nuke-missiles-item:nuke-missiles-item:1" value="@21,4"/>
+  <property name="object:stun-missiles-item:stun-missiles-item:2" value="577,975"/>
+  <property name="zone:timer-win:defend-base:300:1" value="@7,9:@6,6"/>
+  <property name="object:dispersion-bullets-item:dispersion-bullets-item:4" value="1204,22"/>
+  <property name="object:dispersion-bullets-item:dispersion-bullets-item:3" value="73,708"/>
+  <property name="config:objects.machinegunner.targeting-range(alerted)" value="int:800"/>
+  <property name="spawn:13" value="648,684"/>
+  <property name="spawn:12" value="648,871"/>
+  <property name="spawn:11" value="561,776"/>
+  <property name="spawn:10" value="735,774"/>
+  <property name="object:impassable-static-corpse:dead-red-launcher:3" value="537,1244,-100"/>
+  <property name="object:zombie:zombie:9" value="36,746"/>
+  <property name="object:zombie:zombie:8" value="19,1269"/>
+  <property name="object:zombie:zombie:7" value="792,11"/>
+  <property name="object:zombie:zombie:6" value="1261,152"/>
+  <property name="object:zombie:zombie:4" value="47,905"/>
+  <property name="object:zombie:zombie:2" value="102,1441"/>
   <property name="object:watchtower-with-machinegunner(ally):watchtower:9" value="1056,776,250"/>
+  <property name="object:zombie:zombie:1" value="198,1513"/>
   <property name="object:watchtower-with-machinegunner(ally):watchtower:8" value="991,200,250"/>
-  <property name="object:machinegunner:machinegunner:10" value="44,74"/>
   <property name="object:watchtower-with-machinegunner(ally):watchtower:6" value="755,656,250"/>
+  <property name="object:dumb-missiles-item:dumb-missiles-item:1" value="@4,8"/>
   <property name="object:watchtower-with-machinegunner(ally):watchtower:5" value="468,786,250"/>
   <property name="object:watchtower-with-machinegunner(ally):watchtower:4" value="681,851,250"/>
   <property name="object:watchtower-with-machinegunner(ally):watchtower:3" value="544,580,250"/>
   <property name="object:watchtower-with-machinegunner(ally):watchtower:2" value="801,517,250"/>
+  <property name="object:static-corpse:dead-civilian-static-3:1" value="248,108,-100"/>
+  <property name="object:megaheal:megaheal:1" value="210,116"/>
+  <property name="object:stack:stack:4" value="267,1153"/>
+  <property name="object:smoke-missiles-item:smoke-missiles-item:3" value="735,550"/>
+  <property name="object:stack:stack:3" value="924,1033"/>
+  <property name="object:static-corpse:dead-civilian-static-2:1" value="994,667,-100"/>
+  <property name="object:impassable-static-corpse:dead-red-tank:1" value="1308,16,-100"/>
+  <property name="object:stack:stack:2" value="680,38"/>
+  <property name="object:mines-item:mines-item:2" value="805,862"/>
+  <property name="object:machinegunner:machinegunner:9" value="1214,1534"/>
+  <property name="object:machinegunner:machinegunner:8" value="1293,858"/>
+  <property name="object:machinegunner:machinegunner:7" value="1344,733"/>
+  <property name="object:heal:heal:1" value="1350,1255"/>
+  <property name="object:machinegunner:machinegunner:5" value="1128,1356"/>
+  <property name="object:machinegunner:machinegunner:21" value="1,110"/>
+  <property name="object:machinegunner:machinegunner:20" value="2,2"/>
   <property name="object:thrower-item:thrower-item:4" value="@16,5"/>
   <property name="object:thrower-item:thrower-item:3" value="478,676"/>
-  <property name="object:stack:stack:4" value="267,1153"/>
-  <property name="object:stack:stack:3" value="924,1033"/>
-  <property name="object:mines-item:mines-item:2" value="805,862"/>
-  <property name="object:stack:stack:2" value="680,38"/>
-  <property name="object:nuke-missiles-item:nuke-missiles-item:1" value="@21,4"/>
-  <property name="object:dumb-missiles-item:dumb-missiles-item:1" value="@4,8"/>
-  <property name="object:sandworm:sandworm:1" value="@1,6"/>
-  <property name="object:megaheal:megaheal:1" value="210,116"/>
-  <property name="object:thrower:thrower:5" value="@20,12"/>
-  <property name="object:thrower:thrower:4" value="1011,1540"/>
-  <property name="object:static-corpse:dead-civilian-static-3:1" value="248,108,-100"/>
-  <property name="object:thrower:thrower:3" value="@0,1"/>
-  <property name="object:thrower:thrower:2" value="1327,1485"/>
-  <property name="object:thrower:thrower:1" value="115,6"/>
-  <property name="object:stun-missiles-item:stun-missiles-item:2" value="577,975"/>
-  <property name="object:heal:heal:1" value="1350,1255"/>
-  <property name="object:guided-missiles-item:guided-missiles-item:2" value="@13,23"/>
-  <property name="object:guided-missiles-item:guided-missiles-item:1" value="1173,691"/>
-  <property name="object:static-corpse:dead-civilian-static-2:1" value="994,667,-100"/>
-  <property name="object:impassable-static-corpse:dead-red-launcher:3" value="537,1244,-100"/>
-  <property name="object:machinegunner:machinegunner:9" value="1214,1534"/>
-  <property name="object:zombie:zombie:9" value="36,746"/>
-  <property name="object:machinegunner:machinegunner:8" value="1293,858"/>
-  <property name="object:zombie:zombie:8" value="19,1269"/>
-  <property name="object:machinegunner:machinegunner:7" value="1344,733"/>
-  <property name="object:zombie:zombie:7" value="792,11"/>
-  <property name="object:zombie:zombie:6" value="1261,152"/>
-  <property name="object:machinegunner:machinegunner:5" value="1128,1356"/>
-  <property name="object:zombie:zombie:4" value="47,905"/>
-  <property name="object:dispersion-bullets-item:dispersion-bullets-item:4" value="1204,22"/>
-  <property name="spawn:13" value="648,684"/>
-  <property name="object:dispersion-bullets-item:dispersion-bullets-item:3" value="73,708"/>
-  <property name="spawn:12" value="648,871"/>
-  <property name="object:zombie:zombie:2" value="102,1441"/>
-  <property name="spawn:11" value="561,776"/>
-  <property name="object:zombie:zombie:1" value="198,1513"/>
-  <property name="spawn:10" value="735,774"/>
-  <property name="object:static-mortar:yellow-mortar:2" value="1288,1371"/>
-  <property name="object:machinegunner-item:machinegunner-item:1" value="@0,21"/>
-  <property name="object:machinegunner:machinegunner:21" value="1,110"/>
-  <property name="zone:timer-win:defend-base:300:1" value="@7,9:@6,6"/>
-  <property name="object:machinegunner:machinegunner:20" value="2,2"/>
-  <property name="object:road-sign:road-sign07:1" value="82,272,-660"/>
-  <property name="object:watchtower-with-machinegunner(ally):watchtower:12" value="351,201,250"/>
-  <property name="object:watchtower-with-machinegunner(ally):watchtower:11" value="164,1093,250"/>
-  <property name="object:watchtower-with-machinegunner(ally):watchtower:10" value="853,1213,250"/>
-  <property name="object:static-corpse:dead-ziehharmonikaspieler-static:1" value="236,1137,-100"/>
-  <property name="object:oil-barrels:oil-barrels:1" value="0,186,150"/>
-  <property name="object:impassable-static-corpse:dead-red-tank:1" value="1308,16,-100"/>
-  <property name="object:gate:gate:1" value="900,908,-651"/>
-  <property name="object:smoke-missiles-item:smoke-missiles-item:3" value="735,550"/>
   <property name="object:machinegunner:machinegunner:19" value="644,1525"/>
   <property name="object:machinegunner:machinegunner:18" value="940,1543"/>
+  <property name="object:machinegunner:machinegunner:17" value="1279,703"/>
+  <property name="object:machinegunner:machinegunner:13" value="715,1510"/>
+  <property name="object:machinegunner:machinegunner:10" value="44,74"/>
+  <property name="object:road-sign:road-sign07:1" value="82,272,-660"/>
+  <property name="object:thrower:thrower:5" value="@20,12"/>
+  <property name="object:thrower:thrower:4" value="1011,1540"/>
+  <property name="object:guided-missiles-item:guided-missiles-item:2" value="@13,23"/>
+  <property name="object:thrower:thrower:3" value="@0,1"/>
+  <property name="object:guided-missiles-item:guided-missiles-item:1" value="1173,691"/>
+  <property name="object:thrower:thrower:2" value="1327,1485"/>
+  <property name="object:thrower:thrower:1" value="115,6"/>
+  <property name="object:sandworm:sandworm:1" value="@1,6"/>
+  <property name="config:objects.machinegunner.targeting-range(stable)" value="int:600"/>
+  <property name="object:machinegunner-item:machinegunner-item:1" value="@0,21"/>
+  <property name="object:static-mortar:yellow-mortar:2" value="1288,1371"/>
+  <property name="config:multiplayer.game-type" value="string:cooperative"/>
+  <property name="config:objects.thrower.targeting-range(stable)" value="int:600"/>
+  <property name="object:barrack-with-machinegunners(ally):trooper-hut:save-for-victory:base-destroyed:((" value="608,694,150"/>
+  <property name="config:objects.tank.dispersion.duration" value="float:10"/>
+  <property name="object:oil-barrels:oil-barrels:1" value="0,186,150"/>
+  <property name="object:watchtower-with-machinegunner(ally):watchtower:12" value="351,201,250"/>
+  <property name="object:watchtower-with-machinegunner(ally):watchtower:11" value="164,1093,250"/>
+  <property name="object:static-corpse:dead-ziehharmonikaspieler-static:1" value="236,1137,-100"/>
+  <property name="object:watchtower-with-machinegunner(ally):watchtower:10" value="853,1213,250"/>
+  <property name="config:objects.shilka.dispersion.duration" value="float:15"/>
  </properties>
  <tileset name="terrains" firstgid="1" tilewidth="64" tileheight="64">
   <image source="../tilesets/terrains.png"/>
@@ -130,7 +136,7 @@
  <layer name="Sand" width="22" height="25">
   <properties>
    <property name="ai-hint:1" value="sandworm"/>
-   <property name="impassability" value="50"/>
+   <property name="impassability" value="60"/>
    <property name="z" value="-700"/>
   </properties>
   <data encoding="base64" compression="gzip">
@@ -147,7 +153,7 @@
  <layer name="Sand 2" width="22" height="25">
   <properties>
    <property name="ai-hint:2" value="sandworm"/>
-   <property name="impassability" value="60"/>
+   <property name="impassability" value="70"/>
    <property name="z" value="-650"/>
   </properties>
   <data encoding="base64" compression="gzip">
