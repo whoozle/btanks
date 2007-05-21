@@ -190,6 +190,22 @@ void IGameMonitor::render(sdlx::Surface &window) {
 		
 		_big_font->render(window, x, y, _state);
 	}
+
+	if (_timer > 0) {
+		int m = (int)_timer / 60;
+		int ms = (int)(10 * (_timer - (int)_timer));
+		std::string timer_str; 
+		if (m) {
+			timer_str = mrt::formatString("%2d%c%02d", m, (ms / 2 == 0 || ms /2 == 1 || ms / 2 == 4)?':':'.', ((int)_timer) % 60);
+		} else 
+			timer_str = mrt::formatString("   %2d.%d", (int)_timer, ms);
+		
+		int tw = timer_str.size() + 1;
+		_big_font->render(window, window.getWidth() - _big_font->getWidth() * tw, 
+			 window.getHeight() - _big_font->getHeight() * 3 / 2, 
+			 timer_str);
+	}
+
 }
 
 

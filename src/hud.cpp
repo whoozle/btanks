@@ -344,15 +344,6 @@ void Hud::render(sdlx::Surface &window) const {
 		//fixme: just draw splitter centered. 
 		window.copyFrom(*_screen_splitter, (window.getWidth() - _screen_splitter->getWidth()) / 2, 0);
 	}
-	
-	float timer = GameMonitor->getTimer();
-	if (timer > 0) {
-		const std::string timer_str = mrt::formatString("%2d.%d", (int)timer, (int)(10 * (timer - (int)timer)));
-		int tw = _big_font->getWidth() * 3;
-		_big_font->render(window, window.getWidth() - tw - _big_font->getWidth(), 
-			 window.getHeight() -_background->getHeight() - _big_font->getHeight(), 
-			 timer_str);
-	}
 }
 
 void Hud::renderSplash(sdlx::Surface &window) const {

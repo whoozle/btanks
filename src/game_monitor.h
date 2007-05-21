@@ -67,7 +67,6 @@ public:
 	void displayMessage(const std::string &area, const std::string &message, const float time);
 	void setTimer(const std::string &area, const std::string &message, const float time);
 	void resetTimer();
-	const float getTimer() const { return _timer; }
 
 	void clear();
 	
