@@ -51,24 +51,31 @@ void IGameMonitor::checkItems(const float dt) {
 	
 	for(Items::iterator i = _items.begin(); i != _items.end(); ++i) {
 		Item &item = *i;
-		if (item.destroy_for_victory)
-			++goal_total;
 		Object *o = World->getObjectByID(item.id);
+
+		bool dead = true;
 		if (o != NULL) {
-			if (item.destroy_for_victory) {
-				if (o->getState() == "broken") {
-					++goal;
-				} else 
-					_specials.push_back(item.position);
-			} 
-			continue;
+			dead = o->getState() == "broken";
 		}
+		
+		if (item.destroy_for_victory) {
+			++goal_total;
+			if (dead) {
+				++goal;
+			} else 
+				_specials.push_back(item.position);
+		} 
+
+		if (!dead)
+			continue;
+		
 		if (!item.save_for_victory.empty()) {
 			gameOver("messages", item.save_for_victory, 5);
-			return;
+			continue;
 		}
-		if (item.destroy_for_victory)
-			++goal;
+
+		if (o)
+			continue;
 		
 		Uint32 ticks = SDL_GetTicks();
 		if (item.dead_on == 0) {
@@ -76,6 +83,7 @@ void IGameMonitor::checkItems(const float dt) {
 			LOG_DEBUG(("item %d:%s:%s is dead, log dead time.", item.id, item.classname.c_str(), item.animation.c_str()));
 			continue;
 		}
+		
 		int rt;
 		Config->get("map." + item.classname + ".respawn-interval", rt, 5); 
 		if (rt < 0) 
