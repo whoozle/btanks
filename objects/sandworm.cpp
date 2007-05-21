@@ -26,12 +26,16 @@
 
 class SandWorm : public Object {
 public: 
-	SandWorm(): Object("monster"), _reaction_time(true), _head_id(0) {
+	SandWorm(): Object("monster"), _reaction_time(true), _head_id(0), _fire(false) {
 		setDirectionsNumber(1);
 	}
 	virtual void onSpawn() {
 		disown();
 		play("main", true);
+
+		GET_CONFIG_VALUE("objects.sandworm.fire-rate", float, frt, 2.0f);
+		_fire.set(frt);
+
 		GET_CONFIG_VALUE("objects.sandworm.reaction-time", float, rt, 0.1);
 		mrt::randomize(rt, rt/10);
 		_reaction_time.set(rt);
@@ -52,7 +56,7 @@ public:
 	}
 	
 	virtual void tick(const float dt) {
-		if (_state.fire && _head_id == 0) {
+		if (_fire.tick(dt) && _state.fire && _head_id == 0) {
 			GET_CONFIG_VALUE("objects.sandworm.minimum-snatch-distance", float, msd, 100.0f);
 			v2<float> cpos; 
 			getCenterPosition(cpos);
@@ -181,6 +185,7 @@ public:
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
 		s.add(_reaction_time);
+		s.add(_fire);
 		s.add(_head_id);
 		s.add(_last_snatch);
 	}
@@ -188,12 +193,13 @@ public:
 	virtual void deserialize(const mrt::Serializator &s) {
 		Object::deserialize(s);
 		s.get(_reaction_time);
+		s.get(_fire);
 		s.get(_head_id);
 		s.get(_last_snatch);
 	}
 	
 private:
-	Alarm _reaction_time; 
+	Alarm _reaction_time, _fire; 
 	int _head_id;
 	v2<float> _last_snatch;
 };
