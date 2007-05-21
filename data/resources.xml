@@ -209,8 +209,8 @@
 	<animation-model id="regular-mine-animation" speed="6">
 		<pose id="pause" speed="2">0</pose>
 		<pose id="3" sound="mine-tick.ogg">1,2,3</pose>
-		<pose id="2" sound="mine-tick.ogg">4,5,6</pose>
-		<pose id="1" sound="mine-tick.ogg">7,8,9</pose>
+		<pose id="2">4,5,6</pose>
+		<pose id="1">7,8,9</pose>
 		<pose id="armed">10</pose>
 	</animation-model>
 	
