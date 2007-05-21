@@ -56,6 +56,15 @@ public:
 			GET_CONFIG_VALUE("objects.sandworm.minimum-snatch-distance", float, msd, 100.0f);
 			v2<float> cpos; 
 			getCenterPosition(cpos);
+			
+			{
+				const Matrix<int> &hint = Map->getAreaMatrix("sandworm"); 
+				const v2<int> tile_size = Map->getPathTileSize();
+				v2<int> hint_pos = cpos.convert<int>() / tile_size;
+				if (hint.get(hint_pos.y, hint_pos.x) == 0)
+					return; //no snatchin' 
+			}
+			
 		
 			if (cpos.distance(_last_snatch) > msd) {
 				std::set<const Object *> objects;
