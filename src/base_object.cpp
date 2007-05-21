@@ -21,6 +21,7 @@
 #include "mrt/logger.h"
 #include "world.h"
 #include "zbox.h"
+#include "special_owners.h"
 
 BaseObject::BaseObject(const std::string &classname): 
 	size(), mass(1), speed(0), ttl(-1), impassability(1), hp(1), max_hp(1), 
@@ -277,7 +278,7 @@ const int BaseObject::_getOwner() const {
 	return *_owners.begin();
 }
 
-const bool BaseObject::hasSameOwner(const BaseObject *other) const {
+const bool BaseObject::hasSameOwner(const BaseObject *other, const bool skip_cooperative) const {
 	assert(this != other);
 	if (hasOwner(other->_id) || other->hasOwner(_id))
 		return true;
@@ -286,6 +287,10 @@ const bool BaseObject::hasSameOwner(const BaseObject *other) const {
 	while(i != _owner_set.end() && j != other->_owner_set.end()) {
 		const int l = *i, r = *j;
 		if (l == r) {
+			if (skip_cooperative && l == OWNER_COOPERATIVE) {
+				++i; ++j;
+				continue;
+			}
 			return true;
 			//LOG_DEBUG(("same owner: %s: %d: %d : %s", classname.c_str(), l, r, other->classname.c_str()));
 		}

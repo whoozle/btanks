@@ -29,6 +29,7 @@
 #include "tmx/map.h"
 #include "math/unary.h"
 #include "sound/mixer.h"
+#include "special_owners.h"
 
 Object::Event::Event() : name(), repeat(false), sound(), gain(1.0f), played(false), cached_pose(NULL) {}
 
@@ -1236,7 +1237,8 @@ const std::string Object::getNearestWaypoint(const std::string &name) const {
 void Object::addDamage(Object *from, const bool emitDeath) {
 	if (from == NULL || !from->piercing)
 		return;
-
+	if (from->hasOwner(OWNER_COOPERATIVE) && hasOwner(OWNER_COOPERATIVE))
+		return;
 	addDamage(from, from->max_hp, emitDeath);
 }
 

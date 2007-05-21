@@ -202,7 +202,7 @@ const bool IWorld::collides(Object *obj, const v2<int> &position, Object *o, con
 			//owner stuff
 			(obj->_follow != 0 && obj->_follow == o->_id) || 
 			(o->_follow != 0 && o->_follow == obj->_id) ||
-			obj->hasSameOwner(o) 
+			obj->hasSameOwner(o, true) 
 		) {
 			return false;
 		}
