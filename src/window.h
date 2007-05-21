@@ -73,7 +73,8 @@ public:
 
 private:
 	sdlx::Surface _window;
-	bool _fullscreen, _vsync, _opengl, _dx, _fsaa, _force_soft, _running;
+	int _fsaa;
+	bool _fullscreen, _vsync, _opengl, _dx, _force_soft, _running;
 	int _w, _h;
 	sdlx::Timer _timer;	
 	float _fr;
