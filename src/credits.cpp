@@ -59,6 +59,10 @@ Credits::Credits() : _w(0), _h(0) {
 	lines.push_back("SOMETHING RESEMBLING MUSIC");
 	lines.push_back("VLADIMIR 'PETROVICH' VOLKOV");
 	lines.push_back("");
+
+	lines.push_back("SOUND EFFECTS");
+	lines.push_back("LEONID 'USSR' VOLKOV");
+	lines.push_back("");
 	
 	lines.push_back("GAME DESIGN");
 	lines.push_back("NETIVE MEDIA GROUP 2006-2007");
