@@ -62,7 +62,14 @@ public:
 				GET_CONFIG_VALUE("objects.sandworm.snatch-range", float, sr, 32.0f);
 				World->enumerateObjects(objects, this, sr, NULL);
 				//LOG_DEBUG(("%u objects around", (unsigned) objects.size()));
-				if (!objects.empty()) {
+				bool snatch = false;
+				for(std::set<const Object *>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
+					if ((*i)->speed != 0) {
+						snatch = true;
+						break;
+					}
+				}
+				if (snatch) {
 					Object *head = spawn("sandworm-head", "sandworm-head");
 					_head_id = head->getID();
 					_last_snatch = cpos;
@@ -225,10 +232,10 @@ void SandWormHead::emit(const std::string &event, Object * emitter) {
 		if (getStateProgress() < da)
 			return;
 		
-		//nuke damage.
 		if (emitter == NULL || registered_name == "explosion" || 
 			(emitter->registered_name.size() >= 9 && 
 			emitter->registered_name.substr(emitter->registered_name.size() - 9, 9) == "explosion")
+			|| emitter->speed == 0
 			)
 			return;
 			
