@@ -5,7 +5,6 @@
   <property name="object:zombie:zombie:11" value="1189,66"/>
   <property name="object:zombie:zombie:10" value="642,1"/>
   <property name="config:objects.thrower.targeting-range(alerted)" value="int:800"/>
-  <property name="object:gate:gate:1" value="900,908,-651"/>
   <property name="object:nuke-missiles-item:nuke-missiles-item:1" value="@21,4"/>
   <property name="object:stun-missiles-item:stun-missiles-item:2" value="577,975"/>
   <property name="zone:timer-win:defend-base:300:1" value="@7,9:@6,6"/>
@@ -149,7 +148,7 @@
  </layer>
  <layer name="details 2" width="22" height="25">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgGBhQzIjEBuJ8WtgxxMylBcgC4iogrgbiGiCuHVjnjIJRQDQIp5G5CTQydxTQHuQyElYzCoY+AACSieiFmAgAAA==
+   H4sIAAAAAAAAAGNgGBhQzIjEBuJ8WtgxxMwlB2QSkM8C4iogrgbiGiCupbmLBg8gFDbkgggqmRNGJXOGurm47AinkbkJVDSXlgBXeDfTwC5Q+QAr0ygpI2BlDTKgZlmZi1RvwPJ3KhXNHwWDAwAASq59lJgIAAA=
   </data>
   <tileproperties/>
  </layer>
@@ -166,7 +165,13 @@
  </layer>
  <layer name="Layer 7" width="22" height="25">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgIB2EkaGHGJBAI3MTgTgOiOOBOIJGdtAqTIZaWMfSyNzhDqxoZO5yGpk73IAuEBuQqRefPnMG1LidC8TzyLQHGTgCsQsSHxTPK6hgrjcQ+1HBnFEwCmCAnDQPAJ8uh5uYCAAA
+   H4sIAAAAAAAAAGNgIB2EkaGHGJBAI3MTgTgOiOOBOIJGdtAqTIZaWMfSyNzhDqxoZO5yGpk73IAuEBuQqRefPnMG1LidC8TzyLQHGTgCsQsSHxTPK9DU1DOSbq43EPuR7apRMAowATlpHgA3BQgAmAgAAA==
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="Layer 5" width="22" height="25">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGFhQx0hb9aNgYIAFEFsCscFAO2QIAXLT9mieGLlgNO5HwUADWqRBAFcjdfGYCAAA
   </data>
   <tileproperties/>
  </layer>
@@ -199,21 +204,15 @@
   </data>
   <tileproperties/>
  </layer>
- <layer name="Layer 5" width="22" height="25">
-  <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgGFhQx0hb9aNgYIAFEFsCscFAO2QIAXLT9mieGLlgNO5HwUADWqRBAFcjdfGYCAAA
-  </data>
-  <tileproperties/>
- </layer>
  <layer name="trees" width="22" height="25">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAANWVaQrCMBCFCz2KWq3gWsHWDdyqf839D+ML9MFQx4UsYD94NJksE6aZSZkmSQVtIANZjvieoDN0gXJoDK2hUsxvc4WtbuxyPdmivRP9Au1V+upPskf/APWgfmu95vdXbph/hybQ1GH9Nxir0DBWXSKPdN6iY3GIyRCxGAWKB3NtAC2gZaB9mWuzSLlWNfu264wrsi5ZXOrMv8Aa7ou9E5lSw32xd2IeIbbv3ipX+B5pb5UPfI+ICbC3zGPNlik+OP4JLY+ljf/xoYzTp1HOIPP4CQM+4OCYCAAA
+   H4sIAAAAAAAAAM2V6wrCMAyFB3sUnTpBp26weQVv07/2/R/GUzAQYupmW8EPDmu7Ni1pkjZpkqyhDWQgyxHfE3SGLlAOTaEaath8yRVj7Wucrye2aO9Yv0S7St/34+zRP0ADaCjWa/v25Yb5d2gGzT3Wd0G+ig35KgTry9EPzmZ9uVDs5oF71Y54KwPsUkzLePO1w89URfDtt3bGmDuJdKeUaxm0hFYddilHZVtCuVb0PCflqGxLeF2yyDrjC69LFp868y/IOPUlE7UjVrwXjtoRiuut8oXiW3urQpDxbSLY5nmsjWlvAP3/hJbHfIzu8aH8pz2Ncgaex08F97CvmAgAAA==
   </data>
   <tileproperties/>
  </layer>
  <layer name="trees 2" width="22" height="25">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAANNnZmAwAGJrILYBYnTgDhTzAGJjIDbBIo8LWALVWgGxKxC74dFnC5SzI8FcZ6BaFyzqNYFiWkjiMHfjA+h6sAFS/U2unlEwCgYjUAWmYzUapGV9aLlDbQArd6gNcJU7gxXQIs5AgBZxBgK0iDMQGEpxpgx1K666mFygCzWPUF0MA6TYT4x5MIBsP7od6HUxALlf9HmYCAAA
+   H4sIAAAAAAAAANNnZmAwAGJrILYBYnTgDhTzAGJjIDbBIo8LWALVWgGxKxC74dFnC5SzI8FcZ6BaFyzqNYFiWkjiMHfjA+h6sAFS/U2uHnoCXHFNKSAU1+QCUtMIOiCUtskFtPIvCAyWOFIFqlWjgTv0oeUOtQGs3KE2wFXuDFZAizgDAVrEGQjQIs5AYCjFmTLUrdTO+7pQ84jN+6TYT0pZgmw/uh3odTEAzNB73JgIAAA=
   </data>
   <tileproperties/>
  </layer>
