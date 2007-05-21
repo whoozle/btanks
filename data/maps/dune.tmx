@@ -4,13 +4,13 @@
   <property name="object:road-sign:road-sign10:1" value="902,916,-660"/>
   <property name="object:zombie:zombie:11" value="1189,66"/>
   <property name="object:zombie:zombie:10" value="642,1"/>
-  <property name="config:objects.thrower.targeting-range(alerted)" value="int:800"/>
+  <property name="config:objects.thrower.targeting-range(alerted)" value="int:700"/>
   <property name="object:nuke-missiles-item:nuke-missiles-item:1" value="@21,4"/>
   <property name="object:stun-missiles-item:stun-missiles-item:2" value="577,975"/>
   <property name="zone:timer-win:defend-base:300:1" value="@7,9:@6,6"/>
   <property name="object:dispersion-bullets-item:dispersion-bullets-item:4" value="1204,22"/>
   <property name="object:dispersion-bullets-item:dispersion-bullets-item:3" value="73,708"/>
-  <property name="config:objects.machinegunner.targeting-range(alerted)" value="int:800"/>
+  <property name="config:objects.machinegunner.targeting-range(alerted)" value="int:700"/>
   <property name="spawn:13" value="648,684"/>
   <property name="spawn:12" value="648,871"/>
   <property name="spawn:11" value="561,776"/>
@@ -64,13 +64,13 @@
   <property name="object:thrower:thrower:2" value="1327,1485"/>
   <property name="object:thrower:thrower:1" value="115,6"/>
   <property name="object:sandworm:sandworm:1" value="@1,6"/>
-  <property name="config:objects.machinegunner.targeting-range(stable)" value="int:600"/>
+  <property name="config:objects.machinegunner.targeting-range(stable)" value="int:550"/>
   <property name="object:machinegunner-item:machinegunner-item:1" value="@0,21"/>
   <property name="object:static-mortar:yellow-mortar:2" value="1288,1371"/>
   <property name="config:multiplayer.game-type" value="string:cooperative"/>
   <property name="config:map.zombie.respawn-interval" value="int:1"/>
   <property name="config:map.machinegunner.respawn-interval" value="int:1"/>
-  <property name="config:objects.thrower.targeting-range(stable)" value="int:600"/>
+  <property name="config:objects.thrower.targeting-range(stable)" value="int:550"/>
   <property name="object:barrack-with-machinegunners(ally):trooper-hut:save-for-victory:base-destroyed:((" value="608,694,150"/>
   <property name="config:objects.tank.dispersion.duration" value="float:10"/>
   <property name="object:oil-barrels:oil-barrels:1" value="0,186,150"/>
@@ -148,7 +148,7 @@
  </layer>
  <layer name="details 2" width="22" height="25">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgGBhQzIjEBuJ8WtgxxMwlB2QSkM8C4iogrgbiGiCupbmLBg8gFDbkgggqmRNGJXOGurm47AinkbkJVDSXlgBXeDfTwC5Q+QAr0ygpI2BlDTKgZlmZi1RvwPJ3KhXNHwWDAwAASq59lJgIAAA=
+   H4sIAAAAAAAAAGNgGBhQzIjEBuJ8WtgxxMwlB2QSkM8C4iogrgbiGiCupbmLBg8gFDbkgggqmRNGJXPobW4BI15lVLEDBMJpZG4CFvkgIv2US0O/IwOQe3DFYzMN7AOVD7AyDVZGEBsmyABW1iADapaVyOEPy9+pVDR/FAwOAAC/GejymAgAAA==
   </data>
   <tileproperties/>
  </layer>
@@ -212,7 +212,7 @@
  </layer>
  <layer name="trees 2" width="22" height="25">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAANNnZmAwAGJrILYBYnTgDhTzAGJjIDbBIo8LWALVWgGxKxC74dFnC5SzI8FcZ6BaFyzqNYFiWkjiMHfjA+h6sAFS/U2uHnoCXHFNKSAU1+QCUtMIOiCUtskFtPIvCAyWOFIFqlWjgTv0oeUOtQGs3KE2wFXuDFZAizgDAVrEGQjQIs5AYCjFmTLUrdTO+7pQ84jN+6TYT0pZgmw/uh3odTEAzNB73JgIAAA=
+   H4sIAAAAAAAAANNnZmAwAGJrILYBYnTgDhTzAGJjIDbBIo8LWALVWgGxKxC74dFnC5SzI8FcZ6BaFyzqNYFiWkjiMHfjA+h6sAFS/U2uHnoCXHFNKSAU1+QCUtMIOiCUtskFtPIvCNAqjgIYSXOzKlCtGg3coQ8td6gNYOUOtQGucmewAlrEGQjQIs5AgBZxBgJDKc6UoW6ldt7XhZpHbHlFiv2klCXI9qPbgV4XAwB5kQN5mAgAAA==
   </data>
   <tileproperties/>
  </layer>
