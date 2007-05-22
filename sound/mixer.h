@@ -83,6 +83,8 @@ private:
 		std::string name;
 		bool loop;
 		ALuint source;
+		
+		bool persistent;
 		SourceInfo(const std::string &name, const bool loop, const ALuint source);
 		
 		v3<float> pos, vel;

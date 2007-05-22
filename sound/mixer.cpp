@@ -40,7 +40,7 @@
 IMPLEMENT_SINGLETON(Mixer, IMixer);
 
 IMixer::SourceInfo::SourceInfo(const std::string &name, const bool loop, const ALuint source) : 
-	name(name), loop(loop), source(source) {}
+	name(name), loop(loop), source(source), persistent(false) {}
 	
 void IMixer::SourceInfo::updatePV() {
 	if (source == AL_NONE)
@@ -330,7 +330,7 @@ const bool IMixer::generateSource(ALuint &r_source) {
 	const SourceInfo &info = i->second;
 	TRY {
 		ALenum state = 0;
-		if (info.source == AL_NONE)
+		if (info.source == AL_NONE || info.persistent == true)
 			continue;
 		alGetSourcei(info.source, AL_SOURCE_STATE, &state);
 		ALenum r = alGetError();
@@ -481,7 +481,8 @@ void IMixer::playSample(const Object *o, const std::string &name, const bool loo
 		alSourcei (source, AL_LOOPING,  loop?AL_TRUE:AL_FALSE );
 		AL_CHECK(("alSourcei(%08x, AL_LOOPING, %s)", source, loop?"AL_TRUE":"AL_FALSE"));
 
-		_sources.insert(Sources::value_type(id, SourceInfo(name, loop, source)));
+		Sources::iterator result = _sources.insert(Sources::value_type(id, SourceInfo(name, loop, source)));
+		result->second.persistent = o == NULL;
 
 		TRY {
 			alSourcePlay(source);
