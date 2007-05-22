@@ -84,6 +84,9 @@ private:
 		bool loop;
 		ALuint source;
 		SourceInfo(const std::string &name, const bool loop, const ALuint source);
+		
+		v3<float> pos, vel;
+		void updatePV();
 	};
 	
 	typedef std::multimap<const int, SourceInfo> Sources;

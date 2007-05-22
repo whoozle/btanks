@@ -41,6 +41,20 @@ IMPLEMENT_SINGLETON(Mixer, IMixer);
 
 IMixer::SourceInfo::SourceInfo(const std::string &name, const bool loop, const ALuint source) : 
 	name(name), loop(loop), source(source) {}
+	
+void IMixer::SourceInfo::updatePV() {
+	if (source == AL_NONE)
+		return;
+
+	ALfloat al_pos[] = { pos.x, pos.y, pos.z };
+	ALfloat al_vel[] = { vel.x, vel.y, vel.z };
+
+	alSourcefv(source, AL_POSITION, al_pos);
+	AL_CHECK_NON_FATAL(("alSourcefv(%08x, AL_POSITION, {%g,%g,%g})", source, al_pos[0], al_pos[1], al_pos[2] ));
+	alSourcefv(source, AL_VELOCITY, al_vel);
+	AL_CHECK_NON_FATAL(("alSourcefv(%08x, AL_VELOCITY, {%g,%g,%g})", source, al_vel[0], al_vel[1], al_vel[2] ));	
+}
+
 
 IMixer::IMixer() : _no_more_sources(false), _nosound(true), _nomusic(true), _ogg(NULL), _ambient(NULL), _ogg_source(0),
 	_volume_fx(1.0f), _volume_music(1.0f), _debug(false) {}
@@ -71,19 +85,19 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 		GET_CONFIG_VALUE("engine.sound.preallocate-sources", bool, preallocate, false);
 #	endif
 		if (preallocate) {
-			LOG_DEBUG(("preallocate sources..."));
+			LOG_DEBUG(("preallocating sources..."));
 			GET_CONFIG_VALUE("engine.sound.maximum-sources", int, max_sources, 32);
 			
 			_no_more_sources = true;
 			ALuint *sources = new ALuint[max_sources];
 			int n;
 			
-			for(n = max_sources; n >= 4; --n) {
+			for(n = max_sources; n >= 1; --n) {
 				alGenSources(n, sources);
 				if (alGetError() == AL_NO_ERROR)
 					break;
 			}
-			if (n < 4) {
+			if (n < 2) {
 				delete[] sources;
 				throw_ex(("cannot generate enough sources."));
 			}
@@ -285,7 +299,7 @@ const bool IMixer::generateSource(ALuint &r_source) {
 		r_source = *_free_sources.begin();
 		_free_sources.erase(_free_sources.begin());
 		if (_debug)
-			LOG_DEBUG(("source %08x has been taken from free sources.", (unsigned)r_source));
+			LOG_DEBUG(("source %08x was taken from free sources.", (unsigned)r_source));
 		return true;
 	}
 	
@@ -315,10 +329,9 @@ const bool IMixer::generateSource(ALuint &r_source) {
 	for(Sources::iterator i = _sources.begin(); i != _sources.end(); ++i) {
 	const SourceInfo &info = i->second;
 	TRY {
-		if (info.loop)
-			continue;
-
 		ALenum state = 0;
+		if (info.source == AL_NONE)
+			continue;
 		alGetSourcei(info.source, AL_SOURCE_STATE, &state);
 		ALenum r = alGetError();
 
@@ -345,12 +358,19 @@ const bool IMixer::generateSource(ALuint &r_source) {
 	} CATCH(mrt::formatString("source %08x, sound: %s", (unsigned)info.source, info.name.c_str()).c_str(), );
 	}
 	if (victim != _sources.end()) {
-		r_source = victim->second.source;
+		SourceInfo &victim_info = victim->second;
+		r_source = victim_info.source;
+		assert(r_source != AL_NONE);
 		if (_debug)
 			LOG_DEBUG(("killing source %08x with distance %g", (unsigned)r_source, max_d));
 		alSourceStop(r_source);
 		AL_CHECK_NON_FATAL(("alSourceStop(%08x)", r_source));
-		_sources.erase(victim);
+
+		if (victim_info.loop) {
+			victim_info.source = AL_NONE;
+		} else {
+			_sources.erase(victim);
+		}
 		return true;
 	}
 	
@@ -359,6 +379,9 @@ const bool IMixer::generateSource(ALuint &r_source) {
 }
 
 void IMixer::deleteSource(const ALuint source) {
+	if (source == AL_NONE)
+		return;
+	
 	//alDeleteSources(1, &source);
 	alSourceStop(source);
 	AL_CHECK_NON_FATAL(("alSourceStop(%08x)", source));
@@ -400,9 +423,11 @@ void IMixer::playSample(const Object *o, const std::string &name, const bool loo
 		
 		GET_CONFIG_VALUE("engine.sound.maximum-distance", float, md, 60.0f);
 		float d = source_pos.distance(listener_pos);
-		if (!loop && d > md) {
+		if (d > md) {
 			if (_debug)
 				LOG_DEBUG(("sound %s was skipped (distance: %g)", name.c_str(), d));
+			if (loop) 
+				_sources.insert(Sources::value_type(id, SourceInfo(name, loop, AL_NONE)));
 			return;
 		}
 	}
@@ -472,6 +497,8 @@ void IMixer::setFXVolume(const float volume) {
 
 	for(Sources::iterator i = _sources.begin(); i != _sources.end(); ++i) {
 		const SourceInfo &info = i->second;
+		if (info.source == AL_NONE)
+			continue;
 		alSourcef(info.source, AL_GAIN, volume);
 		AL_CHECK(("alSourcef(AL_GAIN, %g)", volume));
 	}
@@ -495,21 +522,17 @@ void IMixer::updateObject(const Object *o) {
 	o->getInfo(pos, vel);
 	GET_CONFIG_VALUE("engine.sound.positioning-divisor", float, k, 40.0);
 	
-	ALfloat al_pos[] = { pos.x / k, -pos.y / k, 0*o->getZ() / k };
-	ALfloat al_vel[] = { vel.x / k, -vel.y / k, 0 };
+	const v3<float> al_pos( pos.x / k, -pos.y / k, 0*o->getZ() / k ), al_vel( vel.x / k, -vel.y / k, 0);
 	
 	const int id = o->getID();
 
 	Sources::iterator b = _sources.lower_bound(id);
 	Sources::iterator e = _sources.upper_bound(id);
 	for(Sources::iterator i = b; i != e; ++i) {
-		const SourceInfo &info = i->second;
-
-		ALuint source = info.source;
-		alSourcefv(source, AL_POSITION, al_pos);
-		AL_CHECK_NON_FATAL(("alSourcefv(%08x, AL_POSITION, {%g,%g,%g})", source, al_pos[0], al_pos[1], al_pos[2] ));
-		alSourcefv(source, AL_VELOCITY, al_vel);
-		AL_CHECK_NON_FATAL(("alSourcefv(%08x, AL_VELOCITY, {%g,%g,%g})", source, al_vel[0], al_vel[1], al_vel[2] ));
+		SourceInfo &info = i->second;
+		info.pos = al_pos;
+		info.vel = al_vel;
+		info.updatePV();
 	}
 }
 
@@ -521,11 +544,19 @@ void IMixer::tick(const float dt) {
 
 	if (_nosound) 
 		return;
-		
+	//LOG_DEBUG(("tick"));
 	for(Sources::iterator j = _sources.begin(); j != _sources.end();) {
 	TRY {
 		const SourceInfo &info = j->second;
 		ALuint source = info.source;
+		if (source == AL_NONE) {
+			//throw away non loop AL_NONE sources
+			if (!info.loop) {
+				_sources.erase(j++);
+			}// else LOG_DEBUG(("cancelled loop %d: %s", j->first, info.name.c_str()));
+			++j;
+			continue;
+		}
 		ALenum state;
 		
 		alGetSourcei(source, AL_SOURCE_STATE, &state);
@@ -574,7 +605,7 @@ void IMixer::cancelSample(const Object *o, const std::string &name) {
 	Sources::iterator e = _sources.upper_bound(id);
 	for(Sources::iterator i = b; i != e; ++i) {
 		SourceInfo &info = i->second;
-		if (info.name != name)
+		if (info.name != name || info.source == AL_NONE)
 			continue;
 		
 		info.loop = false;
@@ -587,14 +618,14 @@ void IMixer::cancelAll(const Object *o) {
 	if (_nosound)
 		return;
 	
-	if (_debug)
-		LOG_DEBUG(("object %d cancels all sounds", o->getID()));
-	
 	const int id = o->getID();
 	Sources::iterator b = _sources.lower_bound(id);
 	Sources::iterator e = _sources.upper_bound(id);
 	for(Sources::iterator i = b; i != e; ++i) {
 		SourceInfo &info = i->second;
+		if (info.source == AL_NONE)
+			continue;
+		
 		info.loop = false;
 		alSourcei (info.source, AL_LOOPING, AL_FALSE);
 		AL_CHECK(("alSourcei"));
