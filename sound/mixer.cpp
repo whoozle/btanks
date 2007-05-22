@@ -39,18 +39,8 @@
 
 IMPLEMENT_SINGLETON(Mixer, IMixer);
 
-IMixer::SourceInfo::SourceInfo(const int id, const std::string &name, const bool loop) : id(id), name(name), loop(loop) {}
-
-const bool IMixer::SourceInfo::operator<(const SourceInfo &other) const {
-	if (id != other.id) 
-		return id < other.id;
-
-	if (name != other.name)
-		return name < other.name;
-
-	return loop < other.loop;
-}
-
+IMixer::SourceInfo::SourceInfo(const std::string &name, const bool loop, const ALuint source) : 
+	name(name), loop(loop), source(source) {}
 
 IMixer::IMixer() : _no_more_sources(false), _nosound(true), _nomusic(true), _ogg(NULL), _ambient(NULL), _ogg_source(0),
 	_volume_fx(1.0f), _volume_music(1.0f), _debug(false) {}
@@ -323,25 +313,25 @@ const bool IMixer::generateSource(ALuint &r_source) {
 	Sources::iterator victim = _sources.end();
 	float max_d = 0;
 	for(Sources::iterator i = _sources.begin(); i != _sources.end(); ++i) {
+	const SourceInfo &info = i->second;
 	TRY {
-		const SourceInfo &info = i->first;
 		if (info.loop)
 			continue;
 
 		ALenum state = 0;
-		alGetSourcei(i->second, AL_SOURCE_STATE, &state);
+		alGetSourcei(info.source, AL_SOURCE_STATE, &state);
 		ALenum r = alGetError();
 
 		if (r != AL_NO_ERROR || state != AL_PLAYING) {
 			if (r != AL_NO_ERROR)
-				LOG_ERROR(("alGetSourcei(%08x, AL_SOURCE_STATE): error %08x, state returned: %08xx", i->second, (unsigned)r, (unsigned)state));
+				LOG_ERROR(("alGetSourcei(%08x, AL_SOURCE_STATE): error %08x, state returned: %08xx", info.source, (unsigned)r, (unsigned)state));
 			victim = i;
 			break;
 		}
 
 		ALfloat s_pos[] = { 0, 0, 0 };
-		alGetSourcefv(i->second, AL_POSITION, s_pos);
-		AL_CHECK(("alGetSourcefv(%08x, AL_POSITION)", (unsigned)i->second));
+		alGetSourcefv(info.source, AL_POSITION, s_pos);
+		AL_CHECK(("alGetSourcefv(%08x, AL_POSITION)", (unsigned)info.source));
 		v2<float> source_pos((float)s_pos[0], (float)s_pos[1]);
 		float d = source_pos.distance(listener_pos);
 
@@ -352,10 +342,10 @@ const bool IMixer::generateSource(ALuint &r_source) {
 			max_d = d;
 			victim = i;
 		}
-	} CATCH(mrt::formatString("id %d, sound: %s", i->first.id, i->first.name.c_str()).c_str(), );
+	} CATCH(mrt::formatString("source %08x, sound: %s", (unsigned)info.source, info.name.c_str()).c_str(), );
 	}
 	if (victim != _sources.end()) {
-		r_source = victim->second;
+		r_source = victim->second.source;
 		if (_debug)
 			LOG_DEBUG(("killing source %08x with distance %g", (unsigned)r_source, max_d));
 		alSourceStop(r_source);
@@ -466,7 +456,7 @@ void IMixer::playSample(const Object *o, const std::string &name, const bool loo
 		alSourcei (source, AL_LOOPING,  loop?AL_TRUE:AL_FALSE );
 		AL_CHECK(("alSourcei(%08x, AL_LOOPING, %s)", source, loop?"AL_TRUE":"AL_FALSE"));
 
-		_sources.insert(Sources::value_type(Sources::key_type(id, name, loop), source));
+		_sources.insert(Sources::value_type(id, SourceInfo(name, loop, source)));
 
 		TRY {
 			alSourcePlay(source);
@@ -481,7 +471,8 @@ void IMixer::setFXVolume(const float volume) {
 		throw_ex(("volume value %g is out of range [0-1]", volume));	
 
 	for(Sources::iterator i = _sources.begin(); i != _sources.end(); ++i) {
-		alSourcef(i->second, AL_GAIN, volume);
+		const SourceInfo &info = i->second;
+		alSourcef(info.source, AL_GAIN, volume);
 		AL_CHECK(("alSourcef(AL_GAIN, %g)", volume));
 	}
 
@@ -509,14 +500,16 @@ void IMixer::updateObject(const Object *o) {
 	
 	const int id = o->getID();
 
-	for(Sources::iterator i = _sources.begin(); i != _sources.end(); ++i) {
-		if (i->first.id == id) {
-			ALuint source = i->second;
-			alSourcefv(source, AL_POSITION, al_pos);
-			AL_CHECK_NON_FATAL(("alSourcefv(%08x, AL_POSITION, {%g,%g,%g})", source, al_pos[0], al_pos[1], al_pos[2] ));
-			alSourcefv(source, AL_VELOCITY, al_vel);
-			AL_CHECK_NON_FATAL(("alSourcefv(%08x, AL_VELOCITY, {%g,%g,%g})", source, al_vel[0], al_vel[1], al_vel[2] ));
-		}
+	Sources::iterator b = _sources.lower_bound(id);
+	Sources::iterator e = _sources.upper_bound(id);
+	for(Sources::iterator i = b; i != e; ++i) {
+		const SourceInfo &info = i->second;
+
+		ALuint source = info.source;
+		alSourcefv(source, AL_POSITION, al_pos);
+		AL_CHECK_NON_FATAL(("alSourcefv(%08x, AL_POSITION, {%g,%g,%g})", source, al_pos[0], al_pos[1], al_pos[2] ));
+		alSourcefv(source, AL_VELOCITY, al_vel);
+		AL_CHECK_NON_FATAL(("alSourcefv(%08x, AL_VELOCITY, {%g,%g,%g})", source, al_vel[0], al_vel[1], al_vel[2] ));
 	}
 }
 
@@ -531,7 +524,8 @@ void IMixer::tick(const float dt) {
 		
 	for(Sources::iterator j = _sources.begin(); j != _sources.end();) {
 	TRY {
-		ALuint source = j->second;
+		const SourceInfo &info = j->second;
+		ALuint source = info.source;
 		ALenum state;
 		
 		alGetSourcei(source, AL_SOURCE_STATE, &state);
@@ -571,13 +565,20 @@ void IMixer::setListener(const v3<float> &pos, const v3<float> &vel, const float
 void IMixer::cancelSample(const Object *o, const std::string &name) {
 	if (_nosound || name.empty())
 		return;
-	//LOG_DEBUG(("object %d cancels %s", o->getID(), name.c_str()));
-	for(Sources::iterator j = _sources.begin(); j != _sources.end(); ++j) {
-		const SourceInfo &info = j->first;
-		if (info.id != o->getID() || info.name != name)
+	
+	if (_debug)
+		LOG_DEBUG(("object %d cancels %s", o->getID(), name.c_str()));
+
+	const int id = o->getID();
+	Sources::iterator b = _sources.lower_bound(id);
+	Sources::iterator e = _sources.upper_bound(id);
+	for(Sources::iterator i = b; i != e; ++i) {
+		SourceInfo &info = i->second;
+		if (info.name != name)
 			continue;
 		
-		alSourcei (j->second, AL_LOOPING, AL_FALSE);
+		info.loop = false;
+		alSourcei (info.source, AL_LOOPING, AL_FALSE);
 		AL_CHECK(("alSourcei"));
 	}
 }
@@ -586,12 +587,17 @@ void IMixer::cancelAll(const Object *o) {
 	if (_nosound)
 		return;
 	
+	if (_debug)
+		LOG_DEBUG(("object %d cancels all sounds", o->getID()));
+	
 	const int id = o->getID();
-	for(Sources::iterator j = _sources.begin(); j != _sources.end(); ++j) {
-		if (j->first.id == id) {
-			alSourcei (j->second, AL_LOOPING, AL_FALSE);
-			AL_CHECK(("alSourcei"));
-		}
+	Sources::iterator b = _sources.lower_bound(id);
+	Sources::iterator e = _sources.upper_bound(id);
+	for(Sources::iterator i = b; i != e; ++i) {
+		SourceInfo &info = i->second;
+		info.loop = false;
+		alSourcei (info.source, AL_LOOPING, AL_FALSE);
+		AL_CHECK(("alSourcei"));
 	}
 }
 
@@ -605,7 +611,7 @@ void IMixer::cancelAll() {
 	if (!_sources.empty()) {
 		LOG_DEBUG(("stop playing anything"));
 		for(Sources::iterator j = _sources.begin(); j != _sources.end(); ++j) {
-			deleteSource(j->second);
+			deleteSource(j->second.source);
 		}
 	}
 	_sources.clear();

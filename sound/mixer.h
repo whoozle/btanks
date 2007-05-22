@@ -80,14 +80,13 @@ private:
 	Sounds _sounds;
 	
 	struct SourceInfo {
-		int id;
 		std::string name;
 		bool loop;
-		SourceInfo(const int id, const std::string &name, const bool loop);
-		const bool operator<(const SourceInfo &other) const;
+		ALuint source;
+		SourceInfo(const std::string &name, const bool loop, const ALuint source);
 	};
 	
-	typedef std::multimap<SourceInfo, ALuint> Sources;
+	typedef std::multimap<const int, SourceInfo> Sources;
 	Sources _sources;
 	
 	typedef std::map<const std::string, std::set<std::string> > Classes;
