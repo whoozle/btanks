@@ -2,6 +2,8 @@
 <map version="0.99b" orientation="orthogonal" width="22" height="25" tilewidth="64" tileheight="64">
  <properties>
   <property name="object:road-sign:road-sign10:1" value="902,916,-660"/>
+  <property name="object:zombie:zombie:13" value="1333,884"/>
+  <property name="object:zombie:zombie:12" value="1339,733"/>
   <property name="object:zombie:zombie:11" value="1189,66"/>
   <property name="object:zombie:zombie:10" value="642,1"/>
   <property name="config:objects.thrower.targeting-range(alerted)" value="int:700"/>
@@ -20,45 +22,41 @@
   <property name="object:zombie:zombie:7" value="792,11"/>
   <property name="object:zombie:zombie:6" value="1261,152"/>
   <property name="object:zombie:zombie:4" value="47,905"/>
-  <property name="config:map.thrower.respawn-interval" value="int:1"/>
+  <property name="config:map.thrower.respawn-interval" value="int:2"/>
   <property name="object:zombie:zombie:2" value="102,1441"/>
+  <property name="object:watchtower-with-machinegunner(ally):watchtower:9" value="1056,776,250"/>
   <property name="object:zombie:zombie:1" value="198,1513"/>
   <property name="zone:timer-win:defend-base:240:1" value="@7,9:@6,6"/>
-  <property name="object:watchtower-with-machinegunner(ally):watchtower:9" value="1056,776,250"/>
   <property name="object:watchtower-with-machinegunner(ally):watchtower:8" value="991,200,250"/>
-  <property name="object:dumb-missiles-item:dumb-missiles-item:1" value="@4,8"/>
   <property name="object:watchtower-with-machinegunner(ally):watchtower:6" value="755,656,250"/>
+  <property name="object:dumb-missiles-item:dumb-missiles-item:1" value="@4,8"/>
   <property name="object:watchtower-with-machinegunner(ally):watchtower:5" value="468,786,250"/>
   <property name="object:watchtower-with-machinegunner(ally):watchtower:4" value="681,851,250"/>
   <property name="object:watchtower-with-machinegunner(ally):watchtower:3" value="544,580,250"/>
   <property name="object:watchtower-with-machinegunner(ally):watchtower:2" value="801,517,250"/>
   <property name="object:static-corpse:dead-civilian-static-3:1" value="248,108,-100"/>
   <property name="object:megaheal:megaheal:1" value="210,116"/>
-  <property name="object:smoke-missiles-item:smoke-missiles-item:3" value="735,550"/>
   <property name="object:stack:stack:4" value="267,1153"/>
-  <property name="object:impassable-static-corpse:dead-red-tank:1" value="1308,16,-100"/>
-  <property name="object:static-corpse:dead-civilian-static-2:1" value="994,667,-100"/>
+  <property name="object:smoke-missiles-item:smoke-missiles-item:3" value="735,550"/>
   <property name="object:stack:stack:3" value="924,1033"/>
+  <property name="object:static-corpse:dead-civilian-static-2:1" value="994,667,-100"/>
+  <property name="object:impassable-static-corpse:dead-red-tank:1" value="1308,16,-100"/>
   <property name="object:stack:stack:2" value="680,38"/>
-  <property name="object:machinegunner:machinegunner:9" value="1214,1534"/>
   <property name="object:mines-item:mines-item:2" value="805,862"/>
-  <property name="object:machinegunner:machinegunner:8" value="1293,858"/>
-  <property name="object:machinegunner:machinegunner:7" value="1344,733"/>
-  <property name="object:machinegunner:machinegunner:5" value="1128,1356"/>
+  <property name="object:machinegunner:machinegunner:9" value="1214,1534"/>
   <property name="object:heal:heal:1" value="1350,1255"/>
+  <property name="object:machinegunner:machinegunner:5" value="1128,1356"/>
   <property name="object:machinegunner:machinegunner:21" value="1,110"/>
   <property name="object:machinegunner:machinegunner:20" value="2,2"/>
   <property name="object:thrower-item:thrower-item:4" value="@16,5"/>
   <property name="object:thrower-item:thrower-item:3" value="478,676"/>
   <property name="object:machinegunner:machinegunner:18" value="940,1543"/>
-  <property name="object:machinegunner:machinegunner:17" value="1279,703"/>
-  <property name="object:road-sign:road-sign07:1" value="82,272,-660"/>
   <property name="object:machinegunner:machinegunner:10" value="44,74"/>
-  <property name="object:thrower:thrower:5" value="@20,12"/>
-  <property name="object:guided-missiles-item:guided-missiles-item:2" value="@13,23"/>
+  <property name="object:road-sign:road-sign07:1" value="82,272,-660"/>
   <property name="object:thrower:thrower:4" value="1011,1540"/>
-  <property name="object:guided-missiles-item:guided-missiles-item:1" value="1173,691"/>
+  <property name="object:guided-missiles-item:guided-missiles-item:2" value="@13,23"/>
   <property name="object:thrower:thrower:3" value="@0,1"/>
+  <property name="object:guided-missiles-item:guided-missiles-item:1" value="1173,691"/>
   <property name="object:thrower:thrower:2" value="1327,1485"/>
   <property name="object:thrower:thrower:1" value="115,6"/>
   <property name="object:sandworm:sandworm:1" value="@1,6"/>
@@ -66,15 +64,15 @@
   <property name="object:machinegunner-item:machinegunner-item:1" value="@0,21"/>
   <property name="object:static-mortar:yellow-mortar:2" value="1288,1371"/>
   <property name="config:multiplayer.game-type" value="string:cooperative"/>
-  <property name="config:map.machinegunner.respawn-interval" value="int:1"/>
-  <property name="config:map.zombie.respawn-interval" value="int:1"/>
+  <property name="config:map.zombie.respawn-interval" value="int:2"/>
+  <property name="config:map.machinegunner.respawn-interval" value="int:2"/>
   <property name="config:objects.thrower.targeting-range(stable)" value="int:550"/>
   <property name="object:barrack-with-machinegunners(ally):trooper-hut:save-for-victory:base-destroyed:((" value="608,694,150"/>
   <property name="config:objects.tank.dispersion.duration" value="float:10"/>
   <property name="object:oil-barrels:oil-barrels:1" value="0,186,150"/>
   <property name="object:watchtower-with-machinegunner(ally):watchtower:12" value="351,201,250"/>
-  <property name="object:static-corpse:dead-ziehharmonikaspieler-static:1" value="236,1137,-100"/>
   <property name="object:watchtower-with-machinegunner(ally):watchtower:11" value="164,1093,250"/>
+  <property name="object:static-corpse:dead-ziehharmonikaspieler-static:1" value="236,1137,-100"/>
   <property name="object:watchtower-with-machinegunner(ally):watchtower:10" value="853,1213,250"/>
   <property name="config:objects.shilka.dispersion.duration" value="float:15"/>
  </properties>
@@ -119,8 +117,8 @@
  </layer>
  <layer name="waste" width="22" height="25">
   <properties>
-   <property name="impassability" value="30"/>
    <property name="z" value="-800"/>
+   <property name="impassability" value="30"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAALNjYGCwB2K7UZps2m6ImTvU3T2SaHsqmoMeR+his4F4DoXmY5NfCsTLyDAXl9vR0xkhddjCk1hzaZEvhpq5I7F8gOUFapsLywsD7b/BTgMAOzMdYZgIAAA=
@@ -136,8 +134,8 @@
  <layer name="Sand" width="22" height="25">
   <properties>
    <property name="ai-hint:1" value="sandworm"/>
-   <property name="impassability" value="60"/>
    <property name="z" value="-700"/>
+   <property name="impassability" value="60"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAH2VzU7DMBCEtwjBG5QDByTuSIULoXBp2ltpX4OH4EHg0kr8SPCYOJJH/TxsGmkUJ1mPx7uzTh8RfcE82uu+YFm//RT84ll3jfm8K9jj2wqcN5WH85bGO7YGNeh5VnnXBc91Xc7rjWOHOI03prc3zcpFxqf4OeLmyTzFfRWcm27XzP2P8S4SLV5D1s/5V+DhXteJBte9SGLok1ldexh32GvG6/7KfJHF6Pkh2rqP8fPbUPdNtHnP1lQ+9tHmThCPPLRF3rO+0PhYfVhzvxZx6C36mHoV5/vaQR8v9aNyS79JN+Pcc8e0sue24NC7Ltqak9v7L9NAD9P/Wd3dn7xYB8VIG/VnOsmvHhG+k3jOkX7maVpwEe15lJ21ma94TnaR18g9l50P7hv5zPMq/ROri+s7dk557qX/JNr/zYDXCvIN+i6hj564LbgbyRH38VKR+U99IL1XBdd1TN63ONTuPckr/1lnyJf7fDKSJ609jf/nltfIe33g/LR5WX+x58mhGslXjxVP9T3/yR8Fp8br/Zm9z+ryB3CQdR2YCAAA
@@ -153,8 +151,8 @@
  <layer name="Sand 2" width="22" height="25">
   <properties>
    <property name="ai-hint:2" value="sandworm"/>
-   <property name="impassability" value="70"/>
    <property name="z" value="-650"/>
+   <property name="impassability" value="70"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAJVVSW7DMAzkhwT4lti3tLlFzRva/su5Os+siXLgKUPS7gCEZEkcLqJokRonms+rPNz+NdBpO5yKC82nwM7dxr7Kh30z/Ddws/MP8+3i9nuhWwGxq5/LKk9an2x+CvQUg42qN7q9u+l5P6/E6/eAhbgjqJ7mo8vfPOLOMn/BzXP2W/Xed+xWOBPfKFscqvdWcGssvv4UUb2Nxsl3BfRAB3ny/M3W4DM4B9lyyohyOgc+iFubg31GlNOsjuGDcu7ViKJJ7F/mAzin4mwE5K+yrZxRT8HZo3Z8PEt0UH5j4jurbGR3hDyjRmBfuT9NKmT1xJw8Pg/y/gfob1+rfNvaXt0ommxvmfs1v6MjtQV9xJj5d6O1wWxFdzbL69uMEPWHDGobb45rIYvbw9+lRyv8QX9qpM/nemLz6Nuu/gWI9UwScUa9pvoXZPWt4w+grh5NmAgAAA==
@@ -188,8 +186,8 @@
  <layer name="rocks" width="22" height="25">
   <properties>
    <property name="pierceable" value="true"/>
-   <property name="z" value="200"/>
    <property name="impassability" value="100"/>
+   <property name="z" value="200"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgQID9QHwQiA8xEAbpjAwMGYxEKASCk0B8GojPoInHEakfH1gNxOsoNwYDgNyM7l50EIvD/bRy01Yg3kFATTfQTT0khiso3jcA8RrynIUTgMLwFBQPNUCL+AMBUPzVUiHdowNi8iw5gFAeGAXkg24apANc9pBaJtAaDGQZSQ6AlZHUdjOuuhEGyAknYuIbucynpp9A/tkJxNsYsMcDsf4BAK5xVEWYCAAA
