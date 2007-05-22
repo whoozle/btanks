@@ -40,16 +40,16 @@
   <property name="object:road-sign:road-sign01:1" value="1190,796,1"/>
   <property name="object:guided-missiles-item:guided-missiles-item:1" value="1056,1034"/>
   <property name="object:guided-missiles-item:guided-missiles-item:0" value="1024,128,180"/>
-  <property name="object:car:white-car:1" value="@0,6"/>
-  <property name="object:road-sign:road-sign09:1" value="394,1320,1"/>
   <property name="waypoint:car:6" value="@0,6"/>
-  <property name="object:ricochet-bullets-item:ricochet-bullets-item:3" value="1201,1257,180"/>
   <property name="waypoint:car:5" value="@20,5"/>
-  <property name="object:ricochet-bullets-item:ricochet-bullets-item:2" value="10,300"/>
   <property name="waypoint:car:4" value="@20,6"/>
+  <property name="object:car:white-car:1" value="@0,6"/>
   <property name="waypoint:car:3" value="@4,6"/>
   <property name="waypoint:car:2" value="@4,5"/>
+  <property name="object:road-sign:road-sign09:1" value="394,1320,1"/>
   <property name="waypoint:car:1" value="@24,5"/>
+  <property name="object:ricochet-bullets-item:ricochet-bullets-item:3" value="1201,1257,180"/>
+  <property name="object:ricochet-bullets-item:ricochet-bullets-item:2" value="10,300"/>
   <property name="object:road-sign:road-sign08:1" value="1333,430,1"/>
   <property name="object:dispersion-bullets-item:dispersion-bullets-item:2" value="542,607"/>
   <property name="object:machinegunner-item:machinegunner-item:3" value="771,223"/>
@@ -112,7 +112,7 @@
  </layer>
  <layer name="terrain high" width="25" height="22">
   <properties>
-   <property name="impassability" value="45"/>
+   <property name="impassability" value="40"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAO1V2wrCMAxdv0DFC2xqK0xFffYHBN9WfbPb/3+JGUtYCK2KLm8GDlmzNGcnaZk3WXYD3AHSLhArElgKn3pfYP0W1whHJfZ5zJWe3vkEH+XGdDwgVrNaAdeBxT2u6bmNN6bbK/ObCAfxBATPIf6K1advlbFfjbjqFxr+9rnNTIfFwH0bQb0xYAKwAAc4DcyRQ70d4gA4As4Dc5RQb4U12z7NFXqVMw7q1UZBx55xWAUOrsMpzZzrcEozl/PQuB9yHhozJx2ad7Bk/yinrGNr+rP7TsfU9PeV+9Qcv5nHGvOs8Kl9/Fw9ARMq6cSYCAAA
@@ -120,6 +120,9 @@
   <tileproperties/>
  </layer>
  <layer name="terrain details" width="25" height="22">
+  <properties>
+   <property name="impassability" value="40"/>
+  </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgwA/8GAkogAJHoDofIHYBYnMgdoJiYoALmjoVIF+VEUE7A7EVEKsxItR7Q+3zJdIObyR1yH5CFtfFYgc1QRiVzRsFo4AQUENKcwp0SH9agyiNf2CC0L+YBtYdlAKY+z+Q4Y+RFuekAkE6ul2AEWIfiBaisr2qUPOkgbQUI4SWoZHfpBgRWI1GdgAAgmQVN5gIAAA=
   </data>
@@ -127,7 +130,7 @@
  </layer>
  <layer name="road" width="25" height="22">
   <properties>
-   <property name="impassability" value="20"/>
+   <property name="impassability" value="0"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgQAW3mRgY7jAx0BQ8BZr/jMZ2jPoDNzgFNO80E4LeC8T70cQopa8A8VUk+iIQX0YTI5aG6UUXp2ZYEauXkjgnVu+oP0b9QQoY9QfxYNQfxIOB9AcA6pmv/JgIAAA=
