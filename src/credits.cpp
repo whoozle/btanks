@@ -62,7 +62,7 @@ Credits::Credits() : _w(0), _h(0) {
 	lines.push_back("");
 
 	lines.push_back("SOUND EFFECTS");
-	lines.push_back("LEONID 'USSR' VOLKOV");
+	lines.push_back("LEONID 'DARK MATTER' VOLKOV");
 	lines.push_back("");
 	
 	lines.push_back("GAME DESIGN");
