@@ -545,6 +545,8 @@ void IMixer::tick(const float dt) {
 	if (_nosound) 
 		return;
 	//LOG_DEBUG(("tick"));
+	
+	unsigned none_src = 0;
 	for(Sources::iterator j = _sources.begin(); j != _sources.end();) {
 	TRY {
 		const SourceInfo &info = j->second;
@@ -553,7 +555,7 @@ void IMixer::tick(const float dt) {
 			//throw away non loop AL_NONE sources
 			if (!info.loop) {
 				_sources.erase(j++);
-			}// else LOG_DEBUG(("cancelled loop %d: %s", j->first, info.name.c_str()));
+			} else ++none_src; // else LOG_DEBUG(("cancelled loop %d: %s", j->first, info.name.c_str()));
 			++j;
 			continue;
 		}
@@ -571,6 +573,43 @@ void IMixer::tick(const float dt) {
 		}
 		++j;
 	} CATCH("updateObjects", {++j; continue;})
+	}
+	if (none_src != 0 && !_free_sources.empty()) {
+		if (_debug)
+			LOG_DEBUG(("recovering lost loops..."));
+		
+		ALfloat l_pos[] = { 0, 0, 0 };
+		alGetListenerfv(AL_POSITION, l_pos);
+		AL_CHECK(("alGetListenerfv(AL_POSITION)"));
+		v3<float> listener(l_pos[0], l_pos[1], l_pos[2]);
+		GET_CONFIG_VALUE("engine.sound.maximum-distance", float, md, 60.0f);
+
+		for(Sources::iterator j = _sources.begin(); j != _sources.end() && !_free_sources.empty(); ++j) {
+		SourceInfo &info = j->second;
+		TRY {
+			if (info.source != AL_NONE || !info.loop) 
+				continue;
+			
+			if (info.pos.quick_distance(listener) < md) {
+				Sounds::const_iterator si = _sounds.find(info.name);
+				assert(si != _sounds.end());
+				const Sample &sample = *si->second;
+				
+				info.source = *_free_sources.begin();
+				
+				alSourcei (info.source, AL_BUFFER,   sample.buffer);
+				AL_CHECK(("alSourcei(%08x, AL_BUFFER, %08x)", (unsigned)info.source, (unsigned)sample.buffer));
+		
+				alSourcei (info.source, AL_LOOPING, AL_TRUE);
+				AL_CHECK(("alSourcei(%08x, AL_LOOPING, AL_TRUE)", (unsigned)info.source));
+
+				alSourcePlay(info.source);
+				AL_CHECK(("alSourcePlay(%08x, '%s', resume)", (unsigned)info.source, info.name.c_str()));
+						
+				_free_sources.erase(_free_sources.begin());
+			}
+		} CATCH("recovering loops", {info.source = AL_NONE; throw;} );
+		}
 	}
 }
 
