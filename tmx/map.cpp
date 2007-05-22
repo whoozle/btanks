@@ -1194,8 +1194,8 @@ void IMap::generateXML(std::string &result) const {
 		for(PropertyMap::const_iterator i = properties.begin(); i != properties.end(); ++i) {
 			result += mrt::formatString("\t\t<property name=\"%s\" value=\"%s\"/>\n", i->first.c_str(), i->second.c_str());
 		}
+		result += "\t</properties>\n";
 	}
-	result += "\t</properties>\n";
 	
 	size_t n = _tilesets.size();
 	for(size_t i = 0; i < n; ++i) {
