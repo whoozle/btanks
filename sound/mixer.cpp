@@ -558,8 +558,8 @@ const unsigned IMixer::purgeInactiveSources() {
 		alGetSourcei(source, AL_SOURCE_STATE, &state);
 		ALenum r = alGetError();
 		
-		if (_debug)
-			LOG_DEBUG(("purgeInactiveSources: %d:%s:%08x", j->first, info.name.c_str(), (unsigned)state));
+		//if (_debug)
+		//	LOG_DEBUG(("purgeInactiveSources: %d:%s:%08x", j->first, info.name.c_str(), (unsigned)state));
 
 		if (r != AL_NO_ERROR || state != AL_PLAYING) {
 			if (r != AL_NO_ERROR)
