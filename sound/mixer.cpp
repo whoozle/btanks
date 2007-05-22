@@ -72,29 +72,29 @@ void IMixer::dumpContextAttrs() const {
 	while (data < attributes + attrSize) {
 		switch (*data) {
 			case ALC_FREQUENCY:
-				data += 1;
-				LOG_DEBUG(("ALC_FREQUENCY = %d\n", *data));
+				++data;
+				LOG_DEBUG(("ALC_FREQUENCY = %d", *data));
 				break;
 			case ALC_REFRESH:
-				data += 1;
-				LOG_DEBUG(("ALC_REFRESH = %d\n", *data));
+				++data;
+				LOG_DEBUG(("ALC_REFRESH = %d", *data));
 				break;
 			case ALC_SYNC:
-				data += 1;
-				LOG_DEBUG(("ALC_SYNC = %d\n", *data));
+				++data;
+				LOG_DEBUG(("ALC_SYNC = %d", *data));
 				break;
 			case ALC_MONO_SOURCES:
-				data += 1;
-				LOG_DEBUG(("ALC_MONO_SOURCES = %d\n", *data));
+				++data;
+				LOG_DEBUG(("ALC_MONO_SOURCES = %d", *data));
 				break;
 			case ALC_STEREO_SOURCES:
-				data += 1;
-				LOG_DEBUG(("ALC_STEREO_SOURCES = %d\n", *data));
+				++data;
+				LOG_DEBUG(("ALC_STEREO_SOURCES = %d", *data));
 				break;
 			default:
 				break;
 		}
-		data += 1;
+		++data;
 	}
 	free(attributes);
 }
