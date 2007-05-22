@@ -21,7 +21,7 @@
 
 #include "mrt/exception.h"
 #include <AL/al.h>
-#include <AL/alut.h>
+//#include <AL/alut.h>
 
 class ALException : public mrt::Exception { 
 public:
@@ -32,17 +32,7 @@ private:
 	ALenum _code;
 }; 
 
-class ALUTException : public mrt::Exception { 
-public:
-	ALUTException(const ALenum code);
-	virtual ~ALUTException() throw() {};
-	const std::string getCustomMessage();
-private: 
-	ALenum _code;
-}; 
-
 #define throw_al(r, str) throw_generic_no_default(ALException, str, (r));
-#define throw_alut(r, str) throw_generic_no_default(ALUTException, str, (r));
 
 #define AL_CHECK(fmt) { ALenum r; \
 	if ((r = alGetError()) != AL_NO_ERROR) \
@@ -53,11 +43,23 @@ private:
 	if ((r = alGetError()) != AL_NO_ERROR) \
 		LOG_ERROR(("%s: error %08x (non fatal)", (mrt::formatString fmt ).c_str(), (unsigned)r)); \
 }
+/*
+class ALUTException : public mrt::Exception { 
+public:
+	ALUTException(const ALenum code);
+	virtual ~ALUTException() throw() {};
+	const std::string getCustomMessage();
+private: 
+	ALenum _code;
+}; 
+
+#define throw_alut(r, str) throw_generic_no_default(ALUTException, str, (r));
 
 #define ALUT_CHECK(fmt) { ALenum r; \
 	if ((r = alutGetError()) != AL_NO_ERROR) \
 	throw_alut(r, fmt); \
 }
+*/
 
 #endif
 

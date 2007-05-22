@@ -27,6 +27,7 @@ const std::string ALException::getCustomMessage() {
 	return mrt::formatString("openAL error: %08x", (unsigned)_code);
 }
 
+/*
 ALUTException::ALUTException(const ALenum code): _code(code) {}
 
 const std::string ALUTException::getCustomMessage() {
@@ -34,3 +35,4 @@ const std::string ALUTException::getCustomMessage() {
 	assert(err != NULL);
 	return err;
 }
+*/

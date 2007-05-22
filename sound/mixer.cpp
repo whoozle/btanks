@@ -29,7 +29,6 @@
 #include "ogg_stream.h"
 #include "al_ex.h"
 #include "sample.h"
-#include <AL/alut.h>
 
 #include "config.h"
 #include "world.h"
@@ -56,7 +55,8 @@ void IMixer::SourceInfo::updatePV() {
 }
 
 
-IMixer::IMixer() : _no_more_sources(false), _nosound(true), _nomusic(true), _ogg(NULL), _ambient(NULL), _ogg_source(0),
+IMixer::IMixer() : alc_device(NULL), alc_context(NULL), 
+	_no_more_sources(false), _nosound(true), _nomusic(true), _ogg(NULL), _ambient(NULL), _ogg_source(0),
 	_volume_fx(1.0f), _volume_music(1.0f), _debug(false) {}
 
 void IMixer::init(const bool nosound, const bool nomusic) {
@@ -76,8 +76,24 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 	_ogg = NULL;
 	
 	TRY {
-		alutInit(NULL, NULL);
-		ALUT_CHECK(("alutInit"));
+		LOG_NOTICE(("available sound devices: \"%s\", default device: \"%s\"", 
+			alcGetString(NULL, ALC_DEVICE_SPECIFIER), alcGetString(NULL, ALC_DEFAULT_DEVICE_SPECIFIER)));
+		
+		GET_CONFIG_VALUE("engine.sound.device", std::string, device, std::string());
+		alc_device = device.empty()? alcOpenDevice(NULL): alcOpenDevice(device.c_str());
+		if (alc_device == NULL)
+			throw_ex(("alcOpenDevice failed: no device '%s' found ('' means default(NULL) device)", device.c_str()));
+
+		alc_context = alcCreateContext(alc_device, NULL);
+		if (alc_context == NULL) 
+			throw_ex(("alcCreateContext failed"));
+		
+
+		if (alcMakeContextCurrent(alc_context) == ALC_FALSE) 
+			throw_ex(("alcMakeContextCurrent(%p) failed", (void *)alc_context));
+
+		LOG_NOTICE(("opened device: %s", alcGetString(alc_device, ALC_DEVICE_SPECIFIER)));
+		LOG_NOTICE(("extensions: %s", alcGetString(alc_device, ALC_EXTENSIONS)));
 
 #	ifdef WIN32
 		GET_CONFIG_VALUE("engine.sound.preallocate-sources", bool, preallocate, true);
@@ -167,9 +183,22 @@ void IMixer::deinit() {
 		std::for_each(_sounds.begin(), _sounds.end(), delete_ptr2<Sounds::value_type>());
 		_sounds.clear();
 	}
-	if (!_nosound || !_nomusic) {
-		LOG_DEBUG(("shutting down openAL.."));
-		alutExit();
+	
+	if (alc_context != NULL) {
+		LOG_DEBUG(("destroying openAL context..."));
+		if (alcMakeContextCurrent(NULL) == ALC_FALSE) 
+			LOG_WARN(("alcMakeContextCurrent(%p) failed", (void *)alc_context));
+		
+		alcDestroyContext(alc_context);
+		alc_context = NULL;
+	}
+
+	if (alc_device != NULL) {		
+		LOG_DEBUG(("destroying openAL device..."));
+		if (alcCloseDevice(alc_device) == ALC_FALSE) {
+			LOG_WARN(("alcCloseDevice(%p)", (void *) alc_device));
+		}
+		alc_device = NULL;
 	}
 
 	_nosound = true;

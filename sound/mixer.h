@@ -24,6 +24,7 @@
 #include <map>
 #include <set>
 #include <AL/al.h>
+#include <AL/alc.h>
 #include <math/v3.h>
 #include "alarm.h"
 
@@ -67,6 +68,8 @@ public:
 	void stopAmbient();
 
 private:
+	ALCdevice * alc_device;
+	ALCcontext * alc_context;	
 
 	std::set<ALuint> _free_sources;
 	bool _no_more_sources;

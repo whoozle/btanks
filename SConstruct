@@ -145,9 +145,9 @@ if not conf.CheckLibWithHeader(al_lib, 'AL/al.h', 'c++', "ALuint s; alGenSources
 if not conf.CheckLibWithHeader('vorbisfile', 'vorbis/vorbisfile.h', 'c++', "ov_open(0, 0, 0, 0);", False):
 	Exit(1)
 
-conf.env.Append(LIBS=al_lib)
-if not conf.CheckLibWithHeader('alut', 'AL/alut.h', 'c++', "alutInit(0,0);", False):
-	Exit(1)
+#conf.env.Append(LIBS=al_lib)
+#if not conf.CheckLibWithHeader('alut', 'AL/alut.h', 'c++', "alutInit(0,0);", False):
+#	Exit(1)
 
 #if not conf.CheckLibWithHeader('fann', 'fann.h', 'c', "fann_create_standard_array(0, 0);", False):
 #	Exit(1)
