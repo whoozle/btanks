@@ -116,6 +116,11 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 	_ogg = NULL;
 	
 	TRY {
+		ALCint major = 0, minor = 0;
+		alcGetIntegerv(NULL, ALC_MAJOR_VERSION, sizeof(major), &major);
+		alcGetIntegerv(NULL, ALC_MINOR_VERSION, sizeof(minor), &minor);
+		LOG_NOTICE(("openAL version: %d.%d", major, minor));
+	
 		LOG_NOTICE(("available sound devices: \"%s\", default device: \"%s\"", 
 			alcGetString(NULL, ALC_DEVICE_SPECIFIER), alcGetString(NULL, ALC_DEFAULT_DEVICE_SPECIFIER)));
 		
