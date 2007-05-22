@@ -95,6 +95,7 @@ void AIShilka::onSpawn() {
 	//secondary weapon
 	addBonusName("machinegunner-item");
 	addBonusName("thrower-item");
+	addBonusName("mines-item");
 
 	ai::Base::onSpawn(this);
 	Shilka::onSpawn();
