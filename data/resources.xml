@@ -361,6 +361,12 @@
 
 	<sound file="submarine.ogg" />
 
+	<!-- menu sounds -->
+	<sound file="menu/select.ogg" />
+	<sound file="menu/return.ogg" />
+	<sound file="menu/change.ogg" />
+	<sound file="menu/move.ogg" />
+
 	<!-- animation tiles -->
 
 	<animation id="damage-digits" tile="../font/digits.png" model="single-tile" tile_width="10" tile_height="16" />
