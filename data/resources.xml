@@ -155,6 +155,11 @@
 		<pose id="move">0</pose>
 	</animation-model>
 
+	<animation-model id="machinegunner-bullet-animation" speed="1">
+		<pose id="shot" sound="machinegunner-bullet.ogg">0</pose>
+		<pose id="move">0</pose>
+	</animation-model>
+
 	<animation-model id="mortar-bullet-animation" speed="10">
 		<pose id="shot" sound="@cannon">0</pose>
 		<pose id="move">0,1,2,3,4,5</pose>
@@ -509,8 +514,8 @@
 	<animation id="tank-bullet" tile="bullet.png" model="bullet-animation"/>
 	<animation id="dispersion-bullet" tile="bullet16.png" model="bullet-animation"/>
 	<animation id="ricochet-bullet" tile="bullet16.png" model="bullet-animation"/>
-	<animation id="vehicle-machinegunner-bullet" tile="machinegunner_bullet.png" model="bullet-animation"/>
-	<animation id="machinegunner-bullet" tile="machinegunner_bullet2.png" model="bullet-animation"/>
+	<animation id="vehicle-machinegunner-bullet" tile="machinegunner_bullet.png" model="machinegunner-bullet-animation"/>
+	<animation id="machinegunner-bullet" tile="machinegunner_bullet2.png" model="machinegunner-bullet-animation"/>
 	<animation id="dirt-bullet" tile="dirt_bullet.png" model="bullet-animation"/>
 	<animation id="cannon-bullet" tile="cannon_bullet.png" model="bullet-animation"/>
 	<animation id="mortar-bullet" tile="mortar_bullet.png" model="mortar-bullet-animation"/>
