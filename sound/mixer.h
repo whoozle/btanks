@@ -73,6 +73,8 @@ private:
 	
 	const bool generateSource(ALuint &source);
 	void deleteSource(const ALuint source);
+	
+	const unsigned purgeInactiveSources();
 
 	bool _nosound, _nomusic;
 	

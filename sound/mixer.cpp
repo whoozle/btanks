@@ -432,6 +432,8 @@ void IMixer::playSample(const Object *o, const std::string &name, const bool loo
 		}
 	}
 	
+	purgeInactiveSources();
+	
 	const Sample &sample = *(i->second);
 	ALuint source;
 	if (!generateSource(source)) {
@@ -537,16 +539,7 @@ void IMixer::updateObject(const Object *o) {
 	}
 }
 
-void IMixer::tick(const float dt) {
-	if (_ogg != NULL && _ogg->idle()) {
-		//LOG_DEBUG(("sound thread idle"));
-		play();
-	}
-
-	if (_nosound) 
-		return;
-	//LOG_DEBUG(("tick"));
-	
+const unsigned IMixer::purgeInactiveSources() {
 	unsigned none_src = 0;
 	for(Sources::iterator j = _sources.begin(); j != _sources.end();) {
 	TRY {
@@ -575,6 +568,21 @@ void IMixer::tick(const float dt) {
 		++j;
 	} CATCH("updateObjects", {++j; continue;})
 	}
+	return none_src;
+}
+
+void IMixer::tick(const float dt) {
+	if (_ogg != NULL && _ogg->idle()) {
+		//LOG_DEBUG(("sound thread idle"));
+		play();
+	}
+
+	if (_nosound) 
+		return;
+	//LOG_DEBUG(("tick"));
+	
+	const unsigned none_src = purgeInactiveSources();
+	
 	if (none_src != 0 && !_free_sources.empty()) {
 		if (_debug)
 			LOG_DEBUG(("recovering lost loops..."));
