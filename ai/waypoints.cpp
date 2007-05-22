@@ -66,7 +66,7 @@ void Waypoints::calculate(Object *object, const float dt) {
 			//LOG_DEBUG(("%s[%d] moving to nearest waypoint at %g %g", animation.c_str(), getID(), waypoint.x, waypoint.y));
 		} else {
 			//LOG_DEBUG(("%s[%d] reached waypoint '%s'", animation.c_str(), getID(), _waypoint_name.c_str()));
-			_waypoint_name = Game->getRandomWaypoint(object->registered_name, _waypoint_name);
+			_waypoint_name = Game->getRandomWaypoint(object, _waypoint_name);
 			Game->getWaypoint(waypoint, object->registered_name, _waypoint_name);
 			//LOG_DEBUG(("%s[%d] moving to next waypoint '%s' at %g %g", animation.c_str(), getID(), _waypoint_name.c_str(), waypoint.x, waypoint.y));
 		}
@@ -76,8 +76,10 @@ void Waypoints::calculate(Object *object, const float dt) {
 	}
 	Way way;
 	if (object->calculatingPath() && object->findPathDone(way)) {
+		if (way.size() == 1)
+			way.clear();
 		if (way.empty()) {
-			LOG_DEBUG(("%s:%s[%d] no path. maybe commit a suicide?", 
+			LOG_DEBUG(("%s:%s[%d] no path. ", 
 				object->registered_name.c_str(), object->animation.c_str(), object->getID()));
 			//emit("death", NULL);
 		}
