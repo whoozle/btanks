@@ -281,7 +281,7 @@
 	<animation-model id="yellow-submarine-animation" speed="5">
 		<pose id="hold">0</pose>
 		<pose id="fade-in">0,1,2,3,4</pose>
-		<pose id="main" speed="1" sound="submarine.ogg">4,5,4,6</pose>
+		<pose id="main" speed="1">4,5,4,6</pose>
 		<pose id="fade-out">4,3,2,1,0</pose>
 	</animation-model>
 
@@ -358,6 +358,8 @@
 
 	<sound file="laugh01.ogg" class="laugh" />
 	<sound file="laugh02.ogg" class="laugh" />
+
+	<sound file="submarine.ogg" />
 
 	<!-- animation tiles -->
 

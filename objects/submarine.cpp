@@ -45,6 +45,7 @@ protected:
 void Submarine::onSpawn() {
 	play("hold", true);
 	_wakeup.set(mrt::random(5) + 5);
+	playSound("submarine", true);
 }
 
 void Submarine::tick(const float dt) {
