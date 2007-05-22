@@ -70,6 +70,8 @@ public:
 private:
 	ALCdevice * alc_device;
 	ALCcontext * alc_context;	
+	
+	void dumpContextAttrs() const;
 
 	std::set<ALuint> _free_sources;
 	bool _no_more_sources;

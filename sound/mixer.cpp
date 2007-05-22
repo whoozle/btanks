@@ -59,6 +59,46 @@ IMixer::IMixer() : alc_device(NULL), alc_context(NULL),
 	_no_more_sources(false), _nosound(true), _nomusic(true), _ogg(NULL), _ambient(NULL), _ogg_source(0),
 	_volume_fx(1.0f), _volume_music(1.0f), _debug(false) {}
 
+void IMixer::dumpContextAttrs() const {
+	ALCint attrSize;
+	ALCint *attributes;
+	ALCint *data;
+
+	alcGetIntegerv(alc_device, ALC_ATTRIBUTES_SIZE, sizeof(attrSize), &attrSize);
+	attributes = (ALCint *)malloc(attrSize * sizeof(ALCint));
+	alcGetIntegerv(alc_device, ALC_ALL_ATTRIBUTES, attrSize, attributes);
+	LOG_DEBUG(("context attrs length : %d", attrSize));
+	data = attributes;
+	while (data < attributes + attrSize) {
+		switch (*data) {
+			case ALC_FREQUENCY:
+				data += 1;
+				LOG_DEBUG(("ALC_FREQUENCY = %d\n", *data));
+				break;
+			case ALC_REFRESH:
+				data += 1;
+				LOG_DEBUG(("ALC_REFRESH = %d\n", *data));
+				break;
+			case ALC_SYNC:
+				data += 1;
+				LOG_DEBUG(("ALC_SYNC = %d\n", *data));
+				break;
+			case ALC_MONO_SOURCES:
+				data += 1;
+				LOG_DEBUG(("ALC_MONO_SOURCES = %d\n", *data));
+				break;
+			case ALC_STEREO_SOURCES:
+				data += 1;
+				LOG_DEBUG(("ALC_STEREO_SOURCES = %d\n", *data));
+				break;
+			default:
+				break;
+		}
+		data += 1;
+	}
+	free(attributes);
+}
+
 void IMixer::init(const bool nosound, const bool nomusic) {
 	if (nosound && nomusic) {
 		_nosound = _nomusic = true;
@@ -84,16 +124,25 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 		if (alc_device == NULL)
 			throw_ex(("alcOpenDevice failed: no device '%s' found ('' means default(NULL) device)", device.c_str()));
 
-		alc_context = alcCreateContext(alc_device, NULL);
+		LOG_NOTICE(("opened device: %s", alcGetString(alc_device, ALC_DEVICE_SPECIFIER)));
+		LOG_NOTICE(("extensions: %s", alcGetString(alc_device, ALC_EXTENSIONS)));
+
+/*
+		ALCint attrs[] = {
+			ALC_SYNC, AL_TRUE, 
+			ALC_INVALID, 
+		};
+*/
+		alc_context = alcCreateContext(alc_device, /* attrs */ NULL);
 		if (alc_context == NULL) 
 			throw_ex(("alcCreateContext failed"));
 		
 
 		if (alcMakeContextCurrent(alc_context) == ALC_FALSE) 
 			throw_ex(("alcMakeContextCurrent(%p) failed", (void *)alc_context));
+			
 
-		LOG_NOTICE(("opened device: %s", alcGetString(alc_device, ALC_DEVICE_SPECIFIER)));
-		LOG_NOTICE(("extensions: %s", alcGetString(alc_device, ALC_EXTENSIONS)));
+		dumpContextAttrs();
 
 #	ifdef WIN32
 		GET_CONFIG_VALUE("engine.sound.preallocate-sources", bool, preallocate, true);
