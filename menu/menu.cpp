@@ -32,6 +32,7 @@
 #include "config.h"
 #include "resource_manager.h"
 #include "menu_config.h"
+#include "sound/mixer.h"
 
 #define ITEM_SPACING 10
 
@@ -127,6 +128,7 @@ void MainMenu::activateSelectedItem() {
 		
 	const std::string &name = item->name;
 	if (item->type == "submenu") {
+		Mixer->playSample(NULL, "menu/select.ogg", false);
 		LOG_DEBUG(("entering submenu '%s'", name.c_str()));
 		if (name[0] == '#') {
 			_menu_path.push_front(MenuID(_active_item, _active_menu));
@@ -158,6 +160,8 @@ void MainMenu::activateSelectedItem() {
 
 
 void MainMenu::up() {
+	Mixer->playSample(NULL, "menu/move.ogg", false);
+
 			_items[_active_menu][_active_item]->onLeave();
 
 			if (_active_item == 0) 
@@ -168,6 +172,8 @@ void MainMenu::up() {
 }
 
 void MainMenu::down() {
+	Mixer->playSample(NULL, "menu/move.ogg", false);
+	
 			_items[_active_menu][_active_item]->onLeave();
 			if (_active_item == _items[_active_menu].size() - 1) 
 				_active_item = 0;
@@ -270,6 +276,8 @@ void MainMenu::reset() {
 const bool MainMenu::back() {
 	if (_menu_path.size() == 0) 
 		return false;
+	
+	Mixer->playSample(NULL, "menu/return.ogg", false);
 	
 	if (_active_menu[0] != '#')
 		_items[_active_menu][_active_item]->onLeave();

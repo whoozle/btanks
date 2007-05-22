@@ -25,6 +25,7 @@
 #include "finder.h"
 
 Credits::Credits() : _w(0), _h(0) {
+	Mixer->playSample(NULL, "menu/select.ogg", false);
 	GET_CONFIG_VALUE("engine.credits-tune", std::string, tune, "glory.ogg");
 	Mixer->play(Finder->find("tunes/" + tune), true);
 	
@@ -129,5 +130,6 @@ void Credits::render(const float dt, sdlx::Surface &surface) {
 }
 
 Credits::~Credits() {
+	Mixer->playSample(NULL, "menu/return.ogg", false);
 	Mixer->play();
 }
