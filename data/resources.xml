@@ -112,9 +112,24 @@
 		<pose id="main">0,1,2,3,4</pose>
 	</animation-model>
 
-	<animation-model id="item-animation" speed="10">
+	<animation-model id="item-animation-1" speed="10">
 		<pose id="main">0,1,2,3,4</pose>
-		<pose id="take" speed="8">5,6,7</pose>
+		<pose id="take" speed="8" sound="taking-item-1.ogg">5,6,7</pose>
+	</animation-model>
+
+	<animation-model id="item-animation-2" speed="10">
+		<pose id="main">0,1,2,3,4</pose>
+		<pose id="take" speed="8" sound="taking-item-2.ogg">5,6,7</pose>
+	</animation-model>
+
+	<animation-model id="item-animation-3" speed="10">
+		<pose id="main">0,1,2,3,4</pose>
+		<pose id="take" speed="8" sound="taking-item-3.ogg">5,6,7</pose>
+	</animation-model>
+
+	<animation-model id="item-animation-4" speed="10">
+		<pose id="main">0,1,2,3,4</pose>
+		<pose id="take" speed="8" sound="taking-item-4.ogg">5,6,7</pose>
 	</animation-model>
 
 	<animation-model id="smoke-animation" speed="10">
@@ -469,21 +484,21 @@
 	<animation id="dirt" tile="dirt.png" model="dirt-animation" size="128" />
 
 	<!-- pickable items -->
-	<animation id="heal" tile="heal.png" model="item-animation"/>
-	<animation id="megaheal" tile="megaheal.png" model="item-animation"/>
+	<animation id="heal" tile="heal.png" model="item-animation-3"/>
+	<animation id="megaheal" tile="megaheal.png" model="item-animation-3"/>
 	
-	<animation id="guided-missiles-item" tile="missile01_item.png" model="item-animation" />
-	<animation id="smoke-missiles-item" tile="missile02_item.png" model="item-animation" />
-	<animation id="dumb-missiles-item" tile="missile03_item.png" model="item-animation" />
-	<animation id="nuke-missiles-item" tile="missile04_item.png" model="item-animation" />
-	<animation id="boomerang-missiles-item" tile="missile05_item.png" model="item-animation" />
-	<animation id="stun-missiles-item" tile="missile06_item.png" model="item-animation" />
-	<animation id="mines-item" tile="mine_item.png" model="item-animation" />
-	<animation id="dirt-bullets-item" tile="dirt_item.png" model="item-animation" />
-	<animation id="dispersion-bullets-item" tile="dispersion_item.png" model="item-animation" />
-	<animation id="ricochet-bullets-item" tile="ricochet_item.png" model="item-animation" />
-	<animation id="machinegunner-item" tile="machinegunner_item.png" model="item-animation" />
-	<animation id="thrower-item" tile="thrower_item.png" model="item-animation" />
+	<animation id="guided-missiles-item" tile="missile01_item.png" model="item-animation-2" />
+	<animation id="smoke-missiles-item" tile="missile02_item.png" model="item-animation-2" />
+	<animation id="dumb-missiles-item" tile="missile03_item.png" model="item-animation-2" />
+	<animation id="nuke-missiles-item" tile="missile04_item.png" model="item-animation-2" />
+	<animation id="boomerang-missiles-item" tile="missile05_item.png" model="item-animation-2" />
+	<animation id="stun-missiles-item" tile="missile06_item.png" model="item-animation-2" />
+	<animation id="mines-item" tile="mine_item.png" model="item-animation-2" />
+	<animation id="dirt-bullets-item" tile="dirt_item.png" model="item-animation-1" />
+	<animation id="dispersion-bullets-item" tile="dispersion_item.png" model="item-animation-1" />
+	<animation id="ricochet-bullets-item" tile="ricochet_item.png" model="item-animation-1" />
+	<animation id="machinegunner-item" tile="machinegunner_item.png" model="item-animation-4" />
+	<animation id="thrower-item" tile="thrower_item.png" model="item-animation-4" />
 	<animation id="skotobaza" tile="skotobaza.png" model="single-tile" tile_width="128" tile_height="64" />
 	
 	<!-- end of items -->
