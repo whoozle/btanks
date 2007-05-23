@@ -678,6 +678,7 @@ const unsigned IMixer::purgeInactiveSources() {
 			//throw away non loop AL_NONE sources
 			if (!info.loop) {
 				_sources.erase(j++);
+				continue;
 			} else ++none_src; // else LOG_DEBUG(("cancelled loop %d: %s", j->first, info.name.c_str()));
 			++j;
 			continue;
