@@ -199,6 +199,7 @@ TRY {
 		mrt::Serializator s(&message.data);
 		deserializeSlots(s);
 		World->applyUpdate(s, _trip_time / 1000.0);
+		GameMonitor->deserialize(s);
 		break;
 	} 
 	case Message::PlayerState: {
@@ -705,6 +706,7 @@ void IPlayerManager::tick(const unsigned int now, const float dt) {
 				mrt::Serializator s;
 				serializeSlots(s);
 				World->generateUpdate(s, true);
+				GameMonitor->serialize(s);
 				m.data = s.getData();
 			}
 			LOG_DEBUG(("sending world update... (size: %u)", (unsigned)m.data.getSize()));
