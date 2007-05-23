@@ -539,7 +539,7 @@ void IMixer::playSample(const Object *o, const std::string &name, const bool loo
 			alSourcei (source, AL_SOURCE_RELATIVE, AL_FALSE     );
 			AL_CHECK(("alSourcei(%08x, AL_SOURCE_RELATIVE, AL_FALSE)", source));
 		} else {
-			alSource3f(source, AL_POSITION,        0.0, 0.0, 0.0);
+			alSource3f(source, AL_POSITION,        0.0, 0.0, 0.1); //workaround nvopenal.dll bug.
 			AL_CHECK(("alSource3f(%08x, AL_POSITION)", source));
 			alSource3f(source, AL_VELOCITY,        0.0, 0.0, 0.0);
 			AL_CHECK(("alSource3f(%08x, AL_VELOCITY)", source));
