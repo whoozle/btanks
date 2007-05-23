@@ -1,0 +1,165 @@
+<?xml version="1.0"?>
+<map version="0.99b" orientation="orthogonal" width="18" height="18" tilewidth="64" tileheight="64">
+ <properties>
+  <property name="object:traffic-lights:traffic-lights:3" value="456,236"/>
+  <property name="object:traffic-lights:traffic-lights:2" value="452,68"/>
+  <property name="object:traffic-lights:traffic-lights:1" value="624,66"/>
+  <property name="object:tent-top:tent-top:2" value="307,20,500"/>
+  <property name="object:road-sign:road-sign08:2" value="942,811"/>
+  <property name="spawn:4" value="128,704"/>
+  <property name="spawn:3" value="955,705"/>
+  <property name="spawn:2" value="544,27"/>
+  <property name="spawn:1" value="544,1085"/>
+  <property name="object:tent:tent-right:1" value="411,1102,100"/>
+  <property name="object:umbrella:umbrella:3" value="436,819"/>
+  <property name="object:lodge:lodge:1" value="143,998,100"/>
+  <property name="object:stall:stall-right:2" value="356,21,510"/>
+  <property name="object:bus-stop:bus-stop-right:1" value="974,465"/>
+  <property name="object:stall:stall-right:1" value="127,435,510"/>
+  <property name="object:stall:stall-left:3" value="978,1055"/>
+  <property name="object:bus-stop:bus-stop-left:1" value="127,329,500"/>
+  <property name="object:stall:stall-left:2" value="258,20,510"/>
+  <property name="object:stall:stall-left:1" value="968,431,100"/>
+  <property name="object:traffic-lights:traffic-lights:6" value="454,1064"/>
+  <property name="object:traffic-lights:traffic-lights:5" value="624,1062"/>
+  <property name="object:traffic-lights:traffic-lights:4" value="624,236"/>
+ </properties>
+ <tileset name="Untitled" firstgid="1" tilewidth="64" tileheight="64">
+  <image source="../tilesets/terrains.png"/>
+ </tileset>
+ <tileset name="Untitled" firstgid="211" tilewidth="64" tileheight="64">
+  <image source="../tilesets/fences.png"/>
+ </tileset>
+ <tileset name="Untitled" firstgid="331" tilewidth="64" tileheight="64">
+  <image source="../tilesets/objects.png"/>
+ </tileset>
+ <tileset name="Untitled" firstgid="421" tilewidth="64" tileheight="64">
+  <image source="../tilesets/houses.png"/>
+ </tileset>
+ <tileset name="Untitled" firstgid="601" tilewidth="64" tileheight="64">
+  <image source="../tilesets/destroyed_houses.png"/>
+ </tileset>
+ <tileset name="Untitled" firstgid="701" tilewidth="64" tileheight="64">
+  <image source="../tilesets/destruction.png"/>
+ </tileset>
+ <tileset name="Untitled" firstgid="801" tilewidth="64" tileheight="64">
+  <image source="../tilesets/trees.png"/>
+ </tileset>
+ <tileset name="Untitled" firstgid="921" tilewidth="64" tileheight="64">
+  <image source="../tilesets/animated.png"/>
+ </tileset>
+ <tileset name="road" firstgid="1021" tilewidth="64" tileheight="64">
+  <image source="../tilesets/roads.png"/>
+ </tileset>
+ <layer name="the plan" width="18" height="18">
+  <properties>
+   <property name="impassability" value="30"/>
+   <property name="z" value="-1000"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAFNgYGBQBGIFCmktINamAk2pOwaDe7CxFcmwHxtbG4sd5NCKDJh2kENrU+gOGD2afkbdMxjcAwBzI+8MEAUAAA==
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="road" width="18" height="18">
+  <properties>
+   <property name="impassability" value="0"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAL1T0QrDMAgUGmhpn0q3p4z2aWP9/+8bW8YiPYJRS8uEIwb0ohcl0i0Golswghx2TxwPB0+fYoYMyX81RO9mu9fOS8I1Q/LHhAnutdOyf+uDNgt91/RZFO4IWmh6jEav3h6sOEnTLvxgxZVa4DvMUXJ962HNOLcFdPAO5/JcIlfMPuaV+nnrmZQ5PKIP2pn/hTMn7SP/h1bPU5i72p6uO3fF2+sHWRAtwxAFAAA=
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="dirt" width="18" height="18">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAJNiYGCQgmI1IFZGYqMDZSS1yGqUsagdboANiNmRaA4saljR1LEh8UEAFm7SSDS+cEZWNwtKUwr4gViACuYMNgALJ1oDUNzMQuLPZMAeh6SYRYkZyGZRasYoYGAAAPW/l4wQBQAA
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="details" width="18" height="18">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGPxAjIU65mhRyZyBAFID7QB6AmA8MRETV0Sq0weqMcaiDiRmQEKa4MOjlp8EcyyBanWwqNcGilmR6G90s1DMIDYckdxlC8VEuQMLwJZXycm/2PIqPfIvAKZVyV0QBQAA
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="tracks" width="18" height="18">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAALVTiwqAIAz0G8syiHz9/0dkoDSOObXHwZib23lOVOqGSRZJ7CtrxeRtMkd8zHwWOEPe3yp80hlvsX7E4wfzkoZrHtzsnmqQUN7DCXp6wPWgHow5BIh1soX4Seil8yreVWr3zInQjTNGMH/EczT2e//NdWc6S8Rf797Dy9VgDnmf6kGYRs8Jz8P/KxAFAAA=
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="Layer 14" width="18" height="18">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAUgEAfE8QPtiFHAkDTQDhgFIxoAABJT+68QBQAA
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="buildings details" width="18" height="18">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGN4glpmBIQ6I45lR2aSCdDL0YAOFVDJnFJAOFJlQMblAG8kMbQrMgZlFqRmjgHoAANjAaK0QBQAA
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="trees 0" width="18" height="18">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGP4gjhkVxzOTZ04GMyrOJNOcImZUXEymOaNgFIwCVBBIYV4CAAfZ4OcQBQAA
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="objects" width="18" height="18">
+  <properties>
+   <property name="pierceable" value="true"/>
+   <property name="impassability" value="100"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgwAQFjFgEgSCERPFRMDIAKP59kNJAPJCdgCVN4BLHBTKBarOwqMclPtIAJeGMHF+j4YwAAE4FH6sQBQAA
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="trees low" width="18" height="18">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGJwggZmBIRaI44A4npl8c7KAetOBOAOIM4G4AYgbkcwj1o4SoHwhEBcBcTEQTwHiqUh6kO3ABwqh8sXMCIwuX4RFnJqgiIZmg4Ai0HwlLHaYAsXMSLBbG6jWBIt6e6CYA439MBSAOjAMNLCEgyZQTIuE8DHEEZ7GOMKfmiAWaj4sbYDyfSIQJwFxMpLdhNJOOlQOljZA+T4biHOAOBdJH6G0AwCPY2KMEAUAAA==
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="buildings" width="18" height="18">
+  <properties>
+   <property name="impassability" value="100"/>
+   <property name="z" value="400"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAK2TPQ+CMBCGe7c5OCE6ibggyuJvd9DFJro4yOKg/8e7tBdToNQ2vMnlSHs8ua9qUEqTfchENSq1R9XTy8bqzj98vhqIT9F2Io6oIl4eYGZ0v0BTQ2X9Et2aSvreBDhrui/Q1FBaf0S3poOnt6IdGuMZNGjiZ9Y3E/TmRLM6g6k31JcxXYlxA1NvqC9jehDjCf6d6+bpy5t38A39c1FhZyzKE/Ou8ccSRjfv+Z9cYQ0xWFlEfr7+xXLGlMqRnWO7QDpHdo7tDu67jdln2Tm2Ftx3+wUyuuaIEAUAAA==
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="Layer 8" width="18" height="18">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAWjYBSMglEAAgCc28dnEAUAAA==
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="trees high" width="18" height="18">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNggAB7ZgYGB2YGrKAQKF4ExMVo8ilAfioQp+HQRw2QADQ7EYiTgDiZAnuygHqzgTgHiHMpMKcEqLcUiMuAuJwIc2KBauKoED7pQDMyqGBOIZXjClv8awL5WljsQRdHTj/5QFyApscYj1tNkOTykPRXAnEVmX6soFA/PkCtPIIcRsSEMyz9xaOpQ/YjKJxNsJiDLA5Lf5l4/IHNHnSAqyxBBoTsIRYQsgcE0MsXABAZ3ooQBQAA
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="rooftops" width="18" height="18">
+  <properties>
+   <property name="z" value="1000"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAL3TwQ6CMAwG4K73GSOXReGCGm7w7l58BX0ru7AmZQHWscUm/237Av0BoM6cEOAccsG88zI9ZaLcKK3CceFsHO/cFfdT8w/H4rwPzd7cxl7YeFCeSmvPuIbE1qBwG5yfcxTOpOwzdqywjhh+Olxaewb3sNaHf3e2UsN9b/XOVqnDVg1HM334JqTzMgBvk+fwfyv7+JDxzXTWpsT5ASdkdBsQBQAA
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="objects" width="18" height="18">
+  <properties>
+   <property name="impassability" value="100"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAXDCYQzMjBEMFJuTiLQjCQqmJMNNCOHCuaMglFADwAATczqrBAFAAA=
+  </data>
+  <tileproperties/>
+ </layer>
+</map>
