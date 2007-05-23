@@ -259,6 +259,12 @@ void Layer::serialize(mrt::Serializator &s) const {
 	s.add(frames);
 	s.add(frame_size);
 	s.add(_data);
+
+	s.add((int)properties.size());
+	for(PropertyMap::const_iterator i = properties.begin(); i != properties.end(); ++i) {
+		s.add(i->first);
+		s.add(i->second);
+	}
 }
 
 void Layer::deserialize(const mrt::Serializator &s) {
@@ -275,6 +281,15 @@ void Layer::deserialize(const mrt::Serializator &s) {
 	s.get(frames);
 	s.get(frame_size);
 	s.get(_data);
+
+	int pn;
+	s.get(pn);
+	while(pn--) {
+		std::string name, value;
+		s.get(name);
+		s.get(value);
+		properties.insert(PropertyMap::value_type(name, value));
+	}
 }
 
 Layer::~Layer() { }
