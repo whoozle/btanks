@@ -139,10 +139,11 @@ void Bullet::calculate(const float dt) {
 
 void Bullet::onSpawn() {
 	if (_type == "dispersion") {
+		_variants.remove("auto-aim"); //no auto aim! 
 		GET_CONFIG_VALUE("objects.dispersion-bullet.clone-interval", float, ci, 0.1f);
 		_clone.set(ci);
 	} else {
-		GET_CONFIG_VALUE("objects.dispersion-bullet.clone-interval", float, ci, 0.05f);
+		GET_CONFIG_VALUE("engine.auto-aim.checking-interval", float, ci, 0.05f);
 		_clone.set(ci);
 	}
 

@@ -150,6 +150,12 @@
 		<pose id="missile-1-hold">0</pose>
 	</animation-model>
 
+	<animation-model id="dispersion-bullet-animation" speed="1">
+		<!-- do not use any sounds here. it's dangerous -->
+		<pose id="shot">0</pose>
+		<pose id="move">0</pose>
+	</animation-model>
+
 	<animation-model id="bullet-animation" speed="1">
 		<pose id="shot" sound="@cannon">0</pose>
 		<pose id="move">0</pose>
@@ -520,7 +526,7 @@
 	
 	<animation id="bullet" tile="bullet.png" model="bullet-animation"/>
 	<animation id="tank-bullet" tile="bullet.png" model="bullet-animation"/>
-	<animation id="dispersion-bullet" tile="bullet16.png" model="bullet-animation"/>
+	<animation id="dispersion-bullet" tile="bullet16.png" model="dispersion-bullet-animation"/>
 	<animation id="ricochet-bullet" tile="bullet16.png" model="bullet-animation"/>
 	<animation id="vehicle-machinegunner-bullet" tile="machinegunner_bullet.png" model="machinegunner-bullet-animation"/>
 	<animation id="machinegunner-bullet" tile="machinegunner_bullet2.png" model="machinegunner-bullet-animation"/>
