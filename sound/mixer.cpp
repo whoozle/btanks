@@ -543,6 +543,9 @@ void IMixer::playSample(const Object *o, const std::string &name, const bool loo
 	TRY {
 		if (_debug)
 			LOG_DEBUG(("playSample('%s', %s, %g)", name.c_str(), loop?"loop":"once", _volume_fx * gain));
+
+		alSourcei (source, AL_BUFFER,   sample.buffer);
+		AL_CHECK(("alSourcei(%08x, AL_BUFFER, %08x)", (unsigned)source, (unsigned)sample.buffer));
 		
 		if (o) {
 			ALfloat al_pos[] = { pos.x / k, -pos.y / k, 0*o->getZ() / k };
@@ -573,9 +576,6 @@ void IMixer::playSample(const Object *o, const std::string &name, const bool loo
 		//GET_CONFIG_VALUE("engine.sound.maximum-distance", float, max_dist, 800.0);
 		//float max_dist_al = max_dist / k;
 				
-		alSourcei (source, AL_BUFFER,   sample.buffer);
-		AL_CHECK(("alSourcei(%08x, AL_BUFFER, %08x)", (unsigned)source, (unsigned)sample.buffer));
-		
 		alSourcef (source, AL_PITCH,    1.0          );
 		AL_CHECK(("alSourcef(%08x, AL_PITCH, 1.0)", source));
 		alSourcef (source, AL_GAIN,     _volume_fx * gain  );
