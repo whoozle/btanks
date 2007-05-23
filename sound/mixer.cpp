@@ -162,13 +162,18 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 		//LOG_NOTICE(("default device reported by openal: \"%s\"", alcGetString(NULL, ALC_DEFAULT_DEVICE_SPECIFIER)));
 		
 		GET_CONFIG_VALUE("engine.sound.device", std::string, device, std::string());
+
 		if (device.empty()) {
 			//autoconfiguring
 			if (!device_list.empty()) {
 				device = device_list[0];
 			}
 		}
-		
+		if (device.empty()) {
+			LOG_DEBUG(("using default device"));
+		} else {
+			LOG_DEBUG(("using device \"%s\"", device.c_str()));		
+		}
 		alc_device = device.empty()? alcOpenDevice(NULL): alcOpenDevice(device.c_str());
 		if (alc_device == NULL)
 			throw_ex(("alcOpenDevice failed: no device '%s' found ('' means default(NULL) device)", device.c_str()));
