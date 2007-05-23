@@ -38,13 +38,15 @@ public:
 	virtual bool onMouseMotion(const int state, const int x, const int y, const int xrel, const int yrel);
 	virtual ~Control() {}
 	
+	void invalidate(const bool play_sound = false);
 	inline const bool changed() const { return _changed; } 
 	inline void reset() { _changed = false; }
 	
 	inline void hide(const bool hide = true) { _hidden = hide; }
 	inline const bool hidden() const { return _hidden; }
-protected: 
+private: 
 	bool _changed;
+protected: 
 	bool _hidden;
 };
 

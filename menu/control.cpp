@@ -17,6 +17,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 #include "control.h"
+#include "sound/mixer.h"
 
 Control::Control() : _changed(false), _hidden(false) {}
 
@@ -33,4 +34,10 @@ bool Control::onMouse(const int button, const bool pressed, const int x, const i
 
 bool Control::onMouseMotion(const int state, const int x, const int y, const int xrel, const int yrel) {
 	return false;
+}
+
+void Control::invalidate(const bool play_sound) {
+	if (play_sound)
+		Mixer->playSample(NULL, "menu/change.ogg", false);
+	_changed = true;
 }
