@@ -101,14 +101,14 @@ void Chooser::set(const int i) {
 	if (i < 0 || i >= _n)
 		throw_ex(("set(%d) is greater than available options (%d)", i, _n));
 	_i = i;
-	_changed = true;
+	invalidate();
 }
 
 void Chooser::set(const std::string &name) {
 	for(int i = 0; i < _n; ++i) {
 		if (strcasecmp(name.c_str(), _options[i].c_str()) == 0) {
 			_i = i;
-			_changed = true;
+			invalidate();
 			return;
 		}
 	}
@@ -121,7 +121,7 @@ void Chooser::left() {
 		if (_i < 0)
 			_i = _n - 1;
 	} while(_disabled[_i]);
-	_changed = true;	
+	invalidate(true);
 }
 
 void Chooser::right() {
@@ -130,7 +130,7 @@ void Chooser::right() {
 		if (_i >= _n)
 			_i = 0;
 	} while(_disabled[_i]);
-	_changed = true;
+	invalidate(true);
 }
 
 void Chooser::disable(const int i, const bool value) {

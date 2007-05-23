@@ -80,12 +80,12 @@ bool UpperBox::onMouse(const int button, const bool pressed, const int x, const 
 	if (_on_area.in(x, y)) {
 		//LOG_DEBUG(("split screen on!"));
 		Config->set("multiplayer.split-screen-mode", true);
-		_changed = true;
+		invalidate();
 		return true;
 	} else if (_off_area.in(x, y)) {
 		//LOG_DEBUG(("split screen off!"));
 		Config->set("multiplayer.split-screen-mode", false);
-		_changed = true;
+		invalidate();
 		return true;
 	}
 	return false;

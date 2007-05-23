@@ -125,17 +125,17 @@ public :
 		if (_type->changed()) {
 			_type->reset();
 			config.type = _type->getValue();
-			_changed = true;
+			invalidate();
 			//LOG_DEBUG(("type changed"));
 		}
 		if (_vehicle->changed()) {
 			_vehicle->reset();
 			config.vehicle = _vehicle->getValue();
-			_changed = true;
+			invalidate();
 			//LOG_DEBUG(("vehicle changed"));
 		}
 
-		if (_changed)
+		if (changed())
 			MenuConfig->update(map.name, variant, slot, config);
 	}
 

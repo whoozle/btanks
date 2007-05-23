@@ -20,6 +20,12 @@
 #include "resource_manager.h"
 #include "sdlx/font.h"
 #include "config.h"
+#include "sound/mixer.h"
+
+void TextControl::changing() const {
+	Mixer->playSample(NULL, "menu/change.ogg", false);
+}
+
 
 HostTextControl::HostTextControl(const std::string &font) : TextControl(font) {}
 
@@ -63,12 +69,12 @@ bool TextControl::onKey(const SDL_keysym sym) {
 	switch(sym.sym) {
 	case SDLK_ESCAPE: 
 		_text = _value;
-		_changed = true;
+		invalidate();
 		break;
 
 	case SDLK_RETURN: 
 		_value = _text;
-		_changed = true;
+		invalidate();
 		break;
 
 	case SDLK_LEFT: 
@@ -103,6 +109,7 @@ bool TextControl::onKey(const SDL_keysym sym) {
 		}
 	}
 	}
+	changing();
 	return true;
 }
 

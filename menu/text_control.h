@@ -42,6 +42,8 @@ public:
 	virtual const bool validate(const int c) const { return true; }
 
 private: 
+	void changing() const;
+
 	const sdlx::Font *_font; 
 	std::string _text, _value;
 	Alarm _blink;

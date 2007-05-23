@@ -19,7 +19,7 @@ bool Checkbox::onMouse(const int button, const bool pressed, const int x, const 
 	if (pressed) 
 		return true;
 	_state = !_state;
-	_changed = true;
+	invalidate(true);
 	return true;
 }
 

@@ -59,17 +59,17 @@ void Prompt::tick(const float dt) {
 	Container::tick(dt);
 	if (_text->changed()) {
 		_text->reset();
-		_changed = true;
+		invalidate();
 		value = _text->get();
 	}
 	if (_b_ok->changed()) {
 		_b_ok->reset();
 		value = _text->get();
-		_changed = true;
+		invalidate();
 	} else if (_b_back->changed()) {
 		_b_back->reset();
 		_text->set(value);
-		_changed = true;
+		invalidate();
 	}
 }
 

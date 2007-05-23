@@ -61,7 +61,7 @@ bool Slider::onMouse(const int button, const bool pressed, const int x, const in
 			int dir = math::sign(x - xp);
 			_value += dir / (float)_n;
 			validate();
-			_changed = true;
+			invalidate();
 		}
 	}	
 	return false;
@@ -77,7 +77,7 @@ bool Slider::onMouseMotion(const int state, const int x, const int y, const int 
 	int w = _tiles->getWidth() / 2;
 	_value += 1.0 * xrel / w / _n;
 	validate();
-	_changed = true;
+	invalidate();
 	//LOG_DEBUG(("tracking mouse: %d %d %d %d", x, y, xrel, yrel));
 	
 	return true;
@@ -86,7 +86,7 @@ bool Slider::onMouseMotion(const int state, const int x, const int y, const int 
 void Slider::set(const float value) {
 	_value = value;
 	validate();
-	_changed = true;
+	invalidate();
 }
 
 void Slider::validate() {
