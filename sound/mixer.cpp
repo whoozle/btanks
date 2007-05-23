@@ -143,8 +143,14 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 		alcGetIntegerv(NULL, ALC_MINOR_VERSION, sizeof(minor), &minor);
 		LOG_NOTICE(("openAL version: %d.%d", major, minor));
 	
-		LOG_NOTICE(("available sound devices: \"%s\", default device: \"%s\"", 
-			alcGetString(NULL, ALC_DEVICE_SPECIFIER), alcGetString(NULL, ALC_DEFAULT_DEVICE_SPECIFIER)));
+		const ALchar *name = alcGetString(NULL, ALC_DEVICE_SPECIFIER);
+		while(name[0]) {
+			int len = strlen(name);
+			LOG_NOTICE(("found device: \"%s\"", name));
+			name += len + 1;
+		}
+	
+		LOG_NOTICE(("default device: \"%s\"", alcGetString(NULL, ALC_DEFAULT_DEVICE_SPECIFIER)));
 		
 		GET_CONFIG_VALUE("engine.sound.device", std::string, device, std::string());
 		alc_device = device.empty()? alcOpenDevice(NULL): alcOpenDevice(device.c_str());
