@@ -155,6 +155,8 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 			}
 			//place for other openal implementations ;))))
 			LOG_NOTICE(("found device: \"%s\"%s", name, blacklisted?" (blacklisted)":""));
+			if (!blacklisted)
+				device_list.push_back(sname);
 			
 			name += sname.size() + 1;
 		}
