@@ -226,6 +226,7 @@ void IGameMonitor::disable(const std::string &classname, const bool value) {
 #include "mrt/serializator.h"
 
 void IGameMonitor::serialize(mrt::Serializator &s) const {
+TRY {
 	s.add(_game_over);
 
 	int n = (int)_specials.size();
@@ -244,9 +245,11 @@ void IGameMonitor::serialize(mrt::Serializator &s) const {
 	std::set<std::string>::const_iterator i = _disabled.begin();
 	while(n--) 
 		s.add(*i++);
+} CATCH("serialize", throw);
 }
 
 void IGameMonitor::deserialize(const mrt::Serializator &s) {
+TRY {
 	s.get(_game_over);
 
 	int n;
@@ -272,4 +275,5 @@ void IGameMonitor::deserialize(const mrt::Serializator &s) {
 		s.get(d);
 		_disabled.insert(d);
 	}
+} CATCH("deserialize", throw);
 }
