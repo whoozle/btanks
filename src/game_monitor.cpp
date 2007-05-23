@@ -242,9 +242,10 @@ TRY {
 	s.add(_timer);
 
 	n = (int)_disabled.size();
-	std::set<std::string>::const_iterator i = _disabled.begin();
-	while(n--) 
-		s.add(*i++);
+	s.add(n);
+	for(std::set<std::string>::const_iterator i = _disabled.begin(); i != _disabled.end(); ++i) {
+		s.add(*i);
+	}
 } CATCH("serialize", throw);
 }
 
