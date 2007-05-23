@@ -668,7 +668,8 @@ void IGame::onTick(const float dt) {
 		}
 
 		if (_map_loaded && _credits == NULL && Window->running() && !_paused) {
-			GameMonitor->checkItems(dt);
+			if (!PlayerManager->isClient())
+				GameMonitor->checkItems(dt);
 			PlayerManager->updatePlayers();
 			
 			Map->tick(dt);
