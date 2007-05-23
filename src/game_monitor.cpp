@@ -33,16 +33,19 @@ IMPLEMENT_SINGLETON(GameMonitor, IGameMonitor);
 IGameMonitor::IGameMonitor() : _game_over(false), _check_items(0.5, true), _state_timer(false), _timer(0) {}
 
 void IGameMonitor::checkItems(const float dt) {	
+	const bool client = PlayerManager->isClient();
+
 	if (!_timer_message.empty() && _timer > 0) {
 		_timer -= dt;
 		if (_timer <= 0) {
-			gameOver(_timer_message_area, _timer_message, 5);
+			if (!client)
+				gameOver(_timer_message_area, _timer_message, 5);
 			_timer = 0;
 			return;
 		}
 	}
 	
-	if (_game_over || !_check_items.tick(dt))
+	if (client || _game_over || !_check_items.tick(dt))
 		return;
 		
 	int goal = 0, goal_total = 0;
