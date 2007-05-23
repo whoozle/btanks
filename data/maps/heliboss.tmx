@@ -1,118 +1,163 @@
 <?xml version="1.0"?>
 <map version="0.99b" orientation="orthogonal" width="18" height="18" tilewidth="64" tileheight="64">
  <properties>
+  <property name="object:stall:stall-right:2" value="356,21,510"/>
+  <property name="object:stall:stall-right:1" value="127,435,510"/>
+  <property name="object:dumb-missiles-item:dumb-missiles-item:3" value="33,994,2150"/>
+  <property name="object:dumb-missiles-item:dumb-missiles-item:2" value="@2,13"/>
+  <property name="edge:9:10" value="1"/>
+  <property name="object:dumb-missiles-item:dumb-missiles-item:1" value="@10,5"/>
+  <property name="object:teleport(d):teleport:9" value="1042,664,1900"/>
+  <property name="object:teleport(d):teleport:10" value="961,1010,-10"/>
+  <property name="edge:17:3" value="1"/>
+  <property name="edge:21:22" value="1"/>
+  <property name="object:car:cyan-car:1" value="@14,16"/>
+  <property name="object:static-mortar:cyan-mortar:3" value="@7,8"/>
+  <property name="edge:19:20" value="1"/>
+  <property name="config:map.default-impassability" value="int:100"/>
+  <property name="object:bus-stop:bus-stop-right:1" value="974,465"/>
+  <property name="edge:13:1" value="1"/>
+  <property name="edge:5:11" value="1"/>
+  <property name="edge:26:29" value="1"/>
+  <property name="edge:26:27" value="1"/>
+  <property name="object:teleport(a):teleport:2" value="545,626,1900"/>
+  <property name="object:teleport(a):teleport:1" value="546,878,-10"/>
+  <property name="object:tent:tent-top:2" value="307,20,500"/>
+  <property name="object:guided-missiles-item:guided-missiles-item:2" value="@2,17"/>
+  <property name="object:guided-missiles-item:guided-missiles-item:1" value="@16,0"/>
+  <property name="object:road-sign:road-sign05:1" value="624,12"/>
+  <property name="edge:6:26" value="1"/>
+  <property name="edge:1:14" value="1"/>
+  <property name="object:oil-barrels:oil-barrels:27" value="35,580"/>
+  <property name="object:oil-barrels:oil-barrels:26" value="3,567"/>
+  <property name="object:oil-barrels:oil-barrels:25" value="344,279"/>
+  <property name="waypoint:car:9" value="@4,10"/>
+  <property name="object:oil-barrels:oil-barrels:24" value="336,247"/>
+  <property name="object:car:orange-bus:3" value="@7,6"/>
+  <property name="waypoint:car:8" value="@4,15"/>
+  <property name="object:oil-barrels:oil-barrels:23" value="301,1108"/>
+  <property name="object:car:orange-bus:2" value="@17,2"/>
+  <property name="waypoint:car:7" value="@13,15"/>
+  <property name="object:oil-barrels:oil-barrels:22" value="360,1111"/>
+  <property name="object:car:orange-bus:1" value="@0,12"/>
+  <property name="waypoint:car:6" value="@13,12"/>
+  <property name="object:oil-barrels:oil-barrels:21" value="349,1075"/>
+  <property name="waypoint:car:5" value="@13,7"/>
+  <property name="object:oil-barrels:oil-barrels:20" value="307,1071"/>
+  <property name="waypoint:car:4" value="@8,7"/>
+  <property name="edge:11:31" value="1"/>
+  <property name="waypoint:car:3" value="@8,6"/>
+  <property name="waypoint:car:2" value="@8,2"/>
+  <property name="waypoint:car:1" value="@17,2"/>
+  <property name="edge:22:23" value="1"/>
+  <property name="edge:15:16" value="1"/>
+  <property name="object:stall:stall-left:2" value="258,20,510"/>
+  <property name="object:stall:stall-left:1" value="968,431,100"/>
+  <property name="object:bus-stop:bus-stop-left:1" value="127,329,500"/>
+  <property name="object:oil-barrels:oil-barrels:19" value="937,1102"/>
+  <property name="object:oil-barrels:oil-barrels:18" value="1007,1118"/>
+  <property name="object:oil-barrels:oil-barrels:17" value="1025,428"/>
+  <property name="object:oil-barrels:oil-barrels:16" value="1050,409"/>
+  <property name="object:oil-barrels:oil-barrels:15" value="1048,448"/>
+  <property name="object:oil-barrels:oil-barrels:14" value="1102,446"/>
+  <property name="object:oil-barrels:oil-barrels:13" value="1092,407"/>
+  <property name="object:oil-barrels:oil-barrels:12" value="680,246"/>
+  <property name="object:oil-barrels:oil-barrels:11" value="723,276"/>
+  <property name="object:oil-barrels:oil-barrels:10" value="709,246"/>
+  <property name="edge:27:28" value="1"/>
+  <property name="object:traffic-lights:traffic-lights:6" value="454,1064"/>
+  <property name="object:traffic-lights:traffic-lights:5" value="624,1062"/>
+  <property name="object:traffic-lights:traffic-lights:4" value="624,236"/>
+  <property name="object:car:white-car:10" value="@10,7"/>
+  <property name="object:traffic-lights:traffic-lights:3" value="456,236"/>
+  <property name="object:traffic-lights:traffic-lights:2" value="452,68"/>
+  <property name="object:traffic-lights:traffic-lights:1" value="624,66"/>
+  <property name="object:machinegunner-item:machinegunner-item:3" value="1064,72,2150"/>
+  <property name="object:machinegunner-item:machinegunner-item:2" value="433,305"/>
+  <property name="edge:8:9" value="1"/>
+  <property name="object:thrower-item:thrower-item:1" value="471,412,2150"/>
+  <property name="config:map.helicopter.respawn-interval" value="int:10000"/>
+  <property name="edge:6:7" value="1"/>
+  <property name="object:teleport(e):teleport:13" value="30,726,1900"/>
+  <property name="object:teleport(e):teleport:11" value="126,966,-10"/>
+  <property name="object:heal:heal:3" value="1081,930,2150"/>
+  <property name="object:heal:heal:2" value="@7,0"/>
+  <property name="object:heal:heal:1" value="344,668"/>
+  <property name="edge:2:17" value="1"/>
+  <property name="object:teleport(b):teleport:6" value="997,373,-10"/>
+  <property name="edge:2:15" value="1"/>
+  <property name="object:teleport(b):teleport:5" value="790,96,1900"/>
+  <property name="waypoint:car:31" value="@9,6"/>
+  <property name="waypoint:car:30" value="@14,6"/>
+  <property name="edge:30:31" value="1"/>
+  <property name="edge:23:24" value="1"/>
+  <property name="edge:16:17" value="1"/>
   <property name="waypoint:car:29" value="@14,10"/>
   <property name="waypoint:car:28" value="@17,10"/>
   <property name="waypoint:car:27" value="@17,12"/>
   <property name="waypoint:car:26" value="@14,12"/>
   <property name="waypoint:car:25" value="@14,16"/>
-  <property name="edge:20:23" value=""/>
   <property name="waypoint:car:24" value="@3,16"/>
-  <property name="edge:31:12" value=""/>
   <property name="waypoint:car:23" value="@3,12"/>
-  <property name="edge:20:21" value=""/>
   <property name="waypoint:car:22" value="@0,12"/>
   <property name="waypoint:car:21" value="@0,10"/>
   <property name="waypoint:car:20" value="@3,10"/>
-  <property name="edge:21:22" value=""/>
-  <property name="edge:22:23" value=""/>
-  <property name="object:teleport(c):teleport:8" value="32,357,1900"/>
-  <property name="object:stall:stall-right:2" value="356,21,510"/>
-  <property name="object:teleport(c):teleport:7" value="206,22,-10"/>
-  <property name="object:stall:stall-right:1" value="127,435,510"/>
-  <property name="edge:11:31" value=""/>
-  <property name="object:lodge:lodge:1" value="143,998,100"/>
-  <property name="edge:23:24" value=""/>
-  <property name="object:teleport(e):teleport:13" value="30,726,1900"/>
-  <property name="edge:29:30" value=""/>
-  <property name="object:teleport(e):teleport:11" value="126,966,-10"/>
-  <property name="edge:24:25" value=""/>
+  <property name="object:helicopter:helicopter:destroy-for-victory:2" value="@6,6,2800"/>
+  <property name="object:helicopter:helicopter:destroy-for-victory:1" value="@9,9,2800"/>
+  <property name="edge:28:29" value="1"/>
+  <property name="object:car:yellow-car:2" value="@0,3"/>
+  <property name="object:car:yellow-car:1" value="@16,10"/>
+  <property name="edge:14:2" value="1"/>
   <property name="object:umbrella:umbrella:3" value="436,819"/>
-  <property name="edge:25:26" value=""/>
-  <property name="config:map.default-impassability" value="int:100"/>
-  <property name="edge:26:29" value=""/>
-  <property name="edge:26:27" value=""/>
+  <property name="object:dispersion-bullets-item:dispersion-bullets-item:1" value="962,822"/>
+  <property name="edge:10:4" value="1"/>
   <property name="waypoint:car:19" value="@3,6"/>
+  <property name="object:tent:tent-right:1" value="411,1102,100"/>
   <property name="waypoint:car:17" value="@8,3"/>
   <property name="waypoint:car:16" value="@0,3"/>
-  <property name="edge:27:28" value=""/>
+  <property name="ambient-sound" value="city.ogg"/>
   <property name="waypoint:car:15" value="@0,2"/>
   <property name="waypoint:car:14" value="@9,2"/>
   <property name="waypoint:car:13" value="@17,3"/>
   <property name="waypoint:car:12" value="@9,3"/>
-  <property name="edge:28:29" value=""/>
   <property name="waypoint:car:11" value="@9,7"/>
   <property name="waypoint:car:10" value="@4,7"/>
-  <property name="object:bus-stop:bus-stop-right:1" value="974,465"/>
-  <property name="object:tent:tent-top:2" value="307,20,500"/>
-  <property name="edge:17:3" value=""/>
-  <property name="object:teleport(a):teleport:2" value="545,626,1900"/>
-  <property name="object:teleport(a):teleport:1" value="546,878,-10"/>
-  <property name="object:teleport(d):teleport:10" value="961,1010,-10"/>
-  <property name="edge:14:2" value=""/>
-  <property name="edge:8:9" value=""/>
-  <property name="edge:13:1" value=""/>
-  <property name="edge:7:8" value=""/>
-  <property name="object:bus-stop:bus-stop-left:1" value="127,329,500"/>
-  <property name="waypoint:car:9" value="@4,10"/>
-  <property name="edge:12:14" value=""/>
-  <property name="waypoint:car:8" value="@4,15"/>
-  <property name="edge:12:13" value=""/>
-  <property name="waypoint:car:7" value="@13,15"/>
-  <property name="waypoint:car:6" value="@13,12"/>
-  <property name="edge:6:7" value=""/>
-  <property name="waypoint:car:5" value="@13,7"/>
-  <property name="waypoint:car:4" value="@8,7"/>
-  <property name="waypoint:car:3" value="@8,6"/>
-  <property name="waypoint:car:2" value="@8,2"/>
-  <property name="waypoint:car:1" value="@17,2"/>
-  <property name="edge:19:20" value=""/>
-  <property name="edge:10:4" value=""/>
-  <property name="object:teleport(d):teleport:9" value="1042,664,1900"/>
-  <property name="edge:5:6" value=""/>
-  <property name="object:helicopter:helicopter:1" value="@9,9,2800"/>
-  <property name="edge:15:16" value=""/>
-  <property name="object:car:cyan-car:1" value="@14,16"/>
-  <property name="edge:16:17" value=""/>
-  <property name="edge:3:4" value=""/>
-  <property name="spawn:4" value="128,704"/>
-  <property name="object:traffic-lights:traffic-lights:6" value="454,1064"/>
-  <property name="spawn:3" value="955,705"/>
-  <property name="edge:17:12" value=""/>
-  <property name="object:traffic-lights:traffic-lights:5" value="624,1062"/>
-  <property name="spawn:2" value="544,27"/>
-  <property name="edge:6:26" value=""/>
-  <property name="object:traffic-lights:traffic-lights:4" value="624,236"/>
-  <property name="spawn:1" value="544,1085"/>
-  <property name="object:traffic-lights:traffic-lights:3" value="456,236"/>
-  <property name="object:traffic-lights:traffic-lights:2" value="452,68"/>
-  <property name="ambient-sound" value="city.ogg"/>
-  <property name="object:traffic-lights:traffic-lights:1" value="624,66"/>
-  <property name="edge:1:14" value=""/>
-  <property name="edge:2:17" value=""/>
-  <property name="edge:2:15" value=""/>
-  <property name="edge:3:19" value=""/>
-  <property name="object:car:white-car:10" value="@10,7"/>
-  <property name="object:tent:tent-right:1" value="411,1102,100"/>
-  <property name="edge:9:20" value=""/>
-  <property name="edge:30:31" value=""/>
-  <property name="object:teleport(b):teleport:6" value="997,373,-10"/>
-  <property name="object:teleport(b):teleport:5" value="790,96,1900"/>
-  <property name="object:stall:stall-left:3" value="978,1055"/>
-  <property name="object:road-sign:road-sign08:2" value="942,811"/>
-  <property name="object:stall:stall-left:2" value="258,20,510"/>
-  <property name="edge:4:11" value=""/>
-  <property name="object:stall:stall-left:1" value="968,431,100"/>
-  <property name="edge:5:11" value=""/>
+  <property name="edge:12:14" value="1"/>
+  <property name="edge:12:13" value="1"/>
+  <property name="object:megaheal:megaheal:2" value="@0,1"/>
+  <property name="object:megaheal:megaheal:1" value="623,411,2150"/>
+  <property name="edge:3:19" value="1"/>
+  <property name="object:stun-missiles-item:stun-missiles-item:1" value="752,662"/>
   <property name="object:car:red-car:3" value="@3,16"/>
-  <property name="object:car:yellow-car:2" value="@0,3"/>
-  <property name="object:car:yellow-car:1" value="@16,10"/>
-  <property name="object:car:orange-bus:3" value="@7,6"/>
-  <property name="object:car:orange-bus:2" value="@17,2"/>
-  <property name="object:car:orange-bus:1" value="@0,12"/>
-  <property name="edge:9:10" value=""/>
-  <property name="waypoint:car:31" value="@9,6"/>
-  <property name="waypoint:car:30" value="@14,6"/>
+  <property name="object:oil-barrels:oil-barrels:9" value="759,255"/>
+  <property name="object:oil-barrels:oil-barrels:8" value="308,263"/>
+  <property name="object:oil-barrels:oil-barrels:7" value="217,250"/>
+  <property name="object:oil-barrels:oil-barrels:6" value="270,260"/>
+  <property name="object:oil-barrels:oil-barrels:5" value="271,288"/>
+  <property name="object:oil-barrels:oil-barrels:4" value="233,275"/>
+  <property name="object:oil-barrels:oil-barrels:3" value="208,295"/>
+  <property name="object:ricochet-bullets-item:ricochet-bullets-item:1" value="@2,9"/>
+  <property name="object:oil-barrels:oil-barrels:2" value="1083,360"/>
+  <property name="object:oil-barrels:oil-barrels:1" value="968,1096"/>
+  <property name="object:road-sign:road-sign08:2" value="942,811"/>
+  <property name="edge:24:25" value="1"/>
+  <property name="edge:29:30" value="1"/>
+  <property name="edge:17:12" value="1"/>
+  <property name="object:teleport(c):teleport:8" value="32,357,1900"/>
+  <property name="object:teleport(c):teleport:7" value="206,22,-10"/>
+  <property name="spawn:4" value="128,704"/>
+  <property name="spawn:3" value="955,705"/>
+  <property name="spawn:2" value="544,27"/>
+  <property name="spawn:1" value="544,1085"/>
+  <property name="edge:20:23" value="1"/>
+  <property name="edge:20:21" value="1"/>
+  <property name="edge:31:12" value="1"/>
+  <property name="edge:7:8" value="1"/>
+  <property name="edge:4:11" value="1"/>
+  <property name="edge:9:20" value="1"/>
+  <property name="edge:5:6" value="1"/>
+  <property name="edge:25:26" value="1"/>
+  <property name="edge:3:4" value="1"/>
  </properties>
  <tileset name="Untitled" firstgid="1" tilewidth="64" tileheight="64">
   <image source="../tilesets/terrains.png"/>
@@ -156,7 +201,7 @@
    <property name="impassability" value="0"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAL1T0QrDMAgUGmhpn0q3p4z2aWP9/+8bW8YiPYJRS8uEIwb0ohcl0i0Golswghx2TxwPB0+fYoYMyX81RO9mu9fOS8I1Q/LHhAnutdOyf+uDNgt91/RZFO4IWmh6jEav3h6sOEnTLvxgxZVa4DvMUXJ962HNOLcFdPAO5/JcIlfMPuaV+nnrmZQ5PKIP2pn/hTMn7SP/h1bPU5i72p6uO3fF2+sHWRAtwxAFAAA=
+   H4sIAAAAAAAAALVT0QqDMAwMGJjYJ5k+VbYnh/7/941ZsYFwy9I6tkKIxuRMrhci/0QmmriQVHHmhPGowOlSTuDDiwXlnw3Rq3mPox+SjdkP8L77PtnViKP/1Vz/wLkZsws/GL872FFx4fHRF3qsnWEuaMrSXMuHYR7+D7WivwsGYu39iKak9qKsVf1IbcimsWJ+1nUef14/eB/f8uPxfOa+vLzItuYsbXr9LMbeftrT9eSu1M66AYdKtyoQBQAA
   </data>
   <tileproperties/>
  </layer>
@@ -172,24 +217,25 @@
   </data>
   <tileproperties/>
  </layer>
+ <layer name="junk" width="18" height="18">
+  <properties>
+   <property name="visible-if-damaged" value="true"/>
+   <property name="hp" value="120"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAKtjYmDIAmIQqIPS2UA6B8pGBiD5Oibs7OEOEoF+TCLCn4TU4QpbXOqIUTuQIBrovhgquDEVaEYahebQIx3WMmHy0cVIAcSmK0KA2HQ1ClDTCXqaAQCZZSaXEAUAAA==
+  </data>
+  <tileproperties/>
+ </layer>
  <layer name="tracks" width="18" height="18">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAALVTiwqAIAz0G8syiHz9/0dkoDSOObXHwZib23lOVOqGSRZJ7CtrxeRtMkd8zHwWOEPe3yp80hlvsX7E4wfzkoZrHtzsnmqQUN7DCXp6wPWgHow5BIh1soX4Seil8yreVWr3zInQjTNGMH/EczT2e//NdWc6S8Rf797Dy9VgDnmf6kGYRs8Jz8P/KxAFAAA=
+   H4sIAAAAAAAAALVSiwrDIAz0G9fODkYf9v8/YgqGXY8YI7QHEjXJ5UwM4Y8lrxPOR7UR9gy53/LawZ6VbwPOEpuq/9Pgs2oIklLPgwjxI/UtPbFxb2lAyFuOcO3diAYvZB7YL9bjgZbDevisIdF5zusN9mXk4uzFtv7Bt3Iy5k6NEUw38ayGr7xTZtj79+XN2EvGU3P38GoxfIe82r/16mHf0sn5AUsXitUQBQAA
   </data>
   <tileproperties/>
  </layer>
  <layer name="tracks 2" width="18" height="18">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGAUgEAfE8QPtiFHAkDTQDhgFIxoAABJT+68QBQAA
-  </data>
-  <tileproperties/>
- </layer>
- <layer name="buildings details" width="18" height="18">
-  <properties>
-   <property name="impassability" value="100"/>
-  </properties>
-  <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgGAWjYGQARSZUTC7QRjJDmwJzYGZRasYooB4AAEzptW8QBQAA
   </data>
   <tileproperties/>
  </layer>
@@ -222,13 +268,61 @@
   </data>
   <tileproperties/>
  </layer>
+ <layer name="buildings details" width="18" height="18">
+  <properties>
+   <property name="impassability" value="100"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAWjYPACESZMMVEsYoSAHFCPIhqWJ8McDaAebSQzQGxNMsyBAW2oGaNgcAAAOeQWoBAFAAA=
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="b_details damage" width="18" height="18">
+  <properties>
+   <property name="hp" value="120"/>
+   <property name="impassability" value="100"/>
+   <property name="damage-for" value="buildings details"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAWjYPiDRUwMDKuYEPyVQPZiJtzqcYE1QD1bkPStB7LXkmHOKBicAABkaMpYEAUAAA==
+  </data>
+  <tileproperties/>
+ </layer>
  <layer name="buildings" width="18" height="18">
   <properties>
    <property name="impassability" value="100"/>
    <property name="z" value="400"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAM2TuwrCQBBFdxcUFaySYOW7MGrjT+sHWCioAW3ER5NCf8LaWrzD7mASs+ur8cJlipkcZmcmkRQigs8wK1RC9JV4Umxqo8w3sXyu/Rfd0Fsx5y1JecgX4KvU9RQvJlaEdgv55gtOHfkG3Fa6nuLIRGKUEAeW2bJ6Spt2MDT1ZROHCc63muJNM9gHI/iBswJjLfV7XXPh+dm0BeMg7TfnqweDndc33eDJcYfUp5/4Lnhjn3kK1YPFjGzf1Te5zMpjkLwP+rPNjzmdxBy7X+7dxllg7kvH7PnmyHNp54yRmzg4fHPkjeHQHmoqfc875PYODt8c+SjT/+0dWWExrRAFAAA=
+   H4sIAAAAAAAAAM2TPQvCMBCGk4CiglMrnfwerLr4p3XXQUEt6OD30kH/hLOz+B5NaNCk1Xbx4CUld3nIvbkGnLEAukEqfMFYX7CPCGVt8HYm5J+1/xJP3K1o6EUPB/kCdEeth/XBo3O0VlikFvabKZw68g1oBLWlWnIlRgnrwOKtip6I5MvaIVTWvhUna8zQ0xxywajl4KzB2PCo3yRflH+22INx5vaZ0xlJLJrBa8ocuho/T+/Us/LP1Hv1S7YvYv9MvTs/3DHJP+J0ROxfN2PvJs4Uni+hlcV7yquZIy24mXPA/hiaWDiUVzNH2koOvYOnvQfVHaGThbPj8cyRLjz+b+k/fQF5gWtdEAUAAA==
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="buildings damage" width="18" height="18" visible="0">
+  <properties>
+   <property name="hp" value="120"/>
+   <property name="impassability" value="100"/>
+   <property name="damage-for" value="buildings"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAJvBxMAwA4iRwRogfy2aGAjMhKpdAMWzoWrmY1E73MASoB8XE+HPRUwQtatwqF2HI2zRASgOQGq3UDlsO6hk3iSoOYuIDBdcYA5UL640RyxYNkTTIKXhBwOUhh8tAbXTHKVgDpI5E5HS8VIgBgBZUipZEAUAAA==
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="buildings damage2" width="18" height="18" visible="0">
+  <properties>
+   <property name="hp" value="120"/>
+   <property name="impassability" value="100"/>
+   <property name="damage-for" value="buildings"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAW0AiuZGBiWAPFSJsrM2QzUvw6I11NozmAFE6jkrxnDNHxGAfXBNCbs6Q4AfvSxFRAFAAA=
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="tower front" width="18" height="18">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAWjYBSMglEAAgCc28dnEAUAAA==
   </data>
   <tileproperties/>
  </layer>
@@ -269,7 +363,7 @@
  </layer>
  <layer name="rooftops" width="18" height="18">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAL3TywqAIBAFUJm9EbWRHhsr2uX//12KDpikTikO3J0eam4xVmc6YKx3GeDbeT9SR+nMOgvBEe5sGONshPu5aeFwsPug7E1E9oLGrnMQrZQxuYTWSXBHsM95eY4i9hk63LP+GGZWeFopA3t468O8O1q5wb5jvaNV6qBVw6GMdN9EqYP/ba6P1nMDR8+k/xAFAAA=
+   H4sIAAAAAAAAAL2TTQuAIAyGxXsSdYk+LlZ0q///79pggyE6LaMX3lPjQfeYMd/EWWNaamefzct66AWdoHOG08D3gWbDImctOAemV+aecJaXHLyHE3s7FM6Q2AszNuhe6EBjjNSQpZ2N05OXU3CuAp8xTiNYbxgY9CJZGoM9uMgO8e7MyoV9p7wzq5bDrC84JfH0Jmo5/N/mfPydG6EMAlQQBQAA
   </data>
   <tileproperties/>
  </layer>
