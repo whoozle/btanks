@@ -12,17 +12,27 @@
   <property name="spawn:1" value="544,1085"/>
   <property name="object:tent:tent-right:1" value="411,1102,100"/>
   <property name="object:umbrella:umbrella:3" value="436,819"/>
+  <property name="object:teleport(d):teleport:10" value="961,1010,-10"/>
+  <property name="object:teleport(a):teleport:2" value="545,626,1900"/>
+  <property name="object:teleport(a):teleport:1" value="546,878,-10"/>
+  <property name="object:teleport(b):teleport:6" value="997,373,-10"/>
   <property name="object:lodge:lodge:1" value="143,998,100"/>
+  <property name="object:teleport(b):teleport:5" value="790,96,1900"/>
   <property name="object:stall:stall-right:2" value="356,21,510"/>
   <property name="object:bus-stop:bus-stop-right:1" value="974,465"/>
   <property name="object:stall:stall-right:1" value="127,435,510"/>
+  <property name="object:teleport(c):teleport:8" value="32,357,1900"/>
+  <property name="object:teleport(c):teleport:7" value="206,22,-10"/>
+  <property name="object:teleport(d):teleport:9" value="1042,664,1900"/>
   <property name="object:stall:stall-left:3" value="978,1055"/>
   <property name="object:bus-stop:bus-stop-left:1" value="127,329,500"/>
   <property name="object:stall:stall-left:2" value="258,20,510"/>
+  <property name="object:teleport(e):teleport:13" value="30,726,1900"/>
   <property name="object:traffic-lights:traffic-lights:6" value="454,1064"/>
   <property name="object:stall:stall-left:1" value="968,431,100"/>
   <property name="object:tent:tent-top:2" value="307,20,500"/>
   <property name="object:traffic-lights:traffic-lights:5" value="624,1062"/>
+  <property name="object:teleport(e):teleport:11" value="126,966,-10"/>
   <property name="object:traffic-lights:traffic-lights:4" value="624,236"/>
  </properties>
  <tileset name="Untitled" firstgid="1" tilewidth="64" tileheight="64">
@@ -58,7 +68,7 @@
    <property name="impassability" value="30"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAFNgYGBQBGIFCmktINamAk2pOwaDe7CxFcmwHxtbG4sd5NCKDJh2kENrU+gOGD2afkbdMxjcAwBzI+8MEAUAAA==
+   H4sIAAAAAAAAAFNgYGBQBGIFCmktINamAk2pOwaDe7CxFcmwHxtbG4sd5NCKDJh2kENrYzGfiwAmNr5g6okVxxVfuOwlxz24wmGg3APDyO4gN3woja/hkN8B/F6mCRAFAAA=
   </data>
   <tileproperties/>
  </layer>
@@ -79,7 +89,7 @@
  </layer>
  <layer name="details" width="18" height="18">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgGPxAjIU65mhRyZyBAFID7QB6AmA8MRETV0Sq0weqMcaiDiRmQEKa4MOjlp8EcyyBanWwqNcGilmR6G90s1DMIDYckdxlC8VEuQMLwJZXycm/2PIqPfIvAKZVyV0QBQAA
+   H4sIAAAAAAAAAMthYGDIBeI8hsELxFioY44WlcwZCCA10A6gMTAEYiMYBxhPTMTEFVRdDgP+NKwPVGOMxTyQmAEJaYIPj1p+EsyxBKrVwaJeGyhmRYK/sZmFYgax4YjkLlsoxuYOTiLMwJZX0cWEiTAHW14lJv8S40Z8AAAQZdSHEAUAAA==
   </data>
   <tileproperties/>
  </layer>
@@ -105,6 +115,9 @@
   <tileproperties/>
  </layer>
  <layer name="trees 0" width="18" height="18">
+  <properties>
+   <property name="z" value="80"/>
+  </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGP4gjhkVxzOTZ04GMyrOJNOcImZUXEymOaNgFIwCVBBIYV4CAAfZ4OcQBQAA
   </data>
@@ -149,16 +162,17 @@
   </data>
   <tileproperties/>
  </layer>
- <layer name="rooftops base" width="18" height="18" visible="0">
+ <layer name="rooftops base" width="18" height="18">
   <properties>
    <property name="impassability" value="20"/>
+   <property name="z" value="1000"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgoA7gQsOkqseFKTWHUkAvc0j1Lz45StxMrXCkZnxQM06JjQdK7Ro1hz7mUBsAAAW4omgQBQAA
   </data>
   <tileproperties/>
  </layer>
- <layer name="impassable" width="18" height="18" visible="0">
+ <layer name="impassable" width="18" height="18">
   <properties>
    <property name="pierceable" value="true"/>
    <property name="impassability" value="100"/>
@@ -168,7 +182,7 @@
   </data>
   <tileproperties/>
  </layer>
- <layer name="rooftops" width="18" height="18" visible="0">
+ <layer name="rooftops" width="18" height="18">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAL3TywqAIBAFUJm9EbWRHhsr2uX//12KDpikTikO3J0eam4xVmc6YKx3GeDbeT9SR+nMOgvBEe5sGONshPu5aeFwsPug7E1E9oLGrnMQrZQxuYTWSXBHsM95eY4i9hk63LP+GGZWeFopA3t468O8O1q5wb5jvaNV6qBVw6GMdN9EqYP/ba6P1nMDR8+k/xAFAAA=
   </data>
@@ -177,6 +191,7 @@
  <layer name="objects" width="18" height="18">
   <properties>
    <property name="impassability" value="100"/>
+   <property name="z" value="2100"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGAXDCYQzMjBEMFJuTiLQjCQqmJMNNCOHCuaMglFADwAATczqrBAFAAA=
