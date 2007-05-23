@@ -70,12 +70,12 @@ void Bullet::tick(const float dt) {
 			int d = (getDirection() + 1) % dirs;
 			v2<float> vel;
 			vel.fromDirection(d, dirs);
-			Object * b = spawn(registered_name, animation, v2<float>::empty, vel);
+			Object * b = spawn(registered_name + "(no-sound)", animation, v2<float>::empty, vel);
 			b->ttl = ttl * ttl_m;
 			
 			d = (dirs + getDirection() - 1) % dirs;
 			vel.fromDirection(d, dirs);
-			b = spawn(registered_name, animation, v2<float>::empty, vel);
+			b = spawn(registered_name + "(no-sound)", animation, v2<float>::empty, vel);
 			b->ttl = ttl * ttl_m;
 		}
 	}
@@ -142,6 +142,8 @@ void Bullet::onSpawn() {
 		_variants.remove("auto-aim"); //no auto aim! 
 		GET_CONFIG_VALUE("objects.dispersion-bullet.clone-interval", float, ci, 0.1f);
 		_clone.set(ci);
+		if (!_variants.has("no-sound")) 
+			playSound("dispersion-bullet", false);
 	} else {
 		GET_CONFIG_VALUE("engine.auto-aim.checking-interval", float, ci, 0.05f);
 		_clone.set(ci);
