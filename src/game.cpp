@@ -668,8 +668,7 @@ void IGame::onTick(const float dt) {
 		}
 
 		if (_map_loaded && _credits == NULL && Window->running() && !_paused) {
-			if (!PlayerManager->isClient()) //no need for multiplayer.
-				GameMonitor->checkItems(dt);
+			GameMonitor->checkItems(dt);
 			PlayerManager->updatePlayers();
 			
 			Map->tick(dt);
