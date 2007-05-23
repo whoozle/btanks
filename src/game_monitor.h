@@ -24,6 +24,7 @@
 #include <set>
 
 #include "mrt/singleton.h"
+#include "mrt/serializable.h"
 #include "alarm.h"
 #include "math/v2.h"
 #include "sdlx/sdlx.h"
@@ -79,6 +80,9 @@ public:
 	
 	const bool disabled(const Object *o) const;
 	void disable(const std::string &classname, const bool value = true);
+
+	void serialize(mrt::Serializator &s) const;
+	void deserialize(const mrt::Serializator &s);
 
 private:
 

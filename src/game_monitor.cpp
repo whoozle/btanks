@@ -221,3 +221,55 @@ void IGameMonitor::disable(const std::string &classname, const bool value) {
 		_disabled.erase(classname);
 	}
 }
+
+
+#include "mrt/serializator.h"
+
+void IGameMonitor::serialize(mrt::Serializator &s) const {
+	s.add(_game_over);
+
+	int n = (int)_specials.size();
+	s.add(n);
+	for(int i = 0; i < n; ++i)	
+		s.add(_specials[i]);
+
+	s.add(_state);
+	s.add(_state_timer);
+	
+	s.add(_timer_message);
+	s.add(_timer_message_area);
+	s.add(_timer);
+
+	n = (int)_disabled.size();
+	std::set<std::string>::const_iterator i = _disabled.begin();
+	while(n--) 
+		s.add(*i++);
+}
+
+void IGameMonitor::deserialize(const mrt::Serializator &s) {
+	s.get(_game_over);
+
+	int n;
+	s.get(n);
+	_specials.clear();
+	while(n--) {
+		v2<int> p;
+		s.get(p);
+		_specials.push_back(p);
+	}
+
+	s.get(_state);
+	s.get(_state_timer);
+	
+	s.get(_timer_message);
+	s.get(_timer_message_area);
+	s.get(_timer);
+
+	s.get(n);
+	_disabled.clear();
+	while(n--) {
+		std::string d;
+		s.get(d);
+		_disabled.insert(d);
+	}
+}
