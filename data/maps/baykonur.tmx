@@ -14,8 +14,8 @@
   <property name="object:smoke-missiles-item:smoke-missiles-item:4" value="1979,1071"/>
   <property name="object:smoke-missiles-item:smoke-missiles-item:3" value="2391,1223"/>
   <property name="object:smoke-missiles-item:smoke-missiles-item:2" value="1928,2136"/>
-  <property name="object:tent-with-throwers:trooper-tent:1" value="2640,2871"/>
   <property name="object:smoke-missiles-item:smoke-missiles-item:1" value="2073,2580"/>
+  <property name="object:tent-with-throwers:trooper-tent:1" value="2640,2871"/>
   <property name="object:tent-with-machinegunners:trooper-tent:15" value="1448,1354,210"/>
   <property name="object:tent-with-machinegunners:trooper-tent:13" value="2593,67,300"/>
   <property name="object:tent-with-machinegunners:trooper-tent:12" value="2829,195,300"/>
@@ -31,15 +31,15 @@
   <property name="object:tent-with-throwers:trooper-tent:10" value="1758,465"/>
   <property name="object:cannon:cannon:9" value="1538,1540"/>
   <property name="object:cannon:cannon:7" value="3139,1105"/>
-  <property name="object:cannon:cannon:6" value="2612,1098"/>
   <property name="object:impassable-static-corpse:dead-green-shilka:4" value="1137,482,200"/>
+  <property name="object:cannon:cannon:6" value="2612,1098"/>
   <property name="object:cannon:cannon:5" value="2827,1090"/>
-  <property name="object:cannon:cannon:4" value="2497,1616"/>
   <property name="object:impassable-static-corpse:dead-green-shilka:2" value="1773,2201"/>
-  <property name="object:cannon:cannon:3" value="2996,1863"/>
+  <property name="object:cannon:cannon:4" value="2497,1616"/>
   <property name="object:impassable-static-corpse:dead-green-shilka:1" value="537,1194,-18"/>
-  <property name="config:map.megaheal.respawn-interval" value="int:10000"/>
+  <property name="object:cannon:cannon:3" value="2996,1863"/>
   <property name="object:cannon:cannon:2" value="2434,1921"/>
+  <property name="config:map.megaheal.respawn-interval" value="int:10000"/>
   <property name="object:cannon:cannon:1" value="2211,2189"/>
   <property name="config:map.dispersion-bullets-item.respawn-interval" value="int:10000"/>
   <property name="object:heal:heal:19" value="2498,575"/>
@@ -62,29 +62,29 @@
   <property name="object:stack:stack:9" value="1186,849"/>
   <property name="object:stack:stack:8" value="1150,818"/>
   <property name="object:stack:stack:7" value="1194,782"/>
-  <property name="config:map.guided-missiles-item.respawn-interval" value="int:10000"/>
   <property name="object:stack:stack:6" value="2132,2051,-10"/>
+  <property name="config:map.guided-missiles-item.respawn-interval" value="int:10000"/>
   <property name="object:stack:stack:4" value="2364,3146"/>
   <property name="object:stack:stack:3" value="2372,3112"/>
   <property name="object:stack:stack:2" value="2360,3080"/>
   <property name="object:stack:stack:1" value="2366,3040"/>
   <property name="object:static-mortar:yellow-mortar:1" value="@13,40"/>
-  <property name="object:thrower-item:thrower-item:5" value="1956,1"/>
   <property name="object:armed-mine:regular-mine:37" value="1151,455,-10"/>
+  <property name="object:thrower-item:thrower-item:5" value="1956,1"/>
   <property name="object:thrower-item:thrower-item:4" value="1284,486"/>
-  <property name="object:thrower-item:thrower-item:3" value="1082,1154"/>
-  <property name="object:oil-barrels:oil-barrels:26" value="2427,1698,210"/>
   <property name="object:armed-mine:regular-mine:35" value="1157,539,-10"/>
+  <property name="object:oil-barrels:oil-barrels:26" value="2427,1698,210"/>
+  <property name="object:thrower-item:thrower-item:3" value="1082,1154"/>
   <property name="object:thrower:thrower:20" value="2083,729"/>
-  <property name="object:thrower-item:thrower-item:2" value="1031,2008"/>
-  <property name="object:oil-barrels:oil-barrels:25" value="2945,1958,210"/>
   <property name="object:armed-mine:regular-mine:34" value="1172,574,-10"/>
-  <property name="object:thrower-item:thrower-item:1" value="2173,1395"/>
+  <property name="object:oil-barrels:oil-barrels:25" value="2945,1958,210"/>
+  <property name="object:thrower-item:thrower-item:2" value="1031,2008"/>
   <property name="object:oil-barrels:oil-barrels:24" value="230,44,210"/>
+  <property name="object:thrower-item:thrower-item:1" value="2173,1395"/>
   <property name="object:oil-barrels:oil-barrels:23" value="2408,2276,210"/>
   <property name="object:oil-barrels:oil-barrels:22" value="2992,360,300"/>
-  <property name="object:oil-barrels:oil-barrels:21" value="2673,808,300"/>
   <property name="object:armed-mine:regular-mine:30" value="805,309,-10"/>
+  <property name="object:oil-barrels:oil-barrels:21" value="2673,808,300"/>
   <property name="object:oil-barrels:oil-barrels:20" value="2654,288,300"/>
   <property name="object:impassable-static-corpse:dead-cyan-launcher:1" value="1116,1235,200"/>
   <property name="zone:hint:start" value="@31,49:@6,3"/>
@@ -94,29 +94,29 @@
   <property name="object:thrower:thrower:16" value="2466,679"/>
   <property name="object:guided-missiles-item:guided-missiles-item:15" value="1906,227"/>
   <property name="object:thrower:thrower:15" value="2776,736"/>
-  <property name="object:guided-missiles-item:guided-missiles-item:14" value="1905,227"/>
   <property name="object:armed-mine:regular-mine:29" value="807,259,-10"/>
+  <property name="object:guided-missiles-item:guided-missiles-item:14" value="1905,227"/>
   <property name="object:thrower:thrower:14" value="2868,668"/>
-  <property name="object:guided-missiles-item:guided-missiles-item:13" value="2733,177"/>
-  <property name="object:oil-barrels:oil-barrels:19" value="2135,426"/>
   <property name="object:armed-mine:regular-mine:28" value="779,284,-10"/>
+  <property name="object:oil-barrels:oil-barrels:19" value="2135,426"/>
+  <property name="object:guided-missiles-item:guided-missiles-item:13" value="2733,177"/>
   <property name="object:thrower:thrower:13" value="785,10"/>
-  <property name="object:guided-missiles-item:guided-missiles-item:12" value="2426,439"/>
   <property name="object:armed-mine:regular-mine:27" value="768,259,-10"/>
+  <property name="object:guided-missiles-item:guided-missiles-item:12" value="2426,439"/>
   <property name="object:thrower:thrower:12" value="750,372"/>
-  <property name="object:guided-missiles-item:guided-missiles-item:11" value="1661,928"/>
-  <property name="object:oil-barrels:oil-barrels:17" value="1614,171,210"/>
   <property name="object:armed-mine:regular-mine:26" value="747,286,-10"/>
+  <property name="object:oil-barrels:oil-barrels:17" value="1614,171,210"/>
+  <property name="object:guided-missiles-item:guided-missiles-item:11" value="1661,928"/>
   <property name="object:thrower:thrower:11" value="224,155"/>
-  <property name="object:guided-missiles-item:guided-missiles-item:10" value="994,1369"/>
   <property name="object:oil-barrels:oil-barrels:16" value="1040,377"/>
+  <property name="object:guided-missiles-item:guided-missiles-item:10" value="994,1369"/>
   <property name="object:thrower:thrower:10" value="619,1554"/>
   <property name="object:oil-barrels:oil-barrels:15" value="993,348"/>
   <property name="object:oil-barrels:oil-barrels:14" value="696,32"/>
   <property name="object:oil-barrels:oil-barrels:13" value="307,2649"/>
   <property name="object:oil-barrels:oil-barrels:12" value="1507,1108"/>
-  <property name="object:oil-barrels:oil-barrels:11" value="1613,1634"/>
   <property name="object:spaceport-baykonur:spaceport-baykonur:destroy-for-victory:xx" value="2886,633"/>
+  <property name="object:oil-barrels:oil-barrels:11" value="1613,1634"/>
   <property name="object:oil-barrels:oil-barrels:10" value="1644,1958"/>
   <property name="spawn:5" value="@32,49"/>
   <property name="spawn:4" value="@33,49"/>
@@ -145,8 +145,8 @@
   <property name="object:guided-missiles-item:guided-missiles-item:4" value="1230,1493"/>
   <property name="object:guided-missiles-item:guided-missiles-item:3" value="2345,1511"/>
   <property name="object:guided-missiles-item:guided-missiles-item:2" value="2862,2178"/>
-  <property name="object:guided-missiles-item:guided-missiles-item:1" value="1993,2793"/>
   <property name="object:road-sign:road-sign10:1" value="2294,2269,-10"/>
+  <property name="object:guided-missiles-item:guided-missiles-item:1" value="1993,2793"/>
   <property name="object:static-shilka:cyan-shilka:1" value="3129,2927"/>
   <property name="object:machinegunner-item:machinegunner-item:7" value="2033,0"/>
   <property name="object:machinegunner-item:machinegunner-item:6" value="2870,114"/>
@@ -157,18 +157,19 @@
   <property name="object:machinegunner-item:machinegunner-item:1" value="2489,2703"/>
   <property name="object:ricochet-bullets-item:ricochet-bullets-item:1" value="2382,316"/>
   <property name="object:static-launcher:green-launcher:1" value="961,1577"/>
-  <property name="object:static-corpse:dead-thrower-static:22" value="1567,471,-10"/>
   <property name="object:dumb-missiles-item:dumb-missiles-item:9" value="2649,177"/>
-  <property name="object:static-corpse:dead-thrower-static:21" value="1756,575,-10"/>
+  <property name="object:static-corpse:dead-thrower-static:22" value="1567,471,-10"/>
   <property name="object:dumb-missiles-item:dumb-missiles-item:8" value="1499,307"/>
-  <property name="object:static-corpse:dead-thrower-static:20" value="3099,356,-10"/>
+  <property name="object:static-corpse:dead-thrower-static:21" value="1756,575,-10"/>
   <property name="object:dumb-missiles-item:dumb-missiles-item:7" value="2253,968"/>
+  <property name="object:static-corpse:dead-thrower-static:20" value="3099,356,-10"/>
   <property name="object:dumb-missiles-item:dumb-missiles-item:6" value="235,748"/>
   <property name="object:dumb-missiles-item:dumb-missiles-item:5" value="1296,2779"/>
   <property name="object:dumb-missiles-item:dumb-missiles-item:4" value="1574,1877"/>
+  <property name="ambient-sound" value="forest.ogg"/>
   <property name="object:dumb-missiles-item:dumb-missiles-item:3" value="3064,1370"/>
-  <property name="config:map.smoke-missiles-item.respawn-interval" value="int:10000"/>
   <property name="object:dumb-missiles-item:dumb-missiles-item:2" value="2045,1485"/>
+  <property name="config:map.smoke-missiles-item.respawn-interval" value="int:10000"/>
   <property name="object:dumb-missiles-item:dumb-missiles-item:1" value="3120,2250"/>
   <property name="object:static-tank:red-tank:3" value="1321,3"/>
   <property name="object:static-tank:red-tank:2" value="3132,3006"/>
@@ -178,27 +179,42 @@
   <property name="object:static-corpse:dead-thrower-static:17" value="2302,40,-10"/>
   <property name="object:static-corpse:dead-thrower-static:16" value="2170,261,-10"/>
   <property name="object:static-corpse:dead-thrower-static:15" value="1907,639,-10"/>
-  <property name="object:static-corpse:dead-thrower-static:14" value="1104,531,-10"/>
   <property name="object:impassable-static-corpse:dead-orange-bus:3" value="604,1130,10"/>
+  <property name="object:static-corpse:dead-thrower-static:14" value="1104,531,-10"/>
   <property name="object:static-corpse:dead-thrower-static:13" value="394,583,-10"/>
-  <property name="object:static-corpse:dead-thrower-static:12" value="531,1234,-10"/>
   <property name="object:impassable-static-corpse:dead-orange-bus:1" value="1978,1855,10"/>
+  <property name="object:static-corpse:dead-thrower-static:12" value="531,1234,-10"/>
   <property name="object:static-corpse:dead-thrower-static:11" value="158,1395,-10"/>
   <property name="object:static-corpse:dead-thrower-static:10" value="534,2002,-10"/>
+  <property name="object:static-corpse:dead-civilian-static-1:9" value="2806,383,-10"/>
   <property name="object:road-sign:road-sign03:1" value="2388,2854,-10"/>
+  <property name="object:static-corpse:dead-civilian-static-1:8" value="2385,36,-10"/>
+  <property name="object:static-corpse:dead-civilian-static-1:7" value="2043,1385,-10"/>
+  <property name="object:static-corpse:dead-civilian-static-1:6" value="2538,1216,-10"/>
   <property name="config:map.dumb-missiles-item.respawn-interval" value="int:10000"/>
+  <property name="object:static-corpse:dead-civilian-static-1:5" value="2254,2231,-10"/>
+  <property name="object:static-corpse:dead-civilian-static-1:4" value="1030,2992,-10"/>
+  <property name="object:static-corpse:dead-civilian-static-1:3" value="280,2513,-10"/>
+  <property name="object:static-corpse:dead-civilian-static-1:2" value="750,1566,-10"/>
+  <property name="object:static-corpse:dead-civilian-static-1:1" value="408,1120,-10"/>
+  <property name="object:static-corpse:dead-civilian-static-1:15" value="2186,1048,-10"/>
+  <property name="object:static-corpse:dead-civilian-static-1:14" value="1627,664,-10"/>
+  <property name="object:static-corpse:dead-civilian-static-1:13" value="1991,787,-10"/>
+  <property name="object:static-corpse:dead-civilian-static-1:12" value="2312,862,-10"/>
+  <property name="object:static-corpse:dead-civilian-static-1:11" value="2972,33,-10"/>
+  <property name="object:static-corpse:dead-civilian-static-1:10" value="2439,664,-10"/>
   <property name="object:static-corpse:dead-thrower-static:9" value="160,2397,-10"/>
   <property name="object:static-corpse:dead-thrower-static:8" value="273,2696,-10"/>
   <property name="object:static-corpse:dead-thrower-static:7" value="375,2367,-10"/>
   <property name="object:static-corpse:dead-thrower-static:6" value="619,2415,-10"/>
   <property name="object:static-corpse:dead-thrower-static:5" value="982,2588,-10"/>
   <property name="object:static-corpse:dead-thrower-static:4" value="1839,2147,-10"/>
-  <property name="object:thrower:thrower:9" value="800,990"/>
   <property name="object:static-corpse:dead-thrower-static:3" value="2269,2308,-10"/>
-  <property name="object:thrower:thrower:8" value="291,842"/>
+  <property name="object:thrower:thrower:9" value="800,990"/>
   <property name="object:static-corpse:dead-thrower-static:2" value="2446,1603,-10"/>
-  <property name="object:thrower:thrower:7" value="275,382"/>
+  <property name="object:thrower:thrower:8" value="291,842"/>
   <property name="object:static-corpse:dead-thrower-static:1" value="2825,1732,-10"/>
+  <property name="object:thrower:thrower:7" value="275,382"/>
   <property name="object:thrower:thrower:6" value="838,2947"/>
   <property name="object:thrower:thrower:5" value="1199,3090"/>
   <property name="object:thrower:thrower:4" value="2897,1582"/>
@@ -225,16 +241,16 @@
   <property name="object:impassable-static-corpse:dead-cyan-tank:2" value="1248,1134,200"/>
   <property name="object:impassable-static-corpse:dead-cyan-tank:1" value="1692,1512,200"/>
   <property name="config:map.thrower-item.respawn-interval" value="int:10000"/>
-  <property name="object:watchtower-with-thrower:watchtower:11" value="2048,1528"/>
   <property name="object:impassable-static-corpse:dead-green-launcher:4" value="2192,53,10"/>
+  <property name="object:watchtower-with-thrower:watchtower:11" value="2048,1528"/>
   <property name="object:impassable-static-corpse:dead-green-launcher:3" value="1340,809,10"/>
-  <property name="object:machinegunner:machinegunner:29" value="100,202"/>
   <property name="object:impassable-static-corpse:dead-green-launcher:2" value="935,2545,10"/>
-  <property name="object:machinegunner:machinegunner:28" value="111,500"/>
+  <property name="object:machinegunner:machinegunner:29" value="100,202"/>
   <property name="object:impassable-static-corpse:dead-green-launcher:1" value="234,2477,10"/>
+  <property name="object:machinegunner:machinegunner:28" value="111,500"/>
   <property name="object:machinegunner:machinegunner:27" value="86,777"/>
-  <property name="config:map.nuke-missiles-item.respawn-interval" value="int:10000"/>
   <property name="object:machinegunner:machinegunner:26" value="87,777"/>
+  <property name="config:map.nuke-missiles-item.respawn-interval" value="int:10000"/>
   <property name="object:machinegunner:machinegunner:25" value="588,693"/>
   <property name="object:machinegunner:machinegunner:24" value="200,1518"/>
   <property name="object:machinegunner:machinegunner:23" value="471,1518"/>
@@ -243,18 +259,18 @@
   <property name="object:megaheal:megaheal:9" value="2383,249"/>
   <property name="object:megaheal:megaheal:8" value="1234,956"/>
   <property name="object:megaheal:megaheal:7" value="454,1153"/>
-  <property name="object:megaheal:megaheal:5" value="588,2459"/>
   <property name="config:map.machinegunner.respawn-interval" value="int:10000"/>
+  <property name="object:megaheal:megaheal:5" value="588,2459"/>
   <property name="object:megaheal:megaheal:4" value="1411,1918"/>
   <property name="object:megaheal:megaheal:3" value="2170,1226"/>
   <property name="object:megaheal:megaheal:2" value="3073,1830"/>
-  <property name="zone:checkpoint:4" value="@38,14:@2,3"/>
   <property name="object:static-tank:yellow-tank:5" value="1533,3089"/>
+  <property name="zone:checkpoint:4" value="@38,14:@2,3"/>
   <property name="zone:checkpoint:3" value="@18,0:@8,2"/>
-  <property name="zone:checkpoint:2" value="@10,17:@3,4"/>
   <property name="object:static-tank:yellow-tank:3" value="1046,1576"/>
-  <property name="zone:checkpoint:1" value="@19,41:@2,2"/>
+  <property name="zone:checkpoint:2" value="@10,17:@3,4"/>
   <property name="object:static-tank:yellow-tank:2" value="2948,3023"/>
+  <property name="zone:checkpoint:1" value="@19,41:@2,2"/>
   <property name="object:static-tank:cyan-tank:2" value="1481,3012"/>
   <property name="object:static-tank:cyan-tank:1" value="46,1089"/>
   <property name="object:impassable-static-corpse:dead-yellow-car:1" value="1214,421,200"/>
@@ -262,19 +278,19 @@
   <property name="object:machinegunner:machinegunner:19" value="696,2401"/>
   <property name="object:machinegunner:machinegunner:18" value="735,2449"/>
   <property name="object:machinegunner:machinegunner:17" value="325,2928"/>
-  <property name="object:machinegunner:machinegunner:16" value="554,3058"/>
   <property name="object:barrack-with-throwers:trooper-hut:11" value="647,632,210"/>
+  <property name="object:machinegunner:machinegunner:16" value="554,3058"/>
   <property name="object:watchtower-with-machinegunner:watchtower:60" value="1469,1911,210"/>
   <property name="object:machinegunner:machinegunner:15" value="932,3041"/>
   <property name="object:machinegunner:machinegunner:14" value="1051,2905"/>
   <property name="object:machinegunner:machinegunner:13" value="1370,1636"/>
-  <property name="object:gate:gate:4" value="2925,190"/>
   <property name="object:machinegunner:machinegunner:12" value="1370,1443"/>
-  <property name="object:gate:gate:3" value="2517,254"/>
+  <property name="object:gate:gate:4" value="2925,190"/>
   <property name="object:machinegunner:machinegunner:11" value="2911,1208"/>
+  <property name="object:gate:gate:3" value="2517,254"/>
   <property name="object:gate:gate:2" value="3109,1931"/>
-  <property name="object:gate:gate:1" value="1895,1680"/>
   <property name="object:kamikaze:kamikaze:5" value="1371,1141"/>
+  <property name="object:gate:gate:1" value="1895,1680"/>
   <property name="object:kamikaze:kamikaze:4" value="1341,1238"/>
   <property name="object:kamikaze:kamikaze:3" value="1295,1166"/>
   <property name="object:kamikaze:kamikaze:2" value="2857,1218"/>
@@ -289,51 +305,51 @@
   <property name="object:watchtower-with-machinegunner:watchtower:50" value="2303,2220,210"/>
   <property name="object:static-dirt:dirt:1" value="3072,2748"/>
   <property name="object:heal:heal:9" value="664,2861"/>
-  <property name="object:heal:heal:7" value="1267,1216"/>
   <property name="config:map.machinegunner-item.respawn-interval" value="int:10000"/>
+  <property name="object:heal:heal:7" value="1267,1216"/>
   <property name="object:heal:heal:6" value="1523,1719"/>
   <property name="object:heal:heal:5" value="2552,1558"/>
   <property name="object:heal:heal:4" value="2655,1259"/>
   <property name="object:heal:heal:3" value="2176,2087"/>
   <property name="object:heal:heal:2" value="2708,1917,-10"/>
-  <property name="object:lodge:lodge:2" value="2858,3056,500"/>
   <property name="object:heal:heal:1" value="1932,1895,-10"/>
+  <property name="object:lodge:lodge:2" value="2858,3056,500"/>
   <property name="object:watchtower-with-machinegunner:watchtower:49" value="2048,2220,210"/>
   <property name="object:static-shilka:red-shilka:2" value="1241,1"/>
   <property name="object:watchtower-with-machinegunner:watchtower:48" value="1348,1264,210"/>
   <property name="object:static-shilka:red-shilka:1" value="1063,1684"/>
   <property name="object:watchtower-with-machinegunner:watchtower:47" value="2108,173,10"/>
   <property name="object:watchtower-with-machinegunner:watchtower:46" value="2108,74,300"/>
-  <property name="object:watchtower-with-machinegunner:watchtower:44" value="2752,629,300"/>
   <property name="object:impassable-static-corpse:dead-yellow-tank:5" value="997,2649,10"/>
-  <property name="object:watchtower-with-machinegunner:watchtower:43" value="3009,565,300"/>
+  <property name="object:watchtower-with-machinegunner:watchtower:44" value="2752,629,300"/>
   <property name="object:impassable-static-corpse:dead-yellow-tank:4" value="1259,536,10"/>
-  <property name="object:watchtower-with-machinegunner:watchtower:42" value="2816,322,300"/>
+  <property name="object:watchtower-with-machinegunner:watchtower:43" value="3009,565,300"/>
   <property name="object:impassable-static-corpse:dead-yellow-tank:3" value="873,467,10"/>
-  <property name="object:watchtower-with-machinegunner:watchtower:41" value="2559,388,300"/>
+  <property name="object:watchtower-with-machinegunner:watchtower:42" value="2816,322,300"/>
   <property name="object:impassable-static-corpse:dead-yellow-tank:2" value="1876,661,10"/>
+  <property name="object:watchtower-with-machinegunner:watchtower:41" value="2559,388,300"/>
   <property name="object:impassable-static-corpse:dead-yellow-tank:1" value="1172,452,200"/>
   <property name="object:submarine:submarine:1" value="867,2226"/>
-  <property name="object:barrack-with-machinegunners:trooper-hut:9" value="1377,132,210"/>
   <property name="object:impassable-static-corpse:dead-yellow-launcher:2" value="703,227,200"/>
+  <property name="object:barrack-with-machinegunners:trooper-hut:9" value="1377,132,210"/>
   <property name="object:impassable-static-corpse:dead-yellow-launcher:1" value="572,1977,-18"/>
   <property name="object:barrack-with-machinegunners:trooper-hut:5" value="2636,1430"/>
   <property name="object:barrack-with-machinegunners:trooper-hut:4" value="3093,1430"/>
   <property name="object:barrack-with-machinegunners:trooper-hut:3" value="2013,1690"/>
   <property name="object:tent-with-kamikazes:trooper-tent:14" value="2053,13"/>
   <property name="object:cannon:cannon:24" value="1137,303,210"/>
-  <property name="object:cannon:cannon:23" value="2000,1284"/>
   <property name="object:kamikaze:kamikaze:28" value="2926,251"/>
-  <property name="object:cannon:cannon:22" value="2414,2,10"/>
+  <property name="object:cannon:cannon:23" value="2000,1284"/>
   <property name="object:kamikaze:kamikaze:27" value="2767,67"/>
-  <property name="object:cannon:cannon:21" value="3094,619,300"/>
+  <property name="object:cannon:cannon:22" value="2414,2,10"/>
   <property name="object:kamikaze:kamikaze:26" value="2731,4"/>
-  <property name="object:cannon:cannon:20" value="@49,5"/>
-  <property name="config:multiplayer.game-type" value="string:cooperative"/>
+  <property name="object:cannon:cannon:21" value="3094,619,300"/>
   <property name="object:kamikaze:kamikaze:25" value="2780,17"/>
+  <property name="config:multiplayer.game-type" value="string:cooperative"/>
+  <property name="object:cannon:cannon:20" value="@49,5"/>
   <property name="object:kamikaze:kamikaze:24" value="1252,1888"/>
-  <property name="object:watchtower-with-machinegunner:watchtower:35" value="1338,813"/>
   <property name="object:kamikaze:kamikaze:23" value="1205,1898"/>
+  <property name="object:watchtower-with-machinegunner:watchtower:35" value="1338,813"/>
   <property name="object:kamikaze:kamikaze:22" value="1280,1820"/>
   <property name="object:kamikaze:kamikaze:21" value="1216,1844"/>
   <property name="object:kamikaze:kamikaze:20" value="392,2450"/>
@@ -343,36 +359,30 @@
   <property name="object:dispersion-bullets-item:dispersion-bullets-item:6" value="1514,1474"/>
   <property name="object:machinegunner:machinegunner:9" value="2684,1067"/>
   <property name="object:machinegunner:machinegunner:8" value="3044,1125"/>
-  <property name="object:dispersion-bullets-item:dispersion-bullets-item:3" value="2875,2616"/>
   <property name="object:machinegunner:machinegunner:7" value="3117,1756"/>
+  <property name="object:dispersion-bullets-item:dispersion-bullets-item:3" value="2875,2616"/>
   <property name="object:barrack-with-kamikazes:trooper-hut:10" value="347,1275,210"/>
   <property name="object:cannon:cannon:19" value="@46,0"/>
   <property name="object:cannon:cannon:18" value="@39,7"/>
   <property name="object:cannon:cannon:17" value="1692,195"/>
   <property name="object:cannon:cannon:16" value="2334,716"/>
-  <property name="object:cannon:cannon:14" value="1529,509"/>
   <property name="object:kamikaze:kamikaze:19" value="348,2396"/>
-  <property name="object:cannon:cannon:13" value="838,761"/>
+  <property name="object:cannon:cannon:14" value="1529,509"/>
   <property name="object:kamikaze:kamikaze:18" value="234,2672"/>
-  <property name="object:cannon:cannon:12" value="1029,3059"/>
+  <property name="object:cannon:cannon:13" value="838,761"/>
   <property name="object:kamikaze:kamikaze:17" value="297,2977"/>
-  <property name="object:cannon:cannon:11" value="928,2598"/>
+  <property name="object:cannon:cannon:12" value="1029,3059"/>
   <property name="object:kamikaze:kamikaze:16" value="236,3119"/>
-  <property name="object:cannon:cannon:10" value="1447,1043"/>
+  <property name="object:cannon:cannon:11" value="928,2598"/>
   <property name="object:kamikaze:kamikaze:15" value="150,3149"/>
-  <property name="object:watchtower-with-machinegunner:watchtower:26" value="385,1187"/>
+  <property name="object:cannon:cannon:10" value="1447,1043"/>
   <property name="object:kamikaze:kamikaze:14" value="75,3126"/>
-  <property name="object:static-corpse:dead-civilian-static-1:15" value="2186,1048,-10"/>
+  <property name="object:watchtower-with-machinegunner:watchtower:26" value="385,1187"/>
   <property name="object:watchtower-with-machinegunner:watchtower:25" value="449,291"/>
-  <property name="object:static-corpse:dead-civilian-static-1:14" value="1627,664,-10"/>
-  <property name="object:watchtower-with-machinegunner:watchtower:24" value="414,2810"/>
   <property name="object:missile-boat:missile-boat:2" value="9,1804"/>
-  <property name="object:static-corpse:dead-civilian-static-1:13" value="1991,787,-10"/>
-  <property name="object:static-corpse:dead-civilian-static-1:12" value="2312,862,-10"/>
+  <property name="object:watchtower-with-machinegunner:watchtower:24" value="414,2810"/>
   <property name="object:missile-boat:missile-boat:1" value="8,1804"/>
-  <property name="object:static-corpse:dead-civilian-static-1:11" value="2972,33,-10"/>
   <property name="object:static-launcher:yellow-launcher:2" value="43,1180"/>
-  <property name="object:static-corpse:dead-civilian-static-1:10" value="2439,664,-10"/>
   <property name="config:objects.nuke-missiles-on-tank.capacity" value="int:1"/>
   <property name="object:watchtower-with-machinegunner:watchtower:13" value="1855,1772"/>
   <property name="object:nuke-missiles-item:nuke-missiles-item:4" value="2480,988"/>
@@ -380,16 +390,7 @@
   <property name="object:stack:stack:12" value="1818,30"/>
   <property name="object:stack:stack:11" value="2001,220"/>
   <property name="object:stack:stack:10" value="1954,292"/>
-  <property name="object:static-corpse:dead-civilian-static-1:9" value="2806,383,-10"/>
-  <property name="object:static-corpse:dead-civilian-static-1:8" value="2385,36,-10"/>
-  <property name="object:static-corpse:dead-civilian-static-1:7" value="2043,1385,-10"/>
-  <property name="object:static-corpse:dead-civilian-static-1:6" value="2538,1216,-10"/>
-  <property name="object:static-corpse:dead-civilian-static-1:5" value="2254,2231,-10"/>
-  <property name="object:static-corpse:dead-civilian-static-1:4" value="1030,2992,-10"/>
-  <property name="object:static-corpse:dead-civilian-static-1:3" value="280,2513,-10"/>
-  <property name="object:static-corpse:dead-civilian-static-1:2" value="750,1566,-10"/>
   <property name="config:map.thrower.respawn-interval" value="int:10000"/>
-  <property name="object:static-corpse:dead-civilian-static-1:1" value="408,1120,-10"/>
   <property name="object:impassable-static-corpse:dead-red-car:3" value="821,265,10"/>
   <property name="object:impassable-static-corpse:dead-red-car:2" value="2171,110,10"/>
   <property name="object:impassable-static-corpse:dead-red-car:1" value="1111,3049,10"/>
@@ -399,8 +400,8 @@
   <property name="object:tent-with-machinegunners:trooper-tent:3" value="2503,2794"/>
   <property name="object:static-corpse:dead-cyan-shilka:1" value="1149,2706,-100"/>
   <property name="object:tent-with-kamikazes:trooper-tent:8" value="920,816"/>
-  <property name="object:tent-with-kamikazes:trooper-tent:7" value="197,418"/>
   <property name="config:map.kamikaze.respawn-interval" value="int:10000"/>
+  <property name="object:tent-with-kamikazes:trooper-tent:7" value="197,418"/>
   <property name="object:tent-with-kamikazes:trooper-tent:6" value="676,1479"/>
   <property name="object:tent-with-kamikazes:trooper-tent:2" value="2726,1819"/>
   <property name="config:objects.shilka.dispersion.duration" value="float:10000"/>
@@ -420,16 +421,16 @@
  <tileset name="destruction" firstgid="601" tilewidth="64" tileheight="64">
   <image source="../tilesets/destruction.png"/>
  </tileset>
- <tileset name="trees" firstgid="631" tilewidth="64" tileheight="64">
+ <tileset name="trees" firstgid="701" tilewidth="64" tileheight="64">
   <image source="../tilesets/trees.png"/>
  </tileset>
- <tileset name="buildings destructed" firstgid="751" tilewidth="64" tileheight="64">
+ <tileset name="buildings destructed" firstgid="821" tilewidth="64" tileheight="64">
   <image source="../tilesets/destroyed_houses.png"/>
  </tileset>
- <tileset name="objects" firstgid="851" tilewidth="64" tileheight="64">
+ <tileset name="objects" firstgid="921" tilewidth="64" tileheight="64">
   <image source="../tilesets/objects.png"/>
  </tileset>
- <tileset name="animated" firstgid="941" tilewidth="64" tileheight="64">
+ <tileset name="animated" firstgid="1011" tilewidth="64" tileheight="64">
   <image source="../tilesets/animated.png"/>
  </tileset>
  <layer name="grass" width="50" height="50">
@@ -477,7 +478,7 @@
    <property name="animation-frame-size" value="20"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAO2YQQ7EIAhFTXr/o+jWHm+6Iflh0OpUpmB4Gxdjqp8PlE5KQRAEQRAEQfBNPVI6j7dv8Zx8aSgb6Ag/bBF+2IL8qM61kB/ZuY6yiR8n+OG5Tuj+3vsW3T/8sMEufuD741TovzxOWvHK8Gw6Z7UWPEMrfys8W8uXeujnb4YzCvN/lRb0Wzt/UQPP5ydnco9Rz0rQD9TUqk9pbcH38Zit1lEELbOrBN+Hfq+udymP7lbe36R+Ku3XfNfyPtXKJ/xd6m/8jq39WrTifqdr1B9pnwZSPGfro+ePVB8azH4PjsS754/FWbTlC/rjZZ4e8cfLPN3rd3d9zRqtfvfLHPAmvf4k1br1/2ekeUqa36z6Qcy8d6wzOqd5YAc/iF38oPUffnwAy0NVRBAnAAA=
+   H4sIAAAAAAAAAO2YwQ7EIAhETfr/X6tXm+2FZMKi1a1swfAuHtZUhwFKN6UgCIIgCIIg+KYeKZ3H27d4Tr40lA10hB+2CD9sQX5U51rIj+xcR9nEjxP88FwndH/vfYvuH37YYBc/8P1xKvRfHieteGV4Np2zWgueoZW/FZ6t5Us99PM3wxmF+b9KC/qtnb+ogefzkzO5x6hnJegHamrVp7S24Pt4zFbrKIKW2VWC70O/V9e7lEd3K+9vUj+V9mu+a3mfauUT/i71N37H1n4tWnG/0zXqj7RPAymes/XR80eqDw1mvwdH4t3zx+Is2vIF/fEyT4/442We7vW7u75mjVa/+2UOeJNef5Jq3fr/M9I8Jc1vVv0gZt471hmd0zywgx/ELn7Q+g8/Pig+Vk4QJwAA
   </data>
   <tileproperties/>
  </layer>
@@ -559,7 +560,7 @@
    <property name="impassability" value="70"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAO3WTQqAIBCA0aCj2qru0bmzRVALyzF1HP0eCAWR44x/09SnfX4+398BCefb0kEfKVg3+nqpQS/jiCVZ06XXf63ca9V49W3T6TrJ33hDebaWh9bknr+j7Xk1jZbb0cYLGen8CN05Yv4T+ibnHJWeZSl9Wz8vc9W8tq+4S9bFes0vnAd447QDABpx7pUW9/1WzmsAeqzd9azFCwAAxnUAIPB/CxAnAAA=
+   H4sIAAAAAAAAAO3WTQqAIBCA0aCj2qqu2qGyRVALyzF1HP0eCAWR44x/09SnfX4+398BCefb0kEfKVg3+nqpQS/jiCVZ06XXf63ca9V49W3T6TrJ33hDebaWh9bknr+j7Xk1jZbb0cYLGen8CN05Yv4T+ibnHJWeZSl9Wz8vc9W8tq+4S9bFes0vnAd447QDABpx7pUW9/1WzmsAeqzd9azFCwAAxnUAIxplTRAnAAA=
   </data>
   <tileproperties/>
  </layer>
@@ -577,7 +578,7 @@
  </layer>
  <layer name="junk" width="50" height="50">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAO3ZwQmAMBBFwYgl2KzYRKxOLMIi9JCzBAwsKzOQ+/sQyCGl5LJO0QXfbK0/+47a+vfkOwAAAAAAAIDxqn9EAi1zdEG/t9ZMO7I7nnNGRwx0RQeMkvwt+du9yuQGsAKwaBAnAAA=
+   H4sIAAAAAAAAAO3ZwQmAMBBFwYhV2onYRKxOLMIi9JCzBAwsKzOQ+/sQyCGl5LJO0QXfbK0/+47a+vfkOwAAAAAAAIDxqn9EAi1zdEG/t9ZMO7I7nnNGRwx0RQeMkvwt+du9yuQGm0l6FhAnAAA=
   </data>
   <tileproperties/>
  </layer>
@@ -588,7 +589,7 @@
    <property name="impassability" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAO1azU7DMAxe2ePwAAjEBY234IiEeoHDnoDrLvxD6W7teFASUWvGxInTOmmL9knVOlVL/MWf7cRdWywWW3NZVObzq7sfE43HhnvPs9Y82wk4VIhzSlh7Psk8PvtjYdepHcDlZoAtwEODj9Rvc0Xl0MHUcNHZV3e+2Dl0BXFZTpwLhbUbx/xQvV2PxB/iPWR3Kv+8mXHf0fXRcx5pzuLqQB9+tULOv3T8ntpYddrC8Y75Yh366pwLNaNbmHMXOd558XNZXmvyW/od0CDbaRzF5jlah7k5YwB8QnDlgNel0fhy7y+fznAs2DiI9WUuSPKFBaetA/5Coq854JTwOJsYr5MuP1nYT86+lTDmXYCYfzbXy7LfGJrYKPjg0fB4GpmL1jmnLH7Xty35zu1VQ2NKEcujZuyheZjLyy3h5RoX+Mfk6g0ZS7pe2nUNar60LoXQBvyfqq5p2W9BzyZavQmXzjXPBquAxrW0Q9dEu09FeVCEeOA1Da1vk2B9OICuJPmCrimNq6rg+4SamnUBdOVaL3zm8OkC7/d95394lgo1M29OXWiC6n0t8IVFqAbl7plx2pLkGZ+/cvvS1XP2natLoe4gLqbax8T7pjHOsHPriVJAPEpz+RC+tO/Tt3/FIaa/i3UT4k0523iR5ruUqAt3v5HuS7h9gDR2YLycWpeem2LHnHuvK9c7zJQou/hJvX9MDbB/Ku/Ph0DzXHtAHhwf7e+vRuz79XkvCrXk1th9N4H+ax9wZzoXHmbKcS4Ysy5q/i/gP9RFjLnUlG+A1NeXECcAAA==
+   H4sIAAAAAAAAAO1aXU7DMAxu6XE4AALxgsZNkFCfdwJe9w6U7q0dN4Cj8H8aElFrwcSJ0zppg/ZJ1TpVS/zFn+3EXV8WxVZdGo36fBzu50TnsOHG8axXz3YMDo3BOSa0PQ9oHpf9odDr1E/gcj3BFuAhwYfrt1zRWHSwNFwM9rWDL3YWXUFc1gvngqHtNmN+qt6uZuIP8e6zO5Z/btW4d8Z1P3Iebs6i6sAYfq1Azr+0/B7b2AzaMuPd5Gvq0FXnbGgJ3cKcu8DxzsufS/Nao9/i74DOsB3HUWiew3WYmjMEwMcHWw74rIriq9r7y6UzMxZ0HIT6MhU4+UKD0tYBf8HRVw44RTzOFsbrZMhPGvqTsm/FjHkbIObf1fVRjRtDEhsBH7wqHm8zc5E659Tl7/q2Rd+pvapvTC5CebSEPTgPU3m5R7xs4wL/kFy9QWNx10u6rkHN59YlH3qP/2PVNSn7NfDZRKo3YdO55Nlg5dG4lHbwmkj3qTAPDB8Pc01969tFWB8KoCtOvsBriuOqKek+oaRmbQBd2dbLPHO4dGHu913nf3gWCy0xb0pdSALrfc3whYavBqXumVHa4uQZl79S+9LWc3adq2um7iAultrHNPdNc5xhc+uJYkA8cnP5FL647zO2f0UhpL9r6sbHG3PW8cLNdzHRlvZ+I96XUPsAbuzAeCm1zj03hY6Ze68r1TvMmKiH+Im9f4wNsH8p78+nQPJce0AaHB/t77sZ+35j3otCLXlSdj8voP86BtSZzoaXTDnmgjnrouT/Av5DXTSRS035BowEsSYQJwAA
   </data>
   <tileproperties/>
  </layer>
@@ -599,7 +600,7 @@
    <property name="impassability" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAO2aS08cMQzHk+GT0CuiPHrg2UN5tVKBlgNQJDhAgT3w6mW71730wKcGR8TCazwZzyTpEsRPinbYzCT+x3biZdeYbny3xmxDm4E2azsO4jlq8fxN5FycfRjvANoStOXIsX8Hnr+tjDmG/mt/z4Dce0XejwX9Mu+b888ptDPh9SxiTrSf+sNdN/lnE/q3FPOiX1Z9C/lHEz9ujU/sqA+o/X3f73Daeg1jdo3/dbh3o6UO+j6uu9Pz118fk2uKJle6xn9IR10e0PdPKp2NVzXa6vgSsEuC5wu2T/bJ3rrcQXrVSxt5Pkv9qXXwfMH2WTmGlLvub5cXf0DjXfXSD5r4aqsjloG3GddfEz99hX1SnMSeeyHc2lLbMV9i4XGS8hyX6LP17yXSwUFdufUgqesQTsq6hML3pkGisf9NhPv5PvAVrr9FzO3ygeZ5bn8gGF8YW6FzUAM/P5rqDg3TMMZH+1z/SXmA8bVMdPC6kT5Hx8TzkeLWP4XtyByMtQNtl+1TfN45tie7ZxbtaN24Hejn5yONKQetG6X6EfvrWIG+Q2i/oA3t87rzeVfs6LlNn6HP8X5kaEdfUQvaLJ2BTf0SQ+V994liQTtfLlLpyIVmfXCvHfdaasB8lvat2L32f4L5LJ3fJelApPp3p0Ad0uckPCNy14y52bN5asZx0TVP6D43zj0PayasY0plwddMvOYoDfcZZK1g+5F3Ha+LH6Dh5xvQ8c7bIuc5WMJniRhK0ae1sxQ9Gl67FrTvQ2XMZKb/d+cmtMaTBesKMa64urT13y9qOJ8wZsr7I9X3RBKSnTF2h7ionr53vMmgp+n3AqH+kmI/9HuUknSk9EeumuiyIf4fbNgfbeG2p9KisbHN77UkmnyWQkvXtX4EcnaLaBAnAAA=
+   H4sIAAAAAAAAAO2azU4cMQzHk+FJ6BVRvg6Ujx4KlFYC2nIAigQHqGAPQOGy3eteeRVehYcCR8TCazwZzyTpEsRPinbYzCT+x3biZdeYbmxZY7ahzUCbtR0H8Ry2eP4qci7OHoy3D20J2nLk2H8Cz/+tjDmC/kt/z4Dce0HejwX9Mu+b888JtFPh9TRiTrSf+sNdN/nnK/RvKuZFv6z6FvKPJn7cGh/bUR9Q+/u+3+G09RrG7Br/63DvRksd9H1cd6fnn78+ItcUTa50jf+Qjro8oO8fVzobL2q01fElYJcEzxdsC/bJ3rrcQXrVSxt5Pkv9qXXwfMH2WTmGlLvub5cXN6DxunrpB018tdURy8DbjOuviZ++wj4pTmLPvRBubantmC+x8DhJeY5L9Nn69xLp4KCu3HqQ1HUIJ2VdQuF70yDR2PcT4X6+D3yD6+8Rc7t8oHme2x8IxhfGVugc1MDPj6a6Q8M0jPHRPtd/Uh5gfC0THbxupM/RMfF8pLj1T2E7Mgdj7UD7wfYpPu8c25PdM5/saN24Hejn5yONKQetG6X6EfvrWIG+A2i/oQ3t87rzeVfs6LlNn6HP8X5kaEdfUQvaLJ2BTf0SQ+V9t4liQTtfLlLpyIVmfXCvHfdaasB8lvat2L32f4L5LJ3fJelApPp3p0Ad0uckPCNy14y52bV5asZx0TVP6D43zj0PayasY0pl0ddMvOYoDfcZZK1g+5F3Ha+Ln6Dh1xvQ8c7bIuc5WMJniRhK0ae1sxQ9Gl67FrTvQ2XMZKb/d+cmtMaTBesKMa64Orf13y9quJswZsr7I9X3RBKSnTF2hzirnr53vMqgp+n3AqH+kmI/9HuUknSk9Eeumui8If4fbNgfbeG2p9KisbHN77UkmnyWQkvXtX4EGh6LLxAnAAA=
   </data>
   <tileproperties/>
  </layer>
@@ -611,7 +612,7 @@
    <property name="damage-for" value="fence"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAO3avQ2AIBAGUIJ7WruANg7hz8SygIkFgci9V14DJHx3FKREJGtOacu9d0F08yB3cOlwjn1qvyZ9yUssV8n4XSnnI/YLeeCP3nJ9lNr5Mac1ewNEMOIMBGjBmwMAAOLyjwAYzQPU5gGfECcAAA==
+   H4sIAAAAAAAAAO3avQ2AIBAGUIJ7WruA7ucQ/owjC5hYEIjce+U1QMJ3R0FKRLLmlLbcexdENw9yB5cO59in9mvSl7zEcpWM35VyPmK/kAf+6C3XR6mdH3NaszdABCPOQIAWvDkAACAu/wiA0TxKcbH+ECcAAA==
   </data>
   <tileproperties/>
  </layer>
@@ -629,13 +630,13 @@
  </layer>
  <layer name="fence details 2" width="50" height="50">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAO3WSwrCMBAG4Gl6Ir2B4Nq1O115Bm9h76B2p/aIBsqgDMYWzGSS+H9QUugjMySThAg07RrrCMIOGcd2aom61jqKsLMjujjrKH538zncK8gDQBPXu3Xdf9tP5uw1XO/cWucTi8yn9LzkOKWQ81klF6XMq6k4Q/Nq6rveP7u6sdXEfci6lv3ye72o+dB6sPJzfOOvwd8/3Nhqkn1wXLJffm8I1Pyn9WD7R/Uq16Z9E34G5Yq9tiz8tYz3u9m4nrXXyRQ4l3XzGp8Ue4Amzuk9NwANpdcKS3Fegnzlfs7KPT4Aa6iR+hwrGdOukjwAAACgLE8MEqcVECcAAA==
+   H4sIAAAAAAAAAO3WSwrCMBAG4DQ9kd5AcO3ana48g8fwcnoHtTu1awNlUAZjC2Yyk/h/UFLoIzMkk8Q5kLRptCOI2xmO7dg6d2q1o4g7e+cuXjuK391CDvcK8gCQRPWuXfff9pMpew3VO7Xa+aTC8yk9Lz5OOVg+q1hRyrwaizM2r8a+68Kzqx9aSdQHr2veL73XsZqPrQeLMMdX4erD/cMPrSTeB8XF+6X3+kjNf1oP1n9Ur3xt2jbxZ1Cu1GvLLFzzdL+bjOpZep3MgXJZNq/xybEHSKKc3nMDkFB6rZAc5yWwy/o5y3p8ANpQI/XZVzKmh0ryAAAAgLI8AQv/JHIQJwAA
   </data>
   <tileproperties/>
  </layer>
  <layer name="fence details" width="50" height="50">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAO3XSwqAIBSF4UutyNZV7aW20GPWY4kZIYTQIEkt+z9oFnbP4KiJANjVN98fMpEx8zJKUIvOsCaQA/Apdt9Lud6jyhvr2H2PnespJldqeUJQ+inCfAqBuPbgLf0xc7j2+i37gd1j117/+Z5m70/7eVfJcR6qKBP5c86G7+p0V/sE+jrpDHMCOYwmF2nz2FMAAJ7CPyxccNemOwAAAPinDbG1kloQJwAA
+   H4sIAAAAAAAAAO3XSwqAIBSF4UutyNZVbbe20GPWY5wRQggNktSy/4NmYfcMjpoIgF198/0hExkzL6MEtegMawI5AJ9i972U6z2qvLGO3ffYuZ5icqWWJwSlnyLMpxCIaw/e0h8zh2uv37If2D127fWf72n2/rSfd5Uc56GKMpE/52z4rk53tU+gr5POMCeQw2hykTaPPQUA4Cn8w8IFd226AwAAgH/aAJaEtVsQJwAA
   </data>
   <tileproperties/>
  </layer>
@@ -677,13 +678,13 @@
    <property name="z" value="400"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAO2Vv2sCMRzF73KDQvW0VqHl1EJ/+GvQxUKp0IooqP//0q7t4OIiQhcHX7gLxutdRRwS5X3gcV+S4d5L8k0chxBCCCGEEEIIIYQQQgghhBBCLgdfOE5JmHZxGnn4z0DZM89xE+WQFPG9FuFXqnBG+yRz3EKBpi7Ug+6gjmfa4T5FbZ31NZY5ylADWruh1DmTdd+yHPpaP2o5aqhf4fUN+oCGXrg/VWiA+t2yHIPI60MsRxP1CONjaAbNvXB/KtAE9dRQjk+chS/37/gk8hrPkUQd8/eG+/sbGX4Scqj75wl6PnAPtTDXNphjAf/LlBxBdP+oPrHtHtJZwf9vSg6F6uX/+tf0+76Bfxf/Fwke+hh7EbteTutfW973K/w/d6QHX+y/5aqH4m+NDWwB41WoZBAnAAA=
+   H4sIAAAAAAAAAO2VsU/CQBjF2+uACViqQIJBIQFRWXDR/8uZwdhECZEE+fdgxcGFhZi4MPAu7cWjtBLCcFfzfslLv9wNfe/uvjvHIYQQQgghhBBCCCGEEEIIIYSQ/4MvHOdcmHZxHKfwX4BOcp6jEueQBPieiegrVc7RPskcdaihqQ/dQxfQk2fa4TaBts76GsscVegG+nYjqXMm64FlOfS17mg5rlA/w+sL9AYNvWh/LqEQ9atlOcLYazuR4xb1COPv0Ac09aL9qUFj1BNDOWY4C3N3d3wce03mSKOJ+Zbh/l4gw2dKDnX/XEPdPffQHeZ6BnN8wf8yI0cjvn9Un9h2D+ms4P8nI4dC9fJf/Wv6fV/Dv4v/ixQPDxh7FL+9nNW/trzvRfy/dKAHX2y/5aqHkm+NDWwAI89tFxAnAAA=
   </data>
   <tileproperties/>
  </layer>
  <layer name="buildings details" width="50" height="50">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAO3VsQ2AIBQEUKKL2NAzjtbuv4O0NnTAD7w3wSWXy6UEAAAAAAAAAP3kY3aCPu5zdoK2J3g+/l59DRV9v7so9R+uRT9iB1F39AGhswqJECcAAA==
+   H4sIAAAAAAAAAO3VsQ2AIBQEUKKL2NAzsdZuKa0NHfAD701wyeVyKQEAAAAAAABAP/mYnaCP+5ydoO0Jno+/V19DRd/vLkr9h2vRj9hB1B19ODBYOBAnAAA=
   </data>
   <tileproperties/>
  </layer>
@@ -692,7 +693,7 @@
    <property name="impassability" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAO3ZQQqDMBAF0CEeqVcR6QkKeoIuahddCdY714VQkOpGBUPfg4EsAvMThmwScZxHEdEWBzYAAAAAAAAA/trLfySQmTKzd+uSIu6ZZb5Nea+z3M8dzlGd4C66E2SAX/pxNt9jDSszWqfvuknL+7b4AO0oP5IQJwAA
+   H4sIAAAAAAAAAO3ZQQqDMBAF0CEeqafSI5XiCTxDF7WLrgTrhepCKEh1o4Kh78FAFoH5CUM2iTjOo4hoiwMbAAAAAAAAAH/t5T8SyMw1s3frkiLumWVuprz1LPdzh3PcTnAX3QkywC/9OJvvsYaVGS3Td12l5X1bfADnLHJGECcAAA==
   </data>
   <tileproperties/>
  </layer>
@@ -701,19 +702,19 @@
    <property name="z" value="600"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAO1ZR27EMAxc+NfpAdJ77+UTSS6pl9RLkidlfBCWIEiLsopjwAMQWGBFmqLIIS2PRu1xU41Gt5C7KsLIP8AT/H+G3EMeII9VP/f2AV8/Ia+QN8h7Nd7bS8M+TjLucQK2JyFTkOnAuH5jzQ/ktxrv7auj81jAcxchS5BlY1wpLPvmscqBLdjdhuxAdllcLefC9+32RXV5rHKgztlTyBnknDzDei48n5we1eWxSo092Nwndg/w+7CS/bPC6VFdLVapcAGbl8TuFX5fC/lhya85/D+fYE0ofLVH88OSX2v4fz3BmlD4ao/mR5d86gOvvRBulDhJQ27O5bUXwo0SJ2nIzbmUm2qEcKPESRpycy7lphoh3Kj1cDo3analNbGQcpf6qNUB7ZF0PZ0btVmYrkkFKXepj1od0B5J19O5UZuF6ZpUkHKX+mipA63vl5yFrTVBOYHPMinBuSdGT/KTcgKfZdpCig3nHiskPclPWqfumbG8kyM2PtA6dc/MwTuUP32Q8sY3O/B3K3c2qXjH5RjlT22Ng3SGnH+1fXEejrkjofF0Ocb5U1rTBK6vzUSch0Pf5SmkeHL+DK0brm+didr0BY1b23JuE6S+ouVaKG9p+dGWc0Oh5VoO3vIhphdruSbNS7E9fwa6sw36Mf1GyjWNr2L72gp0VwuebwxfcWzAxmZB3ylSzrFHsHHssVPifjUWlvMocb8ag/p+znIeud/1m+Di3MRh9f2c64NNXJX7frUJLs4+DnN9sDRXDRgwIB360MMsSNHDfPNjCaToYY6Tu5zFeA/TYmvx0dL7S0Hrd5KPOb4rdgH3XbEv+/HVcY7vpDkwzFb9xx/lsFxrECcAAA==
+   H4sIAAAAAAAAAO1Z107FMAwtLbwwX4D//xM2EnvvPX4CeMGVCPdg2Y3TJL1U6pEsFRHn2o597KZF0R4fZVF8knyVEZv8A1RVUUxW9UNRTJCUVT99myO750mmSWZIZquRb1OVrveQ0ccV2nuVZI1kvQyL6yLZvESyXI18W2jwIyd2yN5dkj2S/dIWV4TFbx6rHDijfc9JLkguy79xtZwL99v5hbo8VjlQ5+wjyRPJM/yG9Vx4Pjk91OWxSo0r2vMa9r2h59tSts8Kp4e6WqxS4YX2fIV93+j5/edvzA9Lfm3R/7cTrAmFr/YwPyz5dUR7HHtstKwJha/2MD/Gyac+8NoL4UaJkzTk5lxeeyHcKHGShtyci9xUI4QbJU7SkJtzkZtqhHCj2sNhblT3FdbEQspdtFGrA+yRuB7nRm0W/rMmEaTcRRu1OsAeietxbtRmYVyTClLuoo2WOtD6fpezsLUmkBP4LJMSnHti9CQ7kRP4LNMWUmw491gh6Ul2Yp3++hnJOzli4wPWqfvNHLyD/OmDlDe+2YG/W7mzScU7LseQP7U1DtIZcv7V/OI8HHNHgvF0Ocb5U1rTBK6vzUSch0Pf5RFSPDl/htYN17fORG36gsatbTm3CVJfUWsokLe0/GjLuaHQci0Hb/kQ04u1XJPmpdiev0G6mw36Mf1GyjWNr2L72gHpHnaQYw4xfMVxQnafdmg7IuUce0c+3Hv86OJ+NRaW8+jifjUG9f2c5Txyv+s3wcW5icPq+znXB5u4Kvf9ahNcnH0c5vpg11w1YMCAdOhDD7MgRQ/zzY9dIEUPc5w8zlmM9zAtthYbLb2/K2j9TrIxx3fFccB9V+yLP746zvGdNAeG2ar/+AZ0uJmxECcAAA==
   </data>
   <tileproperties/>
  </layer>
  <layer name="forest2" width="50" height="50">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAO1Zx26EMBBd8dfpkdJ77/WaXNN7773cUm4pn5G3SqzMWtjGwMAk2ic9LbDGjJl547EpFOLhJCgUTsGzIGYHgrCAMSyCS0HpcRgqcL0SrAKrhY19C/ZsgztB6XEYGnC9EWwCm4WNg8aWK866cL0b7AF7GcZh83cHzjtTeuYI+hkFx8BxhnHY/D2E82HPZ+o6WcfvBrjJHEsufyu7bBqm0HVyiN8j8Fi7N23du/yt7LJpmELXyTV+b8Bb7V4u3Zvej7KryDT1wqV72/tR9sfRiwlcure9nzD7l3G+Aq6Ca4LmA9/3s4s2e+A+eCBoHL754xxtLsBL8Oqnvas2yQJJ8ofSj6s2yQImfUSZx5R+9Jxr0hCn30z6MM1jCrqt1EaqIZqzs/Ib9YFpHlPQ9U5tpBqiOS+rtQv1wQA4SJ6n5wNd75LWV9QHU+A0sUnyOsIH3OsITlDtcq8jKNKuial29TzMmUPTjmGqXT0Pc+ZQzhjW8zBnfkoSw3FjUkJtRREWk1HGJqG2ogiLySh6kzT/FREWkya93eH4HnwAHz3tr0H72ozHbNLbE46fwRfw1dOmFrRvFeK7N9jxDn6An0JsKqOM/wq1ZuwD+/+w3tSacQKcTDgOafVFXEirL+JCWn3Bhay+y/gir73mtNesee01l/ddvjGDe2aD3zjPC7Y1a5TcP4f/5sl+gQ1cc0kd+qu39OmT+9V+gQ2m/lx2uNCGe9sDcz9p535Tf8qOpEjST5rfXPOE/s1S2rwWt9Z1facJA+cegW+tq3KR6zuNFJjiRuWiL9Abcy4QJwAA
+   H4sIAAAAAAAAAO1Zx27DMAx1ne69163j1vH/t+4C3XvveW2v3X1BI5RRLSmyTZso8oCHxG1MUyYfRUlBEA9thSBoBzsKMQ0IwksYBK/gW1j+PQoz+PssOAfOG36TFwqIRS1YVyj/HoUV+L4KroHrwsZBc8uVZ3vwfR88AA8ZxmGL9w6ud1N65gXsXIJX4DXDOGzxPsP1uecz/+gE8akBQ+Z64Iq38sumYQpdJ834bAFbtXGkrXtXvJVfNg1T6DrpxWcf2K/dy6V70/tRfhWZpl64dG97P8r/OHoxgUv3tvcT5f87rj/AT/BL0Hzg+37qkWcNYCPYJKg38a0fnfC9C+wGe0rjcPUmWSBJ/VD6cfUmWcCojwrmMaUfveaaNMQZN5M+TPOYgu4r9ZFqiNbszOJGYmCaxxR0vVMfqYZozctq7UJjcIJnn5L46PVA17uk9RWNwR18vSfjkLyO8AH3OoITVLvc6wiKtHvisvqi1WHOGpp2DlPt6nWYs4Zy5rBehznrU5IcjpuTEnoriqicrGRsEnoriqicrERvkua/IqJy0qS3Afg8CA6Bw57+L8DOYsY5aNLbCHwfBcfAcc9xbMDOphAtTcD3SXAKnBaST1VU8V+h1oxH4LGQGhAHas14A94mHIe0/iIupPUXcSGtv2BDRucyvshrrzntNWtee83VfZcfPOCex+J9pTzPC7Y1ayW1/wn/ew5/9wts4JpLlmBv2WLTp/ar/QIbTPZcfriwhXu3Q7OdtGu/yZ7yIymS2EnzzDVP/DmzFDavxe11Xec0UeDcI/DtdVUtcp3TiIEhb1Qt+gZCxhdDECcAAA==
   </data>
   <tileproperties/>
  </layer>
  <layer name="Layer 21" width="50" height="50">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAO2Y2WrCUBRFg3/dWqhQLbTVDmpbtU6v9gM66UPr0IdO+kldPgghYPCqGU7YCxZckOTsk5ybED1vOy5ynlfGJ3zGF3zNuZ9nwDGPWxy3L26pfYfv+IFjnPjy9Fj3E8znyhdZv/EHf325k77Ou7DrjEXJG3mGONog17oZCyOu+ZtSY4afG9RaN2NhxDV/f9SY48Kh1upZFlwnjctsLVk9y4LrpHGZrTTjny3Xe5NWsnhvsoTmLF1kdc6EEEJEyzHvjYLBd0cw9xnrc4N9WM0txL45YB8cYh6PDO+JE7IXsYSnhvuokP0Sr/DacB/3ZG9gE1shfdzwW9VwnzWy1/EB24b76JC9azi/EEIIYRGr/wkE0be1iArtEREH/xDDLl4QJwAA
+   H4sIAAAAAAAAAO2Y2U7CUBRFL22Coj44//+fiCaaiCaIA06oDOqrfIADiwcCNKFygQ6n2StZyU1uh33ac5u2zi1GI3DuGr/xB3/xL/A/zhf79BfYb1U8c+4WlkPn1nAdK+F4/oO5zwzz+bJN9h3cxb2JOrK+zsuwbI8lCte4hEH4/6azeiyOtPpvgzybuDVHrlk9Fkda/bdPngM8nDPXkNGzLDrOHI/eGjJ6lkXHWePTW3lmqrc8701eKeS9KRLqs1xR2D4TQgiRKKe8k5/l5L3ch2juOuMrg3VYzS3EqjliHVTxGE8Mr4lzstfwAi8N13FD9lu8w6bhOl7I/opv2I6p4565B8N1PpL9CTvYNVxHj+zvhvMLIYQQFrH6TyCKvq1FUmiNiDQYAMGwVdsQJwAA
   </data>
   <tileproperties/>
  </layer>

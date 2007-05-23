@@ -4,7 +4,7 @@
   <property name="object:traffic-lights:traffic-lights:3" value="456,236"/>
   <property name="object:traffic-lights:traffic-lights:2" value="452,68"/>
   <property name="object:traffic-lights:traffic-lights:1" value="624,66"/>
-  <property name="object:tent-top:tent-top:2" value="307,20,500"/>
+  <property name="ambient-sound" value="city.ogg"/>
   <property name="object:road-sign:road-sign08:2" value="942,811"/>
   <property name="spawn:4" value="128,704"/>
   <property name="spawn:3" value="955,705"/>
@@ -19,8 +19,9 @@
   <property name="object:stall:stall-left:3" value="978,1055"/>
   <property name="object:bus-stop:bus-stop-left:1" value="127,329,500"/>
   <property name="object:stall:stall-left:2" value="258,20,510"/>
-  <property name="object:stall:stall-left:1" value="968,431,100"/>
   <property name="object:traffic-lights:traffic-lights:6" value="454,1064"/>
+  <property name="object:stall:stall-left:1" value="968,431,100"/>
+  <property name="object:tent:tent-top:2" value="307,20,500"/>
   <property name="object:traffic-lights:traffic-lights:5" value="624,1062"/>
   <property name="object:traffic-lights:traffic-lights:4" value="624,236"/>
  </properties>
@@ -53,8 +54,8 @@
  </tileset>
  <layer name="the plan" width="18" height="18">
   <properties>
-   <property name="impassability" value="30"/>
    <property name="z" value="-1000"/>
+   <property name="impassability" value="30"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAFNgYGBQBGIFCmktINamAk2pOwaDe7CxFcmwHxtbG4sd5NCKDJh2kENrU+gOGD2afkbdMxjcAwBzI+8MEAUAAA==
@@ -88,13 +89,16 @@
   </data>
   <tileproperties/>
  </layer>
- <layer name="Layer 14" width="18" height="18">
+ <layer name="tracks 2" width="18" height="18">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGAUgEAfE8QPtiFHAkDTQDhgFIxoAABJT+68QBQAA
   </data>
   <tileproperties/>
  </layer>
  <layer name="buildings details" width="18" height="18">
+  <properties>
+   <property name="impassability" value="100"/>
+  </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGN4glpmBIQ6I45lR2aSCdDL0YAOFVDJnFJAOFJlQMblAG8kMbQrMgZlFqRmjgHoAANjAaK0QBQAA
   </data>
@@ -110,6 +114,7 @@
   <properties>
    <property name="pierceable" value="true"/>
    <property name="impassability" value="100"/>
+   <property name="z" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgwAQFjFgEgSCERPFRMDIAKP59kNJAPJCdgCVN4BLHBTKBarOwqMclPtIAJeGMHF+j4YwAAE4FH6sQBQAA
@@ -124,11 +129,11 @@
  </layer>
  <layer name="buildings" width="18" height="18">
   <properties>
-   <property name="impassability" value="100"/>
    <property name="z" value="400"/>
+   <property name="impassability" value="100"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAK2TPQ+CMBCGe7c5OCE6ibggyuJvd9DFJro4yOKg/8e7tBdToNQ2vMnlSHs8ua9qUEqTfchENSq1R9XTy8bqzj98vhqIT9F2Io6oIl4eYGZ0v0BTQ2X9Et2aSvreBDhrui/Q1FBaf0S3poOnt6IdGuMZNGjiZ9Y3E/TmRLM6g6k31JcxXYlxA1NvqC9jehDjCf6d6+bpy5t38A39c1FhZyzKE/Ou8ccSRjfv+Z9cYQ0xWFlEfr7+xXLGlMqRnWO7QDpHdo7tDu67jdln2Tm2Ftx3+wUyuuaIEAUAAA==
+   H4sIAAAAAAAAAK2Tuw7CMAxFY28MTKUwUcpSCl34dgaQgEqwIB4LA/wPthIL0jYJrXolK1XiHtk3TglKlRRvClGOSi1R1fQ0uWXlH96fNOR30bwnjigjXhxgRnQ+Qt1DZtYx2j2l9D0LcKZ0nqDuITXrGu2eVg5vRQvUwXdQoM4fmLXowZsN3dUWdL8hX3w6EuMEut+QLz5diHEH98xV63TVzTP4gvq+KDF3LIo71p3jlyWMat3DP7nCamKwohb1ufxry/HJxdmT7weP9zJzHDtwc650dvNwZOY4zmC/29+5CHFk5jgeYL/bDyyPgFkQBQAA
   </data>
   <tileproperties/>
  </layer>
@@ -144,12 +149,28 @@
   </data>
   <tileproperties/>
  </layer>
- <layer name="rooftops" width="18" height="18">
+ <layer name="rooftops base" width="18" height="18" visible="0">
   <properties>
-   <property name="z" value="1000"/>
+   <property name="impassability" value="20"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAL3TwQ6CMAwG4K73GSOXReGCGm7w7l58BX0ru7AmZQHWscUm/237Av0BoM6cEOAccsG88zI9ZaLcKK3CceFsHO/cFfdT8w/H4rwPzd7cxl7YeFCeSmvPuIbE1qBwG5yfcxTOpOwzdqywjhh+Olxaewb3sNaHf3e2UsN9b/XOVqnDVg1HM334JqTzMgBvk+fwfyv7+JDxzXTWpsT5ASdkdBsQBQAA
+   H4sIAAAAAAAAAGNgoA7gQsOkqseFKTWHUkAvc0j1Lz45StxMrXCkZnxQM06JjQdK7Ro1hz7mUBsAAAW4omgQBQAA
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="impassable" width="18" height="18" visible="0">
+  <properties>
+   <property name="pierceable" value="true"/>
+   <property name="impassability" value="100"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgoA7QZmFgsIViHRbS1CNjfiDWB2JjIDYjwhxTqFp0DDKHjwj9hAC9zNEmMtxM8YQLyAwrILYk0ix8ZsAAuWaB3GmApE+fyPjEZxYlZiCbhc8MWDwQGx+4ACy+KU0/g9EcSyqYA8u3hOKD3gAAXn89eBAFAAA=
+  </data>
+  <tileproperties/>
+ </layer>
+ <layer name="rooftops" width="18" height="18" visible="0">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAL3TywqAIBAFUJm9EbWRHhsr2uX//12KDpikTikO3J0eam4xVmc6YKx3GeDbeT9SR+nMOgvBEe5sGONshPu5aeFwsPug7E1E9oLGrnMQrZQxuYTWSXBHsM95eY4i9hk63LP+GGZWeFopA3t468O8O1q5wb5jvaNV6qBVw6GMdN9EqYP/ba6P1nMDR8+k/xAFAAA=
   </data>
   <tileproperties/>
  </layer>
