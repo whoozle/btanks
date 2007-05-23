@@ -67,12 +67,12 @@ const bool IMixer::SourceInfo::playing() const {
 				LOG_ERROR(("alGetSourcei(%08x, AL_SOURCE_STATE): error %08x", source, (unsigned)r));
 		return false;
 	}
-	
+/*	
 	ALint n = 0;
 	alGetSourcei(source, AL_BUFFERS_PROCESSED, &n);
 	r = alGetError();
 	LOG_DEBUG(("alGetSourcei(%08x, AL_BUFFERS_PROCESSED, %d): %s", (unsigned)source, n, r == AL_NO_ERROR?"ok":"error"));
-	
+*/	
 	return true;
 }
 
