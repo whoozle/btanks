@@ -29,6 +29,7 @@
   <property name="edge:24:25" value=""/>
   <property name="object:umbrella:umbrella:3" value="436,819"/>
   <property name="edge:25:26" value=""/>
+  <property name="config:map.default-impassability" value="int:100"/>
   <property name="edge:26:29" value=""/>
   <property name="edge:26:27" value=""/>
   <property name="waypoint:car:19" value="@3,6"/>
@@ -142,8 +143,8 @@
  </tileset>
  <layer name="the plan" width="18" height="18">
   <properties>
-   <property name="impassability" value="30"/>
-   <property name="z" value="-1000"/>
+   <property name="impassability" value="40"/>
+   <property name="z" value="-999"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAFNgYGBQBGIFCmktINamAk2pOwaDe7CxFcmwHxtbG4sd5NCKDJh2kENrYzGfiwAmNr5g6okVxxVfuOwlxz24wmGg3APDyO4gN3woja/hkN8B/F6mCRAFAAA=
@@ -231,7 +232,7 @@
   </data>
   <tileproperties/>
  </layer>
- <layer name="Layer 8" width="18" height="18" visible="0">
+ <layer name="Layer 8" width="18" height="18">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAGNgGAWjYBSMglEAAgCc28dnEAUAAA==
   </data>
@@ -246,7 +247,7 @@
   </data>
   <tileproperties/>
  </layer>
- <layer name="rooftops base" width="18" height="18" visible="0">
+ <layer name="rooftops base" width="18" height="18">
   <properties>
    <property name="z" value="1000"/>
    <property name="impassability" value="20"/>
@@ -256,7 +257,7 @@
   </data>
   <tileproperties/>
  </layer>
- <layer name="impassable" width="18" height="18" visible="0">
+ <layer name="impassable" width="18" height="18">
   <properties>
    <property name="pierceable" value="true"/>
    <property name="impassability" value="100"/>
@@ -266,13 +267,13 @@
   </data>
   <tileproperties/>
  </layer>
- <layer name="rooftops" width="18" height="18" visible="0">
+ <layer name="rooftops" width="18" height="18">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAL3TywqAIBAFUJm9EbWRHhsr2uX//12KDpikTikO3J0eam4xVmc6YKx3GeDbeT9SR+nMOgvBEe5sGONshPu5aeFwsPug7E1E9oLGrnMQrZQxuYTWSXBHsM95eY4i9hk63LP+GGZWeFopA3t468O8O1q5wb5jvaNV6qBVw6GMdN9EqYP/ba6P1nMDR8+k/xAFAAA=
   </data>
   <tileproperties/>
  </layer>
- <layer name="objects" width="18" height="18" visible="0">
+ <layer name="objects" width="18" height="18">
   <properties>
    <property name="z" value="2100"/>
    <property name="impassability" value="100"/>
