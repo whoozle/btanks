@@ -94,6 +94,8 @@ private:
 		bool persistent;
 		SourceInfo(const std::string &name, const bool loop, const ALuint source);
 		
+		const bool playing() const;
+		
 		v3<float> pos, vel;
 		void updatePV();
 	};

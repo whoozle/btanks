@@ -54,6 +54,28 @@ void IMixer::SourceInfo::updatePV() {
 	AL_CHECK_NON_FATAL(("alSourcefv(%08x, AL_VELOCITY, {%g,%g,%g})", source, al_vel[0], al_vel[1], al_vel[2] ));	
 }
 
+const bool IMixer::SourceInfo::playing() const {
+	assert(source != AL_NONE);
+
+	ALenum state = 0;
+
+	alGetSourcei(source, AL_SOURCE_STATE, &state);
+	ALenum r = alGetError();
+
+	if (r != AL_NO_ERROR || state != AL_PLAYING) {
+		if (r != AL_NO_ERROR)
+				LOG_ERROR(("alGetSourcei(%08x, AL_SOURCE_STATE): error %08x", source, (unsigned)r));
+		return false;
+	}
+	
+	ALint n = 0;
+	alGetSourcei(source, AL_BUFFERS_PROCESSED, &n);
+	r = alGetError();
+	LOG_DEBUG(("alGetSourcei(%08x, AL_BUFFERS_PROCESSED, %d): %s", (unsigned)source, n, r == AL_NO_ERROR?"ok":"error"));
+	
+	return true;
+}
+
 
 IMixer::IMixer() : alc_device(NULL), alc_context(NULL), 
 	_no_more_sources(false), _nosound(true), _nomusic(true), _ogg(NULL), _ambient(NULL), _ogg_source(0),
@@ -412,15 +434,10 @@ const bool IMixer::generateSource(ALuint &r_source) {
 	for(Sources::iterator i = _sources.begin(); i != _sources.end(); ++i) {
 	const SourceInfo &info = i->second;
 	TRY {
-		ALenum state = 0;
 		if (info.source == AL_NONE || info.persistent == true)
 			continue;
-		alGetSourcei(info.source, AL_SOURCE_STATE, &state);
-		ALenum r = alGetError();
 
-		if (r != AL_NO_ERROR || state != AL_PLAYING) {
-			if (r != AL_NO_ERROR)
-				LOG_ERROR(("alGetSourcei(%08x, AL_SOURCE_STATE): error %08x, state returned: %08xx", info.source, (unsigned)r, (unsigned)state));
+		if (!info.playing()) {
 			victim = i;
 			break;
 		}
@@ -539,7 +556,7 @@ void IMixer::playSample(const Object *o, const std::string &name, const bool loo
 			alSourcei (source, AL_SOURCE_RELATIVE, AL_FALSE     );
 			AL_CHECK(("alSourcei(%08x, AL_SOURCE_RELATIVE, AL_FALSE)", source));
 		} else {
-			alSource3f(source, AL_POSITION,        0.0, 0.0, 0.1); //workaround nvopenal.dll bug.
+			alSource3f(source, AL_POSITION,        0.0, 0.0, 0.0); 
 			AL_CHECK(("alSource3f(%08x, AL_POSITION)", source));
 			alSource3f(source, AL_VELOCITY,        0.0, 0.0, 0.0);
 			AL_CHECK(("alSource3f(%08x, AL_VELOCITY)", source));
@@ -636,17 +653,11 @@ const unsigned IMixer::purgeInactiveSources() {
 			++j;
 			continue;
 		}
-		ALenum state;
-		
-		alGetSourcei(source, AL_SOURCE_STATE, &state);
-		ALenum r = alGetError();
 		
 		//if (_debug)
 		//	LOG_DEBUG(("purgeInactiveSources: %d:%s:%08x", j->first, info.name.c_str(), (unsigned)state));
 
-		if (r != AL_NO_ERROR || state != AL_PLAYING) {
-			if (r != AL_NO_ERROR)
-				LOG_ERROR(("alGetSourcei(%08x, AL_SOURCE_STATE): error %08x", source, (unsigned)r));
+		if (!info.playing()) {
 			deleteSource(source);
 			_sources.erase(j++);
 			continue;
