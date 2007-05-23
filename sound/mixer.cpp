@@ -142,17 +142,33 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 		alcGetIntegerv(NULL, ALC_MAJOR_VERSION, sizeof(major), &major);
 		alcGetIntegerv(NULL, ALC_MINOR_VERSION, sizeof(minor), &minor);
 		LOG_NOTICE(("openAL version: %d.%d", major, minor));
-	
+		
+		std::vector<std::string> device_list;
 		const ALchar *name = alcGetString(NULL, ALC_DEVICE_SPECIFIER);
 		while(name[0]) {
-			int len = strlen(name);
-			LOG_NOTICE(("found device: \"%s\"", name));
-			name += len + 1;
+			std::string sname = name;
+			bool blacklisted = false;
+
+			//nvidia's nvopenal is a real crap. 
+			if (sname.find("NVIDIA") != sname.npos) {
+				blacklisted = true;
+			}
+			//place for other openal implementations ;))))
+			LOG_NOTICE(("found device: \"%s\"%s", name, blacklisted?" (blacklisted)":""));
+			
+			name += sname.size() + 1;
 		}
-	
-		LOG_NOTICE(("default device: \"%s\"", alcGetString(NULL, ALC_DEFAULT_DEVICE_SPECIFIER)));
+		
+		//LOG_NOTICE(("default device reported by openal: \"%s\"", alcGetString(NULL, ALC_DEFAULT_DEVICE_SPECIFIER)));
 		
 		GET_CONFIG_VALUE("engine.sound.device", std::string, device, std::string());
+		if (device.empty()) {
+			//autoconfiguring
+			if (!device_list.empty()) {
+				device = device_list[0];
+			}
+		}
+		
 		alc_device = device.empty()? alcOpenDevice(NULL): alcOpenDevice(device.c_str());
 		if (alc_device == NULL)
 			throw_ex(("alcOpenDevice failed: no device '%s' found ('' means default(NULL) device)", device.c_str()));
