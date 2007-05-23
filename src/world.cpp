@@ -1248,13 +1248,15 @@ void IWorld::interpolateObjects(ObjectMap &objects) {
 	GET_CONFIG_VALUE("multiplayer.disable-interpolation", bool, di, false);
 	if (di)
 		return;
+	GET_CONFIG_VALUE("multiplayer.maximum-interpolation-distance", float, mdd, 128.0f);
 	
 	for(ObjectMap::iterator i = objects.begin(); i != objects.end(); ++i) {
 		Object *o = i->second;
 		if (o->_interpolation_position_backup.is0()) //newly deserialized object
 			continue;
 
-		if (o->_position.quick_distance(o->_interpolation_position_backup) < 1) {
+		const float distance = o->_position.distance(o->_interpolation_position_backup);
+		if (distance < 1 || distance > mdd) {
 			o->_interpolation_position_backup.clear();
 			continue;
 		}
