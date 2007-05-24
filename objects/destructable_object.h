@@ -33,7 +33,5 @@ public:
 
 protected:
 	bool _broken;
-
-private: 
-	int _object_id;
+	Alarm _respawn;
 };

@@ -23,18 +23,18 @@
 DestructableObject::DestructableObject(const std::string &classname) : 
 		Object(classname), 
 		_broken(false),
-		_object_id(0) {}
+		_respawn(false) {}
 
 void DestructableObject::serialize(mrt::Serializator &s) const {
 	Object::serialize(s);
 	s.add(_broken);
-	s.add(_object_id);
+	s.add(_respawn);
 }
 
 void DestructableObject::deserialize(const mrt::Serializator &s) {
 	Object::deserialize(s);
 	s.get(_broken);
-	s.get(_object_id);
+	s.get(_respawn);
 }
 
 void DestructableObject::onBreak() {
@@ -58,7 +58,7 @@ void DestructableObject::addDamage(Object *from, const int dhp, const bool emitD
 		
 		if (_variants.has("with-fire")) {
 			Object *o = spawn("fire", "fire", v2<float>::empty, v2<float>::empty, getZ() + 1);
-			_object_id = o->getID();			
+			o->setZ(getZ() + 1);
 		}
 		onBreak();
 	}
@@ -67,13 +67,7 @@ void DestructableObject::addDamage(Object *from, const int dhp, const bool emitD
 void DestructableObject::tick(const float dt) {
 	Object::tick(dt);
 	const std::string& state = getState();
-	if (_object_id && state == "broken") {
-		Object *o = World->getObjectByID(_object_id);
-		if (o != NULL)
-			o->setZ(getZ() + 1);
-		_object_id = 0;
-	}
-	if (state.empty()) {	
+	if (state.empty()) {
 		//LOG_DEBUG(("over"));
 		emit("death", this);
 	}
