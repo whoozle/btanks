@@ -62,7 +62,7 @@ void DestructableObject::addDamage(Object *from, const int dhp, const bool emitD
 		}
 
 		if (_variants.has("respawning")) {
-			GET_CONFIG_VALUE("objects." + registered_name + ".recover-interval", float, ri, 20.0f);
+			GET_CONFIG_VALUE("objects." + registered_name + ".respawn-interval", float, ri, 20.0f);
 			_respawn.set(ri);
 		}
 
