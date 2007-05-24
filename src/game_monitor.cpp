@@ -53,12 +53,19 @@ void IGameMonitor::checkItems(const float dt) {
 			++goal_total;
 			if (dead) {
 				++goal;
-			} else 
-				_specials.push_back(item.position);
+			}
 		} 
 
-		if (!dead)
+		if (!dead) {
+			if (item.destroy_for_victory || !item.save_for_victory.empty()) {
+				v2<int> pos;
+				o->getCenterPosition(pos);
+				_specials.push_back(pos);	
+			}
+
 			continue;
+		}
+		//object is dead.
 		
 		if (!item.save_for_victory.empty()) {
 			gameOver("messages", item.save_for_victory, 5);
