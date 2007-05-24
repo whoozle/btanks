@@ -295,9 +295,9 @@ void IWindow::run() {
 				mouse_motion_signal.emit(event.motion.state, event.motion.x, event.motion.y, event.motion.xrel, event.motion.yrel);
 				break;
 			
-		    case SDL_QUIT:
-				_running = false;
-			break;
+		    //case SDL_QUIT:
+			//	_running = false;
+			//break;
     		}
 		}
 		
