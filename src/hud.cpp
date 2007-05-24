@@ -443,6 +443,7 @@ Hud::Hud(const int w, const int h) : _update_radar(true) {
 	_icons_map["mod:machinegunner"] = i++;
 	_icons_map["mod:mines:regular"] = i++;
 	_icons_map["special:frag"] = i++;
+	_icons_map["mod:thrower"] = i++;
 }
 
 Hud::~Hud() {}
