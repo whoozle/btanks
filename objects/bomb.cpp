@@ -72,7 +72,7 @@ void Bomb::emit(const std::string &event, Object * emitter) {
 			emit("death", emitter);
 		return; //do not emit addDamage
 	} else if (event == "death") {
-		spawn("cannon-explosion", "cannon-explosion");
+		Object *o = spawn("cannon-explosion", "cannon-explosion");
 		o->setZ(getZ() + 1, true);
 	}
 	Object::emit(event, emitter);
