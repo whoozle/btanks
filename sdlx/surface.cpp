@@ -270,6 +270,10 @@ void Surface::toggleFullscreen() {
 		throw_sdl(("SDL_WM_ToggleFullScreen"));
 }
 
+void Surface::fill(Uint32 color) {
+    if ( SDL_FillRect(surface, NULL, color) == -1) throw_sdl(("SDL_FillRect"));
+}
+
 void Surface::fillRect(const Rect &r, Uint32 color) {
     if ( SDL_FillRect(surface, (SDL_Rect *)&r , color) == -1) throw_sdl(("SDL_FillRect"));
 }

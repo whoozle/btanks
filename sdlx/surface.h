@@ -110,7 +110,9 @@ namespace sdlx {
 			SDL_GetRGBA(color, surface->format, &r, &g, &b, &a);
 		}
 
+		void fill(Uint32 color);
 		void fillRect(const Rect &r, Uint32 color);
+
 		void setColorKey(Uint32 key, Uint32 flag = SDL_SRCCOLORKEY);
 		void setAlpha(Uint8 alpha, Uint32 flags = SDL_SRCALPHA);
 		void convertAlpha();
