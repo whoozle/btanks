@@ -24,6 +24,7 @@
 #include "game.h"
 #include "i18n.h"
 #include "game_monitor.h"
+#include "sound/mixer.h"
 
 #include <set>
 
@@ -124,7 +125,7 @@ void Explosion::emit(const std::string &event, Object * emitter) {
 		if (emitter->isDead() && emitter->classname == "player") {
 			++_players_killed;
 			if (_players_killed == 2) {
-				playRandomSound("laugh", false);
+				Mixer->playRandomSample(NULL, "laugh", false);
 			}
 		}
 		need_sync = true;
