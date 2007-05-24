@@ -80,14 +80,14 @@ void AIHeli::onSpawn() {
 
 void AIHeli::calculate(const float dt) {
 	v2<float> vel;
-	if (!_reaction.tick(dt) || isDriven())
+	if (!_reaction.tick(dt))
 		goto done;
 		
 	_state.fire = false;
 	
 	_target_dir = getTargetPosition(_velocity, _targets, "helicopter-bullet");
 	if (_target_dir >= 0) {
-		//LOG_DEBUG(("target: %g %g %g", tp.x, tp.y, tp.length()));
+		//LOG_DEBUG(("target: %g %g %g, dir: %d", _velocity.x, _velocity.y, _velocity.length(), _target_dir));
 		/*
 		Way way;
 		if (findPath(tp, way)) {
@@ -106,7 +106,9 @@ void AIHeli::calculate(const float dt) {
 			_direction.fromDirection(_target_dir, getDirectionsNumber());
 		}
 	
-	} else {
+	} 
+	
+	if (_target_dir < 0 && !isDriven()) {
 		_velocity.clear();
 		_target_dir = -1;
 		onIdle(dt);
