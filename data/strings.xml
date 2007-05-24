@@ -49,7 +49,8 @@
 		<string id="aqua_world">Submerged desolated city. Rooftops and a lot of teleports around.</string>
 		<string id="dune">Save your very last fortification in desert from relinquishing. 
 			Enemy troops lured deadly sandworm and traitorously attacked. (NEW)</string>
-		<string id="university">Save Battle Tanks University from the deadly helicopters.</string>
+		<string id="university">Save Battle Tanks University from the deadly helicopters. 
+			This is deathmatch map, so enjoy killing each other before destroying helis :) (NEW)</string>
 		<string id="(default)">Sorry, no description was provided by the author of this map...</string>
 	</area>
 	<area id="hints">
