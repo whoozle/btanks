@@ -133,11 +133,14 @@ void IWindow::init(const int argc, char *argv[]) {
 #if 0
 #ifdef WIN32
 	LOG_DEBUG(("loading icon..."));
-	{
-		sdlx::Surface icon;
-		icon.loadFromResource(MAKEINTRESOURCE(1));
-		SDL_WM_SetIcon(icon.getSDLSurface(), NULL);
-	}
+	TRY {
+		HANDLE h = LoadImage(GetModuleHandle(NULL), MAKEINTRESOURCE(1), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE);
+		if (h == NULL)
+			throw_ex(("LoadImage failed"));
+		ULONG r = SetClassLongPtr(NULL, GCLP_HICON, (LONG_PTR)h);
+		LOG_DEBUG(("SetClassLongPtr returned %08lx", (unsigned long)r));
+
+	} CATCH("icon setup", );
 #endif
 #endif
 
