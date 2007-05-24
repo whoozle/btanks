@@ -1277,7 +1277,8 @@ void Object::addDamage(Object *from, const int d, const bool emitDeath) {
 		o->hp += hp;
 	v2<float> pos;
 	getPosition(pos);
-	World->addObject(o, pos);	
+	World->addObject(o, pos);
+	o->setZ(getZ() + 1, true);
 }
 
 const sdlx::Surface * Object::getSurface() const {
