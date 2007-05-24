@@ -18,7 +18,7 @@
 
 #include "destructable_object.h"
 #include "resource_manager.h"
-#include "world.h"
+#include "config.h"
 
 DestructableObject::DestructableObject(const std::string &classname) : 
 		Object(classname), 
@@ -60,7 +60,13 @@ void DestructableObject::addDamage(Object *from, const int dhp, const bool emitD
 			Object *o = spawn("fire", "fire", v2<float>::empty, v2<float>::empty, getZ() + 1);
 			o->setZ(getZ() + 1);
 		}
-		onBreak();
+
+		if (_variants.has("respawning")) {
+			GET_CONFIG_VALUE("objects." + registered_name + ".recover-interval", float, ri, 20.0f);
+			_respawn.set(ri);
+		}
+
+		onBreak();		
 	}
 }
 
@@ -70,6 +76,17 @@ void DestructableObject::tick(const float dt) {
 	if (state.empty()) {
 		//LOG_DEBUG(("over"));
 		emit("death", this);
+	}
+	if (_broken && _variants.has("respawning") && _respawn.tick(dt)) {
+		//fixme: restore classname
+		LOG_DEBUG(("repairing..."));
+		hp = max_hp;
+		_broken = false;
+		cancelAll();
+		onSpawn();
+		
+		if (_variants.has("make-pierceable"))
+			pierceable = false;
 	}
 }
 
