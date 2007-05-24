@@ -373,6 +373,7 @@ void IResourceManager::createAlias(const std::string &name, const std::string &_
 Object *IResourceManager::createObject(const std::string &_classname) const {
 	Variants vars;
 	std::string classname = vars.parse(_classname);
+	assert(classname.find('(') == classname.npos);
 	
 	ObjectMap::const_iterator i = _objects.find(classname);
 	if (i == _objects.end())
