@@ -44,6 +44,10 @@ class Credits;
 class Cheater;
 class MainMenu;
 
+namespace sdlx {
+	class Surface;
+}
+
 class BTANKSAPI IGame {
 
 public: 
@@ -78,6 +82,9 @@ private:
 	bool onMouse(const int button, const bool pressed, const int x, const int y);
 	void onMenu(const std::string &name, const std::string &value);
 	const std::string onConsole(const std::string &cmd, const std::string &param);
+
+	void onEvent(const SDL_Event &event);
+	void quit();
 	
 	void stopCredits();
 
@@ -107,6 +114,9 @@ private:
 	
 	Credits *_credits;
 	Cheater *_cheater;
+	
+	const sdlx::Surface *_donate;
+	float _donate_timer;
 	
 	IGame(const IGame &);
 	const IGame& operator=(const IGame &);
