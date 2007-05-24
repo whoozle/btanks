@@ -59,12 +59,12 @@ void AIHeli::onIdle(const float dt) {
 		return;
 
 	Way way;
-	v2<int> size = Map->getSize();
+	v2<int> map_size = Map->getSize();
 	
 	for(int i = 0; i < 3; ++i) {
 		v2<int> next_target;
-		next_target.x = mrt::random(size.x);
-		next_target.y = mrt::random(size.y);
+		next_target.x = (int)size.x / 2 + mrt::random(map_size.x - (int)size.x);
+		next_target.y = (int)size.y / 2 + mrt::random(map_size.y - (int)size.y);
 		way.push_back(next_target);		
 	}
 	setWay(way);
