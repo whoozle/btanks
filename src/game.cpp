@@ -682,9 +682,9 @@ void IGame::onTick(const float dt) {
 		if (_main_menu)
 			_main_menu->tick(dt);
 
-		if (_credits || _map_loaded)
-			Window->getSurface().fillRect(Window->getSurface().getSize(), 0);
-		else _hud->renderSplash(Window->getSurface());
+		Window->getSurface().fillRect(Window->getSurface().getSize(), 0);
+		if (!_credits && !_map_loaded)
+			_hud->renderSplash(Window->getSurface());
 		
 		int vx = 0, vy = 0;
 
