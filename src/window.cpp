@@ -141,6 +141,7 @@ void IWindow::init(const int argc, char *argv[]) {
 #endif
 #endif
 
+#ifndef WIN32
 	std::string icon_file = Finder->find("tiles/icon.png", false);
 	if (!icon_file.empty()) {
 		TRY {
@@ -149,6 +150,7 @@ void IWindow::init(const int argc, char *argv[]) {
 			SDL_WM_SetIcon(icon.getSDLSurface(), NULL);
 		} CATCH("setting icon", {});
 	}
+#endif
 
 	LOG_DEBUG(("setting caption..."));		
 	SDL_WM_SetCaption(("Battle tanks - " + getVersion()).c_str(), "btanks");
