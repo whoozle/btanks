@@ -417,11 +417,18 @@ void IPlayerManager::updatePlayers() {
 			
 			size_t cn = _zones.size();
 			for(size_t c = 0; c < cn; ++c) {
-				if (_zones[c].in(player_pos) && slot.zones_reached.find(c) == slot.zones_reached.end()) {
+				SpecialZone &zone = _zones[c];
+				bool global = zone.global();
+				if (zone.in(player_pos) && 
+					_global_zones_reached.find(c) == _global_zones_reached.end() && 
+					slot.zones_reached.find(c) == slot.zones_reached.end()) {
+					
 					LOG_DEBUG(("player[%d] zone %u reached.", i, (unsigned)c));
 					slot.zones_reached.insert(c);
+					if (global)
+						_global_zones_reached.insert(c);
 					
-					_zones[c].onEnter(i);
+					zone.onEnter(i);
 				}
 			}
 			
@@ -593,6 +600,7 @@ void IPlayerManager::clear() {
 	_next_sync.set(sync_interval);
 
 	LOG_DEBUG(("cleaning up players..."));
+	_global_zones_reached.clear();
 	_players.clear();	
 	_zones.clear();
 }
@@ -868,7 +876,11 @@ void IPlayerManager::serializeSlots(mrt::Serializator &s) const {
 	for(int i = 0; i < n; ++i) {
 		_players[i].serialize(s);
 	}
-
+	n = _global_zones_reached.size();
+	s.add(n);
+	for(std::set<int>::const_iterator i = _global_zones_reached.begin(); i != _global_zones_reached.end(); ++i) {
+		s.add(*i);
+	}
 }
 
 void IPlayerManager::deserializeSlots(const mrt::Serializator &s) {
@@ -878,7 +890,14 @@ void IPlayerManager::deserializeSlots(const mrt::Serializator &s) {
 	
 	for(int i = 0; i < n; ++i) {
 		_players[i].deserialize(s);
-	}		
+	}
+	s.get(n);
+	_global_zones_reached.clear();
+	while(n--) {
+		int z; 
+		s.get(z);
+		_global_zones_reached.insert(z);
+	}
 }
 
 void IPlayerManager::broadcast(const Message &m) {

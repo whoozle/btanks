@@ -118,6 +118,8 @@ private:
 	Client *_client;
 
 	int _my_idx;
+
+	std::set<int> _global_zones_reached;
 	std::vector<PlayerSlot> _players;
 	std::vector<SpecialZone> _zones;
 
