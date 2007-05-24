@@ -45,60 +45,60 @@
   <property name="object:dumb-missiles-item:dumb-missiles-item:3" value="33,994,2150"/>
   <property name="object:dumb-missiles-item:dumb-missiles-item:2" value="@2,13"/>
   <property name="object:dumb-missiles-item:dumb-missiles-item:1" value="@10,5"/>
-  <property name="object:oil-barrels:oil-barrels:55" value="@10,8,10"/>
-  <property name="object:oil-barrels:oil-barrels:54" value="359,1096,10"/>
-  <property name="object:oil-barrels:oil-barrels:53" value="323,1088,10"/>
-  <property name="object:oil-barrels:oil-barrels:52" value="978,1108,10"/>
-  <property name="object:oil-barrels:oil-barrels:51" value="949,898,10"/>
-  <property name="object:oil-barrels:oil-barrels:50" value="961,923,10"/>
+  <property name="object:oil-barrels(respawning):oil-barrels:55" value="@10,8,10"/>
+  <property name="object:oil-barrels(respawning):oil-barrels:54" value="359,1096,10"/>
+  <property name="object:oil-barrels(respawning):oil-barrels:53" value="323,1088,10"/>
+  <property name="object:oil-barrels(respawning):oil-barrels:52" value="978,1108,10"/>
+  <property name="object:oil-barrels(respawning):oil-barrels:51" value="949,898,10"/>
+  <property name="object:oil-barrels(respawning):oil-barrels:50" value="961,923,10"/>
   <property name="object:teleport(d):teleport:9" value="1042,664,1900"/>
   <property name="object:teleport(d):teleport:10" value="961,1010,-10"/>
   <property name="object:car:cyan-car:1" value="@14,16"/>
-  <property name="object:oil-barrels:oil-barrels:49" value="988,923,10"/>
-  <property name="object:oil-barrels:oil-barrels:48" value="990,895,10"/>
-  <property name="object:oil-barrels:oil-barrels:47" value="983,865,10"/>
+  <property name="object:oil-barrels(respawning):oil-barrels:49" value="988,923,10"/>
+  <property name="object:oil-barrels(respawning):oil-barrels:48" value="990,895,10"/>
+  <property name="object:oil-barrels(respawning):oil-barrels:47" value="983,865,10"/>
   <property name="object:static-mortar:cyan-mortar:3" value="@7,8"/>
-  <property name="object:oil-barrels:oil-barrels:46" value="947,865,10"/>
+  <property name="object:oil-barrels(respawning):oil-barrels:46" value="947,865,10"/>
   <property name="object:bus-stop:bus-stop-right:1" value="974,465"/>
   <property name="config:map.default-impassability" value="int:100"/>
-  <property name="object:oil-barrels:oil-barrels:45" value="1076,434,10"/>
-  <property name="object:oil-barrels:oil-barrels:44" value="1054,408,10"/>
-  <property name="object:oil-barrels:oil-barrels:43" value="1100,386,10"/>
-  <property name="object:oil-barrels:oil-barrels:42" value="690,269,10"/>
-  <property name="object:oil-barrels:oil-barrels:41" value="335,248,10"/>
-  <property name="object:oil-barrels:oil-barrels:40" value="361,252,10"/>
-  <property name="object:oil-barrels:oil-barrels:39" value="349,276,10"/>
-  <property name="object:oil-barrels:oil-barrels:38" value="367,272,10"/>
-  <property name="object:oil-barrels:oil-barrels:37" value="403,269,10"/>
-  <property name="object:oil-barrels:oil-barrels:36" value="392,241,10"/>
-  <property name="object:oil-barrels:oil-barrels:35" value="280,284,10"/>
-  <property name="object:oil-barrels:oil-barrels:34" value="260,283,10"/>
-  <property name="object:oil-barrels:oil-barrels:33" value="246,256,10"/>
+  <property name="object:oil-barrels(respawning):oil-barrels:45" value="1076,434,10"/>
+  <property name="object:oil-barrels(respawning):oil-barrels:44" value="1054,408,10"/>
+  <property name="object:oil-barrels(respawning):oil-barrels:43" value="1100,386,10"/>
+  <property name="object:oil-barrels(respawning):oil-barrels:42" value="690,269,10"/>
+  <property name="object:oil-barrels(respawning):oil-barrels:41" value="335,248,10"/>
+  <property name="object:oil-barrels(respawning):oil-barrels:40" value="361,252,10"/>
+  <property name="object:oil-barrels(respawning):oil-barrels:39" value="349,276,10"/>
+  <property name="object:oil-barrels(respawning):oil-barrels:38" value="367,272,10"/>
+  <property name="object:oil-barrels(respawning):oil-barrels:37" value="403,269,10"/>
+  <property name="object:oil-barrels(respawning):oil-barrels:36" value="392,241,10"/>
+  <property name="object:oil-barrels(respawning):oil-barrels:35" value="280,284,10"/>
+  <property name="object:oil-barrels(respawning):oil-barrels:34" value="260,283,10"/>
+  <property name="object:oil-barrels(respawning):oil-barrels:33" value="246,256,10"/>
   <property name="object:teleport(a):teleport:2" value="545,626,1900"/>
-  <property name="object:oil-barrels:oil-barrels:32" value="220,247,10"/>
+  <property name="object:oil-barrels(respawning):oil-barrels:32" value="220,247,10"/>
   <property name="object:teleport(a):teleport:1" value="546,878,-10"/>
-  <property name="object:oil-barrels:oil-barrels:31" value="201,252,10"/>
-  <property name="object:oil-barrels:oil-barrels:30" value="199,272,10"/>
+  <property name="object:oil-barrels(respawning):oil-barrels:31" value="201,252,10"/>
+  <property name="object:oil-barrels(respawning):oil-barrels:30" value="199,272,10"/>
   <property name="object:tent:tent-top:2" value="307,20,500"/>
   <property name="object:guided-missiles-item:guided-missiles-item:2" value="@2,17"/>
   <property name="object:guided-missiles-item:guided-missiles-item:1" value="@16,0"/>
   <property name="object:road-sign:road-sign05:1" value="624,12"/>
-  <property name="object:oil-barrels:oil-barrels:29" value="226,280,10"/>
-  <property name="object:oil-barrels:oil-barrels:28" value="201,300,10"/>
-  <property name="object:oil-barrels:oil-barrels:27" value="35,580"/>
-  <property name="object:oil-barrels:oil-barrels:26" value="3,567"/>
+  <property name="object:oil-barrels(respawning):oil-barrels:29" value="226,280,10"/>
+  <property name="object:oil-barrels(respawning):oil-barrels:28" value="201,300,10"/>
+  <property name="object:oil-barrels(respawning):oil-barrels:27" value="35,580"/>
+  <property name="object:oil-barrels(respawning):oil-barrels:26" value="3,567"/>
   <property name="waypoint:car:9" value="@4,10"/>
   <property name="object:car:orange-bus:3" value="@7,6"/>
   <property name="waypoint:car:8" value="@4,15"/>
   <property name="object:car:orange-bus:2" value="@17,2"/>
-  <property name="object:oil-barrels:oil-barrels:23" value="301,1108"/>
+  <property name="object:oil-barrels(respawning):oil-barrels:23" value="301,1108"/>
   <property name="waypoint:car:7" value="@13,15"/>
   <property name="object:car:orange-bus:1" value="@0,12"/>
-  <property name="object:oil-barrels:oil-barrels:22" value="360,1111"/>
+  <property name="object:oil-barrels(respawning):oil-barrels:22" value="360,1111"/>
   <property name="waypoint:car:6" value="@13,12"/>
-  <property name="object:oil-barrels:oil-barrels:21" value="349,1075"/>
+  <property name="object:oil-barrels(respawning):oil-barrels:21" value="349,1075"/>
   <property name="waypoint:car:5" value="@13,7"/>
-  <property name="object:oil-barrels:oil-barrels:20" value="307,1071"/>
+  <property name="object:oil-barrels(respawning):oil-barrels:20" value="307,1071"/>
   <property name="waypoint:car:4" value="@8,7"/>
   <property name="waypoint:car:3" value="@8,6"/>
   <property name="waypoint:car:2" value="@8,2"/>
@@ -106,16 +106,16 @@
   <property name="object:stall:stall-left:2" value="258,20,510"/>
   <property name="object:stall:stall-left:1" value="968,431,100"/>
   <property name="object:bus-stop:bus-stop-left:1" value="127,329,500"/>
-  <property name="object:oil-barrels:oil-barrels:19" value="937,1102"/>
-  <property name="object:oil-barrels:oil-barrels:18" value="1007,1118"/>
-  <property name="object:oil-barrels:oil-barrels:17" value="1025,428"/>
-  <property name="object:oil-barrels:oil-barrels:16" value="1050,409"/>
-  <property name="object:oil-barrels:oil-barrels:15" value="1048,448"/>
-  <property name="object:oil-barrels:oil-barrels:14" value="1102,446"/>
-  <property name="object:oil-barrels:oil-barrels:13" value="1092,407"/>
-  <property name="object:oil-barrels:oil-barrels:12" value="680,246"/>
-  <property name="object:oil-barrels:oil-barrels:11" value="723,276"/>
-  <property name="object:oil-barrels:oil-barrels:10" value="709,246"/>
+  <property name="object:oil-barrels(respawning):oil-barrels:19" value="937,1102"/>
+  <property name="object:oil-barrels(respawning):oil-barrels:18" value="1007,1118"/>
+  <property name="object:oil-barrels(respawning):oil-barrels:17" value="1025,428"/>
+  <property name="object:oil-barrels(respawning):oil-barrels:16" value="1050,409"/>
+  <property name="object:oil-barrels(respawning):oil-barrels:15" value="1048,448"/>
+  <property name="object:oil-barrels(respawning):oil-barrels:14" value="1102,446"/>
+  <property name="object:oil-barrels(respawning):oil-barrels:13" value="1092,407"/>
+  <property name="object:oil-barrels(respawning):oil-barrels:12" value="680,246"/>
+  <property name="object:oil-barrels(respawning):oil-barrels:11" value="723,276"/>
+  <property name="object:oil-barrels(respawning):oil-barrels:10" value="709,246"/>
   <property name="object:traffic-lights:traffic-lights:6" value="454,1064"/>
   <property name="object:traffic-lights:traffic-lights:5" value="624,1062"/>
   <property name="object:car:white-car:10" value="@10,7"/>
@@ -126,7 +126,7 @@
   <property name="object:machinegunner-item:machinegunner-item:3" value="1064,72,2150"/>
   <property name="object:machinegunner-item:machinegunner-item:2" value="433,305"/>
   <property name="object:thrower-item:thrower-item:1" value="471,412,2150"/>
-  <property name="config:map.helicopter.respawn-interval" value="int:10000"/>
+  <property name="config:map.helicopter.respawn-interval" value="int:-1"/>
   <property name="object:teleport(e):teleport:13" value="30,726,1900"/>
   <property name="object:teleport(e):teleport:11" value="126,966,-10"/>
   <property name="object:heal:heal:3" value="1081,930,2150"/>
@@ -147,7 +147,9 @@
   <property name="waypoint:car:21" value="@0,10"/>
   <property name="waypoint:car:20" value="@3,10"/>
   <property name="object:helicopter:helicopter:destroy-for-victory:2" value="@6,6,2800"/>
+  <property name="object:helicopter:helicopter:destroy-for-victory:3" value="@9,6,2800"/>
   <property name="object:helicopter:helicopter:destroy-for-victory:1" value="@9,9,2800"/>
+  <property name="object:helicopter:helicopter:destroy-for-victory:4" value="@6,9,2800"/>
   <property name="object:car:yellow-car:2" value="@0,3"/>
   <property name="object:car:yellow-car:1" value="@16,10"/>
   <property name="object:umbrella:umbrella:3" value="436,819"/>
@@ -167,10 +169,10 @@
   <property name="object:megaheal:megaheal:1" value="623,411,2150"/>
   <property name="object:stun-missiles-item:stun-missiles-item:1" value="752,662"/>
   <property name="object:car:red-car:3" value="@3,16"/>
-  <property name="object:oil-barrels:oil-barrels:9" value="759,255"/>
-  <property name="object:oil-barrels:oil-barrels:2" value="1083,360"/>
+  <property name="object:oil-barrels(respawning):oil-barrels:9" value="759,255"/>
+  <property name="object:oil-barrels(respawning):oil-barrels:2" value="1083,360"/>
   <property name="object:ricochet-bullets-item:ricochet-bullets-item:1" value="@2,9"/>
-  <property name="object:oil-barrels:oil-barrels:1" value="968,1096"/>
+  <property name="object:oil-barrels(respawning):oil-barrels:1" value="968,1096"/>
   <property name="object:road-sign:road-sign08:2" value="942,811"/>
   <property name="object:teleport(c):teleport:8" value="32,357,1900"/>
   <property name="object:teleport(c):teleport:7" value="206,22,-10"/>
