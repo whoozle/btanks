@@ -62,17 +62,18 @@ void Bomb::tick(const float dt) {
 	if (getState().empty())
 		emit("death", this);
 	int z = (int)(getStateProgress() * (z2 - z1)  + z1);
-	//LOG_DEBUG(("setting z = %d", z));
+	//LOG_DEBUG(("setting z = %d [%d-%d]", z, z1, z2));
 	setZ(z, true);
 }
 
 void Bomb::emit(const std::string &event, Object * emitter) {
 	if (event == "collision") {
-		if (getStateProgress() >= 0.8) 
+		if (emitter == NULL || getStateProgress() >= 0.8) 
 			emit("death", emitter);
 		return; //do not emit addDamage
 	} else if (event == "death") {
 		spawn("cannon-explosion", "cannon-explosion");
+		o->setZ(getZ() + 1, true);
 	}
 	Object::emit(event, emitter);
 }
