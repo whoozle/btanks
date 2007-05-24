@@ -95,7 +95,6 @@ void AIHeli::calculate(const float dt) {
 			calculateWayVelocity();
 		}
 		*/
-		_state.fire = true;
 		if (_velocity.length() >= 25) {
 			quantizeVelocity();
 			//_direction.fromDirection(getDirection(), getDirectionsNumber());
@@ -105,7 +104,10 @@ void AIHeli::calculate(const float dt) {
 			//LOG_DEBUG(("%d", _target_dir));
 			_direction.fromDirection(_target_dir, getDirectionsNumber());
 		}
-	
+
+		if (_target_dir == getDirection()) {
+			_state.fire = true;
+		}	
 	} 
 	
 	if (_target_dir < 0 && !isDriven()) {
@@ -115,7 +117,7 @@ void AIHeli::calculate(const float dt) {
 	}
 	
 done: 	
-	GET_CONFIG_VALUE("engine.mass-acceleration-divisor", float, ac_div, 1000.0);
+	GET_CONFIG_VALUE("engine.mass-acceleration-divisor", float, ac_div, 1000.0f);
 
 	const float ac_t = mass / ac_div * 0.8;
 	_state.alt_fire = _moving_time >= ac_t;
@@ -123,7 +125,7 @@ done:
 	calculateWayVelocity();
 	updateStateFromVelocity();
 
-	GET_CONFIG_VALUE("objects.helicopter.rotation-time", float, rt, 0.2);
+	GET_CONFIG_VALUE("objects.helicopter.rotation-time", float, rt, 0.2f);
 	limitRotation(dt, rt, true, true);	
 	updateStateFromVelocity();
 }
