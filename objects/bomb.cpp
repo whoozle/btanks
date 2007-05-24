@@ -48,7 +48,7 @@ private:
 void Bomb::onSpawn() {
 	play("main", false);
 	z1 = getZ();
-	GET_CONFIG_VALUE("objects.bomb.lowest-z", int, z, 10);
+	GET_CONFIG_VALUE("objects.bomb.lowest-z", int, z, 610);
 	z2 = z;
 }
 
