@@ -915,43 +915,47 @@ const int Object::getTargetPosition(v2<float> &relative_position, const std::set
 			
 			
 			//skip solid objects
-			v2<int> map_pos = (pos + getPosition()).convert<int>() / pfs;
-			if (matrix.get(map_pos.y, map_pos.x) < 0)
-				continue;
+			if (impassability >= 1.0f) {
+				// i am solid object. 
+				v2<int> map_pos = (pos + getPosition()).convert<int>() / pfs;
+				if (matrix.get(map_pos.y, map_pos.x) < 0)
+					continue;
+			}
 			
 			float dist = pos.quick_length();
 			if (result_dir != -1 && dist >= distance)
 				continue;
 
-			//checking map projection
-			v2<float> map1 = pos + getPosition();
-			v2<float> map2 = o->getPosition();
+
+			if (impassability >= 1.0f) {
+				//checking map projection
+				v2<float> map1 = pos + getPosition();
+				v2<float> map2 = o->getPosition();
 			
-			v2<float> dp (map2.x - map1.x, map2.y - map1.y);
-			dp.normalize(pfs.x);
-			if (dp.is0())
-				continue;
+				v2<float> dp (map2.x - map1.x, map2.y - map1.y);
+				dp.normalize(pfs.x);
+				if (dp.is0())
+					continue;
 			
-			//LOG_DEBUG(("%g:%g -> %g:%g (+%g:+%g)", map1.x, map1.y, map2.x, map2.y, dp.x, dp.y));
-			do {
-				v2<float> dv = (map2 - map1) * dp; 
-				if (dv.x < 0 || dv.y < 0) 
-					break;
-				map1 += dp;
-				v2<int> map_pos = map1.convert<int>() / pfs;
-				//LOG_DEBUG(("%dx%d: %d", map_pos.x, map_pos.y, matrix.get(map_pos.y, map_pos.x)));
-				if (matrix.get(map_pos.y, map_pos.x) < 0)
-					goto failed;
-			} while(true);
-			//end of map proj
+				//LOG_DEBUG(("%g:%g -> %g:%g (+%g:+%g)", map1.x, map1.y, map2.x, map2.y, dp.x, dp.y));
+				do {
+					v2<float> dv = (map2 - map1) * dp; 
+					if (dv.x < 0 || dv.y < 0) 
+						break;
+					map1 += dp;
+					v2<int> map_pos = map1.convert<int>() / pfs;
+					//LOG_DEBUG(("%dx%d: %d", map_pos.x, map_pos.y, matrix.get(map_pos.y, map_pos.x)));
+					if (matrix.get(map_pos.y, map_pos.x) < 0)
+						goto failed;
+				} while(true);
+				//end of map proj
+			} //impassability >= 1.0f
 			
-			{				
 			if (result_dir == -1 || dist < distance) {
 				result_dir = d;
 				distance = dist;
 				relative_position = pos;
 				//LOG_DEBUG(("enemy @ %g %g: %s (dir: %d, distance: %g)", pos.x, pos.y, o->registered_name.c_str(), d, distance));
-			}
 			}
 			
 			failed: ;
