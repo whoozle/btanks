@@ -22,7 +22,7 @@
 
 class Bomb : public Object {
 public:
-	Bomb() : Object("bomb") { piercing = true; pierceable = true; }
+	Bomb() : Object("bomb"), z1(0), z2(0) { piercing = true; pierceable = true; }
 	virtual Object * clone() const;
 	virtual void onSpawn();
 	virtual void calculate(const float dt);
@@ -31,21 +31,25 @@ public:
 
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
-		s.add(z);
+		s.add(z1);
+		s.add(z2);
 	}
 	
 	virtual void deserialize(const mrt::Serializator &s) {
 		Object::deserialize(s);
-		s.get(z);
+		s.get(z1);
+		s.get(z2);
 	}
-
-
+	
 private: 
-	float z;
+	int z1, z2;
 };
 
 void Bomb::onSpawn() {
 	play("main", false);
+	z1 = getZ();
+	GET_CONFIG_VALUE("objects.bomb.lowest-z", int, z, 10);
+	z2 = z;
 }
 
 void Bomb::calculate(const float dt) {
@@ -57,6 +61,9 @@ void Bomb::tick(const float dt) {
 	Object::tick(dt);
 	if (getState().empty())
 		emit("death", this);
+	int z = (int)(getStateProgress() * (z2 - z1)  + z1);
+	//LOG_DEBUG(("setting z = %d", z));
+	setZ(z, true);
 }
 
 void Bomb::emit(const std::string &event, Object * emitter) {
