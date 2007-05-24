@@ -233,7 +233,7 @@ void IGame::init(const int argc, char *argv[]) {
 	_paused = false;
 	_map_loaded = false;
 
-	Window->getSurface().fillRect(window_size, 0);
+	Window->getSurface().fill(0);
 	Window->getSurface().flip();
 	
 	LOG_DEBUG(("initializing hud..."));
@@ -682,7 +682,8 @@ void IGame::onTick(const float dt) {
 		if (_main_menu)
 			_main_menu->tick(dt);
 
-		Window->getSurface().fillRect(Window->getSurface().getSize(), 0);
+		Window->getSurface().fill(0);
+
 		if (!_credits && !_map_loaded)
 			_hud->renderSplash(Window->getSurface());
 		
