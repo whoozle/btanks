@@ -96,9 +96,9 @@ void AIHeli::calculate(const float dt) {
 		}
 		*/
 		_state.fire = true;
-		if (_velocity.length() >= 9) {
+		if (_velocity.length() >= 25) {
 			quantizeVelocity();
-			_direction.fromDirection(getDirection(), getDirectionsNumber());
+			//_direction.fromDirection(getDirection(), getDirectionsNumber());
 		} else {
 			_velocity.clear();
 			setDirection(_target_dir);
