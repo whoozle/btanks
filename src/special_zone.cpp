@@ -49,6 +49,16 @@ SpecialZone::SpecialZone(const ZBox & zbox, const std::string &type, const std::
 		throw_ex(("unhanled type '%s'", type.c_str()));	
 }
 
+const bool SpecialZone::global() const {
+	return (
+		type == "timer-lose" || 
+		type == "timer-win" || 
+		type == "reset-timer" || 
+		type == "disable-ai" || 
+		type == "enable-ai");
+}
+
+
 const bool SpecialZone::final() const {
 	return type == "checkpoint" && name == "final";
 }

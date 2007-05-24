@@ -27,6 +27,7 @@ public:
 	std::string area, type, name, subname;
 
 	SpecialZone(const ZBox & zbox, const std::string &type, const std::string &name, const std::string &subname);
+	const bool global() const;
 
 	void onEnter(const int slot_id);
 
