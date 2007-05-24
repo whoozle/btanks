@@ -142,7 +142,7 @@ void Hud::renderStats(sdlx::Surface &surface) {
 
 
 
-void Hud::renderRadar(const float dt, sdlx::Surface &window, const std::vector<v2<int> > &specials) {
+void Hud::renderRadar(const float dt, sdlx::Surface &window, const std::vector<v3<int> > &specials) {
 	if (!Map->loaded()) {
 		_radar.free();
 		_radar_bg.free();
@@ -192,7 +192,7 @@ void Hud::renderRadar(const float dt, sdlx::Surface &window, const std::vector<v
 	//format me
 	n = specials.size();
 	for(size_t i = 0; i < n; ++i) {
-		const v2<int> &pos = specials[i];
+		const v3<int> &pos = specials[i];
 		Uint32 color[2];
 		color[0] = index2color(_radar, i + 1, 255);
 		color[1] = index2color(_radar, i + 1, 200);

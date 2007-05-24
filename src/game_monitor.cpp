@@ -60,7 +60,7 @@ void IGameMonitor::checkItems(const float dt) {
 			if (item.destroy_for_victory || !item.save_for_victory.empty()) {
 				v2<int> pos;
 				o->getCenterPosition(pos);
-				_specials.push_back(pos);	
+				_specials.push_back(v3<int>(pos.x, pos.y, o->getID()));	
 			}
 
 			continue;
@@ -266,7 +266,7 @@ TRY {
 	s.get(n);
 	_specials.clear();
 	while(n--) {
-		v2<int> p;
+		v3<int> p;
 		s.get(p);
 		_specials.push_back(p);
 	}

@@ -27,6 +27,7 @@
 #include "mrt/serializable.h"
 #include "alarm.h"
 #include "math/v2.h"
+#include "math/v3.h"
 #include "sdlx/sdlx.h"
 #include "export_btanks.h"
 
@@ -61,7 +62,7 @@ public:
 	void add(const Item &item);	
 	void checkItems(const float dt);
 	
-	const std::vector<v2<int> >& getSpecials() const { return _specials; }
+	const std::vector<v3<int> >& getSpecials() const { return _specials; }
 	const size_t getItemsCount() const { return _items.size(); }
 
 	void gameOver(const std::string &area, const std::string &message, const float time);
@@ -90,7 +91,7 @@ private:
 
 	typedef std::vector<Item> Items;
 	Items _items;
-	std::vector<v2<int> > _specials;
+	std::vector<v3<int> > _specials;
 
 	Alarm _check_items;
 

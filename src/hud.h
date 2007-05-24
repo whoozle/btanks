@@ -23,7 +23,7 @@
 #include "export_btanks.h"
 #include "sdlx/surface.h"
 #include "sdlx/font.h"
-#include "math/v2.h"
+#include "math/v3.h"
 #include "alarm.h"
 
 #include <map>
@@ -41,7 +41,7 @@ public:
 
 	void renderSplash(sdlx::Surface &window) const;
 	const bool renderLoadingBar(sdlx::Surface &window, const float old_progress, const float progress, const bool splash = true) const;
-	void renderRadar(const float dt, sdlx::Surface &window, const std::vector<v2<int> > &specials);
+	void renderRadar(const float dt, sdlx::Surface &window, const std::vector<v3<int> > &specials);
 	void renderStats(sdlx::Surface &surface);
 
 	~Hud();

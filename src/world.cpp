@@ -137,8 +137,17 @@ void IWorld::addObject(Object *o, const v2<float> &pos, const int id) {
 	//LOG_DEBUG(("object %d added, objects: %d", o->_id, _objects.size()));
 }
 
+#include "game_monitor.h"
+
 void IWorld::render(sdlx::Surface &surface, const sdlx::Rect&src, const sdlx::Rect &dst) {
 	GET_CONFIG_VALUE("engine.render-hp-bars", bool, rhb, false);
+	std::vector<v3<int> > specials; 
+	specials = GameMonitor->getSpecials();
+
+	std::set<int> special_ids;
+	for(size_t i = 0; i < specials.size(); ++i) {
+		special_ids.insert(specials[i].z);
+	}
 	
 	surface.setClipRect(dst);
 	typedef std::multimap<const int, Object *> LayerMap;
@@ -186,7 +195,7 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect&src, const sdlx::Re
 					wp.x - src.x + dst.x + (int)(o.size.x/2) - 8, wp.y - src.y + dst.y + (int)(o.size.y/2) - 8);
 			}
 		}
-		if ((rhb) && o.impassability == 1.0f && o._follow <= 0) {
+		if (special_ids.find(o.getID()) != special_ids.end() || (rhb && (o.impassability == 1.0f && o._follow <= 0))) {
 			int h = _hp_bar->getHeight() / 16;
 			int y = (o.hp >= 0)?15 * (o.max_hp - o.hp) / o.max_hp: 0;
 			sdlx::Rect hp_src(0, y * h, _hp_bar->getWidth(), h);
