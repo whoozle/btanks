@@ -132,6 +132,8 @@ private:
 	int _last_id;
 	bool _safe_mode, _atatat;
 	float _max_dt;
+	
+	const sdlx::Surface *_hp_bar;
 };
 
 SINGLETON(BTANKSAPI, World, IWorld);

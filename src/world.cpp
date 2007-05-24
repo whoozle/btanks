@@ -55,6 +55,9 @@ void IWorld::setTimeSlice(const float ts) {
 }
 
 void IWorld::initMap() {
+	if (_hp_bar == NULL)
+		_hp_bar = ResourceManager->loadSurface("hud/hp.png");
+
 	GET_CONFIG_VALUE("engine.grid-fragment-size", int, gfs, 128);
 	_grid.setSize(Map->getSize(), gfs);
 }
@@ -80,7 +83,7 @@ void IWorld::setMode(const std::string &mode, const bool value) {
 }
 
 
-IWorld::IWorld() : _last_id(0), _safe_mode(false), _atatat(false), _max_dt(1) {
+IWorld::IWorld() : _last_id(0), _safe_mode(false), _atatat(false), _max_dt(1), _hp_bar(NULL) {
 	Map->load_map_signal.connect(sigc::mem_fun(this, &IWorld::initMap));
 }
 
@@ -135,8 +138,9 @@ void IWorld::addObject(Object *o, const v2<float> &pos, const int id) {
 }
 
 void IWorld::render(sdlx::Surface &surface, const sdlx::Rect&src, const sdlx::Rect &dst) {
-	surface.setClipRect(dst);
+	GET_CONFIG_VALUE("engine.render-hp-bars", bool, rhb, false);
 	
+	surface.setClipRect(dst);
 	typedef std::multimap<const int, Object *> LayerMap;
 	LayerMap layers;
 	const IMap &map = *Map.get_const();
@@ -181,6 +185,14 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect&src, const sdlx::Re
 				surface.copyFrom(*wp_surface, 
 					wp.x - src.x + dst.x + (int)(o.size.x/2) - 8, wp.y - src.y + dst.y + (int)(o.size.y/2) - 8);
 			}
+		}
+		if ((rhb) && o.impassability == 1.0f && o._follow <= 0) {
+			int h = _hp_bar->getHeight() / 16;
+			int y = (o.hp >= 0)?15 * (o.max_hp - o.hp) / o.max_hp: 0;
+			sdlx::Rect hp_src(0, y * h, _hp_bar->getWidth(), h);
+			surface.copyFrom(*_hp_bar, hp_src, 
+					(int)o._position.x - src.x + dst.x + 4 /*+ (int)(o.size.x) - _hp_bar->getWidth() */, 
+					(int)o._position.y - src.y + dst.y + 4);
 		}
 	}
 	map.render(surface, src, dst, z1, 10000);
