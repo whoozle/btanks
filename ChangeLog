@@ -1,7 +1,9 @@
-?.?.3618:
+0.5.3779:
 
+*) a pair of new maps: dune - cooperative survival with timer and "battle tanks university". 
+*) shilka is now able to pick up mines.
 *) adding auto-aiming support for tank's and shilka's bullets.
-*) many new sounds, completely rewritten sound subsystem. ambient sounds thread.(forest, swamp, city and country ambient loops).
+*) a lots of the new sounds, completely rewritten sound subsystem. ambient sounds thread.(forest, swamp, city and country ambient loops).
 *) added secret "mortar" vehicle on every map (!). 
 *) added 'sandworm' creature inspired by famous 'dune' series.
 *) cars stop and beeps instead of crashing. :)
@@ -9,6 +11,7 @@
 *) "bomberman" map - stupid map generator test.
 *) now you don't need to have your copy of map, it downloaded from game server automatically.
 *) added custom "tactical map" in map picker.
+*) hp bars (similar to many RTS) rendered near every important object. 
 *) changed dirt to experimental 'drifting' implementation. 
 *) added "redefine keys" and "gamepad setup" dialogs. Improved gamepad handing (second ministick used for controlling the camera)
 *) added "hint control" key. (skips current hing, replay last)
@@ -16,9 +19,11 @@
 *) added random vehicle selection (?)
 *) added various debug options : no-clip, tiles marks on map, stripping alpha from objects and tiles 
 *) added icons for controls setup dialog
+*) implemented (ally) variant to allow creation friendly troopers and other objects.
 *) implemented special zones with timers (win, lose), disable/enable ai switches, hints and checkpoints. added spawn limit (lives). 
 *) implemented volume sliders in 'options' dialog. fixed listener positioning.
 *) object variants instead of tons similar objects registered.
+*) blacklisted nvidia's openal implementation. it's way too buggy. 
 *) mods could provide its own localized messages 
 *) internationalized menu and in-game messages
 *) finishing level makes you invulnerable
