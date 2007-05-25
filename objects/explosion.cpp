@@ -100,6 +100,7 @@ void Explosion::onSpawn() {
 	}
 	if (registered_name == "nuclear-explosion" && !_variants.has("no-shaking")) 
 		Game->shake(1, 4);
+	disown();
 }
 
 void Explosion::emit(const std::string &event, Object * emitter) {
