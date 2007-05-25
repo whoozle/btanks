@@ -80,10 +80,11 @@ if sys.platform == "win32":
 	bt_main_libs.append('user32')
 
 
+rpath = '.'
 if sys.platform != 'win32':
-	bt_env.Append(LINKFLAGS=' -Wl,-rpath . -Wl,-rpath-link build/' + env['mode'] + '/mrt')
-	bt_env.Append(LINKFLAGS=' -Wl,-rpath . -Wl,-rpath-link build/' + env['mode'] + '/sdlx')
-	bt_env.Append(LINKFLAGS=' -Wl,-rpath . -Wl,-rpath-link build/' + env['mode'] + '/objects')
+	bt_env.Append(LINKFLAGS=' -Wl,-rpath '+ rpath + ' -Wl,-rpath-link build/' + env['mode'] + '/mrt')
+	bt_env.Append(LINKFLAGS=' -Wl,-rpath '+ rpath + ' -Wl,-rpath-link build/' + env['mode'] + '/sdlx')
+	bt_env.Append(LINKFLAGS=' -Wl,-rpath '+ rpath + ' -Wl,-rpath-link build/' + env['mode'] + '/objects')
 
-bt_main = bt_env.Program('bt', bt_main_sources, LIBS=bt_main_libs, RPATH=['.'])
+bt_main = bt_env.Program('bt', bt_main_sources, LIBS=bt_main_libs, RPATH=[rpath])
 Install('#', bt_main)
