@@ -657,7 +657,7 @@
 	<object class="ai-shilka" parent="shilka" z="0" />
 	<object class="mortar" speed="100" mass="400" hp="100" z="0" />
 	<object class="static-mortar" parent="mortar" />
-	<object class="ai-shilka" parent="mortar" />
+	<!-- afaik ai-mortar still does not exist <object class="ai-mortar" parent="mortar" /> -->
 
 	<object class="bullet" speed="1100" mass="2" ttl="1" hp="10" z="210" />
 	<object class="tank-bullet" parent="bullet" />
