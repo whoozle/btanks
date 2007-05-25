@@ -603,6 +603,9 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects, const boo
 			} else if (type == "waypoint") {
 				if (res.size() < 3)
 					throw_ex(("'%s' misses an argument", i->first.c_str()));
+				v2<int> tile_size = Map->getTileSize(); //tiled correction
+				pos.x += tile_size.x / 2;
+				pos.y += tile_size.y / 2;
 				LOG_DEBUG(("waypoint class %s, name %s : %d,%d", res[1].c_str(), res[2].c_str(), pos.x, pos.y));
 				_waypoints[res[1]][res[2]] = v2<int>(pos.x, pos.y);
 			} else if (type == "edge") {
