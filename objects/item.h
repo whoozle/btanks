@@ -29,6 +29,7 @@ public:
 	virtual void onSpawn();
 	virtual void tick(const float dt);
 	virtual void emit(const std::string &event, Object * emitter = NULL);
+	virtual void addDamage(Object *from, const int hp, const bool emitDeath = true);
 
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);

@@ -36,6 +36,10 @@ void Item::onSpawn() {
 	play("main", true);
 }
 
+void Item::addDamage(Object *from, const int hp, const bool emitDeath) {
+	return;
+}
+
 void Item::emit(const std::string &event, Object * emitter) {
 	if (event == "collision") {
 		if (emitter == NULL || emitter->classname != "player")
