@@ -42,6 +42,11 @@ namespace sdlx {
 		return !( x >= (other.x + other.w) || (x + w) <= other.x ||
 				y >= (other.y + other.h) || (y + h) <= other.y );
 	}
+	
+	inline const bool inside(const Rect &other) const {
+		return x >= other.x && x + w <= other.x + other.w &&
+			y >= other.y && y + h <= other.y + other.h;
+	}
 };
 }
 
