@@ -1,3 +1,14 @@
+0.5.3808: 
+*) added new 'batterie' tune from Petrovich.
+*) chain explosions are now possible. 
+*) fall back to generic software if nvidia's nforce detected. 
+*) zombies and other aggressive monsters do not damage items.
+*) fixed speed of shilka with ai driver inside.
+*) added default fps limit (120).
+*) pathfinding fixes, cars' movements are now more accurate and precise. 
+*) fixed helicopter's bomb warnings
+*) added lib_dir handling for **nix packaging. 
+
 0.5.3784:
 
 *) a pair of new maps: dune - cooperative survival with timer and "battle tanks university". 
