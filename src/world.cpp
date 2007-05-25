@@ -193,7 +193,7 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect&src, const sdlx::Re
 			for(Way::const_iterator wi = way.begin(); wi != way.end(); ++wi) {
 				const v2<int> &wp = *wi;
 				surface.copyFrom(*wp_surface, 
-					wp.x - src.x + dst.x + (int)(o.size.x/2) - 8, wp.y - src.y + dst.y + (int)(o.size.y/2) - 8);
+					wp.x - src.x + dst.x - 8, wp.y - src.y + dst.y - 8);
 			}
 		}
 		if (special_ids.find(o.getID()) != special_ids.end() || (rhb && (o.impassability == 1.0f && o._follow <= 0 && !o.piercing))) {
