@@ -4,8 +4,6 @@ Battle Tanks demo version
 Installation:
 Unpack the files into any folder (for example, C:\Games\Btanks\).
 
-The game requires OpenAL libraries.  The package includes the openalweax.exe that will install them.
-
 The package does not include an installer, so you'll have to use command line for switching modes.  See the list below.
 
 The game has two modes:
@@ -26,17 +24,6 @@ The screen resolution can also be set:
 
 --connect=hostname/IP  joins the game on the specified hostname
 --no-sound             turns off ALL sound
-
-Game settings:
-
-The demo has a configuration file with lots of various parameters.  Most of parameters have names those explain what is what; however the following ones are the most noticeable:
-"player.control-method": sets the configuration of control keys. The following values are supported:
-  "keys":    cursor keys move the vehicle, left Alt and left Ctrl fire primary and secondary weapons
-  "keys-1":  rdfg + q + a.
-  "keys-2":  cursor keys, right Shift, right Ctrl. 
-  (keys-1/keys-2 are used in split screen mode)
-
-Gamepad or joystick can be chosen by setting "joy-1" and "joy-2".
 
 Errors are logged in stderr.txt. 
 
