@@ -606,7 +606,7 @@ void Object::calculateWayVelocity() {
 		_velocity.clear();
 		
 		if (_next_target.is0()) {
-			_next_target = _way.begin()->convert<float>();
+			_next_target = _way.begin()->convert<float>() - size / 2;
 			v2<float> rel = _next_target - position;
 			_way.pop_front();
 			
@@ -1135,7 +1135,7 @@ const bool Object::findPathDone(Way &way) {
 	
 	
 			setDirection(i);
-			v2<int> world_pos(id.x * _step, id.y * _step);
+			v2<int> world_pos(id.x * _step - (int)size.x / 2, id.y * _step - (int)size.y / 2);
 			int map_im = Map->getImpassability(this, world_pos);
 			//LOG_DEBUG(("%d, %d, map: %d", world_pos.x, world_pos.y, map_im));
 			assert(map_im >= 0);
