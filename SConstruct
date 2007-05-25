@@ -23,9 +23,12 @@ if sys.platform == "win32":
 	opts.Add('LINK', 'Linker program', '')
 opts.Add('LINKFLAGS', 'General options that are passed to the linker', '')
 opts.Add('CPPPATH', 'extra cpp path', '')
+
 if sys.platform != "win32":
 	opts.Add('prefix', 'prefix for **nix packaging', '')
 	opts.Add('resources_dir', 'resources directory (default: prefix/share)', '')
+	opts.Add('lib_dir', 'resources directory (default: prefix/share)', '')
+
 opts.Add(EnumOption('mode', 'build mode', 'release', allowed_values=('debug','release')))
 opts.Add(BoolOption('gcc_visibility', 'gcc visibility', 'false'))
 
@@ -171,6 +174,7 @@ Export('sigc_flags')
 Export('sigc_lib')
 Export('al_lib')
 
+lib_dir = '.'
 try : 
 	version_file = file('.svnversion', 'r')
 	try : 
@@ -182,6 +186,11 @@ try :
 			resources_dir = env['resources_dir']
 		else: 
 			resources_dir = prefix + "/share/btanks"
+
+		if len(env['lib_dir']):
+			lib_dir = env['lib_dir']
+		else: 
+			lib_dir = prefix + "/lib"
 	
 		env.Append(CPPDEFINES='RESOURCES_DIR="\\"' + resources_dir + '\\""')
 	except: 
@@ -203,6 +212,11 @@ except :
 			else: 
 				resources_dir = prefix + "/share/btanks"
 
+			if len(env['lib_dir']):
+				lib_dir = env['lib_dir']
+			else: 
+				lib_dir = prefix + "/lib"
+
 			env.Append(CPPDEFINES='RESOURCES_DIR="\\"' + resources_dir + '\\""')
 
 version = version[version.rfind(':') + 1:]
@@ -210,6 +224,7 @@ revision = int(version.replace('M', ''))
 	
 Export('version')
 Export('revision')
+Export('lib_dir')
 
 version = '0.4.%s' %version
 print "version: %s" %version
