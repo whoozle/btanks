@@ -46,7 +46,7 @@ void Heli::tick(const float dt) {
 	if (_state.alt_fire && _alt_fire.tick(dt)) {
 		_alt_fire.reset();
 		Object *o = spawn("bomb", "bomb");
-		o->setZ(getZ() - 1);
+		o->setZ(getZ() - 1, true);
 	}
 }
 
