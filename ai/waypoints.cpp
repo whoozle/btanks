@@ -63,15 +63,17 @@ void Waypoints::calculate(Object *object, const float dt) {
 			_waypoint_name = object->getNearestWaypoint(object->registered_name);
 			assert(!_waypoint_name.empty());
 			Game->getWaypoint(waypoint, object->registered_name, _waypoint_name);
-			if (waypoint.quick_length() < object->size.x * object->size.y) 
+			if (waypoint.quick_length() < object->size.x * object->size.y) {
+				//LOG_DEBUG(("waypoint is too close..."));
 				goto random_wp; //REWRITE THIS UGLY CODE
-			//LOG_DEBUG(("%s[%d] moving to nearest waypoint at %g %g", animation.c_str(), getID(), waypoint.x, waypoint.y));
+			}
+			//LOG_DEBUG(("%s[%d] moving to nearest waypoint at %g %g", object->animation.c_str(), object->getID(), waypoint.x, waypoint.y));
 		} else {
 		random_wp:
-			//LOG_DEBUG(("%s[%d] reached waypoint '%s'", animation.c_str(), getID(), _waypoint_name.c_str()));
+			//LOG_DEBUG(("%s[%d] reached waypoint '%s'", object->animation.c_str(), object->getID(), _waypoint_name.c_str()));
 			_waypoint_name = Game->getRandomWaypoint(object->registered_name, _waypoint_name);
 			Game->getWaypoint(waypoint, object->registered_name, _waypoint_name);
-			//LOG_DEBUG(("%s[%d] moving to next waypoint '%s' at %g %g", animation.c_str(), getID(), _waypoint_name.c_str(), waypoint.x, waypoint.y));
+			//LOG_DEBUG(("%s[%d] moving to next waypoint '%s' at %g %g", object->animation.c_str(), object->getID(), _waypoint_name.c_str(), waypoint.x, waypoint.y));
 		}
 		int pfs;
 		Config->get("objects." + object->registered_name + ".pathfinding-step", pfs, 16);
@@ -79,7 +81,11 @@ void Waypoints::calculate(Object *object, const float dt) {
 	}
 	Way way;
 	if (object->calculatingPath() && object->findPathDone(way)) {
-		if (way.size() < 2) {
+		if (way.size() == 1) { 
+			object->_velocity.clear();
+			return;
+		} else if (way.empty()) {
+			_waypoint_name.clear();
 			LOG_DEBUG(("%s:%s[%d] no path[%u]. ", 
 				object->registered_name.c_str(), object->animation.c_str(), object->getID(), (unsigned)way.size()));
 			//emit("death", NULL);
