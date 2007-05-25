@@ -919,6 +919,23 @@ void IGame::getWaypoint(v2<float> &wp, const std::string &classname, const std::
 	wp = i->second.convert<float>();
 }
 
+void IGame::renderWaypoints(sdlx::Surface &surface, const sdlx::Rect &src, const sdlx::Rect &dst) {
+	//typedef std::map<const std::string, v2<int> > WaypointMap;
+	//typedef std::map<const std::string, WaypointMap> WaypointClassMap;
+	
+	const sdlx::Surface *s = ResourceManager->loadSurface("car-waypoint.png");
+	
+	for(WaypointClassMap::const_iterator i = _waypoints.begin(); i != _waypoints.end(); ++i) {
+		//const std::string &classname = i->first;
+		for(WaypointMap::const_iterator j = i->second.begin(); j != i->second.end(); ++j) {
+			const v2<int> &wp = j->second;
+			surface.copyFrom(*s, 
+			wp.x - src.x + dst.x, 
+			wp.y - src.y + dst.y - s->getHeight());	
+		}
+	}
+}
+
 const std::string IGame::onConsole(const std::string &cmd, const std::string &param) {
 try {
 	if (cmd == "quit") {

@@ -138,6 +138,7 @@ void IWorld::addObject(Object *o, const v2<float> &pos, const int id) {
 }
 
 #include "game_monitor.h"
+#include "game.h"
 
 void IWorld::render(sdlx::Surface &surface, const sdlx::Rect&src, const sdlx::Rect &dst) {
 	GET_CONFIG_VALUE("engine.render-hp-bars", bool, rhb, false);
@@ -166,6 +167,7 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect&src, const sdlx::Re
 	}
 	//LOG_DEBUG(("rendering %d objects", layers.size()));
 	int z1 = -10001;
+	GET_CONFIG_VALUE("engine.show-waypoints", bool, show_waypoints, false);
 	for(LayerMap::iterator i = layers.begin(); i != layers.end(); ++i) {
 		if (i->second->isDead())
 			continue;
@@ -181,7 +183,6 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect&src, const sdlx::Re
 			//LOG_DEBUG(("rendering %s with z = %g", o.classname.c_str(), o._position.z));
 		o.render(surface, (int)o._position.x - src.x + dst.x, (int)o._position.y - src.y + dst.y);
 		
-		GET_CONFIG_VALUE("engine.show-waypoints", bool, show_waypoints, false);
 		const Way & way = o.getWay();
 		if (show_waypoints && !way.empty()) {
 			const Animation *a = ResourceManager.get_const()->getAnimation("waypoint-16");
@@ -205,6 +206,8 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect&src, const sdlx::Re
 		}
 	}
 	map.render(surface, src, dst, z1, 10000);
+	if (show_waypoints) 
+		Game->renderWaypoints(surface, src, dst);
 	
 	surface.resetClipRect();
 }
