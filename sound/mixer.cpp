@@ -142,6 +142,8 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 		alcGetIntegerv(NULL, ALC_MAJOR_VERSION, sizeof(major), &major);
 		alcGetIntegerv(NULL, ALC_MINOR_VERSION, sizeof(minor), &minor);
 		LOG_NOTICE(("openAL version: %d.%d", major, minor));
+
+		GET_CONFIG_VALUE("engine.sound.device", std::string, device, std::string());
 		
 		std::vector<std::string> device_list;
 		const ALchar *name = alcGetString(NULL, ALC_DEVICE_SPECIFIER);
@@ -152,6 +154,8 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 			//nvidia's nvopenal is a real crap. 
 			if (sname.find("NVIDIA") != sname.npos) {
 				blacklisted = true;
+				if (device.empty())
+					device = "Generic Software";
 			}
 			//place for other openal implementations ;))))
 			LOG_NOTICE(("found device: \"%s\"%s", name, blacklisted?" (blacklisted)":""));
@@ -163,7 +167,6 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 		
 		//LOG_NOTICE(("default device reported by openal: \"%s\"", alcGetString(NULL, ALC_DEFAULT_DEVICE_SPECIFIER)));
 		
-		GET_CONFIG_VALUE("engine.sound.device", std::string, device, std::string());
 
 		if (device.empty()) {
 			//autoconfiguring
