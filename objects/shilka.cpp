@@ -27,6 +27,8 @@
 #include "world.h"
 
 void Shilka::getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const {
+	base = 0;
+	base_value = 0;
 	penalty = 0.8;
 }
 
