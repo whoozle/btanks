@@ -22,11 +22,11 @@
 #include "container.h"
 #include <vector>
 #include <string>
+#include "map_desc.h"
 
 class ScrollList;
 class MapDetails;
 class PlayerPicker;
-struct MapDesc;
 class UpperBox;
 
 class MapPicker : public Container {
