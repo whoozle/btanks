@@ -1049,7 +1049,7 @@ static inline const int h(const v2<int>& src, const v2<int>& dst) {
 void Object::findPath(const v2<int> target, const int step) {
 	_step = step;
 	_end = target;
-	getPosition(_begin);
+	getCenterPosition(_begin);
 
 	_begin /= step;
 	_end /= step;
@@ -1101,10 +1101,10 @@ const bool Object::findPathDone(Way &way) {
 		
 		if (_close_list.find(current.id) != _close_list.end())
 			continue;
-/*
-		LOG_DEBUG(("%d: popping vertex. id=%d, x=%d, y=%d, g=%d, h=%d, f=%d", getID(), 
-			current.id, current.id % _pitch, current.id / _pitch, current.g, current.h, current.g + current.h));
-*/		
+
+//		LOG_DEBUG(("%d: popping vertex. x=%d, y=%d, g=%d, h=%d, f=%d", getID(), 
+//			current.id.x, current.id.y, current.g, current.h, current.g + current.h));
+	
 		_close_list.insert(current.id);
 		const int x = current.id.x * _step;
 		const int y = current.id.y * _step;
@@ -1149,7 +1149,7 @@ const bool Object::findPathDone(Way &way) {
 				continue;			
 			}
 			float im = World->getImpassability(this, world_pos, NULL, true, true);
-			//LOG_DEBUG(("%d, %d, world: %g", pos.x, pos.y, im));
+			//LOG_DEBUG(("%d, %d, world: %g", world_pos.x, world_pos.y, im));
 			assert(im >= 0);
 			if (im >= 1.0) {
 				//_close_list.insert(id);
