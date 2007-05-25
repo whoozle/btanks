@@ -599,24 +599,29 @@ void Object::setWay(const Way & way) {
 }
 
 void Object::calculateWayVelocity() {
-	v2<float> position = getPosition();
+	v2<float> position;
+	getCenterPosition(position);
+	
 	sdlx::Rect me((int)position.x, (int)position.y, (int)size.x, (int)size.y);
+	GET_CONFIG_VALUE("engine.allowed-pathfinding-fault", int, af, 5);
 
 	while (!_way.empty()) {
 		_velocity.clear();
 		
 		if (_next_target.is0()) {
-			_next_target = _way.begin()->convert<float>() - size / 2;
+			_next_target = _way.begin()->convert<float>();
 			v2<float> rel = _next_target - position;
 			_way.pop_front();
 			
-			sdlx::Rect wp_rect((int)_next_target.x, (int)_next_target.y, (int)size.x, (int)size.y);
 			
-			if (me.intersects(wp_rect)) {
+			sdlx::Rect wp_rect((int)_next_target.x - af, (int)_next_target.y - af, af * 2, af * 2);
+			
+			if (wp_rect.inside(me)) {
 				_next_target.clear();
 				_velocity.clear();
 				continue;
 			}
+			
 						
 			/*if (!_next_target_rel.is0() && (rel.x == 0 || rel.x * _next_target_rel.x <= 0) && (rel.y == 0 || rel.y * _next_target_rel.y <= 0)) {
 				LOG_DEBUG(("skipped waypoint behind objects' back %g:%g (old %g:%g", rel.x, rel.y, _next_target_rel.x, _next_target_rel.y ));
@@ -637,10 +642,9 @@ void Object::calculateWayVelocity() {
 		//	getID(), classname.c_str(), animation.c_str(), _next_target.x, _next_target.y, _next_target_rel.x, _next_target_rel.y));
 		
 		_velocity = _next_target - position;
-		GET_CONFIG_VALUE("engine.allowed-pathfinding-fault", int, f, 5);
-		if ((_next_target_rel.x != 0 && _velocity.x * _next_target_rel.x <= 0) || (math::abs(_velocity.x) < f))
+		if ((_next_target_rel.x != 0 && _velocity.x * _next_target_rel.x <= 0) || (math::abs(_velocity.x) < af))
 			_velocity.x = 0;
-		if ((_next_target_rel.y != 0 && _velocity.y * _next_target_rel.y <= 0) || (math::abs(_velocity.y) < f))
+		if ((_next_target_rel.y != 0 && _velocity.y * _next_target_rel.y <= 0) || (math::abs(_velocity.y) < af))
 			_velocity.y = 0;
 		
 		if (_velocity.is0()) {
