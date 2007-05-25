@@ -600,10 +600,12 @@ void Object::setWay(const Way & way) {
 
 void Object::calculateWayVelocity() {
 	v2<float> position;
-	getCenterPosition(position);
-	
+	getPosition(position);	
 	sdlx::Rect me((int)position.x, (int)position.y, (int)size.x, (int)size.y);
+
 	GET_CONFIG_VALUE("engine.allowed-pathfinding-fault", int, af, 5);
+
+	getCenterPosition(position);
 
 	while (!_way.empty()) {
 		_velocity.clear();
