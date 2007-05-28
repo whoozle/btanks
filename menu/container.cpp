@@ -118,3 +118,20 @@ void Container::clear() {
 	}
 	_controls.clear();
 }
+
+const bool Container::in(const Control *c, const int x, const int y) const {
+	assert(c != NULL);
+	ControlList::const_reverse_iterator i;
+	for(i = _controls.rbegin(); i != _controls.rend(); ++i) {
+		if (i->second == c)
+			break;
+	}
+	if (i == _controls.rend())
+		throw_ex(("no control %p in container %p", (const void *)c, (const void *)this));
+	
+	int bw, bh;
+	c->getSize(bw, bh);
+	
+	const sdlx::Rect dst(i->first.x, i->first.y, bw, bh);
+	return dst.in(x, y);
+}

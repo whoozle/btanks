@@ -43,6 +43,8 @@ private:
 	const Container& operator=(const Container &);
 
 protected:
+	const bool in(const Control *c, const int x, const int y) const;
+
 	typedef std::list<std::pair<v2<int>, Control *> > ControlList;
 	ControlList _controls;
 };
