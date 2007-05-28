@@ -1,7 +1,7 @@
 random notes about linux compilation: 
 
 0) If you're gentoo user, try ebuild located at 
-	http://bugs.gentoo.org/show_bug.cgi?id=17277
+	http://bugs.gentoo.org/show_bug.cgi?id=172772
 
 1) This game must be built with scons build system, no matter you like it or not. You 
 have no choice. Autotools & family is stupid crap and I hope it'll die soon. 
