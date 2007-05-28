@@ -41,3 +41,5 @@ void Control::invalidate(const bool play_sound) {
 		Mixer->playSample(NULL, "menu/change.ogg", false);
 	_changed = true;
 }
+
+Control::~Control() {}
