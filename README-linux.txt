@@ -9,9 +9,9 @@ have no choice. Autotools & family is stupid crap and I hope it'll die soon.
 2) if you have some cheap audio hardware without hardware mixer, ALSA project 
 might help you. Just put this lines into your ~/.openalrc or /etc/openalrc : 
 
-(define devices ‘(alsa))
+(define devices '(alsa))
 (define speaker-num 2)
-(define alsa-out-device “default”)
+(define alsa-out-device 'default')
 (define sampling-rate 44100)
 
 usually "alutInit: There was an error opening the ALC device" error message 
