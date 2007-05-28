@@ -146,7 +146,7 @@ MapPicker::MapPicker(const int w, const int h) : _index(0) {
 	TRY {
 		_list = new ScrollList("medium", list_pos.w, list_pos.h);
 		for(MapList::const_iterator i = _maps.begin(); i != _maps.end(); ++i) {
-			_list->add(i->name);
+			_list->append(i->name);
 		}
 		add(list_pos.x, list_pos.y, _list);
 		_list->set(_index);

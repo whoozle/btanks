@@ -41,11 +41,11 @@ const std::string ScrollList::getValue() const {
 	return l->get();
 }
 
-void ScrollList::add(const std::string &item) {
-	add(new Label(_font, item));
+void ScrollList::append(const std::string &item) {
+	append(new Label(_font, item));
 }
 
-void ScrollList::add(Control *control) {
+void ScrollList::append(Control *control) {
 	_list.push_back(control);
 	invalidate();
 }

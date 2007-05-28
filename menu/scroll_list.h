@@ -19,20 +19,20 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include "control.h"
-#include "box.h"
 #include <deque>
+#include "container.h"
+#include "box.h"
 #include "sdlx/font.h"
 #include "sdlx/rect.h"
 #include "export_btanks.h"
 
-class BTANKSAPI ScrollList : public Control {
+class BTANKSAPI ScrollList : public Container {
 public: 
 	ScrollList(const std::string &font, const int w, const int h, const int spacing = 5);
 	
 	virtual void clear();
-	virtual void add(const std::string &item);
-	virtual void add(Control *control);
+	virtual void append(const std::string &item);
+	virtual void append(Control *control);
 	
 	const int get() const { return _current_item; }
 	const std::string getValue() const;

@@ -30,7 +30,7 @@ HostList::HostList(const std::string &config_key, const int w, const int h) : Sc
 			continue;
 		
 		mrt::toLower(hosts[i]);
-		ScrollList::add(hosts[i]);
+		ScrollList::append(hosts[i]);
 	}
 }
 
@@ -47,7 +47,7 @@ void HostList::promote(const size_t i) {
 	_current_item = 0;
 }
 
-void HostList::add(const std::string &_item) {
+void HostList::append(const std::string &_item) {
 	std::string item = _item;
 	mrt::toLower(item);
 	

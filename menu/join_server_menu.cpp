@@ -153,7 +153,7 @@ void JoinServerMenu::tick(const float dt) {
 		_add_dialog->reset();
 		_add_dialog->hide();
 		if (!_add_dialog->get().empty())
-			_hosts->add(_add_dialog->get());
+			_hosts->append(_add_dialog->get());
 		
 		_add_dialog->set(std::string());
 	}
