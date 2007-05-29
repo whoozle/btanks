@@ -98,7 +98,8 @@ void Zombie::calculate(const float dt) {
 		quantizeVelocity();		
 	} else {
 		_state.fire = false;
-		onIdle(dt);
+		if (!_variants.has("no-herd"))
+			onIdle(dt);
 	}
 
 	GET_CONFIG_VALUE("objects.zombie.rotation-time", float, rt, 0.1);
