@@ -25,7 +25,7 @@ consult your distro's documentation for details):
                                          dont report bugs if you do so)
 	b) SDL_image 	 (PNG support required)
 	c) SDL_ttf 		 
-	d) openal (and alut)
+	d) openal
 	e) libvorbis and family
 	f) sigc++ 2.x (1.x is not supported)
 
