@@ -75,6 +75,7 @@ const int ScrollList::getItemIndex(const int yp) const {
 }
 
 void ScrollList::tick(const float dt) {
+	Container::tick(dt);
 	if (_list.empty())
 		return;
 	
@@ -164,9 +165,13 @@ void ScrollList::render(sdlx::Surface &surface, const int x, const int y) {
 	}
 
 	surface.setClipRect(old_clip);
+	Container::render(surface, x, y);
 }
 
 bool ScrollList::onKey(const SDL_keysym sym) {
+	if (Container::onKey(sym))
+		return true;
+	
 	switch(sym.sym) {
 	case SDLK_PAGEUP:
 		if (_current_item > 0)
@@ -246,6 +251,8 @@ void ScrollList::down() {
 }
 
 bool ScrollList::onMouse(const int button, const bool pressed, const int x, const int y) {
+	if (Container::onMouse(button, pressed, x, y))
+		return true;
 	//implement dragging of scroller here.
 	//LOG_DEBUG(("boo %d %d %d %d", button, pressed, x, y));
 	
