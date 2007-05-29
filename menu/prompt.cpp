@@ -68,12 +68,18 @@ void Prompt::tick(const float dt) {
 		invalidate();
 	} else if (_b_back->changed()) {
 		_b_back->reset();
-		_text->set(value);
+		set(std::string());
 		invalidate();
 	}
 }
 
 bool Prompt::onKey(const SDL_keysym sym) {
+	if (sym.sym == SDLK_ESCAPE) {
+		set(std::string());
+		invalidate();
+		return true;
+	}
+	
 	if (_text->onKey(sym))
 		return true;
 	
