@@ -51,6 +51,7 @@ public:
 	PropertyMap properties; //doesnt used at runtime.
 
 	Layer();
+	virtual void init(const int w, const int h); //empty layer
 	virtual void init(const int w, const int h, const mrt::Chunk & data);
 	void setAnimation(const int frame_size, const int frames, const float speed);
 	virtual void tick(const float dt);

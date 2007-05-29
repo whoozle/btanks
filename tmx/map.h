@@ -115,6 +115,9 @@ public:
 	
 	void generateXML(std::string &result) const;
 	
+	void addLayer(const int after_z, const std::string &name);
+	void swapLayers(const int z1, const int z2);
+	
 private:
 	void addTiles(sdlx::Surface *image, const int first_gid);
 

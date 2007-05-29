@@ -65,6 +65,7 @@ void DestructableLayer::onDeath(const int idx) {
 
 DestructableLayer::DestructableLayer(const bool visible) : _hp_data(NULL), _visible(visible) {}
 
+
 void DestructableLayer::init(const int w, const int h, const mrt::Chunk & data) {
 	if (hp <= 0)
 		throw_ex(("destructable layer cannot have hp %d (hp must be > 0)", hp));
@@ -211,6 +212,11 @@ void Layer::init(const int w, const int h, const mrt::Chunk & data) {
 	assert((int)_data.getSize() == (4 * _w * _h));
 }
 
+void Layer::init(const int w, const int h) {
+	_w = w; _h = h;
+	_data.setSize(_w * _h * 4);
+	_data.fill(0);
+}
 
 const Uint32 Layer::_get(const int i) const {
 	if (i < 0 || i >= _w * _h)
