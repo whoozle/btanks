@@ -1229,5 +1229,5 @@ void IMap::addLayer(const int after_z, const std::string &name) {
 }
 
 void IMap::swapLayers(const int z1, const int z2) {
-
+	LOG_DEBUG(("swap layers %d <-> %d", z1, z2));
 }
