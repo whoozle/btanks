@@ -180,19 +180,20 @@ try :
 	try : 
 		version = version_file.readline().strip()
 		prefix = env['prefix']
-		env.Append(CPPDEFINES='PREFIX="\\"' + prefix + '\\""')
+		if len(prefix): 
+			env.Append(CPPDEFINES='PREFIX="\\"' + prefix + '\\""')
 	
-		if len(env['resources_dir']):
-			resources_dir = env['resources_dir']
-		else: 
-			resources_dir = prefix + "/share/btanks"
+			if len(env['resources_dir']):
+				resources_dir = env['resources_dir']
+			else: 
+				resources_dir = prefix + "/share/btanks"
 
-		if len(env['lib_dir']):
-			lib_dir = env['lib_dir']
-		else: 
-			lib_dir = prefix + "/lib"
-	
-		env.Append(CPPDEFINES='RESOURCES_DIR="\\"' + resources_dir + '\\""')
+			env.Append(CPPDEFINES='RESOURCES_DIR="\\"' + resources_dir + '\\""')
+
+			if len(env['lib_dir']):
+				lib_dir = env['lib_dir']
+			else: 
+				lib_dir = prefix + "/lib"
 	except: 
 		info = sys.exc_info()
 		print "%s %s %s" %(info[0], info[1], info[2])
