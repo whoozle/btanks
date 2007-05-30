@@ -4,7 +4,7 @@
 #include "world.h"
 #include "config.h"
 #include "mrt/random.h"
-#include "game.h"
+#include "game_monitor.h"
 #include "player_manager.h"
 
 using namespace ai;
@@ -62,7 +62,7 @@ void Waypoints::calculate(Object *object, const float dt) {
 		if (_waypoint_name.empty()) {
 			_waypoint_name = object->getNearestWaypoint(object->registered_name);
 			assert(!_waypoint_name.empty());
-			Game->getWaypoint(waypoint, object->registered_name, _waypoint_name);
+			GameMonitor->getWaypoint(waypoint, object->registered_name, _waypoint_name);
 			if (waypoint.quick_length() < object->size.x * object->size.y) {
 				//LOG_DEBUG(("waypoint is too close..."));
 				goto random_wp; //REWRITE THIS UGLY CODE
@@ -71,8 +71,8 @@ void Waypoints::calculate(Object *object, const float dt) {
 		} else {
 		random_wp:
 			//LOG_DEBUG(("%s[%d] reached waypoint '%s'", object->animation.c_str(), object->getID(), _waypoint_name.c_str()));
-			_waypoint_name = Game->getRandomWaypoint(object->registered_name, _waypoint_name);
-			Game->getWaypoint(waypoint, object->registered_name, _waypoint_name);
+			_waypoint_name = GameMonitor->getRandomWaypoint(object->registered_name, _waypoint_name);
+			GameMonitor->getWaypoint(waypoint, object->registered_name, _waypoint_name);
 			//LOG_DEBUG(("%s[%d] moving to next waypoint '%s' at %g %g", object->animation.c_str(), object->getID(), _waypoint_name.c_str(), waypoint.x, waypoint.y));
 		}
 		int pfs;

@@ -1241,7 +1241,7 @@ found:
 #include "game.h"
 
 const std::string Object::getNearestWaypoint(const std::string &name) const {
-	return Game->getNearestWaypoint(this, name);
+	return GameMonitor->getNearestWaypoint(this, name);
 }
 
 void Object::addDamage(Object *from, const bool emitDeath) {

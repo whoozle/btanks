@@ -69,14 +69,6 @@ public:
 	
 	void resetLoadingBar(const int total);
 	void notifyLoadingBar(const int progress = 1);
-
-	void loadMap(const std::string &name, const bool spawn = true, const bool skip_loadmap = false);	
-	
-	const std::string getRandomWaypoint(const std::string &classname, const std::string &last_wp = std::string()) const;
-	const std::string getNearestWaypoint(const BaseObject *obj, const std::string &classname) const;
-	void getWaypoint(v2<float> &wp, const std::string &classname, const std::string &name);
-	
-	void renderWaypoints(sdlx::Surface &surface, const sdlx::Rect &src, const sdlx::Rect &viewport);
 	
 private:
 	void onTick(const float dt);
@@ -84,6 +76,7 @@ private:
 	void onJoyButton(const int joy, const int id, const bool pressed);
 	bool onMouse(const int button, const bool pressed, const int x, const int y);
 	void onMenu(const std::string &name, const std::string &value);
+	void onMap();
 	const std::string onConsole(const std::string &cmd, const std::string &param);
 
 	void onEvent(const SDL_Event &event);
@@ -91,16 +84,9 @@ private:
 	
 	void stopCredits();
 
-	bool _paused, _map_loaded;
+	bool _paused;
 
 	MainMenu *_main_menu;
-	
-	typedef std::map<const std::string, v2<int> > WaypointMap;
-	typedef std::map<const std::string, WaypointMap> WaypointClassMap;
-	typedef std::multimap<const std::string, std::string> WaypointEdgeMap;
-	
-	WaypointClassMap _waypoints;
-	WaypointEdgeMap  _waypoint_edges;
 	
 	bool _show_fps, _show_log_lines;
 	Object *_fps, *_log_lines;

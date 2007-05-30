@@ -138,7 +138,6 @@ void IWorld::addObject(Object *o, const v2<float> &pos, const int id) {
 }
 
 #include "game_monitor.h"
-#include "game.h"
 
 void IWorld::render(sdlx::Surface &surface, const sdlx::Rect&src, const sdlx::Rect &dst) {
 	GET_CONFIG_VALUE("engine.render-hp-bars", bool, rhb, false);
@@ -207,7 +206,7 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect&src, const sdlx::Re
 	}
 	map.render(surface, src, dst, z1, 10000);
 	if (show_waypoints) 
-		Game->renderWaypoints(surface, src, dst);
+		GameMonitor->renderWaypoints(surface, src, dst);
 	
 	surface.resetClipRect();
 }

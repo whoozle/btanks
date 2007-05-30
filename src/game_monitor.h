@@ -22,6 +22,7 @@
 #include <vector>
 #include <string>
 #include <set>
+#include <map>
 
 #include "mrt/singleton.h"
 #include "mrt/serializable.h"
@@ -33,8 +34,10 @@
 
 namespace sdlx {
 class Surface;
+class Rect;
 }
 
+class BaseObject;
 class Object;
 
 struct Item {
@@ -87,6 +90,15 @@ public:
 	
 	void killAllClasses(const std::set<std::string> &classes);
 
+	void loadMap(const std::string &name, const bool spawn = true, const bool skip_loadmap = false);		
+
+	//waypoints
+	const std::string getRandomWaypoint(const std::string &classname, const std::string &last_wp = std::string()) const;
+	const std::string getNearestWaypoint(const BaseObject *obj, const std::string &classname) const;
+	void getWaypoint(v2<float> &wp, const std::string &classname, const std::string &name);
+	
+	void renderWaypoints(sdlx::Surface &surface, const sdlx::Rect &src, const sdlx::Rect &viewport);	
+
 private:
 
 	bool _game_over;
@@ -106,6 +118,14 @@ private:
 	
 	std::set<std::string> _disabled;
 	std::set<std::string> _destroy_classes;
+	
+	//waypoints stuff
+	typedef std::map<const std::string, v2<int> > WaypointMap;
+	typedef std::map<const std::string, WaypointMap> WaypointClassMap;
+	typedef std::multimap<const std::string, std::string> WaypointEdgeMap;
+	
+	WaypointClassMap _waypoints;
+	WaypointEdgeMap  _waypoint_edges;	
 };
 
 SINGLETON(BTANKSAPI, GameMonitor, IGameMonitor);

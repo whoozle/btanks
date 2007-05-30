@@ -27,6 +27,12 @@
 #include "sdlx/font.h"
 #include "sdlx/surface.h"
 #include "special_owners.h"
+#include "mrt/random.h"
+#include "tmx/map.h"
+#include "sound/mixer.h"
+#include "window.h"
+#include "var.h"
+#include "special_zone.h"
 
 IMPLEMENT_SINGLETON(GameMonitor, IGameMonitor);
 
@@ -162,7 +168,6 @@ void IGameMonitor::resetTimer() {
 	_timer = 0;
 }
 
-
 void IGameMonitor::clear() {
 	resetTimer();
 
@@ -174,6 +179,9 @@ void IGameMonitor::clear() {
 	_check_items.reset();
 	_disabled.clear();
 	_destroy_classes.clear();
+
+	_waypoints.clear();
+	_waypoint_edges.clear();
 }
 
 void IGameMonitor::tick(const float dt) {	
@@ -313,4 +321,248 @@ TRY {
 
 void IGameMonitor::killAllClasses(const std::set<std::string> &classes) {
 	_destroy_classes = classes;
+}
+
+
+const std::string IGameMonitor::getRandomWaypoint(const std::string &classname, const std::string &last_wp) const {
+	if (last_wp.empty()) 
+		throw_ex(("getRandomWaypoint('%s', '%s') called with empty name", classname.c_str(), last_wp.c_str()));
+	
+	WaypointClassMap::const_iterator wp_class = _waypoints.find(classname);
+	if (wp_class == _waypoints.end()) 
+		throw_ex(("no waypoints for '%s' defined", classname.c_str()));
+		
+	WaypointEdgeMap::const_iterator b = _waypoint_edges.lower_bound(last_wp);
+	WaypointEdgeMap::const_iterator e = _waypoint_edges.upper_bound(last_wp);
+	if (b == e) 
+		throw_ex(("no edges defined for waypoint '%s'", last_wp.c_str()));
+
+	int wp = mrt::random(_waypoint_edges.size() * 2);
+	while(true) {
+		for(WaypointEdgeMap::const_iterator i = b; i != e; ++i) {
+			if (wp-- <= 0) {
+				return i->second;
+			}
+		}
+	}
+	throw_ex(("getRandomWaypoint(unexpected termination)"));
+	return "*bug*";
+}
+
+const std::string IGameMonitor::getNearestWaypoint(const BaseObject *obj, const std::string &classname) const {
+	v2<int> pos;
+	obj->getPosition(pos);
+	int distance = -1;
+	std::string wp;
+	
+	WaypointClassMap::const_iterator i = _waypoints.find(classname);
+	if (i == _waypoints.end())
+		throw_ex(("no waypoints for '%s' found", classname.c_str()));
+
+	for(WaypointMap::const_iterator j = i->second.begin(); j != i->second.end(); ++j) {
+		int d = j->second.quick_distance(pos);
+		if (distance == -1 || d < distance) {
+			distance = d;
+			wp = j->first;
+		}
+	}
+	return wp;
+}
+
+
+void IGameMonitor::getWaypoint(v2<float> &wp, const std::string &classname, const std::string &name) {
+	if (name.empty() || classname.empty()) 
+		throw_ex(("getWaypoint('%s', '%s') called with empty classname and/or name", classname.c_str(), name.c_str()));
+	
+	WaypointClassMap::const_iterator wp_class = _waypoints.find(classname);
+	if (wp_class == _waypoints.end()) 
+		throw_ex(("no waypoints for '%s' defined", classname.c_str()));
+	
+	WaypointMap::const_iterator i = wp_class->second.find(name);
+	if (i == wp_class->second.end())
+		throw_ex(("no waypoints '%s' defined", name.c_str()));
+	wp = i->second.convert<float>();
+}
+
+void IGameMonitor::renderWaypoints(sdlx::Surface &surface, const sdlx::Rect &src, const sdlx::Rect &dst) {
+	//typedef std::map<const std::string, v2<int> > WaypointMap;
+	//typedef std::map<const std::string, WaypointMap> WaypointClassMap;
+	
+	const sdlx::Surface *s = ResourceManager->loadSurface("car-waypoint.png");
+	
+	for(WaypointClassMap::const_iterator i = _waypoints.begin(); i != _waypoints.end(); ++i) {
+		//const std::string &classname = i->first;
+		for(WaypointMap::const_iterator j = i->second.begin(); j != i->second.end(); ++j) {
+			const v2<int> &wp = j->second;
+			surface.copyFrom(*s, 
+			wp.x - src.x + dst.x, 
+			wp.y - src.y + dst.y - s->getHeight());	
+		}
+	}
+}
+
+template<typename T>
+static void coord2v(T &pos, const std::string &str) {
+	std::string pos_str = str;
+
+	const bool tiled_pos = pos_str[0] == '@';
+	if (tiled_pos) { 
+		pos_str = pos_str.substr(1);
+	}
+
+	TRY {
+		pos.fromString(pos_str);
+	} CATCH(mrt::formatString("parsing '%s'", str.c_str()).c_str() , throw;)
+
+	if (tiled_pos) {
+		v2<int> tile_size = Map->getTileSize();
+		pos.x *= tile_size.x;
+		pos.y *= tile_size.y;
+		//keep z untouched.
+	}
+}
+
+
+void IGameMonitor::loadMap(const std::string &name, const bool spawn_objects, const bool skip_loadmap) {
+	IMap &map = *IMap::get_instance();
+
+	if (!skip_loadmap) {
+		map.load(name);
+	} else {
+		if (!map.loaded())
+			throw_ex(("loadMap() called with skip Map::load() flag. Map must be initialized at this point."));
+	}
+
+	_waypoints.clear();
+	_waypoint_edges.clear();
+	
+	Config->clearOverrides();
+	
+	//const v2<int> size = map.getSize();
+	for (IMap::PropertyMap::iterator i = map.properties.begin(); i != map.properties.end(); ++i) {
+		std::vector<std::string> res;
+		mrt::split(res, i->first, ":");
+		const std::string &type = res[0];
+		
+		if (type != "spawn" && type != "object" && type != "waypoint" && 
+			type != "edge" && type != "config" && type != "zone" && type != "ambient-sound")
+			throw_ex(("unsupported line: '%s'", i->first.c_str()));
+		
+		if (!spawn_objects && type != "waypoint" && type != "edge" && type != "config")
+			continue;
+	
+		if (type == "ambient-sound") {
+			Mixer->startAmbient(i->second);
+			continue;
+		}
+	
+		v3<int> pos;
+		if (type != "edge" && type != "config") {
+			coord2v< v3<int> >(pos, i->second);
+		}
+	
+		/*
+		if (pos.x < 0) 
+			pos.x += size.x;
+		if (pos.y < 0) 
+			pos.y += size.y;
+		*/
+		
+		if (type == "spawn") {
+			LOG_DEBUG(("spawnpoint: %d,%d,%d", pos.x, pos.y, pos.z));
+			v2<int> tile_size = Map->getTileSize();
+			pos.x += tile_size.x / 2;
+			pos.y += tile_size.y / 2;
+			PlayerManager->addSlot(pos);
+		} else {
+			if (type == "object") {
+				//LOG_DEBUG(("object %s, animation %s, pos: %s", res[1].c_str(), res[2].c_str(), i->second.c_str()));
+				if (res.size() < 4)
+					throw_ex(("'%s' misses an argument", i->first.c_str()));
+				res.resize(5);
+				Item item(res[1], res[2], v2<int>(pos.x, pos.y), pos.z);
+				item.destroy_for_victory = res[3].substr(0, 19) == "destroy-for-victory";
+				if (res[3] == "save-for-victory")
+					item.save_for_victory = res[4];
+				GameMonitor->add(item);
+			} else if (type == "waypoint") {
+				if (res.size() < 3)
+					throw_ex(("'%s' misses an argument", i->first.c_str()));
+				v2<int> tile_size = Map->getTileSize(); //tiled correction
+				pos.x += tile_size.x / 2;
+				pos.y += tile_size.y / 2;
+				LOG_DEBUG(("waypoint class %s, name %s : %d,%d", res[1].c_str(), res[2].c_str(), pos.x, pos.y));
+				_waypoints[res[1]][res[2]] = v2<int>(pos.x, pos.y);
+			} else if (type == "edge") {
+				if (res.size() < 3)
+					throw_ex(("'%s' misses an argument", i->first.c_str()));
+				if (res[1] == res[2])
+					throw_ex(("map contains edge from/to the same vertex"));
+				_waypoint_edges.insert(WaypointEdgeMap::value_type(res[1], res[2]));
+			} else if (type == "config") {
+				if (res.size() < 2)
+					throw_ex(("'%s' misses an argument", i->first.c_str()));
+				
+				std::vector<std::string> value;
+				mrt::split(value, i->second, ":");
+				value.resize(2);
+				if (value[0] != "int" && value[0] != "float" && value[0] != "string")
+					throw_ex(("cannot set config variable '%s' of type '%s'", res[1].c_str(), value[0].c_str()));
+				Var var(value[0]);
+				var.fromString(value[1]);
+
+				Config->setOverride(res[1], var);
+			} else if (type == "zone") {
+				LOG_DEBUG(("%s %s %s", type.c_str(), i->first.c_str(), i->second.c_str()));
+				std::vector<std::string> value;
+				mrt::split(value, i->second, ":");
+				if (value.size() < 2)
+					throw_ex(("'%s' misses an argument", i->first.c_str()));
+				v3<int> pos;
+				v2<int> size;
+				coord2v(pos, value[0]);
+				coord2v(size, value[1]);
+				res.resize(4);
+				
+				SpecialZone zone(SpecialZone(ZBox(pos, size), res[1], res[2], res[3]));
+				zone.area = "hints/" + name;
+				PlayerManager->addSpecialZone(zone);
+			} 
+		}
+	}
+	
+	if (Config->has("map.kill-em-all")) {
+		std::string cstr;
+		Config->get("map.kill-em-all", cstr, std::string());
+		std::vector<std::string> res;
+		mrt::split(res, cstr, ",");
+		
+		std::set<std::string> classes;
+		for(size_t i = 0; i < res.size(); ++i) {
+			std::string &str = res[i];
+			mrt::trim(str);
+			if (!str.empty())
+				classes.insert(str);
+		}
+		GameMonitor->killAllClasses(classes);
+		LOG_DEBUG(("kill'em all classes: %u", (unsigned)classes.size()));
+	}
+	
+	LOG_DEBUG(("generating matrixes"));
+	Map->generateMatrixes();
+	
+	LOG_DEBUG(("checking waypoint graph..."));
+	for(WaypointEdgeMap::const_iterator i = _waypoint_edges.begin(); i != _waypoint_edges.end(); ++i) {
+		const std::string &dst = i->second;
+		WaypointEdgeMap::const_iterator b = _waypoint_edges.lower_bound(dst);
+		if (b == _waypoint_edges.end() || b->first != dst)
+			throw_ex(("no edges out of waypoint '%s'", dst.c_str()));
+	}
+	LOG_DEBUG(("%u items on map, %u waypoints, %u edges", (unsigned)GameMonitor->getItemsCount(), (unsigned)_waypoints.size(), (unsigned)_waypoint_edges.size()));
+	Config->invalidateCachedValues();
+	
+	GET_CONFIG_VALUE("engine.max-time-slice", float, mts, 0.025);
+	World->setTimeSlice(mts);
+	
+	Window->resetTimer();
 }
