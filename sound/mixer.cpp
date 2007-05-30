@@ -31,7 +31,6 @@
 #include "sample.h"
 
 #include "config.h"
-#include "world.h"
 #include "object.h"
 #include "math/v3.h"
 #include "finder.h"
