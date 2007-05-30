@@ -40,6 +40,7 @@ void Mortar::onSpawn() {
 
 	GET_CONFIG_VALUE("objects.mortar.fire-rate", float, fr, 0.7);
 	_fire.set(fr);
+	play("hold", true);
 }
 
 Object * Mortar::clone() const {

@@ -22,7 +22,7 @@
 
 class TrafficLights : public Object {
 public:
-	TrafficLights() : Object("traffic-lights"), _idx(-1), _broken(false) {}
+	TrafficLights() : Object("traffic-lights"), _idx(0), _broken(false) {}
 	virtual void tick(const float dt);
 	virtual Object * clone() const;
 	virtual void addDamage(Object *from, const int hp, const bool emitDeath = true);
@@ -45,7 +45,9 @@ private:
 };
 
 
-void TrafficLights::onSpawn() {}
+void TrafficLights::onSpawn() {
+	play("red");
+}
 
 void TrafficLights::addDamage(Object *from, const int dhp, const bool emitDeath) {
 	if (_broken)

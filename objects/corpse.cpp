@@ -68,6 +68,8 @@ void Corpse::onSpawn() {
 	}
 	if (_play_dead)
 		play("dead", true);
+	if (getState().empty())
+		throw_ex(("corpse w/o state!"));
 }
 
 
@@ -77,5 +79,8 @@ Object* Corpse::clone() const  {
 
 REGISTER_OBJECT("corpse", Corpse, (16, true));
 REGISTER_OBJECT("impassable-corpse", Corpse, (16, true));
-REGISTER_OBJECT("static-corpse", Corpse, (0, true));
+
 REGISTER_OBJECT("fire", Corpse, (16, false));
+
+REGISTER_OBJECT("impassable-static-corpse", Corpse, (0, true));
+REGISTER_OBJECT("static-corpse", Corpse, (0, true));

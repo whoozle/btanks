@@ -52,6 +52,7 @@ void Tank::onSpawn() {
 	
 	GET_CONFIG_VALUE("objects.tank.fire-rate", float, fr, 0.3);
 	_fire.set(fr);
+	play("hold", true);
 }
 
 Object * Tank::clone() const {

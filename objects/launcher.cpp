@@ -54,6 +54,7 @@ void Launcher::onSpawn() {
 	
 	GET_CONFIG_VALUE("objects.launcher.fire-rate", float, fr, 0.3);
 	_fire.set(fr);
+	play("hold", true);
 }
 
 

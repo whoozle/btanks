@@ -628,7 +628,6 @@
 	<alias name="stack" class="destructable-object(with-fire)(make-pierceable)" />
 	<alias name="road-sign" class="destructable-object" />
 	<alias name="oil-barrels" class="explosive" />
- 	<alias name="impassable-static-corpse" class="static-corpse" />
  	<alias name="train-smoke" class="single-pose(once)" />
  	<alias name="bomberman-explosion" class="cannon-explosion" />
  	<alias name="tractor" class="combine" />
