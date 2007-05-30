@@ -143,6 +143,8 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 
 		_c_res = new Chooser("medium", res);
 	}
+	
+	int base_x = _bx + 3 * _background.w / 4;
 
 	l = new Label("medium", I18n->get("menu", "screen-resolution"));
 	add(_bx + mx, yp, l);
@@ -150,7 +152,7 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 	{
 		int w, h;
 		_c_res->getSize(w, h);
-		add(_bx + (_background.w + 100) / 2, yp + (sh - h) / 2, _c_res);
+		add(_bx + base_x - w / 2, yp + (sh - h) / 2, _c_res);
 		if (h > sh) 
 			sh = h;
 	}
@@ -168,7 +170,7 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 	{
 		int w, h;
 		_fsmode->getSize(w, h);
-		add(_bx + _background.w - w - 100, yp + (sh - h) / 2, _fsmode);
+		add(_bx + base_x - w / 2, yp + (sh - h) / 2, _fsmode);
 		if (h > sh) 
 			sh = h;
 	}
@@ -182,7 +184,7 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 	{
 		int w, h;
 		_donate->getSize(w, h);
-		add(_bx + _background.w - w - 100, yp + (sh - h) / 2, _donate);
+		add(_bx + base_x - w / 2, yp + (sh - h) / 2, _donate);
 		if (h > sh) 
 			sh = h;
 	}
