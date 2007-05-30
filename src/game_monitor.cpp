@@ -42,7 +42,6 @@ void IGameMonitor::checkItems(const float dt) {
 		++goal_total;
 		if (!World->itemExists(_destroy_classes)) 
 			++goal;
-		return;
 	}
 	
 	_specials.clear();
