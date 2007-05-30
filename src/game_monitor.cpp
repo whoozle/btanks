@@ -38,6 +38,12 @@ void IGameMonitor::checkItems(const float dt) {
 		
 	int goal = 0, goal_total = 0;
 	
+	if (!_destroy_classes.empty()) {
+		if (!World->itemExists(_destroy_classes))
+			gameOver("messages", "mission-accomplished", 5);
+		return;
+	}
+	
 	_specials.clear();
 	
 	for(Items::iterator i = _items.begin(); i != _items.end(); ++i) {
@@ -167,6 +173,7 @@ void IGameMonitor::clear() {
 	_specials.clear();
 	_check_items.reset();
 	_disabled.clear();
+	_destroy_classes.clear();
 }
 
 void IGameMonitor::tick(const float dt) {	
@@ -255,6 +262,13 @@ TRY {
 	for(std::set<std::string>::const_iterator i = _disabled.begin(); i != _disabled.end(); ++i) {
 		s.add(*i);
 	}
+
+	n = (int)_destroy_classes.size();
+	s.add(n);
+	for(std::set<std::string>::const_iterator i = _destroy_classes.begin(); i != _destroy_classes.end(); ++i) {
+		s.add(*i);
+	}
+
 } CATCH("serialize", throw);
 }
 
@@ -285,5 +299,18 @@ TRY {
 		s.get(d);
 		_disabled.insert(d);
 	}
+
+	s.get(n);
+	_destroy_classes.clear();
+	while(n--) {
+		std::string d;
+		s.get(d);
+		_destroy_classes.insert(d);
+	}
+	
 } CATCH("deserialize", throw);
+}
+
+void IGameMonitor::killAllClasses(const std::set<std::string> &classes) {
+	_destroy_classes = classes;
 }

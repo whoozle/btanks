@@ -84,6 +84,8 @@ public:
 
 	void serialize(mrt::Serializator &s) const;
 	void deserialize(const mrt::Serializator &s);
+	
+	void killAllClasses(const std::set<std::string> &classes);
 
 private:
 
@@ -103,6 +105,7 @@ private:
 	float _timer;
 	
 	std::set<std::string> _disabled;
+	std::set<std::string> _destroy_classes;
 };
 
 SINGLETON(BTANKSAPI, GameMonitor, IGameMonitor);

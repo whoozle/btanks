@@ -651,6 +651,24 @@ void IGame::loadMap(const std::string &name, const bool spawn_objects, const boo
 			} 
 		}
 	}
+	
+	if (Config->has("map.kill-em-all")) {
+		std::string cstr;
+		Config->get("map.kill-em-all", cstr, std::string());
+		std::vector<std::string> res;
+		mrt::split(res, cstr, ",");
+		
+		std::set<std::string> classes;
+		for(size_t i = 0; i < res.size(); ++i) {
+			std::string &str = res[i];
+			mrt::trim(str);
+			if (!str.empty())
+				classes.insert(str);
+		}
+		GameMonitor->killAllClasses(classes);
+		LOG_DEBUG(("kill'em all classes: %u", (unsigned)classes.size()));
+	}
+	
 	LOG_DEBUG(("generating matrixes"));
 	Map->generateMatrixes();
 	

@@ -99,6 +99,7 @@ public:
 	const float getImpassability(Object *obj, const v2<int> &position, const Object **collided_with = NULL, const bool probe = false, const bool skip_moving = false) const;
 	
 	const int getChildren(const int id, const std::string &classname) const;
+	const bool itemExists(const std::set<std::string> &classes) const;
 	void setMode(const std::string &mode, const bool value);
 	
 	const bool attachVehicle(Object *object, Object *vehicle);
