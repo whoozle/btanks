@@ -417,7 +417,7 @@ void IGameMonitor::renderWaypoints(sdlx::Surface &surface, const sdlx::Rect &src
 		v2<int> p = ap, d = bp - ap;
 		d.normalize();
 		p += d * w;
-		int len0 = ap.distance(bp);
+		int len0 = (int)sqrt((float)ap.quick_distance(bp));
 		for(int len = len0; len > w; len -= w, p += d * w) {
 			const sdlx::Rect &r = (len == len0)? out: (len <= 2 * w ? in:normal );
 			surface.copyFrom(*s, r, 
