@@ -39,8 +39,9 @@ void IGameMonitor::checkItems(const float dt) {
 	int goal = 0, goal_total = 0;
 	
 	if (!_destroy_classes.empty()) {
-		if (!World->itemExists(_destroy_classes))
-			gameOver("messages", "mission-accomplished", 5);
+		++goal_total;
+		if (!World->itemExists(_destroy_classes)) 
+			++goal;
 		return;
 	}
 	
