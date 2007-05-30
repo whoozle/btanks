@@ -1230,4 +1230,27 @@ void IMap::addLayer(const int after_z, const std::string &name) {
 
 void IMap::swapLayers(const int z1, const int z2) {
 	LOG_DEBUG(("swap layers %d <-> %d", z1, z2));
+	LayerMap::iterator l1 = _layers.find(z1), l2 = _layers.find(z2);
+	if (l1 == _layers.end())
+		throw_ex(("layer with z %d was not found", z1));
+	if (l2 == _layers.end())
+		throw_ex(("layer with z %d was not found", z2));
+
+	math::exchange(l1->second, l2->second);
+
+	bool has_z1 = l1->second->properties.find("z") != l1->second->properties.end();
+	bool has_z2 = l2->second->properties.find("z") != l2->second->properties.end();
+	if (has_z1) {
+		if (has_z2) {
+			math::exchange(l1->second->properties["z"], l2->second->properties["z"]);
+		} else {
+			l2->second->properties["z"] = l1->second->properties["z"];
+			l1->second->properties.erase("z");
+		}
+	} else {
+		if (has_z2) {
+			l1->second->properties["z"] = l2->second->properties["z"];
+			l2->second->properties.erase("z");
+		}	
+	}
 }
