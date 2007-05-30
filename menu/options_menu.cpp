@@ -150,7 +150,7 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 	{
 		int w, h;
 		_c_res->getSize(w, h);
-		add(_bx + _background.w / 2, yp + (sh - h) / 2, _c_res);
+		add(_bx + (_background.w + 100) / 2, yp + (sh - h) / 2, _c_res);
 		if (h > sh) 
 			sh = h;
 	}
@@ -168,7 +168,21 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 	{
 		int w, h;
 		_fsmode->getSize(w, h);
-		add(_bx + _background.w / 2, yp + (sh - h) / 2, _fsmode);
+		add(_bx + _background.w - w - 100, yp + (sh - h) / 2, _fsmode);
+		if (h > sh) 
+			sh = h;
+	}
+	yp += sh + 10;
+
+	l = new Label("medium", I18n->get("menu", "do-not-show-donation-screen"));
+	add(_bx + mx, yp, l);
+	l->getSize(sw, sh);
+	
+	_donate = new Checkbox();
+	{
+		int w, h;
+		_donate->getSize(w, h);
+		add(_bx + _background.w - w - 100, yp + (sh - h) / 2, _donate);
 		if (h > sh) 
 			sh = h;
 	}
@@ -221,7 +235,10 @@ void OptionsMenu::reload() {
 
 	bool fs;
 	Config->get("engine.window.fullscreen", fs, false);
-	_fsmode->set(fs);	
+	_fsmode->set(fs);
+	float donate;
+	Config->get("engine.donate-screen-duration", donate, 1.5f);
+	_donate->set(donate <= 0);
 }
 
 #include "window.h"
@@ -269,6 +286,7 @@ void OptionsMenu::save() {
 		Config->set("engine.window.fullscreen", _fsmode->get());
 		need_restart = true;
 	}
+	Config->set("engine.donate-screen-duration", (_donate->get())?0.0f:1.5f);
 	
 	PlayerManager->updateControls();
 
