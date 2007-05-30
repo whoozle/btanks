@@ -132,6 +132,8 @@ void IWorld::addObject(Object *o, const v2<float> &pos, const int id) {
 	}
 
 	o->onSpawn();
+//	if (o->getState().empty())
+//		throw_ex(("object %s:%s was not set up default pose. fixme.", o->registered_name.c_str(), o->animation.c_str()));
 	o->need_sync = true;
 
 	updateObject(o);
@@ -140,7 +142,7 @@ void IWorld::addObject(Object *o, const v2<float> &pos, const int id) {
 
 #include "game_monitor.h"
 
-void IWorld::render(sdlx::Surface &surface, const sdlx::Rect&src, const sdlx::Rect &dst) {
+void IWorld::render(sdlx::Surface &surface, const sdlx::Rect&src, const sdlx::Rect &dst, const int _z1, const int _z2) {
 	GET_CONFIG_VALUE("engine.render-hp-bars", bool, rhb, false);
 	std::vector<v3<int> > specials; 
 	specials = GameMonitor->getSpecials();
@@ -161,18 +163,26 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect&src, const sdlx::Re
 			//LOG_DEBUG(("render: skipped dead object: %s", o->registered_name.c_str()));
 			continue;
 		}
+		if (o->_z < _z1 || o->_z >= _z2) 	
+			continue;
+		
 		sdlx::Rect r((int)o->_position.x, (int)o->_position.y, (int)o->size.x, (int)o->size.y);
 		if (r.intersects(src)) 
 			layers.insert(LayerMap::value_type(o->_z, o));
 	}
 	//LOG_DEBUG(("rendering %d objects", layers.size()));
-	int z1 = -10001;
+	int z1 = _z1;
 	GET_CONFIG_VALUE("engine.show-waypoints", bool, show_waypoints, false);
 	for(LayerMap::iterator i = layers.begin(); i != layers.end(); ++i) {
 		if (i->second->isDead())
 			continue;
 		
 		int z2 = i->first;
+		if (z2 < z1) 
+			continue;
+
+		if (z2 >= _z2)
+			break;
 		//LOG_DEBUG(("world::render(%d, %d)", z1, z2));
 		if (z1 != z2) {
 			//LOG_DEBUG(("calling map::render(%d, %d)", z1, z2));
@@ -205,7 +215,7 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect&src, const sdlx::Re
 					(int)o._position.y - src.y + dst.y + 4);
 		}
 	}
-	map.render(surface, src, dst, z1, 10000);
+	map.render(surface, src, dst, z1, _z2);
 	if (show_waypoints) 
 		GameMonitor->renderWaypoints(surface, src, dst);
 	
