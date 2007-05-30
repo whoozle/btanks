@@ -89,6 +89,7 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 
 	yp += sh + 20;
 	//volume controls 
+	int base_x = _bx + 3 * _background.w / 4;
 	
 	float volume;
 	Config->get("engine.sound.volume.music", volume, 1);
@@ -101,7 +102,7 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 	{
 		int w, h;
 		s->getSize(w, h);
-		add(_bx + _background.w / 2, yp + (sh - h) / 2, s);
+		add(_bx + base_x - w / 2, yp + (sh - h) / 2, s);
 		if (h > sh) 
 			sh = h;
 	}
@@ -118,7 +119,7 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 	{
 		int w, h;
 		s->getSize(w, h);
-		add(_bx + _background.w / 2, yp + (sh - h) / 2, s);
+		add(_bx + base_x - w / 2, yp + (sh - h) / 2, s);
 		if (h > sh) 
 			sh = h;
 	}
@@ -144,7 +145,6 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 		_c_res = new Chooser("medium", res);
 	}
 	
-	int base_x = _bx + 3 * _background.w / 4;
 
 	l = new Label("medium", I18n->get("menu", "screen-resolution"));
 	add(_bx + mx, yp, l);
