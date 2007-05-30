@@ -114,7 +114,7 @@
   <property name="object:static-corpse:dead-thrower-static:1" value="795,833"/>
   <property name="edge:2:15" value=""/>
   <property name="edge:16:17" value=""/>
-  <property name="object:impassable-static-corpse:white-car:1" value="35,961"/>
+  <property name="object:impassable-static-corpse:dead-white-car:1" value="35,961"/>
   <property name="object:impassable-static-corpse:dead-yellow-car:2" value="2385,245"/>
   <property name="object:impassable-static-corpse:dead-yellow-car:1" value="557,1049"/>
   <property name="edge:18:2" value=""/>
