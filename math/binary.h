@@ -31,6 +31,13 @@ template <typename T>
 	inline const T min(const T a, const T b) {
 		return (a < b)?a:b;
 	}
+
+template <typename T> 
+	inline void exchange(T &a, T &b) {
+		T c = a;
+		a = b;
+		b = c;
+	}
 }
 
 #endif
