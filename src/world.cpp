@@ -45,6 +45,7 @@
 #include <assert.h>
 #include <limits>
 #include "special_owners.h"
+#include "math/binary.h"
 
 IMPLEMENT_SINGLETON(World, IWorld);
 
