@@ -16,6 +16,9 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+#include <string>
+#include <stdexcept>
+
 #include "game_monitor.h"
 #include "object.h"
 #include "config.h"
@@ -411,13 +414,13 @@ void IGameMonitor::renderWaypoints(sdlx::Surface &surface, const sdlx::Rect &src
 		if (b == _all_waypoints.end()) 
 			throw_ex(("no waypoint '%s' defined", i->second.c_str()));
 		
-		const v2<int> & ap = a->second;
-		const v2<int> & bp = b->second;
+		const v2<float> ap = a->second.convert<float>();
+		const v2<float> bp = b->second.convert<float>();
 		//LOG_DEBUG(("%d:%d -> %d:%d", ap.x, ap.y, bp.x, bp.y));
-		v2<int> p = ap, d = bp - ap;
+		v2<float> p = ap, d = bp - ap;
 		d.normalize();
 		p += d * w;
-		int len0 = (int)sqrt((float)ap.quick_distance(bp));
+		int len0 = (int)ap.distance(bp); 
 		for(int len = len0; len > w; len -= w, p += d * w) {
 			const sdlx::Rect &r = (len == len0)? out: (len <= 2 * w ? in:normal );
 			surface.copyFrom(*s, r, 
