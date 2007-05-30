@@ -33,6 +33,7 @@
 #include "window.h"
 #include "var.h"
 #include "special_zone.h"
+#include "math/unary.h"
 
 IMPLEMENT_SINGLETON(GameMonitor, IGameMonitor);
 
@@ -181,6 +182,7 @@ void IGameMonitor::clear() {
 	_destroy_classes.clear();
 
 	_waypoints.clear();
+	_all_waypoints.clear();
 	_waypoint_edges.clear();
 }
 
@@ -385,9 +387,6 @@ void IGameMonitor::getWaypoint(v2<float> &wp, const std::string &classname, cons
 }
 
 void IGameMonitor::renderWaypoints(sdlx::Surface &surface, const sdlx::Rect &src, const sdlx::Rect &dst) {
-	//typedef std::map<const std::string, v2<int> > WaypointMap;
-	//typedef std::map<const std::string, WaypointMap> WaypointClassMap;
-	
 	const sdlx::Surface *s = ResourceManager->loadSurface("car-waypoint.png");
 	
 	for(WaypointClassMap::const_iterator i = _waypoints.begin(); i != _waypoints.end(); ++i) {
@@ -397,6 +396,33 @@ void IGameMonitor::renderWaypoints(sdlx::Surface &surface, const sdlx::Rect &src
 			surface.copyFrom(*s, 
 			wp.x - src.x + dst.x, 
 			wp.y - src.y + dst.y - s->getHeight());	
+		}
+	}
+	
+	s = ResourceManager->loadSurface("edge.png");
+	int w = s->getWidth() / 3, h = s->getHeight();
+	sdlx::Rect normal(0, 0, w, h), out(w, 0, w, h), in(2 * w, 0, w, h);
+	
+	for(WaypointEdgeMap::const_iterator i = _waypoint_edges.begin(); i != _waypoint_edges.end(); ++i) {
+		WaypointMap::const_iterator a = _all_waypoints.find(i->first);
+		if (a == _all_waypoints.end()) 
+			throw_ex(("no waypoint '%s' defined", i->first.c_str()));
+		WaypointMap::const_iterator b = _all_waypoints.find(i->second);
+		if (b == _all_waypoints.end()) 
+			throw_ex(("no waypoint '%s' defined", i->second.c_str()));
+		
+		const v2<int> & ap = a->second;
+		const v2<int> & bp = b->second;
+		//LOG_DEBUG(("%d:%d -> %d:%d", ap.x, ap.y, bp.x, bp.y));
+		v2<int> p = ap, d = bp - ap;
+		d.normalize();
+		p += d * w;
+		int len0 = ap.distance(bp);
+		for(int len = len0; len > w; len -= w, p += d * w) {
+			const sdlx::Rect &r = (len == len0)? out: (len <= 2 * w ? in:normal );
+			surface.copyFrom(*s, r, 
+			p.x - src.x + dst.x + d.x, 
+			p.y - src.y + dst.y + d.y);
 		}
 	}
 }
@@ -493,6 +519,7 @@ void IGameMonitor::loadMap(const std::string &name, const bool spawn_objects, co
 				pos.y += tile_size.y / 2;
 				LOG_DEBUG(("waypoint class %s, name %s : %d,%d", res[1].c_str(), res[2].c_str(), pos.x, pos.y));
 				_waypoints[res[1]][res[2]] = v2<int>(pos.x, pos.y);
+				_all_waypoints[res[2]] = v2<int>(pos.x, pos.y);
 			} else if (type == "edge") {
 				if (res.size() < 3)
 					throw_ex(("'%s' misses an argument", i->first.c_str()));

@@ -124,6 +124,7 @@ private:
 	typedef std::map<const std::string, WaypointMap> WaypointClassMap;
 	typedef std::multimap<const std::string, std::string> WaypointEdgeMap;
 	
+	WaypointMap 	 _all_waypoints;
 	WaypointClassMap _waypoints;
 	WaypointEdgeMap  _waypoint_edges;	
 };
