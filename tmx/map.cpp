@@ -794,6 +794,18 @@ void IMap::charData(const std::string &d) {
 	_stack.top().data += d;
 }
 
+const bool IMap::hasSoloLayers() const {
+	bool solo_layer = false;
+	if (_solo_aware) {
+		for(LayerMap::const_iterator l = _layers.begin(); l != _layers.end(); ++l) 
+			if (l->second->solo) {
+				solo_layer = true;
+				break;
+			}
+	}
+	return solo_layer;
+}
+
 void IMap::render(sdlx::Surface &window, const sdlx::Rect &src, const sdlx::Rect &dst, const int z1, const int z2) const {
 	if (_w == 0 || z1 >= z2)  //not loaded
 		return;
@@ -805,14 +817,7 @@ void IMap::render(sdlx::Surface &window, const sdlx::Rect &src, const sdlx::Rect
 	int tyn = (src.h - 1) / _th + 2;
 	
 	//unsigned int skipped = 0;
-	bool _solo_layer = false;
-	if (_solo_aware) {
-		for(LayerMap::const_iterator l = _layers.begin(); l != _layers.end(); ++l) 
-			if (l->second->solo) {
-				_solo_layer = true;
-				break;
-			}
-	}
+	const bool _solo_layer = hasSoloLayers();
 	
 	for(LayerMap::const_iterator l = _layers.begin(); l != _layers.end(); ++l) {
 		const int z = l->first;
