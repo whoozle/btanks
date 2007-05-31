@@ -631,6 +631,7 @@
  	<alias name="train-smoke" class="single-pose(once)" />
  	<alias name="bomberman-explosion" class="cannon-explosion" />
  	<alias name="tractor" class="combine" />
+	<alias name="civilian" class="car" />
 	
 	<object class="watchtower-with-machinegunner" mass="1000" hp="20" z="200" impassability="1" />
 	<object class="watchtower-with-thrower" mass="1000" hp="20" z="200" impassability="1" />
