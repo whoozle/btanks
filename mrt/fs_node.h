@@ -8,7 +8,9 @@ namespace mrt {
 
 class MRTAPI FSNode {
 public:
-static const bool exists(const std::string &fname);
+	static const bool exists(const std::string &fname);
+	static const std::string getDir(const std::string &fname);
+	static const std::string relativePath(const std::string &from_dir, const std::string &to_dir);
 };
 
 }
