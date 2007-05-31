@@ -23,6 +23,11 @@
 #include "sdlx/sdl_ex.h"
 #include "version.h"
 #include "finder.h"
+#include <stdlib.h>
+
+#ifdef WIN32
+#	define putenv _putenv
+#endif
 
 IMPLEMENT_SINGLETON(Window, IWindow);
 
@@ -35,6 +40,9 @@ IMPLEMENT_SINGLETON(Window, IWindow);
 IWindow::IWindow() : _fr(10.0f) {}
 
 void IWindow::initSDL() {
+	putenv("SDL_VIDEO_WINDOW_POS");
+	putenv("SDL_VIDEO_CENTERED=1");
+
 	LOG_DEBUG(("gl: %s, vsync: %s, dx: %s", _opengl?"yes":"no", _vsync?"yes":"no", _dx?"yes":"no"));
 #ifdef WIN32
 	_putenv("SDL_VIDEO_RENDERER=gdi");
