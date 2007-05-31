@@ -17,6 +17,22 @@ const bool FSNode::exists(const std::string &fname) {
 	return stat(fname.c_str(), &buf) == 0;
 }
 
+const std::string FSNode::getFilename(const std::string &name, const bool return_ext) {
+	std::string::size_type p2 = name.rfind('.'), p1 = name.npos;
+	if (p2 == name.npos)
+		p2 = name.size();
+
+	p1 = name.rfind('/', p2 - 1);
+	if (p1 == name.npos) 
+		p1 = name.rfind('\\', p2 - 1);
+	if (p1 == name.npos)
+		p1 = 0;
+	else 
+		++p1;
+
+	return name.substr(p1, p2 - p1);	
+}
+
 const std::string FSNode::getDir(const std::string &fname) {
 	std::string::size_type p = fname.rfind('/');
 	if (p == fname.npos)
