@@ -774,7 +774,7 @@ void IMap::end(const std::string &name) {
 void IMap::addTileset(const std::string &tileset) {
 	if (!loaded())
 		throw_ex(("addTileset(%s) on uninitialized map", tileset.c_str()));
-	const sdlx::Surface *image = ResourceManager->loadSurface("maps/" + tileset);
+	const sdlx::Surface *image = ResourceManager->loadSurface("../maps/" + tileset);
 	int gid = _tilesets.last() + 1;
 	int n = addTiles(image, gid);
 	_generator->tileset(tileset, gid);
