@@ -33,8 +33,8 @@ void Button::render(sdlx::Surface& surface, int x, int y) {
 }
 
 bool Button::onMouse(const int button, const bool pressed, const int x, const int y) {
-	if (!pressed) 
-		return false;
+	if (pressed) 
+		return true;
 	invalidate(true);
 	return true;
 }
