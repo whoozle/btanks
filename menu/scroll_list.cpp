@@ -26,9 +26,9 @@
 #include "math/binary.h"
 #include "menu/label.h"
 
-ScrollList::ScrollList(const std::string &font, const int w, const int h, const int spacing) : 
+ScrollList::ScrollList(const std::string &background, const std::string &font, const int w, const int h, const int spacing) : 
 _client_w(64), _client_h(64), _pos(0), _vel(0), _current_item(0), _spacing(spacing) {
-	_background.init("menu/background_box.png", "menu/highlight_medium.png", w, h);
+	_background.init(background, "menu/highlight_medium.png", w, h);
 	_font = ResourceManager->loadFont(font, true);
 	_scrollers = ResourceManager->loadSurface("menu/v_scroller.png");
 }

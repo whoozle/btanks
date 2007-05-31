@@ -20,7 +20,8 @@
 #include "config.h"
 #include "label.h"
 
-HostList::HostList(const std::string &config_key, const int w, const int h) : ScrollList("medium_dark", w, h), _config_key(config_key) {
+HostList::HostList(const std::string &config_key, const int w, const int h) : 
+ScrollList("menu/background_box.png", "medium_dark", w, h), _config_key(config_key) {
 	std::string str_hosts;
 	Config->get(config_key, str_hosts, std::string());
 	std::vector<std::string> hosts;
