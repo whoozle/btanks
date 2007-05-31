@@ -37,6 +37,7 @@
 
 #include "config.h"
 #include "player_manager.h"
+#include "resource_manager.h"
 #include "finder.h"
 #include "zbox.h"
 
@@ -638,7 +639,7 @@ void IMap::end(const std::string &name) {
 		if (source.size()) {
 			LOG_DEBUG(("loading tileset from single file ('%s')", source.c_str()));
 			_image_source = source;
-			_image_name = source = Finder->find("tilesets/" + source);
+			_image_name = source = Finder->find("maps/" + source);
 			_image->loadImage(source);
 			_image_is_tileset = true;
 		} else {
@@ -759,8 +760,8 @@ void IMap::end(const std::string &name) {
 		LOG_DEBUG(("tileset: %s, first_gid: %d", _image_source.c_str(), _firstgid));
 		_generator->tileset(_image_name, _firstgid);
 
-		_tilesets.add(_image_source, _firstgid);
-		addTiles(_image, _firstgid);
+		int n = addTiles(_image, _firstgid);
+		_tilesets.add(_image_source, _firstgid, n);
 
 		delete _image;
 		_image = NULL;
@@ -769,6 +770,17 @@ void IMap::end(const std::string &name) {
 	_stack.pop();
 	NotifyingXMLParser::end(name);
 }
+
+void IMap::addTileset(const std::string &tileset) {
+	if (!loaded())
+		throw_ex(("addTileset(%s) on uninitialized map", tileset.c_str()));
+	const sdlx::Surface *image = ResourceManager->loadSurface("maps/" + tileset);
+	int gid = _tilesets.last() + 1;
+	int n = addTiles(image, gid);
+	_generator->tileset(tileset, gid);
+	_tilesets.add(tileset, gid, n);
+}
+
 
 void IMap::charData(const std::string &d) {
 	assert(!_stack.empty());
@@ -1045,20 +1057,21 @@ void IMap::deserialize(const mrt::Serializator &s) {
 		s.get(name);	
 		s.get(gid);	
 		sdlx::Surface *image  = NULL;
+		int n = 0;
 		TRY {
-			std::string fname = Finder->find("tilesets/" + name);
+			std::string fname = Finder->find("maps/" + name);
 			
 			image = new sdlx::Surface;
 			image->loadImage(fname);
 			image->convertAlpha();
 			
-			addTiles(image, gid);
+			n = addTiles(image, gid);
 			
 			delete image;
 			image = NULL;
 		} CATCH("deserialize", { delete image; throw; });
 		
-		_tilesets.add(name, gid);
+		_tilesets.add(name, gid, n);
 		notify_progress.emit(1);
 	}
 	
@@ -1101,11 +1114,12 @@ void IMap::deserialize(const mrt::Serializator &s) {
 	load_map_signal.emit();
 }
 	
-void IMap::addTiles(sdlx::Surface *image, const int first_gid) {
-	image->setAlpha(0, 0);
+const int IMap::addTiles(const sdlx::Surface *image, const int first_gid) {
+	int id = 0;
+TRY {
+	const_cast<sdlx::Surface *>(image)->setAlpha(0, 0);
 	int w = image->getWidth(), h = image->getHeight();
 
-	int id = 0;
 	for(int y = 0; y < h; y += _th) {
 		for(int x = 0; x < w; x += _tw) {
 			sdlx::Surface *s = new sdlx::Surface;
@@ -1156,7 +1170,9 @@ void IMap::addTiles(sdlx::Surface *image, const int first_gid) {
 			s = NULL;
 		}
 	}
-	
+	const_cast<sdlx::Surface *>(image)->setAlpha(0, SDL_SRCALPHA);	//fixme: dangerous
+} CATCH("addTiles", {const_cast<sdlx::Surface *>(image)->setAlpha(0, SDL_SRCALPHA); throw; })
+	return id;
 }
 
 void IMap::getLayers(std::set<int> &layers_z) const {

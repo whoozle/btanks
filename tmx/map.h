@@ -117,9 +117,10 @@ public:
 	
 	void addLayer(const int after_z, const std::string &name);
 	void swapLayers(const int z1, const int z2);
+	void addTileset(const std::string &tileset);
 	
 private:
-	void addTiles(sdlx::Surface *image, const int first_gid);
+	const int addTiles(const sdlx::Surface *image, const int first_gid);
 
 	Matrix<int> &getMatrix(int z);
 	Matrix<int> &getMatrix(const std::string &name);

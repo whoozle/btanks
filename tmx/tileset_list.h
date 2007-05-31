@@ -12,13 +12,16 @@ public:
 	typedef Tilesets::value_type value_type;
 	
 	void clear();
-	void add(const std::string &name, const int gid);
+	void add(const std::string &name, const int gid, const int size);
 	const int exists(const std::string &name) const;
 
 	const size_t size() const { return _tilesets.size(); }
 	const value_type& operator[](const size_t i) const { return _tilesets[i]; }
+	
+	const int last() const { return _last_gid; }
 
 private: 
+	int _last_gid;
 	Tilesets _tilesets;
 };
 
