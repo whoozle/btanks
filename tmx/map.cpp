@@ -819,11 +819,14 @@ void IMap::render(sdlx::Surface &window, const sdlx::Rect &src, const sdlx::Rect
 		if (_solo_layer && !l->second->solo)
 			continue;
 		
-		if (!l->second->visible || z < z1) 
+		if (z < z1) 
 			continue;
 		
 		if (z >= z2) 
 			break;
+
+		if (!l->second->visible && (!_solo_layer || !l->second->solo)) 
+			continue;
 
 		GET_CONFIG_VALUE("engine.strip-alpha-from-map-tiles", bool, strip_alpha, false);
 
