@@ -369,6 +369,8 @@
 	<sound file="laugh02.ogg" class="laugh" />
 
 	<sound file="submarine.ogg" />
+	
+	<sound file="engine-start.ogg" />
 
 	<!-- menu sounds -->
 	<sound file="menu/select.ogg" />

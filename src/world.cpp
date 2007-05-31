@@ -1528,6 +1528,8 @@ const bool IWorld::attachVehicle(Object *object, Object *vehicle) {
 	slot->id = new_id;
 	slot->need_sync = true;
 	
+	Mixer->playSample(vehicle, "engine-start.ogg", false);
+	
 	return true;
 }
 
