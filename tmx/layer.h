@@ -46,6 +46,8 @@ public:
 	bool visible, solo;
 	int impassability, hp;
 	bool pierceable;
+	
+	const bool isVisible() const { return visible || solo; }
 
 	typedef std::map<const std::string, std::string> PropertyMap;
 	PropertyMap properties; //doesnt used at runtime.
