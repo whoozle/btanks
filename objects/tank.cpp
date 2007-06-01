@@ -20,7 +20,6 @@
 #include <assert.h>
 #include "resource_manager.h"
 #include "object.h"
-#include "world.h"
 #include "tank.h"
 #include "config.h"
 
@@ -65,7 +64,7 @@ void Tank::emit(const std::string &event, Object * emitter) {
 		cancelAll();
 		//play("dead", true);
 		if (registered_name != "ai-tank")
-			World->detachVehicle(this);
+			detachVehicle();
 		spawn("corpse", "dead-" + animation);
 		_velocity.clear();
 		Object::emit(event, emitter);

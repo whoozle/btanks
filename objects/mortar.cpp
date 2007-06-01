@@ -20,7 +20,6 @@
 #include <assert.h>
 #include "resource_manager.h"
 #include "object.h"
-#include "world.h"
 #include "mortar.h"
 #include "config.h"
 
@@ -50,7 +49,7 @@ Object * Mortar::clone() const {
 void Mortar::emit(const std::string &event, Object * emitter) {
 	if (event == "death") {
 		if (registered_name != "ai-mortar")
-			World->detachVehicle(this);
+			detachVehicle();
 		spawn("corpse", "dead-mortar");
 		_velocity.clear();
 		Object::emit(event, emitter);

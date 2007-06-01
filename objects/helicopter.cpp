@@ -24,7 +24,6 @@
 #include "mrt/logger.h"
 #include "resource_manager.h"
 #include "config.h"
-#include "world.h"
 
 class Helicopter : public Object {
 public:
@@ -71,11 +70,11 @@ void Helicopter::tick(const float dt) {
 	Object::tick(dt);
 	GET_CONFIG_VALUE("objects.helicopter-with-kamikazes.maximum-children", int, max_c, 10);
 	if (_active && _spawn.tick(dt)) {
-		if (World->getChildren(getID(), "kamikaze") >= max_c) 
+		if (getChildren("kamikaze") >= max_c) 
 			return;
 		
 		Matrix<int> matrix; 
-		World->getImpassabilityMatrix(matrix, this, NULL);
+		getImpassabilityMatrix(matrix, NULL);
 
 		v2<int> pos, pos2;
 		getCenterPosition(pos); 

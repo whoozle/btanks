@@ -19,7 +19,6 @@
 #include "destructable_object.h"
 #include "config.h"
 #include "resource_manager.h"
-#include "world.h"
 #include "alarm.h"
 #include "mrt/random.h"
 

@@ -19,7 +19,6 @@
 
 #include "resource_manager.h"
 #include "object.h"
-#include "world.h"
 #include "launcher.h"
 #include "config.h"
 
@@ -62,7 +61,7 @@ void Launcher::emit(const std::string &event, Object * emitter) {
 	if (event == "death") {
 		LOG_DEBUG(("dead"));
 		if (registered_name != "ai-launcher")
-			World->detachVehicle(this);		
+			detachVehicle();
 		
 		spawn("corpse", "dead-" + animation);
 		Object::emit(event, emitter);

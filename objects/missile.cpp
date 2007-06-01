@@ -19,8 +19,8 @@
 
 #include "object.h"
 #include "resource_manager.h"
-#include "config.h"
 #include "world.h"
+#include "config.h"
 #include "zbox.h"
 
 class Missile : public Object {

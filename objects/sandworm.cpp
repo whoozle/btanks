@@ -17,12 +17,12 @@
  */
 
 #include "object.h"
+#include "world.h"
 #include "resource_manager.h"
 #include "math/matrix.h"
 #include "tmx/map.h"
 #include "mrt/random.h"
 #include "config.h"
-#include "world.h"
 
 class SandWorm : public Object {
 public: 
@@ -73,7 +73,7 @@ public:
 			if (cpos.distance(_last_snatch) > msd) {
 				std::set<const Object *> objects;
 				GET_CONFIG_VALUE("objects.sandworm.snatch-range", float, sr, 32.0f);
-				World->enumerateObjects(objects, this, sr, NULL);
+				enumerateObjects(objects, sr, NULL);
 				//LOG_DEBUG(("%u objects around", (unsigned) objects.size()));
 				bool snatch = false;
 				for(std::set<const Object *>::const_iterator i = objects.begin(); i != objects.end(); ++i) {

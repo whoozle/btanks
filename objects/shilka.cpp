@@ -20,11 +20,9 @@
 #include <assert.h>
 #include "resource_manager.h"
 #include "object.h"
-#include "world.h"
 #include "shilka.h"
 #include "config.h"
 #include "fakemod.h"
-#include "world.h"
 
 void Shilka::getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const {
 	base = 0;
@@ -73,7 +71,7 @@ void Shilka::emit(const std::string &event, Object * emitter) {
 	if (event == "death") {
 		LOG_DEBUG(("dead"));
 		if (registered_name != "ai-shilka")
-			World->detachVehicle(this);		
+			detachVehicle();
 		
 		cancelAll();
 		//play("dead", true);
@@ -175,7 +173,7 @@ skip_left_toggle:
 		} else if (!mod_type.empty()) {
 			int n;
 			Config->get("objects.shilka.units-limit", n, 10); //fixme: add type restrictions
-			if (mod->getCount() > 0 && World->getChildren(getID(), "trooper") < n) {
+			if (mod->getCount() > 0 && getChildren("trooper") < n) {
 				spawn(mod_type + "(disembark)", mod_type, _direction*(size.length()/-2), v2<float>::empty);
 				mod->decreaseCount();
 			}

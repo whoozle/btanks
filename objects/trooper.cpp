@@ -21,7 +21,6 @@
 #include "resource_manager.h"
 #include "alarm.h"
 #include "config.h"
-#include "world.h"
 #include "trooper.h"
 
 
@@ -72,7 +71,7 @@ void Trooper::emit(const std::string &event, Object * emitter) {
 		spawn("corpse(human-death)", (registered_name.substr(0, 8) == "civilian")? "dead-man": "dead-machinegunner", v2<float>::empty, v2<float>::empty);
 	} else if (event == "collision" && emitter != NULL && emitter->classname == "vehicle") {
 		if (_velocity.same_sign(getRelativePosition(emitter)) &&
-			World->attachVehicle(this, emitter))
+			attachVehicle(emitter))
 			return;
 	}
 	Object::emit(event, emitter);

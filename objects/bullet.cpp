@@ -22,7 +22,6 @@
 #include "config.h"
 #include "resource_manager.h"
 #include "mrt/random.h"
-#include "world.h"
 #include "player_manager.h"
 
 class Bullet : public Object {
@@ -109,7 +108,7 @@ void Bullet::calculate(const float dt) {
 			targets.insert("monster");
 		}
 		
-		World->enumerateObjects(objects, this, aar, &targets);
+		enumerateObjects(objects, aar, &targets);
 		GET_CONFIG_VALUE("engine.auto-aim.minimum-cosine", float, min_cos, 0.9848f); //~cos(10')
 		const Object *target = NULL;
 		
