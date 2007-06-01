@@ -34,7 +34,7 @@
 
 	<animation-model id="car-animation" speed="10">
 		<pose id="hold">0</pose>
-		<pose id="move">0,1</pose>
+		<pose id="move" sound="engine-car.ogg">0,1</pose>
 	</animation-model>
 
 	<animation-model id="choo-choo-train-animation" speed="10">
@@ -358,6 +358,7 @@
 	<sound file="cannon1.ogg" class="cannon" />
 	<sound file="cannon2.ogg" class="cannon" />
 	<sound file="cannon3.ogg" class="cannon" />
+	<sound file="cannon4.ogg" class="cannon" />
 
 	<sound file="vehicle-explosion.ogg" class="vehicle-explosion" />
 	<sound file="vehicle-explosion2.ogg" class="vehicle-explosion" />
