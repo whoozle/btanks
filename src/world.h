@@ -109,6 +109,10 @@ public:
 	const Object * findTarget(const Object *src, const std::set<std::string> &enemies, const std::set<std::string> &bonuses, ai::Traits &traits) const;
 	void enumerateObjects(std::set<const Object *> &o_set, const Object *src, const float range, const std::set<std::string> *classfilter);
 
+protected: 
+	friend class Editor;
+	const Object *getObjectByXY(const int x, const int y) const;
+	void move(const Object *object, const int x, const int y);
 	
 private:
 	void initMap();

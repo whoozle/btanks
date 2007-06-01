@@ -1686,5 +1686,22 @@ void IWorld::enumerateObjects(std::set<const Object *> &id_set, const Object *sr
 	}
 }
 
+const Object *IWorld::getObjectByXY(const int x, const int y) const {
+	for(ObjectMap::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
+		const Object *o = i->second;
+		sdlx::Rect r((int)o->_position.x, (int)o->_position.y, (int)o->size.x, (int)o->size.y);
+		if (r.in(x, y))
+			return o;
+	}
+	return NULL;
+}
+
+void IWorld::move(const Object *object, const int x, const int y) {
+	Object *o = const_cast<Object *>(object);
+	if (o != NULL) {
+		o->_position.x = x; 
+		o->_position.y = y; 
+	}
+}
 
 #include "world_old_pf.cpp"
