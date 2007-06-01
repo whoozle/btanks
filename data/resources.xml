@@ -248,7 +248,7 @@
 	</animation-model>
 
 	<animation-model id="dirt-animation" speed="15">
-		<pose id="fade-in">0,1,2,3</pose>
+		<pose id="fade-in" sound="dirt-bullet-explosion.ogg">0,1,2,3</pose>
 		<pose id="main">3</pose>
 	</animation-model>
 
