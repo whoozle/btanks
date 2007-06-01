@@ -1344,10 +1344,14 @@ const bool Object::attachVehicle(Object *vehicle) {
 	return World->attachVehicle(this, vehicle);
 }
 
-void Object::enumerateObjects(std::set<const Object *> &o_set, const float range, const std::set<std::string> *classfilter) {
+void Object::enumerateObjects(std::set<const Object *> &o_set, const float range, const std::set<std::string> *classfilter) const {
 	World->enumerateObjects(o_set, this, range, classfilter);
 }
 
-const int Object::getChildren(const std::string &classname) {
+const int Object::getChildren(const std::string &classname) const {
 	return World->getChildren(getID(), classname);
+}
+
+void Object::getImpassabilityMatrix(Matrix<int> &matrix, const Object *dst) const {
+	World->getImpassabilityMatrix(matrix, this, dst);
 }

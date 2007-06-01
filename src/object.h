@@ -125,10 +125,12 @@ public:
 
 	virtual const bool detachVehicle();
 	virtual const bool attachVehicle(Object *vehicle);
-	const int getChildren(const std::string &classname);
+
+	const int getChildren(const std::string &classname) const;
+	void getImpassabilityMatrix(Matrix<int> &matrix, const Object *dst) const;
+	void enumerateObjects(std::set<const Object *> &o_set, const float range, const std::set<std::string> *classfilter) const;
 
 protected:
-	void enumerateObjects(std::set<const Object *> &o_set, const float range, const std::set<std::string> *classfilter);
 
 	//pathfinding
 
