@@ -448,3 +448,10 @@ void IResourceManager::checkSurface(const std::string &animation, const sdlx::Su
 	}
 	cmap_ptr = cmap;
 }
+
+void IResourceManager::getAllClasses(std::set<std::string> &classes) {
+	classes.clear();
+	for(ObjectMap::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
+		classes.insert(i->first);
+	}
+}

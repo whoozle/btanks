@@ -24,6 +24,7 @@
 #include "mrt/exception.h"
 #include "notifying_xml_parser.h"
 #include <map>
+#include <set>
 #include <vector>
 #include <string>
 
@@ -65,6 +66,8 @@ public:
 	void createAlias(const std::string &name, const std::string &classname);
 	
 	void checkSurface(const std::string &animation, const sdlx::Surface *& surface_ptr, const sdlx::CollisionMap *&cmap);
+	
+	void getAllClasses(std::set<std::string> &classes);
 
 private:
 	Animation *getAnimation(const std::string &id);
