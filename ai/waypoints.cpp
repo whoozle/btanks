@@ -1,7 +1,6 @@
 #include "waypoints.h"
 #include "mrt/serializator.h"
 #include "object.h"
-#include "world.h"
 #include "config.h"
 #include "mrt/random.h"
 #include "game_monitor.h"
@@ -25,7 +24,7 @@ void Waypoints::calculate(Object *object, const float dt) {
 
 	if (_avoid_obstacles && _reaction_time.tick(dt)) {
 		std::set<const Object *> objs;
-		World->enumerateObjects(objs, object, (object->size.x + object->size.y) * 2 / 3, NULL /* &obstacle_filter */);
+		object->enumerateObjects(objs, (object->size.x + object->size.y) * 2 / 3, NULL /* &obstacle_filter */);
 		std::set<const Object *>::const_iterator i;
 		for(i = objs.begin(); i != objs.end(); ++i) {
 			if ((*i)->speed == 0)
