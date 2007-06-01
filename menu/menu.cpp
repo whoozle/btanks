@@ -70,6 +70,7 @@ MainMenu::MainMenu(const int w, const int h) : _active_item(0) {
 	Window->key_signal.connect(sigc::mem_fun(this, &MainMenu::onKey));
 	Window->mouse_signal.connect(sigc::mem_fun(this, &MainMenu::onMouse));
 	Window->mouse_motion_signal.connect(sigc::mem_fun(this, &MainMenu::onMouseMotion));
+	Window->event_signal.connect(sigc::mem_fun(this, &MainMenu::onEvent));
 }
 
 void MainMenu::recalculateSizes() {
@@ -86,6 +87,19 @@ void MainMenu::recalculateSizes() {
 void MainMenu::tick(const float dt) {
 	if (!_active)
 		return;
+		
+	{
+		static float timer; 
+		if (_key_active) {
+			timer += dt;
+			if (timer >= 0.25) {
+				onKey(_key_emulated, true);
+				onKey(_key_emulated, false);
+				timer = 0;
+			}
+		} else 
+			timer = 0;
+	}
 	
 /*	for(std::map<const std::string, BaseMenu *>::iterator i = _special_menus.begin(); i != _special_menus.end(); ++i) {
 		if (i->second)
@@ -349,4 +363,52 @@ bool MainMenu::onMouse(const int button, const bool pressed, const int x, const 
 
 BaseMenu *MainMenu::getMenu(const std::string &menu) {
 	return _special_menus[menu];
+}
+
+#include "math/unary.h"
+
+void MainMenu::onEvent(const SDL_Event &e) {
+	if (!_active)
+		return;
+
+	SDL_keysym sym;
+	memset(&sym, 0, sizeof(sym));
+	sym.mod = KMOD_NONE;
+	
+	if (e.type == SDL_JOYBUTTONDOWN || e.type == SDL_JOYBUTTONUP) {
+		sym.sym = (e.jbutton.button == 0)?SDLK_RETURN:SDLK_ESCAPE;
+		onKey(sym, e.type == SDL_JOYBUTTONDOWN);
+	} else if (e.type == SDL_JOYHATMOTION) {
+		if (e.jhat.value & SDL_HAT_UP) {
+			sym.sym = SDLK_UP;
+			onKey(sym, true);
+		} else if (e.jhat.value & SDL_HAT_DOWN) {
+			sym.sym = SDLK_DOWN;
+			onKey(sym, true);
+		} else if (e.jhat.value & SDL_HAT_LEFT) {
+			sym.sym = SDLK_LEFT;
+			onKey(sym, true);
+		} else if (e.jhat.value & SDL_HAT_RIGHT) {
+			sym.sym = SDLK_RIGHT;
+			onKey(sym, true);
+		}
+	} else if (e.type == SDL_JOYAXISMOTION && e.jaxis.axis < 4) {
+#define M (32768 - 3276)
+		static int value[4] = {0,0,0,0};
+		const int a = e.jaxis.axis;
+		const int v = e.jaxis.value;
+		//LOG_DEBUG(("%d: %d %d", a, value[a], v));
+		if (math::abs(value[a]) <= M && math::abs(v) > M) {
+			sym.sym = v > 0 ? SDLK_DOWN: SDLK_UP;
+			onKey(sym, true);
+			value[a] = v;
+			_key_active = true;
+			_key_emulated = sym;
+		} else if (math::abs(value[a]) > M && math::abs(v) <= M) {
+			sym.sym = value[a] > 0 ? SDLK_DOWN: SDLK_UP;
+			onKey(sym, false);
+			value[a] = v;
+			_key_active = false;
+		}
+	}
 }

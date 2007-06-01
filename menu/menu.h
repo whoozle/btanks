@@ -61,6 +61,7 @@ private:
 	bool onKey(const SDL_keysym sym, const bool pressed);
 	bool onMouse(const int button, const bool pressed, const int x, const int y);
 	bool onMouseMotion(const int state, const int x, const int y, const int xrel, const int yrel);
+	void onEvent(const SDL_Event &);
 	
 	void recalculateSizes();
 	void activateSelectedItem();
@@ -81,6 +82,10 @@ private:
 	
 	Box _background;
 	sdlx::Rect _background_area;
+	
+	//joystick hack: 
+	bool _key_active;
+	SDL_keysym _key_emulated;
 };
 
 
