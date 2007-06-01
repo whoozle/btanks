@@ -42,6 +42,16 @@ IMPLEMENT_SINGLETON(GameMonitor, IGameMonitor);
 
 IGameMonitor::IGameMonitor() : _game_over(false), _check_items(0.5, true), _state_timer(false), _timer(0) {}
 
+const std::string IGameMonitor::find(const Object *obj) const {
+	for(Items::const_iterator i = _items.begin(); i != _items.end(); ++i) {
+		const Item &item = *i;
+		Object *o = World->getObjectByID(item.id);
+		if (obj == o) 
+			return item.property;
+	}
+	return std::string();
+}
+
 void IGameMonitor::checkItems(const float dt) {	
 	if (_game_over || !_check_items.tick(dt))
 		return;
@@ -509,7 +519,7 @@ void IGameMonitor::loadMap(const std::string &name, const bool spawn_objects, co
 				if (res.size() < 4)
 					throw_ex(("'%s' misses an argument", i->first.c_str()));
 				res.resize(5);
-				Item item(res[1], res[2], v2<int>(pos.x, pos.y), pos.z);
+				Item item(res[1], res[2], i->first, v2<int>(pos.x, pos.y), pos.z);
 				item.destroy_for_victory = res[3].substr(0, 19) == "destroy-for-victory";
 				if (res[3] == "save-for-victory")
 					item.save_for_victory = res[4];

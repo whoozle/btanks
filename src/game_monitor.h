@@ -41,12 +41,12 @@ class BaseObject;
 class Object;
 
 struct Item {
-	Item(const std::string &classname, const std::string &animation, const v2<int> position, const int z = 0) :
-		classname(classname), animation(animation), position(position), z(z), id(-1), dead_on(0), 
+	Item(const std::string &classname, const std::string &animation, const std::string &property, const v2<int> position, const int z = 0) :
+		classname(classname), animation(animation), property(property), position(position), z(z), id(-1), dead_on(0), 
 		destroy_for_victory(false)
 		{}
 
-	std::string classname, animation;
+	std::string classname, animation, property;
 	v2<int> position;
 	int z;
 
@@ -63,6 +63,7 @@ public:
 	DECLARE_SINGLETON(IGameMonitor);
 
 	void add(const Item &item);	
+	const std::string find(const Object *o) const;
 	void checkItems(const float dt);
 	
 	const std::vector<v3<int> >& getSpecials() const { return _specials; }
