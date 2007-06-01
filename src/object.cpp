@@ -1335,3 +1335,19 @@ void Object::setZBox(const int zb) {
 const Matrix<int> &Object::getImpassabilityMatrix() const {
 	return Map->getImpassabilityMatrix(getZ());
 }
+
+const bool Object::detachVehicle() {
+	return World->detachVehicle(this);
+}
+
+const bool Object::attachVehicle(Object *vehicle) {
+	return World->attachVehicle(this, vehicle);
+}
+
+void Object::enumerateObjects(std::set<const Object *> &o_set, const float range, const std::set<std::string> *classfilter) {
+	World->enumerateObjects(o_set, this, range, classfilter);
+}
+
+const int Object::getChildren(const std::string &classname) {
+	return World->getChildren(getID(), classname);
+}

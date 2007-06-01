@@ -123,7 +123,13 @@ public:
 
 	void setZBox(const int z);
 
+	virtual const bool detachVehicle();
+	virtual const bool attachVehicle(Object *vehicle);
+	const int getChildren(const std::string &classname);
+
 protected:
+	void enumerateObjects(std::set<const Object *> &o_set, const float range, const std::set<std::string> *classfilter);
+
 	//pathfinding
 
 	struct Point {
