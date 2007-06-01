@@ -111,6 +111,8 @@ public:
 
 protected: 
 	friend class Editor;
+	friend class Command;
+	
 	const Object *getObjectByXY(const int x, const int y) const;
 	void move(const Object *object, const int x, const int y);
 	
