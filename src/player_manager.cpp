@@ -997,7 +997,7 @@ void IPlayerManager::onDestroyMap(const std::set<v3<int> > & cells) {
 		
 	mrt::Serializator s;
 	s.add((int)cells.size());
-	for(std::set<v3<int> >::iterator i = cells.begin(); i != cells.end(); ++i) {
+	for(std::set<v3<int> >::const_iterator i = cells.begin(); i != cells.end(); ++i) {
 		i->serialize(s);
 	}
 
