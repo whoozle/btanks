@@ -253,13 +253,13 @@ void IConfig::deserializeOverrides(const mrt::Serializator &s) {
 }
 
 void IConfig::clearOverrides() {
-	LOG_DEBUG(("clearing %u overrides...", _temp_map.size()));
+	LOG_DEBUG(("clearing %u overrides...", (unsigned)_temp_map.size()));
 	std::for_each(_temp_map.begin(), _temp_map.end(), delete_ptr2<VarMap::value_type>());
 	_temp_map.clear();
 }
 
 void IConfig::invalidateCachedValues() {
-	LOG_DEBUG(("invalidating %u cached values (%u overrides)...", _invalidators.size(), _temp_map.size()));
+	LOG_DEBUG(("invalidating %u cached values (%u overrides)...", (unsigned)_invalidators.size(), (unsigned)_temp_map.size()));
 	for(std::set<bool *>::iterator i = _invalidators.begin(); i != _invalidators.end(); ++i) {
 		*(*i) = false;
 	}
