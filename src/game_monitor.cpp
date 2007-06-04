@@ -37,6 +37,7 @@
 #include "var.h"
 #include "special_zone.h"
 #include "math/unary.h"
+#include <stdlib.h>
 
 IMPLEMENT_SINGLETON(GameMonitor, IGameMonitor);
 
@@ -605,4 +606,28 @@ void IGameMonitor::loadMap(const std::string &name, const bool spawn_objects, co
 	World->setTimeSlice(mts);
 	
 	Window->resetTimer();
+}
+
+const std::string IGameMonitor::generatePropertyName(const std::string &prefix) {
+	//LOG_DEBUG(("prefix: %s", prefix.c_str()));
+	IMap::PropertyMap::const_iterator b = Map->properties.lower_bound(prefix);
+	int n = 0;
+	
+	for(IMap::PropertyMap::const_iterator i = b; i != Map->properties.end(); ++i) {
+		if (i->first.compare(0, prefix.size(), prefix) != 0) 
+			break;
+		std::string suffix = i->first.substr(prefix.size());
+		if (!suffix.empty() && suffix[0] == ':') {
+			int i = atoi(suffix.c_str() + 1);
+			if (i > n) 
+				n = i;
+		}
+	}
+	
+	++n;
+
+	std::string name =  mrt::formatString("%s:%d", prefix.c_str(), n);
+	if (Map->properties.find(name) != Map->properties.end()) 
+		throw_ex(("failed to generate unique name. prefix: %s, n: %d", prefix.c_str(), n));
+	return name;
 }

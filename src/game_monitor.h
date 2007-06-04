@@ -64,6 +64,7 @@ public:
 
 	void add(const Item &item);	
 	const std::string find(const Object *o) const;
+	const std::string generatePropertyName(const std::string &prefix);
 	void checkItems(const float dt);
 	
 	const std::vector<v3<int> >& getSpecials() const { return _specials; }
