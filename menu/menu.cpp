@@ -36,7 +36,7 @@
 
 #define ITEM_SPACING 10
 
-MainMenu::MainMenu(const int w, const int h) : _active_item(0) {
+MainMenu::MainMenu(const int w, const int h) : _active_item(0), _key_active(false) {
 	MenuConfig->load();
 	
 	_active = true;
