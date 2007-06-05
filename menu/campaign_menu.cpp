@@ -4,8 +4,11 @@
 #include "i18n.h"
 #include "chooser.h"
 #include "resource_manager.h"
+#include "sdlx/surface.h"
+#include "scroll_list.h"
+#include "mrt/directory.h"
 
-CampaignMenu::CampaignMenu(MainMenu *parent, const int w, const int h) : _parent(parent) {
+CampaignMenu::CampaignMenu(MainMenu *parent, const int w, const int h) : _parent(parent), _w(w), _h(h) {
 	IFinder::FindResult files;
 
 	Finder->findAll(files, "campaign.xml");
@@ -34,18 +37,71 @@ CampaignMenu::CampaignMenu(MainMenu *parent, const int w, const int h) : _parent
 	_active_campaign = new Chooser("medium", titles);
 	_active_campaign->getSize(cw, ch);
 	add(w / 2 - cw / 2, my, _active_campaign);
+
+	int map_w = _w / 2;
+	map_view = sdlx::Rect(mx * 2, my * 2 + ch, map_w, 3 * map_w / 4);
+	
+	_maps = new ScrollList("menu/background_box.png", "medium", w - map_view.w - 6 * mx, map_view.h );
+	int sw, sh;
+	_maps->getSize(sw, sh);
+	add(w - sw - 2 * mx, map_view.y, _maps);
+	
+	init();
+}
+
+void CampaignMenu::init() {
+	int ci = _active_campaign->get();
+	const Campaign &campaign = _campaigns[ci];
+	_maps->clear();
+	for(size_t i = 0; i < campaign.maps.size(); ++i) {
+		_maps->append(mrt::FSNode::getFilename(campaign.maps[i], false));
+	}
 }
 
 const bool CampaignMenu::empty() const {
 	return _campaigns.empty();
 }
 
-Campaign::Campaign() : map(NULL) {}
+void CampaignMenu::render(sdlx::Surface &surface, const int x, const int y) {
+	Container::render(surface, x, y);
+	int ci = _active_campaign->get();
+	//sdlx::Rect clip = surface.getClipRect();
+	//surface.setClipRect(map_view);
+	surface.copyFrom(*_campaigns[ci].map, sdlx::Rect((int)map_pos.x, (int)map_pos.y, map_view.w, map_view.h), map_view.x, map_view.y);
+	//surface.setClipRect(clip);
+}
 
+Campaign::Campaign() : map(NULL) {}
 
 void Campaign::init() {
 	map = NULL;
 	parseFile(base + "/campaign.xml");
+	
+	mrt::Directory dir;
+	dir.open(base + "/maps");
+	std::string fname;
+
+	while(!(fname = dir.read()).empty()) {
+		std::string map = fname;
+		
+		mrt::toLower(map);
+		if (map.size() < 5 || map.substr(map.size() - 4) != ".tmx")
+			continue;
+		map = fname.substr(0, fname.size() - 4);
+		LOG_DEBUG(("found map: %s", map.c_str()));
+		/*
+		MapScanner m;
+		TRY {
+			m.scan(path + "/" + fname);
+		} CATCH("scanning map", {});
+		const std::string &comments = I18n->has("maps/descriptions", map)?I18n->get("maps/descriptions", map): 
+			I18n->get("maps/descriptions", "(default)");
+		maps.push_back(MapList::value_type(path, map, comments, m.object_restriction, m.game_type, m.slots));
+		*/
+		maps.push_back(fname);
+	}	
+	dir.close();
+	
 }
 
 void Campaign::start(const std::string &name, Attrs &attr) {
@@ -61,6 +117,4 @@ void Campaign::start(const std::string &name, Attrs &attr) {
 	}
 }
 
-void Campaign::end(const std::string &name) {
-
-}
+void Campaign::end(const std::string &name) {}
