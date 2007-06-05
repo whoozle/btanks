@@ -35,12 +35,6 @@ class Tooltip;
 
 class PlayerSlot : public mrt::Serializable {
 public:
-	PlayerSlot();
-	PlayerSlot(const int id);
-	
-	Object * getObject(); 
-	const Object * getObject() const;
-
 	int id;
 	ControlMethod * control_method;
 	PlayerState old_state; //help broadcast AI state changes.
@@ -57,9 +51,6 @@ public:
 	v2<float> map_pos, map_vel, map_dst, map_dst_vel, map_dst_pos;
 	v2<int> map_dpos;
 		
-	void clear();
-	~PlayerSlot();
-		
 	//respawn stuff.
 	std::string classname;
 	std::string animation;
@@ -70,6 +61,16 @@ public:
 	std::set<int> zones_reached;
 	int spawn_limit;
 	
+	int score;
+	
+	PlayerSlot();
+	PlayerSlot(const int id);
+	void clear();
+	
+	Object * getObject(); 
+	const Object * getObject() const;
+	~PlayerSlot();
+		
 	typedef std::queue<std::pair<float, Tooltip *> > Tooltips;
 	Tooltips tooltips;
 	

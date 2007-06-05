@@ -266,19 +266,27 @@ void Hud::render(sdlx::Surface &window) const {
 		const PlayerSlot &slot = PlayerManager->getSlot(i);
 		if (!slot.visible)
 			continue;
+
 		++c;
+		
 		const Object *obj = slot.getObject();
 	
-		std::string hp = mrt::formatString("HP%-2d ", (obj)?obj->hp:0);
-
-		if (obj == NULL)
-			continue;
-
 		GET_CONFIG_VALUE("hud.margin.x", int, xm, 3);
 		GET_CONFIG_VALUE("hud.margin.y", int, ym, 3);
 
 		int xp = slot.viewport.x + xm;
 		int yp = slot.viewport.y + ym;
+
+		{
+			std::string score = mrt::formatString("$%d", slot.score);
+			int tw = _font->render(NULL, 0, 0, score);
+			_font->render(window, xp + slot.viewport.w - xm - tw - 32, yp + font_dy, score);
+		}
+
+		if (obj == NULL)
+			continue;
+
+		std::string hp = mrt::formatString("HP%-2d ", obj->hp);
 
 		xp += _font->render(window, xp, yp + font_dy, hp);	
 		

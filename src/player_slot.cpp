@@ -25,12 +25,12 @@
 
 PlayerSlot::PlayerSlot() : 
 id(-1), control_method(NULL), need_sync(false), dont_interpolate(false), remote(false), trip_time(10), visible(false), 
-classname(), animation(), frags(0), reserved(false), spawn_limit(0), last_tooltip(NULL)
+classname(), animation(), frags(0), reserved(false), spawn_limit(0), score(0), last_tooltip(NULL)
 {}
 
 PlayerSlot::PlayerSlot(const int id) : 
 id(id), control_method(NULL), need_sync(false), dont_interpolate(false), remote(false), trip_time(10), visible(false), 
-classname(), animation(), frags(0), reserved(false), spawn_limit(0), last_tooltip(NULL)
+classname(), animation(), frags(0), reserved(false), spawn_limit(0), score(0), last_tooltip(NULL)
 {}
 
 void PlayerSlot::serialize(mrt::Serializator &s) const {
@@ -40,6 +40,7 @@ void PlayerSlot::serialize(mrt::Serializator &s) const {
 	s.add(frags);		
 	s.add(classname);
 	s.add(animation);
+	s.add(score);
 }
 
 void PlayerSlot::deserialize(const mrt::Serializator &s) {
@@ -48,8 +49,8 @@ void PlayerSlot::deserialize(const mrt::Serializator &s) {
 	s.get(frags);		
 	s.get(classname);
 	s.get(animation);
+	s.get(score);
 }
-
 
 Object * PlayerSlot::getObject() {
 	if (id < 0) 
@@ -57,6 +58,7 @@ Object * PlayerSlot::getObject() {
 	Object *o = World->getObjectByID(id);
 	return o;
 }
+
 const Object * PlayerSlot::getObject() const {
 	if (id < 0) 
 		return NULL;
@@ -81,6 +83,7 @@ void PlayerSlot::clear() {
 	
 	zones_reached.clear();
 	spawn_limit = 0;
+	score = 0;
 	
 	while(!tooltips.empty()) {
 		delete tooltips.front().second;
