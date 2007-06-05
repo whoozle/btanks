@@ -39,7 +39,8 @@ public:
 	virtual bool onKey(const SDL_keysym sym);
 	virtual void render(sdlx::Surface &surface, const int x, const int y);
 
-	virtual const bool validate(const int c) const { return true; }
+protected:
+	virtual const bool validate(const int idx, const int c) const { return true; }
 
 private: 
 	void changing() const;
@@ -54,16 +55,20 @@ private:
 class BTANKSAPI HostTextControl : public TextControl {
 public: 
 	HostTextControl(const std::string &font);
-	virtual const bool validate(const int c) const;
+
+protected:
+	virtual const bool validate(const int idx, const int c) const;
 };
 
 class BTANKSAPI NumericControl : public TextControl {
 public: 
 	NumericControl(const std::string &font, const int value);
-	virtual const bool validate(const int c) const;
 
 	void set(const int value);
 	const int get() const;
+
+protected:
+	virtual const bool validate(const int idx, const int c) const;
 };
 
 #endif

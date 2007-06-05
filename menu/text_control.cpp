@@ -31,7 +31,10 @@ NumericControl::NumericControl(const std::string &font, const int value) : TextC
 	set(value);
 }
 
-const bool NumericControl::validate(const int c) const {
+const bool NumericControl::validate(const int idx, const int c) const {
+	if (idx == 0 && (c == '+' || c == '-'))
+		return true;
+	
 	return (c >= '0' && c <= '9');
 }
 
@@ -49,14 +52,14 @@ const int NumericControl::get() const {
 
 HostTextControl::HostTextControl(const std::string &font) : TextControl(font) {}
 
-const bool HostTextControl::validate(const int c) const {
+const bool HostTextControl::validate(const int idx, const int c) const {
 	if (c >= 'a' && c <= 'z')
 		return true;
 
 	if (c >= '0' && c <= '9')
 		return true;
 
-	if (c == '.' || c == '-') 
+	if (idx != 0 && (c == '.' || c == '-')) 
 		return true;
 
 	return false;
@@ -122,11 +125,11 @@ bool TextControl::onKey(const SDL_keysym sym) {
 		int c = sym.unicode;
 		//LOG_DEBUG(("%d", c));
 		if (c >= SDLK_SPACE && c < 128) {
-			if (validate(c)) {
+			if (validate(_cursor_position, c)) {
 				if (_cursor_position >= _text.size())
 					_text.resize(_cursor_position + 1);
 				_text.insert(_cursor_position, 1, (char)c);
-				_cursor_position += 1;
+				++_cursor_position;
 			} else return false;
 		}
 	}
