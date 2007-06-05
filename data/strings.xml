@@ -9,6 +9,7 @@
 		<string id="delete">DELETE</string>
 	
 		<string id="start-game">START GAME</string>
+		<string id="start-campaign">START CAMPAIGN</string>
 		<string id="start-game" lang="ru">NACHAT IGRU</string>
 		
 		<string id="join-game">JOIN GAME</string>

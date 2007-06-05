@@ -22,6 +22,7 @@
 #include "start_server_menu.h"
 #include "join_server_menu.h"
 #include "options_menu.h"
+#include "campaign_menu.h"
 #include "i18n.h"
 
 #include "sdlx/surface.h"
@@ -52,6 +53,14 @@ MainMenu::MainMenu(const int w, const int h) : _active_item(0), _key_active(fals
 	LOG_DEBUG(("creating menu..."));
 	_active_item = 0;
 	_active_menu.clear();
+	
+	CampaignMenu * cm = new CampaignMenu(this, w, h);
+	if (cm->empty()) {
+		delete cm;
+		cm = NULL;
+	} else {
+		_items[""].push_back(new MenuItem(_font, "#start-campaign", "submenu", I18n->get("menu", "start-campaign")));
+	}
 
 	_items[""].push_back(new MenuItem(_font, "#start-server", "submenu", I18n->get("menu", "start-game")));
 	_items[""].push_back(new MenuItem(_font, "#join-server", "submenu", I18n->get("menu", "join-game")));
@@ -64,6 +73,11 @@ MainMenu::MainMenu(const int w, const int h) : _active_item(0), _key_active(fals
 	_special_menus["#start-server"] = new StartServerMenu(this, w, h);
 	_special_menus["#join-server"] = new JoinServerMenu(this, w, h);
 	_special_menus["#options"] = new OptionsMenu(this, w, h);
+
+	if (cm != NULL) {
+		_special_menus["#start-campaign"] = cm;
+		cm = NULL;
+	}
 
 	recalculateSizes();
 
