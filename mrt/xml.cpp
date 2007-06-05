@@ -120,6 +120,7 @@ void XMLParser::parseFile(const std::string &fname) {
 			throw_xml(this);
 	} while(!done);
 	f.close();
+	clear();
 }
 
 const std::string XMLParser::getErrorMessage() const {
@@ -143,4 +144,9 @@ void XMLParser::clear() {
 		XML_ParserFree(_parser);
 		_parser = NULL;
 	}
+}
+
+XMLParser::XMLParser(const XMLParser &) : _parser(NULL) {}
+const XMLParser& XMLParser::operator=(const XMLParser &) {
+	clear();
 }

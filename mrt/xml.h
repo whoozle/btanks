@@ -44,9 +44,11 @@ public:
 	void clear();
 	XMLParser();
 	virtual ~XMLParser();
-private:
+
 	XMLParser(const XMLParser &);
 	const XMLParser& operator=(const XMLParser &);
+
+private:
 	const std::string getErrorMessage() const;
 	XML_Parser _parser;
 };
