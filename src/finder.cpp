@@ -59,8 +59,6 @@ void IFinder::findAll(FindResult &result, const std::string &name) const {
 		if (mrt::FSNode::exists(file))
 			result.push_back(FindResult::value_type(_path[i], file));
 	}
-	if (result.empty())
-		throw_ex(("file '%s' not found", name.c_str()));
 }
 
 void IFinder::getPath(std::vector<std::string> &path) const {
