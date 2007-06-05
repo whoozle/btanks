@@ -43,14 +43,51 @@ IMPLEMENT_SINGLETON(GameMonitor, IGameMonitor);
 
 IGameMonitor::IGameMonitor() : _game_over(false), _check_items(0.5, true), _state_timer(false), _timer(0) {}
 
-const std::string IGameMonitor::find(const Object *obj) const {
+void Item::respawn() {
+	LOG_DEBUG(("respawning item: %s:%s", classname.c_str(), animation.c_str()));
+	Object *o = ResourceManager->createObject(classname, animation);
+	if (z) 
+		o->setZ(z, true);
+	o->addOwner(OWNER_MAP);
+	
+	World->addObject(o, position.convert<float>());
+	id = o->getID();
+	dead_on = 0;
+}
+
+void Item::updateMapProperty() {
+	if (z) 
+		Map->properties[property] = mrt::formatString("%d,%d,%d", position.x, position.y, z);
+	else 
+		Map->properties[property] = mrt::formatString("%d,%d", position.x, position.y);
+}
+
+
+const Item& IGameMonitor::find(const Object *obj) const {
 	for(Items::const_iterator i = _items.begin(); i != _items.end(); ++i) {
 		const Item &item = *i;
 		Object *o = World->getObjectByID(item.id);
 		if (obj == o) 
-			return item.property;
+			return item;
 	}
-	return std::string();
+	throw_ex(("could not find item %s:%s", obj->registered_name.c_str(), obj->animation.c_str()));
+}
+
+Item& IGameMonitor::find(const Object *obj) {
+	for(Items::iterator i = _items.begin(); i != _items.end(); ++i) {
+		Object *o = World->getObjectByID(i->id);
+		if (obj == o) 
+			return *i;
+	}
+	throw_ex(("could not find item %s:%s", obj->registered_name.c_str(), obj->animation.c_str()));
+}
+
+Item& IGameMonitor::find(const std::string &property) {
+	for(Items::iterator i = _items.begin(); i != _items.end(); ++i) {
+		if (i->property == property) 
+			return *i;
+	}
+	throw_ex(("could not find item %s", property.c_str()));
 }
 
 void IGameMonitor::checkItems(const float dt) {	
@@ -115,15 +152,7 @@ void IGameMonitor::checkItems(const float dt) {
 			continue;
 		if (((ticks - item.dead_on) / 1000) >= (unsigned)rt) {
 			//respawning item
-			LOG_DEBUG(("respawning item: %s:%s", item.classname.c_str(), item.animation.c_str()));
-			Object *o = ResourceManager->createObject(item.classname, item.animation);
-			if (item.z) 
-				o->setZ(item.z, true);
-			o->addOwner(OWNER_MAP);
-			
-			World->addObject(o, item.position.convert<float>());
-			item.id = o->getID();
-			item.dead_on = 0;
+			item.respawn();
 		}
 	}
 	if (goal_total > 0 && goal == goal_total) {
@@ -631,3 +660,4 @@ const std::string IGameMonitor::generatePropertyName(const std::string &prefix) 
 		throw_ex(("failed to generate unique name. prefix: %s, n: %d", prefix.c_str(), n));
 	return name;
 }
+

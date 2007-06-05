@@ -40,11 +40,13 @@ class Rect;
 class BaseObject;
 class Object;
 
-struct Item {
+struct BTANKSAPI Item {
 	Item(const std::string &classname, const std::string &animation, const std::string &property, const v2<int> position, const int z = 0) :
 		classname(classname), animation(animation), property(property), position(position), z(z), id(-1), dead_on(0), 
 		destroy_for_victory(false)
 		{}
+	void respawn();
+	void updateMapProperty();
 
 	std::string classname, animation, property;
 	v2<int> position;
@@ -63,8 +65,11 @@ public:
 	DECLARE_SINGLETON(IGameMonitor);
 
 	void add(const Item &item);	
-	const std::string find(const Object *o) const;
+	Item& find(const std::string &property);
+	Item& find(const Object *o);
+	const Item& find(const Object *o) const;
 	const std::string generatePropertyName(const std::string &prefix);
+	
 	void checkItems(const float dt);
 	
 	const std::vector<v3<int> >& getSpecials() const { return _specials; }
