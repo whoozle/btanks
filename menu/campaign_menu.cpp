@@ -2,6 +2,7 @@
 #include "box.h"
 #include "finder.h"
 #include "i18n.h"
+#include "chooser.h"
 
 CampaignMenu::CampaignMenu(MainMenu *parent, const int w, const int h) : _parent(parent) {
 	IFinder::FindResult files;
@@ -11,18 +12,27 @@ CampaignMenu::CampaignMenu(MainMenu *parent, const int w, const int h) : _parent
 		return;
 
 	LOG_DEBUG(("found %u campaign(s)", (unsigned)files.size()));
+	std::vector<std::string> titles;
 	for(size_t i = 0; i < files.size(); ++i) {
 		LOG_DEBUG(("campaign[%u]: %s", (unsigned)i, files[i].first.c_str()));
 		Campaign c;
 		c.base = files[i].first;
 		c.init();
 		_campaigns.push_back(c);
+		titles.push_back(c.title);
 	}
 
 	Box *b = new Box("menu/background_box.png", w - 32, h - 32);
 	int bw, bh;
 	b->getSize(bw, bh);
 	add((w - bw) / 2, (h - bh) / 2, b);
+	int mx, my;
+	b->getMargins(mx, my);
+
+	int cw, ch;
+	_active_campaign = new Chooser("medium", titles);
+	_active_campaign->getSize(cw, ch);
+	add(w / 2 - cw / 2, my, _active_campaign);
 }
 
 const bool CampaignMenu::empty() const {
