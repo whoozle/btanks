@@ -149,4 +149,5 @@ void XMLParser::clear() {
 XMLParser::XMLParser(const XMLParser &) : _parser(NULL) {}
 const XMLParser& XMLParser::operator=(const XMLParser &) {
 	clear();
+	return *this;
 }
