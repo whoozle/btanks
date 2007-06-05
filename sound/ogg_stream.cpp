@@ -140,7 +140,7 @@ TRY {
 	AL_CHECK(("alGetSourcei(processed: %d)", processed));
 	/*
 	if (processed != 0) {
-		LOG_DEBUG(("source=%u, processed = %d", (unsigned)_source, processed));
+		LOG_DEBUG(("source=%08x, processed = %d", (unsigned)_source, processed));
 		for(unsigned i = 0; i < _buffers_n; ++i) {
 			LOG_DEBUG(("buffer[%d] = %u", i, _buffers[i]));
 		}
@@ -151,7 +151,7 @@ TRY {
 		ALuint buffer;
 		alSourceUnqueueBuffers(_source, 1, &buffer);
 		AL_CHECK(("alSourceUnqueueBuffers(%d of %d)", processed - n, processed));
-		//LOG_DEBUG(("unqueued buffer: %u", (unsigned) buffer));
+		//LOG_DEBUG(("unqueued buffer: %08x", (unsigned) buffer));
 		
 		TRY { 
 			active = stream(buffer);
@@ -161,9 +161,23 @@ TRY {
 			continue;
 		
 		alSourceQueueBuffers(_source, 1, &buffer);
-		//LOG_DEBUG(("queued buffer: %u", (unsigned) buffer));
+		//LOG_DEBUG(("queued buffer: %08x", (unsigned) buffer));
 		AL_CHECK(("alSourceQueueBuffers"));
 	}
+
+	ALenum state = AL_NONE;
+	alGetSourcei(_source, AL_SOURCE_STATE, &state);
+	ALenum r = alGetError();
+
+	if (r != AL_NO_ERROR || state != AL_PLAYING) {
+		if (r != AL_NO_ERROR)
+				LOG_ERROR(("alGetSourcei(%08x, AL_SOURCE_STATE): error %08x", _source, (unsigned)r));
+		LOG_DEBUG(("underrun occured"));
+		alSourcePlay(_source);
+		AL_CHECK_NON_FATAL(("alSourcePlay(%08x)(recovering)", (unsigned)_source));
+	}
+	
+	
 } CATCH("update()", throw;)
 	return true;
 }
