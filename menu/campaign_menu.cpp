@@ -3,6 +3,7 @@
 #include "finder.h"
 #include "i18n.h"
 #include "chooser.h"
+#include "resource_manager.h"
 
 CampaignMenu::CampaignMenu(MainMenu *parent, const int w, const int h) : _parent(parent) {
 	IFinder::FindResult files;
@@ -39,7 +40,11 @@ const bool CampaignMenu::empty() const {
 	return _campaigns.empty();
 }
 
+Campaign::Campaign() : map(NULL) {}
+
+
 void Campaign::init() {
+	map = NULL;
 	parseFile(base + "/campaign.xml");
 }
 
@@ -48,8 +53,11 @@ void Campaign::start(const std::string &name, Attrs &attr) {
 		if (attr["title"].empty())
 			throw_ex(("campaign must have title attr"));
 		title = I18n->get("campaign", attr["title"]);
+		if (attr["map"].empty())
+			throw_ex(("campaign must have map attr"));
+		map = ResourceManager->loadSurface(attr["map"]);
 	} else if (name == "map") {
-		LOG_DEBUG(("map: %s, if-win: %s, if-lost: %s", name.c_str(), attr["if-win"].c_str(), attr["if-lost"].c_str()));
+		LOG_DEBUG(("map: %s, if-won: '%s', if-lost: '%s'", name.c_str(), attr["if-won"].c_str(), attr["if-lost"].c_str()));
 	}
 }
 

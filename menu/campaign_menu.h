@@ -7,8 +7,14 @@
 class MainMenu;
 class Chooser;
 
+namespace sdlx {
+	class sdlx::Surface;
+}
+
 struct Campaign : protected mrt::XMLParser {
+	Campaign();
 	std::string base, title;
+	const sdlx::Surface *map;
 	
 	void init();
 	
