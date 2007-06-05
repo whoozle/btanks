@@ -1253,6 +1253,8 @@ void Object::addDamage(Object *from, const bool emitDeath) {
 	addDamage(from, from->max_hp, emitDeath);
 }
 
+#include "player_slot.h"
+
 void Object::addDamage(Object *from, const int d, const bool emitDeath) {
 	if (hp == -1 || d == 0 || from == NULL)
 		return;
@@ -1282,6 +1284,32 @@ void Object::addDamage(Object *from, const int d, const bool emitDeath) {
 	o->hp = damage;
 	if (hp < 0) 
 		o->hp += hp;
+
+	{
+		PlayerSlot *slot = PlayerManager->getSlotByID(from->getSummoner());
+
+		if (slot == NULL) {
+			std::deque<int> owners;
+			from->getOwners(owners);
+			for(std::deque<int>::const_iterator i = owners.begin(); i != owners.end(); ++i) {
+				slot = PlayerManager->getSlotByID(*i);
+				if (slot != NULL) 
+					break;
+			}
+		}
+		if (slot != NULL) {
+			//LOG_DEBUG(("damage from slot: %s", slot->animation.c_str()));
+			slot->addScore(o->hp);
+		}
+		
+		
+		GET_CONFIG_VALUE("engine.score-decreasing-factor-for-damage", float, sdf, 0.25f);
+		if ((slot = PlayerManager->getSlotByID(getID())) != NULL) {
+			slot->addScore(- (int)(o->hp * sdf));
+		}
+		
+	}
+	
 	v2<float> pos;
 	getPosition(pos);
 	World->addObject(o, pos);

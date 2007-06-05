@@ -210,3 +210,9 @@ void PlayerSlot::validatePosition(v2<float>& position) {
 	
 	//LOG_DEBUG(("%f %f", mapx, mapy));
 }
+
+void PlayerSlot::addScore(const int s) {
+	score += s;
+	if (score < 0) 
+		score = 0;
+}

@@ -83,6 +83,7 @@ public:
 	void createControlMethod(const std::string &name);
 	void spawnPlayer(const std::string &classname, const std::string &animation);
 	void validatePosition(v2<float>& position);
+	void addScore(const int s);
 	
 private: 
 	Tooltip * last_tooltip;
