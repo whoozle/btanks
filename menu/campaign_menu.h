@@ -2,8 +2,21 @@
 #define BTANKS_CAMPAIGN_MENU_H__
 
 #include "menu/base_menu.h"
+#include "mrt/xml.h"
 
 class MainMenu;
+
+struct Campaign : protected mrt::XMLParser {
+	std::string base, title;
+	
+	void init();
+	
+protected: 
+	void start(const std::string &name, Attrs &attr);
+	void end(const std::string &name);
+};
+
+
 
 class CampaignMenu : public BaseMenu {
 public: 
@@ -12,10 +25,6 @@ public:
 private:
 	MainMenu *_parent;
 	
-	struct Campaign {
-		std::string base;
-	};
-
 	typedef std::vector<Campaign> Compaigns;
 	Compaigns _campaigns;
 };
