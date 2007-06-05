@@ -51,11 +51,19 @@ private:
 	size_t _cursor_position;
 };
 
-class HostTextControl : public TextControl {
+class BTANKSAPI HostTextControl : public TextControl {
 public: 
-
 	HostTextControl(const std::string &font);
 	virtual const bool validate(const int c) const;
+};
+
+class BTANKSAPI NumericControl : public TextControl {
+public: 
+	NumericControl(const std::string &font, const int value);
+	virtual const bool validate(const int c) const;
+
+	void set(const int value);
+	const int get() const;
 };
 
 #endif

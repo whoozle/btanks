@@ -21,9 +21,29 @@
 #include "sdlx/font.h"
 #include "config.h"
 #include "sound/mixer.h"
+#include <stdlib.h>
 
 void TextControl::changing() const {
 	Mixer->playSample(NULL, "menu/change.ogg", false);
+}
+
+NumericControl::NumericControl(const std::string &font, const int value) : TextControl(font) {
+	set(value);
+}
+
+const bool NumericControl::validate(const int c) const {
+	return (c >= '0' && c <= '9');
+}
+
+void NumericControl::set(const int value) {
+	TextControl::set(mrt::formatString("%d", value));
+}
+
+const int NumericControl::get() const {
+	const std::string &value = TextControl::get();
+	if (value.empty())
+		return 0;
+	return atoi(value.c_str());
 }
 
 
@@ -107,7 +127,7 @@ bool TextControl::onKey(const SDL_keysym sym) {
 					_text.resize(_cursor_position + 1);
 				_text.insert(_cursor_position, 1, (char)c);
 				_cursor_position += 1;
-			}
+			} else return false;
 		}
 	}
 	}
