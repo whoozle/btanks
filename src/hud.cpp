@@ -280,7 +280,7 @@ void Hud::render(sdlx::Surface &window) const {
 		{
 			std::string score = mrt::formatString("$%d", slot.score);
 			int tw = _font->render(NULL, 0, 0, score);
-			_font->render(window, xp + slot.viewport.w - xm - tw - 32, yp + font_dy, score);
+			_font->render(window, xp + slot.viewport.w - xm * 2- tw, yp + font_dy, score);
 		}
 
 		if (obj == NULL)
