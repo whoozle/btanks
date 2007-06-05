@@ -7,6 +7,7 @@
 #include "sdlx/surface.h"
 #include "scroll_list.h"
 #include "mrt/directory.h"
+#include "math/binary.h"
 
 CampaignMenu::CampaignMenu(MainMenu *parent, const int w, const int h) : _parent(parent), _w(w), _h(h) {
 	IFinder::FindResult files;
@@ -78,8 +79,8 @@ void CampaignMenu::tick(const float dt) {
 		map_pos = map_dst;
 	} else {
 		map_vel.normalize();
-		//float dist = map_dst.distance(map_pos);
-		map_pos += map_vel * dt * 200;
+		float dist = math::min(map_dst.distance(map_pos), dt * 200);
+		map_pos += map_vel * dist;
 	}
 }
 
