@@ -111,6 +111,10 @@ bool TextControl::onKey(const SDL_keysym sym) {
 		break;
 		
 	case SDLK_BACKSPACE:
+		if (sym.mod & KMOD_CTRL) {
+			set(std::string());
+			break;
+		}
 		if (!_text.empty() && _cursor_position > 0) {
 			_text = _text.erase(--_cursor_position, 1);
 		}
