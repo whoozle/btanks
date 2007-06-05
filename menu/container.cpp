@@ -148,3 +148,16 @@ void Container::getBase(const Control *c, int &x, int &y) const {
 
 	x = i->first.x; y = i->first.y;	
 }
+
+void Container::setBase(const Control *c, const int x, const int y) {
+	assert(c != NULL);
+	ControlList::reverse_iterator i;
+	for(i = _controls.rbegin(); i != _controls.rend(); ++i) {
+		if (i->second == c)
+			break;
+	}
+	if (i == _controls.rend())
+		throw_ex(("no control %p in container %p", (const void *)c, (const void *)this));
+
+	i->first.x = x; i->first.y = y;	
+}
