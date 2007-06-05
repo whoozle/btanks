@@ -611,7 +611,7 @@ flip:
 		float fr = Window->getFrameRate();
 		if (_show_fps) {
 			_fps->hp = (int)fr;
-			_fps->render(window, window.getWidth() - (int)(_fps->size.x * 3), 0);
+			_fps->render(window, window.getWidth() - (int)(_fps->size.x * 3), window.getHeight() - (int)_fps->size.y);
 		}
 		if (_show_log_lines) {
 			_log_lines->hp = mrt::Logger->getLinesCounter();
