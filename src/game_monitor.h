@@ -19,7 +19,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include <vector>
+#include <deque>
 #include <string>
 #include <set>
 #include <map>
@@ -66,6 +66,7 @@ public:
 
 	void add(const Item &item);	
 	Item& find(const std::string &property);
+	void eraseLast(const std::string &property);
 	Item& find(const Object *o);
 	const Item& find(const Object *o) const;
 	const std::string generatePropertyName(const std::string &prefix);
@@ -110,7 +111,7 @@ private:
 
 	bool _game_over;
 
-	typedef std::vector<Item> Items;
+	typedef std::deque<Item> Items;
 	Items _items;
 	std::vector<v3<int> > _specials;
 

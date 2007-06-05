@@ -62,6 +62,13 @@ void Item::updateMapProperty() {
 		Map->properties[property] = mrt::formatString("%d,%d", position.x, position.y);
 }
 
+void IGameMonitor::eraseLast(const std::string &property) {
+	if (_items.empty())
+		throw_ex(("item list is empty!"));
+	if (_items.back().property != property)
+		throw_ex(("eraseLast: %s is not the latest item in list", property.c_str()));
+	_items.pop_back();
+}
 
 const Item& IGameMonitor::find(const Object *obj) const {
 	for(Items::const_iterator i = _items.begin(); i != _items.end(); ++i) {
