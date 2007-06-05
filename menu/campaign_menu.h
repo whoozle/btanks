@@ -19,6 +19,7 @@ struct Campaign : protected mrt::XMLParser {
 	const sdlx::Surface *map;
 	
 	std::vector<std::string> maps;
+	std::vector<v2<int> > maps_pos;
 	
 	void init();
 	
@@ -35,6 +36,7 @@ public:
 	const bool empty() const;
 
 	virtual void render(sdlx::Surface &surface, const int x, const int y);
+	virtual void tick(const float dt);
 	
 private:
 	void init();

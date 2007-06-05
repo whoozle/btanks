@@ -54,7 +54,32 @@ void CampaignMenu::init() {
 	const Campaign &campaign = _campaigns[ci];
 	_maps->clear();
 	for(size_t i = 0; i < campaign.maps.size(); ++i) {
-		_maps->append(mrt::FSNode::getFilename(campaign.maps[i], false));
+		_maps->append(campaign.maps[i]);
+	}
+}
+
+void CampaignMenu::tick(const float dt) {
+	if (_active_campaign->changed()) {
+		_active_campaign->reset();
+		init();
+	}
+	
+	if (_maps->changed()) {
+		_maps->reset();
+		int ci = _active_campaign->get();
+		const Campaign &campaign = _campaigns[ci];
+
+		int mi = _maps->get();
+		map_dst = campaign.maps_pos[mi].convert<float>();
+	}
+	
+	v2<float> map_vel = map_dst - map_pos;
+	if (map_vel.quick_length() < 1) {
+		map_pos = map_dst;
+	} else {
+		map_vel.normalize();
+		//float dist = map_dst.distance(map_pos);
+		map_pos += map_vel * dt * 200;
 	}
 }
 
@@ -76,7 +101,7 @@ Campaign::Campaign() : map(NULL) {}
 void Campaign::init() {
 	map = NULL;
 	parseFile(base + "/campaign.xml");
-	
+	/*
 	mrt::Directory dir;
 	dir.open(base + "/maps");
 	std::string fname;
@@ -89,7 +114,7 @@ void Campaign::init() {
 			continue;
 		map = fname.substr(0, fname.size() - 4);
 		LOG_DEBUG(("found map: %s", map.c_str()));
-		/*
+		/ *
 		MapScanner m;
 		TRY {
 			m.scan(path + "/" + fname);
@@ -97,11 +122,11 @@ void Campaign::init() {
 		const std::string &comments = I18n->has("maps/descriptions", map)?I18n->get("maps/descriptions", map): 
 			I18n->get("maps/descriptions", "(default)");
 		maps.push_back(MapList::value_type(path, map, comments, m.object_restriction, m.game_type, m.slots));
-		*/
+		* /
 		maps.push_back(fname);
 	}	
 	dir.close();
-	
+	*/
 }
 
 void Campaign::start(const std::string &name, Attrs &attr) {
@@ -113,7 +138,17 @@ void Campaign::start(const std::string &name, Attrs &attr) {
 			throw_ex(("campaign must have map attr"));
 		map = ResourceManager->loadSurface(attr["map"]);
 	} else if (name == "map") {
+		if (attr["id"].empty())
+			throw_ex(("map must have id attr"));
+		if (attr["position"].empty())
+			throw_ex(("map must have position attr"));
 		LOG_DEBUG(("map: %s, if-won: '%s', if-lost: '%s'", name.c_str(), attr["if-won"].c_str(), attr["if-lost"].c_str()));
+
+		v2<int> pos;
+		pos.fromString(attr["position"]);
+
+		maps.push_back(attr["id"]);
+		maps_pos.push_back(pos);
 	}
 }
 
