@@ -76,7 +76,13 @@ CampaignMenu::CampaignMenu(MainMenu *parent, const int w, const int h) : _parent
 	int sw, sh;
 	_maps->getSize(sw, sh);
 	add(w - sw - 2 * mx, map_view.y, _maps);
+
+	int xbase, ybase;
+	add(xbase = (w - sw - 2 * mx), ybase = (map_view.y + sh + 2 * mx), b = new Box("menu/background_box.png", w - map_view.w - 6 * mx, h - map_view.y - sh - 6 * my));
+	b->getSize(bw, bh);
+	b->getMargins(mx, my);
 	
+		
 	init();
 }
 
@@ -99,8 +105,10 @@ void CampaignMenu::init() {
 
 		const std::string &id = campaign.maps[i];
 		map_id.push_back(id);
-		if (id == current_map)
+		if (id == current_map) {
 			_maps->set(i);
+			map_pos = map_dst = campaign.maps_pos[i].convert<float>();
+		}
 	}
 }
 
