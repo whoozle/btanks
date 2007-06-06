@@ -31,6 +31,7 @@
 #include "object_common.h"
 
 #include "object_grid.h"
+#include <sigc++/sigc++.h>
 
 namespace sdlx {
 class Surface;
@@ -43,7 +44,7 @@ class Traits;
 
 class Object;
 
-class BTANKSAPI IWorld : public mrt::Serializable {
+class BTANKSAPI IWorld : public mrt::Serializable, public sigc::trackable {
 public:
 	DECLARE_SINGLETON(IWorld);
 	typedef std::map<const int, Object*> ObjectMap;
