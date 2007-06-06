@@ -19,7 +19,7 @@
 void CampaignMenu::start() {
 	int ci = _active_campaign->get();
 	const Campaign &campaign = _campaigns[ci];
-	std::string map = _maps->getValue();
+	std::string map = map_id[_maps->get()];
 	LOG_DEBUG(("campaign: %s, map: %s", campaign.name.c_str(), map.c_str()));
 	//ensure world is created 
 	Game->clear();
@@ -84,8 +84,10 @@ void CampaignMenu::init() {
 	int ci = _active_campaign->get();
 	const Campaign &campaign = _campaigns[ci];
 	_maps->clear();
+	map_id.clear();
 	for(size_t i = 0; i < campaign.maps.size(); ++i) {
 		_maps->append(campaign.maps[i]);
+		map_id.push_back(campaign.maps[i]);
 	}
 }
 

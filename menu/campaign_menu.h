@@ -51,6 +51,7 @@ private:
 	Compaigns _campaigns;
 	Chooser *_active_campaign;
 	ScrollList *_maps;
+	std::vector<std::string> map_id;
 
 	sdlx::Rect map_view;
 	v2<float> map_pos;
