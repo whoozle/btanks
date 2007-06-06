@@ -31,9 +31,6 @@ void Grid::clear() {
 	_index.clear();
 }
 
-//#define NEW_COLLIDE
-#define NEW_OLD_COLLIDE
-
 void Grid::collide(std::set<int> &objects, const GridMatrix &grid, const v2<int> &grid_size, const v2<int>& area_pos, const v2<int>& area_size) const {
 	v2<int> start = area_pos / grid_size;
 	v2<int> end = (area_pos + area_size - 1) / grid_size;
