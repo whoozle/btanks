@@ -20,11 +20,11 @@
 void CampaignMenu::start() {
 	int ci = _active_campaign->get();
 	const Campaign &campaign = _campaigns[ci];
-	std::string map = map_id[_maps->get()];
-	LOG_DEBUG(("campaign: %s, map: %s", campaign.name.c_str(), map.c_str()));
+	const Campaign::Map &map = campaign.maps[map_id[_maps->get()]];
+	LOG_DEBUG(("campaign: %s, map: %s", campaign.name.c_str(), map.id.c_str()));
 	//ensure world is created 
 	Game->clear();
-	GameMonitor->loadMap(campaign.name, map);
+	GameMonitor->loadMap(campaign.name, map.id);
 	
 	PlayerSlot &slot = PlayerManager->getSlot(0);
 	std::string cm;
@@ -108,15 +108,20 @@ void CampaignMenu::init() {
 
 	map_id.clear();
 	for(size_t i = 0; i < campaign.maps.size(); ++i) {
-		_maps->append(campaign.maps[i]);
 
-		const std::string &id = campaign.maps[i];
-		map_id.push_back(id);
-		if (id == current_map) {
+		const Campaign::Map &map = campaign.maps[i];
+		if (!campaign.visible(map))	
+			continue;
+		
+		_maps->append(map.id);
+		map_id.push_back((int)i);
+		if (map.id == current_map) {
 			_maps->set(i);
-			map_pos = map_dst = campaign.maps_pos[i].convert<float>();
+			map_pos = map_dst = map.position.convert<float>();
 		}
 	}
+	if (map_id.empty())
+		throw_ex(("bug in compaign.xml. no map could be played now"));
 }
 
 void CampaignMenu::tick(const float dt) {
@@ -140,8 +145,9 @@ void CampaignMenu::tick(const float dt) {
 		_maps->reset();
 
 		int mi = _maps->get();
-		Config->set("campaign." + campaign.name + ".current-map", map_id[mi]);
-		map_dst = campaign.maps_pos[mi].convert<float>();
+		Campaign::Map map = campaign.maps[map_id[mi]];
+		Config->set("campaign." + campaign.name + ".current-map", map.id);
+		map_dst = map.position.convert<float>();
 	}
 	
 	v2<float> map_vel = map_dst - map_pos;
@@ -181,7 +187,7 @@ void CampaignMenu::render(sdlx::Surface &surface, const int x, const int y) {
 	//surface.setClipRect(clip);
 }
 
-Campaign::Campaign() : map(NULL) {}
+Campaign::Campaign() : minimal_score(0), map(NULL) {}
 
 void Campaign::init() {
 	map = NULL;
@@ -228,14 +234,76 @@ void Campaign::start(const std::string &name, Attrs &attr) {
 			throw_ex(("map must have id attr"));
 		if (attr["position"].empty())
 			throw_ex(("map must have position attr"));
-		LOG_DEBUG(("map: %s, if-won: '%s', if-lost: '%s'", name.c_str(), attr["if-won"].c_str(), attr["if-lost"].c_str()));
 
-		v2<int> pos;
-		pos.fromString(attr["position"]);
+		Map map;
+		map.id = attr["id"];
+		map.visible_if = attr["visible"];
+		map.position.fromString(attr["position"]);
 
-		maps.push_back(attr["id"]);
-		maps_pos.push_back(pos);
+		LOG_DEBUG(("map: %s, visible: '%s'", map.id.c_str(), map.visible_if.c_str()));
+
+		maps.push_back(map);
 	}
 }
 
 void Campaign::end(const std::string &name) {}
+
+void Campaign::getStatus(const std::string &map_id, bool &played, bool &won) const {
+	std::string mname = "campaign." + name + ".maps." + map_id + ".win";
+	//LOG_DEBUG(("mname: %s", mname.c_str()));
+	played = Config->has(mname);
+	won = false;
+	if (played) {
+		Config->get(mname, won, false);
+	}
+	//LOG_DEBUG(("played: %d, won: %d", played, won));
+}
+
+#include <vector>
+
+const bool Campaign::visible(const Map &map) const {
+	LOG_DEBUG(("visible('%s')", map.id.c_str()));
+	if (minimal_score > 0) {
+		int score;
+		Config->get("campaign." + name + ".score", score, 0);
+		if (minimal_score > score)
+			return false;
+	}
+	if (map.visible_if.empty()) 
+		return true;
+
+	LOG_DEBUG(("visible attr : %s", map.visible_if.c_str()));
+	
+	std::vector<std::string> ors;
+	mrt::split(ors, map.visible_if, "|");
+	for(size_t i = 0; i < ors.size(); ++i) {
+		std::string &token = ors[i];
+		mrt::trim(token);
+		if (token.empty())
+			throw_ex(("invalid syntax ('%s')", map.visible_if.c_str()));
+		char op = token[0]; 
+		std::string map_id = token.substr(1);
+		bool played, won;
+		getStatus(map_id, played, won);
+		//LOG_DEBUG(("op: '%c', arg: %s, played: %s, won: %s", op, map_id.c_str(), played?"yes":"no", won?"yes":"no"));
+		
+		switch(op) {
+			case '-' : 
+				if (played)
+					return false;
+				break;
+			case '+' : 
+				if (won)
+					return true;
+				break;
+			case '*': 
+				if (played)
+					return true;
+				break;
+			default: 
+				throw_ex(("invalid operation: '%c' (%s)", op, map.visible_if.c_str()));
+		}
+	}
+	
+	return false;
+}

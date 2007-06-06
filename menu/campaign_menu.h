@@ -17,14 +17,24 @@ namespace sdlx {
 struct Campaign : protected mrt::XMLParser {
 	Campaign();
 	std::string base, name, title;
+	int minimal_score;
+	
 	const sdlx::Surface *map;
 	
-	std::vector<std::string> maps;
-	std::vector<v2<int> > maps_pos;
+	struct Map {
+		std::string id;
+		std::string visible_if;
+		v2<int> position;
+	};
+	
+	std::vector<Map> maps;
 	
 	void init();
+	const bool visible(const Map &map_id) const;
 	
 protected: 
+	void getStatus(const std::string &map_id, bool &played, bool &won) const;
+
 	void start(const std::string &name, Attrs &attr);
 	void end(const std::string &name);
 };
@@ -53,7 +63,7 @@ private:
 	Chooser *_active_campaign;
 
 	ScrollList *_maps;	
-	std::vector<std::string> map_id;
+	std::vector<int> map_id;
 	
 	Label * _score;
 

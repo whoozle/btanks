@@ -262,7 +262,7 @@ void IGameMonitor::tick(const float dt) {
 			Config->set("campaign." + _campaign + ".score", score);
 			LOG_DEBUG(("total score: %d", score));
 			
-			std::string mname = "campaign.maps." + Map->getName();
+			std::string mname = "campaign." + _campaign + ".maps." + Map->getName();
 			bool win;
 			Config->get(mname + ".win", win, false);
 			if (_win)
