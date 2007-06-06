@@ -378,7 +378,7 @@ const int OggStream::run() {
 #ifdef WIN32
 	{
 		HANDLE h = GetCurrentThread();
-		if (!SetThreadPriority(h, THREAD_PRIORITY_HIGH))
+		if (!SetThreadPriority(h, THREAD_PRIORITY_HIGHEST))
 			LOG_WARN(("SetThreadPriority(%08x, %08x) failed for sound thread...", (unsigned)h, (unsigned)HIGH_PRIORITY_CLASS));
 	}
 #endif
