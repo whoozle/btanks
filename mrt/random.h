@@ -25,7 +25,7 @@ namespace mrt {
 	const int MRTAPI random(const int max);
 	template<typename T>
 		void randomize(T &value, const T error) {
-			value += error * random(20000) / 10000.0 - error;
+			value += (T)(error * random(20000) / 10000.0 - error);
 		}
 }
 
