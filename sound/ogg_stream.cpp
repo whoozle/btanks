@@ -369,7 +369,20 @@ void OggStream::playTune() {
 	_opened = false;
 }
 
+#ifdef WIN32
+#	define WIN32_LEAN_AND_MEAN
+#	include <windows.h>
+#endif
+
 const int OggStream::run() {
+#ifdef WIN32
+	{
+		HANDLE h = GetCurrentThread();
+		if (!SetPriorityClass(h, HIGH_PRIORITY_CLASS))
+			LOG_WARN(("SetPriorityClass(%08x, %08x) failed for sound thread...", (unsigned)h, (unsigned)HIGH_PRIORITY_CLASS));
+	}
+#endif
+
 TRY {
 	while(_alive) {
 		{
