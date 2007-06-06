@@ -8,6 +8,7 @@
 class MainMenu;
 class Chooser;
 class ScrollList;
+class Label;
 
 namespace sdlx {
 	class sdlx::Surface;
@@ -50,8 +51,11 @@ private:
 	typedef std::vector<Campaign> Compaigns;
 	Compaigns _campaigns;
 	Chooser *_active_campaign;
-	ScrollList *_maps;
+
+	ScrollList *_maps;	
 	std::vector<std::string> map_id;
+	
+	Label * _score;
 
 	sdlx::Rect map_view;
 	v2<float> map_pos;

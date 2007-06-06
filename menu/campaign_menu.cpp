@@ -9,6 +9,7 @@
 #include "mrt/directory.h"
 #include "math/binary.h"
 #include "menu.h"
+#include "label.h"
 #include "game_monitor.h"
 #include "game.h"
 #include "player_manager.h"
@@ -82,7 +83,13 @@ CampaignMenu::CampaignMenu(MainMenu *parent, const int w, const int h) : _parent
 	b->getSize(bw, bh);
 	b->getMargins(mx, my);
 	
-		
+	Label *label = new Label("medium", I18n->get("menu", "score"));
+	add(xbase + mx, ybase + my, label);
+	label->getSize(cw, ch);
+
+	_score = new Label("medium", "0");
+	add(xbase + mx + cw, ybase + my, _score);
+	
 	init();
 }
 
@@ -113,6 +120,17 @@ void CampaignMenu::init() {
 }
 
 void CampaignMenu::tick(const float dt) {
+	int ci = _active_campaign->get();
+	if (ci >= (int)_campaigns.size())
+		throw_ex(("no compaigns defined"));
+	
+	const Campaign &campaign = _campaigns[ci];
+	{
+		int score;
+		Config->get("campaign." + campaign.name + ".score", score, 0);
+		_score->set(mrt::formatString("%d", score));
+	}
+
 	if (_active_campaign->changed()) {
 		_active_campaign->reset();
 		init();
@@ -120,8 +138,6 @@ void CampaignMenu::tick(const float dt) {
 	
 	if (_maps->changed()) {
 		_maps->reset();
-		int ci = _active_campaign->get();
-		const Campaign &campaign = _campaigns[ci];
 
 		int mi = _maps->get();
 		Config->set("campaign." + campaign.name + ".current-map", map_id[mi]);
