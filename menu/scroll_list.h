@@ -20,6 +20,7 @@
  */
 
 #include <deque>
+#include <string>
 #include "container.h"
 #include "box.h"
 #include "sdlx/font.h"
