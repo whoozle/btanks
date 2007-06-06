@@ -498,7 +498,6 @@ static void coord2v(T &pos, const std::string &str) {
 	}
 }
 
-
 void IGameMonitor::loadMap(const std::string &campaign, const std::string &name, const bool spawn_objects, const bool skip_loadmap) {
 	_campaign = campaign;
 	IMap &map = *IMap::get_instance();
