@@ -209,7 +209,16 @@ void Layer::init(const int w, const int h, const mrt::Chunk & data) {
 	_w = w;
 	_h = h;
 	_data = data;
-	assert((int)_data.getSize() == (4 * _w * _h));
+	size_t n = _data.getSize();
+	assert((int)n == (4 * _w * _h));
+	
+	//convert all stuff.
+	Uint32 *p = (Uint32 *)_data.getPtr();
+	n /= 4;
+	for(size_t i = 0; i < n; ++i) {
+		Uint32 x = SDL_SwapLE32(*p);
+		*p++ = x;
+	}
 }
 
 void Layer::init(const int w, const int h) {
