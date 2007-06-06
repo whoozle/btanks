@@ -85,6 +85,7 @@ void IWorld::setMode(const std::string &mode, const bool value) {
 
 
 IWorld::IWorld() : _last_id(0), _safe_mode(false), _atatat(false), _max_dt(1), _hp_bar(NULL) {
+	LOG_DEBUG(("world ctor"));
 	Map->load_map_signal.connect(sigc::mem_fun(this, &IWorld::initMap));
 }
 
