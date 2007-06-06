@@ -322,8 +322,19 @@ void Layer::generateXML(std::string &result) const {
 	
 	result += "\t\t<data encoding=\"base64\" compression=\"gzip\">\n\t\t\t";
 	{
-		mrt::Chunk zipped_data;
-		mrt::ZStream::compress(zipped_data, _data);
+		mrt::Chunk zipped_data, data;
+		data = _data;
+		size_t n = data.getSize() / 4;
+		assert((int)n == (_w * _h));
+	
+		//convert all stuff.
+		Uint32 *p = (Uint32 *)data.getPtr();
+		for(size_t i = 0; i < n; ++i) {
+			Uint32 x = SDL_SwapLE32(*p);
+			*p++ = x;
+		}
+		
+		mrt::ZStream::compress(zipped_data, data);
 		std::string base64; 
 		mrt::Base64::encode(base64, zipped_data);
 		result += base64;
