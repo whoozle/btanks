@@ -8,6 +8,7 @@
 #include "scroll_list.h"
 #include "mrt/directory.h"
 #include "math/binary.h"
+#include "menu.h"
 
 CampaignMenu::CampaignMenu(MainMenu *parent, const int w, const int h) : _parent(parent), _w(w), _h(h) {
 	IFinder::FindResult files;
@@ -81,6 +82,18 @@ void CampaignMenu::tick(const float dt) {
 		map_vel.normalize();
 		float dist = math::min(map_dst.distance(map_pos), dt * 200);
 		map_pos += map_vel * dist;
+	}
+}
+
+bool CampaignMenu::onKey(const SDL_keysym sym) {
+	if (Container::onKey(sym))
+		return true;
+	switch(sym.sym) {
+	case SDLK_ESCAPE:
+		_parent->back();
+		return true;	
+	default: 
+		return false;
 	}
 }
 

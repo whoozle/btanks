@@ -37,6 +37,7 @@ public:
 
 	virtual void render(sdlx::Surface &surface, const int x, const int y);
 	virtual void tick(const float dt);
+	virtual bool onKey(const SDL_keysym sym);
 	
 private:
 	void init();
