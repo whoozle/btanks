@@ -98,7 +98,7 @@ public:
 	
 	void killAllClasses(const std::set<std::string> &classes);
 
-	void loadMap(const std::string &name, const bool spawn = true, const bool skip_loadmap = false);		
+	void loadMap(const std::string &campaign, const std::string &name, const bool spawn = true, const bool skip_loadmap = false);		
 
 	//waypoints
 	const std::string getRandomWaypoint(const std::string &classname, const std::string &last_wp = std::string()) const;
@@ -135,6 +135,8 @@ private:
 	WaypointMap 	 _all_waypoints;
 	WaypointClassMap _waypoints;
 	WaypointEdgeMap  _waypoint_edges;	
+	
+	std::string _campaign;
 };
 
 SINGLETON(BTANKSAPI, GameMonitor, IGameMonitor);

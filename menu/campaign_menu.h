@@ -15,7 +15,7 @@ namespace sdlx {
 
 struct Campaign : protected mrt::XMLParser {
 	Campaign();
-	std::string base, title;
+	std::string base, name, title;
 	const sdlx::Surface *map;
 	
 	std::vector<std::string> maps;
@@ -38,6 +38,8 @@ public:
 	virtual void render(sdlx::Surface &surface, const int x, const int y);
 	virtual void tick(const float dt);
 	virtual bool onKey(const SDL_keysym sym);
+	
+	void start();
 	
 private:
 	void init();

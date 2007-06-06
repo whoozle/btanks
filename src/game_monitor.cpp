@@ -499,7 +499,8 @@ static void coord2v(T &pos, const std::string &str) {
 }
 
 
-void IGameMonitor::loadMap(const std::string &name, const bool spawn_objects, const bool skip_loadmap) {
+void IGameMonitor::loadMap(const std::string &campaign, const std::string &name, const bool spawn_objects, const bool skip_loadmap) {
+	_campaign = campaign;
 	IMap &map = *IMap::get_instance();
 
 	if (!skip_loadmap) {
@@ -552,7 +553,7 @@ void IGameMonitor::loadMap(const std::string &name, const bool spawn_objects, co
 			PlayerManager->addSlot(pos);
 		} else {
 			if (type == "object") {
-				//LOG_DEBUG(("object %s, animation %s, pos: %s", res[1].c_str(), res[2].c_str(), i->second.c_str()));
+				LOG_DEBUG(("spawning: object %s, animation %s, pos: %s", res[1].c_str(), res[2].c_str(), i->second.c_str()));
 				if (res.size() < 4)
 					throw_ex(("'%s' misses an argument", i->first.c_str()));
 				res.resize(5);

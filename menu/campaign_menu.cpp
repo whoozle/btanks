@@ -9,6 +9,7 @@
 #include "mrt/directory.h"
 #include "math/binary.h"
 #include "menu.h"
+#include "game_monitor.h"
 
 CampaignMenu::CampaignMenu(MainMenu *parent, const int w, const int h) : _parent(parent), _w(w), _h(h) {
 	IFinder::FindResult files;
@@ -85,10 +86,21 @@ void CampaignMenu::tick(const float dt) {
 	}
 }
 
+void CampaignMenu::start() {
+	int ci = _active_campaign->get();
+	const Campaign &campaign = _campaigns[ci];
+	std::string map = _maps->getValue();
+	LOG_DEBUG(("campaign: %s, map: %s", campaign.name.c_str(), map.c_str()));
+	GameMonitor->loadMap(campaign.name, map);
+}
+
 bool CampaignMenu::onKey(const SDL_keysym sym) {
 	if (Container::onKey(sym))
 		return true;
 	switch(sym.sym) {
+	case SDLK_RETURN: 
+		start();
+		return true;	
 	case SDLK_ESCAPE:
 		_parent->back();
 		return true;	
@@ -147,7 +159,8 @@ void Campaign::start(const std::string &name, Attrs &attr) {
 	if (name == "campaign") {
 		if (attr["title"].empty())
 			throw_ex(("campaign must have title attr"));
-		title = I18n->get("campaign", attr["title"]);
+		this->name = attr["title"];
+		title = I18n->get("campaign", this->name);
 		if (attr["map"].empty())
 			throw_ex(("campaign must have map attr"));
 		map = ResourceManager->loadSurface(attr["map"]);

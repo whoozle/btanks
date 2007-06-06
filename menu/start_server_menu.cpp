@@ -49,7 +49,7 @@ void StartServerMenu::start() {
 
 	LOG_DEBUG(("start multiplayer server requested"));
 	Game->clear();
-	GameMonitor->loadMap(map.name);
+	GameMonitor->loadMap(std::string(), map.name);
 		
 	_map_picker->fillSlots();
 	
