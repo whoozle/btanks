@@ -67,6 +67,7 @@ void Grid::resize(GridMatrix &grid, const v2<int> &grid_size, const v2<int> &map
 }
 
 void Grid::setSize(const v2<int> &size, const int step) {
+	LOG_DEBUG(("setting grid size: %dx%d, step: %d", size.x, size.y, step));
 	clear();
 	_grid_size = v2<int>(step, step);
 	resize(_grid, _grid_size, size);
