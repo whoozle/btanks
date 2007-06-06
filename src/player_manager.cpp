@@ -338,7 +338,7 @@ TRY {
 	}
 	case Message::GameOver: {
 		TRY {
-			GameMonitor->gameOver("messages", message.get("message"), atof(message.get("duration").c_str()) - _trip_time / 1000.0);
+			GameMonitor->gameOver("messages", message.get("message"), atof(message.get("duration").c_str()) - _trip_time / 1000.0, false);
 		} CATCH("on-message(gameover)", throw; )
 		break;
 	}
@@ -438,7 +438,7 @@ void IPlayerManager::updatePlayers() {
 		if (slot.spawn_limit > 0) {
 			if (--slot.spawn_limit <= 0) {
 				slot.clear();
-				GameMonitor->gameOver("messages", "game-over", 5);
+				GameMonitor->gameOver("messages", "game-over", 5, false);
 				continue;
 			}
 			LOG_DEBUG(("%d lives left", slot.spawn_limit));

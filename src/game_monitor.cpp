@@ -42,7 +42,7 @@
 
 IMPLEMENT_SINGLETON(GameMonitor, IGameMonitor);
 
-IGameMonitor::IGameMonitor() : _game_over(false), _check_items(0.5, true), _state_timer(false), _timer(0) {}
+IGameMonitor::IGameMonitor() : _game_over(false), _win(false), _check_items(0.5, true), _state_timer(false), _timer(0) {}
 
 void Item::respawn() {
 	LOG_DEBUG(("respawning item: %s:%s", classname.c_str(), animation.c_str()));
@@ -140,7 +140,7 @@ void IGameMonitor::checkItems(const float dt) {
 		//object is dead.
 		
 		if (!item.save_for_victory.empty()) {
-			gameOver("messages", item.save_for_victory, 5);
+			gameOver("messages", item.save_for_victory, 5, false);
 			continue;
 		}
 
@@ -164,7 +164,7 @@ void IGameMonitor::checkItems(const float dt) {
 		}
 	}
 	if (goal_total > 0 && goal == goal_total) {
-		gameOver("messages", "mission-accomplished", 5);
+		gameOver("messages", "mission-accomplished", 5, true);
 	}
 }
 
@@ -198,8 +198,9 @@ const std::string IGameMonitor::popState(const float dt) {
 	return r;
 }
 
-void IGameMonitor::gameOver(const std::string &area, const std::string &message, const float time) {
+void IGameMonitor::gameOver(const std::string &area, const std::string &message, const float time, const bool win) {
 	_game_over = true;
+	_win = win;
 	displayMessage(area, message, time);
 	PlayerManager->gameOver(message, time);
 	resetTimer();
@@ -209,10 +210,11 @@ void IGameMonitor::displayMessage(const std::string &area, const std::string &me
 	pushState(I18n->get(area, message), time);
 }
 
-void IGameMonitor::setTimer(const std::string &area, const std::string &message, const float time) {
+void IGameMonitor::setTimer(const std::string &area, const std::string &message, const float time, const bool win_at_end) {
 	_timer_message_area = area;
 	_timer_message = message;
 	_timer = time;
+	_timer_win_at_end = win_at_end;
 }
 
 void IGameMonitor::resetTimer() {
@@ -224,6 +226,7 @@ void IGameMonitor::clear() {
 	resetTimer();
 
 	_game_over = false;
+	_win = false;
 	_state.clear();
 	
 	_items.clear();
@@ -244,7 +247,7 @@ void IGameMonitor::tick(const float dt) {
 		_timer -= dt;
 		if (_timer <= 0) {
 			if (!client)
-				gameOver(_timer_message_area, _timer_message, 5);
+				gameOver(_timer_message_area, _timer_message, 5, _timer_win_at_end);
 			_timer = 0;
 		}
 	}

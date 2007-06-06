@@ -76,9 +76,9 @@ public:
 	const std::vector<v3<int> >& getSpecials() const { return _specials; }
 	const size_t getItemsCount() const { return _items.size(); }
 
-	void gameOver(const std::string &area, const std::string &message, const float time);
+	void gameOver(const std::string &area, const std::string &message, const float time, const bool win);
 	void displayMessage(const std::string &area, const std::string &message, const float time);
-	void setTimer(const std::string &area, const std::string &message, const float time);
+	void setTimer(const std::string &area, const std::string &message, const float time, const bool win_at_end);
 	void resetTimer();
 
 	void clear();
@@ -109,7 +109,7 @@ public:
 
 private:
 
-	bool _game_over;
+	bool _game_over, _win;
 
 	typedef std::deque<Item> Items;
 	Items _items;
@@ -123,6 +123,7 @@ private:
 	
 	std::string _timer_message, _timer_message_area;
 	float _timer;
+	bool _timer_win_at_end;
 	
 	std::set<std::string> _disabled;
 	std::set<std::string> _destroy_classes;

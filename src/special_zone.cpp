@@ -73,9 +73,9 @@ void SpecialZone::onTimer(const int slot_id, const bool win) {
 		Config->get(key_name, slot.spawn_limit, 1);
 	
 	if (win) {
-		GameMonitor->setTimer("messages", "mission-accomplished", duration);
+		GameMonitor->setTimer("messages", "mission-accomplished", duration, true);
 	} else 
-		GameMonitor->setTimer("messages", "game-over", duration);
+		GameMonitor->setTimer("messages", "game-over", duration, false);
 		
 	GameMonitor->displayMessage(area, name, 3);
 }
@@ -150,7 +150,7 @@ void SpecialZone::onCheckpoint(const int slot_id) {
 				o->addEffect("invulnerability", -1);
 			}
 
-			GameMonitor->gameOver("messages", "mission-accomplished", 5);
+			GameMonitor->gameOver("messages", "mission-accomplished", 5, true);
 		} else 
 			GameMonitor->displayMessage("messages", "checkpoint-reached", 3);
 	}
