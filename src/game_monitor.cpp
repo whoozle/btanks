@@ -261,6 +261,17 @@ void IGameMonitor::tick(const float dt) {
 			score += slot.score;
 			Config->set("campaign." + _campaign + ".score", score);
 			LOG_DEBUG(("total score: %d", score));
+			
+			std::string mname = "campaign.maps." + Map->getName();
+			bool win;
+			Config->get(mname + ".win", win, false);
+			if (_win)
+				Config->set(mname + ".win", _win);
+			
+			int mscore;
+			Config->get(mname + ".maximum-score", mscore, 0);
+			if (slot.score > mscore) 
+				Config->set(mname + ".maximum-score", slot.score);
 		}
 		LOG_DEBUG(("saving compaign state..."));
 		
