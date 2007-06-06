@@ -83,11 +83,24 @@ CampaignMenu::CampaignMenu(MainMenu *parent, const int w, const int h) : _parent
 void CampaignMenu::init() {
 	int ci = _active_campaign->get();
 	const Campaign &campaign = _campaigns[ci];
+
+	std::string current_map;
+	TRY {
+		if (Config->has("campaign." + campaign.name + ".current-map")) {
+			Config->get("campaign." + campaign.name + ".current-map", current_map, std::string());
+		}
+	} CATCH("init", )
+
 	_maps->clear();
+
 	map_id.clear();
 	for(size_t i = 0; i < campaign.maps.size(); ++i) {
 		_maps->append(campaign.maps[i]);
-		map_id.push_back(campaign.maps[i]);
+
+		const std::string &id = campaign.maps[i];
+		map_id.push_back(id);
+		if (id == current_map)
+			_maps->set(i);
 	}
 }
 
@@ -103,6 +116,7 @@ void CampaignMenu::tick(const float dt) {
 		const Campaign &campaign = _campaigns[ci];
 
 		int mi = _maps->get();
+		Config->set("campaign." + campaign.name + ".current-map", map_id[mi]);
 		map_dst = campaign.maps_pos[mi].convert<float>();
 	}
 	
