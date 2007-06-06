@@ -38,6 +38,7 @@
 #include "special_zone.h"
 #include "math/unary.h"
 #include <stdlib.h>
+#include "player_slot.h"
 
 IMPLEMENT_SINGLETON(GameMonitor, IGameMonitor);
 
@@ -250,6 +251,16 @@ void IGameMonitor::tick(const float dt) {
 
 	std::string game_state = popState(dt);
 	if (_game_over && !game_state.empty()) {
+		if (!_campaign.empty()) {
+			PlayerSlot &slot = PlayerManager->getSlot(0); 
+			int score; 
+			Config->get("campaign." + _campaign + ".score", score, 0);
+			score += slot.score;
+			Config->set("campaign." + _campaign + ".score", score);
+			LOG_DEBUG(("total score: %d", score));
+		}
+		LOG_DEBUG(("saving compaign state..."));
+		
 		Game->clear();
 	}
 }
