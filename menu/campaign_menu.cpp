@@ -38,9 +38,10 @@ void CampaignMenu::start() {
 	PlayerManager->setViewport(0, Window->getSize());
 	
 	PlayerManager->startServer();	
+	_invalidate_me = true;
 }
 
-CampaignMenu::CampaignMenu(MainMenu *parent, const int w, const int h) : _parent(parent), _w(w), _h(h) {
+CampaignMenu::CampaignMenu(MainMenu *parent, const int w, const int h) : _parent(parent), _w(w), _h(h), _invalidate_me(false) {
 	IFinder::FindResult files;
 
 	Finder->findAll(files, "campaign.xml");
@@ -107,6 +108,7 @@ void CampaignMenu::init() {
 	_maps->clear();
 
 	map_id.clear();
+	_maps->set(0);
 	for(size_t i = 0; i < campaign.maps.size(); ++i) {
 
 		const Campaign::Map &map = campaign.maps[i];
@@ -125,6 +127,11 @@ void CampaignMenu::init() {
 }
 
 void CampaignMenu::tick(const float dt) {
+	if (_invalidate_me) {
+		init();
+		_invalidate_me = false;
+	}
+	
 	int ci = _active_campaign->get();
 	if (ci >= (int)_campaigns.size())
 		throw_ex(("no compaigns defined"));
@@ -145,9 +152,11 @@ void CampaignMenu::tick(const float dt) {
 		_maps->reset();
 
 		int mi = _maps->get();
-		Campaign::Map map = campaign.maps[map_id[mi]];
-		Config->set("campaign." + campaign.name + ".current-map", map.id);
-		map_dst = map.position.convert<float>();
+		if (mi < (int)map_id.size()) {
+			Campaign::Map map = campaign.maps[map_id[mi]];
+			Config->set("campaign." + campaign.name + ".current-map", map.id);
+			map_dst = map.position.convert<float>();
+		}
 	}
 	
 	v2<float> map_vel = map_dst - map_pos;

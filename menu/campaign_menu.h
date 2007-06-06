@@ -70,6 +70,8 @@ private:
 	sdlx::Rect map_view;
 	v2<float> map_pos;
 	v2<float> map_dst;
+	
+	bool _invalidate_me;
 };
 
 #endif
