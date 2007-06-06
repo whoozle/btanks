@@ -40,8 +40,8 @@ IMPLEMENT_SINGLETON(Window, IWindow);
 IWindow::IWindow() : _fr(10.0f) {}
 
 void IWindow::initSDL() {
-	putenv("SDL_VIDEO_WINDOW_POS");
-	putenv("SDL_VIDEO_CENTERED=1");
+	putenv(strdup("SDL_VIDEO_WINDOW_POS"));
+	putenv(strdup("SDL_VIDEO_CENTERED=1"));
 
 	LOG_DEBUG(("gl: %s, vsync: %s, dx: %s", _opengl?"yes":"no", _vsync?"yes":"no", _dx?"yes":"no"));
 #ifdef WIN32
