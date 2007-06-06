@@ -28,6 +28,13 @@ void Label::getSize(int &w, int &h) const {
 	h = _font->getHeight();
 }
 
+void Label::set(const std::string &label) {
+	_label = label;
+}
+
+const std::string Label::get() const { 
+	return _label; 
+}
 
 void Label::render(sdlx::Surface& surface, int x, int y) {
 	_font->render(surface, x, y, _label);
