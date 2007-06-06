@@ -289,8 +289,8 @@ const bool Campaign::visible(const Map &map) const {
 		
 		switch(op) {
 			case '-' : 
-				if (played)
-					return false;
+				if (played && !won)
+					return true;
 				break;
 			case '+' : 
 				if (won)
