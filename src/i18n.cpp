@@ -91,6 +91,7 @@ void II18n::load(const std::string &file, const std::string &language) {
 	_lang = language;
 	//_strings.clear();
 	_unlocalized.clear();
+	_cdata.clear();
 	LOG_DEBUG(("loading file '%s' with language: %s", file.c_str(), language.empty()?"default":language.c_str()));
 	
 	parseFile(file);
@@ -102,6 +103,7 @@ void II18n::load(const std::string &file, const std::string &language) {
 }
 
 void II18n::start(const std::string &name, Attrs &attr) {
+	_cdata.clear();
 	if (name == "string") {
 		_string_id = attr["id"];
 		if (_string_id.empty())
