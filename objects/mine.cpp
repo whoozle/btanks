@@ -57,10 +57,15 @@ void Mine::tick(const float dt) {
 
 void Mine::emit(const std::string &event, Object * emitter) {
 	if (event == "death" && registered_name == "bomberman-mine") {
+		const bool nuke = _variants.has("nuke");
+		spawn(nuke?"nuclear-explosion":"bomberman-explosion", nuke?"nuclear-explosion":"cannon-explosion");
+		if (nuke)
+			return;
+
 		v2<float> tile_size = Map->getTileSize().convert<float>();
 		v2<float> path_tile_size = Map->getPathTileSize().convert<float>();
 		//LOG_DEBUG(("tile_size: %g, %g", tile_size.x, tile_size.y));
-		spawn("bomberman-explosion", "cannon-explosion");
+		
 		const Matrix<int>& matrix = getImpassabilityMatrix();
 		for (int d = 0; d < 4; ++d) {
 			for(int i = 1; i <= 2; ++i) {
@@ -89,8 +94,10 @@ void Mine::emit(const std::string &event, Object * emitter) {
 			GET_CONFIG_VALUE("objects.regular-mine.triggering-mass", int, m, 20);
 			if (emitter->mass < m)
 				return;
+	
+			const bool nuke = _variants.has("nuke");
 			
-			spawn("explosion", "explosion");
+			spawn(nuke?"nuclear-explosion":"explosion", nuke?"nuclear-explosion":"explosion");
 			Object::emit("death", emitter);
 			emitter->addDamage(this, max_hp);
 		} 
