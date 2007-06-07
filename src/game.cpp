@@ -162,7 +162,7 @@ void IGame::init(const int argc, char *argv[]) {
 			Config->remove("engine.sound.update-objects-interval");
 			Config->set("engine.sound.buffers", 8);
 		}
-		if (revision < 3910) {	
+		if (revision < 3942) {	
 			Config->set("engine.sound.file-buffer-size", 441000);
 		}
 		{
