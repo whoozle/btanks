@@ -232,7 +232,7 @@ TRY {
 	
 	mrt::Chunk data;
 	
-	GET_CONFIG_VALUE("engine.sound.file-buffer-size", int, buffer_size, 262144);
+	GET_CONFIG_VALUE("engine.sound.file-buffer-size", int, buffer_size, 441000);
 	data.setSize(buffer_size);
 	
 	int  size = 0;
@@ -271,7 +271,7 @@ void OggStream::decode(Sample &sample, const std::string &fname) {
 		throw_ogg(r, ("ov_open('%s')", fname.c_str()));
 	file.unlink();
 
-	GET_CONFIG_VALUE("engine.sound.file-buffer-size", int, buffer_size, 262144);
+	GET_CONFIG_VALUE("engine.sound.file-buffer-size", int, buffer_size, 441000);
 
 	mrt::Chunk &data = sample.data;
 
