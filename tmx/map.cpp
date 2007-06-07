@@ -1251,6 +1251,8 @@ void IMap::addLayer(const int after_z, const std::string &name) {
 	Layer *l = new Layer();
 	l->name = name;
 	l->init(_w, _h);
+	if (_layers.empty()) 
+		l->properties["z"] = mrt::formatString("%d", after_z + 1);
 	_layers.insert(LayerMap::value_type(after_z + 1, l));
 }
 
