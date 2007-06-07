@@ -676,7 +676,7 @@ const std::string IGameMonitor::generatePropertyName(const std::string &prefix) 
 	
 	for(IMap::PropertyMap::const_iterator i = b; i != Map->properties.end(); ++i) {
 		if (i->first.compare(0, prefix.size(), prefix) != 0) 
-			break;
+			continue;
 		std::string suffix = i->first.substr(prefix.size());
 		if (!suffix.empty() && suffix[0] == ':') {
 			int i = atoi(suffix.c_str() + 1);
