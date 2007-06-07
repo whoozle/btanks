@@ -1238,13 +1238,15 @@ void IMap::generateXML(std::string &result) const {
 }
 
 void IMap::addLayer(const int after_z, const std::string &name) {
-	LayerMap::iterator i = _layers.find(after_z);
-	if (i == _layers.end())
-		throw_ex(("no layer with z %d", after_z));
+	if (!_layers.empty()) {
+		LayerMap::iterator i = _layers.find(after_z);
+		if (i == _layers.end())
+			throw_ex(("no layer with z %d", after_z));
 	
-	LayerMap::iterator next = _layers.find(after_z + 1);
-	if (next != _layers.end())
-		throw_ex(("cannot add layer. no z-room"));
+		LayerMap::iterator next = _layers.find(after_z + 1);
+		if (next != _layers.end())
+			throw_ex(("cannot add layer. no z-room"));
+	}
 	
 	Layer *l = new Layer();
 	l->name = name;
