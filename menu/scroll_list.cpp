@@ -91,8 +91,8 @@ void ScrollList::tick(const float dt) {
 
 	if (yp < _pos + scroll_marg || yp > _pos + _client_h - scroll_marg) {
 		int dpos = (int)(math::max<int>(yp - _client_h / 2, 0) - _pos);
-		_vel = math::max(300, math::abs(dpos)) * math::sign<int>(dpos);
-		_pos += _vel * dt;
+		_vel = math::max(300, 2 * math::abs(dpos)) * math::sign<int>(dpos);
+		_pos += math::sign(dpos) * math::min(math::abs(_vel * dt), math::abs((float)dpos));
 	}
 
 	int h = getItemY(_list.size());
