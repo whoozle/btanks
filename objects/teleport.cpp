@@ -6,6 +6,7 @@
 #include "world.h"
 #include "player_manager.h"
 #include "player_slot.h"
+#include "game_monitor.h"
 
 class Teleport : public Object {
 public: 
@@ -22,8 +23,38 @@ public:
 	virtual void emit(const std::string &event, Object * emitter = NULL);
 	~Teleport();
 
-	virtual void tick(const float dt) {
-		Object::tick(dt);
+	virtual void tick(const float dt);
+	
+	virtual void serialize(mrt::Serializator &s) const {
+		Object::serialize(s);
+		s.add(track);
+	}
+	virtual void deserialize(const mrt::Serializator &s) {
+		Object::deserialize(s);
+		s.get(track);
+		
+		_teleports.insert(this);
+	}
+
+
+private: 
+	typedef std::set<Teleport *> Teleports;
+	static Teleports _teleports;
+	int track;
+};
+
+Teleport::Teleports Teleport::_teleports;
+
+void Teleport::tick(const float dt) {
+	Object::tick(dt);
+	if (GameMonitor->disabled(this)) {
+		if (getState() != "hold") {
+			cancelAll();
+			play("hold", true);
+		}
+		return;
+	}
+
 		if (!track || PlayerManager->isClient())
 			return;
 		
@@ -47,30 +78,15 @@ public:
 			track = 0;
 			need_sync = true;
 		}
-	}
-	
-	virtual void serialize(mrt::Serializator &s) const {
-		Object::serialize(s);
-		s.add(track);
-	}
-	virtual void deserialize(const mrt::Serializator &s) {
-		Object::deserialize(s);
-		s.get(track);
-		
-		_teleports.insert(this);
-	}
+}
 
-
-private: 
-	typedef std::set<Teleport *> Teleports;
-	static Teleports _teleports;
-	int track;
-};
-
-Teleport::Teleports Teleport::_teleports;
 
 void Teleport::emit(const std::string &event, Object * emitter) {
 	if (!PlayerManager->isClient() && event == "collision" && emitter != NULL) {
+		if (getState() == "hold") {
+			return;
+		}
+		
 		v2<int> epos, pos;
 		emitter->getCenterPosition(epos);
 		getPosition(pos);

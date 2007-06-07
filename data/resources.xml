@@ -110,6 +110,7 @@
 
 	<animation-model id="teleport-animation" speed="10">
 		<pose id="main">0,1,2,3,4</pose>
+		<pose id="hold">3</pose>
 	</animation-model>
 
 	<animation-model id="item-animation-1" speed="10">
