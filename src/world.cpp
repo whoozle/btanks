@@ -53,6 +53,7 @@ void IWorld::setTimeSlice(const float ts) {
 	if (ts <= 0)
 		throw_ex(("invalid timeslice value passed (%g)", ts));
 	_max_dt = ts;
+	LOG_DEBUG(("setting maximum timeslice to %g", _max_dt));
 }
 
 void IWorld::initMap() {
