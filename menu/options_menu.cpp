@@ -92,7 +92,7 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 	int base_x = _bx + 3 * _background.w / 4;
 	
 	float volume;
-	Config->get("engine.sound.volume.music", volume, 1);
+	Config->get("engine.sound.volume.music", volume, 1.0f);
 	
 	Label *l = new Label("medium", I18n->get("menu", "music-volume"));
 	Slider *s = _music = new Slider(volume);
@@ -220,10 +220,10 @@ void OptionsMenu::reload() {
 	sp2->reload();
 	
 	float volume;
-	Config->get("engine.sound.volume.music", volume, 1);
+	Config->get("engine.sound.volume.music", volume, 1.0f);
 	_music->set(volume);
 
-	Config->get("engine.sound.volume.fx", volume, 1);
+	Config->get("engine.sound.volume.fx", volume, 1.0f);
 	_fx->set(volume);
 	
 	_keys->reload();
