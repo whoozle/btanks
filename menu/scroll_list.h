@@ -35,6 +35,9 @@ public:
 	virtual void append(const std::string &item);
 	virtual void append(Control *control);
 	
+	const int size() const { return _list.size(); }
+	const bool empty() const { return _list.empty(); }
+	
 	const int get() const { return _current_item; }
 	const std::string getValue() const;
 	void set(const int idx) { _current_item = idx; }
