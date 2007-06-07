@@ -473,6 +473,12 @@ void IWorld::tick(Object &o, const float dt, const bool do_calculate) {
 		return;
 
 	float max_dt = _max_dt;
+	if (o.piercing) {
+		max_dt /= 2.5f;
+		if (max_dt < 0.001f) 
+			max_dt = 0.001f;
+	}
+	
 	int n = (int)(dt / max_dt);
 	if (n > 4) {
 		//LOG_DEBUG(("trottling needed (%d)", n));
