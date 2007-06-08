@@ -998,6 +998,14 @@ void IWorld::tick(ObjectMap &objects, const float dt, const bool do_calculate) {
 		} 
 		++i;
 	}
+	purge();
+}
+
+void IWorld::purge() {
+	purge(_objects);
+}
+
+void IWorld::purge(ObjectMap &objects) {
 	for(ObjectMap::iterator i = objects.begin(); i != objects.end(); ) {
 		Object *o = i->second;
 		const int f = o->_follow;

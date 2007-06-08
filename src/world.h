@@ -94,6 +94,8 @@ public:
 
 	void tick(Object &o, const float dt, const bool do_calculate = true);
 	void tick(ObjectMap &objects, const float dt, const bool do_calculate = true);
+	void purge(ObjectMap &objects);
+	void purge();
 	
 	void setSafeMode(const bool safe_mode = true);
 
