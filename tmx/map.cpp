@@ -861,12 +861,41 @@ void IMap::render(sdlx::Surface &window, const sdlx::Rect &src, const sdlx::Rect
 					continue;
 				}
 				
-				const sdlx::Surface * s = getSurface(l->second, txp + tx, typ + ty);
+				const int sx = txp + tx, sy = typ + ty;
+				const sdlx::Surface * s = getSurface(l->second, sx, sy);
 				if (s == NULL)
 					continue;
 				
 				v2<int> dpos = l->second->position.convert<int>();
-				window.copyFrom(*s, dst.x + xp + tx * _tw + dpos.x, dst.y + yp + ty * _th + dpos.y);
+				const int dx = dst.x + xp + tx * _tw + dpos.x, dy = dst.y + yp + ty * _th + dpos.y;
+				window.copyFrom(*s, dx, dy);
+				
+				if (shifting) {
+					const v2<int>& size = l->second->size;
+					if (tx == 0) {
+						for(int x = 0; x < size.x / _tw; ++x) {
+							const sdlx::Surface * s = getSurface(l->second, sx + x, sy);
+							if (s != NULL)
+								window.copyFrom(*s, dx - size.x + x * _tw, dy);
+						}
+					}
+					if (ty == 0) {
+						for(int y = 0; y < size.y / _th; ++y) {
+							const sdlx::Surface * s = getSurface(l->second, sx, sy + y);
+							if (s != NULL)
+								window.copyFrom(*s, dx, dy - size.y + y * _tw);
+						}
+					}
+					if (tx == 0 && ty == 0) {
+						for(int y = 0; y < size.y / _th; ++y) {
+							for(int x = 0; x < size.x / _tw; ++x) {
+								const sdlx::Surface * s = getSurface(l->second, sx + x, sy + y);
+								if (s != NULL)
+									window.copyFrom(*s, dx - size.x + x * _tw, dy - size.y + y * _tw);
+							}					
+						}
+					}
+				}
 			}
 		}
 	}
