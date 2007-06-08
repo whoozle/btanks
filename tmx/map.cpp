@@ -713,7 +713,7 @@ void IMap::end(const std::string &name) {
 		if (!a_frame_size.empty() && !a_frames.empty()) {
 			int fs = atoi(a_frame_size.c_str());
 			int fn = atoi(a_frames.c_str());
-			float speed = (a_speed.empty())?1:atof(a_speed.c_str());
+			float speed = (a_speed.empty())?1.0f:(float)atof(a_speed.c_str());
 			if (a_speed.empty())
 				LOG_WARN(("layer '%s': default speed of 1 used.", e.attrs["name"].c_str()));
 			LOG_DEBUG(("layer '%s': animation-frame-size: %d, animation-speed: %g", e.attrs["name"].c_str(), fs, speed));
