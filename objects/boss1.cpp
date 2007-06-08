@@ -41,7 +41,6 @@ public:
 		s.add(_reaction);
 		s.add(_fire);
 		s.add(_alt_fire);
-		s.add(_left);
 	}
 	virtual void deserialize(const mrt::Serializator &s) {
 		Object::deserialize(s);
@@ -49,7 +48,6 @@ public:
 		s.get(_reaction);
 		s.get(_fire);
 		s.get(_alt_fire);
-		s.get(_left);
 	}
 protected: 
 	void addFireShift(v2<float>& pos, const int d) const {
@@ -60,13 +58,13 @@ protected:
 		fire_shift *= _fire_shift;
 		pos += fire_shift;
 	}
+
 private: 
 	const int getTargetPosition2(const std::set<std::string> &targets, const std::string &weapon) const;
 
 
 	Alarm _reaction;
 	Alarm _fire, _alt_fire;
-	bool _left;
 	
 	std::set<std::string> _enemies;
 	float _fire_shift; //do not serialize
@@ -84,15 +82,22 @@ const int Boss1::getTargetPosition2(const std::set<std::string> &targets, const 
 		if (hasSameOwner(o))
 			continue;
 		
-		v2<float> tp = getRelativePosition(o);
-		float dist = tp.length();
+		v2<float> cp, my_cp;
+		getCenterPosition(my_cp);
+		o->getCenterPosition(cp);
+		
 		
 		for(int d = 0; d < dirs; ++d) {
+			v2<float> firepoint = my_cp;
+			addFireShift(firepoint, d);
+
+			v2<float> tp = cp - firepoint;
+			float dist = tp.length();
+			
 			v2<float> dir;
 			dir.fromDirection(d, dirs);
 			dir *= dist;
 			
-			addFireShift(dir, d);
 			dir -= tp;
 			float l = dir.length();
 			if (l < 25) 
@@ -111,7 +116,7 @@ void Boss1::onSpawn() {
 	play("hold", true);
 
 	float rt;
-	Config->get("objects." + registered_name + ".reaction-time", rt, 0.1f);
+	Config->get("objects." + registered_name + ".reaction-time", rt, 0.05f);
 	_reaction.set(rt);
 
 	Config->get("objects." + registered_name + ".fire-rate", rt, 0.1f);
@@ -128,7 +133,7 @@ void Boss1::emit(const std::string &event, Object * emitter) {
 	Object::emit(event, emitter);
 }
 
-Boss1::Boss1(const float fire_shift) : Object("monster"), _reaction(true), _fire(false), _alt_fire(false), _left(false), _fire_shift(fire_shift) {}
+Boss1::Boss1(const float fire_shift) : Object("monster"), _reaction(true), _fire(false), _alt_fire(false), _fire_shift(fire_shift) {}
 
 void Boss1::calculate(const float dt) {
 	if (GameMonitor->disabled(this))
@@ -170,9 +175,8 @@ void Boss1::tick(const float dt) {
 		if ( _fire.tick(dt)) {
 			_fire.reset();
 			v2<float> dpos;
-			addFireShift(dpos, getDirection());
-			spawn("helicopter-bullet", _left?"helicopter-bullet-left":"helicopter-bullet-right", dpos, _direction);
-			_left = !_left;
+			//addFireShift(dpos, getDirection());
+			spawn("helicopter-bullet", "uberzombie-bullet", dpos, _direction);
 		}
 	} else if (_velocity.is0() && getState() != "hold") {
 		cancelAll();
@@ -189,4 +193,4 @@ Object * Boss1::clone() const {
 }
 
 
-REGISTER_OBJECT("uberzombie", Boss1, (24));
+REGISTER_OBJECT("uberzombie", Boss1, (38));
