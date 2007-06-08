@@ -28,6 +28,11 @@ class Boss1 : public Object, public ai::Waypoints {
 public: 
 	Boss1(const float fire_shift);
 
+	virtual void addDamage(Object *from, const int hp, const bool emitDeath) {
+		_stable.reset();
+		Object::addDamage(from, hp, emitDeath);
+	}
+	
 	virtual void calculate(const float dt);
 	virtual void tick(const float dt);
 	virtual void onSpawn();
@@ -41,6 +46,7 @@ public:
 		s.add(_reaction);
 		s.add(_fire);
 		s.add(_alt_fire);
+		s.add(_stable);
 	}
 	virtual void deserialize(const mrt::Serializator &s) {
 		Object::deserialize(s);
@@ -48,6 +54,7 @@ public:
 		s.get(_reaction);
 		s.get(_fire);
 		s.get(_alt_fire);
+		s.get(_stable);
 	}
 protected: 
 	void addFireShift(v2<float>& pos, const int d) const {
@@ -65,6 +72,7 @@ private:
 
 	Alarm _reaction;
 	Alarm _fire, _alt_fire;
+	Alarm _stable;
 	
 	std::set<std::string> _enemies;
 	float _fire_shift; //do not serialize
@@ -133,13 +141,19 @@ void Boss1::emit(const std::string &event, Object * emitter) {
 	Object::emit(event, emitter);
 }
 
-Boss1::Boss1(const float fire_shift) : Object("monster"), _reaction(true), _fire(false), _alt_fire(false), _fire_shift(fire_shift) {}
+Boss1::Boss1(const float fire_shift) : 
+	Object("monster"), _reaction(true), _fire(false), _alt_fire(false), _stable(1.0f, false), _fire_shift(fire_shift) {}
 
 void Boss1::calculate(const float dt) {
+	bool stable = _stable.tick(dt);
+
 	if (GameMonitor->disabled(this))
 		return;
 
-	if (_reaction.tick(dt)) {
+	if (!stable)
+		_state.fire = false;
+	
+	if (_reaction.tick(dt) && stable) {
 		_state.fire = false;
 		int dir = getTargetPosition2(_enemies, "helicopter-bullet");
 		if (dir >= 0) {
@@ -193,4 +207,4 @@ Object * Boss1::clone() const {
 }
 
 
-REGISTER_OBJECT("uberzombie", Boss1, (38));
+REGISTER_OBJECT("uberzombie", Boss1, (40));
