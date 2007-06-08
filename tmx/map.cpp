@@ -862,9 +862,11 @@ void IMap::render(sdlx::Surface &window, const sdlx::Rect &src, const sdlx::Rect
 				}
 				
 				const sdlx::Surface * s = getSurface(l->second, txp + tx, typ + ty);
+				if (s == NULL)
+					continue;
+				
 				v2<int> dpos = l->second->position.convert<int>();
-				if (s != NULL) 
-					window.copyFrom(*s, dst.x + xp + tx * _tw + dpos.x, dst.y + yp + ty * _th + dpos.y);
+				window.copyFrom(*s, dst.x + xp + tx * _tw + dpos.x, dst.y + yp + ty * _th + dpos.y);
 			}
 		}
 	}
