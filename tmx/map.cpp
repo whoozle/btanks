@@ -895,7 +895,7 @@ void IMap::render(sdlx::Surface &window, const sdlx::Rect &src, const sdlx::Rect
 							}					
 						}
 					}
-				}
+				} //if (shifting)
 			}
 		}
 	}
