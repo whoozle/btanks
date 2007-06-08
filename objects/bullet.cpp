@@ -166,7 +166,7 @@ void Bullet::emit(const std::string &event, Object * emitter) {
 			dpos = getRelativePosition(emitter) / 2;
 		}
 		if (_type == "regular") {
-			GET_CONFIG_VALUE("objects.explosion-downwards-z-override", int, edzo, 180)
+			GET_CONFIG_VALUE("objects.explosion-downwards-z-override", int, edzo, 180);
 			int z = (_velocity.y >= 0) ? edzo : 0;
 			spawn("explosion", "explosion", dpos, v2<float>::empty, z);
 		} else if (_type == "dirt") {
@@ -197,7 +197,7 @@ void Bullet::emit(const std::string &event, Object * emitter) {
 			(_type == "dispersion")
 			)
 		) {
-			GET_CONFIG_VALUE("objects.explosion-downwards-z-override", int, edzo, 180)
+			GET_CONFIG_VALUE("objects.explosion-downwards-z-override", int, edzo, 180);
 			int z = (_velocity.y >= 0) ? edzo : 0;
 			spawn("explosion", "explosion", dpos, v2<float>::empty, z);			
 		}
