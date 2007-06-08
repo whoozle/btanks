@@ -73,9 +73,6 @@ private:
 };
 
 const int Boss1::getTargetPosition2(const std::set<std::string> &targets, const std::string &weapon) const {
-	if (GameMonitor->disabled(this))
-		return -1;
-
 	float range = getWeaponRange(weapon);
 	
 	const int dirs = getDirectionsNumber();
@@ -134,6 +131,9 @@ void Boss1::emit(const std::string &event, Object * emitter) {
 Boss1::Boss1(const float fire_shift) : Object("monster"), _reaction(true), _fire(false), _alt_fire(false), _left(false), _fire_shift(fire_shift) {}
 
 void Boss1::calculate(const float dt) {
+	if (GameMonitor->disabled(this))
+		return;
+
 	if (_reaction.tick(dt)) {
 		_state.fire = false;
 		int dir = getTargetPosition2(_enemies, "helicopter-bullet");
