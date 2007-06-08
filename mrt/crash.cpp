@@ -15,6 +15,9 @@ static void crash_handler(int sno) {
 
 void mrt::install_crash_handlers() {
 #ifndef WIN32
+	if (getenv("MRT_NO_CRASH_HANDLER") != NULL)
+		return;
+	
 		struct sigaction sa;
 		memset(&sa, 0, sizeof(sa));
 		sa.sa_handler = crash_handler;
