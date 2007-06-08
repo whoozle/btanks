@@ -720,6 +720,19 @@ void IMap::end(const std::string &name) {
 			layer->setAnimation(fs, fn, speed);
 		}
 		
+		const std::string a_velocity = _properties["shifting-velocity"];
+		const std::string a_size = _properties["shifting-size"];
+		if (!a_velocity.empty() && !a_size.empty()) {
+			v2<int> vel, size;
+			vel.fromString(a_velocity);
+			size.fromString(a_size);
+			if (size.x <= 0 || size.y <= 0)	
+				throw_ex(("shift size must not be negative or zero"));
+			layer->velocity = vel.convert<float>();
+			layer->size = size * v2<int>(_tw, _th);
+			LOG_DEBUG(("shifting rendering: velocity: (%g,%g) wrapping: %dx%d", layer->velocity.x, layer->velocity.y, layer->size.x, layer->size.y));
+		}
+		
 		layer->impassability = impassability;
 		layer->pierceable = pierceable;
 		layer->hp = hp;
