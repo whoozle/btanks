@@ -17,9 +17,12 @@
  */
 
 #include "resource_manager.h"
+#include "game_monitor.h"
 #include "config.h"
 #include "object.h"
 #include "ai/waypoints.h"
+#include "alarm.h"
+#include "world.h"
 
 class Boss1 : public Object, public ai::Waypoints {
 public: 
@@ -35,45 +38,106 @@ public:
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
 		//ai::Waypoints::serialize(s);
+		s.add(_reaction);
+		s.add(_fire);
+		s.add(_alt_fire);
+		s.add(_left);
 	}
 	virtual void deserialize(const mrt::Serializator &s) {
 		Object::deserialize(s);
 		//ai::Waypoints::deserialize(s);
+		s.get(_reaction);
+		s.get(_fire);
+		s.get(_alt_fire);
+		s.get(_left);
 	}
 private: 
-	virtual void getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const;
+	const int getTargetPosition2(const std::set<std::string> &targets, const std::string &weapon) const;
+
+
+	Alarm _reaction;
+	Alarm _fire, _alt_fire;
+	bool _left;
+	
+	std::set<std::string> _enemies;
 };
 
-void Boss1::getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const {
-	if (impassability >= 0.2) {
-		base = 0.2;
-		base_value = 0.8;
-		return;
-	}
+const int Boss1::getTargetPosition2(const std::set<std::string> &targets, const std::string &weapon) const {
+	if (GameMonitor->disabled(this))
+		return -1;
+
+	float range = getWeaponRange(weapon);
+	
+	const int dirs = getDirectionsNumber();
+	
+	std::set<const Object *> objects;
+	World->enumerateObjects(objects, this, range, &targets);
+	for(std::set<const Object *>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
+		const Object *o = *i;
+		if (hasSameOwner(o))
+			continue;
+		
+		v2<float> tp = getRelativePosition(o);
+		float dist = tp.length();
+		
+		for(int d = 0; d < dirs; ++d) {
+			v2<float> dir;
+			dir.fromDirection(d, dirs);
+			dir *= dist;
+			dir -= tp;
+			float l = dir.length();
+			if (l < 25) 
+				return d;
+			//LOG_DEBUG(("%d: %g", d, l));
+		}
+	}	
+	return -1;
 }
-/*
-const int Boss1::getPenalty(const int map_im, const int obj_im) const {
-	return (map_im >= 20 || obj_im >= 20)?5000:0;
-}
-*/
 
 void Boss1::emit(const std::string &event, Object * emitter) {
 	if (event == "death") {
 		spawn("corpse", "dead-" + animation, v2<float>::empty, v2<float>::empty);
-	} else if (event == "collision") {
-		
-	}
+	} 
 	Object::emit(event, emitter);
 }
 
 void Boss1::onSpawn() {
+	_enemies.insert("player");
+	_enemies.insert("trooper");
+	
 	ai::Waypoints::onSpawn(this);
 	play("hold", true);
+
+	float rt;
+	Config->get("objects." + registered_name + ".reaction-time", rt, 0.1f);
+	_reaction.set(rt);
+
+	Config->get("objects." + registered_name + ".fire-rate", rt, 0.1f);
+	_fire.set(rt);
+	//Config->get("objects." + registered_name + ".alt-fire-rate", rt, 1.0f);
+	_alt_fire.set(rt);
 }
 
-Boss1::Boss1() : Object("monster") {}
+Boss1::Boss1() : Object("monster"), _reaction(true), _fire(false), _alt_fire(false), _left(false) {}
 
 void Boss1::calculate(const float dt) {
+	if (_reaction.tick(dt)) {
+		_state.fire = false;
+		int dir = getTargetPosition2(_enemies, "helicopter-bullet");
+		if (dir >= 0) {
+			//LOG_DEBUG(("target dir = %d", dir));
+			_state.fire = true;
+			setDirection(dir);
+			_direction.fromDirection(dir, getDirectionsNumber());
+		}
+	}
+	
+	if (_state.fire) {
+		_velocity.clear();
+		updateStateFromVelocity();
+		return;	
+	}
+
 	ai::Waypoints::calculate(this, dt);
 
 	float rt;
@@ -85,7 +149,17 @@ void Boss1::calculate(const float dt) {
 
 void Boss1::tick(const float dt) {
 	Object::tick(dt);
-	if (_velocity.is0() && getState() != "hold") {
+	if (_state.fire) { 
+		if (getState() != "fire") {
+			cancelAll();
+			play("fire", true);
+		}
+		if ( _fire.tick(dt)) {
+			_fire.reset();
+			spawn("helicopter-bullet", _left?"helicopter-bullet-left":"helicopter-bullet-right", v2<float>::empty, _direction);
+			_left = !_left;
+		}
+	} else if (_velocity.is0() && getState() != "hold") {
 		cancelAll();
 		play("hold", true);
 	} else if (!_velocity.is0() && getState() != "walk") {
