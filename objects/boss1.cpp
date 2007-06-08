@@ -26,7 +26,7 @@
 
 class Boss1 : public Object, public ai::Waypoints {
 public: 
-	Boss1();
+	Boss1(const float fire_shift);
 
 	virtual void calculate(const float dt);
 	virtual void tick(const float dt);
@@ -51,6 +51,15 @@ public:
 		s.get(_alt_fire);
 		s.get(_left);
 	}
+protected: 
+	void addFireShift(v2<float>& pos, const int d) const {
+		const int dirs = getDirectionsNumber();
+		const int shift_d = (5 + d) % dirs;
+		v2<float> fire_shift;
+		fire_shift.fromDirection(shift_d, dirs);
+		fire_shift *= _fire_shift;
+		pos += fire_shift;
+	}
 private: 
 	const int getTargetPosition2(const std::set<std::string> &targets, const std::string &weapon) const;
 
@@ -60,6 +69,7 @@ private:
 	bool _left;
 	
 	std::set<std::string> _enemies;
+	float _fire_shift; //do not serialize
 };
 
 const int Boss1::getTargetPosition2(const std::set<std::string> &targets, const std::string &weapon) const {
@@ -84,6 +94,8 @@ const int Boss1::getTargetPosition2(const std::set<std::string> &targets, const 
 			v2<float> dir;
 			dir.fromDirection(d, dirs);
 			dir *= dist;
+			
+			addFireShift(dir, d);
 			dir -= tp;
 			float l = dir.length();
 			if (l < 25) 
@@ -92,13 +104,6 @@ const int Boss1::getTargetPosition2(const std::set<std::string> &targets, const 
 		}
 	}	
 	return -1;
-}
-
-void Boss1::emit(const std::string &event, Object * emitter) {
-	if (event == "death") {
-		spawn("corpse", "dead-" + animation, v2<float>::empty, v2<float>::empty);
-	} 
-	Object::emit(event, emitter);
 }
 
 void Boss1::onSpawn() {
@@ -118,7 +123,15 @@ void Boss1::onSpawn() {
 	_alt_fire.set(rt);
 }
 
-Boss1::Boss1() : Object("monster"), _reaction(true), _fire(false), _alt_fire(false), _left(false) {}
+
+void Boss1::emit(const std::string &event, Object * emitter) {
+	if (event == "death") {
+		spawn("corpse", "dead-" + animation, v2<float>::empty, v2<float>::empty);
+	} 
+	Object::emit(event, emitter);
+}
+
+Boss1::Boss1(const float fire_shift) : Object("monster"), _reaction(true), _fire(false), _alt_fire(false), _left(false), _fire_shift(fire_shift) {}
 
 void Boss1::calculate(const float dt) {
 	if (_reaction.tick(dt)) {
@@ -156,7 +169,9 @@ void Boss1::tick(const float dt) {
 		}
 		if ( _fire.tick(dt)) {
 			_fire.reset();
-			spawn("helicopter-bullet", _left?"helicopter-bullet-left":"helicopter-bullet-right", v2<float>::empty, _direction);
+			v2<float> dpos;
+			addFireShift(dpos, getDirection());
+			spawn("helicopter-bullet", _left?"helicopter-bullet-left":"helicopter-bullet-right", dpos, _direction);
 			_left = !_left;
 		}
 	} else if (_velocity.is0() && getState() != "hold") {
@@ -174,4 +189,4 @@ Object * Boss1::clone() const {
 }
 
 
-REGISTER_OBJECT("uberzombie", Boss1, ());
+REGISTER_OBJECT("uberzombie", Boss1, (24));
