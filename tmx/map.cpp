@@ -851,18 +851,20 @@ void IMap::render(sdlx::Surface &window, const sdlx::Rect &src, const sdlx::Rect
 		if (strip_alpha && l->second->impassability == -1) 
 			continue;
 		
+		const bool shifting = !l->second->velocity.is0();
 		//LOG_DEBUG(("z: %d << %d, layer: %d", z1, z2, l->first));
 		
 		for(int ty = 0; ty < tyn; ++ty) {
 			for(int tx = 0; tx < txn; ++tx) {
-				if (!strip_alpha && z < _cover_map.get(typ + ty, txp + tx)) {//this tile covered by another tile
+				if (!strip_alpha && !shifting && z < _cover_map.get(typ + ty, txp + tx)) {//this tile covered by another tile
 					//++skipped;
 					continue;
 				}
 				
 				const sdlx::Surface * s = getSurface(l->second, txp + tx, typ + ty);
+				v2<int> dpos = l->second->position.convert<int>();
 				if (s != NULL) 
-					window.copyFrom(*s, dst.x + xp + tx * _tw, dst.y + yp + ty * _th);
+					window.copyFrom(*s, dst.x + xp + tx * _tw + dpos.x, dst.y + yp + ty * _th + dpos.y);
 			}
 		}
 	}
