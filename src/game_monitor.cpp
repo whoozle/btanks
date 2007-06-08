@@ -44,7 +44,7 @@ IMPLEMENT_SINGLETON(GameMonitor, IGameMonitor);
 
 IGameMonitor::IGameMonitor() : _game_over(false), _win(false), _check_items(0.5, true), _state_timer(false), _timer(0) {}
 
-void Item::respawn() {
+void GameItem::respawn() {
 	LOG_DEBUG(("respawning item: %s:%s", classname.c_str(), animation.c_str()));
 	Object *o = ResourceManager->createObject(classname, animation);
 	if (z) 
@@ -56,7 +56,7 @@ void Item::respawn() {
 	dead_on = 0;
 }
 
-void Item::updateMapProperty() {
+void GameItem::updateMapProperty() {
 	if (z) 
 		Map->properties[property] = mrt::formatString("%d,%d,%d", position.x, position.y, z);
 	else 
@@ -71,9 +71,9 @@ void IGameMonitor::eraseLast(const std::string &property) {
 	_items.pop_back();
 }
 
-const Item& IGameMonitor::find(const Object *obj) const {
+const GameItem& IGameMonitor::find(const Object *obj) const {
 	for(Items::const_iterator i = _items.begin(); i != _items.end(); ++i) {
-		const Item &item = *i;
+		const GameItem &item = *i;
 		Object *o = World->getObjectByID(item.id);
 		if (obj == o) 
 			return item;
@@ -81,7 +81,7 @@ const Item& IGameMonitor::find(const Object *obj) const {
 	throw_ex(("could not find item %s:%s", obj->registered_name.c_str(), obj->animation.c_str()));
 }
 
-Item& IGameMonitor::find(const Object *obj) {
+GameItem& IGameMonitor::find(const Object *obj) {
 	for(Items::iterator i = _items.begin(); i != _items.end(); ++i) {
 		Object *o = World->getObjectByID(i->id);
 		if (obj == o) 
@@ -90,7 +90,7 @@ Item& IGameMonitor::find(const Object *obj) {
 	throw_ex(("could not find item %s:%s", obj->registered_name.c_str(), obj->animation.c_str()));
 }
 
-Item& IGameMonitor::find(const std::string &property) {
+GameItem& IGameMonitor::find(const std::string &property) {
 	for(Items::iterator i = _items.begin(); i != _items.end(); ++i) {
 		if (i->property == property) 
 			return *i;
@@ -113,7 +113,7 @@ void IGameMonitor::checkItems(const float dt) {
 	_specials.clear();
 	
 	for(Items::iterator i = _items.begin(); i != _items.end(); ++i) {
-		Item &item = *i;
+		GameItem &item = *i;
 		Object *o = World->getObjectByID(item.id);
 
 		bool dead = true;
@@ -168,8 +168,8 @@ void IGameMonitor::checkItems(const float dt) {
 	}
 }
 
-void IGameMonitor::add(const Item &item_) {
-	Item item(item_);
+void IGameMonitor::add(const GameItem &item_) {
+	GameItem item(item_);
 	Object *o = ResourceManager->createObject(item.classname, item.animation);
 	if (item.z)
 		o->setZ(item.z, true);
@@ -584,7 +584,7 @@ void IGameMonitor::loadMap(const std::string &campaign, const std::string &name,
 				if (res.size() < 4)
 					throw_ex(("'%s' misses an argument", i->first.c_str()));
 				res.resize(5);
-				Item item(res[1], res[2], i->first, v2<int>(pos.x, pos.y), pos.z);
+				GameItem item(res[1], res[2], i->first, v2<int>(pos.x, pos.y), pos.z);
 				item.destroy_for_victory = res[3].substr(0, 19) == "destroy-for-victory";
 				if (res[3] == "save-for-victory")
 					item.save_for_victory = res[4];

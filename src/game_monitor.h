@@ -40,8 +40,8 @@ class Rect;
 class BaseObject;
 class Object;
 
-struct BTANKSAPI Item {
-	Item(const std::string &classname, const std::string &animation, const std::string &property, const v2<int> position, const int z = 0) :
+struct BTANKSAPI GameItem {
+	GameItem(const std::string &classname, const std::string &animation, const std::string &property, const v2<int> position, const int z = 0) :
 		classname(classname), animation(animation), property(property), position(position), z(z), id(-1), dead_on(0), 
 		destroy_for_victory(false)
 		{}
@@ -64,11 +64,11 @@ public:
 	IGameMonitor();
 	DECLARE_SINGLETON(IGameMonitor);
 
-	void add(const Item &item);	
-	Item& find(const std::string &property);
+	void add(const GameItem &item);	
+	GameItem& find(const std::string &property);
 	void eraseLast(const std::string &property);
-	Item& find(const Object *o);
-	const Item& find(const Object *o) const;
+	GameItem& find(const Object *o);
+	const GameItem& find(const Object *o) const;
 	const std::string generatePropertyName(const std::string &prefix);
 	
 	void checkItems(const float dt);
@@ -111,7 +111,7 @@ private:
 
 	bool _game_over, _win;
 
-	typedef std::deque<Item> Items;
+	typedef std::deque<GameItem> Items;
 	Items _items;
 	std::vector<v3<int> > _specials;
 
