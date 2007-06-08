@@ -408,6 +408,8 @@ const Object *IResourceManager::getClass(const std::string &classname) const {
 	return i->second;	
 }
 
+#include "mrt/fs_node.h"
+
 void IResourceManager::checkSurface(const std::string &animation, const sdlx::Surface *& surface_ptr, const sdlx::CollisionMap *& cmap_ptr) {
 	if (surface_ptr != NULL && cmap_ptr != NULL) 
 		return;
@@ -417,7 +419,11 @@ void IResourceManager::checkSurface(const std::string &animation, const sdlx::Su
 	sdlx::Surface *s = _surfaces[a->surface];
 	sdlx::CollisionMap *cmap = _cmaps[a->surface];
 
-	const std::string fname = a->base_dir + "/tiles/" + a->surface;
+	std::string fname = a->base_dir + "/tiles/" + a->surface;
+	if (!mrt::FSNode::exists(fname)) {
+		fname = Finder->find("tiles/" + a->surface);
+	}
+	
 	if (s == NULL) {
 		TRY {
 			s = new sdlx::Surface;
