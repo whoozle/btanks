@@ -541,6 +541,9 @@ void IGameMonitor::loadMap(const std::string &campaign, const std::string &name,
 	
 	//const v2<int> size = map.getSize();
 	for (IMap::PropertyMap::iterator i = map.properties.begin(); i != map.properties.end(); ++i) {
+		if (i->first.empty())
+			throw_ex(("property name could not be empty"));
+		
 		std::vector<std::string> res;
 		mrt::split(res, i->first, ":");
 		const std::string &type = res[0];
