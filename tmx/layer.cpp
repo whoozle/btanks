@@ -193,6 +193,18 @@ void Layer::setAnimation(const int frame_size, const int frames, const float spe
 }
 
 void Layer::tick(const float dt) {
+	if (!velocity.is0()) {
+		position += velocity;
+		if (position.x > size.x) 
+			position.x -= size.x;
+		if (position.x < 0) 
+			position.x += size.x;
+		if (position.y > size.y) 
+			position.y -= size.y;
+		if (position.y < 0) 
+			position.y += size.y;
+	}
+
 	if (frames == 0 || frame_size == 0)
 		return;
 	pos += speed * dt;

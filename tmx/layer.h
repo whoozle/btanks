@@ -42,6 +42,9 @@ public:
 #ifdef PRERENDER_LAYERS
 	sdlx::Surface surface;
 #endif
+	v2<float> position, velocity;
+	v2<int> size;
+
 	std::string name;
 	bool visible, solo;
 	int impassability, hp;
