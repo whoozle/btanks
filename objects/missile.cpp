@@ -132,14 +132,19 @@ void Missile::emit(const std::string &event, Object * emitter) {
 		//LOG_DEBUG(("edzo = %d", edzo));
 		spawn("smoke-cloud", "smoke-cloud", v2<float>::empty, v2<float>::empty, z);
 		Object::emit(event, emitter);
-	} else if (event == "death" && type == "nuke") {
+	} else if (event == "death" && (type == "nuke" || type == "mutagen")) {
 		Object *o = World->getObjectByID(getSummoner()); //player
 		v2<float> dpos;
 		if (o != NULL) {
 			dpos = o->getRelativePosition(this);
 		}
-			
-		Object * e = World->spawn(o != NULL?o:this, "nuclear-explosion", "nuclear-explosion", dpos, v2<float>::empty);
+		Object * e = NULL;
+		if (type == "nuke") 
+			e = World->spawn(o != NULL?o:this, "nuclear-explosion", "nuclear-explosion", dpos, v2<float>::empty);
+		else if (type == "mutagen") {
+			e = World->spawn(o != NULL?o:this, "mutagen-explosion", "mutagen-explosion", dpos, v2<float>::empty);
+		} else assert(0);
+		
 		e->disown();
 		Object::emit(event, emitter);
 	} else if (event == "death") {
@@ -165,3 +170,4 @@ REGISTER_OBJECT("smoke-missile", Missile, ("smoke"));
 REGISTER_OBJECT("nuke-missile", Missile, ("nuke"));
 REGISTER_OBJECT("boomerang-missile", Missile, ("boomerang"));
 REGISTER_OBJECT("stun-missile", Missile, ("stun"));
+REGISTER_OBJECT("mutagen-missile", Missile, ("mutagen"));

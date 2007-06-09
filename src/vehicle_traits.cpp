@@ -39,16 +39,18 @@ void VehicleTraits::getWeaponCapacity(int &max_n, int &max_v, const std::string 
 	int def_v = 1;
 
 	if (vehicle == "launcher") {
-		def_v = (type == "nuke")?2:3;
+		def_v = (type == "nuke" || type == "mutagen")?2:3;
 		if (type == "guided") 
 			def_cap = 15;
 		else if (type == "nuke")
 			def_cap = 4;
 		else if (type == "stun")
 			def_cap = 6;
+		else if (type == "mutagen") 
+			def_cap = 3;
 			
 	} else if (vehicle == "tank") {
-		if (type == "nuke")
+		if (type == "nuke" || type == "mutagen")
 			def_cap = 3;
 		else if (type == "boomerang") 
 			def_cap = 6;
