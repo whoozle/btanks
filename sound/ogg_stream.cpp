@@ -308,6 +308,21 @@ void OggStream::decode(Sample &sample, const std::string &fname) {
 	ov_clear(&ogg);	
 }
 
+void OggStream::flush() {
+	TRY { 
+		while(_alive && _running) {
+			ALenum state;
+			alGetSourcei(_source, AL_SOURCE_STATE, &state);
+			AL_CHECK(("alGetSourcei(%08x, AL_SOURCE_STATE)", (unsigned)_source));
+	
+			if (state != AL_PLAYING)
+				break;
+			else
+				SDL_Delay(_delay);
+		}
+	} CATCH("playTune(flush)", throw;)
+}
+
 void OggStream::playTune() {
 	_running = true;
 	TRY {
@@ -339,20 +354,10 @@ void OggStream::playTune() {
 		}
 	} CATCH("playTune(main loop)", throw;)
 
-	TRY { 
-		while(_alive && _running) {
-			ALenum state;
-			alGetSourcei(_source, AL_SOURCE_STATE, &state);
-			AL_CHECK(("alGetSourcei(%08x, AL_SOURCE_STATE)", (unsigned)_source));
-	
-			if (state != AL_PLAYING)
-				break;
-			else
-				SDL_Delay(_delay);
-		}
-	} CATCH("playTune(flush)", throw;)
+	if (!_repeat) 
+		flush();
 
-	LOG_DEBUG(("deleting al source/buffers"));
+	LOG_DEBUG(("stopping source..."));
 
 	alSourceStop(_source);
 	AL_CHECK_NON_FATAL(("alSourceStop(%08x)", (unsigned)_source));

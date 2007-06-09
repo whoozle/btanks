@@ -57,6 +57,8 @@ private:
 	const bool update();
 	void empty();
 	void _open();
+	void rewind();
+	void flush();
 	const bool stream(ALuint buffer);
 
 	sdlx::Mutex _lock;
