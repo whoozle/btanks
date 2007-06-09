@@ -308,6 +308,14 @@ void OggStream::decode(Sample &sample, const std::string &fname) {
 	ov_clear(&ogg);	
 }
 
+void OggStream::rewind() {
+	LOG_DEBUG(("rewinding stream..."));
+	int r = ov_raw_seek(&_ogg_stream, 0);
+	if (r != 0)
+		throw_ogg(r, ("ov_raw_seek"));
+	_eof_reached = false;
+}
+
 void OggStream::flush() {
 	TRY { 
 		while(_alive && _running) {
@@ -320,7 +328,7 @@ void OggStream::flush() {
 			else
 				SDL_Delay(_delay);
 		}
-	} CATCH("playTune(flush)", throw;)
+	} CATCH("flush", throw;)
 }
 
 void OggStream::playTune() {
@@ -336,6 +344,8 @@ void OggStream::playTune() {
 	TRY {
 		play();
 	} CATCH("playTune::play", throw;)
+	
+	do {
 	
 	TRY {
     	while(_alive && _running && update()) {
@@ -354,8 +364,12 @@ void OggStream::playTune() {
 		}
 	} CATCH("playTune(main loop)", throw;)
 
-	if (!_repeat) 
+	if (_repeat) 
+		rewind();
+	else
 		flush();
+	
+	} while(_running && _repeat);
 
 	LOG_DEBUG(("stopping source..."));
 
@@ -416,9 +430,7 @@ TRY {
 		if (!_alive)
 			break;
 		
-		do {
-			playTune();	
-		} while(_running && _repeat);	
+		playTune();	
 		_running = false;
 	}
 	return 0;
