@@ -44,6 +44,7 @@ public:
 	void loadPlaylist(const std::string &file);
 	void play();
 	const bool play(const std::string &fname, const bool continuous = false);
+	void reset(); //stop playing custom music
 	
 	//sample part
 	void setListener(const v3<float> &pos, const v3<float> &vel, const float r);
@@ -114,7 +115,7 @@ private:
 	
 	float _volume_fx, _volume_music;
 	
-	bool _debug;
+	bool _debug, _loop;
 	
 	IMixer(const IMixer &);
 	const IMixer& operator=(const IMixer &);

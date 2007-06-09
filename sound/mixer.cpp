@@ -75,10 +75,15 @@ const bool IMixer::SourceInfo::playing() const {
 	return true;
 }
 
+void IMixer::reset() {
+	if (!_loop)
+		return;
+	play();
+}
 
 IMixer::IMixer() : alc_device(NULL), alc_context(NULL), 
 	_no_more_sources(false), _nosound(true), _nomusic(true), _ogg(NULL), _ambient(NULL), _ogg_source(0),
-	_volume_fx(1.0f), _volume_music(1.0f), _debug(false) {}
+	_volume_fx(1.0f), _volume_music(1.0f), _debug(false), _loop(false) {}
 
 void IMixer::dumpContextAttrs() const {
 	ALCint attrSize;
@@ -337,7 +342,8 @@ void IMixer::loadPlaylist(const std::string &file) {
 const bool IMixer::play(const std::string &fname, const bool continuous) {
 	if (_ogg == NULL) 
 		return false;
-	
+
+	_loop = continuous;	
 	LOG_DEBUG(("playing %s",fname.c_str()));
 	std::string::size_type dp = fname.rfind('.');
 	std::string ext = "unknown";
