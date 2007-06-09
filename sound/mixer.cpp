@@ -321,7 +321,6 @@ void IMixer::loadPlaylist(const std::string &file) {
 	if (_nomusic) 
 		return;
 	
-	_playlist.clear();
 	TRY {
 		mrt::File f;
 		f.open(file, "rt");
@@ -332,7 +331,7 @@ void IMixer::loadPlaylist(const std::string &file) {
 		}
 		f.close();
 	} CATCH("loadPlayList", {});
-	LOG_DEBUG(("loaded %u songs in playlist", (unsigned)_playlist.size()));
+	LOG_DEBUG(("playlist loaded... %u songs in playlist", (unsigned)_playlist.size()));
 }
 
 const bool IMixer::play(const std::string &fname, const bool continuous) {

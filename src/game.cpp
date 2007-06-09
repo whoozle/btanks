@@ -207,9 +207,17 @@ void IGame::init(const int argc, char *argv[]) {
 	
 	
 	Window->init(argc, argv);
+
+	IFinder::FindResult playlists;
+	Finder->findAll(playlists, "playlist");
+	if (playlists.empty())
+		no_music = true;
+
 	Mixer->init(no_sound, no_music);
 	
-	Mixer->loadPlaylist(Finder->find("playlist"));
+	for(size_t i = 0; i < playlists.size(); ++i) 
+		Mixer->loadPlaylist(playlists[i].second);
+	
 	Mixer->play();
 
 	LOG_DEBUG(("probing for joysticks"));
