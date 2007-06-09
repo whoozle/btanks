@@ -595,6 +595,7 @@ void IGame::deinit() {
 void IGame::clear() {
 	LOG_DEBUG(("cleaning up main game object..."));
 	Mixer->cancelAll();
+	Mixer->reset();
 
 	PlayerManager->clear();
 
