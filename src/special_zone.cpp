@@ -26,7 +26,7 @@
 #include "i18n.h"
 #include "menu/tooltip.h"
 #include "object.h"
-//#include "game.h"
+#include "sound/mixer.h"
 #include <set>
 
 SpecialZone::~SpecialZone() {}
@@ -43,6 +43,7 @@ SpecialZone::SpecialZone(const ZBox & zbox, const std::string &type, const std::
 		allowed_types.insert("reset-timer");
 		allowed_types.insert("disable-ai");
 		allowed_types.insert("enable-ai");
+		allowed_types.insert("play-tune");
 	}
 	
 	if (allowed_types.find(type) == allowed_types.end()) 
@@ -55,7 +56,8 @@ const bool SpecialZone::global() const {
 		type == "timer-win" || 
 		type == "reset-timer" || 
 		type == "disable-ai" || 
-		type == "enable-ai");
+		type == "enable-ai" || 
+		type == "play-tune");
 }
 
 
@@ -98,6 +100,8 @@ void SpecialZone::onEnter(const int slot_id) {
 		GameMonitor->disable(name);
 	else if (type == "enable-ai") 
 		GameMonitor->disable(name, false);
+	else if (type == "play-tune") 
+		Mixer->play(name, true);
 	else 
 		throw_ex(("unhandled type '%s'", type.c_str()));
 }
