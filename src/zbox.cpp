@@ -45,7 +45,7 @@ const bool ZBox::sameBox(const int z1, const int z2) {
 }
 
 const int ZBox::getBox(const int z) {
-	return (z / 1000  + math::sign(z) ) / 2;
+	return ((z < 0?z + 1:z) / 1000  + math::sign(z) ) / 2;
 }
 
 const int ZBox::getBoxBase(const int z) {
