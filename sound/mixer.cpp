@@ -344,6 +344,7 @@ const bool IMixer::play(const std::string &fname, const bool continuous) {
 		return false;
 
 	_loop = continuous;	
+	
 	LOG_DEBUG(("playing %s",fname.c_str()));
 	std::string::size_type dp = fname.rfind('.');
 	std::string ext = "unknown";
@@ -355,7 +356,14 @@ const bool IMixer::play(const std::string &fname, const bool continuous) {
 		return false;
 	}
 
-	_ogg->play(fname, continuous, _volume_music);
+	std::string real_file;
+	if (!mrt::FSNode::exists(fname)) {
+		TRY { 
+			real_file = Finder->find("tunes/" + fname);
+		} CATCH("finding tune", return false;)
+	} else real_file = fname;
+
+	_ogg->play(real_file, continuous, _volume_music);
 	return true;
 }
 
