@@ -180,7 +180,7 @@
 		<pose id="boom">0,1,2,3,4,5</pose>
 	</animation-model>
 
-	<animation-model id="nuclear-explosion-animation" speed="5">
+	<animation-model id="nuke-explosion-animation" speed="5">
 		<pose id="boom" sound="nuke-explosion.ogg" gain="15">5,4,3,2,1,0</pose>
 	</animation-model>
 
@@ -544,7 +544,7 @@
 	<animation id="explosion" tile="explosion.png" model="explosion-animation" />
 	<animation id="missile-explosion" tile="missile_blast.png" model="missile-explosion-animation" />
 	<animation id="building-explosion" tile="building_explosion_128.png" model="building-explosion-animation" size="128" />
-	<animation id="nuclear-explosion" tile="nuclear_explosion.png" model="nuclear-explosion-animation" size="448" />
+	<animation id="nuke-explosion" tile="nuke_explosion.png" model="nuke-explosion-animation" size="448" />
 	<animation id="cannon-explosion" tile="cannon_explosion.png" model="cannon-explosion-animation" size="128" />
 	<animation id="mortar-explosion" tile="cannon_explosion.png" model="cannon-explosion-animation" size="128" />
 	<animation id="traffic-lights" tile="traffic_lights.png" model="traffic-lights-animation" />
@@ -705,7 +705,7 @@
 	<object class="explosion" hp="5" z="580" />
 	<object class="static-smoke-cloud" impassability="-1" hp="1000" z="580" />
 	<object class="smoke-cloud" parent="static-smoke-cloud" ttl="30" fadeout_time="1" />
-	<object class="nuclear-explosion" hp="1000" mass="10000" impassability="-1" z="900" />
+	<object class="nuke-explosion" hp="1000" mass="10000" impassability="-1" z="900" />
 	<object class="cannon-explosion" hp="30" impassability="-1" z="900" />
 	<object class="mortar-explosion" hp="30" impassability="-1" z="900" />
 	<object class="bomberman-explosion" hp="100" impassability="-1" z="900" />

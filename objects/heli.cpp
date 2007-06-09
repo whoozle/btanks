@@ -62,7 +62,7 @@ void Heli::onSpawn() {
 
 void Heli::emit(const std::string &event, Object * emitter) {
 	if (event == "death") {
-		spawn("explosion", "nuclear-explosion");
+		spawn("explosion", "nuke-explosion");
 	} else if (event == "collision") {
 	}
 	

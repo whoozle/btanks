@@ -79,7 +79,7 @@ void Explosion::tick(const float dt) {
 	Object::tick(dt);
 	const std::string state = getState();
 
-	GET_CONFIG_VALUE("objects.nuclear-explosion.damage-map-after", float, dma, 0.65);
+	GET_CONFIG_VALUE("objects.nuke-explosion.damage-map-after", float, dma, 0.65);
 
 	if  (
 			!_damage_done && getStateProgress() >= dma && state != "start"
@@ -98,7 +98,7 @@ void Explosion::onSpawn() {
 	if (_variants.has("building")) {
 		playRandomSound("building-explosion", false);
 	}
-	if (registered_name == "nuclear-explosion" && !_variants.has("no-shaking")) 
+	if (registered_name == "nuke-explosion" && !_variants.has("no-shaking")) 
 		Game->shake(1, 4);
 	disown();
 }
@@ -141,7 +141,7 @@ void Explosion::emit(const std::string &event, Object * emitter) {
 
 
 REGISTER_OBJECT("explosion", Explosion, ());
-REGISTER_OBJECT("nuclear-explosion", Explosion, ());
+REGISTER_OBJECT("nuke-explosion", Explosion, ());
 REGISTER_OBJECT("cannon-explosion", Explosion, ());
 REGISTER_OBJECT("mortar-explosion", Explosion, ());
 REGISTER_OBJECT("mutagen-explosion", Explosion, ());

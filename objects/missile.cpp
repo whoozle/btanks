@@ -139,11 +139,7 @@ void Missile::emit(const std::string &event, Object * emitter) {
 			dpos = o->getRelativePosition(this);
 		}
 		Object * e = NULL;
-		if (type == "nuke") 
-			e = World->spawn(o != NULL?o:this, "nuclear-explosion", "nuclear-explosion", dpos, v2<float>::empty);
-		else if (type == "mutagen") {
-			e = World->spawn(o != NULL?o:this, "mutagen-explosion", "mutagen-explosion", dpos, v2<float>::empty);
-		} else assert(0);
+		e = World->spawn(o != NULL?o:this, type + "-explosion", type + "-explosion", dpos, v2<float>::empty);
 		
 		e->disown();
 		Object::emit(event, emitter);

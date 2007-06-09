@@ -58,7 +58,7 @@ void Mine::tick(const float dt) {
 void Mine::emit(const std::string &event, Object * emitter) {
 	if (event == "death" && registered_name == "bomberman-mine") {
 		const bool nuke = _variants.has("nuke");
-		spawn(nuke?"nuclear-explosion":"bomberman-explosion", nuke?"nuclear-explosion":"cannon-explosion");
+		spawn(nuke?"nuke-explosion":"bomberman-explosion", nuke?"nuke-explosion":"cannon-explosion");
 		if (nuke)
 			return;
 
@@ -97,7 +97,7 @@ void Mine::emit(const std::string &event, Object * emitter) {
 	
 			const bool nuke = _variants.has("nuke");
 			
-			spawn(nuke?"nuclear-explosion":"explosion", nuke?"nuclear-explosion":"explosion");
+			spawn(nuke?"nuke-explosion":"explosion", nuke?"nuke-explosion":"explosion");
 			Object::emit("death", emitter);
 			emitter->addDamage(this, max_hp);
 		} 
