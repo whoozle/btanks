@@ -190,13 +190,14 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 		LOG_NOTICE(("opened device: %s", alcGetString(alc_device, ALC_DEVICE_SPECIFIER)));
 		LOG_NOTICE(("extensions: %s", alcGetString(alc_device, ALC_EXTENSIONS)));
 
-/*
+
 		ALCint attrs[] = {
 			ALC_SYNC, AL_TRUE, 
+//			ALC_REFRESH, 100,
 			ALC_INVALID, 
 		};
-*/
-		alc_context = alcCreateContext(alc_device, /* attrs */ NULL);
+		
+		alc_context = alcCreateContext(alc_device, attrs);
 		if (alc_context == NULL) 
 			throw_ex(("alcCreateContext failed"));
 		
@@ -719,9 +720,7 @@ void IMixer::tick(const float dt) {
 		play();
 	}
 
-	if (_nosound) 
-		return;
-	//LOG_DEBUG(("tick"));
+	if (!_nosound)  {
 	
 	const unsigned none_src = purgeInactiveSources();
 	
@@ -761,6 +760,12 @@ void IMixer::tick(const float dt) {
 			}
 		} CATCH("recovering loops", {info.source = AL_NONE; throw;} );
 		}
+	}
+
+	}
+	
+	if (!_nomusic || !_nosound) {
+		alcProcessContext(alc_context);
 	}
 }
 
