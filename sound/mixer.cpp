@@ -214,7 +214,7 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 #	endif
 		if (preallocate) {
 			LOG_DEBUG(("preallocating sources..."));
-			GET_CONFIG_VALUE("engine.sound.maximum-sources", int, max_sources, 32);
+			GET_CONFIG_VALUE("engine.sound.maximum-sources", int, max_sources, 16);
 			
 			_no_more_sources = true;
 			ALuint *sources = new ALuint[max_sources];

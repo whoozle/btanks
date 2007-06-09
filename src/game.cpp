@@ -165,6 +165,9 @@ void IGame::init(const int argc, char *argv[]) {
 		if (revision < 3942) {	
 			Config->set("engine.sound.file-buffer-size", 441000);
 		}
+		if (revision < 4009) {
+			Config->set("engine.sound.maximum-sources", 16);
+		}
 		{
 			int fps_limit;
 			Config->get("engine.fps-limit", fps_limit, 120);
