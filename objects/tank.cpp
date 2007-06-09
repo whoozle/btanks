@@ -40,10 +40,10 @@ void Tank::onSpawn() {
 	if (registered_name.substr(0, 6) == "static")
 		disown();
 
-	Object *_smoke = spawnGrouped("single-pose", "tank-smoke", v2<float>::empty, Centered);
+	Object *_smoke = spawnGrouped("single-pose", "tank-smoke", v2<float>(), Centered);
 	_smoke->impassability = 0;
 
-	Object *_missiles = spawnGrouped("missiles-on-tank", "guided-missiles-on-tank", v2<float>::empty, Centered);
+	Object *_missiles = spawnGrouped("missiles-on-tank", "guided-missiles-on-tank", v2<float>(), Centered);
 	_missiles->impassability = 0;
 
 	add("mod", _missiles);
@@ -143,7 +143,7 @@ void Tank::tick(const float dt) {
 			bullet = "ricochet-bullet";
 			var = "(auto-aim)";
 		}
-		spawn(bullet + var, bullet, v2<float>::empty, _direction);
+		spawn(bullet + var, bullet, v2<float>(), _direction);
 	}
 	if (_state.alt_fire && fire_possible) {
 		_fire.reset();

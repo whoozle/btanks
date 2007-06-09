@@ -40,7 +40,7 @@ void Heli::tick(const float dt) {
 	
 	if (_state.fire && _fire.tick(dt)) {
 		_fire.reset();
-		spawn("helicopter-bullet", _left?"helicopter-bullet-left":"helicopter-bullet-right", v2<float>::empty, _direction);
+		spawn("helicopter-bullet", _left?"helicopter-bullet-left":"helicopter-bullet-right", v2<float>(), _direction);
 		_left = !_left;
 	}
 	if (_state.alt_fire && _alt_fire.tick(dt)) {

@@ -47,9 +47,9 @@ void Shilka::onSpawn() {
 	if (registered_name.substr(0, 6) == "static")
 		disown();
 	
-	add("mod", spawnGrouped("fake-mod", "damage-digits", v2<float>::empty, Centered));
+	add("mod", spawnGrouped("fake-mod", "damage-digits", v2<float>(), Centered));
 	
-	Object *_smoke = spawnGrouped("single-pose", "tank-smoke", v2<float>::empty, Centered);
+	Object *_smoke = spawnGrouped("single-pose", "tank-smoke", v2<float>(), Centered);
 	_smoke->impassability = 0;
 
 	add("smoke", _smoke);
@@ -123,17 +123,17 @@ void Shilka::tick(const float dt) {
 		std::string animation = "shilka-bullet-";
 		animation += (_left_fire)?"left":"right";
 		if (isEffectActive("ricochet")) {
-			spawn("ricochet-bullet(auto-aim)", "ricochet-bullet", v2<float>::empty, _direction);
+			spawn("ricochet-bullet(auto-aim)", "ricochet-bullet", v2<float>(), _direction);
 			play_fire = true;
 		} else if (isEffectActive("dispersion")) {
 			if (special_fire_possible) {
 				_special_fire.reset();
-				spawn("dispersion-bullet", "dispersion-bullet", v2<float>::empty, _direction);
+				spawn("dispersion-bullet", "dispersion-bullet", v2<float>(), _direction);
 				play_fire = true;
 				goto skip_left_toggle;
 			};
 		} else { 
-			spawn("shilka-bullet", animation, v2<float>::empty, _direction);
+			spawn("shilka-bullet", animation, v2<float>(), _direction);
 			play_fire = true;
 		}
 		_left_fire = ! _left_fire;
@@ -156,7 +156,7 @@ skip_left_toggle:
 			std::string animation = "shilka-dirt-bullet-";
 			animation += (_left_fire)?"left":"right";
 
-			spawn("dirt-bullet", animation, v2<float>::empty, _direction);
+			spawn("dirt-bullet", animation, v2<float>(), _direction);
 
 			_left_fire = ! _left_fire;
 			play_fire = true;
@@ -166,7 +166,7 @@ skip_left_toggle:
 			res[0].resize(res[0].size() - 1);
 			std::string name = res[1] + "-" + res[0];
 			if (mod->getCount() > 0) {
-				spawn(name, name, _direction*(size.length()/-2), v2<float>::empty);
+				spawn(name, name, _direction*(size.length()/-2), v2<float>());
 				mod->decreaseCount();
 			}
 			
@@ -174,7 +174,7 @@ skip_left_toggle:
 			int n;
 			Config->get("objects.shilka.units-limit", n, 10); //fixme: add type restrictions
 			if (mod->getCount() > 0 && getChildren("trooper") < n) {
-				spawn(mod_type + "(disembark)", mod_type, _direction*(size.length()/-2), v2<float>::empty);
+				spawn(mod_type + "(disembark)", mod_type, _direction*(size.length()/-2), v2<float>());
 				mod->decreaseCount();
 			}
 		}

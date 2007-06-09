@@ -25,6 +25,9 @@
 #include "i18n.h"
 #include "game_monitor.h"
 #include "sound/mixer.h"
+#include "mrt/random.h"
+#include "player_manager.h"
+#include "world.h"
 
 #include <set>
 
@@ -108,7 +111,6 @@ void Explosion::emit(const std::string &event, Object * emitter) {
 		if (emitter == NULL || emitter->pierceable)
 			return;
 		
-		//nuke damage.
 		if (emitter == NULL || registered_name == "explosion" || 
 			(emitter->registered_name.size() >= 9 && 
 			emitter->registered_name.substr(emitter->registered_name.size() - 9, 9) == "explosion")
@@ -120,7 +122,21 @@ void Explosion::emit(const std::string &event, Object * emitter) {
 		if (_damaged_objects.find(id) != _damaged_objects.end())
 			return; //damage was already added for this object.
 		
-		emitter->addDamage(this, max_hp);
+		if (registered_name == "mutagen-explosion") {
+			if (!PlayerManager->isClient()) {
+				//mutation 
+				GET_CONFIG_VALUE("objects.mutagen-explosion.mutation-probability", float, mp, 0.5f);
+				int p = mrt::random(1000);
+				if (p < 1000 * mp) {
+					//mutation
+					World->spawn(emitter, "zombie", "zombie", v2<float>(), v2<float>());
+					emitter->Object::emit("death", this);
+				}
+			}
+		} else {
+			emitter->addDamage(this, max_hp);
+		}
+		
 		_damaged_objects.insert(id);
 		
 		if (emitter->isDead() && emitter->classname == "player") {

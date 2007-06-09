@@ -50,7 +50,7 @@ public:
 void Missile::onSpawn() {
 	play("main", true);
 	if (type != "boomerang") {
-		Object *_fire = spawnGrouped("single-pose", "missile-fire", v2<float>::empty, Centered);
+		Object *_fire = spawnGrouped("single-pose", "missile-fire", v2<float>(), Centered);
 		_fire->setDirectionsNumber(16);
 		_fire->impassability = 0;
 		add("fire", _fire);
@@ -130,7 +130,7 @@ void Missile::emit(const std::string &event, Object * emitter) {
 		GET_CONFIG_VALUE("objects.smoke-cloud-downwards-z-override", int, csdzo, 350);
 		int z = (_velocity.y > 0)? csdzo: 0;
 		//LOG_DEBUG(("edzo = %d", edzo));
-		spawn("smoke-cloud", "smoke-cloud", v2<float>::empty, v2<float>::empty, z);
+		spawn("smoke-cloud", "smoke-cloud", v2<float>(), v2<float>(), z);
 		Object::emit(event, emitter);
 	} else if (event == "death" && (type == "nuke" || type == "mutagen")) {
 		Object *o = World->getObjectByID(getSummoner()); //player
@@ -139,7 +139,7 @@ void Missile::emit(const std::string &event, Object * emitter) {
 			dpos = o->getRelativePosition(this);
 		}
 		Object * e = NULL;
-		e = World->spawn(o != NULL?o:this, type + "-explosion", type + "-explosion", dpos, v2<float>::empty);
+		e = World->spawn(o != NULL?o:this, type + "-explosion", type + "-explosion", dpos, v2<float>());
 		
 		e->disown();
 		Object::emit(event, emitter);
@@ -149,7 +149,7 @@ void Missile::emit(const std::string &event, Object * emitter) {
 		GET_CONFIG_VALUE("objects.explosion-downwards-z-override", int, edzo, 180);
 		int z = (_velocity.y >= 0)?edzo: 0;
 
-		spawn("explosion", "missile-explosion", dpos, v2<float>::empty, z);
+		spawn("explosion", "missile-explosion", dpos, v2<float>(), z);
 		Object::emit(event, emitter);
 	} else Object::emit(event, emitter);
 }

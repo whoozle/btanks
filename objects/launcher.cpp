@@ -44,11 +44,11 @@ void Launcher::onSpawn() {
 	if (registered_name.substr(0, 6) == "static")
 		disown();
 
-	Object *_smoke = spawnGrouped("single-pose", "launcher-smoke", v2<float>::empty, Centered);
+	Object *_smoke = spawnGrouped("single-pose", "launcher-smoke", v2<float>(), Centered);
 	_smoke->hp = 100000;
 	_smoke->impassability = 0;
 	add("smoke", _smoke);
-	add("mod", spawnGrouped("missiles-on-launcher", "guided-missiles-on-launcher", v2<float>::empty, Centered));
+	add("mod", spawnGrouped("missiles-on-launcher", "guided-missiles-on-launcher", v2<float>(), Centered));
 	add("alt-mod", spawnGrouped("alt-missiles-on-launcher", "guided-missiles-on-launcher", v2<float>(2,2), Centered));
 	
 	GET_CONFIG_VALUE("objects.launcher.fire-rate", float, fr, 0.3);
@@ -117,14 +117,14 @@ const bool Launcher::take(const BaseObject *obj, const std::string &type) {
 	if (obj->classname == "mod" && type == "machinegunner") {
 		LOG_DEBUG(("taking mod: %s", type.c_str()));
 		remove("mod");
-		add("mod", spawnGrouped("machinegunner-on-launcher", "machinegunner-on-launcher", v2<float>::empty, Centered));
+		add("mod", spawnGrouped("machinegunner-on-launcher", "machinegunner-on-launcher", v2<float>(), Centered));
 		return true;
 	}
 	const bool primary_mod = (obj->classname == "missiles" && (type != "smoke" && type != "stun" && type != "nuke"));
 	if (primary_mod && get("mod")->classname != "missiles-on-vehicle") {
 		LOG_DEBUG(("restoring default mod."));
 		remove("mod");
-		add("mod", spawnGrouped("missiles-on-launcher", "guided-missiles-on-launcher", v2<float>::empty, Centered));
+		add("mod", spawnGrouped("missiles-on-launcher", "guided-missiles-on-launcher", v2<float>(), Centered));
 	}
 	if (primary_mod) {
 		if (get("mod")->take(obj, type))

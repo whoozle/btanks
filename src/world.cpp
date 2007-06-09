@@ -767,7 +767,7 @@ TRY {
 		if (hidden) {
 			if (has_outline && !o.has("_outline")) {
 				//LOG_DEBUG(("%d:%s:%s: adding outline", o._id, o.classname.c_str(), o.animation.c_str()));
-				Object *outline = o.spawnGrouped("outline", outline_animation, v2<float>::empty, Centered);
+				Object *outline = o.spawnGrouped("outline", outline_animation, v2<float>(), Centered);
 				outline->setZ(9999, true);
 				o.add("_outline", outline);
 			}
@@ -1561,7 +1561,7 @@ const bool IWorld::detachVehicle(Object *object) {
 	object->_velocity.clear();
 	object->updatePlayerState(PlayerState());
 
-	Object * man = spawn(object, "machinegunner-player", "machinegunner", object->_direction * (object->size.x + object->size.y) / 4, v2<float>::empty);
+	Object * man = spawn(object, "machinegunner-player", "machinegunner", object->_direction * (object->size.x + object->size.y) / 4, v2<float>());
 	object->classname = "vehicle";
 
 	man->copyOwners(object);

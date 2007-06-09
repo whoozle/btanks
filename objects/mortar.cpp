@@ -95,7 +95,7 @@ void Mortar::tick(const float dt) {
 		
 		playNow("fire");
 		
-		spawn("mortar-bullet", "mortar-bullet", v2<float>::empty, _direction);
+		spawn("mortar-bullet", "mortar-bullet", v2<float>(), _direction);
 	}
 }
 

@@ -169,7 +169,7 @@ protected:
 
 	void calculateWayVelocity();
 
-	Object * spawn(const std::string &classname, const std::string &animation, const v2<float> &dpos = v2<float>::empty, const v2<float> &vel = v2<float>::empty, const int z = 0);
+	Object * spawn(const std::string &classname, const std::string &animation, const v2<float> &dpos = v2<float>(), const v2<float> &vel = v2<float>(), const int z = 0);
 	Object * spawnGrouped(const std::string &classname, const std::string &animation, const v2<float> &dpos, const GroupType type);
 
 	const bool old_findPath(const v2<float> &position, Way &way) const;

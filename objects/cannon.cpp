@@ -74,7 +74,7 @@ void Cannon::tick(const float dt) {
 	Object::tick(dt);
 	if (getState() == "real-fire") {
 		cancel();
-		spawn("cannon-bullet", "cannon-bullet", v2<float>::empty, _direction);
+		spawn("cannon-bullet", "cannon-bullet", v2<float>(), _direction);
 	}
 	
 	bool can_fire = _fire.tick(dt);

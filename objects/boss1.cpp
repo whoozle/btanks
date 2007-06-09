@@ -136,7 +136,7 @@ void Boss1::onSpawn() {
 
 void Boss1::emit(const std::string &event, Object * emitter) {
 	if (event == "death") {
-		spawn("corpse", "dead-" + animation, v2<float>::empty, v2<float>::empty);
+		spawn("corpse", "dead-" + animation, v2<float>(), v2<float>());
 	} 
 	Object::emit(event, emitter);
 }

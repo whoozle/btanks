@@ -62,7 +62,7 @@ const int Car::getPenalty(const int map_im, const int obj_im) const {
 
 void Car::emit(const std::string &event, Object * emitter) {
 	if (event == "death") {
-		spawn("corpse", "dead-" + animation, v2<float>::empty, v2<float>::empty);
+		spawn("corpse", "dead-" + animation, v2<float>(), v2<float>());
 	} else if (event == "collision") {
 		if (emitter != NULL && emitter->speed > 0) {
 			Item * item = dynamic_cast<Item *>(emitter);

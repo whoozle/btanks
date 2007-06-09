@@ -69,12 +69,12 @@ void Bullet::tick(const float dt) {
 			int d = (getDirection() + 1) % dirs;
 			v2<float> vel;
 			vel.fromDirection(d, dirs);
-			Object * b = spawn(registered_name + "(no-sound)", animation, v2<float>::empty, vel);
+			Object * b = spawn(registered_name + "(no-sound)", animation, v2<float>(), vel);
 			b->ttl = ttl * ttl_m;
 			
 			d = (dirs + getDirection() - 1) % dirs;
 			vel.fromDirection(d, dirs);
-			b = spawn(registered_name + "(no-sound)", animation, v2<float>::empty, vel);
+			b = spawn(registered_name + "(no-sound)", animation, v2<float>(), vel);
 			b->ttl = ttl * ttl_m;
 		}
 	}
@@ -168,7 +168,7 @@ void Bullet::emit(const std::string &event, Object * emitter) {
 		if (_type == "regular") {
 			GET_CONFIG_VALUE("objects.explosion-downwards-z-override", int, edzo, 180);
 			int z = (_velocity.y >= 0) ? edzo : 0;
-			spawn("explosion", "explosion", dpos, v2<float>::empty, z);
+			spawn("explosion", "explosion", dpos, v2<float>(), z);
 		} else if (_type == "dirt") {
 			spawn("dirt", "dirt", dpos);
 		} else if (_type == "cannon") {
@@ -199,7 +199,7 @@ void Bullet::emit(const std::string &event, Object * emitter) {
 		) {
 			GET_CONFIG_VALUE("objects.explosion-downwards-z-override", int, edzo, 180);
 			int z = (_velocity.y >= 0) ? edzo : 0;
-			spawn("explosion", "explosion", dpos, v2<float>::empty, z);			
+			spawn("explosion", "explosion", dpos, v2<float>(), z);			
 		}
 		Object::emit(event, emitter);
 		Object::emit("death", emitter);

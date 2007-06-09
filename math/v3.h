@@ -37,7 +37,6 @@ public:
 	T x, y, z;
 	inline v3<T>() : x(0), y(0), z(0) {}
 	inline v3<T>(const T x, const T y, const T z) : x(x), y(y), z(z) {} 
-	static const v3<T> empty;
 
 	inline void clear() { x = y = z = 0; }
 	inline const bool is0() const {
@@ -273,9 +272,6 @@ public:
 	}
 };
 	
-template <typename T> const v3<T> v3<T>::empty;
-
-
 template <typename T>
 	const v3<T> operator+(const T a, const v3<T> &v)  {
 		return v3<T>(v.x + a, v.y + a, v.z + a);

@@ -38,7 +38,6 @@ public:
 	T x, y;
 	inline v2<T>() : x(0), y(0) {}
 	inline v2<T>(const T x, const T y) : x(x), y(y) {} 
-	static const v2<T> empty;
 
 	inline void clear() { x = y = 0; }
 	inline const bool is0() const {
@@ -340,9 +339,6 @@ public:
 		return v3<T>(x, y, z);
 	}
 };
-
-template <typename T> const v2<T> v2<T>::empty;
-
 
 template <typename T>
 	const v2<T> operator+(const T a, const v2<T> &v)  {
