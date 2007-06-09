@@ -1705,7 +1705,7 @@ void IWorld::enumerateObjects(std::set<const Object *> &id_set, const Object *sr
 const Object *IWorld::getObjectByXY(const int x, const int y) const {
 	for(ObjectMap::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		const Object *o = i->second;
-		if (o->_follow) //skip grouped objects.
+		if (o->_follow || (o->_spawned_by != 0 && o->_spawned_by != OWNER_MAP)) //skip grouped objects.
 			continue;
 		
 		sdlx::Rect r((int)o->_position.x, (int)o->_position.y, (int)o->size.x, (int)o->size.y);
