@@ -123,7 +123,12 @@ void Explosion::emit(const std::string &event, Object * emitter) {
 			return; //damage was already added for this object.
 		
 		if (registered_name == "mutagen-explosion") {
-			if (!PlayerManager->isClient()) {
+			static std::set<std::string> mutable_classes;
+			if (mutable_classes.empty()) {
+				mutable_classes.insert("trooper");
+				//mutable_classes.insert("player");
+			}
+			if (!PlayerManager->isClient() && mutable_classes.find(emitter->classname) != mutable_classes.end()) {
 				//mutation 
 				GET_CONFIG_VALUE("objects.mutagen-explosion.mutation-probability", float, mp, 0.5f);
 				int p = mrt::random(1000);
