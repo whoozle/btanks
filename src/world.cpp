@@ -1709,7 +1709,17 @@ const Object *IWorld::getObjectByXY(const int x, const int y) const {
 			continue;
 		
 		sdlx::Rect r((int)o->_position.x, (int)o->_position.y, (int)o->size.x, (int)o->size.y);
-		if (r.in(x, y))
+		if (!r.in(x, y))
+			continue;
+
+		std::deque<int> owners;
+		o->getOwners(owners);
+		std::deque<int>::iterator j;
+		for(j = owners.begin(); j != owners.end(); ++j) {
+			if (*j != OWNER_MAP)
+				break;
+		}
+		if (j == owners.end())
 			return o;
 	}
 	return NULL;
