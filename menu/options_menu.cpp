@@ -302,7 +302,7 @@ void OptionsMenu::tick(const float dt) {
 		_fx->reset();
 		Mixer->setFXVolume(_fx->get());
 		if (_shoot.tick(dt)) {
-			Mixer->setListener(v3<float>::empty, v3<float>::empty, 64);
+			Mixer->setListener(v3<float>(), v3<float>(), 64);
 			Mixer->playSample(NULL, "shot.ogg", false);
 			_shoot.reset();
 		}
