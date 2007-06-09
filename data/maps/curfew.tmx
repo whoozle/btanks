@@ -110,7 +110,6 @@
 		<property name="object:megaheal:megaheal:1" value="1820,606"/>
 		<property name="object:mines-item:mines-item:1" value="812,1434"/>
 		<property name="object:mines-item:mines-item:2" value="1992,312"/>
-		<property name="object:mutagen-missiles-item:mutagen-missiles-item:1" value="606,135"/>
 		<property name="object:nuke-missiles-item:nuke-missiles-item:3" value="@5,27"/>
 		<property name="object:nuke-missiles-item:nuke-missiles-item:4" value="904,538"/>
 		<property name="object:oil-barrels:oil-barrels:2" value="2376,1834"/>
