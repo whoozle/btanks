@@ -192,8 +192,8 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 
 
 		ALCint attrs[] = {
-			ALC_SYNC, AL_TRUE, 
-//			ALC_REFRESH, 100,
+		//	ALC_SYNC, AL_TRUE, 
+			ALC_REFRESH, 20,
 			ALC_INVALID, 
 		};
 		
