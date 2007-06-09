@@ -44,6 +44,7 @@ SpecialZone::SpecialZone(const ZBox & zbox, const std::string &type, const std::
 		allowed_types.insert("disable-ai");
 		allowed_types.insert("enable-ai");
 		allowed_types.insert("play-tune");
+		allowed_types.insert("reset-tune");
 	}
 	
 	if (allowed_types.find(type) == allowed_types.end()) 
@@ -57,7 +58,8 @@ const bool SpecialZone::global() const {
 		type == "reset-timer" || 
 		type == "disable-ai" || 
 		type == "enable-ai" || 
-		type == "play-tune");
+		type == "play-tune" || 
+		type == "reset-tune" );
 }
 
 
@@ -102,6 +104,8 @@ void SpecialZone::onEnter(const int slot_id) {
 		GameMonitor->disable(name, false);
 	else if (type == "play-tune") 
 		Mixer->play(name, true);
+	else if (type == "reset-tune") 
+		Mixer->reset();
 	else 
 		throw_ex(("unhandled type '%s'", type.c_str()));
 }
