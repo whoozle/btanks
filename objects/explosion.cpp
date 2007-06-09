@@ -130,7 +130,7 @@ void Explosion::emit(const std::string &event, Object * emitter) {
 			}
 			if (!PlayerManager->isClient() && mutable_classes.find(emitter->classname) != mutable_classes.end()) {
 				//mutation 
-				GET_CONFIG_VALUE("objects.mutagen-explosion.mutation-probability", float, mp, 0.5f);
+				GET_CONFIG_VALUE("objects.mutagen-explosion.mutation-probability", float, mp, 0.3f);
 				int p = mrt::random(1000);
 				if (p < 1000 * mp) {
 					//mutation
