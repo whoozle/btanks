@@ -126,6 +126,9 @@ void Explosion::emit(const std::string &event, Object * emitter) {
 			static std::set<std::string> mutable_classes;
 			if (mutable_classes.empty()) {
 				mutable_classes.insert("trooper");
+				mutable_classes.insert("creature");
+				mutable_classes.insert("kamikaze");
+				mutable_classes.insert("civilian");
 				//mutable_classes.insert("player");
 			}
 			if (!PlayerManager->isClient() && mutable_classes.find(emitter->classname) != mutable_classes.end()) {
