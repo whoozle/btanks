@@ -16,6 +16,7 @@
 #include "window.h"
 #include "player_slot.h"
 #include "config.h"
+#include "shop.h"
 
 void CampaignMenu::start() {
 	int ci = _active_campaign->get();
@@ -90,6 +91,10 @@ CampaignMenu::CampaignMenu(MainMenu *parent, const int w, const int h) : _parent
 
 	_score = new Label("medium", "0");
 	add(xbase + mx + cw, ybase + my, _score);
+	
+	_shop = new Shop(w, h);
+	_shop->add(0, 0, _shop);
+	_shop->hide();
 	
 	init();
 }

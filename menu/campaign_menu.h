@@ -9,6 +9,7 @@ class MainMenu;
 class Chooser;
 class ScrollList;
 class Label;
+class Shop;
 
 namespace sdlx {
 	class sdlx::Surface;
@@ -72,6 +73,7 @@ private:
 	v2<float> map_dst;
 	
 	bool _invalidate_me;
+	Shop *_shop;
 };
 
 #endif
