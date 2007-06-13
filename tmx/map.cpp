@@ -427,6 +427,18 @@ void IMap::updateMatrix(Matrix<int> &imp_map, const Layer *layer) {
 		}	
 }
 
+void IMap::correctGids() {
+	int delta = 0;
+	for(CorrectionMap::iterator i = _corrections.begin(); i != _corrections.end(); ++i) {
+		const int d = i->second - i->first - delta;
+		LOG_DEBUG(("correcting: gid: %d delta: %d", i->first, d));
+		for(LayerMap::iterator j = _layers.begin(); j != _layers.end(); ++j) {
+			j->second->correct(i->first, d);
+		}
+		delta += d;
+	}
+}
+
 void IMap::load(const std::string &name) {
 	clear();
 
@@ -435,6 +447,8 @@ void IMap::load(const std::string &name) {
 	parseFile(file);
 	delete _image;
 	_image = NULL;
+	
+	correctGids();
 
 	_full_tile.create(_tw, _th, true);
 	
@@ -770,11 +784,16 @@ void IMap::end(const std::string &name) {
 		else 
 			properties[e.attrs["name"]] = e.attrs["value"];
 	} else if (name == "tileset" && _image != NULL && _image_is_tileset) {
-		LOG_DEBUG(("tileset: %s, first_gid: %d", _image_source.c_str(), _firstgid));
+		int n = ((_image->getWidth() - 1) / _tw + 1) * ((_image->getHeight() - 1) / _th + 1);
+		LOG_DEBUG(("tileset: %s, first_gid: %d, estimated tiles: %d", _image_source.c_str(), _firstgid, n));
+		
+		int gid = _tilesets.add(_image_source, _firstgid, n);
+		if (gid != _firstgid) 
+			_corrections.insert(CorrectionMap::value_type(_firstgid, gid));
+		_firstgid = gid;
 		_generator->tileset(_image_name, _firstgid);
 
-		int n = addTiles(_image, _firstgid);
-		_tilesets.add(_image_source, _firstgid, n);
+		addTiles(_image, _firstgid);
 
 		delete _image;
 		_image = NULL;
@@ -938,6 +957,8 @@ void IMap::clear() {
 	_damage4.clear();
 	_layer_z.clear();
 	_cover_map.setSize(0, 0, 0);
+
+	_corrections.clear();
 	
 	LOG_DEBUG(("clearing map generator..."));
 	_generator->clear();

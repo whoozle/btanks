@@ -233,6 +233,21 @@ void Layer::init(const int w, const int h, const mrt::Chunk & data) {
 	}
 }
 
+void Layer::correct(const unsigned old_id, const int delta) {
+	if (delta == 0)
+		return;
+	
+	size_t n = _data.getSize() / 4;
+	assert((int)n == (_w * _h));
+	
+	//convert all stuff.
+	Uint32 *p = (Uint32 *)_data.getPtr();
+	for(size_t i = 0; i < n; ++i, ++p) {
+		if (*p >= old_id) 
+			*p += delta;
+	}
+}
+
 void Layer::init(const int w, const int h) {
 	_w = w; _h = h;
 	_data.setSize(_w * _h * 4);

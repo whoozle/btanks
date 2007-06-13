@@ -82,6 +82,8 @@ public:
 	virtual void deserialize(const mrt::Serializator &s);
 
 	void generateXML(std::string &result) const;
+	
+	void correct(const unsigned old_id, const int delta);
 
 protected: 
 	int _w, _h;

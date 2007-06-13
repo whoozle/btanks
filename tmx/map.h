@@ -186,6 +186,10 @@ private:
 	std::string _name;
 	
 	bool _solo_aware;
+	typedef std::map<const int, int> CorrectionMap;
+	CorrectionMap _corrections;
+	
+	void correctGids();
 };
 
 SINGLETON(BTANKSAPI, Map, IMap);
