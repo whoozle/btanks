@@ -30,6 +30,7 @@ class MouseControl : public ControlMethod {
 public:
 	MouseControl(); 
 	virtual void updateState(PlayerSlot &slot, PlayerState &state);
+	void probe() const {}
 private:
 	void getPosition(v2<float>&pos) const;
 	Object * getObject() const;

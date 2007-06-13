@@ -26,6 +26,7 @@ class PlayerSlot;
 class ControlMethod {
 public:
 	virtual void updateState(PlayerSlot &slot, PlayerState &state) = 0;
+	virtual void probe() const = 0;
 	virtual ~ControlMethod() {}
 };
 

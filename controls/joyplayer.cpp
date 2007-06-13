@@ -24,8 +24,16 @@
 #include "mrt/logger.h"
 #include "config.h"
 
-JoyPlayer::JoyPlayer(const int idx): _joy(idx) {
+JoyPlayer::JoyPlayer(const int idx): _idx(idx), _joy(idx) {
 	_bindings.load(sdlx::Joystick::getName(idx), _joy.getNumButtons(), _joy.getNumAxes(), _joy.getNumHats());
+}
+
+void JoyPlayer::probe() const {
+	if (_joy.opened())
+		return;
+	sdlx::Joystick joy; 
+	joy.open(_idx);
+	joy.close();
 }
 
 #define THRESHOLD 16384

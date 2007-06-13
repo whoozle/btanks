@@ -27,8 +27,10 @@ class JoyPlayer :public ControlMethod {
 public:
 	JoyPlayer(const int idx);
 	virtual void updateState(PlayerSlot &slot, PlayerState &state);
-	
+	virtual void probe() const;
+
 private:
+	int _idx;
 	sdlx::Joystick _joy;
 	Bindings _bindings;
 };
