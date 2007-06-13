@@ -2,10 +2,12 @@
 #define BTANKS_IMAGE_VIEW_H__
 
 #include "export_btanks.h"
-#include "control.h"
+#include "container.h"
 #include "math/v2.h"
 
-class BTANKSAPI ImageView : public Control {
+class Box;
+
+class BTANKSAPI ImageView : public Container {
 public: 
 	ImageView(int w, int h);
 	void init(const sdlx::Surface *image);
@@ -13,13 +15,13 @@ public:
 	v2<float> position, destination;
 
 	virtual void render(sdlx::Surface &surface, const int x, const int y);
-	virtual void getSize(int &w, int &h) const;
 
 	void tick(const float dt);
 
 private: 
 	int _w, _h;
 	const sdlx::Surface * _image;
+	Box * _box;
 };
 
 #endif
