@@ -17,6 +17,7 @@
 #include "player_slot.h"
 #include "config.h"
 #include "shop.h"
+#include "button.h"
 
 void CampaignMenu::start() {
 	int ci = _active_campaign->get();
@@ -93,8 +94,13 @@ CampaignMenu::CampaignMenu(MainMenu *parent, const int w, const int h) : _parent
 	add(xbase + mx + cw, ybase + my, _score);
 	
 	_shop = new Shop(w, h);
-	_shop->add(0, 0, _shop);
+	add(0, 0, _shop);
 	_shop->hide();
+	
+	_b_shop = new Button("medium", I18n->get("menu", "shop"));
+	_b_shop->getSize(bw, bh);
+
+	add(2 * mx, h - bh - 2 * my, _b_shop);
 	
 	init();
 }
@@ -109,6 +115,8 @@ void CampaignMenu::init() {
 			Config->get("campaign." + campaign.name + ".current-map", current_map, std::string());
 		}
 	} CATCH("init", )
+
+	_shop->init(campaign.name);
 
 	_maps->clear();
 
@@ -162,6 +170,11 @@ void CampaignMenu::tick(const float dt) {
 			Config->set("campaign." + campaign.name + ".current-map", map.id);
 			map_dst = map.position.convert<float>();
 		}
+	}
+	
+	if (_b_shop->changed()) {
+		_b_shop->reset();
+		_shop->hide(false);
 	}
 	
 	v2<float> map_vel = map_dst - map_pos;

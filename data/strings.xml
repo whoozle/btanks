@@ -40,6 +40,7 @@
 		<string id="fullscreen-mode">fullscreen</string>
 		<string id="do-not-show-donation-screen">do not show donation screen at exit</string>
 		<string id="score">score: </string>
+		<string id="shop">shop</string>
 	</area>
 	<area id="maps/descriptions">
 		<string id="baykonur">Huge cooperative map with tons of troopers, very defensive military base and big boss inside(tm)</string>

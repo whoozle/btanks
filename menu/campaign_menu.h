@@ -9,6 +9,7 @@ class MainMenu;
 class Chooser;
 class ScrollList;
 class Label;
+class Button;
 class Shop;
 
 namespace sdlx {
@@ -38,6 +39,7 @@ protected:
 
 	void start(const std::string &name, Attrs &attr);
 	void end(const std::string &name);
+
 };
 
 
@@ -74,7 +76,8 @@ private:
 	
 	bool _invalidate_me;
 	Shop *_shop;
+
+	Button * _b_shop;
 };
 
 #endif
-
