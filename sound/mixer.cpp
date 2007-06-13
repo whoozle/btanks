@@ -190,11 +190,13 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 		LOG_NOTICE(("opened device: %s", alcGetString(alc_device, ALC_DEVICE_SPECIFIER)));
 		LOG_NOTICE(("extensions: %s", alcGetString(alc_device, ALC_EXTENSIONS)));
 
+		GET_CONFIG_VALUE("engine.sound.openal-sync-context", bool, sync_ctx, false);
+		GET_CONFIG_VALUE("engine.sound.openal-refresh-frequency", int, refresh, 15); //openal default
 
 		ALCint attrs[] = {
-		//	ALC_SYNC, AL_TRUE, 
-			ALC_REFRESH, 20,
-			ALC_INVALID, 
+			ALC_SYNC, sync_ctx?AL_TRUE:AL_FALSE, 
+			ALC_REFRESH, refresh,
+			ALC_INVALID, ALC_INVALID, 
 		};
 		
 		alc_context = alcCreateContext(alc_device, attrs);
