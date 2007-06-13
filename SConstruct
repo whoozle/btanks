@@ -102,9 +102,9 @@ if sys.platform != "win32":
 	sigc_p = os.popen('pkg-config --cflags sigc++-2.0', 'r')
 	sigc_flags = sigc_p.readline().strip()
 	sigc_p = os.popen('pkg-config --libs-only-L sigc++-2.0', 'r')
-	sigc_lflags = [sigc_p.readline().strip()]
-	conf_env.Append(LINK_FLAGS=sigc_lflags)
-	env.Append(LINK_FLAGS=sigc_lflags)
+	sigc_lflags = sigc_p.readline().strip()
+	conf_env.Append(LINKFLAGS=sigc_lflags)
+	env.Append(LINKFLAGS=sigc_lflags)
 	sigc_lib = 'sigc-2.0' #guess 
 	
 else: 
