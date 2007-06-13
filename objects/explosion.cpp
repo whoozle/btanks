@@ -118,6 +118,7 @@ void Explosion::emit(const std::string &event, Object * emitter) {
 			return;
 			
 		const int id = emitter->getID();
+		assert(emitter != NULL);
 		
 		if (_damaged_objects.find(id) != _damaged_objects.end())
 			return; //damage was already added for this object.
@@ -131,6 +132,10 @@ void Explosion::emit(const std::string &event, Object * emitter) {
 				mutable_classes.insert("civilian");
 				//mutable_classes.insert("player");
 			}
+			if (emitter->registered_name.compare(0, 6, "zombie") == 0) {
+				emitter->hp = emitter->max_hp;
+			}
+			
 			if (!PlayerManager->isClient() && mutable_classes.find(emitter->classname) != mutable_classes.end()) {
 				//mutation 
 				GET_CONFIG_VALUE("objects.mutagen-explosion.mutation-probability", float, mp, 0.3f);
