@@ -140,9 +140,21 @@ void PlayerSlot::createControlMethod(const std::string &control_method_name) {
 		throw_ex(("fix mouse control method, then disable this exception ;)"));
 		control_method = new MouseControl();
 	} else if (control_method_name == "joy-1") {
-		control_method = new JoyPlayer(0);
+		TRY {
+			control_method = new JoyPlayer(0);
+			control_method->probe();
+		} CATCH("probing control method", {
+			delete control_method;
+			control_method = new KeyPlayer("keys");
+		})
 	} else if (control_method_name == "joy-2") {
-		control_method = new JoyPlayer(1);
+		TRY {
+			control_method = new JoyPlayer(1);
+			control_method->probe();
+		} CATCH("probing control method", {
+			delete control_method;
+			control_method = new KeyPlayer("keys");
+		})
 	} else if (control_method_name == "network") {
 		//slot.control_method = new ExternalControl;
 		control_method = NULL;
