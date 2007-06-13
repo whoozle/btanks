@@ -18,6 +18,7 @@
 #include "config.h"
 #include "shop.h"
 #include "button.h"
+#include "image_view.h"
 
 void CampaignMenu::start() {
 	int ci = _active_campaign->get();
@@ -75,6 +76,8 @@ CampaignMenu::CampaignMenu(MainMenu *parent, const int w, const int h) : _parent
 
 	int map_w = _w / 2;
 	map_view = sdlx::Rect(mx * 2, my * 2 + ch, map_w, 3 * map_w / 4);
+	_map_view = new ImageView(map_view.w, map_view.h);
+	add(map_view.x, map_view.y, _map_view);
 	
 	_maps = new ScrollList("menu/background_box.png", "medium", w - map_view.w - 6 * mx, map_view.h );
 	int sw, sh;
@@ -117,6 +120,7 @@ void CampaignMenu::init() {
 	} CATCH("init", )
 
 	_shop->init(campaign.name);
+	_map_view->init(campaign.map);
 
 	_maps->clear();
 
@@ -132,7 +136,7 @@ void CampaignMenu::init() {
 		map_id.push_back((int)i);
 		if (map.id == current_map) {
 			_maps->set(i);
-			map_pos = map_dst = map.position.convert<float>();
+			_map_view->position = _map_view->destination = map.position.convert<float>();
 		}
 	}
 	if (map_id.empty())
@@ -140,6 +144,7 @@ void CampaignMenu::init() {
 }
 
 void CampaignMenu::tick(const float dt) {
+	BaseMenu::tick(dt);
 	if (_invalidate_me) {
 		init();
 		_invalidate_me = false;
@@ -168,7 +173,7 @@ void CampaignMenu::tick(const float dt) {
 		if (mi < (int)map_id.size()) {
 			Campaign::Map map = campaign.maps[map_id[mi]];
 			Config->set("campaign." + campaign.name + ".current-map", map.id);
-			map_dst = map.position.convert<float>();
+			_map_view->destination = map.position.convert<float>();
 		}
 	}
 	
@@ -176,16 +181,8 @@ void CampaignMenu::tick(const float dt) {
 		_b_shop->reset();
 		_shop->hide(false);
 	}
-	
-	v2<float> map_vel = map_dst - map_pos;
-	if (map_vel.quick_length() < 1) {
-		map_pos = map_dst;
-	} else {
-		map_vel.normalize();
-		float dist = math::min(map_dst.distance(map_pos), dt * 200);
-		map_pos += map_vel * dist;
-	}
 }
+
 bool CampaignMenu::onKey(const SDL_keysym sym) {
 	if (Container::onKey(sym))
 		return true;
@@ -203,15 +200,6 @@ bool CampaignMenu::onKey(const SDL_keysym sym) {
 
 const bool CampaignMenu::empty() const {
 	return _campaigns.empty();
-}
-
-void CampaignMenu::render(sdlx::Surface &surface, const int x, const int y) {
-	Container::render(surface, x, y);
-	int ci = _active_campaign->get();
-	//sdlx::Rect clip = surface.getClipRect();
-	//surface.setClipRect(map_view);
-	surface.copyFrom(*_campaigns[ci].map, sdlx::Rect((int)map_pos.x, (int)map_pos.y, map_view.w, map_view.h), map_view.x, map_view.y);
-	//surface.setClipRect(clip);
 }
 
 Campaign::Campaign() : minimal_score(0), map(NULL) {}

@@ -5,7 +5,7 @@ env.Append(CPPPATH=['..', '.', '../src'])
 env.Append(CPPDEFINES=['BTANKSAPI=DLLEXPORT']);
 bt_menu = env.StaticLibrary('bt_menu', 
 	[
-	'checkbox.cpp', 'shop.cpp', 
+	'checkbox.cpp', 'shop.cpp', 'image_view.cpp', 
 	'start_server_menu.cpp', 'join_server_menu.cpp', 'campaign_menu.cpp', 
 	'menu.cpp', 'box.cpp', 'upper_box.cpp', 'base_menu.cpp', 'container.cpp', 'menuitem.cpp',
 	'map_picker.cpp', 'scroll_list.cpp', 'control.cpp', 'map_details.cpp', 'player_picker.cpp', 

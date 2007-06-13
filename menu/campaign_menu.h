@@ -11,6 +11,7 @@ class ScrollList;
 class Label;
 class Button;
 class Shop;
+class ImageView;
 
 namespace sdlx {
 	class sdlx::Surface;
@@ -39,7 +40,6 @@ protected:
 
 	void start(const std::string &name, Attrs &attr);
 	void end(const std::string &name);
-
 };
 
 
@@ -49,7 +49,6 @@ public:
 	CampaignMenu(MainMenu *parent, const int w, const int h);
 	const bool empty() const;
 
-	virtual void render(sdlx::Surface &surface, const int x, const int y);
 	virtual void tick(const float dt);
 	virtual bool onKey(const SDL_keysym sym);
 	
@@ -70,14 +69,13 @@ private:
 	
 	Label * _score;
 
-	sdlx::Rect map_view;
-	v2<float> map_pos;
-	v2<float> map_dst;
-	
 	bool _invalidate_me;
 	Shop *_shop;
 
 	Button * _b_shop;
+
+	sdlx::Rect map_view;
+	ImageView * _map_view;
 };
 
 #endif
