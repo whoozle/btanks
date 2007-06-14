@@ -705,5 +705,11 @@ const std::string IGameMonitor::generatePropertyName(const std::string &prefix) 
 void IGameMonitor::generateBonuses() {
 	if (_campaign == NULL)
 		return;
-	
+	const std::vector<Campaign::ShopItem> & wares = _campaign->wares;
+	for(std::vector<Campaign::ShopItem>::const_iterator i = wares.begin(); i != wares.end(); ++i) {
+		if (i->amount <= 0 || i->object.empty() || i->animation.empty())
+			continue;
+		
+		LOG_DEBUG(("bonus: %s, %d", i->name.c_str(), i->amount));
+	}
 }

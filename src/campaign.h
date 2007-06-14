@@ -23,7 +23,7 @@ public:
 	};
 	
 	struct ShopItem {
-		std::string type, name;
+		std::string type, name, object, animation;
 		int amount, price, max_amount;
 		void validate();
 		ShopItem() : amount(0), price(0), max_amount(0) {}

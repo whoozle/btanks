@@ -31,12 +31,19 @@ void Campaign::start(const std::string &name, Attrs &attr) {
 			throw_ex(("recursive wares section is not allowed"));
 		_wares_section = true;
 	} else if (name == "item") {
+		if (!_wares_section)
+			throw_ex(("item must be withing <wares /> tags"));
+		
 		wares.push_back(ShopItem());
 		ShopItem & item = wares.back();
 		item.type = attr["type"];
 		item.name = attr["name"];
 		item.price = attr["price"].empty()?0:atoi(attr["price"].c_str());
 		item.max_amount = attr["maximum-amount"].empty()?0:atoi(attr["maximum-amount"].c_str());
+		
+		item.object = attr["object"];
+		item.animation = attr["animation"];
+		
 		std::string kname = "campaign." + this->name + ".wares." + item.name + ".amount";
 		//LOG_DEBUG(("querying %s", kname.c_str()));
 		if (Config->has(kname)) {
