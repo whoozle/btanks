@@ -119,7 +119,7 @@ void CampaignMenu::init() {
 		}
 	} CATCH("init", )
 
-	_shop->init(campaign.name);
+	_shop->init(campaign);
 	_map_view->init(campaign.map);
 
 	_maps->clear();

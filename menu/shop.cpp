@@ -1,8 +1,9 @@
 #include "shop.h"
 #include "config.h"
 #include "box.h"
+#include "campaign.h"
 
-Shop::Shop(const int w, const int h) : _cash(0) {
+Shop::Shop(const int w, const int h)  {
 	Box * b = new Box("menu/background_box.png", w - 32, h - 32);
 	int mx, my, bw, bh;
 	b->getMargins(mx, my);
@@ -10,11 +11,16 @@ Shop::Shop(const int w, const int h) : _cash(0) {
 	add((w - bw) / 2, (h - bh) / 2, b);
 }
 
-void Shop::init(const std::string &campaign) {
-	_campaign = campaign;
-	_prefix = "campaign." + campaign + ".";
-	Config->get(_prefix + "score", _cash, 0);
-	LOG_DEBUG(("selecting campaign %s, cash: %d", campaign.c_str(), _cash));
+const int Shop::getCash() const {
+	int cash;
+	Config->get(_prefix + "score", cash, 0);
+	return cash;
+}
+
+void Shop::init(const Campaign &campaign) {
+	_campaign = campaign.name;
+	_prefix = "campaign." + _campaign + ".";
+	LOG_DEBUG(("selecting campaign %s, cash: %d", _campaign.c_str(), getCash()));
 }
 
 bool Shop::onKey(const SDL_keysym sym) {

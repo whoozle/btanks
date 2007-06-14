@@ -5,16 +5,18 @@
 #include <string>
 
 class ScrollList;
+class Campaign;
 
 class Shop : public Container {
 public: 
 	Shop(const int w, const int h);	
-	void init(const std::string &campaign);
+	void init(const Campaign &campaign);
 	virtual bool onKey(const SDL_keysym sym);
 
 private: 
+	const int getCash() const;
+
 	std::string _campaign, _prefix;
-	int _cash;
 	ScrollList *_wares;
 };
 
