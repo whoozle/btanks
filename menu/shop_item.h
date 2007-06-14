@@ -21,7 +21,10 @@ private:
 	bool _active;
 	const Animation *_animation;
 	const AnimationModel *_animation_model;
+	const sdlx::Surface *_surface;
 	const Pose * _pose;
+	
+	int xbase;
 	
 	float t;
 };

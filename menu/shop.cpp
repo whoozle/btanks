@@ -14,7 +14,7 @@ Shop::Shop(const int w, const int h)  {
 	add(xbase, ybase, b);
 	
 	int sw, sh;
-	_wares = new ScrollList("menu/background_box.png", "medium", w - 4 * mx, h - 4 * my, 10);
+	_wares = new ScrollList("menu/background_box.png", "medium", w - 4 * mx, h - 4 * my, 20);
 	_wares->initBG("menu/background_box.png", "menu/highlight_big.png",  w - 4 * mx, h - 4 * my);
 	_wares->getSize(sw, sh);
 	add(xbase + mx, ybase + my, _wares);
@@ -53,6 +53,12 @@ void Shop::revalidate() {
 	}
 }
 
+void Shop::tick(const float dt) {
+	if (_wares->changed()) {
+		_wares->reset();
+		revalidate();
+	}
+}
 
 bool Shop::onKey(const SDL_keysym sym) {
 	if (Container::onKey(sym))

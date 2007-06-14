@@ -12,6 +12,7 @@ public:
 	Shop(const int w, const int h);	
 	void init(Campaign *campaign);
 	virtual bool onKey(const SDL_keysym sym);
+	virtual void tick(const float dt);
 
 	void revalidate();
 private: 
