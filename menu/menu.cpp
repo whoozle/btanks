@@ -37,7 +37,14 @@
 
 #define ITEM_SPACING 10
 
-MainMenu::MainMenu(const int w, const int h) : _active_item(0), _key_active(false) {
+MainMenu::MainMenu() : _active(false), _active_item(0), _key_active(false) {
+	Window->key_signal.connect(sigc::mem_fun(this, &MainMenu::onKey));
+	Window->mouse_signal.connect(sigc::mem_fun(this, &MainMenu::onMouse));
+	Window->mouse_motion_signal.connect(sigc::mem_fun(this, &MainMenu::onMouseMotion));
+	Window->event_signal.connect(sigc::mem_fun(this, &MainMenu::onEvent));
+}
+
+void MainMenu::init(const int w, const int h) {
 	MenuConfig->load();
 	
 	_active = true;
@@ -81,10 +88,6 @@ MainMenu::MainMenu(const int w, const int h) : _active_item(0), _key_active(fals
 
 	recalculateSizes();
 
-	Window->key_signal.connect(sigc::mem_fun(this, &MainMenu::onKey));
-	Window->mouse_signal.connect(sigc::mem_fun(this, &MainMenu::onMouse));
-	Window->mouse_motion_signal.connect(sigc::mem_fun(this, &MainMenu::onMouseMotion));
-	Window->event_signal.connect(sigc::mem_fun(this, &MainMenu::onEvent));
 }
 
 void MainMenu::recalculateSizes() {

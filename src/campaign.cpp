@@ -43,6 +43,7 @@ void Campaign::start(const std::string &name, Attrs &attr) {
 		
 		item.object = attr["object"];
 		item.animation = attr["animation"];
+		item.pose = attr["preview-pose"];
 		
 		std::string kname = "campaign." + this->name + ".wares." + item.name + ".amount";
 		//LOG_DEBUG(("querying %s", kname.c_str()));

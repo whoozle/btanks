@@ -42,12 +42,13 @@ void Shop::revalidate() {
 		return;
 	
 	size_t n = _campaign->wares.size();
-	assert(n == _wares->size());
+	assert((int)n == _wares->size());
+	size_t c = _wares->get();
 	for(size_t i = 0; i < n; ++i) {
-		Control *c = _wares->getItem(i);
-		ShopItem *s = dynamic_cast<ShopItem *>(c);
+		Control *ctrl = _wares->getItem(i);
+		ShopItem *s = dynamic_cast<ShopItem *>(ctrl);
 		if (s != NULL) {
-			s->revalidate(*_campaign, _campaign->wares[i]);
+			s->revalidate(*_campaign, _campaign->wares[i], i == c);
 		}
 	}
 }

@@ -37,8 +37,9 @@ class BaseMenu;
 
 class MainMenu : public sigc::trackable {
 public:
-	MainMenu(const int w, const int h);
-
+	MainMenu();
+	void init(const int w, const int h);
+	
 	sigc::signal2<void, const std::string &, const std::string &> menu_signal;
 
 	void setActive(const bool a);

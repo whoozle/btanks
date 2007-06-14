@@ -246,8 +246,7 @@ void IGame::init(const int argc, char *argv[]) {
 
 	sdlx::Rect window_size = Window->getSize();
 	if (_main_menu == NULL) {
-		LOG_DEBUG(("initializing menus..."));		
-		_main_menu = new MainMenu(window_size.w, window_size.h);
+		_main_menu = new MainMenu();
 	}
 
 	_paused = false;
@@ -297,7 +296,7 @@ void IGame::init(const int argc, char *argv[]) {
 		_log_lines->speed = 0;
 	} else _log_lines = NULL;
 
-	
+	_main_menu->init(window_size.w, window_size.h);
 /*	
 	if (_preload_map.size()) {
 		LOG_DEBUG(("starting predefined map %s...", _preload_map.c_str()));
