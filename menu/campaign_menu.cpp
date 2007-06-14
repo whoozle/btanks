@@ -95,15 +95,15 @@ CampaignMenu::CampaignMenu(MainMenu *parent, const int w, const int h) : _parent
 
 	_score = new Label("medium", "0");
 	add(xbase + mx + cw, ybase + my, _score);
-	
-	_shop = new Shop(w, h);
-	add(0, 0, _shop);
-	_shop->hide();
-	
+
 	_b_shop = new Button("medium", I18n->get("menu", "shop"));
 	_b_shop->getSize(bw, bh);
 
 	add(2 * mx, h - bh - 2 * my, _b_shop);
+	
+	_shop = new Shop(w, h);
+	add(0, 0, _shop);
+	_shop->hide();
 	
 	init();
 }

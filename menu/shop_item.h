@@ -2,10 +2,11 @@
 #define BTAKS_SHOP_ITEM_H___
 
 #include "container.h"
+#include "campaign.h"
 
 struct ShopItem : public Container {
-	std::string type, name;
-	int price, max;
+public:
+	ShopItem(const Campaign &campaign, const Campaign::ShopItem &item, const int w);
 };
 
 #endif
