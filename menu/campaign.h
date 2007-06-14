@@ -40,6 +40,8 @@ public:
 	const bool buy(const ShopItem &item) const;
 	const bool sell(const ShopItem &item) const;
 	
+	const ShopItem * find(const std::string &name) const;
+	
 protected: 
 	void getStatus(const std::string &map_id, bool &played, bool &won) const;
 

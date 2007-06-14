@@ -161,6 +161,7 @@ const bool Campaign::sell(const ShopItem &item) const {
 
 	Config->set("campaign." + name + ".score", cash);
 	Config->set("campaign." + name + ".wares." + item.name + ".amount", am);
+	return true;
 }
 
 
@@ -169,4 +170,12 @@ void Campaign::ShopItem::validate() {
 		throw_ex(("shop item does not have a name"));
 	if (price == 0)
 		throw_ex(("shop item %s does not have a price", name.c_str()));
+}
+
+const Campaign::ShopItem * Campaign::find(const std::string &name) const {
+	for(std::vector<ShopItem>::const_iterator i = wares.begin(); i != wares.end(); ++i) {
+		if (i->name == name) 
+			return & *i;
+	}
+	return NULL;
 }
