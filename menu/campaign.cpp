@@ -26,10 +26,27 @@ void Campaign::start(const std::string &name, Attrs &attr) {
 		LOG_DEBUG(("map: %s, visible: '%s'", map.id.c_str(), map.visible_if.c_str()));
 
 		maps.push_back(map);
+	} else if (name == "wares") {
+		if (_wares_section)
+			throw_ex(("recursive wares section is not allowed"));
+		_wares_section = true;
+	} else if (name == "item") {
+		wares.push_back(ShopItem());
+		ShopItem & item = wares.back();
+		item.type = attr["type"];
+		item.name = attr["name"];
+		item.price = attr["price"].empty()?0:atoi(attr["price"].c_str());
+		item.max_amount = attr["maximum-amount"].empty()?0:atoi(attr["maximum-amount"].c_str());
+		item.validate();
 	}
 }
 
-void Campaign::end(const std::string &name) {}
+void Campaign::end(const std::string &name) {
+	if (name == "wares") {
+		LOG_DEBUG(("wares section parsed... %u wares in store.", (unsigned)wares.size()));
+		_wares_section = false;
+	}
+}
 
 void Campaign::getStatus(const std::string &map_id, bool &played, bool &won) const {
 	std::string mname = "campaign." + name + ".maps." + map_id + ".win";
@@ -89,4 +106,19 @@ const bool Campaign::visible(const Map &map) const {
 	}
 	
 	return false;
+}
+
+Campaign::Campaign() : minimal_score(0), map(NULL), _wares_section(false) {}
+
+void Campaign::init() {
+	map = NULL;
+	_wares_section = false;
+	parseFile(base + "/campaign.xml");
+}
+
+void Campaign::ShopItem::validate() {
+	if (name.empty())
+		throw_ex(("shop item does not have a name"));
+	if (price == 0)
+		throw_ex(("shop item %s does not have a price", name.c_str()));
 }

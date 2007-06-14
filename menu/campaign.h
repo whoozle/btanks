@@ -21,7 +21,15 @@ struct Campaign : protected mrt::XMLParser {
 		v2<int> position;
 	};
 	
+	struct ShopItem {
+		std::string type, name;
+		int price, max_amount;
+		void validate();
+		ShopItem() : price(0), max_amount(0) {}
+	};
+	
 	std::vector<Map> maps;
+	std::vector<ShopItem> wares;
 	
 	void init();
 	const bool visible(const Map &map_id) const;
@@ -31,6 +39,8 @@ protected:
 
 	void start(const std::string &name, Attrs &attr);
 	void end(const std::string &name);
+private: 
+	bool _wares_section;
 };
 
 #endif

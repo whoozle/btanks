@@ -202,35 +202,3 @@ const bool CampaignMenu::empty() const {
 	return _campaigns.empty();
 }
 
-Campaign::Campaign() : minimal_score(0), map(NULL) {}
-
-void Campaign::init() {
-	map = NULL;
-	parseFile(base + "/campaign.xml");
-	/*
-	mrt::Directory dir;
-	dir.open(base + "/maps");
-	std::string fname;
-
-	while(!(fname = dir.read()).empty()) {
-		std::string map = fname;
-		
-		mrt::toLower(map);
-		if (map.size() < 5 || map.substr(map.size() - 4) != ".tmx")
-			continue;
-		map = fname.substr(0, fname.size() - 4);
-		LOG_DEBUG(("found map: %s", map.c_str()));
-		/ *
-		MapScanner m;
-		TRY {
-			m.scan(path + "/" + fname);
-		} CATCH("scanning map", {});
-		const std::string &comments = I18n->has("maps/descriptions", map)?I18n->get("maps/descriptions", map): 
-			I18n->get("maps/descriptions", "(default)");
-		maps.push_back(MapList::value_type(path, map, comments, m.object_restriction, m.game_type, m.slots));
-		* /
-		maps.push_back(fname);
-	}	
-	dir.close();
-	*/
-}
