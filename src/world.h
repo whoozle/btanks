@@ -63,8 +63,8 @@ public:
 	void render(sdlx::Surface &surface, const sdlx::Rect &src, const sdlx::Rect &viewport, const int z1 = -10000, const int z2 = 10001);
 	void tick(const float dt);
 	
-	Object * spawn(Object *src, const std::string &classname, const std::string &animation, const v2<float> &dpos, const v2<float> &vel, const int z = 0);
-	Object * spawnGrouped(Object *src, const std::string &classname, const std::string &animation, const v2<float> &dpos, const GroupType type);
+	Object * spawn(const Object *src, const std::string &classname, const std::string &animation, const v2<float> &dpos, const v2<float> &vel, const int z = 0);
+	Object * spawnGrouped(const Object *src, const std::string &classname, const std::string &animation, const v2<float> &dpos, const GroupType type);
 
 //the nearest objects
 	const Object* getNearestObject(const Object *obj, const std::string &classname) const;
