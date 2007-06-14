@@ -18,6 +18,7 @@
  */
 #include <string>
 #include <stdexcept>
+#include <stdlib.h>
 
 #include "game_monitor.h"
 #include "object.h"
@@ -37,8 +38,8 @@
 #include "var.h"
 #include "special_zone.h"
 #include "math/unary.h"
-#include <stdlib.h>
 #include "player_slot.h"
+#include "campaign.h"
 
 IMPLEMENT_SINGLETON(GameMonitor, IGameMonitor);
 
@@ -254,19 +255,21 @@ void IGameMonitor::tick(const float dt) {
 
 	std::string game_state = popState(dt);
 	if (_game_over && !game_state.empty()) {
-		if (!_campaign.empty()) {
+		if (_campaign != NULL) {
 			PlayerSlot &slot = PlayerManager->getSlot(0); 
 			int score; 
-			Config->get("campaign." + _campaign + ".score", score, 0);
+			Config->get("campaign." + _campaign->name + ".score", score, 0);
 			score += slot.score;
-			Config->set("campaign." + _campaign + ".score", score);
+			Config->set("campaign." + _campaign->name + ".score", score);
 			LOG_DEBUG(("total score: %d", score));
 			
-			std::string mname = "campaign." + _campaign + ".maps." + Map->getName();
+			std::string mname = "campaign." + _campaign->name + ".maps." + Map->getName();
 			bool win;
 			Config->get(mname + ".win", win, false);
-			if (_win)
+			if (_win) {
 				Config->set(mname + ".win", _win);
+				_campaign->clearBonuses();
+			} 
 			
 			int mscore;
 			Config->get(mname + ".maximum-score", mscore, 0);
@@ -523,7 +526,7 @@ static void coord2v(T &pos, const std::string &str) {
 	}
 }
 
-void IGameMonitor::loadMap(const std::string &campaign, const std::string &name, const bool spawn_objects, const bool skip_loadmap) {
+void IGameMonitor::loadMap(Campaign *campaign, const std::string &name, const bool spawn_objects, const bool skip_loadmap) {
 	_campaign = campaign;
 	IMap &map = *IMap::get_instance();
 
@@ -666,6 +669,8 @@ void IGameMonitor::loadMap(const std::string &campaign, const std::string &name,
 	LOG_DEBUG(("%u items on map, %u waypoints, %u edges", (unsigned)GameMonitor->getItemsCount(), (unsigned)_waypoints.size(), (unsigned)_waypoint_edges.size()));
 	Config->invalidateCachedValues();
 	
+	generateBonuses();
+	
 	GET_CONFIG_VALUE("engine.max-time-slice", float, mts, 0.025);
 	World->setTimeSlice(mts);
 	
@@ -696,3 +701,9 @@ const std::string IGameMonitor::generatePropertyName(const std::string &prefix) 
 	return name;
 }
 
+
+void IGameMonitor::generateBonuses() {
+	if (_campaign == NULL)
+		return;
+	
+}

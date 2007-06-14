@@ -24,9 +24,9 @@ public:
 	
 	struct ShopItem {
 		std::string type, name;
-		int price, max_amount;
+		int amount, price, max_amount;
 		void validate();
-		ShopItem() : price(0), max_amount(0) {}
+		ShopItem() : amount(0), price(0), max_amount(0) {}
 	};
 	
 	std::vector<Map> maps;
@@ -35,12 +35,12 @@ public:
 	void init();
 	const bool visible(const Map &map_id) const;
 	const int getCash() const;
-	const int getAmount(const ShopItem &item) const;
 
-	const bool buy(const ShopItem &item) const;
-	const bool sell(const ShopItem &item) const;
+	const bool buy(ShopItem &item) const;
+	const bool sell(ShopItem &item) const;
 	
 	const ShopItem * find(const std::string &name) const;
+	void clearBonuses();
 	
 protected: 
 	void getStatus(const std::string &map_id, bool &played, bool &won) const;

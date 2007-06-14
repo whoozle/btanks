@@ -39,6 +39,7 @@ class Rect;
 
 class BaseObject;
 class Object;
+class Campaign;
 
 struct BTANKSAPI GameItem {
 	GameItem(const std::string &classname, const std::string &animation, const std::string &property, const v2<int> position, const int z = 0) :
@@ -98,7 +99,7 @@ public:
 	
 	void killAllClasses(const std::set<std::string> &classes);
 
-	void loadMap(const std::string &campaign, const std::string &name, const bool spawn = true, const bool skip_loadmap = false);		
+	void loadMap(Campaign * campaign, const std::string &name, const bool spawn = true, const bool skip_loadmap = false);		
 
 	//waypoints
 	const std::string getRandomWaypoint(const std::string &classname, const std::string &last_wp = std::string()) const;
@@ -106,6 +107,8 @@ public:
 	void getWaypoint(v2<float> &wp, const std::string &classname, const std::string &name);
 	
 	void renderWaypoints(sdlx::Surface &surface, const sdlx::Rect &src, const sdlx::Rect &viewport);	
+	
+	void generateBonuses();
 
 private:
 
@@ -137,7 +140,7 @@ private:
 	WaypointClassMap _waypoints;
 	WaypointEdgeMap  _waypoint_edges;	
 	
-	std::string _campaign;
+	Campaign * _campaign;
 };
 
 SINGLETON(BTANKSAPI, GameMonitor, IGameMonitor);

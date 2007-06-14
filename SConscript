@@ -19,7 +19,7 @@ env.Append(CPPDEFINES=['BTANKSAPI=DLLEXPORT']);
 
 vobj = venv.SharedObject('src/version.cpp')
 bt_sources = 	[
-	'src/finder.cpp', 'src/zbox.cpp', 
+	'src/finder.cpp', 'src/zbox.cpp', 'src/campaign.cpp',
 	
 	'src/alarm.cpp', 'src/base_object.cpp', 'src/notifying_xml_parser.cpp',
 	'src/special_zone.cpp', 'src/game_monitor.cpp', 

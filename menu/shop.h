@@ -10,12 +10,12 @@ class Campaign;
 class Shop : public Container {
 public: 
 	Shop(const int w, const int h);	
-	void init(const Campaign &campaign);
+	void init(Campaign *campaign);
 	virtual bool onKey(const SDL_keysym sym);
 
 	void revalidate();
 private: 
-	const Campaign *_campaign;
+	Campaign *_campaign;
 	std::string _prefix;
 	ScrollList *_wares;
 };

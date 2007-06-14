@@ -5,9 +5,9 @@
 
 void Campaign::start(const std::string &name, Attrs &attr) {
 	if (name == "campaign") {
-		if (attr["title"].empty())
+		if (attr["name"].empty())
 			throw_ex(("campaign must have title attr"));
-		this->name = attr["title"];
+		this->name = attr["name"];
 		title = I18n->get("campaign", this->name);
 		if (attr["map"].empty())
 			throw_ex(("campaign must have map attr"));
@@ -37,6 +37,13 @@ void Campaign::start(const std::string &name, Attrs &attr) {
 		item.name = attr["name"];
 		item.price = attr["price"].empty()?0:atoi(attr["price"].c_str());
 		item.max_amount = attr["maximum-amount"].empty()?0:atoi(attr["maximum-amount"].c_str());
+		std::string kname = "campaign." + this->name + ".wares." + item.name + ".amount";
+		//LOG_DEBUG(("querying %s", kname.c_str()));
+		if (Config->has(kname)) {
+			int am;
+			Config->get(kname, am, 0);
+			item.amount = am;
+		}
 		item.validate();
 	}
 }
@@ -120,47 +127,35 @@ const int Campaign::getCash() const {
 	return cash;
 }
 
-const int Campaign::getAmount(const ShopItem &item) const {
-	std::string kname = "campaign." + name + ".wares." + item.name + ".amount";
-	if (!Config->has(kname))
-		return 0;
-	
-	int a;
-	Config->get(kname, a, 0);
-	return a;
-}
-
-const bool Campaign::buy(const ShopItem &item) const {
+const bool Campaign::buy(ShopItem &item) const {
 	int cash = getCash();
 	if (cash < item.price)
 		return false;
 
-	int am = getAmount(item);
-	if (am >= item.max_amount)
+	if (item.amount >= item.max_amount)
 		return false;
 
 	LOG_DEBUG(("buying item %s...", item.name.c_str()));
 	cash -= item.price;
-	++am;
+	++item.amount;
 
 	Config->set("campaign." + name + ".score", cash);
-	Config->set("campaign." + name + ".wares." + item.name + ".amount", am);
+	Config->set("campaign." + name + ".wares." + item.name + ".amount", item.amount);
 	return true;
 }
 
-const bool Campaign::sell(const ShopItem &item) const {
-	int am = getAmount(item);
-	if (am <= 0)
+const bool Campaign::sell(ShopItem &item) const {
+	if (item.amount <= 0)
 		return false;
 
 	int cash = getCash();
 		
 	LOG_DEBUG(("selling item %s...", item.name.c_str()));
 	cash += item.price * 4 / 5;
-	--am;
+	--item.amount;
 
 	Config->set("campaign." + name + ".score", cash);
-	Config->set("campaign." + name + ".wares." + item.name + ".amount", am);
+	Config->set("campaign." + name + ".wares." + item.name + ".amount", item.amount);
 	return true;
 }
 
@@ -170,6 +165,8 @@ void Campaign::ShopItem::validate() {
 		throw_ex(("shop item does not have a name"));
 	if (price == 0)
 		throw_ex(("shop item %s does not have a price", name.c_str()));
+	if (amount > max_amount)
+		amount = max_amount;
 }
 
 const Campaign::ShopItem * Campaign::find(const std::string &name) const {
@@ -178,4 +175,14 @@ const Campaign::ShopItem * Campaign::find(const std::string &name) const {
 			return & *i;
 	}
 	return NULL;
+}
+
+void Campaign::clearBonuses() {
+	for(std::vector<ShopItem>::iterator i = wares.begin(); i != wares.end(); ++i) {
+		i->amount = 0;
+		std::string kname = "campaign." + name + ".wares." + i->name + ".amount";
+		if (Config->has(kname)) {
+			Config->remove(kname);
+		}
+	}
 }

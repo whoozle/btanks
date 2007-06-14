@@ -101,7 +101,7 @@ TRY {
 		
 		mrt::Serializator s(&message.data);
 		Map->deserialize(s);
-		GameMonitor->loadMap(Map->getName(), false, true);
+		GameMonitor->loadMap(NULL, Map->getName(), false, true);
 		
 		s.get(_my_idx);
 		LOG_DEBUG(("my_idx = %d", _my_idx));

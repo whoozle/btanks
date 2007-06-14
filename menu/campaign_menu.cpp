@@ -22,12 +22,12 @@
 
 void CampaignMenu::start() {
 	int ci = _active_campaign->get();
-	const Campaign &campaign = _campaigns[ci];
+	Campaign &campaign = _campaigns[ci];
 	const Campaign::Map &map = campaign.maps[map_id[_maps->get()]];
 	LOG_DEBUG(("campaign: %s, map: %s", campaign.name.c_str(), map.id.c_str()));
 	//ensure world is created 
 	Game->clear();
-	GameMonitor->loadMap(campaign.name, map.id);
+	GameMonitor->loadMap(&campaign, map.id);
 	
 	PlayerSlot &slot = PlayerManager->getSlot(0);
 	std::string cm;
@@ -110,7 +110,7 @@ CampaignMenu::CampaignMenu(MainMenu *parent, const int w, const int h) : _parent
 
 void CampaignMenu::init() {
 	int ci = _active_campaign->get();
-	const Campaign &campaign = _campaigns[ci];
+	Campaign &campaign = _campaigns[ci];
 
 	std::string current_map;
 	TRY {
@@ -119,7 +119,7 @@ void CampaignMenu::init() {
 		}
 	} CATCH("init", )
 
-	_shop->init(campaign);
+	_shop->init(&campaign);
 	_map_view->init(campaign.map);
 
 	_maps->clear();

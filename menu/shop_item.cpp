@@ -15,6 +15,6 @@ void ShopItem::revalidate(const Campaign &campaign, const Campaign::ShopItem &it
 	_name->setFont(font);
 	_price->setFont(font);
 	_amount->setFont(font);
-	_amount->set(mrt::formatString("%d", campaign.getAmount(item)));
+	_amount->set(mrt::formatString("%d", item.amount));
 }
 

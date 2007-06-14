@@ -20,17 +20,20 @@ Shop::Shop(const int w, const int h)  {
 	add(xbase + mx, ybase + my, _wares);
 }
 
-void Shop::init(const Campaign &campaign) {
-	_campaign = &campaign;
-	_prefix = "campaign." + campaign.name + ".";
-	LOG_DEBUG(("selecting campaign %s, cash: %d", campaign.name.c_str(), campaign.getCash()));
+void Shop::init(Campaign *campaign) {
+	_campaign = campaign;
+	if (_campaign == NULL)
+		return;
+	
+	_prefix = "campaign." + campaign->name + ".";
+	LOG_DEBUG(("selecting campaign %s, cash: %d", campaign->name.c_str(), campaign->getCash()));
 
 	int w, h;
 	getSize(w, h);
 
 	_wares->clear();
-	for(size_t i = 0; i < campaign.wares.size(); ++i) {
-		_wares->append(new ShopItem(campaign, campaign.wares[i], w));
+	for(size_t i = 0; i < campaign->wares.size(); ++i) {
+		_wares->append(new ShopItem(*campaign, campaign->wares[i], w));
 	}
 }
 
@@ -65,7 +68,7 @@ bool Shop::onKey(const SDL_keysym sym) {
 			int i = _wares->get();
 			if (i >= (int)_campaign->wares.size()) 
 				return true;
-			const Campaign::ShopItem &item = _campaign->wares[i];
+			Campaign::ShopItem &item = _campaign->wares[i];
 			_campaign->buy(item);
 			revalidate();
 		} return true;
