@@ -20,16 +20,10 @@ Shop::Shop(const int w, const int h)  {
 	add(xbase + mx, ybase + my, _wares);
 }
 
-const int Shop::getCash() const {
-	int cash;
-	Config->get(_prefix + "score", cash, 0);
-	return cash;
-}
-
 void Shop::init(const Campaign &campaign) {
 	_campaign = campaign.name;
 	_prefix = "campaign." + _campaign + ".";
-	LOG_DEBUG(("selecting campaign %s, cash: %d", _campaign.c_str(), getCash()));
+	LOG_DEBUG(("selecting campaign %s, cash: %d", _campaign.c_str(), campaign.getCash()));
 
 	int w, h;
 	getSize(w, h);

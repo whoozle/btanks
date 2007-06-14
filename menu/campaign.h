@@ -33,6 +33,7 @@ struct Campaign : protected mrt::XMLParser {
 	
 	void init();
 	const bool visible(const Map &map_id) const;
+	const int getCash() const;
 	
 protected: 
 	void getStatus(const std::string &map_id, bool &played, bool &won) const;

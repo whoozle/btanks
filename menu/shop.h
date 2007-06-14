@@ -14,8 +14,6 @@ public:
 	virtual bool onKey(const SDL_keysym sym);
 
 private: 
-	const int getCash() const;
-
 	std::string _campaign, _prefix;
 	ScrollList *_wares;
 };

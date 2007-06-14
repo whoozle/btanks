@@ -155,11 +155,7 @@ void CampaignMenu::tick(const float dt) {
 		throw_ex(("no compaigns defined"));
 	
 	const Campaign &campaign = _campaigns[ci];
-	{
-		int score;
-		Config->get("campaign." + campaign.name + ".score", score, 0);
-		_score->set(mrt::formatString("%d", score));
-	}
+	_score->set(mrt::formatString("%d", campaign.getCash()));
 
 	if (_active_campaign->changed()) {
 		_active_campaign->reset();

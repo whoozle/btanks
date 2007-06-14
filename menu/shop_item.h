@@ -4,9 +4,14 @@
 #include "container.h"
 #include "campaign.h"
 
+class Label;
+
 struct ShopItem : public Container {
 public:
 	ShopItem(const Campaign &campaign, const Campaign::ShopItem &item, const int w);
+	void validate(const Campaign &campaign, const Campaign::ShopItem &item);
+private: 
+	Label *_name, *_price;
 };
 
 #endif

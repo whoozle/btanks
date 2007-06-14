@@ -64,9 +64,7 @@ void Campaign::getStatus(const std::string &map_id, bool &played, bool &won) con
 const bool Campaign::visible(const Map &map) const {
 	LOG_DEBUG(("visible('%s')", map.id.c_str()));
 	if (minimal_score > 0) {
-		int score;
-		Config->get("campaign." + name + ".score", score, 0);
-		if (minimal_score > score)
+		if (minimal_score > getCash())
 			return false;
 	}
 	if (map.visible_if.empty()) 
@@ -115,6 +113,13 @@ void Campaign::init() {
 	_wares_section = false;
 	parseFile(base + "/campaign.xml");
 }
+
+const int Campaign::getCash() const {
+	int cash;
+	Config->get("campaign." + name + ".score", cash, 0);
+	return cash;
+}
+
 
 void Campaign::ShopItem::validate() {
 	if (name.empty())
