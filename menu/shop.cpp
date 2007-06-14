@@ -21,9 +21,9 @@ Shop::Shop(const int w, const int h)  {
 }
 
 void Shop::init(const Campaign &campaign) {
-	_campaign = campaign.name;
-	_prefix = "campaign." + _campaign + ".";
-	LOG_DEBUG(("selecting campaign %s, cash: %d", _campaign.c_str(), campaign.getCash()));
+	_campaign = &campaign;
+	_prefix = "campaign." + campaign.name + ".";
+	LOG_DEBUG(("selecting campaign %s, cash: %d", campaign.name.c_str(), campaign.getCash()));
 
 	int w, h;
 	getSize(w, h);
@@ -39,6 +39,20 @@ bool Shop::onKey(const SDL_keysym sym) {
 		return true;
 
 	switch(sym.sym) {
+	case SDLK_SPACE: 
+	case SDLK_CTRL: 
+	case SDLK_RETURN: 
+		{
+			if (_campaign == NULL)
+				return true;
+		
+			int i = _wares->get();
+			if (i >= (int)_campaign->wares.size()) 
+				return true;
+			const Campaign::ShopItem &item = _campaign->wares[i];
+			_campaign->buy(item);
+		} return true;
+	
 	case SDLK_ESCAPE: 
 		hide();
 		return true;
