@@ -37,6 +37,8 @@ public:
 
 	void set(const std::string &label);
 	const std::string get() const;
+	
+	void setFont(const std::string &font);
 
 private: 
 	const sdlx::Font * _font;

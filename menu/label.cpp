@@ -28,6 +28,10 @@ void Label::getSize(int &w, int &h) const {
 	h = _font->getHeight();
 }
 
+void Label::setFont(const std::string &font) {
+	_font = ResourceManager->loadFont(font, true);
+}
+
 void Label::set(const std::string &label) {
 	_label = label;
 }
