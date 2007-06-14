@@ -11,7 +11,7 @@ public:
 	ShopItem(const Campaign &campaign, const Campaign::ShopItem &item, const int w);
 	void validate(const Campaign &campaign, const Campaign::ShopItem &item);
 private: 
-	Label *_name, *_price;
+	Label *_name, *_price, *_amount;
 };
 
 #endif
