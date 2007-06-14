@@ -36,7 +36,9 @@ public:
 	const bool visible(const Map &map_id) const;
 	const int getCash() const;
 	const int getAmount(const ShopItem &item) const;
+
 	const bool buy(const ShopItem &item) const;
+	const bool sell(const ShopItem &item) const;
 	
 protected: 
 	void getStatus(const std::string &map_id, bool &played, bool &won) const;

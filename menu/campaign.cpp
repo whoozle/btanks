@@ -148,6 +148,22 @@ const bool Campaign::buy(const ShopItem &item) const {
 	return true;
 }
 
+const bool Campaign::sell(const ShopItem &item) const {
+	int am = getAmount(item);
+	if (am <= 0)
+		return false;
+
+	int cash = getCash();
+		
+	LOG_DEBUG(("selling item %s...", item.name.c_str()));
+	cash += item.price * 4 / 5;
+	--am;
+
+	Config->set("campaign." + name + ".score", cash);
+	Config->set("campaign." + name + ".wares." + item.name + ".amount", am);
+}
+
+
 void Campaign::ShopItem::validate() {
 	if (name.empty())
 		throw_ex(("shop item does not have a name"));
