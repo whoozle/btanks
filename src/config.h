@@ -63,6 +63,9 @@ public:
 	void invalidateCachedValues();
 	
 	void registerInvalidator(bool *ptr);
+	
+	void enumerateKeys(std::set<std::string> &keys, const std::string &pattern) const;
+	
 private: 
 	
 	virtual void start(const std::string &name, Attrs &attr);

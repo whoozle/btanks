@@ -297,3 +297,15 @@ IConfig::~IConfig() {
 	std::for_each(_map.begin(), _map.end(), delete_ptr2<VarMap::value_type>());
 }
 
+void IConfig::enumerateKeys(std::set<std::string> &keys, const std::string &pattern) const {
+	keys.clear();
+	for(VarMap::const_iterator i = _temp_map.begin(); i != _temp_map.end(); ++i) {
+		if (i->first.compare(0, pattern.size(), pattern) == 0)
+			keys.insert(i->first);
+	}
+	//copy-paste ninja was here.... again...
+	for(VarMap::const_iterator i = _map.begin(); i != _map.end(); ++i) {
+		if (i->first.compare(0, pattern.size(), pattern) == 0)
+			keys.insert(i->first);
+	}
+}
