@@ -54,6 +54,7 @@ void Shop::revalidate() {
 }
 
 void Shop::tick(const float dt) {
+	Container::tick(dt);
 	if (_wares->changed()) {
 		_wares->reset();
 		revalidate();

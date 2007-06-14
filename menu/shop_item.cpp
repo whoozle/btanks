@@ -52,6 +52,7 @@ void ShopItem::tick(const float dt) {
 	if (_pose == NULL || !_active)
 		return;
 	t += dt;
+	//LOG_DEBUG(("t = %g", t));
 	if ((t * _pose->speed) > (int)_pose->frames.size())
-		t -= _pose->speed * _pose->frames.size();
+		t -= (float)_pose->frames.size() / _pose->speed;
 }
