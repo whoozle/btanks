@@ -40,6 +40,9 @@ public:
 	const int size() const { return _list.size(); }
 	const bool empty() const { return _list.empty(); }
 	
+	Control * getItem(const int idx) { return _list[idx]; }
+	const Control * getItem(const int idx) const { return _list[idx]; }
+
 	const int get() const { return _current_item; }
 	const std::string getValue() const;
 	void set(const int idx) { _current_item = idx; }

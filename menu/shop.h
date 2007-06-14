@@ -13,6 +13,7 @@ public:
 	void init(const Campaign &campaign);
 	virtual bool onKey(const SDL_keysym sym);
 
+	void revalidate();
 private: 
 	const Campaign *_campaign;
 	std::string _prefix;

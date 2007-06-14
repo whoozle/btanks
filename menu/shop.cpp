@@ -34,13 +34,29 @@ void Shop::init(const Campaign &campaign) {
 	}
 }
 
+void Shop::revalidate() {
+	if (_campaign == NULL)
+		return;
+	
+	size_t n = _campaign->wares.size();
+	assert(n == _wares->size());
+	for(size_t i = 0; i < n; ++i) {
+		Control *c = _wares->getItem(i);
+		ShopItem *s = dynamic_cast<ShopItem *>(c);
+		if (s != NULL) {
+			s->revalidate(*_campaign, _campaign->wares[i]);
+		}
+	}
+}
+
+
 bool Shop::onKey(const SDL_keysym sym) {
 	if (Container::onKey(sym))
 		return true;
 
 	switch(sym.sym) {
 	case SDLK_SPACE: 
-	case SDLK_CTRL: 
+	case SDLK_LCTRL: 
 	case SDLK_RETURN: 
 		{
 			if (_campaign == NULL)
@@ -51,6 +67,7 @@ bool Shop::onKey(const SDL_keysym sym) {
 				return true;
 			const Campaign::ShopItem &item = _campaign->wares[i];
 			_campaign->buy(item);
+			revalidate();
 		} return true;
 	
 	case SDLK_ESCAPE: 
