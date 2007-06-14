@@ -707,8 +707,17 @@ void IGameMonitor::addBonuses(const PlayerSlot &slot) {
 		return;
 	const std::vector<Campaign::ShopItem> & wares = _campaign->wares;
 	for(std::vector<Campaign::ShopItem>::const_iterator i = wares.begin(); i != wares.end(); ++i) {
-		if (i->amount <= 0 || i->object.empty() || i->animation.empty())
+		int n = i->amount;
+		if (n <= 0 || i->object.empty() || i->animation.empty())
 			continue;
 		LOG_DEBUG(("adding bonus: %s", i->name.c_str()));
+		int dirs = (n > 8)?16:(n > 4 ? 8: 4);
+		for(int d = 0; d < n; ++d) {
+			v2<float> dir; 
+			dir.fromDirection(d % dirs, dirs);
+			dir *= o->size.length();
+			//LOG_DEBUG(("%g %g", d.x, d.y));
+			World->spawn(o, i->object, i->animation, dir, v2<float>());
+		}
 	}
 }
