@@ -120,6 +120,33 @@ const int Campaign::getCash() const {
 	return cash;
 }
 
+const int Campaign::getAmount(const ShopItem &item) const {
+	std::string kname = "campaign." + name + ".wares." + item.name + ".amount";
+	if (!Config->has(kname))
+		return 0;
+	
+	int a;
+	Config->get(kname, a, 0);
+	return a;
+}
+
+const bool Campaign::buy(const ShopItem &item) const {
+	int cash = getCash();
+	if (cash < item.price)
+		return false;
+
+	int am = getAmount(item);
+	if (am >= item.max_amount)
+		return false;
+
+	LOG_DEBUG(("buying item %s...", item.name.c_str()));
+	cash -= item.price;
+	++am;
+
+	Config->set("campaign." + name + ".score", cash);
+	Config->set("campaign." + name + ".wares." + item.name + ".amount", am);
+	return true;
+}
 
 void Campaign::ShopItem::validate() {
 	if (name.empty())
