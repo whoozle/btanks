@@ -43,7 +43,7 @@
 
 IMPLEMENT_SINGLETON(GameMonitor, IGameMonitor);
 
-IGameMonitor::IGameMonitor() : _game_over(false), _win(false), _check_items(0.5, true), _state_timer(false), _timer(0) {}
+IGameMonitor::IGameMonitor() : _game_over(false), _win(false), _check_items(0.5, true), _state_timer(false), _timer(0), _campaign(NULL) {}
 
 void GameItem::respawn() {
 	LOG_DEBUG(("respawning item: %s:%s", classname.c_str(), animation.c_str()));
@@ -700,6 +700,8 @@ const std::string IGameMonitor::generatePropertyName(const std::string &prefix) 
 }
 
 void IGameMonitor::addBonuses(const PlayerSlot &slot) {
+	if (_campaign == NULL)
+		return;
 	const Object *o = slot.getObject();
 	if (o == NULL)
 		return;
