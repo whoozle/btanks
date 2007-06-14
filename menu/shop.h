@@ -4,6 +4,8 @@
 #include "container.h"
 #include <string>
 
+class ScrollList;
+
 class Shop : public Container {
 public: 
 	Shop(const int w, const int h);	
@@ -13,6 +15,7 @@ public:
 private: 
 	std::string _campaign, _prefix;
 	int _cash;
+	ScrollList *_wares;
 };
 
 
