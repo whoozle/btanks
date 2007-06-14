@@ -40,6 +40,7 @@ void Campaign::start(const std::string &name, Attrs &attr) {
 		item.name = attr["name"];
 		item.price = attr["price"].empty()?0:atoi(attr["price"].c_str());
 		item.max_amount = attr["maximum-amount"].empty()?0:atoi(attr["maximum-amount"].c_str());
+		item.dir_speed = attr["cycle-directions"].empty()?0.0f:atof(attr["cycle-directions"].c_str());
 		
 		item.object = attr["object"];
 		item.animation = attr["animation"];

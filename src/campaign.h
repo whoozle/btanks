@@ -25,8 +25,10 @@ public:
 	struct ShopItem {
 		std::string type, name, object, animation, pose;
 		int amount, price, max_amount;
+		float dir_speed;
+		
 		void validate();
-		ShopItem() : amount(0), price(0), max_amount(0) {}
+		ShopItem() : amount(0), price(0), max_amount(0), dir_speed(0) {}
 	};
 	
 	std::vector<Map> maps;

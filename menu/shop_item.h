@@ -26,7 +26,7 @@ private:
 	
 	int xbase;
 	
-	float t;
+	float t, dir_speed, dir_t;
 };
 
 #endif
