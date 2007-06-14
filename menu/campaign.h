@@ -8,7 +8,8 @@ namespace sdlx {
 	class Surface;
 }
 
-struct Campaign : protected mrt::XMLParser {
+class Campaign : protected mrt::XMLParser {
+public: 
 	Campaign();
 	std::string base, name, title;
 	int minimal_score;
