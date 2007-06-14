@@ -40,6 +40,7 @@ class Rect;
 class BaseObject;
 class Object;
 class Campaign;
+class PlayerSlot;
 
 struct BTANKSAPI GameItem {
 	GameItem(const std::string &classname, const std::string &animation, const std::string &property, const v2<int> position, const int z = 0) :
@@ -107,9 +108,9 @@ public:
 	void getWaypoint(v2<float> &wp, const std::string &classname, const std::string &name);
 	
 	void renderWaypoints(sdlx::Surface &surface, const sdlx::Rect &src, const sdlx::Rect &viewport);	
-	
-	void generateBonuses();
 
+	void addBonuses(const PlayerSlot &slot);
+	
 private:
 
 	bool _game_over, _win;

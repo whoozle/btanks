@@ -669,8 +669,6 @@ void IGameMonitor::loadMap(Campaign *campaign, const std::string &name, const bo
 	LOG_DEBUG(("%u items on map, %u waypoints, %u edges", (unsigned)GameMonitor->getItemsCount(), (unsigned)_waypoints.size(), (unsigned)_waypoint_edges.size()));
 	Config->invalidateCachedValues();
 	
-	generateBonuses();
-	
 	GET_CONFIG_VALUE("engine.max-time-slice", float, mts, 0.025);
 	World->setTimeSlice(mts);
 	
@@ -701,15 +699,14 @@ const std::string IGameMonitor::generatePropertyName(const std::string &prefix) 
 	return name;
 }
 
-
-void IGameMonitor::generateBonuses() {
-	if (_campaign == NULL)
+void IGameMonitor::addBonuses(const PlayerSlot &slot) {
+	const Object *o = slot.getObject();
+	if (o == NULL)
 		return;
 	const std::vector<Campaign::ShopItem> & wares = _campaign->wares;
 	for(std::vector<Campaign::ShopItem>::const_iterator i = wares.begin(); i != wares.end(); ++i) {
 		if (i->amount <= 0 || i->object.empty() || i->animation.empty())
 			continue;
-		
-		LOG_DEBUG(("bonus: %s, %d", i->name.c_str(), i->amount));
+		LOG_DEBUG(("adding bonus: %s", i->name.c_str()));
 	}
 }
