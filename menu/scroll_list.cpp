@@ -35,6 +35,10 @@ _client_w(64), _client_h(64), _pos(0), _vel(0), _current_item(0), _spacing(spaci
 	_scrollers = ResourceManager->loadSurface("menu/v_scroller.png");
 }
 
+void ScrollList::initBG(const std::string &background, const std::string &highlite, const int w, const int h) {
+	_background.init(background, highlite, w, h);
+}
+
 const std::string ScrollList::getValue() const { 
 	Control *c = _list[_current_item]; 
 	Label *l = dynamic_cast<Label *>(c);
