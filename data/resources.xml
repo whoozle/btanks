@@ -34,6 +34,7 @@
 
 	<animation-model id="car-animation" speed="10">
 		<pose id="hold">0</pose>
+		<pose id="main">0</pose> <!-- hack to make destructable-object work with this model -->
 		<pose id="move" sound="engine-car.ogg">0,1</pose>
 	</animation-model>
 
