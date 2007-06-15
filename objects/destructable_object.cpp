@@ -91,6 +91,8 @@ void DestructableObject::tick(const float dt) {
 
 void DestructableObject::onSpawn() {
 	play("main", true);
+	if (getState().empty())
+		throw_ex(("%s:%s does not have initial pose ('main')", registered_name.c_str(), animation.c_str()));
 }
 
 
