@@ -6,7 +6,6 @@
 #include "world.h"
 #include "player_manager.h"
 #include "player_slot.h"
-#include "game_monitor.h"
 
 class Teleport : public Object {
 public: 
@@ -47,7 +46,7 @@ Teleport::Teleports Teleport::_teleports;
 
 void Teleport::tick(const float dt) {
 	Object::tick(dt);
-	if (GameMonitor->disabled(this)) {
+	if (aiDisabled()) {
 		if (getState() != "hold") {
 			cancelAll();
 			play("hold", true);

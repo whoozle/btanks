@@ -17,7 +17,6 @@
  */
 
 #include "resource_manager.h"
-#include "game_monitor.h"
 #include "config.h"
 #include "object.h"
 #include "ai/waypoints.h"
@@ -147,7 +146,7 @@ Boss1::Boss1(const float fire_shift) :
 void Boss1::calculate(const float dt) {
 	bool stable = _stable.tick(dt);
 
-	if (GameMonitor->disabled(this))
+	if (aiDisabled())
 		return;
 
 	if (!stable)
