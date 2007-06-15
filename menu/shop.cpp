@@ -65,10 +65,20 @@ bool Shop::onKey(const SDL_keysym sym) {
 	if (Container::onKey(sym))
 		return true;
 
+	bool buy = true;
+
 	switch(sym.sym) {
+	case SDLK_MINUS:
+	case SDLK_UNDERSCORE:
+	case SDLK_KP_MINUS:
+		buy = false;
+	
 	case SDLK_SPACE: 
 	case SDLK_LCTRL: 
 	case SDLK_RETURN: 
+	case SDLK_KP_PLUS:
+	case SDLK_PLUS:
+	case SDLK_EQUALS:
 		{
 			if (_campaign == NULL)
 				return true;
@@ -77,7 +87,11 @@ bool Shop::onKey(const SDL_keysym sym) {
 			if (i >= (int)_campaign->wares.size()) 
 				return true;
 			Campaign::ShopItem &item = _campaign->wares[i];
-			_campaign->buy(item);
+			if (buy) 
+				_campaign->buy(item);
+			else
+				_campaign->sell(item);
+				
 			revalidate();
 		} return true;
 	
