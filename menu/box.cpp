@@ -100,9 +100,17 @@ void Box::init(const std::string &tile, const std::string &highlight, int _w, in
 		_filler_d.fill(_filler.mapRGBA(0, 255, 0, 64));
 		_filler_l.fill(_filler.mapRGBA(0, 0, 255, 64));
 		_filler_r.fill(_filler.mapRGBA(255, 255, 0, 64));
+	} else {
+		for(int y = 0; y < TILE_SIZE; ++y) {
+			_filler_l.copyFrom(*_surface, cl, 0, y * c.h);
+			_filler_r.copyFrom(*_surface, cr, 0, y * c.h);
+			_filler_u.copyFrom(*_surface, u, y * c.w, 0);
+			_filler_d.copyFrom(*_surface, d, y * c.w, 0);
+			for(int x = 0; x < TILE_SIZE; ++x) {
+				_filler.copyFrom(*_surface, c, x * c.w, y * c.h);
+			}
+		}
 	}
-	//for(int y = 0; y < TILE_SIZE; ++y) 
-	//	for(int x = 0; x < TILE_SIZE; ++x);
 	
 	foo->setAlpha(255);
 }
