@@ -192,6 +192,8 @@ protected:
 	
 	const sdlx::Surface * getSurface() const;
 	const Matrix<int> &getImpassabilityMatrix() const;
+	
+	const bool aiDisabled() const;
 
 private: 
 //pathfinding stuff

@@ -30,6 +30,7 @@
 #include "math/unary.h"
 #include "sound/mixer.h"
 #include "special_owners.h"
+#include "game_monitor.h"
 
 Object::Event::Event() : name(), repeat(false), sound(), gain(1.0f), played(false), cached_pose(NULL) {}
 
@@ -49,6 +50,13 @@ Object * Object::clone() const {
 	throw_ex(("object %s:%s doesnt provide clone() method", registered_name.c_str(), animation.c_str()));
 	return NULL;
 }
+
+const bool Object::aiDisabled() const {
+	if (_variants.has("ally"))
+		return false;
+	return GameMonitor->disabled(this);
+}
+
 
 Object::Object(const std::string &classname) : 
 	BaseObject(classname), 
@@ -88,34 +96,32 @@ Object* Object::spawn(const std::string &classname, const std::string &animation
 }
 
 
-#include "game_monitor.h"
-
 const Object* Object::getNearestObject(const std::string &classname) const {
-	if (GameMonitor->disabled(this))
+	if (aiDisabled())
 		return NULL;
 	return World->getNearestObject(this, classname);
 }
 
 const Object* Object::getNearestObject(const std::set<std::string> &classnames) const {
-	if (GameMonitor->disabled(this))
+	if (aiDisabled())
 		return NULL;
 	return World->getNearestObject(this, classnames);
 }
 
 const bool Object::getNearest(const std::string &cl, v2<float> &position, v2<float> &velocity, Way * way) const {
-	if (GameMonitor->disabled(this))
+	if (aiDisabled())
 		return false;
 	return World->getNearest(this, cl, position, velocity, way);
 }
 
 const bool Object::getNearest(const std::set<std::string> &classnames, v2<float> &position, v2<float> &velocity) const {
-	if (GameMonitor->disabled(this))
+	if (aiDisabled())
 		return false;
 	return World->getNearest(this, classnames, position, velocity);
 }
 
 const bool Object::getNearest(const std::set<std::string> &classnames, const float range, v2<float> &position, v2<float> &velocity) const {
-	if (GameMonitor->disabled(this))
+	if (aiDisabled())
 		return false;
 	
 	return World->getNearest(this, classnames, range, position, velocity);
@@ -889,7 +895,7 @@ const int Object::getTargetPosition(v2<float> &relative_position, const std::set
 }
 
 const int Object::getTargetPosition(v2<float> &relative_position, const std::set<std::string> &targets, const float range) const {
-	if (GameMonitor->disabled(this))
+	if (aiDisabled())
 		return -1;
 
 	const int dirs = _directions_n;
@@ -973,7 +979,7 @@ const int Object::getTargetPosition(v2<float> &relative_position, const std::set
 
 
 const bool Object::getTargetPosition(v2<float> &relative_position, const v2<float> &target, const std::string &weapon) const {
-	if (GameMonitor->disabled(this))
+	if (aiDisabled())
 		return -1;
 
 	const int dirs = _directions_n;
