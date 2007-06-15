@@ -9,7 +9,8 @@ void TilesetList::clear() {
 const int TilesetList::add(const std::string &name, const int gid, const int size) {
 	if (gid == 0)
 		throw_ex(("adding tileset with gid 0 is prohibited"));
-
+	
+	LOG_DEBUG(("add('%s', %d, %d) the latest gid was %d", name.c_str(), gid, size, _last_gid));
 	int egid = gid;
 	if (egid <= _last_gid) {
 		LOG_DEBUG(("fixing invalid gid %d (the lowest value is %d)", gid, _last_gid));
