@@ -138,7 +138,9 @@ void Box::render(sdlx::Surface &surface, const int x0, const int y0) {
 	x += ul.w;
 	int i;
 	
-	for(i = 0; i < xn - (xn % TILE_SIZE); i += TILE_SIZE,  x += u.w * TILE_SIZE) 
+	const int txn = xn - (xn % TILE_SIZE), tyn = yn - (yn % TILE_SIZE);
+	
+	for(i = 0; i < txn; i += TILE_SIZE,  x += u.w * TILE_SIZE) 
 		surface.copyFrom(_filler_u, x, y);
 
 	for(; i < xn; ++i, x += u.w) 
@@ -151,12 +153,12 @@ void Box::render(sdlx::Surface &surface, const int x0, const int y0) {
 	int j;
 	
 	//optimized patter blitting (TILE_SIZExTILE_SIZE)
-	for(j = 0; j < yn - (yn % TILE_SIZE); j += TILE_SIZE, y += c.h * TILE_SIZE) {
+	for(j = 0; j < tyn; j += TILE_SIZE, y += c.h * TILE_SIZE) {
 		x = x0;
 		surface.copyFrom(_filler_l, x, y);
 		x += cl.w;
 
-		for(i = 0; i < xn - (xn % TILE_SIZE); i += TILE_SIZE, x += c.w * TILE_SIZE) 
+		for(i = 0; i < txn; i += TILE_SIZE, x += c.w * TILE_SIZE) 
 			surface.copyFrom(_filler, x, y);
 
 		for(; i < xn; ++i, x += c.w) {
@@ -188,7 +190,7 @@ void Box::render(sdlx::Surface &surface, const int x0, const int y0) {
 	surface.copyFrom(*_surface, dl, x, y);
 	x += dl.w;
 
-	for(i = 0; i < xn - (xn % TILE_SIZE); i += TILE_SIZE, x += d.w * TILE_SIZE) 
+	for(i = 0; i < txn; i += TILE_SIZE, x += d.w * TILE_SIZE) 
 		surface.copyFrom(_filler_d, x, y);
 
 	for(; i < xn; ++i, x += d.w) 
