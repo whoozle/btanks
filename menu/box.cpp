@@ -18,6 +18,7 @@
 #include "box.h"
 #include "resource_manager.h"
 #include "sdlx/surface.h"
+#include "config.h"
 #include <assert.h>
 
 Box::Box(const std::string &tile, int w, int h) {
@@ -37,6 +38,8 @@ void Box::getSize(int &rw, int &rh) const {
 	rw = w;
 	rh = h;
 }
+
+#define TILE_SIZE 4
 
 void Box::init(const std::string &tile, const std::string &highlight, int _w, int _h) {
 	_highlight = (!highlight.empty())? ResourceManager->loadSurface(highlight): NULL;
@@ -64,6 +67,44 @@ void Box::init(const std::string &tile, const std::string &highlight, int _w, in
 	
 	w = xn * cw + x1 * 2;
 	h = yn * ch + y1 * 2;
+	
+	//16x blending optimization.
+	_filler.createRGB(cw * TILE_SIZE, cw * TILE_SIZE, 32);
+	_filler.convertAlpha();
+
+	_filler_l.createRGB(cw, cw * TILE_SIZE, 32);
+	_filler_l.convertAlpha();
+
+	_filler_r.createRGB(cw, cw * TILE_SIZE, 32);
+	_filler_r.convertAlpha();
+
+	_filler_u.createRGB(cw * TILE_SIZE, cw, 32);
+	_filler_u.convertAlpha();
+
+	_filler_d.createRGB(cw * TILE_SIZE, cw, 32);
+	_filler_d.convertAlpha();
+
+	sdlx::Surface * foo = const_cast<sdlx::Surface *>(_surface);
+	assert(foo != NULL);
+	foo->setAlpha(0,0);
+
+	sdlx::Rect u (x1,	0,	x2 - x1,	 					y1);
+	sdlx::Rect cl(0,	y1, x1, 							y2 - y1);
+	sdlx::Rect c (x1,	y1, x2 - x1,	 					y2 - y1);
+	sdlx::Rect cr(x2,	y1, _surface->getWidth() - x2, 		y2 - y1);
+	sdlx::Rect d (x1,	y2, x2 - x1,	 					_surface->getHeight() - y2);
+	GET_CONFIG_VALUE("menu.debug-background-code", bool, dbc, false);
+	if (dbc) {
+		_filler.fill(_filler.mapRGBA(0, 255, 255, 64));
+		_filler_u.fill(_filler.mapRGBA(255, 0, 0, 64));
+		_filler_d.fill(_filler.mapRGBA(0, 255, 0, 64));
+		_filler_l.fill(_filler.mapRGBA(0, 0, 255, 64));
+		_filler_r.fill(_filler.mapRGBA(255, 255, 0, 64));
+	}
+	//for(int y = 0; y < TILE_SIZE; ++y) 
+	//	for(int x = 0; x < TILE_SIZE; ++x);
+	
+	foo->setAlpha(255);
 }
 
 void Box::render(sdlx::Surface &surface, const int x0, const int y0) {
@@ -87,26 +128,62 @@ void Box::render(sdlx::Surface &surface, const int x0, const int y0) {
 	int x = x0;
 	surface.copyFrom(*_surface, ul, x, y);
 	x += ul.w;
-	for(int i = 0; i < xn; ++i, x += u.w) 
+	int i;
+	
+	for(i = 0; i < xn - (xn % TILE_SIZE); i += TILE_SIZE,  x += u.w * TILE_SIZE) 
+		surface.copyFrom(_filler_u, x, y);
+
+	for(; i < xn; ++i, x += u.w) 
 		surface.copyFrom(*_surface, u, x, y);
+	
 	surface.copyFrom(*_surface, ur, x, y);
 	y += u.h;
 
-	for(int j = 0; j < yn; ++j) {
+	//center box
+	int j;
+	
+	//optimized patter blitting (TILE_SIZExTILE_SIZE)
+	for(j = 0; j < yn - (yn % TILE_SIZE); j += TILE_SIZE, y += c.h * TILE_SIZE) {
+		x = x0;
+		surface.copyFrom(_filler_l, x, y);
+		x += cl.w;
+
+		for(i = 0; i < xn - (xn % TILE_SIZE); i += TILE_SIZE, x += c.w * TILE_SIZE) 
+			surface.copyFrom(_filler, x, y);
+
+		for(; i < xn; ++i, x += c.w) {
+			for(int j2 = 0; j2 < TILE_SIZE; ++j2) {
+				surface.copyFrom(*_surface, c, x, y + j2 * c.h);
+			}
+		}
+		
+		surface.copyFrom(_filler_r, x, y);
+	}
+
+
+
+	for(; j < yn; ++j) {
 		x = x0;
 		surface.copyFrom(*_surface, cl, x, y);
 		x += cl.w;
+
 		for(int i = 0; i < xn; ++i, x += c.w) 
 			surface.copyFrom(*_surface, c, x, y);
+		
 		surface.copyFrom(*_surface, cr, x, y);
 		y += c.h;
 	}
+
 	
 	//lower line
 	x = x0;
 	surface.copyFrom(*_surface, dl, x, y);
 	x += dl.w;
-	for(int i = 0; i < xn; ++i, x += d.w) 
+
+	for(i = 0; i < xn - (xn % TILE_SIZE); i += TILE_SIZE, x += d.w * TILE_SIZE) 
+		surface.copyFrom(_filler_d, x, y);
+
+	for(; i < xn; ++i, x += d.w) 
 		surface.copyFrom(*_surface, d, x, y);
 	surface.copyFrom(*_surface, dr, x, y);
 	

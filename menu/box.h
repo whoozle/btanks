@@ -22,6 +22,7 @@
 #include <string>
 #include "export_btanks.h"
 #include "control.h"
+#include "sdlx/surface.h"
 
 namespace sdlx {
 class Surface;
@@ -49,6 +50,7 @@ private:
 	int x1, x2, y1, y2, xn, yn;
 	
 	const sdlx::Surface *_surface, *_highlight;
+	sdlx::Surface _filler, _filler_u, _filler_d, _filler_l, _filler_r;
 };
 
 #endif
