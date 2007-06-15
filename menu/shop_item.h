@@ -16,6 +16,8 @@ public:
 	void revalidate(const Campaign &campaign, const Campaign::ShopItem &item, const bool active);
 	virtual void render(sdlx::Surface &surface, const int x, const int y);
 	virtual void tick(const float dt);
+	
+	const bool wasSold() const { return sold; }
 
 private: 
 	Label *_name, *_price, *_amount;
@@ -29,6 +31,7 @@ private:
 	int xbase, ybase;
 	
 	float t, dir_speed, dir_t;
+	bool sold;
 };
 
 #endif

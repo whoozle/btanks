@@ -65,8 +65,6 @@ void ShopItem::render(sdlx::Surface &surface, const int x, const int y) {
 	Container::render(surface, x, y);
 	if (_pose == NULL || _animation == NULL || _animation_model == NULL) 
 		return;
-	int w, h; 
-	getSize(w, h);
 	int frame = ((int)(t * _pose->speed)) % _pose->frames.size();
 
 	int dirs = (_surface->getWidth() - 1) / _animation->tw + 1;
@@ -78,6 +76,18 @@ void ShopItem::render(sdlx::Surface &surface, const int x, const int y) {
 
 void ShopItem::tick(const float dt) {
 	Container::tick(dt);
+	if (_b_plus->changed()) {
+		_b_plus->reset();
+		sold = false;
+		invalidate(true);
+	}
+
+	if (_b_minus->changed()) {
+		_b_minus->reset();
+		sold = true;
+		invalidate(true);
+	}
+	
 	if (_pose == NULL || _animation == NULL || _surface == NULL || !_active)
 		return;
 	t += dt;

@@ -54,8 +54,33 @@ void Shop::revalidate() {
 }
 
 void Shop::tick(const float dt) {
+	bool do_revalidate = false;
 	Container::tick(dt);
-	if (_wares->changed()) {
+
+	int i = _wares->get();
+	
+	if (_campaign != NULL && i < (int)_campaign->wares.size()) {
+		Campaign::ShopItem &item = _campaign->wares[i];
+				
+		size_t n = _campaign->wares.size();
+		assert((int)n == _wares->size());
+		for(size_t i = 0; i < n; ++i) {
+			Control *ctrl = _wares->getItem(i);
+			ShopItem *s = dynamic_cast<ShopItem *>(ctrl);
+			if (s == NULL || !s->changed())
+				continue;
+
+			s->reset();
+		
+			if (s->wasSold()) 
+				_campaign->sell(item);
+			else
+				_campaign->buy(item);
+			do_revalidate = true;
+		}
+	}
+	
+	if (do_revalidate || _wares->changed()) {
 		_wares->reset();
 		revalidate();
 	}
