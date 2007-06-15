@@ -24,15 +24,13 @@ ShopItem::ShopItem(const Campaign &campaign, const Campaign::ShopItem &item, con
 	add(0, yfont, _name);
 	add(w / 2, yfont, _price = new Label("medium", mrt::formatString("%d", item.price).c_str()));
 
-
 	int x_am = 3 * w / 4;
 	add(x_am, yfont, _amount = new Label("medium", "0"));
 	
 	xbase = 7 * w / 16;
 	dir_speed = item.dir_speed;
 
-	_b_plus->getSize(bw, bh);
-	add(x_am - 32 - bw, h / 2 - bh / 2, _b_minus);
+	add(x_am - 112 + bw, h / 2 - bh / 2, _b_minus);
 	add(x_am + 32, h / 2 - bh / 2, _b_plus);
 	
 	revalidate(campaign, item, false);
@@ -40,6 +38,10 @@ ShopItem::ShopItem(const Campaign &campaign, const Campaign::ShopItem &item, con
 
 void ShopItem::revalidate(const Campaign &campaign, const Campaign::ShopItem &item, const bool active) {
 	_active = active;
+
+	_b_plus->hide(!active);
+	_b_minus->hide(!active);
+	
 	int cash = campaign.getCash();
 	std::string font = item.price > cash?"medium_dark":"medium";
 	_name->setFont(font);
