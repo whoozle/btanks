@@ -233,7 +233,7 @@ void Layer::init(const int w, const int h, const mrt::Chunk & data) {
 	}
 }
 
-void Layer::correct(const unsigned old_id, const int delta) {
+void Layer::correct(const unsigned old_id, const unsigned max_id, const int delta) {
 	if (delta == 0)
 		return;
 	
@@ -243,7 +243,7 @@ void Layer::correct(const unsigned old_id, const int delta) {
 	//convert all stuff.
 	Uint32 *p = (Uint32 *)_data.getPtr();
 	for(size_t i = 0; i < n; ++i, ++p) {
-		if (*p >= old_id) 
+		if (*p >= old_id && *p < max_id) 
 			*p += delta;
 	}
 }
