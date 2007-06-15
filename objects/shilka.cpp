@@ -174,7 +174,7 @@ skip_left_toggle:
 			int n;
 			Config->get("objects.shilka.units-limit", n, 10); //fixme: add type restrictions
 			if (mod->getCount() > 0 && getChildren("trooper") < n) {
-				spawn(mod_type + "(disembark)", mod_type, _direction*(size.length()/-2), v2<float>());
+				spawn(mod_type + "(disembark)(ally)", mod_type, _direction*(size.length()/-2), v2<float>());
 				mod->decreaseCount();
 			}
 		}

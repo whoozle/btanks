@@ -717,7 +717,7 @@ void IGameMonitor::addBonuses(const PlayerSlot &slot) {
 			dir.fromDirection(d % dirs, dirs);
 			dir *= o->size.length();
 			//LOG_DEBUG(("%g %g", d.x, d.y));
-			World->spawn(o, i->object, i->animation, dir, v2<float>());
+			World->spawn(o, i->object + "(ally)", i->animation, dir, v2<float>());
 		}
 	}
 }
