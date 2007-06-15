@@ -39,7 +39,7 @@ void Box::getSize(int &rw, int &rh) const {
 	rh = h;
 }
 
-#define TILE_SIZE 4
+#define TILE_SIZE 8
 
 void Box::init(const std::string &tile, const std::string &highlight, int _w, int _h) {
 	_highlight = (!highlight.empty())? ResourceManager->loadSurface(highlight): NULL;
