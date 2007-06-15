@@ -4,13 +4,36 @@
 #include "resource_manager.h"
 #include "animation_model.h"
 #include "sdlx/surface.h"
+#include "button.h"
+#include "math/binary.h"
 
 ShopItem::ShopItem(const Campaign &campaign, const Campaign::ShopItem &item, const int w) : _active(false), t(0), dir_t(0) {
-	add(0, 0, _name = new Label("medium", item.name));
-	add(w / 2, 0, _price = new Label("medium", mrt::formatString("%d", item.price).c_str()));
-	add(3 * w / 4, 0, _amount = new Label("medium", "0"));
+	_name = new Label("medium", item.name);
+	int fw, fh;
+	_name->getSize(fw, fh);
+
+	int bw, bh;
+	_b_plus = new Button("medium", "+");
+	_b_plus->getSize(bw, bh);
+	_b_minus = new Button("medium", "-");
+	
+	int h = math::max(bh, fh);
+	ybase = h / 2;
+	int yfont = h / 2 - fh / 2;
+
+	add(0, yfont, _name);
+	add(w / 2, yfont, _price = new Label("medium", mrt::formatString("%d", item.price).c_str()));
+
+
+	int x_am = 3 * w / 4;
+	add(x_am, yfont, _amount = new Label("medium", "0"));
+	
 	xbase = 7 * w / 16;
 	dir_speed = item.dir_speed;
+
+	_b_plus->getSize(bw, bh);
+	add(x_am - 32 - bw, h / 2 - bh / 2, _b_minus);
+	add(x_am + 32, h / 2 - bh / 2, _b_plus);
 	
 	revalidate(campaign, item, false);
 }
@@ -47,10 +70,8 @@ void ShopItem::render(sdlx::Surface &surface, const int x, const int y) {
 	int dirs = (_surface->getWidth() - 1) / _animation->tw + 1;
 	int dir = ((int)(dir_t * dir_speed)) % dirs;
 
-	int ybase = h / 2 - _animation->th / 2;
-	
 	sdlx::Rect from(dir * _animation->tw, _pose->frames[frame] * _animation->th, _animation->tw, _animation->th);
-	surface.copyFrom(*_surface, from, x + xbase - _animation->tw / 2, y + ybase);
+	surface.copyFrom(*_surface, from, x + xbase - _animation->tw / 2, y + ybase - _animation->th / 2);
 }
 
 void ShopItem::tick(const float dt) {
