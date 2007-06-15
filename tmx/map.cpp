@@ -428,14 +428,16 @@ void IMap::updateMatrix(Matrix<int> &imp_map, const Layer *layer) {
 }
 
 void IMap::correctGids() {
-	int delta = 0;
-	for(CorrectionMap::iterator i = _corrections.begin(); i != _corrections.end(); ++i) {
-		const int d = i->second - i->first - delta;
-		LOG_DEBUG(("correcting: gid: %d delta: %d", i->first, d));
+	//int delta = 0;
+	unsigned max = 0x7fffffff;
+	for(CorrectionMap::reverse_iterator i = _corrections.rbegin(); i != _corrections.rend(); ++i) {
+		const int d = i->second - i->first;
+		LOG_DEBUG(("correcting: gid: %d-%u, delta: %d", i->first, max, d));
 		for(LayerMap::iterator j = _layers.begin(); j != _layers.end(); ++j) {
-			j->second->correct(i->first, d);
+			j->second->correct(i->first, max, d);
 		}
-		delta += d;
+		max = i->first;
+		//delta += d;
 	}
 }
 
