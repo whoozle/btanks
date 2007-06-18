@@ -636,7 +636,6 @@
  	<alias name="train-smoke" class="single-pose(once)" />
  	<alias name="bomberman-explosion" class="cannon-explosion" />
  	<alias name="tractor" class="combine" />
-	<alias name="civilian" class="car" />
 	
 	<object class="watchtower-with-machinegunner" mass="1000" hp="20" z="200" impassability="1" />
 	<object class="watchtower-with-thrower" mass="1000" hp="20" z="200" impassability="1" />
@@ -747,7 +746,8 @@
 	<object class="ai-machinegunner-player" parent="machinegunner-player" />
 	<object class="thrower" hp="10" speed="100" mass="85" z="-1" ttl="0" />
 	<object class="thrower-in-watchtower" impassability="0" parent="thrower" z="205" ttl="0" />
-	<object class="civilian-player" hp="20" speed="200" mass="75" z="-1" />
+	<object class="civilian" hp="20" speed="200" mass="75" z="-1" />
+	<object class="civilian-player" parent="civilian" />
 	<object class="car" hp="20" speed="200" mass="500" />
 	<object class="outline" impassability="0" />
 	<object class="random-tooltip" z="995" />
