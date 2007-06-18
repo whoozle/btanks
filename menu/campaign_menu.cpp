@@ -28,6 +28,9 @@ void CampaignMenu::start() {
 	//ensure world is created 
 	Game->clear();
 	GameMonitor->loadMap(&campaign, map.id);
+
+	if (PlayerManager->getSlotsCount() <= 0)
+		throw_ex(("no slots available on map"));
 	
 	PlayerSlot &slot = PlayerManager->getSlot(0);
 	std::string cm;
