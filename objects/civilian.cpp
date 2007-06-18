@@ -30,6 +30,7 @@ public:
 	AICivilian() : Civilian("civilian") {}
 	void onSpawn() {
 		Trooper::onSpawn();
+		_avoid_obstacles = false;
 		ai::Waypoints::onSpawn(this);
 	}
 	void calculate(const float dt) {
