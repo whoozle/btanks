@@ -144,10 +144,13 @@ Boss1::Boss1(const float fire_shift) :
 	Object("monster"), _reaction(true), _fire(false), _alt_fire(false), _stable(1.0f, false), _fire_shift(fire_shift) {}
 
 void Boss1::calculate(const float dt) {
+	bool was_stable = _stable.get() == 0;
 	bool stable = _stable.tick(dt);
 
 	if (aiDisabled())
 		return;
+
+	_state.alt_fire = !was_stable && stable;
 
 	if (!stable)
 		_state.fire = false;
@@ -180,6 +183,13 @@ void Boss1::calculate(const float dt) {
 
 void Boss1::tick(const float dt) {
 	Object::tick(dt);
+	if (_state.alt_fire) {
+		for(int d = 0; d < 7; ++d) {
+			v2<float> dir;
+			dir.fromDirection(d, 8);
+			spawn("thrower-missile", "thrower-missile", dir, dir);
+		}
+	}
 	if (_state.fire) { 
 		if (getState() != "fire") {
 			cancelAll();
