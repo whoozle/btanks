@@ -28,7 +28,8 @@ public:
 	Boss1(const float fire_shift);
 
 	virtual void addDamage(Object *from, const int hp, const bool emitDeath) {
-		_stable.reset();
+		if (_stable.get() == 0)
+			_stable.reset();
 		Object::addDamage(from, hp, emitDeath);
 	}
 	
