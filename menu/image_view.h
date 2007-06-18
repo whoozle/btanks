@@ -13,6 +13,8 @@ public:
 	void init(const sdlx::Surface *image);
 
 	v2<float> position, destination;
+	
+	void setOverlay(const sdlx::Surface *overlay, const v2<int> &dpos);
 
 	virtual void render(sdlx::Surface &surface, const int x, const int y);
 
@@ -20,7 +22,8 @@ public:
 
 private: 
 	int _w, _h;
-	const sdlx::Surface * _image;
+	const sdlx::Surface * _image, *_overlay;
+	v2<int> _overlay_dpos;
 	Box * _box;
 };
 
