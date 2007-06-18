@@ -136,7 +136,7 @@ void CampaignMenu::init() {
 		map_id.push_back((int)i);
 		if (map.id == current_map) {
 			_maps->set(i);
-			_map_view->position = _map_view->destination = map.position.convert<float>();
+			_map_view->setPosition(map.position.convert<float>());
 		}
 	}
 	if (map_id.empty())
@@ -169,8 +169,8 @@ void CampaignMenu::tick(const float dt) {
 		if (mi < (int)map_id.size()) {
 			Campaign::Map map = campaign.maps[map_id[mi]];
 			Config->set("campaign." + campaign.name + ".current-map", map.id);
-			_map_view->destination = map.position.convert<float>();
 			_map_view->setOverlay(map.map_frame, map.position);
+			_map_view->setDestination(map.position.convert<float>());
 		}
 	}
 	

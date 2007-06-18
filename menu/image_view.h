@@ -12,7 +12,6 @@ public:
 	ImageView(int w, int h);
 	void init(const sdlx::Surface *image);
 
-	v2<float> position, destination;
 	
 	void setOverlay(const sdlx::Surface *overlay, const v2<int> &dpos);
 
@@ -20,7 +19,13 @@ public:
 
 	void tick(const float dt);
 
+	void setPosition(const v2<float> &pos);
+	void setDestination(const v2<float> &pos);
+
 private: 
+	void validate(v2<float> & pos);
+	v2<float> position, destination;
+	
 	int _w, _h;
 	const sdlx::Surface * _image, *_overlay;
 	v2<int> _overlay_dpos;

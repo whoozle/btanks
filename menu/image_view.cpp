@@ -36,14 +36,48 @@ void ImageView::render(sdlx::Surface &surface, const int x, const int y) {
 	surface.setClipRect(clip);
 }
 
+void ImageView::validate(v2<float> & pos) {
+	if (_image == NULL)
+		return;
+	if (pos.x < 0) 
+		pos.x = 0;
+		
+	if (pos.y < 0)
+		pos.y = 0;
+	
+	int mx, my;
+	_box->getMargins(mx, my);
+		
+	int w = _w - 2 * mx, h = _h - 2 * my;
+	if (pos.x + w > _image->getWidth())
+		pos.x = _image->getWidth() - w;
+	if (pos.y + h > _image->getHeight())
+		pos.y = _image->getHeight() - h;
+}
+
 void ImageView::tick(const float dt) {
 	Container::tick(dt);
+	validate(destination);
+	validate(position);
+	
 	v2<float> map_vel = destination - position;
 	if (map_vel.quick_length() < 1) {
 		position = destination;
 	} else {
 		map_vel.normalize();
-		float dist = math::min(destination.distance(position), dt * 200);
+		float dist = math::min(destination.distance(position) / 2, dt * 200);
 		position += map_vel * dist;
 	}
+}
+
+void ImageView::setPosition(const v2<float> &pos) { 
+	setDestination(pos);
+	position = destination;
+}
+
+void ImageView::setDestination(const v2<float> &pos) {
+	v2<float> p = pos - v2<float>(_w, _h) / 2;
+	if (_overlay)
+		p += v2<float>(_overlay->getWidth(), _overlay->getHeight()) / 2;
+	destination = p;
 }
