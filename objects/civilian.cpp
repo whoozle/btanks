@@ -18,10 +18,25 @@
 
 #include "trooper.h"
 #include "resource_manager.h"
+#include "ai/waypoints.h"
 
-class Civilian : public Trooper {
+class Civilian : public Trooper, public ai::Waypoints {
 public: 
-	Civilian() : Trooper("player", std::string()) {} 
+	Civilian(const std::string &classname) : Trooper(classname, std::string()) {} 
 };
 
-REGISTER_OBJECT("civilian-player", Civilian, ());
+class AICivilian : public Civilian {
+public: 
+	AICivilian() : Civilian("civilian") {}
+	void onSpawn() {
+		Trooper::onSpawn();
+		ai::Waypoints::onSpawn(this);
+	}
+	void calculate(const float dt) {
+		ai::Waypoints::calculate(this, dt);
+		updateStateFromVelocity();
+	}
+};
+
+REGISTER_OBJECT("civilian-player", Civilian, ("player"));
+REGISTER_OBJECT("civilian", AICivilian, ());
