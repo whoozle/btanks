@@ -170,6 +170,7 @@ void CampaignMenu::tick(const float dt) {
 			Campaign::Map map = campaign.maps[map_id[mi]];
 			Config->set("campaign." + campaign.name + ".current-map", map.id);
 			_map_view->destination = map.position.convert<float>();
+			_map_view->setOverlay(map.map_frame, map.position);
 		}
 	}
 	

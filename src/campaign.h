@@ -19,6 +19,7 @@ public:
 	struct Map {
 		std::string id;
 		std::string visible_if;
+		const sdlx::Surface *map_frame;
 		v2<int> position;
 	};
 	

@@ -22,6 +22,10 @@ void Campaign::start(const std::string &name, Attrs &attr) {
 		map.id = attr["id"];
 		map.visible_if = attr["visible"];
 		map.position.fromString(attr["position"]);
+		map.map_frame = NULL;
+		TRY {
+			map.map_frame = ResourceManager->loadSurface(map.id + "_frame.png");
+		} CATCH("loading map frame", );
 
 		LOG_DEBUG(("map: %s, visible: '%s'", map.id.c_str(), map.visible_if.c_str()));
 
