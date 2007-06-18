@@ -135,7 +135,7 @@ void Boss1::onSpawn() {
 
 void Boss1::emit(const std::string &event, Object * emitter) {
 	if (event == "death") {
-		spawn("corpse", "dead-" + animation, v2<float>(), v2<float>());
+		spawn("escaping-" + registered_name, "escaping-" + animation, v2<float>(), v2<float>());
 	} 
 	Object::emit(event, emitter);
 }
@@ -205,5 +205,22 @@ Object * Boss1::clone() const {
 	return new Boss1(*this);
 }
 
+class Boss1Escaping : public Object {
+public:
+	Boss1Escaping() : Object("boss") { hp = -1; }
+	Object * clone() const { return new Boss1Escaping(*this); }
+	void onSpawn() {
+		play("prepare", false);
+		play("escape", true);
+	}
+	void calculate(const float dt) {
+		if (getState() == "escape") {
+			_velocity.x = -1;
+			_velocity.y = -3;
+		}
+	}
+};
+
 
 REGISTER_OBJECT("uberzombie", Boss1, (40));
+REGISTER_OBJECT("escaping-uberzombie", Boss1Escaping, ());
