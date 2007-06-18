@@ -48,6 +48,8 @@ public:
 protected: 
 	std::string _object;
 	Alarm _fire;
+	
+	std::string _pose; //run by default
 };
 
 #endif

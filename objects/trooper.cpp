@@ -64,6 +64,7 @@ void Trooper::onSpawn() {
 	} else throw_ex(("unsupported weapon %s", _object.c_str()));
 	
 	play("hold", true);
+	_pose = "run";
 }
 
 void Trooper::emit(const std::string &event, Object * emitter) {
