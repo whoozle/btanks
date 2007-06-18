@@ -37,6 +37,7 @@ public:
 		ai::Waypoints::calculate(this, dt);
 		updateStateFromVelocity();
 	}
+	Object *clone() const { return new AICivilian(*this); }
 };
 
 REGISTER_OBJECT("civilian-player", Civilian, ("player"));
