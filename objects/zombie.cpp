@@ -111,6 +111,7 @@ public:
 		_targets.insert("trooper");
 		_targets.insert("watchtower");
 		_targets.insert("creature");
+		_targets.insert("civilian");
 	}
 	
 	virtual void calculate(const float dt);
