@@ -171,6 +171,10 @@ void PlayerSlot::createControlMethod(const std::string &control_method_name) {
 #include "player_manager.h"
 
 void PlayerSlot::spawnPlayer(const std::string &classname, const std::string &animation) {
+	if (spawn_limit <= 0 && Config->has("map.spawn-limit")) {
+		Config->get("map.spawn-limit", spawn_limit, 0);
+	}
+
 	Object *obj = ResourceManager->createObject(classname, animation);
 	assert(obj != NULL);
 
