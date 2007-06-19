@@ -111,6 +111,8 @@ public:
 
 	void addBonuses(const PlayerSlot &slot);
 	
+	const Campaign * getCampaign() const {return _campaign; }
+	
 private:
 
 	bool _game_over, _win;
