@@ -34,15 +34,8 @@ public:
 	virtual Object * clone() const;
 	
 	void emit(const std::string &event, Object * emitter);
-	virtual void serialize(mrt::Serializator &s) const {
-		Object::serialize(s);
-	}
-	virtual void deserialize(const mrt::Serializator &s) {
-		Object::deserialize(s);
-	}	
-	
-	virtual void onObstacle(const int idx);
 
+	virtual void onObstacle(const int idx);
 };
 
 void Combine::emit(const std::string &event, Object * emitter) {
