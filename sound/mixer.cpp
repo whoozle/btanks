@@ -509,7 +509,7 @@ const bool IMixer::generateSource(ALuint &r_source) {
 		r_source = victim_info.source;
 		assert(r_source != AL_NONE);
 		if (_debug)
-			LOG_DEBUG(("killing source %08x with distance %g", (unsigned)r_source, max_d));
+			LOG_DEBUG(("killing source %08x ('%s') with distance %g", (unsigned)r_source, victim_info.name.c_str(), max_d));
 		alSourceStop(r_source);
 		AL_CHECK_NON_FATAL(("alSourceStop(%08x)", r_source));
 
