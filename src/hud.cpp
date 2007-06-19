@@ -298,7 +298,7 @@ void Hud::render(sdlx::Surface &window) const {
 			xp += icon_w;
 
 			if (n > 5) {
-				xp += _font->render(window, xp, yp + font_dy, mrt::formatString(" %d", n));
+				xp += _font->render(window, xp, yp + font_dy, mrt::formatString("%d ", n));
 			} else {
 				for(int i = 0; i < n - 1; ++i) {
 					window.copyFrom(*_icons, src, xp, yp);
