@@ -24,7 +24,7 @@
 
 class Car: public Object {
 public: 
-	Car(const std::string &classname) : Object(classname) {}
+	Car(const std::string &classname) : Object(classname), _alt_fire(1, false) {}
 	virtual void calculate(const float dt);
 	virtual void tick(const float dt);
 	virtual void onSpawn();
@@ -32,6 +32,18 @@ public:
 	
 	void emit(const std::string &event, Object * emitter);
 
+	virtual void serialize(mrt::Serializator &s) const {
+		Object::serialize(s);
+		s.add(_alt_fire);
+	}
+	virtual void deserialize(const mrt::Serializator &s) {
+		Object::deserialize(s);
+		s.get(_alt_fire);
+	}
+
+
+protected:
+	Alarm _alt_fire;
 private: 
 	virtual void getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const;
 };
@@ -79,6 +91,10 @@ void Car::calculate(const float dt) {
 }
 
 void Car::tick(const float dt) {
+	if (_alt_fire.tick(dt) && _state.alt_fire) {
+		_alt_fire.reset();
+		playRandomSound("klaxon", false);
+	}
 	Object::tick(dt);
 	if (_velocity.is0() && getState() != "hold") {
 		cancelAll();
@@ -91,7 +107,7 @@ void Car::tick(const float dt) {
 
 class AICar : public Car, public ai::Waypoints {
 public: 
-	AICar() : Car("car") {}
+	AICar() : Car("car"){}
 	virtual void calculate(const float dt);
 	virtual Object * clone() const {return new AICar(*this);}
 	virtual void onSpawn();
@@ -108,6 +124,7 @@ void AICar::onSpawn() {
 	_avoid_obstacles = true;
 
 	ai::Waypoints::onSpawn(this);
+	_alt_fire.set(5);
 	//GET_CONFIG_VALUE("objects.car.refreshing-path-interval", float, rpi, 1);
 	//_refresh_waypoints.set(rpi);
 	
@@ -116,9 +133,12 @@ void AICar::onSpawn() {
 
 
 void AICar::onObstacle(const int idx) {
+/*
 	if ((idx % 21) == 1) { //approx once per 5 second
 		playRandomSound("klaxon", false);
 	}
+*/
+	_state.alt_fire = true;
 }
 
 void AICar::calculate(const float dt) {
