@@ -283,8 +283,35 @@ void Hud::render(sdlx::Surface &window) const {
 			_font->render(window, xp + slot.viewport.w - xm * 2- tw, yp + font_dy, score);
 		}
 
+		do {
+			const int n = slot.spawn_limit;
+			if (n <= 0) 
+				break;
+			
+			IconMap::const_iterator ic = _icons_map.find("special:lives");
+			if (ic == _icons_map.end())
+				break;
+
+			sdlx::Rect src(icon_w * ic->second, 0, icon_w, icon_h);
+			
+			window.copyFrom(*_icons, src, xp, yp);
+			xp += icon_w;
+
+			if (n > 5) {
+				xp += _font->render(window, xp, yp + font_dy, mrt::formatString(" %d", n));
+			} else {
+				for(int i = 0; i < n - 1; ++i) {
+					window.copyFrom(*_icons, src, xp, yp);
+					xp += icon_w;
+				}
+			}
+			xp += icon_w / 2;
+			
+		} while(0);
+
 		if (obj == NULL)
 			continue;
+
 
 		std::string hp = mrt::formatString("HP%-2d ", obj->hp);
 
