@@ -54,7 +54,7 @@ void Car::emit(const std::string &event, Object * emitter) {
 		if (registered_name == "static-car")
 			detachVehicle();
 		spawn("corpse", "dead-" + animation, v2<float>(), v2<float>());
-	} else if (event == "collision") {
+	} else if (event == "collision" && !_variants.has("safe")) {
 		if (emitter != NULL && emitter->speed > 0) {
 			if (emitter->registered_name == "machinegunner-player" && registered_name.compare(0, 7, "static-") == 0) {
 				return;
