@@ -48,7 +48,7 @@
 	</animation-model>
 
 	<animation-model id="dead-choo-choo-train-animation" speed="7">
-		<pose id="fade-in" sound="nuke-explosion.ogg" gain="15">0,1,2,3,4</pose>
+		<pose id="fade-in" sound="nuke-explosion.ogg">0,1,2,3,4</pose>
 		<pose id="burn">5</pose>
 		<pose id="fade-out">5</pose>
 		<pose id="dead">5</pose>
@@ -60,7 +60,7 @@
 	</animation-model>
 
 	<animation-model id="dead-choo-choo-wagon-animation" speed="7">
-		<pose id="fade-in" sound="@building-explosion" gain="15">0,1,2</pose>
+		<pose id="fade-in" sound="@building-explosion" >0,1,2</pose>
 		<pose id="burn" sound="fire.ogg">3,4,5,6</pose>
 		<pose id="fade-out" sound="fire-fadeout.ogg">7,8</pose>
 		<pose id="dead">9</pose>
@@ -182,7 +182,7 @@
 	</animation-model>
 
 	<animation-model id="nuke-explosion-animation" speed="5">
-		<pose id="boom" sound="nuke-explosion.ogg" gain="15">5,4,3,2,1,0</pose>
+		<pose id="boom" sound="nuke-explosion.ogg">5,4,3,2,1,0</pose>
 	</animation-model>
 
 	<animation-model id="cannon-explosion-animation" speed="14">
