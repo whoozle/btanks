@@ -169,10 +169,17 @@ void PlayerSlot::createControlMethod(const std::string &control_method_name) {
 #include "object.h"
 #include "config.h"
 #include "player_manager.h"
+#include "campaign.h"
 
 void PlayerSlot::spawnPlayer(const std::string &classname, const std::string &animation) {
 	if (spawn_limit <= 0 && Config->has("map.spawn-limit")) {
 		Config->get("map.spawn-limit", spawn_limit, 0);
+		const Campaign * campaign = GameMonitor->getCampaign();
+		if (campaign != NULL && Config->has("campaign." + campaign->name + ".wares.additional-life.amount")) {
+			int al;
+			Config->get("campaign." + campaign->name + ".wares.additional-life.amount", al, 0);
+			spawn_limit += al;
+		}
 	}
 
 	Object *obj = ResourceManager->createObject(classname, animation);
