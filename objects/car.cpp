@@ -25,6 +25,7 @@
 class Car: public Object {
 public: 
 	Car(const std::string &classname) : Object(classname) {}
+	virtual void calculate(const float dt);
 	virtual void tick(const float dt);
 	virtual void onSpawn();
 	virtual Object * clone() const { return new Car(*this); }
@@ -42,21 +43,22 @@ void Car::onSpawn() {
 void Car::getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const {
 	if (impassability >= 0.2) {
 		base = 0.2;
-		base_value = 0.8;
+		base_value = 0.6;
+		penalty = 0;
 		return;
 	}
 }
-/*
-const int Car::getPenalty(const int map_im, const int obj_im) const {
-	return (map_im >= 20 || obj_im >= 20)?5000:0;
-}
-*/
 
 void Car::emit(const std::string &event, Object * emitter) {
 	if (event == "death") {
+		if (registered_name == "static-car")
+			detachVehicle();
 		spawn("corpse", "dead-" + animation, v2<float>(), v2<float>());
 	} else if (event == "collision") {
 		if (emitter != NULL && emitter->speed > 0) {
+			if (emitter->registered_name == "machinegunner-player" && registered_name.compare(0, 7, "static-") == 0) {
+				return;
+			}
 			Item * item = dynamic_cast<Item *>(emitter);
 			//no items.
 			if (item == NULL) {
@@ -68,6 +70,12 @@ void Car::emit(const std::string &event, Object * emitter) {
 		}
 	}
 	Object::emit(event, emitter);
+}
+
+void Car::calculate(const float dt) {
+	Object::calculate(dt);
+	GET_CONFIG_VALUE("objects." + registered_name + ".rotation-time", float, rt, 0.05);
+	limitRotation(dt, rt, true, false);
 }
 
 void Car::tick(const float dt) {
