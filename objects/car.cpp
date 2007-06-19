@@ -22,30 +22,22 @@
 #include "item.h"
 #include "ai/waypoints.h"
 
-class Car : public Object, public ai::Waypoints {
+class Car: public Object {
 public: 
-	Car();
-
-	virtual void calculate(const float dt);
+	Car(const std::string &classname) : Object(classname) {}
 	virtual void tick(const float dt);
 	virtual void onSpawn();
-	virtual Object * clone() const;
+	virtual Object * clone() const { return new Car(*this); }
 	
 	void emit(const std::string &event, Object * emitter);
-	
-	virtual void onObstacle(const int idx);
-	
-	virtual void serialize(mrt::Serializator &s) const {
-		Object::serialize(s);
-		//ai::Waypoints::serialize(s);
-	}
-	virtual void deserialize(const mrt::Serializator &s) {
-		Object::deserialize(s);
-		//ai::Waypoints::deserialize(s);
-	}
+
 private: 
 	virtual void getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const;
 };
+
+void Car::onSpawn() {
+	play("hold", true);
+}
 
 void Car::getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const {
 	if (impassability >= 0.2) {
@@ -78,39 +70,6 @@ void Car::emit(const std::string &event, Object * emitter) {
 	Object::emit(event, emitter);
 }
 
-void Car::onObstacle(const int idx) {
-	if ((idx % 21) == 1) { //approx once per 5 second
-		playRandomSound("klaxon", false);
-	}
-}
-
-void Car::onSpawn() {
-	//obstacle_filter.insert("car");
-	//obstacle_filter.insert("civilian");
-	//obstacle_filter.insert("trooper");
-	//obstacle_filter.insert("player");
-	_avoid_obstacles = true;
-
-	ai::Waypoints::onSpawn(this);
-	//GET_CONFIG_VALUE("objects.car.refreshing-path-interval", float, rpi, 1);
-	//_refresh_waypoints.set(rpi);
-	play("hold", true);
-	
-	disown(); 
-}
-
-Car::Car() : Object("car") {}
-
-void Car::calculate(const float dt) {
-	ai::Waypoints::calculate(this, dt);
-
-	float rt;
-	Config->get("objects." + registered_name + ".rotation-time", rt, 0.05f);
-	limitRotation(dt, rt, true, false);
-	updateStateFromVelocity();
-}
-
-
 void Car::tick(const float dt) {
 	Object::tick(dt);
 	if (_velocity.is0() && getState() != "hold") {
@@ -122,10 +81,46 @@ void Car::tick(const float dt) {
 	}
 }
 
+class AICar : public Car, public ai::Waypoints {
+public: 
+	AICar() : Car("car") {}
+	virtual void calculate(const float dt);
+	virtual Object * clone() const {return new AICar(*this);}
+	virtual void onSpawn();
 
-Object * Car::clone() const {
-	return new Car(*this);
+	virtual void onObstacle(const int idx);	
+};
+
+void AICar::onSpawn() {
+	Car::onSpawn();
+	//obstacle_filter.insert("car");
+	//obstacle_filter.insert("civilian");
+	//obstacle_filter.insert("trooper");
+	//obstacle_filter.insert("player");
+	_avoid_obstacles = true;
+
+	ai::Waypoints::onSpawn(this);
+	//GET_CONFIG_VALUE("objects.car.refreshing-path-interval", float, rpi, 1);
+	//_refresh_waypoints.set(rpi);
+	
+	disown(); 
 }
 
 
-REGISTER_OBJECT("car", Car, ());
+void AICar::onObstacle(const int idx) {
+	if ((idx % 21) == 1) { //approx once per 5 second
+		playRandomSound("klaxon", false);
+	}
+}
+
+void AICar::calculate(const float dt) {
+	ai::Waypoints::calculate(this, dt);
+
+	float rt;
+	Config->get("objects." + registered_name + ".rotation-time", rt, 0.05f);
+	limitRotation(dt, rt, true, false);
+	updateStateFromVelocity();
+}
+
+REGISTER_OBJECT("static-car", Car, ("vehicle"));
+REGISTER_OBJECT("car", AICar, ());
