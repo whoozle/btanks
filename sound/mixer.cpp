@@ -192,10 +192,12 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 
 		GET_CONFIG_VALUE("engine.sound.openal-sync-context", bool, sync_ctx, false);
 		GET_CONFIG_VALUE("engine.sound.openal-refresh-frequency", int, refresh, 15); //openal default
-
+		GET_CONFIG_VALUE("engine.sound.openal-stereo-sources-hint", int, stereo, 2);
+		
 		ALCint attrs[] = {
 			ALC_SYNC, sync_ctx?AL_TRUE:AL_FALSE, 
 			ALC_REFRESH, refresh,
+			ALC_STEREO_SOURCES, stereo,
 			ALC_INVALID, ALC_INVALID, 
 		};
 		
@@ -207,7 +209,6 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 		if (alcMakeContextCurrent(alc_context) == ALC_FALSE) 
 			throw_ex(("alcMakeContextCurrent(%p) failed", (void *)alc_context));
 			
-
 		dumpContextAttrs();
 
 #	ifdef WIN32
