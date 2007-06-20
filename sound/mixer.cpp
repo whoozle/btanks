@@ -85,7 +85,7 @@ IMixer::IMixer() : alc_device(NULL), alc_context(NULL),
 	_no_more_sources(false), _nosound(true), _nomusic(true), _ogg(NULL), _ambient(NULL), _ogg_source(0),
 	_volume_fx(1.0f), _volume_music(1.0f), _debug(false), _loop(false) {}
 
-void IMixer::dumpContextAttrs() const {
+void IMixer::dumpContextAttrs(std::map<const std::string, int> & attrs) const {
 	ALCint attrSize;
 	ALCint *attributes;
 	ALCint *data;
@@ -99,22 +99,27 @@ void IMixer::dumpContextAttrs() const {
 		switch (*data) {
 			case ALC_FREQUENCY:
 				++data;
+				attrs["ALC_FREQUENCY"] = *data;
 				LOG_DEBUG(("ALC_FREQUENCY = %d", *data));
 				break;
 			case ALC_REFRESH:
 				++data;
+				attrs["ALC_REFRESH"] = *data;
 				LOG_DEBUG(("ALC_REFRESH = %d", *data));
 				break;
 			case ALC_SYNC:
 				++data;
+				attrs["ALC_SYNC"] = *data;
 				LOG_DEBUG(("ALC_SYNC = %d", *data));
 				break;
 			case ALC_MONO_SOURCES:
 				++data;
+				attrs["ALC_MONO_SOURCES"] = *data;
 				LOG_DEBUG(("ALC_MONO_SOURCES = %d", *data));
 				break;
 			case ALC_STEREO_SOURCES:
 				++data;
+				attrs["ALC_STEREO_SOURCES"] = *data;
 				LOG_DEBUG(("ALC_STEREO_SOURCES = %d", *data));
 				break;
 			default:
@@ -193,11 +198,13 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 		GET_CONFIG_VALUE("engine.sound.openal-sync-context", bool, sync_ctx, false);
 		GET_CONFIG_VALUE("engine.sound.openal-refresh-frequency", int, refresh, 15); //openal default
 		GET_CONFIG_VALUE("engine.sound.openal-stereo-sources-hint", int, stereo, 2);
+		GET_CONFIG_VALUE("engine.sound.maximum-sources", int, max_sources, 16);
 		
 		ALCint attrs[] = {
 			ALC_SYNC, sync_ctx?AL_TRUE:AL_FALSE, 
 			ALC_REFRESH, refresh,
 			ALC_STEREO_SOURCES, stereo,
+			ALC_MONO_SOURCES, max_sources,
 			ALC_INVALID, ALC_INVALID, 
 		};
 		
@@ -209,7 +216,19 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 		if (alcMakeContextCurrent(alc_context) == ALC_FALSE) 
 			throw_ex(("alcMakeContextCurrent(%p) failed", (void *)alc_context));
 			
-		dumpContextAttrs();
+		std::map<const std::string, int> context_attrs;
+		dumpContextAttrs(context_attrs);
+		int context_sources = 0;
+		if (context_attrs["ALC_MONO_SOURCES"]) {
+			 context_sources = context_attrs["ALC_MONO_SOURCES"] + context_attrs["ALC_STEREO_SOURCES"];
+		}
+
+		if (context_sources) {
+			LOG_DEBUG(("device reported %d sources", context_sources));
+			max_sources = context_sources;
+		} else {
+			LOG_DEBUG(("no ALC_MONO_SOURCES, fallback to generic values..."));
+		}
 
 #	ifdef WIN32
 		GET_CONFIG_VALUE("engine.sound.preallocate-sources", bool, preallocate, true);
@@ -218,7 +237,6 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 #	endif
 		if (preallocate) {
 			LOG_DEBUG(("preallocating sources..."));
-			GET_CONFIG_VALUE("engine.sound.maximum-sources", int, max_sources, 16);
 			
 			_no_more_sources = true;
 			ALuint *sources = new ALuint[max_sources];
