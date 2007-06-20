@@ -593,7 +593,7 @@ void IMixer::playSample(const Object *o, const std::string &name, const bool loo
 
 		alSourcei (source, AL_BUFFER,   sample.buffer);
 		AL_CHECK(("alSourcei(%08x, AL_BUFFER, %08x)", (unsigned)source, (unsigned)sample.buffer));
-		
+		double pitch = 1.0;
 		if (o) {
 			ALfloat al_pos[] = { pos.x / k, -pos.y / k, 0*o->getZ() / k };
 			ALfloat al_vel[] = { vel.x / k, -vel.y / k, 0 };
@@ -605,6 +605,10 @@ void IMixer::playSample(const Object *o, const std::string &name, const bool loo
 			AL_CHECK(("alSourcef(%08x, AL_ROLLOFF_FACTOR, 1.0)", source));
 			alSourcei (source, AL_SOURCE_RELATIVE, AL_FALSE     );
 			AL_CHECK(("alSourcei(%08x, AL_SOURCE_RELATIVE, AL_FALSE)", source));
+			GET_CONFIG_VALUE("engine.sound.delta-pitch", float, sdp, 0.019440643702144828169815632631f); //1/3 semitone
+			pitch = 1.0 + (double)sdp * (mrt::random(2000) - 1000) / 1000.0;
+			if (_debug)
+				LOG_DEBUG(("pitch = %g", pitch));
 		} else {
 			alSource3f(source, AL_POSITION,        0.0, 0.0, 0.0); 
 			AL_CHECK(("alSource3f(%08x, AL_POSITION)", source));
@@ -622,8 +626,8 @@ void IMixer::playSample(const Object *o, const std::string &name, const bool loo
 		//alSourcef (source, AL_REFERENCE_DISTANCE, (o->size.x + o->size.y) / k / 2);
 		//GET_CONFIG_VALUE("engine.sound.maximum-distance", float, max_dist, 800.0);
 		//float max_dist_al = max_dist / k;
-				
-		alSourcef (source, AL_PITCH,    1.0          );
+			
+		alSourcef (source, AL_PITCH, pitch);
 		AL_CHECK(("alSourcef(%08x, AL_PITCH, 1.0)", source));
 		alSourcef (source, AL_GAIN,     _volume_fx * gain  );
 		AL_CHECK(("alSourcef(%08x, AL_GAIN, %g)", source, _volume_fx * gain));
