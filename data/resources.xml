@@ -134,6 +134,11 @@
 		<pose id="take" speed="8" sound="taking-item-4.ogg">5,6,7</pose>
 	</animation-model>
 
+	<animation-model id="item-animation-5" speed="10">
+		<pose id="main">0,1,2,3,4</pose>
+		<pose id="take" speed="8" sound="taking-item-5.ogg">5,6,7</pose>
+	</animation-model>
+
 	<animation-model id="smoke-animation" speed="10">
 		<pose id="main">0,1,2,3,4</pose>
 	</animation-model>
@@ -512,7 +517,7 @@
 
 	<!-- pickable items -->
 	<animation id="heal" tile="heal.png" model="item-animation-3"/>
-	<animation id="megaheal" tile="megaheal.png" model="item-animation-3"/>
+	<animation id="megaheal" tile="megaheal.png" model="item-animation-5"/>
 	
 	<animation id="guided-missiles-item" tile="missile01_item.png" model="item-animation-2" />
 	<animation id="smoke-missiles-item" tile="missile02_item.png" model="item-animation-2" />
