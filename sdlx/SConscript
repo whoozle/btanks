@@ -29,3 +29,13 @@ sdlx_sources = 	['cursor.cpp', 'sdl_ex.cpp', 'surface.cpp', 'system.cpp', 'joyst
 
 sdlx = env.SharedLibrary('sdlx', sdlx_sources, LIBS=libs)
 Install('#', sdlx)
+
+
+Import('lib_dir')
+if sys.platform != 'win32':
+	env.Append(LINKFLAGS=' -Wl,-rpath '+ lib_dir + ' -Wl,-rpath-link build/' + env['mode'] + '/mrt')
+	env.Append(LINKFLAGS=' -Wl,-rpath '+ lib_dir + ' -Wl,-rpath-link build/' + env['mode'] + '/sdlx')
+	env.Append(LINKFLAGS=' -Wl,-rpath '+ lib_dir + ' -Wl,-rpath-link build/' + env['mode'] + '/objects')
+
+test = env.Program('cmap_test', ['c_test.cpp'], LIBS=['sdlx', 'mrt'], LIBPATH=['../mrt', '.'], RPATH=['.'])
+Install('#', test)
