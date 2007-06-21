@@ -42,6 +42,7 @@ public:
 	void save(const std::string &fname) const;
 	const bool isEmpty() const { return _empty; }
 	const bool isFull() const { return _full; }
+	const std::string dump() const { return _data.dump();}
 private: 
 	bool _empty, _full;
 	unsigned int _w, _h;
