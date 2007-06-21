@@ -598,6 +598,7 @@
 	<animation id="road-sign08" model="destructable-object-animation" tile="road_sign08.png" size="32" />
 	<animation id="road-sign09" model="destructable-object-animation" tile="road_sign09.png" size="32" />
 	<animation id="road-sign10" model="destructable-object-animation" tile="road_sign10.png" size="32" />
+	<animation id="road-sign11" model="destructable-object-animation" tile="road_sign11.png" size="32" />
 
 	<animation id="submarine" model="yellow-submarine-animation" tile="submarine.png" tile_width="192" tile_height="128" />
 	<animation id="missile-boat" model="missile-boat-animation" tile="missile_boat.png" size="128" />
