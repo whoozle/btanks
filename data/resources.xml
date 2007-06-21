@@ -614,6 +614,7 @@
 
 	<animation id="teleport" model="teleport-animation" tile="teleport.png" />
 	<animation id="cow" model="cow-animation" tile="cow.png" />
+	<animation id="mutated-cow" model="cow-animation" tile="cow_mutated.png" />
 	<animation id="dead-cow" model="dead-man-animation" tile="cow_dead.png" />
 	<animation id="dead-cow-static" model="dead-man-animation" tile="cow_dead.png" />
 	
