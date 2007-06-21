@@ -28,7 +28,6 @@ public:
 	virtual void onSpawn();
 	virtual void calculate(const float dt);
 	virtual void tick(const float dt);
-	virtual void emit(const std::string &event, Object * emitter = NULL);
 
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
@@ -69,19 +68,6 @@ void Barrier::tick(const float dt) {
 		play("closed", true);
 	}
 }
-
-void Barrier::emit(const std::string &event, Object * emitter) {
-	if (event == "collision") {
-		if (emitter == NULL || getStateProgress() >= 0.8) 
-			emit("death", emitter);
-		return; //do not emit addDamage
-	} else if (event == "death") {
-		Object *o = spawn("cannon-explosion", "cannon-explosion");
-		o->setZ(getZ() + 1, true);
-	}
-	Object::emit(event, emitter);
-}
-
 
 Object* Barrier::clone() const  {
 	return new Barrier(*this);
