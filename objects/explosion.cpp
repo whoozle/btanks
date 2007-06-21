@@ -142,8 +142,14 @@ void Explosion::emit(const std::string &event, Object * emitter) {
 				int p = mrt::random(1000);
 				if (p < 1000 * mp) {
 					//mutation
-					World->spawn(emitter, "zombie", "zombie", v2<float>(), v2<float>());
-					emitter->Object::emit("death", this);
+					std::string an = "mutated-" + emitter->registered_name;
+					//LOG_DEBUG(("checking for animation '%s'", an.c_str()));
+					if (ResourceManager->hasAnimation(an)) {
+						emitter->init(an);
+					} else {
+						World->spawn(emitter, "zombie", "zombie", v2<float>(), v2<float>());
+						emitter->Object::emit("death", this);
+					}
 				}
 			}
 		} else {
