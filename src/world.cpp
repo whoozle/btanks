@@ -662,26 +662,31 @@ TRY {
 	o._velocity += o._velocity_fadeout;
 
 	//LOG_DEBUG(("im = %f", im));
+	v2<int> old_pos = o._position.convert<int>();
 	v2<float> dpos = o.speed * o._velocity * dt;
 
-	v2<int> new_pos = (o._position + dpos).convert<int>();
-	v2<int> old_pos = o._position.convert<int>();
+	const Object *stuck_in = NULL;
+	IMap::TilePosition stuck_map_pos;
 
-	if (new_pos == old_pos) {
+	float map_im_now = map.getImpassability(&o, old_pos, &stuck_map_pos) / 100.0f;
+	float obj_im_now = getImpassability(&o, old_pos, &stuck_in);
+	float result_im = math::max(map_im_now, obj_im_now);
+	dpos *= (1.0f - result_im);
+
+	bool stuck = result_im >= 1.0f;
+
+	v2<int> new_pos = (o._position + dpos).convert<int>();
+
+	if (!stuck && new_pos == old_pos) {
 		o._position += dpos;
 		return;
 	}
 
-	updateObject(&o);
-	
 	bool has_outline = false;
 	bool hidden = false;
 	std::string outline_animation;
 	
 	const Object *other_obj = NULL;
-	const Object *stuck_in = NULL;
-	IMap::TilePosition stuck_map_pos;
-	bool stuck = false;
 
 	int attempt = -1;
 
@@ -739,9 +744,6 @@ TRY {
 		if (o.piercing || dirs == 1) 
 			break;
 	
-		if (attempt == 0)
-			stuck = map.getImpassability(&o, old_pos, &stuck_map_pos) == 100 || getImpassability(&o, old_pos, &stuck_in) >= 1.0;
-		
 		if (ds || other_obj != NULL && o.classname == "player" && other_obj->classname == "player")
 			break;
 		/*
@@ -899,12 +901,6 @@ TRY {
 	if (o.isDead())
 		return;
 
-	dpos = o.speed * o._velocity * dt;
-	
-	//LOG_DEBUG(("%d %d", new_pos.x, new_pos.y));
-	new_pos = (o._position + dpos).convert<int>();
-	//LOG_DEBUG(("%d %d", new_pos.x, new_pos.y));
-
 /*
 	if (o.piercing) {
 		LOG_DEBUG(("%s *** %g,%g", o.dump().c_str(), map_im, obj_im));
@@ -917,16 +913,8 @@ TRY {
 	if (drifting && obj_im < dim)
 		obj_im = dim;
 	
-	if (map_im >= 1.0 || obj_im >= 1.0) {
-		dpos.clear();
-	} else {
-		//map_im = o.getEffectiveImpassability(map_im);
-		//obj_im = o.getEffectiveImpassability(obj_im);
-		dpos *= (1.0f - map_im) * (1.0f - obj_im);
+	if (result_im < 1.0f) 
 		o._latest_good_position = o._position;
-	}
-	
-	v2<float> new_pos = o._position + dpos;
 
 	if (!o.piercing) {
 		if ((dpos.x < 0 && new_pos.x < -o.size.x / 2) || (dpos.x > 0 && new_pos.x + o.size.x / 2 >= map_size.x))
@@ -944,6 +932,8 @@ TRY {
 	
 	}
 	o._position += dpos;
+
+	updateObject(&o);
 	
 	GET_CONFIG_VALUE("engine.velocity-fadeout", float, vf, 0.1);
 	
