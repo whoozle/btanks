@@ -810,6 +810,11 @@ TRY {
 			v2<float> allowed_velocity;
 
 			if (map_im >= 1.0f) {
+				if (!o._latest_good_position.is0() && o._latest_good_position.convert<int>() != o._position.convert<int>()) {
+					o._position = o._latest_good_position;
+					goto skip_collision;
+				}
+				
 				v2<int> map_tile_size = Map->getPathTileSize();
 				const Matrix<int> &matrix = o.getImpassabilityMatrix();
 				GET_CONFIG_VALUE("engine.stuck-tile-lookup", int, n, 3);
