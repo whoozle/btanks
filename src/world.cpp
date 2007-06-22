@@ -258,13 +258,15 @@ const bool IWorld::collides(Object *obj, const v2<int> &position, Object *o, con
 		//LOG_DEBUG(("%s: %d %d", o->classname.c_str(), dpos.x, dpos.y));
 		
 		bool collides;
-		CollisionMap::iterator static_i;
-		if (obj->speed == 0 && o->speed == 0 && 
-			((static_i = _static_collision_map.find(key)) != _static_collision_map.end())
-			) {		
-			
-			collides = static_i->second;
-			_static_collision_map.insert(CollisionMap::value_type(key, collides));
+		if (obj->speed == 0 && o->speed == 0) {
+			//static objects.
+			CollisionMap::iterator static_i = _static_collision_map.find(key);
+			if (static_i != _static_collision_map.end()) {
+				collides = static_i->second;
+			} else {
+				collides = obj->collides(o, dpos.x, dpos.y);
+				_static_collision_map.insert(CollisionMap::value_type(key, collides)); 
+			}
 		} else {
 			collides = obj->collides(o, dpos.x, dpos.y);
 		}
