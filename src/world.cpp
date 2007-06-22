@@ -802,8 +802,15 @@ TRY {
 	if (obj_im == 1.0 || map_im == 1.0) {
 		if (PlayerManager->isClient()) 
 			goto skip_collision;
-			
+		
+		/*
+		if (stuck && !o._latest_good_position.is0() && o._position != o._latest_good_position) {
+			o._position = o._latest_good_position;
+			goto skip_collision;
+		}
+		*/
 		if (stuck) {
+		
 			v2<float> allowed_velocity;
 			v2<float> object_center = o._position + o.size / 2;
 
