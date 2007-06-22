@@ -879,6 +879,7 @@ TRY {
 	skip_collision:;
 		result_im = math::max(map_im, obj_im);
 		dpos = o.speed * o._velocity * dt * (1.0f - result_im);
+		
 		/*
 		LOG_DEBUG(("bang!"));
 		GET_CONFIG_VALUE("engine.bounce-velocity-multiplier", float, bvm, 0.5);
@@ -908,6 +909,8 @@ TRY {
 	
 	if (result_im < 1.0f) 
 		o._latest_good_position = o._position;
+	
+	new_pos = (o._position + dpos).convert<int>();
 
 	if (!o.piercing) {
 		if ((dpos.x < 0 && new_pos.x < -o.size.x / 2) || (dpos.x > 0 && new_pos.x + o.size.x / 2 >= map_size.x))
