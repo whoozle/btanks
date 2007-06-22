@@ -861,6 +861,13 @@ TRY {
 
 					stuck_in = other_obj;
 				}
+				if (stuck_in->speed == 0) {
+					//LOG_DEBUG(("bow wow. stucking in solid object"));
+					if (!o._latest_good_position.is0() && o._latest_good_position.convert<int>() != o._position.convert<int>()) {
+						o._position = o._latest_good_position;
+						goto skip_collision;
+					}
+				}
 			
 				allowed_velocity = object_center - (stuck_in->_position + stuck_in->size/2);
 				//LOG_DEBUG(("allowed: %g %g", allowed_velocity.x, allowed_velocity.y));
