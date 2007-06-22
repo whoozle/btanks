@@ -946,9 +946,10 @@ const int Object::getTargetPosition(v2<float> &relative_position, const std::set
 				v2<float> map2 = o->getPosition();
 			
 				v2<float> dp (map2.x - map1.x, map2.y - map1.y);
-				dp.normalize(pfs.x);
 				if (dp.is0())
-					continue;
+					goto found;
+
+				dp.normalize(pfs.x);
 			
 				//LOG_DEBUG(("%g:%g -> %g:%g (+%g:+%g)", map1.x, map1.y, map2.x, map2.y, dp.x, dp.y));
 				do {
@@ -958,12 +959,12 @@ const int Object::getTargetPosition(v2<float> &relative_position, const std::set
 					map1 += dp;
 					v2<int> map_pos = map1.convert<int>() / pfs;
 					//LOG_DEBUG(("%dx%d: %d", map_pos.x, map_pos.y, matrix.get(map_pos.y, map_pos.x)));
-					if (matrix.get(map_pos.y, map_pos.x) < 0)
+					if (matrix.get(map_pos.y, map_pos.x) < 0 && pmatrix.get(map_pos.x, map_pos.y) >= 0)
 						goto failed;
 				} while(true);
 				//end of map proj
 			} //impassability >= 1.0f
-			
+		found: 
 			if (result_dir == -1 || dist < distance) {
 				result_dir = d;
 				distance = dist;
