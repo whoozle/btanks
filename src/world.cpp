@@ -916,6 +916,7 @@ TRY {
 		//map_im = o.getEffectiveImpassability(map_im);
 		//obj_im = o.getEffectiveImpassability(obj_im);
 		dpos *= (1.0f - map_im) * (1.0f - obj_im);
+		o._latest_good_position = o._position;
 	}
 	
 	v2<float> new_pos = o._position + dpos;
