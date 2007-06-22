@@ -736,12 +736,13 @@ TRY {
 			break;
 		}
 		
-		if (o.piercing || dirs == 1 || ds) 
+		if (o.piercing || dirs == 1) 
 			break;
-
-		stuck = map.getImpassability(&o, old_pos, &stuck_map_pos) == 100 || getImpassability(&o, old_pos, &stuck_in) >= 1.0;
+	
+		if (attempt == 0)
+			stuck = map.getImpassability(&o, old_pos, &stuck_map_pos) == 100 || getImpassability(&o, old_pos, &stuck_in) >= 1.0;
 		
-		if (other_obj != NULL && o.classname == "player" && other_obj->classname == "player")
+		if (ds || other_obj != NULL && o.classname == "player" && other_obj->classname == "player")
 			break;
 		/*
 		LOG_DEBUG(("(%d:%d->%d:%d): (attempt %d) stuck: %s, map_im: %g, obj_im: %g, obj_im_now: %g", 
