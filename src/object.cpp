@@ -894,6 +894,31 @@ const int Object::getTargetPosition(v2<float> &relative_position, const std::set
 	return getTargetPosition(relative_position, targets, range);
 }
 
+static const bool check_distance(const v2<float> &_map1, const v2<float>& map2, const Matrix<int> &matrix, const Matrix<int> *pmatrix, const v2<int>& pfs) {
+	v2<float> map1 = _map1;
+	v2<float> dp (map2.x - map1.x, map2.y - map1.y);
+	if (dp.is0())
+		return true;
+	
+	dp.normalize(pfs.x);
+			
+	//LOG_DEBUG(("%g:%g -> %g:%g (+%g:+%g)", map1.x, map1.y, map2.x, map2.y, dp.x, dp.y));
+	do {
+		v2<float> dv = (map2 - map1) * dp; 
+		if (dv.x < 0 || dv.y < 0) 
+			break;
+		map1 += dp;
+		v2<int> map_pos = map1.convert<int>() / pfs;
+		//LOG_DEBUG(("%dx%d: %d", map_pos.x, map_pos.y, matrix.get(map_pos.y, map_pos.x)));
+		if (matrix.get(map_pos.y, map_pos.x) < 0) {
+			if (pmatrix == NULL || pmatrix->get(map_pos.x, map_pos.y) >= 0)
+				return false;
+		}
+	} while(true);
+
+	return true;
+}
+
 const int Object::getTargetPosition(v2<float> &relative_position, const std::set<std::string> &targets, const float range) const {
 	if (aiDisabled())
 		return -1;
@@ -944,35 +969,20 @@ const int Object::getTargetPosition(v2<float> &relative_position, const std::set
 				//checking map projection
 				v2<float> map1 = pos + getPosition();
 				v2<float> map2 = o->getPosition();
-			
-				v2<float> dp (map2.x - map1.x, map2.y - map1.y);
-				if (dp.is0())
-					goto found;
-
-				dp.normalize(pfs.x);
-			
-				//LOG_DEBUG(("%g:%g -> %g:%g (+%g:+%g)", map1.x, map1.y, map2.x, map2.y, dp.x, dp.y));
-				do {
-					v2<float> dv = (map2 - map1) * dp; 
-					if (dv.x < 0 || dv.y < 0) 
-						break;
-					map1 += dp;
-					v2<int> map_pos = map1.convert<int>() / pfs;
-					//LOG_DEBUG(("%dx%d: %d", map_pos.x, map_pos.y, matrix.get(map_pos.y, map_pos.x)));
-					if (matrix.get(map_pos.y, map_pos.x) < 0 && pmatrix.get(map_pos.x, map_pos.y) >= 0)
-						goto failed;
-				} while(true);
-				//end of map proj
-			} //impassability >= 1.0f
-		found: 
+				if (!check_distance(map1, map2, matrix, &pmatrix, pfs))
+					continue;
+				map1 = getPosition();
+				map2 = pos + getPosition();
+				if (!check_distance(map1, map2, matrix, NULL, pfs))
+					continue;
+			} 
+				
 			if (result_dir == -1 || dist < distance) {
 				result_dir = d;
 				distance = dist;
 				relative_position = pos;
 				//LOG_DEBUG(("enemy @ %g %g: %s (dir: %d, distance: %g)", pos.x, pos.y, o->registered_name.c_str(), d, distance));
 			}
-			
-			failed: ;
 		}
 	}
 	return result_dir;
