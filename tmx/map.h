@@ -81,7 +81,7 @@ public:
 	
 	virtual const int getImpassability(const Object *obj, const v2<int>& pos, TilePosition *tile_pos = NULL, bool *hidden = NULL) const;
 
-	const Matrix<int>& getImpassabilityMatrix(const int z);
+	const Matrix<int>& getImpassabilityMatrix(const int z, const bool only_pierceable = false);
 	const Matrix<int>& getAreaMatrix(const std::string &name);
 	//void getSurroundings(Matrix<int> &matrix, const v2<int> &pos, const int filler = -1) const;
 	
@@ -124,7 +124,7 @@ public:
 private:
 	const int addTiles(const sdlx::Surface *image, const int first_gid);
 
-	Matrix<int> &getMatrix(int z);
+	Matrix<int> &getMatrix(int z, const bool only_pierceable);
 	Matrix<int> &getMatrix(const std::string &name);
 
 	void updateMatrix(const int x, const int y);
@@ -138,7 +138,7 @@ private:
 	virtual const sdlx::CollisionMap* getCollisionMap(const Layer *l, const int x, const int y) const;
 	virtual const sdlx::CollisionMap* getVisibilityMap(const Layer *l, const int x, const int y) const;
 
-	typedef std::map<const int, Matrix<int> > MatrixMap;
+	typedef std::map<const std::pair<int, bool> , Matrix<int> > MatrixMap;
 	MatrixMap _imp_map;
 	typedef std::map<const std::string, Matrix<int> > ObjectAreaMap;
 	ObjectAreaMap _area_map;

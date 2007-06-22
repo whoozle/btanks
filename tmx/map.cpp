@@ -52,9 +52,9 @@ IMap::IMap() : _w(0), _h(0), _tw(0), _th(0), _ptw(0), _pth(0), _firstgid(0), _sp
 	_image = NULL;
 }
 
-Matrix<int> &IMap::getMatrix(int z) {
+Matrix<int> &IMap::getMatrix(int z, const bool only_pierceable) {
 	const int box = ZBox::getBox(z);
-	MatrixMap::iterator i = _imp_map.find(box);
+	MatrixMap::iterator i = _imp_map.find(MatrixMap::key_type(box, only_pierceable));
 	if (i != _imp_map.end())
 		return i->second;
 
@@ -62,7 +62,7 @@ Matrix<int> &IMap::getMatrix(int z) {
 	GET_CONFIG_VALUE("map.default-impassability", int, def_im, 0);
 	map.setSize(_h * _split, _w * _split, 0);
 	map.useDefault(-1);
-	std::pair<MatrixMap::iterator, bool> r = _imp_map.insert(MatrixMap::value_type(box, map));
+	std::pair<MatrixMap::iterator, bool> r = _imp_map.insert(MatrixMap::value_type(MatrixMap::key_type(box, only_pierceable), map));
 	return r.first->second;
 }
 
@@ -84,8 +84,8 @@ const Matrix<int>& IMap::getAreaMatrix(const std::string &name) {
 }
 
 
-const Matrix<int>& IMap::getImpassabilityMatrix(const int z) {
-	return getMatrix(z);
+const Matrix<int>& IMap::getImpassabilityMatrix(const int z, const bool only_pierceable) {
+	return getMatrix(z, only_pierceable);
 }
 
 inline const bool IMap::collides(const Object *obj, const int dx, const int dy, const sdlx::CollisionMap *tile) const {
@@ -363,7 +363,8 @@ void IMap::updateMatrix(const int x, const int y) {
 				if (cmap == NULL || cmap->isEmpty())
 					continue;
 
-				Matrix<int> &imp_map = getMatrix(l->first);
+				Matrix<int> &imp_map = getMatrix(l->first, false);
+				Matrix<int> *pmap = (l->second->pierceable) ? &getMatrix(l->first, true): NULL;
 				
 				//break;
 				//if (im == 100) 
@@ -382,8 +383,11 @@ void IMap::updateMatrix(const int x, const int y) {
 				for(int yy = 0; yy < _split; ++yy)
 					for(int xx = 0; xx < _split; ++xx) {
 						int yp = y * _split + yy, xp = x * _split + xx;
-						if (proj.get(yy, xx) && imp_map.get(yp, xp) == -2) 
+						if (proj.get(yy, xx) && imp_map.get(yp, xp) == -2) {
 							imp_map.set(yp, xp, im);
+							if (pmap)
+								pmap->set(yp, xp, im);
+						}
 					}
 	}
 
@@ -502,7 +506,9 @@ void IMap::generateMatrixes() {
 
 	_imp_map.clear();
 	for(LayerMap::const_iterator i = _layers.begin(); i != _layers.end(); ++i) {
-		getMatrix(i->first).fill(-2);
+		getMatrix(i->first, false).fill(-2);
+		if (i->second->pierceable)
+			getMatrix(i->first, true).fill(-2);
 	}
 	for(int y = 0; y < _h; ++y) {
 		for(int x = 0; x < _w; ++x) {
@@ -510,7 +516,7 @@ void IMap::generateMatrixes() {
 		}
 	}
 	for(MatrixMap::const_iterator i = _imp_map.begin(); i != _imp_map.end(); ++i) {
-		LOG_DEBUG(("z: %d\n%s", i->first, i->second.dump().c_str()));
+		LOG_DEBUG(("z: %d(pierceable: %s)\n%s", i->first.first, i->first.second?"yes":"no", i->second.dump().c_str()));
 	}
 	for(ObjectAreaMap::const_iterator i = _area_map.begin(); i != _area_map.end(); ++i) {
 		LOG_DEBUG(("hint for '%s'\n%s", i->first.c_str(), i->second.dump().c_str()));
@@ -521,7 +527,7 @@ void IMap::generateMatrixes() {
 void IMap::getZBoxes(std::set<int> &layers) {
 	layers.clear();
 	for(MatrixMap::const_iterator i = _imp_map.begin(); i != _imp_map.end(); ++i) {
-		layers.insert(i->first);
+		layers.insert(i->first.first);
 	}
 }
 
