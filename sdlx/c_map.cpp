@@ -283,7 +283,7 @@ void CollisionMap::init(const sdlx::Surface * surface, const Type type) {
 			assert(pos < _data.getSize());
 	
 			if (test_pixel(surface, x, y, type)) {
-				data[pos] |= 1 << b;
+				data[pos] |= (1 << b);
 				_empty = false;
 			} else _full = false;
 		}
