@@ -708,17 +708,12 @@ TRY {
 		v2<int> pos;
 		if (attempt > 0) {
 			int dir = save_dir;
-/*			if (dir < 0) { 
-				dir = save_dir;
-			}
-*/				
 			dir = (dir + ((attempt == 1)?-1:1) + dirs ) % dirs;
 			
 			new_velocity.fromDirection(dir, dirs);
-			//int dir_c = new_velocity.getDirection(dirs) - 1;
-			//assert(dir_c == dir);
-			
-			pos = (o._position + o.speed * new_velocity * dt).convert<int>();
+
+			float im = (result_im < 1.0f)?result_im:0.9f;
+			pos = (o._position + (1.0f - im) * o.speed * new_velocity * dt).convert<int>();
 			o.setDirection(dir);
 			//LOG_DEBUG(("%s: %d:trying %d (original: %d, dirs: %d)", 
 			//	o.animation.c_str(), attempt, dir, save_dir, dirs ));
@@ -737,11 +732,15 @@ TRY {
 
 		if (map_im >= 0 && map_im < 1.0 && obj_im < 1.0) {
 			//LOG_DEBUG(("success, %g %g", map_im, obj_im));
+			if (result_im >= 1.0f) {
+				result_im = math::max(map_im, obj_im);
+				dpos = o.speed * (1.0f - result_im) * o._velocity * dt;
+			}
 			stuck = false;
 			break;
 		}
 		
-		if (o.piercing || dirs == 1) 
+		if (o.piercing || dirs == 1)
 			break;
 	
 		if (ds || other_obj != NULL && o.classname == "player" && other_obj->classname == "player")
@@ -801,22 +800,11 @@ TRY {
 } CATCH("tick(damaging map)", throw;)	
 
 TRY {
-	if (obj_im == 1.0 || map_im == 1.0) {
-		if (PlayerManager->isClient()) 
-			goto skip_collision;
-		
-		/*
-		if (stuck && !o._latest_good_position.is0() && o._position != o._latest_good_position) {
-			o._position = o._latest_good_position;
-			goto skip_collision;
-		}
-		*/
-		if (stuck) {
-		
+	if (!PlayerManager->isClient() && stuck) {
 			v2<float> allowed_velocity;
 			v2<float> object_center = o._position + o.size / 2;
 
-			if (map_im >= 1.0) {
+			if (map_im >= 1.0f) {
 				//allowed_velocity = object_center - stuck_map_pos.position.convert<float>();
 				//LOG_DEBUG(("allowed velocity = %g %g", allowed_velocity.x, allowed_velocity.y));
 
@@ -885,7 +873,7 @@ TRY {
 				o._position += l * allowed_velocity;
 			} else LOG_WARN(("%d:%s:%s: bogus 'stuck' flag!", o.getID(), o.registered_name.c_str(), o.animation.c_str()));
 		}
-	skip_collision: ; 
+	skip_collision:;
 		/*
 		LOG_DEBUG(("bang!"));
 		GET_CONFIG_VALUE("engine.bounce-velocity-multiplier", float, bvm, 0.5);
@@ -895,7 +883,7 @@ TRY {
 		
 		o._moving_time = 0;
 		*/
-	}
+	
 } CATCH("tick(`stuck` case)", throw;);
 
 	if (o.isDead())
