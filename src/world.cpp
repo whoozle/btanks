@@ -677,11 +677,11 @@ TRY {
 
 	v2<int> new_pos = (o._position + dpos).convert<int>();
 
-	if (!stuck && new_pos == old_pos) {
+/*	if (!stuck && new_pos == old_pos) {
 		o._position += dpos;
 		return;
 	}
-
+*/
 	bool has_outline = false;
 	bool hidden = false;
 	std::string outline_animation;
@@ -762,6 +762,10 @@ TRY {
 		o.setDirection(save_dir);
 		hidden = hidden_attempt[0];
 	}
+
+	result_im = math::max(map_im, obj_im);
+	dpos = o.speed * (1.0f - result_im) * o._velocity * dt;
+
 } CATCH(
 	mrt::formatString("tick.impassability check (attempt: %d, stuck_in: %p)", attempt, (void *)stuck_in).c_str(), 
 	throw;);
@@ -801,13 +805,11 @@ TRY {
 
 TRY {
 	if (!PlayerManager->isClient() && stuck) {
-			v2<float> allowed_velocity;
+		//LOG_DEBUG(("stuck: map: %g, obj: %g", map_im, obj_im));
 			v2<float> object_center = o._position + o.size / 2;
+			v2<float> allowed_velocity;
 
 			if (map_im >= 1.0f) {
-				//allowed_velocity = object_center - stuck_map_pos.position.convert<float>();
-				//LOG_DEBUG(("allowed velocity = %g %g", allowed_velocity.x, allowed_velocity.y));
-
 				v2<int> map_tile_size = Map->getPathTileSize();
 				const Matrix<int> &matrix = o.getImpassabilityMatrix();
 				GET_CONFIG_VALUE("engine.stuck-tile-lookup", int, n, 3);
@@ -868,12 +870,15 @@ TRY {
 					goto skip_collision;
 				}
 				
-				GET_CONFIG_VALUE("engine.stuck-fixup", float, l, 2);
+				//GET_CONFIG_VALUE("engine.stuck-fixup", float, l, 2);
 				allowed_velocity.normalize();
-				o._position += l * allowed_velocity;
+				//o._position += l * allowed_velocity;
+				o._velocity = allowed_velocity;
 			} else LOG_WARN(("%d:%s:%s: bogus 'stuck' flag!", o.getID(), o.registered_name.c_str(), o.animation.c_str()));
 		}
 	skip_collision:;
+		result_im = math::max(map_im, obj_im);
+		dpos = o.speed * o._velocity * dt * (1.0f - result_im);
 		/*
 		LOG_DEBUG(("bang!"));
 		GET_CONFIG_VALUE("engine.bounce-velocity-multiplier", float, bvm, 0.5);
