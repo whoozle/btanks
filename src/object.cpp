@@ -904,7 +904,7 @@ const int Object::getTargetPosition(v2<float> &relative_position, const std::set
 	World->enumerateObjects(objects, this, range, &targets);
 	
 	v2<int> pfs = Map->getPathTileSize();
-	const Matrix<int> &matrix = getImpassabilityMatrix();
+	const Matrix<int> &matrix = getImpassabilityMatrix(), pmatrix = Map->getImpassabilityMatrix(getZ(), true);
 //		v2<int> map_pos = (pos + getPosition()).convert<int>() / pfs;
 
 	int result_dir = -1;
@@ -958,7 +958,7 @@ const int Object::getTargetPosition(v2<float> &relative_position, const std::set
 					map1 += dp;
 					v2<int> map_pos = map1.convert<int>() / pfs;
 					//LOG_DEBUG(("%dx%d: %d", map_pos.x, map_pos.y, matrix.get(map_pos.y, map_pos.x)));
-					if (matrix.get(map_pos.y, map_pos.x) < 0)
+					if (matrix.get(map_pos.y, map_pos.x) < 0 && pmatrix.get(map_pos.x, map_pos.y) >= 0)
 						goto failed;
 				} while(true);
 				//end of map proj
