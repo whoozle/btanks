@@ -830,7 +830,7 @@ TRY {
 					goto skip_collision;
 				}
 
-				static const int directions[8] = {4, 3, 5, 2, 6, 1, 7, 0};
+				static const int directions[8] = {0, 4, 3, 5,   2, 6, 1, 7};
 				
 				for(a = 1; a <= n; ++a) {
 					for(d = 0; d < dirs; ++d) {
