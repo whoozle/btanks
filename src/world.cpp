@@ -821,14 +821,20 @@ TRY {
 				int a, d = -1;
 				v2<float> pos;
 				
-				int d0 = o._velocity.getDirection(8) - 1;
-				if (d0 < 0) 
-					d0 = 0;
-				static int directions[] = {0, 4, 3, 5, 2, 6, 1, 7};
+				int dirs = o.getDirectionsNumber();
+				if (dirs > 8) 
+					dirs = 8;
+				
+				int d0 = o._velocity.getDirection(dirs) - 1;
+				if (d0 < 0) { 
+					goto skip_collision;
+				}
+
+				static const int directions[8] = {4, 3, 5, 2, 6, 1, 7, 0};
 				
 				for(a = 1; a <= n; ++a) {
-					for(d = 0; d < 8; ++d) {
-						allowed_velocity.fromDirection((directions[d] + d0) % 8, 8);
+					for(d = 0; d < dirs; ++d) {
+						allowed_velocity.fromDirection((directions[d] + d0) % dirs, dirs);
 						pos = allowed_velocity;
 						pos *= (map_tile_size * a).convert<float>();
 						//LOG_DEBUG(("probe: %d,%d -> %g %g (%d)", a, d, pos.x, pos.y, matrix.get((int)pos.y, (int)pos.x)));
@@ -853,6 +859,7 @@ TRY {
 
 				allowed_velocity.normalize();
 				//LOG_DEBUG(("map:allowed velocity = %g %g, map_im = %g, obj_im = %g", allowed_velocity.x, allowed_velocity.y, map_im, obj_im));
+				//LOG_DEBUG(("map tile position : %d,%d, merged-x:%c, merged-y:%c", stuck_map_pos.position.x, stuck_map_pos.position.y, stuck_map_pos.merged_x?'+':'-', stuck_map_pos.merged_y?'+':'-'));
 				//o._position += allowed_velocity * o.speed * dt;
 				o._velocity = allowed_velocity;
 				//LOG_DEBUG(("resulting map_im = %g", map_im));
