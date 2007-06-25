@@ -116,7 +116,7 @@ const int IMap::getImpassability(const Object *obj, const v2<int>&pos, TilePosit
 TRY {
 	assert(obj != NULL);
 	
-	if (obj->impassability <= 0) {
+	if (obj->impassability < 1.0f) {
 		return 0;
 	}
 	//LOG_DEBUG((">>IMap::getImpassability"));
