@@ -160,11 +160,14 @@ void Bullet::emit(const std::string &event, Object * emitter) {
 	if (emitter != NULL && (emitter->classname == "smoke-cloud" || emitter->classname == "bullet") )
 		return;
 
-	v2<float> dpos;	
+	v2<float> dpos;
+	dpos.fromDirection(getDirection(), getDirectionsNumber());
+	dpos *= size.length() / 2;
 	if (event == "collision" || event == "death") {
-		if (emitter) {
+/*		if (emitter) {
 			dpos = getRelativePosition(emitter) / 2;
-		}
+		} 
+*/
 		if (_type == "regular") {
 			GET_CONFIG_VALUE("objects.explosion-downwards-z-override", int, edzo, 180);
 			int z = (_velocity.y >= 0) ? edzo : 0;
