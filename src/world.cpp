@@ -822,6 +822,9 @@ TRY {
 				v2<float> pos;
 				
 				int dirs = o.getDirectionsNumber();
+				if (dirs < 4) 
+					goto skip_collision;
+				
 				if (dirs > 8) 
 					dirs = 8;
 				
