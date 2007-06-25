@@ -281,7 +281,7 @@ TRY {
 		} else if (v2 && !v1) {
 			tile_pos->position.x = _tw/2 + _tw * xt2;			
 		} else {
-			tile_pos->position.x = _tw/2 + _tw * (xt1 + xt2) / 2;
+			tile_pos->position.x = _tw * xt2;
 			tile_pos->merged_x = true;
 		}
 		
@@ -293,7 +293,7 @@ TRY {
 			tile_pos->position.y = _th/2 + _th * yt2;
 		} else {
 			tile_pos->merged_y = true;
-			tile_pos->position.y = _th/2 + _th * (yt1 + yt2) / 2;
+			tile_pos->position.y = _th * yt2;
 		}
 	}
 	
