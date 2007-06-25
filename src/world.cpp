@@ -677,11 +677,11 @@ TRY {
 
 	v2<int> new_pos = (o._position + dpos).convert<int>();
 
-/*	if (!stuck && new_pos == old_pos) {
+	if (!stuck && new_pos == old_pos) {
 		o._position += dpos;
 		return;
 	}
-*/
+
 	bool has_outline = false;
 	bool hidden = false;
 	std::string outline_animation;
@@ -811,9 +811,9 @@ TRY {
 
 			if (map_im >= 1.0f) {
 				if (!o._latest_good_position.is0() && o._latest_good_position.convert<int>() != o._position.convert<int>()) {
-					o._position = o._latest_good_position;
+					o._position = o._latest_good_position.convert<float>();
 					goto skip_collision;
-				}
+				} else o._latest_good_position.clear();
 				
 				v2<int> map_tile_size = Map->getPathTileSize();
 				const Matrix<int> &matrix = o.getImpassabilityMatrix();
@@ -848,11 +848,11 @@ TRY {
 					return;
 				}
 
-				//LOG_DEBUG(("allowed velocity = %g %g", allowed_velocity.x, allowed_velocity.y));
 
 				map_im = stuck_map_pos.prev_im / 100.0;
 
 				allowed_velocity.normalize();
+				//LOG_DEBUG(("map:allowed velocity = %g %g, map_im = %g, obj_im = %g", allowed_velocity.x, allowed_velocity.y, map_im, obj_im));
 				//o._position += allowed_velocity * o.speed * dt;
 				o._velocity = allowed_velocity;
 				//LOG_DEBUG(("resulting map_im = %g", map_im));
@@ -869,9 +869,9 @@ TRY {
 				if (stuck_in->speed == 0) {
 					//LOG_DEBUG(("bow wow. stucking in solid object"));
 					if (!o._latest_good_position.is0() && o._latest_good_position.convert<int>() != o._position.convert<int>()) {
-						o._position = o._latest_good_position;
+						o._position = o._latest_good_position.convert<float>();
 						goto skip_collision;
-					}
+					} else o._latest_good_position.clear();
 				}
 			
 				allowed_velocity = object_center - (stuck_in->_position + stuck_in->size/2);
@@ -887,6 +887,7 @@ TRY {
 				//o._position += l * allowed_velocity;
 				o._velocity = allowed_velocity;
 			} else LOG_WARN(("%d:%s:%s: bogus 'stuck' flag!", o.getID(), o.registered_name.c_str(), o.animation.c_str()));
+			//LOG_DEBUG(("map_im: %g, obj_im: %g", map_im, obj_im));
 		}
 	skip_collision:;
 		result_im = math::max(map_im, obj_im);
@@ -919,8 +920,8 @@ TRY {
 	if (drifting && obj_im < dim)
 		obj_im = dim;
 	
-	if (result_im < 1.0f) 
-		o._latest_good_position = o._position;
+	if (result_im < 1.0f && !stuck) 
+		o._latest_good_position = o._position.convert<int>();
 	
 	new_pos = (o._position + dpos).convert<int>();
 

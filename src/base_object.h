@@ -128,7 +128,8 @@ protected:
 
 private:
 
-	v2<float> _position, _latest_good_position;
+	v2<float> _position;
+	v2<int> _latest_good_position;
 	
 	//do not serialize interpolation stuff.
 	v2<float> _interpolation_vector, _interpolation_position_backup;
