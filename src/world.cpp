@@ -798,19 +798,18 @@ TRY {
 TRY {
 	if (o.piercing) {
 		//if (obj_im_now > 0 && obj_im_now < 1.0)
-		stuck = false;
 		if (map_im >= 1.0f) {
-			o._position += dpos * 4; //terrible terrible terrible hack !!! fix it ASAP
 			Map->damage(o._position + o.size / 2, o.max_hp);
 			o.emit("collision", NULL); //fixme: emit collisions with map from map::getImpassability
-			o._position -= dpos * 4;
-		} else map_im = 0;
+		} 
+		map_im = 0;
 		obj_im = 0; //collision handler was already called.
+		stuck = false;
 	}
 } CATCH("tick(damaging map)", throw;)	
 
 TRY {
-	if (!PlayerManager->isClient() && stuck) {
+	if (stuck && !PlayerManager->isClient()) {
 			if (dorc)
 				LOG_DEBUG(("stuck: map: %g, obj: %g", map_im, obj_im));
 			v2<float> object_center;
@@ -921,8 +920,6 @@ TRY {
 			//LOG_DEBUG(("map_im: %g, obj_im: %g", map_im, obj_im));
 		}
 	skip_collision:;
-		result_im = math::max(map_im, obj_im);
-		dpos = o.speed * o._velocity * dt * (1.0f - result_im);
 		
 		/*
 		LOG_DEBUG(("bang!"));
@@ -939,11 +936,14 @@ TRY {
 	if (o.isDead())
 		return;
 
-/*
-	if (o.piercing) {
-		LOG_DEBUG(("%s *** %g,%g", o.dump().c_str(), map_im, obj_im));
-	}
-*/	
+	result_im = math::max(map_im, obj_im);
+	dpos = o.speed * o._velocity * dt * (1.0f - result_im);
+
+
+//	if (o.piercing) {
+//		LOG_DEBUG(("%s *** %g,%g, dpos: %g %g", o.dump().c_str(), map_im, obj_im, dpos.x, dpos.y));
+//	}
+	
 TRY {
 	assert(map_im >= 0 && obj_im >= 0);
 	//LOG_DEBUG(("%s: %d %d: obj_im: %g, map_im: %g, dpos: %g %g %s", o.animation.c_str(), old_pos.x, old_pos.y, obj_im, map_im, dpos.x, dpos.y, stuck?"stuck":""));
