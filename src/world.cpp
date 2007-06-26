@@ -804,14 +804,18 @@ TRY {
 } CATCH("tick(damaging map)", throw;)	
 
 TRY {
+	GET_CONFIG_VALUE("engine.debug-stuck-resolution-code", bool, dorc, false);
 	if (!PlayerManager->isClient() && stuck) {
-		//LOG_DEBUG(("stuck: map: %g, obj: %g", map_im, obj_im));
-			v2<float> object_center = o._position + o.size / 2;
+			if (dorc)
+				LOG_DEBUG(("stuck: map: %g, obj: %g", map_im, obj_im));
+			v2<float> object_center;
+			o.getCenterPosition(object_center);
 			v2<float> allowed_velocity;
 
 			if (map_im >= 1.0f) {
 				if (!o._latest_good_position.is0() && o._latest_good_position.convert<int>() != o._position.convert<int>()) {
 					o._position = o._latest_good_position.convert<float>();
+					o._latest_good_position.clear();
 					goto skip_collision;
 				} else o._latest_good_position.clear();
 				
@@ -861,7 +865,9 @@ TRY {
 				map_im = stuck_map_pos.prev_im / 100.0;
 
 				allowed_velocity.normalize();
-				//LOG_DEBUG(("map:allowed velocity = %g %g, map_im = %g, obj_im = %g", allowed_velocity.x, allowed_velocity.y, map_im, obj_im));
+
+				if (dorc)
+					LOG_DEBUG(("map:allowed velocity = %g %g, map_im = %g, obj_im = %g", allowed_velocity.x, allowed_velocity.y, map_im, obj_im));
 				//LOG_DEBUG(("map tile position : %d,%d, merged-x:%c, merged-y:%c", stuck_map_pos.position.x, stuck_map_pos.position.y, stuck_map_pos.merged_x?'+':'-', stuck_map_pos.merged_y?'+':'-'));
 				//o._position += allowed_velocity * o.speed * dt;
 				o._velocity = allowed_velocity;
@@ -877,15 +883,18 @@ TRY {
 					stuck_in = other_obj;
 				}
 				if (stuck_in->speed == 0) {
-					//LOG_DEBUG(("bow wow. stucking in solid object"));
+					//LOG_DEBUG(("stucking in solid object"));
 					if (!o._latest_good_position.is0() && o._latest_good_position.convert<int>() != o._position.convert<int>()) {
 						o._position = o._latest_good_position.convert<float>();
+						o._latest_good_position.clear();
 						goto skip_collision;
 					} else o._latest_good_position.clear();
 				}
 			
 				allowed_velocity = object_center - (stuck_in->_position + stuck_in->size/2);
-				//LOG_DEBUG(("allowed: %g %g", allowed_velocity.x, allowed_velocity.y));
+				if (dorc)
+					LOG_DEBUG(("stuck in object. allowed velocity: %g %g", allowed_velocity.x, allowed_velocity.y));
+	
 				if (allowed_velocity.same_sign(o._velocity) || allowed_velocity.is0()) {
 					//LOG_DEBUG(("stuck in object: %s, trespassing allowed!", stuck_in->classname.c_str()));
 					obj_im = map_im;
