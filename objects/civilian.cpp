@@ -30,6 +30,7 @@ public:
 	AICivilian() : Civilian("civilian") {}
 	void onSpawn() {
 		_pose = "walk";
+		disown();
 		Trooper::onSpawn();
 		_avoid_obstacles = false;
 		ai::Waypoints::onSpawn(this);
