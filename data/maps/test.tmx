@@ -1,150 +1,37 @@
 <?xml version="1.0"?>
 <map version="0.99b" orientation="orthogonal" width="16" height="16" tilewidth="64" tileheight="64">
- <properties>
-  <property name="object:static-dirt:dirt:112" value="@11,6"/>
-  <property name="object:static-dirt:dirt:111" value="@11,7"/>
-  <property name="object:static-dirt:dirt:110" value="@11,8"/>
-  <property name="object:static-dirt:dirt:109" value="@11,9"/>
-  <property name="object:static-dirt:dirt:108" value="@11,10"/>
-  <property name="object:static-dirt:dirt:107" value="@11,11"/>
-  <property name="object:static-dirt:dirt:106" value="@12,11"/>
-  <property name="object:static-dirt:dirt:105" value="@12,10"/>
-  <property name="object:static-dirt:dirt:104" value="@12,9"/>
-  <property name="object:static-dirt:dirt:103" value="@12,8"/>
-  <property name="object:static-dirt:dirt:102" value="@12,7"/>
-  <property name="object:static-dirt:dirt:101" value="@12,6"/>
-  <property name="object:helicopter:helicopter:2" value="778,722"/>
-  <property name="object:helicopter:helicopter:1" value="@1,1,900"/>
-  <property name="object:static-dirt:dirt:238" value="@13,12"/>
-  <property name="object:static-dirt:dirt:237" value="@12,12"/>
-  <property name="object:static-dirt:dirt:236" value="@11,12"/>
-  <property name="object:static-dirt:dirt:235" value="@1,11"/>
-  <property name="object:static-dirt:dirt:234" value="@1,12"/>
-  <property name="object:static-dirt:dirt:233" value="@2,12"/>
-  <property name="object:static-dirt:dirt:232" value="@2,11"/>
-  <property name="object:static-dirt:dirt:231" value="@1,10"/>
-  <property name="object:static-dirt:dirt:199" value="@4,11"/>
-  <property name="object:static-dirt:dirt:230" value="@1,9"/>
-  <property name="object:static-dirt:dirt:198" value="@4,10"/>
-  <property name="object:static-dirt:dirt:197" value="@4,9"/>
-  <property name="object:static-dirt:dirt:196" value="@4,8"/>
-  <property name="object:static-dirt:dirt:195" value="@4,7"/>
-  <property name="object:static-dirt:dirt:194" value="@4,6"/>
-  <property name="object:smoke-missiles-item:smoke-missiles-item:1" value="@0,3"/>
-  <property name="object:static-dirt:dirt:229" value="@1,8"/>
-  <property name="object:static-dirt:dirt:228" value="@1,7"/>
-  <property name="object:static-dirt:dirt:227" value="@1,6"/>
-  <property name="object:static-dirt:dirt:222" value="@2,12"/>
-  <property name="object:static-dirt:dirt:221" value="@2,11"/>
-  <property name="object:machinegunner-item:machinegunner-item:2" value="143,5"/>
-  <property name="object:static-dirt:dirt:189" value="@5,12"/>
-  <property name="object:static-dirt:dirt:220" value="@2,10"/>
-  <property name="object:machinegunner-item:machinegunner-item:1" value="271,8"/>
-  <property name="object:static-dirt:dirt:188" value="@5,11"/>
-  <property name="object:static-dirt:dirt:187" value="@5,10"/>
-  <property name="object:static-dirt:dirt:186" value="@5,9"/>
-  <property name="object:static-dirt:dirt:185" value="@5,8"/>
-  <property name="object:static-dirt:dirt:184" value="@5,7"/>
-  <property name="object:static-dirt:dirt:183" value="@5,6"/>
-  <property name="object:thrower-item:thrower-item:1" value="12,108"/>
-  <property name="object:watchtower-with-machinegunner:watchtower:100" value="@0,13"/>
-  <property name="object:cow:cow:8" value="123,541"/>
-  <property name="object:cow:cow:7" value="196,718"/>
-  <property name="object:static-dirt:dirt:219" value="@2,9"/>
-  <property name="object:cow:cow:6" value="243,582"/>
-  <property name="object:static-dirt:dirt:218" value="@2,8"/>
-  <property name="object:static-dirt:dirt:217" value="@2,7"/>
-  <property name="object:cow:cow:4" value="318,507"/>
-  <property name="object:static-dirt:dirt:216" value="@2,6"/>
-  <property name="object:cow:cow:3" value="166,567"/>
-  <property name="object:cow:cow:2" value="269,651"/>
-  <property name="object:cow:cow:1" value="307,592"/>
-  <property name="object:static-dirt:dirt:211" value="@3,12"/>
-  <property name="object:static-dirt:dirt:210" value="@3,11"/>
-  <property name="object:static-dirt:dirt:178" value="@6,12"/>
-  <property name="object:static-dirt:dirt:177" value="@6,11"/>
-  <property name="object:static-dirt:dirt:176" value="@6,10"/>
-  <property name="object:static-dirt:dirt:175" value="@6,9"/>
-  <property name="object:static-dirt:dirt:174" value="@6,8"/>
-  <property name="object:static-dirt:dirt:173" value="@6,7"/>
-  <property name="object:static-dirt:dirt:172" value="@6,6"/>
-  <property name="object:static-dirt:dirt:96" value="@13,11"/>
-  <property name="object:static-dirt:dirt:95" value="@13,10"/>
-  <property name="object:static-dirt:dirt:94" value="@13,9"/>
-  <property name="object:static-dirt:dirt:93" value="@13,8"/>
-  <property name="object:static-dirt:dirt:92" value="@13,6"/>
-  <property name="object:static-dirt:dirt:209" value="@3,10"/>
-  <property name="object:static-dirt:dirt:91" value="@13,7"/>
-  <property name="object:static-dirt:dirt:208" value="@3,9"/>
-  <property name="object:static-dirt:dirt:207" value="@3,8"/>
-  <property name="object:static-dirt:dirt:206" value="@3,7"/>
-  <property name="object:static-dirt:dirt:205" value="@3,6"/>
-  <property name="object:static-dirt:dirt:200" value="@4,12"/>
-  <property name="object:static-dirt:dirt:167" value="@7,12"/>
-  <property name="object:static-dirt:dirt:166" value="@8,12"/>
-  <property name="object:static-dirt:dirt:165" value="@8,11"/>
-  <property name="object:static-dirt:dirt:164" value="@7,11"/>
-  <property name="object:static-dirt:dirt:163" value="@7,10"/>
-  <property name="object:static-dirt:dirt:162" value="@7,9"/>
-  <property name="object:static-dirt:dirt:161" value="@7,8"/>
-  <property name="object:static-dirt:dirt:160" value="@7,7"/>
-  <property name="object:static-dirt:dirt:159" value="@7,6"/>
-  <property name="object:static-dirt:dirt:149" value="@8,7"/>
-  <property name="object:static-dirt:dirt:148" value="@8,8"/>
-  <property name="object:static-dirt:dirt:147" value="@8,12"/>
-  <property name="object:static-dirt:dirt:146" value="@8,11"/>
-  <property name="object:static-dirt:dirt:145" value="@8,10"/>
-  <property name="object:static-dirt:dirt:144" value="@8,9"/>
-  <property name="object:static-dirt:dirt:143" value="@8,8"/>
-  <property name="object:static-dirt:dirt:142" value="@8,6"/>
-  <property name="spawn:3" value="474,952"/>
-  <property name="spawn:2" value="454,91"/>
-  <property name="spawn:1" value="554,91"/>
-  <property name="object:static-dirt:dirt:134" value="@9,6"/>
-  <property name="object:static-dirt:dirt:133" value="@9,7"/>
-  <property name="object:static-dirt:dirt:132" value="@9,8"/>
-  <property name="object:static-dirt:dirt:131" value="@9,9"/>
-  <property name="object:static-dirt:dirt:130" value="@9,10"/>
-  <property name="zone:hint:start:1" value="422,59:@4,2"/>
-  <property name="object:zombie:zombie:5" value="788,962"/>
-  <property name="object:zombie:zombie:3" value="619,968"/>
-  <property name="object:zombie:zombie:2" value="782,896"/>
-  <property name="object:zombie:zombie:1" value="700,929"/>
-  <property name="object:static-dirt:dirt:129" value="@9,11"/>
-  <property name="object:static-dirt:dirt:128" value="@9,12"/>
-  <property name="object:static-dirt:dirt:127" value="@10,12"/>
-  <property name="object:static-dirt:dirt:126" value="@10,11"/>
-  <property name="object:static-dirt:dirt:125" value="@10,10"/>
-  <property name="object:static-dirt:dirt:124" value="@10,9"/>
-  <property name="object:static-dirt:dirt:123" value="@10,8"/>
-  <property name="object:static-dirt:dirt:122" value="@10,7"/>
-  <property name="object:static-dirt:dirt:121" value="@10,6"/>
- </properties>
- <tileset name="Untitled" firstgid="1" tilewidth="64" tileheight="64">
-  <image source="../tilesets/terrains.png"/>
- </tileset>
- <tileset name="animation" firstgid="211" tilewidth="64" tileheight="64">
-  <image source="../tilesets/animated.png"/>
- </tileset>
- <layer name="Layer 1" width="16" height="16">
-  <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGtkYGBoHMWjeBSPSAwAjk3/FgAEAAA=
-  </data>
-  <tileproperties/>
- </layer>
- <layer name="Layer 0" width="16" height="16">
-  <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAAtgIB/4A3HAqP5R/VTQH4EkHg6lw5DEkNnY9CdCzQDpTUITY0ASw6UfXT0+e7Hph9mLbgax+skB1NAPAD2k86sABAAA
-  </data>
-  <tileproperties/>
- </layer>
- <layer name="Layer 2" width="16" height="16">
-  <properties>
-   <property name="impassability" value="100"/>
-  </properties>
-  <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgoA3gwoLpqX8UjIJRQBgAAH/OKJoABAAA
-  </data>
-  <tileproperties/>
- </layer>
+	<properties>
+		<property name="object:barrier:barrier:1" value="359,208"/>
+		<property name="object:ricochet-bullets-item:ricochet-bullets-item:1" value="739,247"/>
+		<property name="spawn:1" value="554,91"/>
+		<property name="spawn:2" value="454,91"/>
+		<property name="spawn:3" value="474,952"/>
+	</properties>
+	<tileset name="terrains" firstgid="1" tilewidth="64" tileheight="64">
+		<image source="../tilesets/terrains.png"/>
+	</tileset>
+	<tileset name="animated" firstgid="231" tilewidth="64" tileheight="64">
+		<image source="../tilesets/animated.png"/>
+	</tileset>
+	<tileset name="fences" firstgid="391" tilewidth="64" tileheight="64">
+		<image source="../tilesets/fences.png"/>
+	</tileset>
+	<layer name="Layer 1" width="16" height="16">
+		<data encoding="base64" compression="gzip">
+			H4sIAAAAAAAAA2tkYGBoHMWjYTCaBkZkGgAAjk3/FgAEAAA=
+		</data>
+	</layer>
+	<layer name="Layer 0" width="16" height="16">
+		<data encoding="base64" compression="gzip">
+			H4sIAAAAAAAAAwtgIB/4A7UGkK+dYVT/aPjB0k8EUjoKh7LDkMSQ2TBh5PSTCBQEmQHSmwRVABMDcWFiyMkVPf0hq4epw2YvNvth9qKbQax+crIRNfIPAD2k86sABAAA
+		</data>
+	</layer>
+	<layer name="solid" width="16" height="16">
+		<properties>
+			<property name="impassability" value="100"/>
+		</properties>
+		<data encoding="base64" compression="gzip">
+			H4sIAAAAAAAAA2NgIB1MYETVsxnKvw2kicGz0PTvReMTctESHPaD9G0Dym1Hkkfng9Sgu59U+9HdD/M/IXfD5NHdj2z/DKDbZ2LByGajux8mtxuobw8QE6LR3U+su3G5n1T9o+oHTwgAAFSJPyAABAAA
+		</data>
+	</layer>
 </map>
