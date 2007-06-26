@@ -692,6 +692,8 @@ TRY {
 
 	float map_im = 0, obj_im = 0;
 	
+	GET_CONFIG_VALUE("engine.debug-stuck-resolution-code", bool, dorc, false);
+
 TRY {	
 	
 	int save_dir = o.getDirection();
@@ -745,11 +747,12 @@ TRY {
 	
 		if (ds || other_obj != NULL && o.classname == "player" && other_obj->classname == "player")
 			break;
-		/*
+
+		if (dorc)
 		LOG_DEBUG(("(%d:%d->%d:%d): (attempt %d) stuck: %s, map_im: %g, obj_im: %g, obj_im_now: %g", 
 				old_pos.x, old_pos.y, (int)pos.x, (int)pos.y, attempt,
 				stuck?"true":"false", map_im, obj_im, obj_im_now));
-		*/
+		
 	}
 	
 	if (attempt == 1) {
@@ -761,6 +764,8 @@ TRY {
 	} else {
 		o.setDirection(save_dir);
 		hidden = hidden_attempt[0];
+		if (attempt >= 3) 
+			stuck = true;
 	}
 
 	result_im = math::max(map_im, obj_im);
@@ -804,7 +809,6 @@ TRY {
 } CATCH("tick(damaging map)", throw;)	
 
 TRY {
-	GET_CONFIG_VALUE("engine.debug-stuck-resolution-code", bool, dorc, false);
 	if (!PlayerManager->isClient() && stuck) {
 			if (dorc)
 				LOG_DEBUG(("stuck: map: %g, obj: %g", map_im, obj_im));
@@ -818,6 +822,13 @@ TRY {
 					o._latest_good_position.clear();
 					goto skip_collision;
 				} else o._latest_good_position.clear();
+				
+				o.getCenterPosition(o._velocity_fadeout);
+				o._velocity_fadeout -= stuck_map_pos.position.convert<float>();
+				o._velocity_fadeout.normalize();
+	
+				if (dorc)
+					LOG_DEBUG(("appending velocity: %g %g", o._velocity_fadeout.x, o._velocity_fadeout.y));
 				
 				v2<int> map_tile_size = Map->getPathTileSize();
 				const Matrix<int> &matrix = o.getImpassabilityMatrix();
@@ -886,7 +897,7 @@ TRY {
 					//LOG_DEBUG(("stucking in solid object"));
 					if (!o._latest_good_position.is0() && o._latest_good_position.convert<int>() != o._position.convert<int>()) {
 						o._position = o._latest_good_position.convert<float>();
-						o._latest_good_position.clear();
+						//o._latest_good_position.clear();
 						goto skip_collision;
 					} else o._latest_good_position.clear();
 				}
