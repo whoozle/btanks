@@ -70,6 +70,9 @@ void Train::onSpawn() {
 	v2<int> map_size = Map->getSize();
 	dst_y = map_size.y - (int)(size.y) / 2 - 4; //fixme. :)
 	disown();
+
+	if (!_variants.has("standing"))
+		_state.down = true;
 }
 
 void Train::emit(const std::string &event, Object * emitter) {
@@ -102,7 +105,6 @@ void Train::tick(const float dt) {
 }
 
 void Train::calculate(const float dt) {
-	_state.down = true;
 	Object::calculate(dt);
 }
 
