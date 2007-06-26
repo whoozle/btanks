@@ -810,6 +810,7 @@ TRY {
 
 TRY {
 	if (stuck && !PlayerManager->isClient()) {
+			assert(!o.piercing);
 			if (dorc)
 				LOG_DEBUG(("stuck: map: %g, obj: %g", map_im, obj_im));
 			v2<float> object_center;
