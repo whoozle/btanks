@@ -668,7 +668,7 @@ TRY {
 	IMap::TilePosition stuck_map_pos;
 
 	float map_im_now = o.piercing?0:(map.getImpassability(&o, old_pos, &stuck_map_pos) / 100.0f);
-	float obj_im_now = o.piercing?0:getImpassability(&o, old_pos, &stuck_in);
+	float obj_im_now = o.piercing?0:getImpassability(&o, old_pos, &stuck_in, true);
 	float result_im = math::max(map_im_now, obj_im_now);
 	v2<float> dpos = o.speed * o._velocity * dt * (1.0f - result_im);
 
@@ -725,7 +725,7 @@ TRY {
 			//	o.animation.c_str(), attempt, dir, save_dir, dirs ));
 		} 
 		
-		map_im = map.getImpassability(&o, pos, NULL, has_outline?(hidden_attempt + attempt):NULL) / 100.0;
+		map_im = map.getImpassability(&o, pos, NULL, has_outline?(hidden_attempt + attempt):NULL) / 100.0f;
 		obj_im = getImpassability(&o, pos, &other_obj, attempt > 0);  //make sure no cached collision event reported here
 		GET_CONFIG_VALUE("engine.no-clip", bool, no_clip, false);
 		if (no_clip) {
