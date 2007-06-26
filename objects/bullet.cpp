@@ -230,7 +230,8 @@ void Bullet::emit(const std::string &event, Object * emitter) {
 			int z = (_velocity.y >= 0) ? edzo : 0;
 			spawn("explosion", "explosion", dpos, v2<float>(), z);			
 		}
-		Object::emit(event, emitter);
+		if (event != "death")
+			Object::emit(event, emitter);
 		Object::emit("death", emitter);
 	} else Object::emit(event, emitter);
 }
