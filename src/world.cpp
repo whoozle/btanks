@@ -1001,22 +1001,12 @@ void IWorld::tick(ObjectMap &objects, const float dt, const bool do_calculate) {
 		return;
 	}
 
-	for(ObjectMap::iterator i = objects.begin(); i != objects.end(); ) {
+	for(ObjectMap::iterator i = objects.begin(); i != objects.end(); ++i) {
 		Object *o = i->second;
 		assert(o != NULL);
 		TRY {
 			tick(*o, dt, do_calculate);
 		} CATCH(mrt::formatString("tick for object[%p] id:%d %s:%s:%s", (void *)o, o->getID(), o->registered_name.c_str(), o->classname.c_str(), o->animation.c_str()).c_str(), throw;);
-		if (o->isDead()) { //fixme
-			if (_safe_mode == false) {
-				//LOG_DEBUG(("object %d:%s is dead. cleaning up. (global map: %s)", o->getID(), o->classname.c_str(), &objects == &_objects?"true":"false" ));
-				deleteObject(o);
-				o = NULL;
-				objects.erase(i++);
-				continue;
-			}
-		} 
-		++i;
 	}
 	purge();
 }
@@ -1028,14 +1018,26 @@ void IWorld::purge() {
 void IWorld::purge(ObjectMap &objects) {
 	for(ObjectMap::iterator i = objects.begin(); i != objects.end(); ) {
 		Object *o = i->second;
+
+		if (o->isDead()) { //fixme
+			if (_safe_mode == false) {
+				//LOG_DEBUG(("object %d:%s is dead. cleaning up. (global map: %s)", o->getID(), o->classname.c_str(), &objects == &_objects?"true":"false" ));
+				deleteObject(o);
+				o = NULL;
+				objects.erase(i++);
+				continue;
+			}
+		}
+
 		const int f = o->_follow;
+
 		if (f == 0) {
 			++i;
 			continue;
 		}
 		
 		ObjectMap::const_iterator o_i = _objects.find(f);
-		if (o_i != _objects.end()) {
+		if (o_i != _objects.end() && !o_i->second->isDead()) {
 			const Object *leader = o_i->second;
 			//LOG_DEBUG(("following %d...", f));
 			o->_position = leader->_position + o->_follow_position;
