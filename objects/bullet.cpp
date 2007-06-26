@@ -26,7 +26,8 @@
 
 class Bullet : public Object {
 public:
-	Bullet(const std::string &type, const int dirs) : Object("bullet"), _type(type), _clone(false) {
+	Bullet(const std::string &type, const int dirs) : 
+	Object("bullet"), _type(type), _clone(false), _guard_interval(false), _guard_state(false) {
 		impassability = 1;
 		piercing = true;
 		setDirectionsNumber(dirs);
@@ -41,19 +42,24 @@ public:
 		Object::serialize(s);
 		s.add(_type);
 		s.add(_clone);
+		s.add(_guard_interval);
 		s.add(_vel_backup);
 	}
 	virtual void deserialize(const mrt::Serializator &s) {
 		Object::deserialize(s);
 		s.get(_type);
 		s.get(_clone);
+		s.get(_guard_interval);
 		s.get(_vel_backup);
 	}
 
 private: 
 	std::string _type;
-	Alarm _clone;
+	Alarm _clone, _guard_interval;
 	v2<float> _vel_backup;
+	
+	//do not serialize it
+	bool _guard_state;
 };
 
 void Bullet::tick(const float dt) {
@@ -77,6 +83,8 @@ void Bullet::tick(const float dt) {
 			b = spawn(registered_name + "(no-sound)", animation, v2<float>(), vel);
 			b->ttl = ttl * ttl_m;
 		}
+	} else if (_type == "ricochet") {
+		_guard_state = _guard_interval.tick(dt);
 	}
 }
 
@@ -137,6 +145,10 @@ void Bullet::calculate(const float dt) {
 }
 
 void Bullet::onSpawn() {
+	if (_type == "ricochet") {
+		GET_CONFIG_VALUE("objects.ricochet.guard-interval", float, gi, 0.1f);
+		_guard_interval.set(gi);
+	}
 	if (_type == "dispersion") {
 		_variants.remove("auto-aim"); //no auto aim! 
 		GET_CONFIG_VALUE("objects.dispersion-bullet.clone-interval", float, ci, 0.1f);
@@ -179,21 +191,28 @@ void Bullet::emit(const std::string &event, Object * emitter) {
 		} else if (_type == "mortar") {
 			spawn("mortar-explosion", "mortar-explosion", dpos);
 		} else if (event == "collision" && _type == "ricochet" && (emitter == NULL || emitter->hp == -1)) {
+			if (!_guard_state)
+				return;	
+			
+			_guard_interval.reset();
 			const int dirs = getDirectionsNumber();
 			if (dirs != 16) 
 				throw_ex(("%d-directional ricochet not supported yet.", dirs));
+			LOG_DEBUG(("ricocheting..."));
 			
 			//disown(); //BWAHAHHAHA!!!! 
 			
 			int dir = getDirection();
 
-			int sign = (mrt::random(100) & 1) ? 1:-1;
+			int sign = (mrt::random(103) % 3) - 1;
 			int d = sign * (mrt::random(dirs/4 - 1) + 1) ;
-			dir = ( dir + d + dirs) % dirs;
+			dir = ( dir + d + dirs + dirs / 2) % dirs;
 			
 			setDirection(dir);
 			_velocity.fromDirection(dir, dirs);
-			Object::emit(event, emitter);
+			_direction = _velocity;
+			_vel_backup = _velocity;
+			//LOG_DEBUG(("new velocity: %g %g", _velocity.x, _velocity.y));
 			return;
 		} else if (event == "collision" && ( 
 			(_type == "ricochet" && emitter != NULL ) ||
