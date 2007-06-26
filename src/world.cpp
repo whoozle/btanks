@@ -668,8 +668,8 @@ TRY {
 	const Object *stuck_in = NULL;
 	IMap::TilePosition stuck_map_pos;
 
-	float map_im_now = map.getImpassability(&o, old_pos, &stuck_map_pos) / 100.0f;
-	float obj_im_now = getImpassability(&o, old_pos, &stuck_in);
+	float map_im_now = o.piercing?0:map.getImpassability(&o, old_pos, &stuck_map_pos) / 100.0f;
+	float obj_im_now = o.piercing?0:getImpassability(&o, old_pos, &stuck_in);
 	float result_im = math::max(map_im_now, obj_im_now);
 	dpos *= (1.0f - result_im);
 
@@ -768,7 +768,7 @@ TRY {
 			stuck = true;
 	}
 
-	result_im = math::max(map_im, obj_im);
+	result_im = (o.piercing)?0: math::max(map_im, obj_im);
 	dpos = o.speed * (1.0f - result_im) * o._velocity * dt;
 
 } CATCH(
@@ -798,7 +798,8 @@ TRY {
 TRY {
 	if (o.piercing) {
 		//if (obj_im_now > 0 && obj_im_now < 1.0)
-		if (map_im >= 1.0) {
+		stuck = false;
+		if (map_im >= 1.0f) {
 			o._position += dpos * 4; //terrible terrible terrible hack !!! fix it ASAP
 			Map->damage(o._position + o.size / 2, o.max_hp);
 			o.emit("collision", NULL); //fixme: emit collisions with map from map::getImpassability
