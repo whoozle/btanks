@@ -663,25 +663,26 @@ TRY {
 
 	//LOG_DEBUG(("im = %f", im));
 	v2<int> old_pos = o._position.convert<int>();
-	v2<float> dpos = o.speed * o._velocity * dt;
 
 	const Object *stuck_in = NULL;
 	IMap::TilePosition stuck_map_pos;
 
-	float map_im_now = o.piercing?0:map.getImpassability(&o, old_pos, &stuck_map_pos) / 100.0f;
+	float map_im_now = o.piercing?0:(map.getImpassability(&o, old_pos, &stuck_map_pos) / 100.0f);
 	float obj_im_now = o.piercing?0:getImpassability(&o, old_pos, &stuck_in);
 	float result_im = math::max(map_im_now, obj_im_now);
-	dpos *= (1.0f - result_im);
+	v2<float> dpos = o.speed * o._velocity * dt * (1.0f - result_im);
 
 	bool stuck = result_im >= 1.0f;
 
 	v2<int> new_pos = (o._position + dpos).convert<int>();
 
+/*
+	DOUBLE CHECK IT
 	if (!stuck && new_pos == old_pos) {
 		o._position += dpos;
 		return;
 	}
-
+*/
 	bool has_outline = false;
 	bool hidden = false;
 	std::string outline_animation;
@@ -708,7 +709,10 @@ TRY {
 
 	for(attempt =0; attempt < 3; ++attempt) {
 		v2<int> pos;
-		if (attempt > 0) {
+		if (attempt == 0) {
+			pos = new_pos;
+			new_velocity = o._velocity;
+		} else { 
 			int dir = save_dir;
 			dir = (dir + ((attempt == 1)?-1:1) + dirs ) % dirs;
 			
@@ -719,10 +723,7 @@ TRY {
 			o.setDirection(dir);
 			//LOG_DEBUG(("%s: %d:trying %d (original: %d, dirs: %d)", 
 			//	o.animation.c_str(), attempt, dir, save_dir, dirs ));
-		} else {
-			pos = new_pos;
-			new_velocity = o._velocity;
-		}
+		} 
 		
 		map_im = map.getImpassability(&o, pos, NULL, has_outline?(hidden_attempt + attempt):NULL) / 100.0;
 		obj_im = getImpassability(&o, pos, &other_obj, attempt > 0);  //make sure no cached collision event reported here
