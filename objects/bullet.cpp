@@ -27,7 +27,7 @@
 class Bullet : public Object {
 public:
 	Bullet(const std::string &type, const int dirs) : 
-	Object("bullet"), _type(type), _clone(false), _guard_interval(false), _guard_state(false) {
+	Object("bullet"), _type(type), _clone(false), _guard_interval(false), _guard_state(true) {
 		impassability = 1;
 		piercing = true;
 		setDirectionsNumber(dirs);
@@ -84,7 +84,8 @@ void Bullet::tick(const float dt) {
 			b->ttl = ttl * ttl_m;
 		}
 	} else if (_type == "ricochet") {
-		_guard_state = _guard_interval.tick(dt);
+		if (_guard_interval.tick(dt))
+			_guard_state = true;
 	}
 }
 
@@ -193,12 +194,14 @@ void Bullet::emit(const std::string &event, Object * emitter) {
 		} else if (event == "collision" && _type == "ricochet" && (emitter == NULL || emitter->hp == -1)) {
 			if (!_guard_state)
 				return;	
-			
+
+			_guard_state = false;
 			_guard_interval.reset();
+
 			const int dirs = getDirectionsNumber();
 			if (dirs != 16) 
 				throw_ex(("%d-directional ricochet not supported yet.", dirs));
-			LOG_DEBUG(("ricocheting..."));
+			//LOG_DEBUG(("ricocheting..."));
 			
 			//disown(); //BWAHAHHAHA!!!! 
 			
@@ -212,6 +215,10 @@ void Bullet::emit(const std::string &event, Object * emitter) {
 			_velocity.fromDirection(dir, dirs);
 			_direction = _velocity;
 			_vel_backup = _velocity;
+
+			//GET_CONFIG_VALUE("objects.explosion-downwards-z-override", int, edzo, 180);
+			//int z = (_velocity.y >= 0) ? edzo : 0;
+			//spawn("explosion", "explosion", dpos, v2<float>(), z);
 			//LOG_DEBUG(("new velocity: %g %g", _velocity.x, _velocity.y));
 			return;
 		} else if (event == "collision" && ( 
