@@ -1629,8 +1629,8 @@ const bool IWorld::detachVehicle(Object *object) {
 
 	//object->disown();
 
-	//int old_id = object->getID();
-	//replaceID(old_id, new_id);
+	int old_id = object->getID();
+	replaceID(old_id, new_id);
 	man->prependOwner(OWNER_COOPERATIVE);
 	object->prependOwner(OWNER_COOPERATIVE);
 	
