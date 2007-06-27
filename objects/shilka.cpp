@@ -238,5 +238,4 @@ void Shilka::deserialize(const mrt::Serializator &s) {
 	s.get(_left_fire);
 }
 
-REGISTER_OBJECT("shilka", Shilka, ("fighting-vehicle"));
 REGISTER_OBJECT("static-shilka", Shilka, ("vehicle"));

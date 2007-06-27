@@ -164,5 +164,4 @@ void Tank::deserialize(const mrt::Serializator &s) {
 	s.get(_fire);
 }
 
-REGISTER_OBJECT("tank", Tank, ("fighting-vehicle"));
 REGISTER_OBJECT("static-tank", Tank, ("vehicle"));

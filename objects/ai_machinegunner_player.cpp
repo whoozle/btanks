@@ -95,4 +95,4 @@ void AIMachinegunnerPlayer::calculate(const float dt) {
 	updateStateFromVelocity();	
 }
 
-REGISTER_OBJECT("machinegunner", AIMachinegunnerPlayer, ());
+//REGISTER_OBJECT("machinegunner", AIMachinegunnerPlayer, ());

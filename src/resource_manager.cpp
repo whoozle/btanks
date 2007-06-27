@@ -338,7 +338,10 @@ void IResourceManager::registerObject(const std::string &classname, Object *o) {
 	*const_cast<std::string *>(&o->registered_name) = classname;
 	assert(!o->registered_name.empty());
 	
-	delete _objects[classname];
+	Object *old = _objects[classname];
+	if (old != NULL) 
+		LOG_DEBUG(("overriding object %s", classname.c_str()));
+	delete old;
 	_objects[classname] = o;
 	//LOG_DEBUG(("classname %s registered at %p", classname.c_str(), (void*)o));
 }

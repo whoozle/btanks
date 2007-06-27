@@ -149,5 +149,4 @@ void Launcher::deserialize(const mrt::Serializator &s) {
 	s.get(_fire);
 }
 
-REGISTER_OBJECT("launcher", Launcher, ("fighting-vehicle"));
 REGISTER_OBJECT("static-launcher", Launcher, ("vehicle"));

@@ -42,7 +42,7 @@ void Item::addDamage(Object *from, const int hp, const bool emitDeath) {
 
 void Item::emit(const std::string &event, Object * emitter) {
 	if (event == "collision") {
-		if (emitter == NULL || emitter->classname != "fighting-vehicle")
+		if (emitter == NULL)
 			return;
 		
 		if (!emitter->take(this, type)) {
