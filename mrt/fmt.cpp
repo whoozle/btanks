@@ -133,16 +133,16 @@ void mrt::replace(std::string &str, const std::string &from, const std::string &
 	if (from.empty())
 		throw_ex(("replace string must not be empty"));
 	
-	std::string::size_type pos = 0, p;
+	std::string::size_type pos = 0;
 	size_t n = limit;
 
 	while(pos < str.size()) {
-		p = str.find(from, pos);
-		if (p == str.npos) 
+		pos = str.find(from, pos);
+		if (pos == str.npos) 
 			break;
 	
 		str.replace(pos, from.size(), to);
-		pos += from.size() - to.size();
+		pos += from.size() - to.size() + 1;
 	
 		if (n > 0) {
 			if (--n == 0) {
