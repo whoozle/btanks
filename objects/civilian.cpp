@@ -20,26 +20,82 @@
 #include "resource_manager.h"
 #include "ai/waypoints.h"
 
-class Civilian : public Trooper, public ai::Waypoints {
+class Civilian : public Trooper {
 public: 
 	Civilian(const std::string &classname) : Trooper(classname, std::string()) {} 
 };
 
-class AICivilian : public Civilian {
+class AICivilian : public Civilian, public ai::Waypoints  {
 public: 
-	AICivilian() : Civilian("civilian") {}
+	AICivilian() : Civilian("civilian"), _thinking_timer(true), _guard_timer(false), _thinking(false), _guard(false) {}
 	void onSpawn() {
+		//GET_CONFIG_VALUE("object.civilian.thinking-duration", float, td, 3.0f);
+		_thinking_timer.set(3.0f);
+		_guard_timer.set(2.0f);
+	
 		_pose = "walk";
 		disown();
+
 		Trooper::onSpawn();
-		_avoid_obstacles = false;
+
+		_avoid_obstacles = true;
+		_stop_on_obstacle = false;
+		
 		ai::Waypoints::onSpawn(this);
 	}
+	void tick(const float dt) {
+		if (_thinking) {
+			if (getState() != "thinking") {
+				cancelAll();
+				play("thinking", true);
+				LOG_DEBUG(("playing thinking..."));
+			}
+		} else Trooper::tick(dt);
+	}
+	
 	void calculate(const float dt) {
-		ai::Waypoints::calculate(this, dt);
+		if (_thinking_timer.tick(dt)) { 
+			_thinking = false;
+			_guard_timer.reset();
+			_guard = true;
+			LOG_DEBUG(("stop thinking, guard interval signalled"));
+		}
+		
+		if (_guard_timer.tick(dt))
+			_guard = false;
+		
+		if (_thinking) {
+			_velocity.clear();
+		} else {
+			ai::Waypoints::calculate(this, dt);
+			if (_guard) {
+				_velocity.normalize();
+				int dir = getDirection(), dirs = getDirectionsNumber();
+				if (dir >= 0) {
+					v2<float> dv; 
+					dv.fromDirection((dir - 1 + dirs) % dirs, dirs);
+					_velocity += dv / 2;
+				}
+			}
+		}
 		updateStateFromVelocity();
 	}
+
+	virtual void onObstacle(const Object *o) {
+		if (_guard)
+			return;
+		LOG_DEBUG(("%d:%s: obstacle %s", getID(), animation.c_str(), o->animation.c_str()));
+		_thinking = true;
+		_thinking_timer.reset();
+
+		int dirs = getDirectionsNumber();
+		setDirection(getRelativePosition(o).getDirection(dirs));
+	}
+
 	Object *clone() const { return new AICivilian(*this); }
+private: 
+	Alarm _thinking_timer, _guard_timer;
+	bool _thinking, _guard;
 };
 
 REGISTER_OBJECT("civilian-player", Civilian, ("player"));

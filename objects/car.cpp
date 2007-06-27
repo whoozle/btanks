@@ -112,7 +112,8 @@ public:
 	virtual Object * clone() const {return new AICar(*this);}
 	virtual void onSpawn();
 
-	virtual void onObstacle(const int idx);	
+private:
+	virtual void onObstacle(const Object *o);	
 };
 
 void AICar::onSpawn() {
@@ -132,7 +133,7 @@ void AICar::onSpawn() {
 }
 
 
-void AICar::onObstacle(const int idx) {
+void AICar::onObstacle(const Object *o) {
 /*
 	if ((idx % 21) == 1) { //approx once per 5 second
 		playRandomSound("klaxon", false);

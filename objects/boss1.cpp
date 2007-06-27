@@ -68,7 +68,7 @@ protected:
 
 private: 
 	const int getTargetPosition2(const std::set<std::string> &targets, const std::string &weapon) const;
-
+	virtual void onObstacle(const Object *o) {}
 
 	Alarm _reaction;
 	Alarm _fire, _alt_fire;
