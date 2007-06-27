@@ -149,16 +149,15 @@ void Object::setDirectionsNumber(const int dirs) {
 }
 
 void Object::quantizeVelocity() {
-	int dir;
 	_velocity.normalize();
 	if (_directions_n == 8) {
 		_velocity.quantize8();
-		dir = _velocity.getDirection8();
+		setDirection(_velocity.getDirection8() - 1);
 	} else if (_directions_n == 16) {
 		_velocity.quantize16();
-		dir = _velocity.getDirection16();	
-	} else throw_ex(("%s:%s cannot handle %d directions", registered_name.c_str(), animation.c_str(), _directions_n));
-	setDirection(dir - 1);
+		setDirection(_velocity.getDirection16() - 1);
+	} //else throw_ex(("%s:%s cannot handle %d directions", registered_name.c_str(), animation.c_str(), _directions_n));
+	//redesign this ^^ 
 }
 
 
@@ -853,7 +852,7 @@ void Object::calculate(const float dt) {
 	if (_state.up) _velocity.y -= 1;
 	if (_state.down) _velocity.y += 1;
 	
-	_velocity.normalize();
+	quantizeVelocity();
 }
 
 
