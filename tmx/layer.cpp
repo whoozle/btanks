@@ -32,6 +32,7 @@
 #include "mrt/random.h"
 #include "mrt/gzip.h"
 #include "mrt/b64.h"
+#include "mrt/xml.h"
 
 void ChainedDestructableLayer::onDeath(const int idx) {
 	DestructableLayer::onDeath(idx);
@@ -337,12 +338,12 @@ void Layer::deserialize(const mrt::Serializator &s) {
 Layer::~Layer() { }
 
 void Layer::generateXML(std::string &result) const {
-	result = mrt::formatString("\t<layer name=\"%s\" width=\"%d\" height=\"%d\"%s>\n", name.c_str(), _w, _h, visible?"":" visible=\"0\"");
+	result = mrt::formatString("\t<layer name=\"%s\" width=\"%d\" height=\"%d\"%s>\n", mrt::XMLParser::escape(name).c_str(), _w, _h, visible?"":" visible=\"0\"");
 
 	if (!properties.empty()) {
 		result += "\t\t<properties>\n";
 		for(PropertyMap::const_iterator i = properties.begin(); i != properties.end(); ++i) {
-			result += mrt::formatString("\t\t\t<property name=\"%s\" value=\"%s\"/>\n", i->first.c_str(), i->second.c_str());
+			result += mrt::formatString("\t\t\t<property name=\"%s\" value=\"%s\"/>\n", mrt::XMLParser::escape(i->first).c_str(), mrt::XMLParser::escape(i->second).c_str());
 		}
 		result += "\t\t</properties>\n";
 	}
