@@ -892,9 +892,11 @@ TRY {
 				goto skip_collision;
 			} else if (obj_im >= 1.0) {
 				if (stuck_in == NULL) {
-					LOG_WARN(("%d:%s:%s: stuck_in returned 'NULL', other_obj: %s (map_im = %g)", o.getID(), o.registered_name.c_str(), o.animation.c_str(), other_obj?other_obj->registered_name.c_str():"NULL", map_im));
-					if (other_obj == NULL)
+					if (dorc)
+						LOG_WARN(("%d:%s:%s: stuck_in returned 'NULL', other_obj: %s (map_im = %g)", o.getID(), o.registered_name.c_str(), o.animation.c_str(), other_obj?other_obj->registered_name.c_str():"NULL", map_im));
+					if (other_obj == NULL) {
 						goto skip_collision;
+					}
 
 					stuck_in = other_obj;
 				}
