@@ -151,3 +151,13 @@ const XMLParser& XMLParser::operator=(const XMLParser &) {
 	clear();
 	return *this;
 }
+
+const std::string XMLParser::escape(const std::string &str) {
+	std::string result;
+	mrt::replace(result, "&", "&amp;");
+	mrt::replace(result, "<", "&lt;");
+	mrt::replace(result, ">", "&gt;");
+	mrt::replace(result, "\"", "&quot;");
+	mrt::replace(result, "'", "&#39;");
+	return result;
+}

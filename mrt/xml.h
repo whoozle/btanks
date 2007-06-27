@@ -47,6 +47,8 @@ public:
 
 	XMLParser(const XMLParser &);
 	const XMLParser& operator=(const XMLParser &);
+	
+	static const std::string escape(const std::string &str);
 
 private:
 	const std::string getErrorMessage() const;
