@@ -74,4 +74,3 @@ Object* Heli::clone() const  {
 	return new Heli(*this);
 }
 
-REGISTER_OBJECT("helicopter-player", Heli, ("helicopter"));

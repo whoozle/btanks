@@ -82,6 +82,3 @@ void Trooper::emit(const std::string &event, Object * emitter) {
 Object* Trooper::clone() const  {
 	return new Trooper(*this);
 }
-
-
-REGISTER_OBJECT("machinegunner-player", Trooper, ("trooper", "machinegunner-bullet"));

@@ -196,4 +196,3 @@ Object* Zombie::clone() const  {
 }
 
 REGISTER_OBJECT("zombie", Zombie, ("monster"));
-REGISTER_OBJECT("zombie-player", BaseZombie, ("monster"));

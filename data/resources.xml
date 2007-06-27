@@ -465,7 +465,7 @@
 	<animation id="static-shilka-outline" tile="shilka_outline.png" model="single-tile" />
 	<animation id="static-launcher-outline" tile="launcher_outline.png" model="single-tile" />
 	<animation id="static-mortar-outline" tile="mortar_outline.png" model="single-tile" />
-	<animation id="machinegunner-player-outline" tile="machinegunner_outline.png" model="single-tile" />
+	<animation id="machinegunner-outline" tile="machinegunner_outline.png" model="single-tile" />
 
 	<animation id="red-car" tile="car01.png" model="car-animation"/>
 	<animation id="cyan-car" tile="car02.png" model="car-animation"/>
@@ -742,11 +742,9 @@
 	<object class="kamikaze" hp="5" speed="70" mass="80" z="0" />
 	<object class="machinegunner" hp="10" speed="100" mass="85" z="-1" />
 	<object class="machinegunner-in-watchtower" impassability="0" parent="machinegunner" z="205" ttl="0" />
-	<object class="machinegunner-player" hp="20" speed="200" mass="75" z="-1" />
 	<object class="thrower" hp="10" speed="100" mass="85" z="-1" ttl="0" />
 	<object class="thrower-in-watchtower" impassability="0" parent="thrower" z="205" ttl="0" />
 	<object class="civilian" hp="20" speed="100" mass="75" z="-1" />
-	<object class="civilian-player" parent="civilian" speed="150" />
 	<object class="car" hp="20" speed="200" mass="500" />
 	<object class="static-car" parent="car" />
 	<object class="outline" impassability="0" />
