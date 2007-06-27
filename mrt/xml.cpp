@@ -158,6 +158,6 @@ const std::string XMLParser::escape(const std::string &str) {
 	mrt::replace(result, "<", "&lt;");
 	mrt::replace(result, ">", "&gt;");
 	mrt::replace(result, "\"", "&quot;");
-	mrt::replace(result, "'", "&#39;");
+	mrt::replace(result, "'", "&apos;");
 	return result;
 }
