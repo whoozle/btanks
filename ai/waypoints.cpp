@@ -8,7 +8,7 @@
 
 using namespace ai;
 
-Waypoints::Waypoints() : _avoid_obstacles(false), _reaction_time(true), _stop(false), _obstacle(0) {}
+Waypoints::Waypoints() : _avoid_obstacles(false), _stop_on_obstacle(true), _reaction_time(true), _stop(false), _obstacle(0) {}
 
 const bool Waypoints::active() const {
 	return !PlayerManager->isClient();
@@ -35,22 +35,20 @@ void Waypoints::calculate(Object *object, const float dt) {
 			int odir = dpos.getDirection(object->getDirectionsNumber()) - 1;
 			//LOG_DEBUG(("%s: (%g %g)dir = %d, my_dir = %d", animation.c_str(), dpos.x, dpos.y, odir, getDirection()));
 			if (odir == object->getDirection()) {
-				if (_obstacle == 0)
-					_obstacle = 1; //keep obstacle value incrementing
+				_obstacle = *i;
 				object->_velocity.clear();
 				break;
 			}
 		}
 		if (i == objs.end())
-			_obstacle = 0;
+			_obstacle = NULL;
 		
 		if (_obstacle) {
 			onObstacle(_obstacle);
-			++_obstacle;
 		}
 	}
 	
-	if (_obstacle) {
+	if (_obstacle && _stop_on_obstacle) {
 		object->_velocity.clear();
 		return;
 	}
@@ -107,16 +105,3 @@ void Waypoints::onSpawn(const Object *object) {
 	_obstacle = 0;
 }
 
-void Waypoints::serialize(mrt::Serializator &s) const {
-	s.add(_reaction_time);
-	s.add(_waypoint_name);
-	s.add(_stop);
-	s.add(_obstacle);
-}
-
-void Waypoints::deserialize(const mrt::Serializator &s) {
-	s.get(_reaction_time);
-	s.get(_waypoint_name);
-	s.get(_stop);
-	s.get(_obstacle);
-}	

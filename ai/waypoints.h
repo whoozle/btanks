@@ -17,9 +17,7 @@ public:
 	virtual void onSpawn(const Object *object);
 	void calculate(Object *object, const float dt);
 
-	virtual void serialize(mrt::Serializator &s) const;
-	virtual void deserialize(const mrt::Serializator &s);
-	virtual void onObstacle(const int idx) {}
+	virtual void onObstacle(const Object *o) = 0;
 
 	virtual ~Waypoints() {}
 	
@@ -27,12 +25,13 @@ public:
 protected:
 	//std::set<std::string> obstacle_filter;
 	bool _avoid_obstacles;
+	bool _stop_on_obstacle;
 	
 private: 
 	Alarm _reaction_time;
 	bool _stop;
 	std::string _waypoint_name;
-	int _obstacle;	
+	const Object * _obstacle;
 };
 
 }
