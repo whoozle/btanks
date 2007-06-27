@@ -65,6 +65,7 @@ void BaseObject::serialize(mrt::Serializator &s) const {
 	s.add(piercing);
 	s.add(pierceable);
 	s.add(classname);
+	s.add(disable_ai);
 	
 	s.add(_follow);
 	_follow_position.serialize(s);
@@ -102,6 +103,7 @@ void BaseObject::deserialize(const mrt::Serializator &s) {
 	s.get(piercing);
 	s.get(pierceable);
 	s.get(classname);
+	s.get(disable_ai);
 	
 	s.get(_follow);
 	_follow_position.deserialize(s);
