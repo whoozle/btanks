@@ -18,7 +18,7 @@
 		<property name="config:map.thrower.respawn-interval" value="int:10000"/>
 		<property name="config:multiplayer.game-type" value="string:cooperative"/>
 		<property name="config:multiplayer.restrict-start-animation" value="string:machinegunner"/>
-		<property name="config:multiplayer.restrict-start-vehicle" value="string:machinegunner-player"/>
+		<property name="config:multiplayer.restrict-start-vehicle" value="string:machinegunner"/>
 		<property name="config:objects.nuke-missiles-on-launcher.capacity" value="int:2"/>
 		<property name="config:objects.nuke-missiles-on-tank.capacity" value="int:1"/>
 		<property name="config:objects.shilka.dispersion.duration" value="float:10000"/>

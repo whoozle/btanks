@@ -88,8 +88,8 @@ JoinServerMenu::JoinServerMenu(MainMenu *parent, const int w, const int h) : _pa
 	options.push_back("launcher");
 	options.push_back("shilka");
 	options.push_back("tank");
-	options.push_back("machinegunner-player");
-	options.push_back("civilian-player");
+	options.push_back("machinegunner");
+	options.push_back("civilian");
 		
 	_vehicle = new Chooser("medium", options, "menu/vehicles.png");
 	_vehicle->disable(0);
