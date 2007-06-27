@@ -25,7 +25,7 @@
 
 class AITank:  public Tank, public ai::Base {
 public: 
-	AITank() : Tank("player") {}
+	AITank() : Tank("fighting-vehicle") {}
 //	~AITank();
 	virtual void onSpawn();
 	virtual void calculate(const float dt);
@@ -69,7 +69,7 @@ const int AITank::getWeaponAmount(const int idx) const{
 
 
 void AITank::onSpawn() {
-	addEnemyClass("player");
+	addEnemyClass("fighting-vehicle");
 	addEnemyClass("trooper");
 	addEnemyClass("kamikaze");
 	addEnemyClass("boat");
@@ -105,4 +105,4 @@ void AITank::calculate(const float dt) {
 	updateStateFromVelocity();	
 }
 
-REGISTER_OBJECT("ai-tank", AITank, ());
+REGISTER_OBJECT("tank", AITank, ());

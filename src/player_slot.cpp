@@ -184,6 +184,9 @@ void PlayerSlot::spawnPlayer(const std::string &classname, const std::string &an
 
 	Object *obj = ResourceManager->createObject(classname, animation);
 	assert(obj != NULL);
+	
+	if (control_method != NULL)
+		obj->disable_ai = true;
 
 	obj->setZBox(position.z);
 	World->addObject(obj, v2<float>(position.x, position.y) - obj->size / 2, id);

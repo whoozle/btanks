@@ -30,7 +30,7 @@ public:
 			if (aim_missiles)
 				_targets.insert("missile");
 	
-			_targets.insert("player");
+			_targets.insert("fighting-vehicle");
 			_targets.insert("trooper");
 			_targets.insert("kamikaze");
 			_targets.insert("boat");
@@ -150,7 +150,7 @@ public:
 			if (aim_missiles)
 				_targets.insert("missile");
 	
-			_targets.insert("player");
+			_targets.insert("fighting-vehicle");
 			_targets.insert("monster");
 			_targets.insert("trooper");
 			_targets.insert("kamikaze");

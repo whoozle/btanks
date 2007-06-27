@@ -48,7 +48,7 @@ Object * Mortar::clone() const {
 
 void Mortar::emit(const std::string &event, Object * emitter) {
 	if (event == "death") {
-		if (registered_name != "ai-mortar")
+		if (disable_ai)
 			detachVehicle();
 		spawn("corpse", "dead-mortar");
 		_velocity.clear();
@@ -110,5 +110,5 @@ void Mortar::deserialize(const mrt::Serializator &s) {
 	s.get(_fire);
 }
 
-REGISTER_OBJECT("mortar", Mortar, ("player"));
+REGISTER_OBJECT("mortar", Mortar, ("fighting-vehicle"));
 REGISTER_OBJECT("static-mortar", Mortar, ("vehicle"));

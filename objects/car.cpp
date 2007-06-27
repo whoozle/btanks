@@ -121,7 +121,7 @@ void AICar::onSpawn() {
 	//obstacle_filter.insert("car");
 	//obstacle_filter.insert("civilian");
 	//obstacle_filter.insert("trooper");
-	//obstacle_filter.insert("player");
+	//obstacle_filter.insert("fighting-vehicle");
 	_avoid_obstacles = true;
 
 	ai::Waypoints::onSpawn(this);

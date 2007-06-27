@@ -25,7 +25,7 @@
 
 class AIShilka:  public Shilka, public ai::Base {
 public: 
-	AIShilka() : Shilka("player") {}
+	AIShilka() : Shilka("fighting-vehicle") {}
 //	~AIShilka();
 	virtual void onSpawn();
 	virtual void calculate(const float dt);
@@ -76,7 +76,7 @@ const int AIShilka::getWeaponAmount(const int idx) const{
 
 
 void AIShilka::onSpawn() {
-	addEnemyClass("player");
+	addEnemyClass("fighting-vehicle");
 	addEnemyClass("trooper");
 	addEnemyClass("kamikaze");
 	addEnemyClass("boat");
@@ -109,4 +109,4 @@ void AIShilka::calculate(const float dt) {
 	updateStateFromVelocity();	
 }
 
-REGISTER_OBJECT("ai-shilka", AIShilka, ());
+REGISTER_OBJECT("shilka", AIShilka, ());

@@ -26,7 +26,7 @@
 BaseObject::BaseObject(const std::string &classname): 
 	size(), mass(1), speed(0), ttl(-1), impassability(1), hp(1), max_hp(1), 
  	piercing(false), pierceable(false),
-	classname(classname), 
+	classname(classname), disable_ai(false), 
 	_id(0), _follow(0), _follow_position(), 
 	_state(), 
 	_velocity(), _direction(1,0), _velocity_fadeout(), 

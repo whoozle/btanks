@@ -63,7 +63,7 @@ void Tank::emit(const std::string &event, Object * emitter) {
 		LOG_DEBUG(("dead"));
 		cancelAll();
 		//play("dead", true);
-		if (registered_name != "ai-tank")
+		if (disable_ai)
 			detachVehicle();
 		spawn("corpse", "dead-" + animation);
 		_velocity.clear();
@@ -164,5 +164,5 @@ void Tank::deserialize(const mrt::Serializator &s) {
 	s.get(_fire);
 }
 
-REGISTER_OBJECT("tank", Tank, ("player"));
+REGISTER_OBJECT("tank", Tank, ("fighting-vehicle"));
 REGISTER_OBJECT("static-tank", Tank, ("vehicle"));

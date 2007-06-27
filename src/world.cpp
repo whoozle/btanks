@@ -578,7 +578,11 @@ TRY {
 		//LOG_DEBUG(("%g", t));
 		if (t == dd) {
 			TRY { 
-				o.calculate(dt);
+				if (o.disable_ai) {
+					o.Object::calculate(dt);
+				} else {
+					o.calculate(dt);
+				}
 			} CATCH("calling o.calculate", throw;)
 		}
 		if (o._velocity.is0()) 
@@ -588,7 +592,11 @@ TRY {
 		if (do_calculate) {
 			//regular calculate
 			TRY { 
-				o.calculate(dt);
+				if (o.disable_ai) {
+					o.Object::calculate(dt);
+				} else {
+					o.calculate(dt);
+				}
 			} CATCH("calling o.calculate", throw;)
 		}
 	}

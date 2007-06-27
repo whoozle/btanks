@@ -117,7 +117,7 @@ const int Boss1::getTargetPosition2(const std::set<std::string> &targets, const 
 }
 
 void Boss1::onSpawn() {
-	_enemies.insert("player");
+	_enemies.insert("fighting-vehicle");
 	_enemies.insert("trooper");
 	
 	ai::Waypoints::onSpawn(this);

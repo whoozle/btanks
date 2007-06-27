@@ -25,7 +25,7 @@
 
 class AILauncher:  public Launcher, public ai::Base {
 public: 
-	AILauncher() : Launcher("player") {}
+	AILauncher() : Launcher("fighting-vehicle") {}
 //	~AILauncher();
 	virtual void onSpawn();
 	virtual void calculate(const float dt);
@@ -60,7 +60,7 @@ const int AILauncher::getWeaponAmount(const int idx) const{
 
 
 void AILauncher::onSpawn() {
-	addEnemyClass("player");
+	addEnemyClass("fighting-vehicle");
 	addEnemyClass("trooper");
 	addEnemyClass("kamikaze");
 	addEnemyClass("boat");
@@ -90,4 +90,4 @@ void AILauncher::calculate(const float dt) {
 	updateStateFromVelocity();	
 }
 
-REGISTER_OBJECT("ai-launcher", AILauncher, ());
+REGISTER_OBJECT("launcher", AILauncher, ());

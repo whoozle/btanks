@@ -63,7 +63,7 @@ void Missile::onSpawn() {
 void Missile::calculate(const float dt) {
 	if (type == "guided" || type == "stun") {
 		std::set<std::string> targets;
-		targets.insert("player");
+		targets.insert("fighting-vehicle");
 		targets.insert("monster");
 		if (type != "stun") {
 			targets.insert("trooper");

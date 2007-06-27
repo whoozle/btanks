@@ -659,17 +659,13 @@
 	<object class="cannon" mass="1000" hp="50" z="200" impassability="1" />
 
 	<object class="tank" speed="400" mass="500" hp="80" z="0" />
-	<object class="ai-tank" parent="tank" z="0" />
 	<object class="static-tank" parent="tank" z="0" />
 	<object class="launcher" speed="500" mass="400" hp="40" z="0" />
-	<object class="ai-launcher" parent="launcher" z="0" />
 	<object class="static-launcher" parent="launcher" z="0" />
 	<object class="shilka" speed="450" mass="400" hp="60" z="0" />
 	<object class="static-shilka" parent="shilka" z="0" />
-	<object class="ai-shilka" parent="shilka" z="0" />
 	<object class="mortar" speed="100" mass="400" hp="100" z="0" />
 	<object class="static-mortar" parent="mortar" />
-	<!-- afaik ai-mortar still does not exist <object class="ai-mortar" parent="mortar" /> -->
 
 	<object class="bullet" speed="1100" mass="2" ttl="1" hp="10" z="210" />
 	<object class="tank-bullet" parent="bullet" />
@@ -747,7 +743,6 @@
 	<object class="machinegunner" hp="10" speed="100" mass="85" z="-1" />
 	<object class="machinegunner-in-watchtower" impassability="0" parent="machinegunner" z="205" ttl="0" />
 	<object class="machinegunner-player" hp="20" speed="200" mass="75" z="-1" />
-	<object class="ai-machinegunner-player" parent="machinegunner-player" />
 	<object class="thrower" hp="10" speed="100" mass="85" z="-1" ttl="0" />
 	<object class="thrower-in-watchtower" impassability="0" parent="thrower" z="205" ttl="0" />
 	<object class="civilian" hp="20" speed="100" mass="75" z="-1" />

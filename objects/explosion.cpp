@@ -130,7 +130,6 @@ void Explosion::emit(const std::string &event, Object * emitter) {
 				mutable_classes.insert("creature");
 				mutable_classes.insert("kamikaze");
 				mutable_classes.insert("civilian");
-				//mutable_classes.insert("player");
 			}
 			if (emitter->registered_name.compare(0, 6, "zombie") == 0) {
 				emitter->hp = emitter->max_hp;

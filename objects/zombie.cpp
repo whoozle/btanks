@@ -107,7 +107,7 @@ class Zombie : public BaseZombie, public ai::Herd{
 public:
 	Zombie(const std::string &classname) : 
 	BaseZombie(classname), _reaction(true) {
-		_targets.insert("player");
+		_targets.insert("fighting-vehicle");
 		_targets.insert("trooper");
 		_targets.insert("watchtower");
 		_targets.insert("creature");

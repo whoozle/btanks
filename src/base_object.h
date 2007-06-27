@@ -48,6 +48,8 @@ public:
 	
 	std::string classname;
 	
+	bool disable_ai;
+	
 	BaseObject(const std::string &classname);
 	virtual ~BaseObject();
 	

@@ -25,7 +25,7 @@
 
 class AIMachinegunnerPlayer:  public Trooper, public ai::Base {
 public: 
-	AIMachinegunnerPlayer() :  Trooper("player", "machinegunner-bullet") {}
+	AIMachinegunnerPlayer() :  Trooper("trooper", "machinegunner-bullet") {}
 //	~AIMachinegunnerPlayer();
 	virtual const std::string getType() const { return "machinegunner"; }
 	virtual void onSpawn();
@@ -65,7 +65,7 @@ const int AIMachinegunnerPlayer::getWeaponAmount(const int idx) const{
 
 
 void AIMachinegunnerPlayer::onSpawn() {
-	addEnemyClass("player");
+	addEnemyClass("fighting-vehicle");
 	addEnemyClass("trooper");
 	addEnemyClass("kamikaze");
 	addEnemyClass("boat");
@@ -95,4 +95,4 @@ void AIMachinegunnerPlayer::calculate(const float dt) {
 	updateStateFromVelocity();	
 }
 
-REGISTER_OBJECT("ai-machinegunner-player", AIMachinegunnerPlayer, ());
+REGISTER_OBJECT("machinegunner", AIMachinegunnerPlayer, ());

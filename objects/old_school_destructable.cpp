@@ -95,7 +95,7 @@ void OldSchoolDestructableObject::tick(const float dt) {
 		v2<float> pos, vel;
 		static std::set<std::string> targets;
 		if (targets.empty()) 
-			targets.insert("player");
+			targets.insert("fighting-vehicle");
 		
 		if (getNearest(targets, dr, pos, vel)) {
 			GameMonitor->displayMessage("messages", _message, 5);

@@ -98,5 +98,5 @@ private:
 	bool _thinking, _guard;
 };
 
-REGISTER_OBJECT("civilian-player", Civilian, ("player"));
+REGISTER_OBJECT("civilian-player", Civilian, ("civilian"));
 REGISTER_OBJECT("civilian", AICivilian, ());

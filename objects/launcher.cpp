@@ -60,7 +60,7 @@ void Launcher::onSpawn() {
 void Launcher::emit(const std::string &event, Object * emitter) {
 	if (event == "death") {
 		LOG_DEBUG(("dead"));
-		if (registered_name != "ai-launcher")
+		if (disable_ai)
 			detachVehicle();
 		
 		spawn("corpse", "dead-" + animation);
@@ -149,5 +149,5 @@ void Launcher::deserialize(const mrt::Serializator &s) {
 	s.get(_fire);
 }
 
-REGISTER_OBJECT("launcher", Launcher, ("player"));
+REGISTER_OBJECT("launcher", Launcher, ("fighting-vehicle"));
 REGISTER_OBJECT("static-launcher", Launcher, ("vehicle"));

@@ -59,7 +59,7 @@ void Barrack::tick(const float dt) {
 
 	static std::set<std::string> targets;
 	if (targets.empty()) {
-		targets.insert("player");
+		targets.insert("fighting-vehicle");
 		targets.insert("trooper");
 		targets.insert("monster");
 		targets.insert("kamikaze");

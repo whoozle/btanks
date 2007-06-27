@@ -109,7 +109,7 @@ void Bullet::calculate(const float dt) {
 		static std::set<std::string> targets;
 		if (targets.empty()) {
 			targets.insert("missile");	
-			targets.insert("player");
+			targets.insert("fighting-vehicle");
 			targets.insert("trooper");
 			targets.insert("kamikaze");
 			targets.insert("boat");
