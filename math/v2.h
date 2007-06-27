@@ -258,7 +258,7 @@ public:
 		return (y <= 0 || xx == 1)? xx: (18 - xx);
 	}
 	
-	inline int getDirection(int dirs) {
+	inline int getDirection(int dirs) const {
 		switch(dirs) {
 			case 8: return getDirection8();
 			case 16: return getDirection16();
