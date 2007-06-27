@@ -153,7 +153,7 @@ const XMLParser& XMLParser::operator=(const XMLParser &) {
 }
 
 const std::string XMLParser::escape(const std::string &str) {
-	std::string result;
+	std::string result = str;
 	mrt::replace(result, "&", "&amp;");
 	mrt::replace(result, "<", "&lt;");
 	mrt::replace(result, ">", "&gt;");
