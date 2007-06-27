@@ -127,6 +127,9 @@ void mrt::toLower(std::string &str) {
 }
 
 void mrt::replace(std::string &str, const std::string &from, const std::string &to, const size_t limit) {
+	if (str.empty())
+		return;
+	
 	if (from.empty())
 		throw_ex(("replace string must not be empty"));
 	
