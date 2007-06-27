@@ -21,6 +21,7 @@
 #include <stdarg.h>
 #include <ctype.h>
 #include <algorithm>
+#include "exception.h"
 
 #if defined WIN32 
 #	if !defined vsnprintf
@@ -125,3 +126,25 @@ void mrt::toLower(std::string &str) {
 	std::transform(str.begin(), str.end(), str.begin(), tolower);
 }
 
+void mrt::replace(std::string &str, const std::string &from, const std::string &to, const size_t limit) {
+	if (from.empty())
+		throw_ex(("replace string must not be empty"));
+	
+	std::string::size_type pos = 0, p;
+	size_t n = limit;
+
+	while(pos < str.size()) {
+		p = str.find(from, pos);
+		if (p == str.npos) 
+			break;
+	
+		str.replace(pos, from.size(), to);
+		pos += from.size() - to.size();
+	
+		if (n > 0) {
+			if (--n == 0) {
+				break;
+			}
+		}
+	}	
+}
