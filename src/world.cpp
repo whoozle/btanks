@@ -1595,7 +1595,7 @@ const bool IWorld::attachVehicle(Object *object, Object *vehicle) {
 	object->Object::emit("death", NULL); //emit death BEFORE assigning slot.id (avoid to +1 to frags) :)))
 
 	vehicle->_spawned_by = object->_spawned_by;
-
+	vehicle->classname = "fighting-vehicle";
 	vehicle->copyOwners(object);
 
 	replaceID(old_id, new_id);
