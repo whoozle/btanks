@@ -287,11 +287,11 @@ const bool IWorld::collides(Object *obj, const v2<int> &position, Object *o, con
 				o->emit("collision", obj);
 				obj->emit("collision", o);
 			
-				if (o->isDead() && o->classname == "player") {
+				if (o->isDead() && o->disable_ai) {
 					PlayerManager->onPlayerDeath(o, obj);
 				}
 
-				if (obj->isDead() && obj->classname == "player") {
+				if (obj->isDead() && obj->disable_ai) {
 					PlayerManager->onPlayerDeath(obj, o);
 				}
 			
@@ -544,7 +544,7 @@ TRY {
 		state.alt_fire = true;
 		
 		static Alarm update_state(2.0, true);
-		if (o.classname != "player" && update_state.tick(dt)) {
+		if (!o.disable_ai && update_state.tick(dt)) {
 			update_state.reset();
 			int n = mrt::random(2);
 			int k1 = mrt::random(2), k2 = mrt::random(2);
@@ -754,7 +754,7 @@ TRY {
 		if (o.piercing || dirs == 1)
 			break;
 	
-		if (ds || other_obj != NULL && o.classname == "player" && other_obj->classname == "player")
+		if (ds || other_obj != NULL && o.disable_ai && other_obj->disable_ai)
 			break;
 
 		if (dorc)
@@ -1580,14 +1580,14 @@ void IWorld::replaceID(const int old_id, const int new_id) {
 }
 
 const bool IWorld::attachVehicle(Object *object, Object *vehicle) {
-	if (object == NULL || vehicle == NULL || object->classname != "player") 
+	if (object == NULL || vehicle == NULL || !object->disable_ai) 
 		return false;
 	
 	PlayerSlot *slot = PlayerManager->getSlotByID(object->getID());
 	if (slot == NULL)
 		return false;
 	
-	vehicle->classname = "player";
+	//vehicle->classname = "player";
 	
 	int old_id = object->getID();
 	int new_id = vehicle->getID();
@@ -1610,8 +1610,8 @@ const bool IWorld::attachVehicle(Object *object, Object *vehicle) {
 const bool IWorld::detachVehicle(Object *object) {
 	PlayerSlot * slot = PlayerManager->getSlotByID(object->getID());
 	if (slot == NULL || 
-		(object->classname == "player" && 
-			(object->registered_name == "machinegunner-player" || object->registered_name == "civilian-player")
+		(object->disable_ai && 
+			(object->registered_name == "machinegunner" || object->registered_name == "civilian")
 	   )) 
 	   	return false;
 		
@@ -1619,19 +1619,21 @@ const bool IWorld::detachVehicle(Object *object) {
 	object->_velocity.clear();
 	object->updatePlayerState(PlayerState());
 
-	Object * man = spawn(object, "machinegunner-player", "machinegunner", object->_direction * (object->size.x + object->size.y) / 4, v2<float>());
+	Object * man = spawn(object, "machinegunner", "machinegunner", object->_direction * (object->size.x + object->size.y) / 4, v2<float>());
+	man->disable_ai = true;
 	object->classname = "vehicle";
 
 	man->copyOwners(object);
 
-	int old_id = object->getID();
 	int new_id = man->getID();
 
-	object->disown();
+	//object->disown();
 
-	replaceID(old_id, new_id);
-
-
+	//int old_id = object->getID();
+	//replaceID(old_id, new_id);
+	man->prependOwner(OWNER_COOPERATIVE);
+	object->prependOwner(OWNER_COOPERATIVE);
+	
 	slot->id = new_id;
 	slot->need_sync = true;
 	
