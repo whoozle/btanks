@@ -2,6 +2,7 @@
 <map version="0.99b" orientation="orthogonal" width="16" height="16" tilewidth="64" tileheight="64">
 	<properties>
 		<property name="object:barrier:barrier:1" value="359,208"/>
+		<property name="object:car:cyan-car:1" value="171,268"/>
 		<property name="object:ricochet-bullets-item:ricochet-bullets-item:1" value="739,247"/>
 		<property name="spawn:1" value="554,91"/>
 		<property name="spawn:2" value="454,91"/>
