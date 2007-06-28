@@ -378,13 +378,6 @@ Object *IResourceManager::createObject(const std::string &_classname) const {
 	std::string classname = vars.parse(_classname);
 	assert(classname.find('(') == classname.npos);
 
-	int dir = 0;
-	std::string::size_type dp = classname.rfind('$');
-	if (dp != classname.npos && dp + 1 < classname.size()) {
-		dir = atoi(classname.substr(dp + 1).c_str());
-		classname.resize(dp);
-	}
-	
 	ObjectMap::const_iterator i = _objects.find(classname);
 	if (i == _objects.end())
 		throw_ex(("classname '%s' was not registered", classname.c_str()));
@@ -398,10 +391,6 @@ Object *IResourceManager::createObject(const std::string &_classname) const {
 
 	r->updateVariants(vars);
 	
-	if (dir) {
-		r->setDirection(dir);
-		//r->_direction.fromDirection(dir, r->getDirectionsNumber());
-	}
 
 	return r;
 }
