@@ -35,7 +35,7 @@ public:
 	virtual bool onMouseMotion(const int state, const int x, const int y, const int xrel, const int yrel);
 
 	void add(const int x, const int y, Control *ctrl);
-	void clear();
+	virtual void clear();
 	
 	~Container();
 private: 
