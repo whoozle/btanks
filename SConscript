@@ -19,6 +19,16 @@ env.Append(CPPDEFINES=['BTANKSAPI=DLLEXPORT']);
 
 vobj = venv.SharedObject('src/version.cpp')
 bt_sources = 	[
+#menu
+	'menu/checkbox.cpp', 'menu/shop.cpp', 'menu/image_view.cpp', 'menu/shop_item.cpp', 'menu/popup_menu.cpp', 
+	'menu/start_server_menu.cpp', 'menu/join_server_menu.cpp', 'menu/campaign_menu.cpp', 
+	'menu/menu.cpp', 'menu/box.cpp', 'menu/upper_box.cpp', 'menu/base_menu.cpp', 'menu/container.cpp', 'menu/menuitem.cpp',
+	'menu/map_picker.cpp', 'menu/scroll_list.cpp', 'menu/control.cpp', 'menu/map_details.cpp', 'menu/player_picker.cpp', 
+	'menu/chooser.cpp', 'menu/label.cpp', 'menu/button.cpp', 'menu/menu_config.cpp', 'menu/map_desc.cpp', 
+	'menu/prompt.cpp', 'menu/text_control.cpp', 'menu/host_list.cpp', 'menu/options_menu.cpp', 'menu/control_picker.cpp',
+	'menu/slider.cpp', 'menu/redefine_keys.cpp', 'menu/gamepad_setup.cpp', 'menu/tooltip.cpp', 
+#end of menu
+
 	'src/finder.cpp', 'src/zbox.cpp', 'src/campaign.cpp',
 	
 	'src/alarm.cpp', 'src/base_object.cpp', 'src/notifying_xml_parser.cpp',
@@ -54,7 +64,7 @@ if debug and sys.platform == "win32":
 
 #fanncxx
 
-bt_libs = ['mrt', 'bt_net', 'bt_menu', 'sdlx',  sigc_lib, 'SDL', vorbis, al_lib]
+bt_libs = ['mrt', 'bt_net', 'sdlx',  sigc_lib, 'SDL', vorbis, al_lib]
 
 if sys.platform == "win32":
 	bt_libs[0:0] = ['SDLmain']
