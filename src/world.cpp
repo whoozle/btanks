@@ -894,7 +894,7 @@ TRY {
 					LOG_DEBUG(("map:allowed velocity = %g %g, map_im = %g, obj_im = %g", allowed_velocity.x, allowed_velocity.y, map_im, obj_im));
 				//LOG_DEBUG(("map tile position : %d,%d, merged-x:%c, merged-y:%c", stuck_map_pos.position.x, stuck_map_pos.position.y, stuck_map_pos.merged_x?'+':'-', stuck_map_pos.merged_y?'+':'-'));
 				//o._position += allowed_velocity * o.speed * dt;
-				o._direction = o._velocity = allowed_velocity;
+				o._velocity = allowed_velocity;
 				//LOG_DEBUG(("resulting map_im = %g", map_im));
 				
 				goto skip_collision;
@@ -930,7 +930,7 @@ TRY {
 				//GET_CONFIG_VALUE("engine.stuck-fixup", float, l, 2);
 				allowed_velocity.normalize();
 				//o._position += l * allowed_velocity;
-				o._direction = o._velocity = allowed_velocity;
+				o._velocity = allowed_velocity;
 			} else LOG_WARN(("%d:%s:%s: bogus 'stuck' flag!", o.getID(), o.registered_name.c_str(), o.animation.c_str()));
 			//LOG_DEBUG(("map_im: %g, obj_im: %g", map_im, obj_im));
 		}
