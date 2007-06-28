@@ -115,6 +115,8 @@ public:
 
 	const float getEffectiveImpassability(const float impassability) const;
 	
+	const Variants & getVariants() const { return _variants; }
+	
 protected:
 	int _id;
 	int _follow;
