@@ -14,17 +14,18 @@ public:
 	const bool getState() const { return state; }
 private: 
 	void update() {
-		setFont(state?"medim_dark":"medium");
+		setFont(state?"medim":"medium_dark");
 	}
 	bool state;
 };
 
-PopupMenu::PopupMenu() : _background(NULL) {
-}
+PopupMenu::PopupMenu() : _background(new Box), hl_pos(-1, -1) {}
+PopupMenu::~PopupMenu() { delete _background; }
+
 
 void PopupMenu::clear() {
 	Container::clear();
-	_background = NULL;
+	hl_pos = v2<int>(-1, -1);
 }
 
 void PopupMenu::get(std::set<std::string> &labels) const {
@@ -41,16 +42,10 @@ void PopupMenu::get(std::set<std::string> &labels) const {
 void PopupMenu::append(const std::string &item, const bool state) {
 	int w, h;
 	getSize(w, h);
-	add(0, h, new ToggleLabel(item, state));
+	add(0, h + 5, new ToggleLabel(item, state));
 	getSize(w, h);
 	w += 32; h += 24;
-	if (_background == NULL) {
-		_controls.push_front(ControlList::value_type(v2<int>(), _background = new Box));
-	}
 	_background->init("menu/background_box_dark.png", "menu/highlight_medium.png", w, h);
-	int mx, my;
-	_background->getMargins(mx, my);
-	setBase(_background, -mx, -my);
 }
 
 bool PopupMenu::onMouse(const int button, const bool pressed, const int x, const int y) {
@@ -78,6 +73,36 @@ bool PopupMenu::onMouse(const int button, const bool pressed, const int x, const
 bool PopupMenu::onMouseMotion(const int state, const int x, const int y, const int xrel, const int yrel) {
 	if (Container::onMouseMotion(state, x, y, xrel, yrel))
 		return true;
+
+	hl_pos = v2<int>(-1, -1);
+	for(ControlList::const_iterator i = _controls.begin(); i != _controls.end(); ++i) {
+		const ToggleLabel * l = dynamic_cast<const ToggleLabel *>(i->second);
+		if (l == NULL) 
+			continue;
+
+		int bw, bh;
+		l->getSize(bw, bh);
+	
+		const sdlx::Rect dst(i->first.x, i->first.y, bw, bh);
+		if (dst.in(x, y)) {
+			hl_pos = i->first;
+			hl_pos.x -= 16;
+			hl_pos.y += 9;
+		}
+	}
 	
 	return false;
+}
+
+void PopupMenu::render(sdlx::Surface &surface, const int x, const int y) {
+	int mx, my;
+	_background->getMargins(mx, my);
+
+	_background->render(surface, x - mx, y - my);
+	Container::render(surface, x, y);
+	
+	if (hl_pos.x == -1 || hl_pos.y == -1) 
+		return;
+	
+	_background->renderHL(surface, x + hl_pos.x, y + hl_pos.y);
 }
