@@ -13,6 +13,7 @@ public:
 	PopupMenu();
 	
 	void append(const std::string &item, const bool state);
+	void clear();
 	void get(std::set<std::string> &labels) const;
 
 	virtual bool onMouse(const int button, const bool pressed, const int x, const int y);

@@ -43,8 +43,9 @@ void PopupMenu::append(const std::string &item, const bool state) {
 	getSize(w, h);
 	add(0, h, new ToggleLabel(item, state));
 	getSize(w, h);
+	w += 32; h += 24;
 	if (_background == NULL) {
-		add(0, 0, _background = new Box);
+		_controls.push_front(ControlList::value_type(v2<int>(), _background = new Box));
 	}
 	_background->init("menu/background_box_dark.png", "menu/highlight_medium.png", w, h);
 	int mx, my;
