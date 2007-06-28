@@ -7,9 +7,8 @@ public:
 	ToggleLabel(const std::string &item, const bool state) : Label("medium", item), state(state) {
 		update();
 	}
-	void setState(const bool state) {
-		this->state = state;
-		update();
+	void toggle() {
+		state = !state;
 	}
 	const bool getState() const { return state; }
 private: 
@@ -54,8 +53,8 @@ bool PopupMenu::onMouse(const int button, const bool pressed, const int x, const
 	if (pressed)
 		return true;
 	
-	for(ControlList::const_iterator i = _controls.begin(); i != _controls.end(); ++i) {
-		const ToggleLabel * l = dynamic_cast<const ToggleLabel *>(i->second);
+	for(ControlList::iterator i = _controls.begin(); i != _controls.end(); ++i) {
+		ToggleLabel * l = dynamic_cast<ToggleLabel *>(i->second);
 		if (l == NULL) 
 			continue;
 
@@ -63,7 +62,8 @@ bool PopupMenu::onMouse(const int button, const bool pressed, const int x, const
 		l->getSize(bw, bh);
 	
 		const sdlx::Rect dst(i->first.x, i->first.y, bw, bh);
-		if (dst.in(x, y)) {		
+		if (dst.in(x, y)) {
+			l->toggle();
 			result = l->get();
 			invalidate();
 			return true;
