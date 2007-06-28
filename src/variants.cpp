@@ -25,7 +25,10 @@ const std::string Variants::parse(const std::string &name) {
 	return result;
 }
 
-void Variants::update(const Variants &other) {
+void Variants::update(const Variants &other, const bool remove_old) {
+	if (remove_old)
+		vars.clear();
+	
 	for(std::set<std::string>::const_iterator i = other.vars.begin(); i != other.vars.end(); ++i) 
 		vars.insert(*i);
 }

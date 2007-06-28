@@ -53,7 +53,7 @@ public:
 	BaseObject(const std::string &classname);
 	virtual ~BaseObject();
 	
-	void updateVariants(const Variants &vars);
+	void updateVariants(const Variants &vars, const bool remove_old = false);
 	
 	virtual void tick(const float dt) = 0;
 	virtual void render(sdlx::Surface &surf, const int x, const int y) = 0;

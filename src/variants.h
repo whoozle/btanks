@@ -10,7 +10,7 @@ class BTANKSAPI Variants : public mrt::Serializable {
 public: 
 	Variants();
 	const std::string parse(const std::string &name);
-	void update(const Variants &other);
+	void update(const Variants &other, const bool remove_old);
 	const std::string dump() const;
 
 	const bool has(const std::string &name) const;
