@@ -51,7 +51,9 @@ void PopupMenu::append(const std::string &item, const bool state) {
 bool PopupMenu::onMouse(const int button, const bool pressed, const int x, const int y) {
 	if (Container::onMouse(button, pressed, x, y))
 		return true;
-		
+	if (pressed)
+		return true;
+	
 	for(ControlList::const_iterator i = _controls.begin(); i != _controls.end(); ++i) {
 		const ToggleLabel * l = dynamic_cast<const ToggleLabel *>(i->second);
 		if (l == NULL) 
@@ -67,7 +69,7 @@ bool PopupMenu::onMouse(const int button, const bool pressed, const int x, const
 			return true;
 		}
 	}
-	return false;
+	return true;
 }
 
 bool PopupMenu::onMouseMotion(const int state, const int x, const int y, const int xrel, const int yrel) {
