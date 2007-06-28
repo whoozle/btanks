@@ -2,15 +2,43 @@
 #include "box.h"
 #include "label.h"
 
+class ToggleLabel : public Label {
+public: 
+	ToggleLabel(const std::string &item, const bool state) : Label("medium", item), state(state) {
+		update();
+	}
+	void setState(const bool state) {
+		this->state = state;
+		update();
+	}
+	const bool getState() const { return state; }
+private: 
+	void update() {
+		setFont(state?"medim_dark":"medium");
+	}
+	bool state;
+};
+
 PopupMenu::PopupMenu() {
 	_background = new Box(); 
 	//add(0, 0, _background);
 }
 
-void PopupMenu::append(const std::string &item) {
+void PopupMenu::get(std::set<std::string> &labels) const {
+	labels.clear();
+	for(ControlList::const_iterator i = _controls.begin(); i != _controls.end(); ++i) {
+		const ToggleLabel * l = dynamic_cast<const ToggleLabel *>(i->second);
+		if (l == NULL) 
+			continue;
+		if (l->getState())
+			labels.insert(l->get());
+	}		
+}
+
+void PopupMenu::append(const std::string &item, const bool state) {
 	int w, h;
 	getSize(w, h);
-	add(0, h, new Label("medium_dark", item));
+	add(0, h, new ToggleLabel(item, state));
 	getSize(w, h);
 	_background->init("menu/background_box_dark.png", "menu/highlight_medium.png", w, h);
 }
@@ -20,7 +48,7 @@ bool PopupMenu::onMouse(const int button, const bool pressed, const int x, const
 		return true;
 		
 	for(ControlList::const_iterator i = _controls.begin(); i != _controls.end(); ++i) {
-		const Label * l = dynamic_cast<const Label *>(i->second);
+		const ToggleLabel * l = dynamic_cast<const ToggleLabel *>(i->second);
 		if (l == NULL) 
 			continue;
 
@@ -38,5 +66,8 @@ bool PopupMenu::onMouse(const int button, const bool pressed, const int x, const
 }
 
 bool PopupMenu::onMouseMotion(const int state, const int x, const int y, const int xrel, const int yrel) {
-	return Container::onMouseMotion(state, x, y, xrel, yrel);
+	if (Container::onMouseMotion(state, x, y, xrel, yrel))
+		return true;
+	
+	return false;
 }
