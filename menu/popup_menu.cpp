@@ -19,9 +19,12 @@ private:
 	bool state;
 };
 
-PopupMenu::PopupMenu() {
-	_background = new Box(); 
-	//add(0, 0, _background);
+PopupMenu::PopupMenu() : _background(NULL) {
+}
+
+void PopupMenu::clear() {
+	Container::clear();
+	_background = NULL;
 }
 
 void PopupMenu::get(std::set<std::string> &labels) const {
@@ -40,6 +43,9 @@ void PopupMenu::append(const std::string &item, const bool state) {
 	getSize(w, h);
 	add(0, h, new ToggleLabel(item, state));
 	getSize(w, h);
+	if (_background == NULL) {
+		add(0, 0, _background = new Box);
+	}
 	_background->init("menu/background_box_dark.png", "menu/highlight_medium.png", w, h);
 	int mx, my;
 	_background->getMargins(mx, my);
