@@ -73,6 +73,8 @@ void Train::onSpawn() {
 
 	if (!_variants.has("standing"))
 		_state.down = true;
+	else 
+		classname = "destructable-object";
 }
 
 void Train::emit(const std::string &event, Object * emitter) {
