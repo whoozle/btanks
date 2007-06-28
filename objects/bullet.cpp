@@ -174,8 +174,11 @@ void Bullet::emit(const std::string &event, Object * emitter) {
 		return;
 
 	v2<float> dpos;
-	dpos.fromDirection(getDirection(), getDirectionsNumber());
-	dpos *= size.length() / 2;
+	int dirs = getDirectionsNumber();
+	if (dirs == 4 || dirs == 8 || dirs == 16) {
+		dpos.fromDirection(getDirection(), dirs);
+		dpos *= size.length() / 2;
+	}
 	if (event == "collision" || event == "death") {
 /*		if (emitter) {
 			dpos = getRelativePosition(emitter) / 2;
