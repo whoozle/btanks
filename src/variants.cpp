@@ -3,6 +3,7 @@
 #include "mrt/exception.h"
 
 Variants::Variants() : vars() {}
+Variants::Variants(const std::set<std::string> &vars) : vars(vars) {}
 
 const std::string Variants::parse(const std::string &name) {
 	vars.clear();
