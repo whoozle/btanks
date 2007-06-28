@@ -90,6 +90,7 @@ JoinServerMenu::JoinServerMenu(MainMenu *parent, const int w, const int h) : _pa
 	options.push_back("tank");
 	options.push_back("machinegunner");
 	options.push_back("civilian");
+	options.push_back("mortar");
 		
 	_vehicle = new Chooser("medium", options, "menu/vehicles.png");
 	_vehicle->disable(0);
