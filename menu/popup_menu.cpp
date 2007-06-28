@@ -98,6 +98,9 @@ bool PopupMenu::onMouseMotion(const int state, const int x, const int y, const i
 }
 
 void PopupMenu::render(sdlx::Surface &surface, const int x, const int y) {
+	if (_controls.empty())
+		return;
+	
 	int mx, my;
 	_background->getMargins(mx, my);
 
