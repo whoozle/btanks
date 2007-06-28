@@ -37,11 +37,10 @@ void Variants::update(const Variants &other, const bool remove_old) {
 const std::string Variants::dump() const {
 	std::string result;
 	for(std::set<std::string>::const_iterator i = vars.begin(); i != vars.end(); ++i) {
+		result += '(';
 		result += *i;
-		result += ',';
+		result += ')';
 	}
-	if (!result.empty())
-		result.resize(result.size() - 1);
 	return result;
 }
 
