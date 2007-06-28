@@ -807,9 +807,13 @@ TRY {
 TRY {
 	if (o.piercing) {
 		//if (obj_im_now > 0 && obj_im_now < 1.0)
+		int dirs = o.getDirectionsNumber();
 		if (map_im >= 1.0f) {
-			dpos.fromDirection(o.getDirection(), o.getDirectionsNumber());
-			dpos *= o.size.length() / 2;
+			v2<float> dpos;
+			if (dirs == 4 || dirs == 8 || dirs == 16) {
+				dpos.fromDirection(o.getDirection(), o.getDirectionsNumber());
+				dpos *= o.size.length() / 2;
+			}
 
 			Map->damage(o._position + o.size / 2 + dpos, o.max_hp);
 			o.emit("collision", NULL); //fixme: emit collisions with map from map::getImpassability
