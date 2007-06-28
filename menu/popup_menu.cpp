@@ -14,7 +14,7 @@ public:
 	const bool getState() const { return state; }
 private: 
 	void update() {
-		setFont(state?"medim":"medium_dark");
+		setFont(state?"medium_dark":"medium");
 	}
 	bool state;
 };
