@@ -9,6 +9,7 @@ public:
 	}
 	void toggle() {
 		state = !state;
+		update();
 	}
 	const bool getState() const { return state; }
 private: 
