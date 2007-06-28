@@ -23,6 +23,7 @@
 Item::Item(const std::string &classname, const std::string &type) : Object(classname), type(type) {
 	pierceable = true;
 	impassability = 1;
+	setDirectionsNumber(1);
 }
 
 
