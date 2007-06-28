@@ -42,7 +42,7 @@
 		<property name="object:stall:stall-left:16" value="517,190,155"/>
 		<property name="object:stall:stall-right:1" value="194,890,145"/>
 		<property name="object:stall:stall-right:15" value="626,190,155"/>
-		<property name="object:static-car:cyan-car:1" value="1006,184"/>
+		<property name="object:static-car:cyan-car:1" value="1006,184/6"/>
 		<property name="object:static-launcher:cyan-launcher:1" value="545,1129"/>
 		<property name="object:static-launcher:yellow-launcher:1" value="1411,4"/>
 		<property name="object:static-mortar:yellow-mortar:1" value="@11,20"/>

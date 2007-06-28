@@ -46,11 +46,14 @@ IMPLEMENT_SINGLETON(GameMonitor, IGameMonitor);
 IGameMonitor::IGameMonitor() : _game_over(false), _win(false), _check_items(0.5, true), _state_timer(false), _timer(0), _campaign(NULL) {}
 
 void GameItem::respawn() {
-	LOG_DEBUG(("respawning item: %s:%s", classname.c_str(), animation.c_str()));
+	LOG_DEBUG(("respawning item: %s:%s, z: %d, dir: %d", classname.c_str(), animation.c_str(), z, dir));
 	Object *o = ResourceManager->createObject(classname, animation);
 	if (z) 
 		o->setZ(z, true);
 	o->addOwner(OWNER_MAP);
+
+	if (dir) 
+		o->setDirection(dir);
 	
 	World->addObject(o, position.convert<float>());
 	id = o->getID();
@@ -58,10 +61,18 @@ void GameItem::respawn() {
 }
 
 void GameItem::updateMapProperty() {
+	std::string &prop = Map->properties[property];
 	if (z) 
-		Map->properties[property] = mrt::formatString("%d,%d,%d", position.x, position.y, z);
+		prop = mrt::formatString("%d,%d,%d", position.x, position.y, z);
 	else 
-		Map->properties[property] = mrt::formatString("%d,%d", position.x, position.y);
+		prop = mrt::formatString("%d,%d", position.x, position.y);
+
+	const Object *o = World->getObjectByID(id);
+	if (o != NULL) {
+		int dir = o->getDirection();
+		if (dir)
+			prop += mrt::formatString("/%d", dir);
+	}
 }
 
 void IGameMonitor::eraseLast(const std::string &property) {
@@ -171,19 +182,8 @@ void IGameMonitor::checkItems(const float dt) {
 
 void IGameMonitor::add(const GameItem &item_) {
 	GameItem item(item_);
-	Object *o = ResourceManager->createObject(item.classname, item.animation);
-	if (item.z)
-		o->setZ(item.z, true);
-	
-	o->addOwner(OWNER_MAP);
-	World->addObject(o, v2<float>(item.position.x, item.position.y));
-	
-	if (item.destroy_for_victory || !item.save_for_victory.empty()) {
-		LOG_DEBUG(("%s:%s critical for victory", item.classname.c_str(), item.animation.c_str()));
-	}
-		
-	item.id = o->getID();
 	_items.push_back(item);
+	_items.back().respawn();
 }
 
 void IGameMonitor::pushState(const std::string &state, const float time) {
@@ -564,8 +564,14 @@ void IGameMonitor::loadMap(Campaign *campaign, const std::string &name, const bo
 		}
 	
 		v3<int> pos;
+		int dir = 0;
 		if (type != "edge" && type != "config") {
-			coord2v< v3<int> >(pos, i->second);
+			std::string::size_type dp = i->second.rfind('/');
+			if (dp != std::string::npos && dp + 1 < i->second.size()) {
+				dir = atoi(i->second.substr(dp + 1).c_str());
+				LOG_DEBUG(("found argument %d", dir));
+			}
+			coord2v< v3<int> >(pos, i->second.substr(0, dp));
 		}
 	
 		/*
@@ -591,6 +597,7 @@ void IGameMonitor::loadMap(Campaign *campaign, const std::string &name, const bo
 				item.destroy_for_victory = res[3].substr(0, 19) == "destroy-for-victory";
 				if (res[3] == "save-for-victory")
 					item.save_for_victory = res[4];
+				item.dir = dir;
 				GameMonitor->add(item);
 			} else if (type == "waypoint") {
 				if (res.size() < 3)

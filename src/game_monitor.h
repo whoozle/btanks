@@ -44,7 +44,7 @@ class PlayerSlot;
 
 struct BTANKSAPI GameItem {
 	GameItem(const std::string &classname, const std::string &animation, const std::string &property, const v2<int> position, const int z = 0) :
-		classname(classname), animation(animation), property(property), position(position), z(z), id(-1), dead_on(0), 
+		classname(classname), animation(animation), property(property), position(position), z(z), dir(0), id(-1), dead_on(0), 
 		destroy_for_victory(false)
 		{}
 	void respawn();
@@ -52,7 +52,7 @@ struct BTANKSAPI GameItem {
 
 	std::string classname, animation, property;
 	v2<int> position;
-	int z;
+	int z, dir;
 
 	int id;
 	Uint32 dead_on;
