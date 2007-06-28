@@ -48,6 +48,7 @@ struct BTANKSAPI GameItem {
 		destroy_for_victory(false)
 		{}
 	void respawn();
+	void renameProperty(const std::string &name);
 	void updateMapProperty();
 
 	std::string classname, animation, property;

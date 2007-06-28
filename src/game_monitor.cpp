@@ -60,6 +60,15 @@ void GameItem::respawn() {
 	dead_on = 0;
 }
 
+void GameItem::renameProperty(const std::string &name) {
+	Map->properties.erase(property);
+
+	property = GameMonitor->generatePropertyName(name);
+	LOG_DEBUG(("new property name %s", property.c_str()));
+
+	updateMapProperty();
+}
+
 void GameItem::updateMapProperty() {
 	std::string &prop = Map->properties[property];
 	if (z) 
