@@ -89,12 +89,12 @@ void Mortar::tick(const float dt) {
 
 	if (_state.fire && fire_possible) {
 		_fire.reset();
-		
+		/*
 		if (getState() == "fire") 
 			cancel();
 		
 		playNow("fire");
-		
+		*/
 		spawn("mortar-bullet", "mortar-bullet", v2<float>(), _direction);
 	}
 }
