@@ -3,7 +3,10 @@
 	<properties>
 		<property name="object:barrier:barrier:1" value="359,208"/>
 		<property name="object:choo-choo-train:choo-choo-train:1" value="-5,72"/>
+		<property name="object:explosive(spawn-gas):gas-tubes:1" value="475,686,150"/>
 		<property name="object:explosive(spawn-missiles):ammo-box:1" value="194,692,150"/>
+		<property name="object:explosive(spawn-mutagen):biohazard-box:1" value="310,800,150"/>
+		<property name="object:explosive:oil-barrels:1" value="602,784"/>
 		<property name="object:ricochet-bullets-item:ricochet-bullets-item:1" value="739,247"/>
 		<property name="spawn:1" value="554,91"/>
 		<property name="spawn:2" value="454,91"/>

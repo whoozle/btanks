@@ -18,6 +18,7 @@
  */
 #include "destructable_object.h"
 #include "resource_manager.h"
+#include "animation_model.h"
 
 class Explosive : public DestructableObject {
 public: 
@@ -35,15 +36,35 @@ Explosive::Explosive() : DestructableObject("explosive-object") {
 }
 
 void Explosive::onBreak() {
+	bool explosion = true;
+
 	if (_variants.has("spawn-missiles")) {
 		for(int i = 0; i < 16; ++i) {
 			v2<float> dir;
 			dir.fromDirection(i, 16);
 			spawn("thrower-missile", "thrower-missile", dir * 8, dir);
 		}
-	} else {
-		spawn("cannon-explosion", "cannon-explosion");
+		explosion = false;
+	} 
+	
+	if (_variants.has("spawn-gas")) {
+		const Animation *a =  ResourceManager.get_const()->getAnimation("smoke-cloud");
+		int dpos_len = (a->tw + a->th) / 8;
+		for(int i = 0; i < 4; ++i) {
+			v2<float> dir;
+			dir.fromDirection((i * 4 + 1) % 16, 16);
+			dir *= dpos_len;
+			spawn("smoke-cloud", "smoke-cloud", dir, dir);
+		}
+		explosion = false;
+	} 
+	if (_variants.has("spawn-mutagen")) {
+		spawn("mutagen-explosion", "mutagen-explosion");
+		explosion = false;
 	}
+	
+	if (explosion)
+		spawn("cannon-explosion", "cannon-explosion");
 }
 
 REGISTER_OBJECT("explosive", Explosive, ());
