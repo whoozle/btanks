@@ -1328,6 +1328,7 @@ void Object::addDamage(Object *from, const int d, const bool emitDeath) {
 	
 	v2<float> pos;
 	getPosition(pos);
+	pos.x += size.x * 0.66f;
 	World->addObject(o, pos);
 	o->setZ(getZ() + 1, true);
 }
