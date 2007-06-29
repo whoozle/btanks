@@ -825,7 +825,7 @@ TRY {
 } CATCH("tick(damaging map)", throw;)	
 
 TRY {
-	if (stuck && !PlayerManager->isClient()) {
+	if (stuck && o.speed != 0 && !PlayerManager->isClient()) {
 			assert(!o.piercing);
 			
 			GET_CONFIG_VALUE("engine.stuck-resolution-steps", int, steps, 24);
@@ -836,6 +836,9 @@ TRY {
 			static const int directions[8] = {4, 3, 5, 0,  2, 6, 1, 7};
 			
 			int dir = o.getDirection();
+			int dirs = o.getDirectionsNumber();
+			if (dirs == 1) //this is temp hack to do not allow trains and other stupid objects to be corrected (and moved by player)
+				goto skip_collision; 
 			
 			v2<int> pos;
 			v2<float> dp;
