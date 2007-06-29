@@ -827,6 +827,43 @@ TRY {
 TRY {
 	if (stuck && !PlayerManager->isClient()) {
 			assert(!o.piercing);
+			
+			GET_CONFIG_VALUE("engine.stuck-resolution-steps", int, steps, 24);
+			GET_CONFIG_VALUE("engine.stuck-resolution-step-size", int, step_size, 8);
+			
+			int a;
+
+			static const int directions[8] = {4, 3, 5, 0,  2, 6, 1, 7};
+			
+			int dir = o.getDirection();
+			
+			v2<int> pos;
+			v2<float> dp;
+			
+			for(a = 0; a < steps; ++a) {
+				for(int d = 0; d < 8; ++d) {
+					dp.fromDirection((dir + directions[d] + 8) % 8, 8);
+					dp *= (a + 1) * step_size;
+					pos = (o.getPosition() + dp).convert<int>();
+
+					float map_im = map.getImpassability(&o, pos, NULL, NULL) / 100.0f;
+					float obj_im = getImpassability(&o, pos, NULL, true);
+					if (obj_im < 1.0f && map_im < 1.0f) 
+						goto found;
+				}
+			}
+		found: 
+			if (a >= steps) {
+				LOG_DEBUG(("%d: %s couldnt escape from this cruel world. committing suicide. good luck in your next life...", 
+					o._id, o.animation.c_str()));
+				o.emit("death", NULL);
+				goto skip_collision;
+			}
+
+			o._interpolation_vector = dp;
+			o._interpolation_progress = 0;
+			
+	/*
 			if (dorc)
 				LOG_DEBUG(("stuck: map: %g, obj: %g", map_im, obj_im));
 			v2<float> object_center;
@@ -864,9 +901,6 @@ TRY {
 				if (d0 < 0) { 
 					goto skip_collision;
 				}
-
-				static const int directions[8] = {0, 4, 3, 5,   2, 6, 1, 7};
-				
 				for(a = 1; a <= n; ++a) {
 					for(d = 0; d < dirs; ++d) {
 						allowed_velocity.fromDirection((directions[d] + d0) % dirs, dirs);
@@ -937,6 +971,7 @@ TRY {
 				o._velocity = allowed_velocity;
 			} else LOG_WARN(("%d:%s:%s: bogus 'stuck' flag!", o.getID(), o.registered_name.c_str(), o.animation.c_str()));
 			//LOG_DEBUG(("map_im: %g, obj_im: %g", map_im, obj_im));
+		*/
 		}
 	skip_collision:;
 		
