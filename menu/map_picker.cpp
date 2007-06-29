@@ -202,8 +202,6 @@ void MapPicker::fillSlots() const {
 		LOG_DEBUG(("after: %s:%s", object.c_str(), animation.c_str()));
 		
 		mrt::toLower(type);
-		if (type == "ai")
-			object = "ai-" + object;
 
 		std::string cm = "ai";
 		if (!split) {
