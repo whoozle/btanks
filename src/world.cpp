@@ -1008,9 +1008,6 @@ TRY {
 	if (drifting && obj_im < dim)
 		obj_im = dim;
 	
-	if (result_im < 1.0f && !stuck) 
-		o._latest_good_position = o._position.convert<int>();
-	
 	new_pos = (o._position + dpos).convert<int>();
 
 	if (!o.piercing) {
