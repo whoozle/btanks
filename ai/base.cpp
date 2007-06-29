@@ -143,6 +143,8 @@ void Base::calculate(Object *object, const float dt) {
 	if (!active()) {
 		if (object->isDriven()) 
 			object->calculateWayVelocity();
+		else 
+			object->_velocity.clear();
 		object->updateStateFromVelocity();
 		return;
 	}
