@@ -35,7 +35,15 @@ Explosive::Explosive() : DestructableObject("explosive-object") {
 }
 
 void Explosive::onBreak() {
-	spawn("cannon-explosion", "cannon-explosion");
+	if (_variants.has("spawn-missiles")) {
+		for(int i = 0; i < 16; ++i) {
+			v2<float> dir;
+			dir.fromDirection(i, 16);
+			spawn("thrower-missile", "thrower-missile", dir * 8, dir);
+		}
+	} else {
+		spawn("cannon-explosion", "cannon-explosion");
+	}
 }
 
 REGISTER_OBJECT("explosive", Explosive, ());
