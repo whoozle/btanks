@@ -724,7 +724,8 @@
 	<object class="spawn-shield" hp="1000" impassability="1" z="150" />
 	<object class="traffic-lights" hp="15" z="150" />
 	<object class="stack" hp="5" z="150" impassability="1" />
-	<object class="oil-barrels" hp="10" impassability="1" z="150" />
+	<object class="explosive" hp="10" impassability="1" z="150" />
+	<object class="oil-barrels" parent="explosive" />
 	<object class="road-sign" hp="10" impassability="1" z="150" />
 	<object class="fire" z="-15" impassability="0" pierceable="true" />
 	<object class="static-corpse" impassability="0" pierceable="true" z="-18" />
