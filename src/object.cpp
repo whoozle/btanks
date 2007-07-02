@@ -878,14 +878,14 @@ const int Object::getTargetPosition(v2<float> &relative_position, const std::set
 const bool Object::checkDistance(const v2<float> &_map1, const v2<float>& map2, const bool use_pierceable_fixes) const {
 	const v2<int> pfs = Map->getPathTileSize();
 	const Matrix<int> &matrix = Map->getImpassabilityMatrix(getZ());
-	const Matrix<int> *pmatrix = &Map->getImpassabilityMatrix(getZ(), true);
+	const Matrix<int> *pmatrix = use_pierceable_fixes? &Map->getImpassabilityMatrix(getZ(), true): NULL;
 
 	v2<float> map1 = _map1;
 	v2<float> dp (map2.x - map1.x, map2.y - map1.y);
 	if (dp.is0())
 		return true;
 	
-	dp.normalize(pfs.x);
+	dp.normalize((pfs.x + pfs.y) / 2);
 			
 	//LOG_DEBUG(("%g:%g -> %g:%g (+%g:+%g)", map1.x, map1.y, map2.x, map2.y, dp.x, dp.y));
 	do {
