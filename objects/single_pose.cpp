@@ -79,3 +79,4 @@ DLLEXPORT void btanks_objects_dummy_exp_method(void) {}
 REGISTER_OBJECT("single-pose", SinglePose, ("main"));
 REGISTER_OBJECT("broken-object", SinglePose, ("broken"));
 REGISTER_OBJECT("outline", SinglePose, ("main"));
+REGISTER_OBJECT("eternal-flame", SinglePose, ("burn"));
