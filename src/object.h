@@ -132,6 +132,8 @@ public:
 
 	const bool checkDistance(const v2<float> &map1, const v2<float>& map2, const bool use_pierceable_fixes) const;
 
+	const bool aiDisabled() const;
+
 protected:
 
 	//pathfinding
@@ -192,8 +194,6 @@ protected:
 	const sdlx::Surface * getSurface() const;
 	const Matrix<int> &getImpassabilityMatrix() const;
 	
-	const bool aiDisabled() const;
-
 private: 
 //pathfinding stuff
 	void close(const v2<int>& vertex); 
