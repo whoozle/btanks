@@ -4,7 +4,16 @@
 
 using namespace sdlx;
 
+const std::string Module::mangle(const std::string &name) {
+#ifdef WIN32
+	return name + ".dll";	
+#else 
+	return "lib" + name + ".so";
+#endif
+}
+
 Module::Module() : handle(NULL) {}
+
 void Module::load(const std::string &name) {
 	unload();
 	handle = SDL_LoadObject(name.c_str());

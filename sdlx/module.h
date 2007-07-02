@@ -8,6 +8,8 @@ namespace sdlx {
 
 class SDLXAPI Module {
 public: 
+	static const std::string mangle(const std::string &name);
+
 	Module();
 	void load(const std::string &name);
 	void *sym(const std::string &name) const;
