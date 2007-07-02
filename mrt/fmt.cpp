@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 #include "fmt.h"
+#include "chunk.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -27,32 +28,45 @@
 #	if !defined vsnprintf
 #		define vsnprintf _vsnprintf
 #	endif
-
+/*
 #	include <malloc.h>
 #	if !defined alloca
 #		define alloca _alloca
 #	endif
+*/
 
 #endif
 
 using namespace mrt;
 
-#define FORMAT_BUFFER_SIZE 4096
+#define FORMAT_BUFFER_SIZE 1024
 
 //#include "logger.h"
 
 const std::string mrt::formatString(const char *fmt, ...) {
-	int size = FORMAT_BUFFER_SIZE;
-	char *buf;
 	va_list ap;
 
+	//try static buffer on the stack to avoid malloc calls
+	char static_buf[FORMAT_BUFFER_SIZE];
+
+    va_start(ap, fmt);    
+   	int r = vsnprintf (static_buf, FORMAT_BUFFER_SIZE, fmt, ap);
+    va_end(ap);
+
+    if (r > -1 && r < FORMAT_BUFFER_SIZE) 
+   		return std::string(static_buf, r);
+
+	int size = FORMAT_BUFFER_SIZE * 2;
+
+	mrt::Chunk buf;
+
     while(1) {
-    	buf = (char *)alloca(size);
+		buf.setSize(size);
 	    va_start(ap, fmt);    
-    	int r = vsnprintf (buf, size - 1, fmt, ap);
+    	int r = vsnprintf ((char *)buf.getPtr(), size, fmt, ap);
 	    va_end(ap);
-	    if (r > -1 && r <= size) 
-    		return std::string(buf, r);
+	    if (r > -1 && r < size) 
+    		return std::string((char *)buf.getPtr(), r);
     	size *= 2;
     }
 }
