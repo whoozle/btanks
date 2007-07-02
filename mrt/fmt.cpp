@@ -50,10 +50,10 @@ const std::string mrt::formatString(const char *fmt, ...) {
 	char static_buf[FORMAT_BUFFER_SIZE];
 
     va_start(ap, fmt);    
-   	int r = vsnprintf (static_buf, FORMAT_BUFFER_SIZE, fmt, ap);
+   	int r = vsnprintf (static_buf, FORMAT_BUFFER_SIZE - 1, fmt, ap);
     va_end(ap);
 
-    if (r > -1 && r < FORMAT_BUFFER_SIZE) 
+    if (r > -1 && r <= FORMAT_BUFFER_SIZE) 
    		return std::string(static_buf, r);
 
 	int size = FORMAT_BUFFER_SIZE * 2;
@@ -63,9 +63,9 @@ const std::string mrt::formatString(const char *fmt, ...) {
     while(true) {
 		buf.setSize(size);
 	    va_start(ap, fmt);    
-    	int r = vsnprintf ((char *)buf.getPtr(), size, fmt, ap);
+    	int r = vsnprintf ((char *)buf.getPtr(), size - 1, fmt, ap);
 	    va_end(ap);
-	    if (r > -1 && r < size) 
+	    if (r > -1 && r <= size) 
     		return std::string((char *)buf.getPtr(), r);
     	size *= 2;
     }
