@@ -183,14 +183,20 @@ public:
 		float range = getWeaponRange(_object);
 		//LOG_DEBUG(("range = %g", range));
 
-		v2<float> pos, vel;
-		if (getNearest(_targets, range, pos, vel)) {
-			_state.fire = true;
-			_direction = pos;
-			_direction.normalize();
-			setDirection(_direction.getDirection(getDirectionsNumber()) - 1);
-			
-		} else _state.fire = false;
+		_state.fire = false;
+		std::set<const Object *> objects;
+		enumerateObjects(objects, range, &_targets);
+		for(std::set<const Object *>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
+			const Object *target = *i;
+			if (hasSameOwner(target) || target->aiDisabled())
+				continue;
+			if (checkDistance(getPosition(), target->getPosition(), true)) {
+				_state.fire = true;
+				_direction = getRelativePosition(target);
+				_direction.normalize();
+				setDirection(_direction.getDirection(getDirectionsNumber()) - 1);
+			}
+		}
 	}
 private: 
 	Alarm _reaction; 
