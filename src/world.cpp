@@ -1457,28 +1457,6 @@ TRY {
 
 #define PIERCEABLE_PAIR(o1, o2) ((o1->piercing && o2->pierceable) || (o2->piercing && o1->pierceable))
 
-const Object* IWorld::getNearestObject(const Object *obj, const std::string &classname) const {
-	const Object *result = NULL;
-	float distance = std::numeric_limits<float>::infinity();
-	
-	for(ObjectMap::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
-		const Object *o = i->second;
-		//LOG_DEBUG(("%s is looking for %s. found: %s", obj->classname.c_str(), classname.c_str(), o->classname.c_str()));
-		if (o->_id == obj->_id || o->classname != classname || 
-			PIERCEABLE_PAIR(obj, o) || !ZBox::sameBox(obj->getZ(), o->getZ())
-			|| o->hasSameOwner(obj))
-			continue;
-
-		v2<float> cpos = o->_position + o->size / 2;
-		float d = obj->_position.quick_distance(cpos);
-		if (d < distance) {
-			distance = d;
-			result = o;
-		}
-	}
-	return result;
-}
-
 const Object* IWorld::getNearestObject(const Object *obj, const std::set<std::string> &classnames) const {
 	if (classnames.empty())
 		return NULL;
@@ -1534,24 +1512,6 @@ const Object* IWorld::getNearestObject(const Object *obj, const std::set<std::st
 		}
 	}
 	return result;
-}
-
-
-const bool IWorld::getNearest(const Object *obj, const std::string &classname, v2<float> &position, v2<float> &velocity, Way * way) const {
-	position.clear();
-	velocity.clear();
-	const Object *target = getNearestObject(obj, classname);
-	
-	if (target == NULL) 
-		return false;
-
-	position = target->_position + target->size / 2;
-	velocity = target->_velocity;
-	
-	position -= obj->_position + obj->size / 2;
-	if (way == NULL)
-		return true;
-	return old_findPath(obj, position, *way, target);
 }
 
 const bool IWorld::getNearest(const Object *obj, const std::set<std::string> &classnames, v2<float> &position, v2<float> &velocity) const {

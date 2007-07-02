@@ -95,36 +95,18 @@ Object* Object::spawn(const std::string &classname, const std::string &animation
 	return World->spawn(this, classname, animation, dpos, vel, z);
 }
 
-
-const Object* Object::getNearestObject(const std::string &classname) const {
-	if (aiDisabled())
-		return NULL;
-	return World->getNearestObject(this, classname);
-}
-
-const Object* Object::getNearestObject(const std::set<std::string> &classnames) const {
-	if (aiDisabled())
-		return NULL;
-	return World->getNearestObject(this, classnames);
-}
-
-const bool Object::getNearest(const std::string &cl, v2<float> &position, v2<float> &velocity, Way * way) const {
-	if (aiDisabled())
-		return false;
-	return World->getNearest(this, cl, position, velocity, way);
-}
-
-const bool Object::getNearest(const std::set<std::string> &classnames, v2<float> &position, v2<float> &velocity) const {
-	if (aiDisabled())
-		return false;
-	return World->getNearest(this, classnames, position, velocity);
-}
-
 const bool Object::getNearest(const std::set<std::string> &classnames, const float range, v2<float> &position, v2<float> &velocity) const {
 	if (aiDisabled())
 		return false;
 	
 	return World->getNearest(this, classnames, range, position, velocity);
+}
+
+const Object * Object::getNearestObject(const std::set<std::string> &classnames, const float range) const {
+	if (aiDisabled())
+		return NULL;
+	
+	return World->getNearestObject(this, classnames, range);
 }
 
 
