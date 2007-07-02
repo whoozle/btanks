@@ -195,6 +195,7 @@ public:
 				_direction = getRelativePosition(target);
 				_direction.normalize();
 				setDirection(_direction.getDirection(getDirectionsNumber()) - 1);
+				break;
 			}
 		}
 	}
