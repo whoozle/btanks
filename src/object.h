@@ -130,6 +130,8 @@ public:
 	void getImpassabilityMatrix(Matrix<int> &matrix, const Object *dst) const;
 	void enumerateObjects(std::set<const Object *> &o_set, const float range, const std::set<std::string> *classfilter) const;
 
+	const bool checkDistance(const v2<float> &map1, const v2<float>& map2, const bool use_pierceable_fixes) const;
+
 protected:
 
 	//pathfinding

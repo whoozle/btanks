@@ -893,7 +893,11 @@ const int Object::getTargetPosition(v2<float> &relative_position, const std::set
 	return getTargetPosition(relative_position, targets, range);
 }
 
-static const bool check_distance(const v2<float> &_map1, const v2<float>& map2, const Matrix<int> &matrix, const Matrix<int> *pmatrix, const v2<int>& pfs) {
+const bool Object::checkDistance(const v2<float> &_map1, const v2<float>& map2, const bool use_pierceable_fixes) const {
+	const v2<int> pfs = Map->getPathTileSize();
+	const Matrix<int> &matrix = Map->getImpassabilityMatrix(getZ());
+	const Matrix<int> *pmatrix = &Map->getImpassabilityMatrix(getZ(), true);
+
 	v2<float> map1 = _map1;
 	v2<float> dp (map2.x - map1.x, map2.y - map1.y);
 	if (dp.is0())
@@ -922,13 +926,13 @@ const int Object::getTargetPosition(v2<float> &relative_position, const std::set
 	if (aiDisabled())
 		return -1;
 
+	const v2<int> pfs = Map->getPathTileSize();
 	const int dirs = _directions_n;
+	const Matrix<int> &matrix = getImpassabilityMatrix();
 	
 	std::set<const Object *> objects;
 	World->enumerateObjects(objects, this, range, &targets);
 	
-	v2<int> pfs = Map->getPathTileSize();
-	const Matrix<int> &matrix = getImpassabilityMatrix(), pmatrix = Map->getImpassabilityMatrix(getZ(), true);
 //		v2<int> map_pos = (pos + getPosition()).convert<int>() / pfs;
 
 	int result_dir = -1;
@@ -968,11 +972,11 @@ const int Object::getTargetPosition(v2<float> &relative_position, const std::set
 				//checking map projection
 				v2<float> map1 = pos + getPosition();
 				v2<float> map2 = o->getPosition();
-				if (!check_distance(map1, map2, matrix, &pmatrix, pfs))
+				if (!checkDistance(map1, map2, true))
 					continue;
 				map1 = getPosition();
 				map2 = pos + getPosition();
-				if (!check_distance(map1, map2, matrix, NULL, pfs))
+				if (!checkDistance(map1, map2, false))
 					continue;
 			} 
 				
