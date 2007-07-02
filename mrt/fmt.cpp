@@ -60,7 +60,7 @@ const std::string mrt::formatString(const char *fmt, ...) {
 
 	mrt::Chunk buf;
 
-    while(1) {
+    while(true) {
 		buf.setSize(size);
 	    va_start(ap, fmt);    
     	int r = vsnprintf ((char *)buf.getPtr(), size, fmt, ap);
