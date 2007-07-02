@@ -24,7 +24,7 @@ else:
 
 sdlx_sources = 	['cursor.cpp', 'sdl_ex.cpp', 'surface.cpp', 'system.cpp', 'joystick.cpp', 'ttf.cpp', 
 	'thread.cpp', 'mutex.cpp', 'semaphore.cpp', 'color.cpp',
-	'glSDL/glSDL.c', c_map, 'font.cpp', 'timer.cpp', 
+	'glSDL/glSDL.c', c_map, 'font.cpp', 'timer.cpp', 'module.cpp', 
 	]
 
 sdlx = env.SharedLibrary('sdlx', sdlx_sources, LIBS=libs)
