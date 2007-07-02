@@ -86,6 +86,7 @@ public:
 	inline void getPosition(v2<float> &position) const { position = _position; }
 	inline void getPosition(v2<int> &position) const { position = _position.convert<int>(); }
 
+	inline const v2<float> getCenterPosition() const { return _position + size / 2; }
 	inline void getCenterPosition(v2<float> &position) const { position = _position; position += size / 2; }
 	inline void getCenterPosition(v2<int> &position) const { position = (_position + size / 2).convert<int>();  }
 
