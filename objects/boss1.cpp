@@ -21,7 +21,6 @@
 #include "object.h"
 #include "ai/waypoints.h"
 #include "alarm.h"
-#include "world.h"
 
 class Boss1 : public Object, public ai::Waypoints {
 public: 
@@ -84,7 +83,7 @@ const int Boss1::getTargetPosition2(const std::set<std::string> &targets, const 
 	const int dirs = getDirectionsNumber();
 	
 	std::set<const Object *> objects;
-	World->enumerateObjects(objects, this, range, &targets);
+	enumerateObjects(objects, range, &targets);
 	for(std::set<const Object *>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
 		const Object *o = *i;
 		if (hasSameOwner(o))
