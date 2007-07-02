@@ -11,6 +11,7 @@ public:
 	Module();
 	void load(const std::string &name);
 	void *sym(const std::string &name) const;
+	void leak();
 	void unload();
 	~Module();
 private:

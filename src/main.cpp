@@ -23,9 +23,6 @@
 #include "version.h"
 #include <stdlib.h>
 
-DLLIMPORT void btanks_objects_dummy_exp_method(void);
-
-
 #ifdef WIN32
 #	include "sdlx/SDL_main.h"
 #	define WIN32_LEAN_AND_MEAN
@@ -42,8 +39,9 @@ int main(int argc, char *argv[]) {
 	try {
 		LOG_NOTICE(("starting up... version: %s", getVersion().c_str()));
 		mrt::install_crash_handlers();
-		btanks_objects_dummy_exp_method();
 		
+		Game->loadPlugins();
+
 		Game->init(argc, argv);
 		Game->run();
 		Game->deinit();

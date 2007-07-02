@@ -69,7 +69,9 @@ public:
 	
 	void resetLoadingBar(const int total);
 	void notifyLoadingBar(const int progress = 1);
-	
+
+	static void loadPlugins();
+
 private:
 	void onTick(const float dt);
 	bool onKey(const SDL_keysym sym, const bool pressed);

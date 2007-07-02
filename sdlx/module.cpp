@@ -28,3 +28,7 @@ void Module::unload() {
 Module::~Module() {
 	unload();
 }
+
+void Module::leak() {
+	handle = NULL;
+}

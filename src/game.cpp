@@ -742,3 +742,16 @@ void IGame::onMap() {
 	if (!PlayerManager->isClient())
 		_cheater = new Cheater;	
 }
+
+#include "sdlx/module.h"
+
+void IGame::loadPlugins() {
+	IFinder::FindResult path;
+	Finder->findAll(path, "../bt_objects.dll");
+	for(IFinder::FindResult::const_iterator i = path.begin(); i != path.end(); ++i) {
+		LOG_DEBUG(("loading plugin from %s", i->second.c_str()));
+		sdlx::Module module;
+		module.load(i->second);
+		module.leak();
+	}
+}
