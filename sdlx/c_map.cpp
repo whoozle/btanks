@@ -35,84 +35,50 @@ using namespace sdlx;
 
 CollisionMap::CollisionMap() : _empty(true), _full(false), _w(0), _h(0), _data() {}
 
-static inline const unsigned int get_byte(
-	const unsigned char *base, const int pos, const int size, const int bits) 
-{
-	if (pos >= size)
-		return false;
-	if (bits == 0) {
-		return base[pos];
-	}
-	
-	int mask1 = (1 << (8 - bits)) - 1;
-	unsigned int r = (base[pos] & mask1) << bits;
-	if (pos + 1 >= size)
-		return r;
-	
-	r |= (base[pos + 1] & ~mask1) >> (8 - bits);
-	return r;
+
+//DO NOT USE THIS FUNCTION FOR SIGNED TYPES! :(
+template <typename T> 
+static const bool type_collide(T* &ptr1, const int shift1, T* &ptr2, const int shift2, const T mask = ~(T)0) {
+	T a = (shift1 != 0)?((*ptr1++ << shift1) | (*ptr1 >> (sizeof(T) * 8 - shift1))):*ptr1++;
+	T b = (shift2 != 0)?((*ptr2++ << shift2) | (*ptr2 >> (sizeof(T) * 8 - shift2))):*ptr2++;
+	return (mask & a & b) != 0;
 }
 
-
 static inline const bool bitline_collide(
- const unsigned char *base1, const int size1, const int pos1, 
- const unsigned char *base2, const int size2, const int pos2, 
+ const unsigned char *base1, const int size1, const int x1, 
+ const unsigned char *base2, const int size2, const int x2, 
  int line_size) {
-	if (size1 <= 0 || size2 <= 0) 
+	if (size1 <= 0 || size2 <= 0 || line_size <= 0) 
 		return false;
 	
-	const int bf1 = pos1 % 8, bf2 = pos2 % 8;
-	const int shift = bf2 - bf1;
-
-	if (shift < 0) {
-		return bitline_collide(base2, size2, pos2, base1, size1, pos1, line_size);
-	} 
-
-	const int pos1_aligned = pos1 / 8 + (bf1?1:0), pos2_aligned = pos2 / 8 + (bf2?1:0);
+	const int shift1 = x1 % 8, pos1 = x1 / 8;
+	const int shift2 = x2 % 8, pos2 = x2 / 8;
 	
-	const int mask1 = (1 << (8 - bf1)) - 1;
-	const int last_b1 = (8 + line_size - bf1) % 8;
-	const int mask2 = ~((1 << (8 - last_b1)) - 1);
+	assert((line_size - 1) / 8 + 1 <= size1);
+	assert((line_size - 1) / 8 + 1 <= size2);
 
-	int size1_aligned = (line_size - bf1) / 8;
-	int size2_aligned = (line_size - bf2) / 8;
-	if (size1_aligned > 0 && bf1 != 0)
-		--size1_aligned;
-	if (size2_aligned > 0 && bf2 != 0)
-		--size2_aligned;
+	unsigned int *iptr1 = (unsigned int *) (base1 + pos1);
+	unsigned int *iptr2 = (unsigned int *) (base2 + pos2);
 
-	//LOG_DEBUG(("%d:%d %d (+%d:%d) masks: %x:%x, sizes: %d:%d", pos1, pos2, line_size, bf1, bf2, mask1 & 0xff, mask2 & 0xff, size1_aligned, size2_aligned));
-	
-	if (line_size < 8) {
-		return mask1 & mask2 & base1[pos1 / 8] & get_byte(base2, pos2 / 8, size2, shift);
-	}
-
-	if (bf1 != 0) {
-		if (mask1 & base1[pos1 / 8] & get_byte(base2, pos2 / 8, size2, shift)) {
-			//LOG_DEBUG(("first bits collide"));
+	for(; line_size >= 8 * sizeof(int); line_size -= 8 * sizeof(int)) {
+		if (type_collide(iptr1, shift1, iptr2, shift2))
 			return true;
-		}
 	}
 
-	const int size = math::min(size1_aligned, size2_aligned);
-		
-	for(int i = 0; i < size; ++i) {
-		if (pos1_aligned + i >= size1 || pos2_aligned + i >= size2)
-			break;
-		if (base1[pos1_aligned + i] & get_byte(base2, pos2_aligned + i, size2, shift)) {
-			//LOG_DEBUG(("middle bits collide"));
+	Uint8 *ptr1 = (Uint8 *) iptr1;
+	Uint8 *ptr2 = (Uint8 *) iptr2;
+
+	for(; line_size >= 8 * sizeof(Uint8); line_size -= 8 * sizeof(Uint8)) {
+		if (type_collide(ptr1, shift1, ptr2, shift2))
 			return true;
-		}
 	}
-	
-	if (last_b1 == 0 || size1_aligned >= size1 || size2_aligned >= size2)
-		return false;
-	//LOG_DEBUG(("last_b1 %d", last_b1));
-		
-	const bool r = mask2 & base1[pos1_aligned + size1_aligned] & get_byte(base2, pos2_aligned + size2_aligned, size2, shift);
-//	if (r) 
-//		LOG_DEBUG(("last bits collide"));
-	return r;
+
+	if (line_size == 0)
+		return false; //no collision, line_size aligned by 8 bits.
+
+	const Uint8 mask = ~((1 << (8 - line_size)) - 1);
+	//LOG_DEBUG(("a: 0x%x, b: 0x%x, line_size: %d, mask: 0x%x", a, b, line_size, mask));
+	return type_collide(ptr1, shift1, ptr2, shift2, mask);
 }
 
 const bool CollisionMap::collides(const sdlx::Rect &src, const CollisionMap *other, const sdlx::Rect &other_src, const int bx, const int by, const bool hidden_by_other) const {
