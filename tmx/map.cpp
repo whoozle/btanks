@@ -1218,7 +1218,7 @@ TRY {
 				for(int y = 0; y < s->getHeight(); ++y) 
 					for(int x = 0; x < s->getWidth(); ++x) {
 						s->getRGBA(s->getPixel(x, y), r, g, b, a);
-						if (a != 255)
+						if ( !((x & 1) && (y & 1)) && a != 255)
 							s->putPixel(x, y, s->mapRGBA(0,0,0,0));
 					}
 			}
