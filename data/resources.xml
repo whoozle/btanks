@@ -674,7 +674,7 @@
 	<object class="machinegunner-bullet" speed="1100" mass="2" ttl="1" hp="2" z="210" />
 	<object class="dirt-bullet" speed="600" mass="1" ttl="0.5" hp="0" z="-10" />
 	<object class="cannon-bullet" speed="600" mass="1" ttl="1" hp="0" z="-10" />
-	<object class="shilka-bullet" speed="1200" mass="1" piercing="true" ttl="1" hp="10" z="-10" />
+	<object class="shilka-bullet" speed="1200" mass="1" piercing="true" ttl="1" hp="10" z="210" />
 	<object class="mortar-bullet" speed="600" mass="1" ttl="0.7" hp="0" z="210" />
 	<object class="helicopter-bullet" speed="1200" mass="1" piercing="true" ttl="1" hp="10" z="-10" />
 
