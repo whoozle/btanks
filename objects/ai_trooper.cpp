@@ -196,7 +196,7 @@ public:
 				continue;
 			
 			v2<float> dpos = getRelativePosition(target);
-			if (checkDistance(getCenterPosition(), target->getCenterPosition(), true)) {
+			if (checkDistance(getCenterPosition(), target->getCenterPosition(), getZ(), true)) {
 				if (result == NULL || dpos.quick_length() < dist) {
 					result = target;
 					dist = dpos.quick_length();
