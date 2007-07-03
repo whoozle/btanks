@@ -881,25 +881,29 @@ const bool Object::checkDistance(const v2<float> &_map1, const v2<float>& map2, 
 	const Matrix<int> *pmatrix = use_pierceable_fixes? &Map->getImpassabilityMatrix(getZ(), true): NULL;
 
 	v2<float> map1 = _map1;
-	v2<float> dp (map2.x - map1.x, map2.y - map1.y);
+	v2<float> dp = map2 - map1;
 	if (dp.is0())
 		return true;
 	
 	dp.normalize((pfs.x + pfs.y) / 2);
 			
-	//LOG_DEBUG(("%g:%g -> %g:%g (+%g:+%g)", map1.x, map1.y, map2.x, map2.y, dp.x, dp.y));
-	do {
-		v2<float> dv = (map2 - map1) * dp; 
-		if (dv.x < 0 || dv.y < 0) 
-			break;
-		map1 += dp;
+//	LOG_DEBUG(("%g:%g -> %g:%g (%+g:%+g)", map1.x, map1.y, map2.x, map2.y, dp.x, dp.y));
+	v2<float> dv = (map2 - map1) * dp;
+	while(dv.x >= 0 && dv.y >= 0) {
 		v2<int> map_pos = map1.convert<int>() / pfs;
-		//LOG_DEBUG(("%dx%d: %d", map_pos.x, map_pos.y, matrix.get(map_pos.y, map_pos.x)));
+		/*
+		LOG_DEBUG(("(%d,%d): %d", map_pos.x, map_pos.y, matrix.get(map_pos.y, map_pos.x)));
+		if (pmatrix) 
+			LOG_DEBUG(("         %d", pmatrix->get(map_pos.y, map_pos.x)));
+		*/
 		if (matrix.get(map_pos.y, map_pos.x) < 0) {
-			if (pmatrix == NULL || pmatrix->get(map_pos.x, map_pos.y) >= 0)
+			if (pmatrix == NULL || pmatrix->get(map_pos.y, map_pos.x) >= 0)
 				return false;
 		}
-	} while(true);
+		
+		map1 += dp;
+		dv = (map2 - map1) * dp;
+	}
 
 	return true;
 }
