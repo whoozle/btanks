@@ -42,7 +42,8 @@ void Explosive::onBreak() {
 		for(int i = 0; i < 16; ++i) {
 			v2<float> dir;
 			dir.fromDirection(i, 16);
-			spawn("thrower-missile", "thrower-missile", dir * 8, dir);
+			Object *o = spawn("thrower-missile", "thrower-missile", dir * 8, dir);
+			o->disown();
 		}
 		explosion = false;
 	} 
