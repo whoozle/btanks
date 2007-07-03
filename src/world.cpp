@@ -1457,31 +1457,8 @@ TRY {
 
 #define PIERCEABLE_PAIR(o1, o2) ((o1->piercing && o2->pierceable) || (o2->piercing && o1->pierceable))
 
-const Object* IWorld::getNearestObject(const Object *obj, const std::set<std::string> &classnames) const {
-	if (classnames.empty())
-		return NULL;
-	
-	const Object *result = NULL;
-	float distance = std::numeric_limits<float>::infinity();
-	
-	for(ObjectMap::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
-		const Object *o = i->second;
-		//LOG_DEBUG(("%s is looking for %s. found: %s", obj->classname.c_str(), classname.c_str(), o->classname.c_str()));
-		if (o->_id == obj->_id || PIERCEABLE_PAIR(obj, o) || !ZBox::sameBox(obj->getZ(), o->getZ()) ||
-			classnames.find(o->classname) == classnames.end() || o->hasSameOwner(obj) )
-			continue;
 
-		v2<float> cpos = o->_position + o->size / 2;
-		float d = obj->_position.quick_distance(cpos);
-		if (d < distance) {
-			distance = d;
-			result = o;
-		}
-	}
-	return result;
-}
-
-const Object* IWorld::getNearestObject(const Object *obj, const std::set<std::string> &classnames, const float range) const {
+const Object* IWorld::getNearestObject(const Object *obj, const std::set<std::string> &classnames, const float range, const bool check_shooting_range) const {
 	if (classnames.empty())
 		return NULL;
 
@@ -1504,6 +1481,9 @@ const Object* IWorld::getNearestObject(const Object *obj, const std::set<std::st
 			classnames.find(o->classname) == classnames.end() || o->hasSameOwner(obj))
 			continue;
 
+		if (check_shooting_range && !Object::checkDistance(obj->getCenterPosition(), o->getCenterPosition(), o->getZ(), true))	
+			continue;
+
 		v2<float> cpos = o->_position + o->size / 2;
 		float d = obj->_position.quick_distance(cpos);
 		if (d < range2 && d < distance) {
@@ -1514,25 +1494,10 @@ const Object* IWorld::getNearestObject(const Object *obj, const std::set<std::st
 	return result;
 }
 
-const bool IWorld::getNearest(const Object *obj, const std::set<std::string> &classnames, v2<float> &position, v2<float> &velocity) const {
+const bool IWorld::getNearest(const Object *obj, const std::set<std::string> &classnames, const float range, v2<float> &position, v2<float> &velocity, const bool check_shooting_range) const {
 	position.clear();
 	velocity.clear();
-	const Object *target = getNearestObject(obj, classnames);
-	
-	if (target == NULL) 
-		return false;
-
-	position = target->_position + target->size / 2;
-	velocity = target->_velocity;
-	
-	position -= obj->_position + obj->size / 2;
-	return true;
-}
-
-const bool IWorld::getNearest(const Object *obj, const std::set<std::string> &classnames, const float range, v2<float> &position, v2<float> &velocity) const {
-	position.clear();
-	velocity.clear();
-	const Object *target = getNearestObject(obj, classnames, range);
+	const Object *target = getNearestObject(obj, classnames, range, check_shooting_range);
 	
 	if (target == NULL) 
 		return false;

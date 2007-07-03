@@ -72,7 +72,7 @@ void Barrack::tick(const float dt) {
 			Config->get("objects." + registered_name + ".targeting-range", tr, 500);
 
 			v2<float> pos, vel;
-			if (!getNearest(targets, tr, pos, vel))
+			if (!getNearest(targets, tr, pos, vel, false))
 				return; //skip spawning
 		}
 		

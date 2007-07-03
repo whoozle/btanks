@@ -62,7 +62,7 @@ void Cannon::calculate(const float dt) {
 	}
 	static float range = getWeaponRange("cannon-bullet");
 	v2<float> pos, vel;
-	if (getNearest(targets, range, pos, vel)) {
+	if (getNearest(targets, range, pos, vel, true)) {
 		pos.normalize();
 		setDirection(pos.getDirection(getDirectionsNumber()) - 1);
 		_direction = pos;

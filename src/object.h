@@ -130,7 +130,7 @@ public:
 	void getImpassabilityMatrix(Matrix<int> &matrix, const Object *dst) const;
 	void enumerateObjects(std::set<const Object *> &o_set, const float range, const std::set<std::string> *classfilter) const;
 
-	const bool checkDistance(const v2<float> &map1, const v2<float>& map2, const bool use_pierceable_fixes) const;
+	static const bool checkDistance(const v2<float> &map1, const v2<float>& map2, const int z, const bool use_pierceable_fixes);
 
 	const bool aiDisabled() const;
 
@@ -179,8 +179,8 @@ protected:
 	const bool old_findPath(const v2<float> &position, Way &way) const;
 	const bool old_findPath(const Object *target, Way &way) const;
 
-	const bool getNearest(const std::set<std::string> &classnames, const float range, v2<float> &position, v2<float> &velocity) const;
-	const Object * getNearestObject(const std::set<std::string> &classnames, const float range) const;
+	const bool getNearest(const std::set<std::string> &classnames, const float range, v2<float> &position, v2<float> &velocity, const bool check_shooting_range) const;
+	const Object * getNearestObject(const std::set<std::string> &classnames, const float range, const bool check_shooting_range) const;
 	
 	void setWay(const Way & way);
 	const bool isDriven() const;

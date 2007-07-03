@@ -165,7 +165,7 @@ void Zombie::calculate(const float dt) {
 	GET_CONFIG_VALUE("objects.zombie.targeting-range(alerted)", int, tra, 900);
 	int tt = (hp < max_hp)?tra:trs;
 	
-	if (getNearest(_targets, tt, _velocity, vel)) {
+	if (getNearest(_targets, tt, _velocity, vel, false)) {
 		if (_velocity.quick_length() > size.quick_length())
 			_state.fire = false;
 		

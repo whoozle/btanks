@@ -95,18 +95,18 @@ Object* Object::spawn(const std::string &classname, const std::string &animation
 	return World->spawn(this, classname, animation, dpos, vel, z);
 }
 
-const bool Object::getNearest(const std::set<std::string> &classnames, const float range, v2<float> &position, v2<float> &velocity) const {
+const bool Object::getNearest(const std::set<std::string> &classnames, const float range, v2<float> &position, v2<float> &velocity, const bool check_shooting_range) const {
 	if (aiDisabled())
 		return false;
 	
-	return World->getNearest(this, classnames, range, position, velocity);
+	return World->getNearest(this, classnames, range, position, velocity, check_shooting_range);
 }
 
-const Object * Object::getNearestObject(const std::set<std::string> &classnames, const float range) const {
+const Object * Object::getNearestObject(const std::set<std::string> &classnames, const float range, const bool check_shooting_range) const {
 	if (aiDisabled())
 		return NULL;
 	
-	return World->getNearestObject(this, classnames, range);
+	return World->getNearestObject(this, classnames, range, check_shooting_range);
 }
 
 
@@ -875,10 +875,10 @@ const int Object::getTargetPosition(v2<float> &relative_position, const std::set
 	return getTargetPosition(relative_position, targets, range);
 }
 
-const bool Object::checkDistance(const v2<float> &_map1, const v2<float>& map2, const bool use_pierceable_fixes) const {
+const bool Object::checkDistance(const v2<float> &_map1, const v2<float>& map2, const int z, const bool use_pierceable_fixes) {
 	const v2<int> pfs = Map->getPathTileSize();
-	const Matrix<int> &matrix = Map->getImpassabilityMatrix(getZ());
-	const Matrix<int> *pmatrix = use_pierceable_fixes? &Map->getImpassabilityMatrix(getZ(), true): NULL;
+	const Matrix<int> &matrix = Map->getImpassabilityMatrix(z);
+	const Matrix<int> *pmatrix = use_pierceable_fixes? &Map->getImpassabilityMatrix(z, true): NULL;
 
 	v2<float> map1 = _map1;
 	v2<float> dp = map2 - map1;
@@ -958,11 +958,11 @@ const int Object::getTargetPosition(v2<float> &relative_position, const std::set
 				//checking map projection
 				v2<float> map1 = pos + getPosition();
 				v2<float> map2 = o->getPosition();
-				if (!checkDistance(map1, map2, true))
+				if (!checkDistance(map1, map2, getZ(), true))
 					continue;
 				map1 = getPosition();
 				map2 = pos + getPosition();
-				if (!checkDistance(map1, map2, false))
+				if (!checkDistance(map1, map2, getZ(), false))
 					continue;
 			} 
 				
