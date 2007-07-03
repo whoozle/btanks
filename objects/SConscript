@@ -25,4 +25,4 @@ sources = [
 ]
 
 bt_obj = env.SharedLibrary('bt_objects', sources, LIBS=libs)
-InstallAs('#', bt_obj[0])
+Install('#', bt_obj[0])
