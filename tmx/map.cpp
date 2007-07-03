@@ -875,8 +875,8 @@ void IMap::render(sdlx::Surface &window, const sdlx::Rect &src, const sdlx::Rect
 
 		GET_CONFIG_VALUE("engine.strip-alpha-from-map-tiles", bool, strip_alpha, false);
 
-		if (strip_alpha && l->second->impassability == -1) 
-			continue;
+		//if (strip_alpha && l->second->impassability == -1) 
+		//	continue;
 		
 		const bool shifting = !l->second->velocity.is0();
 		//LOG_DEBUG(("z: %d << %d, layer: %d", z1, z2, l->first));
