@@ -40,22 +40,30 @@ public:
 	static const std::string convertName(const std::string &name);
 
 	const bool active() const;
+	const float getWeaponRange(const Object *object) const;
 	
 protected: 
+	virtual void calculateCloseCombat(Object *obj, const Object *target, const float range, const bool dumb);
+	void processPF(Object *object);
+
 	void addEnemyClass(const std::string &classname);
 	void addBonusName(const std::string &rname);
 	const bool isEnemy(const Object *o) const;
 	
 	const bool checkTarget(const Object *obj, const Object * target, const std::string &weapon) const;
+
 private: 
 
 	Alarm _reaction_time, _refresh_path;
 	ai::Traits _traits;
 	std::set<std::string> _enemies, _bonuses;
 	int _target_id;
-	v2<int> _target_position;
+	v2<float> _target_position;
 	bool _enemy;
+	
 	int _pf_slice;
+	bool _close_combat;
+	int _target_dir;
 };
 }
 

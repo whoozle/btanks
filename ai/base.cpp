@@ -25,10 +25,12 @@
 #include "player_manager.h"
 #include "game_monitor.h"
 #include "mrt/random.h"
+#include "math/binary.h"
+
 
 using namespace ai;
 
-Base::Base() : _reaction_time(true), _refresh_path(false), _target_id(-1) {}
+Base::Base() : _reaction_time(true), _refresh_path(false), _target_id(-1), _close_combat(false), _target_dir(-1) {}
 
 const bool Base::active() const {
 	return !PlayerManager->isClient();
@@ -48,6 +50,28 @@ void Base::addEnemyClass(const std::string &classname) {
 
 void Base::addBonusName(const std::string &rname) {
 	_bonuses.insert(rname);
+}
+
+void Base::processPF(Object *object) {
+	if (object->calculatingPath()) {
+		Way way;
+		int n = 1;
+		bool found;
+		while(! (found = object->findPathDone(way)) && n < _pf_slice)
+			++n;
+		
+		if (found) {
+			//LOG_DEBUG(("n = %d", n));
+			if (!way.empty()) {
+				object->setWay(way);
+			} else {
+				LOG_WARN(("no path"));
+			}
+		}
+	} else  {
+		//LOG_DEBUG(("idle"));
+		
+	}
 }
 
 
@@ -118,9 +142,9 @@ const bool Base::checkTarget(const Object *object, const Object * target, const 
 		codir1 = dd == 1 || dd == (object->getDirectionsNumber() - 1);
 	}
 
-	//LOG_DEBUG(("moo(%s/%s): %g %g codir: %c, codir1: %c", wc.c_str(), wt.c_str(), pos.x, pos.y, codir?'+':'-', codir1?'+':'-'));
+	LOG_DEBUG(("checking target(%s/%s): %g %g codir: %c, codir1: %c", wc.c_str(), wt.c_str(), pos.x, pos.y, codir?'+':'-', codir1?'+':'-'));
 	
-	if (wc == "missiles" || wc == "bullet") {
+	if (wc == "missiles" || wc == "bullets" || wc == "bullet") {
 		if (codir)
 			return true;
 		if ((wt == "guided" && codir1) || wt == "dispersion")
@@ -134,6 +158,54 @@ const bool Base::checkTarget(const Object *object, const Object * target, const 
 	return false;
 }
 
+void Base::calculateCloseCombat(Object *object, const Object *target, const float range, const bool dumb) {
+	assert(object != NULL);
+	assert(target != NULL);
+	
+	LOG_DEBUG(("close combat with %s, range: %g, dumb: %c", target->animation.c_str(), range, dumb?'+':'-'));
+
+	if (!dumb) {
+		_target_dir = object->getTargetPosition(_target_position, object->getRelativePosition(target), range);
+		if (_target_dir >= 0)
+			_target_position += object->getCenterPosition();
+	} 
+
+	object->_velocity = _target_position - object->getCenterPosition();
+	
+	LOG_DEBUG(("object velocity: %g,%g, target dir: %d", object->_velocity.x, object->_velocity.y, _target_dir));
+	
+	if (_target_dir >= 0) {
+		int dirs = object->getDirectionsNumber();
+		if (object->_velocity.length() >= 9) {
+			object->quantizeVelocity();
+			object->_direction.fromDirection(object->getDirection(), dirs);
+		} else {
+			object->_velocity.clear();
+			object->setDirection(_target_dir);
+			//LOG_DEBUG(("%d", _target_dir));
+			object->_direction.fromDirection(_target_dir, dirs);
+			std::string weapon1 = getWeapon(0), weapon2 = getWeapon(1);
+			object->_state.fire = checkTarget(object, target, weapon1);
+			object->_state.alt_fire = checkTarget(object, target, weapon2);
+			LOG_DEBUG(("firing: %c%c", object->_state.fire?'+':'-', object->_state.alt_fire?'+':'-'));
+		}
+	} else {
+		object->_velocity.clear();
+	}
+}
+
+const float Base::getWeaponRange(const Object *object) const {
+	std::string weapon1 = getWeapon(0), weapon2 = getWeapon(1);
+	
+	float range = 0;
+	if (!weapon1.empty()) {
+		range = math::max(range, object->getWeaponRange(convertName(weapon1)));
+	}
+	if (!weapon2.empty()) {
+		range = math::max(range, object->getWeaponRange(convertName(weapon2)));
+	}
+	return range;	
+}
 
 void Base::calculate(Object *object, const float dt) {
 	if (GameMonitor->disabled(object)) {
@@ -144,7 +216,7 @@ void Base::calculate(Object *object, const float dt) {
 		if (object->isDriven()) 
 			object->calculateWayVelocity();
 		else 
-			object->_velocity.clear();
+			object->Object::calculate(dt);
 		object->updateStateFromVelocity();
 		return;
 	}
@@ -158,8 +230,19 @@ void Base::calculate(Object *object, const float dt) {
 	std::string weapon1, weapon2;
 	int amount1, amount2;
 
-	if (dumb) 
+	if (dumb) {
+		if (_close_combat) {
+			if (target == NULL)
+				target = World->getObjectByID(_target_id);
+			if (target == NULL)
+				goto gogogo;
+				
+			//processPF(object);
+			calculateCloseCombat(object, target, getWeaponRange(object), true);
+			goto skip_calculations;
+		}
 		goto gogogo;
+	}
 	
 
 	weapon1 = getWeapon(0), weapon2 = getWeapon(1);
@@ -178,29 +261,47 @@ void Base::calculate(Object *object, const float dt) {
 			object->_state.fire = checkTarget(object, target, weapon1);
 		if (!weapon2.empty())
 			object->_state.alt_fire = checkTarget(object, target, weapon2);
+
+		float range = getWeaponRange(object);
+		
+		v2<float> dpos = object->getRelativePosition(target);
+		if (_enemy && dpos.length() <= range) {
+			_close_combat = true;
+			//processPF(object);
+			if (object->isDriven())
+				object->setWay(Way());
+			
+			calculateCloseCombat(object, target, range, false);
+			goto skip_calculations;
+		} else {
+			_close_combat = false;
+		}
 	}
 		
 	target = World->findTarget(object, (amount1 > 0 || amount2 > 0)?_enemies:empty_enemies, _bonuses, _traits);
 	
-	if (target != NULL && ((refresh_path && isEnemy(target)) || target->getID() != _target_id)) {
-		_target_id = target->getID();
-		_enemy = isEnemy(target);
+	if (target != NULL) {
+		if ( ((refresh_path && isEnemy(target)) || target->getID() != _target_id)) {
+			_target_id = target->getID();
+			_enemy = isEnemy(target);
+			v2<int> target_position;
+			target->getCenterPosition(target_position);
 /*
-		if (_enemy && !weapon1.empty()) {
-			v2<float> r;
-			if (object->getTargetPosition(r, target->getPosition(), convertName(weapon1)))
-				_target_position = r.convert<int>();
-		}
+			if (_enemy && !weapon1.empty()) {
+				v2<float> r;
+				if (object->getTargetPosition(r, target->getPosition(), convertName(weapon1)))
+					_target_position = r.convert<int>();
+			}
 */		
-		target->getCenterPosition(_target_position);
-		LOG_DEBUG(("next target: %s at %d,%d", target->registered_name.c_str(), _target_position.x, _target_position.y));
-		object->findPath(_target_position, 16);
-		_refresh_path.reset();
+			LOG_DEBUG(("next target: %s at %d,%d", target->registered_name.c_str(), target_position.x, target_position.y));
+			object->findPath(target_position, 16);
+			_refresh_path.reset();
 		
-		//Way way;
-		//if (!old_findPath(target, way))
-		//	LOG_WARN(("no way"));
-		//else setWay(way);
+			//Way way;
+			//if (!old_findPath(target, way))
+			//	LOG_WARN(("no way"));
+			//else setWay(way);
+		}
 	}
 
 	//2 fire or not 2 fire.
@@ -215,29 +316,12 @@ void Base::calculate(Object *object, const float dt) {
 	//LOG_DEBUG(("calculating: %c, driven: %c", calculating?'+':'-', driven?'+':'-'));
 	gogogo:
 	
-	Way way;
-	
-	if (object->calculatingPath()) {
-		int n = 1;
-		bool found;
-		while(! (found = object->findPathDone(way)) && n < _pf_slice)
-			++n;
-		
-		if (found) {
-			//LOG_DEBUG(("n = %d", n));
-			if (!way.empty()) {
-				object->setWay(way);
-			} else {
-				LOG_WARN(("no path"));
-			}
-		}
-	} else  {
-		//LOG_DEBUG(("idle"));
-		
-	}
+	processPF(object);
 	
 	object->calculateWayVelocity();
-	
+
+skip_calculations: 	
+/*
 	if (!object->calculatingPath() && object->_velocity.is0()) {
 		v2<float> dir = _target_position.convert<float>() - object->getPosition();
 		dir.normalize();
@@ -253,6 +337,7 @@ void Base::calculate(Object *object, const float dt) {
 		}
 			
 	}
+*/
 	object->updateStateFromVelocity();
 }
 

@@ -42,14 +42,14 @@ const std::string AIShilka::getWeapon(const int idx) const {
 	switch(idx) {
 	case 0: 
 		if (isEffectActive("dispersion")) {
-			return "dispersion-bullet";
+			return "bullets:dispersion";
 		} else if (isEffectActive("ricochet")) {
-			return "ricochet-bullet";
+			return "bullets:ricochet";
 		}
 		return "bullet";
 	case 1:
 		if (isEffectActive("dirt")) {
-			return "dirt-bullet";
+			return "bullets:dirt";
 		} 	
 		return "bullet";
 	default: 

@@ -42,11 +42,11 @@ const std::string AITank::getWeapon(const int idx) const {
 	switch(idx) {
 	case 0: 
 		if (isEffectActive("dirt")) {
-			return "dirt-bullet";
+			return "bullets:dirt";
 		} else if (isEffectActive("dispersion")) {
-			return "dispersion-bullet";
+			return "bullets:dispersion";
 		} else if (isEffectActive("ricochet")) {
-			return "ricochet-bullet";
+			return "bullets:ricochet";
 		}
 		return "bullet";
 	case 1:
