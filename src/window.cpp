@@ -45,13 +45,13 @@ void IWindow::initSDL() {
 
 	LOG_DEBUG(("gl: %s, vsync: %s, dx: %s", _opengl?"yes":"no", _vsync?"yes":"no", _dx?"yes":"no"));
 #ifdef WIN32
-	_putenv("SDL_VIDEO_RENDERER=gdi");
+	putenv(strdup("SDL_VIDEO_RENDERER=gdi"));
 
 	if (_dx) 
 #if SDL_MAJOR_VERSION >= 1 && SDL_MINOR_VERSION >= 3
-		_putenv("SDL_VIDEO_RENDERER=d3d");
+		_putenv(strdup("SDL_VIDEO_RENDERER=d3d"));
 #else
-		_putenv("SDL_VIDEODRIVER=directx");
+		_putenv(strdup("SDL_VIDEODRIVER=directx"));
 #endif
 
 #endif
@@ -59,7 +59,7 @@ void IWindow::initSDL() {
 //opengl renderer
 #if SDL_MAJOR_VERSION >= 1 && SDL_MINOR_VERSION >= 3
 	if (_opengl)
-		_putenv("SDL_VIDEO_RENDERER=opengl");
+		_putenv(strdup("SDL_VIDEO_RENDERER=opengl"));
 #endif
 
 	LOG_DEBUG(("initializing SDL..."));
@@ -95,7 +95,7 @@ void IWindow::initSDL() {
 
 void IWindow::init(const int argc, char *argv[]) {
 #ifdef __linux__
-//	putenv("SDL_VIDEODRIVER=dga");
+//	putenv(strdup("SDL_VIDEODRIVER=dga"));
 #endif
 
 	_opengl = true;
@@ -173,7 +173,7 @@ void IWindow::createMainWindow() {
 	//Config->get("engine.window.width", _w, 800);
 	//Config->get("engine.window.height", _h, 600);
 
-	int flags = SDL_HWSURFACE | SDL_ANYFORMAT;
+	int flags = SDL_HWSURFACE | SDL_ANYFORMAT | SDL_SRCALPHA;
 	flags |= SDL_DOUBLEBUF;
 	
 	if (_fullscreen) flags |= SDL_FULLSCREEN;
