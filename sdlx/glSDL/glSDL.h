@@ -1,15 +1,14 @@
 /*(LGPL)
 ------------------------------------------------------------
-	glSDL 0.7 - SDL 2D API on top of OpenGL
+	glSDL 0.8 - SDL 2D API on top of OpenGL
 ------------------------------------------------------------
- * (c) David Olofson, 2001-2004
+ * Copyright (C) 2001-2004, 2006 David Olofson
  * This code is released under the terms of the GNU LGPL.
  */
 
 #ifndef	_GLSDL_H_
 #define	_GLSDL_H_
 
-#define HAVE_OPENGL
 /*
  * If you don't use GNU autotools or similar, uncomment this to
  * compile with OpenGL enabled:
@@ -18,9 +17,10 @@
  *	See README about using this glSDL wrapper with
  *	SDL versions that have the glSDL backend!
  */
+#define HAVE_OPENGL
 
 /* We're still using SDL datatypes here - we just add some stuff. */
-#include "SDL/SDL.h"
+#include <SDL/SDL.h>
 
 /*
  * Ignore the flag from SDL w/ glSDL backend, since we're going
@@ -38,7 +38,7 @@
 
 #else	/* HAVE_OPENGL */
 
-#include "SDL/begin_code.h"
+#include <SDL/begin_code.h>
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -234,7 +234,7 @@ void glSDL_UnloadSurface(SDL_Surface *surface);
 #ifdef __cplusplus
 }
 #endif
-#include "SDL/close_code.h"
+#include <SDL/close_code.h>
 
 /* Some ugly "overriding"... */
 #ifndef	_GLSDL_NO_REDEFINES_
@@ -279,7 +279,7 @@ void glSDL_UnloadSurface(SDL_Surface *surface);
 #endif
 
 /* Some extra overloading for common external lib calls... */
-#include "SDL/SDL_image.h"
+#include <SDL/SDL_image.h>
 #ifdef __cplusplus
 extern "C" {
 #endif

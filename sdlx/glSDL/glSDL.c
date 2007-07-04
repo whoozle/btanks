@@ -1,8 +1,8 @@
 /*(LGPL)
 ------------------------------------------------------------
-	glSDL 0.7 - SDL 2D API on top of OpenGL
+	glSDL 0.8 - SDL 2D API on top of OpenGL
 ------------------------------------------------------------
- * (c) David Olofson, 2001-2004
+ * Copyright (C) 2001-2004, 2006 David Olofson
  * This code is released under the terms of the GNU LGPL.
  */
 
@@ -10,10 +10,10 @@
 #include "glSDL.h"
 
 #ifdef HAVE_OPENGL
-/*
-#define LEAK_TRACKING
-*/
-#define	DBG(x)	x	/*error messages, warnings*/
+
+/* #define LEAK_TRACKING */
+
+#define	DBG(x)		/*error messages, warnings*/
 #define	DBG2(x)		/*texture allocation*/
 #define	DBG3(x)		/*chopping/tiling*/
 #define	DBG4(x)		/*texture uploading*/
@@ -23,9 +23,7 @@
 /*#define	CKSTATS*/	/*colorkey statistics*/
 
 /* Keep this on for now! Makes large surfaces faster. */
-/*
 #define	FAKE_MAXTEXSIZE	256
-*/
 
 #include <string.h>
 #include <stdlib.h>
@@ -45,6 +43,44 @@
 #include <GL/glu.h>
 #endif
 #endif
+
+#if defined(_WIN32) && !defined(APIENTRY) && \
+		!defined(__CYGWIN__) && !defined(__SCITECH_SNAP__)
+#include <windows.h>
+#endif
+#ifndef APIENTRY
+#define APIENTRY
+#endif
+
+
+static inline void clip_rect(SDL_Rect *r, SDL_Rect *to)
+{
+	int dx1 = r->x;
+	int dy1 = r->y;
+	int dx2 = dx1 + r->w;
+	int dy2 = dy1 + r->h;
+	if(dx1 < to->x)
+		dx1 = to->x;
+	if(dy1 < to->y)
+		dy1 = to->y;
+	if(dx2 > to->x + to->w)
+		dx2 = to->x + to->w;
+	if(dy2 > to->y + to->h)
+		dy2 = to->y + to->h;
+	if(dx2 < dx1 || dy2 < dy1)
+	{
+		r->x = r->y = 0;
+		r->w = r->h = 0;
+	}
+	else
+	{
+		r->x = dx1;
+		r->y = dy1;
+		r->w = dx2 - dx1;
+		r->h = dy2 - dy1;
+	}
+}
+
 
 /*----------------------------------------------------------
 	OpenGL interface
@@ -282,7 +318,7 @@ static int glSDL_BlitGL(SDL_Surface *src, SDL_Rect *srcrect,
 /* Get texinfo for a surface. */
 glSDL_TexInfo *glSDL_GetTexInfo(SDL_Surface *surface)
 {
-	if(texinfotab && (surface->unused1 > 0 && surface->unused1 < MAX_TEXINFOS))
+	if(texinfotab)
 		return texinfotab[surface->unused1];
 	else
 		return NULL;
@@ -653,7 +689,10 @@ static void key2alpha(SDL_Surface *surface)
 #ifdef CKSTATS
 	int transp = 0;
 #endif
-	Uint32 ckey = surface->format->colorkey;
+	Uint32 rgbmask = surface->format->Rmask |
+			surface->format->Gmask |
+			surface->format->Bmask;
+	Uint32 ckey = surface->format->colorkey & rgbmask;
 	if(SDL_LockSurface(surface) < 0)
 		return;
 
@@ -661,7 +700,7 @@ static void key2alpha(SDL_Surface *surface)
 	{
 		Uint32 *px = (Uint32 *)((char *)surface->pixels + y*surface->pitch);
 		for(x = 0; x < surface->w; ++x)
-			if(px[x] == ckey)
+			if((px[x] & rgbmask) == ckey)
 			{
 				px[x] = 0;
 #ifdef CKSTATS
@@ -716,19 +755,18 @@ void glSDL_Quit(void)
 {
 	if(SDL_WasInit(SDL_INIT_VIDEO))
 	{
-	/*	SDL_Surface *screen = SDL_GetVideoSurface();
+/*		SDL_Surface *screen = SDL_GetVideoSurface();
 		glSDL_FreeTexInfo(screen);
-	*/
-/*		if(fake_screen)
+		if(fake_screen)
 		{
 			glSDL_FreeTexInfo(fake_screen);
 			SDL_FreeSurface(fake_screen);
 			fake_screen = NULL;
 		}
 */
-		UnloadGL();
-		SDL_QuitSubSystem(SDL_INIT_VIDEO);
 	}
+	UnloadGL();
+	SDL_QuitSubSystem(SDL_INIT_VIDEO);
 #ifndef LEAK_TRACKING
 	KillAllTextures();
 #endif
@@ -758,7 +796,18 @@ SDL_Surface *glSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags)
 	SDL_Surface *screen;
 	GLint gl_doublebuf;
 
-	using_glsdl = 0;
+	if(USING_GLSDL)
+	{
+		glSDL_FreeTexInfo(screen);
+		UnloadGL();
+		if(fake_screen)
+		{
+			glSDL_FreeTexInfo(fake_screen);
+			SDL_FreeSurface(fake_screen);
+			fake_screen = NULL;
+		}
+		using_glsdl = 0;
+	}
 
 	if(!(flags & SDL_GLSDL))
 	{
@@ -816,6 +865,7 @@ SDL_Surface *glSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags)
 	}
 	gl_doublebuf = flags & SDL_DOUBLEBUF;
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, gl_doublebuf);
+	SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, gl_doublebuf ? 1: 0);
 
 	scale = 1;
 
@@ -969,11 +1019,9 @@ void glSDL_UnlockSurface(SDL_Surface *surface)
 	{
 		glSDL_UploadSurface(surface);
 		if((surface == fake_screen) ||
-				(SDL_GetVideoSurface() == surface)) {
+				(SDL_GetVideoSurface() == surface))
 			glSDL_BlitGL(fake_screen, NULL,
 					SDL_GetVideoSurface(), NULL);
-			return;
-		}
 	}
 	SDL_UnlockSurface(surface);
 }
@@ -1054,9 +1102,7 @@ static int glSDL_BlitFromGL(SDL_Rect *srcrect,
 
 	if(scale > 1)
 		return -1;
-/*
-FIXME: Some clipping, perhaps...? :-)
-*/
+
 	/* In case the destination has an OpenGL texture... */
 	glSDL_Invalidate(dst, dstrect);
 
@@ -1064,22 +1110,25 @@ FIXME: Some clipping, perhaps...? :-)
 	gl.PixelStorei(GL_UNPACK_ROW_LENGTH, fake_screen->pitch /
 			fake_screen->format->BytesPerPixel);
 	if(srcrect)
-		gl.ReadPixels(srcrect->x, srcrect->y, srcrect->w, srcrect->h,
-				GL_RGB, GL_UNSIGNED_BYTE, fake_screen->pixels);
-	else
-		gl.ReadPixels(0, 0, fake_screen->w, fake_screen->h,
-				GL_RGB, GL_UNSIGNED_BYTE, fake_screen->pixels);
-
-	/* Blit to the actual target! (Vert. flip... Uuurgh!) */
-	if(srcrect)
+	{
 		sr = *srcrect;
+		dr.x = dr.y = 0;
+		dr.w = fake_screen->w;
+		dr.h = fake_screen->h;
+		clip_rect(&sr, &dr);
+		gl.ReadPixels(sr.x, sr.y, sr.w, sr.h, GL_RGB, GL_UNSIGNED_BYTE,
+				fake_screen->pixels);
+	}
 	else
 	{
 		sr.x = sr.y = 0;
 		sr.w = dst->w;
 		srcrect = &sr;
+		gl.ReadPixels(0, 0, fake_screen->w, fake_screen->h,
+				GL_RGB, GL_UNSIGNED_BYTE, fake_screen->pixels);
 	}
 
+	/* Blit to the actual target! (Vert. flip... Uuurgh!) */
 	if(dstrect)
 		dr = *dstrect;
 	else
@@ -1488,9 +1537,8 @@ static int glSDL_BlitGL(SDL_Surface *src, SDL_Rect *srcrect,
 	/* Make sure we have a source with a valid texture */
 	glSDL_UploadSurface(src);
 	txi = glSDL_GetTexInfo(src);
-	if(!txi) {
+	if(!txi)
 		return -1;
-	}
 
 	/* Set up blending */
 	if(src->flags & (SDL_SRCALPHA | SDL_SRCCOLORKEY))
@@ -1698,7 +1746,6 @@ SDL_Surface *glSDL_DisplayFormat(SDL_Surface *surface)
 		if(surface->flags & SDL_SRCALPHA)
 			SDL_SetAlpha(s, SDL_SRCALPHA,
 					surface->format->alpha);
-		glSDL_UploadSurface(s);
 		return s;
 	}
 	else
@@ -1741,7 +1788,6 @@ SDL_Surface *glSDL_DisplayFormatAlpha(SDL_Surface *surface)
 		if(surface->flags & SDL_SRCALPHA)
 			SDL_SetAlpha(s, SDL_SRCALPHA,
 					surface->format->alpha);
-		glSDL_UploadSurface(s);
 		return s;
 	}
 	else
@@ -1965,7 +2011,8 @@ static int UploadHuge(SDL_Surface *datasurf, glSDL_TexInfo *txi)
 			if(res < 0)
 				return res;
 /*			DBG5(printf("glTexSubImage(x = %d, y = %d, w = %d, h = %d)\n",
-					x, y, thistw, thisth);) */
+					x, y, thistw, thisth);)
+*/
 			gl.TexSubImage2D(GL_TEXTURE_2D, 0, 0, 0,
 					thistw, thisth,
 					datasurf->format->Amask ? GL_RGBA : GL_RGB,
