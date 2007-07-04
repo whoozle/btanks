@@ -110,8 +110,10 @@ public:
 	}
 	
 	virtual void onBreak() {
-		Object *o = spawn("cannon-explosion", "cannon-explosion");
+		Object *o = spawn("explosion", "cannon-explosion");
 		o->setZ(getZ() + 1, true);
+		spawn("machinegunner", "machinegunner", size / 2.5);
+		spawn("machinegunner", "machinegunner", -size / 2.5);
 	}
 private: 
 	Alarm _reaction, _fire; 
