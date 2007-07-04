@@ -793,9 +793,9 @@ void glSDL_QuitSubSystem(Uint32 flags)
 
 SDL_Surface *glSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags)
 {
-	SDL_Surface *screen;
 	GLint gl_doublebuf;
-
+	SDL_Surface *screen;
+/*
 	if(USING_GLSDL)
 	{
 		glSDL_FreeTexInfo(screen);
@@ -808,7 +808,7 @@ SDL_Surface *glSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags)
 		}
 		using_glsdl = 0;
 	}
-
+*/
 	if(!(flags & SDL_GLSDL))
 	{
 		screen = SDL_SetVideoMode(width, height, bpp, flags);
