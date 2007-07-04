@@ -142,7 +142,7 @@ const bool Base::checkTarget(const Object *object, const Object * target, const 
 		codir1 = dd == 1 || dd == (object->getDirectionsNumber() - 1);
 	}
 
-	LOG_DEBUG(("checking target(%s/%s): %g %g codir: %c, codir1: %c", wc.c_str(), wt.c_str(), pos.x, pos.y, codir?'+':'-', codir1?'+':'-'));
+	//LOG_DEBUG(("checking target(%s/%s): %g %g codir: %c, codir1: %c", wc.c_str(), wt.c_str(), pos.x, pos.y, codir?'+':'-', codir1?'+':'-'));
 	
 	if (wc == "missiles" || wc == "bullets" || wc == "bullet") {
 		if (codir)
@@ -162,7 +162,7 @@ void Base::calculateCloseCombat(Object *object, const Object *target, const floa
 	assert(object != NULL);
 	assert(target != NULL);
 	
-	LOG_DEBUG(("close combat with %s, range: %g, dumb: %c", target->animation.c_str(), range, dumb?'+':'-'));
+	//LOG_DEBUG(("close combat with %s, range: %g, dumb: %c", target->animation.c_str(), range, dumb?'+':'-'));
 
 	if (!dumb) {
 		_target_dir = object->getTargetPosition(_target_position, object->getRelativePosition(target), range);
@@ -172,7 +172,7 @@ void Base::calculateCloseCombat(Object *object, const Object *target, const floa
 
 	object->_velocity = _target_position - object->getCenterPosition();
 	
-	LOG_DEBUG(("object velocity: %g,%g, target dir: %d", object->_velocity.x, object->_velocity.y, _target_dir));
+	//LOG_DEBUG(("object velocity: %g,%g, target dir: %d", object->_velocity.x, object->_velocity.y, _target_dir));
 	
 	if (_target_dir >= 0) {
 		int dirs = object->getDirectionsNumber();
@@ -187,7 +187,7 @@ void Base::calculateCloseCombat(Object *object, const Object *target, const floa
 			std::string weapon1 = getWeapon(0), weapon2 = getWeapon(1);
 			object->_state.fire = checkTarget(object, target, weapon1);
 			object->_state.alt_fire = checkTarget(object, target, weapon2);
-			LOG_DEBUG(("firing: %c%c", object->_state.fire?'+':'-', object->_state.alt_fire?'+':'-'));
+			//LOG_DEBUG(("firing: %c%c", object->_state.fire?'+':'-', object->_state.alt_fire?'+':'-'));
 		}
 	} else {
 		object->_velocity.clear();
