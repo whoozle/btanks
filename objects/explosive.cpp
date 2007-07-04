@@ -23,12 +23,18 @@
 class Explosive : public DestructableObject {
 public: 
 	Explosive();
+	virtual void onSpawn();
 	virtual void onBreak();
 
 	Object* clone() const  {
 		return new Explosive(*this);
 	}
 };
+
+void Explosive::onSpawn() {
+	disown();
+	DestructableObject::onSpawn();
+}
 
 Explosive::Explosive() : DestructableObject("explosive-object") {
 	_variants.add("with-fire");
