@@ -68,6 +68,10 @@ void Explosive::onBreak() {
 		spawn("mutagen-explosion", "mutagen-explosion");
 		explosion = false;
 	}
+	if (_variants.has("spawn-nuke")) {
+		spawn("nuke-explosion", "nuke-explosion");
+		explosion = false;
+	}
 	
 	if (explosion)
 		spawn("cannon-explosion", "cannon-explosion");
