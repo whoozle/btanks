@@ -30,7 +30,7 @@
 
 using namespace ai;
 
-Base::Base() : _reaction_time(true), _refresh_path(false), _target_id(-1), _close_combat(false), _target_dir(-1) {}
+Base::Base() : _reaction_time(true), _refresh_path(false), _target_id(-1), _target_dir(-1) {}
 
 const bool Base::active() const {
 	return !PlayerManager->isClient();
@@ -231,7 +231,7 @@ void Base::calculate(Object *object, const float dt) {
 	int amount1, amount2;
 
 	if (dumb) {
-		if (_close_combat) {
+		if (_target_dir >= 0) {
 			if (target == NULL)
 				target = World->getObjectByID(_target_id);
 			if (target == NULL)
@@ -266,15 +266,15 @@ void Base::calculate(Object *object, const float dt) {
 		
 		v2<float> dpos = object->getRelativePosition(target);
 		if (_enemy && dpos.length() <= range) {
-			_close_combat = true;
 			//processPF(object);
-			if (object->isDriven())
-				object->setWay(Way());
-			
 			calculateCloseCombat(object, target, range, false);
-			goto skip_calculations;
+			
+			if (_target_dir >= 0) {
+				if (object->isDriven());
+					object->setWay(Way());
+			}
 		} else {
-			_close_combat = false;
+			_target_dir = -1;
 		}
 	}
 		

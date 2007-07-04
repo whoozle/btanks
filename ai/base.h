@@ -62,7 +62,6 @@ private:
 	bool _enemy;
 	
 	int _pf_slice;
-	bool _close_combat;
 	int _target_dir;
 };
 }
