@@ -32,19 +32,26 @@ void Grid::clear() {
 }
 
 void Grid::collide(std::set<int> &objects, const GridMatrix &grid, const v2<int> &grid_size, const v2<int>& area_pos, const v2<int>& area_size) const {
-	v2<int> start = area_pos / grid_size;
-	v2<int> end = (area_pos + area_size - 1) / grid_size;
-
-	for(int y = math::max(0, start.y); y <= math::min((int)grid.size() - 1, end.y); ++y) 
-		for(int x = math::max(0, start.x); x <= math::min((int)grid[y].size() - 1, end.x); ++x) {
-			const IDSet &set = grid[y][x];
+	const v2<int> start = area_pos / grid_size;
+	const v2<int> end = (area_pos + area_size - 1) / grid_size;
+	
+	const int y1 = math::max(0, start.y), y2 = math::min((int)grid.size() - 1, end.y);
+	const int x1 = math::max(0, start.x);
+	for(int y = y1; y <= y2; ++y) {
+		//assert(y >= 0 && y < (int)grid.size());
+		const SetVector &row = grid[y];
+		const int x2 = math::min((int)row.size() - 1, end.x);
+		for(int x = x1; x <= x2; ++x) {
+			//assert(x >= 0 && x < (int)row.size());
+			const IDSet &set = row[x];
 			//std::set_union(objects.begin(), objects.end(), set.begin(), set.end(), 
 			//	std::insert_iterator<std::set<int> > (objects, objects.begin()));
 			//can cause infinite recursion under win32 :(
 			for(IDSet::const_iterator i = set.begin(); i != set.end(); ++i) {
 				objects.insert(*i);
 			}
-		}	
+		}
+	}
 }
 
 void Grid::collide(std::set<int> &objects, const v2<int>& area_pos, const v2<int>& area_size) const {
