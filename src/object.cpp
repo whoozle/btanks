@@ -956,12 +956,12 @@ const int Object::getTargetPosition(v2<float> &relative_position, const std::set
 
 			if (impassability >= 1.0f) {
 				//checking map projection
-				v2<float> map1 = pos + getPosition();
-				v2<float> map2 = o->getPosition();
+				v2<float> map1 = pos + getCenterPosition();
+				v2<float> map2 = o->getCenterPosition();
 				if (!checkDistance(map1, map2, getZ(), true))
 					continue;
-				map1 = getPosition();
-				map2 = pos + getPosition();
+				map1 = getCenterPosition();
+				map2 = pos + getCenterPosition();
 				if (!checkDistance(map1, map2, getZ(), false))
 					continue;
 			} 
@@ -1010,14 +1010,17 @@ const bool Object::getTargetPosition(v2<float> &relative_position, const v2<floa
 		
 		if (impassability >= 1.0f) {
 			//checking map projection
-			v2<float> map1 = pos + getPosition();
-			v2<float> map2 = target;
+			
+			v2<float> map1 = pos + getCenterPosition();
+			v2<float> map2 = target + getCenterPosition();
 			if (!checkDistance(map1, map2, getZ(), true))
 				continue;
-			map1 = getPosition();
-			map2 = pos + getPosition();
+			
+			map1 = getCenterPosition();
+			map2 = pos + getCenterPosition();
 			if (!checkDistance(map1, map2, getZ(), false))
 				continue;
+			
 		} 
 		
 		double d = pos.quick_length();
