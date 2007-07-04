@@ -839,12 +839,22 @@ void IPlayerManager::render(sdlx::Surface &window, const int vx, const int vy) {
 			World->render(window, sdlx::Rect((int)pos.x, (int)pos.y, slot.viewport.w, slot.viewport.h),  slot.viewport);
 
 			GET_CONFIG_VALUE("engine.show-special-zones", bool, ssz, false);
-			if (ssz) {		
+			if (ssz) {
 				for(size_t i = 0; i < _zones.size(); ++i) {
 					sdlx::Rect pos(_zones[i].position.x, _zones[i].position.y, _zones[i].size.x, _zones[i].size.y);
+					static sdlx::Surface zone;
+					if (zone.isNull()) {
+						//zone.createRGB(_zones[i].size.x, _zones[i].size.y, 32); 
+						zone.createRGB(32, 32, 32); 
+						zone.convertAlpha();
+						zone.fill(zone.mapRGBA(255, 0, 0, 51));
+					}
+
 					pos.x -= (int)slot.map_pos.x;
 					pos.y -= (int)slot.map_pos.y;
-					window.fillRect(pos, window.mapRGBA(0, 255, 0, 32));
+					for(int y = 0; y <= (_zones[i].size.y - 1) / zone.getHeight(); ++y) 
+						for(int x = 0; x <= (_zones[i].size.x - 1) / zone.getWidth(); ++x) 
+						window.copyFrom(zone, pos.x + x * zone.getWidth(), pos.y + y * zone.getHeight());
 				}
 			}
 			
