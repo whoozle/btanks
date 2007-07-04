@@ -833,7 +833,8 @@ TRY {
 			
 			int a;
 
-			static const int directions[8] = {4, 3, 5, 0,  2, 6, 1, 7};
+			//static const int directions[8] = {4, 3, 5, 0,  2, 6, 1, 7};
+			static const int directions[8] = {0, 1, 7, 2, 6, 4, 5, 3};
 			
 			int dir = o.getDirection();
 			int dirs = o.getDirectionsNumber();
