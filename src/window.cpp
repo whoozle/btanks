@@ -173,7 +173,7 @@ void IWindow::createMainWindow() {
 	//Config->get("engine.window.width", _w, 800);
 	//Config->get("engine.window.height", _h, 600);
 
-	int flags = SDL_HWSURFACE | SDL_ANYFORMAT | SDL_SRCALPHA;
+	int flags = SDL_HWSURFACE | SDL_ANYFORMAT;
 	flags |= SDL_DOUBLEBUF;
 	
 	if (_fullscreen) flags |= SDL_FULLSCREEN;
