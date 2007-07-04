@@ -185,13 +185,13 @@ void Base::calculate(Object *object, const float dt) {
 	if (target != NULL && ((refresh_path && isEnemy(target)) || target->getID() != _target_id)) {
 		_target_id = target->getID();
 		_enemy = isEnemy(target);
-
+/*
 		if (_enemy && !weapon1.empty()) {
 			v2<float> r;
 			if (object->getTargetPosition(r, target->getPosition(), convertName(weapon1)))
 				_target_position = r.convert<int>();
 		}
-		
+*/		
 		target->getCenterPosition(_target_position);
 		LOG_DEBUG(("next target: %s at %d,%d", target->registered_name.c_str(), _target_position.x, _target_position.y));
 		object->findPath(_target_position, 16);
