@@ -39,8 +39,8 @@ CollisionMap::CollisionMap() : _empty(true), _full(false), _w(0), _h(0), _data()
 //DO NOT USE THIS FUNCTION FOR SIGNED TYPES! :(
 template <typename T> 
 static inline const bool type_collide(T* &ptr1, const int shift1, T* &ptr2, const int shift2, const T mask = ~(T)0) {
-	T a = (shift1 != 0)?((*ptr1++ << shift1) | (*ptr1 >> (sizeof(T) * 8 - shift1))):*ptr1++;
-	T b = (shift2 != 0)?((*ptr2++ << shift2) | (*ptr2 >> (sizeof(T) * 8 - shift2))):*ptr2++;
+	const T a = (shift1 != 0)?((*ptr1++ << shift1) | (*ptr1 >> (sizeof(T) * 8 - shift1))):*ptr1++;
+	const T b = (shift2 != 0)?((*ptr2++ << shift2) | (*ptr2 >> (sizeof(T) * 8 - shift2))):*ptr2++;
 	return (mask & a & b) != 0;
 }
 
