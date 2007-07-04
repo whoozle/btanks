@@ -53,7 +53,7 @@
 #endif
 
 
-static inline void clip_rect(SDL_Rect *r, SDL_Rect *to)
+static void clip_rect(SDL_Rect *r, SDL_Rect *to)
 {
 	int dx1 = r->x;
 	int dy1 = r->y;
