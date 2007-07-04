@@ -978,14 +978,22 @@ const int Object::getTargetPosition(v2<float> &relative_position, const std::set
 }
 
 
+
+
 const bool Object::getTargetPosition(v2<float> &relative_position, const v2<float> &target, const std::string &weapon) const {
 	if (aiDisabled())
 		return -1;
 
-	const int dirs = _directions_n;
-	
 	float range = getWeaponRange(weapon);
-	
+	return getTargetPosition(relative_position, target, range);
+}
+
+const bool Object::getTargetPosition(v2<float> &relative_position, const v2<float> &target, const float range) const {
+	if (aiDisabled())
+		return -1;
+
+	const int dirs = _directions_n;
+
 	double dist = target.length();
 	if (dist > range) 
 		dist = range;
@@ -994,18 +1002,25 @@ const bool Object::getTargetPosition(v2<float> &relative_position, const v2<floa
 	double distance = 0;
 	bool found = false;
 	
-	v2<int> pfs = Map->getPathTileSize();
-	const Matrix<int> &matrix = getImpassabilityMatrix();
-	
 	for(int i = 0; i < dirs; ++i) {
 		v2<float> pos;
 		pos.fromDirection(i, dirs);
 		pos *= dist;
 		pos += target;
+		
+		if (impassability >= 1.0f) {
+			//checking map projection
+			v2<float> map1 = pos + getPosition();
+			v2<float> map2 = target;
+			if (!checkDistance(map1, map2, getZ(), true))
+				continue;
+			map1 = getPosition();
+			map2 = pos + getPosition();
+			if (!checkDistance(map1, map2, getZ(), false))
+				continue;
+		} 
+		
 		double d = pos.quick_length();
-		v2<int> map_pos = (pos + getPosition()).convert<int>() / pfs;
-		if (matrix.get(map_pos.y, map_pos.x) < 0)
-			continue;
 		
 		if (!found || d < distance) {
 			distance = d;

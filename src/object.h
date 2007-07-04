@@ -112,6 +112,7 @@ public:
 	const float getWeaponRange(const std::string &weapon) const;
 
 	const bool getTargetPosition(v2<float> &relative_position, const v2<float> &target, const std::string &weapon) const;
+	const bool getTargetPosition(v2<float> &relative_position, const v2<float> &target, const float range) const;
 	const int getTargetPosition(v2<float> &relative_position, const std::set<std::string> &targets, const std::string &weapon) const;
 	const int getTargetPosition(v2<float> &relative_position, const std::set<std::string> &targets, const float range) const;
 
