@@ -83,24 +83,33 @@ void Grid::setSize(const v2<int> &size, const int step) {
 }
 
 void Grid::removeFromGrid(GridMatrix &grid, const v2<int> &grid_size, const int id, const Object &o) {
-	v2<int> start = o.pos / grid_size;
-	v2<int> end = (o.pos + o.size - 1) / grid_size;
-	for(int y = math::max(0, start.y); y <= math::min((int)grid.size() - 1, end.y); ++y) 
-		for(int x = math::max(0, start.x); x <= math::min((int)grid[y].size() - 1, end.x); ++x) {
-			grid[y][x].erase(id);
+	const v2<int> start = o.pos / grid_size;
+	const v2<int> end = (o.pos + o.size - 1) / grid_size;
+	const int y1 = math::max(0, start.y), y2 = math::min((int)grid.size() - 1, end.y);
+	const int x1 = math::max(0, start.x);
+	for(int y = y1; y <= y2; ++y) {
+		SetVector &row = grid[y];
+		const int x2 = math::min((int)row.size() - 1, end.x);
+		for(int x = x1; x <= x2; ++x) {
+			row[x].erase(id);
 		}
+	}
 }
 
 void Grid::update(GridMatrix &grid, const v2<int> &grid_size, const int id, const v2<int> &pos, const v2<int> &size) {
 	//insert
-	v2<int> start = pos / grid_size;
-	v2<int> end = (pos + size - 1) / grid_size;
+	const v2<int> start = pos / grid_size;
+	const v2<int> end = (pos + size - 1) / grid_size;
 	//LOG_DEBUG(("updating %d (%d, %d) -> (%d, %d) (%d %d)", id, start.x, start.y, end.x, end.y, pos.x, pos.y));
-	for(int y = math::max(0, start.y); y <= math::min((int)grid.size() - 1, end.y); ++y) 
-		for(int x = math::max(0, start.x); x <= math::min((int)grid[y].size() - 1, end.x); ++x) {
-				grid[y][x].insert(id);
+	const int y1 = math::max(0, start.y), y2 = math::min((int)grid.size() - 1, end.y);
+	const int x1 = math::max(0, start.x);
+	for(int y = y1; y <= y2; ++y) {
+		SetVector &row = grid[y];
+		const int x2 = math::min((int)grid[y].size() - 1, end.x);
+		for(int x = x1; x <= x2; ++x) {
+			row[x].insert(id);
 		}
-
+	}
 }
 
 
