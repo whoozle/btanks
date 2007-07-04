@@ -193,7 +193,6 @@ void Base::calculate(Object *object, const float dt) {
 		}
 		
 		target->getCenterPosition(_target_position);
-		_target_position -= (object->size / 2).convert<int>();
 		LOG_DEBUG(("next target: %s at %d,%d", target->registered_name.c_str(), _target_position.x, _target_position.y));
 		object->findPath(_target_position, 16);
 		_refresh_path.reset();
