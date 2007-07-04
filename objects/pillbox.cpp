@@ -25,9 +25,15 @@
 //remove trooper from here. :)
 
 class PillBox : public DestructableObject {
+	Alarm _reaction, _fire, _fire2, _fire3; 
+	std::string _object;
+
+	//no need to serialize it
+	std::set<std::string> _targets;
 public: 
 	PillBox(const std::string &object, const bool aim_missiles) : 
-		DestructableObject("trooper"), _reaction(true), _fire(false), _object(object) {
+		DestructableObject("trooper"), _reaction(true), 
+		_fire(false), _fire2(false), _fire3(false), _object(object) {
 			if (aim_missiles)
 				_targets.insert("missile");
 	
@@ -43,11 +49,15 @@ public:
 	
 	virtual void onSpawn() { 
 		GET_CONFIG_VALUE("objects.pillbox.reaction-time", float, rt, 0.1);
-		mrt::randomize(rt, rt/10);
+		mrt::randomize(rt, rt / 2);
 		_reaction.set(rt);
 
 		GET_CONFIG_VALUE("objects.pillbox.fire-rate", float, fr, 0.2);
 		_fire.set(fr);
+		mrt::randomize(fr, fr / 2);
+		_fire2.set(fr);
+		mrt::randomize(fr, fr / 2);
+		_fire3.set(fr);
 		
 		DestructableObject::onSpawn();
 	}
@@ -56,20 +66,41 @@ public:
 		DestructableObject::serialize(s);
 		s.add(_reaction);
 		s.add(_fire);
+		s.add(_fire2);
+		s.add(_fire3);
 		s.add(_object);
 	}
 	virtual void deserialize(const mrt::Serializator &s) {
 		DestructableObject::deserialize(s);
 		s.get(_reaction);
 		s.get(_fire);
+		s.get(_fire2);
+		s.get(_fire3);
 		s.get(_object);
 	}
 	
 	virtual void tick(const float dt) {
 		Object::tick(dt);
-		if (!_broken && _fire.tick(dt) && _state.fire) {
-			_fire.reset();
-			spawn(_object, _object, v2<float>(), _direction);
+		if (!_broken && _state.fire) {
+			
+			if (_fire.tick(dt)) {
+				_fire.reset();
+				spawn(_object, _object, v2<float>(), _direction);
+			}
+			
+			int dirs = 16/* bullet->getDirectionsNumber() */, d = _direction.getDirection(dirs);
+			v2<float> dpos; 
+			dpos.fromDirection((d + dirs / 4) % dirs, dirs);
+			dpos *= 16;
+
+			if (_fire2.tick(dt)) {
+				_fire2.reset();
+				spawn(_object, _object, dpos, _direction);
+			}
+			if (_fire3.tick(dt)) {
+				_fire3.reset();
+				spawn(_object, _object, -dpos, _direction);
+			}
 		}
 	}
 	
@@ -115,12 +146,6 @@ public:
 		spawn("machinegunner", "machinegunner", size / 2.5);
 		spawn("machinegunner", "machinegunner", -size / 2.5);
 	}
-private: 
-	Alarm _reaction, _fire; 
-	std::string _object;
-
-	//no need to serialize it
-	std::set<std::string> _targets;
 };
 
 REGISTER_OBJECT("pillbox", PillBox, ("machinegunner-bullet", true));
