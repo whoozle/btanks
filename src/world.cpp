@@ -1631,7 +1631,7 @@ const Object * IWorld::findTarget(const Object *src, const std::set<std::string>
 		const Object *o = i->second;
 		if (o->impassability == 0 || o->hp == -1 || o->_id == src->_id ||
 			!ZBox::sameBox(src->getZ(), o->getZ()) || 
-			o->hasSameOwner(src) )
+			o->hasSameOwner(src) || o->isEffectActive("invulnerability"))
 			continue;
 		const bool enemy = enemies.find(o->classname) != enemies.end();
 		const bool bonus = bonuses.find(o->registered_name) != bonuses.end();
