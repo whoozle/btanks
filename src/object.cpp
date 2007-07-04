@@ -980,7 +980,7 @@ const int Object::getTargetPosition(v2<float> &relative_position, const std::set
 
 
 
-const bool Object::getTargetPosition(v2<float> &relative_position, const v2<float> &target, const std::string &weapon) const {
+const int Object::getTargetPosition(v2<float> &relative_position, const v2<float> &target, const std::string &weapon) const {
 	if (aiDisabled())
 		return -1;
 
@@ -988,7 +988,7 @@ const bool Object::getTargetPosition(v2<float> &relative_position, const v2<floa
 	return getTargetPosition(relative_position, target, range);
 }
 
-const bool Object::getTargetPosition(v2<float> &relative_position, const v2<float> &target, const float range) const {
+const int Object::getTargetPosition(v2<float> &relative_position, const v2<float> &target, const float range) const {
 	if (aiDisabled())
 		return -1;
 
@@ -1000,7 +1000,8 @@ const bool Object::getTargetPosition(v2<float> &relative_position, const v2<floa
 	
 	//LOG_DEBUG(("searching suitable position (distance: %g, range: %g)", dist, range));
 	double distance = 0;
-	bool found = false;
+	
+	int result_dir = -1;
 	
 	for(int i = 0; i < dirs; ++i) {
 		v2<float> pos;
@@ -1025,14 +1026,14 @@ const bool Object::getTargetPosition(v2<float> &relative_position, const v2<floa
 		
 		double d = pos.quick_length();
 		
-		if (!found || d < distance) {
+		if (result_dir == -1 || d < distance) {
 			distance = d;
 			relative_position = pos;
-			found = true;
+			result_dir = (i + dirs / 2) % dirs;
 		}
 		//LOG_DEBUG(("target position: %g %g, distance: %g", pos.x, pos.y, d));
 	}
-	return found;
+	return result_dir;
 }
 
 void Object::checkAnimation() const {
