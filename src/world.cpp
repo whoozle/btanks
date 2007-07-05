@@ -153,8 +153,8 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::R
 	v2<int> player_pos;
 	sdlx::Rect fog_rect;
 	if (fog) {
-		GET_CONFIG_VALUE("engine.fog-of-war.width", int, fog_w, 320);
-		GET_CONFIG_VALUE("engine.fog-of-war.height", int, fog_h, 240);
+		GET_CONFIG_VALUE("engine.fog-of-war.width", int, fog_w, 800);
+		GET_CONFIG_VALUE("engine.fog-of-war.height", int, fog_h, 600);
 		player->getCenterPosition(player_pos);
 		
 		fog_rect.x = player_pos.x - dst.w / 2;
