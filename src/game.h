@@ -43,6 +43,7 @@ class Hud;
 class Credits;
 class Cheater;
 class MainMenu;
+class Tooltip;
 
 namespace sdlx {
 	class Surface;
@@ -108,6 +109,8 @@ private:
 	
 	const sdlx::Surface *_donate;
 	float _donate_timer;
+	
+	Tooltip *_tip;
 	
 	IGame(const IGame &);
 	const IGame& operator=(const IGame &);

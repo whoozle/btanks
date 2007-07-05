@@ -63,6 +63,8 @@
 
 #include "math/v3.h"
 #include "menu/menu.h"
+#include "menu/tooltip.h"
+
 #include "i18n.h"
 #include <math.h>
 #include "special_owners.h"
@@ -70,7 +72,7 @@
 IMPLEMENT_SINGLETON(Game, IGame);
 
 IGame::IGame() : _main_menu(NULL),
- _autojoin(false), _shake(0), _show_radar(true) , _show_stats(false), _credits(NULL), _cheater(NULL) {}
+ _autojoin(false), _shake(0), _show_radar(true) , _show_stats(false), _credits(NULL), _cheater(NULL), _tip(NULL) {}
 IGame::~IGame() {}
 
 void IGame::run() {
@@ -582,7 +584,10 @@ void IGame::deinit() {
 		_main_menu->deinit();
 
 	delete _credits;
-	_credits = NULL;	
+	_credits = NULL;
+	
+	delete _tip;
+	_tip = NULL;
 
 	ResourceManager->clear();
 
@@ -628,6 +633,15 @@ void IGame::shake(const float duration, const int intensity) {
 void IGame::resetLoadingBar(const int total) {
 	_loading_bar_now = 0;
 	_loading_bar_total = total;
+	
+	std::deque<std::string> keys;
+	I18n->enumerateKeys(keys, "tips");
+	LOG_DEBUG(("%u tips found...", (unsigned)keys.size()));
+	int i = mrt::random(keys.size());
+	LOG_DEBUG(("showing tip: '%s'", keys[i].c_str()));
+
+	delete _tip;
+	_tip = new Tooltip(I18n->get("tips", keys[i]), true, 320);
 }
 
 void IGame::notifyLoadingBar(const int progress) {
@@ -639,7 +653,13 @@ void IGame::notifyLoadingBar(const int progress) {
 	_loading_bar_now += progress;
 	
 	sdlx::Surface &window = Window->getSurface();
+	const sdlx::Rect window_size = Window->getSize();
 	if (_hud->renderLoadingBar(window, old_progress, 1.0 * _loading_bar_now / _loading_bar_total)) {
+		if (_tip != NULL) {
+			int w, h;
+			_tip->getSize(w, h);
+			_tip->render(window, (window_size.w - w) / 2, window_size.h - h * 3 / 2);
+		}
 		Window->flip();
 		window.fill(0);
 	}
