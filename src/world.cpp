@@ -144,7 +144,35 @@ void IWorld::addObject(Object *o, const v2<float> &pos, const int id) {
 
 #include "game_monitor.h"
 
-void IWorld::render(sdlx::Surface &surface, const sdlx::Rect&src, const sdlx::Rect &dst, const int _z1, const int _z2) {
+void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::Rect &dst, const int _z1, const int _z2, const Object * player) {
+	bool fog = false;
+	
+	sdlx::Rect fog_rect;
+	if (player != NULL)
+		Config->get("engine.fog-of-war.enabled", fog, false);
+	
+	if (fog) {
+		GET_CONFIG_VALUE("engine.fog-of-war.width", int, fog_w, 320);
+		GET_CONFIG_VALUE("engine.fog-of-war.height", int, fog_h, 240);
+		v2<int> player_pos;
+		player->getCenterPosition(player_pos);
+		
+		if (src.w > fog_w) {
+			fog_rect.x = player_pos.x - fog_w / 2;
+			fog_rect.w = fog_w;
+			fog_rect.h = fog_h;
+		}
+		if (src.h > fog_h) {
+			fog_rect.y = player_pos.y - fog_h / 2;
+			fog_rect.w = fog_w;
+			fog_rect.h = fog_h;
+		}
+		if (fog_rect.w == 0)
+			fog = false;
+		//LOG_DEBUG(("fog: %s", fog?"true":"false"));
+	}
+	
+	
 	GET_CONFIG_VALUE("engine.render-hp-bars", bool, rhb, false);
 	std::vector<v3<int> > specials; 
 	specials = GameMonitor->getSpecials();
@@ -169,7 +197,10 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect&src, const sdlx::Re
 			continue;
 		
 		sdlx::Rect r((int)o->_position.x, (int)o->_position.y, (int)o->size.x, (int)o->size.y);
-		if (r.intersects(src)) 
+		bool fogged = fog;
+		if (fogged && o->speed == 0)
+			fogged = false;
+		if (r.intersects(fogged?fog_rect:src)) 
 			layers.insert(LayerMap::value_type(o->_z, o));
 	}
 	//LOG_DEBUG(("rendering %d objects", layers.size()));

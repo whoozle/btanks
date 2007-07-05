@@ -60,7 +60,7 @@ public:
 	const Object *getObjectByID(const int id) const;
 	Object *getObjectByID(const int id);
 	
-	void render(sdlx::Surface &surface, const sdlx::Rect &src, const sdlx::Rect &viewport, const int z1 = -10000, const int z2 = 10001);
+	void render(sdlx::Surface &surface, const sdlx::Rect &src, const sdlx::Rect &viewport, const int z1 = -10000, const int z2 = 10001, const Object * player = NULL);
 	void tick(const float dt);
 	
 	Object * spawn(const Object *src, const std::string &classname, const std::string &animation, const v2<float> &dpos, const v2<float> &vel, const int z = 0);

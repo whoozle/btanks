@@ -836,7 +836,8 @@ void IPlayerManager::render(sdlx::Surface &window, const int vx, const int vy) {
 			v2<float> pos = ics?slot.map_pos + slot.map_dpos.convert<float>() : slot.map_pos;
 			slot.validatePosition(pos);
 			
-			World->render(window, sdlx::Rect((int)pos.x, (int)pos.y, slot.viewport.w, slot.viewport.h),  slot.viewport);
+			World->render(window, sdlx::Rect((int)pos.x, (int)pos.y, slot.viewport.w, slot.viewport.h), 
+				slot.viewport, -10000, 10001, slot.getObject());
 
 			GET_CONFIG_VALUE("engine.show-special-zones", bool, ssz, false);
 			if (ssz) {
