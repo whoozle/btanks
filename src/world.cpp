@@ -147,22 +147,25 @@ void IWorld::addObject(Object *o, const v2<float> &pos, const int id) {
 void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::Rect &dst, const int _z1, const int _z2, const Object * player) {
 	bool fog = false;
 	
-	sdlx::Rect fog_rect;
 	if (player != NULL)
 		Config->get("engine.fog-of-war.enabled", fog, false);
 	
+	v2<int> player_pos;
+	sdlx::Rect fog_rect;
 	if (fog) {
 		GET_CONFIG_VALUE("engine.fog-of-war.width", int, fog_w, 320);
 		GET_CONFIG_VALUE("engine.fog-of-war.height", int, fog_h, 240);
-		v2<int> player_pos;
 		player->getCenterPosition(player_pos);
 		
-		if (src.w > fog_w) {
+		fog_rect.x = player_pos.x - dst.w / 2;
+		fog_rect.y = player_pos.y - dst.h / 2;
+		
+		if (dst.w > fog_w) {
 			fog_rect.x = player_pos.x - fog_w / 2;
 			fog_rect.w = fog_w;
 			fog_rect.h = fog_h;
 		}
-		if (src.h > fog_h) {
+		if (dst.h > fog_h) {
 			fog_rect.y = player_pos.y - fog_h / 2;
 			fog_rect.w = fog_w;
 			fog_rect.h = fog_h;
@@ -197,9 +200,7 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::R
 			continue;
 		
 		sdlx::Rect r((int)o->_position.x, (int)o->_position.y, (int)o->size.x, (int)o->size.y);
-		bool fogged = fog;
-		if (fogged && o->speed == 0)
-			fogged = false;
+		bool fogged = fog && o->speed != 0;
 		if (r.intersects(fogged?fog_rect:src)) 
 			layers.insert(LayerMap::value_type(o->_z, o));
 	}
@@ -251,7 +252,30 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::R
 	map.render(surface, src, dst, z1, _z2);
 	if (show_waypoints) 
 		GameMonitor->renderWaypoints(surface, src, dst);
-	
+	if (fog) {
+		static const sdlx::Surface * fog_surface = ResourceManager->loadSurface("fog_of_war.png");
+		int tw = fog_surface->getWidth() / 3, th = fog_surface->getHeight() / 3;
+		
+		//LOG_DEBUG(("fog_rect: %d %d %d %d", fog_rect.x, fog_rect.y, fog_rect.w, fog_rect.h));
+		int fog_tw = (fog_rect.w - 1) / tw + 1, fog_th = (fog_rect.h - 1) / th + 1;
+		int dst_tw = (dst.w - 1) / tw + 1, dst_th = (dst.h - 1) / th + 1;
+		
+		fog_tw |= 1; fog_th |= 1;
+		dst_tw |= 1; dst_th |= 1;
+
+		sdlx::Rect fog_src(tw, th, tw, th);
+		
+		int px = (player_pos.x - src.x) / tw, py = (player_pos.y - src.y) / th;
+		int dx = (player_pos.x - src.x) % tw, dy = (player_pos.y - src.y) % th;
+		sdlx::Rect player_rect(px - fog_tw / 2, py - fog_th / 2, fog_tw, fog_th);
+		
+		for(int y = -1; y <= dst_th; ++y) 
+			for(int x = -1; x <= dst_tw; ++x) {
+				if (player_rect.in(x, y))
+					continue;
+				surface.copyFrom(*fog_surface, fog_src, dst.x + x * tw + dx - tw / 2, dst.y + y * th + dy - th / 2);
+			}
+	}	
 	surface.resetClipRect();
 }
 
