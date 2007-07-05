@@ -1,3 +1,30 @@
+0.5.*:
+*) added random and maybe surprising tips while game was loading.
+*) tons of stickin'&stuckin' issues were fixed. 
+*) ai players became more stronger and learnt some close combat skills. 
+*) ai troopers could shoot through fences where possible.
+*) watchtower detect possible directions for shooting and do not shoot thru the walls.
+*) added ai-civilian, alt fire uses horn while in car or tractor.
+*) sandworm does not eat mortar.
+*) added lives support to hud.
+*) added smooth layer scrolling.
+*) ricochet bullets work again.
+*) added support for non-standard directions on map. car facing down, for ex.
+*) campaign support: 
+	*) campaign structural map
+	*) hiding showing levels by several criterias. 
+	*) score and some statistics.
+	*) shop with campaign-provided wares and animation preview.
+*) updated sounds, fixed several glitches. small pitch to every sound to randomize samples. (shooting for ex.) 
+*) sound overruns are more accurately handled. sound buffers were increased to several seconds each.
+*) pass hints to openal (stereo sources, mono sources), read back values. 
+*) added kill-em-all game mode
+*) removed `player' class and all magic with it. added `disable_ai' flag to
+    object to do not call original ai. (could be used to seize any object) 
+*) load bt_objects shared objects dynamically. 
+*) rewrite collision handling code in clean and very quick way.
+*) main menu can be controlled with joystick
+
 0.5.3808: 
 *) added new 'batterie' tune from Petrovich.
 *) chain explosions are now possible. 
