@@ -637,11 +637,28 @@ void IGame::resetLoadingBar(const int total) {
 	std::deque<std::string> keys;
 	I18n->enumerateKeys(keys, "tips");
 	LOG_DEBUG(("%u tips found...", (unsigned)keys.size()));
-	int i = mrt::random(keys.size());
-	LOG_DEBUG(("showing tip: '%s'", keys[i].c_str()));
+
+	if (keys.empty())
+		return;
+	
+	static std::deque<size_t> tips_available;
+	if (tips_available.empty()) {
+		for(size_t i = 0; i < keys.size(); ++i) 
+			tips_available.push_back(i);
+	}
+	
+	int i = mrt::random(tips_available.size());
+	std::string tip = keys[tips_available[i]];
+	{
+		int n = i; std::deque<size_t>::iterator del = tips_available.begin();
+		while(n--) 
+			++del;
+		tips_available.erase(del);
+	}
+	LOG_DEBUG(("showing tip: '%s', tips remaining: %u", tip.c_str(), tips_available.size()));
 
 	delete _tip;
-	_tip = new Tooltip(I18n->get("tips", keys[i]), true, 320);
+	_tip = new Tooltip(I18n->get("tips", tip), true, 320);
 }
 
 void IGame::notifyLoadingBar(const int progress) {
