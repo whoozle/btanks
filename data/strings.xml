@@ -89,4 +89,18 @@
 		<string id="connection-failed">Connection failed</string>
 		<string id="multiplayer-exception">Multiplayer error. Look logs for details.</string>
 	</area>
+	<area id="tips">
+		<!-- <string id="score">Noticed score at upper right corner ? 
+			It has important role in campaigns. Check our site for details.</string> -->
+		<string id="minimap">You can show/hide minimap with the 'M' key</string>
+		<string id="suicide">Getting stuck in some tricky place ? 
+			Usually it's not possible, but there's 'F12' key - commit a suicide. Sorry. </string>
+		<string id="leaving">You can leave vehicle at any time by pressing 'leave' button.</string>
+		<string id="mortar">Every(!) map has a hidden "mortar" vehicle on it.</string>
+		<string id="mines">Shilka could use mines too.</string>
+		<string id="sandworm">Sandworm could be killed with single mortar shot. </string>
+		<string id="donation">You could improve this project and even push it to the desired features by donating.</string>
+		<string id="tactic-map">Clicking on the map screenshot could reveal useless tactic map</string>
+		<string id="clouds">Smoke clouds are poisonous. You could kill troopers with it.</string>
+	</area>
 </strings>
