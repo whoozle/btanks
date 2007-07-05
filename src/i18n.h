@@ -43,6 +43,8 @@ public:
 	const std::string& get(const std::string &area, const std::string &message) const;
 	const bool has(const std::string &area, const std::string &message) const;
 	
+	void enumerateKeys(std::deque<std::string> &keys, const std::string &area) const;
+	
 private: 
 
 	virtual void start(const std::string &name, Attrs &attr);

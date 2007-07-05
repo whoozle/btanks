@@ -33,6 +33,21 @@ bool lessnocase::operator()(const std::string& s1, const std::string& s2) const 
 
 II18n::II18n() {}
 
+void II18n::enumerateKeys(std::deque<std::string> &keys, const std::string &area) const {
+	std::string base = area;
+	if (!base.empty() && base[base.size() - 1] != '/')
+		base += '/';
+
+	keys.clear();
+	
+	for(Strings::const_iterator i = _strings.begin(); i != _strings.end(); ++i) {
+		if (!base.empty() && i->first.compare(0, base.size(), base) != 0)
+			continue;
+		keys.push_back(i->first.substr(base.size()));
+	}
+}
+
+
 const bool II18n::has(const std::string &_area, const std::string &id) const {
 	if (id.empty())
 		return false;
