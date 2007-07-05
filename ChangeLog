@@ -1,76 +1,76 @@
 0.5.*:
-*) added random and maybe surprising tips while game was loading.
-*) tons of stickin'&stuckin' issues were fixed. 
-*) ai players became more stronger and learnt some close combat skills. 
-*) ai troopers could shoot through fences where possible.
-*) watchtower detect possible directions for shooting and do not shoot thru the walls.
-*) added ai-civilian, alt fire uses horn while in car or tractor.
-*) sandworm does not eat mortar.
-*) added lives support to hud.
-*) added smooth layer scrolling.
-*) ricochet bullets work again.
-*) added support for non-standard directions on map. car facing down, for ex.
-*) campaign support: 
-	*) campaign structural map
-	*) hiding showing levels by several criterias. 
-	*) score and some statistics.
-	*) shop with campaign-provided wares and animation preview.
-*) updated sounds, fixed several glitches. small pitch to every sound to randomize samples. (shooting for ex.) 
-*) sound overruns are more accurately handled. sound buffers were increased to several seconds each.
-*) pass hints to openal (stereo sources, mono sources), read back values. 
-*) added kill-em-all game mode
-*) removed `player' class and all magic with it. added `disable_ai' flag to
-    object to do not call original ai. (could be used to seize any object) 
-*) load bt_objects shared objects dynamically. 
-*) rewrite collision handling code in clean and very quick way.
-*) main menu can be controlled with joystick
+*) Random and sometimes surprising tips are added (displayed while game is loading).
+*) Tons of stickin' & stuckin' issues are fixed.
+*) AI players have became stronger and learnt some close combat skills.
+*) AI troopers can now shoot through fences where possible.
+*) Watchtower now detects possible directions for shooting and doesn't shoot thru the walls.
+*) AI-civilian is added, alt fire uses horn while in car or tractor.
+*) Sandworm no longer eats mortar.
+*) Lives support is added to HUD.
+*) Smooth layer scrolling is implemented.
+*) Ricochet bullets work again.
+*) Added support for non-standard directions on map.  Car facing down, for example.
+*) Campaign support: 
+	*) Campaign structural map
+	*) Hiding and showing levels by several criterias. 
+	*) Score and some statistics.
+	*) Shop with campaign-provided wares and animation preview.
+*) Updated sounds, fixed several glitches.  Small pitch to every sound to randomize samples.  (Shooting for ex.) 
+*) Sound overruns are more accurately handled.  Sound buffers have been increased to several seconds each.
+*) Pass hints to openal (stereo sources, mono sources), read back values. 
+*) Added kill-em-all game mode.
+*) Removed `player' class and all magic with it.  Added `disable_ai' flag to
+    object to not call the original AI. (could be used to seize any object) 
+*) Load bt_objects shared objects dynamically. 
+*) Collision handling code is rewritten in clean and very quick way.
+*) Main menu can be controlled with joystick.
 
 0.5.3808: 
-*) added new 'batterie' tune from Petrovich.
-*) chain explosions are now possible. 
-*) fall back to generic software if nvidia's nforce detected. 
-*) zombies and other aggressive monsters do not damage items.
-*) fixed speed of shilka with ai driver inside.
-*) added default fps limit (120).
-*) pathfinding fixes, cars' movements are now more accurate and precise. 
-*) fixed helicopter's bomb warnings
-*) added lib_dir handling for **nix packaging. 
+*) Added new 'batterie' tune from Petrovich.
+*) Chain explosions are now possible. 
+*) Fall back to generic software if nVidia nForce detected. 
+*) Zombies and other aggressive monsters do not damage items.
+*) Fixed speed of Shilka with AI driver inside.
+*) Added default FPS limit (120).
+*) Pathfinding fixes, cars' movements are now more accurate and precise. 
+*) Fixed helicopter's bomb warnings.
+*) Added lib_dir handling for **nix packaging.
 
 0.5.3784:
 
-*) a pair of new maps: dune - cooperative survival with timer and "battle tanks university". 
-*) shilka is now able to pick up mines.
-*) adding auto-aiming support for tank's and shilka's bullets.
-*) a lots of the new sounds, completely rewritten sound subsystem. ambient sounds thread.(forest, swamp, city and country ambient loops).
-*) added secret "mortar" vehicle on every map (!). 
-*) added 'sandworm' creature inspired by famous 'dune' series.
-*) cars stop and beeps instead of crashing. :)
-*) added screen resolution/full screen mode to options screen.
-*) "bomberman" map - stupid map generator test.
-*) now you don't need to have your copy of map, it downloaded from game server automatically.
-*) added custom "tactical map" in map picker.
-*) hp bars (similar to many RTS) rendered near every important object. 
-*) changed dirt to experimental 'drifting' implementation. 
-*) added "redefine keys" and "gamepad setup" dialogs. Improved gamepad handing (second ministick used for controlling the camera)
-*) added "hint control" key. (skips current hing, replay last)
-*) name screenshot files with numbers to allow taking more than one screenshot at ones
-*) added random vehicle selection (?)
-*) added various debug options : no-clip, tiles marks on map, stripping alpha from objects and tiles 
-*) added icons for controls setup dialog
-*) implemented (ally) variant to allow creation friendly troopers and other objects.
-*) implemented special zones with timers (win, lose), disable/enable ai switches, hints and checkpoints. added spawn limit (lives). 
-*) implemented volume sliders in 'options' dialog. fixed listener positioning.
-*) object variants instead of tons similar objects registered.
-*) blacklisted nvidia's openal implementation. it's way too buggy. 
-*) mods could provide its own localized messages 
-*) internationalized menu and in-game messages
-*) finishing level makes you invulnerable
-*) various linux packaging fixes, attempt to add ebuild to gentoo.
-*) split engine into separate dll's.
+*) A couple of new maps: "Dune"--cooperative survival with timer and "Battle Tanks University". 
+*) Shilka is now able to pick up mines.
+*) Adding auto-aiming support for tank's and shilka's bullets.
+*) Lots of new sounds, completely rewritten sound subsystem.  Ambient sounds thread.  (forest, swamp, city and country ambient loops)
+*) Added secret "mortar" vehicle on every map (!). 
+*) Added 'sandworm' creature inspired by famous 'dune' series.
+*) Cars stop and beep instead of crashing. :)
+*) Added screen resolution/full screen mode to options screen.
+*) "Bomberman" map--stupid map generator test.
+*) Now you don't need to have your copy of map, it's downloaded from game server automatically.
+*) Added custom "tactical map" in map picker.
+*) HP bars (similar to many RTS) are rendered near each important object. 
+*) Changed dirt to experimental 'drifting' implementation. 
+*) Added "redefine keys" and "gamepad setup" dialogs.  Improved gamepad handing.  (second ministick used for controlling the camera)
+*) Added "hint control" key.  (skips current hing, replay last)
+*) Name screenshot files with numbers to allow taking more than one screenshot at ones.
+*) Added random vehicle selection (?)
+*) Added various debug options : no-clip, tiles marks on map, stripping alpha from objects and tiles.
+*) Added icons for controls setup dialog.
+*) Implemented (ally) variant to allow creation friendly troopers and other objects.
+*) Implemented special zones with timers (win, lose), disable/enable ai switches, hints and checkpoints.  Added spawn limit (lives). 
+*) Implemented volume sliders in 'options' dialog.  Fixed listener positioning.
+*) Object variants instead of tons similar objects registered.
+*) Blacklisted nVidia's OpenAL implementation.  It's way too buggy. 
+*) Mods can now provide their own localized messages.
+*) Internationalized menu and in-game messages.
+*) Finishing a level makes you invulnerable.
+*) Various Linux packaging fixes, attempt to add ebuild to Gentoo.
+*) Split engine into separate DLLs.
 
 0.4.2902: 
 
-*) added new map : 'Aqua World' with two separated levels: underwater and rooftops
+*) Added new map: 'Aqua World' with two separated levels: underwater and rooftops.
 *) a lot of various bugfixes everywhere (mostly multiplayer, several crashes)
 *) interpolation support in multiplayer. 
 *) added proper player placement into checkpoint.
