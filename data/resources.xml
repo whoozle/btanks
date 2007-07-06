@@ -55,6 +55,7 @@
 	</animation-model>
 
 	<animation-model id="choo-choo-wagon-animation" speed="10">
+		<pose id="main">0</pose>
 		<pose id="hold">0</pose>
 		<pose id="move">0</pose>
 	</animation-model>
