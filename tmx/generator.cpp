@@ -59,6 +59,8 @@ void MapGenerator::fillPattern(Layer *layer, const std::vector<std::string> &arg
 
 	bool random = false;
 	int percentage;
+	v2<int> shift;
+	
 	if (args.size() >= 5) {
 		std::string s = args[4];
 		if (s.empty())
@@ -70,6 +72,9 @@ void MapGenerator::fillPattern(Layer *layer, const std::vector<std::string> &arg
 		if (percentage == 0)
 			throw_ex(("fill-pattern: 0%% is not allowed"));
 		random = true;
+		if (args.size() >= 6) {
+			shift.fromString(args[5]);
+		}
 	}
 		
 	
@@ -104,8 +109,8 @@ void MapGenerator::fillPattern(Layer *layer, const std::vector<std::string> &arg
 			for(int dy = 0; dy < py; ++dy) 
 				for(int dx = 0; dx < px; ++dx) {
 					int pid = dx + px * dy;
-					if (pattern[pid] != '0' && pattern[pid] != ' ' && x + dx < w && y + dy < h)
-						obj->render(this, gid, x + dx, y + dy, false);
+					if (pattern[pid] != '0' && pattern[pid] != ' ' && shift.x + x + dx < w && shift.x + y + dy < h)
+						obj->render(this, gid, shift.x + x + dx, shift.y + y + dy, false);
 				}
 	}
 }
