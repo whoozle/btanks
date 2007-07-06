@@ -49,7 +49,7 @@ void MapGenerator::fill(Layer *layer, const std::vector<std::string> &args) {
 	int w = layer->getWidth(), h = layer->getHeight();
 	for(int y = 0; y < h; y += obj->h) 
 		for(int x = 0; x < w; x += obj->w) {
-			obj->render(this, gid, x, y);	
+			obj->render(this, gid, x, y, true);	
 	}
 }
 
@@ -94,15 +94,19 @@ void MapGenerator::fillPattern(Layer *layer, const std::vector<std::string> &arg
 	const GeneratorObject *obj = getObject(args[0], args[1]);
 	int w = layer->getWidth(), h = layer->getHeight();
 
-	for(int y = 0; y < h; y += obj->h) 
-		for(int x = 0; x < w; x += obj->w) {
+	for(int y = 0; y < h + py; y += py) 
+		for(int x = 0; x < w + px; x += px) {
 			if (random) {
 				if (percentage < mrt::random(100) + 1)
 					continue;
 			}
-			int pid = (x / obj->w) % px + px * ((y / obj->h) % py);
-			if (pattern[pid] != '0' && pattern[pid] != ' ')
-				obj->render(this, gid, x, y);
+			//int pid = (x / obj->w) % px + px * ((y / obj->h) % py);
+			for(int dy = 0; dy < py; ++dy) 
+				for(int dx = 0; dx < px; ++dx) {
+					int pid = dx + px * dy;
+					if (pattern[pid] != '0' && pattern[pid] != ' ' && x + dx < w && y + dy < h)
+						obj->render(this, gid, x + dx, y + dy, false);
+				}
 	}
 }
 

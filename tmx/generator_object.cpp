@@ -27,22 +27,30 @@ public:
 	}
 	std::vector<int> tiles;
 
-	void render(MapGenerator *gen, const int first_gid, const int x, const int y) const {
+	void render(MapGenerator *gen, const int first_gid, const int x, const int y, const bool full) const {
 		//LOG_DEBUG(("render(%d, %d, %d)", first_gid, x, y));
-		for(int dy = 0; dy < h; ++dy) 
-			for(int dx = 0; dx < w; ++dx) {
-				if (tiles[dy * w + dx] == 0)
-					continue;
-				if (gen->get(x + dx, y + dy) == 0)
+		if (full) {
+			for(int dy = 0; dy < h; ++dy) 
+				for(int dx = 0; dx < w; ++dx) {
+					if (tiles[dy * w + dx] == 0 || gen->get(x + dx, y + dy) != 0)
+						continue;
 					gen->set(x + dx, y + dy, first_gid + tiles[dy * w + dx]);
-			}
+				}
+		} else {
+			int px = x % w, py = y % h;
+			int tid = tiles[py * w + px];
+			if (tid == 0 || gen->get(x, y) != 0)
+				return;
+			gen->set(x, y, first_gid + tid);
+		}
 	}
+
 };
 
 class TileBox : public GeneratorObject {
 	void init(const std::map<const std::string, std::string>& attrs, const std::string &data) {
 	}
-	void render(MapGenerator *gen, const int first_gid, const int x, const int y) const {
+	void render(MapGenerator *gen, const int first_gid, const int x, const int y, const bool full) const {
 	}
 };
 

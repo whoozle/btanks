@@ -12,7 +12,7 @@ public:
 	GeneratorObject();
 
 	virtual void init(const std::map<const std::string, std::string>& attrs, const std::string &data);
-	virtual void render(MapGenerator *layer, const int first_gid, const int x, const int y) const = 0;
+	virtual void render(MapGenerator *layer, const int first_gid, const int x, const int y, const bool full) const = 0;
 	virtual ~GeneratorObject() {}
 	
 	static GeneratorObject *create(const std::string &name, const std::map<const std::string, std::string>& attrs, const std::string &data);
