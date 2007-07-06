@@ -765,6 +765,7 @@ void IMap::end(const std::string &name) {
 			{delete layer; layer = NULL; throw; }
 		);
 		
+		if (!_solo_aware) 
 		for(PropertyMap::iterator i = _properties.begin(); i != _properties.end(); ++i) {
 			if (i->first.compare(0, 10, "generator:") == 0) {		
 				TRY {
