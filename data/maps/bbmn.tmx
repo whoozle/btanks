@@ -1,75 +1,69 @@
 <?xml version="1.0"?>
 <map version="0.99b" orientation="orthogonal" width="20" height="20" tilewidth="64" tileheight="64">
- <properties>
-  <property name="spawn:2" value="@18,18"/>
-  <property name="spawn:1" value="@2,2"/>
- </properties>
- <tileset name="terrains" firstgid="1" tilewidth="64" tileheight="64">
-  <image source="../tilesets/terrains.png"/>
- </tileset>
- <tileset name="fences" firstgid="231" tilewidth="64" tileheight="64">
-  <image source="../tilesets/fences.png"/>
- </tileset>
- <tileset name="objects" firstgid="351" tilewidth="64" tileheight="64">
-  <image source="../tilesets/objects.png"/>
- </tileset>
- <tileset name="houses" firstgid="441" tilewidth="64" tileheight="64">
-  <image source="../tilesets/houses.png"/>
- </tileset>
- <tileset name="destroyed_houses" firstgid="621" tilewidth="64" tileheight="64">
-  <image source="../tilesets/destroyed_houses.png"/>
- </tileset>
- <tileset name="destruction" firstgid="741" tilewidth="64" tileheight="64">
-  <image source="../tilesets/destruction.png"/>
- </tileset>
- <tileset name="trees" firstgid="811" tilewidth="64" tileheight="64">
-  <image source="../tilesets/trees.png"/>
- </tileset>
- <tileset name="animated" firstgid="931" tilewidth="64" tileheight="64">
-  <image source="../tilesets/animated.png"/>
- </tileset>
- <tileset name="roads" firstgid="1091" tilewidth="64" tileheight="64">
-  <image source="../tilesets/roads.png"/>
- </tileset>
- <layer name="the plan" width="20" height="20">
-  <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgGAWjYBSMglEwCkgHADV9EcVABgAA
-  </data>
-  <tileproperties/>
- </layer>
- <layer name="Layer 1" width="20" height="20">
-  <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAFNgYGBQBGIFKtFaQKxNRZpa7hp136j7Rt036r5R91HXfQDVH68LQAYAAA==
-  </data>
-  <tileproperties/>
- </layer>
- <layer name="roads" width="20" height="20">
-  <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNggIBEFgaGJBYGOKCUnw1k51CBHwDEgUDsDMSuFPJB7osC4mggDgfiSCrwqRVeQyH8XEfDb9CEX/Zo+I2mv0EQfgBBDmmdQAYAAA==
-  </data>
-  <tileproperties/>
- </layer>
- <layer name="fences" width="20" height="20">
-  <properties>
-   <property name="generator:10:push-matrix" value=""/>
-   <property name="generator:20:fill-pattern" value="fences:wooden-fence-horizontal:4x4:1011000000000000"/>
-   <property name="impassability" value="100"/>
-  </properties>
-  <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgGAWjYBSMglEwCkgHADV9EcVABgAA
-  </data>
-  <tileproperties/>
- </layer>
- <layer name="fences2" width="20" height="20">
-  <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgGAWjYBSMglEwCkgHADV9EcVABgAA
-  </data>
-  <tileproperties/>
- </layer>
- <layer name="houses" width="20" height="20">
-  <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAALvFyMBwH4hh4BaF/CdA9ksq8o8B2aepyL8AZF+lIp/S8BoNv9HwGw0/4vmj4Te4wg8APK0qnkAGAAA=
-  </data>
-  <tileproperties/>
- </layer>
+	<properties>
+		<property name="spawn:1" value="@2,2"/>
+		<property name="spawn:2" value="@18,18"/>
+	</properties>
+	<tileset name="terrains" firstgid="1" tilewidth="64" tileheight="64">
+		<image source="../tilesets/terrains.png"/>
+	</tileset>
+	<tileset name="fences" firstgid="231" tilewidth="64" tileheight="64">
+		<image source="../tilesets/fences.png"/>
+	</tileset>
+	<tileset name="objects" firstgid="351" tilewidth="64" tileheight="64">
+		<image source="../tilesets/objects.png"/>
+	</tileset>
+	<tileset name="houses" firstgid="441" tilewidth="64" tileheight="64">
+		<image source="../tilesets/houses.png"/>
+	</tileset>
+	<tileset name="destroyed_houses" firstgid="621" tilewidth="64" tileheight="64">
+		<image source="../tilesets/destroyed_houses.png"/>
+	</tileset>
+	<tileset name="destruction" firstgid="741" tilewidth="64" tileheight="64">
+		<image source="../tilesets/destruction.png"/>
+	</tileset>
+	<tileset name="trees" firstgid="811" tilewidth="64" tileheight="64">
+		<image source="../tilesets/trees.png"/>
+	</tileset>
+	<tileset name="animated" firstgid="931" tilewidth="64" tileheight="64">
+		<image source="../tilesets/animated.png"/>
+	</tileset>
+	<tileset name="roads" firstgid="1091" tilewidth="64" tileheight="64">
+		<image source="../tilesets/roads.png"/>
+	</tileset>
+	<layer name="the plan" width="20" height="20">
+		<data encoding="base64" compression="gzip">
+			H4sIAAAAAAAAC2NgGAWjITAaAqMhMBoCoyFAeggAADV9EcVABgAA
+		</data>
+	</layer>
+	<layer name="Layer 1" width="20" height="20">
+		<data encoding="base64" compression="gzip">
+			H4sIAAAAAAAAC1NgYGBQBGIFKtFaQHO0gZhaNLXcBTOHWu6CmTPqPsriezT8RsOPlPJnNP9SVl5TO/wA1R+vC0AGAAA=
+		</data>
+	</layer>
+	<layer name="roads" width="20" height="20">
+		<data encoding="base64" compression="gzip">
+			H4sIAAAAAAAAC8VTwQqAMAj10J9F9zpFdapr/f85JSQRnc2gBrKJb07e3gO41toAbBi83uY79jpEv2zeY48Bo8XoMGSu59V1Cz9jjwVD76Mx7yRwVLfyLF/8vnf//onrFPHn4ZkvvVt8Sr48PM/t8VFbz/IX6TPi62m9pL+MHkv60/rS/uG7pF+an/BZ/rReNJ9f6K/k30h/f/s30l8tf54es/71/F3rzwh/AgEdjjZABgAA
+		</data>
+	</layer>
+	<layer name="fences" width="20" height="20">
+		<properties>
+			<property name="generator:10:push-matrix" value=""/>
+			<property name="generator:20:fill-pattern" value="fences:wooden-fence-horizontal:4x4:1011000000000000"/>
+			<property name="impassability" value="100"/>
+		</properties>
+		<data encoding="base64" compression="gzip">
+			H4sIAAAAAAAAC2NgGAWjITB4Q0CacfC6bai4TGY0DIdKVA05dwIATgLhkEAGAAA=
+		</data>
+	</layer>
+	<layer name="fences2" width="20" height="20">
+		<data encoding="base64" compression="gzip">
+			H4sIAAAAAAAAC2NgGAWjITAaAqMhMBoCoyFAeggAADV9EcVABgAA
+		</data>
+	</layer>
+	<layer name="houses" width="20" height="20">
+		<data encoding="base64" compression="gzip">
+			H4sIAAAAAAAAC4VUXQtBURD0UZQo8sD//zEKLxQvNx8vEoVXHiizZbOmY+fU1N12ztx75szeql6r7QFfFdUb1Nukz/wDuOfA55r1FH8CrRlhHvRZT/EX2LsirIOe9bnO+Hb+HSHzU/HNj2XASfip+OZd9Ot70+Un8y/jmxfRnyfqZuMXr+R+nO9vN++iXy1o9Qht1L74vp3vffarj71DYASMP8+DRM/4ndBXeWK/7PumSV5V/vh8R5FXlafS/GZ5tTyZhzGDcZ5L85vlVeWtNL8xf+yvyltpfrP5vuOs3SRv/H9Ttek9AMucI+ZN/e+473rKx3999i/qXfCdV+AW5lX5y/f1Bko4q19ABgAA
+		</data>
+	</layer>
 </map>
