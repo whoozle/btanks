@@ -13,6 +13,16 @@
 #include "mrt/fs_node.h"
 #include "mrt/xml.h"
 
+/*****************
+BIG FAT WARNING: 
+do not use original get on layers as it can be overloaded. 
+use layer_get. 
+******************/
+
+static const int layer_get(const Layer *layer, const int x, const int y) {
+	return layer->Layer::_get(y * layer->getWidth() + x);
+}
+
 void MapGenerator::exec(Layer *layer, const std::string &command, const std::string &value) {
 	assert(layer != NULL);
 	_layer = layer;
@@ -182,7 +192,7 @@ void MapGenerator::tileset(const std::string &fname, const int gid) {
 const Uint32 MapGenerator::get(const int x, const int y) const {
 	if (_layer == NULL)
 		throw_ex(("no layer to operate. (malicious external code?)"));
-	Uint32 t = _layer->get(x, y);
+	Uint32 t = layer_get(_layer, x, y);
 	if (t != 0)
 		return t;
 	if (_matrix_stack.empty())
@@ -233,8 +243,9 @@ void MapGenerator::projectLayer(Layer *layer, const std::vector<std::string> &ar
 	int w = layer->getWidth(), h = layer->getHeight();
 	for(int y = 0; y < h; ++y) 
 		for(int x = 0; x < w; ++x) {
-			int tid = layer->get(x, y);
+			int tid = layer_get(layer, x, y);
 			if (tid) 
 				_matrix_stack.top().set(y, x, tid);
 		}
+	LOG_DEBUG(("projected: \n%s", _matrix_stack.top().dump().c_str()));
 }
