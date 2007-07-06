@@ -30,6 +30,8 @@ void MapGenerator::exec(Layer *layer, const std::string &command, const std::str
 		popMatrix(layer, args);
 	else if (command == "exclude") 
 		exclude(layer, args);
+	else if (command == "project-layer")
+		projectLayer(layer, args);
 	else throw_ex(("unknown command '%s'", command.c_str()));
 	_layer = NULL;
 }
@@ -223,4 +225,16 @@ const std::string MapGenerator::getDescName(const std::string &fname) {
 		throw_ex(("invalid filename '%s' for tileset", fname.c_str()));
 	
 	return fname.substr(0, end) + ".xml";
+}
+
+void MapGenerator::projectLayer(Layer *layer, const std::vector<std::string> &args) {
+	if (_matrix_stack.empty())
+		throw_ex(("you cannot use project-layer without push-matrix. (no matrix on stack)"));
+	int w = layer->getWidth(), h = layer->getHeight();
+	for(int y = 0; y < h; ++y) 
+		for(int x = 0; x < w; ++x) {
+			int tid = layer->get(x, y);
+			if (tid) 
+				_matrix_stack.top().set(y, x, tid);
+		}
 }

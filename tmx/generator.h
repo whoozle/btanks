@@ -32,6 +32,7 @@ private:
 	void pushMatrix(Layer *layer, const std::vector<std::string> &args);
 	void popMatrix(Layer *layer, const std::vector<std::string> &args);
 	void exclude(Layer *layer, const std::vector<std::string> &args);
+	void projectLayer(Layer *layer, const std::vector<std::string> &args);
 	
 	const GeneratorObject *getObject(const std::string &tileset, const std::string &name) const;
 	
