@@ -54,14 +54,12 @@
 			<property name="visible-if-damaged" value="true"/>
 		</properties>
 		<data encoding="base64" compression="gzip">
-			H4sIAAAAAAAAC2NgGNqgk4WBoQuIqQUmA82aQoJ5MPtBNLFugakDuRtdD8x+EE2sW2DqQO4mVg+1wmugzSE2zIl1J6XhR2/34EtL2PyMnF7xpT9i0xJyeiVWD7K76B1e6GFCTv7Fl5bIyb/Eps3BqA4AW6oTaEAGAAA=
+			H4sIAAAAAAAAC9VTMQ6AQAhz8PPeqg/2OjRpCBGOEKMsMDRQShn71hpXc7+I3DHnjcaZ5+y1sgPnI2e5EAfeqDU4HznLhTjwRv2n8G5HXTx9vN0U792OumT1UfyqllkPZPtGHrBein5B/aq6kY/1UvQL6teKbm/rZXWv/O/T7Sr/m/XCF3E3By/lI0AGAAA=
 		</data>
 	</layer>
 	<layer name="fences" width="20" height="20">
 		<properties>
-			<property name="generator:20:fill-pattern" value="fences:wooden-fence-horizontal:4x4:1111000000000000:100%:1,0"/>
-			<!-- property name="generator:20:fill-pattern" value="fences:wooden-fence-horizontal:8x4:01111000000000000000000000000000:1%"/>
-			<property name="generator:30:fill-pattern" value="fences:wooden-fence-horizontal:8x4:10000111000000000000000000000000:20%"/ -->
+			<property name="generator:30:fill-pattern" value="fences:wooden-fence-horizontal:4x4:1111000000000000:100%:1,0"/>
 			<property name="impassability" value="100"/>
 		</properties>
 		<data encoding="base64" compression="gzip">
@@ -80,7 +78,7 @@
 	</layer>
 	<layer name="houses" width="20" height="20">
 		<data encoding="base64" compression="gzip">
-			H4sIAAAAAAAAC4VUTwvBQRT88StKFDnwhZ2dfSGFC8VF/lwkClcOlJmyeab13tbUvnZ22p2dt+tKUeyBNNZSb1BvnXXlH8A9G77Wqhfxx9CaCmZGX/Ui/hx7l4KV0eO61h6f998JPD8jPv1YGJwCPyM+vbN+fV86P6N/Hp9eWH+eqMvqL17O+yif3lm/atBqCeqo09D3Vr761cbeLtAD+p95x9Ejv/HhcV+UJ/WL55s4eY3yp/c7Bnn18jQoiyLXv15emSd6aDOY+nmY0Yvy5+VtlNFTP7WO8pbrX6+/77hr08mb/m9RTb0HwOwk2LxF/52uJ72ob/+tq39W74JzXoGb6dfIX83TG7juhatABgAA
+			H4sIAAAAAAAAC4VUywoCMRCrLiiIguJBf9izZ39IUMEH6GVR9yI+QL3qQcEMbHEMdWYh0NA0tGm6eSWEAohfTnwLvjPmWX+A9qL0zNnP04/hNSXMlD/7efol1q4JG+V3xPikuKeX8+8JVp6eXvJYKZydPD29ZKfz+t50eiT5WXrJTuf1As+qv3gb98N6yU7nVYNXi1AHjx/fN+s5rzbWdoEe0C/HHcNP9I1SJ+u8Ps2x/wWdd2L01esTn0/6aPXV6tMgCyH1fq2+Sp8kQ93B+J6HCT+vf1bfRgk/zpO51zd+vx5/4KxNo2/8f/O4+D0B6U6E7pv3v+P56Oe923/znJ/2u2KfN+Cu+uvly336ACkiWnBABgAA
 		</data>
 	</layer>
 	<layer name="trees" width="20" height="20">
