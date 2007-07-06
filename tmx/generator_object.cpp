@@ -32,9 +32,9 @@ public:
 		if (full) {
 			for(int dy = 0; dy < h; ++dy) 
 				for(int dx = 0; dx < w; ++dx) {
-					if (tiles[dy * w + dx] == 0 || gen->get(x + dx, y + dy) != 0)
-						continue;
-					gen->set(x + dx, y + dy, first_gid + tiles[dy * w + dx]);
+					const int tid = tiles[dy * w + dx];
+					if (tid != 0 && gen->get(x + dx, y + dy) == 0)
+						gen->set(x + dx, y + dy, first_gid + tid);
 				}
 		} else {
 			int px = x % w, py = y % h;
