@@ -39,9 +39,8 @@ public:
 		} else {
 			int px = x % w, py = y % h;
 			int tid = tiles[py * w + px];
-			if (tid == 0 || gen->get(x, y) != 0)
-				return;
-			gen->set(x, y, first_gid + tid);
+			if (tid != 0 && gen->get(x, y) == 0)
+				gen->set(x, y, first_gid + tid);
 		}
 	}
 
