@@ -190,6 +190,20 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 	}
 	yp += sh + 10;
 
+	l = new Label("medium", I18n->get("menu", "enable-fog-of-war"));
+	add(_bx + mx, yp, l);
+	l->getSize(sw, sh);
+	
+	_fog_of_war = new Checkbox();
+	{
+		int w, h;
+		_fog_of_war->getSize(w, h);
+		add(_bx + base_x - w / 2, yp + (sh - h) / 2, _fog_of_war);
+		if (h > sh) 
+			sh = h;
+	}
+	yp += sh + 10;
+
 
 	//dialogs
 
@@ -241,6 +255,9 @@ void OptionsMenu::reload() {
 	float donate;
 	Config->get("engine.donate-screen-duration", donate, 1.5f);
 	_donate->set(donate <= 0);
+	bool fog;
+	Config->get("engine.fog-of-war.enabled", fog, false);
+	_fog_of_war->set(fog);
 }
 
 #include "window.h"
@@ -289,6 +306,7 @@ void OptionsMenu::save() {
 		need_restart = true;
 	}
 	Config->set("engine.donate-screen-duration", (_donate->get())?0.0f:1.5f);
+	Config->set("engine.fog-of-war.enabled", _fog_of_war->get());
 	
 	PlayerManager->updateControls();
 

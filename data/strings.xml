@@ -39,6 +39,7 @@
 		<string id="screen-resolution">screen size</string>
 		<string id="fullscreen-mode">fullscreen</string>
 		<string id="do-not-show-donation-screen">do not show donation screen at exit</string>
+		<string id="enable-fog-of-war">enable fog of war (hardcore difficulty)</string>
 		<string id="score">score: </string>
 		<string id="shop">shop</string>
 	</area>
@@ -102,5 +103,7 @@
 		<string id="donation">You could improve this project and even push it to the desired features by donating.</string>
 		<string id="tactic-map">Clicking on the map screenshot could reveal useless tactic map</string>
 		<string id="clouds">Smoke clouds are poisonous. You could kill troopers with it.</string>
+		<string id="fog-of-war">You can enable "fog of war" in option menu (hardcore difficulty). 
+			Note that this option works only in resolutions larger than 800x600</string>
 	</area>
 </strings>

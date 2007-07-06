@@ -59,7 +59,7 @@ private:
 	Slider *_fx, *_music;
 	Button *_b_redefine;
 	Chooser *_c_res;
-	Checkbox *_fsmode, *_donate;
+	Checkbox *_fsmode, *_donate, *_fog_of_war;
 
 	Alarm _shoot;
 	
