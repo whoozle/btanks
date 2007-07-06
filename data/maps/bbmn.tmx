@@ -46,7 +46,7 @@
 			H4sIAAAAAAAAC92TsQqAMAxEO/hn4q6TqJOuiv8/miKBcCStaTsZCCUkDe3xLoQ39i6Eg5Kjtj5p1yX2ldYj7Zgoe8qBUtb4Xuxr9Uo7Nko8Z+W9izLH9+J87FuR0w/v4Tz2c/pZ86wXnpqeUi9rHv9fW7fizavXVz1T/Hl45D0p/iRvyOMtWIz8/oG/lH9z/Hn9y3q18q/X3znerH6pfy1/1/oV7z/unoQ4QAYAAA==
 		</data>
 	</layer>
-	<layer name="sub" width="20" height="20">
+	<layer name="sub" width="20" height="20" visible="0">
 		<properties>
 			<property name="generator:10:push-matrix" value=""/>
 			<property name="generator:20:project-layer" value=""/>
@@ -66,19 +66,38 @@
 			H4sIAAAAAAAAC2NgGAWjITAaAqMhMBoCoyFAeggAADV9EcVABgAA
 		</data>
 	</layer>
-	<layer name="fences2" width="20" height="20">
-		<data encoding="base64" compression="gzip">
-			H4sIAAAAAAAAC2NgGAWjITAaAqMhMBoCoyFAeggAADV9EcVABgAA
-		</data>
-	</layer>
 	<layer name="trees#1" width="20" height="20">
 		<data encoding="base64" compression="gzip">
 			H4sIAAAAAAAAC2NgIA1UMpOmnpDqZiqbR8i+UfnRECAlBOqA6bMeiBuAuJFGaTUDaG4mFc0uAppVTEXzaoBm1VLRPFLCf1Tt4A4BABeC+bhABgAA
 		</data>
 	</layer>
 	<layer name="houses" width="20" height="20">
+		<properties>
+			<property name="impassability" value="100"/>
+		</properties>
 		<data encoding="base64" compression="gzip">
 			H4sIAAAAAAAAC4VUywoCMRCrLiiIguJBf9izZ39IUMEH6GVR9yI+QL3qQcEMbHEMdWYh0NA0tGm6eSWEAohfTnwLvjPmWX+A9qL0zNnP04/hNSXMlD/7efol1q4JG+V3xPikuKeX8+8JVp6eXvJYKZydPD29ZKfz+t50eiT5WXrJTuf1As+qv3gb98N6yU7nVYNXi1AHjx/fN+s5rzbWdoEe0C/HHcNP9I1SJ+u8Ps2x/wWdd2L01esTn0/6aPXV6tMgCyH1fq2+Sp8kQ93B+J6HCT+vf1bfRgk/zpO51zd+vx5/4KxNo2/8f/O4+D0B6U6E7pv3v+P56Oe923/znJ/2u2KfN+Cu+uvly336ACkiWnBABgAA
+		</data>
+	</layer>
+	<layer name="sub2" width="20" height="20" visible="0">
+		<properties>
+			<property name="generator:10:pop-matrix" value=""/>
+			<property name="generator:20:push-matrix" value=""/>
+			<property name="generator:30:project-layer" value=""/>
+			<property name="hp" value="1000000"/>
+			<property name="visible-if-damaged" value="true"/>
+		</properties>
+		<data encoding="base64" compression="gzip">
+			H4sIAAAAAAAACzvMwMBwBIhh4DCFfCSjsDLPAkXPEVJEgjy1zUP3P7FOwaUPl/sI2UOqv0hVT6y/hoo6QuGJyx+kxhuh8CDXHbjMJTZeibUXpo6QelLTLbHuRPcnIXcQCm90eWq7g1z3kesOUv070OoBCxLQ/kAGAAA=
+		</data>
+	</layer>
+	<layer name="fences2" width="20" height="20">
+		<properties>
+			<property name="generator:40:fill-pattern" value="fences:wooden-fence-vertical:4x4:0000100010001000:100%:0,0"/>
+			<property name="impassability" value="100"/>
+		</properties>
+		<data encoding="base64" compression="gzip">
+			H4sIAAAAAAAAC2NgGAWjITAaAqMhMBoCoyFAeggAADV9EcVABgAA
 		</data>
 	</layer>
 	<layer name="trees" width="20" height="20">
