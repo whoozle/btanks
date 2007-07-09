@@ -170,6 +170,12 @@ void IGame::init(const int argc, char *argv[]) {
 		if (revision < 4009) {
 			Config->set("engine.sound.maximum-sources", 16);
 		}
+		if (revision < 4317) {
+			int cl;
+			Config->get("multiplayer.compression-level", cl, 1);
+			if (cl < 1) 
+				Config->set("multiplayer.compression-level", 1);
+		}
 		{
 			int fps_limit;
 			Config->get("engine.fps-limit", fps_limit, 120);

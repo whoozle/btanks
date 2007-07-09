@@ -59,7 +59,7 @@ Monitor::Monitor() : _running(false),
 	_send_q(), _recv_q(), _result_q(), 
 	_disconnections(), _connections(), 
 	_connections_mutex(), _result_mutex(), _send_q_mutex() {
-	GET_CONFIG_VALUE("multiplayer.compression-level", int, cl, 0);
+	GET_CONFIG_VALUE("multiplayer.compression-level", int, cl, 1);
 	_comp_level = cl;
 	LOG_DEBUG(("compression level = %d", _comp_level));
 }
