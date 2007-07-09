@@ -172,7 +172,7 @@ void Serializator::get(int &n)  const {
 		n = ntohl(*((unsigned long *)(ptr + _pos)));
 		_pos += sizeof(unsigned long);
 	} else 
-		throw_ex(("control byte %02x is unsupported. (corrupted data?)", (unsigned)type));
+		throw_ex(("control byte 0x%02x is unsupported. (corrupted data?)", (unsigned)type));
 
 	if (type & 0x80) 
 		n = -n;
