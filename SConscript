@@ -66,7 +66,7 @@ if debug and sys.platform == "win32":
 
 #fanncxx
 
-bt_libs = ['mrt', 'bt_net', 'sdlx',  sigc_lib, 'SDL', vorbis, al_lib]
+bt_libs = ['mrt', 'sdlx',  sigc_lib, 'SDL', vorbis, al_lib]
 
 if sys.platform == "win32":
 	bt_libs[0:0] = ['SDLmain']

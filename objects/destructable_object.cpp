@@ -57,7 +57,7 @@ void DestructableObject::addDamage(Object *from, const int dhp, const bool emitD
 		classname = "debris";
 		
 		if (_variants.has("with-fire")) {
-			spawn("fire", "fire", v2<float>(), v2<float>());
+			spawn("fire", "fire", v2<float>(), v2<float>(), getZ() + 1);
 		}
 
 		if (_variants.has("respawning")) {
