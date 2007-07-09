@@ -266,8 +266,9 @@ TRY {
 				if (t->pos == t->len) {
 					if (t->size_task) {
 						unsigned long len = ntohl(*((uint32_t *)(t->data->getPtr())));
-						if (len > 262144)
-							throw_ex(("recv'ed packet length of %u. it seems to be far too long for regular packet. so fixme if you want (probably broken/obsoleted client)", (unsigned int)len));
+						GET_CONFIG_VALUE("multiplayer.maximum-packet-length", int, max_len, 1024 * 1024);
+						if (len > max_len)
+							throw_ex(("recv'ed packet length of %u. it seems to be far too long for regular packet (probably broken/obsoleted client)", (unsigned int)len));
 						unsigned char flags = *((unsigned char *)(t->data->getPtr()) + 4);
 						//LOG_DEBUG(("added task for %u bytes. flags = %02x", len, flags));
 						eraseTask(_recv_q, ti);
