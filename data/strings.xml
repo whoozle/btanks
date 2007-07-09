@@ -105,5 +105,7 @@
 		<string id="clouds">Smoke clouds are poisonous. You could kill troopers with it.</string>
 		<string id="fog-of-war">You can enable "fog of war" in option menu (hardcore difficulty). 
 			Note that this option works only in resolutions larger than 800x600</string>
+		<string id="stats">You can view multiplayer game stats with &lt;tab&gt; key</string>
+		<string id="hint-control">You can skip or display again last tip with 'hint-control' key</string>
 	</area>
 </strings>
