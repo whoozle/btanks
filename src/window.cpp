@@ -63,7 +63,7 @@ void IWindow::initSDL() {
 #endif
 
 	LOG_DEBUG(("initializing SDL..."));
-	Uint32 subsystems = SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_JOYSTICK;
+	Uint32 subsystems = SDL_INIT_VIDEO | (_init_timer?SDL_INIT_TIMER:0) | (_init_joystick?SDL_INIT_JOYSTICK:0);
 #ifdef DEBUG
 	sdlx::System::init(subsystems | SDL_INIT_NOPARACHUTE);
 #else
@@ -99,7 +99,8 @@ void IWindow::init(const int argc, char *argv[]) {
 #ifdef __linux__
 //	putenv(strdup("SDL_VIDEODRIVER=dga"));
 #endif
-
+	_init_timer = true;
+	_init_joystick = true;
 	_opengl = true;
 	
 	_fullscreen = false;
@@ -128,6 +129,8 @@ void IWindow::init(const int argc, char *argv[]) {
 		else if (strcmp(argv[i], "-4") == 0) { _w = 1280; _h = 1024; }
 		else if (strcmp(argv[i], "--fsaa") == 0) { _fsaa = (_fsaa)?(_fsaa<< 1) : 1; }
 		else if (strcmp(argv[i], "--force-soft-gl") == 0) { _force_soft = true; }
+		else if (strcmp(argv[i], "--no-joystick") == 0) { _init_joystick = false; }
+		else if (strcmp(argv[i], "--no-timer") == 0) { _init_timer = false; }
 		else if (strcmp(argv[i], "--help") == 0) { 
 			printf(
 					"\t--no-gl\t\t\tdisable GL renderer\n"

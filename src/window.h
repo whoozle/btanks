@@ -74,6 +74,7 @@ public:
 private:
 	sdlx::Surface _window;
 	int _fsaa;
+	bool _init_timer, _init_joystick;
 	bool _fullscreen, _vsync, _opengl, _dx, _force_soft, _running;
 	int _w, _h;
 	sdlx::Timer _timer;	
