@@ -224,8 +224,8 @@
 
 	<animation-model id="destructable-object-animation" speed="1">
 		<pose id="main">0</pose>
-		<pose id="fade-out" z="-18" speed="10">0</pose>
-		<pose id="broken" z="-18" sound="@building-explosion">1</pose>
+		<pose id="fade-out" z="-18" speed="10" sound="@building-explosion">0</pose>
+		<pose id="broken" z="-18">1</pose>
 	</animation-model>
 
 	<animation-model id="destructable-object-animation-no-z" speed="1">
