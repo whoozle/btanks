@@ -35,13 +35,8 @@
 
 using namespace mrt;
 
-#define INTEGER 0x80
-#define SIGNED_INTEGER 0x40
-
-#define FLOAT 1
-#define STRING 2
-
-#define ASSERT_POS(size) if (_pos + (size) > _data->getSize()) throw_ex(("buffer overrun %d + %d > %d", _pos, (size), _data->getSize()))
+#define ASSERT_POS(size) if (_pos + (size) > _data->getSize()) \
+	throw_ex(("buffer overrun %u + %u > %u", (unsigned)_pos, (unsigned)(size), (unsigned)_data->getSize()))
 
 //ugly hackish trick, upcast const pointer to non-const variant.
 
@@ -61,18 +56,24 @@ const bool Serializator::end() const {
 
 void Serializator::add(const int n) {
 	//LOG_DEBUG(("added int %d", n));
-	unsigned char type = INTEGER;
 	unsigned char buf[sizeof(unsigned long)];
 	
-	int x = n, len;
-	if (x < 0) {
-		type |= SIGNED_INTEGER;
-		x = -x;
-	}
+	unsigned int x = (n >= 0)?n:-n;
+	unsigned int len;
+	unsigned char mask = (n >= 0)?0: 0x80;
+
 	assert(x >= 0);
-	if (x == 0) {
-		len = 0;
-	} else if (x <= UCHAR_MAX) {
+	
+	//compact serialization for small numbers
+	if (x <= 0x3f) { 
+		unsigned char *ptr = (unsigned char *) _data->reserve(1) + _pos++;
+		*ptr = mask | x;
+		return;
+	}
+
+	mask |= 0x40;
+	
+	if (x <= UCHAR_MAX) {
 		buf[0] = (unsigned char)x;
 		len = sizeof(unsigned char);
 	} else if (x <= USHRT_MAX) {
@@ -84,7 +85,7 @@ void Serializator::add(const int n) {
 	}
 
 	unsigned char *ptr = (unsigned char *) _data->reserve(1 + len) + _pos;
-	*ptr++ = type | len;
+	*ptr++ = mask | len;
 	memcpy(ptr, buf, len);
 	_pos += len + 1;
 }
@@ -150,8 +151,13 @@ void Serializator::get(int &n)  const {
 
 	ASSERT_POS(1);
 	unsigned char type = *(ptr + _pos++);
-	if (! (type & INTEGER))
-		throw_ex(("got %02x('%c'), instead of integer type-len byte", type, type>=0x20?type:'.'));
+	if ((type & 0x40) == 0) {
+		n = type & 0x3f;
+		if (type & 0x80) 
+			n = -n;
+		return;
+	}
+
 	unsigned char len = type & 0x3f;
 	ASSERT_POS(len);
 	
@@ -165,17 +171,19 @@ void Serializator::get(int &n)  const {
 	} else if (len == sizeof(unsigned long)) {
 		n = ntohl(*((unsigned long *)(ptr + _pos)));
 		_pos += sizeof(unsigned long);
-	}
-	if (type & SIGNED_INTEGER) 
+	} else 
+		throw_ex(("control byte %02x is unsupported. (corrupted data?)", (unsigned)type));
+
+	if (type & 0x80) 
 		n = -n;
 }
 
 void Serializator::get(bool &b) const {
 	int x;
 	get(x);
-	if (x != 't' && x != 'f')
+	if (x != 0 && x != 1)
 		throw_ex(("invalid boolean value '%02x'", x));
-	b = x == 't';
+	b = x == 1;
 }
 
 void Serializator::get(float &f) const {
