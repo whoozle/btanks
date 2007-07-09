@@ -1,8 +1,0 @@
-Import('env')
-
-env = env.Copy()
-env.Append(CPPPATH=['..', '.', '../src'])
-bt_net = env.StaticLibrary('bt_net', 
-	['protocol.cpp', 'server.cpp', 'client.cpp', 'connection.cpp', 'monitor.cpp'] 
-	)
-

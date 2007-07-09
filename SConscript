@@ -19,6 +19,8 @@ env.Append(CPPDEFINES=['BTANKSAPI=DLLEXPORT']);
 
 vobj = venv.SharedObject('src/version.cpp')
 bt_sources = 	[
+#networking
+	'net/protocol.cpp', 'net/server.cpp', 'net/client.cpp', 'net/connection.cpp', 'net/monitor.cpp',
 #menu
 	'menu/checkbox.cpp', 'menu/shop.cpp', 'menu/image_view.cpp', 'menu/shop_item.cpp', 'menu/popup_menu.cpp', 
 	'menu/start_server_menu.cpp', 'menu/join_server_menu.cpp', 'menu/campaign_menu.cpp', 
