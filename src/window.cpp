@@ -69,6 +69,8 @@ void IWindow::initSDL() {
 #else
 	sdlx::System::init(subsystems);
 #endif
+	
+	LOG_DEBUG(("enabling unicode..."));
 
 	SDL_EnableUNICODE(1);
 
