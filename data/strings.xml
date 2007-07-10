@@ -1,47 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <strings>
 	<area id="menu">
 		<string id="back">BACK</string>
+		<string id="back" lang="ru">НАЗАД</string>
+		
 		<string id="ok">OK</string>
+		<string id="ok" lang="ru">ОК</string>
+		
 		<string id="add">ADD</string>
+		<string id="add" lang="ru">ДОБАВИТЬ</string>
+		
 		<string id="scan">SCAN</string>
+		<string id="scan" lang="ru">ИСКАТЬ</string>
+		
 		<string id="join">JOIN</string>
+		<string id="join" lang="ru">ВОЙТИ</string>
+		
 		<string id="start">START</string>
+		<string id="start" lang="ru">НАЧАТЬ</string>
+		
 		<string id="delete">DELETE</string>
+		<string id="delete" lang="ru">УДАЛИТЬ</string>
 	
 		<string id="start-game">START GAME</string>
+		<string id="start-game" lang="ru">НАЧАТЬ ИГРУ</string>
+		
 		<string id="start-campaign">CAMPAIGN</string>
-		<string id="start-game" lang="ru">NACHAT IGRU</string>
+		<string id="start-campaign" lang="ru">КАМПАНИЯ</string>
 		
 		<string id="join-game">JOIN GAME</string>
+		<string id="join-game" lang="ru">ПРИСОЕДИНИТЬСЯ К ИГРЕ</string>
+		
 		<string id="options">OPTIONS</string>
+		<string id="options" lang="ru">НАСТРОЙКИ</string>
+		
 		<string id="credits">CREDITS</string>
+		<string id="credits" lang="ru">АВТОРЫ</string>
+		
 		<string id="quit">QUIT</string>
+		<string id="quit" lang="ru">ВЫЙТИ</string>
 		
 		<string id="no-slots-in-map">No slots in map</string>
-		<string id="connection-failed">Connection failed.</string>
+		<string id="no-slots-in-map" lang="ru">Нет свободных слотов</string>
+		<string id="connection-failed">Connection failed</string>
+		<string id="connection-failed" lang="ru">Ошибка соединения</string>
 
 		<string id="single-player">Single player</string>
+		<string id="single-player" lang="ru">Один игрок</string>
 		<string id="split-player-1">Split screen player 1</string>
+		<string id="split-player-1" lang="ru">Игрок 1 (из 2-х)</string>
 		<string id="split-player-2">Split screen player 2</string>
+		<string id="split-player-2" lang="ru">Игрок 2 (из 2-х)</string>
 
 		<string id="fx-volume">Effects volume</string>
+		<string id="fx-volume" lang="ru">Громкость спецэффектов</string>
 		<string id="music-volume">Music volume</string>
+		<string id="music-volume" lang="ru">Громкость музыки</string>
 		
 		<string id="redefine-keys">Redefine keys</string>
+		<string id="redefine-keys" lang="ru">Настроить клавиши</string>
 		<string id="default-keys">Default keys</string>
+		<string id="default-keys" lang="ru">Клавиши по умолчанию</string>
 		
 		<string id="view-map">[click here to view tactics map]</string>
+		<string id="view-map" lang="ru">[кликните здесь чтобы увидеть тактическую карту]</string>
 		<string id="joystick">Joystick</string>
+		<string id="joystick" lang="ru">Джойстик</string>
 		<string id="of">of</string>
+		<string id="of" lang="ru">из</string>
 
 		<string id="test-gamepad">Test your gamepad. If it behaves different that you expected click [setup] button.</string>
+		<string id="test-gamepad" lang="ru">Попробуйте свой геймпад. Если он ведёт себя не так как ожидалось, нажмите кнопку [настроить].</string>
 		<string id="setup-gamepad">setup gamepad</string>
+		<string id="setup-gamepad" lang="ru">настроить</string>
 		<string id="screen-resolution">screen size</string>
+		<string id="screen-resolution" lang="ru">Размер окна/Разрешение</string>
 		<string id="fullscreen-mode">fullscreen</string>
+		<string id="fullscreen-mode" lang="ru">во весь экран</string>
 		<string id="do-not-show-donation-screen">do not show donation screen at exit</string>
+		<string id="do-not-show-donation-screen" lang="ru">не показывать экран попрошаек</string>
 		<string id="enable-fog-of-war">enable fog of war (hardcore difficulty)</string>
+		<string id="enable-fog-of-war" lang="ru">ограничение видимости(суперсложность)</string>
 		<string id="score">score: </string>
+		<string id="score" lang="ru">счёт: </string>
 		<string id="shop">shop</string>
+		<string id="shop">магазин</string>
 	</area>
 	<area id="maps/descriptions">
 		<string id="baykonur">Huge cooperative map with tons of troopers, very defensive military base and big boss inside(tm)</string>
