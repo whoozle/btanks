@@ -109,23 +109,73 @@ const int Font::render(sdlx::Surface &window, const int x, const int y, const st
 	return render(&window, x, y, str);
 }
 
+#include <deque>
 
 const int Font::render(sdlx::Surface *window, const int x, const int y, const std::string &str) const {
 	int fw, fh;
 	fw = fh = _surface->getHeight();
 	int w = 0;
+	
+	std::deque<unsigned> tokens;
+	
+	for(size_t i = 0; i < str.size(); ++i) {
+		unsigned c = (unsigned)str[i];
+		if (c < 0x80) {
+			tokens.push_back(c);
+		} else if (c & 0xc0 == 0x80) {
+			tokens.push_back('?');
+			continue;
+		} else if (c & 0xe0 == 0xc0) {
+			++i;
+			if (i >= str.size()) {
+				tokens.push_back('?');
+				break;
+			}
+			
+			unsigned b2 = str[i];
+			if ((b2 & 0xc0) != 0x80) {
+				tokens.push_back('?');
+				continue;
+			}
+			tokens.push_back(((c & 0x1f) << 6) | (b2 & 0x3f));
+		} else if (c & 0xf0 == 0xe0) {
+			++i;
+			if (i >= str.size()) {
+				tokens.push_back('?');
+				break;
+			}
+			unsigned b2 = str[i++];
 
-	for(unsigned i = 0; i < str.size(); ++i) {
-		int c = str[i];
+			if (i >= str.size()) {
+				tokens.push_back('?');
+				break;
+			}
+			unsigned b3 = str[i++];
+			if (b2 & 0xc0 != 0x80 || b3 & 0xc0 != 0x80) {
+				tokens.push_back('?');
+				continue;				
+			}
+			
+			tokens.push_back(((c & 0x0f) << 12) | ((b2 & 0x3f) << 6) | (b3 & 0x3f));
+		} else 
+			tokens.push_back('?');
+	}	
+
+	for(std::deque<unsigned>::const_iterator i = tokens.begin(); i != tokens.end(); ++i) {
+		unsigned c = *i;
 		
 		switch(_type) {
 		case Ascii:
 			c -= 32;
-			if (c * fw >= _surface->getWidth())
-				c = toupper(c) - 32;
 			if (c < 0) 
 				continue;
-				
+
+			if (c < 0x80 && c * fw >= (unsigned)_surface->getWidth())
+				c = toupper(c) - 32;
+
+			if (c * fw >= (unsigned)_surface->getWidth())
+				c = '?';
+			
 		break;
 		case AZ09:
 			if (c == ' ')
@@ -146,13 +196,13 @@ const int Font::render(sdlx::Surface *window, const int x, const int y, const st
 			spacing = 4;
 		//const int spacing = 2;
 
-		if (_type == AZ09 && str[i] == ' ') {
+		if (_type == AZ09 && c == ' ') {
 			w += fw / 3 + spacing;
 			continue;
 		}
 			
 		
-		if (c < (int)_width_map.size()) {
+		if (c < _width_map.size()) {
 			//LOG_DEBUG(("char '%c' (code: %d), %d<->%d", str[i], c, x1, x2));
 			x1 = _width_map[c].first;
 			x2 = _width_map[c].second;
@@ -175,7 +225,7 @@ const int Font::render(sdlx::Surface *window, const int x, const int y, const st
 		
 		w += x2 - x1 + 1;
 	}
-	return w;
+	return (w > 0)?w:1;
 }
 
 const int Font::render(sdlx::Surface &window, const std::string &str) const {
