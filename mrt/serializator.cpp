@@ -101,7 +101,7 @@ void Serializator::get(unsigned int &n) const {
 
 void Serializator::add(const bool b) {
 	//LOG_DEBUG(("added bool %c", b?'t':'f'));
-	add((int) (b?'t':'f'));
+	add(b?1:0);
 }
 
 void Serializator::add(const std::string &str) {
