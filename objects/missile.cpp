@@ -22,11 +22,13 @@
 #include "world.h"
 #include "config.h"
 #include "zbox.h"
+#include "math/binary.h"
+#include "mrt/random.h"
 
 class Missile : public Object {
 public:
 	std::string type;
-	Missile(const std::string &type) : Object("missile"), type(type) {
+	Missile(const std::string &type) : Object("missile"), type(type), _reaction(true) {
 		piercing = true;
 		setDirectionsNumber(16);
 	}
@@ -39,15 +41,41 @@ public:
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
 		s.add(type);
+		s.add(_reaction);
+		s.add(_target);
 	}
 	virtual void deserialize(const mrt::Serializator &s) {
 		Object::deserialize(s);
 		s.get(type);
+		s.get(_reaction);
+		s.get(_target);
 	}
+	
+private: 
+	Alarm _reaction;
+	v2<float> _target;
 
+//do not serialize
+	std::set<std::string> _targets;
 };
 
 void Missile::onSpawn() {
+	_targets.insert("fighting-vehicle");
+	_targets.insert("monster");
+
+	if (type != "stun") {
+		_targets.insert("trooper");
+		_targets.insert("kamikaze");
+		_targets.insert("boat");
+		_targets.insert("helicopter");
+	}
+
+	if (type == "guided" || type == "stun") {
+		GET_CONFIG_VALUE("objects.guided-missile.reaction-time", float, rt, 0.05);
+		mrt::randomize(rt, rt / 10);
+		_reaction.set(rt);
+	}
+
 	play("main", true);
 	if (type != "boomerang") {
 		Object *_fire = spawnGrouped("single-pose", "missile-fire", v2<float>(), Centered);
@@ -58,27 +86,21 @@ void Missile::onSpawn() {
 	
 	playSound(type + "-missile", false);
 	quantizeVelocity();
+	_target = _velocity;
 }
 
 void Missile::calculate(const float dt) {
 	if (type == "guided" || type == "stun") {
-		std::set<std::string> targets;
-		targets.insert("fighting-vehicle");
-		targets.insert("monster");
-		if (type != "stun") {
-			targets.insert("trooper");
-			targets.insert("kamikaze");
-			targets.insert("boat");
-			targets.insert("helicopter");
-		}
-	
 		v2<float> pos, vel;
-		if (getNearest(targets, ttl * speed, pos, vel, true)) {
+		if (_reaction.tick(dt) && getNearest(_targets, math::min(ttl * speed, 800.0f), pos, vel, true)) {
 			float est_t = pos.length() / speed;
 			if (est_t > 1)
 				est_t = 1;
-			_velocity = pos + vel * est_t;
+			_target = _velocity = pos + vel * est_t;
+		} else { 
+			_velocity = _target;
 		}
+		LOG_DEBUG(("%d: velocity: %g %g", getID(), _velocity.x, _velocity.y));
 
 		GET_CONFIG_VALUE("objects." + type + "-missile.rotation-time", float, rotation_time, 0.2);
 		limitRotation(dt, rotation_time, false, false);
