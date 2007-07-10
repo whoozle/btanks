@@ -185,7 +185,7 @@ void PlayerSlot::spawnPlayer(const std::string &classname, const std::string &an
 	Object *obj = ResourceManager->createObject(classname, animation);
 	assert(obj != NULL);
 	
-	if (control_method != NULL)
+	if (control_method != NULL || remote)
 		obj->disable_ai = true;
 
 	obj->setZBox(position.z);

@@ -167,10 +167,11 @@ TRY {
 		} 
 
 		LOG_DEBUG(("player%d: %s:%s", id, vehicle.c_str(), animation.c_str()));
-		slot.spawnPlayer(vehicle, animation);
 
-		slot.reserved = false;
 		slot.remote = true;
+		slot.reserved = false;
+		
+		slot.spawnPlayer(vehicle, animation);
 
 		mrt::Serializator s;
 		World->serialize(s);
