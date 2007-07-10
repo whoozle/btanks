@@ -357,6 +357,7 @@ void BaseObject::getInfo(v2<float> &pos, v2<float> &vel) const {
 	vel = _velocity;
 	
 	vel.normalize();
+	vel *= speed;
 }
 
 #include "player_manager.h"
