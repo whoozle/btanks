@@ -111,6 +111,12 @@ const int Font::render(sdlx::Surface &window, const int x, const int y, const st
 
 #include <deque>
 
+#define CHECK_SIZE(i) if ((i) >= str.size()) { \
+	tokens.push_back('?');\
+	break;\
+}
+
+
 const int Font::render(sdlx::Surface *window, const int x, const int y, const std::string &str) const {
 	int fw, fh;
 	fw = fh = _surface->getHeight();
@@ -123,12 +129,9 @@ const int Font::render(sdlx::Surface *window, const int x, const int y, const st
 		if (c < 0x80) {
 			tokens.push_back(c);
 		} else if ((c & 0xc0) == 0x80) {
-			tokens.push_back('?');
+			//tokens.push_back('?'); //unsupported sequence
 		} else if ((c & 0xe0) == 0xc0) {
-			if (i >= str.size()) {
-				tokens.push_back('?');
-				break;
-			}
+			CHECK_SIZE(i);
 			
 			unsigned b2 = str[i++];
 			if ((b2 & 0xc0) != 0x80) {
@@ -137,23 +140,29 @@ const int Font::render(sdlx::Surface *window, const int x, const int y, const st
 			}
 			tokens.push_back(((c & 0x1f) << 6) | (b2 & 0x3f));
 		} else if ((c & 0xf0) == 0xe0) {
-			if (i >= str.size()) {
-				tokens.push_back('?');
-				break;
-			}
+			CHECK_SIZE(i);
 			unsigned b2 = str[i++];
-
-			if (i >= str.size()) {
-				tokens.push_back('?');
-				break;
-			}
+			CHECK_SIZE(i);
 			unsigned b3 = str[i++];
+
 			if ((b2 & 0xc0) != 0x80 || (b3 & 0xc0) != 0x80) {
 				tokens.push_back('?');
 				continue;				
 			}
 			
 			tokens.push_back(((c & 0x0f) << 12) | ((b2 & 0x3f) << 6) | (b3 & 0x3f));
+		} else if ((c & 0xf8) == 0xf0) {
+			CHECK_SIZE(i);
+			unsigned b2 = str[i++];
+			CHECK_SIZE(i);
+			unsigned b3 = str[i++];
+			CHECK_SIZE(i);
+			unsigned b4 = str[i++];
+			if ((b2 & 0xc0) != 0x80 || (b3 & 0xc0) != 0x80 || (b4 & 0xc0) != 0x80) {
+				tokens.push_back('?');
+				continue;
+			}
+			tokens.push_back(((c & 0x07) << 18) | ((b2 & 0x3f) << 12) | ((b3 & 0x3f) << 6) | (b4 & 0x3f));
 		} else {
 			tokens.push_back('*');
 		}
