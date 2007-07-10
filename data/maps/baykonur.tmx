@@ -4,8 +4,8 @@
   <property name="config:objects.tank.dispersion.duration" value="float:-1"/>
   <property name="object:static-shilka:green-shilka:3" value="46,1004"/>
   <property name="object:static-shilka:green-shilka:1" value="1144,1685"/>
-  <property name="object:static-tank:green-tank:1" value="2976,2816"/>
   <property name="object:impassable-static-corpse:dead-cannon:3" value="1805,1642,200"/>
+  <property name="object:static-tank:green-tank:1" value="2976,2816"/>
   <property name="object:impassable-static-corpse:dead-cannon:2" value="2650,1119,200"/>
   <property name="object:impassable-static-corpse:dead-cannon:1" value="225,1344,200"/>
   <property name="object:smoke-missiles-item:smoke-missiles-item:7" value="2093,259"/>
@@ -72,10 +72,10 @@
   <property name="object:thrower-item:thrower-item:5" value="1956,1"/>
   <property name="object:armed-mine:regular-mine:37" value="1151,455,-10"/>
   <property name="object:thrower-item:thrower-item:4" value="1284,486"/>
-  <property name="object:thrower:thrower:20" value="2083,729"/>
   <property name="object:thrower-item:thrower-item:3" value="1082,1154"/>
   <property name="object:oil-barrels:oil-barrels:26" value="2427,1698,210"/>
   <property name="object:armed-mine:regular-mine:35" value="1157,539,-10"/>
+  <property name="object:thrower:thrower:20" value="2083,729"/>
   <property name="object:thrower-item:thrower-item:2" value="1031,2008"/>
   <property name="object:oil-barrels:oil-barrels:25" value="2945,1958,210"/>
   <property name="object:armed-mine:regular-mine:34" value="1172,574,-10"/>
@@ -92,25 +92,25 @@
   <property name="object:thrower:thrower:18" value="1930,1306"/>
   <property name="object:thrower:thrower:17" value="2550,449"/>
   <property name="object:thrower:thrower:16" value="2466,679"/>
-  <property name="object:thrower:thrower:15" value="2776,736"/>
   <property name="object:guided-missiles-item:guided-missiles-item:15" value="1906,227"/>
-  <property name="object:thrower:thrower:14" value="2868,668"/>
+  <property name="object:thrower:thrower:15" value="2776,736"/>
   <property name="object:guided-missiles-item:guided-missiles-item:14" value="1905,227"/>
   <property name="object:armed-mine:regular-mine:29" value="807,259,-10"/>
-  <property name="object:thrower:thrower:13" value="785,10"/>
+  <property name="object:thrower:thrower:14" value="2868,668"/>
   <property name="object:guided-missiles-item:guided-missiles-item:13" value="2733,177"/>
   <property name="object:oil-barrels:oil-barrels:19" value="2135,426"/>
   <property name="object:armed-mine:regular-mine:28" value="779,284,-10"/>
-  <property name="object:thrower:thrower:12" value="750,372"/>
+  <property name="object:thrower:thrower:13" value="785,10"/>
   <property name="object:guided-missiles-item:guided-missiles-item:12" value="2426,439"/>
   <property name="object:armed-mine:regular-mine:27" value="768,259,-10"/>
-  <property name="object:thrower:thrower:11" value="224,155"/>
+  <property name="object:thrower:thrower:12" value="750,372"/>
   <property name="object:guided-missiles-item:guided-missiles-item:11" value="1661,928"/>
   <property name="object:oil-barrels:oil-barrels:17" value="1614,171,210"/>
   <property name="object:armed-mine:regular-mine:26" value="747,286,-10"/>
-  <property name="object:thrower:thrower:10" value="619,1554"/>
+  <property name="object:thrower:thrower:11" value="224,155"/>
   <property name="object:guided-missiles-item:guided-missiles-item:10" value="994,1369"/>
   <property name="object:oil-barrels:oil-barrels:16" value="1040,377"/>
+  <property name="object:thrower:thrower:10" value="619,1554"/>
   <property name="object:oil-barrels:oil-barrels:15" value="993,348"/>
   <property name="object:oil-barrels:oil-barrels:14" value="696,32"/>
   <property name="object:oil-barrels:oil-barrels:13" value="307,2649"/>
@@ -222,8 +222,8 @@
   <property name="object:watchtower-with-thrower:watchtower:45" value="2692,492,300"/>
   <property name="object:watchtower-with-thrower:watchtower:40" value="2750,105,300"/>
   <property name="object:stall:stall-right:1" value="805,2793"/>
-  <property name="object:static-launcher:red-launcher:3" value="2408,1031"/>
   <property name="config:map.cannon.respawn-interval" value="int:10000"/>
+  <property name="object:static-launcher:red-launcher:3" value="2408,1031"/>
   <property name="object:static-launcher:red-launcher:2" value="1399,3"/>
   <property name="object:static-launcher:red-launcher:1" value="155,1239"/>
   <property name="object:watchtower-with-thrower:watchtower:31" value="1154,564,210"/>
@@ -278,9 +278,9 @@
   <property name="object:machinegunner:machinegunner:19" value="696,2401"/>
   <property name="object:machinegunner:machinegunner:18" value="735,2449"/>
   <property name="object:machinegunner:machinegunner:17" value="325,2928"/>
-  <property name="object:watchtower-with-machinegunner:watchtower:60" value="1469,1911,210"/>
   <property name="object:machinegunner:machinegunner:16" value="554,3058"/>
   <property name="object:barrack-with-throwers:trooper-hut:11" value="647,632,210"/>
+  <property name="object:watchtower-with-machinegunner:watchtower:60" value="1469,1911,210"/>
   <property name="object:machinegunner:machinegunner:15" value="932,3041"/>
   <property name="object:machinegunner:machinegunner:14" value="1051,2905"/>
   <property name="object:machinegunner:machinegunner:13" value="1370,1636"/>
@@ -289,8 +289,8 @@
   <property name="object:gate:gate:3" value="2517,254"/>
   <property name="object:machinegunner:machinegunner:11" value="2911,1208"/>
   <property name="object:gate:gate:2" value="3109,1931"/>
-  <property name="object:gate:gate:1" value="1895,1680"/>
   <property name="object:kamikaze:kamikaze:5" value="1371,1141"/>
+  <property name="object:gate:gate:1" value="1895,1680"/>
   <property name="object:kamikaze:kamikaze:4" value="1341,1238"/>
   <property name="object:kamikaze:kamikaze:3" value="1295,1166"/>
   <property name="object:kamikaze:kamikaze:2" value="2857,1218"/>
@@ -305,51 +305,51 @@
   <property name="object:watchtower-with-machinegunner:watchtower:50" value="2303,2220,210"/>
   <property name="object:static-dirt:dirt:1" value="3072,2748"/>
   <property name="object:heal:heal:9" value="664,2861"/>
-  <property name="object:heal:heal:7" value="1267,1216"/>
   <property name="config:map.machinegunner-item.respawn-interval" value="int:10000"/>
+  <property name="object:heal:heal:7" value="1267,1216"/>
   <property name="object:heal:heal:6" value="1523,1719"/>
   <property name="object:heal:heal:5" value="2552,1558"/>
   <property name="object:heal:heal:4" value="2655,1259"/>
   <property name="object:heal:heal:3" value="2176,2087"/>
   <property name="object:heal:heal:2" value="2708,1917,-10"/>
-  <property name="object:lodge:lodge:2" value="2858,3056,500"/>
   <property name="object:heal:heal:1" value="1932,1895,-10"/>
+  <property name="object:lodge:lodge:2" value="2858,3056,500"/>
   <property name="object:watchtower-with-machinegunner:watchtower:49" value="2048,2220,210"/>
-  <property name="object:watchtower-with-machinegunner:watchtower:48" value="1348,1264,210"/>
   <property name="object:static-shilka:red-shilka:2" value="1241,1"/>
-  <property name="object:watchtower-with-machinegunner:watchtower:47" value="2108,173,10"/>
+  <property name="object:watchtower-with-machinegunner:watchtower:48" value="1348,1264,210"/>
   <property name="object:static-shilka:red-shilka:1" value="1063,1684"/>
+  <property name="object:watchtower-with-machinegunner:watchtower:47" value="2108,173,10"/>
   <property name="object:watchtower-with-machinegunner:watchtower:46" value="2108,74,300"/>
-  <property name="object:watchtower-with-machinegunner:watchtower:44" value="2752,629,300"/>
   <property name="object:impassable-static-corpse:dead-yellow-tank:5" value="997,2649,10"/>
-  <property name="object:watchtower-with-machinegunner:watchtower:43" value="3009,565,300"/>
+  <property name="object:watchtower-with-machinegunner:watchtower:44" value="2752,629,300"/>
   <property name="object:impassable-static-corpse:dead-yellow-tank:4" value="1259,536,10"/>
-  <property name="object:watchtower-with-machinegunner:watchtower:42" value="2816,322,300"/>
+  <property name="object:watchtower-with-machinegunner:watchtower:43" value="3009,565,300"/>
   <property name="object:impassable-static-corpse:dead-yellow-tank:3" value="873,467,10"/>
-  <property name="object:watchtower-with-machinegunner:watchtower:41" value="2559,388,300"/>
+  <property name="object:watchtower-with-machinegunner:watchtower:42" value="2816,322,300"/>
   <property name="object:impassable-static-corpse:dead-yellow-tank:2" value="1876,661,10"/>
+  <property name="object:watchtower-with-machinegunner:watchtower:41" value="2559,388,300"/>
   <property name="object:impassable-static-corpse:dead-yellow-tank:1" value="1172,452,200"/>
   <property name="object:submarine:submarine:1" value="867,2226"/>
-  <property name="object:barrack-with-machinegunners:trooper-hut:9" value="1377,132,210"/>
   <property name="object:impassable-static-corpse:dead-yellow-launcher:2" value="703,227,200"/>
+  <property name="object:barrack-with-machinegunners:trooper-hut:9" value="1377,132,210"/>
   <property name="object:impassable-static-corpse:dead-yellow-launcher:1" value="572,1977,-18"/>
   <property name="object:barrack-with-machinegunners:trooper-hut:5" value="2636,1430"/>
   <property name="object:barrack-with-machinegunners:trooper-hut:4" value="3093,1430"/>
   <property name="object:barrack-with-machinegunners:trooper-hut:3" value="2013,1690"/>
   <property name="object:tent-with-kamikazes:trooper-tent:14" value="2053,13"/>
   <property name="object:cannon:cannon:24" value="1137,303,210"/>
-  <property name="object:cannon:cannon:23" value="2000,1284"/>
   <property name="object:kamikaze:kamikaze:28" value="2926,251"/>
-  <property name="object:cannon:cannon:22" value="2414,2,10"/>
+  <property name="object:cannon:cannon:23" value="2000,1284"/>
   <property name="object:kamikaze:kamikaze:27" value="2767,67"/>
-  <property name="object:cannon:cannon:21" value="3094,619,300"/>
+  <property name="object:cannon:cannon:22" value="2414,2,10"/>
   <property name="object:kamikaze:kamikaze:26" value="2731,4"/>
-  <property name="object:cannon:cannon:20" value="@49,5"/>
-  <property name="config:multiplayer.game-type" value="string:cooperative"/>
+  <property name="object:cannon:cannon:21" value="3094,619,300"/>
   <property name="object:kamikaze:kamikaze:25" value="2780,17"/>
+  <property name="config:multiplayer.game-type" value="string:cooperative"/>
+  <property name="object:cannon:cannon:20" value="@49,5"/>
   <property name="object:kamikaze:kamikaze:24" value="1252,1888"/>
-  <property name="object:watchtower-with-machinegunner:watchtower:35" value="1338,813"/>
   <property name="object:kamikaze:kamikaze:23" value="1205,1898"/>
+  <property name="object:watchtower-with-machinegunner:watchtower:35" value="1338,813"/>
   <property name="object:kamikaze:kamikaze:22" value="1280,1820"/>
   <property name="object:kamikaze:kamikaze:21" value="1216,1844"/>
   <property name="object:kamikaze:kamikaze:20" value="392,2450"/>
@@ -359,28 +359,28 @@
   <property name="object:dispersion-bullets-item:dispersion-bullets-item:6" value="1514,1474"/>
   <property name="object:machinegunner:machinegunner:9" value="2684,1067"/>
   <property name="object:machinegunner:machinegunner:8" value="3044,1125"/>
-  <property name="object:dispersion-bullets-item:dispersion-bullets-item:3" value="2875,2616"/>
   <property name="object:machinegunner:machinegunner:7" value="3117,1756"/>
+  <property name="object:dispersion-bullets-item:dispersion-bullets-item:3" value="2875,2616"/>
   <property name="object:barrack-with-kamikazes:trooper-hut:10" value="347,1275,210"/>
   <property name="object:cannon:cannon:19" value="@46,0"/>
   <property name="object:cannon:cannon:18" value="@39,7"/>
   <property name="object:cannon:cannon:17" value="1692,195"/>
   <property name="object:cannon:cannon:16" value="2334,716"/>
-  <property name="object:cannon:cannon:14" value="1529,509"/>
   <property name="object:kamikaze:kamikaze:19" value="348,2396"/>
-  <property name="object:cannon:cannon:13" value="838,761"/>
+  <property name="object:cannon:cannon:14" value="1529,509"/>
   <property name="object:kamikaze:kamikaze:18" value="234,2672"/>
-  <property name="object:cannon:cannon:12" value="1029,3059"/>
+  <property name="object:cannon:cannon:13" value="838,761"/>
   <property name="object:kamikaze:kamikaze:17" value="297,2977"/>
-  <property name="object:cannon:cannon:11" value="928,2598"/>
+  <property name="object:cannon:cannon:12" value="1029,3059"/>
   <property name="object:kamikaze:kamikaze:16" value="236,3119"/>
-  <property name="object:cannon:cannon:10" value="1447,1043"/>
+  <property name="object:cannon:cannon:11" value="928,2598"/>
   <property name="object:kamikaze:kamikaze:15" value="150,3149"/>
-  <property name="object:watchtower-with-machinegunner:watchtower:26" value="385,1187"/>
+  <property name="object:cannon:cannon:10" value="1447,1043"/>
   <property name="object:kamikaze:kamikaze:14" value="75,3126"/>
+  <property name="object:watchtower-with-machinegunner:watchtower:26" value="385,1187"/>
   <property name="object:watchtower-with-machinegunner:watchtower:25" value="449,291"/>
-  <property name="object:watchtower-with-machinegunner:watchtower:24" value="414,2810"/>
   <property name="object:missile-boat:missile-boat:2" value="9,1804"/>
+  <property name="object:watchtower-with-machinegunner:watchtower:24" value="414,2810"/>
   <property name="object:missile-boat:missile-boat:1" value="8,1804"/>
   <property name="object:static-launcher:yellow-launcher:2" value="43,1180"/>
   <property name="config:objects.nuke-missiles-on-tank.capacity" value="int:1"/>
@@ -400,8 +400,8 @@
   <property name="object:tent-with-machinegunners:trooper-tent:3" value="2503,2794"/>
   <property name="object:static-corpse:dead-cyan-shilka:1" value="1149,2706,-100"/>
   <property name="object:tent-with-kamikazes:trooper-tent:8" value="920,816"/>
-  <property name="object:tent-with-kamikazes:trooper-tent:7" value="197,418"/>
   <property name="config:map.kamikaze.respawn-interval" value="int:10000"/>
+  <property name="object:tent-with-kamikazes:trooper-tent:7" value="197,418"/>
   <property name="object:tent-with-kamikazes:trooper-tent:6" value="676,1479"/>
   <property name="object:tent-with-kamikazes:trooper-tent:2" value="2726,1819"/>
   <property name="config:objects.shilka.dispersion.duration" value="float:10000"/>
@@ -444,7 +444,7 @@
  </layer>
  <layer name="sande" width="50" height="50">
   <properties>
-   <property name="impassability" value="60"/>
+   <property name="impassability" value="50"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAO2VWQ7EIAiGOVvn/geat4kPJobIohUGDH/SNF1EPtkeAPhAfj1QHJFUHLHUGG5gKY5YKo5YuoGhqThiqXNk5xkZorB8N9ZE5NhRccTSLRzd91s4ssekOGJprI/MHE23xaQ41uxbasZyal/PeFvtRdm1YtHst+OLN4dmT+rer1WbXiwPyH7MmChbnhwrPNQ3vP4f8cDCuYNnvxQzHCvL+qB81f6Peahz53LwJIembrm1VK559CqKgcqHmR/aWrLstxQDx8SdrVT3XjOD8lP6vlJTFtLkrqZ3SvlimVMzH3fWa2xY1zlVuyua9V1sy3oGnjojKS6431nm2Fu7mjPh+ncUaWNrPUtOiJuF4z+WPfiUtLUSOR7cDO3KwDEK59j4PhNHE54rMHk+oR/2rYVSECcAAA==
@@ -473,8 +473,8 @@
  </layer>
  <layer name="animated water" width="50" height="50">
   <properties>
-   <property name="animation-speed" value="10"/>
    <property name="animation-frames" value="5"/>
+   <property name="animation-speed" value="10"/>
    <property name="shifting-velocity" value="10,20"/>
    <property name="shifting-size" value="2,2"/>
    <property name="animation-frame-size" value="20"/>
@@ -501,8 +501,8 @@
  </layer>
  <layer name="sand details" width="50" height="50">
   <properties>
-   <property name="z" value="-50"/>
    <property name="impassability" value="60"/>
+   <property name="z" value="-50"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAO3ZMQrDMAwFUPUkPUGgc7dCtzS5/1W6NaFkMZmKEznpe6DBg+EbG2FQxNc9zuGZHWDF+4c97qMtY3YA4K9cL9kJAAAAAADY261Y91O9phriWLMqc8421Hg7XaUs2R5xjrMsPQHgqOZeXP53tvIBmxwW6BAnAAA=
@@ -511,7 +511,7 @@
  </layer>
  <layer name="dirt" width="50" height="50">
   <properties>
-   <property name="impassability" value="50"/>
+   <property name="impassability" value="40"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAANVZiW5bIRAkRw/JjttEcu0ekqVU6me0//9XAZVRJqNdWPDxnJFWOO89YIc9WMghpbTNss6yz/KcYlhleTBkPdGWee/ruDdZbuu7URxqG+XAmNHbajd1vBU9uyR66/wtyy692jzCawkeDOhadFAfLTYvnOCP5+BRfPIuvfroTP/bOkbRoay/56MRHrPA2MVHLS7QEa1+oz6jYJ7bM/Jgf9g436xJNlU38IHPIBaUA8cu+531/Fh78PgemGvRvZff2IcsHlvj+bntkUgfzve9cZkH8ylrADsqn4KZmI3aI6UYXwB66vrrHOyX4AGdIvMAUXsAli6tscED+sIfEf/39C308Di3oPaYzcGclzQHWLF0SG/XXOP+GHuM2IUBDqP9OV+oHqP2UP+MxIkCazm7DjwG5+RjxoEeUf/iGnV2HQpgj+c0Fx86zqg+3j73McunLJ/p2w/1mfUO8xe04mpGn4hdNd+hvvqR5WeWJ9L7S5Zf9O6PMb/WQa0Wvz19Zu2h+e436Wzp3ppff+teynp6+szaI9KPa7Pe/B4Xfsc8bhx9IvYY5VH0tWpnPb/o39aZTO1xqN+gjpipP3g9W7nOqx8wDuJL/7a+0xobttZzDuxR8oyVYzz9kPstLp5+LWgN4wH7qp5zoEuJ1xKjJd88OWN48TV7zrTG1vHAT2Gd17jv9/Q/b7byv9W/d6ZknfCdFzsb+d46sxxSe11hl1b+j9zzgAvnLu3P/HH2x/2F1nMWWuva8hGvn9feVd1ZX2vf4N/KYYZHJJ9a/TRfRu59LNk35rEA37Lm2ae39QC3LTtiXHCK8uDcCltY83iI3M9EW91LV411Uj4a014/D3wmOTWPEf/iOw2rJunxUD67RtvSy7rD1/uuyDqwHpZfngLe/U30/xA9HlZu2YmcElq/tzjwntfiwfEdPX8cC61PWxyieQTo5YVTIlr/zez7Pd5LYHTfL/Hh2cO6G78ErJoikq8se4zU/adGZP/jdeYz1c54vhSi+i+pYw/Fp3o8Ru58uL0kRuN7pL0ktB7h++T3xEMxso9cM49j/YxlSbTs8TXLo7R491h//8vyt7ZLomWP98TDswfv8/yOeV0TD88ePW7M4xrivGcPXX/lyH8viZ49LB4PyebxAlQT8hoQJwAA
@@ -584,8 +584,8 @@
  <layer name="sandbags" width="50" height="50">
   <properties>
    <property name="pierceable" value="true"/>
-   <property name="z" value="200"/>
    <property name="impassability" value="100"/>
+   <property name="z" value="200"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAO1azU7DMAxu2YPxAAjEBY03QUI97wm47g6U7raOCzwK/w9CImrNmDhxWqdt0D6pWqdqib/4s524a8ui2JjLojafj939lNh6bLjxPGvNs52AQ404p4S154HM47M/Fnad2gFcrgfYAjw0+Ej9litqhw7mhovOvqbzxc6hK4jLauZcKKzdOOaH6u1qIv4Q7yG7U/nn1ox7h677nvNIcxZXB/rwaxRy/qXj99TGutMWjnfMF+vQV+dcaBjdwpy7yPHOy5/L8lqR39LvgC2yncZRbJ6jdZibMwbAJwRXDvhcFMXXYu8vn85wLNg4iPXlWJDkCwtOWwf8hURfOeCU8DibGa+TLj9Z2E/OvqUw5l2AmH8318ei3xiaWCv44NXweJuYi9Y5pyp/17cN+c7tVUNjShHLo2HsoXmYy8st4eUaF/jH5Oo1GUu6Xtp1DWq+tC6F0Ab8n6quadlvQc8mWr0Jl841zwbLgMa1tEPXRLtPRXlQhHjgNQ2t7zbB+nAAXUnyBV1TGld1yfcJNTXrAujKtV74zOHTBd7v+87/8CwVGmbeMXWhCar3lcAXFqEaNHbPjNOWJM/4/DW2L109Z9+5uhLqDuJirn1MvG+a4gybW0+UAuJRmsuH8KV9n779Kw4x/V2smxBvytnGizTfpURTuvuNdF/C7QOksQPjjal16bkpdszce11jvcNMiaqLn9T7x9QA++fy/nwINM+1B4yD46P9fT1h36/Pe1GoJU/G7ucZ9F/7gDvTufCSKcdcMGVd1PxfwH+oixi51JRv03WNKBAnAAA=
@@ -673,8 +673,8 @@
  </layer>
  <layer name="buildings" width="50" height="50">
   <properties>
-   <property name="z" value="400"/>
    <property name="impassability" value="100"/>
+   <property name="z" value="400"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAAO2Vz0sCQRzFZ2dBgi5d9GJQmaaBYSZU/rrYpf4Rzx4kIUUStP82r3rw4Bt2hsZtNcTDjPE+8JgvM4d9b2a/M0IQQgghhBBCCCGEEEIIIYQQQsj/ISeFuJGuXRzGFfxnofMjz1HUORR5jAUZjUrXR3ROKkcZqljqQC/QHdQNXTvcJG/ts73HKkcJakAnWuY/U3XPsxz2Xj9ZOaqo+/D6Dg2hURidzz00QP3hWY6B9voYy9FEPcb8JzSDvsLofG6hCeqpoxzfgRDz4Pf8RHuN50jiAes1x/29QIZlQg5z/zxD9T/uoRbW2g5zrOA/kMk5Kvr+MX3i2z1kk4K/0y05DKaXd/Wv6/f9DN9OQ5kED6+Ye5M/vbytf3153y/w/cs9PeTk5ltueij+1vjAGnrXp4IQJwAA
