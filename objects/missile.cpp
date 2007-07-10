@@ -100,7 +100,7 @@ void Missile::calculate(const float dt) {
 		} else { 
 			_velocity = _target;
 		}
-		LOG_DEBUG(("%d: velocity: %g %g", getID(), _velocity.x, _velocity.y));
+		//LOG_DEBUG(("%d: velocity: %g %g", getID(), _velocity.x, _velocity.y));
 
 		GET_CONFIG_VALUE("objects." + type + "-missile.rotation-time", float, rotation_time, 0.2);
 		limitRotation(dt, rotation_time, false, false);
