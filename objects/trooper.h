@@ -38,11 +38,13 @@ public:
 		Object::serialize(s);
 		s.add(_object);
 		s.add(_fire);
+		s.add(_pose);
 	}
 	virtual void deserialize(const mrt::Serializator &s) {
 		Object::deserialize(s);
 		s.get(_object);
 		s.get(_fire);
+		s.get(_pose);
 	}	
 
 protected: 
