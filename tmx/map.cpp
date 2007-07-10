@@ -466,14 +466,15 @@ void IMap::load(const std::string &name) {
 		dl = _layers[_layer_z[i->first]];
 		if (dl == NULL)
 			throw_ex(("layer %s doesnt exits", i->first.c_str()));
-		l = _layers[_layer_z[i->second]];
+		int slave_z = _layer_z[i->second];
+		l = _layers[slave_z];
 		if (l == NULL)
 			throw_ex(("layer %s doesnt exits", i->second.c_str()));
 		LOG_DEBUG(("mapping damage layers: %s -> %s", i->first.c_str(), i->second.c_str()));
 		ChainedDestructableLayer *cl = dynamic_cast<ChainedDestructableLayer *>(dl);
 		if (cl == NULL) 
 			throw_ex(("layer %s is not destructable", i->first.c_str()));
-		cl->setSlave(l);
+		cl->setSlave(slave_z, l);
 	}
 
 	_name = name;
@@ -1105,8 +1106,12 @@ void IMap::serialize(mrt::Serializator &s) const {
 	
 	for(LayerMap::const_iterator i = _layers.begin(); i != _layers.end(); ++i) {
 		s.add(i->first);
-		const DestructableLayer *dl = dynamic_cast<DestructableLayer *>(i->second);
-		const int type = (dl != NULL)? 'd':'l';
+		int type = 'l';
+		if (dynamic_cast<ChainedDestructableLayer *>(i->second) != NULL) 
+			type = 'c';
+		else if (dynamic_cast<DestructableLayer *>(i->second) != NULL) 
+			type = 'd';
+
 		s.add(type);
 		s.add(*i->second);
 	}
@@ -1168,6 +1173,9 @@ void IMap::deserialize(const mrt::Serializator &s) {
 		Layer *layer = NULL;
 		TRY {
 			switch(type) {
+			case 'c': 
+				layer = new ChainedDestructableLayer();
+				break;
 			case 'd': 
 				layer = new DestructableLayer(true);
 				break;
@@ -1185,6 +1193,16 @@ void IMap::deserialize(const mrt::Serializator &s) {
 		});
 		
 		notify_progress.emit(1);
+	}
+
+	for(LayerMap::iterator i = _layers.begin(); i != _layers.end(); ++i) {
+		ChainedDestructableLayer * cdl = dynamic_cast<ChainedDestructableLayer *>(i->second);
+		if (cdl == NULL)
+			continue;
+		LayerMap::iterator l = _layers.find(cdl->slave_z);
+		if (l == _layers.end())
+			throw_ex(("no slave layer found (z: %d)", cdl->slave_z));
+		cdl->setSlave(cdl->slave_z, l->second);
 	}
 	
 	int pn;

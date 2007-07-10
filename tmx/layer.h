@@ -118,8 +118,12 @@ protected:
 
 class ChainedDestructableLayer : public DestructableLayer {
 public: 
-	ChainedDestructableLayer() : DestructableLayer(true), _slave(NULL) {}
-	void setSlave(Layer *layer) { _slave = layer; }
+	int slave_z;
+	ChainedDestructableLayer() : DestructableLayer(true), slave_z(-999999), _slave(NULL) {}
+	void setSlave(const int slave_z, Layer *layer) { this->slave_z = slave_z; _slave = layer; }
+
+	virtual void serialize(mrt::Serializator &s) const;
+	virtual void deserialize(const mrt::Serializator &s);
 
 	virtual void onDeath(const int idx);
 private: 

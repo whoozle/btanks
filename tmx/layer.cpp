@@ -39,6 +39,16 @@ void ChainedDestructableLayer::onDeath(const int idx) {
 	_slave->clear(idx);
 }
 
+void ChainedDestructableLayer::serialize(mrt::Serializator &s) const {
+	DestructableLayer::serialize(s);
+	s.add(slave_z);
+}
+
+void ChainedDestructableLayer::deserialize(const mrt::Serializator &s) {
+	DestructableLayer::deserialize(s);
+	s.get(slave_z);
+}
+
 void DestructableLayer::onDeath(const int idx) {
 	//LOG_DEBUG(("onDeath(%d)", idx));
 	_hp_data[idx] = -1;
