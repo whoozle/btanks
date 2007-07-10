@@ -52,9 +52,7 @@ void ai::Herd::calculateV(v2<float> &velocity, Object *sheep, const int leader, 
 		++n;
 	}
 	const v2<int> tile_size = Map->getPathTileSize();
-	v2<float> pos, vel;
-	sheep->getInfo(pos, vel);
-	pos /= tile_size.convert<float>();
+	v2<float> pos = sheep->getCenterPosition() / tile_size.convert<float>();
 	
 	const Matrix<int> &hint = Map->getAreaMatrix(sheep->registered_name);
 	int w = hint.getWidth(), h = hint.getHeight();

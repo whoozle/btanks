@@ -689,8 +689,7 @@ void IPlayerManager::setViewport(const int idx, const sdlx::Rect &rect) {
 	if (o == NULL)
 		throw_ex(("setViewport %d called on empty slot.", idx));
 	
-	v2<float> pos, vel;
-	o->getInfo(pos, vel);
+	v2<float> pos = o->getCenterPosition();
 	slot.map_pos.x = (int)pos.x - rect.w / 2;
 	slot.map_pos.y = (int)pos.y - rect.h / 2;
 }
