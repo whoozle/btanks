@@ -118,28 +118,25 @@ const int Font::render(sdlx::Surface *window, const int x, const int y, const st
 	
 	std::deque<unsigned> tokens;
 	
-	for(size_t i = 0; i < str.size(); ++i) {
-		unsigned c = (unsigned)str[i];
+	for(size_t i = 0; i < str.size(); ) {
+		unsigned c = (unsigned)str[i++];
 		if (c < 0x80) {
 			tokens.push_back(c);
-		} else if (c & 0xc0 == 0x80) {
+		} else if ((c & 0xc0) == 0x80) {
 			tokens.push_back('?');
-			continue;
-		} else if (c & 0xe0 == 0xc0) {
-			++i;
+		} else if ((c & 0xe0) == 0xc0) {
 			if (i >= str.size()) {
 				tokens.push_back('?');
 				break;
 			}
 			
-			unsigned b2 = str[i];
+			unsigned b2 = str[i++];
 			if ((b2 & 0xc0) != 0x80) {
 				tokens.push_back('?');
 				continue;
 			}
 			tokens.push_back(((c & 0x1f) << 6) | (b2 & 0x3f));
-		} else if (c & 0xf0 == 0xe0) {
-			++i;
+		} else if ((c & 0xf0) == 0xe0) {
 			if (i >= str.size()) {
 				tokens.push_back('?');
 				break;
@@ -151,18 +148,20 @@ const int Font::render(sdlx::Surface *window, const int x, const int y, const st
 				break;
 			}
 			unsigned b3 = str[i++];
-			if (b2 & 0xc0 != 0x80 || b3 & 0xc0 != 0x80) {
+			if ((b2 & 0xc0) != 0x80 || (b3 & 0xc0) != 0x80) {
 				tokens.push_back('?');
 				continue;				
 			}
 			
 			tokens.push_back(((c & 0x0f) << 12) | ((b2 & 0x3f) << 6) | (b3 & 0x3f));
-		} else 
-			tokens.push_back('?');
+		} else {
+			tokens.push_back('*');
+		}
 	}	
 
 	for(std::deque<unsigned>::const_iterator i = tokens.begin(); i != tokens.end(); ++i) {
 		unsigned c = *i;
+		//LOG_DEBUG(("token: %x", c));
 		
 		switch(_type) {
 		case Ascii:
@@ -174,7 +173,7 @@ const int Font::render(sdlx::Surface *window, const int x, const int y, const st
 				c = toupper(c) - 32;
 
 			if (c * fw >= (unsigned)_surface->getWidth())
-				c = '?';
+				c = '?' - 32;
 			
 		break;
 		case AZ09:
