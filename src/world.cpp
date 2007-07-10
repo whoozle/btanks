@@ -923,11 +923,17 @@ TRY {
 			v2<int> pos;
 			v2<float> dp;
 			
+			v2<int> size = Map->getSize();
+			sdlx::Rect map_rect(0, 0, size.x, size.y);
+			
 			for(a = 0; a < steps; ++a) {
 				for(int d = 0; d < 8; ++d) {
 					dp.fromDirection((dir + directions[d] + 8) % 8, 8);
 					dp *= (a + 1) * step_size;
 					pos = (o.getPosition() + dp).convert<int>();
+					v2<int> c_pos = (o.getCenterPosition() + dp).convert<int>();
+					if (!map_rect.in(c_pos.x, c_pos.y))
+						continue;
 
 					float map_im = map.getImpassability(&o, pos, NULL, NULL) / 100.0f;
 					float obj_im = getImpassability(&o, pos, NULL, true);
