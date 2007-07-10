@@ -22,6 +22,7 @@
 
 #include <string>
 #include <vector>
+#include <map>
 #include "export_sdlx.h"
 
 namespace sdlx {
@@ -29,9 +30,11 @@ namespace sdlx {
 class Surface;
 class SDLXAPI Font {
 public:
-	enum Type { AZ09, Ascii };
+	enum Type { Undefined, AZ09, Ascii };
 	Font();
 	~Font();
+	
+	void addPage(const unsigned base, const std::string &file, const bool alpha = true);
 	
 	void load(const std::string &file, const Type type, const bool alpha = true);
 	const int getHeight() const;
@@ -44,11 +47,18 @@ public:
 	void clear();
 
 private:
+	Type _type;
+	
 	Font(const Font &);
 	const Font& operator=(const Font &);
-	Type _type;
-	sdlx::Surface *_surface;
-	std::vector<std::pair<int, int> > _width_map;
+	
+	struct Page {
+		Page() : width_map(), surface(NULL) {}
+		std::vector<std::pair<int, int> > width_map;
+		sdlx::Surface *surface;
+	};
+	typedef std::map<const unsigned int, Page, std::greater<const unsigned int> > Pages;
+	Pages _pages;
 };
 
 }

@@ -25,47 +25,47 @@
 
 using namespace sdlx;
 
-Font::Font() : _type(), _surface(NULL){}
+Font::Font() : _type(Undefined) {}
 
 Font::~Font() {
 	clear();
 }
 
 void Font::clear() {
-	if (_surface == NULL) 
-		return;
-	delete _surface;
-	_surface = NULL;
+	for(Pages::iterator i = _pages.begin(); i != _pages.end(); ++i) {
+		delete i->second.surface;
+	}
+	_pages.clear();
 }
-	
-void Font::load(const std::string &file, const Type type, const bool alpha) {
-	clear();
-	_type = type;
-	_surface = new sdlx::Surface;
-	_surface->loadImage(file);
-	_surface->convertAlpha();
+
+void Font::addPage(const unsigned base, const std::string &file, const bool alpha) {
+	Page page;
+
+	page.surface = new sdlx::Surface;
+	page.surface->loadImage(file);
+	page.surface->convertAlpha();
 	
 	if (!alpha)
-		_surface->setAlpha(0, 0);
+		page.surface->setAlpha(0, 0);
 	
 	//scanning pixel width;
-	int h = _surface->getHeight();
+	int h = page.surface->getHeight();
 	int w = h;
-	int n = (_surface->getWidth() - 1) / w + 1;
+	int n = (page.surface->getWidth() - 1) / w + 1;
 	
-	_width_map.resize(n);
+	page.width_map.resize(n);
 	
 	for(int c = 0; c < n; ++c) {
-		_width_map[c].first = w;
-		_width_map[c].second = 0;
+		page.width_map[c].first = w;
+		page.width_map[c].second = 0;
 		
 		for(int y = 0; y < h; ++y) {
 			int x1, x2;
 			
 			for(x1 = 0; x1 < w; ++x1) {
-				Uint32 p = _surface->getPixel(x1 + c * w, y);
+				Uint32 p = page.surface->getPixel(x1 + c * w, y);
 				Uint8 r, g, b, a;
-				_surface->getRGBA(p, r, g, b, a);
+				page.surface->getRGBA(p, r, g, b, a);
 				if (a > 128) {
 					//LOG_DEBUG(("line %d:%d, break on %d %d %d %d", y, x1, r, g, b, a));
 					break;
@@ -73,32 +73,41 @@ void Font::load(const std::string &file, const Type type, const bool alpha) {
 			}
 			
 			for(x2 = w - 1; x2 >= 0; --x2) {
-				Uint32 p = _surface->getPixel(x2 + c * w, y);
+				Uint32 p = page.surface->getPixel(x2 + c * w, y);
 				Uint8 r, g, b, a;
-				_surface->getRGBA(p, r, g, b, a);
+				page.surface->getRGBA(p, r, g, b, a);
 				if (a > 128) {
 					//LOG_DEBUG(("line %d:%d, break on %d %d %d %d", y, x2, r, g, b, a));
 					break;
 				}
 			}
 			
-			if (x1 < _width_map[c].first)
-				_width_map[c].first = x1;
-			if (x2 > _width_map[c].second)
-				_width_map[c].second = x2;
+			if (x1 < page.width_map[c].first)
+				page.width_map[c].first = x1;
+			if (x2 > page.width_map[c].second)
+				page.width_map[c].second = x2;
 		}
 		
-		if (_width_map[c].first > _width_map[c].second) {
-			_width_map[c].first = 0;
-			_width_map[c].second = w / 3;
+		if (page.width_map[c].first > page.width_map[c].second) {
+			page.width_map[c].first = 0;
+			page.width_map[c].second = w / 3;
 		} 
 		
 		//LOG_DEBUG(("%s: char: %d, x1: %d, x2: %d", file.c_str(), c, _width_map[c].first, _width_map[c].second));
 	}
+	_pages[base] = page;
+}
+	
+void Font::load(const std::string &file, const Type type, const bool alpha) {
+	clear();
+	_type = type;
+	addPage(0x20, file, alpha);
 }
 
 const int Font::getHeight() const {
-	return _surface->getHeight();
+	if (_pages.empty())
+		throw_ex(("font was not loaded"));
+	return _pages.begin()->second.surface->getHeight();
 }
 
 const int Font::getWidth() const {
@@ -118,8 +127,6 @@ const int Font::render(sdlx::Surface &window, const int x, const int y, const st
 
 
 const int Font::render(sdlx::Surface *window, const int x, const int y, const std::string &str) const {
-	int fw, fh;
-	fw = fh = _surface->getHeight();
 	int w = 0;
 	
 	std::deque<unsigned> tokens;
@@ -171,31 +178,37 @@ const int Font::render(sdlx::Surface *window, const int x, const int y, const st
 	for(std::deque<unsigned>::const_iterator i = tokens.begin(); i != tokens.end(); ++i) {
 		unsigned c = *i;
 		//LOG_DEBUG(("token: %x", c));
+		Pages::const_iterator page_i = _pages.lower_bound(c);
+		if (page_i == _pages.end())
+			continue;
+		
+		//LOG_DEBUG(("page: %04x", page_i->first));
+		const unsigned page_base = page_i->first;
+		//LOG_DEBUG(("token: %08x base: U+%08x, offset: %08x", c, page_base, c - page_base));
+
+		if (c < page_base) 
+			c = '?';
+
+		const Page & page = page_i->second;
+		int fw, fh;
+		fw = fh = page.surface->getHeight();
 		
 		switch(_type) {
 		case Ascii:
-			c -= 32;
-			if (c < 0) 
-				continue;
 
-			if (c < 0x80 && c * fw >= (unsigned)_surface->getWidth())
-				c = toupper(c) - 32;
+			if (c < 0x80 && (c - page_base) * fw >= (unsigned)page.surface->getWidth())
+				c = toupper(c);
 
-			if (c * fw >= (unsigned)_surface->getWidth())
-				c = '?' - 32;
+			c -= page_base;
+	
+			if (c * fw >= (unsigned)page.surface->getWidth())
+				c = '?' - page_base;
 			
 		break;
+		case Undefined: 
+			throw_ex(("font without type"));
 		case AZ09:
-			if (c == ' ')
-				break;
-			c = toupper(c);
-			c -= '0';
-			if (c > 9)
-				c -= 7;
-			//LOG_DEBUG(("az09: char '%c' (code: %d)", str[i], c));
-			if (c < 0 || c > 36) 	
-				continue;
-		break;
+			throw_ex(("rewrite me"));
 		}
 		
 		int x1 = 0, x2 = fw - 1;
@@ -208,12 +221,11 @@ const int Font::render(sdlx::Surface *window, const int x, const int y, const st
 			w += fw / 3 + spacing;
 			continue;
 		}
-			
 		
-		if (c < _width_map.size()) {
+		if (c < page.width_map.size()) {
 			//LOG_DEBUG(("char '%c' (code: %d), %d<->%d", str[i], c, x1, x2));
-			x1 = _width_map[c].first;
-			x2 = _width_map[c].second;
+			x1 = page.width_map[c].first;
+			x2 = page.width_map[c].second;
 			/*
 			if (x1 >= spacing) 
 				x1 -= spacing;
@@ -227,7 +239,7 @@ const int Font::render(sdlx::Surface *window, const int x, const int y, const st
 		if (window != NULL) {
 			sdlx::Rect src(c * fw + x1, 0, x2 - x1 + 1, fh);
 		
-			window->copyFrom(*_surface, src, x + w, y);
+			window->copyFrom(*page.surface, src, x + w, y);
 		}
 		w += spacing;
 		
