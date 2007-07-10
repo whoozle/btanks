@@ -291,6 +291,10 @@ const sdlx::Font *IResourceManager::loadFont(const std::string &name, const bool
 			LOG_DEBUG(("loaded font '%s' from '%s'", name.c_str(), fname.c_str()));
 			_fonts[id] = f;
 		} CATCH("loading font", { delete f; throw; });
+		
+		const std::string page400 = Finder->find("font/" + name + "_0400.png", false);
+		if (!page400.empty())
+			f->addPage(0x400, page400, alpha);
 	return f;
 }
 
