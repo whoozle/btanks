@@ -199,10 +199,11 @@ const int Font::render(sdlx::Surface *window, const int x, const int y, const st
 			if (c < 0x80 && (c - page_base) * fw >= (unsigned)page.surface->getWidth())
 				c = toupper(c);
 
+
 			c -= page_base;
 	
 			if (c * fw >= (unsigned)page.surface->getWidth())
-				c = '?' - page_base;
+				c -= 0x20;
 			
 		break;
 		case Undefined: 
