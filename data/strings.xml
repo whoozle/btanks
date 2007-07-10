@@ -88,18 +88,36 @@
 	</area>
 	<area id="maps/descriptions">
 		<string id="baykonur">Huge cooperative map with tons of troopers, very defensive military base and big boss inside(tm)</string>
+		<string id="baykonur" lang="ru">Большая кооперативная карта с укреплённым районом и боссом в конце</string>
+		
 		<string id="curfew">Very hot city multiplayer map with the lots of weapons and stuff.</string>
+		<string id="curfew" lang="ru">Руины города. Кучи хлама и полезных штук.</string>
+
 		<string id="gaddino">Country map with railway road.</string>
+		<string id="gaddino" lang="ru">Деревня с железной дорогой.</string>
+
 		<string id="hell_swamp">Complex and tricky map with the endless rain.</string>
+		<string id="hell_swamp" lang="ru">Аццкие болота и вечный дождь.</string>
+
 		<string id="lenin_square">Square with heli, kamikazes and city traffic.</string>
-		<string id="test">Testy zombiez )))</string>
+		<string id="lenin_square" lang="ru">Тупые камикадзы напали на памятник В.И. Ленину</string>
+		
 		<string id="wastes">Wastes. Nuclear desert.</string>
+		<string id="wastes" lang="ru">Выжженый ядерный полигон и мерзкий песчаный червяк.</string>
+		
 		<string id="aqua_world">Submerged desolated city. Rooftops and a lot of teleports around.</string>
+		<string id="aqua_world" lang="ru">Затопленный город, телепортаторы и беготня по крышам</string>
+		
 		<string id="dune">Save your very last fortification in desert from relinquishing. 
-			Enemy troops lured deadly sandworm and traitorously attacked. (NEW)</string>
+			Enemy troops lured deadly sandworm and traitorously attacked. </string>
+		<string id="dune" lang="ru">Подлые враги приманили песчаного червя(tm) остатками завтрака и не менее подло напали на ваш последний оплот в пустыне!</string>
+		
 		<string id="university">Save Battle Tanks University from the deadly helicopters. 
-			This is deathmatch map, so enjoy killing each other before destroying helis :) (NEW)</string>
+			This is deathmatch map, so enjoy killing each other before destroying helis :)</string>
+		<string id="university" lang="ru">Университет BattleTanks. Злобные враги(вертолётчики) пытаются разбомбить всё при помощи не менее злобных бомб.</string>
+		
 		<string id="(default)">Sorry, no description was provided by the author of this map...</string>
+		<string id="(default)" lang="ru">У этой карты нет описания. Извините. :(</string>
 	</area>
 	<area id="hints">
 		<string id="be-careful">Shhh... Be careful!</string>
@@ -137,18 +155,30 @@
 		<!-- <string id="score">Noticed score at upper right corner ? 
 			It has important role in campaigns. Check our site for details.</string> -->
 		<string id="minimap">You can show/hide minimap with the 'M' key</string>
-		<string id="suicide">Getting stuck in some tricky place ? 
+		<string id="minimap" lang="ru">Вы можете прятать карту при помощи кнопки &lt;M&gt;</string>
+		<string id="suicide">Getting stuck in some tricky place ?
 			Usually it's not possible, but there's 'F12' key - commit a suicide. Sorry. </string>
+		<string id="suicide" lang="ru">Застряли в каком-нибудь месте ? Нажмите &lt;F12&gt; чтобы покончить с собой.</string>
 		<string id="leaving">You can leave vehicle at any time by pressing 'leave' button.</string>
+		<string id="leaving" lang="ru">Вы можете покинуть боевую машину в любое время нажав соответствующую кнопку</string>
 		<string id="mortar">Every(!) map has a hidden "mortar" vehicle on it.</string>
+		<string id="mortar" lang="ru">На каждой карте(!) можно найти секретную машинку - мортиру</string>
 		<string id="mines">Shilka could use mines too.</string>
+		<string id="mines" lang="ru">А шилка может брать мины.</string>
 		<string id="sandworm">Sandworm could be killed with single mortar shot. </string>
+		<string id="sandworm" lang="ru">Мортира может убить червя одним попаданием своей банки (в рот).</string>
 		<string id="donation">You could improve this project and even push it to the desired features by donating.</string>
+		<string id="donation" lang="ru">Вы можете помочь проекту, сделав пожертвование.</string>
 		<string id="tactic-map">Clicking on the map screenshot could reveal useless tactic map</string>
+		<string id="tactic-map" lang="ru">Кликнув на картинку карты вы можете посмотреть бесполезную тактическую карту, на которой иногда нарисованы чекпоинты и прочая ерунда</string>
 		<string id="clouds">Smoke clouds are poisonous. You could kill troopers with it.</string>
+		<string id="clouds" lang="ru">Дымовые ракеты очень ядовиты. Они могут убивать солдат, женщин и людей :)))</string>
 		<string id="fog-of-war">You can enable "fog of war" in option menu (hardcore difficulty). 
 			Note that this option works only in resolutions larger than 800x600</string>
+		<string id="fog-of-war" lang="ru">Вы можете включить ограничение видимости в меню настроек. Учтите что оно работает только в разрешениях больше 800 на 600 пикселей. </string>
 		<string id="stats">You can view multiplayer game stats with &lt;tab&gt; key</string>
+		<string id="stats" lang="ru">Вы можете посмотреть статистику матча кнопкой &lt;tab&gt;</string>
 		<string id="hint-control">You can skip or display again last tip with 'hint-control' key</string>
+		<string id="hint-control" lang="ru">Кнопка контроля подсказок очень полезна. Ей можно прятать и повторять подсказки</string>
 	</area>
 </strings>
