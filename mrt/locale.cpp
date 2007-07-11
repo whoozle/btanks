@@ -108,7 +108,6 @@ const std::string mrt::getLanguageCode() {
 	case 0x5a: return "sy"; //no code.
 
 	case 0x60: return "ks";
-	case 0x60: return "ks";
 	case 0x61: return "ne";
 	case 0x65: return "dv";
 	}
