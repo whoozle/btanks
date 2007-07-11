@@ -523,7 +523,7 @@ void IMap::generateMatrixes() {
 		LOG_DEBUG(("hint for '%s'\n%s", i->first.c_str(), i->second.dump().c_str()));
 	}
 	{
-		PropertyMap::const_iterator p = properties.find("map.torus");
+		PropertyMap::const_iterator p = properties.find("config:map.torus");
 		if (p != properties.end()) {
 			if (p->second.find("true") != std::string::npos) {
 				_torus = true;
@@ -893,8 +893,8 @@ void IMap::render(sdlx::Surface &window, const sdlx::Rect &src, const sdlx::Rect
 		const bool shifting = !l->second->velocity.is0();
 		//LOG_DEBUG(("z: %d << %d, layer: %d", z1, z2, l->first));
 		
-		for(int ty = 0; ty < tyn; ++ty) {
-			for(int tx = 0; tx < txn; ++tx) {
+		for(int ty = -1; ty < tyn; ++ty) {
+			for(int tx = -1; tx < txn; ++tx) {
 				if (!strip_alpha && !shifting && z < _cover_map.get(typ + ty, txp + tx)) {//this tile covered by another tile
 					//++skipped;
 					continue;
