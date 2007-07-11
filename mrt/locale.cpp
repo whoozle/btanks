@@ -1,10 +1,12 @@
-#include "locale.h"
-#include "logger.h"
-
 #ifdef WIN32
 #	define WINDOWS_LEAN_AND_MEAN
 #	include <windows.h>
+#else 
+#	include <locale.h>
 #endif
+
+#include "mrt/locale.h"
+#include "logger.h"
 
 const std::string mrt::getLanguageCode() {
 #ifdef WIN32
@@ -111,6 +113,12 @@ const std::string mrt::getLanguageCode() {
 	case 0x61: return "ne";
 	case 0x65: return "dv";
 	}
+#else 
+	//non win-32
+	const char * lang = setlocale(LC_MESSAGES, NULL);
+	LOG_DEBUG(("setlocale(LC_MESSAGES, NULL) returned %s", lang));
+	if (lang == NULL)
+		return std::string();
 #endif
 	return std::string();
 }
