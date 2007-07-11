@@ -1,5 +1,13 @@
 <?xml version="1.0"?>
 <map version="0.99b" orientation="orthogonal" width="48" height="48" tilewidth="64" tileheight="64">
+	<properties>
+		<property name="spawn:1" value="1490,179"/>
+		<property name="spawn:2" value="1487,245"/>
+		<property name="spawn:3" value="1494,312"/>
+		<property name="spawn:4" value="1597,171"/>
+		<property name="spawn:5" value="1600,242"/>
+		<property name="spawn:6" value="1598,314"/>
+	</properties>
 	<tileset name="terrains" firstgid="1" tilewidth="64" tileheight="64">
 		<image source="../../../data/tilesets/terrains.png"/>
 	</tileset>
