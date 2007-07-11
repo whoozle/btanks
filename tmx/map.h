@@ -125,26 +125,26 @@ public:
 
 	template<typename T>
 	const v2<T> distance(const v2<T> &src, const v2<T> &dst) const {
-		v2<T> v1 = dst - src;
+		v2<T> dpos = dst - src;
 		if (_torus) {
-			const v2<T> abs_v1 (v1.x >= 0? v1.x:-v1.x, v1.y >= 0? v1.y:-v1.y);
-			if (abs_v1.x > _w / 2) {
-				if (v1.x >= 0) {
-					v1.x = v1.x - _w;
-				} else {
-					v1.x += _w;
+			const v2<T> abs_dpos (dpos.x >= 0? dpos.x: -dpos.x, dpos.y >= 0? dpos.y: -dpos.y);
+			if (abs_dpos.x > _w / 2) {
+				if (dpos.x > 0) {
+					dpos.x = dpos.x - _w;
+				} else if (dpos.x < 0) {
+					dpos.x += _w;
 				}
 			}
 
-			if (abs_v1.y > _h / 2) {
-				if (v1.y >= 0) {
-					v1.y = v1.y - _h;
-				} else {
-					v1.y += _h;
+			if (abs_dpos.y > _h / 2) {
+				if (dpos.y > 0) {
+					dpos.y = dpos.y - _h;
+				} else if (dpos.y < 0) {
+					dpos.y += _h;
 				}
 			}
 		} //if (_torus)
-		return v1;
+		return dpos;
 	}
 	
 private:
