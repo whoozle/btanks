@@ -134,6 +134,7 @@ const std::string mrt::getLanguageCode() {
 	}
 	if (!lang.empty()) {
 		LOG_DEBUG(("language code: %s", lang.c_str()));
+		mrt::toLower(lang);
 		return lang;
 	}
 #endif
