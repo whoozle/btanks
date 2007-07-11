@@ -121,6 +121,8 @@ public:
 	
 	const bool hasSoloLayers() const;
 	
+	const bool torus() const { return _torus; }
+	
 private:
 	const int addTiles(const sdlx::Surface *image, const int first_gid);
 
@@ -186,6 +188,8 @@ private:
 	std::string _name;
 	
 	bool _solo_aware;
+	bool _torus;
+	
 	typedef std::map<const int, int> CorrectionMap;
 	CorrectionMap _corrections;
 	

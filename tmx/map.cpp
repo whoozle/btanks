@@ -46,7 +46,7 @@
 IMPLEMENT_SINGLETON(Map, IMap);
 
 IMap::IMap() : _w(0), _h(0), _tw(0), _th(0), _ptw(0), _pth(0), _firstgid(0), _split(0), 
-	_generator(new MapGenerator), _solo_aware(false) 
+	_generator(new MapGenerator), _solo_aware(false) , _torus(false) 
 {
 	_lastz = -1000;
 	_image = NULL;
@@ -522,6 +522,16 @@ void IMap::generateMatrixes() {
 	for(ObjectAreaMap::const_iterator i = _area_map.begin(); i != _area_map.end(); ++i) {
 		LOG_DEBUG(("hint for '%s'\n%s", i->first.c_str(), i->second.dump().c_str()));
 	}
+	{
+		PropertyMap::const_iterator p = properties.find("map.torus");
+		if (p != properties.end()) {
+			if (p->second.find("true") != std::string::npos) {
+				_torus = true;
+				LOG_DEBUG(("torus mode switched on..."));
+			}
+		}
+	}
+	
 	load_map_final_signal.emit();
 }
 
@@ -975,6 +985,7 @@ void IMap::clear() {
 	
 	_tilesets.clear();
 	_name.clear();
+	_torus = false;
 }
 
 IMap::~IMap() {
