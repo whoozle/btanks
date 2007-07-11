@@ -147,12 +147,6 @@ public:
 		return dpos;
 	}
 	
-	inline const bool in(const sdlx::Rect &area, const int x, const int y) const; 
-	
-	template<typename T>
-	inline const bool in(const sdlx::Rect &area, const v2<T> &pos) const {
-		return in(area, (int)pos.x, (int)pos.y);
-	}
 private:
 	const int addTiles(const sdlx::Surface *image, const int first_gid);
 
