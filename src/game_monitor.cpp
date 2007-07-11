@@ -630,7 +630,7 @@ void IGameMonitor::loadMap(Campaign *campaign, const std::string &name, const bo
 				std::vector<std::string> value;
 				mrt::split(value, i->second, ":");
 				value.resize(2);
-				if (value[0] != "int" && value[0] != "float" && value[0] != "string")
+				if (value[0] != "int" && value[0] != "float" && value[0] != "string" && value[0] != "bool")
 					throw_ex(("cannot set config variable '%s' of type '%s'", res[1].c_str(), value[0].c_str()));
 				Var var(value[0]);
 				var.fromString(value[1]);
