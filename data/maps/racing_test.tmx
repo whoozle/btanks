@@ -20,12 +20,16 @@
 	<layer name="background" width="48" height="48">
 		<properties>
 			<property name="z" value="-1000"/>
+			<property name="impassability" value="60" />
 		</properties>
 		<data encoding="base64" compression="gzip">
 			H4sIAAAAAAAAA+2Z4Q7CIAyE99vMRF9J3/+dhGSNSzPcHZQVTH8QogL9ehwM2bosyz2V1bi+pfGOinWcXuMJ+3vLQ+pe8azHzfyaPX9nHafXeFb6P1LOz1SkZnh1X/mMrBcr/Wv4S9ws/1EOjH5ZJ4b/jJvlt/C/JT/iG9FX/P/a9h+p5XfWz0h71O/IPJzt/4yujG57fyKcrX6+Io/a/HW/7KG8JqTe74sj56G5f/Gz83lF+9n4hVf8g/jmCh3RdVDSe3TflLjRvL3bBb/v+frf9Pf2Mxtf75ts/2jvu35C/9B/pHNM+HFeP8qzYFY/nZ2hR88v+Pvc68/q5+AOP3g9T1vuIZF72955WfB75lHDX7oL99hHNAsy3zX86P0/Ev/oHp6Zh+D/vjtj9dbta/yj3zMh63ck/+h16skv88H4v2afaZnnmnitvoz+/v9vP0cVvEQAJAAA
 		</data>
 	</layer>
 	<layer name="roads" width="48" height="48">
+		<properties>
+			<property name="impassability" value="0" />
+		</properties>
 		<data encoding="base64" compression="gzip">
 			H4sIAAAAAAAAA+2WMQ7DIAxFyd7epR2aufc/TNeu5Q+WrAgwH1FSqR8JMWDD84vbJCUNGfi+gcuW0jVPZn1lLD+jfJx9y3Nk3Am2iMP2WX7kYTzyuhN1vF3BjN+ojlF+8DwJ/s3FRvwjz5bJATt4sPayINZP5r7ZscaOtcXvewaxfs5mYs4z/8gBf60G3zO/4h7MxnXkNgcl1hXuW71gez3PqcTqa+r9zfTc5WNm8Uf+GX7GW61etndrvcJws+5b8WzvsvXOZG2dVfN3zGHrXcVv/5fRO93vr2SL7or6t/QuiM48Y7+nDvvOO4NPd8qADMiADMiADMiADMiADMiADMiADMiADMiADMiADPyHgQ8taZVJACQAAA==
 		</data>
