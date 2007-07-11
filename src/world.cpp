@@ -1096,22 +1096,35 @@ TRY {
 	
 	new_pos = (o._position + dpos).convert<int>();
 
-	if (!o.piercing) {
-		if ((dpos.x < 0 && new_pos.x < -o.size.x / 2) || (dpos.x > 0 && new_pos.x + o.size.x / 2 >= map_size.x))
-			dpos.x = 0;
+	if (!Map->torus()) {
+		if (!o.piercing) {
+			if ((dpos.x < 0 && new_pos.x < -o.size.x / 2) || (dpos.x > 0 && new_pos.x + o.size.x / 2 >= map_size.x))
+				dpos.x = 0;
 
-		if ((dpos.y < 0 && new_pos.y < -o.size.y / 2) || (dpos.y > 0 && new_pos.y + o.size.y / 2 >= map_size.y))
-			dpos.y = 0;
+			if ((dpos.y < 0 && new_pos.y < -o.size.y / 2) || (dpos.y > 0 && new_pos.y + o.size.y / 2 >= map_size.y))
+				dpos.y = 0;
 		
-	} else {
-		if ((dpos.x < 0 && new_pos.x < -1.5 * o.size.x) || (dpos.x > 0 && new_pos.x >= map_size.x + 1.5 * o.size.x))
-			dpos.x = 0;
+		} else {
+			if ((dpos.x < 0 && new_pos.x < -1.5 * o.size.x) || (dpos.x > 0 && new_pos.x >= map_size.x + 1.5 * o.size.x))
+				dpos.x = 0;
 
-		if ((dpos.y < 0 && new_pos.y < -1.5 * o.size.y) || (dpos.y > 0 && new_pos.y >= map_size.y + 1.5 * o.size.y))
-			dpos.y = 0;
+			if ((dpos.y < 0 && new_pos.y < -1.5 * o.size.y) || (dpos.y > 0 && new_pos.y >= map_size.y + 1.5 * o.size.y))
+				dpos.y = 0;
 	
+		}
 	}
 	o._position += dpos;
+	if (Map->torus()) {
+		if (o._position.x < 0)
+			o._position.x += map_size.x;
+		if (o._position.y < 0)
+			o._position.y += map_size.y;
+		
+		if (o._position.x > map_size.x)
+			o._position.x -= map_size.x;
+		if (o._position.y > map_size.y)
+			o._position.y -= map_size.y;
+	}
 
 	updateObject(&o);
 	
