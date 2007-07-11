@@ -2,7 +2,7 @@
 #	define WINDOWS_LEAN_AND_MEAN
 #	include <windows.h>
 #else 
-#	include <locale.h>
+//#	include <locale.h>
 #endif
 
 #include "lang.h"
@@ -115,10 +115,27 @@ const std::string mrt::getLanguageCode() {
 	}
 #else 
 	//non win-32
-	const char * lang = setlocale(LC_MESSAGES, NULL);
-	LOG_DEBUG(("setlocale(LC_MESSAGES, NULL) returned %s", lang));
-	if (lang == NULL)
+	const char * lang_env = getenv("LANG");
+	if (lang_env == NULL || strlen(lang_env) == 0)
 		return std::string();
+	std::string lang = lang_env;
+
+	std::string::size_type p = lang.find('.');
+	if (p != lang.npos) {
+		lang.resize(p);
+	}
+	if (lang == "C" || lang == "POSIX") 
+		return std::string();
+	
+	LOG_DEBUG(("LANG: '%s', locale name: %s", lang_env, lang.c_str()));
+	p = lang.find('_');
+	if (p != lang.npos) {
+		lang.resize(p);
+	}
+	if (!lang.empty()) {
+		LOG_DEBUG(("language code: %s", lang.c_str()));
+		return lang;
+	}
 #endif
 	return std::string();
 }
