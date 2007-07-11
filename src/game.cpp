@@ -28,6 +28,7 @@
 
 #include "tmx/map.h"
 
+#include "mrt/locale.h"
 #include "mrt/logger.h"
 #include "mrt/exception.h"
 #include "mrt/random.h"
@@ -209,6 +210,14 @@ void IGame::init(const int argc, char *argv[]) {
 			exit(0);
 		}
 
+	}
+	if (lang.empty()) {
+		if (Config->has("engine.language")) {
+			Config->get("engine.language", lang, std::string());
+		}
+
+		if (lang.empty())
+			lang = mrt::getLanguageCode();
 	}
 	
 	IFinder::FindResult strings_files;
