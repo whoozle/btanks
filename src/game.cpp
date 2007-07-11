@@ -28,7 +28,7 @@
 
 #include "tmx/map.h"
 
-#include "mrt/locale.h"
+#include "mrt/lang.h"
 #include "mrt/logger.h"
 #include "mrt/exception.h"
 #include "mrt/random.h"

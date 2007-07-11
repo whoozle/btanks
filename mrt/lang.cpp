@@ -5,7 +5,7 @@
 #	include <locale.h>
 #endif
 
-#include "mrt/locale.h"
+#include "lang.h"
 #include "logger.h"
 
 const std::string mrt::getLanguageCode() {
