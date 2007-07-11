@@ -47,6 +47,8 @@ public:
 	void clear();
 
 private:
+	static const unsigned toUpper(const unsigned page, const unsigned c);
+
 	Type _type;
 	
 	Font(const Font &);

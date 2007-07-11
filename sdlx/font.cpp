@@ -25,6 +25,16 @@
 
 using namespace sdlx;
 
+
+const unsigned Font::toUpper(const unsigned page, const unsigned c) {
+	//fixme: 
+	if (c >= 0x30 && c < 0x50) 
+		return c - 0x20;
+	if (c >= 0x50 && c < 0x60)
+		return c - 0x50;
+	return c;
+}
+
 Font::Font() : _type(Undefined) {}
 
 Font::~Font() {
@@ -203,7 +213,7 @@ const int Font::render(sdlx::Surface *window, const int x, const int y, const st
 			c -= page_base;
 	
 			if (c * fw >= (unsigned)page.surface->getWidth())
-				c -= 0x20;
+				c = toUpper(page_base, c); //last try, try upper
 			
 		break;
 		case Undefined: 
