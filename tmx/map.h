@@ -122,6 +122,30 @@ public:
 	const bool hasSoloLayers() const;
 	
 	const bool torus() const { return _torus; }
+
+	template<typename T>
+	const v2<T> distance(const v2<T> &src, const v2<T> &dst) const {
+		const v2<T> v1 = dst - src;
+		if (_torus) {
+			const v2<T> abs_v1 (v1.x >= 0? v1.x:-v1.x, v1.y >= 0? v1.y:-v1.y);
+			if (abs_v1.x > _w / 2) {
+				if (v1.x >= 0) {
+					v1.x = v1.x - _w;
+				} else {
+					v1.x += _w;
+				}
+			}
+
+			if (abs_v1.y > _h / 2) {
+				if (v1.y >= 0) {
+					v1.y = v1.y - _h;
+				} else {
+					v1.y += _h;
+				}
+			}
+		} //if (_torus)
+		return v1;
+	}
 	
 private:
 	const int addTiles(const sdlx::Surface *image, const int first_gid);
