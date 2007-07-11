@@ -92,7 +92,7 @@
 		<string id="do-not-show-donation-screen" lang="ru">не показывать экран попрошаек</string>
 
 		<string id="enable-fog-of-war">enable fog of war (hardcore difficulty)</string>
-		<string id="enable-fog-of-war" lang="ru">ограничение видимости(суперсложность)</string>
+		<string id="enable-fog-of-war" lang="ru">ограничение видимости (суперсложность)</string>
 
 		<string id="score">score: </string>
 		<string id="score" lang="ru">счёт: </string>
