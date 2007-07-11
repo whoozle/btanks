@@ -1388,3 +1388,20 @@ void IMap::swapLayers(const int z1, const int z2) {
 		}	
 	}
 }
+
+const bool IMap::in(const sdlx::Rect &area, const int x, const int y) const {
+	if (area.in(x, y))
+		return true;
+	
+	if (!_torus) 
+		return false;
+	if (area.in(x + _w, y + _h))
+		return true;		
+	if (area.in(x - _w, y - _h))
+		return true;		
+	if (area.in(x - _w, y + _h))
+		return true;		
+	if (area.in(x + _w, y - _h))
+		return true;
+	return false;
+}
