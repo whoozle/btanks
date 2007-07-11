@@ -145,11 +145,12 @@ void PlayerSlot::tick(const float dt) {
 	map_dst = ics?pos:pos + map_dpos.convert<float>();
 	map_dst.x -= viewport.w / 2;
 	map_dst.y -= viewport.h / 2;
+	validatePosition(map_dst);
 		
 	//float look_forward = v2<float>(slot.viewport.w, slot.viewport.h, 0).length() / 4;
 	//slot.map_dst += vel * moving * look_forward; 
 
-	map_dst_vel = map_dst - map_dst_pos;
+	map_dst_vel = Map->distance(map_dst_pos, map_dst);
 
 	//	if (slot.map_dst_vel.length() > max_speed * 4)
 	//		slot.map_dst_vel.normalize(max_speed * 4);
@@ -157,7 +158,7 @@ void PlayerSlot::tick(const float dt) {
 
 	//const float max_speed = 2.5 * p->speed;
 		
-	v2<float> dvel = map_dst_pos - map_pos;
+	v2<float> dvel = Map->distance(map_pos, map_dst_pos);
 
 	//const int gran = 50;
 	//map_vel = (dvel / (gran / 8)).convert<int>().convert<float>() * gran;
@@ -171,6 +172,7 @@ void PlayerSlot::tick(const float dt) {
 		
 	map_pos += map_vel * math::min<float>(math::abs(10 * dt), 1) * math::sign(dt);
 	//map_pos = map_dst_pos;
+	validatePosition(map_pos);
 }
 
 PlayerSlot::~PlayerSlot() {
