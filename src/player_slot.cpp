@@ -279,8 +279,18 @@ void PlayerSlot::spawnPlayer(const std::string &classname, const std::string &an
 
 void PlayerSlot::validatePosition(v2<float>& position) {
 	const v2<int> world_size = Map->getSize();
-	if (Map->torus()) 
+	if (Map->torus()) {
+		if (position.x < 0)
+			position.x += world_size.x;
+		if (position.y < 0)
+			position.y += world_size.y;
+		
+		if (position.x >= world_size.x)
+			position.x -= world_size.x;
+		if (position.y >= world_size.y)
+			position.y -= world_size.y;
 		return;
+	}
 	
 	if (position.x < 0) 
 			position.x = 0;
