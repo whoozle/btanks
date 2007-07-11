@@ -23,6 +23,10 @@
 #include "tmx/map.h"
 #include "special_owners.h"
 #include "game_monitor.h"
+#include "config.h"
+#include "object.h"
+#include "math/unary.h"
+#include "math/binary.h"
 
 PlayerSlot::PlayerSlot() : 
 id(-1), control_method(NULL), need_sync(false), dont_interpolate(false), remote(false), trip_time(10), visible(false), 
@@ -108,10 +112,7 @@ void PlayerSlot::displayLast() {
 }
 
 void PlayerSlot::tick(const float dt) {
-	if (remote)
-		return;
-	
-	if (!tooltips.empty()) {
+	if (!remote && !tooltips.empty()) {
 		tooltips.front().first -= dt;
 		if (tooltips.front().first < 0) {
 			delete last_tooltip;
@@ -119,6 +120,57 @@ void PlayerSlot::tick(const float dt) {
 			tooltips.pop();
 		}
 	}
+	if (!visible) 
+		return;
+		
+	const Object * p = getObject();
+	if (p == NULL)
+		return;
+					
+	v2<float> pos, vel;
+	p->getInfo(pos, vel);
+	vel.normalize();
+		
+	float moving, idle;
+	p->getTimes(moving, idle);
+	//vel.fromDirection(p->getDirection(), p->getDirectionsNumber());
+
+	
+	moving /= 2;
+	if (moving >= 1)
+		moving = 1;
+	
+	GET_CONFIG_VALUE("player.controls.immediate-camera-sliding", bool, ics, false);
+	
+	map_dst = ics?pos:pos + map_dpos.convert<float>();
+	map_dst.x -= viewport.w / 2;
+	map_dst.y -= viewport.h / 2;
+		
+	//float look_forward = v2<float>(slot.viewport.w, slot.viewport.h, 0).length() / 4;
+	//slot.map_dst += vel * moving * look_forward; 
+
+	map_dst_vel = map_dst - map_dst_pos;
+
+	//	if (slot.map_dst_vel.length() > max_speed * 4)
+	//		slot.map_dst_vel.normalize(max_speed * 4);
+	map_dst_pos += map_dst_vel * math::min<float>(math::abs(dt * 30), 1.0f) * math::sign(dt);
+
+	//const float max_speed = 2.5 * p->speed;
+		
+	v2<float> dvel = map_dst_pos - map_pos;
+
+	//const int gran = 50;
+	//map_vel = (dvel / (gran / 8)).convert<int>().convert<float>() * gran;
+	
+	//if (dvel.length() > p->speed) 
+	//	dvel.normalize(p->speed);
+	map_vel = dvel;
+		
+	//if (map_vel.length() > max_speed)
+	//	map_vel.normalize(max_speed);
+		
+	map_pos += map_vel * math::min<float>(math::abs(10 * dt), 1) * math::sign(dt);
+	//map_pos = map_dst_pos;
 }
 
 PlayerSlot::~PlayerSlot() {

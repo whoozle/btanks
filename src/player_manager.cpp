@@ -759,58 +759,6 @@ void IPlayerManager::tick(const unsigned int now, const float dt) {
 
 	for(size_t pi = 0; pi < _players.size(); ++pi) {
 		PlayerSlot &slot = _players[pi];
-		if (!slot.visible)
-			continue;
-		
-		const Object * p = slot.getObject();
-		if (p == NULL)
-			continue; 
-					
-		v2<float> pos, vel;
-		p->getInfo(pos, vel);
-		vel.normalize();
-		
-		float moving, idle;
-		p->getTimes(moving, idle);
-		//vel.fromDirection(p->getDirection(), p->getDirectionsNumber());
-
-		
-		moving /= 2;
-		if (moving >= 1)
-			moving = 1;
-		
-		GET_CONFIG_VALUE("player.controls.immediate-camera-sliding", bool, ics, false);
-	
-		slot.map_dst = ics?pos:pos + slot.map_dpos.convert<float>();
-		slot.map_dst.x -= slot.viewport.w / 2;
-		slot.map_dst.y -= slot.viewport.h / 2;
-		
-		//float look_forward = v2<float>(slot.viewport.w, slot.viewport.h, 0).length() / 4;
-		//slot.map_dst += vel * moving * look_forward; 
-
-		slot.map_dst_vel = slot.map_dst - slot.map_dst_pos;
-
-	//	if (slot.map_dst_vel.length() > max_speed * 4)
-	//		slot.map_dst_vel.normalize(max_speed * 4);
-		slot.map_dst_pos += slot.map_dst_vel * math::min<float>(math::abs(dt * 30), 1.0f) * math::sign(dt);
-
-		//const float max_speed = 2.5 * p->speed;
-		
-		v2<float> dvel = slot.map_dst_pos - slot.map_pos;
-
-		//const int gran = 50;
-		//slot.map_vel = (dvel / (gran / 8)).convert<int>().convert<float>() * gran;
-		
-		//if (dvel.length() > p->speed) 
-		//	dvel.normalize(p->speed);
-		slot.map_vel = dvel;
-		
-		//if (slot.map_vel.length() > max_speed)
-		//	slot.map_vel.normalize(max_speed);
-		
-		slot.map_pos += slot.map_vel * math::min<float>(math::abs(10 * dt), 1) * math::sign(dt);
-		//slot.map_pos = slot.map_dst_pos;
-		
 		slot.tick(dt);
 	}
 
