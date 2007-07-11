@@ -1120,9 +1120,9 @@ TRY {
 		if (o._position.y < 0)
 			o._position.y += map_size.y;
 		
-		if (o._position.x > map_size.x)
+		if (o._position.x >= map_size.x)
 			o._position.x -= map_size.x;
-		if (o._position.y > map_size.y)
+		if (o._position.y >= map_size.y)
 			o._position.y -= map_size.y;
 	}
 
