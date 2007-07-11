@@ -155,6 +155,7 @@ void PlayerSlot::tick(const float dt) {
 	//	if (slot.map_dst_vel.length() > max_speed * 4)
 	//		slot.map_dst_vel.normalize(max_speed * 4);
 	map_dst_pos += map_dst_vel * math::min<float>(math::abs(dt * 30), 1.0f) * math::sign(dt);
+	validatePosition(map_dst_pos);
 
 	//const float max_speed = 2.5 * p->speed;
 		
@@ -173,6 +174,7 @@ void PlayerSlot::tick(const float dt) {
 	map_pos += map_vel * math::min<float>(math::abs(10 * dt), 1) * math::sign(dt);
 	//map_pos = map_dst_pos;
 	validatePosition(map_pos);
+	//LOG_DEBUG(("pos: %g,%g, dst: %g,%g, vel: %g,%g", map_pos.x, map_pos.y, map_dst.x, map_dst.y, map_vel.x, map_vel.y));
 }
 
 PlayerSlot::~PlayerSlot() {
