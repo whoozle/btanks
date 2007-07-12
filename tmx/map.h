@@ -125,6 +125,24 @@ public:
 	const bool torus() const { return _torus; }
 
 	template<typename T>
+	const v2<T> add(const v2<T> &src, const v2<T> &dst) const {
+		if (!_torus)
+			return src + dst;
+
+		v2<T> result = src + dst;
+
+		result.x %= _w;
+		if (result.x < 0) 
+			result.x += _w;
+
+		result.y %= _h;
+		if (result.y < 0) 
+			result.y += _w;
+
+		return result;
+	}
+
+	template<typename T>
 	const v2<T> distance(const v2<T> &src, const v2<T> &dst) const {
 		v2<T> dpos = dst - src;
 		if (_torus) {
