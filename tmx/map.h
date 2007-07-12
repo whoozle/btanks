@@ -35,6 +35,7 @@
 #include "notifying_xml_parser.h"
 
 #include "sdlx/c_map.h"
+#include "sdlx/rect.h"
 #include "tileset_list.h"
 
 namespace sdlx {
@@ -145,6 +146,41 @@ public:
 			}
 		} //if (_torus)
 		return dpos;
+	}
+
+	const bool in(const sdlx::Rect &area, int x, int y) const {
+		if (!_torus)
+			return area.in(x, y);
+		
+		x -= area.x;
+		y -= area.y;
+		x %= _w;
+		if (x < 0) x += _w;
+		y %= _h;
+		if (y < 0) y += _h;
+		return x < area.w && y < area.h;
+	}
+
+	template<typename T>
+	const bool in(const sdlx::Rect &area, const v2<T> &position) const {
+		if (!_torus)
+			return area.in((int)position.x, (int)position.y);
+		else 
+			return in(area, (int)position.x, (int)position.y);
+	}
+	
+	const bool intersects(const sdlx::Rect &area1, const sdlx::Rect &area2) const {
+		if (!_torus)
+			return area1.intersects(area2);
+		else 
+			return in(area1, area2.x, area2.y) || 
+			in(area2, area1.x, area1.y) || 
+			in(area1, area2.x + area2.w - 1, area2.y + area2.h - 1) ||
+			in(area2, area1.x + area1.w - 1, area1.y + area1.h - 1) ||
+			in(area1, area2.x + area2.w - 1, area2.y) ||
+			in(area2, area1.x + area1.w - 1, area1.y) ||
+			in(area1, area2.x, area2.y + area2.h - 1) ||
+			in(area2, area1.x, area1.y + area1.h - 1);
 	}
 	
 private:
