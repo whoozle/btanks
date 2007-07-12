@@ -39,7 +39,7 @@ void UpperBox::render(sdlx::Surface &surface, const int x, const int y) {
 	
 	int wt = 0;
 	wt = _big->render(surface, x + 16, y + 16, I18n->get("menu", "mode"));
-	_medium->render(surface, x + (w - wt - 32) / 2, y + 16 + font_dy, value);
+	_medium->render(surface, x + (w - wt - 32) / 2, y + 16 + font_dy, I18n->get("menu/modes", value));
 	
 	int line2_y = 46;
 	

@@ -19,6 +19,15 @@
 		<string id="off">OFF</string>
 		<string id="off" lang="ru">НЕТ</string>
 
+		<area id="modes">
+			<string id="deathmatch">DEATHMATCH</string>
+			<string id="deathmatch" lang="ru">ДЕСМАТЧ</string>
+		
+			<string id="cooperative">COOPERATIVE</string>
+			<string id="cooperative" lang="ru">КООПЕРАТИВ</string>
+
+		</area>
+
 		<string id="add">ADD</string>
 		<string id="add" lang="ru">ДОБАВИТЬ</string>
 		
@@ -111,6 +120,7 @@
 
 		<string id="shop">shop</string>
 		<string id="shop" lang="ru">магазин</string>
+
 	</area>
 	<area id="maps/descriptions">
 		<string id="baykonur">Huge cooperative map with tons of troopers, very defensive military base and big boss inside(tm)</string>
