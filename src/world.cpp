@@ -201,7 +201,10 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::R
 		
 		sdlx::Rect r((int)o->_position.x, (int)o->_position.y, (int)o->size.x, (int)o->size.y);
 		bool fogged = fog;// && o->speed != 0;
-		if (r.intersects(fogged?fog_rect:src)) 
+		const sdlx::Rect &src_rect = fogged?fog_rect:src;
+		//LOG_DEBUG(("%d,%d:%d,%d vs %d,%d:%d,%d result: %s", 
+		//	r.x, r.y, r.w, r.h, src_rect.x, src_rect.y, src_rect.w, src_rect.h, Map->intersects(r, src_rect)?"true":"false"));
+		if (Map->intersects(r, src_rect)) 
 			layers.insert(LayerMap::value_type(o->_z, o));
 	}
 	//LOG_DEBUG(("rendering %d objects", layers.size()));
@@ -428,7 +431,7 @@ TRY {
 			continue;
 
 		sdlx::Rect other((int)o->_position.x, (int)o->_position.y,(int)o->size.x, (int)o->size.y);
-		if (!my.intersects(other)) 
+		if (!Map->intersects(my, other)) 
 			continue;
 
 		if (!collides(obj, position, o, probe)) 
