@@ -21,7 +21,7 @@
 #include "config.h"
 #include "sdlx/surface.h"
 #include "sdlx/font.h"
-
+#include "i18n.h"
 
 UpperBox::UpperBox(int w, int h, const bool server): _w(w), _h(h), _server(server) {
 	_checkbox = ResourceManager->loadSurface("menu/radio.png");
@@ -38,12 +38,12 @@ void UpperBox::render(sdlx::Surface &surface, const int x, const int y) {
 	int font_dy = (_big->getHeight() - _medium->getHeight()) / 2;
 	
 	int wt = 0;
-	wt = _big->render(surface, x + 16, y + 16, "MODE");
+	wt = _big->render(surface, x + 16, y + 16, I18n->get("menu", "mode"));
 	_medium->render(surface, x + (w - wt - 32) / 2, y + 16 + font_dy, value);
 	
 	int line2_y = 46;
 	
-	wt = _big->render(surface, x + 16, y + line2_y, "SPLIT SCREEN");
+	wt = _big->render(surface, x + 16, y + line2_y, I18n->get("menu", "split-screen"));
 	wt += 96;
 	
 	int cw = _checkbox->getWidth() / 2;
@@ -61,7 +61,7 @@ void UpperBox::render(sdlx::Surface &surface, const int x, const int y) {
 	
 	surface.copyFrom(*_checkbox, split?off:on, x + wt, y + line2_y);
 	wt += cw;
-	wt += 16 + _medium->render(surface, x + wt, y + line2_y + font_dy - 2, "OFF");
+	wt += 16 + _medium->render(surface, x + wt, y + line2_y + font_dy - 2, I18n->get("menu", "off"));
 	_off_area.w = wt - _off_area.w + 1;
 
 	_on_area.x = wt;
@@ -69,7 +69,7 @@ void UpperBox::render(sdlx::Surface &surface, const int x, const int y) {
 	_on_area.w = wt;
 	surface.copyFrom(*_checkbox, split?on:off, x + wt, y + line2_y);
 	wt += cw;
-	wt += 16 + _medium->render(surface, x + wt, y + line2_y + font_dy - 2, "ON");
+	wt += 16 + _medium->render(surface, x + wt, y + line2_y + font_dy - 2, I18n->get("menu", "on"));
 	_on_area.w = wt - _on_area.w + 1;
 }
 

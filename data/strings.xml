@@ -7,6 +7,18 @@
 		<string id="ok">OK</string>
 		<string id="ok" lang="ru">ОК</string>
 		
+		<string id="mode">MODE</string>
+		<string id="mode" lang="ru">РЕЖИМ</string>
+		
+		<string id="split-screen">SPLIT SCREEN</string>
+		<string id="split-screen" lang="ru">ДВОЕ ИГРОКОВ</string>
+		
+		<string id="on">ON</string>
+		<string id="on" lang="ru">ДА</string>
+		
+		<string id="off">OFF</string>
+		<string id="off" lang="ru">НЕТ</string>
+
 		<string id="add">ADD</string>
 		<string id="add" lang="ru">ДОБАВИТЬ</string>
 		
