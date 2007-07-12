@@ -208,6 +208,7 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::R
 			layers.insert(LayerMap::value_type(o->_z, o));
 	}
 	//LOG_DEBUG(("rendering %d objects", layers.size()));
+	v2<int> map_size = Map->getSize();
 	int z1 = _z1;
 	GET_CONFIG_VALUE("engine.show-waypoints", bool, show_waypoints, false);
 	for(LayerMap::iterator i = layers.begin(); i != layers.end(); ++i) {
@@ -227,8 +228,17 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::R
 		}
 		z1 = z2;
 		Object &o = *i->second;
-			//LOG_DEBUG(("rendering %s with z = %g", o.classname.c_str(), o._position.z));
-		o.render(surface, (int)o._position.x - src.x + dst.x, (int)o._position.y - src.y + dst.y);
+		//LOG_DEBUG(("rendering %s with %d,%d", o.animation.c_str(), (int)o._position.x - src.x + dst.x, (int)o._position.y - src.y + dst.y));
+		int xp = (int)o._position.x - src.x, yp = (int)o._position.y - src.y;
+		if (Map->torus()) {
+			xp %= map_size.x;
+			if (xp < 0) 
+				xp += map_size.x;
+			yp %= map_size.y;
+			if (yp < 0) 
+				yp += map_size.y;
+		}
+		o.render(surface, xp + dst.x, yp + dst.y);
 		
 		const Way & way = o.getWay();
 		if (show_waypoints && !way.empty()) {
