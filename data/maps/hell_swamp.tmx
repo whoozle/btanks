@@ -305,7 +305,7 @@
 			<property name="animation-frames" value="4"/>
 			<property name="animation-speed" value="20"/>
 			<property name="shifting-size" value="2,2"/>
-			<property name="shifting-velocity" value="-250,400"/>
+			<property name="shifting-velocity" value="100,400"/>
 		</properties>
 		<data encoding="base64" compression="gzip">
 			H4sIAAAAAAAAA+2XIQ4AMAjEyH4Ndnv4MEgUghMVBHtpmu3wYxY5Lrpv5no5qluVW+VS5Va54DfzG37w23wf8Q//8K/vT/y/s34JP/ht3if4h3/419/f9D/632b/++Q48wzAEgAA
