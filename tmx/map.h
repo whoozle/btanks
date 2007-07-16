@@ -131,25 +131,35 @@ public:
 
 		v2<T> result = src + dst;
 
+		validate(result);
+		
+		return result;
+	}
+
+	void validate(v2<int> &result) const {
 		result.x %= _w;
 		if (result.x < 0) 
 			result.x += _w;
 
 		result.y %= _h;
 		if (result.y < 0) 
-			result.y += _w;
+			result.y += _h;
+	}
 
-		return result;
+	void validate(v2<float> &v) const {
+		v.x -= ((int)v.x / _w) * _w;
+		v.y -= ((int)v.y / _h) * _h;
 	}
 
 	template<typename T>
 	const v2<T> distance(const v2<T> &src, const v2<T> &dst) const {
 		v2<T> dpos = dst - src;
+		validate(dpos);
 		if (_torus) {
-			const v2<T> abs_dpos (dpos.x >= 0? dpos.x: -dpos.x, dpos.y >= 0? dpos.y: -dpos.y);
+			const v2<T> abs_dpos (((dpos.x >= 0)? dpos.x: -dpos.x), ((dpos.y >= 0)? dpos.y: -dpos.y));
 			if (abs_dpos.x > _w / 2) {
 				if (dpos.x > 0) {
-					dpos.x = dpos.x - _w;
+					dpos.x -= _w;
 				} else if (dpos.x < 0) {
 					dpos.x += _w;
 				}
@@ -157,7 +167,7 @@ public:
 
 			if (abs_dpos.y > _h / 2) {
 				if (dpos.y > 0) {
-					dpos.y = dpos.y - _h;
+					dpos.y -= _h;
 				} else if (dpos.y < 0) {
 					dpos.y += _h;
 				}
