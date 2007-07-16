@@ -137,6 +137,9 @@ public:
 	}
 
 	void validate(v2<int> &result) const {
+		if (!_torus)
+			return;
+		
 		const int w = _tw * _w, h = _th * _h;
 		result.x %= w;
 		if (result.x < 0) 
@@ -148,6 +151,9 @@ public:
 	}
 
 	void validate(v2<float> &v) const {
+		if (!_torus)
+			return;
+
 		const int w = _tw * _w, h = _th * _h;
 		v.x -= (((int)v.x) / w) * w;
 		v.y -= (((int)v.y) / h) * h;

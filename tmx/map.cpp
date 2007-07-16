@@ -1043,6 +1043,7 @@ void IMap::damage(const v2<float> &center, const int hp, const float radius) {
 		for(p.x = position.x; p.x < position2.x; p.x += _tw) {			
 			if (p.quick_distance(center) <= r) {
 				v2<int> pos ((int)(p.x / _tw), (int)(p.y / _th));
+				validate(pos);
 				//LOG_DEBUG(("map damage: %g:%g -> %d:%d for %d hp", position.x, position.y, pos.x, pos.y, hp));
 				for(LayerMap::iterator i = _layers.begin(); i != _layers.end(); ++i) {
 					if (i->second->damage(pos.x, pos.y, hp))
