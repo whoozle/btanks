@@ -1,3 +1,4 @@
 <tileset>
 	<background id="wooden-fence-horizontal" width="2" height="1">52,53</background>
+	<background id="wooden-fence-vertical" width="1" height="2">44,54</background>
 </tileset>
