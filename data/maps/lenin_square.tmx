@@ -247,7 +247,7 @@
 			<property name="z" value="400"/>
 		</properties>
 		<data encoding="base64" compression="gzip">
-			H4sIAAAAAAAAC+2WSUsEMRBG/bcq6EVFD27tQUEF9eiCiKggqIiC62nc9xHF5eZyUa8uNxd8NVRBGNI93TPdB8GGR0KSqi+TTFXqoyr8a2eqAZodWjzLBxgbhCHP3Ahjo/AKb/AOPxGarcy1QeDQ5Vk/zJj4noaZIqZU85P2C74j9GSqG3qg0aE/RHOW8UUYU6QvLKhmCanE00tYLMM8bMAmrChrtOuJPZZvkMN0C7bLd/GnLevYvVCf8a+oxn+NaomUxJ8v7tLchsV6E047IQBf3KWpabHeoZp9tL64q0RzHONJkBwxARbrplmJ7zDbVSbmwM0Jcr6i2ZuFID5zIHnC8q3ImGaW92h5WHK8fHanad+je2zFmnanGR1twa3c6X++TfeEo+qGKKUdJndhD/aVA9rDGNsr/u/EMCksOYI8nMOFw2UMB6U0w94V0TyGUzhTpH+SQNPqI8l97rtiNZ3vXbli7Q3cKk+01zE1rT6y3OfWkAE+BF8+umP8AR4V6d/H0LT6SGoii0+3hpSaLot3xbZm9ZBbQ0Zt2+6glkVGknrCjZlnfLyo2C8+78asyAsAAA==
+			H4sIAAAAAAAAC+2WOUsEQRBG/bcqaKKigdcYKKighh6IiAqCiih4Rut9K4pHIh6JmnpkHvhq6YJi6Zmd2Z0JBAcePXR11dc7vVVdHxXhTyumOmg0NHmW9zHXDwMe2xBzw/AKb/AOPxGazdhaIDB0eNYPMiexJ2GqgAmn+cn4Bd8RemLqhC6oN/SGaE4zPw8jDnkX5pxmEanE5gU8FmEW1mAdlhwrjKuJI5bukMN1AzZLD/GnPWvYvVCb8a+oJH6V0xIpyT9f3qW5Dc31BoK2QwC+vEtTU3O9zWn2MPryrhzNUZzHQWrEGGiuq2Y5scN8lzHMgK0J8n1FszsLQWLmQOqE1luRUc0sz1HrsNR4efRM0z5H+9kKNfVMM/q0+bBypv/1Nt0vHNU3RCltYdyGHdh17DHux9he4X8nhkt+yQGcwhmcGy5iBCimGXaviOYhHMOJ45bxKIGm9kdS++y9oj2d7165ZO013DieGK9iamp/pLXP9pABMQRfPbpj/gEeHfJ+H0NT+yPpiTQ/bQ8pPV0W94puTfsh20NGbVvPoJpFSpJ+wubMMzFenNgvFI8/csgLAAA=
 		</data>
 	</layer>
 	<layer name="buildings-damaged 2" width="29" height="26">
@@ -267,7 +267,7 @@
 			<property name="impassability" value="100"/>
 		</properties>
 		<data encoding="base64" compression="gzip">
-			H4sIAAAAAAAAC2NgwA+WMRFQAJXuxKFuMpH6kW3ZgKZnKYlmzyXDzl1QPeug9HocZsyEivcC6T4y7CEuNFFVNULtmQ6kZyDZ2U0n+5FdM3UA7CQnzEb1UBYCS4DxjCvfUWYyft248h0ldvZD0+wEOqZdWDkxhY52wsoJdDtX08EN6HZuHQA7KUkjxOgdLW+JCSXS1XTRIa2gu4qe+RJmNy47j9LQ//OwmH0EKHYej53bgHI7gHgfFd11DmjWTah52OqVA0C5Q0B8ggw7YeUeev68ATTrMYH2HOmpFVUHenvoERnup9QNIP0AQcbsosgLAAA=
+			H4sIAAAAAAAAC2NgwA+WMRFQAJXuxKFuMpH6kW3ZgKZnKYlmzyXDzl1QPeug9HocZsyEivcC6T4y7CEuNFFVNULtmQ6kZyDZ2U0n+5FdM3UA7CQnzEb1UBYCS4DxjCvfUWYyft248h0ldvZD0+wEOqZdWDkxhY52wsoJdDtX08EN6HZuHQA7KUkjxOgdLW+JCSXS1XTRIa2gu4qe+RJmNy47j9LQ//OwmH0EKHYej53bgHI7gHgfFd11DmjWTah52OqVA0C5Q0B8ggw7YeUeev68ATTrMYH2HOmpFVUHenvoERHun0OEGlLdBQAzE7ADyAsAAA==
 		</data>
 	</layer>
 	<layer name="buildings-damage 3" width="29" height="26">
