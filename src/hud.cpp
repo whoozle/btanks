@@ -182,6 +182,11 @@ void Hud::renderRadar(const float dt, sdlx::Surface &window, const std::vector<v
 		
 		v2<int> pos;
 		obj->getCenterPosition(pos);
+		if (Map->torus()) {
+			pos.x -= viewport.x;
+			pos.y -= viewport.y;
+			Map->validate(pos);
+		}
 		_radar.putPixel(pos.x * _radar.getWidth() / msize.x, pos.y * _radar.getHeight() / msize.y, index2color(_radar, i + 1, 255));
 		_radar.putPixel(pos.x * _radar.getWidth() / msize.x, pos.y * _radar.getHeight() / msize.y + 1, index2color(_radar, i + 1, 200));
 		_radar.putPixel(pos.x * _radar.getWidth() / msize.x, pos.y * _radar.getHeight() / msize.y - 1, index2color(_radar, i + 1, 200));
@@ -196,7 +201,16 @@ void Hud::renderRadar(const float dt, sdlx::Surface &window, const std::vector<v
 	//format me
 	n = specials.size();
 	for(size_t i = 0; i < n; ++i) {
-		const v3<int> &pos = specials[i];
+		v3<int> pos = specials[i];
+		if (Map->torus()) {
+			v2<int> p(pos.x, pos.y);
+			p.x -= viewport.x;
+			p.y -= viewport.y;
+			Map->validate(p);
+			pos.x = p.x;
+			pos.y = p.y;
+		}
+		
 		Uint32 color[2];
 		color[0] = index2color(_radar, i + 1, 255);
 		color[1] = index2color(_radar, i + 1, 200);
