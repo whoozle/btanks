@@ -172,12 +172,23 @@ void DestructableLayer::_destroy(const int x, const int y) {
 		
 		if (x > 0)
 			queue.push(v - 1);
+		else if (Map->torus()) //wrap to _w - 1 
+			queue.push(y * _w + _w - 1);
+
 		if (x < _w - 1)
 			queue.push(v + 1);
+		else if (Map->torus()) //wrap to x == 0
+			queue.push(y * _w);
+
 		if (y > 0)
 			queue.push(v - _w);
+		else if (Map->torus()) 
+			queue.push((_h - 1) * _w + x);
+
 		if (y < _h - 1)
 			queue.push(v + _w);
+		else if (Map->torus()) 
+			queue.push(x);
 	}
 	//LOG_DEBUG(("cleanup done"));
 }
