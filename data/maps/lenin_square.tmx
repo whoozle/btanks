@@ -2,6 +2,7 @@
 <map version="0.99b" orientation="orthogonal" width="25" height="22" tilewidth="64" tileheight="64">
 	<properties>
 		<property name="ambient-sound" value="city.ogg"/>
+		<property name="config:map.torus" value="bool:true" />
 		<property name="edge:1:2" value=""/>
 		<property name="edge:2:3" value=""/>
 		<property name="edge:3:4" value=""/>
