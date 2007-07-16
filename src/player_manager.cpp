@@ -683,6 +683,9 @@ const int IPlayerManager::spawnPlayer(const std::string &classname, const std::s
 
 void IPlayerManager::setViewport(const int idx, const sdlx::Rect &rect) {
 	PlayerSlot &slot = _players[idx];
+	if (_my_idx < 0)
+		_my_idx = idx;
+	
 	slot.visible = true;
 	slot.viewport = rect;
 	const Object *o = _players[idx].getObject();
