@@ -25,6 +25,7 @@
 #include "resource_manager.h"
 #include "config.h"
 #include "sdlx/font.h"
+#include "mrt/utf8_utils.h"
 
 #include <math.h>
 #include <assert.h>
@@ -62,14 +63,14 @@ Tooltip::Tooltip(const std::string &_text, const bool use_background, const int 
 	//std::string lens_dump;
 	size_t sum = 0;
 	for(i = 0; i < words.size(); ++i) {
-		unsigned int l = words[i].size();
+		unsigned int l = mrt::utf8_length(words[i]);
 		lens[i] = l;
 		sum += l;
 		//lens_dump += mrt::formatString("%s%u", (i == 0)?"":", ", l);
 	}
 //	LOG_DEBUG(("sum: %u, words: %s", sum, lens_dump.c_str()));
 	GET_CONFIG_VALUE("engine.tooltip-speed", float, td, 20);
-	_time = ((float)_text.size()) / td;
+	_time = ((float)mrt::utf8_length(_text)) / td;
 
 	int cell = (int)(sqrt(sum / 2.0) + 0.5);
 	int xsize = cell * 2;
