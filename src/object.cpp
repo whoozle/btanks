@@ -239,7 +239,7 @@ void Object::tick(const float dt) {
 		return;
 	}
 	
-	if (pose->z > -1000) {
+	if (pose->z > -10000) {
 		setZ(pose->z);
 	}
 	
