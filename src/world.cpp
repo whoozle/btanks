@@ -1825,7 +1825,8 @@ void IWorld::enumerateObjects(std::set<const Object *> &id_set, const Object *sr
 		if (classfilter != NULL && classfilter->find(o->classname) == classfilter->end())
 			continue;
 		
-		if (src->_position.quick_distance(o->_position) <= r2) 
+		v2<float> dpos = Map->distance(src->getCenterPosition(), o->getCenterPosition());
+		if (dpos.quick_length() <= r2) 
 			id_set.insert(o);
 	}
 }
