@@ -21,6 +21,7 @@
 #include "mrt/logger.h"
 #include "world.h"
 #include "zbox.h"
+#include "tmx/map.h"
 #include "special_owners.h"
 
 BaseObject::BaseObject(const std::string &classname): 
@@ -339,7 +340,7 @@ void BaseObject::truncateOwners(const int n) {
 
 
 const v2<float> BaseObject::getRelativePosition(const BaseObject *obj) const {
-	return obj->_position - _position - size / 2 + obj->size / 2;
+	return Map->distance(this->getCenterPosition(), obj->getCenterPosition());
 }
 
 const bool BaseObject::updatePlayerState(const PlayerState &state) {
