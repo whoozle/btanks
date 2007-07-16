@@ -208,7 +208,7 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::R
 			layers.insert(LayerMap::value_type(o->_z, o));
 	}
 	//LOG_DEBUG(("rendering %d objects", layers.size()));
-	v2<int> map_size = Map->getSize();
+	v2<int> map_size = Map->getSize(), map_tile_size = map_size / Map->getTileSize();
 	int z1 = _z1;
 	GET_CONFIG_VALUE("engine.show-waypoints", bool, show_waypoints, false);
 	for(LayerMap::iterator i = layers.begin(); i != layers.end(); ++i) {
@@ -276,36 +276,35 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::R
 		sdlx::Rect fog_src(tw, th, tw, th);
 		
 		int px = (player_pos.x - src.x) / tw, py = (player_pos.y - src.y) / th;
+		px %= map_tile_size.x;
+		py %= map_tile_size.x;
+		if (px < 0)
+			px += map_tile_size.x;
+		if (py < 0)
+			py += map_tile_size.y;
+			
+		//LOG_DEBUG(("player: %d %d, fog_tile_size: %d %d", px, py, fog_tw, fog_th));
 		int dx = (player_pos.x - src.x) % tw, dy = (player_pos.y - src.y) % th;
-		sdlx::Rect margin_rect(px - fog_tw / 2, py - fog_th / 2 - 1, fog_tw, fog_th);
-		sdlx::Rect player_rect(margin_rect);
-
-		++player_rect.x;
-		++player_rect.y;
-		player_rect.w -= 2;
-		player_rect.h -= 2;
+		int cx = fog_tw / 2, cy = fog_th / 2;
 		
-		for(int y = -1; y <= dst_th; ++y) 
+		for(int y = -1; y <= dst_th; ++y) {
 			for(int x = -1; x <= dst_tw; ++x) {
-				if (player_rect.in(x, y))
+				int rx = math::abs(x - px), ry = math::abs(y - py);
+				if (rx < cx && ry < cy)
 					continue;
 
-				fog_src.x = tw; 
+				fog_src.x = tw;
 				fog_src.y = th;
-
-				if (margin_rect.in(x, y)) {
-					if (x == margin_rect.x)	
-						fog_src.x = 0;
-					if (x == margin_rect.x + margin_rect.w - 1)	
-						fog_src.x = 2 * tw;
-
-					if (y == margin_rect.y)	
-						fog_src.y = 0;
-					if (y == margin_rect.y + margin_rect.h - 1)	
-						fog_src.y = 2 * th;
+				if (rx == cx && ry <= cy) {
+					fog_src.x = (x < cx)?0:2 * tw;
+				}
+				
+				if (ry == cy && rx <= cx) {
+					fog_src.y = (y < cy)?0:2 * th;
 				}
 				surface.copyFrom(*fog_surface, fog_src, dst.x + x * tw + dx - tw / 2, dst.y + y * th + dy - th / 2);
 			}
+		}
 	}	
 	surface.resetClipRect();
 }
