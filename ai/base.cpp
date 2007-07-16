@@ -270,7 +270,7 @@ void Base::calculate(Object *object, const float dt) {
 			calculateCloseCombat(object, target, range, false);
 			
 			if (_target_dir >= 0) {
-				if (object->isDriven());
+				if (object->isDriven())
 					object->setWay(Way());
 			}
 		} else {
