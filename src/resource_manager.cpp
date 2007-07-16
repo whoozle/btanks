@@ -123,7 +123,7 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 		if (speed == 0)
 			speed = _am->default_speed;
 
-		int z = (!attr["z"].empty())?atoi(attr["z"].c_str()) : -1001;
+		int z = (!attr["z"].empty())?atoi(attr["z"].c_str()) : -100001;
 		const std::string &sound = attr["sound"];
 		_pose = new Pose(speed, z, sound);
 		const std::string &gain = attr["gain"];
