@@ -66,13 +66,20 @@ void Hud::generateRadarBG(const sdlx::Rect &viewport) {
 	//LOG_DEBUG(("rendering radar..."));
 
 	int n = 0;
+	int cx = 0, cy = 0;
+	if (Map->torus()) {
+		const v2<int> pfs = Map->getPathTileSize();
+		cx = viewport.x / pfs.x;
+		cy = viewport.y / pfs.y;
+	}
 	for(std::set<int>::iterator i = layers.begin(); i != layers.end(); ++i, ++n) {
 		const Matrix<int>& matrix = Map->getImpassabilityMatrix((*i) * 2000);
 
 		//update radar;
-		for(int ry = 0; ry < matrix.getHeight(); ++ry) 
-			for(int rx = 0; rx < matrix.getWidth(); ++rx) {
-				int v = matrix.get(ry, rx);
+		const int h = matrix.getHeight(), w = matrix.getWidth();
+		for(int ry = 0; ry < h; ++ry) 
+			for(int rx = 0; rx < w; ++rx) {
+				int v = matrix.get((ry + cy + h) % h, (rx + cx + w) % w);
 				if (v < 0 || v > 100) 
 					v = 100;
 			
