@@ -56,7 +56,7 @@ bool Cheater::onKey(const SDL_keysym sym, const bool pressed) {
 	
 	for(size_t i = 0; i < _cheats.size(); ++i) {
 		const std::string &code = _cheats[i];
-		if (std::string(_buf + _buf_size - code.size(), code.size()) == code) {
+		if (code.size() >= _buf_size && strncmp(_buf + _buf_size - code.size(), code.c_str(), code.size()) == 0) {
 			LOG_DEBUG(("triggered cheat: %s", code.c_str()));
 			cheat = code;
 			break;
