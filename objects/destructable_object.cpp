@@ -19,6 +19,7 @@
 #include "destructable_object.h"
 #include "resource_manager.h"
 #include "config.h"
+#include "animation_model.h"
 
 DestructableObject::DestructableObject(const std::string &classname) : 
 		Object(classname), 
@@ -57,7 +58,16 @@ void DestructableObject::addDamage(Object *from, const int dhp, const bool emitD
 		classname = "debris";
 		
 		if (_variants.has("with-fire")) {
-			spawn("fire", "fire", v2<float>(), v2<float>(), getZ() + 1);
+			const AnimationModel *model = getAnimationModel();
+			int my_z = getZ();
+			if (model != NULL) {
+				const Pose * pose = model->getPose("broken");
+				if (pose != NULL && pose->z > -10000)
+					my_z = pose->z;
+			}
+			Object *fire = spawn("fire", "fire");
+			if (my_z > fire->getZ())
+				fire->setZ(my_z + 1, true);
 		}
 
 		if (_variants.has("respawning")) {
