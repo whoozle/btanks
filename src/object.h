@@ -195,6 +195,8 @@ protected:
 	const sdlx::Surface * getSurface() const;
 	const Matrix<int> &getImpassabilityMatrix() const;
 	
+	inline const AnimationModel * getAnimationModel() const { return _model; }
+	
 private: 
 //pathfinding stuff
 	void close(const v2<int>& vertex); 

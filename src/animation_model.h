@@ -22,8 +22,9 @@
 #include <vector>
 #include <string>
 #include <map>
+#include "export_btanks.h"
 
-class Pose {
+class BTANKSAPI Pose {
 public:
 	Pose(const float speed, const int z, const std::string &sound) : speed(speed), z(z), sound(sound), gain(1.0f), frames() {}
 
@@ -35,7 +36,7 @@ public:
 };
 
 
-class AnimationModel {
+class BTANKSAPI AnimationModel {
 public:
 	const float default_speed;
 	AnimationModel(const float default_speed);
@@ -49,7 +50,7 @@ private:
 	PoseMap _poses;
 };
 
-class Animation {
+class BTANKSAPI Animation {
 public:
 	std::string model, base_dir, surface;
 	int tw, th;
