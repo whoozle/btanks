@@ -147,8 +147,12 @@ public:
 	}
 
 	void validate(v2<float> &v) const {
-		v.x -= ((int)v.x / _w) * _w;
-		v.y -= ((int)v.y / _h) * _h;
+		v.x -= (((int)v.x) / _w) * _w;
+		v.y -= (((int)v.y) / _h) * _h;
+		if (v.x < 0) 
+			v.x += _w;
+		if (v.y < 0) 
+			v.y += _h;
 	}
 
 	template<typename T>
