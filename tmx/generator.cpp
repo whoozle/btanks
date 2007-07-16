@@ -70,7 +70,7 @@ void MapGenerator::fillPattern(Layer *layer, const std::vector<std::string> &arg
 		throw_ex(("fill-pattern command takes 4 arguments."));
 
 	bool random = false;
-	int percentage;
+	int percentage = 100;
 	v2<int> shift;
 	
 	if (args.size() >= 5) {
