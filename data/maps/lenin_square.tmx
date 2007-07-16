@@ -22,17 +22,17 @@
 		<property name="object:guided-missiles-item:guided-missiles-item:1" value="1056,1034"/>
 		<property name="object:heal:heal:1" value="24,1200,180"/>
 		<property name="object:heal:heal:10" value="1439,840"/>
-		<property name="object:heal:heal:9" value="@15,21,180"/>
+		<property name="object:heal:heal:9" value="957,1336,180"/>
 		<property name="object:helicopter-with-kamikazes:helicopter:1" value="@12,13,900"/>
 		<property name="object:lodge(make-pierceable)(with-fire):lodge:1" value="0,78,420"/>
 		<property name="object:machinegunner-item:machinegunner-item:2" value="769,223"/>
 		<property name="object:machinegunner-item:machinegunner-item:3" value="771,223"/>
 		<property name="object:megaheal:megaheal:1" value="920,32,180"/>
 		<property name="object:mines-item:mines-item:1" value="424,84,180"/>
-		<property name="object:mines-item:mines-item:2" value="1351,1351"/>
+		<property name="object:mines-item:mines-item:2" value="1362,1407"/>
 		<property name="object:nuke-missiles-item:nuke-missiles-item:0" value="@24,10,180"/>
 		<property name="object:ricochet-bullets-item:ricochet-bullets-item:2" value="10,300"/>
-		<property name="object:ricochet-bullets-item:ricochet-bullets-item:3" value="1200,1252,180"/>
+		<property name="object:ricochet-bullets-item:ricochet-bullets-item:3" value="1194,1267,180"/>
 		<property name="object:road-sign:road-sign01:1" value="1190,796,1"/>
 		<property name="object:road-sign:road-sign01:2" value="230,1244,1"/>
 		<property name="object:road-sign:road-sign02:1" value="1193,1360,10"/>
@@ -46,11 +46,12 @@
 		<property name="object:static-car:cyan-car:1" value="1006,184/6"/>
 		<property name="object:static-launcher:cyan-launcher:1" value="545,1129"/>
 		<property name="object:static-launcher:yellow-launcher:1" value="1411,4"/>
-		<property name="object:static-mortar:yellow-mortar:1" value="@11,20"/>
+		<property name="object:static-mortar:yellow-mortar:1" value="793,1435"/>
 		<property name="object:static-shilka:red-shilka:1" value="1172,1072"/>
 		<property name="object:static-tank:cyan-tank:1" value="828,115"/>
 		<property name="object:stun-missiles-item:stun-missiles-item:3" value="379,1124"/>
 		<property name="object:tent:tent-top:14" value="572,192,150"/>
+		<property name="object:thrower-item:thrower-item:1" value="983,1570"/>
 		<property name="object:traffic-lights:traffic-lights:10" value="198,422"/>
 		<property name="object:traffic-lights:traffic-lights:11" value="368,422"/>
 		<property name="object:traffic-lights:traffic-lights:8" value="367,260"/>
@@ -115,7 +116,7 @@
 			<property name="impassability" value="40"/>
 		</properties>
 		<data encoding="base64" compression="gzip">
-			H4sIAAAAAAAAC+2WyUpGMQyFf59AxQGcBWd3gi8guHPYOTyiO4cnNB/kwCH0/v5g68oLoW1Ic3rSpDf3S7PZQ8hjSP1uQrc9ITup11jtXH+fGBrBQ24bmHcFr+7VGjzmSOuMLUx0LZ5PoX9JX5zrOdcahcNac+xfQ9jrduwXtvTYtT7txc5tdB5iITydverqWdtIi2uFDb8WR/D+v7+LwHrEG9nsHPfl8LcSstrwux+6g5DLzphb4e8kpUbwPPQXIdedMY/C3+6ET+K6MSC28BSm7m4tsRTbwwE8T9MnGPjfy3tkLV3PzHWe+P8M+UpM8mdEDnGfzhMMxZT5iByqPB0T7BH1KZ5X4Z/aeDOeo3JIPPUmKH+cb+83AZ76f5ObZyV/wO5dK+J5nPVCjJWvqpWfeFLPej98nHqnPW9Vg/CmT1r0Pr2e/U6m4uN5WzGFDf7U+8genc3HeW8ImPhE+HS3rNWrMVcNt3z9BlO8NHrPWftN+tvaJ3pfO++MylvZe9/nmLXfrP0b+xzzPdbUH6L/s8aPrBXZO843T1XoCcgLAAA=
+			H4sIAAAAAAAAC+2WyUpGMQyFf59AxQGcBWd3gi8guHPYOTyiO4cnNB/kwCH0/v5g68oLoW1Ic3rSpDf3S7PZQ8hjSP1uQrc9ITup11jtXH+fGBrBQ24bmHcFr+7VGjzmSOuMLUx0LZ5PoX9JX5zrOdcahcNac+xfQ9jrduwXtvTYtT7txc5tdB5iITydverqWdtIi2uFDb8WR/D+v7+LwHrEG9nsHPfl8LcSstrwux+6g5DLzphb4e8kpUbwPPQXIdedMY/C3+6ET+K6MSC28BSm7m4tsRTbwwE8T9MnGPjfy3tkLV3PzHWe+P8M+UpM8mdEDnGfzhMMxZT5iByqPB0T7BH1KZ5X4Z/aeDOeo3JIPPUmKH+cb+83AZ76f5ObZyV/wO5dK+J5nPVCjJWvqpWfeFLPej98nHqnPW9Vg/CmT1r0Pr2e/U6m4uN5WzGFDf7U+8genc3HeW8ImPhE+HS33g8yVw23fP0GU7w0es9Z+03629onel8774zKW9l73+eYtd+s/Rv7HPM91tQfov+zxo+sFdk7zjdtkLZbyAsAAA==
 		</data>
 	</layer>
 	<layer name="terrain details" width="29" height="26">
@@ -141,7 +142,7 @@
 	</layer>
 	<layer name="tracks" width="29" height="26">
 		<data encoding="base64" compression="gzip">
-			H4sIAAAAAAAAC61WSU7EQAxsXsF57pz5A3xiWEdi5ww8HpeUkkqW3XZa05I1ieLYVV4qM8YYzxdjvJudzDrnwfwezfD7Ku+82PVdI8at+Xxvfk8N/wrT2xli/FiMX4lzY9fAuXqO7t2M54w/MXxZrM8Glnvng36irzD0+GMz1n7GDfi1t/QFFhzODGLqUT57e1v5d2pYxfCcK/+s7qg165nVETXEjnjTukb5OzyRE/PBw1nVGeBzP8dR/Ixn5Ot1ws9dVI9o5nxs7N+fWZQTc8d64xdaQw3qaA4xeZ7E3tkJ5dXhTH/PB9hXTqVz3E3EjvqpGsC9pZb7GvK550k9ifB3Zll9shpWPDW354nd8jg6OWf9nMXLeox3Lrc+o9/6zcTcwiJ99fHY06ifeKa7iJyH5mxdBX46P8CBe/Sbs0C8qxp/nWBD/Oq/R6XTOhP8lkNLZqeKqZpT4evuc9RHfCc4E3u0rJuTPDXPqpZ1c9LvHDu+N2emH4rF72N2v9oPfvtnO57xivQi02nG+AdDBJXMyAsAAA==
+			H4sIAAAAAAAAC61Wu04DQQxcvoKanpqWtPATvCPxpgY+A9rwq3ikG2lk2WdnlZVWudP6bI89ns0YYzwcjfFie2u7s27N7s42fp/km0d7vm74uDSbj8XuvmFf5fR8AB+f5uNL/FzYM/KcXVfu2wznGn7m8G6+3hq53Dgb9BN9xUaPX5fN2q9hQ/7aW9oiFyxyBj51KZ59e1vZd2pY+fCYK/us7qg165nVETXEjPitdY3id3AiJvjBRa4qB3jueRz5z3BGtl4nPO+iekSc874xf9+2o5jgHeuNX2gNNaijOczJ42TunZlQXB3MtPd4kPvMqnSOswnfUT9VAzi31HJfQ557nNSTKP8Ol9Umq2GFU2Mrzt9Fs3wenZhr/cz8/Vi8v+QewzfHyxn6rXcmeIsd6avnDHtKnDvhDs50FhHzpMmt08BO+YM88I5+kwvMd1bjz5Lc4L/671HptHKCdzm0ZG1VPlVzqvy68xzNJe4JcmIfLevGJE6NM6tl3Zi0O8SMVzHPrX4b6XWmH5qLn8fsfbYfvPvXZjzDFelFptP08Q9Z9YYzyAsAAA==
 		</data>
 	</layer>
 	<layer name="tracks high" width="29" height="26">
@@ -247,7 +248,7 @@
 			<property name="z" value="400"/>
 		</properties>
 		<data encoding="base64" compression="gzip">
-			H4sIAAAAAAAAC+2WOUsEQRBG/bcqaKKigdcYKKighh6IiAqCiih4Rut9K4pHIh6JmnpkHvhq6YJi6Zmd2Z0JBAcePXR11dc7vVVdHxXhTyumOmg0NHmW9zHXDwMe2xBzw/AKb/AOPxGazdhaIDB0eNYPMiexJ2GqgAmn+cn4Bd8RemLqhC6oN/SGaE4zPw8jDnkX5pxmEanE5gU8FmEW1mAdlhwrjKuJI5bukMN1AzZLD/GnPWvYvVCb8a+oJH6V0xIpyT9f3qW5Dc31BoK2QwC+vEtTU3O9zWn2MPryrhzNUZzHQWrEGGiuq2Y5scN8lzHMgK0J8n1FszsLQWLmQOqE1luRUc0sz1HrsNR4efRM0z5H+9kKNfVMM/q0+bBypv/1Nt0vHNU3RCltYdyGHdh17DHux9he4X8nhkt+yQGcwhmcGy5iBCimGXaviOYhHMOJ45bxKIGm9kdS++y9oj2d7165ZO013DieGK9iamp/pLXP9pABMQRfPbpj/gEeHfJ+H0NT+yPpiTQ/bQ8pPV0W94puTfsh20NGbVvPoJpFSpJ+wubMMzFenNgvFI8/csgLAAA=
+			H4sIAAAAAAAAC+2WyS8EQRSH/bdIuCAcbO1AggRHSwRBIpYIsXMYOxdCzLhZLrhabpb43qReUulU13TPdB8kOvlSnXr13q+ma96r91EV/bRjaoBmixbH8gHmBmHIYRthbhRe4Q3e4cej2YqtDQKLLsf6YeYk9gzMhpg2mp+MX/Dt0RNTN/RAo0V/hOYc88swZpB3YclolpBKbF7BYxUWYRt2YN2wybiVOGL5Djlc9+Gg/BB/2rOO3Qv1Gf+KauLXGC2Rkvxz5V2a29BcbyJoJwTgyrs0NTXXO4xmH6Mr7yrRHMd5CqRGTIDmumpWEjvKdwPDAtg1Qb6vaPZmIUjMHEid0HorMqqZ5TlqHZYaL4+eadrnaH+2sKaeaUafthhWzvS/3qb7hX19g0/pEOMRHMOJ4ZTxLMb2wv+dGC7FJedwAZdwZXEdI0ApTd+9skv8SZg3rDHuJdDU/khqn32vaE/nulduWFuAW8MTYz6mpvZHWvvsHjIghuCqR3fMP8CjQd7vY2hqfyQ9kean3UNKT5fFvaJb037I7iF929YzqGWRkqSfsHPmmRgvRuwXJeEVDMgLAAA=
 		</data>
 	</layer>
 	<layer name="buildings-damaged 2" width="29" height="26">
