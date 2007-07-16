@@ -547,7 +547,9 @@ void IGame::onTick(const float dt) {
 			_hud->render(window);
 
 			if (_show_radar) {
-				_hud->renderRadar(dt, window, GameMonitor->getSpecials());
+				const PlayerSlot &slot = PlayerManager->getMySlot();
+				_hud->renderRadar(dt, window, GameMonitor->getSpecials(), 
+					sdlx::Rect((int)slot.map_pos.x, (int)slot.map_pos.y, slot.viewport.w, slot.viewport.h));
 			}
 			if (_main_menu && !_main_menu->isActive() && _show_stats) {
 				_hud->renderStats(window);

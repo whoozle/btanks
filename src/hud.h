@@ -41,14 +41,14 @@ public:
 
 	void renderSplash(sdlx::Surface &window) const;
 	const bool renderLoadingBar(sdlx::Surface &window, const float old_progress, const float progress, const bool splash = true) const;
-	void renderRadar(const float dt, sdlx::Surface &window, const std::vector<v3<int> > &specials);
+	void renderRadar(const float dt, sdlx::Surface &window, const std::vector<v3<int> > &specials, const sdlx::Rect &viewport);
 	void renderStats(sdlx::Surface &surface);
 
 	~Hud();
 	
 private: 
 	void initMap();
-	void generateRadarBG();
+	void generateRadarBG(const sdlx::Rect &viewport);
 
 	void renderMod(const Object *obj, sdlx::Surface &window, int &xp, int &yp, const std::string &name, const int icon_w, const int icon_h) const;
 

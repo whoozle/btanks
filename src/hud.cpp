@@ -49,12 +49,9 @@ static Uint32 index2color(const sdlx::Surface &surface, const unsigned idx, cons
 void Hud::initMap() {
 	_radar.free();
 	_radar_bg.free();
-
-	LOG_DEBUG(("creating radar surface..."));
-	generateRadarBG();
 }
 
-void Hud::generateRadarBG() {
+void Hud::generateRadarBG(const sdlx::Rect &viewport) {
 	assert(Map->loaded());
 
 	std::set<int> layers;
@@ -142,7 +139,7 @@ void Hud::renderStats(sdlx::Surface &surface) {
 
 
 
-void Hud::renderRadar(const float dt, sdlx::Surface &window, const std::vector<v3<int> > &specials) {
+void Hud::renderRadar(const float dt, sdlx::Surface &window, const std::vector<v3<int> > &specials, const sdlx::Rect &viewport) {
 	if (!Map->loaded()) {
 		_radar.free();
 		_radar_bg.free();
@@ -155,7 +152,7 @@ void Hud::renderRadar(const float dt, sdlx::Surface &window, const std::vector<v
 		return;
 	}
 	
-	generateRadarBG(); //needed for destructable layers. 
+	generateRadarBG(viewport); //needed for destructable layers. 
 	
 	if (_radar.isNull()) {
 		_radar.createRGB(_radar_bg.getWidth(), _radar_bg.getHeight(), 32);
