@@ -73,13 +73,14 @@ void Grid::resize(GridMatrix &grid, const v2<int> &grid_size, const v2<int> &map
 		grid[y].resize(dim.x);
 }
 
-void Grid::setSize(const v2<int> &size, const int step) {
-	LOG_DEBUG(("setting grid size: %dx%d, step: %d", size.x, size.y, step));
+void Grid::setSize(const v2<int> &size, const int step, const bool wrap) {
+	LOG_DEBUG(("setting grid size: %dx%d, step: %d, wrap: %s", size.x, size.y, step, wrap?"yes":"no"));
 	clear();
 	_grid_size = v2<int>(step, step);
 	resize(_grid, _grid_size, size);
 	_grid4_size = v2<int>(step * 4, step * 4);
 	resize(_grid4, _grid4_size, size);
+	_wrap = wrap;
 }
 
 void Grid::removeFromGrid(GridMatrix &grid, const v2<int> &grid_size, const int id, const Object &o) {

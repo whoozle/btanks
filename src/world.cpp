@@ -61,7 +61,7 @@ void IWorld::initMap() {
 		_hp_bar = ResourceManager->loadSurface("hud/hp.png");
 
 	GET_CONFIG_VALUE("engine.grid-fragment-size", int, gfs, 128);
-	_grid.setSize(Map->getSize(), gfs);
+	_grid.setSize(Map->getSize(), gfs, Map->torus());
 }
 
 void IWorld::clear() {

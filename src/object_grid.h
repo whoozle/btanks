@@ -28,7 +28,7 @@
 class Grid {
 public: 
 	Grid();
-	void setSize(const v2<int> &size, const int step);
+	void setSize(const v2<int> &size, const int step, const bool wrap);
 
 	void clear();
 	void update(const int id, const v2<int> &pos, const v2<int> &size);
@@ -58,6 +58,7 @@ private:
 	
 	typedef std::map<const int, Object> Index;
 	Index _index;
+	bool _wrap;
 };
 
 #endif

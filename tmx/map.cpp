@@ -479,6 +479,17 @@ void IMap::load(const std::string &name) {
 
 	_name = name;
 	LOG_DEBUG(("loading completed"));
+
+	{
+		PropertyMap::const_iterator p = properties.find("config:map.torus");
+		if (p != properties.end()) {
+			if (p->second.find("true") != std::string::npos) {
+				_torus = true;
+				LOG_DEBUG(("torus mode switched on..."));
+			}
+		}
+	}
+	
 	load_map_signal.emit();
 }
 
@@ -521,15 +532,6 @@ void IMap::generateMatrixes() {
 	}
 	for(ObjectAreaMap::const_iterator i = _area_map.begin(); i != _area_map.end(); ++i) {
 		LOG_DEBUG(("hint for '%s'\n%s", i->first.c_str(), i->second.dump().c_str()));
-	}
-	{
-		PropertyMap::const_iterator p = properties.find("config:map.torus");
-		if (p != properties.end()) {
-			if (p->second.find("true") != std::string::npos) {
-				_torus = true;
-				LOG_DEBUG(("torus mode switched on..."));
-			}
-		}
 	}
 	
 	load_map_final_signal.emit();
