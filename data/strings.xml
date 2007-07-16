@@ -248,5 +248,8 @@
 
 		<string id="hint-control">You can skip or display again last tip with 'hint-control' key</string>
 		<string id="hint-control" lang="ru">Кнопка контроля подсказок очень полезна. Ей можно прятать и повторять подсказки</string>
+
+		<string id="checkpoints">Cooperative maps usually have special places which automatically saves your progress. Look tactic map for the details.</string>
+		<string id="checkpoints" lang="ru">На кооперативных картах обычно есть специальные места : чекпоинты, которые сохраняют положения игрока.</string>
 	</area>
 </strings>
