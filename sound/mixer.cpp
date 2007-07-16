@@ -677,6 +677,8 @@ void IMixer::setFXVolume(const float volume) {
 	}
 
 	_volume_fx = volume;
+	if (_ambient)
+		_ambient->setVolume(volume);
 }
 
 void IMixer::setMusicVolume(const float volume) {
