@@ -33,7 +33,7 @@ public:
 		int w = s->getWidth();
 		int n = (w - 1) / (int)size.x + 1;
 		setDirectionsNumber(n);
-		LOG_DEBUG(("dirs = %d", n));
+		//LOG_DEBUG(("dirs = %d", n));
 		Object::setDirection(mrt::random(n));
 		play("main", true);
 	}
