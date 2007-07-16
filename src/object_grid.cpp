@@ -35,15 +35,13 @@ void Grid::collide(std::set<int> &objects, const GridMatrix &grid, const v2<int>
 	const v2<int> start = area_pos / grid_size;
 	const v2<int> end = (area_pos + area_size - 1) / grid_size;
 	
-	const int y1 = math::max(0, start.y), y2 = math::min((int)grid.size() - 1, end.y);
-	const int x1 = math::max(0, start.x);
+	const int y1 = _wrap? start.y: math::max(0, start.y), y2 = _wrap? end.y: math::min((int)grid.size() - 1, end.y);
+	const int x1 = _wrap? start.x: math::max(0, start.x);
 	for(int y = y1; y <= y2; ++y) {
-		//assert(y >= 0 && y < (int)grid.size());
-		const SetVector &row = grid[y];
-		const int x2 = math::min((int)row.size() - 1, end.x);
+		const SetVector &row = grid[y % grid.size()];
+		const int x2 = _wrap?end.x: math::min((int)row.size() - 1, end.x);
 		for(int x = x1; x <= x2; ++x) {
-			//assert(x >= 0 && x < (int)row.size());
-			const IDSet &set = row[x];
+			const IDSet &set = row[x % row.size()];
 			//std::set_union(objects.begin(), objects.end(), set.begin(), set.end(), 
 			//	std::insert_iterator<std::set<int> > (objects, objects.begin()));
 			//can cause infinite recursion under win32 :(
@@ -86,13 +84,13 @@ void Grid::setSize(const v2<int> &size, const int step, const bool wrap) {
 void Grid::removeFromGrid(GridMatrix &grid, const v2<int> &grid_size, const int id, const Object &o) {
 	const v2<int> start = o.pos / grid_size;
 	const v2<int> end = (o.pos + o.size - 1) / grid_size;
-	const int y1 = math::max(0, start.y), y2 = math::min((int)grid.size() - 1, end.y);
-	const int x1 = math::max(0, start.x);
+	const int y1 = _wrap? start.y: math::max(0, start.y), y2 = _wrap? end.y: math::min((int)grid.size() - 1, end.y);
+	const int x1 = _wrap? start.x: math::max(0, start.x);
 	for(int y = y1; y <= y2; ++y) {
-		SetVector &row = grid[y];
-		const int x2 = math::min((int)row.size() - 1, end.x);
+		SetVector &row = grid[y % grid.size()];
+		const int x2 = _wrap? end.x: math::min((int)row.size() - 1, end.x);
 		for(int x = x1; x <= x2; ++x) {
-			row[x].erase(id);
+			row[x % row.size()].erase(id);
 		}
 	}
 }
@@ -102,13 +100,13 @@ void Grid::update(GridMatrix &grid, const v2<int> &grid_size, const int id, cons
 	const v2<int> start = pos / grid_size;
 	const v2<int> end = (pos + size - 1) / grid_size;
 	//LOG_DEBUG(("updating %d (%d, %d) -> (%d, %d) (%d %d)", id, start.x, start.y, end.x, end.y, pos.x, pos.y));
-	const int y1 = math::max(0, start.y), y2 = math::min((int)grid.size() - 1, end.y);
-	const int x1 = math::max(0, start.x);
+	const int y1 = _wrap? start.y: math::max(0, start.y), y2 = _wrap? end.y: math::min((int)grid.size() - 1, end.y);
+	const int x1 = _wrap? start.x: math::max(0, start.x);
 	for(int y = y1; y <= y2; ++y) {
-		SetVector &row = grid[y];
-		const int x2 = math::min((int)grid[y].size() - 1, end.x);
+		SetVector &row = grid[y % grid.size()];
+		const int x2 = _wrap? end.x: math::min((int)grid[y].size() - 1, end.x);
 		for(int x = x1; x <= x2; ++x) {
-			row[x].insert(id);
+			row[x % row.size()].insert(id);
 		}
 	}
 }
