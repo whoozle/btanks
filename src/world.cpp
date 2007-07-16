@@ -229,16 +229,10 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::R
 		z1 = z2;
 		Object &o = *i->second;
 		//LOG_DEBUG(("rendering %s with %d,%d", o.animation.c_str(), (int)o._position.x - src.x + dst.x, (int)o._position.y - src.y + dst.y));
-		int xp = (int)o._position.x - src.x, yp = (int)o._position.y - src.y;
-		if (Map->torus()) {
-			xp %= map_size.x;
-			if (xp < 0) 
-				xp += map_size.x;
-			yp %= map_size.y;
-			if (yp < 0) 
-				yp += map_size.y;
-		}
-		o.render(surface, xp + dst.x, yp + dst.y);
+		v2<int> screen_pos((int)o._position.x - src.x, (int)o._position.y - src.y);
+		Map->validate(screen_pos);
+
+		o.render(surface, screen_pos.x + dst.x, screen_pos.y + dst.y);
 		
 		const Way & way = o.getWay();
 		if (show_waypoints && !way.empty()) {
