@@ -137,42 +137,45 @@ public:
 	}
 
 	void validate(v2<int> &result) const {
-		result.x %= _w;
+		const int w = _tw * _w, h = _th * _h;
+		result.x %= w;
 		if (result.x < 0) 
-			result.x += _w;
+			result.x += w;
 
-		result.y %= _h;
+		result.y %= h;
 		if (result.y < 0) 
-			result.y += _h;
+			result.y += h;
 	}
 
 	void validate(v2<float> &v) const {
-		v.x -= (((int)v.x) / _w) * _w;
-		v.y -= (((int)v.y) / _h) * _h;
+		const int w = _tw * _w, h = _th * _h;
+		v.x -= (((int)v.x) / w) * w;
+		v.y -= (((int)v.y) / h) * h;
 		if (v.x < 0) 
-			v.x += _w;
+			v.x += w;
 		if (v.y < 0) 
-			v.y += _h;
+			v.y += h;
 	}
 
 	template<typename T>
 	const v2<T> distance(const v2<T> &src, const v2<T> &dst) const {
 		v2<T> dpos = dst - src;
 		if (_torus) {
+			const int w = _tw * _w, h = _th * _h;
 			const v2<T> abs_dpos (((dpos.x >= 0)? dpos.x: -dpos.x), ((dpos.y >= 0)? dpos.y: -dpos.y));
-			if (abs_dpos.x > _w / 2) {
+			if (abs_dpos.x > w / 2) {
 				if (dpos.x > 0) {
-					dpos.x -= _w;
+					dpos.x -= w;
 				} else if (dpos.x < 0) {
-					dpos.x += _w;
+					dpos.x += w;
 				}
 			}
 
-			if (abs_dpos.y > _h / 2) {
+			if (abs_dpos.y > h / 2) {
 				if (dpos.y > 0) {
-					dpos.y -= _h;
+					dpos.y -= h;
 				} else if (dpos.y < 0) {
-					dpos.y += _h;
+					dpos.y += h;
 				}
 			}
 		} //if (_torus)
@@ -182,13 +185,15 @@ public:
 	const bool in(const sdlx::Rect &area, int x, int y) const {
 		if (!_torus)
 			return area.in(x, y);
+
+		const int w = _tw * _w, h = _th * _h;
 		
 		x -= area.x;
 		y -= area.y;
-		x %= _w;
-		if (x < 0) x += _w;
-		y %= _h;
-		if (y < 0) y += _h;
+		x %= w;
+		if (x < 0) x += w;
+		y %= h;
+		if (y < 0) y += h;
 		return x < area.w && y < area.h;
 	}
 
