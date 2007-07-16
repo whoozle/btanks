@@ -158,7 +158,6 @@ public:
 	template<typename T>
 	const v2<T> distance(const v2<T> &src, const v2<T> &dst) const {
 		v2<T> dpos = dst - src;
-		validate(dpos);
 		if (_torus) {
 			const v2<T> abs_dpos (((dpos.x >= 0)? dpos.x: -dpos.x), ((dpos.y >= 0)? dpos.y: -dpos.y));
 			if (abs_dpos.x > _w / 2) {
