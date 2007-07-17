@@ -3,7 +3,7 @@
 	<area id="menu">
 		<string id="back">BACK</string>
 		<string id="back" lang="ru">НАЗАД</string>
-		<string id="back" lang="de">ZURU:CK</string>
+		<string id="back" lang="de">ZURÜCK</string>
 		<string id="ok">OK</string>
 		<string id="ok" lang="ru">ОК</string>
 		<string id="ok" lang="de">ОК</string>
@@ -12,7 +12,6 @@
 		<string id="mode" lang="ru">РЕЖИМ</string>
 		<string id="mode" lang="de">MODE</string>
 		
-                                            
 		<string id="split-screen">SPLIT SCREEN</string>
 		<string id="split-screen" lang="ru">ДВОЕ ИГРОКОВ</string>
 		<string id="split-screen" lang="de">ZWEI SPIELER</string>
@@ -53,7 +52,7 @@
 		                     
 		<string id="delete">DELETE</string>
 		<string id="delete" lang="ru">УДАЛИТЬ</string>
-		<string id="delete" lang="de">LO:SCHEN</string>
+		<string id="delete" lang="de">LÖSCHEN</string>
 	                    
 		<string id="start-game">START GAME</string>
 		<string id="start-game" lang="ru">НАЧАТЬ ИГРУ</string>
@@ -101,11 +100,11 @@
 		                
 		<string id="fx-volume">Effects volume</string>
 		<string id="fx-volume" lang="ru">Громкость спецэффектов</string>
-		<string id="fx-volume" lang="de">Lautsta:rke der Effekte </string>
+		<string id="fx-volume" lang="de">Lautstärke der Effekte </string>
 		                
 		<string id="music-volume">Music volume</string>
 		<string id="music-volume" lang="ru">Громкость музыки</string>
-		<string id="music-volume" lang="de">Lautsta:rke der Musik</string>
+		<string id="music-volume" lang="de">Lautstärke der Musik</string>
 		                
 		<string id="redefine-keys">Redefine keys</string>
 		<string id="redefine-keys" lang="ru">Настроить клавиши</string>
@@ -129,7 +128,7 @@
 		            
 		<string id="test-gamepad">Test your gamepad. If it behaves different that you expected click [setup] button.</string>
 		<string id="test-gamepad" lang="ru">Попробуйте свой геймпад. Если он ведёт себя не так как ожидалось, нажмите кнопку [настроить].</string>
-		<string id="test-gamepad" lang="de">Testen Sie Ihr Joystick. Falls es nicht richtig funkzioniert, dru:cken Sie bitte die Taste [Einstellen].</string>
+		<string id="test-gamepad" lang="de">Testen Sie Ihr Joystick. Falls es nicht richtig funkzioniert, drücken Sie bitte die Taste [Einstellen].</string>
 		               
 		<string id="setup-gamepad">setup gamepad</string>
 		<string id="setup-gamepad" lang="ru">настроить</string>
@@ -137,7 +136,7 @@
                               
 		<string id="screen-resolution">screen size</string>
 		<string id="screen-resolution" lang="ru">Размер окна/Разрешение</string>
-		<string id="screen-resolution" lang="de">Auflo:sung</string>
+		<string id="screen-resolution" lang="de">Auflösung</string>
 		              
 		<string id="fullscreen-mode">fullscreen</string>
 		<string id="fullscreen-mode" lang="ru">во весь экран</string>
@@ -149,7 +148,7 @@
 		             
 		<string id="enable-fog-of-war">enable fog of war (hardcore difficulty)</string>
 		<string id="enable-fog-of-war" lang="ru">ограничение видимости (суперсложность)</string>
-		<string id="enable-fog-of-war" lang="de">Nebel des Krieges (Beschra:nkung der Sicht)</string>
+		<string id="enable-fog-of-war" lang="de">Nebel des Krieges (Beschränkung der Sicht)</string>
 		             
 		<string id="score">score: </string>
 		<string id="score" lang="ru">счёт: </string>
@@ -157,7 +156,7 @@
 		           
 		<string id="shop">shop</string>
 		<string id="shop" lang="ru">магазин</string>
-		<string id="shop" lang="de">Gescha:ft</string>
+		<string id="shop" lang="de">Geschäft</string>
 		           
 	</area>
 	<area id="maps/descriptions">
@@ -166,7 +165,7 @@
 		
 		<string id="curfew">Very hot city multiplayer map with the lots of weapons and stuff.</string>
 		<string id="curfew" lang="ru">Руины города, остатки укреплений. Классическая карта для десматча.</string>
-		<string id="curfew" lang="de">Stadtruinen, Reste der Befestigungen. Eine klassische Karte fu:rs Deathmatch.</string>
+		<string id="curfew" lang="de">Stadtruinen, Reste der Befestigungen. Eine klassische Karte fürs Deathmatch.</string>
 		           
 
 		<string id="gaddino">Country map with railway road.</string>
@@ -193,7 +192,7 @@
 		
 		<string id="(default)">Sorry, no description was provided by the author of this map...</string>
 		<string id="(default)" lang="ru">У этой карты нет описания. Извините. :(</string>
-		<string id="(default)" lang="de">Es tut uns Leid, aber fu:r diese Karte gibt es noch keine Beschreibung.</string>
+		<string id="(default)" lang="de">Es tut uns Leid, aber für diese Karte gibt es noch keine Beschreibung.</string>
 
 	</area>         
 	<area id="hints">
@@ -217,7 +216,7 @@
 		<area id="dune">
 			<string id="defend-base">DEFEND YOUR BASE!</string>
 			<string id="defend-base" lang="ru">ЗАЩИТИТЕ БАЗУ!</string>
-			<string id="defend-base" lang="de">SCHU:TZEN SIE IHRE BASIS!</string>
+			<string id="defend-base" lang="de">SCHÜTZEN SIE IHRE BASIS!</string>
 		</area> 
 	</area>
 	<area id="messages">
@@ -243,7 +242,7 @@
                         
 		<string id="destroy-spaceport">DESTROY SPACEPORT</string>
 		<string id="destroy-spaceport" lang="ru">УБЕЙ БАЙКОНУР!</string>
-		<string id="destroy-spaceport" lang="de">KOSMODROM ZERSTO:REN!</string>
+		<string id="destroy-spaceport" lang="de">KOSMODROM ZERSTÖREN!</string>
 		        
 		<string id="combo">COMBO !</string>
 		<string id="combo" lang="ru">КОМБО!</string>
@@ -251,7 +250,7 @@
 		        
 		<string id="base-destroyed">YOUR BASE WAS DESTROYED. GAME OVER.</string>
 		<string id="base-destroyed" lang="ru">Ваша база была уничтожена, миссия провалена.</string>
-		<string id="base-destroyed" lang="de">IHRE BASIS IST ZERSTO:RT WORDEN, EINSATZ VERLOREN.</string>
+		<string id="base-destroyed" lang="de">IHRE BASIS IST ZERSTÖRT WORDEN, EINSATZ VERLOREN.</string>
 	</area>         
 	<area id="errors">
 		<string id="connection-failed">Connection failed.</string>
@@ -272,15 +271,15 @@
 		<string id="suicide">Getting stuck in some tricky place ?
 			Usually it's not possible, but there's 'F12' key - commit a suicide. Sorry. </string>
 		<string id="suicide" lang="ru">Застряли в каком-нибудь месте ? Нажмите &lt;F12&gt; чтобы покончить с собой.</string>
-		<string id="suicide" lang="de">An irgendeiner Stelle steckengeblieben? Dru:cken Sie die 'F12' Taste um Selbstmord zu begehen.</string>
+		<string id="suicide" lang="de">An irgendeiner Stelle steckengeblieben? Drücken Sie die 'F12' Taste um Selbstmord zu begehen.</string>
 		        
 		<string id="leaving">You can leave vehicle at any time by pressing 'leave' button.</string>
 		<string id="leaving" lang="ru">Вы можете покинуть боевую машину в любое время нажав соответствующую кнопку.</string>
-		<string id="leaving" lang="de">Sie ko:nnen das Fahrzeug jederzeit verlassen. Dru:cken Sie die dafu:r entsprechende Taste.</string>
+		<string id="leaving" lang="de">Sie können das Fahrzeug jederzeit verlassen. Drücken Sie die dafür entsprechende Taste.</string>
                         
 		<string id="mortar">Every(!) map has a hidden "mortar" vehicle on it.</string>
 		<string id="mortar" lang="ru">На каждой карте(!) можно найти секретную машинку - мортиру.</string>
-		<string id="mortar" lang="de">In jedem Level ko:nnen Sie einen versteckten Mo:rser finden.</string>
+		<string id="mortar" lang="de">In jedem Level können Sie einen versteckten Mörser finden.</string>
                         
 		<string id="mines">Shilka could use mines too.</string>
 		<string id="mines" lang="ru">А шилка может брать мины.</string>
@@ -288,11 +287,11 @@
 		        
 		<string id="sandworm">Sandworm could be killed with single mortar shot. </string>
 		<string id="sandworm" lang="ru">Мортира может убить червя одним попаданием своей банки (в рот).</string>
-		<string id="sandworm" lang="de">Der Sandwurm kann mit einem einzigen Mo:rserschuss geto:tet werden.</string>
+		<string id="sandworm" lang="de">Der Sandwurm kann mit einem einzigen Mörserschuss getötet werden.</string>
 		        
 		<string id="donation">You could improve this project and even push it to the desired features by donating.</string>
 		<string id="donation" lang="ru">Вы можете помочь проекту, сделав пожертвование.</string>
-		<string id="donation" lang="de">Sie ko:nnen gerne das Projekt mit einer kleinen Spende unterstu:tzen.</string>
+		<string id="donation" lang="de">Sie können gerne das Projekt mit einer kleinen Spende unterstützen.</string>
 		        
 		<string id="tactic-map">Clicking on the map screenshot could reveal useless tactic map.</string>
 		<string id="tactic-map" lang="ru">Кликнув на картинку карты вы можете посмотреть бесполезную тактическую карту, на которой иногда нарисованы чекпоинты и прочая ерунда.</string>
@@ -300,20 +299,20 @@
 		        
 		<string id="clouds">Smoke clouds are poisonous. You could kill troopers with it.</string>
 		<string id="clouds" lang="ru">Дымовые ракеты очень ядовиты. Они могут убивать солдат, женщин и людей :)))</string>
-		<string id="clouds" lang="de">Die Rauchraketen sind sehr giftig. Damit ko:nnen Sie die Gegnerische Truppen neutralisieren.</string>
+		<string id="clouds" lang="de">Die Rauchraketen sind sehr giftig. Damit können Sie die Gegnerische Truppen neutralisieren.</string>
                         
 		<string id="fog-of-war">You can enable "fog of war" in option menu (hardcore difficulty).
 			Note that this option works only in resolutions larger than 800x600.</string>
 		<string id="fog-of-war" lang="ru">Вы можете включить ограничение видимости в меню настроек. Учтите что оно работает только в разрешениях больше 800 на 600 пикселей. </string>
-		<string id="fog-of-war" lang="de">Sie ko:nnen die Option "Beschra:nkung der Sicht" im Einstellungsmenu: einschalten. Sie sollten aber im Kauf nehmen, dass diese Option eine gro:ssere Auflo:sung als 800X600 verlangt.</string>
+		<string id="fog-of-war" lang="de">Sie können die Option "Beschränkung der Sicht" im Einstellungsmenü einschalten. Sie sollten aber im Kauf nehmen, dass diese Option eine grössere Auflösung als 800X600 verlangt.</string>
 		         
 		<string id="stats">You can view multiplayer game stats with &lt;tab&gt; key.</string>
 		<string id="stats" lang="ru">Вы можете посмотреть статистику матча кнопкой &lt;tab&gt;.</string>
-		<string id="stats" lang="de">Mit der "TAB" Taste ko:nnen Sie die Matchstatistik ansehen.</string>
+		<string id="stats" lang="de">Mit der "TAB" Taste können Sie die Matchstatistik ansehen.</string>
                         
 		<string id="hint-control">You can skip or display again last tip with 'hint-control' key.</string>
 		<string id="hint-control" lang="ru">Кнопка контроля подсказок очень полезна. Ей можно прятать и повторять подсказки.</string>
-		<string id="hint-control" lang="de">Die Tip-Taste kann sehr nu:tzlich sein. Anhand derer, ko:nnen die Tips wiederholt bzw. versteckt werden.</string>
+		<string id="hint-control" lang="de">Die Tip-Taste kann sehr nützlich sein. Anhand derer, können die Tips wiederholt bzw. versteckt werden.</string>
 		        
 		<string id="checkpoints">Cooperative maps usually have special places which automatically saves your progress. Look tactic map for the details.</string>
 		<string id="checkpoints" lang="ru">На кооперативных картах обычно есть специальные места : чекпоинты, которые сохраняют положения игрока.</string>
