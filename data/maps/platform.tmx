@@ -1,31 +1,88 @@
 <?xml version="1.0"?>
 <map version="0.99b" orientation="orthogonal" width="20" height="80" tilewidth="64" tileheight="64">
 	<properties>
+		<property name="config:map.cannon.respawn-interval" value="int:-1"/>
+		<property name="config:map.choo-choo-train.respawn-interval" value="int:-1"/>
+		<property name="config:map.dispersion-bullets-item.respawn-interval" value="int:-1"/>
+		<property name="config:map.dumb-missiles-item.respawn-interval" value="int:-1"/>
+		<property name="config:map.guided-missiles-item.respawn-interval" value="int:-1"/>
+		<property name="config:map.heal.respawn-interval" value="int:-1"/>
+		<property name="config:map.kamikaze.respawn-interval" value="int:-1"/>
+		<property name="config:map.machinegunner-item.respawn-interval" value="int:-1"/>
+		<property name="config:map.machinegunner.respawn-interval" value="int:-1"/>
+		<property name="config:map.megaheal.respawn-interval" value="int:-1"/>
+		<property name="config:map.nuke-missiles-item.respawn-interval" value="int:-1"/>
+		<property name="config:map.ricochet-bullets-item.respawn-interval" value="int:-1"/>
+		<property name="config:map.smoke-missiles-item.respawn-interval" value="int:-1"/>
+		<property name="config:map.tank.respawn-interval" value="int:-1"/>
+		<property name="config:map.thrower-item.respawn-interval" value="int:-1"/>
+		<property name="config:map.thrower.respawn-interval" value="int:-1"/>
+		<property name="config:map.zombie.respawn-interval" value="int:10"/>
+		<property name="config:objects.missiles-on-tank.default-weapon" value="string:"/>
+		<property name="config:objects.missiles-on-tank.default-weapon-type" value="string:"/>
+		<property name="config:objects.nuke-missiles-on-tank.capacity" value="int:1"/>
+		<property name="config:objects.shilka.dispersion.duration" value="float:15"/>
+		<property name="config:objects.shilka.ricochet.duration" value="float:15"/>
+		<property name="config:objects.tank.dispersion.duration" value="float:15"/>
+		<property name="config:objects.tank.ricochet.duration" value="float:15"/>
 		<property name="object:broken-object:traffic-lights:1" value="1071,2691"/>
 		<property name="object:broken-object:traffic-lights:2" value="901,2691"/>
 		<property name="object:bus-stop:bus-stop-right:1" value="59,4493"/>
-		<property name="object:cannon:cannon:1" value="892,4339/6"/>
+		<property name="object:cannon:cannon:1" value="895,4334/6"/>
 		<property name="object:cannon:cannon:2" value="843,3745/1"/>
 		<property name="object:cannon:cannon:3" value="449,2755/7"/>
 		<property name="object:cannon:cannon:4" value="864,1867/5"/>
 		<property name="object:cannon:cannon:5" value="25,3808/1"/>
-		<property name="object:cannon:cannon:6" value="1015,4944/5"/>
+		<property name="object:cannon:cannon:6" value="1021,4938/5"/>
 		<property name="object:cannon:cannon:7" value="264,3479/7"/>
 		<property name="object:cow:cow:1" value="96,1556"/>
+		<property name="object:dispersion-bullets-item:dispersion-bullets-item:1" value="1089,3138"/>
+		<property name="object:dumb-missiles-item:dumb-missiles-item:1" value="1025,5043"/>
+		<property name="object:dumb-missiles-item:dumb-missiles-item:2" value="731,3234"/>
+		<property name="object:guided-missiles-item:guided-missiles-item:1" value="1020,3781"/>
+		<property name="object:guided-missiles-item:guided-missiles-item:2" value="452,3687"/>
 		<property name="object:heal:heal:1" value="249,4136"/>
-		<property name="object:smoke-missiles-item:smoke-missiles-item:1" value="1020,5034,460"/>
+		<property name="object:heal:heal:2" value="541,3197"/>
+		<property name="object:kamikaze:kamikaze:1" value="437,4600/6"/>
+		<property name="object:kamikaze:kamikaze:10" value="471,3262"/>
+		<property name="object:kamikaze:kamikaze:2" value="428,4672/5"/>
+		<property name="object:kamikaze:kamikaze:3" value="498,4735/5"/>
+		<property name="object:kamikaze:kamikaze:4" value="1003,5070/4"/>
+		<property name="object:kamikaze:kamikaze:5" value="932,4255/5"/>
+		<property name="object:kamikaze:kamikaze:6" value="848,4362/7"/>
+		<property name="object:kamikaze:kamikaze:7" value="479,3668/2"/>
+		<property name="object:kamikaze:kamikaze:8" value="256,3575/6"/>
+		<property name="object:kamikaze:kamikaze:9" value="502,3201"/>
+		<property name="object:machinegunner:machinegunner:1" value="489,4625/5"/>
+		<property name="object:machinegunner:machinegunner:2" value="441,3949"/>
+		<property name="object:machinegunner:machinegunner:3" value="570,4127"/>
+		<property name="object:machinegunner:machinegunner:4" value="413,3457"/>
+		<property name="object:machinegunner:machinegunner:5" value="881,3295"/>
+		<property name="object:machinegunner:machinegunner:6" value="1083,3287"/>
+		<property name="object:machinegunner:machinegunner:7" value="873,2900"/>
+		<property name="object:machinegunner:machinegunner:8" value="408,2709"/>
+		<property name="object:megaheal:megaheal:1" value="448,2732,210"/>
+		<property name="object:road-sign:road-sign09:1" value="1074,3380,430"/>
+		<property name="object:smoke-missiles-item:smoke-missiles-item:1" value="475,4577,460"/>
 		<property name="object:spaceport-baykonur:spaceport-baykonur:1" value="378,-111"/>
 		<property name="object:spaceport-baykonur:spaceport-baykonur:2" value="-84,138"/>
 		<property name="object:spaceport-baykonur:spaceport-baykonur:3" value="948,360,460"/>
+		<property name="object:stack:stack:1" value="0,1389"/>
+		<property name="object:stack:stack:2" value="689,1274"/>
+		<property name="object:stack:stack:3" value="781,907"/>
+		<property name="object:static-launcher:green-launcher:1" value="304,2469/1"/>
 		<property name="object:static-mortar:green-mortar:1" value="129,3137"/>
-		<property name="object:tent-with-machinegunners:trooper-tent:1" value="439,4539"/>
+		<property name="object:static-shilka:red-shilka:1" value="300,2342/1"/>
+		<property name="object:static-tank:yellow-tank:1" value="300,2403/1"/>
+		<property name="object:tent-with-machinegunners:trooper-tent:1" value="865,4643"/>
 		<property name="object:tent-with-machinegunners:trooper-tent:2" value="609,3958"/>
 		<property name="object:tent-with-machinegunners:trooper-tent:3" value="346,3128"/>
+		<property name="object:thrower:thrower:1" value="363,3558"/>
 		<property name="object:traffic-lights:traffic-lights:1" value="1071,2855"/>
 		<property name="object:traffic-lights:traffic-lights:2" value="902,2857"/>
 		<property name="object:watchtower-with-machinegunner(make-pierceable)(with-fire):watchtower:1" value="961,2601,210"/>
 		<property name="object:watchtower-with-machinegunner:watchtower:1" value="866,3781"/>
-		<property name="object:watchtower-with-machinegunner:watchtower:2" value="575,4266"/>
+		<property name="object:watchtower-with-machinegunner:watchtower:2" value="561,4272"/>
 		<property name="object:watchtower-with-machinegunner:watchtower:3" value="-54,4351"/>
 		<property name="object:watchtower-with-machinegunner:watchtower:4" value="318,3956"/>
 		<property name="object:watchtower-with-thrower(make-pierceable)(with-fire)(make-pierceable)(with-fire):watchtower:1" value="-24,3280,400"/>
