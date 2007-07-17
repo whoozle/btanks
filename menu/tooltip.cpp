@@ -66,9 +66,9 @@ Tooltip::Tooltip(const std::string &_text, const bool use_background, const int 
 		unsigned int l = mrt::utf8_length(words[i]);
 		lens[i] = l;
 		sum += l;
-		//lens_dump += mrt::formatString("%s%u", (i == 0)?"":", ", l);
+		//lens_dump += mrt::formatString("%s<<%s>>%u", (i == 0)?"":", ", words[i].c_str(), l);
 	}
-//	LOG_DEBUG(("sum: %u, words: %s", sum, lens_dump.c_str()));
+	//LOG_DEBUG(("sum: %u, words: %s", sum, lens_dump.c_str()));
 	GET_CONFIG_VALUE("engine.tooltip-speed", float, td, 20);
 	_time = ((float)mrt::utf8_length(_text)) / td;
 
