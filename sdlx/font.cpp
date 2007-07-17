@@ -28,17 +28,25 @@ using namespace sdlx;
 
 const unsigned Font::toUpper(const unsigned page, const unsigned c) {
 	//fixme: 
-	if (page == 0x0a0) { //0080 
+	//LOG_DEBUG(("toUpper(%04x, %x)", page, c));
+	switch(page) {
+	case 0x0020: 
+		if (c > 0x40 && c <= 0x5a) 
+			return c + 0x20;
+		return c;
+	case 0x00a0: 
 		if (c >= 0x40)
 			return c - 0x20;
 		return c;
+	case 0x0400:
+		if (c >= 0x30 && c < 0x50) 
+			return c - 0x20;
+		if (c >= 0x50 && c < 0x60)
+			return c - 0x50;
+		return c;
+	default:
+		return c;
 	}
-	
-	if (c >= 0x30 && c < 0x50) 
-		return c - 0x20;
-	if (c >= 0x50 && c < 0x60)
-		return c - 0x50;
-	return c;
 }
 
 Font::Font() : _type(Undefined) {}
@@ -193,19 +201,29 @@ const int Font::render(sdlx::Surface *window, const int x, const int y, const st
 
 	for(std::deque<unsigned>::const_iterator i = tokens.begin(); i != tokens.end(); ++i) {
 		unsigned c = *i;
-		//LOG_DEBUG(("token: %x", c));
-		Pages::const_iterator page_i = _pages.lower_bound(c);
-		if (page_i == _pages.end())
-			continue;
+		//LOG_DEBUG(("token: '%c' %x %s", (c >= 0x20 && c < 0x80)?c:'.', c, c >= 0x80?"<<<<<<<<<<":""));
+		//Pages::const_iterator page_i = _pages.lower_bound(c);
+		//if (page_i == _pages.end())
+		//	continue;
+		Pages::const_iterator page_i;
+		for(page_i = _pages.begin(); page_i != _pages.end() && c < page_i->first; ++page_i);
+
+		unsigned page_base = 0x20;
+		if (page_i == _pages.end()) {
+			c = '?';
+		} else {
+			page_base = page_i->first;
+		}
+		const Page & page = (page_i != _pages.end())? page_i->second: _pages.rbegin()->second;
 		
 		//LOG_DEBUG(("page: %04x", page_i->first));
-		const unsigned page_base = page_i->first;
-		//LOG_DEBUG(("token: %08x base: U+%08x, offset: %08x", c, page_base, c - page_base));
+		LOG_DEBUG(("token: %08x base: U+%08x, offset: %08x", c, page_base, c - page_base));
 
-		if (c < page_base) 
+		if (c < page_base) {
 			c = '?';
+			page_base = 0x20;
+		}
 
-		const Page & page = page_i->second;
 		int fw, fh;
 		fw = fh = page.surface->getHeight();
 		
