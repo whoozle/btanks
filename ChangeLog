@@ -1,15 +1,18 @@
 0.5.*:
+*) Added unicode support, russian and german translations. 
+*) Added `torus'(endless) map mode and converted `lenin square' to it.
+*) Fog of war support (available in `settings' menu)
 *) Random and sometimes surprising tips are added (displayed while game is loading).
 *) Tons of stickin' & stuckin' issues are fixed.
 *) AI players have became stronger and learnt some close combat skills.
 *) AI troopers can now shoot through fences where possible.
 *) Watchtower now detects possible directions for shooting and doesn't shoot thru the walls.
+*) Smooth layer scrolling is implemented.
 *) AI-civilian is added, alt fire uses horn while in car or tractor.
 *) Sandworm no longer eats mortar.
 *) Lives support is added to HUD.
-*) Smooth layer scrolling is implemented.
 *) Ricochet bullets work again.
-*) Added support for non-standard directions on map.  Car facing down, for example.
+*) Added support for objects with non-standard directions on map.  Car facing down, for example.
 *) Campaign support: 
 	*) Campaign structural map
 	*) Hiding and showing levels by several criterias. 
