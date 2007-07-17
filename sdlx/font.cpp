@@ -217,7 +217,7 @@ const int Font::render(sdlx::Surface *window, const int x, const int y, const st
 		const Page & page = (page_i != _pages.end())? page_i->second: _pages.rbegin()->second;
 		
 		//LOG_DEBUG(("page: %04x", page_i->first));
-		LOG_DEBUG(("token: %08x base: U+%08x, offset: %08x", c, page_base, c - page_base));
+		//LOG_DEBUG(("token: %08x base: U+%08x, offset: %08x", c, page_base, c - page_base));
 
 		if (c < page_base) {
 			c = '?';
