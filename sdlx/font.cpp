@@ -28,6 +28,12 @@ using namespace sdlx;
 
 const unsigned Font::toUpper(const unsigned page, const unsigned c) {
 	//fixme: 
+	if (page == 0x0a0) { //0080 
+		if (c >= 0x40)
+			return c - 0x20;
+		return c;
+	}
+	
 	if (c >= 0x30 && c < 0x50) 
 		return c - 0x20;
 	if (c >= 0x50 && c < 0x60)
