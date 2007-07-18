@@ -24,10 +24,9 @@ consult your distro's documentation for details):
 	a) SDL >= 1.2.10 (you can use any version lower down to 1.2.5. 
                                          dont report bugs if you do so)
 	b) SDL_image 	 (PNG support required)
-	c) SDL_ttf 		 
-	d) openal
-	e) libvorbis and family
-	f) sigc++ 2.x (1.x is not supported)
+	c) openal
+	d) libvorbis and family
+	e) sigc++ 2.x (1.x is not supported)
 
 4) you could add something like this in 'options.cache' file 
 (located in trunk/ directory): 
