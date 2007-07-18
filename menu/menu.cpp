@@ -99,6 +99,13 @@ void MainMenu::recalculateSizes() {
 			_menu_size.x = w;
 		_menu_size.y += h + ITEM_SPACING;
 	}
+	int bw = (_menu_size.x < 407)? 407: (_menu_size.x + ITEM_SPACING);
+	int bh = (_menu_size.y < 338) ? 338: (_menu_size.y + ITEM_SPACING);
+	if (bw * 5 / 6 > bh)
+		bh = bw * 5 / 6;
+	if (bh * 6 / 5 > bw)
+		bw = bh * 6 / 5;
+	_background.init("menu/background_box.png", "menu/highlight_big.png", bw, bh);
 }
 
 void MainMenu::tick(const float dt) {
