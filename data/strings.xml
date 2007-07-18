@@ -4,6 +4,7 @@
 		<string id="back">BACK</string>
 		<string id="back" lang="ru">НАЗАД</string>
 		<string id="back" lang="de">ZURÜCK</string>
+		
 		<string id="ok">OK</string>
 		<string id="ok" lang="ru">ОК</string>
 		<string id="ok" lang="de">ОК</string>
@@ -109,6 +110,30 @@
 		<string id="redefine-keys">Redefine keys</string>
 		<string id="redefine-keys" lang="ru">Настроить клавиши</string>
 		<string id="redefine-keys" lang="de">Tasten einstellen</string>
+		
+		<string id="up">UP</string>
+		<string id="up" lang="ru">ВВЕРХ</string>
+		
+		<string id="down">DOWN</string>
+		<string id="down" lang="ru">ВНИЗ</string>
+		
+		<string id="left">LEFT</string>
+		<string id="left" lang="ru">ВЛЕВО</string>
+		
+		<string id="right">RIGHT</string>
+		<string id="right" lang="ru">ВПРАВО</string>
+		
+		<string id="fire">FIRE</string>
+		<string id="fire" lang="ru">ВЫСТРЕЛ</string>
+		
+		<string id="alt-fire">ALT.FIRE</string>
+		<string id="alt-fire" lang="ru">ВЫСТРЕЛ-2</string>
+		
+		<string id="disembark">DISEMBARK</string>
+		<string id="disembark" lang="ru">ВЫЙТИ</string>
+		
+		<string id="hints-control">HINTS CONTROL</string>
+		<string id="hints-control" lang="ru">ПОДСКАЗКИ</string>
                                 
 		<string id="default-keys">Default keys</string>
 		<string id="default-keys" lang="ru">Клавиши по умолчанию</string>
