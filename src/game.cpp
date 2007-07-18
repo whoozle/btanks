@@ -38,7 +38,6 @@
 #include "sdlx/system.h"
 #include "sdlx/sdl_ex.h"
 #include "sdlx/joystick.h"
-#include "sdlx/ttf.h"
 #include "sdlx/color.h"
 #include "sdlx/timer.h"
 
@@ -672,7 +671,7 @@ void IGame::resetLoadingBar(const int total) {
 			++del;
 		tips_available.erase(del);
 	}
-	LOG_DEBUG(("showing tip: '%s', tips remaining: %u", tip.c_str(), tips_available.size()));
+	LOG_DEBUG(("showing tip: '%s', tips remaining: %u", tip.c_str(), (unsigned)tips_available.size()));
 
 	delete _tip;
 	_tip = new Tooltip(I18n->get("tips", tip), true, 320);

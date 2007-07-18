@@ -19,7 +19,6 @@
 #include "window.h"
 #include "config.h"
 #include "sdlx/system.h"
-#include "sdlx/ttf.h"
 #include "sdlx/sdl_ex.h"
 #include "version.h"
 #include "finder.h"
@@ -91,8 +90,8 @@ void IWindow::initSDL() {
 
 	sdlx::Surface::setDefaultFlags(default_flags);
 
-	LOG_DEBUG(("initializing SDL_ttf..."));
-	sdlx::TTF::init();
+	//LOG_DEBUG(("initializing SDL_ttf..."));
+	//sdlx::TTF::init();
 }
 
 void IWindow::init(const int argc, char *argv[]) {

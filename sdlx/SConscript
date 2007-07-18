@@ -7,7 +7,7 @@ env.Append(CPPPATH=['..', '.'])
 env.Append(LIBPATH=['../mrt'])
 env.Append(CPPDEFINES=['SDLXAPI=DLLEXPORT'])
 
-libs = ['mrt', 'SDL', 'SDL_image', 'SDL_ttf']
+libs = ['mrt', 'SDL', 'SDL_image']
 
 if sys.platform != "win32":
 	c_map_env= env.Copy()
@@ -22,10 +22,10 @@ else:
 	libs.append('winmm')
 	libs.append('user32')
 
-sdlx_sources = 	['cursor.cpp', 'sdl_ex.cpp', 'surface.cpp', 'system.cpp', 'joystick.cpp', 'ttf.cpp', 
+sdlx_sources = 	['cursor.cpp', 'sdl_ex.cpp', 'surface.cpp', 'system.cpp', 'joystick.cpp',
 	'thread.cpp', 'mutex.cpp', 'semaphore.cpp', 'color.cpp',
 	'glSDL/glSDL.c', c_map, 'font.cpp', 'timer.cpp', 'module.cpp', 
-	]
+	] #  'ttf.cpp', 
 
 sdlx = env.SharedLibrary('sdlx', sdlx_sources, LIBS=libs)
 Install('#', sdlx)

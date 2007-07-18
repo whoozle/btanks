@@ -620,19 +620,27 @@ void IPlayerManager::addSpecialZone(const SpecialZone &zone) {
 }
 
 PlayerSlot &IPlayerManager::getSlot(const unsigned int idx) {
+	if (idx >= _players.size())
+		throw_ex(("slot #%u does not exist", idx));
 	return _players[idx];
 }
 const PlayerSlot &IPlayerManager::getSlot(const unsigned int idx) const {
+	if (idx >= _players.size())
+		throw_ex(("slot #%u does not exist", idx));
 	return _players[idx];
 }
 PlayerSlot *IPlayerManager::getMySlot() {
 	if (_my_idx < 0) 
 		return NULL;
+	if (_my_idx >= (int)_players.size())
+		throw_ex(("slot #%u does not exist", _my_idx));
 	return &_players[_my_idx];
 }
 const PlayerSlot *IPlayerManager::getMySlot() const {
 	if (_my_idx < 0) 
 		return NULL;
+	if (_my_idx >= (int)_players.size())
+		throw_ex(("slot #%u does not exist", _my_idx));
 	return &_players[_my_idx];
 }
 

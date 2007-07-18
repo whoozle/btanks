@@ -16,14 +16,17 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+#include <vector>
+
+#include "sdlx/surface.h"
+#include "sdlx/font.h"
+
 #include "console.h"
 #include "config.h"
 #include "window.h"
-#include "sdlx/color.h"
-#include "sdlx/surface.h"
-#include <vector>
 #include "version.h"
 #include "finder.h"
+#include "resource_manager.h"
 
 IMPLEMENT_SINGLETON(Console, IConsole);
 
@@ -112,12 +115,10 @@ void IConsole::init() {
 		return;
 	}
 
-	sdlx::TTF::init();
-	LOG_DEBUG(("loading font..."));
-	_font.open(Finder->find("/font/Verdana.ttf"), 12);
+	_font = ResourceManager->loadFont("small", false);
 
 	LOG_DEBUG(("loading background..."));
-	_background.init("menu/background_box.png", 407, 240);
+	_background.init("menu/background_box.png", 600, 240);
 	
 	_buffer.push_back(Buffer::value_type(mrt::formatString("BattleTanks. version: %s", getVersion().c_str()), NULL));
 	_buffer.push_back(Buffer::value_type(std::string(">"), NULL));
@@ -140,7 +141,7 @@ void IConsole::render(sdlx::Surface &window) {
 	for(Buffer::iterator i = _buffer.begin(); i != _buffer.end(); ++i) {
 		if (i->second == NULL) {
 			i->second = new sdlx::Surface;
-			_font.renderBlended(*i->second, i->first, sdlx::Color(0, 200, 0));
+			_font->render(*i->second, i->first);
 			i->second->convertAlpha();
 		}
 		ch += i->second->getHeight();

@@ -19,12 +19,14 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include "sdlx/ttf.h"
-#include "mrt/singleton.h"
 #include <deque>
 #include <string>
 #include <sigc++/sigc++.h>
+#include "mrt/singleton.h"
 #include "menu/box.h"
+namespace sdlx {
+	class Font;
+}
 
 class IConsole : public sigc::trackable {
 class marshaler {
@@ -64,7 +66,7 @@ private:
 	Buffer _buffer;
 
 	int _pos;
-	sdlx::TTF _font;
+	const sdlx::Font *_font;
 	Box _background;
 };
 
