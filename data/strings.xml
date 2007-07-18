@@ -132,8 +132,8 @@
 		<string id="disembark">DISEMBARK</string>
 		<string id="disembark" lang="ru">ВЫЙТИ</string>
 		
-		<string id="hints-control">HINTS CONTROL</string>
-		<string id="hints-control" lang="ru">ПОДСКАЗКИ</string>
+		<string id="hint-ctrl">HINTS CONTROL</string>
+		<string id="hint-ctrl" lang="ru">ПОДСКАЗКИ</string>
                                 
 		<string id="default-keys">Default keys</string>
 		<string id="default-keys" lang="ru">Клавиши по умолчанию</string>
