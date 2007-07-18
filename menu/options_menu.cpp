@@ -32,12 +32,14 @@
 #include "player_manager.h"
 #include "game_monitor.h"
 
-static const int r_dim[5][2] = {
-	{640, 480}, 
+static const int r_dim[6][2] = {
+	//{640, 480}, 
 	{800, 600}, 
 	{1024, 768}, 
 	{1152, 864},
 	{1280, 1024}, 
+	{1400, 1050}, 
+	{1600, 1200},
 };
 
 
