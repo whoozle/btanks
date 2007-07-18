@@ -40,7 +40,7 @@ RedefineKeys::RedefineKeys() : _active_row(-1), _active_col(-1) {
 	_font = ResourceManager->loadFont("medium", true);
 	_small_font = ResourceManager->loadFont("small", true);
 
-	_background.init("menu/background_box_dark.png", "menu/highlight_medium.png", _bg_table->getWidth() + 32, _bg_table->getHeight() + 140);
+	_background.init("menu/background_box_dark.png", "menu/highlight_medium.png", _bg_table->getWidth() + 96, _bg_table->getHeight() + 140);
 	
 	initDefaults();
 	
@@ -126,10 +126,10 @@ void RedefineKeys::render(sdlx::Surface &surface, const int x, const int y) {
 		}
 
 		if (_active_row == (int)i && _active_col != -1) {
-			surface.copyFrom(*_selection, x + 173 + 110 * _active_col, yp - 6);
+			surface.copyFrom(*_selection, x + 205 + 110 * _active_col, yp - 6);
 		}
 
-		_font->render(surface, x + 36, yp, _actions[i].first);
+		_font->render(surface, x + 66, yp, _actions[i].first);
 		
 		for(size_t j = 0; j < 3; ++j) {
 			const char *cname = _keys[j][i] ? SDL_GetKeyName((SDLKey)_keys[j][i]): NULL;
