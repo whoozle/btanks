@@ -201,10 +201,9 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::R
 		
 		sdlx::Rect r((int)o->_position.x, (int)o->_position.y, (int)o->size.x, (int)o->size.y);
 		bool fogged = fog;// && o->speed != 0;
-		const sdlx::Rect &src_rect = fogged?fog_rect:src;
 		//LOG_DEBUG(("%d,%d:%d,%d vs %d,%d:%d,%d result: %s", 
 		//	r.x, r.y, r.w, r.h, src_rect.x, src_rect.y, src_rect.w, src_rect.h, Map->intersects(r, src_rect)?"true":"false"));
-		if (Map->intersects(r, src_rect)) 
+		if (Map->intersects(r, fogged? fog_rect: src)) 
 			layers.insert(LayerMap::value_type(o->_z, o));
 	}
 	//LOG_DEBUG(("rendering %d objects", layers.size()));
@@ -276,12 +275,14 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::R
 		sdlx::Rect fog_src(tw, th, tw, th);
 		
 		int px = (player_pos.x - src.x) / tw, py = (player_pos.y - src.y) / th;
-		px %= map_tile_size.x;
-		py %= map_tile_size.x;
-		if (px < 0)
-			px += map_tile_size.x;
-		if (py < 0)
-			py += map_tile_size.y;
+		if (Map->torus()) {
+			px %= map_tile_size.x;
+			py %= map_tile_size.x;
+			if (px < 0)
+				px += map_tile_size.x;
+			if (py < 0)
+				py += map_tile_size.y;
+		}
 			
 		//LOG_DEBUG(("player: %d %d, fog_tile_size: %d %d", px, py, fog_tw, fog_th));
 		int dx = (player_pos.x - src.x) % tw, dy = (player_pos.y - src.y) % th;
@@ -296,11 +297,11 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::R
 				fog_src.x = tw;
 				fog_src.y = th;
 				if (rx == cx && ry <= cy) {
-					fog_src.x = (x < cx)?0:2 * tw;
+					fog_src.x = (x < px)?0:2 * tw;
 				}
 				
 				if (ry == cy && rx <= cx) {
-					fog_src.y = (y < cy)?0:2 * th;
+					fog_src.y = (y < py)?0:2 * th;
 				}
 				surface.copyFrom(*fog_surface, fog_src, dst.x + x * tw + dx - tw / 2, dst.y + y * th + dy - th / 2);
 			}
