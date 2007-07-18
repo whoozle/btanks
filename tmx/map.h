@@ -204,11 +204,8 @@ public:
 	}
 
 	template<typename T>
-	const bool in(const sdlx::Rect &area, const v2<T> &position) const {
-		if (!_torus)
-			return area.in((int)position.x, (int)position.y);
-		else 
-			return in(area, (int)position.x, (int)position.y);
+	inline const bool in(const sdlx::Rect &area, const v2<T> &position) const {
+		return in(area, (int)position.x, (int)position.y);
 	}
 	
 	const bool intersects(const sdlx::Rect &area1, const sdlx::Rect &area2) const {
