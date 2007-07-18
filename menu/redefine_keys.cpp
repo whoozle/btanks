@@ -101,7 +101,7 @@ void RedefineKeys::tick(const float dt) {
 void RedefineKeys::reload() {
 	_actions.clear();
 	for(size_t i = 0; i < _labels.size(); ++i) {
-		_actions.push_back(Actions::value_type(_labels[i], sdlx::Rect()));
+		_actions.push_back(Actions::value_type(I18n->get("menu", _labels[i]), sdlx::Rect()));
 		for(size_t j = 0; j < 3; ++j) {
 			Config->get("player.controls." + variants[j] + "." + _labels[i], _keys[j][i], _keys[j][i]);
 		}

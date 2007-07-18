@@ -126,13 +126,13 @@
 		<string id="fire">FIRE</string>
 		<string id="fire" lang="ru">ВЫСТРЕЛ</string>
 		
-		<string id="alt-fire">ALT.FIRE</string>
+		<string id="alt-fire">ALT FIRE</string>
 		<string id="alt-fire" lang="ru">ВЫСТРЕЛ-2</string>
 		
 		<string id="disembark">DISEMBARK</string>
 		<string id="disembark" lang="ru">ВЫЙТИ</string>
 		
-		<string id="hint-ctrl">HINTS CONTROL</string>
+		<string id="hint-ctrl">HINTS CTRL</string>
 		<string id="hint-ctrl" lang="ru">ПОДСКАЗКИ</string>
                                 
 		<string id="default-keys">Default keys</string>
