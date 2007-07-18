@@ -22,7 +22,7 @@
 
 Button::Button(const std::string &font, const std::string &label) : _font(ResourceManager->loadFont(font, true)), _label(label) {
 	_w = _font->render(NULL, 0, 0, label);
-	_background.init("menu/background_box.png", _w + 32, _font->getHeight() + 16);
+	_background.init("menu/background_box.png", _w + 24, _font->getHeight() + 8);
 }
 
 
