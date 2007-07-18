@@ -229,7 +229,13 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::R
 		Object &o = *i->second;
 		//LOG_DEBUG(("rendering %s with %d,%d", o.animation.c_str(), (int)o._position.x - src.x + dst.x, (int)o._position.y - src.y + dst.y));
 		v2<int> screen_pos((int)o._position.x - src.x, (int)o._position.y - src.y);
-		Map->validate(screen_pos);
+		screen_pos %= map_size;
+		if (screen_pos.x < 0 && screen_pos.x + o.size.x < 0)
+			screen_pos.x += map_size.x;
+		if (screen_pos.y < 0 && screen_pos.y + o.size.y < 0)
+			screen_pos.y += map_size.y;
+		//Map->validate(screen_pos);
+		//LOG_DEBUG(("object: %s(%gx%g), position: %d %d", o.animation.c_str(), o.size.x, o.size.y, screen_pos.x, screen_pos.y));
 
 		o.render(surface, screen_pos.x + dst.x, screen_pos.y + dst.y);
 		
