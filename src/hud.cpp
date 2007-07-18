@@ -82,6 +82,7 @@ void Hud::generateRadarBG(const sdlx::Rect &viewport) {
 				int v = matrix.get((ry + cy + h) % h, (rx + cx + w) % w);
 				if (v < 0 || v > 100) 
 					v = 100;
+				v = 100 - v;
 			
 				for(int yy = 0; yy < zoom; ++yy) 
 					for(int xx = 0; xx < zoom; ++xx) {
