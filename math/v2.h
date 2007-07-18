@@ -157,6 +157,11 @@ public:
 		x /= other.x; y /= other.y;
 		return *this;
 	}
+
+	inline const v2<T>& operator%=(const v2<T>& other) {
+		x %= other.x; y %= other.y;
+		return *this;
+	}
 	
 	inline const v2<T> operator*(const v2<T>& other) const {
 		return v2<T>(x * other.x, y * other.y);
@@ -169,6 +174,9 @@ public:
 	}
 	inline const v2<T> operator/(const v2<T>& other) const {
 		return v2<T>(x / other.x, y / other.y);
+	}
+	inline const v2<T> operator%(const v2<T>& other) const {
+		return v2<T>(x % other.x, y % other.y);
 	}
 
 	inline const v2<T> operator*(const T& other) const {
@@ -183,10 +191,19 @@ public:
 	inline const v2<T> operator/(const T& other) const {
 		return v2<T>(x / other, y / other);
 	}
+	inline const v2<T> operator%(const T& other) const {
+		return v2<T>(x % other, y % other);
+	}
 
 	inline const v2<T>& operator/=(const T& other) {
 		x /= other;
 		y /= other;
+		return *this;
+	}
+
+	inline const v2<T>& operator%=(const T& other) {
+		x %= other;
+		y %= other;
 		return *this;
 	}
 
@@ -369,6 +386,11 @@ template <typename T>
 template <typename T>
 	const v2<T> operator/(const v2<T> &v, const T a)  {
 		return v2<T>(v.x / a, v.y  / a);
+	}
+
+template <typename T>
+	const v2<T> operator%(const v2<T> &v, const T a)  {
+		return v2<T>(v.x % a, v.y % a);
 	}
 
 #endif
