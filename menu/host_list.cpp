@@ -72,7 +72,7 @@ HostList::~HostList() {
 		const Label *l = dynamic_cast<const Label *>(*i);
 		if (l == NULL || l->get().empty()) 
 			continue;
-		LOG_DEBUG(("host: %s", l->get().c_str()));
+		//LOG_DEBUG(("host: %s", l->get().c_str()));
 		str += l->get();
 		str += " ";
 	}
