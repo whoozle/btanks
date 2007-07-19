@@ -119,8 +119,8 @@ void IWindow::init(const int argc, char *argv[]) {
 #ifdef WIN32
 		else if (strcmp(argv[i], "--dx") == 0) { _dx = true; _opengl = false; }
 #endif
-		else if (strcmp(argv[i], "--320x200") == 0) { _w = 320; _h = 200; }
-		else if (strcmp(argv[i], "--320x240") == 0) { _w = 320; _h = 240; }
+		//else if (strcmp(argv[i], "--320x200") == 0) { _w = 320; _h = 200; }
+		//else if (strcmp(argv[i], "--320x240") == 0) { _w = 320; _h = 240; }
 		else if (strcmp(argv[i], "-0") == 0) { _w = 640; _h = 480; }
 		else if (strcmp(argv[i], "-1") == 0) { _w = 800; _h = 600; }
 		else if (strcmp(argv[i], "-2") == 0) { _w = 1024; _h = 768; }
