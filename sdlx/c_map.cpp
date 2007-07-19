@@ -60,7 +60,7 @@ static inline const bool bitline_collide(
 	unsigned int *iptr1 = (unsigned int *) (base1 + pos1);
 	unsigned int *iptr2 = (unsigned int *) (base2 + pos2);
 
-	for(; line_size >= 8 * sizeof(int); line_size -= 8 * sizeof(int)) {
+	for(; line_size >= 8 * (int)sizeof(int); line_size -= 8 * (int)sizeof(int)) {
 		if (type_collide(iptr1, shift1, iptr2, shift2))
 			return true;
 	}
@@ -68,7 +68,7 @@ static inline const bool bitline_collide(
 	Uint8 *ptr1 = (Uint8 *) iptr1;
 	Uint8 *ptr2 = (Uint8 *) iptr2;
 
-	for(; line_size >= 8 * sizeof(Uint8); line_size -= 8 * sizeof(Uint8)) {
+	for(; line_size >= 8 * (int)sizeof(Uint8); line_size -= 8 * (int)sizeof(Uint8)) {
 		if (type_collide(ptr1, shift1, ptr2, shift2))
 			return true;
 	}
@@ -200,7 +200,7 @@ static const bool test_pixel(const sdlx::Surface * surface, const unsigned x, co
 	case CollisionMap::OnlyOpaque:
 		if ((surface->getFlags() & SDL_SRCALPHA) == SDL_SRCALPHA) {
 			Uint8 r, g, b, a;
-			SDL_GetRGBA(pixelcolor, surface->getPixelFormat(), &r, &g, &b, &a); 
+			surface->getRGBA(pixelcolor, r, g, b, a);
 			return a == 255;
 		}
 		return (pixelcolor !=  surface->getPixelFormat()->colorkey);
@@ -208,7 +208,7 @@ static const bool test_pixel(const sdlx::Surface * surface, const unsigned x, co
 	case CollisionMap::AnyVisible: 
 		if ((surface->getFlags() & SDL_SRCALPHA) == SDL_SRCALPHA) {
 			Uint8 r, g, b, a;
-			SDL_GetRGBA(pixelcolor, surface->getPixelFormat(), &r, &g, &b, &a); 
+			surface->getRGBA(pixelcolor, r, g, b, a);
 			return a >= 250;
 		}
 		return (pixelcolor !=  surface->getPixelFormat()->colorkey);
