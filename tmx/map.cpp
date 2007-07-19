@@ -913,21 +913,21 @@ void IMap::render(sdlx::Surface &window, const sdlx::Rect &src, const sdlx::Rect
 				
 				if (shifting) {
 					const v2<int>& size = l->second->size;
-					if (tx == 0) {
+					if (tx == -1) {
 						for(int x = 0; x < size.x / _tw; ++x) {
 							const sdlx::Surface * s = getSurface(l->second, sx + x, sy);
 							if (s != NULL)
 								window.copyFrom(*s, dx - size.x + x * _tw, dy);
 						}
 					}
-					if (ty == 0) {
+					if (ty == -1) {
 						for(int y = 0; y < size.y / _th; ++y) {
 							const sdlx::Surface * s = getSurface(l->second, sx, sy + y);
 							if (s != NULL)
 								window.copyFrom(*s, dx, dy - size.y + y * _tw);
 						}
 					}
-					if (tx == 0 && ty == 0) {
+					if (tx == -1 && ty == -1) {
 						for(int y = 0; y < size.y / _th; ++y) {
 							for(int x = 0; x < size.x / _tw; ++x) {
 								const sdlx::Surface * s = getSurface(l->second, sx + x, sy + y);
