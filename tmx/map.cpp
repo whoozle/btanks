@@ -500,6 +500,9 @@ void IMap::generateMatrixes() {
 	if (!_solo_aware) {
 	unsigned int ot = 0;
 	for(LayerMap::iterator l = _layers.begin(); l != _layers.end(); ++l) {
+		if (!l->second->velocity.is0())
+			continue;
+		
 		for(int ty = 0; ty < _h; ++ty) {
 			for(int tx = 0; tx < _w; ++tx) {
 				const sdlx::CollisionMap * vmap = getVisibilityMap(l->second, tx, ty);
