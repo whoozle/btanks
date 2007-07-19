@@ -240,7 +240,11 @@
 				Это космопорт Байконур, который надо уничтожить любой ценой.
 				А теперь надо быстро бежать во двор справа и попытаться украсть любую боевую машину. 
 			</string>
+			<string id="destroy-spaceport">DESTROY SPACEPORT</string>
+			<string id="destroy-spaceport" lang="ru">УБЕЙ БАЙКОНУР!</string>
+			<string id="destroy-spaceport" lang="de">KOSMODROM ZERSTÖREN!</string>
 		</area>
+
 		<area id="dune">
 			<string id="defend-base">DEFEND YOUR BASE!</string>
 			<string id="defend-base" lang="ru">ЗАЩИТИТЕ БАЗУ!</string>
@@ -267,10 +271,6 @@
 		<string id="checkpoint-reached">CHECKPOINT REACHED</string>
 		<string id="checkpoint-reached" lang="ru">ТОЧКА СОХРАНЕНИЯ!</string>
 		<string id="checkpoint-reached" lang="de">SPEICHERSTELLE!</string>
-                        
-		<string id="destroy-spaceport">DESTROY SPACEPORT</string>
-		<string id="destroy-spaceport" lang="ru">УБЕЙ БАЙКОНУР!</string>
-		<string id="destroy-spaceport" lang="de">KOSMODROM ZERSTÖREN!</string>
 		        
 		<string id="combo">COMBO !</string>
 		<string id="combo" lang="ru">КОМБО!</string>
