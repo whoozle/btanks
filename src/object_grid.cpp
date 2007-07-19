@@ -31,8 +31,9 @@ void Grid::clear() {
 	_index.clear();
 }
 
-static inline int wrap(const int x, const int y) {
-	return ((x % y) + y) % y;
+static inline int wrap(int x, int y) {
+	x %= y;
+	return x < 0? x + y: x;
 }
 
 void Grid::collide(std::set<int> &objects, const GridMatrix &grid, const v2<int> &grid_size, const v2<int>& area_pos, const v2<int>& area_size) const {
