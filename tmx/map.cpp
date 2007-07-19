@@ -513,7 +513,7 @@ void IMap::generateMatrixes() {
 		}
 	}
 
-	LOG_DEBUG(("created render optimization map. opaque tiles found: %u", ot));
+	LOG_DEBUG(("created render optimization map. opaque tiles found: %u, dump: \n%s", ot, _cover_map.dump().c_str()));
 	}
 
 	_imp_map.clear();
@@ -909,7 +909,7 @@ void IMap::render(sdlx::Surface &window, const sdlx::Rect &src, const sdlx::Rect
 				if (sy < 0)
 					sy += _h;
 
-				if (!strip_alpha && !shifting && z < _cover_map.get(sx, sy)) {//this tile covered by another tile
+				if (!strip_alpha && !shifting && z < _cover_map.get(sy, sx)) {//this tile covered by another tile
 					//++skipped;
 					continue;
 				}
