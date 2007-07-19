@@ -31,6 +31,10 @@ void Grid::clear() {
 	_index.clear();
 }
 
+static inline int wrap(const int x, const int y) {
+	return ((x % y) + y) % y;
+}
+
 void Grid::collide(std::set<int> &objects, const GridMatrix &grid, const v2<int> &grid_size, const v2<int>& area_pos, const v2<int>& area_size) const {
 	const v2<int> start = area_pos / grid_size;
 	const v2<int> end = (area_pos + area_size - 1) / grid_size;
@@ -38,12 +42,10 @@ void Grid::collide(std::set<int> &objects, const GridMatrix &grid, const v2<int>
 	const int y1 = _wrap? start.y: math::max(0, start.y), y2 = _wrap? end.y: math::min((int)grid.size() - 1, end.y);
 	const int x1 = _wrap? start.x: math::max(0, start.x);
 	for(int y = y1; y <= y2; ++y) {
-		assert(y >= 0);
-		const SetVector &row = grid[y % grid.size()];
+		const SetVector &row = grid[wrap(y, grid.size())];
 		const int x2 = _wrap?end.x: math::min((int)row.size() - 1, end.x);
 		for(int x = x1; x <= x2; ++x) {
-			assert(x >= 0);
-			const IDSet &set = row[x % row.size()];
+			const IDSet &set = row[wrap(x, row.size())];
 			//std::set_union(objects.begin(), objects.end(), set.begin(), set.end(), 
 			//	std::insert_iterator<std::set<int> > (objects, objects.begin()));
 			//can cause infinite recursion under win32 :(
@@ -60,12 +62,10 @@ void Grid::removeFromGrid(GridMatrix &grid, const v2<int> &grid_size, const int 
 	const int y1 = _wrap? start.y: math::max(0, start.y), y2 = _wrap? end.y: math::min((int)grid.size() - 1, end.y);
 	const int x1 = _wrap? start.x: math::max(0, start.x);
 	for(int y = y1; y <= y2; ++y) {
-		assert(y >= 0);
-		SetVector &row = grid[y % grid.size()];
+		SetVector &row = grid[wrap(y, grid.size())];
 		const int x2 = _wrap? end.x: math::min((int)row.size() - 1, end.x);
 		for(int x = x1; x <= x2; ++x) {
-			assert(x >= 0);
-			row[x % row.size()].erase(id);
+			row[wrap(x, row.size())].erase(id);
 		}
 	}
 }
@@ -78,12 +78,11 @@ void Grid::update(GridMatrix &grid, const v2<int> &grid_size, const int id, cons
 	const int y1 = _wrap? start.y: math::max(0, start.y), y2 = _wrap? end.y: math::min((int)grid.size() - 1, end.y);
 	const int x1 = _wrap? start.x: math::max(0, start.x);
 	for(int y = y1; y <= y2; ++y) {
-		assert(y >= 0);
-		SetVector &row = grid[y % grid.size()];
+		SetVector &row = grid[wrap(y, grid.size())];
 		const int x2 = _wrap? end.x: math::min((int)grid[y].size() - 1, end.x);
 		for(int x = x1; x <= x2; ++x) {
 			assert(x >= 0);
-			row[x % row.size()].insert(id);
+			row[wrap(x, row.size())].insert(id);
 		}
 	}
 }
