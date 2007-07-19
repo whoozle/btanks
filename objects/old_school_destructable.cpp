@@ -22,7 +22,7 @@
 
 class OldSchoolDestructableObject : public Object {
 public:
-	OldSchoolDestructableObject(const int hops, const bool make_pierceable);
+	OldSchoolDestructableObject(const int hops);
 
 	virtual Object * clone() const { return new OldSchoolDestructableObject(*this); }
 	virtual void tick(const float dt);
@@ -37,7 +37,6 @@ protected:
 	int _explosions;
 
 private: 
-	bool _make_pierceable;
 	Alarm _spawn;
 };
 
@@ -45,17 +44,16 @@ private:
 #include "config.h"
 
 
-OldSchoolDestructableObject::OldSchoolDestructableObject(const int hops, const bool make_pierceable) : 
+OldSchoolDestructableObject::OldSchoolDestructableObject(const int hops) : 
 		Object("destructable-object"), 
 		_hops(hops),
 		_explosions(0), 
-		_make_pierceable(make_pierceable), _spawn(true) {}
+		_spawn(true) {}
 
 void OldSchoolDestructableObject::serialize(mrt::Serializator &s) const {
 	Object::serialize(s);
 	s.add(_hops);
 	s.add(_explosions);
-	s.add(_make_pierceable);
 	s.add(_spawn);
 }
 
@@ -63,7 +61,6 @@ void OldSchoolDestructableObject::deserialize(const mrt::Serializator &s) {
 	Object::deserialize(s);
 	s.get(_hops);
 	s.get(_explosions);
-	s.get(_make_pierceable);
 	s.get(_spawn);
 }
 
@@ -95,8 +92,6 @@ void OldSchoolDestructableObject::tick(const float dt) {
 
 			if (_hops == 0) {
 				//completely dead
-				if (_make_pierceable)
-					pierceable = true;
 				hp = -1; 
 				play("broken", true);
 			} else {
@@ -121,6 +116,6 @@ void OldSchoolDestructableObject::onSpawn() {
 	play("main", true);
 }
 
-REGISTER_OBJECT("old-school-destructable-object-2", OldSchoolDestructableObject, (2, false));
-REGISTER_OBJECT("spaceport-baykonur", OldSchoolDestructableObject, (2, false));
-REGISTER_OBJECT("old-school-destructable-object-3", OldSchoolDestructableObject, (3, false));
+REGISTER_OBJECT("old-school-destructable-object-2", OldSchoolDestructableObject, (2));
+REGISTER_OBJECT("spaceport-baykonur", OldSchoolDestructableObject, (2));
+REGISTER_OBJECT("old-school-destructable-object-3", OldSchoolDestructableObject, (3));
