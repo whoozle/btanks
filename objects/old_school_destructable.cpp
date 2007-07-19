@@ -22,7 +22,7 @@
 
 class OldSchoolDestructableObject : public Object {
 public:
-	OldSchoolDestructableObject(const int hops, const bool make_pierceable, const std::string &message = std::string());
+	OldSchoolDestructableObject(const int hops, const bool make_pierceable);
 
 	virtual Object * clone() const { return new OldSchoolDestructableObject(*this); }
 	virtual void tick(const float dt);
@@ -38,7 +38,6 @@ protected:
 
 private: 
 	bool _make_pierceable;
-	std::string _message;
 	Alarm _spawn;
 };
 
@@ -46,18 +45,17 @@ private:
 #include "config.h"
 
 
-OldSchoolDestructableObject::OldSchoolDestructableObject(const int hops, const bool make_pierceable, const std::string &message) : 
+OldSchoolDestructableObject::OldSchoolDestructableObject(const int hops, const bool make_pierceable) : 
 		Object("destructable-object"), 
 		_hops(hops),
 		_explosions(0), 
-		_make_pierceable(make_pierceable), _message(message), _spawn(true) {}
+		_make_pierceable(make_pierceable), _spawn(true) {}
 
 void OldSchoolDestructableObject::serialize(mrt::Serializator &s) const {
 	Object::serialize(s);
 	s.add(_hops);
 	s.add(_explosions);
 	s.add(_make_pierceable);
-	s.add(_message);
 	s.add(_spawn);
 }
 
@@ -66,7 +64,6 @@ void OldSchoolDestructableObject::deserialize(const mrt::Serializator &s) {
 	s.get(_hops);
 	s.get(_explosions);
 	s.get(_make_pierceable);
-	s.get(_message);
 	s.get(_spawn);
 }
 
@@ -81,28 +78,12 @@ void OldSchoolDestructableObject::addDamage(Object *from, const int dhp, const b
 	}
 }
 
-#include "game_monitor.h"
-
 void OldSchoolDestructableObject::tick(const float dt) {
 	Object::tick(dt);
 	
 	if (!_spawn.tick(dt))
 		return;
 	
-	if (!_message.empty()) {
-		int dr;
-		Config->get("objects." + registered_name + ".display-range", dr, 400);
-		v2<float> pos, vel;
-		static std::set<std::string> targets;
-		if (targets.empty()) 
-			targets.insert("fighting-vehicle");
-		
-		if (getNearest(targets, dr, pos, vel, false)) {
-			GameMonitor->displayMessage("messages", _message, 5);
-			_message.clear();
-		}
-	}
-		
 	if (_explosions != 0) {
 		int e;
 		Config->get("objects." + registered_name + ".explosions", e, 16);		
@@ -141,5 +122,5 @@ void OldSchoolDestructableObject::onSpawn() {
 }
 
 REGISTER_OBJECT("old-school-destructable-object-2", OldSchoolDestructableObject, (2, false));
-REGISTER_OBJECT("spaceport-baykonur", OldSchoolDestructableObject, (2, false, "destroy-spaceport"));
+REGISTER_OBJECT("spaceport-baykonur", OldSchoolDestructableObject, (2, false));
 REGISTER_OBJECT("old-school-destructable-object-3", OldSchoolDestructableObject, (3, false));
