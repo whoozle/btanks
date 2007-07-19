@@ -65,17 +65,19 @@ void HostList::append(const std::string &_item) {
 }
 
 HostList::~HostList() {
-	std::vector<std::string> hosts;
-	
 	//change it .
 	
-	for(List::iterator i = _list.begin(); i != _list.end(); ++i) {
-		Label *l = dynamic_cast<Label *>(*i);
+	std::string str;
+	for(List::const_iterator i = _list.begin(); i != _list.end(); ++i) {
+		const Label *l = dynamic_cast<const Label *>(*i);
 		if (l == NULL || l->get().empty()) 
 			continue;
-		hosts.push_back(l->get());
+		LOG_DEBUG(("host: %s", l->get().c_str()));
+		str += l->get();
+		str += " ";
 	}
-	std::string str;
-	mrt::join(str, hosts, " ");
+	if (!str.empty())
+		str.resize(str.size() - 1);
+	
 	Config->set(_config_key, str);
 }

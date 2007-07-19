@@ -74,8 +74,8 @@ TextControl::TextControl(const std::string &font) : _blink(true), _cursor_visibl
 }
 
 void TextControl::set(const std::string &value) {
-	_value = _text = value;
-	_cursor_position = value.size();
+	_text = value;
+	_cursor_position = _text.size();
 }
 const std::string& TextControl::get() const {
 	return _text;
@@ -90,13 +90,7 @@ void TextControl::tick(const float dt) {
 
 bool TextControl::onKey(const SDL_keysym sym) {
 	switch(sym.sym) {
-	case SDLK_ESCAPE: 
-		_text = _value;
-		invalidate();
-		break;
-
 	case SDLK_RETURN: 
-		_value = _text;
 		invalidate();
 		break;
 
@@ -116,7 +110,7 @@ bool TextControl::onKey(const SDL_keysym sym) {
 			break;
 		}
 		if (!_text.empty() && _cursor_position > 0) {
-			_text = _text.erase(--_cursor_position, 1);
+			_text.erase(--_cursor_position, 1);
 		}
 		break;
 

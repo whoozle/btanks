@@ -46,7 +46,7 @@ private:
 	void changing() const;
 
 	const sdlx::Font *_font; 
-	std::string _text, _value;
+	std::string _text;
 	Alarm _blink;
 	bool _cursor_visible;
 	size_t _cursor_position;
