@@ -124,9 +124,10 @@ bool TextControl::onKey(const SDL_keysym sym) {
 		//LOG_DEBUG(("%d", c));
 		if (c >= SDLK_SPACE && c < 128) {
 			if (validate(_cursor_position, c)) {
-				if (_cursor_position >= _text.size())
-					_text.resize(_cursor_position + 1);
-				_text.insert(_cursor_position, 1, (char)c);
+				if (_cursor_position >= _text.size()) {
+					_text += c;
+				} else 
+					_text.insert(_cursor_position, 1, (char)c);
 				++_cursor_position;
 				return true;
 			} 
