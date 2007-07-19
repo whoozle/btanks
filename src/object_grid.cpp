@@ -38,9 +38,11 @@ void Grid::collide(std::set<int> &objects, const GridMatrix &grid, const v2<int>
 	const int y1 = _wrap? start.y: math::max(0, start.y), y2 = _wrap? end.y: math::min((int)grid.size() - 1, end.y);
 	const int x1 = _wrap? start.x: math::max(0, start.x);
 	for(int y = y1; y <= y2; ++y) {
+		assert(y >= 0);
 		const SetVector &row = grid[y % grid.size()];
 		const int x2 = _wrap?end.x: math::min((int)row.size() - 1, end.x);
 		for(int x = x1; x <= x2; ++x) {
+			assert(x >= 0);
 			const IDSet &set = row[x % row.size()];
 			//std::set_union(objects.begin(), objects.end(), set.begin(), set.end(), 
 			//	std::insert_iterator<std::set<int> > (objects, objects.begin()));
@@ -51,6 +53,42 @@ void Grid::collide(std::set<int> &objects, const GridMatrix &grid, const v2<int>
 		}
 	}
 }
+
+void Grid::removeFromGrid(GridMatrix &grid, const v2<int> &grid_size, const int id, const Object &o) {
+	const v2<int> start = o.pos / grid_size;
+	const v2<int> end = (o.pos + o.size - 1) / grid_size;
+	const int y1 = _wrap? start.y: math::max(0, start.y), y2 = _wrap? end.y: math::min((int)grid.size() - 1, end.y);
+	const int x1 = _wrap? start.x: math::max(0, start.x);
+	for(int y = y1; y <= y2; ++y) {
+		assert(y >= 0);
+		SetVector &row = grid[y % grid.size()];
+		const int x2 = _wrap? end.x: math::min((int)row.size() - 1, end.x);
+		for(int x = x1; x <= x2; ++x) {
+			assert(x >= 0);
+			row[x % row.size()].erase(id);
+		}
+	}
+}
+
+void Grid::update(GridMatrix &grid, const v2<int> &grid_size, const int id, const v2<int> &pos, const v2<int> &size) {
+	//insert
+	const v2<int> start = pos / grid_size;
+	const v2<int> end = (pos + size - 1) / grid_size;
+	//LOG_DEBUG(("updating %d (%d, %d) -> (%d, %d) (%d %d)", id, start.x, start.y, end.x, end.y, pos.x, pos.y));
+	const int y1 = _wrap? start.y: math::max(0, start.y), y2 = _wrap? end.y: math::min((int)grid.size() - 1, end.y);
+	const int x1 = _wrap? start.x: math::max(0, start.x);
+	for(int y = y1; y <= y2; ++y) {
+		assert(y >= 0);
+		SetVector &row = grid[y % grid.size()];
+		const int x2 = _wrap? end.x: math::min((int)grid[y].size() - 1, end.x);
+		for(int x = x1; x <= x2; ++x) {
+			assert(x >= 0);
+			row[x % row.size()].insert(id);
+		}
+	}
+}
+
+
 
 void Grid::collide(std::set<int> &objects, const v2<int>& area_pos, const v2<int>& area_size) const {
 	v2<int> size = area_size / _grid_size;
@@ -80,37 +118,6 @@ void Grid::setSize(const v2<int> &size, const int step, const bool wrap) {
 	resize(_grid4, _grid4_size, size);
 	_wrap = wrap;
 }
-
-void Grid::removeFromGrid(GridMatrix &grid, const v2<int> &grid_size, const int id, const Object &o) {
-	const v2<int> start = o.pos / grid_size;
-	const v2<int> end = (o.pos + o.size - 1) / grid_size;
-	const int y1 = _wrap? start.y: math::max(0, start.y), y2 = _wrap? end.y: math::min((int)grid.size() - 1, end.y);
-	const int x1 = _wrap? start.x: math::max(0, start.x);
-	for(int y = y1; y <= y2; ++y) {
-		SetVector &row = grid[y % grid.size()];
-		const int x2 = _wrap? end.x: math::min((int)row.size() - 1, end.x);
-		for(int x = x1; x <= x2; ++x) {
-			row[x % row.size()].erase(id);
-		}
-	}
-}
-
-void Grid::update(GridMatrix &grid, const v2<int> &grid_size, const int id, const v2<int> &pos, const v2<int> &size) {
-	//insert
-	const v2<int> start = pos / grid_size;
-	const v2<int> end = (pos + size - 1) / grid_size;
-	//LOG_DEBUG(("updating %d (%d, %d) -> (%d, %d) (%d %d)", id, start.x, start.y, end.x, end.y, pos.x, pos.y));
-	const int y1 = _wrap? start.y: math::max(0, start.y), y2 = _wrap? end.y: math::min((int)grid.size() - 1, end.y);
-	const int x1 = _wrap? start.x: math::max(0, start.x);
-	for(int y = y1; y <= y2; ++y) {
-		SetVector &row = grid[y % grid.size()];
-		const int x2 = _wrap? end.x: math::min((int)grid[y].size() - 1, end.x);
-		for(int x = x1; x <= x2; ++x) {
-			row[x % row.size()].insert(id);
-		}
-	}
-}
-
 
 void Grid::update(const int id, const v2<int> &pos, const v2<int> &size) {
 	Index::iterator i = _index.find(id);
