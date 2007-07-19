@@ -193,8 +193,8 @@ const bool CollisionMap::collides(const sdlx::Rect &src, const CollisionMap *oth
 }
 
 
-static const bool test_pixel(const sdlx::Surface * surface, const unsigned x, const unsigned y, const CollisionMap::Type type) {
-	register Uint32 pixelcolor = surface->getPixel(x, y);
+static inline const bool test_pixel(const sdlx::Surface * surface, const unsigned x, const unsigned y, const CollisionMap::Type type) {
+	Uint32 pixelcolor = surface->getPixel(x, y);
 	
 	switch(type) {
 	case CollisionMap::OnlyOpaque:
