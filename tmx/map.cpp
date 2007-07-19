@@ -864,14 +864,13 @@ void IMap::render(sdlx::Surface &window, const sdlx::Rect &src, const sdlx::Rect
 	if (_w == 0 || z1 >= z2)  //not loaded
 		return;
 
-	int txp = src.x / _tw, typ = src.y / _th;
-	int xp = - (src.x % _tw), yp = -(src.y % _th);
-	
-	int txn = (src.w - 1) / _tw + 2;
-	int tyn = (src.h - 1) / _th + 2;
+	int txn = (dst.w - 1) / _tw + 2;
+	int tyn = (dst.h - 1) / _th + 2;
 	
 	//unsigned int skipped = 0;
 	const bool _solo_layer = hasSoloLayers();
+	const v2<int> map_size(_tw, _th);
+	GET_CONFIG_VALUE("engine.strip-alpha-from-map-tiles", bool, strip_alpha, false);
 	
 	for(LayerMap::const_iterator l = _layers.begin(); l != _layers.end(); ++l) {
 		const int z = l->first;
@@ -887,56 +886,40 @@ void IMap::render(sdlx::Surface &window, const sdlx::Rect &src, const sdlx::Rect
 		if (!l->second->visible && (!_solo_layer || !l->second->solo)) 
 			continue;
 
-		GET_CONFIG_VALUE("engine.strip-alpha-from-map-tiles", bool, strip_alpha, false);
-
 		//if (strip_alpha && l->second->impassability == -1) 
 		//	continue;
 		
 		const bool shifting = !l->second->velocity.is0();
 		//LOG_DEBUG(("z: %d << %d, layer: %d", z1, z2, l->first));
+
+		v2<int> pos = v2<int>(src.x, src.y) - l->second->position.convert<int>();
+		pos.x %= _tw * _w; pos.y %= _th * _h;
+		if (pos.x < 0) pos.x += _tw * _w;
+		if (pos.y < 0) pos.y += _th * _h;
+			
+		v2<int> tile_pos = pos / map_size;
+		v2<int> shift_pos = -(pos % map_size);
 		
 		for(int ty = -1; ty < tyn; ++ty) {
 			for(int tx = -1; tx < txn; ++tx) {
-				if (!strip_alpha && !shifting && z < _cover_map.get(typ + ty, txp + tx)) {//this tile covered by another tile
+				int sx = (tile_pos.x + tx) % _w, sy = (tile_pos.y + ty) % _h;
+
+				if (sx < 0)
+					sx += _w;
+				if (sy < 0)
+					sy += _h;
+
+				if (!strip_alpha && !shifting && z < _cover_map.get(sx, sy)) {//this tile covered by another tile
 					//++skipped;
 					continue;
 				}
 				
-				const int sx = txp + tx, sy = typ + ty;
 				const sdlx::Surface * s = getSurface(l->second, sx, sy);
 				if (s == NULL)
 					continue;
 				
-				v2<int> dpos = l->second->position.convert<int>();
-				const int dx = dst.x + xp + tx * _tw + dpos.x, dy = dst.y + yp + ty * _th + dpos.y;
+				const int dx = dst.x + tx * _tw + shift_pos.x, dy = dst.y + ty * _th + shift_pos.y;
 				window.copyFrom(*s, dx, dy);
-				
-				if (shifting) {
-					const v2<int>& size = l->second->size;
-					if (tx == -1) {
-						for(int x = 0; x < size.x / _tw; ++x) {
-							const sdlx::Surface * s = getSurface(l->second, sx + x, sy);
-							if (s != NULL)
-								window.copyFrom(*s, dx - size.x + x * _tw, dy);
-						}
-					}
-					if (ty == -1) {
-						for(int y = 0; y < size.y / _th; ++y) {
-							const sdlx::Surface * s = getSurface(l->second, sx, sy + y);
-							if (s != NULL)
-								window.copyFrom(*s, dx, dy - size.y + y * _tw);
-						}
-					}
-					if (tx == -1 && ty == -1) {
-						for(int y = 0; y < size.y / _th; ++y) {
-							for(int x = 0; x < size.x / _tw; ++x) {
-								const sdlx::Surface * s = getSurface(l->second, sx + x, sy + y);
-								if (s != NULL)
-									window.copyFrom(*s, dx - size.x + x * _tw, dy - size.y + y * _tw);
-							}					
-						}
-					}
-				} //if (shifting)
 			}
 		}
 	}
