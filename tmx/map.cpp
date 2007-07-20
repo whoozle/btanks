@@ -872,7 +872,7 @@ void IMap::render(sdlx::Surface &window, const sdlx::Rect &src, const sdlx::Rect
 	
 	//unsigned int skipped = 0;
 	const bool _solo_layer = hasSoloLayers();
-	const v2<int> map_size(_tw, _th);
+	const v2<int> tile_size(_tw, _th);
 	GET_CONFIG_VALUE("engine.strip-alpha-from-map-tiles", bool, strip_alpha, false);
 	
 	for(LayerMap::const_iterator l = _layers.lower_bound(z1); l != _layers.end(); ++l) {
@@ -900,8 +900,8 @@ void IMap::render(sdlx::Surface &window, const sdlx::Rect &src, const sdlx::Rect
 		if (pos.x < 0) pos.x += _tw * _w;
 		if (pos.y < 0) pos.y += _th * _h;
 			
-		v2<int> tile_pos = pos / map_size;
-		v2<int> shift_pos = -(pos % map_size);
+		v2<int> tile_pos = pos / tile_size;
+		v2<int> shift_pos = -(pos % tile_size);
 		
 		for(int ty = -1; ty < tyn; ++ty) {
 			for(int tx = -1; tx < txn; ++tx) {
