@@ -113,7 +113,7 @@ Tooltip::Tooltip(const std::string &_text, const bool use_background, const int 
 	}
 	_surface.convertAlpha();
 	
-	int yp = my;
+	int yp = my - 3;
 	i = 0;
 	while(!lines.empty()) {
 		int xp = mx;
