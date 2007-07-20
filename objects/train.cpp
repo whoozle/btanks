@@ -87,20 +87,26 @@ void Train::emit(const std::string &event, Object * emitter) {
 
 void Train::tick(const float dt) {
 	Object::tick(dt);
-	v2<int> pos;
-	getPosition(pos);
-	if (pos.y >= 0 && !_spawned_wagon) {
-		v2<float> dpos(0, -size.y);
-		add("wagon", spawnGrouped("choo-choo-wagon", "choo-choo-wagon", dpos, Fixed));
-		_spawned_wagon = true;
+	if (Map->torus()) {
+		if (!_spawned_wagon) {
+			add("wagon", spawnGrouped("choo-choo-wagon", "choo-choo-wagon", v2<float>(0, -size.y), Fixed));
+			_spawned_wagon = true;		
+		}
+	} else { 
+		v2<int> pos;
+		getPosition(pos);
+		if (pos.y >= 0 && !_spawned_wagon) {
+			add("wagon", spawnGrouped("choo-choo-wagon", "choo-choo-wagon", v2<float>(0, -size.y), Fixed));
+			_spawned_wagon = true;
+		}
+		if (pos.y  >= dst_y) { 
+			LOG_DEBUG(("escaped!"));
+			if (_variants.has("win-on-exit")) 
+				GameMonitor->gameOver("messages", "train-saved", 5, true);
+			Object::emit("death", NULL);
+		}
 	}
 	//LOG_DEBUG(("pos: %d dst: %d", pos.y, dst_y));
-	if (pos.y  >= dst_y) { 
-		LOG_DEBUG(("escaped!"));
-		if (_variants.has("win-on-exit")) 
-			GameMonitor->gameOver("messages", "train-saved", 5, true);
-		Object::emit("death", NULL);
-	}
 	if (_smoke.tick(dt)) {
 		spawn("train-smoke", "train-smoke");
 	}
