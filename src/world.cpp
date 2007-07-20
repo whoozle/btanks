@@ -1702,12 +1702,12 @@ const bool IWorld::detachVehicle(Object *object) {
 
 	int new_id = man->getID();
 
-	//object->disown();
+	object->disown();
 
 	int old_id = object->getID();
 	replaceID(old_id, new_id);
-	man->prependOwner(OWNER_COOPERATIVE);
-	object->prependOwner(OWNER_COOPERATIVE);
+	//man->prependOwner(OWNER_COOPERATIVE);
+	//object->prependOwner(OWNER_COOPERATIVE);
 	
 	slot->id = new_id;
 	slot->need_sync = true;
