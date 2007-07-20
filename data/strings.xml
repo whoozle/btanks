@@ -254,7 +254,9 @@
 			<string id="destroy-spaceport" lang="de">KOSMODROM ZERSTÖREN!</string>
 		</area>
 		<area id="platform">
+			<string id="objectives">Destroy three rocket launchers!</string>
 			<string id="objectives" lang="ru">Уничтожьте все три космопорта!</string>
+			<string id="passage-needed">There's no escaping here! Let's try destroying this building.</string>
 			<string id="passage-needed" lang="ru">Дальше пути нет. Похоже придется прокладывать дорогу прямо сквозь этот дом.</string>
 		</area>
 
