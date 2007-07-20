@@ -200,8 +200,8 @@
 		<property name="zone:checkpoint:1" value="@9,33:@5,5"/>
 		<property name="zone:disable-ai:tank:1" value="@0,76:@20,3"/>
 		<property name="zone:enable-ai:tank:1" value="@18,4:@2,2"/>
-		<property name="zone:hint:passage-needed:1" value="@6,29:@5,2"/>
 		<property name="zone:hint:objectives:1" value="@9,13:@10,2"/>
+		<property name="zone:hint:passage-needed:1" value="@6,29:@5,2"/>
 	</properties>
 	<tileset name="terrains" firstgid="1" tilewidth="64" tileheight="64">
 		<image source="../tilesets/terrains.png"/>
@@ -362,7 +362,7 @@
 			<property name="z" value="200"/>
 		</properties>
 		<data encoding="base64" compression="gzip">
-			H4sIAAAAAAAAC1NlZGAQB2JqAUMqmgVykwGVzYP5U53K5lLb39SKj1FzRk4ISAPTtAwQw+jB6nMFoBtlqZj/3jINVp9S113fR4g/qRtqo6aNhsBoCKCHwC9gWfJ+tDwZsgmjC1h/dgPxDCCeSYW6dArQjKlAvAiIF1PBvCEbsKMOHw2B0RAYDYHREKBpCAiTUMeA+rT4AKi/S0p/Ep9aUtxFTACR4q6BMI8YO0fVjIYAsSEAGtuhJhjs+ZGafh01i/4hAADoNeuYABkAAA==
+			H4sIAAAAAAAAC1NlZGAQB2JqAUMqmgVykwGVzYP5U53K5lLb39SKj1FzRk4ISAPTtAwQw+jB6nMFoBtlqZj/3jINVp9S113fR4g/qRtqo6aNhsBoCKCHwC9gWfJ+tDwZsgmjC1h/dgPxDCCeSYW6dArQjKlAvAiIF1PBvCEbsKMOHw2B0RAYDYHREKBpCAiTUMeA+rT4AKi/S0p/Ep9aUtxFTACR4q6BMI8YO6ml5h4wnkB4FAzfEACN7VATDPb8SE2/jppF/xAAAFXxVOIAGQAA
 		</data>
 	</layer>
 	<layer name="fences0 damage#1" width="20" height="80">
@@ -408,7 +408,7 @@
 			H4sIAAAAAAAAC+2XzytEURTHH5ayEls/wiAyfkT5ufHPWbBlQSwkC0mWk6WZBTVDUYaijELJysLS95t76na6b3o/rjLTu/XtPc85n/vueeeeeyYIspFFIItAFoEsAv85Ah8tQbDWGgSfuKYZbWDsQnvQDvSdktcBxjq0AbV74HWCsQltQV1QN+Rr9IDV65Hn670akbONOF4gd2ydq9h+xYj1AWxvwLNVVv65GLl6At9H2O/jSvH+zuK94j4fg1eA/TXsj3A9NvfPMdbXiN84e+csAhKBktnrPiJSBOvK7HUfvCpY9xD3uI9RA+cF4n5vttGPmjXkqFt8PhCznvXBfhaaU358PgZNQIMh84XF1cXLgTEMjRrmoeM9aaMHn7l4k3g+Bc0Y5qnDlzYuHteVV/9bwN+L0LJhnjl8aePicV0jIfEbN8xSxO8i65pW9hK/+YgceU9Z15Lyk3lWY/LCvrnMs+KJF2XPsgaxpumeJYqvy+bB1DTpWYpYC3ujy4Q1RGqa9CwV8Ngb3SbkSU2TnqUKHuvlU0KejkENvDew3j3xkn6HZvWTfKq3vjJiX1HxZ55Lr27nuuSTi2fPVVA85rn06nZ/znxin+0aMpcrf5nn7NXpa/fnzCf22q4huevKX+Y5e3X26FH7c87Fsz5p/v51LUmb07qWpOXpWpKWl/n/RkDyyP5NnfT8IE/OJPs3ddLzgzy7z+bec+0/vYZ639bus7n/KH1+6DWkzRW9hh9oZIDtABkAAA==
 		</data>
 	</layer>
-	<layer name="buildings damage#1" width="20" height="80" visible="0">
+	<layer name="buildings damage#1" width="20" height="80">
 		<properties>
 			<property name="damage-for" value="buildings"/>
 			<property name="hp" value="100"/>
@@ -418,7 +418,7 @@
 			H4sIAAAAAAAAC+2VvQrCUAxGi48vHcXJTSn4i6Ct4qSiq6511RcxgXYpKtz2WLzXZO49JOdLaBRZmQEzYAbMgA8Guh22y96P82K4vz7MY9Pwj3YSn2fQ6UVYV5CXC+sG8u7CeoA8/xK3jv/VgN46WXrrZOmtk6W3bhWmgUyy3YL57oV1hJlqXpkupXNtHN984utchxe8b/lzmTX0b4dgjupqXuGNYP4C5oWer83X3MAU3rm0Jm9Q8907AwnMW8K8HcxrvglGaMPAWHKfFNkT/4+VsNYFb9biTpUzPAF9W6zvABkAAA==
 		</data>
 	</layer>
-	<layer name="buildings damage#2" width="20" height="80" visible="0">
+	<layer name="buildings damage#2" width="20" height="80">
 		<properties>
 			<property name="damage-for" value="buildings"/>
 			<property name="hp" value="100"/>
@@ -508,7 +508,7 @@
 	</layer>
 	<layer name="captions" width="20" height="80">
 		<data encoding="base64" compression="gzip">
-			H4sIAAAAAAAAC+2WTQoCMQyFq95I0JU6Lvw7iMebK3gBdx7HnXlYoYQMphhHxnmF7pL38r620GaS0kH2fZpC1ka0PGshdStH7clRA78m5/B4o2Zv6GKepdNP+8yNPnBd55zQtvJ2cYCeNcsx54Q2drmgrzmUntvKbNDX/EtPK7OXv1W3q5zvEy/2kgAJxBI48/3GAh2QGs/++4fl+S/VTKH/DzW9rB0XAb7vcZ13VNpf35s+/bXXbRZF8alzEb1W9jVYN3ZKqr0I9Hn3SJ0Eognw/kYTpR4JvCfwL+9uCDkeUev5BAAZAAA=
+			H4sIAAAAAAAAC+2WQQpCMQxEq95I0JX6Xajfg3g8r+AF3Hkcd2awQgkRUoxf6p9Cd+lM5rWl7SYpHWTepylkbETLMxZSt3LUHh018OtyDo83avaGLvpZOv20z9xYB67rnBPaVt53HKBn9dLnnNDGLAf0NYfSc1uZDfqaf+lpZfbyt+p2lf194sW1JEACsQROvL+xQBtS495/f7M8/6WaLvT/oWYta8dFgPd7XPsdlfbX52ZIf+11m0VRfOpcRO8s8xqsG9sl1V4Ehjx7pE4CJEACJNA+gX95N1rI8QBr1XctABkAAA==
 		</data>
 	</layer>
 </map>
