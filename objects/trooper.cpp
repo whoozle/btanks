@@ -24,9 +24,9 @@
 #include "trooper.h"
 
 void Trooper::getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const {
-	if (impassability > 0.2) {
+	if (impassability > 0.2f) {
 		base_value = 0.2f;
-		base = 0.2f;
+		base = 0;
 		penalty = 0;
 	}
 }
