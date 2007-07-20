@@ -56,7 +56,7 @@ void StartServerMenu::start() {
 	PlayerManager->startServer();
 	MenuConfig->save();
 
-	_parent->back();
+	//_parent->back();
 	return;
 }
 
