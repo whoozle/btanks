@@ -69,20 +69,20 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 	int sw, sh;
 	int yp = my * 2 + _by;
 	
-	sp = new ControlPicker(width, "big", I18n->get("menu", "single-player"), "player.control-method", std::string());
+	sp = new ControlPicker(width, "medium", I18n->get("menu", "single-player"), "player.control-method", std::string());
 	sp->getSize(sw, sh);
 	add(_bx + mx, yp, sp);
-	yp += sh + 10;
+	yp += sh;
 
-	sp1 = new ControlPicker(width, "big", I18n->get("menu", "split-player-1"), "player.control-method-1", "split");
+	sp1 = new ControlPicker(width, "medium", I18n->get("menu", "split-player-1"), "player.control-method-1", "split");
 	sp1->getSize(sw, sh);
 	add(_bx + mx, yp, sp1);
-	yp += sh + 10;
+	yp += sh;
 
-	sp2 = new ControlPicker(width, "big", I18n->get("menu", "split-player-2"), "player.control-method-2", "split");
+	sp2 = new ControlPicker(width, "medium", I18n->get("menu", "split-player-2"), "player.control-method-2", "split");
 	sp2->getSize(sw, sh);
 	add(_bx + mx, yp, sp2);
-	yp += sh + 10;
+	yp += sh;
 	
 	
 	_b_redefine = new Button("medium_dark", I18n->get("menu", "redefine-keys"));
