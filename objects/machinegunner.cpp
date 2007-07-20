@@ -41,6 +41,9 @@ private:
 };
 
 void Machinegunner::onSpawn() {
+	if (_variants.has("player"))
+		speed *= 2;
+	
 	play("main", true);
 
 	GET_CONFIG_VALUE("objects.machinegunner.fire-rate", float, fr, 0.2);
