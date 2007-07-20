@@ -238,7 +238,7 @@ void PlayerSlot::spawnPlayer(const std::string &classname, const std::string &an
 		}
 	}
 
-	Object *obj = ResourceManager->createObject(classname, animation);
+	Object *obj = ResourceManager->createObject(classname + "(player)", animation);
 	assert(obj != NULL);
 	
 	if (control_method != NULL || remote)
