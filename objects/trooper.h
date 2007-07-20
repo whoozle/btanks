@@ -47,6 +47,9 @@ public:
 		s.get(_pose);
 	}	
 
+	void getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const;
+
+
 protected: 
 	std::string _object;
 	Alarm _fire;
