@@ -875,7 +875,7 @@ void IMap::render(sdlx::Surface &window, const sdlx::Rect &src, const sdlx::Rect
 	const v2<int> map_size(_tw, _th);
 	GET_CONFIG_VALUE("engine.strip-alpha-from-map-tiles", bool, strip_alpha, false);
 	
-	for(LayerMap::const_iterator l = _layers.begin(); l != _layers.end(); ++l) {
+	for(LayerMap::const_iterator l = _layers.lower_bound(z1); l != _layers.end(); ++l) {
 		const int z = l->first;
 		if (_solo_layer && !l->second->solo)
 			continue;
