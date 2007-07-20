@@ -886,6 +886,7 @@ const bool Object::checkDistance(const v2<float> &_map1, const v2<float>& map2, 
 		return true;
 	
 	dp.normalize((pfs.x + pfs.y) / 2);
+	map1 += dp;
 			
 //	LOG_DEBUG(("%g:%g -> %g:%g (%+g:%+g)", map1.x, map1.y, map2.x, map2.y, dp.x, dp.y));
 	v2<float> dv = (map2 - map1) * dp;
