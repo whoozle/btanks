@@ -885,12 +885,15 @@ const bool Object::checkDistance(const v2<float> &_map1, const v2<float>& map2, 
 	if (dp.is0())
 		return true;
 	
-	dp.normalize((pfs.x + pfs.y) / 2);
-	map1 += dp;
+	float dp_len = (pfs.x + pfs.y) / 2;
+	float len = dp.normalize(dp_len);
+
+	Map->add(map1, dp);
+	len -= dp_len;
 			
 //	LOG_DEBUG(("%g:%g -> %g:%g (%+g:%+g)", map1.x, map1.y, map2.x, map2.y, dp.x, dp.y));
 	v2<float> dv = Map->distance(map1, map2) * dp;
-	while(dv.x >= 0 && dv.y >= 0) {
+	while(len > 0) {
 		Map->validate(map1);
 		v2<int> map_pos = map1.convert<int>() / pfs;
 		/*
@@ -903,8 +906,9 @@ const bool Object::checkDistance(const v2<float> &_map1, const v2<float>& map2, 
 				return false;
 		}
 		
-		map1 += dp;
-		dv = (map2 - map1) * dp;
+		Map->add(map1, dp);
+		dv = Map->distance(map1, map2) * dp;
+		len -= dp_len;
 	}
 
 	return true;
