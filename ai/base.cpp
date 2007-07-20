@@ -208,7 +208,7 @@ const float Base::getWeaponRange(const Object *object) const {
 }
 
 void Base::calculate(Object *object, const float dt) {
-	if (GameMonitor->disabled(object)) {
+	if (object->aiDisabled()) {
 		return;
 	}
 	
