@@ -57,6 +57,10 @@ void Trooper::tick(const float dt) {
 }
 
 void Trooper::onSpawn() {
+	if (_variants.has("player")) {
+		speed *= 1.5f;
+	}
+	
 	if (_variants.has("disembark")) {
 		playSound("disembark", false);
 	}
