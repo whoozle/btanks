@@ -1694,7 +1694,7 @@ const bool IWorld::detachVehicle(Object *object) {
 	object->_velocity.clear();
 	object->updatePlayerState(PlayerState());
 
-	Object * man = spawn(object, "machinegunner", "machinegunner", object->_direction * (object->size.x + object->size.y) / 4, v2<float>());
+	Object * man = spawn(object, "machinegunner(player)", "machinegunner", object->_direction * (object->size.x + object->size.y) / 4, v2<float>());
 	man->disable_ai = true;
 	object->classname = "vehicle";
 
