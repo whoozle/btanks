@@ -25,6 +25,8 @@
 #include "map_desc.h"
 #include "menu_config.h"
 #include "config.h"
+#include "tooltip.h"
+#include "i18n.h"
 
 class SlotLine : public Container {
 public : 
@@ -287,11 +289,21 @@ void PlayerPicker::set(const MapDesc &map) {
 
 	_slots.clear();
 	
+	int yp = my;
 	for(int i = 0; i < map.slots; ++i) {
 		SlotLine *line = new SlotLine(map, variant, i, config[i]);
 		_slots.push_back(line);
-		add(mx, my + i * (line->h + 6), line);
+		add(mx, yp, line);
+		yp += line->h + 6;
 	}
+	
+	if (map.game_type == "deathmatch" && I18n->has("tips", "deathmatch-bots")) {
+		int w, h;
+		Tooltip *hint = new Tooltip(I18n->get("tips", "deathmatch-bots"), w - 32);
+		hint->getSize(w, h);
+		add(mx, _background.h - my - h, hint);
+	}
+
 }
 
 void PlayerPicker::render(sdlx::Surface &surface, const int x, const int y) {
