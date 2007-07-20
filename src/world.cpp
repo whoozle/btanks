@@ -1826,15 +1826,14 @@ void IWorld::enumerateObjects(std::set<const Object *> &id_set, const Object *sr
 			continue;
 		Object *o = o_i->second;
 		
-		if (o->_id == src->_id || !ZBox::sameBox(src->getZ(), o->getZ()))
+		v2<float> dpos = Map->distance(src->getCenterPosition(), o->getCenterPosition());
+		if (o->_id == src->_id || !ZBox::sameBox(src->getZ(), o->getZ()) || dpos.quick_length() > r2)
 			continue;
 
 		if (classfilter != NULL && classfilter->find(o->classname) == classfilter->end())
 			continue;
 		
-		v2<float> dpos = Map->distance(src->getCenterPosition(), o->getCenterPosition());
-		if (dpos.quick_length() <= r2) 
-			id_set.insert(o);
+		id_set.insert(o);
 	}
 }
 
