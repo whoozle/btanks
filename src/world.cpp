@@ -945,8 +945,9 @@ TRY {
 					dp *= (a + 1) * step_size;
 					pos = (o.getPosition() + dp).convert<int>();
 					v2<int> c_pos = (o.getCenterPosition() + dp).convert<int>();
-					if (!map_rect.in(c_pos.x, c_pos.y))
+					if (!Map->torus() && !map_rect.in(c_pos.x, c_pos.y))
 						continue;
+					Map->validate(c_pos);
 
 					float map_im = map.getImpassability(&o, pos, NULL, NULL) / 100.0f;
 					float obj_im = getImpassability(&o, pos, NULL, true);
