@@ -68,7 +68,7 @@ const bool SpecialZone::final() const {
 }
 
 void SpecialZone::onTimer(const int slot_id, const bool win) {
-	float duration = atof(subname.c_str());
+	float duration = (float)atof(subname.c_str());
 	LOG_DEBUG(("activating timer %s for %g seconds", name.c_str(), duration));
 	PlayerSlot &slot = PlayerManager->getSlot(slot_id);
 

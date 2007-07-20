@@ -75,7 +75,7 @@ bool Slider::onMouseMotion(const int state, const int x, const int y, const int 
 		return true;
 	}
 	int w = _tiles->getWidth() / 2;
-	_value += 1.0 * xrel / w / _n;
+	_value += 1.0f * xrel / w / _n;
 	validate();
 	invalidate();
 	//LOG_DEBUG(("tracking mouse: %d %d %d %d", x, y, xrel, yrel));

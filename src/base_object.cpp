@@ -382,7 +382,7 @@ void BaseObject::uninterpolate() {
 	if (_interpolation_progress >= 1.0)
 		return;
 	
-	_position += _interpolation_vector * (1.0 - _interpolation_progress);
+	_position += _interpolation_vector * (1.0f - _interpolation_progress);
 	_interpolation_position_backup.clear();
 }
 
