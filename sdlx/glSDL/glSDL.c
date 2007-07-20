@@ -52,8 +52,14 @@
 #define APIENTRY
 #endif
 
+#ifdef WIN32
+#	define GLSDL_INLINE __inline__
+#else 
+#	define GLSDL_INLINE inline
+#endif
 
-static inline void clip_rect(SDL_Rect *r, SDL_Rect *to)
+
+static GLSDL_INLINE void clip_rect(SDL_Rect *r, SDL_Rect *to)
 {
 	int dx1 = r->x;
 	int dy1 = r->y;
