@@ -345,5 +345,8 @@
 		<string id="checkpoints">Cooperative maps usually have special places which automatically saves your progress. Look tactic map for the details.</string>
 		<string id="checkpoints" lang="ru">На кооперативных картах обычно есть специальные места : чекпоинты, которые сохраняют положения игрока.</string>
 		<string id="checkpoints" lang="de">Auf den kooperativen Karten gibt es normalerweise einige spezielle Stellen: Speicherstellen, die die Lage des Spielers behalten.</string>
-	</area>         
+		
+		<string id="deathmatch-bots">Have not planned to play with an opponent ? Add some bots while playing deathmatch game</string>
+		<string id="deathmatch-bots" lang="ru">Если вы не планируете играть с кем-то по сети в десматч, добавте ботов(AI) в меню выбора машинок</string>
+	</area>
 </strings>
