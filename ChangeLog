@@ -1,6 +1,6 @@
-0.5.*:
+0.5.4528:
 *) Added unicode support, russian and german translations. 
-*) Added `torus'(endless) map mode and converted `lenin square' to it. Feel the power of Infinity!
+*) Added `torus'(endless) map mode and converted `lenin square' and 'gaddino' to it. Feel the power of Infinity!
 *) Fog of war support (available in `settings' menu)
 *) Random and sometimes surprising tips are added (displayed while game is loading).
 *) Tons of stickin' & stuckin' issues are fixed.
