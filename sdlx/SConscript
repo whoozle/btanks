@@ -11,7 +11,7 @@ libs = ['mrt', 'SDL', 'SDL_image']
 
 if sys.platform != "win32":
 	c_map_env= env.Copy()
-	c_map_env.Append(CXXFLAGS=['-fforce-addr', '-fprefetch-loop-arrays'])
+	#c_map_env.Append(CXXFLAGS=['-fforce-addr', '-fprefetch-loop-arrays'])
 	c_map = c_map_env.SharedObject('c_map.cpp')
 	libs.append('GL')
 	libs.append('rt')

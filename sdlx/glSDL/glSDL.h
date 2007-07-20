@@ -12,6 +12,7 @@
 /*
  * If you don't use GNU autotools or similar, uncomment this to
  * compile with OpenGL enabled:
+#define HAVE_OPENGL
  *
  * NOTE:
  *	See README about using this glSDL wrapper with
@@ -175,7 +176,7 @@ int glSDL_SaveBMP(SDL_Surface *surface, const char *file);
 
 
 /*----------------------------------------------------------
-	glSDL specific API extensions
+	glSDL API extensions, transparent
 ----------------------------------------------------------*/
 
 /*
@@ -229,6 +230,91 @@ int glSDL_UploadSurface(SDL_Surface *surface);
  * of texture space.
  */
 void glSDL_UnloadSurface(SDL_Surface *surface);
+
+
+/*----------------------------------------------------------
+	glSDL API extensions, OpenGL mode ONLY
+----------------------------------------------------------*/
+
+/*
+ * Set alpha multiplier. This is multiplied with any full
+ * surface alpha or alpha channels of surfaces.
+ *
+ * The default value is 255, which makes glSDL render like
+ * the standard SDL 2D backends, ie based only on the
+ * surface settings.
+ *
+ * This function affects the global state of glSDL.
+ *
+ * NOTE: NOT available without OpenGL acceleration!
+ */
+void glSDL_SetBlendAlpha(Uint8 alpha);
+
+/*
+ * Set color multipliers. These are multiplied with the
+ * respective color channers of rendered surfaces,
+ * modulating the brightness of the resulting output.
+ *
+ * The default values are 255, which makes glSDL render
+ * like the standard SDL 2D backends.
+ *
+ * This function affects the global state of glSDL.
+ *
+ * NOTE: NOT available without OpenGL acceleration!
+ */
+void glSDL_SetBlendColor(Uint8 r, Uint8 g, Uint8 b);
+
+/*
+ * Set center offset in pixels for scaling and rotation.
+ *
+ * The default is (0, 0), which makes surfaces rotate and
+ * scale around their centers.
+ *
+ * This function affects the global state of glSDL.
+ *
+ * NOTE: NOT available without OpenGL acceleration!
+ */
+void glSDL_SetCenter(float x, float y);
+
+
+/*
+ * Set rotation angle in degrees. Rotation is done around
+ * the center point, which is defined as
+ *	(w/2 + cx, h/2 + cy)
+ * where w and h are the width and height of the source
+ * surface, and cx and cy are the center offsets set by
+ * glSDL_SetCenter().
+ *
+ * The default value is 0.0f, which makes glSDL render
+ * like a normal SDL 2D backend.
+ *
+ * This function affects the global state of glSDL.
+ *
+ * NOTE: NOT available without OpenGL acceleration!
+ */
+void glSDL_SetRotation(float angle);
+
+/*
+ * Set scale factor. Scaling is centered around around
+ * the point
+ *	(w/2 + cx, h/2 + cy)
+ * where w and h are the width and height of the source
+ * surface, and cx and cy are the center offsets set by
+ * glSDL_SetCenter().
+ *
+ * The default value is 1.0f, which makes glSDL render
+ * like a normal SDL 2D backend.
+ *
+ * This function affects the global state of glSDL.
+ *
+ * NOTE: NOT available without OpenGL acceleration!
+ */
+void glSDL_SetScale(float x, float y);
+
+/*
+ * Reset glSDL global state to defaults.
+ */
+void glSDL_ResetState(void);
 
 
 #ifdef __cplusplus
