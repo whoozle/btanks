@@ -195,8 +195,10 @@
 		<property name="object:zombie:zombie:3" value="775,1211"/>
 		<property name="object:zombie:zombie:4" value="63,872/7"/>
 		<property name="object:zombie:zombie:5" value="110,833/7"/>
-		<property name="spawn:1" value="@2,78"/>
-		<property name="spawn:2" value="@2,79"/>
+		<property name="spawn:1" value="@2,77"/>
+		<property name="spawn:2" value="@2,78"/>
+		<property name="spawn:3" value="@2,79"/>
+		<property name="spawn:4" value="@1,77"/>
 		<property name="zone:checkpoint:1" value="@9,33:@5,5"/>
 		<property name="zone:disable-ai:tank:1" value="@0,76:@20,3"/>
 		<property name="zone:enable-ai:tank:1" value="@18,4:@2,2"/>
