@@ -52,7 +52,7 @@ Object * Object::clone() const {
 }
 
 const bool Object::aiDisabled() const {
-	if (_variants.has("ally"))
+	if (_variants.has("ally") || disable_ai)
 		return false;
 	return GameMonitor->disabled(this);
 }
