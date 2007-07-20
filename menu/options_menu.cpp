@@ -254,6 +254,21 @@ void OptionsMenu::reload() {
 	_fx->set(volume);
 	
 	_keys->reload();
+	
+	std::string lang;
+	if (Config->has("engine.language"))
+		Config->get("engine.language", lang, std::string());
+
+	//rewrite it to the simplier and extensible manner.
+	if (lang.empty()) {
+		_lang->set(0);
+	} else if (lang == "en") {
+		_lang->set(1);
+	} else if (lang == "ru") {
+		_lang->set(2);
+	} else if (lang == "de") {
+		_lang->set(3);
+	}
 
 	TRY {
 		int w, h;
@@ -285,6 +300,26 @@ void OptionsMenu::save() {
 	Config->set("engine.sound.volume.music", _music->get());
 	
 	bool need_restart = false;
+	TRY {
+		const char * lang_list[] = {"", "en", "ru", "de", };
+		const int idx = _lang->get();
+		if (idx < 0 || idx > 3)
+			throw_ex(("language index %d is invalid", idx));
+		std::string lang = lang_list[idx];
+		
+		std::string old_lang;
+		if (Config->has("engine.language"))
+			Config->get("engine.language", old_lang, std::string());
+		
+		if (old_lang != lang) {
+			if (!lang.empty())
+				Config->set("engine.language", lang);
+			else 
+				Config->remove("engine.language");
+			need_restart = true;
+		}
+	} CATCH("saving language", );
+	
 	TRY {
 		int screen_w, screen_h;
 		Config->get("engine.window.width", screen_w, 800);
