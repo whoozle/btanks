@@ -691,7 +691,7 @@ void IGame::notifyLoadingBar(const int progress) {
 		if (_tip != NULL) {
 			int w, h;
 			_tip->getSize(w, h);
-			_tip->render(window, (window_size.w - w) / 2, window_size.h - h * 3 / 2);
+			_tip->render(window, (window_size.w - w) / 2, window_size.h - h * 5 / 4);
 		}
 		Window->flip();
 		window.fill(0);
