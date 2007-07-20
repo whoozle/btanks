@@ -184,7 +184,10 @@
 		<string id="shop" lang="de">Geschäft</string>
 		
 		<area id="language">
+			<string id="language">Language:</string>
+			<string id="language" lang="ru">Язык:</string>
 			<string id="default">System Default</string>
+			<string id="default" lang="ru">Системный</string>
 			<string id="en">English</string>
 			<string id="ru">Русский</string>
 			<string id="de">Deutsch</string>

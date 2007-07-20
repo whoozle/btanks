@@ -51,6 +51,7 @@ public:
 
 private: 
 	MainMenu *_parent;
+	Chooser *_lang;
 	ControlPicker *sp, *sp1, *sp2;
 
 	Box _background;

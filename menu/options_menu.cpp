@@ -53,6 +53,7 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 	_background.getMargins(mx, my);
 	_bx = ( w - _background.w ) / 2;
 	_by = ( h - _background.h ) / 2;
+	int base_x = _bx + 3 * _background.w / 4;
 
 	_b_back = new Button("big", I18n->get("menu", "back"));
 	_b_back->getSize(bw, bh);
@@ -69,6 +70,18 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 	int sw, sh;
 	int yp = my * 2 + _by;
 	
+	std::vector<std::string> langs;
+	langs.push_back(I18n->get("menu/language", "default"));
+	langs.push_back(I18n->get("menu/language", "en"));
+	langs.push_back(I18n->get("menu/language", "ru"));
+	langs.push_back(I18n->get("menu/language", "de"));
+
+	_lang = new Chooser("medium", langs);
+	_lang->getSize(sw, sh);
+	add(_bx + mx, yp, new Label("medium", I18n->get("menu/language", "language")));
+	add(_bx + base_x - sw / 2, yp, _lang);
+	yp += sh + 10;
+
 	sp = new ControlPicker(width, "medium", I18n->get("menu", "single-player"), "player.control-method", std::string());
 	sp->getSize(sw, sh);
 	add(_bx + mx, yp, sp);
@@ -91,7 +104,6 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 
 	yp += sh + 20;
 	//volume controls 
-	int base_x = _bx + 3 * _background.w / 4;
 	
 	float volume;
 	Config->get("engine.sound.volume.music", volume, 1.0f);
@@ -110,7 +122,6 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 	}
 	
 	yp += sh + 10;
-
 
 	Config->get("engine.sound.volume.fx", volume, 1);
 	
@@ -172,7 +183,7 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 	{
 		int w, h;
 		_fsmode->getSize(w, h);
-		add(_bx + base_x - w / 2, yp + (sh - h) / 2, _fsmode);
+		add(_bx + base_x - w / 2 + 48, yp + (sh - h) / 2, _fsmode);
 		if (h > sh) 
 			sh = h;
 	}
@@ -186,7 +197,7 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 	{
 		int w, h;
 		_donate->getSize(w, h);
-		add(_bx + base_x - w / 2, yp + (sh - h) / 2, _donate);
+		add(_bx + base_x - w / 2 + 48, yp + (sh - h) / 2, _donate);
 		if (h > sh) 
 			sh = h;
 	}
@@ -200,7 +211,7 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 	{
 		int w, h;
 		_fog_of_war->getSize(w, h);
-		add(_bx + base_x - w / 2, yp + (sh - h) / 2, _fog_of_war);
+		add(_bx + base_x - w / 2 + 48, yp + (sh - h) / 2, _fog_of_war);
 		if (h > sh) 
 			sh = h;
 	}
