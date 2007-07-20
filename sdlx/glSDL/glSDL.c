@@ -11,7 +11,7 @@
 
 #ifdef HAVE_OPENGL
 
-#define LEAK_TRACKING
+//#define LEAK_TRACKING
 
 #define	DBG(x)		/*error messages, warnings*/
 #define	DBG2(x)		/*texture allocation*/
