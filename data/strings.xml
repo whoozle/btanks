@@ -182,7 +182,13 @@
 		<string id="shop">shop</string>
 		<string id="shop" lang="ru">магазин</string>
 		<string id="shop" lang="de">Geschäft</string>
-		           
+		
+		<area id="language">
+			<string id="default">System Default</string>
+			<string id="en">English</string>
+			<string id="ru">Русский</string>
+			<string id="de">Deutsch</string>
+		</area>
 	</area>
 	<area id="maps/descriptions">
 		<string id="baykonur">Huge cooperative map with tons of troopers, very defensive military base and big boss inside(tm)</string>
