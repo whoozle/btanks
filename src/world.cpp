@@ -1596,8 +1596,9 @@ const Object* IWorld::getNearestObject(const Object *obj, const std::set<std::st
 		if (check_shooting_range && !Object::checkDistance(obj->getCenterPosition(), o->getCenterPosition(), o->getZ(), true))	
 			continue;
 
-		v2<float> cpos = o->_position + o->size / 2;
-		float d = obj->_position.quick_distance(cpos);
+		v2<float> dpos = Map->distance(o->getCenterPosition(), obj->_position);
+		
+		float d = dpos.quick_length();
 		if (d < range2 && d < distance) {
 			distance = d;
 			result = o;
@@ -1612,7 +1613,7 @@ const bool IWorld::getNearest(const Object *obj, const std::set<std::string> &cl
 	if (target == NULL) 
 		return false;
 
-	position = target->getCenterPosition() - obj->getCenterPosition();
+	position = Map->distance(obj->getCenterPosition(), target->getCenterPosition()) ;
 	velocity = target->_velocity;
 	velocity.normalize();
 	velocity *= target->speed;

@@ -881,7 +881,7 @@ const bool Object::checkDistance(const v2<float> &_map1, const v2<float>& map2, 
 	const Matrix<int> *pmatrix = use_pierceable_fixes? &Map->getImpassabilityMatrix(z, true): NULL;
 
 	v2<float> map1 = _map1;
-	v2<float> dp = map2 - map1;
+	v2<float> dp = Map->distance(map1, map2);
 	if (dp.is0())
 		return true;
 	
@@ -889,8 +889,9 @@ const bool Object::checkDistance(const v2<float> &_map1, const v2<float>& map2, 
 	map1 += dp;
 			
 //	LOG_DEBUG(("%g:%g -> %g:%g (%+g:%+g)", map1.x, map1.y, map2.x, map2.y, dp.x, dp.y));
-	v2<float> dv = (map2 - map1) * dp;
+	v2<float> dv = Map->distance(map1, map2) * dp;
 	while(dv.x >= 0 && dv.y >= 0) {
+		Map->validate(map1);
 		v2<int> map_pos = map1.convert<int>() / pfs;
 		/*
 		LOG_DEBUG(("(%d,%d): %d", map_pos.x, map_pos.y, matrix.get(map_pos.y, map_pos.x)));
