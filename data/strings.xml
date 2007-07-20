@@ -253,6 +253,10 @@
 			<string id="destroy-spaceport" lang="ru">УБЕЙ БАЙКОНУР!</string>
 			<string id="destroy-spaceport" lang="de">KOSMODROM ZERSTÖREN!</string>
 		</area>
+		<area id="platform">
+			<string id="objectives" lang="ru">Уничтожьте все три космопорта!</string>
+			<string id="passage-needed" lang="ru">Дальше пути нет. Похоже придется прокладывать дорогу прямо сквозь этот дом.</string>
+		</area>
 
 		<area id="dune">
 			<string id="defend-base">DEFEND YOUR BASE!</string>
