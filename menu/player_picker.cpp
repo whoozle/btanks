@@ -299,6 +299,7 @@ void PlayerPicker::set(const MapDesc &map) {
 	
 	if (map.game_type == "deathmatch" && I18n->has("tips", "deathmatch-bots")) {
 		int w, h;
+		getSize(w, h);
 		Tooltip *hint = new Tooltip(I18n->get("tips", "deathmatch-bots"), w - 32);
 		hint->getSize(w, h);
 		add(mx, _background.h - my - h, hint);
