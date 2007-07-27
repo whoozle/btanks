@@ -1,3 +1,6 @@
+0.5.4549:
+*) Added French translation
+
 0.5.4536:
 *) Added unicode support, russian and german translations. 
 *) Added `torus'(endless) map mode and converted `lenin square' and 'gaddino' to it. Feel the power of Infinity!
