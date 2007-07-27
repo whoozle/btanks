@@ -113,10 +113,10 @@ Tooltip::Tooltip(const std::string &_text, const bool use_background, const int 
 	}
 	_surface.convertAlpha();
 	
-	int yp = my - 3;
+	int yp = my - 2;
 	i = 0;
 	while(!lines.empty()) {
-		int xp = mx;
+		int xp = mx - 2;
 		size_t n = lines.front();
 		while(i < n) {
 			xp += font->render(_surface, xp, yp, words[i] + " ");
