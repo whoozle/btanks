@@ -12,8 +12,9 @@ The game has two modes:
 
 Command line parameters:
 --no-gl     turns off using of the hardware OpenGL renderer
---vsync     turns on vertical synchronization--may help if tearing effect is visible
 --fs        turns on the full screen mode (will be the default setting in future)
+--lang=XX	override language setting (XX - 2 letter ISO code: en, ru, de, fr)
+--vsync     turns on vertical synchronization--may help if tearing effect is visible
 
 The screen resolution can also be set:
 -0 640x480
