@@ -72,9 +72,12 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 	
 	std::vector<std::string> langs;
 	langs.push_back(I18n->get("menu/language", "default"));
-	langs.push_back(I18n->get("menu/language", "en"));
-	langs.push_back(I18n->get("menu/language", "ru"));
-	langs.push_back(I18n->get("menu/language", "de"));
+	{
+		I18n->getSupportedLanguages(_langs);
+		for(std::set<std::string>::const_iterator i = _langs.begin(); i != _langs.end(); ++i) {
+			langs.push_back(I18n->get("menu/language", *i));
+		}
+	}
 
 	_lang = new Chooser("medium", langs);
 	_lang->getSize(sw, sh);
@@ -262,12 +265,14 @@ void OptionsMenu::reload() {
 	//rewrite it to the simplier and extensible manner.
 	if (lang.empty()) {
 		_lang->set(0);
-	} else if (lang == "en") {
-		_lang->set(1);
-	} else if (lang == "ru") {
-		_lang->set(2);
-	} else if (lang == "de") {
-		_lang->set(3);
+	} else {
+		int idx = 1;
+		for(std::set<std::string>::const_iterator i = _langs.begin(); i != _langs.end(); ++i, ++idx) {
+			if (*i == lang) {
+				_lang->set(idx);
+				break;
+			}
+		}
 	}
 
 	TRY {
@@ -301,11 +306,17 @@ void OptionsMenu::save() {
 	
 	bool need_restart = false;
 	TRY {
-		const char * lang_list[] = {"", "en", "ru", "de", };
-		const int idx = _lang->get();
-		if (idx < 0 || idx > 3)
+		int idx = _lang->get();
+		if (idx < 0 || idx > (int)_langs.size())
 			throw_ex(("language index %d is invalid", idx));
-		std::string lang = lang_list[idx];
+		
+		std::string lang;
+		if (idx > 0) {
+			std::set<std::string>::iterator lang_i = _langs.begin();
+			for(int i = 1; i < idx; ++i) 
+				++lang_i;
+			lang = *lang_i;
+		}
 		
 		std::string old_lang;
 		if (Config->has("engine.language"))

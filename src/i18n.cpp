@@ -124,6 +124,8 @@ void II18n::start(const std::string &name, Attrs &attr) {
 		if (_string_id.empty())
 			throw_ex(("area must have id"));
 		_string_lang = attr["lang"];
+		if (!_string_lang.empty())
+			_langs.insert(_string_lang);
 	} else if (name == "area") {
 		const std::string id = attr["id"];
 		if (id.empty())

@@ -44,6 +44,7 @@ public:
 	const bool has(const std::string &area, const std::string &message) const;
 	
 	void enumerateKeys(std::deque<std::string> &keys, const std::string &area) const;
+	void getSupportedLanguages(std::set<std::string> & result) const { result = _langs; }
 	
 private: 
 
@@ -57,7 +58,7 @@ private:
 	std::string _lang, _string_id, _string_lang, _cdata;
 	Strings _strings;
 	
-	std::set<std::string> _unlocalized;
+	std::set<std::string> _unlocalized, _langs;
 };
 
 SINGLETON(BTANKSAPI, I18n, II18n);

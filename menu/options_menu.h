@@ -23,7 +23,8 @@
 #include "base_menu.h"
 #include "box.h"
 #include "alarm.h"
-
+#include <set>
+#include <string>
 
 class Button;
 class Slider;
@@ -66,6 +67,8 @@ private:
 	
 	RedefineKeys * _keys;
 	GamepadSetup * _gamepad;
+
+	std::set<std::string> _langs;
 };
 
 #endif
