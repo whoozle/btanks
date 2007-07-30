@@ -600,7 +600,7 @@ void Object::calculateWayVelocity() {
 		
 		if (_next_target.is0()) {
 			_next_target = _way.begin()->convert<float>();
-			v2<float> rel = _next_target - position;
+			v2<float> rel = Map->distance( position, _next_target);
 			_way.pop_front();
 			
 			
@@ -631,7 +631,7 @@ void Object::calculateWayVelocity() {
 		//LOG_DEBUG(("%d:%s:%s next waypoint: %g %g, relative: %g %g", 
 		//	getID(), classname.c_str(), animation.c_str(), _next_target.x, _next_target.y, _next_target_rel.x, _next_target_rel.y));
 		
-		_velocity = _next_target - position;
+		_velocity = Map->distance(position, _next_target);
 		if ((_next_target_rel.x != 0 && _velocity.x * _next_target_rel.x <= 0) || (math::abs(_velocity.x) < af))
 			_velocity.x = 0;
 		if ((_next_target_rel.y != 0 && _velocity.y * _next_target_rel.y <= 0) || (math::abs(_velocity.y) < af))
