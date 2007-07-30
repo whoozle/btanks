@@ -31,7 +31,9 @@ bool lessnocase::operator()(const std::string& s1, const std::string& s2) const 
 }
 
 
-II18n::II18n() {}
+II18n::II18n() {
+	_langs.insert("en");
+}
 
 void II18n::enumerateKeys(std::deque<std::string> &keys, const std::string &area) const {
 	std::string base = area;
