@@ -230,11 +230,8 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 			LOG_DEBUG(("no ALC_MONO_SOURCES, fallback to generic values..."));
 		}
 
-#	ifdef WIN32
 		GET_CONFIG_VALUE("engine.sound.preallocate-sources", bool, preallocate, true);
-#	else
-		GET_CONFIG_VALUE("engine.sound.preallocate-sources", bool, preallocate, false);
-#	endif
+
 		if (preallocate) {
 			LOG_DEBUG(("preallocating sources..."));
 			
