@@ -248,6 +248,10 @@
 		<area id="prefixes">
 			<string id="pre"></string>
 			<string id="pre" lang="ru">пре</string>
+			<string id="d'">d'</string>
+			<string id="d'" lang="ru">д'</string>
+			<string id="i">i</string>
+			<string id="i" lang="ru">i</string>
 		</area>
 		<area id="roots">
 			<string id="bo">bo</string>
@@ -278,6 +282,10 @@
 			<string id="pi" lang="ru">пи</string>
 		</area>
 		<area id="suffixes">
+			<string id="tron">tron</string>
+			<string id="tron" lang="ru">трон</string>
+			<string id="lt">lt</string>
+			<string id="lt" lang="ru">льт</string>
 			<string id="zoid">zoid</string>
 			<string id="zoid" lang="ru">зоид</string>
 			<string id="berg">berg</string>
