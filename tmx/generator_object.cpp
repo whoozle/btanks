@@ -47,7 +47,29 @@ public:
 };
 
 class TileBox : public GeneratorObject {
-	void init(const std::map<const std::string, std::string>& attrs, const std::string &data) {
+	int split_w[3];
+	int split_h[3];
+	void init(const std::map<const std::string, std::string>& _attrs, const std::string &data) {
+		std::map<const std::string, std::string> attrs = _attrs;
+		memset(split_w, 0, sizeof(split_w));
+		memset(split_h, 0, sizeof(split_h));
+		if (sscanf(attrs["width"].c_str(), "%d,%d,%d", split_w, split_w + 1, split_w + 2) != 3)
+			throw_ex(("invalid box(in: %s, out: %s) description: width is missing or invalid", attrs["in"].c_str(), attrs["out"].c_str()));
+		if (sscanf(attrs["height"].c_str(), "%d,%d,%d", split_h, split_h + 1, split_h + 2) != 3)
+			throw_ex(("invalid box(in: %s, out: %s) description: height is missing or invalid", attrs["in"].c_str(), attrs["out"].c_str()));
+		std::vector<std::string> numbers; 
+		mrt::split(numbers, data, ",");
+		
+		this->w = 1;
+		this->h = 1;
+		
+		int w = split_w[0] + split_w[1] + split_w[2];
+		int h = split_h[0] + split_h[1] + split_h[2];
+		
+		if (numbers.size() != (unsigned)w * h)
+			throw_ex(("invalid box(in: %s, out: %s) description: got %u numbers, need: %d", attrs["in"].c_str(), attrs["out"].c_str(), (unsigned) numbers.size(), w * h));
+		
+		LOG_DEBUG(("box(%dx%d)[%d,%d,%d:%d,%d,%d]", w, h, split_w[0], split_w[1], split_w[2], split_h[0], split_h[1], split_h[1]));
 	}
 	void render(MapGenerator *gen, const int first_gid, const int x, const int y, const bool full) const {
 	}
