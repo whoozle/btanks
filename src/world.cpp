@@ -562,45 +562,9 @@ void IWorld::getImpassabilityMatrix(Matrix<int> &matrix, const Object *src, cons
 	//LOG_DEBUG(("projected objects:\n%s", matrix.dump().c_str()));
 }
 
-void IWorld::tick(Object &o, const float dt, const bool do_calculate) {
+void IWorld::_tick(Object &o, const float dt, const bool do_calculate) {
 	if (o.isDead()) 
 		return;
-
-	float max_dt = _max_dt;
-	if (o.piercing) {
-		max_dt /= 2.5f;
-		if (max_dt < 0.001f) 
-			max_dt = 0.001f;
-	}
-	
-	int n = (int)(dt / max_dt);
-	if (n > 4) {
-		//LOG_DEBUG(("trottling needed (%d)", n));
-		max_dt = dt / 4;
-	}
-
-	if (dt > max_dt) {
-		float dt2 = dt;
-		while(dt2 > max_dt) {
-			tick(o, max_dt, do_calculate);
-			dt2 -= max_dt;
-		}
-		if (dt2 > 0) 
-			tick(o, dt2, do_calculate);
-		return;
-	}
-
-	if (dt < -max_dt) {
-		float dt2 = dt;
-		while(dt2 < -max_dt) {
-			tick(o, -max_dt, do_calculate);
-			dt2 += max_dt;
-		}
-		if (dt2 < 0) 
-			tick(o, dt2, do_calculate);
-		return;
-	}
-
 
 	//LOG_DEBUG(("tick object %p: %d: %s", (void *)&o, o.getID(), o.classname.c_str()));
 
@@ -1159,41 +1123,51 @@ void IWorld::tick(const float dt) {
 	tick(_objects, dt, true);
 }
 
+void IWorld::tick(Object &o, const float dt, const bool do_calculate) {
+	if (dt < 0.001f)
+		return;
+
+	_tick(o, dt, do_calculate);
+}
+
 void IWorld::tick(ObjectMap &objects, const float dt, const bool do_calculate) {
-	float max_dt = _max_dt;
-	int n = (int)(dt / max_dt);
-	if (n > 4) {
-		//LOG_DEBUG(("trottling needed (%d)", n));
-		max_dt = dt / 4;
+	if (dt < 0.001f)
+		return;
+
+	float max_dt = dt >= 0? _max_dt: -_max_dt;
+	int n = math::abs((int)(dt / max_dt));
+	GET_CONFIG_VALUE("engine.trottle-slices", int, max_slices, 4);
+
+	if (n > max_slices) {
+		LOG_DEBUG(("trottling needed (%d)", n));
+		max_dt = dt / max_slices;
 	}
 
-	if (dt > max_dt) {
-		float dt2 = dt;
+	float dt2 = dt;
+	if (dt > 0) {
 		while(dt2 > max_dt) {
-			tick(objects, max_dt, do_calculate);
+			_tick(objects, max_dt, do_calculate);
 			dt2 -= max_dt;
 		}
 		if (dt2 > 0) 
-			tick(objects, dt2, do_calculate);
-		return;
-	}
-
-	if (dt < -max_dt) {
-		float dt2 = dt;
+			_tick(objects, dt2, do_calculate);
+	} else if (dt < 0) {
 		while(dt2 < -max_dt) {
-			tick(objects, -max_dt, do_calculate);
+			_tick(objects, -max_dt, do_calculate);
 			dt2 += max_dt;
 		}
 		if (dt2 < 0) 
-			tick(objects, dt2, do_calculate);
-		return;
+			_tick(objects, dt2, do_calculate);
 	}
+}
 
+
+void IWorld::_tick(ObjectMap &objects, const float dt, const bool do_calculate) {
 	for(ObjectMap::iterator i = objects.begin(); i != objects.end(); ++i) {
 		Object *o = i->second;
 		assert(o != NULL);
 		TRY {
-			tick(*o, dt, do_calculate);
+			_tick(*o, dt, do_calculate);
 		} CATCH(mrt::formatString("tick for object[%p] id:%d %s:%s:%s", (void *)o, o->getID(), o->registered_name.c_str(), o->classname.c_str(), o->animation.c_str()).c_str(), throw;);
 	}
 	purge();

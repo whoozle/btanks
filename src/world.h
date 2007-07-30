@@ -114,6 +114,9 @@ protected:
 	void move(const Object *object, const int x, const int y);
 	
 private:
+	void _tick(Object &o, const float dt, const bool do_calculate = true);
+	void _tick(ObjectMap &objects, const float dt, const bool do_calculate = true);
+
 	void initMap();
 	
 	void updateObject(const Object *o);
