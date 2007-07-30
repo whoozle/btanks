@@ -250,10 +250,17 @@
 			<string id="pre" lang="ru">пре</string>
 			<string id="d'">d'</string>
 			<string id="d'" lang="ru">д'</string>
-			<string id="i">i</string>
-			<string id="i" lang="ru">i</string>
 		</area>
 		<area id="roots">
+			<string id="ho">ho</string>
+			<string id="ho" lang="ru">хо</string>
+
+			<string id="shi">shi</string>
+			<string id="shi" lang="ru">ши</string>
+
+			<string id="bah">bah</string>
+			<string id="bah" lang="ru">ба</string>
+
 			<string id="bo">bo</string>
 			<string id="bo" lang="ru">бо</string>
 			
@@ -290,6 +297,8 @@
 			<string id="zoid" lang="ru">зоид</string>
 			<string id="berg">berg</string>
 			<string id="berg" lang="ru">берг</string>
+			<string id="man">man</string>
+			<string id="man" lang="ru">мэн</string>
 		</area>
 	</area>
 	
