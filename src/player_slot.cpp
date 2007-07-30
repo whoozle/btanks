@@ -28,6 +28,8 @@
 #include "math/unary.h"
 #include "math/binary.h"
 
+#include "i18n.h"
+
 PlayerSlot::PlayerSlot() : 
 id(-1), control_method(NULL), need_sync(false), dont_interpolate(false), remote(false), trip_time(10), visible(false), 
 classname(), animation(), frags(0), reserved(false), spawn_limit(0), score(0), last_tooltip(NULL)
@@ -46,6 +48,7 @@ void PlayerSlot::serialize(mrt::Serializator &s) const {
 	s.add(classname);
 	s.add(animation);
 	s.add(score);
+	s.add(name);
 }
 
 void PlayerSlot::deserialize(const mrt::Serializator &s) {
@@ -55,6 +58,7 @@ void PlayerSlot::deserialize(const mrt::Serializator &s) {
 	s.get(classname);
 	s.get(animation);
 	s.get(score);
+	s.get(name);
 }
 
 Object * PlayerSlot::getObject() {
@@ -89,6 +93,7 @@ void PlayerSlot::clear() {
 	zones_reached.clear();
 	spawn_limit = 0;
 	score = 0;
+	name.clear();
 	
 	while(!tooltips.empty()) {
 		delete tooltips.front().second;
@@ -226,6 +231,7 @@ void PlayerSlot::createControlMethod(const std::string &control_method_name) {
 #include "config.h"
 #include "player_manager.h"
 #include "campaign.h"
+#include "nickname.h"
 
 void PlayerSlot::spawnPlayer(const std::string &classname, const std::string &animation) {
 	if (spawn_limit <= 0 && Config->has("map.spawn-limit")) {
@@ -277,6 +283,8 @@ void PlayerSlot::spawnPlayer(const std::string &classname, const std::string &an
 		assert(o != NULL);
 		o->prependOwner(OWNER_COOPERATIVE);
 	} else throw_ex(("unknown multiplayer type '%s' used", type.c_str()));
+	
+	name = Nickname::generate();
 
 	GameMonitor->addBonuses(*this);
 }

@@ -53,7 +53,7 @@ bt_sources = 	[
 	'src/player_slot.cpp', 'src/hud.cpp', 'src/console.cpp',
 	'src/i18n.cpp', 'src/game.cpp', 'src/window.cpp', 
 	'src/credits.cpp', 'src/cheater.cpp', 
-	'src/vehicle_traits.cpp', 
+	'src/vehicle_traits.cpp', 'src/nickname.cpp',
 	
 	'sound/al_ex.cpp', 'sound/mixer.cpp', 'sound/ogg_ex.cpp', 'sound/ogg_stream.cpp', 'sound/sample.cpp',
 

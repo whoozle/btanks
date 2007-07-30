@@ -115,7 +115,7 @@ void Hud::renderStats(sdlx::Surface &surface) {
 	const int item_h = 10 + _font->getHeight() ;
 	
 	
-	background.init("menu/background_box.png", 300, item_h * active_slots + 2 * item_h);
+	background.init("menu/background_box.png", 480, item_h * active_slots + 2 * item_h);
 	int mx, my;
 	background.getMargins(mx, my);
 	
@@ -136,7 +136,7 @@ void Hud::renderStats(sdlx::Surface &surface) {
 		if (slot.id == -1)
 			continue;
 		surface.fillRect(sdlx::Rect(xp, yp, box_w1, box_h), index2color(surface, p + 1, 255));
-		_font->render(surface, xp + box_w2, yp, mrt::formatString("%s", slot.animation.c_str()));
+		_font->render(surface, xp + box_w2, yp, mrt::formatString("%s (%s)", slot.name.c_str(), slot.animation.c_str()));
 		std::string score = mrt::formatString("%d", slot.frags);
 		int sw = _font->render(NULL, 0, 0, score);
 		_font->render(surface, xp + background.w - 2 * mx - sw, yp, score);

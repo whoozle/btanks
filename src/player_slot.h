@@ -62,6 +62,7 @@ public:
 	int spawn_limit;
 	
 	int score;
+	std::string name;
 	
 	PlayerSlot();
 	PlayerSlot(const int id);
