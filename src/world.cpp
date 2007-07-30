@@ -1139,7 +1139,7 @@ void IWorld::tick(ObjectMap &objects, const float dt, const bool do_calculate) {
 	GET_CONFIG_VALUE("engine.trottle-slices", int, max_slices, 4);
 
 	if (n > max_slices) {
-		LOG_DEBUG(("trottling needed (%d)", n));
+		//LOG_DEBUG(("trottling needed (%d)", n));
 		max_dt = dt / max_slices;
 	}
 
