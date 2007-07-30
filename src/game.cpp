@@ -801,6 +801,16 @@ void IGame::onMap() {
 void IGame::loadPlugins() {
 	IFinder::FindResult path;
 	Finder->findAll(path, "../" + sdlx::Module::mangle("bt_objects"));
+	if (path.empty()) {
+		std::vector<std::string> dirs;
+		Finder->getPath(dirs);
+		for(size_t i = 0; i < dirs.size(); ++i)
+			dirs[i] += "/..";
+		std::string dirs_str;
+		mrt::join(dirs_str, dirs, " ");
+		throw_ex(("engine could not find any 'bt_objects' shared libraries in the following directories: %s", dirs_str.c_str()));
+	}
+	
 	for(IFinder::FindResult::const_iterator i = path.begin(); i != path.end(); ++i) {
 		LOG_DEBUG(("loading plugin from %s", i->second.c_str()));
 		sdlx::Module module;
