@@ -265,8 +265,11 @@
 			<string id="shi">shi</string>
 			<string id="shi" lang="ru">ши</string>
 
-			<string id="bah">bah</string>
-			<string id="bah" lang="ru">ба</string>
+			<string id="be">be</string>
+			<string id="be" lang="ru">бе</string>
+			
+			<string id="ba">ba</string>
+			<string id="ba" lang="ru">ба</string>
 
 			<string id="bo">bo</string>
 			<string id="bo" lang="ru">бо</string>
@@ -291,9 +294,21 @@
 			
 			<string id="ka">ka</string>
 			<string id="ka" lang="ru">ка</string>
+
+			<string id="ma">ma</string>
+			<string id="ma" lang="ru">ма</string>
+
+			<string id="mi">mi</string>
+			<string id="mi" lang="ru">ми</string>
 			
 			<string id="pi">pi</string>
 			<string id="pi" lang="ru">пи</string>
+			
+			<string id="po">po</string>
+			<string id="po" lang="ru">по</string>
+
+			<string id="pa">pa</string>
+			<string id="pa" lang="ru">па</string>
 		</area>
 		<area id="suffixes">
 			<string id="tron">tron</string>
