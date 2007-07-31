@@ -517,9 +517,9 @@
 		<string id="minimap" lang="fr">Vous pouvez afficher/masquer la minicarte avec la touce 'M'.</string>
 		<string id="minimap" lang="de">Karte anzeigen/verstecken mit der 'M' Taste.</string>
 		        
-		<string id="suicide">Getting stuck in some tricky place ?
+		<string id="suicide">Getting stuck in some tricky place?
 			Usually it's not possible, but there's 'F12' key - commit a suicide. Sorry. </string>
-		<string id="suicide" lang="ru">Застряли в каком-нибудь месте ? Нажмите &lt;F12&gt; чтобы покончить с собой.</string>
+		<string id="suicide" lang="ru">Застряли в каком-нибудь месте? Нажмите &lt;F12&gt; чтобы покончить с собой.</string>
 		<string id="suicide" lang="fr">Coincé dans un endroit bizarre ? Pressez la touche 'F12' pour vous suicider. Désolé.</string>
 		<string id="suicide" lang="de">An irgendeiner Stelle steckengeblieben? Drücken Sie die 'F12' Taste um Selbstmord zu begehen.</string>
 		        
@@ -579,7 +579,7 @@
 		<string id="checkpoints" lang="fr">Les cartes en mode coopératif sauvegardent automatiquement votre progression lorsque vous passez à certains endroits. Regardez le schéma tactique pour plus de détails.</string>
 		<string id="checkpoints" lang="de">Auf den kooperativen Karten gibt es normalerweise einige spezielle Stellen: Speicherstellen, die die Lage des Spielers behalten.</string>
 		
-		<string id="deathmatch-bots">Have not planned to play with an opponent ? Add some bots while playing deathmatch game</string>
+		<string id="deathmatch-bots">Have not planned to play with an opponent? Add some bots while playing deathmatch game</string>
 		<string id="deathmatch-bots" lang="ru">Если вы не планируете играть с кем-то по сети в десматч, добавте ботов(AI) в меню выбора машинок</string>
 		<string id="deathmatch-bots" lang="fr">Vous n'avez pas d'adversaire contre qui jouer ? Ajoutez des robots (AI) pour les combats à mort.</string>
 	</area>
