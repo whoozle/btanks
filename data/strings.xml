@@ -254,6 +254,9 @@
 
 			<string id="d'a">d'</string>
 			<string id="d'a" lang="ru">д'а</string>
+			
+			<string id="el">el </string>
+			<string id="el" lang="ru">эль </string>
 		</area>
 		<area id="roots">
 			<string id="ho">ho</string>
