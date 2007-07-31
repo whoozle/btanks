@@ -468,6 +468,7 @@
 	<animation id="static-launcher-outline" tile="launcher_outline.png" model="single-tile" />
 	<animation id="static-mortar-outline" tile="mortar_outline.png" model="single-tile" />
 	<animation id="machinegunner-outline" tile="machinegunner_outline.png" model="single-tile" />
+	<animation id="man-outline" tile="man_outline.png" model="single-tile" />
 
 	<animation id="red-car" tile="car01.png" model="car-animation"/>
 	<animation id="cyan-car" tile="car02.png" model="car-animation"/>
