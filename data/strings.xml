@@ -265,12 +265,6 @@
 			<string id="anti" lang="ru">анти</string>
 		</area>
 		<area id="roots">
-			<string id="ho">ho</string>
-			<string id="ho" lang="ru">хо</string>
-
-			<string id="shi">shi</string>
-			<string id="shi" lang="ru">ши</string>
-
 			<string id="be">be</string>
 			<string id="be" lang="ru">бе</string>
 			
@@ -286,12 +280,30 @@
 			<string id="bi">bee</string>
 			<string id="bi" lang="ru">би</string>
 
+			<string id="ho">ho</string>
+			<string id="ho" lang="ru">хо</string>
+
+			<string id="shi">shi</string>
+			<string id="shi" lang="ru">ши</string>
+			
+			<string id="ka">ka</string>
+			<string id="ka" lang="ru">ка</string>
+			
+			<string id="ko">ka</string>
+			<string id="ko" lang="ru">ко</string>
+
+			<string id="ki">ki</string>
+			<string id="ki" lang="ru">ки</string>
+
+			<string id="ma">ma</string>
+			<string id="ma" lang="ru">ма</string>
+
+			<string id="mi">mi</string>
+			<string id="mi" lang="ru">ми</string>
+
 			<string id="mo">mo</string>
 			<string id="mo" lang="ru">мо</string>
 			
-			<string id="ma">mah</string>
-			<string id="ma" lang="ru">ма</string>
-
 			<string id="re">re</string>
 			<string id="re" lang="ru">ре</string>
 
@@ -300,15 +312,9 @@
 
 			<string id="ro">ro</string>
 			<string id="ro" lang="ru">ро</string>
-			
-			<string id="ka">ka</string>
-			<string id="ka" lang="ru">ка</string>
 
-			<string id="ma">ma</string>
-			<string id="ma" lang="ru">ма</string>
-
-			<string id="mi">mi</string>
-			<string id="mi" lang="ru">ми</string>
+			<string id="pa">pa</string>
+			<string id="pa" lang="ru">па</string>
 			
 			<string id="pi">pi</string>
 			<string id="pi" lang="ru">пи</string>
@@ -316,14 +322,11 @@
 			<string id="po">po</string>
 			<string id="po" lang="ru">по</string>
 
-			<string id="pa">pa</string>
-			<string id="pa" lang="ru">па</string>
+			<string id="za">za</string>
+			<string id="za" lang="ru">за</string>
 
 			<string id="zu">zu</string>
 			<string id="zu" lang="ru">зу</string>
-
-			<string id="za">za</string>
-			<string id="za" lang="ru">за</string>
 		</area>
 		<area id="suffixes">
 			<string id="tron">tron</string>
