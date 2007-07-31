@@ -38,10 +38,11 @@ void UpperBox::render(sdlx::Surface &surface, const int x, const int y) {
 	int font_dy = (_big->getHeight() - _medium->getHeight()) / 2;
 	
 	int wt = 0;
-	wt = _big->render(surface, x + 16, y + 16, I18n->get("menu", "mode"));
-	_medium->render(surface, x + (w - wt - 32) / 2, y + 16 + font_dy, I18n->get("menu/modes", value));
+	int line1_y = 10;
+	wt = _big->render(surface, x + 16, y + line1_y, I18n->get("menu", "mode"));
+	_medium->render(surface, x + (w - wt - 32) / 2, y + line1_y + font_dy, I18n->get("menu/modes", value));
 	
-	int line2_y = 46;
+	int line2_y = 40;
 	
 	wt = _big->render(surface, x + 16, y + line2_y, I18n->get("menu", "split-screen"));
 	wt += 96;
