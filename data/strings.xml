@@ -297,6 +297,9 @@
 
 			<string id="ru">ru</string>
 			<string id="ru" lang="ru">ру</string>
+
+			<string id="ro">ro</string>
+			<string id="ro" lang="ru">ро</string>
 			
 			<string id="ka">ka</string>
 			<string id="ka" lang="ru">ка</string>
@@ -355,6 +358,12 @@
 
 			<string id="der">der</string>
 			<string id="der" lang="ru">дёр</string>
+
+			<string id="voz">voz</string>
+			<string id="voz" lang="ru">воз</string>
+
+			<string id="hod">hod</string>
+			<string id="hod" lang="ru">ход</string>
 		</area>
 	</area>
 	
