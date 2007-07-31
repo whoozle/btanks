@@ -257,6 +257,12 @@
 			
 			<string id="el">el </string>
 			<string id="el" lang="ru">эль </string>
+
+			<string id="dr">Dr. </string>
+			<string id="dr" lang="ru">Д-р. </string>
+
+			<string id="anti">anti</string>
+			<string id="anti" lang="ru">анти</string>
 		</area>
 		<area id="roots">
 			<string id="ho">ho</string>
@@ -309,6 +315,12 @@
 
 			<string id="pa">pa</string>
 			<string id="pa" lang="ru">па</string>
+
+			<string id="zu">zu</string>
+			<string id="zu" lang="ru">зу</string>
+
+			<string id="za">za</string>
+			<string id="za" lang="ru">за</string>
 		</area>
 		<area id="suffixes">
 			<string id="tron">tron</string>
@@ -331,6 +343,18 @@
 
 			<string id="kot">kot</string>
 			<string id="kot" lang="ru">кот</string>
+
+			<string id="nyan">nyan</string>
+			<string id="nyan" lang="ru">нян</string>
+
+			<string id="san">-san</string>
+			<string id="san" lang="ru">-сан</string>
+
+			<string id="vich">vich</string>
+			<string id="vich" lang="ru">вич</string>
+
+			<string id="der">der</string>
+			<string id="der" lang="ru">дёр</string>
 		</area>
 	</area>
 	
