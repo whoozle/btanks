@@ -246,10 +246,14 @@
 	
 	<area id="names">
 		<area id="prefixes">
-			<string id="pre"></string>
+			<string id="pre">pre</string>
 			<string id="pre" lang="ru">пре</string>
-			<string id="d'">d'</string>
-			<string id="d'" lang="ru">д'</string>
+			
+			<string id="mega">mega</string>
+			<string id="mega" lang="ru">мега</string>
+
+			<string id="d'a">d'</string>
+			<string id="d'a" lang="ru">д'а</string>
 		</area>
 		<area id="roots">
 			<string id="ho">ho</string>
@@ -291,14 +295,24 @@
 		<area id="suffixes">
 			<string id="tron">tron</string>
 			<string id="tron" lang="ru">трон</string>
+			
 			<string id="lt">lt</string>
 			<string id="lt" lang="ru">льт</string>
+
 			<string id="zoid">zoid</string>
 			<string id="zoid" lang="ru">зоид</string>
+			
 			<string id="berg">berg</string>
 			<string id="berg" lang="ru">берг</string>
+
 			<string id="man">man</string>
 			<string id="man" lang="ru">мэн</string>
+			
+			<string id="cop">cop</string>
+			<string id="cop" lang="ru">коп</string>
+
+			<string id="kot">kot</string>
+			<string id="kot" lang="ru">кот</string>
 		</area>
 	</area>
 	
