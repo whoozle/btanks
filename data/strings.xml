@@ -575,7 +575,7 @@
 		<string id="hint-control" lang="de">Die Tip-Taste kann sehr nützlich sein. Anhand derer, können die Tips wiederholt bzw. versteckt werden.</string>
 		        
 		<string id="checkpoints">Cooperative maps usually have special places which automatically saves your progress. Look tactic map for the details.</string>
-		<string id="checkpoints" lang="ru">На кооперативных картах обычно есть специальные места : чекпоинты, которые сохраняют положения игрока.</string>
+		<string id="checkpoints" lang="ru">На кооперативных картах обычно есть специальные места: чекпоинты, которые сохраняют положения игрока.</string>
 		<string id="checkpoints" lang="fr">Les cartes en mode coopératif sauvegardent automatiquement votre progression lorsque vous passez à certains endroits. Regardez le schéma tactique pour plus de détails.</string>
 		<string id="checkpoints" lang="de">Auf den kooperativen Karten gibt es normalerweise einige spezielle Stellen: Speicherstellen, die die Lage des Spielers behalten.</string>
 		
