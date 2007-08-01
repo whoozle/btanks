@@ -21,7 +21,6 @@
 
 #include "sdlx/rect.h"
 #include "base_menu.h"
-#include "upper_box.h"
 
 class Button;
 class MainMenu;
@@ -29,6 +28,7 @@ class HostList;
 class MapDetails;
 class Prompt;
 class Chooser;
+class UpperBox;
 
 class JoinServerMenu : public BaseMenu {
 public:

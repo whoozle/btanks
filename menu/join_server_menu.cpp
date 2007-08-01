@@ -31,6 +31,7 @@
 #include "chooser.h"
 #include "config.h"
 #include "i18n.h"
+#include "upper_box.h"
 
 JoinServerMenu::JoinServerMenu(MainMenu *parent, const int w, const int h) : _parent(parent) {
 	_back = new Button("big", I18n->get("menu", "back"));
