@@ -40,12 +40,16 @@ void UpperBox::render(sdlx::Surface &surface, const int x, const int y) {
 	int wt = 0;
 	int line1_y = 10;
 	wt = _big->render(surface, x + 16, y + line1_y, I18n->get("menu", "mode"));
-	_medium->render(surface, x + (w - wt - 32) / 2, y + line1_y + font_dy, I18n->get("menu/modes", value));
 	
 	int line2_y = 40;
 	
-	wt = _big->render(surface, x + 16, y + line2_y, I18n->get("menu", "split-screen"));
-	wt += 96;
+	int wt2 = _big->render(surface, x + 16, y + line2_y, I18n->get("menu", "split-screen"));
+	if (wt2 > wt)
+		wt = wt2;
+
+	wt += 48;
+
+	_medium->render(surface, x + wt, y + line1_y + font_dy, I18n->get("menu/modes", value));
 	
 	int cw = _checkbox->getWidth() / 2;
 	

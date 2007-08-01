@@ -137,7 +137,7 @@ MapPicker::MapPicker(const int w, const int h) : _index(0) {
 	LOG_DEBUG(("map index: %d", _index));
 	
 	TRY {
-		_upper_box = new UpperBox(500, 80, true);
+		_upper_box = new UpperBox(w, 80, true);
 		add((w - _upper_box->w) / 2, 32, _upper_box);
 	} CATCH("StartServerMenu", {delete _upper_box; throw; });
 

@@ -39,7 +39,7 @@ JoinServerMenu::JoinServerMenu(MainMenu *parent, const int w, const int h) : _pa
 	_del = new Button("medium_dark",  I18n->get("menu", "delete"));
 	_scan = new Button("big", I18n->get("menu", "scan"));
 	_join = new Button("big", I18n->get("menu", "join"));
-	_upper_box = new UpperBox(500, 80, false);
+	_upper_box = new UpperBox(w - 48, 80, false);
 	_add_dialog = new Prompt(w / 2, 96, new HostTextControl("medium"));
 
 	const int host_list_w = 2 * (w - 64)/3;
@@ -65,7 +65,7 @@ JoinServerMenu::JoinServerMenu(MainMenu *parent, const int w, const int h) : _pa
 	_join->getSize(bw, bh);
 	add(w - 64 - bw, h - 16 - bh, _join);
 	
-	add((w - _upper_box->w) / 2, 32, _upper_box);
+	add((w - _upper_box->w) / 2 - 8, 32, _upper_box);
 
 	sdlx::Rect list_pos(16, 128, host_list_w, h - 256);
 
