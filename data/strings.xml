@@ -367,6 +367,12 @@
 
 			<string id="hod">hod</string>
 			<string id="hod" lang="ru">ход</string>
+
+			<string id="dze">dze</string>
+			<string id="dze" lang="ru">дзе</string>
+
+			<string id="boy">boy</string>
+			<string id="boy" lang="ru">бой</string>
 		</area>
 	</area>
 	
