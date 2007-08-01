@@ -18,6 +18,8 @@ const std::string Nickname::generate() {
 
 	bool has_prefix = mrt::random(100) >= 80;
 	bool has_suffix = mrt::random(100) < 80;
+	if (n == 0 && has_prefix && has_suffix)
+		n = 1;
 
 	std::string name;
 	
