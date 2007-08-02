@@ -114,10 +114,10 @@
 		<property name="object:nuke-missiles-item:nuke-missiles-item:2" value="1214,3135"/>
 		<property name="object:nuke-missiles-item:nuke-missiles-item:3" value="1,3077"/>
 		<property name="object:oil-barrels(make-pierceable)(with-fire):oil-barrels:1" value="1064,3814,140"/>
-		<property name="object:oil-barrels(make-pierceable)(with-fire):oil-barrels:3" value="905,2898,170"/>
+		<property name="object:oil-barrels(make-pierceable)(with-fire):oil-barrels:3" value="891,2897,170"/>
 		<property name="object:oil-barrels(make-pierceable)(with-fire):oil-barrels:4" value="1081,3251,240"/>
 		<property name="object:oil-barrels(make-pierceable)(with-fire):oil-barrels:5" value="1092,3274,250"/>
-		<property name="object:oil-barrels:oil-barrels:17" value="879,2894"/>
+		<property name="object:oil-barrels(make-pierceable)(with-fire):oil-barrels:6" value="877,2890,160"/>
 		<property name="object:oil-barrels:oil-barrels:18" value="18,3843"/>
 		<property name="object:oil-barrels:oil-barrels:19" value="-2,3831"/>
 		<property name="object:oil-barrels:oil-barrels:4" value="1044,3819"/>
@@ -202,8 +202,8 @@
 		<property name="zone:checkpoint:1" value="@9,33:@5,5"/>
 		<property name="zone:disable-ai:tank:1" value="@0,76:@20,3"/>
 		<property name="zone:enable-ai:tank:1" value="@18,4:@2,2"/>
-		<property name="zone:hint:objectives:1" value="@9,13:@10,2"/>
 		<property name="zone:hint:passage-needed:1" value="@6,29:@5,2"/>
+		<property name="zone:message:objectives:1" value="@9,13:@10,2"/>
 	</properties>
 	<tileset name="terrains" firstgid="1" tilewidth="64" tileheight="64">
 		<image source="../tilesets/terrains.png"/>
