@@ -28,11 +28,10 @@
 UpperBox::UpperBox(int _w, int _h, const bool server) : _server(server) {
 	_checkbox = ResourceManager->loadSurface("menu/radio.png");
 	Config->get("multiplayer.game-type", value, "deathmatch");
-	Box *box;
-	add(0, 0, box = new Box("menu/background_box.png", _w, _h));
+	add(0, 0, _box = new Box("menu/background_box.png", _w, _h));
 	
 	int mx, my;
-	box->getMargins(mx, my);
+	_box->getMargins(mx, my);
 	
 	_medium = ResourceManager->loadFont("medium", true);
 	_big = ResourceManager->loadFont("big", true);
@@ -50,6 +49,22 @@ UpperBox::UpperBox(int _w, int _h, const bool server) : _server(server) {
 	const int dh = 8;
 	add(w - cw1 - 2 * mx, my + (h - (ch1 + ch2) - dh) / 2 - ch1, _player1_name);
 	add(w - cw2 - 2 * mx, my + (h - (ch1 + ch2) + dh) / 2, _player2_name);
+}
+
+void UpperBox::layout() {
+	int mx, my;
+	_box->getMargins(mx, my);
+
+	int w, h;
+	getSize(w, h);
+	
+	int cw1, ch1, cw2, ch2;
+	_player1_name->getSize(cw1, ch1);
+	_player2_name->getSize(cw2, ch2);
+
+	const int dh = 8;
+	setBase(_player1_name, w - cw1 - 2 * mx, my + (h - (ch1 + ch2) - dh) / 2 - ch1);
+	setBase(_player2_name, w - cw2 - 2 * mx, my + (h - (ch1 + ch2) + dh) / 2);
 }
 
 void UpperBox::render(sdlx::Surface &surface, const int x, const int y) {
@@ -117,4 +132,19 @@ bool UpperBox::onMouse(const int button, const bool pressed, const int x, const 
 		return true;
 	}
 	return false;
+}
+
+void UpperBox::tick(const float dt) {
+	Container::tick(dt);
+	bool layout = false;
+	if (_player1_name->changed()) {
+		_player1_name->reset();
+		layout = true;
+	}
+	if (_player2_name->changed()) {
+		layout = true;
+		_player2_name->reset();
+	}
+	if (layout)
+		this->layout();
 }

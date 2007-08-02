@@ -18,7 +18,7 @@ PlayerNameControl::PlayerNameControl(const std::string &label, const std::string
 	_label->getSize(sw, sh);
 	add(sw, 0, _name);
 
-	getSize(sw, sh);
+	Container::getSize(sw, sh);
 	_dice = ResourceManager->loadSurface("menu/dice.png");
 
 	_dice_area.x = sw + 2;
@@ -34,6 +34,11 @@ bool PlayerNameControl::onMouse(const int button, const bool pressed, const int 
 		std::string name = Nickname::generate();
 		Config->set(_config_key, name);
 		_name->set(name);
+
+		int bw, bh;
+		Container::getSize(bw, bh);
+		_dice_area.x = bw + 2;
+
 		invalidate(true);
 		return true;
 	} 
