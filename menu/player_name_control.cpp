@@ -5,7 +5,7 @@
 #include "label.h"
 
 PlayerNameControl::PlayerNameControl(const std::string &label, const std::string &config_key) : 
-	_font(ResourceManager->loadFont("medium", true)), _config_key(config_key) {
+	_font(ResourceManager->loadFont("small", true)), _config_key(config_key) {
 	std::string name;
 	Config->get(config_key, name, Nickname::generate());
 

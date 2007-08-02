@@ -23,17 +23,38 @@
 #include "sdlx/font.h"
 #include "i18n.h"
 #include "box.h"
+#include "player_name_control.h"
 
-UpperBox::UpperBox(int w, int h, const bool server): _w(w), _h(h), _server(server) {
+UpperBox::UpperBox(int _w, int _h, const bool server) : _server(server) {
 	_checkbox = ResourceManager->loadSurface("menu/radio.png");
 	Config->get("multiplayer.game-type", value, "deathmatch");
-	add(0, 0, new Box("menu/background_box.png", w, h));
-
+	Box *box;
+	add(0, 0, box = new Box("menu/background_box.png", _w, _h));
+	
+	int mx, my;
+	box->getMargins(mx, my);
+	
 	_medium = ResourceManager->loadFont("medium", true);
 	_big = ResourceManager->loadFont("big", true);
+	
+	int w, h;
+	getSize(w, h);
+	
+	int cw1, ch1, cw2, ch2;
+	_player1_name = new PlayerNameControl(I18n->get("menu", "player-name-1"), "player.name-1");
+	_player1_name->getSize(cw1, ch1);
+
+	_player2_name = new PlayerNameControl(I18n->get("menu", "player-name-2"), "player.name-2");
+	_player2_name->getSize(cw2, ch2);
+
+	const int dh = 8;
+	add(w - cw1 - 2 * mx, my + (h - (ch1 + ch2) - dh) / 2 - ch1, _player1_name);
+	add(w - cw2 - 2 * mx, my + (h - (ch1 + ch2) + dh) / 2, _player2_name);
 }
 
 void UpperBox::render(sdlx::Surface &surface, const int x, const int y) {
+	Container::render(surface, x, y);
+	
 	int font_dy = (_big->getHeight() - _medium->getHeight()) / 2;
 	
 	int wt = 0;
@@ -78,6 +99,9 @@ void UpperBox::render(sdlx::Surface &surface, const int x, const int y) {
 }
 
 bool UpperBox::onMouse(const int button, const bool pressed, const int x, const int y) {
+	if (Container::onMouse(button, pressed, x, y))
+		return true;
+	
 	if (!pressed) 
 		return false;
 	
