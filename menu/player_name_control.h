@@ -15,7 +15,7 @@ public:
 	PlayerNameControl(const std::string &label, const std::string &config_key);
 private: 
 	const sdlx::Font * _font;
-	Label * _label;
+	Label * _label, *_name;
 	std::string _config_key;
 };
 
