@@ -31,6 +31,7 @@
 #include "window.h"
 #include "menu_config.h"
 #include "finder.h"
+#include "nickname.h"
 
 #include "mrt/exception.h"
 #include "mrt/directory.h"
@@ -210,16 +211,20 @@ void MapPicker::fillSlots() const {
 			if (type == "player") {
 				idx1 = i;
 				Config->get("player.control-method", cm, "keys");
-			}
+				Config->get("player.name-1", slot.name, Nickname::generate());
+			} else 
+				slot.name = Nickname::generate();
 		} else {
 			if (type == "player-1") {
 				idx1 = i;
 				Config->get("player.control-method-1", cm, "keys-1");		
-			}
-			if (type == "player-2") {
+				Config->get("player.name-1", slot.name, Nickname::generate());
+			} else if (type == "player-2") {
 				idx2 = i;
 				Config->get("player.control-method-2", cm, "keys-2");
-			}
+				Config->get("player.name-2", slot.name, Nickname::generate());
+			} else 
+				slot.name = Nickname::generate();
 		}
 		slot.createControlMethod(cm);
 		slot.spawnPlayer(object, animation);

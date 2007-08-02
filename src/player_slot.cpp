@@ -231,7 +231,6 @@ void PlayerSlot::createControlMethod(const std::string &control_method_name) {
 #include "config.h"
 #include "player_manager.h"
 #include "campaign.h"
-#include "nickname.h"
 
 void PlayerSlot::spawnPlayer(const std::string &classname, const std::string &animation) {
 	if (spawn_limit <= 0 && Config->has("map.spawn-limit")) {
@@ -284,8 +283,6 @@ void PlayerSlot::spawnPlayer(const std::string &classname, const std::string &an
 		o->prependOwner(OWNER_COOPERATIVE);
 	} else throw_ex(("unknown multiplayer type '%s' used", type.c_str()));
 	
-	name = Nickname::generate();
-
 	GameMonitor->addBonuses(*this);
 }
 
