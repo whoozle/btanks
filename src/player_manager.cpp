@@ -29,6 +29,7 @@
 #include "window.h"
 #include "game_monitor.h"
 #include "special_zone.h"
+#include "nickname.h"
 #include "menu/tooltip.h"
 
 #include "controls/control_method.h"
@@ -135,6 +136,11 @@ TRY {
 		Config->get("menu.default-vehicle-1", vehicle, "launcher");
 
 		m.set("vehicle", vehicle);
+
+		std::string name;
+		Config->get("player.name-1", name, Nickname::generate());
+		m.set("name", name);
+		
 		_client->send(m);
 		
 		_next_ping = 0;
@@ -166,7 +172,8 @@ TRY {
 			} else animation = vehicle;
 		} 
 
-		LOG_DEBUG(("player%d: %s:%s", id, vehicle.c_str(), animation.c_str()));
+		slot.name = message.get("name");
+		LOG_DEBUG(("player%d: %s:%s, name: %s", id, vehicle.c_str(), animation.c_str(), slot.name.c_str()));
 
 		slot.remote = true;
 		slot.reserved = false;
