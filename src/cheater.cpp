@@ -20,10 +20,14 @@
 #include "window.h"
 #include <string.h>
 #include <assert.h>
+#include <string.h>
 
 Cheater::Cheater() : _buf_size(0) {
-	Window->key_signal.connect(sigc::mem_fun(this, &Cheater::onKey));
+	memset(_buf, 0, sizeof(_buf));
+	Window->event_signal.connect(sigc::mem_fun(this, &Cheater::onEvent));
+	
 	_cheats.push_back("skotobaza");
+	_cheats.push_back("matrix");
 	
 	//scan cheats.
 	size_t max = 0;
@@ -37,10 +41,14 @@ Cheater::Cheater() : _buf_size(0) {
 
 #include "world.h"
 #include "object.h"
+#include "config.h"
 
-bool Cheater::onKey(const SDL_keysym sym, const bool pressed) {
+void Cheater::onEvent(const SDL_Event &event) {
+	const SDL_keysym &sym = event.key.keysym;
+	const bool pressed = event.type == SDL_KEYDOWN;
+	
 	if (!pressed)
-		return false;
+		return;
 	
 	size_t n = sizeof(_buf)/sizeof(_buf[0]);
 	
@@ -56,18 +64,24 @@ bool Cheater::onKey(const SDL_keysym sym, const bool pressed) {
 	
 	for(size_t i = 0; i < _cheats.size(); ++i) {
 		const std::string &code = _cheats[i];
-		if (code.size() >= _buf_size && strncmp(_buf + _buf_size - code.size(), code.c_str(), code.size()) == 0) {
+		if (_buf_size >= code.size() && strncmp(_buf + _buf_size - code.size(), code.c_str(), code.size()) == 0) {
 			LOG_DEBUG(("triggered cheat: %s", code.c_str()));
 			cheat = code;
 			break;
 		}
 	}
 	if (cheat.empty())
-		return false;
-		
+		return;
+
 	if (cheat == "skotobaza") {
 		/* SECRET ATATAT MODE !! */
 		World->setMode("atatat", true);
+	} else if (cheat == "matrix") {
+		float speed;
+		Config->get("engine.speed", speed, 1.0f);
+		LOG_DEBUG(("current speed = %g", speed));
+		Config->set("engine.speed", (speed <= 0.2f)?1.0f:0.2f);
+		Config->invalidateCachedValues();
 	}
-	return false;
+	return;
 }
