@@ -137,6 +137,17 @@ bool UpperBox::onMouse(const int button, const bool pressed, const int x, const 
 void UpperBox::tick(const float dt) {
 	Container::tick(dt);
 	bool layout = false;
+	bool split;
+	
+	Config->get("multiplayer.split-screen-mode", split, false);
+	if (split) {
+		if (!_player2_name->hidden())
+			_player2_name->hide(false);
+	} else {
+		if (!_player2_name->hidden())
+			_player2_name->hide(true);
+	}
+	
 	if (_player1_name->changed()) {
 		_player1_name->reset();
 		layout = true;
