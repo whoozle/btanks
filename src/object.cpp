@@ -885,29 +885,28 @@ const bool Object::checkDistance(const v2<float> &_map1, const v2<float>& map2, 
 	if (dp.is0())
 		return true;
 	
-	float dp_len = (pfs.x + pfs.y) / 2;
+	float dp_len = pfs.convert<float>().length();
 	float len = dp.normalize(dp_len);
 
 	Map->add(map1, dp);
 	len -= dp_len;
-			
-//	LOG_DEBUG(("%g:%g -> %g:%g (%+g:%+g)", map1.x, map1.y, map2.x, map2.y, dp.x, dp.y));
-	v2<float> dv = Map->distance(map1, map2) * dp;
-	while(len > 0) {
+	
+	//LOG_DEBUG(("%g:%g -> %g:%g (%+g:%+g) step: %g", map1.x, map1.y, map2.x, map2.y, dp.x, dp.y, dp.length()));
+	//do not check map1 and map2 
+	while(len > dp_len) {
 		Map->validate(map1);
 		v2<int> map_pos = map1.convert<int>() / pfs;
-		/*
-		LOG_DEBUG(("(%d,%d): %d", map_pos.x, map_pos.y, matrix.get(map_pos.y, map_pos.x)));
-		if (pmatrix) 
-			LOG_DEBUG(("         %d", pmatrix->get(map_pos.y, map_pos.x)));
-		*/
+		
+		//LOG_DEBUG(("(%d,%d): %d (len: %g)", map_pos.x, map_pos.y, matrix.get(map_pos.y, map_pos.x), len));
+		//if (pmatrix) 
+		//	LOG_DEBUG(("         %d", pmatrix->get(map_pos.y, map_pos.x)));
+		
 		if (matrix.get(map_pos.y, map_pos.x) < 0) {
 			if (pmatrix == NULL || pmatrix->get(map_pos.y, map_pos.x) >= 0)
 				return false;
 		}
 		
 		Map->add(map1, dp);
-		dv = Map->distance(map1, map2) * dp;
 		len -= dp_len;
 	}
 
