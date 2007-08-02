@@ -3,6 +3,7 @@
 #include "nickname.h"
 #include "config.h"
 #include "label.h"
+#include "sdlx/surface.h"
 
 PlayerNameControl::PlayerNameControl(const std::string &label, const std::string &config_key) : 
 	_font(ResourceManager->loadFont("small", true)), _config_key(config_key) {
@@ -16,4 +17,37 @@ PlayerNameControl::PlayerNameControl(const std::string &label, const std::string
 	int sw, sh;
 	_label->getSize(sw, sh);
 	add(sw, 0, _name);
+
+	getSize(sw, sh);
+	_dice = ResourceManager->loadSurface("menu/dice.png");
+
+	_dice_area.x = sw + 2;
+	_dice_area.y = (sh - _dice->getHeight()) / 2;
+	_dice_area.w = _dice->getWidth();
+	_dice_area.h = _dice->getHeight();
+}
+
+bool PlayerNameControl::onMouse(const int button, const bool pressed, const int x, const int y) {
+	if (_dice_area.in(x, y)) {
+		if (!pressed) 
+			return true;
+		std::string name = Nickname::generate();
+		Config->set(_config_key, name);
+		_name->set(name);
+		invalidate(true);
+		return true;
+	} 
+	if (Container::onMouse(button, pressed, x, y))
+		return true;
+	return false;
+}
+
+void PlayerNameControl::render(sdlx::Surface &surface, const int x, const int y) {
+	Container::render(surface, x, y);
+	surface.copyFrom(*_dice, x + _dice_area.x, y + _dice_area.y);
+}
+
+void PlayerNameControl::getSize(int &w, int &h) const {
+	Container::getSize(w, h);
+	w += _dice_area.w + 4;
 }
