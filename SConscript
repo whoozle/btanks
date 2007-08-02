@@ -79,7 +79,7 @@ else:
 
 
 bt = env.SharedLibrary('bt', bt_sources, LIBS=bt_libs, RPATH=['.'])
-Install('#', bt)
+Install('#', bt[0])
 
 
 bt_main_sources = ['src/main.cpp']

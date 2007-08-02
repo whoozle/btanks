@@ -28,7 +28,7 @@ sdlx_sources = 	['cursor.cpp', 'sdl_ex.cpp', 'surface.cpp', 'system.cpp', 'joyst
 	] #  'ttf.cpp', 
 
 sdlx = env.SharedLibrary('sdlx', sdlx_sources, LIBS=libs)
-Install('#', sdlx)
+Install('#', sdlx[0])
 Import('debug')
 
 if debug:
