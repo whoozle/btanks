@@ -141,7 +141,7 @@ void UpperBox::tick(const float dt) {
 	
 	Config->get("multiplayer.split-screen-mode", split, false);
 	if (split) {
-		if (!_player2_name->hidden())
+		if (_player2_name->hidden())
 			_player2_name->hide(false);
 	} else {
 		if (!_player2_name->hidden())
