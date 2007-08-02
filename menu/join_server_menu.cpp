@@ -64,8 +64,9 @@ JoinServerMenu::JoinServerMenu(MainMenu *parent, const int w, const int h) : _pa
 	
 	_join->getSize(bw, bh);
 	add(w - 64 - bw, h - 16 - bh, _join);
-	
-	add((w - _upper_box->w) / 2 - 8, 32, _upper_box);
+
+	_upper_box->getSize(bw, bh);
+	add((w - bw) / 2 - 8, 32, _upper_box);
 
 	sdlx::Rect list_pos(16, 128, host_list_w, h - 256);
 

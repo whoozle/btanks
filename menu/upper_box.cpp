@@ -22,19 +22,18 @@
 #include "sdlx/surface.h"
 #include "sdlx/font.h"
 #include "i18n.h"
+#include "box.h"
 
 UpperBox::UpperBox(int w, int h, const bool server): _w(w), _h(h), _server(server) {
 	_checkbox = ResourceManager->loadSurface("menu/radio.png");
 	Config->get("multiplayer.game-type", value, "deathmatch");
-	Box::init("menu/background_box.png", w, h);
+	add(0, 0, new Box("menu/background_box.png", w, h));
 
 	_medium = ResourceManager->loadFont("medium", true);
 	_big = ResourceManager->loadFont("big", true);
 }
 
 void UpperBox::render(sdlx::Surface &surface, const int x, const int y) {
-	Box::render(surface, x, y);
-	
 	int font_dy = (_big->getHeight() - _medium->getHeight()) / 2;
 	
 	int wt = 0;

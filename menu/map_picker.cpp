@@ -138,7 +138,9 @@ MapPicker::MapPicker(const int w, const int h) : _index(0) {
 	
 	TRY {
 		_upper_box = new UpperBox(w, 80, true);
-		add((w - _upper_box->w) / 2, 32, _upper_box);
+		int cw, ch;
+		_upper_box->getSize(cw, ch);
+		add((w - cw) / 2, 32, _upper_box);
 	} CATCH("StartServerMenu", {delete _upper_box; throw; });
 
 	sdlx::Rect list_pos(0, 128, (w - 64)/3, h - 256);

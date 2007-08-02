@@ -20,14 +20,14 @@
  */
 
 #include <string>
-#include "box.h"
-#include "control.h"
+#include "container.h"
 #include "sdlx/rect.h"
+
 namespace sdlx {
 	class Font;
 }
 
-class UpperBox : public Box {
+class UpperBox : public Container {
 public: 
 	std::string value;
 
