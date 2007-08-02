@@ -230,6 +230,11 @@
 		<string id="shop" lang="fr">Magasin</string>
 		<string id="shop" lang="de">Geschäft</string>
 		
+		<string id="player-name-1">Player name: </string>
+		<string id="player-name-1" lang="ru">Имя игрока: </string>
+		<string id="player-name-2">Second player name: </string>
+		<string id="player-name-2" lang="ru">Имя второго игрока: </string>
+		
 		<area id="language">
 			<string id="language">Language:</string>
 			<string id="language" lang="ru">Язык:</string>
