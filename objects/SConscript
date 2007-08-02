@@ -6,6 +6,8 @@ buildmode = env['mode']
 
 libs = ['bt', 'sdlx', 'mrt']
 env.Prepend(LIBPATH=['#/build/' + buildmode])
+env.Prepend(LIBPATH=['#/build/' + buildmode + '/mrt'])
+env.Prepend(LIBPATH=['#/build/' + buildmode + '/sdlx'])
 
 sources = [
 	'bullet.cpp', 'explosion.cpp', 'single_pose.cpp',
