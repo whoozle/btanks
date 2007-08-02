@@ -19,6 +19,7 @@
 #include "shop.h"
 #include "button.h"
 #include "image_view.h"
+#include "nickname.h"
 
 void CampaignMenu::start() {
 	int ci = _active_campaign->get();
@@ -35,6 +36,7 @@ void CampaignMenu::start() {
 	PlayerSlot &slot = PlayerManager->getSlot(0);
 	std::string cm;
 	Config->get("player.control-method", cm, "keys");
+	Config->get("player.name-1", slot.name, Nickname::generate());
 	slot.createControlMethod(cm);
 
 	std::string object, vehicle;
