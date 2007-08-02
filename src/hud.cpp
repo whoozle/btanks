@@ -136,7 +136,8 @@ void Hud::renderStats(sdlx::Surface &surface) {
 		if (slot.id == -1)
 			continue;
 		surface.fillRect(sdlx::Rect(xp, yp, box_w1, box_h), index2color(surface, p + 1, 255));
-		_font->render(surface, xp + box_w2, yp, mrt::formatString("%s (%s)", slot.name.c_str(), slot.animation.c_str()));
+		const Object * o = slot.getObject();
+		_font->render(surface, xp + box_w2, yp, mrt::formatString("%s (%s)", slot.name.c_str(), o? o->animation.c_str():"-"));
 		std::string score = mrt::formatString("%d", slot.frags);
 		int sw = _font->render(NULL, 0, 0, score);
 		_font->render(surface, xp + background.w - 2 * mx - sw, yp, score);
