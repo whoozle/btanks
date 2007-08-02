@@ -42,6 +42,7 @@ Cheater::Cheater() : _buf_size(0) {
 #include "world.h"
 #include "object.h"
 #include "config.h"
+#include "var.h"
 
 void Cheater::onEvent(const SDL_Event &event) {
 	const SDL_keysym &sym = event.key.keysym;
@@ -80,7 +81,9 @@ void Cheater::onEvent(const SDL_Event &event) {
 		float speed;
 		Config->get("engine.speed", speed, 1.0f);
 		LOG_DEBUG(("current speed = %g", speed));
-		Config->set("engine.speed", (speed <= 0.2f)?1.0f:0.2f);
+		Var v_speed("float");
+		v_speed.f = (speed <= 0.2f)?1.0f:0.2f;
+		Config->setOverride("engine.speed", v_speed);
 		Config->invalidateCachedValues();
 	}
 	return;
