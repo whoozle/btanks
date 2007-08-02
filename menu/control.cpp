@@ -37,7 +37,7 @@ bool Control::onMouseMotion(const int state, const int x, const int y, const int
 }
 
 void Control::invalidate(const bool play_sound) {
-	if (play_sound)
+	if (play_sound && !_changed)
 		Mixer->playSample(NULL, "menu/change.ogg", false);
 	_changed = true;
 }
