@@ -125,15 +125,11 @@ public:
 	const bool torus() const { return _torus; }
 
 	template<typename T>
-	const v2<T> add(const v2<T> &src, const v2<T> &dst) const {
+	void add(v2<T> &src, const v2<T> &dst) const {
+		src += dst;
 		if (!_torus)
-			return src + dst;
-
-		v2<T> result = src + dst;
-
-		validate(result);
-		
-		return result;
+			return;
+		validate(src);
 	}
 
 	void validate(v2<int> &result) const {
