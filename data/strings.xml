@@ -334,6 +334,15 @@
 			<string id="zu" lang="ru">зу</string>
 		</area>
 		<area id="suffixes">
+			<string id="boy">boy</string>
+			<string id="boy" lang="ru">бой</string>
+
+			<string id="bot">bot</string>
+			<string id="bot" lang="ru">бот</string>
+			
+			<string id="droid">droid</string>
+			<string id="droid" lang="ru">дроид</string>
+			
 			<string id="tron">tron</string>
 			<string id="tron" lang="ru">трон</string>
 			
@@ -375,9 +384,6 @@
 
 			<string id="dze">dze</string>
 			<string id="dze" lang="ru">дзе</string>
-
-			<string id="boy">boy</string>
-			<string id="boy" lang="ru">бой</string>
 		</area>
 	</area>
 	
