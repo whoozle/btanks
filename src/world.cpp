@@ -567,6 +567,7 @@ void IWorld::_tick(Object &o, const float dt, const bool do_calculate) {
 		return;
 
 	//LOG_DEBUG(("tick object %p: %d: %s", (void *)&o, o.getID(), o.classname.c_str()));
+	GET_CONFIG_VALUE("engine.speed", float, e_speed, 1.0f);
 
 	const IMap &map = *IMap::get_instance();
 	v2<int> map_size = map.getSize();
@@ -574,7 +575,7 @@ void IWorld::_tick(Object &o, const float dt, const bool do_calculate) {
 TRY {
 
 	if (o.ttl > 0) {
-		o.ttl -= dt;
+		o.ttl -= dt * e_speed;
 		if (o.ttl <= 0) {
 			//dead
 			o.emit("death");
@@ -691,7 +692,7 @@ TRY {
 		
 	if (o.speed == 0) {
 		TRY {
-			o._idle_time += dt;
+			o._idle_time += dt * e_speed;
 			if (o.impassability < 0) {
 				getImpassability(&o, o._position.convert<int>());
 			}
@@ -708,12 +709,12 @@ TRY {
 				o._velocity_fadeout = old_vel;
 		}
 		o._moving_time = 0;
-		o._idle_time += dt;
+		o._idle_time += dt * e_speed;
 		if (o._velocity_fadeout.is0()) 
 			return;
 	} else {
 		o._idle_time = 0;
-		o._moving_time += dt;
+		o._moving_time += dt * e_speed;
 		o._direction = o._velocity;
 	}
 	
@@ -734,8 +735,6 @@ TRY {
 	float map_im_now = o.piercing?0:(map.getImpassability(&o, old_pos, &stuck_map_pos) / 100.0f);
 	float obj_im_now = o.piercing?0:getImpassability(&o, old_pos, &stuck_in, true);
 	float result_im = math::max(map_im_now, obj_im_now);
-	
-	GET_CONFIG_VALUE("engine.speed", float, e_speed, 1.0f);
 	
 	v2<float> dpos = e_speed * o.speed * o._velocity * dt * (1.0f - result_im);
 
