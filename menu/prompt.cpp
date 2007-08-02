@@ -80,11 +80,9 @@ bool Prompt::onKey(const SDL_keysym sym) {
 		return true;
 	}
 	
-	if (_text->onKey(sym))
+	if (_text->onKey(sym) || Container::onKey(sym))
 		return true;
 	
-	if (Container::onKey(sym))
-		return true;
 	return false;
 }
 
