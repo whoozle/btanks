@@ -20,28 +20,41 @@ PlayerNameControl::PlayerNameControl(const std::string &label, const std::string
 
 	Container::getSize(sw, sh);
 	_dice = ResourceManager->loadSurface("menu/dice.png");
+	_edit = ResourceManager->loadSurface("menu/edit.png");
 
-	_dice_area.x = sw + 2;
-	_dice_area.y = (sh - _dice->getHeight()) / 2;
+	_dice_area.x = sw + 4;
+	_dice_area.y = (sh - _edit->getHeight()) / 2;
 	_dice_area.w = _dice->getWidth();
 	_dice_area.h = _dice->getHeight();
+	
+	_edit_area.x = _dice_area.x + _dice_area.w + 6;
+	_edit_area.y = (sh - _edit->getHeight()) / 2;
+	_edit_area.w = _edit->getWidth();
+	_edit_area.h = _edit->getHeight();
 }
 
 bool PlayerNameControl::onMouse(const int button, const bool pressed, const int x, const int y) {
 	if (_dice_area.in(x, y)) {
 		if (!pressed) 
 			return true;
+	
 		std::string name = Nickname::generate();
 		Config->set(_config_key, name);
 		_name->set(name);
 
 		int bw, bh;
 		Container::getSize(bw, bh);
-		_dice_area.x = bw + 2;
+	
+		_dice_area.x = bw + 4;
+		_edit_area.x = _dice_area.x + _dice_area.w + 6;
 
 		invalidate(true);
 		return true;
-	} 
+	}
+	if (_edit_area.in(x, y)) {
+		LOG_DEBUG(("edit name!"));
+		return true;
+	}
 	if (Container::onMouse(button, pressed, x, y))
 		return true;
 	return false;
@@ -50,9 +63,10 @@ bool PlayerNameControl::onMouse(const int button, const bool pressed, const int 
 void PlayerNameControl::render(sdlx::Surface &surface, const int x, const int y) {
 	Container::render(surface, x, y);
 	surface.copyFrom(*_dice, x + _dice_area.x, y + _dice_area.y);
+	surface.copyFrom(*_edit, x + _edit_area.x, y + _edit_area.y);
 }
 
 void PlayerNameControl::getSize(int &w, int &h) const {
 	Container::getSize(w, h);
-	w += _dice_area.w + 4;
+	w += _dice_area.w + _edit_area.w + 10;
 }

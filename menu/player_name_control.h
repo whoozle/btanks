@@ -24,8 +24,8 @@ private:
 	Label * _label, *_name;
 	std::string _config_key;
 	
-	sdlx::Rect _dice_area;
-	const sdlx::Surface * _dice;
+	sdlx::Rect _dice_area, _edit_area;
+	const sdlx::Surface * _dice, *_edit;
 };
 
 #endif
