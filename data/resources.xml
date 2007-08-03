@@ -92,7 +92,8 @@
 	<animation-model id="ziehharmonikaspieler-animation" speed="7">
 		<pose id="hold">0</pose>
 		<pose id="walk">1,2,3,2,4,5,6,5</pose>
-		<pose id="run">7,8,9,10</pose>
+		<pose id="run">1,3,5,2,3</pose>
+		<pose id="thinking">0,1,2,1</pose>
 	</animation-model>
 
 	<animation-model id="dead-man-animation-static" speed="5">
@@ -506,10 +507,10 @@
 	<animation id="dead-civilian-static-1" tile="man01_dead01.png" model="dead-man-animation-static"/>
 	<animation id="civilian-2" tile="man02.png" model="man-animation"/>
 	<animation id="dead-civilian-2" tile="man02_dead01.png" model="dead-man-animation"/>
-	<animation id="dead-civilian-static-2" tile="man02_dead01.png" model="dead-man-animation-static"/>
+	<animation id="dead-civilian-static-2" tile="man02_dead02.png" model="dead-man-animation-static"/>
 	<animation id="civilian-3" tile="man03.png" model="man-animation"/>
 	<animation id="dead-civilian-3" tile="man03_dead01.png" model="dead-man-animation"/>
-	<animation id="dead-civilian-static-3" tile="man03_dead01.png" model="dead-man-animation-static"/>
+	<animation id="dead-civilian-static-3" tile="man03_dead03.png" model="dead-man-animation-static"/>
 
 	<animation id="ziehharmonikaspieler" tile="ziehharmonikaspieler.png" model="ziehharmonikaspieler-animation"/>
 	<animation id="dead-ziehharmonikaspieler" tile="ziehharmonikaspieler_dead.png" model="dead-man-animation"/>
@@ -646,6 +647,8 @@
 	<alias name="oil-barrels" class="explosive" />
  	<alias name="train-smoke" class="single-pose(once)" />
  	<alias name="bomberman-explosion" class="cannon-explosion" />
+
+	<alias name="ziehharmonikaspieler" class="civilian" />
 	
 	<object class="watchtower-with-machinegunner" mass="1000" hp="20" z="200" impassability="1" />
 	<object class="watchtower-with-thrower" mass="1000" hp="20" z="200" impassability="1" />
@@ -749,6 +752,8 @@
 	<object class="thrower" hp="10" speed="100" mass="85" z="-1" ttl="0" />
 	<object class="thrower-in-watchtower" impassability="0" parent="thrower" z="205" ttl="0" />
 	<object class="civilian" hp="20" speed="100" mass="75" z="-1" />
+	<object class="ziehharmonikaspieler" hp="30" speed="80" mass="80" z="-1" />
+
 	<object class="car" hp="20" speed="200" mass="500" />
 	<object class="static-car" parent="car" />
 	<object class="outline" impassability="0" />
