@@ -648,7 +648,7 @@ void IGameMonitor::loadMap(Campaign *campaign, const std::string &name, const bo
 				coord2v(size, value[1]);
 				res.resize(4);
 				
-				SpecialZone zone(SpecialZone(ZBox(pos, size), res[1], res[2], res[3]));
+				SpecialZone zone(ZBox(pos, size), res[1], res[2], res[3]);
 				zone.area = "hints/" + name;
 				PlayerManager->addSpecialZone(zone);
 			} 
