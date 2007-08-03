@@ -333,7 +333,7 @@ void IGame::init(const int argc, char *argv[]) {
 	}
 */
 	if (_autojoin) {
-		onMenu("m-join", address);
+		PlayerManager->startClient(address);
 		if (_main_menu)
 			_main_menu->setActive(false);
 	}
