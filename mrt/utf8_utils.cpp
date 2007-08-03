@@ -32,14 +32,17 @@ void mrt::utf8_add_wchar(std::string &str, const int wchar) {
 const size_t mrt::utf8_backspace(std::string &str, size_t pos) {
 	if (str.empty())
 		return 0;
-	if (pos >= str.size())
-		pos = str.size() - 1;
+	if (pos > str.size())
+		pos = str.size();
 
 	int p;
-	for(p = (int)pos; p >= 0 && (str[p] & 0xc0) == 0x80; --p) {}
+	for(p = (int)pos - 1; (p >= 0) && ((str[p] & 0xc0) == 0x80); --p) {}
 	if (p > 0) {
-		str.resize(p);
-		return p - 1;
+		std::string right;
+		if (pos < str.size())
+			right = str.substr(pos);
+		str = str.substr(0, p) + right;
+		return p;
 	} else {
 		str.clear(); //p <= 0
 		return 0;
@@ -61,5 +64,5 @@ const size_t mrt::utf8_right(const std::string &str, const size_t pos) {
 
 	size_t p;
 	for(p = pos + 1; p < str.size() && (str[p] & 0xc0) == 0x80; ++p) {}
-	return p >= str.size()? str.size() - 1: p;
+	return p >= str.size()? str.size(): p;
 }
