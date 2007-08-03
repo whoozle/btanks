@@ -83,7 +83,7 @@ void OldSchoolDestructableObject::tick(const float dt) {
 	
 	if (_explosions != 0) {
 		int e;
-		Config->get("objects." + registered_name + ".explosions", e, 32);		
+		Config->get("objects." + registered_name + ".explosions", e, 16);		
 		
 		if (_explosions == (e + 1)/2) {
 			--_hops;
@@ -110,9 +110,7 @@ void OldSchoolDestructableObject::tick(const float dt) {
 }
 
 void OldSchoolDestructableObject::onSpawn() {
-	float er; 
-	Config->get("objects." + registered_name + ".explosion-rate", er, 0.1);
-	_spawn.set(er);
+	_spawn.set(0.2f);
 	play("main", true);
 }
 
