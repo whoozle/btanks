@@ -1286,7 +1286,7 @@ void Object::addDamage(Object *from, const bool emitDeath) {
 #include "player_slot.h"
 
 void Object::addDamage(Object *from, const int d, const bool emitDeath) {
-	if (hp == -1 || d == 0 || from == NULL)
+	if (hp < 0 || d == 0 || from == NULL)
 		return;
 	if (isEffectActive("invulnerability"))
 		return;
