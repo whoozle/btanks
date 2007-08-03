@@ -69,7 +69,7 @@ bool IConsole::onKey(const SDL_keysym sym, const bool pressed) {
 		break;
 
 	case SDLK_BACKSPACE: {
-		mrt::utf8_backspace(_buffer.back().first, _buffer.back().first.size() - 1);
+		mrt::utf8_backspace(_buffer.back().first, _buffer.back().first.size());
 		if (_buffer.back().first.empty())
 			_buffer.back().first = ">";
 		break;

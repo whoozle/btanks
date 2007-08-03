@@ -21,6 +21,7 @@
 #include "sdlx/font.h"
 #include "config.h"
 #include "sound/mixer.h"
+#include "mrt/utf8_utils.h"
 #include <stdlib.h>
 
 void TextControl::changing() const {
@@ -95,13 +96,11 @@ bool TextControl::onKey(const SDL_keysym sym) {
 		break;
 
 	case SDLK_LEFT: 
-		if (_cursor_position > 0) 
-			--_cursor_position;
+		_cursor_position = mrt::utf8_left(_text, _cursor_position);
 		break;
 
 	case SDLK_RIGHT: 
-		if (_cursor_position < _text.size()) 
-			++_cursor_position;
+		_cursor_position = mrt::utf8_right(_text, _cursor_position);
 		break;
 		
 	case SDLK_BACKSPACE:
@@ -110,25 +109,32 @@ bool TextControl::onKey(const SDL_keysym sym) {
 			break;
 		}
 		if (!_text.empty() && _cursor_position > 0) {
-			_text.erase(--_cursor_position, 1);
+			_cursor_position = mrt::utf8_backspace(_text, _cursor_position);
 		}
 		break;
 
-	case SDLK_DELETE:
-		if (_cursor_position < _text.size())
-			_text.erase(_cursor_position, 1);
+	case SDLK_DELETE: {
+		if (_cursor_position >= _text.size())
+			break;
+		size_t r = mrt::utf8_right(_text, _cursor_position);
+		mrt::utf8_backspace(_text, r);
+		}
 		break;
 		
 	default: {
 		int c = sym.unicode;
 		//LOG_DEBUG(("%d", c));
-		if (c >= SDLK_SPACE && c < 128) {
+		if (c >= SDLK_SPACE) {
 			if (validate(_cursor_position, c)) {
 				if (_cursor_position >= _text.size()) {
-					_text += c;
-				} else 
-					_text.insert(_cursor_position, 1, (char)c);
-				++_cursor_position;
+					mrt::utf8_add_wchar(_text, c);
+					_cursor_position = _text.size();
+				} else {
+					std::string chr;
+					mrt::utf8_add_wchar(chr, c);
+					_text.insert(_cursor_position, chr);
+					_cursor_position += chr.size();
+				}
 				return true;
 			} 
 		}
