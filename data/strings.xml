@@ -239,6 +239,7 @@
 			<string id="language">Language:</string>
 			<string id="language" lang="ru">Язык:</string>
 			<string id="language" lang="fr">Langue :</string>
+			<string id="language" lang="de">Sprache:</string>	
 			<string id="default">System Default</string>
 			<string id="default" lang="ru">Системный</string>
 			<string id="default" lang="fr">Par défaut</string>
