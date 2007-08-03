@@ -27,6 +27,7 @@
 #include "version.h"
 #include "finder.h"
 #include "resource_manager.h"
+#include "mrt/utf8_utils.h"
 
 IMPLEMENT_SINGLETON(Console, IConsole);
 
@@ -68,10 +69,9 @@ bool IConsole::onKey(const SDL_keysym sym, const bool pressed) {
 		break;
 
 	case SDLK_BACKSPACE: {
-		std::string &line = _buffer.back().first;
-		if (line.size() > 1)
-			line.resize(line.size() - 1);
-		
+		mrt::utf8_backspace(_buffer.back().first, _buffer.back().first.size() - 1);
+		if (_buffer.back().first.empty())
+			_buffer.back().first = ">";
 		break;
 	}			
 
@@ -94,8 +94,8 @@ bool IConsole::onKey(const SDL_keysym sym, const bool pressed) {
 
 	default: {
 		std::string &line = _buffer.back().first;
-		if (sym.unicode >= SDLK_SPACE && sym.unicode < 128)
-			line += (char)sym.unicode;	
+		if (sym.unicode >= SDLK_SPACE)
+			mrt::utf8_add_wchar(line, sym.unicode);
 		}
 	} 
 	return true;
