@@ -23,7 +23,7 @@ sources = [
 	'cannon.cpp', 'boat.cpp', 'poison.cpp', 'old_school_destructable.cpp', 
 	'zombie.cpp', 'civilian.cpp', 'teleport.cpp', 'cow.cpp', 
 	'heli.cpp', 'bomb.cpp', 'explosive.cpp', 'mortar.cpp',
-	'sandworm.cpp', 'boss1.cpp', 'barrier.cpp', 'pillbox.cpp', 
+	'sandworm.cpp', 'barrier.cpp', 'pillbox.cpp'
 ]
 
 bt_obj = env.SharedLibrary('bt_objects', sources, LIBS=libs)
