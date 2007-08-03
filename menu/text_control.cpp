@@ -95,6 +95,14 @@ bool TextControl::onKey(const SDL_keysym sym) {
 		invalidate();
 		break;
 
+	case SDLK_HOME: 
+		_cursor_position = 0;
+		break;
+		
+	case SDLK_END:
+		_cursor_position = _text.size();
+		break;
+
 	case SDLK_LEFT: 
 		_cursor_position = mrt::utf8_left(_text, _cursor_position);
 		break;
