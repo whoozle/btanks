@@ -69,7 +69,7 @@ void OldSchoolDestructableObject::addDamage(Object *from, const int dhp, const b
 		return;
 
 	Object::addDamage(from, dhp, false);
-	if (hp <= 0) {
+	if (hp <= 0 && _explosions == 0) {
 		Config->get("objects." + registered_name + ".explosions", _explosions, 16);		
 		hp = -1;
 	}
@@ -83,7 +83,7 @@ void OldSchoolDestructableObject::tick(const float dt) {
 	
 	if (_explosions != 0) {
 		int e;
-		Config->get("objects." + registered_name + ".explosions", e, 16);		
+		Config->get("objects." + registered_name + ".explosions", e, 32);		
 		
 		if (_explosions == (e + 1)/2) {
 			--_hops;
