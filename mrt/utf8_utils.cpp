@@ -29,18 +29,21 @@ void mrt::utf8_add_wchar(std::string &str, const int wchar) {
 		str += '?';
 }
 
-void mrt::utf8_backspace(std::string &str, size_t pos) {
+const size_t mrt::utf8_backspace(std::string &str, size_t pos) {
 	if (str.empty())
-		return;
+		return 0;
 	if (pos >= str.size())
 		pos = str.size() - 1;
 
 	int p;
-	for(p = (int)str.size() - 1; p >= 0 && (str[p] & 0xc0) == 0x80; --p) {}
-	if (p > 0)
+	for(p = (int)pos; p >= 0 && (str[p] & 0xc0) == 0x80; --p) {}
+	if (p > 0) {
 		str.resize(p);
-	else 
+		return p - 1;
+	} else {
 		str.clear(); //p <= 0
+		return 0;
+	}
 }
 
 const size_t mrt::utf8_left(const std::string &str, const size_t pos) {
