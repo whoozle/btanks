@@ -52,7 +52,7 @@ UpperBox::UpperBox(int _w, int _h, const bool server) : _server(server) {
 	add(w - cw1 - 2 * mx, my + (h - (ch1 + ch2) - dh) / 2 - ch1, _player1_name);
 	add(w - cw2 - 2 * mx, my + (h - (ch1 + ch2) + dh) / 2, _player2_name);
 
-	_name_prompt = new Prompt(320, 64, new TextControl("medium"));
+	_name_prompt = new Prompt(320, 64, new TextControl("small"));
 	int nw, nh;
 	getSize(w, h);
 	_name_prompt->getSize(nw, nh);
@@ -161,8 +161,8 @@ void UpperBox::tick(const float dt) {
 		_player1_name->reset();
 		if (_player1_name->edit()) {
 			_edit_player1 = true;
-			_name_prompt->set(_player1_name->get());
 			_name_prompt->hide(false);
+			_name_prompt->set(_player1_name->get());
 			_name_prompt->reset();
 		} else 
 			layout = true;
@@ -173,8 +173,8 @@ void UpperBox::tick(const float dt) {
 		_player2_name->reset();
 		if (_player2_name->edit()) {
 			_edit_player1 = false;
-			_name_prompt->set(_player2_name->get());
 			_name_prompt->hide(false);
+			_name_prompt->set(_player2_name->get());
 			_name_prompt->reset();
 		} else 
 			layout = true;
@@ -186,6 +186,8 @@ void UpperBox::tick(const float dt) {
 		std::string name = _name_prompt->get();
 		if (!name.empty()) {
 			LOG_DEBUG(("setting name to %s", name.c_str()));
+			(_edit_player1?_player1_name:_player2_name)->set(name);
+			layout = true;
 		}
 	}
 	
