@@ -33,6 +33,10 @@ PlayerNameControl::PlayerNameControl(const std::string &label, const std::string
 	_edit_area.h = _edit->getHeight();
 }
 
+const std::string PlayerNameControl::get() const {
+	return _name->get();
+}
+
 bool PlayerNameControl::onMouse(const int button, const bool pressed, const int x, const int y) {
 	if (_dice_area.in(x, y)) {
 		if (pressed) 

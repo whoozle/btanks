@@ -19,6 +19,7 @@ public:
 	virtual void getSize(int &w, int &h) const;
 	virtual bool onMouse(const int button, const bool pressed, const int x, const int y);
 	const bool edit() const { return _edit_flag; }
+	const std::string get() const;
 
 private: 
 	const sdlx::Font * _font;
