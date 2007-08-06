@@ -24,6 +24,8 @@
 #include "i18n.h"
 #include "box.h"
 #include "player_name_control.h"
+#include "prompt.h"
+#include "text_control.h"
 
 UpperBox::UpperBox(int _w, int _h, const bool server) : _server(server) {
 	_checkbox = ResourceManager->loadSurface("menu/radio.png");
@@ -49,6 +51,13 @@ UpperBox::UpperBox(int _w, int _h, const bool server) : _server(server) {
 	const int dh = 8;
 	add(w - cw1 - 2 * mx, my + (h - (ch1 + ch2) - dh) / 2 - ch1, _player1_name);
 	add(w - cw2 - 2 * mx, my + (h - (ch1 + ch2) + dh) / 2, _player2_name);
+
+	_name_prompt = new Prompt(320, 64, new TextControl("medium"));
+	int nw, nh;
+	getSize(w, h);
+	_name_prompt->getSize(nw, nh);
+	add(w - nw, (h - nh) / 2, _name_prompt);
+	_name_prompt->hide();
 }
 
 void UpperBox::layout() {

@@ -29,6 +29,7 @@ namespace sdlx {
 
 class Box;
 class PlayerNameControl;
+class Prompt;
 
 class UpperBox : public Container {
 public: 
@@ -48,6 +49,7 @@ private:
 	Box   *_box;
 	
 	PlayerNameControl *_player1_name, *_player2_name;
+	Prompt *_name_prompt;
 };
 
 #endif

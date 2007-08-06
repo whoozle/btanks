@@ -136,13 +136,6 @@ MapPicker::MapPicker(const int w, const int h) : _index(0) {
 	if (_index >= (int)_maps.size())
 		_index = 0;
 	LOG_DEBUG(("map index: %d", _index));
-	
-	TRY {
-		_upper_box = new UpperBox(w, 80, true);
-		int cw, ch;
-		_upper_box->getSize(cw, ch);
-		add((w - cw) / 2, 32, _upper_box);
-	} CATCH("StartServerMenu", {delete _upper_box; throw; });
 
 	sdlx::Rect list_pos(0, 128, (w - 64)/3, h - 256);
 	_list = NULL;
@@ -171,6 +164,13 @@ MapPicker::MapPicker(const int w, const int h) : _index(0) {
 		add(map_pos.x, map_pos.y, _details);
 	} CATCH("MapPicker::ctor", {delete _details; throw; });
 
+	
+	TRY {
+		_upper_box = new UpperBox(w, 80, true);
+		int cw, ch;
+		_upper_box->getSize(cw, ch);
+		add((w - cw) / 2, 32, _upper_box);
+	} CATCH("StartServerMenu", {delete _upper_box; throw; });
 
 }
 
