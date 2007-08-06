@@ -20,6 +20,7 @@ public:
 	virtual bool onMouse(const int button, const bool pressed, const int x, const int y);
 	const bool edit() const { return _edit_flag; }
 	const std::string get() const;
+	void set(const std::string &name);
 
 private: 
 	const sdlx::Font * _font;

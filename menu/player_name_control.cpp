@@ -37,12 +37,7 @@ const std::string PlayerNameControl::get() const {
 	return _name->get();
 }
 
-bool PlayerNameControl::onMouse(const int button, const bool pressed, const int x, const int y) {
-	if (_dice_area.in(x, y)) {
-		if (pressed) 
-			return true;
-	
-		std::string name = Nickname::generate();
+void PlayerNameControl::set(const std::string &name) {
 		Config->set(_config_key, name);
 		_name->set(name);
 
@@ -54,6 +49,15 @@ bool PlayerNameControl::onMouse(const int button, const bool pressed, const int 
 
 		_edit_flag = false;
 		invalidate(true);
+}
+
+bool PlayerNameControl::onMouse(const int button, const bool pressed, const int x, const int y) {
+	if (_dice_area.in(x, y)) {
+		if (pressed) 
+			return true;
+	
+		std::string name = Nickname::generate();
+		set(name);
 		return true;
 	}
 	if (_edit_area.in(x, y)) {
