@@ -50,6 +50,7 @@ private:
 	
 	PlayerNameControl *_player1_name, *_player2_name;
 	Prompt *_name_prompt;
+	bool _edit_player1;
 };
 
 #endif

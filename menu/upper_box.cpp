@@ -159,12 +159,36 @@ void UpperBox::tick(const float dt) {
 	
 	if (_player1_name->changed()) {
 		_player1_name->reset();
-		layout = true;
+		if (_player1_name->edit()) {
+			_edit_player1 = true;
+			_name_prompt->set(_player1_name->get());
+			_name_prompt->hide(false);
+			_name_prompt->reset();
+		} else 
+			layout = true;
 	}
+	
+	//copypasteninja was here.
 	if (_player2_name->changed()) {
 		_player2_name->reset();
-		layout = true;
+		if (_player2_name->edit()) {
+			_edit_player1 = false;
+			_name_prompt->set(_player2_name->get());
+			_name_prompt->hide(false);
+			_name_prompt->reset();
+		} else 
+			layout = true;
 	}
+	
+	if (_name_prompt->changed()) {
+		_name_prompt->reset();
+		_name_prompt->hide();
+		std::string name = _name_prompt->get();
+		if (!name.empty()) {
+			LOG_DEBUG(("setting name to %s", name.c_str()));
+		}
+	}
+	
 	if (layout)
 		this->layout();
 }
