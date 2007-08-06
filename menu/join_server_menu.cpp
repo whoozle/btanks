@@ -65,14 +65,14 @@ JoinServerMenu::JoinServerMenu(MainMenu *parent, const int w, const int h) : _pa
 	_join->getSize(bw, bh);
 	add(w - 64 - bw, h - 16 - bh, _join);
 
-	_upper_box->getSize(bw, bh);
-	add((w - bw) / 2 - 8, 32, _upper_box);
-
 	sdlx::Rect list_pos(16, 128, host_list_w, h - 256);
 
 	_hosts = new HostList("multiplayer.recent-hosts", list_pos.w, list_pos.h);
 	add(list_pos.x, list_pos.y, _hosts);
 	
+	_upper_box->getSize(bw, bh);
+	add((w - bw) / 2 - 8, 32, _upper_box);
+
 	sdlx::Rect map_pos(list_pos.x + list_pos.w + 16, 128, (w - 64) / 3, h - 256);
 
 	_details = new MapDetails(map_pos.w, map_pos.h);
