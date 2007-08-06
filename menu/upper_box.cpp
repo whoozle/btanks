@@ -153,8 +153,8 @@ void UpperBox::tick(const float dt) {
 		layout = true;
 	}
 	if (_player2_name->changed()) {
-		layout = true;
 		_player2_name->reset();
+		layout = true;
 	}
 	if (layout)
 		this->layout();

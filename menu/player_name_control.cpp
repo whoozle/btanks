@@ -6,7 +6,7 @@
 #include "sdlx/surface.h"
 
 PlayerNameControl::PlayerNameControl(const std::string &label, const std::string &config_key) : 
-	_font(ResourceManager->loadFont("small", true)), _config_key(config_key) {
+	_font(ResourceManager->loadFont("small", true)), _config_key(config_key), _edit_flag(false) {
 	std::string name;
 	Config->get(config_key, name, Nickname::generate());
 
@@ -35,7 +35,7 @@ PlayerNameControl::PlayerNameControl(const std::string &label, const std::string
 
 bool PlayerNameControl::onMouse(const int button, const bool pressed, const int x, const int y) {
 	if (_dice_area.in(x, y)) {
-		if (!pressed) 
+		if (pressed) 
 			return true;
 	
 		std::string name = Nickname::generate();
@@ -48,11 +48,17 @@ bool PlayerNameControl::onMouse(const int button, const bool pressed, const int 
 		_dice_area.x = bw + 4;
 		_edit_area.x = _dice_area.x + _dice_area.w + 6;
 
+		_edit_flag = false;
 		invalidate(true);
 		return true;
 	}
 	if (_edit_area.in(x, y)) {
-		LOG_DEBUG(("edit name!"));
+		if (pressed)
+			return true;
+		_edit_flag = true;
+		invalidate(true);
+		
+		//LOG_DEBUG(("edit name!"));
 		return true;
 	}
 	if (Container::onMouse(button, pressed, x, y))

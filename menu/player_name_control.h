@@ -18,6 +18,7 @@ public:
 	void render(sdlx::Surface &surface, const int x, const int y);
 	virtual void getSize(int &w, int &h) const;
 	virtual bool onMouse(const int button, const bool pressed, const int x, const int y);
+	const bool edit() const { return _edit_flag; }
 
 private: 
 	const sdlx::Font * _font;
@@ -26,6 +27,7 @@ private:
 	
 	sdlx::Rect _dice_area, _edit_area;
 	const sdlx::Surface * _dice, *_edit;
+	bool _edit_flag;
 };
 
 #endif
