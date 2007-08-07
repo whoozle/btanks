@@ -92,6 +92,22 @@ public:
 		setDirection(getRelativePosition(o).getDirection(dirs));
 	}
 
+	virtual void serialize(mrt::Serializator &s) const {
+		Object::serialize(s);
+		s.add(_thinking_timer);
+		s.add(_guard_timer);
+		s.add(_thinking);
+		s.add(_guard);
+	}
+
+	virtual void deserialize(const mrt::Serializator &s) {
+		Object::deserialize(s);
+		s.get(_thinking_timer);
+		s.get(_guard_timer);
+		s.get(_thinking);
+		s.get(_guard);
+	}
+
 	Object *clone() const { return new AICivilian(*this); }
 private: 
 	Alarm _thinking_timer, _guard_timer;
