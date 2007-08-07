@@ -81,7 +81,7 @@ void Trooper::onSpawn() {
 
 void Trooper::emit(const std::string &event, Object * emitter) {
 	if (event == "death") {
-		spawn("corpse(human-death)", (registered_name.substr(0, 8) == "civilian")? "dead-civilian-1": "dead-machinegunner", v2<float>(), v2<float>());
+		spawn("corpse(human-death)", "dead-" + registered_name, v2<float>(), v2<float>());
 	} else if (event == "collision" && emitter != NULL && emitter->classname == "vehicle") {
 		if (_velocity.same_sign(getRelativePosition(emitter)) &&
 			attachVehicle(emitter))
