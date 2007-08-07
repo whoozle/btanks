@@ -1213,6 +1213,17 @@ void IMap::deserialize(const mrt::Serializator &s) {
 		s.get(value);
 		properties.insert(PropertyMap::value_type(name, value));
 	}
+
+	{
+		PropertyMap::const_iterator p = properties.find("config:map.torus");
+		if (p != properties.end()) {
+			if (p->second.find("true") != std::string::npos) {
+				_torus = true;
+				LOG_DEBUG(("torus mode switched on..."));
+			}
+		}
+	}
+
 	load_map_signal.emit();
 }
 	
