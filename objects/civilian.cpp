@@ -93,7 +93,7 @@ public:
 	}
 
 	virtual void serialize(mrt::Serializator &s) const {
-		Object::serialize(s);
+		Civilian::serialize(s);
 		s.add(_thinking_timer);
 		s.add(_guard_timer);
 		s.add(_thinking);
@@ -101,7 +101,7 @@ public:
 	}
 
 	virtual void deserialize(const mrt::Serializator &s) {
-		Object::deserialize(s);
+		Civilian::deserialize(s);
 		s.get(_thinking_timer);
 		s.get(_guard_timer);
 		s.get(_thinking);
