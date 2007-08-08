@@ -207,7 +207,7 @@
 			<property name="impassability" value="60"/>
 		</properties>
 		<data encoding="base64" compression="gzip">
-			H4sIAAAAAAAAC+3VMQoAIAwDwPpl36D/tqOiUJIqOEQQpyRwi2b5U0u+g2nQLqOGZ+SMmzEJOTNqeEbOuBmTkDOjhmci5+b/c/c7v/jKnoh2b2ycOrT7SnbtlfO/zgPlJX0kuAsAAA==
+			H4sIAAAAAAAAC+3QsQ0AIAzEwLAy+xeMgOy0Tu+PdDP7u2e/YRb6a9R4kzM3M0XORo03OXMzU+Rs1HiTMzczRc5GjTc5/80exWSjG7gLAAA=
 		</data>
 	</layer>
 	<layer name="road" width="30" height="25">
@@ -215,7 +215,7 @@
 			<property name="impassability" value="10"/>
 		</properties>
 		<data encoding="base64" compression="gzip">
-			H4sIAAAAAAAAC2NgoD7IZ6S+mcSYWDlA9o76l5jYoVzNaPxSHobEmDCanokJJcrVjKZnysOQGBMGc3puBdZZLUBMCZ2Bpj8NzUxiwmhUzWgIjIYAaggM5nIDAJKZkt64CwAA
+			H4sIAAAAAAAAC2NgoD7IZ6S+mcSYWDlA9o76l5jYoVzNaPxSHobEmDCanokJJcrVjKZnysOQGBMGc3puBdZZLUBMCZ2BZAbInDQ0M2HmI9tBTLiNqhkNgZEcAoO53AAAgoJFPLgLAAA=
 		</data>
 	</layer>
 	<layer name="tracks high" width="30" height="25">
