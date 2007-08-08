@@ -909,7 +909,11 @@ const bool IPlayerManager::isServerActive() const {
 void IPlayerManager::onPlayerDeath(const Object *player, const Object *killer) {
 	if (isClient())
 		return;
-	
+	{
+		PlayerSlot *player_slot = getSlotByID(player->getID());
+		if (player_slot == NULL)
+			return;
+	}
 	PlayerSlot *slot = NULL;
 
 	std::deque<int> owners;
@@ -929,7 +933,7 @@ void IPlayerManager::onPlayerDeath(const Object *player, const Object *killer) {
 	if (killer->getID() == slot->id) 
 		return; //skip attachVehicle() call. magic. :)
 	
-	//LOG_DEBUG(("player: %s killed by %s", player->registered_name.c_str(), killer->registered_name.c_str()));
+	LOG_DEBUG(("player: %s killed by %s", player->registered_name.c_str(), killer->registered_name.c_str()));
 		
 	if (slot->id == player->getID()) { //suicide
 		if (slot->frags > 0)
