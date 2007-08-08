@@ -1247,6 +1247,9 @@ void IWorld::serialize(mrt::Serializator &s) const {
 		const Object *o = i->second;
 		serializeObject(s, o);
 	}
+
+	GET_CONFIG_VALUE("engine.speed", float, e_speed, 1.0f);
+	s.add(e_speed);
 }
 
 Object * IWorld::deserializeObject(const mrt::Serializator &s) {
@@ -1319,6 +1322,8 @@ void IWorld::cropObjects(const std::set<int> &ids) {
 	}
 }
 
+#include "var.h"
+
 void IWorld::deserialize(const mrt::Serializator &s) {
 TRY {
 	s.get(_last_id);
@@ -1335,6 +1340,17 @@ TRY {
 			recv_ids.insert(obj->_id);
 	}
 	cropObjects(recv_ids);	
+	float speed;
+	s.get(speed);
+	GET_CONFIG_VALUE("engine.speed", float, e_speed, 1.0f);
+	if (speed != e_speed) {
+		Var v;
+		v.type = "float";
+		v.f = speed;
+		Config->setOverride("engine.speed", v);
+		Config->invalidateCachedValues();
+	}
+	
 } CATCH("World::deserialize()", throw;);
 	//LOG_DEBUG(("deserialization completed successfully"));
 }
