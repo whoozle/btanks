@@ -918,7 +918,7 @@ const int Object::getTargetPosition(v2<float> &relative_position, const std::set
 		return -1;
 
 	const v2<int> pfs = Map->getPathTileSize();
-	const int dirs = _directions_n;
+	const int dirs = _directions_n == 1?16:_directions_n;
 	const Matrix<int> &matrix = getImpassabilityMatrix();
 	
 	std::set<const Object *> objects;
@@ -997,7 +997,7 @@ const int Object::getTargetPosition(v2<float> &relative_position, const v2<float
 	if (aiDisabled())
 		return -1;
 
-	const int dirs = _directions_n;
+	const int dirs = _directions_n == 1?16:_directions_n;
 
 	double dist = target.length();
 	if (dist > range) 

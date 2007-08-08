@@ -642,7 +642,7 @@ TRY {
 				}
 			} CATCH("calling o.calculate", throw;)
 		}
-		if (o._velocity.is0()) 
+		if (o._velocity.is0() && o.getDirectionsNumber() > 1) 
 			o._velocity.fromDirection(o._direction_idx, o.getDirectionsNumber());
 				
 	} else {
