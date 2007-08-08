@@ -28,6 +28,7 @@ void CampaignMenu::start() {
 	LOG_DEBUG(("campaign: %s, map: %s", campaign.name.c_str(), map.id.c_str()));
 	//ensure world is created 
 	Game->clear();
+	PlayerManager->startServer();
 	GameMonitor->loadMap(&campaign, map.id);
 
 	if (PlayerManager->getSlotsCount() <= 0)
@@ -45,7 +46,6 @@ void CampaignMenu::start() {
 	slot.spawnPlayer(object, vehicle);
 	PlayerManager->setViewport(0, Window->getSize());
 	
-	PlayerManager->startServer();	
 	_invalidate_me = true;
 }
 
