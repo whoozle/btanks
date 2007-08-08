@@ -81,6 +81,7 @@
 		<pose id="dead">6</pose>
 	</animation-model>
 
+
 	<animation-model id="dead-zombie-animation" speed="5">
 		<pose id="fade-in">0,1</pose>
 		<pose id="burn">2,3,4,5</pose>
@@ -507,10 +508,10 @@
 	<animation id="dead-civilian-static-1" tile="man01_dead01.png" model="dead-man-animation-static"/>
 	<animation id="civilian-2" tile="man02.png" model="man-animation"/>
 	<animation id="dead-civilian-2" tile="man02_dead01.png" model="dead-man-animation"/>
-	<animation id="dead-civilian-static-2" tile="man02_dead02.png" model="dead-man-animation-static"/>
+	<animation id="dead-civilian-static-2" tile="man02_dead01.png" model="dead-man-animation-static"/>
 	<animation id="civilian-3" tile="man03.png" model="man-animation"/>
 	<animation id="dead-civilian-3" tile="man03_dead01.png" model="dead-man-animation"/>
-	<animation id="dead-civilian-static-3" tile="man03_dead03.png" model="dead-man-animation-static"/>
+	<animation id="dead-civilian-static-3" tile="man03_dead01.png" model="dead-man-animation-static"/>
 
 	<animation id="ziehharmonikaspieler" tile="ziehharmonikaspieler.png" model="ziehharmonikaspieler-animation"/>
 	<animation id="dead-ziehharmonikaspieler" tile="ziehharmonikaspieler_dead.png" model="dead-man-animation"/>
@@ -592,6 +593,8 @@
 	<animation id="kamikaze" model="man-animation" tile="kamikaze.png" />
 	<animation id="machinegunner" model="trooper-animation" tile="machinegunner.png" />
 	<animation id="dead-machinegunner" model="dead-man-animation" tile="machinegunner_dead.png" />
+	<animation id="dead-machinegunner-in-watchtower" model="dead-man-animation" tile="machinegunner_dead.png" />
+
 
 	<animation id="road-sign01" model="destructable-object-animation" tile="road_sign01.png" size="32" />
 	<animation id="road-sign02" model="destructable-object-animation" tile="road_sign02.png" size="32" />
