@@ -82,7 +82,6 @@ void Grid::update(GridMatrix &grid, const v2<int> &grid_size, const int id, cons
 		SetVector &row = grid[wrap(y, grid.size())];
 		const int x2 = _wrap? end.x: math::min((int)grid[y].size() - 1, end.x);
 		for(int x = x1; x <= x2; ++x) {
-			assert(x >= 0);
 			row[wrap(x, row.size())].insert(id);
 		}
 	}
