@@ -29,8 +29,11 @@ public:
 	KeyPlayer(const std::string &variant);
 	virtual void updateState(PlayerSlot &slot, PlayerState &state);
 	virtual void probe() const {} //always present
+	static void disable() { _disabled = true; }
+	static void enable() { _disabled = false; }
 private:
 	SDLKey _up, _down, _left, _right, _fire, _alt_fire, leave, _hint_control;
+	static bool _disabled;
 };
 
 #endif

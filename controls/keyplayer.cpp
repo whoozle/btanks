@@ -27,6 +27,8 @@
 #include "world.h"
 #include "config.h"
 
+bool KeyPlayer::_disabled;
+
 KeyPlayer::KeyPlayer(const std::string &variant) {
 	int up, down, left, right, fire, alt_fire, leave, hint_control;
 
@@ -60,6 +62,9 @@ KeyPlayer::KeyPlayer(const std::string &variant) {
 }
 
 void KeyPlayer::updateState(PlayerSlot &slot, PlayerState &state) {
+	if (_disabled)
+		return;
+	
 	static const Uint8 *keys = SDL_GetKeyState(0);
 	state.left = keys[_left] != 0;
 	state.right = keys[_right] != 0;
