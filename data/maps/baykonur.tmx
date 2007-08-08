@@ -405,7 +405,7 @@
 		<property name="zone:checkpoint:3" value="@18,0:@8,2"/>
 		<property name="zone:checkpoint:4" value="@38,14:@2,3"/>
 		<property name="zone:hint:start" value="@31,49:@6,3"/>
-		<property name="zone:message:destroy-spaceport:1" value="@42,8:@7,8"/>
+		<property name="zone:message:destroy-spaceport:1" value="@42,6:@9,10"/>
 	</properties>
 	<tileset name="terrains" firstgid="1" tilewidth="64" tileheight="64">
 		<image source="../tilesets/terrains.png"/>
@@ -482,7 +482,7 @@
 	</layer>
 	<layer name="dirty hack" width="50" height="50">
 		<data encoding="base64" compression="gzip">
-			H4sIAAAAAAAAC+2ZzW4CMQyEeZhybMutP7dSblDesL22j9mMxEiWZbLJsvEmIUgRElqIP8/Yzi6bzXiNDIwMjAyMDIwM3G8G9gH9swP8wVGXiL3ocQpp/QmrB56XTjg+OuGAHj28qEfrNcL6aJ3j2FnParFGHkLQWxF4qz3rKTA8C45WvaX1AFKL81DrAY5WvaXrukU9rN5USg/OJa/5VKLWcZ7+DgvvWF9Ozb0Ey7tT7HqbpVkOK3FgW82iPZ7jeYvDs6eARd8vXuPRKed1qI2zoUepnhKTntogJtQpFmvWuieeYlhz5oLFyis+B5fkIYflp8dw7WtYfyvWTIpmMS3AgPg95gj22s3MlfS8pYXXfSfzpfs9vfA2wci+AJ9ZHvS479Saw8OIm17GM2CsW2Ya9Zgpd/RrjFf6VvpX99nfC9uUNtam1KMER+48QAz8DphyaqmkHqkcOodzWGp9TiZZ6M+YPvJ8UMJbS/wmmVL6AM8HS+y79G/EZnis5mv7LyxHD3CtcU5M0S637j3P7Snxy2tyWGrVgzypLDXrkcriee7N9dS1OWn14RLnxX+9zFxSECcAAA==
+			H4sIAAAAAAAAC+2YSU4EMQxF+ygsYMmwY9gx7BjuxEFgC8ckX+JLluVKJU3FiYu0FLXUqu74+X/bSR8O8zUzMDMwMzAzMDPwfzPwkNAfd4AfneM9aYA1OcYwI/V4SeF8BtaFHMjq9U447gNzSHdDj6ivExE49Yjeu1gf0Tmeg/esPdTIaYI4M2ok2lnrIjFcCo6o3tJ6RJ2HWg9w7GkeRu+9LfVgbrxy1KLWcZ7+SAvvWK9OB6AWLHdOsetttmZ56sSBbTWL9niN5y0OzzsPWPR9cYlHp5zPoTbeDD169Hhqg5hQp1isWetOvMbQc+aCxcorPgeX5CGH5afz9OxNWt8daya3ta4ny09gQPwecwR7XR2ZK+l5Swuveyfzpfs9vXC7wsi+AJ9ZHvS4d2rN4WHETS/jXoL1l5lGPY6UO/s1xit9K/2r++zXL9uaNtam1KMFR+08QAz8DphqaqmlHqUcS3OuhmXU/8mkLvRnTh95PmjhrS1+k0wlfYCzZot9t/6N3AzP1fxo/8/U6AGuHufEEu1qe5jnub0kfvlMDcuoepCnlGVkPUpZPM+9tZ5ampNWH25xXvwBvK/n8xAnAAA=
 		</data>
 	</layer>
 	<layer name="waste" width="50" height="50">
