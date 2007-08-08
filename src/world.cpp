@@ -379,11 +379,11 @@ const bool IWorld::collides(Object *obj, const v2<int> &position, Object *o, con
 				o->emit("collision", obj);
 				obj->emit("collision", o);
 			
-				if (o->isDead() && o->disable_ai) {
+				if (o->isDead()) {
 					PlayerManager->onPlayerDeath(o, obj);
 				}
 
-				if (obj->isDead() && obj->disable_ai) {
+				if (obj->isDead()) {
 					PlayerManager->onPlayerDeath(obj, o);
 				}
 			
