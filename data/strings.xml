@@ -609,7 +609,7 @@
 		<string id="clouds" lang="fr">Les nuages sont empoisonnés. Vous pouvez tuer des soldats avec ça.</string>
 		<string id="clouds" lang="de">Die Rauchraketen sind sehr giftig. Damit können Sie die gegnerische Truppen neutralisieren.</string>
 
-		<string id="screenshot">You can make a screenshot by pressing "Shift-S". Pressing "Shift-M" you can make snapshot of whole map.</string>
+		<string id="screenshot">You can take screenshots with "Shift-S". "Shift-M" takes a screenshot of whole map.</string>
 		<string id="screenshot" lang="ru">Вы можете сделать скриншот игры, просто нажав "Shift-S". А нажав "Shift-M" вы сделаете снимок всей карты!</string>
                         
 		<string id="fog-of-war">You can enable "fog of war" in option menu (hardcore difficulty).
