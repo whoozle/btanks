@@ -55,15 +55,14 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 	_by = ( h - _background.h ) / 2;
 	int base_x = _bx + 3 * _background.w / 4;
 
-	_b_back = new Button("big", I18n->get("menu", "back"));
+	_b_back = new Button("medium_dark", I18n->get("menu", "back"));
 	_b_back->getSize(bw, bh);
 
-	int yb = 200;
-	add(_bx + mx + _background.w / 4 - bw / 2, _by + my +h - yb, _b_back);
+	add(_bx + mx + _background.w / 4 - bw / 2, h - 2 * my - bh - _by, _b_back);
 	
-	_b_ok = new Button("big", I18n->get("menu", "ok"));
+	_b_ok = new Button("medium_dark", I18n->get("menu", "ok"));
 	_b_ok->getSize(bw, bh);
-	add(_by + my + 3 * _background.w / 4 - bw / 2, _by + my + h - yb, _b_ok);
+	add(_by + my + 3 * _background.w / 4 - bw / 2, h - 2 * my - bh - _by, _b_ok);
 	
 	int width = _background.w - 2 * mx;
 
@@ -126,10 +125,30 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 	
 	yp += sh + 10;
 
-	Config->get("engine.sound.volume.fx", volume, 1);
+////////////////////
+
+	Config->get("engine.sound.volume.fx", volume, 1.0f);
 	
 	l = new Label("medium", I18n->get("menu", "fx-volume"));
 	s = _fx = new Slider(volume);
+	add(_bx + mx, yp, l);
+	l->getSize(sw, sh);
+	{
+		int w, h;
+		s->getSize(w, h);
+		add(_bx + base_x - w / 2, yp + (sh - h) / 2, s);
+		if (h > sh) 
+			sh = h;
+	}
+	
+	yp += sh + 10;
+
+/////////////////
+
+	Config->get("engine.sound.volume.ambience", volume, 1.0f);
+
+	l = new Label("medium", I18n->get("menu", "ambience-volume"));
+	s = _ambient = new Slider(volume);
 	add(_bx + mx, yp, l);
 	l->getSize(sw, sh);
 	{
@@ -255,6 +274,9 @@ void OptionsMenu::reload() {
 
 	Config->get("engine.sound.volume.fx", volume, 1.0f);
 	_fx->set(volume);
+
+	Config->get("engine.sound.volume.ambience", volume, 1.0f);
+	_ambient->set(volume);
 	
 	_keys->reload();
 	
@@ -303,6 +325,7 @@ void OptionsMenu::save() {
 	
 	Config->set("engine.sound.volume.fx", _fx->get());
 	Config->set("engine.sound.volume.music", _music->get());
+	Config->set("engine.sound.volume.ambience", _ambient->get());
 	
 	bool need_restart = false;
 	TRY {

@@ -58,7 +58,7 @@ private:
 	Box _background;
 	int _bx, _by;
 	Button *_b_ok, *_b_back;
-	Slider *_fx, *_music;
+	Slider *_fx, *_music, *_ambient;
 	Button *_b_redefine;
 	Chooser *_c_res;
 	Checkbox *_fsmode, *_donate, *_fog_of_war;

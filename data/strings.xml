@@ -127,12 +127,15 @@
 		<string id="fx-volume" lang="ru">Громкость спецэффектов</string>
 		<string id="fx-volume" lang="fr">Volume des bruitages</string>
 		<string id="fx-volume" lang="de">Lautstärke der Effekte </string>
-		                
+
 		<string id="music-volume">Music volume</string>
 		<string id="music-volume" lang="ru">Громкость музыки</string>
 		<string id="music-volume" lang="fr">Volume de la musique</string>
 		<string id="music-volume" lang="de">Lautstärke der Musik</string>
-		                
+
+		<string id="ambience-volume">Ambience volume</string>
+		<string id="ambience-volume" lang="ru">Громкость шума</string>
+
 		<string id="redefine-keys">Redefine keys</string>
 		<string id="redefine-keys" lang="ru">Настроить клавиши</string>
 		<string id="redefine-keys" lang="fr">Changer les touches</string>
