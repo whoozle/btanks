@@ -388,16 +388,24 @@ bool IGame::onKey(const SDL_keysym key, const bool pressed) {
 		return true;
 	}
 	if (key.sym==SDLK_s && key.mod & KMOD_SHIFT) {
+		std::string path;
+#ifdef PREFIX
+		path = mrt::Directory::getAppDir("btanks") + "/";
+#endif	
 		static int n = 0; 
 		std::string fname;
 		do {
-			fname = mrt::formatString("screenshot%02d.bmp", n++);
+			fname = path + mrt::formatString("screenshot%02d.bmp", n++);
 		} while(mrt::FSNode::exists(fname));
 		LOG_DEBUG(("saving screenshot to %s", fname.c_str()));
 		Window->getSurface().saveBMP(fname);
 		return true;
 	}
 	if (key.sym==SDLK_m && key.mod & KMOD_SHIFT && Map->loaded()) {
+		std::string path;
+#ifdef PREFIX
+		path = mrt::Directory::getAppDir("btanks") + "/";
+#endif	
 		const v2<int> msize = Map->getSize();
 		LOG_DEBUG(("creating map screenshot %dx%d", msize.x, msize.y));
 
@@ -408,7 +416,7 @@ bool IGame::onKey(const SDL_keysym key, const bool pressed) {
 
 		sdlx::Rect viewport(0, 0, msize.x, msize.y);
 		World->render(screenshot, viewport, viewport);
-		screenshot.saveBMP("map.bmp");
+		screenshot.saveBMP(path + "map.bmp");
 		return true;
 	}
 
