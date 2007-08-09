@@ -18,6 +18,7 @@ public:
 	virtual bool onKey(const SDL_keysym sym);
 	void addMessage(const std::string &nick, const std::string &text);
 	const std::string get() const { return last_message; }
+	void clear();
 	
 private: 
 	void layout();

@@ -7,6 +7,13 @@ Chat::Chat(const size_t lines) : _font(ResourceManager->loadFont("small", true))
 	add(4, 0, _input = new TextControl("small"));
 }
 
+void Chat::clear() {
+	text.clear();
+	nick_w = 0;
+	_input->set(std::string());
+	hide();
+}
+
 void Chat::render(sdlx::Surface &surface, const int x, const int y) {
 	int h = _font->getHeight();
 	for(size_t i = 0; i < text.size(); ++i) {
