@@ -664,6 +664,8 @@ void IGame::clear() {
 
 	if (_main_menu)
 		_main_menu->setActive(true);
+
+	_net_talk->clear();
 }
 
 
