@@ -248,6 +248,7 @@ void IGameMonitor::clear() {
 	_waypoints.clear();
 	_all_waypoints.clear();
 	_waypoint_edges.clear();
+	bonuses.clear();
 }
 
 void IGameMonitor::tick(const float dt) {	
@@ -722,6 +723,10 @@ void IGameMonitor::addBonuses(const PlayerSlot &slot) {
 	if (o == NULL)
 		return;
 	const std::vector<Campaign::ShopItem> & wares = _campaign->wares;
+	
+	bool first_time = bonuses.empty();
+	size_t idx = 0;
+	
 	for(std::vector<Campaign::ShopItem>::const_iterator i = wares.begin(); i != wares.end(); ++i) {
 		int n = i->amount;
 		if (n <= 0 || i->object.empty() || i->animation.empty())
@@ -733,7 +738,13 @@ void IGameMonitor::addBonuses(const PlayerSlot &slot) {
 			dir.fromDirection(d % dirs, dirs);
 			dir *= o->size.length();
 			//LOG_DEBUG(("%g %g", d.x, d.y));
-			World->spawn(o, i->object + "(ally)", i->animation, dir, v2<float>());
+			if (first_time) 
+				bonuses.push_back(GameBonus(i->object + "(ally)", i->animation, 0));
+			if (World->getObjectByID(bonuses[idx].id) == NULL) {
+				Object *bonus = World->spawn(o, bonuses[idx].classname, bonuses[idx].animation, dir, v2<float>());
+				bonuses[idx].id = bonus->getID();
+			}
+			++idx;
 		}
 	}
 }

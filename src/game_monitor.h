@@ -145,6 +145,14 @@ private:
 	WaypointEdgeMap  _waypoint_edges;	
 	
 	Campaign * _campaign;
+	
+	struct GameBonus {
+		std::string classname, animation;
+		int id;
+		GameBonus(const std::string &classname, const std::string &animation, const int id) : 
+			classname(classname), animation(animation), id(id) {}
+	};
+	std::vector<GameBonus> bonuses;
 };
 
 SINGLETON(BTANKSAPI, GameMonitor, IGameMonitor);
