@@ -60,6 +60,7 @@ public:
 	void updateObject(const Object *o);
 	
 	void setFXVolume(const float volume);
+	void setAmbienceVolume(const float volume);
 	void setMusicVolume(const float volume);
 	
 	IMixer();
@@ -113,7 +114,7 @@ private:
 	OggStream * _ogg, *_ambient;
 	ALuint _ogg_source, _ambient_source;
 	
-	float _volume_fx, _volume_music;
+	float _volume_fx, _volume_ambience, _volume_music;
 	
 	bool _debug, _loop;
 	

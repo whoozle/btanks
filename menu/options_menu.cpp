@@ -411,6 +411,10 @@ void OptionsMenu::tick(const float dt) {
 		_music->reset();
 		Mixer->setMusicVolume(_music->get());
 	}
+	if (_ambient->changed()) {
+		_ambient->reset();
+		Mixer->setAmbienceVolume(_ambient->get());
+	}
 	if (_b_ok->changed()) {
 		_b_ok->reset();
 		_parent->back();
