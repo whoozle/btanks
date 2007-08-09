@@ -36,6 +36,7 @@ public:
 			_targets.insert("boat");
 			_targets.insert("helicopter");
 			_targets.insert("monster");
+			_targets.insert("watchtower");
 	}
 	virtual void onSpawn();
 	virtual void serialize(mrt::Serializator &s) const {
