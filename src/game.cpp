@@ -76,7 +76,9 @@ IGame::IGame() : _main_menu(NULL),
  _autojoin(false), _shake(0), _show_radar(true) , _show_stats(false), _credits(NULL), _cheater(NULL), _tip(NULL), _net_talk(NULL) {
  }
  
-IGame::~IGame() {}
+IGame::~IGame() {
+	delete _net_talk;
+}
 
 void IGame::run() {
 	Window->run();
@@ -665,7 +667,8 @@ void IGame::clear() {
 	if (_main_menu)
 		_main_menu->setActive(true);
 
-	_net_talk->clear();
+	if (_net_talk)
+		_net_talk->clear();
 }
 
 
