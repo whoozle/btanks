@@ -23,7 +23,7 @@ bt_sources = 	[
 	'net/protocol.cpp', 'net/server.cpp', 'net/client.cpp', 'net/connection.cpp', 'net/monitor.cpp',
 #menu
 	'menu/checkbox.cpp', 'menu/shop.cpp', 'menu/image_view.cpp', 'menu/shop_item.cpp', 'menu/popup_menu.cpp', 
-	'menu/start_server_menu.cpp', 'menu/join_server_menu.cpp', 'menu/campaign_menu.cpp', 
+	'menu/start_server_menu.cpp', 'menu/join_server_menu.cpp', 'menu/campaign_menu.cpp', 'menu/chat.cpp',
 	'menu/menu.cpp', 'menu/box.cpp', 'menu/upper_box.cpp', 'menu/base_menu.cpp', 'menu/container.cpp', 'menu/menuitem.cpp',
 	'menu/map_picker.cpp', 'menu/scroll_list.cpp', 'menu/control.cpp', 'menu/map_details.cpp', 'menu/player_picker.cpp', 
 	'menu/chooser.cpp', 'menu/label.cpp', 'menu/button.cpp', 'menu/menu_config.cpp', 'menu/map_desc.cpp', 

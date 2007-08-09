@@ -101,6 +101,7 @@ public:
 	
 	//for special zones
 	void send(const int id, const Message & msg);
+	void say(const std::string &message);
 	
 	void updateControls(); //recreates control methods.
 

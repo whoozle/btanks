@@ -44,6 +44,7 @@ class Credits;
 class Cheater;
 class MainMenu;
 class Tooltip;
+class Chat;
 
 namespace sdlx {
 	class Surface;
@@ -72,6 +73,8 @@ public:
 	void notifyLoadingBar(const int progress = 1);
 
 	static void loadPlugins();
+	
+	Chat *getChat() { return _net_talk; }
 
 private:
 	void onTick(const float dt);
@@ -94,7 +97,6 @@ private:
 	bool _show_fps, _show_log_lines;
 	Object *_fps, *_log_lines;
 
-	std::string _preload_map;
 	bool _autojoin;
 
 	float _shake;
@@ -111,6 +113,7 @@ private:
 	float _donate_timer;
 	
 	Tooltip *_tip;
+	Chat *_net_talk;
 	
 	IGame(const IGame &);
 	const IGame& operator=(const IGame &);

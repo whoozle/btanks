@@ -31,6 +31,7 @@
 #include "special_zone.h"
 #include "nickname.h"
 #include "menu/tooltip.h"
+#include "menu/chat.h"
 
 #include "controls/control_method.h"
 
@@ -369,6 +370,22 @@ TRY {
 		}
 		break;
 	}
+	case Message::PlayerMessage: {
+		if (id < 0 || (unsigned)id >= _players.size())
+			throw_ex(("player id exceeds players count (%d/%d)", id, (int)_players.size()));
+
+		if (_client)
+			Game->getChat()->addMessage(message.get("nick"), message.get("text"));
+
+		if (_server) {
+			std::string nick =  _players[id].name;
+			Game->getChat()->addMessage(nick, message.get("text"));
+			Message msg(message);
+			msg.set("nick", nick);
+			broadcast(msg);
+		}
+		
+		} break;
 	
 	default:
 		LOG_WARN(("unhandled message: %s\n%s", message.getType(), message.data.dump().c_str()));
@@ -1012,5 +1029,23 @@ void IPlayerManager::updateControls() {
 		Config->get("player.control-method", cm1, "keys");	
 		_players[p1].createControlMethod(cm1);
 	break;	
+	}
+}
+
+void IPlayerManager::say(const std::string &message) {
+	LOG_DEBUG(("say('%s')", message.c_str()));
+
+	Message m(Message::PlayerMessage);
+	m.set("text", message);
+	
+	if (_server) {
+		PlayerSlot *my_slot = getMySlot();
+		if (my_slot == NULL) 
+			throw_ex(("cannot get my slot."));
+		Game->getChat()->addMessage(my_slot->name, message);
+		broadcast(m);
+	}
+	if (_client) {
+		_client->send(m);
 	}
 }

@@ -63,6 +63,7 @@
 
 #include "math/v3.h"
 #include "menu/menu.h"
+#include "menu/chat.h"
 #include "menu/tooltip.h"
 
 #include "i18n.h"
@@ -72,7 +73,9 @@
 IMPLEMENT_SINGLETON(Game, IGame);
 
 IGame::IGame() : _main_menu(NULL),
- _autojoin(false), _shake(0), _show_radar(true) , _show_stats(false), _credits(NULL), _cheater(NULL), _tip(NULL) {}
+ _autojoin(false), _shake(0), _show_radar(true) , _show_stats(false), _credits(NULL), _cheater(NULL), _tip(NULL), _net_talk(NULL) {
+ }
+ 
 IGame::~IGame() {}
 
 void IGame::run() {
@@ -181,12 +184,6 @@ void IGame::init(const int argc, char *argv[]) {
 			Config->get("engine.fps-limit", fps_limit, 120);
 			if (fps_limit >= 1000) 
 				Config->set("engine.fps-limit", 120);
-		}
-		if (revision < 4554) {
-			bool p;
-			Config->get("engine.sound.preallocate-sources", p, true);
-			if (!p) 
-				Config->set("engine.sound.preallocate-sources", true);
 		}
 		
 		Config->set("engine.revision", getRevision());
@@ -320,18 +317,10 @@ void IGame::init(const int argc, char *argv[]) {
 	} else _log_lines = NULL;
 
 	_main_menu->init(window_size.w, window_size.h);
-/*	
-	if (_preload_map.size()) {
-		LOG_DEBUG(("starting predefined map %s...", _preload_map.c_str()));
-		loadMap(_preload_map);
-		
-		_my_index = PlayerManager->spawnPlayer("shilka", "green-shilka", "keys");
-		assert(_my_index == 0);
-		PlayerManager->spawnPlayer("ai-tank", "green-tank", "ai");
-		PlayerManager->setViewport(_my_index, Window->getSurface().getSize());
-		_main_menu.setActive(false);
-	}
-*/
+	GET_CONFIG_VALUE("multiplayer.chat.lines-number", int, lines, 6);
+	_net_talk = new Chat(lines);
+	_net_talk->hide();
+
 	if (_autojoin) {
 		PlayerManager->startClient(address);
 		if (_main_menu)
@@ -339,11 +328,40 @@ void IGame::init(const int argc, char *argv[]) {
 	}
 }
 
+#include "controls/keyplayer.h"
+
 bool IGame::onKey(const SDL_keysym key, const bool pressed) {
 	if (_credits) {
 		if (pressed)
 			stopCredits();
 		return true;
+	}
+	
+	if (pressed && Map->loaded()) {
+		if (key.sym==SDLK_t && key.mod & KMOD_ALT) {
+			if (_net_talk->hidden()) {
+				//LOG_DEBUG(("start talking"));
+				KeyPlayer::disable();
+				_net_talk->hide(false);
+			} else {
+				//LOG_DEBUG(("stop talking"));
+				KeyPlayer::enable();
+				_net_talk->hide(true);				
+			}
+		} else if (!_net_talk->hidden()) {
+			_net_talk->onKey(key);
+			if (_net_talk->changed()) {
+				std::string message = _net_talk->get();
+				
+				_net_talk->reset();
+				_net_talk->hide();
+				KeyPlayer::enable();
+				TRY {
+					PlayerManager->say(message);
+				} CATCH("say", throw);
+			}
+			return true;
+		}
 	}
 
 	if (!pressed) {
@@ -560,6 +578,12 @@ void IGame::onTick(const float dt) {
 			if (_main_menu && !_main_menu->isActive() && _show_stats) {
 				_hud->renderStats(window);
 			}
+
+			if (!_net_talk->hidden()) {
+				_net_talk->tick(dt);
+				
+			}
+			_net_talk->render(window, 8, 32);
 		}
 
 		if (_main_menu)
