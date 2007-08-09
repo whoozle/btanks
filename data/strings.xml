@@ -637,6 +637,8 @@
 		<string id="deathmatch-bots" lang="ru">Если вы не планируете играть с кем-то по сети в десматч, добавте ботов(AI) в меню выбора машинок</string>
 		<string id="deathmatch-bots" lang="fr">Vous n'avez pas d'adversaire contre qui jouer ? Ajoutez des robots (AI) pour les combats à mort.</string>
 		<string id="deathmatch-bots" lang="de">Haben Sie niemanden, mit dem Sie spielen können? Geben Sie einige Roboten zum Deathmatch-Spiel.</string>
+		
+		<string id="chat">You can press ENTER and chat with other players</string>
+		<string id="chat" lang="ru">Вы можете разговаривать с другими игроками, нажав ENTER.</string>
 	</area>
 </strings>
-      
