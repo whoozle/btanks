@@ -823,7 +823,8 @@ try {
 		Object *o = my_slot->getObject();
 		if (o == NULL)
 			throw_ex(("you are already dead"));
-		o->impassability = 0;
+		o->impassability = (o->impassability > 0)?0:1;
+
 		return "till death do us apart.";
 	}
 
