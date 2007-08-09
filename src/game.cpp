@@ -337,17 +337,10 @@ bool IGame::onKey(const SDL_keysym key, const bool pressed) {
 		return true;
 	}
 	
-	if (pressed && Map->loaded()) {
-		if ((key.sym == SDLK_t || key.sym == SDLK_s) && key.mod & KMOD_ALT) {
-			if (_net_talk->hidden()) {
-				//LOG_DEBUG(("start talking"));
-				KeyPlayer::disable();
-				_net_talk->hide(false);
-			} else {
-				//LOG_DEBUG(("stop talking"));
-				KeyPlayer::enable();
-				_net_talk->hide(true);				
-			}
+	if (pressed && Map->loaded() && !_main_menu->isActive()) {
+		if (_net_talk->hidden() && key.sym == SDLK_RETURN) {
+			KeyPlayer::disable();
+			_net_talk->hide(false);
 		} else if (!_net_talk->hidden()) {
 			_net_talk->onKey(key);
 			if (_net_talk->changed()) {
@@ -357,7 +350,8 @@ bool IGame::onKey(const SDL_keysym key, const bool pressed) {
 				_net_talk->hide();
 				KeyPlayer::enable();
 				TRY {
-					PlayerManager->say(message);
+					if (!message.empty())
+						PlayerManager->say(message);
 				} CATCH("say", throw);
 			}
 			return true;
