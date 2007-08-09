@@ -262,6 +262,8 @@ void IGame::init(const int argc, char *argv[]) {
 			j.close();
 		}
 	}
+	Console->init();
+	Console->on_command.connect(sigc::mem_fun(this, &IGame::onConsole));
 	
 	sdlx::Rect window_size = Window->getSize();
 	if (_main_menu == NULL) {
@@ -278,9 +280,6 @@ void IGame::init(const int argc, char *argv[]) {
 
 	LOG_DEBUG(("installing callbacks..."));
 	
-	Console->init();
-	Console->on_command.connect(sigc::mem_fun(this, &IGame::onConsole));
-
 	Window->key_signal.connect(sigc::mem_fun(this, &IGame::onKey));
 
 	Window->mouse_signal.connect(sigc::mem_fun(this, &IGame::onMouse));
@@ -817,6 +816,15 @@ try {
 		const std::string posstr = mrt::formatString("%g %g @%d,%d", position.x, position.y, tiled.x, tiled.y);
 		LOG_NOTICE(("%s", posstr.c_str()));
 		return posstr;
+	} else if (cmd == "gh0st" || cmd == "phant0m") {
+		PlayerSlot *my_slot = PlayerManager->getMySlot();
+		if (my_slot == NULL)
+			throw_ex(("no world to wander in"));
+		Object *o = my_slot->getObject();
+		if (o == NULL)
+			throw_ex(("you are already dead"));
+		o->impassability = 0;
+		return "till death do us apart.";
 	}
 
 } catch(const std::exception &e) {
