@@ -338,7 +338,7 @@ bool IGame::onKey(const SDL_keysym key, const bool pressed) {
 	}
 	
 	if (pressed && Map->loaded()) {
-		if (key.sym==SDLK_t && key.mod & KMOD_ALT) {
+		if ((key.sym == SDLK_t || key.sym == SDLK_s) && key.mod & KMOD_ALT) {
 			if (_net_talk->hidden()) {
 				//LOG_DEBUG(("start talking"));
 				KeyPlayer::disable();
