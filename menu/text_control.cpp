@@ -68,7 +68,7 @@ const bool HostTextControl::validate(const int idx, const int c) const {
 
 /////////////////////////////////////////////////////////////
 
-TextControl::TextControl(const std::string &font) : _blink(true), _cursor_visible(false), _cursor_position(0) {
+TextControl::TextControl(const std::string &font) : _blink(true), _cursor_visible(true), _cursor_position(0) {
 	_font = ResourceManager->loadFont(font, true);
 	GET_CONFIG_VALUE("menu.cursor-blinking-interval", float, cbi, 0.4);
 	_blink.set(cbi);
