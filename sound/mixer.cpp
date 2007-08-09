@@ -230,7 +230,8 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 			LOG_DEBUG(("no ALC_MONO_SOURCES, fallback to generic values..."));
 		}
 
-		GET_CONFIG_VALUE("engine.sound.preallocate-sources", bool, preallocate, true);
+		//GET_CONFIG_VALUE("engine.sound.preallocate-sources", bool, preallocate, true);
+		const bool preallocate = true; //uncomment ^^ if you're brave enough
 
 		if (preallocate) {
 			LOG_DEBUG(("preallocating sources..."));
