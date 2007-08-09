@@ -1042,6 +1042,7 @@ void IPlayerManager::say(const std::string &message) {
 		PlayerSlot *my_slot = getMySlot();
 		if (my_slot == NULL) 
 			throw_ex(("cannot get my slot."));
+		m.set("nick", my_slot->name);
 		Game->getChat()->addMessage(my_slot->name, message);
 		broadcast(m);
 	}
