@@ -58,11 +58,11 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 	_b_back = new Button("medium_dark", I18n->get("menu", "back"));
 	_b_back->getSize(bw, bh);
 
-	add(_bx + mx + _background.w / 4 - bw / 2, h - 2 * my - bh - _by, _b_back);
+	add(_bx + mx + _background.w / 4 - bw / 2, h -  my - bh - _by, _b_back);
 	
 	_b_ok = new Button("medium_dark", I18n->get("menu", "ok"));
 	_b_ok->getSize(bw, bh);
-	add(_by + my + 3 * _background.w / 4 - bw / 2, h - 2 * my - bh - _by, _b_ok);
+	add(_by + my + 3 * _background.w / 4 - bw / 2, h -  my - bh - _by, _b_ok);
 	
 	int width = _background.w - 2 * mx;
 
