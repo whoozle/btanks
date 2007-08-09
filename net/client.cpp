@@ -96,6 +96,7 @@ void Client::tick(const float dt) {
 		case Message::GameOver:
 		case Message::TextMessage:
 		case Message::DestroyMap:
+		case Message::PlayerMessage:
 			PlayerManager->onMessage(0, m);
 			break;
 

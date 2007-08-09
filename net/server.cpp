@@ -77,6 +77,7 @@ void Server::tick(const float dt) {
 			case Message::Pong:
 			case Message::RequestPlayer:	
 			case Message::TextMessage:	
+			case Message::PlayerMessage: 
 				PlayerManager->onMessage(id, m);
 				break;
 			default:

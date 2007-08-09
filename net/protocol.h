@@ -44,7 +44,8 @@ public:
 		Respawn, 
 		GameOver,
 		TextMessage, 
-		DestroyMap
+		DestroyMap, 
+		PlayerMessage
 	};
 	
 	Message();
