@@ -83,7 +83,7 @@ void IMixer::reset() {
 
 IMixer::IMixer() : alc_device(NULL), alc_context(NULL), 
 	_no_more_sources(false), _nosound(true), _nomusic(true), _ogg(NULL), _ambient(NULL), _ogg_source(0),
-	_volume_fx(1.0f), _volume_ambience(1.0f), _volume_music(1.0f), _debug(false), _loop(false) {}
+	_volume_fx(1.0f), _volume_ambience(0.5f), _volume_music(1.0f), _debug(false), _loop(false) {}
 
 void IMixer::dumpContextAttrs(std::map<const std::string, int> & attrs) const {
 	ALCint attrSize;
@@ -139,7 +139,7 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 	Config->get("engine.sound.debug", _debug, false);
 
 	Config->get("engine.sound.volume.fx", _volume_fx, 1.0f);
-	Config->get("engine.sound.volume.ambience", _volume_ambience, 1.0f);
+	Config->get("engine.sound.volume.ambience", _volume_ambience, 0.5f);
 	Config->get("engine.sound.volume.music", _volume_music, 1.0f);
 	
 	LOG_DEBUG(("volumes: music: %g, ambience: %g, fx: %g", _volume_music, _volume_ambience, _volume_fx));

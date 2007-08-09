@@ -145,7 +145,7 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 
 /////////////////
 
-	Config->get("engine.sound.volume.ambience", volume, 1.0f);
+	Config->get("engine.sound.volume.ambience", volume, 0.5f);
 
 	l = new Label("medium", I18n->get("menu", "ambience-volume"));
 	s = _ambient = new Slider(volume);
@@ -275,7 +275,7 @@ void OptionsMenu::reload() {
 	Config->get("engine.sound.volume.fx", volume, 1.0f);
 	_fx->set(volume);
 
-	Config->get("engine.sound.volume.ambience", volume, 1.0f);
+	Config->get("engine.sound.volume.ambience", volume, 0.5f);
 	_ambient->set(volume);
 	
 	_keys->reload();
