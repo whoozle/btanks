@@ -1520,8 +1520,8 @@ const int IWorld::getChildren(const int id, const std::string &classname) const 
 const bool IWorld::itemExists(const std::set<std::string> &classes) const {
 	for(ObjectMap::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		const Object *o = i->second;
-		if (classes.find(o->classname) != classes.end()) {
-			return true; // fixme: change to bool ? 
+		if (!o->_variants.has("ally") && classes.find(o->classname) != classes.end()) {
+			return true;
 		}
 	}
 	return false;
