@@ -261,9 +261,6 @@ void IGame::init(const int argc, char *argv[]) {
 		}
 	}
 	
-	Console->init();
-	Console->on_command.connect(sigc::mem_fun(this, &IGame::onConsole));
-
 	sdlx::Rect window_size = Window->getSize();
 	if (_main_menu == NULL) {
 		_main_menu = new MainMenu();
@@ -279,7 +276,11 @@ void IGame::init(const int argc, char *argv[]) {
 
 	LOG_DEBUG(("installing callbacks..."));
 	
+	Console->init();
+	Console->on_command.connect(sigc::mem_fun(this, &IGame::onConsole));
+
 	Window->key_signal.connect(sigc::mem_fun(this, &IGame::onKey));
+
 	Window->mouse_signal.connect(sigc::mem_fun(this, &IGame::onMouse));
 	Window->joy_button_signal.connect(sigc::mem_fun(this, &IGame::onJoyButton));
 	Window->event_signal.connect(sigc::mem_fun(this, &IGame::onEvent));

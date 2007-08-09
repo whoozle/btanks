@@ -29,10 +29,13 @@
 #include "resource_manager.h"
 #include "mrt/utf8_utils.h"
 
+#include "game.h"
+#include "menu/chat.h"
+
 IMPLEMENT_SINGLETON(Console, IConsole);
 
 bool IConsole::onKey(const SDL_keysym sym, const bool pressed) {
-	if (!pressed)
+	if (!pressed || !Game->getChat()->hidden())
 		return false;
 	
 	GET_CONFIG_VALUE("engine.enable-console", bool, ec, false);
