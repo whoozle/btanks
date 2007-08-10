@@ -298,10 +298,13 @@ void IGameMonitor::render(sdlx::Surface &window) {
 		_big_font = ResourceManager->loadFont("big", true);
 
 	if (!_state.empty()) {
-		int w = _big_font->render(NULL, 0, 0, _state);
-		int x = (window.getWidth() - w) / 2;
-		int y = (window.getHeight() - _big_font->getHeight()) / 2;
+		int w = _big_font->render(NULL, 0, 0, _state), h = _big_font->getHeight();
+		_state_bg.init("menu/background_box.png", window.getWidth() + 32, h); //fixme
 		
+		int x = (window.getWidth() - w) / 2;
+		//int y = (window.getHeight() - _big_font->getHeight()) / 2;
+		int y = 50;
+		_state_bg.render(window, (window.getWidth() - _state_bg.w) / 2, y + (h - _state_bg.h) / 2);
 		_big_font->render(window, x, y, _state);
 	}
 

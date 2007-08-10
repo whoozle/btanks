@@ -31,6 +31,7 @@
 #include "math/v3.h"
 #include "sdlx/sdlx.h"
 #include "export_btanks.h"
+#include "menu/box.h"
 
 namespace sdlx {
 class Surface;
@@ -127,6 +128,7 @@ private:
 	Alarm _check_items;
 
 	//displaying messages	
+	Box _state_bg;
 	std::string _state;
 	Alarm _state_timer;
 	
