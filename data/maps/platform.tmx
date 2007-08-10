@@ -129,7 +129,7 @@
 		<property name="object:smoke-missiles-item:smoke-missiles-item:2" value="194,2827"/>
 		<property name="object:smoke-missiles-item:smoke-missiles-item:3" value="359,1536"/>
 		<property name="object:smoke-missiles-item:smoke-missiles-item:4" value="725,3226,230"/>
-		<property name="object:spaceport-baykonur:spaceport-baykonur:destroy-for-victory:1" value="378,-111"/>
+		<property name="object:spaceport-baykonur:spaceport-baykonur:1" value="378,-111,320"/>
 		<property name="object:spaceport-baykonur:spaceport-baykonur:destroy-for-victory:3" value="948,360,460"/>
 		<property name="object:spaceport-baykonur:spaceport-baykonur:destroy-for-victory:4" value="-79,156,220"/>
 		<property name="object:stack(make-pierceable)(with-fire):stack:1" value="363,845,140"/>

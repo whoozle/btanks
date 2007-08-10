@@ -152,9 +152,9 @@
 	</layer>
 	<layer name="animated water" width="40" height="30">
 		<properties>
-			<property name="animation-frame-size" value="20"/>
+			<!-- property name="animation-frame-size" value="20"/>
 			<property name="animation-frames" value="5"/>
-			<property name="animation-speed" value="10"/>
+			<property name="animation-speed" value="10"/-->
 			<property name="z" value="-700"/>
 		</properties>
 		<data encoding="base64" compression="gzip">
