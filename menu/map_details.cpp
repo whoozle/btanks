@@ -26,7 +26,7 @@
 #include "i18n.h"
 #include "map_desc.h"
 
-MapDetails::MapDetails(const int w, const int h) : _map_desc(0), _ai_hint(NULL) {
+MapDetails::MapDetails(const int w, const int h, const bool hint) : _map_desc(0), _ai_hint(NULL) {
 	_background.init("menu/background_box.png", w, h);
 
 	_null_screenshot.loadImage(Finder->find("maps/null.png"));
@@ -35,7 +35,7 @@ MapDetails::MapDetails(const int w, const int h) : _map_desc(0), _ai_hint(NULL) 
 	int mx, my;
 	_background.getMargins(mx, my);
 
-	if (I18n->has("tips", "deathmatch-bots")) {
+	if (hint && I18n->has("tips", "deathmatch-bots")) {
 		int mw, mh;
 		getSize(mw, mh);
 		_ai_hint = new Tooltip(I18n->get("tips", "deathmatch-bots"), w);

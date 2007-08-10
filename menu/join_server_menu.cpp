@@ -75,7 +75,7 @@ JoinServerMenu::JoinServerMenu(MainMenu *parent, const int w, const int h) : _pa
 
 	sdlx::Rect map_pos(list_pos.x + list_pos.w + 16, 128, (w - 64) / 3, h - 256);
 
-	_details = new MapDetails(map_pos.w, map_pos.h);
+	_details = new MapDetails(map_pos.w, map_pos.h, false);
 	add(map_pos.x, map_pos.y, _details);	
 	
 	_add_dialog->getSize(bw, bh);
