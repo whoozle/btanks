@@ -154,6 +154,7 @@ PlayerPicker::PlayerPicker(const int w, const int h) : _time_limit(0) {
 	_time_limits.insert(std::pair<const int, std::string>(60,  "1:00"));
 	_time_limits.insert(std::pair<const int, std::string>(90,  "1:30"));
 	_time_limits.insert(std::pair<const int, std::string>(120, "2:00"));
+	_time_limits.insert(std::pair<const int, std::string>(180, "3:00"));
 	_time_limits.insert(std::pair<const int, std::string>(300, "5:00"));
 	_time_limits.insert(std::pair<const int, std::string>(420, "7:00"));
 	_time_limits.insert(std::pair<const int, std::string>(600, "9:99"));
