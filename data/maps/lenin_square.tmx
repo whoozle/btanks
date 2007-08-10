@@ -297,7 +297,7 @@
 			<property name="z" value="600"/>
 		</properties>
 		<data encoding="base64" compression="gzip">
-			H4sIAAAAAAAAC2NgGAVDLQSMmBgYtg01R4+6l6wQKCVRVwmJ6tGVU6qfVOvTSdVABfW1VDBj1IjREBgNgYEJgcMDY+2IsPXyAPjyLhXsHIj20AEquJtaRgAA3fbWrcgLAAA=
+			H4sIAAAAAAAAC2NgGAVDLQSMmBgYtg01R4+6l6wQKCVLF/maSsjXSpbOdLJ0UaapljLto7pHQ2A0BAYwBA4PoN3D3erLA+DBu1SwcyDaQweo4G5qGQEAz6cX+MgLAAA=
 		</data>
 	</layer>
 	<layer name="buildings details" width="29" height="26">
