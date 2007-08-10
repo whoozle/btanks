@@ -31,6 +31,7 @@ namespace sdlx {
 
 struct MapDesc;
 class SlotLine;
+class Chooser;
 
 class PlayerPicker : public Container {
 public: 
@@ -52,6 +53,7 @@ private:
 	std::vector<SlotLine *> _slots;
 	typedef std::map<const int, std::string> TimeLimits;
 	TimeLimits _time_limits;
+	Chooser *_time_limit;
 };
 
 #endif

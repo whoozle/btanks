@@ -281,6 +281,14 @@ void PlayerPicker::tick(const float dt) {
 		}
 	}
 	Container::tick(dt);
+	if (_time_limit->changed()) {
+		int idx = _time_limit->get();
+		assert(idx < (int)_time_limits.size());
+		TimeLimits::const_iterator i;
+		for (i = _time_limits.begin(); idx-- && i != _time_limits.end(); ++i);
+		assert(i != _time_limits.end());
+		Config->set("multiplayer.time-limit", i->first);
+	}
 }
 
 void PlayerPicker::set(const MapDesc &map) {
@@ -320,10 +328,10 @@ void PlayerPicker::set(const MapDesc &map) {
 				pos = idx;
 		}
 		
-		Chooser *time_limit = new Chooser("big", values);
-		time_limit->set(pos);
-		time_limit->getSize(w, h);
-		add((_background.w - w )/ 2, yp - h, time_limit);
+		_time_limit = new Chooser("big", values);
+		_time_limit->set(pos);
+		_time_limit->getSize(w, h);
+		add((_background.w - w )/ 2, yp - h, _time_limit);
 	}
 }
 
