@@ -107,7 +107,7 @@ void MapPicker::tick(const float dt) {
 		_index = _list->get();
 
 		Config->set("menu.default-mp-map", _maps[_index].name);
-		_details->set(_maps[_index].base, _maps[_index].name, _maps[_index].desc );
+		_details->set(_maps[_index]);
 		_picker->set(_maps[_index]);
 	}
 	Container::tick(dt);
@@ -160,7 +160,7 @@ MapPicker::MapPicker(const int w, const int h) : _index(0) {
 	_details = NULL;	
 	TRY {
 		_details = new MapDetails(map_pos.w, map_pos.h);
-		_details->set(_maps[_index].base, _maps[_index].name, _maps[_index].desc);
+		_details->set(_maps[_index]);
 		add(map_pos.x, map_pos.y, _details);
 	} CATCH("MapPicker::ctor", {delete _details; throw; });
 

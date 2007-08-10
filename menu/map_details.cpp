@@ -24,12 +24,25 @@
 #include "finder.h"
 #include "resource_manager.h"
 #include "i18n.h"
+#include "map_desc.h"
 
-MapDetails::MapDetails(const int w, const int h) : _map_desc(0) {
+MapDetails::MapDetails(const int w, const int h) : _map_desc(0), _ai_hint(NULL) {
 	_background.init("menu/background_box.png", w, h);
 
 	_null_screenshot.loadImage(Finder->find("maps/null.png"));
 	_small_font = ResourceManager->loadFont("small", true);
+
+	int mx, my;
+	_background.getMargins(mx, my);
+
+	if (I18n->has("tips", "deathmatch-bots")) {
+		int mw, mh;
+		getSize(mw, mh);
+		_ai_hint = new Tooltip(I18n->get("tips", "deathmatch-bots"), w - 32);
+		int tw, th;
+		_ai_hint->getSize(tw, th);
+		add((mw - tw) / 2, mh + 2, _ai_hint);
+	}
 }
 
 void MapDetails::getSize(int &w, int &h) const {
@@ -52,9 +65,9 @@ bool MapDetails::onMouse(const int button, const bool pressed, const int x, cons
 	return true;
 }
 
-void MapDetails::set(const std::string &base, const std::string &map, const std::string &comment) {
-	this->base = base;
-	this->map = map;
+void MapDetails::set(const MapDesc & map_desc) {
+	base = map_desc.base;
+	map = map_desc.name;
 	
 	TRY {
 		_screenshot.free();
@@ -70,8 +83,11 @@ void MapDetails::set(const std::string &base, const std::string &map, const std:
 	int mx, my;
 	_background.getMargins(mx, my);
 
-	delete _map_desc;	
-	_map_desc = new Tooltip(comment, false, _background.w - 2 * mx);
+	delete _map_desc;
+	_map_desc = new Tooltip(map_desc.desc, false, _background.w - 2 * mx);
+	if (_ai_hint != NULL) {
+		_ai_hint->hide(map_desc.game_type != "deathmatch");
+	}
 }
 
 void MapDetails::render(sdlx::Surface &surface, const int x, const int y) {
@@ -101,6 +117,7 @@ void MapDetails::render(sdlx::Surface &surface, const int x, const int y) {
 	if (!_tactics.isNull()) {
 		surface.copyFrom(_tactics, x + _background.w / 2 - _tactics.getWidth() / 2, y + _background.h / 2 - _tactics.getHeight() / 2);
 	}
+	Container::render(surface, x, y);
 }
 
 MapDetails::~MapDetails() {

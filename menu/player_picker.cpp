@@ -296,14 +296,24 @@ void PlayerPicker::set(const MapDesc &map) {
 		add(mx, yp, line);
 		yp += line->h + 6;
 	}
-	
-	if (map.game_type == "deathmatch" && I18n->has("tips", "deathmatch-bots")) {
+
+	if (map.game_type == "deathmatch") {
+		int yp = _background.h - my;
 		int w, h;
-		getSize(w, h);
-		Tooltip *hint = new Tooltip(I18n->get("tips", "deathmatch-bots"), w - 32);
-		hint->getSize(w, h);
-		add(mx, _background.h - my - h, hint);
-	}
+
+		std::vector<std::string> values;
+		values.push_back("-:--");
+		values.push_back("1:00");
+		values.push_back("1:30");
+		values.push_back("2:00");
+		values.push_back("5:00");
+		values.push_back("7:00");
+		values.push_back("9:99");
+		
+		Chooser *time_limit = new Chooser("big", values);
+		time_limit->getSize(w, h);
+		add((_background.w - w )/ 2, yp - h, time_limit);
+	} else Config->remove("multiplayer.time-limit");
 
 }
 
