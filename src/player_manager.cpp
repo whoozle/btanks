@@ -416,6 +416,8 @@ void IPlayerManager::updatePlayers() {
 	if (_client && !_game_joined)
 		return;
 	
+TRY {
+
 	int n = _players.size();
 
 	for(int i = 0; i < n; ++i) {
@@ -563,6 +565,10 @@ void IPlayerManager::updatePlayers() {
 			broadcast(m);
 		}
 	}
+} CATCH("updatePlayers", {
+		Game->clear();
+		GameMonitor->displayMessage("errors", "multiplayer-exception", 1);
+})
 }
 
 
@@ -1039,6 +1045,7 @@ void IPlayerManager::updateControls() {
 }
 
 void IPlayerManager::say(const std::string &message) {
+TRY {
 	LOG_DEBUG(("say('%s')", message.c_str()));
 
 	Message m(Message::PlayerMessage);
@@ -1055,4 +1062,8 @@ void IPlayerManager::say(const std::string &message) {
 	if (_client) {
 		_client->send(m);
 	}
+} CATCH("say", {
+		Game->clear();
+		GameMonitor->displayMessage("errors", "multiplayer-exception", 1);
+})
 }
