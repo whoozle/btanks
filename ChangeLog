@@ -7,6 +7,7 @@
 *) Allowed UTF-8 in all text controls. 
 *) Added several new cheats.
 *) Moved game messages like 'game over' to the upper side of the screen and put background under it.
+*) Fixed checkDistance() api, so troopers does not shoot through walls and buildings. (again). 
 *) Fixed players' frags calculations.
 *) Added outline for civilian.
 *) Multiplayer errors do cause game to exit.
