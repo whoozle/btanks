@@ -735,6 +735,7 @@ void IPlayerManager::validateViewports() {
 }
 
 void IPlayerManager::tick(const unsigned int now, const float dt) {
+TRY {
 	if (_server) {
 		if (_next_sync.tick(dt) && isServerActive()) {
 			Message m(Message::UpdateWorld);
@@ -759,6 +760,11 @@ void IPlayerManager::tick(const unsigned int now, const float dt) {
 			_next_ping = (int)(now + ping_interval); //fixme: hardcoded value
 		}
 	}
+} CATCH("tick", {
+		Game->clear();
+		GameMonitor->displayMessage("errors", "multiplayer-exception", 1);
+		return;
+})
 	//bool listener_set = false;
 	v2<float> listener_pos, listener_vel, listener_size;
 	float listeners = 0;
