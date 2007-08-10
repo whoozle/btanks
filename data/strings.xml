@@ -551,6 +551,9 @@
 		<string id="base-destroyed" lang="ru">Ваша база была уничтожена, миссия провалена.</string>
 		<string id="base-destroyed" lang="fr">VOTRE BASE A ÉTÉ DÉTRUIT, VOUS AVEZ PERDU.</string>
 		<string id="base-destroyed" lang="de">IHRE BASIS IST ZERSTÖRT WORDEN, EINSATZ VERLOREN.</string>
+
+		<string id="time-limit-reached">TIME LIMIT WAS REACHED.</string>
+		<string id="time-limit-reached" lang="ru">ВРЕМЯ КОНЧИЛОСЬ.</string>
 	</area>         
 	<area id="errors">
 		<string id="connection-failed">Connection failed.</string>
