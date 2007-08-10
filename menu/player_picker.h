@@ -23,6 +23,7 @@
 #include "box.h"
 #include <string>
 #include <vector>
+#include <map>
 
 namespace sdlx {
 	class Surface;
@@ -49,6 +50,8 @@ private:
 	Box _background;
 	const sdlx::Surface *_vehicles;
 	std::vector<SlotLine *> _slots;
+	typedef std::map<const int, std::string> TimeLimits;
+	TimeLimits _time_limits;
 };
 
 #endif

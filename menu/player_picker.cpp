@@ -149,6 +149,14 @@ private:
 PlayerPicker::PlayerPicker(const int w, const int h)  {
 	_background.init("menu/background_box.png", w, h);
 	_vehicles = ResourceManager->loadSurface("menu/vehicles.png");
+
+	_time_limits.insert(std::pair<const int, std::string>(0,   "-:--"));
+	_time_limits.insert(std::pair<const int, std::string>(60,  "1:00"));
+	_time_limits.insert(std::pair<const int, std::string>(90,  "1:30"));
+	_time_limits.insert(std::pair<const int, std::string>(120, "2:00"));
+	_time_limits.insert(std::pair<const int, std::string>(300, "5:00"));
+	_time_limits.insert(std::pair<const int, std::string>(420, "7:00"));
+	_time_limits.insert(std::pair<const int, std::string>(600, "9:99"));
 }
 
 const std::string PlayerPicker::getVariant() const {
@@ -302,19 +310,21 @@ void PlayerPicker::set(const MapDesc &map) {
 		int w, h;
 
 		std::vector<std::string> values;
-		values.push_back("-:--");
-		values.push_back("1:00");
-		values.push_back("1:30");
-		values.push_back("2:00");
-		values.push_back("5:00");
-		values.push_back("7:00");
-		values.push_back("9:99");
+
+		int tl, pos = 0, idx = 0;
+		Config->get("multiplayer.time-limit", tl, 0);
+
+		for(TimeLimits::const_iterator i = _time_limits.begin(); i != _time_limits.end(); ++i, ++idx) {
+			values.push_back(i->second);
+			if (i->first <= tl)
+				pos = idx;
+		}
 		
 		Chooser *time_limit = new Chooser("big", values);
+		time_limit->set(pos);
 		time_limit->getSize(w, h);
 		add((_background.w - w )/ 2, yp - h, time_limit);
-	} else Config->remove("multiplayer.time-limit");
-
+	}
 }
 
 void PlayerPicker::render(sdlx::Surface &surface, const int x, const int y) {
