@@ -114,6 +114,8 @@ public:
 	
 	const Campaign * getCampaign() const {return _campaign; }
 	
+	const bool gameOver() const { return _game_over; }
+	
 private:
 
 	bool _game_over, _win;

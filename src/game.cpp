@@ -424,10 +424,6 @@ bool IGame::onKey(const SDL_keysym key, const bool pressed) {
 		return true;
 	}
 
-	if (key.sym == SDLK_TAB) {
-		_show_stats = true;
-	}
-
 	if (!PlayerManager->isClient() && key.sym==SDLK_F12 && PlayerManager->getSlotsCount() > 0) {
 		PlayerSlot &slot = PlayerManager->getSlot(0);
 		if (slot.frags > 0) 
@@ -532,6 +528,12 @@ void IGame::onTick(const float dt) {
 
 		if (Window->running() && !_paused) {
 			GameMonitor->tick(dt);
+			if (GameMonitor->gameOver()) {
+				std::string type;
+				Config->get("multiplayer.game-type", type, "deathmatch");
+				if (type == "deathmatch")
+					_show_stats = true;
+			}
 			PlayerManager->tick(SDL_GetTicks(), dt);
 		}
 
