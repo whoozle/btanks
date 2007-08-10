@@ -22,7 +22,6 @@
 #include "world.h"
 #include "object.h"
 #include "config.h"
-#include "mrt/random.h"
 #include "zbox.h"
 #include "tmx/map.h"
 
