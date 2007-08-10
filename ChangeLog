@@ -1,3 +1,25 @@
+0.5.????: 
+
+*) Added time limit to deathmatch maps and show game statistics when game is over. 
+*) Basic network chat is now supported
+*) Player name generated automatically and passed to server in network game (editable).
+*) More tacticals map
+*) Allowed UTF-8 in all text controls. 
+*) Added several new cheats.
+*) Moved game messages like 'game over' to the upper side of the screen and put background under it.
+*) Fixed players' frags calculations.
+*) Added outline for civilian.
+*) Multiplayer errors do cause game to exit.
+*) Added engine.speed parameter
+*) Fixed cheater object overflow and invalid SDL event handling.
+*) Fixed --connect option.
+*) Fixed torus map handling in multiplayer
+*) Do not poll keyboard while menu is active or chatting.
+*) Respawn only dead bonuses in campaign mode.
+*) Added ambience volume slider. 
+*) Fixed screenshot saving in **nix builds. 
+*) Fixed ai hints in multiplayer mode. Shivering cows and other issues.
+
 0.5.4549:
 *) Added French translation
 
