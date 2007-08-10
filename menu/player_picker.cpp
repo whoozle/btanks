@@ -146,7 +146,7 @@ private:
 	const sdlx::Font *_font;
 };
 
-PlayerPicker::PlayerPicker(const int w, const int h)  {
+PlayerPicker::PlayerPicker(const int w, const int h) : _time_limit(0) {
 	_background.init("menu/background_box.png", w, h);
 	_vehicles = ResourceManager->loadSurface("menu/vehicles.png");
 
@@ -281,13 +281,16 @@ void PlayerPicker::tick(const float dt) {
 		}
 	}
 	Container::tick(dt);
-	if (_time_limit->changed()) {
+	if (_time_limit != NULL && _time_limit->changed()) {
+		_time_limit->reset();
 		int idx = _time_limit->get();
-		assert(idx < (int)_time_limits.size());
-		TimeLimits::const_iterator i;
-		for (i = _time_limits.begin(); idx-- && i != _time_limits.end(); ++i);
-		assert(i != _time_limits.end());
-		Config->set("multiplayer.time-limit", i->first);
+		if (idx >= 0) {
+			assert(idx < (int)_time_limits.size());
+			TimeLimits::const_iterator i;
+			for (i = _time_limits.begin(); idx-- && i != _time_limits.end(); ++i);
+			assert(i != _time_limits.end());
+			Config->set("multiplayer.time-limit", i->first);
+		}
 	}
 }
 
@@ -312,6 +315,8 @@ void PlayerPicker::set(const MapDesc &map) {
 		add(mx, yp, line);
 		yp += line->h + 6;
 	}
+	
+	_time_limit = NULL;
 
 	if (map.game_type == "deathmatch") {
 		int yp = _background.h - my;
