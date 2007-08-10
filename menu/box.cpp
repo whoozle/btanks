@@ -29,7 +29,6 @@ Box::Box(const std::string &tile, const std::string &highlight, int w, int h) {
 	init(tile, highlight, w, h);
 }
 
-
 void Box::init(const std::string &tile, int _w, int _h) {
 	init(tile, std::string(), _w, _h);
 }
