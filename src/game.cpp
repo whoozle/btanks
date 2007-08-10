@@ -816,17 +816,7 @@ try {
 		const std::string posstr = mrt::formatString("%g %g @%d,%d", position.x, position.y, tiled.x, tiled.y);
 		LOG_NOTICE(("%s", posstr.c_str()));
 		return posstr;
-	} else if (cmd == "gh0st" || cmd == "phant0m") {
-		PlayerSlot *my_slot = PlayerManager->getMySlot();
-		if (my_slot == NULL)
-			throw_ex(("no world to wander in"));
-		Object *o = my_slot->getObject();
-		if (o == NULL)
-			throw_ex(("you are already dead"));
-		o->impassability = (o->impassability > 0)?0:1;
-
-		return "till death do us apart.";
-	}
+	} 
 
 } catch(const std::exception &e) {
 	return std::string("error: ") + e.what();

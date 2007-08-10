@@ -28,6 +28,8 @@ Cheater::Cheater() : _buf_size(0) {
 	
 	_cheats.push_back("skotobaza");
 	_cheats.push_back("matrix");
+	_cheats.push_back("gh0st");
+	_cheats.push_back("phant0m");
 	
 	//scan cheats.
 	size_t max = 0;
@@ -43,8 +45,13 @@ Cheater::Cheater() : _buf_size(0) {
 #include "object.h"
 #include "config.h"
 #include "var.h"
+#include "player_manager.h"
+#include "player_slot.h"
 
 void Cheater::onEvent(const SDL_Event &event) {
+	if (event.type != SDL_KEYDOWN)
+		return;
+	
 	const SDL_keysym &sym = event.key.keysym;
 	const bool pressed = event.type == SDL_KEYDOWN;
 	
@@ -85,6 +92,16 @@ void Cheater::onEvent(const SDL_Event &event) {
 		v_speed.f = (speed <= 0.2f)?1.0f:0.2f;
 		Config->setOverride("engine.speed", v_speed);
 		Config->invalidateCachedValues();
+	} else if (cheat == "gh0st" || cheat == "phant0m") {
+	TRY {
+		PlayerSlot *my_slot = PlayerManager->getMySlot();
+		if (my_slot == NULL)
+			throw_ex(("no world to wander in"));
+		Object *o = my_slot->getObject();
+		if (o == NULL)
+			throw_ex(("you are already dead"));
+		o->impassability = (o->impassability > 0)?0:1;		
+	} CATCH("activating cheat", )
 	}
 	return;
 }
