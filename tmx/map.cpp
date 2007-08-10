@@ -521,10 +521,14 @@ void IMap::generateMatrixes() {
 
 	_imp_map.clear();
 	for(LayerMap::const_iterator i = _layers.begin(); i != _layers.end(); ++i) {
+		const Layer *layer = i->second;
+		
 		getMatrix(i->first, false).fill(-2);
-		if (i->second->pierceable)
+		if (layer->pierceable)
 			getMatrix(i->first, true).fill(-2);
+				
 	}
+
 	for(int y = 0; y < _h; ++y) {
 		for(int x = 0; x < _w; ++x) {
 			updateMatrix(x, y);
@@ -533,6 +537,19 @@ void IMap::generateMatrixes() {
 	for(MatrixMap::const_iterator i = _imp_map.begin(); i != _imp_map.end(); ++i) {
 		LOG_DEBUG(("z: %d(pierceable: %s)\n%s", i->first.first, i->first.second?"yes":"no", i->second.dump().c_str()));
 	}
+
+	for(LayerMap::const_iterator i = _layers.begin(); i != _layers.end(); ++i) {
+		const Layer *layer = i->second;
+		//LOG_DEBUG(("size(%s.properties) == %u", layer->name.c_str(), (unsigned)layer->properties.size()));
+		for(PropertyMap::const_iterator p = layer->properties.begin(); p != layer->properties.end(); ++p) {
+			//LOG_DEBUG(("%s.%s=%s", layer->name.c_str(), p->first.c_str(), p->second.c_str()));
+			if (p->first.compare(0, 8, "ai-hint:") == 0) {
+				LOG_DEBUG(("layer %d %s provide hint for %s", i->first, layer->name.c_str(), p->second.c_str()));
+				updateMatrix(getMatrix(p->second), layer);
+			}
+		}
+	}
+	
 	for(ObjectAreaMap::const_iterator i = _area_map.begin(); i != _area_map.end(); ++i) {
 		LOG_DEBUG(("hint for '%s'\n%s", i->first.c_str(), i->second.dump().c_str()));
 	}
@@ -740,9 +757,8 @@ void IMap::end(const std::string &name) {
 			LOG_DEBUG(("visible = %d", visible));
 			if (visible == 0)
 				layer->visible = false;
-			layer->properties = _properties;
 		}
-		
+		layer->properties = _properties;
 		layer->name = e.attrs["name"];
 
 		const std::string a_frame_size = _properties["animation-frame-size"];
@@ -789,14 +805,6 @@ void IMap::end(const std::string &name) {
 				} CATCH("executing generator's commands", {})
 			}
 		}
-		
-		for(PropertyMap::iterator i = _properties.begin(); i != _properties.end(); ++i) {
-			if (i->first.compare(0, 8, "ai-hint:") == 0) {
-				LOG_DEBUG(("layer provide hint for %s", i->second.c_str()));
-				updateMatrix(getMatrix(i->second), layer);
-			}
-		}
-
 		
 		_layers[z] = layer;
 		_layer_z[_layer_name] = z;
