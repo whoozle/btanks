@@ -30,7 +30,7 @@ class Surface;
 
 class BTANKSAPI Box : public Control{
 public: 
-	Box() : _surface(0), w(0), h(0) {}
+	Box() : w(0), h(0), _surface(0) {}
 	Box(const std::string &tile, int w, int h);
 	Box(const std::string &tile, const std::string &highlight, int w, int h);
 	virtual void getSize(int &rw, int &rh) const;
