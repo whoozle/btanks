@@ -360,13 +360,14 @@ bool IGame::onKey(const SDL_keysym key, const bool pressed) {
 		}
 	}
 
-	if (!pressed) {
-		if (key.sym == SDLK_TAB) {
-			_show_stats = false;
-			return true;
-		}
-		return false;
+	if (key.sym == SDLK_TAB) {
+		_show_stats = pressed;
+		return true;
 	}
+
+	if (!pressed)
+		return false;
+
 /*
 -			case SDL_JOYBUTTONDOWN:
 -				if (event.jbutton.button == 9) 
