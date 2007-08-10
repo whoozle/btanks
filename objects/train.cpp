@@ -71,9 +71,7 @@ void Train::onSpawn() {
 	dst_y = map_size.y - (int)(size.y) / 2 - 4; //fixme. :)
 	disown();
 
-	if (!_variants.has("standing"))
-		_state.down = true;
-	else 
+	if (_variants.has("standing"))
 		classname = "destructable-object";
 }
 
@@ -113,6 +111,7 @@ void Train::tick(const float dt) {
 }
 
 void Train::calculate(const float dt) {
+	_state.down = true;
 	Object::calculate(dt);
 }
 
