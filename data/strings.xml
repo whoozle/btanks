@@ -46,7 +46,7 @@
 		<string id="add">ADD</string>
 		<string id="add" lang="ru">ДОБАВИТЬ</string>
 		<string id="add" lang="fr">AJOUTER</string>
-		<string id="add" lang="de">ZUGEBEN</string>
+		<string id="add" lang="de">HINZUFÜGEN</string>
 		
 		<string id="scan">SCAN</string>
 		<string id="scan" lang="ru">ИСКАТЬ</string>
@@ -135,7 +135,7 @@
 
 		<string id="ambience-volume">Ambience volume</string>
 		<string id="ambience-volume" lang="ru">Громкость шума</string>
-
+                   Lautstärke des Umgebungslärmes
 		<string id="redefine-keys">Redefine keys</string>
 		<string id="redefine-keys" lang="ru">Настроить клавиши</string>
 		<string id="redefine-keys" lang="fr">Changer les touches</string>
@@ -256,10 +256,13 @@
 			<string id="language" lang="ru">Язык:</string>
 			<string id="language" lang="fr">Langue :</string>
 			<string id="language" lang="de">Sprache:</string>	
+
 			<string id="default">System Default</string>
 			<string id="default" lang="ru">Системный</string>
 			<string id="default" lang="fr">Par défaut</string>
-			<string id="en">English</string>
+			<string id="default" lang="de">Systemsprache</string>
+			
+                           <string id="en">English</string>
 			<string id="ru">Русский</string>
 			<string id="fr">Français</string>
 			<string id="de">Deutsch</string>
@@ -414,11 +417,12 @@
 		<string id="baykonur">Huge cooperative map with tons of troopers, very defensive military base and big boss inside(tm)</string>
 		<string id="baykonur" lang="ru">Захват укрепрайона близ космодрома Байконур.</string>
 		<string id="baykonur" lang="fr">Énorme carte en mode coopératif avec des tonnes de soldats, une base militaire très bien défendue et un grand balèze dedans.</string>
-		
+		<string id="baykonur" lang="de">Reisige Karte im Kooperatifmodus mit einer Menge Soldaten, einer sehr gut geschützten Militärbasis und derer Boss drin. </string>
+	          
 		<string id="curfew">Very hot city multiplayer map with the lots of weapons and stuff.</string>
 		<string id="curfew" lang="ru">Руины города, остатки укреплений. Классическая карта для десматча.</string>
 		<string id="curfew" lang="fr">Carte multijoueur de ville très chaude avec plein de munitions et d'équipements qui traînent ici et là.</string>
-		<string id="curfew" lang="de">Stadtruinen, Reste der Befestigungen. Eine klassische Karte fürs Deathmatch.</string>
+		<string id="curfew" lang="de">Stadtruinen, Reste der Festungen. Eine klassische Karte fürs Deathmatch.</string>
 		           
 
 		<string id="gaddino">Country map with railway road.</string>
@@ -429,7 +433,7 @@
 		<string id="hell_swamp">Complex and tricky map with the endless rain.</string>
 		<string id="hell_swamp" lang="ru">Аццкие болота и вечный дождь.</string>
 		<string id="hell_swamp" lang="fr">Marécages labyrinthiques où il pleut tout le temps...</string>
-		<string id="hell_swamp" lang="de">Es regnet die ganze Zeit! </string>
+		<string id="hell_swamp" lang="de">Todessümpfe und ewiger Regen!  </string>
                    
 		<string id="lenin_square">Square with heli, kamikazes and city traffic.</string>
 		<string id="lenin_square" lang="ru">Тупые камикадзы напали на памятник В.И. Ленину</string>
@@ -439,28 +443,28 @@
 		<string id="wastes">Wastes. Nuclear desert.</string>
 		<string id="wastes" lang="ru">Выжженый ядерный полигон и мерзкий песчаный червяк.</string>
 		<string id="wastes" lang="fr">Dévastations. Désert nucléaire.</string>
-		<string id="wastes" lang="de">Nuleärwüste mit einem aufdringlichen Sandwurm.</string>
+		<string id="wastes" lang="de">Ausgebranntes Kernwaffenversuchsgelände mit einem aufdringlichen Sandwurm.</string>
 		
 		<string id="aqua_world">Submerged desolated city. Rooftops and a lot of teleports around.</string>
 		<string id="aqua_world" lang="ru">Затопленный город, телепортаторы и беготня по крышам</string>
 		<string id="aqua_world" lang="fr">Ville désolée, submergée par les flots. De nombreux téléporteurs et parcours sur les toits.</string>
-		<string id="aqua_world" lang="de">Eine Stadt unter Wasser. Teleporter und Lauferei auf Dächern.</string>
+		<string id="aqua_world" lang="de">Überflutete Stadt, Teleporter und Lauferei auf Dächern.</string>
 		
 
 		<string id="dune">Save your very last fortification in desert from relinquishing. Enemy troops lured deadly sandworm and traitorously attacked. </string>
 		<string id="dune" lang="ru">Враги приманили песчаного червя(tm) остатками завтрака и не менее подло напали на ваш последний оплот в пустыне!</string>
 		<string id="dune" lang="fr">Défendez votre toute dernière base fortifiée dans le désert. Les vers géants des sables vous attaquent par traîtrise.</string>
-		<string id="dune" lang="de">Ihre Feinde haben den Sandwurm mit Resten des Frühstücks bestochen und haben auf die gemeinste Weise Ihre letzte Festung angegriffen. Schützen Sie sie.</string>
+		<string id="dune" lang="de">Ihre Feinde haben den Sandwurm mit Resten des Frühstücks bestochen und auf die gemeinste Weise Ihre letzte Festung angegriffen. Verteidigen Sie sie.</string>
 
 		<string id="university">Save Battle Tanks University from the deadly helicopters. This is deathmatch map, so enjoy killing each other before destroying helis :)</string>
 		<string id="university" lang="ru">Университет BattleTanks. Злобные враги (вертолётчики) пытаются разбомбить всё при помощи бомб.</string>
 		<string id="university" lang="fr">Sauvez l'université Battle Tanks contre les hélicoptères de la mort. C'est une carte de combat à mort, donc entre-tuez vous joyeusement avant de détruire les hélicos.</string>
-		<string id="university" lang="de">Retten Sie die Battle Tanks Universität vor Hubschraubern des Todes. Dies ist eine Deathmatch-Karte. Also, tötet euch untereinander bevor Sie mit den Hubschraubern anfangen. </string>
+		<string id="university" lang="de">Retten Sie die Battle Tanks Universität vor Hubschraubern des Todes. Dies ist eine Deathmatchkarte. Also, tötet euch untereinander bevor Sie mit den Hubschraubern anfangen. </string>
 		
 		<string id="platform">Remains of the orbital city. Vivid rocks and platforms. (NEW!)</string>
 		<string id="platform" lang="ru">Живописные останки брошенного орбитального поселения. Летающие в космосе платформы и камни. (Новая карта!)</string>
 		<string id="platform" lang="fr">Les restes d'une ville en orbite spatiale. Vive les rochers et les plateformes !</string>
-		<string id="platform" lang="de">Reste einer verlassenen Orbitalstazion. Es leben die Steine und Plattformen.</string>
+		<string id="platform" lang="de">Reste einer verlassenen Orbitalstazion. Im Raum fliegen Steine und Plattformen rum.</string>
 		
 		<string id="(default)">Sorry, no description was provided by the author of this map...</string>
 		<string id="(default)" lang="ru">У этой карты нет описания. Извините. :(</string>
@@ -492,8 +496,7 @@
 				Maintenant courrez au garage à droite et prenez le véhicule de votre choix.
 			</string>
 			<string id="start" lang="de">			
-                                    Das ist Ihr erster wichtiger Einsatz, Kamerad. Beachten Sie den leuchtenden roten Kreuz neben dem rechten 
-				oberen Eck der Karte (Taste 'M'). Das ist der Kosmodrom Bajkonur. Er muss zum jedem Preis zerstört werden. Jetzt müssen Sie sofort rechts in die Garage. Nehmen Sie dort ein Fahrzeug nach Ihrer Wahl.
+                                    Das ist Ihr erster wichtiger Einsatz, Kamerad. Beachten Sie das leuchtende rote Kreuz in der rechten oberen Ecke der Karte (Taste 'M'). Das ist das Kosmodrom Bajkonur. Er muss zum jedem Preis zerstört werden. Rennen Sie jetzt sofort rechts in die Garage und nehmen Sie dort ein Fahrzeug nach Ihrer Wahl.
 			</string>
 			<string id="destroy-spaceport">DESTROY SPACEPORT</string>
 			<string id="destroy-spaceport" lang="ru">УБЕЙ БАЙКОНУР!</string>
@@ -507,13 +510,14 @@
 			<string id="passage-needed">There's no escaping here! Let's try destroying this building.</string>
 			<string id="passage-needed" lang="ru">Дальше пути нет. Похоже придется прокладывать дорогу прямо сквозь этот дом.</string>
 			<string id="passage-needed" lang="fr">C'est un cul-de-sac ! Essayez de détruire ce bâtiment.</string>
-		</area>
+			<string id="passage-needed" lang="de">In die Sackgasse geraten! Versuchen Sie dieses Gebäude zu zerstören. </string>
+		</area> 
                              
 		<area id="dune">
 			<string id="defend-base">DEFEND YOUR BASE!</string>
 			<string id="defend-base" lang="ru">ЗАЩИТИТЕ БАЗУ!</string>
 			<string id="defend-base" lang="fr">DÉFENDEZ VOTRE BASE !</string>
-			<string id="defend-base" lang="de">SCHÜTZEN SIE IHRE BASIS!</string>
+			<string id="defend-base" lang="de">VERTEIDIGEN SIE IHRE BASIS!</string>
 		</area> 
 	</area>
 	<area id="messages">
@@ -554,7 +558,10 @@
 
 		<string id="time-limit-reached">TIME LIMIT WAS REACHED.</string>
 		<string id="time-limit-reached" lang="ru">ВРЕМЯ КОНЧИЛОСЬ.</string>
-	</area>         
+		<string id="time-limit-reached" lang="fr">LA LIMITE DE TEMPS A ÉTÉ ATTEINT.</string>
+		<string id="time-limit-reached" lang="de">DIE ZEIT IST UM.</string>
+	</area>        
+                              
 	<area id="errors">
 		<string id="connection-failed">Connection failed.</string>
 		<string id="connection-failed" lang="ru">Ошибка соединения.</string>
@@ -585,10 +592,10 @@
 		<string id="leaving" lang="fr">Vous pouvez débarquer de votre véhicule avec la touche correspondante. Vous pouvez configurer cette touche dans les options.</string>
 		<string id="leaving" lang="de">Sie können das Fahrzeug jederzeit verlassen. Drücken Sie die dafür entsprechende Taste.</string>
                         
-		<string id="mortar">Every(!) map has a hidden "mortar" vehicle on it.</string>
-		<string id="mortar" lang="ru">На каждой карте(!) можно найти секретную машинку - мортиру.</string>
+		<string id="mortar">Every (!) map has a hidden "mortar" vehicle on it.</string>
+		<string id="mortar" lang="ru">На каждой карте (!) можно найти секретную машинку - мортиру.</string>
 		<string id="mortar" lang="fr">Toutes (!) les cartes on un véhicule « mortier » caché quelque part.</string>
-		<string id="mortar" lang="de">In jedem (!) Level können Sie einen versteckten Mörser finden.</string>
+		<string id="mortar" lang="de">Auf jeder (!) Karte können Sie einen versteckten Mörser finden.</string>
                         
 		<string id="mines">Shilka could use mines too.</string>
 		<string id="mines" lang="ru">А шилка может брать мины.</string>
@@ -608,7 +615,7 @@
 		<string id="tactic-map">Clicking on the map screenshot could reveal useless tactic map.</string>
 		<string id="tactic-map" lang="ru">Кликнув на картинку карты вы можете посмотреть бесполезную тактическую карту, на которой иногда нарисованы чекпоинты и прочая ерунда.</string>
 		<string id="tactic-map" lang="fr">Pour voir le schéma tactique, cliquez sur la carte.</string>
-		<string id="tactic-map" lang="de">Um Taktische Karte anzuschauen, klicken Sie bitte auf das Bildchen "Karte".</string>
+		<string id="tactic-map" lang="de">Um das taktische Schema zu sehen, klicken Sie bitte auf das Bildchen "Karte".</string>
 		        
 		<string id="clouds">Smoke clouds are poisonous. You could kill troopers with it.</string>
 		<string id="clouds" lang="ru">Дымовые ракеты очень ядовиты. Они могут убивать солдат, женщин и людей :)))</string>
@@ -617,12 +624,15 @@
 
 		<string id="screenshot">You can take screenshots with "Shift-S". "Shift-M" takes a screenshot of whole map.</string>
 		<string id="screenshot" lang="ru">Вы можете сделать скриншот игры, просто нажав "Shift-S". А нажав "Shift-M" вы сделаете снимок всей карты!</string>
-                        
-		<string id="fog-of-war">You can enable "fog of war" in option menu (hardcore difficulty).
+<string id="screenshot" lang="fr">Vous pouvez prendre une photo de l'écran en pressant la touche 'Shift-S'. Pour une photo de toute la carte, pressez la touche 'Shift-M'.</string>
+<string id="screenshot" lang="de">Falls Sie möchten, können Sie jederzeit mit "Shift-S" eine Aufnahme machen. Mit "Shift-M" machen Sie die Aufnahme der ganzen Karte. </string>
+                  
+		
+                 <string id="fog-of-war">You can enable "fog of war" in option menu (hardcore difficulty).
 			Note that this option works only in resolutions larger than 800x600.</string>
 		<string id="fog-of-war" lang="ru">Вы можете включить ограничение видимости в меню настроек. Учтите что оно работает только в разрешениях больше 800 на 600 пикселей. </string>
 		<string id="fog-of-war" lang="fr">Vous pouvez activer le « brouillard de guerre » (difficulté maximale) dans les options. Notez qu'il ne fonctionne que pour les résolutions plus supérieures à 800x600.</string>
-		<string id="fog-of-war" lang="de">Sie können die Option "Beschränkung der Sicht" im Einstellungsmenü einschalten. Sie sollten aber im Kauf nehmen, dass diese Option eine grössere Auflösung als 800X600 verlangt.</string>
+		<string id="fog-of-war" lang="de">Sie können die Option "Beschränkung der Sicht" im Einstellungsmenü aktivieren. Sie sollten aber im Kauf nehmen, dass diese Option eine grössere Auflösung als 800X600 verlangt.</string>
 		         
 		<string id="stats">You can view multiplayer game stats with &lt;tab&gt; key.</string>
 		<string id="stats" lang="ru">Вы можете посмотреть статистику матча кнопкой &lt;tab&gt;.</string>
@@ -642,9 +652,12 @@
 		<string id="deathmatch-bots">Have not planned to play with an opponent? Add some bots while playing deathmatch game</string>
 		<string id="deathmatch-bots" lang="ru">Если вы не планируете играть с кем-то по сети в десматч, добавте ботов(AI) в меню выбора машинок</string>
 		<string id="deathmatch-bots" lang="fr">Vous n'avez pas d'adversaire contre qui jouer ? Ajoutez des robots (AI) pour les combats à mort.</string>
-		<string id="deathmatch-bots" lang="de">Haben Sie niemanden, mit dem Sie spielen können? Geben Sie einige Roboten zum Deathmatch-Spiel.</string>
+		<string id="deathmatch-bots" lang="de">Haben Sie keinen Rivalen? Fügen Sie einige Roboters zum Deathmatch-Spiel hinzu.</string>
 		
 		<string id="chat">You can press ENTER and chat with other players</string>
 		<string id="chat" lang="ru">Вы можете разговаривать с другими игроками, нажав ENTER.</string>
+		<string id="chat" lang="fr">Vous pouvez contacter les autres joueurs avec la touche ENTER.</string>
+		<string id="chat" lang="de">Mit der ENTER-Taste können Sie die anderen Spieler kontaktieren.</string>
 	</area>
-</strings>
+</strings>    
+                      
