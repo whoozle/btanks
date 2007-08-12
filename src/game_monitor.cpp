@@ -303,7 +303,7 @@ void IGameMonitor::render(sdlx::Surface &window) {
 		
 		int x = (window.getWidth() - w) / 2;
 		//int y = (window.getHeight() - _big_font->getHeight()) / 2;
-		int y = 50;
+		int y = window.getHeight() - _big_font->getHeight() - 32;
 		_state_bg.render(window, (window.getWidth() - _state_bg.w) / 2, y + (h - _state_bg.h) / 2);
 		_big_font->render(window, x, y, _state);
 	}
