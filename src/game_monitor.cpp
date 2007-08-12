@@ -676,7 +676,10 @@ void IGameMonitor::loadMap(Campaign *campaign, const std::string &name, const bo
 		LOG_DEBUG(("kill'em all classes: %u", (unsigned)classes.size()));
 	}
 
-	if (Config->has("multiplayer.time-limit")) {
+	std::string game_type;
+	Config->get("multiplayer.game-type", game_type, "deathmatch");
+
+	if (game_type == "deathmatch" && Config->has("multiplayer.time-limit")) {
 		int tl; 
 		Config->get("multiplayer.time-limit", tl, 0);
 		if (tl != 0) 
