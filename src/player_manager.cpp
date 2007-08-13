@@ -829,14 +829,29 @@ TRY {
 
 
 void IPlayerManager::render(sdlx::Surface &window, const int vx, const int vy) {
-
-		for(unsigned p = 0; p < _players.size(); ++p) {
+		size_t local_idx = 0;
+		for(size_t p = 0; p < _players.size(); ++p) {
 			PlayerSlot &slot = _players[p];
 			if (!slot.visible)
 				continue;
-
-			if (slot.viewport.w == 0) 
-				slot.viewport = window.getSize();
+			++local_idx;
+			
+			if (slot.viewport.w == 0) {
+				assert(local_idx > 0);
+				
+				if (local_idx > _local_clients || _local_clients > 2)
+					throw_ex(("this client cannot handle %u clients(local index: %u)", (unsigned)_local_clients, (unsigned) local_idx));
+				
+				if (_local_clients == 1) {
+					slot.viewport = window.getSize();
+				} else if (_local_clients == 2) {
+					slot.viewport = window.getSize();
+					slot.viewport.w /= 2;
+					if (local_idx == 2) {
+						slot.viewport.x += slot.viewport.w;
+					}
+				}
+			}
 				
 			slot.viewport.x += vx;
 			slot.viewport.y += vy;
