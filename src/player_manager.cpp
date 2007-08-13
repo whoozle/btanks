@@ -450,7 +450,7 @@ TRY {
 
 	for(int i = 0; i < n; ++i) {
 		PlayerSlot &slot = _players[i];
-		if (slot.id <= 0)
+		if (slot.empty())
 			continue;
 		
 		Object *o = slot.getObject();
@@ -574,7 +574,7 @@ TRY {
 		for(int j = 0; j < n; ++j) {
 
 			PlayerSlot &slot = _players[j];
-			if (slot.id >= 0 && slot.need_sync) {
+			if (!slot.empty() && slot.need_sync) {
 				//LOG_DEBUG(("object in slot %d: %s (%d) need sync", j, slot.obj->registered_name.c_str(), slot.obj->getID()));
 				s.add(slot.id);
 				Object * o = slot.getObject();
@@ -932,7 +932,7 @@ void IPlayerManager::broadcast(const Message &m) {
 	int n = _players.size();
 	for(int i = 0; i < n; ++i) {
 		const PlayerSlot &slot = _players[i];
-		if (slot.remote && !slot.reserved && slot.id != -1) 
+		if (slot.remote && !slot.reserved && !slot.empty()) 
 			_server->send(i, m);
 	}
 }
@@ -951,7 +951,7 @@ const bool IPlayerManager::isServerActive() const {
 	int n = _players.size();
 	for(int i = 0; i < n; ++i) {
 		const PlayerSlot &slot = _players[i];
-		if (slot.remote && !slot.reserved && slot.id != -1)
+		if (slot.remote && !slot.reserved && !slot.empty())
 			return true;
 	}
 	return false;

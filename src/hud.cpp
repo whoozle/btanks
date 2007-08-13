@@ -106,7 +106,7 @@ void Hud::renderStats(sdlx::Surface &surface) {
 	
 	for(unsigned p = 0; p < slots; ++p) {
 		PlayerSlot &slot = PlayerManager->getSlot(p);
-		if (slot.id == -1)
+		if (slot.empty())
 			continue;
 		++active_slots;
 	}
@@ -133,7 +133,7 @@ void Hud::renderStats(sdlx::Surface &surface) {
 	
 	for(unsigned p = 0; p < slots; ++p) {
 		PlayerSlot &slot = PlayerManager->getSlot(p);
-		if (slot.id == -1)
+		if (slot.empty())
 			continue;
 		surface.fillRect(sdlx::Rect(xp, yp, box_w1, box_h), index2color(surface, p + 1, 255));
 		const Object * o = slot.getObject();
