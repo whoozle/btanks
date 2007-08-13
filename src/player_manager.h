@@ -62,10 +62,10 @@ public:
 	void addSlot(const v3<int> &position);
 	void addSpecialZone(const SpecialZone& zone);
 
+	PlayerSlot *getMySlot(); //remove me
+
 	PlayerSlot &getSlot(const unsigned int idx);
 	const PlayerSlot &getSlot(const unsigned int idx) const;
-	PlayerSlot *getMySlot();
-	const PlayerSlot *getMySlot() const;
 
 	PlayerSlot *getSlotByID(const int id);
 	const PlayerSlot *getSlotByID(const int id) const;
@@ -119,7 +119,6 @@ private:
 	Client *_client;
 
 	size_t _local_clients;
-	int _my_idx;
 
 	std::set<int> _global_zones_reached;
 	std::vector<PlayerSlot> _players;

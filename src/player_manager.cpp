@@ -115,18 +115,19 @@ TRY {
 			_players.push_back(slot);
 		}
 		
-		std::string vehicle;
-		Config->get("menu.default-vehicle-1", vehicle, "launcher");
-
-		Message m(Message::RequestPlayer);
-
-		m.set("vehicle", vehicle);
-
-		std::string name;
-		Config->get("player.name-1", name, Nickname::generate());
-		m.set("name", name);
 		
-		_client->send(m);
+		for(size_t i = 0; i < _local_clients; ++i) {
+			Message m(Message::RequestPlayer);
+
+			std::string vehicle;
+			Config->get(mrt::formatString("menu.default-vehicle-%u", (unsigned)(i + 1)), vehicle, "launcher");
+			m.set("vehicle", vehicle);
+
+			std::string name;
+			Config->get(mrt::formatString("player.name-%u", (unsigned)(i + 1)), name, Nickname::generate());
+			m.set("name", name);
+			_client->send(m);
+		}	
 		
 		_next_ping = 0;
 		_ping = true;
@@ -176,16 +177,13 @@ TRY {
 	case Message::GameJoined: {
 		LOG_DEBUG(("players = %u", (unsigned)_players.size()));
 		
-		Message m(Message::RequestPlayer);
-		m.channel = _my_idx;
-
-
-		_my_idx = message.channel;
-		assert(_my_idx >= 0);
-		PlayerSlot &slot = _players[_my_idx];
+		int id = message.channel;
+		assert(id >= 0);
+		PlayerSlot &slot = _players[id];
 		
 		slot.viewport.reset();
 		slot.visible = true;
+		slot.remote = id;
 		
 		assert(slot.control_method == NULL);
 		GET_CONFIG_VALUE("player.control-method", std::string, control_method, "keys");	
@@ -251,14 +249,20 @@ TRY {
 		while(!s.end()) {
 			int id;
 			s.get(id);
-			unsigned slot;
-			for(slot = 0; slot < _players.size(); ++slot) {
-				if (_players[slot].id == id)
+			PlayerSlot *slot = NULL;
+			for(size_t i = 0; i < _players.size(); ++i) {
+				if (_players[i].id == id) {
+					slot = &_players[i];
 					break;
+				}
 			}
-			if (slot >= _players.size()) 
-				LOG_WARN(("object id %u was not found in slots", slot));
-			const bool my_state = slot < _players.size() && slot == (unsigned)_my_idx;
+			bool my_state = false;
+			
+			if (slot == NULL) {
+				LOG_WARN(("object id %u was not found in slots", id));
+			} else {
+				my_state = slot->visible;
+			}
 			
 			Object *o = World->getObjectByID(id);
 
@@ -278,8 +282,8 @@ TRY {
 				continue;
 			}
 
-			LOG_DEBUG(("slot: %d, id: %d, state: %s %s (my state: %s) %s", 
-				slot, id, state.dump().c_str(), my_state?"[skipped]":"", o->getPlayerState().dump().c_str(), 
+			LOG_DEBUG(("id: %d, state: %s %s (my state: %s) %s", 
+				id, state.dump().c_str(), my_state?"[skipped]":"", o->getPlayerState().dump().c_str(), 
 				(my_state && state != o->getPlayerState())?"**DIFFERS**":""));
 
 			if (!my_state)
@@ -319,7 +323,7 @@ TRY {
 		
 		LOG_DEBUG(("ping = %g", _trip_time));
 		Message m(Message::Pong);
-		m.channel = _my_idx;
+		m.channel = message.channel;
 		m.data.setData((unsigned char *)data.getPtr() + sizeof(unsigned int), data.getSize() - sizeof(unsigned int));
 		_client->send(m);
 		break;
@@ -423,7 +427,6 @@ TRY {
 
 void IPlayerManager::ping() {
 	Message m(Message::Ping);
-	m.channel = _my_idx;
 	unsigned int ts = SDL_GetTicks();
 	LOG_DEBUG(("ping timestamp = %u", ts));
 	m.data.setData(&ts, sizeof(ts));
@@ -437,9 +440,9 @@ void IPlayerManager::updatePlayers() {
 	
 TRY {
 
-	int n = _players.size();
+	size_t n = _players.size();
 
-	for(int i = 0; i < n; ++i) {
+	for(size_t i = 0; i < n; ++i) {
 		PlayerSlot &slot = _players[i];
 		if (slot.empty())
 			continue;
@@ -469,7 +472,7 @@ TRY {
 					_global_zones_reached.find(c) == _global_zones_reached.end() && 
 					slot.zones_reached.find(c) == slot.zones_reached.end()) {
 					
-					LOG_DEBUG(("player[%d] zone %u reached.", i, (unsigned)c));
+					LOG_DEBUG(("player[%u] zone %u reached.", (unsigned)i, (unsigned)c));
 					slot.zones_reached.insert(c);
 					if (global)
 						_global_zones_reached.insert(c);
@@ -490,7 +493,7 @@ TRY {
 			LOG_DEBUG(("%d lives left", slot.spawn_limit));
 		}
 		
-		LOG_DEBUG(("player in slot %d is dead. respawning. frags: %d", i, slot.frags));
+		LOG_DEBUG(("player in slot %u is dead. respawning. frags: %d", (unsigned)i, slot.frags));
 
 		slot.spawnPlayer(slot.classname, slot.animation);
 
@@ -512,7 +515,7 @@ TRY {
 	
 	bool updated = false;
 	
-	for(int i = 0; i < n; ++i) {
+	for(size_t i = 0; i < n; ++i) {
 		PlayerSlot &slot = _players[i];
 		Object *obj = slot.getObject();
 
@@ -536,24 +539,27 @@ TRY {
 		}
 		
 		if (slot.need_sync)
-			updated = true;
-		
-		
+			updated = true;		
 	}
 				
-	if (_client && _players.size() != 0 && _players[_my_idx].need_sync)	{
+	if (_client && _players.size() != 0 && updated) {
 		mrt::Serializator s;
-		PlayerSlot &slot = _players[_my_idx];
-		
-		const Object * o = slot.getObject();
-		if (o != NULL) {
+
+		for(size_t i = 0; i < n; ++i) {
+			PlayerSlot &slot = _players[i];
+			if (!slot.remote)
+				continue;
+				
+			const Object * o = slot.getObject();
+			if (o == NULL)
+				continue;
 			o->getPlayerState().serialize(s);
-		
+	
 			Message m(Message::PlayerState);
-			m.channel = _my_idx;
+			m.channel = i;
 			m.data = s.getData();
 			_client->send(m);
-			_players[_my_idx].need_sync = false;
+			_players[i].need_sync = false;
 		}
 	}
 	//cross-players state exchange
@@ -563,7 +569,7 @@ TRY {
 		bool send = false;
 		mrt::Serializator s;
 
-		for(int j = 0; j < n; ++j) {
+		for(size_t j = 0; j < n; ++j) {
 
 			PlayerSlot &slot = _players[j];
 			if (!slot.empty() && slot.need_sync) {
@@ -610,7 +616,7 @@ const float IPlayerManager::extractPing(const mrt::Chunk &data) const {
 
 
 IPlayerManager::IPlayerManager() : 
-	_server(NULL), _client(NULL), _my_idx(-1), _players(), _trip_time(10), _next_ping(0), _ping(false), _next_sync(true), _game_joined(false)
+	_server(NULL), _client(NULL), _players(), _trip_time(10), _next_ping(0), _ping(false), _next_sync(true), _game_joined(false)
 {}
 
 IPlayerManager::~IPlayerManager() {}
@@ -640,7 +646,7 @@ void IPlayerManager::clear() {
 	_game_joined = false;
 	delete _server; _server = NULL;
 	delete _client; _client = NULL;
-	_my_idx = -1;
+	_local_clients = 0;
 
 	GET_CONFIG_VALUE("multiplayer.sync-interval", float, sync_interval, 103.0/101);
 	_next_sync.set(sync_interval);
@@ -674,21 +680,6 @@ const PlayerSlot &IPlayerManager::getSlot(const unsigned int idx) const {
 		throw_ex(("slot #%u does not exist", idx));
 	return _players[idx];
 }
-PlayerSlot *IPlayerManager::getMySlot() {
-	if (_my_idx < 0) 
-		return NULL;
-	if (_my_idx >= (int)_players.size())
-		throw_ex(("slot #%u does not exist", _my_idx));
-	return &_players[_my_idx];
-}
-const PlayerSlot *IPlayerManager::getMySlot() const {
-	if (_my_idx < 0) 
-		return NULL;
-	if (_my_idx >= (int)_players.size())
-		throw_ex(("slot #%u does not exist", _my_idx));
-	return &_players[_my_idx];
-}
-
 
 PlayerSlot *IPlayerManager::getSlotByID(const int id) {
 	if (id <= 0)
@@ -736,9 +727,6 @@ const int IPlayerManager::spawnPlayer(const std::string &classname, const std::s
 
 void IPlayerManager::setViewport(const int idx, const sdlx::Rect &rect) {
 	PlayerSlot &slot = _players[idx];
-	if (_my_idx < 0)
-		_my_idx = idx;
-	
 	slot.visible = true;
 	slot.viewport = rect;
 	const Object *o = _players[idx].getObject();
@@ -1086,6 +1074,19 @@ void IPlayerManager::updateControls() {
 	}
 }
 
+PlayerSlot *IPlayerManager::getMySlot() {
+	for(size_t i = 0; i < _players.size(); ++i) {
+		if (_server && !_players[i].remote && !_players[i].empty()) 
+			return &_players[i];
+
+		if (_client && _players[i].remote && !_players[i].empty()) 
+			return &_players[i];
+
+	}
+	return NULL;
+}
+
+
 void IPlayerManager::say(const std::string &message) {
 TRY {
 	LOG_DEBUG(("say('%s')", message.c_str()));
@@ -1094,19 +1095,35 @@ TRY {
 	m.set("text", message);
 	
 	if (_server) {
-		PlayerSlot *my_slot = getMySlot();
+		PlayerSlot *my_slot = NULL;
+		for(size_t i = 0; i < _players.size(); ++i) {
+			if (!_players[i].remote && !_players[i].empty()) {
+				my_slot = &_players[i];
+				break;
+			}
+		}
+		
 		if (my_slot == NULL) 
 			throw_ex(("cannot get my slot."));
+		
 		m.set("nick", my_slot->name);
 		Game->getChat()->addMessage(my_slot->name, message);
 		broadcast(m);
 	}
 	if (_client) {
-		m.channel = _my_idx;
+		size_t i;
+		for(i = 0; i < _players.size(); ++i) {
+			if (_players[i].remote && !_players[i].empty()) 
+				break;
+		}
+		if (i == _players.size())
+			throw_ex(("cannot get my slot"));
+		
+		m.channel = i;
 		_client->send(m);
 	}
 } CATCH("say", {
-		Game->clear();
+		//Game->clear();
 		GameMonitor->displayMessage("errors", "multiplayer-exception", 1);
 })
 }
