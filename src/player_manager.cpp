@@ -340,19 +340,17 @@ TRY {
 	}
 	
 	case Message::Pong: {
-		int id = message.channel;
-		if (id < 0 || (unsigned)id >= _players.size())
-			throw_ex(("player id exceeds players count (%d/%d)", id, (int)_players.size()));
-
-		PlayerSlot &slot = _players[id];
-		if (slot.remote != cid)
-			throw_ex(("client in connection %d sent wrong channel id %d", cid, id));
+		for(size_t id = 0; id < _players.size(); ++id) {
+			PlayerSlot &slot = _players[id];
+			if (slot.remote != cid)
+				continue;
 		
-		float ping = extractPing(message.data);
-		
-		GET_CONFIG_VALUE("multiplayer.ping-interpolation-multiplier", int, pw, 3);
-		slot.trip_time = (pw * ping + slot.trip_time) / (pw + 1);
-		LOG_DEBUG(("player %d: ping: %g ms", id, ping));		
+			float ping = extractPing(message.data);
+			
+			GET_CONFIG_VALUE("multiplayer.ping-interpolation-multiplier", int, pw, 3);
+			slot.trip_time = (pw * ping + slot.trip_time) / (pw + 1);
+			LOG_DEBUG(("player %u: ping: %g ms", (unsigned)id, ping));		
+		}
 		break;
 	}
 	
@@ -715,7 +713,7 @@ const PlayerSlot *IPlayerManager::getSlotByID(const int id) const {
 const int IPlayerManager::findEmptySlot() const {
 	int i, n = _players.size();
 	for(i = 0; i < n; ++i) {
-		if (_players[i].empty())
+		if (_players[i].empty() && !_players[i].remote)
 			break;
 	}
 	if (i == n) 
