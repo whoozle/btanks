@@ -74,7 +74,7 @@ const int IPlayerManager::onConnect(Message &message) {
 
 	message.data = s.getData();
 	LOG_DEBUG(("server status message size = %u", (unsigned) message.data.getSize()));
-	_players[client_id].reserved = true;
+
 	//LOG_DEBUG(("world: %s", message.data.dump().c_str()));
 	return client_id;
 }
@@ -151,13 +151,8 @@ TRY {
 	}
 	
 	case Message::RequestPlayer: {
-		int n = (int)_players.size();
-		int id = message.channel;
-		if (id < 0 || id >= n) 
-			throw_ex(("player id %d in connection %d exceedes player count %u", id, cid, n));
+		int id = findEmptySlot();
 		PlayerSlot &slot = _players[id];
-		if (!slot.reserved) 
-			throw_ex(("RequestPlayer sent over non-reserved slot[%d] (connection: %d). bug/hack.", id, cid));
 		
 		std::string vehicle, animation;
 		Config->get("multiplayer.restrict-start-vehicle", vehicle, "");
@@ -179,7 +174,6 @@ TRY {
 		LOG_DEBUG(("player%d: %s:%s, name: %s", id, vehicle.c_str(), animation.c_str(), slot.name.c_str()));
 
 		slot.remote = cid;
-		slot.reserved = false;
 		
 		slot.spawnPlayer(vehicle, animation);
 
@@ -222,8 +216,6 @@ TRY {
 		if (slot.remote != cid)
 			throw_ex(("client in connection %d sent wrong channel id %d", cid, id));
 
-		if (slot.reserved) 
-			throw_ex(("player sent PlayerState message before join. bye."));
 /*		ExternalControl * ex = dynamic_cast<ExternalControl *>(slot.control_method);
 		if (ex == NULL)
 			throw_ex(("player with id %d uses non-external control method", id));
@@ -631,9 +623,10 @@ void IPlayerManager::startServer() {
 	_server->init(9876);
 }
 
-void IPlayerManager::startClient(const std::string &address) {
+void IPlayerManager::startClient(const std::string &address, const size_t n) {
 	clear();
 	
+	_local_clients = n;
 	World->setSafeMode(true);
 	unsigned port = 9876;
 	TRY {
@@ -722,7 +715,7 @@ const PlayerSlot *IPlayerManager::getSlotByID(const int id) const {
 const int IPlayerManager::findEmptySlot() const {
 	int i, n = _players.size();
 	for(i = 0; i < n; ++i) {
-		if (_players[i].id == -1 && !_players[i].reserved)
+		if (_players[i].empty())
 			break;
 	}
 	if (i == n) 
@@ -934,7 +927,7 @@ void IPlayerManager::broadcast(const Message &_m) {
 	Message m(_m);
 	for(int i = 0; i < n; ++i) {
 		const PlayerSlot &slot = _players[i];
-		if (slot.remote && !slot.reserved && !slot.empty()) {
+		if (slot.remote && !slot.empty()) {
 			m.channel = i;
 			_server->send(slot.remote, m);
 		}
@@ -957,7 +950,7 @@ const bool IPlayerManager::isServerActive() const {
 	int n = _players.size();
 	for(int i = 0; i < n; ++i) {
 		const PlayerSlot &slot = _players[i];
-		if (slot.remote && !slot.reserved && !slot.empty())
+		if (slot.remote && !slot.empty())
 			return true;
 	}
 	return false;

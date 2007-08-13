@@ -120,7 +120,7 @@ void JoinServerMenu::join() {
 	bool ok = true;
 	TRY {
 		Game->clear();
-		PlayerManager->startClient(host);
+		PlayerManager->startClient(host, 2);
 	} CATCH("join", { 
 		GameMonitor->displayMessage("menu", "connection-failed", 1.5); 
 		ok = false; 

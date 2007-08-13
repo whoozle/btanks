@@ -52,7 +52,7 @@ public:
 	~IPlayerManager();
 		
 	void startServer();
-	void startClient(const std::string &address);
+	void startClient(const std::string &address, const size_t n);
 	void clear();
 	
 	const bool isClient() const { return _client != NULL; }
@@ -118,6 +118,7 @@ private:
 	Server *_server;
 	Client *_client;
 
+	size_t _local_clients;
 	int _my_idx;
 
 	std::set<int> _global_zones_reached;

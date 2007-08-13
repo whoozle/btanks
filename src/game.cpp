@@ -324,7 +324,7 @@ void IGame::init(const int argc, char *argv[]) {
 	_net_talk->hide();
 
 	if (_autojoin) {
-		PlayerManager->startClient(address);
+		PlayerManager->startClient(address, 1);
 		if (_main_menu)
 			_main_menu->setActive(false);
 	}

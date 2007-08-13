@@ -32,12 +32,12 @@
 
 PlayerSlot::PlayerSlot() : 
 id(-1), control_method(NULL), need_sync(false), dont_interpolate(false), remote(0), trip_time(10), visible(false), 
-classname(), animation(), frags(0), reserved(false), spawn_limit(0), score(0), last_tooltip(NULL)
+classname(), animation(), frags(0), spawn_limit(0), score(0), last_tooltip(NULL)
 {}
 
 PlayerSlot::PlayerSlot(const int id) : 
 id(id), control_method(NULL), need_sync(false), dont_interpolate(false), remote(0), trip_time(10), visible(false), 
-classname(), animation(), frags(0), reserved(false), spawn_limit(0), score(0), last_tooltip(NULL)
+classname(), animation(), frags(0), spawn_limit(0), score(0), last_tooltip(NULL)
 {}
 
 void PlayerSlot::serialize(mrt::Serializator &s) const {
@@ -88,7 +88,6 @@ void PlayerSlot::clear() {
 	need_sync = false;
 	remote = 0;
 	frags = 0;
-	reserved = false;
 	
 	zones_reached.clear();
 	spawn_limit = 0;

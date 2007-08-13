@@ -59,7 +59,6 @@ public:
 	std::string animation;
 	
 	int frags;
-	bool reserved;
 	
 	std::set<int> zones_reached;
 	int spawn_limit;
