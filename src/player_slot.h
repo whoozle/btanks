@@ -42,7 +42,7 @@ public:
 	v3<int> position;
 		
 	bool need_sync, dont_interpolate;
-	bool remote;
+	int remote;
 	float trip_time;
 	
 	bool visible;

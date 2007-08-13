@@ -31,12 +31,12 @@
 #include "i18n.h"
 
 PlayerSlot::PlayerSlot() : 
-id(-1), control_method(NULL), need_sync(false), dont_interpolate(false), remote(false), trip_time(10), visible(false), 
+id(-1), control_method(NULL), need_sync(false), dont_interpolate(false), remote(0), trip_time(10), visible(false), 
 classname(), animation(), frags(0), reserved(false), spawn_limit(0), score(0), last_tooltip(NULL)
 {}
 
 PlayerSlot::PlayerSlot(const int id) : 
-id(id), control_method(NULL), need_sync(false), dont_interpolate(false), remote(false), trip_time(10), visible(false), 
+id(id), control_method(NULL), need_sync(false), dont_interpolate(false), remote(0), trip_time(10), visible(false), 
 classname(), animation(), frags(0), reserved(false), spawn_limit(0), score(0), last_tooltip(NULL)
 {}
 
@@ -86,7 +86,7 @@ void PlayerSlot::clear() {
 	classname.clear();
 
 	need_sync = false;
-	remote = false;
+	remote = 0;
 	frags = 0;
 	reserved = false;
 	
@@ -217,10 +217,6 @@ void PlayerSlot::createControlMethod(const std::string &control_method_name) {
 			delete control_method;
 			control_method = new KeyPlayer("keys");
 		})
-	} else if (control_method_name == "network") {
-		//slot.control_method = new ExternalControl;
-		control_method = NULL;
-		remote = true;
 	} else if (control_method_name != "ai") {
 		throw_ex(("unknown control method '%s' used", control_method_name.c_str()));
 	}
