@@ -153,7 +153,7 @@ TRY {
 	case Message::RequestPlayer: {
 		int n = (int)_players.size();
 		int id = message.channel;
-		if (id >= n) 
+		if (id < 0 || id >= n) 
 			throw_ex(("player id %d in connection %d exceedes player count %u", id, cid, n));
 		PlayerSlot &slot = _players[id];
 		if (!slot.reserved) 
