@@ -67,7 +67,7 @@ const int IPlayerManager::onConnect(Message &message) {
 	mrt::Serializator s;
 	Map->serialize(s);
 	
-	s.add(client_id);
+	//s.add(client_id);
 	//_players[client_id].position.serialize(s);
 	
 	serializeSlots(s);	
@@ -105,13 +105,8 @@ TRY {
 		Map->deserialize(s);
 		GameMonitor->loadMap(NULL, Map->getName(), false, true);
 		
-		s.get(_my_idx);
-		LOG_DEBUG(("my_idx = %d", _my_idx));
-		
 		int n;
 		s.get(n);
-		if (_my_idx >= n) 
-			throw_ex(("server returned bogus player index (%d/%d)", _my_idx, n));
 		
 		_players.clear();
 		for(int i = 0; i < n; ++i) {
@@ -120,22 +115,10 @@ TRY {
 			_players.push_back(slot);
 		}
 		
-		PlayerSlot &slot = _players[_my_idx];
-		
-		slot.viewport.reset();
-		slot.visible = true;
-		
-		assert(slot.control_method == NULL);
-		GET_CONFIG_VALUE("player.control-method", std::string, control_method, "keys");	
-		slot.createControlMethod(control_method);
-
-		LOG_DEBUG(("players = %u", (unsigned)_players.size()));
-		
-		Message m(Message::RequestPlayer);
-		m.channel = _my_idx;
-
 		std::string vehicle;
 		Config->get("menu.default-vehicle-1", vehicle, "launcher");
+
+		Message m(Message::RequestPlayer);
 
 		m.set("vehicle", vehicle);
 
@@ -191,7 +174,23 @@ TRY {
 	}
 	
 	case Message::GameJoined: {
+		LOG_DEBUG(("players = %u", (unsigned)_players.size()));
+		
+		Message m(Message::RequestPlayer);
+		m.channel = _my_idx;
+
+
+		_my_idx = message.channel;
 		assert(_my_idx >= 0);
+		PlayerSlot &slot = _players[_my_idx];
+		
+		slot.viewport.reset();
+		slot.visible = true;
+		
+		assert(slot.control_method == NULL);
+		GET_CONFIG_VALUE("player.control-method", std::string, control_method, "keys");	
+		slot.createControlMethod(control_method);
+		
 		mrt::Serializator s(&message.data);
 		World->deserialize(s);
 		deserializeSlots(s);
