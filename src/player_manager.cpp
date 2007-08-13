@@ -312,7 +312,6 @@ TRY {
 	} 
 	case Message::Ping: {
 		Message m(Message::Pang);
-		m.channel = message.channel;
 		m.data = message.data;
 		size_t size = m.data.getSize();
 		m.data.reserve(size + sizeof(unsigned int));
@@ -335,7 +334,6 @@ TRY {
 		
 		LOG_DEBUG(("ping = %g", _trip_time));
 		Message m(Message::Pong);
-		m.channel = message.channel;
 		m.data.setData((unsigned char *)data.getPtr() + sizeof(unsigned int), data.getSize() - sizeof(unsigned int));
 		_client->send(m);
 		break;
