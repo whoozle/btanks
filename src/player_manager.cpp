@@ -184,10 +184,22 @@ TRY {
 		slot.viewport.reset();
 		slot.visible = true;
 		slot.remote = id;
-		
+
 		assert(slot.control_method == NULL);
-		GET_CONFIG_VALUE("player.control-method", std::string, control_method, "keys");	
-		slot.createControlMethod(control_method);
+		if (_local_clients == 1) {
+			GET_CONFIG_VALUE("player.control-method", std::string, control_method, "keys");	
+			slot.createControlMethod(control_method);
+		} else if (_local_clients == 2) {
+			size_t idx = 0;
+			for(size_t i = 0; i < _players.size(); ++i) {
+				if (_players[i].remote)
+					++idx;
+			}
+			assert(idx == 1 || idx == 2);
+			std::string control_method;
+			Config->get(mrt::formatString("player.control-method-%u", (unsigned)idx), control_method, mrt::formatString("keys-%u", (unsigned)idx));	
+			slot.createControlMethod(control_method);
+		} else throw_ex(("cannot handle %u clients", (unsigned)_local_clients));
 		
 		mrt::Serializator s(&message.data);
 		World->deserialize(s);
