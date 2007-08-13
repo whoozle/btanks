@@ -100,7 +100,7 @@ public:
 	void validateViewports();
 	
 	//for special zones
-	void send(const int id, const Message & msg);
+	void send(const PlayerSlot &slot, const Message & msg);
 	void say(const std::string &message);
 	
 	void updateControls(); //recreates control methods.

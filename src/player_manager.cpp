@@ -190,7 +190,7 @@ TRY {
 		Message m(Message::GameJoined);
 		m.channel = id;
 		m.data = s.getData();
-		_server->send(id, m);
+		_server->send(cid, m);
 
 		Window->resetTimer();
 		break;
@@ -509,12 +509,13 @@ TRY {
 		
 		if (isServer() && slot.remote) {
 			Message m(Message::Respawn);
+			m.channel = i;
 			mrt::Serializator s;
 			serializeSlots(s);
 			World->generateUpdate(s, false);
 			
 			m.data = s.getData();
-			_server->send(i, m);
+			send(slot, m);
 		}
 	}
 	
@@ -928,19 +929,24 @@ void IPlayerManager::deserializeSlots(const mrt::Serializator &s) {
 	}
 }
 
-void IPlayerManager::broadcast(const Message &m) {
+void IPlayerManager::broadcast(const Message &_m) {
 	int n = _players.size();
+	Message m(_m);
 	for(int i = 0; i < n; ++i) {
 		const PlayerSlot &slot = _players[i];
-		if (slot.remote && !slot.reserved && !slot.empty()) 
-			_server->send(i, m);
+		if (slot.remote && !slot.reserved && !slot.empty()) {
+			m.channel = i;
+			_server->send(slot.remote, m);
+		}
 	}
 }
 
-void IPlayerManager::send(const int id, const Message & msg) {
+void IPlayerManager::send(const PlayerSlot &slot, const Message & msg) {
 	if (_server == NULL)
 		throw_ex(("PlayerManager->send() allowed only in server mode"));
-	_server->send(id, msg);
+	int cid = slot.remote;
+	if (cid != 0)
+		_server->send(cid, msg);
 }
 
 

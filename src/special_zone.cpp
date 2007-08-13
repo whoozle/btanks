@@ -169,6 +169,6 @@ void SpecialZone::onCheckpoint(const int slot_id) {
 		Message m(Message::TextMessage);
 		m.set("message", "checkpoint-reached");
 		m.set("duration", "3");
-		PlayerManager->send(slot_id, m);
+		PlayerManager->send(slot, m);
 	}
 }
