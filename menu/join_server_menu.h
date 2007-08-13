@@ -47,7 +47,7 @@ private:
 	HostList *_hosts;
 	MapDetails *_details;
 	Prompt *_add_dialog;
-	Chooser *_vehicle;
+	Chooser *_vehicle, *_vehicle2;
 	Button *_back, *_add, *_del, *_scan, *_join;
 };
 

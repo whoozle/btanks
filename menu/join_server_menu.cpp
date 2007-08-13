@@ -95,19 +95,30 @@ JoinServerMenu::JoinServerMenu(MainMenu *parent, const int w, const int h) : _pa
 	options.push_back("mortar");
 		
 	_vehicle = new Chooser("medium", options, "menu/vehicles.png");
+	_vehicle2 = new Chooser("medium", options, "menu/vehicles.png");
+
 	_vehicle->disable(0);
-	for(int i = 4; i < _vehicle->size(); ++i)
+	_vehicle2->disable(0);
+
+	for(int i = 4; i < _vehicle->size(); ++i) {
 		_vehicle->disable(i);
+		_vehicle2->disable(i);
+	}
 
 	TRY {
 		std::string def_v;
+
 		Config->get("menu.default-vehicle-1", def_v, "launcher");
 		_vehicle->set(def_v);
+
+		Config->get("menu.default-vehicle-2", def_v, "launcher");
+		_vehicle2->set(def_v);
 	} CATCH("_vehicle->set()", {})
 
 	_vehicle->getSize(bw, bh);
 		
 	add(map_pos.x + map_pos.w / 2 - bw / 2, map_pos.y + map_pos.h - bh * 2, _vehicle);
+	add(map_pos.x + map_pos.w / 2 + bw / 2, map_pos.y + map_pos.h - bh * 2, _vehicle2);
 }
 
 void JoinServerMenu::join() {
@@ -119,8 +130,11 @@ void JoinServerMenu::join() {
 	
 	bool ok = true;
 	TRY {
+		bool split;
+		Config->get("multiplayer.split-screen-mode", split, false);
+		
 		Game->clear();
-		PlayerManager->startClient(host, 2);
+		PlayerManager->startClient(host, split?2:1);
 	} CATCH("join", { 
 		GameMonitor->displayMessage("menu", "connection-failed", 1.5); 
 		ok = false; 
@@ -132,9 +146,23 @@ void JoinServerMenu::join() {
 
 void JoinServerMenu::tick(const float dt) {
 	Container::tick(dt);
+
+	bool split;
+	Config->get("multiplayer.split-screen-mode", split, false);
+
+	if (split && _vehicle2->hidden())
+		_vehicle2->hide(false);
+	if (!split && !_vehicle2->hidden())
+		_vehicle2->hide();
+
 	if (_vehicle->changed()) {
 		_vehicle->reset();
 		Config->set("menu.default-vehicle-1", _vehicle->getValue());
+	}
+
+	if (_vehicle2->changed()) {
+		_vehicle2->reset();
+		Config->set("menu.default-vehicle-1", _vehicle2->getValue());
 	}
 	
 	if (_back->changed()) {
