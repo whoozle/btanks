@@ -555,7 +555,7 @@ TRY {
 
 		for(size_t i = 0; i < n; ++i) {
 			PlayerSlot &slot = _players[i];
-			if (!slot.remote)
+			if (!slot.remote || !slot.need_sync)
 				continue;
 				
 			const Object * o = slot.getObject();
