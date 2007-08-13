@@ -93,7 +93,7 @@ void IPlayerManager::onDisconnect(const int id) {
 }
 
 
-void IPlayerManager::onMessage(const int id, const Message &message) {
+void IPlayerManager::onMessage(const int cid, const Message &message) {
 TRY {
 	LOG_DEBUG(("incoming message %s", message.getType()));
 	switch(message.type) {
@@ -132,6 +132,7 @@ TRY {
 		LOG_DEBUG(("players = %u", (unsigned)_players.size()));
 		
 		Message m(Message::RequestPlayer);
+		m.channel = _my_idx;
 
 		std::string vehicle;
 		Config->get("menu.default-vehicle-1", vehicle, "launcher");
@@ -151,11 +152,12 @@ TRY {
 	
 	case Message::RequestPlayer: {
 		int n = (int)_players.size();
+		int id = message.channel;
 		if (id >= n) 
-			throw_ex(("connection id %d exceedes player count %u", id, n));
+			throw_ex(("player id %d in connection %d exceedes player count %u", id, cid, n));
 		PlayerSlot &slot = _players[id];
 		if (!slot.reserved) 
-			throw_ex(("RequestPlayer sent over non-reserved slot[%d]. bug/hack.", id));	
+			throw_ex(("RequestPlayer sent over non-reserved slot[%d] (connection: %d). bug/hack.", id, cid));
 		
 		std::string vehicle, animation;
 		Config->get("multiplayer.restrict-start-vehicle", vehicle, "");
@@ -176,7 +178,7 @@ TRY {
 		slot.name = message.get("name");
 		LOG_DEBUG(("player%d: %s:%s, name: %s", id, vehicle.c_str(), animation.c_str(), slot.name.c_str()));
 
-		slot.remote = true;
+		slot.remote = cid;
 		slot.reserved = false;
 		
 		slot.spawnPlayer(vehicle, animation);
@@ -186,6 +188,7 @@ TRY {
 		serializeSlots(s);
 		
 		Message m(Message::GameJoined);
+		m.channel = id;
 		m.data = s.getData();
 		_server->send(id, m);
 
@@ -212,10 +215,13 @@ TRY {
 		break;
 	} 
 	case Message::PlayerState: {
-		mrt::Serializator s(&message.data);
+		int id = message.channel;
 		if (id < 0 || (unsigned)id >= _players.size())
 			throw_ex(("player id exceeds players count (%d/%d)", id, (int)_players.size()));
 		PlayerSlot &slot = _players[id];
+		if (slot.remote != cid)
+			throw_ex(("client in connection %d sent wrong channel id %d", cid, id));
+
 		if (slot.reserved) 
 			throw_ex(("player sent PlayerState message before join. bye."));
 /*		ExternalControl * ex = dynamic_cast<ExternalControl *>(slot.control_method);
@@ -224,6 +230,8 @@ TRY {
 		
 		ex->state.deserialize(s);
 		*/
+		mrt::Serializator s(&message.data);
+
 		PlayerState state;
 		state.deserialize(s);
 
@@ -297,13 +305,14 @@ TRY {
 	} 
 	case Message::Ping: {
 		Message m(Message::Pang);
+		m.channel = message.channel;
 		m.data = message.data;
 		size_t size = m.data.getSize();
 		m.data.reserve(size + sizeof(unsigned int));
 		
 		unsigned int ts = SDL_GetTicks();
 		*(unsigned int *)((unsigned char *)m.data.getPtr() + size) = ts;
-		_server->send(id, m);
+		_server->send(cid, m);
 		break;
 	}
 	
@@ -319,26 +328,39 @@ TRY {
 		
 		LOG_DEBUG(("ping = %g", _trip_time));
 		Message m(Message::Pong);
+		m.channel = _my_idx;
 		m.data.setData((unsigned char *)data.getPtr() + sizeof(unsigned int), data.getSize() - sizeof(unsigned int));
 		_client->send(m);
 		break;
 	}
 	
 	case Message::Pong: {
+		int id = message.channel;
 		if (id < 0 || (unsigned)id >= _players.size())
 			throw_ex(("player id exceeds players count (%d/%d)", id, (int)_players.size()));
+
+		PlayerSlot &slot = _players[id];
+		if (slot.remote != cid)
+			throw_ex(("client in connection %d sent wrong channel id %d", cid, id));
+		
 		float ping = extractPing(message.data);
 		
 		GET_CONFIG_VALUE("multiplayer.ping-interpolation-multiplier", int, pw, 3);
-		_players[id].trip_time = (pw * ping + _players[id].trip_time) / (pw + 1);
+		slot.trip_time = (pw * ping + slot.trip_time) / (pw + 1);
 		LOG_DEBUG(("player %d: ping: %g ms", id, ping));		
 		break;
 	}
 	
 	case Message::Respawn: {
 		TRY {
+		int id = message.channel;
 		if (id < 0 || (unsigned)id >= _players.size())
 			throw_ex(("player id exceeds players count (%d/%d)", id, (int)_players.size()));
+
+		PlayerSlot &slot = _players[id];
+		if (slot.remote != cid)
+			throw_ex(("client in connection %d sent wrong channel id %d", cid, id));
+
 		mrt::Serializator s(&message.data);
 		deserializeSlots(s);
 		World->applyUpdate(s, _trip_time / 1000.0);
@@ -371,8 +393,13 @@ TRY {
 		break;
 	}
 	case Message::PlayerMessage: {
+		int id = message.channel;
 		if (id < 0 || (unsigned)id >= _players.size())
 			throw_ex(("player id exceeds players count (%d/%d)", id, (int)_players.size()));
+
+		PlayerSlot &slot = _players[id];
+		if (slot.remote != cid)
+			throw_ex(("client in connection %d sent wrong channel id %d", cid, id));
 
 		if (_client)
 			Game->getChat()->addMessage(message.get("nick"), message.get("text"));
@@ -392,7 +419,7 @@ TRY {
 	};
 } CATCH("onMessage", { 
 	if (_server) 
-		_server->disconnect(id);
+		_server->disconnect(cid);
 	if (_client) {
 		_client->disconnect();
 		Game->clear();
@@ -405,6 +432,7 @@ TRY {
 
 void IPlayerManager::ping() {
 	Message m(Message::Ping);
+	m.channel = _my_idx;
 	unsigned int ts = SDL_GetTicks();
 	LOG_DEBUG(("ping timestamp = %u", ts));
 	m.data.setData(&ts, sizeof(ts));
@@ -530,6 +558,7 @@ TRY {
 			o->getPlayerState().serialize(s);
 		
 			Message m(Message::PlayerState);
+			m.channel = _my_idx;
 			m.data = s.getData();
 			_client->send(m);
 			_players[_my_idx].need_sync = false;
@@ -1060,6 +1089,7 @@ TRY {
 		broadcast(m);
 	}
 	if (_client) {
+		m.channel = _my_idx;
 		_client->send(m);
 	}
 } CATCH("say", {
