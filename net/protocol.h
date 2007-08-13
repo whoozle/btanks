@@ -59,6 +59,7 @@ public:
 	void set(const std::string &key, const std::string &value);
 	const std::string &get(const std::string &key) const;
 	
+	int channel;
 	Type type;
 
 	mrt::Chunk data;

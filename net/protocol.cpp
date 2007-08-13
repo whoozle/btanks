@@ -32,9 +32,9 @@
 #	include <arpa/inet.h>
 #endif
 
-Message::Message() : type(None), data(), _attrs() {}
+Message::Message() : channel(0), type(None), data(), _attrs() {}
 
-Message::Message(const Message::Type type) : type(type), data(), _attrs() {}
+Message::Message(const Message::Type type) : channel(0), type(type), data(), _attrs() {}
 
 const char * Message::getType() const {
 	switch(type) {
@@ -59,12 +59,14 @@ const char * Message::getType() const {
 
 
 void Message::serialize(mrt::Serializator &s) const {
+	s.add(channel);
 	s.add((int)type);
 	writeMap(s);
 	s.add(data);
 }
 
 void Message::deserialize(const mrt::Serializator &s) {
+	s.get(channel);
 	int t;
 	s.get(t);
 	type = (Message::Type) t;
