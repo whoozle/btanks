@@ -752,7 +752,7 @@ void IPlayerManager::setViewport(const int idx, const sdlx::Rect &rect) {
 
 void IPlayerManager::validateViewports() {
 		if (Map->loaded()) {
-			for(unsigned p = 0; p < _players.size(); ++p) {
+			for(size_t p = 0; p < _players.size(); ++p) {
 				PlayerSlot &slot = _players[p];
 				if (!slot.visible) 
 					continue;
