@@ -79,17 +79,18 @@ const int IPlayerManager::onConnect(Message &message) {
 	return client_id;
 }
 
-void IPlayerManager::onDisconnect(const int id) {
-	if ((unsigned)id >= _players.size()) {
-		LOG_ERROR(("player %d doesnt exists, so cannot disconnect.", id));
-		return;
-	}
-	PlayerSlot &slot = _players[id];
-	Object *obj = slot.getObject();
-	if (obj)
-		obj->Object::emit("death", NULL);
+void IPlayerManager::onDisconnect(const int cid) {
+	for(size_t i = 0; i < _players.size(); ++i) {
+		PlayerSlot &slot = _players[i];
+		if (slot.remote != cid)
+			continue;
+		
+		Object *obj = slot.getObject();
+		if (obj)
+			obj->Object::emit("death", NULL);
 	
-	slot.clear();
+		slot.clear();
+	}
 }
 
 
