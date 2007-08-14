@@ -103,6 +103,8 @@ public:
 	void send(const PlayerSlot &slot, const Message & msg);
 	void say(const std::string &message);
 	
+	void broadcastMessage(const std::string &area, const std::string &message, const float duration);
+	
 	void updateControls(); //recreates control methods.
 
 private: 

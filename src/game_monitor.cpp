@@ -216,8 +216,12 @@ void IGameMonitor::gameOver(const std::string &area, const std::string &message,
 	resetTimer();
 }
 
-void IGameMonitor::displayMessage(const std::string &area, const std::string &message, const float time) {
+void IGameMonitor::displayMessage(const std::string &area, const std::string &message, const float time, const bool global) {
 	pushState(I18n->get(area, message), time);
+
+	if (global) {
+		PlayerManager->broadcastMessage(area, message, time);
+	}
 }
 
 void IGameMonitor::setTimer(const std::string &area, const std::string &message, const float time, const bool win_at_end) {
@@ -351,8 +355,8 @@ TRY {
 	for(int i = 0; i < n; ++i)	
 		s.add(_specials[i]);
 
-	s.add(_state);
-	s.add(_state_timer);
+	//s.add(_state);
+	//s.add(_state_timer);
 	
 	s.add(_timer_message);
 	s.add(_timer_message_area);
@@ -386,8 +390,8 @@ TRY {
 		_specials.push_back(p);
 	}
 
-	s.get(_state);
-	s.get(_state_timer);
+	//s.get(_state);
+	//s.get(_state_timer);
 	
 	s.get(_timer_message);
 	s.get(_timer_message_area);

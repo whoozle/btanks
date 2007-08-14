@@ -380,7 +380,7 @@ TRY {
 	
 	case Message::TextMessage: {
 		TRY {
-			GameMonitor->displayMessage("messages", message.get("message"), atof(message.get("duration").c_str()) - _trip_time / 1000.0);
+			GameMonitor->displayMessage(message.get("area"), message.get("message"), atof(message.get("duration").c_str()) - _trip_time / 1000.0);
 		} CATCH("on-message(text-message)", throw; )		
 		break;
 	}
@@ -1113,6 +1113,20 @@ PlayerSlot *IPlayerManager::getMySlot() {
 	return NULL;
 }
 
+void IPlayerManager::broadcastMessage(const std::string &area, const std::string &message, const float duration) {
+TRY {
+	Message m(Message::TextMessage);
+	m.set("area", area);
+	m.set("message", message);
+	m.set("duration", mrt::formatString("%g", duration));
+	broadcast(m, true);	
+} CATCH("say", {
+		Game->clear();
+		GameMonitor->displayMessage("errors", "multiplayer-exception", 1);
+})
+
+}
+
 
 void IPlayerManager::say(const std::string &message) {
 TRY {
@@ -1150,7 +1164,7 @@ TRY {
 		_client->send(m);
 	}
 } CATCH("say", {
-		//Game->clear();
+		Game->clear();
 		GameMonitor->displayMessage("errors", "multiplayer-exception", 1);
 })
 }

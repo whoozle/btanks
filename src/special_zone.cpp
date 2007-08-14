@@ -81,7 +81,7 @@ void SpecialZone::onTimer(const int slot_id, const bool win) {
 	} else 
 		GameMonitor->setTimer("messages", "game-over", duration, false);
 		
-	GameMonitor->displayMessage(area, name, 3);
+	GameMonitor->displayMessage(area, name, 3, global());
 }
 
 
@@ -111,7 +111,7 @@ void SpecialZone::onEnter(const int slot_id) {
 }
 
 void SpecialZone::onMessage(const int slot_id) {
-	GameMonitor->displayMessage(area, name, 3);
+	GameMonitor->displayMessage(area, name, 3, global());
 }
 
 void SpecialZone::onHint(const int slot_id) {
@@ -160,13 +160,15 @@ void SpecialZone::onCheckpoint(const int slot_id) {
 
 			GameMonitor->gameOver("messages", "mission-accomplished", 5, true);
 		} else 
-			GameMonitor->displayMessage("messages", "checkpoint-reached", 3);
+			GameMonitor->displayMessage("messages", "checkpoint-reached", 3, false);
 	}
 
 	slot.need_sync = true;
 
 	if (slot.remote && PlayerManager->isServer() ) {
 		Message m(Message::TextMessage);
+		m.channel = slot_id;
+		m.set("area", "messages");
 		m.set("message", "checkpoint-reached");
 		m.set("duration", "3");
 		PlayerManager->send(slot, m);
