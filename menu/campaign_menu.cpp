@@ -21,6 +21,8 @@
 #include "image_view.h"
 #include "nickname.h"
 
+#include "tmx/map.h"
+
 void CampaignMenu::start() {
 	int ci = _active_campaign->get();
 	Campaign &campaign = _campaigns[ci];
@@ -178,6 +180,13 @@ void CampaignMenu::tick(const float dt) {
 			_map_view->setDestination(map.position.convert<float>());
 		}
 	}
+	
+	if (Map->loaded() && !_b_shop->hidden())
+		_b_shop->hide();
+
+	if (!Map->loaded() && _b_shop->hidden())
+		_b_shop->hide(false);
+	
 	
 	if (_b_shop->changed()) {
 		_b_shop->reset();
