@@ -397,18 +397,20 @@ TRY {
 		break;
 	}
 	case Message::PlayerMessage: {
-		int id = message.channel;
-		if (id < 0 || (unsigned)id >= _players.size())
-			throw_ex(("player id exceeds players count (%d/%d)", id, (int)_players.size()));
-
-		PlayerSlot &slot = _players[id];
-		if (slot.remote != cid)
-			throw_ex(("client in connection %d sent wrong channel id %d", cid, id));
-
-		if (_client)
+		if (_client) {
 			Game->getChat()->addMessage(message.get("nick"), message.get("text"));
-
+			break;
+		} 
+	
 		if (_server) {
+			int id = message.channel;
+			if (id < 0 || (unsigned)id >= _players.size())
+				throw_ex(("player id exceeds players count (%d/%d)", id, (int)_players.size()));
+
+			PlayerSlot &slot = _players[id];
+			if (slot.remote != cid)
+				throw_ex(("client in connection %d sent wrong channel id %d", cid, id));
+	
 			std::string nick =  _players[id].name;
 			Game->getChat()->addMessage(nick, message.get("text"));
 			Message msg(message);
