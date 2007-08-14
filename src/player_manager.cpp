@@ -950,15 +950,16 @@ void IPlayerManager::broadcast(const Message &_m, const bool per_connection) {
 			seen.insert(slot.remote);
 			_server->send(slot.remote, _m);
 		}
-	}
-	Message m(_m);
-	for(size_t i = 0; i < n; ++i) {
-		const PlayerSlot &slot = _players[i];
-		if (!slot.remote || slot.empty())
-			continue;
+	} else {
+		Message m(_m);
+		for(size_t i = 0; i < n; ++i) {
+			const PlayerSlot &slot = _players[i];
+			if (!slot.remote || slot.empty())
+				continue;
 	
-		m.channel = i;
-		_server->send(slot.remote, m);
+			m.channel = i;
+			_server->send(slot.remote, m);
+		}
 	}
 }
 
