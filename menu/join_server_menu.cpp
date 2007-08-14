@@ -162,7 +162,7 @@ void JoinServerMenu::tick(const float dt) {
 
 	if (_vehicle2->changed()) {
 		_vehicle2->reset();
-		Config->set("menu.default-vehicle-1", _vehicle2->getValue());
+		Config->set("menu.default-vehicle-2", _vehicle2->getValue());
 	}
 	
 	if (_back->changed()) {
