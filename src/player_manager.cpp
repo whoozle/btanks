@@ -357,13 +357,13 @@ TRY {
 	
 	case Message::Respawn: {
 		TRY {
-		int id = message.channel;
-		if (id < 0 || (unsigned)id >= _players.size())
-			throw_ex(("player id exceeds players count (%d/%d)", id, (int)_players.size()));
+		//int id = message.channel;
+		//if (id < 0 || (unsigned)id >= _players.size())
+		//	throw_ex(("player id exceeds players count (%d/%d)", id, (int)_players.size()));
 
-		PlayerSlot &slot = _players[id];
-		if (slot.remote != cid)
-			throw_ex(("client in connection %d sent wrong channel id %d", cid, id));
+		//PlayerSlot &slot = _players[id];
+		//if (slot.remote != cid) //client side, no need for this check
+		//	throw_ex(("client in connection %d sent wrong channel id %d", cid, id));
 
 		mrt::Serializator s(&message.data);
 		deserializeSlots(s);
