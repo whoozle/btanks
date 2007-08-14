@@ -420,7 +420,7 @@ TRY {
 	default:
 		LOG_WARN(("unhandled message: %s\n%s", message.getType(), message.data.dump().c_str()));
 	};
-} CATCH("onMessage", { 
+} CATCH(mrt::formatString("onMessage(%d, %s)", cid, message.getType()).c_str(), { 
 	if (_server) 
 		_server->disconnect(cid);
 	if (_client) {
