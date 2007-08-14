@@ -1,5 +1,6 @@
 0.5.????: 
 
+*) Added "split screen" mode in multiplayer client.
 *) Added time limit to deathmatch maps and show game statistics when game is over. 
 *) Basic network chat is now supported
 *) Player name generated automatically and passed to server in network game (editable).
