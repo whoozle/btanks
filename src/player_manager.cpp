@@ -314,10 +314,10 @@ TRY {
 		Message m(Message::Pang);
 		m.data = message.data;
 		size_t size = m.data.getSize();
-		m.data.reserve(size + sizeof(unsigned int));
+		m.data.reserve(size + sizeof(Uint32));
 		
-		unsigned int ts = SDL_GetTicks();
-		*(unsigned int *)((unsigned char *)m.data.getPtr() + size) = ts;
+		Uint32 ts = SDL_SwapLE32(SDL_GetTicks());
+		*(Uint32 *)((unsigned char *)m.data.getPtr() + size) = ts;
 		_server->send(cid, m);
 		break;
 	}
@@ -334,7 +334,7 @@ TRY {
 		
 		LOG_DEBUG(("ping = %g", _trip_time));
 		Message m(Message::Pong);
-		m.data.setData((unsigned char *)data.getPtr() + sizeof(unsigned int), data.getSize() - sizeof(unsigned int));
+		m.data.setData((unsigned char *)data.getPtr() + sizeof(Uint32), data.getSize() - sizeof(Uint32));
 		_client->send(m);
 		break;
 	}
@@ -412,7 +412,7 @@ TRY {
 			Game->getChat()->addMessage(nick, message.get("text"));
 			Message msg(message);
 			msg.set("nick", nick);
-			broadcast(msg);
+			broadcast(msg, true);
 		}
 		
 		} break;
@@ -435,9 +435,10 @@ TRY {
 
 void IPlayerManager::ping() {
 	Message m(Message::Ping);
-	unsigned int ts = SDL_GetTicks();
+	Uint32 ts = SDL_GetTicks();
 	LOG_DEBUG(("ping timestamp = %u", ts));
-	m.data.setData(&ts, sizeof(ts));
+	Uint32 d = SDL_SwapLE32(ts);
+	m.data.setData(&d, sizeof(d));
 	_client->send(m);
 }
 
@@ -597,7 +598,7 @@ TRY {
 		if (send) {
 			Message m(Message::UpdatePlayers);
 			m.data = s.getData();
-			broadcast(m);
+			broadcast(m, true);
 		}
 	}
 } CATCH("updatePlayers", {
@@ -608,10 +609,10 @@ TRY {
 
 
 const float IPlayerManager::extractPing(const mrt::Chunk &data) const {
-	if (data.getSize() < sizeof(unsigned int))
+	if (data.getSize() < sizeof(Uint32))
 		throw_ex(("invalid pong recv'ed. (size: %u)", (unsigned)data.getSize()));
 	
-	unsigned int ts = * (unsigned int *)data.getPtr();
+	Uint32 ts = SDL_SwapLE32(* (const Uint32 *)data.getPtr());
 	Uint32 ticks = SDL_GetTicks();
 	float delta = (int)(ticks - ts);
 	if (delta < 0) delta = -delta; //wrapped around.
@@ -771,7 +772,7 @@ TRY {
 				m.data = s.getData();
 			}
 			LOG_DEBUG(("sending world update... (size: %u)", (unsigned)m.data.getSize()));
-			broadcast(m);
+			broadcast(m, true);
 		}
 		_server->tick(dt);
 	}
@@ -932,15 +933,29 @@ void IPlayerManager::deserializeSlots(const mrt::Serializator &s) {
 	}
 }
 
-void IPlayerManager::broadcast(const Message &_m) {
-	int n = _players.size();
-	Message m(_m);
-	for(int i = 0; i < n; ++i) {
-		const PlayerSlot &slot = _players[i];
-		if (slot.remote && !slot.empty()) {
-			m.channel = i;
-			_server->send(slot.remote, m);
+void IPlayerManager::broadcast(const Message &_m, const bool per_connection) {
+	assert(_server != NULL);
+	
+	size_t n = _players.size();
+	if (per_connection) {
+		std::set<int> seen;
+		for(size_t i = 0; i < n; ++i) {
+			const PlayerSlot &slot = _players[i];
+			
+			if (!slot.remote || seen.find(slot.remote) != seen.end())
+				continue;
+			seen.insert(slot.remote);
+			_server->send(slot.remote, _m);
 		}
+	}
+	Message m(_m);
+	for(size_t i = 0; i < n; ++i) {
+		const PlayerSlot &slot = _players[i];
+		if (!slot.remote || slot.empty())
+			continue;
+	
+		m.channel = i;
+		_server->send(slot.remote, m);
 	}
 }
 
@@ -1029,7 +1044,7 @@ void IPlayerManager::gameOver(const std::string &reason, const float time) {
 	Message m(Message::GameOver);
 	m.set("message", reason);
 	m.set("duration", mrt::formatString("%g", time));
-	broadcast(m);
+	broadcast(m, true);
 }
 
 void IPlayerManager::onDestroyMap(const std::set<v3<int> > & cells) {
@@ -1044,7 +1059,7 @@ void IPlayerManager::onDestroyMap(const std::set<v3<int> > & cells) {
 
 	Message m(Message::DestroyMap);
 	m.data = s.getData();
-	broadcast(m);	
+	broadcast(m, true);	
 }
 
 void IPlayerManager::updateControls() {
@@ -1116,7 +1131,7 @@ TRY {
 		
 		m.set("nick", my_slot->name);
 		Game->getChat()->addMessage(my_slot->name, message);
-		broadcast(m);
+		broadcast(m, true);
 	}
 	if (_client) {
 		size_t i;

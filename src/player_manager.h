@@ -109,7 +109,7 @@ private:
 	void serializeSlots(mrt::Serializator &s) const;
 	void deserializeSlots(const mrt::Serializator &s);
 	
-	void broadcast(const Message &m);
+	void broadcast(const Message &m, const bool per_connection);
 	
 
 	IPlayerManager(const IPlayerManager &);
