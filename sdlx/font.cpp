@@ -86,7 +86,11 @@ void Font::addPage(const unsigned base, const std::string &file, const bool alph
 		for(int y = 0; y < h; ++y) {
 			int x1, x2;
 			
-			for(x1 = 0; x1 < w; ++x1) {
+			int cw = page.surface->getWidth() - c * w;
+			if (cw > w)
+				cw = w;
+			
+			for(x1 = 0; x1 < cw; ++x1) {
 				Uint32 p = page.surface->getPixel(x1 + c * w, y);
 				Uint8 r, g, b, a;
 				page.surface->getRGBA(p, r, g, b, a);
@@ -96,7 +100,7 @@ void Font::addPage(const unsigned base, const std::string &file, const bool alph
 				}
 			}
 			
-			for(x2 = w - 1; x2 >= 0; --x2) {
+			for(x2 = cw - 1; x2 >= 0; --x2) {
 				Uint32 p = page.surface->getPixel(x2 + c * w, y);
 				Uint8 r, g, b, a;
 				page.surface->getRGBA(p, r, g, b, a);
