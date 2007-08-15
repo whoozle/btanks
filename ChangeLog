@@ -11,7 +11,7 @@
 *) Fixed checkDistance() api, so troopers does not shoot through walls and buildings. (again). 
 *) Fixed players' frags calculations.
 *) Added outline for civilian.
-*) Multiplayer errors do cause game to exit.
+*) Multiplayer errors do not cause game to exit.
 *) Added engine.speed parameter
 *) Fixed cheater object overflow and invalid SDL event handling.
 *) Fixed --connect option.
