@@ -1414,3 +1414,12 @@ const int Object::getChildren(const std::string &classname) const {
 void Object::getImpassabilityMatrix(Matrix<int> &matrix, const Object *dst) const {
 	World->getImpassabilityMatrix(matrix, this, dst);
 }
+
+const bool Object::take(const BaseObject *obj, const std::string &type) {
+	if (obj->classname == "effects" && type == "invulnerability" && _variants.has("player")) {
+		GET_CONFIG_VALUE("objects.invulnerability-item.effect-duraion", float, d, 10.0f);
+		addEffect("invulnerability", d);
+		return true;
+	}
+	return BaseObject::take(obj, type);
+}

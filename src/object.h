@@ -134,6 +134,7 @@ public:
 	static const bool checkDistance(const v2<float> &map1, const v2<float>& map2, const int z, const bool use_pierceable_fixes);
 
 	const bool aiDisabled() const;
+	virtual const bool take(const BaseObject *obj, const std::string &type);
 
 protected:
 
