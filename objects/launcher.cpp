@@ -111,7 +111,7 @@ void Launcher::tick(const float dt) {
 }
 
 const bool Launcher::take(const BaseObject *obj, const std::string &type) {
-	if (BaseObject::take(obj, type)) 
+	if (Object::take(obj, type)) 
 		return true;
 
 	if (obj->classname == "mod" && type == "machinegunner") {

@@ -219,7 +219,7 @@ const bool Shilka::take(const BaseObject *obj, const std::string &type) {
 		mod->setCount(n);
 		return true;		
 	}
-	return BaseObject::take(obj, type);
+	return Object::take(obj, type);
 }
 
 void Shilka::serialize(mrt::Serializator &s) const {

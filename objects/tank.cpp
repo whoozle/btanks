@@ -90,7 +90,7 @@ const bool Tank::take(const BaseObject *obj, const std::string &type) {
 	}
 	if (get("mod")->take(obj, type))
 		return true;
-	return BaseObject::take(obj, type);
+	return Object::take(obj, type);
 }
 
 void Tank::calculate(const float dt) {
