@@ -1416,11 +1416,24 @@ void Object::getImpassabilityMatrix(Matrix<int> &matrix, const Object *dst) cons
 }
 
 const bool Object::take(const BaseObject *obj, const std::string &type) {
-	if (obj->classname == "effects" && _variants.has("player") && (type == "invulnerability" || type == "speedup")) {
-		float d;
-		Config->get("objects." + registered_name + "." + type + "-duration", d, 10.0f);
-		addEffect(type, d);
-		return true;
+	if (obj->classname == "effects" && _variants.has("player")) {
+		if (type == "invulnerability" || type == "speedup") {
+			float d;
+			Config->get("objects." + registered_name + "." + type + "-duration", d, 10.0f);
+			addEffect(type, d);
+			return true;
+		} else if (type == "slowdown") {
+			float d;
+			Config->get("objects." + registered_name + "." + type + "-duration", d, 10.0f);
+			
+			size_t n = PlayerManager->getSlotsCount();
+			for(size_t i = 0; i < n; ++i) {
+				PlayerSlot &slot = PlayerManager->getSlot(i);
+				Object *o = slot.getObject();
+				if (o != NULL && o->getID() != getID()) 
+					o->addEffect(type, d);
+			}
+		}
 	}
 	return BaseObject::take(obj, type);
 }

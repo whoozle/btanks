@@ -738,9 +738,19 @@ TRY {
 
 	float obj_speed = o.speed;
 	
-	if (o.isEffectActive("speedup")) {
-		GET_CONFIG_VALUE("objects.speedup-item.speedup-factor", float, su, 1.5f);
-		obj_speed *= su;
+	{
+		const bool speedup = o.isEffectActive("speedup");
+		const bool slowdown = o.isEffectActive("slowdown");
+		if (speedup && slowdown) {
+			o.removeEffect("speedup");
+			o.removeEffect("slowdown");
+		} else if (speedup) {
+			GET_CONFIG_VALUE("objects.speedup-item.speedup-factor", float, su, 1.5f);
+			obj_speed *= su;
+		} else if (slowdown) {
+			GET_CONFIG_VALUE("objects.slowdown-item.slowdown-factor", float, su, 1.5f);
+			obj_speed /= su;
+		}
 	}
 	
 	v2<float> dpos = e_speed * obj_speed * o._velocity * dt * (1.0f - result_im);
