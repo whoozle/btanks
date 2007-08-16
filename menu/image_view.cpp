@@ -81,3 +81,14 @@ void ImageView::setDestination(const v2<float> &pos) {
 		p += v2<float>(_overlay->getWidth(), _overlay->getHeight()) / 2;
 	destination = p;
 }
+
+bool ImageView::onMouseMotion(const int state, const int x, const int y, const int xrel, const int yrel) {
+	if ((state & SDL_BUTTON(1)) == 0)
+		return false;
+	
+	position.x -= xrel; 
+	position.y -= yrel; 
+	validate(position);
+	destination = position;
+	return true;
+}

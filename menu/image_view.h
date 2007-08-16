@@ -21,6 +21,7 @@ public:
 
 	void setPosition(const v2<float> &pos);
 	void setDestination(const v2<float> &pos);
+	virtual bool onMouseMotion(const int state, const int x, const int y, const int xrel, const int yrel);
 
 private: 
 	void validate(v2<float> & pos);
