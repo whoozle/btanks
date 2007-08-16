@@ -87,3 +87,4 @@ REGISTER_OBJECT("machinegunner-item", Item, ("mod", "machinegunner"));
 REGISTER_OBJECT("thrower-item", Item, ("mod", "thrower"));
 
 REGISTER_OBJECT("invulnerability-item", Item, ("effects", "invulnerability"));
+REGISTER_OBJECT("speedup-item", Item, ("effects", "speedup"));
