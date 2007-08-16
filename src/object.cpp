@@ -1416,9 +1416,10 @@ void Object::getImpassabilityMatrix(Matrix<int> &matrix, const Object *dst) cons
 }
 
 const bool Object::take(const BaseObject *obj, const std::string &type) {
-	if (obj->classname == "effects" && type == "invulnerability" && _variants.has("player")) {
-		GET_CONFIG_VALUE("objects.invulnerability-item.effect-duraion", float, d, 10.0f);
-		addEffect("invulnerability", d);
+	if (obj->classname == "effects" && _variants.has("player") && (type == "invulnerability" || type == "speedup")) {
+		float d;
+		Config->get("objects." + registered_name + "." + type + "-duration", d, 10.0f);
+		addEffect(type, d);
 		return true;
 	}
 	return BaseObject::take(obj, type);
