@@ -735,8 +735,15 @@ TRY {
 	float map_im_now = o.piercing?0:(map.getImpassability(&o, old_pos, &stuck_map_pos) / 100.0f);
 	float obj_im_now = o.piercing?0:getImpassability(&o, old_pos, &stuck_in, true);
 	float result_im = math::max(map_im_now, obj_im_now);
+
+	float obj_speed = o.speed;
 	
-	v2<float> dpos = e_speed * o.speed * o._velocity * dt * (1.0f - result_im);
+	if (o.isEffectActive("speedup")) {
+		GET_CONFIG_VALUE("objects.speedup-item.speedup-factor", float, su, 1.5f);
+		obj_speed *= su;
+	}
+	
+	v2<float> dpos = e_speed * obj_speed * o._velocity * dt * (1.0f - result_im);
 
 	bool stuck = result_im >= 1.0f;
 
@@ -785,7 +792,7 @@ TRY {
 			new_velocity.fromDirection(dir, dirs);
 
 			float im = (result_im < 1.0f)?result_im:0.9f;
-			pos = (o._position + (1.0f - im) * e_speed * o.speed * new_velocity * dt).convert<int>();
+			pos = (o._position + (1.0f - im) * e_speed * obj_speed * new_velocity * dt).convert<int>();
 			o.setDirection(dir);
 			//LOG_DEBUG(("%s: %d:trying %d (original: %d, dirs: %d)", 
 			//	o.animation.c_str(), attempt, dir, save_dir, dirs ));
@@ -803,7 +810,7 @@ TRY {
 			//LOG_DEBUG(("success, %g %g", map_im, obj_im));
 			if (result_im >= 1.0f) {
 				result_im = math::max(map_im, obj_im);
-				dpos = e_speed * o.speed * (1.0f - result_im) * o._velocity * dt;
+				dpos = e_speed * obj_speed * (1.0f - result_im) * o._velocity * dt;
 			}
 			stuck = false;
 			break;
@@ -836,7 +843,7 @@ TRY {
 	}
 
 	result_im = (o.piercing)?0: math::max(map_im, obj_im);
-	dpos = e_speed * o.speed * (1.0f - result_im) * o._velocity * dt;
+	dpos = e_speed * obj_speed * (1.0f - result_im) * o._velocity * dt;
 
 } CATCH(
 	mrt::formatString("tick.impassability check (attempt: %d, stuck_in: %p)", attempt, (void *)stuck_in).c_str(), 
@@ -883,7 +890,7 @@ TRY {
 } CATCH("tick(damaging map)", throw;)	
 
 TRY {
-	if (stuck && o.speed != 0 && !PlayerManager->isClient()) {
+	if (stuck && obj_speed != 0 && !PlayerManager->isClient()) {
 			assert(!o.piercing);
 			
 			GET_CONFIG_VALUE("engine.stuck-resolution-steps", int, steps, 24);
@@ -951,7 +958,7 @@ TRY {
 		return;
 
 	result_im = math::max(map_im, obj_im);
-	dpos = e_speed * o.speed * o._velocity * dt * (1.0f - result_im);
+	dpos = e_speed * obj_speed * o._velocity * dt * (1.0f - result_im);
 
 
 //	if (o.piercing) {
