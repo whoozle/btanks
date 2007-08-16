@@ -1433,6 +1433,7 @@ const bool Object::take(const BaseObject *obj, const std::string &type) {
 				if (o != NULL && o->getID() != getID()) 
 					o->addEffect(type, d);
 			}
+			return true;
 		}
 	}
 	return BaseObject::take(obj, type);
