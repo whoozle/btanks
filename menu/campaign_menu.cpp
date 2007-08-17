@@ -112,6 +112,17 @@ CampaignMenu::CampaignMenu(MainMenu *parent, const int w, const int h) : _parent
 	add(0, 0, _shop);
 	_shop->hide();
 	
+	std::vector<std::string> levels;
+	levels.push_back(I18n->get("menu/difficulty", "easy"));
+	levels.push_back(I18n->get("menu/difficulty", "normal"));
+	levels.push_back(I18n->get("menu/difficulty", "hard"));
+	levels.push_back(I18n->get("menu/difficulty", "nightmare"));
+	
+	_c_difficulty = new Chooser("medium", levels);
+	_c_difficulty->getSize(bw, bh);
+	
+	add(xbase + mx, ybase + my + bh * 3 / 2, _c_difficulty);
+	
 	init();
 }
 

@@ -43,6 +43,7 @@ private:
 	Shop *_shop;
 
 	Button * _b_shop;
+	Chooser *_c_difficulty;
 
 	sdlx::Rect map_view;
 	ImageView * _map_view;
