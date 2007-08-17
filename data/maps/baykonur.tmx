@@ -3,19 +3,19 @@
 	<properties>
 		<property name="ambient-sound" value="forest.ogg"/>
 		<property name="config:engine.targeting-multiplier" value="float:0.2"/>
-		<property name="config:map.cannon.respawn-interval" value="int:10000"/>
-		<property name="config:map.dispersion-bullets-item.respawn-interval" value="int:10000"/>
-		<property name="config:map.dumb-missiles-item.respawn-interval" value="int:10000"/>
-		<property name="config:map.guided-missiles-item.respawn-interval" value="int:10000"/>
-		<property name="config:map.heal.respawn-interval" value="int:10000"/>
-		<property name="config:map.kamikaze.respawn-interval" value="int:10000"/>
-		<property name="config:map.machinegunner-item.respawn-interval" value="int:10000"/>
-		<property name="config:map.machinegunner.respawn-interval" value="int:10000"/>
-		<property name="config:map.megaheal.respawn-interval" value="int:10000"/>
-		<property name="config:map.nuke-missiles-item.respawn-interval" value="int:10000"/>
-		<property name="config:map.smoke-missiles-item.respawn-interval" value="int:10000"/>
-		<property name="config:map.thrower-item.respawn-interval" value="int:10000"/>
-		<property name="config:map.thrower.respawn-interval" value="int:10000"/>
+		<property name="config:map.cannon.respawn-interval" value="int:-1"/>
+		<property name="config:map.dispersion-bullets-item.respawn-interval" value="int:-1"/>
+		<property name="config:map.dumb-missiles-item.respawn-interval" value="int:-1"/>
+		<property name="config:map.guided-missiles-item.respawn-interval" value="int:-1"/>
+		<property name="config:map.heal.respawn-interval" value="int:-1"/>
+		<property name="config:map.kamikaze.respawn-interval" value="int:-1"/>
+		<property name="config:map.machinegunner-item.respawn-interval" value="int:-1"/>
+		<property name="config:map.machinegunner.respawn-interval" value="int:-1"/>
+		<property name="config:map.megaheal.respawn-interval" value="int:-1"/>
+		<property name="config:map.nuke-missiles-item.respawn-interval" value="int:-1"/>
+		<property name="config:map.smoke-missiles-item.respawn-interval" value="int:-1"/>
+		<property name="config:map.thrower-item.respawn-interval" value="int:-1"/>
+		<property name="config:map.thrower.respawn-interval" value="int:-1"/>
 		<property name="config:multiplayer.game-type" value="string:cooperative"/>
 		<property name="config:multiplayer.restrict-start-animation" value="string:machinegunner"/>
 		<property name="config:multiplayer.restrict-start-vehicle" value="string:machinegunner"/>
