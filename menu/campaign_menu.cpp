@@ -127,6 +127,8 @@ CampaignMenu::CampaignMenu(MainMenu *parent, const int w, const int h) : _parent
 }
 
 void CampaignMenu::init() {
+	_c_difficulty->set(1);
+
 	int ci = _active_campaign->get();
 	Campaign &campaign = _campaigns[ci];
 
@@ -135,6 +137,11 @@ void CampaignMenu::init() {
 		if (Config->has("campaign." + campaign.name + ".current-map")) {
 			Config->get("campaign." + campaign.name + ".current-map", current_map, std::string());
 		}
+		int diff;
+		Config->get("campaign." + campaign.name + ".difficulty", diff, 1);
+		LOG_DEBUG(("difficulty = %d", diff));
+
+		_c_difficulty->set(diff);
 	} CATCH("init", )
 
 	_shop->init(&campaign);
@@ -202,6 +209,10 @@ void CampaignMenu::tick(const float dt) {
 	if (_b_shop->changed()) {
 		_b_shop->reset();
 		_shop->hide(false);
+	}
+	if (_c_difficulty->changed()) {
+		_c_difficulty->reset();
+		Config->set("campaign." + campaign.name + ".difficulty", _c_difficulty->get());
 	}
 }
 
