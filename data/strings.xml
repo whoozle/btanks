@@ -267,6 +267,23 @@
 			<string id="fr">Français</string>
 			<string id="de">Deutsch</string>
 		</area>
+
+		<area id="difficulty">
+			<string id="difficulty">Difficulty</string>
+			<string id="difficulty" lang="ru">Сложность</string>
+			
+			<string id="easy">Easy</string>
+			<string id="easy" lang="ru">Легко</string>
+			
+			<string id="normal">Normal</string>
+			<string id="normal" lang="ru">Нормально</string>
+			
+			<string id="hard">Hard</string>
+			<string id="hard" lang="ru">Тяжело</string>
+			
+			<string id="nightmare">Nightmare</string>
+			<string id="nightmare" lang="ru">Кошмар!</string>
+		</area>
 	</area>
 	
 	<area id="names">
