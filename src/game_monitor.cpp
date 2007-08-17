@@ -545,6 +545,7 @@ static void coord2v(T &pos, const std::string &str) {
 
 void IGameMonitor::loadMap(Campaign *campaign, const std::string &name, const bool spawn_objects, const bool skip_loadmap) {
 	_campaign = campaign;
+
 	IMap &map = *IMap::get_instance();
 
 	if (!skip_loadmap) {
@@ -558,7 +559,22 @@ void IGameMonitor::loadMap(Campaign *campaign, const std::string &name, const bo
 	_waypoint_edges.clear();
 	
 	Config->clearOverrides();
-	
+
+
+	//difficulty settings
+	int difficulty = 2; //map as is == hard, default: normal
+
+	if (campaign) {
+		Config->get("campaign." + campaign->name + ".difficulty", difficulty, 1);
+
+		Var v_true("bool");
+		v_true.b = true;
+		
+		if (difficulty >= 3) 
+			Config->setOverride("engine.fog-of-war.enabled", v_true);
+	}
+
+
 	//const v2<int> size = map.getSize();
 	for (IMap::PropertyMap::iterator i = map.properties.begin(); i != map.properties.end(); ++i) {
 		if (i->first.empty())
@@ -640,10 +656,35 @@ void IGameMonitor::loadMap(Campaign *campaign, const std::string &name, const bo
 				value.resize(2);
 				if (value[0] != "int" && value[0] != "float" && value[0] != "string" && value[0] != "bool")
 					throw_ex(("cannot set config variable '%s' of type '%s'", res[1].c_str(), value[0].c_str()));
+
+				const std::string &name = res[1];
+				if (difficulty == 0 && name == "map.spawn-limit") {
+					LOG_DEBUG(("skipping spawn limit [difficulty]"));
+					continue;
+				}
+				
 				Var var(value[0]);
 				var.fromString(value[1]);
 
-				Config->setOverride(res[1], var);
+				if (difficulty <= 1 && name.compare(0, 4, "map.") == 0) { //easy + normal
+					//-item.respawn-interval
+					std::vector<std::string> key_names;
+					mrt::split(key_names, name, ".");
+					if (key_names.size() > 2 && key_names[2] == "respawn-interval") {
+						const std::string &item_name = key_names[1];
+						if ((var.i < 0 || var.i >= 10000) &&
+							(
+								(item_name.size() > 5 && item_name.compare(item_name.size() - 5, 5, "-item") == 0) ||
+								item_name == "megaheal" || item_name == "heal"
+							)
+						) { //stupid vz! :)
+							LOG_DEBUG(("skipping: '%s' = %d override [difficulty]", name.c_str(), var.i));
+							continue;
+						}
+					}
+				}
+
+				Config->setOverride(name, var);
 			} else if (type == "zone") {
 				LOG_DEBUG(("%s %s %s", type.c_str(), i->first.c_str(), i->second.c_str()));
 				std::vector<std::string> value;
