@@ -35,17 +35,20 @@ const bool PlayerState::operator==(const PlayerState &other) const {
 		fire == other.fire && alt_fire == other.alt_fire && leave == other.leave && hint_control == other.hint_control;
 }
 
+#define TEST_BIT(var, n) ((var & (1<<n)) == (1<<n))
+
 void PlayerState::deserialize(const mrt::Serializator &s) {
 	int packed;
 	s.get(packed);
-	left = packed & 1;
-	right = packed & 2;
-	up = packed & 4;
-	down = packed & 8;
-	fire = packed & 16;
-	alt_fire = packed & 32;
-	leave = packed & 64;
-	hint_control = packed & 128;
+
+	left = TEST_BIT(packed, 0);
+	right = TEST_BIT(packed, 1);
+	up = TEST_BIT(packed, 2);
+	down = TEST_BIT(packed, 3);
+	fire = TEST_BIT(packed, 4);
+	alt_fire = TEST_BIT(packed, 5);
+	leave = TEST_BIT(packed, 6);
+	hint_control = TEST_BIT(packed, 7);
 }
 
 #define B(b) ((b)?'+':'-')
