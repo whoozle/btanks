@@ -88,7 +88,7 @@ void Base::onSpawn(const Object *object) {
 		throw_ex(("vehicle was not provide enemies/bonuses"));
 		
 	float rt, rpi;
-	Config->get("objects.ai-" + vehicle + ".reaction-time", rt, 0.1);
+	Config->get("objects.ai-" + vehicle + ".reaction-time", rt, 0.1f);
 	mrt::randomize(rt, rt/10);
 	_reaction_time.set(rt);
 	Config->get("objects.ai-" + vehicle + ".refresh-path-interval", rpi, 1);
