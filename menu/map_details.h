@@ -26,7 +26,7 @@
 #include "sdlx/font.h"
 
 class Tooltip;
-class MapDesc;
+struct MapDesc;
 
 class MapDetails : public Container {
 public: 
