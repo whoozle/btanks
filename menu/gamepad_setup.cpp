@@ -181,7 +181,7 @@ void GamepadSetup::renderSetup(sdlx::Surface &surface, const int x, const int y)
 	};
 }
 
-GamepadSetup::GamepadSetup(const int w, const int h) : _current_pad(NULL), _wait(false), _blink(0.7, true) {
+GamepadSetup::GamepadSetup(const int w, const int h) : _current_pad(NULL), _wait(false), _blink(0.7f, true) {
 	_axes.clear();
 	_axis_value = 0;
 	
@@ -332,7 +332,10 @@ void GamepadSetup::render(sdlx::Surface &surface, const int x, const int y) {
 	if (hats) {
 		//assume first hat as D-PAD
 		int hat = joy.getHat(_bindings.get(tHat, 0));
-		renderDPad(surface, hat & SDL_HAT_LEFT, hat & SDL_HAT_RIGHT, hat & SDL_HAT_UP, hat & SDL_HAT_DOWN, x, y);
+		renderDPad(surface, 
+			(hat & SDL_HAT_LEFT) == SDL_HAT_LEFT, (hat & SDL_HAT_RIGHT) == SDL_HAT_RIGHT, 
+			(hat & SDL_HAT_UP) == SDL_HAT_UP, (hat & SDL_HAT_DOWN) == SDL_HAT_DOWN, 
+			x, y);
 	} else {
 		if (axes >= 6 || axes == 2) {
 			//no hats. axe 4,5 - DPAD
