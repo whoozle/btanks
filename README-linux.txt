@@ -25,8 +25,10 @@ consult your distro's documentation for details):
                                          dont report bugs if you do so)
 	b) SDL_image 	 (PNG support required)
 	c) openal
-	d) libvorbis and family
+	d) libvorbisfile, libvorbis and family
 	e) sigc++ 2.x (1.x is not supported)
+	f) expat - XML parsing library
+	g) zlib
 
 4) you could add something like this in 'options.cache' file 
 (located in trunk/ directory): 
