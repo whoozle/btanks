@@ -1,0 +1,188 @@
+<?xml version="1.0"?>
+<map version="0.99b" orientation="orthogonal" width="20" height="20" tilewidth="64" tileheight="64">
+	<properties>
+		<property name="object:boomerang-missiles-item:boomerang-missiles-item:1" value="-10,487"/>
+		<property name="object:boomerang-missiles-item:boomerang-missiles-item:2" value="160,-12"/>
+		<property name="object:boomerang-missiles-item:boomerang-missiles-item:3" value="491,-16"/>
+		<property name="object:boomerang-missiles-item:boomerang-missiles-item:4" value="1062,-17"/>
+		<property name="object:boomerang-missiles-item:boomerang-missiles-item:5" value="1221,492"/>
+		<property name="object:boomerang-missiles-item:boomerang-missiles-item:6" value="1064,1225"/>
+		<property name="object:boomerang-missiles-item:boomerang-missiles-item:7" value="730,1226"/>
+		<property name="object:boomerang-missiles-item:boomerang-missiles-item:8" value="156,1223"/>
+		<property name="object:dirt-bullets-item:dirt-bullets-item:10" value="-11,169,10"/>
+		<property name="object:dirt-bullets-item:dirt-bullets-item:11" value="735,170,10"/>
+		<property name="object:dirt-bullets-item:dirt-bullets-item:12" value="1228,169,10"/>
+		<property name="object:dirt-bullets-item:dirt-bullets-item:13" value="1063,748,10"/>
+		<property name="object:dirt-bullets-item:dirt-bullets-item:2" value="484,1065"/>
+		<property name="object:dirt-bullets-item:dirt-bullets-item:3" value="-10,1059"/>
+		<property name="object:dirt-bullets-item:dirt-bullets-item:8" value="1226,1059"/>
+		<property name="object:dirt-bullets-item:dirt-bullets-item:9" value="158,747,10"/>
+		<property name="object:dispersion-bullets-item:dispersion-bullets-item:10" value="1111,750,10"/>
+		<property name="object:dispersion-bullets-item:dispersion-bullets-item:11" value="1174,169,10"/>
+		<property name="object:dispersion-bullets-item:dispersion-bullets-item:12" value="680,170,10"/>
+		<property name="object:dispersion-bullets-item:dispersion-bullets-item:13" value="39,169,10"/>
+		<property name="object:dispersion-bullets-item:dispersion-bullets-item:6" value="1169,1062"/>
+		<property name="object:dispersion-bullets-item:dispersion-bullets-item:7" value="482,1110"/>
+		<property name="object:dispersion-bullets-item:dispersion-bullets-item:8" value="37,1062"/>
+		<property name="object:dispersion-bullets-item:dispersion-bullets-item:9" value="104,751,10"/>
+		<property name="object:dumb-missiles-item:dumb-missiles-item:1" value="109,-10"/>
+		<property name="object:dumb-missiles-item:dumb-missiles-item:2" value="730,53"/>
+		<property name="object:dumb-missiles-item:dumb-missiles-item:3" value="43,489"/>
+		<property name="object:dumb-missiles-item:dumb-missiles-item:4" value="1113,-17"/>
+		<property name="object:dumb-missiles-item:dumb-missiles-item:5" value="1168,493"/>
+		<property name="object:dumb-missiles-item:dumb-missiles-item:6" value="1116,1223"/>
+		<property name="object:dumb-missiles-item:dumb-missiles-item:7" value="673,1227"/>
+		<property name="object:dumb-missiles-item:dumb-missiles-item:8" value="101,1224"/>
+		<property name="object:guided-missiles-item:guided-missiles-item:1" value="47,1224"/>
+		<property name="object:guided-missiles-item:guided-missiles-item:2" value="619,1226"/>
+		<property name="object:guided-missiles-item:guided-missiles-item:3" value="1166,1225"/>
+		<property name="object:guided-missiles-item:guided-missiles-item:4" value="1116,491"/>
+		<property name="object:guided-missiles-item:guided-missiles-item:5" value="1160,-16"/>
+		<property name="object:guided-missiles-item:guided-missiles-item:6" value="616,-11"/>
+		<property name="object:guided-missiles-item:guided-missiles-item:7" value="56,-9"/>
+		<property name="object:guided-missiles-item:guided-missiles-item:8" value="93,486"/>
+		<property name="object:machinegunner-item:machinegunner-item:1" value="149,487"/>
+		<property name="object:machinegunner-item:machinegunner-item:2" value="156,39"/>
+		<property name="object:machinegunner-item:machinegunner-item:3" value="667,-12"/>
+		<property name="object:machinegunner-item:machinegunner-item:4" value="1059,33"/>
+		<property name="object:machinegunner-item:machinegunner-item:5" value="1061,491"/>
+		<property name="object:machinegunner-item:machinegunner-item:7" value="723,1146"/>
+		<property name="object:machinegunner-item:machinegunner-item:8" value="1060,1174,10"/>
+		<property name="object:machinegunner-item:machinegunner-item:9" value="150,1169"/>
+		<property name="object:mines-item:mines-item:1" value="156,89"/>
+		<property name="object:mines-item:mines-item:2" value="728,-6"/>
+		<property name="object:mines-item:mines-item:3" value="1064,82"/>
+		<property name="object:mines-item:mines-item:4" value="1065,548"/>
+		<property name="object:mines-item:mines-item:5" value="1060,1128"/>
+		<property name="object:mines-item:mines-item:6" value="503,1222"/>
+		<property name="object:mines-item:mines-item:7" value="156,1122"/>
+		<property name="object:mines-item:mines-item:8" value="152,543"/>
+		<property name="object:nuke-missiles-item:nuke-missiles-item:5" value="373,846,20"/>
+		<property name="object:nuke-missiles-item:nuke-missiles-item:6" value="841,834,20"/>
+		<property name="object:nuke-missiles-item:nuke-missiles-item:7" value="843,374,10"/>
+		<property name="object:nuke-missiles-item:nuke-missiles-item:8" value="376,366,10"/>
+		<property name="object:ricochet-bullets-item:ricochet-bullets-item:10" value="60,751,10"/>
+		<property name="object:ricochet-bullets-item:ricochet-bullets-item:11" value="1164,754,10"/>
+		<property name="object:ricochet-bullets-item:ricochet-bullets-item:12" value="1123,174,10"/>
+		<property name="object:ricochet-bullets-item:ricochet-bullets-item:2" value="91,1066"/>
+		<property name="object:ricochet-bullets-item:ricochet-bullets-item:3" value="482,1160"/>
+		<property name="object:ricochet-bullets-item:ricochet-bullets-item:4" value="1119,1070"/>
+		<property name="object:ricochet-bullets-item:ricochet-bullets-item:8" value="89,171,10"/>
+		<property name="object:ricochet-bullets-item:ricochet-bullets-item:9" value="483,170,10"/>
+		<property name="object:smoke-missiles-item:smoke-missiles-item:10" value="902,62,20"/>
+		<property name="object:smoke-missiles-item:smoke-missiles-item:11" value="1154,326,20"/>
+		<property name="object:smoke-missiles-item:smoke-missiles-item:12" value="1173,900,10"/>
+		<property name="object:smoke-missiles-item:smoke-missiles-item:13" value="916,1162,20"/>
+		<property name="object:smoke-missiles-item:smoke-missiles-item:14" value="307,1157,10"/>
+		<property name="object:smoke-missiles-item:smoke-missiles-item:15" value="51,898,20"/>
+		<property name="object:smoke-missiles-item:smoke-missiles-item:16" value="27,320,10"/>
+		<property name="object:smoke-missiles-item:smoke-missiles-item:9" value="323,46,20"/>
+		<property name="object:static-launcher:green-launcher:1" value="4,394"/>
+		<property name="object:static-launcher:green-launcher:2" value="970,54/6"/>
+		<property name="object:static-launcher:green-launcher:3" value="1164,829/4"/>
+		<property name="object:static-launcher:green-launcher:4" value="245,1157/2"/>
+		<property name="object:static-mortar:green-mortar:1" value="10,971"/>
+		<property name="object:static-mortar:green-mortar:2" value="971,1207/2"/>
+		<property name="object:static-mortar:green-mortar:3" value="1204,247/4"/>
+		<property name="object:static-mortar:green-mortar:4" value="252,6/6"/>
+		<property name="object:static-shilka:green-shilka:1" value="828,1204/2"/>
+		<property name="object:static-shilka:green-shilka:2" value="1198,400/4"/>
+		<property name="object:static-shilka:green-shilka:3" value="390,9/6"/>
+		<property name="object:static-shilka:green-shilka:4" value="19,837"/>
+		<property name="object:static-tank:green-tank:1" value="1,268"/>
+		<property name="object:static-tank:green-tank:2" value="822,6/6"/>
+		<property name="object:static-tank:green-tank:3" value="1202,973/4"/>
+		<property name="object:static-tank:green-tank:4" value="395,1201/2"/>
+		<property name="object:stun-missiles-item:stun-missiles-item:1" value="595,546"/>
+		<property name="object:stun-missiles-item:stun-missiles-item:2" value="443,623"/>
+		<property name="object:stun-missiles-item:stun-missiles-item:3" value="773,619"/>
+		<property name="object:stun-missiles-item:stun-missiles-item:4" value="600,699"/>
+		<property name="object:teleport(a):teleport:1" value="151,172"/>
+		<property name="object:teleport(a):teleport:10" value="1074,905"/>
+		<property name="object:teleport(b):teleport:11" value="567,1083"/>
+		<property name="object:teleport(b):teleport:12" value="893,1069"/>
+		<property name="object:teleport(c):teleport:13" value="158,1079"/>
+		<property name="object:teleport(c):teleport:14" value="313,1086"/>
+		<property name="object:teleport(d):teleport:15" value="144,657"/>
+		<property name="object:teleport(d):teleport:16" value="120,899"/>
+		<property name="object:teleport(e):teleport:2" value="101,332"/>
+		<property name="object:teleport(e):teleport:3" value="571,165"/>
+		<property name="object:teleport(f):teleport:4" value="330,161"/>
+		<property name="object:teleport(f):teleport:5" value="1063,171"/>
+		<property name="object:teleport(g):teleport:6" value="898,154"/>
+		<property name="object:teleport(g):teleport:7" value="1069,648"/>
+		<property name="object:teleport(h):teleport:8" value="1079,351"/>
+		<property name="object:teleport(h):teleport:9" value="1064,1077"/>
+		<property name="object:thrower-item:thrower-item:1" value="-9,92"/>
+		<property name="object:thrower-item:thrower-item:2" value="487,78"/>
+		<property name="object:thrower-item:thrower-item:3" value="-8,569"/>
+		<property name="object:thrower-item:thrower-item:4" value="-8,1122"/>
+		<property name="object:thrower-item:thrower-item:5" value="734,1090"/>
+		<property name="object:thrower-item:thrower-item:6" value="1226,1125"/>
+		<property name="object:thrower-item:thrower-item:7" value="1228,554"/>
+		<property name="object:thrower-item:thrower-item:8" value="1222,114"/>
+		<property name="spawn:10" value="@0,10"/>
+		<property name="spawn:11" value="@0,19"/>
+		<property name="spawn:12" value="@9,19"/>
+		<property name="spawn:13" value="@19,19"/>
+		<property name="spawn:14" value="@19,10"/>
+		<property name="spawn:15" value="@19,0"/>
+		<property name="spawn:16" value="@9,0"/>
+		<property name="spawn:9" value="@0,0"/>
+	</properties>
+	<tileset name="terrains" firstgid="1" tilewidth="64" tileheight="64">
+		<image source="../tilesets/terrains.png"/>
+	</tileset>
+	<tileset name="fences" firstgid="231" tilewidth="64" tileheight="64">
+		<image source="../tilesets/fences.png"/>
+	</tileset>
+	<tileset name="trees" firstgid="351" tilewidth="64" tileheight="64">
+		<image source="../tilesets/trees.png"/>
+	</tileset>
+	<layer name="Layer 1" width="20" height="20">
+		<data encoding="base64" compression="gzip">
+			H4sIAAAAAAAAC1NgYGBQBGIFKtFaQHO0gZhaNLXcBTOHWu6CmTPqPsriezT8RsOPlPJnNP9SVl5TO/wA1R+vC0AGAAA=
+		</data>
+	</layer>
+	<layer name="Layer 0" width="20" height="20">
+		<properties>
+			<property name="impassability" value="60"/>
+		</properties>
+		<data encoding="base64" compression="gzip">
+			H4sIAAAAAAAAC81UywqAMAzzpEcfNx8/rlf9UDswWEItLXpQKB1byFKXtqrub5RlJ9FfeVBnWLbXWcGVWAwMY8FnYXEn+Kw7wfeFvkbIaomSD6p3V2eMgT7GYF9n1ItsYTJ7q+iaJGYnb/QuHr/3j5/eGXxaA+70PMBvx7Vo+8BbGX0Rv2T0Rfz8J33wacnwc0ZfxM+Z/xfxtdVnug7dmxG+NxjLz+Cz+o77LOJnb7bxPI342Zu9PE8jfn6j7wTpiGnUQAYAAA==
+		</data>
+	</layer>
+	<layer name="Layer 2" width="20" height="20">
+		<properties>
+			<property name="impassability" value="100"/>
+			<property name="z" value="10"/>
+		</properties>
+		<data encoding="base64" compression="gzip">
+			H4sIAAAAAAAAC2NgQIBoRiQOkInOB8kSowZmCjFqiVFDTfNigX6E4Tg0/8YgyRGrBjXEhj8POfxC0MKPGN8HooUxsh5s6Y2Qmfj0jATz8KVnQmEHkkdP88ToGU5q8KVn9LQKUoue5klJz8OxPAUAX/keoEAGAAA=
+		</data>
+	</layer>
+	<layer name="Layer 4" width="20" height="20">
+		<data encoding="base64" compression="gzip">
+			H4sIAAAAAAAAC2NgQAAXRiQOkInOB8kSowZmCjFqiVFDTfOsgX6EYS80/3oiyRGrBjXEhj8POfxM0MKPGN8bo4Uxsh5s6Y2Qmfj0jATz8KVnQmEHkkdP88ToGU5q8KVn9LQKUoue5klJz8OxPAUATzqw80AGAAA=
+		</data>
+	</layer>
+	<layer name="Layer 3" width="20" height="20">
+		<properties>
+			<property name="impassability" value="100"/>
+			<property name="z" value="20"/>
+		</properties>
+		<data encoding="base64" compression="gzip">
+			H4sIAAAAAAAAC2NgGAWDPQRUGRkYxIEYFxADyqnhkUfXZ0iEWmLUDPZww+a+1UDBNUC8FojXUcEDJ4FmnALi00B8hgrmDUYj1IlIL8SogflNn4j0bECEnYMxrEaamwBWWl0/QAYAAA==
+		</data>
+	</layer>
+	<layer name="water" width="20" height="20">
+		<data encoding="base64" compression="gzip">
+			H4sIAAAAAAAAC2NgQAWljAwMZUBcDsQVQIwNpALF03DIoauvB6prAOJGIG7CoScfKF5ApHnYXUS8aCXQnioq2tUMNKuFiubV4DCrDejFduK9CVfZhsO8CUAVE8kwb1TL4AqBZGD8ppCY/tqB6jtw6MkFiudhkesEinXh0DMRKD4JTQ5mB65yZDJQ/RQS3A2zA185MrhihnauwRd/IFsTgeGaBMTEpg1s8Yfs+mygWTlAjC1tAAA8IxmuQAYAAA==
+		</data>
+	</layer>
+	<layer name="trees" width="20" height="20">
+		<data encoding="base64" compression="gzip">
+			H4sIAAAAAAAAC72SyQrCQAyGx0e14AIWXOtN61VcLuIC2otLvbi+oV+vMikyCQb+Q/M33ySTcS4sLhXncnRFFvGE80JvI55FT/9kVJk7Embvkx8I3p78AWVffovvWKgZkR8LnrTXhP+HAbuR9prCmgTwtDuZceYcLdDS4Pw1jA3aop0BTzufpr54Z75okG+WzFbDq3v84p35oku+V8Jr43U8/tT4flfGPM3d/1J7pN8TOhv1fYNzRw8F7wP12UtXQAYAAA==
+		</data>
+	</layer>
+</map>
