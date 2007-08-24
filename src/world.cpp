@@ -1659,6 +1659,11 @@ const Object * IWorld::findTarget(const Object *src, const std::set<std::string>
 		//bonus!
 		int min = 0, max = 0;
 		std::string mod_type = o->classname;
+		if (mod_type == "teleport") {
+			v2<float> dpos = src->getRelativePosition(o);
+			if (dpos.quick_length() < o->size.x * o->size.y) 
+				continue;
+		}
 		if (!o->getType().empty()) 
 			mod_type += ":" + o->getType();
 		if (o->isEffectActive("invulnerability"))
