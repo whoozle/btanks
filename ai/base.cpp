@@ -64,8 +64,10 @@ void Base::processPF(Object *object) {
 			//LOG_DEBUG(("n = %d", n));
 			if (!way.empty()) {
 				object->setWay(way);
+				_skip_objects.clear();
 			} else {
-				LOG_WARN(("no path"));
+				LOG_DEBUG(("no path, adding %d to targets black list ", _target_id));
+				_skip_objects.insert(_target_id);
 			}
 		}
 	} else  {
@@ -278,7 +280,7 @@ void Base::calculate(Object *object, const float dt) {
 		}
 	}
 		
-	target = World->findTarget(object, (amount1 > 0 || amount2 > 0)?_enemies:empty_enemies, _bonuses, _traits);
+	target = World->findTarget(object, (amount1 > 0 || amount2 > 0)?_enemies:empty_enemies, _bonuses, _traits, _skip_objects);
 	
 	if (target != NULL) {
 		if ( ((refresh_path && isEnemy(target)) || target->getID() != _target_id)) {

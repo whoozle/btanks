@@ -57,6 +57,7 @@ private:
 	Alarm _reaction_time, _refresh_path;
 	ai::Traits _traits;
 	std::set<std::string> _enemies, _bonuses;
+	std::set<int> _skip_objects;
 	int _target_id;
 	v2<float> _target_position;
 	bool _enemy;
