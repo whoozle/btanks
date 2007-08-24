@@ -1636,7 +1636,7 @@ static inline const float getFirePower(const Object *o, ai::Traits &traits) {
 	return value;
 }
 
-const Object * IWorld::findTarget(const Object *src, const std::set<std::string> &enemies, const std::set<std::string> &bonuses, ai::Traits &traits) const {
+const Object * IWorld::findTarget(const Object *src, const std::set<std::string> &enemies, const std::set<std::string> &bonuses, ai::Traits &traits, const std::set<int> &skip_objects) const {
 	if (src->getType().empty())
 		throw_ex(("findTarget source must always provide its type"));
 	
@@ -1646,7 +1646,10 @@ const Object * IWorld::findTarget(const Object *src, const std::set<std::string>
 		const Object *o = i->second;
 		if (o->impassability == 0 || o->hp == -1 || o->_id == src->_id ||
 			!ZBox::sameBox(src->getZ(), o->getZ()) || 
-			o->hasSameOwner(src) || o->isEffectActive("invulnerability"))
+			o->hasSameOwner(src) || 
+			o->isEffectActive("invulnerability") || 
+			skip_objects.find(o->getID()) != skip_objects.end()
+			)
 			continue;
 		const bool enemy = enemies.find(o->classname) != enemies.end();
 		const bool bonus = bonuses.find(o->registered_name) != bonuses.end();
