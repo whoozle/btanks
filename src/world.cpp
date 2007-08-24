@@ -1617,19 +1617,21 @@ const bool IWorld::detachVehicle(Object *object) {
 	return true;
 }
 
-inline const float getFirePower(const Object *o, ai::Traits &traits) {
+static inline const float getFirePower(const Object *o, ai::Traits &traits) {
 	float value = 0;
 	if (o->has("mod")) {
 		const Object *mod = o->get("mod");
 		int c = mod->getCount();
-		if (c > 0) 
-			value += traits.get("value", mod->getType(), 1.0, 1000.0) * c;
+		const std::string& type = mod->getType();
+		if (c > 0 && !type.empty()) 
+			value += traits.get("value", type, 1.0, 1000.0) * c;
 	}
 	if (o->has("alt-mod")) {
 		const Object *mod = o->get("alt-mod");
 		int c = mod->getCount();
-		if (c > 0) 
-			value += traits.get("value", mod->getType(), 1.0, 1000.0) * c;
+		const std::string& type = mod->getType();
+		if (c > 0 && !type.empty()) 
+			value += traits.get("value", type, 1.0, 1000.0) * c;
 	}
 	return value;
 }
