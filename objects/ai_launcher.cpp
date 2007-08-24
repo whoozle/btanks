@@ -69,6 +69,8 @@ void AILauncher::onSpawn() {
 	addEnemyClass("barrack");
 	addEnemyClass("monster");
 	
+	addBonusName("teleport");
+
 	addBonusName("heal");
 	addBonusName("megaheal");
 	addBonusName("guided-missiles-item");

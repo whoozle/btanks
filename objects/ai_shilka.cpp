@@ -85,6 +85,8 @@ void AIShilka::onSpawn() {
 	addEnemyClass("barrack");
 	addEnemyClass("monster");
 	
+	addBonusName("teleport");
+
 	addBonusName("heal");
 	addBonusName("megaheal");
 
