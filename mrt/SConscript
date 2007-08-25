@@ -1,6 +1,5 @@
 import sys
 Import('env')
-Import('dist_files')
 
 env = env.Copy()
 env.Append(CPPDEFINES=['MRTAPI=DLLEXPORT'])
@@ -17,4 +16,3 @@ mrt = env.SharedLibrary('mrt', \
 	'timespy.cpp', 'crash.cpp', 'lang.cpp', 'utf8_utils.cpp', 
 	], LIBS=libs)
 Install('#', mrt[0])
-dist_files.append(mrt[0])
