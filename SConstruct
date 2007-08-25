@@ -174,6 +174,9 @@ Export('sigc_flags')
 Export('sigc_lib')
 Export('al_lib')
 
+dist_files = []
+Export('dist_files')
+
 lib_dir = '.'
 try : 
 	version_file = file('.svnversion', 'r')
@@ -254,3 +257,4 @@ env.Append(LIBPATH=['#/build/' + buildmode])
 
 env.BuildDir('#/build/' + buildmode, '#', 0)
 SConscript('#/build/' + buildmode + '/' + 'SConscript')
+

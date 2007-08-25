@@ -1,5 +1,6 @@
 import sys
 Import('env')
+Import('dist_files')
 
 env = env.Copy()
 buildmode = env['mode']
@@ -28,3 +29,4 @@ sources = [
 
 bt_obj = env.SharedLibrary('bt_objects', sources, LIBS=libs)
 Install('#', bt_obj[0])
+dist_files.append(bt_obj[0])

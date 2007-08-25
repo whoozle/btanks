@@ -1,6 +1,7 @@
 import sys
 Import('env')
 Import('debug')
+Import('dist_files')
 
 env = env.Copy()
 env.Append(CPPPATH=['..', '.'])
@@ -29,6 +30,7 @@ sdlx_sources = 	['cursor.cpp', 'sdl_ex.cpp', 'surface.cpp', 'system.cpp', 'joyst
 
 sdlx = env.SharedLibrary('sdlx', sdlx_sources, LIBS=libs)
 Install('#', sdlx[0])
+dist_files.append(sdlx[0])
 Import('debug')
 
 if debug:

@@ -6,6 +6,7 @@ Import('revision')
 Import('debug')
 Import('sigc_lib')
 Import('al_lib')
+Import('dist_files')
 
 env = env.Copy()
 venv = env.Copy()
@@ -80,7 +81,7 @@ else:
 
 bt = env.SharedLibrary('bt', bt_sources, LIBS=bt_libs, RPATH=['.'])
 Install('#', bt[0])
-
+dist_files.append(bt[0])
 
 bt_main_sources = ['src/main.cpp']
 bt_main_libs =  ['mrt', 'bt', 'SDL', 'sdlx']
@@ -99,3 +100,4 @@ if sys.platform != 'win32':
 
 bt_main = bt_env.Program('bt', bt_main_sources, LIBS=bt_main_libs, RPATH=[lib_dir])
 Install('#', bt_main)
+dist_files.append(bt_main)
