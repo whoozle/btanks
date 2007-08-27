@@ -170,7 +170,7 @@ void Base::calculateCloseCombat(Object *object, const Object *target, const floa
 	if (!dumb) {
 		_target_dir = object->getTargetPosition(_target_position, object->getRelativePosition(target), range);
 		if (_target_dir >= 0)
-			_target_position += object->getCenterPosition();
+			Map->add(_target_position, object->getCenterPosition());
 	} 
 
 	object->_velocity = Map->distance(object->getCenterPosition(), _target_position);
