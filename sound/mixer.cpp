@@ -45,12 +45,12 @@ void IMixer::SourceInfo::updatePV() {
 		return;
 
 	ALfloat al_pos[] = { pos.x, pos.y, pos.z };
-	ALfloat al_vel[] = { vel.x, vel.y, vel.z };
-
 	alSourcefv(source, AL_POSITION, al_pos);
 	AL_CHECK_NON_FATAL(("alSourcefv(%08x, AL_POSITION, {%g,%g,%g})", source, al_pos[0], al_pos[1], al_pos[2] ));
-	alSourcefv(source, AL_VELOCITY, al_vel);
-	AL_CHECK_NON_FATAL(("alSourcefv(%08x, AL_VELOCITY, {%g,%g,%g})", source, al_vel[0], al_vel[1], al_vel[2] ));	
+
+	//ALfloat al_vel[] = { vel.x, vel.y, vel.z };
+	//alSourcefv(source, AL_VELOCITY, al_vel);
+	//AL_CHECK_NON_FATAL(("alSourcefv(%08x, AL_VELOCITY, {%g,%g,%g})", source, al_vel[0], al_vel[1], al_vel[2] ));	
 }
 
 const bool IMixer::SourceInfo::playing() const {
@@ -614,11 +614,11 @@ void IMixer::playSample(const Object *o, const std::string &name, const bool loo
 		double pitch = 1.0;
 		if (o) {
 			ALfloat al_pos[] = { pos.x / k, -pos.y / k, 0*o->getZ() / k };
-			ALfloat al_vel[] = { vel.x / k, -vel.y / k, 0 };
 			alSourcefv(source, AL_POSITION, al_pos       );
 			AL_CHECK(("alSourcefv(%08x, AL_POSITION)", source));
-			alSourcefv(source, AL_VELOCITY, al_vel       );
-			AL_CHECK(("alSourcefv(%08x, AL_VELOCITY)", source));
+			//ALfloat al_vel[] = { vel.x / k, -vel.y / k, 0 };
+			//alSourcefv(source, AL_VELOCITY, al_vel       );
+			//AL_CHECK(("alSourcefv(%08x, AL_VELOCITY)", source));
 			alSourcef (source, AL_ROLLOFF_FACTOR,  1.0   );
 			AL_CHECK(("alSourcef(%08x, AL_ROLLOFF_FACTOR, 1.0)", source));
 			alSourcei (source, AL_SOURCE_RELATIVE, AL_FALSE     );
@@ -809,12 +809,12 @@ void IMixer::setListener(const v3<float> &pos, const v3<float> &vel, const float
 	GET_CONFIG_VALUE("engine.sound.positioning-divisor", float, k, 40.0);
 		
 	ALfloat al_pos[] = { pos.x / k, -pos.y / k, 0*pos.z / k };
-	ALfloat al_vel[] = { vel.x / k, -vel.y / k, 0*vel.z / k };
+	//ALfloat al_vel[] = { vel.x / k, -vel.y / k, 0*vel.z / k };
 		
 	alListenerfv(AL_POSITION,    al_pos);
 	AL_CHECK_NON_FATAL(("alListenerfv(AL_POSITION, {%g,%g,%g})", al_pos[0], al_pos[1], al_pos[2] ));
-	alListenerfv(AL_VELOCITY,    al_vel);
-	AL_CHECK_NON_FATAL(("alListenerfv(AL_VELOCITY, {%g,%g,%g})", al_vel[0], al_vel[1], al_vel[2] ));
+	//alListenerfv(AL_VELOCITY,    al_vel);
+	//AL_CHECK_NON_FATAL(("alListenerfv(AL_VELOCITY, {%g,%g,%g})", al_vel[0], al_vel[1], al_vel[2] ));
 	//alListenerf (AL_REFERENCE_DISTANCE, r / k);
 	//alListenerfv(AL_ORIENTATION, al_vel);
 }
