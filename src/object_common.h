@@ -22,11 +22,16 @@
 
 #include "math/v2.h"
 #include <deque>
+#include <map>
 
 typedef v2<int> WayPoint;
 typedef std::deque<WayPoint> Way;
 
 enum GroupType { Fixed, Centered };
+
+class Object;
+
+typedef std::map<const int, Object*> ObjectMap;
 
 #endif
 
