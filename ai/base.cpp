@@ -293,7 +293,7 @@ void Base::calculate(Object *object, const float dt) {
 					_target_position = r.convert<int>();
 			}
 */		
-			LOG_DEBUG(("next target: %s at %d,%d", target->registered_name.c_str(), target_position.x, target_position.y));
+			LOG_DEBUG(("next target: %s at %d,%d", target->animation.c_str(), target_position.x, target_position.y));
 			object->findPath(target_position, 24);
 			_refresh_path.reset();
 		
