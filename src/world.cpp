@@ -189,6 +189,7 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::R
 	typedef std::multimap<const int, Object *> LayerMap;
 	LayerMap layers;
 	const IMap &map = *Map.get_const();
+	GET_CONFIG_VALUE("engine.show-waypoints", bool, show_waypoints, false);
 	
 	for(ObjectMap::iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		Object *o = i->second;
@@ -203,13 +204,13 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::R
 		bool fogged = fog;// && o->speed != 0;
 		//LOG_DEBUG(("%d,%d:%d,%d vs %d,%d:%d,%d result: %s", 
 		//	r.x, r.y, r.w, r.h, src_rect.x, src_rect.y, src_rect.w, src_rect.h, Map->intersects(r, src_rect)?"true":"false"));
-		if (Map->intersects(r, fogged? fog_rect: src)) 
+		if (Map->intersects(r, fogged? fog_rect: src) || (show_waypoints && o->isDriven())) 
 			layers.insert(LayerMap::value_type(o->_z, o));
 	}
+
 	//LOG_DEBUG(("rendering %d objects", layers.size()));
 	v2<int> map_size = Map->getSize(), map_tile_size = map_size / Map->getTileSize();
 	int z1 = _z1;
-	GET_CONFIG_VALUE("engine.show-waypoints", bool, show_waypoints, false);
 	for(LayerMap::iterator i = layers.begin(); i != layers.end(); ++i) {
 		if (i->second->isDead())
 			continue;
