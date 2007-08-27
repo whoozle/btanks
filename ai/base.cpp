@@ -27,6 +27,7 @@
 #include "mrt/random.h"
 #include "math/binary.h"
 #include "vehicle_traits.h"
+#include "tmx/map.h"
 
 using namespace ai;
 
@@ -172,7 +173,7 @@ void Base::calculateCloseCombat(Object *object, const Object *target, const floa
 			_target_position += object->getCenterPosition();
 	} 
 
-	object->_velocity = _target_position - object->getCenterPosition();
+	object->_velocity = Map->distance(object->getCenterPosition(), _target_position);
 	
 	//LOG_DEBUG(("object velocity: %g,%g, target dir: %d", object->_velocity.x, object->_velocity.y, _target_dir));
 	
