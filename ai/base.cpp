@@ -223,8 +223,6 @@ void Base::calculate(Object *object, const float dt) {
 		return;
 	}
 
-	static const std::set<std::string> empty_enemies;
-
 	const bool refresh_path = _refresh_path.tick(dt);
 	const bool dumb = !_reaction_time.tick(dt);
 	const Object *target = NULL;
@@ -253,10 +251,10 @@ void Base::calculate(Object *object, const float dt) {
 	if (target == NULL)
 		target = World->getObjectByID(_target_id);
 
-	if (amount1 == -1) 
-		amount1 = 10;
-	if (amount2 == -1) 
-		amount2 = 10;
+	if (amount1 < 0) 
+		amount1 = 30;
+	if (amount2 < 0) 
+		amount2 = 30; //infinite amount
 	
 	if (target != NULL) {
 		if (!weapon1.empty())
@@ -280,7 +278,7 @@ void Base::calculate(Object *object, const float dt) {
 		}
 	}
 		
-	target = findTarget(object, (amount1 > 0 || amount2 > 0)?_enemies:empty_enemies, _bonuses, _traits, _skip_objects);
+	target = findTarget(object, (amount1 > 0 || amount2 > 0)?_enemies:std::set<std::string>(), _bonuses, _traits, _skip_objects);
 	
 	if (target != NULL) {
 		if ( ((refresh_path && isEnemy(target)) || target->getID() != _target_id)) {
