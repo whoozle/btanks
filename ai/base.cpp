@@ -296,7 +296,7 @@ void Base::calculate(Object *object, const float dt) {
 			}
 */		
 			LOG_DEBUG(("next target: %s at %d,%d", target->registered_name.c_str(), target_position.x, target_position.y));
-			object->findPath(target_position, 16);
+			object->findPath(target_position, 24);
 			_refresh_path.reset();
 		
 			//Way way;
@@ -304,6 +304,9 @@ void Base::calculate(Object *object, const float dt) {
 			//	LOG_WARN(("no way"));
 			//else setWay(way);
 		}
+	} else if (!object->isDriven()) {
+		//LOG_DEBUG(("%d:%s idle", object->_id, object->animation.c_str()));
+		object->_velocity.clear();
 	}
 
 	//2 fire or not 2 fire.
