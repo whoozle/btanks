@@ -258,7 +258,7 @@ TRY {
 	} 
 	case Message::UpdatePlayers: { 
 		mrt::Serializator s(&message.data);
-		IWorld::ObjectMap updated_objects, interpolated_objects;
+		ObjectMap updated_objects, interpolated_objects;
 		while(!s.end()) {
 			int id;
 			s.get(id);
@@ -302,9 +302,9 @@ TRY {
 			if (!my_state)
 				o->updatePlayerState(state); //update states for all players but me.
 
-			updated_objects.insert(IWorld::ObjectMap::value_type(o->getID(), o));
+			updated_objects.insert(ObjectMap::value_type(o->getID(), o));
 			if (!dont_interpolate)
-				interpolated_objects.insert(IWorld::ObjectMap::value_type(o->getID(), o));
+				interpolated_objects.insert(ObjectMap::value_type(o->getID(), o));
 			else o->uninterpolate();
 		}	
 		World->tick(updated_objects, _trip_time / 1000.0, false);

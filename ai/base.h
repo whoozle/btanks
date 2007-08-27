@@ -42,6 +42,8 @@ public:
 	const bool active() const;
 	const float getWeaponRange(const Object *object) const;
 	
+	static const float getFirePower(const Object *o, ai::Traits &traits);
+	
 protected: 
 	virtual void calculateCloseCombat(Object *obj, const Object *target, const float range, const bool dumb);
 	void processPF(Object *object);
@@ -51,6 +53,7 @@ protected:
 	const bool isEnemy(const Object *o) const;
 	
 	const bool checkTarget(const Object *obj, const Object * target, const std::string &weapon) const;
+	const Object * findTarget(const Object *src, const std::set<std::string> &enemies, const std::set<std::string> &bonuses, ai::Traits &traits, const std::set<int> &skip_objects) const;
 
 private: 
 

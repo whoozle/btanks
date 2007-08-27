@@ -26,7 +26,7 @@
 #include "game_monitor.h"
 #include "mrt/random.h"
 #include "math/binary.h"
-
+#include "vehicle_traits.h"
 
 using namespace ai;
 
@@ -280,7 +280,7 @@ void Base::calculate(Object *object, const float dt) {
 		}
 	}
 		
-	target = World->findTarget(object, (amount1 > 0 || amount2 > 0)?_enemies:empty_enemies, _bonuses, _traits, _skip_objects);
+	target = findTarget(object, (amount1 > 0 || amount2 > 0)?_enemies:empty_enemies, _bonuses, _traits, _skip_objects);
 	
 	if (target != NULL) {
 		if ( ((refresh_path && isEnemy(target)) || target->getID() != _target_id)) {
@@ -343,4 +343,112 @@ skip_calculations:
 	object->updateStateFromVelocity();
 }
 
+const Object * Base::findTarget(const Object *src, const std::set<std::string> &enemies, const std::set<std::string> &bonuses, ai::Traits &traits, const std::set<int> &skip_objects) const {
+	if (src->getType().empty())
+		throw_ex(("findTarget source must always provide its type"));
+	
+	const Object *result = NULL;
+	float result_value = 0;
+	std::set<const Object *> objects;
+	{
+		float range;
+		Config->get("objects." + src->registered_name + ".range", range, 640.0f);
+		World->enumerateObjects(objects, src, range, NULL);
+	}
+	
+	for(std::set<const Object *>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
+		const Object *o = *i;
+		if (o->impassability == 0 || o->hp == -1 || o->_id == src->_id ||
+			!ZBox::sameBox(src->getZ(), o->getZ()) || 
+			o->hasSameOwner(src) || 
+			o->isEffectActive("invulnerability") || 
+			skip_objects.find(o->getID()) != skip_objects.end()
+			)
+			continue;
+		const bool enemy = enemies.find(o->classname) != enemies.end();
+		const bool bonus = bonuses.find(o->registered_name) != bonuses.end();
+		if (!enemy && !bonus)
+			continue;
 
+		//bonus!
+		int min = 0, max = 0;
+		std::string mod_type = o->classname;
+		if (mod_type == "teleport") {
+			v2<float> dpos = src->getRelativePosition(o);
+			if (dpos.quick_length() < o->size.x * o->size.y) 
+				continue;
+		}
+		if (!o->getType().empty()) 
+			mod_type += ":" + o->getType();
+		if (o->isEffectActive("invulnerability"))
+			continue;
+		
+		if (o->classname == "missiles" || o->classname == "mines") {
+			if (src->has("mod")) {
+				const Object *mod = src->get("mod");
+				if (mod->getType() == mod_type)
+					min = mod->getCount();
+			}
+	
+			if (src->has("alt-mod")) {
+				const Object *mod = src->get("alt-mod");
+				if (mod->getType() == mod_type)
+					min = mod->getCount();
+			}
+			assert(min >= 0);
+			int max_v;
+			VehicleTraits::getWeaponCapacity(max, max_v, src->getType(), o->classname, o->getType());
+			if (min > max)
+				min = max;
+		} else if (o->classname == "heal") {
+			min = src->hp;
+			max = src->max_hp;
+		} else if (o->classname == "effects" || o->classname == "mod") {
+			max = 1;
+			traits.get(o->classname, o->getType(), 500.0, 2000.0);
+		}
+		float value = 0;
+		const std::string type = o->getType();
+
+		if (enemy) {
+			value = traits.get("enemy", type.empty()?o->classname:type, 1000.0, 1000.0);
+		} else if (bonus) {
+			if (max == 0) {
+				LOG_WARN(("cannot determine bonus for %s", o->registered_name.c_str()));
+				continue;
+			}
+			value = traits.get("value", mod_type, 1.0, 1000.0) * (max - min);
+		} else assert(0);
+				
+		if (enemy) {
+			value *= (getFirePower(src, traits) + 1) / (getFirePower(o, traits) + 1);
+		}
+		value /= (src->_position.distance(o->_position));
+		//LOG_DEBUG(("item: %s, value: %g", o->registered_name.c_str(), value));
+		//find most valuable item.
+		if (value > result_value) {
+			result = o;
+			result_value = value;
+		}
+	}
+	return result;
+}
+
+const float Base::getFirePower(const Object *o, ai::Traits &traits) {
+	float value = 0;
+	if (o->has("mod")) {
+		const Object *mod = o->get("mod");
+		int c = mod->getCount();
+		const std::string& type = mod->getType();
+		if (c > 0 && !type.empty()) 
+			value += traits.get("value", type, 1.0, 1000.0) * c;
+	}
+	if (o->has("alt-mod")) {
+		const Object *mod = o->get("alt-mod");
+		int c = mod->getCount();
+		const std::string& type = mod->getType();
+		if (c > 0 && !type.empty()) 
+			value += traits.get("value", type, 1.0, 1000.0) * c;
+	}
+	return value;
+}

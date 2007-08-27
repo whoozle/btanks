@@ -47,8 +47,7 @@ class Object;
 class BTANKSAPI IWorld : public mrt::Serializable, public sigc::trackable {
 public:
 	DECLARE_SINGLETON(IWorld);
-	typedef std::map<const int, Object*> ObjectMap;
-	
+
 	void clear();
 	~IWorld();
 	IWorld();
@@ -102,8 +101,6 @@ public:
 	const bool attachVehicle(Object *object, Object *vehicle);
 	const bool detachVehicle(Object *object);
 
-	//ai stuff:	
-	const Object * findTarget(const Object *src, const std::set<std::string> &enemies, const std::set<std::string> &bonuses, ai::Traits &traits, const std::set<int> &skip_objects) const;
 	void enumerateObjects(std::set<const Object *> &o_set, const Object *src, const float range, const std::set<std::string> *classfilter);
 
 protected: 
