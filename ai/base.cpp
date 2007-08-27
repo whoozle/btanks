@@ -253,9 +253,9 @@ void Base::calculate(Object *object, const float dt) {
 		target = World->getObjectByID(_target_id);
 
 	if (amount1 < 0) 
-		amount1 = 30;
+		amount1 = 50;
 	if (amount2 < 0) 
-		amount2 = 30; //infinite amount
+		amount2 = 50; //infinite amount
 	
 	if (target != NULL) {
 		if (!weapon1.empty())
