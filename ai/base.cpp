@@ -141,7 +141,7 @@ const bool Base::checkTarget(const Object *object, const Object * target, const 
 		int dir = d.getDirection(object->getDirectionsNumber()) - 1;
 		codir = dir == object->getDirection();
 		int dd = math::abs(dir - object->getDirection());
-		codir1 = dd == 1 || dd == (object->getDirectionsNumber() - 1);
+		codir1 = codir || dd == 1 || dd == (object->getDirectionsNumber() - 1);
 	}
 
 	//LOG_DEBUG(("checking target(%s/%s): %g %g codir: %c, codir1: %c", wc.c_str(), wt.c_str(), pos.x, pos.y, codir?'+':'-', codir1?'+':'-'));
