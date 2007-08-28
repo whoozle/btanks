@@ -645,7 +645,9 @@ void IGame::deinit() {
 
 	ResourceManager->clear();
 
-	Config->save();
+	TRY {
+		Config->save();
+	} CATCH("saving config", );
 
 	//TTF_Quit();
 	Window->deinit();
