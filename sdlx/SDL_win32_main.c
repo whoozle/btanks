@@ -280,16 +280,19 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrev, LPSTR szCmdLine, int sw)
 
 #ifndef _WIN32_WCE
 	if ( newfp == NULL ) {	/* This happens on NT */
-#if !defined(stdout)
-		stdout = fopen(stdoutPath, TEXT("w"));
-#else
 		newfp = fopen(stdoutPath, TEXT("w"));
+		if (newfp == NULL) 
+			newfp = fopen(TEXT("nul"), TEXT("w"));
+
+#if !defined(stdout)
+		stdout = newfp;
+#else
 		if ( newfp ) {
 			*stdout = *newfp;
 		}
 #endif
 	}
-#endif /* _WIN32_WCE */
+#endif /* !_WIN32_WCE */
 
 #ifdef _WIN32_WCE
 	wcsncpy( stderrPath, path, SDL_arraysize(stdoutPath) );
@@ -302,16 +305,19 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrev, LPSTR szCmdLine, int sw)
 	newfp = freopen(stderrPath, TEXT("w"), stderr);
 #ifndef _WIN32_WCE
 	if ( newfp == NULL ) {	/* This happens on NT */
-#if !defined(stderr)
-		stderr = fopen(stderrPath, TEXT("w"));
-#else
 		newfp = fopen(stderrPath, TEXT("w"));
+		if (newfp == NULL) 
+			newfp = fopen(TEXT("nul"), TEXT("w"));
+
+#if !defined(stderr)
+		stderr = newfp;
+#else
 		if ( newfp ) {
 			*stderr = *newfp;
 		}
 #endif
 	}
-#endif /* _WIN32_WCE */
+#endif /* !_WIN32_WCE */
 
 	setvbuf(stdout, NULL, _IOLBF, BUFSIZ);	/* Line buffered */
 	setbuf(stderr, NULL);			/* No buffering */
