@@ -162,7 +162,9 @@
 
 		<string id="ambience-volume">Ambience volume</string>
 		<string id="ambience-volume" lang="ru">Громкость шума</string>
-                   Lautstärke des Umgebungslärmes
+		<string id="ambience-volume" lang="fr">Volume général</string>
+		<string id="ambience-volume" lang="de">Lautstärke des Umgebungslärmes</string>
+
 		<string id="redefine-keys">Redefine keys</string>
 		<string id="redefine-keys" lang="ru">Настроить клавиши</string>
 		<string id="redefine-keys" lang="fr">Changer les touches</string>
@@ -187,35 +189,35 @@
 		<string id="left" lang="fr">GAUCHE</string>
 		<string id="left" lang="de">links</string>
 		
-		<string id="right" lang="it">DESTRA</string>
 		<string id="right">RIGHT</string>
 		<string id="right" lang="ru">ВПРАВО</string>
 		<string id="right" lang="fr">DROITE</string>
 		<string id="right" lang="de">rechts</string>		
-		<string id="fire" lang="it">FUOCO</string>
+		<string id="right" lang="it">DESTRA</string>
 
 		<string id="fire">FIRE</string>
 		<string id="fire" lang="ru">ВЫСТРЕЛ</string>
 		<string id="fire" lang="fr">TIR</string>
-		<string id="alt-fire" lang="it">FUOCO 2</string>
 		<string id="fire" lang="de">Schuss</string>
+		<string id="fire" lang="it">FUOCO</string>
 		
 		<string id="alt-fire">ALT FIRE</string>
 		<string id="alt-fire" lang="ru">ВЫСТРЕЛ-2</string>
-		<string id="disembark" lang="it">DISIMPEGNO</string>
 		<string id="alt-fire" lang="fr">TIR ALT</string>
 		<string id="alt-fire" lang="de">Alt-Schuss</string>
+		<string id="alt-fire" lang="it">FUOCO 2</string>
 		
 		<string id="disembark">DISEMBARK</string>
-		<string id="hint-ctrl" lang="it">SUGGERIMENTI</string>
 		<string id="disembark" lang="ru">ВЫЙТИ</string>
 		<string id="disembark" lang="fr">DÉBARQUER</string>
 		<string id="disembark" lang="de">Aussteigen</string>
+		<string id="disembark" lang="it">DISIMPEGNO</string>
 		
 		<string id="hint-ctrl">HINTS CTRL</string>
 		<string id="hint-ctrl" lang="ru">ПОДСКАЗКИ</string>
 		<string id="hint-ctrl" lang="fr">CONSEILS</string>
 		<string id="hint-ctrl" lang="de"> Tips</string>
+		<string id="hint-ctrl" lang="it">SUGGERIMENTI</string>
                   
 		<string id="default-keys">Default keys</string>
 		<string id="default-keys" lang="ru">Клавиши по умолчанию</string>
@@ -322,18 +324,23 @@
 		<area id="difficulty">
 			<string id="difficulty">Difficulty</string>
 			<string id="difficulty" lang="ru">Сложность</string>
+			<string id="difficulty" lang="fr">Difficulté</string>
 			
 			<string id="easy">Easy</string>
 			<string id="easy" lang="ru">Легко</string>
+			<string id="easy" lang="fr">Facile</string>
 			
 			<string id="normal">Normal</string>
 			<string id="normal" lang="ru">Нормально</string>
+			<string id="normal" lang="fr">Normal</string>
 			
 			<string id="hard">Hard</string>
 			<string id="hard" lang="ru">Тяжело</string>
+			<string id="hard" lang="fr">Difficile</string>
 			
 			<string id="nightmare">Nightmare</string>
 			<string id="nightmare" lang="ru">Кошмар!</string>
+			<string id="nightmare" lang="fr">Cauchemar !</string>
 		</area>
 	</area>
 	
@@ -388,7 +395,7 @@
 			<string id="ka">ka</string>
 			<string id="ka" lang="ru">ка</string>
 			
-			<string id="ko">ka</string>
+			<string id="ko">ko</string>
 			<string id="ko" lang="ru">ко</string>
 
 			<string id="ki">ki</string>
@@ -648,13 +655,13 @@
 		        
 		<string id="base-destroyed">YOUR BASE WAS DESTROYED. GAME OVER.</string>
 		<string id="base-destroyed" lang="ru">Ваша база была уничтожена, миссия провалена.</string>
-		<string id="base-destroyed" lang="fr">VOTRE BASE A ÉTÉ DÉTRUIT, VOUS AVEZ PERDU.</string>
+		<string id="base-destroyed" lang="fr">VOTRE BASE A ÉTÉ DÉTRUITE, VOUS AVEZ PERDU.</string>
 		<string id="base-destroyed" lang="de">IHRE BASIS IST ZERSTÖRT WORDEN, EINSATZ VERLOREN.</string>
 		<string id="base-destroyed" lang="it">LA TUA BASE E' STATA DISTRUTTA. FINE PARTITA.</string>
 
 		<string id="time-limit-reached">TIME LIMIT WAS REACHED.</string>
 		<string id="time-limit-reached" lang="ru">ВРЕМЯ КОНЧИЛОСЬ.</string>
-		<string id="time-limit-reached" lang="fr">LA LIMITE DE TEMPS A ÉTÉ ATTEINT.</string>
+		<string id="time-limit-reached" lang="fr">LA LIMITE DE TEMPS A ÉTÉ ATTEINTE.</string>
 		<string id="time-limit-reached" lang="de">DIE ZEIT IST UM.</string>
 	</area>        
                               
@@ -768,7 +775,7 @@
 		
 		<string id="chat">You can press ENTER and chat with other players</string>
 		<string id="chat" lang="ru">Вы можете разговаривать с другими игроками, нажав ENTER.</string>
-		<string id="chat" lang="fr">Vous pouvez contacter les autres joueurs avec la touche ENTER.</string>
+		<string id="chat" lang="fr">Vous pouvez contacter les autres joueurs avec la touche ENTRÉE.</string>
 		<string id="chat" lang="de">Mit der ENTER-Taste können Sie die anderen Spieler kontaktieren.</string>
 	</area>
 </strings>    
