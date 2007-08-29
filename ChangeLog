@@ -1,3 +1,23 @@
+0.5.4794: 
+
+*) Added Italian translation
+*) Removed velocity to avoid 3d sound corruption. Sound improvements.
+*) Increased attack of the "cannon" sounds.
+*) Reduced "escape from nuke" probability. 
+*) AI fixes: 
+	*) players now could travel via teleports
+	*) blacklisting unreachable objects
+	*) increased infinite weaponry balance
+	*) torus map issues.
+	*) various small AI fixes
+*) Game could be started from the readonly win32 environment (cdrom).
+*) VC80 port, added manifests to library, fixed installer, made openAL installer optional as workaround for Vista(tm) users. 
+*) Removed magic 10000s interval from maps. 
+*) Added difficulty levels to campaign mode.
+*) Added speedup/slowdown/god effects. I hope corresponding items will appear in newer releases. 
+*) Added default take() implementation for Object.
+*) Fixed invalid memory reads reported by valgrind. 
+
 0.5.4739: 
 
 *) Added "split screen" mode in multiplayer client.
