@@ -116,7 +116,7 @@
 			<property name="impassability" value="40"/>
 		</properties>
 		<data encoding="base64" compression="gzip">
-			H4sIAAAAAAAAC+2WyUpGMQyFf59AxQGcBWd3gi8guHPYOTyiO4cnNB/kwCH0/v5g68oLoW1Ic3rSpDf3S7PZQ8hjSP1uQrc9ITup11jtXH+fGBrBQ24bmHcFr+7VGjzmSOuMLUx0LZ5PoX9JX5zrOdcahcNac+xfQ9jrduwXtvTYtT7txc5tdB5iITydverqWdtIi2uFDb8WR/D+v7+LwHrEG9nsHPfl8LcSstrwux+6g5DLzphb4e8kpUbwPPQXIdedMY/C3+6ET+K6MSC28BSm7m4tsRTbwwE8T9MnGPjfy3tkLV3PzHWe+P8M+UpM8mdEDnGfzhMMxZT5iByqPB0T7BH1KZ5X4Z/aeDOeo3JIPPUmKH+cb+83AZ76f5ObZyV/wO5dK+J5nPVCjJWvqpWfeFLPej98nHqnPW9Vg/CmT1r0Pr2e/U6m4uN5WzGFDf7U+8genc3HeW8ImPhE+HS33g8yVw23fP0GU7w0es9Z+03629onel8774zKW9l73+eYtd+s/Rv7HPM91tQfov+zxo+sFdk7zjdtkLZbyAsAAA==
+			H4sIAAAAAAAAC+2WyUqFMQyFr0+g4gDOgrM7wRcQ3HmvO4dH1JXDE5oPeuAY2qti68ofQtvQ5uSkSf9MFyaTWchzyGOIf1ex3mzIVtFrzPtcPy0YGsFDrhMe2DcJL5/VGjzmSM3HGia62wrmXegeii38ui9rjcJhrTn7iRdnfR/nhS19jqtirLPs8z3yh1gIT75nXfb18w3+fCVs+NU4gvf//V0EViPeyHrnuC+GvaWQ5Yrd3dDthZx3xtwIe0dFcgRPQ38WctkZ8yDsbTdsEte1AbGFpzB1dysFS7HdH8DzuNgEA/s75R5ZS9czc50n9t9C3gsm+TMih7hP5wmGYsp8RA5lno4J9oj6FM+LsE9tPBnPUTkknnoTlD/Ot/ebAE/9v8nNk5Q/YPeuFfE8LPVCjJWvqpWveFLPej98bL3TnreqQXjTJ333Pr2e/U5a8fG8zZjCBr/1PnJGvvk47w0BE5sIn+7W+0HmquGard9gipdG7zlzv0l/m/tE72vn+ai81X7v+xwz95u5f+OcY77EmvpD9H/W+FpqRfsd5wNUtFQQyAsAAA==
 		</data>
 	</layer>
 	<layer name="terrain details" width="29" height="26">
