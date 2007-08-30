@@ -1,4 +1,4 @@
-0.5.4794: 
+0.5.4800: 
 
 *) Added Italian translation
 *) Removed velocity to avoid 3d sound corruption. Sound improvements.
