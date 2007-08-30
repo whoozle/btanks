@@ -649,8 +649,12 @@ void IPlayerManager::startClient(const std::string &address, const size_t n) {
 	TRY {
 		_client = new Client;
 		_client->init(address, port);
-	} CATCH("_client.init", { delete _client; _client = NULL; throw; });
-
+	} CATCH("_client.init", { 
+		delete _client; _client = NULL; 
+		Game->clear();
+		GameMonitor->displayMessage("errors", "multiplayer-exception", 1);
+		return;
+	});
 }
 void IPlayerManager::clear() {
 	LOG_DEBUG(("deleting server/client if exists."));
