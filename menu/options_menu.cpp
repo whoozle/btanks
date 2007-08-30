@@ -84,17 +84,17 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 	add(_bx + base_x - sw / 2, yp, _lang);
 	yp += sh + 10;
 
-	sp = new ControlPicker(width, "medium", I18n->get("menu", "single-player"), "player.control-method", std::string());
+	sp = new ControlPicker(width, "medium", I18n->get("menu", "single-player"), "player.control-method", "keys", std::string());
 	sp->getSize(sw, sh);
 	add(_bx + mx, yp, sp);
 	yp += sh;
 
-	sp1 = new ControlPicker(width, "medium", I18n->get("menu", "split-player-1"), "player.control-method-1", "split");
+	sp1 = new ControlPicker(width, "medium", I18n->get("menu", "split-player-1"), "player.control-method-1", "keys-1", "split");
 	sp1->getSize(sw, sh);
 	add(_bx + mx, yp, sp1);
 	yp += sh;
 
-	sp2 = new ControlPicker(width, "medium", I18n->get("menu", "split-player-2"), "player.control-method-2", "split");
+	sp2 = new ControlPicker(width, "medium", I18n->get("menu", "split-player-2"), "player.control-method-2", "keys-2", "split");
 	sp2->getSize(sw, sh);
 	add(_bx + mx, yp, sp2);
 	yp += sh;

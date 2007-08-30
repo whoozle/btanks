@@ -23,8 +23,8 @@
 #include "config.h"
 #include "sdlx/joystick.h"
 
-ControlPicker::ControlPicker(const int w, const std::string &font, const std::string &label, const std::string &config_key, const std::string &variant) 
-: _config_key(config_key) {
+ControlPicker::ControlPicker(const int w, const std::string &font, const std::string &label, const std::string &config_key, const std::string &def, const std::string &variant) 
+: _config_key(config_key), _default(def) {
 	int bw, bh;
 	
 	Label *l = new Label(font, label);
@@ -67,7 +67,7 @@ void ControlPicker::save() {
 void ControlPicker::reload() {
 	TRY {
 		std::string cm;
-		Config->get(_config_key, cm, "keys");
+		Config->get(_config_key, cm, _default);
 		_controls->set(cm);
 	} CATCH("reload", {})
 }
