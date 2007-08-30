@@ -134,8 +134,9 @@ void IGame::init(const int argc, char *argv[]) {
 			Config->get("player.control-method-2", s2, "keys-2");
 			if (s == "keys" && s2 == "keys") {
 				LOG_WARN(("bogus control methods found. fixing..."));
-				Config->set("player.control-method-1", "keys-1");
-				Config->set("player.control-method-2", "keys-2");
+				Config->set("player.control-method-1", std::string("keys-1"));
+				Config->set("player.control-method-2", std::string("keys-2"));
+				Config->invalidateCachedValues();
 			}
 		}
 	}
