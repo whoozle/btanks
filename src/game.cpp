@@ -127,6 +127,17 @@ void IGame::init(const int argc, char *argv[]) {
 		Config->get("map.stun-missiles-item.respawn-interval", r, 20);
 		Config->get("map.machinegunner-item.respawn-interval", r, 20);
 		Config->get("map.thrower-item.respawn-interval", r, 20);
+		
+		std::string s2;
+		if (Config->has("player.control-method-1") && Config->has("player.control-method-2")) {
+			Config->get("player.control-method-1", s, "keys-1");
+			Config->get("player.control-method-2", s2, "keys-2");
+			if (s == "keys" && s2 == "keys") {
+				LOG_WARN(("bogus control methods found. fixing..."));
+				Config->set("player.control-method-1", "keys-1");
+				Config->set("player.control-method-2", "keys-2");
+			}
+		}
 	}
 	{
 		//place for upgrade.
