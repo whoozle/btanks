@@ -193,7 +193,7 @@ TRY {
 		} else if (_local_clients == 2) {
 			size_t idx = 0;
 			for(size_t i = 0; i < _players.size(); ++i) {
-				if (_players[i].remote)
+				if (_players[i].remote != -1)
 					++idx;
 			}
 			assert(idx == 1 || idx == 2);
@@ -513,7 +513,7 @@ TRY {
 			Mixer->playSample(slot.getObject(), "respawn.ogg", false);
 		}
 		
-		if (isServer() && slot.remote) {
+		if (isServer() && slot.remote != -1) {
 			Message m(Message::Respawn);
 			m.channel = i;
 			mrt::Serializator s;
@@ -559,7 +559,7 @@ TRY {
 
 		for(size_t i = 0; i < n; ++i) {
 			PlayerSlot &slot = _players[i];
-			if (!slot.remote || !slot.need_sync)
+			if (slot.remote == -1 || !slot.need_sync)
 				continue;
 				
 			const Object * o = slot.getObject();
@@ -721,7 +721,7 @@ const PlayerSlot *IPlayerManager::getSlotByID(const int id) const {
 const int IPlayerManager::findEmptySlot() const {
 	int i, n = _players.size();
 	for(i = 0; i < n; ++i) {
-		if (_players[i].empty() && !_players[i].remote)
+		if (_players[i].empty() && _players[i].remote == -1)
 			break;
 	}
 	if (i == n) 
@@ -949,7 +949,7 @@ void IPlayerManager::broadcast(const Message &_m, const bool per_connection) {
 		for(size_t i = 0; i < n; ++i) {
 			const PlayerSlot &slot = _players[i];
 			
-			if (!slot.remote || seen.find(slot.remote) != seen.end())
+			if (slot.remote == -1 || seen.find(slot.remote) != seen.end())
 				continue;
 			seen.insert(slot.remote);
 			_server->send(slot.remote, _m);
@@ -958,7 +958,7 @@ void IPlayerManager::broadcast(const Message &_m, const bool per_connection) {
 		Message m(_m);
 		for(size_t i = 0; i < n; ++i) {
 			const PlayerSlot &slot = _players[i];
-			if (!slot.remote || slot.empty())
+			if (slot.remote == -1 || slot.empty())
 				continue;
 	
 			m.channel = i;
@@ -971,7 +971,7 @@ void IPlayerManager::send(const PlayerSlot &slot, const Message & msg) {
 	if (_server == NULL)
 		throw_ex(("PlayerManager->send() allowed only in server mode"));
 	int cid = slot.remote;
-	if (cid != 0)
+	if (cid != -1)
 		_server->send(cid, msg);
 }
 
@@ -983,7 +983,7 @@ const bool IPlayerManager::isServerActive() const {
 	int n = _players.size();
 	for(int i = 0; i < n; ++i) {
 		const PlayerSlot &slot = _players[i];
-		if (slot.remote && !slot.empty())
+		if (slot.remote != -1 && !slot.empty())
 			return true;
 	}
 	return false;
@@ -1107,10 +1107,10 @@ void IPlayerManager::updateControls() {
 
 PlayerSlot *IPlayerManager::getMySlot() {
 	for(size_t i = 0; i < _players.size(); ++i) {
-		if (_server && !_players[i].remote && !_players[i].empty()) 
+		if (_server && _players[i].remote == -1 && !_players[i].empty()) 
 			return &_players[i];
 
-		if (_client && _players[i].remote && !_players[i].empty()) 
+		if (_client && _players[i].remote != -1 && !_players[i].empty()) 
 			return &_players[i];
 
 	}
@@ -1142,7 +1142,7 @@ TRY {
 	if (_server) {
 		PlayerSlot *my_slot = NULL;
 		for(size_t i = 0; i < _players.size(); ++i) {
-			if (!_players[i].remote && !_players[i].empty()) {
+			if (_players[i].remote == -1 && !_players[i].empty()) {
 				my_slot = &_players[i];
 				break;
 			}
@@ -1158,7 +1158,7 @@ TRY {
 	if (_client) {
 		size_t i;
 		for(i = 0; i < _players.size(); ++i) {
-			if (_players[i].remote && !_players[i].empty()) 
+			if (_players[i].remote != -1 && !_players[i].empty()) 
 				break;
 		}
 		if (i == _players.size())

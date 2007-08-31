@@ -31,12 +31,12 @@
 #include "i18n.h"
 
 PlayerSlot::PlayerSlot() : 
-id(-1), control_method(NULL), need_sync(false), dont_interpolate(false), remote(0), trip_time(10), visible(false), 
+id(-1), control_method(NULL), need_sync(false), dont_interpolate(false), remote(-1), trip_time(10), visible(false), 
 classname(), animation(), frags(0), spawn_limit(0), score(0), last_tooltip(NULL)
 {}
 
 PlayerSlot::PlayerSlot(const int id) : 
-id(id), control_method(NULL), need_sync(false), dont_interpolate(false), remote(0), trip_time(10), visible(false), 
+id(id), control_method(NULL), need_sync(false), dont_interpolate(false), remote(-1), trip_time(10), visible(false), 
 classname(), animation(), frags(0), spawn_limit(0), score(0), last_tooltip(NULL)
 {}
 
@@ -86,7 +86,7 @@ void PlayerSlot::clear() {
 	classname.clear();
 
 	need_sync = false;
-	remote = 0;
+	remote = -1;
 	frags = 0;
 	
 	zones_reached.clear();
@@ -103,7 +103,7 @@ void PlayerSlot::clear() {
 }
 
 void PlayerSlot::displayLast() {
-	if (remote)
+	if (remote != -1)
 		return;
 	if (tooltips.empty() && last_tooltip != NULL) {
 		tooltips.push(Tooltips::value_type(last_tooltip->getReadingTime(), last_tooltip));
@@ -116,7 +116,7 @@ void PlayerSlot::displayLast() {
 }
 
 void PlayerSlot::tick(const float dt) {
-	if (!remote && !tooltips.empty()) {
+	if (remote == -1 && !tooltips.empty()) {
 		tooltips.front().first -= dt;
 		if (tooltips.front().first < 0) {
 			delete last_tooltip;
@@ -241,7 +241,7 @@ void PlayerSlot::spawnPlayer(const std::string &classname, const std::string &an
 	Object *obj = ResourceManager->createObject(classname + "(player)", animation);
 	assert(obj != NULL);
 	
-	if (control_method != NULL || remote)
+	if (control_method != NULL || remote != -1)
 		obj->disable_ai = true;
 
 	obj->setZBox(position.z);

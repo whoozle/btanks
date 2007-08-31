@@ -165,7 +165,7 @@ void SpecialZone::onCheckpoint(const int slot_id) {
 
 	slot.need_sync = true;
 
-	if (slot.remote && PlayerManager->isServer() ) {
+	if (slot.remote != -1 && PlayerManager->isServer() ) {
 		Message m(Message::TextMessage);
 		m.channel = slot_id;
 		m.set("area", "messages");
