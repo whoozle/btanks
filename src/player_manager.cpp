@@ -326,8 +326,8 @@ TRY {
 	case Message::Pang: {
 		const mrt::Chunk &data = message.data;
 		float ping = extractPing(data);
-		GET_CONFIG_VALUE("multiplayer.ping-interpolation-multiplier", int, pw, 3);
-		_trip_time = (pw * ping + _trip_time) / (pw + 1);
+		//GET_CONFIG_VALUE("multiplayer.ping-interpolation-multiplier", int, pw, 3);
+		_trip_time = ping;//(pw * ping + _trip_time) / (pw + 1);
 		
 		GET_CONFIG_VALUE("multiplayer.ping-interval", int, ping_interval, 1500);
 
@@ -348,8 +348,9 @@ TRY {
 		
 			float ping = extractPing(message.data);
 			
-			GET_CONFIG_VALUE("multiplayer.ping-interpolation-multiplier", int, pw, 3);
-			slot.trip_time = (pw * ping + slot.trip_time) / (pw + 1);
+			//GET_CONFIG_VALUE("multiplayer.ping-interpolation-multiplier", int, pw, 3);
+			//slot.trip_time = (pw * ping + slot.trip_time) / (pw + 1);
+			slot.trip_time = ping;
 			LOG_DEBUG(("player %u: ping: %g ms", (unsigned)id, ping));		
 		}
 		break;
