@@ -348,7 +348,6 @@ const bool BaseObject::updatePlayerState(const PlayerState &state) {
 	if (updated) {
 		//LOG_DEBUG(("player %d:%s updated state: %s -> %s", _id, classname.c_str(), _state.dump().c_str(), state.dump().c_str()));
 		_state = state;
-		need_sync = true;
 	}
 	return updated;
 }

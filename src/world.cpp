@@ -1614,6 +1614,8 @@ const bool IWorld::detachVehicle(Object *object) {
 	
 	slot->id = new_id;
 	slot->need_sync = true;
+	object->need_sync = true;
+	man->need_sync = true;
 	
 	return true;
 }
