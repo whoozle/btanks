@@ -288,7 +288,8 @@ TRY {
 						_result_q.push_back(t);
 						
 						GET_CONFIG_VALUE("multiplayer.debug-delay", int, debug_delay, 0);
-						sdlx::Timer::microsleep(debug_delay);
+						if (debug_delay > 0)
+							sdlx::Timer::microsleep(debug_delay);
 					}
 				}
 			}
