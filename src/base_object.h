@@ -110,6 +110,7 @@ public:
 	const int getSummoner() const { return _spawned_by; }
 	void getTimes(float &moving, float &idle) const { moving = _moving_time; idle = _idle_time; }
 	
+	void interpolate();
 	void uninterpolate();
 	
 	virtual void getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const;
