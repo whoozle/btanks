@@ -315,7 +315,7 @@ TRY {
 		Message m(Message::Pang);
 		m.data = message.data;
 		size_t size = m.data.getSize();
-		m.data.reserve(size + sizeof(Uint32));
+		m.data.reserve(sizeof(Uint32));
 		
 		Uint32 ts = SDL_SwapLE32(SDL_GetTicks());
 		*(Uint32 *)((unsigned char *)m.data.getPtr() + size) = ts;
