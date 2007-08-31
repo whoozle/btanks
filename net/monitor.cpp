@@ -165,7 +165,7 @@ const bool Monitor::recv(int &id, mrt::Chunk &data, int &delta) {
 			int r_delta = (task->timestamp >= conn->last_message_ts)? (task->timestamp - conn->last_message_ts): ~(task->timestamp - conn->last_message_ts) ;
 			int my_delta = (now >= conn->last_my_ts)? (now - conn->last_my_ts) : ~(now - conn->last_my_ts);
 			//LOG_DEBUG(("message deltas: (%+d:%+d)", r_delta, my_delta));
-			delta = my_delta - r_delta; //if client side increased, it means ping increased too. 
+			delta = r_delta - my_delta; 
 		}
 		
 		conn->last_message_ts = task->timestamp;
