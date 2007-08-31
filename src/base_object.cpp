@@ -117,7 +117,7 @@ void BaseObject::deserialize(const mrt::Serializator &s) {
 	s.get(_dead);
 	s.get(_variants);
 	
-	_interpolation_position_backup = _position;
+	interpolate();
 	_position.deserialize(s);
 	s.get(_z);
 	
@@ -375,6 +375,10 @@ void BaseObject::updateStateFromVelocity() {
 		if (slot != NULL)
 			slot->need_sync = true;
 	}
+}
+
+void BaseObject::interpolate() {
+	_interpolation_position_backup = _position;
 }
 
 void BaseObject::uninterpolate() {
