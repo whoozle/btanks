@@ -286,7 +286,9 @@ TRY {
 						_recv_q.erase(ti);
 						sdlx::AutoMutex m2(_result_mutex);
 						_result_q.push_back(t);
-						//sdlx::Timer::microsleep(100000); //debug delay
+						
+						GET_CONFIG_VALUE("multiplayer.debug-delay", int, debug_delay, 0);
+						sdlx::Timer::microsleep(debug_delay);
 					}
 				}
 			}
