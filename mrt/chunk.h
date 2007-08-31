@@ -27,13 +27,19 @@ namespace mrt {
 
 class MRTAPI Chunk {
 public:
-	Chunk();
-	Chunk(const Chunk&);
-	Chunk(const int size);
+	inline Chunk(): ptr(NULL), size(0) {}
+	inline Chunk(const Chunk& c) : ptr(NULL), size(0) { *this = c; }
+	inline Chunk(const int size): ptr(NULL), size(0) { setSize(size); }
+	inline ~Chunk() { free(); }
+	inline void *getPtr() const { return ptr; }
+	inline const size_t getSize() const { return size; } 
+
+	//use unlink only if you know what you're doing ;)
+	inline void unlink() { ptr = 0; size = 0; }
+
 	const Chunk& operator=(const Chunk& c);
 
 	void free();
-	~Chunk();
 	
 	void setSize(size_t s);
 	void setData(const void *p, const size_t s);
@@ -43,12 +49,6 @@ public:
 	void append(const Chunk &other);
 	void *reserve(const int more);
 
-	void *getPtr() const;
-	const size_t getSize() const;
-	
-	//use unlink only if you know what you're doing ;)
-	void unlink();
-	
 	const std::string dump() const;
 
 protected:

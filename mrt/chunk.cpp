@@ -25,12 +25,6 @@
 
 using namespace mrt;
 
-Chunk::Chunk(): ptr(NULL), size(0) {}
-
-Chunk::Chunk(const int size) : ptr(NULL), size(0) {
-	setSize(size);
-}
-
 void Chunk::fill(const int b) {
 	if (ptr == NULL) 
 		return;
@@ -49,11 +43,6 @@ const Chunk& Chunk::operator=(const Chunk& c) {
     memcpy(ptr, c.ptr, c.size);
     return *this;
 }
-
-Chunk::Chunk(const Chunk& c) : ptr(NULL), size(0) { //fix it if you want to.
-	*this = c;
-}
-
 
 void Chunk::setSize(size_t s) {
 	if (s == 0) {
@@ -120,10 +109,6 @@ void Chunk::free() {
 	}
 }
 
-Chunk::~Chunk() {
-	free();
-}
-
 const std::string Chunk::dump() const {
 	if (ptr == NULL)
 		return "empty memory chunk";
@@ -165,8 +150,3 @@ const std::string Chunk::dump() const {
 	return result;
 }
 
-void *Chunk::getPtr() const { return ptr; }
-const size_t Chunk::getSize() const { return size; }
-
-//use unlink only if you know what you're doing ;)
-void Chunk::unlink() { ptr = 0; size = 0; }
