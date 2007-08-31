@@ -392,7 +392,7 @@ void Layer::generateXML(std::string &result) const {
 			*p++ = x;
 		}
 		
-		mrt::ZStream::compress(zipped_data, data);
+		mrt::ZStream::compress(zipped_data, data, true, 9);
 		std::string base64; 
 		mrt::Base64::encode(base64, zipped_data);
 		result += base64;

@@ -81,8 +81,8 @@ Monitor::Task * Monitor::createTask(const int id, const mrt::Chunk &rawdata) {
 	unsigned char flags = 0;
 	if (_comp_level > 0) {
 		flags = 1; //compressed
-		mrt::ZStream::compress(data, rawdata, _comp_level);
-		LOG_DEBUG(("sending(%d, %u) (compressed: %u)", id, rawdata.getSize(), data.getSize()));
+		mrt::ZStream::compress(data, rawdata, false, _comp_level);
+		LOG_DEBUG(("sending(%d, %u) (compressed: %u)", id, (unsigned)rawdata.getSize(), (unsigned)data.getSize()));
 	} else data = rawdata; //fixme: optimize it somehow.
 
 	int size = data.getSize();
@@ -279,7 +279,7 @@ TRY {
 					} else {
 						if (t->flags & 1) {
 							mrt::Chunk data;
-							mrt::ZStream::decompress(data, *t->data);
+							mrt::ZStream::decompress(data, *t->data, false);
 							//LOG_DEBUG(("recv(%d, %d) (decompressed: %d)", t->id, t->data->getSize(), data.getSize()));
 							*t->data = data;
 						}

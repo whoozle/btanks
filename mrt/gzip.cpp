@@ -27,7 +27,7 @@ using namespace mrt;
 
 #define BUF 0x10000
 
-void ZStream::decompress(mrt::Chunk &dst, const mrt::Chunk &src) {
+void ZStream::decompress(mrt::Chunk &dst, const mrt::Chunk &src, const bool gzip_header) {
 	z_stream z;
 	memset(&z, 0, sizeof(z));
 	try {
@@ -35,7 +35,7 @@ void ZStream::decompress(mrt::Chunk &dst, const mrt::Chunk &src) {
 		z.avail_in = src.getSize();
 		z.next_in = (Bytef*) src.getPtr();
 
-		if ((ret = inflateInit2(&z, 0x1f)) != Z_OK)
+		if ((ret = inflateInit2(&z, gzip_header?0x1f:0x0f)) != Z_OK)
 			throw_z("inflateInit", ret);
 		
 		dst.setSize(BUF);
@@ -79,7 +79,7 @@ void ZStream::decompress(mrt::Chunk &dst, const mrt::Chunk &src) {
 	} CATCH("decompress", {inflateEnd(&z); throw;});
 }
 
-void ZStream::compress(mrt::Chunk &dst, const mrt::Chunk &src, const int level) {
+void ZStream::compress(mrt::Chunk &dst, const mrt::Chunk &src, const bool gzip_header, const int level) {
 	z_stream z;
 	memset(&z, 0, sizeof(z));
 	try {
@@ -87,7 +87,7 @@ void ZStream::compress(mrt::Chunk &dst, const mrt::Chunk &src, const int level) 
 		z.avail_in = src.getSize();
 		z.next_in = (Bytef*) src.getPtr();
 
-		if ((ret = deflateInit2(&z, level, Z_DEFLATED, 0x1f, 8, Z_DEFAULT_STRATEGY)) != Z_OK)
+		if ((ret = deflateInit2(&z, level, Z_DEFLATED, gzip_header?0x1f:0x0f, 8, Z_DEFAULT_STRATEGY)) != Z_OK)
 			throw_z("DeflateInit", ret);
 		
 		dst.setSize(BUF);

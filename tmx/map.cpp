@@ -679,7 +679,7 @@ void IMap::end(const std::string &name) {
 		//LOG_DEBUG(("decoded data: %s -> %s", e.data.c_str(), data.dump().c_str()));
 
 		if (comp == "gzip") {
-			mrt::ZStream::decompress(_data, data);
+			mrt::ZStream::decompress(_data, data, true);
 		} else if (comp == "none") {
 			_data = data;
 		} else throw_ex(("unknown compression method ('%s') used. ", comp.c_str()));

@@ -27,8 +27,8 @@ class Chunk;
 
 class MRTAPI ZStream {
 public:
-	static void decompress(mrt::Chunk &dst, const mrt::Chunk &src);
-	static void compress(mrt::Chunk &dst, const mrt::Chunk &src, const int level = 3);
+	static void decompress(mrt::Chunk &dst, const mrt::Chunk &src, const bool gzip_header);
+	static void compress(mrt::Chunk &dst, const mrt::Chunk &src, const bool gzip_header, const int level);
 private:
 };
 
