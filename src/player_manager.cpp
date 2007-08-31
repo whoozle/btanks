@@ -242,8 +242,10 @@ TRY {
 			LOG_WARN(("player state for non-existent object %d recv'ed", slot.id));
 			break;
 		}
-	
+
 		assert(slot.id == obj->getID());
+		obj->interpolate();
+		
 		World->tick(*obj, -slot.trip_time / 1000.0, false);
 		
 		slot.need_sync = obj->updatePlayerState(state);
@@ -253,6 +255,7 @@ TRY {
 		}
 		
 		World->tick(*obj, 2 * slot.trip_time / 1000.0, false);
+		World->interpolateObject(obj);
 		break;
 	} 
 	case Message::UpdatePlayers: { 
