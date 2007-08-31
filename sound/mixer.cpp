@@ -882,7 +882,7 @@ void IMixer::startAmbient(const std::string &fname) {
 		return;
 	TRY {
 		if (_ambient)
-			_ambient->play(Finder->find("sounds/ambient/" + fname), true, 1.0f);
+			_ambient->play(Finder->find("sounds/ambient/" + fname), true, _volume_ambience);
 	} CATCH("startAmbient", {});
 }
 
