@@ -655,6 +655,7 @@ const bool Object::isDriven() const {
 void Object::init(const std::string &a) {
 	init(ResourceManager.get_const()->getAnimation(a));
 	animation = a;
+	need_sync = true;
 }
 
 void Object::onSpawn() {
