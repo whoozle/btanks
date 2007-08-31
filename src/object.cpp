@@ -584,6 +584,7 @@ void Object::setWay(const Way & way) {
 		LOG_DEBUG(("%d:%s:%s set %u pending waypoints", getID(), registered_name.c_str(), animation.c_str(), (unsigned)_way.size()));
 		_next_target = way.begin()->convert<float>();
 	}
+	need_sync = true;
 }
 
 void Object::calculateWayVelocity() {
