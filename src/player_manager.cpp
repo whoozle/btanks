@@ -176,10 +176,10 @@ TRY {
 	}
 	
 	case Message::GameJoined: {
-		LOG_DEBUG(("players = %u", (unsigned)_players.size()));
-		
 		int id = message.channel;
-		assert(id >= 0);
+		if (id < 0 || (unsigned)id >= _players.size())
+			throw_ex(("player id exceeds players count (%d/%d)", id, (int)_players.size()));
+		LOG_DEBUG(("players = %u, slot: %d", (unsigned)_players.size(), id));
 		PlayerSlot &slot = _players[id];
 		
 		slot.viewport.reset();
