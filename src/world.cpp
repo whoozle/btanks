@@ -1405,27 +1405,36 @@ void IWorld::generateUpdate(mrt::Serializator &s, const bool clean_sync_flag) {
 	s.add(_last_id);
 }
 
+void IWorld::interpolateObject(Object *o) {
+	GET_CONFIG_VALUE("multiplayer.disable-interpolation", bool, di, false);
+	if (di)
+		return;
+	
+	if (o->_interpolation_position_backup.is0()) //newly deserialized object
+		return;
+
+	GET_CONFIG_VALUE("multiplayer.maximum-interpolation-distance", float, mdd, 128.0f);
+	
+	const float distance = o->_position.distance(o->_interpolation_position_backup);
+	if (distance < 1 || distance > mdd) {
+		o->_position = o->_interpolation_position_backup;
+		o->_interpolation_position_backup.clear();
+		return;
+	}
+			
+	o->_interpolation_vector = o->_position - o->_interpolation_position_backup;
+	o->_position = o->_interpolation_position_backup;
+	o->_interpolation_position_backup.clear();
+	o->_interpolation_progress = 0;
+}
+
 void IWorld::interpolateObjects(ObjectMap &objects) {
 	GET_CONFIG_VALUE("multiplayer.disable-interpolation", bool, di, false);
 	if (di)
 		return;
-	GET_CONFIG_VALUE("multiplayer.maximum-interpolation-distance", float, mdd, 128.0f);
 	
 	for(ObjectMap::iterator i = objects.begin(); i != objects.end(); ++i) {
-		Object *o = i->second;
-		if (o->_interpolation_position_backup.is0()) //newly deserialized object
-			continue;
-
-		const float distance = o->_position.distance(o->_interpolation_position_backup);
-		if (distance < 1 || distance > mdd) {
-			o->_interpolation_position_backup.clear();
-			continue;
-		}
-			
-		o->_interpolation_vector = o->_position - o->_interpolation_position_backup;
-		o->_position = o->_interpolation_position_backup;
-		o->_interpolation_position_backup.clear();
-		o->_interpolation_progress = 0;
+		interpolateObject(i->second);
 	}
 }
 
