@@ -162,8 +162,8 @@ const bool Monitor::recv(int &id, mrt::Chunk &data, int &delta) {
 		Connection * conn = i->second;
 		int now = SDL_GetTicks();
 		if (conn->last_message_ts != -1 && conn->last_my_ts != -1) {
-			int r_delta = (task->timestamp > conn->last_message_ts)? (task->timestamp - conn->last_message_ts): ~(task->timestamp - conn->last_message_ts) ;
-			int my_delta = (now > conn->last_my_ts)? (now - conn->last_my_ts) : ~(now - conn->last_my_ts);
+			int r_delta = (task->timestamp >= conn->last_message_ts)? (task->timestamp - conn->last_message_ts): ~(task->timestamp - conn->last_message_ts) ;
+			int my_delta = (now >= conn->last_my_ts)? (now - conn->last_my_ts) : ~(now - conn->last_my_ts);
 			//LOG_DEBUG(("message deltas: (%+d:%+d)", r_delta, my_delta));
 			delta = r_delta - my_delta;
 		}
