@@ -26,6 +26,7 @@
 #include "config.h"
 #include "sample.h"
 #include "al_ex.h"
+#include "sdlx/timer.h"
 
 OggStream::OggStream(const ALuint source) : _source(source), _opened(false), _running(false), _repeat(false), _alive(true), _idle(false), _eof_reached(true) {
 	alSourcei (_source, AL_SOURCE_RELATIVE, AL_TRUE      );
@@ -326,7 +327,7 @@ void OggStream::flush() {
 			if (state != AL_PLAYING)
 				break;
 			else
-				SDL_Delay(_delay);
+				sdlx::Timer::microsleep(_delay * 1000);
 		}
 	} CATCH("flush", throw;)
 }
@@ -360,7 +361,7 @@ void OggStream::playTune() {
 				//LOG_WARN(("ogg stream was interrupted.."));
 				break;
 			} else 
-				SDL_Delay(_delay);
+				sdlx::Timer::microsleep(_delay * 1000);
 		}
 	} CATCH("playTune(main loop)", throw;)
 

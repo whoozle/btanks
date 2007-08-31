@@ -26,6 +26,7 @@
 #include "mrt/gzip.h"
 #include "connection.h"
 #include "config.h"
+#include "sdlx/timer.h"
 
 #ifdef WIN32
 #	include "Winsock2.h"
@@ -193,7 +194,6 @@ void Monitor::disconnect(const int cid) {
 	}
 }
 
-
 const int Monitor::run() {
 TRY {
 	_running = true;
@@ -213,7 +213,7 @@ TRY {
 			}
 		}
 		if (cids.empty()) {
-			SDL_Delay(10);
+			sdlx::Timer::microsleep(10000);
 			continue;
 		} 
 
@@ -286,6 +286,7 @@ TRY {
 						_recv_q.erase(ti);
 						sdlx::AutoMutex m2(_result_mutex);
 						_result_q.push_back(t);
+						//sdlx::Timer::microsleep(100000); //debug delay
 					}
 				}
 			}
