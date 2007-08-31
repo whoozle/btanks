@@ -89,7 +89,7 @@ public:
 	void render(sdlx::Surface &window, const int x, const int y);
 	
 	const int onConnect(Message &message);
-	void onMessage(const int id, const Message &message);
+	void onMessage(const int id, const Message &message, const int delta);
 	void onDisconnect(const int id);	
 	
 	void onPlayerDeath(const Object *player, const Object *killer);

@@ -39,7 +39,7 @@ public:
 	
 	void send(const int id, const mrt::Chunk &data);
 	void broadcast(const mrt::Chunk &data);
-	const bool recv(int &id, mrt::Chunk &data);
+	const bool recv(int &id, mrt::Chunk &data, int &delta);
 	const bool disconnected(int &id);
 	
 	void disconnect(const int id);
@@ -64,6 +64,7 @@ private:
 		unsigned int len;
 		bool size_task;
 		unsigned char flags;
+		int timestamp;
 	};
 	Task * createTask(const int id, const mrt::Chunk &data);
 	

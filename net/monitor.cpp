@@ -47,13 +47,14 @@
 
 
 Monitor::Task::Task(const int id) : 
-	id(id), data(new mrt::Chunk), pos(0), len(0), size_task(false), flags(0) {}
+	id(id), data(new mrt::Chunk), pos(0), len(0), size_task(false), flags(0), timestamp(0) {}
 
 Monitor::Task::Task(const int id, const mrt::Chunk &d) : 
-	id(id), data(new mrt::Chunk(d)), pos(0), len(data->getSize()), size_task(false), flags(0) {}
+	id(id), data(new mrt::Chunk(d)), pos(0), len(data->getSize()), size_task(false), flags(0), timestamp(0) {}
 
 Monitor::Task::Task(const int id, const int size) : 
-	id(id), data(new mrt::Chunk(size)), pos(0), len(data->getSize()), size_task(false), flags(0) {}
+	id(id), data(new mrt::Chunk(size)), pos(0), len(data->getSize()), size_task(false), flags(0), timestamp(0) {}
+
 void Monitor::Task::clear() { delete data; pos = len = 0; }
 
 Monitor::Monitor() : _running(false), 
@@ -88,12 +89,18 @@ Monitor::Task * Monitor::createTask(const int id, const mrt::Chunk &rawdata) {
 
 	int size = data.getSize();
 
-	Task *t = new Task(id, size + 5);
+	Task *t = new Task(id, size + 9);
+
+	char * ptr = (char *) t->data->getPtr();
 
 	uint32_t nsize = htonl((long)size);
-	memcpy(t->data->getPtr(), &nsize, 4);
-	*((unsigned char *)t->data->getPtr() + 4) = flags;
-	memcpy((unsigned char *)t->data->getPtr() + 5, data.getPtr(), size);
+	memcpy(ptr, &nsize, 4);
+
+	nsize = htonl((long)SDL_GetTicks());
+	memcpy(ptr + 4, &nsize, 4);
+
+	*((unsigned char *)t->data->getPtr() + 8) = flags;
+	memcpy((unsigned char *)t->data->getPtr() + 9, data.getPtr(), size);
 	
 	return t;
 }
@@ -139,14 +146,26 @@ Monitor::TaskQueue::iterator Monitor::findTask(TaskQueue &queue, const int conn_
 }
 
 
-const bool Monitor::recv(int &id, mrt::Chunk &data) {
+const bool Monitor::recv(int &id, mrt::Chunk &data, int &delta) {
 	sdlx::AutoMutex m(_result_mutex);
 	if (_result_q.empty())
 		return false;
 	
-	id = _result_q.front()->id;
-	data = *_result_q.front()->data;
-	_result_q.front()->clear();
+	Task *task = _result_q.front();
+	
+	id = task->id;
+	data = *(task->data);
+	delta = 0;
+
+	ConnectionMap::iterator i = _connections.find(id);
+	if (i != _connections.end()) {
+		Connection * conn = i->second;
+		if (conn->last_message != -1)
+			delta = task->timestamp - conn->last_message;
+		conn->last_message = task->timestamp;
+	}
+	
+	task->clear();
 	
 	_result_q.pop_front();
 	return true;
@@ -242,7 +261,7 @@ TRY {
 
 				TaskQueue::iterator ti = findTask(_recv_q, cid);
 				if (ti == _recv_q.end()) {
-					Task *t = new Task(cid, 5);
+					Task *t = new Task(cid, 9);
 					t->size_task = true;
 					_recv_q.push_back(t);
 					//LOG_DEBUG(("added size task to r-queue"));
@@ -265,16 +284,19 @@ TRY {
 			
 				if (t->pos == t->len) {
 					if (t->size_task) {
-						unsigned long len = ntohl(*((uint32_t *)(t->data->getPtr())));
+						const char * ptr = (char *)t->data->getPtr();
+						unsigned long len = ntohl(*((uint32_t *)ptr));
+						unsigned long ts = ntohl(*((uint32_t *)(ptr + 4)));
 						GET_CONFIG_VALUE("multiplayer.maximum-packet-length", int, max_len, 1024 * 1024);
 						if (len > (unsigned long)max_len)
 							throw_ex(("recv'ed packet length of %u. it seems to be far too long for regular packet (probably broken/obsoleted client)", (unsigned int)len));
-						unsigned char flags = *((unsigned char *)(t->data->getPtr()) + 4);
+						unsigned char flags = *((unsigned char *)(t->data->getPtr()) + 8);
 						//LOG_DEBUG(("added task for %u bytes. flags = %02x", len, flags));
 						eraseTask(_recv_q, ti);
 						
 						Task *t = new Task(cid, len);
 						t->flags = flags;
+						t->timestamp = ts;
 						_recv_q.push_back(t);
 					} else {
 						if (t->flags & 1) {

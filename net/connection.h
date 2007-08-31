@@ -30,6 +30,7 @@ public:
 	~Connection();
 		
 	mrt::TCPSocket * sock;
+	int last_message, delta;
 private: 
 	Connection(const Connection &);
 	const Connection& operator=(const Connection &);

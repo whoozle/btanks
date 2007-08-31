@@ -66,8 +66,9 @@ void Server::tick(const float dt) {
 		}
 
 		mrt::Chunk data;
+		int delta;
 		
-		while(_monitor->recv(id, data)) {
+		while(_monitor->recv(id, data, delta)) {
 			Message m;
 			m.deserialize2(data);
 
@@ -78,7 +79,7 @@ void Server::tick(const float dt) {
 			case Message::RequestPlayer:	
 			case Message::TextMessage:	
 			case Message::PlayerMessage: 
-				PlayerManager->onMessage(id, m);
+				PlayerManager->onMessage(id, m, delta);
 				break;
 			default:
 				throw_ex(("message type %s is not allowed", m.getType()));

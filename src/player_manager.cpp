@@ -94,9 +94,9 @@ void IPlayerManager::onDisconnect(const int cid) {
 }
 
 
-void IPlayerManager::onMessage(const int cid, const Message &message) {
+void IPlayerManager::onMessage(const int cid, const Message &message, const int delta) {
 TRY {
-	LOG_DEBUG(("incoming message %s", message.getType()));
+	LOG_DEBUG(("incoming message %s, delta: %+d", message.getType(), delta));
 	switch(message.type) {
 	case Message::ServerStatus: {
 		LOG_DEBUG(("server version: %s", message.get("version").c_str()));

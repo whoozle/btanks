@@ -20,5 +20,5 @@
 #include "connection.h"
 #include "mrt/tcp_socket.h"
 
-Connection::Connection(mrt::TCPSocket *s) : sock(s) {}
+Connection::Connection(mrt::TCPSocket *s) : sock(s), last_message(-1), delta(0) {}
 Connection::~Connection() { delete sock; sock = NULL; }
