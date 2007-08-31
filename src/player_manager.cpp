@@ -214,6 +214,7 @@ TRY {
 	case Message::UpdateWorld: {
 		mrt::Serializator s(&message.data);
 		deserializeSlots(s);
+		_trip_time += delta;
 		World->applyUpdate(s, _trip_time / 1000.0);
 		GameMonitor->deserialize(s);
 		break;
@@ -244,7 +245,7 @@ TRY {
 		}
 	
 		assert(slot.id == obj->getID());
-
+		slot.trip_time += delta;
 		World->tick(*obj, -slot.trip_time / 1000.0, false);
 		
 		slot.need_sync = obj->updatePlayerState(state);
@@ -282,6 +283,7 @@ TRY {
 			PlayerState state; 
 			state.deserialize(s);
 			
+			_trip_time += delta;
 			if (o != NULL) { 
 				World->tick(*o, -_trip_time / 1000.0, false);
 			}
@@ -365,7 +367,7 @@ TRY {
 		//PlayerSlot &slot = _players[id];
 		//if (slot.remote != cid) //client side, no need for this check
 		//	throw_ex(("client in connection %d sent wrong channel id %d", cid, id));
-
+		_trip_time += delta;
 		mrt::Serializator s(&message.data);
 		deserializeSlots(s);
 		World->applyUpdate(s, _trip_time / 1000.0);
@@ -374,6 +376,7 @@ TRY {
 	}
 	case Message::GameOver: {
 		TRY {
+			_trip_time += delta;
 			GameMonitor->gameOver("messages", message.get("message"), atof(message.get("duration").c_str()) - _trip_time / 1000.0, false);
 		} CATCH("on-message(gameover)", throw; )
 		break;
@@ -381,6 +384,7 @@ TRY {
 	
 	case Message::TextMessage: {
 		TRY {
+			_trip_time += delta;
 			GameMonitor->displayMessage(message.get("area"), message.get("message"), atof(message.get("duration").c_str()) - _trip_time / 1000.0);
 		} CATCH("on-message(text-message)", throw; )		
 		break;
