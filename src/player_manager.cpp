@@ -254,7 +254,7 @@ TRY {
 			slot.need_sync = true;
 		}
 		
-		World->tick(*obj, 2 * slot.trip_time / 1000.0, false);
+		World->tick(*obj, slot.trip_time / 1000.0, false);
 		World->interpolateObject(obj);
 		break;
 	} 
@@ -309,7 +309,7 @@ TRY {
 				interpolated_objects.insert(ObjectMap::value_type(o->getID(), o));
 			else o->uninterpolate();
 		}	
-		World->tick(updated_objects, 2 * _trip_time / 1000.0, false);
+		World->tick(updated_objects, _trip_time / 1000.0, false);
 		World->interpolateObjects(interpolated_objects);
 		break;
 	} 
