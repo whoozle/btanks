@@ -214,7 +214,7 @@ TRY {
 	case Message::UpdateWorld: {
 		mrt::Serializator s(&message.data);
 		deserializeSlots(s);
-		World->applyUpdate(s, _trip_time / 1000.0);
+		World->applyUpdate(s, (delta + _trip_time) / 1000.0);
 		GameMonitor->deserialize(s);
 		break;
 	} 
@@ -246,7 +246,7 @@ TRY {
 		assert(slot.id == obj->getID());
 		obj->interpolate();
 		
-		World->tick(*obj, -slot.trip_time / 1000.0, false);
+		World->tick(*obj, (delta - slot.trip_time) / 1000.0, false);
 		
 		slot.need_sync = obj->updatePlayerState(state);
 		if (slot.need_sync == false) {
@@ -285,7 +285,7 @@ TRY {
 			state.deserialize(s);
 			
 			if (o != NULL) { 
-				World->tick(*o, -_trip_time / 1000.0, false);
+				World->tick(*o, (delta - _trip_time) / 1000.0, false);
 			}
 			
 			World->deserializeObjectPV(s, o);
@@ -329,7 +329,7 @@ TRY {
 		const mrt::Chunk &data = message.data;
 		float ping = extractPing(data);
 		//GET_CONFIG_VALUE("multiplayer.ping-interpolation-multiplier", int, pw, 3);
-		_trip_time = ping;//(pw * ping + _trip_time) / (pw + 1);
+		_trip_time = ping + delta;//(pw * ping + _trip_time) / (pw + 1);
 		
 		GET_CONFIG_VALUE("multiplayer.ping-interval", int, ping_interval, 1500);
 
@@ -352,7 +352,7 @@ TRY {
 			
 			//GET_CONFIG_VALUE("multiplayer.ping-interpolation-multiplier", int, pw, 3);
 			//slot.trip_time = (pw * ping + slot.trip_time) / (pw + 1);
-			slot.trip_time = ping;
+			slot.trip_time = ping + delta;
 			LOG_DEBUG(("player %u: ping: %g ms", (unsigned)id, ping));		
 		}
 		break;
@@ -369,20 +369,20 @@ TRY {
 		//	throw_ex(("client in connection %d sent wrong channel id %d", cid, id));
 		mrt::Serializator s(&message.data);
 		deserializeSlots(s);
-		World->applyUpdate(s, _trip_time / 1000.0);
+		World->applyUpdate(s, (delta + _trip_time) / 1000.0);
 		} CATCH("on-message(respawn)", throw;);
 	break;
 	}
 	case Message::GameOver: {
 		TRY {
-			GameMonitor->gameOver("messages", message.get("message"), atof(message.get("duration").c_str()) - _trip_time / 1000.0, false);
+			GameMonitor->gameOver("messages", message.get("message"), atof(message.get("duration").c_str()) + (delta - _trip_time) / 1000.0, false);
 		} CATCH("on-message(gameover)", throw; )
 		break;
 	}
 	
 	case Message::TextMessage: {
 		TRY {
-			GameMonitor->displayMessage(message.get("area"), message.get("message"), atof(message.get("duration").c_str()) - _trip_time / 1000.0);
+			GameMonitor->displayMessage(message.get("area"), message.get("message"), atof(message.get("duration").c_str()) + (delta - _trip_time) / 1000.0);
 		} CATCH("on-message(text-message)", throw; )		
 		break;
 	}
