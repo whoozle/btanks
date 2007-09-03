@@ -1,11 +1,13 @@
 #include "netstats.h"
 #include "config.h"
 #include "math/binary.h"
+#include "mrt/logger.h"
 
 NetStats::NetStats() : pings_idx(0), pings_n(0), ping(0), deltas_idx(0), deltas_n(0), delta(0) {
-	GET_CONFIG_VALUE("multiplayer.statistical-samples", int, ss, 5);
-	pings.resize(ss);
-	deltas.resize(ss);
+	GET_CONFIG_VALUE("multiplayer.pings-samples", int, ps, 10);
+	GET_CONFIG_VALUE("multiplayer.deltas-samples", int, ds, 100);
+	pings.resize(ps);
+	deltas.resize(ds);
 }
 
 void NetStats::clear() {
@@ -18,7 +20,7 @@ void NetStats::clear() {
 }
 
 int NetStats::getDelta() const {
-	return delta - (int)ping;
+	return math::reduce(delta, (int)ping);
 }
 
 float NetStats::updatePing(const float p) {
@@ -38,6 +40,7 @@ float NetStats::updatePing(const float p) {
 }
 
 int NetStats::updateDelta(const int d) {
+	//LOG_DEBUG(("updateDelta(%d)", d));
 	size_t n = deltas.size();
 	if (deltas_n < n)
 		++deltas_n;
@@ -48,7 +51,10 @@ int NetStats::updateDelta(const int d) {
 	delta = 0;
 	for(unsigned i = 0; i < deltas_n; ++i) {
 		delta += deltas[i];
+		//LOG_DEBUG(("+%d %d", deltas[i], delta));
 	}
-	delta /= deltas_n;
-	return delta - (int)ping;
+
+	delta /= (int)deltas_n;
+	//LOG_DEBUG(("delta: %d, reduced: %d", delta, math::reduce(delta, (int)ping)));
+	return math::reduce(delta, (int)ping);
 }
