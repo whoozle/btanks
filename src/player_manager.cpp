@@ -339,7 +339,7 @@ TRY {
 		in.get(old_client_ts);
 		in.get(server_ts);
 
-		LOG_DEBUG(("pang: timestamps delta: %+d (server delta: %+d)", client_ts - server_ts, server_ts - old_client_ts));
+		LOG_DEBUG(("pang: timestamps delta: %+d (server delta: %+d)", server_ts - client_ts, server_ts - old_client_ts));
 		
 		out.add(client_ts);
 		out.add(server_ts);
@@ -366,7 +366,7 @@ TRY {
 		in.get(client_ts);
 		in.get(old_server_ts);
 
-		LOG_DEBUG(("pang: timestamps delta: %+d (server delta: %+d)", server_ts - client_ts, client_ts - old_server_ts));
+		LOG_DEBUG(("pong: timestamps delta: %+d (server delta: %+d)", client_ts - server_ts, client_ts - old_server_ts));
 		
 		float ping = (server_ts - old_server_ts) / 2.0f;
 		
