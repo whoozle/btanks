@@ -94,9 +94,9 @@ void IPlayerManager::onDisconnect(const int cid) {
 }
 
 
-void IPlayerManager::onMessage(const int cid, const Message &message, const int delta) {
+void IPlayerManager::onMessage(const int cid, const Message &message, const int timestamp) {
 TRY {
-	LOG_DEBUG(("incoming message %s, delta: %+d", message.getType(), delta));
+	LOG_DEBUG(("incoming message %s, timestamp: %d", message.getType(), timestamp));
 	switch(message.type) {
 	case Message::ServerStatus: {
 		LOG_DEBUG(("server version: %s", message.get("version").c_str()));
@@ -214,7 +214,7 @@ TRY {
 	case Message::UpdateWorld: {
 		mrt::Serializator s(&message.data);
 		deserializeSlots(s);
-		World->applyUpdate(s, (delta + _net_stats.getPing()) / 1000.0);
+		World->applyUpdate(s, (_net_stats.getPing()) / 1000.0);
 		GameMonitor->deserialize(s);
 		break;
 	} 
@@ -246,7 +246,7 @@ TRY {
 		assert(slot.id == obj->getID());
 		obj->interpolate();
 		
-		World->tick(*obj, (delta - slot.net_stats.getPing()) / 1000.0, false);
+		World->tick(*obj, (- slot.net_stats.getPing()) / 1000.0, false);
 		
 		slot.need_sync = obj->updatePlayerState(state);
 		if (slot.need_sync == false) {
@@ -285,7 +285,7 @@ TRY {
 			state.deserialize(s);
 			
 			if (o != NULL) { 
-				World->tick(*o, (delta - _net_stats.getPing()) / 1000.0, false);
+				World->tick(*o, (- _net_stats.getPing()) / 1000.0, false);
 			}
 			
 			World->deserializeObjectPV(s, o);
@@ -348,7 +348,7 @@ TRY {
 		LOG_DEBUG(("pang: timestamps delta: %+d (server delta: %+d)", delta1, delta2));
 		
 		//GET_CONFIG_VALUE("multiplayer.ping-interpolation-multiplier", int, pw, 3);
-		_net_stats.updatePing(ping + delta);//(pw * ping + _trip_time) / (pw + 1);
+		_net_stats.updatePing(ping);//(pw * ping + _trip_time) / (pw + 1);
 		_net_stats.updateDelta(delta1);
 		_net_stats.updateDelta(delta2);
 
@@ -390,7 +390,7 @@ TRY {
 		
 			//GET_CONFIG_VALUE("multiplayer.ping-interpolation-multiplier", int, pw, 3);
 			//slot.trip_time = (pw * ping + slot.trip_time) / (pw + 1);
-			slot.net_stats.updatePing(ping + delta);
+			slot.net_stats.updatePing(ping);
 			slot.net_stats.updateDelta(delta1);
 			slot.net_stats.updateDelta(delta2);
 			LOG_DEBUG(("player %u: ping: %g ms, delta: %d", (unsigned)id, slot.net_stats.getPing(), slot.net_stats.getDelta()));		
@@ -409,20 +409,20 @@ TRY {
 		//	throw_ex(("client in connection %d sent wrong channel id %d", cid, id));
 		mrt::Serializator s(&message.data);
 		deserializeSlots(s);
-		World->applyUpdate(s, (delta + _net_stats.getPing()) / 1000.0);
+		World->applyUpdate(s, (_net_stats.getPing()) / 1000.0);
 		} CATCH("on-message(respawn)", throw;);
 	break;
 	}
 	case Message::GameOver: {
 		TRY {
-			GameMonitor->gameOver("messages", message.get("message"), atof(message.get("duration").c_str()) + (delta - _net_stats.getPing()) / 1000.0, false);
+			GameMonitor->gameOver("messages", message.get("message"), atof(message.get("duration").c_str()) + (- _net_stats.getPing()) / 1000.0, false);
 		} CATCH("on-message(gameover)", throw; )
 		break;
 	}
 	
 	case Message::TextMessage: {
 		TRY {
-			GameMonitor->displayMessage(message.get("area"), message.get("message"), atof(message.get("duration").c_str()) + (delta - _net_stats.getPing()) / 1000.0);
+			GameMonitor->displayMessage(message.get("area"), message.get("message"), atof(message.get("duration").c_str()) + (-_net_stats.getPing()) / 1000.0);
 		} CATCH("on-message(text-message)", throw; )		
 		break;
 	}
