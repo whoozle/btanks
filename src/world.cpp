@@ -901,7 +901,7 @@ TRY {
 } CATCH("tick(damaging map)", throw;)	
 
 TRY {
-	if (stuck && obj_speed != 0 && !PlayerManager->isClient()) {
+	if (stuck && obj_speed != 0) {
 			assert(!o.piercing);
 			
 			GET_CONFIG_VALUE("engine.stuck-resolution-steps", int, steps, 24);
