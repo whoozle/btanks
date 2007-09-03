@@ -31,12 +31,12 @@
 #include "i18n.h"
 
 PlayerSlot::PlayerSlot() : 
-id(-1), control_method(NULL), need_sync(false), dont_interpolate(false), remote(-1), trip_time(10), visible(false), 
+id(-1), control_method(NULL), need_sync(false), dont_interpolate(false), remote(-1), visible(false), 
 classname(), animation(), frags(0), spawn_limit(0), score(0), last_tooltip(NULL)
 {}
 
 PlayerSlot::PlayerSlot(const int id) : 
-id(id), control_method(NULL), need_sync(false), dont_interpolate(false), remote(-1), trip_time(10), visible(false), 
+id(id), control_method(NULL), need_sync(false), dont_interpolate(false), remote(-1), visible(false), 
 classname(), animation(), frags(0), spawn_limit(0), score(0), last_tooltip(NULL)
 {}
 
@@ -88,6 +88,7 @@ void PlayerSlot::clear() {
 	need_sync = false;
 	remote = -1;
 	frags = 0;
+	net_stats.clear();
 	
 	zones_reached.clear();
 	spawn_limit = 0;
