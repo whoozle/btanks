@@ -1374,24 +1374,20 @@ TRY {
 }
 
 void IWorld::generateUpdate(mrt::Serializator &s, const bool clean_sync_flag) {
-	unsigned int c = 0, n = _objects.size();
-	std::set<int> skipped_objects;
-
+	std::deque<int> skipped_objects;
+	
+	ObjectMap objects;
 	for(ObjectMap::reverse_iterator i = _objects.rbegin(); i != _objects.rend(); ++i) {
-		const Object *o = i->second;
-		if (o->need_sync || o->speed != 0 || o->_follow != 0) { //leader need for missiles on vehicle or such
-			++c;
-		} else skipped_objects.insert(o->_id);
-	}
-	LOG_DEBUG(("generating update %u objects of %u", c, n));
-
-	s.add(c);
-	for(ObjectMap::reverse_iterator i = _objects.rbegin(); i != _objects.rend(); ++i) {
-		const int id = i->first;
 		Object *o = i->second;
-		if (skipped_objects.find(id) != skipped_objects.end()) 
-			continue;
-		
+		if (o->need_sync || o->speed != 0 || o->_follow != 0) { //leader need for missiles on vehicle or such
+			objects.insert(ObjectMap::value_type(o->_id, o));
+		} else skipped_objects.push_back(o->_id);
+	}
+	LOG_DEBUG(("generating update %u objects of %u", (unsigned)objects.size(), (unsigned)objects.size()));
+
+	s.add((unsigned)objects.size());
+	for(ObjectMap::reverse_iterator i = objects.rbegin(); i != objects.rend(); ++i) {
+		Object *o = i->second;
 		serializeObject(s, o);	
 		if (clean_sync_flag && o->need_sync)
 			o->need_sync = false;
@@ -1399,7 +1395,7 @@ void IWorld::generateUpdate(mrt::Serializator &s, const bool clean_sync_flag) {
 	
 	unsigned int skipped = skipped_objects.size();
 	s.add(skipped);
-	for(std::set<int>::const_iterator i = skipped_objects.begin(); i != skipped_objects.end(); ++i) {
+	for(std::deque<int>::const_iterator i = skipped_objects.begin(); i != skipped_objects.end(); ++i) {
 		s.add(*i);
 	}
 	s.add(_last_id);
