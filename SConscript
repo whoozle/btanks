@@ -31,7 +31,7 @@ bt_sources = 	[
 	'menu/slider.cpp', 'menu/redefine_keys.cpp', 'menu/gamepad_setup.cpp', 'menu/tooltip.cpp', 'menu/player_name_control.cpp', 
 #end of menu
 
-	'src/finder.cpp', 'src/zbox.cpp', 'src/campaign.cpp',
+	'src/finder.cpp', 'src/zbox.cpp', 'src/campaign.cpp', 'src/netstats.cpp', 
 	
 	'src/alarm.cpp', 'src/base_object.cpp', 'src/notifying_xml_parser.cpp',
 	'src/special_zone.cpp', 'src/game_monitor.cpp', 
