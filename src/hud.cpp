@@ -413,7 +413,7 @@ const bool Hud::renderLoadingBar(sdlx::Surface &window, const float old_progress
 	assert(old_progress >= 0 && old_progress <= 1.0);
 	assert(progress >= 0 && progress <= 1.0);
 
-	GET_CONFIG_VALUE("hud.loading-bar.position", float, yf, 2.0/3);
+	GET_CONFIG_VALUE("hud.loading-bar.position", float, yf, 2.0f/3);
 	GET_CONFIG_VALUE("hud.loading-bar.border-size", int, border, 3);
 	
 	int y = (int)(window.getHeight() * yf);
@@ -480,7 +480,7 @@ Hud::Hud(const int w, const int h) : _update_radar(true) {
 	idx = indexes[mrt::random(indexes.size())];
 	_splash = ResourceManager->loadSurface(mrt::formatString("splash_%d_%d.jpg", sw, idx));
 
-	GET_CONFIG_VALUE("hud.radar-update-interval", float, ru, 0.2);
+	GET_CONFIG_VALUE("hud.radar-update-interval", float, ru, 0.2f);
 	_update_radar.set(ru);
 	
 	_icons_map.clear();
