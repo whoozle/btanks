@@ -157,13 +157,6 @@ MapPicker::MapPicker(const int w, const int h) : _index(0) {
 		add(map_pos.x + map_pos.w + 16, 128, _picker);
 	} CATCH("PlayerPicker::ctor", {delete _picker; throw; });
 
-	_details = NULL;	
-	TRY {
-		_details = new MapDetails(map_pos.w, map_pos.h, true);
-		_details->set(_maps[_index]);
-		add(map_pos.x, map_pos.y, _details);
-	} CATCH("MapPicker::ctor", {delete _details; throw; });
-
 	
 	TRY {
 		_upper_box = new UpperBox(w, 80, true);
@@ -171,6 +164,13 @@ MapPicker::MapPicker(const int w, const int h) : _index(0) {
 		_upper_box->getSize(cw, ch);
 		add((w - cw) / 2, 32, _upper_box);
 	} CATCH("StartServerMenu", {delete _upper_box; throw; });
+
+	_details = NULL;	
+	TRY {
+		_details = new MapDetails(map_pos.w, map_pos.h, true);
+		_details->set(_maps[_index]);
+		add(map_pos.x, map_pos.y, _details);
+	} CATCH("MapPicker::ctor", {delete _details; throw; });
 
 }
 

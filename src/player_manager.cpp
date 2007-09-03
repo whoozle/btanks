@@ -313,21 +313,38 @@ TRY {
 		World->interpolateObjects(interpolated_objects);
 		break;
 	} 
+
 	case Message::Ping: {
-		Message m(Message::Pang);
-		m.data = message.data;
-		size_t size = m.data.getSize();
-		m.data.reserve(sizeof(Uint32));
+		mrt::Serializator out, in(&message.data);
 		
-		Uint32 ts = SDL_SwapLE32(SDL_GetTicks());
-		*(Uint32 *)((unsigned char *)m.data.getPtr() + size) = ts;
+		unsigned client_ts;
+		in.get(client_ts);
+		unsigned server_ts = SDL_GetTicks();
+
+		LOG_DEBUG(("ping: timestamps delta: %+d", client_ts - server_ts));
+
+		out.add(client_ts);
+		out.add(server_ts);
+
+		Message m(Message::Pang);
+		m.data = out.getData();
+		
 		_server->send(cid, m);
 		break;
 	}
 	
 	case Message::Pang: {
-		const mrt::Chunk &data = message.data;
-		float ping = extractPing(data);
+		mrt::Serializator out, in(&message.data);
+		unsigned old_client_ts, server_ts, client_ts = SDL_GetTicks();
+		in.get(old_client_ts);
+		in.get(server_ts);
+
+		LOG_DEBUG(("pang: timestamps delta: %+d (server delta: %+d)", client_ts - server_ts, server_ts - old_client_ts));
+		
+		out.add(client_ts);
+		out.add(server_ts);
+		
+		float ping = (client_ts - old_client_ts) / 2.0f;
 		//GET_CONFIG_VALUE("multiplayer.ping-interpolation-multiplier", int, pw, 3);
 		_trip_time = ping + delta;//(pw * ping + _trip_time) / (pw + 1);
 		
@@ -336,20 +353,28 @@ TRY {
 		_next_ping = SDL_GetTicks() + ping_interval; 
 		
 		LOG_DEBUG(("ping = %g", _trip_time));
+
 		Message m(Message::Pong);
-		m.data.setData((unsigned char *)data.getPtr() + sizeof(Uint32), data.getSize() - sizeof(Uint32));
+		m.data = out.getData();
 		_client->send(m);
 		break;
 	}
 	
 	case Message::Pong: {
+		mrt::Serializator in(&message.data);
+		unsigned client_ts, old_server_ts, server_ts = SDL_GetTicks();
+		in.get(client_ts);
+		in.get(old_server_ts);
+
+		LOG_DEBUG(("pang: timestamps delta: %+d (server delta: %+d)", server_ts - client_ts, client_ts - old_server_ts));
+		
+		float ping = (server_ts - old_server_ts) / 2.0f;
+		
 		for(size_t id = 0; id < _players.size(); ++id) {
 			PlayerSlot &slot = _players[id];
 			if (slot.remote != cid)
 				continue;
 		
-			float ping = extractPing(message.data);
-			
 			//GET_CONFIG_VALUE("multiplayer.ping-interpolation-multiplier", int, pw, 3);
 			//slot.trip_time = (pw * ping + slot.trip_time) / (pw + 1);
 			slot.trip_time = ping + delta;
@@ -439,11 +464,13 @@ TRY {
 
 
 void IPlayerManager::ping() {
-	Message m(Message::Ping);
-	Uint32 ts = SDL_GetTicks();
+	unsigned ts = SDL_GetTicks();
 	LOG_DEBUG(("ping timestamp = %u", ts));
-	Uint32 d = SDL_SwapLE32(ts);
-	m.data.setData(&d, sizeof(d));
+	mrt::Serializator s;
+	s.add(ts);
+	
+	Message m(Message::Ping);
+	m.data = s.getData();
 	_client->send(m);
 }
 
@@ -611,23 +638,6 @@ TRY {
 		GameMonitor->displayMessage("errors", "multiplayer-exception", 1);
 })
 }
-
-
-const float IPlayerManager::extractPing(const mrt::Chunk &data) const {
-	if (data.getSize() < sizeof(Uint32))
-		throw_ex(("invalid pong recv'ed. (size: %u)", (unsigned)data.getSize()));
-	
-	Uint32 ts = SDL_SwapLE32(* (const Uint32 *)data.getPtr());
-	Uint32 ticks = SDL_GetTicks();
-	
-	float delta = (ticks >= ts)? (ticks - ts): ~(ticks - ts); //wrapping 
-	if (delta > 60000)
-		throw_ex(("server returns bogus timestamp value. [%g]", delta));
-	delta /= 2;
-	return delta;
-}
-
-
 
 IPlayerManager::IPlayerManager() : 
 	_server(NULL), _client(NULL), _players(), _trip_time(10), _next_ping(0), _ping(false), _next_sync(true), _game_joined(false)

@@ -81,7 +81,6 @@ public:
 
 	void updatePlayers();
 	void ping();
-	const float extractPing(const mrt::Chunk &data) const;
 	
 	void setViewport(const int idx, const sdlx::Rect &rect);
 	
