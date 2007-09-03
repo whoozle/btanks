@@ -11,7 +11,7 @@ public:
 	int updateDelta(const int delta);
 
 	inline float getPing() const { return ping;}
-	inline int getDelta() const { return delta; }
+	int getDelta() const;
 
 private: 
 	std::vector<float> pings;
