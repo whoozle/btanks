@@ -96,7 +96,8 @@ void IPlayerManager::onDisconnect(const int cid) {
 
 void IPlayerManager::onMessage(const int cid, const Message &message, const int timestamp) {
 TRY {
-	LOG_DEBUG(("incoming message %s, timestamp: %d", message.getType(), timestamp));
+	int now = SDL_GetTicks();
+	LOG_DEBUG(("incoming message %s, incoming timestamp: %d, my timestamp: %d", message.getType(), timestamp, now));
 	switch(message.type) {
 	case Message::ServerStatus: {
 		LOG_DEBUG(("server version: %s", message.get("version").c_str()));
@@ -214,7 +215,9 @@ TRY {
 	case Message::UpdateWorld: {
 		mrt::Serializator s(&message.data);
 		deserializeSlots(s);
-		World->applyUpdate(s, (_net_stats.getPing()) / 1000.0);
+		float dt = (now + _net_stats.getDelta() - timestamp) / 1000.0f;
+		LOG_DEBUG(("update world, delta: %+d, dt: %g", _net_stats.getDelta(), dt));
+		World->applyUpdate(s, dt);
 		GameMonitor->deserialize(s);
 		break;
 	} 
@@ -246,7 +249,9 @@ TRY {
 		assert(slot.id == obj->getID());
 		obj->interpolate();
 		
-		World->tick(*obj, (- slot.net_stats.getPing()) / 1000.0, false);
+		float dt = (now - timestamp + slot.net_stats.getDelta()) / 1000.0f;
+		LOG_DEBUG(("player state, delta: %+d, dt: %g", slot.net_stats.getDelta(), dt));
+		World->tick(*obj, -dt, false);
 		
 		slot.need_sync = obj->updatePlayerState(state);
 		if (slot.need_sync == false) {
@@ -254,13 +259,17 @@ TRY {
 			slot.need_sync = true;
 		}
 		
-		World->tick(*obj, slot.net_stats.getPing() / 1000.0, false);
+		World->tick(*obj, dt, false);
 		World->interpolateObject(obj);
 		break;
 	} 
 	case Message::UpdatePlayers: { 
 		mrt::Serializator s(&message.data);
 		ObjectMap updated_objects, interpolated_objects;
+
+		float dt = (now + _net_stats.getDelta() - timestamp) / 1000.0f;
+		LOG_DEBUG(("update players, delta: %+d, dt: %g", _net_stats.getDelta(), dt));
+
 		while(!s.end()) {
 			int id;
 			s.get(id);
@@ -285,7 +294,7 @@ TRY {
 			state.deserialize(s);
 			
 			if (o != NULL) { 
-				World->tick(*o, (- _net_stats.getPing()) / 1000.0, false);
+				World->tick(*o, -dt, false);
 			}
 			
 			World->deserializeObjectPV(s, o);
@@ -309,7 +318,7 @@ TRY {
 				interpolated_objects.insert(ObjectMap::value_type(o->getID(), o));
 			else o->uninterpolate();
 		}	
-		World->tick(updated_objects, _net_stats.getPing() / 1000.0, false);
+		World->tick(updated_objects, dt, false);
 		World->interpolateObjects(interpolated_objects);
 		break;
 	} 
@@ -393,7 +402,7 @@ TRY {
 			slot.net_stats.updatePing(ping);
 			slot.net_stats.updateDelta(delta1);
 			slot.net_stats.updateDelta(delta2);
-			LOG_DEBUG(("player %u: ping: %g ms, delta: %d", (unsigned)id, slot.net_stats.getPing(), slot.net_stats.getDelta()));		
+			LOG_DEBUG(("player %u: ping: %g ms, delta: %+d", (unsigned)id, slot.net_stats.getPing(), slot.net_stats.getDelta()));		
 		}
 		break;
 	}
@@ -409,20 +418,30 @@ TRY {
 		//	throw_ex(("client in connection %d sent wrong channel id %d", cid, id));
 		mrt::Serializator s(&message.data);
 		deserializeSlots(s);
-		World->applyUpdate(s, (_net_stats.getPing()) / 1000.0);
+
+		float dt = (now + _net_stats.getDelta() - timestamp) / 1000.0f;
+		LOG_DEBUG(("respawn, delta: %+d, dt: %g", _net_stats.getDelta(), dt));
+	
+		World->applyUpdate(s, dt);
 		} CATCH("on-message(respawn)", throw;);
 	break;
 	}
 	case Message::GameOver: {
+		float dt = (now + _net_stats.getDelta() - timestamp) / 1000.0f;
+		LOG_DEBUG(("respawn, delta: %+d, dt: %g", _net_stats.getDelta(), dt));
+
 		TRY {
-			GameMonitor->gameOver("messages", message.get("message"), atof(message.get("duration").c_str()) + (- _net_stats.getPing()) / 1000.0, false);
+			GameMonitor->gameOver("messages", message.get("message"), atof(message.get("duration").c_str()) - dt, false);
 		} CATCH("on-message(gameover)", throw; )
 		break;
 	}
 	
 	case Message::TextMessage: {
+		float dt = (now + _net_stats.getDelta() - timestamp) / 1000.0f;
+		LOG_DEBUG(("respawn, delta: %+d, dt: %g", _net_stats.getDelta(), dt));
+
 		TRY {
-			GameMonitor->displayMessage(message.get("area"), message.get("message"), atof(message.get("duration").c_str()) + (-_net_stats.getPing()) / 1000.0);
+			GameMonitor->displayMessage(message.get("area"), message.get("message"), atof(message.get("duration").c_str()) - dt);
 		} CATCH("on-message(text-message)", throw; )		
 		break;
 	}
