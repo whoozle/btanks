@@ -39,7 +39,7 @@ public:
 	
 	void send(const int id, const mrt::Chunk &data);
 	void broadcast(const mrt::Chunk &data);
-	const bool recv(int &id, mrt::Chunk &data, int &delta);
+	const bool recv(int &id, mrt::Chunk &data, int &timestamp);
 	const bool disconnected(int &id);
 	
 	void disconnect(const int id);

@@ -146,7 +146,7 @@ Monitor::TaskQueue::iterator Monitor::findTask(TaskQueue &queue, const int conn_
 }
 
 
-const bool Monitor::recv(int &id, mrt::Chunk &data, int &delta) {
+const bool Monitor::recv(int &id, mrt::Chunk &data, int &timestamp) {
 	sdlx::AutoMutex m(_result_mutex);
 	if (_result_q.empty())
 		return false;
@@ -155,11 +155,11 @@ const bool Monitor::recv(int &id, mrt::Chunk &data, int &delta) {
 	
 	id = task->id;
 	data = *(task->data);
-	delta = 0;
+	timestamp = task->timestamp;
 
 	task->clear();
 	_result_q.pop_front();
-
+/*
 	GET_CONFIG_VALUE("multiplayer.delta-corrections", bool, mdc, true)
 	if (!mdc)
 		return true;
@@ -179,7 +179,7 @@ const bool Monitor::recv(int &id, mrt::Chunk &data, int &delta) {
 		conn->last_message_ts = task->timestamp;
 		conn->last_my_ts = now;
 	}
-	
+*/	
 	return true;
 }
 
