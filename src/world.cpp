@@ -1463,12 +1463,9 @@ TRY {
 		cropObjects(skipped_objects);
 	} CATCH("applyUpdate::cropObjects", throw;);
 
-	GET_CONFIG_VALUE("multiplayer.time-correction-for-updates", bool, pcfu, true);
-	if (pcfu) {
-		TRY {
-			tick(objects, dt, false);
-		} CATCH("applyUpdate::tick", throw;);
-	}
+	TRY {
+		tick(objects, dt, false);
+	} CATCH("applyUpdate::tick", throw;);
 	
 	interpolateObjects(objects);
 } CATCH("applyUpdate", throw;)
