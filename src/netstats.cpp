@@ -8,6 +8,15 @@ NetStats::NetStats() : pings_idx(0), pings_n(0), ping(0), deltas_idx(0), deltas_
 	deltas.resize(ss);
 }
 
+void NetStats::clear() {
+	pings_idx = 0;
+	pings_n = 0;
+	ping = 0;
+	deltas_idx = 0;
+	deltas_n = 0;
+	delta = 0;
+}
+
 int NetStats::getDelta() const {
 	return delta - (int)ping;
 }

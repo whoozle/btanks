@@ -12,6 +12,7 @@ public:
 
 	inline float getPing() const { return ping;}
 	int getDelta() const;
+	void clear();
 
 private: 
 	std::vector<float> pings;
