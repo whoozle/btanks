@@ -550,6 +550,12 @@
 		<string id="platform" lang="de">Reste einer verlassenen Orbitalstazion. Im Raum fliegen Steine und Plattformen rum.</string>
 		<string id="platform" lang="it">Rottami di una stazione spaziale...</string>
 		
+		<string id="paintball">Sorry, no description was provided by the author of this map...</string>
+		<string id="paintball" lang="ru">Да простая игра. Если ты плюнеш дальше - я тебе два чатла, если я - ты мне на Земле три спички. Давай плюй, сынок. (С) Кин-дза-дза</string>
+		<string id="paintball" lang="fr">Désolé, aucune description n'a été fournie par l'auteur de cette carte. :(</string>
+		<string id="paintball" lang="de">Es tut uns Leid, aber für diese Karte gibt es noch keine Beschreibung.</string>
+		<string id="paintball" lang="it">Spiacente, nessuna descrizione per questa mappa. :(</string>
+
 		<string id="(default)">Sorry, no description was provided by the author of this map...</string>
 		<string id="(default)" lang="ru">У этой карты нет описания. Извините. :(</string>
 		<string id="(default)" lang="fr">Désolé, aucune description n'a été fournie par l'auteur de cette carte. :(</string>
