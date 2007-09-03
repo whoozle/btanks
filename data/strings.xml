@@ -549,7 +549,8 @@
 		<string id="platform" lang="fr">Les restes d'une ville en orbite spatiale. Vive les rochers et les plateformes !</string>
 		<string id="platform" lang="de">Reste einer verlassenen Orbitalstazion. Im Raum fliegen Steine und Plattformen rum.</string>
 		<string id="platform" lang="it">Rottami di una stazione spaziale...</string>
-		
+
+		<string id="paintball" lang="en">Various weapons at the same place.</string>
 		<string id="paintball" lang="ru">Если ты плюнешь дальше, я тебе пол чатла. Вот... этой плюкой. Если - ты мне две спички... Понял? Давай плюй, сынок. </string>
 
 		<string id="(default)">Sorry, no description was provided by the author of this map...</string>
