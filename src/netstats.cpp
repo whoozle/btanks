@@ -46,7 +46,7 @@ int NetStats::updateDelta(const int d) {
 	deltas_idx %= n;
 	
 	delta = 0;
-	for(unsigned i = 0; i < pings_n; ++i) {
+	for(unsigned i = 0; i < deltas_n; ++i) {
 		delta += deltas[i];
 	}
 	delta /= deltas_n;
