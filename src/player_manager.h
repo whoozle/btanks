@@ -28,6 +28,7 @@
 #include "math/v3.h"
 #include "alarm.h"
 #include "zbox.h"
+#include "netstats.h"
 
 namespace mrt {
 class Chunk;
@@ -125,7 +126,7 @@ private:
 	std::vector<PlayerSlot> _players;
 	std::vector<SpecialZone> _zones;
 
-	float _trip_time;
+	NetStats _net_stats;
 	unsigned _next_ping;
 	bool _ping;
 	Alarm _next_sync;
