@@ -28,6 +28,7 @@
 #include "math/v3.h"
 #include "sdlx/rect.h"
 #include "player_state.h"
+#include "netstats.h"
 
 class Object;
 class ControlMethod;
@@ -46,7 +47,7 @@ public:
 		
 	bool need_sync, dont_interpolate;
 	int remote;
-	float trip_time;
+	NetStats net_stats;
 	
 	bool visible;
 	sdlx::Rect viewport;
