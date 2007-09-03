@@ -343,7 +343,7 @@ TRY {
 			if (slot.remote != cid)
 				continue;
 			
-			slot.net_stats.updateDelta(server_ts - client_ts + (int)slot.net_stats.getPing());
+			slot.net_stats.updateDelta(client_ts - server_ts + (int)slot.net_stats.getPing());
 		}
 				
 		_server->send(cid, m);
