@@ -358,7 +358,7 @@ TRY {
 		
 		//GET_CONFIG_VALUE("multiplayer.ping-interpolation-multiplier", int, pw, 3);
 		_net_stats.updatePing(ping);//(pw * ping + _trip_time) / (pw + 1);
-		_net_stats.updateDelta(delta1);
+		//_net_stats.updateDelta(delta1); //magic! 
 		_net_stats.updateDelta(delta2);
 
 		LOG_DEBUG(("ping: %g, delta: %d", _net_stats.getPing(), _net_stats.getDelta()));
