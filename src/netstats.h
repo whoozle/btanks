@@ -11,7 +11,7 @@ public:
 	int updateDelta(const int delta);
 
 	inline float getPing() const { return ping;}
-	int getDelta() const;
+	inline int getDelta() const { return delta; } 
 	void clear();
 
 private: 

@@ -1,6 +1,5 @@
 #include "netstats.h"
 #include "config.h"
-#include "math/binary.h"
 #include "mrt/logger.h"
 
 NetStats::NetStats() : pings_idx(0), pings_n(0), ping(0), deltas_idx(0), deltas_n(0), delta(0) {
@@ -17,10 +16,6 @@ void NetStats::clear() {
 	deltas_idx = 0;
 	deltas_n = 0;
 	delta = 0;
-}
-
-int NetStats::getDelta() const {
-	return math::reduce(delta, (int)ping);
 }
 
 float NetStats::updatePing(const float p) {
@@ -56,5 +51,5 @@ int NetStats::updateDelta(const int d) {
 
 	delta /= (int)deltas_n;
 	//LOG_DEBUG(("delta: %d, reduced: %d", delta, math::reduce(delta, (int)ping)));
-	return math::reduce(delta, (int)ping);
+	return delta;
 }
