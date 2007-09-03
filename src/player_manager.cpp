@@ -337,7 +337,15 @@ TRY {
 
 		Message m(Message::Pang);
 		m.data = out.getData();
-		
+
+		for(size_t id = 0; id < _players.size(); ++id) {
+			PlayerSlot &slot = _players[id];
+			if (slot.remote != cid)
+				continue;
+			
+			slot.net_stats.updateDelta(server_ts - client_ts + (int)slot.net_stats.getPing());
+		}
+				
 		_server->send(cid, m);
 		break;
 	}
@@ -352,13 +360,12 @@ TRY {
 		if (ping < 0) 
 			throw_ex(("bogus timestamp sent: %u", server_ts));
 
-		int delta1 = server_ts - client_ts, delta2 = server_ts - old_client_ts;
+		ping = _net_stats.updatePing(ping);
+		int delta1 = server_ts - client_ts + (int)_net_stats.getPing(), delta2 = server_ts - old_client_ts - (int)_net_stats.getPing();
 		
 		LOG_DEBUG(("pang: timestamps delta: %+d (server delta: %+d)", delta1, delta2));
 		
-		//GET_CONFIG_VALUE("multiplayer.ping-interpolation-multiplier", int, pw, 3);
-		_net_stats.updatePing(ping);//(pw * ping + _trip_time) / (pw + 1);
-		//_net_stats.updateDelta(delta1); //magic! 
+		_net_stats.updateDelta(delta1);
 		_net_stats.updateDelta(delta2);
 
 		LOG_DEBUG(("ping: %g, delta: %d", _net_stats.getPing(), _net_stats.getDelta()));
@@ -388,8 +395,6 @@ TRY {
 			throw_ex(("bogus timestamp sent: %u", server_ts));
 
 		int delta1 = client_ts - server_ts, delta2 = client_ts - old_server_ts;
-		delta1 = math::reduce(delta1, (int)ping);
-		delta2 = math::reduce(delta2, (int)ping);
 		LOG_DEBUG(("pong: timestamps delta: %+d (server delta: %+d)", delta1, delta2));
 		
 		for(size_t id = 0; id < _players.size(); ++id) {
@@ -399,9 +404,10 @@ TRY {
 		
 			//GET_CONFIG_VALUE("multiplayer.ping-interpolation-multiplier", int, pw, 3);
 			//slot.trip_time = (pw * ping + slot.trip_time) / (pw + 1);
-			slot.net_stats.updatePing(ping);
-			slot.net_stats.updateDelta(delta1);
-			slot.net_stats.updateDelta(delta2);
+			float p = slot.net_stats.updatePing(ping);
+			
+			slot.net_stats.updateDelta(delta1 + (int)p);
+			slot.net_stats.updateDelta(delta2 - (int)p);
 			LOG_DEBUG(("player %u: ping: %g ms, delta: %+d", (unsigned)id, slot.net_stats.getPing(), slot.net_stats.getDelta()));		
 		}
 		break;
