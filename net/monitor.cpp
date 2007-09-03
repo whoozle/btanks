@@ -157,6 +157,13 @@ const bool Monitor::recv(int &id, mrt::Chunk &data, int &delta) {
 	data = *(task->data);
 	delta = 0;
 
+	task->clear();
+	_result_q.pop_front();
+
+	GET_CONFIG_VALUE("multiplayer.delta-corrections", bool, mdc, true)
+	if (!mdc)
+		return true;
+
 	ConnectionMap::iterator i = _connections.find(id);
 	if (i != _connections.end()) {
 		Connection * conn = i->second;
@@ -172,9 +179,6 @@ const bool Monitor::recv(int &id, mrt::Chunk &data, int &delta) {
 		conn->last_my_ts = now;
 	}
 	
-	task->clear();
-	
-	_result_q.pop_front();
 	return true;
 }
 
