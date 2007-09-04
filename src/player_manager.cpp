@@ -271,6 +271,8 @@ TRY {
 
 		float dt = (now + _net_stats.getDelta() - timestamp) / 1000.0f;
 		LOG_DEBUG(("update players, delta: %+d, dt: %g", _net_stats.getDelta(), dt));
+		if (dt < 0) 
+			dt = 0;
 
 		while(!s.end()) {
 			int id;
@@ -320,8 +322,7 @@ TRY {
 				interpolated_objects.insert(ObjectMap::value_type(o->getID(), o));
 			else o->uninterpolate();
 		}
-		if (dt > 0)
-			World->tick(updated_objects, dt, false);
+		World->tick(updated_objects, dt, false);
 		World->interpolateObjects(interpolated_objects);
 		break;
 	} 
