@@ -226,7 +226,8 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 
 		if (context_sources) {
 			LOG_DEBUG(("device reported %d sources", context_sources));
-			max_sources = context_sources;
+			if (context_sources < max_sources)
+				max_sources = context_sources;
 		} else {
 			LOG_DEBUG(("no ALC_MONO_SOURCES, fallback to generic values..."));
 		}
@@ -264,7 +265,7 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 		if (!generateSource(_ambient_source))
 			throw_ex(("cannot generate source for ambient stream"));
 		
-	} CATCH("alutInit", {
+	} CATCH("initialization", {
 		LOG_DEBUG(("there was error(s) during initialization, disabling sounds."));
 		_nosound = _nomusic = true;
 		return;
