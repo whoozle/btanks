@@ -293,9 +293,9 @@ TRY {
 			PlayerState state; 
 			state.deserialize(s);
 			
-			if (o != NULL) { 
-				World->tick(*o, -dt, false);
-			}
+			//if (o != NULL) { 
+			//	World->tick(*o, -dt, false);
+			//}
 			
 			World->deserializeObjectPV(s, o);
 			bool dont_interpolate;
@@ -317,8 +317,9 @@ TRY {
 			if (!dont_interpolate)
 				interpolated_objects.insert(ObjectMap::value_type(o->getID(), o));
 			else o->uninterpolate();
-		}	
-		World->tick(updated_objects, dt, false);
+		}
+		if (dt > 0)
+			World->tick(updated_objects, dt, false);
 		World->interpolateObjects(interpolated_objects);
 		break;
 	} 
