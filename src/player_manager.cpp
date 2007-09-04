@@ -416,8 +416,7 @@ TRY {
 			if (slot.remote != cid)
 				continue;
 		
-			//int p = (int)slot.net_stats.updatePing(ping);
-			
+			slot.net_stats.updatePing(ping);
 			slot.net_stats.updateDelta(delta);
 			if (client_delta)
 				slot.net_stats.updateDelta(-client_delta);
