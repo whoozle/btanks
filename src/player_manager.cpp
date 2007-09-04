@@ -404,10 +404,10 @@ TRY {
 		
 			//GET_CONFIG_VALUE("multiplayer.ping-interpolation-multiplier", int, pw, 3);
 			//slot.trip_time = (pw * ping + slot.trip_time) / (pw + 1);
-			float p = slot.net_stats.updatePing(ping);
+			int p = (int)slot.net_stats.updatePing(ping);
 			
-			slot.net_stats.updateDelta(delta1 + (int)p);
-			slot.net_stats.updateDelta(delta2 - (int)p);
+			slot.net_stats.updateDelta(delta1 + p);
+			slot.net_stats.updateDelta(delta2 - p);
 			LOG_DEBUG(("player %u: ping: %g ms, delta: %+d", (unsigned)id, slot.net_stats.getPing(), slot.net_stats.getDelta()));		
 		}
 		break;
