@@ -249,7 +249,7 @@ TRY {
 		assert(slot.id == obj->getID());
 		obj->interpolate();
 		
-		float dt = (now - timestamp + slot.net_stats.getDelta()) / 1000.0f; 
+		float dt = (now + slot.net_stats.getDelta() - timestamp) / 1000.0f; 
 		LOG_DEBUG(("player state, delta: %+d, dt: %g", slot.net_stats.getDelta(), dt));
 		World->tick(*obj, -dt, false);
 		
@@ -344,7 +344,7 @@ TRY {
 			if (slot.remote != cid)
 				continue;
 			
-			delta = (client_delta)? slot.net_stats.updateDelta(-client_delta): delta = slot.net_stats.getDelta();
+			delta = (client_delta)? slot.net_stats.updateDelta(-client_delta): slot.net_stats.getDelta();
 			//delta = slot.net_stats.updateDelta(client_ts - server_ts + (int)slot.net_stats.getPing());
 		}
 		
@@ -373,7 +373,7 @@ TRY {
 		int delta1 = server_ts - client_ts, delta2 = server_ts - old_client_ts;
 		int delta = (delta1 + delta2) / 2;
 		
-		LOG_DEBUG(("pang: timestamps delta: %+d, server delta: %+d", delta, server_delta));
+		LOG_DEBUG(("pang: timestamps delta: (%+d, %+d), server delta: %+d", delta1, delta2, server_delta));
 		
 		_net_stats.updateDelta(delta);
 		if (server_delta)
@@ -409,7 +409,7 @@ TRY {
 
 		int delta1 = client_ts - server_ts, delta2 = client_ts - old_server_ts;
 		int delta = (delta1 + delta2) / 2;
-		LOG_DEBUG(("pong: timestamps delta: %+d, client delta: %+d", delta, client_delta));
+		LOG_DEBUG(("pong: timestamps delta: (%+d, %+d), client delta: %+d", delta1, delta2, client_delta));
 	
 		for(size_t id = 0; id < _players.size(); ++id) {
 			PlayerSlot &slot = _players[id];
