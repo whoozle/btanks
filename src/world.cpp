@@ -1035,14 +1035,14 @@ void IWorld::tick(const float dt) {
 }
 
 void IWorld::tick(Object &o, const float dt, const bool do_calculate) {
-	if (dt < 0.001f)
+	if (dt < 0.001f && dt > -0.001f)
 		return;
 
 	_tick(o, dt, do_calculate);
 }
 
 void IWorld::tick(ObjectMap &objects, const float dt, const bool do_calculate) {
-	if (dt < 0.001f)
+	if (dt < 0.001f && dt > -0.001f)
 		return;
 
 	float max_dt = dt >= 0? _max_dt: -_max_dt;
@@ -1063,9 +1063,9 @@ void IWorld::tick(ObjectMap &objects, const float dt, const bool do_calculate) {
 		if (dt2 > 0) 
 			_tick(objects, dt2, do_calculate);
 	} else if (dt < 0) {
-		while(dt2 < -max_dt) {
-			_tick(objects, -max_dt, do_calculate);
-			dt2 += max_dt;
+		while(dt2 < max_dt) {
+			_tick(objects, max_dt, do_calculate);
+			dt2 -= max_dt;
 		}
 		if (dt2 < 0) 
 			_tick(objects, dt2, do_calculate);
