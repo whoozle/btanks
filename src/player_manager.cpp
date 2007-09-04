@@ -249,7 +249,7 @@ TRY {
 		assert(slot.id == obj->getID());
 		obj->interpolate();
 		
-		float dt = (now - timestamp + slot.net_stats.getDelta()) / 1000.0f;
+		float dt = (-now + timestamp - slot.net_stats.getDelta()) / 1000.0f; //or negative ???
 		LOG_DEBUG(("player state, delta: %+d, dt: %g", slot.net_stats.getDelta(), dt));
 		World->tick(*obj, -dt, false);
 		
