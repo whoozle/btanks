@@ -249,7 +249,7 @@ TRY {
 		assert(slot.id == obj->getID());
 		obj->interpolate();
 		
-		float dt = (-now + timestamp - slot.net_stats.getDelta()) / 1000.0f; //or negative ???
+		float dt = (now - timestamp + slot.net_stats.getDelta()) / 1000.0f; 
 		LOG_DEBUG(("player state, delta: %+d, dt: %g", slot.net_stats.getDelta(), dt));
 		World->tick(*obj, -dt, false);
 		
@@ -327,24 +327,31 @@ TRY {
 		mrt::Serializator out, in(&message.data);
 		
 		unsigned client_ts;
+		int client_delta;
 		in.get(client_ts);
+		in.get(client_delta);
 		unsigned server_ts = SDL_GetTicks();
 
-		LOG_DEBUG(("ping: timestamps delta: %+d", client_ts - server_ts));
+		LOG_DEBUG(("ping: timestamps delta: %+d, client delta: %+d", client_ts - server_ts, client_delta));
 
 		out.add(client_ts);
 		out.add(server_ts);
-
-		Message m(Message::Pang);
-		m.data = out.getData();
+		
+		int delta = 0;
 
 		for(size_t id = 0; id < _players.size(); ++id) {
 			PlayerSlot &slot = _players[id];
 			if (slot.remote != cid)
 				continue;
 			
-			slot.net_stats.updateDelta(client_ts - server_ts + (int)slot.net_stats.getPing());
+			delta = (client_delta)? slot.net_stats.updateDelta(-client_delta): delta = slot.net_stats.getDelta();
+			//delta = slot.net_stats.updateDelta(client_ts - server_ts + (int)slot.net_stats.getPing());
 		}
+		
+		out.add(delta);
+
+		Message m(Message::Pang);
+		m.data = out.getData();
 				
 		_server->send(cid, m);
 		break;
@@ -353,8 +360,10 @@ TRY {
 	case Message::Pang: {
 		mrt::Serializator out, in(&message.data);
 		unsigned old_client_ts, server_ts, client_ts = SDL_GetTicks();
+		int server_delta;
 		in.get(old_client_ts);
 		in.get(server_ts);
+		in.get(server_delta);
 
 		float ping = (client_ts - old_client_ts) / 2.0f;
 		if (ping < 0) 
@@ -362,11 +371,13 @@ TRY {
 
 		ping = _net_stats.updatePing(ping);
 		int delta1 = server_ts - client_ts + (int)_net_stats.getPing(), delta2 = server_ts - old_client_ts - (int)_net_stats.getPing();
+		int delta = (delta1 + delta2) / 2;
 		
-		LOG_DEBUG(("pang: timestamps delta: %+d (server delta: %+d)", delta1, delta2));
+		LOG_DEBUG(("pang: timestamps delta: %+d, server delta: %+d", delta, server_delta));
 		
-		_net_stats.updateDelta(delta1);
-		_net_stats.updateDelta(delta2);
+		_net_stats.updateDelta(delta);
+		if (server_delta)
+			_net_stats.updateDelta(-server_delta);
 
 		LOG_DEBUG(("ping: %g, delta: %d", _net_stats.getPing(), _net_stats.getDelta()));
 		
@@ -377,41 +388,43 @@ TRY {
 
 		out.add(client_ts);
 		out.add(server_ts);
+		out.add(_net_stats.getDelta());
 
 		Message m(Message::Pong);
 		m.data = out.getData();
 		_client->send(m);
-		break;
-	}
+	} break;
 	
 	case Message::Pong: {
 		mrt::Serializator in(&message.data);
 		unsigned client_ts, old_server_ts, server_ts = SDL_GetTicks();
+		int client_delta;
 		in.get(client_ts);
 		in.get(old_server_ts);
+		in.get(client_delta);
 
 		float ping = (server_ts - old_server_ts) / 2.0f;
 		if (ping < 0) 
 			throw_ex(("bogus timestamp sent: %u", server_ts));
 
 		int delta1 = client_ts - server_ts, delta2 = client_ts - old_server_ts;
-		LOG_DEBUG(("pong: timestamps delta: %+d (server delta: %+d)", delta1, delta2));
-		
+		int delta = (delta1 + delta2) / 2;
+		LOG_DEBUG(("pong: timestamps delta: %+d, client delta: %+d", delta, client_delta));
+	
 		for(size_t id = 0; id < _players.size(); ++id) {
 			PlayerSlot &slot = _players[id];
 			if (slot.remote != cid)
 				continue;
 		
-			//GET_CONFIG_VALUE("multiplayer.ping-interpolation-multiplier", int, pw, 3);
-			//slot.trip_time = (pw * ping + slot.trip_time) / (pw + 1);
-			int p = (int)slot.net_stats.updatePing(ping);
+			//int p = (int)slot.net_stats.updatePing(ping);
 			
-			slot.net_stats.updateDelta(delta1 + p);
-			slot.net_stats.updateDelta(delta2 - p);
+			slot.net_stats.updateDelta(delta);
+			if (client_delta)
+				slot.net_stats.updateDelta(-client_delta);
 			LOG_DEBUG(("player %u: ping: %g ms, delta: %+d", (unsigned)id, slot.net_stats.getPing(), slot.net_stats.getDelta()));		
 		}
-		break;
-	}
+	} break;
+
 	
 	case Message::Respawn: {
 		TRY {
@@ -504,10 +517,14 @@ TRY {
 
 
 void IPlayerManager::ping() {
+	if (_client == NULL)
+		throw_ex(("ping is possible only in client mode"));
+	
 	unsigned ts = SDL_GetTicks();
 	LOG_DEBUG(("ping timestamp = %u", ts));
 	mrt::Serializator s;
 	s.add(ts);
+	s.add(_net_stats.getDelta());
 	
 	Message m(Message::Ping);
 	m.data = s.getData();
