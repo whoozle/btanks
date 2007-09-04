@@ -370,7 +370,7 @@ TRY {
 			throw_ex(("bogus timestamp sent: %u", server_ts));
 
 		ping = _net_stats.updatePing(ping);
-		int delta1 = server_ts - client_ts + (int)_net_stats.getPing(), delta2 = server_ts - old_client_ts - (int)_net_stats.getPing();
+		int delta1 = server_ts - client_ts, delta2 = server_ts - old_client_ts;
 		int delta = (delta1 + delta2) / 2;
 		
 		LOG_DEBUG(("pang: timestamps delta: %+d, server delta: %+d", delta, server_delta));
