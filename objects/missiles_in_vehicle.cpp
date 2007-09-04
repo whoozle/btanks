@@ -96,7 +96,11 @@ public:
 		s.get(_object);
 		s.get(_type);
 		//LOG_DEBUG(("deserialize. max: %d, max visible: %d, quantity: %d", max_n, max_v, n));
-		update();
+		if (!_type.empty() && !_object.empty()) {	
+			const std::string animation = _type + "-" + _object + "-on-" + _vehicle;
+			init(animation);
+		}
+
 		updatePose();
 		//LOG_DEBUG(("update. max: %d, max visible: %d, quantity: %d", max_n, max_v, n));
 		//LOG_DEBUG(("z = %d", getZ()));
