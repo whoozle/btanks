@@ -132,6 +132,7 @@ void IGameMonitor::checkItems(const float dt) {
 	}
 	
 	_specials.clear();
+	Uint32 ticks = SDL_GetTicks();
 	
 	for(Items::iterator i = _items.begin(); i != _items.end(); ++i) {
 		GameItem &item = *i;
@@ -168,7 +169,6 @@ void IGameMonitor::checkItems(const float dt) {
 		if (o)
 			continue;
 		
-		Uint32 ticks = SDL_GetTicks();
 		if (item.dead_on == 0) {
 			item.dead_on = ticks;
 			LOG_DEBUG(("item %d:%s:%s is dead, log dead time.", item.id, item.classname.c_str(), item.animation.c_str()));
