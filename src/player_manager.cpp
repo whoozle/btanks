@@ -277,13 +277,7 @@ TRY {
 		while(!s.end()) {
 			int id;
 			s.get(id);
-			PlayerSlot *slot = NULL;
-			for(size_t i = 0; i < _players.size(); ++i) {
-				if (_players[i].id == id) {
-					slot = &_players[i];
-					break;
-				}
-			}
+			PlayerSlot *slot = getSlotByID(id);
 			bool my_state = false;
 			
 			if (slot == NULL) {
