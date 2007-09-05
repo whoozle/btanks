@@ -176,7 +176,7 @@
 		<property name="spawn:1" value="@11,3"/>
 		<property name="spawn:2" value="@18,23"/>
 		<property name="spawn:3" value="@2,20"/>
-		<property name="spawn:5" value="@22,2"/>
+		<property name="spawn:5" value="@20,2"/>
 		<property name="spawn:6" value="@27,19"/>
 		<property name="waypoint:car:1" value="@36,2"/>
 		<property name="waypoint:car:10" value="@9,15"/>
