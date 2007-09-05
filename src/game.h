@@ -103,7 +103,7 @@ private:
 	int _shake_int;
 	
 	Hud *_hud;
-	bool _show_radar, _show_stats;
+	bool _show_stats;
 	int _loading_bar_total, _loading_bar_now;
 	
 	Credits *_credits;

@@ -49,6 +49,7 @@ static Uint32 index2color(const sdlx::Surface &surface, const unsigned idx, cons
 void Hud::initMap() {
 	_radar.free();
 	_radar_bg.free();
+	_map_mode = MapSmall;
 }
 
 void Hud::generateRadarBG(const sdlx::Rect &viewport) {
@@ -156,6 +157,8 @@ void Hud::renderRadar(const float dt, sdlx::Surface &window, const std::vector<v
 		_radar_bg.free();
 		return;
 	}
+	if (_map_mode == MapNone)
+		return;
 	
 	if (!_radar.isNull() && !_update_radar.tick(dt)) {
 		const int x = window.getWidth() - _radar.getWidth(), y = _background->getHeight();
@@ -472,7 +475,7 @@ const bool Hud::renderLoadingBar(sdlx::Surface &window, const float old_progress
 	return true;
 }
 
-Hud::Hud(const int w, const int h) : _update_radar(true) {
+Hud::Hud(const int w, const int h) : _update_radar(true), _map_mode(MapSmall) {
 	Map->load_map_final_signal.connect(sigc::mem_fun(this, &Hud::initMap));
 	Map->destroyed_cells_signal.connect(sigc::mem_fun(this, &Hud::onDestroyMap));
 
@@ -532,4 +535,16 @@ Hud::~Hud() {}
 
 void Hud::onDestroyMap(const std::set<v3<int> > & cells) {
 	_radar_bg.free();
+}
+
+void Hud::toggleMapMode() {
+	switch(_map_mode) {
+		case MapNone: 
+			_map_mode = MapSmall;
+		case MapSmall:
+			_map_mode = MapFull;
+		case MapFull:
+		default: 
+			_map_mode = MapNone;
+	}
 }

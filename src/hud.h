@@ -37,6 +37,7 @@ class Object;
 class BTANKSAPI Hud : public sigc::trackable {
 public: 
 	Hud(const int w, const int h);
+	void toggleMapMode(); 
 	
 	void render(sdlx::Surface &window) const;
 
@@ -61,6 +62,8 @@ private:
 	Alarm _update_radar;
 	typedef std::map<const std::string, int> IconMap;
 	IconMap _icons_map;
+
+	enum MapMode {MapNone, MapSmall, MapFull} _map_mode;
 };
 
 

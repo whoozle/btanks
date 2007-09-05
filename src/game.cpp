@@ -73,7 +73,7 @@
 IMPLEMENT_SINGLETON(Game, IGame);
 
 IGame::IGame() : _main_menu(NULL),
- _autojoin(false), _shake(0), _show_radar(true) , _show_stats(false), _credits(NULL), _cheater(NULL), _tip(NULL), _net_talk(NULL) {
+ _autojoin(false), _shake(0), _show_stats(false), _credits(NULL), _cheater(NULL), _tip(NULL), _net_talk(NULL) {
  }
  
 IGame::~IGame() {
@@ -433,7 +433,7 @@ bool IGame::onKey(const SDL_keysym key, const bool pressed) {
 	}
 
 	if (key.sym == SDLK_m && !_main_menu->isActive()) {
-		_show_radar = !_show_radar;
+		_hud->toggleMapMode();
 		return true;
 	}
 
@@ -589,11 +589,10 @@ void IGame::onTick(const float dt) {
 		if (Map->loaded()) {
 			_hud->render(window);
 
-			if (_show_radar) {
-				const PlayerSlot *slot = PlayerManager->getMySlot();
-				_hud->renderRadar(dt, window, GameMonitor->getSpecials(), 
-					slot?sdlx::Rect((int)slot->map_pos.x, (int)slot->map_pos.y, slot->viewport.w, slot->viewport.h): sdlx::Rect());
-			}
+			const PlayerSlot *slot = PlayerManager->getMySlot();
+			_hud->renderRadar(dt, window, GameMonitor->getSpecials(), 
+				slot?sdlx::Rect((int)slot->map_pos.x, (int)slot->map_pos.y, slot->viewport.w, slot->viewport.h): sdlx::Rect());
+			
 			if (_main_menu && !_main_menu->isActive() && _show_stats) {
 				_hud->renderStats(window);
 			}
@@ -678,7 +677,6 @@ void IGame::clear() {
 	World->clear();
 
 	_paused = false;
-	_show_radar = true;
 	_show_stats = false;
 	Map->clear();
 	
