@@ -49,6 +49,9 @@ public:
 private:
 	int _level;
 	unsigned _lines;
+
+	ILogger(const ILogger &);
+	const ILogger& operator=(const ILogger &);
 	
 	FILE *fd;
 };
