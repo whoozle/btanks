@@ -66,12 +66,14 @@ void Hud::generateRadarBG(const sdlx::Rect &viewport) {
 	LOG_DEBUG(("rendering radar..."));
 
 	int n = 0;
+	/*
 	int cx = 0, cy = 0;
 	if (Map->torus()) {
 		const v2<int> pfs = Map->getPathTileSize();
 		cx = viewport.x / pfs.x;
 		cy = viewport.y / pfs.y;
 	}
+	*/
 	for(std::set<int>::iterator i = layers.begin(); i != layers.end(); ++i, ++n) {
 		const Matrix<int>& matrix = Map->getImpassabilityMatrix((*i) * 2000);
 
@@ -79,7 +81,7 @@ void Hud::generateRadarBG(const sdlx::Rect &viewport) {
 		const int h = matrix.getHeight(), w = matrix.getWidth();
 		for(int ry = 0; ry < h; ++ry) 
 			for(int rx = 0; rx < w; ++rx) {
-				int v = matrix.get((ry + cy + h) % h, (rx + cx + w) % w);
+				int v = matrix.get((ry + h) % h, (rx + w) % w);
 				if (v < 0 || v > 100) 
 					v = 100;
 				v = 100 - v;
@@ -174,7 +176,29 @@ void Hud::renderRadar(const float dt, sdlx::Surface &window, const std::vector<v
 	v2<int> msize = Map->getSize();
 	size_t n = PlayerManager->getSlotsCount();
 
-	_radar.copyFrom(_radar_bg, 0, 0);
+	if (Map->torus()) {
+	/* 2x2 split
+	[12]
+	[34]
+	*/	
+		v2<int> split(viewport.x, viewport.y);
+		Map->validate(split);
+		split *= v2<int>(_radar.getWidth(), _radar.getHeight());
+		split /= msize;
+		//int split_x = (viewport.w - viewport.x) * _radar.getWidth() / msize.x, split_y = (viewport.h - viewport.y) * _radar.getWidth() / msize.x;
+
+		_radar.fill(_radar.mapRGBA(0,0,0,255));
+		sdlx::Rect src1(split.x - _radar_bg.getWidth(), split.y - _radar_bg.getHeight(), _radar_bg.getWidth(), _radar_bg.getHeight());
+		sdlx::Rect src2(split.x, split.y - _radar_bg.getHeight(), _radar_bg.getWidth(), _radar_bg.getHeight());
+		sdlx::Rect src3(split.x - _radar_bg.getWidth(), split.y, _radar_bg.getWidth(), _radar_bg.getHeight());
+		sdlx::Rect src4(split.x, split.y, _radar_bg.getWidth(), _radar_bg.getHeight());
+		_radar.copyFrom(_radar_bg, src1, 0, 0);
+		_radar.copyFrom(_radar_bg, src2, 0, 0);
+		_radar.copyFrom(_radar_bg, src3, 0, 0);
+		_radar.copyFrom(_radar_bg, src4, 0, 0);
+	} else 
+		_radar.copyFrom(_radar_bg, 0, 0);
+
 	_radar.lock();
 	
 	for(size_t i = 0; i < n; ++i) {
