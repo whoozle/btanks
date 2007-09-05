@@ -36,8 +36,8 @@
 #include "math/binary.h"
 
 #include "config.h"
-#include "player_manager.h"
 #include "resource_manager.h"
+#include "player_manager.h"
 #include "finder.h"
 #include "zbox.h"
 
@@ -1011,7 +1011,7 @@ const v2<int> IMap::getPathTileSize() const {
 void IMap::damage(const v2<float> &position, const int hp) {
 	if (PlayerManager->isClient())
 		return;
-	
+
 	v2<int> pos = position.convert<int>();
 	pos.x /= _tw;
 	pos.y /= _th;
@@ -1023,7 +1023,7 @@ void IMap::damage(const v2<float> &position, const int hp) {
 			destroyed_cells.insert(v3<int>(pos.x, pos.y, i->first));
 	}
 	if (!destroyed_cells.empty())
-		PlayerManager->onDestroyMap(destroyed_cells);
+		destroyed_cells_signal.emit(destroyed_cells);
 }
 
 void IMap::damage(const v2<float> &center, const int hp, const float radius) {
@@ -1048,9 +1048,8 @@ void IMap::damage(const v2<float> &center, const int hp, const float radius) {
 			}
 		}
 	}
-	
 	if (!destroyed_cells.empty())
-		PlayerManager->onDestroyMap(destroyed_cells);
+		destroyed_cells_signal.emit(destroyed_cells);	
 }
 
 void IMap::tick(const float dt) {

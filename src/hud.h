@@ -27,6 +27,7 @@
 #include "alarm.h"
 
 #include <map>
+#include <set>
 #include <string>
 #include <vector>
 
@@ -48,6 +49,8 @@ public:
 	
 private: 
 	void initMap();
+	void onDestroyMap(const std::set<v3<int> > & cells);
+
 	void generateRadarBG(const sdlx::Rect &viewport);
 
 	void renderMod(const Object *obj, sdlx::Surface &window, int &xp, int &yp, const std::string &name, const int icon_w, const int icon_h) const;

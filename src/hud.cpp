@@ -63,7 +63,7 @@ void Hud::generateRadarBG(const sdlx::Rect &viewport) {
 	_radar_bg.createRGB(zoom * matrix.getWidth(), zoom * matrix.getHeight(), 32);
 	_radar_bg.convertAlpha();
 	_radar_bg.lock();
-	//LOG_DEBUG(("rendering radar..."));
+	LOG_DEBUG(("rendering radar..."));
 
 	int n = 0;
 	int cx = 0, cy = 0;
@@ -161,7 +161,8 @@ void Hud::renderRadar(const float dt, sdlx::Surface &window, const std::vector<v
 		return;
 	}
 	
-	generateRadarBG(viewport); //needed for destructable layers. 
+	if (_radar_bg.isNull())
+		generateRadarBG(viewport); //needed for destructable layers. 
 	
 	if (_radar.isNull()) {
 		_radar.createRGB(_radar_bg.getWidth(), _radar_bg.getHeight(), 32);
@@ -449,6 +450,7 @@ const bool Hud::renderLoadingBar(sdlx::Surface &window, const float old_progress
 
 Hud::Hud(const int w, const int h) : _update_radar(true) {
 	Map->load_map_final_signal.connect(sigc::mem_fun(this, &Hud::initMap));
+	Map->destroyed_cells_signal.connect(sigc::mem_fun(this, &Hud::onDestroyMap));
 
 	_background = ResourceManager->loadSurface("hud/hud_line.png");
 	_loading_border = ResourceManager->loadSurface("hud/loading_border.png");
@@ -504,3 +506,6 @@ Hud::Hud(const int w, const int h) : _update_radar(true) {
 
 Hud::~Hud() {}
 
+void Hud::onDestroyMap(const std::set<v3<int> > & cells) {
+	_radar_bg.free();
+}

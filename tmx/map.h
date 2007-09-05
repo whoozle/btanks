@@ -52,6 +52,8 @@ class BTANKSAPI IMap : public NotifyingXMLParser, public mrt::Serializable {
 public:
 	sigc::signal0<void> load_map_signal;
 	sigc::signal0<void> load_map_final_signal;
+	typedef std::set<v3<int> > destroyed_cells;
+	sigc::signal1<void, const destroyed_cells& > destroyed_cells_signal;
 
 	DECLARE_SINGLETON(IMap);
 	struct TilePosition {
