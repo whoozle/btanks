@@ -18,6 +18,12 @@
 #include "exception.h"
 #include <stdarg.h>
 
+#if defined WIN32 
+#	if !defined snprintf
+#		define snprintf _snprintf
+#	endif
+#endif
+
 using namespace mrt;
 
 Exception::Exception() : _error() {}
