@@ -28,9 +28,9 @@ const char* Exception::what() const throw() { return _error.c_str(); }
 
 
 void Exception::addMessage(const char * file, const int line) {
-	char buf[256];
-	sprintf(buf, "[%s:%d]", file, line);
-	_error = buf;	
+	char buf[1024];
+	size_t n = snprintf(buf, sizeof(buf), "[%s:%d]", file, line);
+	_error = std::string(buf, n);
 }
 
 void Exception::addMessage(const std::string &msg) {
