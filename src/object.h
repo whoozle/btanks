@@ -141,7 +141,7 @@ protected:
 	//pathfinding
 
 	struct Point {
-		Point() : dir(-1) {}
+		Point() : id(), parent(), g(0), h(0), dir(-1) {}
 		v2<int> id, parent;
 		int g, h, dir;
 	};

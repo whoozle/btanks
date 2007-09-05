@@ -139,6 +139,9 @@ private:
 	float _max_dt;
 	
 	const sdlx::Surface *_hp_bar;
+
+	IWorld(const IWorld &);
+	const IWorld& operator=(const IWorld &);
 };
 
 SINGLETON(BTANKSAPI, World, IWorld);
