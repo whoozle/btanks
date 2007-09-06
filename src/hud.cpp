@@ -215,8 +215,21 @@ void Hud::renderRadar(const float dt, sdlx::Surface &window, const std::vector<v
 		_radar.copyFrom(_radar_bg, src3, 0, 0);
 		_radar.copyFrom(_radar_bg, src4, 0, 0);
 	} else {
-		v2<int> shift = radar_shift;
-		_radar.copyFrom(_radar_bg, 0, 0);
+		if (radar_shift.x < 0) 
+			radar_shift.x = 0;
+		if (radar_shift.y < 0) 
+			radar_shift.y = 0;
+		v2<int> radar_map_size = radar_size * msize / v2<int>(_radar_bg.getWidth(), _radar_bg.getHeight());
+
+		if (radar_shift.x + radar_map_size.x > msize.x)
+			radar_shift.x = msize.x - radar_map_size.x;
+
+		if (radar_shift.y + radar_map_size.y > msize.y)
+			radar_shift.y = msize.y - radar_map_size.y;
+
+		v2<int> shift = radar_shift * v2<int>(_radar_bg.getWidth(), _radar_bg.getHeight()) / msize;
+		sdlx::Rect src(shift.x, shift.y, _radar.getWidth(), _radar.getHeight());
+		_radar.copyFrom(_radar_bg, src, 0, 0);
 	}
 		
 	//LOG_DEBUG(("radar shift: %d %d", radar_shift.x, radar_shift.y));
@@ -231,10 +244,9 @@ void Hud::renderRadar(const float dt, sdlx::Surface &window, const std::vector<v
 		
 		v2<int> pos;
 		obj->getCenterPosition(pos);
-		if (Map->torus()) {
-			pos -= radar_shift;
-			Map->validate(pos);
-		}
+		pos -= radar_shift;
+		Map->validate(pos);
+
 		_radar.putPixel(pos.x * _radar_bg.getWidth() / msize.x, pos.y * _radar_bg.getHeight() / msize.y, index2color(_radar, i + 1, 255));
 		_radar.putPixel(pos.x * _radar_bg.getWidth() / msize.x, pos.y * _radar_bg.getHeight() / msize.y + 1, index2color(_radar, i + 1, 200));
 		_radar.putPixel(pos.x * _radar_bg.getWidth() / msize.x, pos.y * _radar_bg.getHeight() / msize.y - 1, index2color(_radar, i + 1, 200));
