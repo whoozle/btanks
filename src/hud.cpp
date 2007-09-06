@@ -190,7 +190,7 @@ void Hud::renderRadar(const float dt, sdlx::Surface &window, const std::vector<v
 	v2<int> msize = Map->getSize();
 
 	v2<int> radar_shift;
-	if (_map_mode == MapSmall) {
+	if (_map_mode == MapSmall || Map->torus()) {
 		radar_shift.x = viewport.x + viewport.w / 2 - msize.x / 2 - msize.x * (_radar.getWidth() - _radar_bg.getWidth()) / 2 / _radar_bg.getWidth();
 		radar_shift.y = viewport.y + viewport.h / 2 - msize.y / 2 - msize.y * (_radar.getHeight() - _radar_bg.getHeight()) / 2 / _radar_bg.getHeight();
 		Map->validate(radar_shift);
@@ -570,11 +570,14 @@ void Hud::onDestroyMap(const std::set<v3<int> > & cells) {
 }
 
 void Hud::toggleMapMode() {
+	bool same_size = !_radar.isNull() && !_radar_bg.isNull() && 
+		_radar.getWidth() == _radar_bg.getWidth() && _radar.getHeight() == _radar_bg.getHeight();
+	
 	switch(_map_mode) {
 		case MapNone: 
-			_map_mode = MapSmall; break;
+			_map_mode = same_size?MapFull:MapSmall; break;
 		case MapSmall:
-			_map_mode = MapFull; break;
+			_map_mode = same_size?MapNone:MapFull; break;
 		case MapFull:
 		default: 
 			_map_mode = MapNone;
