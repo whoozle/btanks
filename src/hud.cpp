@@ -169,7 +169,7 @@ void Hud::renderRadar(const float dt, sdlx::Surface &window, const std::vector<v
 	if (_radar_bg.isNull())
 		generateRadarBG(viewport); //needed for destructable layers. 
 		
-	v2<int> radar_size, radar_shift;
+	v2<int> radar_size;
 	
 	if (_map_mode == MapSmall) {
 		radar_size.x = 64;
@@ -189,15 +189,15 @@ void Hud::renderRadar(const float dt, sdlx::Surface &window, const std::vector<v
 	v2<int> msize = Map->getSize();
 	size_t n = PlayerManager->getSlotsCount();
 
+	v2<int> radar_shift(viewport.x + viewport.w / 2 - msize.x / 2, viewport.y + viewport.h / 2 - msize.y / 2);
+	Map->validate(radar_shift);
+
 	if (Map->torus()) {
 	/* 2x2 split
 	[12]
 	[34]
 	*/
-		v2<int> split(viewport.x + viewport.w / 2 - msize.x / 2, viewport.y + viewport.h / 2 - msize.y / 2);
-		
-		Map->validate(split);
-		radar_shift = split;
+		v2<int> split = radar_shift;
 		//LOG_DEBUG(("split: %d %d %d %d", split.x, split.y, viewport.x, viewport.y));
 		split *= v2<int>(_radar_bg.getWidth(), _radar_bg.getHeight());
 		split /= msize;
@@ -212,10 +212,12 @@ void Hud::renderRadar(const float dt, sdlx::Surface &window, const std::vector<v
 		_radar.copyFrom(_radar_bg, src2, 0, 0);
 		_radar.copyFrom(_radar_bg, src3, 0, 0);
 		_radar.copyFrom(_radar_bg, src4, 0, 0);
-	} else 
-		_radar.copyFrom(_radar_bg, 0, 0);
+	} else {
 		
-	LOG_DEBUG(("radar shift: %d %d", radar_shift.x, radar_shift.y));
+		_radar.copyFrom(_radar_bg, 0, 0);
+	}
+		
+	//LOG_DEBUG(("radar shift: %d %d", radar_shift.x, radar_shift.y));
 
 	_radar.lock();
 	
