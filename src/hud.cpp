@@ -189,7 +189,9 @@ void Hud::renderRadar(const float dt, sdlx::Surface &window, const std::vector<v
 	v2<int> msize = Map->getSize();
 	size_t n = PlayerManager->getSlotsCount();
 
-	v2<int> radar_shift(viewport.x + viewport.w / 2 - msize.x / 2, viewport.y + viewport.h / 2 - msize.y / 2);
+	v2<int> radar_shift(
+		viewport.x + viewport.w / 2 - msize.x / 2 - msize.x * (_radar.getWidth() - _radar_bg.getWidth()) / 2 / _radar_bg.getWidth(), 
+		viewport.y + viewport.h / 2 - msize.y / 2 - msize.y * (_radar.getHeight() - _radar_bg.getHeight()) / 2 / _radar_bg.getHeight());
 	Map->validate(radar_shift);
 
 	if (Map->torus()) {
@@ -213,7 +215,7 @@ void Hud::renderRadar(const float dt, sdlx::Surface &window, const std::vector<v
 		_radar.copyFrom(_radar_bg, src3, 0, 0);
 		_radar.copyFrom(_radar_bg, src4, 0, 0);
 	} else {
-		
+		v2<int> shift = radar_shift;
 		_radar.copyFrom(_radar_bg, 0, 0);
 	}
 		
