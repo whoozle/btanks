@@ -48,22 +48,22 @@ namespace sdlx {
 		Surface(SDL_Surface *x);
 		void assign(SDL_Surface *x);
 
-		const bool isNull() const { return surface == NULL; }
-		SDL_Surface * getSDLSurface() { return surface; }
-		const SDL_Surface * getSDLSurface() const { return surface; }
+		inline const bool isNull() const { return surface == NULL; }
+		inline SDL_Surface * getSDLSurface() { return surface; }
+		inline const SDL_Surface * getSDLSurface() const { return surface; }
 
 		void putPixel(int x, int y, Uint32 pix);
 		Uint32 getPixel(int x, int y) const;
 
-		void *getPixels() const {return surface->pixels;}
+		inline void *getPixels() const {return surface->pixels;}
 
-		const int getWidth() const { return surface->w; }
-		const int getHeight() const { return surface->h; }
-		const int getPitch() const { return surface->pitch; }
-		const int getBPP() const { return getPixelFormat()->BitsPerPixel;} 
-		const int getFlags() const { return surface->flags; }
+		inline const int getWidth() const { return surface->w; }
+		inline const int getHeight() const { return surface->h; }
+		inline const int getPitch() const { return surface->pitch; }
+		inline const int getBPP() const { return getPixelFormat()->BitsPerPixel;} 
+		inline const int getFlags() const { return surface->flags; }
 		
-		const Rect getSize() const { return Rect(0, 0, surface->w, surface->h);} 
+		inline const Rect getSize() const { return Rect(0, 0, surface->w, surface->h);} 
 
 		void createRGB(int width, int height, int depth, Uint32 flags = Default);
 		void createRGBFrom(void *pixels, int width, int height, int depth, int pitch = -1);
