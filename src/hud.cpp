@@ -172,8 +172,9 @@ void Hud::renderRadar(const float dt, sdlx::Surface &window, const std::vector<v
 	v2<int> radar_size;
 	
 	if (_map_mode == MapSmall) {
-		radar_size.x = 64;
-		radar_size.y = 64;
+		radar_size.x = window.getWidth() / 8;
+		radar_size.y = window.getHeight() / 8;
+		LOG_DEBUG(("minimap size: %dx%d", radar_size.x, radar_size.y));
 	} else {
 		radar_size.x = _radar_bg.getWidth();
 		radar_size.y = _radar_bg.getHeight();
