@@ -170,10 +170,7 @@ void Hud::renderRadar(const float dt, sdlx::Surface &window, const std::vector<v
 		generateRadarBG(viewport); //needed for destructable layers. 
 	
 	if (_radar.isNull()) {
-		if (_map_mode == MapFull) 
-			_radar.createRGB(_radar_bg.getWidth(), _radar_bg.getHeight(), 32);
-		else 
-			_radar.createRGB(96, 64, 32);
+		_radar.createRGB(_radar_bg.getWidth(), _radar_bg.getHeight(), 32);
 		_radar.convertAlpha();
 	}
 
@@ -261,6 +258,7 @@ void Hud::renderRadar(const float dt, sdlx::Surface &window, const std::vector<v
 	}
 	
 	_radar.unlock();
+	
 	window.copyFrom(_radar, x, y);
 }
 
