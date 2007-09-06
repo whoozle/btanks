@@ -56,8 +56,7 @@ SpecialZone::SpecialZone(const ZBox & zbox, const std::string &type, const std::
 		type == "play-tune" || type == "reset-tune";
 	
 	_final = type == "checkpoint" && name == "final";
-	_live =  type == "z-warp";	
-
+	_live =  type == "z-warp";
 }
 
 void SpecialZone::onTimer(const int slot_id, const bool win) {
@@ -79,7 +78,7 @@ void SpecialZone::onTimer(const int slot_id, const bool win) {
 
 void SpecialZone::onExit(const int slot_id) {
 	if (type == "z-warp") {
-		LOG_DEBUG(("z-warp: enter"));
+		onWarp(slot_id, false);
 	} else if (_live) 
 		throw_ex(("unhandled exit for type '%s'", type.c_str()));
 }
@@ -106,7 +105,7 @@ void SpecialZone::onEnter(const int slot_id) {
 	else if (type == "reset-tune") 
 		Mixer->reset();
 	else if (type == "z-warp") {
-		LOG_DEBUG(("z-warp: enter"));
+		onWarp(slot_id, true);
 	} else
 		throw_ex(("unhandled enter for type '%s'", type.c_str()));
 }
@@ -174,4 +173,40 @@ void SpecialZone::onCheckpoint(const int slot_id) {
 		m.set("duration", "3");
 		PlayerManager->send(slot, m);
 	}
+}
+
+void SpecialZone::onWarp(const int slot_id, const bool enter) {
+	PlayerSlot &slot = PlayerManager->getSlot(slot_id);
+	Object *o = slot.getObject();
+	if (o == NULL)
+		return;
+}
+
+void SpecialZone::onTick(const int slot_id) {
+	PlayerSlot &slot = PlayerManager->getSlot(slot_id);
+	Object *o = slot.getObject();
+	if (o == NULL)
+		return;
+
+	v2<float> pos, vel;
+	o->getInfo(pos, vel);
+	
+	v2<int> left_pos, right_pos; 
+	o->getPosition(left_pos);
+	o->getPosition(right_pos);
+	right_pos += o->size.convert<int>();
+
+	v2<int> c_pos(position.x, position.y);
+	c_pos += size / 2;
+
+	int o_z = getBox(o->getZ());
+	//LOG_DEBUG(("zone zbox: %d, object zbox: %d", position.z, o_z));
+	if (name == "right") {
+		if (right_pos.x >= c_pos.x && o_z != (position.z + 1) && vel.x > 0)
+			o->setZBox((position.z + 1) * 2000);
+		if (left_pos.x < c_pos.x && o_z != position.z && vel.x < 0) 
+			o->setZBox(position.z * 2000);
+	}
+
+	LOG_DEBUG(("delta left: %d, %d, delta right: %d, %d", left_pos.x - c_pos.x, left_pos.y - c_pos.y, right_pos.x - c_pos.x, right_pos.y - c_pos.y));
 }

@@ -544,36 +544,37 @@ TRY {
 		
 		Object *o = slot.getObject();
 		if (o != NULL /* && !o->isDead() */) {
-			//server or split screen
-			v3<int> player_pos;
-			{
-				v2<int> p;
-				o->getCenterPosition(p);
-				player_pos.x = p.x;
-				player_pos.y = p.y;
-				player_pos.z = o->getZ();
-			}
-			
-			if (isClient())
-				continue;
 			
 			//check for Special Zones ;)
+			v2<int> p;
+			o->getPosition(p);
+			v3<int> player_pos(p.x, p.y, o->getZ());
 			
 			size_t cn = _zones.size();
 			for(size_t c = 0; c < cn; ++c) {
 				SpecialZone &zone = _zones[c];
-				bool global = zone.global();
-				if (zone.in(player_pos) && 
+				if (!zone.live()) {
+					if (_client)
+						continue;
+				}
+				bool in_zone = zone.in(player_pos, zone.live());
+				if (in_zone && 
 					_global_zones_reached.find(c) == _global_zones_reached.end() && 
 					slot.zones_reached.find(c) == slot.zones_reached.end()) {
 					
 					LOG_DEBUG(("player[%u] zone %u reached.", (unsigned)i, (unsigned)c));
 					slot.zones_reached.insert(c);
-					if (global)
+					if (zone.global())
 						_global_zones_reached.insert(c);
 					
 					zone.onEnter(i);
-				}
+				} else if (in_zone && zone.live()) {
+					zone.onTick(i);
+				} else if (!in_zone && zone.live() && slot.zones_reached.find(c) != slot.zones_reached.end()) {
+					slot.zones_reached.erase(c);
+					LOG_DEBUG(("player[%u] has left zone %u", (unsigned)i, (unsigned)c));
+					zone.onExit(i);
+				} 
 			}
 			
 			continue;

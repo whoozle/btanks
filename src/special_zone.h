@@ -33,6 +33,7 @@ public:
 	inline const bool live() const   { return _live; }
 
 	void onEnter(const int slot_id);
+	void onTick(const int slot_id); //only for 'live' zones
 	void onExit(const int slot_id);
 
 	~SpecialZone();
@@ -41,6 +42,7 @@ private:
 	void onHint(const int slot_id);
 	void onMessage(const int slot_id);
 	void onTimer(const int slot_id, const bool win);
+	void onWarp(const int slot_id, const bool enter);
 	
 	bool _global, _final, _live;
 };

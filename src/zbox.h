@@ -23,6 +23,10 @@
 #include "math/v3.h"
 #include "export_btanks.h"
 
+namespace sdlx {
+	class Rect;
+}
+
 class BTANKSAPI ZBox {
 public: 
 	v3<int> position;
@@ -30,7 +34,7 @@ public:
 
 	ZBox(const v3<int> &position, const v2<int> &size);
 	const bool operator<(const ZBox &other) const;
-	const bool in(const v3<int> &position) const;
+	const bool in(const v3<int> &position, const bool ignore_z) const;
 
 	static const bool sameBox(const int z1, const int z2);
 	static const int getBox(const int z);

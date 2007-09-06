@@ -30,15 +30,14 @@ const bool ZBox::operator<(const ZBox &other) const {
 	return false;
 }
 
-const bool ZBox::in(const v3<int> &p) const {
-	if (getBox(position.z) != getBox(p.z))
+const bool ZBox::in(const v3<int> &p, const bool ignore_z) const {
+	if (ignore_z && getBox(position.z) != getBox(p.z))
 		return false;
 	return (
 		p.x >= position.x && p.y >= position.y && 
 		p.x < position.x + size.x && p.y < position.y + size.y
 	);
 }
-
 
 const bool ZBox::sameBox(const int z1, const int z2) {
 	return getBox(z1) == getBox(z2);	
