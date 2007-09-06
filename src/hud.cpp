@@ -540,11 +540,12 @@ void Hud::onDestroyMap(const std::set<v3<int> > & cells) {
 void Hud::toggleMapMode() {
 	switch(_map_mode) {
 		case MapNone: 
-			_map_mode = MapSmall;
+			_map_mode = MapSmall; break;
 		case MapSmall:
-			_map_mode = MapFull;
+			_map_mode = MapFull; break;
 		case MapFull:
 		default: 
 			_map_mode = MapNone;
 	}
+	LOG_DEBUG(("toggling map mode(%d)", (int)_map_mode));
 }
