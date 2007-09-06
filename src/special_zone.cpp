@@ -45,26 +45,19 @@ SpecialZone::SpecialZone(const ZBox & zbox, const std::string &type, const std::
 		allowed_types.insert("enable-ai");
 		allowed_types.insert("play-tune");
 		allowed_types.insert("reset-tune");
+		allowed_types.insert("z-warp");
 	}
 	
 	if (allowed_types.find(type) == allowed_types.end()) 
 		throw_ex(("unhanled type '%s'", type.c_str()));	
-}
 
-const bool SpecialZone::global() const {
-	return (
-		type == "timer-lose" || 
-		type == "timer-win" || 
-		type == "reset-timer" || 
-		type == "disable-ai" || 
-		type == "enable-ai" || 
-		type == "play-tune" || 
-		type == "reset-tune" );
-}
+	_global = type == "timer-lose" || type == "timer-win" || type == "reset-timer" || 
+		type == "disable-ai" || type == "enable-ai" || 
+		type == "play-tune" || type == "reset-tune";
+	
+	_final = type == "checkpoint" && name == "final";
+	_live =  type == "z-warp";	
 
-
-const bool SpecialZone::final() const {
-	return type == "checkpoint" && name == "final";
 }
 
 void SpecialZone::onTimer(const int slot_id, const bool win) {
@@ -84,6 +77,11 @@ void SpecialZone::onTimer(const int slot_id, const bool win) {
 	GameMonitor->displayMessage(area, name, 3, global());
 }
 
+void SpecialZone::onExit(const int slot_id) {
+	if (type == "z-warp") {
+		LOG_DEBUG(("exit"));
+	}
+}
 
 void SpecialZone::onEnter(const int slot_id) {
 	if (type == "checkpoint") 

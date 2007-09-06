@@ -27,17 +27,22 @@ public:
 	std::string area, type, name, subname;
 
 	SpecialZone(const ZBox & zbox, const std::string &type, const std::string &name, const std::string &subname);
-	const bool global() const;
+
+	inline const bool global() const { return _global; }
+	inline const bool final() const  { return _final; }
+	inline const bool live() const   { return _live; }
 
 	void onEnter(const int slot_id);
+	void onExit(const int slot_id);
 
-	const bool final() const;
 	~SpecialZone();
 private: 
 	void onCheckpoint(const int slot_id);
 	void onHint(const int slot_id);
 	void onMessage(const int slot_id);
 	void onTimer(const int slot_id, const bool win);
+	
+	bool _global, _final, _live;
 };
 
 #endif
