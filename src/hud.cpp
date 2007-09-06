@@ -168,9 +168,19 @@ void Hud::renderRadar(const float dt, sdlx::Surface &window, const std::vector<v
 	
 	if (_radar_bg.isNull())
 		generateRadarBG(viewport); //needed for destructable layers. 
+		
+	v2<int> radar_size, radar_shift;
+	
+	if (_map_mode == MapSmall) {
+		radar_size.x = 64;
+		radar_size.y = 64;
+	} else {
+		radar_size.x = _radar_bg.getWidth();
+		radar_size.y = _radar_bg.getHeight();
+	}
 	
 	if (_radar.isNull()) {
-		_radar.createRGB(_radar_bg.getWidth(), _radar_bg.getHeight(), 32);
+		_radar.createRGB(radar_size.x, radar_size.y, 32);
 		_radar.convertAlpha();
 	}
 
@@ -183,9 +193,12 @@ void Hud::renderRadar(const float dt, sdlx::Surface &window, const std::vector<v
 	/* 2x2 split
 	[12]
 	[34]
-	*/	
-		v2<int> split(viewport.x, viewport.y);
+	*/
+		v2<int> split(viewport.x + viewport.w / 2 - msize.x / 2, viewport.y + viewport.h / 2 - msize.y / 2);
+		
 		Map->validate(split);
+		radar_shift = split;
+		//LOG_DEBUG(("split: %d %d %d %d", split.x, split.y, viewport.x, viewport.y));
 		split *= v2<int>(_radar_bg.getWidth(), _radar_bg.getHeight());
 		split /= msize;
 		//int split_x = (viewport.w - viewport.x) * _radar_bg.getWidth() / msize.x, split_y = (viewport.h - viewport.y) * _radar_bg.getWidth() / msize.x;
@@ -201,6 +214,8 @@ void Hud::renderRadar(const float dt, sdlx::Surface &window, const std::vector<v
 		_radar.copyFrom(_radar_bg, src4, 0, 0);
 	} else 
 		_radar.copyFrom(_radar_bg, 0, 0);
+		
+	LOG_DEBUG(("radar shift: %d %d", radar_shift.x, radar_shift.y));
 
 	_radar.lock();
 	
@@ -213,8 +228,7 @@ void Hud::renderRadar(const float dt, sdlx::Surface &window, const std::vector<v
 		v2<int> pos;
 		obj->getCenterPosition(pos);
 		if (Map->torus()) {
-			pos.x -= viewport.x;
-			pos.y -= viewport.y;
+			pos -= radar_shift;
 			Map->validate(pos);
 		}
 		_radar.putPixel(pos.x * _radar_bg.getWidth() / msize.x, pos.y * _radar_bg.getHeight() / msize.y, index2color(_radar, i + 1, 255));
