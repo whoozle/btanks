@@ -79,8 +79,9 @@ void SpecialZone::onTimer(const int slot_id, const bool win) {
 
 void SpecialZone::onExit(const int slot_id) {
 	if (type == "z-warp") {
-		LOG_DEBUG(("exit"));
-	}
+		LOG_DEBUG(("z-warp: enter"));
+	} else if (_live) 
+		throw_ex(("unhandled exit for type '%s'", type.c_str()));
 }
 
 void SpecialZone::onEnter(const int slot_id) {
@@ -104,8 +105,10 @@ void SpecialZone::onEnter(const int slot_id) {
 		Mixer->play(name, true);
 	else if (type == "reset-tune") 
 		Mixer->reset();
-	else 
-		throw_ex(("unhandled type '%s'", type.c_str()));
+	else if (type == "z-warp") {
+		LOG_DEBUG(("z-warp: enter"));
+	} else
+		throw_ex(("unhandled enter for type '%s'", type.c_str()));
 }
 
 void SpecialZone::onMessage(const int slot_id) {
