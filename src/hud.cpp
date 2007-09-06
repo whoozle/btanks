@@ -29,6 +29,7 @@
 #include "game_monitor.h"
 #include "finder.h"
 #include "mrt/random.h"
+#include "math/binary.h"
 
 static Uint32 index2color(const sdlx::Surface &surface, const unsigned idx, const Uint8 a) {
 	unsigned rgb = idx & 7;
@@ -172,8 +173,8 @@ void Hud::renderRadar(const float dt, sdlx::Surface &window, const std::vector<v
 	v2<int> radar_size;
 	
 	if (_map_mode == MapSmall) {
-		radar_size.x = window.getWidth() / 8;
-		radar_size.y = window.getHeight() / 8;
+		radar_size.x = math::min(window.getWidth() / 8, _radar_bg.getWidth());
+		radar_size.y = math::min(window.getHeight() / 8, _radar_bg.getHeight());
 	} else {
 		radar_size.x = _radar_bg.getWidth();
 		radar_size.y = _radar_bg.getHeight();
