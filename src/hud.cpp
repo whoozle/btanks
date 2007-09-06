@@ -187,7 +187,6 @@ void Hud::renderRadar(const float dt, sdlx::Surface &window, const std::vector<v
 	const int x = window.getWidth() - _radar.getWidth(), y = _background->getHeight();
 
 	v2<int> msize = Map->getSize();
-	size_t n = PlayerManager->getSlotsCount();
 
 	v2<int> radar_shift;
 	if (_map_mode == MapSmall) {
@@ -238,6 +237,7 @@ void Hud::renderRadar(const float dt, sdlx::Surface &window, const std::vector<v
 
 	_radar.lock();
 	
+	size_t n = PlayerManager->getSlotsCount();
 	for(size_t i = 0; i < n; ++i) {
 		PlayerSlot &slot = PlayerManager->getSlot(i);
 		const Object *obj = slot.getObject();
