@@ -189,10 +189,12 @@ void Hud::renderRadar(const float dt, sdlx::Surface &window, const std::vector<v
 	v2<int> msize = Map->getSize();
 	size_t n = PlayerManager->getSlotsCount();
 
-	v2<int> radar_shift(
-		viewport.x + viewport.w / 2 - msize.x / 2 - msize.x * (_radar.getWidth() - _radar_bg.getWidth()) / 2 / _radar_bg.getWidth(), 
-		viewport.y + viewport.h / 2 - msize.y / 2 - msize.y * (_radar.getHeight() - _radar_bg.getHeight()) / 2 / _radar_bg.getHeight());
-	Map->validate(radar_shift);
+	v2<int> radar_shift;
+	if (_map_mode == MapSmall) {
+		radar_shift.x = viewport.x + viewport.w / 2 - msize.x / 2 - msize.x * (_radar.getWidth() - _radar_bg.getWidth()) / 2 / _radar_bg.getWidth();
+		radar_shift.y = viewport.y + viewport.h / 2 - msize.y / 2 - msize.y * (_radar.getHeight() - _radar_bg.getHeight()) / 2 / _radar_bg.getHeight();
+		Map->validate(radar_shift);
+	}
 
 	if (Map->torus()) {
 	/* 2x2 split
@@ -262,13 +264,11 @@ void Hud::renderRadar(const float dt, sdlx::Surface &window, const std::vector<v
 	n = specials.size();
 	for(size_t i = 0; i < n; ++i) {
 		v3<int> pos = specials[i];
-		if (Map->torus()) {
+		{
 			v2<int> p(pos.x, pos.y);
-			p.x -= viewport.x;
-			p.y -= viewport.y;
+			p -= radar_shift;
 			Map->validate(p);
-			pos.x = p.x;
-			pos.y = p.y;
+			pos.x = p.x; pos.y = p.y;
 		}
 		
 		Uint32 color[2];
