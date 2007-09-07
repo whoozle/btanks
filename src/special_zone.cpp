@@ -159,8 +159,14 @@ void SpecialZone::onCheckpoint(const int slot_id) {
 			}
 
 			GameMonitor->gameOver("messages", "mission-accomplished", 5, true);
-		} else 
-			GameMonitor->displayMessage("messages", "checkpoint-reached", 3, false);
+		} else {
+			std::string type;
+			if (Config->has("multiplayer.game-type"))
+				Config->get("multiplayer.game-type", type, "deathmatch");
+
+			if (type != "racing")
+				GameMonitor->displayMessage("messages", "checkpoint-reached", 3, false);
+		}
 	}
 
 	slot.need_sync = true;
