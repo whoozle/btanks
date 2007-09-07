@@ -137,6 +137,7 @@ void SpecialZone::onCheckpoint(const int slot_id) {
 		const SpecialZone &zone = PlayerManager->getNextCheckpoint(slot);
 		if (zone.name != name) {
 			LOG_DEBUG(("wrong checkpoint"));
+			GameMonitor->displayMessage("messages", "wrong-checkpoint", 3, false);
 		}
 		return;
 	}
