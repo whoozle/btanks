@@ -1242,3 +1242,16 @@ TRY {
 		GameMonitor->displayMessage("errors", "multiplayer-exception", 1);
 })
 }
+
+const SpecialZone& IPlayerManager::getNextCheckpoint(PlayerSlot &slot) {
+	for(size_t i = 0; i < _zones.size(); ++i) {
+		if (_global_zones_reached.find(i) != _global_zones_reached.end() ||
+			slot.zones_reached.find(i) != slot.zones_reached.end()) 
+				continue;
+		return _zones[i];
+	}
+	if (slot.zones_reached.empty())
+		throw_ex(("cannot release any checkpoints"));
+	slot.zones_reached.clear();
+	return getNextCheckpoint(slot);
+}

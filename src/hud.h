@@ -60,7 +60,7 @@ private:
 	sdlx::Surface _radar_bg, _radar;
 	const sdlx::Font *_font, *_big_font;
 	const sdlx::Surface *_pointer;
-	int _pointer_dir;
+	mutable int _pointer_dir;
 	Alarm _update_radar;
 	typedef std::map<const std::string, int> IconMap;
 	IconMap _icons_map;

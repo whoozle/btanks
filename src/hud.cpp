@@ -30,6 +30,7 @@
 #include "finder.h"
 #include "mrt/random.h"
 #include "math/binary.h"
+#include "special_zone.h"
 
 static Uint32 index2color(const sdlx::Surface &surface, const unsigned idx, const Uint8 a) {
 	unsigned rgb = idx & 7;
@@ -355,7 +356,7 @@ void Hud::render(sdlx::Surface &window) const {
 
 	int c = 0;
 	for(size_t i = 0; i < n; ++i) {
-		const PlayerSlot &slot = PlayerManager->getSlot(i);
+		PlayerSlot &slot = PlayerManager->getSlot(i);
 		if (!slot.visible)
 			continue;
 
@@ -466,12 +467,21 @@ void Hud::render(sdlx::Surface &window) const {
 		} while(0);
 
 		xp = slot.viewport.x + xm;
-		yp = slot.viewport.y + ym + _background->getHeight();
+		yp = slot.viewport.y + _background->getHeight();
 
-		if (_pointer != NULL && _pointer_dir >= 0) {
-			int h = _pointer->getHeight();
-			sdlx::Rect src(_pointer_dir * h, 0, h, h);
-			window.copyFrom(*_pointer, src, xp, yp);
+		if (_pointer != NULL) {
+			const SpecialZone &zone = PlayerManager->getNextCheckpoint(slot);
+			v2<float> pos;
+			obj->getPosition(pos);
+			pos = v2<float>(zone.position.x, zone.position.y)  + zone.size.convert<float>() / 2 - pos;
+			pos.normalize();
+			//LOG_DEBUG(("direction: %g, %g", pos.x, pos.y));
+			_pointer_dir = pos.getDirection(8) - 1;
+			if (_pointer_dir >= 0) {
+				int h = _pointer->getHeight();
+				sdlx::Rect src(_pointer_dir * h, 0, h, h);
+				window.copyFrom(*_pointer, src, xp, yp);
+			}
 		}
 	}
 	

@@ -106,6 +106,8 @@ public:
 	void broadcastMessage(const std::string &area, const std::string &message, const float duration);
 	
 	void updateControls(); //recreates control methods.
+	
+	const SpecialZone& getNextCheckpoint(PlayerSlot &slot); 
 
 private: 
 	void serializeSlots(mrt::Serializator &s) const;
