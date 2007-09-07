@@ -31,7 +31,7 @@ const bool ZBox::operator<(const ZBox &other) const {
 }
 
 const bool ZBox::in(const v3<int> &p, const bool ignore_z) const {
-	if (ignore_z && getBox(position.z) != getBox(p.z))
+	if (!ignore_z && getBox(position.z) != getBox(p.z))
 		return false;
 	return (
 		p.x >= position.x && p.y >= position.y && 
