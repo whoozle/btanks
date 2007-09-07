@@ -646,13 +646,16 @@
 		<string id="mission-accomplished" lang="fr">MISSION ACCOMPLIE</string>
 		<string id="mission-accomplished" lang="de">EINSATZ ERFOLGREICH</string>
 		<string id="mission-accomplished" lang="it">MISSIONE CONCLUSA</string>
-                        
+
 		<string id="checkpoint-reached">CHECKPOINT REACHED</string>
 		<string id="checkpoint-reached" lang="ru">ТОЧКА СОХРАНЕНИЯ!</string>
 		<string id="checkpoint-reached" lang="fr">SAUVEGARDE ATTEINTE !</string>
 		<string id="checkpoint-reached" lang="de">SPEICHERSTELLE!</string>
 		<string id="checkpoint-reached" lang="it">CHECKPOINT RAGGIUNTO!</string>
-		        
+		
+		<string id="wrong-checkpoint">WRONG CHECKPOINT!</string>
+		<string id="wrong-checkpoint" lang="ru">НЕ ТУДА!</string>
+		
 		<string id="combo">COMBO !</string>
 		<string id="combo" lang="ru">КОМБО!</string>
 		<string id="combo" lang="fr">COMBO !</string>
