@@ -127,8 +127,19 @@ void SpecialZone::onHint(const int slot_id) {
 void SpecialZone::onCheckpoint(const int slot_id) {
 	if (PlayerManager->isClient())
 		return; //no checkpoints on client
+
+	std::string type;
+	if (Config->has("multiplayer.game-type"))
+		Config->get("multiplayer.game-type", type, "deathmatch");
 	
 	PlayerSlot &slot = PlayerManager->getSlot(slot_id);
+	if (type == "racing") {
+		const SpecialZone &zone = PlayerManager->getNextCheckpoint(slot);
+		if (zone.name != name) {
+			LOG_DEBUG(("wrong checkpoint"));
+		}
+		return;
+	}
 	{
 		int players = PlayerManager->getSlotsCount();
 	
@@ -160,10 +171,6 @@ void SpecialZone::onCheckpoint(const int slot_id) {
 
 			GameMonitor->gameOver("messages", "mission-accomplished", 5, true);
 		} else {
-			std::string type;
-			if (Config->has("multiplayer.game-type"))
-				Config->get("multiplayer.game-type", type, "deathmatch");
-
 			if (type != "racing")
 				GameMonitor->displayMessage("messages", "checkpoint-reached", 3, false);
 		}

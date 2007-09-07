@@ -563,17 +563,17 @@ TRY {
 					slot.zones_reached.find(c) == slot.zones_reached.end()) {
 					
 					LOG_DEBUG(("player[%u] zone %u reached.", (unsigned)i, (unsigned)c));
+					zone.onEnter(i);
 					slot.zones_reached.insert(c);
 					if (zone.global())
 						_global_zones_reached.insert(c);
 					
-					zone.onEnter(i);
 				} else if (in_zone && zone.live()) {
 					zone.onTick(i);
 				} else if (!in_zone && zone.live() && slot.zones_reached.find(c) != slot.zones_reached.end()) {
+					zone.onExit(i);
 					slot.zones_reached.erase(c);
 					LOG_DEBUG(("player[%u] has left zone %u", (unsigned)i, (unsigned)c));
-					zone.onExit(i);
 				} 
 			}
 			
