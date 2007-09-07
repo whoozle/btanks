@@ -51,6 +51,17 @@ void Hud::initMap() {
 	_radar.free();
 	_radar_bg.free();
 	_map_mode = MapSmall;
+	
+	_pointer = NULL;
+	_pointer_dir = -1;
+	if (Config->has("multiplayer.game-type")) {
+		std::string type; 
+		Config->get("multiplayer.game-type", type, "deathmatch");
+		if (type == "racing") {
+			_pointer = ResourceManager->loadSurface("pointer.png");
+			//_pointer_dir = 2;
+		}
+	}
 }
 
 void Hud::generateRadarBG(const sdlx::Rect &viewport) {
@@ -162,10 +173,15 @@ void Hud::renderRadar(const float dt, sdlx::Surface &window, const std::vector<v
 	}
 	if (_map_mode == MapNone)
 		return;
-	
+		
 	if (!_radar.isNull() && !_update_radar.tick(dt)) {
 		const int x = window.getWidth() - _radar.getWidth(), y = _background->getHeight();
 		window.copyFrom(_radar, x, y);
+		if (_pointer != NULL && _pointer_dir >= 0) {
+			int h = _pointer->getHeight();
+			sdlx::Rect src(_pointer_dir * h, 0, h, h);
+			window.copyFrom(*_pointer, src, x - h, y);
+		}
 		return;
 	}
 	
@@ -188,6 +204,12 @@ void Hud::renderRadar(const float dt, sdlx::Surface &window, const std::vector<v
 	}
 
 	const int x = window.getWidth() - _radar.getWidth(), y = _background->getHeight();
+
+	if (_pointer != NULL && _pointer_dir >= 0) {
+		int h = _pointer->getHeight();
+		sdlx::Rect src(_pointer_dir * h, 0, h, h);
+		window.copyFrom(*_pointer, src, x - h, y);
+	}
 
 	v2<int> msize = Map->getSize();
 
@@ -509,7 +531,7 @@ const bool Hud::renderLoadingBar(sdlx::Surface &window, const float old_progress
 	return true;
 }
 
-Hud::Hud(const int w, const int h) : _update_radar(true), _map_mode(MapSmall) {
+Hud::Hud(const int w, const int h) :  _pointer(NULL), _pointer_dir(-1), _update_radar(true), _map_mode(MapSmall) {
 	Map->load_map_final_signal.connect(sigc::mem_fun(this, &Hud::initMap));
 	Map->destroyed_cells_signal.connect(sigc::mem_fun(this, &Hud::onDestroyMap));
 
