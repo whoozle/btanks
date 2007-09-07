@@ -208,5 +208,5 @@ void SpecialZone::onTick(const int slot_id) {
 			o->setZBox(position.z * 2000);
 	}
 
-	LOG_DEBUG(("delta left: %d, %d, delta right: %d, %d", left_pos.x - c_pos.x, left_pos.y - c_pos.y, right_pos.x - c_pos.x, right_pos.y - c_pos.y));
+	//LOG_DEBUG(("delta left: %d, %d, delta right: %d, %d", left_pos.x - c_pos.x, left_pos.y - c_pos.y, right_pos.x - c_pos.x, right_pos.y - c_pos.y));
 }
