@@ -204,7 +204,12 @@ void SpecialZone::onTick(const int slot_id) {
 	if (name == "right") {
 		if (right_pos.x >= c_pos.x && o_z != (position.z + 1) && vel.x > 0)
 			o->setZBox((position.z + 1) * 2000);
-		if (left_pos.x < c_pos.x && o_z != position.z && vel.x < 0) 
+		if (right_pos.x < c_pos.x && o_z != position.z && vel.x < 0) 
+			o->setZBox(position.z * 2000);
+	} else if (name == "left") {
+		if (left_pos.x < c_pos.x && o_z != (position.z + 1) && vel.x < 0)
+			o->setZBox((position.z + 1) * 2000);
+		if (left_pos.x >= c_pos.x && o_z != position.z && vel.x > 0) 
 			o->setZBox(position.z * 2000);
 	}
 
