@@ -60,6 +60,7 @@ void Hud::generateRadarBG(const sdlx::Rect &viewport) {
 	Map->getZBoxes(layers);
 
 	GET_CONFIG_VALUE("hud.radar.zoom", int, zoom, 2);
+	GET_CONFIG_VALUE("hud.radar.inverse", bool, hri, false);
 	const Matrix<int>& matrix = Map->getImpassabilityMatrix(0);
 	
 	_radar_bg.createRGB(zoom * matrix.getWidth(), zoom * matrix.getHeight(), 32);
@@ -86,7 +87,8 @@ void Hud::generateRadarBG(const sdlx::Rect &viewport) {
 				int v = matrix.get((ry + h) % h, (rx + w) % w);
 				if (v < 0 || v > 100) 
 					v = 100;
-				v = 100 - v;
+				if (hri)
+					v = 100 - v;
 			
 				for(int yy = 0; yy < zoom; ++yy) 
 					for(int xx = 0; xx < zoom; ++xx) {
