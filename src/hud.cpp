@@ -59,7 +59,7 @@ void Hud::initMap() {
 		Config->get("multiplayer.game-type", type, "deathmatch");
 		if (type == "racing") {
 			_pointer = ResourceManager->loadSurface("pointer.png");
-			//_pointer_dir = 2;
+			_pointer_dir = 2;
 		}
 	}
 }
@@ -177,11 +177,6 @@ void Hud::renderRadar(const float dt, sdlx::Surface &window, const std::vector<v
 	if (!_radar.isNull() && !_update_radar.tick(dt)) {
 		const int x = window.getWidth() - _radar.getWidth(), y = _background->getHeight();
 		window.copyFrom(_radar, x, y);
-		if (_pointer != NULL && _pointer_dir >= 0) {
-			int h = _pointer->getHeight();
-			sdlx::Rect src(_pointer_dir * h, 0, h, h);
-			window.copyFrom(*_pointer, src, x - h, y);
-		}
 		return;
 	}
 	
@@ -204,13 +199,6 @@ void Hud::renderRadar(const float dt, sdlx::Surface &window, const std::vector<v
 	}
 
 	const int x = window.getWidth() - _radar.getWidth(), y = _background->getHeight();
-
-	if (_pointer != NULL && _pointer_dir >= 0) {
-		int h = _pointer->getHeight();
-		sdlx::Rect src(_pointer_dir * h, 0, h, h);
-		window.copyFrom(*_pointer, src, x - h, y);
-	}
-
 	v2<int> msize = Map->getSize();
 
 	v2<int> radar_shift;
@@ -476,6 +464,15 @@ void Hud::render(sdlx::Surface &window) const {
 			xp += _font->render(window, xp, yp + font_dy, mrt::formatString("%-2d ", slot.frags));
 			
 		} while(0);
+
+		xp = slot.viewport.x + xm;
+		yp = slot.viewport.y + ym + _background->getHeight();
+
+		if (_pointer != NULL && _pointer_dir >= 0) {
+			int h = _pointer->getHeight();
+			sdlx::Rect src(_pointer_dir * h, 0, h, h);
+			window.copyFrom(*_pointer, src, xp, yp);
+		}
 	}
 	
 	if (c >= 2) {
