@@ -257,7 +257,7 @@ void PlayerSlot::spawnPlayer(const std::string &classname, const std::string &an
 	
 	std::string type;
 	Config->get("multiplayer.game-type", type, "deathmatch");
-	if (type == "deathmatch") {
+	if (type == "deathmatch" || type == "racing") {
 		//moo	
 	} else if (type == "cooperative") {
 		/*

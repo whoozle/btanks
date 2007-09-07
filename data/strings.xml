@@ -38,6 +38,9 @@
 		<string id="off" lang="it">SPENTO</string>
 
 		<area id="modes">
+			<string id="racing">RACING</string>
+			<string id="racing" lang="ru">ГОНКИ</string>
+			
 			<string id="deathmatch">DEATHMATCH</string>
 			<string id="deathmatch" lang="ru">ДЕСМАТЧ</string>
 			<string id="deathmatch" lang="fr">COMBAT À MORT</string>
