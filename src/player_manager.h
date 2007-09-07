@@ -108,6 +108,7 @@ public:
 	void updateControls(); //recreates control methods.
 	
 	const SpecialZone& getNextCheckpoint(PlayerSlot &slot); 
+	void fixCheckpoints(PlayerSlot &slot, const SpecialZone &zone); 
 
 private: 
 	void serializeSlots(mrt::Serializator &s) const;

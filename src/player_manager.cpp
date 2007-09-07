@@ -1258,11 +1258,31 @@ const SpecialZone& IPlayerManager::getNextCheckpoint(PlayerSlot &slot) {
 			throw_ex(("cannot release any checkpoints"));
 
 		//clear checkpoint list
+		LOG_DEBUG(("all checkpoints reached. cleaning up..."));
+		size_t last = 0;
 		for(size_t i = 0; i < _zones.size(); ++i) {
 			const SpecialZone &zone = _zones[i];
-			if (zone.type == "checkpoint")
+			if (zone.type == "checkpoint") {
+				last = i;
 				slot.zones_reached.erase(i);
+			}
 		}
+		slot.zones_reached.insert(last);
 		final = true;
 	} while(true);
+}
+
+void IPlayerManager::fixCheckpoints(PlayerSlot &slot, const SpecialZone &zone) {
+	for(size_t i = 0; i < _zones.size(); ++i) {
+		const SpecialZone &zone = _zones[i];
+		if (zone.type == "checkpoint")
+			slot.zones_reached.erase(i);
+	}
+	for(size_t i = 0; i < _zones.size(); ++i) {
+		const SpecialZone &z = _zones[i];
+		if (zone.type == "checkpoint")
+			slot.zones_reached.insert(i);
+		if (z.name == zone.name)
+			return;
+	}
 }

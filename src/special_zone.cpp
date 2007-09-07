@@ -136,10 +136,11 @@ void SpecialZone::onCheckpoint(const int slot_id) {
 	if (type == "racing") {
 		const SpecialZone &zone = PlayerManager->getNextCheckpoint(slot);
 		if (zone.name != name) {
-			LOG_DEBUG(("wrong checkpoint"));
+			LOG_DEBUG(("wrong checkpoint, next checkpoint: %s", zone.name.c_str()));
 			GameMonitor->displayMessage("messages", "wrong-checkpoint", 3, false);
+			return;
 		}
-		return;
+		PlayerManager->fixCheckpoints(slot, zone); //remove all wrong checkpoints from list
 	}
 	{
 		int players = PlayerManager->getSlotsCount();
