@@ -59,7 +59,7 @@ void Hud::initMap() {
 		Config->get("multiplayer.game-type", type, "deathmatch");
 		if (type == "racing") {
 			_pointer = ResourceManager->loadSurface("pointer.png");
-			_pointer_dir = 2;
+			//_pointer_dir = 2;
 		}
 	}
 }
