@@ -247,6 +247,7 @@ TRY {
 		}
 
 		assert(slot.id == obj->getID());
+		obj->uninterpolate();
 		obj->interpolate();
 		
 		float dt = (now + slot.net_stats.getDelta() - timestamp) / 1000.0f; 
