@@ -56,8 +56,8 @@ public:
 	void startClient(const std::string &address, const size_t n);
 	void clear();
 	
-	const bool isClient() const { return _client != NULL; }
-	const bool isServer() const { return _server != NULL; }	
+	inline const bool isClient() const { return _client != NULL; }
+	inline const bool isServer() const { return _server != NULL; }	
 	const bool isServerActive() const;
 
 	void addSlot(const v3<int> &position);
