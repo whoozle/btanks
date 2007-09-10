@@ -42,6 +42,7 @@ void Object::Event::serialize(mrt::Serializator &s) const {
 	s.add(repeat);
 }
 void Object::Event::deserialize(const mrt::Serializator &s) {
+	cached_pose = NULL;
 	s.get(name);
 	s.get(repeat);
 }
@@ -554,6 +555,11 @@ void Object::deserialize(const mrt::Serializator &s) {
 		_group[name] = id;
 	}
 	_blinking.deserialize(s);
+
+	_animation = NULL;
+	_model = NULL;
+	_surface = NULL;
+	_cmap = NULL;
 
 	checkAnimation();
 }

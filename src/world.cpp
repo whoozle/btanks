@@ -1304,7 +1304,6 @@ Object * IWorld::deserializeObject(const mrt::Serializator &s) {
 					result = ao = ResourceManager->createObject(rn);
 					//LOG_DEBUG(("created ('%s', '%s')", rn.c_str(), an.c_str()));
 					ao->deserialize(s);
-					ao->init(ao->animation);
 					
 					delete o;
 					o = NULL;
@@ -1318,7 +1317,6 @@ Object * IWorld::deserializeObject(const mrt::Serializator &s) {
 				assert(ao != NULL);
 				
 				ao->deserialize(s);
-				ao->init(ao->animation);
 				
 				_objects[id] = ao;
 				ao = NULL;
