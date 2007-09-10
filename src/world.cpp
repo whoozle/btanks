@@ -1413,8 +1413,8 @@ void IWorld::interpolateObject(Object *o) {
 	
 	const float distance = o->_position.distance(o->_interpolation_position_backup);
 	if (distance < 1 || distance > mdd) {
-		o->_position = o->_interpolation_position_backup;
 		o->_interpolation_position_backup.clear();
+		o->_interpolation_progress = 1.0f;
 		return;
 	}
 			
