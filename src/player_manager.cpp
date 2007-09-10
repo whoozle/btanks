@@ -248,7 +248,7 @@ TRY {
 
 		assert(slot.id == obj->getID());
 		//obj->uninterpolate();
-		obj->interpolate();
+		//obj->interpolate();
 		
 		float dt = (now + slot.net_stats.getDelta() - timestamp) / 1000.0f; 
 		LOG_DEBUG(("player state, delta: %+d, dt: %g", slot.net_stats.getDelta(), dt));
@@ -263,7 +263,7 @@ TRY {
 		}
 		
 		World->tick(*obj, dt, false);
-		World->interpolateObject(obj);
+		//World->interpolateObject(obj);
 		break;
 	} 
 	case Message::UpdatePlayers: { 
