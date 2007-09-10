@@ -647,16 +647,14 @@ TRY {
 			o._velocity.fromDirection(o._direction_idx, o.getDirectionsNumber());
 				
 	} else {
-		if (do_calculate) {
-			//regular calculate
-			TRY { 
-				if (o.disable_ai) {
-					o.Object::calculate(dt);
-				} else {
-					o.calculate(dt);
-				}
-			} CATCH("calling o.calculate", throw;)
-		}
+		//regular calculate
+		TRY { 
+			if (o.disable_ai || !do_calculate) {
+				o.Object::calculate(dt);
+			} else {
+				o.calculate(dt);
+			}
+		} CATCH("calling o.calculate", throw;)
 	}
 
 TRY {
