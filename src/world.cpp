@@ -1222,9 +1222,12 @@ Object * IWorld::spawnGrouped(const Object *src, const std::string &classname, c
 }
 
 void IWorld::serializeObjectPV(mrt::Serializator &s, const Object *o) const {
-	o->_position.serialize(s);
-	o->_velocity.serialize(s);
-	o->_velocity_fadeout.serialize(s);
+	if (o->_interpolation_progress < 1.0f) {
+		s.add(o->_position + o->_interpolation_vector * ( 1.0f - o->_interpolation_progress ));
+	} else 
+		s.add(o->_position);
+	s.add(o->_velocity);
+	s.add(o->_velocity_fadeout);
 	s.add(o->getZ());
 }
 
@@ -1241,6 +1244,7 @@ void IWorld::deserializeObjectPV(const mrt::Serializator &s, Object *o) {
 		return;
 	}
 	o->_interpolation_position_backup = o->_position;
+	o->_interpolation_progress = 1.0f;
 	
 	o->_position.deserialize(s);
 	o->_velocity.deserialize(s);

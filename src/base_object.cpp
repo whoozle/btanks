@@ -78,8 +78,12 @@ void BaseObject::serialize(mrt::Serializator &s) const {
 
 	s.add(_dead);
 	s.add(_variants);
-	
-	_position.serialize(s);
+
+	if (_interpolation_progress < 1.0f) {
+		s.add(_position + _interpolation_vector * ( 1.0f - _interpolation_progress));
+	} else 
+		s.add(_position);
+
 	s.add(_z);
 	
 	int n = _owners.size();
@@ -379,6 +383,7 @@ void BaseObject::updateStateFromVelocity() {
 
 void BaseObject::interpolate() {
 	_interpolation_position_backup = _position;
+	_interpolation_progress = 1.0f;
 }
 
 void BaseObject::uninterpolate() {
