@@ -252,11 +252,6 @@ TRY {
 		
 		float dt = (now + slot.net_stats.getDelta() - timestamp) / 1000.0f; 
 		LOG_DEBUG(("player state, delta: %+d, dt: %g", slot.net_stats.getDelta(), dt));
-		if (dt < 0) {
-			slot.net_stats.updateDelta(slot.net_stats.getDelta() + (int)(2 * dt * 1000));
-			dt = (now + slot.net_stats.getDelta() - timestamp) / 1000.0f;
-			LOG_DEBUG(("corrected player state, delta: %+d, dt: %g", slot.net_stats.getDelta(), dt));
-		}
 		if (dt < 0) 
 			dt = 0;
 		World->tick(*obj, -dt, false);
