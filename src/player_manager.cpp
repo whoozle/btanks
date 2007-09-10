@@ -707,7 +707,8 @@ void IPlayerManager::startServer() {
 	clear();
 	 
 	_server = new Server;
-	_server->init(9876);
+	GET_CONFIG_VALUE("multiplayer.port", int, port, 9876);
+	_server->init(port);
 }
 
 void IPlayerManager::startClient(const std::string &address, const size_t n) {
@@ -715,7 +716,7 @@ void IPlayerManager::startClient(const std::string &address, const size_t n) {
 	
 	_local_clients = n;
 	World->setSafeMode(true);
-	unsigned port = 9876;
+	GET_CONFIG_VALUE("multiplayer.port", int, port, 9876);
 	TRY {
 		_client = new Client;
 		_client->init(address, port);
