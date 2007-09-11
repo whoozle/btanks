@@ -343,8 +343,9 @@ TRY {
 			if (slot.remote != cid)
 				continue;
 			
-			delta = (client_delta)? slot.net_stats.updateDelta(-client_delta): slot.net_stats.getDelta();
-			//delta = slot.net_stats.updateDelta(client_ts - server_ts + (int)slot.net_stats.getPing());
+			if (client_delta) 
+				slot.net_stats.updateDelta(-client_delta);
+			delta = slot.net_stats.getDelta();
 		}
 		
 		out.add(delta);
@@ -369,10 +370,9 @@ TRY {
 			throw_ex(("bogus timestamp sent: %u", server_ts));
 
 		ping = _net_stats.updatePing(ping);
-		int delta1 = server_ts - client_ts, delta2 = server_ts - old_client_ts;
-		int delta = (delta1 + delta2) / 2;
+		int delta = server_ts - (client_ts + old_client_ts) / 2;
 		
-		LOG_DEBUG(("pang: timestamps delta: (%+d, %+d), server delta: %+d", delta1, delta2, server_delta));
+		LOG_DEBUG(("pang: delta: %+d, server delta: %+d", delta, server_delta));
 		
 		_net_stats.updateDelta(delta);
 		if (server_delta)
@@ -406,9 +406,8 @@ TRY {
 		if (ping < 0) 
 			throw_ex(("bogus timestamp sent: %u", server_ts));
 
-		int delta1 = client_ts - server_ts, delta2 = client_ts - old_server_ts;
-		int delta = (delta1 + delta2) / 2;
-		LOG_DEBUG(("pong: timestamps delta: (%+d, %+d), client delta: %+d", delta1, delta2, client_delta));
+		int delta = client_ts - (server_ts + old_server_ts) / 2;
+		LOG_DEBUG(("pong: delta: %+d, client delta: %+d", delta, client_delta));
 	
 		for(size_t id = 0; id < _players.size(); ++id) {
 			PlayerSlot &slot = _players[id];
@@ -417,8 +416,8 @@ TRY {
 		
 			slot.net_stats.updatePing(ping);
 			slot.net_stats.updateDelta(delta);
-			if (client_delta)
-				slot.net_stats.updateDelta(-client_delta);
+			//if (client_delta)
+			//	slot.net_stats.updateDelta(-client_delta);
 			LOG_DEBUG(("player %u: ping: %g ms, delta: %+d", (unsigned)id, slot.net_stats.getPing(), slot.net_stats.getDelta()));		
 		}
 	} break;
