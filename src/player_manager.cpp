@@ -329,7 +329,7 @@ TRY {
 		int client_delta;
 		in.get(client_ts);
 		in.get(client_delta);
-		unsigned server_ts = SDL_GetTicks();
+		unsigned server_ts = now;
 
 		LOG_DEBUG(("ping: timestamps delta: %+d, client delta: %+d", client_ts - server_ts, client_delta));
 
@@ -358,7 +358,7 @@ TRY {
 	
 	case Message::Pang: {
 		mrt::Serializator out, in(&message.data);
-		unsigned old_client_ts, server_ts, client_ts = SDL_GetTicks();
+		unsigned old_client_ts, server_ts, client_ts = now;
 		int server_delta;
 		in.get(old_client_ts);
 		in.get(server_ts);
@@ -382,7 +382,7 @@ TRY {
 		
 		GET_CONFIG_VALUE("multiplayer.ping-interval", int, ping_interval, 1500);
 
-		_next_ping = SDL_GetTicks() + ping_interval; 
+		_next_ping = now + ping_interval; 
 		
 
 		out.add(client_ts);
@@ -396,7 +396,7 @@ TRY {
 	
 	case Message::Pong: {
 		mrt::Serializator in(&message.data);
-		unsigned client_ts, old_server_ts, server_ts = SDL_GetTicks();
+		unsigned client_ts, old_server_ts, server_ts = now;
 		int client_delta;
 		in.get(client_ts);
 		in.get(old_server_ts);
