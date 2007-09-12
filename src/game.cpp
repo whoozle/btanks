@@ -212,10 +212,11 @@ void IGame::init(const int argc, char *argv[]) {
 	GET_CONFIG_VALUE("engine.sound.disable-sound", bool, no_sound, false);
 	GET_CONFIG_VALUE("engine.sound.disable-music", bool, no_music, false);
 	
-	std::string address, lang;
+	std::string address, lang, bind;
 	
 	for(int i = 1; i < argc; ++i) {
 		if (strncmp(argv[i], "--connect=", 10) == 0) { address = argv[i] + 10; _autojoin = true; }
+		else if (strncmp(argv[i], "--bind=", 7) == 0) { bind = argv[i] + 7; }
 		else if (strncmp(argv[i], "--lang=", 7) == 0) { lang = argv[i] + 7; }
 		else if (strcmp(argv[i], "--no-sound") == 0) { no_sound = true; no_music = true; }
 		else if (strcmp(argv[i], "--help") == 0) { 
@@ -228,6 +229,12 @@ void IGame::init(const int argc, char *argv[]) {
 		}
 
 	}
+	if (!bind.empty()) {
+		Var v("string");
+		v.s = bind;
+		Config->setOverride("multiplayer.bind-address", v);
+	}
+	
 	if (lang.empty()) {
 		if (Config->has("engine.language")) {
 			Config->get("engine.language", lang, std::string());
