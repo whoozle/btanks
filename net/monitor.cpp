@@ -269,11 +269,13 @@ TRY {
 		
 		if (_dgram_sock != NULL && set.check(_dgram_sock, mrt::SocketSet::Write)) {
 			Task *task = NULL;
-			sdlx::AutoMutex m(_send_q_mutex);
-			if (!_send_dgram.empty()) {
-				task = _send_dgram.front();
-				_send_dgram.pop_front();
-			} else LOG_WARN(("no event in datagram write queue!"));
+			{
+				sdlx::AutoMutex m(_send_q_mutex);
+				if (!_send_dgram.empty()) {
+					task = _send_dgram.front();
+					_send_dgram.pop_front();
+				} else LOG_WARN(("no event in datagram write queue!"));
+			}
 			if (task != NULL) {
 				sdlx::AutoMutex m(_connections_mutex);
 				ConnectionMap::const_iterator i = _connections.find(task->id);
