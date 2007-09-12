@@ -36,7 +36,6 @@ void Server::init(const unsigned port) {
 	LOG_DEBUG(("starting game server at port %d", port));
 	_sock.listen(port, true);
 	_sock.noDelay();
-	_udp_sock.listen(port, true);
 
 	_monitor = new Monitor;
 	_monitor->start();
@@ -50,7 +49,6 @@ void Server::tick(const float dt) {
 		//send world coordinated, receive events.
 		mrt::SocketSet set;
 		set.add(_sock);
-		set.add(_udp_sock);
 		
 		int socks_n = set.check(0);
 		if (socks_n > 0 && set.check(_sock, mrt::SocketSet::Read)) {
