@@ -39,8 +39,6 @@ public:
 	const int recv(void *data, const int len) const;
 	
 	void accept(TCPSocket &client);
-
-	friend class SocketSet;
 };
 
 }

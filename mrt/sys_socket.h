@@ -31,6 +31,8 @@ namespace mrt {
 		virtual ~Socket();
 	protected: 
 		int _sock;
+
+		friend class SocketSet;
 	};
 }
 
