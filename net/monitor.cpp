@@ -263,8 +263,48 @@ TRY {
 			continue;
 			
 		if (_dgram_sock != NULL && set.check(_dgram_sock, mrt::SocketSet::Read)) {
-			LOG_DEBUG(("incoming datagram!"));
-			
+			unsigned char buf[1500]; //fixme
+			mrt::Socket::addr addr;
+			int r = _dgram_sock->recv(addr, buf, sizeof(buf));
+			LOG_DEBUG(("recv() == %d", r));
+			if (r > 9) {
+				sdlx::AutoMutex m(_connections_mutex);
+				ConnectionMap::const_iterator i;
+				for(i = _connections.begin(); i != _connections.end(); ++i) {
+					if (addr == i->second->sock->getAddress()) 
+						break;
+				}
+				if (i != _connections.end()) {
+					m.unlock();
+					unsigned long len = ntohl(*((uint32_t *)buf));
+					unsigned long ts = ntohl(*((uint32_t *)(buf + 4)));
+					GET_CONFIG_VALUE("multiplayer.maximum-packet-length", int, max_len, 1024 * 1024);
+					if (len > (unsigned long)max_len)
+						throw_ex(("recv'ed packet length of %u. it seems to be far too long for regular packet (probably broken/obsoleted client)", (unsigned int)len));
+					unsigned char flags = buf[8];
+
+					Task * t = new Task(i->first);
+					t->data->setData(buf + 9, r - 9);
+					t->timestamp = ts;
+					t->len = len;
+					t->flags = flags;
+
+					if (t->flags & 1) {
+						mrt::Chunk data;
+						mrt::ZStream::decompress(data, *t->data, false);
+						//LOG_DEBUG(("recv(%d, %d) (decompressed: %d)", t->id, t->data->getSize(), data.getSize()));
+						*t->data = data;
+					}
+
+					sdlx::AutoMutex m2(_result_mutex);
+					_result_q.push_back(t);
+				} else {
+					in_addr a;
+					memset(&a, 0, sizeof(a));
+					a.s_addr = addr.ip;
+					LOG_WARN(("incoming datagram from unknown client(%s:%d)", inet_ntoa(a), addr.port));
+				}
+			} else LOG_WARN(("short datagram recv-ed [%d]", r));
 		}
 		
 		if (_dgram_sock != NULL && set.check(_dgram_sock, mrt::SocketSet::Write)) {
