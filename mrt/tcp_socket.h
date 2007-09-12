@@ -32,7 +32,7 @@ public:
 	
 	void noDelay(const bool value = true);
 	
-	void listen(const unsigned port, const bool reuse = false);
+	void listen(const std::string &addr, const unsigned port, const bool reuse = false);
 	void connect(const std::string &host, const int port, const bool no_delay = false);
 	const int send(const void *data, const int len) const;
 	//void send(const mrt::Chunk &data) const;
