@@ -51,7 +51,6 @@ void UDPSocket::create() {
 	Socket::create(PF_INET, SOCK_DGRAM, 0);
 }
 
-
 const int UDPSocket::send(const Socket::addr &addr, const void *data, const int len) const {
 	sockaddr_in sockaddr;
 
