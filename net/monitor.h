@@ -24,6 +24,7 @@
 #include <map>
 #include "sdlx/thread.h"
 #include "sdlx/mutex.h"
+#include "mrt/udp_socket.h"
 
 namespace mrt {
 	class Chunk;
@@ -37,12 +38,14 @@ public:
 	void add(const int id, Connection *);
 	const bool active() const;
 	
-	void send(const int id, const mrt::Chunk &data);
-	void broadcast(const mrt::Chunk &data);
+	void send(const int id, const mrt::Chunk &data, const bool dgram = false);
+	void broadcast(const mrt::Chunk &data, const bool dgram = false);
 	const bool recv(int &id, mrt::Chunk &data, int &timestamp);
 	const bool disconnected(int &id);
 	
 	void disconnect(const int id);
+	
+	void add(mrt::UDPSocket *socket);
 	
 	~Monitor();
 
@@ -69,17 +72,18 @@ private:
 	Task * createTask(const int id, const mrt::Chunk &data);
 	
 	typedef std::deque<Task *> TaskQueue;
-	TaskQueue _send_q, _recv_q, _result_q;
+	TaskQueue _send_q, _send_dgram, _recv_q, _result_q;
 	std::deque<int> _disconnections;
 	
 	ConnectionMap _connections;
-	sdlx::Mutex _connections_mutex, _result_mutex, _send_q_mutex;
+	sdlx::Mutex _connections_mutex, _result_mutex, _send_q_mutex, _send_dgram_mutex;
 	
 	TaskQueue::iterator findTask(TaskQueue &queue, const int conn_id);
 	void eraseTask(TaskQueue &q, const TaskQueue::iterator &i);
 	void eraseTasks(TaskQueue &q, const int conn_id);
 	
 	int _comp_level;
+	mrt::UDPSocket *_dgram_sock;
 };
 
 #endif

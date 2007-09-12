@@ -61,11 +61,16 @@ Monitor::Monitor() : _running(false),
 	_send_q(), _recv_q(), _result_q(), 
 	_disconnections(), _connections(), 
 	_connections_mutex(), _result_mutex(), _send_q_mutex(), 
-	_comp_level(0) {
+	_comp_level(0), _dgram_sock(NULL) {
 	GET_CONFIG_VALUE("multiplayer.compression-level", int, cl, 1);
 	_comp_level = cl;
 	LOG_DEBUG(("compression level = %d", _comp_level));
 }
+
+void Monitor::add(mrt::UDPSocket *socket) {
+	_dgram_sock = socket;
+}
+
 
 void Monitor::add(const int id, Connection *c) {
 	sdlx::AutoMutex m(_connections_mutex);
@@ -107,7 +112,7 @@ Monitor::Task * Monitor::createTask(const int id, const mrt::Chunk &rawdata) {
 }
 
 	
-void Monitor::send(const int id, const mrt::Chunk &rawdata) {
+void Monitor::send(const int id, const mrt::Chunk &rawdata, const bool dgram) {
 	{
 		sdlx::AutoMutex m(_connections_mutex);
 		if (_connections.find(id) == _connections.end()) {
@@ -118,10 +123,10 @@ void Monitor::send(const int id, const mrt::Chunk &rawdata) {
 	Task *t = createTask(id, rawdata);
 	
 	sdlx::AutoMutex m(_send_q_mutex);
-	_send_q.push_back(t);
+	(dgram?_send_dgram:_send_q).push_back(t);
 }
 
-void Monitor::broadcast(const mrt::Chunk &data) {
+void Monitor::broadcast(const mrt::Chunk &data, const bool dgram) {
 	std::deque<Task *> tasks;
 	{
 		sdlx::AutoMutex m(_connections_mutex);
@@ -132,7 +137,7 @@ void Monitor::broadcast(const mrt::Chunk &data) {
 	
 	sdlx::AutoMutex m(_send_q_mutex);
 	while(!tasks.empty()) {
-		_send_q.push_back(tasks.front());
+		(dgram?_send_dgram:_send_q).push_back(tasks.front());
 		tasks.pop_front();
 	}
 }
@@ -247,10 +252,38 @@ TRY {
 		if (cids.empty()) {
 			sdlx::Timer::microsleep(10000);
 			continue;
-		} 
+		}
+		
+		if (_dgram_sock != NULL) {
+			sdlx::AutoMutex m(_send_dgram_mutex);
+			set.add(_dgram_sock, _send_dgram.empty()? mrt::SocketSet::Read: mrt::SocketSet::Read | mrt::SocketSet::Write);
+		}
 
 		if (set.check(1) == 0) 
 			continue;
+			
+		if (_dgram_sock != NULL && set.check(_dgram_sock, mrt::SocketSet::Read)) {
+			LOG_DEBUG(("incoming datagram!"));
+			
+		}
+		
+		if (_dgram_sock != NULL && set.check(_dgram_sock, mrt::SocketSet::Write)) {
+			Task *task = NULL;
+			sdlx::AutoMutex m(_send_q_mutex);
+			if (!_send_dgram.empty()) {
+				task = _send_dgram.front();
+				_send_dgram.pop_front();
+			} else LOG_WARN(("no event in datagram write queue!"));
+			if (task != NULL) {
+				sdlx::AutoMutex m(_connections_mutex);
+				ConnectionMap::const_iterator i = _connections.find(task->id);
+				if (i != _connections.end()) {
+					_dgram_sock->send(i->second->sock->getAddress(), task->data->getPtr(), task->data->getSize());
+				} else LOG_WARN(("task to invalid connection %d found (purged)", task->id));
+				task->clear();
+				delete task;
+			}
+		}
 		
 		for(std::set<int>::iterator i = cids.begin(); i != cids.end(); ++i) {
 			const int cid = *i;
@@ -365,6 +398,7 @@ TRY {
 Monitor::~Monitor() {
 	_running = false;
 	wait();
+	LOG_DEBUG(("stopped network monitor thread."));
 
 	for(ConnectionMap::iterator i = _connections.begin(); i != _connections.end(); ++i) {
 		delete i->second;
