@@ -121,6 +121,9 @@ void TCPSocket::accept(TCPSocket &client) {
 		throw_io(("accept"));
 	client.close();
 	client._sock = s;
+
+	client._addr.ip = addr.sin_addr.s_addr;
+	client._addr.port = ntohs(addr.sin_port); //real port
 }
 
 #ifdef WIN32
