@@ -39,6 +39,9 @@ public:
 	const int recv(void *data, const int len) const;
 	
 	void accept(TCPSocket &client);
+	inline const Socket::addr getAddress() const { return _addr; }
+private: 
+	Socket::addr _addr;
 };
 
 }

@@ -23,6 +23,11 @@
 namespace mrt {
 	class MRTAPI Socket {
 	public:
+		struct addr {
+			addr() { ip[0] = ip[1] = ip[2] = ip[3] = 0; }
+			unsigned char ip[4];
+		};
+
 		Socket();
 		static void init();
 		void create(const int af, int type, int protocol);
