@@ -269,13 +269,16 @@ TRY {
 			LOG_DEBUG(("recv() == %d", r));
 			if (r > 9) {
 				sdlx::AutoMutex m(_connections_mutex);
-				ConnectionMap::const_iterator i;
+				ConnectionMap::iterator i;
 				for(i = _connections.begin(); i != _connections.end(); ++i) {
 					//fixme: translate remote udp socket to connection id ! 
 					if (addr.ip == i->second->sock->getAddress().ip) 
 						break;
 				}
 				if (i != _connections.end()) {
+					//update udp connection status. 
+					i->second->addr = addr;
+				
 					m.unlock();
 					unsigned long len = ntohl(*((uint32_t *)buf));
 					unsigned long ts = ntohl(*((uint32_t *)(buf + 4)));
@@ -293,7 +296,7 @@ TRY {
 					if (t->flags & 1) {
 						mrt::Chunk data;
 						mrt::ZStream::decompress(data, *t->data, false);
-						//LOG_DEBUG(("recv(%d, %d) (decompressed: %d)", t->id, t->data->getSize(), data.getSize()));
+						LOG_DEBUG(("recv(%d, %u) (decompressed: %u)", t->id, (unsigned)t->data->getSize(), (unsigned)data.getSize()));
 						*t->data = data;
 					}
 
@@ -321,8 +324,9 @@ TRY {
 				sdlx::AutoMutex m(_connections_mutex);
 				ConnectionMap::const_iterator i = _connections.find(task->id);
 				if (i != _connections.end()) {
-					int r = _dgram_sock->send(i->second->sock->getAddress(), task->data->getPtr(), task->data->getSize());
-					LOG_DEBUG(("sendto(%u) == %d", (unsigned)task->data->getSize(), r));
+					mrt::Socket::addr addr= i->second->addr.empty()?i->second->sock->getAddress():i->second->addr;
+					int r = _dgram_sock->send(addr, task->data->getPtr(), task->data->getSize());
+					LOG_DEBUG(("sendto(%08x:%d, %u) == %d", addr.ip, addr.port, (unsigned)task->data->getSize(), r));
 				} else LOG_WARN(("task to invalid connection %d found (purged)", task->id));
 				task->clear();
 				delete task;

@@ -20,6 +20,8 @@
  */
 
 
+#include "mrt/sys_socket.h"
+
 namespace mrt  {
 	class TCPSocket;
 }
@@ -30,6 +32,7 @@ public:
 	~Connection();
 		
 	mrt::TCPSocket * sock;
+	mrt::Socket::addr addr;
 	//int last_message_ts, last_my_ts, delta;
 private: 
 	Connection(const Connection &);
