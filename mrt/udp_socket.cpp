@@ -73,5 +73,6 @@ const int UDPSocket::recv(Socket::addr &addr, void *data, const int len) const {
 
 	int r = ::recvfrom(_sock, data, len, 0, (struct sockaddr *)&sockaddr, &socklen);
 	addr.ip = sockaddr.sin_addr.s_addr;
+	addr.port = ntohs(sockaddr.sin_port);
 	return r;
 }
