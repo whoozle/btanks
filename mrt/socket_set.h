@@ -23,7 +23,8 @@
 
 namespace mrt {
 
-class TCPSocket;
+class Socket;
+
 class MRTAPI SocketSet {
 public: 
 	static const int Read;
@@ -31,13 +32,13 @@ public:
 	static const int Exception;
 
 	SocketSet();
-	void add(const TCPSocket &sock, const int how = Read | Write | Exception);
-	void add(const TCPSocket *sock, const int how = Read | Write | Exception);
-	void remove(const TCPSocket &sock);
+	void add(const Socket &sock, const int how = Read | Write | Exception);
+	void add(const Socket *sock, const int how = Read | Write | Exception);
+	void remove(const Socket &sock);
 	
 	const int check(const unsigned int timeout);
-	const bool check(const TCPSocket &sock, const int how);
-	const bool check(const TCPSocket *sock, const int how);
+	const bool check(const Socket &sock, const int how);
+	const bool check(const Socket *sock, const int how);
 	
 	void reset();
 	

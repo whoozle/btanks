@@ -48,7 +48,7 @@ void SocketSet::reset() {
 }
 
 
-void SocketSet::add(const TCPSocket &sock, const int how) {
+void SocketSet::add(const Socket &sock, const int how) {
 	int fd = sock._sock;
 	if (fd == -1)
 		throw_ex(("attempt to add uninitialized socket to set"));
@@ -70,14 +70,14 @@ void SocketSet::add(const TCPSocket &sock, const int how) {
 		_n = fd + 1;
 }
 
-void SocketSet::add(const TCPSocket *sock, const int how) {
+void SocketSet::add(const Socket *sock, const int how) {
 	if (sock == NULL)
 		throw_ex(("attempt to add NULL socket to set"));
 	add(*sock, how);
 }
 
 
-void SocketSet::remove(const TCPSocket &sock) {
+void SocketSet::remove(const Socket &sock) {
 	if (sock._sock == -1)
 		throw_ex(("attempt to remove uninitialized socket from set"));
 
@@ -98,7 +98,7 @@ const int SocketSet::check(const unsigned int timeout) {
 	return r;
 }
 
-const bool SocketSet::check(const TCPSocket &sock, const int how) {
+const bool SocketSet::check(const Socket &sock, const int how) {
 	int fd = sock._sock;
 	if (fd == -1)
 		throw_ex(("check on uninitialized socket"));
@@ -112,7 +112,7 @@ const bool SocketSet::check(const TCPSocket &sock, const int how) {
 	return false;
 }
 
-const bool SocketSet::check(const TCPSocket *sock, const int how) {
+const bool SocketSet::check(const Socket *sock, const int how) {
 	return check(*sock, how);
 }
 
