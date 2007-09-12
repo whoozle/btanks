@@ -26,7 +26,7 @@
 using namespace mrt;
 
 void UDPSocket::listen(const std::string &bindaddr, const unsigned port, const bool reuse) {
-	create(PF_INET, SOCK_DGRAM, 0);
+	create();
 
 	int on = 1;
 	if (reuse)
@@ -46,6 +46,11 @@ void UDPSocket::listen(const std::string &bindaddr, const unsigned port, const b
 //	if (::listen(_sock, 10) == -1)
 //		throw_io(("listen"));	
 }
+
+void UDPSocket::create() {
+	Socket::create(PF_INET, SOCK_DGRAM, 0);
+}
+
 
 const int UDPSocket::send(const Socket::addr &addr, const void *data, const int len) const {
 	sockaddr_in sockaddr;
