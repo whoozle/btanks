@@ -77,6 +77,7 @@ void TCPSocket::connect(const std::string &host, const int port, const bool no_d
 	addr.sin_family = AF_INET;
 	addr.sin_port = htons(port);
 	addr.sin_addr.s_addr = inet_addr(host.c_str());
+
 	//add gethostbyname here.
 	if (addr.sin_addr.s_addr == (in_addr_t)-1) {
 		//try to resolve host
@@ -85,9 +86,13 @@ void TCPSocket::connect(const std::string &host, const int port, const bool no_d
 			throw_ex(("host '%s' was not found", host.c_str()));
 		addr.sin_addr = *(struct in_addr*)(he->h_addr_list[0]);
 	}
+	
 	LOG_DEBUG(("connect %s:%d", inet_ntoa(addr.sin_addr), port));
 	if (::connect(_sock, (const struct sockaddr*)&addr, sizeof(addr))	 == -1)
 		throw_io(("connect"));
+
+	_addr.ip = addr.sin_addr.s_addr;
+	_addr.port = port;
 }
 
 const int TCPSocket::send(const void *data, const int len) const {

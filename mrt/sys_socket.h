@@ -24,8 +24,9 @@ namespace mrt {
 	class MRTAPI Socket {
 	public:
 		struct addr {
-			addr() { ip[0] = ip[1] = ip[2] = ip[3] = 0; }
-			unsigned char ip[4];
+			addr() : ip(0), port(0) {}
+			unsigned ip;
+			unsigned port;
 		};
 
 		Socket();
