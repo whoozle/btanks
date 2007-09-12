@@ -27,6 +27,9 @@ namespace mrt {
 			addr() : ip(0), port(0) {}
 			unsigned ip;
 			unsigned port;
+			const bool operator==(const addr &other) const {
+				return ip == other.ip && port == other.port;
+			}
 		};
 
 		Socket();
