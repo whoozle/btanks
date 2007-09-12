@@ -40,8 +40,8 @@ void UDPSocket::listen(const unsigned port, const bool reuse) {
 	if (bind(_sock, (const sockaddr *)&addr, sizeof(addr)) == -1)
 		throw_io(("bind"));
 	
-	if (::listen(_sock, 10) == -1)
-		throw_io(("listen"));	
+//	if (::listen(_sock, 10) == -1)
+//		throw_io(("listen"));	
 }
 
 const int UDPSocket::send(const Socket::addr &addr, const void *data, const int len) const {
