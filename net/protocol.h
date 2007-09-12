@@ -52,6 +52,9 @@ public:
 	Message(const Type type);
 	
 	const char * getType() const;
+	inline const bool realtime() const {
+		return type == Ping || type == Pong || type == Pang || type == PlayerState || type == UpdatePlayers;
+	}
 
 	virtual void serialize(mrt::Serializator &s) const;
 	virtual void deserialize(const mrt::Serializator &s);

@@ -45,7 +45,9 @@ void Client::init(const std::string &host) {
 	GET_CONFIG_VALUE("multiplayer.port", int, port, 9876);
 	
 	LOG_DEBUG(("client::init('%s':%u)", host.c_str(), port));	
+	//_udp_sock.create();
 	//_udp_sock.listen(bindaddr, port);
+	_udp_sock.connect(host, port);
 	//LOG_DEBUG(("udp socket started..."));
 
 	Connection *conn = NULL;
@@ -54,7 +56,7 @@ void Client::init(const std::string &host) {
 		conn->sock->connect(host, port, true);
 		conn->sock->noDelay();
 		_monitor = new Monitor;
-		//_monitor->add(&_udp_sock);
+		_monitor->add(&_udp_sock);
 		_monitor->start();
 		_monitor->add(0, conn);
 		conn = NULL;
@@ -78,7 +80,7 @@ void Client::send(const Message &m) {
 	mrt::Chunk data;
 	m.serialize2(data);
 	
-	_monitor->send(0, data);	
+	_monitor->send(0, data, m.realtime());	
 }
 
 

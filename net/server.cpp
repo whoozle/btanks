@@ -110,7 +110,7 @@ void Server::send(const int id, const Message &m) {
 		LOG_DEBUG(("sending message '%s' to %d", m.getType(), id));
 		mrt::Chunk data;
 		m.serialize2(data);
-		_monitor->send(id, data);
+		_monitor->send(id, data, m.realtime());
 	} CATCH("send", {
 		disconnect(id);
 	});
@@ -121,7 +121,7 @@ void Server::broadcast(const Message &m) {
 		LOG_DEBUG(("broadcasting message '%s'", m.getType()));
 		mrt::Chunk data;
 		m.serialize2(data);
-		_monitor->broadcast(data);
+		_monitor->broadcast(data, m.realtime());
 	} CATCH("broadcast", {});
 }
 

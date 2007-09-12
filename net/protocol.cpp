@@ -111,3 +111,4 @@ const std::string &Message::get(const std::string &key) const {
 		throw_ex(("no attribute '%s' found", key.c_str()));
 	return i->second;
 }
+

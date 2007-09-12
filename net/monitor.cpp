@@ -271,7 +271,8 @@ TRY {
 				sdlx::AutoMutex m(_connections_mutex);
 				ConnectionMap::const_iterator i;
 				for(i = _connections.begin(); i != _connections.end(); ++i) {
-					if (addr == i->second->sock->getAddress()) 
+					//fixme: translate remote udp socket to connection id ! 
+					if (addr.ip == i->second->sock->getAddress().ip) 
 						break;
 				}
 				if (i != _connections.end()) {
