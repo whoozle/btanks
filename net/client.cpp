@@ -28,7 +28,7 @@
 #include "player_manager.h"
 #include "monitor.h"
 #include "connection.h"
-
+#include "config.h"
 
 Client::Client(): _monitor(NULL) {
 }
@@ -38,11 +38,14 @@ Client::~Client() {
 	_monitor = NULL;
 }
 
-void Client::init(const std::string &host, const unsigned port) {
+void Client::init(const std::string &host) {
 	delete _monitor;
 
+	GET_CONFIG_VALUE("multiplayer.bind-address", std::string, bindaddr, std::string());
+	GET_CONFIG_VALUE("multiplayer.port", int, port, 9876);
+	
 	LOG_DEBUG(("client::init('%s':%u)", host.c_str(), port));	
-	_udp_sock.listen(port);
+	_udp_sock.listen(bindaddr, port);
 	LOG_DEBUG(("udp socket started..."));
 
 	Connection *conn = NULL;

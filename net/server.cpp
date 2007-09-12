@@ -25,6 +25,7 @@
 #include "protocol.h"
 #include "monitor.h"
 #include "connection.h"
+#include "config.h"
 
 Server::Server()  : _monitor(NULL), _sock() {}
 Server::~Server() {
@@ -32,11 +33,15 @@ Server::~Server() {
 	_monitor = NULL;
 }
 
-void Server::init(const unsigned port) {
+void Server::init() {
+	GET_CONFIG_VALUE("multiplayer.bind-address", std::string, bindaddr, std::string());
+	GET_CONFIG_VALUE("multiplayer.port", int, port, 9876);
+
 	LOG_DEBUG(("starting game server at port %d", port));
-	_udp_sock.listen(port);
+
+	_udp_sock.listen(bindaddr, port);
 	LOG_DEBUG(("udp socket started..."));
-	_sock.listen(port, true);
+	_sock.listen(bindaddr, port, true);
 	_sock.noDelay();
 
 	_monitor = new Monitor;

@@ -31,7 +31,7 @@ class Monitor;
 class Server {
 public:
 	Server(); 
-	void init(const unsigned port);
+	void init();
 	void send(const int id, const Message &m);
 	void broadcast(const Message &m);
 	void tick(const float dt);
