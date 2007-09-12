@@ -46,6 +46,7 @@ private:
 	Monitor *_monitor;
 	
 	mrt::TCPSocket _sock;
+	mrt::UDPSocket _udp_sock;
 };
 
 

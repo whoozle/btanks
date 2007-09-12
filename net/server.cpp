@@ -34,10 +34,13 @@ Server::~Server() {
 
 void Server::init(const unsigned port) {
 	LOG_DEBUG(("starting game server at port %d", port));
+	_udp_sock.listen(port);
+	LOG_DEBUG(("udp socket started..."));
 	_sock.listen(port, true);
 	_sock.noDelay();
 
 	_monitor = new Monitor;
+	_monitor->add(&_udp_sock);
 	_monitor->start();
 }
 

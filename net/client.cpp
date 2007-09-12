@@ -42,12 +42,16 @@ void Client::init(const std::string &host, const unsigned port) {
 	delete _monitor;
 
 	LOG_DEBUG(("client::init('%s':%u)", host.c_str(), port));	
+	_udp_sock.listen(port);
+	LOG_DEBUG(("udp socket started..."));
+
 	Connection *conn = NULL;
 	TRY { 
 		conn = new Connection(new mrt::TCPSocket);
 		conn->sock->connect(host, port, true);
 		conn->sock->noDelay();
 		_monitor = new Monitor;
+		_monitor->add(&_udp_sock);
 		_monitor->start();
 		_monitor->add(0, conn);
 		conn = NULL;

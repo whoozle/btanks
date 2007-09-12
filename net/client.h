@@ -21,6 +21,7 @@
 
 
 #include <string>
+#include "mrt/udp_socket.h"
 
 class PlayerState;
 class Monitor;
@@ -37,6 +38,7 @@ public:
 
 protected:
 	Monitor *_monitor;
+	mrt::UDPSocket _udp_sock;
 private: 
 	Client(const Client &);
 	const Client &operator=(const Client&);
