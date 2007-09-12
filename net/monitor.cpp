@@ -280,7 +280,8 @@ TRY {
 				sdlx::AutoMutex m(_connections_mutex);
 				ConnectionMap::const_iterator i = _connections.find(task->id);
 				if (i != _connections.end()) {
-					_dgram_sock->send(i->second->sock->getAddress(), task->data->getPtr(), task->data->getSize());
+					int r = _dgram_sock->send(i->second->sock->getAddress(), task->data->getPtr(), task->data->getSize());
+					LOG_DEBUG(("sendto(%u) == %d", (unsigned)task->data->getSize(), r));
 				} else LOG_WARN(("task to invalid connection %d found (purged)", task->id));
 				task->clear();
 				delete task;
