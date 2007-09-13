@@ -82,7 +82,7 @@ const int UDPSocket::send(const Socket::addr &addr, const void *data, const int 
 	sockaddr.sin_addr.s_addr = addr.ip;
 	sockaddr.sin_port = htons(addr.port);
 	
-	return ::sendto(_sock, data, len, 0, (struct sockaddr *)&sockaddr, sizeof(sockaddr));
+	return ::sendto(_sock, (const char *)data, len, 0, (struct sockaddr *)&sockaddr, sizeof(sockaddr));
 }
 
 const int UDPSocket::recv(Socket::addr &addr, void *data, const int len) const {
@@ -92,7 +92,7 @@ const int UDPSocket::recv(Socket::addr &addr, void *data, const int len) const {
 
 	sockaddr.sin_family = AF_INET;
 
-	int r = ::recvfrom(_sock, data, len, 0, (struct sockaddr *)&sockaddr, &socklen);
+	int r = ::recvfrom(_sock, (char *)data, len, 0, (struct sockaddr *)&sockaddr, &socklen);
 	addr.ip = sockaddr.sin_addr.s_addr;
 	addr.port = ntohs(sockaddr.sin_port);
 	return r;
