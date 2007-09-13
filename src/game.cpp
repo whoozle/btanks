@@ -199,6 +199,12 @@ void IGame::init(const int argc, char *argv[]) {
 			if (fps_limit >= 1000) 
 				Config->set("engine.fps-limit", 120);
 		}
+		if (revision < 4975) {
+			int ds;
+			Config->get("multiplayer.deltas-samples", ds, 30);
+			if (ds >= 100)
+				Config->set("multiplayer.deltas-samples", 30);
+		}
 		
 		Config->set("engine.revision", getRevision());
 	}
