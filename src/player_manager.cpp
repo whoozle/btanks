@@ -416,8 +416,8 @@ TRY {
 		
 			slot.net_stats.updatePing(ping);
 			slot.net_stats.updateDelta(delta);
-			//if (client_delta)
-			//	slot.net_stats.updateDelta(-client_delta);
+			if (client_delta)
+				slot.net_stats.updateDelta(-client_delta);
 			LOG_DEBUG(("player %u: ping: %g ms, delta: %+d", (unsigned)id, slot.net_stats.getPing(), slot.net_stats.getDelta()));		
 		}
 	} break;
