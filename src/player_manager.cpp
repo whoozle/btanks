@@ -343,8 +343,8 @@ TRY {
 			if (slot.remote != cid)
 				continue;
 			
-			if (client_delta) 
-				slot.net_stats.updateDelta(-client_delta);
+			//if (client_delta) 
+			//	slot.net_stats.updateDelta(-client_delta);
 			delta = slot.net_stats.getDelta();
 		}
 		
@@ -375,8 +375,8 @@ TRY {
 		LOG_DEBUG(("pang: delta: %+d, server delta: %+d", delta, server_delta));
 		
 		_net_stats.updateDelta(delta);
-		if (server_delta)
-			_net_stats.updateDelta(-server_delta);
+		//if (server_delta)
+		//	_net_stats.updateDelta(-server_delta);
 
 		LOG_DEBUG(("ping: %g, delta: %d", _net_stats.getPing(), _net_stats.getDelta()));
 		
@@ -416,8 +416,8 @@ TRY {
 		
 			slot.net_stats.updatePing(ping);
 			slot.net_stats.updateDelta(delta);
-			if (client_delta)
-				slot.net_stats.updateDelta(-client_delta);
+			//if (client_delta)
+			//	slot.net_stats.updateDelta(-client_delta);
 			LOG_DEBUG(("player %u: ping: %g ms, delta: %+d", (unsigned)id, slot.net_stats.getPing(), slot.net_stats.getDelta()));		
 		}
 	} break;
