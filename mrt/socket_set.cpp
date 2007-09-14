@@ -66,7 +66,7 @@ void SocketSet::add(const Socket &sock, const int how) {
 	if (how & Exception) {
 		FD_SET(fd, (fd_set*)_e_set);
 	}
-	if (fd > _n) 
+	if (fd >= _n) 
 		_n = fd + 1;
 }
 
