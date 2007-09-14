@@ -1391,7 +1391,7 @@ void IWorld::generateUpdate(mrt::Serializator &s, const bool clean_sync_flag) {
 			objects.insert(ObjectMap::value_type(o->_id, o));
 		} else skipped_objects.push_back(o->_id);
 	}
-	LOG_DEBUG(("generating update %u objects of %u", (unsigned)objects.size(), (unsigned)objects.size()));
+	LOG_DEBUG(("generating update %u objects of %u", (unsigned)objects.size(), (unsigned)_objects.size()));
 
 	s.add((unsigned)objects.size());
 	for(ObjectMap::reverse_iterator i = objects.rbegin(); i != objects.rend(); ++i) {
