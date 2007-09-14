@@ -235,6 +235,7 @@ const int Monitor::run() {
 TRY {
 	_running = true;
 	LOG_DEBUG(("network monitor thread was started..."));
+	GET_CONFIG_VALUE("multiplayer.polling-interval", int, mpi, 1);
 	while(_running) {
 		std::set<int> cids;
 		mrt::SocketSet set; 
@@ -259,7 +260,7 @@ TRY {
 			set.add(_dgram_sock, _send_dgram.empty()? mrt::SocketSet::Read: mrt::SocketSet::Read | mrt::SocketSet::Write);
 		}
 
-		if (set.check(1) == 0) 
+		if (set.check(mpi) == 0) 
 			continue;
 			
 		if (_dgram_sock != NULL && set.check(_dgram_sock, mrt::SocketSet::Read)) {
