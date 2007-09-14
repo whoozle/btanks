@@ -1294,6 +1294,7 @@ Object * IWorld::deserializeObject(const mrt::Serializator &s) {
 				//object with given ID exists in map.
 				Object *o = i->second;
 				assert(o != NULL);
+				assert(o->_id == id);
 				
 				if (rn == o->registered_name) {
 					PlayerState state = o->getPlayerState();
@@ -1305,8 +1306,7 @@ Object * IWorld::deserializeObject(const mrt::Serializator &s) {
 					result = o;
 					assert(result != NULL);
 				} else {
-					//wrong classtype and maybe storage class
-					//_objects.erase(i); // WTF?!!
+					//object storage type differs from existing object
 					result = ao = ResourceManager->createObject(rn);
 					//LOG_DEBUG(("created ('%s', '%s')", rn.c_str(), an.c_str()));
 					ao->deserialize(s);
@@ -1323,6 +1323,7 @@ Object * IWorld::deserializeObject(const mrt::Serializator &s) {
 				assert(ao != NULL);
 				
 				ao->deserialize(s);
+				assert(ao->_id == id);
 				
 				_objects[id] = ao;
 				ao = NULL;
