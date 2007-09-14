@@ -262,7 +262,7 @@ TRY {
 			slot.need_sync = true;
 		}
 		
-		World->tick(*obj, dt, false);
+		World->tick(*obj, dt);
 		//World->interpolateObject(obj);
 		break;
 	} 
@@ -317,7 +317,7 @@ TRY {
 				interpolated_objects.insert(ObjectMap::value_type(o->getID(), o));
 			else o->uninterpolate();
 		}
-		World->tick(updated_objects, dt, false);
+		World->tick(updated_objects, dt);
 		World->interpolateObjects(interpolated_objects);
 		break;
 	} 
