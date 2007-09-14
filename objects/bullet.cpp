@@ -101,7 +101,7 @@ void Bullet::calculate(const float dt) {
 		_velocity = v2<float>(0, g * t - v0) + _vel_backup;
 	}
 	GET_CONFIG_VALUE("engine.auto-aim.enabled", bool, aa, true);
-	if (aa && !PlayerManager->isClient() && _variants.has("auto-aim") && !_velocity.is0()) {
+	if (aa && _variants.has("auto-aim") && !_velocity.is0()) {
 		if (!_clone.tick(dt)) 
 			return;
 		GET_CONFIG_VALUE("engine.auto-aim.range", float, aar, 192.0f);
