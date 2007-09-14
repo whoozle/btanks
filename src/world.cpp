@@ -646,10 +646,10 @@ TRY {
 		if (o._velocity.is0() && o.getDirectionsNumber() > 1) 
 			o._velocity.fromDirection(o._direction_idx, o.getDirectionsNumber());
 				
-	} else {
+	} else if (do_calculate) {
 		//regular calculate
 		TRY { 
-			if (o.disable_ai || !do_calculate) {
+			if (o.disable_ai) {
 				o.Object::calculate(dt);
 			} else {
 				o.calculate(dt);
