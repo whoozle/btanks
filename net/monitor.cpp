@@ -158,34 +158,16 @@ const bool Monitor::recv(int &id, mrt::Chunk &data, int &timestamp) {
 		return false;
 	
 	Task *task = _result_q.front();
-	
-	id = task->id;
-	data = *(task->data);
-	timestamp = task->timestamp;
-
-	task->clear();
 	_result_q.pop_front();
-/*
-	GET_CONFIG_VALUE("multiplayer.delta-corrections", bool, mdc, true)
-	if (!mdc)
-		return true;
+	m.unlock();
+	TRY { 
+		id = task->id;
+		data = *(task->data);
+		timestamp = task->timestamp;
 
-	ConnectionMap::iterator i = _connections.find(id);
-	if (i != _connections.end()) {
-		Connection * conn = i->second;
-		int now = SDL_GetTicks();
-		if (conn->last_message_ts != -1 && conn->last_my_ts != -1) {
-			int r_delta = (task->timestamp >= conn->last_message_ts)? (task->timestamp - conn->last_message_ts): ~(task->timestamp - conn->last_message_ts) ;
-			int my_delta = (now >= conn->last_my_ts)? (now - conn->last_my_ts) : ~(now - conn->last_my_ts);
-			//LOG_DEBUG(("message deltas: (%+d:%+d)", r_delta, my_delta));
-			//delta = r_delta - my_delta; 
-			delta = 0;
-		}
-		
-		conn->last_message_ts = task->timestamp;
-		conn->last_my_ts = now;
-	}
-*/	
+		task->clear();
+	} CATCH("recv", { delete task; throw; });
+	delete task;
 	return true;
 }
 
@@ -201,12 +183,14 @@ const bool Monitor::disconnected(int &id) {
 
 void Monitor::eraseTask(TaskQueue &q, const TaskQueue::iterator &i) {
 	(*i)->clear();
+	delete *i;
 	q.erase(i);
 }
 
 void Monitor::eraseTasks(TaskQueue &q, const int conn_id) {
 	for(TaskQueue::iterator i = q.begin(); i != q.end(); ) {
 		if ((*i)->id == conn_id) {
+			delete *i;
 			i = q.erase(i);
 		} else ++i;
 	}
