@@ -124,6 +124,28 @@ void SpecialZone::onHint(const int slot_id) {
 	//Game->pause();
 }
 
+const v3<int> SpecialZone::getPlayerPosition(const int slot_id) const {
+	int players = PlayerManager->getSlotsCount();
+
+	int yn = (int) sqrt((double)size.y * players / size.x);
+	if (yn < 1) 
+		yn = 1;
+
+	int xn = (players - 1) / yn + 1;
+	//int n = xn * yn;
+
+	int ysize = size.y / yn;
+	int xsize = size.x / xn;
+
+	//LOG_DEBUG(("position in checkpoint: %d %d of %d[%dx%d]. cell size: %dx%d.", slot_id % xn, slot_id / xn, n, xn, yn, xsize, ysize));
+	return v3<int>(
+		position.x + xsize * (slot_id % xn) + xsize / 2, 
+		position.y + ysize * (slot_id / xn) + ysize / 2, 
+		position.z
+	);
+}
+
+
 void SpecialZone::onCheckpoint(const int slot_id) {
 	if (PlayerManager->isClient())
 		return; //no checkpoints on client
@@ -142,25 +164,7 @@ void SpecialZone::onCheckpoint(const int slot_id) {
 		}
 		PlayerManager->fixCheckpoints(slot, zone); //remove all wrong checkpoints from list
 	}
-	{
-		int players = PlayerManager->getSlotsCount();
-	
-		int yn = (int) sqrt((double)size.y * players / size.x);
-		if (yn < 1) 
-			yn = 1;
-	
-		int xn = (players - 1) / yn + 1;
-		int n = xn * yn;
-
-		int ysize = size.y / yn;
-		int xsize = size.x / xn;
-
-		LOG_DEBUG(("position in checkpoint: %d %d of %d[%dx%d]. cell size: %dx%d.", slot_id % xn, slot_id / xn, n, xn, yn, xsize, ysize));
-
-		slot.position.x = position.x + xsize * (slot_id % xn) + xsize / 2;
-		slot.position.y = position.y + ysize * (slot_id / xn) + ysize / 2;
-		slot.position.z = position.z;
-	}
+	slot.position = getPlayerPosition(slot_id);
 					
 	//v3<int> spawn_pos(_zones[c].position + checkpoint_size.convert2v3(0) / 2);
 	//slot.position = spawn_pos;

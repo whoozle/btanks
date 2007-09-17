@@ -21,6 +21,7 @@
 
 #include "zbox.h"
 #include <string>
+#include "math/v3.h"
 
 class SpecialZone : public ZBox {
 public: 
@@ -37,6 +38,9 @@ public:
 	void onExit(const int slot_id);
 
 	~SpecialZone();
+	
+	const v3<int> getPlayerPosition(const int slot_id) const;
+	
 private: 
 	void onCheckpoint(const int slot_id);
 	void onHint(const int slot_id);
