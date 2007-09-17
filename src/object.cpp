@@ -28,6 +28,7 @@
 #include "world.h"
 #include "tmx/map.h"
 #include "math/unary.h"
+#include "math/binary.h"
 #include "sound/mixer.h"
 #include "special_owners.h"
 #include "game_monitor.h"
@@ -1197,12 +1198,13 @@ const bool Object::findPathDone(Way &way) {
 				close(id);
 				continue;
 			}
+			int result_im = (int)(1.0f / (1.0f - math::max<float>(im, map_im / 100.0f)));
 			
 			Point p;
 			p.id = id;
 			p.dir = i;
 			p.parent = current.id;
-			p.g = current.g + ((d.x != 0 && d.y != 0)?141:100) + (int)(im * 100) + map_im;
+			p.g = current.g + ((d.x != 0 && d.y != 0)?141:100) * result_im;
 			p.h = h(id, _end);
 
 
