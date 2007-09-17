@@ -1182,29 +1182,39 @@ const bool Object::findPathDone(Way &way) {
 	
 			setDirection(i);
 			v2<int> world_pos(id.x * _step - (int)size.x / 2, id.y * _step - (int)size.y / 2);
-			int map_im = Map->getImpassability(this, world_pos);
-			//LOG_DEBUG(("%d, %d, map: %d", world_pos.x, world_pos.y, map_im));
+			float map_im = Map->getImpassability(this, world_pos) / 100.0f;
 			assert(map_im >= 0);
-			if (map_im >= 100) {
-				//_close_list.insert(id);
+			//LOG_DEBUG(("%d, %d, map: %d", world_pos.x, world_pos.y, map_im));
+			if (map_im >= 1.0f) {
 				close(id);
 				continue;			
 			}
+			map_im = getEffectiveImpassability(map_im);
+			if (map_im >= 1.0f) {
+				close(id);
+				continue;			
+			}
+			
 			float im = World->getImpassability(this, world_pos, NULL, true, true);
 			//LOG_DEBUG(("%d, %d, world: %g", world_pos.x, world_pos.y, im));
 			assert(im >= 0);
-			if (im >= 1.0) {
-				//_close_list.insert(id);
+			if (im >= 1.0f) {
 				close(id);
 				continue;
 			}
-			int result_im = (int)(1.0f / (1.0f - math::max<float>(im, map_im / 100.0f)));
+			im = getEffectiveImpassability(im);
+			if (im >= 1.0f) {
+				close(id);
+				continue;
+			}
+			
+			float result_im = 1.0f / (1.0f - math::max<float>(im, map_im));
 			
 			Point p;
 			p.id = id;
 			p.dir = i;
 			p.parent = current.id;
-			p.g = current.g + ((d.x != 0 && d.y != 0)?141:100) * result_im;
+			p.g = current.g + (int)(((d.x != 0 && d.y != 0)?141:100) * result_im);
 			p.h = h(id, _end);
 
 
