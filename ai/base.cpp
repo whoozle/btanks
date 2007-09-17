@@ -347,6 +347,9 @@ skip_calculations:
 }
 
 const Object * Base::findTarget(const Object *src, const std::set<std::string> &enemies, const std::set<std::string> &bonuses, ai::Traits &traits, const std::set<int> &skip_objects) const {
+	if (src->getVariants().has("racing"))
+		return NULL;
+	
 	if (src->getType().empty())
 		throw_ex(("findTarget source must always provide its type"));
 	
@@ -378,7 +381,7 @@ const Object * Base::findTarget(const Object *src, const std::set<std::string> &
 		std::string mod_type = o->classname;
 		if (mod_type == "teleport") {
 			v2<float> dpos = src->getRelativePosition(o);
-			if (dpos.quick_length() < o->size.x * o->size.y) 
+			if (dpos.quick_length() < ((o->size.x + o->size.y) * 141 / 100)) 
 				continue;
 		}
 		if (!o->getType().empty()) 
