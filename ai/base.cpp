@@ -28,6 +28,7 @@
 #include "math/binary.h"
 #include "vehicle_traits.h"
 #include "tmx/map.h"
+#include "special_zone.h"
 
 using namespace ai;
 
@@ -224,7 +225,8 @@ void Base::calculate(Object *object, const float dt) {
 		return;
 	}
 
-	const bool refresh_path = _refresh_path.tick(dt);
+	const bool racing = object->getVariants().has("racing");
+	const bool refresh_path = !racing && _refresh_path.tick(dt);
 	const bool dumb = !_reaction_time.tick(dt);
 	const Object *target = NULL;
 	
@@ -276,6 +278,24 @@ void Base::calculate(Object *object, const float dt) {
 			}
 		} else {
 			_target_dir = -1;
+		}
+	}
+	
+	if (racing) {
+		Way way;
+		if (object->calculatingPath()) {
+			goto gogogo;
+		}
+		if (!object->isDriven()) {
+			int slot_id = PlayerManager->getSlotID(object->getID());
+			if (slot_id <= 0) 
+				throw_ex(("ai in racing mode cannot operate without slot."));
+		
+			PlayerSlot &slot = PlayerManager->getSlot(slot_id);
+			const SpecialZone &zone = PlayerManager->getNextCheckpoint(slot);
+			v3<int> position = zone.getPlayerPosition(slot_id);
+		
+			object->findPath(v2<int>(position.x, position.y), 24);
 		}
 	}
 		
