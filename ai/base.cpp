@@ -346,23 +346,12 @@ void Base::calculate(Object *object, const float dt) {
 	object->calculateWayVelocity();
 
 skip_calculations: 	
-/*
-	if (!object->calculatingPath() && object->_velocity.is0()) {
-		v2<float> dir = _target_position.convert<float>() - object->getPosition();
-		dir.normalize();
-		int t_dir = dir.getDirection(object->getDirectionsNumber()) - 1;
-		if (t_dir != -1 && t_dir != object->getDirection())
-			object->_velocity = dir;
-		//LOG_DEBUG(("fire? (target: %p, w1: %s, w2: %s)", target, weapon1.c_str(), weapon2.c_str()));
-		if (target != NULL) {
-			if (!weapon1.empty() && !object->_state.fire)
-				object->_state.fire = checkTarget(object, target, weapon1);
-			if (!weapon2.empty() && !object->_state.alt_fire)
-				object->_state.alt_fire = checkTarget(object, target, weapon2);
-		}
-			
+	if (target != NULL) {
+		if (!weapon1.empty() && !object->_state.fire)
+			object->_state.fire = checkTarget(object, target, weapon1);
+		if (!weapon2.empty() && !object->_state.alt_fire)
+			object->_state.alt_fire = checkTarget(object, target, weapon2);
 	}
-*/
 	object->updateStateFromVelocity();
 }
 
