@@ -68,6 +68,7 @@ public:
 	PlayerSlot &getSlot(const unsigned int idx);
 	const PlayerSlot &getSlot(const unsigned int idx) const;
 
+	const int getSlotID(const int object_id) const;
 	PlayerSlot *getSlotByID(const int id);
 	const PlayerSlot *getSlotByID(const int id) const;
 

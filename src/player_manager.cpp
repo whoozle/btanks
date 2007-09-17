@@ -767,6 +767,17 @@ const PlayerSlot &IPlayerManager::getSlot(const unsigned int idx) const {
 	return _players[idx];
 }
 
+const int IPlayerManager::getSlotID(const int object_id) const {
+	if (object_id <= 0)
+		return -1;
+
+	for(int i = 0; i != (int)_players.size(); ++i) {
+		if (_players[i].id == object_id) 
+			return i;
+	}
+	return -1;
+}
+
 PlayerSlot *IPlayerManager::getSlotByID(const int id) {
 	if (id <= 0)
 		return NULL;
