@@ -257,8 +257,13 @@ void PlayerSlot::spawnPlayer(const std::string &classname, const std::string &an
 	
 	std::string type;
 	Config->get("multiplayer.game-type", type, "deathmatch");
-	if (type == "deathmatch" || type == "racing") {
+
+	if (type == "deathmatch") {
 		//moo	
+	} else if (type == "racing") {
+		Variants v; 
+		v.add("racing");
+		obj->updateVariants(v);
 	} else if (type == "cooperative") {
 		/*
 		LOG_DEBUG(("prepending cooperative owners."));
@@ -274,9 +279,7 @@ void PlayerSlot::spawnPlayer(const std::string &classname, const std::string &an
 			o2->prependOwner(id);
 		}
 		*/
-		Object *o = getObject();
-		assert(o != NULL);
-		o->prependOwner(OWNER_COOPERATIVE);
+		obj->prependOwner(OWNER_COOPERATIVE);
 	} else throw_ex(("unknown multiplayer type '%s' used", type.c_str()));
 	
 	GameMonitor->addBonuses(*this);
