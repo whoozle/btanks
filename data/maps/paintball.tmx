@@ -166,7 +166,8 @@
 	</layer>
 	<layer name="Copy of Layer 13" width="20" height="20">
 		<properties>
-			<property name="impassability" value="60"/>
+			<property name="z" value="1500"/>
+			<property name="impassability" value="40"/>
 		</properties>
 		<data encoding="base64" compression="gzip">
 			H4sIAAAAAAACC61UQQ6EIAzkO5t40+W2yE3xi+4V3rklaZNJgxXJNpkYHJy2MrQ454KCJ2yEb4OriBf82niehIPwIhR+h7jir/RqbTVmozbhLZ0AuR33s0NPJ6+RT8xL3Qn2JdiLsRkc5hU+uv9F/aeZ8CZMvJ4GNBbWKPD/Mq/9A51JnctpnMddfKAG+T4rPey9Ry/c+OVJjeinHv/1hvZ1As/6AY/M4Oe907M9fR8DHus5J/GitV9mkzd8KDkDzJysdGXPwj5r8aXhQz3DoppZ2gf+hte6XvW5qpwZ7pqls6qZad2DqPLJ+x9fNtmzQAYAAA==
@@ -183,9 +184,6 @@
 		</data>
 	</layer>
 	<layer name="road top 2" width="20" height="20">
-		<properties>
-			<property name="z" value="1500"/>
-		</properties>
 		<data encoding="base64" compression="gzip">
 			H4sIAAAAAAACC2NgoBwYMjMwWDMzUA2AzCoGYjcgzgXiVArNhpnlDsR5QFxBRbeOguEJcqFphVqgZDTdjSiQDS27qAGoUWalAPUXULH8qwSakQ/EAEeGzmJABgAA
 		</data>
