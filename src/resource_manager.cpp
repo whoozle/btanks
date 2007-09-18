@@ -47,7 +47,7 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 		if (_th == 0)
 			throw_ex(("resources tag must contain `tile_height' attribute (default tile height)"));
 		if (attr["version"].size() == 0)
-			throw_ex(("resources tag must contain `version' attribute, now only 0.3 supported"));
+			throw_ex(("resources tag must contain `version' attribute"));
 		LOG_DEBUG(("file version: %s", attr["version"].c_str()));
 	} else if (name == "animation") {
 		const std::string &id = attr["id"];

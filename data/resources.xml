@@ -1,4 +1,4 @@
-<resources tile_width="64" tile_height="64" version="0.3">
+<resources tile_width="64" tile_height="64" version="0.5">
 	
 	<animation-model id="tank-animation" speed="10">
 		<pose id="hold">0</pose>
