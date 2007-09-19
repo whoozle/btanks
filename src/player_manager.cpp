@@ -620,22 +620,19 @@ TRY {
 			bool hint = state.hint_control;
 			slot.control_method->updateState(slot, state);
 			
-			if (obj->updatePlayerState(state)) {
-				updated = true;
-				slot.need_sync = true;
-				if (state.hint_control && !hint) {
-					slot.displayLast();
-				}
-			}
-		} else if (slot.control_method == NULL && obj != NULL) {
-			if (obj->getPlayerState() != slot.old_state) {
-				slot.old_state = obj->getPlayerState();
-				slot.need_sync = true;
+			obj->updatePlayerState(state);
+			if (state.hint_control && !hint) {
+				slot.displayLast();
 			}
 		}
 		
-		if (slot.need_sync)
-			updated = true;		
+		if (obj->getPlayerState() != slot.old_state) {
+			slot.old_state = obj->getPlayerState();
+			slot.need_sync = true;
+		}
+		
+		if (slot.need_sync) //keep it here, another code may trigger need_sync
+			updated = true;	
 	}
 				
 	if (_client && _players.size() != 0 && updated) {
