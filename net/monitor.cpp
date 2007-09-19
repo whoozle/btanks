@@ -311,7 +311,9 @@ TRY {
 				if (i != _connections.end()) {
 					mrt::Socket::addr addr= i->second->addr.empty()?i->second->sock->getAddress():i->second->addr;
 					int r = _dgram_sock->send(addr, task->data->getPtr(), task->data->getSize());
-					//LOG_DEBUG(("sendto(%08x:%d, %u) == %d", addr.ip, addr.port, (unsigned)task->data->getSize(), r));
+					if (r != (int)task->data->getSize()) {
+						LOG_WARN(("short sendto(%08x:%d, %u) == %d", addr.ip, addr.port, (unsigned)task->data->getSize(), r));
+					}
 				} else LOG_WARN(("task to invalid connection %d found (purged)", task->id));
 				task->clear();
 				delete task;
