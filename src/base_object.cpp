@@ -368,21 +368,12 @@ void BaseObject::getInfo(v2<float> &pos, v2<float> &vel) const {
 	vel *= speed;
 }
 
-#include "player_manager.h"
-#include "player_slot.h"
-
 void BaseObject::updateStateFromVelocity() {
 	PlayerState state = _state;
 	state.left = (_velocity.x < 0);
 	state.right = (_velocity.x > 0);
 	state.up = (_velocity.y < 0);
 	state.down = (_velocity.y > 0);
-	if (!PlayerManager->isClient() && _state != state) {
-		_state = state;
-		PlayerSlot *slot = PlayerManager->getSlotByID(_id);
-		if (slot != NULL)
-			slot->need_sync = true;
-	}
 }
 
 void BaseObject::interpolate() {
