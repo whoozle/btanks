@@ -32,8 +32,11 @@ void Chunk::fill(const int b) {
 }
 
 const Chunk& Chunk::operator=(const Chunk& c) {
+	if (this == &c) 
+		return *this; // same object
+
     free();
-    if (c.ptr == NULL || this == &c) 
+    if (c.ptr == NULL) 
     	return *this;
     assert(c.size > 0);
     
