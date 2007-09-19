@@ -122,7 +122,7 @@ void Monitor::send(const int id, const mrt::Chunk &rawdata, const bool dgram) {
 	}
 	Task *t = createTask(id, rawdata);
 	
-	sdlx::AutoMutex m(_send_q_mutex);
+	sdlx::AutoMutex m(dgram?_send_dgram_mutex:_send_q_mutex);
 	(dgram?_send_dgram:_send_q).push_back(t);
 }
 
@@ -135,7 +135,7 @@ void Monitor::broadcast(const mrt::Chunk &data, const bool dgram) {
 		}
 	}
 	
-	sdlx::AutoMutex m(_send_q_mutex);
+	sdlx::AutoMutex m(dgram?_send_dgram_mutex:_send_q_mutex);
 	while(!tasks.empty()) {
 		(dgram?_send_dgram:_send_q).push_back(tasks.front());
 		tasks.pop_front();
@@ -299,7 +299,7 @@ TRY {
 		if (_dgram_sock != NULL && set.check(_dgram_sock, mrt::SocketSet::Write)) {
 			Task *task = NULL;
 			{
-				sdlx::AutoMutex m(_send_q_mutex);
+				sdlx::AutoMutex m(_send_dgram_mutex);
 				if (!_send_dgram.empty()) {
 					task = _send_dgram.front();
 					_send_dgram.pop_front();
