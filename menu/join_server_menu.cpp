@@ -122,26 +122,22 @@ JoinServerMenu::JoinServerMenu(MainMenu *parent, const int w, const int h) : _pa
 }
 
 void JoinServerMenu::join() {
-	LOG_DEBUG(("join requested"));
+	LOG_DEBUG(("join()"));
+	if (_hosts->empty()) {
+		LOG_DEBUG(("please add at least one host in list."));
+		return;
+	}
+	
 	std::string host = _hosts->getValue();
 	_hosts->promote(_hosts->get());
 
 	Config->set("menu.default-vehicle-1", _vehicle->getValue());
 	
-	bool ok = true;
-	TRY {
-		bool split;
-		Config->get("multiplayer.split-screen-mode", split, false);
+	bool split;
+	Config->get("multiplayer.split-screen-mode", split, false);
 		
-		Game->clear();
-		PlayerManager->startClient(host, split?2:1);
-	} CATCH("join", { 
-		GameMonitor->displayMessage("menu", "connection-failed", 1.5); 
-		ok = false; 
-	});
-		
-	if (_parent)	
-		_parent->setActive(!ok);
+	Game->clear();
+	PlayerManager->startClient(host, split?2:1);
 }
 
 void JoinServerMenu::tick(const float dt) {

@@ -40,6 +40,9 @@ void ScrollList::initBG(const std::string &background, const std::string &highli
 }
 
 const std::string ScrollList::getValue() const { 
+	if (_current_item < 0 || _current_item >= (int)_list.size())
+		throw_ex(("_current_item is out of range"));
+	
 	Control *c = _list[_current_item]; 
 	Label *l = dynamic_cast<Label *>(c);
 	if (l == NULL)
