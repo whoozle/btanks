@@ -91,6 +91,7 @@ void MapDetails::set(const MapDesc & map_desc) {
 }
 
 void MapDetails::render(sdlx::Surface &surface, const int x, const int y) {
+	Container::render(surface, x, y);
 	_background.render(surface, x, y);
 	int mx, my;
 	_background.getMargins(mx, my);
@@ -117,7 +118,6 @@ void MapDetails::render(sdlx::Surface &surface, const int x, const int y) {
 	if (!_tactics.isNull()) {
 		surface.copyFrom(_tactics, x + _background.w / 2 - _tactics.getWidth() / 2, y + _background.h / 2 - _tactics.getHeight() / 2);
 	}
-	Container::render(surface, x, y);
 }
 
 MapDetails::~MapDetails() {
