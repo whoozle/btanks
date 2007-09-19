@@ -661,7 +661,8 @@ TRY {
 
 			PlayerSlot &slot = _players[j];
 			if (!slot.empty() && slot.need_sync) {
-				//LOG_DEBUG(("object in slot %d: %s (%d) need sync", j, slot.obj->registered_name.c_str(), slot.obj->getID()));
+				//LOG_DEBUG(("object in slot %d: %s (%d) need sync [%s]", 
+				//	j, slot.getObject()->animation.c_str(), slot.getObject()->getID(), slot.getObject()->getPlayerState().dump().c_str()));
 				s.add(slot.id);
 				Object * o = slot.getObject();
 				assert(o != NULL);
