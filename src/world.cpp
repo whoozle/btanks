@@ -1299,10 +1299,6 @@ Object * IWorld::deserializeObject(const mrt::Serializator &s) {
 				if (rn == o->registered_name) {
 					PlayerState state = o->getPlayerState();
 					o->deserialize(s);
-					if (state != o->getPlayerState()) {
-						LOG_WARN(("player state changed from %s to %s after deserialization.", 
-							state.dump().c_str(), o->getPlayerState().dump().c_str()));
-					}
 					result = o;
 					assert(result != NULL);
 				} else {
