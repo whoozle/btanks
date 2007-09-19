@@ -43,22 +43,22 @@
 		<property name="object:static-tank:green-tank:1" value="340,58/6"/>
 		<property name="object:stun-missiles-item:stun-missiles-item:11" value="1132,998,150"/>
 		<property name="object:stun-missiles-item:stun-missiles-item:12" value="256,213,120"/>
-		<property name="object:teleport(a)(a)(a):teleport:1" value="214,296,119"/>
+		<property name="object:teleport(a)(a)(a):teleport:1" value="214,296,-5"/>
 		<property name="object:teleport(a)(a):teleport:1" value="152,222,1639"/>
-		<property name="object:teleport(b)(b):teleport:2" value="578,381,119"/>
 		<property name="object:teleport(b)(b):teleport:3" value="571,217,1639"/>
-		<property name="object:teleport(c)(c):teleport:1" value="998,306,129"/>
+		<property name="object:teleport(b)(b):teleport:4" value="578,381,-5"/>
+		<property name="object:teleport(c)(c):teleport:1" value="998,306,-5"/>
 		<property name="object:teleport(c):teleport:1" value="1094,210,1600"/>
 		<property name="object:teleport(d)(d):teleport:1" value="941,596,1649"/>
-		<property name="object:teleport(d):teleport:1" value="860,665,150"/>
-		<property name="object:teleport(e):teleport:12" value="972,1011,150"/>
+		<property name="object:teleport(d):teleport:1" value="860,665,-5"/>
 		<property name="object:teleport(e):teleport:13" value="1048,1027,1650"/>
-		<property name="object:teleport(f)(f):teleport:1" value="562,999,119"/>
+		<property name="object:teleport(e):teleport:14" value="977,997,-5"/>
+		<property name="object:teleport(f)(f):teleport:1" value="562,999,-5"/>
 		<property name="object:teleport(f):teleport:1" value="542,1072,1650"/>
-		<property name="object:teleport(g)(g):teleport:1" value="212,1008,119"/>
+		<property name="object:teleport(g)(g):teleport:1" value="212,1008,-5"/>
 		<property name="object:teleport(g):teleport:1" value="230,1063,1650"/>
 		<property name="object:teleport(h)(h):teleport:1" value="229,614,1649"/>
-		<property name="object:teleport(h):teleport:1" value="338,685,120"/>
+		<property name="object:teleport(h):teleport:1" value="338,685,-5"/>
 		<property name="object:thrower-item:thrower-item:10" value="435,148,2180"/>
 		<property name="object:thrower-item:thrower-item:11" value="996,-5,2180"/>
 		<property name="object:thrower-item:thrower-item:12" value="1087,778,2180"/>
