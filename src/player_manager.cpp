@@ -612,20 +612,22 @@ TRY {
 		PlayerSlot &slot = _players[i];
 		Object *obj = slot.getObject();
 
-		if (slot.control_method != NULL && obj != NULL) {
-			PlayerState state = obj->getPlayerState();
-			bool hint = state.hint_control;
-			slot.control_method->updateState(slot, state);
-			
-			obj->updatePlayerState(state);
-			if (state.hint_control && !hint) {
-				slot.displayLast();
+		if (obj != NULL) {
+			if (slot.control_method != NULL) {
+				PlayerState state = obj->getPlayerState();
+				bool hint = state.hint_control;
+				slot.control_method->updateState(slot, state);
+				
+				obj->updatePlayerState(state);
+				if (state.hint_control && !hint) {
+					slot.displayLast();
+				}
 			}
-		}
 		
-		if (obj->getPlayerState() != slot.old_state) {
-			slot.old_state = obj->getPlayerState();
-			slot.need_sync = true;
+			if (obj->getPlayerState() != slot.old_state) {
+				slot.old_state = obj->getPlayerState();
+				slot.need_sync = true;
+			}
 		}
 		
 		if (slot.need_sync) //keep it here, another code may trigger need_sync
