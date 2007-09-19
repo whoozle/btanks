@@ -56,7 +56,7 @@ void BaseObject::inheritParameters(const BaseObject *other) {
 void BaseObject::serialize(mrt::Serializator &s) const {
 	s.add(_id);
 	
-	size.serialize(s);
+	s.add(size);
 	s.add(mass);
 	s.add(speed);
 	s.add(ttl);
@@ -100,7 +100,7 @@ void BaseObject::serialize(mrt::Serializator &s) const {
 void BaseObject::deserialize(const mrt::Serializator &s) {
 	s.get(_id);
 	
-	size.deserialize(s);
+	s.get(size);
 	s.get(mass);
 	s.get(speed);
 	s.get(ttl);
