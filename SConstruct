@@ -239,7 +239,7 @@ Export('version')
 Export('revision')
 Export('lib_dir')
 
-version = '0.5.%s' %version
+version = '0.6.%s' %version
 print "version: %s" %version
 
 
