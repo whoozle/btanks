@@ -82,6 +82,7 @@ void PlayerSlot::clear() {
 		delete control_method; 
 		control_method = NULL;
 	}
+	old_state.clear();
 	animation.clear();
 	classname.clear();
 
