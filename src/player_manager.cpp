@@ -289,10 +289,6 @@ TRY {
 			PlayerState state; 
 			state.deserialize(s);
 			
-			//if (o != NULL) { 
-			//	World->tick(*o, -dt, false);
-			//}
-			
 			World->deserializeObjectPV(s, o);
 			bool dont_interpolate;
 			s.get(dont_interpolate);
