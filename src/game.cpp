@@ -566,10 +566,11 @@ void IGame::onTick(const float dt) {
 		if (Map->loaded() && _credits == NULL && Window->running() && !_paused) {
 			if (!PlayerManager->isClient())
 				GameMonitor->checkItems(dt);
-			PlayerManager->updatePlayers();
 			
 			Map->tick(dt);
 			World->tick(dt);
+
+			PlayerManager->updatePlayers();
 		}
 
 		Mixer->tick(dt);
