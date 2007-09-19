@@ -256,11 +256,8 @@ TRY {
 			dt = 0;
 		World->tick(*obj, -dt, false);
 		
-		slot.need_sync = obj->updatePlayerState(state);
-		if (slot.need_sync == false) {
-			LOG_WARN(("player %d send duplicate player state. %s", id, state.dump().c_str()));
-			slot.need_sync = true;
-		}
+		obj->updatePlayerState(state);
+		slot.need_sync = true;
 		
 		World->tick(*obj, dt);
 		//World->interpolateObject(obj);
