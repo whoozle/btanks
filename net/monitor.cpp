@@ -251,7 +251,7 @@ TRY {
 			unsigned char buf[1500]; //fixme
 			mrt::Socket::addr addr;
 			int r = _dgram_sock->recv(addr, buf, sizeof(buf));
-			LOG_DEBUG(("recv() == %d", r));
+			//LOG_DEBUG(("recv() == %d", r));
 			if (r > 9) {
 				sdlx::AutoMutex m(_connections_mutex);
 				ConnectionMap::iterator i;
@@ -311,7 +311,7 @@ TRY {
 				if (i != _connections.end()) {
 					mrt::Socket::addr addr= i->second->addr.empty()?i->second->sock->getAddress():i->second->addr;
 					int r = _dgram_sock->send(addr, task->data->getPtr(), task->data->getSize());
-					LOG_DEBUG(("sendto(%08x:%d, %u) == %d", addr.ip, addr.port, (unsigned)task->data->getSize(), r));
+					//LOG_DEBUG(("sendto(%08x:%d, %u) == %d", addr.ip, addr.port, (unsigned)task->data->getSize(), r));
 				} else LOG_WARN(("task to invalid connection %d found (purged)", task->id));
 				task->clear();
 				delete task;
