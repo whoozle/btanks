@@ -69,10 +69,12 @@ void BaseObject::serialize(mrt::Serializator &s) const {
 	s.add(disable_ai);
 	
 	s.add(_follow);
-	_follow_position.serialize(s);
-	_velocity.serialize(s);
-	_direction.serialize(s);
-	_velocity_fadeout.serialize(s);
+	s.add(_follow_position);	
+	s.add(_state);
+	
+	s.add(_velocity);
+	s.add(_direction);
+	s.add(_velocity_fadeout);
 	s.add(_moving_time);	
 	s.add(_idle_time);	
 
@@ -111,10 +113,12 @@ void BaseObject::deserialize(const mrt::Serializator &s) {
 	s.get(disable_ai);
 	
 	s.get(_follow);
-	_follow_position.deserialize(s);
-	_velocity.deserialize(s);
-	_direction.deserialize(s);
-	_velocity_fadeout.deserialize(s);
+	s.get(_follow_position);
+	s.get(_state);
+	
+	s.get(_velocity);
+	s.get(_direction);
+	s.get(_velocity_fadeout);
 	s.get(_moving_time);	
 	s.get(_idle_time);	
 
