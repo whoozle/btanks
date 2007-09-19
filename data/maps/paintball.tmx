@@ -105,11 +105,19 @@
 	</tileset>
 	<layer name="Layer 1" width="20" height="20">
 		<properties>
-			<property name="z" value="-1000"/>
 			<property name="impassability" value="40"/>
+			<property name="z" value="-1000"/>
 		</properties>
 		<data encoding="base64" compression="gzip">
 			H4sIAAAAAAACC1NhYGBQBWIVKtF6QKxPRVpl1H2j7ht136j7Rt03KN0HAKB7pu9ABgAA
+		</data>
+	</layer>
+	<layer name="mountains 3" width="20" height="20">
+		<properties>
+			<property name="impassability" value="100"/>
+		</properties>
+		<data encoding="base64" compression="gzip">
+			H4sIAAAAAAACC8VUywrEIAzMPwneqt5a+4v2uvudq6yBIfhIpdBAEJ0weTj6JSIn3Gbfs18NrHjo4L6xpuwn/c3UM/QePuLj2FZtSXC5wYq5Sz8H9JTqHvFYca4jQlyEWLR9gGFexgM9a/ZBLgPzK3VuC/xGzL93HzPj3Mj3EXx3atsmOnY3a0Q9afS3Mj8PmkTtr/CxjjWa1fR90nvGf5Pm/h38ObM52cG5vBcv3op8Py2dmon+mNeKPr3IqeHD+KB4B0Hk4/MflGk0EkAGAAA=
 		</data>
 	</layer>
 	<layer name="dirt" width="20" height="20">
@@ -123,14 +131,14 @@
 		</data>
 	</layer>
 	<layer name="terrain deatils" width="20" height="20">
+		<properties>
+			<property name="z" value="200"/>
+		</properties>
 		<data encoding="base64" compression="gzip">
 			H4sIAAAAAAACC2NgGAWjYBSMglEwCkgHADV9EcVABgAA
 		</data>
 	</layer>
 	<layer name="trees" width="20" height="20">
-		<properties>
-			<property name="z" value="200"/>
-		</properties>
 		<data encoding="base64" compression="gzip">
 			H4sIAAAAAAACC+2SNwqAQBBFZ+5/GkNn6MyC2fP46kVkFm2E/fCKYeKyXyQo6HtFKhJDAqn69Q7Uj05PRpxDAaXnvIP60+mpiGtooNX3752YMcMCq4b//4PP7mT1WUeuN+yz+mwjt+s3PrPeZtXTbRfRcBfdQAYAAA==
 		</data>
@@ -141,20 +149,25 @@
 		</data>
 	</layer>
 	<layer name="trees2" width="20" height="20">
+		<properties>
+			<property name="z" value="500"/>
+		</properties>
 		<data encoding="base64" compression="gzip">
 			H4sIAAAAAAACC2NgwATnGRkYLgDxRSC+xMgwCoYw2A2Mvz1AvBeI92GJy6tAsWtI4huB7E1AvBmIt2BRfxQodgyIjwPxCTzqiLUfHRBSh24/IUBIHalpnVZ54jTQzDNUNBc9XikBhNIEtdMkqYCYNIHsB0KAmDSB7AdSAAsTAwMrE/nplVRA6zIcAErGv0FABgAA
 		</data>
 	</layer>
-	<layer name="Layer 14" width="20" height="20">
+	<layer name="mountains" width="20" height="20">
 		<properties>
 			<property name="impassability" value="100"/>
-			<property name="z" value="500"/>
 		</properties>
 		<data encoding="base64" compression="gzip">
 			H4sIAAAAAAACC82UQQoAIQhF5/7Xy9ppHWWahSCiY1MN9MBF/KL/Q6uXTeqVL59Hh2AP66UX9qqBTsYeCettUrcoKo/2F+mgcvDdnCcJjRwdhE5BDgwyorrnZN7eewYy1u0HzyMeR+ejDHr05gM25WWvuie/wmel15WenDlrzeoKaPTWCcgeyxtzVucftt71BtnxDrdABgAA
 		</data>
 	</layer>
-	<layer name="layer 14.5" width="20" height="20">
+	<layer name="mountains 2" width="20" height="20">
+		<properties>
+			<property name="impassability" value="100"/>
+		</properties>
 		<data encoding="base64" compression="gzip">
 			H4sIAAAAAAACC2NgGLngKh6xqwT0XMGi5j4W9ffxyCGL38OjZhQM7jRDCbg/TN10jcpuejCa9AYlAADzcoSzQAYAAA==
 		</data>
@@ -164,10 +177,10 @@
 			H4sIAAAAAAACC2NgGFrgJCMDwylG6pl3GWjWFUb6uP000J4zBOzaCJTfBMSbgXgLI34zrgLpa4wMo2AEpEli0g4pgN5phxj3YwtHXPqIcT+2cBzNM9QFAMMrhxdABgAA
 		</data>
 	</layer>
-	<layer name="Copy of Layer 13" width="20" height="20">
+	<layer name="passable terrains" width="20" height="20">
 		<properties>
-			<property name="z" value="1500"/>
 			<property name="impassability" value="40"/>
+			<property name="z" value="1500"/>
 		</properties>
 		<data encoding="base64" compression="gzip">
 			H4sIAAAAAAACC61UQQ6EIAzkO5t40+W2yE3xi+4V3rklaZNJgxXJNpkYHJy2MrQ454KCJ2yEb4OriBf82niehIPwIhR+h7jir/RqbTVmozbhLZ0AuR33s0NPJ6+RT8xL3Qn2JdiLsRkc5hU+uv9F/aeZ8CZMvJ4GNBbWKPD/Mq/9A51JnctpnMddfKAG+T4rPey9Ry/c+OVJjeinHv/1hvZ1As/6AY/M4Oe907M9fR8DHus5J/GitV9mkzd8KDkDzJysdGXPwj5r8aXhQz3DoppZ2gf+hte6XvW5qpwZ7pqls6qZad2DqPLJ+x9fNtmzQAYAAA==
