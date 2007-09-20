@@ -77,10 +77,10 @@ void Serializator::add(const int n) {
 		buf[0] = x;
 		len = 1;
 	} else if (x <= 65535) {
-		* (unsigned short *)buf = htons(x);
+		* (uint16_t *)buf = htons(x);
 		len = sizeof(unsigned short);
 	} else if (x <= 2147483647) {
-		* (unsigned long *)buf = htonl(x); //defined as uint32 even on 64bit arch
+		* (uint32_t *)buf = htonl(x); //defined as uint32 even on 64bit arch
 		len = 4;
 	} else throw_ex(("implement me (64bit values serialization)"));
 
