@@ -11,7 +11,7 @@ class Object;
 
 namespace ai {
 
-class BTANKSAPI Waypoints {
+class BTANKSAPI Waypoints: public mrt::Serializable {
 public: 
 	Waypoints();
 	virtual void onSpawn(const Object *object);
@@ -20,6 +20,9 @@ public:
 	virtual void onObstacle(const Object *o) = 0;
 
 	virtual ~Waypoints() {}
+
+	virtual void serialize(mrt::Serializator &s) const;
+	virtual void deserialize(const mrt::Serializator &s);
 	
 	const bool active() const;
 protected:
@@ -31,7 +34,6 @@ private:
 	Alarm _reaction_time;
 	bool _stop;
 	std::string _waypoint_name;
-	const Object * _obstacle;
 };
 
 }

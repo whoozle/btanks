@@ -8,21 +8,31 @@
 
 using namespace ai;
 
-Waypoints::Waypoints() : _avoid_obstacles(false), _stop_on_obstacle(true), _reaction_time(true), _stop(false), _obstacle(0) {}
+void Waypoints::serialize(mrt::Serializator &s) const {
+	s.add(_avoid_obstacles);
+	s.add(_stop_on_obstacle);
+	s.add(_reaction_time);
+	s.add(_stop);
+	s.add(_waypoint_name);
+}
+void Waypoints::deserialize(const mrt::Serializator &s) {
+	s.get(_avoid_obstacles);
+	s.get(_stop_on_obstacle);
+	s.get(_reaction_time);
+	s.get(_stop);
+	s.get(_waypoint_name);
+}
+
+Waypoints::Waypoints() : _avoid_obstacles(false), _stop_on_obstacle(true), _reaction_time(true), _stop(false)  {}
 
 const bool Waypoints::active() const {
 	return !PlayerManager->isClient();
 }
 
 void Waypoints::calculate(Object *object, const float dt) {
-	if (!active()) {
-		if (object->isDriven()) 
-			object->calculateWayVelocity();
-		object->updateStateFromVelocity();
-		return;
-	}
-
 	if (_avoid_obstacles && _reaction_time.tick(dt)) {
+		const Object * obstacle = NULL;
+		
 		std::set<const Object *> objs;
 		object->enumerateObjects(objs, (object->size.x + object->size.y) * 2 / 3, NULL /* &obstacle_filter */);
 		std::set<const Object *>::const_iterator i;
@@ -35,23 +45,31 @@ void Waypoints::calculate(Object *object, const float dt) {
 			int odir = dpos.getDirection(object->getDirectionsNumber()) - 1;
 			//LOG_DEBUG(("%s: (%g %g)dir = %d, my_dir = %d", animation.c_str(), dpos.x, dpos.y, odir, getDirection()));
 			if (odir == object->getDirection()) {
-				_obstacle = *i;
+				obstacle = *i;
 				object->_velocity.clear();
 				break;
 			}
 		}
-		if (i == objs.end())
-			_obstacle = NULL;
 		
-		if (_obstacle) {
-			onObstacle(_obstacle);
-		}
+		if (obstacle) {
+			onObstacle(obstacle);
+			_stop = true;
+		} else 
+			_stop = false;
 	}
 	
-	if (_obstacle && _stop_on_obstacle) {
+	if (_stop && _stop_on_obstacle) {
 		object->_velocity.clear();
 		return;
 	}
+
+	if (!active()) {
+		if (object->isDriven()) 
+			object->calculateWayVelocity();
+		object->updateStateFromVelocity();
+		return;
+	}
+
 	
 	if (!object->calculatingPath() && !object->isDriven()) {
 		v2<float> waypoint;
@@ -102,6 +120,4 @@ void Waypoints::onSpawn(const Object *object) {
 	mrt::randomize(rt, rt / 10);
 
 	_stop = false;
-	_obstacle = 0;
 }
-
