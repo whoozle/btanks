@@ -25,7 +25,7 @@ using namespace mrt;
 
 #define throw_z(method, ret) throw_ex(("zlib.%s failed: %s, code: %d", method, z.msg, ret));
 
-#define BUF 0x1000
+#define BUF 0x10000
 
 void ZStream::decompress(mrt::Chunk &dst, const mrt::Chunk &src, const bool gzip_header) {
 	z_stream z;
