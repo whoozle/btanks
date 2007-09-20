@@ -112,6 +112,15 @@ public:
 	virtual Object * clone() const {return new AICar(*this);}
 	virtual void onSpawn();
 
+	virtual void serialize(mrt::Serializator &s) const {
+		Car::serialize(s);
+		ai::Waypoints::serialize(s);
+	}
+	virtual void deserialize(const mrt::Serializator &s) {
+		Car::deserialize(s);
+		ai::Waypoints::deserialize(s);
+	}
+
 private:
 	virtual void onObstacle(const Object *o);	
 };

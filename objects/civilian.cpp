@@ -94,6 +94,7 @@ public:
 
 	virtual void serialize(mrt::Serializator &s) const {
 		Civilian::serialize(s);
+		ai::Waypoints::serialize(s);
 		s.add(_thinking_timer);
 		s.add(_guard_timer);
 		s.add(_thinking);
@@ -102,6 +103,7 @@ public:
 
 	virtual void deserialize(const mrt::Serializator &s) {
 		Civilian::deserialize(s);
+		ai::Waypoints::deserialize(s);
 		s.get(_thinking_timer);
 		s.get(_guard_timer);
 		s.get(_thinking);
