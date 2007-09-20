@@ -31,6 +31,16 @@
 #include <limits.h>
 #include "exception.h"
 
+#ifdef WIN32
+#	ifndef uint32_t
+#		define uint32_t unsigned __int32
+#	endif
+#	ifndef uint16_t
+#		define uint16_t unsigned __int16
+#	endif
+#endif
+
+
 #define IEEE_754_SERIALIZATION
 
 using namespace mrt;
