@@ -73,16 +73,16 @@ void Serializator::add(const int n) {
 
 	mask |= 0x40;
 	
-	if (x <= UCHAR_MAX) {
-		buf[0] = (unsigned char)x;
-		len = sizeof(unsigned char);
-	} else if (x <= USHRT_MAX) {
+	if (x <= 255) {
+		buf[0] = x;
+		len = 1;
+	} else if (x <= 65535) {
 		* (unsigned short *)buf = htons(x);
 		len = sizeof(unsigned short);
-	} else {
-		* (unsigned long *)buf = htonl(x);
-		len = sizeof(unsigned long);
-	}
+	} else if (x <= 2147483647) {
+		* (unsigned long *)buf = htonl(x); //defined as uint32 even on 64bit arch
+		len = 4;
+	} else throw_ex(("implement me (64bit values serialization)"));
 
 	unsigned char *ptr = (unsigned char *) _data->reserve(1 + len) + _pos;
 	*ptr++ = mask | len;
@@ -163,14 +163,14 @@ void Serializator::get(int &n)  const {
 	
 	if (len == 0) {
 		n = 0; 
-	} else if(len == sizeof(unsigned char)) {
+	} else if(len == 1) {
 		n = *(ptr + _pos++);
-	} else if (len == sizeof(unsigned short)) {
-		n = ntohs(*((unsigned short *)(ptr + _pos)));
-		_pos += sizeof(unsigned short);
-	} else if (len == sizeof(unsigned long)) {
-		n = ntohl(*((unsigned long *)(ptr + _pos)));
-		_pos += sizeof(unsigned long);
+	} else if (len == 2) {
+		n = ntohs(*((uint16_t *)(ptr + _pos)));
+		_pos += 2;
+	} else if (len == 4) {
+		n = ntohl(*((uint32_t *)(ptr + _pos)));
+		_pos += 4;
 	} else 
 		throw_ex(("control byte 0x%02x is unsupported. (corrupted data?) (position: %u, size: %u)", (unsigned)type, (unsigned)_pos, (unsigned)_data->getSize()));
 
