@@ -213,6 +213,7 @@
 	</layer>
 	<layer name="rocks" width="20" height="20">
 		<properties>
+			<property name="z" value="2250"/>
 			<property name="impassability" value="100"/>
 		</properties>
 		<data encoding="base64" compression="gzip">
