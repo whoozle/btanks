@@ -23,6 +23,7 @@
 #include "version.h"
 #include "finder.h"
 #include <stdlib.h>
+#include <assert.h>
 
 #ifdef WIN32
 #	define putenv _putenv
@@ -68,6 +69,22 @@ void IWindow::initSDL() {
 #else
 	sdlx::System::init(subsystems);
 #endif
+	{
+		SDL_version compiled;
+		SDL_VERSION(&compiled);
+		const SDL_version *linked = SDL_Linked_Version();
+		assert(linked != NULL); //paranoid, 1.2 SDL got return &static_version; there.
+		LOG_DEBUG(("compiled version: %u.%u.%u, linked: %u.%u.%u", 
+			compiled.major, compiled.minor, compiled.patch, 
+			linked->major, linked->minor, linked->patch
+		));
+		
+		if (compiled.major != linked->major || 
+			compiled.minor != linked->minor || 
+			compiled.patch != linked->patch) {
+			LOG_WARN(("Engine was compiled with different version of SDL library. Do not report any bugs(especially crashes) then!"));
+		}
+	}
 	
 	LOG_DEBUG(("enabling unicode..."));
 
