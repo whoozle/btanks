@@ -22,7 +22,7 @@ public:
 
 	void reset();
 	const int microdelta() const;
-	static void microsleep(const int micros);
+	static void microsleep(const char *why, const int micros);
 private: 
 #ifdef WIN32
 #	ifdef SDLX_TIMER_USES_QPC

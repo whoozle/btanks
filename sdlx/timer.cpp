@@ -82,9 +82,10 @@ const int Timer::microdelta() const {
 }
 
 
-void Timer::microsleep(const int micros) {
+void Timer::microsleep(const char *why, const int micros) {
 #ifdef WIN32
 	timeBeginPeriod(1);
+	//LOG_DEBUG(("microsleep('%s', %d)", why, micros));
 
 	/*
 	LARGE_INTEGER t1, t2, freq;
@@ -129,13 +130,13 @@ void Timer::microsleep(const int micros) {
 	ts.tv_nsec = (micros % 1000000) * 1000;
 	
 	do {
-		//LOG_DEBUG(("nanosleep(%u.%u)", (unsigned)ts.tv_sec, (unsigned)ts.tv_nsec));
+		//LOG_DEBUG(("nanosleep(%s, %u.%u)", why, (unsigned)ts.tv_sec, (unsigned)ts.tv_nsec));
 		int r = ::nanosleep(&ts, &rem);
 		if (r == 0) 
 			return;
 		
 		if (r == -1 && errno != EINTR)
-			throw_io(("nanosleep(%u.%u, %u.%u)", (unsigned)ts.tv_sec, (unsigned)ts.tv_nsec, (unsigned)rem.tv_sec, (unsigned)rem.tv_nsec));
+			throw_io(("nanosleep(%s, %u.%u, %u.%u)", why, (unsigned)ts.tv_sec, (unsigned)ts.tv_nsec, (unsigned)rem.tv_sec, (unsigned)rem.tv_nsec));
 		ts = rem;
 	} while (rem.tv_nsec != 0 || rem.tv_sec != 0);
 #endif
