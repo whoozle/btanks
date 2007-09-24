@@ -1,3 +1,22 @@
+0.6.xxxx: 
+
+*) massive changes and cleanups in multiplayer code: 
+	*) added parallel udp connection for faster player state reporting.
+	*) sync-ing timers instead of ping-based corrections. 
+	*) thread-safety and memory leaks were fixed in network monitor.
+	*) allowed port to be specified in config :)))
+	*) various 'out-of-sync' objects were fixed. (cars for example)
+	*) fixed stupid 64-bit client incompatibility.
+*) improved minimap generation, removed "jerking" mostly noticeable on large maps. 
+*) added one more minimap mode (small), this is default now. 
+*) do not trust sound driver about 99 sources available. always obey maximum-sources.
+*) added object-specific penalties to pathfinding. 
+*) new "paintball" map with almost all available weaponry.
+*) do not exit game if multiplayer exception was thrown
+*) remove gzip headers from network compression code
+*) removed SDL_Delay, ported to my own timers.
+*) as usual, lots of fixes and improvements. 
+
 0.5.4800: 
 
 *) Added Italian translation
