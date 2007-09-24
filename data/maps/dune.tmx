@@ -2,6 +2,7 @@
 <map version="0.99b" orientation="orthogonal" width="22" height="25" tilewidth="64" tileheight="64">
 	<properties>
 		<property name="config:map.machinegunner.respawn-interval" value="int:2"/>
+		<property name="config:map.sandworm.respawn-interval" value="int:-1"/>
 		<property name="config:map.thrower.respawn-interval" value="int:2"/>
 		<property name="config:map.zombie.respawn-interval" value="int:2"/>
 		<property name="config:multiplayer.game-type" value="string:cooperative"/>
