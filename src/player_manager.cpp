@@ -1216,7 +1216,7 @@ TRY {
 	if (_server) {
 		PlayerSlot *my_slot = NULL;
 		for(size_t i = 0; i < _players.size(); ++i) {
-			if (_players[i].remote == -1 && !_players[i].empty()) {
+			if (_players[i].visible) {
 				my_slot = &_players[i];
 				break;
 			}
@@ -1232,7 +1232,7 @@ TRY {
 	if (_client) {
 		size_t i;
 		for(i = 0; i < _players.size(); ++i) {
-			if (_players[i].remote != -1 && !_players[i].empty()) 
+			if (_players[i].visible) 
 				break;
 		}
 		if (i == _players.size())
