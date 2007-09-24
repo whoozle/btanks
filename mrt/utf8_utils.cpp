@@ -37,14 +37,14 @@ const size_t mrt::utf8_backspace(std::string &str, size_t pos) {
 
 	int p;
 	for(p = (int)pos - 1; (p >= 0) && ((str[p] & 0xc0) == 0x80); --p) {}
-	if (p > 0) {
+	if (p >= 0) {
 		std::string right;
 		if (pos < str.size())
 			right = str.substr(pos);
-		str = str.substr(0, p) + right;
+		str = ((p > 0)?str.substr(0, p):std::string()) + right;
 		return p;
 	} else {
-		str.clear(); //p <= 0
+		str.clear(); //p < 0
 		return 0;
 	}
 }
