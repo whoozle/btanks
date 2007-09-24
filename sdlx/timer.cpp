@@ -15,25 +15,42 @@ using namespace sdlx;
 
 Timer::Timer() {
 #ifdef WIN32
+#ifdef SDLX_TIMER_USES_QPC
 	tm = new LARGE_INTEGER;
 	freq = new LARGE_INTEGER;
+	if (!QueryPerformanceFrequency(freq)) 
+		throw_ex(("QueryPerformanceFrequency failed"));
+#else 
+	TIMECAPS caps;
+	if (timeGetDevCaps(&caps, sizeof(caps)) != TIMERR_NOERROR) 
+		throw_ex(("timeGetDevCaps failed"));
+	res = caps.wPeriodMin;
+	LOG_DEBUG(("minimum timer's period: %d", res));
+#endif
 #endif
 }
 
 Timer::~Timer() {
 #ifdef WIN32
+#ifdef SDLX_TIMER_USES_QPC
 	delete tm; delete freq;
+#endif
 #endif
 }
 
 
 void Timer::reset() {
 #ifdef WIN32
-	if (!QueryPerformanceFrequency(freq)) 
-		throw_ex(("QueryPerformanceFrequency failed"));
-
+#	ifdef SDLX_TIMER_USES_QPC
 	if (!QueryPerformanceCounter(tm)) 
 		throw_ex(("QueryPerformanceCounter failed"));
+#	else 
+	if (timeBeginPeriod(res) != TIMERR_NOERROR)
+		throw_ex(("timeBeginPeriod(%d) failed", res));
+	tm = timeGetTime();
+	if (timeEndPeriod(res) != TIMERR_NOERROR)
+		throw_ex(("timeEndPeriod(%d) failed", res));
+#	endif
 #else
 	if (clock_gettime(clock_id, &tm) != 0)
 		throw_io(("clock_gettime"));
@@ -42,11 +59,20 @@ void Timer::reset() {
 
 const int Timer::microdelta() const {
 #ifdef WIN32
+#	ifdef SDLX_TIMER_USES_QPC
 	LARGE_INTEGER now;
 	if (!QueryPerformanceCounter(&now)) 
 		throw_ex(("QueryPerformanceCounter failed"));
-	
+	//LOG_DEBUG(("%I64d - %I64d = %I64d, freq: %I64d", now.QuadPart, tm->QuadPart, (now.QuadPart - tm->QuadPart), freq->QuadPart));
 	return (now.QuadPart - tm->QuadPart) * 1000000 / freq->QuadPart;
+#	else
+	if (timeBeginPeriod(res) != TIMERR_NOERROR)
+		throw_ex(("timeBeginPeriod(%d) failed", res));
+	int now = timeGetTime();
+	if (timeEndPeriod(res) != TIMERR_NOERROR)
+		throw_ex(("timeEndPeriod(%d) failed", res));
+	return 1000 * (now - tm);
+#	endif
 #else
 	struct timespec now;
 	if (clock_gettime(clock_id, &now) != 0)
