@@ -327,7 +327,7 @@ void OggStream::flush() {
 			if (state != AL_PLAYING)
 				break;
 			else
-				sdlx::Timer::microsleep(_delay * 1000);
+				sdlx::Timer::microsleep("flushing ogg stream", _delay * 1000);
 		}
 	} CATCH("flush", throw;)
 }
@@ -361,7 +361,7 @@ void OggStream::playTune() {
 				//LOG_WARN(("ogg stream was interrupted.."));
 				break;
 			} else 
-				sdlx::Timer::microsleep(_delay * 1000);
+				sdlx::Timer::microsleep("polling stream", _delay * 1000);
 		}
 	} CATCH("playTune(main loop)", throw;)
 

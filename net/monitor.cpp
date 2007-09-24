@@ -235,7 +235,7 @@ TRY {
 			}
 		}
 		if (cids.empty()) {
-			sdlx::Timer::microsleep(10000);
+			sdlx::Timer::microsleep("waiting for connection", 10000);
 			continue;
 		}
 		
@@ -390,7 +390,7 @@ TRY {
 
 						GET_CONFIG_VALUE("multiplayer.debug-delay", int, debug_delay, 0);
 						if (debug_delay > 0)
-							sdlx::Timer::microsleep(debug_delay * 1000);
+							sdlx::Timer::microsleep("debug delay", debug_delay * 1000);
 
 						sdlx::AutoMutex m2(_result_mutex);
 						_result_q.push_back(t);
