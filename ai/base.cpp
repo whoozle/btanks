@@ -373,15 +373,20 @@ const Object * Base::findTarget(const Object *src, const std::set<std::string> &
 	
 	for(std::set<const Object *>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
 		const Object *o = *i;
-		if (o->impassability == 0 || o->hp == -1 || o->_id == src->_id ||
+		if (o->impassability == 0 || o->_id == src->_id ||
 			!ZBox::sameBox(src->getZ(), o->getZ()) || 
 			o->hasSameOwner(src) || 
 			o->isEffectActive("invulnerability") || 
 			skip_objects.find(o->getID()) != skip_objects.end()
 			)
 			continue;
+		
 		const bool enemy = enemies.find(o->classname) != enemies.end();
-		const bool bonus = bonuses.find(o->registered_name) != bonuses.end();
+		if (enemy && o->hp < 0) 
+			continue; //invulnerable enemy
+		
+		const bool bonus = bonuses.find(o->registered_name) != bonuses.end() || bonuses.find(o->classname) != bonuses.end();
+		//LOG_DEBUG(("object: %s", o->registered_name.c_str()));
 		if (!enemy && !bonus)
 			continue;
 
@@ -420,7 +425,8 @@ const Object * Base::findTarget(const Object *src, const std::set<std::string> &
 			max = src->max_hp;
 		} else if (o->classname == "effects" || o->classname == "mod") {
 			max = 1;
-			traits.get(o->classname, o->getType(), 500.0, 2000.0);
+		} else if (o->classname == "teleport") {
+			max = 1;
 		}
 		float value = 0;
 		const std::string type = o->getType();
