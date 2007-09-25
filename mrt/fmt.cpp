@@ -109,8 +109,8 @@ void mrt::split(std::vector<std::string> & result, const std::string &str, const
 			p = str.find(delimiter, pos);
 			if (p == pos) {
 				result.push_back(std::string());
-				++p;
-				++pos;
+				p += delimiter.size();
+				pos += delimiter.size();
 			}
 		} while(p < str.size() && p == pos);
 		
