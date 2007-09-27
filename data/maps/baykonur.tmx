@@ -482,7 +482,7 @@
 	</layer>
 	<layer name="dirty hack" width="50" height="50">
 		<data encoding="base64" compression="gzip">
-			H4sIAAAAAAACC+1ZSw6DIBD1KF3oUnRndVfrzs+dehC7bY9ZSJiEEBBRVIYyyUSjCeHx5vFGTJIYMWLEiBHjf6Ol+Yw4Lo8Xz4jDLxwDzTdiPICDRRUIjkcg+1aFeO434R74wM5JFQiOHvmeFYJGUpqZQiPY+CA0iwBqS+YDqx/KfITmhyHgOIoPGPOsNTpC66yfnvmV5YjYE5tA/L3zqFcxXW1xVCfrZViJR6dtpo3poD0l1figiZuZ63QUNKuqPxMGV3wQjQ+asEya56OGM1U95TTvNL9Ien8VFzmfvytdQE1lmvUqHfhot/DeFQ6oqUKzXo2mFmoDxl7QzXTCdyfgIAucw7yhlp8893ga8OG6Z0/5/GsJg7he8rPPSm6W9ijXPTvhY9v4QSJhKj3hI9ngz1uxuD4DEPkodoxjW2tif+BrtBb7QO8xliXfwPTtacOHz2cBtrr3+SzABovvZzNrsWA4mzFhcd33XqX7I/5T/AAHzvvzECcAAA==
+			H4sIAAAAAAACC+1ZwQ6DIAz1U3bQo86b09vUG5v/tA9x1+0zhwlNCAEVLUoZTRoWTQyvr68tLEmiRYsWLVq0/7WWexdxnG4v4RGHXzge3N+E8QCOyapAcNwDqVsV4b1fpN/AB3VOqkBwMOI1KwSNpNwzjUao8VFwvwaQWyofVPuhysfRuaWLI3b97U6KI5a54gO+eVSMXGh9mqdHsU7+JNwTm0D6e+/RrLK02uKoDtbLYyUek7YnbQyOakpqWb+Bm1Ho9ClpVpd/Sxiw+Cg21G9m2BPT4IFVl0859xv3L5HZX8dFLvaPpQvIqcwQrxKhj/Yz77FwQE5dDfFqDLlQL2Bkkm6GA86dgKOY4Rz2DbncCd/T04AP7FkzFfuvFQxyvNRnn5XczNUo7FmzEN+26QeJgqn0hI9kQ3/eigX7DkDmY88ZwDbX5PnAV2st6gDzGMtc3zj77OmKD5/vmWx17/PdjA0W3+/91mKhcFe2hAV77j1L9y7+p/gBavfSBBAnAAA=
 		</data>
 	</layer>
 	<layer name="waste" width="50" height="50">
