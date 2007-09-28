@@ -270,7 +270,8 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 		_nosound = _nomusic = true;
 		return;
 	})	
-	
+
+#if 0	
 	TRY {
 		GET_CONFIG_VALUE("engine.sound.doppler-factor", float, df, 1.0);
 		alDopplerFactor(df);
@@ -280,6 +281,7 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 		alSpeedOfSound(sos);
 		AL_CHECK(("setting speed of sound"));
 	} CATCH("init", {});
+#endif
 
 	_nosound = nosound;
 	
