@@ -51,6 +51,7 @@ struct BTANKSAPI GameItem {
 	void respawn();
 	void renameProperty(const std::string &name);
 	void updateMapProperty();
+	void setup(const std::string &name, const std::string &subname);
 
 	std::string classname, animation, property;
 	v2<int> position;

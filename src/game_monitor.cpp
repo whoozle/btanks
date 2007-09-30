@@ -65,6 +65,32 @@ void GameItem::respawn() {
 		--spawn_limit;
 }
 
+void GameItem::setup(const std::string &name, const std::string &subname) {
+	destroy_for_victory = name.substr(0, 19) == "destroy-for-victory";
+	if (name == "save-for-victory")
+		save_for_victory = subname;
+
+	size_t pos1 = name.find('(');
+	if (pos1 == name.npos) 
+		return;
+	++pos1;
+
+	size_t pos2 = name.find(')', pos1);
+	if (pos2 == name.npos)
+		return;
+	--pos2;
+
+	if (pos1 > pos2)
+		return;
+	
+	int limit = atoi(name.substr(pos1, pos2 - pos1 + 1).c_str());
+	if (limit <= 0)
+		return;
+	
+	//LOG_DEBUG(("respawn limit = %d", limit));
+	spawn_limit = limit;
+}
+
 void GameItem::renameProperty(const std::string &name) {
 	Map->properties.erase(property);
 
@@ -172,6 +198,9 @@ void IGameMonitor::checkItems(const float dt) {
 		}
 
 		if (o)
+			continue;
+		
+		if (item.spawn_limit == 0) 
 			continue;
 		
 		if (item.dead_on == 0) {
@@ -630,11 +659,10 @@ void IGameMonitor::loadMap(Campaign *campaign, const std::string &name, const bo
 				LOG_DEBUG(("spawning: object %s, animation %s, pos: %s", res[1].c_str(), res[2].c_str(), i->second.c_str()));
 				if (res.size() < 4)
 					throw_ex(("'%s' misses an argument", i->first.c_str()));
+				//LOG_DEBUG(("name: %s", res[3].c_str()));
 				res.resize(5);
 				GameItem item(res[1], res[2], i->first, v2<int>(pos.x, pos.y), pos.z);
-				item.destroy_for_victory = res[3].substr(0, 19) == "destroy-for-victory";
-				if (res[3] == "save-for-victory")
-					item.save_for_victory = res[4];
+				item.setup(res[3], res[4]);
 				item.dir = dir;
 				GameMonitor->add(item);
 			} else if (type == "waypoint") {
