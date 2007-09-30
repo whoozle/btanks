@@ -46,6 +46,9 @@ IMPLEMENT_SINGLETON(GameMonitor, IGameMonitor);
 IGameMonitor::IGameMonitor() : _game_over(false), _win(false), _check_items(0.5, true), _state_timer(false), _timer(0), _campaign(NULL) {}
 
 void GameItem::respawn() {
+	if (spawn_limit == 0)
+		return;
+	
 	LOG_DEBUG(("respawning item: %s:%s, z: %d, dir: %d", classname.c_str(), animation.c_str(), z, dir));
 	Object *o = ResourceManager->createObject(classname, animation);
 	if (z) 
@@ -58,6 +61,8 @@ void GameItem::respawn() {
 	World->addObject(o, position.convert<float>());
 	id = o->getID();
 	dead_on = 0;
+	if (spawn_limit > 0)
+		--spawn_limit;
 }
 
 void GameItem::renameProperty(const std::string &name) {
