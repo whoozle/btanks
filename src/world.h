@@ -131,6 +131,8 @@ private:
 
 	
 	void cropObjects(const std::set<int> &ids);
+	
+	void setSpeed(const float speed);
 
 	ObjectMap _objects;
 	Grid _grid; //hopefully it'll be our saviour.

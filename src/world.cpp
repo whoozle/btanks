@@ -1365,15 +1365,7 @@ TRY {
 	cropObjects(recv_ids);	
 	float speed;
 	s.get(speed);
-	GET_CONFIG_VALUE("engine.speed", float, e_speed, 1.0f);
-	if (speed != e_speed) {
-		Var v;
-		v.type = "float";
-		v.f = speed;
-		Config->setOverride("engine.speed", v);
-		Config->invalidateCachedValues();
-	}
-	
+	setSpeed(speed);
 } CATCH("World::deserialize()", throw;);
 	//LOG_DEBUG(("deserialization completed successfully"));
 }
@@ -1463,6 +1455,12 @@ TRY {
 		skipped_objects.insert(id);
 	}
 	s.get(_last_id);
+
+	float speed;
+	s.get(speed);
+
+	setSpeed(speed);
+
 	//_last_id += 10000;
 	TRY {
 		cropObjects(skipped_objects);
@@ -1478,6 +1476,16 @@ TRY {
 
 #define PIERCEABLE_PAIR(o1, o2) ((o1->piercing && o2->pierceable) || (o2->piercing && o1->pierceable))
 
+void IWorld::setSpeed(const float speed) {
+	GET_CONFIG_VALUE("engine.speed", float, e_speed, 1.0f);
+	if (speed != e_speed) {
+		Var v;
+		v.type = "float";
+		v.f = speed;
+		Config->setOverride("engine.speed", v);
+		Config->invalidateCachedValues();
+	}
+}
 
 const Object* IWorld::getNearestObject(const Object *obj, const std::set<std::string> &classnames, const float range, const bool check_shooting_range) const {
 	if (classnames.empty())
