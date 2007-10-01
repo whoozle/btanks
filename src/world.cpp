@@ -1396,6 +1396,8 @@ void IWorld::generateUpdate(mrt::Serializator &s, const bool clean_sync_flag) {
 		s.add(*i);
 	}
 	s.add(_last_id);
+	GET_CONFIG_VALUE("engine.speed", float, e_speed, 1.0f);
+	s.add(e_speed);
 }
 
 void IWorld::interpolateObject(Object *o) {
