@@ -560,7 +560,7 @@ void IGame::onTick(const float dt) {
 				if (type == "deathmatch")
 					_show_stats = true;
 			}
-			PlayerManager->tick(SDL_GetTicks(), dt);
+			PlayerManager->tick(dt);
 		}
 
 		if (Map->loaded() && _credits == NULL && Window->running() && !_paused) {

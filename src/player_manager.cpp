@@ -840,8 +840,9 @@ void IPlayerManager::validateViewports() {
 		}
 }
 
-void IPlayerManager::tick(const unsigned int now, const float dt) {
+void IPlayerManager::tick(const float dt) {
 TRY {
+	Uint32 now = SDL_GetTicks();
 	if (_server) {
 		if (_next_sync.tick(dt) && isServerActive()) {
 			Message m(Message::UpdateWorld);
