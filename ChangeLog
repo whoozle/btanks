@@ -9,7 +9,7 @@
 	*) fixed stupid 64-bit client incompatibility.
 *) improved minimap generation, removed "jerking" mostly noticeable on large maps. 
 *) added one more minimap mode (small), this is default now. 
-*) do not trust sound driver about 99 sources available. always obey maximum-sources.
+*) do not trust sound driver about 99 sources available. always obey maximum-sources from config.
 *) added object-specific penalties to pathfinding. 
 *) new "paintball" map with almost all available weaponry.
 *) do not exit game if multiplayer exception was thrown
