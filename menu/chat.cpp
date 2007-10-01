@@ -9,8 +9,9 @@ Chat::Chat(const size_t lines) : _font(ResourceManager->loadFont("small", true))
 
 void Chat::clear() {
 	text.clear();
-	nick_w = 0;
+	nick_w = lines = 0;
 	_input->set(std::string());
+	last_message.clear();
 	hide();
 }
 
