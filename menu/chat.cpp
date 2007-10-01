@@ -13,6 +13,7 @@ void Chat::clear() {
 	_input->set(std::string());
 	last_message.clear();
 	hide();
+	layout();
 }
 
 void Chat::render(sdlx::Surface &surface, const int x, const int y) {
