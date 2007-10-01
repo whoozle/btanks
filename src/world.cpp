@@ -389,9 +389,6 @@ const bool IWorld::collides(Object *obj, const v2<int> &position, Object *o, con
 				}
 			
 				if ( o->isDead() || obj->isDead() || obj->impassability == 0 || o->impassability == 0) {
-					//o->_velocity_fadeout = o_vf;
-					//obj->_velocity_fadeout = obj_vf;
-					//_collision_map.insert(CollisionMap::value_type(key, false));
 					return false; //the most common case is the bullet which collides with object.
 				}
 			
@@ -702,15 +699,9 @@ TRY {
 	float len = o._velocity.normalize();
 		
 	if (len == 0) {
-		if (o._moving_time > 0) {
-		//use inertia only if object co-directional with velocity. fixme
-			if (!o.rotating())
-				o._velocity_fadeout = old_vel;
-		}
 		o._moving_time = 0;
 		o._idle_time += dt * e_speed;
-		if (o._velocity_fadeout.is0()) 
-			return;
+		return;
 	} else {
 		o._idle_time = 0;
 		o._moving_time += dt * e_speed;
@@ -723,7 +714,6 @@ TRY {
 	if (o.mass > 0 && o._moving_time < ac_t) {
 		o._velocity *= o._moving_time / ac_t;
 	}
-	o._velocity += o._velocity_fadeout;
 
 	//LOG_DEBUG(("im = %f", im));
 	v2<int> old_pos = o._position.convert<int>();
@@ -950,16 +940,6 @@ TRY {
 			
 		}
 	skip_collision:;
-		
-		/*
-		LOG_DEBUG(("bang!"));
-		GET_CONFIG_VALUE("engine.bounce-velocity-multiplier", float, bvm, 0.5);
-		
-		o._velocity_fadeout = -bvm * o._velocity;
-		o._velocity.clear();
-		
-		o._moving_time = 0;
-		*/
 	
 } CATCH("tick(`stuck` case)", throw;);
 
@@ -1015,13 +995,6 @@ TRY {
 
 	updateObject(&o);
 	
-	GET_CONFIG_VALUE("engine.velocity-fadeout", float, vf, 0.1);
-	
-	o._velocity_fadeout -= o._velocity_fadeout * math::min(math::abs(dt / vf), 1.0f) * math::sign(dt);
-	//LOG_DEBUG(("vfadeout: %g %g", o._velocity_fadeout.x, o._velocity_fadeout.y));
-	if (o._velocity_fadeout.quick_length() < 0.1) {
-		o._velocity_fadeout.clear();
-	}
 } CATCH("tick(final)", throw;);
 }
 
@@ -1225,7 +1198,6 @@ void IWorld::serializeObjectPV(mrt::Serializator &s, const Object *o) const {
 	} else 
 		s.add(o->_position);
 	s.add(o->_velocity);
-	s.add(o->_velocity_fadeout);
 	s.add(o->getZ());
 	s.add(o->_direction);
 	s.add(o->_direction_idx);
@@ -1235,7 +1207,6 @@ void IWorld::deserializeObjectPV(const mrt::Serializator &s, Object *o) {
 	int z;
 	if (o == NULL) {
 		v2<float> x;
-		s.get(x);
 		s.get(x);
 		s.get(x);
 		s.get(z);
@@ -1249,9 +1220,8 @@ void IWorld::deserializeObjectPV(const mrt::Serializator &s, Object *o) {
 	o->_interpolation_position_backup = o->_position;
 	o->_interpolation_progress = 1.0f;
 	
-	o->_position.deserialize(s);
-	o->_velocity.deserialize(s);
-	o->_velocity_fadeout.deserialize(s);
+	s.get(o->_position);
+	s.get(o->_velocity);
 	s.get(z);
 	if (!ZBox::sameBox(o->getZ(), z))
 		o->setZBox(z);

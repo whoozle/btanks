@@ -30,7 +30,7 @@ BaseObject::BaseObject(const std::string &classname):
 	classname(classname), disable_ai(false), 
 	_id(0), _follow(0), _follow_position(), 
 	_state(), 
-	_velocity(), _direction(1,0), _velocity_fadeout(), 
+	_velocity(), _direction(1,0), 
 	_moving_time(0), _idle_time(0), 
 	need_sync(false),
 	_dead(false), 
@@ -74,7 +74,6 @@ void BaseObject::serialize(mrt::Serializator &s) const {
 	
 	s.add(_velocity);
 	s.add(_direction);
-	s.add(_velocity_fadeout);
 	s.add(_moving_time);	
 	s.add(_idle_time);	
 
@@ -118,7 +117,6 @@ void BaseObject::deserialize(const mrt::Serializator &s) {
 	
 	s.get(_velocity);
 	s.get(_direction);
-	s.get(_velocity_fadeout);
 	s.get(_moving_time);	
 	s.get(_idle_time);	
 

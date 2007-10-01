@@ -124,7 +124,7 @@ protected:
 	int _follow;
 	v2<float> _follow_position;
 	PlayerState _state;
-	v2<float> _velocity, _direction, _velocity_fadeout;
+	v2<float> _velocity, _direction;
 	float _moving_time, _idle_time;
 	
 	virtual void calculate(const float dt) = 0;
