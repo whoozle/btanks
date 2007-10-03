@@ -253,7 +253,7 @@
 		<pose id="armed">10</pose>
 	</animation-model>
 	
-	<animation-model id="nuke-mine-animation" speed="2">
+	<animation-model id="nuke-mine-animation" speed="3">
 		<pose id="pause">0</pose>
 		<pose id="3" sound="mine-tick.ogg">1</pose>
 		<pose id="2">2</pose>
@@ -660,6 +660,8 @@
 	<alias name="oil-barrels" class="explosive" />
  	<alias name="train-smoke" class="single-pose(once)" />
  	<alias name="bomberman-explosion" class="cannon-explosion" />
+ 	<alias name="bomberman-mine" class="regular-mine(bomberman)" />
+ 	<alias name="nuke-mine" class="regular-mine(bomberman)(nuke)" />
 
 	<alias name="ziehharmonikaspieler" class="civilian" />
 	

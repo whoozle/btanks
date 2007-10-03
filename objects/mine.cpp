@@ -32,7 +32,7 @@ public:
 };
 
 void Mine::onSpawn() {
-	if (registered_name == "bomberman-mine")
+	if (_variants.has("bomberman"))
 		disown();
 	
 	if (registered_name != "armed-mine") {
@@ -50,13 +50,13 @@ void Mine::tick(const float dt) {
 	Object::tick(dt);
 	if (hasOwners() && getState() == "armed") 
 		disown();
-	if (getState() == "armed" && registered_name == "bomberman-mine") {
+	if (getState() == "armed" && _variants.has("bomberman")) {
 		emit("death", NULL);
 	}
 }
 
 void Mine::emit(const std::string &event, Object * emitter) {
-	if (event == "death" && registered_name == "bomberman-mine") {
+	if (event == "death" && _variants.has("bomberman")) {
 		const bool nuke = _variants.has("nuke");
 		spawn(nuke?"nuke-explosion":"bomberman-explosion", nuke?"nuke-explosion":"cannon-explosion");
 		if (nuke)
@@ -109,6 +109,5 @@ Object* Mine::clone() const  {
 	return new Mine(*this);
 }
 
-REGISTER_OBJECT("bomberman-mine", Mine, ());
 REGISTER_OBJECT("regular-mine", Mine, ());
 REGISTER_OBJECT("armed-mine", Mine, ());
