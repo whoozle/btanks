@@ -594,7 +594,7 @@ void IMap::getSurroundings(Matrix<int> &matrix, const Object *obj, const int fil
 
 			if (obj->piercing && pmap != _imp_map.end()) {
 				if (pmap->second.get(y, x))
-					i = filler;
+					i = 0;
 			}
 			matrix.set(y - y0, x - x0, i);
 		}
