@@ -31,9 +31,11 @@ const int Joystick::getCount() {
 }
 
 const std::string Joystick::getName(const int idx) {
-	const char * name = SDL_JoystickName(idx);
-	if (name == NULL)
+	const char * name_str = SDL_JoystickName(idx);
+	if (name_str == NULL)
 		throw_sdl(("SDL_JoystickName(%d)", idx));
+	std::string name = name_str;
+	mrt::trim(name);
 	return name;
 }
 
