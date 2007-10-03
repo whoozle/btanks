@@ -80,6 +80,9 @@ void AILauncher::onSpawn() {
 	addBonusName("stun-missiles-item");
 	addBonusName("mines-item");
 
+	addBonusName("machinegunner-item");
+	addBonusName("thrower-item");
+
 	ai::Base::onSpawn(this);
 	Launcher::onSpawn();
 }
