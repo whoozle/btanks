@@ -122,18 +122,27 @@ void Hud::generateRadarBG(const sdlx::Rect &viewport) {
 void Hud::renderStats(sdlx::Surface &surface) {
 	unsigned active_slots = 0, slots = PlayerManager->getSlotsCount();
 	
+	int nick_w = 0;
+	
 	for(unsigned p = 0; p < slots; ++p) {
 		PlayerSlot &slot = PlayerManager->getSlot(p);
 		if (slot.empty())
 			continue;
 		++active_slots;
+		Object *o = slot.getObject();
+		int w = _font->render(NULL, 0, 0, mrt::formatString("%s (%s)", slot.name.c_str(), o? o->animation.c_str():"dead"));
+		if (w > nick_w)
+			nick_w = w;
 	}
+	
+	if (active_slots == 0)
+		return;
 	
 	Box background;
 	const int item_h = 10 + _font->getHeight() ;
 	
 	
-	background.init("menu/background_box.png", 480, item_h * active_slots + 2 * item_h);
+	background.init("menu/background_box.png", nick_w + 64, item_h * active_slots + 2 * item_h);
 	int mx, my;
 	background.getMargins(mx, my);
 	
