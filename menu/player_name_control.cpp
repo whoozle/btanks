@@ -9,6 +9,8 @@ PlayerNameControl::PlayerNameControl(const std::string &label, const std::string
 	_font(ResourceManager->loadFont("small", true)), _config_key(config_key), _edit_flag(false) {
 	std::string name;
 	Config->get(config_key, name, Nickname::generate());
+	if (name.size() > 32)
+		name.resize(32);
 
 	_label = new Label(_font, label);
 	_name = new Label(_font, name);
