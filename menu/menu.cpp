@@ -403,6 +403,8 @@ void MainMenu::onEvent(const SDL_Event &e) {
 	SDL_keysym sym;
 	memset(&sym, 0, sizeof(sym));
 	sym.mod = KMOD_NONE;
+
+	if (generate_key_events_for_gamepad) {	
 	
 	if (e.type == SDL_JOYBUTTONDOWN || e.type == SDL_JOYBUTTONUP) {
 		sym.sym = (e.jbutton.button == 0)?SDLK_RETURN:SDLK_ESCAPE;
@@ -426,18 +428,22 @@ void MainMenu::onEvent(const SDL_Event &e) {
 		static int value[4] = {0,0,0,0};
 		const int a = e.jaxis.axis;
 		const int v = e.jaxis.value;
-		//LOG_DEBUG(("%d: %d %d", a, value[a], v));
-		if (math::abs(value[a]) <= M && math::abs(v) > M) {
-			sym.sym = v > 0 ? SDLK_DOWN: SDLK_UP;
-			onKey(sym, true);
-			value[a] = v;
-			_key_active = true;
-			_key_emulated = sym;
-		} else if (math::abs(value[a]) > M && math::abs(v) <= M) {
-			sym.sym = value[a] > 0 ? SDLK_DOWN: SDLK_UP;
-			onKey(sym, false);
-			value[a] = v;
-			_key_active = false;
+		if (a < 2) {
+			LOG_DEBUG(("%d: %d %d", a, value[a], v));
+			if (math::abs(value[a]) <= M && math::abs(v) > M) {
+				sym.sym = v > 0 ? SDLK_DOWN: SDLK_UP;
+				onKey(sym, true);
+				value[a] = v;
+				_key_active = true;
+				_key_emulated = sym;
+			} else if (math::abs(value[a]) > M && math::abs(v) <= M) {
+				sym.sym = value[a] > 0 ? SDLK_DOWN: SDLK_UP;
+				onKey(sym, false);
+				value[a] = v;
+				_key_active = false;
+			}
 		}
 	}
+	
+	} //generate_key_events_for_gamepad
 }
