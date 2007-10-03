@@ -114,10 +114,10 @@ const bool Launcher::take(const BaseObject *obj, const std::string &type) {
 	if (Object::take(obj, type)) 
 		return true;
 
-	if (obj->classname == "mod" && type == "machinegunner") {
+	if (obj->classname == "mod" && (type == "machinegunner" || type == "thrower")) {
 		LOG_DEBUG(("taking mod: %s", type.c_str()));
 		remove("mod");
-		add("mod", spawnGrouped("machinegunner-on-launcher", "machinegunner-on-launcher", v2<float>(), Centered));
+		add("mod", spawnGrouped(type + "-on-launcher", type + "-on-launcher", v2<float>(), Centered));
 		return true;
 	}
 	const bool primary_mod = (obj->classname == "missiles" && (type != "smoke" && type != "stun" && type != "nuke"));

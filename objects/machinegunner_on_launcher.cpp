@@ -23,8 +23,12 @@
 
 class Machinegunner : public Object {
 public:
-	Machinegunner(const std::string &classname) : Object(classname), _fire(true) { impassability = 0; setDirectionsNumber(16); }
+	Machinegunner(const char *object) : 
+		Object("trooper-on-launcher"), _fire(true), _object(object)
+		{ impassability = 0; setDirectionsNumber(16); }
+
 	virtual Object * clone() const { return new Machinegunner(*this); }
+
 	virtual void onSpawn();
 	virtual void tick(const float dt);
 	virtual void calculate(const float dt);
@@ -38,19 +42,21 @@ public:
 
 private: 
 	Alarm _fire;
+	std::string _object;
 };
 
 void Machinegunner::onSpawn() {
 	play("main", true);
 
-	GET_CONFIG_VALUE("objects.machinegunner.fire-rate", float, fr, 0.2);
+	float fr;
+	Config->get("objects.trooper-on-launcher-with-" + _object + ".fire-rate", fr, 0.2);
 	_fire.set(fr);
 }
 
 void Machinegunner::tick(const float dt) {
 	Object::tick(dt);
 	if (_fire.tick(dt) && _state.fire) {
-		spawn("vehicle-machinegunner-bullet", "vehicle-machinegunner-bullet", v2<float>(), _direction);
+		spawn(_object, _object, v2<float>(), _direction);
 	}
 }
 
@@ -104,4 +110,5 @@ void Machinegunner::deserialize(const mrt::Serializator &s) {
 }
 
 
-REGISTER_OBJECT("machinegunner-on-launcher", Machinegunner, ("machinegunner-on-launcher"));
+REGISTER_OBJECT("machinegunner-on-launcher", Machinegunner, ("vehicle-machinegunner-bullet"));
+REGISTER_OBJECT("thrower-on-launcher", Machinegunner, ("thrower-missile"));
