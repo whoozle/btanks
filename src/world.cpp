@@ -1324,10 +1324,18 @@ Object * IWorld::deserializeObject(const mrt::Serializator &s) {
 
 void IWorld::cropObjects(const std::set<int> &ids) {
 	for(ObjectMap::iterator i = _objects.begin(); i != _objects.end(); /*haha*/ ) {
+		Object *o = i->second;
+		
 		if (ids.find(i->first) == ids.end()) {
-			deleteObject(i->second);
+			deleteObject(o);
 			_objects.erase(i++);
-		} else ++i;
+		} else {
+			if (o->_dead) {
+				LOG_DEBUG(("resurrecting object %d(%s) from the dead", o->getID(), o->animation.c_str()));
+				o->_dead = false;
+			}
+			++i;
+		}
 	}
 }
 
