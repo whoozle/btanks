@@ -24,7 +24,7 @@
 
 class Mine : public Object {
 public:
-	Mine() : Object("mine") { piercing = false; pierceable = true; }
+	Mine() : Object("mine") { piercing = false; pierceable = true; impassability = -1; }
 	virtual Object * clone() const;
 	virtual void onSpawn();
 	virtual void tick(const float dt);

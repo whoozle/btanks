@@ -709,8 +709,9 @@
 
 	<!-- <object class="missile-launch" impassability="0" z="260" /> -->
 
-	<object class="regular-mine" hp="40" impassability="-1" z="-30" />
+	<object class="regular-mine" hp="40" z="-30" />
 	<object class="armed-mine" parent="regular-mine" />
+	<object class="nuke-mine" parent="regular-mine" impassability="0" />
 	<object class="bomberman-mine" parent="regular-mine" pierceable="false" impassability="1" />
 	
 	<object class="bomb" hp="1" impassability="-1" speed="100" />
