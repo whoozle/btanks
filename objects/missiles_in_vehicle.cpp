@@ -123,6 +123,9 @@ const bool MissilesInVehicle::skipRendering() const {
 
 
 const bool MissilesInVehicle::take(const BaseObject *obj, const std::string &type) {
+	if (obj->classname == _object && type == _type && n == max_n) 
+			return false;
+	
 	if (obj->classname == "missiles" || obj->classname == "mines") {
 		_object = obj->classname;
 		_type = type;
