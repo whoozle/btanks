@@ -218,6 +218,14 @@ const bool Shilka::take(const BaseObject *obj, const std::string &type) {
 		Config->get("objects.shilka." + type + "-" + obj->classname + "-capacity", n, 7);
 		mod->setCount(n);
 		return true;		
+	} else if (obj->classname == "missiles" && type == "nuke") {
+		removeEffect("dirt");
+		FakeMod *mod = getMod("mod");
+		mod->setType("mines:nuke");
+		int n;
+		Config->get("objects.shilka.nuke-mines-capacity", n, 3);
+		mod->setCount(n);
+		return true;
 	}
 	return Object::take(obj, type);
 }
