@@ -454,7 +454,7 @@
 	<animation id="regular-mines-on-launcher" tile="launcher_mine.png" model="missiles-on-launcher-animation" />
 	<animation id="bomberman-mines-on-launcher" tile="launcher_mine.png" model="missiles-on-launcher-animation" />
 	<animation id="machinegunner-on-launcher" tile="launcher_machinegunner.png" model="single-tile" />
-	<animation id="thrower-on-launcher" tile="launcher_machinegunner.png" model="single-tile" />
+	<animation id="thrower-on-launcher" tile="launcher_thrower.png" model="single-tile" />
 
 	<animation id="green-mortar" tile="mortar.png" model="mortar-animation"/>
 	<animation id="red-mortar" tile="mortar.png" model="mortar-animation"/>
