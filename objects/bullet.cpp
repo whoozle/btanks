@@ -247,6 +247,7 @@ Object* Bullet::clone() const  {
 REGISTER_OBJECT("bullet", Bullet, ("regular", 8));
 REGISTER_OBJECT("dirt-bullet", Bullet, ("dirt", 8));
 REGISTER_OBJECT("machinegunner-bullet", Bullet, ("regular", 16));
+REGISTER_OBJECT("vehicle-machinegunner-bullet", Bullet, ("regular", 16));
 
 REGISTER_OBJECT("dispersion-bullet", Bullet, ("dispersion", 16));
 REGISTER_OBJECT("ricochet-bullet", Bullet, ("ricochet", 16));

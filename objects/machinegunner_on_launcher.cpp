@@ -50,7 +50,7 @@ void Machinegunner::onSpawn() {
 void Machinegunner::tick(const float dt) {
 	Object::tick(dt);
 	if (_fire.tick(dt) && _state.fire) {
-		spawn("machinegunner-bullet", "vehicle-machinegunner-bullet", v2<float>(), _direction);
+		spawn("vehicle-machinegunner-bullet", "vehicle-machinegunner-bullet", v2<float>(), _direction);
 	}
 }
 
