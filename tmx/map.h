@@ -63,7 +63,7 @@ public:
 		int prev_im;
 	};
 	
-	const TilesetList & getTilesets() const { return _tilesets; }
+	inline const TilesetList & getTilesets() const { return _tilesets; }
 	void getLayers(std::set<int> &layers_z) const;
 	Layer* getLayer(const int z);
 
@@ -93,8 +93,8 @@ public:
 	void _destroy(const int z, const v2<int> &cell);
 	
 	struct TileDescriptor {
-		TileDescriptor() : surface(0), cmap(0), vmap(0) {}
-		TileDescriptor(sdlx::Surface * surface, sdlx::CollisionMap *cmap, sdlx::CollisionMap *vmap) : 
+		inline TileDescriptor() : surface(0), cmap(0), vmap(0) {}
+		inline TileDescriptor(sdlx::Surface * surface, sdlx::CollisionMap *cmap, sdlx::CollisionMap *vmap) : 
 			surface(surface), cmap(cmap), vmap(vmap) {}
 		
 		sdlx::Surface * surface;
@@ -112,7 +112,7 @@ public:
 	virtual void serialize(mrt::Serializator &s) const;
 	virtual void deserialize(const mrt::Serializator &s);
 	
-	const std::string &getName() const { return _name; }
+	inline const std::string &getName() const { return _name; }
 
 	void setSoloAwareMode(const bool value = true);
 	
@@ -124,7 +124,7 @@ public:
 	
 	const bool hasSoloLayers() const;
 	
-	const bool torus() const { return _torus; }
+	inline const bool torus() const { return _torus; }
 
 	template<typename T>
 	void add(v2<T> &src, const v2<T> &dst) const {
@@ -219,6 +219,8 @@ public:
 			in(area1, area2.x, area2.y + area2.h - 1) ||
 			in(area2, area1.x, area1.y + area1.h - 1);
 	}
+
+	void getSurroundings(Matrix<int> &matrix, const Object *obj, const int filler) const;
 	
 private:
 	const int addTiles(const sdlx::Surface *image, const int first_gid);
