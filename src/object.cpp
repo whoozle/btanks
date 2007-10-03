@@ -119,14 +119,6 @@ void Object::setDirection(const int dir) {
 		_direction_idx = dir;
 }
 
-const int Object::getDirection() const {
-	return _direction_idx;
-}
-
-const int Object::getDirectionsNumber() const {
-	return _directions_n;
-}
-
 void Object::setDirectionsNumber(const int dirs) {
 	if (dirs >= 0) 
 		_directions_n = dirs;

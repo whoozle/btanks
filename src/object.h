@@ -59,9 +59,9 @@ public:
 	void playSound(const std::string &name, const bool loop, const float gain = 1.0);
 	void playRandomSound(const std::string &classname, const bool loop, const float gain = 1.0);
 
+	inline const int getDirection() const { return _direction_idx; }
+	inline const int getDirectionsNumber() const { return _directions_n; }
 	virtual void setDirection(const int dir);
-	const int getDirection() const;
-	const int getDirectionsNumber() const;
 	void setDirectionsNumber(const int dirs);
 	
 	virtual void tick(const float dt);
@@ -99,7 +99,7 @@ public:
 
 	virtual void onSpawn();
 	
-	const bool rotating() const { return _direction_idx != _dst_direction; }
+	inline const bool rotating() const { return _direction_idx != _dst_direction; }
 
 	virtual void calculate(const float dt);
 	
@@ -118,7 +118,7 @@ public:
 
 	void quantizeVelocity();
 	
-	const Way& getWay() const { return _way; } 
+	inline const Way& getWay() const { return _way; } 
 	
 	const std::string getNearestWaypoint(const std::string &classname) const;
 
@@ -141,7 +141,7 @@ protected:
 	//pathfinding
 
 	struct Point {
-		Point() : id(), parent(), g(0), h(0), dir(-1) {}
+		inline Point() : id(), parent(), g(0), h(0), dir(-1) {}
 		v2<int> id, parent;
 		int g, h, dir;
 	};
@@ -149,7 +149,7 @@ protected:
 	struct PD {
 		int f;
 		v2<int> id;
-		PD(const int f, const v2<int> &id) : f(f), id(id) {}
+		inline PD(const int f, const v2<int> &id) : f(f), id(id) {}
 		
 		inline const bool operator<(const PD &other) const {
 			return f > other.f;
@@ -163,7 +163,7 @@ protected:
 
 	void findPath(const v2<int> target, const int step);
 	const bool findPathDone(Way &way);
-	const bool calculatingPath() const { return !_open_list.empty(); }
+	inline const bool calculatingPath() const { return !_open_list.empty(); }
 
 	//grouped object handling
 	void add(const std::string &name, Object *obj);
