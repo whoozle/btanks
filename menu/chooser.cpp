@@ -97,6 +97,19 @@ bool Chooser::onMouse(const int button, const bool pressed, const int x, const i
 	return Container::onMouse(button, pressed, x, y);
 }
 
+bool Chooser::onKey(const SDL_keysym sym) {
+	switch(sym.sym) {
+		case SDLK_LEFT: 
+			left();
+			return true;
+		case SDLK_RIGHT: 
+			right();
+			return true;
+		default: 
+			return false;
+	}
+}
+
 void Chooser::set(const int i) {
 	if (i < 0 || i >= _n)
 		throw_ex(("set(%d) is greater than available options (%d)", i, _n));
