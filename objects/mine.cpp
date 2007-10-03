@@ -59,8 +59,10 @@ void Mine::emit(const std::string &event, Object * emitter) {
 	if (event == "death" && _variants.has("bomberman")) {
 		const bool nuke = _variants.has("nuke");
 		spawn(nuke?"nuke-explosion":"bomberman-explosion", nuke?"nuke-explosion":"cannon-explosion");
-		if (nuke)
+		if (nuke) {
+			Object::emit(event, emitter);
 			return;
+		}
 
 		v2<float> tile_size = Map->getTileSize().convert<float>();
 		v2<float> path_tile_size = Map->getPathTileSize().convert<float>();
