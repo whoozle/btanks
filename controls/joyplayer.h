@@ -31,6 +31,7 @@ public:
 
 private:
 	int _idx;
+	mutable std::string _name;
 	sdlx::Joystick _joy;
 	Bindings _bindings;
 };

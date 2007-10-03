@@ -25,12 +25,15 @@
 #include "config.h"
 
 JoyPlayer::JoyPlayer(const int idx): _idx(idx), _joy(idx) {
+	_name = sdlx::Joystick::getName(idx);
 	_bindings.load(sdlx::Joystick::getName(idx), _joy.getNumButtons(), _joy.getNumAxes(), _joy.getNumHats());
 }
 
 void JoyPlayer::probe() const {
 	if (_joy.opened())
 		return;
+
+	_name = sdlx::Joystick::getName(_idx);
 	sdlx::Joystick joy; 
 	joy.open(_idx);
 	joy.close();
@@ -57,6 +60,12 @@ void JoyPlayer::updateState(PlayerSlot &slot, PlayerState &_state) {
 
 	int r;
 	Config->get("player.controls.maximum-camera-slide", r, 200);
+	
+	bool im2x;
+	Config->get(mrt::formatString("player.controls.joystick.%s.ignore-more-than-two-axis", _name.c_str()), im2x, false);
+	if (im2x)
+		return;
+	
 	int n = _joy.getNumAxes();
 	if (n >= 4) {
 		int xa = _joy.getAxis(_bindings.get(tAxis, 2));
