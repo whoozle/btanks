@@ -441,6 +441,7 @@ const bool Object::collides(const sdlx::CollisionMap *other, const int x, const 
 }
 
 void Object::serialize(mrt::Serializator &s) const {
+	assert(!_dead);
 	BaseObject::serialize(s);
 	
 	s.add(animation);
@@ -565,8 +566,6 @@ void Object::emit(const std::string &event, Object * emitter) {
 				continue;
 			o->emit(event, emitter);
 		}
-		_group.clear();
-		_velocity.clear();
 		_dead = true;
 	} else if (event == "collision") {
 		if (piercing && emitter != NULL)
