@@ -134,6 +134,9 @@ bool TextControl::onKey(const SDL_keysym sym) {
 		int c = sym.unicode;
 		//LOG_DEBUG(("%d", c));
 		if (c >= SDLK_SPACE) {
+			if (_max_len && mrt::utf8_length(_text) >= _max_len)
+				return true;
+			
 			if (validate(_cursor_position, c)) {
 				if (_cursor_position >= _text.size()) {
 					mrt::utf8_add_wchar(_text, c);
@@ -144,8 +147,8 @@ bool TextControl::onKey(const SDL_keysym sym) {
 					_text.insert(_cursor_position, chr);
 					_cursor_position += chr.size();
 				}
-				return true;
-			} 
+			}
+			return true;
 		}
 		return false;
 	}
