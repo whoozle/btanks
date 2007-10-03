@@ -670,7 +670,7 @@
 
 	<object class="tank" speed="400" mass="500" hp="80" z="0" />
 	<object class="static-tank" parent="tank" z="0" />
-	<object class="launcher" speed="500" mass="400" hp="40" z="0" />
+	<object class="launcher" speed="500" mass="400" hp="50" z="0" />
 	<object class="static-launcher" parent="launcher" z="0" />
 	<object class="shilka" speed="450" mass="400" hp="60" z="0" />
 	<object class="static-shilka" parent="shilka" z="0" />
