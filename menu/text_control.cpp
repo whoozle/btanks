@@ -28,7 +28,7 @@ void TextControl::changing() const {
 	Mixer->playSample(NULL, "menu/change.ogg", false);
 }
 
-NumericControl::NumericControl(const std::string &font, const int value) : TextControl(font) {
+NumericControl::NumericControl(const std::string &font, const int value) : TextControl(font, 8) {
 	set(value);
 }
 
@@ -51,7 +51,7 @@ const int NumericControl::get() const {
 }
 
 
-HostTextControl::HostTextControl(const std::string &font) : TextControl(font) {}
+HostTextControl::HostTextControl(const std::string &font) : TextControl(font, 255) {}
 
 const bool HostTextControl::validate(const int idx, const int c) const {
 	if (c >= 'a' && c <= 'z')
@@ -68,7 +68,8 @@ const bool HostTextControl::validate(const int idx, const int c) const {
 
 /////////////////////////////////////////////////////////////
 
-TextControl::TextControl(const std::string &font) : _blink(true), _cursor_visible(true), _cursor_position(0) {
+TextControl::TextControl(const std::string &font, unsigned max_len) : 
+_max_len(max_len), _blink(true), _cursor_visible(true), _cursor_position(0) {
 	_font = ResourceManager->loadFont(font, true);
 	GET_CONFIG_VALUE("menu.cursor-blinking-interval", float, cbi, 0.4f);
 	_blink.set(cbi);

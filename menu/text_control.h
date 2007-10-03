@@ -30,7 +30,7 @@ class Font;
 
 class BTANKSAPI TextControl : public Control {
 public: 
-	TextControl(const std::string &font);
+	TextControl(const std::string &font, const unsigned max_len = 0);
 
 	virtual void tick(const float dt);
 	void set(const std::string &value);
@@ -45,6 +45,7 @@ protected:
 private: 
 	void changing() const;
 
+	unsigned _max_len;
 	const sdlx::Font *_font; 
 	std::string _text;
 	Alarm _blink;
