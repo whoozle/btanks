@@ -52,7 +52,7 @@ UpperBox::UpperBox(int _w, int _h, const bool server) : _server(server) {
 	add(w - cw1 - 2 * mx, my + (h - (ch1 + ch2) - dh) / 2 - ch1, _player1_name);
 	add(w - cw2 - 2 * mx, my + (h - (ch1 + ch2) + dh) / 2, _player2_name);
 
-	_name_prompt = new Prompt(320, 64, new TextControl("small"));
+	_name_prompt = new Prompt(320, 64, new TextControl("small", 32));
 	int nw, nh;
 	getSize(w, h);
 	_name_prompt->getSize(nw, nh);
