@@ -1267,8 +1267,24 @@ Object * IWorld::deserializeObject(const mrt::Serializator &s) {
 				assert(o->_id == id);
 				
 				if (rn == o->registered_name) {
-					PlayerState state = o->getPlayerState();
-					o->deserialize(s);
+					PlayerSlot * slot = PlayerManager->getSlotByID(id);
+					if (slot == NULL) {
+						o->deserialize(s);
+					} else { 
+						//state, 
+						PlayerState state = o->_state;
+						v2<float> pos = o->_position, vel = o->_velocity, ipos_backup = o->_interpolation_position_backup;
+						float ip = o->_interpolation_progress;
+						
+						o->deserialize(s);
+						
+						o->_state = state;
+						o->_position = pos;
+						o->_velocity = vel;
+						o->_interpolation_position_backup = ipos_backup;
+						o->_interpolation_progress = ip;
+					}
+					
 					result = o;
 					assert(result != NULL);
 				} else {
