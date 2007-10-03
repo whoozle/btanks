@@ -1064,7 +1064,7 @@ void IWorld::purge(ObjectMap &objects) {
 		Object *o = i->second;
 
 		if (o->isDead()) { //fixme
-			if (_safe_mode == false) {
+			if (!_safe_mode) {
 				//LOG_DEBUG(("object %d:%s is dead. cleaning up. (global map: %s)", o->getID(), o->classname.c_str(), &objects == &_objects?"true":"false" ));
 				deleteObject(o);
 				o = NULL;
@@ -1091,17 +1091,17 @@ void IWorld::purge(ObjectMap &objects) {
 			updateObject(o);
 			++i;
 		} else {
-			if (World->_safe_mode == false) {
+			if (World->_safe_mode) {
 				//LOG_WARN(("leader for object %d is dead. (leader-id:%d)", o->_id, f));
+				++i;
+				o->_dead = true;
+			} else {
 				o->_follow = 0;
 				o->emit("death", NULL);
 			
 				deleteObject(o);
 				o = NULL;
 				objects.erase(i++);
-			} else {
-				++i;
-				o->_dead = true;
 			}
 		}
 	}
