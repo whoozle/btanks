@@ -253,6 +253,14 @@
 		<pose id="armed">10</pose>
 	</animation-model>
 	
+	<animation-model id="nuke-mine-animation" speed="2">
+		<pose id="pause">0</pose>
+		<pose id="3" sound="mine-tick.ogg">1</pose>
+		<pose id="2">2</pose>
+		<pose id="1">3</pose>
+		<pose id="armed">3</pose>
+	</animation-model>
+
 	<animation-model id="fire-animation" speed="7">
  		<pose id="fade-in" sound="fire.ogg">0,1,2,3,4</pose>
 		<pose id="burn">5,6,7,6</pose>
@@ -497,6 +505,7 @@
 	<animation id="missile-fire" tile="missile_fire.png" model="missile-fire-animation" />
 	<!-- <animation id="missile-launch" tile="missile_launch.png" model="missile-launch-animation" size="128" /> -->
 	<animation id="regular-mine" tile="mine.png" model="regular-mine-animation" size="32" />
+	<animation id="nuke-mine" tile="nuke_mine.png" model="nuke-mine-animation" size="32" />
 	<animation id="bomberman-mine" tile="mine.png" model="regular-mine-animation" size="32" />
 	<animation id="bomb" tile="aviabomb.png" model="bomb-animation" />
 
