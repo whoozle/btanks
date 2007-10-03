@@ -14,10 +14,17 @@
 #include "window.h"
 #include "config.h"
 
+#include "menu.h"
+
 void GamepadSetup::save() {
 	_bindings.save();
 	joy.close();
 	hide();
+}
+
+void GamepadSetup::hide(const bool hide) {
+	MainMenu::generate_key_events_for_gamepad = hide;
+	Container::hide(hide);
 }
 
 void GamepadSetup::onEvent(const SDL_Event &event) {

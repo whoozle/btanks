@@ -35,6 +35,8 @@
 #include "menu_config.h"
 #include "sound/mixer.h"
 
+bool MainMenu::generate_key_events_for_gamepad = true;
+
 #define ITEM_SPACING 10
 
 MainMenu::MainMenu() : _active(false), _active_item(0), _key_active(false) {

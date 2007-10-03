@@ -27,6 +27,7 @@ public:
 
 	virtual void render(sdlx::Surface &surface, const int x, const int y);
 	virtual void getSize(int &w, int &h) const;
+	void hide(const bool hide = true);
 
 private: 
 	virtual void renderSetup(sdlx::Surface &surface, const int x, const int y);

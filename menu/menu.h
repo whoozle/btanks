@@ -55,6 +55,8 @@ public:
 	void up();
 	void down();
 	
+	static bool generate_key_events_for_gamepad;
+	
 private:
 	std::map<const std::string, BaseMenu *> _special_menus;
 	BaseMenu *getMenu(const std::string &menu);
