@@ -10,6 +10,7 @@ namespace mrt {
 	const size_t MRTAPI utf8_backspace(std::string &str, size_t pos);
 	const size_t MRTAPI utf8_left(const std::string &str, const size_t pos);
 	const size_t MRTAPI utf8_right(const std::string &str, const size_t pos);
+	void MRTAPI utf8_resize(std::string &str, const size_t max);
 }
 
 #endif

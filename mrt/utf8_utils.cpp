@@ -66,3 +66,16 @@ const size_t mrt::utf8_right(const std::string &str, const size_t pos) {
 	for(p = pos + 1; p < str.size() && (str[p] & 0xc0) == 0x80; ++p) {}
 	return p >= str.size()? str.size(): p;
 }
+
+void MRTAPI mrt::utf8_resize(std::string &str, const size_t max) {
+	std::string::size_type size = 0, str_size = str.size();
+	std::string::size_type p;
+	for(p = 0; p < str_size; ++p) {
+		if (size >= max)
+			break;
+		std::string::value_type c = str[p];
+		if ((c & 0x80) == 0 || (c & 0xc0) != 0x80)
+			++size;
+	}
+	str.resize(p);
+}
