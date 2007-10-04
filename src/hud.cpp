@@ -599,8 +599,10 @@ Hud::Hud(const int w, const int h) :  _pointer(NULL), _pointer_dir(-1), _update_
 	_icons_map["mod:machinegunner"] = i++;
 	_icons_map["mod:mines:regular"] = i++;
 	_icons_map["special:frag"] = i++;
+	_icons_map["effect:thrower"] = i;
 	_icons_map["mod:thrower"] = i++;
 	_icons_map["special:lives"] = i++;
+	_icons_map["mod:mines:nuke"] = i++;
 }
 
 Hud::~Hud() {}
