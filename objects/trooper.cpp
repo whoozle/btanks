@@ -48,17 +48,33 @@ void Trooper::tick(const float dt) {
 		}		
 	}
 	
-	if (!_object.empty() && _fire.tick(dt) && _state.fire ) {
+	if (!_object.empty() && _fire.tick(dt) && _state.fire && !_variants.has("nukeman")) {
 		_fire.reset();
 		if (getState() != "fire")
 			playNow("fire");
 		spawn(_object, _object, v2<float>(), _direction);
 	}
+	if (_state.alt_fire && _variants.has("nukeman")) {
+		//MUGGAGAGAGAGAG!!!
+		spawn("nuke-explosion", "nuke-explosion");
+		emit("death", this);
+	}
+}
+
+const bool Trooper::take(const BaseObject *obj, const std::string &type) {
+	if (obj->classname == "missiles" && type == "nuke" && _variants.has("player")) {
+		_variants.add("nukeman");
+		hp = max_hp = 999;
+		init("nukeman");
+		need_sync = true;
+		return true;
+	}
+	return false;
 }
 
 void Trooper::onSpawn() {
 	if (_variants.has("player")) {
-		speed *= 1.5f;
+		speed *= 1.75f;
 		hp = max_hp *= 2;
 	}
 	

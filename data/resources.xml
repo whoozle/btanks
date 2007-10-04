@@ -602,10 +602,12 @@
 	<animation id="gay-paratrooper" model="paratrooper-animation" tile="gay_paratrooper.png" />
 	<animation id="kamikaze" model="man-animation" tile="kamikaze.png" />
 	<animation id="machinegunner" model="trooper-animation" tile="machinegunner.png" />
+	<animation id="nukeman" model="trooper-animation" tile="nukeman.png" />
 	<animation id="dead-machinegunner" model="dead-man-animation" tile="machinegunner_dead.png" />
+	
+	<animation id="dead-nukeman" model="dead-man-animation" tile="machinegunner_dead.png" />
 	<animation id="dead-machinegunner-in-watchtower" model="dead-man-animation" tile="machinegunner_dead.png" />
 	<animation id="dead-thrower-in-watchtower" model="dead-man-animation" tile="thrower_dead.png" />
-
 
 	<animation id="road-sign01" model="destructable-object-animation" tile="road_sign01.png" size="32" />
 	<animation id="road-sign02" model="destructable-object-animation" tile="road_sign02.png" size="32" />

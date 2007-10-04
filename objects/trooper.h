@@ -48,7 +48,7 @@ public:
 	}	
 
 	void getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const;
-
+	virtual const bool take(const BaseObject *obj, const std::string &type);
 
 protected: 
 	std::string _object;
