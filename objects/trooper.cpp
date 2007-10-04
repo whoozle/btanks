@@ -56,8 +56,8 @@ void Trooper::tick(const float dt) {
 	}
 	if (_state.alt_fire && _variants.has("nukeman")) {
 		//MUGGAGAGAGAGAG!!!
-		spawn("nuke-explosion", "nuke-explosion");
-		emit("death", this);
+		Object *o = spawn("nuke-explosion", "nuke-explosion");
+		emit("death", o);
 	}
 }
 
