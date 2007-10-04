@@ -1,21 +1,31 @@
+0.6.*: 
+	*) Shilka can pick up nuke item (becomes nuke mine)
+	*) Increased damage from machinegunner installed on launcher. 
+	*) Launched can pick up thrower item.
+	*) Vehicles does not pick up items which wont have any effect.
+	*) Skip tcp updates for player in slots. 
+	*) Added maximum nick length (32)
+	*) Do not trust TCP updates for players, use only UDP updates.
+	*) Added gamepad hack for broken hid, (fedora 7), ability to limit gamepad to 2 axis in config.
+	
 0.6.5064: 
 
-*) massive changes and cleanups in multiplayer code: 
+*) Massive changes and cleanups in multiplayer code: 
 	*) added parallel udp connection for faster player state reporting.
 	*) sync-ing timers instead of ping-based corrections. 
 	*) thread-safety and memory leaks were fixed in network monitor.
 	*) allowed port to be specified in config :)))
 	*) various 'out-of-sync' objects were fixed. (cars for example)
 	*) fixed stupid 64-bit client incompatibility.
-*) improved minimap generation, removed "jerking" mostly noticeable on large maps. 
-*) added one more minimap mode (small), this is default now. 
-*) do not trust sound driver about 99 sources available. always obey maximum-sources from config.
-*) added object-specific penalties to pathfinding. 
-*) new "paintball" map with almost all available weaponry.
-*) do not exit game if multiplayer exception was thrown
-*) remove gzip headers from network compression code
-*) removed SDL_Delay, ported to my own timers.
-*) as usual, lots of fixes and improvements. 
+*) Improved minimap generation, removed "jerking" mostly noticeable on large maps. 
+*) Added one more minimap mode (small), this is default now. 
+*) Do not trust sound driver about 99 sources available. always obey maximum-sources from config.
+*) Added object-specific penalties to pathfinding. 
+*) New "paintball" map with almost all available weaponry.
+*) Do not exit game if multiplayer exception was thrown
+*) Remove gzip headers from network compression code
+*) Removed SDL_Delay, ported to my own timers.
+*) As usual, lots of fixes and improvements. 
 
 0.5.4800: 
 
