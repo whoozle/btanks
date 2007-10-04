@@ -47,6 +47,7 @@
 
 #include "math/unary.h"
 #include "math/binary.h"
+#include "mrt/utf8_utils.h"
 
 IMPLEMENT_SINGLETON(PlayerManager, IPlayerManager);
 
@@ -157,8 +158,7 @@ TRY {
 		} 
 
 		slot.name = message.get("name");
-		if (slot.name.size() > 32)
-			slot.name.resize(32);
+		mrt::utf8_resize(slot.name, 32);
 		LOG_DEBUG(("player%d: %s:%s, name: %s", id, vehicle.c_str(), animation.c_str(), slot.name.c_str()));
 
 		slot.remote = cid;
