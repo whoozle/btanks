@@ -90,6 +90,9 @@ void Object::init(const Animation *a) {
 	
 	size.x = _tw;
 	size.y = _th;
+
+	if (has("_outline"))
+		remove("_outline");
 }
 
 

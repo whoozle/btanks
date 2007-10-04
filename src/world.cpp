@@ -865,11 +865,7 @@ TRY {
 				o.remove("_outline");
 			}
 		}
-	} else {
-		if (o.has("_outline")) {
-			o.remove("_outline");
-		}		
-	}
+	} 
 } CATCH("tick.outline", throw;);
 
 
