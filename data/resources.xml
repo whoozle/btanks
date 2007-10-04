@@ -488,6 +488,7 @@
 	<animation id="mortar-outline" tile="mortar_outline.png" model="single-tile" />
 	<animation id="machinegunner-outline" tile="machinegunner_outline.png" model="single-tile" />
 	<animation id="civilian-outline" tile="civilian_outline.png" model="single-tile" />
+	<animation id="nukeman-outline" tile="nukeman_outline.png" model="single-tile" />
 
 	<animation id="red-car" tile="car01.png" model="car-animation"/>
 	<animation id="cyan-car" tile="car02.png" model="car-animation"/>
