@@ -570,7 +570,7 @@ void IGame::onTick(const float dt) {
 			Map->tick(dt);
 			World->tick(dt);
 
-			PlayerManager->updatePlayers();
+			PlayerManager->updatePlayers(dt);
 		}
 
 		Mixer->tick(dt);

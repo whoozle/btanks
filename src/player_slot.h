@@ -63,6 +63,7 @@ public:
 	
 	std::set<int> zones_reached;
 	int spawn_limit;
+	float dead_time;
 	
 	int score;
 	std::string name;

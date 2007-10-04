@@ -93,6 +93,7 @@ void PlayerSlot::clear() {
 	
 	zones_reached.clear();
 	spawn_limit = 0;
+	dead_time = 0;
 	score = 0;
 	name.clear();
 	
@@ -284,6 +285,7 @@ void PlayerSlot::spawnPlayer(const std::string &classname, const std::string &an
 	} else throw_ex(("unknown multiplayer type '%s' used", type.c_str()));
 	
 	GameMonitor->addBonuses(*this);
+	dead_time = 0;
 }
 
 void PlayerSlot::validatePosition(v2<float>& position) {

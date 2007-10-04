@@ -81,7 +81,7 @@ public:
 	const int findEmptySlot() const;
 	const int spawnPlayer(const std::string &classname, const std::string &animation, const std::string &method);
 
-	void updatePlayers();
+	void updatePlayers(const float dt);
 	void ping();
 	
 	void setViewport(const int idx, const sdlx::Rect &rect);

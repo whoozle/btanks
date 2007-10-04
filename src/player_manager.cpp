@@ -524,7 +524,7 @@ void IPlayerManager::ping() {
 }
 
 
-void IPlayerManager::updatePlayers() {
+void IPlayerManager::updatePlayers(const float dt) {
 	if (_client && !_game_joined)
 		return;
 	
@@ -583,6 +583,11 @@ TRY {
 			}
 			LOG_DEBUG(("%d lives left", slot.spawn_limit));
 		}
+		
+		slot.dead_time += dt;
+		//GET_CONFIG_VALUE("engine.respawn-interval", float, ri, 0.1f);
+		if (slot.dead_time < 0.3f)
+			continue;
 		
 		LOG_DEBUG(("player in slot %u is dead. respawning. frags: %d", (unsigned)i, slot.frags));
 
@@ -665,9 +670,11 @@ TRY {
 			if (!slot.empty() && slot.need_sync) {
 				//LOG_DEBUG(("object in slot %d: %s (%d) need sync [%s]", 
 				//	j, slot.getObject()->animation.c_str(), slot.getObject()->getID(), slot.getObject()->getPlayerState().dump().c_str()));
-				s.add(slot.id);
 				Object * o = slot.getObject();
-				assert(o != NULL);
+				if (o == NULL)
+					continue;
+				
+				s.add(slot.id);
 				o->getPlayerState().serialize(s);
 				World->serializeObjectPV(s, o);
 				s.add(slot.dont_interpolate);
