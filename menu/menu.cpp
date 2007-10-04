@@ -429,7 +429,7 @@ void MainMenu::onEvent(const SDL_Event &e) {
 		const int a = e.jaxis.axis;
 		const int v = e.jaxis.value;
 		if (a < 2) {
-			LOG_DEBUG(("%d: %d %d", a, value[a], v));
+			//LOG_DEBUG(("%d: %d %d", a, value[a], v));
 			if (math::abs(value[a]) <= M && math::abs(v) > M) {
 				sym.sym = v > 0 ? SDLK_DOWN: SDLK_UP;
 				onKey(sym, true);
