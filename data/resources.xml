@@ -470,14 +470,22 @@
 		it could be easily changed.
 	-->
 
-	<animation id="tank-outline" tile="tank_outline.png" model="single-tile" />
-	<animation id="shilka-outline" tile="shilka_outline.png" model="single-tile" />
-	<animation id="launcher-outline" tile="launcher_outline.png" model="single-tile" />
+	<animation id="green-tank-outline" tile="tank_outline.png" model="single-tile" />
+	<animation id="red-tank-outline" tile="tank_outline.png" model="single-tile" />
+	<animation id="cyan-tank-outline" tile="tank_outline.png" model="single-tile" />
+	<animation id="yellow-tank-outline" tile="tank_outline.png" model="single-tile" />
+
+	<animation id="green-shilka-outline" tile="shilka_outline.png" model="single-tile" />
+	<animation id="red-shilka-outline" tile="shilka_outline.png" model="single-tile" />
+	<animation id="cyan-shilka-outline" tile="shilka_outline.png" model="single-tile" />
+	<animation id="yellow-shilka-outline" tile="shilka_outline.png" model="single-tile" />
+
+	<animation id="green-launcher-outline" tile="launcher_outline.png" model="single-tile" />
+	<animation id="red-launcher-outline" tile="launcher_outline.png" model="single-tile" />
+	<animation id="cyan-launcher-outline" tile="launcher_outline.png" model="single-tile" />
+	<animation id="yellow-launcher-outline" tile="launcher_outline.png" model="single-tile" />
+
 	<animation id="mortar-outline" tile="mortar_outline.png" model="single-tile" />
-	<animation id="static-tank-outline" tile="tank_outline.png" model="single-tile" />
-	<animation id="static-shilka-outline" tile="shilka_outline.png" model="single-tile" />
-	<animation id="static-launcher-outline" tile="launcher_outline.png" model="single-tile" />
-	<animation id="static-mortar-outline" tile="mortar_outline.png" model="single-tile" />
 	<animation id="machinegunner-outline" tile="machinegunner_outline.png" model="single-tile" />
 	<animation id="civilian-outline" tile="civilian_outline.png" model="single-tile" />
 

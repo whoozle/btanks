@@ -772,7 +772,8 @@ TRY {
 	int save_dir = o.getDirection();
 	int dirs = o.getDirectionsNumber();
 	bool hidden_attempt[3] = { false, false, false };
-	outline_animation = o.registered_name + "-outline";
+	outline_animation = o.animation + "-outline";
+	//LOG_DEBUG(("outline: %s", outline_animation.c_str()));
 	has_outline = ResourceManager->hasAnimation(outline_animation);
 	
 	v2<float> new_velocity;
@@ -864,6 +865,10 @@ TRY {
 				o.remove("_outline");
 			}
 		}
+	} else {
+		if (o.has("_outline")) {
+			o.remove("_outline");
+		}		
 	}
 } CATCH("tick.outline", throw;);
 
