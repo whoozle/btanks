@@ -36,10 +36,9 @@ public:
 		}
 		
 		DestructableObject::onSpawn();
-		Object *o;
-		add("machinegunner", o = spawnGrouped(_object, _animation, v2<float>(0, -12), Centered));
+		Object *o = add("machinegunner", _object, _animation, v2<float>(0, -12), Centered);
 		o->setZ(getZ() + 1);
-		add("top", o = spawnGrouped("watchtower-top", "watchtower", v2<float>(0, 0), Centered));
+		o = add("top", "watchtower-top", "watchtower", v2<float>(0, 0), Centered);
 		o->setZ(getZ() + 2);
 	}
 	

@@ -108,7 +108,7 @@ void Boat::onSpawn() {
 	mrt::randomize(rt, rt/10);
 	_reaction.set(rt);
 	
-	add("mod", spawnGrouped("missiles-on-boat", "guided-missiles-on-launcher", v2<float>(size.x/3, 10), Centered));
+	add("mod", "missiles-on-boat", "guided-missiles-on-launcher", v2<float>(size.x/3, 10), Centered);
 
 }
 

@@ -28,8 +28,7 @@ BaseObject::BaseObject(const std::string &classname):
 	size(), mass(1), speed(0), ttl(-1), impassability(1), hp(1), max_hp(1), 
  	piercing(false), pierceable(false),
 	classname(classname), disable_ai(false), 
-	_id(0), _follow(0), _follow_position(), 
-	_state(), 
+	_id(0), _state(), 
 	_velocity(), _direction(1,0), 
 	_moving_time(0), _idle_time(0), 
 	need_sync(false),
@@ -68,8 +67,6 @@ void BaseObject::serialize(mrt::Serializator &s) const {
 	s.add(classname);
 	s.add(disable_ai);
 	
-	s.add(_follow);
-	s.add(_follow_position);	
 	s.add(_state);
 	
 	s.add(_velocity);
@@ -111,8 +108,6 @@ void BaseObject::deserialize(const mrt::Serializator &s) {
 	s.get(classname);
 	s.get(disable_ai);
 	
-	s.get(_follow);
-	s.get(_follow_position);
 	s.get(_state);
 	
 	s.get(_velocity);
@@ -203,19 +198,6 @@ void BaseObject::state2velocity() {
 	_velocity.normalize();
 }
 */
-void BaseObject::follow(const BaseObject *obj, const GroupType mode) {
-	_follow = obj->_id;
-	if (mode == Centered) {
-		_follow_position = (obj->size - size) / 2;
-		//LOG_DEBUG(("follow: %g %g", _follow_position.x, _follow_position.y));
-	}
-	_position.x = obj->_position.x;
-	_position.y = obj->_position.y;
-}
-
-void BaseObject::follow(const int id) {
-	_follow = id;
-}
 
 void BaseObject::setZ(const int z0, const bool absolute) {
 	if (absolute) {

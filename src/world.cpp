@@ -193,19 +193,27 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::R
 	
 	for(ObjectMap::iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		Object *o = i->second;
-		if (o->isDead()) {
+		if (o->isDead() || o->skipRendering()) {
 			//LOG_DEBUG(("render: skipped dead object: %s", o->registered_name.c_str()));
 			continue;
 		}
-		if (o->_z < _z1 || o->_z >= _z2) 	
-			continue;
 		
-		sdlx::Rect r((int)o->_position.x, (int)o->_position.y, (int)o->size.x, (int)o->size.y);
-		bool fogged = fog;// && o->speed != 0;
-		//LOG_DEBUG(("%d,%d:%d,%d vs %d,%d:%d,%d result: %s", 
-		//	r.x, r.y, r.w, r.h, src_rect.x, src_rect.y, src_rect.w, src_rect.h, Map->intersects(r, src_rect)?"true":"false"));
-		if (Map->intersects(r, fogged? fog_rect: src) || (show_waypoints && o->isDriven())) 
-			layers.insert(LayerMap::value_type(o->_z, o));
+		std::set<Object *> objects;
+		objects.insert(o);
+		o->getSubObjects(objects);
+		for(std::set<Object *>::iterator j = objects.begin(); j != objects.end(); ++j) {
+			Object *o = *j;
+		
+			if (o->_z < _z1 || o->_z >= _z2) 	
+				continue;
+		
+			sdlx::Rect r((int)o->_position.x, (int)o->_position.y, (int)o->size.x, (int)o->size.y);
+			bool fogged = fog;// && o->speed != 0;
+			//LOG_DEBUG(("%d,%d:%d,%d vs %d,%d:%d,%d result: %s", 
+			//	r.x, r.y, r.w, r.h, src_rect.x, src_rect.y, src_rect.w, src_rect.h, Map->intersects(r, src_rect)?"true":"false"));
+			if (Map->intersects(r, fogged? fog_rect: src) || (show_waypoints && o->isDriven())) 
+				layers.insert(LayerMap::value_type(o->_z, o));
+		}
 	}
 
 	//LOG_DEBUG(("rendering %d objects", layers.size()));
@@ -253,7 +261,7 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::R
 					wp.x - src.x + dst.x - 8, wp.y - src.y + dst.y - 8);
 			}
 		}
-		if (o.hp >= 0 && special_ids.find(o.getID()) != special_ids.end() || (rhb && (o.impassability == 1.0f && o._follow <= 0 && !o.piercing))) {
+		if (o.hp >= 0 && special_ids.find(o.getID()) != special_ids.end() || (rhb && (o.impassability == 1.0f && !o.piercing))) {
 			int h = _hp_bar->getHeight() / 16;
 			int y = (o.hp >= 0)?15 * (o.max_hp - o.hp) / o.max_hp: 0;
 			sdlx::Rect hp_src(0, y * h, _hp_bar->getWidth(), h);
@@ -329,8 +337,6 @@ const bool IWorld::collides(Object *obj, const v2<int> &position, Object *o, con
 			(obj->piercing && o->pierceable) || (obj->pierceable && o->piercing) ||
 			o->isDead() || obj->isDead() ||
 			//owner stuff
-			(obj->_follow != 0 && obj->_follow == o->_id) || 
-			(o->_follow != 0 && o->_follow == obj->_id) ||
 			obj->hasSameOwner(o, true) 
 		) {
 			return false;
@@ -591,7 +597,7 @@ TRY {
 
 	if (_atatat && !o.piercing && o.mass > 20) {
 		if (!o.has("atatat-tooltip")) {
-			o.add("atatat-tooltip", o.spawnGrouped("random-tooltip", "skotobaza", v2<float>(48, -48), Centered));
+			o.add("atatat-tooltip", "random-tooltip", "skotobaza", v2<float>(48, -48), Centered);
 		}
 
 		PlayerState state = o.getPlayerState();
@@ -683,9 +689,6 @@ TRY {
 		o.tick(dt);
 	} CATCH("calling o.tick", throw;)
 
-	if (o._follow) 
-		return;
-		
 	if (o.speed == 0) {
 		TRY {
 			o._idle_time += dt * e_speed;
@@ -701,6 +704,11 @@ TRY {
 	if (len == 0) {
 		o._moving_time = 0;
 		o._idle_time += dt * e_speed;
+
+		TRY { 
+			o.groupTick(dt);
+		} CATCH("group_tick", throw; );
+
 		return;
 	} else {
 		o._idle_time = 0;
@@ -854,9 +862,8 @@ TRY {
 		if (hidden) {
 			if (has_outline && !o.has("_outline")) {
 				//LOG_DEBUG(("%d:%s:%s: adding outline", o._id, o.classname.c_str(), o.animation.c_str()));
-				Object *outline = o.spawnGrouped("outline", outline_animation, v2<float>(), Centered);
+				Object *outline = o.add("_outline", "outline", outline_animation, v2<float>(), Centered);
 				outline->setZ(9999, true);
-				o.add("_outline", outline);
 			}
 		//LOG_DEBUG(("%d:%s:%s: whoaaa!!! i'm in domik", o._id, o.classname.c_str(), o.animation.c_str()));
 		} else {
@@ -993,7 +1000,10 @@ TRY {
 		if (o._position.y >= map_size.y)
 			o._position.y -= map_size.y;
 	}
-
+	TRY { 
+		o.groupTick(dt);
+	} CATCH("group_tick", throw; );
+	
 	updateObject(&o);
 	
 } CATCH("tick(final)", throw;);
@@ -1073,38 +1083,7 @@ void IWorld::purge(ObjectMap &objects) {
 				continue;
 			}
 		}
-
-		const int f = o->_follow;
-
-		if (f == 0) {
-			++i;
-			continue;
-		}
-		
-		ObjectMap::const_iterator o_i = _objects.find(f);
-		if (o_i != _objects.end() && !o_i->second->isDead()) {
-			const Object *leader = o_i->second;
-			//LOG_DEBUG(("following %d...", f));
-			o->_position = leader->_position + o->_follow_position;
-			o->_velocity = leader->_velocity;
-			if (World->_safe_mode)
-				o->_dead = false;
-			updateObject(o);
-			++i;
-		} else {
-			if (World->_safe_mode) {
-				//LOG_WARN(("leader for object %d is dead. (leader-id:%d)", o->_id, f));
-				++i;
-				o->_dead = true;
-			} else {
-				o->_follow = 0;
-				o->emit("death", NULL);
-			
-				deleteObject(o);
-				o = NULL;
-				objects.erase(i++);
-			}
-		}
+		++i;
 	}
 }
 
@@ -1158,38 +1137,6 @@ Object* IWorld::spawn(const Object *src, const std::string &classname, const std
 	//LOG_DEBUG(("spawn: %s: %d, parent: %s, %d", obj->animation.c_str(), obj->_z, src->animation.c_str(), src->_z));
 
 	//LOG_DEBUG(("result: %f %f", obj->_position.x, obj->_position.y));
-	return obj;
-}
-
-Object * IWorld::spawnGrouped(const Object *src, const std::string &classname, const std::string &animation, const v2<float> &dpos, const GroupType type) {
-	Object *obj = ResourceManager->createObject(classname, animation);
-
-	assert(obj->_owners.size() == 0);
-
-	obj->copyOwners(src);
-
-	obj->addOwner(src->_id);
-	obj->_spawned_by = src->_id;
-
-	
-	obj->_follow_position = dpos;
-	switch(type) {
-		case Centered:
-			obj->_follow_position += (src->size - obj->size)/2;
-			break;
-		case Fixed:
-			break;
-	}
-	obj->follow(src);
-
-	v2<float> pos = obj->_position + obj->_follow_position;
-	
-	obj->_z -= ZBox::getBoxBase(obj->_z);
-	obj->_z += ZBox::getBoxBase(src->_z);
-	//LOG_DEBUG(("spawnGrouped: %s: %d, parent: %s, %d", obj->animation.c_str(), obj->_z, src->animation.c_str(), src->_z));
-
-	addObject(obj, pos);
-
 	return obj;
 }
 
@@ -1371,7 +1318,7 @@ void IWorld::generateUpdate(mrt::Serializator &s, const bool clean_sync_flag) {
 	ObjectMap objects;
 	for(ObjectMap::reverse_iterator i = _objects.rbegin(); i != _objects.rend(); ++i) {
 		Object *o = i->second;
-		if (o->need_sync || o->speed != 0 || o->_follow != 0) { //leader need for missiles on vehicle or such
+		if (o->need_sync || o->speed != 0) { //leader need for missiles on vehicle or such
 			objects.insert(ObjectMap::value_type(o->_id, o));
 		} else skipped_objects.push_back(o->_id);
 	}
@@ -1664,7 +1611,7 @@ void IWorld::enumerateObjects(std::set<const Object *> &id_set, const Object *sr
 const Object *IWorld::getObjectByXY(const int x, const int y) const {
 	for(ObjectMap::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		const Object *o = i->second;
-		if (o->_follow || (o->_spawned_by != 0 && o->_spawned_by != OWNER_MAP)) //skip grouped objects.
+		if (o->_spawned_by != 0 && o->_spawned_by != OWNER_MAP) //skip grouped objects.
 			continue;
 		
 		sdlx::Rect r((int)o->_position.x, (int)o->_position.y, (int)o->size.x, (int)o->size.y);

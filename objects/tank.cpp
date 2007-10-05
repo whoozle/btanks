@@ -40,14 +40,11 @@ void Tank::onSpawn() {
 	if (registered_name.substr(0, 6) == "static")
 		disown();
 
-	Object *_smoke = spawnGrouped("single-pose", "tank-smoke", v2<float>(), Centered);
+	Object *_smoke = add("smoke", "single-pose", "tank-smoke", v2<float>(), Centered);
 	_smoke->impassability = 0;
 
-	Object *_missiles = spawnGrouped("missiles-on-tank", "guided-missiles-on-tank", v2<float>(), Centered);
+	Object *_missiles = add("mod", "missiles-on-tank", "guided-missiles-on-tank", v2<float>(), Centered);
 	_missiles->impassability = 0;
-
-	add("mod", _missiles);
-	add("smoke", _smoke);
 	
 	GET_CONFIG_VALUE("objects.tank.fire-rate", float, fr, 0.3);
 	_fire.set(fr);

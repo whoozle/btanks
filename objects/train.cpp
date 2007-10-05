@@ -87,14 +87,14 @@ void Train::tick(const float dt) {
 	Object::tick(dt);
 	if (Map->torus()) {
 		if (!_spawned_wagon) {
-			add("wagon", spawnGrouped("choo-choo-wagon", "choo-choo-wagon", v2<float>(0, -size.y), Fixed));
-			_spawned_wagon = true;		
+			add("wagon", "choo-choo-wagon", "choo-choo-wagon", v2<float>(0, -size.y), Fixed);
+			_spawned_wagon = true;
 		}
 	} else { 
 		v2<int> pos;
 		getPosition(pos);
 		if (pos.y >= 0 && !_spawned_wagon) {
-			add("wagon", spawnGrouped("choo-choo-wagon", "choo-choo-wagon", v2<float>(0, -size.y), Fixed));
+			add("wagon", "choo-choo-wagon", "choo-choo-wagon", v2<float>(0, -size.y), Fixed);
 			_spawned_wagon = true;
 		}
 		if (pos.y  >= dst_y) { 

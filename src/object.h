@@ -48,7 +48,7 @@ public:
 	std::string animation;
 	float fadeout_time;
 
-	Object(const std::string &classname);
+	Object(const std::string &classname); //do not use parent - internal
 	~Object();
 	
 	void init(const Animation *other);
@@ -166,7 +166,7 @@ protected:
 	inline const bool calculatingPath() const { return !_open_list.empty(); }
 
 	//grouped object handling
-	void add(const std::string &name, Object *obj);
+	Object *add(const std::string &name, const std::string &classname, const std::string &animation, const v2<float> &dpos, const GroupType type);
 	Object *get(const std::string &name);
 	void remove(const std::string &name);
 	void groupEmit(const std::string &name, const std::string &event);
@@ -198,6 +198,8 @@ protected:
 	
 	inline const AnimationModel * getAnimationModel() const { return _model; }
 	
+	Object * _parent;
+	
 private: 
 //pathfinding stuff
 	void close(const v2<int>& vertex); 
@@ -224,6 +226,8 @@ private:
 	};
 	
 	void checkAnimation() const;
+	void getSubObjects(std::set<Object *> &objects);
+	void groupTick(const float dt);
 	
 	mutable const Animation *_animation;
 	mutable const AnimationModel *_model;
@@ -253,7 +257,8 @@ private:
 	int _dst_direction;
 	
 	//grouped objects stuff
-	typedef std::map<const std::string, int> Group;
+	v2<float> _position_delta;
+	typedef std::map<const std::string, Object *> Group;
 	Group _group;
 	
 	Alarm _blinking;

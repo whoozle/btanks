@@ -78,10 +78,9 @@ void Missile::onSpawn() {
 
 	play("main", true);
 	if (type != "boomerang") {
-		Object *_fire = spawnGrouped("single-pose", "missile-fire", v2<float>(), Centered);
+		Object *_fire = add("fire", "single-pose", "missile-fire", v2<float>(), Centered);
 		_fire->setDirectionsNumber(16);
 		_fire->impassability = 0;
-		add("fire", _fire);
 	} 
 	
 	playSound(type + "-missile", false);

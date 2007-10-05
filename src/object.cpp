@@ -32,6 +32,7 @@
 #include "sound/mixer.h"
 #include "special_owners.h"
 #include "game_monitor.h"
+#include "zbox.h"
 
 Object::Event::Event() : name(), repeat(false), sound(), gain(1.0f), played(false), cached_pose(NULL) {}
 
@@ -63,18 +64,21 @@ const bool Object::aiDisabled() const {
 Object::Object(const std::string &classname) : 
 	BaseObject(classname), 
 	registered_name(), animation(), fadeout_time(0),  
-	_animation(0), _model(0), 
-	_surface(0), _fadeout_surface(0), _fadeout_alpha(0), _cmap(0), 
+	_parent(NULL), 
+	_animation(0), 	_model(0), _surface(0), 
+	_fadeout_surface(0), _fadeout_alpha(0), _cmap(0), 
 	_events(), _effects(), 
 	_tw(0), _th(0), _direction_idx(0), _directions_n(8), _pos(0), 
 	_way(), _next_target(), _next_target_rel(), 
 	_rotation_time(0), 
 	_dst_direction(-1), 
+	_position_delta(), 
 	_group(), _blinking(true)
 	 {
 	 	GET_CONFIG_VALUE("engine.spawn-invulnerability-blinking-interval", float, ibi, 0.3);
 	 	_blinking.set(ibi);
 	 }
+	 
 
 Object::~Object() { Mixer->cancelAll(this); delete _fadeout_surface; }
 
@@ -219,12 +223,19 @@ void Object::tick(const float dt) {
 		++ei;
 	}
 
-	if (_events.empty()) 
+	const Pose * pose = NULL;
+	
+	if (_events.empty()) {
+		if (_parent == NULL) {
+			LOG_DEBUG(("%s: no state, committing suicide", animation.c_str()));
+			emit("death", NULL);
+		}
 		return;
+	}
 	
 	Event & event = _events.front();
 	//LOG_DEBUG(("%p: event: %s, pos = %f", (void *)this, event.name.c_str(), _pos));
-	const Pose * pose = event.cached_pose;
+	pose = event.cached_pose;
 	if (pose == NULL) {
 		checkAnimation();
 		event.cached_pose = pose = _model->getPose(event.name);
@@ -272,6 +283,36 @@ void Object::tick(const float dt) {
 	} 
 }
 
+void Object::groupTick(const float dt) {
+	for(Group::iterator i = _group.begin(); i != _group.end(); ) {
+		Object *o = i->second;
+		assert(o != NULL);
+		assert(o->_parent == this);
+		
+		if (o->isDead()) {
+			_group.erase(i++);
+			continue;
+		}
+
+		o->_position = _position + o->_position_delta;
+		o->_velocity = _velocity;
+		o->_direction = _direction;
+		o->_direction_idx = _direction_idx;
+		//o->setDirection(getDirection());
+
+		o->calculate(dt);
+		o->tick(dt);
+		++i;
+	}
+}
+
+void Object::getSubObjects(std::set<Object *> &objects) {
+	for(Group::iterator i = _group.begin(); i != _group.end(); ++i) {
+		objects.insert(i->second);
+		i->second->getSubObjects(objects);
+	}
+}
+
 void Object::playSound(const std::string &name, const bool loop, const float gain) {
 	Mixer->playSample(this, name + ".ogg", loop, gain);
 }
@@ -283,7 +324,7 @@ void Object::playRandomSound(const std::string &classname, const bool loop, cons
 
 const bool Object::getRenderRect(sdlx::Rect &src) const {
 	if (_events.empty()) {
-		if (!isDead())
+		if (!isDead() && _parent == NULL)
 			LOG_WARN(("%s: no animation played. latest position: %g", registered_name.c_str(), _pos));
 		return false;
 	}
@@ -334,11 +375,6 @@ const bool Object::getRenderRect(sdlx::Rect &src) const {
 }
 
 const bool Object::skipRendering() const {
-	if (_follow != 0) {
-		Object *leader = World->getObjectByID(_follow);
-		if (leader != NULL)
-			return leader->skipRendering();
-	}
 	if (!isEffectActive("invulnerability"))
 		return false;
 	if (getEffectTimer("invulnerability") == -1) 
@@ -346,12 +382,7 @@ const bool Object::skipRendering() const {
 	return _blinking.get() >= 0.5;
 }
 
-
 void Object::render(sdlx::Surface &surface, const int x, const int y) {
-	if (skipRendering()) {
-		return;
-	}
-
 	sdlx::Rect src;
 	if (!getRenderRect(src))
 		return;
@@ -411,6 +442,7 @@ void Object::render(sdlx::Surface &surface, const int x, const int y) {
 	_fadeout_surface->unlock();
 
 	surface.copyFrom(*_fadeout_surface, x, y);
+
 }
 
 const bool Object::collides(const Object *other, const int x, const int y, const bool hidden_by_other) const {
@@ -484,13 +516,16 @@ void Object::serialize(mrt::Serializator &s) const {
 	
 	s.add(_rotation_time);
 	s.add(_dst_direction);
+	s.add(_position_delta);
 
 	//Group	
 	en = _group.size();
 	s.add(en);
 	for(Group::const_iterator i = _group.begin(); i != _group.end(); ++i) {
 		s.add(i->first);
-		s.add(i->second);
+		const Object *o = i->second;
+		s.add(o->registered_name);
+		o->serialize(s);
 	}
 	
 	_blinking.serialize(s);
@@ -541,15 +576,22 @@ void Object::deserialize(const mrt::Serializator &s) {
 
 	s.get(_rotation_time);
 	s.get(_dst_direction);
+	s.get(_position_delta);
 
 	_group.clear();
 	s.get(en);
 	while(en--) {
-		std::string name;
-		int id;
+		std::string name, rn;
 		s.get(name);
-		s.get(id);
-		_group[name] = id;
+		s.get(rn);
+		Object * o = _group[name];
+		if (o == NULL || o->registered_name != rn) {
+			delete o;
+			o = ResourceManager->createObject(rn);
+			o->_parent = this;
+			_group[name] = o;
+		}
+		o->deserialize(s);		
 	}
 	_blinking.deserialize(s);
 
@@ -563,13 +605,10 @@ void Object::deserialize(const mrt::Serializator &s) {
 
 void Object::emit(const std::string &event, Object * emitter) {
 	if (event == "death") {
-		for(Group::iterator i = _group.begin(); i != _group.end(); ++i) {
-			Object * o = World->getObjectByID(i->second);
-			if (o == NULL)
-				continue;
-			o->emit(event, emitter);
-		}
 		_dead = true;
+		for(Group::iterator i = _group.begin(); i != _group.end(); ++i) {
+			i->second->emit("death", emitter);
+		}
 	} else if (event == "collision") {
 		if (piercing && emitter != NULL)
 			emitter->addDamage(this);
@@ -663,10 +702,6 @@ void Object::onSpawn() {
 	throw_ex(("%s: object MUST define onSpawn() method.", registered_name.c_str()));
 }
 
-Object * Object::spawnGrouped(const std::string &classname, const std::string &animation, const v2<float> &dpos, const GroupType type) {
-	return World->spawnGrouped(this, classname, animation, dpos, type);
-}
-
 void Object::limitRotation(const float dt, const float speed, const bool rotate_even_stopped, const bool allow_backward) {
 	const int dirs = getDirectionsNumber();
 	if (dirs == 1)
@@ -741,33 +776,51 @@ void Object::limitRotation(const float dt, const float speed, const bool rotate_
 
 //grouped object stuff
 
-void Object::add(const std::string &name, Object *obj) {
+Object* Object::add(const std::string &name, const std::string &classname, const std::string &animation, const v2<float> &dpos, const GroupType type) {
+	Object *obj = ResourceManager->createObject(classname, animation);
+
 	assert(obj != NULL);
+	assert(obj->_owners.size() == 0);
+
+	obj->_parent = this;
+	obj->copyOwners(this);
+	obj->addOwner(_id);
+	obj->_spawned_by = _id;
+
+	obj->onSpawn();
+	
+	obj->_position_delta = dpos;
+	switch(type) {
+		case Centered:
+			obj->_position_delta += (size - obj->size)/2;
+			break;
+		case Fixed:
+			break;
+	}
+
+	obj->_z -= ZBox::getBoxBase(obj->_z);
+	obj->_z += ZBox::getBoxBase(_z);
+
 	if (_group.find(name) != _group.end())
-		throw_ex(("object '%s'(%s) was already added to group", name.c_str(), obj->classname.c_str()));
-	_group.insert(Group::value_type(name, obj->getID()));
+		throw_ex(("object '%s'(%s) was already added to group", name.c_str(), obj->animation.c_str()));
+	_group.insert(Group::value_type(name, obj));
 	obj->need_sync = true;
 	need_sync = true;
+	return obj;
 }
 
 Object *Object::get(const std::string &name) {
 	Group::iterator i = _group.find(name);
 	if (i == _group.end())
 		throw_ex(("there's no object '%s' in group", name.c_str()));
-	Object * o = World->getObjectByID(i->second);
-	if (o == NULL)
-		throw_ex(("%s: world doesnt know anything about '%s' [group]", registered_name.c_str(), name.c_str()));
-	return o;
+	return i->second;
 }
 
 const Object *Object::get(const std::string &name) const {
 	Group::const_iterator i = _group.find(name);
 	if (i == _group.end())
 		throw_ex(("there's no object '%s' in group", name.c_str()));
-	Object * o = World->getObjectByID(i->second);
-	if (o == NULL)
-		throw_ex(("%s: world doesnt know anything about '%s' [group]", registered_name.c_str(), name.c_str()));
-	return o;
+	return i->second;
 }
 
 const bool Object::has(const std::string &name) const {
@@ -779,11 +832,11 @@ void Object::remove(const std::string &name) {
 	if (i == _group.end())
 		return;
 	
-	Object * o = World->getObjectByID(i->second);
-	if (o != NULL) {
-		o->emit("death", this);
-		o->need_sync = true;
-	}
+	Object * o = i->second;
+	assert(o != NULL);
+	o->emit("death", this);
+	delete o;
+
 	_group.erase(i);
 	need_sync = true;
 }
@@ -793,12 +846,8 @@ void Object::groupEmit(const std::string &name, const std::string &event) {
 	Group::const_iterator i = _group.find(name);
 	if (i == _group.end())
 		throw_ex(("there's no object '%s' in group", name.c_str()));
-	Object * o = World->getObjectByID(i->second);
-	if (o == NULL) {
-		//throw_ex(("%s: world doesnt know anything about '%s', id: %d [group]", classname.c_str(), name.c_str(), i->second));
-		LOG_ERROR(("%s: world doesnt know anything about '%s', id: %d [group] [attempt to recover]", registered_name.c_str(), name.c_str(), i->second));
-		return;
-	}
+	Object * o = i->second;
+	assert(o != NULL);
 	o->emit(event, this);
 }
 
@@ -821,14 +870,8 @@ void Object::removeEffect(const std::string &name) {
 }
 
 void Object::calculate(const float dt) {
-	if (_follow > 0) {
-		Object *leader = World->getObjectByID(_follow);
-		if (leader) {
-			_direction = leader->_direction;
-			setDirection(leader->getDirection());
-			return;
-		}
-	}
+	if (_parent != NULL)
+		return;
 	
 	_velocity.clear();
 		
@@ -1399,9 +1442,9 @@ void Object::setZBox(const int zb) {
 	setZ(z, true);
 	
 	for(Group::const_iterator i = _group.begin(); i != _group.end(); ++i) {
-		Object *o = World->getObjectByID(i->second);
-		if (o != NULL)
-			o->setZBox(zb);
+		Object *o = i->second;
+		assert(o != NULL);
+		o->setZBox(zb);
 	}
 }
 

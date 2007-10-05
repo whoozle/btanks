@@ -63,7 +63,6 @@ public:
 	void tick(const float dt);
 	
 	Object * spawn(const Object *src, const std::string &classname, const std::string &animation, const v2<float> &dpos, const v2<float> &vel, const int z = 0);
-	Object * spawnGrouped(const Object *src, const std::string &classname, const std::string &animation, const v2<float> &dpos, const GroupType type);
 
 //the nearest objects
 	const Object* getNearestObject(const Object *obj, const std::set<std::string> &classnames, const float range, const bool check_shooting_range) const;

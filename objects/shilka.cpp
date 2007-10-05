@@ -47,12 +47,10 @@ void Shilka::onSpawn() {
 	if (registered_name.substr(0, 6) == "static")
 		disown();
 	
-	add("mod", spawnGrouped("fake-mod", "damage-digits", v2<float>(), Centered));
+	add("mod", "fake-mod", "damage-digits", v2<float>(), Centered);
 	
-	Object *_smoke = spawnGrouped("single-pose", "tank-smoke", v2<float>(), Centered);
+	Object *_smoke = add("smoke", "single-pose", "tank-smoke", v2<float>(), Centered);
 	_smoke->impassability = 0;
-
-	add("smoke", _smoke);
 	
 	GET_CONFIG_VALUE("objects.shilka.fire-rate", float, fr, 0.2);
 	_fire.set(fr);

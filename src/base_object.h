@@ -73,10 +73,6 @@ public:
 	inline const PlayerState & getPlayerState() const { return _state; }
 	const bool updatePlayerState(const PlayerState &state);
 
-	void follow(const BaseObject *obj, const GroupType mode = Fixed);
-	void follow(const int id); //add mode
-	inline const int getLeader() const { return _follow; }
-
 	void heal(const int hp);
 	virtual const bool take(const BaseObject *obj, const std::string &type);
 	
@@ -121,8 +117,6 @@ public:
 	
 protected:
 	int _id;
-	int _follow;
-	v2<float> _follow_position;
 	PlayerState _state;
 	v2<float> _velocity, _direction;
 	float _moving_time, _idle_time;
@@ -133,7 +127,6 @@ protected:
 	Variants _variants;
 
 private:
-
 	v2<float> _position;
 	
 	//do not serialize interpolation stuff.
@@ -141,11 +134,14 @@ private:
 	float _interpolation_progress;
 	
 	int _z;
+
 	std::deque<int> _owners;
 	std::set<int> _owner_set;
+
 	int _spawned_by;
 	
 	friend class IWorld;
+	friend class Object;
 	friend class Teleport;
 	friend class ai::Base;
 	friend class ai::Waypoints;
