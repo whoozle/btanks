@@ -46,7 +46,8 @@ private:
 
 void Buggy::onSpawn() {
 	play("hold", true);
-	add("mod", "turrel", "buggy-gun", v2<float>(), Centered);
+	Object *turrel = add("mod", "turrel", "buggy-gun", v2<float>(), Centered);
+	turrel->setZ(getZ() + 5, true);
 }
 
 void Buggy::getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const {
