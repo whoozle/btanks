@@ -45,6 +45,9 @@ private:
 };
 
 void Buggy::onSpawn() {
+	if (registered_name.substr(0, 6) == "static")
+		disown();
+
 	play("hold", true);
 	Object *turrel = add("mod", "turrel", "buggy-gun", v2<float>(), Centered);
 	turrel->setZ(getZ() + 5, true);
