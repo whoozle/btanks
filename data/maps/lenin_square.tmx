@@ -23,7 +23,7 @@
 		<property name="object:heal:heal:1" value="24,1200,180"/>
 		<property name="object:heal:heal:10" value="1439,840"/>
 		<property name="object:heal:heal:9" value="957,1336,180"/>
-		<property name="object:helicopter-with-kamikazes:helicopter:1" value="@12,13,900"/>
+		<property name="object:helicopter-with-kamikazes:helicopter:1" value="@12,13,2900"/>
 		<property name="object:lodge(make-pierceable)(with-fire):lodge:1" value="0,78,420"/>
 		<property name="object:machinegunner-item:machinegunner-item:2" value="769,223"/>
 		<property name="object:machinegunner-item:machinegunner-item:3" value="771,223"/>
