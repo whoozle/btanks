@@ -1074,7 +1074,7 @@ const bool IPlayerManager::isServerActive() const {
 }
 
 void IPlayerManager::onPlayerDeath(const Object *player, const Object *killer) {
-	if (isClient())
+	if (isClient() || GameMonitor->gameOver())
 		return;
 	{
 		PlayerSlot *player_slot = getSlotByID(player->getID());
