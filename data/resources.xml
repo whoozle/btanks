@@ -668,12 +668,18 @@
 	<animation id="buggy-gun" model="buggy-gun-animation" tile="buggy_gun.png" size="64" />
 	<animation id="dead-buggy" model="dead-vehicle-animation" tile="buggy_crash.png" size="64" />
 
+	<animation id="buggy-bullet-right" tile="buggy_bullet1.png" model="bullet-animation"/>
+	<animation id="buggy-bullet-left" tile="buggy_bullet2.png" model="bullet-animation"/>
+	<animation id="buggy-air-bullet-right" tile="buggy_air_bullet1.png" model="bullet-animation"/>
+	<animation id="buggy-air-bullet-left" tile="buggy_air_bullet2.png" model="bullet-animation"/>
+
 	<object class="damage-digits" speed="60" mass="1" ttl="1" z="999" />
 
 	<alias name="pond" class="single-pose" />
 	<alias name="shilka-bullet" class="bullet(auto-aim)" />
 	<alias name="tank-bullet" class="bullet(auto-aim)" />
 	<alias name="helicopter-bullet" class="bullet" />
+	<alias name="buggy-bullet" class="bullet" />
 	<alias name="spawn-shield" class="single-pose(once)(no-directions)" />
 	<alias name="gate" class="destructable-object" />
 	<alias name="bus-stop" class="destructable-object(with-fire)" />
@@ -727,6 +733,7 @@
 	<object class="shilka-bullet" speed="1200" mass="1" piercing="true" ttl="1" hp="10" z="210" />
 	<object class="mortar-bullet" speed="600" mass="1" ttl="0.7" hp="0" z="210" />
 	<object class="helicopter-bullet" speed="1200" mass="1" piercing="true" ttl="1" hp="10" z="-10" />
+	<object class="buggy-bullet" speed="1200" mass="1" piercing="true" ttl="1" hp="10" z="-10" />
 
 	<object class="guided-missile" speed="450" mass="100" ttl="5" hp="15" z="250" />
 	<object class="thrower-missile" speed="450" mass="30" ttl="2.5" hp="5" z="250" />
