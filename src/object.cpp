@@ -297,6 +297,7 @@ void Object::groupTick(const float dt) {
 		assert(o->_parent == this);
 		
 		if (o->isDead()) {
+			LOG_DEBUG(("%d:%s, grouped '%s':%s is dead.", getID(), animation.c_str(), i->first.c_str(), o->animation.c_str()));
 			delete o;
 			_group.erase(i++);
 			continue;
