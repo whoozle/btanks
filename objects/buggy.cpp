@@ -79,10 +79,6 @@ void Buggy::calculate(const float dt) {
 }
 
 void Buggy::tick(const float dt) {
-	if (_alt_fire.tick(dt) && _state.alt_fire) {
-		_alt_fire.reset();
-		playRandomSound("klaxon", false);
-	}
 	Object::tick(dt);
 	if (_velocity.is0() && getState() != "hold") {
 		cancelAll();
