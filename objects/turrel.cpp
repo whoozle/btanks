@@ -54,10 +54,12 @@ void Turrel::onSpawn() {
 void Turrel::tick(const float dt) {
 	Object::tick(dt);
 	if (_fire.tick(dt) && _state.fire) {
+		bool air_mode = (_parent != NULL)?_parent->getPlayerState().alt_fire:_state.alt_fire;
 		cancelAll();
 		play(_left? "fire-left": "fire-right", false);
 		play("hold", true);
-		Object *bullet = spawn("helicopter-bullet", std::string("helicopter-bullet-") + (_left?"left":"right"), v2<float>(), _direction);
+		std::string animation = mrt::formatString("buggy-%s-%s", air_mode?"air-bullet":"bullet", _left?"left":"right");
+		Object *bullet = spawn("buggy-bullet", animation, v2<float>(), _direction);
 		bullet->setZ(getZ() - 1, true);
 		_left = !_left;
 	}
@@ -75,7 +77,7 @@ void Turrel::calculate(const float dt) {
 		targets.insert("monster");
 		targets.insert("watchtower");
 	}
-	bool air_mode = (_parent != NULL)?_parent->getPlayerState().alt_fire:false;
+	bool air_mode = (_parent != NULL)?_parent->getPlayerState().alt_fire:_state.alt_fire;
 	if (air_mode) {
 		v2<float> pos, vel;
 	
