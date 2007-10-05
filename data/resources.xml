@@ -350,6 +350,18 @@
 	<animation-model id="sandworm-body-animation" speed="4"> 
 		<pose id="main">0,1,2</pose>
 	</animation-model>
+
+	<animation-model id="buggy-animation" speed="10">
+		<pose id="hold">0</pose>
+		<pose id="move">0,1,2</pose>
+	</animation-model>
+
+	<animation-model id="buggy-gun-animation" speed="10">
+		<pose id="hold">0</pose>
+		<pose id="move">0,1,2</pose>
+		<pose id="fire-left">3,1</pose>
+		<pose id="fire-right">4,1</pose>
+	</animation-model>
 	
 	<!-- 
 		sound tag allows you to load sample that doesn't reside in any animation model.
@@ -652,6 +664,10 @@
 	<animation id="sandworm-head" model="sandworm-head-animation" tile="sandworm.png" size="128" />
 	<animation id="sandworm" model="sandworm-body-animation" tile="sandworm_body.png" />
 
+	<animation id="buggy" model="buggy-animation" tile="buggy.png" size="64" />
+	<animation id="buggy-gun" model="buggy-gun-animation" tile="buggy_gun.png" size="64" />
+	<animation id="dead-buggy" model="dead-vehicle-animation" tile="buggy_crash.png" size="64" />
+
 	<object class="damage-digits" speed="60" mass="1" ttl="1" z="999" />
 
 	<alias name="pond" class="single-pose" />
@@ -792,6 +808,7 @@
 	<object class="cow" hp="40" speed="80" mass="120" z="-1" />	
 	<object class="sandworm" speed="150" mass="10" z="-1" impassability="0" />
 	<object class="sandworm-head" speed="0" mass="10" z="-1" impassability="-1" hp="500" />
+	<object class="buggy" hp="40" mass="300" speed="400" z="0" />
 	
 	<!-- items -->
 	<object class="base-item" z="180" impassability="-1" />
