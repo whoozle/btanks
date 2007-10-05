@@ -80,7 +80,14 @@ Object::Object(const std::string &classname) :
 	 }
 	 
 
-Object::~Object() { Mixer->cancelAll(this); delete _fadeout_surface; }
+Object::~Object() { 
+	Mixer->cancelAll(this); 
+	delete _fadeout_surface; 
+	for(Group::iterator i = _group.begin(); i != _group.end(); ++i) {
+		delete i->second;
+	}
+	_group.clear();
+}
 
 void Object::init(const Animation *a) {
 	_animation = a;
@@ -290,6 +297,7 @@ void Object::groupTick(const float dt) {
 		assert(o->_parent == this);
 		
 		if (o->isDead()) {
+			delete o;
 			_group.erase(i++);
 			continue;
 		}
