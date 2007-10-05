@@ -23,7 +23,9 @@
 
 class Turrel : public Object {
 public:
-	Turrel(const std::string &classname) : Object(classname), _fire(true), _left(false) { impassability = 0; setDirectionsNumber(8); }
+	Turrel(const std::string &classname) : 
+		Object(classname), _fire(true), _left(false) { impassability = 0; setDirectionsNumber(8); }
+	
 	virtual Object * clone() const { return new Turrel(*this); }
 	virtual void onSpawn();
 	virtual void tick(const float dt);
@@ -55,7 +57,8 @@ void Turrel::tick(const float dt) {
 		cancelAll();
 		play(_left? "fire-left": "fire-right", false);
 		play("hold", true);
-		spawn("helicopter-bullet", std::string("helicopter-bullet-") + (_left?"left":"right"), v2<float>(), _direction);
+		Object *bullet = spawn("helicopter-bullet", std::string("helicopter-bullet-") + (_left?"left":"right"), v2<float>(), _direction);
+		bullet->setZ(getZ() - 1, true);
 		_left = !_left;
 	}
 }
@@ -72,16 +75,26 @@ void Turrel::calculate(const float dt) {
 		targets.insert("monster");
 		targets.insert("watchtower");
 	}
+	bool air_mode = (_parent != NULL)?_parent->getPlayerState().alt_fire:false;
+	if (air_mode) {
+		v2<float> pos, vel;
 	
-	v2<float> pos, vel;
-	
-	if (getNearest(targets, getWeaponRange("helicopter-bullet"), pos, vel, true)) {
-		_direction = pos;
-		_state.fire = true;
-		_direction.quantize8();
-		setDirection(_direction.getDirection8() - 1);
+		if (getNearest(targets, getWeaponRange("helicopter-bullet"), pos, vel, true)) {
+			_direction = pos;
+			_state.fire = true;
+			_direction.quantize8();
+			setDirection(_direction.getDirection8() - 1);
+		} else {
+			_state.fire = false;
+		}
 	} else {
-		_state.fire = false;
+		if (_parent != NULL) {
+			_state.fire = _parent->getPlayerState().fire;
+
+			int idx = _parent->getDirection();
+			setDirection(idx);
+			_direction.fromDirection(idx, getDirectionsNumber());
+		}
 	}
 }
 
