@@ -23,7 +23,7 @@
 
 class Buggy: public Object {
 public: 
-	Buggy(const std::string &classname) : Object(classname), _alt_fire(1, false) {
+	Buggy(const std::string &classname) : Object(classname) {
 		impassability = 1.0f;
 	}
 	virtual void calculate(const float dt);
@@ -35,16 +35,11 @@ public:
 
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
-		s.add(_alt_fire);
 	}
 	virtual void deserialize(const mrt::Serializator &s) {
 		Object::deserialize(s);
-		s.get(_alt_fire);
 	}
 
-
-protected:
-	Alarm _alt_fire;
 private: 
 	virtual void getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const;
 };
@@ -112,7 +107,6 @@ void AIBuggy::onSpawn() {
 	_avoid_obstacles = true;
 
 	ai::Waypoints::onSpawn(this);
-	_alt_fire.set(5);
 	//GET_CONFIG_VALUE("objects.buggy.refreshing-path-interval", float, rpi, 1);
 	//_refresh_waypoints.set(rpi);
 }
@@ -124,7 +118,6 @@ void AIBuggy::onObstacle(const Object *o) {
 		playRandomSound("klaxon", false);
 	}
 */
-	_state.alt_fire = true;
 }
 
 void AIBuggy::calculate(const float dt) {
