@@ -797,7 +797,7 @@
 	<object class="helicopter" hp="200" impassability="-1" speed="400" mass="2000" z="810" />
 	<object class="helicopter-with-kamikazes" parent="helicopter" />
 	<object class="submarine" hp="-1" impassability="1" />
-	<object class="paratrooper-kamikaze" hp="5" impassability="0" z="810" />
+	<object class="paratrooper-kamikaze" hp="25" impassability="1" z="810" />
 	<object class="kamikaze" hp="5" speed="70" mass="80" z="0" />
 	<object class="machinegunner" hp="10" speed="100" mass="85" z="-1" />
 	<object class="machinegunner-in-watchtower" impassability="0" parent="machinegunner" z="205" ttl="0" />
@@ -816,6 +816,7 @@
 	<object class="sandworm" speed="150" mass="10" z="-1" impassability="0" />
 	<object class="sandworm-head" speed="0" mass="10" z="-1" impassability="-1" hp="500" />
 	<object class="buggy" hp="40" mass="300" speed="400" z="0" />
+	<object class="static-buggy" parent="buggy" />
 	
 	<!-- items -->
 	<object class="base-item" z="180" impassability="-1" />
