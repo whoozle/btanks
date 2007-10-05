@@ -696,6 +696,11 @@ TRY {
 				getImpassability(&o, o._position.convert<int>());
 			}
 		} CATCH("tick(speed==0)", throw;);
+
+		TRY { 
+			o.groupTick(dt);
+		} CATCH("group_tick", throw; );
+		
 		return;
 	}
 		
