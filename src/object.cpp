@@ -304,9 +304,10 @@ void Object::groupTick(const float dt) {
 		}
 		o->_position = _position + o->_position_delta;
 		o->_velocity = _velocity;
-
-		o->calculate(dt);
-		o->tick(dt);
+		if (dt > 0) {
+			o->calculate(dt);
+			o->tick(dt);
+		}
 		++i;
 	}
 }
