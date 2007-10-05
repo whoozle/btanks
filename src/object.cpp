@@ -302,12 +302,8 @@ void Object::groupTick(const float dt) {
 			_group.erase(i++);
 			continue;
 		}
-
 		o->_position = _position + o->_position_delta;
 		o->_velocity = _velocity;
-		o->_direction = _direction;
-		o->_direction_idx = _direction_idx;
-		//o->setDirection(getDirection());
 
 		o->calculate(dt);
 		o->tick(dt);
@@ -886,8 +882,13 @@ void Object::removeEffect(const std::string &name) {
 }
 
 void Object::calculate(const float dt) {
-	if (_parent != NULL)
+	if (_parent != NULL) {
+		_direction = _parent->_direction;
+		_direction_idx = _parent->_direction_idx;
+		//o->setDirection(getDirection());
+
 		return;
+	}
 	
 	_velocity.clear();
 		
