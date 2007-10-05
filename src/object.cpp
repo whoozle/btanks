@@ -315,6 +315,9 @@ void Object::groupTick(const float dt) {
 }
 
 void Object::getSubObjects(std::set<Object *> &objects) {
+	if (skipRendering())
+		return;
+
 	for(Group::iterator i = _group.begin(); i != _group.end(); ++i) {
 		objects.insert(i->second);
 		i->second->getSubObjects(objects);
@@ -391,6 +394,9 @@ const bool Object::skipRendering() const {
 }
 
 void Object::render(sdlx::Surface &surface, const int x, const int y) {
+	if (skipRendering())
+		return;
+	
 	sdlx::Rect src;
 	if (!getRenderRect(src))
 		return;
