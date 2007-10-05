@@ -35,6 +35,7 @@ public:
 	virtual void tick(const float dt);
 	virtual Object * clone() const;
 	void onSpawn();
+	void emit(const std::string &event, Object * emitter);
 
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
@@ -64,6 +65,13 @@ void Helicopter::onSpawn() {
 	play("move", true);
 	GET_CONFIG_VALUE("objects.helicopter-with-kamikazes.spawn-rate", float, sr, 1.5);
 	_spawn.set(sr);
+}
+
+void Helicopter::emit(const std::string &event, Object * emitter) {
+	if (event == "death") {
+		spawn("explosion", "nuke-explosion");
+	}
+	Object::emit(event, emitter);
 }
 
 void Helicopter::tick(const float dt) {
