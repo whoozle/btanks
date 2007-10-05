@@ -792,6 +792,9 @@ void Object::limitRotation(const float dt, const float speed, const bool rotate_
 //grouped object stuff
 
 Object* Object::add(const std::string &name, const std::string &classname, const std::string &animation, const v2<float> &dpos, const GroupType type) {
+	if (_group.find(name) != _group.end())
+		throw_ex(("object '%s' was already added to group", name.c_str()));
+
 	Object *obj = ResourceManager->createObject(classname, animation);
 
 	assert(obj != NULL);
@@ -816,8 +819,6 @@ Object* Object::add(const std::string &name, const std::string &classname, const
 	obj->_z -= ZBox::getBoxBase(obj->_z);
 	obj->_z += ZBox::getBoxBase(_z);
 
-	if (_group.find(name) != _group.end())
-		throw_ex(("object '%s'(%s) was already added to group", name.c_str(), obj->animation.c_str()));
 	_group.insert(Group::value_type(name, obj));
 	obj->need_sync = true;
 	need_sync = true;
