@@ -795,7 +795,7 @@
 	<object class="machinegunner-on-launcher" z="10" />
 
 	<object class="helicopter" hp="200" impassability="-1" speed="400" mass="2000" z="810" />
-	<object class="helicopter-with-kamikazes" parent="helicopter" impassability="0" />
+	<object class="helicopter-with-kamikazes" parent="helicopter" />
 	<object class="submarine" hp="-1" impassability="1" />
 	<object class="paratrooper-kamikaze" hp="5" impassability="0" z="810" />
 	<object class="kamikaze" hp="5" speed="70" mass="80" z="0" />
