@@ -697,10 +697,6 @@ TRY {
 			}
 		} CATCH("tick(speed==0)", throw;);
 
-		TRY { 
-			o.groupTick(dt);
-		} CATCH("group_tick", throw; );
-		
 		return;
 	}
 		
@@ -709,10 +705,6 @@ TRY {
 	if (len == 0) {
 		o._moving_time = 0;
 		o._idle_time += dt * e_speed;
-
-		TRY { 
-			o.groupTick(dt);
-		} CATCH("group_tick", throw; );
 
 		return;
 	} else {
@@ -1005,10 +997,7 @@ TRY {
 		if (o._position.y >= map_size.y)
 			o._position.y -= map_size.y;
 	}
-	TRY { 
-		o.groupTick(dt);
-	} CATCH("group_tick", throw; );
-	
+
 	updateObject(&o);
 	
 } CATCH("tick(final)", throw;);
@@ -1068,14 +1057,14 @@ void IWorld::_tick(ObjectMap &objects, const float dt, const bool do_calculate) 
 			_tick(*o, dt, do_calculate);
 		} CATCH(mrt::formatString("tick for object[%p] id:%d %s:%s:%s", (void *)o, o->getID(), o->registered_name.c_str(), o->classname.c_str(), o->animation.c_str()).c_str(), throw;);
 	}
-	purge();
+	purge(dt);
 }
 
-void IWorld::purge() {
-	purge(_objects);
+void IWorld::purge(const float dt) {
+	purge(_objects, dt);
 }
 
-void IWorld::purge(ObjectMap &objects) {
+void IWorld::purge(ObjectMap &objects, const float dt) {
 	for(ObjectMap::iterator i = objects.begin(); i != objects.end(); ) {
 		Object *o = i->second;
 
@@ -1088,6 +1077,8 @@ void IWorld::purge(ObjectMap &objects) {
 				continue;
 			}
 		}
+
+		o->groupTick(dt);
 		++i;
 	}
 }

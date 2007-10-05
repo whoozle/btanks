@@ -87,8 +87,8 @@ public:
 
 	void tick(Object &o, const float dt, const bool do_calculate = true);
 	void tick(ObjectMap &objects, const float dt, const bool do_calculate = true);
-	void purge(ObjectMap &objects);
-	void purge();
+	void purge(ObjectMap &objects, const float dt);
+	void purge(const float dt);
 	
 	void setSafeMode(const bool safe_mode = true);
 	inline const bool safeMode() const { return _safe_mode; }
