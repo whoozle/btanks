@@ -89,7 +89,7 @@ void Buggy::tick(const float dt) {
 
 class AIBuggy : public Buggy, public ai::Waypoints {
 public: 
-	AIBuggy() : Buggy("fighting-vehicle") {}
+	AIBuggy(const std::string &classname) : Buggy(classname) {}
 	virtual void calculate(const float dt);
 	virtual Object * clone() const {return new AIBuggy(*this);}
 	virtual void onSpawn();
@@ -130,5 +130,5 @@ void AIBuggy::calculate(const float dt) {
 	updateStateFromVelocity();
 }
 
-REGISTER_OBJECT("static-buggy", Buggy, ("fighting-vehicle"));
-REGISTER_OBJECT("buggy", AIBuggy, ());
+REGISTER_OBJECT("static-buggy", Buggy, ("vehicle"));
+REGISTER_OBJECT("buggy", AIBuggy, ("fighting-vehicle"));
