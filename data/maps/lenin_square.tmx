@@ -3,6 +3,7 @@
 	<properties>
 		<property name="ambient-sound" value="city.ogg"/>
 		<property name="config:map.torus" value="bool:true"/>
+		<property name="config:map.helicopter-with-kamikazes.respawn-interval" value="int:60"/>
 		<property name="edge:1:2" value=""/>
 		<property name="edge:2:3" value=""/>
 		<property name="edge:3:4" value=""/>
