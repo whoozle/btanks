@@ -147,8 +147,8 @@ bool TextControl::onKey(const SDL_keysym sym) {
 					_text.insert(_cursor_position, chr);
 					_cursor_position += chr.size();
 				}
+				return true;
 			}
-			return true;
 		}
 		return false;
 	}
