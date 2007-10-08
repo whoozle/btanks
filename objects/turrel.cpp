@@ -72,6 +72,9 @@ void Turrel::tick(const float dt) {
 }
 
 void Turrel::calculate(const float dt) {
+	if (!_reaction.tick(dt))
+		return;
+
 	static std::set<std::string> targets;
 	if (targets.empty()) {
 		targets.insert("missile");
@@ -83,8 +86,6 @@ void Turrel::calculate(const float dt) {
 		targets.insert("monster");
 		targets.insert("watchtower");
 	}
-	if (!_reaction.tick(dt))
-		return;
 	
 	bool air_mode = (_parent != NULL)?_parent->getPlayerState().alt_fire:true;
 	if (air_mode) {
