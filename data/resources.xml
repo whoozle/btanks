@@ -668,6 +668,8 @@
 	<animation id="buggy-gun" model="buggy-gun-animation" tile="buggy_gun.png" size="64" />
 	<animation id="dead-buggy" model="dead-vehicle-animation" tile="buggy_crash.png" size="64" />
 
+	<animation id="turrel" model="buggy-gun-animation" tile="buggy_gun.png" size="64" />
+
 	<animation id="buggy-bullet-right" tile="buggy_bullet1.png" model="bullet-animation"/>
 	<animation id="buggy-bullet-left" tile="buggy_bullet2.png" model="bullet-animation"/>
 	<animation id="buggy-air-bullet-right" tile="buggy_air_bullet1.png" model="bullet-animation"/>
