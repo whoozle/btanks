@@ -24,7 +24,7 @@
 class Turrel : public Object {
 public:
 	Turrel(const std::string &classname) : 
-		Object(classname), _fire(true), _left(false) { impassability = 0; setDirectionsNumber(8); }
+		Object(classname), _fire(true), _left(false) { impassability = 1; setDirectionsNumber(8); }
 	
 	virtual Object * clone() const { return new Turrel(*this); }
 	virtual void onSpawn();
@@ -54,7 +54,7 @@ void Turrel::onSpawn() {
 void Turrel::tick(const float dt) {
 	Object::tick(dt);
 	if (_fire.tick(dt) && _state.fire) {
-		bool air_mode = (_parent != NULL)?_parent->getPlayerState().alt_fire:_state.alt_fire;
+		bool air_mode = (_parent != NULL)?_parent->getPlayerState().alt_fire:true;
 		cancelAll();
 		play(_left? "fire-left": "fire-right", false);
 		play("hold", true);
@@ -78,7 +78,7 @@ void Turrel::calculate(const float dt) {
 		targets.insert("monster");
 		targets.insert("watchtower");
 	}
-	bool air_mode = (_parent != NULL)?_parent->getPlayerState().alt_fire:_state.alt_fire;
+	bool air_mode = (_parent != NULL)?_parent->getPlayerState().alt_fire:true;
 	if (air_mode) {
 		v2<float> pos, vel;
 		int z0 = getZ();
