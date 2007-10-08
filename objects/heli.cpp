@@ -51,6 +51,9 @@ void Heli::tick(const float dt) {
 }
 
 void Heli::onSpawn() {
+	if (registered_name.compare(0, 6, "static") == 0)
+		disown();
+
 	GET_CONFIG_VALUE("objects.helicopter.fire-rate", float, fr, 0.1);
 	_fire.set(fr);
 
@@ -74,3 +77,4 @@ Object* Heli::clone() const  {
 	return new Heli(*this);
 }
 
+REGISTER_OBJECT("static-helicopter", Heli, ("vehicle"));

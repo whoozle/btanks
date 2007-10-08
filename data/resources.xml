@@ -796,6 +796,7 @@
 
 	<object class="helicopter" hp="200" impassability="-1" speed="400" mass="2000" z="810" />
 	<object class="helicopter-with-kamikazes" parent="helicopter" />
+	<object class="static-helicopter" parent="helicopter" />
 	<object class="submarine" hp="-1" impassability="1" />
 	<object class="paratrooper-kamikaze" hp="25" impassability="1" z="810" />
 	<object class="kamikaze" hp="5" speed="70" mass="80" z="0" />
