@@ -20,6 +20,7 @@
 #include "resource_manager.h"
 #include "alarm.h"
 #include "config.h"
+#include "zbox.h"
 
 Heli::Heli(const std::string &classname) : 
 	Object(classname), _fire(false), _alt_fire(false), _left(false) {
@@ -47,6 +48,22 @@ void Heli::tick(const float dt) {
 		_alt_fire.reset();
 		Object *o = spawn("bomb", "bomb");
 		o->setZ(getZ() - 1, true);
+	}
+	if (classname == "fighting-vehicle" || classname == "helicopter") {
+		int z = getZ();
+		int box = ZBox::getBox(z);
+		if (box < 1) {
+			z += (1 - box) * 2000;
+			setZBox(z);
+		}
+		//LOG_DEBUG(("box: %d", box));
+	} else if (classname == "vehicle") {
+		int z = getZ();
+		int box = ZBox::getBox(z);
+		if (box != 0) {
+			z += -box * 2000;
+			setZBox(z);
+		}
 	}
 }
 
