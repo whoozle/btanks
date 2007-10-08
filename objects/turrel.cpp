@@ -127,12 +127,14 @@ const bool Turrel::take(const BaseObject *obj, const std::string &type) {
 
 void Turrel::serialize(mrt::Serializator &s) const {
 	Object::serialize(s);
+	s.add(_reaction);
 	s.add(_fire);
-	s.add(_left);	
+	s.add(_left);
 }
 
 void Turrel::deserialize(const mrt::Serializator &s) {
 	Object::deserialize(s);
+	s.get(_reaction);
 	s.get(_fire);
 	s.get(_left);	
 }
