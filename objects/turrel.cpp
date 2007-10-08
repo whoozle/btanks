@@ -20,11 +20,12 @@
 #include "alarm.h"
 #include "resource_manager.h"
 #include "config.h"
+#include "mrt/random.h"
 
 class Turrel : public Object {
 public:
 	Turrel(const std::string &classname) : 
-		Object(classname), _fire(true), _left(false) { impassability = 1; setDirectionsNumber(8); }
+		Object(classname), _reaction(true), _fire(true), _left(false) { impassability = 1; setDirectionsNumber(8); }
 	
 	virtual Object * clone() const { return new Turrel(*this); }
 	virtual void onSpawn();
@@ -39,7 +40,7 @@ public:
 	virtual void deserialize(const mrt::Serializator &s); 
 
 private: 
-	Alarm _fire;
+	Alarm _reaction, _fire;
 	bool _left;
 };
 
@@ -49,6 +50,10 @@ void Turrel::onSpawn() {
 	float fr;
 	Config->get("objects." + registered_name + ".fire-rate", fr, 0.1);
 	_fire.set(fr);
+
+	GET_CONFIG_VALUE("objects.turrel.reaction-time", float, rt, 0.2);
+	mrt::randomize(rt, rt / 10);
+	_reaction.set(rt);
 }
 
 void Turrel::tick(const float dt) {
@@ -78,6 +83,9 @@ void Turrel::calculate(const float dt) {
 		targets.insert("monster");
 		targets.insert("watchtower");
 	}
+	if (!_reaction.tick(dt))
+		return;
+	
 	bool air_mode = (_parent != NULL)?_parent->getPlayerState().alt_fire:true;
 	if (air_mode) {
 		v2<float> pos, vel;
