@@ -14,18 +14,19 @@ static void *l_alloc (void *ud, void *ptr, size_t osize, size_t nsize) {
 	}
 }
 
-static void check_error(const int err) {
+static void check_error(lua_State * state, const int err) {
 	switch(err) {
 		case 0: 
 			return;
 		case LUA_ERRRUN:
-			throw_ex(("lua runtime error"));
+		case LUA_ERRERR:
+		case LUA_ERRSYNTAX: {
+			std::string error = lua_tostring(state, -1);
+			lua_pop(state, 1);
+			throw_ex(("lua error[%d]: %s", err, error.c_str()));
+			}
 		case LUA_ERRMEM:
 			throw_ex(("lua is out of memory"));
-		case LUA_ERRERR:
-			throw_ex(("error calling lua's error handler"));
-		case LUA_ERRSYNTAX: 
-			throw_ex(("lua syntax error"));
 		default: 
 			throw_ex(("unknown lua error[%d]", err));
 	}
@@ -35,13 +36,13 @@ void State::loadFile(const std::string &fname) {
 	int err = luaL_loadfile(state, fname.c_str());
 	if (err == LUA_ERRFILE)
 		throw_ex(("file '%s' not found", fname.c_str()));
-	check_error(err);
+	check_error(state, err);
 }
 
 void State::call(const int nargs, const int nresults) const {
 	int err = lua_pcall(state, nargs, nresults, 0);
 	//if (err == LUA_ERRRUN);
-	check_error(err);
+	check_error(state, err);
 }
 
 State::State() {
