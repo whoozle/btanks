@@ -1,8 +1,7 @@
 #include "luaxx/state.h"
 #include "mrt/exception.h"
 #include <stdlib.h>
-#include "mrt/chunk.h"
-#include "mrt/file.h"
+#include <lauxlib.h>
 
 using namespace luaxx;
 
@@ -32,28 +31,16 @@ static void check_error(const int err) {
 	}
 }
 
-struct ReaderStub {
-	bool read; 
-	mrt::Chunk data;
-};
-
-static const char * l_reader (lua_State *L, void *ud, size_t *sz) {
-	ReaderStub *info = reinterpret_cast<ReaderStub *>(ud);
-	if (info == NULL || info->read)
-		return NULL;
-	*sz = info->data.getSize();
-	info->read = true;
-	return (const char *)info->data.getPtr();
+void State::loadFile(const std::string &fname) {
+	int err = luaL_loadfile(state, fname.c_str());
+	if (err == LUA_ERRFILE)
+		throw_ex(("file '%s' not found", fname.c_str()));
+	check_error(err);
 }
 
-void State::loadFile(const std::string &fname) {
-	ReaderStub stub;
-	mrt::File file;
-	file.open(fname, "rb");
-	file.readAll(stub.data);
-	file.close();
-	stub.read = false;
-	int err = lua_load(state, l_reader, &stub, fname.c_str());
+void State::call(const int nargs, const int nresults) const {
+	int err = lua_pcall(state, nargs, nresults, 0);
+	//if (err == LUA_ERRRUN);
 	check_error(err);
 }
 
