@@ -59,14 +59,15 @@ bt_sources = 	[
 
 	vobj
 	]
-	
+
 vorbis = 'vorbisfile'
 if debug and sys.platform == "win32": 
 	vorbis = 'vorbisfile_d'
 
-#fanncxx
-
 bt_libs = ['mrt', 'sdlx',  sigc_lib, 'SDL', vorbis, al_lib]
+if env['enable_lua']: 
+	bt_sources.append('luaxx/state.cpp')
+	bt_libs.append('lua')
 
 if sys.platform == "win32":
 	bt_libs[0:0] = ['SDLmain']

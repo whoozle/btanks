@@ -31,6 +31,7 @@ if sys.platform != "win32":
 
 opts.Add(EnumOption('mode', 'build mode', 'release', allowed_values=('debug','release')))
 opts.Add(BoolOption('gcc_visibility', 'gcc visibility', 'false'))
+opts.Add(BoolOption('enable_lua', 'enable lua support (experimental)', 'false'))
 
 opts.Update(env)
 opts.Save('options.cache', env.Copy())
@@ -160,15 +161,9 @@ if not conf.CheckLibWithHeader(al_lib, 'AL/al.h', 'c++', "ALuint s; alGenSources
 if not conf.CheckLibWithHeader('vorbisfile', 'vorbis/vorbisfile.h', 'c++', "ov_open(0, 0, 0, 0);", False):
 	Exit(1)
 
-#conf.env.Append(LIBS=al_lib)
-#if not conf.CheckLibWithHeader('alut', 'AL/alut.h', 'c++', "alutInit(0,0);", False):
-#	Exit(1)
-
-#if not conf.CheckLibWithHeader('fann', 'fann.h', 'c', "fann_create_standard_array(0, 0);", False):
-#	Exit(1)
-
-#if not conf.CheckLibWithHeader('SDL_net', 'SDL/SDL_net.h', 'c++', "SDLNet_Init();", False):
-#	Exit(1)
+if env['enable_lua']:
+	if not conf.CheckLibWithHeader('lua', 'lua.hpp', 'c++', "lua_newstate(NULL, NULL);", False):
+		Exit(1)
 
 conf.Finish()
 
