@@ -66,6 +66,7 @@ if debug and sys.platform == "win32":
 
 bt_libs = ['mrt', 'sdlx',  sigc_lib, 'SDL', vorbis, al_lib]
 if env['enable_lua']: 
+	env.Append(CPPDEFINES=['ENABLE_LUA'])
 	bt_sources.append('luaxx/state.cpp')
 	bt_libs.append('lua')
 
