@@ -74,7 +74,7 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 	{
 		I18n->getSupportedLanguages(_langs);
 		for(std::set<std::string>::const_iterator i = _langs.begin(); i != _langs.end(); ++i) {
-			langs.push_back(I18n->get("menu/language", *i));
+			langs.push_back(I18n->has("menu/language", *i)?I18n->get("menu/language", *i): *i);
 		}
 	}
 
