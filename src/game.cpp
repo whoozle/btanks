@@ -488,8 +488,9 @@ bool IGame::onKey(const SDL_keysym key, const bool pressed) {
 }
 
 bool IGame::onMouse(const int button, const bool pressed, const int x, const int y) {
-	if (pressed && _credits) {
-		stopCredits();
+	if (_credits) {
+		if (!pressed)
+			stopCredits();
 		return true;
 	}
 	return false;
