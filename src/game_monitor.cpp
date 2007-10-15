@@ -48,7 +48,11 @@
 
 IMPLEMENT_SINGLETON(GameMonitor, IGameMonitor);
 
-IGameMonitor::IGameMonitor() : _game_over(false), _win(false), _check_items(0.5, true), _state_timer(false), _timer(0), _campaign(NULL), lua_hooks(new LuaHooks) {}
+IGameMonitor::IGameMonitor() : _game_over(false), _win(false), _check_items(0.5, true), _state_timer(false), _timer(0), _campaign(NULL)
+#ifdef ENABLE_LUA
+, lua_hooks(new LuaHooks) 
+#endif
+{}
 
 void GameItem::respawn() {
 	if (spawn_limit == 0)
