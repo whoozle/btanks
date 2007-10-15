@@ -40,10 +40,15 @@
 #include "math/unary.h"
 #include "player_slot.h"
 #include "campaign.h"
+#include "finder.h"
+
+#ifdef ENABLE_LUA
+#	include "luaxx/lua_hooks.h"
+#endif
 
 IMPLEMENT_SINGLETON(GameMonitor, IGameMonitor);
 
-IGameMonitor::IGameMonitor() : _game_over(false), _win(false), _check_items(0.5, true), _state_timer(false), _timer(0), _campaign(NULL) {}
+IGameMonitor::IGameMonitor() : _game_over(false), _win(false), _check_items(0.5, true), _state_timer(false), _timer(0), _campaign(NULL), lua_hooks(new LuaHooks) {}
 
 void GameItem::respawn() {
 	if (spawn_limit == 0)
@@ -589,6 +594,15 @@ void IGameMonitor::loadMap(Campaign *campaign, const std::string &name, const bo
 			throw_ex(("loadMap() called with skip Map::load() flag. Map must be initialized at this point."));
 	}
 
+	std::string script = Finder->find("maps/" + name + ".lua", false);
+	if (!script.empty()) {
+#	ifdef ENABLE_LUA
+		lua_hooks->load(script);
+#	else
+		throw_ex(("this map requires lua scripting support."));
+#	endif
+	}
+	
 	_waypoints.clear();
 	_waypoint_edges.clear();
 	
@@ -838,4 +852,10 @@ void IGameMonitor::addBonuses(const PlayerSlot &slot) {
 			++idx;
 		}
 	}
+}
+
+IGameMonitor::~IGameMonitor() {
+#ifdef ENABLE_LUA
+	delete lua_hooks;
+#endif
 }

@@ -12,6 +12,8 @@ public:
 	void loadFile(const std::string &fname);
 	void call(const int nargs, const int nresults) const;
 	~State();
+	
+	inline operator lua_State*() { return state; } 
 
 private: 
 	lua_State * state;

@@ -63,10 +63,12 @@ struct BTANKSAPI GameItem {
 	std::string save_for_victory;
 };
 
+class LuaHooks;
 
 class BTANKSAPI IGameMonitor {
 public:
 	IGameMonitor();
+	~IGameMonitor();
 	DECLARE_SINGLETON(IGameMonitor);
 
 	void add(const GameItem &item);	
@@ -158,6 +160,9 @@ private:
 			classname(classname), animation(animation), id(id) {}
 	};
 	std::vector<GameBonus> bonuses;
+#ifdef ENABLE_LUA
+	LuaHooks* lua_hooks;
+#endif
 };
 
 SINGLETON(BTANKSAPI, GameMonitor, IGameMonitor);
