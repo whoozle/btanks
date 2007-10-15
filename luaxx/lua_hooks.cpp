@@ -44,6 +44,8 @@ static int lua_hooks_spawn(lua_State *L) {
 	//		o->setDirection(dir);
 	
 		World->addObject(o, v2<float>(x, y));
+		lua_pushinteger(L, o->getID());
+		return 1;
 	} catch(const std::exception &e) {
 		lua_pushstring(L, e.what());
 		lua_error(L);
