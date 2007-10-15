@@ -19,11 +19,24 @@ static int lua_hooks_print(lua_State *L) {
 	return 0;
 }
 
+static int lua_hooks_object_exists(lua_State *L) {
+	int n = lua_gettop(L);
+	if (n < 1) {
+		lua_pushstring(L, "object_exists requires object id");
+		lua_error(L);
+		return 0;
+	}
+	int id = lua_tointeger(L, 1);
+	lua_pushboolean(L, World->getObjectByID(id)?1:0);
+	return 1;
+}
+
 static int lua_hooks_spawn(lua_State *L) {
 	int n = lua_gettop(L);
 	if (n < 4) {
 		lua_pushstring(L, "spawn() requires at least 4 arguments: classname, animation");
 		lua_error(L);
+		return 0;
 	}
 	try {
 		const char *classname = lua_tostring(L, 1);
@@ -62,6 +75,7 @@ void LuaHooks::load(const std::string &name) {
 	
 	lua_register(state, "print", lua_hooks_print);
 	lua_register(state, "spawn", lua_hooks_spawn);
+	lua_register(state, "object_exists", lua_hooks_object_exists);
 	
 	state.call(0, LUA_MULTRET);
 	
