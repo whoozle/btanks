@@ -9,10 +9,10 @@ public:
 	void load(const std::string &name);
 	void on_timer(const float dt);
 private: 
-	lua_CFunction get_function(const std::string &name);
+	bool check_function(const std::string &name);
 	luaxx::State state;
 	
-	lua_CFunction lua_on_timer, lua_on_death;
+	bool has_on_timer, has_on_death;
 };
 
 #endif
