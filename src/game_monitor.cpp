@@ -295,6 +295,11 @@ void IGameMonitor::clear() {
 }
 
 void IGameMonitor::tick(const float dt) {	
+#ifdef ENABLE_LUA
+	if (Map->loaded())
+		lua_hooks->on_tick(dt);
+#endif
+
 	const bool client = PlayerManager->isClient();
 
 	if (!_timer_message.empty() && _timer > 0) {
