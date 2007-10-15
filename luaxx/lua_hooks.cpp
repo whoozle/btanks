@@ -103,10 +103,9 @@ void LuaHooks::on_tick(const float dt) {
 	int top0 = lua_gettop(state);
 	
 	lua_getglobal(state, "on_tick");
-	lua_pushnil(state);
 	lua_pushnumber(state, dt);
 
-	state.call(2, 0);
+	state.call(1, 0);
 
 	assert(lua_gettop(state) == top0);
 }
