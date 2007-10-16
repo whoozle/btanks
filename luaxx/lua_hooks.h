@@ -9,6 +9,7 @@ public:
 	void load(const std::string &name);
 	void clear();
 	void on_tick(const float dt);
+	void call(const std::string &method);
 private: 
 	bool check_function(const std::string &name);
 	luaxx::State state;

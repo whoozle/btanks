@@ -171,3 +171,13 @@ void LuaHooks::on_tick(const float dt) {
 
 	assert(lua_gettop(state) == top0);
 }
+
+void LuaHooks::call(const std::string &method) {
+	LOG_DEBUG(("calling %s()", method.c_str()));
+	int top0 = lua_gettop(state);
+
+	lua_getglobal(state, method.c_str());
+	state.call(0, 0);
+
+	assert(lua_gettop(state) == top0);
+}
