@@ -256,6 +256,45 @@ static int lua_hooks_damage_map(lua_State *L) {
 	return 0;
 }
 
+static int lua_hooks_enable_ai(lua_State *L) {
+	LUA_TRY {
+		int n = lua_gettop(L);
+		if (n < 1) {
+			lua_pushstring(L, "enable_ai: requires classname");
+			lua_error(L);
+			return 0;
+		}
+		const char *classname = lua_tostring(L, 1);
+		if (classname == NULL) {
+			lua_pushstring(L, "enable_ai: first argument must be string");
+			lua_error(L);
+			return 0;		
+		}
+		GameMonitor->disable(classname, false);
+	} LUA_CATCH("enable_ai")
+	return 0;
+}
+
+static int lua_hooks_disable_ai(lua_State *L) {
+	LUA_TRY {
+		int n = lua_gettop(L);
+		if (n < 1) {
+			lua_pushstring(L, "disable_ai: requires classname");
+			lua_error(L);
+			return 0;
+		}
+		const char *classname = lua_tostring(L, 1);
+		if (classname == NULL) {
+			lua_pushstring(L, "disable_ai: first argument must be string");
+			lua_error(L);
+			return 0;		
+		}
+		GameMonitor->disable(classname, true);
+	} LUA_CATCH("disable_ai")
+	return 0;
+}
+
+
 void LuaHooks::load(const std::string &name) {
 	LOG_DEBUG(("loading lua code from %s...", name.c_str()));
 	state.loadFile(name);
@@ -270,6 +309,8 @@ void LuaHooks::load(const std::string &name) {
 	lua_register(state, "set_timer", lua_hooks_set_timer);
 	lua_register(state, "reset_timer", lua_hooks_reset_timer);
 	lua_register(state, "damage_map", lua_hooks_damage_map);
+	lua_register(state, "enable_ai", lua_hooks_enable_ai);
+	lua_register(state, "disable_ai", lua_hooks_disable_ai);
 	
 	state.call(0, LUA_MULTRET);
 	
