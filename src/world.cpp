@@ -1553,7 +1553,10 @@ const bool IWorld::detachVehicle(Object *object) {
 	object->updatePlayerState(PlayerState());
 
 	Object * man = spawn(object, "machinegunner(player)", "machinegunner", object->_direction * (object->size.x + object->size.y) / 4, v2<float>());
-	man->setZBox(ResourceManager->getClass("machinegunner")->getZ());
+	
+	if (object->classname == "helicopter")
+		man->setZBox(ResourceManager->getClass("machinegunner")->getZ());
+
 	man->disable_ai = true;
 	object->classname = "vehicle";
 
