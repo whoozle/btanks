@@ -1090,7 +1090,7 @@ const bool IWorld::exists(const int id) const {
 
 const Object *IWorld::getObjectByID(const int id) const {
 	ObjectMap::const_iterator i = _objects.find(id);
-	if (i != _objects.end())
+	if (i != _objects.end() && !i->second->isDead())
 		return i->second;
 	return NULL;
 }
