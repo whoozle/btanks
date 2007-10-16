@@ -58,6 +58,8 @@ void GameItem::respawn() {
 	if (spawn_limit == 0)
 		return;
 	
+	hidden = false;
+	
 	LOG_DEBUG(("respawning item: %s:%s, z: %d, dir: %d", classname.c_str(), animation.c_str(), z, dir));
 	Object *o = ResourceManager->createObject(classname, animation);
 	if (z) 
@@ -72,6 +74,12 @@ void GameItem::respawn() {
 	dead_on = 0;
 	if (spawn_limit > 0)
 		--spawn_limit;
+}
+
+void GameItem::kill() {
+	Object *o = World->getObjectByID(id);
+	if (o == NULL)
+		o->Object::emit("death", NULL);
 }
 
 void GameItem::setup(const std::string &name, const std::string &subname) {
@@ -209,7 +217,7 @@ void IGameMonitor::checkItems(const float dt) {
 		if (o)
 			continue;
 		
-		if (item.spawn_limit == 0) 
+		if (item.spawn_limit == 0 || item.hidden) 
 			continue;
 		
 		if (item.dead_on == 0) {
@@ -603,15 +611,6 @@ void IGameMonitor::loadMap(Campaign *campaign, const std::string &name, const bo
 			throw_ex(("loadMap() called with skip Map::load() flag. Map must be initialized at this point."));
 	}
 
-	std::string script = Finder->find("maps/" + name + ".lua", false);
-	if (!script.empty()) {
-#	ifdef ENABLE_LUA
-		lua_hooks->load(script);
-#	else
-		throw_ex(("this map requires lua scripting support."));
-#	endif
-	}
-	
 	_waypoints.clear();
 	_waypoint_edges.clear();
 	
@@ -802,6 +801,15 @@ void IGameMonitor::loadMap(Campaign *campaign, const std::string &name, const bo
 	
 	GET_CONFIG_VALUE("engine.max-time-slice", float, mts, 0.025);
 	World->setTimeSlice(mts);
+
+	std::string script = Finder->find("maps/" + name + ".lua", false);
+	if (!script.empty()) {
+#	ifdef ENABLE_LUA
+		lua_hooks->load(script);
+#	else
+		throw_ex(("this map requires lua scripting support."));
+#	endif
+	}
 	
 	Window->resetTimer();
 }

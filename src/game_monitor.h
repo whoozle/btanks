@@ -46,9 +46,10 @@ class PlayerSlot;
 struct BTANKSAPI GameItem {
 	GameItem(const std::string &classname, const std::string &animation, const std::string &property, const v2<int> position, const int z = 0) :
 		classname(classname), animation(animation), property(property), position(position), z(z), dir(0), id(-1), spawn_limit(-1), dead_on(0), 
-		destroy_for_victory(false)
+		destroy_for_victory(false), hidden(false)
 		{}
 	void respawn();
+	void kill();
 	void renameProperty(const std::string &name);
 	void updateMapProperty();
 	void setup(const std::string &name, const std::string &subname);
@@ -61,6 +62,7 @@ struct BTANKSAPI GameItem {
 	Uint32 dead_on;
 	bool destroy_for_victory;
 	std::string save_for_victory;
+	bool hidden;
 };
 
 class LuaHooks;
