@@ -51,6 +51,8 @@ IMPLEMENT_SINGLETON(GameMonitor, IGameMonitor);
 IGameMonitor::IGameMonitor() : _game_over(false), _win(false), _check_items(0.5, true), _state_timer(false), _timer(0), _campaign(NULL)
 #ifdef ENABLE_LUA
 , lua_hooks(new LuaHooks) 
+#else
+, lua_hooks(NULL)
 #endif
 {}
 
@@ -874,5 +876,15 @@ void IGameMonitor::addBonuses(const PlayerSlot &slot) {
 IGameMonitor::~IGameMonitor() {
 #ifdef ENABLE_LUA
 	delete lua_hooks;
+#endif
+}
+
+void IGameMonitor::onScriptZone(const int slot_id, const SpecialZone &zone) {
+#ifndef ENABLE_LUA
+	throw_ex(("no script support compiled in."));
+#else 
+	if (lua_hooks == NULL)
+		throw_ex(("lua hooks was not initialized"));
+	lua_hooks->call(zone.name);
 #endif
 }

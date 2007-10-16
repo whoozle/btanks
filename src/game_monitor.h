@@ -42,6 +42,7 @@ class BaseObject;
 class Object;
 class Campaign;
 class PlayerSlot;
+class SpecialZone;
 
 struct BTANKSAPI GameItem {
 	GameItem(const std::string &classname, const std::string &animation, const std::string &property, const v2<int> position, const int z = 0) :
@@ -121,6 +122,8 @@ public:
 	const Campaign * getCampaign() const {return _campaign; }
 	
 	const bool gameOver() const { return _game_over; }
+
+	void onScriptZone(const int slot_id, const SpecialZone &zone);
 	
 private:
 
