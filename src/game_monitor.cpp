@@ -310,7 +310,7 @@ void IGameMonitor::clear() {
 
 void IGameMonitor::tick(const float dt) {	
 #ifdef ENABLE_LUA
-	if (Map->loaded())
+	if (Map->loaded() && lua_hooks != NULL)
 		lua_hooks->on_tick(dt);
 #endif
 
@@ -805,7 +805,7 @@ void IGameMonitor::loadMap(Campaign *campaign, const std::string &name, const bo
 	World->setTimeSlice(mts);
 
 	std::string script = Finder->find("maps/" + name + ".lua", false);
-	if (!script.empty()) {
+	if (!script.empty() && !Map->soloAwareMode()) {
 #	ifdef ENABLE_LUA
 		lua_hooks->load(script);
 #	else
