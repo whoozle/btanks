@@ -8,7 +8,7 @@ function on_tick(dt)
 	if ai_stage > 3 then game_over('messages', 'mission-accomplished', 4, true) return end
 
 	throttle = throttle + dt
-	if throttle < 5 then return end --check units approx. 5 times per second
+	if throttle < 5 then return end
 	throttle = 0
 
 	if #ai_ids == 0 then 
