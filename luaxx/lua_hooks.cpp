@@ -102,16 +102,23 @@ static int lua_hooks_spawn(lua_State *L) {
 	LUA_TRY {
 		int n = lua_gettop(L);
 		if (n < 4) {
-			lua_pushstring(L, "spawn() requires at least 4 arguments: classname, animation");
+			lua_pushstring(L, "spawn() requires at least 4 arguments: classname, animation, x, y");
 			lua_error(L);
 			return 0;
 		}
 		const char *classname = lua_tostring(L, 1);
-		if (classname == NULL)
-			throw std::runtime_error("spawn: first argument must be string");
+		if (classname == NULL) {
+			lua_pushstring(L, "spawn: first argument must be string");
+			lua_error(L);
+			return 0;		
+		}
 		const char *animation = lua_tostring(L, 2);
-		if (animation == NULL)
-			throw std::runtime_error("spawn: second argument must be string");
+		if (animation == NULL) {
+			lua_pushstring(L, "spawn: first argument must be string");
+			lua_error(L);
+			return 0;		
+		}
+
 		int x = lua_tointeger(L, 3);
 		int y = lua_tointeger(L, 4);
 		
@@ -129,6 +136,35 @@ static int lua_hooks_spawn(lua_State *L) {
 	} LUA_CATCH("lua_hooks_spawn")
 }
 
+static int lua_hooks_game_over(lua_State *L) {
+	LUA_TRY {
+		int n = lua_gettop(L);
+		if (n < 4) {
+			lua_pushstring(L, "game_over() requires at least 4 arguments: area, message, time and win");
+			lua_error(L);
+			return 0;
+		}
+
+		const char *area = lua_tostring(L, 1);
+		if (area == NULL) {
+			lua_pushstring(L, "game_over: first argument must be string");
+			lua_error(L);
+			return 0;		
+		}
+
+		const char *message = lua_tostring(L, 2);
+		if (message == NULL) {
+			lua_pushstring(L, "game_over: second argument must be string");
+			lua_error(L);
+			return 0;		
+		}
+		lua_Number time = lua_tonumber(L, 3);
+		bool win = lua_toboolean(L, 4) != 0;
+		GameMonitor->gameOver(area, message, (float)time, win);
+	} LUA_CATCH("lua_hooks_game_over")
+	return 0;		
+}
+
 void LuaHooks::load(const std::string &name) {
 	LOG_DEBUG(("loading lua code from %s...", name.c_str()));
 	state.loadFile(name);
@@ -138,6 +174,7 @@ void LuaHooks::load(const std::string &name) {
 	lua_register(state, "object_exists", lua_hooks_object_exists);
 	lua_register(state, "show_item", lua_hooks_show_item);
 	lua_register(state, "hide_item", lua_hooks_hide_item);
+	lua_register(state, "game_over", lua_hooks_game_over);
 	
 	state.call(0, LUA_MULTRET);
 	
