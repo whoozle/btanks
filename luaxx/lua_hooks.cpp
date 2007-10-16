@@ -5,6 +5,7 @@
 #include "world.h"
 #include "resource_manager.h"
 #include "game_monitor.h"
+#include "tmx/map.h"
 #include <assert.h>
 #include <stdexcept>
 
@@ -232,6 +233,28 @@ static int lua_hooks_display_message(lua_State *L) {
 	return 0;		
 }
 
+static int lua_hooks_damage_map(lua_State *L) {
+	LUA_TRY {
+		int n = lua_gettop(L);
+		if (n < 3) {
+			lua_pushstring(L, "damage map: requires at least 3 arguments: x, y and hp");
+			lua_error(L);
+			return 0;
+		}
+		float x = (float)lua_tonumber(L, 1);
+		float y = (float)lua_tonumber(L, 2);
+		int hp = lua_tointeger(L, 3);
+		float r = 0;
+		if (n > 3) 
+			r = (float)lua_tonumber(L, 4);
+		
+		if (r > 0) 
+			Map->damage(v2<float>(x, y), hp, r);
+		else 
+			Map->damage(v2<float>(x, y), hp);
+	} LUA_CATCH("damage_map")
+	return 0;
+}
 
 void LuaHooks::load(const std::string &name) {
 	LOG_DEBUG(("loading lua code from %s...", name.c_str()));
@@ -246,6 +269,7 @@ void LuaHooks::load(const std::string &name) {
 	lua_register(state, "display_message", lua_hooks_display_message);
 	lua_register(state, "set_timer", lua_hooks_set_timer);
 	lua_register(state, "reset_timer", lua_hooks_reset_timer);
+	lua_register(state, "damage_map", lua_hooks_damage_map);
 	
 	state.call(0, LUA_MULTRET);
 	
