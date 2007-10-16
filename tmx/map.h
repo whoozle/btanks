@@ -115,6 +115,7 @@ public:
 	inline const std::string &getName() const { return _name; }
 
 	void setSoloAwareMode(const bool value = true);
+	const bool soloAwareMode() const { return _solo_aware; }
 	
 	void generateXML(std::string &result) const;
 	
