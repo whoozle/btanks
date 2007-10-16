@@ -4,15 +4,11 @@ ai_stage = 0
 ai_ids = {}
 throttle = 0
 
-function game_over(win, message)
-	print("game over")
-end
-
 function on_tick(dt)
-	if ai_stage > 3 then game_over(true) return end
+	if ai_stage > 3 then game_over('messages', 'mission-accomplished', 4, true) return end
 
 	throttle = throttle + dt
-	if throttle < 0.2 then return end --check units approx. 5 times per second
+	if throttle < 5 then return end --check units approx. 5 times per second
 	throttle = 0
 
 	if #ai_ids == 0 then 
@@ -37,7 +33,6 @@ function on_tick(dt)
 		ai_ids = {}
 	end
 end
-
 
 hide_item('object:helicopter:helicopter:1')
 hide_item('object:helicopter:helicopter:2')
