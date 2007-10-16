@@ -165,6 +165,74 @@ static int lua_hooks_game_over(lua_State *L) {
 	return 0;		
 }
 
+static int lua_hooks_set_timer(lua_State *L) {
+	LUA_TRY {
+		int n = lua_gettop(L);
+		if (n < 4) {
+			lua_pushstring(L, "set_timer: requires at least 4 arguments: area, message, time and win");
+			lua_error(L);
+			return 0;
+		}
+
+		const char *area = lua_tostring(L, 1);
+		if (area == NULL) {
+			lua_pushstring(L, "set_timer: first argument must be string");
+			lua_error(L);
+			return 0;		
+		}
+
+		const char *message = lua_tostring(L, 2);
+		if (message == NULL) {
+			lua_pushstring(L, "set_timer: second argument must be string");
+			lua_error(L);
+			return 0;		
+		}
+		
+		lua_Number time = lua_tonumber(L, 3);
+		bool win = lua_toboolean(L, 4) != 0;
+		GameMonitor->setTimer(area, message, (float)time, win);
+	} LUA_CATCH("lua_hooks_set_timer")
+	return 0;		
+}
+
+static int lua_hooks_reset_timer(lua_State *L) {
+	LUA_TRY {
+		GameMonitor->resetTimer();
+	} LUA_CATCH("lua_hooks_set_timer")
+	return 0;		
+}
+	
+
+static int lua_hooks_display_message(lua_State *L) {
+	LUA_TRY {
+		int n = lua_gettop(L);
+		if (n < 4) {
+			lua_pushstring(L, "display_message: requires at least 4 arguments: area, message, time and global");
+			lua_error(L);
+			return 0;
+		}
+
+		const char *area = lua_tostring(L, 1);
+		if (area == NULL) {
+			lua_pushstring(L, "display_message: first argument must be string");
+			lua_error(L);
+			return 0;		
+		}
+
+		const char *message = lua_tostring(L, 2);
+		if (message == NULL) {
+			lua_pushstring(L, "display_message: second argument must be string");
+			lua_error(L);
+			return 0;		
+		}
+		lua_Number time = lua_tonumber(L, 3);
+		bool global = lua_toboolean(L, 4) != 0;
+		GameMonitor->displayMessage(area, message, (float)time, global);
+	} LUA_CATCH("lua_hooks_set_timer")
+	return 0;		
+}
+
+
 void LuaHooks::load(const std::string &name) {
 	LOG_DEBUG(("loading lua code from %s...", name.c_str()));
 	state.loadFile(name);
@@ -175,6 +243,9 @@ void LuaHooks::load(const std::string &name) {
 	lua_register(state, "show_item", lua_hooks_show_item);
 	lua_register(state, "hide_item", lua_hooks_hide_item);
 	lua_register(state, "game_over", lua_hooks_game_over);
+	lua_register(state, "display_message", lua_hooks_display_message);
+	lua_register(state, "set_timer", lua_hooks_set_timer);
+	lua_register(state, "reset_timer", lua_hooks_reset_timer);
 	
 	state.call(0, LUA_MULTRET);
 	
