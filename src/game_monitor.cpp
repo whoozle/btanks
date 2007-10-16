@@ -262,6 +262,9 @@ const std::string IGameMonitor::popState(const float dt) {
 }
 
 void IGameMonitor::gameOver(const std::string &area, const std::string &message, const float time, const bool win) {
+	if (_game_over)
+		return;
+	
 	_game_over = true;
 	_win = win;
 	displayMessage(area, message, time);
