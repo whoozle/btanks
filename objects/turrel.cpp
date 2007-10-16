@@ -85,6 +85,7 @@ void Turrel::calculate(const float dt) {
 		targets.insert("helicopter");
 		targets.insert("monster");
 		targets.insert("watchtower");
+		targets.insert("paratrooper");
 	}
 	
 	bool air_mode = (_parent != NULL)?_parent->getPlayerState().alt_fire:true;
