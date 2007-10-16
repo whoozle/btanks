@@ -9,7 +9,7 @@ function game_over(win, message)
 end
 
 function on_tick(dt)
-	if ai_stage > 3 then return end
+	if ai_stage > 3 then game_over(true) return end
 
 	throttle = throttle + dt
 	if throttle < 0.2 then return end --check units approx. 5 times per second
@@ -37,7 +37,6 @@ function on_tick(dt)
 		ai_ids = {}
 	end
 end
-
 
 
 hide_item('object:helicopter:helicopter:1')
