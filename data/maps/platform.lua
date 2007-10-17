@@ -1,5 +1,5 @@
 demolish_house = false
-time_to_demolish = 2
+time_to_demolish = 10
 time = 0
 
 function make_passage()
