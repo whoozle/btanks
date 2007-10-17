@@ -290,6 +290,12 @@ void IGame::init(const int argc, char *argv[]) {
 	Console->init();
 	Console->on_command.connect(sigc::mem_fun(this, &IGame::onConsole));
 	
+	LOG_DEBUG(("installing basic callbacks..."));
+	Window->key_signal.connect(sigc::mem_fun(this, &IGame::onKey));
+	Window->mouse_signal.connect(sigc::mem_fun(this, &IGame::onMouse));
+	Window->joy_button_signal.connect(sigc::mem_fun(this, &IGame::onJoyButton));
+	Window->event_signal.connect(sigc::mem_fun(this, &IGame::onEvent));
+	
 	sdlx::Rect window_size = Window->getSize();
 	if (_main_menu == NULL) {
 		_main_menu = new MainMenu();
@@ -304,13 +310,7 @@ void IGame::init(const int argc, char *argv[]) {
 	_hud = new Hud(window_size.w, window_size.h);
 
 	LOG_DEBUG(("installing callbacks..."));
-	
-	Window->key_signal.connect(sigc::mem_fun(this, &IGame::onKey));
-
-	Window->mouse_signal.connect(sigc::mem_fun(this, &IGame::onMouse));
-	Window->joy_button_signal.connect(sigc::mem_fun(this, &IGame::onJoyButton));
-	Window->event_signal.connect(sigc::mem_fun(this, &IGame::onEvent));
-	
+		
 	_main_menu->menu_signal.connect(sigc::mem_fun(this, &IGame::onMenu));
 	
 	Map->reset_progress.connect(sigc::mem_fun(this, &IGame::resetLoadingBar));
@@ -466,6 +466,8 @@ bool IGame::onKey(const SDL_keysym key, const bool pressed) {
 
 	if (key.sym == SDLK_ESCAPE) {
 		if (!Map->loaded()) {
+			if (_main_menu->isActive()) //do not eat menu's events
+				return false;
 			if (_main_menu)
 				_main_menu->setActive(true);
 			return true;
@@ -489,7 +491,7 @@ bool IGame::onKey(const SDL_keysym key, const bool pressed) {
 
 bool IGame::onMouse(const int button, const bool pressed, const int x, const int y) {
 	if (_credits) {
-		if (!pressed)
+		if (pressed)
 			stopCredits();
 		return true;
 	}
