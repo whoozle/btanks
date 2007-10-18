@@ -221,6 +221,8 @@ void MainMenu::down() {
 			_items[_active_menu][_active_item]->onFocus();
 }
 
+#include "tmx/map.h"
+
 bool MainMenu::onKey(const SDL_keysym sym, const bool pressed) {
 	if (!_active || !pressed)
 		return false;
@@ -248,7 +250,11 @@ bool MainMenu::onKey(const SDL_keysym sym, const bool pressed) {
 		case SDLK_RETURN: 
 			activateSelectedItem();
 			return true;
-		case SDLK_ESCAPE: 
+		case SDLK_ESCAPE:
+			if (Map->loaded()) {
+				setActive(false);
+				return true;
+			} 
 			return false;
 		default: 
 			break;

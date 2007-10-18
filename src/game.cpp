@@ -465,17 +465,14 @@ bool IGame::onKey(const SDL_keysym key, const bool pressed) {
 */
 
 	if (key.sym == SDLK_ESCAPE) {
-		if (!Map->loaded()) {
-			if (_main_menu->isActive()) //do not eat menu's events
-				return false;
-			if (_main_menu)
-				_main_menu->setActive(true);
+		if (!_main_menu->isActive()) {
+			_main_menu->setActive(true);
 			return true;
+		} else {
+			return false;
 		}
 		
 		LOG_DEBUG(("escape hit, paused: %s", _paused?"true":"false"));
-		if (_main_menu)
-			_main_menu->setActive(!_main_menu->isActive());
 		
 		if (PlayerManager->isServer() || PlayerManager->isClient()) {
 			_paused = false;
