@@ -20,6 +20,7 @@
 #include "config.h"
 #include "object.h"
 #include "ai/waypoints.h"
+#include "special_owners.h"
 
 class Buggy: public Object {
 public: 
@@ -49,7 +50,8 @@ void Buggy::onSpawn() {
 		disown();
 
 	play("hold", true);
-	Object *turrel = add("mod", "turrel", "buggy-gun", v2<float>(), Centered);
+	bool ai = registered_name == "buggy" && hasOwner(OWNER_MAP);
+	Object *turrel = add("mod", ai?"turrel(ground-aim)":"turrel", "buggy-gun", v2<float>(), Centered);
 	turrel->setZ(getZ() + 5, true);
 }
 

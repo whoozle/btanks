@@ -89,11 +89,15 @@ void Turrel::calculate(const float dt) {
 	}
 	
 	bool air_mode = (_parent != NULL)?_parent->getPlayerState().alt_fire:true;
-	if (air_mode) {
+	if (air_mode || _variants.has("ground-aim")) {
 		v2<float> pos, vel;
 		int z0 = getZ();
-		setZ(z0 + 2000, true); //temporary move up turrel %) hack for air mode :)
-		if (getNearest(targets, getWeaponRange("helicopter-bullet"), pos, vel, true)) {
+
+		if (air_mode) {
+			setZ(z0 + 2000, true); //temporary move up turrel %) hack for air mode :)
+		}
+
+		if (getNearest(targets, getWeaponRange("buggy-bullet"), pos, vel, true)) {
 			_direction = pos;
 			_state.fire = true;
 			_direction.quantize8();
@@ -101,7 +105,10 @@ void Turrel::calculate(const float dt) {
 		} else {
 			_state.fire = false;
 		}
-		setZ(z0, true);
+
+		if (air_mode) {
+			setZ(z0, true);
+		}
 	} else {
 		if (_parent != NULL) {
 			_state.fire = _parent->getPlayerState().fire;
