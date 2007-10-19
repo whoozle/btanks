@@ -807,9 +807,15 @@ void IGameMonitor::loadMap(Campaign *campaign, const std::string &name, const bo
 	GET_CONFIG_VALUE("engine.max-time-slice", float, mts, 0.025);
 	World->setTimeSlice(mts);
 
+#	ifdef ENABLE_LUA
+		lua_hooks->clear();
+#	endif
+
 	std::string script = Finder->find("maps/" + name + ".lua", false);
+
 	if (!script.empty() && !Map->soloAwareMode()) {
 #	ifdef ENABLE_LUA
+		lua_hooks->clear();
 		lua_hooks->load(script);
 #	else
 		throw_ex(("this map requires lua scripting support."));
