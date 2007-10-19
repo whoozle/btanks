@@ -575,6 +575,11 @@ TRY {
 			continue;
 		}
 		
+		slot.dead_time += dt;
+		//GET_CONFIG_VALUE("engine.respawn-interval", float, ri, 0.1f);
+		if (slot.dead_time < 0.3f)
+			continue;
+
 		if (slot.spawn_limit > 0) {
 			if (--slot.spawn_limit <= 0) {
 				slot.clear();
@@ -584,10 +589,6 @@ TRY {
 			LOG_DEBUG(("%d lives left", slot.spawn_limit));
 		}
 		
-		slot.dead_time += dt;
-		//GET_CONFIG_VALUE("engine.respawn-interval", float, ri, 0.1f);
-		if (slot.dead_time < 0.3f)
-			continue;
 		
 		LOG_DEBUG(("player in slot %u is dead. respawning. frags: %d", (unsigned)i, slot.frags));
 
