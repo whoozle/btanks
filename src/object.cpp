@@ -1006,14 +1006,14 @@ const int Object::getTargetPosition(v2<float> &relative_position, const std::set
 				continue;
 			
 			math::getNormalVector(pos, dir, tp);
-			if (pos.quick_length() > tp.quick_length() || !Map->contains(pos))
+			if (pos.quick_length() > tp.quick_length() || !Map->contains(pos + getCenterPosition()))
 				continue;
 			
 			
 			//skip solid objects
 			if (impassability >= 1.0f) {
 				// i am solid object. 
-				v2<int> map_pos = (pos + getPosition()).convert<int>() / pfs;
+				v2<int> map_pos = (pos + getCenterPosition()).convert<int>() / pfs;
 				if (matrix.get(map_pos.y, map_pos.x) < 0)
 					continue;
 			}
