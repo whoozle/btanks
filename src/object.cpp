@@ -1046,9 +1046,6 @@ const int Object::getTargetPosition(v2<float> &relative_position, const std::set
 	return result_dir;
 }
 
-
-
-
 const int Object::getTargetPosition(v2<float> &relative_position, const v2<float> &target, const std::string &weapon) const {
 	if (aiDisabled())
 		return -1;
