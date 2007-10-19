@@ -51,6 +51,14 @@ State::State() {
 		throw_ex(("cannot create lua interpreter"));
 }
 
+void State::clear() {
+	lua_close(state);
+
+	state = lua_newstate(l_alloc, this);
+	if (state == NULL)
+		throw_ex(("cannot create lua interpreter"));
+}
+
 State::~State() {
 	lua_close(state);
 }

@@ -354,3 +354,7 @@ void LuaHooks::call(const std::string &method) {
 
 	assert(lua_gettop(state) == top0);
 }
+
+void LuaHooks::clear() {
+	state.clear();
+}

@@ -10,6 +10,7 @@ class State {
 public: 
 	State();
 	void loadFile(const std::string &fname);
+	void clear();
 	void call(const int nargs, const int nresults) const;
 	~State();
 	
