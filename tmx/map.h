@@ -135,6 +135,13 @@ public:
 		validate(src);
 	}
 
+	template<typename T> 	
+	const bool contains(const v2<T> &pos) const {
+		if (_torus) 
+			return true;
+		return pos.x >= 0 && pos.y >= 0 && pos.x < _tw * _w && pos.y < _th * _h;
+	}
+
 	void validate(v2<int> &result) const {
 		if (!_torus)
 			return;
