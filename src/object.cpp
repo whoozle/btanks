@@ -1006,7 +1006,7 @@ const int Object::getTargetPosition(v2<float> &relative_position, const std::set
 				continue;
 			
 			math::getNormalVector(pos, dir, tp);
-			if (pos.quick_length() > tp.quick_length())
+			if (pos.quick_length() > tp.quick_length() || !Map->contains(pos))
 				continue;
 			
 			
