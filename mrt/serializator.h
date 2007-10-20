@@ -22,6 +22,9 @@
 #include <string>
 #include "export_mrt.h"
 
+#include <deque>
+#include <map>
+
 namespace mrt {
 class Chunk;
 class DLLEXPORT Serializator {
@@ -49,7 +52,50 @@ public:
 	const Chunk & getData() const;
 
 	void add(const void *raw, const int size); //same as add(chunk)
+
+	//add/get for std containers
 	
+	template <typename T> 
+	void add(const std::deque<T> &q) {
+		add((unsigned)q.size());
+		for(typename std::deque<T>::const_iterator i = q.begin(); i != q.end(); ++i) 
+			add(*i);
+	}
+	template <typename T>
+	void get(std::deque<T> &q) const {
+		q.clear();
+		unsigned n; get(n);
+		while(n--) {
+			T v;
+			get(v);
+			q.push_back(v);
+		}
+	}
+	
+	template <typename T1, typename T2>
+	void add(const std::map<const T1, T2> &m) {
+		add((unsigned)m.size());
+		for(typename std::map<const T1, T2>::const_iterator i = m.begin(); i != m.end(); ++i) {
+			add(i->first);
+			add(i->second);
+		}
+	}
+
+	template <typename T1, typename T2>
+	void get(std::map<const T1, T2> &m) const {
+		m.clear();
+		unsigned n;
+		get(n);
+		T1 key;
+		T2 value;
+		while(n--) {
+			get(key);
+			get(value);
+			m.insert(typename std::map<const T1, T2>::value_type(key, value));
+		}
+	}
+
+
 	template <class T> void add(const T& t) { t.serialize(*this); }
 	template <class T> void get(T& t) const { t.deserialize(*this); }
 
