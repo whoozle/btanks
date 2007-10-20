@@ -217,27 +217,6 @@ void IConfig::registerInvalidator(bool *ptr) {
 	_invalidators.insert(ptr);
 }
 
-void IConfig::serialize(mrt::Serializator &s) const {
-	int n = _map.size();
-	s.add(n);
-	for(VarMap::const_iterator i = _map.begin(); i != _map.end(); ++i) {
-		s.add(i->first);
-		i->second->serialize(s);
-	}
-}
-
-void IConfig::deserialize(const mrt::Serializator &s) {
-	int n;
-	s.get(n);
-	while(n--) {
-		std::string name;
-		s.get(name);
-		if (_map[name] == NULL)
-			_map[name] = new Var;
-		_map[name]->deserialize(s);		
-	}
-}
-
 void IConfig::setOverride(const std::string &name, const Var &var) {
 	LOG_DEBUG(("adding override for '%s'", name.c_str()));
 	Var * v = _temp_map[name];

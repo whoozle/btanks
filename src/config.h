@@ -21,7 +21,6 @@
 
 
 #include "mrt/singleton.h"
-#include "mrt/serializable.h"
 #include "mrt/xml.h"
 #include <string>
 #include <map>
@@ -29,8 +28,11 @@
 #include "export_btanks.h"
 
 class Var;
+namespace mrt {
+	class Serializator;
+}
 
-class BTANKSAPI IConfig : public mrt::XMLParser, mrt::Serializable {
+class BTANKSAPI IConfig : public mrt::XMLParser {
 public:
 	DECLARE_SINGLETON(IConfig);
 	IConfig();
@@ -54,9 +56,6 @@ public:
 	
 	~IConfig();
 	
-	virtual void serialize(mrt::Serializator &s) const;
-	virtual void deserialize(const mrt::Serializator &s);
-
 	void setOverride(const std::string &name, const Var &var);
 	void deserializeOverrides(const mrt::Serializator &s);
 	void clearOverrides();
