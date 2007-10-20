@@ -494,23 +494,8 @@ void Object::serialize(mrt::Serializator &s) const {
 	s.add(animation);
 	s.add(fadeout_time);
 	
-	int en = _events.size();
-	s.add(en);
-	{
-		for(EventQueue::const_iterator i = _events.begin(); i != _events.end(); ++i) {
-			i->serialize(s);
-		}
-	}
-
-	en = _effects.size();
-	s.add(en);
-	{
-		for(EffectMap::const_iterator i = _effects.begin(); i != _effects.end(); ++i) {
-			s.add(i->first);
-			s.add(i->second);
-		}
-	}
-
+	s.add(_events);
+	s.add<std::string, float>(_effects);
 	
 	s.add(_tw);
 	s.add(_th);
@@ -518,20 +503,17 @@ void Object::serialize(mrt::Serializator &s) const {
 	s.add(_directions_n);
 	s.add(_pos);
 
-	//add support for waypoints here. AI cannot serialize now.
-	en = _way.size();
-	s.add(en);
-	for(Way::const_iterator i = _way.begin(); i != _way.end(); ++i) 
-		i->serialize(s);
-	_next_target.serialize(s);
-	_next_target_rel.serialize(s);
+	s.add(_way);
+	
+	s.add(_next_target);
+	s.add(_next_target_rel);
 	
 	s.add(_rotation_time);
 	s.add(_dst_direction);
 	s.add(_position_delta);
 
 	//Group	
-	en = _group.size();
+	int en = _group.size();
 	s.add(en);
 	for(Group::const_iterator i = _group.begin(); i != _group.end(); ++i) {
 		s.add(i->first);
@@ -549,41 +531,18 @@ void Object::deserialize(const mrt::Serializator &s) {
 	s.get(animation);
 	s.get(fadeout_time);
 
-	_events.clear();
-	int en;
-	s.get(en);
-	while(en--) {
-		Event e;
-		e.deserialize(s);
-		//LOG_DEBUG(("event: %s, repeat: %s", e.name.c_str(), e.repeat?"true":"false"));
-		_events.push_back(e);
-	}
-
-	_effects.clear();
-	s.get(en);
-	while(en--) {
-		std::string name;
-		float duration;
-		s.get(name);
-		s.get(duration);
-		_effects[name] = duration;
-	}
-	
+	s.get(_events);
+	s.get<std::string, float>(_effects);
+		
 	s.get(_tw);
 	s.get(_th);
 	s.get(_direction_idx);
 	s.get(_directions_n);
 	s.get(_pos);
 
-	s.get(en);
-	_way.clear();
-	while(en--) {
-		v2<int> wp;
-		wp.deserialize(s);
-		_way.push_back(wp);
-	}
-	_next_target.deserialize(s);
-	_next_target_rel.deserialize(s);
+	s.get(_way);
+	s.get(_next_target);
+	s.get(_next_target_rel);
 
 
 	s.get(_rotation_time);
@@ -591,6 +550,7 @@ void Object::deserialize(const mrt::Serializator &s) {
 	s.get(_position_delta);
 
 	_group.clear();
+	int en;
 	s.get(en);
 	while(en--) {
 		std::string name, rn;
