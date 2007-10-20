@@ -61,7 +61,7 @@ const char * Message::getType() const {
 void Message::serialize(mrt::Serializator &s) const {
 	s.add(channel);
 	s.add((int)type);
-	writeMap(s);
+	s.add<std::string, std::string>(_attrs);
 	s.add(data);
 }
 
@@ -70,36 +70,9 @@ void Message::deserialize(const mrt::Serializator &s) {
 	int t;
 	s.get(t);
 	type = (Message::Type) t;
-	readMap(s);
+	s.get<std::string, std::string>(_attrs);
 	s.get(data);
 }
-
-void Message::writeMap(mrt::Serializator &s) const {
-	int size = _attrs.size();
-	s.add(size);
-	for(AttrMap::const_iterator ai = _attrs.begin(); ai != _attrs.end(); ++ai) {
-		s.add(ai->first);
-		s.add(ai->second);
-	}
-}
-
-
-void Message::readMap(const mrt::Serializator &s) {
-	_attrs.clear();
-	
-	int n;
-	s.get(n);
-
-	std::string key;
-	std::string value;
-	
-	while(n--) {
-		s.get(key);
-		s.get(value);
-		_attrs[key] = value;
-	}
-}
-
 
 void Message::set(const std::string &key, const std::string &value) {
 	_attrs[key] = value;

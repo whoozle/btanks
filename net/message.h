@@ -67,9 +67,6 @@ public:
 
 	mrt::Chunk data;
 private:
-	void readMap(const mrt::Serializator &s);
-	void writeMap(mrt::Serializator &s) const;
-
 	typedef std::map<const std::string, std::string> AttrMap;
 	AttrMap _attrs;
 };
