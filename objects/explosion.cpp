@@ -41,23 +41,13 @@ public:
 	virtual void emit(const std::string &event, Object * emitter = NULL);
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
-		int n = _damaged_objects.size();
-		s.add(n);
-		for(std::set<int>::const_iterator i = _damaged_objects.begin(); i != _damaged_objects.end(); ++i) 
-			s.add(*i);
+		s.add(_damaged_objects);
 		s.add(_damage_done);
 		s.add(_players_killed);
 	}
 	virtual void deserialize(const mrt::Serializator &s) {
 		Object::deserialize(s);
-		int n;
-		s.get(n);
-		_damaged_objects.clear();
-		while(n--) {
-			int id;
-			s.get(id);
-			_damaged_objects.insert(id);
-		}
+		s.get(_damaged_objects);
 		s.get(_damage_done);
 		s.get(_players_killed);
 	}

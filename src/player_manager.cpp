@@ -996,33 +996,13 @@ const size_t IPlayerManager::getSlotsCount() const {
 }
 
 void IPlayerManager::serializeSlots(mrt::Serializator &s) const {
-	int n = _players.size();
-	s.add(n);
-	for(int i = 0; i < n; ++i) {
-		_players[i].serialize(s);
-	}
-	n = _global_zones_reached.size();
-	s.add(n);
-	for(std::set<int>::const_iterator i = _global_zones_reached.begin(); i != _global_zones_reached.end(); ++i) {
-		s.add(*i);
-	}
+	s.add(_players);
+	s.add(_global_zones_reached);
 }
 
 void IPlayerManager::deserializeSlots(const mrt::Serializator &s) {
-	int n, pn = _players.size();
-	s.get(n);
-	assert(pn == n);
-	
-	for(int i = 0; i < n; ++i) {
-		_players[i].deserialize(s);
-	}
-	s.get(n);
-	_global_zones_reached.clear();
-	while(n--) {
-		int z; 
-		s.get(z);
-		_global_zones_reached.insert(z);
-	}
+	s.get(_players);
+	s.get(_global_zones_reached);
 }
 
 void IPlayerManager::broadcast(const Message &_m, const bool per_connection) {

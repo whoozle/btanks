@@ -43,7 +43,7 @@ classname(), animation(), frags(0), spawn_limit(0), score(0), last_tooltip(NULL)
 void PlayerSlot::serialize(mrt::Serializator &s) const {
 	s.add(id);
 	//ControlMethod * control_method;
-	position.serialize(s);
+	s.add(position);
 	s.add(frags);		
 	s.add(classname);
 	s.add(animation);
@@ -53,7 +53,7 @@ void PlayerSlot::serialize(mrt::Serializator &s) const {
 
 void PlayerSlot::deserialize(const mrt::Serializator &s) {
 	s.get(id);
-	position.deserialize(s);
+	s.get(position);
 	s.get(frags);		
 	s.get(classname);
 	s.get(animation);
