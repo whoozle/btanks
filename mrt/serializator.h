@@ -24,6 +24,7 @@
 
 #include <deque>
 #include <map>
+#include <set>
 
 namespace mrt {
 class Chunk;
@@ -55,22 +56,47 @@ public:
 
 	//add/get for std containers
 	
+	//std::set
+
+	template <typename T> 
+	void add(const std::set<T> &s) {
+		add((unsigned)s.size());
+		for(typename std::set<T>::const_iterator i = s.begin(); i != s.end(); ++i) 
+			add(*i);
+	}
+
+	template <typename T>
+	void get(std::set<T> &s) const {
+		s.clear();
+		unsigned n; get(n);
+		T v;
+		while(n--) {
+			get(v);
+			s.insert(v);
+		}
+	}
+
+	//std::deque
+	
 	template <typename T> 
 	void add(const std::deque<T> &q) {
 		add((unsigned)q.size());
 		for(typename std::deque<T>::const_iterator i = q.begin(); i != q.end(); ++i) 
 			add(*i);
 	}
+
 	template <typename T>
 	void get(std::deque<T> &q) const {
 		q.clear();
 		unsigned n; get(n);
+		T v;
 		while(n--) {
-			T v;
 			get(v);
 			q.push_back(v);
 		}
 	}
+
+	//std::map
 	
 	template <typename T1, typename T2>
 	void add(const std::map<const T1, T2> &m) {
