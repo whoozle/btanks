@@ -25,6 +25,7 @@
 #include <deque>
 #include <map>
 #include <set>
+#include <vector>
 
 namespace mrt {
 class Chunk;
@@ -87,6 +88,26 @@ public:
 
 	template <typename T>
 	void get(std::deque<T> &q) const {
+		q.clear();
+		unsigned n; get(n);
+		T v;
+		while(n--) {
+			get(v);
+			q.push_back(v);
+		}
+	}
+
+	//std::vector, the same as deque
+
+	template <typename T> 
+	void add(const std::vector<T> &q) {
+		add((unsigned)q.size());
+		for(typename std::vector<T>::const_iterator i = q.begin(); i != q.end(); ++i) 
+			add(*i);
+	}
+
+	template <typename T>
+	void get(std::vector<T> &q) const {
 		q.clear();
 		unsigned n; get(n);
 		T v;
