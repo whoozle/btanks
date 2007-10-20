@@ -74,18 +74,9 @@ void Variants::remove(const std::string &name) {
 
 
 void Variants::serialize(mrt::Serializator &s) const {
-	s.add((int)vars.size());
-	for(std::set<std::string>::const_iterator i = vars.begin(); i != vars.end(); ++i) 
-		s.add(*i);
+	s.add(vars);
 }
 
 void Variants::deserialize(const mrt::Serializator &s) {
-	vars.clear();
-	int n;
-	s.get(n);
-	while(n--) {
-		std::string var;
-		s.get(var);
-		vars.insert(var);
-	}	
+	s.get(vars);
 }

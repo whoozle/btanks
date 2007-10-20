@@ -408,11 +408,7 @@ void IGameMonitor::disable(const std::string &classname, const bool value) {
 void IGameMonitor::serialize(mrt::Serializator &s) const {
 TRY {
 	s.add(_game_over);
-
-	int n = (int)_specials.size();
-	s.add(n);
-	for(int i = 0; i < n; ++i)	
-		s.add(_specials[i]);
+	s.add(_specials);
 
 	//s.add(_state);
 	//s.add(_state_timer);
@@ -421,17 +417,8 @@ TRY {
 	s.add(_timer_message_area);
 	s.add(_timer);
 
-	n = (int)_disabled.size();
-	s.add(n);
-	for(std::set<std::string>::const_iterator i = _disabled.begin(); i != _disabled.end(); ++i) {
-		s.add(*i);
-	}
-
-	n = (int)_destroy_classes.size();
-	s.add(n);
-	for(std::set<std::string>::const_iterator i = _destroy_classes.begin(); i != _destroy_classes.end(); ++i) {
-		s.add(*i);
-	}
+	s.add(_disabled);
+	s.add(_destroy_classes);
 
 } CATCH("serialize", throw);
 }
@@ -439,15 +426,7 @@ TRY {
 void IGameMonitor::deserialize(const mrt::Serializator &s) {
 TRY {
 	s.get(_game_over);
-
-	int n;
-	s.get(n);
-	_specials.clear();
-	while(n--) {
-		v3<int> p;
-		s.get(p);
-		_specials.push_back(p);
-	}
+	s.get(_specials);
 
 	//s.get(_state);
 	//s.get(_state_timer);
@@ -456,21 +435,8 @@ TRY {
 	s.get(_timer_message_area);
 	s.get(_timer);
 
-	s.get(n);
-	_disabled.clear();
-	while(n--) {
-		std::string d;
-		s.get(d);
-		_disabled.insert(d);
-	}
-
-	s.get(n);
-	_destroy_classes.clear();
-	while(n--) {
-		std::string d;
-		s.get(d);
-		_destroy_classes.insert(d);
-	}
+	s.get(_disabled);
+	s.get(_destroy_classes);
 	
 } CATCH("deserialize", throw);
 }

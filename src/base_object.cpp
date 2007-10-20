@@ -84,11 +84,7 @@ void BaseObject::serialize(mrt::Serializator &s) const {
 
 	s.add(_z);
 	
-	int n = _owners.size();
-	s.add(n);
-	for(std::deque<int>::const_iterator i = _owners.begin(); i != _owners.end(); ++i) {
-		s.add(*i);
-	}
+	s.add(_owners);	
 		
 	s.add(_spawned_by);
 }
