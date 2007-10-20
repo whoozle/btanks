@@ -43,7 +43,7 @@
 
 #include "net/server.h"
 #include "net/client.h"
-#include "net/protocol.h"
+#include "net/message.h"
 #include "net/connection.h"
 
 

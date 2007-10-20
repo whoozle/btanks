@@ -24,7 +24,7 @@
 
 #include "client.h"
 #include "player_state.h"
-#include "protocol.h"
+#include "message.h"
 #include "player_manager.h"
 #include "monitor.h"
 #include "connection.h"

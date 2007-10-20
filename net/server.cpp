@@ -22,7 +22,7 @@
 #include "mrt/exception.h"
 #include "mrt/socket_set.h"
 #include "player_manager.h"
-#include "protocol.h"
+#include "message.h"
 #include "monitor.h"
 #include "connection.h"
 #include "config.h"

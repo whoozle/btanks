@@ -19,7 +19,7 @@
 #include "special_zone.h"
 #include "player_manager.h"
 #include "player_slot.h"
-#include "net/protocol.h"
+#include "net/message.h"
 #include "game_monitor.h"
 #include "player_manager.h"
 #include "config.h"

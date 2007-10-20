@@ -37,7 +37,7 @@
 
 #include "net/server.h"
 #include "net/client.h"
-#include "net/protocol.h"
+#include "net/message.h"
 
 #include "sound/mixer.h"
 #include "sdlx/surface.h"
