@@ -88,10 +88,19 @@ public:
 
 	template <typename T>
 	void get(std::deque<T> &q) const {
-		q.clear();
 		unsigned n; get(n);
+		unsigned m = n;
+		for(typename std::deque<T>::iterator i = q.begin(); m != 0 && i != q.end(); ++i, --m) {
+			get(*i);
+		}
+
+		if (m == 0) {
+			q.resize(n);
+			return;
+		}
+		
 		T v;
-		while(n--) {
+		while(m--) {
 			get(v);
 			q.push_back(v);
 		}
@@ -108,10 +117,19 @@ public:
 
 	template <typename T>
 	void get(std::vector<T> &q) const {
-		q.clear();
 		unsigned n; get(n);
+		unsigned m = n;
+		for(typename std::vector<T>::iterator i = q.begin(); m != 0 && i != q.end(); ++i, --m) {
+			get(*i);
+		}
+
+		if (m == 0) {
+			q.resize(n);
+			return;
+		}
+		
 		T v;
-		while(n--) {
+		while(m--) {
 			get(v);
 			q.push_back(v);
 		}
