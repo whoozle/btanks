@@ -88,8 +88,8 @@ void Base::onSpawn(const Object *object) {
 		throw_ex(("vehicle MUST provide its type"));
 	
 	LOG_DEBUG(("spawning as '%s'", vehicle.c_str()));
-	if (_enemies.size() == 0 && _bonuses.size()) 
-		throw_ex(("vehicle was not provide enemies/bonuses"));
+	if (_enemies.empty() && _bonuses.empty()) 
+		throw_ex(("vehicle had not provided enemies/bonuses"));
 		
 	float rt, rpi;
 	Config->get("objects.ai-" + vehicle + ".reaction-time", rt, 0.1f);
@@ -299,7 +299,10 @@ void Base::calculate(Object *object, const float dt) {
 		}
 	}
 		
-	target = findTarget(object, (amount1 > 0 || amount2 > 0)?_enemies:std::set<std::string>(), _bonuses, _traits, _skip_objects);
+	target = findTarget(object, 
+		(amount1 > 0 || amount2 > 0)?_enemies:std::set<std::string>(), 
+		object->getVariants().has("no-bonuses")?std::set<std::string>():_bonuses, 
+		_traits, _skip_objects);
 	
 	if (target != NULL) {
 		if ( ((refresh_path && isEnemy(target)) || target->getID() != _target_id)) {
