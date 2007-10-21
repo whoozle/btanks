@@ -91,7 +91,7 @@ public:
 		unsigned n; get(n);
 		q.resize(n);
 		for(unsigned i = 0; i < n; ++i) {
-			get(q[n]);
+			get(q[i]);
 		}
 	}
 
@@ -109,7 +109,7 @@ public:
 		unsigned n; get(n);
 		q.resize(n);
 		for(unsigned i = 0; i < n; ++i) {
-			get(q[n]);
+			get(q[i]);
 		}
 	}
 
