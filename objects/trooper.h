@@ -33,6 +33,7 @@ public:
 	virtual Object * clone() const;
 	virtual void onSpawn();
 	virtual void emit(const std::string &event, Object * emitter = NULL);
+	virtual const bool validateFire(const int idx);
 
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
