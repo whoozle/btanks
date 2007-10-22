@@ -52,9 +52,11 @@ void Trooper::tick(const float dt) {
 	
 	if (!_object.empty() && _fire.tick(dt) && _state.fire && !_variants.has("nukeman")) {
 		_fire.reset();
-		if (getState() != "fire")
-			playNow("fire");
-		spawn(_object, _object, v2<float>(), _direction);
+		if (disable_ai || validateFire(0)) {
+			if (getState() != "fire")
+				playNow("fire");
+			spawn(_object, _object, v2<float>(), _direction);
+		}
 	}
 	if (_state.alt_fire && _variants.has("nukeman")) {
 		//MUGGAGAGAGAGAG!!!
@@ -109,6 +111,9 @@ void Trooper::emit(const std::string &event, Object * emitter) {
 	Object::emit(event, emitter);
 }
 
+const bool Trooper::validateFire(const int idx) {
+	return true;
+}
 
 Object* Trooper::clone() const  {
 	return new Trooper(*this);
