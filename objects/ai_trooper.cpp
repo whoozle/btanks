@@ -17,13 +17,14 @@
  */
 
 #include "trooper.h"
+#include "ai/base.h"
 #include "ai/herd.h"
 #include "config.h"
 #include "resource_manager.h"
 #include "mrt/random.h"
 #include "special_owners.h"
 
-class AITrooper : public Trooper, ai::Herd {
+class AITrooper : public Trooper, private ai::Herd, private ai::Base {
 public:
 	AITrooper(const std::string &object, const bool aim_missiles) : 
 		Trooper("trooper", object), _reaction(true), _target_dir(-1) {
@@ -41,11 +42,13 @@ public:
 	virtual void onSpawn();
 	virtual void serialize(mrt::Serializator &s) const {
 		Trooper::serialize(s);
+		ai::Base::serialize(s);
 		s.add(_reaction);
 		s.add(_target_dir);
 	}
 	virtual void deserialize(const mrt::Serializator &s) {
 		Trooper::deserialize(s);
+		ai::Base::deserialize(s);
 		s.get(_reaction);
 		s.get(_target_dir);
 	}
@@ -55,6 +58,12 @@ public:
 	virtual void onIdle(const float dt);
 	
 private: 
+	const bool validateFire(const int idx) {
+		if (idx == 0) 
+			return canFire();
+		return true;
+	}
+	
 	virtual const int getComfortDistance(const Object *other) const;
 
 	Alarm _reaction;
@@ -83,6 +92,7 @@ void AITrooper::onIdle(const float dt) {
 }
 
 void AITrooper::onSpawn() {
+	ai::Base::onSpawn(this);
 	GET_CONFIG_VALUE("objects.ai-trooper.reaction-time", float, rt, 0.3);
 	mrt::randomize(rt, rt / 10);
 	//LOG_DEBUG(("rt = %g", rt));
@@ -144,7 +154,7 @@ void AITrooper::calculate(const float dt) {
 	}
 }
 //==============================================================================
-class TrooperInWatchTower : public Trooper {
+class TrooperInWatchTower : public Trooper, private ai::Base {
 public: 
 	TrooperInWatchTower(const std::string &object, const bool aim_missiles) : 
 		Trooper("trooper", object), _reaction(true) {
@@ -161,6 +171,8 @@ public:
 	virtual Object * clone() const { return new TrooperInWatchTower(*this); }
 	
 	virtual void onSpawn() { 
+		ai::Base::onSpawn(this);
+	
 		GET_CONFIG_VALUE("objects.trooper.reaction-time", float, rt, 0.1);
 		mrt::randomize(rt, rt/10);
 		_reaction.set(rt);
@@ -170,10 +182,12 @@ public:
 
 	virtual void serialize(mrt::Serializator &s) const {
 		Trooper::serialize(s);
+		ai::Base::serialize(s);
 		s.add(_reaction);
 	}
 	virtual void deserialize(const mrt::Serializator &s) {
 		Trooper::deserialize(s);
+		ai::Base::deserialize(s);
 		s.get(_reaction);
 	}
 	
@@ -213,6 +227,12 @@ public:
 		}
 	}
 private: 
+	const bool validateFire(const int idx) {
+		if (idx == 0) 
+			return canFire();
+		return true;
+	}
+	
 	Alarm _reaction; 
 
 	//no need to serialize it
