@@ -27,10 +27,10 @@
 #include "alarm.h"
 
 namespace ai {
-class BTANKSAPI Base {
+class BTANKSAPI Buratino {
 public: 
-	Base();
-	virtual ~Base();
+	Buratino();
+	virtual ~Buratino();
 
 	virtual void calculate(Object *obj, const float dt);
 	virtual void onSpawn(const Object *obj);

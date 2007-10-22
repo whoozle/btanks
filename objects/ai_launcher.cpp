@@ -21,9 +21,9 @@
 #include "resource_manager.h"
 #include "config.h"
 
-#include "ai/base.h" 
+#include "ai/buratino.h" 
 
-class AILauncher:  public Launcher, public ai::Base {
+class AILauncher:  public Launcher, public ai::Buratino {
 public: 
 	AILauncher() : Launcher("fighting-vehicle") {}
 //	~AILauncher();
@@ -83,12 +83,12 @@ void AILauncher::onSpawn() {
 	addBonusName("machinegunner-item");
 	addBonusName("thrower-item");
 
-	ai::Base::onSpawn(this);
+	ai::Buratino::onSpawn(this);
 	Launcher::onSpawn();
 }
 
 void AILauncher::calculate(const float dt) {
-	ai::Base::calculate(this, dt);
+	ai::Buratino::calculate(this, dt);
 	
 	GET_CONFIG_VALUE("objects.launcher.rotation-time", float, rt, 0.07);
 	limitRotation(dt, rt, true, false);

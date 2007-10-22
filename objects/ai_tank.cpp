@@ -21,9 +21,9 @@
 #include "resource_manager.h"
 #include "config.h"
 
-#include "ai/base.h" 
+#include "ai/buratino.h" 
 
-class AITank:  public Tank, public ai::Base {
+class AITank:  public Tank, public ai::Buratino {
 public: 
 	AITank() : Tank("fighting-vehicle") {}
 //	~AITank();
@@ -95,12 +95,12 @@ void AITank::onSpawn() {
 	addBonusName("stun-missiles-item");
 	addBonusName("mines-item");
 
-	ai::Base::onSpawn(this);
+	ai::Buratino::onSpawn(this);
 	Tank::onSpawn();
 }
 
 void AITank::calculate(const float dt) {
-	ai::Base::calculate(this, dt);
+	ai::Buratino::calculate(this, dt);
 	
 	GET_CONFIG_VALUE("objects.tank.rotation-time", float, rt, 0.05);
 	limitRotation(dt, rt, true, false);

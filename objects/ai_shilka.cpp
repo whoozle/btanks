@@ -21,9 +21,9 @@
 #include "resource_manager.h"
 #include "config.h"
 
-#include "ai/base.h" 
+#include "ai/buratino.h" 
 
-class AIShilka:  public Shilka, public ai::Base {
+class AIShilka:  public Shilka, public ai::Buratino {
 public: 
 	AIShilka() : Shilka("fighting-vehicle") {}
 //	~AIShilka();
@@ -100,12 +100,12 @@ void AIShilka::onSpawn() {
 	addBonusName("mines-item");
 	addBonusName("nuke-missiles-item");
 
-	ai::Base::onSpawn(this);
+	ai::Buratino::onSpawn(this);
 	Shilka::onSpawn();
 }
 
 void AIShilka::calculate(const float dt) {
-	ai::Base::calculate(this, dt);
+	ai::Buratino::calculate(this, dt);
 	
 	GET_CONFIG_VALUE("objects.shilka.rotation-time", float, rt, 0.05);
 	limitRotation(dt, rt, true, false);

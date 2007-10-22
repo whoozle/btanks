@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-#include "base.h"
+#include "buratino.h"
 #include <assert.h>
 #include "world.h"
 #include "config.h"
@@ -32,13 +32,13 @@
 
 using namespace ai;
 
-Base::Base() : _reaction_time(true), _refresh_path(false), _target_id(-1), _target_dir(-1) {}
+Buratino::Buratino() : _reaction_time(true), _refresh_path(false), _target_id(-1), _target_dir(-1) {}
 
-const bool Base::active() const {
+const bool Buratino::active() const {
 	return !PlayerManager->isClient();
 }
 
-Base::~Base() {
+Buratino::~Buratino() {
 	if (!active())
 		return;
 	
@@ -46,15 +46,15 @@ Base::~Base() {
 		LOG_DEBUG(("traits: \n%s", _traits.save().c_str()));
 }
 
-void Base::addEnemyClass(const std::string &classname) {
+void Buratino::addEnemyClass(const std::string &classname) {
 	_enemies.insert(classname);
 }
 
-void Base::addBonusName(const std::string &rname) {
+void Buratino::addBonusName(const std::string &rname) {
 	_bonuses.insert(rname);
 }
 
-void Base::processPF(Object *object) {
+void Buratino::processPF(Object *object) {
 	if (object->calculatingPath()) {
 		Way way;
 		int n = 1;
@@ -79,7 +79,7 @@ void Base::processPF(Object *object) {
 }
 
 
-void Base::onSpawn(const Object *object) {
+void Buratino::onSpawn(const Object *object) {
 	if (!active())
 		return;
 	
@@ -100,11 +100,11 @@ void Base::onSpawn(const Object *object) {
 	Config->get("objects.ai-" + vehicle + ".pathfinding-slice", _pf_slice, 10);
 }
 
-const bool Base::isEnemy(const Object *o) const {
+const bool Buratino::isEnemy(const Object *o) const {
 	return _enemies.find(o->classname) != _enemies.end();
 }
 
-const std::string Base::convertName(const std::string &weapon) {
+const std::string Buratino::convertName(const std::string &weapon) {
 	std::string wc, wt;
 	std::string::size_type p;
 	if ((p = weapon.rfind(':')) != std::string::npos) {
@@ -119,7 +119,7 @@ const std::string Base::convertName(const std::string &weapon) {
 }
 
 
-const bool Base::checkTarget(const Object *object, const Object * target, const std::string &weapon) const {
+const bool Buratino::checkTarget(const Object *object, const Object * target, const std::string &weapon) const {
 	if (!isEnemy(target))
 		return false;
 	
@@ -162,7 +162,7 @@ const bool Base::checkTarget(const Object *object, const Object * target, const 
 	return false;
 }
 
-void Base::calculateCloseCombat(Object *object, const Object *target, const float range, const bool dumb) {
+void Buratino::calculateCloseCombat(Object *object, const Object *target, const float range, const bool dumb) {
 	assert(object != NULL);
 	assert(target != NULL);
 	
@@ -198,7 +198,7 @@ void Base::calculateCloseCombat(Object *object, const Object *target, const floa
 	}
 }
 
-const float Base::getWeaponRange(const Object *object) const {
+const float Buratino::getWeaponRange(const Object *object) const {
 	std::string weapon1 = getWeapon(0), weapon2 = getWeapon(1);
 	
 	float range = 0;
@@ -211,7 +211,7 @@ const float Base::getWeaponRange(const Object *object) const {
 	return range;	
 }
 
-void Base::calculate(Object *object, const float dt) {
+void Buratino::calculate(Object *object, const float dt) {
 	if (object->aiDisabled()) {
 		return;
 	}
@@ -358,7 +358,7 @@ skip_calculations:
 	object->updateStateFromVelocity();
 }
 
-const Object * Base::findTarget(const Object *src, const std::set<std::string> &enemies, const std::set<std::string> &bonuses, ai::Traits &traits, const std::set<int> &skip_objects) const {
+const Object * Buratino::findTarget(const Object *src, const std::set<std::string> &enemies, const std::set<std::string> &bonuses, ai::Traits &traits, const std::set<int> &skip_objects) const {
 	if (src->getVariants().has("racing"))
 		return NULL;
 	
@@ -458,7 +458,7 @@ const Object * Base::findTarget(const Object *src, const std::set<std::string> &
 	return result;
 }
 
-const float Base::getFirePower(const Object *o, ai::Traits &traits) {
+const float Buratino::getFirePower(const Object *o, ai::Traits &traits) {
 	float value = 0;
 	if (o->has("mod")) {
 		const Object *mod = o->get("mod");

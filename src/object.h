@@ -264,7 +264,7 @@ private:
 	Alarm _blinking;
 	
 	friend class IWorld;
-	friend class ai::Base;
+	friend class ai::Buratino;
 	friend class ai::Waypoints;
 };
 

@@ -21,9 +21,9 @@
 #include "resource_manager.h"
 #include "config.h"
 
-#include "ai/base.h" 
+#include "ai/buratino.h" 
 
-class AIMachinegunnerPlayer:  public Trooper, public ai::Base {
+class AIMachinegunnerPlayer:  public Trooper, public ai::Buratino {
 public: 
 	AIMachinegunnerPlayer() :  Trooper("trooper", "machinegunner-bullet") {}
 //	~AIMachinegunnerPlayer();
@@ -85,12 +85,12 @@ void AIMachinegunnerPlayer::onSpawn() {
 	//addBonusName("stun-missiles-item");
 	//addBonusName("mines-item");
 
-	ai::Base::onSpawn(this);
+	ai::Buratino::onSpawn(this);
 	Trooper::onSpawn();
 }
 
 void AIMachinegunnerPlayer::calculate(const float dt) {
-	ai::Base::calculate(this, dt);
+	ai::Buratino::calculate(this, dt);
 	
 	GET_CONFIG_VALUE("objects.trooper.rotation-time", float, rt, 0.07);
 	limitRotation(dt, rt, true, false);

@@ -34,7 +34,7 @@ namespace sdlx {
 }
 
 namespace ai {
-	class Base;
+	class Buratino;
 	class Waypoints;
 }
 
@@ -143,7 +143,7 @@ private:
 	friend class IWorld;
 	friend class Object;
 	friend class Teleport;
-	friend class ai::Base;
+	friend class ai::Buratino;
 	friend class ai::Waypoints;
 };
 
