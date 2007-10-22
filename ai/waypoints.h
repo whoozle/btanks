@@ -4,14 +4,16 @@
 #include <string>
 //#include <set>
 #include "alarm.h"
-#include "mrt/serializable.h"
 #include "export_btanks.h"
 
 class Object;
+namespace mrt {
+	class Serializator;
+}
 
 namespace ai {
 
-class BTANKSAPI Waypoints: public mrt::Serializable {
+class BTANKSAPI Waypoints {
 public: 
 	Waypoints();
 	virtual void onSpawn(const Object *object);
