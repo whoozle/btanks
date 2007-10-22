@@ -760,6 +760,7 @@ Object* Object::add(const std::string &name, const std::string &classname, const
 	obj->_parent = this;
 	obj->copyOwners(this);
 	obj->addOwner(_id);
+	obj->_id = _id;
 	obj->_spawned_by = _id;
 
 	obj->onSpawn();
