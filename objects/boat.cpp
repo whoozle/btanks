@@ -21,6 +21,7 @@
 #include "resource_manager.h"
 #include "alarm.h"
 #include "mrt/random.h"
+#include "tmx/map.h"
 
 class Boat : public Object {
 public:
@@ -63,8 +64,14 @@ void Boat::emit(const std::string &event, Object * emitter) {
 
 
 void Boat::calculate(const float dt) {
-	if (!_reaction.tick(dt)) 
+	if (!_reaction.tick(dt)) {
+		calculateWayVelocity();
+
+		GET_CONFIG_VALUE("objects." + registered_name + ".rotation-time", float, rt, 0.1f);
+		limitRotation(dt, rt, true, false);
+
 		return;
+	}
 	
 	int tr;
 	Config->get("objects." + registered_name + ".targeting-range", tr, 800);
@@ -80,6 +87,43 @@ void Boat::calculate(const float dt) {
 	if (getNearest(targets, tr, pos, vel, true)) {
 		_state.fire = true;
 	} else _state.fire = false;
+	
+	if (!isDriven()) {
+		LOG_DEBUG(("finding next target..."));
+		_velocity.clear();
+		
+		const v2<int> tile_size = Map->getPathTileSize();
+		const Matrix<int> & water = Map->getAreaMatrix("water");
+		v2<int> pos;
+		getCenterPosition(pos);
+		int im = water.get(pos.y / tile_size.y, pos.x / tile_size.x);
+		if (im != 1) {
+			emit("death", NULL); //bam! 
+			return;
+		}
+		int dirs = getDirectionsNumber();
+		int dir = mrt::random(dirs);
+		v2<float> d; 
+		d.fromDirection(dir, dirs);
+		d.normalize((tile_size.x + tile_size.y) / 2);
+		int len = 0;
+		while(water.get(pos.y / tile_size.y, pos.x / tile_size.x) == 1) {
+			++len;
+			pos += d.convert<int>();
+		}
+		//LOG_DEBUG(("d: %g %g, len: %d", d.x, d.y, len));
+		len = mrt::random(len);
+		getCenterPosition(pos);
+		pos += (d * len).convert<int>();
+		Way way;
+		way.push_back(pos);
+		setWay(way);
+	} 
+	
+	calculateWayVelocity();
+
+	GET_CONFIG_VALUE("objects." + registered_name + ".rotation-time", float, rt, 0.1f);
+	limitRotation(dt, rt, true, false);
 }
 
 void Boat::tick(const float dt) {
