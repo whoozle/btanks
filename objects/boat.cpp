@@ -112,12 +112,15 @@ void Boat::calculate(const float dt) {
 			pos += d.convert<int>();
 		}
 		//LOG_DEBUG(("d: %g %g, len: %d", d.x, d.y, len));
-		len = mrt::random(len);
-		getCenterPosition(pos);
-		pos += (d * len).convert<int>();
-		Way way;
-		way.push_back(pos);
-		setWay(way);
+		len -= (int)(size.x + size.y) / (tile_size.x + tile_size.y) / 2 + 1;
+		if (len > 0) {
+			len = 1 + mrt::random(len);
+			getCenterPosition(pos);
+			pos += (d * len).convert<int>();
+			Way way;
+			way.push_back(pos);
+			setWay(way);
+		}
 	} 
 	
 	calculateWayVelocity();
