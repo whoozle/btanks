@@ -86,7 +86,7 @@ void Car::emit(const std::string &event, Object * emitter) {
 
 void Car::calculate(const float dt) {
 	Object::calculate(dt);
-	GET_CONFIG_VALUE("objects." + registered_name + ".rotation-time", float, rt, 0.05);
+	GET_CONFIG_VALUE("objects." + registered_name + ".rotation-time", float, rt, 0.05f);
 	limitRotation(dt, rt, true, false);
 }
 
