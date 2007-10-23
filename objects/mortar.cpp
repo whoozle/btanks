@@ -110,5 +110,4 @@ void Mortar::deserialize(const mrt::Serializator &s) {
 	s.get(_fire);
 }
 
-REGISTER_OBJECT("mortar", Mortar, ("fighting-vehicle"));
 REGISTER_OBJECT("static-mortar", Mortar, ("vehicle"));
