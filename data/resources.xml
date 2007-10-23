@@ -658,7 +658,7 @@
 
 	<animation id="boat" model="boat-animation" tile="boat.png" size="128" />
 	<animation id="dead-boat" model="dead-boat-animation" tile="boat_crash.png" size="128" />
-	<animation id="guided-missiles-on-boat" tile="boat_missile.png" model="missiles-on-boat-animation" />
+	<animation id="guided-missiles-on-boat" tile="boat_missile.png" model="missiles-on-boat-animation" size="128" />
 
 	<animation id="spaceport-baykonur" model="spaceport-baykonur-animation" tile="baykonur.png" tile_width="192" tile_height="256" />
 	
