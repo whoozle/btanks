@@ -318,13 +318,15 @@
 		<pose id="broken">2</pose>
 	</animation-model>
 
-	<animation-model id="missile-boat-animation" speed="2">
+	<animation-model id="boat-animation" speed="2">
 		<pose id="main">1,0,2,0</pose>
-		<pose id="reload">1,0,2,0</pose>
-		<pose id="fade-out">3,4,5</pose>
-		<pose id="broken">5</pose>
 	</animation-model>
-	
+
+	<animation-model id="dead-boat-animation" speed="2">
+		<pose id="fade-out">0,1</pose>
+		<pose id="dead">2</pose>
+	</animation-model>
+		
 	<animation-model id="cannon-animation" speed="5">
 		<pose id="hold">0</pose>
 		<pose id="fire" sound="@cannon">1,2,3</pose>
@@ -473,8 +475,6 @@
 	<animation id="yellow-mortar" tile="mortar.png" model="mortar-animation"/>
 	<animation id="cyan-mortar" tile="mortar.png" model="mortar-animation"/>
 	<animation id="dead-mortar" tile="mortar_crash.png" model="dead-vehicle-animation"/>
-
-	<animation id="guided-missiles-on-boat" tile="launcher_missile01.png" model="missiles-on-launcher-animation" />
 
 	<!-- a little note on outlines and animations : 
 		it is safe to define more than one animation with the same tile. it wont be loaded more than once. 
@@ -643,7 +643,11 @@
 	<animation id="road-sign11" model="destructable-object-animation" tile="road_sign11.png" size="32" />
 
 	<animation id="submarine" model="yellow-submarine-animation" tile="submarine.png" tile_width="192" tile_height="128" />
-	<animation id="missile-boat" model="missile-boat-animation" tile="missile_boat.png" size="128" />
+
+	<animation id="boat" model="boat-animation" tile="boat.png" size="128" />
+	<animation id="dead-boat" model="dead-boat-animation" tile="boat_crash.png" size="128" />
+	<animation id="guided-missiles-on-boat" tile="boat_missile.png" model="single-tile" />
+
 	<animation id="spaceport-baykonur" model="spaceport-baykonur-animation" tile="baykonur.png" tile_width="192" tile_height="256" />
 	
 	<animation id="zombie" model="zombie-animation" tile="zombak_vasya.png" size="64" />

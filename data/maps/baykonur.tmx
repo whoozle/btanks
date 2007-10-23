@@ -225,8 +225,8 @@
 		<property name="object:megaheal:megaheal:7" value="454,1153"/>
 		<property name="object:megaheal:megaheal:8" value="1234,956"/>
 		<property name="object:megaheal:megaheal:9" value="2383,249"/>
-		<property name="object:missile-boat:missile-boat:1" value="8,1804"/>
-		<property name="object:missile-boat:missile-boat:2" value="9,1804"/>
+		<property name="object:boat:boat:1" value="8,1804"/>
+		<property name="object:boat:boat:2" value="9,1804"/>
 		<property name="object:nuke-missiles-item:nuke-missiles-item:3" value="2,2857"/>
 		<property name="object:nuke-missiles-item:nuke-missiles-item:4" value="2480,988"/>
 		<property name="object:oil-barrels:oil-barrels:10" value="1644,1958"/>
