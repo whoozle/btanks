@@ -114,7 +114,7 @@ void Boat::calculate(const float dt) {
 		//LOG_DEBUG(("d: %g %g, len: %d", d.x, d.y, len));
 		len -= (int)(size.x + size.y) / (tile_size.x + tile_size.y) / 2 + 1;
 		if (len > 0) {
-			len = 1 + mrt::random(len);
+			len = 1 + len / 2 + (len % 2) + mrt::random(len / 2);
 			getCenterPosition(pos);
 			pos += (d * len).convert<int>();
 			Way way;
