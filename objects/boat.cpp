@@ -16,13 +16,13 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include "destructable_object.h"
 #include "config.h"
+#include "object.h"
 #include "resource_manager.h"
 #include "alarm.h"
 #include "mrt/random.h"
 
-class Boat : public DestructableObject {
+class Boat : public Object {
 public:
 	Boat(const std::string &object);
 
@@ -31,9 +31,10 @@ public:
 	virtual void calculate(const float dt);
 	virtual void tick(const float dt);
 	virtual void onSpawn();
+	void emit(const std::string &event, Object * emitter);
 
 	virtual void serialize(mrt::Serializator &s) const {
-		DestructableObject::serialize(s);
+		Object::serialize(s);
 		s.add(_object);
 		s.add(_fire);
 		s.add(_reload);
@@ -41,7 +42,7 @@ public:
 	}
 
 	virtual void deserialize(const mrt::Serializator &s) {
-		DestructableObject::deserialize(s);
+		Object::deserialize(s);
 		s.get(_object);
 		s.get(_fire);
 		s.get(_reload);
@@ -53,11 +54,20 @@ private:
 	Alarm _fire, _reload, _reaction;
 };
 
+void Boat::emit(const std::string &event, Object * emitter) {
+	if (event == "death") {
+		spawn("corpse", "dead-" + animation);
+	}
+	Object::emit(event, emitter);
+}
+
+
 void Boat::calculate(const float dt) {
 	if (!_reaction.tick(dt)) 
 		return;
 	
-	GET_CONFIG_VALUE("objects.missile-boat.targeting-range", int, tr, 800);
+	int tr;
+	Config->get("objects." + registered_name + ".targeting-range", tr, 800);
 	
 	static std::set<std::string> targets;
 	if (targets.empty()) {
@@ -73,11 +83,8 @@ void Boat::calculate(const float dt) {
 }
 
 void Boat::tick(const float dt) {
-	DestructableObject::tick(dt);
-	if (_broken) {
-		remove("mod");
-		return;
-	}
+	Object::tick(dt);
+
 	const std::string state = getState();
 	if (state == "reload" && _reload.tick(dt)) {
 		_reload.reset();
@@ -98,7 +105,7 @@ void Boat::tick(const float dt) {
 }
 
 void Boat::onSpawn() {
-	DestructableObject::onSpawn();
+	play("main", true);
 	
 	GET_CONFIG_VALUE("objects.missile-boat.fire-rate", float, fr, 0.5);
 	_fire.set(fr);
@@ -108,18 +115,17 @@ void Boat::onSpawn() {
 	mrt::randomize(rt, rt/10);
 	_reaction.set(rt);
 	
-	add("mod", "missiles-on-boat", "guided-missiles-on-launcher", v2<float>(size.x/3, 10), Centered);
-
+	Object *o = add("mod", "missiles-on-boat", "guided-missiles-on-launcher", v2<float>(), Centered);
+	o->setZ(getZ() + 1, true);
 }
 
-Boat::Boat(const std::string &object) : 
-	DestructableObject("boat"), 
+Boat::Boat(const std::string &object) : Object("boat"), 
 	_object(object), 
 	_fire(false), 
 	_reload(false), 
 	_reaction(true) {
-	_variants.add("with-fire");
+	setDirectionsNumber(8);
 }
 
 
-REGISTER_OBJECT("missile-boat", Boat, ("guided"));
+REGISTER_OBJECT("boat", Boat, ("guided"));
