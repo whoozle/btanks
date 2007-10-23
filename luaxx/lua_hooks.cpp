@@ -315,7 +315,6 @@ void LuaHooks::load(const std::string &name) {
 	state.call(0, LUA_MULTRET);
 	
 	has_on_tick = check_function("on_tick");
-	has_on_death = check_function("on_death");
 }
 
 bool LuaHooks::check_function(const std::string &name) {
@@ -357,4 +356,7 @@ void LuaHooks::call(const std::string &method) {
 
 void LuaHooks::clear() {
 	state.clear();
+	has_on_tick = false;
 }
+
+LuaHooks::LuaHooks() : has_on_tick(false) {}

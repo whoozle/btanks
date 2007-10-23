@@ -6,6 +6,7 @@
 
 class LuaHooks {
 public: 
+	LuaHooks();
 	void load(const std::string &name);
 	void clear();
 	void on_tick(const float dt);
@@ -14,7 +15,7 @@ private:
 	bool check_function(const std::string &name);
 	luaxx::State state;
 	
-	bool has_on_tick, has_on_death;
+	bool has_on_tick;
 };
 
 #endif
