@@ -161,6 +161,15 @@
 		<pose id="missile-1-hold">0</pose>
 	</animation-model>
 
+	<animation-model id="missiles-on-boat-animation" speed="1">
+		<pose id="missile-1">0</pose>
+		<pose id="missile-2">0</pose>
+		<pose id="missile-3">0</pose>
+		<pose id="missile-1-hold">0</pose>
+		<pose id="missile-2-hold">0</pose>
+		<pose id="missile-3-hold">0</pose>
+	</animation-model>
+
 	<animation-model id="dispersion-bullet-animation" speed="1">
 		<!-- do not use any sounds here. it's dangerous -->
 		<pose id="shot">0</pose>
@@ -318,12 +327,15 @@
 		<pose id="broken">2</pose>
 	</animation-model>
 
-	<animation-model id="boat-animation" speed="2">
+	<animation-model id="boat-animation" speed="5">
 		<pose id="main">1,0,2,0</pose>
+		<pose id="reload">1,0,2,0</pose>
 	</animation-model>
 
-	<animation-model id="dead-boat-animation" speed="2">
-		<pose id="fade-out">0,1</pose>
+	<animation-model id="dead-boat-animation" speed="1">
+		<pose id="fade-in" speed="2">0,1</pose>
+		<pose id="burn">2</pose>
+		<pose id="fade-out" speed="1">2</pose>
 		<pose id="dead">2</pose>
 	</animation-model>
 		
@@ -646,7 +658,7 @@
 
 	<animation id="boat" model="boat-animation" tile="boat.png" size="128" />
 	<animation id="dead-boat" model="dead-boat-animation" tile="boat_crash.png" size="128" />
-	<animation id="guided-missiles-on-boat" tile="boat_missile.png" model="single-tile" />
+	<animation id="guided-missiles-on-boat" tile="boat_missile.png" model="missiles-on-boat-animation" />
 
 	<animation id="spaceport-baykonur" model="spaceport-baykonur-animation" tile="baykonur.png" tile_width="192" tile_height="256" />
 	
@@ -804,6 +816,7 @@
 	<object class="helicopter-with-kamikazes" parent="helicopter" />
 	<object class="static-helicopter" parent="helicopter" />
 	<object class="submarine" hp="-1" impassability="1" />
+	<object class="boat" hp="100" impassability="1" speed="300" mass="200" />
 	<object class="paratrooper-kamikaze" hp="25" impassability="1" z="810" />
 	<object class="kamikaze" hp="5" speed="70" mass="80" z="0" />
 	<object class="machinegunner" hp="10" speed="100" mass="85" z="-1" />
