@@ -454,6 +454,7 @@
 		<properties>
 			<property name="impassability" value="100"/>
 			<property name="pierceable" value="true"/>
+			<property name="ai-hint:1" value="water"/>
 		</properties>
 		<data encoding="base64" compression="gzip">
 			H4sIAAAAAAACC+3YQQ6DMAwEwDwacjQcTX/SX7YHkCILhdDWLll2JZ/DxJhEpMQwDMMwDMMwuMkgjpkOOui4hQPhmzWB9ATNkQEcCD2h47qODODw7snwrrEob4dXT8R5v6YgS7TDy/IPx7bW+CPPsDqWtR6BDuvZq3zC4P0dsc+8FNVqzA3vk1cfrMOuIw2Oo3mK6kWq7JWa3pQljb2RwHP2k35rxVTOkwSes99GG9/B2Xk+oiy93EOPLD3epwXYcebsvLJjq2dHFqRZqVl6mxUFmnnduXP2+k9DQRwR/zNe4tR/oRAnAAA=
