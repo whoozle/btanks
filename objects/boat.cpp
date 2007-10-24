@@ -93,6 +93,7 @@ void Boat::calculate(const float dt) {
 		_velocity.clear();
 		
 		const v2<int> tile_size = Map->getPathTileSize();
+		const v2<int> map_size = Map->getSize();
 		const Matrix<int> & water = Map->getAreaMatrix("water");
 		v2<int> pos;
 		getCenterPosition(pos);
@@ -117,6 +118,16 @@ void Boat::calculate(const float dt) {
 			len = 1 + len / 2 + (len % 2) + mrt::random(len / 2);
 			getCenterPosition(pos);
 			pos += (d * len).convert<int>();
+
+			if (pos.x < size.x / 2) 
+				pos.x = (int)size.x / 2;
+			if (pos.y < size.y / 2) 
+				pos.y = (int)size.y / 2;
+			if (pos.x + size.x / 2 > map_size.x) 
+				pos.x = map_size.x - (int)size.x / 2;
+			if (pos.y + size.y / 2 > map_size.y) 
+				pos.y = map_size.y - (int)size.y / 2;
+
 			Way way;
 			way.push_back(pos);
 			setWay(way);
