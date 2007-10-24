@@ -33,7 +33,7 @@
 #	include <stdint.h>
 #endif
 
-#include "logger.h"
+//#include "logger.h"
 #include <assert.h>
 
 static uint32_t mrt_rand_seed;
@@ -61,7 +61,7 @@ const unsigned mrt::random(const unsigned max) {
 	x >>= len;
 	*/
 	x %= max;
-	LOG_DEBUG(("result: %u of %d", x, max));
+	//LOG_DEBUG(("result: %u of %d", x, max));
 	return x;
 }
 
