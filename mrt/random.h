@@ -21,12 +21,18 @@
 #include "export_mrt.h"
 
 namespace mrt {
+	class Serializator;
+
 	void MRTAPI init_seed();
-	const int MRTAPI random(const int max);
+	const unsigned MRTAPI random(const unsigned max);
 	template<typename T>
 		void randomize(T &value, const T error) {
 			value += (T)(error * random(20000) / 10000.0 - error);
 		}
+
+	void MRTAPI random_serialize(Serializator &s);
+	void MRTAPI random_deserialize(const Serializator &s);
+
 }
 
 #endif
