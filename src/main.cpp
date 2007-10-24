@@ -18,6 +18,8 @@
 
 #include "mrt/logger.h"
 #include "mrt/crash.h"
+#include "mrt/random.h"
+
 #include "sdlx/system.h"
 #include "game.h"
 #include "version.h"
@@ -39,6 +41,7 @@ int main(int argc, char *argv[]) {
 	try {
 		LOG_NOTICE(("starting up... version: %s", getVersion().c_str()));
 		mrt::install_crash_handlers();
+		mrt::init_seed();
 		
 		Game->loadPlugins();
 
