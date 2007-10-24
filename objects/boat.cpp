@@ -89,7 +89,7 @@ void Boat::calculate(const float dt) {
 	} else _state.fire = false;
 	
 	if (!isDriven()) {
-		LOG_DEBUG(("finding next target..."));
+		//LOG_DEBUG(("finding next target..."));
 		_velocity.clear();
 		
 		const v2<int> tile_size = Map->getPathTileSize();
