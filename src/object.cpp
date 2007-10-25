@@ -1132,8 +1132,8 @@ void Object::findPath(const v2<int> target, const int step) {
 #include "player_manager.h"
 
 const bool Object::findPathDone(Way &way) {
-	if (PlayerManager->isClient()) 
-		return false;
+//	if (PlayerManager->isClient()) 
+//		return false;
 	
 	if (_begin == _end) {
 		way.clear();
