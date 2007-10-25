@@ -25,8 +25,7 @@ public:
 
 	virtual void serialize(mrt::Serializator &s) const;
 	virtual void deserialize(const mrt::Serializator &s);
-	
-	const bool active() const;
+
 protected:
 	//std::set<std::string> obstacle_filter;
 	bool _avoid_obstacles;

@@ -25,10 +25,6 @@ void Waypoints::deserialize(const mrt::Serializator &s) {
 
 Waypoints::Waypoints() : _avoid_obstacles(false), _stop_on_obstacle(true), _reaction_time(true), _stop(false)  {}
 
-const bool Waypoints::active() const {
-	return !PlayerManager->isClient();
-}
-
 void Waypoints::calculate(Object *object, const float dt) {
 	if (_avoid_obstacles && _reaction_time.tick(dt)) {
 		const Object * obstacle = NULL;
@@ -63,14 +59,6 @@ void Waypoints::calculate(Object *object, const float dt) {
 		return;
 	}
 
-	if (!active()) {
-		if (object->isDriven()) 
-			object->calculateWayVelocity();
-		object->updateStateFromVelocity();
-		return;
-	}
-
-	
 	if (!object->calculatingPath() && !object->isDriven()) {
 		v2<float> waypoint;
 		object->_velocity.clear();
