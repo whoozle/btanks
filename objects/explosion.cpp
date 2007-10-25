@@ -26,7 +26,6 @@
 #include "game_monitor.h"
 #include "sound/mixer.h"
 #include "mrt/random.h"
-#include "player_manager.h"
 #include "world.h"
 
 #include <set>
@@ -125,7 +124,7 @@ void Explosion::emit(const std::string &event, Object * emitter) {
 				emitter->hp = emitter->max_hp;
 			}
 			
-			if (!PlayerManager->isClient() && mutable_classes.find(emitter->classname) != mutable_classes.end()) {
+			if (mutable_classes.find(emitter->classname) != mutable_classes.end()) {
 				//mutation 
 				GET_CONFIG_VALUE("objects.mutagen-explosion.mutation-probability", float, mp, 0.3f);
 				int p = mrt::random(1000);

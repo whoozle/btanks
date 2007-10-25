@@ -19,7 +19,6 @@
 #include "heli.h"
 #include "config.h"
 #include "resource_manager.h"
-#include "player_manager.h"
 #include "tmx/map.h"
 #include "mrt/random.h"
 
@@ -55,9 +54,6 @@ private:
 };
 
 void AIHeli::onIdle(const float dt) {
-	if (PlayerManager->isClient())
-		return;
-
 	Way way;
 	v2<int> map_size = Map->getSize();
 	
