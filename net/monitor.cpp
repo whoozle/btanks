@@ -166,7 +166,7 @@ const bool Monitor::recv(int &id, mrt::Chunk &data, int &timestamp) {
 		timestamp = task->timestamp;
 
 		task->clear();
-	} CATCH("recv", { delete task; throw; });
+	} CATCH("recv", { task->clear(); delete task; throw; });
 	delete task;
 	return true;
 }
