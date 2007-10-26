@@ -1097,13 +1097,13 @@ const sdlx::Surface* IMap::getSurface(const Layer *l, const int x, const int y) 
 	return _tiles[t].surface;
 }
 const sdlx::CollisionMap* IMap::getCollisionMap(const Layer *l, const int x, const int y) const {
-	Uint32 t = l->get(((x % _w) + _w) % _w, ((y % _h) + _h) % _h);
+	Uint32 t = l->get(_torus?(((x % _w) + _w) % _w):x, _torus?(((y % _h) + _h) % _h):y);
 	if (t == 0 || t >= _tiles.size())
 		return NULL;
 	return _tiles[t].cmap;
 }
 const sdlx::CollisionMap* IMap::getVisibilityMap(const Layer *l, const int x, const int y) const {
-	Uint32 t = l->get(((x % _w) + _w) % _w, ((y % _h) + _h) % _h);
+	Uint32 t = l->get(_torus?(((x % _w) + _w) % _w):x, _torus?(((y % _h) + _h) % _h):y);
 	if (t == 0 || t >= _tiles.size())
 		return NULL;
 	return _tiles[t].vmap;
