@@ -3,10 +3,11 @@
 
 #include <string>
 #include <map>
+#include "export_btanks.h"
 
 class MapGenerator;
 
-class GeneratorObject {
+class BTANKSAPI GeneratorObject {
 public: 
 	int w, h;
 	GeneratorObject();
