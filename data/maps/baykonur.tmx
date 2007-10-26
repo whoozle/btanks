@@ -2,8 +2,8 @@
 <map version="0.99b" orientation="orthogonal" width="50" height="50" tilewidth="64" tileheight="64">
 	<properties>
 		<property name="ambient-sound" value="forest.ogg"/>
-		<property name="config:engine.targeting-multiplier" value="float:0.2"/>
 		<property name="config:map.cannon.respawn-interval" value="int:-1"/>
+		<property name="config:map.boat.respawn-interval" value="int:-1"/>
 		<property name="config:map.dispersion-bullets-item.respawn-interval" value="int:-1"/>
 		<property name="config:map.dumb-missiles-item.respawn-interval" value="int:-1"/>
 		<property name="config:map.guided-missiles-item.respawn-interval" value="int:-1"/>
