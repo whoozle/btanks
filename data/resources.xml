@@ -691,7 +691,7 @@
 	<animation id="buggy-air-bullet-right" tile="buggy_air_bullet1.png" model="bullet-animation"/>
 	<animation id="buggy-air-bullet-left" tile="buggy_air_bullet2.png" model="bullet-animation"/>
 
-	<object class="damage-digits" speed="60" mass="1" ttl="1" z="999" />
+	<object class="damage-digits" speed="60" ttl="1" z="999" />
 
 	<alias name="pond" class="single-pose" />
 	<alias name="shilka-bullet" class="bullet(auto-aim)" />
@@ -740,18 +740,18 @@
 	<object class="mortar" speed="100" mass="400" hp="100" z="0" />
 	<object class="static-mortar" parent="mortar" />
 
-	<object class="bullet" speed="1100" mass="2" ttl="1" hp="10" z="210" />
+	<object class="bullet" speed="1100" mass="2" ttl="0.5818" hp="10" z="210" />
 	<object class="tank-bullet" parent="bullet" />
-	<object class="ricochet-bullet" speed="1100" mass="2" ttl="2" hp="10" z="210" />
-	<object class="dispersion-bullet" speed="1000" mass="2" ttl="0.5" hp="10" z="210" />
-	<object class="machinegunner-bullet" speed="1100" mass="2" ttl="1" hp="2" z="210" />
+	<object class="ricochet-bullet" speed="1100" mass="2" ttl="1.5" hp="10" z="210" />
+	<object class="dispersion-bullet" speed="1000" mass="2" ttl="0.4" hp="10" z="210" />
+	<object class="machinegunner-bullet" speed="1100" mass="2" ttl="0.5818" hp="2" z="210" />
 	<object class="vehicle-machinegunner-bullet" parent="machinegunner-bullet" hp="10" />
-	<object class="dirt-bullet" speed="600" mass="1" ttl="0.5" hp="0" z="-10" />
-	<object class="cannon-bullet" speed="600" mass="1" ttl="1" hp="0" z="-10" />
-	<object class="shilka-bullet" speed="1200" mass="1" piercing="true" ttl="1" hp="10" z="210" />
-	<object class="mortar-bullet" speed="600" mass="1" ttl="0.7" hp="0" z="210" />
-	<object class="helicopter-bullet" speed="1200" mass="1" piercing="true" ttl="1" hp="10" z="-10" />
-	<object class="buggy-bullet" speed="1200" mass="1" piercing="true" ttl="1" hp="10" z="-10" />
+	<object class="dirt-bullet" speed="600" ttl="0.5" hp="0" z="-10" />
+	<object class="cannon-bullet" speed="600" ttl="1" hp="0" z="-10" />
+	<object class="shilka-bullet" speed="1200" piercing="true" ttl="0.5333" hp="10" z="210" />
+	<object class="mortar-bullet" speed="600" ttl="0.7" hp="0" z="210" />
+	<object class="helicopter-bullet" speed="1200" ttl="0.5333" hp="10" z="-10" />
+	<object class="buggy-bullet" speed="1200" ttl="0.5333" hp="10" z="-10" />
 
 	<object class="guided-missile" speed="450" mass="100" ttl="5" hp="15" z="250" />
 	<object class="thrower-missile" speed="450" mass="30" ttl="2.5" hp="5" z="250" />
