@@ -7,12 +7,13 @@
 #include "sdlx/sdlx.h"
 #include <stack>
 #include "math/matrix.h"
+#include "export_btanks.h"
 
 class Layer;
 class Tileset;
 class GeneratorObject;
 
-class MapGenerator {
+class BTANKSAPI MapGenerator {
 public: 
 	MapGenerator();
 	~MapGenerator();
@@ -25,6 +26,8 @@ public:
 	const Uint32 get(const int x, const int y) const; 
 	void set(const int x, const int y, const Uint32 tid);
 
+	const GeneratorObject *getObject(const std::string &tileset, const std::string &name) const;
+
 private: 
 
 	void fill(Layer *layer, const std::vector<std::string> &args);
@@ -34,7 +37,6 @@ private:
 	void exclude(Layer *layer, const std::vector<std::string> &args);
 	void projectLayer(Layer *layer, const std::vector<std::string> &args);
 	
-	const GeneratorObject *getObject(const std::string &tileset, const std::string &name) const;
 	
 	static const std::string getName(const std::string &fname);
 	static const std::string getDescName(const std::string &fname);

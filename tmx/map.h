@@ -229,6 +229,7 @@ public:
 	}
 
 	void getSurroundings(Matrix<int> &matrix, const Object *obj, const int filler) const;
+	inline MapGenerator *getGenerator() { return _generator; }
 	
 private:
 	const int addTiles(const sdlx::Surface *image, const int first_gid);
