@@ -68,6 +68,15 @@ void TileBox::init(const std::map<const std::string, std::string>& _attrs, const
 	if (numbers.size() != (unsigned)w * h)
 		throw_ex(("invalid box(in: %s, out: %s) description: got %u numbers, need: %d", attrs["in"].c_str(), attrs["out"].c_str(), (unsigned) numbers.size(), w * h));
 	
+	tiles.setSize(w, h);
+	for(size_t i = 0; i < numbers.size(); ++i) {
+		int y = i / w, x = i % w;
+		int tid = atoi(numbers[i].c_str());
+		if (tid <= 0)
+			throw_ex(("invalid tile, box: %s, line %d, tile %d", attrs["id"].c_str(), y, x));
+		tiles.set(y, x, tid);
+	}
+	
 	LOG_DEBUG(("box(%dx%d)[%d,%d,%d:%d,%d,%d]", w, h, split_w[0], split_w[1], split_w[2], split_h[0], split_h[1], split_h[1]));
 }
 

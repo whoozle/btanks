@@ -4,6 +4,7 @@
 #include <string>
 #include <map>
 #include "export_btanks.h"
+#include "math/matrix.h"
 
 class MapGenerator;
 
@@ -29,6 +30,8 @@ class BTANKSAPI TileBox : public GeneratorObject {
 public: 
 	int split_w[3];
 	int split_h[3];
+	Matrix<int> tiles;
+	
 	void init(const std::map<const std::string, std::string>& _attrs, const std::string &data);
 	void render(MapGenerator *gen, const int first_gid, const int x, const int y, const bool full) const;
 };
