@@ -23,4 +23,15 @@ private:
 	static GeneratorObject *create(const std::string &name);
 };
 
+namespace generator {
+
+class BTANKSAPI TileBox : public GeneratorObject {
+public: 
+	int split_w[3];
+	int split_h[3];
+	void init(const std::map<const std::string, std::string>& _attrs, const std::string &data);
+	void render(MapGenerator *gen, const int first_gid, const int x, const int y, const bool full) const;
+};
+}
+
 #endif
