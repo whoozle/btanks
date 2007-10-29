@@ -686,6 +686,9 @@
 		<string id="multiplayer-exception" lang="fr">Erreur du mode multijoueur.</string>
 		<string id="multiplayer-exception" lang="de">Fehler des Netzspieles.</string>
 		<string id="multiplayer-exception" lang="it">Errore nel gioco multigiocatore. Guarda nei log per dettagli.</string>
+
+		<string id="script-error">Script error.</string>
+		<string id="script-error" lang="ru">Ошибка в скрипте.</string>
 	</area>         
 	<area id="tips">
 		<!-- <string id="score">Noticed score at upper right corner ? 
