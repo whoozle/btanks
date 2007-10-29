@@ -119,14 +119,9 @@ void AITrooper::calculate(const float dt) {
 	
 	v2<float> vel;
 	
-	int range = (int)getWeaponRange(_object);
-	int trs, tra;
-	
-	Config->get("objects." + registered_name + ".targeting-range(stable)", trs, range * 2 / 3);
-	Config->get("objects." + registered_name + ".targeting-range(alerted)", tra, range);
-	int tt = (hp < max_hp)?tra:trs;
+	float range = getWeaponRange(_object);
 
-	_target_dir = getTargetPosition(_velocity, _targets, (float)tt);
+	_target_dir = getTargetPosition(_velocity, _targets, range);
 	if (_target_dir >= 0) {
 		//LOG_DEBUG(("target: %g %g %g", tp.x, tp.y, tp.length()));
 		/*
