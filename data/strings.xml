@@ -554,7 +554,7 @@
 		<string id="platform" lang="it">Rottami di una stazione spaziale...</string>
 
 		<string id="paintball" lang="en">Various weapons at the same place.</string>
-		<string id="paintball" lang="ru">Если ты плюнешь дальше, я тебе пол чатла. Вот... этой плюкой. Если - ты мне две спички... Понял? Давай плюй, сынок. </string>
+		<string id="paintball" lang="ru">Если ты плюнешь дальше - я тебе полчатла. Вот этой плюкой. Если я - ты мне две спички, понял? Давай плюй, сынок. </string>
 
 		<string id="(default)">Sorry, no description was provided by the author of this map...</string>
 		<string id="(default)" lang="ru">У этой карты нет описания. Извините. :(</string>
@@ -568,6 +568,17 @@
 		<string id="be-careful" lang="fr">Chuuut... Soyez prudent !</string>
 		<string id="be-careful" lang="de">Still! Seien Sie vorsichtig!</string>
 		<string id="be-careful" lang="it">Silenzio. Stai attento!</string>
+
+		<string id="one">1</string>
+		<string id="two">2</string>
+		<string id="three">3</string>
+		<string id="four">4</string>
+		<string id="five">5</string>
+		<string id="six">6</string>
+		<string id="seven">7</string>
+		<string id="eight">8</string>
+		<string id="nine">9</string>
+		<string id="ten">10</string>
 		        
 		<area id="baykonur">
 			<string id="start">This is your first big mission, comrade. :)
