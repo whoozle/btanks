@@ -889,8 +889,8 @@ const float Object::getWeaponRange(const std::string &weapon) const {
 	float tm;
 	Config->get("objects." + registered_name + ".targeting-multiplier", tm, 1.0f);
 	
-	if (tm <= 0 || tm >= 1) 
-		throw_ex(("targeting multiplier must be greater than 0 and less than 1.0 (%g)", tm));
+	if (tm <= 0 || tm > 1) 
+		throw_ex(("targeting multiplier must be greater than 0 and less or equal than 1.0 (%g)", tm));
 	return range * tm;
 }
 
