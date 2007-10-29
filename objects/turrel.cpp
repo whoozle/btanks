@@ -21,8 +21,9 @@
 #include "resource_manager.h"
 #include "config.h"
 #include "mrt/random.h"
+#include "ai/base.h"
 
-class Turrel : public Object {
+class Turrel : public Object, protected ai::Base {
 public:
 	Turrel(const std::string &classname) : 
 		Object(classname), _reaction(true), _fire(true), _left(false) { impassability = 1; setDirectionsNumber(8); }
@@ -54,11 +55,14 @@ void Turrel::onSpawn() {
 	GET_CONFIG_VALUE("objects.turrel.reaction-time", float, rt, 0.2);
 	mrt::randomize(rt, rt / 10);
 	_reaction.set(rt);
+
+	ai::Base::onSpawn(this);
 }
 
 void Turrel::tick(const float dt) {
 	Object::tick(dt);
-	if (_fire.tick(dt) && _state.fire) {
+	bool ai = (_parent != NULL)? _parent->disable_ai:true;
+	if (_fire.tick(dt) && _state.fire && (!ai || canFire())) {
 		bool air_mode = (_parent != NULL)?_parent->getPlayerState().alt_fire:true;
 		cancelAll();
 		play(_left? "fire-left": "fire-right", false);
@@ -135,6 +139,7 @@ const bool Turrel::take(const BaseObject *obj, const std::string &type) {
 
 void Turrel::serialize(mrt::Serializator &s) const {
 	Object::serialize(s);
+	ai::Base::serialize(s);
 	s.add(_reaction);
 	s.add(_fire);
 	s.add(_left);
@@ -142,6 +147,7 @@ void Turrel::serialize(mrt::Serializator &s) const {
 
 void Turrel::deserialize(const mrt::Serializator &s) {
 	Object::deserialize(s);
+	ai::Base::deserialize(s);
 	s.get(_reaction);
 	s.get(_fire);
 	s.get(_left);	
