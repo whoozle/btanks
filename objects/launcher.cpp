@@ -47,7 +47,17 @@ void Launcher::onSpawn() {
 	Object *_smoke = add("smoke", "single-pose", "launcher-smoke", v2<float>(), Centered);
 	_smoke->hp = 100000;
 	_smoke->impassability = 0;
-	add("mod", "missiles-on-launcher", "guided-missiles-on-launcher", v2<float>(), Centered);
+	std::string default_mod;
+	Config->get("objects.launcher.default-mod", default_mod, "missiles-on-launcher");
+	if (default_mod == "missiles-on-launcher") 
+		add("mod", "missiles-on-launcher", "guided-missiles-on-launcher", v2<float>(), Centered);
+	else if (default_mod == "machinegunner-on-launcher")
+		add("mod", "machinegunner-on-launcher", "machinegunner-on-launcher", v2<float>(), Centered);
+	else if (default_mod == "thrower-on-launcher")
+		add("mod", "thrower-on-launcher", "thrower-on-launcher", v2<float>(), Centered);
+	else
+		throw_ex(("unknown mod type %s", default_mod.c_str()));
+	
 	add("alt-mod", "alt-missiles-on-launcher", "guided-missiles-on-launcher", v2<float>(2,2), Centered);
 	
 	GET_CONFIG_VALUE("objects.launcher.fire-rate", float, fr, 0.3);
