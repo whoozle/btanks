@@ -315,6 +315,8 @@ void LuaHooks::load(const std::string &name) {
 	state.call(0, LUA_MULTRET);
 	
 	has_on_tick = check_function("on_tick");
+	has_on_spawn = check_function("on_spawn");
+	has_on_load = check_function("on_load");
 }
 
 bool LuaHooks::check_function(const std::string &name) {
@@ -329,6 +331,37 @@ bool LuaHooks::check_function(const std::string &name) {
 	assert(lua_gettop(state) == top0);
 	return r;
 }
+
+const bool LuaHooks::on_spawn(const std::string &classname, const std::string &animation, const std::string &property) {
+	if (!has_on_spawn)
+		return true;
+	
+	int top0 = lua_gettop(state);
+	
+	lua_getglobal(state, "on_spawn");
+	lua_pushstring(state, classname.c_str());
+	lua_pushstring(state, animation.c_str());
+	lua_pushstring(state, property.c_str());
+
+	state.call(3, 1);
+	bool r = lua_toboolean(state, 1) != 0;
+	lua_pop(state, 1);
+	LOG_DEBUG(("on spawn returns %s", r?"true":"false"));
+
+	assert(lua_gettop(state) == top0);
+	
+	return r;
+}
+
+void LuaHooks::on_load() {
+	if (!has_on_load)
+		return;
+
+	LOG_DEBUG(("calling on_load()"));
+	lua_getglobal(state, "on_load");
+	state.call(0, 0);
+}
+
 
 void LuaHooks::on_tick(const float dt) {
 	if (!has_on_tick)
@@ -356,7 +389,7 @@ void LuaHooks::call(const std::string &method) {
 
 void LuaHooks::clear() {
 	state.clear();
-	has_on_tick = false;
+	has_on_tick = has_on_spawn = has_on_load = false;
 }
 
-LuaHooks::LuaHooks() : has_on_tick(false) {}
+LuaHooks::LuaHooks() : has_on_tick(false), has_on_spawn(false), has_on_load(false) {}

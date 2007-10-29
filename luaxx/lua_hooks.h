@@ -9,13 +9,17 @@ public:
 	LuaHooks();
 	void load(const std::string &name);
 	void clear();
+
 	void on_tick(const float dt);
+	void on_load();
+	const bool on_spawn(const std::string &classname, const std::string &animation, const std::string &property); 
+
 	void call(const std::string &method);
 private: 
 	bool check_function(const std::string &name);
 	luaxx::State state;
 	
-	bool has_on_tick;
+	bool has_on_tick, has_on_spawn, has_on_load;
 };
 
 #endif
