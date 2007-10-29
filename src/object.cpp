@@ -883,10 +883,11 @@ const int Object::getCount() const {
 
 const float Object::getWeaponRange(const std::string &weapon) const {
 	const Object *wp = ResourceManager->getClass(weapon);
-	float range = wp->ttl * wp->speed;
+	GET_CONFIG_VALUE("engine.global-targeting-multiplier", float, gtm, 0.95f)
+	float range = wp->ttl * wp->speed * gtm;
 	
 	float tm;
-	Config->get("objects." + registered_name + ".targeting-multiplier", tm, 0.95);
+	Config->get("objects." + registered_name + ".targeting-multiplier", tm, 1.0f);
 	
 	if (tm <= 0 || tm >= 1) 
 		throw_ex(("targeting multiplier must be greater than 0 and less than 1.0 (%g)", tm));
