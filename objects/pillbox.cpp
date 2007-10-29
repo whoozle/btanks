@@ -21,19 +21,20 @@
 #include "config.h"
 #include "destructable_object.h"
 #include "mrt/random.h"
+#include "ai/base.h"
 
 //remove trooper from here. :)
 
-class PillBox : public DestructableObject {
+class PillBox : public DestructableObject, protected ai::Base {
 	Alarm _reaction, _fire, _fire2, _fire3; 
 	std::string _object;
-
+	bool _skip2, _skip3;
 	//no need to serialize it
 	std::set<std::string> _targets;
 public: 
 	PillBox(const std::string &object, const bool aim_missiles) : 
 		DestructableObject("trooper"), _reaction(true), 
-		_fire(false), _fire2(false), _fire3(false), _object(object) {
+		_fire(false), _fire2(false), _fire3(false), _object(object), _skip2(false), _skip3(false) {
 			if (aim_missiles)
 				_targets.insert("missile");
 	
@@ -58,25 +59,33 @@ public:
 		_fire2.set(fr);
 		mrt::randomize(fr, fr / 2);
 		_fire3.set(fr);
+		_skip2 = _skip3 = false;
 		
 		DestructableObject::onSpawn();
+		ai::Base::onSpawn(this);
 	}
 
 	virtual void serialize(mrt::Serializator &s) const {
 		DestructableObject::serialize(s);
+		ai::Base::serialize(s);
 		s.add(_reaction);
 		s.add(_fire);
 		s.add(_fire2);
 		s.add(_fire3);
 		s.add(_object);
+		s.add(_skip2);
+		s.add(_skip3);
 	}
 	virtual void deserialize(const mrt::Serializator &s) {
 		DestructableObject::deserialize(s);
+		ai::Base::deserialize(s);
 		s.get(_reaction);
 		s.get(_fire);
 		s.get(_fire2);
 		s.get(_fire3);
 		s.get(_object);
+		s.get(_skip2);
+		s.get(_skip3);
 	}
 	
 	virtual void tick(const float dt) {
@@ -85,7 +94,10 @@ public:
 			
 			if (_fire.tick(dt)) {
 				_fire.reset();
-				spawn(_object, _object, v2<float>(), _direction);
+				if (canFire()) {
+					spawn(_object, _object, v2<float>(), _direction);
+				} else 
+					_skip2 = _skip3 = true;
 			}
 			
 			int dirs = 16/* bullet->getDirectionsNumber() */, d = _direction.getDirection(dirs);
@@ -95,11 +107,17 @@ public:
 
 			if (_fire2.tick(dt)) {
 				_fire2.reset();
-				spawn(_object, _object, dpos, _direction);
+				if (!_skip2)
+					spawn(_object, _object, dpos, _direction);
+				else 
+					_skip3 = false;
 			}
 			if (_fire3.tick(dt)) {
 				_fire3.reset();
-				spawn(_object, _object, -dpos, _direction);
+				if (!_skip3)
+					spawn(_object, _object, -dpos, _direction);
+				else
+					_skip3 = false;
 			}
 		}
 	}
