@@ -2,6 +2,8 @@
 #define BTANKS_TILESET_H__
 
 #include "mrt/xml.h"
+#include <deque>
+#include <string>
 #include <map>
 
 class GeneratorObject;
@@ -9,6 +11,7 @@ class Tileset : public mrt::XMLParser {
 public: 
 
 	const GeneratorObject *getObject(const std::string &name) const;
+	void getPrimaryBoxes(std::deque<std::string> &boxes);
 	~Tileset();
 
 private: 

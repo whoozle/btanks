@@ -5,6 +5,13 @@
 #include "mrt/random.h"
 #include "utils.h"
 
+void Tileset::getPrimaryBoxes(std::deque<std::string> &boxes) {
+	boxes.clear();
+	for(Objects::const_iterator i = _objects.begin(); i != _objects.end() ; ++i) {
+		boxes.push_back(i->first);
+	}
+}
+
 void Tileset::start(const std::string &name, Attrs &attr) {
 	if (name == "tileset")
 		return;

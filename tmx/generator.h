@@ -27,6 +27,7 @@ public:
 	void set(const int x, const int y, const Uint32 tid);
 
 	const GeneratorObject *getObject(const std::string &tileset, const std::string &name) const;
+	void getPrimaryBoxes(std::deque<std::pair<std::string, std::string> > &boxes) const;
 
 private: 
 

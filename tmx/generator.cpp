@@ -167,6 +167,18 @@ const GeneratorObject* MapGenerator::getObject(const std::string &tileset, const
 	return o;
 }
 
+void MapGenerator::getPrimaryBoxes(std::deque<std::pair<std::string, std::string> > &boxes) const {
+	boxes.clear();
+	for(Tilesets::const_iterator i = _tilesets.begin(); i != _tilesets.end(); ++i) {
+		std::deque<std::string> b;
+		i->second->getPrimaryBoxes(b);
+		for(std::deque<std::string>::const_iterator j = b.begin(); j != b.end(); ++j) {
+			boxes.push_back(std::pair<std::string, std::string>(i->first, *j));
+		}
+	}
+}
+
+
 void MapGenerator::tileset(const std::string &fname, const int gid) {
 	std::string name = getName(fname);
 	std::string xml_name = getDescName(fname);
