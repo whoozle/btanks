@@ -242,8 +242,16 @@ void IGameMonitor::checkItems(const float dt) {
 
 void IGameMonitor::add(const GameItem &item_) {
 	GameItem item(item_);
+
+#ifdef ENABLE_LUA
+	if (lua_hooks != NULL)
+		item.hidden = !lua_hooks->on_spawn(item.classname, item.animation, item.property);
+#endif
+
 	_items.push_back(item);
-	_items.back().respawn();
+	
+	if (!item.hidden)
+		_items.back().respawn();
 }
 
 void IGameMonitor::pushState(const std::string &state, const float time) {
@@ -585,6 +593,23 @@ void IGameMonitor::loadMap(Campaign *campaign, const std::string &name, const bo
 	
 	Config->clearOverrides();
 
+#	ifdef ENABLE_LUA
+		if (lua_hooks)
+			lua_hooks->clear();
+#	endif
+
+	std::string script = Finder->find("maps/" + name + ".lua", false);
+
+	if (!script.empty() && !Map->soloAwareMode()) {
+#	ifdef ENABLE_LUA
+		if (lua_hooks) {
+			lua_hooks->clear();
+			lua_hooks->load(script);
+		}
+#	else
+		throw_ex(("this map requires lua scripting support."));
+#	endif
+
 
 	//difficulty settings
 	int difficulty = 2; //map as is == hard, default: normal
@@ -655,6 +680,7 @@ void IGameMonitor::loadMap(Campaign *campaign, const std::string &name, const bo
 				GameItem item(res[1], res[2], i->first, v2<int>(pos.x, pos.y), pos.z);
 				item.setup(res[3], res[4]);
 				item.dir = dir;
+				
 				GameMonitor->add(item);
 			} else if (type == "waypoint") {
 				if (res.size() < 3)
@@ -772,17 +798,8 @@ void IGameMonitor::loadMap(Campaign *campaign, const std::string &name, const bo
 	World->setTimeSlice(mts);
 
 #	ifdef ENABLE_LUA
-		lua_hooks->clear();
-#	endif
-
-	std::string script = Finder->find("maps/" + name + ".lua", false);
-
-	if (!script.empty() && !Map->soloAwareMode()) {
-#	ifdef ENABLE_LUA
-		lua_hooks->clear();
-		lua_hooks->load(script);
-#	else
-		throw_ex(("this map requires lua scripting support."));
+		if (lua_hooks)
+			lua_hooks->on_load();
 #	endif
 	}
 	
