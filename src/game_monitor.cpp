@@ -319,8 +319,13 @@ void IGameMonitor::clear() {
 
 void IGameMonitor::tick(const float dt) {	
 #ifdef ENABLE_LUA
-	if (Map->loaded() && lua_hooks != NULL)
-		lua_hooks->on_tick(dt);
+	TRY {
+		if (Map->loaded() && lua_hooks != NULL)
+			lua_hooks->on_tick(dt);
+	} CATCH("tick::on_tick", {
+		Game->clear();
+		displayMessage("errors", "script-error", 1);
+	});
 #endif
 
 	const bool client = PlayerManager->isClient();
@@ -601,11 +606,16 @@ void IGameMonitor::loadMap(Campaign *campaign, const std::string &name, const bo
 	std::string script = Finder->find("maps/" + name + ".lua", false);
 
 	if (!script.empty() && !Map->soloAwareMode()) {
-#	ifdef ENABLE_LUA
-		if (lua_hooks) {
-			lua_hooks->clear();
-			lua_hooks->load(script);
-		}
+#	ifdef ENABLE_LUA	
+		TRY {
+			if (lua_hooks) {
+				lua_hooks->clear();
+				lua_hooks->load(script);
+			}
+		} CATCH("loadMap::load", {
+			Game->clear();
+			displayMessage("errors", "script-error", 1);
+		});
 #	else
 		throw_ex(("this map requires lua scripting support."));
 #	endif
@@ -681,7 +691,7 @@ void IGameMonitor::loadMap(Campaign *campaign, const std::string &name, const bo
 				item.setup(res[3], res[4]);
 				item.dir = dir;
 				
-				GameMonitor->add(item);
+				add(item);
 			} else if (type == "waypoint") {
 				if (res.size() < 3)
 					throw_ex(("'%s' misses an argument", i->first.c_str()));
@@ -767,7 +777,7 @@ void IGameMonitor::loadMap(Campaign *campaign, const std::string &name, const bo
 			if (!str.empty())
 				classes.insert(str);
 		}
-		GameMonitor->killAllClasses(classes);
+		killAllClasses(classes);
 		LOG_DEBUG(("kill'em all classes: %u", (unsigned)classes.size()));
 	}
 
@@ -791,15 +801,21 @@ void IGameMonitor::loadMap(Campaign *campaign, const std::string &name, const bo
 		if (b == _waypoint_edges.end() || b->first != dst)
 			throw_ex(("no edges out of waypoint '%s'", dst.c_str()));
 	}
-	LOG_DEBUG(("%u items on map, %u waypoints, %u edges", (unsigned)GameMonitor->getItemsCount(), (unsigned)_waypoints.size(), (unsigned)_waypoint_edges.size()));
+	LOG_DEBUG(("%u items on map, %u waypoints, %u edges", (unsigned)getItemsCount(), (unsigned)_waypoints.size(), (unsigned)_waypoint_edges.size()));
 	Config->invalidateCachedValues();
 	
 	GET_CONFIG_VALUE("engine.max-time-slice", float, mts, 0.025);
 	World->setTimeSlice(mts);
 
 #	ifdef ENABLE_LUA
+	TRY {
 		if (lua_hooks)
 			lua_hooks->on_load();
+	} CATCH("loadMap::on_load", {
+		Game->clear();
+		displayMessage("errors", "script-error", 1);
+	});
+
 #	endif
 	}
 	
@@ -873,8 +889,14 @@ void IGameMonitor::onScriptZone(const int slot_id, const SpecialZone &zone) {
 #ifndef ENABLE_LUA
 	throw_ex(("no script support compiled in."));
 #else 
-	if (lua_hooks == NULL)
-		throw_ex(("lua hooks was not initialized"));
-	lua_hooks->call(zone.name);
+	TRY {
+		if (lua_hooks == NULL)
+			throw_ex(("lua hooks was not initialized"));
+		lua_hooks->call(zone.name);
+	} CATCH("onScriptZone", {
+		Game->clear();
+		GameMonitor->displayMessage("errors", "script-error", 1);
+	});
+
 #endif
 }
