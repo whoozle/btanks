@@ -325,6 +325,7 @@ void IGameMonitor::tick(const float dt) {
 	} CATCH("tick::on_tick", {
 		Game->clear();
 		displayMessage("errors", "script-error", 1);
+		return;
 	});
 #endif
 
@@ -615,11 +616,12 @@ void IGameMonitor::loadMap(Campaign *campaign, const std::string &name, const bo
 		} CATCH("loadMap::load", {
 			Game->clear();
 			displayMessage("errors", "script-error", 1);
+			return;
 		});
 #	else
 		throw_ex(("this map requires lua scripting support."));
 #	endif
-
+	}
 
 	//difficulty settings
 	int difficulty = 2; //map as is == hard, default: normal
@@ -814,10 +816,10 @@ void IGameMonitor::loadMap(Campaign *campaign, const std::string &name, const bo
 	} CATCH("loadMap::on_load", {
 		Game->clear();
 		displayMessage("errors", "script-error", 1);
+		return;
 	});
 
 #	endif
-	}
 	
 	Window->resetTimer();
 }
@@ -895,7 +897,8 @@ void IGameMonitor::onScriptZone(const int slot_id, const SpecialZone &zone) {
 		lua_hooks->call(zone.name);
 	} CATCH("onScriptZone", {
 		Game->clear();
-		GameMonitor->displayMessage("errors", "script-error", 1);
+		displayMessage("errors", "script-error", 1);
+		return;
 	});
 
 #endif
