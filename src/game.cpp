@@ -205,6 +205,20 @@ void IGame::init(const int argc, char *argv[]) {
 			if (ds >= 100)
 				Config->set("multiplayer.deltas-samples", 30);
 		}
+		if (revision < 5264) {
+			std::set<std::string> keys;
+			Config->enumerateKeys(keys, "objects.");
+			for(std::set<std::string>::const_iterator i = keys.begin(); i != keys.end(); ++i) {
+				const std::string &key = *i;
+				int pos = (int)key.size() - 20;
+				if (pos < 0) 
+					continue;
+				if (key.compare(pos, 20, "targeting-multiplier") == 0) {
+					LOG_DEBUG(("removing invalid key: %s", key.c_str()));
+					Config->remove(key);
+				}
+			}
+		}
 		
 		Config->set("engine.revision", getRevision());
 	}
