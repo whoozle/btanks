@@ -12,9 +12,6 @@
 	
 	<background id="metal" size="1">128</background>
 
-	<box in="concrete" width="0,2,0" height="0,2,0">31,32,41,42</box>
-	<box in="grass" width="0,2,0" height="0,2,0">35,36,45,46</box>
-
 	<box in="brown-soil" width="1,2,1" height="1,2,1">
 		00,01,02,03,
 		10,11,12,13,
