@@ -6,6 +6,7 @@
 #include "resource_manager.h"
 #include "game_monitor.h"
 #include "tmx/map.h"
+#include "sound/mixer.h"
 #include <assert.h>
 #include <stdexcept>
 
@@ -70,6 +71,32 @@ static int lua_hooks_show_item(lua_State *L) {
 		lua_pushinteger(L, item.id);
 		return 1;
 	} LUA_CATCH("lua_hooks_show_item")
+}
+
+static int lua_hooks_play_tune(lua_State *L) {
+	LUA_TRY {
+		int n = lua_gettop(L);
+		if (n < 1) {
+			lua_pushstring(L, "play_tune requre tune name");
+			lua_error(L);
+			return 0;
+		}
+		const char *name = lua_tostring(L, 1);
+		if (name == NULL) {
+			lua_pushstring(L, "tune name must be string");
+			lua_error(L);
+			return 0;
+		}
+		Mixer->play(name, true);
+		return 0;
+	} LUA_CATCH("lua_hooks_play_tune")
+}
+
+static int lua_hooks_reset_tune(lua_State *L) {
+	LUA_TRY {
+		Mixer->reset();
+		return 0;
+	} LUA_CATCH("lua_hooks_reset_tune")
 }
 
 static int lua_hooks_hide_item(lua_State *L) {
@@ -311,6 +338,8 @@ void LuaHooks::load(const std::string &name) {
 	lua_register(state, "damage_map", lua_hooks_damage_map);
 	lua_register(state, "enable_ai", lua_hooks_enable_ai);
 	lua_register(state, "disable_ai", lua_hooks_disable_ai);
+	lua_register(state, "play_tune", lua_hooks_play_tune);
+	lua_register(state, "reset_tune", lua_hooks_reset_tune);
 	
 	state.call(0, LUA_MULTRET);
 	
