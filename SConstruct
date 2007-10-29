@@ -161,7 +161,7 @@ if not conf.CheckLibWithHeader(al_lib, 'AL/al.h', 'c++', "ALuint s; alGenSources
 if not conf.CheckLibWithHeader('vorbisfile', 'vorbis/vorbisfile.h', 'c++', "ov_open(0, 0, 0, 0);", False):
 	Exit(1)
 
-if env['enable_lua']:
+if sys.platform == 'win32' and env['enable_lua']:
 	if not conf.CheckLibWithHeader('lua', 'lua.hpp', 'c++', "lua_newstate(NULL, NULL);", False):
 		Exit(1)
 
@@ -236,7 +236,6 @@ Export('lib_dir')
 
 version = '0.6.%s' %version
 print "version: %s" %version
-
 
 env.Append(CPPPATH=['.', 'src'])
 env.Append(CXXFLAGS=sigc_flags)

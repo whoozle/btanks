@@ -65,11 +65,27 @@ if debug and sys.platform == "win32":
 	vorbis = 'vorbisfile_d'
 
 bt_libs = ['mrt', 'sdlx',  sigc_lib, 'SDL', vorbis, al_lib]
+
+if sys.platform != 'win32' and env['enable_lua']:
+	got_lua = False
+	for lua in ['lua5.1', 'lua5.0', 'lua']: 
+		try: 
+			env.ParseConfig("pkg-config --cflags --libs lua5.1");
+			got_lua = True
+			env.Append(CPPDEFINES=['ENABLE_LUA'])
+			bt_libs.append(lua)
+			break
+		except: 
+			continue
+	if not got_lua: 
+		raise Exception("Cannot find lua5.1/lua5.0 or lua pkg-config information")
+
 if env['enable_lua']: 
 	env.Append(CPPDEFINES=['ENABLE_LUA'])
 	bt_sources.append('luaxx/state.cpp')
 	bt_sources.append('luaxx/lua_hooks.cpp')
-	bt_libs.append('lua')
+	if sys.platform == "win32":
+		bt_libs.append('lua')
 
 if sys.platform == "win32":
 	bt_libs[0:0] = ['SDLmain']
