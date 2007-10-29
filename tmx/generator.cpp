@@ -173,9 +173,11 @@ void MapGenerator::getPrimaryBoxes(std::deque<std::pair<std::string, std::string
 		std::deque<std::string> b;
 		i->second->getPrimaryBoxes(b);
 		for(std::deque<std::string>::const_iterator j = b.begin(); j != b.end(); ++j) {
-			boxes.push_back(std::pair<std::string, std::string>(i->first, *j));
+			if (j->operator[](j->size() - 1) == '|')
+				boxes.push_back(std::pair<std::string, std::string>(i->first, j->substr(0, j->size() - 1)));
 		}
 	}
+	LOG_DEBUG(("returned %u objects", (unsigned) boxes.size()));
 }
 
 
