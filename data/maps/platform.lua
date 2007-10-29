@@ -16,5 +16,6 @@ function on_tick(dt)
 	end
 end
 		
-
-disable_ai('tank')
+function on_load()
+	disable_ai('tank')
+end

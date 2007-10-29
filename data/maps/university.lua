@@ -34,9 +34,11 @@ function on_tick(dt)
 	end
 end
 
-hide_item('object:helicopter:helicopter:1')
-hide_item('object:helicopter:helicopter:2')
-hide_item('object:helicopter:helicopter:3')
-hide_item('object:helicopter:helicopter:4')
-hide_item('object:helicopter:helicopter:5')
-hide_item('object:helicopter:helicopter:6')
+function on_load()
+	hide_item('object:helicopter:helicopter:1')
+	hide_item('object:helicopter:helicopter:2')
+	hide_item('object:helicopter:helicopter:3')
+	hide_item('object:helicopter:helicopter:4')
+	hide_item('object:helicopter:helicopter:5')
+	hide_item('object:helicopter:helicopter:6')
+end
