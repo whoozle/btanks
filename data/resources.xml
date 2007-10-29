@@ -811,6 +811,7 @@
 	<object class="missiles-on-launcher" z="10" />
 	<object class="alt-missiles-on-launcher" z="5" />
 	<object class="machinegunner-on-launcher" z="10" />
+	<object class="thrower-on-launcher" z="10" />
 
 	<object class="helicopter" hp="200" impassability="-1" speed="400" mass="2000" z="810" />
 	<object class="helicopter-with-kamikazes" parent="helicopter" />
