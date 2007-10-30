@@ -32,7 +32,7 @@
 
 class Explosion : public Object {
 public:
-	Explosion() : Object("explosion"), _damaged_objects(), _players_killed(0), _damage_done(false) { impassability = 0; }
+	Explosion() : Object("explosion"), _damaged_objects(), _players_killed(0), _damage_done(false) { hp = -1; impassability = 0; }
 	Object* clone() const  { return new Explosion(*this); }
 
 	virtual void tick(const float dt);

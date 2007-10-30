@@ -23,7 +23,7 @@
 
 class Submarine : public Object {
 public:
-	Submarine() : Object("submarine"), _wakeup(false) { impassability = 0; }
+	Submarine() : Object("submarine"), _wakeup(false) { impassability = 0; hp = -1; }
 	virtual Object * clone() const;
 	virtual void onSpawn();
 	virtual void tick(const float dt);

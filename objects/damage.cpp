@@ -33,6 +33,7 @@ public:
 
 Damage::Damage() : Object("damage-digits") { 
 	impassability = 0; 
+	hp = -1;
 	setDirectionsNumber(10);
 }
 Object * Damage::clone() const { return new Damage(*this); } 

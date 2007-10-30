@@ -24,7 +24,7 @@
 
 class TooltipObject : public Object {
 public:
-	TooltipObject() : Object("tooltip"), _change(true) { impassability = 0; }
+	TooltipObject() : Object("tooltip"), _change(true) { impassability = 0; hp = -1; }
 	virtual void onSpawn() {
 		GET_CONFIG_VALUE("objects.random-tooltip.show-time", float, st, 3.0);
 		_change.set(st);

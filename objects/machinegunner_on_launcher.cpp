@@ -25,7 +25,7 @@ class Machinegunner : public Object {
 public:
 	Machinegunner(const char *object) : 
 		Object("trooper-on-launcher"), _fire(true), _object(object)
-		{ impassability = 0; setDirectionsNumber(16); }
+		{ hp = -1; impassability = 0; setDirectionsNumber(16); }
 
 	virtual Object * clone() const { return new Machinegunner(*this); }
 

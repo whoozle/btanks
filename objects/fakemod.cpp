@@ -20,6 +20,7 @@
  */
 
 FakeMod::FakeMod() : Object("fake-mod"), _type(), _n(0) {
+	hp = -1;
 	impassability = 0;
 	pierceable = true;
 }

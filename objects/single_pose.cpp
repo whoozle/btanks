@@ -25,6 +25,7 @@ public:
 	SinglePose(const std::string &pose) : 
 		Object("single-pose"), _pose(pose) {
 			impassability = 0;
+			hp = -1;
 		}
 
 	virtual Object * clone() const;
