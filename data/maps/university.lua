@@ -19,7 +19,7 @@ function on_tick(dt)
 		
 		local i = 1
 		while i <= ai_stage do
-			ai_ids[i] = show_item('object:helicopter:helicopter:'..heli)
+			ai_ids[i] = show_item('object:helicopter:helicopter:special-'..heli)
 			i = i + 1
 			heli = heli + 1
 		end
@@ -35,10 +35,10 @@ function on_tick(dt)
 end
 
 function on_load()
-	hide_item('object:helicopter:helicopter:1')
-	hide_item('object:helicopter:helicopter:2')
-	hide_item('object:helicopter:helicopter:3')
-	hide_item('object:helicopter:helicopter:4')
-	hide_item('object:helicopter:helicopter:5')
-	hide_item('object:helicopter:helicopter:6')
+	hide_item('object:helicopter:helicopter:special-1')
+	hide_item('object:helicopter:helicopter:special-2')
+	hide_item('object:helicopter:helicopter:special-3')
+	hide_item('object:helicopter:helicopter:special-4')
+	hide_item('object:helicopter:helicopter:special-5')
+	hide_item('object:helicopter:helicopter:special-6')
 end

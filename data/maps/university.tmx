@@ -62,12 +62,12 @@
 		<property name="object:heal:heal:1" value="344,668"/>
 		<property name="object:heal:heal:2" value="@7,0"/>
 		<property name="object:heal:heal:3" value="1081,930,2150"/>
-		<property name="object:helicopter:helicopter:1" value="@9,9,2800"/>
-		<property name="object:helicopter:helicopter:2" value="@6,6,2800"/>
-		<property name="object:helicopter:helicopter:3" value="@9,6,2800"/>
-		<property name="object:helicopter:helicopter:4" value="@6,9,2800"/>
-		<property name="object:helicopter:helicopter:5" value="@9,9,2800"/>
-		<property name="object:helicopter:helicopter:6" value="@6,6,2800"/>
+		<property name="object:helicopter:helicopter:special-1" value="@9,9,2800"/>
+		<property name="object:helicopter:helicopter:special-2" value="@6,6,2800"/>
+		<property name="object:helicopter:helicopter:special-3" value="@9,6,2800"/>
+		<property name="object:helicopter:helicopter:special-4" value="@6,9,2800"/>
+		<property name="object:helicopter:helicopter:special-5" value="@9,9,2800"/>
+		<property name="object:helicopter:helicopter:special-6" value="@6,6,2800"/>
 
 		<property name="object:machinegunner-item:machinegunner-item:2" value="433,305"/>
 		<property name="object:machinegunner-item:machinegunner-item:3" value="1064,72,2150"/>
