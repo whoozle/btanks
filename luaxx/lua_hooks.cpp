@@ -109,7 +109,12 @@ static int lua_hooks_play_tune(lua_State *L) {
 			lua_error(L);
 			return 0;
 		}
-		Mixer->play(name, true);
+		bool loop = true;
+		if (n >= 2) {
+			loop = lua_toboolean(L, 2) != 0;
+		}
+		
+		Mixer->play(name, loop);
 		return 0;
 	} LUA_CATCH("lua_hooks_play_tune")
 }
