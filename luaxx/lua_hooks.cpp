@@ -65,7 +65,7 @@ static int lua_hooks_show_item(lua_State *L) {
 			return 0;
 		}
 		GameItem &item = GameMonitor->find(prop);
-		if (item.hidden)
+		if (item.hidden || World->getObjectByID(item.id) == NULL)
 			item.respawn();
 		
 		lua_pushinteger(L, item.id);
