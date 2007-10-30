@@ -115,13 +115,8 @@ static int lua_hooks_hide_item(lua_State *L) {
 		}
 		GameItem &item = GameMonitor->find(prop);
 		item.hidden = true;
+		item.kill();
 
-		Object *o = World->getObjectByID(item.id);
-		if (o != NULL) {
-			//silently kill 
-			o->Object::emit("death", NULL);
-		}
-		
 		return 0;
 	} LUA_CATCH("lua_hooks_show_item")
 }
