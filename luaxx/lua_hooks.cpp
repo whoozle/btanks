@@ -73,6 +73,28 @@ static int lua_hooks_show_item(lua_State *L) {
 	} LUA_CATCH("lua_hooks_show_item")
 }
 
+static int lua_hooks_kill_item(lua_State *L) {
+	LUA_TRY {
+		int n = lua_gettop(L);
+		if (n < 1) {
+			lua_pushstring(L, "kill_item requires item's property as first argument");
+			lua_error(L);
+			return 0;
+		}
+		const char *prop = lua_tostring(L, 1);
+		if (prop == NULL) {
+			lua_pushstring(L, "kill_item's first argument must be string");
+			lua_error(L);
+			return 0;
+		}
+		GameItem &item = GameMonitor->find(prop);
+		Object *o = World->getObjectByID(item.id);
+		if (o != NULL)
+			o->emit("death", NULL); 
+		return 0;
+	} LUA_CATCH("lua_hooks_kill_item")
+}
+
 static int lua_hooks_play_tune(lua_State *L) {
 	LUA_TRY {
 		int n = lua_gettop(L);
@@ -326,6 +348,7 @@ void LuaHooks::load(const std::string &name) {
 	lua_register(state, "object_exists", lua_hooks_object_exists);
 	lua_register(state, "show_item", lua_hooks_show_item);
 	lua_register(state, "hide_item", lua_hooks_hide_item);
+	lua_register(state, "kill_item", lua_hooks_kill_item);
 	lua_register(state, "game_over", lua_hooks_game_over);
 	lua_register(state, "display_message", lua_hooks_display_message);
 	lua_register(state, "set_timer", lua_hooks_set_timer);
