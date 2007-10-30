@@ -70,7 +70,7 @@ if sys.platform != 'win32' and env['enable_lua']:
 	got_lua = False
 	for lua in ['lua5.1', 'lua5.0', 'lua']: 
 		try: 
-			env.ParseConfig("pkg-config --cflags --libs lua5.1");
+			env.ParseConfig("pkg-config --cflags --libs %s 2>/dev/null" %lua);
 			got_lua = True
 			env.Append(CPPDEFINES=['ENABLE_LUA'])
 			bt_libs.append(lua)
