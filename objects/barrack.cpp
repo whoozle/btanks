@@ -19,6 +19,7 @@
 #include "destructable_object.h"
 #include "config.h"
 #include "resource_manager.h"
+#include "special_owners.h"
 
 class Barrack : public DestructableObject {
 public:
@@ -83,7 +84,10 @@ void Barrack::tick(const float dt) {
 			v2<float>dpos;
 			dpos.y = size.y / 2 + 16; //fixme: use debiloids size here.
 			
-			spawn(_object, _animation, dpos);
+			Object * o = spawn(_object, _animation, dpos);
+			o->disown();
+			if (hasOwner(OWNER_MAP))
+				o->addOwner(OWNER_MAP);
 			playNow("spawn");
 		}
 	}
