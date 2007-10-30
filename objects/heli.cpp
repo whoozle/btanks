@@ -21,6 +21,7 @@
 #include "alarm.h"
 #include "config.h"
 #include "zbox.h"
+#include "mrt/random.h"
 
 Heli::Heli(const std::string &classname) : 
 	Object(classname), _fire(false), _alt_fire(false), _left(false) {
@@ -46,7 +47,19 @@ void Heli::tick(const float dt) {
 	}
 	if (_state.alt_fire && _alt_fire.tick(dt)) {
 		_alt_fire.reset();
-		Object *o = spawn("bomb", "bomb");
+		Object *o;
+		if (_variants.has("kamikazes")) {
+			bool gay = mrt::random(6) == 3;
+			o = spawn("paratrooper-kamikaze", gay? "gay-paratrooper": "paratrooper");
+		} else if (_variants.has("machinegunners")) {
+			bool gay = mrt::random(6) == 4;
+			o = spawn("paratrooper-machinegunner", gay? "gay-paratrooper": "paratrooper");
+		} else if (_variants.has("throwers")) {
+			bool gay = mrt::random(6) == 2;
+			o = spawn("paratrooper-thrower", gay? "gay-paratrooper": "paratrooper");
+		} else {
+			o = spawn("bomb", "bomb");
+		}
 		o->setZ(getZ() - 1, true);
 	}
 	if (classname == "fighting-vehicle" || classname == "helicopter") {
@@ -71,11 +84,16 @@ void Heli::onSpawn() {
 	if (registered_name.compare(0, 6, "static") == 0)
 		disown();
 
-	GET_CONFIG_VALUE("objects.helicopter.fire-rate", float, fr, 0.1);
+	GET_CONFIG_VALUE("objects.helicopter.fire-rate", float, fr, 0.1f);
 	_fire.set(fr);
-
-	GET_CONFIG_VALUE("objects.helicopter.bombing-rate", float, br, 0.2);
-	_alt_fire.set(br);
+	
+	if (_variants.has("kamikazes") || _variants.has("machinegunners") || _variants.has("throwers")) {
+		GET_CONFIG_VALUE("objects.helicopter.disembark-rate", float, br, 1.0f);
+		_alt_fire.set(br);
+	} else {
+		GET_CONFIG_VALUE("objects.helicopter.bombing-rate", float, br, 0.2f);
+		_alt_fire.set(br);
+	} 
 
 	play("move", true);
 }
