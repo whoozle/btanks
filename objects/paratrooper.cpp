@@ -64,3 +64,5 @@ Object* Paratrooper::clone() const  {
 }
 
 REGISTER_OBJECT("paratrooper-kamikaze", Paratrooper, ("paratrooper", "kamikaze", "kamikaze"));
+REGISTER_OBJECT("paratrooper-machinegunner", Paratrooper, ("paratrooper", "machinegunner", "machinegunner"));
+REGISTER_OBJECT("paratrooper-thrower", Paratrooper, ("paratrooper", "thrower", "thrower"));
