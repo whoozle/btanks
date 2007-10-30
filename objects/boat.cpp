@@ -88,9 +88,9 @@ void Boat::calculate(const float dt) {
 		_state.fire = true;
 	} else _state.fire = false;
 	
-	if (!isDriven()) {
+	_velocity.clear();
+	if (!isDriven() && !_variants.has("stale")) {
 		//LOG_DEBUG(("finding next target..."));
-		_velocity.clear();
 		
 		const v2<int> tile_size = Map->getPathTileSize();
 		const v2<int> map_size = Map->getSize();
