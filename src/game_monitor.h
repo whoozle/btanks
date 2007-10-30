@@ -125,6 +125,7 @@ public:
 	void onScriptZone(const int slot_id, const SpecialZone &zone);
 	
 private:
+	const std::string onConsole(const std::string &cmd, const std::string &param);
 
 	bool _game_over, _win;
 

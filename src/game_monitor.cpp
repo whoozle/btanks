@@ -41,6 +41,7 @@
 #include "player_slot.h"
 #include "campaign.h"
 #include "finder.h"
+#include "console.h"
 
 #ifdef ENABLE_LUA
 #	include "luaxx/lua_hooks.h"
@@ -52,7 +53,9 @@ IGameMonitor::IGameMonitor() : _game_over(false), _win(false), _check_items(0.5,
 #ifdef ENABLE_LUA
 , lua_hooks(new LuaHooks) 
 #endif
-{}
+{
+	Console->on_command.connect(sigc::mem_fun(this, &IGameMonitor::onConsole));
+}
 
 void GameItem::respawn() {
 	if (spawn_limit == 0)
@@ -906,4 +909,18 @@ void IGameMonitor::onScriptZone(const int slot_id, const SpecialZone &zone) {
 	});
 
 #endif
+}
+
+const std::string IGameMonitor::onConsole(const std::string &cmd, const std::string &param) {
+	if (cmd == "call") {
+		try {
+			if (lua_hooks == NULL)
+				throw_ex(("lua hooks was not initialized"));
+			lua_hooks->call(param);
+		} catch(const std::exception &e) {
+			return std::string("error") + e.what();
+		}
+		return "ok";
+	}
+	return std::string();
 }
