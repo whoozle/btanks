@@ -47,8 +47,7 @@ class SpecialZone;
 struct BTANKSAPI GameItem {
 	GameItem(const std::string &classname, const std::string &animation, const std::string &property, const v2<int> position, const int z = 0) :
 		classname(classname), animation(animation), property(property), position(position), z(z), dir(0), id(-1), spawn_limit(-1), dead_on(0), 
-		destroy_for_victory(false), hidden(false)
-		{}
+		destroy_for_victory(false), hidden(false), special(false) {}
 	void respawn();
 	void kill();
 	void renameProperty(const std::string &name);
