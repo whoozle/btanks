@@ -78,14 +78,18 @@ void GameItem::respawn() {
 
 void GameItem::kill() {
 	Object *o = World->getObjectByID(id);
-	if (o == NULL)
+	if (o != NULL)
 		o->Object::emit("death", NULL);
 }
 
 void GameItem::setup(const std::string &name, const std::string &subname) {
 	destroy_for_victory = name.substr(0, 19) == "destroy-for-victory";
+	special = name.substr(0, 7) == "special";
+	
 	if (name == "save-for-victory")
 		save_for_victory = subname;
+
+	special |= destroy_for_victory | !save_for_victory.empty();
 
 	size_t pos1 = name.find('(');
 	if (pos1 == name.npos) 
@@ -199,7 +203,7 @@ void IGameMonitor::checkItems(const float dt) {
 		} 
 
 		if (!dead) {
-			if (item.destroy_for_victory || !item.save_for_victory.empty()) {
+			if (item.special) {
 				v2<int> pos;
 				o->getCenterPosition(pos);
 				_specials.push_back(v3<int>(pos.x, pos.y, o->getID()));	

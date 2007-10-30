@@ -63,7 +63,7 @@ struct BTANKSAPI GameItem {
 	Uint32 dead_on;
 	bool destroy_for_victory;
 	std::string save_for_victory;
-	bool hidden;
+	bool hidden, special;
 };
 
 class LuaHooks;
