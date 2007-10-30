@@ -174,8 +174,10 @@ TRY {
 		if (r != AL_NO_ERROR)
 				LOG_ERROR(("alGetSourcei(%08x, AL_SOURCE_STATE): error %08x", _source, (unsigned)r));
 		LOG_DEBUG(("underrun occured"));
-		alSourcePlay(_source);
-		AL_CHECK_NON_FATAL(("alSourcePlay(%08x)(recovering)", (unsigned)_source));
+		//alSourcePlay(_source);
+		empty();
+		play();
+		//AL_CHECK_NON_FATAL(("alSourcePlay(%08x)(recovering)", (unsigned)_source));
 	}
 	
 	
