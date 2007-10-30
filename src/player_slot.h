@@ -34,7 +34,7 @@ class Object;
 class ControlMethod;
 class Tooltip;
 
-class PlayerSlot : public mrt::Serializable {
+class BTANKSAPI PlayerSlot : public mrt::Serializable {
 public:
 	int id;
 	
