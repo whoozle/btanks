@@ -69,6 +69,9 @@ void Tank::emit(const std::string &event, Object * emitter) {
 }
 
 const bool Tank::take(const BaseObject *obj, const std::string &type) {
+	if (Object::take(obj, type))
+		return true;
+	
 	if (obj->classname == "effects") {
 		float def = 10;
 		if (type == "dispersion") {
@@ -87,7 +90,7 @@ const bool Tank::take(const BaseObject *obj, const std::string &type) {
 	}
 	if (get("mod")->take(obj, type))
 		return true;
-	return Object::take(obj, type);
+	return false;
 }
 
 void Tank::calculate(const float dt) {

@@ -188,6 +188,9 @@ skip_left_toggle:
 }
 
 const bool Shilka::take(const BaseObject *obj, const std::string &type) {
+	if (Object::take(obj, type))
+		return true;
+	
 	if (obj->classname == "effects") {
 		if (type == "dispersion") {
 			removeEffect("ricochet");
@@ -225,7 +228,7 @@ const bool Shilka::take(const BaseObject *obj, const std::string &type) {
 		mod->setCount(n);
 		return true;
 	}
-	return Object::take(obj, type);
+	return false;
 }
 
 void Shilka::serialize(mrt::Serializator &s) const {

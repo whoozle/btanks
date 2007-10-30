@@ -57,7 +57,10 @@ void Mortar::emit(const std::string &event, Object * emitter) {
 }
 
 const bool Mortar::take(const BaseObject *obj, const std::string &type) {
-	return Object::take(obj, type);
+	if (Object::take(obj, type))
+		return true;
+	//custom code
+	return false;
 }
 
 void Mortar::calculate(const float dt) {
