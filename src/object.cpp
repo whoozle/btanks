@@ -1312,7 +1312,7 @@ const std::string Object::getNearestWaypoint(const std::string &name) const {
 void Object::addDamage(Object *from, const bool emitDeath) {
 	if (from == NULL || !from->piercing)
 		return;
-	if (from->hasOwner(OWNER_COOPERATIVE) && hasOwner(OWNER_COOPERATIVE))
+	if (hasSameOwner(from)) //friendly fire
 		return;
 	addDamage(from, from->max_hp, emitDeath);
 }
