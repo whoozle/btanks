@@ -815,6 +815,7 @@
 
 	<object class="helicopter" hp="200" impassability="-1" speed="400" mass="2000" z="810" />
 	<object class="helicopter-with-kamikazes" parent="helicopter" />
+	<object class="raider-helicopter" parent="helicopter" />
 	<object class="static-helicopter" parent="helicopter" />
 	<object class="submarine" hp="-1" impassability="1" />
 	<object class="boat" hp="100" impassability="-1" speed="50" mass="200" />

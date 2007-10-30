@@ -119,10 +119,9 @@ done:
 	_state.alt_fire = _moving_time >= ac_t;
 
 	calculateWayVelocity();
-	updateStateFromVelocity();
 
 	GET_CONFIG_VALUE("objects.helicopter.rotation-time", float, rt, 0.2f);
-	limitRotation(dt, rt, true, true);	
+	limitRotation(dt, rt, false, false);	
 	updateStateFromVelocity();
 }
 
