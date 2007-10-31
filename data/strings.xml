@@ -729,11 +729,14 @@
 		<string id="mortar" lang="de">Auf jeder (!) Karte können Sie einen versteckten Mörser finden.</string>
 		<string id="mortar" lang="it">Ogni mappa ha un "mortar" nascosto.</string>
                         
-		<string id="mines">Shilka could use mines too.</string>
-		<string id="mines" lang="ru">А шилка может брать мины.</string>
+		<string id="mines">Shilka could use mines. Grab nuke item to get special nuke mines</string>
+		<string id="mines" lang="ru">Шилка может брать мины. Если взять ядерную бомбу, то шилка сможет ставить чудовищные ядерные мины. </string>
 		<string id="mines" lang="fr">Shilka peut aussi poser des mines.</string>
 		<string id="mines" lang="de">Schilka kann auch Minen benutzen.</string>
 		<string id="mines" lang="it">Schilka puo' usare anche le mine.</string>
+
+		<string id="cars">Car is a quiet safe place. Enemy cannot see you while you in.</string>
+		<string id="cars" lang="ru">В машине достаточно безопасно. Враги не видят кто едет внутри и не стреляют.</string>
 		        
 		<string id="sandworm">Sandworm could be killed with single mortar shot. </string>
 		<string id="sandworm" lang="ru">Мортира может убить червя одним попаданием своей банки (в рот).</string>
