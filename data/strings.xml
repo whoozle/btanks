@@ -736,7 +736,7 @@
 		<string id="mines" lang="it">Schilka puo' usare anche le mine.</string>
 
 		<string id="cars">Car is a quiet safe place. Enemy cannot see you while you in.</string>
-		<string id="cars" lang="ru">В машине достаточно безопасно. Враги не видят кто едет внутри и не стреляют.</string>
+		<string id="cars" lang="ru">В машине достаточно безопасно. Враги по машинам не стреляют.</string>
 		        
 		<string id="sandworm">Sandworm could be killed with single mortar shot. </string>
 		<string id="sandworm" lang="ru">Мортира может убить червя одним попаданием своей банки (в рот).</string>
