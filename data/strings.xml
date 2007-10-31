@@ -800,6 +800,9 @@
 		<string id="chat" lang="ru">Вы можете разговаривать с другими игроками, нажав ENTER.</string>
 		<string id="chat" lang="fr">Vous pouvez contacter les autres joueurs avec la touche ENTRÉE.</string>
 		<string id="chat" lang="de">Mit der ENTER-Taste können Sie die anderen Spieler kontaktieren.</string>
+
+		<string id="nukeman">Machinegunner players can grab nuke missile items and become kamikaze</string>
+		<string id="nukeman" lang="ru">Играя пулемётчиком можно брать ядерные бомбы и превращаться в ядерного камикадзе</string>
 	</area>
 </strings>    
                       
