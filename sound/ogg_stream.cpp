@@ -188,7 +188,19 @@ TRY {
 
 void OggStream::empty() {
 	sdlx::AutoMutex m(_lock);
-	int n = 0;
+	int processed = 0, n = 0;
+	alSourceStop(_source); alGetError();
+	
+	alGetSourcei(_source, AL_BUFFERS_PROCESSED, &processed);
+	AL_CHECK(("alGetSourcei(processed: %d)", processed));
+	
+	n = processed;
+	while(n-- > 0) {
+		ALuint buffer;
+		alSourceUnqueueBuffers(_source, 1, &buffer);
+		AL_CHECK(("alSourceUnqueueBuffers(%d of %d)", processed - n, processed));
+	}	
+	
 	alGetSourcei(_source, AL_BUFFERS_QUEUED, &n);
 	AL_CHECK(("alGetSourcei(%08x, AL_BUFFERS_QUEUED)", _source));
 	while(n--) {
