@@ -56,7 +56,7 @@ void Turrel::onSpawn() {
 	mrt::randomize(rt, rt / 10);
 	_reaction.set(rt);
 
-	ai::Base::multiplier = 3.0f;
+	ai::Base::multiplier = 5.0f;
 	ai::Base::onSpawn(this);
 }
 

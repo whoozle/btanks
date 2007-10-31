@@ -63,6 +63,7 @@ public:
 		
 		DestructableObject::onSpawn();
 		ai::Base::onSpawn(this);
+		ai::Base::multiplier = 5.0f;
 	}
 
 	virtual void serialize(mrt::Serializator &s) const {
