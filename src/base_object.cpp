@@ -233,7 +233,7 @@ void BaseObject::heal(const int plus) {
 }
 
 const bool BaseObject::take(const BaseObject *obj, const std::string &type) {
-	if (obj->classname == "heal" && hp < max_hp) {
+	if (hp < max_hp && obj->classname == "heal" ) {
 		heal(obj->hp);
 		return true;
 	}
