@@ -103,8 +103,10 @@ void Kamikaze::emit(const std::string &event, Object * emitter) {
 		
 		GET_CONFIG_VALUE("objects.kamikaze.damage", int, kd, 5);
 		
-		if (emitter) 
+		if (emitter) {
 			emitter->addDamage(this, kd);
+			emitter->addEffect("stunned", 0.1f);
+		}
 		emit("death", emitter);
 	} else 
 		Object::emit(event, emitter);
