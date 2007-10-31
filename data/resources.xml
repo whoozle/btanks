@@ -227,6 +227,10 @@
 		<pose id="boom" sound="@vehicle-explosion">0,1,2,3</pose>
 	</animation-model>
 
+	<animation-model id="kamikaze-explosion-animation" speed="7">
+		<pose id="boom" sound="@vehicle-explosion">4,3,2,1,0</pose>
+	</animation-model>
+
 	<animation-model id="single-tile" speed="1">
 		<pose id="main">0</pose>
 	</animation-model>
@@ -618,6 +622,7 @@
 	<animation id="nuke-explosion" tile="nuke_explosion.png" model="nuke-explosion-animation" size="448" />
 	<animation id="cannon-explosion" tile="cannon_explosion.png" model="cannon-explosion-animation" size="128" />
 	<animation id="mortar-explosion" tile="cannon_explosion.png" model="cannon-explosion-animation" size="128" />
+	<animation id="kamikaze-explosion" tile="kamikaze_explosion.png" model="kamikaze-explosion-animation" size="128" />
 	<animation id="traffic-lights" tile="traffic_lights.png" model="traffic-lights-animation" />
 
 	<animation id="gate" tile="gate01.png" model="destructable-object-animation" tile_width="128" tile_height="64" />
@@ -813,6 +818,7 @@
 	<object class="nuke-explosion" hp="1000" mass="10000" impassability="-1" z="900" />
 	<object class="cannon-explosion" hp="30" impassability="-1" z="900" />
 	<object class="mortar-explosion" hp="30" impassability="-1" z="900" />
+	<object class="kamikaze-explosion" hp="10" impassability="-1" z="900" />
 	<object class="bomberman-explosion" hp="100" impassability="-1" z="900" />
 	
 	<object class="static-dirt" impassability="-1" z="-20" />

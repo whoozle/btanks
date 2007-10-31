@@ -168,3 +168,4 @@ REGISTER_OBJECT("nuke-explosion", Explosion, ());
 REGISTER_OBJECT("cannon-explosion", Explosion, ());
 REGISTER_OBJECT("mortar-explosion", Explosion, ());
 REGISTER_OBJECT("mutagen-explosion", Explosion, ());
+REGISTER_OBJECT("kamikaze-explosion", Explosion, ());
