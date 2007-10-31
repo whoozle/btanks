@@ -38,6 +38,9 @@ public:
 	virtual void serialize(mrt::Serializator &s) const;
 	virtual void deserialize(const mrt::Serializator &s);
 
+protected: 
+	float multiplier;	
+
 private:
 	static const int magic[5][5];
 	int row, pos, attempt;

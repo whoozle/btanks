@@ -33,12 +33,12 @@ const int Base::magic[MAGIC_ROWS][MAGIC_SIZE] = {
 	{4, 3, 2, 5, 1, }, 
 };
 
-Base::Base() : row(0), pos(0), attempt(0), wait(false) {}
+Base::Base() : multiplier(1.0f), row(0), pos(0), attempt(0), wait(false) {}
 
 const bool Base::canFire() {
 	if (attempt == 0) {
 		pos = (pos + 1) % MAGIC_SIZE;
-		attempt = magic[row][pos];
+		attempt = (int)(magic[row][pos] * multiplier);
 		wait = !wait;
 	} else {
 		--attempt;
@@ -51,11 +51,12 @@ void Base::onSpawn(Object *src)  {
 	row = id % MAGIC_ROWS;
 	pos = (id * 3 + 7)  % MAGIC_SIZE;
 	//LOG_DEBUG(("spawning %s(%d) with %dx%d", src->animation.c_str(), id, row, pos));
-	attempt = magic[row][pos];
+	attempt = (int) (magic[row][pos] * multiplier);
 	wait = false;
 }
 
 void Base::serialize(mrt::Serializator &s) const {
+	s.add(multiplier);
 	s.add(row);
 	s.add(pos);
 	s.add(attempt);
@@ -63,6 +64,7 @@ void Base::serialize(mrt::Serializator &s) const {
 }
 
 void Base::deserialize(const mrt::Serializator &s) {
+	s.get(multiplier);
 	s.get(row);
 	s.get(pos);
 	s.get(attempt);
