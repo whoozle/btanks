@@ -93,7 +93,7 @@ void Kamikaze::onSpawn() {
 
 void Kamikaze::emit(const std::string &event, Object * emitter) {
 	if (event == "death") {
-		spawn("explosion", "missile-explosion");
+		spawn("kamikaze-explosion", "kamikaze-explosion");
 		Object::emit(event, emitter);
 	} else if (event == "collision") {
 		if (emitter == NULL || (emitter->classname != "fighting-vehicle" && emitter->classname != "train" && emitter->classname != "trooper")) {
@@ -101,12 +101,6 @@ void Kamikaze::emit(const std::string &event, Object * emitter) {
 			return;
 		}
 		
-		GET_CONFIG_VALUE("objects.kamikaze.damage", int, kd, 5);
-		
-		if (emitter) {
-			emitter->addDamage(this, kd);
-			emitter->addEffect("stunned", 0.1f);
-		}
 		emit("death", emitter);
 	} else 
 		Object::emit(event, emitter);
