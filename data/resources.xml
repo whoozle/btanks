@@ -850,10 +850,13 @@
 	<object class="boat" hp="100" impassability="-1" speed="50" mass="200" />
 	<object class="paratrooper-kamikaze" hp="25" impassability="1" z="810" />
 	<object class="kamikaze" hp="5" speed="70" mass="80" z="0" />
-	<object class="machinegunner" hp="10" speed="100" mass="85" z="-1" />
-	<object class="machinegunner-in-watchtower" impassability="0" parent="machinegunner" z="205" ttl="0" />
-	<object class="thrower" hp="10" speed="100" mass="85" z="-1" ttl="0" />
-	<object class="thrower-in-watchtower" impassability="0" parent="thrower" z="205" ttl="0" />
+
+	<object class="machinegunner" hp="10" speed="100" mass="85" z="-2" />
+	<object class="thrower" parent="machinegunner" />
+	<object class="helmet" z="-1" />
+	<object class="machinegunner-in-watchtower" impassability="0" parent="machinegunner" z="205" />
+	<object class="thrower-in-watchtower" impassability="0" parent="thrower" z="205" />
+
 	<object class="civilian" hp="20" speed="100" mass="75" z="-1" />
 	<object class="ziehharmonikaspieler" hp="30" speed="80" mass="80" z="-1" />
 
