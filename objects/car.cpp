@@ -49,6 +49,7 @@ private:
 };
 
 void Car::onSpawn() {
+	_variants.add("safe");
 	play("hold", true);
 }
 
