@@ -42,11 +42,19 @@ void Trooper::tick(const float dt) {
 		if (state != "hold" && state != "fire") {
 			cancelAll();
 			play("hold", true);
+			if (has("helmet")) {
+				cancelAll();
+				get("helmet")->play("hold", true);
+			}
 		}
 	} else {
 		if (state == "hold") {
 			cancelAll();
 			play("run", true);
+			if (has("helmet")) {
+				cancelAll();
+				get("helmet")->play("run", true);
+			}
 		}		
 	}
 	
@@ -77,14 +85,37 @@ const bool Trooper::take(const BaseObject *obj, const std::string &type) {
 	return false;
 }
 
+#include "world.h"
+
 void Trooper::onSpawn() {
 	if (_variants.has("player")) {
 		speed *= 1.75f;
 		hp = max_hp *= 2;
 	}
+
+	int sid = getSummoner();
+	const Object *summoner = World->getObjectByID(sid);
+	if (summoner != NULL) {
+		const std::string &a = summoner->animation;
+		static const char *colors[4] = {"red-", "green-", "yellow-", "cyan-"};
+		int i;
+		for(i = 0; i < 4; ++i) {
+			size_t l = strlen(colors[i]);
+			if (a.size() > l && a.compare(0, l, colors[i]) == 0)
+				break;
+		}
+		if (i < 4) {
+			std::string animation = colors[i] + registered_name + "-helmet";
+			//LOG_DEBUG(("helmet animation = %s", animation.c_str()));
+			if (ResourceManager->hasAnimation(animation)) {
+				add("helmet", "helmet", animation, v2<float>(), Centered);
+			}
+		}
+	}
 	
 	if (_variants.has("disembark")) {
 		playSound("disembark", false);
+		//add helmet if parent player detected.
 	}
 	if (_object.empty()) {
 		//nothing to do

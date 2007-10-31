@@ -79,3 +79,4 @@ REGISTER_OBJECT("single-pose", SinglePose, ("main"));
 REGISTER_OBJECT("broken-object", SinglePose, ("broken"));
 REGISTER_OBJECT("outline", SinglePose, ("main"));
 REGISTER_OBJECT("eternal-flame", SinglePose, ("burn"));
+REGISTER_OBJECT("helmet", SinglePose, ("hold"));
