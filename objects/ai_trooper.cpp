@@ -93,7 +93,7 @@ void AITrooper::onIdle(const float dt) {
 
 void AITrooper::onSpawn() {
 	ai::Base::onSpawn(this);
-	GET_CONFIG_VALUE("objects.ai-trooper.reaction-time", float, rt, 0.3);
+	GET_CONFIG_VALUE("objects.ai-trooper.reaction-time", float, rt, 0.15f);
 	mrt::randomize(rt, rt / 10);
 	//LOG_DEBUG(("rt = %g", rt));
 	_reaction.set(rt);	
@@ -108,16 +108,56 @@ Object* AITrooper::clone() const  {
 void AITrooper::calculate(const float dt) {
 	//calculateWayVelocity();
 	//LOG_DEBUG(("calculate"));
+	if (_target_dir != -1 && isEffectActive("panic")) {
+		//LOG_DEBUG(("panic: %d", _target_dir));
+		_velocity.fromDirection(_target_dir, getDirectionsNumber());
+	
+		GET_CONFIG_VALUE("objects.ai-trooper.rotation-time", float, rt, 0.05f);
+		limitRotation(dt, rt, true, false);
+		updateStateFromVelocity();
+		return;
+	}
+	
 	if (!_reaction.tick(dt))
 		return;
+
+	{
+		static std::set<std::string> bullets; 
+		if (bullets.empty()) {
+			bullets.insert("bullet");
+			bullets.insert("missile");
+		}
+		//checking for a bullets 
+		v2<float> pos, vel;
+		float r = speed * 3.0f; //1s
+		
+		if (getNearest(bullets, r, pos, vel, false)) {
+			float ct = getCollisionTime(pos, vel, 16);
+			//LOG_DEBUG(("bullet at %g %g, est: %g", pos.x, pos.y, ct));
+			if (ct > 0) {
+				//LOG_DEBUG(("AAAAAAA!!"));
+				pos.normalize();
+				int dirs = getDirectionsNumber(), d = pos.getDirection(dirs) - 1;
+				if (d >= 0) {
+					int s = mrt::random(2) * 2 - 1;
+					d = (d + dirs + s * dirs / 4) % dirs;
+					_target_dir = d;
+					setDirection(d);
+					_velocity.fromDirection(_target_dir, getDirectionsNumber());
+					_direction.fromDirection(_target_dir, getDirectionsNumber());
+					addEffect("panic", 0.75f);
+					return;
+				}
+			}
+		}
+	}
+
 	if (getState() == "fire") {
 		_state.fire = true; //just to be sure.
 		return;
 	}
 	
 	_state.fire = false;
-	
-	v2<float> vel;
 	
 	float range = getWeaponRange(_object);
 
@@ -168,7 +208,7 @@ public:
 	virtual void onSpawn() { 
 		ai::Base::onSpawn(this);
 	
-		GET_CONFIG_VALUE("objects.trooper.reaction-time", float, rt, 0.1);
+		GET_CONFIG_VALUE("objects.ai-trooper.reaction-time", float, rt, 0.15f);
 		mrt::randomize(rt, rt/10);
 		_reaction.set(rt);
 	
