@@ -129,23 +129,22 @@ void AITrooper::calculate(const float dt) {
 		}
 		//checking for a bullets 
 		v2<float> pos, vel;
-		float r = speed * 3.0f; //1s
+		float r = speed * 5.0f; 
 		
 		if (getNearest(bullets, r, pos, vel, false)) {
 			float ct = getCollisionTime(pos, vel, 16);
 			//LOG_DEBUG(("bullet at %g %g, est: %g", pos.x, pos.y, ct));
-			if (ct > 0) {
+			if (ct > 0 && ct <= 0.5f) {
+				v2<float> dpos = -(pos + vel * ct);
 				//LOG_DEBUG(("AAAAAAA!!"));
-				pos.normalize();
-				int dirs = getDirectionsNumber(), d = pos.getDirection(dirs) - 1;
-				if (d >= 0) {
-					int s = mrt::random(2) * 2 - 1;
-					d = (d + dirs + s * dirs / 4) % dirs;
-					_target_dir = d;
-					setDirection(d);
+				dpos.normalize();
+				int dirs = getDirectionsNumber(), escape = dpos.getDirection(dirs) - 1;
+				if (escape >= 0) {
+					_target_dir = escape;
+					setDirection(escape);
 					_velocity.fromDirection(_target_dir, getDirectionsNumber());
 					_direction.fromDirection(_target_dir, getDirectionsNumber());
-					addEffect("panic", 0.75f);
+					addEffect("panic", ct);
 					return;
 				}
 			}
