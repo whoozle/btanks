@@ -75,7 +75,7 @@ private:
 
 const int AITrooper::getComfortDistance(const Object *other) const {
 	GET_CONFIG_VALUE("objects.ai-trooper.comfort-distance", int, cd, 80);
-	return (other == NULL || other->classname == "trooper")?cd:-1;
+	return (other == NULL || other->classname == "trooper" || other->classname == "kamikaze")?cd:-1;
 }
 
 void AITrooper::onIdle(const float dt) {
