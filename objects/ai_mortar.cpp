@@ -41,7 +41,7 @@ private:
 const std::string AIMortar::getWeapon(const int idx) const {
 	switch(idx) {
 	case 0: 
-		return "mortar-bullet";
+		return "bullets:mortar";
 	case 1:
 		return std::string();
 	default: 
