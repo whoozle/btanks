@@ -885,6 +885,10 @@ const float Object::getWeaponRange(const std::string &weapon) const {
 	const Object *wp = ResourceManager->getClass(weapon);
 	GET_CONFIG_VALUE("engine.global-targeting-multiplier", float, gtm, 0.95f)
 	float range = wp->ttl * wp->speed * gtm;
+
+	GET_CONFIG_VALUE("engine.window.width", int, screen_w, 800);
+	if (range > screen_w / 2)
+		range = screen_w / 2;
 	
 	float tm;
 	Config->get("objects." + registered_name + ".targeting-multiplier", tm, 1.0f);
