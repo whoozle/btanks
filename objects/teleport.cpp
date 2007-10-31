@@ -82,6 +82,9 @@ void Teleport::tick(const float dt) {
 
 void Teleport::emit(const std::string &event, Object * emitter) {
 	if (event == "collision" && emitter != NULL) {
+		if (emitter->classname == "helicopter") 
+			return;
+		
 		if (getState() == "hold") {
 			return;
 		}
