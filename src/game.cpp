@@ -219,6 +219,12 @@ void IGame::init(const int argc, char *argv[]) {
 				}
 			}
 		}
+		if (revision < 5337) {
+			if (Config->has("objects.ai-trooper.reaction-time")) {
+				Config->remove("objects.ai-trooper.reaction-time");
+				Config->remove("objects.trooper.reaction-time");
+			}
+		}
 		
 		Config->set("engine.revision", getRevision());
 	}
