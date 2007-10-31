@@ -663,10 +663,10 @@
 	<animation id="green-machinegunner-helmet" model="machinegunner-helmet" tile="helmet_green.png" />
 	<animation id="yellow-machinegunner-helmet" model="machinegunner-helmet" tile="helmet_yellow.png" />
 	<animation id="cyan-machinegunner-helmet" model="machinegunner-helmet" tile="helmet_cyan.png" />
-	<animation id="red-thrower-helmet" model="thrower-helmet" tile="red_helmet.png" />
-	<animation id="green-thrower-helmet" model="thrower-helmet" tile="green_helmet.png" />
-	<animation id="yellow-thrower-helmet" model="thrower-helmet" tile="yellow_helmet.png" />
-	<animation id="cyan-thrower-helmet" model="thrower-helmet" tile="cyan_helmet.png" />
+	<animation id="red-thrower-helmet" model="thrower-helmet" tile="helmet_red.png" />
+	<animation id="green-thrower-helmet" model="thrower-helmet" tile="helmet_green.png" />
+	<animation id="yellow-thrower-helmet" model="thrower-helmet" tile="helmet_yellow.png" />
+	<animation id="cyan-thrower-helmet" model="thrower-helmet" tile="helmet_cyan.png" />
 	
 
 	<!-- road signs -->
