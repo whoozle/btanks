@@ -22,8 +22,10 @@
 #include "alarm.h"
 #include "config.h"
 #include "mrt/random.h"
+#include "ai/herd.h"
+#include "special_owners.h"
 
-class Kamikaze : public Object {
+class Kamikaze : public Object, public ai::Herd {
 public:
 	Kamikaze() : 
 		Object("kamikaze"), _reaction(true) {}
@@ -34,6 +36,7 @@ public:
 	virtual Object * clone() const;
 	virtual void onSpawn();
 	virtual void emit(const std::string &event, Object * emitter = NULL);
+	void on_idle(const int range, const float dt);
 
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
@@ -43,10 +46,22 @@ public:
 		Object::deserialize(s);
 		s.get(_reaction);
 	}	
+	virtual const int getComfortDistance(const Object *other) const;
 
 private: 
 	Alarm _reaction;
 };
+
+const int Kamikaze::getComfortDistance(const Object *other) const {
+	GET_CONFIG_VALUE("objects.kamikaze.comfort-distance", int, cd, 80);
+	return (other == NULL || other->classname == "trooper" || other->classname == "kamikaze")?cd:-1;
+}
+
+void Kamikaze::on_idle(const int range, const float dt) {
+	ai::Herd::calculateV(_velocity, this, 0, range);
+	_state.fire = false;
+}
+
 
 void Kamikaze::calculate(const float dt) {
 	if (!_reaction.tick(dt))
@@ -65,7 +80,11 @@ void Kamikaze::calculate(const float dt) {
 
 	if (getNearest(targets, tt, _velocity, vel, false)) {
 		quantizeVelocity();
-	} else _velocity.clear();
+	} else on_idle(tt, dt);
+
+	GET_CONFIG_VALUE("objects.kamikaze.rotation-time", float, rt, 0.05);
+	limitRotation(dt, rt, true, false);
+	updateStateFromVelocity();	
 }
 
 void Kamikaze::tick(const float dt) {
