@@ -43,8 +43,9 @@ void Trooper::tick(const float dt) {
 			cancelAll();
 			play("hold", true);
 			if (has("helmet")) {
-				cancelAll();
-				get("helmet")->play("hold", true);
+				Object *helmet = get("helmet");
+				helmet->cancelAll();
+				helmet->play("hold", true);
 			}
 		}
 	} else {
@@ -52,8 +53,9 @@ void Trooper::tick(const float dt) {
 			cancelAll();
 			play("run", true);
 			if (has("helmet")) {
-				cancelAll();
-				get("helmet")->play("run", true);
+				Object *helmet = get("helmet");
+				helmet->cancelAll();
+				helmet->play("run", true);
 			}
 		}		
 	}
