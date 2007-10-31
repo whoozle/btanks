@@ -705,7 +705,9 @@ TRY {
 	if (len == 0) {
 		o._moving_time = 0;
 		o._idle_time += dt * e_speed;
-
+		if (o.impassability < 0 || o.impassability >= 1.0f) {
+			getImpassability(&o, o._position.convert<int>());
+		}
 		return;
 	} else {
 		o._idle_time = 0;
