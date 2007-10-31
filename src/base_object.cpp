@@ -146,8 +146,18 @@ const std::string BaseObject::dump() const {
 
 BaseObject::~BaseObject() { _dead = true; }
 
-const float BaseObject::getCollisionTime(const v2<float> &dpos, const v2<float> &vel, const float r) const {
-	//v2<float> dpos = pos - _position;
+const float BaseObject::getCollisionTime(const v2<float> &dpos, const v2<float> &vel, const float range) const {
+	if (vel.is0())
+		return -1;
+
+	float r = dpos.length(), v = vel.length(), t = r / v;
+	v2<float> d = dpos + vel * t;
+	r = d.length();
+	if (r <= range)
+		return t;
+	return -1;
+		
+/*	//v2<float> dpos = pos - _position;
 	float a = vel.x * vel.x + vel.y * vel.y;
 	if (a == 0)
 		return -1;
@@ -175,6 +185,7 @@ const float BaseObject::getCollisionTime(const v2<float> &dpos, const v2<float> 
 		return t2;
 	
 	return -4;
+*/
 }
 
 void BaseObject::convertToAbsolute(v2<float> &pos, const v2<float> &dpos) {
