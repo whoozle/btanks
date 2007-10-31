@@ -221,16 +221,20 @@ void BaseObject::setZ(const int z0, const bool absolute) {
 	_z = ZBox::getBoxBase(_z) + z; //do not change box;
 }
 
-const bool BaseObject::take(const BaseObject *obj, const std::string &type) {
-	if (obj->classname == "heal") {
-		if (hp >= max_hp)
-			return false;
+void BaseObject::heal(const int plus) {
+	if (hp >= max_hp)
+		return;
 		
-		need_sync = true;
-		hp += obj->hp;
-		if (hp >= max_hp)
-			hp = max_hp;
-		LOG_DEBUG(("%s: got %d hp (heal). result: %d", classname.c_str(), obj->hp, hp));	
+	need_sync = true;
+	hp += plus;
+	if (hp >= max_hp)
+		hp = max_hp;
+	LOG_DEBUG(("%s: got %d hp (heal). result: %d", classname.c_str(), plus, hp));
+}
+
+const bool BaseObject::take(const BaseObject *obj, const std::string &type) {
+	if (obj->classname == "heal" && hp < max_hp) {
+		heal(obj->hp);
 		return true;
 	}
 	//LOG_WARN(("%s: cannot take %s (%s)", classname.c_str(), obj->classname.c_str(), type.c_str()));
