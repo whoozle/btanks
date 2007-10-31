@@ -130,7 +130,7 @@ done:
 	calculateWayVelocity();
 
 	GET_CONFIG_VALUE("objects.helicopter.rotation-time", float, rt, 0.2f);
-	limitRotation(dt, rt, false, false);	
+	limitRotation(dt, rt, true, true);	
 	updateStateFromVelocity();
 }
 
