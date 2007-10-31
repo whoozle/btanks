@@ -1,12 +1,40 @@
-0.6.*: 
-	*) Shilka can pick up nuke item (becomes nuke mine)
-	*) Increased damage from machinegunner installed on launcher. 
-	*) Launched can pick up thrower item.
+0.7.*: 
+	*) Introduce lua scripting support: 
+		*) Hiding/showing/spawning items
+		*) Triggering lua callbacks from special zones
+		*) Changing background music
+		*) Ending game: win or lose.
+		*) User interaction: messages and timers.
+		*) Enabling/disabling AI 
+		*) Damaging map
+	*) Balance modifications: 
+		*) Machinegunner player can grab nuke missile item (check it out ;)
+		*) Shilka can pick up nuke item (becomes nuke mine)
+		*) Increased damage from machinegunner installed on launcher. 
+		*) Boat patrols water.
+		*) Launched can pick up thrower item. Deadly combination. 
+		*) Reduce bullet ranges, improved fog of war by limiting visible range for enemies (half of screen's width).
+		*) All items which fire a burst limited and cannot fire continiously
+		*) Troopers can evade missiles and bullets. :)
+		*) Kamikaze was redrawn from scratch and they do more damage (could be chained)
+		*) Your troopers wear coloured helmets to distinguish them from enemy. 
+		*) You could drive any ownerless car. Enemy troops don't see while you in.
+	*) You could not survive(by freezing) in nuke explosion anymore. 
+	*) You could mark any object you want on minimap.
+	*) Added raider helicopter with bombs and paratroopers.
+	*) Troopers don't hide under barracks and tents/don't shoot through it anymore.
+	*) Added buggy vehicle + automatic turrel. Find it on the lenin's square map.
 	*) Vehicles does not pick up items which wont have any effect.
-	*) Skip tcp updates for player in slots. 
+	*) Fixed edge impassability on non-torus maps. (baykonur, near start)
+	*) Network multiplayer fixes: 
+		*) Do not trust TCP updates for players, use only UDP updates.
+		*) Skip tcp updates for player in slots. 
+		*) Allowed using of the pathfinding API. (better synchronization for cars and other PF clients)
+		*) Implemented congruent 32-bit random generator. Added its synchronization in the network game. 
 	*) Added maximum nick length (32)
-	*) Do not trust TCP updates for players, use only UDP updates.
 	*) Added gamepad hack for broken hid, (fedora 7), ability to limit gamepad to 2 axis in config.
+	*) Disabled hardcoded keys in "redefine keys" dialog.
+	*) Improved engine scalability by removing subobjects from the global map.
 	
 0.6.5064: 
 
