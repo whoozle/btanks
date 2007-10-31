@@ -692,7 +692,7 @@ TRY {
 	if (o.speed == 0) {
 		TRY {
 			o._idle_time += dt * e_speed;
-			if (o.impassability < 0) {
+			if (o.impassability < 0 || o.impassability >= 1.0f) {
 				getImpassability(&o, o._position.convert<int>());
 			}
 		} CATCH("tick(speed==0)", throw;);
