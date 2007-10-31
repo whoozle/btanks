@@ -21,8 +21,9 @@
 #include "resource_manager.h"
 #include "tmx/map.h"
 #include "mrt/random.h"
+#include "ai/base.h"
 
-class AIHeli : public Heli {
+class AIHeli : public Heli, public ai::Base {
 public:
 	AIHeli() : Heli("helicopter"), _reaction(true), _target_dir(-1) {
 			_targets.insert("missile");	
@@ -36,18 +37,24 @@ public:
 	void calculate(const float dt);
 	virtual void serialize(mrt::Serializator &s) const {
 		Heli::serialize(s);
+		ai::Base::serialize(s);
 		s.add(_reaction);
 	}
 	virtual void deserialize(const mrt::Serializator &s) {
 		Heli::deserialize(s);
+		ai::Base::deserialize(s);
 		s.get(_reaction);
+	}
+	
+	virtual const bool validateFire(const int idx) {
+		return (idx == 0)? canFire() : true;
 	}
 
 	virtual Object * clone() const { return new AIHeli(*this); }
 	virtual void onIdle(const float dt);
 	
 private: 
-	Alarm _reaction;	
+	Alarm _reaction;
 	int _target_dir;
 	
 	std::set<std::string> _targets;
@@ -72,6 +79,8 @@ void AIHeli::onSpawn() {
 	mrt::randomize(rt, rt/10);
 	_reaction.set(rt);
 	Heli::onSpawn();
+	ai::Base::onSpawn(this);
+	ai::Base::multiplier = 3.0f;
 }
 
 void AIHeli::calculate(const float dt) {
