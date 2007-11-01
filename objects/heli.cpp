@@ -110,6 +110,13 @@ void Heli::emit(const std::string &event, Object * emitter) {
 	Object::emit(event, emitter);
 }
 
+void Heli::getDependentAnimations(std::set<std::string> &animations) const {
+	animations.insert("bomb");
+	animations.insert("paratrooper");
+	animations.insert("gay-paratrooper");
+	animations.insert("helicopter-bullet-right");
+	animations.insert("helicopter-bullet-left");
+}
 
 Object* Heli::clone() const  {
 	return new Heli(*this);
