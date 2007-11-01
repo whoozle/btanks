@@ -409,9 +409,6 @@ Object *IResourceManager::createObject(const std::string &classname, const std::
 	//LOG_DEBUG(("clone: %s", r->dump().c_str()));
 	r->animation = animation;
 
-	//check for preloading: 
-	const_cast<IResourceManager *>(this)->preload(classname, animation);
-
 	return r;
 }
 
