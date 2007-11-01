@@ -473,17 +473,18 @@ void IResourceManager::getAllClasses(std::set<std::string> &classes) {
 	}
 }
 
-void IResourceManager::preload(const std::string &classname, const std::string &animation) {
+void IResourceManager::preload(const std::string &_classname, const std::string &animation) {
 	GET_CONFIG_VALUE("engine.preload-all-resources", bool , preload_all, true);
 	if (!preload_all) 
 		return;
 
-	LOG_DEBUG(("preload(%s, %s)", classname.c_str(), animation.c_str()));
+	LOG_DEBUG(("preload(%s, %s)", _classname.c_str(), animation.c_str()));
 	if (classname.empty() || animation.empty())
 		return;
 	
 	preload(animation); 
 	
+	std::string classname = vars.parse(_classname);
 	if (_preload_done.find(classname) != _preload_done.end())
 		return;	
 	
