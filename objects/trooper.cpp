@@ -23,6 +23,14 @@
 #include "config.h"
 #include "trooper.h"
 
+void Trooper::getDependentAnimations(std::set<std::string> &animations) const {
+	animations.insert("machinegunner-bullet");
+	animations.insert("thrower-missile");
+	animations.insert("explosion");
+	animations.insert("missile-explosion");
+}
+
+
 void Trooper::getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const {
 	if (impassability > 0.2f) {
 		base_value = 0.2f;
