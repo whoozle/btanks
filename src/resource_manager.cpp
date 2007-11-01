@@ -479,11 +479,12 @@ void IResourceManager::preload(const std::string &_classname, const std::string 
 		return;
 
 	LOG_DEBUG(("preload(%s, %s)", _classname.c_str(), animation.c_str()));
-	if (classname.empty() || animation.empty())
+	if (_classname.empty() || animation.empty())
 		return;
 	
 	preload(animation); 
-	
+
+	Variants vars; 
 	std::string classname = vars.parse(_classname);
 	if (_preload_done.find(classname) != _preload_done.end())
 		return;	
