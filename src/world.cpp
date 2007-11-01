@@ -1535,6 +1535,7 @@ const bool IWorld::attachVehicle(Object *object, Object *vehicle) {
 	if (!vehicle->_variants.has("safe")) //do not change classname for safe vehicles
 		vehicle->classname = "fighting-vehicle";
 	vehicle->copyOwners(object);
+	vehicle->disable_ai = true;
 
 	replaceID(old_id, new_id);
 	slot->id = new_id;
