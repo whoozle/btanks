@@ -305,7 +305,7 @@
 		<pose id="move" sound="helicopter.ogg">0,1,2</pose>
 	</animation-model>
 	
-	<animation-model id="dead-helicopter-animation" speed="5">
+	<animation-model id="dead-helicopter-animation" speed="4">
 		<pose id="fade-in">0,1,2</pose>
 		<pose id="burn" speed="100">3</pose> <!-- small hack to avoid warnings from corpse object. -->
 		<pose id="fade-out">3</pose>
