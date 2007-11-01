@@ -38,6 +38,14 @@ public:
 		s.get(_fire_cycles);
 		s.get(_play_dead);
 	}
+	
+	void emit(const std::string &event, Object * emitter) {
+		if (emitter != NULL && _variants.has("do-damage") && event == "collision") {
+			if (getState() == "burn" || getState() == "fade-out") {
+				emitter->emit("death");
+			}
+		}
+	}
 
 private: 
 	int _fire_cycles;
