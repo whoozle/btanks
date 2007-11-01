@@ -68,9 +68,7 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 		sdlx::Surface *s = NULL;
 		sdlx::CollisionMap *cmap = NULL;
 		bool real_load = !attr["persistent"].empty();
-		GET_CONFIG_VALUE("engine.preload-all-resources", bool , preload_all, true);
 
-		real_load |= preload_all;
 		std::string &tile = attr["tile"];
 		if (_base_dir.empty())
 			throw_ex(("base directory was not defined (multiply resources tag ? invalid resource structure?)"));
@@ -399,7 +397,6 @@ Object *IResourceManager::createObject(const std::string &_classname) const {
 
 	r->updateVariants(vars);
 	
-
 	return r;
 }
 
@@ -411,6 +408,18 @@ Object *IResourceManager::createObject(const std::string &classname, const std::
 	//LOG_DEBUG(("base: %s", i->second->dump().c_str()));
 	//LOG_DEBUG(("clone: %s", r->dump().c_str()));
 	r->animation = animation;
+
+	//check for preloading: 
+	GET_CONFIG_VALUE("engine.preload-all-resources", bool , preload_all, true);
+	if (preload_all) {
+		const_cast<IResourceManager*>(this)->preload(animation); //fixme: remove const from this method
+		std::set<std::string> animations; 
+		r->getDependentAnimations(animations);
+		for(std::set<std::string>::iterator i = animations.begin(); i != animations.end(); ++i) {
+			const_cast<IResourceManager*>(this)->preload(*i);
+		}
+	}
+
 	return r;
 }
 
