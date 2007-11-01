@@ -52,6 +52,7 @@ public:
 	}
 	virtual void getDependentAnimations(std::set<std::string> &animations) const {
 		animations.insert("missile-fire");
+		animations.insert("smoke-cloud");
 	}
 	
 private: 

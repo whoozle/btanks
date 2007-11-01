@@ -67,7 +67,13 @@ void Launcher::onSpawn() {
 
 void Launcher::getDependentAnimations(std::set<std::string> &animations) const {
 	animations.insert("launcher-smoke");
+
+	animations.insert("dump-missiles-on-launcher");
 	animations.insert("guided-missiles-on-launcher");
+	animations.insert("smoke-missiles-on-launcher");
+	animations.insert("boomerang-missiles-on-launcher");
+	animations.insert("nuke-missiles-on-launcher");
+	animations.insert("stun-missiles-on-launcher");
 }
 
 void Launcher::emit(const std::string &event, Object * emitter) {
