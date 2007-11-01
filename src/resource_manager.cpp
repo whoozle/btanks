@@ -478,6 +478,7 @@ void IResourceManager::preload(const std::string &classname, const std::string &
 	if (!preload_all) 
 		return;
 
+	LOG_DEBUG(("preload(%s, %s)", classname.c_str(), animation.c_str()));
 	if (classname.empty() || animation.empty())
 		return;
 	
