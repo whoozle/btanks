@@ -642,7 +642,7 @@
 	<animation id="oil-barrels" model="destructable-object-animation" tile="oil-barrels.png" />
 
 	<animation id="helicopter" model="helicopter-animation" tile="helicopter.png" size="128" />
-	<animation id="chinook" model="helicopter-animation" tile="chinook.png" size="128" />
+	<animation id="chinook" model="helicopter-animation" tile="chinook.png" size="256" />
 	<animation id="helicopter-bullet-right" tile="helicopter_bullet1.png" model="bullet-animation"/>
 	<animation id="helicopter-bullet-left" tile="helicopter_bullet2.png" model="bullet-animation"/>
 
