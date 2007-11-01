@@ -397,6 +397,10 @@
 		<pose id="fire-right">4,1</pose>
 	</animation-model>
 	
+	<animation-model id="target-animation" speed="7">
+		<pose id="main">0,1,2,3,2,1</pose>
+	</animation-model>
+	
 	<!-- 
 		sound tag allows you to load sample that doesn't reside in any animation model.
 	-->
@@ -725,6 +729,8 @@
 	<animation id="buggy-bullet-left" tile="buggy_bullet2.png" model="bullet-animation"/>
 	<animation id="buggy-air-bullet-right" tile="buggy_air_bullet1.png" model="bullet-animation"/>
 	<animation id="buggy-air-bullet-left" tile="buggy_air_bullet2.png" model="bullet-animation"/>
+	
+	<animation id="target" tile="target.png" model="target-animation" size="64" />
 
 	<object class="damage-digits" speed="60" ttl="1" z="999" />
 
@@ -795,6 +801,8 @@
 	<object class="nuke-missile" speed="150" mass="100" ttl="3" hp="1000" z="250" />
 	<object class="boomerang-missile" speed="500" mass="100" hp="15" z="250" />
 	<object class="stun-missile" speed="600" mass="100" ttl="5" hp="0" z="250" />
+	<object class="ballistic-missile" speed="1000" mass="100" hp="-1" z="-1" impassability="0"/>
+	<object class="ballistic-missile-target" speed="100" z="-5" impassability="0" />
 
 	<!-- <object class="missile-launch" impassability="0" z="260" /> -->
 

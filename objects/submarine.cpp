@@ -57,6 +57,7 @@ void Submarine::tick(const float dt) {
 	}
 	if (_wakeup.tick(dt)) {
 		//LOG_DEBUG(("waking up..."));
+		spawn("ballistic-missile", "nuke-missile");
 		_wakeup.set(3600);
 		
 		cancelAll();
