@@ -179,11 +179,11 @@
 
 	<animation-model id="missiles-on-boat-animation" speed="1">
 		<pose id="missile-1">0</pose>
-		<pose id="missile-2">0</pose>
-		<pose id="missile-3">0</pose>
+		<pose id="missile-2">1</pose>
+		<pose id="missile-3">2</pose>
 		<pose id="missile-1-hold">0</pose>
-		<pose id="missile-2-hold">0</pose>
-		<pose id="missile-3-hold">0</pose>
+		<pose id="missile-2-hold">1</pose>
+		<pose id="missile-3-hold">2</pose>
 	</animation-model>
 
 	<animation-model id="dispersion-bullet-animation" speed="1">
