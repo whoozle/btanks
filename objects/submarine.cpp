@@ -63,7 +63,7 @@ bool Submarine::spawnBallistic() {
 	targets.insert("watchtower");
 	
 	v2<float> pos, vel;
-	if (getNearest(targets, getWeaponRange("bullet"), pos, vel, false)) {
+	if (getNearest(targets, 640.0f, pos, vel, false)) {
 		spawn("ballistic-missile", "nuke-missile");
 		return true;
 	}
