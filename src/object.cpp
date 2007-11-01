@@ -1453,7 +1453,7 @@ void Object::getImpassabilityMatrix(Matrix<int> &matrix, const Object *dst) cons
 	World->getImpassabilityMatrix(matrix, this, dst);
 }
 
-void Object::getDependentAnimations(std::set<std::string> &animations) const {
+void Object::getDependentAnimations(std::set<std::string> &classes, std::set<std::string> &animations) const {
 }
 
 const bool Object::take(const BaseObject *obj, const std::string &type) {

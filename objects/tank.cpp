@@ -51,7 +51,7 @@ void Tank::onSpawn() {
 	play("hold", true);
 }
 
-void Tank::getDependentAnimations(std::set<std::string> &animations) const {
+void Tank::getDependentAnimations(std::set<std::string> &classes, std::set<std::string> &animations) const {
 	animations.insert("tank-smoke");
 	animations.insert("guided-missiles-on-tank");
 	animations.insert("tank-bullet");

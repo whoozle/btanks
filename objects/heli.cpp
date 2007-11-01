@@ -110,7 +110,7 @@ void Heli::emit(const std::string &event, Object * emitter) {
 	Object::emit(event, emitter);
 }
 
-void Heli::getDependentAnimations(std::set<std::string> &animations) const {
+void Heli::getDependentAnimations(std::set<std::string> &classes, std::set<std::string> &animations) const {
 	animations.insert("bomb");
 	animations.insert("paratrooper");
 	animations.insert("gay-paratrooper");

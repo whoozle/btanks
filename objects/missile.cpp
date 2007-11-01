@@ -50,7 +50,7 @@ public:
 		s.get(_reaction);
 		s.get(_target);
 	}
-	virtual void getDependentAnimations(std::set<std::string> &animations) const {
+	virtual void getDependentAnimations(std::set<std::string> &classes, std::set<std::string> &animations) const {
 		animations.insert("missile-fire");
 		animations.insert("smoke-cloud");
 	}

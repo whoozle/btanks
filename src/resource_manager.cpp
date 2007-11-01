@@ -493,8 +493,8 @@ void IResourceManager::preload(const std::string &_classname, const std::string 
 		return;	
 	
 	const Object *o = getClass(classname);
-	std::set<std::string> animations; 
-	o->getDependentAnimations(animations);
+	std::set<std::string> classes, animations; 
+	o->getDependentAnimations(classes, animations);
 	for(std::set<std::string>::iterator i = animations.begin(); i != animations.end(); ++i) {
 		preload(*i);
 	}

@@ -42,7 +42,7 @@ public:
 		s.get(_alt_fire);
 		s.get(_left);
 	}	
-	virtual void getDependentAnimations(std::set<std::string> &animations) const;
+	virtual void getDependentAnimations(std::set<std::string> &classes, std::set<std::string> &animations) const;
 
 private: 
 	Alarm _fire, _alt_fire;

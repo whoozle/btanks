@@ -20,7 +20,7 @@
 #include "item.h"
 #include "resource_manager.h"
 
-void Item::getDependentAnimations(std::set<std::string> &animations) const {
+void Item::getDependentAnimations(std::set<std::string> &classes, std::set<std::string> &animations) const {
 	if (classname == "missiles" || classname == "mines") {
 		animations.insert(type + "-" + classname.substr(0, classname.size() - 1));
 	}

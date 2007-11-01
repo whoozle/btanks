@@ -23,7 +23,7 @@
 #include "config.h"
 #include "trooper.h"
 
-void Trooper::getDependentAnimations(std::set<std::string> &animations) const {
+void Trooper::getDependentAnimations(std::set<std::string> &classes, std::set<std::string> &animations) const {
 	animations.insert("machinegunner-bullet");
 	animations.insert("thrower-missile");
 	animations.insert("explosion");

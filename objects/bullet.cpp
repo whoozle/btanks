@@ -53,7 +53,7 @@ public:
 		s.get(_vel_backup);
 	}
 
-	virtual void getDependentAnimations(std::set<std::string> &animations) const {
+	virtual void getDependentAnimations(std::set<std::string> &classes, std::set<std::string> &animations) const {
 		animations.insert("explosion");
 		if (_type == "dirt") {
 			animations.insert("dirt");

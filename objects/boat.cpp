@@ -50,7 +50,7 @@ public:
 		s.get(_reaction);
 	}
 
-	virtual void getDependentAnimations(std::set<std::string> &animations) const {
+	virtual void getDependentAnimations(std::set<std::string> &classes, std::set<std::string> &animations) const {
 		animations.insert("guided-missiles-on-boat");
 	}
 

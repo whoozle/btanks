@@ -40,7 +40,7 @@ public:
 	virtual void deserialize(const mrt::Serializator &s) {
 		Object::deserialize(s);
 	}
-	virtual void getDependentAnimations(std::set<std::string> &animations) const {
+	virtual void getDependentAnimations(std::set<std::string> &classes, std::set<std::string> &animations) const {
 		animations.insert("buggy-gun");
 	}
 

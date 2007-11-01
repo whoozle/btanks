@@ -28,7 +28,7 @@ public:
 	virtual void tick(const float dt);
 	virtual void onSpawn();
 
-	virtual void getDependentAnimations(std::set<std::string> &animations) const {
+	virtual void getDependentAnimations(std::set<std::string> &classes, std::set<std::string> &animations) const {
 		animations.insert("fire");
 	}
 	
