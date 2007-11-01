@@ -410,15 +410,7 @@ Object *IResourceManager::createObject(const std::string &classname, const std::
 	r->animation = animation;
 
 	//check for preloading: 
-	GET_CONFIG_VALUE("engine.preload-all-resources", bool , preload_all, true);
-	if (preload_all) {
-		const_cast<IResourceManager*>(this)->preload(animation); //fixme: remove const from this method
-		std::set<std::string> animations; 
-		r->getDependentAnimations(animations);
-		for(std::set<std::string>::iterator i = animations.begin(); i != animations.end(); ++i) {
-			const_cast<IResourceManager*>(this)->preload(*i);
-		}
-	}
+	const_cast<IResourceManager *>(this)->preload(classname, animation);
 
 	return r;
 }
@@ -484,7 +476,30 @@ void IResourceManager::getAllClasses(std::set<std::string> &classes) {
 	}
 }
 
+void IResourceManager::preload(const std::string &classname, const std::string &animation) {
+	GET_CONFIG_VALUE("engine.preload-all-resources", bool , preload_all, true);
+	if (!preload_all) 
+		return;
+
+	preload(animation); 
+	
+	if (_preload_done.find(classname) != _preload_done.end())
+		return;	
+	
+	const Object *o = getClass(classname);
+	std::set<std::string> animations; 
+	o->getDependentAnimations(animations);
+	for(std::set<std::string>::iterator i = animations.begin(); i != animations.end(); ++i) {
+		preload(*i);
+	}
+	_preload_done.insert(classname);
+}
+
 void IResourceManager::preload(const std::string &animation) {
 	Animation * a = getAnimation(animation);
 	loadSurface(a->surface);
+
+	AnimationMap::iterator i = _animations.find("dead-" + animation);
+	if (i != _animations.end()) 
+		loadSurface(i->second->surface);
 }
