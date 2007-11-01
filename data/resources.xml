@@ -81,7 +81,6 @@
 		<pose id="dead">6</pose>
 	</animation-model>
 
-
 	<animation-model id="dead-zombie-animation" speed="5">
 		<pose id="fade-in">0,1</pose>
 		<pose id="burn">2,3,4,5</pose>
@@ -305,6 +304,14 @@
 		<pose id="hold">0</pose>
 		<pose id="move" sound="helicopter.ogg">0,1,2</pose>
 	</animation-model>
+	
+	<animation-model id="dead-helicopter-animation" speed="5">
+		<pose id="fade-in">0,1,2</pose>
+		<pose id="burn" speed="100">3</pose> <!-- small hack to avoid warnings from corpse object. -->
+		<pose id="fade-out">3</pose>
+		<pose id="dead">4</pose>
+	</animation-model>
+
 
 	<animation-model id="bomb-animation" speed="2">
 		<pose id="main">0,1,2,3,4</pose>
@@ -647,6 +654,8 @@
 
 	<animation id="helicopter" model="helicopter-animation" tile="helicopter.png" size="128" />
 	<animation id="chinook" model="helicopter-animation" tile="chinook.png" size="256" />
+	<animation id="dead-helicopter" model="dead-helicopter-animation" tile="helicopter_crash.png" size="128" />
+	<animation id="dead-chinook" model="dead-helicopter-animation" tile="chinook_crash.png" size="256" />
 	<animation id="helicopter-bullet-right" tile="helicopter_bullet1.png" model="bullet-animation"/>
 	<animation id="helicopter-bullet-left" tile="helicopter_bullet2.png" model="bullet-animation"/>
 
