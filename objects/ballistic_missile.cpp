@@ -63,8 +63,8 @@ public:
 				emit("death", NULL);
 				target->emit("death", NULL);
 			} else {
-				if (math::abs(_velocity.x) * 3 > _velocity.y)
-					_velocity.x = _velocity.y / 3;
+				if (math::abs(_velocity.x) * 5 > _velocity.y)
+					_velocity.x = _velocity.y / 5;
 			}
 		}
 	}
