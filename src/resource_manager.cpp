@@ -478,6 +478,9 @@ void IResourceManager::preload(const std::string &classname, const std::string &
 	if (!preload_all) 
 		return;
 
+	if (classname.empty() || animation.empty())
+		return;
+	
 	preload(animation); 
 	
 	if (_preload_done.find(classname) != _preload_done.end())
@@ -493,6 +496,8 @@ void IResourceManager::preload(const std::string &classname, const std::string &
 }
 
 void IResourceManager::preload(const std::string &animation) {
+	if (animation.empty())
+		return;
 	Animation * a = getAnimation(animation);
 	loadSurface(a->surface);
 
