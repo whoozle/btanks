@@ -37,9 +37,14 @@ extern "C"
 	int main(int argc, char *argv[]);
 
 
+#include "mrt/memory.h"
+
 int main(int argc, char *argv[]) {
 	try {
 		LOG_NOTICE(("starting up... version: %s", getVersion().c_str()));
+		
+		LOG_NOTICE(("mem avail: %d mb", mrt::MemoryInfo::available()));
+		
 		mrt::install_crash_handlers();
 		mrt::init_seed();
 		
