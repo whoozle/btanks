@@ -102,7 +102,8 @@ void Heli::onSpawn() {
 
 void Heli::emit(const std::string &event, Object * emitter) {
 	if (event == "death") {
-		spawn("impassable-corpse(with-fire)", "dead-" + animation);
+		Object * o = spawn("impassable-corpse(with-fire)", "dead-" + animation);
+		o->setZBox(0);
 	} else if (event == "collision") {
 	}
 	
