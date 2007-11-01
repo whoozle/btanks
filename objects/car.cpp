@@ -69,9 +69,10 @@ void Car::emit(const std::string &event, Object * emitter) {
 		spawn("corpse", "dead-" + animation, v2<float>(), v2<float>());
 	} else if (emitter != NULL && !_velocity.is0() && event == "collision" && animation == "harvester") {
 		const std::string &classname = emitter->classname;
-		if (!emitter->getVariants().has("player") && (classname == "trooper" || classname == "civilian" || classname == "kamikaze")) {
+		if (!emitter->getVariants().has("player") && (classname == "trooper" || classname == "civilian" || classname == "kamikaze" || classname == "monster")) {
 			//LOG_DEBUG(("bloody harvest"));
-			emitter->emit("death", NULL);
+			if (classname != "monster")
+				emitter->emit("death", NULL);
 			heal(5);
 		}
 	} else if (event == "collision" && !_variants.has("safe")) {
