@@ -37,6 +37,8 @@ public:
 		Object::deserialize(s);
 		s.get(_wakeup);
 	}
+	
+	bool spawnBallistic();
 
 protected:
 	Alarm _wakeup;
@@ -48,6 +50,26 @@ void Submarine::onSpawn() {
 	playSound("submarine", true);
 }
 
+
+bool Submarine::spawnBallistic() {
+	std::set<std::string> targets;
+	
+	targets.insert("fighting-vehicle");
+	targets.insert("trooper");
+	targets.insert("kamikaze");
+	targets.insert("boat");
+	targets.insert("helicopter");
+	targets.insert("monster");
+	targets.insert("watchtower");
+	
+	v2<float> pos, vel;
+	if (getNearest(targets, getWeaponRange("bullet"), pos, vel, false)) {
+		spawn("ballistic-missile", "nuke-missile");
+		return true;
+	}
+	return false;
+}
+
 void Submarine::tick(const float dt) {
 	Object::tick(dt);
 
@@ -57,7 +79,7 @@ void Submarine::tick(const float dt) {
 	}
 	if (_wakeup.tick(dt)) {
 		//LOG_DEBUG(("waking up..."));
-		spawn("ballistic-missile", "nuke-missile");
+		spawnBallistic();
 		_wakeup.set(3600);
 		
 		cancelAll();
