@@ -63,6 +63,7 @@ void Turrel::onSpawn() {
 void Turrel::tick(const float dt) {
 	Object::tick(dt);
 	bool ai = (_parent != NULL)? !_parent->disable_ai:true;
+	//LOG_DEBUG(("ai: %s, _parent: %s, parent->disable_ai : %s", ai?"true":"false", _parent?_parent->animation.c_str():"-", _parent?(_parent->disable_ai?"true":"false"):"-"));
 	if (_fire.tick(dt) && _state.fire && (!ai || canFire())) {
 		bool air_mode = (_parent != NULL)?_parent->getPlayerState().alt_fire:true;
 		cancelAll();
