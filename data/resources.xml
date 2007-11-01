@@ -458,7 +458,7 @@
 
 	<!-- animation tiles -->
 
-	<animation id="damage-digits" tile="../font/digits.png" model="single-tile" tile_width="10" tile_height="16" />
+	<animation id="damage-digits" tile="../font/digits.png" model="single-tile" tile_width="10" tile_height="16" persistent="yes" />
 
 	<animation id="spawning" tile="respawn.png" model="spawning-animation" size="128" />
 	<animation id="green-tank" tile="tank01.png" model="tank-animation"/>

@@ -28,6 +28,10 @@ public:
 	virtual void tick(const float dt);
 	virtual void onSpawn();
 
+	virtual void getDependentAnimations(std::set<std::string> &animations) const {
+		animations.insert("fire");
+	}
+	
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
 		s.add(_fire_cycles);

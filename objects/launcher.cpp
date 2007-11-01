@@ -65,6 +65,10 @@ void Launcher::onSpawn() {
 	play("hold", true);
 }
 
+void Launcher::getDependentAnimations(std::set<std::string> &animations) const {
+	animations.insert("launcher-smoke");
+	animations.insert("guided-missiles-on-launcher");
+}
 
 void Launcher::emit(const std::string &event, Object * emitter) {
 	if (event == "death") {

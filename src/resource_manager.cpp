@@ -474,3 +474,8 @@ void IResourceManager::getAllClasses(std::set<std::string> &classes) {
 		classes.insert(i->first);
 	}
 }
+
+void IResourceManager::preload(const std::string &animation) {
+	Animation * a = getAnimation(animation);
+	loadSurface(a->surface);
+}

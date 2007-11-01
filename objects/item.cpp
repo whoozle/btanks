@@ -20,6 +20,12 @@
 #include "item.h"
 #include "resource_manager.h"
 
+void Item::getDependentAnimations(std::set<std::string> &animations) const {
+	if (classname == "missiles" || classname == "mines") {
+		animations.insert(type + "-" + classname.substr(0, classname.size() - 1));
+	}
+}
+
 Item::Item(const std::string &classname, const std::string &type) : Object(classname), type(type) {
 	pierceable = true;
 	impassability = 1;

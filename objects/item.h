@@ -41,6 +41,7 @@ public:
 	}
 	virtual const std::string getType() const { return type; }
 	virtual const int getCount() const { return hp; }
+	virtual void getDependentAnimations(std::set<std::string> &animations) const;
 
 };
 

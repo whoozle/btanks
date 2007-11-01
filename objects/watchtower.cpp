@@ -41,6 +41,11 @@ public:
 		o = add("top", "watchtower-top", "watchtower", v2<float>(0, 0), Centered);
 		o->setZ(getZ() + 2);
 	}
+
+	virtual void getDependentAnimations(std::set<std::string> &animations) const {
+		animations.insert(_animation);
+		animations.insert("watchtower");
+	}
 	
 	virtual void tick(const float dt) {
 		DestructableObject::tick(dt);

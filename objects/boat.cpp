@@ -50,6 +50,10 @@ public:
 		s.get(_reaction);
 	}
 
+	virtual void getDependentAnimations(std::set<std::string> &animations) const {
+		animations.insert("guided-missiles-on-boat");
+	}
+
 private:
 	std::string _object;
 	Alarm _fire, _reload, _reaction;
