@@ -69,6 +69,9 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 		sdlx::CollisionMap *cmap = NULL;
 		bool real_load = !attr["persistent"].empty();
 
+		GET_CONFIG_VALUE("engine.preload-all-resources", bool , preload_all, true);
+		real_load |= preload_all;
+
 		std::string &tile = attr["tile"];
 		if (_base_dir.empty())
 			throw_ex(("base directory was not defined (multiply resources tag ? invalid resource structure?)"));
@@ -475,7 +478,7 @@ void IResourceManager::getAllClasses(std::set<std::string> &classes) {
 
 void IResourceManager::preload(const std::string &_classname, const std::string &animation) {
 	GET_CONFIG_VALUE("engine.preload-all-resources", bool , preload_all, true);
-	if (!preload_all) 
+	if (preload_all) 
 		return;
 
 	LOG_DEBUG(("preload(%s, %s)", _classname.c_str(), animation.c_str()));
