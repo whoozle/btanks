@@ -249,6 +249,7 @@ void IGameMonitor::checkItems(const float dt) {
 
 void IGameMonitor::add(const GameItem &item_) {
 	GameItem item(item_);
+	ResourceManager->preload(item.classname, item.animation);
 
 #ifdef ENABLE_LUA
 	if (lua_hooks != NULL)
