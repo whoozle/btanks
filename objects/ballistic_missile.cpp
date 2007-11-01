@@ -11,6 +11,7 @@ public:
 	
 	BallisticMissile() : Object("ballistic-missile"), _fall(false), _reaction(true)	{
 		setDirectionsNumber(16);
+		piercing = true;
 	}
 	
 	void onSpawn() {
