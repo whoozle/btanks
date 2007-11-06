@@ -22,8 +22,7 @@
 #include "destructable_object.h"
 #include "mrt/random.h"
 #include "ai/base.h"
-
-//remove trooper from here. :)
+#include "special_owners.h"
 
 class PillBox : public DestructableObject, protected ai::Base {
 	Alarm _reaction, _fire, _fire2, _fire3; 
@@ -162,8 +161,12 @@ public:
 	virtual void onBreak() {
 		Object *o = spawn("explosion", "cannon-explosion");
 		o->setZ(getZ() + 1, true);
-		spawn("machinegunner", "machinegunner", size / 2.5);
-		spawn("machinegunner", "machinegunner", -size / 2.5);
+		for(int i = 0; i < 2; ++i) {
+			o = spawn("machinegunner", "machinegunner", size / 2.5);
+			o->disown();
+			if (hasOwner(OWNER_MAP))
+				o->addOwner(OWNER_MAP);
+		}
 	}
 };
 
