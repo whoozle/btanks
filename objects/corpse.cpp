@@ -49,6 +49,7 @@ public:
 				emitter->emit("death");
 			}
 		}
+		Object::emit(event, emitter);
 	}
 
 private: 
