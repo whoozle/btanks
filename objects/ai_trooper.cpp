@@ -130,11 +130,11 @@ void AITrooper::calculate(const float dt) {
 		//checking for a bullets 
 		v2<float> pos, vel;
 		float r = speed * 5.0f; 
-		
+
 		if (getNearest(bullets, r, pos, vel, false)) {
 			float ct = getCollisionTime(pos, vel, 16);
 			//LOG_DEBUG(("bullet at %g %g, est: %g", pos.x, pos.y, ct));
-			if (ct > 0 && ct <= 0.5f) {
+			if (ct > 0 && ct > 0.15f) {
 				v2<float> dpos = -(pos + vel * ct);
 				//LOG_DEBUG(("AAAAAAA!!"));
 				dpos.normalize();
