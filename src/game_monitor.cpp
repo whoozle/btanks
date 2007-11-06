@@ -249,7 +249,7 @@ void IGameMonitor::checkItems(const float dt) {
 
 void IGameMonitor::add(const GameItem &item_) {
 	GameItem item(item_);
-	ResourceManager->preload(item.classname, item.animation);
+	ResourceManager->preload(item_.classname, item_.animation);
 
 #ifdef ENABLE_LUA
 	if (lua_hooks != NULL)
@@ -828,6 +828,8 @@ void IGameMonitor::loadMap(Campaign *campaign, const std::string &name, const bo
 	});
 
 #	endif
+
+	ResourceManager->preload();
 	
 	Window->resetTimer();
 }

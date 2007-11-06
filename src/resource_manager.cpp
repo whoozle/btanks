@@ -485,10 +485,10 @@ void IResourceManager::preload(const std::string &_classname, const std::string 
 	if (_classname.empty() || animation.empty())
 		return;
 	
-	preload(animation); 
-
-	std::set<std::string> classes, animations; 
+	std::set<std::string> classes; 
 	classes.insert(_classname);
+	_preload_animations.insert(animation);
+
 	while (!classes.empty()) {
 		Variants vars; 
 		std::string classname = vars.parse(*classes.begin());
@@ -499,15 +499,26 @@ void IResourceManager::preload(const std::string &_classname, const std::string 
 	
 		const Object *o = getClass(classname);
 		LOG_DEBUG(("finding dependent animations for %s...", o->registered_name.c_str()));
-		o->getDependentAnimations(classes, animations);
+		o->getDependentAnimations(classes, _preload_animations);
 
 		_preload_done.insert(classname);
 		classes.erase(classes.begin());
 	}
 
-	for(std::set<std::string>::iterator i = animations.begin(); i != animations.end(); ++i) {
+}
+
+#include "sdlx/timer.h"
+
+void IResourceManager::preload() {
+	if (_preload_animations.empty())
+		return;
+	
+	reset_progress.emit(_preload_animations.size());
+	for(std::set<std::string>::iterator i = _preload_animations.begin(); i != _preload_animations.end(); ++i) {
 		preload(*i);
-	}	
+		notify_progress.emit(1);
+		sdlx::Timer::microsleep("splash test", 500);
+	}
 }
 
 void IResourceManager::preload(const std::string &animation) {

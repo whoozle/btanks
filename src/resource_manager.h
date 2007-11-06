@@ -62,8 +62,9 @@ public:
 	const sdlx::Surface *getSurface(const std::string &id) const;
 	const sdlx::CollisionMap *getCollisionMap(const std::string &id) const;
 	const sdlx::Font *loadFont(const std::string &id, const bool alpha);
-	void preload(const std::string &classname, const std::string &animation);
-	void preload(const std::string &animation);
+
+	void preload(const std::string &classname, const std::string &animation); //do not preload anything
+	void preload(); //real preloading.
 	
 	void createAlias(const std::string &name, const std::string &classname);
 	
@@ -72,6 +73,7 @@ public:
 	void getAllClasses(std::set<std::string> &classes);
 
 private:
+	void preload(const std::string &animation);
 	Animation *getAnimation(const std::string &id);
 
 	//xml stuff
@@ -107,7 +109,7 @@ private:
 	typedef std::map<const std::string, Object *> ObjectMap;
 	ObjectMap _objects;
 	
-	std::set<std::string> _preload_done;
+	std::set<std::string> _preload_done, _preload_animations;
 	
 	IResourceManager(const IResourceManager &);
 	const IResourceManager& operator=(const IResourceManager &);
