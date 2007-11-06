@@ -59,12 +59,7 @@ void Tank::getDependentAnimations(std::set<std::string> &classes, std::set<std::
 	animations.insert("dirt");
 	animations.insert("dirt-bullet");
 	
-	animations.insert("dumb-missiles-on-tank");
-	animations.insert("guided-missiles-on-tank");
-	animations.insert("smoke-missiles-on-tank");
-	animations.insert("boomerang-missiles-on-tank");
-	animations.insert("nuke-missiles-on-tank");
-	animations.insert("stun-missiles-on-tank");
+	classes.insert("missiles-on-tank");
 }
 
 

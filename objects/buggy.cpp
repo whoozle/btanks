@@ -41,6 +41,7 @@ public:
 		Object::deserialize(s);
 	}
 	virtual void getDependentAnimations(std::set<std::string> &classes, std::set<std::string> &animations) const {
+		classes.insert("turrel");
 		animations.insert("buggy-gun");
 	}
 

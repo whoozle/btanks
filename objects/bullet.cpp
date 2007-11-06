@@ -54,13 +54,13 @@ public:
 	}
 
 	virtual void getDependentAnimations(std::set<std::string> &classes, std::set<std::string> &animations) const {
-		animations.insert("explosion");
+		classes.insert("explosion");
 		if (_type == "dirt") {
-			animations.insert("dirt");
+			classes.insert("dirt");
 		} else if (_type == "cannon") {
-			animations.insert("cannon-explosion");
+			classes.insert("cannon-explosion");
 		} else if (_type == "mortar") {
-			animations.insert("mortar-explosion");
+			classes.insert("mortar-explosion");
 		}
 	}
 

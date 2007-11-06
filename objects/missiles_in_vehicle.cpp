@@ -25,6 +25,15 @@
 
 class MissilesInVehicle : public Object {
 public:
+	void getDependentAnimations(std::set<std::string> &classes, std::set<std::string> &animations) const {
+		classes.insert("dumb-missile");
+		classes.insert("guided-missile");
+		classes.insert("smoke-missile");
+		classes.insert("boomerang-missile");
+		classes.insert("nuke-missile");
+		classes.insert("stun-missile");
+	}
+
 	void update() {
 		need_sync = true;
 		if (_object.empty()) 

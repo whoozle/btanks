@@ -487,18 +487,27 @@ void IResourceManager::preload(const std::string &_classname, const std::string 
 	
 	preload(animation); 
 
-	Variants vars; 
-	std::string classname = vars.parse(_classname);
-	if (_preload_done.find(classname) != _preload_done.end())
-		return;	
-	
-	const Object *o = getClass(classname);
 	std::set<std::string> classes, animations; 
-	o->getDependentAnimations(classes, animations);
+	classes.insert(_classname);
+	while (!classes.empty()) {
+		Variants vars; 
+		std::string classname = vars.parse(*classes.begin());
+		if (_preload_done.find(classname) != _preload_done.end()) {
+			classes.erase(classes.begin());
+			continue;		
+		}
+	
+		const Object *o = getClass(classname);
+		LOG_DEBUG(("finding dependent animations for %s...", o->registered_name.c_str()));
+		o->getDependentAnimations(classes, animations);
+
+		_preload_done.insert(classname);
+		classes.erase(classes.begin());
+	}
+
 	for(std::set<std::string>::iterator i = animations.begin(); i != animations.end(); ++i) {
 		preload(*i);
-	}
-	_preload_done.insert(classname);
+	}	
 }
 
 void IResourceManager::preload(const std::string &animation) {
@@ -508,6 +517,9 @@ void IResourceManager::preload(const std::string &animation) {
 	loadSurface(a->surface);
 
 	AnimationMap::iterator i = _animations.find("dead-" + animation);
+	if (i != _animations.end()) 
+		loadSurface(i->second->surface);
+	AnimationMap::iterator i = _animations.find(animation + "-outline");
 	if (i != _animations.end()) 
 		loadSurface(i->second->surface);
 }

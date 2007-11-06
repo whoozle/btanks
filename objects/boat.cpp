@@ -51,7 +51,7 @@ public:
 	}
 
 	virtual void getDependentAnimations(std::set<std::string> &classes, std::set<std::string> &animations) const {
-		animations.insert("guided-missiles-on-boat");
+		classes.insert("missiles-on-boat");
 	}
 
 private:
