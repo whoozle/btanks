@@ -69,6 +69,8 @@ void Launcher::getDependentAnimations(std::set<std::string> &classes, std::set<s
 	animations.insert("launcher-smoke");
 
 	classes.insert("missiles-on-launcher");
+	classes.insert("machinegunner-on-launcher");
+	classes.insert("thrower-on-launcher");
 }
 
 void Launcher::emit(const std::string &event, Object * emitter) {
