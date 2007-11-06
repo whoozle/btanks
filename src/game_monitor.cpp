@@ -913,6 +913,7 @@ void IGameMonitor::onScriptZone(const int slot_id, const SpecialZone &zone) {
 }
 
 const std::string IGameMonitor::onConsole(const std::string &cmd, const std::string &param) {
+#ifdef ENABLE_LUA
 	if (cmd == "call") {
 		try {
 			if (lua_hooks == NULL)
@@ -923,5 +924,6 @@ const std::string IGameMonitor::onConsole(const std::string &cmd, const std::str
 		}
 		return "ok";
 	}
+#endif
 	return std::string();
 }
