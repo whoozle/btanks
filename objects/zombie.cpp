@@ -31,6 +31,9 @@ public:
 	virtual void onSpawn();
 	virtual void tick(const float dt);
 	virtual void emit(const std::string &event, Object * emitter = NULL);
+	const bool take(const BaseObject *obj, const std::string &type) {
+		return false;
+	}
 
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
