@@ -519,7 +519,7 @@ void IResourceManager::preload(const std::string &animation) {
 	AnimationMap::iterator i = _animations.find("dead-" + animation);
 	if (i != _animations.end()) 
 		loadSurface(i->second->surface);
-	AnimationMap::iterator i = _animations.find(animation + "-outline");
+	i = _animations.find(animation + "-outline");
 	if (i != _animations.end()) 
 		loadSurface(i->second->surface);
 }
