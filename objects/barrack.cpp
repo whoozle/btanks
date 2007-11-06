@@ -88,6 +88,8 @@ void Barrack::tick(const float dt) {
 			o->disown();
 			if (hasOwner(OWNER_MAP))
 				o->addOwner(OWNER_MAP);
+			if (hasOwner(OWNER_COOPERATIVE))
+				o->addOwner(OWNER_COOPERATIVE);
 			playNow("spawn");
 		}
 	}
