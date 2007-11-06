@@ -672,6 +672,7 @@
 	<animation id="machinegunner" model="trooper-animation" tile="machinegunner.png" />
 	<animation id="nukeman" model="trooper-animation" tile="nukeman.png" />
 	<animation id="dead-machinegunner" model="dead-man-animation" tile="machinegunner_dead.png" />
+	<animation id="dead-machinegunner-static" model="dead-man-animation-static" tile="machinegunner_dead.png" />
 
 	<animation id="dead-nukeman" model="dead-man-animation" tile="machinegunner_dead.png" />
 	<animation id="dead-machinegunner-in-watchtower" model="dead-man-animation" tile="machinegunner_dead.png" />
