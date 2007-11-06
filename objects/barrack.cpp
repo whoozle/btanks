@@ -31,6 +31,11 @@ public:
 				_variants.add("make-pierceable");
 		}
 
+	virtual void getDependentAnimations(std::set<std::string> &classes, std::set<std::string> &animations) const {
+		classes.insert(_object);
+		animations.insert(_animation);
+	}
+	
 	virtual Object* clone() const  { return new Barrack(*this); }
 	
 	virtual void tick(const float dt);
