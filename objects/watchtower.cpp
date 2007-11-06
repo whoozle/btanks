@@ -27,6 +27,12 @@ public:
 			_variants.add("make-pierceable");
 			_variants.add("with-fire");
 		}
+		
+	virtual void getDependentAnimations(std::set<std::string> &classes, std::set<std::string> &animations) const {
+		classes.insert(_object);
+		animations.insert(_animation);
+	}
+		
 	Object *clone() const { return new WatchTower(*this); }
 	
 	virtual void onSpawn() {
@@ -42,11 +48,6 @@ public:
 		o->setZ(getZ() + 2);
 	}
 
-	virtual void getDependentAnimations(std::set<std::string> &classes, std::set<std::string> &animations) const {
-		animations.insert(_animation);
-		animations.insert("watchtower");
-	}
-	
 	virtual void tick(const float dt) {
 		DestructableObject::tick(dt);
 		if (_broken) {
