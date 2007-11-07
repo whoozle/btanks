@@ -45,11 +45,6 @@ public:
 			_targets.insert("helicopter");
 	}
 
-	virtual void getDependentAnimations(std::set<std::string> &classes, std::set<std::string> &animations) const {
-		classes.insert(_object);
-		animations.insert(_object);
-	}
-
 	virtual Object * clone() const { return new PillBox(*this); }
 	
 	virtual void onSpawn() { 

@@ -28,10 +28,6 @@ public:
 			_variants.add("with-fire");
 		}
 		
-	virtual void getDependentAnimations(std::set<std::string> &classes, std::set<std::string> &animations) const {
-		classes.insert(_object);
-		animations.insert(_animation);
-	}
 		
 	Object *clone() const { return new WatchTower(*this); }
 	

@@ -60,11 +60,6 @@ void Shilka::onSpawn() {
 	play("hold", true);
 }
 
-void Shilka::getDependentAnimations(std::set<std::string> &classes, std::set<std::string> &animations) const {
-	animations.insert("tank-smoke");
-}
-
-
 Object * Shilka::clone() const {
 	return new Shilka(*this);
 }

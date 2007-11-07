@@ -40,10 +40,6 @@ public:
 	virtual void deserialize(const mrt::Serializator &s) {
 		Object::deserialize(s);
 	}
-	virtual void getDependentAnimations(std::set<std::string> &classes, std::set<std::string> &animations) const {
-		classes.insert("turrel");
-		animations.insert("buggy-gun");
-	}
 
 private: 
 	virtual void getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const;

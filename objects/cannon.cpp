@@ -44,16 +44,10 @@ public:
 		_fire.deserialize(s);
 		_reaction.deserialize(s);
 	}
-	virtual void getDependentAnimations(std::set<std::string> &classes, std::set<std::string> &animations) const;
 
 private:
 	Alarm _fire, _reaction;
 };
-
-void Cannon::getDependentAnimations(std::set<std::string> &classes, std::set<std::string> &animations) const {
-	animations.insert("cannon-bullet");
-	animations.insert("cannon-explosion");
-}
 
 void Cannon::calculate(const float dt) {
 	if (!_reaction.tick(dt))

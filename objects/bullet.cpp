@@ -53,17 +53,6 @@ public:
 		s.get(_vel_backup);
 	}
 
-	virtual void getDependentAnimations(std::set<std::string> &classes, std::set<std::string> &animations) const {
-		classes.insert("explosion");
-		if (_type == "dirt") {
-			classes.insert("dirt");
-		} else if (_type == "cannon") {
-			classes.insert("cannon-explosion");
-		} else if (_type == "mortar") {
-			classes.insert("mortar-explosion");
-		}
-	}
-
 private: 
 	std::string _type;
 	Alarm _clone, _guard_interval;

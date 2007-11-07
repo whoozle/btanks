@@ -51,18 +51,6 @@ void Tank::onSpawn() {
 	play("hold", true);
 }
 
-void Tank::getDependentAnimations(std::set<std::string> &classes, std::set<std::string> &animations) const {
-	animations.insert("tank-smoke");
-	animations.insert("guided-missiles-on-tank");
-	animations.insert("tank-bullet");
-	animations.insert("explosion");
-	animations.insert("dirt");
-	animations.insert("dirt-bullet");
-	
-	classes.insert("missiles-on-tank");
-}
-
-
 Object * Tank::clone() const {
 	return new Tank(*this);
 }

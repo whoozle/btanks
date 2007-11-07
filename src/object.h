@@ -55,7 +55,6 @@ public:
 	void init(const std::string &animation); //do not use it, needed for resman
 
 	virtual Object * clone() const;
-	virtual void getDependentAnimations(std::set<std::string> &classes, std::set<std::string> &animations) const;
 	
 	void playSound(const std::string &name, const bool loop, const float gain = 1.0);
 	void playRandomSound(const std::string &classname, const bool loop, const float gain = 1.0);

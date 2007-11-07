@@ -38,7 +38,6 @@ public:
 	virtual const std::string getType() const { return "launcher"; }
 
 	void getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const;
-	virtual void getDependentAnimations(std::set<std::string> &classes, std::set<std::string> &animations) const;
 	
 private:
 	Alarm _fire;

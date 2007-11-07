@@ -28,13 +28,6 @@ public:
 		{ hp = -1; impassability = 0; setDirectionsNumber(16); }
 
 	virtual Object * clone() const { return new Machinegunner(*this); }
-	virtual void getDependentAnimations(std::set<std::string> &classes, std::set<std::string> &animations) const {
-		animations.insert("machinegunner-on-launcher");
-		animations.insert("machinegunner-bullet");
-		animations.insert("thrower-on-launcher");
-		animations.insert("thrower-missile");
-	}
-
 	virtual void onSpawn();
 	virtual void tick(const float dt);
 	virtual void calculate(const float dt);
