@@ -60,6 +60,12 @@ void Machinegunner::tick(const float dt) {
 }
 
 void Machinegunner::calculate(const float dt) {
+	if (_parent != NULL) {
+		if (_parent->classname != "fighting-vehicle") {
+			_state.fire = _state.alt_fire = false;
+			return;
+		}
+	}
 	static std::set<std::string> targets;
 	if (targets.empty()) {
 		targets.insert("missile");
