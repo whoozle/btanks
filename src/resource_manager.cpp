@@ -316,6 +316,8 @@ void IResourceManager::init(const std::vector<std::pair<std::string, std::string
 	parseFiles(fname);
 }
 
+#include "mrt/file.h"
+
 void IResourceManager::clear() {
 	LOG_DEBUG(("freeing resources"));
 	std::for_each(_animations.begin(), _animations.end(), delete_ptr2<AnimationMap::value_type>());
@@ -332,6 +334,25 @@ void IResourceManager::clear() {
 	_objects.clear();
 
 	_am = NULL;
+	
+	std::map<const std::string, std::string> xml_data;
+	for(PreloadMap::const_iterator i = _preload_map.begin(); i != _preload_map.end(); ++i) {
+		for(std::set<std::string>::const_iterator j = i->second.begin(); j != i->second.end(); ++j) {
+			//LOG_DEBUG(("map: %s, %s", i->first.c_str(), j->c_str()));
+			xml_data[i->first.first] += mrt::formatString("\t<animation map=\"%s\" id=\"%s\" />\n", escape(i->first.second).c_str(), escape(*j).c_str());
+		}
+	}
+	for(std::map<const std::string, std::string>::iterator i = xml_data.begin(); i != xml_data.end(); ++i) {
+		//LOG_DEBUG(("xml data for %s, size: %u", i->first.c_str(), (unsigned)i->second.size()));
+		TRY {
+			assert(!i->first.empty());
+			mrt::File f;
+			f.open(i->first + "/preload.xml", "wb");
+			i->second.insert(0, "<preload>\n");
+			i->second += "</preload>\n";
+			f.writeAll(i->second);
+		} CATCH("writing to the preload cache", {});
+	}
 }
 
 IResourceManager::~IResourceManager() {
@@ -403,8 +424,12 @@ Object *IResourceManager::createObject(const std::string &_classname) const {
 	return r;
 }
 
+#include "tmx/map.h"
 
 Object *IResourceManager::createObject(const std::string &classname, const std::string &animation) const {
+	if (!Map->getName().empty())
+		_preload_map[PreloadMap::key_type(Map->getPath(), Map->getName())].insert(animation);
+	
 	Object *r = createObject(classname);
 	
 	r->init(animation);
@@ -476,61 +501,14 @@ void IResourceManager::getAllClasses(std::set<std::string> &classes) {
 	}
 }
 
-void IResourceManager::preload(const std::string &_classname, const std::string &animation) {
-	GET_CONFIG_VALUE("engine.preload-all-resources", bool , preload_all, true);
-	if (preload_all) 
-		return;
-
-	LOG_DEBUG(("preload(%s, %s)", _classname.c_str(), animation.c_str()));
-	if (_classname.empty() || animation.empty())
-		return;
-	
-	std::set<std::string> classes; 
-	classes.insert(_classname);
-	_preload_animations.insert(animation);
-
-	while (!classes.empty()) {
-		Variants vars; 
-		std::string classname = vars.parse(*classes.begin());
-		if (_preload_done.find(classname) != _preload_done.end()) {
-			classes.erase(classes.begin());
-			continue;		
-		}
-	
-		const Object *o = getClass(classname);
-		LOG_DEBUG(("finding dependent animations for %s...", o->registered_name.c_str()));
-		o->getDependentAnimations(classes, _preload_animations);
-
-		_preload_done.insert(classname);
-		classes.erase(classes.begin());
-	}
-
-}
-
-#include "sdlx/timer.h"
-
 void IResourceManager::preload() {
-	if (_preload_animations.empty())
+/*	if (_preload_animations.empty())
 		return;
 	
 	reset_progress.emit(_preload_animations.size());
 	for(std::set<std::string>::iterator i = _preload_animations.begin(); i != _preload_animations.end(); ++i) {
 		preload(*i);
 		notify_progress.emit(1);
-		sdlx::Timer::microsleep("splash test", 500);
 	}
-}
-
-void IResourceManager::preload(const std::string &animation) {
-	if (animation.empty())
-		return;
-	Animation * a = getAnimation(animation);
-	loadSurface(a->surface);
-
-	AnimationMap::iterator i = _animations.find("dead-" + animation);
-	if (i != _animations.end()) 
-		loadSurface(i->second->surface);
-	i = _animations.find(animation + "-outline");
-	if (i != _animations.end()) 
-		loadSurface(i->second->surface);
+*/
 }

@@ -1109,7 +1109,6 @@ void IPlayerManager::getDefaultVehicle(std::string &vehicle, std::string &animat
 			} else animation = vehicle;
 		}
 	} else animation = ra;
-	ResourceManager->preload(vehicle, animation);
 }
 
 void IPlayerManager::gameOver(const std::string &reason, const float time) {
