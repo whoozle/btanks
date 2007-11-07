@@ -4,6 +4,7 @@
 	<animation map="aqua_world" id="bus-stop-top" />
 	<animation map="aqua_world" id="cyan-launcher" />
 	<animation map="aqua_world" id="cyan-launcher-outline" />
+	<animation map="aqua_world" id="cyan-machinegunner-helmet" />
 	<animation map="aqua_world" id="cyan-shilka" />
 	<animation map="aqua_world" id="cyan-tank" />
 	<animation map="aqua_world" id="damage-digits" />
@@ -16,8 +17,10 @@
 	<animation map="aqua_world" id="dead-cyan-tank" />
 	<animation map="aqua_world" id="dead-green-launcher" />
 	<animation map="aqua_world" id="dead-green-tank" />
+	<animation map="aqua_world" id="dead-machinegunner" />
 	<animation map="aqua_world" id="dead-orange-bus" />
 	<animation map="aqua_world" id="dead-red-car" />
+	<animation map="aqua_world" id="dead-red-launcher" />
 	<animation map="aqua_world" id="dead-red-tank" />
 	<animation map="aqua_world" id="dead-thrower" />
 	<animation map="aqua_world" id="dead-thrower-static" />
@@ -27,8 +30,12 @@
 	<animation map="aqua_world" id="dead-yellow-shilka" />
 	<animation map="aqua_world" id="dead-yellow-tank" />
 	<animation map="aqua_world" id="dispersion-bullets-item" />
+	<animation map="aqua_world" id="dumb-missile" />
 	<animation map="aqua_world" id="dumb-missiles-item" />
+	<animation map="aqua_world" id="explosion" />
+	<animation map="aqua_world" id="fire" />
 	<animation map="aqua_world" id="green-launcher" />
+	<animation map="aqua_world" id="green-launcher-outline" />
 	<animation map="aqua_world" id="guided-missile" />
 	<animation map="aqua_world" id="guided-missiles-item" />
 	<animation map="aqua_world" id="guided-missiles-on-launcher" />
@@ -36,15 +43,23 @@
 	<animation map="aqua_world" id="heal" />
 	<animation map="aqua_world" id="launcher-smoke" />
 	<animation map="aqua_world" id="lodge" />
+	<animation map="aqua_world" id="machinegunner" />
+	<animation map="aqua_world" id="machinegunner-bullet" />
 	<animation map="aqua_world" id="machinegunner-item" />
+	<animation map="aqua_world" id="machinegunner-on-launcher" />
+	<animation map="aqua_world" id="machinegunner-outline" />
 	<animation map="aqua_world" id="megaheal" />
 	<animation map="aqua_world" id="mines-item" />
 	<animation map="aqua_world" id="missile-explosion" />
 	<animation map="aqua_world" id="missile-fire" />
+	<animation map="aqua_world" id="nuke-explosion" />
+	<animation map="aqua_world" id="nuke-missile" />
 	<animation map="aqua_world" id="nuke-missiles-item" />
 	<animation map="aqua_world" id="oil-barrels" />
 	<animation map="aqua_world" id="red-launcher" />
+	<animation map="aqua_world" id="red-launcher-outline" />
 	<animation map="aqua_world" id="red-tank" />
+	<animation map="aqua_world" id="regular-mine" />
 	<animation map="aqua_world" id="ricochet-bullets-item" />
 	<animation map="aqua_world" id="road-sign01" />
 	<animation map="aqua_world" id="road-sign04" />
@@ -55,11 +70,82 @@
 	<animation map="aqua_world" id="teleport" />
 	<animation map="aqua_world" id="tent-top" />
 	<animation map="aqua_world" id="thrower-item" />
+	<animation map="aqua_world" id="thrower-missile" />
+	<animation map="aqua_world" id="thrower-on-launcher" />
 	<animation map="aqua_world" id="traffic-lights" />
 	<animation map="aqua_world" id="van" />
+	<animation map="aqua_world" id="vehicle-machinegunner-bullet" />
 	<animation map="aqua_world" id="watchtower" />
 	<animation map="aqua_world" id="yellow-launcher" />
+	<animation map="aqua_world" id="yellow-launcher-outline" />
 	<animation map="aqua_world" id="yellow-mortar" />
 	<animation map="aqua_world" id="yellow-shilka" />
 	<animation map="aqua_world" id="yellow-tank" />
+	<animation map="baykonur" id="boat" />
+	<animation map="baykonur" id="cannon" />
+	<animation map="baykonur" id="cyan-shilka" />
+	<animation map="baykonur" id="cyan-tank" />
+	<animation map="baykonur" id="damage-digits" />
+	<animation map="baykonur" id="dead-cannon" />
+	<animation map="baykonur" id="dead-civilian-static-1" />
+	<animation map="baykonur" id="dead-cyan-car" />
+	<animation map="baykonur" id="dead-cyan-launcher" />
+	<animation map="baykonur" id="dead-cyan-shilka" />
+	<animation map="baykonur" id="dead-cyan-tank" />
+	<animation map="baykonur" id="dead-green-launcher" />
+	<animation map="baykonur" id="dead-green-shilka" />
+	<animation map="baykonur" id="dead-machinegunner" />
+	<animation map="baykonur" id="dead-orange-bus" />
+	<animation map="baykonur" id="dead-red-car" />
+	<animation map="baykonur" id="dead-red-shilka" />
+	<animation map="baykonur" id="dead-red-tank" />
+	<animation map="baykonur" id="dead-thrower-static" />
+	<animation map="baykonur" id="dead-yellow-car" />
+	<animation map="baykonur" id="dead-yellow-launcher" />
+	<animation map="baykonur" id="dead-yellow-tank" />
+	<animation map="baykonur" id="dirt" />
+	<animation map="baykonur" id="dispersion-bullets-item" />
+	<animation map="baykonur" id="dumb-missiles-item" />
+	<animation map="baykonur" id="explosion" />
+	<animation map="baykonur" id="gate" />
+	<animation map="baykonur" id="green-launcher" />
+	<animation map="baykonur" id="green-shilka" />
+	<animation map="baykonur" id="green-tank" />
+	<animation map="baykonur" id="guided-missiles-item" />
+	<animation map="baykonur" id="guided-missiles-on-launcher" />
+	<animation map="baykonur" id="guided-missiles-on-tank" />
+	<animation map="baykonur" id="heal" />
+	<animation map="baykonur" id="kamikaze" />
+	<animation map="baykonur" id="kamikaze-explosion" />
+	<animation map="baykonur" id="launcher-smoke" />
+	<animation map="baykonur" id="lodge" />
+	<animation map="baykonur" id="machinegunner" />
+	<animation map="baykonur" id="machinegunner-bullet" />
+	<animation map="baykonur" id="machinegunner-item" />
+	<animation map="baykonur" id="machinegunner-outline" />
+	<animation map="baykonur" id="megaheal" />
+	<animation map="baykonur" id="nuke-missiles-item" />
+	<animation map="baykonur" id="oil-barrels" />
+	<animation map="baykonur" id="red-launcher" />
+	<animation map="baykonur" id="red-shilka" />
+	<animation map="baykonur" id="red-tank" />
+	<animation map="baykonur" id="regular-mine" />
+	<animation map="baykonur" id="ricochet-bullets-item" />
+	<animation map="baykonur" id="road-sign03" />
+	<animation map="baykonur" id="road-sign10" />
+	<animation map="baykonur" id="smoke-missiles-item" />
+	<animation map="baykonur" id="spaceport-baykonur" />
+	<animation map="baykonur" id="stack" />
+	<animation map="baykonur" id="stall-left" />
+	<animation map="baykonur" id="stall-right" />
+	<animation map="baykonur" id="submarine" />
+	<animation map="baykonur" id="tank-smoke" />
+	<animation map="baykonur" id="thrower" />
+	<animation map="baykonur" id="thrower-item" />
+	<animation map="baykonur" id="trooper-hut" />
+	<animation map="baykonur" id="trooper-tent" />
+	<animation map="baykonur" id="watchtower" />
+	<animation map="baykonur" id="yellow-launcher" />
+	<animation map="baykonur" id="yellow-mortar" />
+	<animation map="baykonur" id="yellow-tank" />
 </preload>
