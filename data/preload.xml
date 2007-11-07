@@ -82,10 +82,14 @@
 	<animation map="aqua_world" id="yellow-shilka" />
 	<animation map="aqua_world" id="yellow-tank" />
 	<animation map="baykonur" id="boat" />
+	<animation map="baykonur" id="building-explosion" />
 	<animation map="baykonur" id="cannon" />
+	<animation map="baykonur" id="cannon-bullet" />
+	<animation map="baykonur" id="cannon-explosion" />
 	<animation map="baykonur" id="cyan-shilka" />
 	<animation map="baykonur" id="cyan-tank" />
 	<animation map="baykonur" id="damage-digits" />
+	<animation map="baykonur" id="dead-boat" />
 	<animation map="baykonur" id="dead-cannon" />
 	<animation map="baykonur" id="dead-civilian-static-1" />
 	<animation map="baykonur" id="dead-cyan-car" />
@@ -99,6 +103,7 @@
 	<animation map="baykonur" id="dead-red-car" />
 	<animation map="baykonur" id="dead-red-shilka" />
 	<animation map="baykonur" id="dead-red-tank" />
+	<animation map="baykonur" id="dead-thrower" />
 	<animation map="baykonur" id="dead-thrower-static" />
 	<animation map="baykonur" id="dead-yellow-car" />
 	<animation map="baykonur" id="dead-yellow-launcher" />
@@ -107,6 +112,7 @@
 	<animation map="baykonur" id="dispersion-bullets-item" />
 	<animation map="baykonur" id="dumb-missiles-item" />
 	<animation map="baykonur" id="explosion" />
+	<animation map="baykonur" id="fire" />
 	<animation map="baykonur" id="gate" />
 	<animation map="baykonur" id="green-launcher" />
 	<animation map="baykonur" id="green-shilka" />
@@ -124,6 +130,9 @@
 	<animation map="baykonur" id="machinegunner-item" />
 	<animation map="baykonur" id="machinegunner-outline" />
 	<animation map="baykonur" id="megaheal" />
+	<animation map="baykonur" id="missile-explosion" />
+	<animation map="baykonur" id="missile-fire" />
+	<animation map="baykonur" id="nuke-missile" />
 	<animation map="baykonur" id="nuke-missiles-item" />
 	<animation map="baykonur" id="oil-barrels" />
 	<animation map="baykonur" id="red-launcher" />
@@ -139,15 +148,18 @@
 	<animation map="baykonur" id="stall-left" />
 	<animation map="baykonur" id="stall-right" />
 	<animation map="baykonur" id="submarine" />
+	<animation map="baykonur" id="tank-bullet" />
 	<animation map="baykonur" id="tank-smoke" />
 	<animation map="baykonur" id="thrower" />
 	<animation map="baykonur" id="thrower-item" />
+	<animation map="baykonur" id="thrower-missile" />
 	<animation map="baykonur" id="trooper-hut" />
 	<animation map="baykonur" id="trooper-tent" />
 	<animation map="baykonur" id="watchtower" />
 	<animation map="baykonur" id="yellow-launcher" />
 	<animation map="baykonur" id="yellow-mortar" />
 	<animation map="baykonur" id="yellow-tank" />
+	<animation map="baykonur" id="yellow-tank-outline" />
 	<animation map="curfew" id="biotoilet" />
 	<animation map="curfew" id="building-explosion" />
 	<animation map="curfew" id="bus-stop-left" />
@@ -257,6 +269,7 @@
 	<animation map="dune" id="dumb-missiles-item" />
 	<animation map="dune" id="explosion" />
 	<animation map="dune" id="fire" />
+	<animation map="dune" id="green-launcher" />
 	<animation map="dune" id="guided-missile" />
 	<animation map="dune" id="guided-missiles-item" />
 	<animation map="dune" id="guided-missiles-on-launcher" />
@@ -275,6 +288,10 @@
 	<animation map="dune" id="nuke-missiles-item" />
 	<animation map="dune" id="oil-barrels" />
 	<animation map="dune" id="red-launcher" />
+	<animation map="dune" id="red-machinegunner-helmet" />
+	<animation map="dune" id="red-shilka" />
+	<animation map="dune" id="red-shilka-outline" />
+	<animation map="dune" id="red-thrower-helmet" />
 	<animation map="dune" id="regular-mine" />
 	<animation map="dune" id="road-sign07" />
 	<animation map="dune" id="road-sign10" />
@@ -291,8 +308,10 @@
 	<animation map="dune" id="thrower-missile" />
 	<animation map="dune" id="trooper-hut" />
 	<animation map="dune" id="watchtower" />
+	<animation map="dune" id="yellow-launcher" />
 	<animation map="dune" id="yellow-mortar" />
 	<animation map="dune" id="yellow-shilka" />
+	<animation map="dune" id="yellow-shilka-outline" />
 	<animation map="dune" id="zombie" />
 	<animation map="gaddino" id="boomerang-missile" />
 	<animation map="gaddino" id="boomerang-missiles-item" />
