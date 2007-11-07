@@ -539,13 +539,23 @@ void IResourceManager::getAllClasses(std::set<std::string> &classes) {
 }
 
 void IResourceManager::preload() {
-/*	if (_preload_animations.empty())
+	LOG_DEBUG(("preloading surfaces..."));
+	std::pair<std::string, std::string> map_id(Map->getPath(), Map->getName());
+	PreloadMap::const_iterator i = _preload_map.find(map_id);
+	if (i == _preload_map.end())
 		return;
 	
-	reset_progress.emit(_preload_animations.size());
-	for(std::set<std::string>::iterator i = _preload_animations.begin(); i != _preload_animations.end(); ++i) {
-		preload(*i);
+	const std::set<std::string>& animations = i->second;
+	if (animations.empty())
+		return;
+
+	reset_progress.emit(animations.size());
+	for(std::set<std::string>::iterator i = animations.begin(); i != animations.end(); ++i) {
+		const std::string &name = *i;
+		if (hasAnimation(name)) {
+			Animation *a = getAnimation(name);
+			loadSurface(a->surface);
+		}
 		notify_progress.emit(1);
 	}
-*/
 }
