@@ -84,15 +84,15 @@ void File::write(const Chunk &ch) const {
 		throw_io(("fwrite"));
 }
 
-const bool File::readLine(std::string &str) const {
-	char buf[1024];
-	
+const bool File::readLine(std::string &str, const size_t bufsize) const {
 	if (_f == NULL)
 		throw_ex(("readLine on closed file"));
+	mrt::Chunk buf;
+	buf.setSize(bufsize);
 	
-	if (fgets(buf, sizeof(buf), _f) == NULL)
+	if (fgets((char *)buf.getPtr(), buf.getSize(), _f) == NULL)
 		return false;
-	str = buf;
+	str.assign((const char *)buf.getPtr());
 	return true;
 }
 
