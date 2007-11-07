@@ -1,5 +1,5 @@
 #include "object.h"
-#include "resource_manager.h"
+#include "registrar.h"
 #include "mrt/random.h"
 #include "config.h"
 #include "world.h"

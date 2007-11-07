@@ -18,7 +18,7 @@
 
 #include "object.h"
 #include "world.h"
-#include "resource_manager.h"
+#include "registrar.h"
 #include "math/matrix.h"
 #include "tmx/map.h"
 #include "mrt/random.h"

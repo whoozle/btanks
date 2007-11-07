@@ -18,7 +18,7 @@
  */
 #include "heli.h"
 #include "config.h"
-#include "resource_manager.h"
+#include "registrar.h"
 #include "player_manager.h"
 #include "player_slot.h"
 

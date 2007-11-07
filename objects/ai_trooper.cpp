@@ -20,7 +20,7 @@
 #include "ai/base.h"
 #include "ai/herd.h"
 #include "config.h"
-#include "resource_manager.h"
+#include "registrar.h"
 #include "mrt/random.h"
 #include "special_owners.h"
 

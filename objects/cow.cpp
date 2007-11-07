@@ -17,7 +17,7 @@
  */
 
 #include "object.h"
-#include "resource_manager.h"
+#include "registrar.h"
 #include "alarm.h"
 #include "config.h"
 #include "mrt/random.h"

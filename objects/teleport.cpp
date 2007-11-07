@@ -1,5 +1,5 @@
 #include "object.h"
-#include "resource_manager.h"
+#include "registrar.h"
 #include "sdlx/rect.h"
 #include "mrt/random.h"
 #include "zbox.h"

@@ -19,7 +19,7 @@
 
 #include "object.h"
 #include "mrt/logger.h"
-#include "resource_manager.h"
+#include "registrar.h"
 
 class Damage : public Object {
 public:

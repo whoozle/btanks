@@ -18,6 +18,7 @@
  */
 
 #include "object.h"
+#include "registrar.h"
 #include "resource_manager.h"
 #include "alarm.h"
 #include "config.h"

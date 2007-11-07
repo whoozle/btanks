@@ -18,7 +18,7 @@
 
 #include "object.h"
 #include "alarm.h"
-#include "resource_manager.h"
+#include "registrar.h"
 #include "config.h"
 
 class Machinegunner : public Object {

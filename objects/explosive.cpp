@@ -17,6 +17,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 #include "destructable_object.h"
+#include "registrar.h"
 #include "resource_manager.h"
 #include "animation_model.h"
 

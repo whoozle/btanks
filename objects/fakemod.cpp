@@ -1,5 +1,5 @@
 #include "fakemod.h"
-#include "resource_manager.h"
+#include "registrar.h"
 
 /* Battle Tanks Game
  * Copyright (C) 2006-2007 Battle Tanks team

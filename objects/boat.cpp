@@ -18,7 +18,7 @@
 
 #include "config.h"
 #include "object.h"
-#include "resource_manager.h"
+#include "registrar.h"
 #include "alarm.h"
 #include "mrt/random.h"
 #include "tmx/map.h"

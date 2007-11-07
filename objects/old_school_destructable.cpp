@@ -17,7 +17,7 @@
  */
 
 #include "object.h"
-#include "resource_manager.h"
+#include "registrar.h"
 #include "object.h"
 
 class OldSchoolDestructableObject : public Object {

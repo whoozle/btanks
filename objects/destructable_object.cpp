@@ -17,7 +17,7 @@
  */
 
 #include "destructable_object.h"
-#include "resource_manager.h"
+#include "registrar.h"
 #include "config.h"
 #include "animation_model.h"
 

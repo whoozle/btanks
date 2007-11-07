@@ -18,7 +18,7 @@
 
 #include "launcher.h"
 #include "mrt/exception.h"
-#include "resource_manager.h"
+#include "registrar.h"
 #include "config.h"
 
 #include "ai/buratino.h" 

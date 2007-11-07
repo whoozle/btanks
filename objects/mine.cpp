@@ -18,7 +18,7 @@
  */
 
 #include "object.h"
-#include "resource_manager.h"
+#include "registrar.h"
 #include "config.h"
 #include "tmx/map.h"
 

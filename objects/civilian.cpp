@@ -17,7 +17,7 @@
  */
 
 #include "trooper.h"
-#include "resource_manager.h"
+#include "registrar.h"
 #include "ai/waypoints.h"
 
 class Civilian : public Trooper {

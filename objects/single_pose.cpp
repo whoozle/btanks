@@ -18,7 +18,7 @@
  */
 
 #include "object.h"
-#include "resource_manager.h"
+#include "registrar.h"
 
 class SinglePose : public Object {
 public:

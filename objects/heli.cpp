@@ -17,7 +17,7 @@
  */
 
 #include "heli.h"
-#include "resource_manager.h"
+#include "registrar.h"
 #include "alarm.h"
 #include "config.h"
 #include "zbox.h"

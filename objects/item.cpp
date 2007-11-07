@@ -18,7 +18,7 @@
  */
 
 #include "item.h"
-#include "resource_manager.h"
+#include "registrar.h"
 
 void Item::getDependentAnimations(std::set<std::string> &classes, std::set<std::string> &animations) const {
 	if (classname == "missiles" || classname == "mines") {

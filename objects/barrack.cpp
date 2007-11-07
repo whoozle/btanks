@@ -18,7 +18,7 @@
 
 #include "destructable_object.h"
 #include "config.h"
-#include "resource_manager.h"
+#include "registrar.h"
 #include "special_owners.h"
 
 class Barrack : public DestructableObject {

@@ -18,7 +18,7 @@
 
 #include "object.h"
 #include "alarm.h"
-#include "resource_manager.h"
+#include "registrar.h"
 #include "mrt/random.h"
 #include "tmx/map.h"
 #include "game_monitor.h"

@@ -18,7 +18,7 @@
 
 #include "object.h"
 #include "config.h"
-#include "resource_manager.h"
+#include "registrar.h"
 
 class Cannon : public Object {
 public:

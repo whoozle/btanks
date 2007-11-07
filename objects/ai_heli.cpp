@@ -18,7 +18,7 @@
  */
 #include "heli.h"
 #include "config.h"
-#include "resource_manager.h"
+#include "registrar.h"
 #include "tmx/map.h"
 #include "mrt/random.h"
 #include "ai/base.h"

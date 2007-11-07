@@ -48,7 +48,7 @@ bt_sources = 	[
 	'tmx/generator_object.cpp', 'tmx/tileset.cpp', 'tmx/generator.cpp', 'tmx/tileset_list.cpp',  
 	'tmx/map.cpp', 'tmx/layer.cpp',
 	
-	'src/var.cpp', 'src/config.cpp', 
+	'src/var.cpp', 'src/config.cpp', 'src/registrar.cpp', 
 	
 	'src/player_slot.cpp', 'src/hud.cpp', 'src/console.cpp',
 	'src/i18n.cpp', 'src/game.cpp', 'src/window.cpp', 

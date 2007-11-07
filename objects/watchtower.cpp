@@ -17,7 +17,7 @@
  */
 
 #include "destructable_object.h"
-#include "resource_manager.h"
+#include "registrar.h"
 
 
 class WatchTower : public DestructableObject {

@@ -20,7 +20,7 @@
 #include "object.h"
 #include "alarm.h"
 #include "config.h"
-#include "resource_manager.h"
+#include "registrar.h"
 #include "mrt/random.h"
 #include "player_manager.h"
 

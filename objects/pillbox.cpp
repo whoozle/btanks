@@ -17,7 +17,7 @@
  */
 
 #include "object.h"
-#include "resource_manager.h"
+#include "registrar.h"
 #include "config.h"
 #include "destructable_object.h"
 #include "mrt/random.h"

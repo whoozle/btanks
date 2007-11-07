@@ -22,8 +22,9 @@
 #include "tmx/map.h"
 #include "mrt/random.h"
 #include "mrt/logger.h"
-#include "resource_manager.h"
+#include "registrar.h"
 #include "config.h"
+#include "resource_manager.h"
 
 class Helicopter : public Object {
 public:

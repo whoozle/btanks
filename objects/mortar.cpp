@@ -18,7 +18,7 @@
  */
 
 #include <assert.h>
-#include "resource_manager.h"
+#include "registrar.h"
 #include "object.h"
 #include "mortar.h"
 #include "config.h"
