@@ -472,13 +472,18 @@ bool IGame::onKey(const SDL_keysym key, const bool pressed) {
 	}
 
 	if (!PlayerManager->isClient() && key.sym==SDLK_F12 && PlayerManager->getSlotsCount() > 0) {
-		PlayerSlot &slot = PlayerManager->getSlot(0);
-		if (slot.frags > 0) 
-			--slot.frags;
+		TRY {
+			PlayerSlot *slot = PlayerManager->getMySlot();
+			if (slot == NULL)
+				return true;
+		
+			if (slot->frags > 0) 
+				--slot->frags;
 
-		Object *o = slot.getObject();
-		if (o)
-			o->emit("death", 0);
+			Object *o = slot->getObject();
+			if (o)
+				o->emit("death", 0);
+		} CATCH("f12-suicide", {});
 		return true;
 	}
 
