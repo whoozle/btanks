@@ -484,4 +484,54 @@
 	<animation map="lenin_square" id="yellow-car" />
 	<animation map="lenin_square" id="yellow-launcher" />
 	<animation map="lenin_square" id="yellow-mortar" />
+	<animation map="paintball" id="cyan-launcher" />
+	<animation map="paintball" id="damage-digits" />
+	<animation map="paintball" id="dead-green-launcher" />
+	<animation map="paintball" id="dead-machinegunner" />
+	<animation map="paintball" id="dead-mortar" />
+	<animation map="paintball" id="dead-red-launcher" />
+	<animation map="paintball" id="dead-yellow-launcher" />
+	<animation map="paintball" id="dispersion-bullets-item" />
+	<animation map="paintball" id="dumb-missile" />
+	<animation map="paintball" id="dumb-missiles-item" />
+	<animation map="paintball" id="explosion" />
+	<animation map="paintball" id="green-launcher" />
+	<animation map="paintball" id="green-launcher-outline" />
+	<animation map="paintball" id="green-machinegunner-helmet" />
+	<animation map="paintball" id="green-mortar" />
+	<animation map="paintball" id="green-shilka" />
+	<animation map="paintball" id="green-tank" />
+	<animation map="paintball" id="guided-missile" />
+	<animation map="paintball" id="guided-missiles-item" />
+	<animation map="paintball" id="guided-missiles-on-launcher" />
+	<animation map="paintball" id="guided-missiles-on-tank" />
+	<animation map="paintball" id="heal" />
+	<animation map="paintball" id="launcher-smoke" />
+	<animation map="paintball" id="machinegunner" />
+	<animation map="paintball" id="machinegunner-bullet" />
+	<animation map="paintball" id="machinegunner-item" />
+	<animation map="paintball" id="machinegunner-on-launcher" />
+	<animation map="paintball" id="machinegunner-outline" />
+	<animation map="paintball" id="megaheal" />
+	<animation map="paintball" id="mines-item" />
+	<animation map="paintball" id="missile-explosion" />
+	<animation map="paintball" id="missile-fire" />
+	<animation map="paintball" id="mortar-bullet" />
+	<animation map="paintball" id="mortar-explosion" />
+	<animation map="paintball" id="nuke-explosion" />
+	<animation map="paintball" id="nuke-missile" />
+	<animation map="paintball" id="nuke-missiles-item" />
+	<animation map="paintball" id="red-launcher" />
+	<animation map="paintball" id="red-launcher-outline" />
+	<animation map="paintball" id="red-machinegunner-helmet" />
+	<animation map="paintball" id="regular-mine" />
+	<animation map="paintball" id="stun-missiles-item" />
+	<animation map="paintball" id="tank-smoke" />
+	<animation map="paintball" id="teleport" />
+	<animation map="paintball" id="thrower-item" />
+	<animation map="paintball" id="thrower-missile" />
+	<animation map="paintball" id="thrower-on-launcher" />
+	<animation map="paintball" id="vehicle-machinegunner-bullet" />
+	<animation map="paintball" id="yellow-launcher" />
+	<animation map="paintball" id="yellow-launcher-outline" />
 </preload>
