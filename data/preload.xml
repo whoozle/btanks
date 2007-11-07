@@ -164,6 +164,7 @@
 	<animation map="curfew" id="dead-cyan-car" />
 	<animation map="curfew" id="dead-cyan-shilka" />
 	<animation map="curfew" id="dead-cyan-tank" />
+	<animation map="curfew" id="dead-green-tank" />
 	<animation map="curfew" id="dead-machinegunner" />
 	<animation map="curfew" id="dead-orange-bus" />
 	<animation map="curfew" id="dead-red-car" />
@@ -180,7 +181,9 @@
 	<animation map="curfew" id="explosion" />
 	<animation map="curfew" id="fire" />
 	<animation map="curfew" id="gate" />
+	<animation map="curfew" id="green-machinegunner-helmet" />
 	<animation map="curfew" id="green-tank" />
+	<animation map="curfew" id="green-tank-outline" />
 	<animation map="curfew" id="guided-missile" />
 	<animation map="curfew" id="guided-missiles-item" />
 	<animation map="curfew" id="guided-missiles-on-launcher" />
@@ -203,8 +206,10 @@
 	<animation map="curfew" id="red-car" />
 	<animation map="curfew" id="red-shilka" />
 	<animation map="curfew" id="red-shilka-outline" />
+	<animation map="curfew" id="red-tank" />
 	<animation map="curfew" id="red-thrower-helmet" />
 	<animation map="curfew" id="regular-mine" />
+	<animation map="curfew" id="ricochet-bullet" />
 	<animation map="curfew" id="ricochet-bullets-item" />
 	<animation map="curfew" id="road-sign03" />
 	<animation map="curfew" id="road-sign04" />
@@ -220,6 +225,7 @@
 	<animation map="curfew" id="submarine" />
 	<animation map="curfew" id="tank-bullet" />
 	<animation map="curfew" id="tank-smoke" />
+	<animation map="curfew" id="target" />
 	<animation map="curfew" id="tent-left" />
 	<animation map="curfew" id="thrower" />
 	<animation map="curfew" id="thrower-item" />
