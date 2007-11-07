@@ -33,10 +33,47 @@
 
 IMPLEMENT_SINGLETON(ResourceManager, IResourceManager);
 
+class PreloadParser : public mrt::XMLParser {
+public: 
+	typedef std::map<const std::string, std::set<std::string> > PreloadMap;
+	
+	virtual void start(const std::string &name, Attrs &attr) {
+		if (name == "animation") {
+			std::string id = attr["id"];
+			std::string map = attr["map"];
+			if (map.empty() || id.empty())
+				return;
+			data[map].insert(id);
+		}
+	}
+	virtual void end(const std::string &name) {}
+	void update(std::map<const std::pair<std::string, std::string>, std::set<std::string> > &preload_map, const std::string &base) const {
+		for(PreloadMap::const_iterator i = data.begin(); i != data.end(); ++i) {
+			std::set<std::string> &dst = preload_map[std::pair<std::string, std::string>(base, i->first)];
+			const std::set<std::string> &src = i->second;
+			for(std::set<std::string>::const_iterator j = src.begin(); j != src.end(); ++j) {
+				dst.insert(*j);
+			}
+		}
+	}
+private: 
+	PreloadMap data;
+};
+
 void IResourceManager::onFile(const std::string &base, const std::string &file) {
 	_base_dir = base;
-}
 
+	if (base.empty())
+		return;
+
+	TRY {
+		std::string preload = base + "/preload.xml";
+		LOG_DEBUG(("parsing preload file: %s", preload.c_str()));
+		PreloadParser p;
+		p.parseFile(preload);
+		p.update(_preload_map, base);
+	} CATCH("parsing preload file", {});
+}
 
 void IResourceManager::start(const std::string &name, Attrs &attr) {	
 	if (name == "resources") {
