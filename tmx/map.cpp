@@ -449,7 +449,16 @@ void IMap::load(const std::string &name) {
 	clear();
 
 	LOG_DEBUG(("loading map '%s'", name.c_str()));
-	const std::string file = Finder->find("maps/" + name + ".tmx");
+	std::string file;
+	{
+		IFinder::FindResult fr;
+		Finder->findAll(fr, "maps/" + name + ".tmx");
+		if (fr.empty())
+			throw_ex(("could not find map '%s'", name.c_str()));
+		_path = fr[0].first;
+		file = fr[0].second;
+	}
+	
 	parseFile(file);
 	delete _image;
 	_image = NULL;
@@ -994,6 +1003,7 @@ void IMap::clear() {
 	
 	_tilesets.clear();
 	_name.clear();
+	_path.clear();
 	_torus = false;
 }
 
@@ -1111,6 +1121,7 @@ const sdlx::CollisionMap* IMap::getVisibilityMap(const Layer *l, const int x, co
 
 void IMap::serialize(mrt::Serializator &s) const {
 	s.add(_name);
+	s.add(_path);
 	s.add(_w); s.add(_h);
 	s.add(_tw); s.add(_th);
 	s.add(_ptw); s.add(_pth);
@@ -1147,6 +1158,7 @@ void IMap::deserialize(const mrt::Serializator &s) {
 	clear();
 
 	s.get(_name);
+	s.get(_path);
 	s.get(_w); s.get(_h);
 	s.get(_tw); s.get(_th);
 	s.get(_ptw); s.get(_pth);

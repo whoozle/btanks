@@ -112,6 +112,7 @@ public:
 	virtual void serialize(mrt::Serializator &s) const;
 	virtual void deserialize(const mrt::Serializator &s);
 	
+	inline const std::string &getPath() const { return _path; }
 	inline const std::string &getName() const { return _name; }
 
 	void setSoloAwareMode(const bool value = true);
@@ -293,7 +294,7 @@ private:
 	MapGenerator *_generator;
 	
 	TilesetList _tilesets;
-	std::string _name;
+	std::string _name, _path;
 	
 	bool _solo_aware;
 	bool _torus;
