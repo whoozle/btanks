@@ -454,6 +454,8 @@
 	<animation map="lenin_square" id="cyan-tank-outline" />
 	<animation map="lenin_square" id="damage-digits" />
 	<animation map="lenin_square" id="dead-chinook" />
+	<animation map="lenin_square" id="dead-cyan-tank" />
+	<animation map="lenin_square" id="dead-machinegunner" />
 	<animation map="lenin_square" id="dead-white-car" />
 	<animation map="lenin_square" id="dead-yellow-car" />
 	<animation map="lenin_square" id="dispersion-bullet" />
@@ -464,6 +466,7 @@
 	<animation map="lenin_square" id="fire" />
 	<animation map="lenin_square" id="gate" />
 	<animation map="lenin_square" id="gay-paratrooper" />
+	<animation map="lenin_square" id="green-tank" />
 	<animation map="lenin_square" id="guided-missiles-item" />
 	<animation map="lenin_square" id="guided-missiles-on-launcher" />
 	<animation map="lenin_square" id="guided-missiles-on-tank" />
