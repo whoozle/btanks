@@ -15,6 +15,7 @@ public:
 	const bool on_spawn(const std::string &classname, const std::string &animation, const std::string &property); 
 
 	void call(const std::string &method);
+	void call1(const std::string &method, const int id);
 private: 
 	bool check_function(const std::string &name);
 	luaxx::State state;

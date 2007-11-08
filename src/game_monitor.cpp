@@ -896,14 +896,17 @@ IGameMonitor::~IGameMonitor() {
 #endif
 }
 
-void IGameMonitor::onScriptZone(const int slot_id, const SpecialZone &zone) {
+void IGameMonitor::onScriptZone(const int slot_id, const SpecialZone &zone, const bool global) {
 #ifndef ENABLE_LUA
 	throw_ex(("no script support compiled in."));
 #else 
 	TRY {
 		if (lua_hooks == NULL)
 			throw_ex(("lua hooks was not initialized"));
-		lua_hooks->call(zone.name);
+		if (global)
+			lua_hooks->call(zone.name);
+		else 
+			lua_hooks->call1(zone.name, PlayerManager->getSlot(slot_id).id);
 	} CATCH("onScriptZone", {
 		Game->clear();
 		displayMessage("errors", "script-error", 1);

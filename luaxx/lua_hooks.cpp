@@ -471,6 +471,18 @@ void LuaHooks::call(const std::string &method) {
 	assert(lua_gettop(state) == top0);
 }
 
+void LuaHooks::call1(const std::string &method, const int id) {
+	LOG_DEBUG(("calling %s(%d)", method.c_str(), id));
+	int top0 = lua_gettop(state);
+	
+	lua_pushinteger(state, id);
+
+	lua_getglobal(state, method.c_str());
+	state.call(1, 0);
+
+	assert(lua_gettop(state) == top0);
+}
+
 void LuaHooks::clear() {
 	state.clear();
 	has_on_tick = has_on_spawn = has_on_load = false;

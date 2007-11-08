@@ -47,6 +47,7 @@ SpecialZone::SpecialZone(const ZBox & zbox, const std::string &type, const std::
 		allowed_types.insert("reset-tune");
 		allowed_types.insert("z-warp");
 		allowed_types.insert("script");
+		allowed_types.insert("local-script");
 	}
 	
 	if (allowed_types.find(type) == allowed_types.end()) 
@@ -108,7 +109,9 @@ void SpecialZone::onEnter(const int slot_id) {
 	else if (type == "z-warp") {
 		onWarp(slot_id, true);
 	} else if (type == "script") {
-		GameMonitor->onScriptZone(slot_id, *this);
+		GameMonitor->onScriptZone(slot_id, *this, true);
+	} else if (type == "local-script") {
+		GameMonitor->onScriptZone(slot_id, *this, false);
 	} else
 		throw_ex(("unhandled enter for type '%s'", type.c_str()));
 }

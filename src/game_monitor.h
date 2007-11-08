@@ -122,7 +122,7 @@ public:
 	
 	const bool gameOver() const { return _game_over; }
 
-	void onScriptZone(const int slot_id, const SpecialZone &zone);
+	void onScriptZone(const int slot_id, const SpecialZone &zone, const bool global);
 	
 private:
 	const std::string onConsole(const std::string &cmd, const std::string &param);
