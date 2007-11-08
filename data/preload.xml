@@ -179,6 +179,7 @@
 	<animation map="curfew" id="cannon-explosion" />
 	<animation map="curfew" id="cyan-car" />
 	<animation map="curfew" id="cyan-launcher" />
+	<animation map="curfew" id="cyan-launcher-outline" />
 	<animation map="curfew" id="cyan-machinegunner-helmet" />
 	<animation map="curfew" id="cyan-tank" />
 	<animation map="curfew" id="cyan-tank-outline" />
@@ -186,17 +187,23 @@
 	<animation map="curfew" id="dead-civilian-1" />
 	<animation map="curfew" id="dead-civilian-static-1" />
 	<animation map="curfew" id="dead-cyan-car" />
+	<animation map="curfew" id="dead-cyan-launcher" />
 	<animation map="curfew" id="dead-cyan-shilka" />
 	<animation map="curfew" id="dead-cyan-tank" />
+	<animation map="curfew" id="dead-green-launcher" />
 	<animation map="curfew" id="dead-green-tank" />
 	<animation map="curfew" id="dead-machinegunner" />
+	<animation map="curfew" id="dead-mortar" />
+	<animation map="curfew" id="dead-nukeman" />
 	<animation map="curfew" id="dead-orange-bus" />
 	<animation map="curfew" id="dead-red-car" />
 	<animation map="curfew" id="dead-red-shilka" />
+	<animation map="curfew" id="dead-thrower" />
 	<animation map="curfew" id="dead-thrower-static" />
 	<animation map="curfew" id="dead-white-car" />
 	<animation map="curfew" id="dead-yellow-car" />
 	<animation map="curfew" id="dead-yellow-launcher" />
+	<animation map="curfew" id="dead-yellow-shilka" />
 	<animation map="curfew" id="dead-yellow-tank" />
 	<animation map="curfew" id="dispersion-bullet" />
 	<animation map="curfew" id="dispersion-bullets-item" />
@@ -205,6 +212,8 @@
 	<animation map="curfew" id="explosion" />
 	<animation map="curfew" id="fire" />
 	<animation map="curfew" id="gate" />
+	<animation map="curfew" id="green-launcher" />
+	<animation map="curfew" id="green-launcher-outline" />
 	<animation map="curfew" id="green-machinegunner-helmet" />
 	<animation map="curfew" id="green-tank" />
 	<animation map="curfew" id="green-tank-outline" />
@@ -215,7 +224,9 @@
 	<animation map="curfew" id="heal" />
 	<animation map="curfew" id="launcher-smoke" />
 	<animation map="curfew" id="machinegunner" />
+	<animation map="curfew" id="machinegunner-bullet" />
 	<animation map="curfew" id="machinegunner-item" />
+	<animation map="curfew" id="machinegunner-on-launcher" />
 	<animation map="curfew" id="machinegunner-outline" />
 	<animation map="curfew" id="megaheal" />
 	<animation map="curfew" id="mines-item" />
@@ -224,10 +235,12 @@
 	<animation map="curfew" id="nuke-explosion" />
 	<animation map="curfew" id="nuke-missile" />
 	<animation map="curfew" id="nuke-missiles-item" />
+	<animation map="curfew" id="nukeman-outline" />
 	<animation map="curfew" id="oil-barrels" />
 	<animation map="curfew" id="orange-bus" />
 	<animation map="curfew" id="pond" />
 	<animation map="curfew" id="red-car" />
+	<animation map="curfew" id="red-launcher" />
 	<animation map="curfew" id="red-shilka" />
 	<animation map="curfew" id="red-shilka-outline" />
 	<animation map="curfew" id="red-tank" />
@@ -245,6 +258,7 @@
 	<animation map="curfew" id="smoke-missile" />
 	<animation map="curfew" id="smoke-missiles-item" />
 	<animation map="curfew" id="stall-right" />
+	<animation map="curfew" id="stun-missile" />
 	<animation map="curfew" id="stun-missiles-item" />
 	<animation map="curfew" id="submarine" />
 	<animation map="curfew" id="tank-bullet" />
@@ -253,14 +267,20 @@
 	<animation map="curfew" id="tent-left" />
 	<animation map="curfew" id="thrower" />
 	<animation map="curfew" id="thrower-item" />
+	<animation map="curfew" id="thrower-missile" />
 	<animation map="curfew" id="traffic-lights" />
 	<animation map="curfew" id="umbrella" />
+	<animation map="curfew" id="vehicle-machinegunner-bullet" />
 	<animation map="curfew" id="white-car" />
 	<animation map="curfew" id="yellow-car" />
 	<animation map="curfew" id="yellow-launcher" />
+	<animation map="curfew" id="yellow-launcher-outline" />
+	<animation map="curfew" id="yellow-machinegunner-helmet" />
 	<animation map="curfew" id="yellow-mortar" />
 	<animation map="curfew" id="yellow-shilka" />
+	<animation map="curfew" id="yellow-shilka-outline" />
 	<animation map="curfew" id="yellow-tank" />
+	<animation map="curfew" id="yellow-thrower-helmet" />
 	<animation map="dune" id="building-explosion" />
 	<animation map="dune" id="cyan-launcher" />
 	<animation map="dune" id="cyan-machinegunner-helmet" />
@@ -335,6 +355,7 @@
 	<animation map="gaddino" id="cyan-launcher" />
 	<animation map="gaddino" id="cyan-launcher-outline" />
 	<animation map="gaddino" id="cyan-machinegunner-helmet" />
+	<animation map="gaddino" id="cyan-shilka" />
 	<animation map="gaddino" id="cyan-tank" />
 	<animation map="gaddino" id="cyan-tank-outline" />
 	<animation map="gaddino" id="damage-digits" />
@@ -345,6 +366,7 @@
 	<animation map="gaddino" id="dead-cyan-tank" />
 	<animation map="gaddino" id="dead-green-launcher" />
 	<animation map="gaddino" id="dead-machinegunner" />
+	<animation map="gaddino" id="dead-mortar" />
 	<animation map="gaddino" id="dead-red-launcher" />
 	<animation map="gaddino" id="dead-yellow-launcher" />
 	<animation map="gaddino" id="dirt-bullets-item" />
@@ -355,6 +377,7 @@
 	<animation map="gaddino" id="fire" />
 	<animation map="gaddino" id="gay-paratrooper" />
 	<animation map="gaddino" id="green-launcher" />
+	<animation map="gaddino" id="green-launcher-outline" />
 	<animation map="gaddino" id="green-machinegunner-helmet" />
 	<animation map="gaddino" id="green-tank" />
 	<animation map="gaddino" id="guided-missile" />
@@ -383,6 +406,8 @@
 	<animation map="gaddino" id="red-launcher" />
 	<animation map="gaddino" id="red-launcher-outline" />
 	<animation map="gaddino" id="red-machinegunner-helmet" />
+	<animation map="gaddino" id="red-tank" />
+	<animation map="gaddino" id="red-tank-outline" />
 	<animation map="gaddino" id="regular-mine" />
 	<animation map="gaddino" id="road-sign10" />
 	<animation map="gaddino" id="smoke-cloud" />
@@ -464,17 +489,22 @@
 	<animation map="lenin_square" id="cyan-car" />
 	<animation map="lenin_square" id="cyan-launcher" />
 	<animation map="lenin_square" id="cyan-machinegunner-helmet" />
+	<animation map="lenin_square" id="cyan-shilka" />
+	<animation map="lenin_square" id="cyan-shilka-outline" />
 	<animation map="lenin_square" id="cyan-tank" />
 	<animation map="lenin_square" id="cyan-tank-outline" />
 	<animation map="lenin_square" id="damage-digits" />
 	<animation map="lenin_square" id="dead-chinook" />
 	<animation map="lenin_square" id="dead-cyan-car" />
 	<animation map="lenin_square" id="dead-cyan-launcher" />
+	<animation map="lenin_square" id="dead-cyan-shilka" />
 	<animation map="lenin_square" id="dead-cyan-tank" />
 	<animation map="lenin_square" id="dead-green-launcher" />
 	<animation map="lenin_square" id="dead-green-tank" />
 	<animation map="lenin_square" id="dead-machinegunner" />
+	<animation map="lenin_square" id="dead-mortar" />
 	<animation map="lenin_square" id="dead-red-launcher" />
+	<animation map="lenin_square" id="dead-red-shilka" />
 	<animation map="lenin_square" id="dead-red-tank" />
 	<animation map="lenin_square" id="dead-white-car" />
 	<animation map="lenin_square" id="dead-yellow-car" />
@@ -511,6 +541,9 @@
 	<animation map="lenin_square" id="mines-item" />
 	<animation map="lenin_square" id="missile-explosion" />
 	<animation map="lenin_square" id="missile-fire" />
+	<animation map="lenin_square" id="nuke-explosion" />
+	<animation map="lenin_square" id="nuke-mine" />
+	<animation map="lenin_square" id="nuke-missile" />
 	<animation map="lenin_square" id="nuke-missiles-item" />
 	<animation map="lenin_square" id="paratrooper" />
 	<animation map="lenin_square" id="red-launcher" />
@@ -527,8 +560,11 @@
 	<animation map="lenin_square" id="road-sign04" />
 	<animation map="lenin_square" id="road-sign08" />
 	<animation map="lenin_square" id="road-sign09" />
+	<animation map="lenin_square" id="shilka-bullet-left" />
+	<animation map="lenin_square" id="shilka-bullet-right" />
 	<animation map="lenin_square" id="stall-left" />
 	<animation map="lenin_square" id="stall-right" />
+	<animation map="lenin_square" id="stun-missile" />
 	<animation map="lenin_square" id="stun-missiles-item" />
 	<animation map="lenin_square" id="tank-bullet" />
 	<animation map="lenin_square" id="tank-smoke" />
