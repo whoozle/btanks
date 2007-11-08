@@ -49,6 +49,10 @@ private:
 };
 
 void Car::onSpawn() {
+	if (registered_name.compare(0, 7, "static-") == 0) {
+		disown();
+		disable_ai = true;
+	}
 	_variants.add("safe");
 	play("hold", true);
 }
