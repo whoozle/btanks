@@ -1517,7 +1517,7 @@ void IWorld::replaceID(const int old_id, const int new_id) {
 }
 
 const bool IWorld::attachVehicle(Object *object, Object *vehicle) {
-	if (object == NULL || vehicle == NULL || !object->disable_ai) 
+	if (object == NULL || vehicle == NULL) 
 		return false;
 	
 	PlayerSlot *slot = PlayerManager->getSlotByID(object->getID());
@@ -1558,7 +1558,7 @@ const bool IWorld::detachVehicle(Object *object) {
 	object->_velocity.clear();
 	object->updatePlayerState(PlayerState());
 
-	Object * man = spawn(object, "machinegunner(player)", "machinegunner", object->_direction * (object->size.x + object->size.y) / 4, v2<float>());
+	Object * man = spawn(object, object->disable_ai?"machinegunner(player)": "machinegunner-player(player)", "machinegunner", object->_direction * (object->size.x + object->size.y) / 4, v2<float>());
 	
 	if (object->classname == "helicopter")
 		man->setZBox(ResourceManager->getClass("machinegunner")->getZ());
