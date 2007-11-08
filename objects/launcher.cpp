@@ -41,8 +41,10 @@ Object * Launcher::clone() const {
 }
 
 void Launcher::onSpawn() {
-	if (registered_name.substr(0, 6) == "static")
+	if (registered_name.substr(0, 6) == "static") {
 		disown();
+		disable_ai = true;
+	}
 
 	Object *_smoke = add("smoke", "single-pose", "launcher-smoke", v2<float>(), Centered);
 	_smoke->hp = 100000;
@@ -151,9 +153,6 @@ void Launcher::serialize(mrt::Serializator &s) const {
 
 void Launcher::deserialize(const mrt::Serializator &s) {
 	Object::deserialize(s);
-	if (registered_name == "static-launcher")
-		_state.clear();
 	s.get(_fire);
 }
 
-REGISTER_OBJECT("static-launcher", Launcher, ("vehicle"));

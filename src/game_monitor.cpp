@@ -472,6 +472,9 @@ const std::string IGameMonitor::getRandomWaypoint(const std::string &classname, 
 		throw_ex(("getRandomWaypoint('%s', '%s') called with empty name", classname.c_str(), last_wp.c_str()));
 	
 	WaypointClassMap::const_iterator wp_class = _waypoints.find(classname);
+	if (wp_class == _waypoints.end() && classname.compare(0, 7, "static-") == 0)  //no matter static or not
+		wp_class = _waypoints.find(classname.substr(7));
+
 	if (wp_class == _waypoints.end()) 
 		throw_ex(("no waypoints for '%s' defined", classname.c_str()));
 		
@@ -499,6 +502,9 @@ const std::string IGameMonitor::getNearestWaypoint(const BaseObject *obj, const 
 	std::string wp;
 	
 	WaypointClassMap::const_iterator i = _waypoints.find(classname);
+	if (i == _waypoints.end() && classname.compare(0, 7, "static-") == 0)  //no matter static or not
+		i = _waypoints.find(classname.substr(7));
+	
 	if (i == _waypoints.end())
 		throw_ex(("no waypoints for '%s' found", classname.c_str()));
 
@@ -518,6 +524,8 @@ void IGameMonitor::getWaypoint(v2<float> &wp, const std::string &classname, cons
 		throw_ex(("getWaypoint('%s', '%s') called with empty classname and/or name", classname.c_str(), name.c_str()));
 	
 	WaypointClassMap::const_iterator wp_class = _waypoints.find(classname);
+	if (wp_class == _waypoints.end() && classname.compare(0, 7, "static-") == 0)  //no matter static or not
+		wp_class = _waypoints.find(classname.substr(7));
 	if (wp_class == _waypoints.end()) 
 		throw_ex(("no waypoints for '%s' defined", classname.c_str()));
 	

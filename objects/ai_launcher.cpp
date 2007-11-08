@@ -25,7 +25,7 @@
 
 class AILauncher:  public Launcher, public ai::Buratino {
 public: 
-	AILauncher() : Launcher("fighting-vehicle") {}
+	AILauncher(const std::string &classname) : Launcher(classname) {}
 //	~AILauncher();
 	virtual void onSpawn();
 	virtual void calculate(const float dt);
@@ -95,4 +95,5 @@ void AILauncher::calculate(const float dt) {
 	updateStateFromVelocity();	
 }
 
-REGISTER_OBJECT("launcher", AILauncher, ());
+REGISTER_OBJECT("launcher", AILauncher, ("fighting-vehicle"));
+REGISTER_OBJECT("static-launcher", AILauncher, ("vehicle"));

@@ -25,7 +25,7 @@
 
 class AIMortar:  public Mortar, public ai::Buratino {
 public: 
-	AIMortar() : Mortar("fighting-vehicle") {}
+	AIMortar(const std::string &classname) : Mortar(classname) {}
 //	~AIMortar();
 	virtual void onSpawn();
 	virtual void calculate(const float dt);
@@ -88,4 +88,5 @@ void AIMortar::calculate(const float dt) {
 	updateStateFromVelocity();	
 }
 
-REGISTER_OBJECT("mortar", AIMortar, ());
+REGISTER_OBJECT("mortar", AIMortar, ("vehicle"));
+REGISTER_OBJECT("static-mortar", AIMortar, ("fighting-vehicle"));

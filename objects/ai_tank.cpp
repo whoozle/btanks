@@ -25,7 +25,7 @@
 
 class AITank:  public Tank, public ai::Buratino {
 public: 
-	AITank() : Tank("fighting-vehicle") {}
+	AITank(const std::string &classname) : Tank(classname) {}
 //	~AITank();
 	virtual void onSpawn();
 	virtual void calculate(const float dt);
@@ -107,4 +107,5 @@ void AITank::calculate(const float dt) {
 	updateStateFromVelocity();	
 }
 
-REGISTER_OBJECT("tank", AITank, ());
+REGISTER_OBJECT("tank", AITank, ("fighting-vehicle"));
+REGISTER_OBJECT("static-tank", AITank, ("vehicle"));

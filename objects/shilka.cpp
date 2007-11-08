@@ -44,8 +44,10 @@ FakeMod *Shilka::getMod(const std::string &name) {
 }
 
 void Shilka::onSpawn() {
-	if (registered_name.substr(0, 6) == "static")
+	if (registered_name.substr(0, 6) == "static") {
 		disown();
+		disable_ai = true;
+	}
 	
 	add("mod", "fake-mod", "damage-digits", v2<float>(), Centered);
 	
@@ -238,12 +240,7 @@ void Shilka::serialize(mrt::Serializator &s) const {
 }
 void Shilka::deserialize(const mrt::Serializator &s) {
 	Object::deserialize(s);
-	if (registered_name == "static-shilka")
-		_state.clear();
-	
 	s.get(_fire);
 	s.get(_special_fire);
 	s.get(_left_fire);
 }
-
-REGISTER_OBJECT("static-shilka", Shilka, ("vehicle"));

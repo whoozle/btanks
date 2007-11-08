@@ -46,8 +46,10 @@ private:
 };
 
 void Buggy::onSpawn() {
-	if (registered_name.substr(0, 6) == "static")
+	if (registered_name.substr(0, 6) == "static") {
 		disown();
+		disable_ai = true;
+	}
 
 	play("hold", true);
 	bool ai = registered_name == "buggy" && hasOwner(OWNER_MAP);

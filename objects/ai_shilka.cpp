@@ -25,7 +25,7 @@
 
 class AIShilka:  public Shilka, public ai::Buratino {
 public: 
-	AIShilka() : Shilka("fighting-vehicle") {}
+	AIShilka(const std::string &classname) : Shilka(classname) {}
 //	~AIShilka();
 	virtual void onSpawn();
 	virtual void calculate(const float dt);
@@ -112,4 +112,5 @@ void AIShilka::calculate(const float dt) {
 	updateStateFromVelocity();	
 }
 
-REGISTER_OBJECT("shilka", AIShilka, ());
+REGISTER_OBJECT("shilka", AIShilka, ("fighting-vehicle"));
+REGISTER_OBJECT("static-shilka", AIShilka, ("vehicle"));

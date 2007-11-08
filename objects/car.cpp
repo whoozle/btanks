@@ -115,7 +115,7 @@ void Car::tick(const float dt) {
 
 class AICar : public Car, public ai::Waypoints {
 public: 
-	AICar() : Car("car"){}
+	AICar(const std::string &classname) : Car(classname){}
 	virtual void calculate(const float dt);
 	virtual Object * clone() const {return new AICar(*this);}
 	virtual void onSpawn();
@@ -168,5 +168,5 @@ void AICar::calculate(const float dt) {
 	updateStateFromVelocity();
 }
 
-REGISTER_OBJECT("static-car", Car, ("vehicle"));
-REGISTER_OBJECT("car", AICar, ());
+REGISTER_OBJECT("static-car", AICar, ("vehicle"));
+REGISTER_OBJECT("car", AICar, ("car"));

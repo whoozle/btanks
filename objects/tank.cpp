@@ -37,8 +37,10 @@ Tank::Tank(const std::string &classname)
 }
 
 void Tank::onSpawn() {
-	if (registered_name.substr(0, 6) == "static")
+	if (registered_name.substr(0, 6) == "static") {
 		disown();
+		disable_ai = true;
+	}
 
 	Object *_smoke = add("smoke", "single-pose", "tank-smoke", v2<float>(), Centered);
 	_smoke->impassability = 0;
@@ -158,9 +160,5 @@ void Tank::serialize(mrt::Serializator &s) const {
 }
 void Tank::deserialize(const mrt::Serializator &s) {
 	Object::deserialize(s);
-	if (registered_name == "static-tank")
-		_state.clear();
 	s.get(_fire);
 }
-
-REGISTER_OBJECT("static-tank", Tank, ("vehicle"));

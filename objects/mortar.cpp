@@ -34,8 +34,10 @@ Mortar::Mortar(const std::string &classname)
 }
 
 void Mortar::onSpawn() {
-	if (registered_name.substr(0, 6) == "static")
+	if (registered_name.substr(0, 6) == "static") {
+		disable_ai = true;
 		disown();
+	}
 
 	GET_CONFIG_VALUE("objects.mortar.fire-rate", float, fr, 0.7);
 	_fire.set(fr);
@@ -107,9 +109,6 @@ void Mortar::serialize(mrt::Serializator &s) const {
 }
 void Mortar::deserialize(const mrt::Serializator &s) {
 	Object::deserialize(s);
-	if (registered_name == "static-mortar")
-		_state.clear();
 	s.get(_fire);
 }
 
-REGISTER_OBJECT("static-mortar", Mortar, ("vehicle"));
