@@ -64,8 +64,7 @@ void Car::getImpassabilityPenalty(const float impassability, float &base, float 
 
 void Car::emit(const std::string &event, Object * emitter) {
 	if (event == "death") {
-		if (registered_name == "static-car")
-			detachVehicle();
+		detachVehicle();
 		spawn("corpse", "dead-" + animation, v2<float>(), v2<float>());
 	} else if (emitter != NULL && !_velocity.is0() && event == "collision" && animation == "harvester") {
 		const std::string &classname = emitter->classname;

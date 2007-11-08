@@ -48,8 +48,7 @@ Object * Mortar::clone() const {
 
 void Mortar::emit(const std::string &event, Object * emitter) {
 	if (event == "death") {
-		if (disable_ai)
-			detachVehicle();
+		detachVehicle();
 		spawn("corpse", "dead-mortar");
 		_velocity.clear();
 		Object::emit(event, emitter);
