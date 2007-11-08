@@ -99,7 +99,7 @@ const bool File::readLine(std::string &str, const size_t bufsize) const {
 const size_t File::read(void *buf, const size_t size) const {
 	size_t r = fread(buf, 1, size, _f);
 	if (r == (size_t)-1) 
-		throw_io(("read(%p, %u)", buf, size));
+		throw_io(("read(%p, %u)", buf, (unsigned)size));
 	return r;
 }
 
