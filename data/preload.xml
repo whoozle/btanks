@@ -21,6 +21,7 @@
 	<animation map="aqua_world" id="dead-orange-bus" />
 	<animation map="aqua_world" id="dead-red-car" />
 	<animation map="aqua_world" id="dead-red-launcher" />
+	<animation map="aqua_world" id="dead-red-shilka" />
 	<animation map="aqua_world" id="dead-red-tank" />
 	<animation map="aqua_world" id="dead-thrower" />
 	<animation map="aqua_world" id="dead-thrower-static" />
@@ -29,6 +30,7 @@
 	<animation map="aqua_world" id="dead-yellow-launcher" />
 	<animation map="aqua_world" id="dead-yellow-shilka" />
 	<animation map="aqua_world" id="dead-yellow-tank" />
+	<animation map="aqua_world" id="dispersion-bullet" />
 	<animation map="aqua_world" id="dispersion-bullets-item" />
 	<animation map="aqua_world" id="dumb-missile" />
 	<animation map="aqua_world" id="dumb-missiles-item" />
@@ -58,17 +60,24 @@
 	<animation map="aqua_world" id="oil-barrels" />
 	<animation map="aqua_world" id="red-launcher" />
 	<animation map="aqua_world" id="red-launcher-outline" />
+	<animation map="aqua_world" id="red-machinegunner-helmet" />
+	<animation map="aqua_world" id="red-shilka" />
+	<animation map="aqua_world" id="red-shilka-outline" />
 	<animation map="aqua_world" id="red-tank" />
 	<animation map="aqua_world" id="regular-mine" />
+	<animation map="aqua_world" id="ricochet-bullet" />
 	<animation map="aqua_world" id="ricochet-bullets-item" />
 	<animation map="aqua_world" id="road-sign01" />
 	<animation map="aqua_world" id="road-sign04" />
 	<animation map="aqua_world" id="road-sign05" />
 	<animation map="aqua_world" id="road-sign06" />
+	<animation map="aqua_world" id="shilka-bullet-left" />
+	<animation map="aqua_world" id="shilka-bullet-right" />
 	<animation map="aqua_world" id="stall-left" />
 	<animation map="aqua_world" id="tank-smoke" />
 	<animation map="aqua_world" id="teleport" />
 	<animation map="aqua_world" id="tent-top" />
+	<animation map="aqua_world" id="thrower" />
 	<animation map="aqua_world" id="thrower-item" />
 	<animation map="aqua_world" id="thrower-missile" />
 	<animation map="aqua_world" id="thrower-on-launcher" />
@@ -78,9 +87,12 @@
 	<animation map="aqua_world" id="watchtower" />
 	<animation map="aqua_world" id="yellow-launcher" />
 	<animation map="aqua_world" id="yellow-launcher-outline" />
+	<animation map="aqua_world" id="yellow-machinegunner-helmet" />
 	<animation map="aqua_world" id="yellow-mortar" />
 	<animation map="aqua_world" id="yellow-shilka" />
+	<animation map="aqua_world" id="yellow-shilka-outline" />
 	<animation map="aqua_world" id="yellow-tank" />
+	<animation map="aqua_world" id="yellow-thrower-helmet" />
 	<animation map="baykonur" id="boat" />
 	<animation map="baykonur" id="building-explosion" />
 	<animation map="baykonur" id="cannon" />
