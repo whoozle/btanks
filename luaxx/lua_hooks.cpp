@@ -52,6 +52,67 @@ LUA_TRY {
 } LUA_CATCH("lua_hooks_object_exists")
 }
 
+static int lua_hooks_object_property(lua_State *L) {
+LUA_TRY {
+	int n = lua_gettop(L);
+	if (n < 2) {
+		lua_pushstring(L, "object_property requires object id and property name");
+		lua_error(L);
+		return 0;
+	}
+	int id = lua_tointeger(L, 1);
+	const Object *o = World->getObjectByID(id);
+	if (o == NULL) {
+		lua_pushnil(L);
+		return 1;
+	}
+	std::string prop = lua_tostring(L, 2);
+	if (prop == "classname") {
+		lua_pushstring(L, o->classname.c_str());
+		return 1;	
+	} else if (prop == "registered_name") {
+		lua_pushstring(L, o->registered_name.c_str());
+		return 1;	
+	} else if (prop == "animation") {
+		lua_pushstring(L, o->animation.c_str());
+		return 1;	
+	} else if (prop == "hp") {
+		lua_pushinteger(L, o->hp);
+		return 1;	
+	}
+
+	lua_pushstring(L, mrt::formatString("object_property: unknown property %s", prop.c_str()).c_str());
+	lua_error(L);
+	return 0;
+	
+} LUA_CATCH("lua_hooks_object_property")	
+}
+
+static int lua_hooks_kill_object(lua_State *L) {
+	LUA_TRY {
+		int n = lua_gettop(L);
+		if (n < 1) {
+			lua_pushstring(L, "kill object requres object id as first argument");
+			lua_error(L);
+			return 0;
+		}
+		int id = lua_tointeger(L, 1);
+		bool system = (n >= 2)? lua_toboolean(L, 2) != 0: false;
+		
+		Object *o = World->getObjectByID(id);
+		if (o == NULL)
+			return 0;
+		
+		if (system) {
+			o->Object::emit("death", NULL);
+		} else {
+			o->emit("death", NULL);
+		}
+		return 0;
+	} LUA_CATCH("lua_hooks_item_exists")
+}
+
+
 static int lua_hooks_show_item(lua_State *L) {
 	LUA_TRY {
 		int n = lua_gettop(L);
@@ -164,7 +225,7 @@ static int lua_hooks_item_exists(lua_State *L) {
 			lua_error(L);
 			return 0;
 		}
-		bool strict = (n >= 2)? lua_tostring(L, 2) != 0: false;
+		bool strict = (n >= 2)? lua_toboolean(L, 2) != 0: false;
 		
 		GameItem &item = GameMonitor->find(prop);
 		const Object *o = World->getObjectByID(item.id);
@@ -395,6 +456,8 @@ void LuaHooks::load(const std::string &name) {
 	lua_register(state, "disable_ai", lua_hooks_disable_ai);
 	lua_register(state, "play_tune", lua_hooks_play_tune);
 	lua_register(state, "reset_tune", lua_hooks_reset_tune);
+	lua_register(state, "object_property", lua_hooks_object_property);
+	lua_register(state, "kill_object", lua_hooks_kill_object);
 	
 	state.call(0, LUA_MULTRET);
 	
