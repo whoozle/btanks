@@ -43,9 +43,7 @@ private:
 const std::string AIMachinegunnerPlayer::getWeapon(const int idx) const {
 	switch(idx) {
 	case 0: 
-		if (_object == "machinegunner-bullet")
-			return "bullet";
-		return Trooper::_object;
+		return "bullets:machinegunner";
 	case 1:
 		return std::string();
 	default: 
@@ -78,6 +76,11 @@ void AIMachinegunnerPlayer::onSpawn() {
 
 	addBonusName("heal");
 	addBonusName("megaheal");
+
+	addBonusName("static-tank");
+	addBonusName("static-launcher");
+	addBonusName("static-shilka");
+	addBonusName("static-mortar");
 	//addBonusName("guided-missiles-item");
 	//addBonusName("dumb-missiles-item");
 	//addBonusName("nuke-missiles-item");
@@ -97,4 +100,4 @@ void AIMachinegunnerPlayer::calculate(const float dt) {
 	updateStateFromVelocity();	
 }
 
-//REGISTER_OBJECT("machinegunner", AIMachinegunnerPlayer, ());
+REGISTER_OBJECT("machinegunner-player", AIMachinegunnerPlayer, ());
