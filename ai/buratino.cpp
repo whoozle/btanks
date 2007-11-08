@@ -430,6 +430,8 @@ const Object * Buratino::findTarget(const Object *src, const std::set<std::strin
 			max = 1;
 		} else if (o->classname == "teleport") {
 			max = 1;
+		} else if (o->classname == "vehicle") {
+			max = 1;
 		}
 		float value = 0;
 		const std::string type = o->getType();
