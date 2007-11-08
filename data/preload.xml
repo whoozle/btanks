@@ -469,9 +469,13 @@
 	<animation map="lenin_square" id="damage-digits" />
 	<animation map="lenin_square" id="dead-chinook" />
 	<animation map="lenin_square" id="dead-cyan-tank" />
+	<animation map="lenin_square" id="dead-green-launcher" />
+	<animation map="lenin_square" id="dead-green-tank" />
 	<animation map="lenin_square" id="dead-machinegunner" />
 	<animation map="lenin_square" id="dead-white-car" />
 	<animation map="lenin_square" id="dead-yellow-car" />
+	<animation map="lenin_square" id="dead-yellow-launcher" />
+	<animation map="lenin_square" id="dead-yellow-tank" />
 	<animation map="lenin_square" id="dispersion-bullet" />
 	<animation map="lenin_square" id="dispersion-bullets-item" />
 	<animation map="lenin_square" id="dumb-missile" />
@@ -480,7 +484,12 @@
 	<animation map="lenin_square" id="fire" />
 	<animation map="lenin_square" id="gate" />
 	<animation map="lenin_square" id="gay-paratrooper" />
+	<animation map="lenin_square" id="green-launcher" />
+	<animation map="lenin_square" id="green-launcher-outline" />
+	<animation map="lenin_square" id="green-machinegunner-helmet" />
 	<animation map="lenin_square" id="green-tank" />
+	<animation map="lenin_square" id="green-tank-outline" />
+	<animation map="lenin_square" id="guided-missile" />
 	<animation map="lenin_square" id="guided-missiles-item" />
 	<animation map="lenin_square" id="guided-missiles-on-launcher" />
 	<animation map="lenin_square" id="guided-missiles-on-tank" />
@@ -490,6 +499,7 @@
 	<animation map="lenin_square" id="launcher-smoke" />
 	<animation map="lenin_square" id="lodge" />
 	<animation map="lenin_square" id="machinegunner" />
+	<animation map="lenin_square" id="machinegunner-bullet" />
 	<animation map="lenin_square" id="machinegunner-item" />
 	<animation map="lenin_square" id="machinegunner-outline" />
 	<animation map="lenin_square" id="megaheal" />
@@ -520,7 +530,11 @@
 	<animation map="lenin_square" id="white-car" />
 	<animation map="lenin_square" id="yellow-car" />
 	<animation map="lenin_square" id="yellow-launcher" />
+	<animation map="lenin_square" id="yellow-launcher-outline" />
+	<animation map="lenin_square" id="yellow-machinegunner-helmet" />
 	<animation map="lenin_square" id="yellow-mortar" />
+	<animation map="lenin_square" id="yellow-tank" />
+	<animation map="lenin_square" id="yellow-tank-outline" />
 	<animation map="paintball" id="cyan-launcher" />
 	<animation map="paintball" id="damage-digits" />
 	<animation map="paintball" id="dead-green-launcher" />
