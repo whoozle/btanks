@@ -322,6 +322,7 @@
 	<animation map="gaddino" id="cow" />
 	<animation map="gaddino" id="cyan-launcher" />
 	<animation map="gaddino" id="cyan-launcher-outline" />
+	<animation map="gaddino" id="cyan-machinegunner-helmet" />
 	<animation map="gaddino" id="cyan-tank" />
 	<animation map="gaddino" id="cyan-tank-outline" />
 	<animation map="gaddino" id="damage-digits" />
@@ -369,6 +370,7 @@
 	<animation map="gaddino" id="paratrooper" />
 	<animation map="gaddino" id="red-launcher" />
 	<animation map="gaddino" id="red-launcher-outline" />
+	<animation map="gaddino" id="red-machinegunner-helmet" />
 	<animation map="gaddino" id="regular-mine" />
 	<animation map="gaddino" id="road-sign10" />
 	<animation map="gaddino" id="smoke-cloud" />
