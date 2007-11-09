@@ -233,6 +233,7 @@
 	<animation map="curfew" id="missile-explosion" />
 	<animation map="curfew" id="missile-fire" />
 	<animation map="curfew" id="nuke-explosion" />
+	<animation map="curfew" id="nuke-mine" />
 	<animation map="curfew" id="nuke-missile" />
 	<animation map="curfew" id="nuke-missiles-item" />
 	<animation map="curfew" id="nukeman-outline" />
