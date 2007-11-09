@@ -26,6 +26,11 @@ void Waypoints::deserialize(const mrt::Serializator &s) {
 Waypoints::Waypoints() : _avoid_obstacles(false), _stop_on_obstacle(true), _reaction_time(true), _stop(false)  {}
 
 void Waypoints::calculate(Object *object, const float dt) {
+	if (_no_waypoints) {
+		object->_velocity.clear();
+		return;
+	}
+	
 	if (_avoid_obstacles && _reaction_time.tick(dt)) {
 		const Object * obstacle = NULL;
 		
@@ -108,4 +113,5 @@ void Waypoints::onSpawn(const Object *object) {
 	mrt::randomize(rt, rt / 10);
 
 	_stop = false;
+	_no_waypoints = !GameMonitor->hasWaypoints(object->registered_name);
 }

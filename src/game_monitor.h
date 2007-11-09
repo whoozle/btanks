@@ -110,6 +110,7 @@ public:
 	void loadMap(Campaign * campaign, const std::string &name, const bool spawn = true, const bool skip_loadmap = false);		
 
 	//waypoints
+	const bool hasWaypoints(const std::string &classname) const;
 	const std::string getRandomWaypoint(const std::string &classname, const std::string &last_wp = std::string()) const;
 	const std::string getNearestWaypoint(const BaseObject *obj, const std::string &classname) const;
 	void getWaypoint(v2<float> &wp, const std::string &classname, const std::string &name);

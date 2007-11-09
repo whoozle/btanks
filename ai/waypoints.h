@@ -28,6 +28,7 @@ public:
 
 protected:
 	//std::set<std::string> obstacle_filter;
+	bool _no_waypoints;
 	bool _avoid_obstacles;
 	bool _stop_on_obstacle;
 	

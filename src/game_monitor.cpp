@@ -466,6 +466,13 @@ void IGameMonitor::killAllClasses(const std::set<std::string> &classes) {
 	_destroy_classes = classes;
 }
 
+const bool IGameMonitor::hasWaypoints(const std::string &classname) const {
+	WaypointClassMap::const_iterator wp_class = _waypoints.find(classname);
+	if (wp_class == _waypoints.end() && classname.compare(0, 7, "static-") == 0)  //no matter static or not
+		wp_class = _waypoints.find(classname.substr(7));
+
+	return (wp_class != _waypoints.end());	
+}
 
 const std::string IGameMonitor::getRandomWaypoint(const std::string &classname, const std::string &last_wp) const {
 	if (last_wp.empty()) 
