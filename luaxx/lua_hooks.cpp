@@ -5,6 +5,8 @@
 #include "world.h"
 #include "resource_manager.h"
 #include "game_monitor.h"
+#include "player_manager.h"
+#include "player_slot.h"
 #include "tmx/map.h"
 #include "sound/mixer.h"
 #include <assert.h>
@@ -87,6 +89,43 @@ LUA_TRY {
 	
 } LUA_CATCH("lua_hooks_object_property")	
 }
+
+static int lua_hooks_set_slot_property(lua_State *L) {
+LUA_TRY {
+	int n = lua_gettop(L);
+	if (n < 3) {
+		lua_pushstring(L, "set_slot_property requires object id, property name and property value");
+		lua_error(L);
+		return 0;
+	}
+	int id = lua_tointeger(L, 1);
+	PlayerSlot *slot =  PlayerManager->getSlotByID(id);
+	
+	if (slot == NULL) {
+		lua_pushstring(L, "slot does not exist");
+		lua_error(L);
+		return 0;
+	}
+	
+	std::string prop = lua_tostring(L, 2);
+	if (prop == "classname") {
+		slot->classname = lua_tostring(L, 3);
+		return 0;
+	} else if (prop == "animation") {
+		slot->animation = lua_tostring(L, 3);
+		return 0;
+	} else if (prop == "spawn_limit") {
+		slot->spawn_limit = lua_tointeger(L, 3);
+		return 0;
+	}
+	
+	lua_pushstring(L, mrt::formatString("object_property: unknown property %s", prop.c_str()).c_str());
+	lua_error(L);
+	return 0;
+	
+} LUA_CATCH("lua_hooks_object_property")	
+}
+
 
 static int lua_hooks_kill_object(lua_State *L) {
 	LUA_TRY {
@@ -458,6 +497,7 @@ void LuaHooks::load(const std::string &name) {
 	lua_register(state, "reset_tune", lua_hooks_reset_tune);
 	lua_register(state, "object_property", lua_hooks_object_property);
 	lua_register(state, "kill_object", lua_hooks_kill_object);
+	lua_register(state, "set_slot_property", lua_hooks_set_slot_property);
 	
 	state.call(0, LUA_MULTRET);
 	
