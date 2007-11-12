@@ -22,12 +22,24 @@
 #include "mrt/random.h"
 #include "tmx/map.h"
 #include "game_monitor.h"
+#include "world.h"
 
 class Wagon : public Object {
 public: 
 	Wagon() : Object("train") { setDirectionsNumber(1); }
 	virtual void onSpawn() { play("move", true); disown(); }	
 	virtual Object * clone() const { return new Wagon(*this); }
+	virtual void calculate(const float dt) {
+		Object *o = World->getObjectByID(getSummoner());
+		if (o == NULL) {
+			emit("death", NULL);
+			return;
+		}
+		_velocity = getRelativePosition(o);
+		float l = _velocity.normalize();
+		if (l > 1.2f * size.y)
+			_velocity.clear(); //too far
+	}
 	virtual void emit(const std::string &event, Object * emitter = NULL) {
 		if (event == "death") {
 			spawn("impassable-corpse", "dead-choo-choo-wagon");
@@ -38,7 +50,7 @@ public:
 
 class Train : public Object {
 public:
-	Train() : Object("train"), _smoke(1.0, true), _spawned_wagon(false) { setDirectionsNumber(1); }
+	Train() : Object("train"), _smoke(1.0, true), _wagon_id(0) { setDirectionsNumber(1); }
 	virtual Object * clone() const;
 	virtual void onSpawn();
 	virtual void calculate(const float dt);
@@ -49,20 +61,20 @@ public:
 		Object::serialize(s);
 		s.add(dst_y);
 		s.add(_smoke);
-		s.add(_spawned_wagon);
+		s.add(_wagon_id);
 	}
 
 	virtual void deserialize(const mrt::Serializator &s) {
 		Object::deserialize(s);
 		s.get(dst_y);
 		s.get(_smoke);
-		s.get(_spawned_wagon);
+		s.get(_wagon_id);
 	}
 
 private: 
 	int dst_y;
 	Alarm _smoke;
-	bool _spawned_wagon;
+	int _wagon_id;
 };
 
 void Train::onSpawn() {
@@ -86,16 +98,14 @@ void Train::emit(const std::string &event, Object * emitter) {
 void Train::tick(const float dt) {
 	Object::tick(dt);
 	if (Map->torus()) {
-		if (!_spawned_wagon) {
-			add("wagon", "choo-choo-wagon", "choo-choo-wagon", v2<float>(0, -size.y), Fixed);
-			_spawned_wagon = true;
+		if (!_wagon_id) {
+			_wagon_id = spawn("choo-choo-wagon", "choo-choo-wagon", v2<float>(0, -size.y))->getID();
 		}
 	} else { 
 		v2<int> pos;
 		getPosition(pos);
-		if (pos.y >= 0 && !_spawned_wagon) {
-			add("wagon", "choo-choo-wagon", "choo-choo-wagon", v2<float>(0, -size.y), Fixed);
-			_spawned_wagon = true;
+		if (pos.y >= 0 && !_wagon_id) {
+			_wagon_id = spawn("choo-choo-wagon", "choo-choo-wagon", v2<float>(0, -size.y))->getID();
 		}
 		if (pos.y  >= dst_y) { 
 			LOG_DEBUG(("escaped!"));
