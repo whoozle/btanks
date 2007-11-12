@@ -4,20 +4,23 @@
 #include "config.h"
 #include "world.h"
 #include "math/unary.h"
+#include "tmx/map.h"
 
 class BallisticMissile : public Object {
 public: 
 	virtual Object * clone() const { return new BallisticMissile(*this); }
 	
-	BallisticMissile() : Object("ballistic-missile"), _fall(false), _reaction(true)	{
+	BallisticMissile() : Object("ballistic-missile"), _fall(false), _launch(false), _reaction(true) {
 		setDirectionsNumber(16);
 		piercing = true;
 	}
 	
 	void onSpawn() {
 		play("main", true);
-		float duration = 5.0f;
-		_fall.set(duration);
+		float duration = 5.0f, launch_duration = 512.0f / speed;
+		_launch.set(launch_duration);
+		_fall.set(duration - launch_duration);
+		
 		float reaction = 0.05f;
 		mrt::randomize(reaction, reaction / 10);
 		_reaction.set(reaction);
@@ -30,44 +33,75 @@ public:
 		speed_backup = speed;
 	}
 	
+	virtual const bool skipRendering() const {
+		float l = _launch.get(), f = _launch.get();
+		if (l <= 0 && f > 0)
+			return true;
+		return false;
+	}
+	
 	void calculate(const float dt) {
-		bool react = _reaction.tick(dt), falling = _fall.tick(dt);
-		if (!falling) {
+		bool react = _reaction.tick(dt), falling = _fall.tick(dt), launch = !_launch.tick(dt);
+		//LOG_DEBUG(("launch: %c, falling: %c", launch?'+':'-', falling?'+':'-'));
+		if (launch) {
+			_velocity = v2<float>(0, -1);
+		} else if (!falling) {
 			v2<float> pos = getPosition();
-			if (react && pos.y < 0) {
+			if (react) {
 				Object *target = World->getObjectByID(target_id);
 				if (target == NULL) {
 					Object::emit("death", NULL); //just hide 
 					return;
 				}
-				speed = target->speed * 1.5f;
-				_velocity = getRelativePosition(target);
-				_velocity.y = -1;
+				speed = target->speed * 1.3f;
+				_velocity = getRelativePosition(target) + v2<float>(0, -512);
 				//LOG_DEBUG(("correcting: %g", _velocity.x));
 			}
-		} else if (react) { //falling and react
-			speed = speed_backup;
-			setDirection(12);
-			Object *target = World->getObjectByID(target_id);
-			
-			if (target == NULL) {
-				Object::emit("death", NULL); //just hide 
-				return;
+		} else { //falling
+			if (speed != speed_backup) {
+				speed = speed_backup;
+				Object *target = World->getObjectByID(target_id);
+				ttl = ((target != NULL)?getRelativePosition(target).length():512.0f) / speed;
+				setDirection(12);
 			}
-			v2<float> pos = getPosition() + size, tpos = target->getCenterPosition();
-			_velocity = tpos - pos;
+			_velocity = v2<float>(0, 1);
+			/*
+			
+			v2<float> pos = getCenterPosition(), tpos;
+
+			if (target != NULL)			
+				tpos = target->getCenterPosition();
+			
+			if (target == NULL || tpos.y <= 0) {
+				tpos = pos + v2<float>(0, 50);
+			}
+			
+			_velocity = Map->distance(pos, tpos);
 			if (_velocity.y <= 0) {
 				if (animation == "nuke-missile") {
 					spawn("nuke-explosion", "nuke-explosion");
 				}
 			
 				emit("death", NULL);
-				target->emit("death", NULL);
+				if (target) 
+					target->emit("death", NULL);
 			} else {
 				if (math::abs(_velocity.x) * 5 > _velocity.y)
 					_velocity.x = _velocity.y / 5;
 			}
+			*/
 		}
+	}
+	void emit(const std::string &event, Object * emitter) {
+		if (event == "death") {
+			Object *target = World->getObjectByID(target_id);
+			if (target != NULL)
+				target->emit("death", NULL);
+			if (animation == "nuke-missile") {
+				spawn("nuke-explosion", "nuke-explosion");
+			}
+		}
+		Object::emit(event, emitter);
 	}
 
 	virtual void serialize(mrt::Serializator &s) const {
@@ -86,7 +120,7 @@ public:
 		s.get(speed_backup);
 	}
 private: 
-	Alarm _fall, _reaction;
+	Alarm _fall, _launch, _reaction;
 	float speed_backup;
 	int target_id;
 };
