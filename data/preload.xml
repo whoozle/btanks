@@ -357,6 +357,7 @@
 	<animation map="gaddino" id="cyan-launcher-outline" />
 	<animation map="gaddino" id="cyan-machinegunner-helmet" />
 	<animation map="gaddino" id="cyan-shilka" />
+	<animation map="gaddino" id="cyan-shilka-outline" />
 	<animation map="gaddino" id="cyan-tank" />
 	<animation map="gaddino" id="cyan-tank-outline" />
 	<animation map="gaddino" id="damage-digits" />
@@ -369,8 +370,11 @@
 	<animation map="gaddino" id="dead-machinegunner" />
 	<animation map="gaddino" id="dead-mortar" />
 	<animation map="gaddino" id="dead-red-launcher" />
+	<animation map="gaddino" id="dead-red-shilka" />
 	<animation map="gaddino" id="dead-yellow-launcher" />
+	<animation map="gaddino" id="dirt" />
 	<animation map="gaddino" id="dirt-bullets-item" />
+	<animation map="gaddino" id="dispersion-bullet" />
 	<animation map="gaddino" id="dispersion-bullets-item" />
 	<animation map="gaddino" id="dumb-missile" />
 	<animation map="gaddino" id="dumb-missiles-item" />
@@ -400,6 +404,7 @@
 	<animation map="gaddino" id="missile-explosion" />
 	<animation map="gaddino" id="missile-fire" />
 	<animation map="gaddino" id="nuke-explosion" />
+	<animation map="gaddino" id="nuke-mine" />
 	<animation map="gaddino" id="nuke-missile" />
 	<animation map="gaddino" id="nuke-missiles-item" />
 	<animation map="gaddino" id="oil-barrels" />
@@ -407,10 +412,15 @@
 	<animation map="gaddino" id="red-launcher" />
 	<animation map="gaddino" id="red-launcher-outline" />
 	<animation map="gaddino" id="red-machinegunner-helmet" />
+	<animation map="gaddino" id="red-shilka" />
+	<animation map="gaddino" id="red-shilka-outline" />
 	<animation map="gaddino" id="red-tank" />
 	<animation map="gaddino" id="red-tank-outline" />
 	<animation map="gaddino" id="regular-mine" />
 	<animation map="gaddino" id="road-sign10" />
+	<animation map="gaddino" id="shilka-bullet-left" />
+	<animation map="gaddino" id="shilka-bullet-right" />
+	<animation map="gaddino" id="shilka-dirt-bullet-left" />
 	<animation map="gaddino" id="smoke-cloud" />
 	<animation map="gaddino" id="smoke-missile" />
 	<animation map="gaddino" id="smoke-missiles-item" />
@@ -429,6 +439,8 @@
 	<animation map="gaddino" id="yellow-machinegunner-helmet" />
 	<animation map="gaddino" id="yellow-mortar" />
 	<animation map="gaddino" id="yellow-shilka" />
+	<animation map="gaddino" id="yellow-tank" />
+	<animation map="gaddino" id="yellow-tank-outline" />
 	<animation map="hell_swamp" id="choo-choo-wagon" />
 	<animation map="hell_swamp" id="cyan-launcher" />
 	<animation map="hell_swamp" id="cyan-launcher-outline" />
