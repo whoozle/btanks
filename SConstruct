@@ -31,7 +31,7 @@ if sys.platform != "win32":
 
 opts.Add(EnumOption('mode', 'build mode', 'release', allowed_values=('debug','release')))
 opts.Add(BoolOption('gcc_visibility', 'gcc visibility', 'false'))
-opts.Add(BoolOption('enable_lua', 'enable lua support (experimental)', 'false'))
+opts.Add(BoolOption('enable_lua', 'enable lua support', 'true'))
 
 opts.Update(env)
 opts.Save('options.cache', env.Copy())
