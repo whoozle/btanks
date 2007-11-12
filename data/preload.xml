@@ -546,6 +546,7 @@
 	<animation map="lenin_square" id="dead-white-car" />
 	<animation map="lenin_square" id="dead-yellow-car" />
 	<animation map="lenin_square" id="dead-yellow-launcher" />
+	<animation map="lenin_square" id="dead-yellow-shilka" />
 	<animation map="lenin_square" id="dead-yellow-tank" />
 	<animation map="lenin_square" id="dispersion-bullet" />
 	<animation map="lenin_square" id="dispersion-bullets-item" />
@@ -617,6 +618,8 @@
 	<animation map="lenin_square" id="yellow-launcher-outline" />
 	<animation map="lenin_square" id="yellow-machinegunner-helmet" />
 	<animation map="lenin_square" id="yellow-mortar" />
+	<animation map="lenin_square" id="yellow-shilka" />
+	<animation map="lenin_square" id="yellow-shilka-outline" />
 	<animation map="lenin_square" id="yellow-tank" />
 	<animation map="lenin_square" id="yellow-tank-outline" />
 	<animation map="paintball" id="cyan-launcher" />
