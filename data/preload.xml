@@ -181,6 +181,8 @@
 	<animation map="curfew" id="cyan-launcher" />
 	<animation map="curfew" id="cyan-launcher-outline" />
 	<animation map="curfew" id="cyan-machinegunner-helmet" />
+	<animation map="curfew" id="cyan-shilka" />
+	<animation map="curfew" id="cyan-shilka-outline" />
 	<animation map="curfew" id="cyan-tank" />
 	<animation map="curfew" id="cyan-tank-outline" />
 	<animation map="curfew" id="damage-digits" />
@@ -197,7 +199,9 @@
 	<animation map="curfew" id="dead-nukeman" />
 	<animation map="curfew" id="dead-orange-bus" />
 	<animation map="curfew" id="dead-red-car" />
+	<animation map="curfew" id="dead-red-launcher" />
 	<animation map="curfew" id="dead-red-shilka" />
+	<animation map="curfew" id="dead-red-tank" />
 	<animation map="curfew" id="dead-thrower" />
 	<animation map="curfew" id="dead-thrower-static" />
 	<animation map="curfew" id="dead-white-car" />
@@ -215,6 +219,8 @@
 	<animation map="curfew" id="green-launcher" />
 	<animation map="curfew" id="green-launcher-outline" />
 	<animation map="curfew" id="green-machinegunner-helmet" />
+	<animation map="curfew" id="green-shilka" />
+	<animation map="curfew" id="green-shilka-outline" />
 	<animation map="curfew" id="green-tank" />
 	<animation map="curfew" id="green-tank-outline" />
 	<animation map="curfew" id="guided-missile" />
@@ -242,9 +248,12 @@
 	<animation map="curfew" id="pond" />
 	<animation map="curfew" id="red-car" />
 	<animation map="curfew" id="red-launcher" />
+	<animation map="curfew" id="red-launcher-outline" />
+	<animation map="curfew" id="red-machinegunner-helmet" />
 	<animation map="curfew" id="red-shilka" />
 	<animation map="curfew" id="red-shilka-outline" />
 	<animation map="curfew" id="red-tank" />
+	<animation map="curfew" id="red-tank-outline" />
 	<animation map="curfew" id="red-thrower-helmet" />
 	<animation map="curfew" id="regular-mine" />
 	<animation map="curfew" id="ricochet-bullet" />
@@ -281,6 +290,7 @@
 	<animation map="curfew" id="yellow-shilka" />
 	<animation map="curfew" id="yellow-shilka-outline" />
 	<animation map="curfew" id="yellow-tank" />
+	<animation map="curfew" id="yellow-tank-outline" />
 	<animation map="curfew" id="yellow-thrower-helmet" />
 	<animation map="dune" id="building-explosion" />
 	<animation map="dune" id="cyan-launcher" />
@@ -365,13 +375,18 @@
 	<animation map="gaddino" id="dead-choo-choo-wagon" />
 	<animation map="gaddino" id="dead-cow" />
 	<animation map="gaddino" id="dead-cyan-launcher" />
+	<animation map="gaddino" id="dead-cyan-shilka" />
 	<animation map="gaddino" id="dead-cyan-tank" />
 	<animation map="gaddino" id="dead-green-launcher" />
+	<animation map="gaddino" id="dead-green-shilka" />
 	<animation map="gaddino" id="dead-machinegunner" />
 	<animation map="gaddino" id="dead-mortar" />
 	<animation map="gaddino" id="dead-red-launcher" />
 	<animation map="gaddino" id="dead-red-shilka" />
+	<animation map="gaddino" id="dead-red-tank" />
+	<animation map="gaddino" id="dead-thrower" />
 	<animation map="gaddino" id="dead-yellow-launcher" />
+	<animation map="gaddino" id="dead-yellow-shilka" />
 	<animation map="gaddino" id="dirt" />
 	<animation map="gaddino" id="dirt-bullets-item" />
 	<animation map="gaddino" id="dispersion-bullet" />
@@ -384,7 +399,10 @@
 	<animation map="gaddino" id="green-launcher" />
 	<animation map="gaddino" id="green-launcher-outline" />
 	<animation map="gaddino" id="green-machinegunner-helmet" />
+	<animation map="gaddino" id="green-shilka" />
+	<animation map="gaddino" id="green-shilka-outline" />
 	<animation map="gaddino" id="green-tank" />
+	<animation map="gaddino" id="green-tank-outline" />
 	<animation map="gaddino" id="guided-missile" />
 	<animation map="gaddino" id="guided-missiles-item" />
 	<animation map="gaddino" id="guided-missiles-on-launcher" />
@@ -416,11 +434,13 @@
 	<animation map="gaddino" id="red-shilka-outline" />
 	<animation map="gaddino" id="red-tank" />
 	<animation map="gaddino" id="red-tank-outline" />
+	<animation map="gaddino" id="red-thrower-helmet" />
 	<animation map="gaddino" id="regular-mine" />
 	<animation map="gaddino" id="road-sign10" />
 	<animation map="gaddino" id="shilka-bullet-left" />
 	<animation map="gaddino" id="shilka-bullet-right" />
 	<animation map="gaddino" id="shilka-dirt-bullet-left" />
+	<animation map="gaddino" id="shilka-dirt-bullet-right" />
 	<animation map="gaddino" id="smoke-cloud" />
 	<animation map="gaddino" id="smoke-missile" />
 	<animation map="gaddino" id="smoke-missiles-item" />
@@ -431,7 +451,9 @@
 	<animation map="gaddino" id="tank-bullet" />
 	<animation map="gaddino" id="tank-smoke" />
 	<animation map="gaddino" id="target" />
+	<animation map="gaddino" id="thrower" />
 	<animation map="gaddino" id="thrower-item" />
+	<animation map="gaddino" id="thrower-missile" />
 	<animation map="gaddino" id="train-smoke" />
 	<animation map="gaddino" id="van" />
 	<animation map="gaddino" id="yellow-launcher" />
@@ -439,8 +461,10 @@
 	<animation map="gaddino" id="yellow-machinegunner-helmet" />
 	<animation map="gaddino" id="yellow-mortar" />
 	<animation map="gaddino" id="yellow-shilka" />
+	<animation map="gaddino" id="yellow-shilka-outline" />
 	<animation map="gaddino" id="yellow-tank" />
 	<animation map="gaddino" id="yellow-tank-outline" />
+	<animation map="gaddino" id="yellow-thrower-helmet" />
 	<animation map="hell_swamp" id="choo-choo-wagon" />
 	<animation map="hell_swamp" id="cyan-launcher" />
 	<animation map="hell_swamp" id="cyan-launcher-outline" />
