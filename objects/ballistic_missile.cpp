@@ -107,17 +107,19 @@ public:
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
 		s.add(_fall);
+		s.add(_launch);
 		s.add(_reaction);
-		s.add(target_id);
 		s.add(speed_backup);
+		s.add(target_id);
 	}
 
 	virtual void deserialize(const mrt::Serializator &s) {
 		Object::deserialize(s);
 		s.get(_fall);
+		s.get(_launch);
 		s.get(_reaction);
-		s.get(target_id);
 		s.get(speed_backup);
+		s.get(target_id);
 	}
 private: 
 	Alarm _fall, _launch, _reaction;
