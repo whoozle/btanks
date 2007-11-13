@@ -37,7 +37,7 @@ public:
 		}
 		_velocity = getRelativePosition(o);
 		float l = _velocity.normalize();
-		LOG_DEBUG(("velocity: %g,%g (%g) (%g)", _velocity.x, _velocity.y, l, 1.2f * size.y));
+		//LOG_DEBUG(("velocity: %g,%g (%g) (%g)", _velocity.x, _velocity.y, l, 1.2f * size.y));
 		if (l > 1.2f * size.y)
 			_velocity.clear(); //too far
 	}
