@@ -824,7 +824,7 @@
 	
 	<object class="bomb" hp="1" impassability="-1" speed="100" />
 
-	<object class="choo-choo-train" speed="20" mass="5000" hp="100" z="0" impassability="1" />
+	<object class="choo-choo-train" speed="20" mass="5" hp="100" z="0" impassability="1" />
 	<object class="choo-choo-wagon" parent="choo-choo-train"/>
 	<object class="train-smoke" z="101" />
 
