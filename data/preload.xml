@@ -111,6 +111,7 @@
 	<animation map="baykonur" id="dead-green-launcher" />
 	<animation map="baykonur" id="dead-green-shilka" />
 	<animation map="baykonur" id="dead-machinegunner" />
+	<animation map="baykonur" id="dead-mortar" />
 	<animation map="baykonur" id="dead-orange-bus" />
 	<animation map="baykonur" id="dead-red-car" />
 	<animation map="baykonur" id="dead-red-shilka" />
@@ -144,6 +145,7 @@
 	<animation map="baykonur" id="megaheal" />
 	<animation map="baykonur" id="missile-explosion" />
 	<animation map="baykonur" id="missile-fire" />
+	<animation map="baykonur" id="nuke-explosion" />
 	<animation map="baykonur" id="nuke-missile" />
 	<animation map="baykonur" id="nuke-missiles-item" />
 	<animation map="baykonur" id="oil-barrels" />
@@ -162,6 +164,7 @@
 	<animation map="baykonur" id="submarine" />
 	<animation map="baykonur" id="tank-bullet" />
 	<animation map="baykonur" id="tank-smoke" />
+	<animation map="baykonur" id="target" />
 	<animation map="baykonur" id="thrower" />
 	<animation map="baykonur" id="thrower-item" />
 	<animation map="baykonur" id="thrower-missile" />

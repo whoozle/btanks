@@ -21,9 +21,9 @@
 #include "registrar.h"
 #include "alarm.h"
 #include "mrt/random.h"
-#include "tmx/map.h"
+#include "ai/rush.h"
 
-class Boat : public Object {
+class Boat : public Object, private ai::Rush {
 public:
 	Boat(const std::string &object);
 
@@ -92,46 +92,9 @@ void Boat::calculate(const float dt) {
 	if (!isDriven() && !_variants.has("stale")) {
 		//LOG_DEBUG(("finding next target..."));
 		
-		const v2<int> tile_size = Map->getPathTileSize();
-		const v2<int> map_size = Map->getSize();
-		const Matrix<int> & water = Map->getAreaMatrix("water");
-		v2<int> pos;
-		getCenterPosition(pos);
-		int im = water.get(pos.y / tile_size.y, pos.x / tile_size.x);
-		if (im != 1) {
-			emit("death", NULL); //bam! 
-			return;
-		}
-		int dirs = getDirectionsNumber();
-		int dir = mrt::random(dirs);
-		v2<float> d; 
-		d.fromDirection(dir, dirs);
-		d.normalize((tile_size.x + tile_size.y) / 2);
-		int len = 0;
-		while(water.get(pos.y / tile_size.y, pos.x / tile_size.x) == 1) {
-			++len;
-			pos += d.convert<int>();
-		}
-		//LOG_DEBUG(("d: %g %g, len: %d", d.x, d.y, len));
-		len -= (int)(size.x + size.y) / (tile_size.x + tile_size.y) / 2 + 1;
-		if (len > 0) {
-			len = 1 + len / 2 + (len % 2) + mrt::random(len / 2);
-			getCenterPosition(pos);
-			pos += (d * len).convert<int>();
-
-			if (pos.x < size.x / 2) 
-				pos.x = (int)size.x / 2;
-			if (pos.y < size.y / 2) 
-				pos.y = (int)size.y / 2;
-			if (pos.x + size.x / 2 > map_size.x) 
-				pos.x = map_size.x - (int)size.x / 2;
-			if (pos.y + size.y / 2 > map_size.y) 
-				pos.y = map_size.y - (int)size.y / 2;
-
-			Way way;
-			way.push_back(pos);
-			setWay(way);
-		}
+		Way way;
+		ai::Rush::calculateW(way, this);
+		setWay(way);
 	} 
 	
 	calculateWayVelocity();
