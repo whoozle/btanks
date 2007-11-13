@@ -593,7 +593,7 @@ void Object::setWay(const Way & way) {
 	_way = way;
 	_next_target.clear();
 	if (!way.empty()) { 
-		LOG_DEBUG(("%d:%s:%s set %u pending waypoints", getID(), registered_name.c_str(), animation.c_str(), (unsigned)_way.size()));
+//		LOG_DEBUG(("%d:%s:%s set %u pending waypoints", getID(), registered_name.c_str(), animation.c_str(), (unsigned)_way.size()));
 		_next_target = way.begin()->convert<float>();
 	}
 	need_sync = true;
