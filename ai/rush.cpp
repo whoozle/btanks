@@ -15,6 +15,7 @@ void Rush::calculateW(Way &way, Object *object) {
 	object->getCenterPosition(pos);
 	int im = water.get(pos.y / tile_size.y, pos.x / tile_size.x);
 	if (im != 1) {
+		LOG_WARN(("object %s:%d is now on non-hint area (value: %d)", object->animation.c_str(), object->getID(), im));
 		object->emit("death", NULL); //bam! 
 		return;
 	}
