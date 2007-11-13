@@ -339,6 +339,9 @@ TRY {
 
 	if (debug)
 		LOG_DEBUG(("*** im = %d", result_im));
+	if (result_im == 100)
+		return 100;
+	
 	//LOG_DEBUG(("<<IMap::getImpassability"));
 	return (int)(100 * obj->getEffectiveImpassability(result_im / 100.0f));
 } CATCH(mrt::formatString("Map::getImpassability(%p, (%d:%d), %p, %p)", 
