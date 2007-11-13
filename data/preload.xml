@@ -682,6 +682,8 @@
 	<animation map="platform" id="cyan-machinegunner-helmet" />
 	<animation map="platform" id="cyan-shilka" />
 	<animation map="platform" id="cyan-shilka-outline" />
+	<animation map="platform" id="cyan-tank" />
+	<animation map="platform" id="cyan-tank-outline" />
 	<animation map="platform" id="damage-digits" />
 	<animation map="platform" id="dead-cannon" />
 	<animation map="platform" id="dead-civilian-static-1" />
