@@ -37,6 +37,7 @@ public:
 		}
 		_velocity = getRelativePosition(o);
 		float l = _velocity.normalize();
+		LOG_DEBUG(("velocity: %g,%g (%g) (%g)", _velocity.x, _velocity.y, l, 1.2f * size.y));
 		if (l > 1.2f * size.y)
 			_velocity.clear(); //too far
 	}
@@ -45,6 +46,11 @@ public:
 			spawn("impassable-corpse", "dead-choo-choo-wagon");
 		}
 		Object::emit(event, emitter);
+	}
+	
+
+	void getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const {
+		base = base_value = penalty = 0;
 	}
 };
 
@@ -56,6 +62,10 @@ public:
 	virtual void calculate(const float dt);
 	virtual void tick(const float dt);
 	virtual void emit(const std::string &event, Object * emitter = NULL);
+
+	void getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const {
+		base = base_value = penalty = 0;
+	}
 
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
