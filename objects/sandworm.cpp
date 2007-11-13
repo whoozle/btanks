@@ -128,27 +128,11 @@ public:
 				emit("death", NULL);
 				return;
 			}
-/*			
-			if (getRelativePosition(summoner).length() > (size.x  + size.y) / 2) {
-				Way way = getWay();
-				v2<int> hpos; 
-				getCenterPosition(hpos);
-				way.push_back(WayPoint(hpos));
-				setWay(way);
-			}
-*/
 			_velocity = getRelativePosition(summoner);
 			float l = _velocity.normalize();
 			if (l < (size.x  + size.y) / 2)
 				_velocity.clear();
 			//else _velocity.quantize8();
-			
-			/*
-			v2<float> pos;
-			getCenterPosition(pos);
-			
-			LOG_DEBUG(("tail %g %g<-> parent: %g, velocity: %g %g", pos.x, pos.y, l, _velocity.x, _velocity.y));
-			*/
 			return;
 		}
 		
