@@ -136,12 +136,14 @@ public:
 			//else _velocity.quantize8();
 			return;
 		}
-		
-		if (!isDriven() && _variants.has("withdrawn")) {
-			Way way;
-			ai::Rush::calculateW(way, this);
-			if (!way.empty()) 
-				setWay(way);
+
+		if (_variants.has("withdrawn")) {
+			if (!isDriven()) {
+				Way way;
+				ai::Rush::calculateW(way, this);
+				if (!way.empty()) 
+					setWay(way);
+			}
 			return;
 		}
 		
