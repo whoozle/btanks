@@ -23,7 +23,7 @@
 #include "mrt/random.h"
 #include "ai/rush.h"
 
-class Boat : public Object, private ai::Rush {
+class Boat : public Object {
 public:
 	Boat(const std::string &object);
 
