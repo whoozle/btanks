@@ -20,6 +20,7 @@
 #include "world.h"
 #include "registrar.h"
 #include "math/matrix.h"
+#include "ai/rush.h"
 #include "tmx/map.h"
 #include "mrt/random.h"
 #include "config.h"
@@ -133,6 +134,14 @@ public:
 			if (l < (size.x  + size.y) / 2)
 				_velocity.clear();
 			//else _velocity.quantize8();
+			return;
+		}
+		
+		if (!isDriven() && _variants.has("withdrawn")) {
+			Way way;
+			ai::Rush::calculateW(way, this);
+			if (!way.empty()) 
+				setWay(way);
 			return;
 		}
 		
