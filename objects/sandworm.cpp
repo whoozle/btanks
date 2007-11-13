@@ -145,7 +145,7 @@ public:
 			return;
 		}
 		
-		LOG_DEBUG(("searching random hint area..."));
+		//LOG_DEBUG(("searching random hint area..."));
 		const Matrix<int> &hint = Map->getAreaMatrix("sandworm"); 
 		const v2<int> tile_size = Map->getPathTileSize();
 
