@@ -7,7 +7,7 @@
 namespace ai {
 class BTANKSAPI Rush {
 public: 
-	static void calculateW(Way &way, Object *object); //non-const Object* because of emitting death :)
+	static void calculateW(Way &way, Object *object, const std::string &area); //non-const Object* because of emitting death :)
 };
 }
 

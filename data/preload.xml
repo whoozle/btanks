@@ -300,11 +300,13 @@
 	<animation map="dune" id="cyan-machinegunner-helmet" />
 	<animation map="dune" id="cyan-shilka" />
 	<animation map="dune" id="cyan-shilka-outline" />
+	<animation map="dune" id="cyan-tank" />
 	<animation map="dune" id="damage-digits" />
 	<animation map="dune" id="dead-civilian-static-2" />
 	<animation map="dune" id="dead-civilian-static-3" />
 	<animation map="dune" id="dead-cyan-shilka" />
 	<animation map="dune" id="dead-machinegunner" />
+	<animation map="dune" id="dead-mortar" />
 	<animation map="dune" id="dead-red-launcher" />
 	<animation map="dune" id="dead-red-tank" />
 	<animation map="dune" id="dead-thrower" />
@@ -319,6 +321,7 @@
 	<animation map="dune" id="guided-missile" />
 	<animation map="dune" id="guided-missiles-item" />
 	<animation map="dune" id="guided-missiles-on-launcher" />
+	<animation map="dune" id="guided-missiles-on-tank" />
 	<animation map="dune" id="heal" />
 	<animation map="dune" id="launcher-smoke" />
 	<animation map="dune" id="machinegunner" />
@@ -337,6 +340,7 @@
 	<animation map="dune" id="red-machinegunner-helmet" />
 	<animation map="dune" id="red-shilka" />
 	<animation map="dune" id="red-shilka-outline" />
+	<animation map="dune" id="red-tank" />
 	<animation map="dune" id="red-thrower-helmet" />
 	<animation map="dune" id="regular-mine" />
 	<animation map="dune" id="road-sign07" />
@@ -358,6 +362,8 @@
 	<animation map="dune" id="yellow-mortar" />
 	<animation map="dune" id="yellow-shilka" />
 	<animation map="dune" id="yellow-shilka-outline" />
+	<animation map="dune" id="yellow-tank" />
+	<animation map="dune" id="yellow-tank-outline" />
 	<animation map="dune" id="zombie" />
 	<animation map="gaddino" id="boomerang-missile" />
 	<animation map="gaddino" id="boomerang-missiles-item" />

@@ -5,22 +5,26 @@
 
 using namespace ai;
 
-void Rush::calculateW(Way &way, Object *object) {
+void Rush::calculateW(Way &way, Object *object, const std::string &area) {
 	way.clear();
 	
 	const v2<int> tile_size = Map->getPathTileSize();
 	const v2<int> map_size = Map->getSize();
-	const Matrix<int> & water = Map->getAreaMatrix("water");
+	const Matrix<int> & water = Map->getAreaMatrix(area);
 	v2<int> pos;
 	object->getCenterPosition(pos);
 	int im = water.get(pos.y / tile_size.y, pos.x / tile_size.x);
 	if (im != 1) {
-		LOG_WARN(("object %s:%d is now on non-hint area (value: %d)", object->animation.c_str(), object->getID(), im));
+		LOG_WARN(("object %s:%d is now on non-hint area (%d:%d value: %d)", 
+			object->animation.c_str(), object->getID(), pos.y / tile_size.y, pos.x / tile_size.x, im));
 		object->emit("death", NULL); //bam! 
 		return;
 	}
 	
 	int dirs = object->getDirectionsNumber();
+	if (dirs == 1)
+		dirs = 16;
+	
 	int dir = mrt::random(dirs);
 	v2<float> d; 
 	d.fromDirection(dir, dirs);

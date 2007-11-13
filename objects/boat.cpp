@@ -93,7 +93,7 @@ void Boat::calculate(const float dt) {
 		//LOG_DEBUG(("finding next target..."));
 		
 		Way way;
-		ai::Rush::calculateW(way, this);
+		ai::Rush::calculateW(way, this, "water");
 		setWay(way);
 	} 
 	

@@ -140,7 +140,7 @@ public:
 		if (_variants.has("withdrawn")) {
 			if (!isDriven()) {
 				Way way;
-				ai::Rush::calculateW(way, this);
+				ai::Rush::calculateW(way, this, "sandworm");
 				if (!way.empty()) 
 					setWay(way);
 			}
