@@ -106,7 +106,7 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 		sdlx::CollisionMap *cmap = NULL;
 		bool real_load = !attr["persistent"].empty();
 
-		GET_CONFIG_VALUE("engine.preload-all-resources", bool , preload_all, true);
+		GET_CONFIG_VALUE("engine.preload", bool , preload_all, false);
 		real_load |= preload_all;
 
 		std::string &tile = attr["tile"];

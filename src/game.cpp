@@ -225,6 +225,9 @@ void IGame::init(const int argc, char *argv[]) {
 				Config->remove("objects.trooper.reaction-time");
 			}
 		}
+		if (revision < 5478) {
+			Config->remove("engine.preload-all-resources");
+		}
 		
 		Config->set("engine.revision", getRevision());
 	}
