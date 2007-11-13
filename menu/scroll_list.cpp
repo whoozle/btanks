@@ -226,7 +226,7 @@ bool ScrollList::onKey(const SDL_keysym sym) {
 		size_t i;
 		int c = tolower(sym.sym);
 		for(i = 0; i < _list.size(); ++i) {
-			Label *l = dynamic_cast<Label *>(_list[i]);
+			Label *l = dynamic_cast<Label *>(_list[(i + _current_item + 1) % _list.size()]);
 			if (l != NULL && !l->get().empty()) {
 				int fc = tolower(l->get()[0]);
 				if (fc == c) 
@@ -234,6 +234,7 @@ bool ScrollList::onKey(const SDL_keysym sym) {
 			}
 		}
 		if (i < _list.size()) {
+			i = (i + _current_item + 1) % _list.size();
 			if (_current_item != (int)i)
 				invalidate(true);
 			_current_item = i;
