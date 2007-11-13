@@ -82,7 +82,7 @@ void RaiderHeli::calculate(const float dt) {
 		_player = 0;
 	}
 
-	if (_leaving.tick(dt)) {
+	if (!_variants.has("no-escape") && _leaving.tick(dt)) {
 		v2<int> pos, map_size = Map->getSize();
 		getPosition(pos);
 		pos += (size * 0.9).convert<int>();
