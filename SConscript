@@ -89,13 +89,12 @@ if env['enable_lua']:
 
 if sys.platform == "win32":
 	bt_libs[0:0] = ['SDLmain']
-	bt_libs.append('opengl32')
 	bt_libs.append('Ws2_32')
 	bt_libs.append('user32')
 	#bt_libs.append('gdi32')
-else: 
-	#bt_libs.append('GL')
-	pass
+#	bt_libs.append('opengl32')
+#else: 
+#	bt_libs.append('GL')
 
 
 bt = env.SharedLibrary('bt', bt_sources, LIBS=bt_libs, RPATH=['.'])
