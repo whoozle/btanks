@@ -225,7 +225,11 @@ void IWindow::createMainWindow() {
 		int r = SDL_GL_SetAttribute( SDL_GL_SWAP_CONTROL, _vsync?1:0);
 		if (r == -1) 
 			LOG_WARN(("cannot set SDL_GL_SWAP_CONTROL."));
-#ifdef WIN32
+
+		if (_vsync)
+			SDL_putenv("__GL_SYNC_TO_VBLANK=1"); //nvidia ext
+			
+#if 0
 		if (!_vsync) {
 			typedef void (APIENTRY * WGLSWAPINTERVALEXT) (int);
 			WGLSWAPINTERVALEXT wglSwapIntervalEXT = (WGLSWAPINTERVALEXT) SDL_GL_GetProcAddress("wglSwapIntervalEXT");
@@ -236,7 +240,6 @@ void IWindow::createMainWindow() {
 		}
 #endif
 
-#if SDL_VERSION_ATLEAST(1,2,10)
 #ifdef WIN32
 		LOG_DEBUG(("setting GL accelerated visual..."));
 
@@ -244,7 +247,6 @@ void IWindow::createMainWindow() {
 		r = SDL_GL_SetAttribute( SDL_GL_ACCELERATED_VISUAL, 1);
 		if (r == -1) 
 			LOG_WARN(("cannot set SDL_GL_ACCELERATED_VISUAL."));
-#endif
 #endif
 
 #endif
