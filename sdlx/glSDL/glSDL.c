@@ -951,7 +951,7 @@ SDL_Surface *glSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags)
 	}
 	gl_doublebuf = flags & SDL_DOUBLEBUF;
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, gl_doublebuf);
-	SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, gl_doublebuf ? 1: 0);
+	//SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, gl_doublebuf ? 1: 0);
 
 	scale = 1;
 
