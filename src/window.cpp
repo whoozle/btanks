@@ -217,13 +217,15 @@ void IWindow::createMainWindow() {
 		}
 #endif
 
+#if SDL_VERSION_ATLEAST(1,2,10)
+#ifdef WIN32
 		LOG_DEBUG(("setting GL accelerated visual..."));
 
-#ifdef WIN32
 		//SIGSEGV in SDL under linux if no GLX visual present. (debian sid, fc6)
 		r = SDL_GL_SetAttribute( SDL_GL_ACCELERATED_VISUAL, 1);
 		if (r == -1) 
 			LOG_WARN(("cannot set SDL_GL_ACCELERATED_VISUAL."));
+#endif
 #endif
 
 #endif
@@ -258,7 +260,7 @@ void IWindow::createMainWindow() {
 				"Or use --no-gl to switch disable GL renderer completely."
 				));
 			}
-		} else LOG_WARN(("SDL_GL_GetAttribute( SDL_GL_ACCELERATED_VISUAL) failed: %s (%d)", SDL_GetError(), r));
+		} else LOG_WARN(("SDL_GL_GetAttribute( SDL_GL_ACCELERATED_VISUAL) failed: %s, result: %d, value: %d", SDL_GetError(), r, accel));
 #endif
 
 	} else {
