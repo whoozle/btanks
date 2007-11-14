@@ -248,7 +248,7 @@ void IWindow::createMainWindow() {
 
 #if SDL_VERSION_ATLEAST(1,2,10)
 
-		int accel = 0;
+		int accel = -1;
 		if ((r = SDL_GL_GetAttribute( SDL_GL_ACCELERATED_VISUAL, &accel)) == 0) {
 			LOG_DEBUG(("SDL_GL_ACCELERATED_VISUAL = %d", accel));
 
