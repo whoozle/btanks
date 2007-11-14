@@ -94,7 +94,6 @@ void IWindow::initSDL() {
 		LOG_DEBUG(("loading GL library"));
 		if (SDL_GL_LoadLibrary(NULL) == -1) 
 			throw_sdl(("SDL_GL_LoadLibrary"));
-
 	}
 	
 	int default_flags = sdlx::Surface::Hardware | sdlx::Surface::Alpha | (_opengl? SDL_OPENGL: 0) ;
@@ -109,6 +108,27 @@ void IWindow::initSDL() {
 
 	//LOG_DEBUG(("initializing SDL_ttf..."));
 	//sdlx::TTF::init();
+}
+
+static std::string getGLString(const GLenum name) {
+	typedef const GLubyte * (APIENTRY * PGLGETSTRING) (GLenum);
+	union {
+		PGLGETSTRING pglGetString;
+		void *ptr;
+	} ptr_hack;
+
+	memset(&ptr_hack, 0, sizeof(ptr_hack));
+	
+	ptr_hack.ptr = SDL_GL_GetProcAddress("glGetString");
+	if (ptr_hack.pglGetString) {
+		const char * cstr = (const char *) ptr_hack.pglGetString(name);
+		if (cstr != NULL) {
+			return cstr;
+		} else {
+			LOG_WARN(("could not get value for GLenum %d.", (int)name));
+		}
+	} else LOG_WARN(("glGetString not found."));
+	return std::string();
 }
 
 void IWindow::init(const int argc, char *argv[]) {
@@ -261,6 +281,9 @@ void IWindow::createMainWindow() {
 			}
 		} else LOG_WARN(("SDL_GL_GetAttribute( SDL_GL_ACCELERATED_VISUAL) failed: %s, result: %d, value: %d", SDL_GetError(), r, accel));
 #endif
+
+		LOG_DEBUG(("vendor: %s", getGLString(GL_VENDOR).c_str()));
+		LOG_DEBUG(("renderer: %s", getGLString(GL_RENDERER).c_str()));
 
 	} else {
 		_window.setVideoMode(_w, _h, 0, flags);
