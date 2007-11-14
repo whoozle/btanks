@@ -94,7 +94,8 @@ if sys.platform == "win32":
 	bt_libs.append('user32')
 	#bt_libs.append('gdi32')
 else: 
-	bt_libs.append('GL')
+	#bt_libs.append('GL')
+	pass
 
 
 bt = env.SharedLibrary('bt', bt_sources, LIBS=bt_libs, RPATH=['.'])

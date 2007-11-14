@@ -208,12 +208,11 @@ void IWindow::createMainWindow() {
 #ifdef WIN32
 		if (!_vsync) {
 			typedef void (APIENTRY * WGLSWAPINTERVALEXT) (int);
-			WGLSWAPINTERVALEXT wglSwapIntervalEXT = (WGLSWAPINTERVALEXT) 
-			wglGetProcAddress("wglSwapIntervalEXT");
+			WGLSWAPINTERVALEXT wglSwapIntervalEXT = (WGLSWAPINTERVALEXT) SDL_GL_GetProcAddress("wglSwapIntervalEXT");
 			if (wglSwapIntervalEXT) {
 				LOG_DEBUG(("disabling vsync with SwapIntervalEXT(0)..."));
 			    wglSwapIntervalEXT(0); // disable vertical synchronisation
-			}
+			} else LOG_WARN(("wglSwapIntervalEXT not found. vsync option will not have any effect"));
 		}
 #endif
 
