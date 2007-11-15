@@ -38,7 +38,6 @@ static void WIN_FlushMessageQueue()
 	}
 }
 
-
 const bool System::acceleratedGL(const bool windowed) {
 	bool accel = true;
 TRY {
@@ -73,8 +72,13 @@ TRY {
 		((pfd.dwFlags & PFD_DOUBLEBUFFER) == PFD_DOUBLEBUFFER)?"PFD_DOUBLEBUFFER ":"",
 		((pfd.dwFlags & PFD_DRAW_TO_WINDOW) == PFD_DRAW_TO_WINDOW)?"PFD_DRAW_TO_WINDOW ":""
 	));
-	if ((pdf.dwFlags & PFD_GENERIC_ACCELERATED) != PFD_GENERIC_ACCELERATED)
+
+	if (
+		((pfd.dwFlags & PFD_GENERIC_ACCELERATED) != PFD_GENERIC_ACCELERATED) ||
+		((pfd.dwFlags & PFD_SUPPORT_OPENGL) != PFD_SUPPORT_OPENGL)
+	) {
 		accel = false;
+	}
 
 /*
 	pfd2 = pfd;
