@@ -78,7 +78,7 @@ TRY {
 		((pfd.dwFlags & PFD_GENERIC_ACCELERATED) != PFD_GENERIC_ACCELERATED) ||
 		((pfd.dwFlags & PFD_SUPPORT_OPENGL) != PFD_SUPPORT_OPENGL)
 	) {
-		accel = false;
+		//accel = false;
 	}
 
 /*
