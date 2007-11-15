@@ -21,12 +21,13 @@
 #include "sdlx/sdl_ex.h"
 #include <stdlib.h>
 
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-
 #include "mrt/logger.h"
 
 using namespace sdlx;
+
+#ifdef _WINDOWS
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
 
 static void WIN_FlushMessageQueue()
 {
@@ -37,6 +38,7 @@ static void WIN_FlushMessageQueue()
 		DispatchMessage( &msg );
 	}
 }
+#endif
 
 const bool System::acceleratedGL(const bool windowed) {
 	bool accel = true;
