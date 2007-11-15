@@ -61,6 +61,7 @@ TRY {
 	pfd.iPixelType = PFD_TYPE_RGBA;
 	pfd.cColorBits = 24;
 	int pf = ChoosePixelFormat(hdc, &pfd);
+	::DescribePixelFormat(hdc, pf, sizeof(PIXELFORMATDESCRIPTOR), &pfd); 
 	
 	LOG_DEBUG(("best pixel format: #%02d, bits: %02d, flags: %08x %s%s%s%s%s%s%s", 
 		pf, pfd.cColorBits, pfd.dwFlags, 
