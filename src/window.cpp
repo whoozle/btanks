@@ -92,8 +92,11 @@ void IWindow::initSDL() {
 
 	if (_opengl) {
 		LOG_DEBUG(("loading GL library"));
-		if (SDL_GL_LoadLibrary(NULL) == -1) 
-			throw_sdl(("SDL_GL_LoadLibrary"));
+		int r = SDL_GL_LoadLibrary(NULL);
+		if (r == -1) {
+			LOG_WARN(("SDL_GL_LoadLibrary failed: %s", SDL_GetError()));
+			_opengl = false;
+		}
 	}
 	
 	int default_flags = sdlx::Surface::Hardware | sdlx::Surface::Alpha | (_opengl? SDL_OPENGL: 0) ;
