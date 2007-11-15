@@ -59,7 +59,10 @@ TRY {
 	pfd.nVersion = 1;
 	pfd.dwFlags = (windowed?PFD_DRAW_TO_WINDOW:0) | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER | PFD_GENERIC_ACCELERATED;
 	pfd.iPixelType = PFD_TYPE_RGBA;
-	pfd.cColorBits = 24;
+	pfd.cColorBits = 32;
+	pfd.cDepthBits = 16;
+	pfd.iLayerType = PFD_MAIN_PLANE;
+
 	int pf = ChoosePixelFormat(hdc, &pfd);
 	::DescribePixelFormat(hdc, pf, sizeof(PIXELFORMATDESCRIPTOR), &pfd); 
 	
