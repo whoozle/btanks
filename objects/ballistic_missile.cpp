@@ -34,7 +34,7 @@ public:
 	}
 	
 	virtual const bool skipRendering() const {
-		float l = _launch.get(), f = _launch.get();
+		float l = _launch.get(), f = _fall.get();
 		if (l <= 0 && f > 0)
 			return true;
 		return false;
