@@ -210,6 +210,11 @@ void IWindow::init(const int argc, char *argv[]) {
 	LOG_DEBUG(("setting caption..."));		
 	SDL_WM_SetCaption(("Battle tanks - " + getVersion()).c_str(), "btanks");
 
+	if (_opengl && !sdlx::System::acceleratedGL(!_fullscreen)) {
+		LOG_WARN(("could not find accelerated GL, falling back to software mode"));
+		_opengl = false;
+	}
+
 	createMainWindow();
 }
 

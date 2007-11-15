@@ -21,6 +21,7 @@ else:
 	libs.append('opengl32')
 	libs.append('winmm')
 	libs.append('user32')
+	libs.append('gdi32')
 
 sdlx_sources = 	['cursor.cpp', 'sdl_ex.cpp', 'surface.cpp', 'system.cpp', 'joystick.cpp',
 	'thread.cpp', 'mutex.cpp', 'semaphore.cpp', 'color.cpp',
