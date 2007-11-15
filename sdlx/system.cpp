@@ -38,10 +38,24 @@ static void WIN_FlushMessageQueue()
 		DispatchMessage( &msg );
 	}
 }
+#else
+#	include <X11/X.h>
+#	include <X11/Xutil.h>
+#	include <GL/glx.h>
+#	include <GL/gl.h>
+#	include <GL/glu.h>
+
+template <typename FuncPtr> union union_ptr {
+	FuncPtr func;
+	void *ptr;
+	union_ptr() { memset(this, 0, sizeof(*this));}
+};
+
 #endif
 
 const bool System::acceleratedGL(const bool windowed) {
 	bool accel = true;
+	LOG_DEBUG(("checking for accelerating GL..."));
 TRY {
 #ifdef _WINDOWS
 	HWND hwnd = CreateWindow("SDL_app", "SDL_app", WS_POPUP | WS_DISABLED,
@@ -115,6 +129,65 @@ TRY {
 	ReleaseDC(hwnd, hdc);
 	DestroyWindow(hwnd);
 	WIN_FlushMessageQueue();
+#else 
+	int errorBase, eventBase; 
+	
+	if (SDL_GL_LoadLibrary(NULL) != 0) {
+		LOG_WARN(("SDL_GL_LoadLibrary failed: %s", SDL_GetError()));
+		return false;
+	}
+	
+	union_ptr<Bool (APIENTRY *)( Display *dpy, int *, int *)> glx_query_ext;
+	if ((glx_query_ext.ptr = SDL_GL_GetProcAddress("glXQueryExtension")) == NULL)
+		throw_ex(("no glXQueryExtension in GL library"));
+	union_ptr<XVisualInfo* (APIENTRY *)(Display *, int, int *)> glx_choose_visual;
+	if ((glx_choose_visual.ptr = SDL_GL_GetProcAddress("glXChooseVisual")) == NULL)
+		throw_ex(("no glXChooseVisual in GL library"));
+	union_ptr<GLXContext (APIENTRY *)(Display *, XVisualInfo *, GLXContext, Bool)> glx_create_context;
+	if ((glx_create_context.ptr = SDL_GL_GetProcAddress("glXCreateContext")) == NULL)
+		throw_ex(("no glXCreateContext in GL library"));
+	union_ptr<Bool (APIENTRY *)(Display *, GLXContext)> glx_is_direct;
+	if ((glx_is_direct.ptr = SDL_GL_GetProcAddress("glXIsDirect")) == NULL)
+		throw_ex(("no glXIsDirect in GL library"));
+	union_ptr<void (APIENTRY *)(Display *, GLXContext)> glx_destroy_context;
+	if ((glx_destroy_context.ptr = SDL_GL_GetProcAddress("glXDestroyContext")) == NULL)
+		throw_ex(("no glXDestroyContext in GL library"));
+
+	accel = false;
+	Display *display = XOpenDisplay(NULL);
+
+    static int doubleBufferVisual[]  =
+    {
+        GLX_RGBA,           // Needs to support OpenGL
+        GLX_DEPTH_SIZE, 16, // Needs to support a 16 bit depth buffer
+        GLX_DOUBLEBUFFER,   // Needs to support double-buffering
+        None                // end of list
+    };
+
+	if (display == NULL)
+		goto end;
+	
+	if (!glx_query_ext.func(display, &errorBase, &eventBase))
+		goto end;
+
+{
+    XVisualInfo *visual_info = glx_choose_visual.func(display, DefaultScreen(display), doubleBufferVisual);
+	if (visual_info == NULL)
+		goto end;
+	
+	GLXContext gl_context = glx_create_context.func(display, visual_info, NULL, GL_TRUE);
+	if (gl_context == NULL) 
+		goto end;
+	
+	accel = glx_is_direct.func(display, gl_context);
+	LOG_DEBUG(("direct rendering: %s", accel? "yes":"no"));
+
+	glx_destroy_context.func(display, gl_context);
+}
+	
+end: 
+	XCloseDisplay(display);
+	
 #endif
 } CATCH("acceleratedGL", )
 	return accel;
