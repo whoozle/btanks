@@ -53,7 +53,7 @@ TRY {
 
 	HDC hdc = GetDC(hwnd);
 
-	PIXELFORMATDESCRIPTOR pfd, pfd2;
+	PIXELFORMATDESCRIPTOR pfd;//, pfd2;
 	memset(&pfd, 0, sizeof(pfd));
 	
 	pfd.nSize = sizeof(pfd);
@@ -61,16 +61,24 @@ TRY {
 	pfd.dwFlags = (windowed?PFD_DRAW_TO_WINDOW:0) | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER | PFD_GENERIC_ACCELERATED;
 	pfd.iPixelType = PFD_TYPE_RGBA;
 	pfd.cColorBits = 24;
-	/*int pf = ChoosePixelFormat(hdc, &pfd);
-	LOG_DEBUG(("best pixel format: %d, flags: %08x %s%s%s%s", 
-		pf, pfd.dwFlags, 
-			((pfd.dwFlags & PFD_SUPPORT_OPENGL) == PFD_SUPPORT_OPENGL)?"PFD_SUPPORT_OPENGL ":"", 
-			((pfd.dwFlags & PFD_GENERIC_FORMAT) == PFD_GENERIC_FORMAT)?"PFD_GENERIC_FORMAT ":"",
-			((pfd.dwFlags & PFD_GENERIC_ACCELERATED) == PFD_GENERIC_ACCELERATED)?"PFD_GENERIC_ACCELERATED ":"",
-			((pfd.dwFlags & PFD_DOUBLEBUFFER) == PFD_DOUBLEBUFFER)?"PFD_DOUBLEBUFFER ":""			
-			));
-	*/
+	int pf = ChoosePixelFormat(hdc, &pfd);
+	
+	LOG_DEBUG(("best pixel format: #%02d, bits: %02d, flags: %08x %s%s%s%s%s%s%s", 
+		pf, pfd.cColorBits, pfd.dwFlags, 
+		((pfd.dwFlags & PFD_SUPPORT_OPENGL) == PFD_SUPPORT_OPENGL)?"PFD_SUPPORT_OPENGL ":"", 
+		((pfd.dwFlags & PFD_SUPPORT_GDI) == PFD_SUPPORT_GDI)?"PFD_SUPPORT_GDI ":"", 
+		((pfd.dwFlags & PFD_GENERIC_FORMAT) == PFD_GENERIC_FORMAT)?"PFD_GENERIC_FORMAT ":"",
+		((pfd.dwFlags & PFD_GENERIC_ACCELERATED) == PFD_GENERIC_ACCELERATED)?"PFD_GENERIC_ACCELERATED ":"",
+		((pfd.dwFlags & PFD_SUPPORT_DIRECTDRAW) == PFD_SUPPORT_DIRECTDRAW)?"PFD_SUPPORT_DIRECTDRAW ":"",
+		((pfd.dwFlags & PFD_DOUBLEBUFFER) == PFD_DOUBLEBUFFER)?"PFD_DOUBLEBUFFER ":"",
+		((pfd.dwFlags & PFD_DRAW_TO_WINDOW) == PFD_DRAW_TO_WINDOW)?"PFD_DRAW_TO_WINDOW ":""
+	));
+	if ((pdf.dwFlags & PFD_GENERIC_ACCELERATED) != PFD_GENERIC_ACCELERATED)
+		accel = false;
+
+/*
 	pfd2 = pfd;
+	pfd2.dwFlags = 0;
 
 	int n = ::DescribePixelFormat( hdc, 1, sizeof(PIXELFORMATDESCRIPTOR), &pfd2); 
 	//LOG_DEBUG(("pixelformats: %d", n));
@@ -79,15 +87,18 @@ TRY {
 			continue;
 			if (pfd.cColorBits < 24 || pfd.iPixelType != PFD_TYPE_RGBA)
 				continue;
-			LOG_DEBUG(("pixel format: #%02d, bits: %02d, flags: %08x %s%s%s%s", 
+			LOG_DEBUG(("pixel format: #%02d, bits: %02d, flags: %08x %s%s%s%s%s%s%s", 
 				i, pfd.cColorBits, pfd.dwFlags, 
 				((pfd.dwFlags & PFD_SUPPORT_OPENGL) == PFD_SUPPORT_OPENGL)?"PFD_SUPPORT_OPENGL ":"", 
+				((pfd.dwFlags & PFD_SUPPORT_GDI) == PFD_SUPPORT_GDI)?"PFD_SUPPORT_GDI ":"", 
 				((pfd.dwFlags & PFD_GENERIC_FORMAT) == PFD_GENERIC_FORMAT)?"PFD_GENERIC_FORMAT ":"",
 				((pfd.dwFlags & PFD_GENERIC_ACCELERATED) == PFD_GENERIC_ACCELERATED)?"PFD_GENERIC_ACCELERATED ":"",
-				((pfd.dwFlags & PFD_DOUBLEBUFFER) == PFD_DOUBLEBUFFER)?"PFD_DOUBLEBUFFER ":""			
+				((pfd.dwFlags & PFD_SUPPORT_DIRECTDRAW) == PFD_SUPPORT_DIRECTDRAW)?"PFD_SUPPORT_DIRECTDRAW ":"",
+				((pfd.dwFlags & PFD_DOUBLEBUFFER) == PFD_DOUBLEBUFFER)?"PFD_DOUBLEBUFFER ":"",
+				((pfd.dwFlags & PFD_DRAW_TO_WINDOW) == PFD_DRAW_TO_WINDOW)?"PFD_DRAW_TO_WINDOW ":""
 			));
 	}
-
+*/
 	ReleaseDC(hwnd, hdc);
 	DestroyWindow(hwnd);
 	WIN_FlushMessageQueue();
