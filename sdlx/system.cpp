@@ -77,7 +77,7 @@ TRY {
 	for(int i = 1; i <= n; ++i) {
 		if (::DescribePixelFormat( hdc, i, sizeof(PIXELFORMATDESCRIPTOR), &pfd) == 0)
 			continue;
-			if (pfd.cColorBits < 24)
+			if (pfd.cColorBits < 24 || pfd.iPixelType != PFD_TYPE_RGBA)
 				continue;
 			LOG_DEBUG(("pixel format: #%02d, bits: %02d, flags: %08x %s%s%s%s", 
 				i, pfd.cColorBits, pfd.dwFlags, 
