@@ -16,7 +16,11 @@ public:
 
 	void call(const std::string &method);
 	void call1(const std::string &method, const int id);
+	
+	static const std::string & getNextMap();
+	static void resetNextMap();
 private: 
+
 	bool check_function(const std::string &name);
 	luaxx::State state;
 	

@@ -326,14 +326,23 @@ void IGameMonitor::clear() {
 
 void IGameMonitor::tick(const float dt) {	
 #ifdef ENABLE_LUA
+	if (lua_hooks != NULL) {
 	TRY {
-		if (Map->loaded() && lua_hooks != NULL)
+		const std::string &next_map = lua_hooks->getNextMap();
+		if (!next_map.empty()) {
+			std::string name = next_map; //copy
+			lua_hooks->resetNextMap();
+			startGame(_campaign, name);
+			return;
+		}
+		if (Map->loaded())
 			lua_hooks->on_tick(dt);
 	} CATCH("tick::on_tick", {
 		Game->clear();
 		displayMessage("errors", "script-error", 1);
 		return;
 	});
+	}
 #endif
 
 	const bool client = PlayerManager->isClient();

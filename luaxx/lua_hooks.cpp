@@ -23,6 +23,10 @@
 		return 0;\
 	}
 
+static std::string next_map;
+
+const std::string & LuaHooks::getNextMap() { return next_map; }
+void LuaHooks::resetNextMap() { next_map.clear(); }
 
 static int lua_hooks_print(lua_State *L) {
 LUA_TRY {
@@ -37,6 +41,23 @@ LUA_TRY {
 	return 0;
 } LUA_CATCH("lua_hooks_print")
 }
+
+static int lua_hooks_load_map(lua_State *L) {
+LUA_TRY {
+	int n = lua_gettop(L);
+	if (n < 1) {
+		lua_pushstring(L, "load_map requires map name");
+		lua_error(L);
+		return 0;
+	}
+	const char * name = lua_tostring(L, 1);
+	if (name == NULL) 
+		throw_ex(("load_map's 1st argument is not a string"));
+	next_map = name;
+	return 0;
+} LUA_CATCH("lua_hooks_load_map")
+}
+
 
 static int lua_hooks_object_exists(lua_State *L) {
 LUA_TRY {
@@ -498,6 +519,7 @@ void LuaHooks::load(const std::string &name) {
 	lua_register(state, "object_property", lua_hooks_object_property);
 	lua_register(state, "kill_object", lua_hooks_kill_object);
 	lua_register(state, "set_slot_property", lua_hooks_set_slot_property);
+	lua_register(state, "load_map", lua_hooks_load_map);
 	
 	state.call(0, LUA_MULTRET);
 	
