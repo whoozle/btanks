@@ -19,7 +19,6 @@
 #include "shop.h"
 #include "button.h"
 #include "image_view.h"
-#include "nickname.h"
 
 #include "tmx/map.h"
 
@@ -29,24 +28,7 @@ void CampaignMenu::start() {
 	const Campaign::Map &map = campaign.maps[map_id[_maps->get()]];
 	LOG_DEBUG(("campaign: %s, map: %s", campaign.name.c_str(), map.id.c_str()));
 	//ensure world is created 
-	Game->clear();
-	PlayerManager->startServer();
-	GameMonitor->loadMap(&campaign, map.id);
-
-	if (PlayerManager->getSlotsCount() <= 0)
-		throw_ex(("no slots available on map"));
-	
-	PlayerSlot &slot = PlayerManager->getSlot(0);
-	std::string cm;
-	Config->get("player.control-method", cm, "keys");
-	Config->get("player.name-1", slot.name, Nickname::generate());
-	slot.createControlMethod(cm);
-
-	std::string object, vehicle;
-	PlayerManager->getDefaultVehicle(object, vehicle);
-
-	slot.spawnPlayer(object, vehicle);
-	PlayerManager->setViewport(0, Window->getSize());
+	GameMonitor->startGame(&campaign, map.id);
 	
 	_invalidate_me = true;
 }

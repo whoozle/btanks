@@ -107,7 +107,8 @@ public:
 	
 	void killAllClasses(const std::set<std::string> &classes);
 
-	void loadMap(Campaign * campaign, const std::string &name, const bool spawn = true, const bool skip_loadmap = false);		
+	void loadMap(Campaign * campaign, const std::string &name, const bool spawn = true, const bool skip_loadmap = false);
+	void startGame(Campaign *campaign, const std::string &name);
 
 	//waypoints
 	const bool hasWaypoints(const std::string &classname) const;

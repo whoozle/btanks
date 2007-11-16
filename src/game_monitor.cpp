@@ -905,6 +905,29 @@ void IGameMonitor::addBonuses(const PlayerSlot &slot) {
 	}
 }
 
+#include "nickname.h"
+
+void IGameMonitor::startGame(Campaign *campaign, const std::string &name) {
+	Game->clear();
+	PlayerManager->startServer();
+	GameMonitor->loadMap(campaign, name);
+
+	if (PlayerManager->getSlotsCount() <= 0)
+		throw_ex(("no slots available on map"));
+	
+	PlayerSlot &slot = PlayerManager->getSlot(0);
+	std::string cm;
+	Config->get("player.control-method", cm, "keys");
+	Config->get("player.name-1", slot.name, Nickname::generate());
+	slot.createControlMethod(cm);
+
+	std::string object, vehicle;
+	PlayerManager->getDefaultVehicle(object, vehicle);
+
+	slot.spawnPlayer(object, vehicle);
+	PlayerManager->setViewport(0, Window->getSize());
+}
+
 IGameMonitor::~IGameMonitor() {
 #ifdef ENABLE_LUA
 	delete lua_hooks;
