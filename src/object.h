@@ -119,6 +119,8 @@ public:
 	void quantizeVelocity();
 	
 	inline const Way& getWay() const { return _way; } 
+	void setWay(const Way & way);
+	const bool isDriven() const;
 	
 	const std::string getNearestWaypoint(const std::string &classname) const;
 
@@ -184,9 +186,6 @@ protected:
 	const bool getNearest(const std::set<std::string> &classnames, const float range, v2<float> &position, v2<float> &velocity, const bool check_shooting_range) const;
 	const Object * getNearestObject(const std::set<std::string> &classnames, const float range, const bool check_shooting_range) const;
 	
-	void setWay(const Way & way);
-	const bool isDriven() const;
-
 	void limitRotation(const float dt, const float speed, const bool rotate_even_stopped, const bool allow_backward);
 	
 	void checkSurface() const;
