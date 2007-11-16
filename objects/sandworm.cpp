@@ -62,7 +62,7 @@ public:
 			v2<float> cpos; 
 			getCenterPosition(cpos);
 			
-			{
+			if (!_variants.has("hunting")) {
 				const Matrix<int> &hint = Map->getAreaMatrix("sandworm"); 
 				const v2<int> tile_size = Map->getPathTileSize();
 				v2<int> hint_pos = cpos.convert<int>() / tile_size;
