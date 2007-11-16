@@ -328,13 +328,6 @@ void IGameMonitor::tick(const float dt) {
 #ifdef ENABLE_LUA
 	if (lua_hooks != NULL) {
 	TRY {
-		const std::string &next_map = lua_hooks->getNextMap();
-		if (!next_map.empty()) {
-			std::string name = next_map; //copy
-			lua_hooks->resetNextMap();
-			startGame(_campaign, name);
-			return;
-		}
 		if (Map->loaded())
 			lua_hooks->on_tick(dt);
 	} CATCH("tick::on_tick", {
@@ -358,6 +351,23 @@ void IGameMonitor::tick(const float dt) {
 
 	std::string game_state = popState(dt);
 	if (_game_over && !game_state.empty()) {
+#ifdef ENABLE_LUA
+	if (lua_hooks != NULL) {
+	TRY {
+		std::string next_map = lua_hooks->getNextMap();
+		if (!next_map.empty()) {
+			lua_hooks->resetNextMap();
+			startGame(_campaign, next_map);
+			return;
+		}
+	} CATCH("tick::game_over", {
+		Game->clear();
+		displayMessage("errors", "script-error", 1);
+		return;
+	});
+	}
+#endif
+
 		if (_campaign != NULL) {
 			PlayerSlot &slot = PlayerManager->getSlot(0); 
 			int score; 
