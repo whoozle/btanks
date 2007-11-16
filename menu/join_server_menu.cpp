@@ -108,10 +108,10 @@ JoinServerMenu::JoinServerMenu(MainMenu *parent, const int w, const int h) : _pa
 	TRY {
 		std::string def_v;
 
-		Config->get("menu.default-vehicle-1", def_v, "launcher");
+		Config->get("menu.default-vehicle-1", def_v, "tank");
 		_vehicle->set(def_v);
 
-		Config->get("menu.default-vehicle-2", def_v, "launcher");
+		Config->get("menu.default-vehicle-2", def_v, "tank");
 		_vehicle2->set(def_v);
 	} CATCH("_vehicle->set()", {})
 

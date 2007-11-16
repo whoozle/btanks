@@ -123,7 +123,7 @@ TRY {
 			Message m(Message::RequestPlayer);
 
 			std::string vehicle;
-			Config->get(mrt::formatString("menu.default-vehicle-%u", (unsigned)(i + 1)), vehicle, "launcher");
+			Config->get(mrt::formatString("menu.default-vehicle-%u", (unsigned)(i + 1)), vehicle, "tank");
 			m.set("vehicle", vehicle);
 
 			std::string name;
@@ -1097,7 +1097,7 @@ void IPlayerManager::getDefaultVehicle(std::string &vehicle, std::string &animat
 	Config->get("multiplayer.restrict-start-animation", ra, "");
 	if (rv.empty()) {
 		if (vehicle.empty()) 
-			Config->get("menu.default-vehicle-1", vehicle, "launcher");
+			Config->get("menu.default-vehicle-1", vehicle, "tank");
 	} else vehicle = rv;
 	
 	if (ra.empty()) {
