@@ -122,24 +122,55 @@ LUA_TRY {
 		return 0;
 	}
 	int id = lua_tointeger(L, 1);
-	PlayerSlot *slot =  PlayerManager->getSlotByID(id);
-	
-	if (slot == NULL) {
-		lua_pushstring(L, "slot does not exist");
-		lua_error(L);
+	if (id < 1) 
+		throw_ex(("slot #%d is invalid", id));
+	PlayerSlot &slot =  PlayerManager->getSlot(id - 1);
+		
+	std::string prop = lua_tostring(L, 2);
+	if (prop == "classname") {
+		slot.classname = lua_tostring(L, 3);
+		return 0;
+	} else if (prop == "animation") {
+		slot.animation = lua_tostring(L, 3);
+		return 0;
+	} else if (prop == "spawn_limit") {
+		slot.spawn_limit = lua_tointeger(L, 3);
 		return 0;
 	}
 	
+	lua_pushstring(L, mrt::formatString("object_property: unknown property %s", prop.c_str()).c_str());
+	lua_error(L);
+	return 0;
+	
+} LUA_CATCH("lua_hooks_object_property")	
+}
+
+static int lua_hooks_slot_property(lua_State *L) {
+LUA_TRY {
+	int n = lua_gettop(L);
+	if (n < 2) {
+		lua_pushstring(L, "slot_property requires object id and property name");
+		lua_error(L);
+		return 0;
+	}
+	int id = lua_tointeger(L, 1);
+	if (id < 1) 
+		throw_ex(("slot #%d is invalid", id));
+	PlayerSlot &slot =  PlayerManager->getSlot(id - 1);
+		
 	std::string prop = lua_tostring(L, 2);
 	if (prop == "classname") {
-		slot->classname = lua_tostring(L, 3);
-		return 0;
+		lua_pushstring(L, slot.classname.c_str());
+		return 1;
 	} else if (prop == "animation") {
-		slot->animation = lua_tostring(L, 3);
-		return 0;
+		lua_pushstring(L, slot.animation.c_str());
+		return 1;
 	} else if (prop == "spawn_limit") {
-		slot->spawn_limit = lua_tointeger(L, 3);
-		return 0;
+		lua_pushinteger(L, slot.spawn_limit);
+		return 1;
+	} else if (prop == "id") {
+		lua_pushinteger(L, slot.id);
+		return 1;
 	}
 	
 	lua_pushstring(L, mrt::formatString("object_property: unknown property %s", prop.c_str()).c_str());
@@ -578,6 +609,10 @@ LUA_TRY {
 } LUA_CATCH("lua_hooks_add_waypoint")
 }
 
+static int lua_hooks_players_number(lua_State *L) {
+	lua_pushinteger(L, (int)PlayerManager->getSlotsCount());
+	return 1;
+}
 
 void LuaHooks::load(const std::string &name) {
 	LOG_DEBUG(("loading lua code from %s...", name.c_str()));
@@ -602,10 +637,12 @@ void LuaHooks::load(const std::string &name) {
 	lua_register(state, "object_property", lua_hooks_object_property);
 	lua_register(state, "kill_object", lua_hooks_kill_object);
 	lua_register(state, "set_slot_property", lua_hooks_set_slot_property);
+	lua_register(state, "slot_property", lua_hooks_slot_property);
 	lua_register(state, "load_map", lua_hooks_load_map);
 	lua_register(state, "visual_effect", lua_hooks_visual_effect);
 	lua_register(state, "add_effect", lua_hooks_add_effect);
 	lua_register(state, "add_waypoint", lua_hooks_add_waypoint);
+	lua_register(state, "players_number", lua_hooks_players_number);
 	
 	state.call(0, LUA_MULTRET);
 	
