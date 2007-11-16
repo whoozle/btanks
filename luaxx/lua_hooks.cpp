@@ -522,6 +522,30 @@ static int lua_hooks_visual_effect(lua_State *L) {
 	return 0;
 }
 
+static int lua_hooks_add_effect(lua_State *L) {
+LUA_TRY {
+	int n = lua_gettop(L);
+	if (n < 3) {
+		lua_pushstring(L, "add_effect requires object id, effect name and duration");
+		lua_error(L);
+		return 0;
+	}
+
+	int id = lua_tointeger(L, 1);
+	Object *o = World->getObjectByID(id);
+
+	if (o == NULL) {
+		return 0;
+	}
+
+	std::string effect = lua_tostring(L, 2);
+	float duration = lua_tonumber(L, 3);
+	
+	o->addEffect(effect, duration);
+	return 0;	
+} LUA_CATCH("lua_hooks_object_property")	
+}
+
 
 void LuaHooks::load(const std::string &name) {
 	LOG_DEBUG(("loading lua code from %s...", name.c_str()));
@@ -548,6 +572,7 @@ void LuaHooks::load(const std::string &name) {
 	lua_register(state, "set_slot_property", lua_hooks_set_slot_property);
 	lua_register(state, "load_map", lua_hooks_load_map);
 	lua_register(state, "visual_effect", lua_hooks_visual_effect);
+	lua_register(state, "add_effect", lua_hooks_add_effect);
 	
 	state.call(0, LUA_MULTRET);
 	
