@@ -15,6 +15,7 @@ if sys.platform != "win32":
 	c_map = c_map_env.SharedObject('c_map.cpp')
 	#libs.append('GL')
 	libs.append('rt')
+	libs.append('X11')
 	env.Append(LINKFLAGS=' -Wl,-rpath-link build/' + env['mode'] + '/mrt')
 else: 
 	c_map = env.SharedObject('c_map.cpp')
