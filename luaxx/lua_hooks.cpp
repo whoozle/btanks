@@ -544,7 +544,38 @@ LUA_TRY {
 	
 	o->addEffect(effect, duration);
 	return 0;	
-} LUA_CATCH("lua_hooks_object_property")	
+} LUA_CATCH("lua_hooks_add_effect")	
+}
+
+static int lua_hooks_add_waypoint(lua_State *L) {
+LUA_TRY {
+	int n = lua_gettop(L);
+	if (n < 2) {
+		lua_pushstring(L, "set_waypoint requires source object id and destination object id");
+		lua_error(L);
+		return 0;
+	}
+	int src_id = lua_tointeger(L, 1);
+	int dst_id = lua_tointeger(L, 2);
+	Object *src = World->getObjectByID(src_id);
+	const Object *dst = World->getObjectByID(dst_id);
+	if (src == NULL || dst == NULL) {
+		if (src == NULL)
+			LOG_ERROR(("object %d does not exists", src_id));
+		if (dst == NULL)
+			LOG_ERROR(("object %d does not exists", dst_id));
+		return 0;
+	}
+
+	v2<int> dst_pos; 
+	dst->getCenterPosition(dst_pos);
+
+	Way way;
+	way.push_back(dst_pos);
+
+	src->setWay(way);
+	return 0;
+} LUA_CATCH("lua_hooks_add_waypoint")
 }
 
 
@@ -574,6 +605,7 @@ void LuaHooks::load(const std::string &name) {
 	lua_register(state, "load_map", lua_hooks_load_map);
 	lua_register(state, "visual_effect", lua_hooks_visual_effect);
 	lua_register(state, "add_effect", lua_hooks_add_effect);
+	lua_register(state, "add_waypoint", lua_hooks_add_waypoint);
 	
 	state.call(0, LUA_MULTRET);
 	
