@@ -148,6 +148,7 @@ void IWindow::init(const int argc, char *argv[]) {
 
 	_dx = false;
 	_force_soft = false;
+	bool force_gl = false;
 	Config->get("engine.window.width", _w, 800);
 	Config->get("engine.window.height", _h, 600);
 	Config->get("engine.window.fullscreen", _fullscreen, false);
@@ -167,6 +168,7 @@ void IWindow::init(const int argc, char *argv[]) {
 		else if (strcmp(argv[i], "-3") == 0) { _w = 1152; _h = 864; }
 		else if (strcmp(argv[i], "-4") == 0) { _w = 1280; _h = 1024; }
 		else if (strcmp(argv[i], "--fsaa") == 0) { _fsaa = (_fsaa)?(_fsaa<< 1) : 1; }
+		else if (strcmp(argv[i], "--force-gl") == 0) { force_gl = true; }
 		else if (strcmp(argv[i], "--force-soft-gl") == 0) { _force_soft = true; }
 		else if (strcmp(argv[i], "--no-joystick") == 0) { _init_joystick = false; }
 		else if (strcmp(argv[i], "--no-timer") == 0) { _init_timer = false; }
@@ -210,7 +212,7 @@ void IWindow::init(const int argc, char *argv[]) {
 	LOG_DEBUG(("setting caption..."));		
 	SDL_WM_SetCaption(("Battle tanks - " + getVersion()).c_str(), "btanks");
 
-	if (_opengl && !sdlx::System::acceleratedGL(!_fullscreen)) {
+	if (_opengl && !force_gl && !sdlx::System::acceleratedGL(!_fullscreen)) {
 		LOG_WARN(("could not find accelerated GL, falling back to software mode"));
 		_opengl = false;
 	}
