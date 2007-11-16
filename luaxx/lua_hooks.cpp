@@ -9,6 +9,7 @@
 #include "player_slot.h"
 #include "tmx/map.h"
 #include "sound/mixer.h"
+#include "game.h"
 #include <assert.h>
 #include <stdexcept>
 
@@ -495,6 +496,32 @@ static int lua_hooks_disable_ai(lua_State *L) {
 	return 0;
 }
 
+static int lua_hooks_visual_effect(lua_State *L) {
+	LUA_TRY {
+		int n = lua_gettop(L);
+		if (n < 2) {
+			lua_pushstring(L, "visual_effect: requires name and duration");
+			lua_error(L);
+			return 0;
+		}
+		const char *name = lua_tostring(L, 1);
+		if (name == NULL) {
+			lua_pushstring(L, "visual_effect: first argument must be a string");
+			lua_error(L);
+			return 0;
+		}
+		float d = (float)lua_tonumber(L, 2);
+		std::string effect = name;
+
+		if (effect == "shaking") {
+			int i = (n >= 3)?lua_tointeger(L, 3) : 4;
+			
+			Game->shake(d, i);
+		} else throw_ex(("unknown visual effect name: %s", name));
+	} LUA_CATCH("visual_effect")
+	return 0;
+}
+
 
 void LuaHooks::load(const std::string &name) {
 	LOG_DEBUG(("loading lua code from %s...", name.c_str()));
@@ -520,6 +547,7 @@ void LuaHooks::load(const std::string &name) {
 	lua_register(state, "kill_object", lua_hooks_kill_object);
 	lua_register(state, "set_slot_property", lua_hooks_set_slot_property);
 	lua_register(state, "load_map", lua_hooks_load_map);
+	lua_register(state, "visual_effect", lua_hooks_visual_effect);
 	
 	state.call(0, LUA_MULTRET);
 	
