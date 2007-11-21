@@ -1534,6 +1534,10 @@ const bool IWorld::attachVehicle(Object *object, Object *vehicle) {
 	vehicle->_spawned_by = object->_spawned_by;
 	if (!vehicle->_variants.has("safe")) //do not change classname for safe vehicles
 		vehicle->classname = "fighting-vehicle";
+	
+	if (object->_variants.has("player"))
+		vehicle->_variants.add("player");
+	
 	vehicle->copyOwners(object);
 	vehicle->disable_ai = object->disable_ai;
 
@@ -1565,6 +1569,8 @@ const bool IWorld::detachVehicle(Object *object) {
 
 	man->disable_ai = object->disable_ai;
 	object->classname = "vehicle";
+	if (object->_variants.has("player"))
+		object->_variants.remove("player");
 
 	man->copyOwners(object);
 
