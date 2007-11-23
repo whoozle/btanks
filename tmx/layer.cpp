@@ -285,7 +285,7 @@ const Uint32 Layer::_get(const int i) const {
 
 
 const Uint32 Layer::get(const int x, const int y) const {
-	return _get(_w * y + x);
+	return (x < 0 || x >= _w || y < 0 || y >= _h)? 0: _get(_w * y + x);
 }
 
 void Layer::set(const int x, const int y, const Uint32 tid) {
