@@ -534,6 +534,7 @@
 	<animation map="lenin_square" id="chinook" />
 	<animation map="lenin_square" id="cyan-car" />
 	<animation map="lenin_square" id="cyan-launcher" />
+	<animation map="lenin_square" id="cyan-launcher-outline" />
 	<animation map="lenin_square" id="cyan-machinegunner-helmet" />
 	<animation map="lenin_square" id="cyan-shilka" />
 	<animation map="lenin_square" id="cyan-shilka-outline" />
@@ -568,6 +569,8 @@
 	<animation map="lenin_square" id="green-launcher" />
 	<animation map="lenin_square" id="green-launcher-outline" />
 	<animation map="lenin_square" id="green-machinegunner-helmet" />
+	<animation map="lenin_square" id="green-shilka" />
+	<animation map="lenin_square" id="green-shilka-outline" />
 	<animation map="lenin_square" id="green-tank" />
 	<animation map="lenin_square" id="green-tank-outline" />
 	<animation map="lenin_square" id="guided-missile" />
@@ -617,6 +620,8 @@
 	<animation map="lenin_square" id="tank-smoke" />
 	<animation map="lenin_square" id="tent-top" />
 	<animation map="lenin_square" id="thrower-item" />
+	<animation map="lenin_square" id="thrower-missile" />
+	<animation map="lenin_square" id="thrower-on-launcher" />
 	<animation map="lenin_square" id="traffic-lights" />
 	<animation map="lenin_square" id="umbrella" />
 	<animation map="lenin_square" id="van" />
