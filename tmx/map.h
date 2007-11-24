@@ -245,9 +245,10 @@ private:
 	virtual void end(const std::string &name);
 	virtual void charData(const std::string &data);
 
-	virtual const sdlx::Surface* getSurface(const Layer *l, const int x, const int y) const;
-	virtual const sdlx::CollisionMap* getCollisionMap(const Layer *l, const int x, const int y) const;
-	virtual const sdlx::CollisionMap* getVisibilityMap(const Layer *l, const int x, const int y) const;
+	const Uint32 getTile(const Layer *l, const int x, const int y) const;
+	const sdlx::Surface* getSurface(const Layer *l, const int x, const int y) const;
+	const sdlx::CollisionMap* getCollisionMap(const Layer *l, const int x, const int y) const;
+	const sdlx::CollisionMap* getVisibilityMap(const Layer *l, const int x, const int y) const;
 
 	typedef std::map<const std::pair<int, bool> , Matrix<int> > MatrixMap;
 	MatrixMap _imp_map;
