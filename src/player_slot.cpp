@@ -303,15 +303,23 @@ void PlayerSlot::validatePosition(v2<float>& position) {
 		return;
 	}
 	
-	if (position.x < 0) 
+	if (viewport.w >= world_size.x) {
+		position.x = (world_size.x - viewport.w) / 2;
+	} else {
+		if (position.x < 0) 
 			position.x = 0;
-	if (position.x + viewport.w > world_size.x) 
-		position.x = world_size.x - viewport.w;
+		if (position.x + viewport.w > world_size.x) 
+			position.x = world_size.x - viewport.w;
+	}
 
-	if (position.y < 0) 
-		position.y = 0;
-	if (position.y + viewport.h > world_size.y) 
-		position.y = world_size.y - viewport.h;
+	if (viewport.h >= world_size.y) {
+		position.y = (world_size.y - viewport.h) / 2;
+	} else {
+		if (position.y < 0) 
+			position.y = 0;
+		if (position.y + viewport.h > world_size.y) 
+			position.y = world_size.y - viewport.h;
+	}
 	
 	//LOG_DEBUG(("%f %f", mapx, mapy));
 }
