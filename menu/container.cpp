@@ -105,6 +105,7 @@ bool Container::onMouseMotion(const int state, const int x, const int y, const i
 
 
 void Container::add(const int x, const int y, Control *ctrl) {
+	assert(ctrl != NULL);
 	_controls.push_back(ControlList::value_type(v2<int>(x, y), ctrl));
 }
 
