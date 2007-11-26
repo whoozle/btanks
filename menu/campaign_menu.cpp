@@ -63,18 +63,18 @@ CampaignMenu::CampaignMenu(MainMenu *parent, const int w, const int h) : _parent
 	_active_campaign->getSize(cw, ch);
 	add(w / 2 - cw / 2, my, _active_campaign);
 
-	int map_w = _w / 2;
-	map_view = sdlx::Rect(mx * 2, my * 2 + ch, map_w, 3 * map_w / 4);
-	_map_view = new ImageView(map_view.w, map_view.h);
-	add(map_view.x, map_view.y, _map_view);
+	int map_base = 3 * my + ch;
+	_map_view = new ImageView(w - 4 * mx, h - 6 * my);
+	add(3 * mx, map_base - 8 , _map_view);
 	
-	_maps = new ScrollList("menu/background_box.png", "medium", w - map_view.w - 6 * mx, map_view.h );
+	int panel_w = 200, panel_h = 96;
+	_maps = new ScrollList("menu/background_box_dark.png", "medium", panel_w, h - map_base - 6 * my - panel_h);
 	int sw, sh;
 	_maps->getSize(sw, sh);
-	add(w - sw - 2 * mx, map_view.y, _maps);
+	add(w - sw - 2 * mx - mx / 2, map_base + my, _maps);
 
 	int xbase, ybase;
-	add(xbase = (w - sw - 2 * mx), ybase = (map_view.y + sh + 2 * mx), b = new Box("menu/background_box.png", w - map_view.w - 6 * mx, h - map_view.y - sh - 6 * my));
+	add(xbase = (w - sw - 2 * mx - mx / 2), ybase = (h - panel_h - 3 * my - my / 2), b = new Box("menu/background_box_dark.png", panel_w, panel_h));
 	b->getSize(bw, bh);
 	b->getMargins(mx, my);
 	
