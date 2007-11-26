@@ -142,7 +142,7 @@ void CampaignMenu::init() {
 		_maps->append(map.id);
 		map_id.push_back((int)i);
 		if (map.id == current_map) {
-			_maps->set(i);
+			_maps->set(_maps->size() - 1);
 			_map_view->setPosition(map.position.convert<float>());
 		}
 	}
