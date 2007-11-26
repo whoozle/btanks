@@ -115,12 +115,18 @@ void Kamikaze::emit(const std::string &event, Object * emitter) {
 		spawn("kamikaze-explosion", "kamikaze-explosion");
 		Object::emit(event, emitter);
 	} else if (event == "collision") {
-		if (emitter == NULL || (emitter->classname != "fighting-vehicle" && emitter->classname != "train" && emitter->classname != "trooper")) {
-			Object::emit(event, emitter);
+		if (emitter != NULL && (
+			emitter->classname == "fighting-vehicle" || 
+			emitter->classname == "train" || 
+			emitter->classname == "trooper" || 
+			emitter->classname == "monster")
+		) {
+			emit("death", emitter);
 			return;
+			//LOG_DEBUG(("collided with : %s(%s)", emitter->animation.c_str(), emitter->classname.c_str()));
 		}
 		
-		emit("death", emitter);
+		Object::emit(event, emitter);
 	} else 
 		Object::emit(event, emitter);
 }
