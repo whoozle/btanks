@@ -12,6 +12,8 @@
 #include "game.h"
 #include <assert.h>
 #include <stdexcept>
+#include "var.h"
+#include "config.h"
 
 #define LUA_TRY try
 #define LUA_CATCH(where) catch(const std::exception &e) {\
@@ -609,6 +611,32 @@ LUA_TRY {
 } LUA_CATCH("lua_hooks_add_waypoint")
 }
 
+static int lua_hooks_set_config_override(lua_State *L) {
+LUA_TRY {
+	int n = lua_gettop(L);
+	if (n < 2) {
+		lua_pushstring(L, "set_config_override requires key name and override value");
+		lua_error(L);
+		return 0;
+	}
+	const char * name = lua_tostring(L, 1);
+	const char *value = lua_tostring(L, 2);
+	if (name == NULL || value == NULL) {
+		lua_pushstring(L, mrt::formatString("set_config_override: %s argument must be a string", (name == NULL)?"first":"second").c_str());
+		lua_error(L);
+		return 0;
+	}
+	
+	Var var;
+	var.fromString(value);
+	Config->setOverride(name, var);
+	Config->invalidateCachedValues();
+	
+} LUA_CATCH("lua_hooks_set_config_override")	
+	return 0;
+}
+
+
 static int lua_hooks_players_number(lua_State *L) {
 	lua_pushinteger(L, (int)PlayerManager->getSlotsCount());
 	return 1;
@@ -643,6 +671,7 @@ void LuaHooks::load(const std::string &name) {
 	lua_register(state, "add_effect", lua_hooks_add_effect);
 	lua_register(state, "add_waypoint", lua_hooks_add_waypoint);
 	lua_register(state, "players_number", lua_hooks_players_number);
+	lua_register(state, "set_config_override", lua_hooks_set_config_override);
 	
 	state.call(0, LUA_MULTRET);
 	
