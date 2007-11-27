@@ -1412,21 +1412,31 @@ void IMap::swapLayers(const int z1, const int z2) {
 	if (l2 == _layers.end())
 		throw_ex(("layer with z %d was not found", z2));
 
-	math::exchange(l1->second, l2->second);
-
 	bool has_z1 = l1->second->properties.find("z") != l1->second->properties.end();
 	bool has_z2 = l2->second->properties.find("z") != l2->second->properties.end();
-	if (has_z1) {
-		if (has_z2) {
-			math::exchange(l1->second->properties["z"], l2->second->properties["z"]);
-		} else {
-			l2->second->properties["z"] = l1->second->properties["z"];
-			l1->second->properties.erase("z");
-		}
-	} else {
-		if (has_z2) {
-			l1->second->properties["z"] = l2->second->properties["z"];
-			l2->second->properties.erase("z");
-		}	
+	if (has_z1 && has_z2) {
+		LOG_DEBUG(("cannot swap two absolutely positioned layers."));
+		return;
 	}
+	math::exchange(l1->second, l2->second);
+	LayerMap new_map;
+
+	int z0 = -1000;
+	for(LayerMap::iterator l = _layers.begin(); l != _layers.end(); ++l) {
+		int z;
+		if (l->second->properties.find("z") != l->second->properties.end()) {
+			z = atoi(l->second->properties["z"].c_str());
+			z0 = z + 1;
+		} else {
+			z = z0++;
+		}
+		//LOG_DEBUG(("%s -> %d", l->second->name.c_str(), z));
+		if (new_map.find(z) != new_map.end()) {
+			LOG_DEBUG(("no room for new layer. restore changes..."));
+			math::exchange(l1->second, l2->second);
+			return;
+		}
+		new_map[z] = l->second;
+	}
+	_layers = new_map;
 }
