@@ -1,5 +1,6 @@
 #include "tileset_list.h"
 #include "mrt/exception.h"
+#include "mrt/fs_node.h"
 
 void TilesetList::clear() {
 	_tilesets.clear();
@@ -27,7 +28,7 @@ const int TilesetList::add(const std::string &name, const int gid, const int siz
 const int TilesetList::exists(const std::string &name) const {
 	size_t n = size();
 	for(size_t i = 0; i < n; ++i) {
-		if (_tilesets[i].first == name)
+		if (_tilesets[i].first == name || mrt::FSNode::getFilename(_tilesets[i].first, false) == name) //small hack allowing shortnames of the tilesets to be used here
 			return _tilesets[i].second;
 	}
 	return 0;

@@ -187,7 +187,7 @@ void MapGenerator::getPrimaryBoxes(std::deque<std::pair<std::string, std::string
 
 
 void MapGenerator::tileset(const std::string &fname, const int gid) {
-	std::string name = getName(fname);
+	std::string name = mrt::FSNode::getFilename(fname, false);
 	std::string xml_name = getDescName(fname);
 	LOG_DEBUG(("tileset: %s, gid: %d, description file: %s", name.c_str(), gid, xml_name.c_str()));
 	first_gid[name] = gid;
@@ -235,17 +235,6 @@ void MapGenerator::clear() {
 
 MapGenerator::~MapGenerator() {
 	std::for_each(_tilesets.begin(), _tilesets.end(), delete_ptr2<Tilesets::value_type>());
-}
-
-
-const std::string MapGenerator::getName(const std::string &fname) {
-	size_t end = fname.rfind(".");
-	if (end == fname.npos) 
-		end = fname.size();
-	
-	size_t start = fname.rfind("/");
-	start = (start == fname.npos) ? 0: start + 1;
-	return fname.substr(start, end - start);
 }
 
 const std::string MapGenerator::getDescName(const std::string &fname) {
