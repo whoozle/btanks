@@ -987,7 +987,7 @@ void IMap::clear() {
 	//LOG_DEBUG(("deleting intermediate parser objects..."));
 	delete _image;
 	_image = NULL;
-	_lastz = -100;
+	_lastz = -1000;
 	_w = _h = _tw = _th = _firstgid = 0;
 	
 	//LOG_DEBUG(("clearing damage layers and optimization maps..."));
