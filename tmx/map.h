@@ -121,7 +121,7 @@ public:
 	void generateXML(std::string &result) const;
 	
 	void addLayer(const int after_z, const std::string &name);
-	void swapLayers(const int z1, const int z2);
+	const bool swapLayers(const int z1, const int z2);
 	void addTileset(const std::string &tileset);
 	
 	const bool hasSoloLayers() const;

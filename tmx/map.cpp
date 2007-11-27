@@ -1404,7 +1404,7 @@ void IMap::addLayer(const int after_z, const std::string &name) {
 	_layers.insert(LayerMap::value_type(after_z + 1, l));
 }
 
-void IMap::swapLayers(const int z1, const int z2) {
+const bool IMap::swapLayers(const int z1, const int z2) {
 	LOG_DEBUG(("swap layers %d <-> %d", z1, z2));
 	LayerMap::iterator l1 = _layers.find(z1), l2 = _layers.find(z2);
 	if (l1 == _layers.end())
@@ -1416,7 +1416,7 @@ void IMap::swapLayers(const int z1, const int z2) {
 	bool has_z2 = l2->second->properties.find("z") != l2->second->properties.end();
 	if (has_z1 && has_z2) {
 		LOG_DEBUG(("cannot swap two absolutely positioned layers."));
-		return;
+		return false;
 	}
 	math::exchange(l1->second, l2->second);
 	LayerMap new_map;
@@ -1434,9 +1434,10 @@ void IMap::swapLayers(const int z1, const int z2) {
 		if (new_map.find(z) != new_map.end()) {
 			LOG_DEBUG(("no room for new layer. restore changes..."));
 			math::exchange(l1->second, l2->second);
-			return;
+			return false;
 		}
 		new_map[z] = l->second;
 	}
 	_layers = new_map;
+	return true;
 }
