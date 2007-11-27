@@ -867,7 +867,7 @@ void IMap::addTileset(const std::string &tileset) {
 	const sdlx::Surface *image = ResourceManager->loadSurface("../maps/" + tileset);
 	int gid = _tilesets.last() + 1;
 	int n = addTiles(image, gid);
-	_generator->tileset(mrt::FSNode::getFilename(tileset, false), gid);
+	_generator->tileset(tileset, gid);
 	_tilesets.add(tileset, gid, n);
 }
 
