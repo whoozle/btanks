@@ -24,6 +24,7 @@
 #include "label.h"
 #include "map_desc.h"
 #include "menu_config.h"
+#include "checkbox.h"
 #include "config.h"
 #include "tooltip.h"
 #include "i18n.h"
@@ -146,7 +147,7 @@ private:
 	const sdlx::Font *_font;
 };
 
-PlayerPicker::PlayerPicker(const int w, const int h) : _time_limit(0) {
+PlayerPicker::PlayerPicker(const int w, const int h) : _time_limit(NULL), _random_respawn(NULL) {
 	_background.init("menu/background_box.png", w, h);
 	_vehicles = ResourceManager->loadSurface("menu/vehicles.png");
 
@@ -293,6 +294,10 @@ void PlayerPicker::tick(const float dt) {
 			Config->set("multiplayer.time-limit", i->first);
 		}
 	}
+	if (_random_respawn != NULL && _random_respawn->changed()) {
+		_random_respawn->reset();
+		Config->set("multiplayer.random-respawn", _random_respawn->get());
+	}
 }
 
 void PlayerPicker::set(const MapDesc &map) {
@@ -318,6 +323,7 @@ void PlayerPicker::set(const MapDesc &map) {
 	}
 	
 	_time_limit = NULL;
+	_random_respawn = NULL;
 
 	if (map.game_type == "deathmatch") {
 		int yp = _background.h - my;
@@ -334,10 +340,30 @@ void PlayerPicker::set(const MapDesc &map) {
 				pos = idx;
 		}
 		
+		int mx, my;
+		_background.getMargins(mx, my);
+		
+		int xp = mx;
+		
 		_time_limit = new Chooser("big", values);
 		_time_limit->set(pos);
 		_time_limit->getSize(w, h);
-		add((_background.w - w )/ 2, yp - h, _time_limit);
+		yp -= h;
+
+		add(xp, yp, _time_limit);
+		xp += w + 2;
+		
+		bool rr;
+		Config->get("multiplayer.random-respawn", rr, false);
+		_random_respawn = new Checkbox(rr);
+		_random_respawn->getSize(w, h);
+		add(xp , yp, _random_respawn);
+		xp += w;
+		
+		Label *l = new Label("small", I18n->get("menu", "random-respawn"));
+		int lw, lh;
+		l->getSize(lw, lh);
+		add(xp, yp + (h - lh) / 2, l);
 	}
 }
 

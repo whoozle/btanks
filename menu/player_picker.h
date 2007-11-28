@@ -32,6 +32,7 @@ namespace sdlx {
 struct MapDesc;
 class SlotLine;
 class Chooser;
+class Checkbox;
 
 class PlayerPicker : public Container {
 public: 
@@ -54,6 +55,7 @@ private:
 	typedef std::map<const int, std::string> TimeLimits;
 	TimeLimits _time_limits;
 	Chooser *_time_limit;
+	Checkbox * _random_respawn;
 };
 
 #endif
