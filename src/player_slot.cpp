@@ -271,10 +271,17 @@ void PlayerSlot::spawnPlayer(const std::string &classname, const std::string &an
 		std::vector<v2<int> > spots;
 		for(int y = 0; y < h - obj_size.y + 1; ++y) 
 			for(int x= 0; x < w - obj_size.x + 1; ++x) {
-				int im = matrix.get(y, x);
-				if (im >= 0 && im < 100) 
-					spots.push_back(v2<int>(x, y));
+				for(int yy = 0; yy < obj_size.y; ++yy)
+					for(int xx = 0; xx < obj_size.x; ++xx) {
+						int im = matrix.get(y + yy, x + xx);
+						if (im < 0 || im >= 100)
+							goto skip;
+					
+					}
+				spots.push_back(v2<int>(x, y));
+			skip: ;
 			}
+		
 		size_t n = spots.size();
 		if (n == 0)
 			throw_ex(("no spots found"));
