@@ -310,6 +310,7 @@
 	<animation map="dune" id="dead-red-launcher" />
 	<animation map="dune" id="dead-red-tank" />
 	<animation map="dune" id="dead-thrower" />
+	<animation map="dune" id="dead-yellow-shilka" />
 	<animation map="dune" id="dead-ziehharmonikaspieler-static" />
 	<animation map="dune" id="dead-zombie" />
 	<animation map="dune" id="dispersion-bullet" />
@@ -359,6 +360,7 @@
 	<animation map="dune" id="trooper-hut" />
 	<animation map="dune" id="watchtower" />
 	<animation map="dune" id="yellow-launcher" />
+	<animation map="dune" id="yellow-machinegunner-helmet" />
 	<animation map="dune" id="yellow-mortar" />
 	<animation map="dune" id="yellow-shilka" />
 	<animation map="dune" id="yellow-shilka-outline" />
