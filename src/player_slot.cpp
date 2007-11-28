@@ -27,6 +27,7 @@
 #include "object.h"
 #include "math/unary.h"
 #include "math/binary.h"
+#include "mrt/random.h"
 
 #include "i18n.h"
 
@@ -247,8 +248,47 @@ void PlayerSlot::spawnPlayer(const std::string &classname, const std::string &an
 	if (control_method != NULL || remote != -1)
 		obj->disable_ai = true;
 
+	std::string type;
+	Config->get("multiplayer.game-type", type, "deathmatch");
+
 	obj->setZBox(position.z);
-	World->addObject(obj, v2<float>(position.x, position.y) - obj->size / 2, id);
+	
+	bool random_respawn = false;
+	if (type == "deathmatch") {
+		Config->get("multiplayer.random-respawn", random_respawn, false);
+	}
+	
+	if (random_respawn) {
+		const Matrix<int>& matrix = Map->getImpassabilityMatrix(ZBox::getBox(position.z));
+		const v2<int> tile_size = Map->getPathTileSize();
+		if (obj->size.is0())
+			throw_ex(("object size must not be 0,0"));
+		
+		v2<int> obj_size = ((obj->size.convert<int>() - v2<int>(1, 1)) / tile_size) + v2<int>(1, 1);
+		LOG_DEBUG(("searching random %dx%d spot", obj_size.x, obj_size.y));
+	
+		int w = matrix.getWidth(), h = matrix.getHeight();
+		std::vector<v2<int> > spots;
+		for(int y = 0; y < h - obj_size.y + 1; ++y) 
+			for(int x= 0; x < w - obj_size.x + 1; ++x) {
+				int im = matrix.get(y, x);
+				if (im >= 0 && im < 100) 
+					spots.push_back(v2<int>(x, y));
+			}
+		size_t n = spots.size();
+		if (n == 0)
+			throw_ex(("no spots found"));
+		
+		int idx = mrt::random(n);
+		LOG_DEBUG(("found %u spots. get #%d", (unsigned)n, idx));
+		v2<float> pos = (spots[idx] * tile_size).convert<float>();
+		
+		//LOG_DEBUG(("map : %s", matrix.dump().c_str()));
+		obj_size = tile_size * obj_size / 2;
+		World->addObject(obj, pos + obj_size.convert<float>() - obj->size / 2, id);
+	} else {
+		World->addObject(obj, v2<float>(position.x, position.y) - obj->size / 2, id);
+	}
 
 	GET_CONFIG_VALUE("engine.spawn-invulnerability-duration", float, sid, 3);
 	obj->addEffect("invulnerability", sid);
@@ -257,8 +297,6 @@ void PlayerSlot::spawnPlayer(const std::string &classname, const std::string &an
 	this->classname = classname;
 	this->animation = animation;
 	
-	std::string type;
-	Config->get("multiplayer.game-type", type, "deathmatch");
 
 	if (type == "deathmatch") {
 		//moo	
