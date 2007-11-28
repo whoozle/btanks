@@ -90,6 +90,9 @@
 		<string id="start-game" lang="fr">CRÉER UNE PARTIE</string>
 		<string id="start-game" lang="de">NETZSPIEL STARTEN</string>
 		<string id="start-game" lang="it">NUOVO GIOCO</string>
+		
+		<string id="random-respawn">Random respawn</string>
+		<string id="random-respawn" lang="ru">Случайный респаун</string>
 		          
 		<string id="start-campaign">CAMPAIGN</string>
 		<string id="start-campaign" lang="ru">КАМПАНИЯ</string>
