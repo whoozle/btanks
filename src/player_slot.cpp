@@ -259,7 +259,10 @@ void PlayerSlot::spawnPlayer(const std::string &classname, const std::string &an
 	}
 	
 	if (random_respawn) {
-		const Matrix<int>& matrix = Map->getImpassabilityMatrix(ZBox::getBox(position.z));
+		//const Matrix<int>& matrix = Map->getImpassabilityMatrix(ZBox::getBox(position.z));
+		Matrix<int> matrix;
+		World->getImpassabilityMatrix(matrix, obj, NULL);
+		
 		const v2<int> tile_size = Map->getPathTileSize();
 		if (obj->size.is0())
 			throw_ex(("object size must not be 0,0"));
