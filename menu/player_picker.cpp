@@ -357,13 +357,13 @@ void PlayerPicker::set(const MapDesc &map) {
 		Config->get("multiplayer.random-respawn", rr, false);
 		_random_respawn = new Checkbox(rr);
 		_random_respawn->getSize(w, h);
-		add(xp , yp, _random_respawn);
-		xp += w;
 		
 		Label *l = new Label("small", I18n->get("menu", "random-respawn"));
 		int lw, lh;
 		l->getSize(lw, lh);
-		add(xp, yp + (h - lh) / 2, l);
+		xp += (_background.w - (xp + lw + w + mx)) / 2;
+		add(xp, yp, _random_respawn);
+		add(xp + w, yp + (h - lh) / 2, l);
 	}
 }
 
