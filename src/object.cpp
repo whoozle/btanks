@@ -1114,7 +1114,7 @@ void Object::findPath(const v2<int> target, const int step) {
 	_begin /= step;
 	_end /= step;
 	
-	LOG_DEBUG(("%s[%d]: findPath %d:%d -> %d:%d", registered_name.c_str(), getID(), _begin.x, _begin.y, _end.x, _end.y));
+	//LOG_DEBUG(("%s[%d]: findPath %d:%d -> %d:%d", registered_name.c_str(), getID(), _begin.x, _begin.y, _end.x, _end.y));
 	
 	//while(!_open_list.empty())
 	//	_open_list.pop();
