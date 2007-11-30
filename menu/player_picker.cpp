@@ -332,7 +332,7 @@ void PlayerPicker::set(const MapDesc &map) {
 		std::vector<std::string> values;
 
 		int tl, pos = 0, idx = 0;
-		Config->get("multiplayer.time-limit", tl, 0);
+		Config->get("multiplayer.time-limit", tl, 300);
 
 		for(TimeLimits::const_iterator i = _time_limits.begin(); i != _time_limits.end(); ++i, ++idx) {
 			values.push_back(i->second);
