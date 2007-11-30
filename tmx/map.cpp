@@ -1412,14 +1412,22 @@ void IMap::deleteLayer(const int kill_z) {
 }
 
 void IMap::addLayer(const int after_z, const std::string &name) {
+	int z = -1000;
+	Layer *layer = NULL;
+	
 	if (!_layers.empty()) {
 		LayerMap::iterator i = _layers.find(after_z);
 		if (i == _layers.end())
 			throw_ex(("no layer with z %d", after_z));
+	} else {
+		layer = new Layer(); //first layer
+		layer->name = name;
+		layer->init(_w, _h);
+		_layers.insert(LayerMap::value_type(z++, layer));
+		return;
 	}
+	
 	LayerMap new_map;
-	int z = -1000;
-	Layer *layer = NULL;
 	
 	for(LayerMap::iterator l = _layers.begin(); l != _layers.end(); ++l) {
 		if (l->second->properties.find("z") != l->second->properties.end()) {
