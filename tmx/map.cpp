@@ -1390,18 +1390,31 @@ void IMap::addLayer(const int after_z, const std::string &name) {
 		LayerMap::iterator i = _layers.find(after_z);
 		if (i == _layers.end())
 			throw_ex(("no layer with z %d", after_z));
-	
-		LayerMap::iterator next = _layers.find(after_z + 1);
-		if (next != _layers.end())
-			throw_ex(("cannot add layer. no z-room"));
 	}
+	LayerMap new_map;
+	int z = -1000;
+	Layer *layer = NULL;
 	
-	Layer *l = new Layer();
-	l->name = name;
-	l->init(_w, _h);
-	if (_layers.empty()) 
-		l->properties["z"] = mrt::formatString("%d", after_z + 1);
-	_layers.insert(LayerMap::value_type(after_z + 1, l));
+	for(LayerMap::iterator l = _layers.begin(); l != _layers.end(); ++l) {
+		if (l->second->properties.find("z") != l->second->properties.end()) {
+			z = atoi(l->second->properties["z"].c_str());
+		}
+		//LOG_DEBUG(("%s -> %d", l->second->name.c_str(), z));
+		if (new_map.find(z) != new_map.end()) {
+			if (layer != NULL)
+				delete layer;
+			throw_ex(("no room for layer"));
+		}
+		new_map[z++] = l->second;
+		
+		if (z == after_z + 1) {
+			layer = new Layer();
+			layer->name = name;
+			layer->init(_w, _h);
+			new_map.insert(LayerMap::value_type(z++, layer));
+		}
+	}
+	_layers = new_map;
 }
 
 const bool IMap::swapLayers(const int z1, const int z2) {
@@ -1421,22 +1434,18 @@ const bool IMap::swapLayers(const int z1, const int z2) {
 	math::exchange(l1->second, l2->second);
 	LayerMap new_map;
 
-	int z0 = -1000;
+	int z = -1000;
 	for(LayerMap::iterator l = _layers.begin(); l != _layers.end(); ++l) {
-		int z;
 		if (l->second->properties.find("z") != l->second->properties.end()) {
 			z = atoi(l->second->properties["z"].c_str());
-			z0 = z + 1;
-		} else {
-			z = z0++;
 		}
-		LOG_DEBUG(("%s -> %d", l->second->name.c_str(), z));
+		//LOG_DEBUG(("%s -> %d", l->second->name.c_str(), z));
 		if (new_map.find(z) != new_map.end()) {
 			LOG_DEBUG(("no room for new layer. restore changes..."));
 			math::exchange(l1->second, l2->second);
 			return false;
 		}
-		new_map[z] = l->second;
+		new_map[z++] = l->second;
 	}
 	_layers = new_map;
 	return true;
