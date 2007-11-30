@@ -1385,6 +1385,32 @@ void IMap::generateXML(std::string &result) const {
 	result += "</map>\n";
 }
 
+void IMap::deleteLayer(const int kill_z) {
+	LayerMap::iterator i = _layers.find(kill_z);
+	if (i == _layers.end())
+		throw_ex(("no layer with z %d", kill_z));
+		
+	LayerMap new_map;
+	int z = -1000;
+	
+	for(LayerMap::iterator l = _layers.begin(); l != _layers.end(); ) {
+		if (l->first == kill_z) {
+			delete l->second;
+			_layers.erase(l++);
+			continue;
+		}
+		if (l->second->properties.find("z") != l->second->properties.end()) {
+			z = atoi(l->second->properties["z"].c_str());
+		}
+		//LOG_DEBUG(("%s -> %d", l->second->name.c_str(), z));
+		assert(new_map.find(z) == new_map.end());
+		new_map[z++] = l->second;
+		++l;
+	}
+	_layers = new_map;
+	generateMatrixes();
+}
+
 void IMap::addLayer(const int after_z, const std::string &name) {
 	if (!_layers.empty()) {
 		LayerMap::iterator i = _layers.find(after_z);
