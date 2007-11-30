@@ -48,7 +48,7 @@ IMPLEMENT_SINGLETON(Map, IMap);
 IMap::IMap() : _w(0), _h(0), _tw(0), _th(0), _ptw(0), _pth(0), _firstgid(0), _split(0), 
 	_generator(new MapGenerator), _solo_aware(false) , _torus(false) 
 {
-	_lastz = -1000;
+	_lastz = -1001;
 	_image = NULL;
 }
 
@@ -987,7 +987,7 @@ void IMap::clear() {
 	//LOG_DEBUG(("deleting intermediate parser objects..."));
 	delete _image;
 	_image = NULL;
-	_lastz = -1000;
+	_lastz = -1001;
 	_w = _h = _tw = _th = _firstgid = 0;
 	
 	//LOG_DEBUG(("clearing damage layers and optimization maps..."));
@@ -1430,7 +1430,7 @@ const bool IMap::swapLayers(const int z1, const int z2) {
 		} else {
 			z = z0++;
 		}
-		//LOG_DEBUG(("%s -> %d", l->second->name.c_str(), z));
+		LOG_DEBUG(("%s -> %d", l->second->name.c_str(), z));
 		if (new_map.find(z) != new_map.end()) {
 			LOG_DEBUG(("no room for new layer. restore changes..."));
 			math::exchange(l1->second, l2->second);
