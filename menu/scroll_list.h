@@ -45,7 +45,7 @@ public:
 
 	const int get() const { return _current_item; }
 	const std::string getValue() const;
-	void set(const int idx) { _current_item = idx; }
+	void set(const int idx);
 	void remove(const int idx);
 	
 	virtual void tick(const float dt);

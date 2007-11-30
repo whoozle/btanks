@@ -35,6 +35,13 @@ _client_w(64), _client_h(64), _pos(0), _vel(0), _current_item(0), _spacing(spaci
 	_scrollers = ResourceManager->loadSurface("menu/v_scroller.png");
 }
 
+void ScrollList::set(const int idx) {
+	if (idx < 0 || idx >= (int)_list.size())
+		throw_ex(("invalid index %d was set", idx));
+	_current_item = idx;
+}
+
+
 void ScrollList::initBG(const std::string &background, const std::string &highlite, const int w, const int h) {
 	_background.init(background, highlite, w, h);
 }
