@@ -132,7 +132,6 @@ void CampaignMenu::init() {
 	_maps->clear();
 
 	map_id.clear();
-	_maps->set(0);
 	for(size_t i = 0; i < campaign.maps.size(); ++i) {
 
 		const Campaign::Map &map = campaign.maps[i];
