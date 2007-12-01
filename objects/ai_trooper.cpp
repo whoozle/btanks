@@ -80,7 +80,7 @@ const int AITrooper::getComfortDistance(const Object *other) const {
 
 void AITrooper::onIdle(const float dt) {
 	int summoner = getSummoner();
-	if (summoner != 0 && summoner != OWNER_MAP) {
+	if ((summoner != 0 && summoner != OWNER_MAP) || _variants.has("herd")) {
 		float range = getWeaponRange(_object);
 		ai::Herd::calculateV(_velocity, this, summoner, range);
 	} else _velocity.clear();
