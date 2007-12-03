@@ -33,13 +33,13 @@ public:
 	OldSchool();
 	void onSpawn(Object *object);
 	virtual ~OldSchool() {}
-	void calculateV(v2<float> &velocity, Object *object, const float dt);
+	void calculateV(v2<float> &velocity, Object *object);
 
 	virtual void serialize(mrt::Serializator &s) const;
 	virtual void deserialize(const mrt::Serializator &s);
 
 private:
-	Alarm _move;
+	int trottle;
 };
 
 }

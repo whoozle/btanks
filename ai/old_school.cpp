@@ -24,27 +24,32 @@
 #include "mrt/random.h"
 #include "tmx/map.h"
 
-ai::OldSchool::OldSchool() : _move(true) {}
+ai::OldSchool::OldSchool() {}
 
 void ai::OldSchool::onSpawn(Object *object) {
-	float r = 1.0f;
-	mrt::randomize(r, r / 10);
-	_move.set(r);
+	trottle = 0;
 }
 
-void ai::OldSchool::calculateV(v2<float> &velocity, Object *object, const float dt) {
+void ai::OldSchool::calculateV(v2<float> &velocity, Object *object) {
 	if (object->isDriven())
 		return;
 
+	++trottle;
+	if (trottle < 10) {
+		return;
+	} else {
+		trottle = 0;
+	}
+
 	int dirs = object->getDirectionsNumber();
 
-	int action = mrt::random(10);
+	int action = mrt::random(2);
 
-	if (action == 1) {
+	if (action == 0) {
 		int dir = mrt::random(dirs);
 		object->setDirection(dir);
 		velocity.clear();
-	} else if (action == 3) {
+	} else if (action == 1) {
 		int dir = mrt::random(dirs);
 		v2<int> pos;
 		object->getCenterPosition(pos);
@@ -67,9 +72,9 @@ void ai::OldSchool::calculateV(v2<float> &velocity, Object *object, const float 
 
 
 void ai::OldSchool::serialize(mrt::Serializator &s) const {
-	s.add(_move);
+	s.add(trottle);
 }
 
 void ai::OldSchool::deserialize(const mrt::Serializator &s) {
-	s.get(_move);	
+	s.get(trottle);	
 }
