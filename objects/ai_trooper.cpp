@@ -19,12 +19,13 @@
 #include "trooper.h"
 #include "ai/base.h"
 #include "ai/herd.h"
+#include "ai/old_school.h"
 #include "config.h"
 #include "registrar.h"
 #include "mrt/random.h"
 #include "special_owners.h"
 
-class AITrooper : public Trooper, private ai::Herd, private ai::Base {
+class AITrooper : public Trooper, private ai::Herd, private ai::Base, ai::OldSchool {
 public:
 	AITrooper(const std::string &object, const bool aim_missiles) : 
 		Trooper("trooper", object), _reaction(true), _target_dir(-1) {
@@ -43,12 +44,14 @@ public:
 	virtual void serialize(mrt::Serializator &s) const {
 		Trooper::serialize(s);
 		ai::Base::serialize(s);
+		ai::OldSchool::serialize(s);
 		s.add(_reaction);
 		s.add(_target_dir);
 	}
 	virtual void deserialize(const mrt::Serializator &s) {
 		Trooper::deserialize(s);
 		ai::Base::deserialize(s);
+		ai::OldSchool::deserialize(s);
 		s.get(_reaction);
 		s.get(_target_dir);
 	}
@@ -80,19 +83,23 @@ const int AITrooper::getComfortDistance(const Object *other) const {
 
 void AITrooper::onIdle(const float dt) {
 	int summoner = getSummoner();
-	if ((summoner != 0 && summoner != OWNER_MAP) || _variants.has("herd")) {
+	if (_variants.has("old-school")) {
+		ai::OldSchool::calculateV(_velocity, this, dt);
+	} else if ((summoner != 0 && summoner != OWNER_MAP) || _variants.has("herd")) {
 		float range = getWeaponRange(_object);
 		ai::Herd::calculateV(_velocity, this, summoner, range);
 	} else _velocity.clear();
 	_state.fire = false;
 
 	GET_CONFIG_VALUE("objects.ai-trooper.rotation-time", float, rt, 0.05);
+	calculateWayVelocity();
 	limitRotation(dt, rt, true, false);
 	updateStateFromVelocity();	
 }
 
 void AITrooper::onSpawn() {
 	ai::Base::onSpawn(this);
+	ai::OldSchool::onSpawn(this);
 	GET_CONFIG_VALUE("objects.ai-trooper.reaction-time", float, rt, 0.15f);
 	mrt::randomize(rt, rt / 10);
 	//LOG_DEBUG(("rt = %g", rt));
@@ -118,8 +125,10 @@ void AITrooper::calculate(const float dt) {
 		return;
 	}
 	
-	if (!_reaction.tick(dt))
+	if (!_reaction.tick(dt) || isDriven()) {
+		calculateWayVelocity();
 		return;
+	}
 
 	{
 		static std::set<std::string> bullets; 

@@ -600,6 +600,9 @@ void Object::setWay(const Way & way) {
 }
 
 void Object::calculateWayVelocity() {
+	if (_way.empty())
+		return;
+	
 	v2<float> position;
 	getPosition(position);	
 	sdlx::Rect me((int)position.x, (int)position.y, (int)size.x, (int)size.y);
