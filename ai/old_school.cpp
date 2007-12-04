@@ -57,14 +57,18 @@ void ai::OldSchool::calculateV(v2<float> &velocity, Object *object) {
 	
 		const Matrix<int> &matrix = Map->getImpassabilityMatrix(object->getZ());
 	
-		v2<float> dpos;
-		dpos.fromDirection(dir, dirs);
-		pos += (dpos * tile_size.convert<float>() * 2).convert<int>();
-	
+		v2<float> delta;
+		delta.fromDirection(dir, dirs);
+
+		v2<int> dpos = (delta * tile_size.convert<float>()).convert<int>();
+		pos += dpos;
+		v2<int> pos2 = pos + dpos;
+		
 		pos /= tile_size;
-		if (matrix.get(pos.y, pos.x) != -1) {
+		pos2 /= tile_size;
+		if (matrix.get(pos.y, pos.x) != -1 && matrix.get(pos2.y, pos2.x) != -1) {
 			Way way;
-			way.push_back(pos * tile_size + tile_size / 2);
+			way.push_back(pos2 * tile_size + tile_size / 2);
 			object->setWay(way);
 		}
 	}
