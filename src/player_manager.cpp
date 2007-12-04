@@ -577,7 +577,7 @@ TRY {
 		
 		slot.dead_time += dt;
 		//GET_CONFIG_VALUE("engine.respawn-interval", float, ri, 0.1f);
-		if (slot.dead_time < 0.3f)
+		if (slot.dead_time < 0.5f)
 			continue;
 
 		if (slot.spawn_limit > 0) {
