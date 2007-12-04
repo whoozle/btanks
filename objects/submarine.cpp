@@ -84,7 +84,7 @@ void Submarine::tick(const float dt) {
 		
 		cancelAll();
 		play("fade-in", false);
-		int n = mrt::random(5) + 5;
+		int n = mrt::random(3) + 3;
 		for(int i = 0; i < n; ++i) {
 			play("main", false);
 		}
