@@ -11,7 +11,7 @@ might help you. Just put this lines into your ~/.openalrc or /etc/openalrc :
 
 (define devices '(alsa))
 (define speaker-num 2)
-(define alsa-out-device 'default')
+(define alsa-out-device 'plughw')
 (define sampling-rate 44100)
 
 usually "alutInit: There was an error opening the ALC device" error message 
