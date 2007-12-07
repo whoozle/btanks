@@ -98,7 +98,6 @@ void IGame::pause() {
 }
 
 void IGame::init(const int argc, char *argv[]) {
-	srand(time(NULL));
 	_donate = NULL;
 	_donate_timer = 0;
 
