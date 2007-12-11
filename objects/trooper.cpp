@@ -126,8 +126,8 @@ void Trooper::onSpawn() {
 		playSound("disembark", false);
 		//add helmet if parent player detected.
 	}
-	//GET_CONFIG_VALUE("objects.trooper.grenade-rate", float, gr, 3);
-	_alt_fire.set(1);
+	GET_CONFIG_VALUE("objects.trooper.grenade-rate", float, gr, 1.2f);
+	_alt_fire.set(gr);
 	
 	if (_object.empty()) {
 		//nothing to do

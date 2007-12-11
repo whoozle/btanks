@@ -639,6 +639,7 @@
 	<animation id="nuke-explosion" tile="nuke_explosion.png" model="nuke-explosion-animation" size="448" />
 	<animation id="cannon-explosion" tile="cannon_explosion.png" model="cannon-explosion-animation" size="128" />
 	<animation id="mortar-explosion" tile="cannon_explosion.png" model="cannon-explosion-animation" size="128" />
+	<animation id="grenade-explosion" tile="cannon_explosion.png" model="cannon-explosion-animation" size="128" />
 	<animation id="kamikaze-explosion" tile="kamikaze_explosion.png" model="kamikaze-explosion-animation" size="128" />
 	<animation id="traffic-lights" tile="traffic_lights.png" model="traffic-lights-animation" />
 
@@ -846,6 +847,7 @@
 	<object class="nuke-explosion" hp="1000" mass="10000" impassability="-1" z="900" />
 	<object class="cannon-explosion" hp="30" impassability="-1" z="900" />
 	<object class="mortar-explosion" hp="30" impassability="-1" z="900" />
+	<object class="grenade-explosion" hp="10" impassability="-1" z="900" />
 	<object class="kamikaze-explosion" hp="10" impassability="-1" z="900" />
 	<object class="bomberman-explosion" hp="100" impassability="-1" z="900" />
 	

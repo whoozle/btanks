@@ -58,7 +58,11 @@ public:
 				dpos = getRelativePosition(emitter) / 2;
 			} 
 			
-			spawn("mortar-explosion", "mortar-explosion", dpos);
+			if (registered_name == "mortar-bullet") 
+				spawn("mortar-explosion", "mortar-explosion", dpos);
+			else 
+				spawn("grenade-explosion", "grenade-explosion", dpos);
+			
 			Object::emit("death", emitter);
 			return;
 		} 
