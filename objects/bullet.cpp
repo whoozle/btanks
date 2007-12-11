@@ -91,15 +91,6 @@ void Bullet::tick(const float dt) {
 
 
 void Bullet::calculate(const float dt) {
-	if (_type == "mortar") {
-		float idle, moving;
-		getTimes(moving, idle);
-		float real_ttl = ttl + moving + idle;
-		GET_CONFIG_VALUE("objects.mortar-bullet.g", float, g, 2.0f);
-		float v0 = real_ttl * g / 2;
-		float t = real_ttl - ttl;
-		_velocity = v2<float>(0, g * t - v0) + _vel_backup;
-	}
 	GET_CONFIG_VALUE("engine.auto-aim.enabled", bool, aa, true);
 	if (aa && _variants.has("auto-aim") && !_velocity.is0()) {
 		if (!_clone.tick(dt)) 
@@ -164,8 +155,7 @@ void Bullet::onSpawn() {
 	play("shot", false);
 	play("move", true);
 	
-	if (_type != "mortar")
-		quantizeVelocity();
+	quantizeVelocity();
 	_vel_backup = _direction = _velocity;
 }
 
@@ -192,8 +182,6 @@ void Bullet::emit(const std::string &event, Object * emitter) {
 			spawn("dirt", "dirt", dpos);
 		} else if (_type == "cannon") {
 			spawn("cannon-explosion", "cannon-explosion", dpos);
-		} else if (_type == "mortar") {
-			spawn("mortar-explosion", "mortar-explosion", dpos);
 		} else if (event == "collision" && _type == "ricochet" && (emitter == NULL || emitter->hp == -1)) {
 			if (!_guard_state)
 				return;	
@@ -253,4 +241,3 @@ REGISTER_OBJECT("dispersion-bullet", Bullet, ("dispersion", 16));
 REGISTER_OBJECT("ricochet-bullet", Bullet, ("ricochet", 16));
 
 REGISTER_OBJECT("cannon-bullet", Bullet, ("cannon", 8));
-REGISTER_OBJECT("mortar-bullet", Bullet, ("mortar", 1));
