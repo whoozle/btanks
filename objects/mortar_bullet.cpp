@@ -59,6 +59,8 @@ public:
 			} 
 			
 			spawn("mortar-explosion", "mortar-explosion", dpos);
+			Object::emit("death", emitter);
+			return;
 		} 
 		Object::emit(event, emitter);
 	}
