@@ -311,6 +311,7 @@
 	<animation map="dune" id="dead-red-tank" />
 	<animation map="dune" id="dead-thrower" />
 	<animation map="dune" id="dead-yellow-shilka" />
+	<animation map="dune" id="dead-yellow-tank" />
 	<animation map="dune" id="dead-ziehharmonikaspieler-static" />
 	<animation map="dune" id="dead-zombie" />
 	<animation map="dune" id="dispersion-bullet" />
@@ -319,6 +320,8 @@
 	<animation map="dune" id="explosion" />
 	<animation map="dune" id="fire" />
 	<animation map="dune" id="green-launcher" />
+	<animation map="dune" id="grenade" />
+	<animation map="dune" id="grenade-explosion" />
 	<animation map="dune" id="guided-missile" />
 	<animation map="dune" id="guided-missiles-item" />
 	<animation map="dune" id="guided-missiles-on-launcher" />
@@ -352,7 +355,9 @@
 	<animation map="dune" id="shilka-bullet-right" />
 	<animation map="dune" id="smoke-missiles-item" />
 	<animation map="dune" id="stack" />
+	<animation map="dune" id="stun-missile" />
 	<animation map="dune" id="stun-missiles-item" />
+	<animation map="dune" id="tank-bullet" />
 	<animation map="dune" id="tank-smoke" />
 	<animation map="dune" id="thrower" />
 	<animation map="dune" id="thrower-item" />
