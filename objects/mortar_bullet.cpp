@@ -79,3 +79,4 @@ private:
 };
 
 REGISTER_OBJECT("mortar-bullet", MortarBullet, ());
+REGISTER_OBJECT("grenade", MortarBullet, ());
