@@ -69,11 +69,17 @@ void Trooper::tick(const float dt) {
 			spawn(_object, _object, v2<float>(), _direction);
 		}
 	}
-	if (_state.alt_fire && _variants.has("nukeman")) {
-		//MUGGAGAGAGAGAG!!!
-		Object *o = spawn("nuke-explosion", "nuke-explosion");
-		emit("death", o); //fix frags calculation to remove this player manager call: 
-		PlayerManager->onPlayerDeath(this, o);
+	if (_alt_fire.tick(dt) && _state.alt_fire) {
+		_alt_fire.reset();
+		if (_variants.has("nukeman")) {
+			//MUGGAGAGAGAGAG!!!
+			Object *o = spawn("nuke-explosion", "nuke-explosion");
+			emit("death", o); //fix frags calculation to remove this player manager call: 
+			PlayerManager->onPlayerDeath(this, o);
+		} else {
+			LOG_DEBUG(("grenade!"));
+			spawn("grenade", "grenade", v2<float>(), _direction);
+		}
 	}
 }
 
@@ -120,6 +126,9 @@ void Trooper::onSpawn() {
 		playSound("disembark", false);
 		//add helmet if parent player detected.
 	}
+	//GET_CONFIG_VALUE("objects.trooper.grenade-rate", float, gr, 3);
+	_alt_fire.set(1);
+	
 	if (_object.empty()) {
 		//nothing to do
 	} else if (_object == "thrower-missile") {
