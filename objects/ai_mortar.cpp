@@ -88,5 +88,5 @@ void AIMortar::calculate(const float dt) {
 	updateStateFromVelocity();	
 }
 
-REGISTER_OBJECT("mortar", AIMortar, ("vehicle"));
-REGISTER_OBJECT("static-mortar", AIMortar, ("fighting-vehicle"));
+REGISTER_OBJECT("mortar", AIMortar, ("fighting-vehicle"));
+REGISTER_OBJECT("static-mortar", AIMortar, ("vehicle"));
