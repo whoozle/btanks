@@ -205,6 +205,11 @@
 		<pose id="shot" sound="@cannon">0</pose>
 		<pose id="move">0,1,2,3,4,5</pose>
 	</animation-model>
+	
+	<animation-model id="grenade-animation" speed="10">
+		<pose id="shot">0</pose>
+		<pose id="move">0,1,2,3,4,5</pose>
+	</animation>
 
 	<animation-model id="explosion-animation" speed="7">
 		<pose id="boom">0,1,2</pose>
@@ -626,6 +631,7 @@
 	<animation id="dirt-bullet" tile="dirt_bullet.png" model="bullet-animation"/>
 	<animation id="cannon-bullet" tile="cannon_bullet.png" model="bullet-animation"/>
 	<animation id="mortar-bullet" tile="mortar_bullet.png" model="mortar-bullet-animation"/>
+	<animation id="grenade" tile="grenade.png" model="grenade-animation"/>
 	
 	<animation id="explosion" tile="explosion.png" model="explosion-animation" />
 	<animation id="missile-explosion" tile="missile_blast.png" model="missile-explosion-animation" />
