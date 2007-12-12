@@ -19,7 +19,7 @@ sources = [
 	'damage.cpp', 'helicopter.cpp', 'paratrooper.cpp', 'kamikaze.cpp',
 	'machinegunner_on_launcher.cpp', 'destructable_object.cpp', 'submarine.cpp', 'train.cpp',
 	'trooper.cpp', 'fakemod.cpp', 'car.cpp', 'tooltip.cpp', 
-	'barrack.cpp', 'watchtower.cpp',
+	'barrack.cpp', 'watchtower.cpp', 'slime.cpp', 
 	'cannon.cpp', 'boat.cpp', 'poison.cpp', 'old_school_destructable.cpp', 
 	'zombie.cpp', 'civilian.cpp', 'teleport.cpp', 'cow.cpp', 
 	'heli.cpp', 'bomb.cpp', 'explosive.cpp', 'mortar.cpp',

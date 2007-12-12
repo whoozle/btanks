@@ -414,8 +414,14 @@
 		<pose id="main">0,1,2,3,2,1</pose>
 	</animation-model>
 	
+	<animation-model id="slime-animation" speed="2">
+		<pose id="hold">0</pose>
+		<pose id="move">0,1,2</pose>
+		<pose id="fire" speed="10">1,2,1</pose>
+	</animation-model>
+	
 	<!-- 
-		sound tag allows you to load sample that doesn't reside in any animation model.
+		sound tag allows you to load samples that don't reside in any animation model.
 	-->
 	<sound file="respawn.ogg" />
 	<sound file="teleport.ogg" />
@@ -749,6 +755,9 @@
 	<animation id="buggy-air-bullet-left" tile="buggy_air_bullet2.png" model="bullet-animation"/>
 	
 	<animation id="target" tile="target.png" model="target-animation" size="64" />
+	<animation id="slime" tile="slime.png" model="slime-animation" size="64" />
+	
+	<!-- OBJECTS -->
 
 	<object class="damage-digits" speed="60" ttl="1" z="999" />
 
@@ -903,7 +912,10 @@
 	<object class="outline" impassability="0" />
 	<object class="random-tooltip" z="995" />
 	<object class="spaceport-baykonur" hp="200" z="0"/> 
+
 	<object class="zombie" hp="40" speed="80" mass="85" z="-1" />	
+	<object class="slime" hp="40" speed="50" mass="100" z="-1" />
+	
 	<object class="cow" hp="40" speed="80" mass="120" z="-1" />	
 	<object class="sandworm" speed="150" mass="10" z="-1" impassability="0" />
 	<object class="sandworm-head" speed="0" mass="10" z="-1" impassability="-1" hp="500" />
