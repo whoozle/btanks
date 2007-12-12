@@ -842,15 +842,15 @@
 	<object class="helicorpse" parent="corpse" impassability="-1" />
 	<object class="broken-object" impassability="1" pierceable="true" hp="-1" />
 	
-	<object class="explosion" hp="5" z="580" />
-	<object class="static-smoke-cloud" impassability="-1" hp="1000" z="580" />
-	<object class="smoke-cloud" parent="static-smoke-cloud" ttl="30" fadeout_time="1" />
-	<object class="nuke-explosion" hp="1000" mass="10000" impassability="-1" z="900" />
-	<object class="cannon-explosion" hp="30" impassability="-1" z="900" />
-	<object class="mortar-explosion" hp="30" impassability="-1" z="900" />
-	<object class="grenade-explosion" hp="10" impassability="-1" z="900" />
-	<object class="kamikaze-explosion" hp="10" impassability="-1" z="900" />
-	<object class="bomberman-explosion" hp="100" impassability="-1" z="900" />
+	<object class="explosion" hp="5" z="580" speed="1" />
+	<object class="static-smoke-cloud" impassability="-1" hp="1000" z="580" speed="1" />
+	<object class="smoke-cloud" parent="static-smoke-cloud" ttl="30" fadeout_time="1" speed="1" />
+	<object class="nuke-explosion" hp="1000" mass="10000" impassability="-1" z="900" speed="1" /> <!-- speed == 1 to avoid explosion to be put in static collision map -->
+	<object class="cannon-explosion" hp="30" impassability="-1" z="900" speed="1" />
+	<object class="mortar-explosion" hp="30" impassability="-1" z="900" speed="1" />
+	<object class="grenade-explosion" hp="10" impassability="-1" z="900" speed="1" />
+	<object class="kamikaze-explosion" hp="10" impassability="-1" z="900" speed="1" />
+	<object class="bomberman-explosion" hp="100" impassability="-1" z="900" speed="1" />
 	
 	<object class="static-dirt" impassability="-1" z="-20" />
 	<object class="dirt" parent="static-dirt" ttl="50" fadeout_time="1" />
