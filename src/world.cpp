@@ -1545,6 +1545,9 @@ const bool IWorld::attachVehicle(Object *object, Object *vehicle) {
 	
 	object->Object::emit("death", NULL); //emit death BEFORE assigning slot.id (avoid to +1 to frags) :)))
 
+	if (vehicle->classname == "vehicle" || vehicle->classname == "fighting-vehicle")
+		Mixer->playSample(vehicle, "engine-start.ogg", false);
+	
 	vehicle->_spawned_by = object->_spawned_by;
 	if (!vehicle->_variants.has("safe")) //do not change classname for safe vehicles
 		vehicle->classname = "fighting-vehicle";
@@ -1559,7 +1562,6 @@ const bool IWorld::attachVehicle(Object *object, Object *vehicle) {
 	slot->id = new_id;
 	slot->need_sync = true;
 	
-	Mixer->playSample(vehicle, "engine-start.ogg", false);
 	
 	return true;
 }
