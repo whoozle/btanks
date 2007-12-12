@@ -175,7 +175,7 @@ TRY {
 		const Layer *layer = l->second;
 		int layer_im = layer->impassability;
 
-		if (hidden && l->first > obj_z) {
+		if (hidden && l->second->visible && l->first > obj_z) {
 			if (!(hidden_mask & 1)) {
 				if ((empty_mask & 1) || hiddenBy(obj, dx1, dy1, getVisibilityMap(layer, xt1, yt1)))
 					hidden_mask |= 1;
