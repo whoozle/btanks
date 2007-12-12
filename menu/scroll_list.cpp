@@ -279,13 +279,13 @@ bool ScrollList::onMouse(const int button, const bool pressed, const int x, cons
 		return false;
 
 	if (button == SDL_BUTTON_WHEELUP) {
-		if (pressed)
+		if (!pressed)
 			up();
 		return true;
 	}
 
 	if (button == SDL_BUTTON_WHEELDOWN) {
-		if (pressed)
+		if (!pressed)
 			down();
 		return true;
 	}
