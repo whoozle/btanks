@@ -782,6 +782,12 @@ void IMap::end(const std::string &name) {
 			LOG_DEBUG(("visible = %d", visible));
 			if (visible == 0)
 				layer->visible = false;
+		} else {
+			//hide layers with 'hidden' attribute set
+			PropertyMap::const_iterator i = _properties.find("hidden");
+			if (i != _properties.end() && !i->second.empty() && (i->second[0] == 't' || i->second[0] == 'T' || i->second[0] == '1')) {
+				layer->visible = false;
+			}
 		}
 		layer->properties = _properties;
 		layer->name = e.attrs["name"];
