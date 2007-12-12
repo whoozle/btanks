@@ -102,7 +102,15 @@ void IWorld::setSafeMode(const bool safe_mode) {
 void IWorld::deleteObject(const Object *o) {
 	if (o == NULL)
 		return;
-	_grid.remove(o->_id);
+	const int id = o->_id;
+	for(StaticCollisionMap::iterator i = _static_collision_map.begin(); i != _static_collision_map.end(); ) {
+		if (i->first.first == id || i->first.second == id) {
+			_static_collision_map.erase(i++);
+		} else {
+			++i;
+		}
+	}
+	_grid.remove(id);
 	delete o;
 }
 
@@ -327,19 +335,19 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::R
 	surface.resetClipRect();
 }
 
-const bool IWorld::collides(Object *obj, const v2<int> &position, Object *o, const bool probe) const {
+const bool IWorld::collides(Object *obj1, const v2<int> &position, Object *obj2, const bool probe) const {
 	TRY {
-		const int id1 = obj->_id;
-		const int id2 = o->_id;
-		assert(obj != NULL && o != NULL);
+		const int id1 = obj1->_id;
+		const int id2 = obj2->_id;
+		assert(obj1 != NULL && obj2 != NULL);
 
 		if (id1 == id2 || 
-			(obj->impassability < 1.0 && obj->impassability >= 0) || 
-			(o->impassability < 1.0 && o->impassability >= 0) || 
-			(obj->piercing && o->pierceable) || (obj->pierceable && o->piercing) ||
-			o->isDead() || obj->isDead() ||
+			(obj1->impassability < 1.0 && obj1->impassability >= 0) || 
+			(obj2->impassability < 1.0 && obj2->impassability >= 0) || 
+			(obj1->piercing && obj2->pierceable) || (obj1->pierceable && obj2->piercing) ||
+			obj1->isDead() || obj2->isDead() ||
 			//owner stuff
-			obj->hasSameOwner(o, true) 
+			obj1->hasSameOwner(obj2, true) 
 		) {
 			return false;
 		}
@@ -355,21 +363,24 @@ const bool IWorld::collides(Object *obj, const v2<int> &position, Object *o, con
 		 }
 		//LOG_DEBUG(("collides(%s:%d(speed: %g), (%d, %d), %s:%d(speed: %g), %s)", obj->registered_name.c_str(), obj->_id, obj->speed, position.x, position.y, o->registered_name.c_str(), o->_id, o->speed, probe?"true":"false"));
 		
-		v2<int> dpos = o->_position.convert<int>() - position;
+		v2<int> dpos = obj2->_position.convert<int>() - position;
 		//LOG_DEBUG(("%s: %d %d", o->classname.c_str(), dpos.x, dpos.y));
 		
 		bool collides;
-		if (obj->speed == 0 && o->speed == 0) {
+		if (obj1->speed == 0 && obj2->speed == 0) {
 			//static objects.
-			CollisionMap::iterator static_i = _static_collision_map.find(key);
-			if (static_i != _static_collision_map.end()) {
-				collides = static_i->second;
+			StaticCollisionMap::iterator static_i = _static_collision_map.find(key);
+			int p1 = id1 < id2 ? (int)obj1->_pos : (int)obj2->_pos;
+			int p2 = id1 < id2 ? (int)obj2->_pos : (int)obj1->_pos;
+			if (static_i != _static_collision_map.end() && p1 == static_i->second.first && p2 == static_i->second.second) {
+				collides = static_i->second.third;
 			} else {
-				collides = obj->collides(o, dpos.x, dpos.y);
-				_static_collision_map.insert(CollisionMap::value_type(key, collides)); 
+				collides = obj1->collides(obj2, dpos.x, dpos.y);
+				 ternary<int, int, bool> value = id1 < id2 ? ternary<int, int, bool>((int) obj1->_pos, (int) obj2->_pos, collides): ternary<int, int, bool>((int) obj2->_pos, (int) obj1->_pos, collides);
+				_static_collision_map.insert(StaticCollisionMap::value_type(key, value)); 
 			}
 		} else {
-			collides = obj->collides(o, dpos.x, dpos.y);
+			collides = obj1->collides(obj2, dpos.x, dpos.y);
 		}
 
 		//LOG_DEBUG(("collision %s <-> %s: %s", obj->classname.c_str(), o->classname.c_str(), collides?"true":"false"));
@@ -385,18 +396,18 @@ const bool IWorld::collides(Object *obj, const v2<int> &position, Object *o, con
 				m = 1.0;
 				v2<float> o_vf = o->_velocity * -m, obj_vf = obj->_velocity * (-1/m);
 				*/
-				o->emit("collision", obj);
-				obj->emit("collision", o);
+				obj2->emit("collision", obj1);
+				obj1->emit("collision", obj2);
 			
-				if (o->isDead()) {
-					PlayerManager->onPlayerDeath(o, obj);
+				if (obj2->isDead()) {
+					PlayerManager->onPlayerDeath(obj2, obj1);
 				}
 
-				if (obj->isDead()) {
-					PlayerManager->onPlayerDeath(obj, o);
+				if (obj1->isDead()) {
+					PlayerManager->onPlayerDeath(obj1, obj2);
 				}
 			
-				if ( o->isDead() || obj->isDead() || obj->impassability == 0 || o->impassability == 0) {
+				if (obj1->isDead() || obj2->isDead() || obj1->impassability == 0 || obj2->impassability == 0) {
 					return false; //the most common case is the bullet which collides with object.
 				}
 			
@@ -406,7 +417,7 @@ const bool IWorld::collides(Object *obj, const v2<int> &position, Object *o, con
 		
 		return collides;
 	} CATCH(
-		mrt::formatString("World::collides(%p, (%d:%d), %p, %s)", (void *)obj, position.x, position.y, (void *)o, probe?"true":"false").c_str(), 
+		mrt::formatString("World::collides(%p, (%d:%d), %p, %s)", (void *)obj1, position.x, position.y, (void *)obj2, probe?"true":"false").c_str(), 
 		throw; )
 	return 0;
 }
