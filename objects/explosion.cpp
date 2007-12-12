@@ -96,6 +96,9 @@ void Explosion::onSpawn() {
 	disown();
 }
 
+#include "player_manager.h"
+#include "world.h"
+
 void Explosion::emit(const std::string &event, Object * emitter) {
 	if (event == "collision") {
 		if (emitter == NULL || registered_name == "explosion" || 
@@ -133,8 +136,10 @@ void Explosion::emit(const std::string &event, Object * emitter) {
 					if (ResourceManager->hasAnimation(an)) {
 						emitter->init(an);
 					} else {
-						World->spawn(emitter, "zombie", "zombie", v2<float>(), v2<float>());
 						emitter->Object::emit("death", this);
+						
+						Object * zombie = World->spawn(emitter, "zombie", "zombie", v2<float>(), v2<float>());
+						World->attachVehicle(emitter, zombie);
 					}
 				}
 			}
