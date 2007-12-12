@@ -227,6 +227,12 @@ void IGame::init(const int argc, char *argv[]) {
 		if (revision < 5478) {
 			Config->remove("engine.preload-all-resources");
 		}
+		if (revision < 5587) {
+			float mp;
+			Config->get("objects.mutagen-explosion.mutation-probability", mp, 0.5f);
+			if (mp < 0.5f) 
+				Config->set("objects.mutagen-explosion.mutation-probability", 0.5f);
+		}
 		
 		Config->set("engine.revision", getRevision());
 	}
