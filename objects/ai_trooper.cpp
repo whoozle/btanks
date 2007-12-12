@@ -81,14 +81,41 @@ const int AITrooper::getComfortDistance(const Object *other) const {
 	return (other == NULL || other->classname == "trooper" || other->classname == "kamikaze")?cd:-1;
 }
 
+#include "world.h"
+
 void AITrooper::onIdle(const float dt) {
 	int summoner = getSummoner();
 	if (_variants.has("old-school")) {
 		ai::OldSchool::calculateV(_velocity, this);
 	} else if ((summoner != 0 && summoner != OWNER_MAP) || _variants.has("herd")) {
+		Object *parent = World->getObjectByID(summoner);
+		if (parent != NULL) {
+			v2<float> dpos = getRelativePosition(parent);
+			float dist = dpos.length();
+			//LOG_DEBUG(("%d: %s: summoner distance: %g", getID(), animation.c_str(), dist));
+			if (dist > 800) {
+				//teleportation! 
+				LOG_DEBUG(("%d: %s: teleports from distance: %g", getID(), animation.c_str(), dist));
+				v2<float> dir;
+				dir.fromDirection(getID() % 16, 16);
+				dir *= (parent->size.x + parent->size.x) / 2;
+
+				Object *new_me = World->spawn(parent, registered_name, animation, dir, v2<float>());
+
+				new_me->updateVariants(getVariants(), true);
+				new_me->copyOwners(this);
+				new_me->hp = hp;
+
+				Object::emit("death", NULL);
+				return;
+			}
+			
+		}
 		float range = getWeaponRange(_object);
 		ai::Herd::calculateV(_velocity, this, summoner, range);
-	} else _velocity.clear();
+	} else {
+		_velocity.clear();
+	}
 	_state.fire = false;
 
 	GET_CONFIG_VALUE("objects.ai-trooper.rotation-time", float, rt, 0.05);
