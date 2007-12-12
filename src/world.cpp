@@ -376,6 +376,7 @@ const bool IWorld::collides(Object *obj1, const v2<int> &position, Object *obj2,
 				collides = static_i->second.third;
 			} else {
 				collides = obj1->collides(obj2, dpos.x, dpos.y);
+				_collision_map.insert(CollisionMap::value_type(key, collides));
 				 ternary<int, int, bool> value = id1 < id2 ? ternary<int, int, bool>((int) obj1->_pos, (int) obj2->_pos, collides): ternary<int, int, bool>((int) obj2->_pos, (int) obj1->_pos, collides);
 				_static_collision_map.insert(StaticCollisionMap::value_type(key, value)); 
 			}
