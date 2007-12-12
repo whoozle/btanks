@@ -345,6 +345,7 @@
 	<animation map="dune" id="red-shilka" />
 	<animation map="dune" id="red-shilka-outline" />
 	<animation map="dune" id="red-tank" />
+	<animation map="dune" id="red-tank-outline" />
 	<animation map="dune" id="red-thrower-helmet" />
 	<animation map="dune" id="regular-mine" />
 	<animation map="dune" id="road-sign07" />
