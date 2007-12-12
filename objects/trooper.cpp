@@ -40,7 +40,7 @@ void Trooper::tick(const float dt) {
 	
 	const std::string state = getState();
 	if (_velocity.is0()) {
-		if (state != "hold" && state != "fire") {
+		if (state != "hold" && state != "fire" && state != "throw") {
 			cancelAll();
 			play("hold", true);
 			if (has("helmet")) {
