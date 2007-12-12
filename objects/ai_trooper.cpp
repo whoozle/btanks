@@ -98,7 +98,7 @@ void AITrooper::onIdle(const float dt) {
 				LOG_DEBUG(("%d: %s: teleports from distance: %g", getID(), animation.c_str(), dist));
 				v2<float> dir;
 				dir.fromDirection(getID() % 16, 16);
-				dir *= (parent->size.x + parent->size.x) / 2;
+				dir *= (parent->size.x + parent->size.x) / 3;
 
 				Object *new_me = World->spawn(parent, registered_name, animation, dir, v2<float>());
 
