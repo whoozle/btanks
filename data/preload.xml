@@ -141,6 +141,7 @@
 	<animation map="baykonur" id="dead-yellow-launcher" />
 	<animation map="baykonur" id="dead-yellow-tank" />
 	<animation map="baykonur" id="dirt" />
+	<animation map="baykonur" id="dispersion-bullet" />
 	<animation map="baykonur" id="dispersion-bullets-item" />
 	<animation map="baykonur" id="dumb-missiles-item" />
 	<animation map="baykonur" id="explosion" />
@@ -149,6 +150,7 @@
 	<animation map="baykonur" id="green-launcher" />
 	<animation map="baykonur" id="green-shilka" />
 	<animation map="baykonur" id="green-tank" />
+	<animation map="baykonur" id="guided-missile" />
 	<animation map="baykonur" id="guided-missiles-item" />
 	<animation map="baykonur" id="guided-missiles-on-launcher" />
 	<animation map="baykonur" id="guided-missiles-on-tank" />
@@ -191,6 +193,7 @@
 	<animation map="baykonur" id="trooper-tent" />
 	<animation map="baykonur" id="watchtower" />
 	<animation map="baykonur" id="yellow-launcher" />
+	<animation map="baykonur" id="yellow-machinegunner-helmet" />
 	<animation map="baykonur" id="yellow-mortar" />
 	<animation map="baykonur" id="yellow-tank" />
 	<animation map="baykonur" id="yellow-tank-outline" />
