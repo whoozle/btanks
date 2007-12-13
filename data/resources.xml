@@ -88,6 +88,12 @@
 		<pose id="dead">6</pose>
 	</animation-model>
 
+	<animation-model id="dead-slime-animation" speed="5">
+		<pose id="fade-in">0,1,2</pose>
+		<pose id="burn">3,4,5,6</pose>
+		<pose id="fade-out">6</pose>
+		<pose id="dead">6</pose>
+	</animation-model>
 
 	<animation-model id="ziehharmonikaspieler-animation" speed="7">
 		<pose id="hold">0</pose>
@@ -757,7 +763,7 @@
 	<animation id="target" tile="target.png" model="target-animation" size="64" />
 	<animation id="slime" tile="slime.png" model="slime-animation" size="64" />
 	<animation id="slime-acid" tile="slime_bullet.png" model="bullet-animation" size="64" />
-	<animation id="dead-slime" tile="slime_dead.png" model="dead-zombie-animation" size="128" />
+	<animation id="dead-slime" tile="slime_dead.png" model="dead-slime-animation" size="128" />
 	
 	<!-- OBJECTS -->
 
