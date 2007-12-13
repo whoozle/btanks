@@ -224,7 +224,7 @@ void Object::tick(const float dt) {
 				_direction = _velocity;
 				_velocity.clear();
 			}
-		} else if (ei->first == "invulnerability") {
+		} else if (ei->first == "invulnerability" || ei->first == "teleportation") {
 			_blinking.tick(dt);
 		}
 		++ei;
@@ -389,13 +389,23 @@ const bool Object::skipRendering() const {
 	return _blinking.get() >= 0.5;
 }
 
-void Object::render(sdlx::Surface &surface, const int x, const int y) {
+void Object::render(sdlx::Surface &surface, const int x_, const int y_) {
 	if (skipRendering())
 		return;
-	
+
 	sdlx::Rect src;
 	if (!getRenderRect(src))
 		return;
+		
+	int x = x_, y = y_;
+	if (isEffectActive("teleportation")) {
+		int dx = (int)(_blinking.get() * 50) % 3;
+		int dy = (int)(_blinking.get() * 50 + 7) % 3;
+		if (dx != 1) {
+			x += 5 * (dx - 1);
+			y += 5 * (dy - 1);
+		} else return;
+	}
 
 	int alpha = 0;
 	if (fadeout_time > 0 && ttl > 0 && ttl < fadeout_time) 

@@ -121,7 +121,7 @@ void Teleport::emit(const std::string &event, Object * emitter) {
 		dst->track = emitter->getID();
 		dst->need_sync = true;
 		dst->playSound("teleport", false);
-		emitter->addEffect("teleportation", 0.5f);
+		emitter->addEffect("teleportation", 1);
 	} else Object::emit(event, emitter);
 }
 
