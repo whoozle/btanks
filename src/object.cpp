@@ -589,8 +589,9 @@ void Object::emit(const std::string &event, Object * emitter) {
 		for(Group::iterator i = _group.begin(); i != _group.end(); ++i) {
 			i->second->emit("death", emitter);
 		}
-	} else if (piercing && emitter != NULL && event == "collision") {
-		emitter->addDamage(this);
+	} else if (event == "collision") {
+		if (piercing && emitter != NULL)
+			emitter->addDamage(this);
 	} else 
 		LOG_WARN(("%s[%d]: unhandled event '%s'", registered_name.c_str(), _id, event.c_str()));
 }
