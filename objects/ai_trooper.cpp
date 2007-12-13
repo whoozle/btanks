@@ -105,6 +105,7 @@ void AITrooper::onIdle(const float dt) {
 				new_me->updateVariants(getVariants(), true);
 				new_me->copyOwners(this);
 				new_me->hp = hp;
+				new_me->addEffect("teleportation", 0.5f);
 
 				Object::emit("death", NULL);
 				return;
