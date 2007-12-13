@@ -9,6 +9,7 @@
 using namespace ai;
 
 void Waypoints::serialize(mrt::Serializator &s) const {
+	ai::OldSchool::serialize(s);
 	s.add(_avoid_obstacles);
 	s.add(_stop_on_obstacle);
 	s.add(_reaction_time);
@@ -16,6 +17,7 @@ void Waypoints::serialize(mrt::Serializator &s) const {
 	s.add(_waypoint_name);
 }
 void Waypoints::deserialize(const mrt::Serializator &s) {
+	ai::OldSchool::deserialize(s);
 	s.get(_avoid_obstacles);
 	s.get(_stop_on_obstacle);
 	s.get(_reaction_time);
