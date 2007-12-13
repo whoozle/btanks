@@ -384,9 +384,7 @@ const bool Object::getRenderRect(sdlx::Rect &src) const {
 }
 
 const bool Object::skipRendering() const {
-	if (!isEffectActive("invulnerability"))
-		return false;
-	if (getEffectTimer("invulnerability") == -1) 
+	if (!isEffectActive("invulnerability") || getEffectTimer("invulnerability") == -1)
 		return false;
 	return _blinking.get() >= 0.5;
 }
