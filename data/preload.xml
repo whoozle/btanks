@@ -106,6 +106,7 @@
 	<animation map="arena" id="cyan-launcher" />
 	<animation map="arena" id="cyan-machinegunner-helmet" />
 	<animation map="arena" id="damage-digits" />
+	<animation map="arena" id="dead-buggy" />
 	<animation map="arena" id="dead-chinook" />
 	<animation map="arena" id="dead-cyan-launcher" />
 	<animation map="arena" id="dead-green-launcher" />
