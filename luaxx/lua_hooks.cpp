@@ -1,6 +1,7 @@
 #include "lua_hooks.h"
 #include "special_owners.h"
 #include "mrt/logger.h"
+#include "mrt/random.h"
 #include "object.h"
 #include "world.h"
 #include "resource_manager.h"
@@ -637,6 +638,22 @@ LUA_TRY {
 }
 
 
+static int lua_hooks_random(lua_State *L) {
+LUA_TRY {
+	int n = lua_gettop(L);
+	if (n < 1) {
+		lua_pushstring(L, "random requires upper limit value");
+		lua_error(L);
+		return 0;
+	}
+	n = lua_tointeger(L, 1);
+	lua_pushinteger(L, mrt::random(n));
+	return 1;
+} LUA_CATCH("lua_random")
+	return 0;
+}
+
+
 static int lua_hooks_players_number(lua_State *L) {
 	lua_pushinteger(L, (int)PlayerManager->getSlotsCount());
 	return 1;
@@ -672,6 +689,7 @@ void LuaHooks::load(const std::string &name) {
 	lua_register(state, "add_waypoint", lua_hooks_add_waypoint);
 	lua_register(state, "players_number", lua_hooks_players_number);
 	lua_register(state, "set_config_override", lua_hooks_set_config_override);
+	lua_register(state, "random", lua_hooks_random);
 	
 	state.call(0, LUA_MULTRET);
 	
