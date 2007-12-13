@@ -56,7 +56,7 @@ void ai::Herd::calculateV(v2<float> &velocity, Object *sheep, const int leader, 
 	const Matrix<int> &hint = Map->getAreaMatrix(sheep->registered_name);
 
 	GET_CONFIG_VALUE("objects.ai.hint-gravity", float, hgc, 10.0f);
-	v2<int> size = v2<int>(640, 480) / tile_size / 2;
+	v2<int> size = v2<int>((int)distance, (int)distance * 4 / 3) / tile_size / 2;
 	for(int y = -size.y; y <= size.y; ++y) 
 		for(int x = -size.x; x < size.x; ++x) {
 			if (hint.get(pos.y + y, pos.x + x)) {
