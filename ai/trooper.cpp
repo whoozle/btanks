@@ -42,12 +42,6 @@ StupidTrooper::~StupidTrooper() {}
 
 void StupidTrooper::calculate(Object *object, PlayerState &_state, v2<float> &_velocity, v2<float> &_direction, const float dt) {
 	int dirs = object->getDirectionsNumber();
-	if (_target_dir != -1) {
-		//LOG_DEBUG(("panic: %d", _target_dir));
-		_velocity.fromDirection(_target_dir, dirs);
-		return;
-	}
-
 	if (!_reaction.tick(dt)) {
 		return;
 	}
