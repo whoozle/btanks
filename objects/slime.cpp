@@ -29,6 +29,13 @@ public:
 	}
 	Object *clone() const { return new Slime(*this); }
 
+	void emit(const std::string &event, Object * emitter) {
+		if (event == "death") {
+			spawn("corpse(zombie-death)", "dead-" + animation);
+		}
+		Object::emit(event, emitter);
+	}
+	
 	const int getComfortDistance(const Object *other) const {
 		GET_CONFIG_VALUE("objects.slime.comfort-distance", int, cd, 120);
 		return (other == NULL || other->classname == classname)?cd:-1; //fixme names if you want
