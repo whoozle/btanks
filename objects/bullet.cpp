@@ -178,6 +178,10 @@ void Bullet::emit(const std::string &event, Object * emitter) {
 			GET_CONFIG_VALUE("objects.explosion-downwards-z-override", int, edzo, 180);
 			int z = (_velocity.y >= 0) ? edzo : 0;
 			spawn("explosion", "explosion", dpos, v2<float>(), z);
+		} else if (emitter != NULL && _type == "stun") {
+			float sd;
+			Config->get("objects." + registered_name + ".stun-duration", sd, 3.0f);
+			emitter->addEffect("stunned", sd);
 		} else if (_type == "dirt") {
 			spawn("dirt", "dirt", dpos);
 		} else if (_type == "cannon") {
@@ -241,3 +245,5 @@ REGISTER_OBJECT("dispersion-bullet", Bullet, ("dispersion", 16));
 REGISTER_OBJECT("ricochet-bullet", Bullet, ("ricochet", 16));
 
 REGISTER_OBJECT("cannon-bullet", Bullet, ("cannon", 8));
+
+REGISTER_OBJECT("slime-acid", Bullet, ("stun", 8));
