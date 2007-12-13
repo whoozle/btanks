@@ -27,7 +27,9 @@ Waypoints::Waypoints() : _avoid_obstacles(false), _stop_on_obstacle(true), _reac
 
 void Waypoints::calculate(Object *object, const float dt) {
 	if (_no_waypoints) {
-		object->_velocity.clear();
+		if (_reaction_time.tick(dt))
+			ai::OldSchool::calculateV(object->_velocity, object);
+		object->calculateWayVelocity();
 		return;
 	}
 	

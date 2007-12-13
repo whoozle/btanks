@@ -23,6 +23,7 @@
 //#include <set>
 #include "alarm.h"
 #include "export_btanks.h"
+#include "old_school.h"
 
 class Object;
 namespace mrt {
@@ -31,7 +32,7 @@ namespace mrt {
 
 namespace ai {
 
-class BTANKSAPI Waypoints {
+class BTANKSAPI Waypoints : private ai::OldSchool {
 public: 
 	Waypoints();
 	virtual void onSpawn(const Object *object);
