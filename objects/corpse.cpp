@@ -40,7 +40,7 @@ public:
 	}
 	
 	void emit(const std::string &event, Object * emitter) {
-		if (emitter != NULL && _variants.has("do-damage") && event == "collision") {
+		if (emitter != NULL && _variants.has("do-damage") && event == "collision" && emitter->classname != "corpse") {
 			if (getState() == "burn" || getState() == "fade-out") {
 				emitter->emit("death", this);
 			}
