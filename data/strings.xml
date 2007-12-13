@@ -686,6 +686,9 @@
 		<string id="time-limit-reached" lang="ru">ВРЕМЯ КОНЧИЛОСЬ.</string>
 		<string id="time-limit-reached" lang="fr">LA LIMITE DE TEMPS A ÉTÉ ATTEINTE.</string>
 		<string id="time-limit-reached" lang="de">DIE ZEIT IST UM.</string>
+		
+		<string id="ready">READY</string>
+		<string id="go">GO</string>
 	</area>        
                               
 	<area id="errors">
