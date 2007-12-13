@@ -22,9 +22,11 @@
 #include "ai/trooper.h"
 #include "config.h"
 
-class Slime : public Object, ai::StupidTrooper, ai::Herd {
+class Slime : public Object, private ai::StupidTrooper, private ai::Herd {
 public: 
-	Slime() : Object("monster"), ai::StupidTrooper("bullet", false) {}
+	Slime() : Object("monster"), ai::StupidTrooper("slime-acid", false), _fire(false) {
+		_targets.erase("monster");
+	}
 	Object *clone() const { return new Slime(*this); }
 
 	const int getComfortDistance(const Object *other) const {
@@ -35,13 +37,49 @@ public:
 	void onIdle() {
 		_state.fire = false;
 
-		float tt = getWeaponRange("bullet");
+		float tt = getWeaponRange("slime-acid");
 		ai::Herd::calculateV(_velocity, this, 0, tt);
 	}
+
+	void tick(const float dt);
+	void calculate(const float dt);
 	
 	void onSpawn() {
+		play("hold", true);
 		ai::StupidTrooper::onSpawn();
+		//GET_CONFIG_VALUE("objects.slime.fire-rate", float, fr, 1.0f);
+		float fr = 1.0f;
+		_fire.set(fr);
 	}
+private: 
+	Alarm _fire;
 };
+
+void Slime::calculate(const float dt) {
+	ai::StupidTrooper::calculate(this, _state, _velocity, _direction, dt);
+
+	GET_CONFIG_VALUE("objects.slime.rotation-time", float, rt, 0.2);
+	limitRotation(dt, rt, true, false);	
+}
+
+void Slime::tick(const float dt) {
+	Object::tick(dt);
+
+	const std::string state = getState();
+	
+	if (_velocity.is0() && state == "move") {
+		cancelAll();
+		play("hold", true);
+	} else if (!_velocity.is0() && state == "hold") {
+		cancelAll();
+		play("move", true);
+	}
+	if (_fire.tick(dt) && _state.fire) {
+		_fire.reset();
+		spawn("slime-acid", "slime-acid", v2<float>(), _direction);
+		if (state != "fire") 
+			playNow("fire");
+	}
+}
 
 REGISTER_OBJECT("slime", Slime, ());

@@ -756,6 +756,7 @@
 	
 	<animation id="target" tile="target.png" model="target-animation" size="64" />
 	<animation id="slime" tile="slime.png" model="slime-animation" size="64" />
+	<animation id="slime-acid" tile="slime_bullet.png" model="bullet-animation" size="64" />
 	
 	<!-- OBJECTS -->
 
