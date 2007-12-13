@@ -51,16 +51,16 @@ void ai::Herd::calculateV(v2<float> &velocity, Object *sheep, const int leader, 
 		++n;
 	}
 	const v2<int> tile_size = Map->getPathTileSize();
-	v2<float> pos = sheep->getCenterPosition() / tile_size.convert<float>();
+	v2<int> pos = sheep->getCenterPosition().convert<int>() / tile_size;
 	
 	const Matrix<int> &hint = Map->getAreaMatrix(sheep->registered_name);
-	int w = hint.getWidth(), h = hint.getHeight();
 
 	GET_CONFIG_VALUE("objects.ai.hint-gravity", float, hgc, 10.0f);
-	for(int y = 0; y < h; ++y) 
-		for(int x = 0; x < w; ++x) {
-			if (hint.get(y, x)) {
-				v2<float> dpos = v2<float>(x, y) - pos;
+	v2<int> size = v2<int>(640, 480) / tile_size / 2;
+	for(int y = -size.y; y <= size.y; ++y) 
+		for(int x = -size.x; x < size.x; ++x) {
+			if (hint.get(pos.y + y, pos.x + x)) {
+				v2<float> dpos(x, y);
 				//LOG_DEBUG(("%d:%s %g %g, %g", sheep->getID(), sheep->registered_name.c_str(), dpos.x, dpos.y, dpos.length()));
 				float r = dpos.normalize();
 				velocity += dpos * hgc / r;
