@@ -31,7 +31,7 @@ public:
 
 	const int getComfortDistance(const Object *other) const {
 		GET_CONFIG_VALUE("objects.slime.comfort-distance", int, cd, 120);
-		return (other == NULL || other->registered_name == registered_name)?cd:-1; //fixme names if you want
+		return (other == NULL || other->classname == classname)?cd:-1; //fixme names if you want
 	}
 	
 	void onIdle() {
