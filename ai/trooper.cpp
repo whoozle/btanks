@@ -6,7 +6,7 @@
 
 using namespace ai;
 
-StupidTrooper::StupidTrooper(const std::string &object, const bool aim_missiles) : _reaction(true), _target_dir(-1) {
+StupidTrooper::StupidTrooper(const std::string &object, const bool aim_missiles) : _object(object), _reaction(true), _target_dir(-1) {
 	if (aim_missiles)
 		_targets.insert("missile");
 
