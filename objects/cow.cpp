@@ -43,9 +43,8 @@ public:
 		Object::deserialize(s);
 		s.get(_reaction);
 	}	
-	
-	virtual void onIdle(const float dt);
 
+	virtual void onIdle(const float dt);
 	const int getComfortDistance(const Object *other) const;
 
 private: 
@@ -66,10 +65,8 @@ void Cow::onIdle(const float dt) {
 
 
 void Cow::calculate(const float dt) {
-	if (!_reaction.tick(dt))
-		return;
-	
-	onIdle(dt);
+	if (_reaction.tick(dt) && !isEffectActive("panic"))
+		onIdle(dt);
 
 	GET_CONFIG_VALUE("objects.cow.rotation-time", float, rt, 0.2);
 	limitRotation(dt, rt, true, false);
@@ -105,7 +102,16 @@ void Cow::onSpawn() {
 void Cow::emit(const std::string &event, Object * emitter) {
 	if (event == "death") {
 		spawn("corpse", "dead-cow", v2<float>(), v2<float>());
-	} else if (emitter != NULL && event == "collision") {
+	} else if (emitter != NULL && emitter->piercing && event == "collision") {
+		v2<float> p, v; 
+		emitter->getInfo(p, v);
+		int dirs = getDirectionsNumber();
+		int dir = v.getDirection(dirs);
+		dir = (dirs + dir + dirs / (mrt::random(2)?4:-4)) % dirs;
+		setDirection(dir);
+		_velocity.fromDirection(dir, dirs);
+		_direction = _velocity;
+		addEffect("panic", 3.0f);
 	}
 	Object::emit(event, emitter);
 }
