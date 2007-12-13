@@ -38,7 +38,7 @@ LUA_TRY {
 	for (int i = 1; i <= n; i++) {
 		const char *v = lua_tostring(L, i);
 		str += v?v: "(nil)";
-		str += ' ';
+		str += '\t';
 	}
 	LOG_DEBUG(("[lua] %s", str.c_str()));
 	
