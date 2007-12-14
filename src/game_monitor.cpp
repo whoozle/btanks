@@ -247,7 +247,7 @@ void IGameMonitor::checkItems(const float dt) {
 	}
 }
 
-void IGameMonitor::add(const GameItem &item_) {
+void IGameMonitor::add(const GameItem &item_, const bool dont_respawn) {
 	GameItem item(item_);
 
 #ifdef ENABLE_LUA
@@ -257,7 +257,7 @@ void IGameMonitor::add(const GameItem &item_) {
 
 	_items.push_back(item);
 	
-	if (!item.hidden)
+	if (!dont_respawn && !item.hidden)
 		_items.back().respawn();
 }
 
@@ -734,7 +734,7 @@ void IGameMonitor::loadMap(Campaign *campaign, const std::string &name, const bo
 				item.setup(res[3], res[4]);
 				item.dir = dir;
 				
-				add(item);
+				add(item, true);
 			} else if (type == "waypoint") {
 				if (res.size() < 3)
 					throw_ex(("'%s' misses an argument", i->first.c_str()));
@@ -849,6 +849,11 @@ void IGameMonitor::loadMap(Campaign *campaign, const std::string &name, const bo
 	
 	GET_CONFIG_VALUE("engine.max-time-slice", float, mts, 0.025);
 	World->setTimeSlice(mts);
+	
+	for(Items::iterator i = _items.begin(); i != _items.end(); ++i) {
+		if (!i->hidden)
+			i->respawn();
+	}
 
 #	ifdef ENABLE_LUA
 	TRY {

@@ -73,7 +73,7 @@ public:
 	~IGameMonitor();
 	DECLARE_SINGLETON(IGameMonitor);
 
-	void add(const GameItem &item);	
+	void add(const GameItem &item, bool dont_respawn = false);	
 	GameItem& find(const std::string &property);
 	void eraseLast(const std::string &property);
 	GameItem& find(const Object *o);
