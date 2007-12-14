@@ -104,6 +104,7 @@ void Explosion::emit(const std::string &event, Object * emitter) {
 		if (emitter == NULL || registered_name == "explosion" || 
 			(emitter->registered_name.size() >= 9 && 
 			emitter->registered_name.substr(emitter->registered_name.size() - 9, 9) == "explosion")
+			|| emitter->classname == "poison"
 			)
 			return;
 			
