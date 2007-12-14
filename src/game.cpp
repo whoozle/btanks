@@ -69,6 +69,7 @@
 #include "i18n.h"
 #include <math.h>
 #include "special_owners.h"
+#include "mrt/calendar.h"
 
 IMPLEMENT_SINGLETON(Game, IGame);
 
@@ -247,7 +248,7 @@ void IGame::init(const int argc, char *argv[]) {
 	GET_CONFIG_VALUE("engine.sound.disable-music", bool, no_music, false);
 	
 	std::string address, lang, bind;
-	bool xmas = false;
+	bool xmas = mrt::xmas();
 	
 	for(int i = 1; i < argc; ++i) {
 		if (strncmp(argv[i], "--connect=", 10) == 0) { address = argv[i] + 10; _autojoin = true; }
