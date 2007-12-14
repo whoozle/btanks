@@ -27,7 +27,7 @@ void Profiler::add(const std::string &object, const float dt) {
 	add(object, t, dt);
 }
 
-Profiler::~Profiler() {
+void Profiler::dump() {
 	if (samples.empty())
 		return;
 	
@@ -45,4 +45,8 @@ Profiler::~Profiler() {
 		const data & d = i->second.second;
 		LOG_NOTICE(("%-32s %-8d %-8d %-8d %-8g %-8g", i->second.first.c_str(), d.micros, d.peak, d.objects, d.life_time, d.micros / d.life_time));
 	}
+
+	samples.clear();
 }
+
+Profiler::~Profiler() {}

@@ -78,6 +78,7 @@ void IWorld::clear() {
 	
 	_last_id = 0;
 	_atatat = _safe_mode = false;
+	profiler.dump();
 }
 
 void IWorld::setMode(const std::string &mode, const bool value) {

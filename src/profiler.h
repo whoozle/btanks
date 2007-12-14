@@ -14,6 +14,7 @@ public:
 	void create(const std::string &object);
 	
 	~Profiler();
+	void dump();
 private: 
 	void add(const std::string &object, const int t, const float dt);
 	struct data {
