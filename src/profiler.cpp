@@ -29,7 +29,7 @@ Profiler::~Profiler() {
 	if (samples.empty())
 		return;
 	
-	LOG_NOTICE(("profile results:"));
+	LOG_NOTICE(("[object name]                    mcS      count    lifetime avg.load"));
 	typedef std::multimap<const double, std::pair<std::string, data> , std::greater<double> > Results;
 	Results results;
 	
