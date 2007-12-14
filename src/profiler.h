@@ -20,7 +20,8 @@ private:
 		int micros;
 		int objects;
 		double life_time;
-		data() : micros(0), objects(0), life_time(0) {}
+		int peak;
+		data() : micros(0), objects(0), life_time(0), peak(0) {}
 	};
 	typedef std::map<const std::string, data> Samples;
 	Samples samples;

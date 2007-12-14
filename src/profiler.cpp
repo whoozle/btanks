@@ -8,6 +8,8 @@ void Profiler::add(const std::string &object, const int t, const float dt) {
 	struct data & d = samples[object];
 	if (t > 0)
 		d.micros += t;
+	if (t > d.peak)
+		d.peak = t;
 	if (dt > 0)
 		d.life_time += dt;
 }
@@ -29,7 +31,7 @@ Profiler::~Profiler() {
 	if (samples.empty())
 		return;
 	
-	LOG_NOTICE(("[object name]                    mcS      count    lifetime avg.load"));
+	LOG_NOTICE(("[object name]                    mcS      peak     count    lifetime avg.load"));
 	typedef std::multimap<const double, std::pair<std::string, data> , std::greater<double> > Results;
 	Results results;
 	
@@ -41,6 +43,6 @@ Profiler::~Profiler() {
 	
 	for(Results::const_iterator i = results.begin(); i != results.end(); ++i) {
 		const data & d = i->second.second;
-		LOG_NOTICE(("%-32s %-8d %-8d %-8g %-8g", i->second.first.c_str(), d.micros, d.objects, d.life_time, d.micros / d.life_time));
+		LOG_NOTICE(("%-32s %-8d %-8d %-8d %-8g %-8g", i->second.first.c_str(), d.micros, d.peak, d.objects, d.life_time, d.micros / d.life_time));
 	}
 }
