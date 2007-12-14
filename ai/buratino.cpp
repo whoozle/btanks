@@ -96,6 +96,7 @@ void Buratino::onSpawn(const Object *object) {
 	mrt::randomize(rt, rt/10);
 	_reaction_time.set(rt);
 	Config->get("objects.ai-" + vehicle + ".refresh-path-interval", rpi, 1);
+	mrt::randomize(rpi, rpi/10);
 	_refresh_path.set(rpi);
 	Config->get("objects.ai-" + vehicle + ".pathfinding-slice", _pf_slice, 10);
 }
