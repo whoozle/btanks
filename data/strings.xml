@@ -495,6 +495,9 @@
 	</area>
 	
 	<area id="maps/descriptions">
+		<string id="arena">Battle Tanks Arena: check your Battle Tanks skill. Kill all opponents to win.</string>
+		<string id="arena" lang="ru">Танковая Арена: проверь своё умение убивать. </string>
+		
 		<string id="baykonur">Huge cooperative map with tons of troopers, very defensive military base and big boss inside(tm)</string>
 		<string id="baykonur" lang="ru">Захват укрепрайона близ космодрома Байконур.</string>
 		<string id="baykonur" lang="fr">Énorme carte en mode coopératif avec des tonnes de soldats, une base militaire très bien défendue et un grand balèze dedans.</string>
