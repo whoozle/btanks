@@ -234,6 +234,13 @@ void IGame::init(const int argc, char *argv[]) {
 			if (mp < 0.5f) 
 				Config->set("objects.mutagen-explosion.mutation-probability", 0.5f);
 		}
+		if (revision <= 5646) {
+			Config->remove("objects.car.reaction-time");
+			Config->remove("objects.buggy.reaction-time");
+			Config->remove("objects.civilian.reaction-time");
+			Config->remove("objects.combine.reaction-time");
+			Config->remove("objects.tractor.reaction-time");
+		}
 		
 		Config->set("engine.revision", getRevision());
 	}
