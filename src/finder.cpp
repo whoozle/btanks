@@ -40,11 +40,34 @@ IFinder::IFinder() {
 		throw_ex(("non of the directories listed in engine.path('%s') exist", path.c_str()));
 }
 
+void IFinder::applyPatches(std::vector<std::string>& files, const std::string &file) const {
+	files.clear();	
+	size_t pos = file.rfind('.');
+	size_t spos = file.rfind('/');
+	if (spos != std::string::npos && pos != std::string::npos && pos < spos)
+		pos = std::string::npos;
+	
+	for(size_t i = 0; i < patches.size(); ++i) {
+		if (pos == std::string::npos) {
+			files.push_back(file + patches[i]);
+		} else {
+			std::string f = file;
+			f.insert(pos, patches[i]);
+			files.push_back(f);
+		}
+	}
+	files.push_back(file);
+}
+
 const std::string IFinder::find(const std::string &name, const bool strict) const {
 	for(size_t i = 0; i < _path.size(); ++i) {
-		std::string file = _path[i] + "/" + name;
-		if (mrt::FSNode::exists(file))
-			return file;
+		std::vector<std::string> files;
+		applyPatches(files, _path[i] + "/" + name);
+		for(size_t j = 0; j < files.size(); ++j) {
+			//LOG_DEBUG(("looking for the file: %s", files[j].c_str()));
+			if (mrt::FSNode::exists(files[j]))
+				return files[j];
+		}
 	}
 	if (strict)
 		throw_ex(("file '%s' not found", name.c_str()));
@@ -55,12 +78,22 @@ void IFinder::findAll(FindResult &result, const std::string &name) const {
 	result.clear();
 	
 	for(size_t i = 0; i < _path.size(); ++i) {
-		std::string file = _path[i] + "/" + name;
-		if (mrt::FSNode::exists(file))
-			result.push_back(FindResult::value_type(_path[i], file));
+		std::vector<std::string> files;
+		applyPatches(files, _path[i] + "/" + name);
+		for(size_t j = 0; j < files.size(); ++j) {
+			//LOG_DEBUG(("looking for the file: %s", files[j].c_str()));
+			if (mrt::FSNode::exists(files[j])) {
+				result.push_back(FindResult::value_type(_path[i], files[j]));
+				break;
+			}
+		}
 	}
 }
 
 void IFinder::getPath(std::vector<std::string> &path) const {
 	path = _path;
+}
+
+void IFinder::addPatchSuffix(const std::string &patch) {
+	patches.push_back(patch);
 }

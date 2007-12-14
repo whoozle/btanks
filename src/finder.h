@@ -36,9 +36,13 @@ public:
 	void findAll(FindResult &result, const std::string &name) const;
 
 	void getPath(std::vector<std::string> &path) const;
+	void addPatchSuffix(const std::string &patch);
 
 private: 
+	void applyPatches(std::vector<std::string>& files, const std::string &fname) const;
+
 	std::vector<std::string> _path;
+	std::vector<std::string> patches;
 };
 
 SINGLETON(BTANKSAPI, Finder, IFinder);
