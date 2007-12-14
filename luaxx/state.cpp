@@ -1,7 +1,7 @@
 #include "luaxx/state.h"
 #include "mrt/exception.h"
 #include <stdlib.h>
-//#include <lauxlib.h>
+#include <lauxlib.h>
 #include <assert.h>
 
 using namespace luaxx;
