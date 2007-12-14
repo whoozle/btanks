@@ -288,6 +288,8 @@
 	<animation map="curfew" id="green-shilka-outline" />
 	<animation map="curfew" id="green-tank" />
 	<animation map="curfew" id="green-tank-outline" />
+	<animation map="curfew" id="grenade" />
+	<animation map="curfew" id="grenade-explosion" />
 	<animation map="curfew" id="guided-missile" />
 	<animation map="curfew" id="guided-missiles-item" />
 	<animation map="curfew" id="guided-missiles-on-launcher" />
