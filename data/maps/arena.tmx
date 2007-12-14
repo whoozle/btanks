@@ -4,14 +4,21 @@
 		<property name="config:map.helicopter-with-kamikazes.respawn-interval" value="int:-1"/>
 		<property name="config:map.raider-helicopter.respawn-interval" value="int:-1"/>
 		<property name="config:multiplayer.game-type" value="string:cooperative"/>
+		<property name="config:map.tank.respawn-interval" value="int:-1"/>
+		<property name="config:map.launcher.respawn-interval" value="int:-1"/>
+		<property name="config:map.shilka.respawn-interval" value="int:-1"/>		
 		<property name="object:biotoilet:biotoilet:1" value="1280,1280,10"/>
+		<property name="object:helicopter-with-kamikazes:chinook:special-1" value="2250,-30,2000"/>
+		<property name="object:launcher:cyan-launcher:special-1" value="1361,1349"/>
+		<property name="object:launcher:green-launcher:special-1" value="1222,1215"/>
+		<property name="object:raider-helicopter:helicopter:special-1" value="45,33,2000"/>
+		<property name="object:raider-helicopter:helicopter:special-2" value="2394,2406,2000"/>
 		<property name="object:static-buggy:buggy:1" value="335,589/3"/>
 		<property name="object:static-buggy:buggy:2" value="481,592/5"/>
 		<property name="object:static-buggy:buggy:3" value="565,502/3"/>
 		<property name="object:static-buggy:buggy:4" value="562,398/2"/>
-		<property name="object:helicopter-with-kamikazes:chinook:1" value="2250,-30,2000"/>
-		<property name="object:raider-helicopter:helicopter:1" value="45,33,2000"/>
-		<property name="object:raider-helicopter:helicopter:2" value="2394,2406,2000"/>
+		<property name="object:tank:green-tank:special-2" value="1214,1344"/>
+		<property name="object:tank:yellow-tank:special-1" value="1359,1227"/>
 		<property name="spawn:1" value="318,378"/>
 		<property name="spawn:2" value="2113,378"/>
 		<property name="spawn:3" value="320,2109"/>
@@ -26,6 +33,11 @@
 	<layer name="background" width="40" height="40">
 		<data encoding="base64" compression="gzip">
 			H4sIAAAAAAACA+3FMQ0AAAgDsGkb/j2BDtKjaZPMqW3btm3btm3b9pMXRzwtrgAZAAA=
+		</data>
+	</layer>
+	<layer name="impassable-background" width="40" height="40">
+		<data encoding="base64" compression="gzip">
+			H4sIAAAAAAACA+3OsQ0AAAjDsM78fzBvVOBI2T1Jxi64JT4+Pj4+Pj4+Pj4+Pj4+Pj4+Pr5/Pt97ARPmTsQAGQAA
 		</data>
 	</layer>
 	<layer name="details" width="40" height="40">

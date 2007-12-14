@@ -8,7 +8,9 @@ check_interval = 0.5
 
 function on_load()
 	stages = {
-		{'object:helicopter-with-kamikazes:chinook:1', 'object:raider-helicopter:helicopter:1', 'object:raider-helicopter:helicopter:2'}, 
+		{'object:helicopter-with-kamikazes:chinook:special-1', 'object:raider-helicopter:helicopter:special-1', 'object:raider-helicopter:helicopter:special-2'}, 
+		{'object:tank:green-tank:special-2', 'object:tank:yellow-tank:special-1', }, 
+		{'object:launcher:cyan-launcher:special-1', 'object:launcher:green-launcher:special-1', }
 	};
 	table.foreachi(stages, hide_stage);
 end

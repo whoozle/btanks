@@ -105,24 +105,32 @@
 	<animation map="arena" id="chinook" />
 	<animation map="arena" id="cyan-launcher" />
 	<animation map="arena" id="cyan-machinegunner-helmet" />
+	<animation map="arena" id="cyan-tank" />
 	<animation map="arena" id="damage-digits" />
 	<animation map="arena" id="dead-buggy" />
 	<animation map="arena" id="dead-chinook" />
 	<animation map="arena" id="dead-cyan-launcher" />
+	<animation map="arena" id="dead-cyan-tank" />
 	<animation map="arena" id="dead-green-launcher" />
+	<animation map="arena" id="dead-green-tank" />
 	<animation map="arena" id="dead-helicopter" />
 	<animation map="arena" id="dead-machinegunner" />
+	<animation map="arena" id="dead-red-tank" />
+	<animation map="arena" id="dead-thrower" />
 	<animation map="arena" id="dead-yellow-launcher" />
+	<animation map="arena" id="dead-yellow-tank" />
 	<animation map="arena" id="explosion" />
 	<animation map="arena" id="fire" />
 	<animation map="arena" id="gay-paratrooper" />
 	<animation map="arena" id="green-launcher" />
 	<animation map="arena" id="green-machinegunner-helmet" />
 	<animation map="arena" id="green-shilka" />
+	<animation map="arena" id="green-tank" />
 	<animation map="arena" id="grenade" />
 	<animation map="arena" id="grenade-explosion" />
 	<animation map="arena" id="guided-missile" />
 	<animation map="arena" id="guided-missiles-on-launcher" />
+	<animation map="arena" id="guided-missiles-on-tank" />
 	<animation map="arena" id="helicopter" />
 	<animation map="arena" id="kamikaze" />
 	<animation map="arena" id="kamikaze-explosion" />
@@ -134,11 +142,16 @@
 	<animation map="arena" id="paratrooper" />
 	<animation map="arena" id="red-launcher" />
 	<animation map="arena" id="red-machinegunner-helmet" />
+	<animation map="arena" id="red-tank" />
 	<animation map="arena" id="shilka-bullet-left" />
 	<animation map="arena" id="shilka-bullet-right" />
+	<animation map="arena" id="tank-bullet" />
 	<animation map="arena" id="tank-smoke" />
+	<animation map="arena" id="thrower" />
+	<animation map="arena" id="thrower-missile" />
 	<animation map="arena" id="yellow-launcher" />
 	<animation map="arena" id="yellow-machinegunner-helmet" />
+	<animation map="arena" id="yellow-tank" />
 	<animation map="baykonur" id="boat" />
 	<animation map="baykonur" id="building-explosion" />
 	<animation map="baykonur" id="cannon" />
