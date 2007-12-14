@@ -10,13 +10,19 @@ public:
 	Profiler();
 	
 	void reset();
-	void add(const std::string &object);
+	void add(const std::string &object, const float dt);
 	void create(const std::string &object);
 	
-	void add(const std::string &object, const int time);
 	~Profiler();
 private: 
-	typedef std::map<const std::string, std::pair<int, int> > Samples;
+	void add(const std::string &object, const int t, const float dt);
+	struct data {
+		int micros;
+		int objects;
+		double life_time;
+		data() : micros(0), objects(0), life_time(0) {}
+	};
+	typedef std::map<const std::string, data> Samples;
 	Samples samples;
 	sdlx::Timer timer;
 };

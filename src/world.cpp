@@ -681,7 +681,7 @@ TRY {
 				if (ep) {
 					profiler.reset();
 					o.calculate(dt);
-					profiler.add(o.registered_name);
+					profiler.add(o.registered_name, dt);
 				} else {
 					o.calculate(dt);
 				}
