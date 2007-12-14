@@ -29,6 +29,7 @@ Waypoints::Waypoints() : _avoid_obstacles(false), _stop_on_obstacle(true), _reac
 
 void Waypoints::calculate(Object *object, const float dt) {
 	if (_no_waypoints) {
+		//LOG_DEBUG(("no waypoints stub!"));
 		if (_reaction_time.tick(dt))
 			ai::OldSchool::calculateV(object->_velocity, object);
 		object->calculateWayVelocity();
@@ -113,8 +114,8 @@ void Waypoints::onSpawn(const Object *object) {
 	float rt;
 	Config->get("objects." + object->registered_name + ".reaction-time", rt, 0.1f);
 	
-	_reaction_time.set(rt);
 	mrt::randomize(rt, rt / 10);
+	_reaction_time.set(rt);
 
 	_stop = false;
 	_no_waypoints = !GameMonitor->hasWaypoints(object->registered_name);
