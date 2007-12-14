@@ -27,16 +27,20 @@
 		*) Helicopter could fall and kill someone
 		*) Troopers can panic and try to escape bullets and missiles.
 		*) Teleporting your troopers closer to vehicle.
+		*) Stupid ai's like cows and zombies now better sticks to hints' areas. Cow can panic if hit. 
 	*) New items and objects: 
 		*) "Chinook" helicopter.
 		*) Raider helicopter with bombs and paratroopers.
 		*) Buggy vehicle + automatic turrel. Find it on the lenin's square map. This vehicle can kill helis
 		*) Ballistic missile (now for submarine only)
+		*) Acid slime which helps zombies and other monsters.
 	*) Network multiplayer fixes: 
 		*) Do not trust TCP updates for players, use only UDP updates.
 		*) Skip tcp updates for player in slots. 
 		*) Allowed using of the pathfinding API. (better synchronization for cars and other PF clients)
 		*) Implemented congruent 32-bit random generator. Added its synchronization in the network game. 
+	*) Added preload feature to minimize memory usage and decrease loading time.
+	*) Added visual effect for teleportation.
 	*) Implemented simple 32-bit congruent random generator to allow random synchronization.
 	*) 'Random respawn' mode.
 	*) AI could enter vehicles now.
