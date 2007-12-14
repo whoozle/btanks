@@ -844,7 +844,7 @@ void IGameMonitor::loadMap(Campaign *campaign, const std::string &name, const bo
 		if (b == _waypoint_edges.end() || b->first != dst)
 			throw_ex(("no edges out of waypoint '%s'", dst.c_str()));
 	}
-	LOG_DEBUG(("%u items on map, %u waypoints, %u edges", (unsigned)getItemsCount(), (unsigned)_waypoints.size(), (unsigned)_waypoint_edges.size()));
+	LOG_DEBUG(("%u items on map, %u waypoint classes, %u edges", (unsigned)getItemsCount(), (unsigned)_waypoints.size(), (unsigned)_waypoint_edges.size()));
 	Config->invalidateCachedValues();
 	
 	GET_CONFIG_VALUE("engine.max-time-slice", float, mts, 0.025);
