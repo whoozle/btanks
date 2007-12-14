@@ -48,6 +48,12 @@ const off_t File::getSize() const {
 	return s.st_size;
 }
 
+void File::readAll(std::string &str) const {
+	mrt::Chunk data;
+	readAll(data);
+	str.assign((const char *)data.getPtr(), data.getSize());
+}
+
 void File::readAll(Chunk &ch) const {
 	ch.free();
 	

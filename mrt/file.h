@@ -37,6 +37,7 @@ public:
 	long tell() const;
 	void write(const Chunk &ch) const;
 
+	void readAll(std::string &str) const;
 	void readAll(Chunk &ch) const;
 	void writeAll(const Chunk &ch) const;
 	void writeAll(const std::string &str) const;
