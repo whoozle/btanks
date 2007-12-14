@@ -580,6 +580,8 @@ void IWorld::getImpassabilityMatrix(Matrix<int> &matrix, const Object *src, cons
 	//LOG_DEBUG(("projected objects:\n%s", matrix.dump().c_str()));
 }
 
+#include "profiler.h"
+
 void IWorld::_tick(Object &o, const float dt, const bool do_calculate) {
 	if (o.isDead()) 
 		return;
@@ -665,11 +667,19 @@ TRY {
 				
 	} else if (do_calculate) {
 		//regular calculate
+		GET_CONFIG_VALUE("engine.enable-profiler", bool, profiler, false);
 		TRY { 
 			if (o.disable_ai) {
 				o.Object::calculate(dt);
 			} else {
-				o.calculate(dt);
+				if (profiler) {
+					static Profiler profiler;
+					profiler.reset();
+					o.calculate(dt);
+					profiler.add(o.registered_name);
+				} else {
+					o.calculate(dt);
+				}
 			}
 		} CATCH("calling o.calculate", throw;)
 	}
