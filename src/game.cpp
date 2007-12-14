@@ -256,6 +256,7 @@ void IGame::init(const int argc, char *argv[]) {
 		else if (strncmp(argv[i], "--lang=", 7) == 0) { lang = argv[i] + 7; }
 		else if (strcmp(argv[i], "--no-sound") == 0) { no_sound = true; no_music = true; }
 		else if (strcmp(argv[i], "--xmas") == 0) { xmas = true; }
+		else if (strcmp(argv[i], "--no-xmas") == 0) { xmas = false; }
 		else if (strcmp(argv[i], "--sound") == 0) { no_sound = false; no_music = false; }
 		else if (strcmp(argv[i], "--help") == 0) { 
 			printf(
