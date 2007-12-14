@@ -113,6 +113,10 @@ void Waypoints::calculate(Object *object, const float dt) {
 void Waypoints::onSpawn(const Object *object) {
 	float rt;
 	Config->get("objects." + object->registered_name + ".reaction-time", rt, 0.3f);
+	if (rt <= 0.3f) {
+		rt = 0.3f;
+		Config->set("objects." + object->registered_name + ".reaction-time", rt);
+	}
 	
 	mrt::randomize(rt, rt / 10);
 	_reaction_time.set(rt);
