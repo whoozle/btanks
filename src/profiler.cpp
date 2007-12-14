@@ -37,7 +37,7 @@ void Profiler::dump() {
 	
 	for(Samples::const_iterator i = samples.begin(); i != samples.end(); ++i) {
 		const data & d = i->second;
-		double avg = d.micros / d.life_time;
+		double avg = (d.life_time > 0)? d.micros / d.life_time: 0;
 		results.insert(Results::value_type(avg, std::pair<std::string, data>(i->first, d)));
 	}
 	
