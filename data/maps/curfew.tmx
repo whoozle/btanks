@@ -43,7 +43,7 @@
 		<property name="object:bus-stop:bus-stop-right:4" value="704,1638"/>
 		<property name="object:car:cyan-car:1" value="2304,384/6"/>
 		<property name="object:car:cyan-car:2" value="1792,896/4"/>
-		<property name="object:car:cyan-car:3" value="1344,192/6"/>
+		<property name="object:car:cyan-car:3" value="1171,127/7"/>
 		<property name="object:car:orange-bus:2" value="1340,1713"/>
 		<property name="object:car:orange-bus:3" value="2351,1743"/>
 		<property name="object:car:red-car:6" value="578,52/6"/>
@@ -190,8 +190,8 @@
 		<property name="waypoint:car:18" value="@37,15"/>
 		<property name="waypoint:car:2" value="@36,14"/>
 		<property name="waypoint:car:3" value="@21,14"/>
-		<property name="waypoint:car:4" value="@21,2"/>
-		<property name="waypoint:car:5" value="@19,2"/>
+		<property name="waypoint:car:4" value="@21,3"/>
+		<property name="waypoint:car:5" value="@19,3"/>
 		<property name="waypoint:car:6" value="@19,14"/>
 		<property name="waypoint:car:7" value="@10,14"/>
 		<property name="waypoint:car:8" value="@10,1"/>
