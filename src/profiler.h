@@ -11,11 +11,12 @@ public:
 	
 	void reset();
 	void add(const std::string &object);
+	void create(const std::string &object);
 	
 	void add(const std::string &object, const int time);
 	~Profiler();
 private: 
-	typedef std::map<const std::string, int> Samples;
+	typedef std::map<const std::string, std::pair<int, int> > Samples;
 	Samples samples;
 	sdlx::Timer timer;
 };

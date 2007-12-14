@@ -46,8 +46,11 @@
 #include <limits>
 #include "special_owners.h"
 #include "math/binary.h"
+#include "profiler.h"
 
 IMPLEMENT_SINGLETON(World, IWorld);
+
+static Profiler profiler;
 
 void IWorld::setTimeSlice(const float ts) {
 	if (ts <= 0)
@@ -147,6 +150,11 @@ void IWorld::addObject(Object *o, const v2<float> &pos, const int id) {
 	o->need_sync = true;
 
 	updateObject(o);
+
+	GET_CONFIG_VALUE("engine.enable-profiler", bool, ep, false);
+	if (ep) {
+		profiler.create(o->registered_name);
+	}
 	//LOG_DEBUG(("object %d added, objects: %d", o->_id, _objects.size()));
 }
 
@@ -580,8 +588,6 @@ void IWorld::getImpassabilityMatrix(Matrix<int> &matrix, const Object *src, cons
 	//LOG_DEBUG(("projected objects:\n%s", matrix.dump().c_str()));
 }
 
-#include "profiler.h"
-
 void IWorld::_tick(Object &o, const float dt, const bool do_calculate) {
 	if (o.isDead()) 
 		return;
@@ -667,13 +673,12 @@ TRY {
 				
 	} else if (do_calculate) {
 		//regular calculate
-		GET_CONFIG_VALUE("engine.enable-profiler", bool, profiler, false);
+		GET_CONFIG_VALUE("engine.enable-profiler", bool, ep, false);
 		TRY { 
 			if (o.disable_ai) {
 				o.Object::calculate(dt);
 			} else {
-				if (profiler) {
-					static Profiler profiler;
+				if (ep) {
 					profiler.reset();
 					o.calculate(dt);
 					profiler.add(o.registered_name);
