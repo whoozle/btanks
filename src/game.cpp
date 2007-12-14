@@ -247,12 +247,14 @@ void IGame::init(const int argc, char *argv[]) {
 	GET_CONFIG_VALUE("engine.sound.disable-music", bool, no_music, false);
 	
 	std::string address, lang, bind;
+	bool xmas = false;
 	
 	for(int i = 1; i < argc; ++i) {
 		if (strncmp(argv[i], "--connect=", 10) == 0) { address = argv[i] + 10; _autojoin = true; }
 		else if (strncmp(argv[i], "--bind=", 7) == 0) { bind = argv[i] + 7; }
 		else if (strncmp(argv[i], "--lang=", 7) == 0) { lang = argv[i] + 7; }
 		else if (strcmp(argv[i], "--no-sound") == 0) { no_sound = true; no_music = true; }
+		else if (strcmp(argv[i], "--xmas") == 0) { xmas = true; }
 		else if (strcmp(argv[i], "--sound") == 0) { no_sound = false; no_music = false; }
 		else if (strcmp(argv[i], "--help") == 0) { 
 			printf(
@@ -280,6 +282,10 @@ void IGame::init(const int argc, char *argv[]) {
 	}
 	
 	IFinder::FindResult strings_files;
+	
+	if (xmas)
+		Finder->addPatchSuffix("_xmas");
+	
 	Finder->findAll(strings_files, "strings.xml");
 	for(size_t i = 0; i < strings_files.size(); ++i) 
 		I18n->load(strings_files[i].second, lang);
