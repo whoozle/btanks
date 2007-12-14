@@ -23,6 +23,6 @@ Profiler::~Profiler() {
 	
 	LOG_NOTICE(("profile results:"));
 	for(Samples::const_iterator i = samples.begin(); i != samples.end(); ++i) {
-		LOG_NOTICE(("\t%-20s\t%d", i->first.c_str(), i->second));
+		LOG_NOTICE(("%-32s\t%d", i->first.c_str(), i->second));
 	}
 }
