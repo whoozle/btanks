@@ -813,6 +813,7 @@
 	<animation map="platform" id="missile-fire" />
 	<animation map="platform" id="nuke-missiles-item" />
 	<animation map="platform" id="oil-barrels" />
+	<animation map="platform" id="red-launcher" />
 	<animation map="platform" id="red-tank" />
 	<animation map="platform" id="ricochet-bullets-item" />
 	<animation map="platform" id="road-sign09" />
@@ -821,6 +822,7 @@
 	<animation map="platform" id="smoke-missiles-item" />
 	<animation map="platform" id="spaceport-baykonur" />
 	<animation map="platform" id="stack" />
+	<animation map="platform" id="tank-bullet" />
 	<animation map="platform" id="tank-smoke" />
 	<animation map="platform" id="teleport" />
 	<animation map="platform" id="thrower" />

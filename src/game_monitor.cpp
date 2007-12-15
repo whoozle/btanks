@@ -325,6 +325,8 @@ void IGameMonitor::clear() {
 }
 
 void IGameMonitor::tick(const float dt) {	
+	const bool client = PlayerManager->isClient();
+
 #ifdef ENABLE_LUA
 	if (lua_hooks != NULL) {
 	TRY {
@@ -337,8 +339,6 @@ void IGameMonitor::tick(const float dt) {
 	});
 	}
 #endif
-
-	const bool client = PlayerManager->isClient();
 
 	if (!_timer_message.empty() && _timer > 0) {
 		_timer -= dt;
@@ -651,7 +651,6 @@ void IGameMonitor::loadMap(Campaign *campaign, const std::string &name, const bo
 #	ifdef ENABLE_LUA	
 		TRY {
 			if (lua_hooks) {
-				lua_hooks->clear();
 				lua_hooks->load(script);
 			}
 		} CATCH("loadMap::load", {
