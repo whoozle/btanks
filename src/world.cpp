@@ -144,7 +144,7 @@ void IWorld::addObject(Object *o, const v2<float> &pos, const int id) {
 		o->removeOwner(OWNER_MAP);
 		o->prependOwner(OWNER_COOPERATIVE);
 	}
-
+	assert(o->_group.empty());
 	o->onSpawn();
 //	if (o->getState().empty())
 //		throw_ex(("object %s:%s was not set up default pose. fixme.", o->registered_name.c_str(), o->animation.c_str()));
