@@ -24,6 +24,8 @@ public:
 
 	virtual void serialize(mrt::Serializator &s) const;
 	virtual void deserialize(const mrt::Serializator &s);
+	
+	static const std::string strip(const std::string &name);
 
 private:
 	std::set<std::string> vars;
