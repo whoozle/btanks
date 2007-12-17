@@ -198,6 +198,7 @@
 		<object id="guided-missile"/>
 		<object id="guided-missiles-item"/>
 		<object id="heal"/>
+		<object id="helmet"/>
 		<object id="impassable-static-corpse"/>
 		<object id="launcher"/>
 		<object id="machinegunner"/>
@@ -631,6 +632,7 @@
 		<animation id="helicopter"/>
 	</object>
 	<object id="helmet">
+		<animation id="cyan-machinegunner-helmet"/>
 		<animation id="green-machinegunner-helmet"/>
 		<animation id="red-machinegunner-helmet"/>
 	</object>
