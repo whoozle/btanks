@@ -1,79 +1,15 @@
 <preload>
-	<map id="alt-missiles-on-launcher">
-		<object id="guided-missiles-on-launcher"/>
-	</map>
-	<map id="bus-stop">
-		<object id="bus-stop-left"/>
-		<object id="bus-stop-right"/>
-		<object id="bus-stop-top"/>
-	</map>
-	<map id="car">
-		<object id="white-car"/>
-		<object id="yellow-car"/>
-	</map>
-	<map id="corpse">
-		<object id="dead-cyan-car"/>
-		<object id="dead-cyan-launcher"/>
-		<object id="dead-cyan-tank"/>
-		<object id="dead-green-tank"/>
-		<object id="dead-machinegunner"/>
-		<object id="dead-red-shilka"/>
-		<object id="dead-red-tank"/>
-		<object id="dead-white-car"/>
-		<object id="dead-yellow-car"/>
-		<object id="dead-yellow-shilka"/>
-	</map>
-	<map id="damage-digits">
-		<object id="damage-digits"/>
-	</map>
-	<map id="dispersion-bullets-item">
-		<object id="dispersion-bullets-item"/>
-	</map>
-	<map id="dumb-missiles-item">
-		<object id="dumb-missiles-item"/>
-	</map>
-	<map id="explosion">
-		<object id="explosion"/>
-		<object id="missile-explosion"/>
-	</map>
-	<map id="fake-mod">
-		<object id="damage-digits"/>
-	</map>
-	<map id="fire">
-		<object id="fire"/>
-	</map>
-	<map id="gate">
-		<object id="gate"/>
-	</map>
-	<map id="guided-missile">
-		<object id="guided-missile"/>
-	</map>
-	<map id="guided-missiles-item">
-		<object id="guided-missiles-item"/>
-	</map>
-	<map id="heal">
-		<object id="heal"/>
-	</map>
-	<map id="helicopter-with-kamikazes">
-		<object id="chinook"/>
-	</map>
-	<map id="helmet">
-		<object id="cyan-machinegunner-helmet"/>
-		<object id="yellow-machinegunner-helmet"/>
-	</map>
-	<map id="kamikaze">
-		<object id="kamikaze"/>
-	</map>
-	<map id="kamikaze-explosion">
-		<object id="kamikaze-explosion"/>
-	</map>
-	<map id="lenin_square">
+	<map id="curfew">
 		<object id="alt-missiles-on-launcher"/>
-		<object id="buggy-bullet"/>
+		<object id="armed-mine"/>
+		<object id="ballistic-missile"/>
+		<object id="ballistic-missile-target"/>
+		<object id="biotoilet"/>
 		<object id="bus-stop"/>
 		<object id="car"/>
 		<object id="corpse"/>
 		<object id="damage-digits"/>
+		<object id="dispersion-bullet"/>
 		<object id="dispersion-bullets-item"/>
 		<object id="dumb-missile"/>
 		<object id="dumb-missiles-item"/>
@@ -81,18 +17,13 @@
 		<object id="fake-mod"/>
 		<object id="fire"/>
 		<object id="gate"/>
-		<object id="grenade"/>
-		<object id="grenade-explosion"/>
 		<object id="guided-missile"/>
 		<object id="guided-missiles-item"/>
 		<object id="heal"/>
-		<object id="helicopter-with-kamikazes"/>
 		<object id="helmet"/>
-		<object id="kamikaze"/>
-		<object id="kamikaze-explosion"/>
-		<object id="lodge"/>
+		<object id="impassable-static-corpse"/>
+		<object id="launcher"/>
 		<object id="machinegunner"/>
-		<object id="machinegunner-bullet"/>
 		<object id="machinegunner-item"/>
 		<object id="machinegunner-player"/>
 		<object id="megaheal"/>
@@ -100,193 +31,78 @@
 		<object id="missiles-on-launcher"/>
 		<object id="missiles-on-tank"/>
 		<object id="nuke-explosion"/>
-		<object id="nuke-missile"/>
+		<object id="nuke-mine"/>
 		<object id="nuke-missiles-item"/>
+		<object id="oil-barrels"/>
 		<object id="outline"/>
-		<object id="paratrooper-kamikaze"/>
+		<object id="pond"/>
 		<object id="regular-mine"/>
-		<object id="ricochet-bullet"/>
 		<object id="ricochet-bullets-item"/>
 		<object id="road-sign"/>
 		<object id="shilka"/>
 		<object id="shilka-bullet"/>
 		<object id="single-pose"/>
+		<object id="smoke-cloud"/>
+		<object id="smoke-missile"/>
+		<object id="smoke-missiles-item"/>
 		<object id="stall"/>
-		<object id="static-buggy"/>
-		<object id="static-car"/>
+		<object id="static-corpse"/>
 		<object id="static-launcher"/>
 		<object id="static-mortar"/>
 		<object id="static-shilka"/>
 		<object id="static-tank"/>
-		<object id="stun-missile"/>
 		<object id="stun-missiles-item"/>
+		<object id="submarine"/>
 		<object id="tank"/>
-		<object id="tank-bullet"/>
 		<object id="tent"/>
 		<object id="thrower-item"/>
 		<object id="thrower-missile"/>
 		<object id="thrower-on-launcher"/>
 		<object id="traffic-lights"/>
-		<object id="turrel"/>
 		<object id="umbrella"/>
-		<object id="van"/>
-	</map>
-	<map id="lodge">
-		<object id="lodge"/>
-	</map>
-	<map id="machinegunner">
-		<object id="machinegunner"/>
-	</map>
-	<map id="machinegunner-bullet">
-		<object id="machinegunner-bullet"/>
-	</map>
-	<map id="machinegunner-item">
-		<object id="machinegunner-item"/>
-	</map>
-	<map id="machinegunner-player">
-		<object id="machinegunner"/>
-	</map>
-	<map id="megaheal">
-		<object id="megaheal"/>
-	</map>
-	<map id="mines-item">
-		<object id="mines-item"/>
-	</map>
-	<map id="missiles-on-launcher">
-		<object id="guided-missiles-on-launcher"/>
-	</map>
-	<map id="missiles-on-tank">
-		<object id="guided-missiles-on-tank"/>
-	</map>
-	<map id="nuke-missiles-item">
-		<object id="nuke-missiles-item"/>
-	</map>
-	<map id="outline">
-		<object id="cyan-shilka-outline"/>
-		<object id="cyan-tank-outline"/>
-		<object id="green-tank-outline"/>
-		<object id="machinegunner-outline"/>
-		<object id="red-tank-outline"/>
-		<object id="yellow-launcher-outline"/>
-		<object id="yellow-shilka-outline"/>
-	</map>
-	<map id="paratrooper-kamikaze">
-		<object id="gay-paratrooper"/>
-		<object id="paratrooper"/>
-	</map>
-	<map id="regular-mine">
-		<object id="regular-mine"/>
-	</map>
-	<map id="ricochet-bullet">
-		<object id="ricochet-bullet"/>
-	</map>
-	<map id="ricochet-bullets-item">
-		<object id="ricochet-bullets-item"/>
-	</map>
-	<map id="road-sign">
-		<object id="road-sign01"/>
-		<object id="road-sign02"/>
-		<object id="road-sign04"/>
-		<object id="road-sign08"/>
-		<object id="road-sign09"/>
-	</map>
-	<map id="shilka">
-		<object id="cyan-shilka"/>
-		<object id="yellow-shilka"/>
-	</map>
-	<map id="shilka-bullet">
-		<object id="shilka-bullet-left"/>
-		<object id="shilka-bullet-right"/>
-	</map>
-	<map id="single-pose">
-		<object id="launcher-smoke"/>
-		<object id="missile-fire"/>
-		<object id="tank-smoke"/>
-	</map>
-	<map id="stall">
-		<object id="stall-left"/>
-		<object id="stall-right"/>
-	</map>
-	<map id="static-buggy">
-		<object id="buggy"/>
-	</map>
-	<map id="static-car">
-		<object id="cyan-car"/>
-	</map>
-	<map id="static-launcher">
-		<object id="cyan-launcher"/>
-		<object id="yellow-launcher"/>
-	</map>
-	<map id="static-mortar">
-		<object id="yellow-mortar"/>
-	</map>
-	<map id="static-shilka">
-		<object id="red-shilka"/>
-	</map>
-	<map id="static-tank">
-		<object id="cyan-tank"/>
-	</map>
-	<map id="stun-missiles-item">
-		<object id="stun-missiles-item"/>
-	</map>
-	<map id="tank">
-		<object id="cyan-tank"/>
-		<object id="green-tank"/>
-		<object id="red-tank"/>
-	</map>
-	<map id="tank-bullet">
-		<object id="tank-bullet"/>
-	</map>
-	<map id="tent">
-		<object id="tent-top"/>
-	</map>
-	<map id="thrower-item">
-		<object id="thrower-item"/>
-	</map>
-	<map id="traffic-lights">
-		<object id="traffic-lights"/>
-	</map>
-	<map id="turrel">
-		<object id="buggy-gun"/>
-	</map>
-	<map id="umbrella">
-		<object id="umbrella"/>
-	</map>
-	<map id="van">
-		<object id="van"/>
 	</map>
 	<object id="alt-missiles-on-launcher">
 		<animation id="guided-missiles-on-launcher"/>
 	</object>
-	<object id="buggy-bullet">
-		<animation id="buggy-air-bullet-left"/>
-		<animation id="buggy-air-bullet-right"/>
-		<animation id="buggy-bullet-left"/>
-		<animation id="buggy-bullet-right"/>
+	<object id="armed-mine">
+		<animation id="regular-mine"/>
+	</object>
+	<object id="ballistic-missile">
+		<animation id="nuke-missile"/>
+	</object>
+	<object id="ballistic-missile-target">
+		<animation id="target"/>
+	</object>
+	<object id="biotoilet">
+		<animation id="biotoilet"/>
 	</object>
 	<object id="bus-stop">
 		<animation id="bus-stop-left"/>
 		<animation id="bus-stop-right"/>
-		<animation id="bus-stop-top"/>
 	</object>
 	<object id="car">
+		<animation id="cyan-car"/>
+		<animation id="orange-bus"/>
+		<animation id="red-car"/>
 		<animation id="white-car"/>
 		<animation id="yellow-car"/>
 	</object>
 	<object id="corpse">
-		<animation id="dead-buggy"/>
-		<animation id="dead-cyan-car"/>
 		<animation id="dead-cyan-launcher"/>
-		<animation id="dead-cyan-tank"/>
-		<animation id="dead-green-shilka"/>
+		<animation id="dead-cyan-shilka"/>
+		<animation id="dead-green-launcher"/>
+		<animation id="dead-green-tank"/>
 		<animation id="dead-machinegunner"/>
+		<animation id="dead-orange-bus"/>
 		<animation id="dead-red-shilka"/>
-		<animation id="dead-white-car"/>
-		<animation id="dead-yellow-car"/>
-		<animation id="dead-yellow-tank"/>
+		<animation id="dead-yellow-launcher"/>
+		<animation id="dead-yellow-shilka"/>
 	</object>
 	<object id="damage-digits">
 		<animation id="damage-digits"/>
+	</object>
+	<object id="dispersion-bullet">
+		<animation id="dispersion-bullet"/>
 	</object>
 	<object id="dispersion-bullets-item">
 		<animation id="dispersion-bullets-item"/>
@@ -311,12 +127,6 @@
 	<object id="gate">
 		<animation id="gate"/>
 	</object>
-	<object id="grenade">
-		<animation id="grenade"/>
-	</object>
-	<object id="grenade-explosion">
-		<animation id="grenade-explosion"/>
-	</object>
 	<object id="guided-missile">
 		<animation id="guided-missile"/>
 	</object>
@@ -326,27 +136,28 @@
 	<object id="heal">
 		<animation id="heal"/>
 	</object>
-	<object id="helicopter-with-kamikazes">
-		<animation id="chinook"/>
-	</object>
 	<object id="helmet">
-		<animation id="cyan-machinegunner-helmet"/>
 		<animation id="green-machinegunner-helmet"/>
 	</object>
-	<object id="kamikaze">
-		<animation id="kamikaze"/>
+	<object id="impassable-static-corpse">
+		<animation id="dead-cyan-car"/>
+		<animation id="dead-cyan-shilka"/>
+		<animation id="dead-orange-bus"/>
+		<animation id="dead-red-car"/>
+		<animation id="dead-red-shilka"/>
+		<animation id="dead-white-car"/>
+		<animation id="dead-yellow-car"/>
+		<animation id="dead-yellow-launcher"/>
+		<animation id="dead-yellow-tank"/>
 	</object>
-	<object id="kamikaze-explosion">
-		<animation id="kamikaze-explosion"/>
-	</object>
-	<object id="lodge">
-		<animation id="lodge"/>
+	<object id="launcher">
+		<animation id="cyan-launcher"/>
+		<animation id="green-launcher"/>
+		<animation id="red-launcher"/>
+		<animation id="yellow-launcher"/>
 	</object>
 	<object id="machinegunner">
 		<animation id="machinegunner"/>
-	</object>
-	<object id="machinegunner-bullet">
-		<animation id="machinegunner-bullet"/>
 	</object>
 	<object id="machinegunner-item">
 		<animation id="machinegunner-item"/>
@@ -369,41 +180,45 @@
 	<object id="nuke-explosion">
 		<animation id="nuke-explosion"/>
 	</object>
-	<object id="nuke-missile">
-		<animation id="nuke-missile"/>
+	<object id="nuke-mine">
+		<animation id="nuke-mine"/>
 	</object>
 	<object id="nuke-missiles-item">
 		<animation id="nuke-missiles-item"/>
 	</object>
+	<object id="oil-barrels">
+		<animation id="oil-barrels"/>
+	</object>
 	<object id="outline">
 		<animation id="cyan-launcher-outline"/>
-		<animation id="cyan-tank-outline"/>
-		<animation id="green-shilka-outline"/>
+		<animation id="cyan-shilka-outline"/>
+		<animation id="green-launcher-outline"/>
 		<animation id="machinegunner-outline"/>
-		<animation id="yellow-tank-outline"/>
+		<animation id="red-launcher-outline"/>
+		<animation id="red-shilka-outline"/>
+		<animation id="red-tank-outline"/>
+		<animation id="yellow-launcher-outline"/>
+		<animation id="yellow-shilka-outline"/>
 	</object>
-	<object id="paratrooper-kamikaze">
-		<animation id="gay-paratrooper"/>
-		<animation id="paratrooper"/>
+	<object id="pond">
+		<animation id="pond"/>
 	</object>
 	<object id="regular-mine">
 		<animation id="regular-mine"/>
-	</object>
-	<object id="ricochet-bullet">
-		<animation id="ricochet-bullet"/>
 	</object>
 	<object id="ricochet-bullets-item">
 		<animation id="ricochet-bullets-item"/>
 	</object>
 	<object id="road-sign">
-		<animation id="road-sign01"/>
-		<animation id="road-sign02"/>
+		<animation id="road-sign03"/>
 		<animation id="road-sign04"/>
-		<animation id="road-sign08"/>
-		<animation id="road-sign09"/>
+		<animation id="road-sign05"/>
+		<animation id="road-sign10"/>
 	</object>
 	<object id="shilka">
-		<animation id="green-shilka"/>
+		<animation id="cyan-shilka"/>
+		<animation id="red-shilka"/>
+		<animation id="yellow-shilka"/>
 	</object>
 	<object id="shilka-bullet">
 		<animation id="shilka-bullet-left"/>
@@ -414,15 +229,22 @@
 		<animation id="missile-fire"/>
 		<animation id="tank-smoke"/>
 	</object>
+	<object id="smoke-cloud">
+		<animation id="smoke-cloud"/>
+	</object>
+	<object id="smoke-missile">
+		<animation id="smoke-missile"/>
+	</object>
+	<object id="smoke-missiles-item">
+		<animation id="smoke-missiles-item"/>
+	</object>
 	<object id="stall">
-		<animation id="stall-left"/>
 		<animation id="stall-right"/>
 	</object>
-	<object id="static-buggy">
-		<animation id="buggy"/>
-	</object>
-	<object id="static-car">
-		<animation id="cyan-car"/>
+	<object id="static-corpse">
+		<animation id="dead-civilian-1"/>
+		<animation id="dead-civilian-static-1"/>
+		<animation id="dead-thrower-static"/>
 	</object>
 	<object id="static-launcher">
 		<animation id="cyan-launcher"/>
@@ -433,25 +255,24 @@
 	</object>
 	<object id="static-shilka">
 		<animation id="red-shilka"/>
+		<animation id="yellow-shilka"/>
 	</object>
 	<object id="static-tank">
-		<animation id="cyan-tank"/>
-	</object>
-	<object id="stun-missile">
-		<animation id="stun-missile"/>
+		<animation id="green-tank"/>
+		<animation id="yellow-tank"/>
 	</object>
 	<object id="stun-missiles-item">
 		<animation id="stun-missiles-item"/>
 	</object>
-	<object id="tank">
-		<animation id="cyan-tank"/>
-		<animation id="yellow-tank"/>
+	<object id="submarine">
+		<animation id="submarine"/>
 	</object>
-	<object id="tank-bullet">
-		<animation id="tank-bullet"/>
+	<object id="tank">
+		<animation id="green-tank"/>
+		<animation id="red-tank"/>
 	</object>
 	<object id="tent">
-		<animation id="tent-top"/>
+		<animation id="tent-left"/>
 	</object>
 	<object id="thrower-item">
 		<animation id="thrower-item"/>
@@ -465,13 +286,7 @@
 	<object id="traffic-lights">
 		<animation id="traffic-lights"/>
 	</object>
-	<object id="turrel">
-		<animation id="buggy-gun"/>
-	</object>
 	<object id="umbrella">
 		<animation id="umbrella"/>
-	</object>
-	<object id="van">
-		<animation id="van"/>
 	</object>
 </preload>
