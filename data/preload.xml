@@ -372,11 +372,13 @@
 	<animation map="curfew" id="yellow-tank-outline" />
 	<animation map="curfew" id="yellow-thrower-helmet" />
 	<animation map="dune" id="building-explosion" />
+	<animation map="dune" id="cannon-explosion" />
 	<animation map="dune" id="cyan-launcher" />
 	<animation map="dune" id="cyan-machinegunner-helmet" />
 	<animation map="dune" id="cyan-shilka" />
 	<animation map="dune" id="cyan-shilka-outline" />
 	<animation map="dune" id="cyan-tank" />
+	<animation map="dune" id="cyan-tank-outline" />
 	<animation map="dune" id="damage-digits" />
 	<animation map="dune" id="dead-civilian-static-2" />
 	<animation map="dune" id="dead-civilian-static-3" />
@@ -392,6 +394,7 @@
 	<animation map="dune" id="dead-zombie" />
 	<animation map="dune" id="dispersion-bullet" />
 	<animation map="dune" id="dispersion-bullets-item" />
+	<animation map="dune" id="dumb-missile" />
 	<animation map="dune" id="dumb-missiles-item" />
 	<animation map="dune" id="explosion" />
 	<animation map="dune" id="fire" />
