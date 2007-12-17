@@ -24,6 +24,7 @@
 		<object id="impassable-static-corpse"/>
 		<object id="launcher"/>
 		<object id="machinegunner"/>
+		<object id="machinegunner-bullet"/>
 		<object id="machinegunner-item"/>
 		<object id="machinegunner-player"/>
 		<object id="megaheal"/>
@@ -54,6 +55,7 @@
 		<object id="stun-missiles-item"/>
 		<object id="submarine"/>
 		<object id="tank"/>
+		<object id="tank-bullet"/>
 		<object id="tent"/>
 		<object id="thrower-item"/>
 		<object id="thrower-missile"/>
@@ -88,15 +90,21 @@
 		<animation id="yellow-car"/>
 	</object>
 	<object id="corpse">
+		<animation id="dead-cyan-car"/>
 		<animation id="dead-cyan-launcher"/>
 		<animation id="dead-cyan-shilka"/>
 		<animation id="dead-green-launcher"/>
 		<animation id="dead-green-tank"/>
 		<animation id="dead-machinegunner"/>
 		<animation id="dead-orange-bus"/>
+		<animation id="dead-red-launcher"/>
 		<animation id="dead-red-shilka"/>
+		<animation id="dead-red-tank"/>
+		<animation id="dead-white-car"/>
+		<animation id="dead-yellow-car"/>
 		<animation id="dead-yellow-launcher"/>
 		<animation id="dead-yellow-shilka"/>
+		<animation id="dead-yellow-tank"/>
 	</object>
 	<object id="damage-digits">
 		<animation id="damage-digits"/>
@@ -138,6 +146,7 @@
 	</object>
 	<object id="helmet">
 		<animation id="green-machinegunner-helmet"/>
+		<animation id="red-machinegunner-helmet"/>
 	</object>
 	<object id="impassable-static-corpse">
 		<animation id="dead-cyan-car"/>
@@ -158,6 +167,9 @@
 	</object>
 	<object id="machinegunner">
 		<animation id="machinegunner"/>
+	</object>
+	<object id="machinegunner-bullet">
+		<animation id="machinegunner-bullet"/>
 	</object>
 	<object id="machinegunner-item">
 		<animation id="machinegunner-item"/>
@@ -192,13 +204,16 @@
 	<object id="outline">
 		<animation id="cyan-launcher-outline"/>
 		<animation id="cyan-shilka-outline"/>
+		<animation id="cyan-tank-outline"/>
 		<animation id="green-launcher-outline"/>
+		<animation id="green-tank-outline"/>
 		<animation id="machinegunner-outline"/>
 		<animation id="red-launcher-outline"/>
 		<animation id="red-shilka-outline"/>
 		<animation id="red-tank-outline"/>
 		<animation id="yellow-launcher-outline"/>
 		<animation id="yellow-shilka-outline"/>
+		<animation id="yellow-tank-outline"/>
 	</object>
 	<object id="pond">
 		<animation id="pond"/>
@@ -268,8 +283,13 @@
 		<animation id="submarine"/>
 	</object>
 	<object id="tank">
+		<animation id="cyan-tank"/>
 		<animation id="green-tank"/>
 		<animation id="red-tank"/>
+		<animation id="yellow-tank"/>
+	</object>
+	<object id="tank-bullet">
+		<animation id="tank-bullet"/>
 	</object>
 	<object id="tent">
 		<animation id="tent-left"/>
