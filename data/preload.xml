@@ -1,1035 +1,249 @@
 <preload>
-	<animation map="aqua_world" id="bus-stop-left" />
-	<animation map="aqua_world" id="bus-stop-right" />
-	<animation map="aqua_world" id="bus-stop-top" />
-	<animation map="aqua_world" id="cyan-launcher" />
-	<animation map="aqua_world" id="cyan-launcher-outline" />
-	<animation map="aqua_world" id="cyan-machinegunner-helmet" />
-	<animation map="aqua_world" id="cyan-shilka" />
-	<animation map="aqua_world" id="cyan-tank" />
-	<animation map="aqua_world" id="damage-digits" />
-	<animation map="aqua_world" id="dead-cannon" />
-	<animation map="aqua_world" id="dead-civilian-1" />
-	<animation map="aqua_world" id="dead-civilian-static-1" />
-	<animation map="aqua_world" id="dead-cyan-car" />
-	<animation map="aqua_world" id="dead-cyan-launcher" />
-	<animation map="aqua_world" id="dead-cyan-shilka" />
-	<animation map="aqua_world" id="dead-cyan-tank" />
-	<animation map="aqua_world" id="dead-green-launcher" />
-	<animation map="aqua_world" id="dead-green-tank" />
-	<animation map="aqua_world" id="dead-machinegunner" />
-	<animation map="aqua_world" id="dead-orange-bus" />
-	<animation map="aqua_world" id="dead-red-car" />
-	<animation map="aqua_world" id="dead-red-launcher" />
-	<animation map="aqua_world" id="dead-red-shilka" />
-	<animation map="aqua_world" id="dead-red-tank" />
-	<animation map="aqua_world" id="dead-thrower" />
-	<animation map="aqua_world" id="dead-thrower-static" />
-	<animation map="aqua_world" id="dead-white-car" />
-	<animation map="aqua_world" id="dead-yellow-car" />
-	<animation map="aqua_world" id="dead-yellow-launcher" />
-	<animation map="aqua_world" id="dead-yellow-shilka" />
-	<animation map="aqua_world" id="dead-yellow-tank" />
-	<animation map="aqua_world" id="dispersion-bullet" />
-	<animation map="aqua_world" id="dispersion-bullets-item" />
-	<animation map="aqua_world" id="dumb-missile" />
-	<animation map="aqua_world" id="dumb-missiles-item" />
-	<animation map="aqua_world" id="explosion" />
-	<animation map="aqua_world" id="fire" />
-	<animation map="aqua_world" id="green-launcher" />
-	<animation map="aqua_world" id="green-launcher-outline" />
-	<animation map="aqua_world" id="guided-missile" />
-	<animation map="aqua_world" id="guided-missiles-item" />
-	<animation map="aqua_world" id="guided-missiles-on-launcher" />
-	<animation map="aqua_world" id="guided-missiles-on-tank" />
-	<animation map="aqua_world" id="heal" />
-	<animation map="aqua_world" id="launcher-smoke" />
-	<animation map="aqua_world" id="lodge" />
-	<animation map="aqua_world" id="machinegunner" />
-	<animation map="aqua_world" id="machinegunner-bullet" />
-	<animation map="aqua_world" id="machinegunner-item" />
-	<animation map="aqua_world" id="machinegunner-on-launcher" />
-	<animation map="aqua_world" id="machinegunner-outline" />
-	<animation map="aqua_world" id="megaheal" />
-	<animation map="aqua_world" id="mines-item" />
-	<animation map="aqua_world" id="missile-explosion" />
-	<animation map="aqua_world" id="missile-fire" />
-	<animation map="aqua_world" id="nuke-explosion" />
-	<animation map="aqua_world" id="nuke-missile" />
-	<animation map="aqua_world" id="nuke-missiles-item" />
-	<animation map="aqua_world" id="oil-barrels" />
-	<animation map="aqua_world" id="red-launcher" />
-	<animation map="aqua_world" id="red-launcher-outline" />
-	<animation map="aqua_world" id="red-machinegunner-helmet" />
-	<animation map="aqua_world" id="red-shilka" />
-	<animation map="aqua_world" id="red-shilka-outline" />
-	<animation map="aqua_world" id="red-tank" />
-	<animation map="aqua_world" id="regular-mine" />
-	<animation map="aqua_world" id="ricochet-bullet" />
-	<animation map="aqua_world" id="ricochet-bullets-item" />
-	<animation map="aqua_world" id="road-sign01" />
-	<animation map="aqua_world" id="road-sign04" />
-	<animation map="aqua_world" id="road-sign05" />
-	<animation map="aqua_world" id="road-sign06" />
-	<animation map="aqua_world" id="shilka-bullet-left" />
-	<animation map="aqua_world" id="shilka-bullet-right" />
-	<animation map="aqua_world" id="stall-left" />
-	<animation map="aqua_world" id="tank-smoke" />
-	<animation map="aqua_world" id="teleport" />
-	<animation map="aqua_world" id="tent-top" />
-	<animation map="aqua_world" id="thrower" />
-	<animation map="aqua_world" id="thrower-item" />
-	<animation map="aqua_world" id="thrower-missile" />
-	<animation map="aqua_world" id="thrower-on-launcher" />
-	<animation map="aqua_world" id="traffic-lights" />
-	<animation map="aqua_world" id="van" />
-	<animation map="aqua_world" id="vehicle-machinegunner-bullet" />
-	<animation map="aqua_world" id="watchtower" />
-	<animation map="aqua_world" id="yellow-launcher" />
-	<animation map="aqua_world" id="yellow-launcher-outline" />
-	<animation map="aqua_world" id="yellow-machinegunner-helmet" />
-	<animation map="aqua_world" id="yellow-mortar" />
-	<animation map="aqua_world" id="yellow-shilka" />
-	<animation map="aqua_world" id="yellow-shilka-outline" />
-	<animation map="aqua_world" id="yellow-tank" />
-	<animation map="aqua_world" id="yellow-thrower-helmet" />
-	<animation map="arena" id="biotoilet" />
-	<animation map="arena" id="bomb" />
-	<animation map="arena" id="buggy" />
-	<animation map="arena" id="buggy-air-bullet-left" />
-	<animation map="arena" id="buggy-air-bullet-right" />
-	<animation map="arena" id="buggy-bullet-left" />
-	<animation map="arena" id="buggy-bullet-right" />
-	<animation map="arena" id="buggy-gun" />
-	<animation map="arena" id="cannon-explosion" />
-	<animation map="arena" id="chinook" />
-	<animation map="arena" id="cyan-launcher" />
-	<animation map="arena" id="cyan-machinegunner-helmet" />
-	<animation map="arena" id="cyan-tank" />
-	<animation map="arena" id="damage-digits" />
-	<animation map="arena" id="dead-buggy" />
-	<animation map="arena" id="dead-chinook" />
-	<animation map="arena" id="dead-cyan-launcher" />
-	<animation map="arena" id="dead-cyan-tank" />
-	<animation map="arena" id="dead-green-launcher" />
-	<animation map="arena" id="dead-green-tank" />
-	<animation map="arena" id="dead-helicopter" />
-	<animation map="arena" id="dead-machinegunner" />
-	<animation map="arena" id="dead-red-tank" />
-	<animation map="arena" id="dead-thrower" />
-	<animation map="arena" id="dead-yellow-launcher" />
-	<animation map="arena" id="dead-yellow-tank" />
-	<animation map="arena" id="explosion" />
-	<animation map="arena" id="fire" />
-	<animation map="arena" id="gay-paratrooper" />
-	<animation map="arena" id="green-launcher" />
-	<animation map="arena" id="green-machinegunner-helmet" />
-	<animation map="arena" id="green-shilka" />
-	<animation map="arena" id="green-tank" />
-	<animation map="arena" id="grenade" />
-	<animation map="arena" id="grenade-explosion" />
-	<animation map="arena" id="guided-missile" />
-	<animation map="arena" id="guided-missiles-on-launcher" />
-	<animation map="arena" id="guided-missiles-on-tank" />
-	<animation map="arena" id="helicopter" />
-	<animation map="arena" id="kamikaze" />
-	<animation map="arena" id="kamikaze-explosion" />
-	<animation map="arena" id="launcher-smoke" />
-	<animation map="arena" id="machinegunner" />
-	<animation map="arena" id="machinegunner-bullet" />
-	<animation map="arena" id="missile-explosion" />
-	<animation map="arena" id="missile-fire" />
-	<animation map="arena" id="paratrooper" />
-	<animation map="arena" id="red-launcher" />
-	<animation map="arena" id="red-machinegunner-helmet" />
-	<animation map="arena" id="red-tank" />
-	<animation map="arena" id="shilka-bullet-left" />
-	<animation map="arena" id="shilka-bullet-right" />
-	<animation map="arena" id="tank-bullet" />
-	<animation map="arena" id="tank-smoke" />
-	<animation map="arena" id="thrower" />
-	<animation map="arena" id="thrower-missile" />
-	<animation map="arena" id="yellow-launcher" />
-	<animation map="arena" id="yellow-machinegunner-helmet" />
-	<animation map="arena" id="yellow-tank" />
-	<animation map="baykonur" id="boat" />
-	<animation map="baykonur" id="building-explosion" />
-	<animation map="baykonur" id="cannon" />
-	<animation map="baykonur" id="cannon-bullet" />
-	<animation map="baykonur" id="cannon-explosion" />
-	<animation map="baykonur" id="cyan-shilka" />
-	<animation map="baykonur" id="cyan-tank" />
-	<animation map="baykonur" id="damage-digits" />
-	<animation map="baykonur" id="dead-boat" />
-	<animation map="baykonur" id="dead-cannon" />
-	<animation map="baykonur" id="dead-civilian-static-1" />
-	<animation map="baykonur" id="dead-cyan-car" />
-	<animation map="baykonur" id="dead-cyan-launcher" />
-	<animation map="baykonur" id="dead-cyan-shilka" />
-	<animation map="baykonur" id="dead-cyan-tank" />
-	<animation map="baykonur" id="dead-green-launcher" />
-	<animation map="baykonur" id="dead-green-shilka" />
-	<animation map="baykonur" id="dead-machinegunner" />
-	<animation map="baykonur" id="dead-mortar" />
-	<animation map="baykonur" id="dead-orange-bus" />
-	<animation map="baykonur" id="dead-red-car" />
-	<animation map="baykonur" id="dead-red-launcher" />
-	<animation map="baykonur" id="dead-red-shilka" />
-	<animation map="baykonur" id="dead-red-tank" />
-	<animation map="baykonur" id="dead-thrower" />
-	<animation map="baykonur" id="dead-thrower-static" />
-	<animation map="baykonur" id="dead-yellow-car" />
-	<animation map="baykonur" id="dead-yellow-launcher" />
-	<animation map="baykonur" id="dead-yellow-tank" />
-	<animation map="baykonur" id="dirt" />
-	<animation map="baykonur" id="dispersion-bullet" />
-	<animation map="baykonur" id="dispersion-bullets-item" />
-	<animation map="baykonur" id="dumb-missile" />
-	<animation map="baykonur" id="dumb-missiles-item" />
-	<animation map="baykonur" id="explosion" />
-	<animation map="baykonur" id="fire" />
-	<animation map="baykonur" id="gate" />
-	<animation map="baykonur" id="green-launcher" />
-	<animation map="baykonur" id="green-machinegunner-helmet" />
-	<animation map="baykonur" id="green-shilka" />
-	<animation map="baykonur" id="green-shilka-outline" />
-	<animation map="baykonur" id="green-tank" />
-	<animation map="baykonur" id="green-thrower-helmet" />
-	<animation map="baykonur" id="guided-missile" />
-	<animation map="baykonur" id="guided-missiles-item" />
-	<animation map="baykonur" id="guided-missiles-on-launcher" />
-	<animation map="baykonur" id="guided-missiles-on-tank" />
-	<animation map="baykonur" id="heal" />
-	<animation map="baykonur" id="kamikaze" />
-	<animation map="baykonur" id="kamikaze-explosion" />
-	<animation map="baykonur" id="launcher-smoke" />
-	<animation map="baykonur" id="lodge" />
-	<animation map="baykonur" id="machinegunner" />
-	<animation map="baykonur" id="machinegunner-bullet" />
-	<animation map="baykonur" id="machinegunner-item" />
-	<animation map="baykonur" id="machinegunner-outline" />
-	<animation map="baykonur" id="megaheal" />
-	<animation map="baykonur" id="missile-explosion" />
-	<animation map="baykonur" id="missile-fire" />
-	<animation map="baykonur" id="nuke-explosion" />
-	<animation map="baykonur" id="nuke-missile" />
-	<animation map="baykonur" id="nuke-missiles-item" />
-	<animation map="baykonur" id="oil-barrels" />
-	<animation map="baykonur" id="red-launcher" />
-	<animation map="baykonur" id="red-launcher-outline" />
-	<animation map="baykonur" id="red-machinegunner-helmet" />
-	<animation map="baykonur" id="red-shilka" />
-	<animation map="baykonur" id="red-tank" />
-	<animation map="baykonur" id="red-tank-outline" />
-	<animation map="baykonur" id="regular-mine" />
-	<animation map="baykonur" id="ricochet-bullets-item" />
-	<animation map="baykonur" id="road-sign03" />
-	<animation map="baykonur" id="road-sign10" />
-	<animation map="baykonur" id="shilka-bullet-left" />
-	<animation map="baykonur" id="shilka-bullet-right" />
-	<animation map="baykonur" id="smoke-cloud" />
-	<animation map="baykonur" id="smoke-missile" />
-	<animation map="baykonur" id="smoke-missiles-item" />
-	<animation map="baykonur" id="spaceport-baykonur" />
-	<animation map="baykonur" id="stack" />
-	<animation map="baykonur" id="stall-left" />
-	<animation map="baykonur" id="stall-right" />
-	<animation map="baykonur" id="submarine" />
-	<animation map="baykonur" id="tank-bullet" />
-	<animation map="baykonur" id="tank-smoke" />
-	<animation map="baykonur" id="target" />
-	<animation map="baykonur" id="thrower" />
-	<animation map="baykonur" id="thrower-item" />
-	<animation map="baykonur" id="thrower-missile" />
-	<animation map="baykonur" id="trooper-hut" />
-	<animation map="baykonur" id="trooper-tent" />
-	<animation map="baykonur" id="watchtower" />
-	<animation map="baykonur" id="yellow-launcher" />
-	<animation map="baykonur" id="yellow-machinegunner-helmet" />
-	<animation map="baykonur" id="yellow-mortar" />
-	<animation map="baykonur" id="yellow-tank" />
-	<animation map="baykonur" id="yellow-tank-outline" />
-	<animation map="curfew" id="biotoilet" />
-	<animation map="curfew" id="building-explosion" />
-	<animation map="curfew" id="bus-stop-left" />
-	<animation map="curfew" id="bus-stop-right" />
-	<animation map="curfew" id="cannon-explosion" />
-	<animation map="curfew" id="cyan-car" />
-	<animation map="curfew" id="cyan-launcher" />
-	<animation map="curfew" id="cyan-launcher-outline" />
-	<animation map="curfew" id="cyan-machinegunner-helmet" />
-	<animation map="curfew" id="cyan-shilka" />
-	<animation map="curfew" id="cyan-shilka-outline" />
-	<animation map="curfew" id="cyan-tank" />
-	<animation map="curfew" id="cyan-tank-outline" />
-	<animation map="curfew" id="damage-digits" />
-	<animation map="curfew" id="dead-civilian-1" />
-	<animation map="curfew" id="dead-civilian-static-1" />
-	<animation map="curfew" id="dead-cyan-car" />
-	<animation map="curfew" id="dead-cyan-launcher" />
-	<animation map="curfew" id="dead-cyan-shilka" />
-	<animation map="curfew" id="dead-cyan-tank" />
-	<animation map="curfew" id="dead-green-launcher" />
-	<animation map="curfew" id="dead-green-tank" />
-	<animation map="curfew" id="dead-machinegunner" />
-	<animation map="curfew" id="dead-mortar" />
-	<animation map="curfew" id="dead-nukeman" />
-	<animation map="curfew" id="dead-orange-bus" />
-	<animation map="curfew" id="dead-red-car" />
-	<animation map="curfew" id="dead-red-launcher" />
-	<animation map="curfew" id="dead-red-shilka" />
-	<animation map="curfew" id="dead-red-tank" />
-	<animation map="curfew" id="dead-thrower" />
-	<animation map="curfew" id="dead-thrower-static" />
-	<animation map="curfew" id="dead-white-car" />
-	<animation map="curfew" id="dead-yellow-car" />
-	<animation map="curfew" id="dead-yellow-launcher" />
-	<animation map="curfew" id="dead-yellow-shilka" />
-	<animation map="curfew" id="dead-yellow-tank" />
-	<animation map="curfew" id="dispersion-bullet" />
-	<animation map="curfew" id="dispersion-bullets-item" />
-	<animation map="curfew" id="dumb-missile" />
-	<animation map="curfew" id="dumb-missiles-item" />
-	<animation map="curfew" id="explosion" />
-	<animation map="curfew" id="fire" />
-	<animation map="curfew" id="gate" />
-	<animation map="curfew" id="green-launcher" />
-	<animation map="curfew" id="green-launcher-outline" />
-	<animation map="curfew" id="green-machinegunner-helmet" />
-	<animation map="curfew" id="green-shilka" />
-	<animation map="curfew" id="green-shilka-outline" />
-	<animation map="curfew" id="green-tank" />
-	<animation map="curfew" id="green-tank-outline" />
-	<animation map="curfew" id="grenade" />
-	<animation map="curfew" id="grenade-explosion" />
-	<animation map="curfew" id="guided-missile" />
-	<animation map="curfew" id="guided-missiles-item" />
-	<animation map="curfew" id="guided-missiles-on-launcher" />
-	<animation map="curfew" id="guided-missiles-on-tank" />
-	<animation map="curfew" id="heal" />
-	<animation map="curfew" id="launcher-smoke" />
-	<animation map="curfew" id="machinegunner" />
-	<animation map="curfew" id="machinegunner-bullet" />
-	<animation map="curfew" id="machinegunner-item" />
-	<animation map="curfew" id="machinegunner-on-launcher" />
-	<animation map="curfew" id="machinegunner-outline" />
-	<animation map="curfew" id="megaheal" />
-	<animation map="curfew" id="mines-item" />
-	<animation map="curfew" id="missile-explosion" />
-	<animation map="curfew" id="missile-fire" />
-	<animation map="curfew" id="nuke-explosion" />
-	<animation map="curfew" id="nuke-mine" />
-	<animation map="curfew" id="nuke-missile" />
-	<animation map="curfew" id="nuke-missiles-item" />
-	<animation map="curfew" id="nukeman-outline" />
-	<animation map="curfew" id="oil-barrels" />
-	<animation map="curfew" id="orange-bus" />
-	<animation map="curfew" id="pond" />
-	<animation map="curfew" id="red-car" />
-	<animation map="curfew" id="red-launcher" />
-	<animation map="curfew" id="red-launcher-outline" />
-	<animation map="curfew" id="red-machinegunner-helmet" />
-	<animation map="curfew" id="red-shilka" />
-	<animation map="curfew" id="red-shilka-outline" />
-	<animation map="curfew" id="red-tank" />
-	<animation map="curfew" id="red-tank-outline" />
-	<animation map="curfew" id="red-thrower-helmet" />
-	<animation map="curfew" id="regular-mine" />
-	<animation map="curfew" id="ricochet-bullet" />
-	<animation map="curfew" id="ricochet-bullets-item" />
-	<animation map="curfew" id="road-sign03" />
-	<animation map="curfew" id="road-sign04" />
-	<animation map="curfew" id="road-sign05" />
-	<animation map="curfew" id="road-sign10" />
-	<animation map="curfew" id="shilka-bullet-left" />
-	<animation map="curfew" id="shilka-bullet-right" />
-	<animation map="curfew" id="smoke-cloud" />
-	<animation map="curfew" id="smoke-missile" />
-	<animation map="curfew" id="smoke-missiles-item" />
-	<animation map="curfew" id="stall-right" />
-	<animation map="curfew" id="stun-missile" />
-	<animation map="curfew" id="stun-missiles-item" />
-	<animation map="curfew" id="submarine" />
-	<animation map="curfew" id="tank-bullet" />
-	<animation map="curfew" id="tank-smoke" />
-	<animation map="curfew" id="target" />
-	<animation map="curfew" id="tent-left" />
-	<animation map="curfew" id="thrower" />
-	<animation map="curfew" id="thrower-item" />
-	<animation map="curfew" id="thrower-missile" />
-	<animation map="curfew" id="traffic-lights" />
-	<animation map="curfew" id="umbrella" />
-	<animation map="curfew" id="vehicle-machinegunner-bullet" />
-	<animation map="curfew" id="white-car" />
-	<animation map="curfew" id="yellow-car" />
-	<animation map="curfew" id="yellow-launcher" />
-	<animation map="curfew" id="yellow-launcher-outline" />
-	<animation map="curfew" id="yellow-machinegunner-helmet" />
-	<animation map="curfew" id="yellow-mortar" />
-	<animation map="curfew" id="yellow-shilka" />
-	<animation map="curfew" id="yellow-shilka-outline" />
-	<animation map="curfew" id="yellow-tank" />
-	<animation map="curfew" id="yellow-tank-outline" />
-	<animation map="curfew" id="yellow-thrower-helmet" />
-	<animation map="dune" id="building-explosion" />
-	<animation map="dune" id="cannon-explosion" />
-	<animation map="dune" id="cyan-launcher" />
-	<animation map="dune" id="cyan-machinegunner-helmet" />
-	<animation map="dune" id="cyan-shilka" />
-	<animation map="dune" id="cyan-shilka-outline" />
-	<animation map="dune" id="cyan-tank" />
-	<animation map="dune" id="cyan-tank-outline" />
-	<animation map="dune" id="damage-digits" />
-	<animation map="dune" id="dead-civilian-static-2" />
-	<animation map="dune" id="dead-civilian-static-3" />
-	<animation map="dune" id="dead-cyan-shilka" />
-	<animation map="dune" id="dead-machinegunner" />
-	<animation map="dune" id="dead-mortar" />
-	<animation map="dune" id="dead-red-launcher" />
-	<animation map="dune" id="dead-red-tank" />
-	<animation map="dune" id="dead-thrower" />
-	<animation map="dune" id="dead-yellow-shilka" />
-	<animation map="dune" id="dead-yellow-tank" />
-	<animation map="dune" id="dead-ziehharmonikaspieler-static" />
-	<animation map="dune" id="dead-zombie" />
-	<animation map="dune" id="dispersion-bullet" />
-	<animation map="dune" id="dispersion-bullets-item" />
-	<animation map="dune" id="dumb-missile" />
-	<animation map="dune" id="dumb-missiles-item" />
-	<animation map="dune" id="explosion" />
-	<animation map="dune" id="fire" />
-	<animation map="dune" id="green-launcher" />
-	<animation map="dune" id="grenade" />
-	<animation map="dune" id="grenade-explosion" />
-	<animation map="dune" id="guided-missile" />
-	<animation map="dune" id="guided-missiles-item" />
-	<animation map="dune" id="guided-missiles-on-launcher" />
-	<animation map="dune" id="guided-missiles-on-tank" />
-	<animation map="dune" id="heal" />
-	<animation map="dune" id="kamikaze" />
-	<animation map="dune" id="kamikaze-explosion" />
-	<animation map="dune" id="launcher-smoke" />
-	<animation map="dune" id="machinegunner" />
-	<animation map="dune" id="machinegunner-bullet" />
-	<animation map="dune" id="machinegunner-item" />
-	<animation map="dune" id="machinegunner-outline" />
-	<animation map="dune" id="megaheal" />
-	<animation map="dune" id="mines-item" />
-	<animation map="dune" id="missile-explosion" />
-	<animation map="dune" id="missile-fire" />
-	<animation map="dune" id="nuke-explosion" />
-	<animation map="dune" id="nuke-mine" />
-	<animation map="dune" id="nuke-missiles-item" />
-	<animation map="dune" id="oil-barrels" />
-	<animation map="dune" id="red-launcher" />
-	<animation map="dune" id="red-machinegunner-helmet" />
-	<animation map="dune" id="red-shilka" />
-	<animation map="dune" id="red-shilka-outline" />
-	<animation map="dune" id="red-tank" />
-	<animation map="dune" id="red-tank-outline" />
-	<animation map="dune" id="red-thrower-helmet" />
-	<animation map="dune" id="regular-mine" />
-	<animation map="dune" id="road-sign07" />
-	<animation map="dune" id="road-sign10" />
-	<animation map="dune" id="sandworm" />
-	<animation map="dune" id="sandworm-head" />
-	<animation map="dune" id="shilka-bullet-left" />
-	<animation map="dune" id="shilka-bullet-right" />
-	<animation map="dune" id="smoke-missiles-item" />
-	<animation map="dune" id="stack" />
-	<animation map="dune" id="stun-missile" />
-	<animation map="dune" id="stun-missiles-item" />
-	<animation map="dune" id="tank-bullet" />
-	<animation map="dune" id="tank-smoke" />
-	<animation map="dune" id="thrower" />
-	<animation map="dune" id="thrower-item" />
-	<animation map="dune" id="thrower-missile" />
-	<animation map="dune" id="trooper-hut" />
-	<animation map="dune" id="watchtower" />
-	<animation map="dune" id="yellow-launcher" />
-	<animation map="dune" id="yellow-machinegunner-helmet" />
-	<animation map="dune" id="yellow-mortar" />
-	<animation map="dune" id="yellow-shilka" />
-	<animation map="dune" id="yellow-shilka-outline" />
-	<animation map="dune" id="yellow-tank" />
-	<animation map="dune" id="yellow-tank-outline" />
-	<animation map="dune" id="zombie" />
-	<animation map="gaddino" id="boomerang-missile" />
-	<animation map="gaddino" id="boomerang-missiles-item" />
-	<animation map="gaddino" id="building-explosion" />
-	<animation map="gaddino" id="cannon-explosion" />
-	<animation map="gaddino" id="choo-choo-train" />
-	<animation map="gaddino" id="choo-choo-wagon" />
-	<animation map="gaddino" id="cow" />
-	<animation map="gaddino" id="cyan-launcher" />
-	<animation map="gaddino" id="cyan-launcher-outline" />
-	<animation map="gaddino" id="cyan-machinegunner-helmet" />
-	<animation map="gaddino" id="cyan-shilka" />
-	<animation map="gaddino" id="cyan-shilka-outline" />
-	<animation map="gaddino" id="cyan-tank" />
-	<animation map="gaddino" id="cyan-tank-outline" />
-	<animation map="gaddino" id="damage-digits" />
-	<animation map="gaddino" id="dead-choo-choo-train" />
-	<animation map="gaddino" id="dead-choo-choo-wagon" />
-	<animation map="gaddino" id="dead-cow" />
-	<animation map="gaddino" id="dead-cyan-launcher" />
-	<animation map="gaddino" id="dead-cyan-shilka" />
-	<animation map="gaddino" id="dead-cyan-tank" />
-	<animation map="gaddino" id="dead-green-launcher" />
-	<animation map="gaddino" id="dead-green-shilka" />
-	<animation map="gaddino" id="dead-machinegunner" />
-	<animation map="gaddino" id="dead-mortar" />
-	<animation map="gaddino" id="dead-red-launcher" />
-	<animation map="gaddino" id="dead-red-shilka" />
-	<animation map="gaddino" id="dead-red-tank" />
-	<animation map="gaddino" id="dead-thrower" />
-	<animation map="gaddino" id="dead-yellow-launcher" />
-	<animation map="gaddino" id="dead-yellow-shilka" />
-	<animation map="gaddino" id="dirt" />
-	<animation map="gaddino" id="dirt-bullets-item" />
-	<animation map="gaddino" id="dispersion-bullet" />
-	<animation map="gaddino" id="dispersion-bullets-item" />
-	<animation map="gaddino" id="dumb-missile" />
-	<animation map="gaddino" id="dumb-missiles-item" />
-	<animation map="gaddino" id="explosion" />
-	<animation map="gaddino" id="fire" />
-	<animation map="gaddino" id="gay-paratrooper" />
-	<animation map="gaddino" id="green-launcher" />
-	<animation map="gaddino" id="green-launcher-outline" />
-	<animation map="gaddino" id="green-machinegunner-helmet" />
-	<animation map="gaddino" id="green-shilka" />
-	<animation map="gaddino" id="green-shilka-outline" />
-	<animation map="gaddino" id="green-tank" />
-	<animation map="gaddino" id="green-tank-outline" />
-	<animation map="gaddino" id="guided-missile" />
-	<animation map="gaddino" id="guided-missiles-item" />
-	<animation map="gaddino" id="guided-missiles-on-launcher" />
-	<animation map="gaddino" id="guided-missiles-on-tank" />
-	<animation map="gaddino" id="heal" />
-	<animation map="gaddino" id="helicopter" />
-	<animation map="gaddino" id="kamikaze" />
-	<animation map="gaddino" id="kamikaze-explosion" />
-	<animation map="gaddino" id="launcher-smoke" />
-	<animation map="gaddino" id="lodge" />
-	<animation map="gaddino" id="machinegunner" />
-	<animation map="gaddino" id="machinegunner-bullet" />
-	<animation map="gaddino" id="machinegunner-item" />
-	<animation map="gaddino" id="machinegunner-outline" />
-	<animation map="gaddino" id="megaheal" />
-	<animation map="gaddino" id="mines-item" />
-	<animation map="gaddino" id="missile-explosion" />
-	<animation map="gaddino" id="missile-fire" />
-	<animation map="gaddino" id="nuke-explosion" />
-	<animation map="gaddino" id="nuke-mine" />
-	<animation map="gaddino" id="nuke-missile" />
-	<animation map="gaddino" id="nuke-missiles-item" />
-	<animation map="gaddino" id="oil-barrels" />
-	<animation map="gaddino" id="paratrooper" />
-	<animation map="gaddino" id="red-launcher" />
-	<animation map="gaddino" id="red-launcher-outline" />
-	<animation map="gaddino" id="red-machinegunner-helmet" />
-	<animation map="gaddino" id="red-shilka" />
-	<animation map="gaddino" id="red-shilka-outline" />
-	<animation map="gaddino" id="red-tank" />
-	<animation map="gaddino" id="red-tank-outline" />
-	<animation map="gaddino" id="red-thrower-helmet" />
-	<animation map="gaddino" id="regular-mine" />
-	<animation map="gaddino" id="road-sign10" />
-	<animation map="gaddino" id="shilka-bullet-left" />
-	<animation map="gaddino" id="shilka-bullet-right" />
-	<animation map="gaddino" id="shilka-dirt-bullet-left" />
-	<animation map="gaddino" id="shilka-dirt-bullet-right" />
-	<animation map="gaddino" id="smoke-cloud" />
-	<animation map="gaddino" id="smoke-missile" />
-	<animation map="gaddino" id="smoke-missiles-item" />
-	<animation map="gaddino" id="stack" />
-	<animation map="gaddino" id="stun-missile" />
-	<animation map="gaddino" id="stun-missiles-item" />
-	<animation map="gaddino" id="submarine" />
-	<animation map="gaddino" id="tank-bullet" />
-	<animation map="gaddino" id="tank-smoke" />
-	<animation map="gaddino" id="target" />
-	<animation map="gaddino" id="thrower" />
-	<animation map="gaddino" id="thrower-item" />
-	<animation map="gaddino" id="thrower-missile" />
-	<animation map="gaddino" id="train-smoke" />
-	<animation map="gaddino" id="van" />
-	<animation map="gaddino" id="yellow-launcher" />
-	<animation map="gaddino" id="yellow-launcher-outline" />
-	<animation map="gaddino" id="yellow-machinegunner-helmet" />
-	<animation map="gaddino" id="yellow-mortar" />
-	<animation map="gaddino" id="yellow-shilka" />
-	<animation map="gaddino" id="yellow-shilka-outline" />
-	<animation map="gaddino" id="yellow-tank" />
-	<animation map="gaddino" id="yellow-tank-outline" />
-	<animation map="gaddino" id="yellow-thrower-helmet" />
-	<animation map="hell_swamp" id="choo-choo-wagon" />
-	<animation map="hell_swamp" id="cyan-launcher" />
-	<animation map="hell_swamp" id="cyan-launcher-outline" />
-	<animation map="hell_swamp" id="cyan-machinegunner-helmet" />
-	<animation map="hell_swamp" id="cyan-tank" />
-	<animation map="hell_swamp" id="cyan-tank-outline" />
-	<animation map="hell_swamp" id="damage-digits" />
-	<animation map="hell_swamp" id="dead-cyan-launcher" />
-	<animation map="hell_swamp" id="dead-cyan-shilka" />
-	<animation map="hell_swamp" id="dead-cyan-tank" />
-	<animation map="hell_swamp" id="dead-machinegunner" />
-	<animation map="hell_swamp" id="dead-mortar" />
-	<animation map="hell_swamp" id="dead-yellow-launcher" />
-	<animation map="hell_swamp" id="dead-yellow-shilka" />
-	<animation map="hell_swamp" id="dead-yellow-tank" />
-	<animation map="hell_swamp" id="dirt" />
-	<animation map="hell_swamp" id="dumb-missile" />
-	<animation map="hell_swamp" id="dumb-missiles-item" />
-	<animation map="hell_swamp" id="explosion" />
-	<animation map="hell_swamp" id="fire" />
-	<animation map="hell_swamp" id="guided-missiles-on-launcher" />
-	<animation map="hell_swamp" id="guided-missiles-on-tank" />
-	<animation map="hell_swamp" id="heal" />
-	<animation map="hell_swamp" id="launcher-smoke" />
-	<animation map="hell_swamp" id="lodge" />
-	<animation map="hell_swamp" id="machinegunner" />
-	<animation map="hell_swamp" id="machinegunner-outline" />
-	<animation map="hell_swamp" id="megaheal" />
-	<animation map="hell_swamp" id="mines-item" />
-	<animation map="hell_swamp" id="missile-explosion" />
-	<animation map="hell_swamp" id="missile-fire" />
-	<animation map="hell_swamp" id="nuke-explosion" />
-	<animation map="hell_swamp" id="nuke-missile" />
-	<animation map="hell_swamp" id="nuke-missiles-item" />
-	<animation map="hell_swamp" id="oil-barrels" />
-	<animation map="hell_swamp" id="red-launcher" />
-	<animation map="hell_swamp" id="red-tank" />
-	<animation map="hell_swamp" id="red-tank-outline" />
-	<animation map="hell_swamp" id="regular-mine" />
-	<animation map="hell_swamp" id="ricochet-bullet" />
-	<animation map="hell_swamp" id="ricochet-bullets-item" />
-	<animation map="hell_swamp" id="stack" />
-	<animation map="hell_swamp" id="tank-bullet" />
-	<animation map="hell_swamp" id="tank-smoke" />
-	<animation map="hell_swamp" id="yellow-launcher" />
-	<animation map="hell_swamp" id="yellow-mortar" />
-	<animation map="hell_swamp" id="yellow-tank" />
-	<animation map="lenin_square" id="buggy" />
-	<animation map="lenin_square" id="buggy-air-bullet-left" />
-	<animation map="lenin_square" id="buggy-air-bullet-right" />
-	<animation map="lenin_square" id="buggy-bullet-left" />
-	<animation map="lenin_square" id="buggy-bullet-right" />
-	<animation map="lenin_square" id="buggy-gun" />
-	<animation map="lenin_square" id="building-explosion" />
-	<animation map="lenin_square" id="bus-stop-left" />
-	<animation map="lenin_square" id="bus-stop-right" />
-	<animation map="lenin_square" id="bus-stop-top" />
-	<animation map="lenin_square" id="chinook" />
-	<animation map="lenin_square" id="cyan-car" />
-	<animation map="lenin_square" id="cyan-launcher" />
-	<animation map="lenin_square" id="cyan-launcher-outline" />
-	<animation map="lenin_square" id="cyan-machinegunner-helmet" />
-	<animation map="lenin_square" id="cyan-shilka" />
-	<animation map="lenin_square" id="cyan-shilka-outline" />
-	<animation map="lenin_square" id="cyan-tank" />
-	<animation map="lenin_square" id="cyan-tank-outline" />
-	<animation map="lenin_square" id="damage-digits" />
-	<animation map="lenin_square" id="dead-chinook" />
-	<animation map="lenin_square" id="dead-cyan-car" />
-	<animation map="lenin_square" id="dead-cyan-launcher" />
-	<animation map="lenin_square" id="dead-cyan-shilka" />
-	<animation map="lenin_square" id="dead-cyan-tank" />
-	<animation map="lenin_square" id="dead-green-launcher" />
-	<animation map="lenin_square" id="dead-green-tank" />
-	<animation map="lenin_square" id="dead-machinegunner" />
-	<animation map="lenin_square" id="dead-mortar" />
-	<animation map="lenin_square" id="dead-red-launcher" />
-	<animation map="lenin_square" id="dead-red-shilka" />
-	<animation map="lenin_square" id="dead-red-tank" />
-	<animation map="lenin_square" id="dead-white-car" />
-	<animation map="lenin_square" id="dead-yellow-car" />
-	<animation map="lenin_square" id="dead-yellow-launcher" />
-	<animation map="lenin_square" id="dead-yellow-shilka" />
-	<animation map="lenin_square" id="dead-yellow-tank" />
-	<animation map="lenin_square" id="dispersion-bullet" />
-	<animation map="lenin_square" id="dispersion-bullets-item" />
-	<animation map="lenin_square" id="dumb-missile" />
-	<animation map="lenin_square" id="dumb-missiles-item" />
-	<animation map="lenin_square" id="explosion" />
-	<animation map="lenin_square" id="fire" />
-	<animation map="lenin_square" id="gate" />
-	<animation map="lenin_square" id="gay-paratrooper" />
-	<animation map="lenin_square" id="green-launcher" />
-	<animation map="lenin_square" id="green-launcher-outline" />
-	<animation map="lenin_square" id="green-machinegunner-helmet" />
-	<animation map="lenin_square" id="green-shilka" />
-	<animation map="lenin_square" id="green-shilka-outline" />
-	<animation map="lenin_square" id="green-tank" />
-	<animation map="lenin_square" id="green-tank-outline" />
-	<animation map="lenin_square" id="grenade" />
-	<animation map="lenin_square" id="grenade-explosion" />
-	<animation map="lenin_square" id="guided-missile" />
-	<animation map="lenin_square" id="guided-missiles-item" />
-	<animation map="lenin_square" id="guided-missiles-on-launcher" />
-	<animation map="lenin_square" id="guided-missiles-on-tank" />
-	<animation map="lenin_square" id="heal" />
-	<animation map="lenin_square" id="kamikaze" />
-	<animation map="lenin_square" id="kamikaze-explosion" />
-	<animation map="lenin_square" id="launcher-smoke" />
-	<animation map="lenin_square" id="lodge" />
-	<animation map="lenin_square" id="machinegunner" />
-	<animation map="lenin_square" id="machinegunner-bullet" />
-	<animation map="lenin_square" id="machinegunner-item" />
-	<animation map="lenin_square" id="machinegunner-on-launcher" />
-	<animation map="lenin_square" id="machinegunner-outline" />
-	<animation map="lenin_square" id="megaheal" />
-	<animation map="lenin_square" id="mines-item" />
-	<animation map="lenin_square" id="missile-explosion" />
-	<animation map="lenin_square" id="missile-fire" />
-	<animation map="lenin_square" id="nuke-explosion" />
-	<animation map="lenin_square" id="nuke-mine" />
-	<animation map="lenin_square" id="nuke-missile" />
-	<animation map="lenin_square" id="nuke-missiles-item" />
-	<animation map="lenin_square" id="paratrooper" />
-	<animation map="lenin_square" id="red-launcher" />
-	<animation map="lenin_square" id="red-launcher-outline" />
-	<animation map="lenin_square" id="red-machinegunner-helmet" />
-	<animation map="lenin_square" id="red-shilka" />
-	<animation map="lenin_square" id="red-shilka-outline" />
-	<animation map="lenin_square" id="red-tank" />
-	<animation map="lenin_square" id="red-tank-outline" />
-	<animation map="lenin_square" id="red-thrower-helmet" />
-	<animation map="lenin_square" id="regular-mine" />
-	<animation map="lenin_square" id="ricochet-bullet" />
-	<animation map="lenin_square" id="ricochet-bullets-item" />
-	<animation map="lenin_square" id="road-sign01" />
-	<animation map="lenin_square" id="road-sign02" />
-	<animation map="lenin_square" id="road-sign04" />
-	<animation map="lenin_square" id="road-sign08" />
-	<animation map="lenin_square" id="road-sign09" />
-	<animation map="lenin_square" id="shilka-bullet-left" />
-	<animation map="lenin_square" id="shilka-bullet-right" />
-	<animation map="lenin_square" id="stall-left" />
-	<animation map="lenin_square" id="stall-right" />
-	<animation map="lenin_square" id="stun-missile" />
-	<animation map="lenin_square" id="stun-missiles-item" />
-	<animation map="lenin_square" id="tank-bullet" />
-	<animation map="lenin_square" id="tank-smoke" />
-	<animation map="lenin_square" id="tent-top" />
-	<animation map="lenin_square" id="thrower" />
-	<animation map="lenin_square" id="thrower-item" />
-	<animation map="lenin_square" id="thrower-missile" />
-	<animation map="lenin_square" id="thrower-on-launcher" />
-	<animation map="lenin_square" id="traffic-lights" />
-	<animation map="lenin_square" id="umbrella" />
-	<animation map="lenin_square" id="van" />
-	<animation map="lenin_square" id="vehicle-machinegunner-bullet" />
-	<animation map="lenin_square" id="white-car" />
-	<animation map="lenin_square" id="yellow-car" />
-	<animation map="lenin_square" id="yellow-launcher" />
-	<animation map="lenin_square" id="yellow-launcher-outline" />
-	<animation map="lenin_square" id="yellow-machinegunner-helmet" />
-	<animation map="lenin_square" id="yellow-mortar" />
-	<animation map="lenin_square" id="yellow-shilka" />
-	<animation map="lenin_square" id="yellow-shilka-outline" />
-	<animation map="lenin_square" id="yellow-tank" />
-	<animation map="lenin_square" id="yellow-tank-outline" />
-	<animation map="paintball" id="cyan-launcher" />
-	<animation map="paintball" id="damage-digits" />
-	<animation map="paintball" id="dead-green-launcher" />
-	<animation map="paintball" id="dead-machinegunner" />
-	<animation map="paintball" id="dead-mortar" />
-	<animation map="paintball" id="dead-red-launcher" />
-	<animation map="paintball" id="dead-yellow-launcher" />
-	<animation map="paintball" id="dispersion-bullets-item" />
-	<animation map="paintball" id="dumb-missile" />
-	<animation map="paintball" id="dumb-missiles-item" />
-	<animation map="paintball" id="explosion" />
-	<animation map="paintball" id="green-launcher" />
-	<animation map="paintball" id="green-launcher-outline" />
-	<animation map="paintball" id="green-machinegunner-helmet" />
-	<animation map="paintball" id="green-mortar" />
-	<animation map="paintball" id="green-shilka" />
-	<animation map="paintball" id="green-tank" />
-	<animation map="paintball" id="guided-missile" />
-	<animation map="paintball" id="guided-missiles-item" />
-	<animation map="paintball" id="guided-missiles-on-launcher" />
-	<animation map="paintball" id="guided-missiles-on-tank" />
-	<animation map="paintball" id="heal" />
-	<animation map="paintball" id="launcher-smoke" />
-	<animation map="paintball" id="machinegunner" />
-	<animation map="paintball" id="machinegunner-bullet" />
-	<animation map="paintball" id="machinegunner-item" />
-	<animation map="paintball" id="machinegunner-on-launcher" />
-	<animation map="paintball" id="machinegunner-outline" />
-	<animation map="paintball" id="megaheal" />
-	<animation map="paintball" id="mines-item" />
-	<animation map="paintball" id="missile-explosion" />
-	<animation map="paintball" id="missile-fire" />
-	<animation map="paintball" id="mortar-bullet" />
-	<animation map="paintball" id="mortar-explosion" />
-	<animation map="paintball" id="nuke-explosion" />
-	<animation map="paintball" id="nuke-missile" />
-	<animation map="paintball" id="nuke-missiles-item" />
-	<animation map="paintball" id="red-launcher" />
-	<animation map="paintball" id="red-launcher-outline" />
-	<animation map="paintball" id="red-machinegunner-helmet" />
-	<animation map="paintball" id="regular-mine" />
-	<animation map="paintball" id="stun-missiles-item" />
-	<animation map="paintball" id="tank-smoke" />
-	<animation map="paintball" id="teleport" />
-	<animation map="paintball" id="thrower-item" />
-	<animation map="paintball" id="thrower-missile" />
-	<animation map="paintball" id="thrower-on-launcher" />
-	<animation map="paintball" id="vehicle-machinegunner-bullet" />
-	<animation map="paintball" id="yellow-launcher" />
-	<animation map="paintball" id="yellow-launcher-outline" />
-	<animation map="platform" id="boomerang-missile" />
-	<animation map="platform" id="boomerang-missiles-item" />
-	<animation map="platform" id="building-explosion" />
-	<animation map="platform" id="bus-stop-right" />
-	<animation map="platform" id="cannon" />
-	<animation map="platform" id="cannon-bullet" />
-	<animation map="platform" id="cannon-explosion" />
-	<animation map="platform" id="cow" />
-	<animation map="platform" id="cyan-machinegunner-helmet" />
-	<animation map="platform" id="cyan-shilka" />
-	<animation map="platform" id="cyan-shilka-outline" />
-	<animation map="platform" id="cyan-tank" />
-	<animation map="platform" id="cyan-tank-outline" />
-	<animation map="platform" id="damage-digits" />
-	<animation map="platform" id="dead-cannon" />
-	<animation map="platform" id="dead-civilian-static-1" />
-	<animation map="platform" id="dead-civilian-static-2" />
-	<animation map="platform" id="dead-civilian-static-3" />
-	<animation map="platform" id="dead-cow" />
-	<animation map="platform" id="dead-cyan-car" />
-	<animation map="platform" id="dead-cyan-launcher" />
-	<animation map="platform" id="dead-cyan-shilka" />
-	<animation map="platform" id="dead-cyan-tank" />
-	<animation map="platform" id="dead-green-shilka" />
-	<animation map="platform" id="dead-green-tank" />
-	<animation map="platform" id="dead-machinegunner" />
-	<animation map="platform" id="dead-orange-bus" />
-	<animation map="platform" id="dead-red-tank" />
-	<animation map="platform" id="dead-thrower" />
-	<animation map="platform" id="dead-thrower-static" />
-	<animation map="platform" id="dead-yellow-car" />
-	<animation map="platform" id="dead-yellow-launcher" />
-	<animation map="platform" id="dead-yellow-shilka" />
-	<animation map="platform" id="dead-yellow-tank" />
-	<animation map="platform" id="dead-zombie" />
-	<animation map="platform" id="dispersion-bullet" />
-	<animation map="platform" id="dispersion-bullets-item" />
-	<animation map="platform" id="dumb-missile" />
-	<animation map="platform" id="dumb-missiles-item" />
-	<animation map="platform" id="explosion" />
-	<animation map="platform" id="fire" />
-	<animation map="platform" id="green-launcher" />
-	<animation map="platform" id="green-machinegunner-helmet" />
-	<animation map="platform" id="green-mortar" />
-	<animation map="platform" id="green-shilka" />
-	<animation map="platform" id="green-shilka-outline" />
-	<animation map="platform" id="green-tank" />
-	<animation map="platform" id="green-tank-outline" />
-	<animation map="platform" id="green-thrower-helmet" />
-	<animation map="platform" id="guided-missile" />
-	<animation map="platform" id="guided-missiles-item" />
-	<animation map="platform" id="guided-missiles-on-launcher" />
-	<animation map="platform" id="guided-missiles-on-tank" />
-	<animation map="platform" id="heal" />
-	<animation map="platform" id="kamikaze" />
-	<animation map="platform" id="kamikaze-explosion" />
-	<animation map="platform" id="launcher-smoke" />
-	<animation map="platform" id="machinegunner" />
-	<animation map="platform" id="machinegunner-bullet" />
-	<animation map="platform" id="machinegunner-item" />
-	<animation map="platform" id="machinegunner-outline" />
-	<animation map="platform" id="megaheal" />
-	<animation map="platform" id="missile-explosion" />
-	<animation map="platform" id="missile-fire" />
-	<animation map="platform" id="nuke-explosion" />
-	<animation map="platform" id="nuke-missile" />
-	<animation map="platform" id="nuke-missiles-item" />
-	<animation map="platform" id="oil-barrels" />
-	<animation map="platform" id="red-launcher" />
-	<animation map="platform" id="red-machinegunner-helmet" />
-	<animation map="platform" id="red-tank" />
-	<animation map="platform" id="red-tank-outline" />
-	<animation map="platform" id="red-thrower-helmet" />
-	<animation map="platform" id="ricochet-bullet" />
-	<animation map="platform" id="ricochet-bullets-item" />
-	<animation map="platform" id="road-sign09" />
-	<animation map="platform" id="shilka-bullet-left" />
-	<animation map="platform" id="shilka-bullet-right" />
-	<animation map="platform" id="smoke-cloud" />
-	<animation map="platform" id="smoke-missile" />
-	<animation map="platform" id="smoke-missiles-item" />
-	<animation map="platform" id="spaceport-baykonur" />
-	<animation map="platform" id="stack" />
-	<animation map="platform" id="tank-bullet" />
-	<animation map="platform" id="tank-smoke" />
-	<animation map="platform" id="teleport" />
-	<animation map="platform" id="thrower" />
-	<animation map="platform" id="thrower-item" />
-	<animation map="platform" id="thrower-missile" />
-	<animation map="platform" id="traffic-lights" />
-	<animation map="platform" id="trooper-hut" />
-	<animation map="platform" id="trooper-tent" />
-	<animation map="platform" id="watchtower" />
-	<animation map="platform" id="yellow-launcher" />
-	<animation map="platform" id="yellow-machinegunner-helmet" />
-	<animation map="platform" id="yellow-shilka" />
-	<animation map="platform" id="yellow-shilka-outline" />
-	<animation map="platform" id="yellow-tank" />
-	<animation map="platform" id="yellow-tank-outline" />
-	<animation map="platform" id="yellow-thrower-helmet" />
-	<animation map="platform" id="zombie" />
-	<animation map="university" id="bomb" />
-	<animation map="university" id="building-explosion" />
-	<animation map="university" id="bus-stop-left" />
-	<animation map="university" id="bus-stop-right" />
-	<animation map="university" id="cannon-explosion" />
-	<animation map="university" id="cyan-car" />
-	<animation map="university" id="cyan-launcher" />
-	<animation map="university" id="cyan-launcher-outline" />
-	<animation map="university" id="cyan-mortar" />
-	<animation map="university" id="cyan-tank" />
-	<animation map="university" id="cyan-tank-outline" />
-	<animation map="university" id="damage-digits" />
-	<animation map="university" id="dead-cyan-car" />
-	<animation map="university" id="dead-cyan-launcher" />
-	<animation map="university" id="dead-helicopter" />
-	<animation map="university" id="dead-machinegunner" />
-	<animation map="university" id="dead-orange-bus" />
-	<animation map="university" id="dead-red-car" />
-	<animation map="university" id="dead-red-launcher" />
-	<animation map="university" id="dead-white-car" />
-	<animation map="university" id="dead-yellow-car" />
-	<animation map="university" id="dead-yellow-launcher" />
-	<animation map="university" id="dead-yellow-tank" />
-	<animation map="university" id="dispersion-bullets-item" />
-	<animation map="university" id="dumb-missile" />
-	<animation map="university" id="dumb-missiles-item" />
-	<animation map="university" id="explosion" />
-	<animation map="university" id="fire" />
-	<animation map="university" id="guided-missile" />
-	<animation map="university" id="guided-missiles-item" />
-	<animation map="university" id="guided-missiles-on-launcher" />
-	<animation map="university" id="guided-missiles-on-tank" />
-	<animation map="university" id="heal" />
-	<animation map="university" id="helicopter" />
-	<animation map="university" id="helicopter-bullet-left" />
-	<animation map="university" id="helicopter-bullet-right" />
-	<animation map="university" id="launcher-smoke" />
-	<animation map="university" id="machinegunner" />
-	<animation map="university" id="machinegunner-bullet" />
-	<animation map="university" id="machinegunner-item" />
-	<animation map="university" id="machinegunner-outline" />
-	<animation map="university" id="megaheal" />
-	<animation map="university" id="missile-explosion" />
-	<animation map="university" id="missile-fire" />
-	<animation map="university" id="oil-barrels" />
-	<animation map="university" id="orange-bus" />
-	<animation map="university" id="red-car" />
-	<animation map="university" id="red-launcher" />
-	<animation map="university" id="red-launcher-outline" />
-	<animation map="university" id="ricochet-bullet" />
-	<animation map="university" id="ricochet-bullets-item" />
-	<animation map="university" id="road-sign05" />
-	<animation map="university" id="road-sign08" />
-	<animation map="university" id="stall-left" />
-	<animation map="university" id="stall-right" />
-	<animation map="university" id="stun-missile" />
-	<animation map="university" id="stun-missiles-item" />
-	<animation map="university" id="tank-bullet" />
-	<animation map="university" id="tank-smoke" />
-	<animation map="university" id="teleport" />
-	<animation map="university" id="tent-right" />
-	<animation map="university" id="tent-top" />
-	<animation map="university" id="thrower-item" />
-	<animation map="university" id="traffic-lights" />
-	<animation map="university" id="umbrella" />
-	<animation map="university" id="white-car" />
-	<animation map="university" id="yellow-car" />
-	<animation map="university" id="yellow-launcher" />
-	<animation map="university" id="yellow-launcher-outline" />
-	<animation map="university" id="yellow-machinegunner-helmet" />
-	<animation map="university" id="yellow-tank" />
-	<animation map="university" id="yellow-tank-outline" />
-	<animation map="wastes" id="biotoilet" />
-	<animation map="wastes" id="boomerang-missile" />
-	<animation map="wastes" id="boomerang-missiles-item" />
-	<animation map="wastes" id="building-explosion" />
-	<animation map="wastes" id="cannon-explosion" />
-	<animation map="wastes" id="cyan-launcher" />
-	<animation map="wastes" id="cyan-launcher-outline" />
-	<animation map="wastes" id="cyan-shilka" />
-	<animation map="wastes" id="damage-digits" />
-	<animation map="wastes" id="dead-choo-choo-train" />
-	<animation map="wastes" id="dead-choo-choo-wagon" />
-	<animation map="wastes" id="dead-civilian-static-1" />
-	<animation map="wastes" id="dead-cyan-car" />
-	<animation map="wastes" id="dead-cyan-launcher" />
-	<animation map="wastes" id="dead-cyan-tank" />
-	<animation map="wastes" id="dead-green-launcher" />
-	<animation map="wastes" id="dead-green-shilka" />
-	<animation map="wastes" id="dead-machinegunner" />
-	<animation map="wastes" id="dead-orange-bus" />
-	<animation map="wastes" id="dead-red-car" />
-	<animation map="wastes" id="dead-red-launcher" />
-	<animation map="wastes" id="dead-red-shilka" />
-	<animation map="wastes" id="dead-red-tank" />
-	<animation map="wastes" id="dead-thrower-static" />
-	<animation map="wastes" id="dead-white-car" />
-	<animation map="wastes" id="dead-yellow-car" />
-	<animation map="wastes" id="dead-yellow-launcher" />
-	<animation map="wastes" id="dead-yellow-shilka" />
-	<animation map="wastes" id="dead-yellow-tank" />
-	<animation map="wastes" id="dirt" />
-	<animation map="wastes" id="dirt-bullets-item" />
-	<animation map="wastes" id="dispersion-bullets-item" />
-	<animation map="wastes" id="dumb-missile" />
-	<animation map="wastes" id="dumb-missiles-item" />
-	<animation map="wastes" id="explosion" />
-	<animation map="wastes" id="fire" />
-	<animation map="wastes" id="gate" />
-	<animation map="wastes" id="green-launcher" />
-	<animation map="wastes" id="guided-missile" />
-	<animation map="wastes" id="guided-missiles-item" />
-	<animation map="wastes" id="guided-missiles-on-launcher" />
-	<animation map="wastes" id="guided-missiles-on-tank" />
-	<animation map="wastes" id="heal" />
-	<animation map="wastes" id="launcher-smoke" />
-	<animation map="wastes" id="machinegunner" />
-	<animation map="wastes" id="machinegunner-bullet" />
-	<animation map="wastes" id="machinegunner-item" />
-	<animation map="wastes" id="machinegunner-on-launcher" />
-	<animation map="wastes" id="machinegunner-outline" />
-	<animation map="wastes" id="megaheal" />
-	<animation map="wastes" id="mines-item" />
-	<animation map="wastes" id="missile-explosion" />
-	<animation map="wastes" id="missile-fire" />
-	<animation map="wastes" id="nuke-explosion" />
-	<animation map="wastes" id="nuke-missile" />
-	<animation map="wastes" id="nuke-missiles-item" />
-	<animation map="wastes" id="oil-barrels" />
-	<animation map="wastes" id="red-tank" />
-	<animation map="wastes" id="regular-mine" />
-	<animation map="wastes" id="ricochet-bullets-item" />
-	<animation map="wastes" id="road-sign03" />
-	<animation map="wastes" id="road-sign09" />
-	<animation map="wastes" id="sandworm" />
-	<animation map="wastes" id="sandworm-head" />
-	<animation map="wastes" id="smoke-cloud" />
-	<animation map="wastes" id="smoke-missile" />
-	<animation map="wastes" id="smoke-missiles-item" />
-	<animation map="wastes" id="stun-missile" />
-	<animation map="wastes" id="stun-missiles-item" />
-	<animation map="wastes" id="tank-bullet" />
-	<animation map="wastes" id="tank-smoke" />
-	<animation map="wastes" id="thrower-item" />
-	<animation map="wastes" id="yellow-launcher" />
-	<animation map="wastes" id="yellow-launcher-outline" />
-	<animation map="wastes" id="yellow-machinegunner-helmet" />
-	<animation map="wastes" id="yellow-mortar" />
-	<animation map="wastes" id="yellow-shilka" />
-	<animation map="wastes" id="yellow-tank" />
-	<animation map="wastes" id="yellow-tank-outline" />
+	<map id="lenin_square">
+		<object id="alt-missiles-on-launcher"/>
+		<object id="bus-stop"/>
+		<object id="car"/>
+		<object id="corpse"/>
+		<object id="damage-digits"/>
+		<object id="dispersion-bullets-item"/>
+		<object id="dumb-missiles-item"/>
+		<object id="explosion"/>
+		<object id="fake-mod"/>
+		<object id="fire"/>
+		<object id="gate"/>
+		<object id="guided-missile"/>
+		<object id="guided-missiles-item"/>
+		<object id="heal"/>
+		<object id="helicopter-with-kamikazes"/>
+		<object id="helmet"/>
+		<object id="kamikaze"/>
+		<object id="kamikaze-explosion"/>
+		<object id="lodge"/>
+		<object id="machinegunner"/>
+		<object id="machinegunner-bullet"/>
+		<object id="machinegunner-item"/>
+		<object id="machinegunner-player"/>
+		<object id="megaheal"/>
+		<object id="mines-item"/>
+		<object id="missiles-on-launcher"/>
+		<object id="missiles-on-tank"/>
+		<object id="nuke-missiles-item"/>
+		<object id="outline"/>
+		<object id="paratrooper-kamikaze"/>
+		<object id="regular-mine"/>
+		<object id="ricochet-bullet"/>
+		<object id="ricochet-bullets-item"/>
+		<object id="road-sign"/>
+		<object id="shilka"/>
+		<object id="shilka-bullet"/>
+		<object id="single-pose"/>
+		<object id="stall"/>
+		<object id="static-buggy"/>
+		<object id="static-car"/>
+		<object id="static-launcher"/>
+		<object id="static-mortar"/>
+		<object id="static-shilka"/>
+		<object id="static-tank"/>
+		<object id="stun-missiles-item"/>
+		<object id="tank"/>
+		<object id="tank-bullet"/>
+		<object id="tent"/>
+		<object id="thrower-item"/>
+		<object id="traffic-lights"/>
+		<object id="turrel"/>
+		<object id="umbrella"/>
+		<object id="van"/>
+	</map>
+	<object id="alt-missiles-on-launcher">
+		<animation id="guided-missiles-on-launcher"/>
+	</object>
+	<object id="bus-stop">
+		<animation id="bus-stop-left"/>
+		<animation id="bus-stop-right"/>
+		<animation id="bus-stop-top"/>
+	</object>
+	<object id="car">
+		<animation id="white-car"/>
+		<animation id="yellow-car"/>
+	</object>
+	<object id="corpse">
+		<animation id="dead-cyan-car"/>
+		<animation id="dead-cyan-launcher"/>
+		<animation id="dead-cyan-tank"/>
+		<animation id="dead-green-tank"/>
+		<animation id="dead-machinegunner"/>
+		<animation id="dead-red-shilka"/>
+		<animation id="dead-red-tank"/>
+		<animation id="dead-white-car"/>
+		<animation id="dead-yellow-car"/>
+		<animation id="dead-yellow-shilka"/>
+	</object>
+	<object id="damage-digits">
+		<animation id="damage-digits"/>
+	</object>
+	<object id="dispersion-bullets-item">
+		<animation id="dispersion-bullets-item"/>
+	</object>
+	<object id="dumb-missiles-item">
+		<animation id="dumb-missiles-item"/>
+	</object>
+	<object id="explosion">
+		<animation id="explosion"/>
+		<animation id="missile-explosion"/>
+	</object>
+	<object id="fake-mod">
+		<animation id="damage-digits"/>
+	</object>
+	<object id="fire">
+		<animation id="fire"/>
+	</object>
+	<object id="gate">
+		<animation id="gate"/>
+	</object>
+	<object id="guided-missile">
+		<animation id="guided-missile"/>
+	</object>
+	<object id="guided-missiles-item">
+		<animation id="guided-missiles-item"/>
+	</object>
+	<object id="heal">
+		<animation id="heal"/>
+	</object>
+	<object id="helicopter-with-kamikazes">
+		<animation id="chinook"/>
+	</object>
+	<object id="helmet">
+		<animation id="cyan-machinegunner-helmet"/>
+		<animation id="yellow-machinegunner-helmet"/>
+	</object>
+	<object id="kamikaze">
+		<animation id="kamikaze"/>
+	</object>
+	<object id="kamikaze-explosion">
+		<animation id="kamikaze-explosion"/>
+	</object>
+	<object id="lodge">
+		<animation id="lodge"/>
+	</object>
+	<object id="machinegunner">
+		<animation id="machinegunner"/>
+	</object>
+	<object id="machinegunner-bullet">
+		<animation id="machinegunner-bullet"/>
+	</object>
+	<object id="machinegunner-item">
+		<animation id="machinegunner-item"/>
+	</object>
+	<object id="machinegunner-player">
+		<animation id="machinegunner"/>
+	</object>
+	<object id="megaheal">
+		<animation id="megaheal"/>
+	</object>
+	<object id="mines-item">
+		<animation id="mines-item"/>
+	</object>
+	<object id="missiles-on-launcher">
+		<animation id="guided-missiles-on-launcher"/>
+	</object>
+	<object id="missiles-on-tank">
+		<animation id="guided-missiles-on-tank"/>
+	</object>
+	<object id="nuke-missiles-item">
+		<animation id="nuke-missiles-item"/>
+	</object>
+	<object id="outline">
+		<animation id="cyan-shilka-outline"/>
+		<animation id="cyan-tank-outline"/>
+		<animation id="green-tank-outline"/>
+		<animation id="machinegunner-outline"/>
+		<animation id="red-tank-outline"/>
+		<animation id="yellow-launcher-outline"/>
+		<animation id="yellow-shilka-outline"/>
+	</object>
+	<object id="paratrooper-kamikaze">
+		<animation id="gay-paratrooper"/>
+		<animation id="paratrooper"/>
+	</object>
+	<object id="regular-mine">
+		<animation id="regular-mine"/>
+	</object>
+	<object id="ricochet-bullet">
+		<animation id="ricochet-bullet"/>
+	</object>
+	<object id="ricochet-bullets-item">
+		<animation id="ricochet-bullets-item"/>
+	</object>
+	<object id="road-sign">
+		<animation id="road-sign01"/>
+		<animation id="road-sign02"/>
+		<animation id="road-sign04"/>
+		<animation id="road-sign08"/>
+		<animation id="road-sign09"/>
+	</object>
+	<object id="shilka">
+		<animation id="cyan-shilka"/>
+		<animation id="yellow-shilka"/>
+	</object>
+	<object id="shilka-bullet">
+		<animation id="shilka-bullet-left"/>
+		<animation id="shilka-bullet-right"/>
+	</object>
+	<object id="single-pose">
+		<animation id="launcher-smoke"/>
+		<animation id="missile-fire"/>
+		<animation id="tank-smoke"/>
+	</object>
+	<object id="stall">
+		<animation id="stall-left"/>
+		<animation id="stall-right"/>
+	</object>
+	<object id="static-buggy">
+		<animation id="buggy"/>
+	</object>
+	<object id="static-car">
+		<animation id="cyan-car"/>
+	</object>
+	<object id="static-launcher">
+		<animation id="cyan-launcher"/>
+		<animation id="yellow-launcher"/>
+	</object>
+	<object id="static-mortar">
+		<animation id="yellow-mortar"/>
+	</object>
+	<object id="static-shilka">
+		<animation id="red-shilka"/>
+	</object>
+	<object id="static-tank">
+		<animation id="cyan-tank"/>
+	</object>
+	<object id="stun-missiles-item">
+		<animation id="stun-missiles-item"/>
+	</object>
+	<object id="tank">
+		<animation id="cyan-tank"/>
+		<animation id="green-tank"/>
+		<animation id="red-tank"/>
+	</object>
+	<object id="tank-bullet">
+		<animation id="tank-bullet"/>
+	</object>
+	<object id="tent">
+		<animation id="tent-top"/>
+	</object>
+	<object id="thrower-item">
+		<animation id="thrower-item"/>
+	</object>
+	<object id="traffic-lights">
+		<animation id="traffic-lights"/>
+	</object>
+	<object id="turrel">
+		<animation id="buggy-gun"/>
+	</object>
+	<object id="umbrella">
+		<animation id="umbrella"/>
+	</object>
+	<object id="van">
+		<animation id="van"/>
+	</object>
 </preload>

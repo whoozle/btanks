@@ -35,29 +35,56 @@ IMPLEMENT_SINGLETON(ResourceManager, IResourceManager);
 
 class PreloadParser : public mrt::XMLParser {
 public: 
-	typedef std::map<const std::string, std::set<std::string> > PreloadMap;
-	
 	virtual void start(const std::string &name, Attrs &attr) {
-		if (name == "animation") {
+		if (name == "object") {
 			std::string id = attr["id"];
-			std::string map = attr["map"];
-			if (map.empty() || id.empty())
+			if (id.empty())
 				return;
-			data[map].insert(id);
+			
+			if (current_map.empty()) {
+				//parent object
+				current_object = attr["id"];
+			} else {
+				data[current_map].insert(id);
+			}
+		} else if (name == "map") {
+			current_map = attr["id"];
+		} else if (name == "animation") {
+			std::string id = attr["id"];
+			if (current_object.empty() || id.empty())
+				return;
+			object_data[current_object].insert(id);
 		}
 	}
-	virtual void end(const std::string &name) {}
-	void update(std::map<const std::pair<std::string, std::string>, std::set<std::string> > &preload_map, const std::string &base) const {
-		for(PreloadMap::const_iterator i = data.begin(); i != data.end(); ++i) {
-			std::set<std::string> &dst = preload_map[std::pair<std::string, std::string>(base, i->first)];
+	virtual void end(const std::string &name) {
+		if (name == "object") {
+			current_object.clear();
+		} else if (name == "map") {
+			current_map.clear();
+		}
+	}
+	void update(IResourceManager::PreloadMap &preload_map, IResourceManager::PreloadMap &object_map, const std::string &base) const {
+		for(PreloadMap::const_iterator i = object_data.begin(); i != object_data.end(); ++i) {
 			const std::set<std::string> &src = i->second;
+			std::set<std::string> &dst = preload_map[std::pair<std::string, std::string>(base, i->first)];
+			for(std::set<std::string>::const_iterator j = src.begin(); j != src.end(); ++j) {
+				dst.insert(*j);
+			}
+		}
+		
+		for(PreloadMap::const_iterator i = data.begin(); i != data.end(); ++i) {
+			const std::set<std::string> &src = i->second;
+			std::set<std::string> &dst = preload_map[std::pair<std::string, std::string>(base, i->first)];
 			for(std::set<std::string>::const_iterator j = src.begin(); j != src.end(); ++j) {
 				dst.insert(*j);
 			}
 		}
 	}
 private: 
-	PreloadMap data;
+	typedef std::map<const std::string, std::set<std::string> > PreloadMap;
+	
+	std::string current_object, current_map;
+	PreloadMap data, object_data;
 };
 
 void IResourceManager::onFile(const std::string &base, const std::string &file) {
@@ -71,7 +98,7 @@ void IResourceManager::onFile(const std::string &base, const std::string &file) 
 		LOG_DEBUG(("parsing preload file: %s", preload.c_str()));
 		PreloadParser p;
 		p.parseFile(preload);
-		p.update(_preload_map, base);
+		p.update(_preload_map, _object_preload_map, base);
 	} CATCH("parsing preload file", {});
 }
 
@@ -374,11 +401,25 @@ void IResourceManager::clear() {
 	
 	std::map<const std::string, std::string> xml_data;
 	for(PreloadMap::const_iterator i = _preload_map.begin(); i != _preload_map.end(); ++i) {
+		std::string &dst = xml_data[i->first.first];
+		dst += mrt::formatString("\t<map id=\"%s\">\n", escape(i->first.second).c_str());
 		for(std::set<std::string>::const_iterator j = i->second.begin(); j != i->second.end(); ++j) {
 			//LOG_DEBUG(("map: %s, %s", i->first.c_str(), j->c_str()));
-			xml_data[i->first.first] += mrt::formatString("\t<animation map=\"%s\" id=\"%s\" />\n", escape(i->first.second).c_str(), escape(*j).c_str());
+			 dst += mrt::formatString("\t\t<object id=\"%s\"/>\n", escape(*j).c_str());
 		}
+		dst += "\t</map>\n";
 	}
+	for(PreloadMap::const_iterator i = _object_preload_map.begin(); i != _object_preload_map.end(); ++i) {
+		std::string &dst = xml_data[i->first.first];
+		dst += mrt::formatString("\t<object id=\"%s\">\n", escape(i->first.second).c_str());
+		for(std::set<std::string>::const_iterator j = i->second.begin(); j != i->second.end(); ++j) {
+			//LOG_DEBUG(("map: %s, %s", i->first.c_str(), j->c_str()));
+			 dst += mrt::formatString("\t\t<animation id=\"%s\"/>\n", escape(*j).c_str());
+		}
+		dst += "\t</object>\n";
+	}
+	
+
 	for(std::map<const std::string, std::string>::iterator i = xml_data.begin(); i != xml_data.end(); ++i) {
 		//LOG_DEBUG(("xml data for %s, size: %u", i->first.c_str(), (unsigned)i->second.size()));
 		TRY {
@@ -464,8 +505,11 @@ Object *IResourceManager::createObject(const std::string &_classname) const {
 #include "tmx/map.h"
 
 Object *IResourceManager::createObject(const std::string &classname, const std::string &animation) const {
-	if (!Map->getName().empty())
-		_preload_map[PreloadMap::key_type(Map->getPath(), Map->getName())].insert(animation);
+	if (!Map->getName().empty()) {
+		std::string stripped_classname = Variants::strip(classname);
+		_preload_map[PreloadMap::key_type(Map->getPath(), Map->getName())].insert(stripped_classname);
+		_object_preload_map[PreloadMap::key_type(Map->getPath(), stripped_classname)].insert(animation);
+	}
 	
 	Object *r = createObject(classname);
 	
@@ -541,14 +585,27 @@ void IResourceManager::getAllClasses(std::set<std::string> &classes) {
 void IResourceManager::preload() {
 	LOG_DEBUG(("preloading surfaces..."));
 	std::pair<std::string, std::string> map_id(Map->getPath(), Map->getName());
-	PreloadMap::const_iterator i = _preload_map.find(map_id);
-	if (i == _preload_map.end())
+	PreloadMap::const_iterator map = _preload_map.find(map_id);
+	if (map == _preload_map.end())
 		return;
 	
-	const std::set<std::string>& animations = i->second;
+	const std::set<std::string>& objects = map->second;
+	std::set<std::string> animations;
+	
+	for(std::set<std::string>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
+		PreloadMap::const_iterator o = _object_preload_map.find(PreloadMap::key_type(Map->getPath(), *i));
+		if (o != _object_preload_map.end()) {
+			const std::set<std::string>& anims = o->second;
+			for(std::set<std::string>::const_iterator j = anims.begin(); j != anims.end(); ++j) {
+				animations.insert(*j);
+			}
+		}
+	}
+	
 	if (animations.empty())
 		return;
-
+	LOG_DEBUG(("found %u surfaces, loading...", (unsigned)animations.size()));
+	
 	reset_progress.emit(animations.size());
 	for(std::set<std::string>::iterator i = animations.begin(); i != animations.end(); ++i) {
 		const std::string &name = *i;

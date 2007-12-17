@@ -71,6 +71,8 @@ public:
 	
 	void getAllClasses(std::set<std::string> &classes);
 
+	typedef std::map<const std::pair<std::string, std::string>, std::set<std::string> > PreloadMap;
+
 private:
 	void preload(const std::string &animation);
 	Animation *getAnimation(const std::string &id);
@@ -108,8 +110,7 @@ private:
 	typedef std::map<const std::string, Object *> ObjectMap;
 	ObjectMap _objects;
 	
-	typedef std::map<const std::pair<std::string, std::string>, std::set<std::string> > PreloadMap;
-	mutable PreloadMap _preload_map;
+	mutable PreloadMap _preload_map, _object_preload_map;
 	
 	IResourceManager(const IResourceManager &);
 	const IResourceManager& operator=(const IResourceManager &);
