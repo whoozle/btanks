@@ -406,6 +406,8 @@
 	<animation map="dune" id="guided-missiles-on-launcher" />
 	<animation map="dune" id="guided-missiles-on-tank" />
 	<animation map="dune" id="heal" />
+	<animation map="dune" id="kamikaze" />
+	<animation map="dune" id="kamikaze-explosion" />
 	<animation map="dune" id="launcher-smoke" />
 	<animation map="dune" id="machinegunner" />
 	<animation map="dune" id="machinegunner-bullet" />
@@ -660,6 +662,8 @@
 	<animation map="lenin_square" id="green-shilka-outline" />
 	<animation map="lenin_square" id="green-tank" />
 	<animation map="lenin_square" id="green-tank-outline" />
+	<animation map="lenin_square" id="grenade" />
+	<animation map="lenin_square" id="grenade-explosion" />
 	<animation map="lenin_square" id="guided-missile" />
 	<animation map="lenin_square" id="guided-missiles-item" />
 	<animation map="lenin_square" id="guided-missiles-on-launcher" />
@@ -687,8 +691,10 @@
 	<animation map="lenin_square" id="red-launcher-outline" />
 	<animation map="lenin_square" id="red-machinegunner-helmet" />
 	<animation map="lenin_square" id="red-shilka" />
+	<animation map="lenin_square" id="red-shilka-outline" />
 	<animation map="lenin_square" id="red-tank" />
 	<animation map="lenin_square" id="red-tank-outline" />
+	<animation map="lenin_square" id="red-thrower-helmet" />
 	<animation map="lenin_square" id="regular-mine" />
 	<animation map="lenin_square" id="ricochet-bullet" />
 	<animation map="lenin_square" id="ricochet-bullets-item" />
@@ -706,6 +712,7 @@
 	<animation map="lenin_square" id="tank-bullet" />
 	<animation map="lenin_square" id="tank-smoke" />
 	<animation map="lenin_square" id="tent-top" />
+	<animation map="lenin_square" id="thrower" />
 	<animation map="lenin_square" id="thrower-item" />
 	<animation map="lenin_square" id="thrower-missile" />
 	<animation map="lenin_square" id="thrower-on-launcher" />
