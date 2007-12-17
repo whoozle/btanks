@@ -249,9 +249,10 @@ void IGameMonitor::checkItems(const float dt) {
 
 void IGameMonitor::add(const GameItem &item_, const bool dont_respawn) {
 	GameItem item(item_);
+	const bool client = PlayerManager->isClient();
 
 #ifdef ENABLE_LUA
-	if (lua_hooks != NULL)
+	if (!client && lua_hooks != NULL)
 		item.hidden = !lua_hooks->on_spawn(item.classname, item.animation, item.property);
 #endif
 
@@ -328,7 +329,7 @@ void IGameMonitor::tick(const float dt) {
 	const bool client = PlayerManager->isClient();
 
 #ifdef ENABLE_LUA
-	if (lua_hooks != NULL) {
+	if (!client && lua_hooks != NULL) {
 	TRY {
 		if (Map->loaded())
 			lua_hooks->on_tick(dt);
@@ -352,7 +353,7 @@ void IGameMonitor::tick(const float dt) {
 	std::string game_state = popState(dt);
 	if (_game_over && !game_state.empty()) {
 #ifdef ENABLE_LUA
-	if (lua_hooks != NULL) {
+	if (!client && lua_hooks != NULL) {
 	TRY {
 		std::string next_map = lua_hooks->getNextMap();
 		if (!next_map.empty()) {
@@ -625,6 +626,7 @@ static void coord2v(T &pos, const std::string &str) {
 
 void IGameMonitor::loadMap(Campaign *campaign, const std::string &name, const bool spawn_objects, const bool skip_loadmap) {
 	_campaign = campaign;
+	const bool client = PlayerManager->isClient();
 
 	IMap &map = *IMap::get_instance();
 
@@ -647,7 +649,7 @@ void IGameMonitor::loadMap(Campaign *campaign, const std::string &name, const bo
 
 	std::string script = Finder->find("maps/" + name + ".lua", false);
 
-	if (!script.empty() && !Map->soloAwareMode()) {
+	if (!skip_loadmap && !script.empty() && !Map->soloAwareMode()) {
 #	ifdef ENABLE_LUA	
 		TRY {
 			if (lua_hooks) {
@@ -856,7 +858,7 @@ void IGameMonitor::loadMap(Campaign *campaign, const std::string &name, const bo
 
 #	ifdef ENABLE_LUA
 	TRY {
-		if (lua_hooks)
+		if (!client && lua_hooks)
 			lua_hooks->on_load();
 	} CATCH("loadMap::on_load", {
 		Game->clear();
@@ -958,6 +960,10 @@ IGameMonitor::~IGameMonitor() {
 }
 
 void IGameMonitor::onScriptZone(const int slot_id, const SpecialZone &zone, const bool global) {
+	const bool client = PlayerManager->isClient();
+	if (client)
+		return;
+	
 #ifndef ENABLE_LUA
 	throw_ex(("no script support compiled in."));
 #else 
