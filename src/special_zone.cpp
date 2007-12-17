@@ -123,7 +123,10 @@ void SpecialZone::onHint(const int slot_id) {
 	PlayerSlot &slot = PlayerManager->getSlot(slot_id);
 
 	//Game->pause();
-	slot.displayTooltip(area, name);
+	if (slot.remote && !PlayerManager->isClient()) //useless but just for sure
+		PlayerManager->sendHint(slot, area, name);
+	else 
+		slot.displayTooltip(area, name);
 }
 
 const v3<int> SpecialZone::getPlayerPosition(const int slot_id) const {

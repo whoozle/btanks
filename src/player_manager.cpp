@@ -448,12 +448,20 @@ TRY {
 	}
 	
 	case Message::TextMessage: {
-		float dt = (now + _net_stats.getDelta() - timestamp) / 1000.0f;
-		LOG_DEBUG(("respawn, delta: %+d, dt: %g", _net_stats.getDelta(), dt));
+		if (message.get("hint") == "1") {
+			int id = message.channel;
+			if (id < 0 || (unsigned)id >= _players.size())
+				throw_ex(("player id exceeds players count (%d/%d)", id, (int)_players.size()));
+			PlayerSlot &slot = _players[id];
+			slot.displayTooltip(message.get("area"), message.get("message"));			
+		} else {
+			float dt = (now + _net_stats.getDelta() - timestamp) / 1000.0f;
+			LOG_DEBUG(("respawn, delta: %+d, dt: %g", _net_stats.getDelta(), dt));
 
-		TRY {
-			GameMonitor->displayMessage(message.get("area"), message.get("message"), atof(message.get("duration").c_str()) - dt);
-		} CATCH("on-message(text-message)", throw; )		
+			TRY {
+				GameMonitor->displayMessage(message.get("area"), message.get("message"), atof(message.get("duration").c_str()) - dt);
+			} CATCH("on-message(text-message)", throw; )		
+		}
 		break;
 	}
 	case Message::DestroyMap: {
@@ -1188,6 +1196,7 @@ TRY {
 	m.set("area", area);
 	m.set("message", message);
 	m.set("duration", mrt::formatString("%g", duration));
+	m.set("hint", "0");
 	broadcast(m, true);	
 } CATCH("say", {
 		Game->clear();
@@ -1196,6 +1205,13 @@ TRY {
 
 }
 
+void IPlayerManager::sendHint(const PlayerSlot &slot, const std::string &message, const std::string &area) {
+	Message m(Message::TextMessage);
+	m.set("area", area);
+	m.set("message", message);
+	m.set("hint", "1");
+	send(slot, m);
+}
 
 void IPlayerManager::say(const std::string &message) {
 TRY {
