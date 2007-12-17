@@ -348,10 +348,12 @@
 		<object id="guided-missiles-item"/>
 		<object id="heal"/>
 		<object id="helicopter-with-kamikazes"/>
+		<object id="helmet"/>
 		<object id="kamikaze"/>
 		<object id="kamikaze-explosion"/>
 		<object id="launcher"/>
 		<object id="lodge"/>
+		<object id="machinegunner"/>
 		<object id="machinegunner-bullet"/>
 		<object id="machinegunner-item"/>
 		<object id="machinegunner-player"/>
