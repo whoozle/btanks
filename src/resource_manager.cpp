@@ -66,7 +66,7 @@ public:
 	void update(IResourceManager::PreloadMap &preload_map, IResourceManager::PreloadMap &object_map, const std::string &base) const {
 		for(PreloadMap::const_iterator i = object_data.begin(); i != object_data.end(); ++i) {
 			const std::set<std::string> &src = i->second;
-			std::set<std::string> &dst = preload_map[std::pair<std::string, std::string>(base, i->first)];
+			std::set<std::string> &dst = object_map[std::pair<std::string, std::string>(base, i->first)];
 			for(std::set<std::string>::const_iterator j = src.begin(); j != src.end(); ++j) {
 				dst.insert(*j);
 			}
