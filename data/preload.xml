@@ -152,6 +152,7 @@
 		<object id="missiles-on-tank"/>
 		<object id="nuke-explosion"/>
 		<object id="nuke-mine"/>
+		<object id="nuke-missile"/>
 		<object id="nuke-missiles-item"/>
 		<object id="oil-barrels"/>
 		<object id="outline"/>
@@ -235,6 +236,8 @@
 	</map>
 	<map id="gaddino">
 		<object id="alt-missiles-on-launcher"/>
+		<object id="ballistic-missile"/>
+		<object id="ballistic-missile-target"/>
 		<object id="boomerang-missile"/>
 		<object id="boomerang-missiles-item"/>
 		<object id="cannon-explosion"/>
@@ -280,16 +283,20 @@
 		<object id="static-mortar"/>
 		<object id="static-shilka"/>
 		<object id="static-tank"/>
+		<object id="stun-missile"/>
 		<object id="stun-missiles-item"/>
 		<object id="submarine"/>
 		<object id="tank"/>
 		<object id="tank-bullet"/>
 		<object id="thrower-item"/>
+		<object id="thrower-on-launcher"/>
 		<object id="train-smoke"/>
 		<object id="van"/>
 	</map>
 	<map id="hell_swamp">
 		<object id="alt-missiles-on-launcher"/>
+		<object id="corpse"/>
+		<object id="damage-digits"/>
 		<object id="destructable-object"/>
 		<object id="dumb-missile"/>
 		<object id="dumb-missiles-item"/>
@@ -299,15 +306,23 @@
 		<object id="impassable-static-corpse"/>
 		<object id="launcher"/>
 		<object id="lodge"/>
+		<object id="machinegunner-bullet"/>
+		<object id="machinegunner-player"/>
 		<object id="megaheal"/>
 		<object id="mines-item"/>
 		<object id="missiles-on-launcher"/>
 		<object id="missiles-on-tank"/>
+		<object id="nuke-explosion"/>
+		<object id="nuke-mine"/>
+		<object id="nuke-missile"/>
 		<object id="nuke-missiles-item"/>
 		<object id="oil-barrels"/>
 		<object id="outline"/>
+		<object id="regular-mine"/>
+		<object id="ricochet-bullet"/>
 		<object id="ricochet-bullets-item"/>
 		<object id="shilka"/>
+		<object id="shilka-bullet"/>
 		<object id="single-pose"/>
 		<object id="stack"/>
 		<object id="static-dirt"/>
