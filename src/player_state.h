@@ -26,7 +26,15 @@
 
 class BTANKSAPI PlayerState : public mrt::Serializable {
 public:
-	bool left, right, up, down, fire, alt_fire, leave, hint_control;
+	unsigned left: 1;
+	unsigned right: 1;
+	unsigned up:1;
+	unsigned down:1;
+	unsigned fire:1;
+	unsigned alt_fire:1;
+	unsigned leave:1;
+	unsigned hint_control:1;
+
 	PlayerState();
 	void clear();
 	
