@@ -83,6 +83,7 @@ public:
 	virtual void deserialize(const mrt::Serializator &s);
 	
 	void displayLast();
+	void displayTooltip(const std::string &area, const std::string &message);
 	void tick(const float dt);
 	
 	void createControlMethod(const std::string &name);

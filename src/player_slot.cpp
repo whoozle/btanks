@@ -21,6 +21,7 @@
 #include "controls/control_method.h"
 #include "menu/tooltip.h"
 #include "tmx/map.h"
+#include "i18n.h"
 #include "special_owners.h"
 #include "game_monitor.h"
 #include "config.h"
@@ -117,6 +118,13 @@ void PlayerSlot::displayLast() {
 		last_tooltip = tooltips.front().second;
 		tooltips.pop();
 	}
+}
+
+void PlayerSlot::displayTooltip(const std::string &area, const std::string &message) {
+	const std::string text = I18n->get(area, message);
+	
+	Tooltip *tooltip = new Tooltip(text, true);
+	tooltips.push(PlayerSlot::Tooltips::value_type(tooltip->getReadingTime(), tooltip));
 }
 
 void PlayerSlot::tick(const float dt) {

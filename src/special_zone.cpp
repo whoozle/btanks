@@ -23,7 +23,6 @@
 #include "game_monitor.h"
 #include "player_manager.h"
 #include "config.h"
-#include "i18n.h"
 #include "menu/tooltip.h"
 #include "object.h"
 #include "sound/mixer.h"
@@ -123,11 +122,8 @@ void SpecialZone::onMessage(const int slot_id) {
 void SpecialZone::onHint(const int slot_id) {
 	PlayerSlot &slot = PlayerManager->getSlot(slot_id);
 
-	const std::string text = I18n->get(area, name);
-	
-	Tooltip *tooltip = new Tooltip(text, true);
-	slot.tooltips.push(PlayerSlot::Tooltips::value_type(tooltip->getReadingTime(), tooltip));
 	//Game->pause();
+	slot.displayTooltip(area, name);
 }
 
 const v3<int> SpecialZone::getPlayerPosition(const int slot_id) const {

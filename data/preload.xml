@@ -173,6 +173,7 @@
 	<animation map="baykonur" id="dead-mortar" />
 	<animation map="baykonur" id="dead-orange-bus" />
 	<animation map="baykonur" id="dead-red-car" />
+	<animation map="baykonur" id="dead-red-launcher" />
 	<animation map="baykonur" id="dead-red-shilka" />
 	<animation map="baykonur" id="dead-red-tank" />
 	<animation map="baykonur" id="dead-thrower" />
@@ -183,13 +184,17 @@
 	<animation map="baykonur" id="dirt" />
 	<animation map="baykonur" id="dispersion-bullet" />
 	<animation map="baykonur" id="dispersion-bullets-item" />
+	<animation map="baykonur" id="dumb-missile" />
 	<animation map="baykonur" id="dumb-missiles-item" />
 	<animation map="baykonur" id="explosion" />
 	<animation map="baykonur" id="fire" />
 	<animation map="baykonur" id="gate" />
 	<animation map="baykonur" id="green-launcher" />
+	<animation map="baykonur" id="green-machinegunner-helmet" />
 	<animation map="baykonur" id="green-shilka" />
+	<animation map="baykonur" id="green-shilka-outline" />
 	<animation map="baykonur" id="green-tank" />
+	<animation map="baykonur" id="green-thrower-helmet" />
 	<animation map="baykonur" id="guided-missile" />
 	<animation map="baykonur" id="guided-missiles-item" />
 	<animation map="baykonur" id="guided-missiles-on-launcher" />
@@ -211,12 +216,19 @@
 	<animation map="baykonur" id="nuke-missiles-item" />
 	<animation map="baykonur" id="oil-barrels" />
 	<animation map="baykonur" id="red-launcher" />
+	<animation map="baykonur" id="red-launcher-outline" />
+	<animation map="baykonur" id="red-machinegunner-helmet" />
 	<animation map="baykonur" id="red-shilka" />
 	<animation map="baykonur" id="red-tank" />
+	<animation map="baykonur" id="red-tank-outline" />
 	<animation map="baykonur" id="regular-mine" />
 	<animation map="baykonur" id="ricochet-bullets-item" />
 	<animation map="baykonur" id="road-sign03" />
 	<animation map="baykonur" id="road-sign10" />
+	<animation map="baykonur" id="shilka-bullet-left" />
+	<animation map="baykonur" id="shilka-bullet-right" />
+	<animation map="baykonur" id="smoke-cloud" />
+	<animation map="baykonur" id="smoke-missile" />
 	<animation map="baykonur" id="smoke-missiles-item" />
 	<animation map="baykonur" id="spaceport-baykonur" />
 	<animation map="baykonur" id="stack" />
@@ -758,6 +770,7 @@
 	<animation map="paintball" id="vehicle-machinegunner-bullet" />
 	<animation map="paintball" id="yellow-launcher" />
 	<animation map="paintball" id="yellow-launcher-outline" />
+	<animation map="platform" id="boomerang-missile" />
 	<animation map="platform" id="boomerang-missiles-item" />
 	<animation map="platform" id="building-explosion" />
 	<animation map="platform" id="bus-stop-right" />
@@ -779,15 +792,22 @@
 	<animation map="platform" id="dead-cyan-car" />
 	<animation map="platform" id="dead-cyan-launcher" />
 	<animation map="platform" id="dead-cyan-shilka" />
+	<animation map="platform" id="dead-cyan-tank" />
+	<animation map="platform" id="dead-green-shilka" />
 	<animation map="platform" id="dead-green-tank" />
 	<animation map="platform" id="dead-machinegunner" />
 	<animation map="platform" id="dead-orange-bus" />
+	<animation map="platform" id="dead-red-tank" />
 	<animation map="platform" id="dead-thrower" />
 	<animation map="platform" id="dead-thrower-static" />
 	<animation map="platform" id="dead-yellow-car" />
 	<animation map="platform" id="dead-yellow-launcher" />
+	<animation map="platform" id="dead-yellow-shilka" />
+	<animation map="platform" id="dead-yellow-tank" />
 	<animation map="platform" id="dead-zombie" />
+	<animation map="platform" id="dispersion-bullet" />
 	<animation map="platform" id="dispersion-bullets-item" />
+	<animation map="platform" id="dumb-missile" />
 	<animation map="platform" id="dumb-missiles-item" />
 	<animation map="platform" id="explosion" />
 	<animation map="platform" id="fire" />
@@ -795,7 +815,10 @@
 	<animation map="platform" id="green-machinegunner-helmet" />
 	<animation map="platform" id="green-mortar" />
 	<animation map="platform" id="green-shilka" />
+	<animation map="platform" id="green-shilka-outline" />
 	<animation map="platform" id="green-tank" />
+	<animation map="platform" id="green-tank-outline" />
+	<animation map="platform" id="green-thrower-helmet" />
 	<animation map="platform" id="guided-missile" />
 	<animation map="platform" id="guided-missiles-item" />
 	<animation map="platform" id="guided-missiles-on-launcher" />
@@ -811,14 +834,22 @@
 	<animation map="platform" id="megaheal" />
 	<animation map="platform" id="missile-explosion" />
 	<animation map="platform" id="missile-fire" />
+	<animation map="platform" id="nuke-explosion" />
+	<animation map="platform" id="nuke-missile" />
 	<animation map="platform" id="nuke-missiles-item" />
 	<animation map="platform" id="oil-barrels" />
 	<animation map="platform" id="red-launcher" />
+	<animation map="platform" id="red-machinegunner-helmet" />
 	<animation map="platform" id="red-tank" />
+	<animation map="platform" id="red-tank-outline" />
+	<animation map="platform" id="red-thrower-helmet" />
+	<animation map="platform" id="ricochet-bullet" />
 	<animation map="platform" id="ricochet-bullets-item" />
 	<animation map="platform" id="road-sign09" />
 	<animation map="platform" id="shilka-bullet-left" />
 	<animation map="platform" id="shilka-bullet-right" />
+	<animation map="platform" id="smoke-cloud" />
+	<animation map="platform" id="smoke-missile" />
 	<animation map="platform" id="smoke-missiles-item" />
 	<animation map="platform" id="spaceport-baykonur" />
 	<animation map="platform" id="stack" />
@@ -835,7 +866,10 @@
 	<animation map="platform" id="yellow-launcher" />
 	<animation map="platform" id="yellow-machinegunner-helmet" />
 	<animation map="platform" id="yellow-shilka" />
+	<animation map="platform" id="yellow-shilka-outline" />
 	<animation map="platform" id="yellow-tank" />
+	<animation map="platform" id="yellow-tank-outline" />
+	<animation map="platform" id="yellow-thrower-helmet" />
 	<animation map="platform" id="zombie" />
 	<animation map="university" id="bomb" />
 	<animation map="university" id="building-explosion" />
