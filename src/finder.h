@@ -37,7 +37,8 @@ public:
 
 	void getPath(std::vector<std::string> &path) const;
 	void addPatchSuffix(const std::string &patch);
-
+	
+	const std::string fix(const std::string &file, const bool strict = true) const;
 private: 
 	void applyPatches(std::vector<std::string>& files, const std::string &fname) const;
 

@@ -59,6 +59,21 @@ void IFinder::applyPatches(std::vector<std::string>& files, const std::string &f
 	files.push_back(file);
 }
 
+const std::string IFinder::fix(const std::string &file, const bool strict) const {
+	std::vector<std::string> files;
+	
+	applyPatches(files, file);
+	for(size_t j = 0; j < files.size(); ++j) {
+		//LOG_DEBUG(("looking for the file: %s", files[j].c_str()));
+		if (mrt::FSNode::exists(files[j]))
+			return files[j];
+	}
+	if (strict)
+		throw_ex(("file '%s' not found", file.c_str()));
+	return std::string();
+}
+
+
 const std::string IFinder::find(const std::string &name, const bool strict) const {
 	for(size_t i = 0; i < _path.size(); ++i) {
 		std::vector<std::string> files;
