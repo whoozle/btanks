@@ -647,6 +647,7 @@
 		<animation id="cyan-machinegunner-helmet"/>
 		<animation id="green-machinegunner-helmet"/>
 		<animation id="red-machinegunner-helmet"/>
+		<animation id="yellow-machinegunner-helmet"/>
 	</object>
 	<object id="impassable-static-corpse">
 		<animation id="dead-cannon"/>

@@ -143,7 +143,7 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 		if (_surfaces.find(tile) == _surfaces.end()) {
 			TRY { 		
 				if (real_load) {
-					const std::string fname = _base_dir + "/tiles/" + tile;
+					const std::string fname = Finder->fix(_base_dir + "/tiles/" + tile);
 					s = new sdlx::Surface;
 					s->loadImage(fname);
 					s->convertAlpha();
@@ -539,8 +539,8 @@ void IResourceManager::checkSurface(const std::string &animation, const sdlx::Su
 	sdlx::Surface *s = _surfaces[a->surface];
 	sdlx::CollisionMap *cmap = _cmaps[a->surface];
 
-	std::string fname = a->base_dir + "/tiles/" + a->surface;
-	if (!mrt::FSNode::exists(fname)) {
+	std::string fname = Finder->fix(a->base_dir + "/tiles/" + a->surface, false);
+	if (fname.empty()) {
 		fname = Finder->find("tiles/" + a->surface);
 	}
 	
