@@ -1,5 +1,6 @@
 
 current_stage = nil
+current_stage_idx = 0
 current_message = nil
 message_timer = 0
 
@@ -7,18 +8,10 @@ check_timer = 0
 check_interval = 0.5
 
 function on_load()
-	stages = {
-		{'object:helicopter-with-kamikazes:chinook:special-1', 'object:raider-helicopter:helicopter:special-1', 'object:raider-helicopter:helicopter:special-2'}, 
-		{'object:tank:green-tank:special-2', 'object:tank:yellow-tank:special-1', }, 
-		{'object:launcher:cyan-launcher:special-1', 'object:launcher:green-launcher:special-1', }
-	};
-	table.foreachi(stages, hide_stage);
 end
 
-function hide_stage_item(idx, value) hide_item(value) end
-
-function hide_stage(idx, items)
-	table.foreachi(items, hide_stage_item);
+function generate_stage(idx) 
+	return { spawn('kamikaze', 'kamikaze', 256, 256) };
 end
 
 function on_tick(dt) 
@@ -32,12 +25,6 @@ function on_tick(dt)
 		check_timer = 0;
 		-- print "test";
 		if current_stage == nil then
-			if table.getn(stages) == 0 then
-				game_over('messages', 'mission-accomplished', 3, true);
-				message_timer = 1000;
-				return;
-			end
-			
 			if current_message == nil then 
 				current_message = 'ready'
 				message_timer = 1
@@ -47,20 +34,19 @@ function on_tick(dt)
 				message_timer = 1
 				display_message('messages', current_message, message_timer, true)				
 			else 
-				current_message = nil
-				local n = table.getn(stages);
-				local idx = random(n);
-				print("searching for the new stage #"..idx.." from the "..n.." entries");
-				current_stage = table.remove(stages, idx + 1)
-				for i = 1,#current_stage do 
-					show_item(current_stage[i]);
+				current_message = nil;
+				current_stage_idx = current_stage_idx + 1
+				current_stage = generate_stage(current_stage_idx);
+				if current_stage == nil then
+					game_over('messages', 'mission-accomplished', 3, true);
+					message_timer = 1000;
+					return;
 				end
-
 			end
 		else 
 			-- current_stage not nil
 			for i = 1,#current_stage do 
-				if item_exists(current_stage[i]) then return end
+				if object_exists(current_stage[i]) then return end
 			end
 			current_stage = nil;
 		end

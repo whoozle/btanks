@@ -2,27 +2,16 @@
 <map version="0.99b" orientation="orthogonal" width="40" height="40" tilewidth="64" tileheight="64">
 	<properties>
 		<property name="config:map.helicopter-with-kamikazes.respawn-interval" value="int:-1"/>
-		<property name="config:map.raider-helicopter.respawn-interval" value="int:-1"/>
-		<property name="config:multiplayer.game-type" value="string:cooperative"/>
-		<property name="config:map.tank.respawn-interval" value="int:-1"/>
 		<property name="config:map.launcher.respawn-interval" value="int:-1"/>
-		<property name="config:map.shilka.respawn-interval" value="int:-1"/>		
+		<property name="config:map.raider-helicopter.respawn-interval" value="int:-1"/>
+		<property name="config:map.shilka.respawn-interval" value="int:-1"/>
+		<property name="config:map.tank.respawn-interval" value="int:-1"/>
+		<property name="config:multiplayer.game-type" value="string:cooperative"/>
 		<property name="object:biotoilet:biotoilet:1" value="1280,1280,10"/>
-		<property name="object:helicopter-with-kamikazes:chinook:special-1" value="2250,-30,2000"/>
-		<property name="object:launcher:cyan-launcher:special-1" value="1361,1349"/>
-		<property name="object:launcher:green-launcher:special-1" value="1222,1215"/>
-		<property name="object:raider-helicopter:helicopter:special-1" value="45,33,2000"/>
-		<property name="object:raider-helicopter:helicopter:special-2" value="2394,2406,2000"/>
-		<property name="object:static-buggy:buggy:1" value="335,589/3"/>
-		<property name="object:static-buggy:buggy:2" value="481,592/5"/>
-		<property name="object:static-buggy:buggy:3" value="565,502/3"/>
-		<property name="object:static-buggy:buggy:4" value="562,398/2"/>
-		<property name="object:tank:green-tank:special-2" value="1214,1344"/>
-		<property name="object:tank:yellow-tank:special-1" value="1359,1227"/>
-		<property name="spawn:1" value="318,378"/>
-		<property name="spawn:2" value="2113,378"/>
-		<property name="spawn:3" value="320,2109"/>
-		<property name="spawn:4" value="2175,2106"/>
+		<property name="spawn:2" value="1195,1206"/>
+		<property name="spawn:3" value="1380,1203"/>
+		<property name="spawn:4" value="1197,1380"/>
+		<property name="spawn:5" value="1372,1379"/>
 	</properties>
 	<tileset name="terrains" firstgid="1" tilewidth="64" tileheight="64">
 		<image source="../tilesets/terrains.png"/>
