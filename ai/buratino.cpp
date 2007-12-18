@@ -228,7 +228,7 @@ void Buratino::calculate(Object *object, const float dt) {
 	}
 
 	const bool racing = object->getVariants().has("racing");
-	const bool refresh_path = !racing && _refresh_path.tick(dt);
+	const bool refresh_path = !racing && _refresh_path.tick(dt) && object->isDriven();
 	const bool dumb = !_reaction_time.tick(dt);
 	const Object *target = NULL;
 	
