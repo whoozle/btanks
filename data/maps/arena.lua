@@ -10,8 +10,24 @@ check_interval = 0.5
 function on_load()
 end
 
+function spawn_random(classname, animation)
+	local x, y;
+	local xs, ys = map_size();
+	repeat
+		x = random(xs);
+		y = random(ys);
+		-- print("x "..x..", y = "..y);
+	until check_matrix(x, y);
+	return spawn(classname, animation, x, y);
+end
+
 function generate_stage(idx) 
-	return { spawn('kamikaze', 'kamikaze', 256, 256) };
+	local i, stage;
+	stage = {};
+	for i = 1,20 do 
+		stage[#stage + 1] = spawn_random('kamikaze', 'kamikaze');
+	end
+	return stage;
 end
 
 function on_tick(dt) 
