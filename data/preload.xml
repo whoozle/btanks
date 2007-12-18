@@ -68,6 +68,8 @@
 		<object id="barrack-with-throwers"/>
 		<object id="boat"/>
 		<object id="cannon"/>
+		<object id="cannon-bullet"/>
+		<object id="cannon-explosion"/>
 		<object id="corpse"/>
 		<object id="damage-digits"/>
 		<object id="dispersion-bullets-item"/>
@@ -76,6 +78,8 @@
 		<object id="fake-mod"/>
 		<object id="fire"/>
 		<object id="gate"/>
+		<object id="grenade"/>
+		<object id="grenade-explosion"/>
 		<object id="guided-missiles-item"/>
 		<object id="heal"/>
 		<object id="impassable-static-corpse"/>
@@ -619,6 +623,12 @@
 	</object>
 	<object id="gate">
 		<animation id="gate"/>
+	</object>
+	<object id="grenade">
+		<animation id="grenade"/>
+	</object>
+	<object id="grenade-explosion">
+		<animation id="grenade-explosion"/>
 	</object>
 	<object id="guided-missile">
 		<animation id="guided-missile"/>
