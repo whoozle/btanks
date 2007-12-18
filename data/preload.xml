@@ -390,6 +390,7 @@
 		<object id="tank"/>
 		<object id="tank-bullet"/>
 		<object id="tent"/>
+		<object id="thrower"/>
 		<object id="thrower-item"/>
 		<object id="traffic-lights"/>
 		<object id="turrel"/>
@@ -648,6 +649,7 @@
 		<animation id="green-machinegunner-helmet"/>
 		<animation id="red-machinegunner-helmet"/>
 		<animation id="yellow-machinegunner-helmet"/>
+		<animation id="yellow-thrower-helmet"/>
 	</object>
 	<object id="impassable-static-corpse">
 		<animation id="dead-cannon"/>
