@@ -241,6 +241,9 @@ void IGame::init(const int argc, char *argv[]) {
 			Config->remove("objects.combine.reaction-time");
 			Config->remove("objects.tractor.reaction-time");
 		}
+		if (revision < 5700) {
+			Config->remove("engine.pathfinding-throttling");
+		}
 		
 		Config->set("engine.revision", getRevision());
 	}
