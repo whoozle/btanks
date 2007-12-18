@@ -21,19 +21,97 @@ function spawn_random(classname, animation)
 	return spawn(classname, animation, x, y);
 end
 
+items = {
+	nuke_missiles_item=150, 
+	guided_missiles_item=10, 
+	dumb_missiles_item=10, 
+	smoke_missiles_item=30, 
+	mines_item=20, 
+	ricochet_bullets_item=20, 
+	dispersion_bullets_item=50, 
+	machinegunner_item=30, 
+	thrower_item=20, 
+	boomerang_missiles_item = 40, 
+	stun_missiles_item = 20, 
+	};
+
+items_id = {}
+
+monsters = {zombie= 10, slime= 20};
+troopers = {kamikaze= 5, machinegunner= 10, thrower= 5, cannon= 10, tank= 100, launcher= 100, shilka= 100, mortar= 75};
+scores = {
+	troopers,	
+	troopers,	
+	troopers,	
+	monsters, 	
+	troopers,	
+	troopers,	
+}
+
+animations = {
+	launcher={"red-launcher", "green-launcher", "cyan-launcher", "yellow-launcher", },
+	tank={"red-tank", "green-tank", "cyan-tank", "yellow-tank", },
+	shilka={"red-shilka", "green-shilka", "cyan-shilka", "yellow-shilka", },
+	mortar={"red-mortar", "green-mortar", "cyan-mortar", "yellow-mortar", }, 
+}
+
+function array_keys(array)
+	local keys = {};
+	local k;
+	for k in pairs(array) do 
+		keys[#keys + 1] = k;
+	end
+	return keys;
+end
+
+
 function generate_stage(idx) 
+	local score = idx * 100;
+	local item_score = score;
+	local stage = {};
+
+	print("score "..score);
+
 	local i, stage;
 	stage = {};
-	for i = 1,20 do 
-		stage[#stage + 1] = spawn_random('kamikaze', 'kamikaze');
+	local row = random(table.getn(scores)) + 1;
+	local objects = scores[row];
+	local keys = array_keys(objects);
+
+	repeat 
+		local object = keys[1 + random(#keys)];
+		local animation = object;
+		if animations[object] ~= nil then 
+			animation = animations[object][random(#animations[object]) + 1];
+		end
+		print("i've chosen: "..object..":"..animation);
+
+		stage[#stage + 1] = spawn_random(object, animation);
+		score = score - objects[object];
+	until score <= 0;
+
+	for i = 1, #items_id do 
+		kill_object(items_id[i], true);
 	end
+
+	items_id = {}
+	keys = array_keys(items);
+
+	repeat 
+		local object = keys[1 + random(#keys)];
+		item_score = item_score - items[object];
+
+		object = string.gsub(object, "_", "-");
+		items_id[#items_id + 1] = spawn_random(object, object);
+	until item_score <= 0;
+
 	return stage;
 end
 
 function on_tick(dt) 
 	if (message_timer > 0) then
-		message_timer = message_timer - dt
-		return
+		message_timer = message_timer - dt;
+		return;
 	end
 	
 	check_timer = check_timer + dt;
@@ -42,8 +120,14 @@ function on_tick(dt)
 		-- print "test";
 		if current_stage == nil then
 			if current_message == nil then 
+				if current_stage_idx >= 10 then
+					game_over('messages', 'mission-accomplished', 3, true);
+					message_timer = 1000;
+					return;
+				end
+
 				current_message = 'ready'
-				message_timer = 1
+				message_timer = 2
 				display_message('messages', current_message, message_timer, true)
 			elseif current_message == 'ready' then
 				current_message = 'go'
@@ -53,11 +137,6 @@ function on_tick(dt)
 				current_message = nil;
 				current_stage_idx = current_stage_idx + 1
 				current_stage = generate_stage(current_stage_idx);
-				if current_stage == nil then
-					game_over('messages', 'mission-accomplished', 3, true);
-					message_timer = 1000;
-					return;
-				end
 			end
 		else 
 			-- current_stage not nil
