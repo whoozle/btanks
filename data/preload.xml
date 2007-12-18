@@ -598,6 +598,7 @@
 		<animation id="dead-machinegunner"/>
 		<animation id="dead-mortar"/>
 		<animation id="dead-orange-bus"/>
+		<animation id="dead-red-car"/>
 		<animation id="dead-red-launcher"/>
 		<animation id="dead-red-shilka"/>
 		<animation id="dead-red-tank"/>

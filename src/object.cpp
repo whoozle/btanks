@@ -596,13 +596,37 @@ void Object::emit(const std::string &event, Object * emitter) {
 		LOG_WARN(("%s[%d]: unhandled event '%s'", registered_name.c_str(), _id, event.c_str()));
 }
 
-void Object::setWay(const Way & way) {
-	_way = way;
-	_next_target.clear();
-	if (!way.empty()) { 
-//		LOG_DEBUG(("%d:%s:%s set %u pending waypoints", getID(), registered_name.c_str(), animation.c_str(), (unsigned)_way.size()));
-		_next_target = way.begin()->convert<float>();
+void Object::setWay(const Way & new_way) {
+	v2<int> pos;
+	getCenterPosition(pos);
+
+	_way = new_way;
+
+	int d = ((int)size.x + (int)size.y) / 4;
+	d *= d;
+	
+	int idx, n = (int)_way.size();
+	for(idx = n - 1; idx >= 0; --idx) {
+		if (pos.quick_distance(_way[idx]) <= d) 
+			break;
 	}
+	if (idx >= 0) {
+		Way::iterator i = _way.begin();
+		LOG_DEBUG(("skipping %d vertex(es)", idx + 1));
+		while(idx--) {
+			assert(i != _way.end());
+			++i;
+		}
+		_way.erase(_way.begin(), i);
+	}
+	
+	if (!_way.empty()) { 
+//		LOG_DEBUG(("%d:%s:%s set %u pending waypoints", getID(), registered_name.c_str(), animation.c_str(), (unsigned)_way.size()));
+		_next_target = _way.begin()->convert<float>();
+	}
+
+	_next_target.clear();
+	_velocity.clear();
 	need_sync = true;
 }
 
