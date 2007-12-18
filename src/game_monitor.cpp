@@ -187,6 +187,17 @@ void IGameMonitor::checkItems(const float dt) {
 	}
 	
 	_specials.clear();
+	for(size_t i = 0; i < _external_specials.size(); ++i) {
+		const int id = _external_specials[i];
+		Object *o = World->getObjectByID(id);
+		if (o == NULL)
+			continue;
+
+		v2<int> pos;
+		o->getCenterPosition(pos);
+		_specials.push_back(v3<int>(pos.x, pos.y, id));	
+	}
+	
 	Uint32 ticks = SDL_GetTicks();
 	
 	for(Items::iterator i = _items.begin(); i != _items.end(); ++i) {
@@ -315,6 +326,8 @@ void IGameMonitor::clear() {
 	
 	_items.clear();
 	_specials.clear();
+	_external_specials.clear();
+	
 	_check_items.reset();
 	_disabled.clear();
 	_destroy_classes.clear();

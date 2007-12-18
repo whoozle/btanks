@@ -125,6 +125,7 @@ public:
 	const bool gameOver() const { return _game_over; }
 
 	void onScriptZone(const int slot_id, const SpecialZone &zone, const bool global);
+	void setSpecials(const std::vector<int> &ex) { _external_specials = ex; }
 	
 private:
 	const std::string onConsole(const std::string &cmd, const std::string &param);
@@ -134,6 +135,7 @@ private:
 	typedef std::deque<GameItem> Items;
 	Items _items;
 	std::vector<v3<int> > _specials;
+	std::vector<int> _external_specials;
 
 	Alarm _check_items;
 

@@ -681,13 +681,34 @@ LUA_TRY {
 	lua_pushinteger(L, mrt::random(n));
 	return 1;
 } LUA_CATCH("lua_random")
-	return 0;
 }
 
 
 static int lua_hooks_players_number(lua_State *L) {
 	lua_pushinteger(L, (int)PlayerManager->getSlotsCount());
 	return 1;
+}
+
+static int lua_hooks_set_specials(lua_State *L) {
+LUA_TRY {
+	int n = lua_gettop(L);
+	if (n < 1 || !lua_istable(L, 1)) {
+		lua_pushstring(L, "set_specials requires table as first argument");
+		lua_error(L);
+		return 0;
+	}
+	std::vector<int> specials;
+	lua_pushnil(L);  /* first key */
+    while (lua_next(L, 1) != 0) {
+		/* `key' is at index -2 and `value' at index -1 */
+		//printf("%s - %s\n", lua_typename(L, lua_type(L, -2)), lua_typename(L, lua_type(L, -1)));
+		int id = lua_tointeger(L, -1);
+		specials.push_back(id);
+		lua_pop(L, 1);  /* removes `value'; keeps `key' for next iteration */
+	}
+	GameMonitor->setSpecials(specials);
+	return 0;
+} LUA_CATCH("lua_random")
 }
 
 void LuaHooks::load(const std::string &name) {
@@ -723,6 +744,7 @@ void LuaHooks::load(const std::string &name) {
 	lua_register(state, "random", lua_hooks_random);
 	lua_register(state, "check_matrix", lua_hooks_check_matrix);
 	lua_register(state, "map_size", lua_hooks_map_size);
+	lua_register(state, "set_specials", lua_hooks_set_specials);
 	
 	state.call(0, LUA_MULTRET);
 	

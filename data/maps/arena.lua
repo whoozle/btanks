@@ -89,6 +89,7 @@ function generate_stage(idx)
 		stage[#stage + 1] = spawn_random(object, animation);
 		score = score - objects[object];
 	until score <= 0;
+	set_specials(stage); --add marks on the minimap
 
 	for i = 1, #items_id do 
 		kill_object(items_id[i], true);

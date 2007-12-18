@@ -48,7 +48,9 @@
 	<map id="arena">
 		<object id="alt-missiles-on-launcher"/>
 		<object id="biotoilet"/>
+		<object id="boomerang-missile"/>
 		<object id="boomerang-missiles-item"/>
+		<object id="cannon"/>
 		<object id="corpse"/>
 		<object id="damage-digits"/>
 		<object id="dumb-missiles-item"/>
@@ -57,6 +59,7 @@
 		<object id="grenade"/>
 		<object id="grenade-explosion"/>
 		<object id="guided-missile"/>
+		<object id="guided-missiles-item"/>
 		<object id="helicopter-with-kamikazes"/>
 		<object id="helmet"/>
 		<object id="kamikaze"/>
@@ -68,13 +71,23 @@
 		<object id="mines-item"/>
 		<object id="missiles-on-launcher"/>
 		<object id="missiles-on-tank"/>
+		<object id="mortar"/>
+		<object id="mortar-bullet"/>
+		<object id="mortar-explosion"/>
+		<object id="nuke-missiles-item"/>
 		<object id="raider-helicopter"/>
+		<object id="ricochet-bullets-item"/>
 		<object id="shilka"/>
+		<object id="shilka-bullet"/>
 		<object id="single-pose"/>
+		<object id="smoke-missiles-item"/>
 		<object id="static-buggy"/>
+		<object id="stun-missiles-item"/>
 		<object id="tank"/>
 		<object id="tank-bullet"/>
 		<object id="thrower"/>
+		<object id="thrower-item"/>
+		<object id="thrower-missile"/>
 		<object id="turrel"/>
 	</map>
 	<map id="baykonur">
@@ -179,6 +192,7 @@
 		<object id="outline"/>
 		<object id="pond"/>
 		<object id="regular-mine"/>
+		<object id="ricochet-bullet"/>
 		<object id="ricochet-bullets-item"/>
 		<object id="road-sign"/>
 		<object id="shilka"/>
@@ -745,6 +759,11 @@
 	</object>
 	<object id="missiles-on-tank">
 		<animation id="guided-missiles-on-tank"/>
+	</object>
+	<object id="mortar">
+		<animation id="cyan-mortar"/>
+		<animation id="green-mortar"/>
+		<animation id="red-mortar"/>
 	</object>
 	<object id="mortar-bullet">
 		<animation id="mortar-bullet"/>
