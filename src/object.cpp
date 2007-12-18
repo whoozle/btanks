@@ -1278,6 +1278,8 @@ const bool Object::findPathDone(Way &way) {
 			_open_list.push(PD(p.g + p.h, p.id));
 		}
 		--ps;
+		if (ps == 0)
+			ps = -1;
 	}
 	
 	setDirection(dir_save);
