@@ -56,7 +56,7 @@ void State::init() {
 		throw_ex(("cannot create lua interpreter"));
 
 	static const luaL_Reg libs[] = {
-		//{"", luaopen_base},
+		{"", luaopen_base},
 		//{LUA_LOADLIBNAME, luaopen_package},
 		{LUA_TABLIBNAME, luaopen_table},
 		//{LUA_IOLIBNAME, luaopen_io},
