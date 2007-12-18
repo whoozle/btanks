@@ -91,13 +91,14 @@ void Buratino::onSpawn(const Object *object) {
 	if (_enemies.empty() && _bonuses.empty()) 
 		throw_ex(("vehicle had not provided enemies/bonuses"));
 		
-	float rt, rpi;
-	Config->get("objects.ai-" + vehicle + ".reaction-time", rt, 0.1f);
+	float rt = 0.1f, rpi = 2.0f;
+
 	mrt::randomize(rt, rt/10);
 	_reaction_time.set(rt);
-	Config->get("objects.ai-" + vehicle + ".refresh-path-interval", rpi, 1);
+
 	mrt::randomize(rpi, rpi/10);
 	_refresh_path.set(rpi);
+	
 	Config->get("objects.ai-" + vehicle + ".pathfinding-slice", _pf_slice, 10);
 }
 
