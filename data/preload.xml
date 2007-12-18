@@ -48,8 +48,10 @@
 	<map id="arena">
 		<object id="alt-missiles-on-launcher"/>
 		<object id="biotoilet"/>
+		<object id="boomerang-missiles-item"/>
 		<object id="corpse"/>
 		<object id="damage-digits"/>
+		<object id="dumb-missiles-item"/>
 		<object id="explosion"/>
 		<object id="fake-mod"/>
 		<object id="grenade"/>
@@ -62,6 +64,8 @@
 		<object id="launcher"/>
 		<object id="machinegunner"/>
 		<object id="machinegunner-bullet"/>
+		<object id="machinegunner-item"/>
+		<object id="mines-item"/>
 		<object id="missiles-on-launcher"/>
 		<object id="missiles-on-tank"/>
 		<object id="raider-helicopter"/>
@@ -69,6 +73,8 @@
 		<object id="single-pose"/>
 		<object id="static-buggy"/>
 		<object id="tank"/>
+		<object id="tank-bullet"/>
+		<object id="thrower"/>
 		<object id="turrel"/>
 	</map>
 	<map id="baykonur">
@@ -192,6 +198,7 @@
 		<object id="tank"/>
 		<object id="tank-bullet"/>
 		<object id="tent"/>
+		<object id="thrower"/>
 		<object id="thrower-item"/>
 		<object id="thrower-missile"/>
 		<object id="thrower-on-launcher"/>
@@ -318,16 +325,21 @@
 		<object id="dumb-missiles-item"/>
 		<object id="explosion"/>
 		<object id="fake-mod"/>
+		<object id="fire"/>
 		<object id="heal"/>
+		<object id="helmet"/>
 		<object id="impassable-static-corpse"/>
 		<object id="launcher"/>
 		<object id="lodge"/>
+		<object id="machinegunner"/>
 		<object id="machinegunner-bullet"/>
 		<object id="machinegunner-player"/>
 		<object id="megaheal"/>
 		<object id="mines-item"/>
 		<object id="missiles-on-launcher"/>
 		<object id="missiles-on-tank"/>
+		<object id="mortar-bullet"/>
+		<object id="mortar-explosion"/>
 		<object id="nuke-explosion"/>
 		<object id="nuke-mine"/>
 		<object id="nuke-missile"/>
@@ -345,6 +357,8 @@
 		<object id="static-launcher"/>
 		<object id="static-mortar"/>
 		<object id="static-tank"/>
+		<object id="tank"/>
+		<object id="tank-bullet"/>
 	</map>
 	<map id="lenin_square">
 		<object id="alt-missiles-on-launcher"/>
@@ -657,6 +671,7 @@
 	</object>
 	<object id="helmet">
 		<animation id="cyan-machinegunner-helmet"/>
+		<animation id="cyan-thrower-helmet"/>
 		<animation id="green-machinegunner-helmet"/>
 		<animation id="red-machinegunner-helmet"/>
 		<animation id="yellow-machinegunner-helmet"/>
@@ -729,6 +744,12 @@
 	</object>
 	<object id="missiles-on-tank">
 		<animation id="guided-missiles-on-tank"/>
+	</object>
+	<object id="mortar-bullet">
+		<animation id="mortar-bullet"/>
+	</object>
+	<object id="mortar-explosion">
+		<animation id="mortar-explosion"/>
 	</object>
 	<object id="nuke-explosion">
 		<animation id="nuke-explosion"/>
