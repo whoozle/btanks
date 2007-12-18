@@ -37,7 +37,7 @@ IFinder::IFinder() {
 		else LOG_DEBUG(("skipped non-existent path item %s", r[i].c_str()));
 	}
 	if (_path.empty())
-		throw_ex(("non of the directories listed in engine.path('%s') exist", path.c_str()));
+		throw_ex(("none of the directories listed in engine.path('%s') exist", path.c_str()));
 }
 
 void IFinder::applyPatches(std::vector<std::string>& files, const std::string &file) const {
