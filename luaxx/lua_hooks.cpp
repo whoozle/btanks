@@ -52,13 +52,13 @@ LUA_TRY {
 static int lua_hooks_check_matrix(lua_State *L) {
 LUA_TRY {
 	int n = lua_gettop(L);
-	if (n < 3) {
+	if (n < 2) {
 		lua_pushstring(L, "check_matrix requires x, y and z");
 		lua_error(L);
 		return 0;		
 	}
 	v2<int> pos(lua_tointeger(L, 1), lua_tointeger(L, 2));
-	int z = lua_tointeger(L, 3);
+	int z = (n >= 3)? lua_tointeger(L, 3): 0;
 	const v2<int> pfs = Map->getPathTileSize();
 	pos /= pfs;
 	
@@ -66,6 +66,15 @@ LUA_TRY {
 	int im = matrix.get(pos.y, pos.x);
 	lua_pushboolean(L, (im >= 0 && im < 100)?1:0);
 	return 1;
+} LUA_CATCH("lua_hooks_check_matrix")
+}
+
+static int lua_hooks_map_size(lua_State *L) {
+LUA_TRY {
+	v2<int> map_size = Map->getSize();
+	lua_pushinteger(L, map_size.x);
+	lua_pushinteger(L, map_size.y);
+	return 2;
 } LUA_CATCH("lua_hooks_check_matrix")
 }
 
@@ -713,6 +722,7 @@ void LuaHooks::load(const std::string &name) {
 	lua_register(state, "set_config_override", lua_hooks_set_config_override);
 	lua_register(state, "random", lua_hooks_random);
 	lua_register(state, "check_matrix", lua_hooks_check_matrix);
+	lua_register(state, "map_size", lua_hooks_map_size);
 	
 	state.call(0, LUA_MULTRET);
 	
