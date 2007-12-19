@@ -39,13 +39,17 @@
 		*) Skip tcp updates for player in slots. 
 		*) Allowed using of the pathfinding API. (better synchronization for cars and other PF clients)
 		*) Implemented congruent 32-bit random generator. Added its synchronization in the network game. 
+	*) AI fixes: 
+		*) Removed various bogus throttling stuff from pathfinding improving performance.
+		*) AI players without slot properly moves in multiplayer game.
+		*) AI players could enter vehicles.
+		*) New AI code: rush and old-school roaming. :)
+	*) New scripted map: Arena with random enemies and items.
+	*) Added X-mas tiles, happy X-mas, everyone! 
 	*) Added preload feature to minimize memory usage and decrease loading time.
 	*) Added visual effect for teleportation.
 	*) Implemented simple 32-bit congruent random generator to allow random synchronization.
 	*) 'Random respawn' mode.
-	*) AI could enter vehicles now.
-	*) New AI code: rush and old-school roaming. :)
-	*) Improved tiles loading: do not load all tiles on start, load only needed.
 	*) New tune: "karbofos"
 	*) Fixed important stuff in static collisions map. Now nuke 100% destroys mines and other static objects.
 	*) You could not survive(by freezing) in nuke explosion anymore. 
