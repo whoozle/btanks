@@ -81,6 +81,7 @@
 		<object id="mortar-bullet"/>
 		<object id="mortar-explosion"/>
 		<object id="nuke-explosion"/>
+		<object id="nuke-mine"/>
 		<object id="nuke-missile"/>
 		<object id="nuke-missiles-item"/>
 		<object id="raider-helicopter"/>
@@ -705,6 +706,7 @@
 		<animation id="cyan-machinegunner-helmet"/>
 		<animation id="cyan-thrower-helmet"/>
 		<animation id="green-machinegunner-helmet"/>
+		<animation id="green-thrower-helmet"/>
 		<animation id="red-machinegunner-helmet"/>
 		<animation id="yellow-machinegunner-helmet"/>
 		<animation id="yellow-thrower-helmet"/>
