@@ -11,13 +11,16 @@ The game has two modes:
 2. Using of software rendering.  This will work on any video card.
 
 Command line parameters:
---no-gl     turns off using of the hardware OpenGL renderer
---fs        turns on the full screen mode (will be the default setting in future)
---lang=XX	override language setting (XX - 2 letter ISO code: en, ru, de, fr)
---vsync     turns on vertical synchronization--may help if tearing effect is visible
+--no-gl     	turns off using of the hardware OpenGL renderer
+--force-gl		forces using of the GL renderer, even if no acceleration was detected.
+--fs        	turns on the full screen mode (will be the default setting in future)
+--lang=XX		override language setting (XX - 2 letter ISO code: en, ru, de, fr)
+--vsync     	turns on vertical synchronization--may help if tearing effect is visible
+--connect=host  connects to the given host
+--no-sound		turns off sound completely.
+--sound			turns on sound, even if it was turned off in bt.xml
 
 The screen resolution can also be set:
--0 640x480
 -1 800x600 (this is the default value)
 -2 1024x768
 -3 1152x864
