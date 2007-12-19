@@ -58,6 +58,14 @@ public:
 		float fr = 1.0f;
 		_fire.set(fr);
 	}
+	virtual void serialize(mrt::Serializator &s) const {
+		ai::StupidTrooper::serialize(s);
+		s.add(_fire);
+	}
+	virtual void deserialize(const mrt::Serializator &s) {
+		ai::StupidTrooper::deserialize(s);
+		s.get(_fire);	
+	}
 private: 
 	Alarm _fire;
 };
