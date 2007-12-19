@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+#include "SDL/SDL_syswm.h"
 #include "directory.h"
 #include "ioexception.h"
 #include <errno.h>
@@ -119,7 +120,6 @@ void Directory::close() {
 	_handle = 0;
 }
 
-#include "SDL/SDL_syswm.h"
 #include <shlobj.h>
 
 const std::string Directory::getAppDir(const std::string &name) {
@@ -132,10 +132,11 @@ const std::string Directory::getAppDir(const std::string &name) {
 const std::string Directory::getHome() {
     SDL_SysWMinfo   info;
 	HWND hwnd = NULL;
-
+/*
     SDL_VERSION(&info.version);
     if (SDL_GetWMInfo(&info) != -1)
         hwnd = info.window;
+*/
     TCHAR path[MAX_PATH];
    	if (FAILED(::SHGetFolderPath(hwnd, CSIDL_APPDATA | CSIDL_FLAG_CREATE, NULL, SHGFP_TYPE_CURRENT, path)))
    		throw_ex(("GetFolderPath(CSIDL_APPDATA|CSIDL_FLAG_CREATE) failed"));
