@@ -589,6 +589,8 @@ void IWorld::getImpassabilityMatrix(Matrix<int> &matrix, const Object *src, cons
 	//LOG_DEBUG(("projected objects:\n%s", matrix.dump().c_str()));
 }
 
+#include "ai/buratino.h"
+
 void IWorld::_tick(Object &o, const float dt, const bool do_calculate) {
 	if (o.isDead()) 
 		return;
@@ -676,6 +678,7 @@ TRY {
 		//regular calculate
 		GET_CONFIG_VALUE("engine.enable-profiler", bool, ep, false);
 		TRY { 
+			PlayerState old_state = o.getPlayerState();
 			if (o.disable_ai) {
 				o.Object::calculate(dt);
 			} else {
@@ -686,6 +689,10 @@ TRY {
 				} else {
 					o.calculate(dt);
 				}
+			}
+			if (old_state != o.getPlayerState() && dynamic_cast<ai::Buratino *>(&o) != NULL) {
+				//LOG_DEBUG(("buratino %s changed state", o.animation.c_str()));
+				PlayerManager->sendObjectState(o.getID(), o.getPlayerState());
 			}
 		} CATCH("calling o.calculate", throw;)
 	}

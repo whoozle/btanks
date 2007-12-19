@@ -40,6 +40,7 @@ class Surface;
 }
 
 class PlayerSlot;
+class PlayerState;
 class SpecialZone;
 class Server;
 class Client;
@@ -111,6 +112,8 @@ public:
 	
 	const SpecialZone& getNextCheckpoint(PlayerSlot &slot); 
 	void fixCheckpoints(PlayerSlot &slot, const SpecialZone &zone); 
+	
+	void sendObjectState(const int id, const PlayerState & state);
 
 private: 
 	void serializeSlots(mrt::Serializator &s) const;
@@ -136,6 +139,9 @@ private:
 	bool _ping;
 	Alarm _next_sync;
 	bool _game_joined;
+	
+	typedef std::set<int> ObjectStates;
+	ObjectStates _object_states;
 };
 
 SINGLETON(BTANKSAPI, PlayerManager, IPlayerManager);

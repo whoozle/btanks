@@ -56,6 +56,7 @@
 		<object id="corpse"/>
 		<object id="damage-digits"/>
 		<object id="dispersion-bullet"/>
+		<object id="dispersion-bullets-item"/>
 		<object id="dumb-missile"/>
 		<object id="dumb-missiles-item"/>
 		<object id="explosion"/>

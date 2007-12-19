@@ -280,11 +280,9 @@ TRY {
 			PlayerSlot *slot = getSlotByID(id);
 			bool my_state = false;
 			
-			if (slot == NULL) {
-				LOG_WARN(("object id %u was not found in slots", id));
-			} else {
+			if (slot != NULL) {
 				my_state = slot->visible;
-			}
+			} 
 			
 			Object *o = World->getObjectByID(id);
 
@@ -645,7 +643,10 @@ TRY {
 		if (slot.need_sync) //keep it here, another code may trigger need_sync
 			updated = true;	
 	}
-				
+	
+	if (!_object_states.empty())
+		updated = true;
+			
 	if (_client && _players.size() != 0 && updated) {
 		mrt::Serializator s;
 
@@ -679,18 +680,35 @@ TRY {
 			if (!slot.empty() && slot.need_sync) {
 				//LOG_DEBUG(("object in slot %d: %s (%d) need sync [%s]", 
 				//	j, slot.getObject()->animation.c_str(), slot.getObject()->getID(), slot.getObject()->getPlayerState().dump().c_str()));
-				Object * o = slot.getObject();
+				const Object * o = slot.getObject();
 				if (o == NULL)
 					continue;
 				
 				s.add(slot.id);
-				o->getPlayerState().serialize(s);
+				s.add(o->getPlayerState());
 				World->serializeObjectPV(s, o);
 				s.add(slot.dont_interpolate);
+				
 				send = true;
 				slot.need_sync = false;
 				slot.dont_interpolate = false;
 			}
+		}
+		if (!_object_states.empty()) {
+			for(ObjectStates::const_iterator i = _object_states.begin(); i != _object_states.end(); ++i) {
+				const int id = *i;
+				const Object * o = World->getObjectByID(id);
+				if (o == NULL)
+					continue;
+			
+				s.add(id);
+				s.add(o->getPlayerState());
+				World->serializeObjectPV(s, o);
+				s.add(false);
+				
+				send = true;
+			}
+			_object_states.clear();			
 		}
 
 		if (send) {
@@ -752,6 +770,7 @@ void IPlayerManager::clear() {
 	_global_zones_reached.clear();
 	_players.clear();	
 	_zones.clear();
+	_object_states.clear();
 }
 
 void IPlayerManager::addSlot(const v3<int> &position) {
@@ -1296,4 +1315,10 @@ void IPlayerManager::fixCheckpoints(PlayerSlot &slot, const SpecialZone &zone) {
 		if (z.name == zone.name)
 			return;
 	}
+}
+
+void IPlayerManager::sendObjectState(const int id, const PlayerState & state) {
+	if (!isServerActive() || getSlotByID(id) != NULL) //object doesnt reside in any slot.
+		return;
+	_object_states.insert(id);
 }
