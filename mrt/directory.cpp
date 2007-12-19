@@ -119,13 +119,32 @@ void Directory::close() {
 	_handle = 0;
 }
 
-const std::string Directory::getHome() {
-	throw_ex(("implement me -> http://support.microsoft.com/kb/101507"));
-	return std::string();
+#include "SDL/SDL_syswm.h"
+#include <shlobj.h>
+
+const std::string Directory::getAppDir(const std::string &name) {
+	std::string path = getHome() + "\\" + name;
+	if (!exists(path)) 
+		create(path);
+	return path;	
 }
 
+const std::string Directory::getHome() {
+    SDL_SysWMinfo   info;
+	HWND hwnd = NULL;
+
+    SDL_VERSION(&info.version);
+    if (SDL_GetWMInfo(&info) != -1)
+        hwnd = info.window;
+    TCHAR path[MAX_PATH];
+   	if (FAILED(::SHGetFolderPath(hwnd, CSIDL_APPDATA | CSIDL_FLAG_CREATE, NULL, SHGFP_TYPE_CURRENT, path)))
+   		throw_ex(("GetFolderPath(CSIDL_APPDATA|CSIDL_FLAG_CREATE) failed"));
+	return path;
+}
+
+
 void Directory::create(const std::string &path) {
-	throw_ex(("implement me"));	
+	::CreateDirectory(path.c_str(), NULL);
 }
 
 #endif

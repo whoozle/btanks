@@ -8,6 +8,7 @@ libs = ['expat', 'z']
 
 if sys.platform == "win32":
 	libs.append('Ws2_32')
+	libs.append('shell32')
 
 mrt = env.SharedLibrary('mrt', \
 	['exception.cpp', 'fmt.cpp', 'ioexception.cpp', 'logger.cpp', 'chunk.cpp', 'random.cpp', \
