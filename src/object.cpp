@@ -308,6 +308,10 @@ void Object::groupTick(const float dt) {
 			o->calculate(dt);
 			o->tick(dt);
 		}
+		if (o->need_sync) {
+			need_sync = true;
+			o->need_sync = false;
+		}
 		++i;
 	}
 }
