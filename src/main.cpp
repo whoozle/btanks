@@ -44,8 +44,10 @@ int main(int argc, char *argv[]) {
 		LOG_NOTICE(("starting up... version: %s", getVersion().c_str()));
 		
 		LOG_NOTICE(("mem avail: %d mb", mrt::MemoryInfo::available()));
-		
+
+#ifdef DEBUG		
 		mrt::install_crash_handlers();
+#endif
 		mrt::init_seed();
 		
 		Game->loadPlugins();
