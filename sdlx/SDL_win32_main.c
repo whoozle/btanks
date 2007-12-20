@@ -53,6 +53,11 @@
 #define isspace(a) (((CHAR)a == ' ') || ((CHAR)a == '\t'))
 #endif /* _WIN32_WCE < 300 */
 
+#ifdef SDL_WINMAIN
+#	define WinMain SDL_WINMAIN
+#endif
+
+
 /* Parse a command line buffer into arguments */
 static int ParseCommandLine(char *cmdline, char **argv)
 {
