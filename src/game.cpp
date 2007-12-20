@@ -103,9 +103,7 @@ void IGame::init(const int argc, char *argv[]) {
 	_donate_timer = 0;
 
 	std::string path;
-#ifdef PREFIX
-	path = mrt::Directory::getAppDir("btanks") + "/";
-#endif	
+	path = mrt::Directory::getAppDir("BattleTanks", "btanks") + "/";
 	Config->load(path + "bt.xml");
 	
 	{
@@ -460,10 +458,8 @@ bool IGame::onKey(const SDL_keysym key, const bool pressed) {
 		return true;
 	}
 	if (key.sym==SDLK_s && key.mod & KMOD_SHIFT) {
-		std::string path;
-#ifdef PREFIX
-		path = mrt::Directory::getAppDir("btanks") + "/";
-#endif	
+		std::string path = mrt::Directory::getAppDir("BattleTanks", "btanks") + "/";
+
 		static int n = 0; 
 		std::string fname;
 		do {
@@ -474,10 +470,7 @@ bool IGame::onKey(const SDL_keysym key, const bool pressed) {
 		return true;
 	}
 	if (key.sym==SDLK_m && key.mod & KMOD_SHIFT && Map->loaded()) {
-		std::string path;
-#ifdef PREFIX
-		path = mrt::Directory::getAppDir("btanks") + "/";
-#endif	
+		std::string path = mrt::Directory::getAppDir("BattleTanks", "btanks") + "/";
 		const v2<int> msize = Map->getSize();
 		LOG_DEBUG(("creating map screenshot %dx%d", msize.x, msize.y));
 

@@ -22,7 +22,7 @@ public:
 	~Directory();
 	
 	static const std::string getHome();
-	static const std::string getAppDir(const std::string &name);
+	static const std::string getAppDir(const std::string &name, const std::string &shortname);
 	static void create(const std::string &path);
 
 private: 

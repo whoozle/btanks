@@ -74,8 +74,8 @@ const std::string Directory::getHome() {
 	return home_env;
 }
 
-const std::string Directory::getAppDir(const std::string &name) {
-	std::string path = getHome() + "/." + name;
+const std::string Directory::getAppDir(const std::string &name, const std::string &shortname) {
+	std::string path = getHome() + "/." + shortname;
 	if (!exists(path)) 
 		create(path);
 	return path;
@@ -122,7 +122,7 @@ void Directory::close() {
 
 #include <shlobj.h>
 
-const std::string Directory::getAppDir(const std::string &name) {
+const std::string Directory::getAppDir(const std::string &name, const std::string &shortname) {
 	std::string path = getHome() + "\\" + name;
 	if (!exists(path)) 
 		create(path);
