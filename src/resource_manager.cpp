@@ -381,6 +381,7 @@ void IResourceManager::init(const std::vector<std::pair<std::string, std::string
 }
 
 #include "mrt/file.h"
+#include "tmx/map.h"
 
 void IResourceManager::clear() {
 	LOG_DEBUG(("freeing resources"));
@@ -398,6 +399,9 @@ void IResourceManager::clear() {
 	_objects.clear();
 
 	_am = NULL;
+	
+	if (Map->soloAwareMode())
+		return;
 	
 	std::map<const std::string, std::string> xml_data;
 	for(PreloadMap::const_iterator i = _preload_map.begin(); i != _preload_map.end(); ++i) {
