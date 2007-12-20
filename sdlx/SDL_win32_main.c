@@ -284,10 +284,10 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrev, LPSTR szCmdLine, int sw)
 		if (newfp == NULL) 
 			newfp = fopen(TEXT("nul"), TEXT("w"));
 
-#if !defined(stdout)
-		stdout = newfp;
-#else
 		if ( newfp ) {
+#if !defined(stdout)
+			stdout = newfp;
+#else
 			*stdout = *newfp;
 		}
 #endif
@@ -309,10 +309,10 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrev, LPSTR szCmdLine, int sw)
 		if (newfp == NULL) 
 			newfp = fopen(TEXT("nul"), TEXT("w"));
 
-#if !defined(stderr)
-		stderr = newfp;
-#else
 		if ( newfp ) {
+#if !defined(stderr)
+			stderr = newfp;
+#else
 			*stderr = *newfp;
 		}
 #endif
