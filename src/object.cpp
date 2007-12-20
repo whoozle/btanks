@@ -89,24 +89,6 @@ Object::~Object() {
 	_group.clear();
 }
 
-void Object::init(const Animation *a) {
-	_animation = a;
-	_model = ResourceManager->getAnimationModel(a->model);
-	
-	_surface = ResourceManager->getSurface(a->surface);
-	_cmap = ResourceManager->getCollisionMap(a->surface);
-
-	_tw = a->tw;
-	_th = a->th;
-	
-	size.x = _tw;
-	size.y = _th;
-
-	if (has("_outline"))
-		remove("_outline");
-}
-
-
 Object* Object::spawn(const std::string &classname, const std::string &animation, const v2<float> &dpos, const v2<float> &vel, const int z) {
 	return World->spawn(this, classname, animation, dpos, vel, z);
 }
@@ -712,9 +694,24 @@ const bool Object::isDriven() const {
 	return !_way.empty();
 }
 
-void Object::init(const std::string &a) {
-	init(ResourceManager.get_const()->getAnimation(a));
-	animation = a;
+void Object::init(const std::string &an) {
+	const Animation * a = ResourceManager.get_const()->getAnimation(an);
+	_animation = a;
+	_model = ResourceManager->getAnimationModel(a->model);
+	
+	_surface = ResourceManager->getSurface(a->surface);
+	_cmap = ResourceManager->getCollisionMap(a->surface);
+
+	_tw = a->tw;
+	_th = a->th;
+	
+	size.x = _tw;
+	size.y = _th;
+
+	if (has("_outline"))
+		remove("_outline");
+
+	animation = an;
 	need_sync = true;
 }
 

@@ -199,8 +199,6 @@ protected:
 	Object * _parent;
 	
 private: 
-	void init(const Animation *other);
-
 //pathfinding stuff
 	void close(const v2<int>& vertex); 
 
