@@ -3,28 +3,39 @@
 		<object id="alt-missiles-on-launcher"/>
 		<object id="broken-object"/>
 		<object id="bus-stop"/>
+		<object id="cannon-explosion"/>
 		<object id="corpse"/>
 		<object id="damage-digits"/>
+		<object id="dispersion-bullet"/>
 		<object id="dispersion-bullets-item"/>
+		<object id="dumb-missile"/>
 		<object id="dumb-missiles-item"/>
 		<object id="explosion"/>
 		<object id="fake-mod"/>
+		<object id="fire"/>
 		<object id="guided-missile"/>
 		<object id="guided-missiles-item"/>
 		<object id="heal"/>
+		<object id="helmet"/>
 		<object id="impassable-static-corpse"/>
 		<object id="launcher"/>
 		<object id="lodge"/>
+		<object id="machinegunner"/>
+		<object id="machinegunner-bullet"/>
 		<object id="machinegunner-item"/>
 		<object id="machinegunner-player"/>
 		<object id="megaheal"/>
 		<object id="mines-item"/>
 		<object id="missiles-on-launcher"/>
 		<object id="missiles-on-tank"/>
+		<object id="nuke-explosion"/>
+		<object id="nuke-mine"/>
+		<object id="nuke-missile"/>
 		<object id="nuke-missiles-item"/>
 		<object id="oil-barrels"/>
 		<object id="outline"/>
 		<object id="regular-mine"/>
+		<object id="ricochet-bullet"/>
 		<object id="ricochet-bullets-item"/>
 		<object id="road-sign"/>
 		<object id="shilka"/>
@@ -40,6 +51,7 @@
 		<object id="tank-bullet"/>
 		<object id="teleport"/>
 		<object id="tent"/>
+		<object id="thrower"/>
 		<object id="thrower-item"/>
 		<object id="thrower-missile"/>
 		<object id="thrower-on-launcher"/>
@@ -75,6 +87,7 @@
 		<object id="machinegunner-bullet"/>
 		<object id="machinegunner-item"/>
 		<object id="machinegunner-on-launcher"/>
+		<object id="machinegunner-player"/>
 		<object id="mines-item"/>
 		<object id="missiles-on-launcher"/>
 		<object id="missiles-on-tank"/>
@@ -92,6 +105,8 @@
 		<object id="shilka"/>
 		<object id="shilka-bullet"/>
 		<object id="single-pose"/>
+		<object id="slime"/>
+		<object id="slime-acid"/>
 		<object id="smoke-cloud"/>
 		<object id="smoke-missile"/>
 		<object id="smoke-missiles-item"/>
@@ -106,6 +121,7 @@
 		<object id="thrower-on-launcher"/>
 		<object id="turrel"/>
 		<object id="vehicle-machinegunner-bullet"/>
+		<object id="zombie"/>
 	</map>
 	<map id="baykonur">
 		<object id="alt-missiles-on-launcher"/>
@@ -158,6 +174,7 @@
 		<object id="static-shilka"/>
 		<object id="static-tank"/>
 		<object id="submarine"/>
+		<object id="tank-bullet"/>
 		<object id="tent-with-kamikazes"/>
 		<object id="tent-with-machinegunners"/>
 		<object id="tent-with-throwers"/>
@@ -681,6 +698,7 @@
 		<animation id="dead-red-launcher"/>
 		<animation id="dead-red-shilka"/>
 		<animation id="dead-red-tank"/>
+		<animation id="dead-slime"/>
 		<animation id="dead-thrower"/>
 		<animation id="dead-white-car"/>
 		<animation id="dead-yellow-car"/>
@@ -841,6 +859,7 @@
 		<animation id="cyan-mortar"/>
 		<animation id="green-mortar"/>
 		<animation id="red-mortar"/>
+		<animation id="yellow-mortar"/>
 	</object>
 	<object id="mortar-bullet">
 		<animation id="mortar-bullet"/>
@@ -871,6 +890,7 @@
 		<animation id="green-shilka-outline"/>
 		<animation id="green-tank-outline"/>
 		<animation id="machinegunner-outline"/>
+		<animation id="nukeman-outline"/>
 		<animation id="red-launcher-outline"/>
 		<animation id="red-shilka-outline"/>
 		<animation id="red-tank-outline"/>
@@ -929,6 +949,12 @@
 		<animation id="launcher-smoke"/>
 		<animation id="missile-fire"/>
 		<animation id="tank-smoke"/>
+	</object>
+	<object id="slime">
+		<animation id="slime"/>
+	</object>
+	<object id="slime-acid">
+		<animation id="slime-acid"/>
 	</object>
 	<object id="smoke-cloud">
 		<animation id="smoke-cloud"/>
