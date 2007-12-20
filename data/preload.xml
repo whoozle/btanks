@@ -28,6 +28,7 @@
 		<object id="ricochet-bullets-item"/>
 		<object id="road-sign"/>
 		<object id="shilka"/>
+		<object id="shilka-bullet"/>
 		<object id="single-pose"/>
 		<object id="stall"/>
 		<object id="static-corpse"/>
