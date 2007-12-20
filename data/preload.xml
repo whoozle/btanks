@@ -169,6 +169,7 @@
 		<object id="outline"/>
 		<object id="ricochet-bullets-item"/>
 		<object id="road-sign"/>
+		<object id="shilka-bullet"/>
 		<object id="single-pose"/>
 		<object id="smoke-cloud"/>
 		<object id="smoke-missile"/>
@@ -191,6 +192,7 @@
 		<object id="thrower-in-watchtower"/>
 		<object id="thrower-item"/>
 		<object id="thrower-missile"/>
+		<object id="thrower-on-launcher"/>
 		<object id="watchtower-top"/>
 		<object id="watchtower-with-machinegunner"/>
 		<object id="watchtower-with-thrower"/>
@@ -202,6 +204,7 @@
 		<object id="ballistic-missile-target"/>
 		<object id="biotoilet"/>
 		<object id="bus-stop"/>
+		<object id="cannon-explosion"/>
 		<object id="car"/>
 		<object id="corpse"/>
 		<object id="damage-digits"/>
@@ -213,6 +216,8 @@
 		<object id="fake-mod"/>
 		<object id="fire"/>
 		<object id="gate"/>
+		<object id="grenade"/>
+		<object id="grenade-explosion"/>
 		<object id="guided-missile"/>
 		<object id="guided-missiles-item"/>
 		<object id="heal"/>
@@ -250,6 +255,7 @@
 		<object id="static-mortar"/>
 		<object id="static-shilka"/>
 		<object id="static-tank"/>
+		<object id="stun-missile"/>
 		<object id="stun-missiles-item"/>
 		<object id="submarine"/>
 		<object id="tank"/>
@@ -690,6 +696,7 @@
 		<animation id="choo-choo-wagon"/>
 	</object>
 	<object id="corpse">
+		<animation id="dead-boat"/>
 		<animation id="dead-cannon"/>
 		<animation id="dead-cow"/>
 		<animation id="dead-cyan-car"/>
