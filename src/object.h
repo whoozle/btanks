@@ -51,7 +51,6 @@ public:
 	Object(const std::string &classname); //do not use parent - internal
 	~Object();
 	
-	void init(const Animation *other);
 	void init(const std::string &animation); //do not use it, needed for resman
 
 	virtual Object * clone() const;
@@ -200,6 +199,8 @@ protected:
 	Object * _parent;
 	
 private: 
+	void init(const Animation *other);
+
 //pathfinding stuff
 	void close(const v2<int>& vertex); 
 
