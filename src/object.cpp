@@ -72,6 +72,7 @@ Object::Object(const std::string &classname) :
 	_way(), _next_target(), _next_target_rel(), 
 	_rotation_time(0), 
 	_dst_direction(-1), 
+	_position_delta(), 
 	_group(), _blinking(true)
 	 {
 	 	GET_CONFIG_VALUE("engine.spawn-invulnerability-blinking-interval", float, ibi, 0.3);
@@ -283,6 +284,7 @@ void Object::groupTick(const float dt) {
 			_group.erase(i++);
 			continue;
 		}
+		o->_position = _position + o->_position_delta;
 		o->_velocity = _velocity;
 		if (dt > 0) {
 			o->calculate(dt);
@@ -502,6 +504,7 @@ void Object::serialize(mrt::Serializator &s) const {
 	
 	s.add(_rotation_time);
 	s.add(_dst_direction);
+	s.add(_position_delta);
 
 	//Group	
 	int en = _group.size();
@@ -538,6 +541,7 @@ void Object::deserialize(const mrt::Serializator &s) {
 
 	s.get(_rotation_time);
 	s.get(_dst_direction);
+	s.get(_position_delta);
 
 	int en;
 	s.get(en);
@@ -806,10 +810,10 @@ Object* Object::add(const std::string &name, const std::string &classname, const
 
 	obj->onSpawn();
 	
-	obj->_position = dpos;
+	obj->_position_delta = dpos;
 	switch(type) {
 		case Centered:
-			obj->_position += (size - obj->size)/2;
+			obj->_position_delta += (size - obj->size)/2;
 			break;
 		case Fixed:
 			break;

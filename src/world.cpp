@@ -223,12 +223,8 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::R
 		
 			if (o->_z < _z1 || o->_z >= _z2) 	
 				continue;
-
-			v2<float> pos = o->_position;
-			if (o->_parent != NULL)
-				pos += o->_parent->_position;
-			
-			sdlx::Rect r((int)pos.x, (int)pos.y, (int)o->size.x, (int)o->size.y);
+		
+			sdlx::Rect r((int)o->_position.x, (int)o->_position.y, (int)o->size.x, (int)o->size.y);
 			bool fogged = fog;// && o->speed != 0;
 			//LOG_DEBUG(("%d,%d:%d,%d vs %d,%d:%d,%d result: %s", 
 			//	r.x, r.y, r.w, r.h, src_rect.x, src_rect.y, src_rect.w, src_rect.h, Map->intersects(r, src_rect)?"true":"false"));
@@ -258,11 +254,7 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::R
 		z1 = z2;
 		Object &o = *i->second;
 		//LOG_DEBUG(("rendering %s with %d,%d", o.animation.c_str(), (int)o._position.x - src.x + dst.x, (int)o._position.y - src.y + dst.y));
-		v2<float> pos = o._position;
-		if (o._parent != NULL)
-			pos += o._parent->_position;
-		
-		v2<int> screen_pos((int)pos.x - src.x, (int)pos.y - src.y);
+		v2<int> screen_pos((int)o._position.x - src.x, (int)o._position.y - src.y);
 		if (Map->torus()) {
 			screen_pos %= map_size;
 			if (screen_pos.x < 0 && screen_pos.x + o.size.x < 0)
@@ -293,8 +285,8 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::R
 			int y = (o.hp >= 0)?15 * (o.max_hp - o.hp) / o.max_hp: 0;
 			sdlx::Rect hp_src(0, y * h, _hp_bar->getWidth(), h);
 			surface.copyFrom(*_hp_bar, hp_src, 
-					(int)pos.x - src.x + dst.x + (int)(o.size.x) - _hp_bar->getWidth() - 4, 
-					(int)pos.y - src.y + dst.y + 4);
+					(int)o._position.x - src.x + dst.x + (int)(o.size.x) - _hp_bar->getWidth() - 4, 
+					(int)o._position.y - src.y + dst.y + 4);
 		}
 	}
 	map.render(surface, src, dst, z1, _z2);
