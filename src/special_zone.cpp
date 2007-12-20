@@ -192,6 +192,7 @@ void SpecialZone::onCheckpoint(const int slot_id) {
 	if (slot.remote != -1 && PlayerManager->isServer() ) {
 		Message m(Message::TextMessage);
 		m.channel = slot_id;
+		m.set("hint", "0");
 		m.set("area", "messages");
 		m.set("message", "checkpoint-reached");
 		m.set("duration", "3");
