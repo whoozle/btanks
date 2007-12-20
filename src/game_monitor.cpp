@@ -190,7 +190,7 @@ void IGameMonitor::checkItems(const float dt) {
 	for(size_t i = 0; i < _external_specials.size(); ++i) {
 		const int id = _external_specials[i];
 		Object *o = World->getObjectByID(id);
-		if (o == NULL)
+		if (o == NULL || o->getState() == "broken")
 			continue;
 
 		v2<int> pos;

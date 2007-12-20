@@ -74,6 +74,7 @@
 		<object id="dumb-missiles-item"/>
 		<object id="explosion"/>
 		<object id="fake-mod"/>
+		<object id="fire"/>
 		<object id="grenade"/>
 		<object id="grenade-explosion"/>
 		<object id="guided-missile"/>
