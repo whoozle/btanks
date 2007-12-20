@@ -1224,8 +1224,11 @@ TRY {
 
 }
 
-void IPlayerManager::sendHint(const PlayerSlot &slot, const std::string &message, const std::string &area) {
+void IPlayerManager::sendHint(const int slot_id, const std::string &message, const std::string &area) {
+	PlayerSlot &slot = getSlot(slot_id);
+	
 	Message m(Message::TextMessage);
+	m.channel = slot_id;
 	m.set("area", area);
 	m.set("message", message);
 	m.set("hint", "1");

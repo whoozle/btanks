@@ -106,7 +106,7 @@ public:
 	void say(const std::string &message);
 	
 	void broadcastMessage(const std::string &area, const std::string &message, const float duration);
-	void sendHint(const PlayerSlot &slot, const std::string &message, const std::string &area);
+	void sendHint(const int slot_id, const std::string &message, const std::string &area);
 	
 	void updateControls(); //recreates control methods.
 	
