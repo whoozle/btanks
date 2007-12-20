@@ -59,10 +59,12 @@ public:
 		_fire.set(fr);
 	}
 	virtual void serialize(mrt::Serializator &s) const {
+		Object::serialize(s);
 		ai::StupidTrooper::serialize(s);
 		s.add(_fire);
 	}
 	virtual void deserialize(const mrt::Serializator &s) {
+		Object::deserialize(s);
 		ai::StupidTrooper::deserialize(s);
 		s.get(_fire);	
 	}
