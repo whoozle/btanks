@@ -87,7 +87,7 @@ int WINAPI SDLWinMain(HINSTANCE hInst, HINSTANCE hPrev, LPSTR szCmdLine, int sw)
 int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrev, LPSTR szCmdLine, int sw)
 #endif
 {
-	std::string logpath = mrt::formatString("SDL_LOG_PATH=%s", mrt::Directory::getAppDir("BattleTanks", "btanks").c_str());
+	std::string logpath = mrt::formatString("SDL_LOG_PATH=%s", mrt::Directory::getAppDir("Battle Tanks", "btanks").c_str());
 	_putenv(_strdup(logpath.c_str()));
 	return SDLWinMain(hInst, hPrev, szCmdLine, sw);
 }
