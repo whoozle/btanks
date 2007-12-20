@@ -105,8 +105,14 @@ LUA_TRY {
 	}
 	int id = lua_tointeger(L, 1);
 	const Object *o = World->getObjectByID(id);
-	bool r = o?!o->isDead():false;
-	lua_pushboolean(L, r);
+
+	bool strict = (n >= 2)? lua_toboolean(L, 2) != 0: false;
+		
+	bool exists = o?!o->isDead():false;
+	if (exists && !strict && o->getState() == "broken")
+		exists = false;
+		
+	lua_pushboolean(L, exists?1:0);
 	return 1;
 } LUA_CATCH("lua_hooks_object_exists")
 }
@@ -236,7 +242,7 @@ static int lua_hooks_kill_object(lua_State *L) {
 			o->emit("death", NULL);
 		}
 		return 0;
-	} LUA_CATCH("lua_hooks_item_exists")
+	} LUA_CATCH("lua_hooks_kill_object")
 }
 
 
