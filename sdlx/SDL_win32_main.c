@@ -235,6 +235,8 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrev, LPSTR szCmdLine, int sw)
 	int argc;
 	char *cmdline;
 	DWORD pathlen;
+
+	char * env_path = SDL_getenv("SDL_LOG_PATH");
 #ifdef _WIN32_WCE
 	wchar_t path[MAX_PATH];
 #else
@@ -271,7 +273,7 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrev, LPSTR szCmdLine, int sw)
 	wcsncpy( stdoutPath, path, SDL_arraysize(stdoutPath) );
 	wcsncat( stdoutPath, DIR_SEPERATOR STDOUT_FILE, SDL_arraysize(stdoutPath) );
 #else
-	SDL_strlcpy( stdoutPath, path, SDL_arraysize(stdoutPath) );
+	SDL_strlcpy( stdoutPath, env_path != NULL?env_path:path, SDL_arraysize(stdoutPath));
 	SDL_strlcat( stdoutPath, DIR_SEPERATOR STDOUT_FILE, SDL_arraysize(stdoutPath) );
 #endif
     
@@ -298,7 +300,7 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrev, LPSTR szCmdLine, int sw)
 	wcsncpy( stderrPath, path, SDL_arraysize(stdoutPath) );
 	wcsncat( stderrPath, DIR_SEPERATOR STDOUT_FILE, SDL_arraysize(stdoutPath) );
 #else
-	SDL_strlcpy( stderrPath, path, SDL_arraysize(stderrPath) );
+	SDL_strlcpy( stderrPath, env_path != NULL?env_path:path, SDL_arraysize(stderrPath) );
 	SDL_strlcat( stderrPath, DIR_SEPERATOR STDERR_FILE, SDL_arraysize(stderrPath) );
 #endif
 
