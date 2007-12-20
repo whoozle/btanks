@@ -105,6 +105,7 @@
 		<object id="shilka"/>
 		<object id="shilka-bullet"/>
 		<object id="single-pose"/>
+		<object id="slime-acid"/>
 		<object id="slime"/>
 		<object id="slime-acid"/>
 		<object id="smoke-cloud"/>
@@ -949,6 +950,9 @@
 		<animation id="launcher-smoke"/>
 		<animation id="missile-fire"/>
 		<animation id="tank-smoke"/>
+	</object>
+	<object id="slime-acid">
+		<animation id="slime-acid"/>
 	</object>
 	<object id="slime">
 		<animation id="slime"/>
