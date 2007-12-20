@@ -38,7 +38,7 @@ items = {
 items_id = {}
 
 monsters = {zombie= 10, slime= 20};
-troopers = {kamikaze= 5, machinegunner= 10, thrower= 5, cannon= 10, tank= 100, launcher= 100, shilka= 100, mortar= 75};
+troopers = {kamikaze= 5, machinegunner= 10, thrower= 5, cannon= 10, tank= 100, launcher= 100, shilka= 100, mortar= 75, watchtower_with_machinegunner = 60, watchtower_with_thrower = 30 };
 scores = {
 	troopers,	
 	troopers,	
@@ -53,6 +53,8 @@ animations = {
 	tank={"red-tank", "green-tank", "cyan-tank", "yellow-tank", },
 	shilka={"red-shilka", "green-shilka", "cyan-shilka", "yellow-shilka", },
 	mortar={"red-mortar", "green-mortar", "cyan-mortar", "yellow-mortar", }, 
+	watchtower_with_machinegunner = {"watchtower"},
+	watchtower_with_thrower = {"watchtower"},
 }
 
 function array_keys(array)
@@ -84,10 +86,10 @@ function generate_stage(idx)
 		if animations[object] ~= nil then 
 			animation = animations[object][random(#animations[object]) + 1];
 		end
-		print("i've chosen: "..object..":"..animation);
-
-		stage[#stage + 1] = spawn_random(object, animation);
 		score = score - objects[object];
+
+		print("i've chosen: "..object..":"..animation);
+		stage[#stage + 1] = spawn_random(string.gsub(object, "_", "-"), string.gsub(animation, "_", "-"));
 	until score <= 0;
 	set_specials(stage); --add marks on the minimap
 
