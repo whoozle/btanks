@@ -561,9 +561,9 @@ void Object::deserialize(const mrt::Serializator &s) {
 	s.get(_dst_direction);
 	s.get(_position_delta);
 
-	_group.clear();
 	int en;
 	s.get(en);
+	std::set<std::string> keys;
 	while(en--) {
 		std::string name, rn;
 		s.get(name);
@@ -575,7 +575,17 @@ void Object::deserialize(const mrt::Serializator &s) {
 			o->_parent = this;
 			_group[name] = o;
 		}
-		o->deserialize(s);		
+		o->deserialize(s);
+		keys.insert(name);
+	}
+	for(Group::iterator i = _group.begin(); i != _group.end(); ) {
+		if (keys.find(i->first) != keys.end()) {
+			++i;
+		} else {
+			delete i->second;
+			i->second = NULL; //just for fun :)
+			_group.erase(i++);
+		}
 	}
 	_blinking.deserialize(s);
 
