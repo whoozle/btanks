@@ -179,6 +179,9 @@ void Bullet::emit(const std::string &event, Object * emitter) {
 			int z = (_velocity.y >= 0) ? edzo : 0;
 			spawn("explosion", "explosion", dpos, v2<float>(), z);
 		} else if (emitter != NULL && _type == "stun") {
+			if (emitter->classname == "monster")
+				return;
+			
 			float sd;
 			Config->get("objects." + registered_name + ".stun-duration", sd, 3.0f);
 			emitter->addEffect("stunned", sd);
