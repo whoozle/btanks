@@ -255,7 +255,6 @@ private:
 	int _dst_direction;
 	
 	//grouped objects stuff
-	v2<float> _position_delta;
 	typedef std::map<const std::string, Object *> Group;
 	Group _group;
 	

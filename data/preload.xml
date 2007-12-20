@@ -228,6 +228,7 @@
 		<object id="machinegunner"/>
 		<object id="machinegunner-bullet"/>
 		<object id="machinegunner-item"/>
+		<object id="machinegunner-on-launcher"/>
 		<object id="machinegunner-player"/>
 		<object id="megaheal"/>
 		<object id="mines-item"/>
