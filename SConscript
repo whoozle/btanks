@@ -105,7 +105,6 @@ bt_main_sources = ['src/main.cpp']
 bt_main_libs =  ['mrt', 'bt', 'SDL', 'sdlx']
 
 if sys.platform == "win32":
-	env.Append(CPPDEFINE='SDL_WINMAIN=SDLWinMain')
 	bt_main_sources.append('sdlx/SDL_win32_main.c')
 	bt_rc = env.RES('src/bt.rc')
 	bt_main_sources.append(bt_rc)

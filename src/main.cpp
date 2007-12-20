@@ -73,3 +73,23 @@ int main(int argc, char *argv[]) {
 	sdlx::System::deinit();
 	return 0;
 }
+
+#include "mrt/directory.h"
+#include <string>
+
+#ifdef _WINDOWS
+extern "C" {
+#ifdef _WIN32_WCE
+int WINAPI SDLWinMain(HINSTANCE hInst, HINSTANCE hPrev, LPWSTR szCmdLine, int sw);
+int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrev, LPWSTR szCmdLine, int sw)
+#else
+int WINAPI SDLWinMain(HINSTANCE hInst, HINSTANCE hPrev, LPSTR szCmdLine, int sw);
+int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrev, LPSTR szCmdLine, int sw)
+#endif
+{
+	std::string logpath = mrt::formatString("SDL_LOG_PATH=%s", mrt::Directory::getAppDir("BattleTanks", "btanks").c_str());
+	_putenv(_strdup(logpath.c_str()));
+	return SDLWinMain(hInst, hPrev, szCmdLine, sw);
+}
+}
+#endif
