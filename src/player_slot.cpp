@@ -128,7 +128,7 @@ void PlayerSlot::displayTooltip(const std::string &area, const std::string &mess
 }
 
 void PlayerSlot::tick(const float dt) {
-	if (remote == -1 && !tooltips.empty()) {
+	if (!tooltips.empty()) {
 		tooltips.front().first -= dt;
 		if (tooltips.front().first < 0) {
 			delete last_tooltip;
