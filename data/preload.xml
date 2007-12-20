@@ -105,7 +105,6 @@
 		<object id="shilka"/>
 		<object id="shilka-bullet"/>
 		<object id="single-pose"/>
-		<object id="slime-acid"/>
 		<object id="slime"/>
 		<object id="slime-acid"/>
 		<object id="smoke-cloud"/>
@@ -127,6 +126,8 @@
 	<map id="baykonur">
 		<object id="alt-missiles-on-launcher"/>
 		<object id="armed-mine"/>
+		<object id="ballistic-missile"/>
+		<object id="ballistic-missile-target"/>
 		<object id="barrack-with-kamikazes"/>
 		<object id="barrack-with-machinegunners"/>
 		<object id="barrack-with-throwers"/>
@@ -136,7 +137,9 @@
 		<object id="cannon-explosion"/>
 		<object id="corpse"/>
 		<object id="damage-digits"/>
+		<object id="dispersion-bullet"/>
 		<object id="dispersion-bullets-item"/>
+		<object id="dumb-missile"/>
 		<object id="dumb-missiles-item"/>
 		<object id="explosion"/>
 		<object id="fake-mod"/>
@@ -144,8 +147,10 @@
 		<object id="gate"/>
 		<object id="grenade"/>
 		<object id="grenade-explosion"/>
+		<object id="guided-missile"/>
 		<object id="guided-missiles-item"/>
 		<object id="heal"/>
+		<object id="helmet"/>
 		<object id="impassable-static-corpse"/>
 		<object id="kamikaze"/>
 		<object id="kamikaze-explosion"/>
@@ -158,12 +163,15 @@
 		<object id="missiles-on-boat"/>
 		<object id="missiles-on-launcher"/>
 		<object id="missiles-on-tank"/>
+		<object id="nuke-explosion"/>
 		<object id="nuke-missiles-item"/>
 		<object id="oil-barrels"/>
 		<object id="outline"/>
 		<object id="ricochet-bullets-item"/>
 		<object id="road-sign"/>
 		<object id="single-pose"/>
+		<object id="smoke-cloud"/>
+		<object id="smoke-missile"/>
 		<object id="smoke-missiles-item"/>
 		<object id="spaceport-baykonur"/>
 		<object id="stack"/>
@@ -950,9 +958,6 @@
 		<animation id="launcher-smoke"/>
 		<animation id="missile-fire"/>
 		<animation id="tank-smoke"/>
-	</object>
-	<object id="slime-acid">
-		<animation id="slime-acid"/>
 	</object>
 	<object id="slime">
 		<animation id="slime"/>
