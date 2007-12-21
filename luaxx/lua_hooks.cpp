@@ -49,24 +49,57 @@ LUA_TRY {
 }
 
 
-static int lua_hooks_check_matrix(lua_State *L) {
+static int lua_hooks_spawn_random(lua_State *L) {
 LUA_TRY {
-	int n = lua_gettop(L);
-	if (n < 2) {
-		lua_pushstring(L, "check_matrix requires x, y and z");
+	int args = lua_gettop(L);
+	if (args < 2) {
+		lua_pushstring(L, "spawn_random requires object and animation");
 		lua_error(L);
 		return 0;		
 	}
-	v2<int> pos(lua_tointeger(L, 1), lua_tointeger(L, 2));
-	int z = (n >= 3)? lua_tointeger(L, 3): 0;
-	const v2<int> pfs = Map->getPathTileSize();
-	pos /= pfs;
+	const char *object = lua_tostring(L, 1), *animation = lua_tostring(L, 2);
+	Object *obj = ResourceManager->createObject(object, animation);
+
+	Matrix<int> matrix;
+	World->getImpassabilityMatrix(matrix, obj, NULL);
+		
+	const v2<int> tile_size = Map->getPathTileSize();
+	if (obj->size.is0())
+		throw_ex(("object size must not be 0,0"));
+		
+	v2<int> obj_size = ((obj->size.convert<int>() - 1) / tile_size) + 1;
+	LOG_DEBUG(("searching random %dx%d spot", obj_size.x, obj_size.y));
 	
-	const Matrix<int> &matrix = Map->getImpassabilityMatrix(z);
-	int im = matrix.get(pos.y, pos.x);
-	lua_pushboolean(L, (im >= 0 && im < 100)?1:0);
+	int w = matrix.getWidth(), h = matrix.getHeight();
+	std::vector<v2<int> > spots;
+	for(int y = 0; y < h - obj_size.y + 1; ++y) 
+		for(int x= 0; x < w - obj_size.x + 1; ++x) {
+			for(int yy = 0; yy < obj_size.y; ++yy)
+				for(int xx = 0; xx < obj_size.x; ++xx) {
+					int im = matrix.get(y + yy, x + xx);
+					if (im < 0 || im >= 100)
+						goto skip;
+				
+				}
+			spots.push_back(v2<int>(x, y));
+		skip: ;
+		}
+		
+	size_t n = spots.size();
+	if (n == 0)
+		throw_ex(("no spots found"));
+		
+	int idx = mrt::random(n);
+	LOG_DEBUG(("found %u spots. get #%d", (unsigned)n, idx));
+	v2<float> pos = (spots[idx] * tile_size).convert<float>();
+		
+	//LOG_DEBUG(("map : %s", matrix.dump().c_str()));
+	obj_size = tile_size * obj_size / 2;
+	World->addObject(obj, pos + obj_size.convert<float>() - obj->size / 2);
+	
+	lua_pushinteger(L, obj->getID());
 	return 1;
-} LUA_CATCH("lua_hooks_check_matrix")
+} LUA_CATCH("lua_hooks_spawn_random")
 }
 
 static int lua_hooks_map_size(lua_State *L) {
@@ -75,7 +108,7 @@ LUA_TRY {
 	lua_pushinteger(L, map_size.x);
 	lua_pushinteger(L, map_size.y);
 	return 2;
-} LUA_CATCH("lua_hooks_check_matrix")
+} LUA_CATCH("lua_hooks_map_size")
 }
 
 static int lua_hooks_load_map(lua_State *L) {
@@ -748,7 +781,7 @@ void LuaHooks::load(const std::string &name) {
 	lua_register(state, "players_number", lua_hooks_players_number);
 	lua_register(state, "set_config_override", lua_hooks_set_config_override);
 	lua_register(state, "random", lua_hooks_random);
-	lua_register(state, "check_matrix", lua_hooks_check_matrix);
+	lua_register(state, "spawn_random", lua_hooks_spawn_random);
 	lua_register(state, "map_size", lua_hooks_map_size);
 	lua_register(state, "set_specials", lua_hooks_set_specials);
 	

@@ -86,6 +86,7 @@
 		<object id="launcher"/>
 		<object id="machinegunner"/>
 		<object id="machinegunner-bullet"/>
+		<object id="machinegunner-in-watchtower"/>
 		<object id="machinegunner-item"/>
 		<object id="machinegunner-on-launcher"/>
 		<object id="machinegunner-player"/>
@@ -117,11 +118,15 @@
 		<object id="tank"/>
 		<object id="tank-bullet"/>
 		<object id="thrower"/>
+		<object id="thrower-in-watchtower"/>
 		<object id="thrower-item"/>
 		<object id="thrower-missile"/>
 		<object id="thrower-on-launcher"/>
 		<object id="turrel"/>
 		<object id="vehicle-machinegunner-bullet"/>
+		<object id="watchtower-top"/>
+		<object id="watchtower-with-machinegunner"/>
+		<object id="watchtower-with-thrower"/>
 		<object id="zombie"/>
 	</map>
 	<map id="baykonur">

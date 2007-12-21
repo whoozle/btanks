@@ -10,17 +10,6 @@ check_interval = 0.5
 function on_load()
 end
 
-function spawn_random(classname, animation)
-	local x, y;
-	local xs, ys = map_size();
-	repeat
-		x = random(xs);
-		y = random(ys);
-		-- print("x "..x..", y = "..y);
-	until check_matrix(x, y);
-	return spawn(classname, animation, x, y);
-end
-
 items = {
 	nuke_missiles_item=150, 
 	guided_missiles_item=10, 

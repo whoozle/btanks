@@ -275,7 +275,7 @@ void PlayerSlot::spawnPlayer(const std::string &classname, const std::string &an
 		if (obj->size.is0())
 			throw_ex(("object size must not be 0,0"));
 		
-		v2<int> obj_size = ((obj->size.convert<int>() - v2<int>(1, 1)) / tile_size) + v2<int>(1, 1);
+		v2<int> obj_size = ((obj->size.convert<int>() - 1) / tile_size) + 1;
 		LOG_DEBUG(("searching random %dx%d spot", obj_size.x, obj_size.y));
 	
 		int w = matrix.getWidth(), h = matrix.getHeight();
