@@ -19,6 +19,7 @@
 Scanner::Scanner() : _running(true) {
 	start();
 }
+
 Scanner::~Scanner() {
 	_running = false;
 	wait();
