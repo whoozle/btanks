@@ -64,12 +64,12 @@
 			H4sIAAAAAAACC+3BAQ0AAADCoPdPbQ8HFAAAAAAAwJcBSxPzAQAZAAA=
 		</data>
 	</layer>
-	<layer name="impassable-background" width="40" height="40" visible="0">
+	<layer name="impassable-background" width="40" height="40">
 		<properties>
 			<property name="impassability" value="100"/>
 		</properties>
 		<data encoding="base64" compression="gzip">
-			H4sIAAAAAAACC+3YMQrAIAyF4aeHctScttdsO3Qo0sliedg/oNk0fCiEVEntWtUwV+Pa7vntGZrs5xZ9rW6BH3744YefVMz9Ar+l/ZqhYf9/YzG/PZ1bllL+xq+Y+4X5+8MPP/oX+j/88MMPP/ye7xz1c8ib5s2f/zq/PwBYNpH4ABkAAA==
+			H4sIAAAAAAACC+3YywqAIBAF0Fu/FLTT3PX4xfrXMiiIoVmkRDcZYZqdDscX6QF0R3jC7Ilru+bcPvCy3xxjjDE8zFpdc0Jfe14Us5x2N86U2JdT/FhaLwzZ6jsbqx+UNW1+5veVH8j9WrLaGuEXyOpzP/RryeqT+zeQza88/0rzW6v4qYGqNj9bf/n3L9sZbX7l+v1x/4LcD0RzrPkF8yvSj+2MkX7n29pE6sd2t7mP/t98oh/I/ez9Pj1vEmZTyQAZAAA=
 		</data>
 	</layer>
 	<layer name="details" width="40" height="40">
@@ -113,7 +113,7 @@
 	</layer>
 	<layer name="shadow" width="40" height="40">
 		<data encoding="base64" compression="gzip">
-			H4sIAAAAAAACC+3OuQkAIBAAwcP+i/TJtAm1A8NDZmDzjQAAAAAAyK2WiHbqJefbOC1v37xdM/EbbzbXgdVFABkAAA==
+			H4sIAAAAAAACC+3QMQqAMBAEwOP+/0ijZXyENgErDSZFihnY7liWiwAAAAAAWNuWEXuuu+24c+a622qOdZSf/y/5nratDKR19PY81fxO792sHua5AMJbkngAGQAA
 		</data>
 	</layer>
 	<layer name="2nd floor" width="40" height="40">
@@ -128,9 +128,6 @@
 		<properties>
 			<property name="impassability" value="100"/>
 			<property name="pierceable" value="true"/>
-		</properties>
-		<properties>
-			<property name="impassability" value="100"/>
 		</properties>
 		<data encoding="base64" compression="gzip">
 			H4sIAAAAAAACC+3XMQqAMBBE0WWOrpWeQ9FraKPB1gO5gpBKkJAikv+aSTVJkS3WDCUYZDYqZm67dwZ9z9vkOT/nxrNVzNTOnDrv7F/ecibet6rsf7KJWQEAAABQh6Xw/edgPwOqE5h74Hcuy1vhkwAZAAA=

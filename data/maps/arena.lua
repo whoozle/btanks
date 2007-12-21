@@ -29,7 +29,7 @@ items = {
 items_id = {}
 
 monsters = {zombie= 10, slime= 20};
-troopers = {kamikaze= 5, machinegunner= 10, thrower= 5, cannon= 10, tank= 100, launcher= 100, shilka= 100, mortar= 75, watchtower_with_machinegunner = 60, watchtower_with_thrower = 30 };
+troopers = {kamikaze= 5, machinegunner= 10, thrower= 5, cannon= 10, tank= 100, launcher= 100, shilka= 100, mortar= 75, watchtower_with_machinegunner = 60, watchtower_with_thrower = 30, heli_bomb = 200 };
 scores = {
 	troopers,	
 	troopers,	
@@ -46,6 +46,7 @@ animations = {
 	mortar={"red-mortar", "green-mortar", "cyan-mortar", "yellow-mortar", }, 
 	watchtower_with_machinegunner = {"watchtower"},
 	watchtower_with_thrower = {"watchtower"},
+	heli_bomb = {"helicopter", "chinook"},
 }
 
 function array_keys(array)
@@ -80,7 +81,10 @@ function generate_stage(idx)
 		score = score - objects[object];
 
 		print("i've chosen: "..object..":"..animation);
-		stage[#stage + 1] = spawn_random(string.gsub(object, "_", "-"), string.gsub(animation, "_", "-"));
+		object = string.gsub(object, "_", "-");
+		animation = string.gsub(animation, "_", "-");
+		if (object == "heli-bomb") then object = "raider-helicopter" end;
+		stage[#stage + 1] = spawn_random(object, animation);
 	until score <= 0;
 	set_specials(stage); --add marks on the minimap
 
