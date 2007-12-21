@@ -66,6 +66,7 @@
 		<object id="cannon"/>
 		<object id="cannon-bullet"/>
 		<object id="cannon-explosion"/>
+		<object id="civilian"/>
 		<object id="corpse"/>
 		<object id="damage-digits"/>
 		<object id="dispersion-bullet"/>
@@ -115,6 +116,9 @@
 		<object id="smoke-missile"/>
 		<object id="smoke-missiles-item"/>
 		<object id="static-buggy"/>
+		<object id="static-launcher"/>
+		<object id="static-shilka"/>
+		<object id="static-tank"/>
 		<object id="stun-missile"/>
 		<object id="stun-missiles-item"/>
 		<object id="tank"/>
@@ -129,6 +133,7 @@
 		<object id="watchtower-top"/>
 		<object id="watchtower-with-machinegunner"/>
 		<object id="watchtower-with-thrower"/>
+		<object id="ziehharmonikaspieler"/>
 		<object id="zombie"/>
 	</map>
 	<map id="baykonur">
@@ -704,6 +709,11 @@
 	<object id="choo-choo-wagon">
 		<animation id="choo-choo-wagon"/>
 	</object>
+	<object id="civilian">
+		<animation id="civilian-1"/>
+		<animation id="civilian-2"/>
+		<animation id="civilian-3"/>
+	</object>
 	<object id="corpse">
 		<animation id="dead-boat"/>
 		<animation id="dead-cannon"/>
@@ -1119,6 +1129,9 @@
 	</object>
 	<object id="watchtower-with-thrower">
 		<animation id="watchtower"/>
+	</object>
+	<object id="ziehharmonikaspieler">
+		<animation id="ziehharmonikaspieler"/>
 	</object>
 	<object id="zombie">
 		<animation id="zombie"/>
