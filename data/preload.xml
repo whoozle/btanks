@@ -79,6 +79,7 @@
 		<object id="grenade-explosion"/>
 		<object id="guided-missile"/>
 		<object id="guided-missiles-item"/>
+		<object id="heal"/>
 		<object id="helicopter-with-kamikazes"/>
 		<object id="helmet"/>
 		<object id="kamikaze"/>
