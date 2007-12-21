@@ -45,7 +45,8 @@ public:
 		GameOver,
 		TextMessage, 
 		DestroyMap, 
-		PlayerMessage
+		PlayerMessage, 
+		ServerDiscovery
 	};
 	
 	Message();

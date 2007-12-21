@@ -1,10 +1,12 @@
 #include "config.h"
 #include "scanner.h"
+#include "message.h"
 #include "mrt/ioexception.h"
 #include "mrt/logger.h"
 #include "mrt/chunk.h"
 #include "mrt/socket_set.h"
 #include "mrt/udp_socket.h"
+#include "mrt/serializator.h"
 
 Scanner::Scanner() : _running(true) {
 	start();
@@ -27,15 +29,23 @@ TRY {
 	
 	udp_sock.listen(bindaddr, port, false);
 	
+	mrt::Serializator s;
+	Message m(Message::ServerDiscovery);
+	mrt::Chunk data;
+	m.serialize2(data);
+	
+	udp_sock.send(mrt::Socket::addr(), data.getPtr(), data.getSize());
+	
 	mrt::SocketSet set; 
-	set.add(udp_sock);
+	set.add(udp_sock, mrt::SocketSet::Exception | mrt::SocketSet::Read);
 	
 	while(_running) {
 		if (set.check(100) == 0)
 			continue;
-		if (set.check(udp_sock, mrt::SocketSet::Exception))
+		
+		if (set.check(udp_sock, mrt::SocketSet::Exception)) {
 			throw_io(("udp_socket"));
-		if (set.check(udp_sock, mrt::SocketSet::Read)) {
+		} else if (set.check(udp_sock, mrt::SocketSet::Read)) {
 			LOG_DEBUG(("incoming packet!"));
 			mrt::Socket::addr addr;
 			mrt::Chunk data;
