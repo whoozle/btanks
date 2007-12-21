@@ -60,8 +60,9 @@ LUA_TRY {
 	const char *object = lua_tostring(L, 1), *animation = lua_tostring(L, 2);
 	Object *obj = ResourceManager->createObject(object, animation);
 
-	Matrix<int> matrix;
-	World->getImpassabilityMatrix(matrix, obj, NULL);
+	//Matrix<int> matrix;
+	//World->getImpassabilityMatrix(matrix, obj, NULL);
+	const Matrix<int> &matrix = Map->getImpassabilityMatrix(0);
 		
 	const v2<int> tile_size = Map->getPathTileSize();
 	if (obj->size.is0())
