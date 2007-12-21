@@ -26,16 +26,16 @@ Scanner::~Scanner() {
 
 const int Scanner::run() {
 TRY {
-	mrt::UDPSocket udp_sock;
 	GET_CONFIG_VALUE("multiplayer.bind-address", std::string, bindaddr, std::string());
 	GET_CONFIG_VALUE("multiplayer.port", int, port, 9876);
 
 	LOG_DEBUG(("searching for servers at port %d", port));
 
-	udp_sock.listen(bindaddr, port);
+	mrt::UDPSocket udp_sock;
+	//udp_sock.listen(bindaddr, port, false);
+	udp_sock.create();
 	LOG_DEBUG(("udp socket started..."));
 	
-	udp_sock.listen(bindaddr, port, false);
 	
 	mrt::Serializator s;
 	Message m(Message::ServerDiscovery);
