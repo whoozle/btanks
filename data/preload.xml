@@ -90,6 +90,7 @@
 		<object id="machinegunner-item"/>
 		<object id="machinegunner-on-launcher"/>
 		<object id="machinegunner-player"/>
+		<object id="megaheal"/>
 		<object id="mines-item"/>
 		<object id="missiles-on-launcher"/>
 		<object id="missiles-on-tank"/>

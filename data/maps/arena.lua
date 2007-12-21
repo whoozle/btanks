@@ -22,6 +22,8 @@ items = {
 	thrower_item=20, 
 	boomerang_missiles_item = 40, 
 	stun_missiles_item = 20, 
+	heal = 20, 
+	megaheal = 40,
 	};
 
 items_id = {}
