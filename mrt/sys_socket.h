@@ -24,7 +24,7 @@
 namespace mrt {
 	class MRTAPI Socket {
 	public:
-		struct addr {
+		struct MRTAPI addr {
 			unsigned ip;
 			unsigned port;
 
