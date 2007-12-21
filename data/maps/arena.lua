@@ -46,7 +46,7 @@ animations = {
 	mortar={"red-mortar", "green-mortar", "cyan-mortar", "yellow-mortar", }, 
 	watchtower_with_machinegunner = {"watchtower"},
 	watchtower_with_thrower = {"watchtower"},
-	heli_bomb = {"helicopter", "chinook"},
+	heli_bomb = {"helicopter"},
 }
 
 function array_keys(array)
@@ -78,13 +78,15 @@ function generate_stage(idx)
 		if animations[object] ~= nil then 
 			animation = animations[object][random(#animations[object]) + 1];
 		end
-		score = score - objects[object];
 
-		print("i've chosen: "..object..":"..animation);
-		object = string.gsub(object, "_", "-");
-		animation = string.gsub(animation, "_", "-");
-		if (object == "heli-bomb") then object = "raider-helicopter" end;
-		stage[#stage + 1] = spawn_random(object, animation);
+		if (score > objects[object] / 2 ) then
+			score = score - objects[object];
+			print("i've chosen: "..object..":"..animation);
+			object = string.gsub(object, "_", "-");
+			animation = string.gsub(animation, "_", "-");
+			if (object == "heli-bomb") then object = "raider-helicopter" end;
+			stage[#stage + 1] = spawn_random(object, animation);
+		end
 	until score <= 0;
 	set_specials(stage); --add marks on the minimap
 

@@ -8,6 +8,91 @@
 		<property name="config:map.tank.respawn-interval" value="int:-1"/>
 		<property name="config:multiplayer.game-type" value="string:cooperative"/>
 		<property name="object:biotoilet:biotoilet:1" value="1280,1280,10"/>
+		<property name="object:civilian:civilian-1:1" value="1127,29,2000"/>
+		<property name="object:civilian:civilian-1:10" value="2304,1388,2000"/>
+		<property name="object:civilian:civilian-1:11" value="2448,1513,2000"/>
+		<property name="object:civilian:civilian-1:12" value="2478,2212,2000"/>
+		<property name="object:civilian:civilian-1:13" value="2393,2346,2000"/>
+		<property name="object:civilian:civilian-1:14" value="1726,2376,2000"/>
+		<property name="object:civilian:civilian-1:15" value="2020,2482,2000"/>
+		<property name="object:civilian:civilian-1:16" value="2183,2436,2000"/>
+		<property name="object:civilian:civilian-1:17" value="1496,2473,2000"/>
+		<property name="object:civilian:civilian-1:18" value="1160,2445,2000"/>
+		<property name="object:civilian:civilian-1:19" value="1272,2486,2000"/>
+		<property name="object:civilian:civilian-1:2" value="1022,232,2000"/>
+		<property name="object:civilian:civilian-1:20" value="685,2192,2000"/>
+		<property name="object:civilian:civilian-1:21" value="575,2406,2000"/>
+		<property name="object:civilian:civilian-1:22" value="801,2426,2000"/>
+		<property name="object:civilian:civilian-1:23" value="298,2452,2000"/>
+		<property name="object:civilian:civilian-1:24" value="104,2046,2000"/>
+		<property name="object:civilian:civilian-1:25" value="73,1866,2000"/>
+		<property name="object:civilian:civilian-1:26" value="28,2418,2000"/>
+		<property name="object:civilian:civilian-1:27" value="35,1251,2000"/>
+		<property name="object:civilian:civilian-1:28" value="14,1450,2000"/>
+		<property name="object:civilian:civilian-1:29" value="13,883,2000"/>
+		<property name="object:civilian:civilian-1:3" value="1603,84,2000"/>
+		<property name="object:civilian:civilian-1:30" value="97,701,2000"/>
+		<property name="object:civilian:civilian-1:31" value="-7,435,2000"/>
+		<property name="object:civilian:civilian-1:32" value="34,288,2000"/>
+		<property name="object:civilian:civilian-1:33" value="153,13,2000"/>
+		<property name="object:civilian:civilian-1:34" value="251,56,2000"/>
+		<property name="object:civilian:civilian-1:35" value="357,-1,2000"/>
+		<property name="object:civilian:civilian-1:36" value="757,57,2000"/>
+		<property name="object:civilian:civilian-1:4" value="1842,10,2000"/>
+		<property name="object:civilian:civilian-1:5" value="2231,35,2000"/>
+		<property name="object:civilian:civilian-1:6" value="2453,319,2000"/>
+		<property name="object:civilian:civilian-1:7" value="2381,725,2000"/>
+		<property name="object:civilian:civilian-1:8" value="2476,724,2000"/>
+		<property name="object:civilian:civilian-1:9" value="2480,1005,2000"/>
+		<property name="object:civilian:civilian-2:1" value="685,3,2000"/>
+		<property name="object:civilian:civilian-2:10" value="992,2500,2000"/>
+		<property name="object:civilian:civilian-2:11" value="1878,2475,2000"/>
+		<property name="object:civilian:civilian-2:12" value="2484,2021,2000"/>
+		<property name="object:civilian:civilian-2:13" value="2478,2456,2000"/>
+		<property name="object:civilian:civilian-2:14" value="2381,1448,2000"/>
+		<property name="object:civilian:civilian-2:15" value="2477,714,2000"/>
+		<property name="object:civilian:civilian-2:16" value="2453,865,2000"/>
+		<property name="object:civilian:civilian-2:17" value="2315,112,2000"/>
+		<property name="object:civilian:civilian-2:18" value="1677,24,2000"/>
+		<property name="object:civilian:civilian-2:19" value="1870,89,2000"/>
+		<property name="object:civilian:civilian-2:2" value="267,4,2000"/>
+		<property name="object:civilian:civilian-2:20" value="1193,125,2000"/>
+		<property name="object:civilian:civilian-2:21" value="1060,163,2000"/>
+		<property name="object:civilian:civilian-2:3" value="42,403,2000"/>
+		<property name="object:civilian:civilian-2:4" value="41,1021,2000"/>
+		<property name="object:civilian:civilian-2:5" value="-5,1401,2000"/>
+		<property name="object:civilian:civilian-2:6" value="151,1929,2000"/>
+		<property name="object:civilian:civilian-2:7" value="30,2054,2000"/>
+		<property name="object:civilian:civilian-2:8" value="434,2472,2000"/>
+		<property name="object:civilian:civilian-2:9" value="1406,2422,2000"/>
+		<property name="object:civilian:civilian-3:1" value="999,28,2000"/>
+		<property name="object:civilian:civilian-3:10" value="1750,2493,2000"/>
+		<property name="object:civilian:civilian-3:11" value="802,2347,2000"/>
+		<property name="object:civilian:civilian-3:12" value="639,2501,2000"/>
+		<property name="object:civilian:civilian-3:13" value="5,2249,2000"/>
+		<property name="object:civilian:civilian-3:14" value="47,1453,2000"/>
+		<property name="object:civilian:civilian-3:15" value="64,697,2000"/>
+		<property name="object:civilian:civilian-3:16" value="-2,107,2000"/>
+		<property name="object:civilian:civilian-3:2" value="1570,13,2000"/>
+		<property name="object:civilian:civilian-3:3" value="2157,21,2000"/>
+		<property name="object:civilian:civilian-3:4" value="2458,441,2000"/>
+		<property name="object:civilian:civilian-3:5" value="2425,750,2000"/>
+		<property name="object:civilian:civilian-3:6" value="2455,1333,2000"/>
+		<property name="object:civilian:civilian-3:7" value="2417,1817,2000"/>
+		<property name="object:civilian:civilian-3:8" value="2350,2473,2000"/>
+		<property name="object:civilian:civilian-3:9" value="1804,2386,2000"/>
+		<property name="object:static-buggy:buggy:1" value="848,1639/4"/>
+		<property name="object:static-launcher:red-launcher:1" value="1968,422/5"/>
+		<property name="object:static-shilka:yellow-shilka:1" value="1725,1770/7"/>
+		<property name="object:static-tank:red-tank:1" value="533,682/4"/>
+		<property name="object:ziehharmonikaspieler:ziehharmonikaspieler:1" value="572,78,2000"/>
+		<property name="object:ziehharmonikaspieler:ziehharmonikaspieler:2" value="1764,46,2000"/>
+		<property name="object:ziehharmonikaspieler:ziehharmonikaspieler:3" value="2417,141,2000"/>
+		<property name="object:ziehharmonikaspieler:ziehharmonikaspieler:4" value="2476,1237,2000"/>
+		<property name="object:ziehharmonikaspieler:ziehharmonikaspieler:5" value="1635,2436,2000"/>
+		<property name="object:ziehharmonikaspieler:ziehharmonikaspieler:6" value="713,2336,2000"/>
+		<property name="object:ziehharmonikaspieler:ziehharmonikaspieler:7" value="40,1776,2000"/>
+		<property name="object:ziehharmonikaspieler:ziehharmonikaspieler:8" value="1,752,2000"/>
 		<property name="spawn:2" value="1195,1206"/>
 		<property name="spawn:3" value="1380,1203"/>
 		<property name="spawn:4" value="1197,1380"/>
@@ -34,7 +119,13 @@
 	<tileset name="captions" firstgid="761" tilewidth="64" tileheight="64">
 		<image source="../tilesets/captions.png"/>
 	</tileset>
+	<tileset name="trees" firstgid="791" tilewidth="64" tileheight="64">
+		<image source="../tilesets/trees.png"/>
+	</tileset>
 	<layer name="background" width="40" height="40">
+		<properties>
+			<property name="z" value="-1000"/>
+		</properties>
 		<data encoding="base64" compression="gzip">
 			H4sIAAAAAAACC+3FMQ0AAAgDsGkb/j2BDtKjaZPMqW3btm3btm3b9pMXRzwtrgAZAAA=
 		</data>
@@ -46,7 +137,7 @@
 	</layer>
 	<layer name="waste" width="40" height="40">
 		<data encoding="base64" compression="gzip">
-			H4sIAAAAAAACC+1YQW6EMAzkO5Fyy5ZbILdQvsheyTtLJZAsdzwxqz30sEgIbUuSyWQ8thmGz/WOKxz3l/gd/xm26bhn8Syd9x/nfnrP6FyfvZ8Eru24v497JfMltRf23Ds4f7E18f4I3pHYVuPcH2KNDLBc+1rO51P9fxfjJV8S22bwksAciNtrb/VcfyL7rgKnHo/438iZZaI7iaWoMZ650fja4dfi71onqPNE/CJeB4JxUXtg/Fr8FfV7P3E2wG8Vels7cRk72HvzJIc+WHz14nx3+AyKwwHwFQ19MJ1pP0RxrjEG5TtSz4X42WhoWGKT56b9awb7lH+XvjKpM7N0KLEUoGvt15LvZmihEC+aX9BzVTiC4fuBYJqM/IMwevIUuzLgMwC/X9TaxeGDPR1HZ+zpeE2GHi0d3I3n5PRTi7/syBeWTwTDR5kPs/kb4K86/LgZcZgcumP8BVBP9OpAC9tG8plnb6Wz782pJw9vwxvG504N6NGqrkmjUWfHDrbJqKEWB/9WHVyFz8g8lIx6OhJsHv5RP5AduV7vU8b7E/CTDY8vDi3MJD/uTh+V8S5z6KjwefkLJH5Rjiov6rQo/IuqVVcHtg3k4+aoyZE/B1HnMo1cHESSL1B+YDWB7B/1e0xnO4nlQvItqvMa6CVR/5YMHVVwhvL/ep3xZr6dgT9W1e+uymcsfaJ+Ljt0nUi+/b6ZT5LBT3T2O4y/3vcIj2820g9GUGfc4Q/1adb3oEh0KnWcOv1fdfTB2fA9Kwcx/WxGfW/VQ9f+PLqV+2TYZnBerL9JRv5F/jDezJ+zo//y1Lu6RkC838lLvd7Q8z0hkXHWd4o79aP2ubt+U8m4asz7as/5uf5eP7JZT78AGQAA
+			H4sIAAAAAAACC+1YQW6kMBDkO5Z8c5abwTcTvkiu8M6dlWakVm9VuRnlkEOQEJoE2+VydXU30/R7fceVHvcf8zv/MGzL417Nsw3e/3juZ/TMwfXV+8XgOh735+PexXzF7UU9zwHOf9gu8/4M3rHYdnLuH2aNCrC89rU9n1/u/6cZb/my2A7CSwFzIG5fe+vP9Rex725w+vGI/0OcWRW6s1iaGxOZG43vA34Zf691kjtPxC/idRIYN7cHxS/jr7nf5xPnBfjtRm/7IC7zAPtonhLQh4qvUZyfAZ9BcTgBvjLRh9KZ90MU5x5jcr5j9dyEn81EwxabPTfvXyvYp/279ZXFnRnTocXSgK69X1u+L6KFJrxofUPP3eFIxPeTwLSQ/IMwRvKUuirgMwG/39zaLeCDIx3nYOz5eC1Ej0wHd+O5BP2U8VcD+YL5RCI+qnxYzX8B/nrAjy8ShyWgO8VfAvXEqA5k2A6RzyJ7a4N9H0E9RXibvmF8HdSAEa36mjSTOjsPsC2khtoC/LM6uBufsXmokHo6C2wR/lE/UAO53u/TxvsX4KcSj28BLawiP55BH7XxbnPo7PBF+UsiflGOam/qtDn8m6tV9wC2A+TjK1CTI39Ops5VGnlxkEW+QPlB1QS2f/TvKZ2dIpabyLeozrtAL4n6t0J01MEZ2v/7deab+XYF/thdv7s7n2H6RP1cDei6iHz7eTOfFMJPDvY7ir/R94iIb16iH8ygzrjDH+rT2PegLHRqdVwG/V8P9MGV+B7LQUo/B6nvWT0UqQ07yJ8K2wrOS/U3heRf5A/zzfy5BvqvSL3rawQ//92ac9QbRr4nFDGOfae4Uz96n7vrN12M62Ted3vO3+v/6y+f84q0ABkAAA==
 		</data>
 	</layer>
 	<layer name="barahlo" width="40" height="40">
@@ -74,12 +165,13 @@
 	</layer>
 	<layer name="details" width="40" height="40">
 		<data encoding="base64" compression="gzip">
-			H4sIAAAAAAACC+2TqQ6AMBBEy+HAcToSHAmOIxgOx/Gj8JmMqMBSUUozL3lZOZPdVghiGhVsYacwaw39RjjBWWFWGnqucIO7wmxk197QtzHKPS6G9lvlHg9+Y0LIg8AVIpWSfxLhdjHvZz0nHODFVRBCCCHW40AP+oZmJjCEucZ+bzILmMFSY78vMgmxgRu5pZCfABkAAA==
+			H4sIAAAAAAACC+2Yv04DMQzGQ2GDjRbYkNgqsVEqlgIbfx7A1+nOzcvBY/JVOqTqlN4lTuJkaKRPGXqXs3+2bKfGnFZtawmtoGfB/qhg3wZ6hd4E+1LBzg/oE/oS7E+9revENjVQC3WOfdvvvuz3HN8Dz59aNPLbzvOMf/Z7jt+Jz2cB8xD/jeD7h8xtxNmUwD7KdK6UvSvGw7y0Do6u/O1GcjuGfaMYn5x5wYXs40A/LmfG3PTSYE0BubkNeLZLVFc4c42gDPyuEbv5LE0OslJ8pSxYMb5a/Hx71g/0Av066vewDh+rzSF1eeqdxqMPtIl6fWqWpXoJCfzQ7CUs8IMUY2sFfnBltpXgRxF5oMHPRvhTahb05bcbmU1qmmOp8jmWFfgN7z3HZBX5nUHn0EWkv7n4LaAr6C7SX/K8o7aB/yPcQ7fQQwZ+Oeuuxt2CJ2a/mPmxBL9a79un5b/+APnw3msAGQAA
 		</data>
 	</layer>
 	<layer name="objects" width="40" height="40">
 		<properties>
 			<property name="impassability" value="100"/>
+			<property name="z" value="100"/>
 		</properties>
 		<data encoding="base64" compression="gzip">
 			H4sIAAAAAAACC+3VuQ2AMBBE0XX/NXFkHCUAIdABV8YkrmAxsqz/pA1t+Zw1A/C1KZjNId/1rVrbFrgnoCSN/nTr+NeVxtYJcuFWPapBc4+O+TuN7QvOrdg3lkz3GPvGTu9wOXR+p+riHPFDrqfmzXXylDcOAADwhxdAJlkDABkAAA==
@@ -149,9 +241,40 @@
 			H4sIAAAAAAACC+2YzQ6DIAzHeR2S3XTcVG77eEV3heccSzQhpIgg4N+MJk0TlVJ+sS0wMsYmo2MFm/oOIb5p49ls9Gn0FWE/Ab+pPql4JYuXzollnWed653g8+GJURz0lbK+kN/xIL/VVyqrLRky8CspXSZ+peRq/JTRGzA/pBi5Ue2p4RKEHdU/StSJs+tfy1/s/LVjFGD83ByRjV/jV6F39Ev/QONH9TUkfl3g3HQ2P6qvof1/VIxo+WvHeKX6h9SDB899gwDmh7QPbPz+i9+e89GvP94r5bjLL8TN7t016pDLT+5cz5HzSgx/l9/WfJzYj8XGGMOfe/Z/allf71jN/HfGiviesjpinGbhO2kUO2UYX+Jbe8wXTzgypQAZAAA=
 		</data>
 	</layer>
+	<layer name="Copy of Copy of 2nd floor" width="40" height="40">
+		<properties>
+			<property name="impassability" value="40"/>
+			<property name="z" value="1000"/>
+		</properties>
+		<data encoding="base64" compression="gzip">
+			H4sIAAAAAAACC+2YzQ6DIAzHeR2S3XTcVG77eEV3heccSzQhpIgg4N+MJk0TlVJ+sS0wMsYmo2MFm/oOIb5p49ls9Gn0FWE/Ab+pPql4JYuXzollnWed653g8+GJURz0lbK+kN/xIL/VVyqrLRky8CspXSZ+peRq/JTRGzA/pBi5Ue2p4RKEHdU/StSJs+tfy1/s/LVjFGD83ByRjV/jV6F39Ev/QONH9TUkfl3g3HQ2P6qvof1/VIxo+WvHeKX6h9SDB899gwDmh7QPbPz+i9+e89GvP94r5bjLL8TN7t016pDLT+5cz5HzSgx/l9/WfJzYj8XGGMOfe/Z/allf71jN/HfGiviesjpinGbhO2kUO2UYX+Jbe8wXTzgypQAZAAA=
+		</data>
+	</layer>
+	<layer name="invisible layer" width="40" height="40" visible="0">
+		<properties>
+			<property name="hidden" value="true"/>
+			<property name="impassability" value="100"/>
+		</properties>
+		<data encoding="base64" compression="gzip">
+			H4sIAAAAAAACC9WYS27EIAyGc2jSJcMy4RKwhVM2iyIhy45/XskUyVKnIPhi4wfetu8e5pK9U36U/cyE/ewln05xDFOu5lPjfonhLHy5gy/9seWBb5T2LYzHJXFwL2kuXHIKksk6yTajNkb1wJ0VCWN8iC8I5xR7FR168redyBfAe+EaYslMvmK74rtxkI/6mSM6j412K3tk4v90H9+hO+67LMAm6SlPsK8lZ3mAr8SHO91G5X9u8O5xtg9VHN+J3gLoEzP5bGNOQ9eEzvuXhByn2bCch/K1xJYDjM+BsamrYugh3Mn6t+3gG4l/TvjeOgfUuaCee4tvxbCgfT9KLFpVI2eAj94v97DeOJ1QvRpSc0u19yzd5YbcweXplXq0wF23TGx4g0+661R/NE6eC33EKvW2pL/wkH/YxjcBsn7m4PLRXf5NTO5azaj5CZ2zL+SQO75DyO9P8h1KXcvlkJO8/97Kv9rcU6OXz4C9pjf4pP7PCp9GGZzC1sJoOnt9DvBt5N2UlF5lBmteA9Z/9ZmZ6ZNFhXMXepXa+jzQX3NKPkKkZf1dfcr1DzwQT5E3ZwS4uPMOocfpgZh/guKB9X77f+MXxEpjawAZAAA=
+		</data>
+	</layer>
 	<layer name="123" width="40" height="40">
 		<data encoding="base64" compression="gzip">
 			H4sIAAAAAAACC+3RsQqAIABF0YfOZd9cYCj2z71FiDZdvQfu4OBzUMIqcpBuV1x1zT2f8+muMLbZ7/w3+1szmzO2KO0uuSPy1wAAAAAAAACwuheE4TEXABkAAA==
+		</data>
+	</layer>
+	<layer name="trees" width="40" height="40">
+		<properties>
+			<property name="z" value="2100"/>
+		</properties>
+		<data encoding="base64" compression="gzip">
+			H4sIAAAAAAACC+1YDQuCMBAd+CtmQYEWFGhZgabV//9ZPYjBMTy3TNpZe/BA3NyeN+5jp9QL90SpR6IGUWH8BGZgDm7ALflG4zkFF+DSWouub9YZ2sNHh40O725gAZbgATySeZxubp2+/eiY+V/X9zZqjDXgFWzJPE63C9x+Wc85fAJO91gUjnMIjfrNcwiBVrg+ydBMrJKCzCNWhUQxIlZ9239NrDqDF8G+4pN/I+YVW1LB52lqIakwtZDk2qCJ/vqTkJgrVtCzTuTmih307KM/TIpKuD27gfu+FOTCa+hSYA1N49+U9/1/rpV9+lqhffk28/gdbRxtJ8VetF6b2s60z+5rL1sPV69xdqa6tSPv0z67a77JNZwe7VljUN2uPj/tsz8Bf9EvTgAZAAA=
+		</data>
+	</layer>
+	<layer name="trees#2" width="40" height="40">
+		<data encoding="base64" compression="gzip">
+			H4sIAAAAAAACC+1Z2Q6CMBA06VeIvHG8oXgkKh4/oT6qj+r//4BDpMkGu0KxkY3pJBOubDs0MExLoAaDERiCGhn2x+AEzMn5JfZX4BosqvNzbBfq/VpZm4Apqafg+igR4Tiu6mNDOyYdHHa4vgen4Ew1992mD1rf1M4nUE0bbLfK/v6atH/TDtXkAge0dQRPDtt0iTN0XcCrUH036LqDD6H6uGdbIlw/2x4e/4Ih3ougygUSQfOBRNB8EArUSPNBKtwDc+H6Cv8t9t/inrxZordEtTmbNJ31uV8izANN82jJHth1bunxQih07LTPpMIzYC48A0p9N7TP+Nzic0uf/vLL7GNTr/3Fpq+IWa/ump1K6PV1zl9s+sparldz42Sq1+vrnL/Y5Je2695Rh/8C3Dg+AQSLdHsAGQAA
 		</data>
 	</layer>
 </map>
