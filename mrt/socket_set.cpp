@@ -21,7 +21,7 @@
 #include <assert.h>
 
 #ifdef WIN32
-#	include "Winsock2.h"
+#	include <Winsock2.h>
 #else
 #	include <sys/select.h>
 /* According to earlier standards */
