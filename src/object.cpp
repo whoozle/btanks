@@ -608,7 +608,7 @@ void Object::setWay(const Way & new_way) {
 	}
 	if (idx >= 0) {
 		Way::iterator i = _way.begin();
-		LOG_DEBUG(("skipping %d vertex(es)", idx + 1));
+		//LOG_DEBUG(("skipping %d vertex(es)", idx + 1));
 		while(idx--) {
 			assert(i != _way.end());
 			++i;
