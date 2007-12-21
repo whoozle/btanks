@@ -149,7 +149,7 @@
 	</layer>
 	<layer name="sand2" width="40" height="40">
 		<properties>
-			<property name="impassability" value="60"/>
+			<property name="impassability" value="40"/>
 		</properties>
 		<data encoding="base64" compression="gzip">
 			H4sIAAAAAAACC+1Yy46DMAzkhyL1li230NzC8of0Cp+5OVDJsiZ+tbctUlSpAjOxZ8YO0/S9/uOV+rr39QN+bx+MewvGOPta+nqA3/kNbDxuJFa5nt37Wvv67etJYlZDfm7GuFsAX76wHOQ9jWCclWeX61mOs124NmFvGn94DThGFJ/GLYwLNVC36uTdbNjP674M+JWAvhAPsvI+xA8pX3eCbb/uo/mj/1HMB3muOvJn5ccJdD0z/tE8vLi7KPrV3u/1BqRDigXpayH5jupX0uWD4NqEOjyBjhvYT3L6NL0f6XI37pnyUOJUceo8E15QPTVnPbKxT1jjJqbHSvR0DPIv+Sn3QR7DW1e03yzsn/ueFo/fx/uM1jeQ79OeRvefmMdUoW4jHy3Ao6pDnxvou8fA/46A/rx9qgn9ogizFuqzSZgXy+D53aE9Hv8UsCGfzQbeRbFJ+Xr58lOZTygndoV3e6CH5AG2DWhjNvioFbv1amBurk5fO5X8eueAkV9m5tFUR3yeRjOE1d+s/bIKvb4K8652plqAxj39Q+qDo3rQ/zPT88p4tgKNR/ObAvVA+5N4xudBrX9Y+6q3LlafiMxtSJsn0a2GU6tDcWLT5jbkixJ/slKHM/A9gvOC5rA49CmdxyzzjwfjDHxb0+foOwTFFskfjyFxQzuvFtCnvXOfpCuNt1mZ/2gdZuPcaulv1v7YWH9Gc5/3XGU5t01BX84f+k74zjnPOves0+e+DXyv+PUHZnLobgAZAAA=
