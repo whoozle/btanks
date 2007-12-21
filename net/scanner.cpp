@@ -8,6 +8,14 @@
 #include "mrt/udp_socket.h"
 #include "mrt/serializator.h"
 
+#ifdef WIN32
+#	include <Winsock2.h>
+#else
+#	include <sys/socket.h>
+#	include <netinet/in.h>
+#	include <netinet/ip.h> /* superset of previous */
+#endif
+
 Scanner::Scanner() : _running(true) {
 	start();
 }
@@ -34,7 +42,9 @@ TRY {
 	mrt::Chunk data;
 	m.serialize2(data);
 	
-	udp_sock.send(mrt::Socket::addr(), data.getPtr(), data.getSize());
+	udp_sock.send(mrt::Socket::addr(INADDR_BROADCAST, port), data.getPtr(), data.getSize());
+	
+	return 0;
 	
 	mrt::SocketSet set; 
 	set.add(udp_sock, mrt::SocketSet::Exception | mrt::SocketSet::Read);
