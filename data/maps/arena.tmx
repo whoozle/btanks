@@ -7,7 +7,6 @@
 		<property name="config:map.shilka.respawn-interval" value="int:-1"/>
 		<property name="config:map.tank.respawn-interval" value="int:-1"/>
 		<property name="config:multiplayer.game-type" value="string:cooperative"/>
-		<property name="object:biotoilet:biotoilet:1" value="1280,1280,10"/>
 		<property name="object:civilian:civilian-1:1" value="1127,29,2000"/>
 		<property name="object:civilian:civilian-1:10" value="2304,1388,2000"/>
 		<property name="object:civilian:civilian-1:11" value="2448,1513,2000"/>
@@ -142,7 +141,7 @@
 	</layer>
 	<layer name="barahlo" width="40" height="40">
 		<data encoding="base64" compression="gzip">
-			H4sIAAAAAAACC+3UPwtAQBjH8VtYeZPUTcSkmIjNn3fsNxhkUE70DN9Pfctluc5znAMAhOrVYGg/mcoNn1ehSsYm2KyWh7Pgb957w7PQ8Llf/Qc8x4CXKlWf1pGKDe2vVd1pnaj0eB7VZPhsV7UxYvjp7lpzvbsAAABf2wFPmvvYABkAAA==
+			H4sIAAAAAAACC+2UMQuDMBBGXXTVP6kQOyg6CXZSdKv2H/sNDhlaS5PlhPfgQS5ZjsvdJQkAAIQyydlQPqWsDNerkS1tE8xLbn/2grt4d4Z7YeC7o/aAowwQSSd7L05lZii/UT69OJfFeV7kari2u3zTYhBILR8fZvTb7FqZ0V/3AGB75wAA3JkD6j3s1AAZAAA=
 		</data>
 	</layer>
 	<layer name="sand2" width="40" height="40">
@@ -165,7 +164,7 @@
 	</layer>
 	<layer name="details" width="40" height="40">
 		<data encoding="base64" compression="gzip">
-			H4sIAAAAAAACC+2Yv04DMQzGQ2GDjRbYkNgqsVEqlgIbfx7A1+nOzcvBY/JVOqTqlN4lTuJkaKRPGXqXs3+2bKfGnFZtawmtoGfB/qhg3wZ6hd4E+1LBzg/oE/oS7E+9revENjVQC3WOfdvvvuz3HN8Dz59aNPLbzvOMf/Z7jt+Jz2cB8xD/jeD7h8xtxNmUwD7KdK6UvSvGw7y0Do6u/O1GcjuGfaMYn5x5wYXs40A/LmfG3PTSYE0BubkNeLZLVFc4c42gDPyuEbv5LE0OslJ8pSxYMb5a/Hx71g/0Av066vewDh+rzSF1eeqdxqMPtIl6fWqWpXoJCfzQ7CUs8IMUY2sFfnBltpXgRxF5oMHPRvhTahb05bcbmU1qmmOp8jmWFfgN7z3HZBX5nUHn0EWkv7n4LaAr6C7SX/K8o7aB/yPcQ7fQQwZ+Oeuuxt2CJ2a/mPmxBL9a79un5b/+APnw3msAGQAA
+			H4sIAAAAAAACC+2YuW7DMAyGlWNrt6THVqBbgG450KVpl54PICcZbEYvlz5m/wAOUBiKLVES5SECfnCILZMfCVKKUpfVtzWDFtCSYZ8E/HuB1tArw84E/PyEvqBvhp3Xvq4i+1RAJVRZ7Ka2ruyPHN889+9auuW3veMeJ/ZHjj+R9ycGc5/4FeP7/5mbgL11BP90on257G05btalsXC01W/VUtsh7AvB/KSsC8rkH3nGcTVU6raWBGvtUZsbj2erSH2FEvcInYDfBLmbDuPUIAnll8uCBPMrxc91Zh2gZ+jX0r+bffhcb/bpy13vFA5zoIw062OzzDVLNCMOyVlCjDh8+b1DH8zcGkYcJFR3hlkHukd1l4ufCYgn11nQld++5WySyvcttItwN+nTOZYE+DXvPedkBPkNoBE0Dow3Fb8b6Bq6D4xXO95RS8//ER6gO+gxAb+UfVfibkEdZ7+Q82MOfn29b1+W+/oDNHOmjgAZAAA=
 		</data>
 	</layer>
 	<layer name="objects" width="40" height="40">
@@ -174,7 +173,7 @@
 			<property name="z" value="100"/>
 		</properties>
 		<data encoding="base64" compression="gzip">
-			H4sIAAAAAAACC+3VuQ2AMBBE0XX/NXFkHCUAIdABV8YkrmAxsqz/pA1t+Zw1A/C1KZjNId/1rVrbFrgnoCSN/nTr+NeVxtYJcuFWPapBc4+O+TuN7QvOrdg3lkz3GPvGTu9wOXR+p+riHPFDrqfmzXXylDcOAADwhxdAJlkDABkAAA==
+			H4sIAAAAAAACC+2XOw7DIBBE2fufKU662DlCkjIfu3Qs23GXaejSIIRB6D1pO0CzK5hlnQPIT2/ODVauvo+0TQH6rlp7Kzifh7Q9jXsHUBNHvelTxLs+aG+TwBe+ik3R6exLxPln7W0r9i3fN+6F5uj7xoveEcWs+i2KlTrCDr6emlhfx0+54/Cft5U9H48WPh/zd8NrAABy8gMWnuxoABkAAA==
 		</data>
 	</layer>
 	<layer name="plan" width="40" height="40" visible="0">
@@ -230,7 +229,7 @@
 			<property name="impassability" value="100"/>
 		</properties>
 		<data encoding="base64" compression="gzip">
-			H4sIAAAAAAACC+3VuwqAMAyF4eT9n8nL5mX1IdRJqoujR6S7SyHo/0Gg46FpGjMAf1S5We1x83XK1jt9wjc0estt4Pc8KNtYMF/+b6agd8B/865/p84b/QMgs2ZuUa0BZ+/euUm1q46A+fLOLb17AQAA8LgA9Qht+wAZAAA=
+			H4sIAAAAAAACC+3WuwqAMAyF4eT9n8nL5mX1IdRJqoujR6S7SyHo/0Gg46Fpm5oB+KPKzWqPm69Ttt7pE76h0VluA5/nQdnGgvnyezMF3QPem3f9O7Xe6B8AmXXnFtUa8O7dMzepdtURMF+euaVnL/ibAQCAxwUxNF9PABkAAA==
 		</data>
 	</layer>
 	<layer name="Copy of 2nd floor" width="40" height="40">
@@ -261,7 +260,7 @@
 	</layer>
 	<layer name="123" width="40" height="40">
 		<data encoding="base64" compression="gzip">
-			H4sIAAAAAAACC+3RsQqAIABF0YfOZd9cYCj2z71FiDZdvQfu4OBzUMIqcpBuV1x1zT2f8+muMLbZ7/w3+1szmzO2KO0uuSPy1wAAAAAAAACwuheE4TEXABkAAA==
+			H4sIAAAAAAACC+3QzQqDMBhE0Y+4tFoVFPx52gpKi76zsxHEWtCIIPQemEVMMiYx+1Y6s8rZplTfsx9za6HWPdyx/rNq9TY7u3OtKy46xx11umuvvJWPMijjYvxS2oPvMe9Zd87/8un0EQVmsfJUksAAAAAAAAAAAH9uApQZiVwAGQAA
 		</data>
 	</layer>
 	<layer name="trees" width="40" height="40">
