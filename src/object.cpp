@@ -596,6 +596,8 @@ void Object::setWay(const Way & new_way) {
 	v2<int> pos;
 	getCenterPosition(pos);
 
+	_next_target.clear();
+	_velocity.clear();
 	_way = new_way;
 
 	int d = ((int)size.x + (int)size.y) / 4;
@@ -621,8 +623,6 @@ void Object::setWay(const Way & new_way) {
 		_next_target = _way.begin()->convert<float>();
 	}
 
-	_next_target.clear();
-	_velocity.clear();
 	need_sync = true;
 }
 
