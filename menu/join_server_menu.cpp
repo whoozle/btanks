@@ -32,6 +32,7 @@
 #include "config.h"
 #include "i18n.h"
 #include "upper_box.h"
+#include "net/scanner.h"
 
 JoinServerMenu::JoinServerMenu(MainMenu *parent, const int w, const int h) : _parent(parent) {
 	_back = new Button("big", I18n->get("menu", "back"));
@@ -189,7 +190,7 @@ void JoinServerMenu::tick(const float dt) {
 
 	if (_scan->changed()) {
 		_scan->reset();
-		LOG_DEBUG(("scan"));
+		Scanner scanner;
 	}
 	
 	if (_join->changed()) {

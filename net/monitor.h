@@ -69,6 +69,8 @@ private:
 		unsigned char flags;
 		int timestamp;
 	};
+	
+	static void parse(mrt::Chunk &data, const unsigned char *buf, const int len, int &timestamp);
 	Task * createTask(const int id, const mrt::Chunk &data);
 	
 	typedef std::deque<Task *> TaskQueue;

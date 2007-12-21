@@ -215,6 +215,29 @@ void Monitor::disconnect(const int cid) {
 	}
 }
 
+void Monitor::parse(mrt::Chunk &data, const unsigned char *buf, const int r, int &ts) {
+	if (r < 9) 
+		throw_ex(("packet too short (%u)", (unsigned)r));
+	
+	unsigned long len = ntohl(*((const uint32_t *)buf));
+	ts = ntohl(*((const uint32_t *)(buf + 4)));
+	GET_CONFIG_VALUE("multiplayer.maximum-packet-length", int, max_len, 1024 * 1024);
+	if (len > (unsigned long)max_len)
+		throw_ex(("recv'ed packet length of %u. it seems to be far too long for regular packet (probably broken/obsoleted client)", (unsigned int)len));
+
+	unsigned char flags = buf[8];
+
+	if (flags & 1) {
+		mrt::Chunk src;
+		src.setData(buf + 9, r - 9);
+		mrt::ZStream::decompress(data, src, false);
+	} else {
+		data.setData(buf + 9, r - 9);
+	}
+}
+
+#include "message.h"
+
 const int Monitor::run() {
 TRY {
 	_running = true;
@@ -265,33 +288,33 @@ TRY {
 					i->second->addr = addr;
 				
 					m.unlock();
-					unsigned long len = ntohl(*((uint32_t *)buf));
-					unsigned long ts = ntohl(*((uint32_t *)(buf + 4)));
-					GET_CONFIG_VALUE("multiplayer.maximum-packet-length", int, max_len, 1024 * 1024);
-					if (len > (unsigned long)max_len)
-						throw_ex(("recv'ed packet length of %u. it seems to be far too long for regular packet (probably broken/obsoleted client)", (unsigned int)len));
-					unsigned char flags = buf[8];
-
+	
 					Task * t = new Task(i->first);
-					t->data->setData(buf + 9, r - 9);
-					t->timestamp = ts;
-					t->len = len;
-					t->flags = flags;
 
-					if (t->flags & 1) {
-						mrt::Chunk data;
-						mrt::ZStream::decompress(data, *t->data, false);
-						LOG_DEBUG(("recv(%d, %u) (decompressed: %u)", t->id, (unsigned)t->data->getSize(), (unsigned)data.getSize()));
-						*t->data = data;
-					}
+					parse(*t->data, buf, r, t->timestamp);
+					t->len = t->data->getSize();
+					
+					//LOG_DEBUG(("recv(%d, %u)", t->id, (unsigned)t->data->getSize()));
 
 					sdlx::AutoMutex m2(_result_mutex);
 					_result_q.push_back(t);
 				} else {
-					in_addr a;
-					memset(&a, 0, sizeof(a));
-					a.s_addr = addr.ip;
-					LOG_WARN(("incoming datagram from unknown client(%s:%d)", inet_ntoa(a), addr.port));
+					bool ok = false;
+
+					TRY {
+						mrt::Chunk data;
+						int ts = 0;
+						parse(data, buf, r, ts);
+						Message msg;
+						msg.deserialize2(data);
+						if (msg.type == Message::ServerDiscovery) {
+							ok = true;
+							LOG_DEBUG(("server discovery datagram from the %s", addr.getAddr().c_str()));
+						}
+					} CATCH("discovery message", );
+					if (!ok) {
+						LOG_WARN(("incoming datagram from unknown client(%s:%d)", addr.getAddr().c_str(), addr.port));
+					}
 				}
 			} else LOG_WARN(("short datagram recv-ed [%d]", r));
 		}
