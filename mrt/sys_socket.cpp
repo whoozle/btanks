@@ -21,7 +21,9 @@
 #ifdef WIN32
 #	include "Winsock2.h"
 #else
-#	include "sys/socket.h"
+#	include <sys/socket.h>
+#	include <netinet/in.h>
+#	include <arpa/inet.h>
 #	include <unistd.h>
 #endif
 
@@ -29,6 +31,13 @@
 using namespace mrt;
 
 Socket::Socket() : _sock(-1) {}
+
+const std::string Socket::addr::getAddr() const {
+	in_addr a;
+	memset(&a, 0, sizeof(a));
+	a.s_addr = ip;
+	return inet_ntoa(a);
+}
 
 void Socket::init() {
 	static bool inited;

@@ -19,18 +19,23 @@
  */
 
 #include "export_mrt.h"
+#include <string>
 
 namespace mrt {
 	class MRTAPI Socket {
 	public:
 		struct addr {
-			addr() : ip(0), port(0) {}
 			unsigned ip;
 			unsigned port;
+
+			addr() : ip(0), port(0) {}
+			addr(unsigned ip, unsigned port) : ip(ip), port(port) {}
+			
 			const bool empty() const { return ip == 0; }
 			const bool operator==(const addr &other) const {
 				return ip == other.ip && port == other.port;
 			}
+			const std::string getAddr() const;
 		};
 
 		Socket();
