@@ -85,7 +85,7 @@ void Trooper::tick(const float dt) {
 }
 
 const bool Trooper::take(const BaseObject *obj, const std::string &type) {
-	if (obj->classname == "missiles" && type == "nuke" && _variants.has("player")) {
+	if (obj->classname == "missiles" && type == "nuke" && _variants.has("player") && !_variants.has("nukeman")) {
 		_variants.add("nukeman");
 		hp = max_hp = 999;
 		init("nukeman");
