@@ -495,8 +495,8 @@
 	</area>
 	
 	<area id="maps/descriptions">
-		<string id="arena">Battle Tanks Arena: check your Battle Tanks skill. Kill all opponents to win.</string>
-		<string id="arena" lang="ru">Танковая Арена: проверь своё умение убивать. </string>
+		<string id="arena">Battle Tanks Arena: check your Battle Tanks skill. Kill all opponents to win. (NEW!)</string>
+		<string id="arena" lang="ru">Танковая Арена: проверь своё умение убивать. (Новая карта!)</string>
 		
 		<string id="baykonur">Huge cooperative map with tons of troopers, very defensive military base and big boss inside(tm)</string>
 		<string id="baykonur" lang="ru">Захват укрепрайона близ космодрома Байконур.</string>
@@ -553,8 +553,8 @@
 		<string id="university" lang="de">Retten Sie die Battle Tanks Universität vor Hubschraubern des Todes. Dies ist eine Deathmatchkarte. Also, tötet euch untereinander bevor Sie mit den Hubschraubern anfangen. </string>
 		<string id="university" lang="it">Salvate l'universita Battle Tanks dagli elicotteri. Mappa deathmatch, sparatevi e POI distruggete gli elicotteri.</string>
 		
-		<string id="platform">Remains of the orbital city. Vivid rocks and platforms. (NEW!)</string>
-		<string id="platform" lang="ru">Живописные останки брошенного орбитального поселения. Летающие в космосе платформы и камни. (Новая карта!)</string>
+		<string id="platform">Remains of the orbital city. Vivid rocks and platforms.</string>
+		<string id="platform" lang="ru">Живописные останки брошенного орбитального поселения. Летающие в космосе платформы и камни.</string>
 		<string id="platform" lang="fr">Les restes d'une ville en orbite spatiale. Vive les rochers et les plateformes !</string>
 		<string id="platform" lang="de">Reste einer verlassenen Orbitalstazion. Im Raum fliegen Steine und Plattformen rum.</string>
 		<string id="platform" lang="it">Rottami di una stazione spaziale...</string>
@@ -803,7 +803,7 @@
 		<string id="checkpoints" lang="it">Le mappe di squadra salvano automaticamente la partita al raggiungimento di un CHECKPOINT.</string>
 		
 		<string id="deathmatch-bots">Have not planned to play with an opponent? Add some bots while playing deathmatch game</string>
-		<string id="deathmatch-bots" lang="ru">Если вы не планируете играть с кем-то по сети в десматч, добавте ботов(AI) в меню выбора машинок</string>
+		<string id="deathmatch-bots" lang="ru">Если вы не планируете играть с кем-то по сети в десматч, добавте ботов (AI) в меню выбора машинок</string>
 		<string id="deathmatch-bots" lang="fr">Vous n'avez pas d'adversaire contre qui jouer ? Ajoutez des robots (AI) pour les combats à mort.</string>
 		<string id="deathmatch-bots" lang="it">Non hai avversari? Aggiungi qualche BOT mentri giochi.</string>
 		<string id="deathmatch-bots" lang="de">Haben Sie keinen Rivalen? Fügen Sie einige Roboters zum Deathmatch-Spiel hinzu.</string>
