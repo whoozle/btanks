@@ -163,15 +163,6 @@
 			H4sIAAAAAAACC+2XOw7DIBBE2fufKU662DlCkjIfu3Qs23GXaejSIIRB6D1pO0CzK5hlnQPIT2/ODVauvo+0TQH6rlp7Kzifh7Q9jXsHUBNHvelTxLs+aG+TwBe+ik3R6exLxPln7W0r9i3fN+6F5uj7xoveEcWs+i2KlTrCDr6emlhfx0+54/Cft5U9H48WPh/zd8NrAABy8gMWnuxoABkAAA==
 		</data>
 	</layer>
-	<layer name="plan" width="40" height="40" visible="0">
-		<properties>
-			<property name="hp" value="10000"/>
-			<property name="visible-if-damaged" value="true"/>
-		</properties>
-		<data encoding="base64" compression="gzip">
-			H4sIAAAAAAACC+2YSQ7AIAwD8/9v+WO9V0gl4CwFR+KEqg7OgoyZ4oZAszXiizgz6zsE56SCb/b/3pwx+XY1GbGv8EXWxJtxlQ+Js8RTC5lsHr5srlX9OvPZZXwonhWMmSm+f+YXRP1Q2NOaL+Kr8j0n6Pflo3Z6GyS+TG8WUX9eDWE+P8X0b978z+xH9wc29jvwmfjCfCjI9dLhfhPfnBfv+j6pODMechiBqQAZAAA=
-		</data>
-	</layer>
 	<layer name="walls" width="40" height="40">
 		<properties>
 			<property name="impassability" value="100"/>
