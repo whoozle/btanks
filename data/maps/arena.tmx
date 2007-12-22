@@ -157,7 +157,7 @@
 	<layer name="objects" width="40" height="40">
 		<properties>
 			<property name="impassability" value="100"/>
-			<property name="z" value="100"/>
+			<property name="z" value="150"/>
 		</properties>
 		<data encoding="base64" compression="gzip">
 			H4sIAAAAAAACC+2XOw7DIBBE2fufKU662DlCkjIfu3Qs23GXaejSIIRB6D1pO0CzK5hlnQPIT2/ODVauvo+0TQH6rlp7Kzifh7Q9jXsHUBNHvelTxLs+aG+TwBe+ik3R6exLxPln7W0r9i3fN+6F5uj7xoveEcWs+i2KlTrCDr6emlhfx0+54/Cft5U9H48WPh/zd8NrAABy8gMWnuxoABkAAA==
@@ -202,6 +202,11 @@
 			H4sIAAAAAAACC+3YMQ6CUAzG8WePjpOeA6KnwOgChAniqmehAwZCeGoKQwP/X9J0IJQvLzCUEOBBKiFkMvS1lTqzkv/7U+uide2zJNqPMnTLzLWddOZZq4jkt3iI7/ekEL6VOe8DZwAAAABszd3B/tN+2TXqne1nL/Yu4Of/rVyv3/ryphnlyh1mnGayZFx6/p/7Y91yT2yG5Vmw6QC8T4cIABkAAA==
 		</data>
 	</layer>
+	<layer name="123" width="40" height="40">
+		<data encoding="base64" compression="gzip">
+			H4sIAAAAAAACC+3QzQqDMBhE0Y+4tFoVFPx52gpKi76zsxHEWtCIIPQemEVMMiYx+1Y6s8rZplTfsx9za6HWPdyx/rNq9TY7u3OtKy46xx11umuvvJWPMijjYvxS2oPvMe9Zd87/8un0EQVmsfJUksAAAAAAAAAAAH9uApQZiVwAGQAA
+		</data>
+	</layer>
 	<layer name="objects2" width="40" height="40">
 		<properties>
 			<property name="impassability" value="100"/>
@@ -234,11 +239,6 @@
 		</properties>
 		<data encoding="base64" compression="gzip">
 			H4sIAAAAAAACC9WYS27EIAyGc2jSJcMy4RKwhVM2iyIhy45/XskUyVKnIPhi4wfetu8e5pK9U36U/cyE/ewln05xDFOu5lPjfonhLHy5gy/9seWBb5T2LYzHJXFwL2kuXHIKksk6yTajNkb1wJ0VCWN8iC8I5xR7FR168redyBfAe+EaYslMvmK74rtxkI/6mSM6j412K3tk4v90H9+hO+67LMAm6SlPsK8lZ3mAr8SHO91G5X9u8O5xtg9VHN+J3gLoEzP5bGNOQ9eEzvuXhByn2bCch/K1xJYDjM+BsamrYugh3Mn6t+3gG4l/TvjeOgfUuaCee4tvxbCgfT9KLFpVI2eAj94v97DeOJ1QvRpSc0u19yzd5YbcweXplXq0wF23TGx4g0+661R/NE6eC33EKvW2pL/wkH/YxjcBsn7m4PLRXf5NTO5azaj5CZ2zL+SQO75DyO9P8h1KXcvlkJO8/97Kv9rcU6OXz4C9pjf4pP7PCp9GGZzC1sJoOnt9DvBt5N2UlF5lBmteA9Z/9ZmZ6ZNFhXMXepXa+jzQX3NKPkKkZf1dfcr1DzwQT5E3ZwS4uPMOocfpgZh/guKB9X77f+MXxEpjawAZAAA=
-		</data>
-	</layer>
-	<layer name="123" width="40" height="40">
-		<data encoding="base64" compression="gzip">
-			H4sIAAAAAAACC+3QzQqDMBhE0Y+4tFoVFPx52gpKi76zsxHEWtCIIPQemEVMMiYx+1Y6s8rZplTfsx9za6HWPdyx/rNq9TY7u3OtKy46xx11umuvvJWPMijjYvxS2oPvMe9Zd87/8un0EQVmsfJUksAAAAAAAAAAAH9uApQZiVwAGQAA
 		</data>
 	</layer>
 	<layer name="objects" width="40" height="40">
