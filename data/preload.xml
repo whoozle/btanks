@@ -61,8 +61,10 @@
 	<map id="arena">
 		<object id="alt-missiles-on-launcher"/>
 		<object id="biotoilet"/>
+		<object id="bomb"/>
 		<object id="boomerang-missile"/>
 		<object id="boomerang-missiles-item"/>
+		<object id="buggy-bullet"/>
 		<object id="cannon"/>
 		<object id="cannon-bullet"/>
 		<object id="cannon-explosion"/>
@@ -82,6 +84,7 @@
 		<object id="guided-missiles-item"/>
 		<object id="heal"/>
 		<object id="helicopter-with-kamikazes"/>
+		<object id="helicorpse"/>
 		<object id="helmet"/>
 		<object id="kamikaze"/>
 		<object id="kamikaze-explosion"/>
@@ -562,14 +565,20 @@
 		<object id="corpse"/>
 		<object id="cow"/>
 		<object id="damage-digits"/>
+		<object id="dispersion-bullet"/>
 		<object id="dispersion-bullets-item"/>
+		<object id="dumb-missile"/>
 		<object id="dumb-missiles-item"/>
 		<object id="eternal-flame"/>
 		<object id="explosion"/>
 		<object id="fake-mod"/>
 		<object id="fire"/>
+		<object id="grenade"/>
+		<object id="grenade-explosion"/>
+		<object id="guided-missile"/>
 		<object id="guided-missiles-item"/>
 		<object id="heal"/>
+		<object id="helmet"/>
 		<object id="impassable-static-corpse"/>
 		<object id="kamikaze"/>
 		<object id="kamikaze-explosion"/>
@@ -584,9 +593,14 @@
 		<object id="nuke-missiles-item"/>
 		<object id="oil-barrels"/>
 		<object id="outline"/>
+		<object id="ricochet-bullet"/>
 		<object id="ricochet-bullets-item"/>
 		<object id="road-sign"/>
+		<object id="shilka"/>
+		<object id="shilka-bullet"/>
 		<object id="single-pose"/>
+		<object id="smoke-cloud"/>
+		<object id="smoke-missile"/>
 		<object id="smoke-missiles-item"/>
 		<object id="spaceport-baykonur"/>
 		<object id="stack"/>
@@ -596,6 +610,7 @@
 		<object id="static-shilka"/>
 		<object id="static-tank"/>
 		<object id="tank"/>
+		<object id="tank-bullet"/>
 		<object id="teleport"/>
 		<object id="tent-with-kamikazes"/>
 		<object id="tent-with-machinegunners"/>
@@ -674,6 +689,9 @@
 	<object id="boat">
 		<animation id="boat"/>
 	</object>
+	<object id="bomb">
+		<animation id="bomb"/>
+	</object>
 	<object id="boomerang-missile">
 		<animation id="boomerang-missile"/>
 	</object>
@@ -683,6 +701,12 @@
 	<object id="broken-object">
 		<animation id="traffic-lights"/>
 		<animation id="watchtower"/>
+	</object>
+	<object id="buggy-bullet">
+		<animation id="buggy-air-bullet-left"/>
+		<animation id="buggy-air-bullet-right"/>
+		<animation id="buggy-bullet-left"/>
+		<animation id="buggy-bullet-right"/>
 	</object>
 	<object id="bus-stop">
 		<animation id="bus-stop-left"/>
@@ -811,6 +835,9 @@
 	<object id="helicopter-with-kamikazes">
 		<animation id="chinook"/>
 		<animation id="helicopter"/>
+	</object>
+	<object id="helicorpse">
+		<animation id="dead-helicopter"/>
 	</object>
 	<object id="helmet">
 		<animation id="cyan-machinegunner-helmet"/>
