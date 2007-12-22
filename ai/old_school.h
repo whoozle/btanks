@@ -31,7 +31,7 @@ namespace ai {
 class BTANKSAPI OldSchool {
 public:
 	OldSchool();
-	void onSpawn(Object *object);
+	void onSpawn(const Object *object);
 	virtual ~OldSchool() {}
 	void calculateV(v2<float> &velocity, Object *object);
 

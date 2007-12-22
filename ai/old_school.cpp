@@ -24,16 +24,16 @@
 #include "mrt/random.h"
 #include "tmx/map.h"
 
-ai::OldSchool::OldSchool() {}
+ai::OldSchool::OldSchool() : trottle(0) {}
 
-void ai::OldSchool::onSpawn(Object *object) {
+void ai::OldSchool::onSpawn(const Object *object) {
 	trottle = 0;
 }
 
 void ai::OldSchool::calculateV(v2<float> &velocity, Object *object) {
 	if (object->isDriven())
 		return;
-
+	velocity.clear();
 	++trottle;
 	if (trottle < 10) {
 		return;
@@ -41,11 +41,12 @@ void ai::OldSchool::calculateV(v2<float> &velocity, Object *object) {
 		trottle = 0;
 	}
 
+	//LOG_DEBUG(("[%d: %s]old school calculate", object->getID(), object->animation.c_str()));
 	int dirs = object->getDirectionsNumber();
 
-	int action = mrt::random(2);
+	int action = mrt::random(3);
 
-	if (action == 0) {
+	if (action != 1) {
 		int dir = mrt::random(dirs);
 		object->setDirection(dir);
 		velocity.clear();
