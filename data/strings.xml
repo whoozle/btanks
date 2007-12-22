@@ -690,10 +690,12 @@
 		<string id="time-limit-reached" lang="fr">LA LIMITE DE TEMPS A ÉTÉ ATTEINTE.</string>
 		<string id="time-limit-reached" lang="de">DIE ZEIT IST UM.</string>
 		
-		<string id="ready">READY</string>
-		<string id="go">GO</string>
-	</area>        
-                              
+		<string id="ready">GET READY</string>
+		<string id="go">FIGHT!!</string>
+		<string id="ready" lang="ru">ПРИГОТОВИТЬСЯ!</string>
+		<string id="go" lang="ru">В АТАКУ!!!</string>
+	</area>
+
 	<area id="errors">
 		<string id="connection-failed">Connection failed.</string>
 		<string id="connection-failed" lang="ru">Ошибка соединения.</string>

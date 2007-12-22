@@ -717,6 +717,7 @@
 	</object>
 	<object id="corpse">
 		<animation id="dead-boat"/>
+		<animation id="dead-buggy"/>
 		<animation id="dead-cannon"/>
 		<animation id="dead-cow"/>
 		<animation id="dead-cyan-car"/>
