@@ -293,6 +293,7 @@
 		<object id="cannon-explosion"/>
 		<object id="corpse"/>
 		<object id="damage-digits"/>
+		<object id="dispersion-bullet"/>
 		<object id="dispersion-bullets-item"/>
 		<object id="dumb-missile"/>
 		<object id="dumb-missiles-item"/>
@@ -314,7 +315,11 @@
 		<object id="mines-item"/>
 		<object id="missiles-on-launcher"/>
 		<object id="missiles-on-tank"/>
+		<object id="mortar-bullet"/>
+		<object id="mortar-explosion"/>
+		<object id="nuke-explosion"/>
 		<object id="nuke-mine"/>
+		<object id="nuke-missile"/>
 		<object id="nuke-missiles-item"/>
 		<object id="oil-barrels"/>
 		<object id="outline"/>
@@ -325,6 +330,8 @@
 		<object id="shilka"/>
 		<object id="shilka-bullet"/>
 		<object id="single-pose"/>
+		<object id="smoke-cloud"/>
+		<object id="smoke-missile"/>
 		<object id="smoke-missiles-item"/>
 		<object id="stack"/>
 		<object id="static-corpse"/>
@@ -352,6 +359,8 @@
 		<object id="corpse"/>
 		<object id="cow"/>
 		<object id="damage-digits"/>
+		<object id="dirt"/>
+		<object id="dirt-bullet"/>
 		<object id="dirt-bullets-item"/>
 		<object id="dispersion-bullet"/>
 		<object id="dispersion-bullets-item"/>
@@ -360,14 +369,18 @@
 		<object id="explosion"/>
 		<object id="fake-mod"/>
 		<object id="fire"/>
+		<object id="grenade"/>
+		<object id="grenade-explosion"/>
 		<object id="guided-missile"/>
 		<object id="guided-missiles-item"/>
 		<object id="heal"/>
 		<object id="helicopter-with-kamikazes"/>
+		<object id="helmet"/>
 		<object id="impassable-corpse"/>
 		<object id="kamikaze"/>
 		<object id="kamikaze-explosion"/>
 		<object id="launcher"/>
+		<object id="machinegunner"/>
 		<object id="machinegunner-bullet"/>
 		<object id="machinegunner-item"/>
 		<object id="machinegunner-on-launcher"/>
@@ -388,6 +401,8 @@
 		<object id="shilka"/>
 		<object id="shilka-bullet"/>
 		<object id="single-pose"/>
+		<object id="smoke-cloud"/>
+		<object id="smoke-missile"/>
 		<object id="smoke-missiles-item"/>
 		<object id="stack"/>
 		<object id="static-launcher"/>
@@ -399,7 +414,9 @@
 		<object id="submarine"/>
 		<object id="tank"/>
 		<object id="tank-bullet"/>
+		<object id="thrower"/>
 		<object id="thrower-item"/>
+		<object id="thrower-missile"/>
 		<object id="thrower-on-launcher"/>
 		<object id="train-smoke"/>
 		<object id="van"/>
@@ -451,6 +468,7 @@
 	</map>
 	<map id="lenin_square">
 		<object id="alt-missiles-on-launcher"/>
+		<object id="buggy-bullet"/>
 		<object id="bus-stop"/>
 		<object id="car"/>
 		<object id="corpse"/>
@@ -463,10 +481,12 @@
 		<object id="fake-mod"/>
 		<object id="fire"/>
 		<object id="gate"/>
+		<object id="grenade"/>
 		<object id="guided-missile"/>
 		<object id="guided-missiles-item"/>
 		<object id="heal"/>
 		<object id="helicopter-with-kamikazes"/>
+		<object id="helicorpse"/>
 		<object id="helmet"/>
 		<object id="kamikaze"/>
 		<object id="kamikaze-explosion"/>
@@ -508,6 +528,7 @@
 		<object id="thrower"/>
 		<object id="thrower-item"/>
 		<object id="thrower-missile"/>
+		<object id="thrower-on-launcher"/>
 		<object id="traffic-lights"/>
 		<object id="turrel"/>
 		<object id="umbrella"/>
@@ -523,10 +544,14 @@
 		<object id="dumb-missiles-item"/>
 		<object id="explosion"/>
 		<object id="fake-mod"/>
+		<object id="grenade"/>
+		<object id="grenade-explosion"/>
 		<object id="guided-missile"/>
 		<object id="guided-missiles-item"/>
 		<object id="heal"/>
+		<object id="helmet"/>
 		<object id="launcher"/>
+		<object id="machinegunner"/>
 		<object id="machinegunner-bullet"/>
 		<object id="machinegunner-item"/>
 		<object id="machinegunner-on-launcher"/>
@@ -535,6 +560,10 @@
 		<object id="mines-item"/>
 		<object id="missiles-on-launcher"/>
 		<object id="missiles-on-tank"/>
+		<object id="mortar-bullet"/>
+		<object id="mortar-explosion"/>
+		<object id="nuke-explosion"/>
+		<object id="nuke-missile"/>
 		<object id="nuke-missiles-item"/>
 		<object id="outline"/>
 		<object id="regular-mine"/>
@@ -778,6 +807,12 @@
 	<object id="destructable-object">
 		<animation id="choo-choo-wagon"/>
 	</object>
+	<object id="dirt">
+		<animation id="dirt"/>
+	</object>
+	<object id="dirt-bullet">
+		<animation id="dirt-bullet"/>
+	</object>
 	<object id="dirt-bullets-item">
 		<animation id="dirt-bullets-item"/>
 	</object>
@@ -837,6 +872,7 @@
 		<animation id="helicopter"/>
 	</object>
 	<object id="helicorpse">
+		<animation id="dead-chinook"/>
 		<animation id="dead-helicopter"/>
 	</object>
 	<object id="helmet">
@@ -850,6 +886,7 @@
 		<animation id="yellow-thrower-helmet"/>
 	</object>
 	<object id="impassable-corpse">
+		<animation id="dead-choo-choo-train"/>
 		<animation id="dead-choo-choo-wagon"/>
 	</object>
 	<object id="impassable-static-corpse">
