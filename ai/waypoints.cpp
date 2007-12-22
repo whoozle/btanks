@@ -123,4 +123,6 @@ void Waypoints::onSpawn(const Object *object) {
 
 	_stop = false;
 	_no_waypoints = !GameMonitor->hasWaypoints(object->registered_name);
+	if (_no_waypoints) 
+		ai::OldSchool::onSpawn(object);
 }
