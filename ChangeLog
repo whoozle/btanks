@@ -1,4 +1,4 @@
-0.7.*: 
+0.7.5800: 
 	*) Introduce lua scripting support (map zones and special handlers): 
 		*) Hiding/showing/spawning items
 		*) Spawning/killing objects
@@ -44,6 +44,7 @@
 		*) AI players without slot properly moves in multiplayer game.
 		*) AI players could enter vehicles.
 		*) New AI code: rush and old-school roaming. :)
+	*) Moved configuration data to ~/.btanks for linux and appdata/Battle Tanks for windows version.
 	*) New scripted map: Arena with random enemies and items.
 	*) Added X-mas tiles, happy X-mas, everyone! 
 	*) Added preload feature to minimize memory usage and decrease loading time.
