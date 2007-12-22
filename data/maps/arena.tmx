@@ -60,7 +60,8 @@
 		<property name="object:civilian:civilian-3:8" value="2350,2473,2000"/>
 		<property name="object:civilian:civilian-3:9" value="1713,2460,2000"/>
 		<property name="object:static-buggy:buggy:1" value="848,1639/4"/>
-		<property name="object:static-launcher:red-launcher:1" value="1785,867"/>
+		<property name="object:static-buggy:buggy:2" value="1782,862"/>
+		<property name="object:static-launcher:red-launcher:1" value="1954,417"/>
 		<property name="object:static-mortar:green-mortar:1" value="2257,258/5"/>
 		<property name="object:static-shilka:yellow-shilka:1" value="1725,1770/7"/>
 		<property name="object:static-tank:red-tank:1" value="533,682/4"/>
