@@ -58,7 +58,7 @@ public:
 			_thinking = false;
 			_guard_timer.reset();
 			_guard = true;
-			LOG_DEBUG(("stop thinking, guard interval signalled"));
+			//LOG_DEBUG(("stop thinking, guard interval signalled"));
 		}
 		
 		if (_guard_timer.tick(dt))
