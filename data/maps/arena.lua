@@ -72,6 +72,8 @@ function generate_stage(idx)
 	local objects = scores[row];
 	local keys = array_keys(objects);
 
+	local heli = false
+
 	repeat 
 		local object = keys[1 + random(#keys)];
 		local animation = object;
@@ -79,12 +81,15 @@ function generate_stage(idx)
 			animation = animations[object][random(#animations[object]) + 1];
 		end
 
-		if (score > objects[object] / 2 ) then
+		if (score > objects[object] / 2 ) and ((object ~= "heli_bomb") or not heli) then
 			score = score - objects[object];
 			print("i've chosen: "..object..":"..animation);
 			object = string.gsub(object, "_", "-");
 			animation = string.gsub(animation, "_", "-");
-			if (object == "heli-bomb") then object = "raider-helicopter" end;
+			if (object == "heli-bomb") then 
+				object = "raider-helicopter"; 
+				heli = true; 
+			end;
 			stage[#stage + 1] = spawn_random(object, animation);
 		end
 	until score <= 0;
