@@ -316,6 +316,7 @@ void Layer::serialize(mrt::Serializator &s) const {
 	s.add(size);
 	
 	s.add(name);
+	s.add(visible);
 	s.add(impassability);
 	s.add(hp);
 	s.add(pierceable);
@@ -342,6 +343,7 @@ void Layer::deserialize(const mrt::Serializator &s) {
 	s.get(size);
 
 	s.get(name);
+	s.get(visible);
 	s.get(impassability);
 	s.get(hp);
 	s.get(pierceable);
