@@ -103,6 +103,7 @@
 		<object id="nuke-mine"/>
 		<object id="nuke-missile"/>
 		<object id="nuke-missiles-item"/>
+		<object id="outline"/>
 		<object id="raider-helicopter"/>
 		<object id="regular-mine"/>
 		<object id="ricochet-bullet"/>
