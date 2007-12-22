@@ -117,6 +117,7 @@
 		<object id="smoke-missiles-item"/>
 		<object id="static-buggy"/>
 		<object id="static-launcher"/>
+		<object id="static-mortar"/>
 		<object id="static-shilka"/>
 		<object id="static-tank"/>
 		<object id="stun-missile"/>
