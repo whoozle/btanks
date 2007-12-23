@@ -29,6 +29,7 @@ consult your distro's documentation for details):
 	e) sigc++ 2.x (1.x is not supported)
 	f) expat - XML parsing library
 	g) zlib
+	h) lua 5.1 (maybe 5.0, not tested)
 
 4) you could add something like this in 'options.cache' file 
 (located in trunk/ directory): 
@@ -36,3 +37,7 @@ consult your distro's documentation for details):
 CCFLAGS = ' -O -march=YOUR_CPU -mtune=YOUR_CPU  '
 CXXFLAGS = ' -O -march=YOUR_CPU -mtune=YOUR_CPU '
 
+KNOWN BUGS: 
+*) Frequent crashes on amd64 platform: you have openal built with mmx support.
+Disable mmx and rebuild. Patched package for debian available here: 
+http://dump.iof.ru/people/megath/openal
