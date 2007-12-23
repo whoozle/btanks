@@ -100,7 +100,7 @@ void AITrooper::onIdle(const float dt) {
 				dir.fromDirection(getID() % 16, 16);
 				dir *= (parent->size.x + parent->size.x) / 3;
 
-				Object *new_me = World->spawn(parent, registered_name, animation, dir, v2<float>());
+				Object *new_me = parent->spawn(registered_name, animation, dir, v2<float>());
 
 				new_me->updateVariants(getVariants(), true);
 				new_me->copyOwners(this);

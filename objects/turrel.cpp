@@ -60,8 +60,6 @@ void Turrel::onSpawn() {
 	ai::Base::onSpawn(this);
 }
 
-#include "world.h"
-
 void Turrel::tick(const float dt) {
 	Object::tick(dt);
 	bool ai = (_parent != NULL)? !_parent->disable_ai:true;
@@ -72,9 +70,7 @@ void Turrel::tick(const float dt) {
 		play(_left? "fire-left": "fire-right", false);
 		play("hold", true);
 		std::string animation = mrt::formatString("buggy-%s-%s", air_mode?"air-bullet":"bullet", _left?"left":"right");
-		Object *bullet = _parent == NULL? 
-			spawn("buggy-bullet", animation, v2<float>(), _direction): 
-			World->spawn(_parent, "buggy-bullet", animation, v2<float>(), _direction);
+		Object *bullet = (_parent == NULL? this: _parent)->spawn("buggy-bullet", animation, v2<float>(), _direction);
 		
 		bullet->setZ(air_mode? bullet->getZ() + 2000:getZ() - 1, true);
 		_left = !_left;

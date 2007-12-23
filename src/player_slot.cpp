@@ -63,20 +63,11 @@ void PlayerSlot::deserialize(const mrt::Serializator &s) {
 	s.get(name);
 }
 
-Object * PlayerSlot::getObject() {
+Object * PlayerSlot::getObject() const {
 	if (id < 0) 
 		return NULL;
-	Object *o = World->getObjectByID(id);
-	return o;
+	return World->getObjectByID(id);
 }
-
-const Object * PlayerSlot::getObject() const {
-	if (id < 0) 
-		return NULL;
-	const Object *o = World->getObjectByID(id);
-	return o;
-}
-
 
 void PlayerSlot::clear() {
 	id = -1;

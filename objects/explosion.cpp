@@ -26,7 +26,6 @@
 #include "game_monitor.h"
 #include "sound/mixer.h"
 #include "mrt/random.h"
-#include "world.h"
 #include "resource_manager.h"
 
 #include <set>
@@ -139,7 +138,7 @@ void Explosion::emit(const std::string &event, Object * emitter) {
 					} else {
 						emitter->Object::emit("death", this);
 						
-						Object * zombie = World->spawn(emitter, "zombie", "zombie", v2<float>(), v2<float>());
+						Object * zombie = emitter->spawn("zombie", "zombie");
 						World->attachVehicle(emitter, zombie);
 					}
 				}

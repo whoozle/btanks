@@ -19,11 +19,11 @@
 
 #include "object.h"
 #include "registrar.h"
-#include "world.h"
 #include "config.h"
 #include "zbox.h"
 #include "math/binary.h"
 #include "mrt/random.h"
+#include "world.h"
 
 class Missile : public Object {
 public:
@@ -158,8 +158,7 @@ void Missile::emit(const std::string &event, Object * emitter) {
 		if (o != NULL) {
 			dpos = o->getRelativePosition(this);
 		}
-		Object * e = NULL;
-		e = World->spawn(o != NULL?o:this, type + "-explosion", type + "-explosion", dpos, v2<float>());
+		Object * e = (o != NULL? o: this)->spawn(type + "-explosion", type + "-explosion", dpos, v2<float>());
 		
 		e->disown();
 		Object::emit(event, emitter);

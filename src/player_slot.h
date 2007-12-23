@@ -72,8 +72,7 @@ public:
 	PlayerSlot(const int id);
 	void clear();
 	
-	Object * getObject(); 
-	const Object * getObject() const;
+	Object * getObject() const; 
 	~PlayerSlot();
 		
 	typedef std::queue<std::pair<float, Tooltip *> > Tooltips;

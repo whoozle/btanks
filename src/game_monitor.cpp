@@ -913,7 +913,7 @@ const std::string IGameMonitor::generatePropertyName(const std::string &prefix) 
 void IGameMonitor::addBonuses(const PlayerSlot &slot) {
 	if (_campaign == NULL)
 		return;
-	const Object *o = slot.getObject();
+	Object *o = slot.getObject();
 	if (o == NULL)
 		return;
 	const std::vector<Campaign::ShopItem> & wares = _campaign->wares;
@@ -935,7 +935,7 @@ void IGameMonitor::addBonuses(const PlayerSlot &slot) {
 			if (first_time) 
 				bonuses.push_back(GameBonus(i->object + "(ally)", i->animation, 0));
 			if (World->getObjectByID(bonuses[idx].id) == NULL) {
-				Object *bonus = World->spawn(o, bonuses[idx].classname, bonuses[idx].animation, dir, v2<float>());
+				Object *bonus = o->spawn(bonuses[idx].classname, bonuses[idx].animation, dir, v2<float>());
 				bonuses[idx].id = bonus->getID();
 			}
 			++idx;
