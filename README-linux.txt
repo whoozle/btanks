@@ -39,5 +39,5 @@ CXXFLAGS = ' -O -march=YOUR_CPU -mtune=YOUR_CPU '
 
 KNOWN BUGS: 
 *) Frequent crashes on amd64 platform: you have openal built with mmx support.
-Disable mmx and rebuild. Patched package for debian available here: 
+Disable mmx and rebuild openal. Patched package for debian available here: 
 http://dump.iof.ru/people/megath/openal
