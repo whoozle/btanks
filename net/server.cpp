@@ -39,7 +39,7 @@ void Server::init() {
 
 	LOG_DEBUG(("starting game server at port %d", port));
 
-	_udp_sock.listen(bindaddr, port);
+	_udp_sock.listen(bindaddr, port, true);
 	LOG_DEBUG(("udp socket started..."));
 	_sock.listen(bindaddr, port, true);
 	_sock.noDelay();
