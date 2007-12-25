@@ -34,6 +34,7 @@ public:
 	void setBroadcastMode(int val = 1);
 
 	const int send(const Socket::addr &addr, const void *data, const int len) const;
+	void broadcast(const mrt::Chunk &data, const int port);
 	const int recv(Socket::addr &addr, void *data, const int len) const;
 };
 

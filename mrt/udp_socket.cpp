@@ -1,8 +1,16 @@
 #include "udp_socket.h"
 #include "ioexception.h"
+#include "mrt/chunk.h"
 
-#ifdef WIN32
+#ifdef _WINDOWS
 #	include "Winsock2.h"
+#	ifndef socklen_t 
+#		define socklen_t int
+#	endif
+
+#	ifndef in_addr_t
+#		define in_addr_t unsigned long
+#	endif
 #else
 #	include <sys/socket.h>
 #	include <netinet/in.h>
@@ -11,16 +19,6 @@
 #	include <arpa/inet.h>
 #	include <netdb.h>
 #endif              
-
-#ifdef WIN32
-#	ifndef socklen_t 
-#		define socklen_t int
-#	endif
-
-#	ifndef in_addr_t
-#		define in_addr_t unsigned long
-#	endif
-#endif
 
 
 using namespace mrt;
@@ -105,3 +103,44 @@ void UDPSocket::setBroadcastMode(int val) {
 			throw_io(("setsockopt"));
 	} CATCH("setsockopt(IPPROTO_UDP, SO_BROADCAST)", {});
 }
+
+#ifdef _WINDOWS
+void UDPSocket::broadcast(const mrt::Chunk &data, const int port) {
+	TRY {
+		if (send(mrt::Socket::addr(INADDR_BROADCAST, port), data.getPtr(), data.getSize()) == -1)
+			throw_io(("sendto"));
+	} CATCH("broadcast", );
+}
+#else 
+#	include <net/if.h>
+#	include <ifaddrs.h>
+
+void UDPSocket::broadcast(const mrt::Chunk &data, const int port) {
+	LOG_DEBUG(("broadcasting packet[%u]", (unsigned)data.getSize()));
+	struct ifaddrs * ifs = NULL;
+	TRY {
+		if (getifaddrs(&ifs) == -1)
+			throw_io(("getifaddrs"));
+		
+		for(struct ifaddrs * i = ifs; i->ifa_next != NULL; i = i->ifa_next) {
+			int flags = i->ifa_flags;
+			if (!(flags & IFF_BROADCAST) || 
+				!(flags & IFF_UP) || 
+				 flags & IFF_LOOPBACK || 
+				i->ifa_ifu.ifu_broadaddr == NULL)
+				continue;
+			if (i->ifa_ifu.ifu_broadaddr->sa_family != PF_INET)
+				continue;
+			sockaddr_in *addr = (sockaddr_in *)i->ifa_ifu.ifu_broadaddr;
+			LOG_DEBUG(("interface: %s, ifu_broadaddr: %s", i->ifa_name, inet_ntoa(addr->sin_addr)));
+			TRY {
+				if (send(mrt::Socket::addr(addr->sin_addr.s_addr, port), data.getPtr(), data.getSize()) == -1)
+					throw_io(("sendto"));
+			} CATCH("sendto", );
+		}
+	} CATCH("broadcast", );
+	if (ifs != NULL) 	
+		freeifaddrs(ifs);
+}
+
+#endif
