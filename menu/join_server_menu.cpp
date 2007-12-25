@@ -33,6 +33,7 @@
 #include "i18n.h"
 #include "upper_box.h"
 #include "net/scanner.h"
+#include "label.h"
 
 JoinServerMenu::JoinServerMenu(MainMenu *parent, const int w, const int h) : _parent(parent), _scanner(NULL) {
 	_back = new Button("big", I18n->get("menu", "back"));
@@ -200,6 +201,26 @@ void JoinServerMenu::tick(const float dt) {
 	if (_join->changed()) {
 		_join->reset();
 		join();
+	}
+	
+	if (_scanner != NULL && _scanner->changed()) {
+		std::set<std::string> hosts;
+		_scanner->get(hosts);
+		int n = _hosts->size();
+		for(int i = 0; i < n; ++i) {
+			const Label * label = dynamic_cast<const Label*>(_hosts->getItem(i));
+			if (label == NULL) 
+				continue;
+			
+			std::set<std::string>::iterator h = hosts.find(label->get());
+			if (h != hosts.end())
+				hosts.erase(h);
+		}
+			
+		for(std::set<std::string>::iterator i = hosts.begin(); i != hosts.end(); ++i) {
+			_hosts->append(*i);
+			_hosts->promote(_hosts->size() - 1);
+		}
 	}
 }
 

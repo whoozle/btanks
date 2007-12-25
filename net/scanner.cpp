@@ -66,7 +66,7 @@ TRY {
 			if (r == 0 || r == -1)
 				throw_io(("udp_sock.read"));
 			data.setSize(r);
-			//LOG_DEBUG(("data from addr %s: %s", addr.getAddr().c_str(), data.dump().c_str()));
+			LOG_DEBUG(("data from addr %s: %s", addr.getAddr().c_str(), data.dump().c_str()));
 			TRY {
 				Message msg;
 				msg.deserialize2(data);
