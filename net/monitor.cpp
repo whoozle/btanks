@@ -318,7 +318,10 @@ TRY {
 						if (msg.type == Message::ServerDiscovery) {
 							ok = true;
 							LOG_DEBUG(("server discovery datagram from the %s", addr.getAddr().c_str()));
-							_dgram_sock->send(addr, buf, r); //returning same message
+							msg.data.setSize(1);
+							((char *)msg.data.getPtr())[0] = 1;
+							msg.serialize2(data);
+							_dgram_sock->send(addr, data.getPtr(), data.getSize()); //returning same message
 						}
 					} CATCH("discovery message", );
 					if (!ok) {
