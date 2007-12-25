@@ -59,7 +59,6 @@ TRY {
 		if (set.check(udp_sock, mrt::SocketSet::Exception)) {
 			throw_io(("udp_socket"));
 		} else if (set.check(udp_sock, mrt::SocketSet::Read)) {
-			LOG_DEBUG(("incoming packet!"));
 			mrt::Socket::addr addr;
 			mrt::Chunk data;
 			data.setSize(1500);
@@ -67,7 +66,16 @@ TRY {
 			if (r == 0 || r == -1)
 				throw_io(("udp_sock.read"));
 			data.setSize(r);
-			LOG_DEBUG(("data from addr %s: %s", addr.getAddr().c_str(), data.dump().c_str()));
+			//LOG_DEBUG(("data from addr %s: %s", addr.getAddr().c_str(), data.dump().c_str()));
+			TRY {
+				Message msg;
+				msg.deserialize2(data);
+				if (msg.type != Message::ServerDiscovery)
+					continue;
+				if (msg.data.getSize() == 0) //this is client packet
+					continue;
+				LOG_DEBUG(("found server: %s", addr.getAddr().c_str()));
+			}CATCH("reading message", )
 		}
 	}
 } CATCH("run", return 1;)
