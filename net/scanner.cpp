@@ -16,7 +16,7 @@
 #	include <netinet/ip.h> /* superset of previous */
 #endif
 
-Scanner::Scanner() : _running(true), _scan(true) {
+Scanner::Scanner() : _running(true), _scan(true), _changed(false) {
 	start();
 }
 
