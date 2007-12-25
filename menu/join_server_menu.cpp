@@ -207,7 +207,7 @@ void JoinServerMenu::tick(const float dt) {
 		_scanner->reset();
 		std::set<std::string> hosts;
 		_scanner->get(hosts);
-		int n = _hosts->size();
+/*		int n = _hosts->size();
 		for(int i = 0; i < n; ++i) {
 			const Label * label = dynamic_cast<const Label*>(_hosts->getItem(i));
 			if (label == NULL) 
@@ -217,6 +217,7 @@ void JoinServerMenu::tick(const float dt) {
 			if (h != hosts.end())
 				hosts.erase(h);
 		}
+		*/
 			
 		for(std::set<std::string>::iterator i = hosts.begin(); i != hosts.end(); ++i) {
 			_hosts->append(*i);

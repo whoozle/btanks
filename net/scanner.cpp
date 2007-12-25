@@ -66,7 +66,7 @@ TRY {
 			if (r == 0 || r == -1)
 				throw_io(("udp_sock.read"));
 			data.setSize(r);
-			LOG_DEBUG(("data from addr %s: %s", addr.getAddr().c_str(), data.dump().c_str()));
+			//LOG_DEBUG(("data from addr %s: %s", addr.getAddr().c_str(), data.dump().c_str()));
 			TRY {
 				Message msg;
 				msg.deserialize2(data);
@@ -74,9 +74,10 @@ TRY {
 					continue;
 				if (msg.data.getSize() == 0) //this is client packet
 					continue;
-				//LOG_DEBUG(("found server: %s", addr.getAddr().c_str()));
+				LOG_DEBUG(("found server: %s", addr.getAddr().c_str()));
 				sdlx::AutoMutex m(_hosts_lock);
 				_hosts.insert(addr.getAddr());
+				_changed = true;
 			}CATCH("reading message", )
 		}
 	}
