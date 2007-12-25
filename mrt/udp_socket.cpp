@@ -107,6 +107,7 @@ void UDPSocket::setBroadcastMode(int val) {
 #ifdef _WINDOWS
 void UDPSocket::broadcast(const mrt::Chunk &data, const int port) {
 	TRY {
+		LOG_DEBUG(("broadcasting packet[%u]", (unsigned)data.getSize()));
 		if (send(mrt::Socket::addr(INADDR_BROADCAST, port), data.getPtr(), data.getSize()) == -1)
 			throw_io(("sendto"));
 	} CATCH("broadcast", );
