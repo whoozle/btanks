@@ -58,11 +58,8 @@ JoinServerMenu::JoinServerMenu(MainMenu *parent, const int w, const int h) : _pa
 	add(xp, h - 16 - bh, _back);
 	xp += 16 + bw;
 	
-
-#ifndef RELEASE
 	_scan->getSize(bw, bh);
 	add(xp, h - 16 - bh, _scan);
-#endif
 	
 	_join->getSize(bw, bh);
 	add(w - 64 - bw, h - 16 - bh, _join);
