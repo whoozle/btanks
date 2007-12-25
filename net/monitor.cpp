@@ -275,7 +275,7 @@ TRY {
 			mrt::Socket::addr addr;
 			int r = _dgram_sock->recv(addr, buf, sizeof(buf));
 			//LOG_DEBUG(("recv() == %d", r));
-			if (r > 9) {
+			//if (r > 9) {
 				sdlx::AutoMutex m(_connections_mutex);
 				ConnectionMap::iterator i;
 				for(i = _connections.begin(); i != _connections.end(); ++i) {
@@ -290,8 +290,14 @@ TRY {
 					m.unlock();
 	
 					Task * t = new Task(i->first);
-
-					parse(*t->data, buf, r, t->timestamp);
+					
+					TRY {
+						parse(*t->data, buf, r, t->timestamp);
+					} CATCH("processing datagram", {
+						delete t;
+						t = NULL;
+						goto skip_read;
+					});
 					t->len = t->data->getSize();
 					
 					//LOG_DEBUG(("recv(%d, %u)", t->id, (unsigned)t->data->getSize()));
@@ -303,8 +309,7 @@ TRY {
 
 					TRY {
 						mrt::Chunk data;
-						int ts = 0;
-						parse(data, buf, r, ts);
+						data.setData(buf, r);
 						Message msg;
 						msg.deserialize2(data);
 						if (msg.type == Message::ServerDiscovery) {
@@ -316,8 +321,11 @@ TRY {
 						LOG_WARN(("incoming datagram from unknown client(%s:%d)", addr.getAddr().c_str(), addr.port));
 					}
 				}
-			} else LOG_WARN(("short datagram recv-ed [%d]", r));
+			/*} else {
+				LOG_WARN(("short datagram recv-ed [%d]", r));
+			}*/
 		}
+	skip_read:
 		
 		if (_dgram_sock != NULL && set.check(_dgram_sock, mrt::SocketSet::Write)) {
 			Task *task = NULL;
