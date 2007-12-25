@@ -44,8 +44,7 @@ TRY {
 	mrt::Chunk data;
 	m.serialize2(data);
 	
-	if (udp_sock.send(mrt::Socket::addr(INADDR_BROADCAST, port), data.getPtr(), data.getSize()) == -1)
-		throw_io(("sendto"));
+	udp_sock.broadcast(data, port);
 	
 	return 0;
 	
