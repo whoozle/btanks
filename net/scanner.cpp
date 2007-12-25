@@ -74,10 +74,17 @@ TRY {
 					continue;
 				if (msg.data.getSize() == 0) //this is client packet
 					continue;
-				LOG_DEBUG(("found server: %s", addr.getAddr().c_str()));
+				//LOG_DEBUG(("found server: %s", addr.getAddr().c_str()));
+				sdlx::AutoMutex m(_hosts_lock);
+				_hosts.insert(addr.getAddr());
 			}CATCH("reading message", )
 		}
 	}
 } CATCH("run", return 1;)
 	return 0;
+}
+
+void Scanner::get(std::set<std::string> &hosts) const {
+	sdlx::AutoMutex m(_hosts_lock);
+	hosts = _hosts;
 }
