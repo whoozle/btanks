@@ -35,6 +35,7 @@ TRY {
 	mrt::UDPSocket udp_sock;
 	//udp_sock.listen(bindaddr, port, false);
 	udp_sock.create();
+	udp_sock.setBroadcastMode(1);
 	LOG_DEBUG(("udp socket started..."));
 	
 	
@@ -43,7 +44,8 @@ TRY {
 	mrt::Chunk data;
 	m.serialize2(data);
 	
-	udp_sock.send(mrt::Socket::addr(INADDR_BROADCAST, port), data.getPtr(), data.getSize());
+	if (udp_sock.send(mrt::Socket::addr(INADDR_BROADCAST, port), data.getPtr(), data.getSize()) == -1)
+		throw_io(("sendto"));
 	
 	return 0;
 	
