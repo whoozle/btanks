@@ -318,6 +318,7 @@ TRY {
 						if (msg.type == Message::ServerDiscovery) {
 							ok = true;
 							LOG_DEBUG(("server discovery datagram from the %s", addr.getAddr().c_str()));
+							_dgram_sock->send(addr, buf, r); //returning same message
 						}
 					} CATCH("discovery message", );
 					if (!ok) {
