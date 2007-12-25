@@ -34,7 +34,7 @@
 #include "upper_box.h"
 #include "net/scanner.h"
 
-JoinServerMenu::JoinServerMenu(MainMenu *parent, const int w, const int h) : _parent(parent) {
+JoinServerMenu::JoinServerMenu(MainMenu *parent, const int w, const int h) : _parent(parent), _scanner(NULL) {
 	_back = new Button("big", I18n->get("menu", "back"));
 	_add = new Button("medium_dark",  I18n->get("menu", "add"));
 	_del = new Button("medium_dark",  I18n->get("menu", "delete"));
@@ -164,6 +164,7 @@ void JoinServerMenu::tick(const float dt) {
 	
 	if (_back->changed()) {
 		LOG_DEBUG(("[back] clicked"));
+		onHide();
 		MenuConfig->save();
 		_back->reset();
 		_parent->back();
@@ -190,15 +191,24 @@ void JoinServerMenu::tick(const float dt) {
 
 	if (_scan->changed()) {
 		_scan->reset();
-		Scanner scanner;
+		if (_scanner == NULL) {
+			_scanner = new Scanner;
+		}
 	}
 	
 	if (_join->changed()) {
 		_join->reset();
 		join();
 	}
-
 }
+
+void JoinServerMenu::onHide() {
+	if (_scanner != NULL) {
+		delete _scanner;
+		_scanner = NULL;
+	}
+}
+
 
 bool JoinServerMenu::onKey(const SDL_keysym sym) {
 	if (Container::onKey(sym))
@@ -215,6 +225,7 @@ bool JoinServerMenu::onKey(const SDL_keysym sym) {
 		return true;
 	
 	case SDLK_ESCAPE: 
+		onHide();
 		MenuConfig->save();
 		_parent->back();
 		return true;

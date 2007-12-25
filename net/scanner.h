@@ -9,7 +9,7 @@ public:
 	~Scanner();
 private: 
 	virtual const int run();
-	volatile bool _running;
+	volatile bool _running, _scan;
 };
 
 

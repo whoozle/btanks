@@ -16,11 +16,12 @@
 #	include <netinet/ip.h> /* superset of previous */
 #endif
 
-Scanner::Scanner() : _running(true) {
+Scanner::Scanner() : _running(true), _scan(true) {
 	start();
 }
 
 Scanner::~Scanner() {
+	LOG_DEBUG(("stopping scanner..."));
 	_running = false;
 	wait();
 }
@@ -33,25 +34,25 @@ TRY {
 	LOG_DEBUG(("searching for servers at port %d", port));
 
 	mrt::UDPSocket udp_sock;
-	//udp_sock.listen(bindaddr, port, false);
-	udp_sock.create();
+	udp_sock.listen(bindaddr, port, false);
+	//udp_sock.create();
 	udp_sock.setBroadcastMode(1);
 	LOG_DEBUG(("udp socket started..."));
-	
-	
-	mrt::Serializator s;
-	Message m(Message::ServerDiscovery);
-	mrt::Chunk data;
-	m.serialize2(data);
-	
-	udp_sock.broadcast(data, port);
-	
-	return 0;
 	
 	mrt::SocketSet set; 
 	set.add(udp_sock, mrt::SocketSet::Exception | mrt::SocketSet::Read);
 	
 	while(_running) {
+		if (_scan) {
+			mrt::Serializator s;
+			Message m(Message::ServerDiscovery);
+			mrt::Chunk data;
+			m.serialize2(data);
+	
+			udp_sock.broadcast(data, port);	
+			_scan = false;
+		}
+
 		if (set.check(100) == 0)
 			continue;
 		
@@ -65,7 +66,8 @@ TRY {
 			int r = udp_sock.recv(addr, data.getPtr(), data.getSize());
 			if (r == 0 || r == -1)
 				throw_io(("udp_sock.read"));
-			LOG_DEBUG(("data: %s", data.dump().c_str()));
+			data.setSize(r);
+			LOG_DEBUG(("data from addr %s: %s", addr.getAddr().c_str(), data.dump().c_str()));
 		}
 	}
 } CATCH("run", return 1;)

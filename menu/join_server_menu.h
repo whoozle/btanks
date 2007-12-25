@@ -29,6 +29,7 @@ class MapDetails;
 class Prompt;
 class Chooser;
 class UpperBox;
+class Scanner;
 
 class JoinServerMenu : public BaseMenu {
 public:
@@ -42,6 +43,8 @@ public:
 	virtual bool onKey(const SDL_keysym sym);
 
 private: 
+	void onHide();
+
 	MainMenu *_parent;
 	UpperBox *_upper_box;
 	HostList *_hosts;
@@ -49,6 +52,7 @@ private:
 	Prompt *_add_dialog;
 	Chooser *_vehicle, *_vehicle2;
 	Button *_back, *_add, *_del, *_scan, *_join;
+	Scanner *_scanner;
 };
 
 #endif
