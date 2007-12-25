@@ -102,7 +102,7 @@ void UDPSocket::setBroadcastMode(int val) {
 	if (_sock == -1)
 		throw_ex(("setBroadcast called on uninitialized socket"));
 	TRY { 
-		int r = setsockopt(_sock, SOL_SOCKET, SO_BROADCAST, (void *)&val, sizeof(val));
+		int r = setsockopt(_sock, SOL_SOCKET, SO_BROADCAST, (char *)&val, sizeof(val)); //win32 hack
 		if (r == -1)
 			throw_io(("setsockopt"));
 	} CATCH("setsockopt(IPPROTO_UDP, SO_BROADCAST)", {});
