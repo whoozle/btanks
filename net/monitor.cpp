@@ -257,7 +257,8 @@ TRY {
 				set.add(i->second->sock, how);
 			}
 		}
-		if (cids.empty()) {
+
+		if (cids.empty() && _dgram_sock == NULL) {
 			sdlx::Timer::microsleep("waiting for connection", 10000);
 			continue;
 		}
@@ -267,8 +268,10 @@ TRY {
 			set.add(_dgram_sock, _send_dgram.empty()? mrt::SocketSet::Read: mrt::SocketSet::Read | mrt::SocketSet::Write);
 		}
 
-		if (set.check(mpi) == 0) 
+		if (set.check(mpi) == 0) {
+			///LOG_DEBUG(("no events"));
 			continue;
+		}
 			
 		if (_dgram_sock != NULL && set.check(_dgram_sock, mrt::SocketSet::Read)) {
 			unsigned char buf[1500]; //fixme
