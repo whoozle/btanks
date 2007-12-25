@@ -194,6 +194,7 @@ void JoinServerMenu::tick(const float dt) {
 		if (_scanner == NULL) {
 			_scanner = new Scanner;
 		}
+		_scanner->scan();
 	}
 	
 	if (_join->changed()) {
