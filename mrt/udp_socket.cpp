@@ -36,9 +36,7 @@ void UDPSocket::listen(const std::string &bindaddr, const unsigned port, const b
 	memset(&addr, 0, sizeof(addr));
 	addr.sin_family = AF_INET;
 	addr.sin_port = htons(port);
-	if (!bindaddr.empty()) {
-		addr.sin_addr.s_addr = inet_addr(bindaddr.c_str());
-	}
+	addr.sin_addr.s_addr = bindaddr.empty()?INADDR_ANY: inet_addr(bindaddr.c_str());
 	
 	if (bind(_sock, (const sockaddr *)&addr, sizeof(addr)) == -1)
 		throw_io(("bind"));
