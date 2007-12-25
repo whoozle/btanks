@@ -97,3 +97,13 @@ const int UDPSocket::recv(Socket::addr &addr, void *data, const int len) const {
 	addr.port = ntohs(sockaddr.sin_port);
 	return r;
 }
+
+void UDPSocket::setBroadcastMode(int val) {
+	if (_sock == -1)
+		throw_ex(("setBroadcast called on uninitialized socket"));
+	TRY { 
+		int r = setsockopt(_sock, SOL_SOCKET, SO_BROADCAST, (void *)&val, sizeof(val));
+		if (r == -1)
+			throw_io(("setsockopt"));
+	} CATCH("setsockopt(IPPROTO_UDP, SO_BROADCAST)", {});
+}

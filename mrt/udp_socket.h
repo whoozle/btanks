@@ -31,6 +31,7 @@ public:
 	void create();
 	void connect(const std::string &host, const int port);
 	void listen(const std::string &addr, const unsigned port, const bool reuse = false);
+	void setBroadcastMode(int val = 1);
 
 	const int send(const Socket::addr &addr, const void *data, const int len) const;
 	const int recv(Socket::addr &addr, void *data, const int len) const;
