@@ -34,8 +34,8 @@ TRY {
 	LOG_DEBUG(("searching for servers at port %d", port));
 
 	mrt::UDPSocket udp_sock;
-	udp_sock.listen(bindaddr, port, false);
-	//udp_sock.create();
+	//udp_sock.listen(bindaddr, port, false);
+	udp_sock.create();
 	udp_sock.setBroadcastMode(1);
 	LOG_DEBUG(("udp socket started..."));
 	
