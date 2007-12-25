@@ -12,6 +12,7 @@ public:
 	~Scanner();
 	void scan() { _scan = true; }
 	const bool changed() const { return _changed; }
+	void reset() { _changed = false; }
 
 	void get(std::set<std::string> &hosts) const;
 

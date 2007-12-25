@@ -39,10 +39,10 @@ TRY {
 	udp_sock.setBroadcastMode(1);
 	LOG_DEBUG(("udp socket started..."));
 	
-	mrt::SocketSet set; 
-	set.add(udp_sock, mrt::SocketSet::Exception | mrt::SocketSet::Read);
 	
 	while(_running) {
+		mrt::SocketSet set; 
+		set.add(udp_sock, mrt::SocketSet::Exception | mrt::SocketSet::Read);
 		if (_scan) {
 			mrt::Serializator s;
 			Message m(Message::ServerDiscovery);

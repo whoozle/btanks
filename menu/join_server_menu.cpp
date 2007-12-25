@@ -204,6 +204,7 @@ void JoinServerMenu::tick(const float dt) {
 	}
 	
 	if (_scanner != NULL && _scanner->changed()) {
+		_scanner->reset();
 		std::set<std::string> hosts;
 		_scanner->get(hosts);
 		int n = _hosts->size();
@@ -219,7 +220,6 @@ void JoinServerMenu::tick(const float dt) {
 			
 		for(std::set<std::string>::iterator i = hosts.begin(); i != hosts.end(); ++i) {
 			_hosts->append(*i);
-			_hosts->promote(_hosts->size() - 1);
 		}
 	}
 }
