@@ -1363,7 +1363,7 @@ TRY {
 	//LOG_DEBUG(("deserialization completed successfully"));
 }
 
-void IWorld::generateUpdate(mrt::Serializator &s, const bool clean_sync_flag) {
+void IWorld::generateUpdate(mrt::Serializator &s, const bool clean_sync_flag, const int first_id) {
 	s.add((unsigned)_objects.size());
 	for(ObjectMap::iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		Object *o = i->second;

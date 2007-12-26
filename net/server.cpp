@@ -88,6 +88,7 @@ void Server::tick(const float dt) {
 			case Message::RequestPlayer:	
 			case Message::TextMessage:	
 			case Message::PlayerMessage: 
+			case Message::RequestObjects:
 				PlayerManager->onMessage(id, m, delta);
 				break;
 			default:

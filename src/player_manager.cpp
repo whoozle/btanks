@@ -223,6 +223,24 @@ TRY {
 		GameMonitor->deserialize(s);
 		break;
 	} 
+	case Message::RequestObjects: {
+		assert(_server != NULL);
+		
+		int first_id;
+		{
+			mrt::Serializator md(&message.data);
+			md.get(first_id);
+		}
+
+		mrt::Serializator s;
+		serializeSlots(s);
+		World->generateUpdate(s, false, first_id);
+			
+		Message m(Message::UpdateWorld);
+		m.set("sync", "1");
+		m.data = s.getData();
+		_server->send(cid, m);
+	}
 	case Message::PlayerState: {
 		int id = message.channel;
 		if (id < 0 || (unsigned)id >= _players.size())
@@ -1331,6 +1349,8 @@ void IPlayerManager::requestObjects(const int first_id) {
 	if (_client == NULL)
 		return;
 	Message m(Message::RequestObjects);
-	m.set("id", mrt::formatString("%d", first_id));
+	mrt::Serializator s;
+	s.add(first_id);
+	m.data = s.getData();
 	_client->send(m);
 }
