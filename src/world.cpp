@@ -1185,6 +1185,8 @@ void IWorld::serializeObjectPV(mrt::Serializator &s, const Object *o) const {
 	s.add(o->getZ());
 	s.add(o->_direction);
 	s.add(o->_direction_idx);
+	s.add(o->_moving_time);
+	s.add(o->_idle_time);
 }
 
 void IWorld::deserializeObjectPV(const mrt::Serializator &s, Object *o) {
@@ -1197,6 +1199,9 @@ void IWorld::deserializeObjectPV(const mrt::Serializator &s, Object *o) {
 
 		s.get(x); //direction
 		s.get(z);
+
+		s.get(x.x); //moving time 
+		s.get(x.y); //idle time
 		
 		LOG_WARN(("skipped deserializeObjectPV for NULL object"));
 		return;
@@ -1212,6 +1217,8 @@ void IWorld::deserializeObjectPV(const mrt::Serializator &s, Object *o) {
 
 	s.get(o->_direction);
 	s.get(o->_direction_idx);
+	s.get(o->_moving_time);
+	s.get(o->_idle_time);
 }
 
 
