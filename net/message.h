@@ -62,6 +62,7 @@ public:
 	virtual void deserialize(const mrt::Serializator &s);
 	
 	void set(const std::string &key, const std::string &value);
+	const bool has(const std::string &key) const;
 	const std::string &get(const std::string &key) const;
 	
 	int channel;

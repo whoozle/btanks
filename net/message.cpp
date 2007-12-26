@@ -80,6 +80,10 @@ void Message::set(const std::string &key, const std::string &value) {
 	_attrs[key] = value;
 }
 
+const bool Message::has(const std::string &key) const {
+	return _attrs.find(key) != _attrs.end();
+}
+
 const std::string &Message::get(const std::string &key) const {
 	AttrMap::const_iterator i = _attrs.find(key);
 	if (i == _attrs.end())
