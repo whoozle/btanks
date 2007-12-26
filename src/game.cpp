@@ -242,6 +242,9 @@ void IGame::init(const int argc, char *argv[]) {
 		if (revision < 5700) {
 			Config->remove("engine.pathfinding-throttling");
 		}
+		if (revision < 5829 && Config->has("multiplayer.port")) {
+			Config->set("multiplayer.port", 27255);
+		}
 		
 		Config->set("engine.revision", getRevision());
 	}

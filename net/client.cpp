@@ -42,7 +42,7 @@ void Client::init(const std::string &host) {
 	delete _monitor;
 
 	GET_CONFIG_VALUE("multiplayer.bind-address", std::string, bindaddr, std::string());
-	GET_CONFIG_VALUE("multiplayer.port", int, port, 9876);
+	GET_CONFIG_VALUE("multiplayer.port", int, port, 27255);
 	
 	LOG_DEBUG(("client::init('%s':%u)", host.c_str(), port));	
 	//_udp_sock.create();

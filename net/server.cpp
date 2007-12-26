@@ -35,7 +35,7 @@ Server::~Server() {
 
 void Server::init() {
 	GET_CONFIG_VALUE("multiplayer.bind-address", std::string, bindaddr, std::string());
-	GET_CONFIG_VALUE("multiplayer.port", int, port, 9876);
+	GET_CONFIG_VALUE("multiplayer.port", int, port, 27255);
 
 	LOG_DEBUG(("starting game server at port %d", port));
 

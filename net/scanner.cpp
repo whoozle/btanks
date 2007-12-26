@@ -29,7 +29,7 @@ Scanner::~Scanner() {
 const int Scanner::run() {
 TRY {
 	GET_CONFIG_VALUE("multiplayer.bind-address", std::string, bindaddr, std::string());
-	GET_CONFIG_VALUE("multiplayer.port", int, port, 9876);
+	GET_CONFIG_VALUE("multiplayer.port", int, port, 27255);
 
 	LOG_DEBUG(("searching for servers at port %d", port));
 
