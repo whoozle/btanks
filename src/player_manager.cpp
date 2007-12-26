@@ -219,7 +219,7 @@ TRY {
 		deserializeSlots(s);
 		float dt = (now + _net_stats.getDelta() - timestamp) / 1000.0f;
 		LOG_DEBUG(("update world, delta: %+d, dt: %g", _net_stats.getDelta(), dt));
-		World->applyUpdate(s, dt, false);
+		World->applyUpdate(s, dt, message.has("sync"));
 		GameMonitor->deserialize(s);
 		break;
 	} 
