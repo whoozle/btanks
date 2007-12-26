@@ -219,7 +219,7 @@ TRY {
 		deserializeSlots(s);
 		float dt = (now + _net_stats.getDelta() - timestamp) / 1000.0f;
 		LOG_DEBUG(("update world, delta: %+d, dt: %g", _net_stats.getDelta(), dt));
-		World->applyUpdate(s, dt);
+		World->applyUpdate(s, dt, false);
 		GameMonitor->deserialize(s);
 		break;
 	} 
@@ -431,7 +431,7 @@ TRY {
 		float dt = (now + _net_stats.getDelta() - timestamp) / 1000.0f;
 		LOG_DEBUG(("respawn, delta: %+d, dt: %g", _net_stats.getDelta(), dt));
 	
-		World->applyUpdate(s, dt);
+		World->applyUpdate(s, dt, false);
 		} CATCH("on-message(respawn)", throw;);
 	break;
 	}
@@ -1324,4 +1324,10 @@ void IPlayerManager::sendObjectState(const int id, const PlayerState & state) {
 	if (!isServerActive() || getSlotByID(id) != NULL) //object doesnt reside in any slot.
 		return;
 	_object_states.insert(id);
+}
+
+
+void IPlayerManager::requestObjects(const int first_id) {
+	if (_client == NULL)
+		return;
 }

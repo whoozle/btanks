@@ -46,6 +46,7 @@ public:
 		TextMessage, 
 		DestroyMap, 
 		PlayerMessage, 
+		RequestObjects,
 		ServerDiscovery
 	};
 	

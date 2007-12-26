@@ -1411,9 +1411,11 @@ void IWorld::interpolateObjects(ObjectMap &objects) {
 	}
 }
 
-void IWorld::applyUpdate(const mrt::Serializator &s, const float dt) {
+void IWorld::applyUpdate(const mrt::Serializator &s, const float dt, const bool reset_sync) {
 TRY {
 	_collision_map.clear();
+	if (reset_sync)
+		_out_of_sync = -1;
 
 	unsigned int n;
 	s.get(n);
@@ -1448,6 +1450,9 @@ TRY {
 	} CATCH("applyUpdate::tick", throw;);
 	
 	interpolateObjects(objects);
+	if (_out_of_sync != -1) {
+		PlayerManager->requestObjects(_out_of_sync);
+	}
 } CATCH("applyUpdate", throw;)
 }
 

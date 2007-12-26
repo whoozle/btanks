@@ -114,6 +114,7 @@ public:
 	void fixCheckpoints(PlayerSlot &slot, const SpecialZone &zone); 
 	
 	void sendObjectState(const int id, const PlayerState & state);
+	void requestObjects(const int first_id);
 
 private: 
 	void serializeSlots(mrt::Serializator &s) const;
