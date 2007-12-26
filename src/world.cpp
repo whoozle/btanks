@@ -1375,7 +1375,7 @@ TRY {
 }
 
 void IWorld::generateUpdate(mrt::Serializator &s, const bool clean_sync_flag, const int first_id) {
-	int n = 0;
+	unsigned n = 0;
 	if (first_id == -1) {
 		n = _objects.size();
 	} else {
@@ -1386,7 +1386,7 @@ void IWorld::generateUpdate(mrt::Serializator &s, const bool clean_sync_flag, co
 			++n;
 		}
 	}
-
+	LOG_DEBUG(("generate update: %u objects", n));
 	s.add(n);
 	for(ObjectMap::iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		Object *o = i->second;
@@ -1446,6 +1446,7 @@ TRY {
 
 	unsigned int n;
 	s.get(n);
+	LOG_DEBUG(("there's %u objects in update", n));
 	ObjectMap objects;
 	std::set<int> ids;
 	
