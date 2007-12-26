@@ -240,6 +240,7 @@ TRY {
 		m.set("sync", "1");
 		m.data = s.getData();
 		_server->send(cid, m);
+		break;
 	}
 	case Message::PlayerState: {
 		int id = message.channel;

@@ -1427,8 +1427,10 @@ void IWorld::interpolateObjects(ObjectMap &objects) {
 void IWorld::applyUpdate(const mrt::Serializator &s, const float dt, const bool reset_sync) {
 TRY {
 	_collision_map.clear();
-	if (reset_sync)
+	if (reset_sync) {
+		LOG_DEBUG(("catched update with 'sync' flag set"));
 		_out_of_sync = -1;
+	}
 
 	unsigned int n;
 	s.get(n);
