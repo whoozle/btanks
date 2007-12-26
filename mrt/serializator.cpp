@@ -45,8 +45,12 @@
 
 using namespace mrt;
 
+#ifdef DEBUG
+#define ASSERT_POS(size) assert(_pos + (size) <= _data->getSize())
+#else
 #define ASSERT_POS(size) if (_pos + (size) > _data->getSize()) \
 	throw_ex(("buffer overrun %u + %u > %u", (unsigned)_pos, (unsigned)(size), (unsigned)_data->getSize()))
+#endif
 
 //ugly hackish trick, upcast const pointer to non-const variant.
 
