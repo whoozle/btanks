@@ -1262,6 +1262,10 @@ Object * IWorld::deserializeObject(const mrt::Serializator &s) {
 					PlayerSlot * slot = PlayerManager->getSlotByID(id);
 					if (slot == NULL) {
 						o->deserialize(s);
+						if (o->_dead) {
+							LOG_DEBUG(("incomplete data for object %d:%s", o->_id, o->animation.c_str()));
+							sync(o->_id);
+						}
 					} else { 
 						//state, 
 						PlayerState state = o->_state;
@@ -1269,8 +1273,10 @@ Object * IWorld::deserializeObject(const mrt::Serializator &s) {
 						float ip = o->_interpolation_progress;
 						
 						o->deserialize(s);
-						if (o->_dead) 
+						if (o->_dead) {
+							LOG_DEBUG(("incomplete data for object %d:%s", o->_id, o->animation.c_str()));
 							sync(o->_id);
+						}
 						
 						o->_state = state;
 						o->_position = pos;
