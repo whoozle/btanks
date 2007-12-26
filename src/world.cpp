@@ -1375,7 +1375,19 @@ TRY {
 }
 
 void IWorld::generateUpdate(mrt::Serializator &s, const bool clean_sync_flag, const int first_id) {
-	s.add((unsigned)_objects.size());
+	int n = 0;
+	if (first_id == -1) {
+		n = _objects.size();
+	} else {
+		for(ObjectMap::iterator i = _objects.begin(); i != _objects.end(); ++i) {
+			Object *o = i->second;
+			if (first_id != -1 && o->_id < first_id) //rewrite it with lower_bound ? 
+				continue; 
+			++n;
+		}
+	}
+
+	s.add(n);
 	for(ObjectMap::iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		Object *o = i->second;
 		if (first_id != -1 && o->_id < first_id) //rewrite it with lower_bound ? 
