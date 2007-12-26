@@ -123,7 +123,7 @@ void BaseObject::deserialize(const mrt::Serializator &s) {
 	s.get(_state);
 	
 	//s.get(_dead);
-	_dead = false;
+	_dead = false; //mark object as undead only after full deserialization.
 	s.get(_variants);
 	
 	_owners.clear();

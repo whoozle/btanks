@@ -104,6 +104,7 @@ public:
 	const bool detachVehicle(Object *object);
 
 	void enumerateObjects(std::set<const Object *> &o_set, const Object *src, const float range, const std::set<std::string> *classfilter);
+	void sync(const int id);
 
 protected: 
 	friend class Editor;
@@ -142,6 +143,7 @@ private:
 	int _last_id;
 	bool _safe_mode, _atatat;
 	float _max_dt;
+	int _out_of_sync;
 	
 	const sdlx::Surface *_hp_bar;
 

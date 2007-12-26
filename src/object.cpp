@@ -558,9 +558,16 @@ void Object::deserialize(const mrt::Serializator &s) {
 			o = ResourceManager->createObject(rn);
 			o->_parent = this;
 			_group[name] = o;
+			o->deserialize(s);
+			//assert(o->_need_sync);
+			if (!o->_need_sync) {
+				LOG_DEBUG(("incomplete data for object %d:%s", o->_id, o->animation.c_str()));
+				//incomplete object serialization. mark object as dead for future restoring.
+				_dead = true;
+			}
+		} else {
+			o->deserialize(s);
 		}
-		assert(o->_need_sync);
-		o->deserialize(s);
 		keys.insert(name);
 	}
 	for(Group::iterator i = _group.begin(); i != _group.end(); ) {

@@ -79,6 +79,7 @@ void IWorld::clear() {
 	_last_id = 0;
 	_atatat = _safe_mode = false;
 	profiler.dump();
+	_out_of_sync = -1;
 }
 
 void IWorld::setMode(const std::string &mode, const bool value) {
@@ -89,7 +90,7 @@ void IWorld::setMode(const std::string &mode, const bool value) {
 }
 
 
-IWorld::IWorld() : _last_id(0), _safe_mode(false), _atatat(false), _max_dt(1), _hp_bar(NULL) {
+IWorld::IWorld() : _last_id(0), _safe_mode(false), _atatat(false), _max_dt(1), _out_of_sync(-1), _hp_bar(NULL) {
 	LOG_DEBUG(("world ctor"));
 	Map->load_map_signal.connect(sigc::mem_fun(this, &IWorld::initMap));
 }
@@ -1236,6 +1237,11 @@ void IWorld::serialize(mrt::Serializator &s) const {
 	s.add(e_speed);
 }
 
+void IWorld::sync(const int id) {
+	if (_out_of_sync == -1 || id < _out_of_sync) 
+		_out_of_sync = id;
+}
+
 Object * IWorld::deserializeObject(const mrt::Serializator &s) {
 	int id;
 	std::string rn, an;
@@ -1263,6 +1269,8 @@ Object * IWorld::deserializeObject(const mrt::Serializator &s) {
 						float ip = o->_interpolation_progress;
 						
 						o->deserialize(s);
+						if (o->_dead) 
+							sync(o->_id);
 						
 						o->_state = state;
 						o->_position = pos;
@@ -1282,6 +1290,11 @@ Object * IWorld::deserializeObject(const mrt::Serializator &s) {
 					delete o;
 					o = NULL;
 					i->second = ao;
+					if (!ao->_need_sync) {
+						LOG_DEBUG(("incomplete data for object %d:%s", ao->_id, ao->animation.c_str()));
+						ao->_dead = true;
+						sync(ao->_id);
+					}
 					ao = NULL;
 				}
 			} else {
@@ -1316,7 +1329,7 @@ void IWorld::cropObjects(const std::set<int> &ids) {
 			deleteObject(o);
 			_objects.erase(i++);
 		} else {
-			if (o->_dead) {
+			if (o->_dead && (_out_of_sync == -1 || o->_id < _out_of_sync) ) {
 				LOG_DEBUG(("resurrecting object %d(%s) from the dead", o->getID(), o->animation.c_str()));
 				o->_dead = false;
 			}
