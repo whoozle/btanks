@@ -1307,6 +1307,11 @@ Object * IWorld::deserializeObject(const mrt::Serializator &s) {
 				assert(ao->_id == id);
 				
 				_objects[id] = ao;
+				if (!ao->_need_sync) {
+					LOG_DEBUG(("incomplete data for object %d:%s", ao->_id, ao->animation.c_str()));
+					ao->_dead = true;
+					sync(ao->_id);
+				}
 				ao = NULL;
 			}
 
