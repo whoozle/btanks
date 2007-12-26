@@ -1469,9 +1469,11 @@ TRY {
 	setSpeed(speed);
 
 	//_last_id += 10000;
-	TRY {
-		cropObjects(ids);
-	} CATCH("applyUpdate::cropObjects", throw;);
+	if (!reset_sync) {
+		TRY {
+			cropObjects(ids);
+		} CATCH("applyUpdate::cropObjects", throw;);
+	}
 
 	TRY {
 		tick(objects, dt);
