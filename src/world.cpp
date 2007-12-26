@@ -1380,7 +1380,7 @@ void IWorld::generateUpdate(mrt::Serializator &s, const bool clean_sync_flag, co
 		Object *o = i->second;
 		if (first_id != -1 && o->_id < first_id) //rewrite it with lower_bound ? 
 			continue; 
-		serializeObject(s, o, false);	
+		serializeObject(s, o, first_id != -1);	
 		if (clean_sync_flag)
 			o->setSync(false);
 	}
