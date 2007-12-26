@@ -1367,6 +1367,8 @@ void IWorld::generateUpdate(mrt::Serializator &s, const bool clean_sync_flag, co
 	s.add((unsigned)_objects.size());
 	for(ObjectMap::iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		Object *o = i->second;
+		if (first_id != -1 && o->_id < first_id) //rewrite it with lower_bound ? 
+			continue; 
 		serializeObject(s, o, false);	
 		if (clean_sync_flag)
 			o->setSync(false);
