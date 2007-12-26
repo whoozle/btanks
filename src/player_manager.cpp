@@ -1330,4 +1330,7 @@ void IPlayerManager::sendObjectState(const int id, const PlayerState & state) {
 void IPlayerManager::requestObjects(const int first_id) {
 	if (_client == NULL)
 		return;
+	Message m(Message::RequestObjects);
+	m.set("id", mrt::formatString("%d", first_id));
+	_client->send(m);
 }
