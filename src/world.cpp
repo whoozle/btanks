@@ -1376,13 +1376,16 @@ TRY {
 
 void IWorld::generateUpdate(mrt::Serializator &s, const bool clean_sync_flag, const int first_id) {
 	unsigned n = 0;
+	std::set<int> skipped_objects; 
 	if (first_id == -1) {
 		n = _objects.size();
 	} else {
 		for(ObjectMap::iterator i = _objects.begin(); i != _objects.end(); ++i) {
 			Object *o = i->second;
-			if (first_id != -1 && o->_id < first_id) //rewrite it with lower_bound ? 
+			if (first_id != -1 && o->_id < first_id) {
+				skipped_objects.insert(o->_id);
 				continue; 
+			}
 			++n;
 		}
 	}
@@ -1396,6 +1399,7 @@ void IWorld::generateUpdate(mrt::Serializator &s, const bool clean_sync_flag, co
 		if (clean_sync_flag)
 			o->setSync(false);
 	}
+	s.add(skipped_objects);
 	
 	s.add(_last_id);
 	GET_CONFIG_VALUE("engine.speed", float, e_speed, 1.0f);
@@ -1459,6 +1463,13 @@ TRY {
 		objects.insert(ObjectMap::value_type(o->_id, o));
 		ids.insert(o->_id);
 	}
+	{
+		std::set<int> skipped_ids;
+		s.get(skipped_ids);
+		for(std::set<int>::const_iterator i = skipped_ids.begin(); i != skipped_ids.end(); ++i) {
+			ids.insert(*i);
+		}
+	}
 
 	s.get(_last_id);
 
@@ -1469,11 +1480,9 @@ TRY {
 	setSpeed(speed);
 
 	//_last_id += 10000;
-	if (!reset_sync) {
-		TRY {
-			cropObjects(ids);
-		} CATCH("applyUpdate::cropObjects", throw;);
-	}
+	TRY {
+		cropObjects(ids);
+	} CATCH("applyUpdate::cropObjects", throw;);
 
 	TRY {
 		tick(objects, dt);

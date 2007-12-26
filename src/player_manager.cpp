@@ -235,6 +235,7 @@ TRY {
 		mrt::Serializator s;
 		serializeSlots(s);
 		World->generateUpdate(s, false, first_id);
+		GameMonitor->serialize(s);
 			
 		Message m(Message::UpdateWorld);
 		m.set("sync", "1");
