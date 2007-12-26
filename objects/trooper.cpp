@@ -89,7 +89,7 @@ const bool Trooper::take(const BaseObject *obj, const std::string &type) {
 		_variants.add("nukeman");
 		hp = max_hp = 999;
 		init("nukeman");
-		need_sync = true;
+		invalidate();
 		return true;
 	}
 	return false;

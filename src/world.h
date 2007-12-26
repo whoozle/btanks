@@ -78,7 +78,7 @@ public:
 	void generateUpdate(mrt::Serializator &s, const bool clean_sync_flag);
 	void applyUpdate(const mrt::Serializator &s, const float dt);
 
-	void serializeObject(mrt::Serializator &, const Object *) const;
+	void serializeObject(mrt::Serializator &, const Object *, const bool force) const;
 	Object* deserializeObject(const mrt::Serializator &);
 	void serializeObjectPV(mrt::Serializator &, const Object *) const;
 	void deserializeObjectPV(const mrt::Serializator &, Object *);

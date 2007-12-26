@@ -148,7 +148,7 @@ void IWorld::addObject(Object *o, const v2<float> &pos, const int id) {
 	o->onSpawn();
 //	if (o->getState().empty())
 //		throw_ex(("object %s:%s was not set up default pose. fixme.", o->registered_name.c_str(), o->animation.c_str()));
-	o->need_sync = true;
+	o->invalidate();
 
 	updateObject(o);
 
@@ -1214,10 +1214,13 @@ void IWorld::deserializeObjectPV(const mrt::Serializator &s, Object *o) {
 }
 
 
-void IWorld::serializeObject(mrt::Serializator &s, const Object *o) const {
+void IWorld::serializeObject(mrt::Serializator &s, const Object *o, const bool force) const {
 	s.add(o->_id);
 	s.add(o->registered_name);
-	o->serialize(s);
+	if (force)
+		o->serializeAll(s);
+	else 
+		o->serialize(s);
 }
 
 
@@ -1226,7 +1229,7 @@ void IWorld::serialize(mrt::Serializator &s) const {
 	s.add((unsigned int)_objects.size());
 	for(ObjectMap::const_reverse_iterator i = _objects.rbegin(); i != _objects.rend(); ++i) {
 		const Object *o = i->second;
-		serializeObject(s, o);
+		serializeObject(s, o, true);
 	}
 
 	GET_CONFIG_VALUE("engine.speed", float, e_speed, 1.0f);
@@ -1348,30 +1351,14 @@ TRY {
 }
 
 void IWorld::generateUpdate(mrt::Serializator &s, const bool clean_sync_flag) {
-	std::deque<int> skipped_objects;
-	
-	ObjectMap objects;
+	s.add((unsigned)_objects.size());
 	for(ObjectMap::reverse_iterator i = _objects.rbegin(); i != _objects.rend(); ++i) {
 		Object *o = i->second;
-		if (o->need_sync || o->speed != 0) { //leader need for missiles on vehicle or such
-			objects.insert(ObjectMap::value_type(o->_id, o));
-		} else skipped_objects.push_back(o->_id);
-	}
-	LOG_DEBUG(("generating update %u objects of %u", (unsigned)objects.size(), (unsigned)_objects.size()));
-
-	s.add((unsigned)objects.size());
-	for(ObjectMap::reverse_iterator i = objects.rbegin(); i != objects.rend(); ++i) {
-		Object *o = i->second;
-		serializeObject(s, o);	
-		if (clean_sync_flag && o->need_sync)
-			o->need_sync = false;
+		serializeObject(s, o, false);	
+		if (clean_sync_flag)
+			o->setSync(false);
 	}
 	
-	unsigned int skipped = skipped_objects.size();
-	s.add(skipped);
-	for(std::deque<int>::const_iterator i = skipped_objects.begin(); i != skipped_objects.end(); ++i) {
-		s.add(*i);
-	}
 	s.add(_last_id);
 	GET_CONFIG_VALUE("engine.speed", float, e_speed, 1.0f);
 	s.add(e_speed);
@@ -1416,9 +1403,10 @@ TRY {
 	_collision_map.clear();
 
 	unsigned int n;
-	std::set<int> skipped_objects;
-	ObjectMap objects;
 	s.get(n);
+	ObjectMap objects;
+	std::set<int> ids;
+	
 	while(n--) {
 		Object *o = deserializeObject(s);
 		if (o == NULL) {
@@ -1426,14 +1414,9 @@ TRY {
 			continue;
 		}
 		objects.insert(ObjectMap::value_type(o->_id, o));
-		skipped_objects.insert(o->_id);
+		ids.insert(o->_id);
 	}
-	s.get(n);
-	while(n--) {
-		int id;
-		s.get(id);
-		skipped_objects.insert(id);
-	}
+
 	s.get(_last_id);
 
 	float speed;
@@ -1444,7 +1427,7 @@ TRY {
 
 	//_last_id += 10000;
 	TRY {
-		cropObjects(skipped_objects);
+		cropObjects(ids);
 	} CATCH("applyUpdate::cropObjects", throw;);
 
 	TRY {
@@ -1624,8 +1607,8 @@ const bool IWorld::detachVehicle(Object *object) {
 	
 	slot->id = new_id;
 	slot->need_sync = true;
-	object->need_sync = true;
-	man->need_sync = true;
+	object->invalidate();
+	man->invalidate();
 	
 	return true;
 }

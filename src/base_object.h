@@ -123,7 +123,7 @@ protected:
 	
 	virtual void calculate(const float dt) = 0;
 
-	bool need_sync, _dead;
+	bool _need_sync, _dead;
 	Variants _variants;
 
 private:

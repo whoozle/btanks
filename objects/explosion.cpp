@@ -155,7 +155,7 @@ void Explosion::emit(const std::string &event, Object * emitter) {
 				Mixer->playRandomSample(NULL, "laugh", false);
 			}
 		}
-		need_sync = true;
+		invalidate();
 	} else if (event == "death") {
 		if (_players_killed > 1) {
 			std::string combo = I18n->get("messages", "combo");

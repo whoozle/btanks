@@ -25,7 +25,7 @@
 class MissilesInVehicle : public Object {
 public:
 	void update() {
-		need_sync = true;
+		invalidate();
 		if (_object.empty()) 
 			Config->get("objects." + registered_name + ".default-weapon", _object, "missiles");
 

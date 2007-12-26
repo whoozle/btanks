@@ -60,7 +60,7 @@ void Teleport::tick(const float dt) {
 		const Object *o = World->getObjectByID(track);
 		if (o == NULL) {
 			track = 0;
-			need_sync = true;
+			invalidate();
 			return;
 		}
 		PlayerSlot *slot = PlayerManager->getSlotByID(track);
@@ -75,7 +75,7 @@ void Teleport::tick(const float dt) {
 		if (pos.quick_distance(tpos) >= size.x * size.y) {
 			LOG_DEBUG(("dropped target %d", track));
 			track = 0;
-			need_sync = true;
+			invalidate();
 		}
 }
 
@@ -119,7 +119,7 @@ void Teleport::emit(const std::string &event, Object * emitter) {
 		//LOG_DEBUG(("dst z = %d, dst box base = %d", dst->getZ(), ZBox::getBoxBase(dst->getZ())));
 		emitter->setZBox(ZBox::getBoxBase(dst->getZ()));
 		dst->track = emitter->getID();
-		dst->need_sync = true;
+		dst->invalidate();
 		dst->playSound("teleport", false);
 		emitter->addEffect("teleportation", 1);
 	} else Object::emit(event, emitter);

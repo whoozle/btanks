@@ -102,7 +102,7 @@ public:
 				return;
 			if (World->getObjectByID(_head_id) == NULL) {
 				_head_id = 0;
-				need_sync = true;
+				invalidate();
 			}
 		}
 		

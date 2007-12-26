@@ -31,7 +31,7 @@ BaseObject::BaseObject(const std::string &classname):
 	_id(0), _state(), 
 	_velocity(), _direction(1,0), 
 	_moving_time(0), _idle_time(0), 
-	need_sync(false),
+	_need_sync(true),
 	_dead(false), 
 	_position(), _interpolation_progress(1), _z(0), 
 	_owners(), _owner_set(), _spawned_by(0) {
@@ -55,6 +55,21 @@ void BaseObject::inheritParameters(const BaseObject *other) {
 void BaseObject::serialize(mrt::Serializator &s) const {
 	s.add(_id);
 	
+	s.add(_need_sync);
+	
+	s.add(_velocity);
+	s.add(_direction);
+	s.add(_moving_time);	
+	s.add(_idle_time);	
+	if (_interpolation_progress < 1.0f) {
+		s.add(_position + _interpolation_vector * ( 1.0f - _interpolation_progress));
+	} else 
+		s.add(_position);
+	s.add(_z);
+
+	if (!_need_sync)
+		return;
+
 	s.add(size);
 	s.add(mass);
 	s.add(speed);
@@ -69,29 +84,30 @@ void BaseObject::serialize(mrt::Serializator &s) const {
 	
 	s.add(_state);
 	
-	s.add(_velocity);
-	s.add(_direction);
-	s.add(_moving_time);	
-	s.add(_idle_time);	
-
-	s.add(_dead);
+	//s.add(_dead); 
 	s.add(_variants);
 
-	if (_interpolation_progress < 1.0f) {
-		s.add(_position + _interpolation_vector * ( 1.0f - _interpolation_progress));
-	} else 
-		s.add(_position);
 
-	s.add(_z);
-	
 	s.add(_owners);	
-		
 	s.add(_spawned_by);
 }
 
 void BaseObject::deserialize(const mrt::Serializator &s) {
 	s.get(_id);
 	
+	s.get(_need_sync);
+	
+	s.get(_velocity);
+	s.get(_direction);
+	s.get(_moving_time);	
+	s.get(_idle_time);	
+
+	interpolate();
+	_position.deserialize(s);
+	s.get(_z);
+	if (!_need_sync)
+		return;
+
 	s.get(size);
 	s.get(mass);
 	s.get(speed);
@@ -106,17 +122,9 @@ void BaseObject::deserialize(const mrt::Serializator &s) {
 	
 	s.get(_state);
 	
-	s.get(_velocity);
-	s.get(_direction);
-	s.get(_moving_time);	
-	s.get(_idle_time);	
-
-	s.get(_dead);
+	//s.get(_dead);
+	_dead = false;
 	s.get(_variants);
-	
-	interpolate();
-	_position.deserialize(s);
-	s.get(_z);
 	
 	_owners.clear();
 	_owner_set.clear();
@@ -225,7 +233,7 @@ void BaseObject::heal(const int plus) {
 	if (hp >= max_hp)
 		return;
 		
-	need_sync = true;
+	_need_sync = true;
 	hp += plus;
 	if (hp >= max_hp)
 		hp = max_hp;

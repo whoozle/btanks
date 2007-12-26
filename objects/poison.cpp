@@ -49,7 +49,6 @@ void PoisonCloud::tick(const float dt) {
 	Object::tick(dt);
 	if (_damage.tick(dt)) {
 		_damaged_objects.clear();
-		need_sync = true;
 	}
 }
 

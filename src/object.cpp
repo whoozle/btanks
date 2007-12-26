@@ -290,10 +290,6 @@ void Object::groupTick(const float dt) {
 			o->calculate(dt);
 			o->tick(dt);
 		}
-		if (o->need_sync) {
-			need_sync = true;
-			o->need_sync = false;
-		}
 		++i;
 	}
 }
@@ -484,6 +480,17 @@ const bool Object::collides(const sdlx::CollisionMap *other, const int x, const 
 void Object::serialize(mrt::Serializator &s) const {
 	assert(!_dead);
 	BaseObject::serialize(s);
+	//Group	
+	int en = _group.size();
+	s.add(en);
+	for(Group::const_iterator i = _group.begin(); i != _group.end(); ++i) {
+		s.add(i->first);
+		const Object *o = i->second;
+		s.add(o->registered_name);
+		o->serialize(s);
+	}
+	if (!_need_sync) 
+		return;
 	
 	s.add(animation);
 	s.add(fadeout_time);
@@ -506,41 +513,67 @@ void Object::serialize(mrt::Serializator &s) const {
 	s.add(_dst_direction);
 	s.add(_position_delta);
 
-	//Group	
-	int en = _group.size();
-	s.add(en);
-	for(Group::const_iterator i = _group.begin(); i != _group.end(); ++i) {
-		s.add(i->first);
-		const Object *o = i->second;
-		s.add(o->registered_name);
-		o->serialize(s);
-	}
-	
 	_blinking.serialize(s);
 }
 
 void Object::serializeAll(mrt::Serializator &s) const {
 	std::deque<Object *> restore;
 	Object *o = const_cast<Object *>(this);
-	if  (!need_sync) {
+	if  (!_need_sync) {
 		restore.push_back(o);
-		o->need_sync = true;
+		o->_need_sync = true;
 	}
-	for(Group::const_iterator i = _group.begin(); i != _group.end(); ) {
+	for(Group::const_iterator i = _group.begin(); i != _group.end(); ++i) {
 		o = const_cast<Object *>(i->second);
-		if (!o->need_sync) {
-			o->need_sync = true;
+		if (!o->_need_sync) {
+			o->_need_sync = true;
 		}
 	}
 	serialize(s);
 	for(std::deque<Object *>::iterator i = restore.begin(); i != restore.end(); ++i) {
-		(*i)->need_sync = false;
+		(*i)->_need_sync = false;
 	}
 }
 
+void Object::setSync(const bool sync) {
+	_need_sync = sync;
+	for(Group::iterator i = _group.begin(); i != _group.end(); ++i) {
+		i->second->_need_sync = sync;
+	}
+}
 
 void Object::deserialize(const mrt::Serializator &s) {
 	BaseObject::deserialize(s);
+
+	int en;
+	s.get(en);
+	std::set<std::string> keys;
+	while(en--) {
+		std::string name, rn;
+		s.get(name);
+		s.get(rn);
+		Object * o = _group[name];
+		if (o == NULL || o->registered_name != rn) {
+			delete o;
+			o = ResourceManager->createObject(rn);
+			o->_parent = this;
+			_group[name] = o;
+		}
+		assert(o->_need_sync);
+		o->deserialize(s);
+		keys.insert(name);
+	}
+	for(Group::iterator i = _group.begin(); i != _group.end(); ) {
+		if (keys.find(i->first) != keys.end()) {
+			++i;
+		} else {
+			delete i->second;
+			i->second = NULL; //just for fun :)
+			_group.erase(i++);
+		}
+	}
+	if (!_need_sync)
+		return;
 
 	s.get(animation);
 	s.get(fadeout_time);
@@ -563,32 +596,6 @@ void Object::deserialize(const mrt::Serializator &s) {
 	s.get(_dst_direction);
 	s.get(_position_delta);
 
-	int en;
-	s.get(en);
-	std::set<std::string> keys;
-	while(en--) {
-		std::string name, rn;
-		s.get(name);
-		s.get(rn);
-		Object * o = _group[name];
-		if (o == NULL || o->registered_name != rn) {
-			delete o;
-			o = ResourceManager->createObject(rn);
-			o->_parent = this;
-			_group[name] = o;
-		}
-		o->deserialize(s);
-		keys.insert(name);
-	}
-	for(Group::iterator i = _group.begin(); i != _group.end(); ) {
-		if (keys.find(i->first) != keys.end()) {
-			++i;
-		} else {
-			delete i->second;
-			i->second = NULL; //just for fun :)
-			_group.erase(i++);
-		}
-	}
 	_blinking.deserialize(s);
 
 	_animation = NULL;
@@ -643,7 +650,7 @@ void Object::setWay(const Way & new_way) {
 		_next_target = _way.begin()->convert<float>();
 	}
 
-	need_sync = true;
+	_need_sync = true;
 }
 
 void Object::calculateWayVelocity() {
@@ -732,7 +739,7 @@ void Object::init(const std::string &an) {
 		remove("_outline");
 
 	animation = an;
-	need_sync = true;
+	invalidate();
 }
 
 void Object::onSpawn() {
@@ -843,8 +850,8 @@ Object* Object::add(const std::string &name, const std::string &classname, const
 	obj->_z += ZBox::getBoxBase(_z);
 
 	_group.insert(Group::value_type(name, obj));
-	obj->need_sync = true;
-	need_sync = true;
+	obj->invalidate();
+	_need_sync = true;
 	return obj;
 }
 
@@ -877,7 +884,7 @@ void Object::remove(const std::string &name) {
 	delete o;
 
 	_group.erase(i);
-	need_sync = true;
+	_need_sync = true;
 }
 
 
@@ -893,7 +900,7 @@ void Object::groupEmit(const std::string &name, const std::string &event) {
 //effects
 void Object::addEffect(const std::string &name, const float ttl) {
 	_effects[name] = ttl;
-	need_sync = true;
+	_need_sync = true;
 }
 
 const float Object::getEffectTimer(const std::string &name) const {
@@ -905,7 +912,7 @@ const float Object::getEffectTimer(const std::string &name) const {
 
 void Object::removeEffect(const std::string &name) {
 	_effects.erase(name);
-	need_sync = true;
+	_need_sync = true;
 }
 
 void Object::calculate(const float dt) {
@@ -1399,7 +1406,7 @@ void Object::addDamage(Object *from, const int d, const bool emitDeath) {
 		damage += mrt::random(radius * 2 + 1) - radius;
 	}
 	*/
-	need_sync = true;
+	_need_sync = true;
 	
 	hp -= damage;	
 	//LOG_DEBUG(("%s: received %d hp of damage from %s. hp = %d", registered_name.c_str(), damage, from->classname.c_str(), hp));
@@ -1476,8 +1483,6 @@ const float Object::getStateProgress() const {
 #include "zbox.h"
 
 void Object::setZBox(const int zb) {
-	need_sync = true;
-	
 	LOG_DEBUG(("%s::setZBox(%d)", registered_name.c_str(), zb));
 	int z = getZ();
 	z -= ZBox::getBoxBase(z); //removing current box

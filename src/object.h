@@ -141,6 +141,8 @@ public:
 
 	Object * spawn(const std::string &classname, const std::string &animation, const v2<float> &dpos = v2<float>(), const v2<float> &vel = v2<float>(), const int z = 0);
 
+	void invalidate() { setSync(true); }
+
 protected:
 
 	//pathfinding
@@ -263,6 +265,8 @@ private:
 	Group _group;
 	
 	Alarm _blinking;
+
+	void setSync(const bool sync);
 	
 	friend class IWorld;
 	friend class ai::Buratino;
