@@ -519,6 +519,26 @@ void Object::serialize(mrt::Serializator &s) const {
 	_blinking.serialize(s);
 }
 
+void Object::serializeAll(mrt::Serializator &s) const {
+	std::deque<Object *> restore;
+	Object *o = const_cast<Object *>(this);
+	if  (!need_sync) {
+		restore.push_back(o);
+		o->need_sync = true;
+	}
+	for(Group::const_iterator i = _group.begin(); i != _group.end(); ) {
+		o = const_cast<Object *>(i->second);
+		if (!o->need_sync) {
+			o->need_sync = true;
+		}
+	}
+	serialize(s);
+	for(std::deque<Object *>::iterator i = restore.begin(); i != restore.end(); ++i) {
+		(*i)->need_sync = false;
+	}
+}
+
+
 void Object::deserialize(const mrt::Serializator &s) {
 	BaseObject::deserialize(s);
 

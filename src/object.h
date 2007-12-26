@@ -96,6 +96,8 @@ public:
 	virtual void serialize(mrt::Serializator &s) const;
 	virtual void deserialize(const mrt::Serializator &s);
 
+	void serializeAll(mrt::Serializator &s) const;
+	
 	virtual void onSpawn();
 	
 	inline const bool rotating() const { return _direction_idx != _dst_direction; }
