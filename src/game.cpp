@@ -608,7 +608,6 @@ void IGame::onTick(const float dt) {
 				if (type == "deathmatch")
 					_show_stats = true;
 			}
-			PlayerManager->tick(dt);
 		}
 
 		if (Map->loaded() && _credits == NULL && Window->running() && !_paused) {
@@ -619,6 +618,10 @@ void IGame::onTick(const float dt) {
 			World->tick(dt);
 
 			PlayerManager->updatePlayers(dt);
+		}
+
+		if (Window->running() && !_paused) {
+			PlayerManager->tick(dt); //avoid any dead objects in serialization
 		}
 
 		Mixer->tick(dt);
