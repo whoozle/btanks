@@ -132,6 +132,13 @@ void JoinServerMenu::join() {
 		return;
 		
 	std::string host = item->ip;
+	if (host.empty())
+		host = item->name;
+
+	if (host.empty()) {
+		LOG_ERROR(("no ip or address in item %d", _hosts->get()));
+		return;
+	}
 		
 	_hosts->promote();
 
