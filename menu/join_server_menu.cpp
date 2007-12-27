@@ -180,8 +180,11 @@ void JoinServerMenu::tick(const float dt) {
 	if (_add_dialog->changed()) {
 		_add_dialog->reset();
 		_add_dialog->hide();
-		if (!_add_dialog->get().empty())
+		if (!_add_dialog->get().empty()) {
 			_hosts->append(_add_dialog->get());
+			if (_scanner != NULL)
+				_scanner->scan();
+		}
 		
 		_add_dialog->set(std::string());
 	}
