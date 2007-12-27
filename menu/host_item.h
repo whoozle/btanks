@@ -11,7 +11,7 @@ public:
 	const int ping;
 	const int players, slots;
 	
-	HostItem(const int w);
+	HostItem();
 	void update();
 private: 
 	Label * _line;

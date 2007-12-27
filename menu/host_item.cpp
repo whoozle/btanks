@@ -2,7 +2,7 @@
 #include "label.h"
 #include "resource_manager.h"
 
-HostItem::HostItem(const int w) : ping(0), players(0), slots(0) , _line(new Label("small", "")) {
+HostItem::HostItem() : ping(0), players(0), slots(0) , _line(new Label("small", "")) {
 	add(0, 0, _line);
 }
 
