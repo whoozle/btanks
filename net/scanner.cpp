@@ -74,15 +74,19 @@ TRY {
 				msg.deserialize2(data);
 				if (msg.type != Message::ServerDiscovery)
 					continue;
-				if (msg.data.getSize() == 4) //this is client packet
+				if (msg.data.getSize() <= 4) //this is client packet
 					continue;
+				Sint32 delta = (SDL_GetTicks() - *((Uint32 *)msg.data.getPtr()));
+				if (delta < 0 || delta > 60000) 
+					throw_ex(("server returned bogus timestamp value"));
+								
 				std::string ip = addr.getAddr();
 				LOG_DEBUG(("found server: %s", ip.c_str()));
 				std::string name = addr.getName();
 				LOG_DEBUG(("found name: %s", name.c_str()));
 				
 				sdlx::AutoMutex m(_hosts_lock);
-				_hosts[ip].ping = 10;
+				_hosts[ip].ping = delta / 2;
 				_hosts[ip].name = name;
 				_changed = true;
 			}CATCH("reading message", )
