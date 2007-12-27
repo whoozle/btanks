@@ -206,8 +206,7 @@ void JoinServerMenu::tick(const float dt) {
 		Scanner::HostMap hosts;
 		_scanner->get(hosts);
 		
-		int n = _hosts->size();
-		for(int i = 0; i < n; ++i) {
+		for(int i = 0; i < _hosts->size(); ++i) {
 			HostItem * host = dynamic_cast<HostItem*>(_hosts->getItem(i));
 			if (host == NULL) 
 				continue;
@@ -245,6 +244,21 @@ void JoinServerMenu::tick(const float dt) {
 			item->players = src.players;
 			item->slots = src.slots;
 			_hosts->append(item);
+		}
+	
+		std::set<std::string> dup_ips;
+		for(int i = 0; i < _hosts->size(); ) {
+			HostItem * host = dynamic_cast<HostItem*>(_hosts->getItem(i));
+			if (host == NULL) 
+				continue;
+
+			if (dup_ips.find(host->ip) != dup_ips.end()) {
+				_hosts->remove(i);
+				continue;
+			}			
+			
+			dup_ips.insert(host->ip);
+			++i;
 		}
 	}
 }
