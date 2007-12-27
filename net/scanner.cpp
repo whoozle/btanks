@@ -76,9 +76,14 @@ TRY {
 					continue;
 				if (msg.data.getSize() == 4) //this is client packet
 					continue;
-				LOG_DEBUG(("found server: %s", addr.getAddr().c_str()));
+				std::string ip = addr.getAddr();
+				LOG_DEBUG(("found server: %s", ip.c_str()));
+				std::string name = addr.getName();
+				LOG_DEBUG(("found name: %s", name.c_str()));
+				
 				sdlx::AutoMutex m(_hosts_lock);
-				_hosts[addr.getAddr()].ping = 10;
+				_hosts[ip].ping = 10;
+				_hosts[ip].name = name;
 				_changed = true;
 			}CATCH("reading message", )
 		}
