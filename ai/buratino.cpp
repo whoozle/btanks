@@ -90,8 +90,10 @@ void Buratino::onSpawn(const Object *object) {
 	LOG_DEBUG(("spawning as '%s'", vehicle.c_str()));
 	if (_enemies.empty() && _bonuses.empty()) 
 		throw_ex(("vehicle had not provided enemies/bonuses"));
-		
-	float rt = 0.1f, rpi = 2.0f;
+	
+	float rt;
+	Config->get("objects." + object->registered_name + ".reaction-time", rt, 0.1f);
+	float rpi = 2.0f;
 
 	mrt::randomize(rt, rt/10);
 	_reaction_time.set(rt);
