@@ -25,12 +25,20 @@
 #	include <netinet/in.h>
 #	include <arpa/inet.h>
 #	include <unistd.h>
+#	include <netdb.h>
 #endif
 
 
 using namespace mrt;
 
 Socket::Socket() : _sock(-1) {}
+
+const std::string Socket::addr::getName() const {
+	struct hostent *he = gethostbyaddr((char *)&ip, sizeof(ip), AF_INET);
+	if (he == NULL)
+		return std::string();
+	return he->h_name;
+}
 
 const std::string Socket::addr::getAddr() const {
 	in_addr a;

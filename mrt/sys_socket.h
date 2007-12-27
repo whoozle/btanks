@@ -36,6 +36,7 @@ namespace mrt {
 				return ip == other.ip && port == other.port;
 			}
 			const std::string getAddr() const;
+			const std::string getName() const; //gethostbyname
 		};
 
 		Socket();
