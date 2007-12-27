@@ -319,10 +319,14 @@ TRY {
 						if (msg.type == Message::ServerDiscovery) {
 							ok = true;
 							LOG_DEBUG(("server discovery datagram from the %s", addr.getAddr().c_str()));
-							mrt::Serializator s;
-							s.add((unsigned)PlayerManager->getFreeSlotsCount());
-							s.add((unsigned)PlayerManager->getSlotsCount());
-							msg.data.append(s.getData());
+							mrt::Serializator in(&msg.data), out;
+							unsigned t0;
+							in.get(t0);
+							
+							out.add(t0);
+							out.add((unsigned)PlayerManager->getFreeSlotsCount());
+							out.add((unsigned)PlayerManager->getSlotsCount());
+							msg.data.append(out.getData());
 							
 							msg.serialize2(data);
 							_dgram_sock->send(addr, data.getPtr(), data.getSize()); //returning same message
