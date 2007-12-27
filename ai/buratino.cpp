@@ -92,7 +92,7 @@ void Buratino::onSpawn(const Object *object) {
 		throw_ex(("vehicle had not provided enemies/bonuses"));
 	
 	float rt;
-	Config->get("objects." + object->registered_name + ".reaction-time", rt, 0.1f);
+	Config->get("objects.ai-" + object->registered_name + ".reaction-time", rt, 0.1f);
 	float rpi = 2.0f;
 
 	mrt::randomize(rt, rt/10);
