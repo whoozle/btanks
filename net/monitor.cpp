@@ -316,21 +316,25 @@ TRY {
 						data.setData(buf, r);
 						Message msg;
 						msg.deserialize2(data);
-						if (msg.type == Message::ServerDiscovery) {
-							ok = true;
-							LOG_DEBUG(("server discovery datagram from the %s", addr.getAddr().c_str()));
-							mrt::Serializator in(&msg.data), out;
-							unsigned t0;
+						if (msg.type != Message::ServerDiscovery) 
+							throw_ex(("wrong message type: %s", msg.getType()));
+
+						ok = true;
+						LOG_DEBUG(("server discovery datagram from the %s", addr.getAddr().c_str()));
+						unsigned t0;
+						{
+							mrt::Serializator in(&msg.data);
 							in.get(t0);
-							
-							out.add(t0);
-							out.add((unsigned)PlayerManager->getFreeSlotsCount());
-							out.add((unsigned)PlayerManager->getSlotsCount());
-							msg.data.append(out.getData());
-							
-							msg.serialize2(data);
-							_dgram_sock->send(addr, data.getPtr(), data.getSize()); //returning same message
 						}
+						mrt::Serializator out;
+							
+						out.add(t0);
+						out.add((unsigned)PlayerManager->getFreeSlotsCount());
+						out.add((unsigned)PlayerManager->getSlotsCount());
+						msg.data = out.getData();
+							
+						msg.serialize2(data);
+						_dgram_sock->send(addr, data.getPtr(), data.getSize()); //returning same message
 					} CATCH("discovery message", );
 					if (!ok) {
 						LOG_WARN(("incoming datagram from unknown client(%s:%d)", addr.getAddr().c_str(), addr.port));
