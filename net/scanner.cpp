@@ -84,7 +84,7 @@ TRY {
 				s.get(slots);
 				
 				if (players > slots)
-					throw_ex(("server returned bogus free slots counter"));
+					throw_ex(("server returned bogus free slots counter(%u)", players));
 				players = slots - players; 
 				
 				Sint32 delta = (SDL_GetTicks() - t0);
