@@ -1108,18 +1108,19 @@ void IWorld::purge(ObjectMap &objects, const float dt) {
 	for(ObjectMap::iterator i = objects.begin(); i != objects.end(); ) {
 		Object *o = i->second;
 
-		if (o->isDead()) { //fixme
-			if (!_safe_mode) {
-				//LOG_DEBUG(("object %d:%s is dead. cleaning up. (global map: %s)", o->getID(), o->classname.c_str(), &objects == &_objects?"true":"false" ));
-				deleteObject(o);
-				o = NULL;
-				objects.erase(i++);
-				continue;
-			}
+		if (!o->_dead) {
+			o->groupTick(dt);
+			++i;
+		} else if (!_safe_mode) { //dead and server mode
+			//LOG_DEBUG(("object %d:%s is dead. cleaning up. (global map: %s)", o->getID(), o->classname.c_str(), &objects == &_objects?"true":"false" ));
+			deleteObject(o);
+			o = NULL;
+			objects.erase(i++);
+			continue;
+		} else {
+			++i; //dead and safe mode. waiting for the update.
+			continue;
 		}
-
-		o->groupTick(dt);
-		++i;
 	}
 }
 
