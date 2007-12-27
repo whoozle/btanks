@@ -36,9 +36,8 @@ ScrollList("menu/background_box.png", "medium_dark", w, h), _config_key(config_k
 	}
 }
 
-void HostList::promote(const size_t i) {
-	if (i >= _list.size())
-		throw_ex(("promote(%u) is out of range", (unsigned)i));
+void HostList::promote() {
+	size_t i = get();
 	
 	List::iterator li = _list.begin();
 	

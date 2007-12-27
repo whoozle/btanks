@@ -127,8 +127,13 @@ void JoinServerMenu::join() {
 		return;
 	}
 	
-	std::string host = _hosts->getValue();
-	_hosts->promote(_hosts->get());
+	HostItem *item = dynamic_cast<HostItem *>(_hosts->getItem(_hosts->get()));
+	if (item == NULL)
+		return;
+		
+	std::string host = item->ip;
+		
+	_hosts->promote();
 
 	Config->set("menu.default-vehicle-1", _vehicle->getValue());
 	

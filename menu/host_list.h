@@ -29,7 +29,7 @@ public:
 	virtual void append(const std::string &item);
 	void append(HostItem *);
 	
-	void promote(const size_t i);
+	void promote();
 	~HostList();
 
 private: 
