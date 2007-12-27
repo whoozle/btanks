@@ -1116,10 +1116,8 @@ void IWorld::purge(ObjectMap &objects, const float dt) {
 			deleteObject(o);
 			o = NULL;
 			objects.erase(i++);
-			continue;
 		} else {
 			++i; //dead and safe mode. waiting for the update.
-			continue;
 		}
 	}
 }
