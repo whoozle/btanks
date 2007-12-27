@@ -44,8 +44,10 @@ TRY {
 		mrt::SocketSet set; 
 		set.add(udp_sock, mrt::SocketSet::Exception | mrt::SocketSet::Read);
 		if (_scan) {
-			mrt::Serializator s;
 			Message m(Message::ServerDiscovery);
+			Uint32 ticks = SDL_GetTicks();
+			m.data.setData(&ticks, 4);
+			
 			mrt::Chunk data;
 			m.serialize2(data);
 	
@@ -72,11 +74,11 @@ TRY {
 				msg.deserialize2(data);
 				if (msg.type != Message::ServerDiscovery)
 					continue;
-				if (msg.data.getSize() == 0) //this is client packet
+				if (msg.data.getSize() == 4) //this is client packet
 					continue;
 				LOG_DEBUG(("found server: %s", addr.getAddr().c_str()));
 				sdlx::AutoMutex m(_hosts_lock);
-				_hosts.insert(addr.getAddr());
+				_hosts[addr.getAddr()].ping = 10;
 				_changed = true;
 			}CATCH("reading message", )
 		}
@@ -85,7 +87,7 @@ TRY {
 	return 0;
 }
 
-void Scanner::get(std::set<std::string> &hosts) const {
+void Scanner::get(HostMap &hosts) const {
 	sdlx::AutoMutex m(_hosts_lock);
 	hosts = _hosts;
 }
