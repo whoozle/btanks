@@ -85,7 +85,7 @@ HostList::~HostList() {
 	//change it .
 	
 	std::string str;
-	for(List::const_reverse_iterator i = _list.rbegin(); i != _list.rend(); ++i) {
+	for(List::reverse_iterator i = _list.rbegin(); i != _list.rend(); ++i) {
 		const HostItem *l = dynamic_cast<const HostItem *>(*i);
 		if (l == NULL) 
 			continue;
