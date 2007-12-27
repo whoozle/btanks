@@ -101,7 +101,7 @@ TRY {
 				
 				sdlx::AutoMutex m(_hosts_lock);
 				Host &host = _hosts[ip];
-				host.ping = delta / 2;
+				host.ping = 1 + delta / 2;
 				host.name = name;
 				host.slots = slots;
 				host.players = players;

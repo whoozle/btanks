@@ -8,7 +8,7 @@ HostItem::HostItem() : ping(0), players(0), slots(0) , _line(new Label("small", 
 
 void HostItem::update() {
 	std::string prefix = slots != 0? mrt::formatString("[%d/%d] ", players, slots) : std::string("[-/-] ");
-	std::string pingstr = ping > 0? mrt::formatString(", ping: %d ms)", ping) : std::string();
+	std::string pingstr = ping > 0? mrt::formatString(", ping: %d ms)", ping - 1) : std::string();
 	std::string hoststr = name;
 	if (hoststr.empty()) {
 		hoststr = ip;
