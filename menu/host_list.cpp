@@ -18,7 +18,7 @@
  */
 #include "host_list.h"
 #include "config.h"
-#include "label.h"
+#include "host_item.h"
 
 HostList::HostList(const std::string &config_key, const int w, const int h) : 
 ScrollList("menu/background_box.png", "medium_dark", w, h), _config_key(config_key) {
@@ -30,8 +30,9 @@ ScrollList("menu/background_box.png", "medium_dark", w, h), _config_key(config_k
 		if (hosts[i].empty())
 			continue;
 		
-		mrt::toLower(hosts[i]);
-		ScrollList::append(hosts[i]);
+		//mrt::toLower(hosts[i]);
+		//ScrollList::append(hosts[i]);
+		append(hosts[i]);
 	}
 }
 
@@ -51,30 +52,45 @@ void HostList::promote(const size_t i) {
 void HostList::append(const std::string &_item) {
 	std::string item = _item;
 	mrt::toLower(item);
+	int a;
+	bool has_ip = (sscanf(item.c_str(), "%d.%d.%d.%d", &a, &a, &a, &a) == 4);
 	
 	for(List::iterator i = _list.begin(); i != _list.end(); ++i) {
-		Label *l = dynamic_cast<Label *>(*i);
-		if (l == NULL || l->get().empty()) 
+		HostItem *l = dynamic_cast<HostItem *>(*i);
+		if (l == NULL) 
 			continue;
 		
-		if (item == l->get())
+		if (item == l->ip || item == l->host)
 			return;
 	}
-	
-	_list.push_front(new Label(_font, item));
+
+	HostItem *new_item = new HostItem();
+	size_t sp = item.find('/');
+
+	if (sp != std::string::npos) {
+		new_item->host = item.substr(sp + 1);
+		new_item->ip = item.substr(0, sp);
+	} else {
+		if (has_ip) {
+			new_item->ip = item;
+		} else {
+			new_item->host = item;
+		}
+	}
+	new_item->update();
+	_list.push_front(new_item);
 }
 
 HostList::~HostList() {
 	//change it .
 	
 	std::string str;
-	for(List::const_iterator i = _list.begin(); i != _list.end(); ++i) {
-		const Label *l = dynamic_cast<const Label *>(*i);
-		if (l == NULL || l->get().empty()) 
+	for(List::const_reverse_iterator i = _list.rbegin(); i != _list.rend(); ++i) {
+		const HostItem *l = dynamic_cast<const HostItem *>(*i);
+		if (l == NULL) 
 			continue;
 		//LOG_DEBUG(("host: %s", l->get().c_str()));
-		str += l->get();
-		str += " ";
+		str += l->ip + "/" + l->host + " ";
 	}
 	if (!str.empty())
 		str.resize(str.size() - 1);
