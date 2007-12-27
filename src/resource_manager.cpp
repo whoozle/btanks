@@ -298,6 +298,9 @@ const bool IResourceManager::hasAnimation(const std::string &id) const {
 
 Animation *IResourceManager::getAnimation(const std::string &id) {
 	AnimationMap::iterator i = _animations.find(id);
+#ifdef DEBUG
+	assert(i != _animations.end());	
+#endif
 	if (i == _animations.end()) 
 		throw_ex(("could not find animation with id '%s'", id.c_str()));
 	return i->second;
@@ -305,6 +308,9 @@ Animation *IResourceManager::getAnimation(const std::string &id) {
 
 const Animation *IResourceManager::getAnimation(const std::string &id) const {
 	AnimationMap::const_iterator i = _animations.find(id);
+#ifdef DEBUG
+	assert(i != _animations.end());	
+#endif
 	if (i == _animations.end()) 
 		throw_ex(("could not find animation with id '%s'", id.c_str()));
 	return i->second;
@@ -313,7 +319,7 @@ const Animation *IResourceManager::getAnimation(const std::string &id) const {
 AnimationModel *IResourceManager::getAnimationModel(const std::string &id) {
 	AnimationModelMap::iterator i = _animation_models.find(id);
 	if (i == _animation_models.end()) 
-		throw_ex(("could not find animation with id '%s'", id.c_str()));
+		throw_ex(("could not find animation model with id '%s'", id.c_str()));
 	return i->second;
 }
 
