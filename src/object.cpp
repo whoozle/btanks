@@ -272,7 +272,11 @@ void Object::tick(const float dt) {
 	} 
 }
 
+#include "player_manager.h"
+
 void Object::groupTick(const float dt) {
+	bool safe_mode = PlayerManager->isClient(); 
+	
 	for(Group::iterator i = _group.begin(); i != _group.end(); ) {
 		Object *o = i->second;
 		assert(o != NULL);
@@ -283,16 +287,30 @@ void Object::groupTick(const float dt) {
 
 		if (o->isDead()) {
 			LOG_DEBUG(("%d:%s, grouped '%s':%s is dead.", getID(), animation.c_str(), i->first.c_str(), o->animation.c_str()));
-			//check for safe mode ? 
-			//delete o;
-			//_group.erase(i++);
-			++i;
+			if (!safe_mode) {
+				delete o;
+				_group.erase(i++);
+			} else {
+				++i;
+			}
 			continue;
 		}
 		if (dt > 0) {
 			o->calculate(dt);
 			o->tick(dt);
 		}
+
+		if (o->isDead()) {
+			LOG_DEBUG(("%d:%s, grouped '%s':%s is dead.", getID(), animation.c_str(), i->first.c_str(), o->animation.c_str()));
+			if (!safe_mode) {
+				delete o;
+				_group.erase(i++);
+			} else {
+				++i;
+			}
+			continue;
+		}
+
 		++i;
 	}
 }
