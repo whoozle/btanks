@@ -11,7 +11,7 @@ class Scanner : public sdlx::Thread {
 public:
 	struct Host {
 		std::string name;
-		int ping;
+		unsigned ping, players, slots;
 	};
 	typedef std::map<const std::string, Host> HostMap;
 	

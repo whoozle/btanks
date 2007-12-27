@@ -46,7 +46,9 @@ TRY {
 		if (_scan) {
 			Message m(Message::ServerDiscovery);
 			Uint32 ticks = SDL_GetTicks();
-			m.data.setData(&ticks, 4);
+			mrt::Serializator s;
+			s.add(ticks);
+			m.data = s.getData();
 			
 			mrt::Chunk data;
 			m.serialize2(data);
@@ -74,20 +76,31 @@ TRY {
 				msg.deserialize2(data);
 				if (msg.type != Message::ServerDiscovery)
 					continue;
-				if (msg.data.getSize() <= 4) //this is client packet
-					continue;
-				Sint32 delta = (SDL_GetTicks() - *((Uint32 *)msg.data.getPtr()));
-				if (delta < 0 || delta > 60000) 
+
+				mrt::Serializator s(&msg.data);
+				unsigned t0, players, slots;
+				s.get(t0);
+				s.get(players);
+				s.get(slots);
+				
+				Sint32 delta = (SDL_GetTicks() - t0);
+				if (delta < 0) 
+					delta = ~delta; //wrapping
+
+				if (delta > 120000) 
 					throw_ex(("server returned bogus timestamp value"));
 								
 				std::string ip = addr.getAddr();
-				LOG_DEBUG(("found server: %s", ip.c_str()));
+				LOG_DEBUG(("found server: %s, players: %u, slots: %u", ip.c_str(), players, slots));
 				std::string name = addr.getName();
 				LOG_DEBUG(("found name: %s", name.c_str()));
 				
 				sdlx::AutoMutex m(_hosts_lock);
-				_hosts[ip].ping = delta / 2;
-				_hosts[ip].name = name;
+				Host &host = _hosts[ip];
+				host.ping = delta / 2;
+				host.name = name;
+				host.slots = slots;
+				host.players = players;
 				_changed = true;
 			}CATCH("reading message", )
 		}
