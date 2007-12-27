@@ -237,6 +237,7 @@ void Monitor::parse(mrt::Chunk &data, const unsigned char *buf, const int r, int
 }
 
 #include "message.h"
+#include "player_manager.h" //fixme
 
 const int Monitor::run() {
 TRY {
@@ -318,8 +319,11 @@ TRY {
 						if (msg.type == Message::ServerDiscovery) {
 							ok = true;
 							LOG_DEBUG(("server discovery datagram from the %s", addr.getAddr().c_str()));
-							msg.data.setSize(1);
-							((char *)msg.data.getPtr())[0] = 1;
+							mrt::Serializator s;
+							s.add((unsigned)PlayerManager->getFreeSlotsCount());
+							s.add((unsigned)PlayerManager->getSlotsCount());
+							msg.data.append(s.getData());
+							
 							msg.serialize2(data);
 							_dgram_sock->send(addr, data.getPtr(), data.getSize()); //returning same message
 						}
