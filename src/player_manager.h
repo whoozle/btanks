@@ -74,6 +74,7 @@ public:
 	const PlayerSlot *getSlotByID(const int id) const;
 
 	const size_t getSlotsCount() const;
+	const size_t getFreeSlotsCount() const;
 	
 	void screen2world(v2<float> &pos, const int p, const int x, const int y);
 

@@ -1042,6 +1042,16 @@ const size_t IPlayerManager::getSlotsCount() const {
 	return _players.size();
 }
 
+const size_t IPlayerManager::getFreeSlotsCount() const {
+	size_t c = 0, n = _players.size();
+	for(size_t i = 0; i < n; ++i) {
+		if (_players[i].empty() && _players[i].remote == -1)
+			++c;
+	}
+	return c;
+}
+
+
 void IPlayerManager::serializeSlots(mrt::Serializator &s) const {
 	s.add(_players);
 	s.add(_global_zones_reached);
