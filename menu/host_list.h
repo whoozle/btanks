@@ -22,10 +22,13 @@
 #include "scroll_list.h"
 #include "export_btanks.h"
 
+class HostItem;
 class BTANKSAPI HostList : public ScrollList {
 public:
 	HostList(const std::string &config_key, const int w, const int h);
 	virtual void append(const std::string &item);
+	void append(HostItem *);
+	
 	void promote(const size_t i);
 	~HostList();
 

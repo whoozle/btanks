@@ -33,7 +33,7 @@
 #include "i18n.h"
 #include "upper_box.h"
 #include "net/scanner.h"
-#include "label.h"
+#include "host_item.h"
 
 JoinServerMenu::JoinServerMenu(MainMenu *parent, const int w, const int h) : _parent(parent), _scanner(NULL) {
 	_back = new Button("big", I18n->get("menu", "back"));
@@ -205,21 +205,46 @@ void JoinServerMenu::tick(const float dt) {
 		_scanner->reset();
 		Scanner::HostMap hosts;
 		_scanner->get(hosts);
-/*		int n = _hosts->size();
+		
+		int n = _hosts->size();
 		for(int i = 0; i < n; ++i) {
-			const Label * label = dynamic_cast<const Label*>(_hosts->getItem(i));
-			if (label == NULL) 
+			HostItem * host = dynamic_cast<HostItem*>(_hosts->getItem(i));
+			if (host == NULL) 
 				continue;
 			
-			std::set<std::string>::iterator h = hosts.find(label->get());
-			if (h != hosts.end())
+			Scanner::HostMap::iterator h = hosts.find(host->ip);
+			if (h != hosts.end()) {
+				const Scanner::Host &src = h->second;
+				host->name = src.name;
+				host->ping = src.ping;
+				host->players = src.players;
+				host->slots = src.slots;
+				host->update();
 				hosts.erase(h);
+			} else {
+				for(Scanner::HostMap::iterator h = hosts.begin(); h != hosts.end(); ++h) {
+					const Scanner::Host &src = h->second;
+					if (host->name == src.name) {
+						host->ip = h->first;
+						host->ping = src.ping;
+						host->players = src.players;
+						host->slots = src.slots;
+						host->update();
+						hosts.erase(h);
+						break;
+					}
+				}
+			}
 		}
-		*/
-			
-		for(Scanner::HostMap::iterator i = hosts.begin(); i != hosts.end(); ++i) {
-			//_hosts->append(*i);
-			LOG_DEBUG(("server %s, ping: %d", i->first.c_str(), i->second.ping));
+		for(Scanner::HostMap::iterator h = hosts.begin(); h != hosts.end(); ++h) {
+			const Scanner::Host &src = h->second;
+			HostItem *item = new HostItem;
+			item->ip = h->first;
+			item->name = src.name;
+			item->ping = src.ping;
+			item->players = src.players;
+			item->slots = src.slots;
+			_hosts->append(item);
 		}
 	}
 }
