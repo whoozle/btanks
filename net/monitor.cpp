@@ -238,6 +238,7 @@ void Monitor::parse(mrt::Chunk &data, const unsigned char *buf, const int r, int
 
 #include "message.h"
 #include "player_manager.h" //fixme
+#include "tmx/map.h"
 
 const int Monitor::run() {
 TRY {
@@ -332,6 +333,7 @@ TRY {
 						out.add((unsigned)PlayerManager->getFreeSlotsCount());
 						out.add((unsigned)PlayerManager->getSlotsCount());
 						msg.data = out.getData();
+						msg.set("map", Map->getName());
 							
 						msg.serialize2(data);
 						_dgram_sock->send(addr, data.getPtr(), data.getSize()); //returning same message

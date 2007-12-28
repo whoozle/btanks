@@ -248,6 +248,7 @@ void JoinServerMenu::tick(const float dt) {
 				host->ping = src.ping;
 				host->players = src.players;
 				host->slots = src.slots;
+				host->map = src.map;
 				host->update();
 				hosts.erase(h);
 			} else {
@@ -258,6 +259,7 @@ void JoinServerMenu::tick(const float dt) {
 						host->ping = src.ping;
 						host->players = src.players;
 						host->slots = src.slots;
+						host->map = src.map;
 						host->update();
 						hosts.erase(h);
 						break;
@@ -270,6 +272,7 @@ void JoinServerMenu::tick(const float dt) {
 			HostItem *item = new HostItem;
 			item->ip = h->first;
 			item->name = src.name;
+			item->map = src.map;
 			item->ping = src.ping;
 			item->players = src.players;
 			item->slots = src.slots;

@@ -7,7 +7,7 @@ class Label;
 
 class HostItem : public Container {
 public:
-	std::string name, ip;
+	std::string name, map, ip;
 	int ping, players, slots;
 	
 	HostItem();

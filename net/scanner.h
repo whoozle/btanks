@@ -16,10 +16,10 @@ namespace mrt {
 class Scanner : public sdlx::Thread {
 public:
 	struct Host {
-		std::string name;
+		std::string name, map;
 		unsigned ping, players, slots;
 		
-		Host() : name(), ping(0), players(0), slots(0) {}
+		Host() : name(), map(), ping(0), players(0), slots(0) {}
 	};
 	typedef std::map<const std::string, Host> HostMap;
 	

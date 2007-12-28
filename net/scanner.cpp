@@ -118,6 +118,7 @@ TRY {
 				host.name = name;
 				host.slots = slots;
 				host.players = players;
+				host.map = msg.has("map")?msg.get("map"): std::string();
 				_changed = true;
 			}CATCH("reading message", )
 		}
