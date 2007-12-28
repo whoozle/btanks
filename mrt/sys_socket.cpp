@@ -42,7 +42,7 @@ const std::string Socket::addr::getName() const {
 
 void Socket::addr::getAddr(const std::string &name) {
 	struct hostent *he = gethostbyname(name.c_str());
-	if (he == NULL)
+	if (he == NULL || he->h_addrtype != AF_INET) //sorry, no ipv6 now
 		return;
 	ip = *((uint32_t*)he->h_addr_list[0]);
 }
