@@ -144,6 +144,12 @@ void Missile::emit(const std::string &event, Object * emitter) {
 			}
 			if (emitter->classname == "smoke-cloud" && type != "smoke")
 				return;
+		} else {
+			//emitter == NULL
+			if (type == "boomerang") {
+				_velocity = -_velocity;
+				return;
+			}
 		}
 		emit("death", emitter);
 	} if (event == "death" && type == "smoke") {
