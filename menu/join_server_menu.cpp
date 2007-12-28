@@ -286,7 +286,7 @@ void JoinServerMenu::ping() {
 	if (_scanner == NULL)
 		_scanner = new Scanner;
 
-	for(int i = 0; i < _hosts->size(); ) {
+	for(int i = 0; i < _hosts->size(); ++i) {
 		HostItem * host = dynamic_cast<HostItem*>(_hosts->getItem(i));
 		if (host == NULL) 
 			continue;
