@@ -35,7 +35,9 @@
 #include "net/scanner.h"
 #include "host_item.h"
 
-JoinServerMenu::JoinServerMenu(MainMenu *parent, const int w, const int h) : _parent(parent), _scanner(NULL) {
+JoinServerMenu::JoinServerMenu(MainMenu *parent, const int w, const int h) : ping_timer(true), _parent(parent), _scanner(NULL) {
+	ping_timer.set(60, false);
+	
 	_back = new Button("big", I18n->get("menu", "back"));
 	_add = new Button("medium_dark",  I18n->get("menu", "add"));
 	_del = new Button("medium_dark",  I18n->get("menu", "delete"));
@@ -195,7 +197,7 @@ void JoinServerMenu::tick(const float dt) {
 		if (!_add_dialog->get().empty()) {
 			_hosts->append(_add_dialog->get());
 			if (_scanner != NULL)
-				_scanner->scan();
+				ping();
 		}
 		
 		_add_dialog->set(std::string());
@@ -207,7 +209,15 @@ void JoinServerMenu::tick(const float dt) {
 		if (_scanner == NULL)
 			_scanner = new Scanner;
 		
+		ping();
 		_scanner->scan();
+	}
+
+	if (ping_timer.tick(dt)) {
+		ping_timer.reset();
+		if (_scanner == NULL)
+			_scanner = new Scanner;
+		
 		ping();
 	}
 	
@@ -283,6 +293,7 @@ void JoinServerMenu::tick(const float dt) {
 }
 
 void JoinServerMenu::ping() {
+	LOG_DEBUG(("ping()"));
 	if (_scanner == NULL)
 		_scanner = new Scanner;
 

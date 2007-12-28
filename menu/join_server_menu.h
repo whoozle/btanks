@@ -21,6 +21,7 @@
 
 #include "sdlx/rect.h"
 #include "base_menu.h"
+#include "alarm.h"
 
 class Button;
 class MainMenu;
@@ -45,6 +46,7 @@ public:
 private: 
 	void onHide();
 	void ping();
+	Alarm ping_timer;
 
 	MainMenu *_parent;
 	UpperBox *_upper_box;

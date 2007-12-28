@@ -124,7 +124,7 @@ TRY {
 		}
 		if (ip.empty() && host.empty())
 			continue;
-
+		LOG_DEBUG(("pinging %s/%s", ip.c_str(), host.c_str()));
 		TRY {
 			mrt::Socket::addr addr;
 			addr.port = port;
@@ -132,13 +132,20 @@ TRY {
 				addr.getAddr(host);
 				if (!addr.empty()) {
 					std::string ip = addr.getAddr();
+					LOG_DEBUG(("found address %s for %s", ip.c_str(), host.c_str()));
 				} else goto check_ip;
 			} else {
 			check_ip: 
 				addr.parse(ip);
 				std::string new_host = addr.getName();
-				if (!new_host.empty())
+				LOG_DEBUG(("found name %s for address %s", new_host.c_str(), ip.c_str()));
+				if (!new_host.empty()) {
 					host = new_host;
+					_changed = true;
+
+					sdlx::AutoMutex l(_hosts_lock);
+					_hosts[ip].name = host;
+				}
 			}
 			mrt::Chunk data;
 			createMessage(data);
