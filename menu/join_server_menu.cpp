@@ -151,6 +151,7 @@ void JoinServerMenu::join() {
 		
 	Game->clear();
 	PlayerManager->startClient(host, split?2:1);
+	onHide();
 }
 
 void JoinServerMenu::tick(const float dt) {
