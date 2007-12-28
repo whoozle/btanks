@@ -40,6 +40,13 @@ const std::string Socket::addr::getName() const {
 	return he->h_name;
 }
 
+void Socket::addr::getAddr(const std::string &name) {
+	struct hostent *he = gethostbyname(name.c_str());
+	if (he == NULL)
+		return;
+	ip = *((uint32_t*)he->h_addr_list[0]);
+}
+
 const std::string Socket::addr::getAddr() const {
 	in_addr a;
 	memset(&a, 0, sizeof(a));

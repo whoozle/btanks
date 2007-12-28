@@ -21,12 +21,21 @@
 #include "export_mrt.h"
 #include <string>
 
+#ifdef WIN32
+#	ifndef uint32_t
+#		define uint32_t unsigned __int32
+#	endif
+#	ifndef uint16_t
+#		define uint16_t unsigned __int16
+#	endif
+#endif
+
 namespace mrt {
 	class MRTAPI Socket {
 	public:
 		struct MRTAPI addr {
-			unsigned ip;
-			unsigned port;
+			uint16_t ip;
+			uint32_t port;
 
 			addr() : ip(0), port(0) {}
 			addr(unsigned ip, unsigned port) : ip(ip), port(port) {}
@@ -35,8 +44,9 @@ namespace mrt {
 			const bool operator==(const addr &other) const {
 				return ip == other.ip && port == other.port;
 			}
+			void getAddr(const std::string &name);
 			const std::string getAddr() const;
-			const std::string getName() const; //gethostbyname
+			const std::string getName() const; //gethostbyaddr
 		};
 
 		Socket();
