@@ -34,8 +34,8 @@ namespace mrt {
 	class MRTAPI Socket {
 	public:
 		struct MRTAPI addr {
-			mrt_uint16_t ip;
-			mrt_uint32_t port;
+			mrt_uint32_t ip;
+			mrt_uint16_t port;
 
 			addr() : ip(0), port(0) {}
 			addr(unsigned ip, unsigned port) : ip(ip), port(port) {}

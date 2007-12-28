@@ -48,10 +48,16 @@ void Socket::addr::getAddr(const std::string &name) {
 }
 
 void Socket::addr::parse(const std::string &ip) {
+#ifdef _WINDOWS
+	this->ip = inet_addr(ip.c_str());
+	if (this->ip == INADDR_NONE)
+		this->ip = 0;
+#else	
 	struct in_addr a;
 	if (inet_aton(ip.c_str(), &a) == -1)
 		return;
 	this->ip = a.s_addr;
+#endif
 }
 
 const std::string Socket::addr::getAddr() const {
