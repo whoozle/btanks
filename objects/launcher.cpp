@@ -124,9 +124,13 @@ const bool Launcher::take(const BaseObject *obj, const std::string &type) {
 		return true;
 
 	if (obj->classname == "mod" && (type == "machinegunner" || type == "thrower")) {
+		std::string mod_name = type + "-on-launcher";
+		if (get("mod")->registered_name == mod_name) 
+			return false;
+		
 		LOG_DEBUG(("taking mod: %s", type.c_str()));
 		remove("mod");
-		add("mod", type + "-on-launcher", type + "-on-launcher", v2<float>(), Centered);
+		add("mod", mod_name, mod_name, v2<float>(), Centered);
 		return true;
 	}
 	const bool primary_mod = (obj->classname == "missiles" && (type != "smoke" && type != "stun" && type != "nuke"));
