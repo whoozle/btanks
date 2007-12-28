@@ -28,6 +28,9 @@
 #	ifndef mrt_uint16_t
 #		define mrt_uint16_t unsigned __int16
 #	endif
+#else
+	typedef uint32_t mrt_uint32_t;
+	typedef uint16_t mrt_uint16_t;
 #endif
 
 namespace mrt {
