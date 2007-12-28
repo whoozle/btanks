@@ -753,14 +753,15 @@ TRY {
 		o._direction = o._velocity;
 	}
 	
+	/*
 	GET_CONFIG_VALUE("engine.mass-acceleration-divisor", float, ac_div, 1000.0);
 
 	const float ac_t = o.mass / ac_div;
 	if (o.mass > 0 && o._moving_time < ac_t) {
 		o._velocity *= o._moving_time / ac_t;
 	}
+	*/
 
-	//LOG_DEBUG(("im = %f", im));
 	v2<int> old_pos = o._position.convert<int>();
 
 	const Object *stuck_in = NULL;
