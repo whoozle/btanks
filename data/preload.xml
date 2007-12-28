@@ -182,6 +182,8 @@
 		<object id="missiles-on-launcher"/>
 		<object id="missiles-on-tank"/>
 		<object id="nuke-explosion"/>
+		<object id="nuke-mine"/>
+		<object id="nuke-missile"/>
 		<object id="nuke-missiles-item"/>
 		<object id="oil-barrels"/>
 		<object id="outline"/>
@@ -483,6 +485,7 @@
 		<object id="fire"/>
 		<object id="gate"/>
 		<object id="grenade"/>
+		<object id="grenade-explosion"/>
 		<object id="guided-missile"/>
 		<object id="guided-missiles-item"/>
 		<object id="heal"/>
@@ -496,6 +499,7 @@
 		<object id="machinegunner"/>
 		<object id="machinegunner-bullet"/>
 		<object id="machinegunner-item"/>
+		<object id="machinegunner-on-launcher"/>
 		<object id="machinegunner-player"/>
 		<object id="megaheal"/>
 		<object id="mines-item"/>
@@ -534,6 +538,7 @@
 		<object id="turrel"/>
 		<object id="umbrella"/>
 		<object id="van"/>
+		<object id="vehicle-machinegunner-bullet"/>
 	</map>
 	<map id="paintball">
 		<object id="alt-missiles-on-launcher"/>
@@ -586,6 +591,7 @@
 	<map id="platform">
 		<object id="alt-missiles-on-launcher"/>
 		<object id="barrack-with-machinegunners"/>
+		<object id="boomerang-missile"/>
 		<object id="boomerang-missiles-item"/>
 		<object id="broken-object"/>
 		<object id="bus-stop"/>
@@ -649,6 +655,7 @@
 		<object id="thrower-in-watchtower"/>
 		<object id="thrower-item"/>
 		<object id="thrower-missile"/>
+		<object id="thrower-on-launcher"/>
 		<object id="traffic-lights"/>
 		<object id="watchtower-top"/>
 		<object id="watchtower-with-machinegunner"/>

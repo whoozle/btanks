@@ -92,7 +92,7 @@ const bool Trooper::take(const BaseObject *obj, const std::string &type) {
 		invalidate();
 		return true;
 	}
-	return false;
+	return Object::take(obj, type);
 }
 
 #include "world.h"
