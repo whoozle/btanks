@@ -67,6 +67,8 @@ void BaseObject::serialize(mrt::Serializator &s) const {
 		s.add(_position);
 	s.add(_z);
 
+	s.add(_state);
+	
 	if (!_need_sync)
 		return;
 
@@ -82,7 +84,6 @@ void BaseObject::serialize(mrt::Serializator &s) const {
 	s.add(classname);
 	s.add(disable_ai);
 	
-	s.add(_state);
 	
 	//s.add(_dead); 
 	s.add(_variants);
@@ -105,6 +106,9 @@ void BaseObject::deserialize(const mrt::Serializator &s) {
 	interpolate();
 	_position.deserialize(s);
 	s.get(_z);
+
+	s.get(_state);
+
 	if (!_need_sync)
 		return;
 
@@ -120,7 +124,6 @@ void BaseObject::deserialize(const mrt::Serializator &s) {
 	s.get(classname);
 	s.get(disable_ai);
 	
-	s.get(_state);
 	
 	//s.get(_dead);
 	_dead = false; //mark object as undead only after full deserialization.
