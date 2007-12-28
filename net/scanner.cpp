@@ -26,6 +26,15 @@ Scanner::~Scanner() {
 	wait();
 }
 
+void Scanner::createMessage(mrt::Chunk &data) {
+	Message m(Message::ServerDiscovery);
+	Uint32 ticks = SDL_GetTicks();
+	mrt::Serializator s;
+	s.add(ticks);
+	m.data = s.getData();
+	m.serialize2(data);
+}
+
 const int Scanner::run() {
 TRY {
 	GET_CONFIG_VALUE("multiplayer.bind-address", std::string, bindaddr, std::string());
@@ -44,14 +53,8 @@ TRY {
 		mrt::SocketSet set; 
 		set.add(udp_sock, mrt::SocketSet::Exception | mrt::SocketSet::Read);
 		if (_scan) {
-			Message m(Message::ServerDiscovery);
-			Uint32 ticks = SDL_GetTicks();
-			mrt::Serializator s;
-			s.add(ticks);
-			m.data = s.getData();
-			
 			mrt::Chunk data;
-			m.serialize2(data);
+			createMessage(data);
 	
 			udp_sock.broadcast(data, port);	
 			_scan = false;
@@ -107,7 +110,40 @@ TRY {
 				host.players = players;
 				_changed = true;
 			}CATCH("reading message", )
+			continue;
 		}
+		
+		std::string ip, host;
+		{
+			sdlx::AutoMutex l(_hosts_lock);
+			if (check_queue.empty())
+				continue;
+			ip = check_queue.front().first;
+			host = check_queue.front().second;
+			check_queue.pop_front();
+		}
+		if (ip.empty() && host.empty())
+			continue;
+
+		TRY {
+			mrt::Socket::addr addr;
+			addr.port = port;
+			if (!host.empty()) {
+				addr.getAddr(host);
+				if (!addr.empty()) {
+					std::string ip = addr.getAddr();
+				} else goto check_ip;
+			} else {
+			check_ip: 
+				addr.parse(ip);
+				std::string new_host = addr.getName();
+				if (!new_host.empty())
+					host = new_host;
+			}
+			mrt::Chunk data;
+			createMessage(data);
+			udp_sock.send(addr, data.getPtr(), data.getSize());
+		} CATCH("pinging known server", )
 	}
 } CATCH("run", return 1;)
 	return 0;
@@ -117,3 +153,9 @@ void Scanner::get(HostMap &hosts) const {
 	sdlx::AutoMutex m(_hosts_lock);
 	hosts = _hosts;
 }
+
+void Scanner::add(const std::string &ip, const std::string &name) {
+	sdlx::AutoMutex m(_hosts_lock);
+	check_queue.push_back(CheckQueue::value_type(ip, name));
+}
+

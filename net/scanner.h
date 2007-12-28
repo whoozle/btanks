@@ -4,8 +4,13 @@
 #include <set>
 #include <string>
 #include <map>
+#include <deque>
 #include "sdlx/thread.h"
 #include "sdlx/mutex.h"
+
+namespace mrt {
+	class Chunk;
+}
 
 class Scanner : public sdlx::Thread {
 public:
@@ -23,11 +28,17 @@ public:
 
 	void get(HostMap &hosts) const;
 
+	void add(const std::string &ip, const std::string &name);
+
 private: 
+	void createMessage(mrt::Chunk & data);
+
 	virtual const int run();
 	volatile bool _running, _scan, _changed;
 	sdlx::Mutex _hosts_lock;
 	HostMap _hosts;
+	typedef std::deque<std::pair<std::string, std::string> > CheckQueue;
+	CheckQueue check_queue;
 };
 
 
