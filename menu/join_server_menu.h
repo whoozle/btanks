@@ -44,6 +44,7 @@ public:
 
 private: 
 	void onHide();
+	void ping();
 
 	MainMenu *_parent;
 	UpperBox *_upper_box;

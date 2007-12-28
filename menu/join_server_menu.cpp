@@ -204,7 +204,11 @@ void JoinServerMenu::tick(const float dt) {
 
 	if (_scan->changed()) {
 		_scan->reset();
+		if (_scanner == NULL)
+			_scanner = new Scanner;
+		
 		_scanner->scan();
+		ping();
 	}
 	
 	if (_join->changed()) {
@@ -276,6 +280,18 @@ void JoinServerMenu::tick(const float dt) {
 			++i;
 		}
 	}
+}
+
+void JoinServerMenu::ping() {
+	if (_scanner == NULL)
+		_scanner = new Scanner;
+
+	for(int i = 0; i < _hosts->size(); ) {
+		HostItem * host = dynamic_cast<HostItem*>(_hosts->getItem(i));
+		if (host == NULL) 
+			continue;
+		_scanner->add(host->ip, host->name);
+	}	
 }
 
 void JoinServerMenu::onHide() {
