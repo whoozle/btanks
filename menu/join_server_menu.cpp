@@ -197,8 +197,7 @@ void JoinServerMenu::tick(const float dt) {
 		_add_dialog->hide();
 		if (!_add_dialog->get().empty()) {
 			_hosts->append(_add_dialog->get());
-			if (_scanner != NULL)
-				ping();
+			ping();
 		}
 		
 		_add_dialog->set(std::string());
@@ -207,19 +206,13 @@ void JoinServerMenu::tick(const float dt) {
 
 	if (_scan->changed()) {
 		_scan->reset();
-		if (_scanner == NULL)
-			_scanner = new Scanner;
-		
 		ping_timer.reset();
-		ping();
+		ping(); //ping creates scanner
 		_scanner->scan();
 	}
 
 	if (ping_timer.tick(dt)) {
 		ping_timer.reset();
-		if (_scanner == NULL)
-			_scanner = new Scanner;
-		
 		ping();
 	}
 	
