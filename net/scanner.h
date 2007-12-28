@@ -10,6 +10,7 @@
 
 namespace mrt {
 	class Chunk;
+	class UDPSocket;
 }
 
 class Scanner : public sdlx::Thread {
@@ -17,6 +18,8 @@ public:
 	struct Host {
 		std::string name;
 		unsigned ping, players, slots;
+		
+		Host() : name(), ping(0), players(0), slots(0) {}
 	};
 	typedef std::map<const std::string, Host> HostMap;
 	
@@ -32,6 +35,7 @@ public:
 
 private: 
 	void createMessage(mrt::Chunk & data);
+	void ping(mrt::UDPSocket &udp_sock, unsigned int port);
 
 	virtual const int run();
 	volatile bool _running, _scan, _changed;

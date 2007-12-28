@@ -60,8 +60,11 @@ TRY {
 			_scan = false;
 		}
 
-		if (set.check(100) == 0)
+		ping(udp_sock, port);
+	
+		if (set.check(100) == 0) {
 			continue;
+		}
 		
 		if (set.check(udp_sock, mrt::SocketSet::Exception)) {
 			throw_io(("udp_socket"));
@@ -110,20 +113,25 @@ TRY {
 				host.players = players;
 				_changed = true;
 			}CATCH("reading message", )
-			continue;
 		}
-		
+	}
+} CATCH("run", return 1;)
+	return 0;
+}
+
+void Scanner::ping(mrt::UDPSocket &udp_sock, unsigned int port) {
 		std::string ip, host;
 		{
 			sdlx::AutoMutex l(_hosts_lock);
 			if (check_queue.empty())
-				continue;
+				return;
 			ip = check_queue.front().first;
 			host = check_queue.front().second;
 			check_queue.pop_front();
 		}
 		if (ip.empty() && host.empty())
-			continue;
+			return;
+		
 		LOG_DEBUG(("pinging %s/%s", ip.c_str(), host.c_str()));
 		TRY {
 			mrt::Socket::addr addr;
@@ -151,9 +159,6 @@ TRY {
 			createMessage(data);
 			udp_sock.send(addr, data.getPtr(), data.getSize());
 		} CATCH("pinging known server", )
-	}
-} CATCH("run", return 1;)
-	return 0;
 }
 
 void Scanner::get(HostMap &hosts) const {
