@@ -47,6 +47,13 @@ void Socket::addr::getAddr(const std::string &name) {
 	ip = *((uint32_t*)he->h_addr_list[0]);
 }
 
+void Socket::addr::parse(const std::string &ip) {
+	struct in_addr a;
+	if (inet_aton(ip.c_str(), &a) == -1)
+		return;
+	this->ip = a.s_addr;
+}
+
 const std::string Socket::addr::getAddr() const {
 	in_addr a;
 	memset(&a, 0, sizeof(a));

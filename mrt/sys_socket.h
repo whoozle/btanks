@@ -47,6 +47,7 @@ namespace mrt {
 			void getAddr(const std::string &name);
 			const std::string getAddr() const;
 			const std::string getName() const; //gethostbyaddr
+			void parse(const std::string &ip); 
 		};
 
 		Socket();
