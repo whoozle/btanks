@@ -161,6 +161,10 @@ void Scanner::ping(mrt::UDPSocket &udp_sock, unsigned int port) {
 
 					sdlx::AutoMutex l(_hosts_lock);
 					_hosts[ip].name = host;
+					_hosts[ip].ping = 0;
+					_hosts[ip].map.clear();
+					_hosts[ip].players = 0;
+					_hosts[ip].slots = 0;
 				}
 			}
 			mrt::Chunk data;
