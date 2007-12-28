@@ -67,14 +67,21 @@ TRY {
 		}
 		
 		if (set.check(udp_sock, mrt::SocketSet::Exception)) {
-			throw_io(("udp_socket"));
+			TRY {
+				throw_io(("udp_socket"));
+			} CATCH("select", )
+			LOG_DEBUG(("restarting udp socket..."));
+			udp_sock.create();
+			udp_sock.setBroadcastMode(1);
 		} else if (set.check(udp_sock, mrt::SocketSet::Read)) {
 			mrt::Socket::addr addr;
 			mrt::Chunk data;
 			data.setSize(1500);
 			int r = udp_sock.recv(addr, data.getPtr(), data.getSize());
-			if (r == 0 || r == -1)
-				throw_io(("udp_sock.read"));
+			TRY { 
+				if (r == 0 || r == -1)
+					throw_io(("udp_sock.recv"));
+			} CATCH("recv", continue; );
 			data.setSize(r);
 			//LOG_DEBUG(("data from addr %s: %s", addr.getAddr().c_str(), data.dump().c_str()));
 			TRY {
