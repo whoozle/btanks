@@ -1490,3 +1490,7 @@ const bool IMap::swapLayers(const int z1, const int z2) {
 	_layers = new_map;
 	return true;
 }
+
+void IMap::resize(const int left_cut, const int right_cut, const int up_cut, const int down_cut) {
+	LOG_DEBUG(("cutting map: %d %d %d %d", left_cut, right_cut, up_cut, down_cut));
+}

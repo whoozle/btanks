@@ -233,6 +233,8 @@ public:
 	void getSurroundings(Matrix<int> &matrix, const Object *obj, const int filler) const;
 	inline MapGenerator *getGenerator() { return _generator; }
 	
+	void resize(const int left_cut, const int right_cut, const int up_cut, const int down_cut);
+	
 private:
 	const int addTiles(const sdlx::Surface *image, const int first_gid);
 
