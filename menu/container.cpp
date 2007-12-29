@@ -84,7 +84,10 @@ bool Container::onMouse(const int button, const bool pressed, const int x, const
 		const sdlx::Rect dst(i->first.x, i->first.y, bw, bh);
 		//LOG_DEBUG(("%p: checking control %p (%d, %d, %d, %d)", (void *)this, (void *)i->second, dst.x, dst.y, dst.w, dst.h));
 		if (dst.in(x, y)) {
-			_focus = i->second;
+			if (pressed) {
+				//LOG_DEBUG(("focus passed to %p", (void *)_focus));
+				_focus = i->second;
+			}
 			if (i->second->onMouse(button, pressed, x - dst.x, y - dst.y)) {
 				//LOG_DEBUG(("%p: control %p returning true", (void *)this, (void *)i->second));
 				return true;
