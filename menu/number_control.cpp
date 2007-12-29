@@ -55,11 +55,11 @@ void NumberControl::down(const int v) {
 
 bool NumberControl::onKey(const SDL_keysym sym) {
 	switch(sym.sym) {
-/*		case SDLK_UP: up(); return true;
+		case SDLK_UP: up(); return true;
 		case SDLK_DOWN: down(); return true;
 		case SDLK_PAGEUP: up(10); return true;
 		case SDLK_PAGEDOWN: down(10); return true;
-*/
+
 		case SDLK_BACKSPACE: value /= 10;
 			return true;
 		default: 
