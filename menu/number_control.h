@@ -25,8 +25,14 @@ public:
 	void up(const int v = 1);
 	void down(const int v = 1);
 
+	virtual void tick(const float dt);
+
 private: 
 	int min, max, step, value;
+	float mouse_pressed;
+	int mouse_button;
+	bool direction;
+	
 	const sdlx::Surface *_number;
 	const sdlx::Font *_font;
 	sdlx::Rect r_up, r_down;
