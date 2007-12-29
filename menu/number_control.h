@@ -14,7 +14,7 @@ class BTANKSAPI NumberControl : public Control {
 public: 
 	NumberControl(const std::string &font, const int min = 0, const int max = 9999, const int step = 1);
 
-	inline const int get() const { return value; }
+	const int get() const;
 	void set(const int v);
 
 	virtual void render(sdlx::Surface &surface, const int x, const int y);
@@ -28,6 +28,7 @@ public:
 	virtual void tick(const float dt);
 
 private: 
+	void validate();
 	int min, max, step, value;
 	float mouse_pressed;
 	int mouse_button;

@@ -4,6 +4,7 @@
 #include "math/binary.h"
 #include "resource_manager.h"
 
+
 NumberControl::NumberControl(const std::string &font, const int min, const int max, const int step) : 
 	min(min), max(max), step(step), value(min), 
 	mouse_pressed(0), mouse_button(0), direction(false), 
@@ -11,6 +12,18 @@ NumberControl::NumberControl(const std::string &font, const int min, const int m
 	_font(ResourceManager->loadFont(font, true)), 
 	r_up(0, 0, _number->getWidth(), _number->getHeight() / 2), 
 	r_down(0, _number->getHeight() / 2, _number->getWidth(), _number->getHeight() - _number->getHeight() / 2) {}
+
+const int NumberControl::get() const {
+	const_cast<NumberControl *>(this)->validate();
+	return value;
+}
+
+void NumberControl::validate() {
+	if (value < min)
+		value = min;
+	if (value > max)
+		value = max;
+}
 
 void NumberControl::set(const int v) {
 	if (v > max || v < min)
@@ -29,22 +42,33 @@ void NumberControl::getSize(int &w, int &h) const {
 }
 
 void NumberControl::up(const int v) {
-	if (value + v <= max)
-		value += v;
+	if (value + v * step <= max)
+		value += v * step;
+	validate();
 }
 
 void NumberControl::down(const int v) {
-	if (value - v >= min)
-		value -= v;
+	if (value - v * step >= min)
+		value -= v * step;
+	validate();
 }
 
 bool NumberControl::onKey(const SDL_keysym sym) {
 	switch(sym.sym) {
 		case SDLK_UP: up(); return true;
 		case SDLK_DOWN: down(); return true;
-		case SDLK_PAGEUP: up(step * 10); return true;
-		case SDLK_PAGEDOWN: down(step * 10); return true;
+		case SDLK_PAGEUP: up(10); return true;
+		case SDLK_PAGEDOWN: down(10); return true;
+		case SDLK_BACKSPACE: value /= 10;
+			return true;
 		default: 
+			if (sym.unicode >= '0' && sym.unicode <= '9') {
+				value = sym.unicode - '0' + 10 * value;
+				if (value > max)
+					value = max;
+				return true;
+			}
+		
 			return false;
 	}
 }
