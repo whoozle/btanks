@@ -26,7 +26,7 @@
 
 class BTANKSAPI Container : public Control {
 public: 
-	Container() {}
+	Container() : _focus(NULL) {}
 	virtual void tick(const float dt);
 	virtual void render(sdlx::Surface &surface, const int x, const int y);
 	virtual void getSize(int &w, int &h) const;
@@ -49,6 +49,7 @@ protected:
 
 	typedef std::list<std::pair<v2<int>, Control *> > ControlList;
 	ControlList _controls;
+	Control * _focus;
 };
 
 #endif

@@ -60,8 +60,11 @@ void Container::getSize(int &w, int &h) const {
 
 
 bool Container::onKey(const SDL_keysym sym) {
+	if (_focus != NULL && !_focus->hidden() && _focus->onKey(sym)) //first, pass key event to control with focus
+		return true;
+	
 	for(ControlList::reverse_iterator i = _controls.rbegin(); i != _controls.rend(); ++i) {
-		if (i->second->hidden())
+		if (i->second->hidden() || i->second == _focus)
 			continue;
 
 		if (i->second->onKey(sym))
@@ -80,9 +83,12 @@ bool Container::onMouse(const int button, const bool pressed, const int x, const
 		
 		const sdlx::Rect dst(i->first.x, i->first.y, bw, bh);
 		//LOG_DEBUG(("%p: checking control %p (%d, %d, %d, %d)", (void *)this, (void *)i->second, dst.x, dst.y, dst.w, dst.h));
-		if (dst.in(x, y) && i->second->onMouse(button, pressed, x - dst.x, y - dst.y)) {
-			//LOG_DEBUG(("%p: control %p returning true", (void *)this, (void *)i->second));
-			return true;
+		if (dst.in(x, y)) {
+			_focus = i->second;
+			if (i->second->onMouse(button, pressed, x - dst.x, y - dst.y)) {
+				//LOG_DEBUG(("%p: control %p returning true", (void *)this, (void *)i->second));
+				return true;
+			}
 		}
 	}
 	return false;
@@ -118,6 +124,7 @@ void Container::clear() {
 		delete i->second;
 	}
 	_controls.clear();
+	_focus = NULL;
 }
 
 const bool Container::in(const Control *c, const int x, const int y) const {
