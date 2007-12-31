@@ -42,14 +42,12 @@ void NumberControl::getSize(int &w, int &h) const {
 }
 
 void NumberControl::up(const int v) {
-	if (value + v * step <= max)
-		value += v * step;
+	value += v * step;
 	validate();
 }
 
 void NumberControl::down(const int v) {
-	if (value - v * step >= min)
-		value -= v * step;
+	value -= v * step;
 	validate();
 }
 
@@ -110,11 +108,9 @@ void NumberControl::tick(const float dt) {
 
 		//don't blame me, i am an indian programmer :)))
 		if (direction) {
-			for(int i = 0; i < n; ++i)
-				up(mouse_button == SDL_BUTTON_RIGHT? 10: 1);
+			up(mouse_button == SDL_BUTTON_RIGHT? 10 * n: n);
 		} else {
-			for(int i = 0; i < n; ++i)
-				down(mouse_button == SDL_BUTTON_RIGHT? 10: 1);
+			down(mouse_button == SDL_BUTTON_RIGHT? 10 * n: n);
 		}
 	}
 
