@@ -36,7 +36,7 @@ void SlotConfig::deserialize(const mrt::Serializator &s) {
 	s.get(vehicle);
 }
 
-#ifdef WIN32
+#ifdef _WINDOWS
 #	define strcasecmp _stricmp
 #endif
 

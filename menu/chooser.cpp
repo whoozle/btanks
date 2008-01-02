@@ -22,7 +22,7 @@
 #include "sdlx/surface.h"
 #include "sdlx/font.h"
 
-#ifdef WIN32
+#ifdef _WINDOWS
 #	define strcasecmp _stricmp
 #endif
 

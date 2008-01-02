@@ -18,7 +18,7 @@
 #include "sys_socket.h"
 #include "ioexception.h"
 
-#ifdef WIN32
+#ifdef _WINDOWS
 #	include "Winsock2.h"
 #else
 #	include <sys/socket.h>
@@ -72,7 +72,7 @@ void Socket::init() {
 	if (inited)
 		return;
 	
-#ifdef WIN32
+#ifdef _WINDOWS
 	struct WSAData WSAData;
 	if (WSAStartup (MAKEWORD(1,1), &WSAData) != 0) 
 		throw_ex(("failed to initialize winsock 1.1. upgrade your windows installation and/or upgrade mrt runtime"));
@@ -94,7 +94,7 @@ void Socket::close() {
 		return;
 	
 	shutdown(_sock, 2);
-#ifdef WIN32
+#ifdef _WINDOWS
 	::closesocket(_sock);
 #else
 	::close(_sock);

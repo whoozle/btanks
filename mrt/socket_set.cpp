@@ -20,7 +20,7 @@
 #include "ioexception.h"
 #include <assert.h>
 
-#ifdef WIN32
+#ifdef _WINDOWS
 #	include <Winsock2.h>
 #else
 #	include <sys/select.h>

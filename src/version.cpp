@@ -18,7 +18,7 @@
  */
 
 #include "version.h"
-#ifdef WIN32
+#ifdef _WINDOWS
 #pragma comment(exestr, "Battle Tanks (c)2006-2007 Battle tanks team. version " VERSION)
 #pragma comment( user, "Compiled on " __DATE__ " at " __TIME__ ) 
 #endif

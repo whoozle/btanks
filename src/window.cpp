@@ -25,7 +25,7 @@
 #include <stdlib.h>
 #include <assert.h>
 
-#ifdef WIN32
+#ifdef _WINDOWS
 #	define putenv _putenv
 #endif
 
@@ -44,7 +44,7 @@ void IWindow::initSDL() {
 	putenv(strdup("SDL_VIDEO_CENTERED=1"));
 
 	LOG_DEBUG(("gl: %s, vsync: %s, dx: %s", _opengl?"yes":"no", _vsync?"yes":"no", _dx?"yes":"no"));
-#ifdef WIN32
+#ifdef _WINDOWS
 	putenv(strdup("SDL_VIDEO_RENDERER=gdi"));
 
 	if (_dx) 
@@ -157,7 +157,7 @@ void IWindow::init(const int argc, char *argv[]) {
 		if (strcmp(argv[i], "--no-gl") == 0) _opengl = false;
 		else if (strcmp(argv[i], "--fs") == 0) _fullscreen = true;
 		else if (strcmp(argv[i], "--vsync") == 0) _vsync = true;
-#ifdef WIN32
+#ifdef _WINDOWS
 		else if (strcmp(argv[i], "--dx") == 0) { _dx = true; _opengl = false; }
 #endif
 		//else if (strcmp(argv[i], "--320x200") == 0) { _w = 320; _h = 200; }
@@ -185,7 +185,7 @@ void IWindow::init(const int argc, char *argv[]) {
 	initSDL();
 
 #if 0
-#ifdef WIN32
+#ifdef _WINDOWS
 	LOG_DEBUG(("loading icon..."));
 	TRY {
 		HANDLE h = LoadImage(GetModuleHandle(NULL), MAKEINTRESOURCE(1), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE);
@@ -198,7 +198,7 @@ void IWindow::init(const int argc, char *argv[]) {
 #endif
 #endif
 
-#ifndef WIN32
+#ifndef _WINDOWS
 	std::string icon_file = Finder->find("tiles/icon.png", false);
 	if (!icon_file.empty()) {
 		TRY {
@@ -250,7 +250,7 @@ void IWindow::createMainWindow() {
 		}
 #endif
 
-#ifdef WIN32
+#ifdef _WINDOWS
 		LOG_DEBUG(("setting GL accelerated visual..."));
 
 		//SIGSEGV in SDL under linux if no GLX visual present. (debian sid, fc6)

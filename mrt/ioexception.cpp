@@ -29,7 +29,7 @@ const std::string IOException::getCustomMessage() {
 	char buf[1024];
 	memset(buf, 0, sizeof(buf));
 
-#ifdef WIN32
+#ifdef _WINDOWS
 	strncpy(buf, _strerror(NULL), sizeof(buf));
 #else 
 	strncpy(buf, strerror(errno), sizeof(buf));

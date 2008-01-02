@@ -19,7 +19,7 @@
 #include <time.h>
 #include "serializator.h"
 
-#ifdef WIN32
+#ifdef _WINDOWS
 #	ifndef uint64_t
 #		define uint64_t unsigned __int64
 #	endif

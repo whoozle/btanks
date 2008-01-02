@@ -26,7 +26,7 @@
 #include "mrt/tcp_socket.h"
 #include <string.h>
 
-#ifdef WIN32
+#ifdef _WINDOWS
 #	include <winsock2.h>
 #else
 #	include <arpa/inet.h>

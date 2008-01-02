@@ -8,7 +8,7 @@
 #include "mrt/udp_socket.h"
 #include "mrt/serializator.h"
 
-#ifdef WIN32
+#ifdef _WINDOWS
 #	include <Winsock2.h>
 #else
 #	include <sys/socket.h>

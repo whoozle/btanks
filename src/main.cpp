@@ -25,7 +25,7 @@
 #include "version.h"
 #include <stdlib.h>
 
-#ifdef WIN32
+#ifdef _WINDOWS
 #	include "sdlx/SDL_main.h"
 #	define WIN32_LEAN_AND_MEAN
 #	include <windows.h>
@@ -56,7 +56,7 @@ int main(int argc, char *argv[]) {
 		Game->run();
 		Game->deinit();
 		LOG_DEBUG(("exiting"));
-#ifdef WIN32
+#ifdef _WINDOWS
 	} catch(const std::exception &e) {
 		LOG_ERROR(("main:%s", e.what()));
 		TRY { LOG_DEBUG(("calling Game->deinit()")); Game->deinit(); } CATCH("deinit", {});

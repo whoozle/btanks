@@ -403,13 +403,13 @@ void OggStream::playTune() {
 	_opened = false;
 }
 
-#ifdef WIN32
+#ifdef _WINDOWS
 #	define WIN32_LEAN_AND_MEAN
 #	include <windows.h>
 #endif
 
 const int OggStream::run() {
-#ifdef WIN32
+#ifdef _WINDOWS
 	{
 		HANDLE h = GetCurrentThread();
 		if (!SetThreadPriority(h, THREAD_PRIORITY_HIGHEST))

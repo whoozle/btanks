@@ -20,7 +20,7 @@
 #include <string.h>
 
 
-#ifdef WIN32
+#ifdef _WINDOWS
 #	include "Winsock2.h"
 #else
 #	include <sys/socket.h>
@@ -31,7 +31,7 @@
 #	include <netdb.h>
 #endif              
 
-#ifdef WIN32
+#ifdef _WINDOWS
 #	ifndef socklen_t 
 #		define socklen_t int
 #	endif
@@ -99,7 +99,7 @@ void TCPSocket::connect(const std::string &host, const int port, const bool no_d
 }
 
 const int TCPSocket::send(const void *data, const int len) const {
-#ifdef WIN32
+#ifdef _WINDOWS
 	return ::send(_sock, (const char *)data, len, 0);
 #else
 	return ::send(_sock, data, len, 0);
@@ -107,7 +107,7 @@ const int TCPSocket::send(const void *data, const int len) const {
 }
 //void send(const mrt::Chunk &data) const;
 const int TCPSocket::recv(void *data, const int len) const {
-#ifdef WIN32
+#ifdef _WINDOWS
 	return ::recv(_sock, (char *)data, len, 0);
 #else
 	return ::recv(_sock, data, len, 0);
@@ -129,7 +129,7 @@ void TCPSocket::accept(TCPSocket &client) {
 	client._addr.port = ntohs(addr.sin_port); //real port
 }
 
-#ifdef WIN32
+#ifdef _WINDOWS
 #ifndef IP_TOS
 #	define IP_TOS              3
 #endif
@@ -151,7 +151,7 @@ TRY {
 	if (r < 0) 
 		throw_io(("setsockopt(TCP_NODELAY)"));
 
-#ifndef WIN32
+#ifndef _WINDOWS
 	if (flag) {	
 		value = IPTOS_LOWDELAY;
 		r = setsockopt(_sock, IPPROTO_IP, IP_TOS, (char *)&value, sizeof(value));

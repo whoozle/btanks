@@ -1,5 +1,5 @@
-#ifdef WIN32
-#	define WINDOWS_LEAN_AND_MEAN
+#ifdef _WINDOWS
+#	define WIN32_LEAN_AND_MEAN
 #	include <windows.h>
 #else 
 //#	include <locale.h>
@@ -9,7 +9,7 @@
 #include "logger.h"
 
 const std::string mrt::getLanguageCode() {
-#ifdef WIN32
+#ifdef _WINDOWS
 	LANGID lang_id = GetUserDefaultLangID();
 	LOG_DEBUG(("GetUserDefaultLangID() returned %08x", (unsigned)lang_id));
 

@@ -28,7 +28,7 @@
 #include "config.h"
 #include "sdlx/timer.h"
 
-#ifdef WIN32
+#ifdef _WINDOWS
 #	include "Winsock2.h"
 #else
 #	include <sys/socket.h>
@@ -39,7 +39,7 @@
 #endif              
 
 #include <set>
-#ifdef WIN32
+#ifdef _WINDOWS
 	typedef unsigned __int32 uint32_t;
 #else
 #	include <stdint.h>

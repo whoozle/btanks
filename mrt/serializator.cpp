@@ -16,7 +16,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#ifndef WIN32
+#ifndef _WINDOWS
 #	include <arpa/inet.h>
 #else
 #	include <winsock2.h>
@@ -31,7 +31,7 @@
 #include <limits.h>
 #include "exception.h"
 
-#ifdef WIN32
+#ifdef _WINDOWS
 #	ifndef uint32_t
 #		define uint32_t unsigned __int32
 #	endif
