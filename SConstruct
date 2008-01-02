@@ -73,7 +73,7 @@ env.Append(CPPDEFINES = ['_REENTRANT'])
 #print sys.platform
 if sys.platform == "win32":
 	al_lib = 'openal32'
-	env.Append(CPPDEFINES = ['WIN32', '_WINDOWS', '_CRT_SECURE_NO_WARNINGS']) #, '_UNICODE'
+	env.Append(CPPDEFINES = ['_WINDOWS', '_CRT_SECURE_NO_WARNINGS']) #, '_UNICODE'
 	env.Append(CCFLAGS = ' /GR /W3 /nologo ')
 	env.Append(CPPFLAGS = ' /EHsc /GR /W3 /nologo ')
 
