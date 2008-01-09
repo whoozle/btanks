@@ -3,7 +3,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#ifndef WIN32
+#ifndef _WINDOWS
 #	include <unistd.h>
 #endif
 

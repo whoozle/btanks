@@ -18,7 +18,7 @@
 #include "exception.h"
 #include <stdarg.h>
 
-#if defined WIN32 
+#if defined _WINDOWS
 #	if !defined snprintf
 #		define snprintf _snprintf
 #	endif

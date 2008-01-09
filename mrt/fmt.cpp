@@ -24,7 +24,7 @@
 #include <algorithm>
 #include "exception.h"
 
-#if defined WIN32 
+#if defined _WINDOWS
 #	if !defined vsnprintf
 #		define vsnprintf _vsnprintf
 #	endif

@@ -1,6 +1,6 @@
 #include "crash.h"
 
-#ifndef WIN32
+#ifndef _WINDOWS
 #	include <string.h>
 #	include <signal.h>
 #	include <unistd.h>
@@ -15,7 +15,7 @@ static void crash_handler(int sno) {
 #endif
 
 void mrt::install_crash_handlers() {
-#ifndef WIN32
+#ifndef _WINDOWS
 	if (getenv("MRT_NO_CRASH_HANDLER") != NULL)
 		return;
 	

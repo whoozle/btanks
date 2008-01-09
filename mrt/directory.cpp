@@ -33,7 +33,7 @@ const bool Directory::opened() const {
 	return _handle != 0;
 }
 
-#ifndef WIN32
+#ifndef _WINDOWS
 
 #include <sys/types.h>
 #include <sys/stat.h>
