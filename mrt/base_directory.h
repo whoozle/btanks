@@ -2,7 +2,6 @@
 #define __MRT_BASE_DIRECTORY_H__
 
 #include <string>
-#include "fs_node.h"
 #include "export_mrt.h"
 
 namespace mrt { 
