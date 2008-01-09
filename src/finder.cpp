@@ -39,9 +39,20 @@ IFinder::IFinder() {
 	std::vector<std::string> r;
 	mrt::split(r, path, ":");
 	for(size_t i = 0; i < r.size(); ++i) {
-		if (exists(r[i]))
+		bool found = false;
+		if (exists(r[i])) {
 			_path.push_back(r[i]);
-		else 
+			found = true;
+		} 
+		std::string dat = mrt::FSNode::getParentDir(r[i]) + "/resources.dat";
+		if (exists(dat)) {
+			found = true;
+			dat += "#data";
+			LOG_DEBUG(("found packed resources, adding %s to the list", dat.c_str()));
+			_path.push_back(dat);
+		} 
+		
+		if (!found)
 			LOG_DEBUG(("skipped non-existent path item %s", r[i].c_str()));
 	}
 	if (_path.empty())
