@@ -50,7 +50,9 @@ const bool IFinder::exists(const std::string &name) const {
 		mrt::Directory dir;
 		return dir.exists(name);
 	} else {
-		throw_ex(("implement me"));
+		std::string pack = name.substr(0, p);
+		std::string file = name.substr(p + 1);
+		throw_ex(("implement me, %s :: %s", pack.c_str(), file.c_str()));
 	}
 }
 
