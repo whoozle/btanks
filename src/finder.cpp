@@ -28,7 +28,7 @@ IMPLEMENT_SINGLETON(Finder, IFinder);
 
 mrt::BaseFile *IFinder::get_file(const std::string &file, const std::string &mode) const {
 	std::string::size_type p = file.find(':');
-	if (p == file.npos) {
+	if (p == std::string::npos) {
 		mrt::File *f = new mrt::File();
 		TRY {
 			f->open(file, mode);
@@ -44,10 +44,14 @@ mrt::BaseFile *IFinder::get_file(const std::string &file, const std::string &mod
 	}
 }
 
-//STUB!!!
 const bool IFinder::exists(const std::string &name) const {
-	mrt::Directory dir;
-	return dir.exists(name);
+	std::string::size_type p = name.find(':');
+	if (p == std::string::npos) {
+		mrt::Directory dir;
+		return dir.exists(name);
+	} else {
+		throw_ex(("implement me"));
+	}
 }
 
 IFinder::IFinder() {
