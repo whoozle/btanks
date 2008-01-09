@@ -32,7 +32,9 @@
 
 namespace mrt {
 class Chunk;
+class BaseFile;
 }
+
 class Sample;
 class OggStream : public sdlx::Thread {
 public: 
@@ -64,7 +66,7 @@ private:
 	sdlx::Mutex _lock;
 
 	std::string _filename;
-	FILE * _file;
+	mrt::BaseFile * _file;
 	OggVorbis_File _ogg_stream;
 	vorbis_info * _vorbis_info;
 	vorbis_comment * _vorbis_comment;

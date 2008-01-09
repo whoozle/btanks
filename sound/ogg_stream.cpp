@@ -28,7 +28,8 @@
 #include "al_ex.h"
 #include "sdlx/timer.h"
 
-OggStream::OggStream(const ALuint source) : _source(source), _opened(false), _running(false), _repeat(false), _alive(true), _idle(false), _eof_reached(true) {
+OggStream::OggStream(const ALuint source) : 
+	_file(NULL), _source(source), _opened(false), _running(false), _repeat(false), _alive(true), _idle(false), _eof_reached(true) {
 	alSourcei (_source, AL_SOURCE_RELATIVE, AL_TRUE      );
 	AL_CHECK(("alSourcei(%08x, AL_SOURCE_RELATIVE, AL_TRUE)", (unsigned)_source));
 	alSource3f(_source, AL_POSITION,        0.0, 0.0, 0.0);
@@ -63,17 +64,67 @@ void OggStream::play(const std::string &fname, const bool repeat, const float vo
 	}
 }
 
+static size_t stream_read_func  (void *ptr, size_t size, size_t nmemb, void *datasource) {
+	//LOG_DEBUG(("read(%p, %u, %u)", ptr, (unsigned)size, (unsigned)nmemb));
+	assert(datasource != NULL);
+	mrt::BaseFile *file = (mrt::BaseFile *)datasource;
+	TRY { 
+		int r = file->read(ptr, nmemb * size);
+		if (r <= 0)
+			return r;
+	
+		return r / size;
+	} CATCH("read_cb", return -1);
+}
+
+static int    stream_seek_func  (void *datasource, ogg_int64_t offset, int whence) {
+	//LOG_DEBUG(("seek(%u, %d)", (unsigned)offset, whence));
+	assert(datasource != NULL);
+	mrt::BaseFile *file = (mrt::BaseFile *)datasource;
+	TRY { 
+		return file->seek(offset, whence);
+	} CATCH("seek_cb", return -1);
+}
+
+static int    stream_close_func (void *datasource) {
+	//LOG_DEBUG(("close()"));
+	assert(datasource != NULL);
+	mrt::BaseFile *file = (mrt::BaseFile *)datasource;
+	TRY { 
+		file->close();
+		return 0;
+	} CATCH("close_cb", return -1);
+}
+
+static long   stream_tell_func  (void *datasource) {
+	//LOG_DEBUG(("tell"));
+	assert(datasource != NULL);
+	mrt::BaseFile *file = (mrt::BaseFile *)datasource;
+	TRY { 
+		return file->tell();
+	} CATCH("tell_cb", return -1);
+}
+
 
 void OggStream::_open() {
 	sdlx::AutoMutex m(_lock);
 
 	LOG_DEBUG(("_open(%s)", _filename.c_str()));
-	mrt::File file;
-	file.open(_filename, "rb");
-	int r = ov_open(file, &_ogg_stream, NULL, 0);
+	delete _file;
+	_file = new mrt::File(); //leak it for now
+	_file->open(_filename, "rb");
+	
+	ov_callbacks ov_cb;
+	memset(&ov_cb, 0, sizeof(ov_cb));
+
+	ov_cb.read_func = stream_read_func;
+	ov_cb.seek_func = stream_seek_func;
+	ov_cb.tell_func = stream_tell_func;
+	ov_cb.close_func = stream_close_func;
+		
+	int r = ov_open_callbacks(_file, &_ogg_stream, NULL, 0, ov_cb);
 	if (r < 0)
 		throw_ogg(r, ("ov_open('%s')", _filename.c_str()));
-	_file = file.unlink();
 	
 	_vorbis_info = ov_info(&_ogg_stream, -1);
 	_vorbis_comment = ov_comment(&_ogg_stream, -1);
@@ -214,7 +265,6 @@ void OggStream::stop() {
 	LOG_DEBUG(("stop()"));
 	sdlx::AutoMutex m(_lock);
 	_running = false;
-	_filename.clear();
 }
 
 OggStream::~OggStream() {
@@ -400,6 +450,8 @@ void OggStream::playTune() {
 
 	LOG_DEBUG(("deleting ogg context."));
 	ov_clear(&_ogg_stream);					   
+	delete _file;
+	_file = NULL;
 	_opened = false;
 }
 
