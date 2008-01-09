@@ -237,7 +237,7 @@ void IWindow::createMainWindow() {
 			LOG_WARN(("cannot set SDL_GL_SWAP_CONTROL."));
 
 		if (_vsync)
-			SDL_putenv("__GL_SYNC_TO_VBLANK=1"); //nvidia ext
+			SDL_putenv(strdup("__GL_SYNC_TO_VBLANK=1")); //nvidia ext
 			
 #if 0
 		if (!_vsync) {
