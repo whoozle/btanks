@@ -20,9 +20,29 @@
 #include "config.h"
 #include "mrt/directory.h"
 #include "mrt/fmt.h"
+#include "mrt/file.h"
+#include "zzip/mrt_zzip_file.h"
+#include "zzip/mrt_zzip_dir.h"
 
 IMPLEMENT_SINGLETON(Finder, IFinder);
 
+mrt::BaseFile *IFinder::get_file(const std::string &file, const std::string &mode) const {
+	std::string::size_type p = file.find(':');
+	if (p == file.npos) {
+		mrt::File *f = new mrt::File();
+		TRY {
+			f->open(file, mode);
+		} CATCH("fs open", { delete f; throw; } )
+		return f;
+	} else {
+		//zzip file
+		zzip::File *f = new zzip::File();
+		TRY {
+			f->open(file, mode);
+		} CATCH("zzip open", { delete f; throw; } )
+		return f;
+	}
+}
 
 //STUB!!!
 const bool IFinder::exists(const std::string &name) const {

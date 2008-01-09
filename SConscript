@@ -65,7 +65,7 @@ vorbis = 'vorbisfile'
 if debug and sys.platform == "win32": 
 	vorbis = 'vorbisfile_d'
 
-bt_libs = ['mrt', 'sdlx',  sigc_lib, 'SDL', vorbis, al_lib]
+bt_libs = ['mrt', 'zzip', 'sdlx',  sigc_lib, 'SDL', vorbis, al_lib]
 
 if sys.platform != 'win32' and env['enable_lua']:
 	got_lua = False

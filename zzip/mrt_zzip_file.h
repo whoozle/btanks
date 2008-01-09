@@ -3,6 +3,7 @@
 
 #include "mrt/base_file.h"
 #include <zzip/zzip.h>
+#include "export_zzip.h"
 
 namespace zzip {
 	class ZZIPAPI File : public mrt::BaseFile {

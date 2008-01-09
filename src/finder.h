@@ -24,6 +24,10 @@
 #include <string>
 #include <vector>
 
+namespace mrt {
+	class BaseFile;
+}
+
 class BTANKSAPI IFinder {
 public: 
 	typedef std::vector<std::pair<std::string, std::string> > FindResult;
@@ -40,6 +44,8 @@ public:
 	
 	const std::string fix(const std::string &file, const bool strict = true) const;
 	const bool exists(const std::string &name) const;
+	
+	mrt::BaseFile *get_file(const std::string &file, const std::string &mode) const;
 
 private: 
 	void applyPatches(std::vector<std::string>& files, const std::string &fname) const;
