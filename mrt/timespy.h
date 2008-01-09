@@ -1,7 +1,7 @@
 #ifndef MRT_TIMESPY_H__
 #define MRT_TIMESPY_H__
 
-#if defined(_MSC_VER) || defined(_WINDOWS_)
+#if defined(_MSC_VER) || defined(_WINDOWS_) || defined(_WINDOWS)
    #include <time.h>
    #if !defined(_WINSOCK2API_) && !defined(_WINSOCKAPI_)
          struct timeval 
