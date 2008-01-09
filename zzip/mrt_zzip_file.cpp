@@ -39,4 +39,6 @@ const bool File::eof() const{
 	return true;
 }
 
-
+File::~File() {
+	close();
+}

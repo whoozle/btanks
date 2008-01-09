@@ -23,7 +23,7 @@ namespace zzip {
 	
 		virtual const bool eof() const;
 
-		~File() { close(); }
+		~File();
 	private: 
 		ZZIP_FILE *_f;
 	};
