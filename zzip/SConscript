@@ -16,7 +16,7 @@ env.Append(LIBPATH=['../mrt'])
 
 zzip = env.SharedLibrary('zzip', \
 	['dir.c', 'err.c', 'fetch.c', 'file.c', 'info.c', 'plugin.c', 'stat.c', 'write.c', 'zip.c', 
-	'mrt_zzip_file.cpp', 
+	'mrt_zzip_file.cpp', 'mrt_zzip_dir.cpp', 
 	], 
 	LIBS=libs)
 
