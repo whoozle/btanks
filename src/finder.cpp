@@ -48,7 +48,7 @@ IFinder::IFinder() {
 		LOG_DEBUG(("checking for compressed resources in %s", dat.c_str()));
 		if (exists(dat)) {
 			found = true;
-			dat += "#data";
+			dat += ":data";
 			LOG_DEBUG(("found packed resources, adding %s to the list", dat.c_str()));
 			_path.push_back(dat);
 		} 
