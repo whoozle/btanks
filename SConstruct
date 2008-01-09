@@ -55,7 +55,7 @@ if os.environ.has_key('LDFLAGS'):
 	env['LINKFLAGS'] += SCons.Util.CLVar(os.environ['LDFLAGS'])
 
 if (env['gcc_visibility']): 
-	env.Append(CCFLAGS=' -fvisibility-inlines-hidden -fvisibility=hidden -DGCC_HASCLASSVISIBILITY ')
+	env.Append(CCFLAGS=' -fvisibility=hidden -DGCC_HASCLASSVISIBILITY ')
 	env.Append(CXXFLAGS=' -fvisibility-inlines-hidden -fvisibility=hidden -DGCC_HASCLASSVISIBILITY ')
 
 if sys.platform == "win32" and debug:
@@ -92,8 +92,8 @@ if sys.platform == "win32":
 #	env.Prepend(CPPPATH=' C:\\\\STLport-4.6.2\\\\stlport ')
 else:
 	if env['gcc_visibility']: 
-		env.Append(CCFLAGS=' -fvisibility-inlines-hidden -fvisibility=hidden ');
-		env.Append(CPPFLAGS=' -fvisibility-inlines-hidden -fvisibility=hidden ');
+		env.Append(CCFLAGS=' -fvisibility=hidden ');
+		env.Append(CXXFLAGS=' -fvisibility-inlines-hidden -fvisibility=hidden ');
 	if debug:
 		env.Append(CCFLAGS='-ggdb ')
 		env.Append(CPPFLAGS='-ggdb ')
@@ -242,7 +242,7 @@ env.Append(CXXFLAGS=sigc_flags)
 
 env.Append(CPPPATH=['#', '#/src'])
 
-bt_sublibs = ['mrt', 'sdlx', 'objects'] #fann
+bt_sublibs = ['mrt', 'sdlx', 'objects', 'zzip']
 
 if (os.path.exists('private')):
 	dir = 'private'
