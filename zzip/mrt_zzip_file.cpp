@@ -41,10 +41,10 @@ const off_t File::getSize() const {
 }
 
 const size_t File::read(void *buf, const size_t size) const {
-	size_t r = zzip_read(_f, buf, size);
-	if ((ssize_t)r < 0) 
+	int r = zzip_read(_f, buf, size);
+	if (r < 0) 
 		throw_io(("zzip_read"));
-	if (r != size)
+	if ((size_t)r != size)
 		_endof = true;
 	return r;
 } 
