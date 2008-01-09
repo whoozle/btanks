@@ -5,7 +5,7 @@
 
 using namespace mrt;
 
-#if defined(_MSC_VER) || defined(_WINDOWS_)
+#if defined(_MSC_VER) || defined(_WINDOWS_) || defined(_WINDOWS)
    static int gettimeofday(struct timeval* tp, void* tzp) 
    {
 /*      DWORD t;
