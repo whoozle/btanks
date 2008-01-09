@@ -3,7 +3,7 @@
 
 using namespace zzip;
 
-File::File() : _f(NULL), _endof(true) {}
+zzip::File::File() : _f(NULL), _endof(true) {}
 
 const bool File::readLine(std::string &str, const size_t bufsize) const {
 	throw_ex(("unimplemented"));
