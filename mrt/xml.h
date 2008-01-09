@@ -2,7 +2,7 @@
 #define __BT_XML_H__
 
 /* M-Runtime for c++
- * Copyright (C) 2005-2007 Vladimir Menshakov
+ * Copyright (C) 2005-2008 Vladimir Menshakov
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
