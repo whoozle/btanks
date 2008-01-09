@@ -3,7 +3,7 @@ Import('env')
 
 env = env.Copy()
 
-libs = ['z']
+libs = ['z', 'mrt']
 
 if sys.platform != "win32":
 	env.Append(CPPDEFINES=['ZZIP_HAVE_STDINT_H'])
