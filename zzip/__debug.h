@@ -6,6 +6,7 @@
 
 /* perhaps want to show on syslog(3) ?? */
 
+#undef DEBUG
 #ifdef DEBUG
 #include <stdio.h>
 #define DBG1(X1) ZZIP_FOR1 { \
