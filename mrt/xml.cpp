@@ -85,7 +85,7 @@ void XMLParser::getFileStats(int &tags, const std::string &fname) {
 			done = len < sizeof(buf);
 			if (XML_Parse(parser, buf, len, done) == XML_STATUS_ERROR) {
 				mrt::XMLException e;
-				std::string error = mrt::formatString("%s at line %d", XML_ErrorString(XML_GetErrorCode(parser)), XML_GetCurrentLineNumber(parser));
+				std::string error = mrt::formatString("%s at line %d", XML_ErrorString(XML_GetErrorCode(parser)), (int)XML_GetCurrentLineNumber(parser));
 				e.addMessage("XML error: " + error); throw e; 
 			}
 		} while(!done);
@@ -126,7 +126,7 @@ void XMLParser::parseFile(const std::string &fname) {
 const std::string XMLParser::getErrorMessage() const {
 	return mrt::formatString("%s at line %d", 
 				XML_ErrorString(XML_GetErrorCode(_parser)),
-				XML_GetCurrentLineNumber(_parser));
+				(int)XML_GetCurrentLineNumber(_parser));
 }
 
 	
