@@ -27,6 +27,7 @@ namespace zzip {
 		~File();
 	private: 
 		ZZIP_FILE *_f;
+		mutable bool _endof;
 	};
 }
 
