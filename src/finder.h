@@ -39,6 +39,8 @@ public:
 	void addPatchSuffix(const std::string &patch);
 	
 	const std::string fix(const std::string &file, const bool strict = true) const;
+	const bool exists(const std::string &name) const;
+
 private: 
 	void applyPatches(std::vector<std::string>& files, const std::string &fname) const;
 

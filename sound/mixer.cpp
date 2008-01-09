@@ -380,12 +380,9 @@ const bool IMixer::play(const std::string &fname, const bool continuous) {
 		return false;
 	}
 
-	std::string real_file;
-	if (!mrt::FSNode::exists(fname)) {
-		TRY { 
-			real_file = Finder->find("tunes/" + fname);
-		} CATCH("finding tune", return false;)
-	} else real_file = fname;
+	std::string real_file = Finder->find("tunes/" + fname, false);
+	if (real_file.empty())
+		return false;
 
 	_ogg->play(real_file, continuous, _volume_music);
 	return true;

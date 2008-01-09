@@ -18,10 +18,17 @@
  */
 #include "finder.h"
 #include "config.h"
-#include "mrt/fs_node.h"
+#include "mrt/directory.h"
 #include "mrt/fmt.h"
 
 IMPLEMENT_SINGLETON(Finder, IFinder);
+
+
+//STUB!!!
+const bool IFinder::exists(const std::string &name) const {
+	mrt::Directory dir;
+	return dir.exists(name);
+}
 
 IFinder::IFinder() {
 #ifdef PREFIX
@@ -32,9 +39,10 @@ IFinder::IFinder() {
 	std::vector<std::string> r;
 	mrt::split(r, path, ":");
 	for(size_t i = 0; i < r.size(); ++i) {
-		if (mrt::FSNode::exists(r[i]))
+		if (exists(r[i]))
 			_path.push_back(r[i]);
-		else LOG_DEBUG(("skipped non-existent path item %s", r[i].c_str()));
+		else 
+			LOG_DEBUG(("skipped non-existent path item %s", r[i].c_str()));
 	}
 	if (_path.empty())
 		throw_ex(("none of the directories listed in engine.path('%s') exist", path.c_str()));
@@ -65,7 +73,7 @@ const std::string IFinder::fix(const std::string &file, const bool strict) const
 	applyPatches(files, file);
 	for(size_t j = 0; j < files.size(); ++j) {
 		//LOG_DEBUG(("looking for the file: %s", files[j].c_str()));
-		if (mrt::FSNode::exists(files[j]))
+		if (exists(files[j]))
 			return files[j];
 	}
 	if (strict)
@@ -80,7 +88,7 @@ const std::string IFinder::find(const std::string &name, const bool strict) cons
 		applyPatches(files, _path[i] + "/" + name);
 		for(size_t j = 0; j < files.size(); ++j) {
 			//LOG_DEBUG(("looking for the file: %s", files[j].c_str()));
-			if (mrt::FSNode::exists(files[j]))
+			if (exists(files[j]))
 				return files[j];
 		}
 	}
@@ -97,7 +105,7 @@ void IFinder::findAll(FindResult &result, const std::string &name) const {
 		applyPatches(files, _path[i] + "/" + name);
 		for(size_t j = 0; j < files.size(); ++j) {
 			//LOG_DEBUG(("looking for the file: %s", files[j].c_str()));
-			if (mrt::FSNode::exists(files[j])) {
+			if (exists(files[j])) {
 				result.push_back(FindResult::value_type(_path[i], files[j]));
 				break;
 			}

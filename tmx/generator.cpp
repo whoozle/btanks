@@ -12,6 +12,7 @@
 #include "mrt/exception.h"
 #include "mrt/fs_node.h"
 #include "mrt/xml.h"
+#include "finder.h"
 
 /*****************
 BIG FAT WARNING: 
@@ -195,7 +196,7 @@ void MapGenerator::tileset(const std::string &fname, const int gid) {
 	if (_tilesets.find(name) != _tilesets.end())
 		return;
 	
-	if (!mrt::FSNode::exists(xml_name))
+	if (!Finder->exists(xml_name))
 		return;
 	
 	Tileset *t = NULL;

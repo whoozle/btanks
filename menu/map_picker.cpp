@@ -70,10 +70,11 @@ private:
 
 
 void MapPicker::scan(const std::string &path) {
-	if (!mrt::Directory::exists(path))
+	mrt::Directory dir;
+
+	if (!dir.exists(path))
 		return;
 	
-	mrt::Directory dir;
 	dir.open(path);
 	std::string fname;
 
