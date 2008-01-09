@@ -5,28 +5,25 @@
 #	include <sys/types.h>
 #	include <dirent.h>
 #endif
-#include <string>
-#include "fs_node.h"
-#include "export_mrt.h"
+#include "base_directory.h"
 
 namespace mrt { 
 
-class MRTAPI Directory : public FSNode {
+class MRTAPI Directory : public BaseDirectory, public FSNode {
 public: 
 
 	Directory();
-	void open(const std::string &path);
-	const bool opened() const;
-	const std::string read() const;
-	void close();
-	~Directory();
+	virtual void create(const std::string &path);
+	virtual void open(const std::string &path);
+	virtual const bool opened() const;
+	virtual const std::string read() const;
+	virtual void close();
+	virtual ~Directory();
 	
 	static const std::string getHome();
 	static const std::string getAppDir(const std::string &name, const std::string &shortname);
-	static void create(const std::string &path);
-
+	
 private: 
-
 
 #ifdef _WINDOWS
 	typedef long dir_t;

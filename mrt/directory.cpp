@@ -67,20 +67,6 @@ void Directory::close() {
 	}
 }
 
-const std::string Directory::getHome() {
-	const char *home_env = getenv("HOME");
-	if (home_env == NULL) 
-		throw_ex(("getting home directory now is possible only via HOME variable. fix it if you want."));
-	return home_env;
-}
-
-const std::string Directory::getAppDir(const std::string &name, const std::string &shortname) {
-	std::string path = getHome() + "/." + shortname;
-	if (!exists(path)) 
-		create(path);
-	return path;
-}
-
 void Directory::create(const std::string &path) {
 	if (mkdir(path.c_str(), S_IRUSR | S_IWUSR | S_IXUSR) == -1)
 		throw_io(("mkdir"));
@@ -120,12 +106,22 @@ void Directory::close() {
 	_handle = 0;
 }
 
+void Directory::create(const std::string &path) {
+	::CreateDirectory(path.c_str(), NULL);
+}
+
+#endif
+
+
+#ifdef _WINDOWS
 #include <shlobj.h>
 
 const std::string Directory::getAppDir(const std::string &name, const std::string &shortname) {
 	std::string path = getHome() + "\\" + name;
-	if (!exists(path)) 
-		create(path);
+	mrt::Directory dir;
+	try {
+		dir.create(path);
+	} catch(...) {}
 	return path;	
 }
 
@@ -143,9 +139,23 @@ const std::string Directory::getHome() {
 	return path;
 }
 
+#else 
 
-void Directory::create(const std::string &path) {
-	::CreateDirectory(path.c_str(), NULL);
+const std::string Directory::getHome() {
+	const char *home_env = getenv("HOME");
+	if (home_env == NULL) 
+		throw_ex(("getting home directory now is possible only via HOME variable. fix it if you want."));
+	return home_env;
+}
+
+const std::string Directory::getAppDir(const std::string &name, const std::string &shortname) {
+	std::string path = getHome() + "/." + shortname;
+	mrt::Directory dir;
+	try {
+		dir.create(path);
+	} catch(...) {}
+	return path;
 }
 
 #endif
+

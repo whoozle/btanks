@@ -12,7 +12,7 @@
 
 using namespace mrt;
 
-const bool FSNode::exists(const std::string &fname) {
+bool FSNode::exists(const std::string &fname) const {
 	struct stat buf;
 	return stat(fname.c_str(), &buf) == 0;
 }

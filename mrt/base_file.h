@@ -27,7 +27,7 @@ namespace mrt {
 
 class Chunk;
 
-class MRTAPI BaseFile : public FSNode {
+class MRTAPI BaseFile {
 public: 
 	virtual ~BaseFile();
 

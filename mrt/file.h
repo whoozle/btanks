@@ -28,7 +28,7 @@ namespace mrt {
 
 class Chunk;
 
-class MRTAPI File : public BaseFile {
+class MRTAPI File : public BaseFile, public FSNode {
 public: 
 	const bool readLine(std::string &str, const size_t bufsize = 1024) const;
 
