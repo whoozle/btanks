@@ -5,9 +5,11 @@ env = env.Copy()
 
 libs = ['z']
 
-env.Append(CPPDEFINES=['ZZIP_HAVE_STDINT_H'])
-env.Append(CPPDEFINES=['ZZIP_HAVE_ENDIAN_H'])
-env.Append(CPPDEFINES=['_USE_MMAP'])
+if sys.platform != "win32":
+	env.Append(CPPDEFINES=['ZZIP_HAVE_STDINT_H'])
+	env.Append(CPPDEFINES=['ZZIP_HAVE_ENDIAN_H'])
+	env.Append(CPPDEFINES=['_USE_MMAP'])
+
 env.Append(CPPPATH=['zzip'])
 env.Append(CPPDEFINES=['ZZIPAPI=DLLEXPORT'])
 
