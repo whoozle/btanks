@@ -28,7 +28,7 @@ public:
 private: 
 
 
-#ifdef WIN32
+#ifdef _WINDOWS
 	typedef long dir_t;
 	mutable std::string _first_value;
 #else
