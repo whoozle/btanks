@@ -32,7 +32,7 @@
 #if HAS_SDL_OPENGL_H
 #include "SDL_opengl.h"
 #else
-#ifdef WIN32
+#ifdef _WINDOWS
 #include <windows.h>
 #endif
 #if defined(__APPLE__) && defined(__MACH__)
@@ -52,7 +52,7 @@
 #define APIENTRY
 #endif
 
-#ifdef WIN32
+#ifdef _WINDOWS
 #	define GLSDL_INLINE __inline__
 #else 
 #	define GLSDL_INLINE inline
