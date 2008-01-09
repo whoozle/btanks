@@ -1,7 +1,7 @@
 #ifndef MRT_TIMER_H_
 #define MRT_TIMER_H_
 
-#ifdef WIN32
+#ifdef _WINDOWS
 	union _LARGE_INTEGER;
 #	define SDLX_TIMER_USES_QPC
 
@@ -24,7 +24,7 @@ public:
 	const int microdelta() const;
 	static void microsleep(const char *why, const int micros);
 private: 
-#ifdef WIN32
+#ifdef _WINDOWS
 #	ifdef SDLX_TIMER_USES_QPC
 	_LARGE_INTEGER *tm, *freq;
 #	else
