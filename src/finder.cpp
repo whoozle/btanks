@@ -45,6 +45,7 @@ IFinder::IFinder() {
 			found = true;
 		} 
 		std::string dat = mrt::FSNode::getParentDir(r[i]) + "/resources.dat";
+		LOG_DEBUG(("checking for compressed resources in %s", dat.c_str()));
 		if (exists(dat)) {
 			found = true;
 			dat += "#data";

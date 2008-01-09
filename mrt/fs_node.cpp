@@ -14,8 +14,13 @@ using namespace mrt;
 
 const std::string FSNode::getParentDir(const std::string &fname) {
 	std::string::size_type p = fname.rfind('\\'), p2 = fname.rfind('/');
-	if (p2 > p) 
+	if (p == std::string::npos) {
+		if (p2 == std::string::npos)
+			return std::string(".");
 		p = p2;
+	} else if (p < p2) {
+		p = p2;
+	}
 	return fname.substr(0, p);
 }
 
