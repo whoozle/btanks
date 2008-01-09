@@ -6,6 +6,7 @@
 #	include <dirent.h>
 #endif
 #include "base_directory.h"
+#include "fs_node.h"
 
 namespace mrt { 
 
