@@ -22,7 +22,7 @@
 #include "export_mrt.h"
 #include <string>
 
-#ifdef WIN32
+#ifdef _WINDOWS
 #	ifndef mrt_uint32_t
 #		define mrt_uint32_t unsigned __int32
 #	endif

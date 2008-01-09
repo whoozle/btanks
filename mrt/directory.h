@@ -1,7 +1,7 @@
 #ifndef __MRT_DIRECTORY_H__
 #define __MRT_DIRECTORY_H__
 
-#ifndef WIN32
+#ifndef _WINDOWS
 #	include <sys/types.h>
 #	include <dirent.h>
 #endif

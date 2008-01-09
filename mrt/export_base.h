@@ -2,7 +2,7 @@
 #define MRT_EXPORT_MACRO_H__
 
 // Shared library support
-#ifdef WIN32
+#ifdef _WINDOWS
 
 #	pragma warning(disable:4251)  /* needs to have dll-interface used by client */
 #	pragma warning(disable:4275)  /* non dll-interface struct */
