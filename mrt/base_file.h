@@ -1,5 +1,5 @@
-#ifndef __MRT_FILE_H__
-#define __MRT_FILE_H__
+#ifndef __MRT_BASEFILE__
+#define __MRT_BASEFILE__
 
 /* M-Runtime for c++
  * Copyright (C) 2005-2007 Vladimir Menshakov
@@ -20,39 +20,37 @@
  */
 
 #include <string>
-#include <stdio.h>
-#include "base_file.h"
+#include "fs_node.h"
 #include "export_mrt.h"
 
 namespace mrt {
 
 class Chunk;
 
-class MRTAPI File : public BaseFile {
+class MRTAPI BaseFile : public FSNode {
 public: 
-	const bool readLine(std::string &str, const size_t bufsize = 1024) const;
+	virtual ~BaseFile();
 
-	File();
+	void readAll(std::string &str) const;
+	void readAll(Chunk &ch) const;
+	void writeAll(const Chunk &ch) const;
+	void writeAll(const std::string &str) const;
 
-	virtual void open(const std::string &fname, const std::string &mode);
-	virtual const bool opened() const;
+	virtual void open(const std::string &fname, const std::string &mode) = 0;
+	virtual const bool opened() const = 0;
 	
-	virtual int seek(long offset, int whence) const;
-	virtual long tell() const;
-	virtual void write(const Chunk &ch) const;
+	virtual int seek(long offset, int whence) const = 0;
+	virtual long tell() const = 0;
+	virtual void write(const Chunk &ch) const = 0;
 
-	virtual const off_t getSize() const;
-	virtual const size_t read(void *buf, const size_t size) const;
+	virtual const off_t getSize() const = 0;
+	virtual const size_t read(void *buf, const size_t size) const = 0;
 	virtual void close();
 	
-	virtual const bool eof() const;
+	virtual const bool eof() const = 0;
 
-	inline operator FILE*() { return _f; }
-	FILE * unlink(); //unlinks FILE* structure from this object
-private: 
-	FILE *_f;
+	virtual const bool readLine(std::string &str, const size_t bufsize = 1024) const = 0;
 };
 
 }
-
 #endif

@@ -11,10 +11,10 @@ if sys.platform == "win32":
 	libs.append('shell32')
 
 mrt = env.SharedLibrary('mrt', \
-	['exception.cpp', 'fmt.cpp', 'ioexception.cpp', 'logger.cpp', 'chunk.cpp', 'random.cpp', \
-	'file.cpp', 'xml.cpp', 'b64.cpp', 'gzip.cpp', 'serializator.cpp', 'serializable.cpp', 
-	'sys_socket.cpp', 'tcp_socket.cpp', 'socket_set.cpp', 'directory.cpp', 'fs_node.cpp', 
-	'timespy.cpp', 'crash.cpp', 'lang.cpp', 'utf8_utils.cpp', 'udp_socket.cpp', 'memory.cpp', 
-	'calendar.cpp', 
+	['exception.cpp', 'fmt.cpp', 'ioexception.cpp', 'logger.cpp', 'chunk.cpp', 'random.cpp', 
+	'base_file.cpp', 'file.cpp', 'xml.cpp', 'b64.cpp', 'gzip.cpp', 'serializator.cpp', 
+	'serializable.cpp', 'sys_socket.cpp', 'tcp_socket.cpp', 'socket_set.cpp', 'directory.cpp', 
+	'fs_node.cpp', 'timespy.cpp', 'crash.cpp', 'lang.cpp', 'utf8_utils.cpp', 'udp_socket.cpp', 
+	'memory.cpp', 'calendar.cpp', 
 	], LIBS=libs)
 Install('#', mrt[0])

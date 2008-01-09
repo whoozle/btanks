@@ -48,43 +48,6 @@ const off_t File::getSize() const {
 	return s.st_size;
 }
 
-void File::readAll(std::string &str) const {
-	mrt::Chunk data;
-	readAll(data);
-	str.assign((const char *)data.getPtr(), data.getSize());
-}
-
-void File::readAll(Chunk &ch) const {
-	ch.free();
-	
-	fseek(_f, 0, SEEK_SET);
-	
-#define BUF_SIZE 16384	
-	long r, size = 0;
-	do {
-		ch.setSize(size + BUF_SIZE);
-		unsigned char * ptr = (unsigned char *) ch.getPtr();
-		ptr += size;
-		
-		r = fread(ptr, 1, BUF_SIZE, _f);
-		if (r == -1) 
-			throw_io(("fread"));
-		size += r; 
-	} while (r == BUF_SIZE);
-	ch.setSize(size);
-}
-
-void File::writeAll(const Chunk &ch) const {
-	fseek(_f, 0, SEEK_SET);
-	write(ch);
-}
-
-void File::writeAll(const std::string &str) const {
-	fseek(_f, 0, SEEK_SET);
-	if (fwrite(str.c_str(), 1, str.size(), _f) != str.size())
-		throw_io(("fwrite"));
-}
-
 void File::write(const Chunk &ch) const {
 	if (fwrite(ch.getPtr(), 1, ch.getSize(), _f) != ch.getSize())
 		throw_io(("fwrite"));

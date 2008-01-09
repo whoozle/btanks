@@ -1,5 +1,3 @@
-#ifndef __MRT_FILE_H__
-#define __MRT_FILE_H__
 
 /* M-Runtime for c++
  * Copyright (C) 2005-2007 Vladimir Menshakov
@@ -19,40 +17,51 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include <string>
-#include <stdio.h>
 #include "base_file.h"
-#include "export_mrt.h"
+#include "mrt/chunk.h"
+#include "ioexception.h"
 
-namespace mrt {
+using namespace mrt;
 
-class Chunk;
-
-class MRTAPI File : public BaseFile {
-public: 
-	const bool readLine(std::string &str, const size_t bufsize = 1024) const;
-
-	File();
-
-	virtual void open(const std::string &fname, const std::string &mode);
-	virtual const bool opened() const;
-	
-	virtual int seek(long offset, int whence) const;
-	virtual long tell() const;
-	virtual void write(const Chunk &ch) const;
-
-	virtual const off_t getSize() const;
-	virtual const size_t read(void *buf, const size_t size) const;
-	virtual void close();
-	
-	virtual const bool eof() const;
-
-	inline operator FILE*() { return _f; }
-	FILE * unlink(); //unlinks FILE* structure from this object
-private: 
-	FILE *_f;
-};
-
+BaseFile::~BaseFile() {
+	close();
 }
 
-#endif
+void BaseFile::close() {}
+
+void BaseFile::readAll(std::string &str) const {
+	mrt::Chunk data;
+	readAll(data);
+	str.assign((const char *)data.getPtr(), data.getSize());
+}
+
+void BaseFile::readAll(Chunk &ch) const {
+	ch.free();
+	
+	seek(0, SEEK_SET);
+	
+#define BUF_SIZE 524288
+	long r, size = 0;
+	do {
+		ch.setSize(size + BUF_SIZE);
+		
+		unsigned char * ptr = (unsigned char *) ch.getPtr();
+		ptr += size;
+		
+		r = read(ptr, BUF_SIZE);
+		size += r; 
+	} while (r == BUF_SIZE);
+	ch.setSize(size);
+}
+
+void BaseFile::writeAll(const Chunk &ch) const {
+	seek(0, SEEK_SET);
+	write(ch);
+}
+
+void BaseFile::writeAll(const std::string &str) const {
+	mrt::Chunk data;
+	data.setData(str.c_str(), str.size());
+	writeAll(data);
+}
+
