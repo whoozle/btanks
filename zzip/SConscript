@@ -9,9 +9,13 @@ env.Append(CPPDEFINES=['ZZIP_HAVE_STDINT_H'])
 env.Append(CPPDEFINES=['ZZIP_HAVE_ENDIAN_H'])
 env.Append(CPPDEFINES=['_USE_MMAP'])
 env.Append(CPPPATH=['zzip'])
+env.Append(CPPDEFINES=['ZZIPAPI=DLLEXPORT'])
+
 
 zzip = env.SharedLibrary('zzip', \
-	['dir.c', 'err.c', 'fetch.c', 'file.c', 'info.c', 'plugin.c', 'stat.c', 'write.c', 'zip.c', ], 
+	['dir.c', 'err.c', 'fetch.c', 'file.c', 'info.c', 'plugin.c', 'stat.c', 'write.c', 'zip.c', 
+	'mrt_zzip_file.cpp', 
+	], 
 	LIBS=libs)
 
 Install('#', zzip[0])
