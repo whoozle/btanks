@@ -229,6 +229,22 @@ void IFinder::addPatchSuffix(const std::string &patch) {
 	patches.push_back(patch);
 }
 
-void IFinder::enumerate(std::vector<std::string>&files, const std::string &base, const std::string &root) {
+void IFinder::enumerate(std::vector<std::string>&files, const std::string &base, const std::string &root) const {
 	files.clear();
+	
+	Packages::const_iterator p_i = packages.find(base);
+	if (p_i == packages.end())
+		return;
+
+	for(std::set<std::string>::const_iterator f = p_i->second->files.begin(); p_i->second->files.end() != f; ++f) {
+		if (!root.empty()) {
+			if (f->compare(0, root.size(), root))
+				continue;
+			std::string file = f->substr(root.size() + 1);
+			if (!file.empty())
+				files.push_back(file);
+		} else {
+			files.push_back(*f);
+		}
+	}
 }
