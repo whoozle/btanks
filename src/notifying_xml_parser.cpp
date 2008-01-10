@@ -17,6 +17,9 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 #include "notifying_xml_parser.h"
+#include "scoped_ptr.h"
+#include "finder.h"
+#include "mrt/base_file.h"
 
 NotifyingXMLParser::NotifyingXMLParser() : reset_progress(), notify_progress() {}
 
@@ -32,15 +35,17 @@ void NotifyingXMLParser::parseFiles(const std::vector<std::pair<std::string, std
 	int progress = 0;
 	for(size_t i = 0; i < files.size(); ++i) {
 		int tags;
-		getFileStats(tags, files[i].second);
+		scoped_ptr<mrt::BaseFile> f(Finder->get_file(files[i].second, "rt"));
+		getFileStats(tags, *f);
 		progress += tags;
 	}
 	
 	reset_progress.emit(progress);
 
 	for(size_t i = 0; i < files.size(); ++i) {
+		scoped_ptr<mrt::BaseFile> f(Finder->get_file(files[i].second, "rt"));
 		onFile(files[i].first, files[i].second);
-		XMLParser::parseFile(files[i].second);
+		XMLParser::parseFile(*f);
 	}
 }
 
