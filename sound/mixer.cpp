@@ -345,20 +345,20 @@ IMixer::~IMixer() {
 	_nosound = _nomusic = true;
 }
 
+#include "scoped_ptr.h"
 
 void IMixer::loadPlaylist(const std::string &file) {
 	if (_nomusic) 
 		return;
 	
 	TRY {
-		mrt::File f;
-		f.open(file, "rt");
+		scoped_ptr<mrt::BaseFile> f(Finder->get_file(file, "rt"));
 		std::string line;
-		while(f.readLine(line)) {
+		while(f->readLine(line)) {
 			mrt::trim(line);
 			_playlist[line] = false;
 		}
-		f.close();
+		f->close();
 	} CATCH("loadPlayList", {});
 	LOG_DEBUG(("playlist loaded... %u songs in playlist", (unsigned)_playlist.size()));
 }
