@@ -75,6 +75,11 @@ IMPLEMENT_SINGLETON(Game, IGame);
 
 IGame::IGame() : _main_menu(NULL),
  _autojoin(false), _shake(0), _show_stats(false), _credits(NULL), _cheater(NULL), _tip(NULL), _net_talk(NULL) {
+
+	std::string path;
+	path = mrt::Directory::getAppDir("Battle Tanks", "btanks") + "/";
+	Config->load(path + "bt.xml");
+
  }
  
 IGame::~IGame() {
@@ -102,9 +107,6 @@ void IGame::init(const int argc, char *argv[]) {
 	_donate = NULL;
 	_donate_timer = 0;
 
-	std::string path;
-	path = mrt::Directory::getAppDir("Battle Tanks", "btanks") + "/";
-	Config->load(path + "bt.xml");
 	
 	{
 		//setup some defaults
