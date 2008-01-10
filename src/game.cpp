@@ -79,7 +79,6 @@ IGame::IGame() : _main_menu(NULL),
 	std::string path;
 	path = mrt::Directory::getAppDir("Battle Tanks", "btanks") + "/";
 	Config->load(path + "bt.xml");
-
  }
  
 IGame::~IGame() {
