@@ -19,6 +19,7 @@
 #include "i18n.h"
 #include "mrt/exception.h"
 #include <assert.h>
+#include "finder.h"
 
 IMPLEMENT_SINGLETON(I18n, II18n);
 
@@ -30,6 +31,12 @@ bool lessnocase::operator()(const std::string& s1, const std::string& s2) const 
 #endif
 }
 
+void II18n::load(const std::string &lang) {
+	IFinder::FindResult strings_files;
+	Finder->findAll(strings_files, "strings.xml");
+	for(size_t i = 0; i < strings_files.size(); ++i) 
+		load(strings_files[i].second, lang);
+}
 
 II18n::II18n() {
 	_langs.insert("en");

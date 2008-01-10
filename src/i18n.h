@@ -38,7 +38,7 @@ public:
 	DECLARE_SINGLETON(II18n);
 	II18n();
 
-	void load(const std::string &file, const std::string &language);
+	void load(const std::string &lang);
 	
 	const std::string& get(const std::string &area, const std::string &message) const;
 	const bool has(const std::string &area, const std::string &message) const;
@@ -47,6 +47,7 @@ public:
 	void getSupportedLanguages(std::set<std::string> & result) const { result = _langs; }
 	
 private: 
+	void load(const std::string &file, const std::string &language);
 
 	virtual void start(const std::string &name, Attrs &attr);
 	virtual void end(const std::string &name);

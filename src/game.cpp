@@ -294,16 +294,12 @@ void IGame::init(const int argc, char *argv[]) {
 			lang = mrt::getLanguageCode();
 	}
 	
-	IFinder::FindResult strings_files;
 	
 	if (xmas)
 		Finder->addPatchSuffix("_xmas");
 	
-	Finder->findAll(strings_files, "strings.xml");
-	for(size_t i = 0; i < strings_files.size(); ++i) 
-		I18n->load(strings_files[i].second, lang);
-	
-	
+	I18n->load(lang);
+		
 	Window->init(argc, argv);
 
 	IFinder::FindResult playlists;
