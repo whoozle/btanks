@@ -229,6 +229,17 @@ void IFinder::addPatchSuffix(const std::string &patch) {
 
 void IFinder::enumerate(std::vector<std::string>&files, const std::string &base, const std::string &root) const {
 	files.clear();
+	TRY { 
+		mrt::Directory dir;
+		if (dir.exists(base + "/" + root)) {
+			dir.open(base + "/" + root);
+			std::string file;
+			while(!(file = dir.read()).empty()) {
+				files.push_back(file);
+			}
+			dir.close();
+		}
+	} CATCH("scanning directory", );
 	
 	Packages::const_iterator p_i = packages.find(base);
 	if (p_i == packages.end())
