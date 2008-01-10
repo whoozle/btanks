@@ -169,11 +169,11 @@ void IConfig::get(const std::string &name, std::string &value, const std::string
 	VarMap::iterator i = _map.find(name); 
 	if (i == _map.end()) {
 		_map[name] = new Var("string");
-		_map[name]->s = default_value;
+		value = _map[name]->s = default_value;
 	} else {
 		i->second->check("string");
+		value = i->second->s;
 	}
-	value = _map[name]->s;
 }
 
 void IConfig::set(const std::string &name, const float value) {
