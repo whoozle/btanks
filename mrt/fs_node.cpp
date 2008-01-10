@@ -93,3 +93,24 @@ const std::string FSNode::relativePath(const std::string &from_dir, const std::s
 	join(r_str, result, "/");
 	return r_str;
 }
+
+const std::string FSNode::normalize(const std::string &path_) {
+	std::string path = path_;
+	for(size_t i = 0; i < path.size(); ++i) {
+		if (path[i] == '\\')
+			path[i] = '/';
+	}
+	std::vector<std::string> p, r;
+	mrt::split(p, path, "/");
+	for(size_t i = 0; i < p.size(); ++i) {
+		if (p[i] == ".")
+			continue;
+		if (p[i] == ".." && !r.empty()) {
+			r.resize(r.size() - 1);
+			continue;
+		}
+		r.push_back(p[i]);
+	}
+	mrt::join(path, r, "/");
+	return path;
+}
