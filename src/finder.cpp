@@ -23,8 +23,15 @@
 #include "mrt/file.h"
 #include "zzip/mrt_zzip_file.h"
 #include "zzip/mrt_zzip_dir.h"
+#include <algorithm>
+#include "utils.h"
 
 IMPLEMENT_SINGLETON(Finder, IFinder);
+
+struct Package {
+	std::set<std::string> files;
+	zzip::Directory root;
+};
 
 mrt::BaseFile *IFinder::get_file(const std::string &file, const std::string &mode) const {
 	std::string::size_type p = file.find(':');
@@ -51,8 +58,15 @@ const bool IFinder::exists(const std::string &name) const {
 		return dir.exists(name);
 	} else {
 		std::string pack = name.substr(0, p);
-		std::string file = name.substr(p + 1);
-		throw_ex(("implement me, %s :: %s", pack.c_str(), file.c_str()));
+		Packages::const_iterator i = packages.find(pack);
+		if (i == packages.end())
+			throw_ex(("invalid package id '%s'", pack.c_str()));
+
+		const Package * package = i->second;
+		std::string file = mrt::FSNode::normalize(name.substr(p + 1));
+		return package->files.find(file) != package->files.end();
+		
+		//throw_ex(("implement me, %s :: %s", pack.c_str(), file.c_str()));
 	}
 }
 
@@ -76,13 +90,16 @@ IFinder::IFinder() {
 			found = true;
 			LOG_DEBUG(("found packed resources, adding %s to the list", dat.c_str()));
 			_path.push_back(dat + ":data");
-			zzip::Directory dir;
-			dir.open(dat);
+			Package *package = new Package;
+			package->root.open(dat);
 			std::string file;
-			while(!(file = dir.read()).empty()) {
-				LOG_DEBUG(("file: %s", file.c_str()));
+			while(!(file = package->root.read()).empty()) {
+				//LOG_DEBUG(("file: %s", file.c_str()));
+				package->files.insert(file);
 			}
-			dir.close();
+			LOG_DEBUG(("%u files were read from the archive", (unsigned)package->files.size()));
+			delete packages[r[i]];
+			packages[dat] = package;
 		} 
 		
 		if (!found)
@@ -90,6 +107,10 @@ IFinder::IFinder() {
 	}
 	if (_path.empty())
 		throw_ex(("none of the directories listed in engine.path('%s') exist", path.c_str()));
+}
+
+IFinder::~IFinder() {
+	std::for_each(packages.begin(), packages.end(), delete_ptr2<Packages::value_type>());
 }
 
 void IFinder::applyPatches(std::vector<std::string>& files, const std::string &file) const {

@@ -23,10 +23,13 @@
 #include "mrt/singleton.h"
 #include <string>
 #include <vector>
+#include <map>
 
 namespace mrt {
 	class BaseFile;
 }
+
+struct Package;
 
 class BTANKSAPI IFinder {
 public: 
@@ -35,6 +38,7 @@ public:
 	DECLARE_SINGLETON(IFinder);
 
 	IFinder();	
+	~IFinder();	
 
 	const std::string find(const std::string &name, const bool strict = true) const;
 	void findAll(FindResult &result, const std::string &name) const;
@@ -52,6 +56,9 @@ private:
 
 	std::vector<std::string> _path;
 	std::vector<std::string> patches;
+	
+	typedef std::map<const std::string, Package*> Packages;
+	Packages packages;
 };
 
 SINGLETON(BTANKSAPI, Finder, IFinder);
