@@ -27,6 +27,7 @@
 
 namespace mrt {
 	class BaseFile;
+	class Chunk;
 }
 
 struct Package;
@@ -50,6 +51,7 @@ public:
 	const bool exists(const std::string &name) const;
 	
 	mrt::BaseFile *get_file(const std::string &file, const std::string &mode) const;
+	void load(mrt::Chunk &data, const std::string &fname) const;
 
 private: 
 	void applyPatches(std::vector<std::string>& files, const std::string &fname) const;

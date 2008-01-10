@@ -182,6 +182,12 @@ void IFinder::findAll(FindResult &result, const std::string &name) const {
 	}
 }
 
+void IFinder::load(mrt::Chunk &data, const std::string &fname) const {
+	scoped_ptr<mrt::BaseFile> file(get_file(fname, "rb"));
+	file->readAll(data);
+	file->close();
+}
+
 void IFinder::getPath(std::vector<std::string> &path) const {
 	path = _path;
 }
