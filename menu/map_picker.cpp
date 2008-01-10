@@ -51,7 +51,7 @@ struct MapScanner : mrt::XMLParser {
 	std::string game_type;
 
 	void scan(const std::string &name) {
-		scoped_ptr<mrt::BaseFile> f(Finder->get_file("maps/" + name + ".tmx", "rt"));
+		scoped_ptr<mrt::BaseFile> f(Finder->get_file(Finder->find("maps/" + name + ".tmx"), "rt"));
 
 		parseFile(*f);
 		LOG_DEBUG(("parser: slots: %d, object_restriction: '%s'", slots, object_restriction.c_str()));
