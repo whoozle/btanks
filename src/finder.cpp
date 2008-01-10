@@ -71,8 +71,10 @@ const bool IFinder::exists(const std::string &name) const {
 	}
 
 	mrt::Directory dir;
-	if (dir.exists(name))
-		return true;
+	for(size_t i = 0; i < _path.size(); ++i) {
+		if (dir.exists(_path[i] + "/" + name))
+			return true;
+	}
 	
 	return true;
 }
