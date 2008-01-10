@@ -196,13 +196,14 @@ void MapGenerator::tileset(const std::string &fname, const int gid) {
 	if (_tilesets.find(name) != _tilesets.end())
 		return;
 	
-	if (!Finder->exists(xml_name))
+	std::string f = Finder->find(xml_name, false);
+	if (f.empty())
 		return;
 	
 	Tileset *t = NULL;
 	TRY {
 		t = new Tileset;
-		t->parseFile(Finder->find(xml_name));
+		t->parseFile(f);
 		_tilesets.insert(Tilesets::value_type(name, t));
 		t = NULL;
 	} CATCH("parsing tileset descriptor", {delete t; throw;} );
