@@ -27,6 +27,7 @@
 #include "export_mrt.h"
 
 namespace mrt {
+class BaseFile;
 
 DERIVE_EXCEPTION(MRTAPI, XMLException);
 
@@ -35,7 +36,9 @@ public:
 	typedef std::map<const std::string, std::string> Attrs;
 
 	static void getFileStats(int &tags, const std::string &fname);
-	virtual void parseFile(const std::string &fname);
+	static void getFileStats(int &tags, const mrt::BaseFile &file);
+	void parseFile(const std::string &fname);
+	virtual void parseFile(const mrt::BaseFile &file);
 	
 	virtual void start(const std::string &name, Attrs &attr) = 0;
 	virtual void end(const std::string &name) = 0;

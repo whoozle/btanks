@@ -65,9 +65,17 @@ static void XMLCALL char_data(void *userData, const XML_Char *s, int len) {
 }
 
 void XMLParser::getFileStats(int &tags, const std::string &fname) {
+	mrt::File f;
+	f.open(fname, "rt");
+	getFileStats(tags, f);
+	f.close();
+}
+
+void XMLParser::getFileStats(int &tags, const mrt::BaseFile &f) {
 	XML_Parser parser = NULL;
 
 	TRY {
+		f.seek(0, SEEK_SET);
 		parser = XML_ParserCreate("UTF-8");
 		if (parser == NULL)
 			throw_ex(("cannot create parser"));
@@ -76,8 +84,6 @@ void XMLParser::getFileStats(int &tags, const std::string &fname) {
 		XML_SetUserData(parser, &tags);
 		XML_SetElementHandler(parser, startElementStats, endElementStats);
 
-		mrt::File f;
-		f.open(fname, "rt");
 		bool done;
 		do {
 			char buf[16384];
@@ -91,7 +97,6 @@ void XMLParser::getFileStats(int &tags, const std::string &fname) {
 		} while(!done);
 		XML_ParserFree(parser);
 		parser = NULL;
-		f.close();
 	} CATCH("getFileStats", {
 		if (parser) {
 			XML_ParserFree(parser);
@@ -99,8 +104,15 @@ void XMLParser::getFileStats(int &tags, const std::string &fname) {
 	})
 }
 
-
 void XMLParser::parseFile(const std::string &fname) {
+	mrt::File f;
+	f.open(fname, "rt");
+	parseFile(f);
+	f.close();
+}
+
+void XMLParser::parseFile(const mrt::BaseFile &f) {
+	f.seek(0, SEEK_SET);
 	clear();
 	_parser = XML_ParserCreate("UTF-8");
 	if (_parser == NULL)
@@ -109,8 +121,6 @@ void XMLParser::parseFile(const std::string &fname) {
 	XML_SetElementHandler(_parser, startElement, endElement);
 	XML_SetCharacterDataHandler(_parser, char_data);
 	
-	mrt::File f;
-	f.open(fname, "rt");
 	bool done;
 	do {
 		char buf[16384];
@@ -119,7 +129,6 @@ void XMLParser::parseFile(const std::string &fname) {
 		if (XML_Parse(_parser, buf, len, done) == XML_STATUS_ERROR) 
 			throw_xml(this);
 	} while(!done);
-	f.close();
 	clear();
 }
 
