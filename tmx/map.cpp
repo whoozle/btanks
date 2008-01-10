@@ -42,6 +42,7 @@
 #include "zbox.h"
 
 #include "generator.h"
+#include "scoped_ptr.h"
 
 IMPLEMENT_SINGLETON(Map, IMap);
 
@@ -720,7 +721,14 @@ void IMap::end(const std::string &name) {
 			LOG_DEBUG(("loading tileset from single file ('%s')", source.c_str()));
 			_image_source = source;
 			_image_name = source = Finder->find("maps/" + source);
-			_image->loadImage(source);
+			
+			scoped_ptr<mrt::BaseFile> file(Finder->get_file(source, "rb"));
+
+			mrt::Chunk data;
+			file->readAll(data);
+			file->close();
+			
+			_image->loadImage(data);
 			_image_is_tileset = true;
 		} else {
 			_image->loadImage(_data);
@@ -1197,9 +1205,15 @@ void IMap::deserialize(const mrt::Serializator &s) {
 		int n = 0;
 		TRY {
 			std::string fname = Finder->find("maps/" + name);
+
+			scoped_ptr<mrt::BaseFile> file(Finder->get_file(fname, "rb"));
+
+			mrt::Chunk data;
+			file->readAll(data);
+			file->close();
 			
 			image = new sdlx::Surface;
-			image->loadImage(fname);
+			image->loadImage(data);
 			image->convertAlpha();
 			
 			n = addTiles(image, gid);
