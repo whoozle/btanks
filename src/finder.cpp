@@ -72,14 +72,17 @@ const bool IFinder::exists(const std::string &name) const {
 }
 
 IFinder::IFinder() {
+	std::string path;
 #ifdef PREFIX
-	GET_CONFIG_VALUE("engine.path", std::string, path, RESOURCES_DIR "/private/data:" RESOURCES_DIR "/data");
+	Config->get("engine.path", path, RESOURCES_DIR "/private/data:" RESOURCES_DIR "/data");
 #else
-	GET_CONFIG_VALUE("engine.path", std::string, path, "private/data:data");
+	Config->get("engine.path", path, "private/data:data");
 #endif
+	LOG_DEBUG(("engine.path = %s", path.c_str()));
 	std::vector<std::string> r;
 	mrt::split(r, path, ":");
 	for(size_t i = 0; i < r.size(); ++i) {
+		LOG_DEBUG(("checking for directory: %s", r[i].c_str()));
 		bool found = false;
 		if (exists(r[i])) {
 			_path.push_back(r[i]);
