@@ -20,6 +20,8 @@
 #include "mrt/exception.h"
 #include <assert.h>
 #include "finder.h"
+#include "scoped_ptr.h"
+#include "mrt/base_file.h"
 
 IMPLEMENT_SINGLETON(I18n, II18n);
 
@@ -117,8 +119,10 @@ void II18n::load(const std::string &file, const std::string &language) {
 	_unlocalized.clear();
 	_cdata.clear();
 	LOG_DEBUG(("loading file '%s' with language: %s", file.c_str(), language.empty()?"default":language.c_str()));
-	
-	parseFile(file);
+
+	scoped_ptr<mrt::BaseFile> f ( Finder->get_file(file, "rt") );
+	parseFile(*f);
+	f->close();
 	
 	for(std::set<std::string>::const_iterator i = _unlocalized.begin(); i != _unlocalized.end(); ++i) {
 		LOG_WARN(("unlocalized message \"%s\"", i->c_str()));
