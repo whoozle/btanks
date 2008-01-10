@@ -168,15 +168,18 @@ const std::string IFinder::find(const std::string &name, const bool strict) cons
 	mrt::Directory dir;
 	for(size_t i = 0; i < _path.size(); ++i) {
 		std::vector<std::string> files;
+		std::string prefix =  _path[i] + "/";
 		applyPatches(files, name);
 		Packages::const_iterator p_i = packages.find(_path[i]);
-		std::string prepath = _path[i] + "/";
 		for(size_t j = 0; j < files.size(); ++j) {
 			LOG_DEBUG(("looking for the file: %s:%s", _path[i].c_str(), files[j].c_str()));
-			if (dir.exists(prepath + files[j]))
+			if (dir.exists(prefix + files[j]))
 				return files[j];
-			if (p_i != packages.end() && p_i->second->files.find(files[j]) != p_i->second->files.end())
-				return _path[i] + ":" + files[j];
+			if (p_i != packages.end()) {
+				std::string n = mrt::FSNode::normalize(files[j]);
+				if (p_i->second->files.find(n) != p_i->second->files.end())
+					return _path[i] + ":" + n;
+			}
 		}
 	}
 	if (strict)

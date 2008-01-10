@@ -21,7 +21,8 @@
 #include "sdl_ex.h"
 #include <assert.h>
 #include <ctype.h>
-
+#include "mrt/chunk.h"
+#include "mrt/file.h"
 
 using namespace sdlx;
 
@@ -62,11 +63,11 @@ void Font::clear() {
 	_pages.clear();
 }
 
-void Font::addPage(const unsigned base, const std::string &file, const bool alpha) {
+void Font::addPage(const unsigned base, const mrt::Chunk &data, const bool alpha) {
 	Page page;
 
 	page.surface = new sdlx::Surface;
-	page.surface->loadImage(file);
+	page.surface->loadImage(data);
 	page.surface->convertAlpha();
 	
 	if (!alpha)
@@ -125,11 +126,23 @@ void Font::addPage(const unsigned base, const std::string &file, const bool alph
 	}
 	_pages[base] = page;
 }
+
+void Font::load(const mrt::Chunk &data, const Type type, const bool alpha) {
+	clear();
+	_type = type;
+	addPage(0x20, data, alpha);
+}
+
 	
 void Font::load(const std::string &file, const Type type, const bool alpha) {
 	clear();
 	_type = type;
-	addPage(0x20, file, alpha);
+	mrt::File f;
+	f.open(file, "rb");
+	mrt::Chunk data;
+	f.readAll(data);
+	f.close();
+	addPage(0x20, data, alpha);
 }
 
 const int Font::getHeight() const {

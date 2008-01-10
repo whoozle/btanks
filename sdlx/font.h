@@ -25,6 +25,10 @@
 #include <map>
 #include "export_sdlx.h"
 
+namespace mrt {
+	class Chunk;
+}
+
 namespace sdlx {
 
 class Surface;
@@ -34,8 +38,9 @@ public:
 	Font();
 	~Font();
 	
-	void addPage(const unsigned base, const std::string &file, const bool alpha = true);
+	void addPage(const unsigned base, const mrt::Chunk &data, const bool alpha = true);
 	
+	void load(const mrt::Chunk &data, const Type type, const bool alpha = true);
 	void load(const std::string &file, const Type type, const bool alpha = true);
 	const int getHeight() const;
 	const int getWidth() const; //fixme! returns height ;)

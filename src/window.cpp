@@ -134,6 +134,8 @@ static std::string getGLString(const GLenum name) {
 	return std::string();
 }
 
+#include "mrt/chunk.h"
+
 void IWindow::init(const int argc, char *argv[]) {
 #ifdef __linux__
 //	putenv(strdup("SDL_VIDEODRIVER=dga"));
@@ -199,14 +201,14 @@ void IWindow::init(const int argc, char *argv[]) {
 #endif
 
 #ifndef _WINDOWS
-	std::string icon_file = Finder->find("tiles/icon.png", false);
-	if (!icon_file.empty()) {
-		TRY {
-			sdlx::Surface icon;
-			icon.loadImage(icon_file);
-			SDL_WM_SetIcon(icon.getSDLSurface(), NULL);
-		} CATCH("setting icon", {});
-	}
+	TRY {
+		mrt::Chunk data;
+		Finder->load(data, "tiles/icon.png");
+
+		sdlx::Surface icon;
+		icon.loadImage(data);
+		SDL_WM_SetIcon(icon.getSDLSurface(), NULL);
+	} CATCH("setting icon", {});
 #endif
 
 	LOG_DEBUG(("setting caption..."));		

@@ -358,22 +358,28 @@ const sdlx::Font *IResourceManager::loadFont(const std::string &name, const bool
 	if (i != _fonts.end() && i->second != NULL)
 		return i->second;
 	
-	const std::string fname = Finder->find("font/" + name + ".png");
 	sdlx::Font *f = NULL;
 		TRY {
+			mrt::Chunk data;
+			Finder->load(data, "font/" + name + ".png");
 			f = new sdlx::Font;
-			f->load(fname, sdlx::Font::Ascii, alpha);
-			LOG_DEBUG(("loaded font '%s' from '%s'", name.c_str(), fname.c_str()));
+			f->load(data, sdlx::Font::Ascii, alpha);
+			LOG_DEBUG(("loaded font '%s'", name.c_str()));
 			_fonts[id] = f;
 		} CATCH("loading font", { delete f; throw; });
 		
+		mrt::Chunk data;
 		const std::string page0400 = Finder->find("font/" + name + "_0400.png", false);
-		if (!page0400.empty())
-			f->addPage(0x0400, page0400, alpha);
+		if (!page0400.empty()) {
+			Finder->load(data, "font/" + name + "_0400.png");
+			f->addPage(0x0400, data, alpha);
+		}
 
 		const std::string page0080 = Finder->find("font/" + name + "_0080.png", false);
-		if (!page0080.empty())
-			f->addPage(0x00a0, page0080, alpha);
+		if (!page0080.empty()) {
+			Finder->load(data, "font/" + name + "_0400.png");
+			f->addPage(0x00a0, data, alpha);
+		}
 	return f;
 }
 
