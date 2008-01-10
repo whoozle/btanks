@@ -52,6 +52,7 @@ static const char * chunk_reader(lua_State *L, void *data, size_t *size) {
 		x->pos += *size;
 		return ptr;
 	}
+	*size = 0;
 	return NULL;
 }
 
