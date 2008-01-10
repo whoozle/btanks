@@ -65,8 +65,6 @@ const bool IFinder::exists(const std::string &name) const {
 		const Package * package = i->second;
 		std::string file = mrt::FSNode::normalize(name.substr(p + 1));
 		return package->files.find(file) != package->files.end();
-		
-		//throw_ex(("implement me, %s :: %s", pack.c_str(), file.c_str()));
 	}
 }
 
