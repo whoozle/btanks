@@ -751,9 +751,14 @@ LUA_TRY {
 } LUA_CATCH("lua_random")
 }
 
+#include "finder.h"
+
 void LuaHooks::load(const std::string &name) {
 	LOG_DEBUG(("loading lua code from %s...", name.c_str()));
-	state.loadFile(name);
+	
+	mrt::Chunk data;
+	Finder->load(data, name, false);
+	state.load(data);
 	
 	lua_register(state, "print", lua_hooks_print);
 	lua_register(state, "spawn", lua_hooks_spawn);

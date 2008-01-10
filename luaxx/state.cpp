@@ -34,6 +34,11 @@ static void check_error(lua_State * state, const int err) {
 	}
 }
 
+void State::load(const mrt::Chunk &data) {
+	throw_ex(("implement me"));
+}
+
+
 void State::loadFile(const std::string &fname) {
 	int err = luaL_loadfile(state, fname.c_str());
 	if (err == LUA_ERRFILE)

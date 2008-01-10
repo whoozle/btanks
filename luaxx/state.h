@@ -5,11 +5,17 @@
 #include <lua.hpp>
 #include <string>
 
+namespace mrt {
+	class Chunk;
+}
+
 namespace luaxx {
 class State {
 public: 
 	State();
+	void load(const mrt::Chunk &data);
 	void loadFile(const std::string &fname);
+	
 	void open();
 	void call(const int nargs, const int nresults) const;
 	~State();

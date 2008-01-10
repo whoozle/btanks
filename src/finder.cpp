@@ -212,8 +212,9 @@ void IFinder::findAll(FindResult &result, const std::string &name_) const {
 	}
 }
 
-void IFinder::load(mrt::Chunk &data, const std::string &fname) const {
-	scoped_ptr<mrt::BaseFile> file(get_file(find(fname), "rb"));
+void IFinder::load(mrt::Chunk &data, const std::string &fname, const bool do_find) const {
+	std::string name = do_find? find(fname): fname;
+	scoped_ptr<mrt::BaseFile> file(get_file(name, "rb"));
 	file->readAll(data);
 	file->close();
 }
