@@ -42,6 +42,7 @@ public:
 	~IFinder();	
 
 	const std::string find(const std::string &name, const bool strict = true) const;
+	const std::string find(const std::string &base, const std::string &name, const bool strict = true) const;
 	void findAll(FindResult &result, const std::string &name) const;
 
 	void getPath(std::vector<std::string> &path) const;

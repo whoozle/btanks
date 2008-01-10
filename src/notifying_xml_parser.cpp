@@ -24,11 +24,17 @@
 NotifyingXMLParser::NotifyingXMLParser() : reset_progress(), notify_progress() {}
 
 
+void NotifyingXMLParser::parseFile(const std::string &file) {
+	scoped_ptr<mrt::BaseFile> f(Finder->get_file(file, "rt"));
+	parseFile(*f);
+	f->close();
+}
+
 void NotifyingXMLParser::parseFile(const mrt::BaseFile &file) {
 	int tags;
 	getFileStats(tags, file);
 	reset_progress.emit(tags);
-	XMLParser::parseFile(file);
+	mrt::XMLParser::parseFile(file);
 }
 
 void NotifyingXMLParser::parseFiles(const std::vector<std::pair<std::string, std::string> > &files) {
@@ -45,7 +51,7 @@ void NotifyingXMLParser::parseFiles(const std::vector<std::pair<std::string, std
 	for(size_t i = 0; i < files.size(); ++i) {
 		scoped_ptr<mrt::BaseFile> f(Finder->get_file(files[i].second, "rt"));
 		onFile(files[i].first, files[i].second);
-		XMLParser::parseFile(*f);
+		mrt::XMLParser::parseFile(*f);
 	}
 }
 

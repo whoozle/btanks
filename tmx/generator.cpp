@@ -202,7 +202,7 @@ void MapGenerator::tileset(const std::string &fname, const int gid) {
 	Tileset *t = NULL;
 	TRY {
 		t = new Tileset;
-		t->parseFile(xml_name);
+		t->parseFile(Finder->find(xml_name));
 		_tilesets.insert(Tilesets::value_type(name, t));
 		t = NULL;
 	} CATCH("parsing tileset descriptor", {delete t; throw;} );

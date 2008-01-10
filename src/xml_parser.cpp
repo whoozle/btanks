@@ -1,5 +1,3 @@
-#ifndef __BTASKS_NOTIFYING_XML_PARSER_H__
-#define __BTASKS_NOTIFYING_XML_PARSER_H__
 
 /* Battle Tanks Game
  * Copyright (C) 2006-2008 Battle Tanks team
@@ -18,27 +16,13 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+#include "xml_parser.h"
+#include "scoped_ptr.h"
+#include "finder.h"
+#include "mrt/base_file.h"
 
-#include "mrt/xml.h"
-#include <vector>
-#include <sigc++/sigc++.h>
-
-class NotifyingXMLParser : public sigc::trackable, public mrt::XMLParser {
-public: 
-	NotifyingXMLParser();
-	sigc::signal1<void, const int> reset_progress;
-	sigc::signal1<void, const int> notify_progress;
-
-protected:	
-	virtual void parseFile(const std::string &file);
-	virtual void parseFile(const mrt::BaseFile &file);
-	virtual void onFile(const std::string &base, const std::string &file) {}
-	virtual void parseFiles(const std::vector<std::pair<std::string, std::string> > &files);
-
-	virtual void start(const std::string &name, Attrs &attr);
-	virtual void end(const std::string &name);
-
-};
-
-#endif
-
+void XMLParser::parseFile(const std::string &file) {
+	scoped_ptr<mrt::BaseFile> f(Finder->get_file(file, "rt"));
+	mrt::XMLParser::parseFile(*f);
+	f->close();
+}

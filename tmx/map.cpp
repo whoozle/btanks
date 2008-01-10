@@ -463,7 +463,7 @@ void IMap::load(const std::string &name) {
 		file = fr[0].second;
 	}
 	
-	XMLParser::parseFile(file);
+	parseFile(file);
 	delete _image;
 	_image = NULL;
 	

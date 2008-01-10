@@ -1,13 +1,13 @@
 #ifndef BTANKS_TILESET_H__
 #define BTANKS_TILESET_H__
 
-#include "mrt/xml.h"
+#include "xml_parser.h"
 #include <deque>
 #include <string>
 #include <map>
 
 class GeneratorObject;
-class Tileset : public mrt::XMLParser {
+class Tileset : public XMLParser {
 public: 
 
 	const GeneratorObject *getObject(const std::string &name) const;

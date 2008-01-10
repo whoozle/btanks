@@ -34,7 +34,7 @@ bt_sources = 	[
 
 	'src/finder.cpp', 'src/zbox.cpp', 'src/campaign.cpp', 'src/netstats.cpp', 
 	
-	'src/alarm.cpp', 'src/base_object.cpp', 'src/notifying_xml_parser.cpp',
+	'src/alarm.cpp', 'src/base_object.cpp', 'src/notifying_xml_parser.cpp', 'src/xml_parser.cpp', 
 	'src/special_zone.cpp', 'src/game_monitor.cpp', 
 	'src/player_manager.cpp', 'src/object_grid.cpp', 'src/variants.cpp', 
 

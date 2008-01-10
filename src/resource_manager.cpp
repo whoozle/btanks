@@ -28,12 +28,13 @@
 #include "sound/mixer.h"
 #include "config.h"
 #include "finder.h"
+#include "xml_parser.h"
 
 #include <algorithm>
 
 IMPLEMENT_SINGLETON(ResourceManager, IResourceManager);
 
-class PreloadParser : public mrt::XMLParser {
+class PreloadParser : public XMLParser {
 public: 
 	virtual void start(const std::string &name, Attrs &attr) {
 		if (name == "object") {
@@ -94,7 +95,9 @@ void IResourceManager::onFile(const std::string &base, const std::string &file) 
 		return;
 
 	TRY {
-		std::string preload = base + "/preload.xml";
+		std::string preload = Finder->find(base, "preload.xml", false);
+		if (preload.empty()) 
+			return;
 		LOG_DEBUG(("parsing preload file: %s", preload.c_str()));
 		PreloadParser p;
 		p.parseFile(preload);

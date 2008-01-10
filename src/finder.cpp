@@ -165,23 +165,34 @@ const std::string IFinder::fix(const std::string &file, const bool strict) const
 
 
 const std::string IFinder::find(const std::string &name_, const bool strict) const {
-	mrt::Directory dir;
 	for(size_t i = 0; i < _path.size(); ++i) {
-		std::string prefix =  _path[i] + "/";
-		const std::string name = mrt::FSNode::normalize(prefix + name_);
-		std::vector<std::string> files;
-		applyPatches(files, name_);
-		Packages::const_iterator p_i = packages.find(_path[i]);
-		for(size_t j = 0; j < files.size(); ++j) {
-			//LOG_DEBUG(("looking for the file: %s:%s -> %s", _path[i].c_str(), files[j].c_str(), name.c_str()));
-			if (dir.exists(name))
-				return name;
-			if (p_i != packages.end()) {
-				//LOG_DEBUG(("checking for %s in archive", files[j].c_str()));
-				std::string n = mrt::FSNode::normalize(files[j]);
-				if (p_i->second->files.find(n) != p_i->second->files.end())
-					return _path[i] + ":" + n;
-			}
+		const std::string r = find(_path[i], name_, false);
+		if (!r.empty())
+			return r;
+	}
+	if (strict)
+		throw_ex(("file '%s' not found", name_.c_str()));
+	return std::string();
+}
+
+const std::string IFinder::find(const std::string &base, const std::string &name_, const bool strict) const {
+	mrt::Directory dir;
+
+	std::string prefix =  base + "/";
+	const std::string name = mrt::FSNode::normalize(prefix + name_);
+	std::vector<std::string> files;
+	applyPatches(files, name_);
+
+	Packages::const_iterator p_i = packages.find(base);
+	for(size_t j = 0; j < files.size(); ++j) {
+		//LOG_DEBUG(("looking for the file: %s:%s -> %s", _path[i].c_str(), files[j].c_str(), name.c_str()));
+		if (dir.exists(name))
+			return name;
+		if (p_i != packages.end()) {
+			//LOG_DEBUG(("checking for %s in archive", files[j].c_str()));
+			std::string n = mrt::FSNode::normalize(files[j]);
+			if (p_i->second->files.find(n) != p_i->second->files.end())
+				return base + ":" + n;
 		}
 	}
 	if (strict)
@@ -189,28 +200,13 @@ const std::string IFinder::find(const std::string &name_, const bool strict) con
 	return std::string();
 }
 
+
 void IFinder::findAll(FindResult &result, const std::string &name_) const {
 	result.clear();
-	mrt::Directory dir;
 	for(size_t i = 0; i < _path.size(); ++i) {
-		std::string prefix =  _path[i] + "/";
-		const std::string name = mrt::FSNode::normalize(prefix + name_);
-		std::vector<std::string> files;
-		applyPatches(files, name_);
-		Packages::const_iterator p_i = packages.find(_path[i]);
-		for(size_t j = 0; j < files.size(); ++j) {
-			//LOG_DEBUG(("looking for the file: %s %s", prefix.c_str(), files[j].c_str()));
-			if (dir.exists(name)) {
-				result.push_back(FindResult::value_type(_path[i], name));
-				break;
-			}
-			if (p_i != packages.end()) {
-				std::string n = mrt::FSNode::normalize(files[j]);
-				if (p_i->second->files.find(n) != p_i->second->files.end()) {
-					result.push_back(FindResult::value_type(_path[i], _path[i] + ":" + n));
-					break;
-				}
-			}
+		const std::string r = find(_path[i], name_, false);
+		if (!r.empty()) {
+			result.push_back(FindResult::value_type(_path[i], r));
 		}
 	}
 }
