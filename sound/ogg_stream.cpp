@@ -326,15 +326,23 @@ TRY {
     return true;
 }
 
-void OggStream::decode(Sample &sample, const std::string &fname) {
-	mrt::File file;
-	file.open(fname, "rb");
+#include "scoped_ptr.h"
 
+void OggStream::decode(Sample &sample, const std::string &fname) {
+	scoped_ptr<mrt::BaseFile> file(Finder->get_file(fname, "rb"));
+	
+	ov_callbacks ov_cb;
+	memset(&ov_cb, 0, sizeof(ov_cb));
+
+	ov_cb.read_func = stream_read_func;
+	ov_cb.seek_func = stream_seek_func;
+	ov_cb.tell_func = stream_tell_func;
+	ov_cb.close_func = stream_close_func;
+		
 	OggVorbis_File ogg;
-	int r = ov_open(file, &ogg, NULL, 0);
+	int r = ov_open_callbacks(file.get(), &ogg, NULL, 0, ov_cb);
 	if (r < 0)
 		throw_ogg(r, ("ov_open('%s')", fname.c_str()));
-	file.unlink();
 
 	GET_CONFIG_VALUE("engine.sound.file-buffer-size", int, buffer_size, 441000);
 
