@@ -90,7 +90,7 @@ IFinder::IFinder() {
 		if (exists(dat)) {
 			found = true;
 			LOG_DEBUG(("found packed resources, adding %s to the list", dat.c_str()));
-			_path.push_back(dat + ":data");
+
 			scoped_ptr<Package> package(new Package);
 			package->root.open(dat);
 			std::string file;
@@ -100,7 +100,7 @@ IFinder::IFinder() {
 			}
 			LOG_DEBUG(("%u files were read from the archive", (unsigned)package->files.size()));
 			delete packages[r[i]];
-			packages[dat] = package.release();
+			packages[r[i]] = package.release();
 		} 
 		
 		if (!found)
