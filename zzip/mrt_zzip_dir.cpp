@@ -8,10 +8,10 @@ Directory::Directory() : _dir(NULL) {}
 
 void Directory::open(const std::string &path) {
 	close();
-	zzip_error_t code;
-	_dir = zzip_dir_open(path.c_str(), &code);
+	//zzip_error_t code;
+	_dir = zzip_opendir_ext_io(path.c_str(), ZZIP_THREADED | ZZIP_ONLYZIP, NULL, NULL);
 	if (_dir == NULL) 
-		throw_ex(("could not open archive file %s with code: %d", path.c_str(), (int) code));
+		throw_io(("could not open archive file %s", path.c_str()));
 }
 
 const bool Directory::opened() const {
