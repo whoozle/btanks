@@ -55,20 +55,17 @@ mrt::BaseFile *IFinder::get_file(const std::string &file, const std::string &mod
 }
 
 const bool IFinder::exists(const std::string &name) const {
-	std::string::size_type p = name.find(':');
-	if (p == std::string::npos) {
-		mrt::Directory dir;
-		return dir.exists(name);
-	} else {
-		std::string pack = name.substr(0, p);
-		Packages::const_iterator i = packages.find(pack);
-		if (i == packages.end())
-			throw_ex(("invalid package id '%s'", pack.c_str()));
-
+	for(Packages::const_iterator i = packages.begin(); i != packages.end(); ++i) {
 		const Package * package = i->second;
-		std::string file = mrt::FSNode::normalize(name.substr(p + 1));
-		return package->files.find(file) != package->files.end();
+		if (package->files.find(name) != package->files.end())
+			return true;	
 	}
+
+	mrt::Directory dir;
+	if (dir.exists(name))
+		return true;
+	
+	return true;
 }
 
 IFinder::IFinder() {
@@ -81,16 +78,17 @@ IFinder::IFinder() {
 	LOG_DEBUG(("engine.path = %s", path.c_str()));
 	std::vector<std::string> r;
 	mrt::split(r, path, ":");
+	mrt::Directory dir;
 	for(size_t i = 0; i < r.size(); ++i) {
 		LOG_DEBUG(("checking for directory: %s", r[i].c_str()));
 		bool found = false;
-		if (exists(r[i])) {
+		if (dir.exists(r[i])) {
 			_path.push_back(r[i]);
 			found = true;
 		} 
 		std::string dat = mrt::FSNode::getParentDir(r[i]) + "/resources.dat";
 		LOG_DEBUG(("checking for compressed resources in %s", dat.c_str()));
-		if (exists(dat)) {
+		if (dir.exists(dat)) {
 			found = true;
 			LOG_DEBUG(("found packed resources, adding %s to the list", dat.c_str()));
 
