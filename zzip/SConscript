@@ -3,7 +3,7 @@ Import('env')
 
 env = env.Copy()
 
-libs = ['z', 'mrt']
+libs = ['z', 'mrt', 'sdlx']
 
 if sys.platform != "win32":
 	env.Append(CPPDEFINES=['ZZIP_HAVE_STDINT_H'])
@@ -12,7 +12,7 @@ if sys.platform != "win32":
 
 env.Append(CPPPATH=['zzip'])
 env.Append(CPPDEFINES=['ZZIPAPI=DLLEXPORT'])
-env.Append(LIBPATH=['../mrt'])
+env.Append(LIBPATH=['../mrt', '../sdlx'])
 
 zzip = env.SharedLibrary('zzip', \
 	['dir.c', 'err.c', 'fetch.c', 'file.c', 'info.c', 'plugin.c', 'stat.c', 'write.c', 'zip.c', 

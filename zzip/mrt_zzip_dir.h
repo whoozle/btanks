@@ -4,12 +4,15 @@
 #include <string>
 #include "export_zzip.h"
 #include "zzip/zzip.h"
+#include "sdlx/mutex.h"
 
 namespace zzip { 
 
 class File;
 class ZZIPAPI Directory {
 public: 
+	sdlx::Mutex big_lock; /// zzlib are not thread safe at all. :(((
+
 	Directory();
 	virtual void open(const std::string &path);
 	virtual const bool opened() const;
