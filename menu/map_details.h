@@ -42,6 +42,7 @@ private:
 	Box _background;
 	Tooltip *_map_desc, *_ai_hint;
 	std::string base, map;
+	bool has_tactics;
 	
 	sdlx::Surface _screenshot, _tactics, _null_screenshot;
 	const sdlx::Font *_small_font;

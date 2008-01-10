@@ -26,7 +26,7 @@
 #include "map_desc.h"
 #include "mrt/chunk.h"
 
-MapDetails::MapDetails(const int w, const int h, const bool hint) : _map_desc(0), _ai_hint(NULL) {
+MapDetails::MapDetails(const int w, const int h, const bool hint) : _map_desc(0), _ai_hint(NULL), has_tactics(false) {
 	_background.init("menu/background_box.png", w, h);
 
 	mrt::Chunk data;
@@ -63,8 +63,9 @@ bool MapDetails::onMouse(const int button, const bool pressed, const int x, cons
 			Finder->load(data, fname);
 			_tactics.loadImage(data);
 			_tactics.convertAlpha();
+			has_tactics = true;
 		}
-	} CATCH("loading mini map", {});
+	} CATCH("loading tactic map", {});
 	
 	return true;
 }
@@ -72,6 +73,8 @@ bool MapDetails::onMouse(const int button, const bool pressed, const int x, cons
 void MapDetails::set(const MapDesc & map_desc) {
 	base = map_desc.base;
 	map = map_desc.name;
+
+	LOG_DEBUG(("selected base: %s, map: %s", base.c_str(), map.c_str()));
 	
 	TRY {
 		_screenshot.free();
@@ -83,6 +86,10 @@ void MapDetails::set(const MapDesc & map_desc) {
 			_screenshot.convertAlpha();
 		}
 	} CATCH("loading screenshot", {});
+
+	std::string fname = "maps/" + map + "_tactics.jpg";
+	has_tactics = Finder->exists(base, fname);
+
 	delete _map_desc; 
 	_map_desc = NULL;
 	
@@ -110,8 +117,7 @@ void MapDetails::render(sdlx::Surface &surface, const int x, const int y) {
 	int ys = screenshot.getHeight();
 	yp += (ys < 140)?140:ys;
 	
-	const std::string fname = base + "/" + map + "_tactics.jpg";
-	if (Finder->exists(base, fname)) {
+	if (has_tactics) {
 		std::string click_here = I18n->get("menu", "view-map");
 		int w = _small_font->render(NULL, 0, 0, click_here);
 		_small_font->render(surface, x + (_background.w - w) / 2, y + yp, click_here);

@@ -69,7 +69,8 @@ private:
 };
 
 
-void MapPicker::scan(const std::string &path) {
+void MapPicker::scan(const std::string &base) {
+	const std::string path = base + "/maps";
 	mrt::Directory dir;
 
 	if (!dir.exists(path))
@@ -92,7 +93,7 @@ void MapPicker::scan(const std::string &path) {
 		} CATCH("scanning map", {});
 		const std::string &comments = I18n->has("maps/descriptions", map)?I18n->get("maps/descriptions", map): 
 			I18n->get("maps/descriptions", "(default)");
-		_maps.push_back(MapList::value_type(path, map, comments, m.object_restriction, m.game_type, m.slots));
+		_maps.push_back(MapList::value_type(base, map, comments, m.object_restriction, m.game_type, m.slots));
 	}	
 	dir.close();
 
@@ -119,7 +120,7 @@ MapPicker::MapPicker(const int w, const int h) : _index(0) {
 	std::vector<std::string> path;
 	Finder->getPath(path);
 	for(size_t i = 0; i < path.size(); ++i) {
-		scan(path[i] + "/maps");
+		scan(path[i]);
 	}
 	
 	if (_maps.empty())
