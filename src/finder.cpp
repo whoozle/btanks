@@ -151,9 +151,10 @@ const std::string IFinder::fix(const std::string &file, const bool strict) const
 	std::vector<std::string> files;
 	
 	applyPatches(files, file);
+	mrt::Directory dir;
 	for(size_t j = 0; j < files.size(); ++j) {
 		//LOG_DEBUG(("looking for the file: %s", files[j].c_str()));
-		if (exists(files[j]))
+		if (dir.exists(files[j]))
 			return files[j];
 	}
 	if (strict)
@@ -163,12 +164,13 @@ const std::string IFinder::fix(const std::string &file, const bool strict) const
 
 
 const std::string IFinder::find(const std::string &name, const bool strict) const {
+	mrt::Directory dir;
 	for(size_t i = 0; i < _path.size(); ++i) {
 		std::vector<std::string> files;
 		applyPatches(files, _path[i] + "/" + name);
 		for(size_t j = 0; j < files.size(); ++j) {
 			//LOG_DEBUG(("looking for the file: %s", files[j].c_str()));
-			if (exists(files[j]))
+			if (dir.exists(files[j]))
 				return files[j];
 		}
 	}
@@ -179,13 +181,13 @@ const std::string IFinder::find(const std::string &name, const bool strict) cons
 
 void IFinder::findAll(FindResult &result, const std::string &name) const {
 	result.clear();
-	
+	mrt::Directory dir;
 	for(size_t i = 0; i < _path.size(); ++i) {
 		std::vector<std::string> files;
 		applyPatches(files, _path[i] + "/" + name);
 		for(size_t j = 0; j < files.size(); ++j) {
 			//LOG_DEBUG(("looking for the file: %s", files[j].c_str()));
-			if (exists(files[j])) {
+			if (dir.exists(files[j])) {
 				result.push_back(FindResult::value_type(_path[i], files[j]));
 				break;
 			}
