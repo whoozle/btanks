@@ -56,11 +56,11 @@ mrt::BaseFile *IFinder::get_file(const std::string &file, const std::string &mod
 
 const bool IFinder::exists(const std::string &base, const std::string &name) const {
 	Packages::const_iterator i = packages.find(base);
-	if (i != packages.end())
-		return i->second->files.find(name) != i->second->files.end();
+	if (i != packages.end() && i->second->files.find(mrt::FSNode::normalize(name)) != i->second->files.end())
+		return true;
 
 	mrt::Directory dir;
-	return dir.exists(name);
+	return dir.exists(mrt::FSNode::normalize(base + "/" + name));
 }
 
 const bool IFinder::exists(const std::string &name) const {
