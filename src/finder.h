@@ -49,6 +49,7 @@ public:
 	
 	const std::string fix(const std::string &file, const bool strict = true) const;
 	const bool exists(const std::string &name) const;
+	const bool exists(const std::string &base, const std::string &name) const;
 	
 	mrt::BaseFile *get_file(const std::string &file, const std::string &mode) const;
 	void load(mrt::Chunk &data, const std::string &fname) const;

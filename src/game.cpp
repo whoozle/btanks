@@ -462,9 +462,10 @@ bool IGame::onKey(const SDL_keysym key, const bool pressed) {
 
 		static int n = 0; 
 		std::string fname;
+		mrt::Directory dir;
 		do {
 			fname = path + mrt::formatString("screenshot%02d.bmp", n++);
-		} while(Finder->exists(fname));
+		} while(dir.exists(fname));
 		LOG_DEBUG(("saving screenshot to %s", fname.c_str()));
 		Window->getSurface().saveBMP(fname);
 		return true;

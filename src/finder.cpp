@@ -54,6 +54,15 @@ mrt::BaseFile *IFinder::get_file(const std::string &file, const std::string &mod
 	return package->root.open_file(name);
 }
 
+const bool IFinder::exists(const std::string &base, const std::string &name) const {
+	Packages::const_iterator i = packages.find(base);
+	if (i != packages.end())
+		return i->second->files.find(name) != i->second->files.end();
+
+	mrt::Directory dir;
+	return dir.exists(name);
+}
+
 const bool IFinder::exists(const std::string &name) const {
 	for(Packages::const_iterator i = packages.begin(); i != packages.end(); ++i) {
 		const Package * package = i->second;

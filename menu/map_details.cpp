@@ -55,7 +55,7 @@ bool MapDetails::onMouse(const int button, const bool pressed, const int x, cons
 	
 	TRY {
 		const std::string fname = base + "/" + map + "_tactics.jpg";
-		if (Finder->exists(fname)) {
+		if (Finder->exists(base, fname)) {
 			_tactics.loadImage(fname);
 			_tactics.convertAlpha();
 		}
@@ -71,7 +71,7 @@ void MapDetails::set(const MapDesc & map_desc) {
 	TRY {
 		_screenshot.free();
 		const std::string fname = base + "/" + map + ".jpg";
-		if (Finder->exists(fname)) {
+		if (Finder->exists(base, fname)) {
 			_screenshot.loadImage(fname);
 			_screenshot.convertAlpha();
 		}
@@ -104,7 +104,7 @@ void MapDetails::render(sdlx::Surface &surface, const int x, const int y) {
 	yp += (ys < 140)?140:ys;
 	
 	const std::string fname = base + "/" + map + "_tactics.jpg";
-	if (Finder->exists(fname)) {
+	if (Finder->exists(base, fname)) {
 		std::string click_here = I18n->get("menu", "view-map");
 		int w = _small_font->render(NULL, 0, 0, click_here);
 		_small_font->render(surface, x + (_background.w - w) / 2, y + yp, click_here);
