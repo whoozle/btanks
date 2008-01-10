@@ -143,16 +143,18 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 		if (_surfaces.find(tile) == _surfaces.end()) {
 			TRY { 		
 				if (real_load) {
-					const std::string fname = Finder->fix(_base_dir + "/tiles/" + tile);
+					mrt::Chunk data;
+					Finder->load(data, "tiles/" + tile);
+					
 					s = new sdlx::Surface;
-					s->loadImage(fname);
+					s->loadImage(data);
 					s->convertAlpha();
 			
 					cmap = new sdlx::CollisionMap;
 					cmap->init(s, sdlx::CollisionMap::OnlyOpaque);
 			
 					s->convertToHardware();
-					LOG_DEBUG(("loaded animation '%s' from '%s'", id.c_str(), fname.c_str()));
+					LOG_DEBUG(("loaded animation '%s'", id.c_str()));
 				}
 			
 				_surfaces[tile] = s;
@@ -335,14 +337,16 @@ const sdlx::Surface *IResourceManager::loadSurface(const std::string &id) {
 	if (i != _surfaces.end() && i->second != NULL)
 		return i->second;
 	
-	const std::string fname = Finder->find("tiles/" + id);
 	sdlx::Surface *s = NULL;
 		TRY {
+			mrt::Chunk data;
+			Finder->load(data, "tiles/" + id);
+
 			s = new sdlx::Surface;
-			s->loadImage(fname);
+			s->loadImage(data);
 			s->convertAlpha();
 			s->convertToHardware();
-			LOG_DEBUG(("loaded surface '%s' from '%s'", id.c_str(), fname.c_str()));
+			LOG_DEBUG(("loaded surface '%s'", id.c_str()));
 			_surfaces[id] = s;
 		} CATCH("loading surface", { delete s; throw; });
 	return s;
@@ -549,15 +553,13 @@ void IResourceManager::checkSurface(const std::string &animation, const sdlx::Su
 	sdlx::Surface *s = _surfaces[a->surface];
 	sdlx::CollisionMap *cmap = _cmaps[a->surface];
 
-	std::string fname = Finder->fix(a->base_dir + "/tiles/" + a->surface, false);
-	if (fname.empty()) {
-		fname = Finder->find("tiles/" + a->surface);
-	}
 	
 	if (s == NULL) {
 		TRY {
+			mrt::Chunk data;
+			Finder->load(data, "tiles/" + a->surface);
 			s = new sdlx::Surface;
-			s->loadImage(fname);
+			s->loadImage(data);
 			s->convertAlpha();
 			s->convertToHardware();
 			GET_CONFIG_VALUE("engine.strip-alpha-from-object-tiles", bool, strip_alpha, false);
@@ -571,7 +573,7 @@ void IResourceManager::checkSurface(const std::string &animation, const sdlx::Su
 					}
 			}
 
-			LOG_DEBUG(("loaded animation '%s' from '%s'", animation.c_str(), fname.c_str()));
+			LOG_DEBUG(("loaded animation '%s'", animation.c_str()));
 			_surfaces[a->surface] = s;
 		} CATCH("loading surface", { delete s; throw; });
 	}
