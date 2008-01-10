@@ -401,6 +401,7 @@ void IResourceManager::init(const std::vector<std::pair<std::string, std::string
 
 #include "mrt/file.h"
 #include "tmx/map.h"
+#include "mrt/directory.h"
 
 void IResourceManager::clear() {
 	LOG_DEBUG(("freeing resources"));
@@ -447,6 +448,12 @@ void IResourceManager::clear() {
 		//LOG_DEBUG(("xml data for %s, size: %u", i->first.c_str(), (unsigned)i->second.size()));
 		TRY {
 			assert(!i->first.empty());
+
+			try {
+				mrt::Directory dir;
+				dir.create(i->first);
+			} catch(...) {}
+
 			mrt::File f;
 			f.open(i->first + "/preload.xml", "wb");
 			i->second.insert(0, "<preload>\n");
