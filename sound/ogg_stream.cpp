@@ -105,14 +105,14 @@ static long   stream_tell_func  (void *datasource) {
 	} CATCH("tell_cb", return -1);
 }
 
+#include "finder.h"
 
 void OggStream::_open() {
 	sdlx::AutoMutex m(_lock);
 
 	LOG_DEBUG(("_open(%s)", _filename.c_str()));
 	delete _file;
-	_file = new mrt::File(); //leak it for now
-	_file->open(_filename, "rb");
+	_file = Finder->get_file(_filename, "rb");
 	
 	ov_callbacks ov_cb;
 	memset(&ov_cb, 0, sizeof(ov_cb));
