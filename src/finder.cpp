@@ -89,19 +89,21 @@ IFinder::IFinder() {
 		std::string dat = mrt::FSNode::getParentDir(r[i]) + "/resources.dat";
 		LOG_DEBUG(("checking for compressed resources in %s", dat.c_str()));
 		if (dir.exists(dat)) {
-			found = true;
-			LOG_DEBUG(("found packed resources, adding %s to the list", dat.c_str()));
+			TRY {
+				LOG_DEBUG(("found packed resources, adding %s to the list", dat.c_str()));
 
-			scoped_ptr<Package> package(new Package);
-			package->root.open(dat);
-			std::string file;
-			while(!(file = package->root.read()).empty()) {
-				//LOG_DEBUG(("file: %s", file.c_str()));
-				package->files.insert(file);
-			}
-			LOG_DEBUG(("%u files were read from the archive", (unsigned)package->files.size()));
-			delete packages[r[i]];
-			packages[r[i]] = package.release();
+				scoped_ptr<Package> package(new Package);
+				package->root.open(dat);
+				std::string file;
+				while(!(file = package->root.read()).empty()) {
+					//LOG_DEBUG(("file: %s", file.c_str()));
+					package->files.insert(file);
+				}
+				LOG_DEBUG(("%u files were read from the archive", (unsigned)package->files.size()));
+				delete packages[r[i]];
+				packages[r[i]] = package.release();
+				found = true;
+			} CATCH("loading packed resources", );
 		} 
 		
 		if (!found)
