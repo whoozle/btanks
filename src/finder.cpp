@@ -172,7 +172,7 @@ const std::string IFinder::find(const std::string &name, const bool strict) cons
 		applyPatches(files, name);
 		Packages::const_iterator p_i = packages.find(_path[i]);
 		for(size_t j = 0; j < files.size(); ++j) {
-			LOG_DEBUG(("looking for the file: %s:%s", _path[i].c_str(), files[j].c_str()));
+			//LOG_DEBUG(("looking for the file: %s:%s", _path[i].c_str(), files[j].c_str()));
 			if (dir.exists(prefix + files[j]))
 				return files[j];
 			if (p_i != packages.end()) {
@@ -204,7 +204,7 @@ void IFinder::findAll(FindResult &result, const std::string &name) const {
 }
 
 void IFinder::load(mrt::Chunk &data, const std::string &fname) const {
-	scoped_ptr<mrt::BaseFile> file(get_file(fname, "rb"));
+	scoped_ptr<mrt::BaseFile> file(get_file(find(fname), "rb"));
 	file->readAll(data);
 	file->close();
 }
