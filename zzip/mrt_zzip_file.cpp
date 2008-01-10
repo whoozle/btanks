@@ -4,6 +4,7 @@
 using namespace zzip;
 
 zzip::File::File() : _f(NULL), _endof(true) {}
+zzip::File::File(ZZIP_FILE *f) : _f(f), _endof(false) {}
 
 const bool File::readLine(std::string &str, const size_t bufsize) const {
 	throw_ex(("unimplemented"));
@@ -16,6 +17,19 @@ void File::open(const std::string &fname, const std::string &mode) {
 		throw_io(("zzip_fopen(%s, %s)", fname.c_str(), mode.c_str()));
 	_endof = false;
 }
+
+File *File::shared_open(const std::string &fname, const std::string &mode) const {
+	int flags = O_RDONLY;
+#ifdef _WINDOWS 
+	flags |= O_BINARY;
+#endif
+
+	ZZIP_FILE *dst = zzip_open_shared_io(_f, fname.c_str(), flags, ZZIP_ONLYZIP | ZZIP_THREADED, /*ext*/0, /*io struct*/0);
+	if (dst == NULL)
+		throw_io(("zzip_open_shared_io(%s)", fname.c_str()));
+	return new File(dst);
+}
+
 
 const bool File::opened() const {
 	return _f != NULL;

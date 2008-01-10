@@ -10,6 +10,7 @@ public:
 	inline T* operator->() { return ptr; }
 	inline T& operator*() { return *ptr; }
 	inline T * release() { T * r = ptr; ptr = 0; return r; }
+	inline T *get() { return ptr; }
 
 private:
 	scoped_ptr(const scoped_ptr<T>& other);

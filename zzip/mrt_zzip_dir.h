@@ -7,6 +7,7 @@
 
 namespace zzip { 
 
+class File;
 class ZZIPAPI Directory {
 public: 
 	Directory();

@@ -1,4 +1,5 @@
 #include "mrt_zzip_dir.h"
+#include "mrt_zzip_file.h"
 #include "mrt/exception.h"
 
 using namespace zzip;

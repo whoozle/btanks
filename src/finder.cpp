@@ -25,12 +25,14 @@
 #include "zzip/mrt_zzip_dir.h"
 #include <algorithm>
 #include "utils.h"
+#include "scoped_ptr.h"
 
 IMPLEMENT_SINGLETON(Finder, IFinder);
 
 struct Package {
 	std::set<std::string> files;
 	zzip::Directory root;
+	zzip::File file;
 };
 
 mrt::BaseFile *IFinder::get_file(const std::string &file, const std::string &mode) const {
@@ -41,14 +43,16 @@ mrt::BaseFile *IFinder::get_file(const std::string &file, const std::string &mod
 			f->open(file, mode);
 		} CATCH("fs open", { delete f; throw; } )
 		return f;
-	} else {
-		//zzip file
-		zzip::File *f = new zzip::File();
-		TRY {
-			f->open(file, mode);
-		} CATCH("zzip open", { delete f; throw; } )
-		return f;
-	}
+	} 
+	
+	std::string pack = file.substr(0, p);
+	Packages::const_iterator i = packages.find(pack);
+	if (i == packages.end())
+		throw_ex(("invalid package id '%s'", pack.c_str()));
+
+	const Package * package = i->second;
+	std::string name = mrt::FSNode::normalize(file.substr(p + 1));
+	return package->file.shared_open(name, "rb");
 }
 
 const bool IFinder::exists(const std::string &name) const {
@@ -88,7 +92,8 @@ IFinder::IFinder() {
 			found = true;
 			LOG_DEBUG(("found packed resources, adding %s to the list", dat.c_str()));
 			_path.push_back(dat + ":data");
-			Package *package = new Package;
+			scoped_ptr<Package> package(new Package);
+			package->file.open(dat, "rb");
 			package->root.open(dat);
 			std::string file;
 			while(!(file = package->root.read()).empty()) {
@@ -97,7 +102,7 @@ IFinder::IFinder() {
 			}
 			LOG_DEBUG(("%u files were read from the archive", (unsigned)package->files.size()));
 			delete packages[r[i]];
-			packages[dat] = package;
+			packages[dat] = package.release();
 		} 
 		
 		if (!found)
