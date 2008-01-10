@@ -228,3 +228,7 @@ void IFinder::getPath(std::vector<std::string> &path) const {
 void IFinder::addPatchSuffix(const std::string &patch) {
 	patches.push_back(patch);
 }
+
+void IFinder::enumerate(std::vector<std::string>&files, const std::string &base, const std::string &root) {
+	files.clear();
+}

@@ -53,6 +53,7 @@ public:
 	
 	mrt::BaseFile *get_file(const std::string &file, const std::string &mode) const;
 	void load(mrt::Chunk &data, const std::string &fname) const;
+	void enumerate(std::vector<std::string>&files, const std::string &base, const std::string &root);
 
 private: 
 	void applyPatches(std::vector<std::string>& files, const std::string &fname) const;

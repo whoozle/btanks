@@ -41,6 +41,8 @@
 #include "config.h"
 
 #include "tmx/map.h"
+#include "scoped_ptr.h"
+#include "mrt/base_file.h"
 
 struct MapScanner : mrt::XMLParser {
 	MapScanner() : slots(0) {}
@@ -49,7 +51,9 @@ struct MapScanner : mrt::XMLParser {
 	std::string game_type;
 
 	void scan(const std::string &name) {
-		parseFile(name);
+		scoped_ptr<mrt::BaseFile> f(Finder->get_file("maps/" + name + ".tmx", "rt"));
+
+		parseFile(*f);
 		LOG_DEBUG(("parser: slots: %d, object_restriction: '%s'", slots, object_restriction.c_str()));
 	}
 private: 
@@ -70,17 +74,10 @@ private:
 
 
 void MapPicker::scan(const std::string &base) {
-	const std::string path = base + "/maps";
-	mrt::Directory dir;
-
-	if (!dir.exists(path))
-		return;
-	
-	dir.open(path);
-	std::string fname;
-
-	while(!(fname = dir.read()).empty()) {
-		std::string map = fname;
+	std::vector<std::string> entries;
+	Finder->enumerate(entries, base, "maps");
+	for(size_t i = 0; i < entries.size(); ++i) {
+		std::string map = entries[i];
 		
 		mrt::toLower(map);
 		if (map.size() < 5 || map.substr(map.size() - 4) != ".tmx")
@@ -89,14 +86,12 @@ void MapPicker::scan(const std::string &base) {
 		LOG_DEBUG(("found map: %s", map.c_str()));
 		MapScanner m;
 		TRY {
-			m.scan(path + "/" + fname);
+			m.scan(map);
 		} CATCH("scanning map", {});
 		const std::string &comments = I18n->has("maps/descriptions", map)?I18n->get("maps/descriptions", map): 
 			I18n->get("maps/descriptions", "(default)");
 		_maps.push_back(MapList::value_type(base, map, comments, m.object_restriction, m.game_type, m.slots));
 	}	
-	dir.close();
-
 }
 
 void MapPicker::tick(const float dt) {
