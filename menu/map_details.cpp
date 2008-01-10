@@ -24,11 +24,14 @@
 #include "resource_manager.h"
 #include "i18n.h"
 #include "map_desc.h"
+#include "mrt/chunk.h"
 
 MapDetails::MapDetails(const int w, const int h, const bool hint) : _map_desc(0), _ai_hint(NULL) {
 	_background.init("menu/background_box.png", w, h);
 
-	_null_screenshot.loadImage(Finder->find("maps/null.png"));
+	mrt::Chunk data;
+	Finder->load(data, "maps/null.png");
+	_null_screenshot.loadImage(data);
 	_small_font = ResourceManager->loadFont("small", true);
 
 	int mx, my;
@@ -54,9 +57,11 @@ bool MapDetails::onMouse(const int button, const bool pressed, const int x, cons
 		return true;
 	
 	TRY {
-		const std::string fname = base + "/" + map + "_tactics.jpg";
+		std::string fname = "maps/" + map + "_tactics.jpg";
 		if (Finder->exists(base, fname)) {
-			_tactics.loadImage(fname);
+			mrt::Chunk data;
+			Finder->load(data, fname);
+			_tactics.loadImage(data);
 			_tactics.convertAlpha();
 		}
 	} CATCH("loading mini map", {});
@@ -70,9 +75,11 @@ void MapDetails::set(const MapDesc & map_desc) {
 	
 	TRY {
 		_screenshot.free();
-		const std::string fname = base + "/" + map + ".jpg";
+		const std::string fname = "maps/" + map + ".jpg";
 		if (Finder->exists(base, fname)) {
-			_screenshot.loadImage(fname);
+			mrt::Chunk data;
+			Finder->load(data, fname);
+			_screenshot.loadImage(data);
 			_screenshot.convertAlpha();
 		}
 	} CATCH("loading screenshot", {});
