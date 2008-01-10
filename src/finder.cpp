@@ -113,7 +113,8 @@ IFinder::IFinder() {
 				LOG_DEBUG(("%u files were read from the archive", (unsigned)package->files.size()));
 				delete packages[r[i]];
 				packages[r[i]] = package.release();
-				_path.push_back(r[i]);
+				if (!found)
+					_path.push_back(r[i]);
 				found = true;
 			} CATCH("loading packed resources", );
 		} 
@@ -185,7 +186,7 @@ const std::string IFinder::find(const std::string &base, const std::string &name
 
 	Packages::const_iterator p_i = packages.find(base);
 	for(size_t j = 0; j < files.size(); ++j) {
-		//LOG_DEBUG(("looking for the file: %s:%s -> %s", _path[i].c_str(), files[j].c_str(), name.c_str()));
+		//LOG_DEBUG(("looking for the file: %s:%s -> %s", base.c_str(), files[j].c_str(), name.c_str()));
 		if (dir.exists(name))
 			return name;
 		if (p_i != packages.end()) {
