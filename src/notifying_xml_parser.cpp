@@ -21,11 +21,11 @@
 NotifyingXMLParser::NotifyingXMLParser() : reset_progress(), notify_progress() {}
 
 
-void NotifyingXMLParser::parseFile(const std::string &fname) {
+void NotifyingXMLParser::parseFile(const mrt::BaseFile &file) {
 	int tags;
-	getFileStats(tags, fname);
+	getFileStats(tags, file);
 	reset_progress.emit(tags);
-	XMLParser::parseFile(fname);
+	XMLParser::parseFile(file);
 }
 
 void NotifyingXMLParser::parseFiles(const std::vector<std::pair<std::string, std::string> > &files) {

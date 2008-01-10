@@ -30,7 +30,7 @@ public:
 	sigc::signal1<void, const int> notify_progress;
 
 protected:	
-	virtual void parseFile(const std::string &fname);
+	virtual void parseFile(const mrt::BaseFile &file);
 	virtual void onFile(const std::string &base, const std::string &file) {}
 	virtual void parseFiles(const std::vector<std::pair<std::string, std::string> > &files);
 
