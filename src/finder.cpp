@@ -32,7 +32,6 @@ IMPLEMENT_SINGLETON(Finder, IFinder);
 struct Package {
 	std::set<std::string> files;
 	zzip::Directory root;
-	zzip::File file;
 };
 
 mrt::BaseFile *IFinder::get_file(const std::string &file, const std::string &mode) const {
@@ -52,7 +51,7 @@ mrt::BaseFile *IFinder::get_file(const std::string &file, const std::string &mod
 
 	const Package * package = i->second;
 	std::string name = mrt::FSNode::normalize(file.substr(p + 1));
-	return package->file.shared_open(name, "rb");
+	return package->root.open_file(name);
 }
 
 const bool IFinder::exists(const std::string &name) const {
@@ -93,7 +92,6 @@ IFinder::IFinder() {
 			LOG_DEBUG(("found packed resources, adding %s to the list", dat.c_str()));
 			_path.push_back(dat + ":data");
 			scoped_ptr<Package> package(new Package);
-			package->file.open(dat, "rb");
 			package->root.open(dat);
 			std::string file;
 			while(!(file = package->root.read()).empty()) {

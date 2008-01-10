@@ -17,6 +17,7 @@ public:
 	virtual void close();
 	virtual void create(const std::string &path);
 	virtual ~Directory();
+	File * open_file(const std::string &name) const;
 private: 
 	ZZIP_DIR * _dir;
 };

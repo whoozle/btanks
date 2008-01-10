@@ -1,6 +1,6 @@
 #include "mrt_zzip_dir.h"
 #include "mrt_zzip_file.h"
-#include "mrt/exception.h"
+#include "mrt/ioexception.h"
 
 using namespace zzip;
 
@@ -34,9 +34,20 @@ void Directory::close() {
 }
 
 void Directory::create(const std::string &path) {
-
+	throw_ex(("implement me"));
 }
 
 Directory::~Directory() {
 	close();
+}
+
+File * Directory::open_file(const std::string &name) const {
+	int mode = O_RDONLY;
+#ifdef _WINDOWS 
+	mode |= O_BINARY;
+#endif
+	ZZIP_FILE *f = zzip_file_open(_dir, name.c_str(), mode);
+	if (f == NULL)
+		throw_io(("zzip_file_open"));
+	return new File(f);
 }
