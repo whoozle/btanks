@@ -915,6 +915,7 @@ void IGame::onMap() {
 #include "sdlx/module.h"
 
 void IGame::loadPlugins() {
+	LOG_DEBUG(("loading plugins..."));
 	IFinder::FindResult path;
 	Finder->findAll(path, "../" + sdlx::Module::mangle("bt_objects"));
 	if (path.empty()) {

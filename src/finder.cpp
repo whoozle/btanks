@@ -174,7 +174,7 @@ const std::string IFinder::find(const std::string &name, const bool strict) cons
 		for(size_t j = 0; j < files.size(); ++j) {
 			//LOG_DEBUG(("looking for the file: %s:%s", _path[i].c_str(), files[j].c_str()));
 			if (dir.exists(prefix + files[j]))
-				return files[j];
+				return prefix + files[j];
 			if (p_i != packages.end()) {
 				std::string n = mrt::FSNode::normalize(files[j]);
 				if (p_i->second->files.find(n) != p_i->second->files.end())
@@ -192,12 +192,21 @@ void IFinder::findAll(FindResult &result, const std::string &name) const {
 	mrt::Directory dir;
 	for(size_t i = 0; i < _path.size(); ++i) {
 		std::vector<std::string> files;
-		applyPatches(files, _path[i] + "/" + name);
+		std::string prefix =  _path[i] + "/";
+		applyPatches(files, name);
+		Packages::const_iterator p_i = packages.find(_path[i]);
 		for(size_t j = 0; j < files.size(); ++j) {
-			//LOG_DEBUG(("looking for the file: %s", files[j].c_str()));
-			if (dir.exists(files[j])) {
-				result.push_back(FindResult::value_type(_path[i], files[j]));
-				break;
+			//LOG_DEBUG(("looking for the file: %s:%s", _path[i].c_str(), files[j].c_str()));
+			if (dir.exists(prefix + files[j])) {
+				result.push_back(FindResult::value_type(_path[i], prefix + files[j]));
+				continue;
+			}
+			if (p_i != packages.end()) {
+				std::string n = mrt::FSNode::normalize(files[j]);
+				if (p_i->second->files.find(n) != p_i->second->files.end()) {
+					result.push_back(FindResult::value_type(_path[i], _path[i] + ":" + n));
+					continue;
+				}
 			}
 		}
 	}
