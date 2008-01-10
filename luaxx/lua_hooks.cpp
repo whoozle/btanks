@@ -758,7 +758,8 @@ void LuaHooks::load(const std::string &name) {
 	
 	mrt::Chunk data;
 	Finder->load(data, name, false);
-	state.load(data);
+	std::string::size_type p = name.find('/');
+	state.load(p != std::string::npos? name.substr(p + 1): name, data);
 	
 	lua_register(state, "print", lua_hooks_print);
 	lua_register(state, "spawn", lua_hooks_spawn);

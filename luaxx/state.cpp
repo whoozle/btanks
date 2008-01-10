@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <lauxlib.h>
 #include <assert.h>
+#include "mrt/chunk.h"
 
 using namespace luaxx;
 /*
@@ -34,8 +35,32 @@ static void check_error(lua_State * state, const int err) {
 	}
 }
 
-void State::load(const mrt::Chunk &data) {
-	throw_ex(("implement me"));
+struct reader_state {
+	const mrt::Chunk &data;
+	size_t pos;
+	reader_state(const mrt::Chunk &data) :data(data), pos(0) {}
+};
+
+
+static const char * chunk_reader(lua_State *L, void *data, size_t *size) {
+	LOG_DEBUG(("reader: %p, %p, %u", (void *)L, data, (unsigned)*size));
+	assert(size != NULL);
+	reader_state * x = (reader_state *) data;
+	if (x->pos < x->data.getSize()) {
+		*size = x->data.getSize();
+		const char *ptr =  (const char *)x->data.getPtr() + x->pos;
+		x->pos += *size;
+		return ptr;
+	}
+	return NULL;
+}
+
+
+void State::load(const std::string &fname, const mrt::Chunk &data) {
+	//throw_ex(("implement me[%s]", fname.c_str()));
+	reader_state x(data);
+	int err = lua_load(state, chunk_reader, &x, fname.c_str());
+	check_error(state, err);
 }
 
 

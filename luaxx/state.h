@@ -13,7 +13,7 @@ namespace luaxx {
 class State {
 public: 
 	State();
-	void load(const mrt::Chunk &data);
+	void load(const std::string &fname, const mrt::Chunk &data);
 	void loadFile(const std::string &fname);
 	
 	void open();
