@@ -1505,6 +1505,27 @@ const bool IMap::swapLayers(const int z1, const int z2) {
 	return true;
 }
 
+template<typename T>
+static void c2v(T &pos, const std::string &str) {
+	std::string pos_str = str;
+
+	const bool tiled_pos = pos_str[0] == '@';
+	if (tiled_pos) { 
+		pos_str = pos_str.substr(1);
+	}
+
+	TRY {
+		pos.fromString(pos_str);
+	} CATCH(mrt::formatString("parsing '%s'", str.c_str()).c_str() , throw;)
+
+	if (tiled_pos) {
+		v2<int> tile_size = Map->getTileSize();
+		pos.x *= tile_size.x;
+		pos.y *= tile_size.y;
+		//keep z untouched.
+	}
+}
+
 void IMap::resize(const int left_cut, const int right_cut, const int up_cut, const int down_cut) {
 	if (!loaded() || (left_cut == 0 && right_cut == 0 && up_cut == 0 && down_cut == 0))
 		return;
@@ -1521,4 +1542,26 @@ void IMap::resize(const int left_cut, const int right_cut, const int up_cut, con
 	_h += up_cut + down_cut;
 	
 	map_resize_signal.emit(left_cut * _tw, right_cut * _tw, up_cut * _th, down_cut * _th);
+
+	for(PropertyMap::iterator i = properties.begin(); i != properties.end(); ++i) {
+		const std::string &name = i->first;
+		std::string &value = i->second;
+		if (name.compare(0, 7, "spawn:") == 0 || name.compare(0, 10, "waypoints:") == 0) { 
+			v3<int> pos;
+			c2v< v3<int> >(pos, value);
+			pos.x += left_cut * _tw;
+			pos.y += up_cut * _th;
+			value = mrt::formatString("%d,%d,%d", pos.x, pos.y, pos.z);
+		} else if (name.compare(0, 5, "zone:") == 0) {
+			std::vector<std::string> res;
+			mrt::split(res, value, ":", 2);
+
+			v3<int> pos;
+			c2v< v3<int> >(pos, res[0]);
+			pos.x += left_cut * _tw;
+			pos.y += up_cut * _th;
+			
+			value = mrt::formatString("%d,%d,%d:", pos.x, pos.y, pos.z) + res[1];
+		}
+	}
 }
