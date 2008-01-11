@@ -26,6 +26,7 @@ public:
 	void down(const int v = 1);
 
 	virtual void tick(const float dt);
+	void setMinMax(const int m1, const int m2) { min = m1; max = m2; validate(); } 
 
 private: 
 	void validate();
