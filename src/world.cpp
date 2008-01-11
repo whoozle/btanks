@@ -1756,7 +1756,7 @@ void IWorld::onMapResize(int left, int right, int up, int down) {
 		updateObject(o);
 		TRY {
 			GameItem &item = GameMonitor->find(o);
-			item.position = o._position;
+			item.position = o->_position.convert<int>();
 			item.updateMapProperty();
 		} CATCH("moving object",)
 	}
