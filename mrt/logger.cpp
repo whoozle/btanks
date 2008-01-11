@@ -70,7 +70,7 @@ const char * ILogger::getLogLevelName(const int level) {
 void ILogger::log(const int level, const char *file, const int line, const std::string &str) {
 	if (level < _level) return;
 	++_lines;
-	int h = 0, m = 0, s = 0, ms = 0;
+	int h, m, s, ms;
 #ifdef _WINDOWS
 	struct _SYSTEMTIME st;
 	GetLocalTime(&st);
