@@ -27,6 +27,7 @@
 #include "math/unary.h"
 #include "math/binary.h"
 #include "menu/label.h"
+#include "menu/textual.h"
 
 ScrollList::ScrollList(const std::string &background, const std::string &font, const int w, const int h, const int spacing) : 
 _client_w(64), _client_h(64), _pos(0), _vel(0), _current_item(0), _spacing(spacing) {
@@ -51,7 +52,7 @@ const std::string ScrollList::getValue() const {
 		throw_ex(("_current_item is out of range"));
 	
 	Control *c = _list[_current_item]; 
-	Label *l = dynamic_cast<Label *>(c);
+	TextualControl *l = dynamic_cast<TextualControl *>(c);
 	if (l == NULL)
 		throw_ex(("cannot getValue from item %d", _current_item));
 	return l->get();
@@ -233,7 +234,7 @@ bool ScrollList::onKey(const SDL_keysym sym) {
 		size_t i;
 		int c = tolower(sym.sym);
 		for(i = 0; i < _list.size(); ++i) {
-			Label *l = dynamic_cast<Label *>(_list[(i + _current_item + 1) % _list.size()]);
+			TextualControl *l = dynamic_cast<TextualControl *>(_list[(i + _current_item + 1) % _list.size()]);
 			if (l != NULL && !l->get().empty()) {
 				int fc = tolower(l->get()[0]);
 				if (fc == c) 
@@ -356,4 +357,8 @@ void ScrollList::clear() {
 
 ScrollList::~ScrollList() {
 	clear();
+}
+
+void ScrollList::sort() {
+	
 }

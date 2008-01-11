@@ -57,6 +57,8 @@ public:
 	const int getItemY(const int idx) const;
 	const int getItemIndex(const int yp) const;
 	
+	void sort();
+	
 	~ScrollList();
 	
 	void up();
