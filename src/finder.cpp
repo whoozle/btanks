@@ -238,6 +238,7 @@ void IFinder::enumerate(std::vector<std::string>&files, const std::string &base,
 				files.push_back(file);
 			}
 			dir.close();
+			return;
 		}
 	} CATCH("scanning directory", );
 	
