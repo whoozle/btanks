@@ -1011,3 +1011,11 @@ const std::string IGameMonitor::onConsole(const std::string &cmd, const std::str
 #endif
 	return std::string();
 }
+
+const bool IGameMonitor::usedInCampaign(const std::string &base, const std::string &id) const {
+	return used_maps.find(std::pair<std::string, std::string>(base, id)) != used_maps.end();
+}
+
+const void IGameMonitor::useInCampaign(const std::string &base, const std::string &id) {
+	used_maps.insert(std::pair<std::string, std::string>(base, id));
+}

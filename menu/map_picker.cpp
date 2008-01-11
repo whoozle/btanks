@@ -43,6 +43,7 @@
 #include "tmx/map.h"
 #include "scoped_ptr.h"
 #include "mrt/base_file.h"
+#include "game_monitor.h"
 
 struct MapScanner : mrt::XMLParser {
 	MapScanner() : slots(0) {}
@@ -83,6 +84,8 @@ void MapPicker::scan(const std::string &base) {
 		if (map.size() < 5 || map.substr(map.size() - 4) != ".tmx")
 			continue;
 		map = map.substr(0, map.size() - 4);
+		if (GameMonitor->usedInCampaign(base, map))
+			continue;
 		LOG_DEBUG(("found map: %s", map.c_str()));
 		MapScanner m;
 		TRY {

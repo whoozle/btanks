@@ -74,7 +74,7 @@ void MapDetails::set(const MapDesc & map_desc) {
 	base = map_desc.base;
 	map = map_desc.name;
 
-	LOG_DEBUG(("selected base: %s, map: %s", base.c_str(), map.c_str()));
+	//LOG_DEBUG(("selected base: %s, map: %s", base.c_str(), map.c_str()));
 	
 	TRY {
 		_screenshot.free();

@@ -128,10 +128,15 @@ const bool Campaign::visible(const Map &map) const {
 
 Campaign::Campaign() : minimal_score(0), map(NULL), _wares_section(false) {}
 
+#include "game_monitor.h"
+
 void Campaign::init() {
 	map = NULL;
 	_wares_section = false;
 	parseFile(base + "/campaign.xml");
+	for(size_t i = 0; i < maps.size(); ++i) {
+		GameMonitor->useInCampaign(base, maps[i].id);
+	}
 }
 
 const int Campaign::getCash() const {

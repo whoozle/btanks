@@ -127,6 +127,9 @@ public:
 	void onScriptZone(const int slot_id, const SpecialZone &zone, const bool global);
 	void setSpecials(const std::vector<int> &ex) { _external_specials = ex; }
 	
+	const bool usedInCampaign(const std::string &base, const std::string &id) const;
+	const void useInCampaign(const std::string &base, const std::string &id);
+	
 private:
 	const std::string onConsole(const std::string &cmd, const std::string &param);
 
@@ -172,6 +175,8 @@ private:
 #ifdef ENABLE_LUA
 	LuaHooks* lua_hooks;
 #endif
+
+	std::set<std::pair<std::string, std::string> > used_maps;
 };
 
 SINGLETON(BTANKSAPI, GameMonitor, IGameMonitor);
