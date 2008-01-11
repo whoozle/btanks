@@ -28,7 +28,8 @@ void NumberControl::validate() {
 void NumberControl::set(const int v) {
 	if (v > max || v < min)
 		return;
-	value = (v - min) / step * step;
+	value = min + (v - min) / step * step;
+	validate();
 }
 
 void NumberControl::render(sdlx::Surface &surface, const int x, const int y) {
@@ -37,7 +38,7 @@ void NumberControl::render(sdlx::Surface &surface, const int x, const int y) {
 }
 
 void NumberControl::getSize(int &w, int &h) const {
-	w =	_font->render(NULL, 0, 0, mrt::formatString("%d", value)) + _number->getWidth();
+	w =	_font->render(NULL, 0, 0, mrt::formatString(min < 0?"%+d":"%d", value)) + _number->getWidth();
 	h = math::max(_number->getHeight(), _font->getHeight());
 }
 
@@ -114,4 +115,11 @@ void NumberControl::tick(const float dt) {
 		}
 	}
 
+}
+
+void NumberControl::setMinMax(const int m1, const int m2) { 
+	LOG_DEBUG(("setting min: %d, max: %d", m1, m2));
+	min = m1; 
+	max = m2; 
+	validate(); 
 }
