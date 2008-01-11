@@ -63,11 +63,12 @@ CampaignMenu::CampaignMenu(MainMenu *parent, const int w, const int h) : _parent
 	_active_campaign->getSize(cw, ch);
 	add(w / 2 - cw / 2, my, _active_campaign);
 
+	int panel_w = 200, panel_h = 96;
+
 	int map_base = 3 * my + ch;
-	_map_view = new ImageView(w - 4 * mx, h - 6 * my);
+	_map_view = new ImageView(w - 4 * mx - panel_w, h - 6 * my);
 	add(3 * mx, map_base - 8 , _map_view);
 	
-	int panel_w = 200, panel_h = 96;
 	_maps = new ScrollList("menu/background_box_dark.png", "medium", panel_w, h - map_base - 6 * my - panel_h);
 	int sw, sh;
 	_maps->getSize(sw, sh);
