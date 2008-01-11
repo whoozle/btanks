@@ -1541,8 +1541,6 @@ void IMap::resize(const int left_cut, const int right_cut, const int up_cut, con
 	_w += left_cut + right_cut;
 	_h += up_cut + down_cut;
 	
-	map_resize_signal.emit(left_cut * _tw, right_cut * _tw, up_cut * _th, down_cut * _th);
-
 	for(PropertyMap::iterator i = properties.begin(); i != properties.end(); ++i) {
 		const std::string &name = i->first;
 		std::string &value = i->second;
@@ -1566,4 +1564,6 @@ void IMap::resize(const int left_cut, const int right_cut, const int up_cut, con
 			LOG_DEBUG(("fixed %s->%s", name.c_str(), value.c_str()));
 		}
 	}
+
+	map_resize_signal.emit(left_cut * _tw, right_cut * _tw, up_cut * _th, down_cut * _th);
 }
