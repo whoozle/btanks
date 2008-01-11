@@ -55,6 +55,11 @@ IGameMonitor::IGameMonitor() : _game_over(false), _win(false), _check_items(0.5,
 #endif
 {
 	Console->on_command.connect(sigc::mem_fun(this, &IGameMonitor::onConsole));
+	Map->map_resize_signal.connect(
+		sigc::hide(sigc::hide(sigc::hide(sigc::hide(
+			sigc::mem_fun(this, &IGameMonitor::parseWaypoints)
+		))))
+	);
 }
 
 void GameItem::respawn() {
@@ -701,11 +706,14 @@ void IGameMonitor::loadMap(Campaign *campaign, const std::string &name, const bo
 		mrt::split(res, i->first, ":");
 		const std::string &type = res[0];
 		
-		if (type != "spawn" && type != "object" && type != "waypoint" && 
-			type != "edge" && type != "config" && type != "zone" && type != "ambient-sound")
-			throw_ex(("unsupported line: '%s'", i->first.c_str()));
+		if (type == "waypoint" || type == "edge") //save some time
+			continue;
+
+		if (type != "spawn" && type != "object" && type != "config" && 
+			type != "zone" && type != "ambient-sound")
+				throw_ex(("unsupported line: '%s'", i->first.c_str()));
 		
-		if (!spawn_objects && type != "waypoint" && type != "edge" && type != "config")
+		if (!spawn_objects && type != "config")
 			continue;
 	
 		if (type == "ambient-sound") {
@@ -749,21 +757,6 @@ void IGameMonitor::loadMap(Campaign *campaign, const std::string &name, const bo
 				item.dir = dir;
 				
 				add(item, true);
-			} else if (type == "waypoint") {
-				if (res.size() < 3)
-					throw_ex(("'%s' misses an argument", i->first.c_str()));
-				v2<int> tile_size = Map->getTileSize(); //tiled correction
-				pos.x += tile_size.x / 2;
-				pos.y += tile_size.y / 2;
-				LOG_DEBUG(("waypoint class %s, name %s : %d,%d", res[1].c_str(), res[2].c_str(), pos.x, pos.y));
-				_waypoints[res[1]][res[2]] = v2<int>(pos.x, pos.y);
-				_all_waypoints[res[2]] = v2<int>(pos.x, pos.y);
-			} else if (type == "edge") {
-				if (res.size() < 3)
-					throw_ex(("'%s' misses an argument", i->first.c_str()));
-				if (res[1] == res[2])
-					throw_ex(("map contains edge from/to the same vertex"));
-				_waypoint_edges.insert(WaypointEdgeMap::value_type(res[1], res[2]));
 			} else if (type == "config") {
 				if (res.size() < 2)
 					throw_ex(("'%s' misses an argument", i->first.c_str()));
@@ -851,14 +844,8 @@ void IGameMonitor::loadMap(Campaign *campaign, const std::string &name, const bo
 	LOG_DEBUG(("generating matrixes"));
 	Map->generateMatrixes();
 	
-	LOG_DEBUG(("checking waypoint graph..."));
-	for(WaypointEdgeMap::const_iterator i = _waypoint_edges.begin(); i != _waypoint_edges.end(); ++i) {
-		const std::string &dst = i->second;
-		WaypointEdgeMap::const_iterator b = _waypoint_edges.lower_bound(dst);
-		if (b == _waypoint_edges.end() || b->first != dst)
-			throw_ex(("no edges out of waypoint '%s'", dst.c_str()));
-	}
-	LOG_DEBUG(("%u items on map, %u waypoint classes, %u edges", (unsigned)getItemsCount(), (unsigned)_waypoints.size(), (unsigned)_waypoint_edges.size()));
+	parseWaypoints();
+	
 	Config->invalidateCachedValues();
 	
 	GET_CONFIG_VALUE("engine.max-time-slice", float, mts, 0.025);
@@ -884,6 +871,52 @@ void IGameMonitor::loadMap(Campaign *campaign, const std::string &name, const bo
 	ResourceManager->preload();
 	
 	Window->resetTimer();
+}
+
+void IGameMonitor::parseWaypoints() {
+	LOG_DEBUG(("parsing waypoints..."));
+	IMap &map = *IMap::get_instance();
+	v3<int> pos;
+	
+	_waypoints.clear();
+	_all_waypoints.clear();
+	_waypoint_edges.clear();
+	
+	for (IMap::PropertyMap::iterator i = map.properties.begin(); i != map.properties.end(); ++i) {
+		if (i->first.empty())
+			throw_ex(("property name could not be empty"));
+		
+		std::vector<std::string> res;
+		mrt::split(res, i->first, ":");
+		const std::string &type = res[0];
+
+		if (type == "waypoint") {
+			if (res.size() < 3)
+				throw_ex(("'%s' misses an argument", i->first.c_str()));
+			v2<int> tile_size = Map->getTileSize(); //tiled correction
+			coord2v< v3<int> >(pos, i->second);
+			pos.x += tile_size.x / 2;
+			pos.y += tile_size.y / 2;
+			LOG_DEBUG(("waypoint class %s, name %s : %d,%d", res[1].c_str(), res[2].c_str(), pos.x, pos.y));
+			_waypoints[res[1]][res[2]] = v2<int>(pos.x, pos.y);
+			_all_waypoints[res[2]] = v2<int>(pos.x, pos.y);
+		} else if (type == "edge") {
+			if (res.size() < 3)
+				throw_ex(("'%s' misses an argument", i->first.c_str()));
+			if (res[1] == res[2])
+				throw_ex(("map contains edge from/to the same vertex"));
+			_waypoint_edges.insert(WaypointEdgeMap::value_type(res[1], res[2]));
+		} 
+	}
+
+	LOG_DEBUG(("checking waypoint graph..."));
+	for(WaypointEdgeMap::const_iterator i = _waypoint_edges.begin(); i != _waypoint_edges.end(); ++i) {
+		const std::string &dst = i->second;
+		WaypointEdgeMap::const_iterator b = _waypoint_edges.lower_bound(dst);
+		if (b == _waypoint_edges.end() || b->first != dst)
+			throw_ex(("no edges out of waypoint '%s'", dst.c_str()));
+	}
+	LOG_DEBUG(("%u items on map, %u waypoint classes, %u edges", (unsigned)getItemsCount(), (unsigned)_waypoints.size(), (unsigned)_waypoint_edges.size()));
 }
 
 const std::string IGameMonitor::generatePropertyName(const std::string &prefix) {

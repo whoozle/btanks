@@ -130,6 +130,8 @@ public:
 	const bool usedInCampaign(const std::string &base, const std::string &id) const;
 	const void useInCampaign(const std::string &base, const std::string &id);
 	
+	void parseWaypoints();
+	
 private:
 	const std::string onConsole(const std::string &cmd, const std::string &param);
 
