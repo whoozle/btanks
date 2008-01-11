@@ -931,7 +931,10 @@ void IGame::loadPlugins() {
 	for(IFinder::FindResult::const_iterator i = path.begin(); i != path.end(); ++i) {
 		LOG_DEBUG(("loading plugin from %s", i->second.c_str()));
 		sdlx::Module module;
-		module.load(i->second);
+		if (i->second.find('/') != std::string::npos)
+			module.load(i->second);
+		else 
+			module.load("./" + i->second); //return same handle for the dll :(( private/bt_objects.dll, bt_objects.dll		
 		module.leak();
 	}
 }
