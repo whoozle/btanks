@@ -72,7 +72,9 @@ void Directory::create(const std::string &path, const bool recurse) {
 		if (mkdir(path.c_str(), S_IRUSR | S_IWUSR | S_IXUSR) == -1)
 			throw_io(("mkdir"));
 	} else {
+		//LOG_DEBUG(("create(%s, true)", path.c_str()));
 		std::string p = normalize(path);
+		//LOG_DEBUG(("normalized path: %s", p.c_str()));
 		if (p.empty())
 			return;
 		std::vector<std::string> res;
@@ -82,12 +84,12 @@ void Directory::create(const std::string &path, const bool recurse) {
 
 		p = res[0];
 		
-		LOG_DEBUG(("creating directory: %s", p.c_str()));
+		//LOG_DEBUG(("creating directory: %s", p.c_str()));
 		mkdir(p.c_str(), S_IRUSR | S_IWUSR | S_IXUSR);
 		for(size_t i = 1; i < res.size(); ++i) {
 			p += "/";
 			p += res[i];
-			LOG_DEBUG(("creating directory: %s", p.c_str()));
+			//LOG_DEBUG(("creating directory: %s", p.c_str()));
 			mkdir(p.c_str(), S_IRUSR | S_IWUSR | S_IXUSR);
 		}
 	}
