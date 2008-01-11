@@ -1552,6 +1552,7 @@ void IMap::resize(const int left_cut, const int right_cut, const int up_cut, con
 			pos.x += left_cut * _tw;
 			pos.y += up_cut * _th;
 			value = mrt::formatString("%d,%d,%d", pos.x, pos.y, pos.z);
+			LOG_DEBUG(("fixed %s->%s", name.c_str(), value.c_str()));
 		} else if (name.compare(0, 5, "zone:") == 0) {
 			std::vector<std::string> res;
 			mrt::split(res, value, ":", 2);
@@ -1562,6 +1563,7 @@ void IMap::resize(const int left_cut, const int right_cut, const int up_cut, con
 			pos.y += up_cut * _th;
 			
 			value = mrt::formatString("%d,%d,%d:", pos.x, pos.y, pos.z) + res[1];
+			LOG_DEBUG(("fixed %s->%s", name.c_str(), value.c_str()));
 		}
 	}
 }
