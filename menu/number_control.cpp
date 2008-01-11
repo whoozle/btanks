@@ -33,7 +33,7 @@ void NumberControl::set(const int v) {
 
 void NumberControl::render(sdlx::Surface &surface, const int x, const int y) {
 	surface.copyFrom(*_number, x, y);
-	_font->render(surface, x + _number->getWidth(), y + _number->getHeight() - _font->getHeight(), mrt::formatString(min < 0?"+%d":"%d", value));
+	_font->render(surface, x + _number->getWidth(), y + _number->getHeight() - _font->getHeight(), mrt::formatString(min < 0?"%+d":"%d", value));
 }
 
 void NumberControl::getSize(int &w, int &h) const {
