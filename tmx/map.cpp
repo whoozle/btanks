@@ -1546,7 +1546,7 @@ void IMap::resize(const int left_cut, const int right_cut, const int up_cut, con
 	for(PropertyMap::iterator i = properties.begin(); i != properties.end(); ++i) {
 		const std::string &name = i->first;
 		std::string &value = i->second;
-		if (name.compare(0, 6, "spawn:") == 0 || name.compare(0, 10, "waypoints:") == 0) { 
+		if (name.compare(0, 6, "spawn:") == 0 || name.compare(0, 9, "waypoint:") == 0) { 
 			v3<int> pos;
 			c2v< v3<int> >(pos, value);
 			pos.x += left_cut * _tw;
