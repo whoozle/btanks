@@ -456,7 +456,7 @@ void IResourceManager::clear() {
 
 			mrt::File f;
 			f.open(i->first + "/preload.xml", "wb");
-			i->second.insert(0, "<preload>\n");
+			i->second.insert(0, "<?xml version=\"1.0\"?>\n<preload>\n");
 			i->second += "</preload>\n";
 			f.writeAll(i->second);
 		} CATCH("writing to the preload cache", {});
