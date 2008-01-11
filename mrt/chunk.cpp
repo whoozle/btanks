@@ -35,13 +35,16 @@ const Chunk& Chunk::operator=(const Chunk& c) {
 	if (this == &c) 
 		return *this; // same object
 
-    free();
-    if (c.ptr == NULL) 
+    if (c.ptr == NULL) {
+    	free();
     	return *this;
+    }
     assert(c.size > 0);
-    
-    if ((ptr = malloc(c.size)) == NULL) 
+
+    void *p = realloc(ptr, c.size);
+    if (p == NULL) 
 		throw_io(("malloc"));
+	ptr = p;
     size = c.size;
     memcpy(ptr, c.ptr, c.size);
     return *this;
