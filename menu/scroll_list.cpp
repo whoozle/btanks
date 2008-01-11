@@ -359,6 +359,36 @@ ScrollList::~ScrollList() {
 	clear();
 }
 
+#include <algorithm>
+
+struct textual_less_eq {
+	bool operator()(Control * a, Control * b) const {
+		TextualControl * ta = dynamic_cast<TextualControl *>(a);
+		TextualControl * tb = dynamic_cast<TextualControl *>(b);
+		if (ta == NULL) 
+			return true;
+		if (tb == NULL)
+			return false;
+		
+		return ta->get() < tb->get();
+	}
+};
+
 void ScrollList::sort() {
+	if (_list.empty())
+		return;
 	
+	if (_current_item >= (int)_list.size())
+		_current_item = 0;
+	
+	Control *selected = _list[_current_item];
+
+	std::sort(_list.begin(), _list.end(), textual_less_eq());
+
+	for(size_t i = 0; i < _list.size(); ++i) {
+		if (((Control *)_list[i]) == selected) {
+			_current_item = i;
+			return;
+		}
+	}
 }
