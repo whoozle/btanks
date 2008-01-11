@@ -144,11 +144,14 @@ static std::string getGLString(const GLenum name) {
 
 void IWindow::init(const int argc, char *argv[]) {
 #ifdef _WINDOWS
-	LOG_DEBUG(("setting high priority class..."));
 	{
-		HANDLE pid = GetCurrentProcess();
-		if (SetPriorityClass(pid, HIGH_PRIORITY_CLASS) == FALSE)
-			LOG_WARN(("SetProcessPriority failed"));
+		GET_CONFIG_VALUE("engine.use-high-priority-class", bool, uhpc, true);
+		if (uhpc) {
+			LOG_DEBUG(("setting high priority class..."));
+			HANDLE pid = GetCurrentProcess();
+			if (SetPriorityClass(pid, HIGH_PRIORITY_CLASS) == FALSE)
+				LOG_WARN(("SetPriorityClass(HIGH_PRIORITY_CLASS) failed. nevermind, using default."));
+		}
 	}
 #endif
 
