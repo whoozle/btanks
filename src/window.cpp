@@ -1,4 +1,3 @@
-
 /* Battle Tanks Game
  * Copyright (C) 2006-2008 Battle Tanks team
  *
@@ -16,6 +15,12 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+
+#ifdef _WINDOWS
+#	include <windows.h>
+#endif
+
+
 #include "window.h"
 #include "config.h"
 #include "sdlx/system.h"
@@ -28,6 +33,7 @@
 #ifdef _WINDOWS
 #	define putenv _putenv
 #endif
+
 
 IMPLEMENT_SINGLETON(Window, IWindow);
 
@@ -137,6 +143,15 @@ static std::string getGLString(const GLenum name) {
 #include "mrt/chunk.h"
 
 void IWindow::init(const int argc, char *argv[]) {
+#ifdef _WINDOWS
+	LOG_DEBUG(("setting high priority class..."));
+	{
+		HANDLE pid = GetCurrentProcess();
+		if (SetPriorityClass(pid, HIGH_PRIORITY_CLASS) == FALSE)
+			LOG_WARN(("SetProcessPriority failed"));
+	}
+#endif
+
 #ifdef __linux__
 //	putenv(strdup("SDL_VIDEODRIVER=dga"));
 #endif
