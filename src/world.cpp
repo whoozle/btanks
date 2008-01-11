@@ -1737,4 +1737,24 @@ void IWorld::move(const Object *object, const int x, const int y) {
 	}
 }
 
+void IWorld::onMapResize(int left, int right, int up, int down) {
+	LOG_DEBUG(("reacting to the map resize event"));
+	v2<int> map_size = Map->getSize();
+	for(ObjectMap::iterator i = _objects.begin(); i != _objects.end(); ++i) {
+		Object *o = i->second;
+		o->_position.x += left;
+		o->_position.y += up;
+		if (o->_position.x < 0)
+			o->_position.x = 0;
+		if (o->_position.y < 0)
+			o->_position.y = 0;
+		v2<float> rpos = o->_position + o->size;
+		if (rpos.x > map_size.x)
+			o->_position.x = map_size.x - o->size.x;
+		if (rpos.y > map_size.y)
+			o->_position.y = map_size.y - o->size.y;
+		updateObject(o);
+	}
+}
+
 #include "world_old_pf.cpp"

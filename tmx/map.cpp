@@ -1506,14 +1506,19 @@ const bool IMap::swapLayers(const int z1, const int z2) {
 }
 
 void IMap::resize(const int left_cut, const int right_cut, const int up_cut, const int down_cut) {
+	if (!loaded())
+		return;
+	
 	LOG_DEBUG(("cutting map: %d %d %d %d", left_cut, right_cut, up_cut, down_cut));
 	if (left_cut < 0 && right_cut < 0 && -left_cut - right_cut >= _w)
 		throw_ex(("invalid left/right shrink width"));
 	if (up_cut < 0 && down_cut < 0 && -up_cut - down_cut >= _h)
 		throw_ex(("invalid up/down shrink height"));
-	_w += left_cut + right_cut;
-	_h += up_cut + down_cut;
 	for(LayerMap::iterator i = _layers.begin(); i != _layers.end(); ++i) {
 		i->second->resize(left_cut, right_cut, up_cut, down_cut);
 	}
+	_w += left_cut + right_cut;
+	_h += up_cut + down_cut;
+	
+	map_resize_signal.emit(left_cut * _tw, right_cut * _tw, up_cut * _th, down_cut * _th);
 }
