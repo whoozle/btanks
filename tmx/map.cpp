@@ -1507,4 +1507,8 @@ const bool IMap::swapLayers(const int z1, const int z2) {
 
 void IMap::resize(const int left_cut, const int right_cut, const int up_cut, const int down_cut) {
 	LOG_DEBUG(("cutting map: %d %d %d %d", left_cut, right_cut, up_cut, down_cut));
+	if (left_cut < 0 && right_cut < 0 && -left_cut - right_cut >= _w)
+		throw_ex(("invalid left/right shrink width"));
+	if (up_cut < 0 && down_cut < 0 && -up_cut - down_cut >= _h)
+		throw_ex(("invalid up/down shrink height"));
 }
