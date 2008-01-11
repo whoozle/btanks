@@ -1511,4 +1511,9 @@ void IMap::resize(const int left_cut, const int right_cut, const int up_cut, con
 		throw_ex(("invalid left/right shrink width"));
 	if (up_cut < 0 && down_cut < 0 && -up_cut - down_cut >= _h)
 		throw_ex(("invalid up/down shrink height"));
+	_w += left_cut + right_cut;
+	_h += up_cut + down_cut;
+	for(LayerMap::iterator i = _layers.begin(); i != _layers.end(); ++i) {
+		i->second->resize(left_cut, right_cut, up_cut, down_cut);
+	}
 }

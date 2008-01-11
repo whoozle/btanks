@@ -403,3 +403,34 @@ void Layer::generateXML(std::string &result) const {
 
 	result += "\t</layer>\n";
 }
+
+void Layer::resize(const int left, const int right, const int up, const int down) {
+	mrt::Chunk new_data;
+	int new_w = _w + left + right, new_h = _h + up + down;
+
+	new_data.setSize(new_w * new_h * 4);
+	new_data.fill(0);
+	
+	Uint32 *src = (Uint32 *)_data.getPtr();
+	Uint32 *dst = (Uint32 *)new_data.getPtr();
+	
+	for(int yd = 0; yd < new_h; ++yd) {
+		for(int xd = 0; xd < new_w; ++xd) {
+			int idx = xd + yd * new_w;
+			assert(idx * 4 < (int)new_data.getSize());
+
+			if (xd < left || xd >= new_w - right) 
+				continue;
+			if (yd < up || yd >= new_h - down) 
+				continue;
+			
+			int src_idx = xd - left + (yd - up) * _w;
+			assert(src_idx * 4 < (int)_data.getSize());
+			dst[idx] = src[src_idx];
+		}
+	}
+	
+	_w = new_w;
+	_h = new_h;
+	_data = new_data;
+}

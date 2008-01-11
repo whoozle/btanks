@@ -84,6 +84,7 @@ public:
 	void generateXML(std::string &result) const;
 	
 	void correct(const unsigned old_id, const unsigned max_id, const int delta);
+	void resize(const int left, const int right, const int up, const int down);
 
 protected: 
 	int _w, _h;
