@@ -451,7 +451,7 @@ void IResourceManager::clear() {
 
 			try {
 				mrt::Directory dir;
-				dir.create(i->first);
+				dir.create(i->first, true);
 			} catch(...) {}
 
 			mrt::File f;

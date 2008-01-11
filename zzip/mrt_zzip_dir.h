@@ -18,7 +18,7 @@ public:
 	virtual const bool opened() const;
 	virtual const std::string read() const;
 	virtual void close();
-	virtual void create(const std::string &path);
+	virtual void create(const std::string &path, const bool recurse = false);
 	virtual ~Directory();
 	File * open_file(const std::string &name) const;
 private: 

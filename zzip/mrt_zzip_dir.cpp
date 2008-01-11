@@ -37,7 +37,7 @@ void Directory::close() {
 	_dir = NULL;
 }
 
-void Directory::create(const std::string &path) {
+void Directory::create(const std::string &path, const bool recurse) {
 	throw_ex(("implement me"));
 }
 

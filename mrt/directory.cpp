@@ -67,7 +67,7 @@ void Directory::close() {
 	}
 }
 
-void Directory::create(const std::string &path) {
+void Directory::create(const std::string &path, const bool recurse) {
 	if (mkdir(path.c_str(), S_IRUSR | S_IWUSR | S_IXUSR) == -1)
 		throw_io(("mkdir"));
 }

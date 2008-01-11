@@ -12,7 +12,7 @@ public:
 	virtual const bool opened() const = 0;
 	virtual const std::string read() const = 0;
 	virtual void close() = 0;
-	virtual void create(const std::string &path) = 0;
+	virtual void create(const std::string &path, const bool recurse = false) = 0;
 	virtual ~BaseDirectory() = 0;
 };
 }
