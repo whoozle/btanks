@@ -34,7 +34,7 @@ _options(options), _i(0), _n(options.size()), _surface(NULL), _w(0) {
 	
 	_left_right = ResourceManager->loadSurface("menu/left_right.png");
 	_font = ResourceManager->loadFont(font, true);
-	for(size_t i =0; i < options.size(); ++i) {
+	for(int i = 0; i < _n; ++i) {
 		int w = _font->render(NULL, 0, 0, options[i]);
 		if (w > _w)
 			_w = w;
@@ -49,6 +49,11 @@ const std::string& Chooser::getValue() const {
 
 
 void Chooser::getSize(int &w, int &h) const {
+	if (_n == 0) {
+		w = _left_right->getWidth();
+		h = _left_right->getHeight();
+		return;
+	}
 	if (_surface != NULL) {
 		w = _left_right->getWidth() + _surface->getWidth() / _n;
 		h = math::max(_left_right->getHeight(), _surface->getHeight());
@@ -129,6 +134,8 @@ void Chooser::set(const std::string &name) {
 }
 
 void Chooser::left() {
+	if (_n == 0)
+		return;
 	do {
 		--_i;
 		if (_i < 0)
@@ -138,6 +145,8 @@ void Chooser::left() {
 }
 
 void Chooser::right() {
+	if (_n == 0)
+		return;
 	do {
 		++_i;
 		if (_i >= _n)
