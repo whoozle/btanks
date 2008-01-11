@@ -43,7 +43,7 @@ const Chunk& Chunk::operator=(const Chunk& c) {
 
     void *p = realloc(ptr, c.size);
     if (p == NULL) 
-		throw_io(("malloc"));
+		throw_io(("realloc"));
 	ptr = p;
     size = c.size;
     memcpy(ptr, c.ptr, c.size);
