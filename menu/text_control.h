@@ -19,22 +19,22 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include "control.h"
 #include <string>
 #include "alarm.h"
 #include "export_btanks.h"
+#include "textual.h"
 
 namespace sdlx {
 class Font;
 }
 
-class BTANKSAPI TextControl : public Control {
+class BTANKSAPI TextControl : public TextualControl {
 public: 
 	TextControl(const std::string &font, const unsigned max_len = 0);
 
 	virtual void tick(const float dt);
 	void set(const std::string &value);
-	const std::string &get() const;
+	const std::string get() const;
 	void getSize(int &w, int &h) const;
 	virtual bool onKey(const SDL_keysym sym);
 	virtual void render(sdlx::Surface &surface, const int x, const int y);
