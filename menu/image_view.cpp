@@ -65,8 +65,8 @@ void ImageView::tick(const float dt) {
 		position = destination;
 	} else {
 		map_vel.normalize();
-		float dist = math::min(destination.distance(position) / 2, dt * 200);
-		position += map_vel * dist;
+		float dist = destination.distance(position);
+		position += math::min(dist, map_vel.length() * (dist > 300?600:(dist < 25?50:dist * 2)) * dt) * map_vel;
 	}
 }
 
