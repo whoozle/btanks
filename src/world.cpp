@@ -721,11 +721,17 @@ TRY {
 		
 		o._position += o._interpolation_vector * dp;
 	} 
-	
-
 		
 	TRY { 
+		PlayerState state_backup = o.getPlayerState();
+		if ((state_backup.fire || state_backup.alt_fire) && o.isEffectActive("tampax")) {
+			o._state.fire = o._state.alt_fire = false;
+		}
 		o.tick(dt);
+		if (state_backup.fire)
+			o._state.fire = state_backup.fire;
+		if (state_backup.alt_fire)
+			o._state.alt_fire = state_backup.alt_fire;
 	} CATCH("calling o.tick", throw;)
 
 	if (o.speed == 0) {
