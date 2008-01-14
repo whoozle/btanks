@@ -16,7 +16,7 @@ if sys.platform != "win32":
 	#libs.append('GL')
 	libs.append('rt')
 	libs.append('X11')
-	env.Append(LINKFLAGS=' -Wl,-rpath-link,build/' + env['mode'] + '/mrt')
+	env.Append(LINKFLAGS=['-Wl,-rpath-link,build/' + env['mode'] + '/mrt'])
 else: 
 	c_map = env.SharedObject('c_map.cpp')
 	libs.append('opengl32')
@@ -36,9 +36,9 @@ Import('debug')
 if debug:
 	Import('lib_dir')
 	if sys.platform != 'win32':
-		env.Append(LINKFLAGS=' -Wl,-rpath-link,build/' + env['mode'] + '/mrt')
-		env.Append(LINKFLAGS=' -Wl,-rpath-link,build/' + env['mode'] + '/sdlx')
-		env.Append(LINKFLAGS=' -Wl,-rpath-link,build/' + env['mode'] + '/objects')
+		env.Append(LINKFLAGS=['-Wl,-rpath-link,build/' + env['mode'] + '/mrt'])
+		env.Append(LINKFLAGS=['-Wl,-rpath-link,build/' + env['mode'] + '/sdlx'])
+		env.Append(LINKFLAGS=['-Wl,-rpath-link,build/' + env['mode'] + '/objects'])
 
 	test = env.Program('cmap_test', ['c_test.cpp'], LIBS=['sdlx', 'mrt'], LIBPATH=['../mrt', '.'], RPATH=['.'])
 	Install('#', test)

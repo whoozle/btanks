@@ -15,11 +15,11 @@ ed_src = [
 	'morph_dialog.cpp', 'resize_dialog.cpp', 
 ]
 if sys.platform != 'win32':
-	env.Append(LINKFLAGS=' -Wl,-rpath,' + lib_dir)
-	env.Append(LINKFLAGS=' -Wl,-rpath-link,build/' + env['mode'])
-	env.Append(LINKFLAGS=' -Wl,-rpath-link,build/' + env['mode'] + '/mrt')
-	env.Append(LINKFLAGS=' -Wl,-rpath-link,build/' + env['mode'] + '/sdlx')
-	env.Append(LINKFLAGS=' -Wl,-rpath-link,build/' + env['mode'] + '/zzip')
+	env.Append(LINKFLAGS=['-Wl,-rpath,' + lib_dir])
+	env.Append(LINKFLAGS=['-Wl,-rpath-link,build/' + env['mode']])
+	env.Append(LINKFLAGS=['-Wl,-rpath-link,build/' + env['mode'] + '/mrt'])
+	env.Append(LINKFLAGS=['-Wl,-rpath-link,build/' + env['mode'] + '/sdlx'])
+	env.Append(LINKFLAGS=['-Wl,-rpath-link,build/' + env['mode'] + '/zzip'])
 else: 
 	ed_src.append("SDL_win32_main.c")
 	libs.append('user32')
