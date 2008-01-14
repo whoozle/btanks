@@ -98,7 +98,7 @@ if sys.platform == "win32":
 #	bt_libs.append('GL')
 
 
-bt = env.SharedLibrary('bt', bt_sources, LIBS=bt_libs, RPATH=['.'])
+bt = env.SharedLibrary('bt', bt_sources, LIBS=bt_libs)
 Install('#', bt[0])
 
 bt_main_sources = ['src/main.cpp']
