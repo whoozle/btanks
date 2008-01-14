@@ -5,7 +5,7 @@ the usability features. If you want something with windows interface -
 download hacked tiled(mapeditor.org) from our download page. 
 
 This editor gone public only because of the multiply requests and was not 
-designed for unprepared users. 
+designed for the unprepared users. 
 
 So, use at your own risk. 
 
