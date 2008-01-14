@@ -57,11 +57,7 @@ const std::string &Prompt::get() const {
 void Prompt::tick(const float dt) {
 	_text->tick(dt);
 	Container::tick(dt);
-	if (_text->changed()) {
-		_text->reset();
-		invalidate();
-		value = _text->get();
-	}
+
 	if (_b_ok->changed()) {
 		_b_ok->reset();
 		value = _text->get();
