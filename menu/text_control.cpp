@@ -23,6 +23,7 @@
 #include "sound/mixer.h"
 #include "mrt/utf8_utils.h"
 #include <stdlib.h>
+#include <ctype.h>
 
 void TextControl::changing() const {
 	Mixer->playSample(NULL, "menu/change.ogg", false);
@@ -110,7 +111,17 @@ bool TextControl::onKey(const SDL_keysym sym) {
 		
 	case SDLK_BACKSPACE:
 		if (sym.mod & KMOD_CTRL) {
-			set(std::string());
+			//set(std::string());
+			size_t next = _text.size(); 
+			while(next > 0) {
+				next = mrt::utf8_left(_text, next);
+				if (_text[next] & 0x80)
+					continue;
+				if (!isalnum(_text[next]))
+					break;
+			}
+			_text.resize(next);
+			
 			break;
 		}
 		if (!_text.empty() && _cursor_position > 0) {
