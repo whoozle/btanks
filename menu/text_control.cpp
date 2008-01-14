@@ -92,10 +92,6 @@ void TextControl::tick(const float dt) {
 
 bool TextControl::onKey(const SDL_keysym sym) {
 	switch(sym.sym) {
-	case SDLK_RETURN: 
-		invalidate();
-		break;
-
 	case SDLK_HOME: 
 		_cursor_position = 0;
 		break;
