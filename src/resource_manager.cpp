@@ -558,6 +558,10 @@ const Object *IResourceManager::getClass(const std::string &classname) const {
 	return i->second;	
 }
 
+const bool IResourceManager::hasClass(const std::string &classname) const {
+	return _objects.find(classname) != _objects.end();
+}
+
 #include "mrt/fs_node.h"
 
 void IResourceManager::checkSurface(const std::string &animation, const sdlx::Surface *& surface_ptr, const sdlx::CollisionMap *& cmap_ptr) {
