@@ -108,6 +108,8 @@ This override changes respawn interval of the OBJECT to the given interval.
 "timer.stay-alive.spawn-limit" "int:SECONDS"
 life limits for the timers. Useful for some survival missions. 
 
+"engine.global-targeting-multiplier" "float:VALUE" 
+multiply targeting range for all objects.
 
 [1] some objects share the same class: 
 "zombie", "acid-slime", "sandworm" are "monster"s, 
