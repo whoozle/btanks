@@ -879,9 +879,10 @@ void IMap::addTileset(const std::string &tileset) {
 	if (!loaded())
 		throw_ex(("addTileset(%s) on uninitialized map", tileset.c_str()));
 	const sdlx::Surface *image = ResourceManager->loadSurface("../maps/" + tileset);
+	std::string fname = Finder->find("tiles/" + tileset);
 	int gid = _tilesets.last() + 1;
 	int n = addTiles(image, gid);
-	_generator->tileset(tileset, gid);
+	_generator->tileset(fname, gid);
 	_tilesets.add(tileset, gid, n);
 }
 
