@@ -101,7 +101,6 @@ if sys.platform == "win32":
 bt = env.SharedLibrary('bt', bt_sources, LIBS=bt_libs, RPATH=['.'])
 Install('#', bt[0])
 
-
 bt_main_sources = ['src/main.cpp']
 bt_main_libs =  ['mrt', 'bt', 'SDL', 'sdlx']
 
@@ -114,8 +113,9 @@ if sys.platform == "win32":
 
 Import('lib_dir')
 if sys.platform != 'win32':
-	bt_env.Append(LINKFLAGS=' -Wl,-rpath '+ lib_dir + ' -Wl,-rpath-link,build/' + env['mode'] + '/mrt')
-	bt_env.Append(LINKFLAGS=' -Wl,-rpath '+ lib_dir + ' -Wl,-rpath-link,build/' + env['mode'] + '/sdlx')
+	bt_env.Append(LINKFLAGS=' -Wl,-rpath,'+ lib_dir + ' -Wl,-rpath-link,build/' + env['mode'] + '/mrt')
+	bt_env.Append(LINKFLAGS=' -Wl,-rpath,'+ lib_dir + ' -Wl,-rpath-link,build/' + env['mode'] + '/sdlx')
+	bt_env.Append(LINKFLAGS=' -Wl,-rpath,'+ lib_dir + ' -Wl,-rpath-link,build/' + env['mode'] + '/zzip')
 
 bt_main = bt_env.Program('bt', bt_main_sources, LIBS=bt_main_libs, RPATH=[lib_dir])
 Install('#', bt_main)

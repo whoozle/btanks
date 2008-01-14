@@ -256,6 +256,9 @@ for dir in bt_sublibs:
 for dir in bt_sublibs:
 	env.Append(LIBPATH=['#/build/' + buildmode + '/' + dir])
 
+env.BuildDir('#/build/' + buildmode + '/editor', 'editor', 0)
+SConscript('#/build/' + buildmode + '/editor/SConscript')
+
 env.Append(LIBPATH=['#/build/' + buildmode])
 
 env.BuildDir('#/build/' + buildmode, '#', 0)
