@@ -112,15 +112,16 @@ bool TextControl::onKey(const SDL_keysym sym) {
 	case SDLK_BACKSPACE:
 		if (sym.mod & KMOD_CTRL) {
 			//set(std::string());
-			size_t next = _text.size(); 
+			size_t next = _cursor_position; 
 			while(next > 0) {
 				next = mrt::utf8_left(_text, next);
-				if (_text[next] & 0x80)
+				if (_text[next] & 0x80) 
 					continue;
 				if (!isalnum(_text[next]))
 					break;
 			}
-			_text.resize(next);
+			_text.erase(next, _cursor_position - next);
+			_cursor_position = next;
 			
 			break;
 		}
