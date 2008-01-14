@@ -38,7 +38,10 @@ alt-o                open map dialog
 alt-r                resize map dialog
 alt-s                save map
 tab                  show tileset dialog (brush chooser)
+tab + n in dialog    add new tileset from the list
 shift                show layers menu/blink active layer
+shift-n              add new layer
+shift-up/shift-down  move layer up/down
 delete               delete selected object
 [ ]                  rotate selected object left and right. (if your object 
                             suddenly dissapeared, try undo or rotating back)
