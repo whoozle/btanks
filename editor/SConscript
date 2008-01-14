@@ -1,0 +1,29 @@
+import sys
+Import('env')
+Import('sigc_lib')
+Import('lib_dir')
+env = env.Copy()
+
+libs = ['bt', 'sdlx', 'mrt', 'SDL', sigc_lib]
+
+ed_src = [
+	'base_brush.cpp', 
+	'editor.cpp', 'open_map_dialog.cpp', 'tileset_dialog.cpp', 
+	'layer_item.cpp', 'layer_list_dialog.cpp', 'command.cpp', 
+	'add_tileset_dialog.cpp', 'add_object_dialog.cpp', 
+	'object_properties.cpp', 'tilebox_brush.cpp', 
+	'morph_dialog.cpp', 'resize_dialog.cpp', 
+]
+if sys.platform != 'win32':
+	env.Append(LINKFLAGS=' -Wl,-rpath-link,build/' + env['mode'])
+	env.Append(LINKFLAGS=' -Wl,-rpath-link,build/' + env['mode'] + '/mrt')
+	env.Append(LINKFLAGS=' -Wl,-rpath-link,build/' + env['mode'] + '/sdlx')
+	env.Append(LINKFLAGS=' -Wl,-rpath-link,build/' + env['mode'] + '/zzip')
+else: 
+	ed_src.append("SDL_win32_main.c")
+	libs.append('user32')
+
+env.Append(LIBPATH=['#/build/' + env['mode']])
+
+editor = env.Program('bted', ed_src, LIBS=libs, RPATH=[lib_dir])
+Install('#', editor)
