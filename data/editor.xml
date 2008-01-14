@@ -1,0 +1,520 @@
+<?xml version="1.0"?>
+<editor>
+	<!-- add <animation id="sample animation" /> inside <class> tag
+		to make object visible in "add new object dialog" -->
+	<class id="alt-missiles-on-launcher">
+	</class>
+	<class id="ammo-box">
+		<animation id="ammo-box" />
+	</class>
+	<class id="armed-mine">
+		<animation id="regular-mine" />
+		<variant id="nuke" />
+	</class>
+	<class id="ballistic-missile">
+	</class>
+	<class id="ballistic-missile-target">
+	</class>
+	<class id="barrack-with-kamikazes">
+		<animation id="trooper-hut" />
+	</class>
+	<class id="barrack-with-machinegunners">
+		<animation id="trooper-hut" />
+	</class>
+	<class id="barrack-with-throwers">
+		<animation id="trooper-hut" />
+	</class>
+	<class id="barrier">
+		<animation id="barrier" />
+	</class>
+	<class id="base-item">
+	</class>
+	<class id="biohazard-box">
+		<animation id="biohazard-box" />
+	</class>
+	<class id="biotoilet">
+		<animation id="biotoilet" />
+	</class>
+	<class id="boat">
+		<animation id="boat" />
+		<variant id="stale" />
+	</class>
+	<class id="bomb">
+	</class>
+	<class id="bomberman-explosion">
+	</class>
+	<class id="bomberman-mine">
+	</class>
+	<class id="boomerang-missile">
+	</class>
+	<class id="boomerang-missiles-item">
+		<animation id="boomerang-missiles-item" />
+	</class>
+	<class id="broken-object">
+		<animation id="gate" />
+		<animation id="traffic-lights" />
+	</class>
+	<class id="buggy">
+		<animation id="buggy" />
+	</class>
+	<class id="buggy-bullet">
+	</class>
+	<class id="bullet">
+	</class>
+	<class id="bus-stop">
+		<animation id="bus-stop-left" />
+		<animation id="bus-stop-right" />
+		<animation id="bus-stop-top" />
+	</class>
+	<class id="cannon">
+		<animation id="cannon" />
+	</class>
+	<class id="cannon-bullet">
+	</class>
+	<class id="cannon-explosion">
+	</class>
+	<class id="car">
+		<animation id="red-car" />
+		<animation id="cyan-car" />
+		<animation id="yellow-car" />
+		<animation id="white-car" />
+		<variant id="safe" />
+	</class>
+	<class id="choo-choo-train">
+		<animation id="choo-choo-train" />
+		<variant id="standing" />
+		<variant id="win-on-exit" />
+	</class>
+	<class id="choo-choo-wagon">
+	</class>
+	<class id="civilian">
+		<animation id="civilian-1" />
+		<animation id="civilian-2" />
+		<animation id="civilian-3" />
+	</class>
+	<class id="combine">
+		<animation id="tractor" />
+		<animation id="harvester" />
+	</class>
+	<class id="corpse">
+	</class>
+	<class id="cow">
+		<animation id="cow" />
+	</class>
+	<class id="damage-digits">
+	</class>
+	<class id="destructable-object">
+		<variant id="make-pierceable" />
+		<variant id="with-fire" />
+		<variant id="respawning" />
+	</class>
+	<class id="dirt">
+	</class>
+	<class id="dirt-bullet">
+	</class>
+	<class id="dirt-bullets-item">
+		<animation id="dirt-bullets-item" />
+	</class>
+	<class id="dispersion-bullet">
+	</class>
+	<class id="dispersion-bullets-item">
+		<animation id="dispersion-bullets-item" />
+	</class>
+	<class id="dumb-missile">
+	</class>
+	<class id="dumb-missiles-item">
+		<animation id="dumb-missiles-item" />
+	</class>
+	<class id="escaping-uberzombie">
+	</class>
+	<class id="eternal-flame">
+		<animation id="fire" />
+	</class>
+	<class id="exhibitionist">
+	</class>
+	<class id="explosion">
+	</class>
+	<class id="explosive">
+		<variant id="spawn-gas" />
+		<variant id="spawn-missiles" />
+		<variant id="spawn-mutagen" />
+	</class>
+	<class id="fake-mod">
+	</class>
+	<class id="fire">
+	</class>
+	<class id="gas-tubes">
+		<animation id="gas-tubes" />
+	</class>
+	<class id="gate">
+		<animation id="gate" />
+	</class>
+	<class id="grenade">
+	</class>
+	<class id="grenade-explosion">
+	</class>
+	<class id="guided-missile">
+	</class>
+	<class id="guided-missiles-item">
+		<animation id="guided-missiles-item" />
+	</class>
+	<class id="heal">
+		<animation id="heal" />
+	</class>
+	<class id="helicopter">
+		<animation id="helicopter" />
+	</class>
+	<class id="helicopter-bullet">
+	</class>
+	<class id="helicopter-with-kamikazes">
+		<animation id="helicopter" />
+		<animation id="chinook" />
+	</class>
+	<class id="helicorpse">
+	</class>
+	<class id="helmet">
+	</class>
+	<class id="impassable-corpse">
+	</class>
+	<class id="impassable-static-corpse">
+		<animation id="dead-green-launcher" />
+		<animation id="dead-red-launcher" />
+		<animation id="dead-yellow-launcher" />
+		<animation id="dead-cyan-launcher" />
+		<animation id="dead-green-shilka" />
+		<animation id="dead-red-shilka" />
+		<animation id="dead-yellow-shilka" />
+		<animation id="dead-cyan-shilka" />
+		<animation id="dead-green-tank" />
+		<animation id="dead-red-tank" />
+		<animation id="dead-yellow-tank" />
+		<animation id="dead-cyan-tank" />
+		<animation id="dead-orange-bus" />
+		<animation id="dead-red-car" />
+		<animation id="dead-cyan-car" />
+		<animation id="dead-yellow-car" />
+		<animation id="dead-white-car" />
+		<animation id="dead-harvester" />
+		<animation id="dead-tractor" />
+		<animation id="dead-cannon" />
+		<animation id="dead-mortar" />
+	</class>
+	<class id="invader">
+		<animation id="invader" />
+	</class>
+	<class id="invader-bullet">
+	</class>
+	<class id="invaders-defender">
+	</class>
+	<class id="invulnerability-item">
+		<animation id="invulnerability-item" />
+	</class>
+	<class id="kamikaze">
+		<animation id="kamikaze" />
+	</class>
+	<class id="kamikaze-explosion">
+	</class>
+	<class id="launcher">
+		<animation id="green-launcher" />
+		<animation id="red-launcher" />
+		<animation id="yellow-launcher" />
+		<animation id="cyan-launcher" />
+	</class>
+	<class id="lodge">
+		<animation id="lodge" />
+	</class>
+	<class id="machinegunner">
+		<animation id="machinegunner" />
+	</class>
+	<class id="machinegunner-bullet">
+	</class>
+	<class id="machinegunner-in-watchtower">
+	</class>
+	<class id="machinegunner-item">
+		<animation id="machinegunner-item" />
+	</class>
+	<class id="machinegunner-on-launcher">
+	</class>
+	<class id="machinegunner-player">
+	</class>
+	<class id="megaheal">
+		<animation id="megaheal" />
+	</class>
+	<class id="mines-item">
+		<animation id="mines-item" />
+	</class>
+	<class id="missile-boat">
+	</class>
+	<class id="missiles-on-boat">
+	</class>
+	<class id="missiles-on-launcher">
+	</class>
+	<class id="missiles-on-tank">
+	</class>
+	<class id="mortar">
+		<animation id="green-mortar" />
+	</class>
+	<class id="mortar-bullet">
+	</class>
+	<class id="mortar-explosion">
+	</class>
+	<class id="mutagen-explosion">
+	</class>
+	<class id="mutagen-missile">
+	</class>
+	<class id="mutagen-missiles-item">
+		<animation id="mutagen-missiles-item" />
+	</class>
+	<class id="nuke-barrels">
+		<animation id="nuke-barrels" />
+	</class>
+	<class id="nuke-explosion">
+	</class>
+	<class id="nuke-mine">
+	</class>
+	<class id="nuke-missile">
+	</class>
+	<class id="nuke-missiles-item">
+		<animation id="nuke-missiles-item" />
+	</class>
+	<class id="oil-barrels">
+		<animation id="oil-barrels" />
+	</class>
+	<class id="old-school-destructable-object-2">
+	</class>
+	<class id="old-school-destructable-object-3">
+	</class>
+	<class id="outline">
+	</class>
+	<class id="paratrooper-kamikaze">
+	</class>
+	<class id="paratrooper-machinegunner">
+	</class>
+	<class id="paratrooper-thrower">
+	</class>
+	<class id="pillbox">
+		<animation id="pillbox" />
+	</class>
+	<class id="pond">
+		<animation id="pond" />
+	</class>
+	<class id="raider-helicopter">
+		<animation id="helicopter" />
+		<animation id="chinook" />
+		<variant id="kamikazes" />
+		<variant id="machinegunners" />
+		<variant id="throwers" />
+		<variant id="no-escape" />
+	</class>
+	<class id="random-tooltip">
+	</class>
+	<class id="regular-mine">
+	</class>
+	<class id="ricochet-bullet">
+	</class>
+	<class id="ricochet-bullets-item">
+		<animation id="ricochet-bullets-item" />
+	</class>
+	<class id="road-sign">
+		<animation id="road-sign01" />
+		<animation id="road-sign02" />
+		<animation id="road-sign03" />
+		<animation id="road-sign04" />
+		<animation id="road-sign05" />
+		<animation id="road-sign06" />
+		<animation id="road-sign07" />
+		<animation id="road-sign08" />
+		<animation id="road-sign09" />
+		<animation id="road-sign10" />
+		<animation id="road-sign11" />
+	</class>
+	<class id="sandworm">
+		<animation id="sandworm" />
+		<variant id="withdrawn" />
+	</class>
+	<class id="sandworm-head">
+	</class>
+	<class id="shilka">
+		<animation id="green-shilka" />
+		<animation id="red-shilka" />
+		<animation id="yellow-shilka" />
+		<animation id="cyan-shilka" />
+	</class>
+	<class id="shilka-bullet">
+	</class>
+	<class id="single-pose">
+		<variant id="no-directions" />
+		<variant id="once" />
+		<variant id="play-start" />
+	</class>
+	<class id="slime">
+		<animation id="slime" />
+	</class>
+	<class id="slime-acid">
+	</class>
+	<class id="slowdown-item">
+		<animation id="slowdown-item" />
+	</class>
+	<class id="smoke-cloud">
+	</class>
+	<class id="smoke-missile">
+	</class>
+	<class id="smoke-missiles-item">
+		<animation id="smoke-missiles-item" />
+	</class>
+	<class id="spaceport-baykonur">
+		<animation id="spaceport-baykonur" />
+	</class>
+	<class id="spawn-shield">
+	</class>
+	<class id="speedup-item">
+		<animation id="speedup-item" />
+	</class>
+	<class id="stack">
+		<animation id="stack" />
+	</class>
+	<class id="stall">
+		<animation id="stall-left" />
+		<animation id="stall-right" />
+	</class>
+	<class id="static-buggy">
+		<animation id="buggy" />
+	</class>
+	<class id="static-car">
+		<animation id="red-car" />
+		<animation id="cyan-car" />
+		<animation id="yellow-car" />
+		<animation id="white-car" />
+		<animation id="orange-bus" />
+	</class>
+	<class id="static-combine">
+		<animation id="harvester" />
+	</class>
+	<class id="static-corpse">
+		<animation id="dead-civilian-static-1" />
+		<animation id="dead-civilian-static-2" />
+		<animation id="dead-civilian-static-3" />
+		<animation id="dead-machinegunner-static" />
+		<animation id="dead-thrower-static" />
+		<animation id="dead-cow-static" />
+		<animation id="dead-zombie" />
+		<animation id="dead-slime" />
+	</class>
+	<class id="static-dirt">
+		<animation id="dirt" />
+	</class>
+	<class id="static-helicopter">
+		<animation id="helicopter" />
+	</class>
+	<class id="static-launcher">
+		<animation id="green-launcher" />
+		<animation id="red-launcher" />
+		<animation id="yellow-launcher" />
+		<animation id="cyan-launcher" />
+	</class>
+	<class id="static-mortar">
+		<animation id="green-mortar" />
+	</class>
+	<class id="static-shilka">
+		<animation id="green-shilka" />
+		<animation id="red-shilka" />
+		<animation id="yellow-shilka" />
+		<animation id="cyan-shilka" />
+	</class>
+	<class id="static-smoke-cloud">
+		<animation id="smoke-cloud" />
+	</class>
+	<class id="static-tank">
+		<animation id="green-tank" />
+		<animation id="red-tank" />
+		<animation id="yellow-tank" />
+		<animation id="cyan-tank" />
+	</class>
+	<class id="static-tractor">
+		<animation id="tractor" />
+	</class>
+	<class id="stun-missile">
+	</class>
+	<class id="stun-missiles-item">
+		<animation id="stun-missiles-item" />
+	</class>
+	<class id="submarine">
+		<animation id="submarine" />
+	</class>
+	<class id="tank">
+		<animation id="green-tank" />
+		<animation id="red-tank" />
+		<animation id="yellow-tank" />
+		<animation id="cyan-tank" />
+	</class>
+	<class id="tank-bullet">
+	</class>
+	<class id="teleport">
+		<animation id="teleport" />
+	</class>
+	<class id="tent">
+		<animation id="tent-left" />
+		<animation id="tent-top" />
+		<animation id="tent-right" />
+	</class>
+	<class id="tent-with-kamikazes">
+		<animation id="trooper-tent" />
+	</class>
+	<class id="tent-with-machinegunners">
+		<animation id="trooper-tent" />
+	</class>
+	<class id="tent-with-throwers">
+		<animation id="trooper-tent" />
+	</class>
+	<class id="thrower">
+		<animation id="thrower" />
+	</class>
+	<class id="thrower-in-watchtower">
+	</class>
+	<class id="thrower-item">
+		<animation id="thrower-item" />
+	</class>
+	<class id="thrower-missile">
+	</class>
+	<class id="thrower-on-launcher">
+	</class>
+	<class id="tractor">
+	</class>
+	<class id="traffic-lights">
+		<animation id="traffic-lights" />
+	</class>
+	<class id="train-smoke">
+	</class>
+	<class id="turrel">
+		<animation id="turrel" />
+	</class>
+	<class id="uberzombie">
+	</class>
+	<class id="umbrella">
+		<animation id="umbrella" />
+	</class>
+	<class id="van">
+		<animation id="lodge" />
+		<animation id="van" />
+	</class>
+	<class id="vehicle-machinegunner-bullet">
+	</class>
+	<class id="watchtower-top">
+	</class>
+	<class id="watchtower-with-machinegunner">
+		<animation id="watchtower" />
+	</class>
+	<class id="watchtower-with-thrower">
+		<animation id="watchtower" />
+	</class>
+	<class id="ziehharmonikaspieler">
+		<animation id="ziehharmonikaspieler" />
+	</class>
+	<class id="zombie">
+		<animation id="zombie" />
+	</class>
+	<class id="zombie(old-school)">
+		<animation id="zombie" />
+		<variant id="no-herd" />
+	</class>
+</editor>
