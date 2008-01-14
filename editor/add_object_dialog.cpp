@@ -24,6 +24,9 @@ ScrollList("menu/background_box_dark.png", "small", w, h), selected_z(0) {
 	//control initialization
 	std::string classname;
 	for(Animations::const_iterator i = _animations.begin(); i != _animations.end(); ++i) {
+		if (!ResourceManager->hasClass(i->first))
+			continue;
+		
 		if (i->first != classname) {
 			classname = i->first;
 			//check for single-items
