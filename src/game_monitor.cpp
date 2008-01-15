@@ -328,7 +328,6 @@ void IGameMonitor::clear() {
 	_game_over = false;
 	_win = false;
 	saveCampaign();
-	_campaign = NULL;
 	_state.clear();
 	
 	_items.clear();
@@ -1037,14 +1036,22 @@ void IGameMonitor::saveCampaign() {
 		return;
 
 	LOG_DEBUG(("saving compaign state..."));
-	PlayerSlot &slot = PlayerManager->getSlot(0); 
-	int score; 
-	Config->get("campaign." + _campaign->name + ".score", score, 0);
-	score += slot.score;
-	Config->set("campaign." + _campaign->name + ".score", score);
-	LOG_DEBUG(("total score: %d", score));
+	const std::string mname = "campaign." + _campaign->name + ".maps." + Map->getName();
+	
+	if (PlayerManager->getSlotsCount()) {
+		PlayerSlot &slot = PlayerManager->getSlot(0); 
+		int score; 
+		Config->get("campaign." + _campaign->name + ".score", score, 0);
+		score += slot.score;
+		Config->set("campaign." + _campaign->name + ".score", score);
+		LOG_DEBUG(("total score: %d", score));
+
+		int mscore;
+		Config->get(mname + ".maximum-score", mscore, 0);
+		if (slot.score > mscore) 
+			Config->set(mname + ".maximum-score", slot.score);
+	}
 			
-	std::string mname = "campaign." + _campaign->name + ".maps." + Map->getName();
 	bool win;
 	Config->get(mname + ".win", win, false);
 	if (_win) {
@@ -1052,9 +1059,5 @@ void IGameMonitor::saveCampaign() {
 		_campaign->clearBonuses();
 	} 
 			
-	int mscore;
-	Config->get(mname + ".maximum-score", mscore, 0);
-	if (slot.score > mscore) 
-		Config->set(mname + ".maximum-score", slot.score);
 	_campaign = NULL;	
 }
