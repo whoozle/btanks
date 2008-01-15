@@ -43,6 +43,7 @@ shift                show layers menu/blink active layer
 shift-n              add new layer
 shift-up/shift-down  move layer up/down
 delete               delete selected object
+shift + delete       delete layer (no undo for layer operations yet!)
 [ ]                  rotate selected object left and right. (if your object 
                             suddenly dissapeared, try undo or rotating back)
 num+ num-            +10/-10 to the object's z value.
@@ -50,7 +51,7 @@ num+ num-            +10/-10 to the object's z value.
 
 mouse controls: 
 
-left button          paint with the brush if the brash is active. 
+left button          paint with the brush if the brush is active. 
 space + left button  move map 
 right button         select tiles for the copy/cut, show object properties dialog
 wheel                scroll map up/down
