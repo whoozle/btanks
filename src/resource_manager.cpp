@@ -448,6 +448,8 @@ void IResourceManager::clear() {
 		//LOG_DEBUG(("xml data for %s, size: %u", i->first.c_str(), (unsigned)i->second.size()));
 		TRY {
 			assert(!i->first.empty());
+			if (Finder->packed(i->first))
+				continue;
 
 			try {
 				mrt::Directory dir;

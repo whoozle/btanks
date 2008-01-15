@@ -133,6 +133,9 @@ void AddObjectDialog::getVariants(std::set<std::string> &variants, const std::st
 
 AddObjectDialog::~AddObjectDialog() {
 	TRY {
+		if (Finder->packed(_base))
+			return;
+		
 		std::string fname = _base + "/" + _fname;
 		LOG_DEBUG(("saving editor.xml file to %s", fname.c_str()));
 		mrt::File file;
