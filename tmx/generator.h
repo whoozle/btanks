@@ -39,7 +39,7 @@ private:
 	void projectLayer(Layer *layer, const std::vector<std::string> &args);
 	
 	
-	static const std::string getDescName(const std::string &fname);
+	//static const std::string getDescName(const std::string &fname);
 	
 	std::map<const std::string, int> first_gid;
 	typedef std::map<const std::string, Tileset *> Tilesets;
