@@ -55,6 +55,8 @@ public:
 	mrt::BaseFile *get_file(const std::string &file, const std::string &mode) const;
 	void load(mrt::Chunk &data, const std::string &fname, const bool do_find = true) const;
 	void enumerate(std::vector<std::string>&files, const std::string &base, const std::string &root) const;
+	
+	const bool packed(const std::string &base) const;
 
 private: 
 	void applyPatches(std::vector<std::string>& files, const std::string &fname) const;

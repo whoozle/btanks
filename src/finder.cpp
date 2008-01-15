@@ -258,3 +258,10 @@ void IFinder::enumerate(std::vector<std::string>&files, const std::string &base,
 		}
 	}
 }
+
+const bool IFinder::packed(const std::string &base) const {
+	Packages::const_iterator p_i = packages.find(base);
+	if (p_i == packages.end())	
+		return false;
+	return !p_i->second->files.empty();
+}
