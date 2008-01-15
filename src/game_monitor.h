@@ -133,6 +133,7 @@ public:
 	void parseWaypoints();
 	
 private:
+	void saveCampaign();
 	const std::string onConsole(const std::string &cmd, const std::string &param);
 
 	bool _game_over, _win;

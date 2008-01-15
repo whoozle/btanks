@@ -327,6 +327,8 @@ void IGameMonitor::clear() {
 
 	_game_over = false;
 	_win = false;
+	saveCampaign();
+	_campaign = NULL;
 	_state.clear();
 	
 	_items.clear();
@@ -386,30 +388,7 @@ void IGameMonitor::tick(const float dt) {
 	});
 	}
 #endif
-
-		if (_campaign != NULL) {
-			PlayerSlot &slot = PlayerManager->getSlot(0); 
-			int score; 
-			Config->get("campaign." + _campaign->name + ".score", score, 0);
-			score += slot.score;
-			Config->set("campaign." + _campaign->name + ".score", score);
-			LOG_DEBUG(("total score: %d", score));
-			
-			std::string mname = "campaign." + _campaign->name + ".maps." + Map->getName();
-			bool win;
-			Config->get(mname + ".win", win, false);
-			if (_win) {
-				Config->set(mname + ".win", _win);
-				_campaign->clearBonuses();
-			} 
-			
-			int mscore;
-			Config->get(mname + ".maximum-score", mscore, 0);
-			if (slot.score > mscore) 
-				Config->set(mname + ".maximum-score", slot.score);
-		}
-		LOG_DEBUG(("saving compaign state..."));
-		
+		saveCampaign();
 		Game->clear();
 	}
 }
@@ -1051,4 +1030,31 @@ const bool IGameMonitor::usedInCampaign(const std::string &base, const std::stri
 
 const void IGameMonitor::useInCampaign(const std::string &base, const std::string &id) {
 	used_maps.insert(std::pair<std::string, std::string>(base, id));
+}
+
+void IGameMonitor::saveCampaign() {
+	if (_campaign == NULL) 
+		return;
+
+	LOG_DEBUG(("saving compaign state..."));
+	PlayerSlot &slot = PlayerManager->getSlot(0); 
+	int score; 
+	Config->get("campaign." + _campaign->name + ".score", score, 0);
+	score += slot.score;
+	Config->set("campaign." + _campaign->name + ".score", score);
+	LOG_DEBUG(("total score: %d", score));
+			
+	std::string mname = "campaign." + _campaign->name + ".maps." + Map->getName();
+	bool win;
+	Config->get(mname + ".win", win, false);
+	if (_win) {
+		Config->set(mname + ".win", _win);
+		_campaign->clearBonuses();
+	} 
+			
+	int mscore;
+	Config->get(mname + ".maximum-score", mscore, 0);
+	if (slot.score > mscore) 
+		Config->set(mname + ".maximum-score", slot.score);
+	_campaign = NULL;	
 }
