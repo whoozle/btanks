@@ -172,4 +172,4 @@ public:
 	}
 };
 
-REGISTER_OBJECT("pillbox", PillBox, ("machinegunner-bullet", true));
+REGISTER_OBJECT("pillbox", PillBox, ("machinegunner-bullet", false));
