@@ -129,8 +129,31 @@ void Directory::close() {
 	_handle = 0;
 }
 
-void Directory::create(const std::string &path) {
-	::CreateDirectory(path.c_str(), NULL);
+void Directory::create(const std::string &path, const bool recurse) {
+	if (!recurse) {
+		::CreateDirectory(path.c_str(), NULL);
+	} else {
+		//LOG_DEBUG(("create(%s, true)", path.c_str()));
+		std::string p = normalize(path);
+		//LOG_DEBUG(("normalized path: %s", p.c_str()));
+		if (p.empty())
+			return;
+		std::vector<std::string> res;
+		mrt::split(res, p, "/");
+		if (res.empty())
+			return;
+
+		p = res[0];
+		
+		//LOG_DEBUG(("creating directory: %s", p.c_str()));
+		::CreateDirectory(p.c_str(), NULL);
+		for(size_t i = 1; i < res.size(); ++i) {
+			p += "/";
+			p += res[i];
+			//LOG_DEBUG(("creating directory: %s", p.c_str()));
+			::CreateDirectory(p.c_str(), NULL);
+		}
+	}
 }
 
 #endif
