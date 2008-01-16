@@ -823,6 +823,9 @@
 
 		<string id="nukeman">Machinegunner players can grab nuke missile items and become kamikaze</string>
 		<string id="nukeman" lang="ru">Играя пулемётчиком можно брать ядерные бомбы и превращаться в ядерного камикадзе</string>
+		
+		<string id="buggy">Buggy can kill helicopters with its alternative fire</string>
+		<string id="buggy" lang="ru">Багги может убивать вертолёты при помощи автоматической зенитной пушки. Зажмите кнопку альтернативного огня и ищите удобную позицию. </string>
 	</area>
 </strings>    
                       
