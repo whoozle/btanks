@@ -21,7 +21,7 @@ if sys.platform != 'win32':
 	env.Append(LINKFLAGS=['-Wl,-rpath-link,build/' + env['mode'] + '/sdlx'])
 	env.Append(LINKFLAGS=['-Wl,-rpath-link,build/' + env['mode'] + '/zzip'])
 else: 
-	ed_src.append("SDL_win32_main.c")
+	ed_src.append("../sdlx/SDL_win32_main.c")
 	libs.append('user32')
 
 env.Append(LIBPATH=['#/build/' + env['mode']])
