@@ -87,26 +87,32 @@ void OpenMapDialog::tick(const float dt) {
 
 bool OpenMapDialog::onKey(const SDL_keysym sym) {
 	switch(sym.sym) {
-	case SDLK_UP: 
-		_focus = c_base;
+	case SDLK_PAGEDOWN:
+		c_base->left();
 		return true;
 
-	case SDLK_DOWN: 
-		_focus = c_map;
+	case SDLK_PAGEUP:
+		c_base->right();
 		return true;
 	
-	default: 
-		if (Container::onKey(sym))
-			return true;
-	}
+	case SDLK_LEFT: 
+	case SDLK_UP: 
+		c_map->left();
+		return true;
 
-	if (sym.sym == SDLK_RETURN) {
+	case SDLK_RIGHT: 
+	case SDLK_DOWN: 
+		c_map->right();
+		return true;
+
+	case SDLK_RETURN:
 		hide();
 		load();
 		return true;
-	}
 	
-	return false;
+	default: ;
+		return Container::onKey(sym);
+	}
 }
 
 OpenMapDialog::OpenMapDialog() {
