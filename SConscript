@@ -89,7 +89,6 @@ if env['enable_lua']:
 		bt_libs.append('lua')
 
 if sys.platform == "win32":
-	bt_libs[0:0] = ['SDLmain']
 	bt_libs.append('Ws2_32')
 	bt_libs.append('user32')
 	#bt_libs.append('gdi32')
@@ -105,10 +104,10 @@ bt_main_sources = ['src/main.cpp']
 bt_main_libs =  ['mrt', 'bt', 'SDL', 'sdlx']
 
 if sys.platform == "win32":
-	bt_main_sources.append('sdlx/SDL_win32_main.c')
 	bt_rc = env.RES('src/bt.rc')
 	bt_main_sources.append(bt_rc)
 	bt_main_libs.append('user32')
+	bt_main_libs.append('sdlx_main')
 
 
 Import('lib_dir')

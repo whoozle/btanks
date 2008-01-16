@@ -42,3 +42,5 @@ if debug:
 
 	test = env.Program('cmap_test', ['c_test.cpp'], LIBS=['sdlx', 'mrt'], LIBPATH=['../mrt', '.'], RPATH=['.'])
 	Install('#', test)
+
+sdlx_main = env.StaticLibrary('sdlx_main', ['SDL_win32_main.c'])
