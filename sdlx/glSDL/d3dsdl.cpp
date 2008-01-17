@@ -195,18 +195,18 @@ SDL_Surface *d3dSDL_ConvertSurface
 SDL_Surface *d3dSDL_CreateRGBSurface
 			(Uint32 flags, int width, int height, int depth, 
 			Uint32 Rmask, Uint32 Gmask, Uint32 Bmask, Uint32 Amask) {
-	if (g_pD3D == NULL) 
+//	if (g_pD3D == NULL) 
 		return SDL_CreateRGBSurface(flags, width, height, depth, Rmask, Gmask, Bmask, Amask);
-	return NULL;
+//	return NULL;
 }
 
 SDL_Surface *d3dSDL_CreateRGBSurfaceFrom(void *pixels,
 			int width, int height, int depth, int pitch,
 			Uint32 Rmask, Uint32 Gmask, Uint32 Bmask, Uint32 Amask) {
-	if (g_pD3D == NULL) {
+//	if (g_pD3D == NULL) {
 		return SDL_CreateRGBSurfaceFrom(pixels, width, height, depth, pitch, Rmask, Gmask, Bmask, Amask);		
-	}
-	return NULL;
+//	}
+//	return NULL;
 }
 
 SDL_Surface *d3dSDL_LoadBMP(const char *file) {
