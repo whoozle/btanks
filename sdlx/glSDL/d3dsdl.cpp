@@ -9,6 +9,7 @@
 
 LPDIRECT3D9          g_pD3D       = NULL;
 LPDIRECT3DDEVICE9    g_pd3dDevice = NULL;
+IDirect3DVertexBuffer9* g_VB 	  = NULL;
 
 SDL_Surface *d3dSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags) {
 	flags &= ~(SDL_OPENGL | SDL_OPENGLBLIT);
@@ -75,6 +76,14 @@ SDL_Surface *d3dSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags) {
 
     g_pd3dDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
     g_pd3dDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+	g_pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+	g_pd3dDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	g_pd3dDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+	g_pd3dDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
+	if (FAILED(g_pd3dDevice->CreateVertexBuffer(1024 * 1024, 0, 0, D3DPOOL_DEFAULT, &g_VB, NULL))) {
+		LOG_ERROR(("CreateVertexBuffer failed"));
+		return NULL;
+	} 
 
 	LOG_DEBUG(("d3d initialization was successful"));
     return screen;
@@ -163,6 +172,9 @@ int d3dSDL_Flip(SDL_Surface *screen) {
 	if (g_pD3D == NULL) {
 		return SDL_Flip(screen);
 	}
+	g_pd3dDevice->BeginScene();
+	g_pd3dDevice->EndScene();
+	g_pd3dDevice->Present (NULL, NULL, NULL, NULL);
 	return NULL;
 }
 
@@ -201,9 +213,16 @@ int d3dSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
 	return -1;
 }
 
-int d3dSDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, Uint32 color) {
+int d3dSDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, Uint32 color_) {
 	if (g_pD3D == NULL) 
-		return SDL_FillRect(dst, dstrect, color);
+		return SDL_FillRect(dst, dstrect, color_);
+	Uint8 r, g, b, a;
+	SDL_GetRGBA(color_, dst->format, &r, &g, &b, &a);
+	DWORD color = D3DCOLOR_ARGB(a, r, g, b);
+	if (dstrect == NULL) {
+	    g_pd3dDevice->Clear (0, NULL, D3DCLEAR_TARGET, color, 0.0f, 0);
+	    return 0;
+	}
 	return -1;
 }
 
@@ -236,8 +255,8 @@ int d3dSDL_SetAlpha(SDL_Surface *surface, Uint32 flag, Uint8 alpha) {
 }
 
 SDL_Surface *d3dSDL_IMG_Load(const char *file) {
-	if (g_pD3D == NULL) {
-		return IMG_Load(file); 
-    }
-	return NULL;
+	SDL_Surface * surface = IMG_Load(file); 
+	if (surface == NULL)
+		return NULL;
+	return surface;
 }
