@@ -11,6 +11,7 @@ static LPDIRECT3D9          g_pD3D       = NULL;
 static LPDIRECT3DDEVICE9    g_pd3dDevice = NULL;
 static SDL_Surface * g_screen 			 = NULL;
 static LPD3DXSPRITE g_sprite;
+static bool g_begin_scene = true;
 
 std::vector<LPDIRECT3DTEXTURE9> g_textures;
 
@@ -103,10 +104,8 @@ SDL_Surface *d3dSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags) {
 		SDL_SetError("CreateSprite failed");
 	}
 
-	g_pd3dDevice->BeginScene();
-	g_sprite->Begin(D3DXSPRITE_ALPHABLEND);
-
 	LOG_DEBUG(("d3d initialization was successful"));
+	g_begin_scene = true;
 
     return g_screen;
 }
@@ -231,11 +230,15 @@ int d3dSDL_Flip(SDL_Surface *screen) {
 	if (g_pD3D == NULL) {
 		return SDL_Flip(screen);
 	}
+	
 	g_sprite->End();
 	g_pd3dDevice->EndScene();
-	g_pd3dDevice->Present (NULL, NULL, NULL, NULL);
-	g_pd3dDevice->BeginScene();
-	g_sprite->Begin(D3DXSPRITE_ALPHABLEND);
+
+	if (FAILED(g_pd3dDevice->Present (NULL, NULL, NULL, NULL))) {
+		SDL_SetError("Present(0,0,0,0) failed");
+		return -1;
+	}
+	g_begin_scene = true;
 	return 0;
 }
 
@@ -321,6 +324,13 @@ int d3dSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
 			D3DXVECTOR3 pos;
 			pos.x = pos.y = 0;
 			pos.z = (float) z++;
+
+			if (g_begin_scene) {
+				g_pd3dDevice->BeginScene();
+				g_sprite->Begin(D3DXSPRITE_ALPHABLEND);
+				g_begin_scene = false;
+			}
+
 			if (FAILED(g_sprite->Draw(tex, srcrect != NULL? &dxr : NULL, NULL, &pos, 0xffffffff))) {
 				SDL_SetError("Sprite::Draw failed");
 				return -1;
