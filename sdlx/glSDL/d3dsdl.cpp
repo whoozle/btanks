@@ -5,6 +5,7 @@
 #include <d3dx9.h>
 
 #include <SDL/SDL_syswm.h>
+#include "mrt/logger.h"
 
 LPDIRECT3D9          g_pD3D       = NULL;
 LPDIRECT3DDEVICE9    g_pd3dDevice = NULL;
@@ -14,12 +15,17 @@ SDL_Surface *d3dSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags) {
 	SDL_Surface * screen = SDL_SetVideoMode(width, height, bpp, flags);
 	if (screen == NULL)
 		return NULL;
+	//if ((flags & SDL_GLSDL) == 0)
+	//	return screen;
+	LOG_DEBUG(("created sdl window..."));	
 
 	SDL_SysWMinfo   info;
 
     SDL_VERSION(&info.version);
     if (SDL_GetWMInfo(&info) == -1)
         return NULL;
+
+	LOG_DEBUG(("hwnd: %x", (unsigned)info.window));
 
     g_pD3D = Direct3DCreate9( D3D_SDK_VERSION );
 
@@ -53,9 +59,12 @@ SDL_Surface *d3dSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags) {
     //d3dpp.PresentationInterval   = D3DPRESENT_INTERVAL_DEFAULT; // Sync to vertical retrace
     d3dpp.Flags                  = D3DPRESENTFLAG_LOCKABLE_BACKBUFFER;
 
-    g_pD3D->CreateDevice( D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, info.window,
+    if (FAILED(g_pD3D->CreateDevice( D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, info.window,
                           D3DCREATE_SOFTWARE_VERTEXPROCESSING,
-                          &d3dpp, &g_pd3dDevice );
+                          &d3dpp, &g_pd3dDevice )))  {
+		LOG_ERROR(("CreateDevice failed"));
+        return NULL;
+	}
 
     D3DXMATRIX matProj;
     D3DXMatrixPerspectiveFovLH( &matProj, D3DXToRadian( 45.0f ), 
@@ -65,6 +74,7 @@ SDL_Surface *d3dSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags) {
     g_pd3dDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
     g_pd3dDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
+	LOG_DEBUG(("d3d initialization was successful"));
     return screen;
 }
 
@@ -97,36 +107,135 @@ void d3dSDL_Quit() {
 	SDL_Quit();	
 }
 
-SDL_Surface *d3dSDL_DisplayFormat(SDL_Surface *surface) {}
-SDL_Surface *d3dSDL_DisplayFormatAlpha(SDL_Surface *surface) {}
+SDL_Surface *d3dSDL_DisplayFormat(SDL_Surface *surface) {
+	if (g_pD3D == NULL)
+		return SDL_DisplayFormat(surface);
+	return NULL;
+}
+
+SDL_Surface *d3dSDL_DisplayFormatAlpha(SDL_Surface *surface) {
+	if (g_pD3D == NULL)
+		return SDL_DisplayFormatAlpha(surface);
+	return NULL;
+}
+
 SDL_Surface *d3dSDL_ConvertSurface
-			(SDL_Surface *src, SDL_PixelFormat *fmt, Uint32 flags) {}
+			(SDL_Surface *src, SDL_PixelFormat *fmt, Uint32 flags) {
+	if (g_pD3D == NULL)
+		return SDL_ConvertSurface(src, fmt, flags);
+	return NULL;
+}
+
 SDL_Surface *d3dSDL_CreateRGBSurface
 			(Uint32 flags, int width, int height, int depth, 
-			Uint32 Rmask, Uint32 Gmask, Uint32 Bmask, Uint32 Amask) {}
+			Uint32 Rmask, Uint32 Gmask, Uint32 Bmask, Uint32 Amask) {
+	if (g_pD3D == NULL) 
+		return SDL_CreateRGBSurface(flags, width, height, depth, Rmask, Gmask, Bmask, Amask);
+	return NULL;
+}
+
 SDL_Surface *d3dSDL_CreateRGBSurfaceFrom(void *pixels,
 			int width, int height, int depth, int pitch,
-			Uint32 Rmask, Uint32 Gmask, Uint32 Bmask, Uint32 Amask) {}
+			Uint32 Rmask, Uint32 Gmask, Uint32 Bmask, Uint32 Amask) {
+	if (g_pD3D == NULL) {
+		return SDL_CreateRGBSurfaceFrom(pixels, width, height, depth, pitch, Rmask, Gmask, Bmask, Amask);		
+	}
+	return NULL;
+}
 
-SDL_Surface *d3dSDL_LoadBMP(const char *file) {}
-int d3dSDL_SaveBMP(SDL_Surface *surface, const char *file) {}
-int d3dSDL_Flip(SDL_Surface *screen) {}
+SDL_Surface *d3dSDL_LoadBMP(const char *file) {
+	if (g_pD3D == NULL) {
+		return SDL_LoadBMP(file);
+	}
+	return NULL;
+}
 
-void d3dSDL_FreeSurface(SDL_Surface *surface) {}
+int d3dSDL_SaveBMP(SDL_Surface *surface, const char *file) {
+	if (g_pD3D == NULL) {
+		return SDL_SaveBMP(surface, file);
+	}
+	return NULL;
+}
 
-int d3dSDL_LockSurface(SDL_Surface *surface) {}
-void d3dSDL_UnlockSurface(SDL_Surface *surface) {}
+int d3dSDL_Flip(SDL_Surface *screen) {
+	if (g_pD3D == NULL) {
+		return SDL_Flip(screen);
+	}
+	return NULL;
+}
 
-SDL_bool d3dSDL_SetClipRect(SDL_Surface *surface, SDL_Rect *rect) {}
+void d3dSDL_FreeSurface(SDL_Surface *surface) {
+	if (g_pD3D == NULL) {
+		SDL_FreeSurface(surface);
+		return;
+	}
+}
+
+int d3dSDL_LockSurface(SDL_Surface *surface) {
+	if (g_pD3D == NULL) {
+		return SDL_LockSurface(surface);
+	}
+	return NULL;
+}
+
+void d3dSDL_UnlockSurface(SDL_Surface *surface) {
+	if (g_pD3D == NULL) {
+		SDL_UnlockSurface(surface);
+		return;
+	}
+
+}
+
+SDL_bool d3dSDL_SetClipRect(SDL_Surface *surface, SDL_Rect *rect) {
+	if (g_pD3D == NULL) 
+		return SDL_SetClipRect(surface, rect);		
+	return SDL_FALSE;
+}
 
 int d3dSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
-			 SDL_Surface *dst, SDL_Rect *dstrect) {}
+			 SDL_Surface *dst, SDL_Rect *dstrect) {
+	if (g_pD3D == NULL) 
+		return SDL_BlitSurface(src, srcrect, dst, dstrect);
+	return -1;
+}
 
-int d3dSDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, Uint32 color) {}
+int d3dSDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, Uint32 color) {
+	if (g_pD3D == NULL) 
+		return SDL_FillRect(dst, dstrect, color);
+	return -1;
+}
 
-void d3dSDL_UpdateRects(SDL_Surface *screen, int numrects, SDL_Rect *rects) {}
-void d3dSDL_UpdateRect(SDL_Surface *screen, Sint32 x, Sint32 y, Uint32 w, Uint32 h) {}
+void d3dSDL_UpdateRects(SDL_Surface *screen, int numrects, SDL_Rect *rects) {
+	if (g_pD3D == NULL) {
+		SDL_UpdateRects(screen, numrects, rects); 
+		return;
+    }
+}
+void d3dSDL_UpdateRect(SDL_Surface *screen, Sint32 x, Sint32 y, Uint32 w, Uint32 h) {
+	if (g_pD3D == NULL) {
+		SDL_UpdateRect(screen, x, y, w, h); 
+		return;
+    }
 
-int d3dSDL_SetColorKey(SDL_Surface *surface, Uint32 flag, Uint32 key) {}
-int d3dSDL_SetAlpha(SDL_Surface *surface, Uint32 flag, Uint8 alpha) {}
+}
 
+int d3dSDL_SetColorKey(SDL_Surface *surface, Uint32 flag, Uint32 key) {
+	if (g_pD3D == NULL) {
+		return SDL_SetColorKey(surface, flag, key); 
+    }
+	return -1;
+}
+
+int d3dSDL_SetAlpha(SDL_Surface *surface, Uint32 flag, Uint8 alpha) {
+	if (g_pD3D == NULL) {
+		return SDL_SetAlpha(surface, flag, alpha); 
+    }
+	return -1;
+}
+
+SDL_Surface *d3dSDL_IMG_Load(const char *file) {
+	if (g_pD3D == NULL) {
+		return IMG_Load(file); 
+    }
+	return NULL;
+}
