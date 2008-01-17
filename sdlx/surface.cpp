@@ -124,6 +124,8 @@ void Surface::setVideoMode(int w, int h, int bpp, int flags) {
 
 
 void Surface::putPixel(int x, int y, Uint32 pixel) {
+	if (surface->pixels == NULL)
+		throw_ex(("putPixel called on unlocked surface without pixel information"));
 	if (!(x >= 0 && y >= 0 && x < surface->w && y < surface->h))
 		return;
 	int bpp = surface->format->BytesPerPixel;
@@ -161,6 +163,8 @@ void Surface::putPixel(int x, int y, Uint32 pixel) {
 }
 
 Uint32 Surface::getPixel(int x, int y) const{
+	if (surface->pixels == NULL)
+		throw_ex(("getPixel called on unlocked surface without pixel information"));
 	int bpp = surface->format->BytesPerPixel;
 	/* Here p is the address to the pixel we want to retrieve */
 	Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
