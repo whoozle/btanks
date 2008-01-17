@@ -59,7 +59,9 @@ SDL_Surface *d3dSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags) {
     //d3dpp.PresentationInterval   = D3DPRESENT_INTERVAL_DEFAULT; // Sync to vertical retrace
     d3dpp.Flags                  = D3DPRESENTFLAG_LOCKABLE_BACKBUFFER;
 
-    if (FAILED(g_pD3D->CreateDevice( D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, info.window,
+    if (FAILED(g_pD3D->CreateDevice( D3DADAPTER_DEFAULT, 
+    					D3DDEVTYPE_REF, //D3DDEVTYPE_HAL, 
+    					info.window,
                           D3DCREATE_SOFTWARE_VERTEXPROCESSING,
                           &d3dpp, &g_pd3dDevice )))  {
 		LOG_ERROR(("CreateDevice failed"));
