@@ -132,16 +132,23 @@ SDL_Surface *d3dSDL_DisplayFormatAlpha(SDL_Surface *surface) {
 		SDL_SetError("surface with pixels == NULL found");
 		return NULL;
 	}
+	LOG_DEBUG(("creating texture..."));
 	LPDIRECT3DTEXTURE9 tex;
 	
-	if (FAILED(g_pd3dDevice->CreateTexture(surface->w, surface->h, 1, 0, D3DFMT_A8B8G8R8, D3DPOOL_DEFAULT, &tex, NULL))) {
+	if (FAILED(g_pd3dDevice->CreateTexture(surface->w, surface->h, 1, D3DUSAGE_DYNAMIC, D3DFMT_A8B8G8R8, D3DPOOL_DEFAULT, &tex, NULL))) {
 		SDL_SetError("CreateTexture failed");
 		return NULL;
 	}
 
+	LOG_DEBUG(("locking texture.."));
+
 	D3DLOCKED_RECT rect;
-	tex->LockRect(0, &rect, NULL, D3DLOCK_DISCARD);
-	//CopyMemory(rect.pBits, rgbdata, width*height*sizeof(rgbdata));
+	if (FAILED(tex->LockRect(0, &rect, NULL, D3DLOCK_DISCARD))) {
+		SDL_SetError("LockRect failed");
+		return NULL;
+	}
+
+	LOG_DEBUG(("pitch = %d, w: %d, h: %d", rect.Pitch, surface->w, surface->h));
 	for(int y = 0; y < surface->h; ++y) {
 		CopyMemory((char *)rect.pBits + rect.Pitch * y, (const char *)surface->pixels + y * surface->pitch, surface->w * surface->format->BytesPerPixel);		
 	}
@@ -150,6 +157,7 @@ SDL_Surface *d3dSDL_DisplayFormatAlpha(SDL_Surface *surface) {
 	SDL_Surface *r = SDL_CreateRGBSurface(0, surface->w, surface->h, surface->format->BitsPerPixel,  
 			surface->format->Rmask, surface->format->Gmask, surface->format->Bmask, surface->format->Amask);
 	SDL_free(r->pixels); //no need for that. use it later from Lock
+	r->pixels = NULL;
 	LOG_DEBUG(("created texture!"));
 	
 	return r;
@@ -194,6 +202,7 @@ int d3dSDL_SaveBMP(SDL_Surface *surface, const char *file) {
 }
 
 int d3dSDL_Flip(SDL_Surface *screen) {
+	LOG_DEBUG(("Flip"));
 	if (g_pD3D == NULL) {
 		return SDL_Flip(screen);
 	}
@@ -204,6 +213,7 @@ int d3dSDL_Flip(SDL_Surface *screen) {
 }
 
 void d3dSDL_FreeSurface(SDL_Surface *surface) {
+	LOG_DEBUG(("FreeSurface"));
 	if (g_pD3D == NULL) {
 		SDL_FreeSurface(surface);
 		return;
@@ -211,21 +221,23 @@ void d3dSDL_FreeSurface(SDL_Surface *surface) {
 }
 
 int d3dSDL_LockSurface(SDL_Surface *surface) {
+	LOG_DEBUG(("LockSurface"));
 	if (g_pD3D == NULL) {
 		return SDL_LockSurface(surface);
 	}
-	return NULL;
+	return -1;
 }
 
 void d3dSDL_UnlockSurface(SDL_Surface *surface) {
+	LOG_DEBUG(("UnlockSurface"));
 	if (g_pD3D == NULL) {
 		SDL_UnlockSurface(surface);
 		return;
 	}
-
 }
 
 SDL_bool d3dSDL_SetClipRect(SDL_Surface *surface, SDL_Rect *rect) {
+	LOG_DEBUG(("SetClipRect"));
 	if (g_pD3D == NULL) 
 		return SDL_SetClipRect(surface, rect);		
 	return SDL_FALSE;
@@ -233,12 +245,14 @@ SDL_bool d3dSDL_SetClipRect(SDL_Surface *surface, SDL_Rect *rect) {
 
 int d3dSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
 			 SDL_Surface *dst, SDL_Rect *dstrect) {
+	LOG_DEBUG(("BlitSurface"));
 	if (g_pD3D == NULL) 
 		return SDL_BlitSurface(src, srcrect, dst, dstrect);
 	return -1;
 }
 
 int d3dSDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, Uint32 color_) {
+	LOG_DEBUG(("FillRect"));
 	if (g_pD3D == NULL) 
 		return SDL_FillRect(dst, dstrect, color_);
 	Uint8 r, g, b, a;
