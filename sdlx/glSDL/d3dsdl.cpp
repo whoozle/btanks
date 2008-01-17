@@ -9,8 +9,8 @@
 
 static LPDIRECT3D9          g_pD3D       = NULL;
 static LPDIRECT3DDEVICE9    g_pd3dDevice = NULL;
-static IDirect3DVertexBuffer9* g_VB 	 = NULL;
 static SDL_Surface * g_screen 			 = NULL;
+static LPD3DXSPRITE g_sprite;
 
 std::vector<LPDIRECT3DTEXTURE9> g_textures;
 
@@ -98,10 +98,13 @@ SDL_Surface *d3dSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags) {
 	g_pd3dDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 	g_pd3dDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 	g_pd3dDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
-	if (FAILED(g_pd3dDevice->CreateVertexBuffer(1024 * 1024, 0, 0, D3DPOOL_DEFAULT, &g_VB, NULL))) {
-		LOG_ERROR(("CreateVertexBuffer failed"));
-		return NULL;
-	} 
+
+	if (FAILED(D3DXCreateSprite(g_pd3dDevice, &g_sprite))) {
+		SDL_SetError("CreateSprite failed");
+	}
+
+	g_pd3dDevice->BeginScene();
+	g_sprite->Begin(D3DXSPRITE_ALPHABLEND);
 
 	LOG_DEBUG(("d3d initialization was successful"));
 
@@ -228,10 +231,12 @@ int d3dSDL_Flip(SDL_Surface *screen) {
 	if (g_pD3D == NULL) {
 		return SDL_Flip(screen);
 	}
-	g_pd3dDevice->BeginScene();
+	g_sprite->End();
 	g_pd3dDevice->EndScene();
 	g_pd3dDevice->Present (NULL, NULL, NULL, NULL);
-	return NULL;
+	g_pd3dDevice->BeginScene();
+	g_sprite->Begin(D3DXSPRITE_ALPHABLEND);
+	return 0;
 }
 
 void d3dSDL_FreeSurface(SDL_Surface *surface) {
@@ -294,10 +299,48 @@ SDL_bool d3dSDL_SetClipRect(SDL_Surface *surface, SDL_Rect *rect) {
 
 int d3dSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
 			 SDL_Surface *dst, SDL_Rect *dstrect) {
-	LOG_DEBUG(("BlitSurface"));
+	//LOG_DEBUG(("BlitSurface"));
 	if (g_pD3D == NULL) 
 		return SDL_BlitSurface(src, srcrect, dst, dstrect);
-	return -1;
+
+	LPDIRECT3DTEXTURE9 tex = getTexture(src);
+	//LOG_DEBUG(("src->getTexture(%d) returns %p", src->unused1, (void *)tex));
+
+	static int z;
+
+	if (dst == g_screen) {
+		if ( tex != NULL) {
+			LOG_DEBUG(("blitting to screen"));
+			RECT dxr;
+			if (srcrect) {
+				dxr.left = srcrect->x;
+				dxr.top = srcrect->y;
+				dxr.right = srcrect->x + srcrect->w - 1;
+				dxr.bottom = srcrect->y + srcrect->h - 1;
+			}
+			D3DXVECTOR3 pos;
+			pos.x = pos.y = 0;
+			pos.z = (float) z++;
+			if (FAILED(g_sprite->Draw(tex, srcrect != NULL? &dxr : NULL, NULL, &pos, 0xffffffff))) {
+				SDL_SetError("Sprite::Draw failed");
+				return -1;
+			}
+			return 0;
+		}
+		SDL_SetError("Cannot convert surfaces on the fly");
+		return -1;
+	} else {
+		int r = d3dSDL_LockSurface(src); 
+		if (r == -1)
+			return r;
+		r = d3dSDL_LockSurface(dst); 
+		if (r == -1)
+			return r;
+		SDL_BlitSurface(src, srcrect, dst, dstrect);
+		d3dSDL_UnlockSurface(dst); 
+		d3dSDL_UnlockSurface(src); 
+		return 0;
+	}
 }
 
 int d3dSDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, Uint32 color_) {
