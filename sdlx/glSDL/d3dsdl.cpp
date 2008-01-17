@@ -16,8 +16,8 @@ std::vector<LPDIRECT3DTEXTURE9> g_textures;
 static LPDIRECT3DTEXTURE9 getTexture(const SDL_Surface *surface, const bool del = false) {
 	if (surface == NULL)
 		return NULL;
-	int idx = surface->unused1;
-	if (idx < 0 || idx > (int)g_textures.size())
+	int idx = surface->unused1 - 1;
+	if (idx < 0 || idx >= (int)g_textures.size())
 		return NULL;
 	if (!del)
 		return g_textures[idx];
@@ -253,6 +253,7 @@ int d3dSDL_LockSurface(SDL_Surface *surface) {
 	}
 
 	LPDIRECT3DTEXTURE9 tex = getTexture(surface);
+	LOG_DEBUG(("getTexture(%d) returns %p", surface->unused1, (void *)tex));
 	if (tex == NULL)
 		return r;
     
@@ -269,6 +270,11 @@ int d3dSDL_LockSurface(SDL_Surface *surface) {
 }
 
 void d3dSDL_UnlockSurface(SDL_Surface *surface) {
+	LPDIRECT3DTEXTURE9 tex = getTexture(surface);
+	LOG_DEBUG(("getTexture(%d) returns %p", surface->unused1, (void *)tex));
+	if (tex != NULL) {
+		tex->UnlockRect(0);
+	}
 	LOG_DEBUG(("UnlockSurface"));
 	if (g_pD3D == NULL) {
 		SDL_UnlockSurface(surface);
