@@ -11,6 +11,23 @@ LPDIRECT3D9          g_pD3D       = NULL;
 LPDIRECT3DDEVICE9    g_pd3dDevice = NULL;
 IDirect3DVertexBuffer9* g_VB 	  = NULL;
 
+std::vector<LPDIRECT3DTEXTURE9> g_textures;
+
+static LPDIRECT3DTEXTURE9 getTexture(const SDL_Surface *surface, const bool del = false) {
+	if (surface == NULL)
+		return NULL;
+	int idx = surface->unused1;
+	if (idx < 0 || idx > (int)g_textures.size())
+		return NULL;
+	if (!del)
+		return g_textures[idx];
+	else {
+		LPDIRECT3DTEXTURE9 r = g_textures[idx];
+		g_textures[idx] = NULL;
+		return r;
+	}
+}
+
 SDL_Surface *d3dSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags) {
 	flags &= ~(SDL_OPENGL | SDL_OPENGLBLIT);
 	SDL_Surface * screen = SDL_SetVideoMode(width, height, bpp, flags);
@@ -160,6 +177,8 @@ SDL_Surface *d3dSDL_DisplayFormatAlpha(SDL_Surface *surface) {
 	r->pixels = NULL;
 	LOG_DEBUG(("created texture!"));
 	r->flags |= SDL_GLSDL | SDL_HWSURFACE;
+	g_textures.push_back(tex);
+	r->unused1 = g_textures.size();
 	
 	return r;
 }
@@ -215,6 +234,10 @@ int d3dSDL_Flip(SDL_Surface *screen) {
 
 void d3dSDL_FreeSurface(SDL_Surface *surface) {
 	LOG_DEBUG(("FreeSurface"));
+	LPDIRECT3DTEXTURE9 tex = getTexture(surface, true);
+	if (tex != NULL) {
+		tex->Release();
+	}
 	if (g_pD3D == NULL) {
 		SDL_FreeSurface(surface);
 		return;
@@ -223,10 +246,26 @@ void d3dSDL_FreeSurface(SDL_Surface *surface) {
 
 int d3dSDL_LockSurface(SDL_Surface *surface) {
 	LOG_DEBUG(("LockSurface"));
-	if (g_pD3D == NULL) {
-		return SDL_LockSurface(surface);
+	int r = SDL_LockSurface(surface);
+
+	if (g_pD3D == NULL || r == -1) {
+		return r;
 	}
-	return -1;
+
+	LPDIRECT3DTEXTURE9 tex = getTexture(surface);
+	if (tex == NULL)
+		return r;
+    
+	D3DLOCKED_RECT rect;
+
+	if (FAILED(tex->LockRect(0, &rect, NULL, D3DLOCK_DISCARD))) {
+		SDL_SetError("LockRect failed");
+		return -1;
+	}
+	surface->pitch = rect.Pitch;
+	surface->pixels = rect.pBits;
+	
+	return 0;
 }
 
 void d3dSDL_UnlockSurface(SDL_Surface *surface) {
@@ -235,6 +274,7 @@ void d3dSDL_UnlockSurface(SDL_Surface *surface) {
 		SDL_UnlockSurface(surface);
 		return;
 	}
+
 }
 
 SDL_bool d3dSDL_SetClipRect(SDL_Surface *surface, SDL_Rect *rect) {
