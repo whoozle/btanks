@@ -77,6 +77,7 @@ void Font::addPage(const unsigned base, const mrt::Chunk &data, const bool alpha
 	int h = page.surface->getHeight();
 	int w = h;
 	int n = (page.surface->getWidth() - 1) / w + 1;
+	page.surface->lock();
 	
 	page.width_map.resize(n);
 	
@@ -124,6 +125,7 @@ void Font::addPage(const unsigned base, const mrt::Chunk &data, const bool alpha
 		
 		//LOG_DEBUG(("%s: char: %d, x1: %d, x2: %d", file.c_str(), c, _width_map[c].first, _width_map[c].second));
 	}
+	page.surface->unlock();
 	_pages[base] = page;
 }
 
