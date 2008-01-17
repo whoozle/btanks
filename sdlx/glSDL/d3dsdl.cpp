@@ -159,6 +159,7 @@ SDL_Surface *d3dSDL_DisplayFormatAlpha(SDL_Surface *surface) {
 	SDL_free(r->pixels); //no need for that. use it later from Lock
 	r->pixels = NULL;
 	LOG_DEBUG(("created texture!"));
+	r->flags |= SDL_GLSDL | SDL_HWSURFACE;
 	
 	return r;
 }
