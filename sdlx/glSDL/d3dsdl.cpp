@@ -127,7 +127,32 @@ SDL_Surface *d3dSDL_DisplayFormat(SDL_Surface *surface) {
 SDL_Surface *d3dSDL_DisplayFormatAlpha(SDL_Surface *surface) {
 	if (g_pD3D == NULL)
 		return SDL_DisplayFormatAlpha(surface);
-	return NULL;
+
+	if (surface->pixels == NULL) {
+		SDL_SetError("surface with pixels == NULL found");
+		return NULL;
+	}
+	LPDIRECT3DTEXTURE9 tex;
+	
+	if (FAILED(g_pd3dDevice->CreateTexture(surface->w, surface->h, 1, 0, D3DFMT_A8B8G8R8, D3DPOOL_DEFAULT, &tex, NULL))) {
+		SDL_SetError("CreateTexture failed");
+		return NULL;
+	}
+
+	D3DLOCKED_RECT rect;
+	tex->LockRect(0, &rect, NULL, D3DLOCK_DISCARD);
+	//CopyMemory(rect.pBits, rgbdata, width*height*sizeof(rgbdata));
+	for(int y = 0; y < surface->h; ++y) {
+		CopyMemory((char *)rect.pBits + rect.Pitch * y, (const char *)surface->pixels + y * surface->pitch, surface->w * surface->format->BytesPerPixel);		
+	}
+	tex->UnlockRect(0);
+	
+	SDL_Surface *r = SDL_CreateRGBSurface(0, surface->w, surface->h, surface->format->BitsPerPixel,  
+			surface->format->Rmask, surface->format->Gmask, surface->format->Bmask, surface->format->Amask);
+	SDL_free(r->pixels); //no need for that. use it later from Lock
+	LOG_DEBUG(("created texture!"));
+	
+	return r;
 }
 
 SDL_Surface *d3dSDL_ConvertSurface
