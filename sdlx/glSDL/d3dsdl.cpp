@@ -7,9 +7,10 @@
 #include <SDL/SDL_syswm.h>
 #include "mrt/logger.h"
 
-LPDIRECT3D9          g_pD3D       = NULL;
-LPDIRECT3DDEVICE9    g_pd3dDevice = NULL;
-IDirect3DVertexBuffer9* g_VB 	  = NULL;
+static LPDIRECT3D9          g_pD3D       = NULL;
+static LPDIRECT3DDEVICE9    g_pd3dDevice = NULL;
+static IDirect3DVertexBuffer9* g_VB 	 = NULL;
+static SDL_Surface * g_screen 			 = NULL;
 
 std::vector<LPDIRECT3DTEXTURE9> g_textures;
 
@@ -30,8 +31,8 @@ static LPDIRECT3DTEXTURE9 getTexture(const SDL_Surface *surface, const bool del 
 
 SDL_Surface *d3dSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags) {
 	flags &= ~(SDL_OPENGL | SDL_OPENGLBLIT);
-	SDL_Surface * screen = SDL_SetVideoMode(width, height, bpp, flags);
-	if (screen == NULL)
+	g_screen = SDL_SetVideoMode(width, height, bpp, flags);
+	if (g_screen == NULL)
 		return NULL;
 	//if ((flags & SDL_GLSDL) == 0)
 	//	return screen;
@@ -103,7 +104,8 @@ SDL_Surface *d3dSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags) {
 	} 
 
 	LOG_DEBUG(("d3d initialization was successful"));
-    return screen;
+
+    return g_screen;
 }
 
 static void d3d_Shutdown(void) {
@@ -327,17 +329,11 @@ void d3dSDL_UpdateRect(SDL_Surface *screen, Sint32 x, Sint32 y, Uint32 w, Uint32
 }
 
 int d3dSDL_SetColorKey(SDL_Surface *surface, Uint32 flag, Uint32 key) {
-	if (g_pD3D == NULL) {
-		return SDL_SetColorKey(surface, flag, key); 
-    }
-	return -1;
+	return SDL_SetColorKey(surface, flag, key); 
 }
 
 int d3dSDL_SetAlpha(SDL_Surface *surface, Uint32 flag, Uint8 alpha) {
-	if (g_pD3D == NULL) {
-		return SDL_SetAlpha(surface, flag, alpha); 
-    }
-	return -1;
+	return SDL_SetAlpha(surface, flag, alpha); 
 }
 
 SDL_Surface *d3dSDL_IMG_Load(const char *file) {
