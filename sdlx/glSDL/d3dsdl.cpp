@@ -310,7 +310,7 @@ int d3dSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
 
 	if (dst == g_screen) {
 		if ( tex != NULL) {
-			LOG_DEBUG(("blitting to screen"));
+			//LOG_DEBUG(("blitting to screen"));
 			RECT dxr;
 			if (srcrect) {
 				dxr.left = srcrect->x;
