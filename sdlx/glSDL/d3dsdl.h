@@ -91,18 +91,7 @@ extern "C" {
 #define	SDL_LoadBMP			d3dSDL_LoadBMP
 #undef	SDL_SaveBMP
 #define	SDL_SaveBMP			d3dSDL_SaveBMP
-#define IMG_Load(x)			d3dSDL_IMG_Load(x)
 
-#endif
-
-#include <SDL/SDL_image.h>
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-SDL_Surface *d3dSDL_IMG_Load(const char *file);
-#ifdef __cplusplus
-}
 #endif
 
 #endif
