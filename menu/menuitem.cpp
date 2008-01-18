@@ -40,7 +40,6 @@ void MenuItem::render() {
 
 	_font->render(_normal, (_text.empty())?" ":_text);
 	_normal.convertAlpha();
-	_normal.convertToHardware();
 }
 	
 void MenuItem::render(sdlx::Surface &dst, const int x, const int y) {
