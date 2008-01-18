@@ -324,19 +324,6 @@ void Surface::unlock() const {
 	}
 }
 
-void Surface::convertToHardware() {
-	if ((surface->flags & SDL_HWSURFACE) == SDL_HWSURFACE) {
-		LOG_DEBUG(("%p is already in hardware, skipping", (void*) surface));
-		return;
-	}
-	//fixme: implement the following:
-	//create HWSURFACE with the same w/h.
-	//check its flags, if HWSURFACE was successfully created, blit it to this surface.
-	
-	//convert((surface->flags & ~SDL_SWSURFACE) | SDL_HWSURFACE);
-	//LOG_DEBUG(("moving %p to hardware,  result: %s", (void *)surface, ((surface->flags & SDL_HWSURFACE) == SDL_HWSURFACE)?"hardware":"software"));
-}
-
 void Surface::setClipRect(const sdlx::Rect &rect) {
 	SDL_SetClipRect(surface, const_cast<sdlx::Rect*>(&rect));
 }

@@ -117,7 +117,6 @@ namespace sdlx {
 		void setAlpha(Uint8 alpha, Uint32 flags = SDL_SRCALPHA);
 		void convertAlpha();
 		void convertToDisplay();
-		void convertToHardware();
 
 		PixelFormat* getPixelFormat() const { return surface->format; }
 
