@@ -323,8 +323,8 @@ int WINAPI SDLWinMain(HINSTANCE hInst, HINSTANCE hPrev, LPSTR szCmdLine, int sw)
 #endif /* !_WIN32_WCE */
 
 	setvbuf(stdout, NULL, _IOLBF, BUFSIZ);	/* Line buffered */
-	//setbuf(stderr, NULL);			/* No buffering */
-	setvbuf(stderr, NULL, _IOLBF, BUFSIZ);	/* Line buffered */
+	setbuf(stderr, NULL);			/* No buffering */
+	//setvbuf(stderr, NULL, _IOLBF, BUFSIZ);	/* Line buffered */
 #endif /* !NO_STDIO_REDIRECT */
 
 #ifdef _WIN32_WCE
