@@ -972,6 +972,9 @@ zzip_seek(ZZIP_FILE * fp, zzip_off_t offset, int whence)
      * If this is other handle than previous, save current seek pointer
      * and read the file position of `this' handle.
      */
+	if (dir->currentfp == NULL)
+		dir->currentfp = fp;
+	
     if (dir->currentfp != fp)  
     {
         if (zzip_file_saveoffset(dir->currentfp) < 0 
