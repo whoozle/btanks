@@ -156,7 +156,6 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 					cmap = new sdlx::CollisionMap;
 					cmap->init(s, sdlx::CollisionMap::OnlyOpaque);
 			
-					s->convertToHardware();
 					LOG_DEBUG(("loaded animation '%s'", id.c_str()));
 				}
 			
@@ -348,7 +347,6 @@ const sdlx::Surface *IResourceManager::loadSurface(const std::string &id) {
 			s = new sdlx::Surface;
 			s->loadImage(data);
 			s->convertAlpha();
-			s->convertToHardware();
 			LOG_DEBUG(("loaded surface '%s'", id.c_str()));
 			_surfaces[id] = s;
 		} CATCH("loading surface", { delete s; throw; });
@@ -583,9 +581,9 @@ void IResourceManager::checkSurface(const std::string &animation, const sdlx::Su
 			s = new sdlx::Surface;
 			s->loadImage(data);
 			s->convertAlpha();
-			s->convertToHardware();
 			GET_CONFIG_VALUE("engine.strip-alpha-from-object-tiles", bool, strip_alpha, false);
 			if (strip_alpha) {
+				s->lock();
 				Uint8 r,g,b,a;
 				for(int y = 0; y < s->getHeight(); ++y) 
 					for(int x = 0; x < s->getWidth(); ++x) {
@@ -593,6 +591,7 @@ void IResourceManager::checkSurface(const std::string &animation, const sdlx::Su
 						if (a != 255)
 							s->putPixel(x, y, s->mapRGBA(r, g, b, (a > 51)?51:a));
 					}
+				s->unlock();
 			}
 
 			LOG_DEBUG(("loaded animation '%s'", animation.c_str()));
