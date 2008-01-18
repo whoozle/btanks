@@ -736,7 +736,6 @@ void IMap::end(const std::string &name) {
 		}
 		//_image->convert(SDL_ASYNCBLIT | SDL_HWSURFACE);
 		_image->convertAlpha();
-		_image->convertToHardware();
 		
 		LOG_DEBUG(("image loaded. (%dx%d)", _image->getWidth(), _image->getHeight()));
 	} else if (name == "layer") {
@@ -1301,12 +1300,12 @@ TRY {
 			sdlx::Surface *s = new sdlx::Surface;
 			s->createRGB(_tw, _th, 24);
 			s->convertAlpha();
-			s->convertToHardware();
 
 			sdlx::Rect from(x, y, _tw, _th);
 			s->copyFrom(*image, from);
 			GET_CONFIG_VALUE("engine.strip-alpha-from-map-tiles", bool, strip_alpha, false);
 			if (strip_alpha) {
+				s->lock();
 				Uint8 r,g,b,a;
 				for(int y = 0; y < s->getHeight(); ++y) 
 					for(int x = 0; x < s->getWidth(); ++x) {
@@ -1314,6 +1313,7 @@ TRY {
 						if (a != 255)
 							s->putPixel(x, y, s->mapRGBA(r, g, b, (a > 51)?51:a));
 					}
+			   s->unlock();
 			}
 
 			GET_CONFIG_VALUE("engine.mark-map-tiles", bool, marks, false);
