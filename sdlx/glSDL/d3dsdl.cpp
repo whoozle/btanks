@@ -87,12 +87,12 @@ SDL_Surface *d3dSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags) {
 		LOG_ERROR(("CreateDevice failed"));
         return NULL;
 	}
-/*
+
     D3DXMATRIX matProj;
     D3DXMatrixPerspectiveFovLH( &matProj, D3DXToRadian( 45.0f ), 
                                 1.0f * width / height, 0.1f, 100.0f );
     g_pd3dDevice->SetTransform( D3DTS_PROJECTION, &matProj );
-*/
+
     g_pd3dDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
     g_pd3dDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 	g_pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
