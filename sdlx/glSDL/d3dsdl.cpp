@@ -87,7 +87,7 @@ SDL_Surface *d3dSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags) {
     d3dpp.Flags                  = D3DPRESENTFLAG_LOCKABLE_BACKBUFFER;
 
     if (FAILED(g_pD3D->CreateDevice( D3DADAPTER_DEFAULT, 
-    					D3DDEVTYPE_REF, //D3DDEVTYPE_HAL, 
+    					D3DDEVTYPE_HAL, //D3DDEVTYPE_REF, 
     					info.window,
                           D3DCREATE_SOFTWARE_VERTEXPROCESSING,
                           &d3dpp, &g_pd3dDevice )))  {
@@ -162,23 +162,10 @@ SDL_Surface *d3dSDL_DisplayFormat(SDL_Surface *surface) {
 	return NULL;
 }
 
-SDL_Surface *d3dSDL_DisplayFormatAlpha(SDL_Surface *surface) {
-	LOG_DEBUG(("DisplayFormatAlpha(%p->%d, %d)", (void *) surface, surface->w, surface->h));
-	if (g_pD3D == NULL)
-		return SDL_DisplayFormatAlpha(surface);
-
-	if (surface->pixels == NULL) {
-		SDL_SetError("surface with pixels == NULL found");
-		return NULL;
-	}
-
-	int tex_size = surface->w > surface->h? surface->w: surface->h; 
-	//fixme: check nonpow2 capability
+static int pow2(int tex_size) {
 	if (tex_size > 2048) {
-		SDL_SetError("cannot handle large textures (greater than 2048x2048)");
-		return NULL;
-	}
-	if (tex_size > 1024) {
+		tex_size = -1;
+	} else if (tex_size > 1024) {
 		tex_size = 2048;
 	} else if (tex_size > 512) { 
 		tex_size = 1024;
@@ -201,10 +188,30 @@ SDL_Surface *d3dSDL_DisplayFormatAlpha(SDL_Surface *surface) {
    	} else if (tex_size > 1) {
 		tex_size = 2;
    	} else tex_size = 1;
+   	return tex_size;
+}
+
+SDL_Surface *d3dSDL_DisplayFormatAlpha(SDL_Surface *surface) {
+	LOG_DEBUG(("DisplayFormatAlpha(%p->%d, %d)", (void *) surface, surface->w, surface->h));
+	if (g_pD3D == NULL)
+		return SDL_DisplayFormatAlpha(surface);
+
+	if (surface->pixels == NULL) {
+		SDL_SetError("surface with pixels == NULL found");
+		return NULL;
+	}
+
+	//fixme: check nonpow2 capability
+	int tex_size_w = pow2(surface->w);
+	int tex_size_h = pow2(surface->h);
+	if (tex_size_w == -1 || tex_size_h == -1) {
+		SDL_SetError("cannot handle large textures (greater than 2048x2048) w:%d, h: %d", surface->w, surface->h);
+		return NULL;
+	}
 
 	LPDIRECT3DTEXTURE9 tex;
-	LOG_DEBUG(("creating %dx%d texture...", tex_size, tex_size));
-	if (FAILED(g_pd3dDevice->CreateTexture(tex_size, tex_size, 1, D3DUSAGE_DYNAMIC, D3DFMT_A8B8G8R8, D3DPOOL_DEFAULT, &tex, NULL))) {
+	LOG_DEBUG(("creating %dx%d texture...", tex_size_w, tex_size_h));
+	if (FAILED(g_pd3dDevice->CreateTexture(tex_size_w, tex_size_h, 1, D3DUSAGE_DYNAMIC, D3DFMT_A8B8G8R8, D3DPOOL_DEFAULT, &tex, NULL))) {
 		SDL_SetError("CreateTexture failed");
 		return NULL;
 	}
