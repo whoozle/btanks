@@ -40,8 +40,8 @@ static texinfo * getTexture(const SDL_Surface *surface) {
 SDL_Surface *d3dSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags) {
 	flags &= ~(SDL_OPENGL | SDL_OPENGLBLIT);
 	g_screen = SDL_SetVideoMode(width, height, bpp, flags);
-	if (g_screen == NULL)
-		return NULL;
+	if (g_screen == NULL || (flags & SDL_GLSDL) == 0)
+		return g_screen;
 	//if ((flags & SDL_GLSDL) == 0)
 	//	return screen;
 	LOG_DEBUG(("created sdl window..."));	
@@ -192,9 +192,10 @@ static int pow2(int tex_size) {
 }
 
 SDL_Surface *d3dSDL_DisplayFormatAlpha(SDL_Surface *surface) {
-	LOG_DEBUG(("DisplayFormatAlpha(%p->%d, %d)", (void *) surface, surface->w, surface->h));
 	if (g_pD3D == NULL)
 		return SDL_DisplayFormatAlpha(surface);
+
+	LOG_DEBUG(("DisplayFormatAlpha(%p->%d, %d)", (void *) surface, surface->w, surface->h));
 
 	if (surface->pixels == NULL) {
 		SDL_SetError("surface with pixels == NULL found");
@@ -320,10 +321,11 @@ int d3dSDL_SaveBMP(SDL_Surface *surface, const char *file) {
 }
 
 int d3dSDL_Flip(SDL_Surface *screen) {
-	LOG_DEBUG(("Flip"));
 	if (g_pD3D == NULL) {
 		return SDL_Flip(screen);
 	}
+
+	LOG_DEBUG(("Flip"));
 	
 	if (g_sprite_end && FAILED(g_sprite->End())) {
 		SDL_SetError("Sprite::End() failed");
@@ -351,6 +353,11 @@ void d3dSDL_FreeSurface(SDL_Surface *surface) {
 		LOG_WARN(("SDL_FreeSurface(NULL) called"));
 		return;
 	}
+	if (g_pD3D == NULL) {
+		SDL_FreeSurface(surface);
+		return;
+	}
+
 	LOG_DEBUG(("FreeSurface"));
 	texinfo * tex = getTexture(surface);
 	if (tex != NULL) {
@@ -400,12 +407,12 @@ static void d3dSDL_UnlockSurface2(SDL_Surface *surface) {
 
 
 int d3dSDL_LockSurface(SDL_Surface *surface) {
-	LOG_DEBUG(("LockSurface"));
 	int r = SDL_LockSurface(surface);
 
 	if (g_pD3D == NULL || r == -1) {
 		return r;
 	}
+	LOG_DEBUG(("LockSurface"));
 	if (d3dSDL_LockSurface2(surface) == -1) {
 		SDL_UnlockSurface(surface);
 		return -1;
@@ -413,17 +420,17 @@ int d3dSDL_LockSurface(SDL_Surface *surface) {
 }
 
 void d3dSDL_UnlockSurface(SDL_Surface *surface) {
-	LOG_DEBUG(("UnlockSurface"));
 	if (g_pD3D != NULL)  {
+		LOG_DEBUG(("UnlockSurface"));
 		d3dSDL_UnlockSurface2(surface);
 	}
 	SDL_UnlockSurface(surface);
 }
 
 SDL_bool d3dSDL_SetClipRect(SDL_Surface *surface, SDL_Rect *rect) {
-	LOG_DEBUG(("SetClipRect"));
 	if (g_pD3D == NULL) 
 		return SDL_SetClipRect(surface, rect);		
+	LOG_DEBUG(("SetClipRect"));
 	return SDL_FALSE;
 }
 
@@ -505,9 +512,10 @@ int d3dSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
 }
 
 int d3dSDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, Uint32 color_) {
-	LOG_DEBUG(("FillRect"));
 	if (g_pD3D == NULL) 
 		return SDL_FillRect(dst, dstrect, color_);
+
+	LOG_DEBUG(("FillRect"));
 
 	Uint8 r, g, b, a;
 	SDL_GetRGBA(color_, dst->format, &r, &g, &b, &a);
