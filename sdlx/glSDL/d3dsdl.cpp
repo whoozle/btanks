@@ -12,6 +12,7 @@ static LPDIRECT3DDEVICE9    g_pd3dDevice = NULL;
 static SDL_Surface * g_screen 			 = NULL;
 static LPD3DXSPRITE g_sprite;
 static bool g_begin_scene = true;
+static bool g_sprite_end = false;
 
 std::vector<LPDIRECT3DTEXTURE9> g_textures;
 
@@ -232,13 +233,17 @@ int d3dSDL_Flip(SDL_Surface *screen) {
 		return SDL_Flip(screen);
 	}
 	
-	if (FAILED(g_sprite->End())) {
+	if (g_sprite_end && FAILED(g_sprite->End())) {
 		SDL_SetError("Sprite::End() failed");
 		return -1;
 	}
-	if (FAILED(g_pd3dDevice->EndScene())) {
-		SDL_SetError("EndScene() failed");
-		return -1;
+
+	if (g_sprite_end) {
+		g_sprite_end = false;
+		if (FAILED(g_pd3dDevice->EndScene())) {
+			SDL_SetError("EndScene() failed");
+			return -1;
+		}
 	}
 
 	if (FAILED(g_pd3dDevice->Present (NULL, NULL, NULL, NULL))) {
@@ -323,19 +328,27 @@ int d3dSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
 			if (srcrect) {
 				dxr.left = srcrect->x;
 				dxr.top = srcrect->y;
-				dxr.right = srcrect->x + srcrect->w - 1;
-				dxr.bottom = srcrect->y + srcrect->h - 1;
+				dxr.right = srcrect->x + srcrect->w;
+				dxr.bottom = srcrect->y + srcrect->h;
 			}
 			D3DXVECTOR3 pos;
 			pos.x = pos.y = 0;
 			pos.z = 0;
 
 			if (g_begin_scene) {
+				LOG_DEBUG(("BeginScene"));
+				g_pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET, 0, 0, 0);
 				g_pd3dDevice->BeginScene();
-				g_sprite->Begin(D3DXSPRITE_ALPHABLEND);
 				g_begin_scene = false;
 			}
-
+			if (!g_sprite_end) {
+				g_sprite_end = true;
+				if (FAILED(g_sprite->Begin(D3DXSPRITE_ALPHABLEND))) {
+					SDL_SetError("Sprite::Begin() failed");
+					return -1;
+				}
+			}
+			LOG_DEBUG(("Sprite::Draw"));
 			if (FAILED(g_sprite->Draw(tex, srcrect != NULL? &dxr : NULL, NULL, &pos, 0xffffffff))) {
 				SDL_SetError("Sprite::Draw failed");
 				return -1;
