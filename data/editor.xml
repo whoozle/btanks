@@ -11,6 +11,9 @@
 		<animation id="regular-mine" />
 		<variant id="nuke" />
 	</class>
+	<class id="ball-lightning">
+		<animation id="ball-lightning" />
+	</class>
 	<class id="ballistic-missile">
 	</class>
 	<class id="ballistic-missile-target">
