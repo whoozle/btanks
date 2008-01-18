@@ -61,13 +61,13 @@ SDL_Surface *d3dSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags) {
     if((flags & SDL_FULLSCREEN) == 0)
     {
         d3dpp.Windowed         = TRUE;
-        d3dpp.SwapEffect       = D3DSWAPEFFECT_DISCARD;
+        d3dpp.SwapEffect       = D3DSWAPEFFECT_FLIP;//D3DSWAPEFFECT_DISCARD;
         d3dpp.BackBufferFormat = d3ddm.Format;
     }
     else
     {
         d3dpp.Windowed         = FALSE;
-        d3dpp.SwapEffect       = D3DSWAPEFFECT_DISCARD;
+        d3dpp.SwapEffect       = D3DSWAPEFFECT_FLIP;//D3DSWAPEFFECT_DISCARD;
         d3dpp.BackBufferWidth  = width;
         d3dpp.BackBufferHeight = height;
         d3dpp.BackBufferFormat = D3DFMT_X8R8G8B8;
@@ -87,12 +87,12 @@ SDL_Surface *d3dSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags) {
 		LOG_ERROR(("CreateDevice failed"));
         return NULL;
 	}
-
+/*
     D3DXMATRIX matProj;
     D3DXMatrixPerspectiveFovLH( &matProj, D3DXToRadian( 45.0f ), 
                                 1.0f * width / height, 0.1f, 100.0f );
     g_pd3dDevice->SetTransform( D3DTS_PROJECTION, &matProj );
-
+*/
     g_pd3dDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
     g_pd3dDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 	g_pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
@@ -182,6 +182,7 @@ SDL_Surface *d3dSDL_DisplayFormatAlpha(SDL_Surface *surface) {
 	LOG_DEBUG(("created texture!"));
 	r->flags |= SDL_GLSDL | SDL_HWSURFACE;
 	g_textures.push_back(tex);
+	g_pd3dDevice->SetTexture(g_textures.size() - 1, tex);
 	r->unused1 = g_textures.size();
 	
 	return r;
@@ -309,8 +310,6 @@ int d3dSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
 	LPDIRECT3DTEXTURE9 tex = getTexture(src);
 	//LOG_DEBUG(("src->getTexture(%d) returns %p", src->unused1, (void *)tex));
 
-	static int z;
-
 	if (dst == g_screen) {
 		if ( tex != NULL) {
 			//LOG_DEBUG(("blitting to screen"));
@@ -323,7 +322,7 @@ int d3dSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
 			}
 			D3DXVECTOR3 pos;
 			pos.x = pos.y = 0;
-			pos.z = (float) z++;
+			pos.z = 0;
 
 			if (g_begin_scene) {
 				g_pd3dDevice->BeginScene();
@@ -357,6 +356,7 @@ int d3dSDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, Uint32 color_) {
 	LOG_DEBUG(("FillRect"));
 	if (g_pD3D == NULL) 
 		return SDL_FillRect(dst, dstrect, color_);
+
 	Uint8 r, g, b, a;
 	SDL_GetRGBA(color_, dst->format, &r, &g, &b, &a);
 	DWORD color = D3DCOLOR_ARGB(a, r, g, b);
