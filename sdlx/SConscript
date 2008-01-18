@@ -1,4 +1,4 @@
-import sys
+import os, sys
 Import('env')
 Import('debug')
 
@@ -26,8 +26,17 @@ else:
 
 sdlx_sources = 	['cursor.cpp', 'sdl_ex.cpp', 'surface.cpp', 'system.cpp', 'joystick.cpp',
 	'thread.cpp', 'mutex.cpp', 'semaphore.cpp', 'color.cpp',
-	'glSDL/glSDL.c', c_map, 'font.cpp', 'timer.cpp', 'module.cpp', 
+	c_map, 'font.cpp', 'timer.cpp', 'module.cpp', 
 	] #  'ttf.cpp', 
+
+#if sys.platform == 'win32': 
+#	sdlx_sources.append('glSDL/d3dsdl.cpp')
+#	env.Append(CPPPATH=os.environ['DXSDK_DIR'] + 'Include')
+#	env.Append(LINKFLAGS=' /LIBPATH:"' + os.environ['DXSDK_DIR'] + 'Lib\\x86"')
+#	libs.append('d3d9')
+#	libs.append('d3dx9')
+#else: 
+sdlx_sources.append('glSDL/glSDL.c')
 
 sdlx = env.SharedLibrary('sdlx', sdlx_sources, LIBS=libs)
 Install('#', sdlx[0])

@@ -2,7 +2,11 @@
 #define __SDLX__COMMON_H__
 
 #ifdef USE_GLSDL
-#	include "glSDL/glSDL.h"
+//#	ifdef _WINDOWS
+//#		include "glSDL/d3dsdl.h"
+//#	else
+#		include "glSDL/glSDL.h"
+//#	endif
 #else
 #	include <SDL/SDL.h>
 #endif

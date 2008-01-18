@@ -232,8 +232,14 @@ int d3dSDL_Flip(SDL_Surface *screen) {
 		return SDL_Flip(screen);
 	}
 	
-	g_sprite->End();
-	g_pd3dDevice->EndScene();
+	if (FAILED(g_sprite->End())) {
+		SDL_SetError("Sprite::End() failed");
+		return -1;
+	}
+	if (FAILED(g_pd3dDevice->EndScene())) {
+		SDL_SetError("EndScene() failed");
+		return -1;
+	}
 
 	if (FAILED(g_pd3dDevice->Present (NULL, NULL, NULL, NULL))) {
 		SDL_SetError("Present(0,0,0,0) failed");
