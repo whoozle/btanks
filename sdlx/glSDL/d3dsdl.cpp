@@ -29,7 +29,7 @@ static texinfo * getTexture(const SDL_Surface *surface) {
 		return NULL;
 
 	texinfo * r = &g_textures[idx];
-	LOG_DEBUG(("getTexture(%d) returns %p", surface->unused1, (void *)r));
+	//LOG_DEBUG(("getTexture(%d) returns %p", surface->unused1, (void *)r));
 	if (r->tex == NULL) {
 		LOG_WARN(("texture %d do not contain d3d texture!", idx));
 		return NULL;
