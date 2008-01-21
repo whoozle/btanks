@@ -212,7 +212,8 @@ SDL_Surface *d3dSDL_DisplayFormatAlpha(SDL_Surface *surface) {
 
 	LPDIRECT3DTEXTURE9 tex;
 	LOG_DEBUG(("creating %dx%d texture...", tex_size_w, tex_size_h));
-	if (FAILED(g_pd3dDevice->CreateTexture(tex_size_w, tex_size_h, 1, D3DUSAGE_DYNAMIC, D3DFMT_A8B8G8R8, D3DPOOL_SYSTEMMEM, &tex, NULL))) {
+	//if (FAILED(g_pd3dDevice->CreateTexture(tex_size_w, tex_size_h, 1, D3DUSAGE_DYNAMIC, D3DFMT_A8B8G8R8, D3DPOOL_SYSTEMMEM, &tex, NULL))) {
+	if (FAILED(g_pd3dDevice->CreateTexture(tex_size_w, tex_size_h, 1, 0, D3DFMT_A8B8G8R8, D3DPOOL_SYSTEMMEM, &tex, NULL))) {
 		SDL_SetError("CreateTexture failed");
 		return NULL;
 	}
