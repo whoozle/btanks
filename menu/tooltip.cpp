@@ -107,9 +107,9 @@ Tooltip::Tooltip(const std::string &_text, const bool use_background, const int 
 	//LOG_DEBUG(("line width: %d, lines: %u", width, lines.size()));
 	if (_use_background) {
 		_background.init("menu/background_box.png", width +  mx, line_h * lines.size() +  my);
-		_surface.createRGB(_background.w, _background.h, SDL_SRCALPHA);
+		_surface.createRGB(_background.w, _background.h, 32, SDL_SRCALPHA);
 	} else {
-		_surface.createRGB(w, line_h * (lines.size() + 2/*magic! */), SDL_SRCALPHA);
+		_surface.createRGB(w, line_h * (lines.size() + 2/*magic! */), 32, SDL_SRCALPHA);
 	}
 	_surface.convertAlpha();
 	
