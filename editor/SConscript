@@ -28,3 +28,5 @@ env.Append(LIBPATH=['#/build/' + env['mode']])
 
 editor = env.Program('bted', ed_src, LIBS=libs, RPATH=[lib_dir])
 Install('#', editor)
+if sys.platform == 'win32': 
+	env.AddPostAction(editor, 'mt.exe -nologo -manifest ${TARGET}.manifest -outputresource:$TARGET;2')
