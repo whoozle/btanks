@@ -14,14 +14,16 @@ static LPD3DXSPRITE g_sprite;
 static bool g_begin_scene = true;
 static bool g_sprite_end = false;
 
+#include <deque>
+#include <vector>
+
 struct texinfo {
 	LPDIRECT3DTEXTURE9 tex;
 	int w, h;
-//	bool vertical; //vertical split
-//	int tex_size; //texture size;
 };
 
 std::vector<texinfo> g_textures;
+std::deque<int> g_freetexinfo;
 
 static texinfo * getTexture(const SDL_Surface *surface) {
 	if (surface == NULL)
@@ -131,6 +133,7 @@ static void d3d_Shutdown(void) {
 			}
 		}
 		g_textures.clear();
+		g_freetexinfo.clear();
 	}
     if (g_pd3dDevice != NULL) {
     	g_pd3dDevice->Release();
@@ -202,6 +205,9 @@ SDL_Surface *d3dSDL_DisplayFormatAlpha(SDL_Surface *surface) {
 		return SDL_DisplayFormatAlpha(surface);
 	{
 		texinfo * texinfo = getTexture(surface);
+		if (texinfo != NULL) {
+			LOG_DEBUG(("problem texture: id: %d, %dx%d, surface: %dx%d", surface->unused1, texinfo->w, texinfo->h, surface->w, surface->h));
+		}
 		assert(texinfo == NULL);
 	}
 
@@ -355,7 +361,7 @@ int d3dSDL_Flip(SDL_Surface *screen) {
 		return SDL_Flip(screen);
 	}
 
-	LOG_DEBUG(("Flip"));
+	//LOG_DEBUG(("Flip"));
 	
 	if (g_sprite_end && FAILED(g_sprite->End())) {
 		SDL_SetError("Sprite::End() failed");
@@ -398,7 +404,7 @@ void d3dSDL_FreeSurface(SDL_Surface *surface) {
 	}
 	//LOG_DEBUG(("calling SDL_FreeSurface"));
 	SDL_FreeSurface(surface);
-	LOG_DEBUG(("exit from FreeSurface"));
+	//LOG_DEBUG(("exit from FreeSurface"));
 }
 
 static int d3dSDL_LockSurface2(SDL_Surface *surface) {
@@ -475,7 +481,7 @@ int d3dSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
 
 	if (dst == g_screen) {
 		if (tex != NULL) {
-			LOG_DEBUG(("blitting to screen"));
+			//LOG_DEBUG(("blitting to screen"));
 			RECT dxr;
 			if (srcrect) {
 				dxr.left = srcrect->x;
@@ -521,7 +527,7 @@ int d3dSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
 		SDL_SetError("Cannot convert surfaces on the fly");
 		return -1;
 	} else {
-		LOG_DEBUG(("blitting to surfaces"));
+		//LOG_DEBUG(("blitting to surfaces"));
 		if (src->pixels == NULL) {
 			if (d3dSDL_LockSurface2(src) == -1) {
 				SDL_SetError("locking surface for blitting: src->pixels");
@@ -542,7 +548,7 @@ int d3dSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
 }
 
 int d3dSDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, Uint32 color_) {
-	if (g_pD3D == NULL) 
+	if (g_pD3D == NULL || getTexture(dst) == NULL) 
 		return SDL_FillRect(dst, dstrect, color_);
 
 	LOG_DEBUG(("FillRect"));
@@ -550,11 +556,38 @@ int d3dSDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, Uint32 color_) {
 	Uint8 r, g, b, a;
 	SDL_GetRGBA(color_, dst->format, &r, &g, &b, &a);
 	DWORD color = D3DCOLOR_ARGB(a, r, g, b);
-	if (dstrect == NULL) {
-	    g_pd3dDevice->Clear (0, NULL, D3DCLEAR_TARGET, color, 0.0f, 0);
+	if (dst == g_screen) {
+		if (dstrect != NULL) {
+			D3DRECT rect;
+			rect.x1 = dstrect->x;
+			rect.x2 = dstrect->x + dstrect->w;
+			rect.y1 = dstrect->y;
+			rect.y2 = dstrect->y + dstrect->h;
+			if (FAILED(g_pd3dDevice->Clear (0, &rect, D3DCLEAR_TARGET, color, 0.0f, 0))) {
+				SDL_SetError("Clear() failed.");
+				return -1;
+			}
+		} else {
+			if (FAILED(g_pd3dDevice->Clear (0, NULL, D3DCLEAR_TARGET, color, 0.0f, 0))) {
+				SDL_SetError("Clear() failed.");
+				return -1;
+			}
+		}
 	    return 0;
+	} else {
+		d3dSDL_LockSurface2(dst);
+		int x1 = (dstrect == NULL)?0: dstrect->x;
+		int y1 = (dstrect == NULL)?0: dstrect->y;
+		int x2 = (dstrect == NULL)?0: (dstrect->x + dstrect->y);
+		int y2 = (dstrect == NULL)?0: (dstrect->y + dstrect->h);
+		Uint32 *pixels = (Uint32 *)dst->pixels;
+		for(int y = y1; y < y2; ++y) 
+			for(int x = x1; x < x2; ++x) {
+				pixels[y * dst->pitch / 4 + x] = color;
+			}
+		d3dSDL_UnlockSurface2(dst);
+		return 0;
 	}
-	return -1;
 }
 
 void d3dSDL_UpdateRects(SDL_Surface *screen, int numrects, SDL_Rect *rects) {
