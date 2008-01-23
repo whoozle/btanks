@@ -17,6 +17,8 @@ static bool g_sprite_end = false;
 struct texinfo {
 	LPDIRECT3DTEXTURE9 tex;
 	int w, h;
+	bool vertical; //vertical split
+	int tex_size; //texture size;
 };
 
 std::vector<texinfo> g_textures;
@@ -65,16 +67,17 @@ SDL_Surface *d3dSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags) {
     D3DPRESENT_PARAMETERS d3dpp;
     ZeroMemory( &d3dpp, sizeof(d3dpp) );
 
+	d3dpp.SwapEffect       = D3DSWAPEFFECT_DISCARD;
+
     if((flags & SDL_FULLSCREEN) == 0)
     {
+		LOG_DEBUG(("format = %d", (int) d3ddm.Format));
         d3dpp.Windowed         = TRUE;
-        d3dpp.SwapEffect       = D3DSWAPEFFECT_FLIP;//D3DSWAPEFFECT_DISCARD;
         d3dpp.BackBufferFormat = d3ddm.Format;
     }
     else
     {
         d3dpp.Windowed         = FALSE;
-        d3dpp.SwapEffect       = D3DSWAPEFFECT_FLIP;//D3DSWAPEFFECT_DISCARD;
         d3dpp.BackBufferWidth  = width;
         d3dpp.BackBufferHeight = height;
         d3dpp.BackBufferFormat = D3DFMT_X8R8G8B8;
@@ -87,9 +90,10 @@ SDL_Surface *d3dSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags) {
     d3dpp.Flags                  = D3DPRESENTFLAG_LOCKABLE_BACKBUFFER;
 
     if (FAILED(g_pD3D->CreateDevice( D3DADAPTER_DEFAULT, 
-    					D3DDEVTYPE_HAL, //D3DDEVTYPE_REF, 
+    					D3DDEVTYPE_HAL,
     					info.window,
-                          D3DCREATE_SOFTWARE_VERTEXPROCESSING,
+                          //D3DCREATE_SOFTWARE_VERTEXPROCESSING,
+						  D3DCREATE_HARDWARE_VERTEXPROCESSING, 
                           &d3dpp, &g_pd3dDevice )))  {
 		LOG_ERROR(("CreateDevice failed"));
         return NULL;
@@ -191,9 +195,15 @@ static int pow2(int tex_size) {
    	return tex_size;
 }
 
+#include <assert.h>
+
 SDL_Surface *d3dSDL_DisplayFormatAlpha(SDL_Surface *surface) {
 	if (g_pD3D == NULL)
 		return SDL_DisplayFormatAlpha(surface);
+	{
+		texinfo * texinfo = getTexture(surface);
+		assert(texinfo == NULL);
+	}
 
 	LOG_DEBUG(("DisplayFormatAlpha(%p->%d, %d)", (void *) surface, surface->w, surface->h));
 
@@ -209,12 +219,18 @@ SDL_Surface *d3dSDL_DisplayFormatAlpha(SDL_Surface *surface) {
 		SDL_SetError("cannot handle large textures (greater than 2048x2048) w:%d, h: %d", surface->w, surface->h);
 		return NULL;
 	}
+	
+	int tex_size = tex_size_w < tex_size_h? tex_size_w: tex_size_h;
 
 	LPDIRECT3DTEXTURE9 tex;
-	LOG_DEBUG(("creating %dx%d texture...", tex_size_w, tex_size_h));
-	//if (FAILED(g_pd3dDevice->CreateTexture(tex_size_w, tex_size_h, 1, D3DUSAGE_DYNAMIC, D3DFMT_A8B8G8R8, D3DPOOL_SYSTEMMEM, &tex, NULL))) {
-	if (FAILED(g_pd3dDevice->CreateTexture(tex_size_w, tex_size_h, 1, 0, D3DFMT_A8B8G8R8, D3DPOOL_SYSTEMMEM, &tex, NULL))) {
-		SDL_SetError("CreateTexture failed");
+	LOG_DEBUG(("creating %dx%d texture...", tex_size, tex_size));
+
+	HRESULT err;
+	if (FAILED(err = g_pd3dDevice->CreateTexture(tex_size_w, tex_size_h, 0, D3DUSAGE_DYNAMIC, 
+				//D3DFMT_A8B8G8R8, 
+				D3DFMT_A8R8G8B8, 
+				D3DPOOL_DEFAULT, &tex, NULL))) {
+		SDL_SetError("CreateTexture failed: %08x", err);
 		return NULL;
 	}
 
@@ -252,7 +268,8 @@ SDL_Surface *d3dSDL_DisplayFormatAlpha(SDL_Surface *surface) {
 			case 4:
 				color = *(Uint32 *)p; break;
 		    default: {
-		    	SDL_SetError("cannot determine pixel format (%d/%d) of the source surface", bpp, surface->format->BitsPerPixel);
+		    	SDL_SetError("cannot determine pixel format (%d/%d) of the source surface(%dx%d)", 
+					bpp, surface->format->BitsPerPixel, surface->w, surface->h);
 		    	return NULL;
 		    }	
 		    }
@@ -263,7 +280,7 @@ SDL_Surface *d3dSDL_DisplayFormatAlpha(SDL_Surface *surface) {
 	}
 	tex->UnlockRect(0);
 	
-	SDL_Surface *r = SDL_CreateRGBSurface(0, surface->w, surface->h, 32,  
+	SDL_Surface *r = SDL_CreateRGBSurface(surface->flags, surface->w, surface->h, 32,  
 			surface->format->Rmask, surface->format->Gmask, surface->format->Bmask, surface->format->Amask);
 	if (r == NULL)
 		return NULL;
@@ -278,6 +295,7 @@ SDL_Surface *d3dSDL_DisplayFormatAlpha(SDL_Surface *surface) {
 	g_textures.push_back(info);
 	//g_pd3dDevice->SetTexture(g_textures.size() - 1, tex);
 	r->unused1 = g_textures.size();
+	assert(r->format->BitsPerPixel != 0);
 	LOG_DEBUG(("created texture with id %d", r->unused1));
 	
 	return r;
@@ -294,7 +312,14 @@ SDL_Surface *d3dSDL_CreateRGBSurface
 			(Uint32 flags, int width, int height, int depth, 
 			Uint32 Rmask, Uint32 Gmask, Uint32 Bmask, Uint32 Amask) {
 //	if (g_pD3D == NULL) 
-		return SDL_CreateRGBSurface(flags, width, height, depth, Rmask, Gmask, Bmask, Amask);
+		SDL_Surface *r = SDL_CreateRGBSurface(flags & (~SDL_HWSURFACE), width, height, depth, Rmask, Gmask, Bmask, Amask);
+		if (r == NULL)
+			return NULL;
+		if (r->format->BitsPerPixel == 0) {
+			LOG_DEBUG(("problem surface: %dx%dx%d %d:%d", r->w, r->h, depth, r->format->BytesPerPixel, r->format->BytesPerPixel));
+		}
+		assert(r->format->BitsPerPixel != 0);
+		return r;
 //	return NULL;
 }
 
@@ -302,7 +327,11 @@ SDL_Surface *d3dSDL_CreateRGBSurfaceFrom(void *pixels,
 			int width, int height, int depth, int pitch,
 			Uint32 Rmask, Uint32 Gmask, Uint32 Bmask, Uint32 Amask) {
 //	if (g_pD3D == NULL) {
-		return SDL_CreateRGBSurfaceFrom(pixels, width, height, depth, pitch, Rmask, Gmask, Bmask, Amask);		
+		SDL_Surface *r = SDL_CreateRGBSurfaceFrom(pixels, width, height, depth, pitch, Rmask, Gmask, Bmask, Amask);		
+		if (r == NULL)
+			return NULL;
+		assert(r->format->BitsPerPixel != 0);
+		return r;
 //	}
 //	return NULL;
 }
@@ -359,16 +388,15 @@ void d3dSDL_FreeSurface(SDL_Surface *surface) {
 		return;
 	}
 
-	LOG_DEBUG(("FreeSurface"));
+	//LOG_DEBUG(("FreeSurface"));
 	texinfo * tex = getTexture(surface);
 	if (tex != NULL) {
-		LOG_DEBUG(("freeing d3d texture"));
+		//LOG_DEBUG(("freeing d3d texture"));
 		tex->tex->Release();
 		tex->tex = NULL;
 		surface->unused1 = 0;
 	}
-	LOG_DEBUG(("calling SDL_FreeSurface"));
-	surface->pixels = malloc(1);
+	//LOG_DEBUG(("calling SDL_FreeSurface"));
 	SDL_FreeSurface(surface);
 	LOG_DEBUG(("exit from FreeSurface"));
 }
@@ -390,6 +418,7 @@ static int d3dSDL_LockSurface2(SDL_Surface *surface) {
 		SDL_SetError("LockRect failed");
 		return -1;
 	}
+	LOG_DEBUG(("lock surface succeeded: pitch: %d, pixels: %p", rect.Pitch, (const void *)rect.pBits));
 	surface->pitch = rect.Pitch;
 	surface->pixels = rect.pBits;
 
