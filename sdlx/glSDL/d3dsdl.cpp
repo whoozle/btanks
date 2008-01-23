@@ -17,8 +17,8 @@ static bool g_sprite_end = false;
 struct texinfo {
 	LPDIRECT3DTEXTURE9 tex;
 	int w, h;
-	bool vertical; //vertical split
-	int tex_size; //texture size;
+//	bool vertical; //vertical split
+//	int tex_size; //texture size;
 };
 
 std::vector<texinfo> g_textures;
