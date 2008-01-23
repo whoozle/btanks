@@ -201,14 +201,16 @@ static int pow2(int tex_size) {
 #include <assert.h>
 
 SDL_Surface *d3dSDL_DisplayFormatAlpha(SDL_Surface *surface) {
+	//assert(g_pD3D != NULL);
 	if (g_pD3D == NULL)
 		return SDL_DisplayFormatAlpha(surface);
 	{
 		texinfo * texinfo = getTexture(surface);
 		if (texinfo != NULL) {
-			LOG_DEBUG(("problem texture: id: %d, %dx%d, surface: %dx%d", surface->unused1, texinfo->w, texinfo->h, surface->w, surface->h));
+			return surface; //hack requiring proper handling in sdlx :)
+			//LOG_DEBUG(("problem texture: id: %d, %dx%d, surface: %dx%d", surface->unused1, texinfo->w, texinfo->h, surface->w, surface->h));
 		}
-		assert(texinfo == NULL);
+		//assert(texinfo == NULL);
 	}
 
 	LOG_DEBUG(("DisplayFormatAlpha(%p->%d, %d)", (void *) surface, surface->w, surface->h));
@@ -319,6 +321,7 @@ SDL_Surface *d3dSDL_CreateRGBSurface
 			Uint32 Rmask, Uint32 Gmask, Uint32 Bmask, Uint32 Amask) {
 //	if (g_pD3D == NULL) 
 		SDL_Surface *r = SDL_CreateRGBSurface(flags & (~SDL_HWSURFACE), width, height, depth, Rmask, Gmask, Bmask, Amask);
+		LOG_DEBUG(("SDL_CreateRGBSurface(%08x, %d, %d, %d) -> %p", flags, width, height, depth, (const void*) r));
 		if (r == NULL)
 			return NULL;
 		if (r->format->BitsPerPixel == 0) {
@@ -438,6 +441,7 @@ static void d3dSDL_UnlockSurface2(SDL_Surface *surface) {
 	texinfo *tex = getTexture(surface);
 	if (tex != NULL) {
 		tex->tex->UnlockRect(0);
+		surface->pixels = NULL;
 	}
 }
 
@@ -453,11 +457,12 @@ int d3dSDL_LockSurface(SDL_Surface *surface) {
 		SDL_UnlockSurface(surface);
 		return -1;
 	}
+	return 0;
 }
 
 void d3dSDL_UnlockSurface(SDL_Surface *surface) {
+	LOG_DEBUG(("UnlockSurface"));
 	if (g_pD3D != NULL)  {
-		LOG_DEBUG(("UnlockSurface"));
 		d3dSDL_UnlockSurface2(surface);
 	}
 	SDL_UnlockSurface(surface);
@@ -524,7 +529,8 @@ int d3dSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
 			}
 			return 0;
 		}
-		SDL_SetError("Cannot convert surfaces on the fly");
+		SDL_SetError("Cannot convert surfaces on the fly, surface: %p: %dx%d", (const void *)src, src->w, src->h);
+		assert(false);
 		return -1;
 	} else {
 		//LOG_DEBUG(("blitting to surfaces"));
@@ -575,7 +581,9 @@ int d3dSDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, Uint32 color_) {
 		}
 	    return 0;
 	} else {
-		d3dSDL_LockSurface2(dst);
+		bool need_lock = dst->pixels == NULL;
+		if (need_lock)
+			d3dSDL_LockSurface2(dst);
 		int x1 = (dstrect == NULL)?0: dstrect->x;
 		int y1 = (dstrect == NULL)?0: dstrect->y;
 		int x2 = (dstrect == NULL)?0: (dstrect->x + dstrect->y);
@@ -585,7 +593,8 @@ int d3dSDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, Uint32 color_) {
 			for(int x = x1; x < x2; ++x) {
 				pixels[y * dst->pitch / 4 + x] = color;
 			}
-		d3dSDL_UnlockSurface2(dst);
+		if (need_lock)
+			d3dSDL_UnlockSurface2(dst);
 		return 0;
 	}
 }
