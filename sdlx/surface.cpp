@@ -292,6 +292,9 @@ void Surface::setAlpha(Uint8 alpha, Uint32 flags) {
 
 void Surface::convertAlpha() {
 	SDL_Surface *r = SDL_DisplayFormatAlpha(surface);
+	if (r == surface) 
+		return; //hack :)
+
 	if (r == NULL)
 		throw_sdl(("SDL_DisplayFormatAlpha"));
 	assign(r);
