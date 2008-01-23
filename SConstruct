@@ -80,8 +80,8 @@ if sys.platform == "win32":
 	env.Append(CPPFLAGS = ' /EHsc /GR /W3 /nologo ')
 
 	if debug:
-		env.Append(CCFLAGS = ' /Yd /Zi /Ge /GT /GZ /Od /ZI /MDd ')
-		env.Append(CPPFLAGS = ' /Yd /Zi /Ge /GT /GZ /Od /ZI /MDd ')
+		env.Append(CCFLAGS = ' /Zi /GT /Od /MDd /RTC1 ')
+		env.Append(CPPFLAGS = ' /Zi /GT /Od /MDd /RTC1 ')
 		env.Append(LINKFLAGS = ' /NOLOGO /DEBUG ')
 	else:
 		env.Append(CCCFLAGS = ' /Ot /Ox /GA /GF /Gs /Gy /MD ') #optimizations
