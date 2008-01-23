@@ -62,6 +62,7 @@ SDL_Surface *d3dSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags) {
 
     D3DCAPS9 d3dCaps;
     g_pD3D->GetDeviceCaps( D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, &d3dCaps );
+	LOG_DEBUG(("maximum texture size: %dx%d", d3dCaps.MaxTextureWidth, d3dCaps.MaxTextureHeight));
 
     D3DDISPLAYMODE d3ddm;
     g_pD3D->GetAdapterDisplayMode( D3DADAPTER_DEFAULT, &d3ddm );
@@ -169,33 +170,35 @@ SDL_Surface *d3dSDL_DisplayFormat(SDL_Surface *surface) {
 	return NULL;
 }
 
-static int pow2(int tex_size) {
-	if (tex_size > 2048) {
-		tex_size = -1;
+static int pow2(const int tex_size) {
+	if (tex_size > 4096) {
+		return -1;
+	} else if (tex_size > 2048) {
+		return 4096;
 	} else if (tex_size > 1024) {
-		tex_size = 2048;
+		return 2048;
 	} else if (tex_size > 512) { 
-		tex_size = 1024;
+		return 1024;
 	} else if (tex_size > 256) { 
-		tex_size = 512;
+		return 512;
 	} else if (tex_size > 128) {
-		tex_size = 256;
+		return 256;
 	} else if (tex_size > 64) {
-		tex_size = 128;
+		return 128;
 	} else if (tex_size > 32) {
-		tex_size = 64;
+		return 64;
 	} else if (tex_size > 16) {
-		tex_size = 32;
+		return 32;
    	} else if (tex_size > 8) {
-		tex_size = 16;
+		return 16;
    	} else if (tex_size > 4) {
-		tex_size = 8;
+		return 8;
    	} else if (tex_size > 2) {
-		tex_size = 4;
+		return 4;
    	} else if (tex_size > 1) {
-		tex_size = 2;
-   	} else tex_size = 1;
-   	return tex_size;
+		return 2;
+   	} else 
+		return 1;
 }
 
 #include <assert.h>
@@ -240,7 +243,7 @@ SDL_Surface *d3dSDL_DisplayFormatAlpha(SDL_Surface *surface) {
 				D3DPOOL_MANAGED, 
 				//D3DPOOL_DEFAULT, 
 				&tex, NULL))) {
-		SDL_SetError("CreateTexture failed: %08x", err);
+		SDL_SetError("CreateTexture(%d, %d) failed: %08x", tex_size_w, tex_size_h, err);
 		return NULL;
 	}
 
