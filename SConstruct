@@ -2,6 +2,8 @@ import os, sys
 
 #builder for static libraries
 env = Environment()
+if sys.platform == 'win32':
+	env['SHLINKCOM'] = [env['SHLINKCOM'], 'mt.exe -nologo -manifest ${TARGET}.manifest -outputresource:$TARGET;2']
 
 picLibBuilder = Builder(
 		action = Action('$ARCOM'),
