@@ -119,3 +119,6 @@ if sys.platform != 'win32':
 
 bt_main = bt_env.Program('bt', bt_main_sources, LIBS=bt_main_libs, RPATH=[lib_dir])
 Install('#', bt_main)
+
+if sys.platform == 'win32': 
+	env.AddPostAction(bt_main, 'mt.exe -nologo -manifest ${TARGET}.manifest -outputresource:$TARGET;2')
