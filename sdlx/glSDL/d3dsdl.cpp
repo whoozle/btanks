@@ -22,7 +22,7 @@ static int g_max_w = 2048, g_max_h = 2048;
 struct texinfo {
 	LPDIRECT3DTEXTURE9 *tex;
 	int w, h;
-	int w_split, h_split;
+	int split_w, split_h;
 	int n;
 };
 
@@ -247,13 +247,14 @@ static LPDIRECT3DTEXTURE9 d3d_CreateTexture(SDL_Surface * surface, int tex_size_
 		return NULL;
 	}
 
-	if (y2 > surface->h) 
-		y2 = surface->h;
 	if (x2 > surface->w) 
 		x2 = surface->w;
 
+	if (y2 > surface->h) 
+		y2 = surface->h;
+
 	int bpp = surface->format->BytesPerPixel;
-	LOG_DEBUG(("pitch = %d, w: %d, h: %d, bpp: %d, bits: %d", rect.Pitch, surface->w, surface->h, bpp, surface->format->BitsPerPixel));
+	LOG_DEBUG(("pitch = %d, w: %d, h: %d, bpp: %d, bits: %d", rect.Pitch, tex_size_w, tex_size_h, bpp, surface->format->BitsPerPixel));
 	for(int y = y1; y < y2; ++y) {
 		for(int x = x1; x < x2; ++x) {
 			/* Here p is the address to the pixel we want to retrieve */
@@ -281,7 +282,7 @@ static LPDIRECT3DTEXTURE9 d3d_CreateTexture(SDL_Surface * surface, int tex_size_
 		    }
 			Uint8 r,g,b,a;
 			SDL_GetRGBA(color, surface->format, &r, &g, &b, &a);
-			*(Uint32 *)((char *)rect.pBits + rect.Pitch * y + 4 * x) = D3DCOLOR_RGBA(r, g, b, a);
+			*(Uint32 *)((char *)rect.pBits + rect.Pitch * (y - y1) + 4 * (x - x1)) = D3DCOLOR_RGBA(r, g, b, a);
 		}
 	}
 	tex->UnlockRect(0);
@@ -343,13 +344,15 @@ SDL_Surface *d3dSDL_DisplayFormatAlpha(SDL_Surface *surface) {
 	texinfo info;
 	info.w = surface->w;
 	info.h = surface->h;
+	info.split_w = tex_split_w;
+	info.split_h = tex_split_h;
 	info.n = nx * ny;
 	
 	info.tex = new LPDIRECT3DTEXTURE9[info.n];
 	int idx = 0;
 	for(int y = 0; y < surface->h; y += tex_split_h) {
 		for(int x = 0; x < surface->w; x += tex_split_w) {
-			LPDIRECT3DTEXTURE9 tex = d3d_CreateTexture(surface, tex_size_w, tex_size_h, x, y, x + tex_split_w, y + tex_split_h);
+			LPDIRECT3DTEXTURE9 tex = d3d_CreateTexture(surface, tex_split_w, tex_split_h, x, y, x + tex_split_w, y + tex_split_h);
 			if (tex == NULL) 
 				return NULL;
 	
@@ -372,7 +375,7 @@ SDL_Surface *d3dSDL_DisplayFormatAlpha(SDL_Surface *surface) {
 	//g_pd3dDevice->SetTexture(g_textures.size() - 1, tex);
 	r->unused1 = g_textures.size();
 	assert(r->format->BitsPerPixel != 0);
-	LOG_DEBUG(("created texture with id %d", r->unused1));
+	LOG_DEBUG(("created texture with id %d, fragments: %d", r->unused1, info.n));
 	
 	return r;
 }
@@ -553,6 +556,10 @@ SDL_bool d3dSDL_SetClipRect(SDL_Surface *surface, SDL_Rect *rect) {
 	return SDL_FALSE;
 }
 
+inline int align_div(const int a, const int b) {
+	return 1 + (a - 1) / b;
+}
+
 int d3dSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
 			 SDL_Surface *dst, SDL_Rect *dstrect) {
 
@@ -564,28 +571,6 @@ int d3dSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
 
 	if (dst == g_screen) {
 		if (tex != NULL) {
-			//LOG_DEBUG(("blitting to screen"));
-			RECT dxr;
-			if (srcrect) {
-				dxr.left = srcrect->x;
-				dxr.top = srcrect->y;
-				dxr.right = srcrect->x + srcrect->w;
-				dxr.bottom = srcrect->y + srcrect->h;
-			} else {
-				dxr.left = dxr.top = 0;
-				dxr.right = tex->w;
-				dxr.bottom = tex->h;
-			}
-
-			D3DXVECTOR3 pos;
-			pos.x = pos.y = 0;
-			pos.z = 0;
-
-			if (dstrect != NULL) {
-				pos.x = dstrect->x;
-				pos.y = dstrect->y;
-			}
-
 			if (g_begin_scene) {
 				//LOG_DEBUG(("BeginScene"));
 				//g_pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET, 0, 0, 0);
@@ -603,10 +588,57 @@ int d3dSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
 					return -1;
 				}
 			}
-			//LOG_DEBUG(("Sprite::Draw"));
-			if (FAILED(g_sprite->Draw(tex->tex[0], &dxr, NULL, &pos, 0xffffffff))) {
-				SDL_SetError("Sprite::Draw failed");
-				return -1;
+			//LOG_DEBUG(("blitting to screen"));
+
+			RECT dxr;
+			if (srcrect) {
+				dxr.left = srcrect->x;
+				dxr.top = srcrect->y;
+				dxr.right = srcrect->x + srcrect->w;
+				dxr.bottom = srcrect->y + srcrect->h;
+			} else {
+				dxr.left = dxr.top = 0;
+				dxr.right = tex->w;
+				dxr.bottom = tex->h;
+			}
+			int ny = align_div(tex->h, tex->split_h), nx = align_div(tex->w, tex->split_w);
+			assert(tex->n == nx * ny);
+			int x1 = dxr.left / tex->split_w, x2 = align_div(dxr.right, tex->split_w);
+			int y1 = dxr.top / tex->split_h, y2 = align_div(dxr.bottom, tex->split_h);
+			
+			if (dxr.right > tex->split_w)
+				dxr.right = tex->split_w;
+
+			if (dxr.bottom > tex->split_h)
+				dxr.bottom = tex->split_h;
+	
+			if (nx * ny > 1) 
+				LOG_DEBUG(("blit texture split into %dx%d, %d,%d->%d,%d", nx, ny, x1, y1, x2, y2));
+			for(int y = y1; y < y2; ++y) {
+				for(int x = x1; x < x2; ++x) {
+					//LOG_DEBUG(("blit %d %d", y, x));
+
+					int offset_x = x * tex->split_w;
+					int offset_y = y * tex->split_h;
+
+					D3DXVECTOR3 pos;
+					pos.x = x * tex->split_w;
+					pos.y = y * tex->split_h;
+					pos.z = 0;
+
+					if (dstrect != NULL) {
+						pos.x += dstrect->x;
+						pos.y += dstrect->y;
+					}
+
+					//LOG_DEBUG(("Sprite::Draw"));
+					int idx = nx * y + x;
+					assert(idx < tex->n);
+					if (FAILED(g_sprite->Draw(tex->tex[idx], &dxr, NULL, &pos, 0xffffffff))) {
+						SDL_SetError("Sprite::Draw failed");
+						return -1;
+					}
+				}
 			}
 			return 0;
 		}
