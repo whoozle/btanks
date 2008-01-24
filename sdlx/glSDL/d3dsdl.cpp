@@ -649,13 +649,13 @@ int d3dSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
 		//LOG_DEBUG(("blitting to surfaces"));
 		if (src->pixels == NULL) {
 			if (d3dSDL_LockSurface2(src) == -1) {
-				SDL_SetError("locking surface for blitting: src->pixels");
+				SDL_SetError("locking surface(src) for blitting failed");
 				return -1;
 			}
 		}
 		if (dst->pixels == NULL) {
 			if (d3dSDL_LockSurface2(dst) == -1) {
-				SDL_SetError("locking surface for blitting: dst->pixels");
+				SDL_SetError("locking surface(dst) for blitting failed");
 				return -1;
 			}
 		}
