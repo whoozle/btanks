@@ -30,6 +30,10 @@ struct texinfo {
 	}
 };
 
+static inline int align_div(const int a, const int b) {
+	return 1 + (a - 1) / b;
+}
+
 std::vector<texinfo> g_textures;
 std::deque<int> g_freetexinfo;
 
@@ -431,7 +435,15 @@ int d3dSDL_SaveBMP(SDL_Surface *surface, const char *file) {
 	if (g_pD3D == NULL) {
 		return SDL_SaveBMP(surface, file);
 	}
-	return NULL;
+	texinfo *tex = getTexture(surface);
+	if (tex == NULL) {
+		return SDL_SaveBMP(surface, file); //generic save
+	}
+	if (tex->n != 1) {
+		SDL_SetError("cannot save big texture! sorry");
+		return -1;
+	}
+	return FAILED(D3DXSaveTextureToFile(file, D3DXIFF_BMP, tex->tex[0], NULL))? -1: 0;
 }
 
 int d3dSDL_Flip(SDL_Surface *screen) {
@@ -511,19 +523,40 @@ static int d3dSDL_LockSurface2(SDL_Surface *surface) {
 		return 0;
 	}
 
+	int ny = align_div(surface->h, tex->split_h), nx = align_div(surface->w, tex->split_w);
+	assert(tex->n == nx * ny);
+
+	//LOG_DEBUG(("locking fragmented surface: %dx%d", nx, ny));
 	tex->lrect = new D3DLOCKED_RECT[tex->n];
 	
 	for(int t = 0; t < tex->n; ++t) {
 		if (FAILED(tex->tex[t]->LockRect(0, tex->lrect + t, NULL, D3DLOCK_DISCARD))) {
+			delete[] tex->lrect;
+			tex->lrect = NULL;
 			SDL_SetError("LockRect failed");
 			return -1;
 		}
 	}
-	//LOG_DEBUG(("lock surface succeeded: pitch: %d, pixels: %p", rect.Pitch, (const void *)rect.pBits));
-	surface->pitch = 4 * tex->w;
-	int size = 4 * tex->w * tex->h;
-	surface->pixels = malloc(size); //too pity
 	
+	int size = 4 * surface->w * surface->h;
+	//LOG_DEBUG(("allocating %d bytes", size));
+	surface->pixels = malloc(size); //too pity
+	surface->pitch = 4 * surface->w;
+	
+	Uint32 *pixels = (Uint32 *)surface->pixels;
+
+	for(int y = 0; y < surface->h; ++y) {
+		for(int x = 0; x < surface->w; ++x) {
+			const int tx = x / tex->split_w, ty = y / tex->split_h;
+			const int px = x % tex->split_w, py = y % tex->split_h;
+
+			const int idx = ty * nx + tx;
+			assert(idx < tex->n);
+			const D3DLOCKED_RECT &src = tex->lrect[idx];
+			//assert(y * surface->pitch / 4 + x < size / 4);
+			pixels[y * surface->pitch / 4 + x] = ((Uint32 *)(src.pBits))[px + py * src.Pitch / 4];
+		}
+	}
 
 	surface->format->BitsPerPixel = 32;
 	surface->format->BytesPerPixel = 4;
@@ -542,7 +575,26 @@ static void d3dSDL_UnlockSurface2(SDL_Surface *surface) {
 		return;
 	}
 
+	int ny = align_div(surface->h, tex->split_h), nx = align_div(surface->w, tex->split_w);
+	assert(tex->n == nx * ny);
+
 	assert(tex->lrect != NULL);
+	assert(surface->pixels != NULL);
+
+	Uint32 *pixels = (Uint32 *)surface->pixels;
+
+	for(int y = 0; y < surface->h; ++y) {
+		for(int x = 0; x < surface->w; ++x) {
+			const int tx = x / tex->split_w, ty = y / tex->split_h;
+			const int px = x % tex->split_w, py = y % tex->split_h;
+
+			const int idx = ty * nx + tx;
+			assert(idx < tex->n);
+			const D3DLOCKED_RECT &src = tex->lrect[idx];
+			//assert(y * surface->pitch / 4 + x < size / 4);
+			((Uint32 *)(src.pBits))[px + py * src.Pitch / 4] = pixels[y * surface->pitch / 4 + x];
+		}
+	}
 
 	for(int t = 0; t < tex->n; ++t) 
 		tex->tex[t]->UnlockRect(0);
@@ -580,10 +632,6 @@ SDL_bool d3dSDL_SetClipRect(SDL_Surface *surface, SDL_Rect *rect) {
 	if (g_pD3D == NULL) 
 		return SDL_SetClipRect(surface, rect);		
 	return SDL_FALSE;
-}
-
-inline int align_div(const int a, const int b) {
-	return 1 + (a - 1) / b;
 }
 
 int d3dSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
@@ -631,6 +679,9 @@ int d3dSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
 			assert(tex->n == nx * ny);
 			int x1 = dxr.left / tex->split_w, x2 = align_div(dxr.right, tex->split_w);
 			int y1 = dxr.top / tex->split_h, y2 = align_div(dxr.bottom, tex->split_h);
+
+			if (x2 > nx) x2 = nx;
+			if (y2 > ny) y2 = ny;
 			
 			if (dxr.right > tex->split_w)
 				dxr.right = tex->split_w;
@@ -638,11 +689,13 @@ int d3dSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
 			if (dxr.bottom > tex->split_h)
 				dxr.bottom = tex->split_h;
 	
-			if (nx * ny > 1) 
-				LOG_DEBUG(("blit texture split into %dx%d, %d,%d->%d,%d", nx, ny, x1, y1, x2, y2));
+			//if (tex->n > 1) 
+			//	LOG_DEBUG(("blit texture split into %dx%d, %d,%d->%d,%d", nx, ny, x1, y1, x2, y2));
 			for(int y = y1; y < y2; ++y) {
 				for(int x = x1; x < x2; ++x) {
-					//LOG_DEBUG(("blit %d %d", y, x));
+					const int idx = nx * y + x;
+					//if (tex->n > 1)
+					//	LOG_DEBUG(("blit %d %d, tex #%d of %d", y, x, idx, tex->n));
 
 					int offset_x = x * tex->split_w;
 					int offset_y = y * tex->split_h;
@@ -658,7 +711,6 @@ int d3dSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
 					}
 
 					//LOG_DEBUG(("Sprite::Draw"));
-					int idx = nx * y + x;
 					assert(idx < tex->n);
 					if (FAILED(g_sprite->Draw(tex->tex[idx], &dxr, NULL, &pos, 0xffffffff))) {
 						SDL_SetError("Sprite::Draw failed");
@@ -718,6 +770,7 @@ int d3dSDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, Uint32 color_) {
 		}
 	    return 0;
 	} else {
+	/*
 		bool need_lock = dst->pixels == NULL;
 		if (need_lock)
 			d3dSDL_LockSurface2(dst);
@@ -733,6 +786,8 @@ int d3dSDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, Uint32 color_) {
 		if (need_lock)
 			d3dSDL_UnlockSurface2(dst);
 		return 0;
+	*/
+		return -1;
 	}
 }
 
