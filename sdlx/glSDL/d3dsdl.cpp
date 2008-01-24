@@ -732,7 +732,7 @@ int d3dSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
 		}
 		if (dst->pixels == NULL) {
 			if (d3dSDL_LockSurface2(dst) == -1) {
-				d3dSDL_UnlockSurface2(src)
+				d3dSDL_UnlockSurface2(src);
 				return -1;
 			}
 		}
