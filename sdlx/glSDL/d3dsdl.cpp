@@ -547,8 +547,8 @@ static int d3dSDL_LockSurface2(SDL_Surface *surface) {
 
 	for(int y = 0; y < surface->h; ++y) {
 		for(int x = 0; x < surface->w; ++x) {
-			const int tx = x / tex->split_w, ty = y / tex->split_h;
-			const int px = x % tex->split_w, py = y % tex->split_h;
+			const int tx = x / tex->split_w, px = x % tex->split_w;
+			const int ty = y / tex->split_h, py = y % tex->split_h;
 
 			const int idx = ty * nx + tx;
 			assert(idx < tex->n);
@@ -732,6 +732,7 @@ int d3dSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
 		}
 		if (dst->pixels == NULL) {
 			if (d3dSDL_LockSurface2(dst) == -1) {
+				d3dSDL_UnlockSurface2(src)
 				return -1;
 			}
 		}
