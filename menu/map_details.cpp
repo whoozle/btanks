@@ -32,6 +32,7 @@ MapDetails::MapDetails(const int w, const int h, const bool hint) : _map_desc(0)
 	mrt::Chunk data;
 	Finder->load(data, "maps/null.png");
 	_null_screenshot.loadImage(data);
+	_null_screenshot.convertAlpha();
 	_small_font = ResourceManager->loadFont("small", true);
 
 	int mx, my;
