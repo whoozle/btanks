@@ -13,6 +13,7 @@ static SDL_Surface * g_screen 			 = NULL;
 static LPD3DXSPRITE g_sprite;
 static bool g_begin_scene = true;
 static bool g_sprite_end = false;
+static bool g_non_pow2 = false;
 
 #include <deque>
 #include <vector>
@@ -20,6 +21,7 @@ static bool g_sprite_end = false;
 struct texinfo {
 	LPDIRECT3DTEXTURE9 tex;
 	int w, h;
+	int w_split, h_split;
 };
 
 std::vector<texinfo> g_textures;
@@ -62,7 +64,9 @@ SDL_Surface *d3dSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags) {
 
     D3DCAPS9 d3dCaps;
     g_pD3D->GetDeviceCaps( D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, &d3dCaps );
-	LOG_DEBUG(("maximum texture size: %dx%d", d3dCaps.MaxTextureWidth, d3dCaps.MaxTextureHeight));
+	LOG_DEBUG(("maximum texture size: %dx%d, aspect ratio: %d", d3dCaps.MaxTextureWidth, d3dCaps.MaxTextureHeight, d3dCaps.MaxTextureAspectRatio));
+	g_non_pow2 = (d3dCaps.TextureCaps & D3DPTEXTURECAPS_NONPOW2CONDITIONAL) != 0;
+	LOG_DEBUG(("non-pow2 textures: %s", g_non_pow2?"yes":"no"));
 
     D3DDISPLAYMODE d3ddm;
     g_pD3D->GetAdapterDisplayMode( D3DADAPTER_DEFAULT, &d3ddm );
@@ -107,8 +111,8 @@ SDL_Surface *d3dSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags) {
                                 1.0f * width / height, 0.1f, 100.0f );
     g_pd3dDevice->SetTransform( D3DTS_PROJECTION, &matProj );
 
-    g_pd3dDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
-    g_pd3dDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+	g_pd3dDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
+	g_pd3dDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 	g_pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
 	g_pd3dDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 	g_pd3dDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
@@ -171,8 +175,10 @@ SDL_Surface *d3dSDL_DisplayFormat(SDL_Surface *surface) {
 }
 
 static int pow2(const int tex_size) {
-	if (tex_size > 4096) {
+	if (tex_size > 8192) {
 		return -1;
+	} else if (tex_size > 4096) {
+		return 8192;
 	} else if (tex_size > 2048) {
 		return 4096;
 	} else if (tex_size > 1024) {
@@ -203,39 +209,13 @@ static int pow2(const int tex_size) {
 
 #include <assert.h>
 
-SDL_Surface *d3dSDL_DisplayFormatAlpha(SDL_Surface *surface) {
-	//assert(g_pD3D != NULL);
-	if (g_pD3D == NULL)
-		return SDL_DisplayFormatAlpha(surface);
-	{
-		texinfo * texinfo = getTexture(surface);
-		if (texinfo != NULL) {
-			return surface; //hack requiring proper handling in sdlx :)
-			//LOG_DEBUG(("problem texture: id: %d, %dx%d, surface: %dx%d", surface->unused1, texinfo->w, texinfo->h, surface->w, surface->h));
-		}
-		//assert(texinfo == NULL);
-	}
 
-	LOG_DEBUG(("DisplayFormatAlpha(%p->%d, %d)", (void *) surface, surface->w, surface->h));
-
-	if (surface->pixels == NULL) {
-		SDL_SetError("surface with pixels == NULL found");
-		return NULL;
-	}
-
-	//fixme: check nonpow2 capability
-	int tex_size_w = pow2(surface->w);
-	int tex_size_h = pow2(surface->h);
-	if (tex_size_w == -1 || tex_size_h == -1) {
-		SDL_SetError("cannot handle large textures (greater than 2048x2048) w:%d, h: %d", surface->w, surface->h);
-		return NULL;
-	}
-	
-	int tex_size = tex_size_w < tex_size_h? tex_size_w: tex_size_h;
+static LPDIRECT3DTEXTURE9 d3d_CreateTexture(SDL_Surface * surface, int tex_size_w, int tex_size_h, 
+	int x1, int y1, int x2, int y2
+) {
+	LOG_DEBUG(("creating %dx%d texture...", tex_size_w, tex_size_h));
 
 	LPDIRECT3DTEXTURE9 tex;
-	LOG_DEBUG(("creating %dx%d texture...", tex_size, tex_size));
-
 	HRESULT err;
 	if (FAILED(err = g_pd3dDevice->CreateTexture(tex_size_w, tex_size_h, 1, 0, 
 				//D3DFMT_A8B8G8R8, 
@@ -261,8 +241,8 @@ SDL_Surface *d3dSDL_DisplayFormatAlpha(SDL_Surface *surface) {
 
 	int bpp = surface->format->BytesPerPixel;
 	LOG_DEBUG(("pitch = %d, w: %d, h: %d, bpp: %d, bits: %d", rect.Pitch, surface->w, surface->h, bpp, surface->format->BitsPerPixel));
-	for(int y = 0; y < surface->h; ++y) {
-		for(int x = 0; x < surface->w; ++x) {
+	for(int y = y1; y < y2; ++y) {
+		for(int x = x1; x < x2; ++x) {
 			/* Here p is the address to the pixel we want to retrieve */
 			Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
 			Uint32 color = 0;
@@ -292,6 +272,41 @@ SDL_Surface *d3dSDL_DisplayFormatAlpha(SDL_Surface *surface) {
 		}
 	}
 	tex->UnlockRect(0);
+	return tex;
+}
+
+SDL_Surface *d3dSDL_DisplayFormatAlpha(SDL_Surface *surface) {
+	//assert(g_pD3D != NULL);
+	if (g_pD3D == NULL)
+		return SDL_DisplayFormatAlpha(surface);
+	{
+		texinfo * texinfo = getTexture(surface);
+		if (texinfo != NULL) {
+			return surface; //hack requiring proper handling in sdlx :)
+			//LOG_DEBUG(("problem texture: id: %d, %dx%d, surface: %dx%d", surface->unused1, texinfo->w, texinfo->h, surface->w, surface->h));
+		}
+		//assert(texinfo == NULL);
+	}
+
+	LOG_DEBUG(("DisplayFormatAlpha(%p->%d, %d)", (void *) surface, surface->w, surface->h));
+
+	if (surface->pixels == NULL) {
+		SDL_SetError("surface with pixels == NULL found");
+		return NULL;
+	}
+
+	//fixme: check nonpow2 capability
+	int tex_size_w = g_non_pow2? surface->w: pow2(surface->w);
+	int tex_size_h = g_non_pow2? surface->h: pow2(surface->h);
+
+	if (tex_size_w == -1 || tex_size_h == -1) {
+		SDL_SetError("cannot handle large textures (greater than 2048x2048) w:%d, h: %d", surface->w, surface->h);
+		return NULL;
+	}
+	
+	LPDIRECT3DTEXTURE9 tex = d3d_CreateTexture(surface, tex_size_w, tex_size_h, 0, 0, surface->w, surface->h);
+	if (tex == NULL) 
+		return NULL;
 	
 	SDL_Surface *r = SDL_CreateRGBSurface(surface->flags, surface->w, surface->h, 32,  
 			surface->format->Rmask, surface->format->Gmask, surface->format->Bmask, surface->format->Amask);
@@ -432,7 +447,7 @@ static int d3dSDL_LockSurface2(SDL_Surface *surface) {
 		SDL_SetError("LockRect failed");
 		return -1;
 	}
-	LOG_DEBUG(("lock surface succeeded: pitch: %d, pixels: %p", rect.Pitch, (const void *)rect.pBits));
+	//LOG_DEBUG(("lock surface succeeded: pitch: %d, pixels: %p", rect.Pitch, (const void *)rect.pBits));
 	surface->pitch = rect.Pitch;
 	surface->pixels = rect.pBits;
 
@@ -457,7 +472,7 @@ int d3dSDL_LockSurface(SDL_Surface *surface) {
 	if (g_pD3D == NULL || r == -1) {
 		return r;
 	}
-	LOG_DEBUG(("LockSurface"));
+	//LOG_DEBUG(("LockSurface"));
 	if (d3dSDL_LockSurface2(surface) == -1) {
 		SDL_UnlockSurface(surface);
 		return -1;
@@ -466,7 +481,7 @@ int d3dSDL_LockSurface(SDL_Surface *surface) {
 }
 
 void d3dSDL_UnlockSurface(SDL_Surface *surface) {
-	LOG_DEBUG(("UnlockSurface"));
+	//LOG_DEBUG(("UnlockSurface"));
 	if (g_pD3D != NULL)  {
 		d3dSDL_UnlockSurface2(surface);
 	}
@@ -476,7 +491,6 @@ void d3dSDL_UnlockSurface(SDL_Surface *surface) {
 SDL_bool d3dSDL_SetClipRect(SDL_Surface *surface, SDL_Rect *rect) {
 	if (g_pD3D == NULL) 
 		return SDL_SetClipRect(surface, rect);		
-	LOG_DEBUG(("SetClipRect"));
 	return SDL_FALSE;
 }
 
