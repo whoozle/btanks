@@ -14,14 +14,16 @@ static LPD3DXSPRITE g_sprite;
 static bool g_begin_scene = true;
 static bool g_sprite_end = false;
 static bool g_non_pow2 = false;
+static int g_max_w = 2048, g_max_h = 2048;
 
 #include <deque>
 #include <vector>
 
 struct texinfo {
-	LPDIRECT3DTEXTURE9 tex;
+	LPDIRECT3DTEXTURE9 *tex;
 	int w, h;
 	int w_split, h_split;
+	int n;
 };
 
 std::vector<texinfo> g_textures;
@@ -64,7 +66,9 @@ SDL_Surface *d3dSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags) {
 
     D3DCAPS9 d3dCaps;
     g_pD3D->GetDeviceCaps( D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, &d3dCaps );
-	LOG_DEBUG(("maximum texture size: %dx%d, aspect ratio: %d", d3dCaps.MaxTextureWidth, d3dCaps.MaxTextureHeight, d3dCaps.MaxTextureAspectRatio));
+    g_max_w = d3dCaps.MaxTextureWidth;
+    g_max_h = d3dCaps.MaxTextureHeight;
+	LOG_DEBUG(("maximum texture size: %dx%d, aspect ratio: %d", g_max_w, g_max_h, d3dCaps.MaxTextureAspectRatio));
 	g_non_pow2 = (d3dCaps.TextureCaps & D3DPTEXTURECAPS_NONPOW2CONDITIONAL) != 0;
 	LOG_DEBUG(("non-pow2 textures: %s", g_non_pow2?"yes":"no"));
 
@@ -132,9 +136,13 @@ SDL_Surface *d3dSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags) {
 static void d3d_Shutdown(void) {
 	if (!g_textures.empty()) {
 		for(size_t i = 0; i < g_textures.size(); ++i) {
-			if (g_textures[i].tex != NULL) {
-				g_textures[i].tex->Release();
-				g_textures[i].tex = NULL;
+			texinfo &tex = g_textures[i];
+			if (tex.tex != NULL) {
+				for(int t = 0; t < tex.n; ++t) {
+					tex.tex[t]->Release();
+			   	}
+			   	delete[] tex.tex;
+			   	tex.tex = NULL;
 			}
 		}
 		g_textures.clear();
@@ -298,15 +306,24 @@ SDL_Surface *d3dSDL_DisplayFormatAlpha(SDL_Surface *surface) {
 	//fixme: check nonpow2 capability
 	int tex_size_w = g_non_pow2? surface->w: pow2(surface->w);
 	int tex_size_h = g_non_pow2? surface->h: pow2(surface->h);
+	int tex_split_w = tex_size_w;
+	int tex_split_h = tex_size_h;
+
+	texinfo info;
+	info.w = surface->w;
+	info.h = surface->h;
+	info.n = 1;
+	info.tex = new LPDIRECT3DTEXTURE9[info.n];
 
 	if (tex_size_w == -1 || tex_size_h == -1) {
 		SDL_SetError("cannot handle large textures (greater than 2048x2048) w:%d, h: %d", surface->w, surface->h);
 		return NULL;
 	}
-	
+
 	LPDIRECT3DTEXTURE9 tex = d3d_CreateTexture(surface, tex_size_w, tex_size_h, 0, 0, surface->w, surface->h);
 	if (tex == NULL) 
 		return NULL;
+	info.tex[0] = tex;
 	
 	SDL_Surface *r = SDL_CreateRGBSurface(surface->flags, surface->w, surface->h, 32,  
 			surface->format->Rmask, surface->format->Gmask, surface->format->Bmask, surface->format->Amask);
@@ -316,10 +333,7 @@ SDL_Surface *d3dSDL_DisplayFormatAlpha(SDL_Surface *surface) {
 	SDL_free(r->pixels); //no need for that. use it later from Lock
 	r->pixels = NULL;
 	r->flags |= SDL_GLSDL | SDL_HWSURFACE;
-	texinfo info;
-	info.w = surface->w;
-	info.h = surface->h;
-	info.tex = tex;
+
 	g_textures.push_back(info);
 	//g_pd3dDevice->SetTexture(g_textures.size() - 1, tex);
 	r->unused1 = g_textures.size();
@@ -421,8 +435,12 @@ void d3dSDL_FreeSurface(SDL_Surface *surface) {
 	texinfo * tex = getTexture(surface);
 	if (tex != NULL) {
 		//LOG_DEBUG(("freeing d3d texture"));
-		tex->tex->Release();
-		tex->tex = NULL;
+		for(int t = 0; t < tex->n; ++t) {
+			tex->tex[t]->Release();
+	   	}
+	   	delete[] tex->tex;
+	   	tex->tex = NULL;
+	   	tex->n = 0;
 		surface->unused1 = 0;
 	}
 	//LOG_DEBUG(("calling SDL_FreeSurface"));
@@ -443,7 +461,7 @@ static int d3dSDL_LockSurface2(SDL_Surface *surface) {
     
 	D3DLOCKED_RECT rect;
 
-	if (FAILED(tex->tex->LockRect(0, &rect, NULL, D3DLOCK_DISCARD))) {
+	if (FAILED(tex->tex[0]->LockRect(0, &rect, NULL, D3DLOCK_DISCARD))) {
 		SDL_SetError("LockRect failed");
 		return -1;
 	}
@@ -460,7 +478,7 @@ static int d3dSDL_LockSurface2(SDL_Surface *surface) {
 static void d3dSDL_UnlockSurface2(SDL_Surface *surface) {
 	texinfo *tex = getTexture(surface);
 	if (tex != NULL) {
-		tex->tex->UnlockRect(0);
+		tex->tex[0]->UnlockRect(0);
 		surface->pixels = NULL;
 	}
 }
@@ -542,7 +560,7 @@ int d3dSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
 				}
 			}
 			//LOG_DEBUG(("Sprite::Draw"));
-			if (FAILED(g_sprite->Draw(tex->tex, &dxr, NULL, &pos, 0xffffffff))) {
+			if (FAILED(g_sprite->Draw(tex->tex[0], &dxr, NULL, &pos, 0xffffffff))) {
 				SDL_SetError("Sprite::Draw failed");
 				return -1;
 			}
