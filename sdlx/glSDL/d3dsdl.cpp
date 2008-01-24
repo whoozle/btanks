@@ -21,9 +21,13 @@ static int g_max_w = 2048, g_max_h = 2048;
 
 struct texinfo {
 	LPDIRECT3DTEXTURE9 *tex;
+	D3DLOCKED_RECT *lrect;
 	int w, h;
 	int split_w, split_h;
 	int n;
+	texinfo() {
+		ZeroMemory(this, sizeof(*this));
+	}
 };
 
 std::vector<texinfo> g_textures;
@@ -490,25 +494,36 @@ static int d3dSDL_LockSurface2(SDL_Surface *surface) {
 	if (tex == NULL) {
 		return 0;
 	}
-	if (tex->n > 1) {
-		SDL_SetError("implement locking of the fragmented surfaces!");
+
+	if (surface->pixels != NULL || tex->lrect != NULL) {
+		SDL_SetError("pixels != NULL || tex->locked_rects != NULL: recursive locks are not allowed");
 		return -1;
 	}
 
-	if (surface->pixels != NULL) {
-		SDL_SetError("pixels != NULL: recursive locks are not allowed");
-		return -1;
+	if (tex->n == 1) { //single tile: almost no overhead
+		D3DLOCKED_RECT rect;
+		if (FAILED(tex->tex[0]->LockRect(0, &rect, NULL, D3DLOCK_DISCARD))) {
+			SDL_SetError("LockRect failed");
+			return -1;
+		}
+		surface->pitch = rect.Pitch;
+		surface->pixels = rect.pBits;
+		return 0;
 	}
-    
-	D3DLOCKED_RECT rect;
 
-	if (FAILED(tex->tex[0]->LockRect(0, &rect, NULL, D3DLOCK_DISCARD))) {
-		SDL_SetError("LockRect failed");
-		return -1;
+	tex->lrect = new D3DLOCKED_RECT[tex->n];
+	
+	for(int t = 0; t < tex->n; ++t) {
+		if (FAILED(tex->tex[t]->LockRect(0, tex->lrect + t, NULL, D3DLOCK_DISCARD))) {
+			SDL_SetError("LockRect failed");
+			return -1;
+		}
 	}
 	//LOG_DEBUG(("lock surface succeeded: pitch: %d, pixels: %p", rect.Pitch, (const void *)rect.pBits));
-	surface->pitch = rect.Pitch;
-	surface->pixels = rect.pBits;
+	surface->pitch = 4 * tex->w;
+	int size = 4 * tex->w * tex->h;
+	surface->pixels = malloc(size); //too pity
+	
 
 	surface->format->BitsPerPixel = 32;
 	surface->format->BytesPerPixel = 4;
@@ -518,13 +533,24 @@ static int d3dSDL_LockSurface2(SDL_Surface *surface) {
 
 static void d3dSDL_UnlockSurface2(SDL_Surface *surface) {
 	texinfo *tex = getTexture(surface);
-	if (tex->n > 1) {
+	if (tex == NULL)
 		return;
-	}
-	if (tex != NULL) {
+
+	if (tex->n == 1) { //single tile case
 		tex->tex[0]->UnlockRect(0);
 		surface->pixels = NULL;
+		return;
 	}
+
+	assert(tex->lrect != NULL);
+
+	for(int t = 0; t < tex->n; ++t) 
+		tex->tex[t]->UnlockRect(0);
+	delete[] tex->lrect;
+	tex->lrect = NULL;
+
+	free(surface->pixels);
+	surface->pixels = NULL;
 }
 
 
@@ -649,13 +675,11 @@ int d3dSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
 		//LOG_DEBUG(("blitting to surfaces"));
 		if (src->pixels == NULL) {
 			if (d3dSDL_LockSurface2(src) == -1) {
-				SDL_SetError("locking surface(src) for blitting failed");
 				return -1;
 			}
 		}
 		if (dst->pixels == NULL) {
 			if (d3dSDL_LockSurface2(dst) == -1) {
-				SDL_SetError("locking surface(dst) for blitting failed");
 				return -1;
 			}
 		}
