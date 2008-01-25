@@ -523,43 +523,60 @@ static int d3dSDL_LockSurface2(SDL_Surface *surface) {
 		return 0;
 	}
 
+	Uint32 rmask, gmask, bmask, amask;
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+	rmask = 0xff000000;
+	gmask = 0x00ff0000;
+	bmask = 0x0000ff00;
+	amask = 0x000000ff;
+#else
+	rmask = 0x000000ff;
+	gmask = 0x0000ff00;
+	bmask = 0x00ff0000;
+	amask = 0xff000000;
+#endif
+
 	int ny = align_div(surface->h, tex->split_h), nx = align_div(surface->w, tex->split_w);
 	assert(tex->n == nx * ny);
+
+	surface->pixels = SDL_malloc(surface->w * surface->h * 4);
+	if (surface->pixels == NULL) {
+		return -1;
+	}
+	surface->pitch = surface->w * 4;
 
 	//LOG_DEBUG(("locking fragmented surface: %dx%d", nx, ny));
 	tex->lrect = new D3DLOCKED_RECT[tex->n];
 	
 	for(int t = 0; t < tex->n; ++t) {
 		if (FAILED(tex->tex[t]->LockRect(0, tex->lrect + t, NULL, D3DLOCK_DISCARD))) {
+			for(--t; t >= 0; --t) {
+				tex->tex[t]->UnlockRect(0);
+			}
 			delete[] tex->lrect;
 			tex->lrect = NULL;
 			SDL_SetError("LockRect failed");
 			return -1;
 		}
 	}
-	
-	int size = 4 * surface->w * surface->h;
-	//LOG_DEBUG(("allocating %d bytes", size));
-	surface->pixels = malloc(size); //too pity
-	surface->pitch = 4 * surface->w;
-	
-	Uint32 *pixels = (Uint32 *)surface->pixels;
 
-	for(int y = 0; y < surface->h; ++y) {
-		for(int x = 0; x < surface->w; ++x) {
-			const int tx = x / tex->split_w, px = x % tex->split_w;
-			const int ty = y / tex->split_h, py = y % tex->split_h;
-
-			const int idx = ty * nx + tx;
+	//create another fake and blit it: 
+	for(int y = 0; y < ny; ++y) {
+		for(int x = 0; x < nx; ++x) {
+			int idx = nx * y + x;
 			assert(idx < tex->n);
-			const D3DLOCKED_RECT &src = tex->lrect[idx];
-			//assert(y * surface->pitch / 4 + x < size / 4);
-			pixels[y * surface->pitch / 4 + x] = ((Uint32 *)(src.pBits))[px + py * src.Pitch / 4];
+			SDL_Surface *sub_fake = SDL_CreateRGBSurfaceFrom(tex->lrect[idx].pBits, tex->split_w, tex->split_h, 32, tex->lrect[idx].Pitch, rmask, gmask, bmask, amask);
+			SDL_SetAlpha(sub_fake, 0, 0);
+			SDL_Rect dst_rect;
+			
+			dst_rect.x = x * tex->split_w;
+			dst_rect.y = y * tex->split_h;
+
+			SDL_BlitSurface(sub_fake, NULL, surface, &dst_rect);
+			sub_fake->pixels = NULL;
+			SDL_FreeSurface(sub_fake);
 		}
 	}
-
-	surface->format->BitsPerPixel = 32;
-	surface->format->BytesPerPixel = 4;
 	
 	return 0;
 }
@@ -581,27 +598,46 @@ static void d3dSDL_UnlockSurface2(SDL_Surface *surface) {
 	assert(tex->lrect != NULL);
 	assert(surface->pixels != NULL);
 
-	Uint32 *pixels = (Uint32 *)surface->pixels;
+	Uint32 rmask, gmask, bmask, amask;
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+	rmask = 0xff000000;
+	gmask = 0x00ff0000;
+	bmask = 0x0000ff00;
+	amask = 0x000000ff;
+#else
+	rmask = 0x000000ff;
+	gmask = 0x0000ff00;
+	bmask = 0x00ff0000;
+	amask = 0xff000000;
+#endif
 
-	for(int y = 0; y < surface->h; ++y) {
-		for(int x = 0; x < surface->w; ++x) {
-			const int tx = x / tex->split_w, ty = y / tex->split_h;
-			const int px = x % tex->split_w, py = y % tex->split_h;
-
-			const int idx = ty * nx + tx;
+	for(int y = 0; y < ny; ++y) {
+		for(int x = 0; x < nx; ++x) {
+			int idx = nx * y + x;
 			assert(idx < tex->n);
-			const D3DLOCKED_RECT &src = tex->lrect[idx];
-			//assert(y * surface->pitch / 4 + x < size / 4);
-			((Uint32 *)(src.pBits))[px + py * src.Pitch / 4] = pixels[y * surface->pitch / 4 + x];
+			assert(tex->lrect[idx].pBits != NULL);
+			SDL_Surface *sub_fake = SDL_CreateRGBSurfaceFrom(tex->lrect[idx].pBits, tex->split_w, tex->split_h, 32, tex->lrect[idx].Pitch, rmask, gmask, bmask, amask);
+			SDL_Rect src_rect;
+			
+			src_rect.x = x * tex->split_w;
+			src_rect.y = y * tex->split_h;
+			src_rect.w = tex->split_w;
+			src_rect.h = tex->split_h;
+
+			SDL_BlitSurface(surface, &src_rect, sub_fake, NULL);
+			sub_fake->pixels = NULL;
+			SDL_FreeSurface(sub_fake);
+
+			//unlock texture
+			tex->tex[idx]->UnlockRect(0);
+			tex->lrect[idx].pBits = NULL;
 		}
 	}
-
-	for(int t = 0; t < tex->n; ++t) 
-		tex->tex[t]->UnlockRect(0);
+	
 	delete[] tex->lrect;
 	tex->lrect = NULL;
 
-	free(surface->pixels);
+	SDL_free(surface->pixels);
 	surface->pixels = NULL;
 }
 
@@ -701,8 +737,8 @@ int d3dSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
 					int offset_y = y * tex->split_h;
 
 					D3DXVECTOR3 pos;
-					pos.x = x * tex->split_w;
-					pos.y = y * tex->split_h;
+					pos.x = (float)(x * tex->split_w);
+					pos.y = (float)(y * tex->split_h);
 					pos.z = 0;
 
 					if (dstrect != NULL) {
@@ -726,7 +762,7 @@ int d3dSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
 	} else {
 		//LOG_DEBUG(("blitting to surfaces"));
 		texinfo * dst_tex = getTexture(dst);
-		if (tex == NULL || dst_tex == NULL) {
+		if (true || tex == NULL || dst_tex == NULL) {
 			LOG_DEBUG(("generic mixed blit used."));
 			if (src->pixels == NULL) {
 				if (d3dSDL_LockSurface2(src) == -1) {
