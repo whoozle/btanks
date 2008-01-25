@@ -544,7 +544,7 @@ static int d3dSDL_LockSurface2(SDL_Surface *surface) {
 			dst_rect.y = y * tex->split_h;
 
 			if (SDL_BlitSurface(sub_fake, NULL, surface, &dst_rect) == -1) 
-				LOG_ERROR(("LockSurface2: blit failed"));
+				LOG_ERROR(("LockSurface2: blit failed: %s", SDL_GetError()));
 			sub_fake->pixels = NULL;
 			SDL_FreeSurface(sub_fake);
 		}
@@ -590,7 +590,7 @@ static void d3dSDL_UnlockSurface2(SDL_Surface *surface) {
 			src_rect.h = tex->split_h;
 
 			if (SDL_BlitSurface(surface, &src_rect, sub_fake, NULL) == -1)
-				LOG_ERROR(("SDL_BlitSurface failed: %s", SDL_GetError()));
+				LOG_ERROR(("UnlockSurface2: SDL_BlitSurface failed: %s", SDL_GetError()));
 			sub_fake->pixels = NULL;
 			SDL_FreeSurface(sub_fake);
 
