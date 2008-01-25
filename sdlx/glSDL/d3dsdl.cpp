@@ -617,6 +617,9 @@ static void d3dSDL_UnlockSurface2(SDL_Surface *surface) {
 			assert(idx < tex->n);
 			assert(tex->lrect[idx].pBits != NULL);
 			SDL_Surface *sub_fake = SDL_CreateRGBSurfaceFrom(tex->lrect[idx].pBits, tex->split_w, tex->split_h, 32, tex->lrect[idx].Pitch, rmask, gmask, bmask, amask);
+			if (sub_fake == NULL)
+				return -1;
+
 			SDL_Rect src_rect;
 			
 			src_rect.x = x * tex->split_w;
