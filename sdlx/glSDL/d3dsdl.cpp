@@ -22,7 +22,7 @@ static int g_max_w = 2048, g_max_h = 2048;
 struct texinfo {
 	LPDIRECT3DTEXTURE9 *tex;
 	D3DLOCKED_RECT *lrect;
-	int w, h;
+	//int w, h;
 	int split_w, split_h;
 	int n;
 	texinfo() {
@@ -335,8 +335,8 @@ SDL_Surface *d3dSDL_DisplayFormatAlpha(SDL_Surface *surface) {
 		LOG_DEBUG(("split texture into %dx%d squares. %dx%d = %d", tex_split_w, tex_split_h, nx, ny, nx * ny));
 
 	texinfo info;
-	info.w = surface->w;
-	info.h = surface->h;
+	//info.w = surface->w;
+	//info.h = surface->h;
 	info.split_w = tex_split_w;
 	info.split_h = tex_split_h;
 	info.n = nx * ny;
@@ -668,15 +668,16 @@ int d3dSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
 			RECT dxr;
 			if (srcrect) {
 				dxr.left = srcrect->x;
+				dxr.right = dxr.left + srcrect->w;
 				dxr.top = srcrect->y;
-				dxr.right = srcrect->x + srcrect->w;
-				dxr.bottom = srcrect->y + srcrect->h;
+				dxr.bottom = dxr.top + srcrect->h;
 			} else {
-				dxr.left = dxr.top = 0;
-				dxr.right = tex->w;
-				dxr.bottom = tex->h;
+				dxr.left = 0;
+				dxr.right = src->w;
+				dxr.top = 0;
+				dxr.bottom = src->h;
 			}
-			int ny = align_div(tex->h, tex->split_h), nx = align_div(tex->w, tex->split_w);
+			int nx = align_div(src->w, tex->split_w), ny = align_div(src->h, tex->split_h);
 			assert(tex->n == nx * ny);
 			int x1 = dxr.left / tex->split_w, x2 = align_div(dxr.right, tex->split_w);
 			int y1 = dxr.top / tex->split_h, y2 = align_div(dxr.bottom, tex->split_h);
@@ -684,12 +685,6 @@ int d3dSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
 			if (x2 > nx) x2 = nx;
 			if (y2 > ny) y2 = ny;
 			
-			if (dxr.right > tex->split_w)
-				dxr.right = tex->split_w;
-
-			if (dxr.bottom > tex->split_h)
-				dxr.bottom = tex->split_h;
-	
 			//if (tex->n > 1) 
 			//LOG_DEBUG(("blit texture %dx%d split into %dx%d, %d,%d->%d,%d", src->w, src->h, nx, ny, x1, y1, x2, y2));
 			for(int y = y1; y < y2; ++y) {
@@ -697,12 +692,29 @@ int d3dSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
 					const int idx = nx * y + x;
 					assert(idx < tex->n);
 
-					int offset_x = x * tex->split_w;
-					int offset_y = y * tex->split_h;
+					const int offset_x = x * tex->split_w, offset_y = y * tex->split_h;
+					
+					RECT src_rect = dxr;
+					
+					src_rect.left -= offset_x;
+					if (src_rect.left < 0)
+						src_rect.left = 0;
+					
+					src_rect.right -= offset_x;
+					if (src_rect.right > tex->split_w)
+						src_rect.right = tex->split_w;
+					
+					src_rect.top -= offset_y;
+					if (src_rect.top < 0)
+						src_rect.top = 0;
+
+					src_rect.bottom -= offset_y;
+					if (src_rect.bottom > tex->split_h)
+						src_rect.bottom = tex->split_h;
 
 					D3DXVECTOR3 pos;
-					pos.x = (FLOAT)(x * tex->split_w);
-					pos.y = (FLOAT)(y * tex->split_h);
+					pos.x = (FLOAT)((x - x1) * tex->split_w);
+					pos.y = (FLOAT)((y - y1) * tex->split_h);
 					pos.z = 0;
 
 					if (dstrect != NULL) {
@@ -710,9 +722,11 @@ int d3dSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
 						pos.y += dstrect->y;
 					}
 
-					//if (tex->n > 1)
-					//	LOG_DEBUG(("blit %d %d, tex #%d of %d -> %g,%g", y, x, idx, tex->n, pos.x, pos.y));
-					if (FAILED(g_sprite->Draw(tex->tex[idx], &dxr, NULL, &pos, 0xffffffff))) {
+					if (tex->n > 1)
+						LOG_DEBUG(("blit %d %d(%d/%d, %d/%d), tex #%d of %d -> %g,%g", x, y,
+							src_rect.left, src_rect.right, src_rect.top, src_rect.bottom, 
+							idx, tex->n, pos.x, pos.y));
+					if (FAILED(g_sprite->Draw(tex->tex[idx], &src_rect, NULL, &pos, 0xffffffff))) {
 						SDL_SetError("Sprite::Draw failed");
 						return -1;
 					}
