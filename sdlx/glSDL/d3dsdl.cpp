@@ -609,25 +609,25 @@ static void d3dSDL_UnlockSurface2(SDL_Surface *surface) {
 
 
 int d3dSDL_LockSurface(SDL_Surface *surface) {
+	if (g_pD3D != NULL) {
+		if (d3dSDL_LockSurface2(surface) == -1) {
+			return -1;
+		}
+	}
 	int r = SDL_LockSurface(surface);
-
-	if (g_pD3D == NULL || r == -1) {
-		return r;
+	if (r == -1) {
+		LOG_DEBUG(("lock failed, undo d3d lock"));
+		d3dSDL_UnlockSurface2(surface);
 	}
-	//LOG_DEBUG(("LockSurface"));
-	if (d3dSDL_LockSurface2(surface) == -1) {
-		SDL_UnlockSurface(surface);
-		return -1;
-	}
-	return 0;
+	return r;
 }
 
 void d3dSDL_UnlockSurface(SDL_Surface *surface) {
 	//LOG_DEBUG(("UnlockSurface"));
+	SDL_UnlockSurface(surface);
 	if (g_pD3D != NULL)  {
 		d3dSDL_UnlockSurface2(surface);
 	}
-	SDL_UnlockSurface(surface);
 }
 
 SDL_bool d3dSDL_SetClipRect(SDL_Surface *surface, SDL_Rect *rect) {
