@@ -727,21 +727,22 @@ int d3dSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
 		//LOG_DEBUG(("blitting to surfaces"));
 		texinfo * dst_tex = getTexture(dst);
 		if (true || tex == NULL || dst_tex == NULL) {
-			LOG_DEBUG(("generic mixed blit used."));
-			if (src->pixels == NULL) {
+			if (tex != NULL && src->pixels == NULL) {
 				if (d3dSDL_LockSurface2(src) == -1) {
 					return -1;
 				}
 			}
-			if (dst->pixels == NULL) {
+			if (dst_tex != NULL && dst->pixels == NULL) {
 				if (d3dSDL_LockSurface2(dst) == -1) {
 					d3dSDL_UnlockSurface2(src);
 					return -1;
 				}
 			}
 			int r = SDL_BlitSurface(src, srcrect, dst, dstrect);
-			d3dSDL_UnlockSurface2(dst); 
-			d3dSDL_UnlockSurface2(src); 
+			if (dst_tex != NULL)
+				d3dSDL_UnlockSurface2(dst); 
+			if (tex != NULL)
+				d3dSDL_UnlockSurface2(src); 
 			return r;
 		}
 		//both textures are hardware: 
