@@ -192,12 +192,6 @@ void IGame::init(const int argc, char *argv[]) {
 			if (cl < 1) 
 				Config->set("multiplayer.compression-level", 1);
 		}
-		if (revision < 4554) { //actually more revisions ago
-			int fps_limit;
-			Config->get("engine.fps-limit", fps_limit, 120);
-			if (fps_limit >= 1000) 
-				Config->set("engine.fps-limit", 120);
-		}
 		if (revision < 4975) {
 			int ds;
 			Config->get("multiplayer.deltas-samples", ds, 30);
@@ -245,6 +239,12 @@ void IGame::init(const int argc, char *argv[]) {
 		}
 		if (revision < 5829 && Config->has("multiplayer.port")) {
 			Config->set("multiplayer.port", 27255);
+		}
+		if (revision < 6170) { //actually more revisions ago
+			int fps_limit;
+			Config->get("engine.fps-limit", fps_limit, 50);
+			if (fps_limit > 50) 
+				Config->set("engine.fps-limit", 50);
 		}
 		
 		Config->set("engine.revision", getRevision());

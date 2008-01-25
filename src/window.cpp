@@ -353,7 +353,7 @@ void IWindow::createMainWindow() {
 
 void IWindow::run() {
 
-	GET_CONFIG_VALUE("engine.fps-limit", int, fps_limit, 120);
+	GET_CONFIG_VALUE("engine.fps-limit", int, fps_limit, 50);
 	
 	_fr = fps_limit;
 	int max_delay = 1000000 / fps_limit;
