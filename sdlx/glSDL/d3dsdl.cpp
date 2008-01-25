@@ -272,14 +272,14 @@ static LPDIRECT3DTEXTURE9 d3d_CreateTexture(SDL_Surface * surface, int tex_size_
 		y2 = surface->h;
 
 	SDL_Rect src_rect;
-	src_rect.x = x1; src_rect.y = x1;
+	src_rect.x = x1; src_rect.y = y1;
 	src_rect.w = x2 - x1; src_rect.h = y2 - y1;
 
 	bool alpha = (surface->flags & SDL_SRCALPHA) != 0;
 	if (alpha) {
 		SDL_SetAlpha(surface, 0, 0);
 	}
-
+	LOG_DEBUG(("blitting from %d,%d, size: %d,%d.", src_rect.x, src_rect.y, src_rect.w, src_rect.h));
 	SDL_Surface *fake = SDL_CreateRGBSurfaceFrom(rect.pBits, tex_size_w, tex_size_h, 32, rect.Pitch, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000);
 	if (SDL_BlitSurface(surface, &src_rect, fake, NULL) == -1)
 		return NULL;
@@ -700,19 +700,18 @@ int d3dSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
 				dxr.bottom = tex->split_h;
 	
 			//if (tex->n > 1) 
-			//	LOG_DEBUG(("blit texture split into %dx%d, %d,%d->%d,%d", nx, ny, x1, y1, x2, y2));
+			//LOG_DEBUG(("blit texture %dx%d split into %dx%d, %d,%d->%d,%d", src->w, src->h, nx, ny, x1, y1, x2, y2));
 			for(int y = y1; y < y2; ++y) {
 				for(int x = x1; x < x2; ++x) {
 					const int idx = nx * y + x;
-					//if (tex->n > 1)
-					//	LOG_DEBUG(("blit %d %d, tex #%d of %d", y, x, idx, tex->n));
+					assert(idx < tex->n);
 
 					int offset_x = x * tex->split_w;
 					int offset_y = y * tex->split_h;
 
 					D3DXVECTOR3 pos;
-					pos.x = (float)(x * tex->split_w);
-					pos.y = (float)(y * tex->split_h);
+					pos.x = (FLOAT)(x * tex->split_w);
+					pos.y = (FLOAT)(y * tex->split_h);
 					pos.z = 0;
 
 					if (dstrect != NULL) {
@@ -720,8 +719,8 @@ int d3dSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
 						pos.y += dstrect->y;
 					}
 
-					//LOG_DEBUG(("Sprite::Draw"));
-					assert(idx < tex->n);
+					//if (tex->n > 1)
+					//	LOG_DEBUG(("blit %d %d, tex #%d of %d -> %g,%g", y, x, idx, tex->n, pos.x, pos.y));
 					if (FAILED(g_sprite->Draw(tex->tex[idx], &dxr, NULL, &pos, 0xffffffff))) {
 						SDL_SetError("Sprite::Draw failed");
 						return -1;
