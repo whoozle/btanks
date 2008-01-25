@@ -571,12 +571,15 @@ static void d3dSDL_UnlockSurface2(SDL_Surface *surface) {
 
 	for(int y = 0; y < ny; ++y) {
 		for(int x = 0; x < nx; ++x) {
-			int idx = nx * y + x;
+			const int idx = nx * y + x;
 			assert(idx < tex->n);
 			assert(tex->lrect[idx].pBits != NULL);
 			SDL_Surface *sub_fake = SDL_CreateRGBSurfaceFrom(tex->lrect[idx].pBits, tex->split_w, tex->split_h, 32, tex->lrect[idx].Pitch, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000);
-			if (sub_fake == NULL)
+			if (sub_fake == NULL) {
+				LOG_ERROR(("UnlockSurface2: creating surface failed."));
+				tex->tex[idx]->UnlockRect(0);
 				continue;
+			}
 
 			SDL_Rect src_rect;
 			
@@ -585,7 +588,8 @@ static void d3dSDL_UnlockSurface2(SDL_Surface *surface) {
 			src_rect.w = tex->split_w;
 			src_rect.h = tex->split_h;
 
-			SDL_BlitSurface(surface, &src_rect, sub_fake, NULL);
+			if (SDL_BlitSurface(surface, &src_rect, sub_fake, NULL) == -1)
+				LOG_ERROR(("SDL_BlitSurface failed: %s", SDL_GetError()));
 			sub_fake->pixels = NULL;
 			SDL_FreeSurface(sub_fake);
 
