@@ -16,19 +16,6 @@ static bool g_sprite_end = false;
 static bool g_non_pow2 = false;
 static int g_max_w = 2048, g_max_h = 2048;
 
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-	static const Uint32 g_rmask = 0xff000000;
-	static const Uint32 g_gmask = 0x00ff0000;
-	static const Uint32 g_bmask = 0x0000ff00;
-	static const Uint32 g_amask = 0x000000ff;
-#else
-	static const Uint32 g_rmask = 0x000000ff;
-	static const Uint32 g_gmask = 0x0000ff00;
-	static const Uint32 g_bmask = 0x00ff0000;
-	static const Uint32 g_amask = 0xff000000;
-#endif
-
-
 #include <deque>
 #include <vector>
 
@@ -549,7 +536,7 @@ static int d3dSDL_LockSurface2(SDL_Surface *surface) {
 		for(int x = 0; x < nx; ++x) {
 			int idx = nx * y + x;
 			assert(idx < tex->n);
-			SDL_Surface *sub_fake = SDL_CreateRGBSurfaceFrom(tex->lrect[idx].pBits, tex->split_w, tex->split_h, 32, tex->lrect[idx].Pitch, g_rmask, g_gmask, g_bmask, g_amask);
+			SDL_Surface *sub_fake = SDL_CreateRGBSurfaceFrom(tex->lrect[idx].pBits, tex->split_w, tex->split_h, 32, tex->lrect[idx].Pitch, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000);
 			SDL_SetAlpha(sub_fake, 0, 0);
 			SDL_Rect dst_rect;
 			
@@ -587,7 +574,7 @@ static void d3dSDL_UnlockSurface2(SDL_Surface *surface) {
 			int idx = nx * y + x;
 			assert(idx < tex->n);
 			assert(tex->lrect[idx].pBits != NULL);
-			SDL_Surface *sub_fake = SDL_CreateRGBSurfaceFrom(tex->lrect[idx].pBits, tex->split_w, tex->split_h, 32, tex->lrect[idx].Pitch, g_rmask, g_gmask, g_bmask, g_amask);
+			SDL_Surface *sub_fake = SDL_CreateRGBSurfaceFrom(tex->lrect[idx].pBits, tex->split_w, tex->split_h, 32, tex->lrect[idx].Pitch, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000);
 			if (sub_fake == NULL)
 				continue;
 
