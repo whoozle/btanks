@@ -14,7 +14,8 @@ static LPD3DXSPRITE g_sprite;
 static bool g_begin_scene = true;
 static bool g_sprite_end = false;
 static bool g_non_pow2 = false;
-static int g_max_w = 2048, g_max_h = 2048;
+static int g_max_w = 2048, g_max_h = 2048, g_width, g_height;
+static SDL_Rect g_clip_rect;
 
 #include <deque>
 #include <vector>
@@ -137,6 +138,14 @@ SDL_Surface *d3dSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags) {
 
 	LOG_DEBUG(("d3d initialization was successful"));
 	g_begin_scene = true;
+
+	g_clip_rect.x = 0; 
+	g_clip_rect.y = 0;
+	g_clip_rect.w = width;
+	g_clip_rect.h = height;
+
+	g_width = width;
+	g_height = height;
 
     return g_screen;
 }
@@ -632,8 +641,17 @@ void d3dSDL_UnlockSurface(SDL_Surface *surface) {
 
 SDL_bool d3dSDL_SetClipRect(SDL_Surface *surface, SDL_Rect *rect) {
 	if (g_pD3D == NULL) 
-		return SDL_SetClipRect(surface, rect);		
-	return SDL_FALSE;
+		return SDL_SetClipRect(surface, rect);
+	if (rect == NULL) {
+		//reset to default ? 
+		g_clip_rect.x = 0; 
+		g_clip_rect.y = 0;
+		g_clip_rect.w = g_width;
+		g_clip_rect.h = g_height;
+	} else {
+		g_clip_rect = *rect;
+	}
+	return SDL_TRUE;
 }
 
 int d3dSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
@@ -764,6 +782,8 @@ int d3dSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
 					return -1;
 				}
 			}
+			if (srcrect != NULL && dstrect != NULL)
+				LOG_DEBUG(("%d, %d;%d, %d -> %d, %d", srcrect->x, srcrect->y, srcrect->w, srcrect->h, dstrect->x, dstrect->y));
 			int r = SDL_BlitSurface(src, srcrect, dst, dstrect);
 			if (dst_tex != NULL)
 				d3dSDL_UnlockSurface2(dst); 
