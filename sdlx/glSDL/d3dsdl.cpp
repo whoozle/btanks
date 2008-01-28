@@ -829,8 +829,15 @@ int d3dSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
 		return -1;
 	} else {
 		texinfo * dst_tex = getTexture(dst);
-		if (true || tex == NULL || dst_tex == NULL) {
-			LOG_DEBUG(("slow blit."));
+		bool default_blit = tex == NULL || dst_tex == NULL;
+		if (tex != NULL) {
+			int nx = align_div(src->w, tex->split_w), ny = align_div(src->h, tex->split_h);
+			if (nx * ny == 1)
+				default_blit = true;
+		}
+
+		if (true || default_blit) {
+			//LOG_DEBUG(("default blit. (slow for fragmented surfaces)"));
 			if (tex != NULL) {
 				if (src->pixels != NULL) {
 					SDL_SetError("Surface must not be locked during blit");
@@ -860,9 +867,11 @@ int d3dSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
 			if (tex != NULL)
 				d3dSDL_UnlockSurface2(src); 
 			return r;
+		} else {
+			LOG_DEBUG(("optimized blit! (both surfaces are in hardware and fragmented :)"));
+			//fixme
 		}
 		//both textures are hardware: 
-		LOG_DEBUG(("optimized blit!"));
 		return 0;
 	}
 }
