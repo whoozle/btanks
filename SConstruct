@@ -77,11 +77,11 @@ if sys.platform == "win32":
 	al_lib = 'openal32'
 	env.Append(CPPDEFINES = ['_WINDOWS', '_CRT_SECURE_NO_WARNINGS']) #, '_UNICODE'
 	env.Append(CCFLAGS = ' /GR /W3 /nologo ')
-	env.Append(CPPFLAGS = ' /EHsc /GR /W3 /nologo ')
+	env.Append(CXXFLAGS = ' /EHsc /GR /W3 /nologo ')
 
 	if debug:
 		env.Append(CCFLAGS = ' /Zi /GT /Od /MDd /RTC1 ')
-		env.Append(CPPFLAGS = ' /Zi /GT /Od /MDd /RTC1 ')
+		env.Append(CXXFLAGS = ' /Zi /GT /Od /MDd /RTC1 ')
 		env.Append(LINKFLAGS = ' /NOLOGO /DEBUG ')
 	else:
 		env.Append(CCCFLAGS = ' /Ot /Ox /GA /GF /Gs /Gy /MD ') #optimizations
