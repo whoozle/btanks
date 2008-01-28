@@ -722,11 +722,12 @@ int d3dSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
 						pos.x += dstrect->x;
 						pos.y += dstrect->y;
 					}
-
+					/*
 					if (tex->n > 1)
 						LOG_DEBUG(("blit %d %d(%d/%d, %d/%d), tex #%d of %d -> %g,%g", x, y,
 							src_rect.left, src_rect.right, src_rect.top, src_rect.bottom, 
 							idx, tex->n, pos.x, pos.y));
+					*/
 					if (FAILED(g_sprite->Draw(tex->tex[idx], &src_rect, NULL, &pos, 0xffffffff))) {
 						SDL_SetError("Sprite::Draw failed");
 						return -1;
@@ -739,15 +740,25 @@ int d3dSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
 		assert(false);
 		return -1;
 	} else {
-		//LOG_DEBUG(("blitting to surfaces"));
 		texinfo * dst_tex = getTexture(dst);
 		if (true || tex == NULL || dst_tex == NULL) {
-			if (tex != NULL && src->pixels == NULL) {
+			LOG_DEBUG(("slow blit."));
+			if (tex != NULL) {
+				if (src->pixels != NULL) {
+					SDL_SetError("Surface must not be locked during blit");
+					return -1;
+				}
+				
 				if (d3dSDL_LockSurface2(src) == -1) {
 					return -1;
 				}
 			}
-			if (dst_tex != NULL && dst->pixels == NULL) {
+			if (dst_tex != NULL) {
+				if (dst->pixels != NULL) {
+					SDL_SetError("Surface must not be locked during blit.");
+					return -1;
+				}
+
 				if (d3dSDL_LockSurface2(dst) == -1) {
 					d3dSDL_UnlockSurface2(src);
 					return -1;
@@ -767,9 +778,8 @@ int d3dSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
 }
 
 int d3dSDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, Uint32 color_) {
-	if (g_pD3D == NULL || (dst != g_screen && getTexture(dst) == NULL)) 
+	if (g_pD3D == NULL)
 		return SDL_FillRect(dst, dstrect, color_);
-
 
 	Uint8 r, g, b, a;
 	SDL_GetRGBA(color_, dst->format, &r, &g, &b, &a);
@@ -794,24 +804,62 @@ int d3dSDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, Uint32 color_) {
 		}
 	    return 0;
 	} else {
-	/*
-		bool need_lock = dst->pixels == NULL;
-		if (need_lock)
-			d3dSDL_LockSurface2(dst);
-		int x1 = (dstrect == NULL)?0: dstrect->x;
-		int y1 = (dstrect == NULL)?0: dstrect->y;
-		int x2 = (dstrect == NULL)?0: (dstrect->x + dstrect->y);
-		int y2 = (dstrect == NULL)?0: (dstrect->y + dstrect->h);
-		Uint32 *pixels = (Uint32 *)dst->pixels;
-		for(int y = y1; y < y2; ++y) 
+		texinfo *tex = getTexture(dst);
+		if (tex == NULL) 
+			return SDL_FillRect(dst, dstrect, color_);
+
+		int ny = align_div(dst->h, tex->split_h), nx = align_div(dst->w, tex->split_w);
+		assert(tex->n == nx * ny);
+
+		SDL_Rect rect;
+		if (dstrect != NULL) {
+			rect = *dstrect;
+		} else {
+			rect.x = rect.y = 0;
+			rect.w = dst->w;
+			rect.h = dst->h;
+		}
+
+		assert(tex->lrect != NULL);
+		assert(dst->pixels != NULL);
+		int x1 = rect.x / tex->split_w, y1 = rect.y / tex->split_h;
+		int x2 = align_div(rect.x + rect.w, tex->split_w), y2 = align_div(rect.y + rect.h, tex->split_h);
+		if (x2 > nx) x2 = nx;
+		if (y2 > ny) y2 = ny;
+
+
+		for(int y = y1; y < y2; ++y) {
 			for(int x = x1; x < x2; ++x) {
-				pixels[y * dst->pitch / 4 + x] = color;
+				const int idx = nx * y + x;
+				assert(idx < tex->n);
+
+				D3DLOCKED_RECT lrect;
+				if (FAILED(tex->tex[idx]->LockRect(0, &lrect, NULL, D3DLOCK_DISCARD))) {
+					SDL_SetError("LockRect failed");
+					return -1;
+				}
+
+				SDL_Surface *fake = SDL_CreateRGBSurfaceFrom(lrect.pBits, tex->split_w, tex->split_h, 32, lrect.Pitch, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000);
+				if (fake == NULL) {
+					tex->tex[idx]->UnlockRect(0);
+					return -1;				
+				}
+				
+				SDL_Rect trect = rect;
+				trect.x -= (x - x1) * tex->split_w;
+				trect.y -= (y - y1) * tex->split_h;
+	
+				if (SDL_FillRect(fake, &rect, color_) == -1) {
+					tex->tex[idx]->UnlockRect(0);
+					return -1;
+				}
+
+				fake->pixels = NULL;
+				SDL_FreeSurface(fake);				
+				tex->tex[idx]->UnlockRect(0);
 			}
-		if (need_lock)
-			d3dSDL_UnlockSurface2(dst);
+		}	
 		return 0;
-	*/
-		return -1;
 	}
 }
 
