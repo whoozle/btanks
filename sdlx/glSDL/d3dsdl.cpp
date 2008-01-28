@@ -15,7 +15,7 @@ static bool g_begin_scene = true;
 static bool g_sprite_end = false;
 static bool g_non_pow2 = false;
 static int g_max_w = 2048, g_max_h = 2048, g_width, g_height;
-static SDL_Rect g_clip_rect;
+static RECT g_clip_rect;
 
 #include <deque>
 #include <vector>
@@ -139,10 +139,10 @@ SDL_Surface *d3dSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags) {
 	LOG_DEBUG(("d3d initialization was successful"));
 	g_begin_scene = true;
 
-	g_clip_rect.x = 0; 
-	g_clip_rect.y = 0;
-	g_clip_rect.w = width;
-	g_clip_rect.h = height;
+	g_clip_rect.top = 0; 
+	g_clip_rect.left = 0;
+	g_clip_rect.right = width;
+	g_clip_rect.bottom = height;
 
 	g_width = width;
 	g_height = height;
@@ -644,12 +644,15 @@ SDL_bool d3dSDL_SetClipRect(SDL_Surface *surface, SDL_Rect *rect) {
 		return SDL_SetClipRect(surface, rect);
 	if (rect == NULL) {
 		//reset to default ? 
-		g_clip_rect.x = 0; 
-		g_clip_rect.y = 0;
-		g_clip_rect.w = g_width;
-		g_clip_rect.h = g_height;
+		g_clip_rect.top = 0; 
+		g_clip_rect.left = 0;
+		g_clip_rect.right = g_width;
+		g_clip_rect.bottom = g_height;
 	} else {
-		g_clip_rect = *rect;
+		g_clip_rect.left = rect->x;
+		g_clip_rect.right = rect->x + rect->w;
+		g_clip_rect.top = rect->y;
+		g_clip_rect.bottom = rect->y + rect->h;
 	}
 	return SDL_TRUE;
 }
@@ -687,8 +690,8 @@ int d3dSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
 			RECT dxr;
 			if (srcrect) {
 				dxr.left = srcrect->x;
-				dxr.right = dxr.left + srcrect->w;
 				dxr.top = srcrect->y;
+				dxr.right = dxr.left + srcrect->w;
 				dxr.bottom = dxr.top + srcrect->h;
 			} else {
 				dxr.left = 0;
@@ -696,6 +699,38 @@ int d3dSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
 				dxr.top = 0;
 				dxr.bottom = src->h;
 			}
+				
+			int dst_delta_x = 0;
+			int dst_delta_y = 0;
+			//clip rectangle: 
+			{
+				RECT dst_rect;
+				dst_rect.left = (dstrect != NULL)? dstrect->x: 0;
+				dst_rect.right = dst_rect.left + dxr.right - dxr.left;
+				dst_rect.top  = (dstrect != NULL)? dstrect->y: 0;
+				dst_rect.bottom = dst_rect.top + dxr.bottom - dxr.top;
+
+				if (dst_rect.left < g_clip_rect.left) {
+					dxr.left += g_clip_rect.left - dst_rect.left;
+					dst_delta_x += g_clip_rect.left - dst_rect.left;
+				}
+
+				if (dst_rect.right > g_clip_rect.right) 
+					dxr.right -= dst_rect.right - g_clip_rect.right;
+
+				if (dst_rect.top < g_clip_rect.top) {
+					dxr.top += g_clip_rect.top - dst_rect.top;
+					dst_delta_y += g_clip_rect.top - dst_rect.top;
+				}
+
+				if (dst_rect.bottom > g_clip_rect.bottom)
+					dxr.bottom -= dst_rect.bottom - g_clip_rect.bottom;
+
+				if (dxr.left >= dxr.right || dxr.top >= dxr.bottom)
+					return 0; //nothing to do
+			}
+			//end of the clipping
+
 			int nx = align_div(src->w, tex->split_w), ny = align_div(src->h, tex->split_h);
 			assert(tex->n == nx * ny);
 			int x1 = dxr.left / tex->split_w, x2 = align_div(dxr.right, tex->split_w);
@@ -732,8 +767,8 @@ int d3dSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
 						src_rect.bottom = tex->split_h;
 
 					D3DXVECTOR3 pos;
-					pos.x = (FLOAT)((x - x1) * tex->split_w);
-					pos.y = (FLOAT)((y - y1) * tex->split_h);
+					pos.x = (FLOAT)((x - x1) * tex->split_w + dst_delta_x);
+					pos.y = (FLOAT)((y - y1) * tex->split_h + dst_delta_y);
 					pos.z = 0;
 
 					if (dstrect != NULL) {
