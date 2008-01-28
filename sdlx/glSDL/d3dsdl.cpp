@@ -339,14 +339,14 @@ SDL_Surface *d3dSDL_DisplayFormatAlpha(SDL_Surface *surface) {
 	int tex_size_h = g_non_pow2? surface->h: pow2(surface->h);
 
 	if (tex_size_w == -1 || tex_size_h == -1) {
-		SDL_SetError("cannot handle large textures (greater than 2048x2048) w:%d, h: %d", surface->w, surface->h);
+		SDL_SetError("cannot handle this large texture w:%d, h: %d", surface->w, surface->h);
 		return NULL;
 	}
 	
 	int tex_split_w = tex_size_w;
 	int tex_split_h = tex_size_h;
 
-	if ((tex_split_w > 64 && tex_split_h > 64) || 
+	if (/*(tex_split_w > 64 && tex_split_h > 64) || */
 		(tex_size_w > g_max_w || tex_size_h > g_max_h) ) {
 		if (tex_split_w > g_max_w)
 			tex_split_w = g_max_w;
@@ -400,7 +400,10 @@ SDL_Surface *d3dSDL_DisplayFormatAlpha(SDL_Surface *surface) {
 	//g_pd3dDevice->SetTexture(g_textures.size() - 1, tex);
 	r->unused1 = g_textures.size();
 	assert(r->format->BitsPerPixel != 0);
-	LOG_DEBUG(("created texture with id %d, fragments: %d", r->unused1, info.n));
+	static int max_f;
+	if (info.n > max_f)
+		max_f = info.n;
+	LOG_DEBUG(("created texture with id %d, fragments: %d (max: %d)", r->unused1, info.n, max_f));
 	
 	return r;
 }
