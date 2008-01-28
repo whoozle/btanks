@@ -727,7 +727,7 @@ int d3dSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
 			int dst_delta_x = 0;
 			int dst_delta_y = 0;
 			//clip rectangle: 
-			if (false) {
+			{
 				RECT dst_rect;
 				dst_rect.left = (dstrect != NULL)? dstrect->x: 0;
 				dst_rect.right = dst_rect.left + dxr.right - dxr.left;
