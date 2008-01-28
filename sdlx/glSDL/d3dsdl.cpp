@@ -309,7 +309,7 @@ static LPDIRECT3DTEXTURE9 d3d_CreateTexture(SDL_Surface * surface, int tex_size_
 
 	if (alpha) {
 		SDL_SetAlpha(surface, SDL_SRCALPHA, 0);
-	}
+	} 
 
 	tex->UnlockRect(0);
 	return tex;
@@ -602,6 +602,10 @@ static void d3dSDL_UnlockSurface2(SDL_Surface *surface) {
 
 	assert(tex->lrect != NULL);
 	assert(surface->pixels != NULL);
+	bool alpha = (surface->flags & SDL_SRCALPHA) != 0;
+	if (alpha) {
+		SDL_SetAlpha(surface, 0, 0);
+	}
 
 	for(int y = 0; y < ny; ++y) {
 		for(int x = 0; x < nx; ++x) {
@@ -631,6 +635,9 @@ static void d3dSDL_UnlockSurface2(SDL_Surface *surface) {
 			tex->tex[idx]->UnlockRect(0);
 			tex->lrect[idx].pBits = NULL;
 		}
+	}
+	if (alpha) {
+		SDL_SetAlpha(surface, SDL_SRCALPHA, 0);
 	}
 	
 	delete[] tex->lrect;
@@ -962,5 +969,6 @@ int d3dSDL_SetColorKey(SDL_Surface *surface, Uint32 flag, Uint32 key) {
 }
 
 int d3dSDL_SetAlpha(SDL_Surface *surface, Uint32 flag, Uint8 alpha) {
+	LOG_DEBUG(("SetAlpha(%u, %u)", flag, alpha));
 	return SDL_SetAlpha(surface, flag, alpha); 
 }
