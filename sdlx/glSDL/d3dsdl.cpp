@@ -1,3 +1,27 @@
+/* d3dsdl - libSDL direct3d backed/wrapper for the SDL
+ * Copyright (C) 2008 Vladimir Menshakov
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+*/
+
+/*
+	Please do not forget mention me (and btanks project) if you used 
+	my code in your project :)
+	Thanks for your attention.
+/*/
+
 #define D3DSDL_NO_REDEFINES
 #include "d3dsdl.h"
 
@@ -703,7 +727,7 @@ int d3dSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
 			int dst_delta_x = 0;
 			int dst_delta_y = 0;
 			//clip rectangle: 
-			{
+			if (false) {
 				RECT dst_rect;
 				dst_rect.left = (dstrect != NULL)? dstrect->x: 0;
 				dst_rect.right = dst_rect.left + dxr.right - dxr.left;
@@ -739,19 +763,23 @@ int d3dSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
 			if (x2 > nx) x2 = nx;
 			if (y2 > ny) y2 = ny;
 			
-			//if (tex->n > 1) 
-			//LOG_DEBUG(("blit texture %dx%d split into %dx%d, %d,%d->%d,%d", src->w, src->h, nx, ny, x1, y1, x2, y2));
+			//if (tex->n > 1 && x2 - x1 > 1) 
+			//	LOG_DEBUG(("blit texture %dx%d split into %dx%d, %d,%d->%d,%d", src->w, src->h, nx, ny, x1, y1, x2, y2));
+
+			int suboffset_y = 0;
 			for(int y = y1; y < y2; ++y) {
+				RECT src_rect;
+				int suboffset_x = 0;
+
 				for(int x = x1; x < x2; ++x) {
 					const int idx = nx * y + x;
 					assert(idx < tex->n);
 
 					const int offset_x = x * tex->split_w, offset_y = y * tex->split_h;
-					
-					RECT src_rect = dxr;
-					
+					src_rect = dxr;
+
 					src_rect.left -= offset_x;
-					if (src_rect.left < 0)
+					if (src_rect.left < 0) 
 						src_rect.left = 0;
 					
 					src_rect.right -= offset_x;
@@ -759,7 +787,7 @@ int d3dSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
 						src_rect.right = tex->split_w;
 					
 					src_rect.top -= offset_y;
-					if (src_rect.top < 0)
+					if (src_rect.top < 0) 
 						src_rect.top = 0;
 
 					src_rect.bottom -= offset_y;
@@ -767,17 +795,12 @@ int d3dSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
 						src_rect.bottom = tex->split_h;
 
 					D3DXVECTOR3 pos;
-					pos.x = (FLOAT)((x - x1) * tex->split_w + dst_delta_x);
-					pos.y = (FLOAT)((y - y1) * tex->split_h + dst_delta_y);
+					pos.x = (FLOAT)(suboffset_x + dst_delta_x + (dstrect? dstrect->x : 0));
+					pos.y = (FLOAT)(suboffset_y + dst_delta_y + (dstrect? dstrect->y : 0));
 					pos.z = 0;
-
-					if (dstrect != NULL) {
-						pos.x += dstrect->x;
-						pos.y += dstrect->y;
-					}
-					/*
-					if (tex->n > 1)
-						LOG_DEBUG(("blit %d %d(%d/%d, %d/%d), tex #%d of %d -> %g,%g", x, y,
+					
+					/*if (tex->n > 1 && x2 - x1 > 1)
+						LOG_DEBUG(("blit %d %d(%d-%d, %d-%d), tex #%d of %d -> %g,%g", x, y,
 							src_rect.left, src_rect.right, src_rect.top, src_rect.bottom, 
 							idx, tex->n, pos.x, pos.y));
 					*/
@@ -785,7 +808,9 @@ int d3dSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
 						SDL_SetError("Sprite::Draw failed");
 						return -1;
 					}
+					suboffset_x += src_rect.right - src_rect.left;
 				}
+				suboffset_y += src_rect.bottom - src_rect.top;
 			}
 			return 0;
 		}
