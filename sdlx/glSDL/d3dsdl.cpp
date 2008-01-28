@@ -346,7 +346,7 @@ SDL_Surface *d3dSDL_DisplayFormatAlpha(SDL_Surface *surface) {
 	int tex_split_w = tex_size_w;
 	int tex_split_h = tex_size_h;
 
-	if (/*(tex_split_w > 64 && tex_split_h > 64) || */
+	if (/*(tex_split_w > 64 && tex_split_h > 64) ||*/
 		(tex_size_w > g_max_w || tex_size_h > g_max_h) ) {
 		if (tex_split_w > g_max_w)
 			tex_split_w = g_max_w;
