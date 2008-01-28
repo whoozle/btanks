@@ -105,17 +105,19 @@ void IWindow::initSDL() {
 	//putenv(strdup("SDL_VIDEO_WINDOW_POS"));
 	putenv(strdup("SDL_VIDEO_CENTERED=1"));
 
-	LOG_DEBUG(("gl: %s, vsync: %s, dx: %s", _opengl?"yes":"no", _vsync?"yes":"no", _dx?"yes":"no"));
 #ifdef _WINDOWS
+	LOG_DEBUG(("direct3d: %s, vsync: %s", _dx?"yes":"no", _vsync?"yes":"no"));
 	putenv(strdup("SDL_VIDEO_RENDERER=gdi"));
 
 	if (_dx) 
-#if SDL_MAJOR_VERSION >= 1 && SDL_MINOR_VERSION >= 3
+#	if SDL_MAJOR_VERSION >= 1 && SDL_MINOR_VERSION >= 3
 		_putenv(strdup("SDL_VIDEO_RENDERER=d3d"));
-#else
-		_putenv(strdup("SDL_VIDEODRIVER=directx"));
-#endif
+#	else
+		//_putenv(strdup("SDL_VIDEODRIVER=directx"));
+#	endif
 
+#else 
+	LOG_DEBUG(("gl: %s, vsync: %s", _opengl?"yes":"no", _vsync?"yes":"no"));
 #endif
 
 //opengl renderer
@@ -125,7 +127,7 @@ void IWindow::initSDL() {
 #endif
 
 	LOG_DEBUG(("initializing SDL..."));
-	Uint32 subsystems = SDL_INIT_VIDEO | (_init_timer?SDL_INIT_TIMER:0) | (_init_joystick?SDL_INIT_JOYSTICK:0);
+	Uint32 subsystems = SDL_INIT_VIDEO | SDL_INIT_TIMER | (_init_joystick?SDL_INIT_JOYSTICK:0);
 #ifdef DEBUG
 	sdlx::System::init(subsystems | SDL_INIT_NOPARACHUTE);
 #else
@@ -152,6 +154,11 @@ void IWindow::initSDL() {
 
 	SDL_EnableUNICODE(1);
 
+	int default_flags = sdlx::Surface::Hardware | sdlx::Surface::Alpha;
+
+#ifndef _WINDOWS
+	default_flags |= (_opengl? SDL_OPENGL: 0);
+
 	if (_opengl) {
 		LOG_DEBUG(("loading GL library"));
 		int r = SDL_GL_LoadLibrary(NULL);
@@ -160,11 +167,17 @@ void IWindow::initSDL() {
 			_opengl = false;
 		}
 	}
+
+#endif
 	
-	int default_flags = sdlx::Surface::Hardware | sdlx::Surface::Alpha | (_opengl? SDL_OPENGL: 0) ;
+#ifdef _WINDOWS
+	if (_dx) {
+#else
 	if (_opengl) {
-		default_flags &= ~SDL_OPENGL;
+#endif
+
 #ifdef USE_GLSDL
+		default_flags &= ~SDL_OPENGL;
 		default_flags |= SDL_GLSDL;
 #endif
 	}
@@ -211,31 +224,35 @@ void IWindow::init(const int argc, char *argv[]) {
 	}
 #endif
 
-#ifdef __linux__
-//	putenv(strdup("SDL_VIDEODRIVER=dga"));
-#endif
-	_init_timer = true;
 	_init_joystick = true;
-	_opengl = true;
 	
 	_fullscreen = false;
 	_vsync = false;
 	_fsaa = 0;
 
-	_dx = false;
+#ifndef _WINDOWS
+	_opengl = true;
 	_force_soft = false;
+#else
+	_dx = true;
+#endif
+
 	bool force_gl = false;
 	Config->get("engine.window.width", _w, 800);
 	Config->get("engine.window.height", _h, 600);
 	Config->get("engine.window.fullscreen", _fullscreen, false);
 	
 	for(int i = 1; i < argc; ++i) {
-		if (strcmp(argv[i], "--no-gl") == 0) _opengl = false;
-		else if (strcmp(argv[i], "--fs") == 0) _fullscreen = true;
-		else if (strcmp(argv[i], "--vsync") == 0) _vsync = true;
-#ifdef _WINDOWS
-		else if (strcmp(argv[i], "--dx") == 0) { _dx = true; _opengl = false; }
+		if (strcmp(argv[i], "--fs") == 0) _fullscreen = true;
+#ifndef _WINDOWS
+		else if (strcmp(argv[i], "--no-gl") == 0) _opengl = false;
+		else if (strcmp(argv[i], "--force-gl") == 0) { force_gl = true; }
+		else if (strcmp(argv[i], "--force-soft-gl") == 0) { _force_soft = true; }
+#else
+		else if (strcmp(argv[i], "--no-dx") == 0) { _dx = false; }
+		else if (strcmp(argv[i], "--no-gl") == 0) { _dx = false; }
 #endif
+		else if (strcmp(argv[i], "--vsync") == 0) _vsync = true;
 		//else if (strcmp(argv[i], "--320x200") == 0) { _w = 320; _h = 200; }
 		//else if (strcmp(argv[i], "--320x240") == 0) { _w = 320; _h = 240; }
 		else if (strcmp(argv[i], "-0") == 0) { _w = 640; _h = 480; }
@@ -244,10 +261,7 @@ void IWindow::init(const int argc, char *argv[]) {
 		else if (strcmp(argv[i], "-3") == 0) { _w = 1152; _h = 864; }
 		else if (strcmp(argv[i], "-4") == 0) { _w = 1280; _h = 1024; }
 		else if (strcmp(argv[i], "--fsaa") == 0) { _fsaa = (_fsaa)?(_fsaa<< 1) : 1; }
-		else if (strcmp(argv[i], "--force-gl") == 0) { force_gl = true; }
-		else if (strcmp(argv[i], "--force-soft-gl") == 0) { _force_soft = true; }
 		else if (strcmp(argv[i], "--no-joystick") == 0) { _init_joystick = false; }
-		else if (strcmp(argv[i], "--no-timer") == 0) { _init_timer = false; }
 		else if (strcmp(argv[i], "--help") == 0) { 
 			printf(
 					"\t--no-gl\t\t\tdisable GL renderer\n"
@@ -274,6 +288,9 @@ void IWindow::init(const int argc, char *argv[]) {
 #endif
 #endif
 
+LOG_DEBUG(("setting caption..."));		
+SDL_WM_SetCaption(("Battle tanks - " + getVersion()).c_str(), "btanks");
+
 #ifndef _WINDOWS
 	TRY {
 		mrt::Chunk data;
@@ -283,15 +300,14 @@ void IWindow::init(const int argc, char *argv[]) {
 		icon.loadImage(data);
 		SDL_WM_SetIcon(icon.getSDLSurface(), NULL);
 	} CATCH("setting icon", {});
-#endif
-
-	LOG_DEBUG(("setting caption..."));		
-	SDL_WM_SetCaption(("Battle tanks - " + getVersion()).c_str(), "btanks");
 
 	if (_opengl && !force_gl && !sdlx::System::acceleratedGL(!_fullscreen)) {
 		LOG_WARN(("could not find accelerated GL, falling back to software mode"));
 		_opengl = false;
 	}
+#endif
+
+
 	createMainWindow();
 #ifdef _WINDOWS
 	SystemParametersInfo(SPI_GETSTICKYKEYS, sizeof(STICKYKEYS), &g_StartupStickyKeys, 0);
@@ -311,6 +327,7 @@ void IWindow::createMainWindow() {
 	
 	if (_fullscreen) flags |= SDL_FULLSCREEN;
 
+#ifndef _WINDOWS
 	if (_opengl) {
 #if SDL_VERSION_ATLEAST(1,2,10)
 		LOG_DEBUG(("setting GL swap control to %d...", _vsync?1:0));
@@ -382,6 +399,15 @@ void IWindow::createMainWindow() {
 	} else {
 		_window.setVideoMode(_w, _h, 0, flags);
 	}
+
+#else //_WINDOWS
+
+#ifdef USE_GLSDL
+		flags |= _dx?SDL_GLSDL : 0;
+#endif
+		_window.setVideoMode(_w, _h, 0, flags);
+	
+#endif
 
 	LOG_DEBUG(("created main surface. (%dx%dx%d, %s)", _w, _h, _window.getBPP(), ((_window.getFlags() & SDL_HWSURFACE) == SDL_HWSURFACE)?"hardware":"software"));
 
@@ -490,9 +516,6 @@ IWindow::~IWindow() {
 
 void IWindow::flip() {
 	_window.flip();
-	if (_opengl) {
-		//glFlush_ptr.call();
-	}
 }
 
 void IWindow::resetTimer() {
