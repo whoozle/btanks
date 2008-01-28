@@ -40,6 +40,7 @@ static bool g_sprite_end = false;
 static bool g_non_pow2 = false;
 static int g_max_w = 2048, g_max_h = 2048, g_width, g_height;
 static RECT g_clip_rect;
+static D3DPRESENT_PARAMETERS d3dpp;
 
 #include <deque>
 #include <vector>
@@ -108,7 +109,6 @@ SDL_Surface *d3dSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags) {
     D3DDISPLAYMODE d3ddm;
     g_pD3D->GetAdapterDisplayMode( D3DADAPTER_DEFAULT, &d3ddm );
 
-    D3DPRESENT_PARAMETERS d3dpp;
     ZeroMemory( &d3dpp, sizeof(d3dpp) );
 
 	d3dpp.SwapEffect       = D3DSWAPEFFECT_FLIP;
@@ -466,12 +466,43 @@ int d3dSDL_SaveBMP(SDL_Surface *surface, const char *file) {
 	return FAILED(D3DXSaveTextureToFile(file, D3DXIFF_BMP, tex->tex[0], NULL))? -1: 0;
 }
 
+static int waitForDevice() {
+	LOG_DEBUG(("device was lost, waiting for the device..."));
+	HRESULT r;
+
+	do {
+		Sleep(300);
+		LOG_DEBUG(("woken up... checking device"));
+		r = g_pd3dDevice->TestCooperativeLevel();
+		
+		LOG_DEBUG(("status = %08x", (unsigned)r));
+	} while(r == D3DERR_DEVICELOST);
+
+	LOG_DEBUG(("device returns, return code: %08x", (unsigned)r));
+
+	if (r != D3DERR_DEVICENOTRESET) {
+		SDL_SetError("TestCooperativeLevel did not return D3DERR_DEVICENOTRESET (%08x)", (unsigned)r);
+		return -1;
+	}
+
+	r = g_pd3dDevice->Reset(&d3dpp);	
+	if (FAILED(r)) {
+		SDL_SetError("Reset failed");
+		return -1;
+	}
+	return 0;
+}
+
 int d3dSDL_Flip(SDL_Surface *screen) {
 	if (g_pD3D == NULL) {
 		return SDL_Flip(screen);
 	}
 
 	//LOG_DEBUG(("Flip"));
+	if (g_pd3dDevice->TestCooperativeLevel() == D3DERR_DEVICELOST) {
+		if (waitForDevice() == -1)
+			return -1;
+	}
 	
 	if (g_sprite_end) {
 		g_sprite_end = false;
@@ -489,7 +520,16 @@ int d3dSDL_Flip(SDL_Surface *screen) {
 		}
 	}
 
-	if (FAILED(g_pd3dDevice->Present (NULL, NULL, NULL, NULL))) {
+retry: 
+
+	HRESULT r = g_pd3dDevice->Present (NULL, NULL, NULL, NULL);
+	if (r == D3DERR_DEVICELOST) {
+		if (waitForDevice() == -1)
+			return -1;
+		goto retry;
+	}
+
+	if (FAILED(r)) {
 		SDL_SetError("Present(0,0,0,0) failed");
 		return -1;
 	}
