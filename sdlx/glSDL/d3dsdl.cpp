@@ -849,8 +849,8 @@ int d3dSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
 					return -1;
 				}
 			}
-			if (srcrect != NULL && dstrect != NULL)
-				LOG_DEBUG(("%d, %d;%d, %d -> %d, %d", srcrect->x, srcrect->y, srcrect->w, srcrect->h, dstrect->x, dstrect->y));
+			//if (srcrect != NULL && dstrect != NULL)
+			//	LOG_DEBUG(("%d, %d;%d, %d -> %d, %d", srcrect->x, srcrect->y, srcrect->w, srcrect->h, dstrect->x, dstrect->y));
 			int r = SDL_BlitSurface(src, srcrect, dst, dstrect);
 			if (dst_tex != NULL)
 				d3dSDL_UnlockSurface2(dst); 
@@ -969,6 +969,6 @@ int d3dSDL_SetColorKey(SDL_Surface *surface, Uint32 flag, Uint32 key) {
 }
 
 int d3dSDL_SetAlpha(SDL_Surface *surface, Uint32 flag, Uint8 alpha) {
-	LOG_DEBUG(("SetAlpha(%u, %u)", flag, alpha));
+	//LOG_DEBUG(("SetAlpha(%u, %u)", flag, alpha));
 	return SDL_SetAlpha(surface, flag, alpha); 
 }
