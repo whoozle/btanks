@@ -919,8 +919,9 @@ int d3dSDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, Uint32 color_) {
 			rect.h = dst->h;
 		}
 
-		assert(tex->lrect != NULL);
-		assert(dst->pixels != NULL);
+		assert(tex->lrect == NULL);
+		assert(dst->pixels == NULL);
+
 		int x1 = rect.x / tex->split_w, y1 = rect.y / tex->split_h;
 		int x2 = align_div(rect.x + rect.w, tex->split_w), y2 = align_div(rect.y + rect.h, tex->split_h);
 		if (x2 > nx) x2 = nx;
