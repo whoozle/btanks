@@ -29,28 +29,18 @@ sdlx_sources = 	['cursor.cpp', 'sdl_ex.cpp', 'surface.cpp', 'system.cpp', 'joyst
 	c_map, 'font.cpp', 'timer.cpp', 'module.cpp', 
 	] #  'ttf.cpp', 
 
-#if sys.platform == 'win32': 
-#	sdlx_sources.append('glSDL/d3dsdl.cpp')
-#	env.Append(CPPPATH=os.environ['DXSDK_DIR'] + 'Include')
-#	env.Append(LINKFLAGS=' /LIBPATH:"' + os.environ['DXSDK_DIR'] + 'Lib\\x86"')
-#	libs.append('d3d9')
-#	libs.append('d3dx9')
-#else: 
-sdlx_sources.append('glSDL/glSDL.c')
+if sys.platform == 'win32': 
+	sdlx_sources.append('glSDL/d3dsdl.cpp')
+	env.Append(CPPPATH=os.environ['DXSDK_DIR'] + 'Include')
+	env.Append(LINKFLAGS=' /LIBPATH:"' + os.environ['DXSDK_DIR'] + 'Lib\\x86"')
+	libs.append('d3d9')
+	libs.append('d3dx9')
+else: 
+	sdlx_sources.append('glSDL/glSDL.c')
 
 sdlx = env.SharedLibrary('sdlx', sdlx_sources, LIBS=libs)
 Install('#', sdlx[0])
 Import('debug')
-
-if debug:
-	Import('lib_dir')
-	if sys.platform != 'win32':
-		env.Append(LINKFLAGS=['-Wl,-rpath-link,build/' + env['mode'] + '/mrt'])
-		env.Append(LINKFLAGS=['-Wl,-rpath-link,build/' + env['mode'] + '/sdlx'])
-		env.Append(LINKFLAGS=['-Wl,-rpath-link,build/' + env['mode'] + '/objects'])
-
-	test = env.Program('cmap_test', ['c_test.cpp'], LIBS=['sdlx', 'mrt'], LIBPATH=['../mrt', '.'], RPATH=['.'])
-	Install('#', test)
 
 if sys.platform == "win32":
 	sdlx_main = env.StaticLibrary('sdlx_main', ['SDL_win32_main.c'])
