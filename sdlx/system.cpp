@@ -54,6 +54,9 @@ template <typename FuncPtr> union union_ptr {
 
 #endif
 
+#ifndef _WINDOWS 
+//remove it if you want
+
 const bool System::acceleratedGL(const bool windowed) {
 	bool accel = true;
 	LOG_DEBUG(("checking for accelerating GL..."));
@@ -193,6 +196,8 @@ end:
 } CATCH("acceleratedGL", )
 	return accel;
 }
+
+#endif
 
 void System::init(int system) {
 	LOG_DEBUG(("calling SDL_init('%08x')", (unsigned)system));

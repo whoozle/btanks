@@ -188,6 +188,7 @@ void IWindow::initSDL() {
 	//sdlx::TTF::init();
 }
 
+#ifndef _WINDOWS
 static std::string getGLString(const GLenum name) {
 	typedef const GLubyte * (APIENTRY * PGLGETSTRING) (GLenum);
 	union {
@@ -208,6 +209,8 @@ static std::string getGLString(const GLenum name) {
 	} else LOG_WARN(("glGetString not found."));
 	return std::string();
 }
+
+#endif
 
 #include "mrt/chunk.h"
 

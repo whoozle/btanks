@@ -26,7 +26,9 @@ namespace sdlx {
 	public:
 		static void init(int system);
 		static void probeVideoMode();
+#ifndef _WINDOWS
 		static const bool acceleratedGL(const bool windowed);
+#endif
 		static void deinit();
 	};
 }
