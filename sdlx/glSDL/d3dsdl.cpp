@@ -473,13 +473,16 @@ int d3dSDL_Flip(SDL_Surface *screen) {
 
 	//LOG_DEBUG(("Flip"));
 	
-	if (g_sprite_end && FAILED(g_sprite->End())) {
-		SDL_SetError("Sprite::End() failed");
-		return -1;
-	}
-
 	if (g_sprite_end) {
 		g_sprite_end = false;
+		if (FAILED(g_sprite->End())) {
+			SDL_SetError("Sprite::End() failed");
+			return -1;
+		}
+	}
+
+	if (!g_begin_scene) {
+		g_begin_scene = true;
 		if (FAILED(g_pd3dDevice->EndScene())) {
 			SDL_SetError("EndScene() failed");
 			return -1;
@@ -490,7 +493,7 @@ int d3dSDL_Flip(SDL_Surface *screen) {
 		SDL_SetError("Present(0,0,0,0) failed");
 		return -1;
 	}
-	g_begin_scene = true;
+
 	return 0;
 }
 
