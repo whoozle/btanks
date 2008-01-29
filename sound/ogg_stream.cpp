@@ -110,11 +110,16 @@ static long   stream_tell_func  (void *datasource) {
 
 void OggStream::_open() {
 	std::string filename;
-	sdlx::AutoMutex m(_lock);
+	{
+		sdlx::AutoMutex m(_lock);
+		filename = _filename;
+		if (!_repeat)
+			_filename.clear();
+	}
 
-	LOG_DEBUG(("_open(%s)", _filename.c_str()));
+	LOG_DEBUG(("_open(%s)", filename.c_str()));
 	delete _file;
-	_file = Finder->get_file(_filename, "rb");
+	_file = Finder->get_file(filename, "rb");
 	
 	ov_callbacks ov_cb;
 	memset(&ov_cb, 0, sizeof(ov_cb));
@@ -137,8 +142,6 @@ void OggStream::_open() {
 	else
 		_format = AL_FORMAT_STEREO16;
 	_opened = true;
-	if (!_repeat)
-		_filename.clear();
 
 	LOG_DEBUG(("generating openAL buffers..."));
 	GET_CONFIG_VALUE("engine.sound.buffers", int, bf, 8);
@@ -171,7 +174,6 @@ TRY {
 			break;
 	}
 	if (i > 0) {
-		sdlx::AutoMutex m(_lock);
 		alSourceQueueBuffers(_source, i, _buffers);
 		AL_CHECK(("alSourceQueueBuffers(%08x, %d, %p)", _source, i, (const void *)_buffers));
 		alSourcePlay(_source);
@@ -186,9 +188,10 @@ const bool OggStream::update() {
 if (!_running)
 	return false;
 TRY {
-	sdlx::AutoMutex m(_lock);
 	int processed = 0;
 	bool active = true;
+	alSourcef(_source, AL_GAIN, _volume);
+	AL_CHECK(("alSourcef(AL_GAIN, %g)", _volume));
 
 	alGetSourcei(_source, AL_BUFFERS_PROCESSED, &processed);
 	AL_CHECK(("alGetSourcei(processed: %d)", processed));
@@ -240,7 +243,6 @@ TRY {
 
 
 void OggStream::empty() {
-	sdlx::AutoMutex m(_lock);
 	int processed = 0, n = 0;
 	alSourceStop(_source); alGetError();
 	
@@ -267,12 +269,13 @@ void OggStream::stop() {
 	LOG_DEBUG(("stop()"));
 	sdlx::AutoMutex m(_lock);
 	_running = false;
+	_repeat = false;
 }
 
 OggStream::~OggStream() {
+	_alive = false;
 	stop();
 	sdlx::AutoMutex m(_lock);
-	_alive = false;
 	if (_idle)
 		_idle_sem.post();
 	m.unlock();
@@ -293,7 +296,6 @@ TRY {
 
 const bool OggStream::stream(ALuint buffer) {
 TRY {
-	sdlx::AutoMutex m(_lock);
 	if (!_opened)
 		return false;
 	
@@ -516,11 +518,7 @@ return 1;
 }
 
 void OggStream::setVolume(const float volume) {
-	sdlx::AutoMutex m(_lock);
 	if (volume < 0 || volume > 1) 
 		throw_ex(("volume value %g is out of range [0-1]", volume));	
-	
-	alSourcef(_source, AL_GAIN, volume);
-	AL_CHECK(("alSourcef(AL_GAIN, %g)", volume));
+	_volume = volume;	
 }
-
