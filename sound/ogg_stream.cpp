@@ -57,6 +57,7 @@ void OggStream::play(const std::string &fname, const bool repeat, const float vo
 
 	_volume = volume;
 	if (_idle) {
+		m.unlock();
 		_idle_sem.post();
 		_running = true;
 	} else {
@@ -108,6 +109,7 @@ static long   stream_tell_func  (void *datasource) {
 #include "finder.h"
 
 void OggStream::_open() {
+	std::string filename;
 	sdlx::AutoMutex m(_lock);
 
 	LOG_DEBUG(("_open(%s)", _filename.c_str()));
@@ -118,7 +120,7 @@ void OggStream::_open() {
 	memset(&ov_cb, 0, sizeof(ov_cb));
 
 	ov_cb.read_func = stream_read_func;
-	//ov_cb.seek_func = stream_seek_func;
+	ov_cb.seek_func = stream_seek_func;
 	ov_cb.tell_func = stream_tell_func;
 	ov_cb.close_func = stream_close_func;
 		
@@ -335,7 +337,7 @@ void OggStream::decode(Sample &sample, const std::string &fname) {
 	memset(&ov_cb, 0, sizeof(ov_cb));
 
 	ov_cb.read_func = stream_read_func;
-	ov_cb.seek_func = stream_seek_func;
+	//ov_cb.seek_func = stream_seek_func;
 	ov_cb.tell_func = stream_tell_func;
 	ov_cb.close_func = stream_close_func;
 		

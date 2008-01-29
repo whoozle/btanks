@@ -27,7 +27,7 @@
 Credits::Credits() : _w(0), _h(0) {
 	Mixer->playSample(NULL, "menu/select.ogg", false);
 	GET_CONFIG_VALUE("engine.credits-tune", std::string, tune, "glory.ogg");
-	Mixer->play(Finder->find("tunes/" + tune), true);
+	Mixer->play(tune, true);
 	
 	_font = ResourceManager->loadFont("big", false);
 	_medium_font = ResourceManager->loadFont("medium", false);
