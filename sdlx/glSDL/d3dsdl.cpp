@@ -420,13 +420,13 @@ SDL_Surface *d3dSDL_CreateRGBSurface
 			Uint32 Rmask, Uint32 Gmask, Uint32 Bmask, Uint32 Amask) {
 //	if (g_pD3D == NULL) 
 		SDL_Surface *r = SDL_CreateRGBSurface(flags & (~SDL_HWSURFACE), width, height, depth, Rmask, Gmask, Bmask, Amask);
-		LOG_DEBUG(("SDL_CreateRGBSurface(%08x, %d, %d, %d) -> %p", flags, width, height, depth, (const void*) r));
+		//LOG_DEBUG(("SDL_CreateRGBSurface(%08x, %d, %d, %d) -> %p", flags, width, height, depth, (const void*) r));
 		if (r == NULL)
 			return NULL;
 		if (r->format->BitsPerPixel == 0) {
 			LOG_DEBUG(("problem surface: %dx%dx%d %d:%d", r->w, r->h, depth, r->format->BytesPerPixel, r->format->BytesPerPixel));
+			assert(0);
 		}
-		assert(r->format->BitsPerPixel != 0);
 		return r;
 //	return NULL;
 }
