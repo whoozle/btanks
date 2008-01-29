@@ -45,6 +45,12 @@ static D3DPRESENT_PARAMETERS d3dpp;
 #include <deque>
 #include <vector>
 
+#define RELEASE_OBJECT(p)  \
+if ((p) != NULL) {  \
+	(p)->Release(); \
+	(p) = NULL;     \
+}
+
 struct texinfo {
 	LPDIRECT3DTEXTURE9 *tex;
 	D3DLOCKED_RECT *lrect;
@@ -77,6 +83,8 @@ static texinfo * getTexture(const SDL_Surface *surface) {
 		return NULL;
 	}
 	return r;
+
+
 }
 
 SDL_Surface *d3dSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags) {
@@ -133,17 +141,19 @@ SDL_Surface *d3dSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags) {
     //d3dpp.PresentationInterval   = D3DPRESENT_INTERVAL_DEFAULT; // Sync to vertical retrace
     d3dpp.Flags                  = D3DPRESENTFLAG_LOCKABLE_BACKBUFFER;
 
-    if (FAILED(g_pD3D->CreateDevice( D3DADAPTER_DEFAULT, 
+    HRESULT r;
+    D3DXMATRIX matProj;
+
+    if (FAILED(r = g_pD3D->CreateDevice( D3DADAPTER_DEFAULT, 
     					D3DDEVTYPE_HAL,
     					info.window,
                           //D3DCREATE_SOFTWARE_VERTEXPROCESSING,
 						  D3DCREATE_HARDWARE_VERTEXPROCESSING, 
                           &d3dpp, &g_pd3dDevice )))  {
-		LOG_ERROR(("CreateDevice failed"));
-        return NULL;
+		SDL_SetError("CreateDevice failed : %08x", (unsigned)r);
+		goto error;
 	}
 
-    D3DXMATRIX matProj;
     D3DXMatrixPerspectiveFovLH( &matProj, D3DXToRadian( 45.0f ), 
                                 1.0f * width / height, 0.1f, 100.0f );
     g_pd3dDevice->SetTransform( D3DTS_PROJECTION, &matProj );
@@ -155,9 +165,9 @@ SDL_Surface *d3dSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags) {
 	g_pd3dDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 	g_pd3dDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
 
-	if (FAILED(D3DXCreateSprite(g_pd3dDevice, &g_sprite))) {
-		SDL_SetError("CreateSprite failed");
-		return NULL;
+	if (FAILED(r = D3DXCreateSprite(g_pd3dDevice, &g_sprite))) {
+		SDL_SetError("CreateSprite failed: 08x", (unsigned)r);
+		goto error;
 	}
 
 	LOG_DEBUG(("d3d initialization was successful"));
@@ -172,6 +182,13 @@ SDL_Surface *d3dSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags) {
 	g_height = height;
 
     return g_screen;
+
+error:
+	RELEASE_OBJECT(g_sprite);
+	RELEASE_OBJECT(g_pd3dDevice);
+	RELEASE_OBJECT(g_pD3D);
+	LOG_NOTICE(("falling back to the software mode: %s", SDL_GetError()));
+	return g_screen;
 }
 
 static void d3d_Shutdown(void) {
