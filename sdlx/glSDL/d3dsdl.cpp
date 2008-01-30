@@ -192,6 +192,7 @@ error:
 }
 
 static void d3d_Shutdown(void) {
+	LOG_DEBUG(("direct3d shutdown, releasing textures..."));
 	if (!g_textures.empty()) {
 		for(size_t i = 0; i < g_textures.size(); ++i) {
 			texinfo &tex = g_textures[i];
@@ -206,15 +207,13 @@ static void d3d_Shutdown(void) {
 		g_textures.clear();
 		g_freetexinfo.clear();
 	}
-    if (g_pd3dDevice != NULL) {
-    	g_pd3dDevice->Release();
-    	g_pd3dDevice = NULL;
-    }
-
-	if (g_pD3D != NULL) {
-		g_pD3D->Release();
-		g_pD3D = NULL;
-	}
+	LOG_DEBUG(("releasing sprite..."));
+	RELEASE_OBJECT(g_sprite);
+	LOG_DEBUG(("releasing device..."));
+	RELEASE_OBJECT(g_pd3dDevice);
+	LOG_DEBUG(("releasing d3d..."));
+	RELEASE_OBJECT(g_pD3D);
+	LOG_DEBUG(("...done"));
 }
 
 SDL_Surface *d3dSDL_GetVideoSurface(void) {
