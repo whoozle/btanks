@@ -1304,8 +1304,10 @@ TRY {
 			sdlx::Rect from(x, y, _tw, _th);
 			s->copyFrom(*image, from);
 			GET_CONFIG_VALUE("engine.strip-alpha-from-map-tiles", bool, strip_alpha, false);
+			bool locked = false;
 			if (strip_alpha) {
 				s->lock();
+				locked = true;
 				Uint8 r,g,b,a;
 				for(int y = 0; y < s->getHeight(); ++y) 
 					for(int x = 0; x < s->getWidth(); ++x) {
@@ -1313,16 +1315,21 @@ TRY {
 						if (a != 255)
 							s->putPixel(x, y, s->mapRGBA(r, g, b, (a > 51)?51:a));
 					}
-			   s->unlock();
 			}
 
 			GET_CONFIG_VALUE("engine.mark-map-tiles", bool, marks, false);
 			if (marks) {
+				if (!locked) {
+					s->lock();
+					locked = true;
+				}
 				Uint32 color = s->mapRGBA(255,0,255,249); //magic value to avoid Collision map confusing
 				s->putPixel(0, 0, color);
 				s->putPixel(1, 0, color);
 				s->putPixel(0, 1, color);
 			}
+			if (locked)
+				s->unlock();
 
 			//s->saveBMP(mrt::formatString("tile-%d.bmp", id));
 
