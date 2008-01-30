@@ -483,6 +483,7 @@ int d3dSDL_SaveBMP(SDL_Surface *surface, const char *file) {
 }
 
 static int d3d_waitForDevice() {
+	RELEASE_OBJECT(g_sprite);
     HRESULT r;
 	do {
 		LOG_DEBUG(("waiting for device..."));
@@ -494,11 +495,16 @@ static int d3d_waitForDevice() {
 	
 	if (r == D3DERR_DEVICENOTRESET) {
 		//SDL_SetError("DEVICENOTRESET! FIXME!");
-  		r = g_pd3dDevice->Reset(&d3dpp);
-  		if (FAILED(r)) {
+		if (FAILED(r = D3DXCreateSprite(g_pd3dDevice, &g_sprite))) {
+			SDL_SetError("CreateSprite failed: 08x", (unsigned)r);
+			return -1;
+		}
+  		if (FAILED(r = g_pd3dDevice->Reset(&d3dpp))) {
   			SDL_SetError("Reset device failed: %08x", (unsigned)r);
   			return -1;
   		}
+  		g_sprite_end = false;
+  		g_begin_scene = true;
 		return 0;
 	}
 
