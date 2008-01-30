@@ -482,16 +482,41 @@ int d3dSDL_SaveBMP(SDL_Surface *surface, const char *file) {
 	return FAILED(D3DXSaveTextureToFile(file, D3DXIFF_BMP, tex->tex[0], NULL))? -1: 0;
 }
 
+static int d3d_waitForDevice() {
+    HRESULT r;
+	do {
+		LOG_DEBUG(("waiting for device..."));
+		SDL_Event event;
+		if (!SDL_PollEvent(&event))
+			Sleep(300);
+		r = g_pd3dDevice->TestCooperativeLevel();
+	} while (r == D3DERR_DEVICELOST);
+	
+	if (r == D3DERR_DEVICENOTRESET) {
+		//SDL_SetError("DEVICENOTRESET! FIXME!");
+  		r = g_pd3dDevice->Reset(&d3dpp);
+  		if (FAILED(r)) {
+  			SDL_SetError("Reset device failed: %08x", (unsigned)r);
+  			return -1;
+  		}
+		return 0;
+	}
+
+	SDL_SetError("TestCooperativeLevel returns: %08x", (unsigned)r);
+	return -1;
+}
+
 int d3dSDL_Flip(SDL_Surface *screen) {
 	if (g_pD3D == NULL) {
 		return SDL_Flip(screen);
 	}
 
 	//LOG_DEBUG(("Flip"));
-	HRESULT r = g_pd3dDevice->TestCooperativeLevel() == D3DERR_DEVICELOST;
+	HRESULT r = g_pd3dDevice->TestCooperativeLevel();
+
 	if (r == D3DERR_DEVICELOST) {
-		SDL_SetError("Device was lost");
-	 	return -1;
+		if (d3d_waitForDevice() == -1)
+			return -1;
 	}
 	
 	if (g_sprite_end) {
@@ -512,8 +537,8 @@ int d3dSDL_Flip(SDL_Surface *screen) {
 
 	r = g_pd3dDevice->Present (NULL, NULL, NULL, NULL);
 	if (r == D3DERR_DEVICELOST) {
-		SDL_SetError("Device was lost");
-		return -1;
+		if (d3d_waitForDevice() == -1)
+			return -1;
 	}
 
 	if (FAILED(r)) {
