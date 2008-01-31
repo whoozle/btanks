@@ -144,6 +144,7 @@ SDL_Surface *d3dSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags) {
         d3dpp.Windowed         = TRUE;
         d3dpp.BackBufferFormat = d3ddm.Format;
         d3dpp.SwapEffect = D3DSWAPEFFECT_FLIP;
+	    d3dpp.PresentationInterval   = D3DPRESENT_INTERVAL_DEFAULT;
     }
     else
     {
@@ -152,12 +153,12 @@ SDL_Surface *d3dSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags) {
         d3dpp.BackBufferWidth  = width;
         d3dpp.BackBufferHeight = height;
         d3dpp.BackBufferFormat = D3DFMT_X8R8G8B8;
+	    d3dpp.PresentationInterval   = D3DPRESENT_INTERVAL_IMMEDIATE; // Do NOT sync to vertical retrace
     }
 	
-	d3dpp.BackBufferCount = 1;
+	//d3dpp.BackBufferCount = 1;
     d3dpp.EnableAutoDepthStencil = TRUE;
     d3dpp.AutoDepthStencilFormat = D3DFMT_D16;
-    d3dpp.PresentationInterval   = D3DPRESENT_INTERVAL_IMMEDIATE; // Do NOT sync to vertical retrace
     //d3dpp.PresentationInterval   = D3DPRESENT_INTERVAL_DEFAULT; // Sync to vertical retrace
     d3dpp.Flags                  = D3DPRESENTFLAG_LOCKABLE_BACKBUFFER;
 
