@@ -138,22 +138,23 @@ SDL_Surface *d3dSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags) {
 
     ZeroMemory( &d3dpp, sizeof(d3dpp) );
 
-	d3dpp.SwapEffect       = D3DSWAPEFFECT_FLIP;
-
     if((flags & SDL_FULLSCREEN) == 0)
     {
 		LOG_DEBUG(("format = %d", (int) d3ddm.Format));
         d3dpp.Windowed         = TRUE;
         d3dpp.BackBufferFormat = d3ddm.Format;
+        d3dpp.SwapEffect = D3DSWAPEFFECT_FLIP;
     }
     else
     {
+    	d3dpp.SwapEffect = (d3dCaps.Caps3 & D3DCAPS3_ALPHA_FULLSCREEN_FLIP_OR_DISCARD)? D3DSWAPEFFECT_FLIP: D3DSWAPEFFECT_COPY;
         d3dpp.Windowed         = FALSE;
         d3dpp.BackBufferWidth  = width;
         d3dpp.BackBufferHeight = height;
         d3dpp.BackBufferFormat = D3DFMT_X8R8G8B8;
     }
-
+	
+	d3dpp.BackBufferCount = 1;
     d3dpp.EnableAutoDepthStencil = TRUE;
     d3dpp.AutoDepthStencilFormat = D3DFMT_D16;
     d3dpp.PresentationInterval   = D3DPRESENT_INTERVAL_IMMEDIATE; // Do NOT sync to vertical retrace
