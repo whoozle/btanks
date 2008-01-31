@@ -151,8 +151,11 @@ void IWindow::initSDL() {
 	}
 	
 	LOG_DEBUG(("enabling unicode..."));
-
 	SDL_EnableUNICODE(1);
+	
+	LOG_DEBUG(("turning on keyboard repeat..."));
+	if (SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL) == -1)
+		LOG_ERROR(("SDL_EnableKeyRepeat failed: %s", SDL_GetError()));
 
 	int default_flags = sdlx::Surface::Hardware | sdlx::Surface::Alpha;
 
