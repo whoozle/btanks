@@ -83,8 +83,21 @@ static texinfo * getTexture(const SDL_Surface *surface) {
 		return NULL;
 	}
 	return r;
+}
 
+static void freeTexture(texinfo *tex) {
+	if (tex == NULL || tex->tex == NULL)
+		return;
 
+	//LOG_DEBUG(("freeing d3d texture"));
+	for(int t = 0; t < tex->n; ++t) {
+		ULONG n = tex->tex[t]->Release();
+		LOG_DEBUG(("texture %p[%d].ref_count = %lu", (void *)tex, t, n));
+	}
+	
+	delete[] tex->tex;
+	tex->tex = NULL;
+	tex->n = 0;
 }
 
 SDL_Surface *d3dSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags) {
@@ -195,14 +208,7 @@ static void d3d_Shutdown(void) {
 	LOG_DEBUG(("direct3d shutdown, releasing textures..."));
 	if (!g_textures.empty()) {
 		for(size_t i = 0; i < g_textures.size(); ++i) {
-			texinfo &tex = g_textures[i];
-			if (tex.tex != NULL) {
-				for(int t = 0; t < tex.n; ++t) {
-					tex.tex[t]->Release();
-			   	}
-			   	delete[] tex.tex;
-			   	tex.tex = NULL;
-			}
+			freeTexture(&g_textures[i]);
 		}
 		g_textures.clear();
 		g_freetexinfo.clear();
@@ -555,6 +561,8 @@ int d3dSDL_Flip(SDL_Surface *screen) {
 	return 0;
 }
 
+static void d3dSDL_UnlockSurface2(SDL_Surface *surface);
+
 void d3dSDL_FreeSurface(SDL_Surface *surface) {
 	if (surface == NULL) {
 		LOG_WARN(("SDL_FreeSurface(NULL) called"));
@@ -565,18 +573,14 @@ void d3dSDL_FreeSurface(SDL_Surface *surface) {
 		return;
 	}
 
+	if (surface->pixels != NULL)
+		d3dSDL_UnlockSurface2(surface);
+	
 	//LOG_DEBUG(("FreeSurface"));
 	texinfo * tex = getTexture(surface);
-	if (tex != NULL) {
-		//LOG_DEBUG(("freeing d3d texture"));
-		for(int t = 0; t < tex->n; ++t) {
-			tex->tex[t]->Release();
-	   	}
-	   	delete[] tex->tex;
-	   	tex->tex = NULL;
-	   	tex->n = 0;
-		surface->unused1 = 0;
-	}
+	freeTexture(tex);
+
+	surface->unused1 = 0;
 	//LOG_DEBUG(("calling SDL_FreeSurface"));
 	SDL_FreeSurface(surface);
 	//LOG_DEBUG(("exit from FreeSurface"));
