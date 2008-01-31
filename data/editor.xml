@@ -394,9 +394,11 @@
 		<animation id="harvester" />
 	</class>
 	<class id="static-corpse">
+		<animation id="dead-civilian-1" />
 		<animation id="dead-civilian-static-1" />
 		<animation id="dead-civilian-static-2" />
 		<animation id="dead-civilian-static-3" />
+		<animation id="dead-ziehharmonikaspieler-static" />
 		<animation id="dead-machinegunner-static" />
 		<animation id="dead-thrower-static" />
 		<animation id="dead-cow-static" />
@@ -492,6 +494,7 @@
 		<animation id="turrel" />
 	</class>
 	<class id="uberzombie">
+		<animation id="uberzombie" />
 	</class>
 	<class id="umbrella">
 		<animation id="umbrella" />
