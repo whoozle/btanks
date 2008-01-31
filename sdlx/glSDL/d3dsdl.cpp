@@ -89,12 +89,18 @@ static void freeTexture(texinfo *tex) {
 	if (tex == NULL || tex->tex == NULL)
 		return;
 
+	const bool unlock = tex->lrect != NULL;
+
 	//LOG_DEBUG(("freeing d3d texture"));
 	for(int t = 0; t < tex->n; ++t) {
+		if (unlock) 
+			tex->tex[t]->UnlockRect(0);
 		ULONG n = tex->tex[t]->Release();
 		LOG_DEBUG(("texture %p[%d].ref_count = %lu", (void *)tex, t, n));
 	}
 	
+	delete[] tex->lrect;
+	tex->lrect = NULL;
 	delete[] tex->tex;
 	tex->tex = NULL;
 	tex->n = 0;
@@ -573,12 +579,12 @@ void d3dSDL_FreeSurface(SDL_Surface *surface) {
 		return;
 	}
 
-	if (surface->pixels != NULL)
-		d3dSDL_UnlockSurface2(surface);
-	
 	//LOG_DEBUG(("FreeSurface"));
 	texinfo * tex = getTexture(surface);
-	freeTexture(tex);
+	if (tex != NULL) {
+		freeTexture(tex); 
+		surface->pixels = NULL;
+	}
 
 	surface->unused1 = 0;
 	//LOG_DEBUG(("calling SDL_FreeSurface"));
