@@ -39,6 +39,8 @@ static void WIN_FlushMessageQueue()
 		DispatchMessage( &msg );
 	}
 }
+#elif defined __APPLE__
+	//nothing here
 #else
 #	include <X11/X.h>
 #	include <X11/Xutil.h>
@@ -54,7 +56,8 @@ template <typename FuncPtr> union union_ptr {
 
 #endif
 
-#ifndef _WINDOWS 
+#ifdef __APPLE__
+#elif not defined _WINDOWS
 //remove it if you want
 
 const bool System::acceleratedGL(const bool windowed) {
