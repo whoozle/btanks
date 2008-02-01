@@ -143,19 +143,21 @@ void UDPSocket::broadcast(const mrt::Chunk &data, const int port) {
 		
 		for(struct ifaddrs * i = ifs; i->ifa_next != NULL; i = i->ifa_next) {
 			int flags = i->ifa_flags;
-			if (!(flags & IFF_BROADCAST) || 
-				!(flags & IFF_UP) || 
-				 flags & IFF_LOOPBACK || 
-				i->ifa_ifu.ifu_broadaddr == NULL)
+			if (!(flags & IFF_BROADCAST) || !(flags & IFF_UP) || flags & IFF_LOOPBACK)
+				 continue;
+#		ifdef __linux__	
+			if (i->ifa_ifu.ifu_broadaddr == NULL || i->ifa_ifu.ifu_broadaddr->sa_family != PF_INET)
 				continue;
-			if (i->ifa_ifu.ifu_broadaddr->sa_family != PF_INET)
-				continue;
+			
 			sockaddr_in *addr = (sockaddr_in *)i->ifa_ifu.ifu_broadaddr;
 			LOG_DEBUG(("interface: %s, ifu_broadaddr: %s", i->ifa_name, inet_ntoa(addr->sin_addr)));
 			TRY {
 				if (send(mrt::Socket::addr(addr->sin_addr.s_addr, port), data.getPtr(), data.getSize()) == -1)
 					throw_io(("sendto"));
 			} CATCH("sendto", );
+#		else
+			LOG_WARN(("implement broadcast address obtaining."));
+#		endif
 		}
 	} CATCH("broadcast", );
 	if (ifs != NULL) 	
