@@ -27,7 +27,7 @@
 #		pragma comment(lib,"winmm.lib")
 #	endif
 #else 
-#	include <time.h>
+#	include <sys/time.h>
 #endif
 
 #include "export_sdlx.h"
@@ -48,6 +48,8 @@ private:
 #	else
 	int tm, res;
 #	endif
+#elif defined __APPLE__
+	struct timeval tv;
 #else	
 	struct timespec tm;
 #endif

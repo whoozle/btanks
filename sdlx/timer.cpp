@@ -21,6 +21,7 @@
 
 #ifdef _WINDOWS
 #	include <windows.h>
+#elif defined __APPLE__
 #else
 #	include <time.h>
 #	include <errno.h>
@@ -38,6 +39,8 @@ Timer::Timer() {
 	freq = new LARGE_INTEGER;
 	if (!QueryPerformanceFrequency(freq)) 
 		throw_ex(("QueryPerformanceFrequency failed"));
+#elif defined __APPLE__
+	//some stupid initialization
 #else 
 	TIMECAPS caps;
 	if (timeGetDevCaps(&caps, sizeof(caps)) != TIMERR_NOERROR) 
@@ -69,6 +72,9 @@ void Timer::reset() {
 	if (timeEndPeriod(res) != TIMERR_NOERROR)
 		throw_ex(("timeEndPeriod(%d) failed", res));
 #	endif
+#elif defined __APPLE__
+	if (gettimeofday(&tv, NULL) == -1)
+		throw_io(("gettimeofday"));
 #else
 	if (clock_gettime(clock_id, &tm) != 0)
 		throw_io(("clock_gettime"));
@@ -91,6 +97,11 @@ const int Timer::microdelta() const {
 		throw_ex(("timeEndPeriod(%d) failed", res));
 	return 1000 * (now - tm);
 #	endif
+#elif defined __APPLE__
+	struct timeval now;
+	if (gettimeofday(&now, NULL) == -1)
+		throw_io(("gettimeofday"));
+	return ((int)now.tv_sec - tv.tv_sec) *1000000 + ((int)now.tv_nsec - tm.tv_nsec) / 1000;
 #else
 	struct timespec now;
 	if (clock_gettime(clock_id, &now) != 0)
