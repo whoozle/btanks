@@ -51,9 +51,11 @@ void Mutex::unlock() const {
 }
 
 
-AutoMutex::AutoMutex(const Mutex &m, const bool lock) : _mutex(m), _locked(lock) {
-	if (lock)
+AutoMutex::AutoMutex(const Mutex &m, const bool lock) : _mutex(m), _locked(false) {
+	if (lock) {
 		_mutex.lock();
+		_locked = true;
+	}
 }
 
 void AutoMutex::lock() const {
