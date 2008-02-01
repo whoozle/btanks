@@ -32,9 +32,9 @@ void Directory::close() {
 	if (_dir == NULL)
 		return;
 
-	//sdlx::AutoMutex m(big_lock);
-	//zzip_dir_close(_dir);
-	//_dir = NULL; //leak resources to avoid race with global dtors.
+	sdlx::AutoMutex m(big_lock);
+	zzip_dir_close(_dir);
+	_dir = NULL; //leak resources to avoid race with global dtors.
 }
 
 void Directory::create(const std::string &path, const bool recurse) {
