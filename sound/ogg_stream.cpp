@@ -128,13 +128,13 @@ void OggStream::_open() {
 	ov_cb.seek_func = stream_seek_func;
 	ov_cb.tell_func = stream_tell_func;
 	ov_cb.close_func = stream_close_func;
-		
+
 	int r = ov_open_callbacks(_file, &_ogg_stream, NULL, 0, ov_cb);
 	if (r < 0)
 		throw_ogg(r, ("ov_open('%s')", _filename.c_str()));
 	
 	_vorbis_info = ov_info(&_ogg_stream, -1);
-	_vorbis_comment = ov_comment(&_ogg_stream, -1);
+	//_vorbis_comment = ov_comment(&_ogg_stream, -1);
 	assert(_vorbis_info != NULL);
 	
 	if (_vorbis_info->channels == 1) 
