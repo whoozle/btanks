@@ -22,6 +22,7 @@
 #ifdef _WINDOWS
 #	include <windows.h>
 #elif defined __APPLE__
+#	include <errno.h>
 #else
 #	include <time.h>
 #	include <errno.h>
@@ -101,7 +102,7 @@ const int Timer::microdelta() const {
 	struct timeval now;
 	if (gettimeofday(&now, NULL) == -1)
 		throw_io(("gettimeofday"));
-	return ((int)now.tv_sec - tv.tv_sec) *1000000 + ((int)now.tv_nsec - tm.tv_nsec) / 1000;
+	return ((int)now.tv_sec - tv.tv_sec) *1000000 + ((int)now.tv_usec - tv.tv_usec) / 1000;
 #else
 	struct timespec now;
 	if (clock_gettime(clock_id, &now) != 0)
