@@ -441,7 +441,7 @@ void OggStream::playTune() {
 		}
 	} CATCH("playTune(main loop)", throw;)
 
-	if (_repeat) 
+	if (_alive && _repeat) 
 		rewind();
 	else
 		flush();
