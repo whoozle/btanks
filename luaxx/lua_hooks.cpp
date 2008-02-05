@@ -709,6 +709,44 @@ LUA_TRY {
 }
 
 
+static int lua_hooks_play_sound(lua_State *L) {
+LUA_TRY {
+	int n = lua_gettop(L);
+	if (n < 2) {
+		lua_pushstring(L, "play_sound requires object_id(0 == listener), sound and optionally loop flag and gain level. ");
+		lua_error(L);
+		return 0;
+	}
+	int object_id = lua_tointeger(L, 1);
+	const Object *o = NULL;
+	if (object_id > 0) {
+		o = World->getObjectByID(object_id);
+		if (o == NULL)
+			throw_ex(("object with id %d not found", object_id));
+	} 
+	
+	const char * name = lua_tostring(L, 2);
+	if (name == NULL) {
+		lua_pushstring(L, "play_sound: second argument(sound name) must be a string");
+		lua_error(L);
+		return 0;
+	}
+	
+	bool loop = false;
+	float gain = 1.0f;
+	if (n >= 3) 
+		loop = lua_toboolean(L, 3);
+	if (n >= 4) 
+		loop = lua_tonumber(L, 4);
+	Mixer->playSample(o, name, loop, gain);
+	
+} LUA_CATCH("lua_hooks_play_sound")	
+	return 0;
+}
+
+
+
+
 static int lua_hooks_random(lua_State *L) {
 LUA_TRY {
 	int n = lua_gettop(L);
@@ -791,6 +829,7 @@ void LuaHooks::load(const std::string &name) {
 	lua_register(state, "spawn_random", lua_hooks_spawn_random);
 	lua_register(state, "map_size", lua_hooks_map_size);
 	lua_register(state, "set_specials", lua_hooks_set_specials);
+	lua_register(state, "play_sound", lua_hooks_play_sound);
 	
 	state.call(0, LUA_MULTRET);
 	
