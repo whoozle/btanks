@@ -1631,7 +1631,7 @@ const bool IWorld::attachVehicle(Object *object, Object *vehicle) {
 		Mixer->playSample(vehicle, "engine-start.ogg", false);
 	
 	vehicle->_spawned_by = object->_spawned_by;
-	if (!vehicle->_variants.has("safe")) //do not change classname for safe vehicles
+	if (!vehicle->_variants.has("safe") && vehicle->classname != "monster") //do not change classname for safe vehicles
 		vehicle->classname = "fighting-vehicle";
 	
 	if (object->_variants.has("player"))
