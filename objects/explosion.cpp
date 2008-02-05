@@ -114,6 +114,10 @@ void Explosion::emit(const std::string &event, Object * emitter) {
 			return; //damage was already added for this object.
 		
 		if (registered_name == "mutagen-explosion") {
+			if (_variants.has("chained") && emitter->classname == "explosive") {
+				emitter->emit("death", this);
+				return;
+			}
 			static std::set<std::string> mutable_classes;
 			if (mutable_classes.empty()) {
 				mutable_classes.insert("trooper");
@@ -129,7 +133,7 @@ void Explosion::emit(const std::string &event, Object * emitter) {
 				//mutation 
 				GET_CONFIG_VALUE("objects.mutagen-explosion.mutation-probability", float, mp, 0.5f);
 				int p = mrt::random(1000);
-				if (p < 1000 * mp) {
+				if (_variants.has("100%") || p < 1000 * mp) {
 					//mutation
 					std::string an = "mutated-" + emitter->registered_name;
 					//LOG_DEBUG(("checking for animation '%s'", an.c_str()));
@@ -138,7 +142,7 @@ void Explosion::emit(const std::string &event, Object * emitter) {
 					} else {
 						emitter->Object::emit("death", this);
 						
-						Object * zombie = emitter->spawn("zombie", "zombie");
+						Object * zombie = emitter->spawn((p&1)? "zombie": "slime", (p&1)? "zombie": "slime");
 						World->attachVehicle(emitter, zombie);
 					}
 				}

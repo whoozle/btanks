@@ -37,7 +37,7 @@ void Explosive::onSpawn() {
 	DestructableObject::onSpawn();
 }
 
-Explosive::Explosive() : DestructableObject("explosive-object") {
+Explosive::Explosive() : DestructableObject("explosive") {
 	_variants.add("with-fire");
 	_variants.add("make-pierceable");
 }
@@ -66,11 +66,18 @@ void Explosive::onBreak() {
 		explosion = false;
 	} 
 	if (_variants.has("spawn-mutagen")) {
-		spawn(_variants.has("chained")?"mutagen-explosion(chained)":"mutagen-explosion", "mutagen-explosion");
+		Variants vars; 
+		if (_variants.has("chained"))
+			vars.add("chained");
+		if (_variants.has("100%"))
+			vars.add("100%");
+		
+		Object *o = spawn("mutagen-explosion", "mutagen-explosion");
+		o->updateVariants(vars);
 		explosion = false;
 	}
 	if (_variants.has("spawn-nuke")) {
-		spawn(_variants.has("chained")?"nuke-explosion(chained)":"nuke-explosion", "nuke-explosion");
+		spawn("nuke-explosion", "nuke-explosion");
 		explosion = false;
 	}
 	
