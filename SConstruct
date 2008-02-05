@@ -261,7 +261,7 @@ for dir in bt_sublibs:
 env.BuildDir('#/build/' + buildmode + '/editor', 'editor', 0)
 SConscript('#/build/' + buildmode + '/editor/SConscript')
 
-env.Append(LIBPATH=['#/build/' + buildmode])
+env.Append(LIBPATH=['#/build/' + buildmode + '/engine'])
 
-env.BuildDir('#/build/' + buildmode, '#', 0)
-SConscript('#/build/' + buildmode + '/' + 'SConscript')
+env.BuildDir('#/build/' + buildmode + '/engine', 'engine', 0)
+SConscript('#/build/' + buildmode + '/engine/' + 'SConscript')

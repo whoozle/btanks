@@ -5,9 +5,10 @@ env = env.Copy()
 buildmode = env['mode']
 
 libs = ['bt', 'sdlx', 'mrt']
-env.Prepend(LIBPATH=['#/build/' + buildmode])
+env.Prepend(LIBPATH=['#/build/' + buildmode + '/engine'])
 env.Prepend(LIBPATH=['#/build/' + buildmode + '/mrt'])
 env.Prepend(LIBPATH=['#/build/' + buildmode + '/sdlx'])
+env.Append(CPPPATH=['#/engine', '#/engine/src'])
 
 sources = [
 	'bullet.cpp', 'explosion.cpp', 'single_pose.cpp',

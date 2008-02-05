@@ -14,6 +14,7 @@ ed_src = [
 	'object_properties.cpp', 'tilebox_brush.cpp', 
 	'morph_dialog.cpp', 'resize_dialog.cpp', 
 ]
+env.Append(CPPPATH=['#/engine', '#/engine/src'])
 if sys.platform != 'win32':
 	env.Append(LINKFLAGS=['-Wl,-rpath,' + lib_dir])
 	env.Append(LINKFLAGS=['-Wl,-rpath-link,build/' + env['mode']])
@@ -24,7 +25,7 @@ else:
 	libs.append('sdlx_main')
 	libs.append('user32')
 
-env.Append(LIBPATH=['#/build/' + env['mode']])
+env.Append(LIBPATH=['#/build/' + env['mode'] + '/engine'])
 
 editor = env.Program('bted', ed_src, LIBS=libs, RPATH=[lib_dir])
 Install('#', editor)
