@@ -66,11 +66,11 @@ void Explosive::onBreak() {
 		explosion = false;
 	} 
 	if (_variants.has("spawn-mutagen")) {
-		spawn("mutagen-explosion", "mutagen-explosion");
+		spawn(_variants.has("chained")?"mutagen-explosion(chained)":"mutagen-explosion", "mutagen-explosion");
 		explosion = false;
 	}
 	if (_variants.has("spawn-nuke")) {
-		spawn("nuke-explosion", "nuke-explosion");
+		spawn(_variants.has("chained")?"nuke-explosion(chained)":"nuke-explosion", "nuke-explosion");
 		explosion = false;
 	}
 	
