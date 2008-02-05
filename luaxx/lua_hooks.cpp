@@ -708,7 +708,6 @@ LUA_TRY {
 	return 0;
 }
 
-
 static int lua_hooks_play_sound(lua_State *L) {
 LUA_TRY {
 	int n = lua_gettop(L);
@@ -744,7 +743,39 @@ LUA_TRY {
 	return 0;
 }
 
-
+static int lua_hooks_stop_sound(lua_State *L) {
+LUA_TRY {
+	int n = lua_gettop(L);
+	if (n < 1) {
+		lua_pushstring(L, "stop_sound requires object_id(0 == listener) and sound. ");
+		lua_error(L);
+		return 0;
+	}
+	int object_id = lua_tointeger(L, 1);
+	const Object *o = NULL;
+	if (object_id > 0) {
+		o = World->getObjectByID(object_id);
+		if (o == NULL)
+			throw_ex(("object with id %d not found", object_id));
+	} 
+	
+	const char * name = NULL;
+	if (n >= 2) {
+		name = lua_tostring(L, 2);
+		if (name == NULL) {
+			lua_pushstring(L, "stop_sound: second argument(sound name) must be a string");
+			lua_error(L);
+			return 0;
+		}
+	}
+	if (name == NULL)
+		Mixer->cancelAll(o);
+	else 
+		Mixer->cancelSample(o, name);
+	
+} LUA_CATCH("lua_hooks_stop_sound")	
+	return 0;
+}
 
 
 static int lua_hooks_random(lua_State *L) {
