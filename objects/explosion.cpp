@@ -114,8 +114,13 @@ void Explosion::emit(const std::string &event, Object * emitter) {
 			return; //damage was already added for this object.
 		
 		if (registered_name == "mutagen-explosion") {
-			if (_variants.has("chained") && emitter->classname == "explosive") {
-				emitter->emit("death", this);
+			if (_variants.has("chained") && emitter->classname == "explosive" && emitter->getState() == "main") {
+				float p = getStateProgress();
+				//LOG_DEBUG(("%d: progress = %g", getID(), p));
+				if (p < 0.03f)
+					return;
+				emitter->emit("destroy", this);
+				_damaged_objects.insert(id);
 				return;
 			}
 			static std::set<std::string> mutable_classes;

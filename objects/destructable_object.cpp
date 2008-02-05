@@ -42,12 +42,7 @@ void DestructableObject::onBreak() {
 }
 
 
-void DestructableObject::addDamage(Object *from, const int dhp, const bool emitDeath) {
-	if (_broken)
-		return;
-
-	Object::addDamage(from, dhp, false);
-	if (hp <= 0) {
+void DestructableObject::destroy() {
 		_broken = true;
 		hp = -1;
 		if (_variants.has("make-pierceable"))
@@ -75,8 +70,24 @@ void DestructableObject::addDamage(Object *from, const int dhp, const bool emitD
 			_respawn.set(ri);
 		}
 
-		onBreak();		
+		onBreak();
+}
+
+
+void DestructableObject::addDamage(Object *from, const int dhp, const bool emitDeath) {
+	if (_broken)
+		return;
+
+	Object::addDamage(from, dhp, false);
+	if (hp <= 0) {
+		destroy();
 	}
+}
+
+void DestructableObject::emit(const std::string &event, Object * emitter) {
+	if (event == "destroy") {
+		destroy();
+	} else Object::emit(event, emitter);
 }
 
 void DestructableObject::tick(const float dt) {
