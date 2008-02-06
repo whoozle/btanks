@@ -1,5 +1,7 @@
 import sys
 Import('env')
+Import('sdl_cflags')
+Import('sdl_libs')
 
 env = env.Copy()
 
@@ -13,6 +15,8 @@ if sys.platform != "win32":
 env.Append(CPPPATH=['zzip'])
 env.Append(CPPDEFINES=['ZZIPAPI=DLLEXPORT'])
 env.Append(LIBPATH=['../mrt', '../sdlx'])
+
+env.MergeFlags(sdl_cflags, sdl_libs)
 
 zzip = env.SharedLibrary('zzip', \
 	['dir.c', 'err.c', 'fetch.c', 'file.c', 'info.c', 'plugin.c', 'stat.c', 'write.c', 'zip.c', 

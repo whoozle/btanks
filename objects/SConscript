@@ -1,5 +1,7 @@
 import sys
 Import('env')
+Import('sdl_cflags')
+Import('sdl_libs')
 
 env = env.Copy()
 buildmode = env['mode']
@@ -9,6 +11,7 @@ env.Prepend(LIBPATH=['#/build/' + buildmode + '/engine'])
 env.Prepend(LIBPATH=['#/build/' + buildmode + '/mrt'])
 env.Prepend(LIBPATH=['#/build/' + buildmode + '/sdlx'])
 env.Append(CPPPATH=['#/engine', '#/engine/src'])
+env.MergeFlags(sdl_cflags, sdl_libs)
 
 sources = [
 	'bullet.cpp', 'explosion.cpp', 'single_pose.cpp',
