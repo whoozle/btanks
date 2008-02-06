@@ -1,11 +1,15 @@
 import os, sys
 Import('env')
 Import('debug')
+Import('sdl_cflags')
+Import('sdl_libs')
 
 env = env.Copy()
 env.Append(CPPPATH=['..', '.'])
 env.Append(LIBPATH=['../mrt'])
 env.Append(CPPDEFINES=['SDLXAPI=DLLEXPORT'])
+
+env.MergeFlags(sdl_cflags, sdl_libs)
 
 libs = ['mrt', 'SDL', 'SDL_image']
 
