@@ -205,7 +205,8 @@ void Surface::saveBMP(const std::string &fname)  const {
 
 
 #ifndef NO_SDL_IMAGE
-#include <SDL/SDL_image.h>
+#include <SDL_image.h>
+
 void Surface::loadImage(const std::string &str) {
     free();
     if ((surface = IMG_Load(str.c_str())) == NULL ) throw_sdl(("IMG_Load"));

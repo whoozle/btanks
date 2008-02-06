@@ -8,7 +8,7 @@
 #		include "glSDL/glSDL.h"
 #	endif
 #else
-#	include <SDL/SDL.h>
+#	include <SDL.h>
 #endif
 
 #include "sdlx/export_sdlx.h"

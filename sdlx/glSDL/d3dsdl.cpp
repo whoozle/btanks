@@ -28,7 +28,7 @@
 #include <d3d9.h>
 #include <d3dx9.h>
 
-#include <SDL/SDL_syswm.h>
+#include <SDL_syswm.h>
 #include "mrt/logger.h"
 
 static LPDIRECT3D9          g_pD3D       = NULL;

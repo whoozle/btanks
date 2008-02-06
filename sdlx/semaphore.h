@@ -20,7 +20,7 @@
 */
 
 #include "sdlx.h"
-#include <SDL/SDL_thread.h>
+#include <SDL_thread.h>
 
 namespace sdlx {
 class SDLXAPI Semaphore {

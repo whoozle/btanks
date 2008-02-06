@@ -30,6 +30,7 @@ consult your distro's documentation for details):
 	f) expat - XML parsing library
 	g) zlib
 	h) lua 5.1 (maybe 5.0, not tested)
+	i) smpeg - SDL mpeg2 player (for campaign preview movies)
 
 4) you could add something like this in 'options.cache' file 
 (located in trunk/ directory): 

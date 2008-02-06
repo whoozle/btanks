@@ -5,8 +5,8 @@
 	D3D SDL - direct 3d wrapper for SDL 
 */
 
-#include <SDL/SDL.h>
-#include <SDL/begin_code.h>
+#include <SDL.h>
+#include <begin_code.h>
 
 
 //fake d3dSDL backend
@@ -60,7 +60,7 @@ extern "C" {
 }
 #endif
 
-#include <SDL/close_code.h>
+#include <close_code.h>
 
 #ifndef D3DSDL_NO_REDEFINES
 

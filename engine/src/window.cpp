@@ -86,18 +86,18 @@ void AllowAccessibilityShortcutKeys( bool bAllowKeys )
         }
     }
 }
+#else 
 
+#include <SDL_opengl.h>
+#	ifndef SDL_OPENGLBLIT
+#		define SDL_OPENGLBLIT 0
+// using 0 as OPENGLBLIT value. SDL 1.3 or later
+#	endif
 
 #endif
 
 
 IMPLEMENT_SINGLETON(Window, IWindow);
-
-#include <SDL/SDL_opengl.h>
-#ifndef SDL_OPENGLBLIT
-#define SDL_OPENGLBLIT 0
-// using 0 as OPENGLBLIT value. SDL 1.3 or later
-#endif
 
 IWindow::IWindow() : _fr(10.0f) {}
 

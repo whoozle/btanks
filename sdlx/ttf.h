@@ -19,7 +19,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 */
 
-#include "SDL/SDL_ttf.h"
+#include <SDL_ttf.h>
 #include <string>
 #include "export_sdlx.h"
 

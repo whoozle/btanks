@@ -150,12 +150,23 @@ if sys.platform == "win32":
 
 if not conf.CheckLibWithHeader('SDL', 'SDL/SDL.h', 'c++', "SDL_Init(0);", False):
 	Exit(1)
+	
+if sys.platform != "win32":
+	sdl_cflags = env.ParseFlags('!pkg-config --cflags sdl')
+	sdl_libs = env.ParseFlags('!pkg-config --libs sdl')
+	conf.env.MergeFlags(sdl_cflags, sdl_libs)
+else: 
+	sdl_cflags = {}
+	sdl_libs = {}
+
+Export('sdl_cflags')
+Export('sdl_libs')
+
+if not conf.CheckLibWithHeader('smpeg', 'smpeg/smpeg.h', 'c++', "SMPEG_new_data(malloc(42), 42, NULL, 0);", False):
+	Exit(1)
 
 if not conf.CheckLibWithHeader('SDL_image', 'SDL/SDL_image.h', 'c++', "IMG_Load(0);", False):
 	Exit(1)
-
-#if not conf.CheckLibWithHeader('SDL_ttf', 'SDL/SDL_ttf.h', 'c++', "TTF_Init();", False):
-#	Exit(1)
 
 if not conf.CheckLibWithHeader(al_lib, 'AL/al.h', 'c++', "ALuint s; alGenSources(1, &s);", False):
 	Exit(1)

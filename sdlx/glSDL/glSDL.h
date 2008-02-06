@@ -21,7 +21,7 @@
 #define HAVE_OPENGL
 
 /* We're still using SDL datatypes here - we just add some stuff. */
-#include <SDL/SDL.h>
+#include <SDL.h>
 
 /*
  * Ignore the flag from SDL w/ glSDL backend, since we're going
@@ -39,7 +39,7 @@
 
 #else	/* HAVE_OPENGL */
 
-#include <SDL/begin_code.h>
+#include <begin_code.h>
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -320,7 +320,7 @@ void glSDL_ResetState(void);
 #ifdef __cplusplus
 }
 #endif
-#include <SDL/close_code.h>
+#include <close_code.h>
 
 /* Some ugly "overriding"... */
 #ifndef	_GLSDL_NO_REDEFINES_
@@ -365,7 +365,7 @@ void glSDL_ResetState(void);
 #endif
 
 /* Some extra overloading for common external lib calls... */
-#include <SDL/SDL_image.h>
+#include <SDL_image.h>
 #ifdef __cplusplus
 extern "C" {
 #endif
