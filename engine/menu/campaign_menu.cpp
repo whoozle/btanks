@@ -19,7 +19,7 @@
 #include "shop.h"
 #include "button.h"
 #include "image_view.h"
-
+#include "menu/video_control.h"
 #include "tmx/map.h"
 
 void CampaignMenu::start() {
@@ -139,7 +139,7 @@ void CampaignMenu::init() {
 		if (!campaign.visible(map))	
 			continue;
 		
-		_maps->append(map.id);
+		_maps->append(new VideoControl(campaign.base, map.id));
 		map_id.push_back((int)i);
 		if (map.id == current_map) {
 			_maps->set(_maps->size() - 1);

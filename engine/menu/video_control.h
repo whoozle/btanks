@@ -1,14 +1,22 @@
 #ifndef BT_ENGINE_VIDEO_CONTROL_H__
 #define BT_ENGINE_VIDEO_CONTROL_H__
 
-#include "control.h"
 #include <string>
+#include "control.h"
+#include <smpeg/smpeg.h>
 
 class VideoControl : public Control {
 public: 
 	VideoControl(const std::string &base, const std::string &name);
+	virtual void render(sdlx::Surface &surface, const int x, const int y);
+	virtual void getSize(int &w, int &h) const;
+
 private: 
 	std::string base, name;
+	const sdlx::Surface *screenshot;
+	SMPEG * mpeg;
+	SMPEG_Info mpeg_info;
+	bool active, attached;
 };
 
 
