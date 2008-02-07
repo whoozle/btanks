@@ -1,5 +1,5 @@
 grab video in software mode (--no-gl): 
-recordmydesktop -windowid 0x3600003 --overwrite -fps 15
+recordmydesktop -windowid 0x3600003 --overwrite -fps 15 --no-sound
 
 recode to mpeg2 no sound:
 mencoder -ovc lavc -lavcopts vcodec=mpeg1video out.ogv -nosound -vf scale=160:120 -o out.mpg
