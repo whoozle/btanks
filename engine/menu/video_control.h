@@ -15,7 +15,6 @@ public:
 	virtual void tick(const float dt);
 	~VideoControl();
 	
-	void copy(const int x, const int y, const int w, const int h); //do not use this!
 	virtual void activate(const bool active);
 private: 
 	void checkStatus();
@@ -26,7 +25,7 @@ private:
 	sdlx::Surface shadow, frame;
 	SDL_mutex * lock;
 	bool active, started;
-	volatile bool updated;
+	//volatile bool updated;
 };
 
 

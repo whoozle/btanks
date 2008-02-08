@@ -8,23 +8,9 @@
 
 #define SMPEG_CHECK(f) do { const char * err; if ((err = SMPEG_error(mpeg)) != NULL) throw_ex(("%s: %s", f, err)); } while(0)
 
-std::map<const SDL_Surface *, VideoControl *> video_controls;
-
-static void update(SDL_Surface* dst, int x, int y, unsigned int w, unsigned int h) {
-	///LOG_DEBUG(("%p: update %d, %d, %d, %d", (void *)dst, x, y, w, h));
-	VideoControl *vc = video_controls[dst];
-	if (vc == NULL)
-		return;
-	vc->copy(x, y, w, h);
-}
-
-void VideoControl::copy(const int x, const int y, const int w, const int h) {
-	updated = true;
-}
-
-
 VideoControl::VideoControl(const std::string &base, const std::string &name) : 
-base(base), name(name), mpeg(0), lock(SDL_CreateMutex()), active(false), started(false), updated(false)  {
+base(base), name(name), mpeg(0), lock(SDL_CreateMutex()), active(false), started(false) //, updated(false)  
+{
 	if (lock == NULL)
 		throw_sdl(("SDL_CreateMutex"));
 	
@@ -71,7 +57,7 @@ base(base), name(name), mpeg(0), lock(SDL_CreateMutex()), active(false), started
 
 		video_controls[dst] = this;
 
-		SMPEG_setdisplay(mpeg, dst, lock, update);
+		SMPEG_setdisplay(mpeg, dst, lock, NULL); //update);
 		SMPEG_CHECK("SMPEG_setdisplay");
 		
 		SMPEG_scaleXY(mpeg, screenshot->getWidth(), screenshot->getHeight());
@@ -127,7 +113,8 @@ void VideoControl::tick(const float dt) {
 		
 	checkStatus();
 
-	if (updated) {
+	//if (updated) 
+	{
 		//LOG_DEBUG(("syncing frame with shadow"));
 		frame.createRGB(mpeg_info.width, mpeg_info.height, 24, SDL_SWSURFACE);
 		frame.fill(0);
@@ -142,7 +129,7 @@ void VideoControl::tick(const float dt) {
 			SDL_mutexV(lock);
 			throw;
 		}
-		updated = false;
+		//updated = false;
 		SDL_mutexV(lock);
 
 		//frame.convertAlpha();
