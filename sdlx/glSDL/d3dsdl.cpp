@@ -96,7 +96,7 @@ static void freeTexture(texinfo *tex) {
 		if (unlock) 
 			tex->tex[t]->UnlockRect(0);
 		ULONG n = tex->tex[t]->Release();
-		LOG_DEBUG(("texture %p[%d].ref_count = %lu", (void *)tex, t, n));
+		//LOG_DEBUG(("texture %p[%d].ref_count = %lu", (void *)tex, t, n));
 	}
 	
 	delete[] tex->lrect;
@@ -292,7 +292,7 @@ static int pow2(const int tex_size) {
 static LPDIRECT3DTEXTURE9 d3d_CreateTexture(SDL_Surface * surface, int tex_size_w, int tex_size_h, 
 	int x1, int y1, int x2, int y2
 ) {
-	LOG_DEBUG(("creating %dx%d texture...", tex_size_w, tex_size_h));
+	//LOG_DEBUG(("creating %dx%d texture...", tex_size_w, tex_size_h));
 
 	LPDIRECT3DTEXTURE9 tex;
 	HRESULT err;
@@ -306,7 +306,7 @@ static LPDIRECT3DTEXTURE9 d3d_CreateTexture(SDL_Surface * surface, int tex_size_
 		return NULL;
 	}
 
-	LOG_DEBUG(("locking texture.."));
+	//LOG_DEBUG(("locking texture.."));
 
 	D3DLOCKED_RECT rect;
 	if (FAILED(tex->LockRect(0, &rect, NULL, D3DLOCK_DISCARD))) {
@@ -329,7 +329,7 @@ static LPDIRECT3DTEXTURE9 d3d_CreateTexture(SDL_Surface * surface, int tex_size_
 	if (alpha) {
 		SDL_SetAlpha(surface, 0, 0);
 	}
-	LOG_DEBUG(("blitting from %d,%d, size: %d,%d.", src_rect.x, src_rect.y, src_rect.w, src_rect.h));
+	//LOG_DEBUG(("blitting from %d,%d, size: %d,%d.", src_rect.x, src_rect.y, src_rect.w, src_rect.h));
 	SDL_Surface *fake = SDL_CreateRGBSurfaceFrom(rect.pBits, tex_size_w, tex_size_h, 32, rect.Pitch, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000);
 	if (SDL_BlitSurface(surface, &src_rect, fake, NULL) == -1)
 		return NULL;
@@ -358,7 +358,7 @@ SDL_Surface *d3dSDL_DisplayFormatAlpha(SDL_Surface *surface) {
 		//assert(texinfo == NULL);
 	}
 
-	LOG_DEBUG(("DisplayFormatAlpha(%p->%d, %d)", (void *) surface, surface->w, surface->h));
+	//LOG_DEBUG(("DisplayFormatAlpha(%p->%d, %d)", (void *) surface, surface->w, surface->h));
 
 	if (surface->pixels == NULL) {
 		SDL_SetError("surface with pixels == NULL found");
@@ -394,8 +394,8 @@ SDL_Surface *d3dSDL_DisplayFormatAlpha(SDL_Surface *surface) {
 	int nx = (tex_size_w - 1) / tex_split_w + 1;
 	int ny = (tex_size_h - 1) / tex_split_h + 1;
 	//some weird and hackish code above. 
-	if (nx * ny > 1)
-		LOG_DEBUG(("split texture into %dx%d squares. %dx%d = %d", tex_split_w, tex_split_h, nx, ny, nx * ny));
+	//if (nx * ny > 1)
+	//	LOG_DEBUG(("split texture into %dx%d squares. %dx%d = %d", tex_split_w, tex_split_h, nx, ny, nx * ny));
 
 	texinfo info;
 	//info.w = surface->w;
@@ -433,7 +433,7 @@ SDL_Surface *d3dSDL_DisplayFormatAlpha(SDL_Surface *surface) {
 	static int max_f;
 	if (info.n > max_f)
 		max_f = info.n;
-	LOG_DEBUG(("created texture with id %d, fragments: %d (max: %d)", r->unused1, info.n, max_f));
+	//LOG_DEBUG(("created texture with id %d, fragments: %d (max: %d)", r->unused1, info.n, max_f));
 	
 	return r;
 }
@@ -454,7 +454,7 @@ SDL_Surface *d3dSDL_CreateRGBSurface
 		if (r == NULL)
 			return NULL;
 		if (r->format->BitsPerPixel == 0) {
-			LOG_DEBUG(("problem surface: %dx%dx%d %d:%d", r->w, r->h, depth, r->format->BytesPerPixel, r->format->BytesPerPixel));
+			//LOG_DEBUG(("problem surface: %dx%dx%d %d:%d", r->w, r->h, depth, r->format->BytesPerPixel, r->format->BytesPerPixel));
 			assert(0);
 		}
 		return r;
@@ -500,7 +500,7 @@ static int d3d_waitForDevice() {
 	RELEASE_OBJECT(g_sprite);
     HRESULT r;
 	do {
-		LOG_DEBUG(("waiting for device..."));
+		//LOG_DEBUG(("waiting for device..."));
 		SDL_Event event;
 		if (!SDL_PollEvent(&event))
 			Sleep(300);
