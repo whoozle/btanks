@@ -76,6 +76,10 @@ base(base), name(name), mpeg(0), lock(SDL_CreateMutex()), active(false), updated
 		
 		SMPEG_loop(mpeg, 1);
 		SMPEG_CHECK("SMPEG_loop");
+
+		SMPEG_play(mpeg);
+		SMPEG_CHECK("SMPEG_play");
+		
 		checkStatus();
 		//SMPEG_play(mpeg);
 		//SMPEG_CHECK("SMPEG_play");
