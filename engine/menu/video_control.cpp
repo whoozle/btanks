@@ -87,8 +87,8 @@ void VideoControl::checkStatus() {
 		if (active) {
 			if (!started) {
 				LOG_DEBUG(("starting stream..."));
-				SMPEG_loop(mpeg, 1);
 				SMPEG_play(mpeg);
+				SMPEG_loop(mpeg, 1);
 				started = true;
 			} else {
 				LOG_DEBUG(("calling SMPEG_pause"));
