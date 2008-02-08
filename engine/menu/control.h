@@ -44,6 +44,8 @@ public:
 	
 	inline void hide(const bool hide = true) { _hidden = hide; }
 	inline const bool hidden() const { return _hidden; }
+	
+	virtual void activate(const bool active);
 private: 
 	bool _changed;
 protected: 
