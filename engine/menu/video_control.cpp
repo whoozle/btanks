@@ -88,6 +88,7 @@ void VideoControl::tick(const float dt) {
 		break;
 	case SMPEG_STOPPED: 
 		LOG_DEBUG(("calling SMPEG_play"));
+		SMPEG_rewind(mpeg);
 		SMPEG_play(mpeg);
 		break;
 	case SMPEG_ERROR: 
