@@ -39,7 +39,12 @@ _client_w(64), _client_h(64), _pos(0), _vel(0), _current_item(0), _spacing(spaci
 void ScrollList::set(const int idx) {
 	if (idx < 0 || idx >= (int)_list.size())
 		throw_ex(("invalid index %d was set", idx));
-	_current_item = idx;
+	if (_current_item != idx) {
+		_list[_current_item]->activate(false);
+		_list[idx]->activate(true);
+		_current_item = idx;
+		invalidate(true);
+	}
 }
 
 
@@ -63,19 +68,22 @@ void ScrollList::append(const std::string &item) {
 }
 
 void ScrollList::append(Control *control) {
+	if ((int)_list.size() == _current_item) {
+		control->activate(true);
+	}
 	_list.push_back(control);
 	invalidate();
 }
 
-const int ScrollList::getItemY(const int idx) const {
-	int y = 0;
+void ScrollList::getItemY(const int idx, int &y, int &height) const {
+	y = 0;
+	int w = 0, h = 0;
 	for(int i = 0; i < idx; ++i) {
-		int w, h;
 		_list[i]->getSize(w, h);
 		h += _spacing;
 		y += h;
 	}
-	return y;
+	height = h;
 }
 
 const int ScrollList::getItemIndex(const int yp) const {
@@ -97,7 +105,9 @@ void ScrollList::tick(const float dt) {
 		return;
 	
 	int scroll_marg = _client_h / 3;
-	int yp = getItemY(_current_item);
+	int yp = 0, ysize = 0;
+	getItemY(_current_item, yp, ysize);
+	yp += ysize / 2;
 	
 	if (_vel != 0) {
 		if (math::abs((int)(math::max<int>(yp - _client_h / 2, 0) - _pos)) < 8)
@@ -110,7 +120,8 @@ void ScrollList::tick(const float dt) {
 		_pos += math::sign(dpos) * math::min(math::abs(_vel * dt), math::abs((float)dpos));
 	}
 
-	int h = getItemY(_list.size());
+	int h = 0, hsize = 0;
+	getItemY(_list.size(), h, hsize);
 	
 	if (_pos  >  h - _client_h) {
 		_pos = h - _client_h;
@@ -168,7 +179,8 @@ void ScrollList::render(sdlx::Surface &surface, const int x, const int y) {
 	int n = _list.size();
 	assert(p>= 0 && p < (int)_list.size());
 	
-	int item_pos = getItemY(p);
+	int item_pos = 0, item_size = 0;
+	getItemY(p, item_pos, item_size);
 	int yp = my + y - ((int)_pos - item_pos);
 	for(; p < n; ++p) {
 		int w, h;
@@ -190,45 +202,32 @@ void ScrollList::render(sdlx::Surface &surface, const int x, const int y) {
 bool ScrollList::onKey(const SDL_keysym sym) {
 	if (Container::onKey(sym))
 		return true;
-	
+
 	switch(sym.sym) {
 	case SDLK_PAGEUP:
-		if (_current_item > 0)
-			invalidate();
-		_current_item -= 9;
+		up(10);
+		return true;
+		
 	case SDLK_UP:
-		if (_current_item > 0)
-			invalidate(true);
-		--_current_item;
-		if (_current_item < 0 ) 
-			_current_item = 0;
-		//LOG_DEBUG(("up: %u", _current_item));
+		up();
 		return true;
 
 	case SDLK_HOME: 
-		if (_current_item > 0)
-			invalidate(true);
-		_current_item = 0;
+		set(0);
 		return true;
 
 	case SDLK_END: 
-		if (_current_item != (int)_list.size() - 1)
-			invalidate(true);
-		_current_item = (int)_list.size() - 1;
+		set((int)_list.size() - 1);
 		return true;
 
 	case SDLK_PAGEDOWN:
-		if (_current_item != (int)_list.size() - 1)
-			invalidate();
-		_current_item += 9;
-	case SDLK_DOWN:
-		if (_current_item != (int)_list.size() - 1)
-			invalidate(true);
-		++_current_item;
-		if (_current_item >= (int)_list.size()) 
-			_current_item = (int)_list.size() - 1;
-		//LOG_DEBUG(("down: %u", _current_item));
+		down(10);
 		return true;
+
+	case SDLK_DOWN:
+		down(1);
+		return true;
+
 	default: 
 		//LOG_DEBUG(("%d", sym.sym));
 		size_t i;
@@ -243,9 +242,7 @@ bool ScrollList::onKey(const SDL_keysym sym) {
 		}
 		if (i < _list.size()) {
 			i = (i + _current_item + 1) % _list.size();
-			if (_current_item != (int)i)
-				invalidate(true);
-			_current_item = i;
+			set(i);
 			return true;
 		}
 		return false;
@@ -254,20 +251,26 @@ bool ScrollList::onKey(const SDL_keysym sym) {
 	return false;
 }
 
-void ScrollList::up() {
-		if (_current_item > 0 ) {
-			--_current_item;
-			invalidate(true);
-		}
-		//LOG_DEBUG(("up: %u", _current_item));
+void ScrollList::up(const int n) {
+	if (_list.empty())
+		return;
+	
+	int i = _current_item - n;
+	if (i < 0)
+		i = 0;
+	
+	set(i);
 }
 
-void ScrollList::down() {
-		if (_current_item + 1 < (int)_list.size()) {
-			++_current_item;
-			invalidate(true);
-		}
-		//LOG_DEBUG(("down: %u", _current_item));
+void ScrollList::down(const int n) {
+	if (_list.empty())
+		return;
+	
+	int i = _current_item + n;
+	if (i >= (int)_list.size())
+		i = (int)_list.size() - 1;
+	
+	set(i);
 }
 
 bool ScrollList::onMouse(const int button, const bool pressed, const int x, const int y) {
@@ -299,15 +302,14 @@ bool ScrollList::onMouse(const int button, const bool pressed, const int x, cons
 		//LOG_DEBUG(("%d %d -> %d", x, y, y + (int)_pos - my));
 		int item = getItemIndex(y - my + (int)_pos);
 		if (item >= 0 && item < (int)_list.size()) {
-			int ybase = getItemY(item);
+			int ybase = 0, ysize = 0;
+			getItemY(item, ybase, ysize);
 			//LOG_DEBUG(("%d %d", x - _items_area.x, y - _items_area.y + (int)_pos - ybase));
 			if (_list[item]->onMouse(button, pressed, x - _items_area.x, y - _items_area.y + (int)_pos - ybase))
 				return true;
 	
 			if (pressed) {
-				if (_current_item != item)
-					invalidate(true);
-				_current_item = item;
+				set(item);
 			}
 		}
 		return true;
@@ -338,6 +340,7 @@ void ScrollList::remove(const int idx) {
 	int n = idx;
 	List::iterator i;
 	for (i = _list.begin(); n--; ++i);
+	(*i)->activate(false);
 	delete *i;
 	_list.erase(i);
 
@@ -350,6 +353,7 @@ void ScrollList::clear() {
 	invalidate();
 	_current_item = 0;
 	for(size_t i = 0; i < _list.size(); ++i) {
+		_list[i]->activate(false);
 		delete _list[i];
 	}
 	_list.clear();

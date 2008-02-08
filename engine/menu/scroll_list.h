@@ -54,15 +54,15 @@ public:
 	virtual bool onMouse(const int button, const bool pressed, const int x, const int y);
 	virtual void getSize(int &w, int &h) const;
 
-	const int getItemY(const int idx) const;
+	void getItemY(const int idx, int &ypos, int &height) const;
 	const int getItemIndex(const int yp) const;
 	
 	void sort();
 	
 	~ScrollList();
 	
-	void up();
-	void down();
+	void up(const int n = 1);
+	void down(const int n = 1);
 private:
 	Box _background;
 	const sdlx::Surface *_scrollers;
