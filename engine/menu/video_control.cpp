@@ -55,8 +55,6 @@ base(base), name(name), mpeg(0), lock(SDL_CreateMutex()), active(false), started
 		
 		SDL_Surface *dst = shadow.getSDLSurface();
 
-		video_controls[dst] = this;
-
 		SMPEG_setdisplay(mpeg, dst, lock, NULL); //update);
 		SMPEG_CHECK("SMPEG_setdisplay");
 		
@@ -155,7 +153,6 @@ void VideoControl::getSize(int &w, int &h) const {
 }
 
 VideoControl::~VideoControl() {
-	video_controls.erase(shadow.getSDLSurface());
 	if (mpeg != NULL) {
 		SMPEG_stop(mpeg);
 		SMPEG_delete(mpeg);
