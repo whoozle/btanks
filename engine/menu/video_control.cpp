@@ -4,6 +4,7 @@
 #include "sdlx/sdl_ex.h"
 #include "sdlx/surface.h"
 #include "mrt/chunk.h"
+#include "config.h"
 
 #define SMPEG_CHECK(f) do { const char * err; if ((err = SMPEG_error(mpeg)) != NULL) throw_ex(("%s: %s", f, err)); } while(0)
 
