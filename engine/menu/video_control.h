@@ -16,7 +16,9 @@ public:
 	~VideoControl();
 	
 	void copy(const int x, const int y, const int w, const int h); //do not use this!
+	virtual void activate(const bool active);
 private: 
+	void checkStatus();
 	std::string base, name;
 	const sdlx::Surface *screenshot;
 	SMPEG * mpeg;

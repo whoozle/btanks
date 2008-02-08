@@ -56,7 +56,6 @@ base(base), name(name), mpeg(0), lock(SDL_CreateMutex()), active(false), updated
 		frame.setAlpha(0, 0);
 
 		LOG_DEBUG(("video file info: %dx%d, %.02g seconds", mpeg_info.width, mpeg_info.height, mpeg_info.total_time));
-		active = true;
 		SMPEG_enableaudio(mpeg, 0);
 		SMPEG_CHECK("SMPEG_enableaudio");
 		SMPEG_enablevideo(mpeg, 1);
@@ -72,9 +71,38 @@ base(base), name(name), mpeg(0), lock(SDL_CreateMutex()), active(false), updated
 		
 		SMPEG_loop(mpeg, 1);
 		SMPEG_CHECK("SMPEG_loop");
-		SMPEG_pause(mpeg);
+		checkStatus();
 		//SMPEG_play(mpeg);
 		//SMPEG_CHECK("SMPEG_play");
+	}
+}
+
+void VideoControl::activate(const bool a) {
+	active = a;
+}
+
+void VideoControl::checkStatus() {
+	if (mpeg == NULL)
+		return;
+	
+	switch(SMPEG_status(mpeg)) {
+	case SMPEG_PLAYING: 
+		if (!active) {
+			LOG_DEBUG(("calling SMPEG_pause"));
+			SMPEG_pause(mpeg);
+		}
+		break;
+	case SMPEG_STOPPED: 
+		if (active) {
+			LOG_DEBUG(("calling SMPEG_pause"));
+			SMPEG_pause(mpeg);
+		}
+		break;
+	case SMPEG_ERROR: 
+		LOG_DEBUG(("SMPEG error: %s", SMPEG_error(mpeg)));
+		SMPEG_delete(mpeg);
+		mpeg = NULL;
+		break;
 	}
 }
 
@@ -82,21 +110,9 @@ void VideoControl::tick(const float dt) {
 	Control::tick(dt);
 	if (mpeg == NULL) 
 		return;
+		
+	checkStatus();
 
-	switch(SMPEG_status(mpeg)) {
-	case SMPEG_PLAYING: 
-		break;
-	case SMPEG_STOPPED: 
-		LOG_DEBUG(("calling SMPEG_play"));
-		SMPEG_rewind(mpeg);
-		SMPEG_play(mpeg);
-		break;
-	case SMPEG_ERROR: 
-		LOG_DEBUG(("SMPEG error: %s", SMPEG_error(mpeg)));
-		SMPEG_delete(mpeg);
-		mpeg = NULL;
-		return;
-	}
 	if (updated) {
 		//LOG_DEBUG(("syncing frame with shadow"));
 		frame.createRGB(mpeg_info.width, mpeg_info.height, 24, SDL_SWSURFACE);
