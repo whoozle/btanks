@@ -53,7 +53,7 @@ public:
 private:
 	Alarm _fire, _reaction;
 
-	static std::set<std::string> targets; //no serialization
+	std::set<std::string> targets; //no serialization
 };
 
 void Cannon::calculate(const float dt) {
