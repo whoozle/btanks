@@ -10,6 +10,8 @@ Import('al_lib')
 Import('sdl_cflags')
 Import('sdl_libs')
 
+Import('smpeg_lib')
+
 venv = env.Copy()
 bt_env = env.Copy()
 env = env.Copy()
@@ -71,7 +73,7 @@ vorbis = 'vorbisfile'
 if debug and sys.platform == "win32": 
 	vorbis = 'vorbisfile_d'
 
-bt_libs = ['mrt', 'zzip', 'sdlx',  sigc_lib, 'smpeg', 'SDL', vorbis, al_lib]
+bt_libs = ['mrt', 'zzip', 'sdlx',  sigc_lib, smpeg_lib, 'SDL', vorbis, al_lib]
 
 if sys.platform != 'win32' and env['enable_lua']:
 	got_lua = False

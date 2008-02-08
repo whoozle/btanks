@@ -65,8 +65,8 @@ if sys.platform == "win32" and debug:
 else: 
 	stl_port_debug = False
 
-if stl_port_debug: 
-	env.Append(CPPDEFINES = ['_STLP_DEBUG', '_STLP_DEBUG_UNINITIALIZED'])
+#if stl_port_debug: 
+#	env.Append(CPPDEFINES = ['_STLP_DEBUG', '_STLP_DEBUG_UNINITIALIZED'])
 
 env.Append(CPPDEFINES = ['USE_GLSDL'])
 env.Append(CPPDEFINES = ['V3_DISABLE_Z'])
@@ -161,8 +161,12 @@ else:
 
 Export('sdl_cflags')
 Export('sdl_libs')
+smpeg_lib = 'smpeg'
+if debug and sys.platform == 'win32':
+	smpeg_lib = 'smpeg_d'
+Export('smpeg_lib')
 
-if not conf.CheckLibWithHeader('smpeg', 'smpeg/smpeg.h', 'c++', "SMPEG_new_data(malloc(42), 42, NULL, 0);", False):
+if not conf.CheckLibWithHeader(smpeg_lib, 'smpeg/smpeg.h', 'c++', "SMPEG_new_data(malloc(42), 42, NULL, 0);", False):
 	Exit(1)
 
 if not conf.CheckLibWithHeader('SDL_image', 'SDL/SDL_image.h', 'c++', "IMG_Load(0);", False):
