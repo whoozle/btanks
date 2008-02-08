@@ -25,7 +25,7 @@ private:
 	SMPEG_Info mpeg_info;
 	sdlx::Surface shadow, frame;
 	SDL_mutex * lock;
-	bool active;
+	bool active, started;
 	volatile bool updated;
 };
 

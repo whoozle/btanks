@@ -24,7 +24,7 @@ void VideoControl::copy(const int x, const int y, const int w, const int h) {
 
 
 VideoControl::VideoControl(const std::string &base, const std::string &name) : 
-base(base), name(name), mpeg(0), lock(SDL_CreateMutex()), active(false), updated(false)  {
+base(base), name(name), mpeg(0), lock(SDL_CreateMutex()), active(false), started(false), updated(false)  {
 	if (lock == NULL)
 		throw_sdl(("SDL_CreateMutex"));
 	
@@ -73,13 +73,11 @@ base(base), name(name), mpeg(0), lock(SDL_CreateMutex()), active(false), updated
 		
 		SMPEG_scaleXY(mpeg, screenshot->getWidth(), screenshot->getHeight());
 		SMPEG_CHECK("SMPEG_scaleXY");
-		
-		SMPEG_loop(mpeg, 1);
-		SMPEG_CHECK("SMPEG_loop");
 
-		SMPEG_play(mpeg);
-		SMPEG_CHECK("SMPEG_play");
-		
+		SMPEG_renderFinal(mpeg, shadow.getSDLSurface(), 0, 0);
+		SMPEG_CHECK("SMPEG_renderFinal");
+		updated = true;
+
 		checkStatus();
 		//SMPEG_play(mpeg);
 		//SMPEG_CHECK("SMPEG_play");
@@ -97,14 +95,22 @@ void VideoControl::checkStatus() {
 	switch(SMPEG_status(mpeg)) {
 	case SMPEG_PLAYING: 
 		if (!active) {
+			assert(started);
 			LOG_DEBUG(("calling SMPEG_pause"));
 			SMPEG_pause(mpeg);
 		}
 		break;
 	case SMPEG_STOPPED: 
 		if (active) {
-			LOG_DEBUG(("calling SMPEG_pause"));
-			SMPEG_pause(mpeg);
+			if (!started) {
+				LOG_DEBUG(("starting stream..."));
+				SMPEG_loop(mpeg, 1);
+				SMPEG_play(mpeg);
+				started = true;
+			} else {
+				LOG_DEBUG(("calling SMPEG_pause"));
+				SMPEG_pause(mpeg);
+			}
 		}
 		break;
 	case SMPEG_ERROR: 
