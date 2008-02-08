@@ -133,6 +133,9 @@ void AITrooper::onSpawn() {
 	//LOG_DEBUG(("rt = %g", rt));
 	_reaction.set(rt);	
 	Trooper::onSpawn();
+	
+	if (_variants.has("trainphobic"))
+		_targets.insert("train");
 }
 
 Object* AITrooper::clone() const  {

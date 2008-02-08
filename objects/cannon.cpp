@@ -24,6 +24,11 @@ class Cannon : public Object {
 public:
 	Cannon(const int dir) : Object("trooper"), _fire(false), _reaction(true) {
 		setDirection(dir);
+		
+		targets.insert("fighting-vehicle");
+		targets.insert("trooper");
+		targets.insert("monster");
+		targets.insert("kamikaze");
 	}
 	virtual Object* clone() const  { return new Cannon(*this); }
 	
@@ -47,19 +52,14 @@ public:
 
 private:
 	Alarm _fire, _reaction;
+
+	static std::set<std::string> targets; //no serialization
 };
 
 void Cannon::calculate(const float dt) {
 	if (!_reaction.tick(dt))
 		return;
 	
-	static std::set<std::string> targets;
-	if (targets.empty()) {
-		targets.insert("fighting-vehicle");
-		targets.insert("trooper");
-		targets.insert("monster");
-		targets.insert("kamikaze");
-	}
 	static float range = getWeaponRange("cannon-bullet");
 	v2<float> pos, vel;
 	if (getNearest(targets, range, pos, vel, true)) {
@@ -105,6 +105,9 @@ void Cannon::onSpawn() {
 	GET_CONFIG_VALUE("objects.cannon.reaction-time", float, rt, 0.105);
 	_reaction.set(rt);	
 	play("hold", true);
+
+	if (_variants.has("trainphobic"))
+		targets.insert("train");
 }
 
 REGISTER_OBJECT("cannon", Cannon, (6));
