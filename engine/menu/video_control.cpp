@@ -25,10 +25,6 @@ void VideoControl::copy(const int x, const int y, const int w, const int h) {
 
 VideoControl::VideoControl(const std::string &base, const std::string &name) : 
 base(base), name(name), mpeg(0), lock(SDL_CreateMutex()), active(false), updated(false)  {
-	GET_CONFIG_VALUE("engine.disable-video", bool, edv, false);
-	if (edv)
-		return;
-
 	if (lock == NULL)
 		throw_sdl(("SDL_CreateMutex"));
 	
@@ -37,6 +33,10 @@ base(base), name(name), mpeg(0), lock(SDL_CreateMutex()), active(false), updated
 		screenshot = ResourceManager->loadSurface("../" + fname);
 	} else 
 		screenshot = ResourceManager->loadSurface("../maps/null_video.png");
+
+	GET_CONFIG_VALUE("engine.disable-video", bool, edv, false);
+	if (edv)
+		return;
 	
 	fname = "maps/" + name + ".mpg";
 	if (Finder->exists(base, fname)) {
