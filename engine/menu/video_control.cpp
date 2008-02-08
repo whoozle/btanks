@@ -61,22 +61,21 @@ base(base), name(name), mpeg(0), lock(SDL_CreateMutex()), active(false), started
 		frame.setAlpha(0, 0);
 
 		LOG_DEBUG(("video file info: %dx%d, %.02g seconds", mpeg_info.width, mpeg_info.height, mpeg_info.total_time));
+
 		SMPEG_enableaudio(mpeg, 0);
 		SMPEG_CHECK("SMPEG_enableaudio");
 		SMPEG_enablevideo(mpeg, 1);
 		SMPEG_CHECK("SMPEG_enablevideo");
 		
 		SDL_Surface *dst = shadow.getSDLSurface();
+
 		video_controls[dst] = this;
+
 		SMPEG_setdisplay(mpeg, dst, lock, update);
 		SMPEG_CHECK("SMPEG_setdisplay");
 		
 		SMPEG_scaleXY(mpeg, screenshot->getWidth(), screenshot->getHeight());
 		SMPEG_CHECK("SMPEG_scaleXY");
-
-		SMPEG_renderFinal(mpeg, shadow.getSDLSurface(), 0, 0);
-		SMPEG_CHECK("SMPEG_renderFinal");
-		updated = true;
 
 		checkStatus();
 		//SMPEG_play(mpeg);
