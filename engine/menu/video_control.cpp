@@ -38,7 +38,6 @@ base(base), name(name), mpeg(0), lock(SDL_CreateMutex()), active(false), started
 
 		shadow.createRGB(screenshot->getWidth(), screenshot->getHeight(), 24, SDL_SWSURFACE);
 		shadow.fill(0);
-		shadow.convertAlpha();
 		shadow.setAlpha(0, 0);
 
 		frame.createRGB(screenshot->getWidth(), screenshot->getHeight(), 24, SDL_SWSURFACE);
@@ -53,9 +52,7 @@ base(base), name(name), mpeg(0), lock(SDL_CreateMutex()), active(false), started
 		SMPEG_enablevideo(mpeg, 1);
 		SMPEG_CHECK("SMPEG_enablevideo");
 		
-		SDL_Surface *dst = shadow.getSDLSurface();
-
-		SMPEG_setdisplay(mpeg, dst, lock, NULL); //update);
+		SMPEG_setdisplay(mpeg, shadow.getSDLSurface(), lock, NULL); //update);
 		SMPEG_CHECK("SMPEG_setdisplay");
 		
 		SMPEG_scaleXY(mpeg, screenshot->getWidth(), screenshot->getHeight());
@@ -114,12 +111,9 @@ void VideoControl::tick(const float dt) {
 	//if (updated) 
 	{
 		//LOG_DEBUG(("syncing frame with shadow"));
-		frame.createRGB(mpeg_info.width, mpeg_info.height, 24, SDL_SWSURFACE);
-		frame.fill(0);
-		frame.convertAlpha();
-
 		SDL_mutexP(lock);
 		try {
+			frame.setAlpha(0, 0);
 			shadow.setAlpha(0, 0);
 			frame.copyFrom(shadow, 0, 0);
 			frame.setAlpha(0, 0);
@@ -129,8 +123,6 @@ void VideoControl::tick(const float dt) {
 		}
 		//updated = false;
 		SDL_mutexV(lock);
-
-		//frame.convertAlpha();
 	}
 }
 
