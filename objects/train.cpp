@@ -27,7 +27,17 @@
 class Wagon : public Object {
 public: 
 	Wagon() : Object("train") { setDirectionsNumber(1); }
-	virtual void onSpawn() { play("move", true); disown(); }	
+	virtual void onSpawn() { 
+		play("move", true); 
+		disown(); 
+	
+		Object *o = World->getObjectByID(getSummoner());
+		if (o == NULL) {
+			emit("death", NULL);
+			return;
+		}
+		addOwner(o->getID());	
+	}	
 	virtual Object * clone() const { return new Wagon(*this); }
 	virtual void calculate(const float dt) {
 		Object *o = World->getObjectByID(getSummoner());
@@ -38,8 +48,8 @@ public:
 		_velocity = getRelativePosition(o);
 		float l = _velocity.normalize();
 		//LOG_DEBUG(("velocity: %g,%g (%g) (%g)", _velocity.x, _velocity.y, l, 1.2f * size.y));
-		if (l > 1.2f * size.y)
-			_velocity.clear(); //too far
+		if (l < 1.0f * size.y || l > 1.2f * size.y)
+			_velocity.clear(); //too close or far
 	}
 	virtual void emit(const std::string &event, Object * emitter = NULL) {
 		if (event == "death") {
