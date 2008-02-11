@@ -391,9 +391,9 @@ SDL_Surface *d3dSDL_DisplayFormatAlpha(SDL_Surface *surface) {
 		tex_split_h = tex_split_w;
 	}
 
-	int nx = (tex_size_w - 1) / tex_split_w + 1;
-	int ny = (tex_size_h - 1) / tex_split_h + 1;
-	//some weird and hackish code above. 
+	int nx = align_div(tex_size_w, tex_split_w);
+	int ny = align_div(tex_size_h, tex_split_h);
+
 	//if (nx * ny > 1)
 	//	LOG_DEBUG(("split texture into %dx%d squares. %dx%d = %d", tex_split_w, tex_split_h, nx, ny, nx * ny));
 
@@ -680,8 +680,11 @@ static void d3dSDL_UnlockSurface2(SDL_Surface *surface) {
 	assert(surface->pixels != NULL);
 
 	const bool has_alpha = (surface->flags & SDL_SRCALPHA) == SDL_SRCALPHA;
+	int alpha = SDL_ALPHA_OPAQUE;
 	if (has_alpha) {
-		SDL_SetAlpha(surface, 0, 0);
+		alpha = surface->format->alpha;
+		if (SDL_SetAlpha(surface, 0, 0) == -1)
+			LOG_ERROR(("SDL_SetAlpha failed: %s", SDL_GetError()));
 	}
 
 	for(int y = 0; y < ny; ++y) {
@@ -714,7 +717,7 @@ static void d3dSDL_UnlockSurface2(SDL_Surface *surface) {
 		}
 	}
 	if (has_alpha) {
-		SDL_SetAlpha(surface, SDL_SRCALPHA, 0);
+		SDL_SetAlpha(surface, SDL_SRCALPHA, alpha);
 	}
 	
 	delete[] tex->lrect;
