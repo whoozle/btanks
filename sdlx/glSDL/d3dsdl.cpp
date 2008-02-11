@@ -562,6 +562,7 @@ int d3dSDL_Flip(SDL_Surface *screen) {
 	if (r == D3DERR_DEVICELOST) {
 		if (d3d_waitForDevice() == -1)
 			return -1;
+	   	return 0;
 	}
 
 	if (FAILED(r)) {
