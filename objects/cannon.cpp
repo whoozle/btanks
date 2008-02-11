@@ -106,7 +106,7 @@ void Cannon::onSpawn() {
 	_reaction.set(rt);	
 	play("hold", true);
 
-	if (_variants.has("trainphobic"))
+	if (_variants.has("trainophobic"))
 		targets.insert("train");
 }
 

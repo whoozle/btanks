@@ -134,7 +134,7 @@ void AITrooper::onSpawn() {
 	_reaction.set(rt);	
 	Trooper::onSpawn();
 	
-	if (_variants.has("trainphobic"))
+	if (_variants.has("trainophobic"))
 		_targets.insert("train");
 }
 
