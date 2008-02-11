@@ -36,9 +36,11 @@ public:
 			play("top", true);
 			return;
 		}
-		
+		if (_variants.has("trainophobic"))
+			_object += "(trainophobic)";
+
 		DestructableObject::onSpawn();
-		Object *o = add(_variants.has("trainophobic")?"machinegunner(trainophobic)":"machinegunner", _object, _animation, v2<float>(0, -12), Centered);
+		Object *o = add("machinegunner", _object, _animation, v2<float>(0, -12), Centered);
 		o->setZ(getZ() + 1);
 		o = add("top", "watchtower-top", "watchtower", v2<float>(0, 0), Centered);
 		o->setZ(getZ() + 2);
