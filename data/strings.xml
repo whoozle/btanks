@@ -652,6 +652,7 @@
 
 	<area id="editor">
 		<string id="new-map">New map</string>
+		<string id="new-map" lang="de">Neue Karte</string>
 		<string id="new-map" lang="ru">Новая карта</string>
 	</area>
 
