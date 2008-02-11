@@ -500,6 +500,7 @@
 		</area>
 	</area>
 	
+
 	<area id="maps/descriptions">
 		<string id="arena">Battle Tanks Arena: check your Battle Tanks skill. Kill all opponents to win. (NEW!)</string>
 		<string id="arena" lang="ru">Танковая Арена: проверь своё умение убивать. (Новая карта!)</string>
@@ -574,6 +575,8 @@
 		<string id="(default)" lang="de">Es tut uns Leid, aber für diese Karte gibt es noch keine Beschreibung.</string>
 		<string id="(default)" lang="it">Spiacente, nessuna descrizione per questa mappa. :(</string>
 	</area>         
+
+
 	<area id="hints">
 		<string id="be-careful">Shhh... Be careful!</string>
 		<string id="be-careful" lang="ru">Тише! Тут надо быть осторожным</string>
@@ -645,6 +648,14 @@
 			<string id="defend-base" lang="de">VERTEIDIGEN SIE IHRE BASIS!</string>
 		</area> 
 	</area>
+
+
+	<area id="editor">
+		<string id="new-map">New map</string>
+		<string id="new-map" lang="ru">Новая карта</string>
+	</area>
+
+
 	<area id="messages">
 		<string id="restart-game">Restart game to see changes.</string>
 		<string id="restart-game" lang="ru">Перезапустите игру.</string>
@@ -702,6 +713,7 @@
 		<string id="go" lang="ru">В АТАКУ!!!</string>
 	</area>
 
+
 	<area id="errors">
 		<string id="connection-failed">Connection failed.</string>
 		<string id="connection-failed" lang="ru">Ошибка соединения.</string>
@@ -718,6 +730,8 @@
 		<string id="script-error">Script error.</string>
 		<string id="script-error" lang="ru">Ошибка в скрипте.</string>
 	</area>         
+
+
 	<area id="tips">
 		<!-- <string id="score">Noticed score at upper right corner ? 
 			It has important role in campaigns. Check our site for details.</string> -->
@@ -781,8 +795,8 @@
 
 		<string id="screenshot">You can take screenshots with "Shift-S". "Shift-M" takes a screenshot of whole map.</string>
 		<string id="screenshot" lang="ru">Вы можете сделать скриншот игры, просто нажав "Shift-S". А нажав "Shift-M" вы сделаете снимок всей карты!</string>
-<string id="screenshot" lang="fr">Vous pouvez prendre une photo de l'écran en pressant la touche 'Shift-S'. Pour une photo de toute la carte, pressez la touche 'Shift-M'.</string>
-<string id="screenshot" lang="de">Falls Sie möchten, können Sie jederzeit mit "Shift-S" eine Aufnahme machen. Mit "Shift-M" machen Sie die Aufnahme der ganzen Karte. </string>
+		<string id="screenshot" lang="fr">Vous pouvez prendre une photo de l'écran en pressant la touche 'Shift-S'. Pour une photo de toute la carte, pressez la touche 'Shift-M'.</string>
+		<string id="screenshot" lang="de">Falls Sie möchten, können Sie jederzeit mit "Shift-S" eine Aufnahme machen. Mit "Shift-M" machen Sie die Aufnahme der ganzen Karte. </string>
                   
 		<string id="fog-of-war" lang="it">Puoi abilitare "nebbia di guerra" nel menu opzioni (difficolta' massima).Funziona solo con risoluzioni superiori a 800X600 </string>
 		
