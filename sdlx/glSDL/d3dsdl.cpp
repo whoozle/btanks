@@ -325,8 +325,11 @@ static LPDIRECT3DTEXTURE9 d3d_CreateTexture(SDL_Surface * surface, int tex_size_
 	src_rect.x = x1; src_rect.y = y1;
 	src_rect.w = x2 - x1; src_rect.h = y2 - y1;
 
-	bool alpha = (surface->flags & SDL_SRCALPHA) != 0;
-	if (alpha) {
+	bool has_alpha = (surface->flags & SDL_SRCALPHA) == SDL_SRCALPHA;
+	int alpha = SDL_ALPHA_OPAQUE;
+
+	if (has_alpha) {
+		alpha = surface->format->alpha;
 		SDL_SetAlpha(surface, 0, 0);
 	}
 	//LOG_DEBUG(("blitting from %d,%d, size: %d,%d.", src_rect.x, src_rect.y, src_rect.w, src_rect.h));
@@ -337,8 +340,8 @@ static LPDIRECT3DTEXTURE9 d3d_CreateTexture(SDL_Surface * surface, int tex_size_
 	fake->pixels = NULL;
 	SDL_FreeSurface(fake);
 
-	if (alpha) {
-		SDL_SetAlpha(surface, SDL_SRCALPHA, 0);
+	if (has_alpha) {
+		SDL_SetAlpha(surface, SDL_SRCALPHA, alpha);
 	} 
 
 	tex->UnlockRect(0);
