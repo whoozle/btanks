@@ -421,7 +421,7 @@ SDL_Surface *d3dSDL_DisplayFormatAlpha(SDL_Surface *surface) {
 	}
 	assert(idx == info.n);	
 	
-	SDL_Surface *r = SDL_CreateRGBSurface(surface->flags, surface->w, surface->h, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000);
+	SDL_Surface *r = SDL_CreateRGBSurface(surface->flags | SDL_SRCALPHA, surface->w, surface->h, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000);
 	if (r == NULL)
 		return NULL;
 
