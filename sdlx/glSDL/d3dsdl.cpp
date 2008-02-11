@@ -678,8 +678,9 @@ static void d3dSDL_UnlockSurface2(SDL_Surface *surface) {
 
 	assert(tex->lrect != NULL);
 	assert(surface->pixels != NULL);
-	bool alpha = (surface->flags & SDL_SRCALPHA) != 0;
-	if (alpha) {
+
+	const bool has_alpha = (surface->flags & SDL_SRCALPHA) == SDL_SRCALPHA;
+	if (has_alpha) {
 		SDL_SetAlpha(surface, 0, 0);
 	}
 
@@ -712,7 +713,7 @@ static void d3dSDL_UnlockSurface2(SDL_Surface *surface) {
 			tex->lrect[idx].pBits = NULL;
 		}
 	}
-	if (alpha) {
+	if (has_alpha) {
 		SDL_SetAlpha(surface, SDL_SRCALPHA, 0);
 	}
 	
