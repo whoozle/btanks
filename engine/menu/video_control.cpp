@@ -37,13 +37,12 @@ base(base), name(name), mpeg(0), lock(SDL_CreateMutex()), active(false), started
 		}
 
 		shadow.createRGB(screenshot->getWidth(), screenshot->getHeight(), 24, SDL_SWSURFACE);
-		shadow.fill(0);
-		shadow.setAlpha(0, 0);
+		shadow.fill(shadow.mapRGBA(0, 0, 255, 0));
+		shadow.setAlpha(255, 0);
 
 		frame.createRGB(screenshot->getWidth(), screenshot->getHeight(), 24, SDL_SWSURFACE);
-		frame.fill(0);
+		frame.fill(frame.mapRGBA(255, 255, 255, 255));
 		frame.convertAlpha();
-		frame.setAlpha(0, 0);
 
 		LOG_DEBUG(("video file info: %dx%d, %.02g seconds", mpeg_info.width, mpeg_info.height, mpeg_info.total_time));
 
@@ -113,10 +112,18 @@ void VideoControl::tick(const float dt) {
 		//LOG_DEBUG(("syncing frame with shadow"));
 		SDL_mutexP(lock);
 		try {
-			frame.setAlpha(0, 0);
-			shadow.setAlpha(0, 0);
-			frame.copyFrom(shadow, 0, 0);
-			frame.setAlpha(0, 0);
+			frame.lock();
+			shadow.lock();
+			for(int y = 0; y  < frame.getHeight(); ++y) {
+				for(int x = 0; x < frame.getWidth(); ++x) {
+					Uint8 r, g, b, a;
+					shadow.getRGBA(shadow.getPixel(x, y), r, g, b, a);
+					if (a == 0) 
+					frame.putPixel(x, y, frame.mapRGBA(r, g, b, 255));
+				}
+			}
+			shadow.unlock();
+			frame.unlock();
 		} catch(...) {
 			SDL_mutexV(lock);
 			throw;
@@ -127,7 +134,7 @@ void VideoControl::tick(const float dt) {
 }
 
 void VideoControl::render(sdlx::Surface &surface, const int x, const int y) {
-	if (mpeg == NULL) {
+	if (mpeg == NULL || !active) {
 		surface.copyFrom(*screenshot, x, y);
 		return;
 	}
