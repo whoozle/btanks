@@ -43,6 +43,9 @@ void DestructableObject::onBreak() {
 
 
 void DestructableObject::destroy() {
+	if (_broken)
+		return;
+	
 		_broken = true;
 		hp = -1;
 		if (_variants.has("make-pierceable"))
