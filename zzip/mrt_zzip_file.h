@@ -12,8 +12,6 @@ namespace sdlx {
 namespace zzip {
 	class ZZIPAPI File : public mrt::BaseFile {
 	public: 
-		const bool readLine(std::string &str, const size_t bufsize = 1024) const;
-
 		//File();
 		File(ZZIP_FILE *f, const sdlx::Mutex &big_lock);
 

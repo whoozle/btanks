@@ -2,6 +2,7 @@
 #define MRT_ZIP_FILE_H__
 
 #include "export_mrt.h"
+#include <stdio.h>
 #include "base_file.h"
 
 namespace mrt {
@@ -23,10 +24,13 @@ public:
 	virtual const bool eof() const;
 
 	virtual const bool readLine(std::string &str, const size_t bufsize = 1024) const;
+	virtual ~ZipFile();
+
 private: 
 	FILE *file;
-	const unsigned method, flags, offset, csize, usize;
-	long voffset;
+	const unsigned method, flags, offset;
+	unsigned long csize, usize;
+	unsigned long voffset;
 };
 
 }

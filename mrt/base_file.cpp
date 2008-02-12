@@ -106,3 +106,17 @@ void BaseFile::writeAll(const std::string &str) const {
 	writeAll(data);
 }
 
+const bool BaseFile::readLine(std::string &str, const size_t bufsize) const {
+	//FIXME FIXME FIXME!!
+	//very stupid and sloooow implementation. consider it as a stub. 
+	str.clear();
+	char c;
+	do {
+		size_t r = read(&c, 1);
+		if (r <= 0)
+			return !str.empty();
+		str += c;
+		if (c == '\n')
+			return true;
+	} while(true);
+}

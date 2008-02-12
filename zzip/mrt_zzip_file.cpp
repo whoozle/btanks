@@ -7,21 +7,6 @@ using namespace zzip;
 //zzip::File::File() : _f(NULL), _endof(true) {}
 zzip::File::File(ZZIP_FILE *f, const sdlx::Mutex &lock) : _f(f), _endof(false), big_lock(lock) {}
 
-const bool File::readLine(std::string &str, const size_t bufsize) const {
-	//FIXME FIXME FIXME!!
-	//very stupid and sloooow implementation. consider it as a stub. 
-	str.clear();
-	char c;
-	do {
-		size_t r = read(&c, 1);
-		if (r <= 0)
-			return !str.empty();
-		str += c;
-		if (c == '\n')
-			return true;
-	} while(true);
-}
-
 void File::open(const std::string &fname, const std::string &mode) {
 	close();
 	sdlx::AutoMutex m(big_lock);
