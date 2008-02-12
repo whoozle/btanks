@@ -8,6 +8,8 @@
 namespace mrt {
 class ZipFile;
 
+struct LocalZipHeader;
+
 class MRTAPI ZipDirectory : public mrt::BaseDirectory {
 public: 
 	ZipDirectory(const std::string &zip);

@@ -7,16 +7,23 @@ using namespace mrt;
 
 //mrt::ZipDirectory xxx;
 struct LocalFileHeader {
+
 	unsigned version;
 	unsigned flags;
 	unsigned compression;
 	unsigned mtime, mdate;
 	unsigned crc32;
 	unsigned csize, usize;
+	
 	std::string fname;
 	mrt::Chunk extra;
-		
-	void read(const mrt::BaseFile &file) {
+	
+private: 
+	unsigned fsize, esize;
+	size_t data_offset;
+	
+protected: 
+	void read0(const mrt::BaseFile &file) {
 		file.readLE16(version);
 		file.readLE16(flags);
 		file.readLE16(compression);
@@ -28,12 +35,13 @@ struct LocalFileHeader {
 		file.readLE32(csize);
 		file.readLE32(usize);
 
-		LOG_DEBUG(("local file record, version: %d, flags: %04x, compression: %d, crc32: %08x, size: %u/%u", version, flags, compression, crc32, csize, usize));
+		LOG_DEBUG(("version: %d, flags: %04x, compression: %d, crc32: %08x, size: %u/%u", version, flags, compression, crc32, csize, usize));
 		
-		unsigned fsize, esize;
 		file.readLE16(fsize);
 		file.readLE16(esize);
-		
+	}
+
+	void readFE(const mrt::BaseFile &file) {
 		if (fsize > 0) {
 			extra.setSize(fsize);
 			if (file.read(extra.getPtr(), fsize) != fsize)
@@ -51,26 +59,69 @@ struct LocalFileHeader {
 		} else {
 			extra.free();
 		}
-		LOG_DEBUG(("file: \"%s\", extra data: %s", fname.c_str(), extra.dump().c_str()));
+		data_offset = file.tell();
+		LOG_DEBUG(("file: \"%s\", extra data: %s, data offset: %u", fname.c_str(), extra.dump().c_str(), (unsigned)data_offset));
+	}
+
+public: 
+	void read(const mrt::BaseFile &file) {
+		read0(file);
+		readFE(file);
+		file.seek(csize, SEEK_CUR);
 	}
 };
 
-
-struct FileHeader {
+struct CentralDirectorySignature : public LocalFileHeader {
+	mrt::Chunk comment;
+	
+	unsigned disk_number;
+	unsigned internal_attrs, external_attrs;
+	int header_offset;
+private: 
+	unsigned comment_size;
+public: 	
 	void read(const mrt::BaseFile &file) {
-	}
+		unsigned version_made;
+		file.readLE16(version_made);
+		LOG_DEBUG(("central directory signature, made by version %d", version_made));
+		read0(file);
+		file.readLE16(comment_size);
+		file.readLE16(disk_number);
+		
+		file.readLE16(internal_attrs);
+		file.readLE32(external_attrs);
+		file.readLE16(header_offset);
+		
+		readFE(file);
+		
+		if (comment_size > 0) {
+			comment.setSize(comment_size);
+			if (file.read(comment.getPtr(), comment_size) != comment_size)
+				throw_ex(("unexpected end of the archive"));
+		} else {
+			comment.free();
+		}
+		LOG_DEBUG(("comment: %s, header offset: %d", comment.dump().c_str(), header_offset));
+	}	
 };
 
 ZipDirectory::ZipDirectory(const std::string &zip) {
 	LOG_DEBUG(("opening archive: %s", zip.c_str()));
 	archive.open(zip, "rb");
 	unsigned magic;
-	archive.readLE32(magic);
-	LOG_DEBUG(("magic: %08x", magic));
-	if (magic != 0x04034b50)
-		throw_ex(("archive must start with local file header. invalid magic: %08x", magic));
-	LocalFileHeader lfh;
-	lfh.read(archive);
+	while(!archive.eof()) {
+		archive.readLE32(magic);
+		if (magic == 0x04034b50) {
+			LocalFileHeader lfh;
+			lfh.read(archive);
+		} else if (magic == 0x02014b50) {
+			CentralDirectorySignature cds;
+			cds.read(archive);
+		} else {
+			LOG_WARN(("unknown magic: %08x", magic));
+			break;
+		}
+	}
 }
 
 void ZipDirectory::open(const std::string &path) {
