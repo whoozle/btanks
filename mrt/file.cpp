@@ -26,7 +26,57 @@
 #include <unistd.h>
 #endif
 
+#ifdef _WINDOWS
+#	ifndef int32_t
+#		define int32_t __int32
+#	endif
+#	ifndef int16_t
+#		define int16_t __int16
+#	endif
+#endif
+
 using namespace mrt;
+
+
+void File::readLE16(int &x) {
+	unsigned t; 
+	readLE16(t);
+	x = (int16_t)t;
+}
+
+void File::readLE32(int &x) {
+	if (_f == NULL)
+		throw_ex(("readLE32 on closed file"));
+	unsigned t; 
+	readLE32(t);
+	x = (int32_t)t;
+}
+
+void File::readLE16(unsigned int &x) {
+	if (_f == NULL)
+		throw_ex(("readLE16 on closed file"));
+
+	unsigned char buf[2];
+	size_t r = read(buf, 2);
+	if (r == (size_t)-1)
+		throw_io(("readLE16 failed"));
+	if (r != 2)
+		throw_ex(("unexpected EOF (read %u bytes)", (unsigned) r));
+	x = buf[0] + (buf[1] << 8);
+}
+
+void File::readLE32(unsigned int &x) {
+	if (_f == NULL)
+		throw_ex(("readLE32 on closed file"));
+
+	unsigned char buf[4];
+	size_t r = read(buf, 4);
+	if (r == (size_t)-1)
+		throw_io(("readLE16 failed"));
+	if (r != 4)
+		throw_ex(("unexpected EOF (read %u bytes)", (unsigned) r));
+	x = buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 16);
+}
 
 File::File():_f(NULL) {}
 
@@ -109,3 +159,4 @@ long File::tell() const {
 		throw_ex(("tell() on uninitialized file"));
 	return ftell(_f);
 }
+

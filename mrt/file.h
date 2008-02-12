@@ -46,6 +46,11 @@ public:
 	virtual const size_t read(void *buf, const size_t size) const;
 	virtual void close();
 	
+	void readLE16(int &x);
+	void readLE32(int &x);
+	void readLE16(unsigned int &x);
+	void readLE32(unsigned int &x);
+	
 	virtual const bool eof() const;
 
 	inline operator FILE*() { return _f; }
