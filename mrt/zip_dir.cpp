@@ -1,7 +1,9 @@
 #include "zip_dir.h"
-#include "mrt/logger.h"
-#include "mrt/chunk.h"
-#include "mrt/exception.h"
+#include "logger.h"
+#include "chunk.h"
+#include "exception.h"
+#include "ioexception.h"
+#include "zip_file.h"
 
 using namespace mrt;
 
@@ -156,9 +158,6 @@ ZipDirectory::ZipDirectory(const std::string &zip) {
 			file.method = lfh.method;
 			file.csize = lfh.csize;
 			file.offset = lfh.data_offset;
-			
-			filenames.insert(lfh.fname);
-			
 		} else if (magic == 0x02014b50) {
 			CentralDirectorySignature cds;
 			cds.read(archive);
@@ -170,11 +169,10 @@ ZipDirectory::ZipDirectory(const std::string &zip) {
 			break;
 		}
 	}
-	LOG_DEBUG(("loaded %u files.", filenames.size()));
+	LOG_DEBUG(("loaded %u files.", headers.size()));
 }
 
-void ZipDirectory::open(const std::string &path) {
-	
+void ZipDirectory::open(const std::string &path_) {
 }
 
 const bool ZipDirectory::opened() const {
@@ -194,7 +192,21 @@ ZipDirectory::~ZipDirectory() {
 }
 
 ZipFile * ZipDirectory::open_file(const std::string &name) const {
-	return NULL;
+	Headers::const_iterator i = headers.find(name);
+	if (i == headers.end())
+		return NULL;
+	const FileDesc &file = i->second;
+	
+	int fd = fileno((FILE *)archive);
+	if (fd == -1)
+		throw_io(("fileno"));
+	int newfd = dup(fd);
+	if (newfd == -1)
+		throw_io(("dup"));
+	FILE *f = fdopen(newfd, "rb");
+	if (f == NULL)
+		throw_io(("fdopen"));
+	return new ZipFile(f, file.method, file.flags, file.offset, file.csize, file.usize);
 }
 
 bool mrt::ZipDirectory::lessnocase::operator()(const std::string& s1, const std::string& s2) const {

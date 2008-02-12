@@ -29,12 +29,12 @@ public:
 	ZipFile * open_file(const std::string &name) const;
 private: 
 	struct FileDesc {
-		unsigned flags, method, offset, csize;
+		unsigned flags, method, offset, csize, usize;
 		FileDesc() : flags(0), method(0), offset(0), csize(0) {}
 	};
 	mrt::File archive;
-	std::map<const std::string, FileDesc, lessnocase> headers;
-	std::set<std::string, lessnocase> filenames;
+	typedef std::map<const std::string, FileDesc, lessnocase> Headers;
+	Headers headers;
 };
 
 }

@@ -7,6 +7,8 @@
 namespace mrt {
 class MRTAPI ZipFile : public mrt::BaseFile {
 public: 
+	ZipFile(FILE *file, const unsigned method, const unsigned flags, const unsigned offset, const unsigned csize, const unsigned usize);
+	
 	virtual void open(const std::string &fname, const std::string &mode);
 	virtual const bool opened() const;
 
@@ -19,6 +21,12 @@ public:
 	virtual void close();
 	
 	virtual const bool eof() const;
+
+	virtual const bool readLine(std::string &str, const size_t bufsize = 1024) const;
+private: 
+	FILE *file;
+	const unsigned method, flags, offset, csize, usize;
+	long voffset;
 };
 
 }
