@@ -83,7 +83,8 @@ static int    stream_seek_func  (void *datasource, ogg_int64_t offset, int whenc
 	assert(datasource != NULL);
 	mrt::BaseFile *file = (mrt::BaseFile *)datasource;
 	TRY { 
-		return file->seek(offset, whence);
+		file->seek(offset, whence);
+		return 0;
 	} CATCH("seek_cb", return -1);
 }
 
