@@ -66,7 +66,7 @@ void OggStream::play(const std::string &fname, const bool repeat, const float vo
 }
 
 static size_t stream_read_func  (void *ptr, size_t size, size_t nmemb, void *datasource) {
-	LOG_DEBUG(("read(%p, %u, %u)", ptr, (unsigned)size, (unsigned)nmemb));
+	//LOG_DEBUG(("read(%p, %u, %u)", ptr, (unsigned)size, (unsigned)nmemb));
 	assert(datasource != NULL);
 	mrt::BaseFile *file = (mrt::BaseFile *)datasource;
 	TRY { 
@@ -79,7 +79,7 @@ static size_t stream_read_func  (void *ptr, size_t size, size_t nmemb, void *dat
 }
 
 static int    stream_seek_func  (void *datasource, ogg_int64_t offset, int whence) {
-	LOG_DEBUG(("seek(%u, %d)", (unsigned)offset, whence));
+	//LOG_DEBUG(("seek(%u, %d)", (unsigned)offset, whence));
 	assert(datasource != NULL);
 	mrt::BaseFile *file = (mrt::BaseFile *)datasource;
 	TRY { 
