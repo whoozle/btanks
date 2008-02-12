@@ -49,6 +49,12 @@ public:
 	virtual const bool eof() const = 0;
 
 	virtual const bool readLine(std::string &str, const size_t bufsize = 1024) const = 0;
+
+	void readLE16(int &x) const;
+	void readLE32(int &x) const;
+	void readLE16(unsigned int &x) const;
+	void readLE32(unsigned int &x) const;
+
 };
 
 }

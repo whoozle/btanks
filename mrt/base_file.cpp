@@ -22,6 +22,48 @@
 
 using namespace mrt;
 
+#ifdef _WINDOWS
+#	ifndef int32_t
+#		define int32_t __int32
+#	endif
+#	ifndef int16_t
+#		define int16_t __int16
+#	endif
+#endif
+
+
+void BaseFile::readLE16(int &x) const {
+	unsigned t; 
+	readLE16(t);
+	x = (int16_t)t;
+}
+
+void BaseFile::readLE32(int &x) const {
+	unsigned t; 
+	readLE32(t);
+	x = (int32_t)t;
+}
+
+void BaseFile::readLE16(unsigned int &x) const {
+	unsigned char buf[2];
+	size_t r = read(buf, 2);
+	if (r == (size_t)-1)
+		throw_io(("readLE16 failed"));
+	if (r != 2)
+		throw_ex(("unexpected EOF (read %u bytes)", (unsigned) r));
+	x = buf[0] + (buf[1] << 8);
+}
+
+void BaseFile::readLE32(unsigned int &x) const {
+	unsigned char buf[4];
+	size_t r = read(buf, 4);
+	if (r == (size_t)-1)
+		throw_io(("readLE16 failed"));
+	if (r != 4)
+		throw_ex(("unexpected EOF (read %u bytes)", (unsigned) r));
+	x = buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24);
+}
+
 BaseFile::~BaseFile() {
 	close();
 }
