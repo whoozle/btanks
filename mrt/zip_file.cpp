@@ -10,6 +10,8 @@ file(file), method(method), flags(flags), offset(offset), csize(csize), usize(us
 	if (method != 0)
 		throw_ex(("compression method %u unsupported", method));
 	//LOG_DEBUG(("file created with usize: %ld", this->usize));
+	if (fseek(file, offset, SEEK_SET) == -1)
+		throw_io(("fseek(%lu, SEEK_SET)", offset));
 }
 
 void ZipFile::open(const std::string &fname, const std::string &mode) {
@@ -23,7 +25,7 @@ const bool ZipFile::opened() const {
 void ZipFile::seek(long off, int whence) const {
 	switch(whence) {
 	case SEEK_SET: {
-		if (off < 0 || off >= usize) 
+		if (off < 0 || off > usize) 
 			throw_ex(("seek(%ld, SEEK_SET) jumps out of file (%ld)", off, usize));
 		
 		long r = fseek(file, offset + off, whence);
