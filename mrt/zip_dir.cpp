@@ -35,7 +35,7 @@ protected:
 		file.readLE32(csize);
 		file.readLE32(usize);
 
-		LOG_DEBUG(("version: %d, flags: %04x, compression: %d, crc32: %08x, size: %u/%u", version, flags, compression, crc32, csize, usize));
+		//LOG_DEBUG(("version: %d, flags: %04x, compression: %d, crc32: %08x, size: %u/%u", version, flags, compression, crc32, csize, usize));
 		
 		file.readLE16(fsize);
 		file.readLE16(esize);
@@ -60,7 +60,7 @@ protected:
 			extra.free();
 		}
 		data_offset = file.tell();
-		LOG_DEBUG(("file: \"%s\", extra data: %s, data offset: %u", fname.c_str(), extra.dump().c_str(), (unsigned)data_offset));
+		//LOG_DEBUG(("file: \"%s\", extra data: %s, data offset: %u", fname.c_str(), extra.dump().c_str(), (unsigned)data_offset));
 	}
 
 public: 
@@ -83,7 +83,7 @@ public:
 	void read(const mrt::BaseFile &file) {
 		unsigned version_made;
 		file.readLE16(version_made);
-		LOG_DEBUG(("central directory signature, made by version %d", version_made));
+		//LOG_DEBUG(("central directory signature, made by version %d", version_made));
 		read0(file);
 		file.readLE16(comment_size);
 		file.readLE16(disk_number);
@@ -101,7 +101,7 @@ public:
 		} else {
 			comment.free();
 		}
-		LOG_DEBUG(("comment: %s, header offset: %d", comment.dump().c_str(), header_offset));
+		//LOG_DEBUG(("comment: %s, header offset: %d", comment.dump().c_str(), header_offset));
 	}	
 };
 
