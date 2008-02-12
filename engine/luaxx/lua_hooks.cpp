@@ -861,6 +861,7 @@ void LuaHooks::load(const std::string &name) {
 	lua_register(state, "map_size", lua_hooks_map_size);
 	lua_register(state, "set_specials", lua_hooks_set_specials);
 	lua_register(state, "play_sound", lua_hooks_play_sound);
+	lua_register(state, "stop_sound", lua_hooks_stop_sound);
 	
 	state.call(0, LUA_MULTRET);
 	
@@ -870,7 +871,7 @@ void LuaHooks::load(const std::string &name) {
 }
 
 bool LuaHooks::check_function(const std::string &name) {
-	int top0 = lua_gettop(state);
+	lua_settop(state, 0);
 	
 	lua_getglobal(state, name.c_str());
 	bool r = !(lua_isnoneornil(state, -1));
@@ -878,7 +879,6 @@ bool LuaHooks::check_function(const std::string &name) {
 	LOG_DEBUG(("checking for function: %s: %c", name.c_str(), r?'+':'-'));
 	lua_pop(state, 1);
 
-	assert(lua_gettop(state) == top0);
 	return r;
 }
 
@@ -886,7 +886,7 @@ const bool LuaHooks::on_spawn(const std::string &classname, const std::string &a
 	if (!has_on_spawn)
 		return true;
 	
-	int top0 = lua_gettop(state);
+	lua_settop(state, 0);
 	
 	lua_getglobal(state, "on_spawn");
 	lua_pushstring(state, classname.c_str());
@@ -898,14 +898,13 @@ const bool LuaHooks::on_spawn(const std::string &classname, const std::string &a
 	lua_pop(state, 1);
 	LOG_DEBUG(("on spawn returns %s", r?"true":"false"));
 
-	assert(lua_gettop(state) == top0);
-	
 	return r;
 }
 
 void LuaHooks::on_load() {
 	if (!has_on_load)
 		return;
+
 
 	LOG_DEBUG(("calling on_load()"));
 	lua_getglobal(state, "on_load");
@@ -917,37 +916,30 @@ void LuaHooks::on_tick(const float dt) {
 	if (!has_on_tick)
 		return;
 	
-	int top0 = lua_gettop(state);
+	lua_settop(state, 0);
 	
 	lua_getglobal(state, "on_tick");
 	lua_pushnumber(state, dt);
 
 	state.call(1, 0);
-
-	assert(lua_gettop(state) == top0);
 }
 
 void LuaHooks::call(const std::string &method) {
 	LOG_DEBUG(("calling %s()", method.c_str()));
-	int top0 = lua_gettop(state);
+	lua_settop(state, 0);
 
 	lua_getglobal(state, method.c_str());
 	state.call(0, 0);
-
-	assert(lua_gettop(state) == top0);
 }
 
 void LuaHooks::call1(const std::string &method, const int id) {
 	LOG_DEBUG(("calling %s(%d)", method.c_str(), id));
-	int top0 = lua_gettop(state);
-	
+	lua_settop(state, 0);
 
 	lua_getglobal(state, method.c_str());
 	lua_pushinteger(state, id);
 	
 	state.call(1, 0);
-
-	assert(lua_gettop(state) == top0);
 }
 
 void LuaHooks::clear() {
