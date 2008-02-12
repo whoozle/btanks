@@ -73,7 +73,7 @@ vorbis = 'vorbisfile'
 if debug and sys.platform == "win32": 
 	vorbis = 'vorbisfile_d'
 
-bt_libs = ['mrt', 'zzip', 'sdlx',  sigc_lib, smpeg_lib, 'SDL', vorbis, al_lib]
+bt_libs = ['mrt', 'sdlx',  sigc_lib, smpeg_lib, 'SDL', vorbis, al_lib]
 
 if sys.platform != 'win32' and env['enable_lua']:
 	got_lua = False
@@ -123,7 +123,6 @@ if sys.platform != 'win32':
 	bt_env.Append(LINKFLAGS=['-Wl,-rpath,'+ lib_dir])
 	bt_env.Append(LINKFLAGS=['-Wl,-rpath-link,build/' + env['mode'] + '/mrt'])
 	bt_env.Append(LINKFLAGS=['-Wl,-rpath-link,build/' + env['mode'] + '/sdlx'])
-	bt_env.Append(LINKFLAGS=['-Wl,-rpath-link,build/' + env['mode'] + '/zzip'])
 
 bt_main = bt_env.Program('bt', bt_main_sources, LIBS=bt_main_libs, RPATH=[lib_dir])
 Install('#', bt_main)

@@ -191,7 +191,8 @@ ZipDirectory::~ZipDirectory() {
 	archive.close();
 }
 
-ZipFile * ZipDirectory::open_file(const std::string &name) const {
+ZipFile * ZipDirectory::open_file(const std::string &name_) const {
+	std::string name = mrt::FSNode::normalize(name_);
 	Headers::const_iterator i = headers.find(name);
 	if (i == headers.end())
 		return NULL;
@@ -215,4 +216,13 @@ bool mrt::ZipDirectory::lessnocase::operator()(const std::string& s1, const std:
 #else
 		return strcasecmp(s1.c_str(), s2.c_str()) < 0;
 #endif
+}
+
+bool ZipDirectory::exists(const std::string &fname_) const {
+	std::string fname = mrt::FSNode::normalize(fname_);
+	return headers.find(fname) != headers.end();
+}
+
+void ZipDirectory::enumerate(std::vector<std::string>&files, const std::string &root) const {
+	
 }

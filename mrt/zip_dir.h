@@ -7,11 +7,12 @@
 #include <map>
 #include <set>
 #include <string>
+#include <vector>
 
 namespace mrt {
 class ZipFile;
 
-class MRTAPI ZipDirectory : public mrt::BaseDirectory {
+class MRTAPI ZipDirectory : public mrt::BaseDirectory, public mrt::FSNode {
 
 struct lessnocase {
 	bool operator()(const std::string& s1, const std::string& s2) const;
@@ -27,6 +28,12 @@ public:
 	virtual void create(const std::string &path, const bool recurse = false);
 	virtual ~ZipDirectory();
 	ZipFile * open_file(const std::string &name) const;
+
+	//FSNode: 
+	virtual bool exists(const std::string &fname) const;
+
+	void enumerate(std::vector<std::string>&files, const std::string &root) const;
+
 private: 
 	struct FileDesc {
 		unsigned flags, method, offset, csize, usize;

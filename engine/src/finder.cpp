@@ -21,8 +21,8 @@
 #include "mrt/directory.h"
 #include "mrt/fmt.h"
 #include "mrt/file.h"
-#include "zzip/mrt_zzip_file.h"
-#include "zzip/mrt_zzip_dir.h"
+#include "mrt/zip_file.h"
+#include "mrt/zip_dir.h"
 #include <algorithm>
 #include "utils.h"
 #include "scoped_ptr.h"
@@ -30,8 +30,8 @@
 IMPLEMENT_SINGLETON(Finder, IFinder);
 
 struct Package {
-	std::set<std::string> files;
-	zzip::Directory root;
+	//std::set<std::string> files;
+	mrt::ZipDirectory *root;
 };
 
 mrt::BaseFile *IFinder::get_file(const std::string &file, const std::string &mode) const {
@@ -51,12 +51,12 @@ mrt::BaseFile *IFinder::get_file(const std::string &file, const std::string &mod
 
 	const Package * package = i->second;
 	std::string name = mrt::FSNode::normalize(file.substr(p + 1));
-	return package->root.open_file(name);
+	return package->root->open_file(name);
 }
 
 const bool IFinder::exists(const std::string &base, const std::string &name) const {
 	Packages::const_iterator i = packages.find(base);
-	if (i != packages.end() && i->second->files.find(mrt::FSNode::normalize(name)) != i->second->files.end())
+	if (i != packages.end() && i->second->root->exists(name))
 		return true;
 
 	mrt::Directory dir;
@@ -66,7 +66,7 @@ const bool IFinder::exists(const std::string &base, const std::string &name) con
 const bool IFinder::exists(const std::string &name) const {
 	for(Packages::const_iterator i = packages.begin(); i != packages.end(); ++i) {
 		const Package * package = i->second;
-		if (package->files.find(name) != package->files.end())
+		if (package->root->exists(name))
 			return true;	
 	}
 
@@ -104,13 +104,16 @@ IFinder::IFinder() {
 				LOG_DEBUG(("found packed resources, adding %s to the list", dat.c_str()));
 
 				scoped_ptr<Package> package(new Package);
-				package->root.open(dat);
+				package->root = new mrt::ZipDirectory(dat);
+				/*
+				package->root->open(dat);
 				std::string file;
 				while(!(file = package->root.read()).empty()) {
 					//LOG_DEBUG(("file: %s", file.c_str()));
 					package->files.insert(file);
 				}
 				LOG_DEBUG(("%u files were read from the archive", (unsigned)package->files.size()));
+				*/
 				delete packages[r[i]];
 				packages[r[i]] = package.release();
 				if (!found)
@@ -192,7 +195,7 @@ const std::string IFinder::find(const std::string &base, const std::string &name
 		if (p_i != packages.end()) {
 			//LOG_DEBUG(("checking for %s in archive", files[j].c_str()));
 			std::string n = mrt::FSNode::normalize(files[j]);
-			if (p_i->second->files.find(n) != p_i->second->files.end())
+			if (p_i->second->root->exists(n))
 				return base + ":" + n;
 		}
 	}
@@ -246,22 +249,12 @@ void IFinder::enumerate(std::vector<std::string>&files, const std::string &base,
 	if (p_i == packages.end())
 		return;
 
-	for(std::set<std::string>::const_iterator f = p_i->second->files.begin(); p_i->second->files.end() != f; ++f) {
-		if (!root.empty()) {
-			if (f->compare(0, root.size(), root))
-				continue;
-			std::string file = f->substr(root.size() + 1);
-			if (!file.empty())
-				files.push_back(file);
-		} else {
-			files.push_back(*f);
-		}
-	}
+	p_i->second->root->enumerate(files, root);
 }
 
 const bool IFinder::packed(const std::string &base) const {
 	Packages::const_iterator p_i = packages.find(base);
 	if (p_i == packages.end())	
 		return false;
-	return !p_i->second->files.empty();
+	return p_i->second->root != NULL;
 }
