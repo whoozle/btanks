@@ -830,7 +830,7 @@ void LuaHooks::load(const std::string &name) {
 	std::string::size_type p = name.find('/');
 	state.load(p != std::string::npos? name.substr(p + 1): name, data);
 	
-	lua_settop(0);
+	lua_settop(state, 0);
 
 	lua_register(state, "print", lua_hooks_print);
 	lua_register(state, "spawn", lua_hooks_spawn);
