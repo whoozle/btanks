@@ -960,6 +960,8 @@ void IGameMonitor::startGame(Campaign *campaign, const std::string &name) {
 	Game->clear();
 	PlayerManager->startServer();
 	GameMonitor->loadMap(campaign, name);
+	if (!Map->loaded())
+		return; //error 
 
 	if (PlayerManager->getSlotsCount() <= 0)
 		throw_ex(("no slots available on map"));
