@@ -10,7 +10,8 @@ class ZipFile;
 
 class MRTAPI ZipDirectory : public mrt::BaseDirectory {
 public: 
-	ZipDirectory();
+	ZipDirectory(const std::string &zip);
+	
 	virtual void open(const std::string &path);
 	virtual const bool opened() const;
 	virtual const std::string read() const;
@@ -19,7 +20,7 @@ public:
 	virtual ~ZipDirectory();
 	ZipFile * open_file(const std::string &name) const;
 private: 
-	
+	mrt::File archive;
 };
 
 }
