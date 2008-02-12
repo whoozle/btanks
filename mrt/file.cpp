@@ -94,14 +94,12 @@ FILE * File::unlink() {
 	return r;
 }
 
-int File::seek(long offset, int whence) const {
+void File::seek(long offset, int whence) const {
 	if (_f == NULL)
 		throw_ex(("seek(%ld, %d) on uninitialized file", offset, whence));
 		
-	int r = fseek(_f, offset, whence);
-	if (r < 0)
+	if (fseek(_f, offset, whence) == -1)
 		throw_io(("seek(%ld, %d)", offset, whence));
-	return r;
 }
 
 long File::tell() const {

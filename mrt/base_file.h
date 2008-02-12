@@ -38,7 +38,7 @@ public:
 	virtual void open(const std::string &fname, const std::string &mode) = 0;
 	virtual const bool opened() const = 0;
 	
-	virtual int seek(long offset, int whence) const = 0;
+	virtual void seek(long offset, int whence) const = 0;
 	virtual long tell() const = 0;
 	virtual void write(const Chunk &ch) const = 0;
 

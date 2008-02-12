@@ -157,6 +157,7 @@ ZipDirectory::ZipDirectory(const std::string &zip) {
 			file.flags = lfh.flags;
 			file.method = lfh.method;
 			file.csize = lfh.csize;
+			file.usize = lfh.usize;
 			file.offset = lfh.data_offset;
 		} else if (magic == 0x02014b50) {
 			CentralDirectorySignature cds;
@@ -224,5 +225,18 @@ bool ZipDirectory::exists(const std::string &fname_) const {
 }
 
 void ZipDirectory::enumerate(std::vector<std::string>&files, const std::string &root) const {
-	
+	if (root.empty()) {
+		for(Headers::const_iterator i = headers.begin(); i != headers.end(); ++i) {
+			files.push_back(i->first);
+		}
+	} else {
+		for(Headers::const_iterator i = headers.begin(); i != headers.end(); ++i) {
+			const std::string &fname = i->first;
+			if (fname.compare(0, root.size(), root))
+				continue;
+			std::string file = fname.substr(root.size() + 1);
+			if (!file.empty())
+				files.push_back(file);
+		}
+	}
 }
