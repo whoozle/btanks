@@ -75,7 +75,7 @@ void File::readLE32(unsigned int &x) {
 		throw_io(("readLE16 failed"));
 	if (r != 4)
 		throw_ex(("unexpected EOF (read %u bytes)", (unsigned) r));
-	x = buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 16);
+	x = buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24);
 }
 
 File::File():_f(NULL) {}
