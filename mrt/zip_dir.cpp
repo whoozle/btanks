@@ -30,28 +30,28 @@ struct LocalFileHeader {
 
 		LOG_DEBUG(("local file record, version: %d, flags: %04x, compression: %d, crc32: %08x, size: %u/%u", version, flags, compression, crc32, csize, usize));
 		
-		unsigned size;
-		file.readLE16(size);
+		unsigned fsize, esize;
+		file.readLE16(fsize);
+		file.readLE16(esize);
 		
-		if (size > 0) {
-			extra.setSize(size);
-			if (file.read(extra.getPtr(), size) != size)
+		if (fsize > 0) {
+			extra.setSize(fsize);
+			if (file.read(extra.getPtr(), fsize) != fsize)
 				throw_ex(("unexpected end of archive"));
 
-			fname.assign((const char *)extra.getPtr(), size);
+			fname.assign((const char *)extra.getPtr(), fsize);
 		} else {
 			fname.clear();
 		}
 
-		file.readLE16(size);
-		if (size > 0) {
-			extra.setSize(size);
-			if (file.read(extra.getPtr(), size) != size)
+		if (esize > 0) {
+			extra.setSize(esize);
+			if (file.read(extra.getPtr(), esize) != esize)
 				throw_ex(("unexpected end of archive"));
 		} else {
 			extra.free();
 		}
-		LOG_DEBUG(("file: %s, extra data: %u bytes", fname.c_str(), (unsigned)extra.getSize()));
+		LOG_DEBUG(("file: \"%s\", extra data: %s", fname.c_str(), extra.dump().c_str()));
 	}
 };
 
