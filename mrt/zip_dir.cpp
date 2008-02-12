@@ -90,7 +90,7 @@ public:
 		
 		file.readLE16(internal_attrs);
 		file.readLE32(external_attrs);
-		file.readLE16(header_offset);
+		file.readLE32(header_offset);
 		
 		readFE(file);
 		
@@ -105,18 +105,56 @@ public:
 	}	
 };
 
+
+struct EndOfCentralDirectorySignature {
+	unsigned disk_number, central_disk_number, central_on_this_disk;
+	unsigned entries;
+	
+	unsigned size;
+	int central_offset;
+
+	mrt::Chunk comment;
+	
+private: 
+	unsigned comment_size;
+public: 	
+	void read(const mrt::BaseFile &file) {
+		file.readLE16(disk_number);
+		file.readLE16(central_disk_number);
+		file.readLE16(central_on_this_disk);
+		file.readLE16(entries);
+		
+		file.readLE32(size);
+		file.readLE32(central_offset);
+		file.readLE16(comment_size);
+		if (comment_size > 0) {
+			comment.setSize(comment_size);
+			if (file.read(comment.getPtr(), comment_size) != comment_size) 
+				throw_ex(("unexpected end of the archive"));
+		} else comment.free();
+	}
+};
+
+
 ZipDirectory::ZipDirectory(const std::string &zip) {
 	LOG_DEBUG(("opening archive: %s", zip.c_str()));
 	archive.open(zip, "rb");
 	unsigned magic;
 	while(!archive.eof()) {
-		archive.readLE32(magic);
+		try {
+			archive.readLE32(magic);
+		} catch(...) {
+			break;
+		}
 		if (magic == 0x04034b50) {
 			LocalFileHeader lfh;
 			lfh.read(archive);
 		} else if (magic == 0x02014b50) {
 			CentralDirectorySignature cds;
 			cds.read(archive);
+		} else if (magic == 0x06054b50) {
+			EndOfCentralDirectorySignature ecds;
+			ecds.read(archive);
 		} else {
 			LOG_WARN(("unknown magic: %08x", magic));
 			break;

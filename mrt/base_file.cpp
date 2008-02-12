@@ -50,7 +50,7 @@ void BaseFile::readLE16(unsigned int &x) const {
 	if (r == (size_t)-1)
 		throw_io(("readLE16 failed"));
 	if (r != 2)
-		throw_ex(("unexpected EOF (read %u bytes)", (unsigned) r));
+		throw_ex(("unexpected EOF (read %u of 2 bytes)", (unsigned) r));
 	x = buf[0] + (buf[1] << 8);
 }
 
@@ -60,7 +60,7 @@ void BaseFile::readLE32(unsigned int &x) const {
 	if (r == (size_t)-1)
 		throw_io(("readLE16 failed"));
 	if (r != 4)
-		throw_ex(("unexpected EOF (read %u bytes)", (unsigned) r));
+		throw_ex(("unexpected EOF (read %u of 4 bytes)", (unsigned) r));
 	x = buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24);
 }
 
