@@ -101,10 +101,11 @@ void MapPicker::tick(const float dt) {
 	const MapDesc &map = getCurrentMap();
 	_upper_box->value = map.game_type;
 
-	if (_upper_box->changed() || _index != _list->get()) {
-		_upper_box->reset();
-
+	if (_upper_box->changed() || _index != _list->get() || _list->changed()) {
 		_index = _list->get();
+		//LOG_DEBUG(("index: %d", _index));
+		_list->reset();
+		_upper_box->reset();
 
 		Config->set("menu.default-mp-map", _maps[_index].name);
 		_details->set(_maps[_index]);
