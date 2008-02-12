@@ -10,23 +10,24 @@ struct LocalFileHeader {
 
 	unsigned version;
 	unsigned flags;
-	unsigned compression;
+	unsigned method;
 	unsigned mtime, mdate;
 	unsigned crc32;
 	unsigned csize, usize;
 	
 	std::string fname;
 	mrt::Chunk extra;
+
+	size_t data_offset;
 	
 private: 
 	unsigned fsize, esize;
-	size_t data_offset;
 	
 protected: 
 	void read0(const mrt::BaseFile &file) {
 		file.readLE16(version);
 		file.readLE16(flags);
-		file.readLE16(compression);
+		file.readLE16(method);
 
 		file.readLE16(mtime);
 		file.readLE16(mdate);
@@ -149,6 +150,15 @@ ZipDirectory::ZipDirectory(const std::string &zip) {
 		if (magic == 0x04034b50) {
 			LocalFileHeader lfh;
 			lfh.read(archive);
+			
+			FileDesc &file = headers[lfh.fname];
+			file.flags = lfh.flags;
+			file.method = lfh.method;
+			file.csize = lfh.csize;
+			file.offset = lfh.data_offset;
+			
+			filenames.insert(lfh.fname);
+			
 		} else if (magic == 0x02014b50) {
 			CentralDirectorySignature cds;
 			cds.read(archive);
@@ -160,6 +170,7 @@ ZipDirectory::ZipDirectory(const std::string &zip) {
 			break;
 		}
 	}
+	LOG_DEBUG(("loaded %u files.", filenames.size()));
 }
 
 void ZipDirectory::open(const std::string &path) {
@@ -184,4 +195,12 @@ ZipDirectory::~ZipDirectory() {
 
 ZipFile * ZipDirectory::open_file(const std::string &name) const {
 	return NULL;
+}
+
+bool mrt::ZipDirectory::lessnocase::operator()(const std::string& s1, const std::string& s2) const {
+#ifdef _WINDOWS
+		return _stricmp(s1.c_str(), s2.c_str()) < 0;
+#else
+		return strcasecmp(s1.c_str(), s2.c_str()) < 0;
+#endif
 }

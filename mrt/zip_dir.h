@@ -4,13 +4,19 @@
 #include "export_mrt.h"
 #include "base_directory.h"
 #include "file.h"
+#include <map>
+#include <set>
+#include <string>
 
 namespace mrt {
 class ZipFile;
 
-struct LocalZipHeader;
-
 class MRTAPI ZipDirectory : public mrt::BaseDirectory {
+
+struct lessnocase {
+	bool operator()(const std::string& s1, const std::string& s2) const;
+};
+
 public: 
 	ZipDirectory(const std::string &zip);
 	
@@ -22,7 +28,13 @@ public:
 	virtual ~ZipDirectory();
 	ZipFile * open_file(const std::string &name) const;
 private: 
+	struct FileDesc {
+		unsigned flags, method, offset, csize;
+		FileDesc() : flags(0), method(0), offset(0), csize(0) {}
+	};
 	mrt::File archive;
+	std::map<const std::string, FileDesc, lessnocase> headers;
+	std::set<std::string, lessnocase> filenames;
 };
 
 }
