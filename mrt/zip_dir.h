@@ -42,6 +42,7 @@ private:
 	mrt::File archive;
 	typedef std::map<const std::string, FileDesc, lessnocase> Headers;
 	Headers headers;
+	std::string fname;
 };
 
 }

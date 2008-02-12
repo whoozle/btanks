@@ -139,7 +139,7 @@ public:
 };
 
 
-ZipDirectory::ZipDirectory(const std::string &zip) {
+ZipDirectory::ZipDirectory(const std::string &zip) : fname(zip) {
 	LOG_DEBUG(("opening archive: %s", zip.c_str()));
 	archive.open(zip, "rb");
 	unsigned magic;
@@ -198,16 +198,11 @@ ZipFile * ZipDirectory::open_file(const std::string &name_) const {
 	if (i == headers.end())
 		return NULL;
 	const FileDesc &file = i->second;
-	
-	int fd = fileno((FILE *)archive);
-	if (fd == -1)
-		throw_io(("fileno"));
-	int newfd = dup(fd);
-	if (newfd == -1)
-		throw_io(("dup"));
-	FILE *f = fdopen(newfd, "rb");
+
+	FILE * f = fopen(fname.c_str(), "rb");
 	if (f == NULL)
-		throw_io(("fdopen"));
+		throw_io(("fopen(%s)", fname.c_str()));	
+	
 	return new ZipFile(f, file.method, file.flags, file.offset, file.csize, file.usize);
 }
 

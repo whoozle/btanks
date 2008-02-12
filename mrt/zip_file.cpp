@@ -9,7 +9,7 @@ ZipFile::ZipFile(FILE *file, const unsigned method, const unsigned flags, const 
 file(file), method(method), flags(flags), offset(offset), csize(csize), usize(usize), voffset(0) {
 	if (method != 0)
 		throw_ex(("compression method %u unsupported", method));
-	LOG_DEBUG(("file created with usize: %ld", this->usize));
+	//LOG_DEBUG(("file created with usize: %ld", this->usize));
 }
 
 void ZipFile::open(const std::string &fname, const std::string &mode) {
@@ -41,7 +41,7 @@ void ZipFile::seek(long off, int whence) const {
 		break;
 	}
 	case SEEK_END: {
-		if (off + usize < 0 || off >= 0) 
+		if (off + usize < 0 || off > 0) 
 			throw_ex(("seek(%ld, SEEK_END) jumps out of file (size: %ld)", off,  usize));
 		
 		if (fseek(file, off + usize + offset, SEEK_SET) == -1)
@@ -52,7 +52,7 @@ void ZipFile::seek(long off, int whence) const {
 		throw_ex(("seek: unknown whence value (%d)", whence));
 	}
 	voffset = ftell(file) - offset;
-	if (voffset < 0 || voffset >= usize)
+	if (voffset < 0 || voffset > usize)
 		throw_ex(("invalid voffset(%ld) after seek operation", voffset));
 }
 
@@ -70,12 +70,14 @@ const off_t ZipFile::getSize() const {
 
 const size_t ZipFile::read(void *buf, const size_t size) const {
 	size_t rsize = ((long)size > usize - voffset)? usize - voffset: size;
-	LOG_DEBUG(("read(%u), voffset: %ld, rsize: %u, usize: %u", (unsigned) size, voffset, (unsigned)rsize, (unsigned)usize));
+	//LOG_DEBUG(("read(%u), offset: %u + %ld, rsize: %u, usize: %u", (unsigned) size, offset, voffset, (unsigned)rsize, (unsigned)usize));
 	size_t r = fread(buf, 1, rsize, file);
 	if (r == (size_t)-1) 
 		throw_io(("read(%p, %u)", buf, (unsigned)size));
-	LOG_DEBUG(("result = %lu", (unsigned long) r));
-	voffset += r;
+	//LOG_DEBUG(("result = %lu", (unsigned long) r));
+	voffset = ftell(file) - offset;
+	if (voffset < 0 || voffset > usize)
+		throw_ex(("invalid voffset(%ld) after seek operation", voffset));
 	return r;
 }
 
