@@ -1,6 +1,7 @@
 #include "zip_file.h"
 #include "ioexception.h"
 #include "logger.h"
+#include <errno.h>
 
 using namespace mrt;
 
@@ -18,13 +19,45 @@ const bool ZipFile::opened() const {
 	return file != NULL;
 }
 
-int ZipFile::seek(long offset, int whence) const {
+int ZipFile::seek(long off, int whence) const {
 	switch(whence) {
-	case SEEK_SET: 
-	case SEEK_CUR:
-	case SEEK_END: 
+	case SEEK_SET: {
+		if (off < 0 || off >= usize) {
+			errno = EINVAL;
+			return -1; 
+		}
+		long r = fseek(file, offset + off, whence);
+		if (r == -1)
+			return -1;
 		break;
 	}
+	case SEEK_CUR: {
+		if (off + voffset < 0 || off + voffset >= usize) {
+			errno = EINVAL;
+			return -1;
+		}
+		long r = fseek(file, off, whence);
+		if (r == -1)
+			return -1;
+		break;
+	}
+	case SEEK_END: {
+		if (off + usize < 0 || off >= 0) {
+			errno = EINVAL;
+			return -1;
+		}
+		fseek(file, off, whence);
+		break;
+	}
+	default: {
+		errno = EINVAL;
+		return -1;
+	}
+	}
+	voffset = ftell(file) - offset;
+	if (voffset < 0 || voffset >= usize)
+		throw_ex(("invalid voffset(%ld) after seek operation", voffset));
+	return 0;
 }
 
 long ZipFile::tell() const {
@@ -41,7 +74,7 @@ const off_t ZipFile::getSize() const {
 
 const size_t ZipFile::read(void *buf, const size_t size) const {
 	size_t rsize = size;
-	if (rsize > usize - voffset)
+	if ((long)rsize > usize - voffset)
 		rsize = usize - voffset;
 	size_t r = fread(buf, 1, rsize, file);
 	if (r == (size_t)-1) 
@@ -58,10 +91,6 @@ void ZipFile::close() {
 	
 const bool ZipFile::eof() const {
 	return voffset < usize;
-}
-
-const bool ZipFile::readLine(std::string &str, const size_t bufsize) const {
-
 }
 
 ZipFile::~ZipFile() {

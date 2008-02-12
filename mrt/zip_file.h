@@ -23,14 +23,13 @@ public:
 	
 	virtual const bool eof() const;
 
-	virtual const bool readLine(std::string &str, const size_t bufsize = 1024) const;
 	virtual ~ZipFile();
 
 private: 
 	FILE *file;
 	const unsigned method, flags, offset;
-	unsigned long csize, usize;
-	unsigned long voffset;
+	long csize, usize;
+	mutable long voffset;
 };
 
 }
