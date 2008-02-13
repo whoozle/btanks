@@ -43,10 +43,13 @@ void ai::OldSchool::calculateV(v2<float> &velocity, Object *object) {
 
 	//LOG_DEBUG(("[%d: %s]old school calculate", object->getID(), object->animation.c_str()));
 	int dirs = object->getDirectionsNumber();
+	int dirs0 = dirs;
 
 	int action = mrt::random(3);
+	if (dirs == 1)
+		dirs = 8;
 
-	if (action != 1) {
+	if (action != 1 && dirs0 > 1) {
 		int dir = mrt::random(dirs);
 		object->setDirection(dir);
 		velocity.clear();
