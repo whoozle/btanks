@@ -134,7 +134,7 @@ void Chooser::set(const std::string &name) {
 }
 
 void Chooser::left() {
-	if (_n == 0)
+	if (_n == 0 || _n == 1)
 		return;
 	do {
 		--_i;
@@ -145,7 +145,7 @@ void Chooser::left() {
 }
 
 void Chooser::right() {
-	if (_n == 0)
+	if (_n == 0 || _n == 1)
 		return;
 	do {
 		++_i;
