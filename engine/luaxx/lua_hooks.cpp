@@ -958,6 +958,22 @@ LUA_TRY {
 } LUA_CATCH("cancel_animation")
 }
 
+static int lua_hooks_get_state(lua_State *L) {
+LUA_TRY {
+	int n = lua_gettop(L);
+	if (n < 1) {
+		lua_pushstring(L, "get_state requires object id");
+		lua_error(L);
+		return 0;
+	}
+	int id = lua_tointeger(L, 1);
+
+	Object *o = World->getObjectByID(id);
+	lua_pushstring(L, o != NULL? o->getState().c_str(): "");
+	return 1;
+} LUA_CATCH("get_state")
+}
+
 
 
 #include "finder.h"
@@ -1020,6 +1036,7 @@ void LuaHooks::load(const std::string &name) {
 	lua_register(state, "remove_effect", lua_hooks_remove_effect);
 	lua_register(state, "play_animation", lua_hooks_play_animation);
 	lua_register(state, "cancel_animation", lua_hooks_cancel_animation);
+	lua_register(state, "get_state", lua_hooks_get_state);
 
 	
 	state.call(0, LUA_MULTRET);
