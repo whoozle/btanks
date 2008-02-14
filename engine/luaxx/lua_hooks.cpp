@@ -900,6 +900,66 @@ LUA_TRY {
 } LUA_CATCH("lua_random")
 }
 
+
+
+static int lua_hooks_play_animation(lua_State *L) {
+LUA_TRY {
+	int n = lua_gettop(L);
+	if (n < 2) {
+		lua_pushstring(L, "play_animation requires object id, pose name and optional loop/mode flag");
+		lua_error(L);
+		return 0;
+	}
+	int id = lua_tointeger(L, 1);
+	Object *o = World->getObjectByID(id);
+	if (o == NULL)
+		return 0;
+	
+	std::string pose = lua_tostring(L, 2);
+	if (n > 2) {
+		bool loop = lua_toboolean(L, 3) != 0;
+		o->play(pose, loop);
+	} else {
+		o->playNow(pose);
+	}
+	return 0;
+} LUA_CATCH("play_animation")
+}
+
+static int lua_hooks_cancel_animation(lua_State *L) {
+LUA_TRY {
+	int n = lua_gettop(L);
+	if (n < 1) {
+		lua_pushstring(L, "cancel_animation requires object id, and optional mode(0 - current, 1 - all, 2 - repeatable)");
+		lua_error(L);
+		return 0;
+	}
+	int id = lua_tointeger(L, 1);
+	Object *o = World->getObjectByID(id);
+	if (o == NULL)
+		return 0;
+
+	int mode = n > 1 ? lua_tointeger(L, 2): 0;
+	switch(mode) {
+	case 0: 
+		o->cancel();
+		break;
+	case 1: 
+		o->cancelAll();
+		break;
+	case 2: 
+		o->cancelRepeatable();
+		break;
+	default:  
+		throw_ex(("invalid mode %d", mode));
+	}
+	
+	return 0;
+} LUA_CATCH("cancel_animation")
+}
+
+
+
 #include "finder.h"
 
 void LuaHooks::load(const std::string &name) {
@@ -912,39 +972,53 @@ void LuaHooks::load(const std::string &name) {
 
 	lua_register(state, "print", lua_hooks_print);
 	lua_register(state, "spawn", lua_hooks_spawn);
-	lua_register(state, "object_exists", lua_hooks_object_exists);
-	lua_register(state, "item_exists", lua_hooks_item_exists);
-	lua_register(state, "show_item", lua_hooks_show_item);
-	lua_register(state, "hide_item", lua_hooks_hide_item);
-	lua_register(state, "kill_item", lua_hooks_kill_item);
 	lua_register(state, "game_over", lua_hooks_game_over);
 	lua_register(state, "display_message", lua_hooks_display_message);
 	lua_register(state, "set_timer", lua_hooks_set_timer);
 	lua_register(state, "reset_timer", lua_hooks_reset_timer);
 	lua_register(state, "damage_map", lua_hooks_damage_map);
-	lua_register(state, "enable_ai", lua_hooks_enable_ai);
-	lua_register(state, "disable_ai", lua_hooks_disable_ai);
-	lua_register(state, "play_tune", lua_hooks_play_tune);
-	lua_register(state, "reset_tune", lua_hooks_reset_tune);
-	lua_register(state, "object_property", lua_hooks_object_property);
-	lua_register(state, "kill_object", lua_hooks_kill_object);
-	lua_register(state, "set_slot_property", lua_hooks_set_slot_property);
-	lua_register(state, "slot_property", lua_hooks_slot_property);
 	lua_register(state, "load_map", lua_hooks_load_map);
 	lua_register(state, "visual_effect", lua_hooks_visual_effect);
-	lua_register(state, "add_effect", lua_hooks_add_effect);
-	lua_register(state, "remove_effect", lua_hooks_remove_effect);
-	lua_register(state, "players_number", lua_hooks_players_number);
 	lua_register(state, "set_config_override", lua_hooks_set_config_override);
 	lua_register(state, "random", lua_hooks_random);
 	lua_register(state, "spawn_random", lua_hooks_spawn_random);
 	lua_register(state, "map_size", lua_hooks_map_size);
 	lua_register(state, "set_specials", lua_hooks_set_specials);
+
+//Sound 
 	lua_register(state, "play_sound", lua_hooks_play_sound);
 	lua_register(state, "stop_sound", lua_hooks_stop_sound);
+	lua_register(state, "play_tune", lua_hooks_play_tune);
+	lua_register(state, "reset_tune", lua_hooks_reset_tune);
+
+//Players management
+	lua_register(state, "players_number", lua_hooks_players_number);
+	lua_register(state, "set_slot_property", lua_hooks_set_slot_property);
+	lua_register(state, "slot_property", lua_hooks_slot_property);
+
+//Items management: 
+	lua_register(state, "item_exists", lua_hooks_item_exists);
+	lua_register(state, "show_item", lua_hooks_show_item);
+	lua_register(state, "hide_item", lua_hooks_hide_item);
+	lua_register(state, "kill_item", lua_hooks_kill_item);
+
+
+//AI related
+	lua_register(state, "enable_ai", lua_hooks_enable_ai);
+	lua_register(state, "disable_ai", lua_hooks_disable_ai);
 	lua_register(state, "add_waypoint_object", lua_hooks_add_waypoint_object);
 	lua_register(state, "add_waypoints", lua_hooks_add_waypoints);
 	lua_register(state, "has_waypoints", lua_hooks_has_waypoints);
+
+//Object related functions : 	
+	lua_register(state, "object_exists", lua_hooks_object_exists);
+	lua_register(state, "object_property", lua_hooks_object_property);
+	lua_register(state, "kill_object", lua_hooks_kill_object);
+	lua_register(state, "add_effect", lua_hooks_add_effect);
+	lua_register(state, "remove_effect", lua_hooks_remove_effect);
+	lua_register(state, "play_animation", lua_hooks_play_animation);
+	lua_register(state, "cancel_animation", lua_hooks_cancel_animation);
+
 	
 	state.call(0, LUA_MULTRET);
 	
