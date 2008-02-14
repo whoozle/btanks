@@ -106,11 +106,14 @@ bool OpenMapDialog::onKey(const SDL_keysym sym) {
 		return true;
 
 	case SDLK_RETURN:
+		if (Container::onKey(sym))
+			return true;
+		
 		hide();
 		load();
 		return true;
 	
-	default: ;
+	default: 
 		return Container::onKey(sym);
 	}
 }
