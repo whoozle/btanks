@@ -675,7 +675,7 @@ LUA_TRY {
 } LUA_CATCH("lua_hooks_remove_effect")	
 }
 
-static int lua_hooks_add_waypoint(lua_State *L) {
+static int lua_hooks_add_waypoint_object(lua_State *L) {
 LUA_TRY {
 	int n = lua_gettop(L);
 	if (n < 2) {
@@ -703,7 +703,7 @@ LUA_TRY {
 
 	src->setWay(way);
 	return 0;
-} LUA_CATCH("lua_hooks_add_waypoint")
+} LUA_CATCH("lua_hooks_add_waypoint_object")
 }
 
 static int lua_hooks_set_config_override(lua_State *L) {
@@ -877,7 +877,6 @@ void LuaHooks::load(const std::string &name) {
 	lua_register(state, "visual_effect", lua_hooks_visual_effect);
 	lua_register(state, "add_effect", lua_hooks_add_effect);
 	lua_register(state, "remove_effect", lua_hooks_remove_effect);
-	lua_register(state, "add_waypoint", lua_hooks_add_waypoint);
 	lua_register(state, "players_number", lua_hooks_players_number);
 	lua_register(state, "set_config_override", lua_hooks_set_config_override);
 	lua_register(state, "random", lua_hooks_random);
@@ -886,6 +885,8 @@ void LuaHooks::load(const std::string &name) {
 	lua_register(state, "set_specials", lua_hooks_set_specials);
 	lua_register(state, "play_sound", lua_hooks_play_sound);
 	lua_register(state, "stop_sound", lua_hooks_stop_sound);
+	lua_register(state, "add_waypoint_object", lua_hooks_add_waypoint_object);
+	lua_register(state, "has_waypoint", lua_hooks_add_waypoint);
 	
 	state.call(0, LUA_MULTRET);
 	
