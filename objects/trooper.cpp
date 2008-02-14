@@ -86,6 +86,12 @@ void Trooper::tick(const float dt) {
 
 const bool Trooper::take(const BaseObject *obj, const std::string &type) {
 	if (obj->classname == "missiles" && type == "nuke" && _variants.has("player") && !_variants.has("nukeman")) {
+		if (Config->has("multiplayer.game-type")) {
+			std::string type;
+			Config->get("multiplayer.game-type", type, "deathmatch");
+			if (type == "cooperative") 
+				return Object::take(obj, type);
+		}
 		_variants.add("nukeman");
 		hp = max_hp = 999;
 		init("nukeman");
