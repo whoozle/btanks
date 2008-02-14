@@ -683,6 +683,14 @@ TRY {
 			PlayerState old_state = o.getPlayerState();
 			if (o.disable_ai) {
 				o.Object::calculate(dt);
+			} else if (o.isEffectActive("obey")) {
+				//LOG_DEBUG(("obey!!!"));
+				if (o.isDriven()) {
+					o.calculateWayVelocity();
+				} else {
+					o._velocity.clear();
+				}
+				o.limitRotation(dt, 0.1f, true, false);
 			} else {
 				if (ep) {
 					profiler.reset();
