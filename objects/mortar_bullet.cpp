@@ -26,7 +26,7 @@ public:
 	Object *clone() const { return new MortarBullet(*this); }
 	
 	MortarBullet() : Object("bullet") {
-		impassability = 1;
+		impassability = -1;
 		piercing = true;
 		setDirectionsNumber(1);
 	}
@@ -48,24 +48,23 @@ public:
 		_velocity = v2<float>(0, g * t - v0) + _vel_backup;
 	}
 	
-	void tick(const float dt) {
-		Object::tick(dt);
-		float idle, moving;
-		getTimes(moving, idle);
-		float progress = ttl / (ttl + moving + idle);
-		bool fly = (progress >= 0.3333f && progress < 0.6666f);
-		if (fly && impassability >= 1) {
-			impassability = 0;
-		} else if (!fly && impassability == 0) {
-			impassability = 1;
-		}
-	}
-
 	void emit(const std::string &event, Object * emitter) {
 		if (emitter != NULL && (emitter->classname == "smoke-cloud" || emitter->classname == "bullet") )
 			return;
+			
+		bool collision = event == "collision";
+
+		if (collision) {
+			float idle, moving;
+			getTimes(moving, idle);
+			float progress = ttl / (ttl + moving + idle);
+			bool fly = (progress >= 0.3f && progress < 0.7f);
+			//LOG_DEBUG(("fly: %c, emitter: %s", fly?'+':'-', emitter != NULL?emitter->animation.c_str(): "-"));
+			if (fly && (emitter == NULL || emitter->speed == 0))
+				return;
+		}
 		
-		if (event == "collision" || event == "death") {
+		if (collision || event == "death") {
 			v2<float> dpos;
 			if (emitter) {
 				dpos = getRelativePosition(emitter) / 2;
