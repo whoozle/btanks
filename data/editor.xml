@@ -130,6 +130,8 @@
 	<class id="dumb-missiles-item">
 		<animation id="dumb-missiles-item" />
 	</class>
+	<class id="e209">
+	</class>
 	<class id="escaping-uberzombie">
 	</class>
 	<class id="eternal-flame">
