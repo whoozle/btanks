@@ -131,6 +131,10 @@
 		<animation id="dumb-missiles-item" />
 	</class>
 	<class id="e209">
+		<animation id="e209" />
+	</class>
+	<class id="e209-2">
+		<animation id="e209" />
 	</class>
 	<class id="escaping-uberzombie">
 	</class>
