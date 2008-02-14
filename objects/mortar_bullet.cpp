@@ -47,6 +47,19 @@ public:
 		float t = real_ttl - ttl;
 		_velocity = v2<float>(0, g * t - v0) + _vel_backup;
 	}
+	
+	void tick(const float dt) {
+		Object::tick(dt);
+		float idle, moving;
+		getTimes(moving, idle);
+		float progress = ttl / (ttl + moving + idle);
+		bool fly = (progress >= 0.3333f && progress < 0.6666f);
+		if (fly && impassability >= 1) {
+			impassability = 0;
+		} else if (!fly && impassability == 0) {
+			impassability = 1;
+		}
+	}
 
 	void emit(const std::string &event, Object * emitter) {
 		if (emitter != NULL && (emitter->classname == "smoke-cloud" || emitter->classname == "bullet") )
