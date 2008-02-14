@@ -681,9 +681,7 @@ TRY {
 		GET_CONFIG_VALUE("engine.enable-profiler", bool, ep, false);
 		TRY { 
 			PlayerState old_state = o.getPlayerState();
-			if (o.disable_ai) {
-				o.Object::calculate(dt);
-			} else if (o.isEffectActive("obey")) {
+			if (o.isEffectActive("obey")) {
 				//LOG_DEBUG(("obey!!!"));
 				if (o.isDriven()) {
 					o.calculateWayVelocity();
@@ -691,6 +689,8 @@ TRY {
 					o._velocity.clear();
 				}
 				o.limitRotation(dt, 0.1f, true, false);
+			} else if (o.disable_ai) {
+				o.Object::calculate(dt);
 			} else {
 				if (ep) {
 					profiler.reset();
