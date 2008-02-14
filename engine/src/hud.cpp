@@ -502,6 +502,10 @@ void Hud::render(sdlx::Surface &window) const {
 }
 
 void Hud::renderSplash(sdlx::Surface &window) const {
+	if (_splash == NULL) {
+		window.fill(window.mapRGB(239, 239, 239));
+		return;
+	}
 	int spx = (window.getWidth() - _splash->getWidth()) / 2;
 	int spy = (window.getHeight() - _splash->getHeight()) / 2;
 	
@@ -547,6 +551,10 @@ const bool Hud::renderLoadingBar(sdlx::Surface &window, const float old_progress
 	return true;
 }
 
+static void find_splashes(std::vector<std::string> &splashes, const std::string &prefix) {
+	splashes.clear();
+}
+
 Hud::Hud(const int w, const int h) :  _pointer(NULL), _pointer_dir(-1), _update_radar(true), _map_mode(MapSmall) {
 	Map->load_map_final_signal.connect(sigc::mem_fun(this, &Hud::initMap));
 	Map->destroyed_cells_signal.connect(sigc::mem_fun(this, &Hud::onDestroyMap));
@@ -570,16 +578,18 @@ Hud::Hud(const int w, const int h) :  _pointer(NULL), _pointer_dir(-1), _update_
 			break;
 		}
 	}
-	LOG_DEBUG(("using splash %d", sw));
-	int idx;
-	std::vector<int> indexes;
-	for(idx = 1; idx <= 9; ++idx) {
-		std::string fname = Finder->find(mrt::formatString("tiles/splash_%d_%d.jpg", sw, idx), false);
-		if (!fname.empty())
-			indexes.push_back(idx);
+	LOG_DEBUG(("using splash width %d", sw));
+	std::vector<std::string> files;
+	find_splashes(files, mrt::formatString("tiles/xsplash_%d_", sw));
+	if (files.empty()) {
+		find_splashes(files, mrt::formatString("tiles/splash_%d_", sw));
 	}
-	idx = indexes[mrt::random(indexes.size())];
-	_splash = ResourceManager->loadSurface(mrt::formatString("splash_%d_%d.jpg", sw, idx));
+	
+	if (!files.empty()) {
+		_splash = ResourceManager->loadSurface(files[mrt::random(files.size())]);
+	} else {
+		_splash = NULL;
+	}
 
 	GET_CONFIG_VALUE("hud.radar-update-interval", float, ru, 0.2f);
 	_update_radar.set(ru);
