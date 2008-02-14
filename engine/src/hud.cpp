@@ -553,6 +553,18 @@ const bool Hud::renderLoadingBar(sdlx::Surface &window, const float old_progress
 
 static void find_splashes(std::vector<std::string> &splashes, const std::string &prefix) {
 	splashes.clear();
+	std::vector<std::string> path;
+	Finder->getPath(path);
+	for(size_t i = 0; i < path.size(); ++i) {
+		std::vector<std::string> files; 
+		Finder->enumerate(files, path[i], "tiles");
+		for(size_t j = 0; j < files.size(); ++j) {
+			if (files[j].compare(0, prefix.size(), prefix) != 0)
+				continue;
+			//LOG_DEBUG(("found splash: %s", files[j].c_str()));
+			splashes.push_back(files[j]);
+		}
+	}
 }
 
 Hud::Hud(const int w, const int h) :  _pointer(NULL), _pointer_dir(-1), _update_radar(true), _map_mode(MapSmall) {
@@ -580,9 +592,9 @@ Hud::Hud(const int w, const int h) :  _pointer(NULL), _pointer_dir(-1), _update_
 	}
 	LOG_DEBUG(("using splash width %d", sw));
 	std::vector<std::string> files;
-	find_splashes(files, mrt::formatString("tiles/xsplash_%d_", sw));
+	find_splashes(files, mrt::formatString("xsplash_%d_", sw));
 	if (files.empty()) {
-		find_splashes(files, mrt::formatString("tiles/splash_%d_", sw));
+		find_splashes(files, mrt::formatString("splash_%d_", sw));
 	}
 	
 	if (!files.empty()) {
