@@ -683,6 +683,7 @@ LUA_TRY {
 		lua_error(L);
 		return 0;
 	}
+
 	int src_id = lua_tointeger(L, 1);
 	int dst_id = lua_tointeger(L, 2);
 	Object *src = World->getObjectByID(src_id);
@@ -709,7 +710,7 @@ LUA_TRY {
 static int lua_hooks_add_waypoints(lua_State *L) {
 LUA_TRY {
 	int n = lua_gettop(L);
-	if (n < 2) {
+	if (n < 2 || !lua_istable(L, 2)) {
 		lua_pushstring(L, "add_waypoints requires object id and array");
 		lua_error(L);
 		return 0;
@@ -718,10 +719,32 @@ LUA_TRY {
 	Object *o = World->getObjectByID(id);
 	if (o == NULL)
 		return 0;
-	
+
+	Way way;
+
+	lua_pushnil(L);  /* first key */
+    while (lua_next(L, 2) != 0) {
+    	int idx = lua_gettop(L);
+
+		lua_pushnil(L);
+		std::vector<int> pos;
+		while(lua_next(L, idx)) {
+			pos.push_back(lua_tointeger(L, -1));
+			lua_pop(L, 1);
+		}
+
+		//LOG_DEBUG(("pos.size = %u", (unsigned)pos.size()));
+		if (pos.size() < 2) 
+			throw_ex(("invalid waypoint on position %u", (unsigned)way.size()));
+
+		way.push_back(v2<int>(pos[0], pos[1]));
+		lua_pop(L, 1);  /* removes `value'; keeps `key' for next iteration */
+	}
+
+	o->setWay(way);
 	
 	return 0;
-} LUA_CATCH("lua_hooks_has_waypoints")
+} LUA_CATCH("lua_hooks_add_waypoints")
 }
 
 
