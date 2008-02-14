@@ -652,6 +652,29 @@ LUA_TRY {
 } LUA_CATCH("lua_hooks_add_effect")	
 }
 
+static int lua_hooks_remove_effect(lua_State *L) {
+LUA_TRY {
+	int n = lua_gettop(L);
+	if (n < 2) {
+		lua_pushstring(L, "add_effect requires object id and effect name.");
+		lua_error(L);
+		return 0;
+	}
+
+	int id = lua_tointeger(L, 1);
+	Object *o = World->getObjectByID(id);
+
+	if (o == NULL) {
+		return 0;
+	}
+
+	std::string effect = lua_tostring(L, 2);
+	
+	o->removeEffect(effect);
+	return 0;	
+} LUA_CATCH("lua_hooks_remove_effect")	
+}
+
 static int lua_hooks_add_waypoint(lua_State *L) {
 LUA_TRY {
 	int n = lua_gettop(L);
@@ -853,6 +876,7 @@ void LuaHooks::load(const std::string &name) {
 	lua_register(state, "load_map", lua_hooks_load_map);
 	lua_register(state, "visual_effect", lua_hooks_visual_effect);
 	lua_register(state, "add_effect", lua_hooks_add_effect);
+	lua_register(state, "remove_effect", lua_hooks_remove_effect);
 	lua_register(state, "add_waypoint", lua_hooks_add_waypoint);
 	lua_register(state, "players_number", lua_hooks_players_number);
 	lua_register(state, "set_config_override", lua_hooks_set_config_override);
