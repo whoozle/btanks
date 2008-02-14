@@ -706,6 +706,40 @@ LUA_TRY {
 } LUA_CATCH("lua_hooks_add_waypoint_object")
 }
 
+static int lua_hooks_add_waypoints(lua_State *L) {
+LUA_TRY {
+	int n = lua_gettop(L);
+	if (n < 2) {
+		lua_pushstring(L, "add_waypoints requires object id and array");
+		lua_error(L);
+		return 0;
+	}
+	int id = lua_tointeger(L, 1);
+	Object *o = World->getObjectByID(id);
+	if (o == NULL)
+		return 0;
+	
+	
+	return 0;
+} LUA_CATCH("lua_hooks_has_waypoints")
+}
+
+
+static int lua_hooks_has_waypoints(lua_State *L) {
+LUA_TRY {
+	int n = lua_gettop(L);
+	if (n < 1) {
+		lua_pushstring(L, "has_waypoints requires object id");
+		lua_error(L);
+		return 0;
+	}
+	int id = lua_tointeger(L, 1);
+	Object *o = World->getObjectByID(id);
+	lua_pushboolean(L, o != NULL && o->isDriven()? 1:0);
+	return 1;
+} LUA_CATCH("lua_hooks_has_waypoints")
+}
+
 static int lua_hooks_set_config_override(lua_State *L) {
 LUA_TRY {
 	int n = lua_gettop(L);
@@ -886,7 +920,8 @@ void LuaHooks::load(const std::string &name) {
 	lua_register(state, "play_sound", lua_hooks_play_sound);
 	lua_register(state, "stop_sound", lua_hooks_stop_sound);
 	lua_register(state, "add_waypoint_object", lua_hooks_add_waypoint_object);
-	lua_register(state, "has_waypoint", lua_hooks_add_waypoint);
+	lua_register(state, "add_waypoints", lua_hooks_add_waypoints);
+	lua_register(state, "has_waypoints", lua_hooks_has_waypoints);
 	
 	state.call(0, LUA_MULTRET);
 	
