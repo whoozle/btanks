@@ -970,8 +970,11 @@ void LuaHooks::load(const std::string &name) {
 	std::string::size_type p = name.find('/');
 	state.load(p != std::string::npos? name.substr(p + 1): name, data);
 
+//Utility: 
 	lua_register(state, "print", lua_hooks_print);
-	lua_register(state, "spawn", lua_hooks_spawn);
+	lua_register(state, "random", lua_hooks_random);
+	
+//Game flow / messages / timers
 	lua_register(state, "game_over", lua_hooks_game_over);
 	lua_register(state, "display_message", lua_hooks_display_message);
 	lua_register(state, "set_timer", lua_hooks_set_timer);
@@ -980,8 +983,6 @@ void LuaHooks::load(const std::string &name) {
 	lua_register(state, "load_map", lua_hooks_load_map);
 	lua_register(state, "visual_effect", lua_hooks_visual_effect);
 	lua_register(state, "set_config_override", lua_hooks_set_config_override);
-	lua_register(state, "random", lua_hooks_random);
-	lua_register(state, "spawn_random", lua_hooks_spawn_random);
 	lua_register(state, "map_size", lua_hooks_map_size);
 	lua_register(state, "set_specials", lua_hooks_set_specials);
 
@@ -1002,7 +1003,6 @@ void LuaHooks::load(const std::string &name) {
 	lua_register(state, "hide_item", lua_hooks_hide_item);
 	lua_register(state, "kill_item", lua_hooks_kill_item);
 
-
 //AI related
 	lua_register(state, "enable_ai", lua_hooks_enable_ai);
 	lua_register(state, "disable_ai", lua_hooks_disable_ai);
@@ -1011,6 +1011,8 @@ void LuaHooks::load(const std::string &name) {
 	lua_register(state, "has_waypoints", lua_hooks_has_waypoints);
 
 //Object related functions : 	
+	lua_register(state, "spawn", lua_hooks_spawn);
+	lua_register(state, "spawn_random", lua_hooks_spawn_random);
 	lua_register(state, "object_exists", lua_hooks_object_exists);
 	lua_register(state, "object_property", lua_hooks_object_property);
 	lua_register(state, "kill_object", lua_hooks_kill_object);
