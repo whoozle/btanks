@@ -249,6 +249,9 @@ void Object::tick(const float dt) {
 				Mixer->playRandomSample(this, event.sound.substr(1), event.repeat, event.gain);
 			}
 		}
+		if (pose->need_notify) {
+			emit(event.name);
+		}
 	}
 	
 	_pos += dt * pose->speed;

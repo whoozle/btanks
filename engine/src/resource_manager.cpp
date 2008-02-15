@@ -200,6 +200,9 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 			_pose->gain = atof(gain.c_str());
 			LOG_DEBUG(("adjusting gain for sample %s to %g", sound.c_str(), _pose->gain));
 		}
+		const std::string &notify = attr["notify"];
+		if (!notify.empty() && (notify[0] == 't' || notify[0] == '1'))
+			_pose->need_notify = true;
 		if (!sound.empty() && sound[0] != '@')
 			Mixer->loadSample(sound);
 	} else if (name == "object") {

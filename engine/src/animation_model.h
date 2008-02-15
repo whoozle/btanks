@@ -26,13 +26,15 @@
 
 class BTANKSAPI Pose {
 public:
-	Pose(const float speed, const int z, const std::string &sound) : speed(speed), z(z), sound(sound), gain(1.0f), frames() {}
+	Pose(const float speed, const int z, const std::string &sound) : 
+		speed(speed), z(z), sound(sound), gain(1.0f), frames(), need_notify(false) {}
 
 	const float speed;
 	int z;
 	std::string sound;
 	float gain;
 	std::vector<unsigned int> frames;
+	bool need_notify;
 };
 
 
