@@ -17,7 +17,7 @@
 */
 
 #include "sys_socket.h"
-#include "ioexception.h"
+#include "net_exception.h"
 
 #ifdef _WINDOWS
 #	include "Winsock2.h"
@@ -87,7 +87,7 @@ void Socket::create(const int af, int type, int protocol) {
 	
 	_sock = socket(af, type, protocol);
 	if (_sock == -1) 
-		throw_io(("socket"));
+		throw_net(("socket"));
 }
 
 void Socket::close() {

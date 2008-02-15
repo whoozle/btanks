@@ -43,7 +43,7 @@
 #endif
 
 
-#include "ioexception.h"              
+#include "net_exception.h"              
 
 using namespace mrt;
 
@@ -65,10 +65,10 @@ void TCPSocket::listen(const std::string &bindaddr, const unsigned port, const b
 	}
 	
 	if (bind(_sock, (const sockaddr *)&addr, sizeof(addr)) == -1)
-		throw_io(("bind"));
+		throw_net(("bind"));
 	
 	if (::listen(_sock, 10) == -1)
-		throw_io(("listen"));
+		throw_net(("listen"));
 }
 
 void TCPSocket::connect(const std::string &host, const int port, const bool no_delay) {
@@ -93,7 +93,7 @@ void TCPSocket::connect(const std::string &host, const int port, const bool no_d
 	
 	LOG_DEBUG(("connect %s:%d", inet_ntoa(addr.sin_addr), port));
 	if (::connect(_sock, (const struct sockaddr*)&addr, sizeof(addr))	 == -1)
-		throw_io(("connect"));
+		throw_net(("connect"));
 
 	_addr.ip = addr.sin_addr.s_addr;
 	_addr.port = port;
@@ -122,7 +122,7 @@ void TCPSocket::accept(TCPSocket &client) {
 	socklen_t len = sizeof(addr);
 	int s = ::accept(_sock, (struct sockaddr *)&addr, &len);
 	if (s == -1)
-		throw_io(("accept"));
+		throw_net(("accept"));
 	client.close();
 	client._sock = s;
 
@@ -150,14 +150,14 @@ TRY {
 	int value = flag?1:0;
 	int r = setsockopt(_sock, IPPROTO_TCP, TCP_NODELAY, (char *)&value, sizeof(value));
 	if (r < 0) 
-		throw_io(("setsockopt(TCP_NODELAY)"));
+		throw_net(("setsockopt(TCP_NODELAY)"));
 
 #ifndef _WINDOWS
 	if (flag) {	
 		value = IPTOS_LOWDELAY;
 		r = setsockopt(_sock, IPPROTO_IP, IP_TOS, (char *)&value, sizeof(value));
 		if (r < 0) 
-			throw_io(("setsockopt(TOS_LOWDELAY)"));
+			throw_net(("setsockopt(TOS_LOWDELAY)"));
 	}
 #endif
 } CATCH("noDelay", {});

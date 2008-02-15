@@ -18,7 +18,7 @@
 
 #include "socket_set.h"
 #include "tcp_socket.h"
-#include "ioexception.h"
+#include "net_exception.h"
 #include <assert.h>
 
 #ifdef _WINDOWS
@@ -94,7 +94,7 @@ const int SocketSet::check(const unsigned int timeout) {
 	
 	int r = select(_n, (fd_set*)_r_set, (fd_set*)_w_set, (fd_set*)_e_set, &tv);
 	if (r == -1)
-		throw_io(("select"));
+		throw_net(("select"));
 	
 	return r;
 }

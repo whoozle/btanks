@@ -17,7 +17,7 @@
 */
 
 #include "udp_socket.h"
-#include "ioexception.h"
+#include "net_exception.h"
 #include "mrt/chunk.h"
 
 #ifdef _WINDOWS
@@ -55,10 +55,10 @@ void UDPSocket::listen(const std::string &bindaddr, const unsigned port, const b
 	addr.sin_addr.s_addr = bindaddr.empty()?INADDR_ANY: inet_addr(bindaddr.c_str());
 	
 	if (bind(_sock, (const sockaddr *)&addr, sizeof(addr)) == -1)
-		throw_io(("bind"));
+		throw_net(("bind"));
 	
 //	if (::listen(_sock, 10) == -1)
-//		throw_io(("listen"));	
+//		throw_net(("listen"));	
 }
 
 void UDPSocket::connect(const std::string &host, const int port) {
@@ -80,7 +80,7 @@ void UDPSocket::connect(const std::string &host, const int port) {
 	
 	LOG_DEBUG(("connect %s:%d", inet_ntoa(addr.sin_addr), port));
 	if (::connect(_sock, (const struct sockaddr*)&addr, sizeof(addr))	 == -1)
-		throw_io(("connect"));
+		throw_net(("connect"));
 }
 
 void UDPSocket::create() {
@@ -118,7 +118,7 @@ void UDPSocket::setBroadcastMode(int val) {
 	TRY { 
 		int r = setsockopt(_sock, SOL_SOCKET, SO_BROADCAST, (char *)&val, sizeof(val)); //win32 hack
 		if (r == -1)
-			throw_io(("setsockopt"));
+			throw_net(("setsockopt"));
 	} CATCH("setsockopt(IPPROTO_UDP, SO_BROADCAST)", {});
 }
 
@@ -127,7 +127,7 @@ void UDPSocket::broadcast(const mrt::Chunk &data, const int port) {
 	TRY {
 		LOG_DEBUG(("broadcasting packet[%u]", (unsigned)data.getSize()));
 		if (send(mrt::Socket::addr(INADDR_BROADCAST, port), data.getPtr(), data.getSize()) == -1)
-			throw_io(("sendto"));
+			throw_net(("sendto"));
 	} CATCH("broadcast", );
 }
 #else 
@@ -139,7 +139,7 @@ void UDPSocket::broadcast(const mrt::Chunk &data, const int port) {
 	struct ifaddrs * ifs = NULL;
 	TRY {
 		if (getifaddrs(&ifs) == -1)
-			throw_io(("getifaddrs"));
+			throw_net(("getifaddrs"));
 		
 		for(struct ifaddrs * i = ifs; i->ifa_next != NULL; i = i->ifa_next) {
 			int flags = i->ifa_flags;
@@ -153,7 +153,7 @@ void UDPSocket::broadcast(const mrt::Chunk &data, const int port) {
 			LOG_DEBUG(("interface: %s, ifu_broadaddr: %s", i->ifa_name, inet_ntoa(addr->sin_addr)));
 			TRY {
 				if (send(mrt::Socket::addr(addr->sin_addr.s_addr, port), data.getPtr(), data.getSize()) == -1)
-					throw_io(("sendto"));
+					throw_net(("sendto"));
 			} CATCH("sendto", );
 #		else
 			LOG_WARN(("implement broadcast address obtaining."));
