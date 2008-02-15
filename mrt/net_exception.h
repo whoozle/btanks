@@ -2,22 +2,15 @@
 #define MRT_NETEXCEPTION_H__
 
 #ifdef _WINDOWS
+#	include "exception.h"
 
 namespace mrt {
 
-DERIVE_EXCEPTION(MRTAPI, IOException);
+DERIVE_EXCEPTION_NO_DEFAULT(MRTAPI, NetException, (const int wsacode), std::string wsa_error; );
 
 }
 
-#define throw_io(str) throw_generic(mrt::IOException, str)
-
-namespace mrt {
-
-DERIVE_EXCEPTION_NO_DEFAULT(MRTAPI, NetException, (const int wsacode));
-
-}
-
-#define throw_net(str) throw_generic_no_default(mrt::IOException, str, (WSAGetLastError()))
+#define throw_net(str) throw_generic_no_default(mrt::NetException, str, (WSAGetLastError()))
 
 
 #else
