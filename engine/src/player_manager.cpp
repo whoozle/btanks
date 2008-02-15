@@ -753,9 +753,15 @@ IPlayerManager::~IPlayerManager() {}
 
 void IPlayerManager::startServer() {
 	clear();
-	 
-	_server = new Server;
-	_server->init();
+	TRY {	 
+		_server = new Server;
+		_server->init();
+	} CATCH("server initialization", {
+		if (_server != NULL) {
+			delete _server;
+			_server = NULL;
+		}
+	});
 }
 
 void IPlayerManager::startClient(const std::string &address, const size_t n) {
