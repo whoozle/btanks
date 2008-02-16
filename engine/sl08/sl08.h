@@ -8,8 +8,14 @@
 
 #define SLOT(N, tspec, proto, call, signal_template, signal_spec) \
 template signal_template class signal##N; \
+template signal_template \
+class base_slot##N {\
+public: \
+	virtual R operator() proto = 0; \
+	virtual ~base_slot##N () {} \
+}; \
 template tspec \
-class slot##N { \
+class slot##N : public base_slot##N signal_spec { \
 	typedef signal##N signal_spec signal_type; \
 	signal_type *signal; \
 public: \
@@ -17,7 +23,7 @@ public: \
 	slot##N(CL *object, func_t func) : signal(NULL), object(object), func(func) {}\
 	\
 	R operator() proto { \
-		return (*object).*func call ;\
+		(object->*func) call ;\
 	} \
 	\
 	void connect(signal##N signal_spec &signal_ref) {\
@@ -43,12 +49,10 @@ public: \
 	R emit proto { \
 	} \
 \
-	template <class CL> \
-	void connect(slot##N slot_spec *slot) {\
+	void connect(base_slot##N signal_spec *slot) {\
 	} \
 	\
-	template <class CL> \
-	void disconnect(slot##N slot_spec *slot) {\
+	void disconnect(base_slot##N signal_spec *slot) {\
 	} \
 }
 #define SLOT_ARG0 <typename R, typename CL>
@@ -65,8 +69,8 @@ public: \
 namespace sl08 {
 	SLOT(0, SLOT_ARG0, (), (), SIGNAL_ARG0, SIGNAL_TEMPLATE_ARG0);
 	SLOT(1, SLOT_ARG1, (A1 a1), (a1), SIGNAL_ARG1, SIGNAL_TEMPLATE_ARG1);
-	SIGNAL(0, SIGNAL_ARG0, (), (), TEMPLATE_ARG0, SLOT_TEMPLATE_ARG0);
-	SIGNAL(1, SIGNAL_ARG1, (A1 a1), (a1), TEMPLATE_ARG1, SLOT_TEMPLATE_ARG1);
+	SIGNAL(0, SIGNAL_ARG0, (), (), SIGNAL_TEMPLATE_ARG0, SLOT_TEMPLATE_ARG0);
+	SIGNAL(1, SIGNAL_ARG1, (A1 a1), (a1), SIGNAL_TEMPLATE_ARG1, SLOT_TEMPLATE_ARG1);
 }
 
 #endif
