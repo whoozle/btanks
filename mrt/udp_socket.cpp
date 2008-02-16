@@ -19,6 +19,7 @@
 #include "udp_socket.h"
 #include "net_exception.h"
 #include "mrt/chunk.h"
+#include <string.h>
 
 #ifdef _WINDOWS
 #	include "Winsock2.h"

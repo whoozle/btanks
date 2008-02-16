@@ -19,9 +19,10 @@
 #ifdef _WINDOWS
 #	define WIN32_LEAN_AND_MEAN
 #	include <windows.h>
-#else 
-//#	include <locale.h>
 #endif
+
+#include <stdlib.h>
+#include <string.h>
 
 #include "lang.h"
 #include "logger.h"
