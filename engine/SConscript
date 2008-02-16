@@ -108,7 +108,7 @@ if sys.platform == "win32":
 bt = env.SharedLibrary('bt', bt_sources, LIBS=bt_libs)
 Install('#', bt[0])
 
-bt_main_sources = ['src/main.cpp', 'sl08/sl08.cpp']
+bt_main_sources = ['src/main.cpp']
 bt_main_libs =  ['mrt', 'bt', 'SDL', 'sdlx']
 
 if sys.platform == "win32":
