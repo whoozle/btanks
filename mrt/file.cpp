@@ -108,3 +108,6 @@ long File::tell() const {
 	return ftell(_f);
 }
 
+File::~File() {
+	close();
+}

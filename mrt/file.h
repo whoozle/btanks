@@ -34,6 +34,7 @@ public:
 	const bool readLine(std::string &str, const size_t bufsize = 1024) const;
 
 	File();
+	~File();
 
 	virtual void open(const std::string &fname, const std::string &mode);
 	virtual const bool opened() const;
