@@ -1,3 +1,4 @@
+#include <string.h>
 #include "zip_dir.h"
 #include "logger.h"
 #include "chunk.h"
@@ -170,7 +171,7 @@ ZipDirectory::ZipDirectory(const std::string &zip) : fname(zip) {
 			break;
 		}
 	}
-	LOG_DEBUG(("loaded %u files.", headers.size()));
+	LOG_DEBUG(("loaded %u files.", (unsigned)headers.size()));
 }
 
 void ZipDirectory::open(const std::string &path_) {
