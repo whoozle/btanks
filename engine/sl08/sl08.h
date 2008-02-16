@@ -45,14 +45,27 @@ private: \
 #define SIGNAL(N, tspec, proto, call, signal_spec, slot_spec) \
 template tspec \
 class signal##N { \
+	typedef base_slot##N signal_spec slot_type; \
+	typedef std::deque<slot_type *> slots_type; \
+	slots_type slots;\
 public: \
 	R emit proto { \
+		for(typename slots_type::iterator i = slots.begin(); i != slots.end(); ++i) { \
+			(*i)->operator() call ; \
+		} \
 	} \
 \
 	void connect(base_slot##N signal_spec *slot) {\
+		slots.push_back(slot);\
 	} \
 	\
 	void disconnect(base_slot##N signal_spec *slot) {\
+		for(typename slots_type::iterator i = slots.begin(); i != slots.end(); ) { \
+			if (slot != *i) \
+				++i; \
+			else \
+				i = slots.erase(i); \
+		} \
 	} \
 }
 #define SLOT_ARG0 <typename R, typename CL>
