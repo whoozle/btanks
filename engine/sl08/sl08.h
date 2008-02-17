@@ -130,27 +130,18 @@ public: \
 namespace sl08 {
 
 template <typename result_type>
-struct default_marshaller {
-	template<typename IteratorT>
-	inline result_type operator()(IteratorT First, IteratorT Last) {
-		result_type r;
-		for(; First != Last; ++First) {
-			r = *First;
-		}
-		return r;
+class default_validator {
+public:
+	inline bool operator()(result_type r) {
+		return true;
 	}
 };
 
 template <typename result_type>
-struct exclusive_marshaller {
-	template<typename IteratorT>
-	inline result_type operator()(IteratorT First, IteratorT Last) {
-		for(; First != Last; ++First) {
-			result_type r = *First;
-			if (r) 
-				return r;
-		}
-		return (result_type)0;
+class exclusive_validator {
+public:
+	inline bool operator()(result_type r) {
+		return (bool)r;
 	}
 };
 
