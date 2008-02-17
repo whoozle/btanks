@@ -6,26 +6,17 @@
 #include <algorithm>
 #include <functional>
 
-#define SLOT(N, tspec, proto, call, signal_template, signal_spec) \
+#define SLOT(N, tspec, proto, call, signal_template, signal_spec, arglist, arglist2, declist, declist2) \
 template signal_template class signal##N; \
 template signal_template \
 class base_slot##N {\
-public: \
-	virtual R operator() proto = 0; \
-	virtual ~base_slot##N () {} \
-}; \
-template tspec \
-class slot##N : public base_slot##N signal_spec { \
+protected: \
 	typedef signal##N signal_spec signal_type; \
 	signal_type *signal; \
+\
 public: \
-	typedef R (CL::*func_t) proto; \
-	slot##N(CL *object, func_t func) : signal(NULL), object(object), func(func) {}\
-	\
-	R operator() proto { \
-		(object->*func) call ;\
-	} \
-	\
+	virtual R operator() proto = 0; \
+	base_slot##N () : signal(NULL) {} \
 	void connect(signal##N signal_spec &signal_ref) {\
 		signal = &signal_ref; \
 		signal->connect(this); \
@@ -33,26 +24,56 @@ public: \
 	\
 	void disconnect() {\
 		signal->disconnect(this); \
+		signal = NULL; \
 	} \
-	~slot##N() { \
+	virtual ~base_slot##N() { \
 		disconnect(); \
 	} \
+}; \
+\
+template tspec \
+class slot##N : public base_slot##N signal_spec { \
+public: \
+	typedef R (CL::*func_t) proto; \
+	slot##N(CL *object, func_t func) : object(object), func(func) {}\
+	\
+	R operator() proto { \
+		return (object->*func) call ;\
+	} \
+	\
 private: \
 	CL *object; \
 	func_t func;\
+}; \
+template <declist class CL> \
+class slot##N <void arglist CL> : public base_slot##N <void arglist2> { \
+public: \
+	typedef void (CL::*func_t) proto ;\
+	slot##N (CL *object, func_t func) : object(object), func(func) {}\
+	\
+	void operator() proto { \
+		(object->*func) call; \
+	} \
+	\
+private: \
+	CL *object; \
+	func_t func; \
 }
 
 #define SIGNAL(N, tspec, proto, call, signal_spec, slot_spec) \
 template tspec \
-class signal##N { \
+class base_signal##N { \
+protected: \
 	typedef base_slot##N signal_spec slot_type; \
 	typedef std::deque<slot_type *> slots_type; \
 	slots_type slots;\
 public: \
 	R emit proto { \
+		R r; \
 		for(typename slots_type::iterator i = slots.begin(); i != slots.end(); ++i) { \
-			(*i)->operator() call ; \
+			r = (*i)->operator() call ; \
 		} \
+		return r; \
 	} \
 \
 	void connect(base_slot##N signal_spec *slot) {\
@@ -67,21 +88,35 @@ public: \
 				i = slots.erase(i); \
 		} \
 	} \
+}; \
+template tspec \
+class signal##N : public base_signal##N signal_spec { \
 }
-#define SLOT_ARG0 <typename R, typename CL>
-#define SLOT_ARG1 <typename R, typename A1, typename CL>
+
+#define SLOT_ARG0 <typename R, class CL>
+#define SLOT_ARG1 <typename R, typename A1, class CL>
 
 #define SIGNAL_ARG0 <typename R>
 #define SIGNAL_ARG1 <typename R, typename A1>
 
 #define SIGNAL_TEMPLATE_ARG0 <R>
 #define SIGNAL_TEMPLATE_ARG1 <R, A1>
-#define SLOT_TEMPLATE_ARG0 <R, CL>
-#define SLOT_TEMPLATE_ARG1 <R, A1, CL>
+
+#define SLOT_TEMPLATE_ARG0_ARGLIST ,
+#define SLOT_TEMPLATE_ARG0_ARGLIST2
+#define SLOT_TEMPLATE_ARG0 <R, ##SLOT_TEMPLATE_ARG0_ARGLIST## CL>
+
+#define SLOT_TEMPLATE_ARG1_ARGLIST ,A1, 
+#define SLOT_TEMPLATE_ARG1_ARGLIST2 ,A1 
+#define SLOT_TEMPLATE_ARG1_DECLIST typename A1,
+#define SLOT_TEMPLATE_ARG1_DECLIST2 typename A1
+#define SLOT_TEMPLATE_ARG1 <R, ##SLOT_TEMPLATE_ARG1_ARGLIST## CL>
 
 namespace sl08 {
-	SLOT(0, SLOT_ARG0, (), (), SIGNAL_ARG0, SIGNAL_TEMPLATE_ARG0);
-	SLOT(1, SLOT_ARG1, (A1 a1), (a1), SIGNAL_ARG1, SIGNAL_TEMPLATE_ARG1);
+	SLOT(0, SLOT_ARG0, (), (), SIGNAL_ARG0, SIGNAL_TEMPLATE_ARG0, \
+		SLOT_TEMPLATE_ARG0_ARGLIST, SLOT_TEMPLATE_ARG0_ARGLIST2 ,,);
+	SLOT(1, SLOT_ARG1, (A1 a1), (a1), SIGNAL_ARG1, SIGNAL_TEMPLATE_ARG1, \
+		SLOT_TEMPLATE_ARG1_ARGLIST, SLOT_TEMPLATE_ARG1_ARGLIST2, SLOT_TEMPLATE_ARG1_DECLIST, SLOT_TEMPLATE_ARG1_DECLIST2);
 	SIGNAL(0, SIGNAL_ARG0, (), (), SIGNAL_TEMPLATE_ARG0, SLOT_TEMPLATE_ARG0);
 	SIGNAL(1, SIGNAL_ARG1, (A1 a1), (a1), SIGNAL_TEMPLATE_ARG1, SLOT_TEMPLATE_ARG1);
 }
