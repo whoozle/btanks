@@ -16,17 +16,17 @@ protected: \
 \
 public: \
 	virtual R operator() proto = 0; \
-	base_slot##N () : signal(NULL) {} \
-	void connect(signal##N signal_spec &signal_ref) {\
+	inline base_slot##N () : signal(NULL) {} \
+	inline void connect(signal##N signal_spec &signal_ref) {\
 		signal = &signal_ref; \
 		signal->connect(this); \
 	} \
 	\
-	void disconnect() {\
+	inline void disconnect() {\
 		signal->disconnect(this); \
 		signal = NULL; \
 	} \
-	virtual ~base_slot##N() { \
+	inline virtual ~base_slot##N() { \
 		disconnect(); \
 	} \
 }; \
@@ -35,9 +35,9 @@ template tspec \
 class slot##N : public base_slot##N signal_spec { \
 public: \
 	typedef R (CL::*func_t) proto; \
-	slot##N(CL *object, func_t func) : object(object), func(func) {}\
+	inline slot##N(CL *object, func_t func) : object(object), func(func) {}\
 	\
-	R operator() proto { \
+	inline R operator() proto { \
 		return (object->*func) call ;\
 	} \
 	\
@@ -49,9 +49,9 @@ template <declist class CL> \
 class slot##N <void arglist CL> : public base_slot##N <void arglist2> { \
 public: \
 	typedef void (CL::*func_t) proto ;\
-	slot##N (CL *object, func_t func) : object(object), func(func) {}\
+	inline slot##N (CL *object, func_t func) : object(object), func(func) {}\
 	\
-	void operator() proto { \
+	inline void operator() proto { \
 		(object->*func) call; \
 	} \
 	\
@@ -68,7 +68,7 @@ protected: \
 	typedef std::deque<slot_type *> slots_type; \
 	slots_type slots;\
 public: \
-	R emit proto { \
+	inline R emit proto { \
 		R r; \
 		for(typename slots_type::iterator i = slots.begin(); i != slots.end(); ++i) { \
 			r = (*i)->operator() call ; \
@@ -76,11 +76,11 @@ public: \
 		return r; \
 	} \
 \
-	void connect(base_slot##N signal_spec *slot) {\
+	inline void connect(base_slot##N signal_spec *slot) {\
 		slots.push_back(slot);\
 	} \
 	\
-	void disconnect(base_slot##N signal_spec *slot) {\
+	inline void disconnect(base_slot##N signal_spec *slot) {\
 		for(typename slots_type::iterator i = slots.begin(); i != slots.end(); ) { \
 			if (slot != *i) \
 				++i; \
@@ -98,7 +98,7 @@ template tspec \
 class signal##N tpar : public base_signal##N tpar { \
 	typedef base_signal##N tpar parent_t; \
 public: \
-	void emit proto {  \
+	inline void emit proto {  \
 		for(typename_helper parent_t::slots_type::iterator i = parent_t::slots.begin(); i != parent_t::slots.end(); ++i) { \
 			(*i)->operator() call ; \
 		} \
@@ -128,6 +128,33 @@ public: \
 #define SIGNAL_SPECIAL1_TPARAM <void, A1>
 
 namespace sl08 {
+
+template <typename result_type>
+struct default_marshaller {
+	template<typename IteratorT>
+	inline result_type operator()(IteratorT First, IteratorT Last) {
+		result_type r;
+		for(; First != Last; ++First) {
+			r = *First;
+		}
+		return r;
+	}
+};
+
+template <typename result_type>
+struct exclusive_marshaller {
+	template<typename IteratorT>
+	inline result_type operator()(IteratorT First, IteratorT Last) {
+		for(; First != Last; ++First) {
+			result_type r = *First;
+			if (r) 
+				return r;
+		}
+		return (result_type)0;
+	}
+};
+
+
 	SLOT(0, SLOT_ARG0, (), (), SIGNAL_ARG0, SIGNAL_TEMPLATE_ARG0, \
 		SLOT_TEMPLATE_ARG0_ARGLIST, SLOT_TEMPLATE_ARG0_ARGLIST2 ,,);
 	SLOT(1, SLOT_ARG1, (A1 a1), (a1), SIGNAL_ARG1, SIGNAL_TEMPLATE_ARG1, \
