@@ -212,12 +212,14 @@ class Generator(object):
 		class signalXXX : public base_signalXXX %s { 
 		public: 
 			typedef base_signalXXX %s parent_type; 
+			typedef typename deconst<return_type>::type non_const_return_type;
 			
 			inline virtual return_type emit %s {
-				return_type r; 
 				validator_type v;
+				
+				non_const_return_type r;
 				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
-					r = (*i)->operator() %s; 
+					r = (*i)->operator() %s;
 					if (!v(r))
 						return r;
 				}
@@ -273,6 +275,9 @@ print """#ifndef BTANKS_SL08_SLOTSANDSIGNALS_H__
 #endif
 
 namespace sl08 {
+
+		template <typename T> struct deconst { typedef T type; };
+		template <typename T> struct deconst<const T> { typedef T type; };
 
 		template <typename result_type>
 		class default_validator {

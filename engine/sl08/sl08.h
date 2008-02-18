@@ -9,6 +9,9 @@
 
 namespace sl08 {
 
+		template <typename T> struct deconst { typedef T type; };
+		template <typename T> struct deconst<const T> { typedef T type; };
+
 		template <typename result_type>
 		class default_validator {
 		public:
@@ -125,12 +128,14 @@ namespace sl08 {
 		class signal0 : public base_signal0 <return_type> { 
 		public: 
 			typedef base_signal0 <return_type> parent_type; 
+			typedef typename deconst<return_type>::type non_const_return_type;
 			
 			inline virtual return_type emit () {
-				return_type r; 
 				validator_type v;
+				
+				non_const_return_type r;
 				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
-					r = (*i)->operator() (); 
+					r = (*i)->operator() ();
 					if (!v(r))
 						return r;
 				}
@@ -248,12 +253,14 @@ namespace sl08 {
 		class signal1 : public base_signal1 <return_type, arg1_type> { 
 		public: 
 			typedef base_signal1 <return_type, arg1_type> parent_type; 
+			typedef typename deconst<return_type>::type non_const_return_type;
 			
 			inline virtual return_type emit (arg1_type a1) {
-				return_type r; 
 				validator_type v;
+				
+				non_const_return_type r;
 				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
-					r = (*i)->operator() (a1); 
+					r = (*i)->operator() (a1);
 					if (!v(r))
 						return r;
 				}
@@ -371,12 +378,14 @@ namespace sl08 {
 		class signal2 : public base_signal2 <return_type, arg1_type, arg2_type> { 
 		public: 
 			typedef base_signal2 <return_type, arg1_type, arg2_type> parent_type; 
+			typedef typename deconst<return_type>::type non_const_return_type;
 			
 			inline virtual return_type emit (arg1_type a1, arg2_type a2) {
-				return_type r; 
 				validator_type v;
+				
+				non_const_return_type r;
 				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
-					r = (*i)->operator() (a1, a2); 
+					r = (*i)->operator() (a1, a2);
 					if (!v(r))
 						return r;
 				}
@@ -494,12 +503,14 @@ namespace sl08 {
 		class signal3 : public base_signal3 <return_type, arg1_type, arg2_type, arg3_type> { 
 		public: 
 			typedef base_signal3 <return_type, arg1_type, arg2_type, arg3_type> parent_type; 
+			typedef typename deconst<return_type>::type non_const_return_type;
 			
 			inline virtual return_type emit (arg1_type a1, arg2_type a2, arg3_type a3) {
-				return_type r; 
 				validator_type v;
+				
+				non_const_return_type r;
 				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
-					r = (*i)->operator() (a1, a2, a3); 
+					r = (*i)->operator() (a1, a2, a3);
 					if (!v(r))
 						return r;
 				}
@@ -617,12 +628,14 @@ namespace sl08 {
 		class signal4 : public base_signal4 <return_type, arg1_type, arg2_type, arg3_type, arg4_type> { 
 		public: 
 			typedef base_signal4 <return_type, arg1_type, arg2_type, arg3_type, arg4_type> parent_type; 
+			typedef typename deconst<return_type>::type non_const_return_type;
 			
 			inline virtual return_type emit (arg1_type a1, arg2_type a2, arg3_type a3, arg4_type a4) {
-				return_type r; 
 				validator_type v;
+				
+				non_const_return_type r;
 				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
-					r = (*i)->operator() (a1, a2, a3, a4); 
+					r = (*i)->operator() (a1, a2, a3, a4);
 					if (!v(r))
 						return r;
 				}
@@ -740,12 +753,14 @@ namespace sl08 {
 		class signal5 : public base_signal5 <return_type, arg1_type, arg2_type, arg3_type, arg4_type, arg5_type> { 
 		public: 
 			typedef base_signal5 <return_type, arg1_type, arg2_type, arg3_type, arg4_type, arg5_type> parent_type; 
+			typedef typename deconst<return_type>::type non_const_return_type;
 			
 			inline virtual return_type emit (arg1_type a1, arg2_type a2, arg3_type a3, arg4_type a4, arg5_type a5) {
-				return_type r; 
 				validator_type v;
+				
+				non_const_return_type r;
 				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
-					r = (*i)->operator() (a1, a2, a3, a4, a5); 
+					r = (*i)->operator() (a1, a2, a3, a4, a5);
 					if (!v(r))
 						return r;
 				}
