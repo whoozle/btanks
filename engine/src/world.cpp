@@ -282,7 +282,7 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::R
 					wp.x - src.x + dst.x - 8, wp.y - src.y + dst.y - 8);
 			}
 		}
-		if (o.hp >= 0 && o._parent == NULL && special_ids.find(o.getID()) != special_ids.end() || (rhb && (o.impassability == 1.0f && !o.piercing))) {
+		if (o.hp >= 0 && o._parent == NULL && (special_ids.find(o.getID()) != special_ids.end() || (rhb && (o.impassability == 1.0f && !o.piercing)))) {
 			int h = _hp_bar->getHeight() / 16;
 			int y = (o.hp >= 0)?15 * (o.max_hp - o.hp) / o.max_hp: 0;
 			sdlx::Rect hp_src(0, y * h, _hp_bar->getWidth(), h);
@@ -885,7 +885,7 @@ TRY {
 		if (o.piercing || dirs == 1)
 			break;
 	
-		if (ds || other_obj != NULL && o.disable_ai && other_obj->disable_ai)
+		if (ds || (other_obj != NULL && o.disable_ai && other_obj->disable_ai))
 			break;
 
 		if (dorc)
