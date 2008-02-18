@@ -20,7 +20,7 @@
  */
 
 #include "sdlx/rect.h"
-#include <sigc++/sigc++.h>
+#include "sl08/sl08.h"
 #include <vector>
 #include <map>
 #include <string>
@@ -35,12 +35,12 @@ namespace sdlx {
 class MenuItem;
 class BaseMenu;
 
-class MainMenu : public sigc::trackable {
+class MainMenu {
 public:
 	MainMenu();
 	void init(const int w, const int h);
 	
-	sigc::signal2<void, const std::string &, const std::string &> menu_signal;
+	sl08::signal2<void, const std::string &, const std::string &> menu_signal;
 
 	void setActive(const bool a);
 	const bool isActive() const { return _active; }
@@ -61,6 +61,12 @@ private:
 	std::map<const std::string, BaseMenu *> _special_menus;
 	BaseMenu *getMenu(const std::string &menu);
 
+	sl08::slot2<bool, const SDL_keysym, const bool, MainMenu> on_key_slot;
+	sl08::slot4<bool, const int, const bool, const int, const int, MainMenu> on_mouse_slot;
+	sl08::slot5<bool, const int, const int, const int, const int, const int, MainMenu> on_mouse_motion_slot;
+	sl08::slot1<void, const SDL_Event &, MainMenu> on_event_slot;
+
+	bool onMouseMotionSignal(const int state, const int x, const int y, const int xrel, const int yrel);
 	bool onKey(const SDL_keysym sym, const bool pressed);
 	bool onMouse(const int button, const bool pressed, const int x, const int y);
 	bool onMouseMotion(const int state, const int x, const int y, const int xrel, const int yrel);

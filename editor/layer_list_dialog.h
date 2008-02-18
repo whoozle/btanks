@@ -2,6 +2,8 @@
 #define BTANKS_LAYER_LIST_DIALOG_H__
 
 #include "menu/scroll_list.h"
+#include "sl08/sl08.h"
+
 class LayerItem;
 class Prompt;
 
@@ -18,6 +20,7 @@ public:
 
 private: 
 	void initMap();
+	sl08::slot0<void, LayerListDialog> init_map_slot;
 	Prompt *_new_layer;
 };
 

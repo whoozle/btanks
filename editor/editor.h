@@ -1,7 +1,7 @@
 #ifndef BTANKS_EDITOR_H__
 #define BTANKS_EDITOR_H__
 
-#include <sigc++/sigc++.h>
+#include "sl08/sl08.h"
 #include "sdlx/sdlx.h"
 #include "sdlx/rect.h"
 #include "menu/container.h"
@@ -27,7 +27,7 @@ namespace sdlx {
 }
 class Object;
 
-class Editor : public sigc::trackable, public Container {
+class Editor : public Container {
 public: 
 	Editor();
 	void init(int argc, char **argv);
@@ -48,13 +48,22 @@ private:
 	virtual bool onMouse(const int button, const bool pressed, const int x, const int y);
 	virtual bool onMouseMotion(const int state, const int x, const int y, const int xrel, const int yrel);
 
-	void onTick(const float dt);
 	void render(sdlx::Surface &surface, const float dt);
-	
-	bool onKeySignal(const SDL_keysym sym, const bool pressed);
-	bool onMouseSignal(const int button, const bool pressed, const int x, const int y);
-	bool onMouseMotionSignal(const int state, const int x, const int y, const int xrel, const int yrel);
 
+	//slots:	
+	sl08::slot1<void, const float, Editor> on_tick_slot;
+	void onTick(const float dt);
+
+	sl08::slot2<bool, const SDL_keysym, const bool, Editor> on_key_slot;
+	bool onKeySignal(const SDL_keysym sym, const bool pressed);
+	
+	sl08::slot4<bool, const int, const bool, const int, const int, Editor> on_mouse_slot;
+	bool onMouseSignal(const int button, const bool pressed, const int x, const int y);
+	
+	sl08::slot5<bool, const int, const int, const int, const int, const int, Editor> on_mouse_motion_slot;
+	bool onMouseMotionSignal(const int state, const int x, const int y, const int xrel, const int yrel);
+	
+	sl08::slot1<void, const SDL_Event &, Editor> on_event_slot;
 	void onEvent(const SDL_Event &event);
 	
 	void displayStatusMessage(const Object *o);
@@ -76,7 +85,11 @@ private:
 	std::string _map_base, _map_file;
 
 	int _loading_bar_total, _loading_bar_now;
+
+	//slots: 
+	sl08::slot1<void, const int, Editor> reset_slot;
 	void resetLoadingBar(const int total);
+	sl08::slot1<void, const int, Editor> notify_slot;
 	void notifyLoadingBar(const int progress = 1);
 	
 	int _current_layer_z;

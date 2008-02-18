@@ -4,7 +4,6 @@ Import('env')
 Import('version')
 Import('revision')
 Import('debug')
-Import('sigc_lib')
 Import('al_lib')
 
 Import('sdl_cflags')
@@ -13,8 +12,9 @@ Import('sdl_libs')
 Import('smpeg_lib')
 
 venv = env.Copy()
-bt_env = env.Copy()
 env = env.Copy()
+env.Append(CPPPATH=['#/engine', '#/engine/src'])
+bt_env = env.Copy()
 
 env.MergeFlags(sdl_cflags, sdl_libs)
 bt_env.MergeFlags(sdl_cflags, sdl_libs)
@@ -73,7 +73,7 @@ vorbis = 'vorbisfile'
 if debug and sys.platform == "win32": 
 	vorbis = 'vorbisfile_d'
 
-bt_libs = ['mrt', 'sdlx',  sigc_lib, smpeg_lib, 'SDL', vorbis, al_lib]
+bt_libs = ['mrt', 'sdlx', smpeg_lib, 'SDL', vorbis, al_lib]
 
 if sys.platform != 'win32' and env['enable_lua']:
 	got_lua = False

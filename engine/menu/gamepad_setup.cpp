@@ -232,8 +232,8 @@ GamepadSetup::GamepadSetup(const int w, const int h) : _current_pad(NULL), _wait
 	_back->getSize(bw, bh);
 	add(w - mx - sw / 2 - bw / 2, yp, _back);
 	yp += bh;
-	
-	Window->event_signal.connect(sigc::mem_fun(this, &GamepadSetup::onEvent));
+
+	on_event_slot.assign(this, &GamepadSetup::onEvent, Window->event_signal);
 }
 
 void GamepadSetup::renderIcon(sdlx::Surface &surface, const int idx, const int x, const int y) {

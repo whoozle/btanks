@@ -27,7 +27,7 @@
 #include "object.h"
 
 MouseControl::MouseControl(): _shoot(false) {
-	Window->mouse_signal.connect(sigc::mem_fun(this, &MouseControl::onMouse));
+	on_mouse_slot.assign(this, &MouseControl::onMouse, Window->mouse_signal);
 } 
 
 bool MouseControl::onMouse(const int button, const bool pressed, const int x, const int y) {

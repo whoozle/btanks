@@ -344,18 +344,19 @@ void Editor::init(int argc, char *argv[]) {
 	_hud = new Hud(window_size.w, window_size.h);
 
 	LOG_DEBUG(("installing callbacks..."));
-	
-	Window->key_signal.connect(sigc::mem_fun(this, &Editor::onKeySignal));
-	Window->mouse_signal.connect(sigc::mem_fun(this, &Editor::onMouseSignal));
-	Window->mouse_motion_signal.connect(sigc::mem_fun(this, &Editor::onMouseMotionSignal));
-	Window->event_signal.connect(sigc::mem_fun(this, &Editor::onEvent));
 
-	Map->reset_progress.connect(sigc::mem_fun(this, &Editor::resetLoadingBar));
-	Map->notify_progress.connect(sigc::mem_fun(this, &Editor::notifyLoadingBar));
-	ResourceManager->reset_progress.connect(sigc::mem_fun(this, &Editor::resetLoadingBar));
-	ResourceManager->notify_progress.connect(sigc::mem_fun(this, &Editor::notifyLoadingBar));
+	on_key_slot.assign(this, &Editor::onKeySignal, Window->key_signal);
+	on_mouse_slot.assign(this, &Editor::onMouseSignal, Window->mouse_signal);
+	on_mouse_motion_slot.assign(this, &Editor::onMouseMotionSignal, Window->mouse_motion_signal);
+	on_event_slot.assign(this, &Editor::onEvent, Window->event_signal);
 
-	Window->tick_signal.connect(sigc::mem_fun(this, &Editor::onTick));
+	reset_slot.assign(this, &Editor::resetLoadingBar, Map->reset_progress);
+	notify_slot.assign(this, &Editor::notifyLoadingBar, Map->notify_progress);
+
+	reset_slot.assign(this, &Editor::resetLoadingBar, ResourceManager->reset_progress);
+	notify_slot.assign(this, &Editor::notifyLoadingBar, ResourceManager->notify_progress);
+
+	on_tick_slot.assign(this, &Editor::onTick, Window->tick_signal);
 
 	std::vector<std::pair<std::string, std::string> > files;
 	Finder->findAll(files, "resources.xml");

@@ -30,6 +30,7 @@
 
 #include "export_btanks.h"
 #include "sdlx/sdlx.h"
+#include "sl08/sl08.h"
 
 class BaseObject;
 class Object;
@@ -69,23 +70,39 @@ public:
 	//stupid visual effect
 	void shake(const float duration, const int intensity);
 	
-	void resetLoadingBar(const int total);
-	void notifyLoadingBar(const int progress = 1);
-
 	static void loadPlugins();
 	
 	Chat *getChat() { return _net_talk; }
 
 private:
+	sl08::slot1<void, const int, IGame> reset_slot, notify_slot;
+	void resetLoadingBar(const int total);
+	void notifyLoadingBar(const int progress = 1);
+
+	sl08::slot1<void, const float, IGame> on_tick_slot;
 	void onTick(const float dt);
+
+	sl08::slot2<bool, const SDL_keysym, const bool, IGame>  on_key_slot;
 	bool onKey(const SDL_keysym sym, const bool pressed);
-	void onJoyButton(const int joy, const int id, const bool pressed);
+
+	sl08::slot3<void, const int, const int, const bool, IGame> on_joy_slot;
+	void onJoyButton(const int, const int, const bool);
+
+	sl08::slot4<bool, const int, const bool, const int, const int, IGame> on_mouse_slot;
 	bool onMouse(const int button, const bool pressed, const int x, const int y);
+
+	sl08::slot2<void, const std::string &, const std::string &, IGame> on_menu_slot;
 	void onMenu(const std::string &name, const std::string &value);
+
+	sl08::slot0<void, IGame> on_map_slot;	
 	void onMap();
+
+	sl08::slot2<const std::string, const std::string &, const std::string &, IGame> on_console_slot;
 	const std::string onConsole(const std::string &cmd, const std::string &param);
 
+	sl08::slot1<void, const SDL_Event &, IGame> on_event_slot;
 	void onEvent(const SDL_Event &event);
+
 	void quit();
 	
 	void stopCredits();

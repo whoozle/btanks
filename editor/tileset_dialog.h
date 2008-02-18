@@ -9,6 +9,7 @@
 #include "sdlx/surface.h"
 #include "tmx/tileset_list.h"
 #include "base_brush.h"
+#include "sl08/sl08.h"
 
 class Box;
 class ScrollList;
@@ -27,6 +28,8 @@ public:
 private: 
 	void set(const int tileset);
 	void initMap();
+	sl08::slot0<void, TilesetDialog> init_map_slot;
+	
 	virtual void tick(const float dt);
 	virtual bool onMouse(const int button, const bool pressed, const int x, const int y);
 	virtual bool onMouseMotion(const int state, const int x, const int y, const int xrel, const int yrel);

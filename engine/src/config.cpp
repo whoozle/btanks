@@ -37,7 +37,7 @@ void IConfig::load(const std::string &file) {
 	TRY {
 		parseFile(file);
 	} CATCH("load", {}); 
-	Console->on_command.connect(sigc::mem_fun(this, &IConfig::onConsole));
+	on_console_slot.assign(this, &IConfig::onConsole, Console->on_command);
 }
 
 void IConfig::save() const {

@@ -111,32 +111,7 @@ else:
 conf_env = env.Copy()
 conf = Configure(conf_env)
 
-os.environ['PKG_CONFIG_PATH'] = "/usr/local/lib/pkgconfig/"
-
-if sys.platform != "win32":
-	sigc_p = os.popen('pkg-config --cflags sigc++-2.0', 'r')
-	sigc_flags = sigc_p.readline().strip()
-	sigc_p = os.popen('pkg-config --libs-only-L sigc++-2.0', 'r')
-	sigc_lflags = sigc_p.readline().strip()
-	conf_env.Append(LINKFLAGS=sigc_lflags)
-	env.Append(LINKFLAGS=sigc_lflags)
-	sigc_lib = 'sigc-2.0' #guess 
-	
-else: 
-	sigc_flags = ''
-	if stl_port_debug:
-		sigc_lib = 'sigc-2.0d'
-	else: 
-		sigc_lib = 'sigc-2.0'
-
-conf_env.Append(CXXFLAGS=sigc_flags)
-
-
 #print conf.env['CCFLAGS']
-
-
-if not conf.CheckLibWithHeader(sigc_lib, 'sigc++/sigc++.h', 'c++', "sigc::signal1<int,int> sig;", False):
-	Exit(1)
 
 if not conf.CheckLibWithHeader('expat', 'expat.h', 'c', "XML_ParserCreate(NULL);", False):
 	Exit(1)
@@ -194,8 +169,6 @@ else:
 	env.Append(CPPDEFINES = ['RELEASE'])
 
 Export('env')
-Export('sigc_flags')
-Export('sigc_lib')
 Export('al_lib')
 
 lib_dir = '.'
@@ -254,12 +227,8 @@ Export('lib_dir')
 version = '0.7.%s' %version
 print "version: %s" %version
 
-env.Append(CPPPATH=['.', 'src'])
-env.Append(CXXFLAGS=sigc_flags)
-
-env.Append(CPPPATH=['#', '#/src'])
-
 bt_sublibs = ['mrt', 'sdlx', 'objects']
+env.Append(CPPPATH=['#'])
 
 if (os.path.exists('private')):
 	dir = 'private'

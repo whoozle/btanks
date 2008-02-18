@@ -17,7 +17,8 @@ TilesetDialog::TilesetDialog(const int w, const int h) :
 	_w(w), _h(h), _current_tileset(NULL), _current_tileset_idx(-1), _current_tileset_gid(0), _selecting(false), _selected(false), 
 	_tileset_added(false)
 	{
-	Map->load_map_signal.connect(sigc::mem_fun(this, &TilesetDialog::initMap));
+	init_map_slot.assign(this, &TilesetDialog::initMap, Map->load_map_signal);
+
 	std::vector<std::string> path;
 	Finder->getPath(path);
 	std::reverse(path.begin(), path.end());

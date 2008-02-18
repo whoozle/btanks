@@ -20,10 +20,10 @@
  */
 
 #include "control.h"
-#include <sigc++/sigc++.h>
+#include "sl08/sl08.h"
 #include "export_btanks.h"
 
-class BTANKSAPI Slider : public sigc::trackable, public Control {
+class BTANKSAPI Slider : public Control {
 public: 
 	Slider(const float value);
 
@@ -37,6 +37,7 @@ public:
 
 private: 
 	bool onMouseMotion(const int state, const int x, const int y, const int xrel, const int yrel);
+	sl08::slot5<bool, const int, const int, const int, const int, const int, Slider> mm_slot;
 
 	const sdlx::Surface * _tiles;
 	int _n;

@@ -32,7 +32,7 @@
 
 #include "object_grid.h"
 #include "utils.h"
-#include <sigc++/sigc++.h>
+#include "sl08/sl08.h"
 
 namespace sdlx {
 class Surface;
@@ -45,7 +45,7 @@ class Traits;
 
 class Object;
 
-class BTANKSAPI IWorld : public mrt::Serializable, public sigc::trackable {
+class BTANKSAPI IWorld : public mrt::Serializable {
 public:
 	DECLARE_SINGLETON(IWorld);
 
@@ -117,6 +117,7 @@ private:
 	void _tick(Object &o, const float dt, const bool do_calculate = true);
 	void _tick(ObjectMap &objects, const float dt, const bool do_calculate = true);
 
+	sl08::slot0<void, IWorld> init_map_slot;
 	void initMap();
 	
 	void updateObject(const Object *o);
@@ -138,6 +139,7 @@ private:
 	
 	void setSpeed(const float speed);
 	
+	sl08::slot4<void, int, int, int, int, IWorld> map_resize_slot;
 	void onMapResize(int left, int right, int up, int down);
 
 	ObjectMap _objects;

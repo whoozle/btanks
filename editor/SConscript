@@ -1,13 +1,12 @@
 import sys
 Import('env')
-Import('sigc_lib')
 Import('lib_dir')
 Import('sdl_cflags')
 Import('sdl_libs')
 
 env = env.Copy()
 
-libs = ['bt', 'sdlx', 'mrt', 'SDL', sigc_lib]
+libs = ['bt', 'sdlx', 'mrt', 'SDL']
 
 ed_src = [
 	'base_brush.cpp', 

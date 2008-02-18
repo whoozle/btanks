@@ -7,6 +7,7 @@
 #include "math/v2.h"
 #include "sdlx/joystick.h"
 #include "controls/joy_bindings.h"
+#include "sl08/sl08.h"
 
 #include <map>
 
@@ -33,6 +34,8 @@ private:
 	virtual void renderSetup(sdlx::Surface &surface, const int x, const int y);
 	virtual bool onKey(const SDL_keysym sym);
 	virtual bool onMouse(const int button, const bool pressed, const int x, const int y);
+
+	sl08::slot1<void, const SDL_Event &, GamepadSetup> on_event_slot;
 	virtual void onEvent(const SDL_Event &event);
 
 	void renderIcon(sdlx::Surface &surface, const int idx, const int x, const int y);

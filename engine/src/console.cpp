@@ -126,7 +126,7 @@ void IConsole::init() {
 	_buffer.push_back(Buffer::value_type(mrt::formatString("Battle Tanks engine. version: %s", getVersion().c_str()), NULL));
 	_buffer.push_back(Buffer::value_type(std::string(">"), NULL));
 	LOG_DEBUG(("connecting signal..."));
-	Window->key_signal.connect(sigc::mem_fun(this, &IConsole::onKey));	
+	on_key_slot.assign(this, &IConsole::onKey, Window->key_signal);
 }
 
 void IConsole::render(sdlx::Surface &window) {

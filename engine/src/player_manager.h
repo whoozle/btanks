@@ -29,6 +29,7 @@
 #include "alarm.h"
 #include "zbox.h"
 #include "netstats.h"
+#include "sl08/sl08.h"
 
 namespace mrt {
 class Chunk;
@@ -98,6 +99,7 @@ public:
 	void onPlayerDeath(const Object *player, const Object *killer);
 	void gameOver(const std::string &reason, const float time);
 	
+	sl08::slot1<void, const std::set<v3<int> > &, IPlayerManager> on_destroy_map_slot;
 	void onDestroyMap(const std::set<v3<int> > & cells);
 	
 	void validateViewports();

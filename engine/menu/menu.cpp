@@ -40,10 +40,10 @@ bool MainMenu::generate_key_events_for_gamepad = true;
 #define ITEM_SPACING 10
 
 MainMenu::MainMenu() : _active(false), _active_item(0), _key_active(false) {
-	Window->key_signal.connect(sigc::mem_fun(this, &MainMenu::onKey));
-	Window->mouse_signal.connect(sigc::mem_fun(this, &MainMenu::onMouse));
-	Window->mouse_motion_signal.connect(sigc::mem_fun(this, &MainMenu::onMouseMotion));
-	Window->event_signal.connect(sigc::mem_fun(this, &MainMenu::onEvent));
+	on_key_slot.assign(this, &MainMenu::onKey, Window->key_signal);
+	on_mouse_slot.assign(this, &MainMenu::onMouse, Window->mouse_signal);
+	on_mouse_motion_slot.assign(this, &MainMenu::onMouseMotion, Window->mouse_motion_signal);
+	on_event_slot.assign(this, &MainMenu::onEvent, Window->event_signal);
 }
 
 void MainMenu::init(const int w, const int h) {

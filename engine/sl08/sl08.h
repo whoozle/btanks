@@ -24,7 +24,7 @@ namespace sl08 {
 		class exclusive_validator {
 		public:
 			inline bool operator()(result_type r) {
-				return (bool)r;
+				return !r;
 			}
 		};
 

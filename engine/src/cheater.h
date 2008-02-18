@@ -24,12 +24,13 @@
 #include <deque>
 
 #include "sdlx/sdlx.h"
-#include <sigc++/sigc++.h>
+#include "sl08/sl08.h"
 
-class Cheater : public sigc::trackable {
+class Cheater {
 public: 
 	Cheater();
 private: 
+	sl08::slot1<void, const SDL_Event &, Cheater> on_event_slot;
 	void onEvent(const SDL_Event &event);
 	std::vector<std::string> _cheats;
 	size_t _buf_size;

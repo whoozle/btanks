@@ -24,7 +24,8 @@
 
 Cheater::Cheater() : _buf_size(0) {
 	memset(_buf, 0, sizeof(_buf));
-	Window->event_signal.connect(sigc::mem_fun(this, &Cheater::onEvent));
+	
+	on_event_slot.assign(this, &Cheater::onEvent, Window->event_signal);
 	
 	_cheats.push_back("skotobaza");
 	_cheats.push_back("matrix");

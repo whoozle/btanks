@@ -3,6 +3,7 @@ Import('env')
 
 env = env.Copy()
 env.Append(CPPDEFINES=['MRTAPI=DLLEXPORT'])
+env.Append(CPPPATH=['.'])
 
 libs = ['expat', 'z']
 

@@ -3,7 +3,7 @@
 #include "tmx/generator.h"
 
 MorphDialog::MorphDialog(const int w, const int h) : ScrollList("menu/background_box_dark.png", "small", w, h) {
-	Map->load_map_signal.connect(sigc::mem_fun(this, &MorphDialog::initMap));
+	init_map_slot.assign(this, &MorphDialog::initMap, Map->load_map_signal);
 }
 
 void MorphDialog::initMap() {

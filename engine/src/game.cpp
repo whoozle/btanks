@@ -333,13 +333,13 @@ void IGame::init(const int argc, char *argv[]) {
 		}
 	}
 	Console->init();
-	Console->on_command.connect(sigc::mem_fun(this, &IGame::onConsole));
+	on_console_slot.assign(this, &IGame::onConsole, Console->on_command);
 	
 	LOG_DEBUG(("installing basic callbacks..."));
-	Window->key_signal.connect(sigc::mem_fun(this, &IGame::onKey));
-	Window->mouse_signal.connect(sigc::mem_fun(this, &IGame::onMouse));
-	Window->joy_button_signal.connect(sigc::mem_fun(this, &IGame::onJoyButton));
-	Window->event_signal.connect(sigc::mem_fun(this, &IGame::onEvent));
+	on_key_slot.assign(this, &IGame::onKey, Window->key_signal);
+	on_mouse_slot.assign(this, &IGame::onMouse, Window->mouse_signal);
+	on_joy_slot.assign(this, &IGame::onJoyButton, Window->joy_button_signal);
+	on_event_slot.assign(this, &IGame::onEvent, Window->event_signal);
 	
 	sdlx::Rect window_size = Window->getSize();
 	if (_main_menu == NULL) {
@@ -355,17 +355,17 @@ void IGame::init(const int argc, char *argv[]) {
 	_hud = new Hud(window_size.w, window_size.h);
 
 	LOG_DEBUG(("installing callbacks..."));
-		
-	_main_menu->menu_signal.connect(sigc::mem_fun(this, &IGame::onMenu));
 	
-	Map->reset_progress.connect(sigc::mem_fun(this, &IGame::resetLoadingBar));
-	Map->notify_progress.connect(sigc::mem_fun(this, &IGame::notifyLoadingBar));
-	Map->load_map_signal.connect(sigc::mem_fun(this, &IGame::onMap));
-	
-	ResourceManager->reset_progress.connect(sigc::mem_fun(this, &IGame::resetLoadingBar));
-	ResourceManager->notify_progress.connect(sigc::mem_fun(this, &IGame::notifyLoadingBar));
+	on_menu_slot.assign(this, &IGame::onMenu, _main_menu->menu_signal);
+	reset_slot.assign(this, &IGame::resetLoadingBar, Map->reset_progress);
+	notify_slot.assign(this, &IGame::notifyLoadingBar, Map->notify_progress);
 
-	Window->tick_signal.connect(sigc::mem_fun(this, &IGame::onTick));
+	on_map_slot.assign(this, &IGame::onMap, Map->load_map_signal);
+	
+	reset_slot.assign(this, &IGame::resetLoadingBar, ResourceManager->reset_progress);
+	notify_slot.assign(this, &IGame::notifyLoadingBar, ResourceManager->notify_progress);
+
+	on_tick_slot.assign(this, &IGame::onTick, Window->tick_signal);
 
 	LOG_DEBUG(("initializing resource manager..."));
 	

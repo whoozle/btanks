@@ -21,35 +21,27 @@
 
 #include <deque>
 #include <string>
-#include <sigc++/sigc++.h>
+#include "sl08/sl08.h"
 #include "mrt/singleton.h"
 #include "menu/box.h"
 namespace sdlx {
 	class Font;
 }
 
-class IConsole : public sigc::trackable {
-class marshaler {
-public: 
-	typedef std::string result_type;
-
-	template<typename IteratorT>
-    	const std::string operator()(IteratorT First, IteratorT Last) {
-    		while(First != Last) {
-    			const std::string r = *First;
-    			if (!r.empty())
-    				return r;
-    			++First;
-    		}
-    		return std::string();
-    	}
-};
+class IConsole {
+	class validator {
+	public:
+		typedef std::string result_type;
+		inline bool operator()(result_type r) {
+			return r.empty();
+		}
+	};
 public: 
 	DECLARE_SINGLETON(IConsole);
 	
 	void init();
 
-	sigc::signal2<const std::string, const std::string &, const std::string &, marshaler> on_command;
+	sl08::signal2<const std::string, const std::string &, const std::string &, validator > on_command;
 	
 	void render(sdlx::Surface &window);
 	
@@ -59,6 +51,7 @@ protected:
 	IConsole(); 
 	
 private:
+	sl08::slot2<bool, const SDL_keysym, const bool, IConsole> on_key_slot;
 	bool onKey(const SDL_keysym sym, const bool pressed);
 	bool _active; 
 

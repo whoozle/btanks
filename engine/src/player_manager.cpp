@@ -746,7 +746,7 @@ TRY {
 IPlayerManager::IPlayerManager() : 
 	_server(NULL), _client(NULL), _players(), _next_ping(0), _ping(false), _next_sync(true), _game_joined(false)
 {
-	Map->destroyed_cells_signal.connect(sigc::mem_fun(this, &IPlayerManager::onDestroyMap));
+	on_destroy_map_slot.assign(this, &IPlayerManager::onDestroyMap, Map->destroyed_cells_signal);
 }
 
 IPlayerManager::~IPlayerManager() {}

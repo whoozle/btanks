@@ -28,7 +28,7 @@ Slider::Slider(const float value) : _n(10), _value(value), _grab(false) {
 		throw_ex(("slider accepts only values between 0 and 1 (inclusive)"));
 	_tiles = ResourceManager->loadSurface("menu/slider.png");
 
-	Window->mouse_motion_signal.connect(sigc::mem_fun(this, &Slider::onMouseMotion));	
+	mm_slot.assign(this, &Slider::onMouseMotion, Window->mouse_motion_signal);
 }
 
 

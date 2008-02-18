@@ -19,7 +19,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include <sigc++/sigc++.h>
+#include "sl08/sl08.h"
 #include "export_btanks.h"
 #include "sdlx/surface.h"
 #include "sdlx/font.h"
@@ -34,7 +34,7 @@
 class Font;
 class Object;
 
-class BTANKSAPI Hud : public sigc::trackable {
+class BTANKSAPI Hud {
 public: 
 	Hud(const int w, const int h);
 	void toggleMapMode(); 
@@ -49,7 +49,10 @@ public:
 	~Hud();
 	
 private: 
+	sl08::slot0<void, Hud> init_map_slot;
 	void initMap();
+	
+	sl08::slot1<void, const std::set<v3<int> > &, Hud> on_destroy_map_slot;
 	void onDestroyMap(const std::set<v3<int> > & cells);
 
 	void generateRadarBG(const sdlx::Rect &viewport);

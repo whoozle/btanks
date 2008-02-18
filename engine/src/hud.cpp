@@ -568,8 +568,8 @@ static void find_splashes(std::vector<std::string> &splashes, const std::string 
 }
 
 Hud::Hud(const int w, const int h) :  _pointer(NULL), _pointer_dir(-1), _update_radar(true), _map_mode(MapSmall) {
-	Map->load_map_final_signal.connect(sigc::mem_fun(this, &Hud::initMap));
-	Map->destroyed_cells_signal.connect(sigc::mem_fun(this, &Hud::onDestroyMap));
+	init_map_slot.assign(this, &Hud::initMap, Map->load_map_final_signal);
+	on_destroy_map_slot.assign(this, &Hud::onDestroyMap, Map->destroyed_cells_signal);
 
 	_background = ResourceManager->loadSurface("hud/hud_line.png");
 	_loading_border = ResourceManager->loadSurface("hud/loading_border.png");

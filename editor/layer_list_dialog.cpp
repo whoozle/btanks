@@ -7,7 +7,8 @@
 #include "menu/text_control.h"
 
 LayerListDialog::LayerListDialog(const int w, const int h) : ScrollList("menu/background_box.png", "small", w / 3, h, 0) {
-	Map->load_map_final_signal.connect(sigc::mem_fun(this, &LayerListDialog::initMap));
+	init_map_slot.assign(this, &LayerListDialog::initMap, Map->load_map_final_signal);
+
 	_new_layer = new Prompt(320, 100, new TextControl("small"));
 	int sw, sh;
 	_new_layer->getSize(sw, sh);

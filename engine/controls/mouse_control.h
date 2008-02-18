@@ -24,6 +24,7 @@
 #include "control_method.h"
 #include "player_state.h"
 #include "math/v2.h"
+#include "sl08/sl08.h"
 
 class Object;
 class MouseControl : public ControlMethod {
@@ -34,8 +35,10 @@ public:
 private:
 	void getPosition(v2<float>&pos) const;
 	Object * getObject() const;
-	
+
+	sl08::slot4<bool, const int, const bool, const int, const int, MouseControl> on_mouse_slot;	
 	bool onMouse(const int button, const bool pressed, const int x, const int y);
+
 	v2<float> _target_rel, _target;
 	int _target_dir;
 	bool _shoot;

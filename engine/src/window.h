@@ -19,39 +19,23 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 #include "sdlx/surface.h"
-#include <sigc++/sigc++.h>
+#include "sl08/sl08.h"
 #include "sdlx/timer.h"
 #include "export_btanks.h"
 #include "mrt/singleton.h"
 
-
-class BTANKSAPI IWindow : public sigc::trackable {
-class marshaller {
-public: 
-	typedef bool result_type;
-
-	template<typename IteratorT>
-    	result_type operator()(IteratorT First, IteratorT Last) {
-    		for(; First != Last; ++First) {
-    			if (*First) {
-    				return true;
-    			}
-    		}
-    		return false;
-    	}
-};
+class BTANKSAPI IWindow  {
 public: 
 	DECLARE_SINGLETON(IWindow);
 
 	//signals
-	sigc::signal1<void, const SDL_Event& > event_signal;
-	sigc::signal1<void, const float> tick_signal;
-	sigc::signal2<bool, const SDL_keysym, const bool, marshaller> key_signal;
-	sigc::signal3<void, const int, const int, const bool> joy_button_signal;
-	sigc::signal4<bool, const int, const bool, const int, const int, marshaller> mouse_signal;
-	sigc::signal5<bool, const int, const int, const int, const int, const int, marshaller> mouse_motion_signal;
+	sl08::signal1<void, const SDL_Event& > event_signal;
+	sl08::signal1<void, const float> tick_signal;
+	sl08::signal2<bool, const SDL_keysym, const bool, sl08::exclusive_validator<bool> > key_signal;
+	sl08::signal3<void, const int, const int, const bool> joy_button_signal;
+	sl08::signal4<bool, const int, const bool, const int, const int, sl08::exclusive_validator<bool> > mouse_signal;
+	sl08::signal5<bool, const int, const int, const int, const int, const int, sl08::exclusive_validator<bool> > mouse_motion_signal;
 
 	IWindow();
 	void init(const int argc, char *argv[]);

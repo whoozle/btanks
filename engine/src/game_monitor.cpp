@@ -54,12 +54,8 @@ IGameMonitor::IGameMonitor() : _game_over(false), _win(false), _check_items(0.5,
 , lua_hooks(new LuaHooks) 
 #endif
 {
-	Console->on_command.connect(sigc::mem_fun(this, &IGameMonitor::onConsole));
-	Map->map_resize_signal.connect(
-		sigc::hide(sigc::hide(sigc::hide(sigc::hide(
-			sigc::mem_fun(this, &IGameMonitor::parseWaypoints)
-		))))
-	);
+	on_console_slot.assign(this, &IGameMonitor::onConsole, Console->on_command);
+	on_map_resize_slot.assign(this, &IGameMonitor::parseWaypoints, Map->map_resize_signal);
 }
 
 void GameItem::respawn() {
@@ -822,7 +818,7 @@ void IGameMonitor::loadMap(Campaign *campaign, const std::string &name, const bo
 	LOG_DEBUG(("generating matrixes"));
 	Map->generateMatrixes();
 	
-	parseWaypoints();
+	parseWaypoints(0,0,0,0);
 	
 	Config->invalidateCachedValues();
 	
@@ -851,7 +847,7 @@ void IGameMonitor::loadMap(Campaign *campaign, const std::string &name, const bo
 	Window->resetTimer();
 }
 
-void IGameMonitor::parseWaypoints() {
+void IGameMonitor::parseWaypoints(int, int, int, int) {
 	LOG_DEBUG(("parsing waypoints..."));
 	IMap &map = *IMap::get_instance();
 	v3<int> pos;

@@ -21,13 +21,13 @@
 
 #include "mrt/xml.h"
 #include <vector>
-#include <sigc++/sigc++.h>
+#include "sl08/sl08.h"
 
-class NotifyingXMLParser : public sigc::trackable, public mrt::XMLParser {
+class NotifyingXMLParser : public mrt::XMLParser {
 public: 
 	NotifyingXMLParser();
-	sigc::signal1<void, const int> reset_progress;
-	sigc::signal1<void, const int> notify_progress;
+	sl08::signal1<void, const int> reset_progress;
+	sl08::signal1<void, const int> notify_progress;
 
 protected:	
 	virtual void parseFile(const std::string &file);

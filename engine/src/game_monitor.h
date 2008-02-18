@@ -32,6 +32,7 @@
 #include "sdlx/sdlx.h"
 #include "export_btanks.h"
 #include "menu/box.h"
+#include "sl08/sl08.h"
 
 namespace sdlx {
 class Surface;
@@ -129,11 +130,14 @@ public:
 	
 	const bool usedInCampaign(const std::string &base, const std::string &id) const;
 	const void useInCampaign(const std::string &base, const std::string &id);
-	
-	void parseWaypoints();
+
+	sl08::slot4<void, int, int, int, int, IGameMonitor> on_map_resize_slot;	
+	void parseWaypoints(int, int, int, int);
 	
 private:
 	void saveCampaign();
+
+	sl08::slot2<const std::string, const std::string &, const std::string &, IGameMonitor> on_console_slot;
 	const std::string onConsole(const std::string &cmd, const std::string &param);
 
 	bool _game_over, _win;
