@@ -119,9 +119,12 @@ class Generator(object):
 		template %s
 		class slotXXX : public base_slotXXX %s { 
 		public: 
+			typedef base_signalXXX %s signal_type; 
 			typedef return_type (object_type::*func_t) %s; 
-			inline slotXXX(object_type *object, func_t func) : object(object), func(func) {}
-			void assign(object_type *o, func_t f) { object = o; func = f; }
+
+			inline slotXXX () : object(NULL), func(NULL) {}
+			inline slotXXX(object_type *object, func_t func, signal_type * signal = NULL) : object(object), func(func) {}
+			inline void assign(object_type *o, func_t f, signal_type *signal = NULL) { object = o; func = f; if (signal != NULL) connect(*signal); }
 	
 			inline return_type operator() %s { 
 				return (object->*func) %s ;
@@ -139,6 +142,7 @@ class Generator(object):
 			self.prototype(True),
 			self.template_declaration('slot'), 
 			self.template_parameters('base-slot'), 
+			self.template_parameters('base-slot'), 
 			self.prototype(True), self.prototype(True), self.prototype(False),
 			)
 			
@@ -148,8 +152,12 @@ class Generator(object):
 		template %s
 		class slotXXX %s : public base_slotXXX %s{
 		public: 
+			typedef base_signalXXX %s signal_type; 
 			typedef void (object_type::*func_t) %s ;
+
+			inline slotXXX () : object(NULL), func(NULL) {}
 			inline slotXXX (object_type *object, func_t func) : object(object), func(func) {}
+			inline void assign(object_type *o, func_t f, signal_type *signal) { object = o; func = f; if (signal != NULL) connect(*signal); }
 	
 			inline void operator() %s { 
 				(object->*func) %s; 
@@ -162,6 +170,7 @@ class Generator(object):
 		""" %(
 			self.template_declaration('slot', True), 
 			self.template_parameters('slot', True), 
+			self.template_parameters('base-slot', True), 
 			self.template_parameters('base-slot', True), 
 			self.prototype(True), 
 			self.prototype(True), 
