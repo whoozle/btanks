@@ -201,8 +201,11 @@ class Generator(object):
 			
 			inline virtual return_type emit %s {
 				return_type r; 
+				validator_type v;
 				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
 					r = (*i)->operator() %s; 
+					if (!v(r))
+						return r;
 				}
 				return r; 
 			} 

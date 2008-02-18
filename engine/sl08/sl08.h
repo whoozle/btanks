@@ -116,8 +116,11 @@ namespace sl08 {
 			
 			inline virtual return_type emit () {
 				return_type r; 
+				validator_type v;
 				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
 					r = (*i)->operator() (); 
+					if (!v(r))
+						return r;
 				}
 				return r; 
 			} 
@@ -224,8 +227,11 @@ namespace sl08 {
 			
 			inline virtual return_type emit (arg1_type a1) {
 				return_type r; 
+				validator_type v;
 				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
 					r = (*i)->operator() (a1); 
+					if (!v(r))
+						return r;
 				}
 				return r; 
 			} 
