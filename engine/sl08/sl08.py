@@ -245,7 +245,7 @@ class Generator(object):
 		
 
 text = ''
-for i in xrange(0, 2): 
+for i in xrange(0, 6):
 	g = Generator(i)
 	text = text + "\n" + g.generate(); 
 
