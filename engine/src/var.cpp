@@ -20,6 +20,7 @@
 #include "mrt/exception.h"
 #include "mrt/serializator.h"
 #include <assert.h>
+#include <stdlib.h>
 
 void Var::serialize(mrt::Serializator &s) const {
 		if (type.empty()) 

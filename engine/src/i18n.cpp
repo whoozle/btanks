@@ -19,6 +19,7 @@
 #include "i18n.h"
 #include "mrt/exception.h"
 #include <assert.h>
+#include <string.h>
 #include "finder.h"
 #include "scoped_ptr.h"
 #include "mrt/base_file.h"

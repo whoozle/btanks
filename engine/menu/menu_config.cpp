@@ -23,6 +23,7 @@
 #include "mrt/random.h"
 #include "mrt/b64.h"
 #include "config.h"
+#include <string.h>
 
 IMPLEMENT_SINGLETON(MenuConfig, IMenuConfig);
 

@@ -23,6 +23,7 @@
 #include "alarm.h"
 #include "config.h"
 #include "trooper.h"
+#include <string.h>
 
 void Trooper::getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const {
 	if (impassability > 0.2f) {
