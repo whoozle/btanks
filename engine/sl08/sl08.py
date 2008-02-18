@@ -125,7 +125,9 @@ class Generator(object):
 
 			inline slotXXX () : object(NULL), func(NULL) {}
 			inline slotXXX(object_type *object, func_t func, signal_type * signal = NULL) : object(object), func(func) {}
-			inline void assign(object_type *o, func_t f, signal_type *signal = NULL) { object = o; func = f; if (signal != NULL) connect(*signal); }
+
+			inline void assign(object_type *o, func_t f) { object = o; func = f; }
+			inline void assign(object_type *o, func_t f, signal_type &signal_ref = NULL) { object = o; func = f; connect(signal_ref); }
 	
 			inline return_type operator() %s { 
 				return (object->*func) %s ;
@@ -158,7 +160,8 @@ class Generator(object):
 
 			inline slotXXX () : object(NULL), func(NULL) {}
 			inline slotXXX (object_type *object, func_t func) : object(object), func(func) {}
-			inline void assign(object_type *o, func_t f, signal_type *signal) { object = o; func = f; if (signal != NULL) connect(*signal); }
+			inline void assign(object_type *o, func_t f) { object = o; func = f; }
+			inline void assign(object_type *o, func_t f, signal_type &signal_ref) { object = o; func = f; connect(signal_ref); }
 	
 			inline void operator() %s { 
 				(object->*func) %s; 
