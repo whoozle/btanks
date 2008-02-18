@@ -121,6 +121,7 @@ class Generator(object):
 		public: 
 			typedef return_type (object_type::*func_t) %s; 
 			inline slotXXX(object_type *object, func_t func) : object(object), func(func) {}
+			void assign(object_type *o, func_t f) { object = o; func = f; }
 	
 			inline return_type operator() %s { 
 				return (object->*func) %s ;

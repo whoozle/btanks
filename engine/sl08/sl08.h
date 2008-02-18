@@ -58,6 +58,7 @@ namespace sl08 {
 		public: 
 			typedef return_type (object_type::*func_t) (); 
 			inline slot0(object_type *object, func_t func) : object(object), func(func) {}
+			void assign(object_type *o, func_t f) { object = o; func = f; }
 	
 			inline return_type operator() () { 
 				return (object->*func) () ;
@@ -169,6 +170,7 @@ namespace sl08 {
 		public: 
 			typedef return_type (object_type::*func_t) (arg1_type a1); 
 			inline slot1(object_type *object, func_t func) : object(object), func(func) {}
+			void assign(object_type *o, func_t f) { object = o; func = f; }
 	
 			inline return_type operator() (arg1_type a1) { 
 				return (object->*func) (a1) ;
@@ -280,6 +282,7 @@ namespace sl08 {
 		public: 
 			typedef return_type (object_type::*func_t) (arg1_type a1, arg2_type a2); 
 			inline slot2(object_type *object, func_t func) : object(object), func(func) {}
+			void assign(object_type *o, func_t f) { object = o; func = f; }
 	
 			inline return_type operator() (arg1_type a1, arg2_type a2) { 
 				return (object->*func) (a1, a2) ;
@@ -391,6 +394,7 @@ namespace sl08 {
 		public: 
 			typedef return_type (object_type::*func_t) (arg1_type a1, arg2_type a2, arg3_type a3); 
 			inline slot3(object_type *object, func_t func) : object(object), func(func) {}
+			void assign(object_type *o, func_t f) { object = o; func = f; }
 	
 			inline return_type operator() (arg1_type a1, arg2_type a2, arg3_type a3) { 
 				return (object->*func) (a1, a2, a3) ;
@@ -502,6 +506,7 @@ namespace sl08 {
 		public: 
 			typedef return_type (object_type::*func_t) (arg1_type a1, arg2_type a2, arg3_type a3, arg4_type a4); 
 			inline slot4(object_type *object, func_t func) : object(object), func(func) {}
+			void assign(object_type *o, func_t f) { object = o; func = f; }
 	
 			inline return_type operator() (arg1_type a1, arg2_type a2, arg3_type a3, arg4_type a4) { 
 				return (object->*func) (a1, a2, a3, a4) ;
@@ -613,6 +618,7 @@ namespace sl08 {
 		public: 
 			typedef return_type (object_type::*func_t) (arg1_type a1, arg2_type a2, arg3_type a3, arg4_type a4, arg5_type a5); 
 			inline slot5(object_type *object, func_t func) : object(object), func(func) {}
+			void assign(object_type *o, func_t f) { object = o; func = f; }
 	
 			inline return_type operator() (arg1_type a1, arg2_type a2, arg3_type a3, arg4_type a4, arg5_type a5) { 
 				return (object->*func) (a1, a2, a3, a4, a5) ;
