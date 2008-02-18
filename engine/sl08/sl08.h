@@ -1,162 +1,248 @@
-#ifndef SL08_SIGNALS_CORE_H
-#define SL08_SIGNALS_CORE_H
+#ifndef BTANKS_SL08_SLOTSANDSIGNALS_H__
+#define BTANKS_SL08_SLOTSANDSIGNALS_H__
 
 #include <deque>
-#include <set>
-#include <algorithm>
-#include <functional>
 
-#define SLOT(N, tspec, proto, call, signal_template, signal_spec, arglist, arglist2, declist, declist2) \
-template signal_template class signal##N; \
-template signal_template \
-class base_slot##N {\
-protected: \
-	typedef signal##N signal_spec signal_type; \
-	signal_type *signal; \
-\
-public: \
-	virtual R operator() proto = 0; \
-	inline base_slot##N () : signal(NULL) {} \
-	inline void connect(signal##N signal_spec &signal_ref) {\
-		signal = &signal_ref; \
-		signal->connect(this); \
-	} \
-	\
-	inline void disconnect() {\
-		signal->disconnect(this); \
-		signal = NULL; \
-	} \
-	inline virtual ~base_slot##N() { \
-		disconnect(); \
-	} \
-}; \
-\
-template tspec \
-class slot##N : public base_slot##N signal_spec { \
-public: \
-	typedef R (CL::*func_t) proto; \
-	inline slot##N(CL *object, func_t func) : object(object), func(func) {}\
-	\
-	inline R operator() proto { \
-		return (object->*func) call ;\
-	} \
-	\
-private: \
-	CL *object; \
-	func_t func;\
-}; \
-template <declist class CL> \
-class slot##N <void arglist CL> : public base_slot##N <void arglist2> { \
-public: \
-	typedef void (CL::*func_t) proto ;\
-	inline slot##N (CL *object, func_t func) : object(object), func(func) {}\
-	\
-	inline void operator() proto { \
-		(object->*func) call; \
-	} \
-	\
-private: \
-	CL *object; \
-	func_t func; \
-}
-
-#define SIGNAL(N, tspec, proto, call, signal_spec, slot_spec, declist, arglist) \
-template tspec \
-class base_signal##N { \
-protected: \
-	typedef base_slot##N signal_spec slot_type; \
-	typedef std::deque<slot_type *> slots_type; \
-	slots_type slots;\
-public: \
-	inline R emit proto { \
-		R r; \
-		for(typename slots_type::iterator i = slots.begin(); i != slots.end(); ++i) { \
-			r = (*i)->operator() call ; \
-		} \
-		return r; \
-	} \
-\
-	inline void connect(base_slot##N signal_spec *slot) {\
-		slots.push_back(slot);\
-	} \
-	\
-	inline void disconnect(base_slot##N signal_spec *slot) {\
-		for(typename slots_type::iterator i = slots.begin(); i != slots.end(); ) { \
-			if (slot != *i) \
-				++i; \
-			else \
-				i = slots.erase(i); \
-		} \
-	} \
-};\
-template tspec \
-class signal##N : public base_signal##N signal_spec { \
-}
-
-#define SIGNAL_SPECIAL(N, typename_helper, proto, call, tspec, tpar) \
-template tspec \
-class signal##N tpar : public base_signal##N tpar { \
-	typedef base_signal##N tpar parent_t; \
-public: \
-	inline void emit proto {  \
-		for(typename_helper parent_t::slots_type::iterator i = parent_t::slots.begin(); i != parent_t::slots.end(); ++i) { \
-			(*i)->operator() call ; \
-		} \
-	} \
-}
-
-
-#define SLOT_ARG0 <typename R, class CL>
-#define SIGNAL_ARG0 <typename R>
-#define SIGNAL_TEMPLATE_ARG0 <R>
-#define SLOT_TEMPLATE_ARG0_ARGLIST ,
-#define SLOT_TEMPLATE_ARG0_ARGLIST2
-#define SLOT_TEMPLATE_ARG0 <R, ##SLOT_TEMPLATE_ARG0_ARGLIST## CL>
-#define SIGNAL_SPECIAL0_TEMPLATE <>
-#define SIGNAL_SPECIAL0_TPARAM <void>
-
-#define SLOT_ARG1 <typename R, typename A1, class CL>
-#define SIGNAL_ARG1 <typename R, typename A1>
-#define SIGNAL_TEMPLATE_ARG1 <R, A1>
-#define SLOT_TEMPLATE_ARG1_ARGLIST2 , A1 
-#define SLOT_TEMPLATE_ARG1_DECLIST2 typename A1
-#define SLOT_TEMPLATE_ARG1_DECLIST SLOT_TEMPLATE_ARG1_DECLIST2,
-#define SLOT_TEMPLATE_ARG1_ARGLIST SLOT_TEMPLATE_ARG1_ARGLIST2, 
-#define SLOT_TEMPLATE_ARG1 <R, ##SLOT_TEMPLATE_ARG1_ARGLIST## CL>
-
-#define SIGNAL_SPECIAL1_TEMPLATE <typename A1>
-#define SIGNAL_SPECIAL1_TPARAM <void, A1>
+#ifndef NULL
+#define NULL            ((void*) 0)
+#endif
 
 namespace sl08 {
 
-template <typename result_type>
-class default_validator {
-public:
-	inline bool operator()(result_type r) {
-		return true;
-	}
-};
+		template <typename result_type>
+		class default_validator {
+		public:
+			inline bool operator()(result_type r) {
+				return true;
+			}
+		};
 
-template <typename result_type>
-class exclusive_validator {
-public:
-	inline bool operator()(result_type r) {
-		return (bool)r;
-	}
-};
+		template <typename result_type>
+		class exclusive_validator {
+		public:
+			inline bool operator()(result_type r) {
+				return (bool)r;
+			}
+		};
 
+	
 
-	SLOT(0, SLOT_ARG0, (), (), SIGNAL_ARG0, SIGNAL_TEMPLATE_ARG0, \
-		SLOT_TEMPLATE_ARG0_ARGLIST, SLOT_TEMPLATE_ARG0_ARGLIST2 ,,);
-	SLOT(1, SLOT_ARG1, (A1 a1), (a1), SIGNAL_ARG1, SIGNAL_TEMPLATE_ARG1, \
-		SLOT_TEMPLATE_ARG1_ARGLIST, SLOT_TEMPLATE_ARG1_ARGLIST2, SLOT_TEMPLATE_ARG1_DECLIST, SLOT_TEMPLATE_ARG1_DECLIST2);
-	SIGNAL(0, SIGNAL_ARG0, (), (), SIGNAL_TEMPLATE_ARG0, SLOT_TEMPLATE_ARG0, SIGNAL_TEMPLATE_ARG0_DECLIST, SLOT_TEMPLATE_ARG0_ARGLIST2);
-	SIGNAL(1, SIGNAL_ARG1, (A1 a1), (a1), SIGNAL_TEMPLATE_ARG1, SLOT_TEMPLATE_ARG1, SIGNAL_TEMPLATE_ARG1_DECLIST, SLOT_TEMPLATE_ARG1_ARGLIST2);
+		template <typename return_type> class base_signal0;
 
-	SIGNAL_SPECIAL(0, , 		 (), (), SIGNAL_SPECIAL0_TEMPLATE, SIGNAL_SPECIAL0_TPARAM);
-	SIGNAL_SPECIAL(1, typename , (A1 a1), (a1), SIGNAL_SPECIAL1_TEMPLATE, SIGNAL_SPECIAL1_TPARAM);
+		template <typename return_type> 
+		class base_slot0 {
+			typedef base_signal0 <return_type> signal_type; 
+			signal_type *signal; 
+		public: 
+			virtual return_type operator() () = 0;
+			inline base_slot0 () : signal(NULL) {} 
+			inline void connect(signal_type &signal_ref) {
+				disconnect();
+				signal = &signal_ref; 
+				signal->connect(this); 
+			}
+		
+			inline void disconnect() {
+				if (signal != NULL) {
+					signal->disconnect(this); 
+					signal = NULL; 	
+				}
+			} 
+			inline virtual ~base_slot0() { 
+				disconnect();
+			}
+		};
+
+		template <typename return_type, class object_type>
+		class slot0 : public base_slot0 <return_type> { 
+		public: 
+			typedef return_type (object_type::*func_t) (); 
+			inline slot0(object_type *object, func_t func) : object(object), func(func) {}
+	
+			inline return_type operator() () { 
+				return (object->*func) () ;
+			} 
+	
+		private: 
+			object_type *object; 
+			func_t func;
+		}; 
+
+		
+		template <class object_type>
+		class slot0 <void, object_type> : public base_slot0 <void>{
+		public: 
+			typedef void (object_type::*func_t) () ;
+			inline slot0 (object_type *object, func_t func) : object(object), func(func) {}
+	
+			inline void operator() () { 
+				(object->*func) (); 
+			} 
+	
+		private: 
+			object_type *object; 
+			func_t func; 
+		};
+		
+		template <typename return_type>
+		class base_signal0 {
+		protected: 
+			typedef base_slot0 <return_type> slot_type; 
+			typedef std::deque<slot_type *> slots_type;
+			slots_type slots;
+		
+		public: 
+			inline virtual return_type emit () = 0;
+
+			inline void connect(slot_type *slot) {
+				slots.push_back(slot);
+			} 
+
+			inline void disconnect(slot_type *slot) {
+				for(typename slots_type::iterator i = slots.begin(); i != slots.end(); ) { 
+					if (slot != *i) 
+						++i; 
+					else 
+						i = slots.erase(i); 
+				} 
+			} 
+			inline virtual ~base_signal0() {}
+		};
+		
+		template <typename return_type, class validator_type = default_validator<return_type> >
+		class signal0 : public base_signal0 <return_type> { 
+		public: 
+			typedef base_signal0 <return_type> parent_type; 
+			
+			inline virtual return_type emit () {
+				return_type r; 
+				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
+					r = (*i)->operator() (); 
+				}
+				return r; 
+			} 
+		};
+			
+		template <class validator_type >
+		class signal0 <void, validator_type> : public base_signal0 <void> { 
+		typedef base_signal0 <void> parent_type; 
+		public: 
+			inline void emit () {  
+				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
+					(*i)->operator() () ; 
+				} 
+			} 
+		};
+		
+
+		template <typename return_type, typename arg1_type> class base_signal1;
+
+		template <typename return_type, typename arg1_type> 
+		class base_slot1 {
+			typedef base_signal1 <return_type, arg1_type> signal_type; 
+			signal_type *signal; 
+		public: 
+			virtual return_type operator() (arg1_type a1) = 0;
+			inline base_slot1 () : signal(NULL) {} 
+			inline void connect(signal_type &signal_ref) {
+				disconnect();
+				signal = &signal_ref; 
+				signal->connect(this); 
+			}
+		
+			inline void disconnect() {
+				if (signal != NULL) {
+					signal->disconnect(this); 
+					signal = NULL; 	
+				}
+			} 
+			inline virtual ~base_slot1() { 
+				disconnect();
+			}
+		};
+
+		template <typename return_type, typename arg1_type, class object_type>
+		class slot1 : public base_slot1 <return_type, arg1_type> { 
+		public: 
+			typedef return_type (object_type::*func_t) (arg1_type a1); 
+			inline slot1(object_type *object, func_t func) : object(object), func(func) {}
+	
+			inline return_type operator() (arg1_type a1) { 
+				return (object->*func) (a1) ;
+			} 
+	
+		private: 
+			object_type *object; 
+			func_t func;
+		}; 
+
+		
+		template <typename arg1_type, class object_type>
+		class slot1 <void, arg1_type, object_type> : public base_slot1 <void, arg1_type>{
+		public: 
+			typedef void (object_type::*func_t) (arg1_type a1) ;
+			inline slot1 (object_type *object, func_t func) : object(object), func(func) {}
+	
+			inline void operator() (arg1_type a1) { 
+				(object->*func) (a1); 
+			} 
+	
+		private: 
+			object_type *object; 
+			func_t func; 
+		};
+		
+		template <typename return_type, typename arg1_type>
+		class base_signal1 {
+		protected: 
+			typedef base_slot1 <return_type, arg1_type> slot_type; 
+			typedef std::deque<slot_type *> slots_type;
+			slots_type slots;
+		
+		public: 
+			inline virtual return_type emit (arg1_type a1) = 0;
+
+			inline void connect(slot_type *slot) {
+				slots.push_back(slot);
+			} 
+
+			inline void disconnect(slot_type *slot) {
+				for(typename slots_type::iterator i = slots.begin(); i != slots.end(); ) { 
+					if (slot != *i) 
+						++i; 
+					else 
+						i = slots.erase(i); 
+				} 
+			} 
+			inline virtual ~base_signal1() {}
+		};
+		
+		template <typename return_type, typename arg1_type, class validator_type = default_validator<return_type> >
+		class signal1 : public base_signal1 <return_type, arg1_type> { 
+		public: 
+			typedef base_signal1 <return_type, arg1_type> parent_type; 
+			
+			inline virtual return_type emit (arg1_type a1) {
+				return_type r; 
+				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
+					r = (*i)->operator() (a1); 
+				}
+				return r; 
+			} 
+		};
+			
+		template <typename arg1_type, class validator_type >
+		class signal1 <void, arg1_type, validator_type> : public base_signal1 <void, arg1_type> { 
+		typedef base_signal1 <void, arg1_type> parent_type; 
+		public: 
+			inline void emit (arg1_type a1) {  
+				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
+					(*i)->operator() (a1) ; 
+				} 
+			} 
+		};
+		
 }
 
 #endif
-
 
