@@ -26,11 +26,10 @@ consult your distro's documentation for details):
 	b) SDL_image 	 (PNG support required)
 	c) openal
 	d) libvorbisfile, libvorbis and family
-	e) sigc++ 2.x (1.x is not supported)
-	f) expat - XML parsing library
-	g) zlib
-	h) lua 5.1 (maybe 5.0, not tested)
-	i) smpeg - SDL mpeg1 library (for campaign preview movies)
+	e) expat - XML parsing library
+	f) zlib
+	g) lua 5.1 (maybe 5.0, not tested)
+	h) smpeg - SDL mpeg1 library (for campaign preview movies)
 
 4) you could add something like this in 'options.cache' file 
 (located in trunk/ directory): 
