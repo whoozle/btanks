@@ -32,21 +32,22 @@ namespace sl08 {
 		template <typename return_type> 
 		class base_slot0 {
 			typedef base_signal0 <return_type> signal_type; 
-			signal_type *signal; 
+			typedef std::deque<signal_type *> signals_type;
+			signals_type signals;
 		public: 
 			virtual return_type operator() () = 0;
-			inline base_slot0 () : signal(NULL) {} 
+			inline base_slot0 () : signals() {} 
 			inline void connect(signal_type &signal_ref) {
-				disconnect();
-				signal = &signal_ref; 
+				signal_type *signal = &signal_ref;
+				signals.push_back(signal);
 				signal->connect(this); 
 			}
 		
 			inline void disconnect() {
-				if (signal != NULL) {
-					signal->disconnect(this); 
-					signal = NULL; 	
+				for(typename signals_type::iterator i = signals.begin(); i != signals.end(); ++i) {
+					(*i)->disconnect(this); 
 				}
+				signals.clear();
 			} 
 			inline virtual ~base_slot0() { 
 				disconnect();
@@ -151,21 +152,22 @@ namespace sl08 {
 		template <typename return_type, typename arg1_type> 
 		class base_slot1 {
 			typedef base_signal1 <return_type, arg1_type> signal_type; 
-			signal_type *signal; 
+			typedef std::deque<signal_type *> signals_type;
+			signals_type signals;
 		public: 
 			virtual return_type operator() (arg1_type a1) = 0;
-			inline base_slot1 () : signal(NULL) {} 
+			inline base_slot1 () : signals() {} 
 			inline void connect(signal_type &signal_ref) {
-				disconnect();
-				signal = &signal_ref; 
+				signal_type *signal = &signal_ref;
+				signals.push_back(signal);
 				signal->connect(this); 
 			}
 		
 			inline void disconnect() {
-				if (signal != NULL) {
-					signal->disconnect(this); 
-					signal = NULL; 	
+				for(typename signals_type::iterator i = signals.begin(); i != signals.end(); ++i) {
+					(*i)->disconnect(this); 
 				}
+				signals.clear();
 			} 
 			inline virtual ~base_slot1() { 
 				disconnect();
@@ -270,21 +272,22 @@ namespace sl08 {
 		template <typename return_type, typename arg1_type, typename arg2_type> 
 		class base_slot2 {
 			typedef base_signal2 <return_type, arg1_type, arg2_type> signal_type; 
-			signal_type *signal; 
+			typedef std::deque<signal_type *> signals_type;
+			signals_type signals;
 		public: 
 			virtual return_type operator() (arg1_type a1, arg2_type a2) = 0;
-			inline base_slot2 () : signal(NULL) {} 
+			inline base_slot2 () : signals() {} 
 			inline void connect(signal_type &signal_ref) {
-				disconnect();
-				signal = &signal_ref; 
+				signal_type *signal = &signal_ref;
+				signals.push_back(signal);
 				signal->connect(this); 
 			}
 		
 			inline void disconnect() {
-				if (signal != NULL) {
-					signal->disconnect(this); 
-					signal = NULL; 	
+				for(typename signals_type::iterator i = signals.begin(); i != signals.end(); ++i) {
+					(*i)->disconnect(this); 
 				}
+				signals.clear();
 			} 
 			inline virtual ~base_slot2() { 
 				disconnect();
@@ -389,21 +392,22 @@ namespace sl08 {
 		template <typename return_type, typename arg1_type, typename arg2_type, typename arg3_type> 
 		class base_slot3 {
 			typedef base_signal3 <return_type, arg1_type, arg2_type, arg3_type> signal_type; 
-			signal_type *signal; 
+			typedef std::deque<signal_type *> signals_type;
+			signals_type signals;
 		public: 
 			virtual return_type operator() (arg1_type a1, arg2_type a2, arg3_type a3) = 0;
-			inline base_slot3 () : signal(NULL) {} 
+			inline base_slot3 () : signals() {} 
 			inline void connect(signal_type &signal_ref) {
-				disconnect();
-				signal = &signal_ref; 
+				signal_type *signal = &signal_ref;
+				signals.push_back(signal);
 				signal->connect(this); 
 			}
 		
 			inline void disconnect() {
-				if (signal != NULL) {
-					signal->disconnect(this); 
-					signal = NULL; 	
+				for(typename signals_type::iterator i = signals.begin(); i != signals.end(); ++i) {
+					(*i)->disconnect(this); 
 				}
+				signals.clear();
 			} 
 			inline virtual ~base_slot3() { 
 				disconnect();
@@ -508,21 +512,22 @@ namespace sl08 {
 		template <typename return_type, typename arg1_type, typename arg2_type, typename arg3_type, typename arg4_type> 
 		class base_slot4 {
 			typedef base_signal4 <return_type, arg1_type, arg2_type, arg3_type, arg4_type> signal_type; 
-			signal_type *signal; 
+			typedef std::deque<signal_type *> signals_type;
+			signals_type signals;
 		public: 
 			virtual return_type operator() (arg1_type a1, arg2_type a2, arg3_type a3, arg4_type a4) = 0;
-			inline base_slot4 () : signal(NULL) {} 
+			inline base_slot4 () : signals() {} 
 			inline void connect(signal_type &signal_ref) {
-				disconnect();
-				signal = &signal_ref; 
+				signal_type *signal = &signal_ref;
+				signals.push_back(signal);
 				signal->connect(this); 
 			}
 		
 			inline void disconnect() {
-				if (signal != NULL) {
-					signal->disconnect(this); 
-					signal = NULL; 	
+				for(typename signals_type::iterator i = signals.begin(); i != signals.end(); ++i) {
+					(*i)->disconnect(this); 
 				}
+				signals.clear();
 			} 
 			inline virtual ~base_slot4() { 
 				disconnect();
@@ -627,21 +632,22 @@ namespace sl08 {
 		template <typename return_type, typename arg1_type, typename arg2_type, typename arg3_type, typename arg4_type, typename arg5_type> 
 		class base_slot5 {
 			typedef base_signal5 <return_type, arg1_type, arg2_type, arg3_type, arg4_type, arg5_type> signal_type; 
-			signal_type *signal; 
+			typedef std::deque<signal_type *> signals_type;
+			signals_type signals;
 		public: 
 			virtual return_type operator() (arg1_type a1, arg2_type a2, arg3_type a3, arg4_type a4, arg5_type a5) = 0;
-			inline base_slot5 () : signal(NULL) {} 
+			inline base_slot5 () : signals() {} 
 			inline void connect(signal_type &signal_ref) {
-				disconnect();
-				signal = &signal_ref; 
+				signal_type *signal = &signal_ref;
+				signals.push_back(signal);
 				signal->connect(this); 
 			}
 		
 			inline void disconnect() {
-				if (signal != NULL) {
-					signal->disconnect(this); 
-					signal = NULL; 	
+				for(typename signals_type::iterator i = signals.begin(); i != signals.end(); ++i) {
+					(*i)->disconnect(this); 
 				}
+				signals.clear();
 			} 
 			inline virtual ~base_slot5() { 
 				disconnect();

@@ -95,21 +95,22 @@ class Generator(object):
 		template %s 
 		class base_slotXXX {
 			typedef base_signalXXX %s signal_type; 
-			signal_type *signal; 
+			typedef std::deque<signal_type *> signals_type;
+			signals_type signals;
 		public: 
 			virtual return_type operator() %s = 0;
-			inline base_slotXXX () : signal(NULL) {} 
+			inline base_slotXXX () : signals() {} 
 			inline void connect(signal_type &signal_ref) {
-				disconnect();
-				signal = &signal_ref; 
+				signal_type *signal = &signal_ref;
+				signals.push_back(signal);
 				signal->connect(this); 
 			}
 		
 			inline void disconnect() {
-				if (signal != NULL) {
-					signal->disconnect(this); 
-					signal = NULL; 	
+				for(typename signals_type::iterator i = signals.begin(); i != signals.end(); ++i) {
+					(*i)->disconnect(this); 
 				}
+				signals.clear();
 			} 
 			inline virtual ~base_slotXXX() { 
 				disconnect();
