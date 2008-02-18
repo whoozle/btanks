@@ -132,8 +132,8 @@ namespace sl08 {
 			
 			inline virtual return_type emit () {
 				validator_type v;
-				
 				non_const_return_type r;
+				
 				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
 					r = (*i)->operator() ();
 					if (!v(r))
@@ -152,6 +152,38 @@ namespace sl08 {
 					(*i)->operator() () ; 
 				} 
 			} 
+		};
+		template <class validator_type >
+		class signal0 <int, validator_type> : public base_signal0 <int> { 
+			typedef base_signal0 <int> parent_type; 
+		public: 
+			inline int emit () {  
+				validator_type v;
+				int r = (int)0;
+				
+				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
+					r = (*i)->operator() ();
+					if (!v(r))
+						return r;
+				}
+				return r;
+			}
+		};
+		template <class validator_type >
+		class signal0 <bool, validator_type> : public base_signal0 <bool> { 
+			typedef base_signal0 <bool> parent_type; 
+		public: 
+			inline bool emit () {  
+				validator_type v;
+				bool r = (bool)0;
+				
+				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
+					r = (*i)->operator() ();
+					if (!v(r))
+						return r;
+				}
+				return r;
+			}
 		};
 		
 
@@ -257,8 +289,8 @@ namespace sl08 {
 			
 			inline virtual return_type emit (arg1_type a1) {
 				validator_type v;
-				
 				non_const_return_type r;
+				
 				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
 					r = (*i)->operator() (a1);
 					if (!v(r))
@@ -277,6 +309,38 @@ namespace sl08 {
 					(*i)->operator() (a1) ; 
 				} 
 			} 
+		};
+		template <typename arg1_type, class validator_type >
+		class signal1 <int, arg1_type, validator_type> : public base_signal1 <int, arg1_type> { 
+			typedef base_signal1 <int, arg1_type> parent_type; 
+		public: 
+			inline int emit (arg1_type a1) {  
+				validator_type v;
+				int r = (int)0;
+				
+				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
+					r = (*i)->operator() (a1);
+					if (!v(r))
+						return r;
+				}
+				return r;
+			}
+		};
+		template <typename arg1_type, class validator_type >
+		class signal1 <bool, arg1_type, validator_type> : public base_signal1 <bool, arg1_type> { 
+			typedef base_signal1 <bool, arg1_type> parent_type; 
+		public: 
+			inline bool emit (arg1_type a1) {  
+				validator_type v;
+				bool r = (bool)0;
+				
+				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
+					r = (*i)->operator() (a1);
+					if (!v(r))
+						return r;
+				}
+				return r;
+			}
 		};
 		
 
@@ -382,8 +446,8 @@ namespace sl08 {
 			
 			inline virtual return_type emit (arg1_type a1, arg2_type a2) {
 				validator_type v;
-				
 				non_const_return_type r;
+				
 				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
 					r = (*i)->operator() (a1, a2);
 					if (!v(r))
@@ -402,6 +466,38 @@ namespace sl08 {
 					(*i)->operator() (a1, a2) ; 
 				} 
 			} 
+		};
+		template <typename arg1_type, typename arg2_type, class validator_type >
+		class signal2 <int, arg1_type, arg2_type, validator_type> : public base_signal2 <int, arg1_type, arg2_type> { 
+			typedef base_signal2 <int, arg1_type, arg2_type> parent_type; 
+		public: 
+			inline int emit (arg1_type a1, arg2_type a2) {  
+				validator_type v;
+				int r = (int)0;
+				
+				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
+					r = (*i)->operator() (a1, a2);
+					if (!v(r))
+						return r;
+				}
+				return r;
+			}
+		};
+		template <typename arg1_type, typename arg2_type, class validator_type >
+		class signal2 <bool, arg1_type, arg2_type, validator_type> : public base_signal2 <bool, arg1_type, arg2_type> { 
+			typedef base_signal2 <bool, arg1_type, arg2_type> parent_type; 
+		public: 
+			inline bool emit (arg1_type a1, arg2_type a2) {  
+				validator_type v;
+				bool r = (bool)0;
+				
+				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
+					r = (*i)->operator() (a1, a2);
+					if (!v(r))
+						return r;
+				}
+				return r;
+			}
 		};
 		
 
@@ -507,8 +603,8 @@ namespace sl08 {
 			
 			inline virtual return_type emit (arg1_type a1, arg2_type a2, arg3_type a3) {
 				validator_type v;
-				
 				non_const_return_type r;
+				
 				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
 					r = (*i)->operator() (a1, a2, a3);
 					if (!v(r))
@@ -527,6 +623,38 @@ namespace sl08 {
 					(*i)->operator() (a1, a2, a3) ; 
 				} 
 			} 
+		};
+		template <typename arg1_type, typename arg2_type, typename arg3_type, class validator_type >
+		class signal3 <int, arg1_type, arg2_type, arg3_type, validator_type> : public base_signal3 <int, arg1_type, arg2_type, arg3_type> { 
+			typedef base_signal3 <int, arg1_type, arg2_type, arg3_type> parent_type; 
+		public: 
+			inline int emit (arg1_type a1, arg2_type a2, arg3_type a3) {  
+				validator_type v;
+				int r = (int)0;
+				
+				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
+					r = (*i)->operator() (a1, a2, a3);
+					if (!v(r))
+						return r;
+				}
+				return r;
+			}
+		};
+		template <typename arg1_type, typename arg2_type, typename arg3_type, class validator_type >
+		class signal3 <bool, arg1_type, arg2_type, arg3_type, validator_type> : public base_signal3 <bool, arg1_type, arg2_type, arg3_type> { 
+			typedef base_signal3 <bool, arg1_type, arg2_type, arg3_type> parent_type; 
+		public: 
+			inline bool emit (arg1_type a1, arg2_type a2, arg3_type a3) {  
+				validator_type v;
+				bool r = (bool)0;
+				
+				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
+					r = (*i)->operator() (a1, a2, a3);
+					if (!v(r))
+						return r;
+				}
+				return r;
+			}
 		};
 		
 
@@ -632,8 +760,8 @@ namespace sl08 {
 			
 			inline virtual return_type emit (arg1_type a1, arg2_type a2, arg3_type a3, arg4_type a4) {
 				validator_type v;
-				
 				non_const_return_type r;
+				
 				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
 					r = (*i)->operator() (a1, a2, a3, a4);
 					if (!v(r))
@@ -652,6 +780,38 @@ namespace sl08 {
 					(*i)->operator() (a1, a2, a3, a4) ; 
 				} 
 			} 
+		};
+		template <typename arg1_type, typename arg2_type, typename arg3_type, typename arg4_type, class validator_type >
+		class signal4 <int, arg1_type, arg2_type, arg3_type, arg4_type, validator_type> : public base_signal4 <int, arg1_type, arg2_type, arg3_type, arg4_type> { 
+			typedef base_signal4 <int, arg1_type, arg2_type, arg3_type, arg4_type> parent_type; 
+		public: 
+			inline int emit (arg1_type a1, arg2_type a2, arg3_type a3, arg4_type a4) {  
+				validator_type v;
+				int r = (int)0;
+				
+				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
+					r = (*i)->operator() (a1, a2, a3, a4);
+					if (!v(r))
+						return r;
+				}
+				return r;
+			}
+		};
+		template <typename arg1_type, typename arg2_type, typename arg3_type, typename arg4_type, class validator_type >
+		class signal4 <bool, arg1_type, arg2_type, arg3_type, arg4_type, validator_type> : public base_signal4 <bool, arg1_type, arg2_type, arg3_type, arg4_type> { 
+			typedef base_signal4 <bool, arg1_type, arg2_type, arg3_type, arg4_type> parent_type; 
+		public: 
+			inline bool emit (arg1_type a1, arg2_type a2, arg3_type a3, arg4_type a4) {  
+				validator_type v;
+				bool r = (bool)0;
+				
+				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
+					r = (*i)->operator() (a1, a2, a3, a4);
+					if (!v(r))
+						return r;
+				}
+				return r;
+			}
 		};
 		
 
@@ -757,8 +917,8 @@ namespace sl08 {
 			
 			inline virtual return_type emit (arg1_type a1, arg2_type a2, arg3_type a3, arg4_type a4, arg5_type a5) {
 				validator_type v;
-				
 				non_const_return_type r;
+				
 				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
 					r = (*i)->operator() (a1, a2, a3, a4, a5);
 					if (!v(r))
@@ -777,6 +937,38 @@ namespace sl08 {
 					(*i)->operator() (a1, a2, a3, a4, a5) ; 
 				} 
 			} 
+		};
+		template <typename arg1_type, typename arg2_type, typename arg3_type, typename arg4_type, typename arg5_type, class validator_type >
+		class signal5 <int, arg1_type, arg2_type, arg3_type, arg4_type, arg5_type, validator_type> : public base_signal5 <int, arg1_type, arg2_type, arg3_type, arg4_type, arg5_type> { 
+			typedef base_signal5 <int, arg1_type, arg2_type, arg3_type, arg4_type, arg5_type> parent_type; 
+		public: 
+			inline int emit (arg1_type a1, arg2_type a2, arg3_type a3, arg4_type a4, arg5_type a5) {  
+				validator_type v;
+				int r = (int)0;
+				
+				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
+					r = (*i)->operator() (a1, a2, a3, a4, a5);
+					if (!v(r))
+						return r;
+				}
+				return r;
+			}
+		};
+		template <typename arg1_type, typename arg2_type, typename arg3_type, typename arg4_type, typename arg5_type, class validator_type >
+		class signal5 <bool, arg1_type, arg2_type, arg3_type, arg4_type, arg5_type, validator_type> : public base_signal5 <bool, arg1_type, arg2_type, arg3_type, arg4_type, arg5_type> { 
+			typedef base_signal5 <bool, arg1_type, arg2_type, arg3_type, arg4_type, arg5_type> parent_type; 
+		public: 
+			inline bool emit (arg1_type a1, arg2_type a2, arg3_type a3, arg4_type a4, arg5_type a5) {  
+				validator_type v;
+				bool r = (bool)0;
+				
+				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
+					r = (*i)->operator() (a1, a2, a3, a4, a5);
+					if (!v(r))
+						return r;
+				}
+				return r;
+			}
 		};
 		
 }

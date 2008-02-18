@@ -216,8 +216,8 @@ class Generator(object):
 			
 			inline virtual return_type emit %s {
 				validator_type v;
-				
 				non_const_return_type r;
+				
 				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
 					r = (*i)->operator() %s;
 					if (!v(r))
@@ -256,8 +256,38 @@ class Generator(object):
 			self.prototype(True), 
 			self.prototype(False), 
 		)
+		
+		for x in ['int', 'bool']: 
+			text = text + self.specialize_signal(x)
 				
 		return text.replace('XXX', str(self.__n));
+		
+	def specialize_signal(self, t):
+		#hack hack hack: replace void with our pod type
+		return ("""template %s
+		class signalXXX %s : public base_signalXXX %s { 
+			typedef base_signalXXX %s parent_type; 
+		public: 
+			inline void emit %s {  
+				validator_type v;
+				void r = (void)0;
+				
+				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
+					r = (*i)->operator() %s;
+					if (!v(r))
+						return r;
+				}
+				return r;
+			}
+		};
+		"""  %(
+			self.template_declaration('signal', True), 
+			self.template_parameters('signal', True), 
+			self.template_parameters('base-signal', True), 
+			self.template_parameters('base-signal', True), 
+			self.prototype(True), 
+			self.prototype(False), 
+		)).replace('void', t)
 		
 
 text = ''
