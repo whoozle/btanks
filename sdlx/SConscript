@@ -35,8 +35,8 @@ sdlx_sources = 	['cursor.cpp', 'sdl_ex.cpp', 'surface.cpp', 'system.cpp', 'joyst
 
 if sys.platform == 'win32': 
 	sdlx_sources.append('glSDL/d3dsdl.cpp')
-	env.Append(CPPPATH=os.environ['DXSDK_DIR'] + 'Include')
-	env.Append(LINKFLAGS=' /LIBPATH:"' + os.environ['DXSDK_DIR'] + 'Lib\\x86"')
+	env.Append(CPPPATH=[os.environ['DXSDK_DIR'] + 'Include'])
+	env.Append(LINKFLAGS=[' /LIBPATH:"' + os.environ['DXSDK_DIR'] + 'Lib\\x86"'])
 	libs.append('d3d9')
 	libs.append('d3dx9')
 else: 

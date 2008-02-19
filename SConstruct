@@ -57,8 +57,8 @@ if os.environ.has_key('LDFLAGS'):
 	env['LINKFLAGS'] += SCons.Util.CLVar(os.environ['LDFLAGS'])
 
 if (env['gcc_visibility']): 
-	env.Append(CCFLAGS=' -fvisibility=hidden -DGCC_HASCLASSVISIBILITY ')
-	env.Append(CXXFLAGS=' -fvisibility-inlines-hidden -fvisibility=hidden -DGCC_HASCLASSVISIBILITY ')
+	env.Append(CCFLAGS=['-fvisibility=hidden', '-DGCC_HASCLASSVISIBILITY'])
+	env.Append(CXXFLAGS=['-fvisibility-inlines-hidden', '-fvisibility=hidden', '-DGCC_HASCLASSVISIBILITY'])
 
 if sys.platform == "win32" and debug:
 	stl_port_debug = True
@@ -76,36 +76,33 @@ env.Append(CPPDEFINES = ['_REENTRANT'])
 if sys.platform == "win32":
 	al_lib = 'openal32'
 	env.Append(CPPDEFINES = ['_WINDOWS', '_CRT_SECURE_NO_WARNINGS']) #, '_UNICODE'
-	env.Append(CCFLAGS = ' /GR /W3 /nologo ')
-	env.Append(CXXFLAGS = ' /EHsc /GR /W3 /nologo ')
+	env.Append(CCFLAGS = ['/GR', '/W3', '/nologo'])
+	env.Append(CXXFLAGS = ['/EHsc', '/GR', '/W3', '/nologo'])
 
 	if debug:
-		env.Append(CCFLAGS = ' /Zi /GT /Od /MDd /RTC1 ')
-		env.Append(CXXFLAGS = ' /Zi /GT /Od /MDd /RTC1 ')
-		env.Append(LINKFLAGS = ' /NOLOGO /DEBUG ')
+		env.Append(CCFLAGS = ['/Zi', '/GT', '/Od', '/MDd', '/RTC1'])
+		env.Append(CXXFLAGS = ['/Zi', '/GT', '/Od', '/MDd', '/RTC1'])
+		env.Append(LINKFLAGS = ['/NOLOGO', '/DEBUG'])
 	else:
-		env.Append(CCCFLAGS = ' /Ot /Ox /GA /GF /Gs /Gy /MD ') #optimizations
-		env.Append(CPPFLAGS = ' /Ot /Ox /GA /GF /Gs /Gy /MD ') #optimizations
-		env.Append(LINKFLAGS = ' /OPT:REF /OPT:ICF /NOLOGO /INCREMENTAL:NO ')
+		env.Append(CCCFLAGS = ['/Ot', '/Ox', '/GA', '/GF', '/Gs', '/Gy', '/MD']) #optimizations
+		env.Append(CPPFLAGS = ['/Ot', '/Ox', '/GA', '/GF', '/Gs', '/Gy', '/MD']) #optimizations
+		env.Append(LINKFLAGS = ['/OPT:REF', '/OPT:ICF', '/NOLOGO', '/INCREMENTAL:NO'])
 		#env.Append(CPPDEFINES = ['NDEBUG']) 
 
-#	
-#	env.Append(CPPFLAGS = '/Ox /Ot ') #optimizations
-#	env.Prepend(CPPPATH=' C:\\\\STLport-4.6.2\\\\stlport ')
 else:
 	if env['gcc_visibility']: 
-		env.Append(CCFLAGS=' -fvisibility=hidden ');
-		env.Append(CXXFLAGS=' -fvisibility-inlines-hidden -fvisibility=hidden ');
+		env.Append(CCFLAGS=['-fvisibility=hidden']);
+		env.Append(CXXFLAGS=['-fvisibility-inlines-hidden', '-fvisibility=hidden']);
 	if debug:
-		env.Append(CCFLAGS='-ggdb ')
-		env.Append(CPPFLAGS='-ggdb ')
+		env.Append(CCFLAGS=['-ggdb'])
+		env.Append(CPPFLAGS=['-ggdb'])
 	else: 
-		env.Append(CCFLAGS='-O3 ')
-		env.Append(CPPFLAGS='-O3 ')
+		env.Append(CCFLAGS=['-O3'])
+		env.Append(CPPFLAGS=['-O3'])
 		
 	al_lib = 'openal'
-	env.Append(CPPFLAGS=' -Wall -pedantic -Wno-long-long -pipe -pthread ')
-	env.Append(CCFLAGS=' -Wall -pedantic -Wno-long-long -pipe -pthread ')
+	env.Append(CPPFLAGS=['-Wall', '-pedantic', '-Wno-long-long', '-pipe', '-pthread'])
+	env.Append(CCFLAGS=['-Wall', '-pedantic', '-Wno-long-long', '-pipe', '-pthread'])
 
 
 conf_env = env.Copy()
@@ -120,7 +117,7 @@ if not conf.CheckLibWithHeader('z', 'zlib.h', 'c', "zlibVersion();", False):
 	Exit(1)
 
 if sys.platform == "win32":
-	conf.env.Append(LINKFLAGS = '/SUBSYSTEM:WINDOWS /FORCE')
+	conf.env.Append(LINKFLAGS = ['/SUBSYSTEM:WINDOWS', '/FORCE'])
 	conf.env.Append(LIBS=['SDLmain'])
 
 if not conf.CheckLibWithHeader('SDL', 'SDL/SDL.h', 'c++', "SDL_Init(0);", False):
@@ -161,7 +158,7 @@ conf.Finish()
 
 if sys.platform == "win32":
 	env.Append(LIBS=['Ws2_32', 'SDLmain'])
-	env.Append(LINKFLAGS = '/SUBSYSTEM:WINDOWS ')
+	env.Append(LINKFLAGS = ['/SUBSYSTEM:WINDOWS'])
 
 if debug: 
 	env.Append(CPPDEFINES = ['DEBUG'])
@@ -178,14 +175,14 @@ try :
 		version = version_file.readline().strip()
 		prefix = env['prefix']
 		if len(prefix): 
-			env.Append(CPPDEFINES='PREFIX="\\"' + prefix + '\\""')
+			env.Append(CPPDEFINES=['PREFIX="\\"' + prefix + '\\""'])
 	
 			if len(env['resources_dir']):
 				resources_dir = env['resources_dir']
 			else: 
 				resources_dir = prefix + "/share/btanks"
 
-			env.Append(CPPDEFINES='RESOURCES_DIR="\\"' + resources_dir + '\\""')
+			env.Append(CPPDEFINES=['RESOURCES_DIR="\\"' + resources_dir + '\\""'])
 
 			if len(env['lib_dir']):
 				lib_dir = env['lib_dir']
@@ -203,7 +200,7 @@ except :
 		res_dir = env['resources_dir'] 
 	
 		if len(prefix) or len(res_dir): 	
-			env.Append(CPPDEFINES='PREFIX="\\"' + prefix + '\\""')
+			env.Append(CPPDEFINES=['PREFIX="\\"' + prefix + '\\""'])
 	
 			if len(env['resources_dir']):
 				resources_dir = env['resources_dir']
@@ -215,7 +212,7 @@ except :
 			else: 
 				lib_dir = prefix + "/lib"
 
-			env.Append(CPPDEFINES='RESOURCES_DIR="\\"' + resources_dir + '\\""')
+			env.Append(CPPDEFINES=['RESOURCES_DIR="\\"' + resources_dir + '\\""'])
 
 version = version[version.rfind(':') + 1:]
 revision = int(version.replace('M', ''))
