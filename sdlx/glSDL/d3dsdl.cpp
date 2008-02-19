@@ -168,7 +168,8 @@ SDL_Surface *d3dSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags) {
     					D3DDEVTYPE_HAL,
     					info.window,
                           D3DCREATE_SOFTWARE_VERTEXPROCESSING,
-						  //D3DCREATE_HARDWARE_VERTEXPROCESSING, 
+						  //D3DCREATE_HARDWARE_VERTEXPROCESSING,
+						  //D3DCREATE_MIXED_VERTEXPROCESSING,
                           &d3dpp, &g_pd3dDevice )))  {
 		SDL_SetError("CreateDevice failed : %08x", (unsigned)r);
 		goto error;
@@ -184,15 +185,16 @@ SDL_Surface *d3dSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags) {
 	g_pd3dDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 	g_pd3dDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 	g_pd3dDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
+	g_pd3dDevice->SetDepthStencilSurface(NULL);
+
+	g_pd3dDevice->SetRenderState(D3DRS_ZENABLE, FALSE);
+	g_pd3dDevice->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
 
 	if (FAILED(r = D3DXCreateSprite(g_pd3dDevice, &g_sprite))) {
 		SDL_SetError("CreateSprite failed: 08x", (unsigned)r);
 		goto error;
 	}
 
-	if (FAILED(r = g_pd3dDevice->SetDepthStencilSurface(NULL))) {
-		LOG_ERROR(("SetDepthStencilSurface(NULL) failed: %08x", (unsigned)r));
-	}
 
 	LOG_DEBUG(("d3d initialization was successful"));
 	g_begin_scene = true;
@@ -798,7 +800,7 @@ int d3dSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
 			
 			if (!g_sprite_end) {
 				g_sprite_end = true;
-				if (FAILED(g_sprite->Begin(D3DXSPRITE_ALPHABLEND))) {
+				if (FAILED(g_sprite->Begin(D3DXSPRITE_ALPHABLEND | D3DXSPRITE_DONOTSAVESTATE))) {
 					SDL_SetError("Sprite::Begin() failed");
 					return -1;
 				}
