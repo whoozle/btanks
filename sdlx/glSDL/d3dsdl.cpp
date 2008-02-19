@@ -143,12 +143,11 @@ SDL_Surface *d3dSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags) {
 		LOG_DEBUG(("format = %d", (int) d3ddm.Format));
         d3dpp.Windowed         = TRUE;
         d3dpp.BackBufferFormat = d3ddm.Format;
-        d3dpp.SwapEffect = D3DSWAPEFFECT_FLIP;
-	    d3dpp.PresentationInterval   = D3DPRESENT_INTERVAL_DEFAULT;
+	    d3dpp.PresentationInterval   = D3DPRESENT_INTERVAL_IMMEDIATE;//D3DPRESENT_INTERVAL_TWO;
     }
     else
     {
-    	d3dpp.SwapEffect = (d3dCaps.Caps3 & D3DCAPS3_ALPHA_FULLSCREEN_FLIP_OR_DISCARD)? D3DSWAPEFFECT_FLIP: D3DSWAPEFFECT_COPY;
+    	//d3dpp.SwapEffect = (d3dCaps.Caps3 & D3DCAPS3_ALPHA_FULLSCREEN_FLIP_OR_DISCARD)? D3DSWAPEFFECT_FLIP: D3DSWAPEFFECT_COPY;
         d3dpp.Windowed         = FALSE;
         d3dpp.BackBufferWidth  = width;
         d3dpp.BackBufferHeight = height;
@@ -156,11 +155,11 @@ SDL_Surface *d3dSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags) {
 	    d3dpp.PresentationInterval   = D3DPRESENT_INTERVAL_IMMEDIATE; // Do NOT sync to vertical retrace
     }
 	
+	d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD; //we do not use any back buffers - redrawing full scene from scratch
 	//d3dpp.BackBufferCount = 1;
     d3dpp.EnableAutoDepthStencil = TRUE;
     d3dpp.AutoDepthStencilFormat = D3DFMT_D16;
-    //d3dpp.PresentationInterval   = D3DPRESENT_INTERVAL_DEFAULT; // Sync to vertical retrace
-    d3dpp.Flags                  = D3DPRESENTFLAG_LOCKABLE_BACKBUFFER;
+    d3dpp.Flags                  = D3DPRESENTFLAG_DISCARD_DEPTHSTENCIL; //D3DPRESENTFLAG_LOCKABLE_BACKBUFFER;
 
     HRESULT r;
     D3DXMATRIX matProj;
@@ -189,6 +188,10 @@ SDL_Surface *d3dSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags) {
 	if (FAILED(r = D3DXCreateSprite(g_pd3dDevice, &g_sprite))) {
 		SDL_SetError("CreateSprite failed: 08x", (unsigned)r);
 		goto error;
+	}
+
+	if (FAILED(r = g_pd3dDevice->SetDepthStencilSurface(NULL))) {
+		LOG_ERROR(("SetDepthStencilSurface(NULL) failed: %08x", (unsigned)r));
 	}
 
 	LOG_DEBUG(("d3d initialization was successful"));
