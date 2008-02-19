@@ -167,9 +167,9 @@ SDL_Surface *d3dSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags) {
     if (FAILED(r = g_pD3D->CreateDevice( D3DADAPTER_DEFAULT, 
     					D3DDEVTYPE_HAL,
     					info.window,
-                          D3DCREATE_SOFTWARE_VERTEXPROCESSING,
+                          //D3DCREATE_SOFTWARE_VERTEXPROCESSING,
 						  //D3DCREATE_HARDWARE_VERTEXPROCESSING,
-						  //D3DCREATE_MIXED_VERTEXPROCESSING,
+						  D3DCREATE_MIXED_VERTEXPROCESSING,
                           &d3dpp, &g_pd3dDevice )))  {
 		SDL_SetError("CreateDevice failed : %08x", (unsigned)r);
 		goto error;
