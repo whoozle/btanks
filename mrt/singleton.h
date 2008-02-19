@@ -27,13 +27,11 @@ namespace mrt {
 	public:
 
 		inline S* operator->() const {
-			static S * p = S::get_instance();
-			return p;
+			return S::get_instance();
 		}
 
 		inline const S* get_const() const {
-			static S * p = S::get_instance();
-			return p;
+			return S::get_instance();
 		}
 	};
 }
@@ -42,14 +40,13 @@ namespace mrt {
 	extern e const mrt::Accessor<class> name
 
 #define DECLARE_SINGLETON(class) \
-	static class * get_instance()
-
-#define IMPLEMENT_SINGLETON(name, class) \
-	class * class::get_instance() { \
+	static class * get_instance() { \
 		static class instance; \
 		return &instance; \
 	} \
-	\
+
+
+#define IMPLEMENT_SINGLETON(name, class) \
 	const mrt::Accessor<class> name = mrt::Accessor<class>()
 
 
