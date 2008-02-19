@@ -31,6 +31,10 @@
 #include "netstats.h"
 #include "sl08/sl08.h"
 
+//could be forward, but incompatible with stlport
+#include "special_zone.h"
+#include "player_slot.h"
+
 namespace mrt {
 class Chunk;
 }
@@ -40,9 +44,7 @@ class Rect;
 class Surface;
 }
 
-class PlayerSlot;
 class PlayerState;
-class SpecialZone;
 class Server;
 class Client;
 class Message;

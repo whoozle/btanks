@@ -21,6 +21,7 @@
 
 #include <string>
 #include <vector>
+#include <functional>
 #include <map>
 #include "export_sdlx.h"
 
