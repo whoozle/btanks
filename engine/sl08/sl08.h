@@ -132,7 +132,7 @@ namespace sl08 {
 			} 
 
 			inline void disconnect() {
-				for(typename slots_type::iterator i = slots.begin(); i != slots.end(); ) { 
+				for(typename slots_type::iterator i = slots.begin(); i != slots.end(); ++i) { 
 					(*i)->_disconnect(this);
 				} 
 				slots.clear();
@@ -307,7 +307,7 @@ namespace sl08 {
 			} 
 
 			inline void disconnect() {
-				for(typename slots_type::iterator i = slots.begin(); i != slots.end(); ) { 
+				for(typename slots_type::iterator i = slots.begin(); i != slots.end(); ++i) { 
 					(*i)->_disconnect(this);
 				} 
 				slots.clear();
@@ -482,7 +482,7 @@ namespace sl08 {
 			} 
 
 			inline void disconnect() {
-				for(typename slots_type::iterator i = slots.begin(); i != slots.end(); ) { 
+				for(typename slots_type::iterator i = slots.begin(); i != slots.end(); ++i) { 
 					(*i)->_disconnect(this);
 				} 
 				slots.clear();
@@ -657,7 +657,7 @@ namespace sl08 {
 			} 
 
 			inline void disconnect() {
-				for(typename slots_type::iterator i = slots.begin(); i != slots.end(); ) { 
+				for(typename slots_type::iterator i = slots.begin(); i != slots.end(); ++i) { 
 					(*i)->_disconnect(this);
 				} 
 				slots.clear();
@@ -832,7 +832,7 @@ namespace sl08 {
 			} 
 
 			inline void disconnect() {
-				for(typename slots_type::iterator i = slots.begin(); i != slots.end(); ) { 
+				for(typename slots_type::iterator i = slots.begin(); i != slots.end(); ++i) { 
 					(*i)->_disconnect(this);
 				} 
 				slots.clear();
@@ -1007,7 +1007,7 @@ namespace sl08 {
 			} 
 
 			inline void disconnect() {
-				for(typename slots_type::iterator i = slots.begin(); i != slots.end(); ) { 
+				for(typename slots_type::iterator i = slots.begin(); i != slots.end(); ++i) { 
 					(*i)->_disconnect(this);
 				} 
 				slots.clear();
