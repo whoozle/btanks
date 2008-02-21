@@ -135,6 +135,7 @@ namespace sl08 {
 				for(typename slots_type::iterator i = slots.begin(); i != slots.end(); ) { 
 					(*i)->_disconnect(this);
 				} 
+				slots.clear();
 			}
 			inline virtual ~base_signal0() {
 				disconnect();
@@ -309,6 +310,7 @@ namespace sl08 {
 				for(typename slots_type::iterator i = slots.begin(); i != slots.end(); ) { 
 					(*i)->_disconnect(this);
 				} 
+				slots.clear();
 			}
 			inline virtual ~base_signal1() {
 				disconnect();
@@ -483,6 +485,7 @@ namespace sl08 {
 				for(typename slots_type::iterator i = slots.begin(); i != slots.end(); ) { 
 					(*i)->_disconnect(this);
 				} 
+				slots.clear();
 			}
 			inline virtual ~base_signal2() {
 				disconnect();
@@ -657,6 +660,7 @@ namespace sl08 {
 				for(typename slots_type::iterator i = slots.begin(); i != slots.end(); ) { 
 					(*i)->_disconnect(this);
 				} 
+				slots.clear();
 			}
 			inline virtual ~base_signal3() {
 				disconnect();
@@ -831,6 +835,7 @@ namespace sl08 {
 				for(typename slots_type::iterator i = slots.begin(); i != slots.end(); ) { 
 					(*i)->_disconnect(this);
 				} 
+				slots.clear();
 			}
 			inline virtual ~base_signal4() {
 				disconnect();
@@ -1005,6 +1010,7 @@ namespace sl08 {
 				for(typename slots_type::iterator i = slots.begin(); i != slots.end(); ) { 
 					(*i)->_disconnect(this);
 				} 
+				slots.clear();
 			}
 			inline virtual ~base_signal5() {
 				disconnect();

@@ -219,6 +219,7 @@ class Generator(object):
 				for(typename slots_type::iterator i = slots.begin(); i != slots.end(); ) { 
 					(*i)->_disconnect(this);
 				} 
+				slots.clear();
 			}
 			inline virtual ~base_signalXXX() {
 				disconnect();
