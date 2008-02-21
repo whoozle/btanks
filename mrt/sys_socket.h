@@ -31,6 +31,7 @@
 #		define mrt_uint16_t unsigned __int16
 #	endif
 #else
+#	include <stdint.h>
 	typedef uint32_t mrt_uint32_t;
 	typedef uint16_t mrt_uint16_t;
 #endif
