@@ -814,9 +814,9 @@ LUA_TRY {
 	bool loop = false;
 	float gain = 1.0f;
 	if (n >= 3) 
-		loop = lua_toboolean(L, 3);
+		loop = lua_toboolean(L, 3) != 0;
 	if (n >= 4) 
-		loop = lua_tonumber(L, 4);
+		gain = lua_tonumber(L, 4);
 	Mixer->playSample(o, name, loop, gain);
 	
 } LUA_CATCH("lua_hooks_play_sound")	
