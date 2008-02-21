@@ -40,15 +40,24 @@ namespace sl08 {
 		public: 
 			virtual return_type operator() () = 0;
 			inline base_slot0 () : signals() {} 
+
 			inline void connect(signal_type &signal_ref) {
 				signal_type *signal = &signal_ref;
 				signals.push_back(signal);
 				signal->connect(this); 
 			}
+
+			inline void _disconnect(signal_type *signal) {
+				for(typename signals_type::iterator i = signals.begin(); i != signals.end(); ) {
+					if (*i == signal) {
+						i = signals.erase(i);
+					} else ++i;
+				}
+			}
 		
 			inline void disconnect() {
 				for(typename signals_type::iterator i = signals.begin(); i != signals.end(); ++i) {
-					(*i)->disconnect(this); 
+					(*i)->_disconnect(this); 
 				}
 				signals.clear();
 			} 
@@ -113,7 +122,7 @@ namespace sl08 {
 				slots.push_back(slot);
 			} 
 
-			inline void disconnect(slot_type *slot) {
+			inline void _disconnect(slot_type *slot) {
 				for(typename slots_type::iterator i = slots.begin(); i != slots.end(); ) { 
 					if (slot != *i) 
 						++i; 
@@ -121,6 +130,12 @@ namespace sl08 {
 						i = slots.erase(i); 
 				} 
 			} 
+
+			inline void disconnect() {
+				for(typename slots_type::iterator i = slots.begin(); i != slots.end(); ) { 
+					(*i)->_disconnect(this);
+				} 
+			}
 			inline virtual ~base_signal0() {}
 		};
 		
@@ -141,6 +156,7 @@ namespace sl08 {
 				}
 				return r; 
 			} 
+			~signal0() { parent_type::disconnect(); }
 		};
 			
 		template <class validator_type >
@@ -152,6 +168,7 @@ namespace sl08 {
 					(*i)->operator() () ; 
 				} 
 			} 
+			~signal0() { parent_type::disconnect(); }
 		};
 		template <class validator_type >
 		class signal0 <int, validator_type> : public base_signal0 <int> { 
@@ -197,15 +214,24 @@ namespace sl08 {
 		public: 
 			virtual return_type operator() (arg1_type a1) = 0;
 			inline base_slot1 () : signals() {} 
+
 			inline void connect(signal_type &signal_ref) {
 				signal_type *signal = &signal_ref;
 				signals.push_back(signal);
 				signal->connect(this); 
 			}
+
+			inline void _disconnect(signal_type *signal) {
+				for(typename signals_type::iterator i = signals.begin(); i != signals.end(); ) {
+					if (*i == signal) {
+						i = signals.erase(i);
+					} else ++i;
+				}
+			}
 		
 			inline void disconnect() {
 				for(typename signals_type::iterator i = signals.begin(); i != signals.end(); ++i) {
-					(*i)->disconnect(this); 
+					(*i)->_disconnect(this); 
 				}
 				signals.clear();
 			} 
@@ -270,7 +296,7 @@ namespace sl08 {
 				slots.push_back(slot);
 			} 
 
-			inline void disconnect(slot_type *slot) {
+			inline void _disconnect(slot_type *slot) {
 				for(typename slots_type::iterator i = slots.begin(); i != slots.end(); ) { 
 					if (slot != *i) 
 						++i; 
@@ -278,6 +304,12 @@ namespace sl08 {
 						i = slots.erase(i); 
 				} 
 			} 
+
+			inline void disconnect() {
+				for(typename slots_type::iterator i = slots.begin(); i != slots.end(); ) { 
+					(*i)->_disconnect(this);
+				} 
+			}
 			inline virtual ~base_signal1() {}
 		};
 		
@@ -298,6 +330,7 @@ namespace sl08 {
 				}
 				return r; 
 			} 
+			~signal1() { parent_type::disconnect(); }
 		};
 			
 		template <typename arg1_type, class validator_type >
@@ -309,6 +342,7 @@ namespace sl08 {
 					(*i)->operator() (a1) ; 
 				} 
 			} 
+			~signal1() { parent_type::disconnect(); }
 		};
 		template <typename arg1_type, class validator_type >
 		class signal1 <int, arg1_type, validator_type> : public base_signal1 <int, arg1_type> { 
@@ -354,15 +388,24 @@ namespace sl08 {
 		public: 
 			virtual return_type operator() (arg1_type a1, arg2_type a2) = 0;
 			inline base_slot2 () : signals() {} 
+
 			inline void connect(signal_type &signal_ref) {
 				signal_type *signal = &signal_ref;
 				signals.push_back(signal);
 				signal->connect(this); 
 			}
+
+			inline void _disconnect(signal_type *signal) {
+				for(typename signals_type::iterator i = signals.begin(); i != signals.end(); ) {
+					if (*i == signal) {
+						i = signals.erase(i);
+					} else ++i;
+				}
+			}
 		
 			inline void disconnect() {
 				for(typename signals_type::iterator i = signals.begin(); i != signals.end(); ++i) {
-					(*i)->disconnect(this); 
+					(*i)->_disconnect(this); 
 				}
 				signals.clear();
 			} 
@@ -427,7 +470,7 @@ namespace sl08 {
 				slots.push_back(slot);
 			} 
 
-			inline void disconnect(slot_type *slot) {
+			inline void _disconnect(slot_type *slot) {
 				for(typename slots_type::iterator i = slots.begin(); i != slots.end(); ) { 
 					if (slot != *i) 
 						++i; 
@@ -435,6 +478,12 @@ namespace sl08 {
 						i = slots.erase(i); 
 				} 
 			} 
+
+			inline void disconnect() {
+				for(typename slots_type::iterator i = slots.begin(); i != slots.end(); ) { 
+					(*i)->_disconnect(this);
+				} 
+			}
 			inline virtual ~base_signal2() {}
 		};
 		
@@ -455,6 +504,7 @@ namespace sl08 {
 				}
 				return r; 
 			} 
+			~signal2() { parent_type::disconnect(); }
 		};
 			
 		template <typename arg1_type, typename arg2_type, class validator_type >
@@ -466,6 +516,7 @@ namespace sl08 {
 					(*i)->operator() (a1, a2) ; 
 				} 
 			} 
+			~signal2() { parent_type::disconnect(); }
 		};
 		template <typename arg1_type, typename arg2_type, class validator_type >
 		class signal2 <int, arg1_type, arg2_type, validator_type> : public base_signal2 <int, arg1_type, arg2_type> { 
@@ -511,15 +562,24 @@ namespace sl08 {
 		public: 
 			virtual return_type operator() (arg1_type a1, arg2_type a2, arg3_type a3) = 0;
 			inline base_slot3 () : signals() {} 
+
 			inline void connect(signal_type &signal_ref) {
 				signal_type *signal = &signal_ref;
 				signals.push_back(signal);
 				signal->connect(this); 
 			}
+
+			inline void _disconnect(signal_type *signal) {
+				for(typename signals_type::iterator i = signals.begin(); i != signals.end(); ) {
+					if (*i == signal) {
+						i = signals.erase(i);
+					} else ++i;
+				}
+			}
 		
 			inline void disconnect() {
 				for(typename signals_type::iterator i = signals.begin(); i != signals.end(); ++i) {
-					(*i)->disconnect(this); 
+					(*i)->_disconnect(this); 
 				}
 				signals.clear();
 			} 
@@ -584,7 +644,7 @@ namespace sl08 {
 				slots.push_back(slot);
 			} 
 
-			inline void disconnect(slot_type *slot) {
+			inline void _disconnect(slot_type *slot) {
 				for(typename slots_type::iterator i = slots.begin(); i != slots.end(); ) { 
 					if (slot != *i) 
 						++i; 
@@ -592,6 +652,12 @@ namespace sl08 {
 						i = slots.erase(i); 
 				} 
 			} 
+
+			inline void disconnect() {
+				for(typename slots_type::iterator i = slots.begin(); i != slots.end(); ) { 
+					(*i)->_disconnect(this);
+				} 
+			}
 			inline virtual ~base_signal3() {}
 		};
 		
@@ -612,6 +678,7 @@ namespace sl08 {
 				}
 				return r; 
 			} 
+			~signal3() { parent_type::disconnect(); }
 		};
 			
 		template <typename arg1_type, typename arg2_type, typename arg3_type, class validator_type >
@@ -623,6 +690,7 @@ namespace sl08 {
 					(*i)->operator() (a1, a2, a3) ; 
 				} 
 			} 
+			~signal3() { parent_type::disconnect(); }
 		};
 		template <typename arg1_type, typename arg2_type, typename arg3_type, class validator_type >
 		class signal3 <int, arg1_type, arg2_type, arg3_type, validator_type> : public base_signal3 <int, arg1_type, arg2_type, arg3_type> { 
@@ -668,15 +736,24 @@ namespace sl08 {
 		public: 
 			virtual return_type operator() (arg1_type a1, arg2_type a2, arg3_type a3, arg4_type a4) = 0;
 			inline base_slot4 () : signals() {} 
+
 			inline void connect(signal_type &signal_ref) {
 				signal_type *signal = &signal_ref;
 				signals.push_back(signal);
 				signal->connect(this); 
 			}
+
+			inline void _disconnect(signal_type *signal) {
+				for(typename signals_type::iterator i = signals.begin(); i != signals.end(); ) {
+					if (*i == signal) {
+						i = signals.erase(i);
+					} else ++i;
+				}
+			}
 		
 			inline void disconnect() {
 				for(typename signals_type::iterator i = signals.begin(); i != signals.end(); ++i) {
-					(*i)->disconnect(this); 
+					(*i)->_disconnect(this); 
 				}
 				signals.clear();
 			} 
@@ -741,7 +818,7 @@ namespace sl08 {
 				slots.push_back(slot);
 			} 
 
-			inline void disconnect(slot_type *slot) {
+			inline void _disconnect(slot_type *slot) {
 				for(typename slots_type::iterator i = slots.begin(); i != slots.end(); ) { 
 					if (slot != *i) 
 						++i; 
@@ -749,6 +826,12 @@ namespace sl08 {
 						i = slots.erase(i); 
 				} 
 			} 
+
+			inline void disconnect() {
+				for(typename slots_type::iterator i = slots.begin(); i != slots.end(); ) { 
+					(*i)->_disconnect(this);
+				} 
+			}
 			inline virtual ~base_signal4() {}
 		};
 		
@@ -769,6 +852,7 @@ namespace sl08 {
 				}
 				return r; 
 			} 
+			~signal4() { parent_type::disconnect(); }
 		};
 			
 		template <typename arg1_type, typename arg2_type, typename arg3_type, typename arg4_type, class validator_type >
@@ -780,6 +864,7 @@ namespace sl08 {
 					(*i)->operator() (a1, a2, a3, a4) ; 
 				} 
 			} 
+			~signal4() { parent_type::disconnect(); }
 		};
 		template <typename arg1_type, typename arg2_type, typename arg3_type, typename arg4_type, class validator_type >
 		class signal4 <int, arg1_type, arg2_type, arg3_type, arg4_type, validator_type> : public base_signal4 <int, arg1_type, arg2_type, arg3_type, arg4_type> { 
@@ -825,15 +910,24 @@ namespace sl08 {
 		public: 
 			virtual return_type operator() (arg1_type a1, arg2_type a2, arg3_type a3, arg4_type a4, arg5_type a5) = 0;
 			inline base_slot5 () : signals() {} 
+
 			inline void connect(signal_type &signal_ref) {
 				signal_type *signal = &signal_ref;
 				signals.push_back(signal);
 				signal->connect(this); 
 			}
+
+			inline void _disconnect(signal_type *signal) {
+				for(typename signals_type::iterator i = signals.begin(); i != signals.end(); ) {
+					if (*i == signal) {
+						i = signals.erase(i);
+					} else ++i;
+				}
+			}
 		
 			inline void disconnect() {
 				for(typename signals_type::iterator i = signals.begin(); i != signals.end(); ++i) {
-					(*i)->disconnect(this); 
+					(*i)->_disconnect(this); 
 				}
 				signals.clear();
 			} 
@@ -898,7 +992,7 @@ namespace sl08 {
 				slots.push_back(slot);
 			} 
 
-			inline void disconnect(slot_type *slot) {
+			inline void _disconnect(slot_type *slot) {
 				for(typename slots_type::iterator i = slots.begin(); i != slots.end(); ) { 
 					if (slot != *i) 
 						++i; 
@@ -906,6 +1000,12 @@ namespace sl08 {
 						i = slots.erase(i); 
 				} 
 			} 
+
+			inline void disconnect() {
+				for(typename slots_type::iterator i = slots.begin(); i != slots.end(); ) { 
+					(*i)->_disconnect(this);
+				} 
+			}
 			inline virtual ~base_signal5() {}
 		};
 		
@@ -926,6 +1026,7 @@ namespace sl08 {
 				}
 				return r; 
 			} 
+			~signal5() { parent_type::disconnect(); }
 		};
 			
 		template <typename arg1_type, typename arg2_type, typename arg3_type, typename arg4_type, typename arg5_type, class validator_type >
@@ -937,6 +1038,7 @@ namespace sl08 {
 					(*i)->operator() (a1, a2, a3, a4, a5) ; 
 				} 
 			} 
+			~signal5() { parent_type::disconnect(); }
 		};
 		template <typename arg1_type, typename arg2_type, typename arg3_type, typename arg4_type, typename arg5_type, class validator_type >
 		class signal5 <int, arg1_type, arg2_type, arg3_type, arg4_type, arg5_type, validator_type> : public base_signal5 <int, arg1_type, arg2_type, arg3_type, arg4_type, arg5_type> { 

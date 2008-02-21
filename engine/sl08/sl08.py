@@ -100,15 +100,24 @@ class Generator(object):
 		public: 
 			virtual return_type operator() %s = 0;
 			inline base_slotXXX () : signals() {} 
+
 			inline void connect(signal_type &signal_ref) {
 				signal_type *signal = &signal_ref;
 				signals.push_back(signal);
 				signal->connect(this); 
 			}
+
+			inline void _disconnect(signal_type *signal) {
+				for(typename signals_type::iterator i = signals.begin(); i != signals.end(); ) {
+					if (*i == signal) {
+						i = signals.erase(i);
+					} else ++i;
+				}
+			}
 		
 			inline void disconnect() {
 				for(typename signals_type::iterator i = signals.begin(); i != signals.end(); ++i) {
-					(*i)->disconnect(this); 
+					(*i)->_disconnect(this); 
 				}
 				signals.clear();
 			} 
@@ -197,7 +206,7 @@ class Generator(object):
 				slots.push_back(slot);
 			} 
 
-			inline void disconnect(slot_type *slot) {
+			inline void _disconnect(slot_type *slot) {
 				for(typename slots_type::iterator i = slots.begin(); i != slots.end(); ) { 
 					if (slot != *i) 
 						++i; 
@@ -205,6 +214,12 @@ class Generator(object):
 						i = slots.erase(i); 
 				} 
 			} 
+
+			inline void disconnect() {
+				for(typename slots_type::iterator i = slots.begin(); i != slots.end(); ) { 
+					(*i)->_disconnect(this);
+				} 
+			}
 			inline virtual ~base_signalXXX() {}
 		};
 		
@@ -225,6 +240,7 @@ class Generator(object):
 				}
 				return r; 
 			} 
+			~signalXXX() { parent_type::disconnect(); }
 		};
 			
 		"""  %(
@@ -247,6 +263,7 @@ class Generator(object):
 					(*i)->operator() %s ; 
 				} 
 			} 
+			~signalXXX() { parent_type::disconnect(); }
 		};
 		""" %(
 			self.template_declaration('signal', True), 
