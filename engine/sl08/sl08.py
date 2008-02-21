@@ -220,7 +220,9 @@ class Generator(object):
 					(*i)->_disconnect(this);
 				} 
 			}
-			inline virtual ~base_signalXXX() {}
+			inline virtual ~base_signalXXX() {
+				disconnect();
+			}
 		};
 		
 		template %s
@@ -240,7 +242,6 @@ class Generator(object):
 				}
 				return r; 
 			} 
-			~signalXXX() { parent_type::disconnect(); }
 		};
 			
 		"""  %(
@@ -263,7 +264,6 @@ class Generator(object):
 					(*i)->operator() %s ; 
 				} 
 			} 
-			~signalXXX() { parent_type::disconnect(); }
 		};
 		""" %(
 			self.template_declaration('signal', True), 

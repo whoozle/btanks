@@ -136,7 +136,9 @@ namespace sl08 {
 					(*i)->_disconnect(this);
 				} 
 			}
-			inline virtual ~base_signal0() {}
+			inline virtual ~base_signal0() {
+				disconnect();
+			}
 		};
 		
 		template <typename return_type, class validator_type = default_validator<return_type> >
@@ -156,7 +158,6 @@ namespace sl08 {
 				}
 				return r; 
 			} 
-			~signal0() { parent_type::disconnect(); }
 		};
 			
 		template <class validator_type >
@@ -168,7 +169,6 @@ namespace sl08 {
 					(*i)->operator() () ; 
 				} 
 			} 
-			~signal0() { parent_type::disconnect(); }
 		};
 		template <class validator_type >
 		class signal0 <int, validator_type> : public base_signal0 <int> { 
@@ -310,7 +310,9 @@ namespace sl08 {
 					(*i)->_disconnect(this);
 				} 
 			}
-			inline virtual ~base_signal1() {}
+			inline virtual ~base_signal1() {
+				disconnect();
+			}
 		};
 		
 		template <typename return_type, typename arg1_type, class validator_type = default_validator<return_type> >
@@ -330,7 +332,6 @@ namespace sl08 {
 				}
 				return r; 
 			} 
-			~signal1() { parent_type::disconnect(); }
 		};
 			
 		template <typename arg1_type, class validator_type >
@@ -342,7 +343,6 @@ namespace sl08 {
 					(*i)->operator() (a1) ; 
 				} 
 			} 
-			~signal1() { parent_type::disconnect(); }
 		};
 		template <typename arg1_type, class validator_type >
 		class signal1 <int, arg1_type, validator_type> : public base_signal1 <int, arg1_type> { 
@@ -484,7 +484,9 @@ namespace sl08 {
 					(*i)->_disconnect(this);
 				} 
 			}
-			inline virtual ~base_signal2() {}
+			inline virtual ~base_signal2() {
+				disconnect();
+			}
 		};
 		
 		template <typename return_type, typename arg1_type, typename arg2_type, class validator_type = default_validator<return_type> >
@@ -504,7 +506,6 @@ namespace sl08 {
 				}
 				return r; 
 			} 
-			~signal2() { parent_type::disconnect(); }
 		};
 			
 		template <typename arg1_type, typename arg2_type, class validator_type >
@@ -516,7 +517,6 @@ namespace sl08 {
 					(*i)->operator() (a1, a2) ; 
 				} 
 			} 
-			~signal2() { parent_type::disconnect(); }
 		};
 		template <typename arg1_type, typename arg2_type, class validator_type >
 		class signal2 <int, arg1_type, arg2_type, validator_type> : public base_signal2 <int, arg1_type, arg2_type> { 
@@ -658,7 +658,9 @@ namespace sl08 {
 					(*i)->_disconnect(this);
 				} 
 			}
-			inline virtual ~base_signal3() {}
+			inline virtual ~base_signal3() {
+				disconnect();
+			}
 		};
 		
 		template <typename return_type, typename arg1_type, typename arg2_type, typename arg3_type, class validator_type = default_validator<return_type> >
@@ -678,7 +680,6 @@ namespace sl08 {
 				}
 				return r; 
 			} 
-			~signal3() { parent_type::disconnect(); }
 		};
 			
 		template <typename arg1_type, typename arg2_type, typename arg3_type, class validator_type >
@@ -690,7 +691,6 @@ namespace sl08 {
 					(*i)->operator() (a1, a2, a3) ; 
 				} 
 			} 
-			~signal3() { parent_type::disconnect(); }
 		};
 		template <typename arg1_type, typename arg2_type, typename arg3_type, class validator_type >
 		class signal3 <int, arg1_type, arg2_type, arg3_type, validator_type> : public base_signal3 <int, arg1_type, arg2_type, arg3_type> { 
@@ -832,7 +832,9 @@ namespace sl08 {
 					(*i)->_disconnect(this);
 				} 
 			}
-			inline virtual ~base_signal4() {}
+			inline virtual ~base_signal4() {
+				disconnect();
+			}
 		};
 		
 		template <typename return_type, typename arg1_type, typename arg2_type, typename arg3_type, typename arg4_type, class validator_type = default_validator<return_type> >
@@ -852,7 +854,6 @@ namespace sl08 {
 				}
 				return r; 
 			} 
-			~signal4() { parent_type::disconnect(); }
 		};
 			
 		template <typename arg1_type, typename arg2_type, typename arg3_type, typename arg4_type, class validator_type >
@@ -864,7 +865,6 @@ namespace sl08 {
 					(*i)->operator() (a1, a2, a3, a4) ; 
 				} 
 			} 
-			~signal4() { parent_type::disconnect(); }
 		};
 		template <typename arg1_type, typename arg2_type, typename arg3_type, typename arg4_type, class validator_type >
 		class signal4 <int, arg1_type, arg2_type, arg3_type, arg4_type, validator_type> : public base_signal4 <int, arg1_type, arg2_type, arg3_type, arg4_type> { 
@@ -1006,7 +1006,9 @@ namespace sl08 {
 					(*i)->_disconnect(this);
 				} 
 			}
-			inline virtual ~base_signal5() {}
+			inline virtual ~base_signal5() {
+				disconnect();
+			}
 		};
 		
 		template <typename return_type, typename arg1_type, typename arg2_type, typename arg3_type, typename arg4_type, typename arg5_type, class validator_type = default_validator<return_type> >
@@ -1026,7 +1028,6 @@ namespace sl08 {
 				}
 				return r; 
 			} 
-			~signal5() { parent_type::disconnect(); }
 		};
 			
 		template <typename arg1_type, typename arg2_type, typename arg3_type, typename arg4_type, typename arg5_type, class validator_type >
@@ -1038,7 +1039,6 @@ namespace sl08 {
 					(*i)->operator() (a1, a2, a3, a4, a5) ; 
 				} 
 			} 
-			~signal5() { parent_type::disconnect(); }
 		};
 		template <typename arg1_type, typename arg2_type, typename arg3_type, typename arg4_type, typename arg5_type, class validator_type >
 		class signal5 <int, arg1_type, arg2_type, arg3_type, arg4_type, arg5_type, validator_type> : public base_signal5 <int, arg1_type, arg2_type, arg3_type, arg4_type, arg5_type> { 
