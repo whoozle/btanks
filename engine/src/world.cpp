@@ -1665,6 +1665,9 @@ const bool IWorld::detachVehicle(Object *object) {
 	   	return false;
 		
 	LOG_DEBUG(("leaving vehicle..."));
+	if (object->isEffectActive("cage")) 
+		return false;
+	
 	object->_velocity.clear();
 	object->updatePlayerState(PlayerState());
 
