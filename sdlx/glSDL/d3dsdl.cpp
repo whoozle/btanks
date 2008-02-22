@@ -143,7 +143,7 @@ SDL_Surface *d3dSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags) {
 		LOG_DEBUG(("format = %d", (int) d3ddm.Format));
         d3dpp.Windowed         = TRUE;
         d3dpp.BackBufferFormat = d3ddm.Format;
-	    d3dpp.PresentationInterval   = D3DPRESENT_INTERVAL_IMMEDIATE;//D3DPRESENT_INTERVAL_TWO;
+	    //d3dpp.PresentationInterval   = D3DPRESENT_INTERVAL_IMMEDIATE;
     }
     else
     {
@@ -156,10 +156,10 @@ SDL_Surface *d3dSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags) {
     }
 	
 	d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD; //we do not use any back buffers - redrawing full scene from scratch
-	//d3dpp.BackBufferCount = 1;
-    d3dpp.EnableAutoDepthStencil = TRUE;
-    d3dpp.AutoDepthStencilFormat = D3DFMT_D16;
-    d3dpp.Flags                  = D3DPRESENTFLAG_DISCARD_DEPTHSTENCIL; //D3DPRESENTFLAG_LOCKABLE_BACKBUFFER;
+	d3dpp.BackBufferCount = 1;
+    d3dpp.EnableAutoDepthStencil = FALSE;
+    d3dpp.AutoDepthStencilFormat = D3DFMT_D24X8; //D3DFMT_D16;
+    d3dpp.Flags                  = 0; //D3DPRESENTFLAG_DISCARD_DEPTHSTENCIL; //D3DPRESENTFLAG_LOCKABLE_BACKBUFFER;
 
     HRESULT r;
     D3DXMATRIX matProj;
@@ -168,7 +168,8 @@ SDL_Surface *d3dSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags) {
     					D3DDEVTYPE_HAL,
     					info.window,
                           //D3DCREATE_SOFTWARE_VERTEXPROCESSING,
-						  (d3dCaps.VertexProcessingCaps != 0 )? D3DCREATE_HARDWARE_VERTEXPROCESSING: D3DCREATE_SOFTWARE_VERTEXPROCESSING,
+                          //D3DCREATE_PUREDEVICE | D3DCREATE_FPU_PRESERVE | 
+						  ((d3dCaps.VertexProcessingCaps != 0 )? D3DCREATE_HARDWARE_VERTEXPROCESSING: D3DCREATE_SOFTWARE_VERTEXPROCESSING),
 						  //D3DCREATE_MIXED_VERTEXPROCESSING,
                           &d3dpp, &g_pd3dDevice )))  {
 		SDL_SetError("CreateDevice failed : %08x", (unsigned)r);
@@ -185,8 +186,10 @@ SDL_Surface *d3dSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags) {
 	g_pd3dDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 	g_pd3dDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 	g_pd3dDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
+	
 	g_pd3dDevice->SetDepthStencilSurface(NULL);
 
+	g_pd3dDevice->SetRenderState(D3DRS_STENCILENABLE, FALSE);
 	g_pd3dDevice->SetRenderState(D3DRS_ZENABLE, FALSE);
 	g_pd3dDevice->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
 
@@ -790,7 +793,7 @@ int d3dSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
 		if (tex != NULL) {
 			if (g_begin_scene) {
 				//LOG_DEBUG(("BeginScene"));
-				//g_pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET, 0, 0, 0);
+				g_pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_STENCIL | D3DCLEAR_ZBUFFER, 0, 0, 0);
 				if (FAILED(g_pd3dDevice->BeginScene())) {
 					SDL_SetError("BeginScene failed");
 					return -1;
