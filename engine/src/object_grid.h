@@ -21,9 +21,9 @@
 
 #include "math/v2.h"
 #include <map>
-#include <set>
 #include <string>
 #include <vector>
+#include "math/elastic_bset.h"
 
 class Grid {
 public: 
@@ -34,10 +34,10 @@ public:
 	void update(const int id, const v2<int> &pos, const v2<int> &size);
 	void remove(const int id);
 
-	void collide(std::set<int> &objects, const v2<int>& area_pos, const v2<int>& area_size) const;
+	void collide(std::vector<int> &objects, const v2<int>& area_pos, const v2<int>& area_size) const;
 	
 private:
-	typedef std::set<int> IDSet;
+	typedef elastic_bset<unsigned long> IDSet;
 	typedef std::vector<IDSet> SetVector;
 	typedef std::vector<SetVector> GridMatrix;
 
@@ -46,7 +46,7 @@ private:
 		v2<int> pos, size;
 	};
 
-	void collide(std::set<int> &objects, const GridMatrix &grid, const v2<int> &grid_size, const v2<int>& area_pos, const v2<int>& area_size) const;
+	void collide(std::vector<int> &objects, const GridMatrix &grid, const v2<int> &grid_size, const v2<int>& area_pos, const v2<int>& area_size) const;
 	void removeFromGrid(GridMatrix &grid, const v2<int> &grid_size, const int id, const Object &o);
 	void update(GridMatrix &grid, const v2<int> &grid_size, const int id, const v2<int> &pos, const v2<int> &size);
 	void resize(GridMatrix &grid, const v2<int> &grid_size, const v2<int> &map_size);
