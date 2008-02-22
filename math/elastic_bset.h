@@ -4,10 +4,11 @@
 #include <cstddef>
 #include <stdlib.h>
 #include <stdexcept>
+#include <vector>
 #include <string.h>
 #include <assert.h>
 
-template<typename T, unsigned page_size> 
+template<typename T, unsigned page_size = 1024> 
 class elastic_bset {
 public: 
 	typedef T  key_type;
@@ -60,6 +61,33 @@ public:
 			return;
 		data[offset] &= ~((key_type)1 << bit);
 		//add shrinking from head
+	}
+	
+	const elastic_bset<key_type, page_size>& operator&= (const elastic_bset<key_type, page_size>& other) {
+		size_t msize = size < other.size? size: other.size;
+		for(size_t i = 0; i < msize; ++i) {
+			data[i] &= other.data[i];
+		}
+	}
+
+	const elastic_bset<key_type, page_size>& operator|= (const elastic_bset<key_type, page_size>& other) {
+		size_t msize = size < other.size? size: other.size;
+		for(size_t i = 0; i < msize; ++i) {
+			data[i] |= other.data[i];
+		}
+	}
+
+	template<typename K>
+	void store(std::vector<K> &values) {
+		for(size_t i = 0; i < size; ++i) {
+			key_type k = data[i];
+			if (k == 0)
+				continue;
+			for(size_t j = 0; j < sizeof(key_type) * 8; ++j) {
+				if (((key_type)1 << j) != 0) 
+					values.push_back(i * sizeof(key_type) * 8 + j);
+			}
+		}
 	}
 };
 
