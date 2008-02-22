@@ -18,10 +18,21 @@ private:
 	size_t size;
 
 public: 
-	elastic_bset() : data(0), size(0) {}
+	elastic_bset() : data(NULL), size(0) {}
+	elastic_bset(const elastic_bset<key_type, page_size> &other) : data(NULL), size(0) {
+		if (other.data == NULL)
+			return;
+		data = static_cast<key_type*>(::malloc(other.size));
+		if (data == NULL)
+			throw std::runtime_error("malloc failed");
+		size = other.size;
+		memcpy(data, other.data, size);
+	}
+	
 	static inline size_t align(const size_t size) {
 		return (1 + (size - 1) / page_size) * page_size;
 	}
+	
 	~elastic_bset() {
 		::free(data);
 	}
@@ -51,7 +62,8 @@ public:
 		const unsigned bit = value % ( sizeof(key_type) * 8 );
 		const unsigned offset = value / sizeof(key_type) / 8;
 		assert(offset >= 0 && offset < size);
-		data[offset] |= (key_type)1 << bit;
+		data[offset] |= ((key_type)1) << bit;
+		printf("insert bit %u in byte %u\n", bit, offset);
 	}
 	
 	void erase(const unsigned &value) {
@@ -59,7 +71,8 @@ public:
 		const unsigned offset = value / sizeof(key_type) / 8;
 		if (offset >= size)
 			return;
-		data[offset] &= ~((key_type)1 << bit);
+		data[offset] &= ~(((key_type)1) << bit);
+		printf("erase bit %u in byte %u\n", bit, offset);
 		//add shrinking from head
 	}
 	
@@ -68,6 +81,7 @@ public:
 		for(size_t i = 0; i < msize; ++i) {
 			data[i] &= other.data[i];
 		}
+		return *this;
 	}
 
 	const elastic_bset<key_type, page_size>& operator|= (const elastic_bset<key_type, page_size>& other) {
@@ -75,16 +89,18 @@ public:
 		for(size_t i = 0; i < msize; ++i) {
 			data[i] |= other.data[i];
 		}
+		return *this;
 	}
 
 	template<typename K>
 	void store(std::vector<K> &values) {
+		values.clear();
 		for(size_t i = 0; i < size; ++i) {
 			key_type k = data[i];
 			if (k == 0)
 				continue;
 			for(size_t j = 0; j < sizeof(key_type) * 8; ++j) {
-				if (((key_type)1 << j) != 0) 
+				if ((data[i] & (((key_type)1) << j)) != 0) 
 					values.push_back(i * sizeof(key_type) * 8 + j);
 			}
 		}
