@@ -155,7 +155,7 @@ SDL_Surface *d3dSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags) {
 	    d3dpp.PresentationInterval   = D3DPRESENT_INTERVAL_IMMEDIATE; // Do NOT sync to vertical retrace
     }
 	
-	//d3dpp.BackBufferCount = 2;
+	d3dpp.BackBufferCount = 2;
 	d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD; //we do not use any back buffers - redrawing full scene from scratch
     d3dpp.EnableAutoDepthStencil = FALSE;
     d3dpp.AutoDepthStencilFormat = D3DFMT_D16; //D3DFMT_D24X8; 
