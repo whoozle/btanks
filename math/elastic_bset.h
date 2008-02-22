@@ -22,15 +22,15 @@ public:
 	elastic_bset(const elastic_bset<key_type, page_size> &other) : data(NULL), size(0) {
 		if (other.data == NULL)
 			return;
-		data = static_cast<key_type*>(::malloc(other.size));
+		data = static_cast<key_type*>(::malloc(other.size * sizeof(key_type)));
 		if (data == NULL)
 			throw std::runtime_error("malloc failed");
 		size = other.size;
-		memcpy(data, other.data, size);
+		memcpy(data, other.data, size * sizeof(key_type));
 	}
 	
 	static inline size_t align(const size_t size) {
-		return (1 + (size - 1) / page_size) * page_size;
+		return (1 + (size - 1) / page_size) * page_size / sizeof(key_type);
 	}
 	
 	~elastic_bset() {
@@ -46,15 +46,14 @@ public:
 		if (new_size <= size)
 			return;
 		
-		key_type *p = static_cast<key_type *>(::realloc(data, new_size));
+		key_type *p = static_cast<key_type *>(::realloc(data, new_size * sizeof(key_type)));
 		if (p == NULL)
 			throw std::runtime_error("realloc failed");
-		//printf("realloc(%u)\n", (unsigned)new_size);
+		
+		::memset(p + size, 0, (new_size - size) * sizeof(key_type));
 		
 		data = p;
 		size = new_size;
-
-		::memset((char *)data + size, 0, new_size - size);
 	}
 	
 	void insert(const unsigned value) {
@@ -63,7 +62,7 @@ public:
 		const unsigned offset = value / sizeof(key_type) / 8;
 		assert(offset >= 0 && offset < size);
 		data[offset] |= ((key_type)1) << bit;
-		printf("insert bit %u in byte %u\n", bit, offset);
+		//printf("insert bit %u in byte %u\n", bit, offset);
 	}
 	
 	void erase(const unsigned &value) {
@@ -72,7 +71,7 @@ public:
 		if (offset >= size)
 			return;
 		data[offset] &= ~(((key_type)1) << bit);
-		printf("erase bit %u in byte %u\n", bit, offset);
+		//printf("erase bit %u in byte %u\n", bit, offset);
 		//add shrinking from head
 	}
 	
@@ -85,6 +84,7 @@ public:
 	}
 
 	const elastic_bset<key_type, page_size>& operator|= (const elastic_bset<key_type, page_size>& other) {
+		resize(other.size);
 		size_t msize = size < other.size? size: other.size;
 		for(size_t i = 0; i < msize; ++i) {
 			data[i] |= other.data[i];
@@ -101,7 +101,7 @@ public:
 				continue;
 			for(size_t j = 0; j < sizeof(key_type) * 8; ++j) {
 				if ((data[i] & (((key_type)1) << j)) != 0) 
-					values.push_back(i * sizeof(key_type) * 8 + j);
+					values.push_back((K)(i * sizeof(key_type) * 8 + j));
 			}
 		}
 	}
