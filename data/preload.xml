@@ -304,6 +304,8 @@
 		<object id="explosion"/>
 		<object id="fake-mod"/>
 		<object id="fire"/>
+		<object id="grenade"/>
+		<object id="grenade-explosion"/>
 		<object id="guided-missile"/>
 		<object id="guided-missiles-item"/>
 		<object id="heal"/>

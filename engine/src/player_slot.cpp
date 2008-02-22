@@ -115,11 +115,11 @@ void PlayerSlot::removeTooltips() {
 	if (remote != -1)
 		return;
 	
-	do {
+	while(!tooltips.empty()) {
 		delete last_tooltip;
 		last_tooltip = tooltips.front().second;
 		tooltips.pop();
-	} while(!tooltips.empty());
+	} 
 }
 
 void PlayerSlot::displayTooltip(const std::string &area, const std::string &message) {
