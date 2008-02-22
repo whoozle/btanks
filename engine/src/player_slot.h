@@ -83,6 +83,7 @@ public:
 	
 	void displayLast();
 	void displayTooltip(const std::string &area, const std::string &message);
+	void removeTooltips();
 	void tick(const float dt);
 	
 	void createControlMethod(const std::string &name);
