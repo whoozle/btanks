@@ -212,11 +212,51 @@ LUA_TRY {
 		return 0;
 	}
 	
-	lua_pushstring(L, mrt::formatString("object_property: unknown property %s", prop.c_str()).c_str());
+	lua_pushstring(L, mrt::formatString("slot_property: unknown property %s", prop.c_str()).c_str());
 	lua_error(L);
 	return 0;
 	
-} LUA_CATCH("lua_hooks_object_property")	
+} LUA_CATCH("slot_property")	
+}
+
+static int lua_hooks_display_hint(lua_State *L) {
+LUA_TRY {
+	int n = lua_gettop(L);
+	if (n < 3) {
+		lua_pushstring(L, "display_hint requires slot_id, area and message-id");
+		lua_error(L);
+		return 0;
+	}
+	int id = lua_tointeger(L, 1);
+	if (id < 1) 
+		throw_ex(("slot #%d is invalid", id));
+	PlayerSlot &slot =  PlayerManager->getSlot(id - 1);
+		
+	std::string area = lua_tostring(L, 2);
+	std::string message = lua_tostring(L, 3);
+
+	slot.displayTooltip(area, message);
+
+	return 0;
+} LUA_CATCH("display_hint")	
+}
+
+static int lua_hooks_remove_hints(lua_State *L) {
+LUA_TRY {
+	int n = lua_gettop(L);
+	if (n < 1) {
+		lua_pushstring(L, "remove_hints requires slot_id");
+		lua_error(L);
+		return 0;
+	}
+	int id = lua_tointeger(L, 1);
+	if (id < 1) 
+		throw_ex(("slot #%d is invalid", id));
+	PlayerSlot &slot =  PlayerManager->getSlot(id - 1);
+	slot.removeTooltips();
+
+	return 0;
+} LUA_CATCH("remove_hints")	
 }
 
 static int lua_hooks_slot_property(lua_State *L) {
@@ -251,9 +291,8 @@ LUA_TRY {
 	lua_error(L);
 	return 0;
 	
-} LUA_CATCH("lua_hooks_object_property")	
+} LUA_CATCH("slot_property")	
 }
-
 
 static int lua_hooks_kill_object(lua_State *L) {
 	LUA_TRY {
@@ -276,7 +315,7 @@ static int lua_hooks_kill_object(lua_State *L) {
 			o->emit("death", NULL);
 		}
 		return 0;
-	} LUA_CATCH("lua_hooks_kill_object")
+	} LUA_CATCH("kill_object")
 }
 
 
@@ -300,7 +339,7 @@ static int lua_hooks_show_item(lua_State *L) {
 		
 		lua_pushinteger(L, item.id);
 		return 1;
-	} LUA_CATCH("lua_hooks_show_item")
+	} LUA_CATCH("show_item")
 }
 
 static int lua_hooks_kill_item(lua_State *L) {
@@ -322,7 +361,7 @@ static int lua_hooks_kill_item(lua_State *L) {
 		if (o != NULL && !o->isDead())
 			o->emit("death", NULL); 
 		return 0;
-	} LUA_CATCH("lua_hooks_kill_item")
+	} LUA_CATCH("kill_item")
 }
 
 static int lua_hooks_play_tune(lua_State *L) {
@@ -346,14 +385,14 @@ static int lua_hooks_play_tune(lua_State *L) {
 		
 		Mixer->play(name, loop);
 		return 0;
-	} LUA_CATCH("lua_hooks_play_tune")
+	} LUA_CATCH("play_tune")
 }
 
 static int lua_hooks_reset_tune(lua_State *L) {
 	LUA_TRY {
 		Mixer->reset();
 		return 0;
-	} LUA_CATCH("lua_hooks_reset_tune")
+	} LUA_CATCH("reset_tune")
 }
 
 static int lua_hooks_hide_item(lua_State *L) {
@@ -375,7 +414,7 @@ static int lua_hooks_hide_item(lua_State *L) {
 		item.kill();
 
 		return 0;
-	} LUA_CATCH("lua_hooks_hide_item")
+	} LUA_CATCH("hide_item")
 }
 
 static int lua_hooks_item_exists(lua_State *L) {
@@ -403,7 +442,7 @@ static int lua_hooks_item_exists(lua_State *L) {
 		
 		lua_pushboolean(L, exists?1:0);
 		return 1;
-	} LUA_CATCH("lua_hooks_item_exists")
+	} LUA_CATCH("item_exists")
 }
 
 
@@ -442,7 +481,7 @@ static int lua_hooks_spawn(lua_State *L) {
 		World->addObject(o, v2<float>(x, y));
 		lua_pushinteger(L, o->getID());
 		return 1;
-	} LUA_CATCH("lua_hooks_spawn")
+	} LUA_CATCH("spawn")
 }
 
 static int lua_hooks_game_over(lua_State *L) {
@@ -470,7 +509,7 @@ static int lua_hooks_game_over(lua_State *L) {
 		lua_Number time = lua_tonumber(L, 3);
 		bool win = lua_toboolean(L, 4) != 0;
 		GameMonitor->gameOver(area, message, (float)time, win);
-	} LUA_CATCH("lua_hooks_game_over")
+	} LUA_CATCH("game_over")
 	return 0;		
 }
 
@@ -500,14 +539,14 @@ static int lua_hooks_set_timer(lua_State *L) {
 		lua_Number time = lua_tonumber(L, 3);
 		bool win = lua_toboolean(L, 4) != 0;
 		GameMonitor->setTimer(area, message, (float)time, win);
-	} LUA_CATCH("lua_hooks_set_timer")
+	} LUA_CATCH("set_timer")
 	return 0;		
 }
 
 static int lua_hooks_reset_timer(lua_State *L) {
 	LUA_TRY {
 		GameMonitor->resetTimer();
-	} LUA_CATCH("lua_hooks_set_timer")
+	} LUA_CATCH("reset_timer")
 	return 0;		
 }
 	
@@ -537,7 +576,7 @@ static int lua_hooks_display_message(lua_State *L) {
 		lua_Number time = lua_tonumber(L, 3);
 		bool global = lua_toboolean(L, 4) != 0;
 		GameMonitor->displayMessage(area, message, (float)time, global);
-	} LUA_CATCH("lua_hooks_set_timer")
+	} LUA_CATCH("display_message")
 	return 0;		
 }
 
@@ -649,7 +688,7 @@ LUA_TRY {
 	
 	o->addEffect(effect, duration);
 	return 0;	
-} LUA_CATCH("lua_hooks_add_effect")	
+} LUA_CATCH("add_effect")	
 }
 
 static int lua_hooks_remove_effect(lua_State *L) {
@@ -672,7 +711,7 @@ LUA_TRY {
 	
 	o->removeEffect(effect);
 	return 0;	
-} LUA_CATCH("lua_hooks_remove_effect")	
+} LUA_CATCH("remove_effect")	
 }
 
 static int lua_hooks_add_waypoint_object(lua_State *L) {
@@ -704,7 +743,7 @@ LUA_TRY {
 
 	src->setWay(way);
 	return 0;
-} LUA_CATCH("lua_hooks_add_waypoint_object")
+} LUA_CATCH("add_waypoint_object")
 }
 
 static int lua_hooks_add_waypoints(lua_State *L) {
@@ -744,7 +783,7 @@ LUA_TRY {
 	o->setWay(way);
 	
 	return 0;
-} LUA_CATCH("lua_hooks_add_waypoints")
+} LUA_CATCH("add_waypoints")
 }
 
 
@@ -760,7 +799,7 @@ LUA_TRY {
 	Object *o = World->getObjectByID(id);
 	lua_pushboolean(L, o != NULL && o->isDriven()? 1:0);
 	return 1;
-} LUA_CATCH("lua_hooks_has_waypoints")
+} LUA_CATCH("has_waypoints")
 }
 
 static int lua_hooks_set_config_override(lua_State *L) {
@@ -784,7 +823,7 @@ LUA_TRY {
 	Config->setOverride(name, var);
 	Config->invalidateCachedValues();
 	
-} LUA_CATCH("lua_hooks_set_config_override")	
+} LUA_CATCH("set_config_override")	
 	return 0;
 }
 
@@ -819,7 +858,7 @@ LUA_TRY {
 		gain = lua_tonumber(L, 4);
 	Mixer->playSample(o, name, loop, gain);
 	
-} LUA_CATCH("lua_hooks_play_sound")	
+} LUA_CATCH("play_sound")	
 	return 0;
 }
 
@@ -853,7 +892,7 @@ LUA_TRY {
 	else 
 		Mixer->cancelSample(o, name);
 	
-} LUA_CATCH("lua_hooks_stop_sound")	
+} LUA_CATCH("stop_sound")	
 	return 0;
 }
 
@@ -869,7 +908,7 @@ LUA_TRY {
 	n = lua_tointeger(L, 1);
 	lua_pushinteger(L, mrt::random(n));
 	return 1;
-} LUA_CATCH("lua_random")
+} LUA_CATCH("random")
 }
 
 
@@ -1012,6 +1051,8 @@ void LuaHooks::load(const std::string &name) {
 	lua_register(state, "players_number", lua_hooks_players_number);
 	lua_register(state, "set_slot_property", lua_hooks_set_slot_property);
 	lua_register(state, "slot_property", lua_hooks_slot_property);
+	lua_register(state, "display_hint", lua_hooks_display_hint);
+	lua_register(state, "remove_hints", lua_hooks_remove_hints);
 
 //Items management: 
 	lua_register(state, "item_exists", lua_hooks_item_exists);
