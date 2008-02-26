@@ -723,8 +723,7 @@ void IMap::end(const std::string &name) {
 			_image_name = source = Finder->find("maps/" + source, false);
 			if (_image_name.empty()) {
 				//last resort, try match filename with any tilesets folder.
-				std::string fname = mrt::FSNode::getFilename(_image_name);
-				_image_name = Finder->find("tilesets/" + fname);
+				_image_name = Finder->find("tilesets/" + mrt::FSNode::getFilename(_image_name));
 			}
 			
 			scoped_ptr<mrt::BaseFile> file(Finder->get_file(source, "rb"));
