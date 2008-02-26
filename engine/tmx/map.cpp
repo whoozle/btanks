@@ -739,7 +739,6 @@ void IMap::end(const std::string &name) {
 			_image->loadImage(_data);
 			_image_is_tileset = false;
 		}
-		//_image->convert(SDL_ASYNCBLIT | SDL_HWSURFACE);
 		_image->convertAlpha();
 		
 		LOG_DEBUG(("image loaded. (%dx%d)", _image->getWidth(), _image->getHeight()));
