@@ -720,7 +720,12 @@ void IMap::end(const std::string &name) {
 		if (source.size()) {
 			LOG_DEBUG(("loading tileset from single file ('%s')", source.c_str()));
 			_image_source = source;
-			_image_name = source = Finder->find("maps/" + source);
+			_image_name = source = Finder->find("maps/" + source, false);
+			if (_image_name.empty()) {
+				//last resort, try match filename with any tilesets folder.
+				std::string fname = mrt::FSNode::getFilename(_image_name);
+				_image_name = Finder->find("tilesets/" + fname);
+			}
 			
 			scoped_ptr<mrt::BaseFile> file(Finder->get_file(source, "rb"));
 
