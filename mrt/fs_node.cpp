@@ -60,7 +60,7 @@ const std::string FSNode::getFilename(const std::string &name, const bool return
 	else 
 		++p1;
 
-	return name.substr(p1, p2 - p1);	
+	return name.substr(p1, return_ext?std::string::npos: p2 - p1);	
 }
 
 const std::string FSNode::getDir(const std::string &fname) {
