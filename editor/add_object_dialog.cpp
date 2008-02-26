@@ -6,6 +6,7 @@
 #include "resource_manager.h"
 #include <algorithm>
 #include "object_properties.h"
+#include "scoped_ptr.h"
 
 AddObjectDialog::AddObjectDialog(const int w, const int h) : 
 ScrollList("menu/background_box_dark.png", "small", w, h), selected_z(0) {
@@ -13,8 +14,10 @@ ScrollList("menu/background_box_dark.png", "small", w, h), selected_z(0) {
 	_fname = "editor.xml";
 	
 	std::string src = Finder->find(_base, _fname, false);
-	if (!src.empty()) 
-		parseFile(src);
+	if (src.empty()) {
+		scoped_ptr<mrt::BaseFile> ptr(Finder->get_file(src, "rt"));
+		parseFile(*ptr);
+	}
 
 	Classes classes;
 	ResourceManager->getAllClasses(classes);
