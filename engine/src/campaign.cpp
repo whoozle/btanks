@@ -130,12 +130,15 @@ Campaign::Campaign() : minimal_score(0), map(NULL), _wares_section(false) {}
 
 #include "game_monitor.h"
 #include "finder.h"
+#include "scoped_ptr.h"
+#include "mrt/base_file.h"
 
-void Campaign::init(const std::string &base, const std::string &file) {
+void Campaign::init(const std::string &base, const std::string &filename) {
 	this->base = base;
 	map = NULL;
 	_wares_section = false;
-	parseFile(file);
+	scoped_ptr<mrt::BaseFile> ptr(Finder->get_file(filename, "rt"));
+	parseFile(*ptr);
 	for(size_t i = 0; i < maps.size(); ++i) {
 		GameMonitor->useInCampaign(base, maps[i].id);
 	}
