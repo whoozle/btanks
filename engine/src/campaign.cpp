@@ -129,11 +129,13 @@ const bool Campaign::visible(const Map &map) const {
 Campaign::Campaign() : minimal_score(0), map(NULL), _wares_section(false) {}
 
 #include "game_monitor.h"
+#include "finder.h"
 
-void Campaign::init() {
+void Campaign::init(const std::string &base, const std::string &file) {
+	this->base = base;
 	map = NULL;
 	_wares_section = false;
-	parseFile(base + "/campaign.xml");
+	parseFile(file);
 	for(size_t i = 0; i < maps.size(); ++i) {
 		GameMonitor->useInCampaign(base, maps[i].id);
 	}

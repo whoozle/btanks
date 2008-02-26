@@ -35,7 +35,7 @@ public:
 	std::vector<Map> maps;
 	std::vector<ShopItem> wares;
 	
-	void init();
+	void init(const std::string &base, const std::string &file);
 	const bool visible(const Map &map_id) const;
 	const int getCash() const;
 
