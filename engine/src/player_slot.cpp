@@ -29,17 +29,18 @@
 #include "math/unary.h"
 #include "math/binary.h"
 #include "mrt/random.h"
+#include "player_manager.h"
 
 #include "i18n.h"
 
 PlayerSlot::PlayerSlot() : 
 id(-1), control_method(NULL), need_sync(false), dont_interpolate(false), remote(-1), visible(false), 
-classname(), animation(), frags(0), spawn_limit(0), score(0), last_tooltip(NULL)
+classname(), animation(), frags(0), spawn_limit(0), score(0), last_tooltip(NULL), last_tooltip_used(false)
 {}
 
 PlayerSlot::PlayerSlot(const int id) : 
 id(id), control_method(NULL), need_sync(false), dont_interpolate(false), remote(-1), visible(false), 
-classname(), animation(), frags(0), spawn_limit(0), score(0), last_tooltip(NULL)
+classname(), animation(), frags(0), spawn_limit(0), score(0), last_tooltip(NULL), last_tooltip_used(false)
 {}
 
 void PlayerSlot::serialize(mrt::Serializator &s) const {
@@ -96,6 +97,7 @@ void PlayerSlot::clear() {
 	}
 	delete last_tooltip;
 	last_tooltip = NULL;
+	last_tooltip_used = false;
 }
 
 void PlayerSlot::displayLast() {
@@ -104,9 +106,13 @@ void PlayerSlot::displayLast() {
 	if (tooltips.empty() && last_tooltip != NULL) {
 		tooltips.push(Tooltips::value_type(last_tooltip->getReadingTime(), last_tooltip));
 		last_tooltip = NULL;
+		last_tooltip_used = true;
 	} else if (!tooltips.empty()) {
 		delete last_tooltip;
 		last_tooltip = tooltips.front().second;
+		if (!last_tooltip_used)
+			GameMonitor->onTooltip("hide", PlayerManager->getSlotID(id), last_tooltip->area, last_tooltip->message);
+		last_tooltip_used = false;
 		tooltips.pop();
 	}
 }
@@ -116,8 +122,11 @@ void PlayerSlot::removeTooltips() {
 		return;
 	
 	while(!tooltips.empty()) {
-		deleteLast();
+		delete last_tooltip;
 		last_tooltip = tooltips.front().second;
+		if (!last_tooltip_used)
+			GameMonitor->onTooltip("hide", PlayerManager->getSlotID(id), last_tooltip->area, last_tooltip->message);		
+		last_tooltip_used = false;
 		tooltips.pop();
 	} 
 }
@@ -130,21 +139,17 @@ void PlayerSlot::displayTooltip(const std::string &area, const std::string &mess
 	GameMonitor->onTooltip("show", PlayerManager->getSlotID(id), area, message);
 }
 
-void PlayerSlot::deleteLast() {
-	if (last_tooltip == NULL)
-		return;
-	GameMonitor->onTooltip("hide", PlayerManager->getSlotID(id), last_tooltip->area, last_tooltip->message);
-	delete last_tooltip;
-	last_tooltip = NULL;
-}
-
-
 void PlayerSlot::tick(const float dt) {
 	if (!tooltips.empty()) {
 		tooltips.front().first -= dt;
 		if (tooltips.front().first < 0) {
-			deleteLast();
+			delete last_tooltip;
 			last_tooltip = tooltips.front().second;
+	
+			if (!last_tooltip_used)
+				GameMonitor->onTooltip("hide", PlayerManager->getSlotID(id), last_tooltip->area, last_tooltip->message);
+			last_tooltip_used = false;
+			
 			tooltips.pop();
 		}
 	}

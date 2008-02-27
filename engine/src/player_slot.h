@@ -92,9 +92,8 @@ public:
 	void addScore(const int s);
 	
 private: 
-	void deleteLast();
-	
 	Tooltip * last_tooltip;
+	bool last_tooltip_used;
 };
 
 #endif
