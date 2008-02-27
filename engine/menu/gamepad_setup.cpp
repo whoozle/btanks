@@ -217,7 +217,7 @@ GamepadSetup::GamepadSetup(const int w, const int h) : _current_pad(NULL), _wait
 	_current_pad->getSize(sw, sh);
 	_gamepad_bg_pos = v2<int>(mx, my + sh + 10);
 	add((w - sw - mx * 2) / 2, my, _current_pad);
-	Tooltip * t = new Tooltip(I18n->get("menu", "test-gamepad"), false, w - 2 * mx - _gamepad_bg->getHeight() - 60);
+	Tooltip * t = new Tooltip("menu", "test-gamepad", false, w - 2 * mx - _gamepad_bg->getHeight() - 60);
 	t->getSize(sw, sh);
 	add(w - mx - sw, _gamepad_bg_pos.y, t);
 	

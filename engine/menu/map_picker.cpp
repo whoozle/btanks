@@ -91,9 +91,7 @@ void MapPicker::scan(const std::string &base) {
 		TRY {
 			m.scan(map);
 		} CATCH("scanning map", {});
-		const std::string &comments = I18n->has("maps/descriptions", map)?I18n->get("maps/descriptions", map): 
-			I18n->get("maps/descriptions", "(default)");
-		_maps.push_back(MapList::value_type(base, map, comments, m.object_restriction, m.game_type, m.slots));
+		_maps.push_back(MapList::value_type(base, map, m.object_restriction, m.game_type, m.slots));
 	}	
 }
 
