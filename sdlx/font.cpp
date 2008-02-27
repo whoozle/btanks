@@ -176,6 +176,7 @@ const int Font::render(sdlx::Surface *window, const int x, const int y, const st
 	
 	for(size_t i = 0; i < str.size(); ) {
 		unsigned c = (unsigned)str[i++];
+		if (c < 32) c = ' ';
 		if (c < 0x80) {
 			tokens.push_back(c);
 		} else if ((c & 0xc0) == 0x80) {
