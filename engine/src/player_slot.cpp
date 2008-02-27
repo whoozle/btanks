@@ -134,6 +134,7 @@ void PlayerSlot::deleteLast() {
 	if (last_tooltip == NULL)
 		return;
 	GameMonitor->onTooltip("hide", PlayerManager->getSlotID(id), last_tooltip->area, last_tooltip->message);
+	delete last_tooltip;
 	last_tooltip = NULL;
 }
 
