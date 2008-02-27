@@ -1150,7 +1150,7 @@ void LuaHooks::on_tooltip(const std::string &event, const int slot_id, const std
 	lua_settop(state, 0);
 
 	lua_getglobal(state, "on_tooltip");
-	lua_pushinteger(state, slot_id);
+	lua_pushinteger(state, slot_id + 1);
 	lua_pushstring(state, area.c_str());
 	lua_pushstring(state, message.c_str());
 
