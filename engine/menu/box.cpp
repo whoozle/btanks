@@ -114,7 +114,7 @@ void Box::init(const std::string &tile, const std::string &highlight, int _w, in
 	foo->setAlpha(255);
 }
 
-void Box::render(sdlx::Surface &surface, const int x0, const int y0) {
+void Box::render(sdlx::Surface &surface, const int x0, const int y0) const {
 	assert(_surface != NULL);
 	
 	sdlx::Rect ul(0,	0,	x1,								y1);
@@ -206,7 +206,7 @@ void Box::copyTo(sdlx::Surface &surface, const int x, const int y) {
 }
 
 
-void Box::renderHL(sdlx::Surface &surface, const int x, const int y) {
+void Box::renderHL(sdlx::Surface &surface, const int x, const int y) const {
 	const sdlx::Surface *bg = _highlight;
 	if (bg == NULL)
 		throw_ex(("highlight background was not loaded."));

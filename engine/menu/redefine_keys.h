@@ -38,7 +38,7 @@ public:
 	RedefineKeys();
 
 	virtual void tick(const float dt);
-	virtual void render(sdlx::Surface &surface, const int x, const int y);
+	virtual void render(sdlx::Surface &surface, const int x, const int y) const;
 	virtual void getSize(int &w, int &h) const;
 	
 	virtual bool onKey(const SDL_keysym sym);
@@ -60,7 +60,7 @@ private:
 	
 	std::vector<std::string> _labels;
 	typedef std::vector<std::pair<std::string, sdlx::Rect> > Actions; 
-	Actions _actions;
+	mutable Actions _actions;
 	
 	int _keys[3][8];
 	

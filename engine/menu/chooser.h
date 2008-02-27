@@ -35,7 +35,7 @@ public:
 	Chooser(const std::string &font, const std::vector<std::string> &options, const std::string &surface = std::string());
 	void getSize(int &w, int &h) const;
 
-	virtual void render(sdlx::Surface &surface, const int x, const int y);
+	virtual void render(sdlx::Surface &surface, const int x, const int y) const;
 	virtual bool onMouse(const int button, const bool pressed, const int x, const int y);
 	virtual bool onKey(const SDL_keysym sym);
 
@@ -60,7 +60,7 @@ private:
 	const sdlx::Font *_font;
 	int _w;
 
-	sdlx::Rect _left_area, _right_area;
+	mutable sdlx::Rect _left_area, _right_area;
 };
 
 

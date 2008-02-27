@@ -97,7 +97,7 @@ bool PopupMenu::onMouseMotion(const int state, const int x, const int y, const i
 	return false;
 }
 
-void PopupMenu::render(sdlx::Surface &surface, const int x, const int y) {
+void PopupMenu::render(sdlx::Surface &surface, const int x, const int y) const {
 	if (_controls.empty())
 		return;
 	

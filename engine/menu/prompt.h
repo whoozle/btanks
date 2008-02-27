@@ -36,7 +36,7 @@ public:
 	void set(const std::string &value);
 	const std::string &get() const;
 
-	virtual void render(sdlx::Surface& surface, const int x, const int y);
+	virtual void render(sdlx::Surface& surface, const int x, const int y) const;
 	virtual void tick(const float dt);
 	virtual bool onKey(const SDL_keysym sym);
 	virtual bool onMouse(const int button, const bool pressed, const int x, const int y);

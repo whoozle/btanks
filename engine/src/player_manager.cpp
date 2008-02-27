@@ -1026,8 +1026,8 @@ void IPlayerManager::render(sdlx::Surface &window, const int vx, const int vy) {
 				}
 			}
 			
-			if (!slot.tooltips.empty()) {
-				Tooltip *t = slot.tooltips.front().second;
+			const Tooltip *t = slot.currentTooltip();
+			if (t != NULL) {
 				int w, h;
 				t->getSize(w, h);
 				t->render(window, slot.viewport.x, slot.viewport.h - h);

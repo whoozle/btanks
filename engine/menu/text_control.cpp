@@ -165,7 +165,7 @@ bool TextControl::onKey(const SDL_keysym sym) {
 	return true;
 }
 
-void TextControl::render(sdlx::Surface &surface, const int x, const int y) {
+void TextControl::render(sdlx::Surface &surface, const int x, const int y) const {
 	int xp = x;
 	if (!_text.empty())
 		xp += _font->render(surface, xp, y, _text.substr(0, _cursor_position));

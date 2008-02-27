@@ -76,7 +76,7 @@ void UpperBox::layout() {
 	setBase(_player2_name, w - cw2 - 2 * mx, my + (h - (ch1 + ch2) + dh) / 2);
 }
 
-void UpperBox::render(sdlx::Surface &surface, const int x, const int y) {
+void UpperBox::render(sdlx::Surface &surface, const int x, const int y) const{
 	Container::render(surface, x, y);
 	
 	int font_dy = (_big->getHeight() - _medium->getHeight()) / 2;

@@ -75,9 +75,6 @@ public:
 	Object * getObject() const; 
 	~PlayerSlot();
 		
-	typedef std::queue<std::pair<float, Tooltip *> > Tooltips;
-	Tooltips tooltips;
-	
 	virtual void serialize(mrt::Serializator &s) const;
 	virtual void deserialize(const mrt::Serializator &s);
 	
@@ -91,7 +88,12 @@ public:
 	void validatePosition(v2<float>& position);
 	void addScore(const int s);
 	
+	const Tooltip *currentTooltip() const { return tooltips.empty()? NULL: tooltips.front().second; }
+	
 private: 
+	typedef std::queue<std::pair<float, Tooltip *> > Tooltips;
+	Tooltips tooltips;
+	
 	Tooltip * last_tooltip;
 	bool last_tooltip_used;
 };

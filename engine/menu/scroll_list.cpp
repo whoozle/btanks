@@ -139,7 +139,7 @@ void ScrollList::tick(const float dt) {
 }
 
 
-void ScrollList::render(sdlx::Surface &surface, const int x, const int y) {
+void ScrollList::render(sdlx::Surface &surface, const int x, const int y) const {
 	_background.render(surface, x, y);
 	
 	sdlx::Rect old_clip;

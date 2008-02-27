@@ -30,8 +30,8 @@ void Container::tick(const float dt) {
 }
 
 
-void Container::render(sdlx::Surface &surface, const int x, const int y) {
-	for(ControlList::iterator i = _controls.begin(); i != _controls.end(); ++i) {
+void Container::render(sdlx::Surface &surface, const int x, const int y) const {
+	for(ControlList::const_iterator i = _controls.begin(); i != _controls.end(); ++i) {
 		if (i->second->hidden())
 			continue;
 

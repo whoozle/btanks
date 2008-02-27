@@ -16,7 +16,7 @@ void Chat::clear() {
 	layout();
 }
 
-void Chat::render(sdlx::Surface &surface, const int x, const int y) {
+void Chat::render(sdlx::Surface &surface, const int x, const int y) const {
 	int h = _font->getHeight();
 	for(size_t i = 0; i < text.size(); ++i) {
 		_font->render(surface, x + 4, y + h * i, text[i].first);

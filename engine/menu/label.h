@@ -32,7 +32,7 @@ class BTANKSAPI Label : public TextualControl {
 public: 
 	Label(const sdlx::Font *font, const std::string &label);
 	Label(const std::string &font, const std::string &label);
-	virtual void render(sdlx::Surface& surface, const int x, const int y);
+	virtual void render(sdlx::Surface& surface, const int x, const int y) const;
 	virtual void getSize(int &w, int &h) const;
 
 	void set(const std::string &label);

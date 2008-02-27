@@ -107,7 +107,7 @@ void MapDetails::set(const MapDesc & map_desc) {
 	}
 }
 
-void MapDetails::render(sdlx::Surface &surface, const int x, const int y) {
+void MapDetails::render(sdlx::Surface &surface, const int x, const int y) const {
 	Container::render(surface, x, y);
 	_background.render(surface, x, y);
 	int mx, my;

@@ -32,7 +32,7 @@ class MapDetails : public Container {
 public: 
 	MapDetails(const int w, const int h, const bool hint);
 
-	virtual void render(sdlx::Surface &surface, const int x, const int y);
+	virtual void render(sdlx::Surface &surface, const int x, const int y) const;
 	virtual void getSize(int &w, int &h) const;
 	virtual bool onMouse(const int button, const bool pressed, const int x, const int y);
 	

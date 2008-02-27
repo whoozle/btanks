@@ -48,7 +48,7 @@ public:
 	~MainMenu();
 	
 	void tick(const float dt);
-	void render(sdlx::Surface &dst);
+	void render(sdlx::Surface &dst) const;
 	void reset();
 	const bool back();
 	
@@ -59,6 +59,7 @@ public:
 	
 private:
 	std::map<const std::string, BaseMenu *> _special_menus;
+	const BaseMenu *getMenu(const std::string &menu) const;
 	BaseMenu *getMenu(const std::string &menu);
 
 	sl08::slot2<bool, const SDL_keysym, const bool, MainMenu> on_key_slot;
@@ -90,7 +91,7 @@ private:
 	v2<int> _menu_size;	
 	
 	Box _background;
-	sdlx::Rect _background_area;
+	mutable sdlx::Rect _background_area;
 	
 	//joystick hack: 
 	bool _key_active;

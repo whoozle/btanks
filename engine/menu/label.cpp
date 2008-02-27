@@ -40,6 +40,6 @@ const std::string Label::get() const {
 	return _label; 
 }
 
-void Label::render(sdlx::Surface& surface, int x, int y) {
+void Label::render(sdlx::Surface& surface, int x, int y) const {
 	_font->render(surface, x, y, _label);
 }

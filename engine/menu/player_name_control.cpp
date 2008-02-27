@@ -76,7 +76,7 @@ bool PlayerNameControl::onMouse(const int button, const bool pressed, const int 
 	return false;
 }
 
-void PlayerNameControl::render(sdlx::Surface &surface, const int x, const int y) {
+void PlayerNameControl::render(sdlx::Surface &surface, const int x, const int y) const {
 	Container::render(surface, x, y);
 	surface.copyFrom(*_dice, x + _dice_area.x, y + _dice_area.y);
 	surface.copyFrom(*_edit, x + _edit_area.x, y + _edit_area.y);

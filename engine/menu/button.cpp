@@ -26,7 +26,7 @@ Button::Button(const std::string &font, const std::string &label) : _font(Resour
 }
 
 
-void Button::render(sdlx::Surface& surface, int x, int y) {
+void Button::render(sdlx::Surface& surface, int x, int y) const {
 	_background.render(surface, x, y);
 	
 	_font->render(surface, x + (_background.w - _w) / 2, y + (_background.h - _font->getHeight()) / 2, _label);

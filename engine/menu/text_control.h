@@ -37,7 +37,7 @@ public:
 	const std::string &get() const;
 	void getSize(int &w, int &h) const;
 	virtual bool onKey(const SDL_keysym sym);
-	virtual void render(sdlx::Surface &surface, const int x, const int y);
+	virtual void render(sdlx::Surface &surface, const int x, const int y) const;
 
 protected:
 	virtual const bool validate(const int idx, const int c) const { return true; }

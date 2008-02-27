@@ -48,7 +48,7 @@ public:
 	void save();
 	
 	virtual bool onKey(const SDL_keysym sym);
-	virtual void render(sdlx::Surface &dst, const int x, const int y);
+	virtual void render(sdlx::Surface &dst, const int x, const int y) const;
 
 private: 
 	MainMenu *_parent;

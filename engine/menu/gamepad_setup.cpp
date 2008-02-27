@@ -160,7 +160,7 @@ void GamepadSetup::setupNextControl() {
 	}
 }
 
-void GamepadSetup::renderSetup(sdlx::Surface &surface, const int x, const int y) {
+void GamepadSetup::renderSetup(sdlx::Surface &surface, const int x, const int y) const {
 	switch(_wait_control) {
 	case tButton: 
 		if (_blink.get() < 0.5f)
@@ -236,7 +236,7 @@ GamepadSetup::GamepadSetup(const int w, const int h) : _current_pad(NULL), _wait
 	on_event_slot.assign(this, &GamepadSetup::onEvent, Window->event_signal);
 }
 
-void GamepadSetup::renderIcon(sdlx::Surface &surface, const int idx, const int x, const int y) {
+void GamepadSetup::renderIcon(sdlx::Surface &surface, const int idx, const int x, const int y) const {
 	const int w = _gamepad_buttons->getWidth() / 7;
 	const int h = _gamepad_buttons->getHeight();
 
@@ -245,7 +245,7 @@ void GamepadSetup::renderIcon(sdlx::Surface &surface, const int idx, const int x
 	surface.copyFrom(*_gamepad_buttons, src, _gamepad_bg_pos.x + x, _gamepad_bg_pos.y + y);
 }
 
-void GamepadSetup::renderButton(sdlx::Surface &surface, const int b, const int x, const int y) {
+void GamepadSetup::renderButton(sdlx::Surface &surface, const int b, const int x, const int y) const {
 	assert(b >= 0 && b < 10);
 
 	int idx = (b >= 4)?((b >= 8)?5:0):6;
@@ -291,7 +291,7 @@ void GamepadSetup::reload() {
 	joy.open(_current_pad?_current_pad->get():0);
 }
 
-void GamepadSetup::renderDPad(sdlx::Surface &surface, const bool left, const bool right, const bool up, const bool down, const int x, const int y) {
+void GamepadSetup::renderDPad(sdlx::Surface &surface, const bool left, const bool right, const bool up, const bool down, const int x, const int y) const {
 	static const int xp[] =   { 62,  98, 85,  85};
 	static const int yp[] =   {193, 193, 170, 206};
 	static const int icon[] = {2,  4,  1,  3 };
@@ -306,7 +306,7 @@ void GamepadSetup::renderDPad(sdlx::Surface &surface, const bool left, const boo
 		renderIcon(surface, icon[3], xp[3], yp[3]);
 }
 
-void GamepadSetup::renderMinistick(sdlx::Surface &surface, const int ai, const int x, const int y) {
+void GamepadSetup::renderMinistick(sdlx::Surface &surface, const int ai, const int x, const int y) const {
 	const int r = 16;
 	const int xa = x * r / 32767;
 	const int ya = y * r / 32767;
@@ -319,7 +319,7 @@ void GamepadSetup::renderMinistick(sdlx::Surface &surface, const int ai, const i
 	surface.copyFrom(*_gamepad_ministick, _gamepad_bg_pos.x + xp[idx] + xa + _gamepad_ministick->getWidth() / 2, _gamepad_bg_pos.y + yp[idx] + ya + _gamepad_ministick->getHeight() / 2);
 }
 
-void GamepadSetup::render(sdlx::Surface &surface, const int x, const int y) {
+void GamepadSetup::render(sdlx::Surface &surface, const int x, const int y) const {
 	_background.render(surface, x, y);
 	int mx, my;
 	_background.getMargins(mx, my);

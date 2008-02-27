@@ -30,7 +30,7 @@ class BTANKSAPI Control {
 public: 
 	Control();
 	virtual void tick(const float dt);
-	virtual void render(sdlx::Surface &surface, const int x, const int y) = 0;
+	virtual void render(sdlx::Surface &surface, const int x, const int y) const = 0;
 	virtual void getSize(int &w, int &h) const = 0;
 	
 	virtual bool onKey(const SDL_keysym sym);

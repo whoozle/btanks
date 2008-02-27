@@ -133,7 +133,7 @@ void VideoControl::tick(const float dt) {
 	}
 }
 
-void VideoControl::render(sdlx::Surface &surface, const int x, const int y) {
+void VideoControl::render(sdlx::Surface &surface, const int x, const int y) const {
 	if (mpeg == NULL || !active) {
 		surface.copyFrom(*screenshot, x, y);
 		return;

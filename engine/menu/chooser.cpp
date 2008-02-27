@@ -63,7 +63,7 @@ void Chooser::getSize(int &w, int &h) const {
 	}
 }
 
-void Chooser::render(sdlx::Surface &surface, const int x, const int y) {
+void Chooser::render(sdlx::Surface &surface, const int x, const int y) const {
 	Container::render(surface, x, y);
 	int lrw = _left_right->getWidth() / 2;
 	int lrh = _left_right->getHeight();

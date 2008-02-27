@@ -49,7 +49,7 @@ public:
 	void remove(const int idx);
 	
 	virtual void tick(const float dt);
-	virtual void render(sdlx::Surface &surface, const int x, const int y);
+	virtual void render(sdlx::Surface &surface, const int x, const int y) const;
 	virtual bool onKey(const SDL_keysym sym);
 	virtual bool onMouse(const int button, const bool pressed, const int x, const int y);
 	virtual void getSize(int &w, int &h) const;
@@ -66,8 +66,8 @@ public:
 private:
 	Box _background;
 	const sdlx::Surface *_scrollers;
-	sdlx::Rect _up_area, _down_area, _items_area;
-	int _client_w, _client_h;
+	mutable sdlx::Rect _up_area, _down_area, _items_area;
+	mutable int _client_w, _client_h;
 
 
 	float _pos, _vel;

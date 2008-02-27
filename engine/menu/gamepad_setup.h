@@ -26,22 +26,22 @@ public:
 	void save();
 	void tick(const float dt);
 
-	virtual void render(sdlx::Surface &surface, const int x, const int y);
+	virtual void render(sdlx::Surface &surface, const int x, const int y) const;
 	virtual void getSize(int &w, int &h) const;
 	void hide(const bool hide = true);
 
 private: 
-	virtual void renderSetup(sdlx::Surface &surface, const int x, const int y);
+	virtual void renderSetup(sdlx::Surface &surface, const int x, const int y) const;
 	virtual bool onKey(const SDL_keysym sym);
 	virtual bool onMouse(const int button, const bool pressed, const int x, const int y);
 
 	sl08::slot1<void, const SDL_Event &, GamepadSetup> on_event_slot;
 	virtual void onEvent(const SDL_Event &event);
 
-	void renderIcon(sdlx::Surface &surface, const int idx, const int x, const int y);
-	void renderDPad(sdlx::Surface &surface, const bool left, const bool right, const bool up, const bool down, const int x, const int y);
-	void renderButton(sdlx::Surface &surface, const int b, const int x, const int y);
-	void renderMinistick(sdlx::Surface &surface, const int ai, const int x, const int y);
+	void renderIcon(sdlx::Surface &surface, const int idx, const int x, const int y) const;
+	void renderDPad(sdlx::Surface &surface, const bool left, const bool right, const bool up, const bool down, const int x, const int y) const;
+	void renderButton(sdlx::Surface &surface, const int b, const int x, const int y) const;
+	void renderMinistick(sdlx::Surface &surface, const int ai, const int x, const int y) const;
 
 	Box _background; 
 	Chooser *_current_pad;

@@ -108,7 +108,7 @@ void RedefineKeys::reload() {
 	}
 }
 
-void RedefineKeys::render(sdlx::Surface &surface, const int x, const int y) {
+void RedefineKeys::render(sdlx::Surface &surface, const int x, const int y) const {
 	_background.render(surface, x, y);
 	int dx = (_background.w - _bg_table->getWidth()) / 2, dy = (_background.h - _bg_table->getHeight()) / 2;
 	surface.copyFrom(*_bg_table, x + dx, y + dy);

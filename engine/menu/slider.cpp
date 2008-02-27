@@ -32,7 +32,7 @@ Slider::Slider(const float value) : _n(10), _value(value), _grab(false) {
 }
 
 
-void Slider::render(sdlx::Surface &surface, const int x, const int y) {
+void Slider::render(sdlx::Surface &surface, const int x, const int y) const {
 	int w = _tiles->getWidth() / 2, h = _tiles->getHeight();
 	sdlx::Rect bound(0, 0, w, h), pointer(w, 0, w, h);
 	for(int i = 0; i < _n; ++i) 

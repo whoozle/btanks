@@ -432,7 +432,7 @@ void OptionsMenu::tick(const float dt) {
 	Container::tick(dt);
 }
 
-void OptionsMenu::render(sdlx::Surface &surface, const int x, const int y) {
+void OptionsMenu::render(sdlx::Surface &surface, const int x, const int y) const {
 	_background.render(surface, _bx, _by);
 	Container::render(surface, x, y);	
 }

@@ -37,7 +37,7 @@ public:
 
 	UpperBox(int w, int h, const bool server);
 	virtual void tick(const float dt);
-	virtual void render(sdlx::Surface &surface, const int x, const int y);
+	virtual void render(sdlx::Surface &surface, const int x, const int y) const;
 	virtual bool onMouse(const int button, const bool pressed, const int x, const int y);
 private: 
 	void layout();
@@ -45,7 +45,7 @@ private:
 	bool _server;
 	const sdlx::Surface *_checkbox;
 	const sdlx::Font *_big, *_medium;
-	sdlx::Rect _on_area, _off_area;
+	mutable sdlx::Rect _on_area, _off_area;
 	Box   *_box;
 	
 	PlayerNameControl *_player1_name, *_player2_name;

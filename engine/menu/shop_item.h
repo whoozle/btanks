@@ -14,7 +14,7 @@ struct ShopItem : public Container {
 public:
 	ShopItem(const Campaign &campaign, const Campaign::ShopItem &item, const int w);
 	void revalidate(const Campaign &campaign, const Campaign::ShopItem &item, const bool active);
-	virtual void render(sdlx::Surface &surface, const int x, const int y);
+	virtual void render(sdlx::Surface &surface, const int x, const int y) const;
 	virtual void tick(const float dt);
 	
 	const bool wasSold() const { return sold; }

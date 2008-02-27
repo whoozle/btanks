@@ -61,7 +61,7 @@ void ShopItem::revalidate(const Campaign &campaign, const Campaign::ShopItem &it
 	}
 }
 
-void ShopItem::render(sdlx::Surface &surface, const int x, const int y) {
+void ShopItem::render(sdlx::Surface &surface, const int x, const int y) const {
 	Container::render(surface, x, y);
 	if (_pose == NULL || _animation == NULL || _animation_model == NULL) 
 		return;

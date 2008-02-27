@@ -129,7 +129,7 @@ area(area), message(message), _use_background(use_background) {
 	}
 }
 
-void Tooltip::render(sdlx::Surface &surface, const int x, const int y) {
+void Tooltip::render(sdlx::Surface &surface, const int x, const int y) const {
 	if (_use_background)
 		_background.render(surface, x, y);
 	surface.copyFrom(_surface, x, y);

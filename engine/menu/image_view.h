@@ -15,7 +15,7 @@ public:
 	
 	void setOverlay(const sdlx::Surface *overlay, const v2<int> &dpos);
 
-	virtual void render(sdlx::Surface &surface, const int x, const int y);
+	virtual void render(sdlx::Surface &surface, const int x, const int y) const;
 
 	void tick(const float dt);
 

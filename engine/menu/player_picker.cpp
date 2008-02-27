@@ -367,7 +367,7 @@ void PlayerPicker::set(const MapDesc &map) {
 	}
 }
 
-void PlayerPicker::render(sdlx::Surface &surface, const int x, const int y) {
+void PlayerPicker::render(sdlx::Surface &surface, const int x, const int y) const {
 	_background.render(surface, x, y);
 	
 	int mx, my;

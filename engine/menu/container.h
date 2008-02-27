@@ -28,7 +28,7 @@ class BTANKSAPI Container : public Control {
 public: 
 	Container() : _focus(NULL) {}
 	virtual void tick(const float dt);
-	virtual void render(sdlx::Surface &surface, const int x, const int y);
+	virtual void render(sdlx::Surface &surface, const int x, const int y) const;
 	virtual void getSize(int &w, int &h) const;
 	virtual bool onKey(const SDL_keysym sym);
 	virtual bool onMouse(const int button, const bool pressed, const int x, const int y);

@@ -265,11 +265,11 @@ bool MainMenu::onKey(const SDL_keysym sym, const bool pressed) {
 
 #include "resource_manager.h"
 
-void MainMenu::render(sdlx::Surface &dst) {
+void MainMenu::render(sdlx::Surface &dst) const {
 	if (!_active)
 		return;
 		
-	BaseMenu * sm = getMenu(_active_menu);
+	const BaseMenu * sm = getMenu(_active_menu);
 	if (sm != NULL) {
 		sm->render(dst, 0, 0);
 		return;
@@ -284,7 +284,11 @@ void MainMenu::render(sdlx::Surface &dst) {
 	_background_area.x = x;
 	_background_area.y = y;
 	
-	const ItemList & items = _items[_active_menu];
+	MenuMap::const_iterator i = _items.find(_active_menu);
+	if ( i == _items.end())
+		return;
+	
+	const ItemList & items = i->second;
 	size_t n = items.size();
 	for(size_t i = 0; i < n ;++i) {
 		int w,h;
@@ -396,8 +400,14 @@ bool MainMenu::onMouse(const int button, const bool pressed, const int x, const 
 	return false;
 }
 
+const BaseMenu *MainMenu::getMenu(const std::string &menu) const {
+	std::map<const std::string, BaseMenu *>::const_iterator i = _special_menus.find(menu);
+	return i != _special_menus.end()? i->second: NULL;
+}
+
 BaseMenu *MainMenu::getMenu(const std::string &menu) {
-	return _special_menus[menu];
+	std::map<const std::string, BaseMenu *>::iterator i = _special_menus.find(menu);
+	return i != _special_menus.end()? i->second: NULL;
 }
 
 #include "math/unary.h"

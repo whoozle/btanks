@@ -24,7 +24,7 @@ bool Checkbox::onMouse(const int button, const bool pressed, const int x, const 
 }
 
 
-void Checkbox::render(sdlx::Surface &surface, const int x, const int y) {
+void Checkbox::render(sdlx::Surface &surface, const int x, const int y) const {
 	int tw = _checkbox->getWidth() / 2, th = _checkbox->getHeight();
 	if (_state) {
 		sdlx::Rect fg(tw, 0, _checkbox->getWidth() - tw, th);

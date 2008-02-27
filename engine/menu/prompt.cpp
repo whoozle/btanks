@@ -101,7 +101,7 @@ bool Prompt::onMouse(const int button, const bool pressed, const int x, const in
 
 #include "mrt/logger.h"
 
-void Prompt::render(sdlx::Surface& surface, const int x, const int y) {
+void Prompt::render(sdlx::Surface& surface, const int x, const int y) const {
 	_background.render(surface, x, y);
 	sdlx::Rect old_clip; 
 	surface.getClipRect(old_clip);

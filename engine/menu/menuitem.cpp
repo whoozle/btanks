@@ -41,7 +41,7 @@ void MenuItem::render() {
 	_font->render(_normal, (_text.empty())?" ":_text);
 }
 	
-void MenuItem::render(sdlx::Surface &dst, const int x, const int y) {
+void MenuItem::render(sdlx::Surface &dst, const int x, const int y) const {
 	dst.copyFrom(_normal, x, y);
 }
 

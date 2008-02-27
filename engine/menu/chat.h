@@ -14,7 +14,7 @@ class TextControl;
 class Chat : public Container {
 public:
 	Chat(const size_t lines);
-	virtual void render(sdlx::Surface &surface, const int x, const int y);
+	virtual void render(sdlx::Surface &surface, const int x, const int y) const;
 	virtual bool onKey(const SDL_keysym sym);
 	void addMessage(const std::string &nick, const std::string &text);
 	const std::string get() const { return last_message; }

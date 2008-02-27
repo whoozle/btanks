@@ -20,7 +20,7 @@ void ImageView::init(const sdlx::Surface *image) {
 	_image = image;
 }
 
-void ImageView::render(sdlx::Surface &surface, const int x, const int y) {
+void ImageView::render(sdlx::Surface &surface, const int x, const int y) const {
 	Container::render(surface, x, y);
 	if (_image == NULL)
 		return;
