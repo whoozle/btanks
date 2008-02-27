@@ -171,7 +171,7 @@ MapPicker::MapPicker(const int w, const int h) : _index(0) {
 		_details = new MapDetails(map_pos.w, map_pos.h, true);
 		_details->set(_maps[_index]);
 		add(map_pos.x, map_pos.y, _details);
-	} CATCH("MapPicker::ctor", {delete _details; throw; });
+	} CATCH("MapPicker::ctor", {delete _details; _details = NULL; throw; });
 
 }
 
