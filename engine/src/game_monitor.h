@@ -134,6 +134,8 @@ public:
 	sl08::slot4<void, int, int, int, int, IGameMonitor> on_map_resize_slot;	
 	void parseWaypoints(int, int, int, int);
 	
+	void onTooltip(const std::string &event, const int slot_id, const std::string &area, const std::string &message);
+	
 private:
 	void saveCampaign();
 

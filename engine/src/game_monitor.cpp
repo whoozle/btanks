@@ -981,6 +981,13 @@ IGameMonitor::~IGameMonitor() {
 #endif
 }
 
+void IGameMonitor::onTooltip(const std::string &event, const int slot_id, const std::string &area, const std::string &message) {
+#ifdef ENABLE_LUA
+	if (lua_hooks)
+		lua_hooks->on_tooltip(event, slot_id, area, message);
+#endif
+}
+
 void IGameMonitor::onScriptZone(const int slot_id, const SpecialZone &zone, const bool global) {
 	const bool client = PlayerManager->isClient();
 	if (client)

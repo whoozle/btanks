@@ -13,6 +13,7 @@ public:
 	void on_tick(const float dt);
 	void on_load();
 	const bool on_spawn(const std::string &classname, const std::string &animation, const std::string &property); 
+	void on_tooltip(const std::string &event, const int slot_id, const std::string & area, const std::string & message);
 
 	void call(const std::string &method);
 	void call1(const std::string &method, const int id);
@@ -24,7 +25,7 @@ private:
 	bool check_function(const std::string &name);
 	luaxx::State state;
 	
-	bool has_on_tick, has_on_spawn, has_on_load;
+	bool has_on_tick, has_on_spawn, has_on_load, has_on_tooltip;
 };
 
 #endif
