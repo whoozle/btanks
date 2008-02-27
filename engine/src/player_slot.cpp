@@ -114,6 +114,9 @@ void PlayerSlot::displayLast() {
 			GameMonitor->onTooltip("hide", PlayerManager->getSlotID(id), last_tooltip->area, last_tooltip->message);
 		last_tooltip_used = false;
 		tooltips.pop();
+		if (!tooltips.empty()) {
+			GameMonitor->onTooltip("show", PlayerManager->getSlotID(id), tooltips.front().second->area, tooltips.front().second->message);	
+		}
 	}
 }
 
@@ -135,8 +138,10 @@ void PlayerSlot::removeTooltips() {
 
 void PlayerSlot::displayTooltip(const std::string &area, const std::string &message) {
 	Tooltip *tooltip = new Tooltip(area, message, true);
+	if (tooltips.empty()) {
+		GameMonitor->onTooltip("show", PlayerManager->getSlotID(id), area, message);	
+	}
 	tooltips.push(PlayerSlot::Tooltips::value_type(tooltip->getReadingTime(), tooltip));
-	GameMonitor->onTooltip("show", PlayerManager->getSlotID(id), area, message);
 }
 
 void PlayerSlot::tick(const float dt) {
@@ -151,6 +156,9 @@ void PlayerSlot::tick(const float dt) {
 			last_tooltip_used = false;
 			
 			tooltips.pop();
+			if (!tooltips.empty()) {
+				GameMonitor->onTooltip("show", PlayerManager->getSlotID(id), tooltips.front().second->area, tooltips.front().second->message);	
+			}
 		}
 	}
 	if (!visible) 
