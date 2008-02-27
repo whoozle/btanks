@@ -32,7 +32,8 @@
 #include <assert.h>
 #include <deque>
 
-Tooltip::Tooltip(const std::string &area, const std::string &message, const bool use_background, const int w)  : _use_background(use_background) {
+Tooltip::Tooltip(const std::string &area, const std::string &message, const bool use_background, const int w)  : 
+area(area), message(message), _use_background(use_background) {
 	std::string text, _text = I18n->get(area, message);
 	bool space = true;
 	size_t i;
