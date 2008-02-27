@@ -275,6 +275,9 @@ void IGameMonitor::add(const GameItem &item_, const bool dont_respawn) {
 }
 
 void IGameMonitor::pushState(const std::string &state, const float time) {
+	if (time <= 0) 
+		throw_ex(("message time <= 0 is not allowed"));
+	
 	_state = state;
 	_state_timer.set(time);
 }
