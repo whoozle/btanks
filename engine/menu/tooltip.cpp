@@ -26,13 +26,14 @@
 #include "config.h"
 #include "sdlx/font.h"
 #include "mrt/utf8_utils.h"
+#include "i18n.h"
 
 #include <math.h>
 #include <assert.h>
 #include <deque>
 
-Tooltip::Tooltip(const std::string &_text, const bool use_background, const int w)  : _use_background(use_background) {
-	std::string text;
+Tooltip::Tooltip(const std::string &area, const std::string &message, const bool use_background, const int w)  : _use_background(use_background) {
+	std::string text, _text = I18n->get(area, message);
 	bool space = true;
 	size_t i;
 	for(i = 0; i < _text.size(); ++i) {

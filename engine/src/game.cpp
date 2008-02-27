@@ -790,7 +790,7 @@ void IGame::resetLoadingBar(const int total) {
 	LOG_DEBUG(("showing tip: '%s', tips remaining: %u", tip.c_str(), (unsigned)tips_available.size()));
 
 	delete _tip;
-	_tip = new Tooltip(I18n->get("tips", tip), true, 320);
+	_tip = new Tooltip("tips", tip, true, 320);
 }
 
 void IGame::notifyLoadingBar(const int progress) {

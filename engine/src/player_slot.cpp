@@ -122,11 +122,12 @@ void PlayerSlot::removeTooltips() {
 	} 
 }
 
+#include "player_manager.h"
+
 void PlayerSlot::displayTooltip(const std::string &area, const std::string &message) {
-	const std::string text = I18n->get(area, message);
-	
-	Tooltip *tooltip = new Tooltip(text, true);
+	Tooltip *tooltip = new Tooltip(area, message, true);
 	tooltips.push(PlayerSlot::Tooltips::value_type(tooltip->getReadingTime(), tooltip));
+	GameMonitor->onTooltip("show", PlayerManager->getSlotID(id), area, message);
 }
 
 void PlayerSlot::tick(const float dt) {

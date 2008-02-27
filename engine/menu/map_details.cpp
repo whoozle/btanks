@@ -41,7 +41,7 @@ MapDetails::MapDetails(const int w, const int h, const bool hint) : _map_desc(0)
 	if (hint && I18n->has("tips", "deathmatch-bots")) {
 		int mw, mh;
 		getSize(mw, mh);
-		_ai_hint = new Tooltip(I18n->get("tips", "deathmatch-bots"), true, w);
+		_ai_hint = new Tooltip("tips", "deathmatch-bots", true, w);
 		int tw, th;
 		_ai_hint->getSize(tw, th);
 		add((mw - tw) / 2, mh + 2, _ai_hint);
