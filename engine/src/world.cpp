@@ -871,7 +871,13 @@ TRY {
 			LOG_DEBUG(("map im: %g, obj im: %g", map_im, obj_im));
 			map_im = obj_im = 0;
 		}
-
+		if (o.impassability < 0) {
+			map_im = 0;
+			obj_im = 0;
+			result_im = 0;
+			stuck = false;
+			break;
+		} 
 		if (map_im >= 0 && map_im < 1.0 && obj_im < 1.0) {
 			//LOG_DEBUG(("success, %g %g", map_im, obj_im));
 			if (result_im >= 1.0f) {
