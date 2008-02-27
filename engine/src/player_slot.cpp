@@ -116,7 +116,7 @@ void PlayerSlot::removeTooltips() {
 		return;
 	
 	while(!tooltips.empty()) {
-		delete last_tooltip;
+		deleteLast();
 		last_tooltip = tooltips.front().second;
 		tooltips.pop();
 	} 
@@ -130,11 +130,19 @@ void PlayerSlot::displayTooltip(const std::string &area, const std::string &mess
 	GameMonitor->onTooltip("show", PlayerManager->getSlotID(id), area, message);
 }
 
+void PlayerSlot::deleteLast() {
+	if (last_tooltip == NULL)
+		return;
+	GameMonitor->onTooltip("hide", PlayerManager->getSlotID(id), last_tooltip->area, last_tooltip->message);
+	last_tooltip = NULL;
+}
+
+
 void PlayerSlot::tick(const float dt) {
 	if (!tooltips.empty()) {
 		tooltips.front().first -= dt;
 		if (tooltips.front().first < 0) {
-			delete last_tooltip;
+			deleteLast();
 			last_tooltip = tooltips.front().second;
 			tooltips.pop();
 		}
