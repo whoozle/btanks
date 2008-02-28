@@ -1020,7 +1020,45 @@ LUA_TRY {
 } LUA_CATCH("get_state")
 }
 
+static int lua_hooks_start_timer(lua_State *L) {
+LUA_TRY {
+	int n = lua_gettop(L);
+	if (n < 2) {
+		lua_pushstring(L, "start_timer requires timer-name, period and optional repeat flag (default -> false)");
+		lua_error(L);
+		return 0;
+	}
+	const char *name = lua_tostring(L, 1);
+	if (name == NULL) {
+		lua_pushstring(L, "start_timer: could not convert first argument to string.");
+		lua_error(L);
+		return 0;
+	}
+	const float period = lua_tonumber(L, 2);
+	const bool repeat = n >= 3? (lua_toboolean(L, 3) != 0) : false;
+	GameMonitor->startGameTimer(name, period, repeat);	
+	return 0;
+} LUA_CATCH("lua_hooks_start_timer")
+}
 
+static int lua_hooks_stop_timer(lua_State *L) {
+LUA_TRY {
+	int n = lua_gettop(L);
+	if (n < 1) {
+		lua_pushstring(L, "stop_timer requires timer-name");
+		lua_error(L);
+		return 0;
+	}
+	const char *name = lua_tostring(L, 1);
+	if (name == NULL) {
+		lua_pushstring(L, "stop_timer: could not convert first argument to string.");
+		lua_error(L);
+		return 0;
+	}
+	GameMonitor->stopGameTimer(name);	
+	return 0;
+} LUA_CATCH("lua_hooks_stop_timer")
+}
 
 #include "finder.h"
 
@@ -1048,6 +1086,10 @@ void LuaHooks::load(const std::string &name) {
 	lua_register(state, "set_config_override", lua_hooks_set_config_override);
 	lua_register(state, "map_size", lua_hooks_map_size);
 	lua_register(state, "set_specials", lua_hooks_set_specials);
+
+//low level timer
+	lua_register(state, "start_timer", lua_hooks_start_timer);
+	lua_register(state, "stop_timer", lua_hooks_stop_timer);
 
 //Sound 
 	lua_register(state, "play_sound", lua_hooks_play_sound);
