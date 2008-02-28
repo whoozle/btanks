@@ -73,6 +73,7 @@ void Kamikaze::calculate(const float dt) {
 		targets.insert("train");
 		targets.insert("fighting-vehicle");
 		targets.insert("trooper");
+		targets.insert("cannon");
 		targets.insert("monster");
 	}
 	
@@ -119,6 +120,7 @@ void Kamikaze::emit(const std::string &event, Object * emitter) {
 			emitter->classname == "fighting-vehicle" || 
 			emitter->classname == "train" || 
 			emitter->classname == "trooper" || 
+			emitter->classname == "cannon" || 
 			emitter->classname == "monster")
 		) {
 			emit("death", emitter);

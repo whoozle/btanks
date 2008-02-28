@@ -106,6 +106,7 @@ void Bullet::calculate(const float dt) {
 			targets.insert("boat");
 			targets.insert("helicopter");
 			targets.insert("monster");
+			targets.insert("cannon");	
 		}
 		
 		enumerateObjects(objects, aar, &targets);

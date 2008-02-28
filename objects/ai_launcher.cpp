@@ -61,6 +61,7 @@ const int AILauncher::getWeaponAmount(const int idx) const{
 
 void AILauncher::onSpawn() {
 	addEnemyClass("fighting-vehicle");
+	addEnemyClass("cannon");
 	addEnemyClass("trooper");
 	addEnemyClass("kamikaze");
 	addEnemyClass("boat");

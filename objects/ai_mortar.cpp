@@ -65,6 +65,7 @@ void AIMortar::onSpawn() {
 	addEnemyClass("fighting-vehicle");
 	addEnemyClass("trooper");
 	addEnemyClass("kamikaze");
+	addEnemyClass("cannon");
 	addEnemyClass("boat");
 	addEnemyClass("helicopter");
 	addEnemyClass("watchtower");

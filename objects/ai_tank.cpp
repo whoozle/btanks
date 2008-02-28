@@ -70,6 +70,7 @@ const int AITank::getWeaponAmount(const int idx) const{
 
 void AITank::onSpawn() {
 	addEnemyClass("fighting-vehicle");
+	addEnemyClass("cannon");
 	addEnemyClass("trooper");
 	addEnemyClass("kamikaze");
 	addEnemyClass("boat");

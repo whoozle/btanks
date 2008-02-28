@@ -112,6 +112,7 @@ public:
 	BaseZombie(classname), _reaction(true) {
 		_targets.insert("fighting-vehicle");
 		_targets.insert("trooper");
+		_targets.insert("cannon");
 		_targets.insert("watchtower");
 		_targets.insert("creature");
 		_targets.insert("civilian");

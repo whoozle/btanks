@@ -86,6 +86,7 @@ void Turrel::calculate(const float dt) {
 		//targets.insert("missile");
 		targets.insert("fighting-vehicle");
 		targets.insert("trooper");
+		targets.insert("cannon");
 		targets.insert("kamikaze");
 		targets.insert("boat");
 		targets.insert("helicopter");

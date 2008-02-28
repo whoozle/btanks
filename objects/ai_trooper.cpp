@@ -33,6 +33,7 @@ public:
 				_targets.insert("missile");
 	
 			_targets.insert("fighting-vehicle");
+			_targets.insert("cannon");
 			_targets.insert("trooper");
 			_targets.insert("kamikaze");
 			_targets.insert("boat");

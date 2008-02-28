@@ -65,6 +65,7 @@ const int AIMachinegunnerPlayer::getWeaponAmount(const int idx) const{
 void AIMachinegunnerPlayer::onSpawn() {
 	addEnemyClass("fighting-vehicle");
 	addEnemyClass("trooper");
+	addEnemyClass("cannon");
 	addEnemyClass("kamikaze");
 	addEnemyClass("boat");
 	addEnemyClass("helicopter");

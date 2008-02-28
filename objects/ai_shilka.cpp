@@ -77,6 +77,7 @@ const int AIShilka::getWeaponAmount(const int idx) const{
 
 void AIShilka::onSpawn() {
 	addEnemyClass("fighting-vehicle");
+	addEnemyClass("cannon");
 	addEnemyClass("trooper");
 	addEnemyClass("kamikaze");
 	addEnemyClass("boat");

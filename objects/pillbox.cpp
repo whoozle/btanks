@@ -32,7 +32,7 @@ class PillBox : public DestructableObject, protected ai::Base {
 	std::set<std::string> _targets;
 public: 
 	PillBox(const std::string &object, const bool aim_missiles) : 
-		DestructableObject("trooper"), _reaction(true), 
+		DestructableObject("cannon"), _reaction(true), 
 		_fire(false), _fire2(false), _fire3(false), _object(object), _skip2(false), _skip3(false) {
 			if (aim_missiles)
 				_targets.insert("missile");

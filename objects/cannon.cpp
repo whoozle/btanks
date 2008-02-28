@@ -22,7 +22,7 @@
 
 class Cannon : public Object {
 public:
-	Cannon(const int dir) : Object("trooper"), _fire(false), _reaction(true) {
+	Cannon(const int dir) : Object("cannon"), _fire(false), _reaction(true) {
 		setDirection(dir);
 		
 		targets.insert("fighting-vehicle");
