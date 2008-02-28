@@ -14,7 +14,7 @@ ScrollList("menu/background_box_dark.png", "small", w, h), selected_z(0) {
 	_fname = "editor.xml";
 	
 	std::string src = Finder->find(_base, _fname, false);
-	if (src.empty()) {
+	if (!src.empty()) {
 		scoped_ptr<mrt::BaseFile> ptr(Finder->get_file(src, "rt"));
 		parseFile(*ptr);
 	}
