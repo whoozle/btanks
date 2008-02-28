@@ -1094,6 +1094,7 @@ void LuaHooks::load(const std::string &name) {
 	has_on_spawn = check_function("on_spawn");
 	has_on_load = check_function("on_load");
 	has_on_tooltip = check_function("on_tooltip");
+	has_on_timer = check_function("on_timer");
 }
 
 bool LuaHooks::check_function(const std::string &name) {
@@ -1167,6 +1168,14 @@ void LuaHooks::on_tooltip(const std::string &event, const int slot_id, const std
 	state.call(4, 0);
 }
 
+void LuaHooks::on_timer(const std::string &name) {
+	if (!has_on_timer)
+		return;
+	
+	lua_getglobal(state, "on_tooltip");
+	lua_pushstring(state, name.c_str());
+	state.call(1, 0);
+}
 
 void LuaHooks::call(const std::string &method) {
 	LOG_DEBUG(("calling %s()", method.c_str()));
@@ -1188,7 +1197,7 @@ void LuaHooks::call1(const std::string &method, const int id) {
 
 void LuaHooks::clear() {
 	state.clear();
-	has_on_tick = has_on_spawn = has_on_load = has_on_tooltip = false;
+	has_on_tick = has_on_spawn = has_on_load = has_on_tooltip = has_on_timer = false;
 }
 
-LuaHooks::LuaHooks() : has_on_tick(false), has_on_spawn(false), has_on_load(false), has_on_tooltip(false) {}
+LuaHooks::LuaHooks() : has_on_tick(false), has_on_spawn(false), has_on_load(false), has_on_tooltip(false), has_on_timer(false) {}

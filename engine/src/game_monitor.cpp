@@ -1097,7 +1097,7 @@ void IGameMonitor::processGameTimers(const float dt) {
 		if (timer.t >= timer.period) {
 			//triggering event
 			TRY {
-				//lua_hooks->onTimer(i->first);
+				lua_hooks->on_timer(i->first);
 			} CATCH("processGameTimers", );
 			
 			if (timer.repeat) {
