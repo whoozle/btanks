@@ -64,6 +64,7 @@ void Missile::onSpawn() {
 
 	if (type != "stun") {
 		_targets.insert("trooper");
+		_targets.insert("cannon");
 		_targets.insert("kamikaze");
 		_targets.insert("boat");
 		_targets.insert("helicopter");
