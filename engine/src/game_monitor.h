@@ -137,6 +137,9 @@ public:
 	
 	void onTooltip(const std::string &event, const int slot_id, const std::string &area, const std::string &message);
 	
+	void startGameTimer(const std::string &name, const float period, const bool repeat);
+	void stopGameTimer(const std::string &name);
+	
 private:
 	void saveCampaign();
 
@@ -187,6 +190,15 @@ private:
 #endif
 
 	std::set<std::pair<std::string, std::string> > used_maps;
+	
+	void processGameTimers(const float dt);
+	struct Timer {
+		float t, period;
+		bool repeat;
+		Timer(const float period, const bool repeat): t(0), period(period), repeat(repeat) {}
+	};
+	typedef std::map<const std::string, Timer> Timers;
+	Timers timers;
 };
 
 SINGLETON(BTANKSAPI, GameMonitor, IGameMonitor);

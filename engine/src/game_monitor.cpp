@@ -327,6 +327,7 @@ void IGameMonitor::resetTimer() {
 
 void IGameMonitor::clear() {
 	resetTimer();
+	timers.clear();
 
 	_game_over = false;
 	_win = false;
@@ -1073,3 +1074,43 @@ void IGameMonitor::saveCampaign() {
 			
 	_campaign = NULL;	
 }
+
+void IGameMonitor::startGameTimer(const std::string &name, const float period, const bool repeat) {
+#ifdef ENABLE_LUA
+	timers.insert(Timers::value_type(name, Timer(period, repeat)));
+#endif
+}
+
+void IGameMonitor::stopGameTimer(const std::string &name) {
+#ifdef ENABLE_LUA
+	timers.erase(name);
+#endif
+}
+
+void IGameMonitor::processGameTimers(const float dt) {
+#ifdef ENABLE_LUA
+	if (lua_hooks == NULL)
+		return;
+	for(Timers::iterator i = timers.begin(); i != timers.end(); ) {
+		Timer & timer = i->second;
+		timer.t += dt;
+		if (timer.t >= timer.period) {
+			//triggering event
+			TRY {
+				//lua_hooks->onTimer(i->first);
+			} CATCH("processGameTimers", );
+			
+			if (timer.repeat) {
+				while(timer.t >= timer.period) timer.t -= timer.period;
+				++i;
+			} else {
+				//one shot
+				timers.erase(i++);
+			}
+		} else {
+			++i; //continue;
+		}
+	}
+#endif
+}
+
