@@ -580,6 +580,13 @@ static int lua_hooks_display_message(lua_State *L) {
 	return 0;		
 }
 
+static int lua_hooks_hide_message(lua_State *L) {
+	LUA_TRY {
+		GameMonitor->hideMessage();
+	} LUA_CATCH("hide_message")
+	return 0;
+}
+
 static int lua_hooks_damage_map(lua_State *L) {
 	LUA_TRY {
 		int n = lua_gettop(L);
@@ -1032,6 +1039,7 @@ void LuaHooks::load(const std::string &name) {
 //Game flow / messages / timers
 	lua_register(state, "game_over", lua_hooks_game_over);
 	lua_register(state, "display_message", lua_hooks_display_message);
+	lua_register(state, "hide_message", lua_hooks_hide_message);
 	lua_register(state, "set_timer", lua_hooks_set_timer);
 	lua_register(state, "reset_timer", lua_hooks_reset_timer);
 	lua_register(state, "damage_map", lua_hooks_damage_map);

@@ -88,6 +88,7 @@ public:
 
 	void gameOver(const std::string &area, const std::string &message, const float time, const bool win);
 	void displayMessage(const std::string &area, const std::string &message, const float time, const bool global = false);
+	void hideMessage();
 	void setTimer(const std::string &area, const std::string &message, const float time, const bool win_at_end);
 	void resetTimer();
 

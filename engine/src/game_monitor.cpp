@@ -308,6 +308,10 @@ void IGameMonitor::displayMessage(const std::string &area, const std::string &me
 		PlayerManager->broadcastMessage(area, message, time);
 	}
 }
+void IGameMonitor::hideMessage() {
+	_state.clear();
+	_timer = 0;
+}
 
 void IGameMonitor::setTimer(const std::string &area, const std::string &message, const float time, const bool win_at_end) {
 	_timer_message_area = area;
