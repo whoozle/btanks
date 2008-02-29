@@ -1214,7 +1214,7 @@ void LuaHooks::on_timer(const std::string &name) {
 	if (!has_on_timer)
 		return;
 	
-	lua_getglobal(state, "on_tooltip");
+	lua_getglobal(state, "on_timer");
 	lua_pushstring(state, name.c_str());
 	state.call(1, 0);
 }

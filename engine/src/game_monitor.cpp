@@ -361,6 +361,7 @@ void IGameMonitor::tick(const float dt) {
 		displayMessage("errors", "script-error", 1);
 		return;
 	});
+	processGameTimers(dt);
 	}
 #endif
 
