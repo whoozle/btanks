@@ -306,7 +306,7 @@ void OptionsMenu::reload() {
 	} CATCH("default resolution setup", );
 
 	bool fs;
-	Config->get("engine.window.fullscreen", fs, false);
+	Config->get("engine.window.fullscreen", fs, true);
 	_fsmode->set(fs);
 	float donate;
 	Config->get("engine.donate-screen-duration", donate, 1.5f);
@@ -383,7 +383,7 @@ void OptionsMenu::save() {
 	} CATCH("setting video mode", );
 
 	bool fsmode;
-	Config->get("engine.window.fullscreen", fsmode, false);
+	Config->get("engine.window.fullscreen", fsmode, true);
 	if (fsmode != _fsmode->get()) {
 		Config->set("engine.window.fullscreen", _fsmode->get());
 		need_restart = true;
