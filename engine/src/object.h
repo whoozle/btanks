@@ -143,6 +143,14 @@ public:
 
 	void invalidate() { setSync(true); }
 
+	//grouped object handling
+	Object *add(const std::string &name, const std::string &classname, const std::string &animation, const v2<float> &dpos, const GroupType type);
+	Object *get(const std::string &name);
+	void remove(const std::string &name);
+	void groupEmit(const std::string &name, const std::string &event);
+
+	const bool getRenderRect(sdlx::Rect &src) const;
+
 protected:
 
 	//pathfinding
@@ -172,13 +180,6 @@ protected:
 	const bool findPathDone(Way &way);
 	inline const bool calculatingPath() const { return !_open_list.empty(); }
 
-	//grouped object handling
-	Object *add(const std::string &name, const std::string &classname, const std::string &animation, const v2<float> &dpos, const GroupType type);
-	Object *get(const std::string &name);
-	void remove(const std::string &name);
-	void groupEmit(const std::string &name, const std::string &event);
-
-	const bool getRenderRect(sdlx::Rect &src) const;
 
 	void calculateWayVelocity();
 

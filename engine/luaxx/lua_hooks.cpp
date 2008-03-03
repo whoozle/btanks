@@ -1060,6 +1060,81 @@ LUA_TRY {
 } LUA_CATCH("lua_hooks_stop_timer")
 }
 
+static int lua_hooks_group_add(lua_State *L) {
+LUA_TRY {
+	int n = lua_gettop(L);
+	if (n < 4) {
+		lua_pushstring(L, "group_add requires object id, group-object-name, classname and animation");
+		lua_error(L);
+		return 0;
+	}
+	int id = lua_tointeger(L, 1);
+	Object *o = World->getObjectByID(id);
+	if (o == NULL)
+		return 0;
+
+	const char *name = lua_tostring(L, 2);
+	const char *cname = lua_tostring(L, 3);
+	const char *aname = lua_tostring(L, 4);
+	if (name == NULL || cname == NULL || aname == NULL)
+		throw_ex(("name: %s, cname: %s, aname: %s: some argument(s) cannot be converted", name, cname, aname));
+
+	Object *child = o->add(name, cname, aname, v2<float>(), Centered);
+	lua_pushinteger(L, child->getID());
+	return 1;
+} LUA_CATCH("group_add")
+}
+
+static int lua_hooks_group_has(lua_State *L) {
+LUA_TRY {
+	int n = lua_gettop(L);
+	if (n < 2) {
+		lua_pushstring(L, "group_has requires object id and group-object-name");
+		lua_error(L);
+		return 0;
+	}
+
+	int id = lua_tointeger(L, 1);
+	Object *o = World->getObjectByID(id);
+	if (o == NULL) {
+		lua_pushinteger(L, 0);
+		return 1;
+	}
+
+	const char *name = lua_tostring(L, 2);
+	if (name == NULL)
+		throw_ex(("name cannot be converted to the string"));
+
+	lua_pushinteger(L, o->has(name)? o->get(name)->getID(): 0);
+	return 1;
+} LUA_CATCH("group_has")
+}
+
+static int lua_hooks_group_remove(lua_State *L) {
+LUA_TRY {
+	int n = lua_gettop(L);
+	if (n < 2) {
+		lua_pushstring(L, "group_remove requires object id and group-object-name");
+		lua_error(L);
+		return 0;
+	}
+	int id = lua_tointeger(L, 1);
+	Object *o = World->getObjectByID(id);
+	if (o == NULL) {
+		return 0;
+	}
+
+	const char *name = lua_tostring(L, 2);
+	if (name == NULL)
+		throw_ex(("name cannot be converted to the string"));
+
+	o->remove(name);
+	return 0;
+} LUA_CATCH("group_remove")
+}
+
+
+
 #include "finder.h"
 
 void LuaHooks::load(const std::string &name) {
@@ -1128,6 +1203,11 @@ void LuaHooks::load(const std::string &name) {
 	lua_register(state, "play_animation", lua_hooks_play_animation);
 	lua_register(state, "cancel_animation", lua_hooks_cancel_animation);
 	lua_register(state, "get_state", lua_hooks_get_state);
+	
+//object grouping stuff
+	lua_register(state, "group_add", lua_hooks_group_add);
+	lua_register(state, "group_has", lua_hooks_group_has);
+	lua_register(state, "group_remove", lua_hooks_group_remove);
 
 	
 	state.call(0, LUA_MULTRET);
