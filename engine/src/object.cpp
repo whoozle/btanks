@@ -677,7 +677,7 @@ void Object::setWay(const Way & new_way) {
 	}
 	
 	if (!_way.empty()) { 
-//		LOG_DEBUG(("%d:%s:%s set %u pending waypoints", getID(), registered_name.c_str(), animation.c_str(), (unsigned)_way.size()));
+		//LOG_DEBUG(("%d:%s:%s set %u pending waypoints", getID(), registered_name.c_str(), animation.c_str(), (unsigned)_way.size()));
 		_next_target = _way.begin()->convert<float>();
 	}
 
@@ -702,14 +702,15 @@ void Object::calculateWayVelocity() {
 		if (_next_target.is0()) {
 			_next_target = _way.begin()->convert<float>();
 			v2<float> rel = Map->distance( position, _next_target);
-			_way.pop_front();
-			
+			//LOG_DEBUG(("%g %g", rel.x, rel.y));
 			
 			sdlx::Rect wp_rect((int)_next_target.x - af, (int)_next_target.y - af, af * 2, af * 2);
 			
 			if (wp_rect.inside(me)) {
+				//LOG_DEBUG(("%s skipped waypoint because of close match", animation.c_str()));
 				_next_target.clear();
 				_velocity.clear();
+				_way.pop_front();		
 				continue;
 			}
 			
@@ -722,15 +723,17 @@ void Object::calculateWayVelocity() {
 			*/
 			
 			if (rel.quick_length() < 4) {
+				//LOG_DEBUG(("%s skipped waypoint because of short distance (%g)", animation.c_str(), rel.quick_length()));
 				_next_target.clear();
 				_velocity.clear();
+				_way.pop_front();		
 				continue;
 			}
 			_next_target_rel = rel;
 			//LOG_DEBUG(("waypoints: %d", _way.size()));
 		}
-		//LOG_DEBUG(("%d:%s:%s next waypoint: %g %g, relative: %g %g", 
-		//	getID(), classname.c_str(), animation.c_str(), _next_target.x, _next_target.y, _next_target_rel.x, _next_target_rel.y));
+//		LOG_DEBUG(("%d:%s:%s next waypoint: %g %g, relative: %g %g", 
+//			getID(), classname.c_str(), animation.c_str(), _next_target.x, _next_target.y, _next_target_rel.x, _next_target_rel.y));
 		
 		_velocity = Map->distance(position, _next_target);
 		if ((_next_target_rel.x != 0 && _velocity.x * _next_target_rel.x <= 0) || (math::abs(_velocity.x) < af))
@@ -740,11 +743,12 @@ void Object::calculateWayVelocity() {
 		
 		if (_velocity.is0()) {
 			//wiping out way point and restart
+			_way.pop_front();		
 			_next_target.clear();
 		} else break;
 	}
 	_velocity.normalize();
-	//LOG_DEBUG(("%d: velocity: %g %g", getID(), _velocity.x, _velocity.y));
+//	LOG_DEBUG(("%d: %s velocity: %g %g", getID(), animation.c_str(), _velocity.x, _velocity.y));
 }
 
 
