@@ -30,7 +30,7 @@
 #include "menu/textual.h"
 
 ScrollList::ScrollList(const std::string &background, const std::string &font, const int w, const int h, const int spacing, const int hl_h) : 
-_client_w(64), _client_h(64), _pos(0), _vel(0), _current_item(0), _spacing(spacing) {
+_client_w(64), _client_h(64), _align(AlignLeft), _pos(0), _vel(0), _current_item(0), _spacing(spacing) {
 	_background.init(background, w, h, hl_h);
 	_font = ResourceManager->loadFont(font, true);
 	_scrollers = ResourceManager->loadSurface("menu/v_scroller.png");

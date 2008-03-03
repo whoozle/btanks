@@ -63,12 +63,16 @@ public:
 	
 	void up(const int n = 1);
 	void down(const int n = 1);
+
+	enum Align { AlignLeft, AlignCenter, AlignRight };
+	void setAlign(const Align align) { _align = align; }
+
 private:
 	Box _background;
 	const sdlx::Surface *_scrollers;
 	mutable sdlx::Rect _up_area, _down_area, _items_area;
 	mutable int _client_w, _client_h;
-
+	Align _align;
 
 	float _pos, _vel;
 protected:
