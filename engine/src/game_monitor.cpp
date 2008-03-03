@@ -1078,6 +1078,7 @@ void IGameMonitor::saveCampaign() {
 
 void IGameMonitor::startGameTimer(const std::string &name, const float period, const bool repeat) {
 #ifdef ENABLE_LUA
+	LOG_DEBUG(("starting timer '%s', %g sec., repeat: %s", name.c_str(), period, repeat?"yes":"no"));
 	timers.insert(Timers::value_type(name, Timer(period, repeat)));
 #endif
 }
@@ -1097,9 +1098,7 @@ void IGameMonitor::processGameTimers(const float dt) {
 		timer.t += dt;
 		if (timer.t >= timer.period) {
 			//triggering event
-			TRY {
-				lua_hooks->on_timer(i->first);
-			} CATCH("processGameTimers", );
+			std::string name = i->first;
 			
 			if (timer.repeat) {
 				while(timer.t >= timer.period) timer.t -= timer.period;
@@ -1108,6 +1107,12 @@ void IGameMonitor::processGameTimers(const float dt) {
 				//one shot
 				timers.erase(i++);
 			}
+
+			TRY {
+				LOG_DEBUG(("calling on_timer(%s)", name.c_str()));
+				lua_hooks->on_timer(name); //callback could add/delete timers!!
+			} CATCH("processGameTimers", );
+			
 		} else {
 			++i; //continue;
 		}

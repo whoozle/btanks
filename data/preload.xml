@@ -666,6 +666,7 @@
 		<object id="zombie"/>
 	</map>
 	<map id="university">
+		<object id="alt-missiles-on-launcher"/>
 		<object id="bus-stop"/>
 		<object id="car"/>
 		<object id="corpse"/>
@@ -679,10 +680,12 @@
 		<object id="heal"/>
 		<object id="helicopter"/>
 		<object id="helicopter-bullet"/>
+		<object id="launcher"/>
 		<object id="machinegunner-bullet"/>
 		<object id="machinegunner-item"/>
 		<object id="machinegunner-player"/>
 		<object id="megaheal"/>
+		<object id="missiles-on-launcher"/>
 		<object id="missiles-on-tank"/>
 		<object id="oil-barrels"/>
 		<object id="outline"/>
