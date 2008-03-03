@@ -45,6 +45,7 @@ public:
 	virtual ~Box() {}
 	
 	void getMargins(int &v, int &h) const;
+	void setHLColor(int r, int g, int b, int a);
 private: 
 	int x1, x2, y1, y2, xn, yn;
 	

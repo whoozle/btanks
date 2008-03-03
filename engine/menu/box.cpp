@@ -236,3 +236,9 @@ void Box::getMargins(int &v, int &h) const {
 	v = x1;
 	h = y1;
 }
+
+void Box::setHLColor(int r, int g, int b, int a) {
+	if (_highlight.isNull())
+		return;
+	_highlight.fill(_highlight.mapRGBA(r, g, b, a));
+}
