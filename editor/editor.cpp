@@ -541,9 +541,10 @@ bool Editor::onKey(const SDL_keysym sym) {
 		SDL_GetMouseState(&mx, &my);
 		v2<int> window_pos(mx, my);
 		v2<int> base(map_pos.x, map_pos.y);
-		v2<int> tile_pos = (base + window_pos) / _tile_size;
+		v2<int> pixel_pos = base + window_pos;
+		v2<int> tile_pos = pixel_pos / _tile_size;
 		//mrt::formatString("%d,%d", tile_pos.x, tile_pos.y).c_str());
-		_layer_name = mrt::formatString("grid_position: %d,%d", tile_pos.x, tile_pos.y);
+		_layer_name = mrt::formatString("grid_position: %d,%d, pixel position: %d,%d", tile_pos.x, tile_pos.y, pixel_pos.x, pixel_pos.y);
 		_layer_name_invisible.reset();
 
 		return true;
