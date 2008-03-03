@@ -766,7 +766,8 @@
 	<!-- OBJECTS -->
 
 	<object class="damage-digits" speed="60" ttl="1" z="999" />
-
+	
+	<alias name="static-target" class="single-pose(no-directions)" />
 	<alias name="pond" class="single-pose" />
 	<alias name="shilka-bullet" class="bullet(auto-aim)" />
 	<alias name="tank-bullet" class="bullet(auto-aim)" />
@@ -839,6 +840,7 @@
 	<object class="stun-missile" speed="600" mass="100" ttl="5" hp="0" z="250" />
 	<object class="ballistic-missile" speed="1000" mass="100" hp="-1" z="-1" impassability="0"/>
 	<object class="ballistic-missile-target" speed="100" z="-5" impassability="0" />
+	<object class="static-target" parent="ballistic-missile-target" />
 
 	<!-- <object class="missile-launch" impassability="0" z="260" /> -->
 
