@@ -62,7 +62,7 @@ CampaignMenu::CampaignMenu(MainMenu *parent, const int w, const int h) : _parent
 	_active_campaign->getSize(cw, ch);
 	add(w / 2 - cw / 2, my, _active_campaign);
 
-	int panel_w = 200, panel_h = 96;
+	int panel_w = 240, panel_h = 96;
 
 	int map_base = 3 * my + ch;
 	_map_view = new ImageView(w - 4 * mx - panel_w, h - 6 * my);
