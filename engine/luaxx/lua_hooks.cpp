@@ -58,6 +58,10 @@ LUA_TRY {
 		return 0;		
 	}
 	const char *object = lua_tostring(L, 1), *animation = lua_tostring(L, 2);
+	if (object == NULL)
+		throw_ex(("object argument could not be converted to string"));
+	if (animation == NULL)
+		throw_ex(("animation argument could not be converted to string"));
 	Object *obj = ResourceManager->createObject(object, animation);
 
 	//Matrix<int> matrix;
@@ -165,7 +169,11 @@ LUA_TRY {
 		lua_pushnil(L);
 		return 1;
 	}
-	std::string prop = lua_tostring(L, 2);
+	const char *cprop = lua_tostring(L, 2);
+	if (cprop == NULL)
+		throw_ex(("property argument could not be converted to string"));
+
+	std::string prop = cprop;
 	if (prop == "classname") {
 		lua_pushstring(L, o->classname.c_str());
 		return 1;	
@@ -200,12 +208,25 @@ LUA_TRY {
 		throw_ex(("slot #%d is invalid", id));
 	PlayerSlot &slot =  PlayerManager->getSlot(id - 1);
 		
-	std::string prop = lua_tostring(L, 2);
+	const char *cprop = lua_tostring(L, 2);
+	if (cprop == NULL)
+		throw_ex(("property argument could not be converted to string"));
+
+	std::string prop = cprop;
+
 	if (prop == "classname") {
-		slot.classname = lua_tostring(L, 3);
+		const char *value = lua_tostring(L, 3);
+		if (value == NULL)
+			throw_ex(("`value' argument could not be converted to string"));
+
+		slot.classname = value;
 		return 0;
 	} else if (prop == "animation") {
-		slot.animation = lua_tostring(L, 3);
+		const char *value = lua_tostring(L, 3);
+		if (value == NULL)
+			throw_ex(("`value' argument could not be converted to string"));
+
+		slot.animation = value;
 		return 0;
 	} else if (prop == "spawn_limit") {
 		slot.spawn_limit = lua_tointeger(L, 3);
@@ -231,9 +252,14 @@ LUA_TRY {
 	if (id < 1) 
 		throw_ex(("slot #%d is invalid", id));
 	PlayerSlot &slot =  PlayerManager->getSlot(id - 1);
+
+	const char *area = lua_tostring(L, 2);
+	if (area == NULL)
+		throw_ex(("area argument could not be converted to string"));
 		
-	std::string area = lua_tostring(L, 2);
-	std::string message = lua_tostring(L, 3);
+	const char *message = lua_tostring(L, 3);
+	if (message == NULL)
+		throw_ex(("message-id argument could not be converted to string"));
 
 	slot.displayTooltip(area, message);
 
@@ -272,7 +298,11 @@ LUA_TRY {
 		throw_ex(("slot #%d is invalid", id));
 	PlayerSlot &slot =  PlayerManager->getSlot(id - 1);
 		
-	std::string prop = lua_tostring(L, 2);
+	const char *cprop = lua_tostring(L, 2);
+	if (cprop == NULL)
+		throw_ex(("name could not be converted to string"));
+	
+	const std::string prop = cprop;
 	if (prop == "classname") {
 		lua_pushstring(L, slot.classname.c_str());
 		return 1;
@@ -690,7 +720,9 @@ LUA_TRY {
 		return 0;
 	}
 
-	std::string effect = lua_tostring(L, 2);
+	const char * effect = lua_tostring(L, 2);
+	if (effect == NULL)
+		throw_ex(("effect name could not be converted to string"));
 	float duration = lua_tonumber(L, 3);
 	
 	o->addEffect(effect, duration);
@@ -714,7 +746,9 @@ LUA_TRY {
 		return 0;
 	}
 
-	std::string effect = lua_tostring(L, 2);
+	const char * effect = lua_tostring(L, 2);
+	if (effect == NULL)
+		throw_ex(("effect name could not be converted to string"));
 	
 	o->removeEffect(effect);
 	return 0;	
@@ -961,7 +995,10 @@ LUA_TRY {
 	if (o == NULL)
 		return 0;
 	
-	std::string pose = lua_tostring(L, 2);
+	const char *pose = lua_tostring(L, 2);
+	if (pose == NULL)
+		throw_ex(("pose name could not be converted to string"));
+	
 	if (n > 2) {
 		bool loop = lua_toboolean(L, 3) != 0;
 		o->play(pose, loop);
