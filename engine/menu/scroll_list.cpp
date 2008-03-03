@@ -191,7 +191,16 @@ void ScrollList::render(sdlx::Surface &surface, const int x, const int y) const 
 			_background.renderHL(surface, x - 3 * mx, yp + h / 2 - _spacing / 2 + 1);
 		}
 		//_font->render(surface, x + mx, yp, _list[p]);
-		_list[p]->render(surface, x + mx, yp);
+		int xp = x;
+		switch(_align) {
+		case AlignLeft: 
+			xp += mx; break;
+		case AlignRight: 
+			xp += _client_w - mx - w;
+		case AlignCenter: 
+			xp += (_client_w - 2 * mx - w) / 2 + mx;
+		}
+		_list[p]->render(surface, xp, yp);
 		yp += h;
 	}
 
