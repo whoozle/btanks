@@ -181,7 +181,7 @@ void ScrollList::render(sdlx::Surface &surface, const int x, const int y) const 
 	
 	int item_pos = 0, item_size = 0;
 	getItemY(p, item_pos, item_size);
-	int yp = my + y - ((int)_pos - item_pos);
+	int yp = my + (_spacing + 1)/ 2 + y - ((int)_pos - item_pos);
 	for(; p < n; ++p) {
 		int w, h;
 		_list[p]->getSize(w, h);
