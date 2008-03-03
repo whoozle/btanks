@@ -29,9 +29,9 @@
 
 class BTANKSAPI ScrollList : public Container {
 public: 
-	ScrollList(const std::string &background, const std::string &font, const int w, const int h, const int spacing = 3);
+	ScrollList(const std::string &background, const std::string &font, const int w, const int h, const int spacing = 3, const int hl_h = 24);
 	
-	void initBG(const std::string &background, const std::string &highlite, const int w, const int h);
+	void initBG(const std::string &background, const int w, const int h, const int hl_h = 0);
 	
 	virtual void clear();
 	virtual void append(const std::string &item);

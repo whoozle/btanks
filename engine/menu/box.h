@@ -32,13 +32,12 @@ class BTANKSAPI Box : public Control{
 public: 
 	Box() : w(0), h(0), _surface(0) {}
 	Box(const std::string &tile, int w, int h);
-	Box(const std::string &tile, const std::string &highlight, int w, int h);
+	Box(const std::string &tile, int w, int h, int hl_h);
 	virtual void getSize(int &rw, int &rh) const;
 	int w, h;
 
 	const bool inited() const { return _surface != 0; }
-	void init(const std::string &tile, int w, int h);
-	void init(const std::string &tile, const std::string &highlight_tile, int w, int h);
+	void init(const std::string &tile, int w, int h, int hl_h = 0);
 	
 	virtual void render(sdlx::Surface &surface, const int x, const int y) const;
 	void copyTo(sdlx::Surface &surface, const int x, const int y);
@@ -49,8 +48,9 @@ public:
 private: 
 	int x1, x2, y1, y2, xn, yn;
 	
-	const sdlx::Surface *_surface, *_highlight;
+	const sdlx::Surface *_surface;
 	sdlx::Surface _filler, _filler_u, _filler_d, _filler_l, _filler_r;
+	sdlx::Surface _highlight;
 };
 
 #endif

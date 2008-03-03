@@ -45,7 +45,7 @@ void PopupMenu::append(const std::string &item, const bool state) {
 	add(0, h + 5, new ToggleLabel(item, state));
 	getSize(w, h);
 	w += 32; h += 24;
-	_background->init("menu/background_box_dark.png", "menu/highlight_medium.png", w, h);
+	_background->init("menu/background_box_dark.png", w, h, 24);
 }
 
 bool PopupMenu::onMouse(const int button, const bool pressed, const int x, const int y) {

@@ -55,7 +55,7 @@ void MainMenu::init(const int w, const int h) {
 	_font = ResourceManager->loadFont("big", false);
 
 	LOG_DEBUG(("loading background..."));
-	_background.init("menu/background_box.png", "menu/highlight_big.png", 407, 338);
+	_background.init("menu/background_box.png", 407, 338, 36);
 	_background_area.w = _background.w;
 	_background_area.h = _background.h;
 	
@@ -107,7 +107,7 @@ void MainMenu::recalculateSizes() {
 		bh = bw * 5 / 6;
 	if (bh * 6 / 5 > bw)
 		bw = bh * 6 / 5;
-	_background.init("menu/background_box.png", "menu/highlight_big.png", bw, bh);
+	_background.init("menu/background_box.png", bw, bh, 36);
 }
 
 void MainMenu::tick(const float dt) {

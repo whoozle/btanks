@@ -40,7 +40,7 @@ RedefineKeys::RedefineKeys() : _active_row(-1), _active_col(-1) {
 	_font = ResourceManager->loadFont("medium", true);
 	_small_font = ResourceManager->loadFont("small", true);
 
-	_background.init("menu/background_box_dark.png", "menu/highlight_medium.png", _bg_table->getWidth() + 96, _bg_table->getHeight() + 140);
+	_background.init("menu/background_box_dark.png", _bg_table->getWidth() + 96, _bg_table->getHeight() + 140, 24);
 	
 	initDefaults();
 	
