@@ -363,7 +363,10 @@ void IWindow::createMainWindow() {
 				if (w < 800 || h < 600)
 					continue;
 				int nod = temp_nod(w, h);
-				LOG_DEBUG(("\t%dx%d, %d:%d", w, h, w / nod, h / nod));
+				int aw = w / nod, ah = h / nod;
+				if (w > 800 && w < 1024 && aw == 4 && ah == 3)
+					continue; //skip numerous stupid modes. disable this if you want to
+				LOG_DEBUG(("\t%dx%d, %d:%d", w, h, aw, ah));
 			}
 		}
 	} CATCH("screen modes probe", );
