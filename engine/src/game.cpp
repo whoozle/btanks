@@ -266,11 +266,13 @@ void IGame::init(const int argc, char *argv[]) {
 	
 	std::string address, lang, bind;
 	bool xmas = mrt::xmas();
+	std::string preload_map;
 	
 	for(int i = 1; i < argc; ++i) {
 		if (strncmp(argv[i], "--connect=", 10) == 0) { address = argv[i] + 10; _autojoin = true; }
 		else if (strncmp(argv[i], "--bind=", 7) == 0) { bind = argv[i] + 7; }
 		else if (strncmp(argv[i], "--lang=", 7) == 0) { lang = argv[i] + 7; }
+		else if (strncmp(argv[i], "--map=", 6) == 0) { preload_map = argv[i] + 6; }
 		else if (strcmp(argv[i], "--no-sound") == 0) { no_sound = true; no_music = true; }
 		else if (strcmp(argv[i], "--xmas") == 0) { xmas = true; }
 		else if (strcmp(argv[i], "--no-xmas") == 0) { xmas = false; }
@@ -426,6 +428,8 @@ if (!server_mode) {
 	} else {
 		_net_talk = NULL;
 	}
+	if (!preload_map.empty())
+		GameMonitor->startGame(NULL, preload_map);
 }
 
 #include "controls/keyplayer.h"
