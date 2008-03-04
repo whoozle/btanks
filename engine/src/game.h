@@ -73,8 +73,6 @@ public:
 	static void loadPlugins();
 	
 	Chat *getChat() { return _net_talk; }
-	
-	const bool serverMode() const { return server_mode; }
 
 private:
 	sl08::slot1<void, const int, IGame> reset_slot, notify_slot;
@@ -133,7 +131,6 @@ private:
 	
 	Tooltip *_tip;
 	Chat *_net_talk;
-	bool server_mode;
 	
 	IGame(const IGame &);
 	const IGame& operator=(const IGame &);

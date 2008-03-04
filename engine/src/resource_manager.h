@@ -46,7 +46,7 @@ public:
 	~IResourceManager();
 	DECLARE_SINGLETON(IResourceManager);
 	
-	void init(const std::vector<std::pair<std::string, std::string> > &fname, bool server_mode);
+	void init(const std::vector<std::pair<std::string, std::string> > &fname);
 	void clear();
 	
 	AnimationModel *getAnimationModel(const std::string &id);
@@ -112,7 +112,6 @@ private:
 	ObjectMap _objects;
 	
 	mutable PreloadMap _preload_map, _object_preload_map;
-	bool server_mode;
 	
 	IResourceManager(const IResourceManager &);
 	const IResourceManager& operator=(const IResourceManager &);

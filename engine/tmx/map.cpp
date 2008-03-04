@@ -19,6 +19,7 @@
 #include "map.h"
 #include "layer.h"
 #include "base_object.h"
+#include "rt_config.h"
 
 #include "mrt/file.h"
 #include "mrt/b64.h"
@@ -739,7 +740,8 @@ void IMap::end(const std::string &name) {
 			_image->loadImage(_data);
 			_image_is_tileset = false;
 		}
-		_image->convertAlpha();
+		if (!RTConfig->server_mode)
+			_image->convertAlpha();
 		
 		LOG_DEBUG(("image loaded. (%dx%d)", _image->getWidth(), _image->getHeight()));
 	} else if (name == "layer") {
@@ -1218,7 +1220,8 @@ void IMap::deserialize(const mrt::Serializator &s) {
 			
 			image = new sdlx::Surface;
 			image->loadImage(data);
-			image->convertAlpha();
+			if (!RTConfig->server_mode)
+				image->convertAlpha();
 			
 			n = addTiles(image, gid);
 			
@@ -1303,7 +1306,8 @@ TRY {
 		for(int x = 0; x < w; x += _tw) {
 			sdlx::Surface *s = new sdlx::Surface;
 			s->createRGB(_tw, _th, 24);
-			s->convertAlpha();
+			if (!RTConfig->server_mode)
+				s->convertAlpha();
 
 			sdlx::Rect from(x, y, _tw, _th);
 			s->copyFrom(*image, from);

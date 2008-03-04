@@ -63,6 +63,7 @@ bt_sources = 	[
 	'src/i18n.cpp', 'src/game.cpp', 'src/window.cpp', 
 	'src/credits.cpp', 'src/cheater.cpp', 
 	'src/vehicle_traits.cpp', 'src/nickname.cpp',
+	'src/rt_config.cpp', 
 	
 	'sound/al_ex.cpp', 'sound/mixer.cpp', 'sound/ogg_ex.cpp', 'sound/ogg_stream.cpp', 'sound/sample.cpp',
 

@@ -29,6 +29,7 @@
 #include "config.h"
 #include "finder.h"
 #include "xml_parser.h"
+#include "rt_config.h"
 
 #include <algorithm>
 
@@ -151,7 +152,7 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 					
 					s = new sdlx::Surface;
 					s->loadImage(data);
-					if (!server_mode)
+					if (!RTConfig->server_mode)
 						s->convertAlpha();
 			
 					cmap = new sdlx::CollisionMap;
@@ -350,7 +351,7 @@ const sdlx::Surface *IResourceManager::loadSurface(const std::string &id) {
 
 			s = new sdlx::Surface;
 			s->loadImage(data);
-			if (!server_mode)
+			if (!RTConfig->server_mode)
 				s->convertAlpha();
 			LOG_DEBUG(("loaded surface '%s'", id.c_str()));
 			_surfaces[id] = s;
@@ -398,8 +399,7 @@ const sdlx::CollisionMap *IResourceManager::getCollisionMap(const std::string &i
 }
 
 
-void IResourceManager::init(const std::vector<std::pair<std::string, std::string> > &fname, const bool server_mode) {
-	this->server_mode = server_mode;
+void IResourceManager::init(const std::vector<std::pair<std::string, std::string> > &fname) {
 	parseFiles(fname);
 }
 
@@ -586,7 +586,7 @@ void IResourceManager::checkSurface(const std::string &animation, const sdlx::Su
 			Finder->load(data, "tiles/" + a->surface);
 			s = new sdlx::Surface;
 			s->loadImage(data);
-			if (!server_mode)
+			if (!RTConfig->server_mode)
 				s->convertAlpha();
 			GET_CONFIG_VALUE("engine.strip-alpha-from-object-tiles", bool, strip_alpha, false);
 			if (strip_alpha) {
