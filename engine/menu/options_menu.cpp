@@ -31,18 +31,7 @@
 #include "gamepad_setup.h"
 #include "player_manager.h"
 #include "game_monitor.h"
-
-static const int r_dim[][2] = {
-	{800, 600}, 
-	{1024, 768}, 
-	{1152, 864},
-	{1280, 800}, 
-	{1280, 1024}, 
-	{1400, 900}, 
-	{1400, 1050}, 
-	{1600, 1200},
-};
-
+#include "window.h"
 
 OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(parent), _shoot(0.5f, false) {
 	Mixer->loadSample("shot.ogg");
@@ -170,10 +159,10 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 	{
 		std::vector<std::string> res;
 		bool standard = false;
-		for(unsigned i = 0; i < sizeof(r_dim) / sizeof(r_dim[0]); ++i) {
-			if (w == r_dim[i][0] && h == r_dim[i][1]) 
+		for(unsigned i = 0; i < Window->resolutions.size(); ++i) {
+			if (screen_w == Window->resolutions[i].w && screen_h == Window->resolutions[i].h) 
 				standard = true;
-			res.push_back(mrt::formatString("%ux%u", r_dim[i][0], r_dim[i][1]));
+			res.push_back(mrt::formatString("%ux%u", Window->resolutions[i].w, Window->resolutions[i].h));
 		}
 		if (!standard) 
 			res.push_back(mrt::formatString("%ux%u", screen_w, screen_h));

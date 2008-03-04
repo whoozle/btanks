@@ -367,6 +367,7 @@ void IWindow::createMainWindow() {
 				if (w > 800 && w < 1024 && aw == 4 && ah == 3)
 					continue; //skip numerous stupid modes. disable this if you want to
 				LOG_DEBUG(("\t%dx%d, %d:%d", w, h, aw, ah));
+				resolutions.push_front(*modes[i]);
 			}
 		}
 	} CATCH("screen modes probe", );

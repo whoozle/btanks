@@ -24,10 +24,13 @@
 #include "sdlx/timer.h"
 #include "export_btanks.h"
 #include "mrt/singleton.h"
+#include <deque>
 
 class BTANKSAPI IWindow  {
 public: 
 	DECLARE_SINGLETON(IWindow);
+	
+	std::deque<SDL_Rect> resolutions;
 
 	//signals
 	sl08::signal1<void, const SDL_Event& > event_signal;
