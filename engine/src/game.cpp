@@ -91,7 +91,18 @@ void IGame::run() {
 		Window->run();
 	} else {
 		LOG_DEBUG(("server is up and running!"));
-		
+		sdlx::Timer _timer;	
+		float dt = 0.01f;
+		while(true) {
+			_timer.reset();
+			tick(dt);
+			float dt2 = _timer.microdelta() / 1000000.0f;
+			//LOG_DEBUG(("dt2 %g", dt2));
+			if (dt2 < 0.01f) {
+				_timer.microsleep("server fps limit", (int)((0.01f - dt2) * 1000000));
+			}
+			dt = _timer.microdelta() / 1000000.0f;
+		}
 	}
 }
 
@@ -616,6 +627,21 @@ void IGame::quit() {
 	}
 	_donate_timer = dsd;
 	_donate = ResourceManager->loadSurface("donate.jpg");
+}
+
+void IGame::tick(const float dt) {
+	GameMonitor->tick(dt);
+	if (Map->loaded()) {
+		if (!PlayerManager->isClient())
+			GameMonitor->checkItems(dt);
+			
+			Map->tick(dt);
+			World->tick(dt);
+
+			PlayerManager->updatePlayers(dt);
+	}
+
+	PlayerManager->tick(dt);
 }
 
 void IGame::onTick(const float dt) {

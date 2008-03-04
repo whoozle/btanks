@@ -81,6 +81,7 @@ private:
 
 	sl08::slot1<void, const float, IGame> on_tick_slot;
 	void onTick(const float dt);
+	void tick(const float dt);
 
 	sl08::slot2<bool, const SDL_keysym, const bool, IGame>  on_key_slot;
 	bool onKey(const SDL_keysym sym, const bool pressed);
