@@ -74,7 +74,7 @@
 IMPLEMENT_SINGLETON(Game, IGame);
 
 IGame::IGame() : _main_menu(NULL),
- _autojoin(false), _shake(0), _show_stats(false), _credits(NULL), _cheater(NULL), _tip(NULL), _net_talk(NULL) {
+ _autojoin(false), _shake(0), _show_stats(false), _credits(NULL), _cheater(NULL), _tip(NULL), _net_talk(NULL), server_mode(false) {
 
 	std::string path;
 	path = mrt::Directory::getAppDir("Battle Tanks", "btanks") + "/";
@@ -86,7 +86,12 @@ IGame::~IGame() {
 }
 
 void IGame::run() {
-	Window->run();
+	if (!server_mode) {
+		Window->run();
+	} else {
+		LOG_DEBUG(("server is up and running!"));
+		
+	}
 }
 
 void IGame::pause() {
@@ -270,6 +275,7 @@ void IGame::init(const int argc, char *argv[]) {
 		else if (strcmp(argv[i], "--xmas") == 0) { xmas = true; }
 		else if (strcmp(argv[i], "--no-xmas") == 0) { xmas = false; }
 		else if (strcmp(argv[i], "--sound") == 0) { no_sound = false; no_music = false; }
+		else if (strcmp(argv[i], "--server") == 0) { server_mode = true; }
 		else if (strcmp(argv[i], "--help") == 0) { 
 			printf(
 					"\t--connect=ip/host\tconnect to given host as mp-client\n" 
@@ -278,7 +284,9 @@ void IGame::init(const int argc, char *argv[]) {
 			Window->init(argc, argv);
 			exit(0);
 		}
-
+	}
+	if (server_mode) {
+		no_sound = no_music = true;
 	}
 	if (!bind.empty()) {
 		Var v("string");
@@ -300,8 +308,9 @@ void IGame::init(const int argc, char *argv[]) {
 		Finder->addPatchSuffix("_xmas");
 	
 	I18n->load(lang);
-		
-	Window->init(argc, argv);
+	
+	if (!server_mode)
+		Window->init(argc, argv);
 
 	IFinder::FindResult playlists;
 	Finder->findAll(playlists, "playlist");
@@ -315,6 +324,7 @@ void IGame::init(const int argc, char *argv[]) {
 	
 	Mixer->play();
 
+if (!server_mode) {
 	LOG_DEBUG(("probing for joysticks"));
 	int jc = sdlx::Joystick::getCount();
 	if (jc > 0) {
@@ -334,69 +344,87 @@ void IGame::init(const int argc, char *argv[]) {
 	}
 	Console->init();
 	on_console_slot.assign(this, &IGame::onConsole, Console->on_command);
-	
+
 	LOG_DEBUG(("installing basic callbacks..."));
 	on_key_slot.assign(this, &IGame::onKey, Window->key_signal);
 	on_mouse_slot.assign(this, &IGame::onMouse, Window->mouse_signal);
 	on_joy_slot.assign(this, &IGame::onJoyButton, Window->joy_button_signal);
 	on_event_slot.assign(this, &IGame::onEvent, Window->event_signal);
+
 	
-	sdlx::Rect window_size = Window->getSize();
-	if (_main_menu == NULL) {
+	if (_main_menu == NULL && !server_mode) {
 		_main_menu = new MainMenu();
 	}
 
+}
+
 	_paused = false;
 
-	Window->getSurface().fill(0);
-	Window->getSurface().flip();
+	if (!server_mode) {
+		Window->getSurface().fill(0);
+		Window->getSurface().flip();
 	
-	LOG_DEBUG(("initializing hud..."));
-	_hud = new Hud(window_size.w, window_size.h);
+		LOG_DEBUG(("initializing hud..."));
+		sdlx::Rect window_size = Window->getSize();
+		_hud = new Hud(window_size.w, window_size.h);
+	} else {  
+		_hud = NULL;
+	}
 
 	LOG_DEBUG(("installing callbacks..."));
 	
-	on_menu_slot.assign(this, &IGame::onMenu, _main_menu->menu_signal);
+	if (!server_mode) {
+		on_menu_slot.assign(this, &IGame::onMenu, _main_menu->menu_signal);
+	}
+	on_map_slot.assign(this, &IGame::onMap, Map->load_map_signal);
+
 	reset_slot.assign(this, &IGame::resetLoadingBar, Map->reset_progress);
 	notify_slot.assign(this, &IGame::notifyLoadingBar, Map->notify_progress);
 
-	on_map_slot.assign(this, &IGame::onMap, Map->load_map_signal);
-	
 	reset_slot.assign(this, &IGame::resetLoadingBar, ResourceManager->reset_progress);
 	notify_slot.assign(this, &IGame::notifyLoadingBar, ResourceManager->notify_progress);
 
-	on_tick_slot.assign(this, &IGame::onTick, Window->tick_signal);
+	if (!server_mode) 
+		on_tick_slot.assign(this, &IGame::onTick, Window->tick_signal);
 
 	LOG_DEBUG(("initializing resource manager..."));
 	
 	std::vector<std::pair<std::string, std::string> > files;
 	Finder->findAll(files, "resources.xml");
 	
-	ResourceManager->init(files);
+	ResourceManager->init(files, server_mode);
 	
-	if (_show_fps) {
+	if (_show_fps && !server_mode) {
 		LOG_DEBUG(("creating `digits' object..."));
 		_fps = ResourceManager->createObject("damage-digits", "damage-digits");
 		_fps->onSpawn();
 		_fps->speed = 0;
 	} else _fps = NULL;
 
-	if (_show_log_lines) {
+	if (_show_log_lines && !server_mode) {
 		LOG_DEBUG(("creating `digits' object..."));
 		_log_lines = ResourceManager->createObject("damage-digits", "damage-digits");
 		_log_lines->onSpawn();
 		_log_lines->speed = 0;
 	} else _log_lines = NULL;
 
-	_main_menu->init(window_size.w, window_size.h);
-	GET_CONFIG_VALUE("multiplayer.chat.lines-number", int, lines, 6);
-	_net_talk = new Chat(lines);
-	_net_talk->hide();
+	if (_main_menu != NULL) {
+		sdlx::Rect window_size = Window->getSize();
+		_main_menu->init(window_size.w, window_size.h);
+	}
+	
+	if (!server_mode) {
+		GET_CONFIG_VALUE("multiplayer.chat.lines-number", int, lines, 6);
+		_net_talk = new Chat(lines);
+		_net_talk->hide();
 
-	if (_autojoin) {
-		PlayerManager->startClient(address, 1);
-		if (_main_menu)
-			_main_menu->setActive(false);
+		if (_autojoin) {
+			PlayerManager->startClient(address, 1);
+			if (_main_menu)
+				_main_menu->setActive(false);
+		}
+	} else {
+		_net_talk = NULL;
 	}
 }
 
@@ -765,6 +793,9 @@ void IGame::shake(const float duration, const int intensity) {
 void IGame::resetLoadingBar(const int total) {
 	_loading_bar_now = 0;
 	_loading_bar_total = total;
+
+	if (server_mode)
+		return;
 	
 	std::deque<std::string> keys;
 	I18n->enumerateKeys(keys, "tips");
@@ -797,8 +828,18 @@ void IGame::notifyLoadingBar(const int progress) {
 	GET_CONFIG_VALUE("hud.disable-loading-screen", bool, disable_bar, false);
 	if (disable_bar)
 		return;
+
+	if (server_mode) {
+		int p0 = 10 * _loading_bar_now / _loading_bar_total;
+		_loading_bar_now += progress;
+		int p1 = 10 * _loading_bar_now / _loading_bar_total;
+		if (p0 != p1) {
+			LOG_DEBUG(("%d0%%", p1));
+		}
+		return;
+	}
 	
-	float old_progress = 1.0 * _loading_bar_now / _loading_bar_total;
+	float old_progress = 1.0f * _loading_bar_now / _loading_bar_total;
 	_loading_bar_now += progress;
 	
 	sdlx::Surface &window = Window->getSurface();

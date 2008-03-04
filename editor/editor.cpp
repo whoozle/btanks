@@ -361,7 +361,7 @@ void Editor::init(int argc, char *argv[]) {
 	std::vector<std::pair<std::string, std::string> > files;
 	Finder->findAll(files, "resources.xml");
 	
-	ResourceManager->init(files);
+	ResourceManager->init(files, false);
 	
 	Control * c = _map_picker = new OpenMapDialog;
 	int cw, ch;
