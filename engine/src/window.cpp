@@ -324,6 +324,16 @@ SDL_WM_SetCaption(("Battle tanks - " + getVersion()).c_str(), "btanks");
 #endif
 }
 
+static int temp_nod(int a, int b) {
+	int p = a % b;
+	while (p != 0) {
+		a = b; 
+		b = p;
+		p = a % b;
+	}
+	return b;
+}
+
 void IWindow::createMainWindow() {
 	//Config->get("engine.window.width", _w, 800);
 	//Config->get("engine.window.height", _h, 600);
@@ -333,6 +343,31 @@ void IWindow::createMainWindow() {
 	
 	if (_fullscreen) flags |= SDL_FULLSCREEN;
 
+	TRY {
+		SDL_Rect **modes;
+		/* Get available fullscreen/hardware modes */
+		modes = SDL_ListModes(NULL, SDL_FULLSCREEN);
+
+		/* Check is there are any modes available */
+		if(modes == (SDL_Rect **)0) 
+			throw_ex(("No video modes available"));
+    
+	    /* Check if our resolution is restricted */
+    	if(modes == (SDL_Rect **)-1){
+			LOG_DEBUG(("all resolutions available."));
+		} else {
+			/* Print valid modes */
+			LOG_DEBUG(("available modes:"));
+			for(int i = 0; modes[i] != NULL; ++i) {
+				int w = modes[i]->w, h = modes[i]->h;
+				if (w < 800 || h < 600)
+					continue;
+				int nod = temp_nod(w, h);
+				LOG_DEBUG(("\t%dx%d, %d:%d", w, h, w / nod, h / nod));
+			}
+		}
+	} CATCH("screen modes probe", );
+	
 #ifndef _WINDOWS
 	if (_opengl) {
 #if SDL_VERSION_ATLEAST(1,2,10)
@@ -418,29 +453,6 @@ void IWindow::createMainWindow() {
 	LOG_DEBUG(("created main surface. (%dx%dx%d, %s)", _w, _h, _window.getBPP(), ((_window.getFlags() & SDL_HWSURFACE) == SDL_HWSURFACE)?"hardware":"software"));
 
 	sdlx::System::probeVideoMode();	
-#if 0
-	{
-		SDL_Rect **modes;
-		int i;
-
-		/* Get available fullscreen/hardware modes */
-		modes = SDL_ListModes(NULL, SDL_FULLSCREEN|SDL_HWSURFACE);
-
-		/* Check is there are any modes available */
-		if(modes == (SDL_Rect **)0) 
-			throw_ex(("No video modes available"));
-    
-	    /* Check if our resolution is restricted */
-    	if(modes == (SDL_Rect **)-1){
-			LOG_DEBUG(("all resolutions available."));
-		} else {
-			/* Print valid modes */
-			LOG_DEBUG(("available modes:"));
-			for(i=0;modes[i];++i)
-				LOG_DEBUG(("\t%dx%d", modes[i]->w, modes[i]->h));
-		}
-	}
-#endif
 
 	_running = true;
 }
