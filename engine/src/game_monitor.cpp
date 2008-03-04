@@ -960,6 +960,7 @@ void IGameMonitor::addBonuses(const PlayerSlot &slot) {
 }
 
 #include "nickname.h"
+#include "rt_config.h"
 
 void IGameMonitor::startGame(Campaign *campaign, const std::string &name) {
 	Game->clear();
@@ -970,6 +971,9 @@ void IGameMonitor::startGame(Campaign *campaign, const std::string &name) {
 
 	if (PlayerManager->getSlotsCount() <= 0)
 		throw_ex(("no slots available on map"));
+	
+	if (RTConfig->server_mode)
+		return;
 	
 	PlayerSlot &slot = PlayerManager->getSlot(0);
 	std::string cm;
