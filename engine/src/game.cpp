@@ -92,8 +92,8 @@ void IGame::run() {
 	} else {
 		LOG_DEBUG(("server is up and running!"));
 		sdlx::Timer _timer;	
-		const float limit = 0.02f;
-		float dt = 0.01f;
+		const float limit = 1.0f / 60;
+		float dt = limit;
 		while(true) {
 			_timer.reset();
 			tick(dt);
