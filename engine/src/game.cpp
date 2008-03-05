@@ -691,7 +691,7 @@ void IGame::onTick(const float dt) {
 		if (_main_menu)
 			_main_menu->tick(dt);
 
-		window.fill(0);
+		window.fill(window.mapRGB(0x10, 0x10, 0x10));
 
 		if (!_credits && !Map->loaded())
 			_hud->renderSplash(window);
@@ -886,7 +886,7 @@ void IGame::notifyLoadingBar(const int progress) {
 			_tip->render(window, (window_size.w - w) / 2, window_size.h - h * 5 / 4);
 		}
 		Window->flip();
-		window.fill(0);
+		window.fill(window.mapRGB(0x10, 0x10, 0x10));
 	}
 }
 
