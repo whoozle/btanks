@@ -419,6 +419,10 @@
 	<animation-model id="target-animation" speed="7">
 		<pose id="main">0,1,2,3,2,1</pose>
 	</animation-model>
+
+	<animation-model id="target-arrows-animation" speed="7">
+		<pose id="main">0,1,2,3</pose>
+	</animation-model>
 	
 	<animation-model id="slime-animation" speed="2">
 		<pose id="hold">0</pose>
@@ -759,6 +763,7 @@
 	<animation id="buggy-air-bullet-left" tile="buggy_air_bullet2.png" model="bullet-animation"/>
 	
 	<animation id="target" tile="target.png" model="target-animation" size="64" />
+	<animation id="target-arrows" tile="arrows.png" model="target-arrows-animation" size="96" />
 	<animation id="slime" tile="slime.png" model="slime-animation" size="64" />
 	<animation id="slime-acid" tile="slime_bullet.png" model="bullet-animation" size="64" />
 	<animation id="dead-slime" tile="slime_dead.png" model="dead-slime-animation" size="128" />
