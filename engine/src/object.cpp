@@ -192,14 +192,12 @@ void Object::cancelAll() {
 
 void Object::tick(const float dt) {
 	for(EffectMap::iterator ei = _effects.begin(); ei != _effects.end(); ) {
-		if (ei->second < 0) {
-			++ei;
-			continue;
-		}
-		ei->second -= dt;
-		if (ei->second <= 0) {
-			_effects.erase(ei++);
-			continue;
+		if (ei->second >= 0) {
+			ei->second -= dt;
+			if (ei->second <= 0) {
+				_effects.erase(ei++);
+				continue;
+			}
 		}
 		if (ei->first == "stunned") {
 			if (!_velocity.is0()) {
