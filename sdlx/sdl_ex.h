@@ -21,6 +21,7 @@
 
 #include <string>
 #include <exception>
+#include "sdlx/export_sdlx.h"
 #include "mrt/fmt.h"
 #include "mrt/exception.h"
 
