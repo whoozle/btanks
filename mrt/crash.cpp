@@ -19,7 +19,7 @@
 */
 
 
-#ifndef _WINDOWS
+#if not defined _WINDOWS and not defined __APPLE__
 #	include <string.h>
 #	include <signal.h>
 #	include <unistd.h>
@@ -34,7 +34,7 @@ static void crash_handler(int sno) {
 #endif
 
 void mrt::install_crash_handlers() {
-#ifndef _WINDOWS
+#if not defined _WINDOWS and not defined __APPLE__
 	if (getenv("MRT_NO_CRASH_HANDLER") != NULL)
 		return;
 	
