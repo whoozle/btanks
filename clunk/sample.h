@@ -20,7 +20,7 @@ private:
 	Sample(const Sample &);
 	const Sample& operator=(const Sample &);
 	
-	SDL_AudioSpec * spec;
+	SDL_AudioSpec spec;
 	Uint8 *data_ptr;
 	Uint32 data_len;	
 };
