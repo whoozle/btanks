@@ -30,7 +30,7 @@ else:
 
 sdlx_sources = 	['cursor.cpp', 'sdl_ex.cpp', 'surface.cpp', 'system.cpp', 'joystick.cpp',
 	'thread.cpp', 'mutex.cpp', 'semaphore.cpp', 'color.cpp',
-	c_map, 'font.cpp', 'timer.cpp', 'module.cpp', 
+	c_map, 'font.cpp', 'timer.cpp', 'module.cpp', 'file_rw.cpp', 
 	] #  'ttf.cpp', 
 
 if sys.platform == 'win32': 
