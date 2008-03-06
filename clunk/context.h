@@ -14,7 +14,8 @@ public:
 	
 	~Context();
 private: 
-	Uint8 sample_rate, channels, period_size;
+	SDL_AudioSpec spec;
+	int period_size;	
 };
 }
 
