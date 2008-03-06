@@ -83,8 +83,8 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 	} CATCH("music thread startup", { _nomusic = true; return; })
 
 	TRY {
-		if (!nosound)
-			_ambient = new OggStream;
+	//	if (!nosound)
+	//		_ambient = new OggStream;
 	} CATCH("ambient thread startup", {})
 	
 }
