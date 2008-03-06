@@ -32,7 +32,7 @@ public:
 	void play(const std::string &fname, const bool continuous, const float volume);
 	void stop();
 
-	const bool idle() const { return _idle; }
+	const bool idle() const;
 		
 	OggStream();
 	~OggStream();
@@ -41,8 +41,8 @@ public:
 	void setVolume(const float v);
 
 private: 
-	bool _idle;
 	float _volume;
+	Mix_Music * _music;
 };
 
 #endif

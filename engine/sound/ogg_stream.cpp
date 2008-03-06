@@ -26,19 +26,36 @@
 #include "finder.h"
 #include "mrt/base_file.h"
 #include "mrt/chunk.h"
+#include "sdlx/file_rw.h"
+#include "sdlx/sdl_ex.h"
 
-OggStream::OggStream() : _idle(true), _volume(1) {}
+OggStream::OggStream() : _volume(1), _music(NULL) {}
 
 void OggStream::play(const std::string &fname, const bool repeat, const float volume) {
 	LOG_DEBUG(("play('%s', %s, %g)", fname.c_str(), repeat?"loop":"once", volume));
 	stop();
 	scoped_ptr<mrt::BaseFile> file(Finder->get_file(fname, "rb"));
+	_music = Mix_LoadMUS_RW(sdlx::RWFromMRTFile(file.release()));
+	TRY {
+	if (_music == NULL)
+		throw_sdl(("Mix_LoadMUS_RW('%s')", fname.c_str()));
+	} CATCH("play", return);
+	Mix_PlayMusic(_music, repeat?-1:1);
 }
 
 void OggStream::stop() {
+	if (_music != NULL) {
+		Mix_FreeMusic(_music);
+		_music = NULL;
+	}
+}
+
+const bool OggStream::idle() const {
+	return Mix_GetMusicType(NULL) == MUS_NONE;
 }
 
 OggStream::~OggStream() {
+	stop();
 }
 
 #include "scoped_ptr.h"
