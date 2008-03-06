@@ -3,6 +3,7 @@
 
 #include "export_clunk.h"
 #include "object.h"
+#include "sample.h"
 #include <SDL_audio.h>
 
 namespace clunk {
@@ -14,6 +15,7 @@ public:
 	void deinit();
 	
 	Object *createObject();
+	Sample *createSample();
 	
 	~Context();
 private: 
@@ -24,6 +26,7 @@ private:
 	void deleteObject(Object *o);
 
 	friend clunk::Object::~Object();
+	friend clunk::Sample::~Sample();
 };
 }
 

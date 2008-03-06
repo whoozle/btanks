@@ -5,14 +5,16 @@
 
 using namespace clunk;
 
-Sample::Sample() {}
+Sample::Sample(Context *context) : context(context) {}
+
+void Sample::generateSine(const int freq) {
+	
+}
 
 void Sample::init(const mrt::Chunk &data, int rate, const Uint16 format, const Uint8 channels) {
 	SDL_RWops *op = SDL_RWFromConstMem(data.getPtr(), data.getSize());
 	if (op == NULL)
 		throw_sdl(("SDL_RWFromConstMem"));
-
-	deinit();
 
 	SDL_AudioSpec spec;
 	memset(&spec, 0, sizeof(spec));
@@ -27,14 +29,10 @@ void Sample::init(const mrt::Chunk &data, int rate, const Uint16 format, const U
 	this->spec = *r;
 }
 
-void Sample::deinit() {
+Sample::~Sample() {
 	if (data_ptr != NULL) {
 		SDL_FreeWAV(data_ptr);
 		data_ptr = NULL;
 		data_len = 0;
 	}
-}
-
-Sample::~Sample() {
-	deinit();
 }

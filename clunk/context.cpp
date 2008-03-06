@@ -35,6 +35,11 @@ Object *Context::createObject() {
 	return new Object(this);
 }
 
+Sample *Context::createSample() {
+	return new Sample(this);
+}
+
+
 void Context::init(const int sample_rate, const Uint8 channels, int period_size) {
 	SDL_AudioSpec src;
 	memset(&src, 0, sizeof(src));
