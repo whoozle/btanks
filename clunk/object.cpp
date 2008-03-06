@@ -11,5 +11,5 @@ void Object::updatePV(const v3<float> &pos, const v3<float> &vel) {
 }
 
 Object::~Object() {
-	context->deleteObject(this);
+	context->delete_object(this);
 }

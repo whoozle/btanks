@@ -14,16 +14,20 @@ public:
 	void init(const int sample_rate, const Uint8 channels, int period_size);
 	void deinit();
 	
-	Object *createObject();
-	Sample *createSample();
+	Object *create_object();
+	Sample *create_sample();
 	
 	~Context();
+	
+	const SDL_AudioSpec & get_spec() const {
+		return spec;
+	}
 private: 
 	SDL_AudioSpec spec;
 	int period_size;
 
 	static void callback(void *userdata, Uint8 *stream, int len);
-	void deleteObject(Object *o);
+	void delete_object(Object *o);
 
 	friend clunk::Object::~Object();
 	friend clunk::Sample::~Sample();

@@ -31,11 +31,11 @@ void Context::callback(void *userdata, Uint8 *bstream, int len) {
 	}
 }
 
-Object *Context::createObject() {
+Object *Context::create_object() {
 	return new Object(this);
 }
 
-Sample *Context::createSample() {
+Sample *Context::create_sample() {
 	return new Sample(this);
 }
 
@@ -61,7 +61,7 @@ void Context::init(const int sample_rate, const Uint8 channels, int period_size)
 	SDL_PauseAudio(0);
 }
 
-void Context::deleteObject(Object *o) {
+void Context::delete_object(Object *o) {
 	//blah blah
 }
 
