@@ -4,6 +4,7 @@ Import('env')
 Import('version')
 Import('revision')
 Import('debug')
+Import('al_lib')
 
 Import('sdl_cflags')
 Import('sdl_libs')
@@ -64,7 +65,7 @@ bt_sources = 	[
 	'src/vehicle_traits.cpp', 'src/nickname.cpp',
 	'src/rt_config.cpp', 
 	
-	'sound/mixer.cpp', 'sound/ogg_ex.cpp', 'sound/ogg_stream.cpp', 'sound/sample.cpp',
+	'sound/al_ex.cpp', 'sound/mixer.cpp', 'sound/ogg_ex.cpp', 'sound/ogg_stream.cpp', 'sound/sample.cpp',
 
 	vobj
 	]
@@ -73,7 +74,7 @@ vorbis = 'vorbisfile'
 if debug and sys.platform == "win32": 
 	vorbis = 'vorbisfile_d'
 
-bt_libs = ['mrt', 'sdlx', smpeg_lib, 'SDL', 'SDL_mixer', vorbis]
+bt_libs = ['mrt', 'sdlx', smpeg_lib, 'SDL', vorbis, al_lib]
 
 if sys.platform != 'win32' and env['enable_lua']:
 	got_lua = False
