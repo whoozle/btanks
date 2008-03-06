@@ -1,7 +1,7 @@
 #include "sdl_ex.h"
 #include <SDL.h>
 
-using namespace sdlx;
+using namespace clunk;
 
 Exception::Exception() {}
 
