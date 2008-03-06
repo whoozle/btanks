@@ -4,8 +4,6 @@
 #include "sdl_ex.h"
 #include <assert.h>
 
-using namespace sdlx;
-
 static int mrt_seek(struct SDL_RWops *context, int offset, int whence) {
 	assert(context->hidden.unknown.data1 != NULL);
 	const mrt::BaseFile *file = (const mrt::BaseFile *)context->hidden.unknown.data1;
@@ -20,13 +18,12 @@ static int mrt_read(struct SDL_RWops *context, void *ptr, int size, int maxnum) 
 	return (r > 0) ? r / size : r;
 }
 
-SDL_RWops * RWFromMRTFile(const mrt::BaseFile *file) {
+SDL_RWops * sdlx::RWFromMRTFile(const mrt::BaseFile *file) {
 	SDL_RWops * op = SDL_AllocRW();
 	if (op == NULL)
 		throw_sdl(("SDL_AllocRW()"));
-	assert(op->hidden.unknown.data1 == NULL);
+
 	op->hidden.unknown.data1 = (void *)file; //sic! 
-	
 	
 	op->seek = &mrt_seek;
 	op->read = &mrt_read;
