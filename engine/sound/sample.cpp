@@ -22,7 +22,8 @@
 #include "mrt/exception.h"
 #include "al_ex.h"
 
-void Sample::init() {
+void Sample::init(const mrt::Chunk& data) {
+	LOG_DEBUG(("sample length: %u", (unsigned)data.getSize()));
 	TRY {
 		alGenBuffers(1, &buffer);
 		AL_CHECK(("alGenBuffers"));

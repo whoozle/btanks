@@ -429,9 +429,7 @@ void IMixer::loadSample(const std::string &filename, const std::string &classnam
 	TRY {
 		sample = new Sample;
 		OggStream::decode(*sample, Finder->find("sounds/" + filename));
-		LOG_DEBUG(("sample %s decoded. rate: %u, size: %u", filename.c_str(), (unsigned)sample->rate, (unsigned)sample->data.getSize()));
-
-		sample->init();
+		LOG_DEBUG(("sample %s decoded. rate: %u", filename.c_str(), (unsigned)sample->rate));
 				
 		_sounds[filename] = sample;
 	} CATCH("loadSample", { delete sample; sample = NULL; });

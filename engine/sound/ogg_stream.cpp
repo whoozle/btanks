@@ -351,7 +351,7 @@ void OggStream::decode(Sample &sample, const std::string &fname) {
 
 	GET_CONFIG_VALUE("engine.sound.file-buffer-size", int, buffer_size, 441000);
 
-	mrt::Chunk &data = sample.data;
+	mrt::Chunk data;
 
 	size_t pos = 0;
 	data.free();
@@ -382,6 +382,8 @@ void OggStream::decode(Sample &sample, const std::string &fname) {
 	else
 		sample.format = AL_FORMAT_STEREO16;
 	sample.rate = info->rate;
+
+	sample.init(data);
 
 	ov_clear(&ogg);	
 }

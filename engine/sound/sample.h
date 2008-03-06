@@ -25,12 +25,11 @@
 
 class Sample {
 public:
-	mrt::Chunk data;
 	ALenum format;
 	ALsizei rate;
 	ALuint buffer;
 	
-	void init();
+	void init(const mrt::Chunk& data);
 	~Sample();
 };
 

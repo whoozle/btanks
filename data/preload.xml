@@ -667,7 +667,9 @@
 	</map>
 	<map id="university">
 		<object id="alt-missiles-on-launcher"/>
+		<object id="bomb"/>
 		<object id="bus-stop"/>
+		<object id="cannon-explosion"/>
 		<object id="car"/>
 		<object id="corpse"/>
 		<object id="damage-digits"/>
@@ -676,6 +678,8 @@
 		<object id="dumb-missiles-item"/>
 		<object id="explosion"/>
 		<object id="fake-mod"/>
+		<object id="fire"/>
+		<object id="guided-missile"/>
 		<object id="guided-missiles-item"/>
 		<object id="heal"/>
 		<object id="helicopter"/>
@@ -683,6 +687,7 @@
 		<object id="launcher"/>
 		<object id="machinegunner-bullet"/>
 		<object id="machinegunner-item"/>
+		<object id="machinegunner-on-launcher"/>
 		<object id="machinegunner-player"/>
 		<object id="megaheal"/>
 		<object id="missiles-on-launcher"/>
