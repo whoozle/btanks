@@ -53,6 +53,9 @@ void Context::init(const int sample_rate, const Uint8 channels, int period_size)
 	SDL_PauseAudio(0);
 }
 
+void Context::deleteObject(Object *o) {
+	//blah blah
+}
 
 void Context::deinit() {
 	SDL_PauseAudio(1);

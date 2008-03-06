@@ -2,6 +2,7 @@
 #define CLUNK_CONTEXT_H__
 
 #include "export_clunk.h"
+#include "object.h"
 #include <SDL_audio.h>
 
 namespace clunk {
@@ -18,6 +19,9 @@ private:
 	int period_size;
 
 	static void callback(void *userdata, Uint8 *stream, int len);
+	void deleteObject(Object *o);
+
+	friend clunk::Object::~Object();
 };
 }
 

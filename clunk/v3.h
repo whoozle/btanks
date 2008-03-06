@@ -2,6 +2,7 @@
 #define CLUNK_V3_H__
 
 #include <math.h>
+namespace clunk {
 
 template <typename T> class v3  {
 public:
@@ -195,6 +196,8 @@ template <typename T>
 	const v3<T> operator/(const v3<T> &v, const T a)  {
 		return v3<T>(v.x / a, v.y  / a, v.z / a);
 	}
+	
+} //namespace clunk
 
 #endif
 
