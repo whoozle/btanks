@@ -5,16 +5,30 @@
 #include "sdl_ex.h"
 #include "mrt/logger.h"
 #include <assert.h>
+#include <math.h>
 
 using namespace clunk;
 
 Context::Context() : period_size(0) {
 }
 
-void Context::callback(void *userdata, Uint8 *stream, int len) {
+void Context::callback(void *userdata, Uint8 *bstream, int len) {
 	Context *self = (Context *)userdata;
 	assert(self != NULL);
-	LOG_DEBUG(("requested %d bytes!", len));
+	//LOG_DEBUG(("requested %d bytes!", len));
+	Sint16 *stream = (Sint16*)bstream;
+	
+	static double a = 0;
+	double da = 440 * 2 * M_PI / self->spec.freq;
+	//LOG_DEBUG(("da = %g", da));
+	
+	int n = len / 2 / self->spec.channels;
+	for(int i = 0; i < n; ++i) {
+		*stream++ = (Sint16)(32767 * sin(a));
+		*stream++ = (Sint16)(32767 * sin(a + self->spec.freq / 10.0)); //sample delay
+		//*stream++ = 0;
+		a += da;
+	}
 }
 
 
@@ -41,6 +55,7 @@ void Context::init(const int sample_rate, const Uint8 channels, int period_size)
 
 
 void Context::deinit() {
+	SDL_PauseAudio(1);
 	SDL_QuitSubSystem(SDL_INIT_AUDIO);
 }
 	
