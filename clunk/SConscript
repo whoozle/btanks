@@ -6,10 +6,11 @@ Import('sdl_libs')
 
 env = env.Copy()
 env.Append(CPPPATH=['..', '.'])
+env.Append(LIBPATH=['../mrt'])
 env.Append(CPPDEFINES=['CLUNKAPI=DLLEXPORT'])
 
 env.MergeFlags(sdl_cflags, sdl_libs)
 
-clunk = env.SharedLibrary('clunk', ['context.cpp'], LIBS=['SDL'])
+clunk = env.SharedLibrary('clunk', ['context.cpp', 'sample.cpp'], LIBS=['m', 'SDL', 'mrt'])
 Install('#', clunk[0])
 

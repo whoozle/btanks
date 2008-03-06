@@ -1,34 +1,7 @@
 #ifndef CLUNK_EXPORT_H__
 #define CLUNK_EXPORT_H__
 
-// Shared library support
-#ifdef _WINDOWS
-
-#	pragma warning(disable:4251)  /* needs to have dll-interface used by client */
-#	pragma warning(disable:4275)  /* non dll-interface struct */
-#	pragma warning(disable:4786) /* debug info exceedes 255 bytes */
-
-#	define DLLIMPORT __declspec(dllimport)
-#	define DLLEXPORT __declspec(dllexport)
-#	define DLLDLLLOCAL
-#	define DLLDLLPUBLIC
-#else
-#	ifdef GCC_HASCLASSVISIBILITY
-#		define DLLIMPORT __attribute__ ((visibility("default")))
-#		define DLLEXPORT __attribute__ ((visibility("default")))
-#		define DLLDLLLOCAL __attribute__ ((visibility("hidden")))
-#		define DLLDLLPUBLIC __attribute__ ((visibility("default")))
-#	else
-#		define DLLIMPORT
-#		define DLLEXPORT
-#		define DLLDLLLOCAL
-#		define DLLDLLPUBLIC
-#	endif
-#endif
-
-#if !defined DLLIMPORT || !defined DLLEXPORT
-#	error DLLIMPORT or DLLEXPORT was not defined
-#endif
+#include "mrt/export_base.h"
 
 #ifndef CLUNKAPI
 #	define CLUNKAPI DLLIMPORT
