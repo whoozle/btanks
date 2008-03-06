@@ -15,7 +15,8 @@ public:
 private: 
 	friend class Context;
 	Object(Context *context);
-	Context *context;	
+	Context *context;
+	v3<float> pos, vel;
 };
 }
 
