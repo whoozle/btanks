@@ -18,20 +18,15 @@
  */
 
 #include "sample.h"
-#include <AL/al.h>
-#include "mrt/exception.h"
-#include "al_ex.h"
+#include "sdlx/sdl_ex.h"
+#include "mrt/chunk.h"
 
-void Sample::init() {
-	TRY {
-		alGenBuffers(1, &buffer);
-		AL_CHECK(("alGenBuffers"));
-	
-		alBufferData(buffer, format, data.getPtr(), data.getSize(), rate);
-		AL_CHECK(("alBufferData"));
-	} CATCH("init", throw;)
+Sample::Sample(const mrt::Chunk &src) {
+	data = Mix_QuickLoad_RAW((Uint8 *)src.getPtr(), src.getSize());
+	if (data == NULL)
+		throw_sdl(("Mix_QuickLoad_RAW"));
 }
 
 Sample::~Sample() {
-	alDeleteBuffers(1, &buffer);
+	Mix_FreeChunk(data);
 }

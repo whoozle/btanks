@@ -20,18 +20,21 @@
  */
 
 
-#include <AL/al.h>
-#include "mrt/chunk.h"
+#include <SDL_mixer.h>
+namespace mrt {
+	class Chunk;
+}
 
 class Sample {
 public:
-	mrt::Chunk data;
-	ALenum format;
-	ALsizei rate;
-	ALuint buffer;
-	
-	void init();
+	Sample(const mrt::Chunk &data);
 	~Sample();
+
+private: 
+	Sample(const Sample &);
+	const Sample& operator=(const Sample &);
+	
+	Mix_Chunk *data;
 };
 
 #endif

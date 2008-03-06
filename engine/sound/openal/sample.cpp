@@ -1,5 +1,3 @@
-#ifndef __BTANKS_OGG_STREAM_H__
-#define __BTANKS_OGG_STREAM_H__
 
 /* Battle Tanks Game
  * Copyright (C) 2006-2008 Battle Tanks team
@@ -19,31 +17,21 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include <string>
-#include <SDL_mixer.h>
+#include "sample.h"
+#include <AL/al.h>
+#include "mrt/exception.h"
+#include "al_ex.h"
 
-namespace mrt {
-class Chunk;
+void Sample::init() {
+	TRY {
+		alGenBuffers(1, &buffer);
+		AL_CHECK(("alGenBuffers"));
+	
+		alBufferData(buffer, format, data.getPtr(), data.getSize(), rate);
+		AL_CHECK(("alBufferData"));
+	} CATCH("init", throw;)
 }
 
-class Sample;
-class OggStream {
-public: 
-	void play(const std::string &fname, const bool continuous, const float volume);
-	void stop();
-
-	const bool idle() const { return _idle; }
-		
-	OggStream();
-	~OggStream();
-	
-	static void decode(mrt::Chunk &data, const std::string &file, int &rate, int &channels);
-	void setVolume(const float v);
-
-private: 
-	bool _idle;
-	float _volume;
-};
-
-#endif
-
+Sample::~Sample() {
+	alDeleteBuffers(1, &buffer);
+}
