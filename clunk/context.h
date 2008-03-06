@@ -15,7 +15,9 @@ public:
 	~Context();
 private: 
 	SDL_AudioSpec spec;
-	int period_size;	
+	int period_size;
+
+	static void callback(void *userdata, Uint8 *stream, int len);
 };
 }
 
