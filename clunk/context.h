@@ -13,6 +13,8 @@ public:
 	void init(const int sample_rate, const Uint8 channels, int period_size);
 	void deinit();
 	
+	Object *createObject();
+	
 	~Context();
 private: 
 	SDL_AudioSpec spec;

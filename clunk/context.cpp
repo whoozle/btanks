@@ -31,6 +31,9 @@ void Context::callback(void *userdata, Uint8 *bstream, int len) {
 	}
 }
 
+Object *Context::createObject() {
+	return new Object(this);
+}
 
 void Context::init(const int sample_rate, const Uint8 channels, int period_size) {
 	SDL_AudioSpec src;
