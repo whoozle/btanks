@@ -224,7 +224,7 @@ Export('lib_dir')
 version = '0.7.%s' %version
 print "version: %s" %version
 
-bt_sublibs = ['mrt', 'sdlx', 'objects']
+bt_sublibs = ['mrt', 'sdlx', 'objects', 'clunk']
 env.Append(CPPPATH=['#'])
 
 if (os.path.exists('private')):
