@@ -57,8 +57,13 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 	int rate;
 	Config->get("engine.sound.sample-rate", rate, 22050);
 	TRY {
+		LOG_DEBUG(("opening sound device..."));
 		if(Mix_OpenAudio(rate, AUDIO_S16LSB, 2, 1024) == -1)
 			throw_sdl(("Mix_OpenAudio"));
+
+		char buf[1024];
+		SDL_AudioDriverName(buf, sizeof(buf));
+		LOG_DEBUG(("...using audio driver: %s", buf));
 	} CATCH("init", {
 		_nosound = _nomusic = true;
 		return;
