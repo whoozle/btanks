@@ -30,14 +30,9 @@ void Sample::generateSine(const int freq, const float len) {
 		//*stream++ = 0;
 		a += da;
 	}
-	
-	SDL_RWops *op = SDL_RWFromConstMem(data.getPtr(), data.getSize());
-	if (op == NULL)
-		throw_sdl(("SDL_RWFromConstMem"));
-	SDL_AudioSpec *r = SDL_LoadWAV_RW(op, 1, &spec, &data_ptr, &data_len);
-	if (r == NULL)
-		throw_sdl(("SDL_LoadWAV_RW"));
-	spec = *r;
+	data_ptr = (Uint8 *)data.getPtr();
+	data_len = size;
+	data.unlink();
 }
 
 void Sample::init(const mrt::Chunk &data, int rate, const Uint16 format, const Uint8 channels) {

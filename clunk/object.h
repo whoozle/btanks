@@ -14,7 +14,7 @@ public:
 	~Object();
 	void update(const v3<float> &pos, const v3<float> &vel);
 
-	void add(Source *source);
+	void play(Source *source);
 	void remove(Source *source);
 	void remove_all();
 

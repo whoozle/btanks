@@ -56,19 +56,26 @@ void Context::process(Sint16 *stream, int size) {
 	}
 	std::vector<Source *> lsources;
 	sources_type::iterator j = sources.begin();
-	for(unsigned i = 0; i < max_sources; ++i, ++j) {
+	for(unsigned i = 0; i < max_sources && j != sources.end(); ++i, ++j) {
+		LOG_DEBUG(("%u: source in %g", i, j->first));
 		lsources.push_back(j->second);
 	}
+	sources.clear();
+
+	unsigned n = size / spec.channels / 2;
+	LOG_DEBUG(("generating %u samples", n));
 }
 
 
 Object *Context::create_object() {
+	AudioLocker l;
 	Object *o = new Object(this);
 	objects.insert(o);
 	return o;
 }
 
 Sample *Context::create_sample() {
+	AudioLocker l;
 	return new Sample(this);
 }
 
@@ -95,6 +102,7 @@ void Context::init(const int sample_rate, const Uint8 channels, int period_size)
 }
 
 void Context::delete_object(Object *o) {
+	AudioLocker l;
 	objects.erase(o);
 }
 

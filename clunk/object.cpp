@@ -10,7 +10,7 @@ void Object::update(const v3<float> &pos, const v3<float> &vel) {
 	velocity = vel;
 }
 
-void Object::add(Source *source) {
+void Object::play(Source *source) {
 	sources.insert(source);
 }
 
