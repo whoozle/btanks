@@ -10,9 +10,13 @@ int main() {
 		sample->generateSine(440, 1);
 		
 		clunk::Object * o = context.create_object();
-		o->update(clunk::v3<float>(2, 0, 0), clunk::v3<float>());
 		o->play(new clunk::Source(sample));
-		sleep(2);
+		
+		for(int i = 0; i < 200; ++i) {
+			o->update(clunk::v3<float>(2 * cos(i / 100.0 * 440 * M_PI * 2), 2 * sin(i / 100.0 * 440 * M_PI * 2), 0), clunk::v3<float>());
+			usleep(10000);
+		}
+		o->update(clunk::v3<float>(), clunk::v3<float>());
 		delete o; o = NULL;
 		
 		context.deinit();
