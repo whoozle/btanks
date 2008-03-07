@@ -13,6 +13,11 @@ float Source::process(mrt::Chunk &buffer, unsigned dst_ch, const v3<float> &delt
 	if (r2 < 1)
 		r2 = 1;
 	float v = gain / r2;
+	if (v < 0)
+		return 0;
+	if (v > 1)
+		v = 1;
+	
 	Sint16 * src = (Sint16*) sample->data_ptr;
 	if (src == NULL)
 		throw_ex(("uninitialized sample used (%p)", (void *)sample));

@@ -10,6 +10,7 @@ int main() {
 		sample->generateSine(440, 1);
 		
 		clunk::Object * o = context.create_object();
+		o->update(clunk::v3<float>(2, 0, 0), clunk::v3<float>());
 		o->play(new clunk::Source(sample));
 		sleep(2);
 		delete o; o = NULL;
