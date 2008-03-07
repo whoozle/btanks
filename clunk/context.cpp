@@ -4,6 +4,7 @@
 #include <string.h>
 #include "sdl_ex.h"
 #include "mrt/logger.h"
+#include "mrt/chunk.h"
 #include "source.h"
 #include <assert.h>
 #include <math.h>
@@ -25,7 +26,7 @@ void Context::callback(void *userdata, Uint8 *bstream, int len) {
 }
 
 void Context::process(Sint16 *stream, int size) {
-	typedef std::multimap<const float, Source *> sources_type;
+	typedef std::multimap<const float, std::pair<v3<float>, Source *> > sources_type;
 	sources_type sources;
 	
 	for(objects_type::iterator i = objects.begin(); i != objects.end(); ++i) {
@@ -34,19 +35,19 @@ void Context::process(Sint16 *stream, int size) {
 		std::set<Source *> & sset = o->sources;
 		for(std::set<Source *>::iterator j = sset.begin(); j != sset.end(); ++j) {
 			Source *s = *j;
-			v3<float> position = base + s->delta_position;
-			float dist = position.distance(base);
+			v3<float> position = base + s->delta_position - listener;
+			float dist = position.length();
 			if (sources.size() < max_sources) {
-				sources.insert(sources_type::value_type(dist, s));
+				sources.insert(sources_type::value_type(dist, std::pair<v3<float>, Source *>(position, s)));
 			} else {
 				if (sources.rbegin()->first <= dist) 
 					continue;
 				//sources.erase(sources.rbegin());
-				sources.insert(sources_type::value_type(dist, s));
+				sources.insert(sources_type::value_type(dist, std::pair<v3<float>, Source *>(position, s)));
 			}
 		}
 	}
-	std::vector<Source *> lsources;
+	std::vector<std::pair<v3<float>, Source *> > lsources;
 	sources_type::iterator j = sources.begin();
 	for(unsigned i = 0; i < max_sources && j != sources.end(); ++i, ++j) {
 		LOG_DEBUG(("%u: source in %g", i, j->first));
@@ -56,6 +57,18 @@ void Context::process(Sint16 *stream, int size) {
 
 	unsigned n = size / spec.channels / 2;
 	LOG_DEBUG(("generating %u samples", n));
+	Sint16 *dst = stream;
+	for(int i = 0; i < size / 2; ++i) {
+		*dst++ = 0;
+	}
+
+	mrt::Chunk buf;
+	buf.setSize(size);
+	for(unsigned i = 0; i < lsources.size(); ++i ) {
+		v3<float> & position = lsources[i].first;
+		Source * source = lsources[i].second;
+		float volume = source->process(buf, spec.channels, position);
+	}
 }
 
 

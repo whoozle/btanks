@@ -18,6 +18,8 @@ public:
 	
 private: 	
 	friend class Context;
+	friend class Source;
+	
 	Sample(Context *context);
 
 	Sample(const Sample &);

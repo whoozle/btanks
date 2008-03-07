@@ -3,6 +3,10 @@
 
 #include "v3.h"
 
+namespace mrt {
+	class Chunk;
+}
+
 namespace clunk {
 
 class Sample;
@@ -15,7 +19,9 @@ public:
 	float gain;
 	float pitch;
 	
-	Source(const Sample * sample, const bool loop = false, const v3<float> &delta = v3<float>(), float gain = 1, float pitch = 1);
+	Source(const Sample * sample, const bool loop = false, const v3<float> &delta = v3<float>(), float gain = 1, float pitch = 0);
+
+	float process(mrt::Chunk &buffer, unsigned ch, const v3<float> &position);
 
 private: 
 	int position;
