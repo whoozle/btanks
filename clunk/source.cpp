@@ -7,17 +7,67 @@
 using namespace clunk;
 Source::Source(const Sample * sample, const bool loop, const v3<float> &delta, float gain, float pitch) : 
 	sample(sample), loop(loop), delta_position(delta), gain(gain), pitch(pow(2.0, pitch)), position(0) {}
+	
+float Source::idt(const v3<float> &delta) {
+	float head_r = 0.09554140127388535032f;
+
+	float direction = M_PI_2;
+	float angle = direction - atan2f(delta.y, delta.x);
+	float angle_gr = angle * 180 / M_PI;
+	while (angle_gr < 0)
+		angle_gr += 360;
+	
+	//LOG_DEBUG(("relative position = (%g,%g,%g), angle = %g (%g)", delta.x, delta.y, delta.z, angle, angle_gr));
+	
+	float idt_angle = angle;
+	while (idt_angle < 0)
+		idt_angle += 2 * M_PI;
+	while(idt_angle > 2 * M_PI)
+		idt_angle -= 2 * M_PI;
+
+	if (idt_angle >= M_PI_2 && idt_angle < M_PI) {
+		idt_angle = M_PI - idt_angle;
+	} else if (idt_angle >= M_PI && idt_angle < 3 * M_PI_2) {
+		idt_angle = M_PI - idt_angle;
+	} else if (idt_angle >= 3 * M_PI_2) {
+		idt_angle -= M_PI * 2;
+	}
+
+	//printf("idt_angle = %g (%d)\n", idt_angle, (int)(idt_angle * 180 / M_PI));
+	float idt_offset = head_r / 343 * (idt_angle + sin(idt_angle));
+	//printf("idt_offset %g", idt_offset);
+	return idt_offset;
+}
+
+Sint16 Source::get(int sample_idx) const {
+	unsigned src_ch = sample->spec.channels; 
+	unsigned src_n = sample->data_len / src_ch / 2;
+
+	if (!loop && sample_idx < 0 || sample_idx >= src_n)
+		return 0;
+	
+	sample_idx %= src_n;
+	if (sample_idx < 0)	
+		sample_idx += src_n;
+	
+	const Sint16 * src = (const Sint16 *)sample->data_ptr;
+	int v = 0;
+	for(unsigned c = 0; c < src_ch; ++c) 
+		v += src[sample_idx * src_ch + c];
+	v /= src_ch;
+	return v;
+}
 
 float Source::process(mrt::Chunk &buffer, unsigned dst_ch, const v3<float> &delta_position) {
 	LOG_DEBUG(("delta position: %g %g", delta_position.x, delta_position.y));
 	float r2 = delta_position.quick_length();
 	if (r2 < 1)
 		r2 = 1;
-	float v = gain / r2;
-	if (v < 0)
+	float vol = gain / r2;
+	if (vol < 0)
 		return 0;
-	if (v > 1)
-		v = 1;
+	if (vol > 1)
+		vol = 1;
 	
 	Sint16 * src = (Sint16*) sample->data_ptr;
 	if (src == NULL)
@@ -29,22 +79,18 @@ float Source::process(mrt::Chunk &buffer, unsigned dst_ch, const v3<float> &delt
 	unsigned dst_n = buffer.getSize() / dst_ch / 2;
 	unsigned src_n = sample->data_len / src_ch / 2;
 	
+	int sample_offset = (int)(idt(delta_position) * sample->spec.freq);
+	LOG_DEBUG(("idt offset %d samples", sample_offset));
+	
 	for(unsigned i = 0; i < dst_n; ++i) {
-		int p = (position + (int)(i * pitch)) % src_n;
-		if (p < 0)
-			p += src_n;
-		
-		Sint16 *src_v = src + p * src_ch;
-		int v = 0;
-		for(unsigned c = 0; c < src_ch; ++c) {
-			v += src_v[c];
-		}
-		v /= src_ch; //mono sample.
 		for(unsigned c = 0; c < dst_ch; ++c) {
-			dst[i * dst_ch + c] = v;
-			//LOG_DEBUG(("%u -> %d", i * dst_ch + c,  v));
+			int p = (position + (int)(i * pitch)) % src_n;
+			if (p < 0)
+				p += src_n;
+		
+			//dst[i * dst_ch + c] = v;
 		}
 	}
 	position += ((int)(dst_n * pitch)) % src_n;
-	return v;
+	return vol;
 }
