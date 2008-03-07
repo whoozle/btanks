@@ -9,6 +9,7 @@ Source::Source(const Sample * sample, const bool loop, const v3<float> &delta, f
 	sample(sample), loop(loop), delta_position(delta), gain(gain), pitch(pow(2.0, pitch)), position(0) {}
 
 float Source::process(mrt::Chunk &buffer, unsigned dst_ch, const v3<float> &delta_position) {
+	LOG_DEBUG(("delta position: %g %g", delta_position.x, delta_position.y));
 	float r2 = delta_position.quick_length();
 	if (r2 < 1)
 		r2 = 1;
