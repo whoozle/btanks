@@ -8,17 +8,9 @@
 #include <assert.h>
 #include <math.h>
 #include <map>
+#include "locker.h"
 
 using namespace clunk;
-
-struct AudioLocker {
-	AudioLocker () {
-		SDL_LockAudio();
-	}
-	~AudioLocker() {
-		SDL_UnlockAudio();
-	}
-};
 
 Context::Context() : period_size(0), max_sources(8) {
 }

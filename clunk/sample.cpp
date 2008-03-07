@@ -4,12 +4,15 @@
 #include "sdl_ex.h"
 #include "context.h"
 #include <math.h>
+#include "locker.h"
 
 using namespace clunk;
 
 Sample::Sample(Context *context) : context(context) {}
 
 void Sample::generateSine(const int freq, const float len) {
+	AudioLocker l;
+	
 	spec.freq = context->get_spec().freq;
 	spec.channels = 1;
 	spec.format = context->get_spec().format;
@@ -36,6 +39,8 @@ void Sample::generateSine(const int freq, const float len) {
 }
 
 void Sample::init(const mrt::Chunk &data, int rate, const Uint16 format, const Uint8 channels) {
+	AudioLocker l;
+
 	SDL_RWops *op = SDL_RWFromConstMem(data.getPtr(), data.getSize());
 	if (op == NULL)
 		throw_sdl(("SDL_RWFromConstMem"));
