@@ -5,9 +5,9 @@ using namespace clunk;
 
 Object::Object(Context *context) : context(context) {}
 
-void Object::updatePV(const v3<float> &pos, const v3<float> &vel) {
-	this->pos = pos;
-	this->vel = vel;
+void Object::update(const v3<float> &pos, const v3<float> &vel) {
+	position = pos;
+	velocity = vel;
 }
 
 void Object::add(Source *source) {

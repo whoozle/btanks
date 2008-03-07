@@ -14,7 +14,7 @@ class CLUNKAPI Sample {
 public: 
 	~Sample();
 	void init(const mrt::Chunk &data, int rate, const Uint16 format, const Uint8 channels);
-	void generateSine(const int freq);
+	void generateSine(const int freq, const float len);
 	
 private: 	
 	friend class Context;

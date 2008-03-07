@@ -4,35 +4,68 @@
 #include <string.h>
 #include "sdl_ex.h"
 #include "mrt/logger.h"
+#include "source.h"
 #include <assert.h>
 #include <math.h>
+#include <map>
 
 using namespace clunk;
 
-Context::Context() : period_size(0) {
+struct AudioLocker {
+	AudioLocker () {
+		SDL_LockAudio();
+	}
+	~AudioLocker() {
+		SDL_UnlockAudio();
+	}
+};
+
+Context::Context() : period_size(0), max_sources(8) {
 }
 
 void Context::callback(void *userdata, Uint8 *bstream, int len) {
 	Context *self = (Context *)userdata;
 	assert(self != NULL);
-	//LOG_DEBUG(("requested %d bytes!", len));
 	Sint16 *stream = (Sint16*)bstream;
+	TRY {
+		self->process(stream, len);
+	} CATCH("callback", )
+}
+
+void Context::process(Sint16 *stream, int size) {
+	typedef std::multimap<const float, Source *> sources_type;
+	sources_type sources;
 	
-	static double a = 0;
-	double da = 440 * 2 * M_PI / self->spec.freq;
-	//LOG_DEBUG(("da = %g", da));
-	
-	int n = len / 2 / self->spec.channels;
-	for(int i = 0; i < n; ++i) {
-		*stream++ = (Sint16)(32767 * sin(a));
-		*stream++ = (Sint16)(32767 * sin(a + self->spec.freq / 10.0)); //sample delay
-		//*stream++ = 0;
-		a += da;
+	for(objects_type::iterator i = objects.begin(); i != objects.end(); ++i) {
+		Object *o = *i;
+		v3<float> base = o->position;
+		std::set<Source *> & sset = o->sources;
+		for(std::set<Source *>::iterator j = sset.begin(); j != sset.end(); ++j) {
+			Source *s = *j;
+			v3<float> position = base + s->delta_position;
+			float dist = position.distance(base);
+			if (sources.size() < max_sources) {
+				sources.insert(sources_type::value_type(dist, s));
+			} else {
+				if (sources.rbegin()->first <= dist) 
+					continue;
+				//sources.erase(sources.rbegin());
+				sources.insert(sources_type::value_type(dist, s));
+			}
+		}
+	}
+	std::vector<Source *> lsources;
+	sources_type::iterator j = sources.begin();
+	for(unsigned i = 0; i < max_sources; ++i, ++j) {
+		lsources.push_back(j->second);
 	}
 }
 
+
 Object *Context::create_object() {
-	return new Object(this);
+	Object *o = new Object(this);
+	objects.insert(o);
+	return o;
 }
 
 Sample *Context::create_sample() {
@@ -62,7 +95,7 @@ void Context::init(const int sample_rate, const Uint8 channels, int period_size)
 }
 
 void Context::delete_object(Object *o) {
-	//blah blah
+	objects.erase(o);
 }
 
 void Context::deinit() {

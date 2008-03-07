@@ -12,7 +12,7 @@ class Source;
 class CLUNKAPI Object {
 public: 
 	~Object();
-	void updatePV(const v3<float> &pos, const v3<float> &vel);
+	void update(const v3<float> &pos, const v3<float> &vel);
 
 	void add(Source *source);
 	void remove(Source *source);
@@ -22,7 +22,7 @@ private:
 	friend class Context;
 	Object(Context *context);
 	Context *context;
-	v3<float> pos, vel;
+	v3<float> position, velocity;
 
 	std::set<Source *> sources;
 };

@@ -22,6 +22,9 @@ public:
 	const SDL_AudioSpec & get_spec() const {
 		return spec;
 	}
+	
+	void process(Sint16 *stream, int len);
+
 private: 
 	SDL_AudioSpec spec;
 	int period_size;
@@ -31,6 +34,12 @@ private:
 
 	friend clunk::Object::~Object();
 	friend clunk::Sample::~Sample();
+	
+	typedef std::set<Object *> objects_type;
+	objects_type objects;
+
+	v3<float> listener;
+	unsigned max_sources;
 };
 }
 
