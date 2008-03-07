@@ -51,6 +51,9 @@ const Chunk& Chunk::operator=(const Chunk& c) {
 }
 
 void Chunk::setSize(size_t s) {
+	if (s == size)
+		return;
+	
 	if (s == 0) {
 		free();
 		return;
