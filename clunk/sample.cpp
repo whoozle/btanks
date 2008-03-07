@@ -35,6 +35,7 @@ void Sample::generateSine(const int freq, const float len) {
 	}
 	data_ptr = (Uint8 *)data.getPtr();
 	data_len = size;
+	LOG_DEBUG(("generated %u bytes", data_len));
 	data.unlink();
 }
 
