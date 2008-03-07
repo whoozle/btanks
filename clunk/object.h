@@ -3,7 +3,7 @@
 
 #include "export_clunk.h"
 #include "v3.h"
-#include <deque>
+#include <set>
 
 namespace clunk {
 class Context;
@@ -13,7 +13,10 @@ class CLUNKAPI Object {
 public: 
 	~Object();
 	void updatePV(const v3<float> &pos, const v3<float> &vel);
+
 	void add(Source *source);
+	void remove(Source *source);
+	void remove_all();
 
 private: 
 	friend class Context;
@@ -21,7 +24,7 @@ private:
 	Context *context;
 	v3<float> pos, vel;
 
-	std::deque<Source *> sources;
+	std::set<Source *> sources;
 };
 }
 

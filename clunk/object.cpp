@@ -11,7 +11,15 @@ void Object::updatePV(const v3<float> &pos, const v3<float> &vel) {
 }
 
 void Object::add(Source *source) {
-	sources.push_back(source);
+	sources.insert(source);
+}
+
+void Object::remove(Source *source) {
+	sources.erase(source);
+}
+
+void Object::remove_all() {
+	sources.clear();
 }
 
 Object::~Object() {
