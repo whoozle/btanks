@@ -19,7 +19,7 @@ if sys.platform != 'win32':
 env.MergeFlags(sdl_cflags, sdl_libs)
 
 clunk = env.SharedLibrary('clunk', 
-	['context.cpp', 'sample.cpp', 'object.cpp', 'sdl_ex.cpp'], 
+	['context.cpp', 'sample.cpp', 'object.cpp', 'source.cpp', 'sdl_ex.cpp'], 
 	LIBS=['m', 'SDL', 'mrt'])
 Install('#', clunk[0])
 

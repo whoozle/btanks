@@ -10,6 +10,10 @@ void Object::updatePV(const v3<float> &pos, const v3<float> &vel) {
 	this->vel = vel;
 }
 
+void Object::add(Source *source) {
+	sources.push_back(source);
+}
+
 Object::~Object() {
 	context->delete_object(this);
 }
