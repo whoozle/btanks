@@ -76,10 +76,13 @@ float Source::process(mrt::Chunk &buffer, unsigned dst_ch, const v3<float> &delt
 		throw_ex(("uninitialized sample used (%p)", (void *)sample));
 
 	unsigned src_ch = sample->spec.channels; 
-	Sint16 * dst = (Sint16*) buffer.getPtr();
-	
-	unsigned dst_n = buffer.getSize() / dst_ch / 2;
 	unsigned src_n = sample->data_len / src_ch / 2;
+	if (position >= (int)src_n) {
+		return 0;
+	}
+
+	Sint16 * dst = (Sint16*) buffer.getPtr();
+	unsigned dst_n = buffer.getSize() / dst_ch / 2;
 	
 	int idt_offset = (int)(idt(delta_position) * sample->spec.freq);
 	LOG_DEBUG(("idt offset %d samples", idt_offset));
@@ -102,10 +105,12 @@ float Source::process(mrt::Chunk &buffer, unsigned dst_ch, const v3<float> &delt
 		}
 	}
 	position += ((int)(dst_n * pitch));
-
-	position %= src_n;
-	if (position < 0)
-		position += src_n;
+	if (loop) {
+		position %= src_n;
+		LOG_DEBUG(("position %d", position));
+		if (position < 0)
+			position += src_n;
+	}
 	
 	return vol;
 }
