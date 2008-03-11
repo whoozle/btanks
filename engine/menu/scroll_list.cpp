@@ -405,3 +405,7 @@ void ScrollList::sort() {
 		}
 	}
 }
+
+void ScrollList::setHLColor(int r, int g, int b, int a) {
+	_background.setHLColor(r, g, b, a);
+}

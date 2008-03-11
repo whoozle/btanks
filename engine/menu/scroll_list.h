@@ -32,6 +32,7 @@ public:
 	ScrollList(const std::string &background, const std::string &font, const int w, const int h, const int spacing = 3, const int hl_h = 24);
 	
 	void initBG(const std::string &background, const int w, const int h, const int hl_h = 0);
+	void setHLColor(int r, int g, int b, int a);
 	
 	virtual void clear();
 	virtual void append(const std::string &item);

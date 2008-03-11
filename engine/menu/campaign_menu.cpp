@@ -70,6 +70,7 @@ CampaignMenu::CampaignMenu(MainMenu *parent, const int w, const int h) : _parent
 	
 	_maps = new ScrollList("menu/background_box_dark.png", "medium", panel_w, h - map_base - 6 * my - panel_h, 5, 138);
 	_maps->setAlign(ScrollList::AlignCenter);
+	_maps->setHLColor(255, 0, 0, 0x66);
 	int sw, sh;
 	_maps->getSize(sw, sh);
 	add(w - sw - 2 * mx - mx / 2, map_base + my, _maps);
