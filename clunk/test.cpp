@@ -1,6 +1,13 @@
+#define _USE_MATH_DEFINES
+#include <math.h>
 #include "mrt/exception.h"
 #include <stdlib.h>
 #include "clunk.h"
+
+#ifdef _WINDOWS
+#	include <Windows.h>
+#	define usleep(x) Sleep( (x) / 1000 )
+#endif
 
 int main() {
 	TRY {

@@ -1,3 +1,5 @@
+#define _USE_MATH_DEFINES
+#include <math.h>
 #include "source.h"
 #include <SDL.h>
 #include "mrt/exception.h"
@@ -6,7 +8,7 @@
 
 using namespace clunk;
 Source::Source(const Sample * sample, const bool loop, const v3<float> &delta, float gain, float pitch) : 
-	sample(sample), loop(loop), delta_position(delta), gain(gain), pitch(pow(2.0, pitch)), position(0) {}
+	sample(sample), loop(loop), delta_position(delta), gain(gain), pitch(pow(2.0f, pitch)), position(0) {}
 	
 float Source::idt(const v3<float> &delta) {
 	float head_r = 0.09554140127388535032f;

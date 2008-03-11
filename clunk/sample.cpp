@@ -1,9 +1,10 @@
+#define _USE_MATH_DEFINES
+#include <math.h>
 #include <SDL_rwops.h>
 #include "sample.h"
 #include "mrt/chunk.h"
 #include "sdl_ex.h"
 #include "context.h"
-#include <math.h>
 #include "locker.h"
 
 using namespace clunk;
