@@ -41,25 +41,6 @@ float Source::idt(const v3<float> &delta) {
 	return idt_offset;
 }
 
-Sint16 Source::get(int sample_idx) const {
-	unsigned src_ch = sample->spec.channels; 
-	int src_n = sample->data_len / src_ch / 2;
-
-	if (!loop && sample_idx < 0 || sample_idx >= src_n)
-		return 0;
-	
-	sample_idx %= src_n;
-	if (sample_idx < 0)	
-		sample_idx += src_n;
-	
-	const Sint16 * src = (const Sint16 *)sample->data_ptr;
-	int v = 0;
-	for(unsigned c = 0; c < src_ch; ++c) 
-		v += src[sample_idx * src_ch + c];
-	v /= src_ch;
-	return v;
-}
-
 float Source::process(mrt::Chunk &buffer, unsigned dst_ch, const v3<float> &delta_position) {
 	LOG_DEBUG(("delta position: %g %g", delta_position.x, delta_position.y));
 	float r2 = delta_position.quick_length();
@@ -99,7 +80,14 @@ float Source::process(mrt::Chunk &buffer, unsigned dst_ch, const v3<float> &delt
 				} else if (!left && idt_offset < 0) {
 					p += idt_offset;
 				}
-				v = get(p);
+				
+				if (loop || p >= 0 || p < (int)src_n) {
+					p %= src_n;
+					if (p < 0)	
+						p += src_n;
+	
+					v = src[p * src_ch]; //always first channel, 3d sounds must be mono. fixme :)
+				}
 			}
 			dst[i * dst_ch + c] = v;
 		}

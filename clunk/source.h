@@ -25,7 +25,6 @@ public:
 	float process(mrt::Chunk &buffer, unsigned ch, const v3<float> &position);
 
 private: 
-	Sint16 get(int sample_idx) const;
 
 	float idt(const v3<float> &delta);
 
