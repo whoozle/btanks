@@ -222,7 +222,7 @@ LUA_TRY {
 		return 0;	
 	} 
 
-	lua_pushstring(L, mrt::formatString("object_property: unknown property %s", prop.c_str()).c_str());
+	lua_pushstring(L, mrt::formatString("set_object_property: unknown property %s", prop.c_str()).c_str());
 	lua_error(L);
 	return 0;
 	
