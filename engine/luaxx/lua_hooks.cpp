@@ -195,6 +195,40 @@ LUA_TRY {
 } LUA_CATCH("lua_hooks_object_property")	
 }
 
+static int lua_hooks_set_object_property(lua_State *L) {
+LUA_TRY {
+	int n = lua_gettop(L);
+	if (n < 3) {
+		lua_pushstring(L, "object_property requires object id, property name and value");
+		lua_error(L);
+		return 0;
+	}
+	int id = lua_tointeger(L, 1);
+	Object *o = World->getObjectByID(id);
+	if (o == NULL) {
+		return 0;
+	}
+	const char *cprop = lua_tostring(L, 2);
+	if (cprop == NULL)
+		throw_ex(("property argument could not be converted to string"));
+
+	std::string prop = cprop;
+	if (prop == "animation") {
+		const char *value = lua_tostring(L, 3);
+		if (value == NULL)
+			throw_ex(("property value for '%s' could not be converted to string", cprop));
+		
+		o->init(value);
+		return 0;	
+	} 
+
+	lua_pushstring(L, mrt::formatString("object_property: unknown property %s", prop.c_str()).c_str());
+	lua_error(L);
+	return 0;
+	
+} LUA_CATCH("lua_hooks_set_object_property")
+}
+
 static int lua_hooks_set_slot_property(lua_State *L) {
 LUA_TRY {
 	int n = lua_gettop(L);
@@ -1235,6 +1269,7 @@ void LuaHooks::load(const std::string &name) {
 	lua_register(state, "spawn_random", lua_hooks_spawn_random);
 	lua_register(state, "object_exists", lua_hooks_object_exists);
 	lua_register(state, "object_property", lua_hooks_object_property);
+	lua_register(state, "set_object_property", lua_hooks_set_object_property);
 	lua_register(state, "kill_object", lua_hooks_kill_object);
 	lua_register(state, "add_effect", lua_hooks_add_effect);
 	lua_register(state, "remove_effect", lua_hooks_remove_effect);
