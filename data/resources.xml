@@ -812,38 +812,38 @@
 	
 	<object class="cannon" mass="1000" hp="50" z="200" impassability="1" />
 
-	<object class="tank" speed="400" mass="500" hp="80" z="0" />
+	<object class="tank" speed="360" mass="500" hp="80" z="0" />
 	<object class="static-tank" parent="tank" z="0" />
-	<object class="launcher" speed="500" mass="400" hp="50" z="0" />
+	<object class="launcher" speed="450" mass="400" hp="50" z="0" />
 	<object class="static-launcher" parent="launcher" z="0" />
-	<object class="shilka" speed="450" mass="400" hp="60" z="0" />
+	<object class="shilka" speed="400" mass="400" hp="60" z="0" />
 	<object class="static-shilka" parent="shilka" z="0" />
-	<object class="mortar" speed="100" mass="400" hp="100" z="0" />
+	<object class="mortar" speed="90" mass="400" hp="100" z="0" />
 	<object class="static-mortar" parent="mortar" />
 
-	<object class="bullet" speed="1100" mass="2" ttl="0.5818" hp="10" z="210" />
+	<object class="bullet" speed="1000" mass="2" ttl="0.5818" hp="10" z="210" />
 	<object class="tank-bullet" parent="bullet" />
-	<object class="ricochet-bullet" speed="1100" mass="2" ttl="1.5" hp="10" z="210" />
-	<object class="dispersion-bullet" speed="1000" mass="2" ttl="0.4" hp="10" z="210" />
-	<object class="machinegunner-bullet" speed="1100" mass="2" ttl="0.5818" hp="2" z="210" />
+	<object class="ricochet-bullet" speed="1000" mass="2" ttl="1.5" hp="10" z="210" />
+	<object class="dispersion-bullet" speed="900" mass="2" ttl="0.4" hp="10" z="210" />
+	<object class="machinegunner-bullet" speed="1000" mass="2" ttl="0.5818" hp="2" z="210" />
 	<object class="vehicle-machinegunner-bullet" parent="machinegunner-bullet" hp="10" />
-	<object class="dirt-bullet" speed="600" ttl="0.5" hp="0" z="-10" />
-	<object class="cannon-bullet" speed="600" ttl="1" hp="0" z="-10" />
-	<object class="shilka-bullet" speed="1200" piercing="true" ttl="0.5333" hp="10" z="210" />
-	<object class="mortar-bullet" speed="600" ttl="0.7" hp="0" z="210" />
-	<object class="grenade" speed="600" ttl="0.5" hp="0" z="210" />
-	<object class="helicopter-bullet" speed="1200" ttl="0.5333" hp="10" z="-10" />
-	<object class="buggy-bullet" speed="1200" ttl="0.5333" hp="10" z="210" />
-	<object class="slime-acid" speed="600" ttl="0.9" hp="10" z="-10" />
+	<object class="dirt-bullet" speed="550" ttl="0.5" hp="0" z="-10" />
+	<object class="cannon-bullet" speed="550" ttl="1" hp="0" z="-10" />
+	<object class="shilka-bullet" speed="1100" piercing="true" ttl="0.5333" hp="10" z="210" />
+	<object class="mortar-bullet" speed="550" ttl="0.7" hp="0" z="210" />
+	<object class="grenade" speed="550" ttl="0.5" hp="0" z="210" />
+	<object class="helicopter-bullet" speed="1100" ttl="0.5333" hp="10" z="-10" />
+	<object class="buggy-bullet" speed="1100" ttl="0.5333" hp="10" z="210" />
+	<object class="slime-acid" speed="500" ttl="0.9" hp="10" z="-10" />
 
-	<object class="guided-missile" speed="450" mass="100" ttl="5" hp="15" z="250" />
-	<object class="thrower-missile" speed="450" mass="30" ttl="2.5" hp="5" z="250" />
+	<object class="guided-missile" speed="400" mass="100" ttl="5" hp="15" z="250" />
+	<object class="thrower-missile" speed="400" mass="30" ttl="2.5" hp="5" z="250" />
 	<object class="smoke-missile" speed="450" mass="100" ttl="1" hp="0" z="250" />
-	<object class="dumb-missile" speed="600" mass="100" ttl="10" hp="40" z="250" />
-	<object class="nuke-missile" speed="150" mass="100" ttl="3" hp="1000" z="250" />
-	<object class="boomerang-missile" speed="500" mass="100" hp="15" z="250" />
-	<object class="stun-missile" speed="600" mass="100" ttl="5" hp="0" z="250" />
-	<object class="ballistic-missile" speed="1000" mass="100" hp="-1" z="-1" impassability="0"/>
+	<object class="dumb-missile" speed="550" mass="100" ttl="10" hp="40" z="250" />
+	<object class="nuke-missile" speed="135" mass="100" ttl="3" hp="1000" z="250" />
+	<object class="boomerang-missile" speed="450" mass="100" hp="15" z="250" />
+	<object class="stun-missile" speed="550" mass="100" ttl="5" hp="0" z="250" />
+	<object class="ballistic-missile" speed="900" mass="100" hp="-1" z="-1" impassability="0"/>
 	<object class="ballistic-missile-target" speed="100" z="-5" impassability="0" />
 	<object class="static-target" parent="ballistic-missile-target" />
 
