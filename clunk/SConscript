@@ -22,7 +22,10 @@ if sys.platform != 'win32':
 env.MergeFlags(sdl_cflags, sdl_libs)
 
 clunk = env.SharedLibrary('clunk', 
-	['context.cpp', 'sample.cpp', 'object.cpp', 'source.cpp', 'sdl_ex.cpp'], 
+	[
+		'context.cpp', 'sample.cpp', 'object.cpp', 'source.cpp', 'sdl_ex.cpp', 'kemar.c', 
+		'kiss/kiss_fftr.c', 'kiss/kiss_fft.c', 
+	], 
 	LIBS=clunk_libs)
 Install('#', clunk[0])
 
