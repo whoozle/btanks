@@ -41,6 +41,14 @@ float Source::idt(const v3<float> &delta) {
 	return idt_offset;
 }
 
+#define WINDOW_SIZE 512
+
+void Source::hrtf(mrt::Chunk &data, unsigned dst_n, const Sint16 *src, unsigned src_ch, unsigned src_n, const v3<float> &delta_position) {
+	assert(position >= 0 && position < (int)src_n && dst_n != 0);
+	unsigned n = (dst_n - 1) / WINDOW_SIZE + 1;
+	LOG_DEBUG(("fft windows: %u", n));
+}
+
 float Source::process(mrt::Chunk &buffer, unsigned dst_ch, const v3<float> &delta_position) {
 	LOG_DEBUG(("delta position: %g %g", delta_position.x, delta_position.y));
 	float r2 = delta_position.quick_length();
@@ -52,9 +60,12 @@ float Source::process(mrt::Chunk &buffer, unsigned dst_ch, const v3<float> &delt
 	if (vol > 1)
 		vol = 1;
 	
-	Sint16 * src = (Sint16*) sample->data_ptr;
+	const Sint16 * src = (Sint16*) sample->data_ptr;
 	if (src == NULL)
 		throw_ex(("uninitialized sample used (%p)", (void *)sample));
+	if (pitch < 0)
+		throw_ex(("pitch %g could not be negative", pitch));
+		
 
 	unsigned src_ch = sample->spec.channels; 
 	unsigned src_n = sample->data_len / src_ch / 2;
@@ -64,6 +75,9 @@ float Source::process(mrt::Chunk &buffer, unsigned dst_ch, const v3<float> &delt
 
 	Sint16 * dst = (Sint16*) buffer.getPtr();
 	unsigned dst_n = buffer.getSize() / dst_ch / 2;
+
+	mrt::Chunk sample3d;
+	hrtf(sample3d, dst_n, src, src_ch, src_n, delta_position);
 	
 	int idt_offset = (int)(idt(delta_position) * sample->spec.freq);
 	//LOG_DEBUG(("idt offset %d samples", idt_offset));
@@ -75,9 +89,9 @@ float Source::process(mrt::Chunk &buffer, unsigned dst_ch, const v3<float> &delt
 			Sint16 v = 0;
 			if (c <= 1) {
 				bool left = c == 0;
-				if (left && idt_offset > 0) {
+				if (!left && idt_offset > 0) {
 					p -= idt_offset;
-				} else if (!left && idt_offset < 0) {
+				} else if (left && idt_offset < 0) {
 					p += idt_offset;
 				}
 				

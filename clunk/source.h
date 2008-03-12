@@ -27,6 +27,7 @@ public:
 private: 
 
 	float idt(const v3<float> &delta);
+	void hrtf(mrt::Chunk &data, unsigned dst_n, const Sint16 *src, unsigned src_ch, unsigned src_n, const v3<float> &position);
 
 	int position;
 };
