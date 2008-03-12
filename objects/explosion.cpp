@@ -77,7 +77,9 @@ void Explosion::tick(const float dt) {
 			!_damage_done && getStateProgress() >= dma && state != "start"
 		) {
 		_damage_done = true;
-		damageMap();
+	
+		if (registered_name != "mutagen-explosion")
+			damageMap();
 	}
 
 	if (state.empty()) {	
