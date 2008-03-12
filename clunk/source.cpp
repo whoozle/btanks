@@ -66,7 +66,7 @@ float Source::process(mrt::Chunk &buffer, unsigned dst_ch, const v3<float> &delt
 	unsigned dst_n = buffer.getSize() / dst_ch / 2;
 	
 	int idt_offset = (int)(idt(delta_position) * sample->spec.freq);
-	LOG_DEBUG(("idt offset %d samples", idt_offset));
+	//LOG_DEBUG(("idt offset %d samples", idt_offset));
 	
 	for(unsigned i = 0; i < dst_n; ++i) {
 		for(unsigned c = 0; c < dst_ch; ++c) {
@@ -95,7 +95,7 @@ float Source::process(mrt::Chunk &buffer, unsigned dst_ch, const v3<float> &delt
 	position += ((int)(dst_n * pitch));
 	if (loop) {
 		position %= src_n;
-		LOG_DEBUG(("position %d", position));
+		//LOG_DEBUG(("position %d", position));
 		if (position < 0)
 			position += src_n;
 	}
