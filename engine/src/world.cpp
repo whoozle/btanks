@@ -1663,8 +1663,11 @@ const bool IWorld::attachVehicle(Object *object, Object *vehicle) {
 }
 
 const bool IWorld::detachVehicle(Object *object) {
+	if (object == NULL)
+		throw_ex(("detachVehicle(NULL) is prohibited"));
+	
 	PlayerSlot * slot = PlayerManager->getSlotByID(object->getID());
-	if (slot == NULL || 
+	if (slot == NULL || object->classname == "monster" ||
 		(object->disable_ai && 
 			(object->registered_name == "machinegunner" || object->registered_name == "civilian")
 	   )) 
