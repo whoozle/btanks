@@ -51,6 +51,12 @@ void Source::hrtf(mrt::Chunk &data, unsigned dst_n, const Sint16 *src, unsigned 
 
 float Source::process(mrt::Chunk &buffer, unsigned dst_ch, const v3<float> &delta_position) {
 	LOG_DEBUG(("delta position: %g %g", delta_position.x, delta_position.y));
+	
+	kemar_ptr kemar_data;
+	int angles;
+	get_kemar_data(kemar_data, angles, delta_position);
+	LOG_DEBUG(("data: %p, angles: %d", (void *) kemar_data, angles));
+	
 	float r2 = delta_position.quick_length();
 	if (r2 < 1)
 		r2 = 1;
@@ -115,4 +121,60 @@ float Source::process(mrt::Chunk &buffer, unsigned dst_ch, const v3<float> &delt
 	}
 	
 	return vol;
+}
+
+#include "kemar.h"
+
+void Source::get_kemar_data(kemar_ptr & kemar_data, int & elev_n, const v3<float> &pos) {
+	
+	int elev_gr = (int)(180 * atan2(pos.z, sqrt(pos.x * pos.x + pos.y * pos.y)) / M_PI);
+
+	kemar_data = NULL;
+	elev_n = 0;
+	if (pos.is0())
+		return;
+
+	if (elev_gr < -35) {
+		kemar_data = elev_m40;
+		elev_n = ELEV_M40_N;
+	} else if (elev_gr < -25) {
+		kemar_data = elev_m30;
+		elev_n = ELEV_M30_N;
+	} else if (elev_gr < -15) {
+		kemar_data = elev_m20;
+		elev_n = ELEV_M20_N;
+	} else if (elev_gr < -5) {
+		kemar_data = elev_m10;
+		elev_n = ELEV_M10_N;
+	} else if (elev_gr < 5) {
+		kemar_data = elev_0;
+		elev_n = ELEV_0_N;
+	} else if (elev_gr < 15) {
+		kemar_data = elev_10;
+		elev_n = ELEV_10_N;
+	} else if (elev_gr < 25) {
+		kemar_data = elev_20;
+		elev_n = ELEV_20_N;
+	} else if (elev_gr < 35) {
+		kemar_data = elev_30;
+		elev_n = ELEV_30_N;
+	} else if (elev_gr < 45) {
+		kemar_data = elev_40;
+		elev_n = ELEV_40_N;
+	} else if (elev_gr < 55) {
+		kemar_data = elev_50;
+		elev_n = ELEV_50_N;
+	} else if (elev_gr < 65) {
+		kemar_data = elev_60;
+		elev_n = ELEV_60_N;
+	} else if (elev_gr < 75) {
+		kemar_data = elev_70;
+		elev_n = ELEV_70_N;
+	} else if (elev_gr < 85) {
+		kemar_data = elev_80;
+		elev_n = ELEV_80_N;
+	} else {
+		kemar_data = elev_90;
+		elev_n = ELEV_90_N;
+	}
 }
