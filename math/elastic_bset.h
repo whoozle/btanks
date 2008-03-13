@@ -60,7 +60,8 @@ public:
 		resize((value > 0)? ((value - 1) / sizeof(key_type) / 8 + 1): 1);
 		const unsigned bit = value % ( sizeof(key_type) * 8 );
 		const unsigned offset = value / sizeof(key_type) / 8;
-		assert(offset >= 0 && offset < size);
+		assert(offset >= 0);
+		assert(offset < size);
 		data[offset] |= ((key_type)1) << bit;
 		//printf("insert bit %u in byte %u\n", bit, offset);
 	}
