@@ -10,12 +10,13 @@ using namespace clunk;
 Source::Source(const Sample * sample, const bool loop, const v3<float> &delta, float gain, float pitch) : 
 	sample(sample), loop(loop), delta_position(delta), gain(gain), pitch(pow(2.0f, pitch)), position(0) {}
 	
-float Source::idt(const v3<float> &delta) {
+void Source::idt(const v3<float> &delta, float &idt_offset, float &angle_gr) {
 	float head_r = 0.09554140127388535032f;
 
 	float direction = M_PI_2;
 	float angle = direction - atan2f(delta.y, delta.x);
-	float angle_gr = angle * 180 / M_PI;
+	
+	angle_gr = angle * 180 / M_PI;
 	while (angle_gr < 0)
 		angle_gr += 360;
 	
@@ -36,9 +37,8 @@ float Source::idt(const v3<float> &delta) {
 	}
 
 	//printf("idt_angle = %g (%d)\n", idt_angle, (int)(idt_angle * 180 / M_PI));
-	float idt_offset = head_r / 343 * (idt_angle + sin(idt_angle));
+	idt_offset = head_r / 343 * (idt_angle + sin(idt_angle));
 	//printf("idt_offset %g", idt_offset);
-	return idt_offset;
 }
 
 #define WINDOW_SIZE 512
@@ -85,7 +85,9 @@ float Source::process(mrt::Chunk &buffer, unsigned dst_ch, const v3<float> &delt
 	mrt::Chunk sample3d;
 	hrtf(sample3d, dst_n, src, src_ch, src_n, delta_position);
 	
-	int idt_offset = (int)(idt(delta_position) * sample->spec.freq);
+	float t_idt, angle_gr;
+	idt(delta_position, t_idt, angle_gr);
+	int idt_offset = (int)(t_idt * sample->spec.freq);
 	//LOG_DEBUG(("idt offset %d samples", idt_offset));
 	
 	for(unsigned i = 0; i < dst_n; ++i) {

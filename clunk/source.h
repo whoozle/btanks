@@ -28,7 +28,7 @@ private:
 	typedef const float (*kemar_ptr)[2][512];
 	void get_kemar_data(kemar_ptr & kemar_data, int & samples, const v3<float> &delta_position);
 
-	float idt(const v3<float> &delta);
+	void idt(const v3<float> &delta, float &idt_offset, float &angle_gr);
 	void hrtf(mrt::Chunk &data, unsigned dst_n, const Sint16 *src, unsigned src_ch, unsigned src_n, const v3<float> &position);
 
 	int position;
