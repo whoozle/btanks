@@ -29,7 +29,7 @@ private:
 	void get_kemar_data(kemar_ptr & kemar_data, int & samples, const v3<float> &delta_position);
 
 	void idt(const v3<float> &delta, float &idt_offset, float &angle_gr);
-	void hrtf(mrt::Chunk &data, unsigned dst_n, const Sint16 *src, unsigned src_ch, unsigned src_n, const v3<float> &position);
+	void hrtf(mrt::Chunk &result, int dst_n, const Sint16 *src, int src_ch, int src_n, const kemar_ptr& kemar_data, int kemar_idx);
 
 	int position;
 };

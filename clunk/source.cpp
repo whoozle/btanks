@@ -42,11 +42,56 @@ void Source::idt(const v3<float> &delta, float &idt_offset, float &angle_gr) {
 }
 
 #define WINDOW_SIZE 512
+#include "kiss/kiss_fftr.h"
 
-void Source::hrtf(mrt::Chunk &data, unsigned dst_n, const Sint16 *src, unsigned src_ch, unsigned src_n, const v3<float> &delta_position) {
-	assert(position >= 0 && position < (int)src_n && dst_n != 0);
-	unsigned n = (dst_n - 1) / WINDOW_SIZE + 1;
-	LOG_DEBUG(("fft windows: %u", n));
+void Source::hrtf(mrt::Chunk &result, int dst_n, const Sint16 *src, int src_ch, int src_n, const kemar_ptr& kemar_data, int kemar_idx) {
+	kiss_fftr_cfg kiss_cfg = kiss_fftr_alloc(512, 0, NULL, NULL);
+	kiss_fftr_cfg kiss_cfg_i = kiss_fftr_alloc(512, 1, NULL, NULL);
+	
+	int n = (dst_n - 1) / WINDOW_SIZE;
+	result.setSize(2 * sizeof(kiss_fft_scalar) * WINDOW_SIZE * n);
+	Sint16 *dst = (Sint16 *)result.getPtr();
+	
+	for(int i = 0; i < n; ++i) {
+		kiss_fft_scalar src_data[WINDOW_SIZE];
+		kiss_fft_cpx freq[WINDOW_SIZE / 2 + 1];
+		//printf("fft #%d\n", i);
+		for(int j = 0; j < WINDOW_SIZE; ++j) {
+			int p = (int)(position + j * pitch);
+
+			int v = 0;
+			if (p >= 0 || p < src_n || loop) {
+				p %= src_n;
+				if (p < 0)
+					p += src_n;
+				v = src[p * src_ch];
+			}
+			src_data[j] = v / 32767.0;
+		}
+		
+		kiss_fftr(kiss_cfg, src_data, freq);
+		
+		//printf("kemar angle index: %d\n", idx);
+		for(int j = 0; j <= WINDOW_SIZE / 2; ++j) {
+			//float * dst = (ch == 0)?tr_left + pos:tr_right + pos;
+			float len = sqrt(freq[j].r * freq[j].r + freq[j].i * freq[j].i);
+				
+			float m = sqrt(pow10f(kemar_data[kemar_idx][0][j] * len / 20));
+			//printf("%d: multiplicator = %g, len: %g\n", j, m, len);
+			freq[j].r *= m;
+			freq[j].i *= m;
+			//printf("%g <--> %g\n", kemar_data[idx][0][j], elev_0[idx][1][j]);
+		}
+		kiss_fftri(kiss_cfg_i, freq, src_data);
+		for(int j = 0; j < WINDOW_SIZE; ++j) {
+			LOG_DEBUG(("%g", src_data[j]));
+			//tr[pos + j] /= 512; 
+			dst[i * WINDOW_SIZE + j] = (Sint16)(src_data[j] / WINDOW_SIZE * 32767);
+			//printf("%g,%g ", tr[pos + j], tr[pos + j] / 1024);
+		}
+	}
+	kiss_fft_free(kiss_cfg);
+	kiss_fft_free(kiss_cfg_i);
 }
 
 float Source::process(mrt::Chunk &buffer, unsigned dst_ch, const v3<float> &delta_position) {
@@ -55,6 +100,7 @@ float Source::process(mrt::Chunk &buffer, unsigned dst_ch, const v3<float> &delt
 	kemar_ptr kemar_data;
 	int angles;
 	get_kemar_data(kemar_data, angles, delta_position);
+	
 	LOG_DEBUG(("data: %p, angles: %d", (void *) kemar_data, angles));
 	
 	float r2 = delta_position.quick_length();
@@ -82,11 +128,15 @@ float Source::process(mrt::Chunk &buffer, unsigned dst_ch, const v3<float> &delt
 	Sint16 * dst = (Sint16*) buffer.getPtr();
 	unsigned dst_n = buffer.getSize() / dst_ch / 2;
 
-	mrt::Chunk sample3d;
-	hrtf(sample3d, dst_n, src, src_ch, src_n, delta_position);
-	
 	float t_idt, angle_gr;
 	idt(delta_position, t_idt, angle_gr);
+
+	const int kemar_idx = ((((int)angle_gr  + 180 / (int)angles)/ (360 / (int)angles)) % (int)angles);
+
+	mrt::Chunk sample3d;
+	hrtf(sample3d, dst_n, src, src_ch, src_n, kemar_data, kemar_idx);
+	
+	//LOG_DEBUG(("angle: %g", angle_gr));
 	int idt_offset = (int)(t_idt * sample->spec.freq);
 	//LOG_DEBUG(("idt offset %d samples", idt_offset));
 	
