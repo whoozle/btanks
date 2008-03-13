@@ -48,8 +48,8 @@ void Source::hrtf(mrt::Chunk &result, int dst_n, const Sint16 *src, int src_ch, 
 	kiss_fftr_cfg kiss_cfg = kiss_fftr_alloc(512, 0, NULL, NULL);
 	kiss_fftr_cfg kiss_cfg_i = kiss_fftr_alloc(512, 1, NULL, NULL);
 	
-	int n = (dst_n - 1) / WINDOW_SIZE;
-	result.setSize(2 * sizeof(kiss_fft_scalar) * WINDOW_SIZE * n);
+	int n = (dst_n - 1) / WINDOW_SIZE + 1;
+	result.setSize(2 * WINDOW_SIZE * n);
 	Sint16 *dst = (Sint16 *)result.getPtr();
 	
 	for(int i = 0; i < n; ++i) {
@@ -155,7 +155,7 @@ float Source::process(mrt::Chunk &buffer, unsigned dst_ch, const v3<float> &delt
 					p += idt_offset;
 				}
 				assert(p >= 0 && p * 2 < (int)sample3d.getSize());
-				v = src_3d[p]; //always first channel, 3d sounds must be mono. fixme :)
+				v = src_3d[p]; 
 				//LOG_DEBUG(("%d->%d", p, v));
 			}
 			dst[i * dst_ch + c] = v;
