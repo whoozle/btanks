@@ -251,7 +251,7 @@ void TilesetDialog::set(const int tileset) {
 	_tileset_bg->init("transparent_background_box.png", _current_tileset->getWidth(), _current_tileset->getHeight());
 }
 
-void TilesetDialog::render(sdlx::Surface &surface, const int x, const int y) {
+void TilesetDialog::render(sdlx::Surface &surface, const int x, const int y) const {
 	Container::render(surface, x, y);
 	if (_current_tileset == NULL)
 		return;

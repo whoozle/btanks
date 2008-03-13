@@ -445,6 +445,8 @@
 		<animation id="yellow-tank" />
 		<animation id="cyan-tank" />
 	</class>
+	<class id="static-target">
+	</class>
 	<class id="static-tractor">
 		<animation id="tractor" />
 	</class>

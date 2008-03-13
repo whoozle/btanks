@@ -19,7 +19,7 @@ class TilesetDialog : public Container {
 public:
 	TilesetDialog(const int w, const int h);
 	virtual bool onKey(const SDL_keysym sym);
-	virtual void render(sdlx::Surface &surface, const int x, const int y);
+	virtual void render(sdlx::Surface &surface, const int x, const int y) const;
 	virtual void getSize(int &w, int &h) const { w = _w; h = _h; }
 	
 	BaseBrush *getBrush();
