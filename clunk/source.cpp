@@ -84,7 +84,7 @@ void Source::hrtf(mrt::Chunk &result, int dst_n, const Sint16 *src, int src_ch, 
 		}
 		kiss_fftri(kiss_cfg_i, freq, src_data);
 		for(int j = 0; j < WINDOW_SIZE; ++j) {
-			LOG_DEBUG(("%g", src_data[j]));
+			//LOG_DEBUG(("%g", src_data[j]));
 			//tr[pos + j] /= 512; 
 			dst[i * WINDOW_SIZE + j] = (Sint16)(src_data[j] / WINDOW_SIZE * 32767);
 			//printf("%g,%g ", tr[pos + j], tr[pos + j] / 1024);
