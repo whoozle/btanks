@@ -71,7 +71,7 @@ void Source::hrtf(mrt::Chunk &result, int dst_n, const Sint16 *src, int src_ch, 
 		
 		kiss_fftr(kiss_cfg, src_data, freq);
 		
-		//printf("kemar angle index: %d\n", idx);
+		LOG_DEBUG(("kemar angle index: %d\n", kemar_idx));
 		for(int j = 0; j <= WINDOW_SIZE / 2; ++j) {
 			//float * dst = (ch == 0)?tr_left + pos:tr_right + pos;
 			float len = sqrt(freq[j].r * freq[j].r + freq[j].i * freq[j].i);
@@ -132,17 +132,19 @@ float Source::process(mrt::Chunk &buffer, unsigned dst_ch, const v3<float> &delt
 	idt(delta_position, t_idt, angle_gr);
 
 	const int kemar_idx = ((((int)angle_gr  + 180 / (int)angles)/ (360 / (int)angles)) % (int)angles);
+	int idt_offset = (int)(t_idt * sample->spec.freq);
 
 	mrt::Chunk sample3d;
-	hrtf(sample3d, dst_n, src, src_ch, src_n, kemar_data, kemar_idx);
+	int idt_abs = idt_offset > 0? idt_offset: -idt_offset;
+	hrtf(sample3d, dst_n + idt_abs, src, src_ch, src_n, kemar_data, kemar_idx);
 	
 	//LOG_DEBUG(("angle: %g", angle_gr));
-	int idt_offset = (int)(t_idt * sample->spec.freq);
 	//LOG_DEBUG(("idt offset %d samples", idt_offset));
+	Sint16 * src_3d = (Sint16 *)sample3d.getPtr();
 	
 	for(unsigned i = 0; i < dst_n; ++i) {
 		for(unsigned c = 0; c < dst_ch; ++c) {
-			int p = position + (int)(i * pitch);
+			int p = idt_abs + (int)(i * pitch);
 			
 			Sint16 v = 0;
 			if (c <= 1) {
@@ -152,14 +154,9 @@ float Source::process(mrt::Chunk &buffer, unsigned dst_ch, const v3<float> &delt
 				} else if (left && idt_offset < 0) {
 					p += idt_offset;
 				}
-				
-				if (loop || p >= 0 || p < (int)src_n) {
-					p %= src_n;
-					if (p < 0)	
-						p += src_n;
-	
-					v = src[p * src_ch]; //always first channel, 3d sounds must be mono. fixme :)
-				}
+				assert(p >= 0 && p * 2 < (int)sample3d.getSize());
+				v = src_3d[p]; //always first channel, 3d sounds must be mono. fixme :)
+				//LOG_DEBUG(("%d->%d", p, v));
 			}
 			dst[i * dst_ch + c] = v;
 		}
