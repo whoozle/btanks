@@ -30,7 +30,7 @@ public:
 	}
 	
 	static inline size_t align(const size_t size) {
-		return (1 + (size - 1) / page_size) * page_size / sizeof(key_type);
+		return (size / page_size + 1) * page_size;
 	}
 	
 	~elastic_bset() {
@@ -38,9 +38,6 @@ public:
 	}
 	
 	void resize(size_t new_size) {
-		if (new_size == 0)
-			return;
-		
 		new_size = align(new_size);
 		
 		if (new_size <= size)
@@ -57,10 +54,9 @@ public:
 	}
 	
 	void insert(const unsigned value) {
-		resize((value > 0)? ((value - 1) / sizeof(key_type) / 8 + 1): 1);
-		const unsigned bit = value % ( sizeof(key_type) * 8 );
 		const unsigned offset = value / sizeof(key_type) / 8;
-		assert(offset >= 0);
+		const unsigned bit = value % ( sizeof(key_type) * 8 );
+		resize(offset);
 		assert(offset < size);
 		data[offset] |= ((key_type)1) << bit;
 		//printf("insert bit %u in byte %u\n", bit, offset);
