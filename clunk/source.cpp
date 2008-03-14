@@ -6,6 +6,10 @@
 #include "mrt/chunk.h"
 #include "sample.h"
 
+#ifdef _WINDOWS
+#	define pow10f(x) powf(10.0f, (x))
+#endif
+
 using namespace clunk;
 Source::Source(const Sample * sample, const bool loop, const v3<float> &delta, float gain, float pitch) : 
 	sample(sample), loop(loop), delta_position(delta), gain(gain), pitch(pow(2.0f, pitch)), position(0) {}
