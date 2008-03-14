@@ -18,8 +18,8 @@ private:
 	size_t size;
 
 public: 
-	elastic_bset() : data(NULL), size(0) {}
-	elastic_bset(const elastic_bset<key_type, page_size> &other) : data(NULL), size(0) {
+	inline elastic_bset() : data(NULL), size(0) {}
+	inline elastic_bset(const elastic_bset<key_type, page_size> &other) : data(NULL), size(0) {
 		if (other.data == NULL)
 			return;
 		data = static_cast<key_type*>(::malloc(other.size * sizeof(key_type)));
@@ -33,11 +33,11 @@ public:
 		return (size / page_size + 1) * page_size;
 	}
 	
-	~elastic_bset() {
+	inline ~elastic_bset() {
 		::free(data);
 	}
 	
-	void resize(size_t new_size) {
+	inline void resize(size_t new_size) {
 		new_size = align(new_size);
 		
 		if (new_size <= size)
@@ -53,7 +53,7 @@ public:
 		size = new_size;
 	}
 	
-	void insert(const unsigned value) {
+	inline void insert(const unsigned value) {
 		const unsigned offset = value / sizeof(key_type) / 8;
 		const unsigned bit = value % ( sizeof(key_type) * 8 );
 		resize(offset);
@@ -62,7 +62,7 @@ public:
 		//printf("insert bit %u in byte %u\n", bit, offset);
 	}
 	
-	void erase(const unsigned &value) {
+	inline void erase(const unsigned &value) {
 		const unsigned bit = value % ( sizeof(key_type) * 8 );
 		const unsigned offset = value / sizeof(key_type) / 8;
 		if (offset >= size)
@@ -72,7 +72,7 @@ public:
 		//add shrinking from head
 	}
 	
-	const elastic_bset<key_type, page_size>& operator&= (const elastic_bset<key_type, page_size>& other) {
+	inline const elastic_bset<key_type, page_size>& operator&= (const elastic_bset<key_type, page_size>& other) {
 		size_t msize = size < other.size? size: other.size;
 		for(size_t i = 0; i < msize; ++i) {
 			data[i] &= other.data[i];
@@ -80,7 +80,7 @@ public:
 		return *this;
 	}
 
-	const elastic_bset<key_type, page_size>& operator|= (const elastic_bset<key_type, page_size>& other) {
+	inline const elastic_bset<key_type, page_size>& operator|= (const elastic_bset<key_type, page_size>& other) {
 		resize(other.size);
 		size_t msize = size < other.size? size: other.size;
 		for(size_t i = 0; i < msize; ++i) {
@@ -90,7 +90,7 @@ public:
 	}
 
 	template<typename K>
-	void store(std::vector<K> &values) {
+	inline void store(std::vector<K> &values) {
 		values.clear();
 		for(size_t i = 0; i < size; ++i) {
 			key_type k = data[i];
