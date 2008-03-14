@@ -230,7 +230,7 @@ void MapPicker::fillSlots() const {
 	}
 
 	if (!split) {	
-		PlayerManager->setViewport((idx1 == -1)?0:idx1, Window->getSize());
+		PlayerManager->getSlot((idx1 == -1)?0:idx1).setViewport(Window->getSize());
 	} else {
 		v2<int> ts = Map->getTileSize();
 		sdlx::Rect window_size = Window->getSize();
@@ -244,8 +244,8 @@ void MapPicker::fillSlots() const {
 		vp2.w = w;
 		LOG_DEBUG(("p1: %d %d %d %d", vp1.x, vp1.y, vp1.w, vp1.h));
 		LOG_DEBUG(("p2: %d %d %d %d", vp2.x, vp2.y, vp2.w, vp2.h));
-		PlayerManager->setViewport((idx1 == -1)?0:idx1, vp1);
-		PlayerManager->setViewport((idx2 == -1)?(idx1 != 1?1:0):idx2, vp2); //avoid duplication of viewports
+		PlayerManager->getSlot((idx1 == -1)?0:idx1).setViewport(vp1);
+		PlayerManager->getSlot((idx2 == -1)?(idx1 != 1?1:0):idx2).setViewport(vp2); //avoid duplication of viewports
 	}
 	PlayerManager->validateViewports();
 }

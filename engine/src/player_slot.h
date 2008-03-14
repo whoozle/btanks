@@ -89,6 +89,7 @@ public:
 	void addScore(const int s);
 	
 	const Tooltip *currentTooltip() const { return tooltips.empty()? NULL: tooltips.front().second; }
+	void setViewport(const sdlx::Rect &rect);
 	
 private: 
 	typedef std::queue<std::pair<float, Tooltip *> > Tooltips;

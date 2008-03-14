@@ -877,20 +877,6 @@ const int IPlayerManager::spawnPlayer(const std::string &classname, const std::s
 	return i;
 }
 
-
-void IPlayerManager::setViewport(const int idx, const sdlx::Rect &rect) {
-	PlayerSlot &slot = _players[idx];
-	slot.visible = true;
-	slot.viewport = rect;
-	const Object *o = _players[idx].getObject();
-	if (o == NULL)
-		throw_ex(("setViewport %d called on empty slot.", idx));
-	
-	v2<float> pos = o->getCenterPosition();
-	slot.map_pos.x = (int)pos.x - rect.w / 2;
-	slot.map_pos.y = (int)pos.y - rect.h / 2;
-}
-
 void IPlayerManager::validateViewports() {
 		if (Map->loaded()) {
 			for(size_t p = 0; p < _players.size(); ++p) {

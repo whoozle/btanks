@@ -410,3 +410,15 @@ void PlayerSlot::addScore(const int s) {
 	if (score < 0) 
 		score = 0;
 }
+
+void PlayerSlot::setViewport(const sdlx::Rect &rect) {
+	visible = true;
+	viewport = rect;
+	const Object *o = getObject();
+	if (o == NULL)
+		throw_ex(("setViewport() called on empty slot."));
+	
+	v2<float> pos = o->getCenterPosition();
+	map_pos.x = (int)pos.x - rect.w / 2;
+	map_pos.y = (int)pos.y - rect.h / 2;
+}
