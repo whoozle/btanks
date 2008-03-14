@@ -1,11 +1,16 @@
 #ifndef CLUNK_KEMAR_DATA_H__
 #define CLUNK_KEMAR_DATA_H__	
 
+
 /*
 This data is Copyright 1994 by the MIT Media Laboratory. It is provided free with no restrictions on use, provided the authors are cited when the data is used in any research or commercial application.
 
 Bill Gardner billg@media.mit.edu and Keith Martin kdm@media.mit.edu
 */
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define ELEV_M40_N 56
 extern const float elev_m40[][2][512];
 #define ELEV_M30_N 60
@@ -34,6 +39,10 @@ extern const float elev_70[][2][512];
 extern const float elev_80[][2][512];
 #define ELEV_90_N 1
 extern const float elev_90[][2][512];
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
 
