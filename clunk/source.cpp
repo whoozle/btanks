@@ -75,7 +75,7 @@ void Source::hrtf(mrt::Chunk &result, int dst_n, const Sint16 *src, int src_ch, 
 		
 		kiss_fftr(kiss_cfg, src_data, freq);
 		
-		LOG_DEBUG(("kemar angle index: %d\n", kemar_idx));
+		//LOG_DEBUG(("kemar angle index: %d\n", kemar_idx));
 		for(int j = 0; j <= WINDOW_SIZE / 2; ++j) {
 			//float * dst = (ch == 0)?tr_left + pos:tr_right + pos;
 			float len = sqrt(freq[j].r * freq[j].r + freq[j].i * freq[j].i);
@@ -88,10 +88,11 @@ void Source::hrtf(mrt::Chunk &result, int dst_n, const Sint16 *src, int src_ch, 
 		}
 		kiss_fftri(kiss_cfg_i, freq, src_data);
 		for(int j = 0; j < WINDOW_SIZE; ++j) {
-			//LOG_DEBUG(("%g", src_data[j]));
-			//tr[pos + j] /= 512; 
-			dst[i * WINDOW_SIZE + j] = (Sint16)(src_data[j] / WINDOW_SIZE * 32000);
-			LOG_DEBUG(("%g: %d", src_data[j], dst[i * WINDOW_SIZE + j]));
+			int x = (int)(src_data[j] * (32500.0 / WINDOW_SIZE));
+			if (x > 32767) 
+				x = 32767;
+			dst[i * WINDOW_SIZE + j] = x;
+			//LOG_DEBUG(("%g: %d", src_data[j], dst[i * WINDOW_SIZE + j]));
 			//printf("%g,%g ", tr[pos + j], tr[pos + j] / 1024);
 		}
 	}
