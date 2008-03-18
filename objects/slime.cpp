@@ -52,6 +52,7 @@ public:
 	void calculate(const float dt);
 	
 	void onSpawn() {
+		disown();
 		play("hold", true);
 		ai::StupidTrooper::onSpawn();
 		//GET_CONFIG_VALUE("objects.slime.fire-rate", float, fr, 1.0f);
