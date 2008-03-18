@@ -935,6 +935,7 @@
 	<object class="sandworm-head" speed="0" mass="10" z="-1" impassability="-1" hp="500" />
 	<object class="buggy" hp="40" mass="300" speed="400" z="0" />
 	<object class="static-buggy" parent="buggy" />
+	<object class="teleport" z="-5" />
 	
 	<!-- items -->
 	<object class="base-item" z="180" impassability="-1" />

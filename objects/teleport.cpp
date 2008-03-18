@@ -13,7 +13,6 @@ public:
 		impassability = -1;
 		hp = -1;
 		pierceable = true;
-		setZ(-1);
 	}
 
 	virtual void onSpawn();
