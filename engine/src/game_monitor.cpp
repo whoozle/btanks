@@ -304,7 +304,7 @@ void IGameMonitor::gameOver(const std::string &area, const std::string &message,
 void IGameMonitor::displayMessage(const std::string &area, const std::string &message, const float time, const bool global) {
 	pushState(I18n->get(area, message), time);
 
-	if (global) {
+	if (global && PlayerManager->isServer()) {
 		PlayerManager->broadcastMessage(area, message, time);
 	}
 }
