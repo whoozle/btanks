@@ -169,5 +169,8 @@ void Context::stop(const int id) {
 }
 
 void Context::set_volume(const int id, const float volume) {
-
+	streams_type::iterator i = streams.find(id);
+	if (i == streams.end())
+		return;
+	i->second.gain = volume;
 }
