@@ -395,6 +395,8 @@
 		<object id="mines-item"/>
 		<object id="missiles-on-launcher"/>
 		<object id="missiles-on-tank"/>
+		<object id="mortar-bullet"/>
+		<object id="mortar-explosion"/>
 		<object id="nuke-explosion"/>
 		<object id="nuke-mine"/>
 		<object id="nuke-missile"/>
@@ -402,6 +404,7 @@
 		<object id="oil-barrels"/>
 		<object id="outline"/>
 		<object id="paratrooper-kamikaze"/>
+		<object id="random-tooltip"/>
 		<object id="regular-mine"/>
 		<object id="road-sign"/>
 		<object id="shilka"/>
@@ -1028,6 +1031,9 @@
 	</object>
 	<object id="raider-helicopter">
 		<animation id="helicopter"/>
+	</object>
+	<object id="random-tooltip">
+		<animation id="skotobaza"/>
 	</object>
 	<object id="regular-mine">
 		<animation id="regular-mine"/>
