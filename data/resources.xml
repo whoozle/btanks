@@ -3,7 +3,7 @@
 	<animation-model id="tank-animation" speed="10">
 		<pose id="hold">0</pose>
 		<pose id="start" speed="10">0,1,2</pose>
-		<pose id="move" sound="tank-move.ogg">0,1,2</pose>
+		<pose id="move" sound="tank-move.ogg" gain="0.5">0,1,2</pose>
 		<pose id="fire" speed="10">3,4</pose>
 	</animation-model>
 
