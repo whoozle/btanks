@@ -65,6 +65,11 @@ void Context::process(Sint16 *stream, int size) {
 
 	mrt::Chunk buf;
 	buf.setSize(size);
+	
+	for(streams_type::iterator i = streams.begin(); i != streams.end(); ++i) {
+		//fixme! 
+	}
+	
 	for(unsigned i = 0; i < lsources.size(); ++i ) {
 		v3<float> & position = lsources[i].first;
 		Source * source = lsources[i].second;
