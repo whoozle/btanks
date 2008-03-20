@@ -22,28 +22,17 @@
 #include "destructable_object.h"
 #include "mrt/random.h"
 #include "ai/base.h"
+#include "ai/targets.h"
 #include "special_owners.h"
 
 class PillBox : public DestructableObject, protected ai::Base {
 	Alarm _reaction, _fire, _fire2, _fire3; 
 	std::string _object;
 	bool _skip2, _skip3;
-	//no need to serialize it
-	std::set<std::string> _targets;
 public: 
-	PillBox(const std::string &object, const bool aim_missiles) : 
+	PillBox(const std::string &object) : 
 		DestructableObject("cannon"), _reaction(true), 
-		_fire(false), _fire2(false), _fire3(false), _object(object), _skip2(false), _skip3(false) {
-			if (aim_missiles)
-				_targets.insert("missile");
-	
-			_targets.insert("fighting-vehicle");
-			_targets.insert("monster");
-			_targets.insert("trooper");
-			_targets.insert("kamikaze");
-			_targets.insert("boat");		
-			_targets.insert("helicopter");
-	}
+		_fire(false), _fire2(false), _fire3(false), _object(object), _skip2(false), _skip3(false) {}
 
 	virtual Object * clone() const { return new PillBox(*this); }
 	
@@ -135,7 +124,7 @@ public:
 		float dist = -1;
 		
 		std::set<const Object *> objects;
-		enumerateObjects(objects, range, &_targets);
+		enumerateObjects(objects, range, &ai::Targets->troops );
 		for(std::set<const Object *>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
 			const Object *target = *i;
 			if (hasSameOwner(target) || target->aiDisabled())
@@ -172,4 +161,4 @@ public:
 	}
 };
 
-REGISTER_OBJECT("pillbox", PillBox, ("machinegunner-bullet", false));
+REGISTER_OBJECT("pillbox", PillBox, ("machinegunner-bullet"));

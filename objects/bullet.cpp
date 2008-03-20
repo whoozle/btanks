@@ -23,6 +23,7 @@
 #include "registrar.h"
 #include "mrt/random.h"
 #include "player_manager.h"
+#include "ai/targets.h"
 
 class Bullet : public Object {
 public:
@@ -97,19 +98,8 @@ void Bullet::calculate(const float dt) {
 			return;
 		GET_CONFIG_VALUE("engine.auto-aim.range", float, aar, 192.0f);
 		std::set<const Object *> objects;
-		static std::set<std::string> targets;
-		if (targets.empty()) {
-			targets.insert("missile");	
-			targets.insert("fighting-vehicle");
-			targets.insert("trooper");
-			targets.insert("kamikaze");
-			targets.insert("boat");
-			targets.insert("helicopter");
-			targets.insert("monster");
-			targets.insert("cannon");	
-		}
 		
-		enumerateObjects(objects, aar, &targets);
+		enumerateObjects(objects, aar, &ai::Targets->troops);
 		GET_CONFIG_VALUE("engine.auto-aim.minimum-cosine", float, min_cos, 0.9848f); //~cos(10')
 		const Object *target = NULL;
 		

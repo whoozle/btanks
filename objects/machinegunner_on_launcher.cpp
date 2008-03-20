@@ -20,6 +20,7 @@
 #include "alarm.h"
 #include "registrar.h"
 #include "config.h"
+#include "ai/targets.h"
 
 class Machinegunner : public Object {
 public:
@@ -66,25 +67,12 @@ void Machinegunner::calculate(const float dt) {
 			return;
 		}
 	}
-	static std::set<std::string> targets;
-	if (targets.empty()) {
-		targets.insert("missile");
-		targets.insert("fighting-vehicle");
-		targets.insert("trooper");
-		targets.insert("cannon");
-		targets.insert("kamikaze");
-		targets.insert("boat");
-		targets.insert("helicopter");
-		targets.insert("monster");
-	}
-	
+
 	v2<float> pos, vel;
-	
 
 	GET_CONFIG_VALUE("objects.machinegunner-on-launcher.targeting-range", int, range, (int)getWeaponRange("machinegunner-bullet"));
 
-	
-	if (!getNearest(targets, range, pos, vel, true)) {
+	if (!getNearest(ai::Targets->troops, range, pos, vel, true)) {
 		_state.fire = false;
 		Object::calculate(dt);
 		return;

@@ -39,7 +39,7 @@ namespace ai {
 class BTANKSAPI StupidTrooper {
 public: 
 	
-	StupidTrooper(const std::string &object, const bool aim_missiles);
+	StupidTrooper(const std::string &object, const std::set<std::string> &targets);
 	virtual ~StupidTrooper();
 	void onSpawn();
 	void calculate(Object *object, PlayerState &state, v2<float> &velocity, v2<float> &direction, const float dt);
@@ -55,8 +55,7 @@ private:
 	int _target_dir;
 
 protected: 
-	//no need for serialize it:
-	std::set<std::string> _targets;
+	const std::set<std::string> &_targets;
 };
 
 }

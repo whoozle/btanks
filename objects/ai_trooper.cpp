@@ -19,6 +19,7 @@
 #include "trooper.h"
 #include "ai/base.h"
 #include "ai/herd.h"
+#include "ai/targets.h"
 #include "ai/old_school.h"
 #include "config.h"
 #include "registrar.h"
@@ -28,19 +29,7 @@
 class AITrooper : public Trooper, private ai::Herd, private ai::Base, ai::OldSchool {
 public:
 	AITrooper(const std::string &object, const bool aim_missiles) : 
-		Trooper("trooper", object), _reaction(true), _target_dir(-1) {
-			if (aim_missiles)
-				_targets.insert("missile");
-	
-			_targets.insert("fighting-vehicle");
-			_targets.insert("cannon");
-			_targets.insert("trooper");
-			_targets.insert("kamikaze");
-			_targets.insert("boat");
-			_targets.insert("helicopter");
-			_targets.insert("monster");
-			_targets.insert("watchtower");
-	}
+		Trooper("trooper", object), _reaction(true), _target_dir(-1), _aim_missiles(aim_missiles) {}
 	virtual void onSpawn();
 	virtual void serialize(mrt::Serializator &s) const {
 		Trooper::serialize(s);
@@ -48,6 +37,7 @@ public:
 		ai::OldSchool::serialize(s);
 		s.add(_reaction);
 		s.add(_target_dir);
+		s.add(_aim_missiles);
 	}
 	virtual void deserialize(const mrt::Serializator &s) {
 		Trooper::deserialize(s);
@@ -55,6 +45,7 @@ public:
 		ai::OldSchool::deserialize(s);
 		s.get(_reaction);
 		s.get(_target_dir);
+		s.get(_aim_missiles);
 	}
 	virtual void calculate(const float dt);
 	virtual Object* clone() const;
@@ -72,9 +63,7 @@ private:
 
 	Alarm _reaction;
 	int _target_dir;
-	
-	//no need for serialize it:
-	std::set<std::string> _targets;
+	bool _aim_missiles;
 };
 
 const int AITrooper::getComfortDistance(const Object *other) const {
@@ -134,9 +123,6 @@ void AITrooper::onSpawn() {
 	//LOG_DEBUG(("rt = %g", rt));
 	_reaction.set(rt);	
 	Trooper::onSpawn();
-	
-	if (_variants.has("trainophobic"))
-		_targets.insert("train");
 }
 
 Object* AITrooper::clone() const  {
@@ -200,8 +186,11 @@ void AITrooper::calculate(const float dt) {
 	_state.fire = false;
 	
 	float range = getWeaponRange(_object);
+	
 
-	_target_dir = getTargetPosition(_velocity, _targets, range);
+	_target_dir = getTargetPosition(_velocity,
+		_variants.has("trainophobic")? (_aim_missiles? ai::Targets->troops_train_and_missiles: ai::Targets->troops_and_missiles): (_aim_missiles? ai::Targets->troops_and_missiles: ai::Targets->troops), 
+		range);
 	if (_target_dir >= 0) {
 		//LOG_DEBUG(("target: %g %g %g", tp.x, tp.y, tp.length()));
 		/*
@@ -232,17 +221,7 @@ void AITrooper::calculate(const float dt) {
 class TrooperInWatchTower : public Trooper, private ai::Base {
 public: 
 	TrooperInWatchTower(const std::string &object, const bool aim_missiles) : 
-		Trooper("trooper", object), _reaction(true) {
-			if (aim_missiles)
-				_targets.insert("missile");
-	
-			_targets.insert("fighting-vehicle");
-			_targets.insert("monster");
-			_targets.insert("trooper");
-			_targets.insert("kamikaze");
-			_targets.insert("boat");		
-			_targets.insert("helicopter");
-	}
+		Trooper("trooper", object), _reaction(true), _aim_missiles(aim_missiles) {}
 	virtual Object * clone() const { return new TrooperInWatchTower(*this); }
 	
 	virtual void onSpawn() { 
@@ -259,11 +238,13 @@ public:
 		Trooper::serialize(s);
 		ai::Base::serialize(s);
 		s.add(_reaction);
+		s.add(_aim_missiles);
 	}
 	virtual void deserialize(const mrt::Serializator &s) {
 		Trooper::deserialize(s);
 		ai::Base::deserialize(s);
 		s.get(_reaction);
+		s.get(_aim_missiles);
 	}
 	
 	virtual void calculate(const float dt) {
@@ -279,7 +260,9 @@ public:
 		float dist = -1;
 		
 		std::set<const Object *> objects;
-		enumerateObjects(objects, range, &_targets);
+		enumerateObjects(objects, range, 
+			&(_variants.has("trainophobic")? (_aim_missiles? ai::Targets->troops_train_and_missiles: ai::Targets->troops_and_missiles): (_aim_missiles? ai::Targets->troops_and_missiles: ai::Targets->troops))
+		);
 		for(std::set<const Object *>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
 			const Object *target = *i;
 			if (hasSameOwner(target) || target->aiDisabled())
@@ -309,9 +292,7 @@ private:
 	}
 	
 	Alarm _reaction; 
-
-	//no need to serialize it
-	std::set<std::string> _targets;
+	bool _aim_missiles;
 };
 
 REGISTER_OBJECT("machinegunner", AITrooper, ("machinegunner-bullet", true));

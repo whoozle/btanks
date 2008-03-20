@@ -20,6 +20,7 @@
 #include "config.h"
 #include "registrar.h"
 #include "special_owners.h"
+#include "ai/targets.h"
 
 class Barrack : public DestructableObject {
 public:
@@ -58,22 +59,13 @@ private:
 void Barrack::tick(const float dt) {
 	DestructableObject::tick(dt);
 
-	static std::set<std::string> targets;
-	if (targets.empty()) {
-		targets.insert("fighting-vehicle");
-		targets.insert("trooper");
-		targets.insert("monster");
-		targets.insert("kamikaze");
-	}
-	
-	
 	if (!_broken && _spawn.tick(dt)) {
 		if (hp == max_hp) { //nothing happens
 			int tr;
 			Config->get("objects." + registered_name + ".targeting-range", tr, 500);
 
 			v2<float> pos, vel;
-			if (!getNearest(targets, tr, pos, vel, false))
+			if (!getNearest(ai::Targets->infantry, tr, pos, vel, false))
 				return; //skip spawning
 		}
 		

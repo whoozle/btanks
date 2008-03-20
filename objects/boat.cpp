@@ -22,6 +22,7 @@
 #include "alarm.h"
 #include "mrt/random.h"
 #include "ai/rush.h"
+#include "ai/targets.h"
 
 class Boat : public Object {
 public:
@@ -76,15 +77,8 @@ void Boat::calculate(const float dt) {
 	int tr;
 	Config->get("objects." + registered_name + ".targeting-range", tr, 800);
 	
-	static std::set<std::string> targets;
-	if (targets.empty()) {
-		targets.insert("fighting-vehicle");
-		//targets.insert("trooper");
-		//targets.insert("kamikaze");
-	}
-
 	v2<float> pos, vel;
-	if (getNearest(targets, tr, pos, vel, true)) {
+	if (getNearest(ai::Targets->players, tr, pos, vel, true)) {
 		_state.fire = true;
 	} else _state.fire = false;
 	

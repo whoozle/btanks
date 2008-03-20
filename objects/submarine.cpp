@@ -20,6 +20,7 @@
 #include "alarm.h"
 #include "registrar.h"
 #include "mrt/random.h"
+#include "ai/targets.h"
 
 class Submarine : public Object {
 public:
@@ -52,18 +53,8 @@ void Submarine::onSpawn() {
 
 
 bool Submarine::spawnBallistic() {
-	std::set<std::string> targets;
-	
-	targets.insert("fighting-vehicle");
-	targets.insert("trooper");
-	targets.insert("kamikaze");
-	targets.insert("boat");
-	targets.insert("helicopter");
-	targets.insert("monster");
-	targets.insert("watchtower");
-	
 	v2<float> pos, vel;
-	if (getNearest(targets, 640.0f, pos, vel, false)) {
+	if (getNearest(ai::Targets->troops, 640.0f, pos, vel, false)) {
 		spawn("ballistic-missile", "nuke-missile");
 		return true;
 	}

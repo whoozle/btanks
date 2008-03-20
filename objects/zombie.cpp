@@ -22,6 +22,7 @@
 #include "config.h"
 #include "mrt/random.h"
 #include "ai/herd.h"
+#include "ai/targets.h"
 
 class BaseZombie : public Object {
 public: 
@@ -110,12 +111,6 @@ class Zombie : public BaseZombie, public ai::Herd{
 public:
 	Zombie(const std::string &classname) : 
 	BaseZombie(classname), _reaction(true) {
-		_targets.insert("fighting-vehicle");
-		_targets.insert("trooper");
-		_targets.insert("cannon");
-		_targets.insert("watchtower");
-		_targets.insert("creature");
-		_targets.insert("civilian");
 	}
 	
 	virtual void calculate(const float dt);
@@ -138,8 +133,6 @@ public:
 
 private: 
 	Alarm _reaction;
-	//no need for serialization (ONLY IF TARGETS INIT'ED IN CTOR AND DOESNT MODIFIED ANYWHERE
-	std::set<std::string> _targets;
 };
 
 const int Zombie::getComfortDistance(const Object *other) const {
@@ -169,7 +162,7 @@ void Zombie::calculate(const float dt) {
 	GET_CONFIG_VALUE("objects.zombie.targeting-range(alerted)", int, tra, 900);
 	int tt = (hp < max_hp)?tra:trs;
 	
-	if (getNearest(_targets, tt, _velocity, vel, false)) {
+	if (getNearest(ai::Targets->monster, tt, _velocity, vel, false)) {
 		if (_velocity.quick_length() > size.quick_length())
 			_state.fire = false;
 		

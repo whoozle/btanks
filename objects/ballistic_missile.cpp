@@ -5,6 +5,7 @@
 #include "world.h"
 #include "math/unary.h"
 #include "tmx/map.h"
+#include "ai/targets.h"
 
 class BallisticMissile : public Object {
 public: 
@@ -133,15 +134,6 @@ public:
 	
 	BallisticMissileTarget() : Object("mark"), _reaction(true) {
 		setDirectionsNumber(1);
-		if (_targets.empty()) {
-			_targets.insert("fighting-vehicle");
-			_targets.insert("trooper");
-			_targets.insert("kamikaze");
-			_targets.insert("boat");
-			_targets.insert("helicopter");
-			_targets.insert("monster");
-			_targets.insert("watchtower");
-		}
 	}
 	
 	void onSpawn() { 
@@ -155,7 +147,7 @@ public:
 		if (!_reaction.tick(dt))
 			return;
 		v2<float> pos, vel;
-		if (getNearest(_targets, speed * 5.0f, pos, vel, false)) {
+		if (getNearest(ai::Targets->troops, speed * 5.0f, pos, vel, false)) {
 			_velocity = pos;
 			return;
 		}
@@ -172,11 +164,7 @@ public:
 	}
 private: 
 	Alarm _reaction;
-	
-	static std::set<std::string> _targets;
 };
-
-std::set<std::string> BallisticMissileTarget::_targets;
 
 REGISTER_OBJECT("ballistic-missile", BallisticMissile, ());
 REGISTER_OBJECT("ballistic-missile-target", BallisticMissileTarget, ());

@@ -6,18 +6,8 @@
 
 using namespace ai;
 
-StupidTrooper::StupidTrooper(const std::string &object, const bool aim_missiles) : _object(object), _reaction(true), _target_dir(-1) {
-	if (aim_missiles)
-		_targets.insert("missile");
-
-	_targets.insert("fighting-vehicle");
-	_targets.insert("trooper");
-	_targets.insert("kamikaze");
-	_targets.insert("boat");
-	_targets.insert("helicopter");
-	_targets.insert("monster");
-	_targets.insert("watchtower");
-}
+StupidTrooper::StupidTrooper(const std::string &object, const std::set<std::string> &targets) : 
+	_object(object), _reaction(true), _target_dir(-1), _targets(targets) {}
 
 void StupidTrooper::onSpawn() {
 	GET_CONFIG_VALUE("objects.ai-trooper.reaction-time", float, rt, 0.15f);

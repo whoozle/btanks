@@ -24,6 +24,7 @@
 #include "math/binary.h"
 #include "mrt/random.h"
 #include "world.h"
+#include "ai/targets.h"
 
 class Missile : public Object {
 public:
@@ -53,23 +54,9 @@ public:
 private: 
 	Alarm _reaction;
 	v2<float> _target;
-
-//do not serialize
-	std::set<std::string> _targets;
 };
 
 void Missile::onSpawn() {
-	_targets.insert("fighting-vehicle");
-	_targets.insert("monster");
-
-	if (type != "stun") {
-		_targets.insert("trooper");
-		_targets.insert("cannon");
-		_targets.insert("kamikaze");
-		_targets.insert("boat");
-		_targets.insert("helicopter");
-	}
-
 	if (type == "guided" || type == "stun") {
 		GET_CONFIG_VALUE("objects.guided-missile.reaction-time", float, rt, 0.05);
 		mrt::randomize(rt, rt / 10);
@@ -91,7 +78,7 @@ void Missile::onSpawn() {
 void Missile::calculate(const float dt) {
 	if (type == "guided" || type == "stun") {
 		v2<float> pos, vel;
-		if (_reaction.tick(dt) && getNearest(_targets, math::min(ttl * speed, 800.0f), pos, vel, true)) {
+		if (_reaction.tick(dt) && getNearest(type == "stun"? ai::Targets->players_and_monsters: ai::Targets->troops, math::min(ttl * speed, 800.0f), pos, vel, true)) {
 			float est_t = pos.length() / speed;
 			if (est_t > 1)
 				est_t = 1;

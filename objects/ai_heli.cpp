@@ -22,17 +22,11 @@
 #include "tmx/map.h"
 #include "mrt/random.h"
 #include "ai/base.h"
+#include "ai/targets.h"
 
 class AIHeli : public Heli, public ai::Base {
 public:
 	AIHeli() : Heli("helicopter"), _reaction(true), _target_dir(-1) {
-			_targets.insert("missile");	
-			_targets.insert("fighting-vehicle");
-			_targets.insert("trooper");
-			_targets.insert("cannon");
-			_targets.insert("kamikaze");
-			_targets.insert("boat");		
-			_targets.insert("helicopter");
 	}
 	virtual void onSpawn();
 	void calculate(const float dt);
@@ -57,8 +51,6 @@ public:
 private: 
 	Alarm _reaction;
 	int _target_dir;
-	
-	std::set<std::string> _targets;
 };
 
 void AIHeli::onIdle(const float dt) {
@@ -91,7 +83,7 @@ void AIHeli::calculate(const float dt) {
 		
 	_state.fire = false;
 	
-	_target_dir = getTargetPosition(_velocity, _targets, "helicopter-bullet");
+	_target_dir = getTargetPosition(_velocity, ai::Targets->troops, "helicopter-bullet");
 	if (_target_dir >= 0) {
 		//LOG_DEBUG(("target: %g %g %g, dir: %d", _velocity.x, _velocity.y, _velocity.length(), _target_dir));
 		/*

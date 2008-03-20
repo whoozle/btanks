@@ -23,6 +23,7 @@
 #include "config.h"
 #include "mrt/random.h"
 #include "ai/herd.h"
+#include "ai/targets.h"
 #include "special_owners.h"
 
 class Kamikaze : public Object, public ai::Herd {
@@ -68,18 +69,10 @@ void Kamikaze::calculate(const float dt) {
 		return;
 	
 	v2<float> vel;
-	static std::set<std::string> targets;
-	if (targets.empty()) {
-		targets.insert("train");
-		targets.insert("fighting-vehicle");
-		targets.insert("trooper");
-		targets.insert("cannon");
-		targets.insert("monster");
-	}
 	
 	GET_CONFIG_VALUE("objects.kamikaze.targeting-range", int, tt, 800);
 
-	if (getNearest(targets, tt, _velocity, vel, false)) {
+	if (getNearest(_variants.has("trainophobic")? ai::Targets->infantry_and_train: ai::Targets->infantry, tt, _velocity, vel, false)) {
 		quantizeVelocity();
 	} else on_idle(tt, dt);
 

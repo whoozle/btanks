@@ -20,13 +20,12 @@
 #include "registrar.h"
 #include "ai/herd.h"
 #include "ai/trooper.h"
+#include "ai/targets.h"
 #include "config.h"
 
 class Slime : public Object, private ai::StupidTrooper, private ai::Herd {
 public: 
-	Slime() : Object("monster"), ai::StupidTrooper("slime-acid", false), _fire(false) {
-		_targets.erase("monster");
-	}
+	Slime() : Object("monster"), ai::StupidTrooper("slime-acid", ai::Targets->monster), _fire(false) {}
 	Object *clone() const { return new Slime(*this); }
 
 	void emit(const std::string &event, Object * emitter) {
