@@ -5,7 +5,7 @@
 
 namespace mrt {
 	class Chunk;
-};
+}
 
 namespace clunk {
 class CLUNKAPI Stream {
