@@ -10,6 +10,7 @@
 #include <math.h>
 #include <map>
 #include "locker.h"
+#include "stream.h"
 
 using namespace clunk;
 
@@ -123,4 +124,50 @@ void Context::deinit() {
 	
 Context::~Context() {
 	deinit();
+}
+
+
+//MUSIC MIXER: 
+
+void Context::play(const int id, Stream *stream, bool loop) {
+	LOG_DEBUG(("play(%d, %p, %s)", id, (const void *)stream, loop?"'loop'":"'once'"));
+	AudioLocker l;
+	stream_info & stream_info = streams[id];
+	delete stream_info.stream;
+	stream_info.stream = stream;
+	stream_info.loop = loop;
+	stream_info.paused = false;
+}
+
+bool Context::playing(const int id) const {
+	AudioLocker l;
+	return streams.find(id) != streams.end();
+}
+
+void Context::pause(const int id) {
+	AudioLocker l;
+	streams_type::iterator i = streams.find(id);
+	if (i == streams.end())
+		return;
+	
+	i->second.paused = !i->second.paused;
+}
+
+void Context::stop(const int id) {
+	AudioLocker l;
+	streams_type::iterator i = streams.find(id);
+	if (i == streams.end())
+		return;
+	
+	TRY {
+		delete i->second.stream;
+	} CATCH(mrt::formatString("stop(%d)", id).c_str(), {
+		streams.erase(i);
+		throw;
+	})
+	streams.erase(i);
+}
+
+void Context::set_volume(const int id, const float volume) {
+
 }
