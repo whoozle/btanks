@@ -274,6 +274,7 @@
 	<class id="mutagen-explosion">
 	</class>
 	<class id="mutagen-missile">
+		<animation id="mutagen-missile" />
 	</class>
 	<class id="mutagen-missiles-item">
 		<animation id="mutagen-missiles-item" />
