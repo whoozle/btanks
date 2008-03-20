@@ -3,7 +3,7 @@
 	<animation-model id="tank-animation" speed="10">
 		<pose id="hold">0</pose>
 		<pose id="start" speed="10">0,1,2</pose>
-		<pose id="move">0,1,2</pose>
+		<pose id="move" sound="tank-move.ogg">0,1,2</pose>
 		<pose id="fire" speed="10">3,4</pose>
 	</animation-model>
 
@@ -69,8 +69,8 @@
 
 	<animation-model id="man-animation" speed="7">
 		<pose id="hold">0</pose>
-		<pose id="walk">1,2,3,2,4,5,6,5</pose>
-		<pose id="run">7,8,9,10</pose>
+		<pose id="walk" sound="man-steps.ogg">1,2,3,2,4,5,6,5</pose>
+		<pose id="run" sound="man-steps.ogg">7,8,9,10</pose>
 		<pose id="thinking">11,0,12,0</pose>
 	</animation-model>
 
@@ -92,7 +92,7 @@
 		<pose id="fade-in">0,1,2</pose>
 		<pose id="burn">3,4,5,6</pose>
 		<pose id="fade-out">6</pose>
-		<pose id="dead">6</pose>
+		<pose id="dead" sound="slime-dead.ogg">6</pose>
 	</animation-model>
 
 	<animation-model id="ziehharmonikaspieler-animation" speed="7">
@@ -388,20 +388,20 @@
 	<animation-model id="zombie-animation" speed="5">
 		<pose id="hold">0</pose>
 		<pose id="walk" sound="zombie.ogg">0,1,2,1,0,3,4,3</pose>
-		<pose id="punch">5,0,6</pose>
+		<pose id="punch" sound="zombie-strike.ogg">5,0,6</pose>
 	</animation-model>
 
 	<animation-model id="cow-animation" speed="4">
-		<pose id="hold">4,5,6,5,4,6</pose>
+		<pose id="hold" sound="cow.ogg">4,5,6,5,4,6</pose>
 		<pose id="walk">0,1,2,3,2,1</pose>
 	</animation-model>
 	
 	<animation-model id="sandworm-head-animation" speed="6"> 
-		<pose id="snatch">0,1,2,3,4,5,6,7</pose>
+		<pose id="snatch" sound="worm-eat.ogg">0,1,2,3,4,5,6,7</pose>
 	</animation-model>
 
 	<animation-model id="sandworm-body-animation" speed="4"> 
-		<pose id="main">0,1,2</pose>
+		<pose id="main" sound="worm-move.ogg">0,1,2</pose>
 	</animation-model>
 
 	<animation-model id="buggy-animation" speed="10">
@@ -427,7 +427,7 @@
 	<animation-model id="slime-animation" speed="2">
 		<pose id="hold">0</pose>
 		<pose id="move">0,1,2</pose>
-		<pose id="fire" speed="10">1,2,1</pose>
+		<pose id="fire" speed="10" sound="slime-fire.ogg">1,2,1</pose>
 	</animation-model>
 	
 	<!-- 
