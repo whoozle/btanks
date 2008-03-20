@@ -93,7 +93,7 @@ void Context::process(Sint16 *stream, int size) {
 		if (buf_size >= size)
 			buf_size = size;
 
-		int sdl_v = floor(SDL_MIX_MAXVOLUME * stream_info.gain + 0.5f);
+		int sdl_v = (int)floor(SDL_MIX_MAXVOLUME * stream_info.gain + 0.5f);
 		SDL_MixAudio((Uint8 *)stream, (Uint8 *)stream_info.buffer.getPtr(), buf_size, sdl_v);
 		
 		++i;
@@ -108,7 +108,7 @@ void Context::process(Sint16 *stream, int size) {
 		float volume = source->process(buf, spec.channels, position);
 		if (volume <= 0)
 			continue;
-		int sdl_v = floor(SDL_MIX_MAXVOLUME * volume + 0.5f);
+		int sdl_v = (int)floor(SDL_MIX_MAXVOLUME * volume + 0.5f);
 		LOG_DEBUG(("mixing source with volume %g (%d)", volume, sdl_v));
 		SDL_MixAudio((Uint8 *)stream, (Uint8 *)buf.getPtr(), size, sdl_v);
 	}
