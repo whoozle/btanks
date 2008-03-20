@@ -2,7 +2,7 @@
 
 using namespace ai;
 
-IMPLEMENT_SINGLETON(Targets, ITargets);
+IMPLEMENT_SINGLETON(ai::Targets, ai::ITargets);
 
 void ITargets::insert(std::set<std::string> &x, const char * array[]) {
 	for(const char **t = array; *t != NULL; ++t) { 
