@@ -62,8 +62,9 @@ void Server::restart() {
 			Message msg(Message::ServerStatus);
 			int id = PlayerManager->onConnect(msg);
 			_monitor->add(id, c);
+			c = NULL;
 			send(id, msg);
-		} CATCH("restart", )
+		} CATCH("restart", { delete c;})
 	}
 }
 
