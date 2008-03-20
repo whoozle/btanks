@@ -49,6 +49,24 @@ void Server::init() {
 	_monitor->start();
 }
 
+void Server::restart() {
+	std::queue<Connection *> conns;
+	Connection *c;
+	while((c = _monitor->pop()) != NULL)
+		conns.push(c);
+	
+	while(!conns.empty()) {
+		Connection *c = conns.front();
+		conns.pop();
+		TRY {
+			Message msg(Message::ServerStatus);
+			int id = PlayerManager->onConnect(msg);
+			_monitor->add(id, c);
+			send(id, msg);
+		} CATCH("restart", )
+	}
+}
+
 void Server::tick(const float dt) {
 	if (!_monitor) 
 		return;

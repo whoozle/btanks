@@ -40,6 +40,8 @@ public:
 	const bool active() const;
 	void disconnect(const int id);
 	
+	void restart();
+	
 private:
 	Server(const Server &);
 	const Server& operator=(const Server &);

@@ -29,11 +29,11 @@
 #include "alarm.h"
 #include "zbox.h"
 #include "netstats.h"
-#include "sl08/sl08.h"
 
 //could be forward, but incompatible with stlport
 #include "special_zone.h"
 #include "player_slot.h"
+#include "sl08/sl08.h"
 
 namespace mrt {
 class Chunk;
@@ -95,11 +95,11 @@ public:
 	const int onConnect(Message &message);
 	void onMessage(const int id, const Message &message, const int delta);
 	void onDisconnect(const int id);	
+	void onMap();
 	
 	void onPlayerDeath(const Object *player, const Object *killer);
 	void gameOver(const std::string &reason, const float time);
 	
-	sl08::slot1<void, const std::set<v3<int> > &, IPlayerManager> on_destroy_map_slot;
 	void onDestroyMap(const std::set<v3<int> > & cells);
 	
 	void validateViewports();
@@ -120,6 +120,9 @@ public:
 	void requestObjects(const int first_id);
 
 private: 
+	sl08::slot1<void, const std::set<v3<int> > &, IPlayerManager> on_destroy_map_slot;
+	sl08::slot0<void, IPlayerManager> on_load_map_slot;
+	
 	void serializeSlots(mrt::Serializator &s) const;
 	void deserializeSlots(const mrt::Serializator &s);
 	
@@ -143,6 +146,7 @@ private:
 	bool _ping;
 	Alarm _next_sync;
 	bool _game_joined;
+	std::string _recent_address;
 	
 	typedef std::set<int> ObjectStates;
 	ObjectStates _object_states;

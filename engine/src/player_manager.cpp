@@ -49,6 +49,9 @@
 #include "math/binary.h"
 #include "mrt/utf8_utils.h"
 
+#include "sl08/sl08.h"
+
+
 IMPLEMENT_SINGLETON(PlayerManager, IPlayerManager);
 
 
@@ -532,7 +535,14 @@ TRY {
 });
 }
 
-
+void IPlayerManager::onMap() {
+	if (_server == NULL || !_server->active()) {
+		LOG_DEBUG(("server is inactive. exists: %s", _server != NULL? "yes": "nope"));
+		return;
+	}
+	LOG_DEBUG(("server is active. restarting players."));
+	_server->restart();	
+}
 
 void IPlayerManager::ping() {
 	if (_client == NULL)
@@ -747,15 +757,23 @@ IPlayerManager::IPlayerManager() :
 	_server(NULL), _client(NULL), _players(), _next_ping(0), _ping(false), _next_sync(true), _game_joined(false)
 {
 	on_destroy_map_slot.assign(this, &IPlayerManager::onDestroyMap, Map->destroyed_cells_signal);
+	on_load_map_slot.assign(this, &IPlayerManager::onMap, Map->load_map_final_signal);
 }
 
 IPlayerManager::~IPlayerManager() {}
 
 void IPlayerManager::startServer() {
 	clear();
-	TRY {	 
-		_server = new Server;
-		_server->init();
+	TRY {
+		if (_client != NULL) {
+			delete _client;
+			_client = NULL;
+			_recent_address.clear();
+		}
+		if (_server == NULL) {
+			_server = new Server;
+			_server->init();
+		}
 	} CATCH("server initialization", {
 		if (_server != NULL) {
 			delete _server;
@@ -766,6 +784,16 @@ void IPlayerManager::startServer() {
 
 void IPlayerManager::startClient(const std::string &address, const size_t n) {
 	clear();
+	if (_server != NULL) {
+		delete _server;
+		_server = NULL;
+	}
+	if (_client != NULL && _recent_address == address) {
+		LOG_DEBUG(("skipping connection to the same address (%s)", address.c_str()));
+		return;
+	}
+	delete _client;
+	_client = NULL;
 	
 	_local_clients = n;
 	World->setSafeMode(true);
@@ -779,14 +807,15 @@ void IPlayerManager::startClient(const std::string &address, const size_t n) {
 		GameMonitor->displayMessage("errors", "multiplayer-exception", 1);
 		return;
 	});
+	_recent_address = address;
 }
 void IPlayerManager::clear() {
 	LOG_DEBUG(("deleting server/client if exists."));
 	_ping = false;
 	_game_joined = false;
-	delete _server; _server = NULL;
-	delete _client; _client = NULL;
-	_local_clients = 0;
+	//delete _server; _server = NULL;
+	//delete _client; _client = NULL;
+	//_local_clients = 0;
 	_net_stats.clear();
 
 	GET_CONFIG_VALUE("multiplayer.sync-interval", float, sync_interval, 103.0/101);

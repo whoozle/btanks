@@ -508,3 +508,13 @@ Monitor::~Monitor() {
 void Monitor::setCompressionLevel(const int level) {
 	_comp_level = level;
 }
+
+Connection *Monitor::pop() {
+	sdlx::AutoMutex m(_connections_mutex);
+	ConnectionMap::iterator i = _connections.begin();
+	if (i == _connections.end())
+		return NULL;
+	Connection *r = i->second;
+	_connections.erase(i);
+	return r;
+}

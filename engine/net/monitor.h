@@ -48,6 +48,7 @@ public:
 	void add(mrt::UDPSocket *socket);
 	
 	~Monitor();
+	Connection *pop();
 
 private:
 	volatile bool _running;
