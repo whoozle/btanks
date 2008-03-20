@@ -7,6 +7,7 @@
 #include <SDL_audio.h>
 #include <map>
 #include <set>
+#include "mrt/chunk.h"
 
 namespace clunk {
 
@@ -34,7 +35,7 @@ public:
 	bool playing(const int id) const;
 	void pause(const int id);
 	void stop(const int id);
-	void set_volume(const int id, const float volume);
+	void set_volume(const int id, float volume);
 
 private: 
 	SDL_AudioSpec spec;
@@ -54,6 +55,7 @@ private:
 		Stream *stream;
 		float gain;
 		bool paused;
+		mrt::Chunk buffer;
 	};
 	
 	typedef std::map<const int, stream_info> streams_type;

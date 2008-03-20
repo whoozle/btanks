@@ -63,12 +63,44 @@ void Context::process(Sint16 *stream, int size) {
 		*dst++ = 0;
 	}
 
+	for(streams_type::iterator i = streams.begin(); i != streams.end();) {
+		LOG_DEBUG(("processing stream %d", i->first));
+		stream_info &stream_info = i->second;
+		while ((int)stream_info.buffer.getSize() < size) {
+			mrt::Chunk data;
+			bool eos = stream_info.stream->read(data);
+			stream_info.buffer.append(data);
+			if (eos) {
+				if (stream_info.loop) {
+					stream_info.stream->rewind();
+				} else {
+					break;
+				}
+			}
+		}
+		int buf_size = stream_info.buffer.getSize();
+		LOG_DEBUG(("buffered %d bytes", buf_size));
+		if (buf_size == 0) {
+			//all data buffered. continue;
+			LOG_DEBUG(("stream %d finished. dropping.", i->first));
+			TRY {
+				delete stream_info.stream;
+			} CATCH("mixing stream", );
+			streams.erase(i++);
+			continue;
+		}
+		
+		if (buf_size >= size)
+			buf_size = size;
+
+		int sdl_v = (long)floor(SDL_MIX_MAXVOLUME * stream_info.gain + 0.5f);
+		SDL_MixAudio((Uint8 *)stream, (Uint8 *)stream_info.buffer.getPtr(), buf_size, sdl_v);
+		
+		++i;
+	}
+	
 	mrt::Chunk buf;
 	buf.setSize(size);
-	
-	for(streams_type::iterator i = streams.begin(); i != streams.end(); ++i) {
-		//fixme! 
-	}
 	
 	for(unsigned i = 0; i < lsources.size(); ++i ) {
 		v3<float> & position = lsources[i].first;
@@ -173,7 +205,12 @@ void Context::stop(const int id) {
 	streams.erase(i);
 }
 
-void Context::set_volume(const int id, const float volume) {
+void Context::set_volume(const int id, float volume) {
+	if (volume < 0)
+		volume = 0;
+	if (volume > 1)
+		volume = 1;
+		
 	streams_type::iterator i = streams.find(id);
 	if (i == streams.end())
 		return;
