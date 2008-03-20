@@ -3,7 +3,7 @@
 	<animation-model id="tank-animation" speed="10">
 		<pose id="hold">0</pose>
 		<pose id="start" speed="10">0,1,2</pose>
-		<pose id="move" sound="tank-move.ogg" gain="0.5">0,1,2</pose>
+		<pose id="move" sound="tank-move.ogg" gain="0.3">0,1,2</pose>
 		<pose id="fire" speed="10">3,4</pose>
 	</animation-model>
 
@@ -17,19 +17,19 @@
 	<animation-model id="shilka-animation" speed="10">
 		<pose id="hold">0</pose>
 		<pose id="start" speed="10">0,1,2</pose>
-		<pose id="move">0,1,2</pose>
+		<pose id="move" sound="tank-move.ogg" gain="0.4">0,1,2</pose>
 		<pose id="fire-left" speed="10">3</pose>
 		<pose id="fire-right" speed="10">4</pose>
 	</animation-model>
 
 	<animation-model id="launcher-animation" speed="10">
 		<pose id="hold">0</pose>
-		<pose id="move">0,1,0</pose>
+		<pose id="move" sound="engine-car.ogg">0,1,0</pose>
 	</animation-model>
 
 	<animation-model id="mortar-animation" speed="10">
 		<pose id="hold">0</pose>
-		<pose id="move">1,2,3,4</pose>
+		<pose id="move" sound="vehicle-car.ogg">1,2,3,4</pose>
 	</animation-model>
 
 	<animation-model id="car-animation" speed="10">
@@ -413,7 +413,7 @@
 
 	<animation-model id="buggy-animation" speed="10">
 		<pose id="hold">0</pose>
-		<pose id="move">0,1,2</pose>
+		<pose id="move" sound="vehicle-sound.ogg">0,1,2</pose>
 	</animation-model>
 
 	<animation-model id="buggy-gun-animation" speed="10">
