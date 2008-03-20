@@ -96,6 +96,13 @@ void Context::process(Sint16 *stream, int size) {
 		int sdl_v = (int)floor(SDL_MIX_MAXVOLUME * stream_info.gain + 0.5f);
 		SDL_MixAudio((Uint8 *)stream, (Uint8 *)stream_info.buffer.getPtr(), buf_size, sdl_v);
 		
+		if ((int)stream_info.buffer.getSize() > size) {
+			memmove(stream_info.buffer.getPtr(), ((Uint8 *)stream_info.buffer.getPtr()) + size, stream_info.buffer.getSize() - size);
+			stream_info.buffer.setSize(stream_info.buffer.getSize() - size);
+		} else {
+			stream_info.buffer.free();
+		}
+		
 		++i;
 	}
 	
