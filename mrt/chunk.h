@@ -34,9 +34,10 @@ public:
 	inline ~Chunk() { free(); }
 	inline void *getPtr() const { return ptr; }
 	inline const size_t getSize() const { return size; } 
+	inline bool empty() const { return ptr == NULL; }
 
 	//use unlink only if you know what you're doing ;)
-	inline void unlink() { ptr = 0; size = 0; }
+	inline void unlink() { ptr = NULL; size = 0; }
 
 	const Chunk& operator=(const Chunk& c);
 
