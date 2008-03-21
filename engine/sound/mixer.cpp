@@ -380,5 +380,5 @@ void IMixer::startAmbient(const std::string &fname) {
 void IMixer::stopAmbient() {
 	if (_context == NULL) 
 		return;
-	_context->stop(0);
+	_context->stop(1);
 }

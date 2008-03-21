@@ -89,7 +89,7 @@ void Context::process(Sint16 *stream, int size) {
 			mrt::Chunk data;
 			bool eos = !stream_info.stream->read(data, size);
 			if (!data.empty() && stream_info.stream->sample_rate != spec.freq) {
-				LOG_DEBUG(("converting audio data from %u to %u", stream_info.stream->sample_rate, spec.freq));
+				//LOG_DEBUG(("converting audio data from %u to %u", stream_info.stream->sample_rate, spec.freq));
 				convert(data, data, stream_info.stream->sample_rate, stream_info.stream->format, stream_info.stream->channels);
 			}
 			stream_info.buffer.append(data);
