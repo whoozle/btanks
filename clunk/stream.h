@@ -11,7 +11,7 @@ namespace clunk {
 class CLUNKAPI Stream {
 public: 
 	virtual void rewind() = 0;
-	virtual bool read(mrt::Chunk &data) = 0;
+	virtual bool read(mrt::Chunk &data, unsigned hint) = 0;
 	virtual ~Stream();
 };
 }

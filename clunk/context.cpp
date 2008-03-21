@@ -68,7 +68,7 @@ void Context::process(Sint16 *stream, int size) {
 		stream_info &stream_info = i->second;
 		while ((int)stream_info.buffer.getSize() < size) {
 			mrt::Chunk data;
-			bool eos = stream_info.stream->read(data);
+			bool eos = stream_info.stream->read(data, size);
 			stream_info.buffer.append(data);
 			if (eos) {
 				if (stream_info.loop) {
@@ -222,4 +222,12 @@ void Context::set_volume(const int id, float volume) {
 	if (i == streams.end())
 		return;
 	i->second.gain = volume;
+}
+
+void Context::set_fx_volume(float volume) {
+	LOG_WARN(("ignoring set_fx_volume(%g)", volume));
+}
+
+void Context::stop_all(bool stop_streams) {
+	LOG_WARN(("ignoring stop_all()"));
 }

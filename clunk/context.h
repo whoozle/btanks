@@ -37,6 +37,9 @@ public:
 	void stop(const int id);
 	void set_volume(const int id, float volume);
 
+	void set_fx_volume(float volume);
+	void stop_all(bool stop_streams);
+
 private: 
 	SDL_AudioSpec spec;
 	int period_size;
