@@ -30,6 +30,6 @@ clunk = env.SharedLibrary('clunk',
 	LIBS=clunk_libs)
 Install('#', clunk[0])
 
-if sys.platform != 'win32':
-	test = env.Program('clunk_test', ['test.cpp'], LIBS=['mrt', 'clunk'])
-	Install('#', test)
+#if sys.platform != 'win32':
+#	test = env.Program('clunk_test', ['test.cpp'], LIBS=['mrt', 'clunk'])
+#	Install('#', test)

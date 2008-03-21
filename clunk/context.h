@@ -40,6 +40,9 @@ public:
 	void set_fx_volume(float volume);
 	void stop_all(bool stop_streams);
 
+
+	void convert(mrt::Chunk &dst, const mrt::Chunk &src, int rate, const Uint16 format, const Uint8 channels);
+
 private: 
 	SDL_AudioSpec spec;
 	int period_size;
@@ -54,8 +57,9 @@ private:
 	objects_type objects;
 	
 	struct stream_info {
-		bool loop;
+		stream_info() : stream(NULL), loop(false), gain(1.0f), paused(false), buffer() {}
 		Stream *stream;
+		bool loop;
 		float gain;
 		bool paused;
 		mrt::Chunk buffer;

@@ -68,8 +68,13 @@ void Context::process(Sint16 *stream, int size) {
 		stream_info &stream_info = i->second;
 		while ((int)stream_info.buffer.getSize() < size) {
 			mrt::Chunk data;
-			bool eos = stream_info.stream->read(data, size);
+			bool eos = !stream_info.stream->read(data, size);
+			if (!data.empty() && stream_info.stream->sample_rate != spec.freq) {
+				LOG_DEBUG(("converting audio data from %u to %u", stream_info.stream->sample_rate, spec.freq));
+				convert(data, data, stream_info.stream->sample_rate, stream_info.stream->format, stream_info.stream->channels);
+			}
 			stream_info.buffer.append(data);
+			//LOG_DEBUG(("read %u bytes", (unsigned)data.getSize()));
 			if (eos) {
 				if (stream_info.loop) {
 					stream_info.stream->rewind();
@@ -181,6 +186,7 @@ void Context::play(const int id, Stream *stream, bool loop) {
 	stream_info.stream = stream;
 	stream_info.loop = loop;
 	stream_info.paused = false;
+	stream_info.gain = 1.0f;
 }
 
 bool Context::playing(const int id) const {
@@ -230,4 +236,23 @@ void Context::set_fx_volume(float volume) {
 
 void Context::stop_all(bool stop_streams) {
 	LOG_WARN(("ignoring stop_all()"));
+}
+
+void Context::convert(mrt::Chunk &dst, const mrt::Chunk &src, int rate, const Uint16 format, const Uint8 channels) {
+	SDL_AudioCVT cvt;
+	memset(&cvt, 0, sizeof(cvt));
+	if (SDL_BuildAudioCVT(&cvt, format, channels, rate, spec.format, spec.channels, spec.freq) == -1) {
+		throw_sdl(("DL_BuildAudioCVT(%d, %04x, %u)", rate, format, channels));
+	}
+	size_t buf_size = (size_t)(src.getSize() * cvt.len_mult);
+	cvt.buf = (Uint8 *)malloc(buf_size);
+	cvt.len = src.getSize();
+
+	assert(buf_size >= src.getSize());
+	memcpy(cvt.buf, src.getPtr(), src.getSize());
+
+	if (SDL_ConvertAudio(&cvt) == -1) 
+		throw_sdl(("SDL_ConvertAudio"));
+
+	dst.setData(cvt.buf, (size_t)(cvt.len * cvt.len_ratio), true);
 }
