@@ -18,7 +18,6 @@ void Sample::generateSine(const int freq, const float len) {
 	spec.channels = 1;
 	spec.format = context->get_spec().format;
 
-	mrt::Chunk data;
 	unsigned size = ((int)(len * spec.freq)) * 2;
 	data.setSize(size);
 
@@ -34,36 +33,35 @@ void Sample::generateSine(const int freq, const float len) {
 		//*stream++ = 0;
 		a += da;
 	}
-	data_ptr = (Uint8 *)data.getPtr();
-	data_len = size;
-	LOG_DEBUG(("generated %u bytes", data_len));
-	data.unlink();
+	LOG_DEBUG(("generated %u bytes", (unsigned)data.getSize()));
 }
 
-void Sample::init(const mrt::Chunk &data, int rate, const Uint16 format, const Uint8 channels) {
+void Sample::init(const mrt::Chunk &src_data, int rate, const Uint16 format, const Uint8 channels) {
 	AudioLocker l;
 
-	SDL_RWops *op = SDL_RWFromConstMem(data.getPtr(), data.getSize());
-	if (op == NULL)
-		throw_sdl(("SDL_RWFromConstMem"));
+	spec.freq = context->get_spec().freq;
+	spec.channels = 1; //fixme: do not 
+	spec.format = context->get_spec().format;
+	//fixme: check format	
+	unsigned len = ((format & 0xff) - 1) / 8 + 1;
+	if (len != 2) 
+		throw_ex(("unsupported data format (%u bps)", len));
 
-	SDL_AudioSpec spec;
-	memset(&spec, 0, sizeof(spec));
-
-	spec.freq = rate;
-	spec.format = format;
-	spec.channels = channels;
+	data.setSize(src_data.getSize() * spec.freq / rate / channels);
 	
-	SDL_AudioSpec *r = SDL_LoadWAV_RW(op, 1, &spec, &data_ptr, &data_len);
-	if (r == NULL)
-		throw_sdl(("SDL_LoadWAV_RW"));
-	this->spec = *r;
+	Sint16 *dst = (Sint16 *)data.getPtr();
+	Sint16 *src = (Sint16 *)src_data.getPtr();
+	for(size_t i = 0; i < data.getSize() / 2; ++i) {
+		int v = 0;
+		int offset = i * rate * channels / spec.freq;
+		for(int j = 0; j < channels; ++j) {
+			v += src[offset + j];
+		}
+		v /= channels;
+		*dst++ = v;
+	}
 }
 
 Sample::~Sample() {
-	if (data_ptr != NULL) {
-		SDL_FreeWAV(data_ptr);
-		data_ptr = NULL;
-		data_len = 0;
-	}
+	
 }

@@ -3,6 +3,7 @@
 
 #include <SDL_audio.h>
 #include "export_clunk.h"
+#include "mrt/chunk.h"
 
 namespace mrt {
 	class Chunk;
@@ -27,8 +28,7 @@ private:
 
 	Context *context;
 	SDL_AudioSpec spec;
-	Uint8 *data_ptr;
-	Uint32 data_len;	
+	mrt::Chunk data;
 };
 }
 

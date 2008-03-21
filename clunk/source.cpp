@@ -118,7 +118,7 @@ float Source::process(mrt::Chunk &buffer, unsigned dst_ch, const v3<float> &delt
 	if (vol > 1)
 		vol = 1;
 	
-	const Sint16 * src = (Sint16*) sample->data_ptr;
+	const Sint16 * src = (Sint16*) sample->data.getPtr();
 	if (src == NULL)
 		throw_ex(("uninitialized sample used (%p)", (void *)sample));
 	if (pitch < 0)
@@ -126,7 +126,7 @@ float Source::process(mrt::Chunk &buffer, unsigned dst_ch, const v3<float> &delt
 		
 
 	unsigned src_ch = sample->spec.channels; 
-	unsigned src_n = sample->data_len / src_ch / 2;
+	unsigned src_n = sample->data.getSize() / src_ch / 2;
 	if (position >= (int)src_n) {
 		return 0;
 	}
