@@ -23,8 +23,6 @@
 #include <string>
 #include <map>
 #include <set>
-#include <AL/al.h>
-#include <AL/alc.h>
 #include <math/v3.h>
 #include "alarm.h"
 
@@ -32,8 +30,13 @@ namespace mrt{
 class Chunk;
 }
 
-class OggStream;
+namespace clunk {
+class Context;
+class Object;
+class Source;
 class Sample;
+}
+
 class Object;
 
 class BTANKSAPI IMixer {
@@ -70,40 +73,23 @@ public:
 	void stopAmbient();
 
 private:
-	ALCdevice * alc_device;
-	ALCcontext * alc_context;	
-	
-	void dumpContextAttrs(std::map<const std::string, int> & attrs) const;
-
-	std::set<ALuint> _free_sources;
-	bool _no_more_sources;
-	
-	const bool generateSource(ALuint &source);
-	void deleteSource(const ALuint source);
-	
-	const unsigned purgeInactiveSources();
-
 	bool _nosound, _nomusic;
-	
-	typedef std::map<const std::string, Sample *> Sounds;
-	Sounds _sounds;
-	
-	struct SourceInfo {
-		std::string name;
-		bool loop;
-		ALuint source;
-		
-		bool persistent;
-		SourceInfo(const std::string &name, const bool loop, const ALuint source);
-		
-		const bool playing() const;
-		
-		v3<float> pos, vel;
-		void updatePV();
+
+	struct ObjectInfo {
+		clunk::Object *object;
+		ObjectInfo(clunk::Object *object) : object(object) {}
+
+		std::map<const std::string, clunk::Source *> sources;
+		void play(const std::string &name, const clunk::Sample *sample);
+		void cancel(const std::string &name);
+		void cancel_all();
 	};
 	
-	typedef std::multimap<const int, SourceInfo> Sources;
-	Sources _sources;
+	typedef std::map<const int, ObjectInfo> Objects;
+	Objects _objects;
+	
+	typedef std::map<const std::string, clunk::Sample *> Sounds;
+	Sounds _sounds;
 	
 	typedef std::map<const std::string, std::set<std::string> > Classes;
 	Classes _classes;
@@ -111,12 +97,13 @@ private:
 	typedef std::map<const std::string, bool> PlayList;
 	PlayList _playlist;
 	std::string _now_playing;
-	OggStream * _ogg, *_ambient;
-	ALuint _ogg_source, _ambient_source;
 	
 	float _volume_fx, _volume_ambience, _volume_music;
 	
 	bool _debug, _loop;
+	
+	
+	clunk::Context *_context;
 	
 	IMixer(const IMixer &);
 	const IMixer& operator=(const IMixer &);

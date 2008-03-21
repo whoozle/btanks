@@ -25,6 +25,7 @@ if sys.platform != 'win32':
 	env.Append(LINKFLAGS=['-Wl,-rpath-link,build/' + env['mode']])
 	env.Append(LINKFLAGS=['-Wl,-rpath-link,build/' + env['mode'] + '/mrt'])
 	env.Append(LINKFLAGS=['-Wl,-rpath-link,build/' + env['mode'] + '/sdlx'])
+	env.Append(LINKFLAGS=['-Wl,-rpath-link,build/' + env['mode'] + '/clunk'])
 else: 
 	libs.append('sdlx_main')
 	libs.append('user32')

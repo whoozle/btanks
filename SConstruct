@@ -74,7 +74,6 @@ env.Append(CPPDEFINES = ['_REENTRANT'])
 
 #print sys.platform
 if sys.platform == "win32":
-	al_lib = 'openal32'
 	env.Append(CPPDEFINES = ['_WINDOWS', '_CRT_SECURE_NO_WARNINGS']) #, '_UNICODE'
 	env.Append(CCFLAGS = ['/GR', '/W3', '/nologo'])
 	env.Append(CXXFLAGS = ['/EHsc', '/GR', '/W3', '/nologo'])
@@ -100,7 +99,6 @@ else:
 		env.Append(CCFLAGS=['-O3'])
 		env.Append(CPPFLAGS=['-O3'])
 		
-	al_lib = 'openal'
 	env.Append(CPPFLAGS=['-Wall', '-pedantic', '-Wno-long-long', '-pipe', '-pthread'])
 	env.Append(CCFLAGS=['-Wall', '-pedantic', '-Wno-long-long', '-pipe', '-pthread'])
 
@@ -144,9 +142,6 @@ if not conf.CheckLibWithHeader(smpeg_lib, 'smpeg/smpeg.h', 'c++', "SMPEG_new_dat
 if not conf.CheckLibWithHeader('SDL_image', 'SDL/SDL_image.h', 'c++', "IMG_Load(0);", False):
 	Exit(1)
 
-if not conf.CheckLibWithHeader(al_lib, 'AL/al.h', 'c++', "ALuint s; alGenSources(1, &s);", False):
-	Exit(1)
-
 if not conf.CheckLibWithHeader('vorbisfile', 'vorbis/vorbisfile.h', 'c++', "ov_open(0, 0, 0, 0);", False):
 	Exit(1)
 
@@ -166,7 +161,6 @@ else:
 	env.Append(CPPDEFINES = ['RELEASE'])
 
 Export('env')
-Export('al_lib')
 
 lib_dir = '.'
 try : 
