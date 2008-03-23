@@ -43,7 +43,7 @@
 #include "zbox.h"
 
 #include "generator.h"
-#include "scoped_ptr.h"
+#include "mrt/scoped_ptr.h"
 
 IMPLEMENT_SINGLETON(Map, IMap);
 

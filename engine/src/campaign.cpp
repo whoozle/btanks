@@ -130,7 +130,7 @@ Campaign::Campaign() : minimal_score(0), map(NULL), _wares_section(false) {}
 
 #include "game_monitor.h"
 #include "finder.h"
-#include "scoped_ptr.h"
+#include "mrt/scoped_ptr.h"
 #include "mrt/base_file.h"
 
 void Campaign::init(const std::string &base, const std::string &filename) {

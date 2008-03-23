@@ -25,7 +25,7 @@
 #include "mrt/zip_dir.h"
 #include <algorithm>
 #include "utils.h"
-#include "scoped_ptr.h"
+#include "mrt/scoped_ptr.h"
 
 IMPLEMENT_SINGLETON(Finder, IFinder);
 

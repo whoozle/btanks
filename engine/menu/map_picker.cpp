@@ -41,7 +41,7 @@
 #include "config.h"
 
 #include "tmx/map.h"
-#include "scoped_ptr.h"
+#include "mrt/scoped_ptr.h"
 #include "mrt/base_file.h"
 #include "game_monitor.h"
 

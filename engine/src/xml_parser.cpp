@@ -17,7 +17,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 #include "xml_parser.h"
-#include "scoped_ptr.h"
+#include "mrt/scoped_ptr.h"
 #include "finder.h"
 #include "mrt/base_file.h"
 

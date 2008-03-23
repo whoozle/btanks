@@ -6,7 +6,7 @@
 #include "resource_manager.h"
 #include <algorithm>
 #include "object_properties.h"
-#include "scoped_ptr.h"
+#include "mrt/scoped_ptr.h"
 
 AddObjectDialog::AddObjectDialog(const int w, const int h) : 
 ScrollList("menu/background_box_dark.png", "small", w, h), selected_z(0) {

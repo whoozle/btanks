@@ -21,7 +21,7 @@
 #include <assert.h>
 #include <string.h>
 #include "finder.h"
-#include "scoped_ptr.h"
+#include "mrt/scoped_ptr.h"
 #include "mrt/base_file.h"
 
 IMPLEMENT_SINGLETON(I18n, II18n);

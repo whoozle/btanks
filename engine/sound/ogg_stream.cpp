@@ -127,7 +127,7 @@ OggStream::~OggStream() {
 
 }
 
-#include "scoped_ptr.h"
+#include "mrt/scoped_ptr.h"
 
 void OggStream::decode(clunk::Sample &sample, const std::string &fname) {
 	scoped_ptr<mrt::BaseFile> file(Finder->get_file(fname, "rb"));

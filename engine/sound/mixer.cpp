@@ -121,7 +121,7 @@ IMixer::~IMixer() {
 	_nosound = _nomusic = true;
 }
 
-#include "scoped_ptr.h"
+#include "mrt/scoped_ptr.h"
 
 void IMixer::loadPlaylist(const std::string &file) {
 	if (_nomusic) 
