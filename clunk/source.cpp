@@ -126,6 +126,17 @@ void Source::hrtf(mrt::Chunk &result, int dst_n, const Sint16 *src, int src_ch, 
 	kiss_fft_free(kiss_cfg_i);
 }
 
+void Source::update_position(const int dp, const int src_n) {
+	position += dp;
+	if (loop) {
+		position %= src_n;
+		//LOG_DEBUG(("position %d", position));
+		if (position < 0)
+			position += src_n;
+	}
+}
+
+
 float Source::process(mrt::Chunk &buffer, unsigned dst_ch, const v3<float> &delta_position, const float fx_volume) {
 	Sint16 * dst = (Sint16*) buffer.getPtr();
 	unsigned dst_n = buffer.getSize() / dst_ch / 2;
@@ -140,14 +151,14 @@ float Source::process(mrt::Chunk &buffer, unsigned dst_ch, const v3<float> &delt
 
 	//LOG_DEBUG(("delta position: %g %g", delta_position.x, delta_position.y));
 	float r2 = delta_position.quick_length(); //linear
-	float vol = fx_volume * gain / r2;
-	if (vol < 0)
-		return 0;
+	float vol = (r2 > 1)?fx_volume * gain / r2: fx_volume * gain;
 	if (vol > 1)
 		vol = 1;
 
-	if ((int)floor(SDL_MIX_MAXVOLUME * vol + 0.5f) == 0) 
+	if (vol < 0 || (int)floor(SDL_MIX_MAXVOLUME * vol + 0.5f) <= 0) {
+		update_position((int)(dst_n * pitch), src_n);
 		return 0;
+	}
 	
 	kemar_ptr kemar_data;
 	int angles;
@@ -170,14 +181,8 @@ float Source::process(mrt::Chunk &buffer, unsigned dst_ch, const v3<float> &delt
 				dst[i * dst_ch + c] = v;
 			}
 		}
-		position += ((int)(dst_n * pitch));
-		if (loop) {
-			position %= src_n;
-			//LOG_DEBUG(("position %d", position));
-			if (position < 0)
-				position += src_n;
-		}
-		return 1.0f;
+		update_position((int)(dst_n * pitch), src_n);
+		return vol;
 	}
 	
 	//LOG_DEBUG(("data: %p, angles: %d", (void *) kemar_data, angles));
@@ -219,14 +224,7 @@ float Source::process(mrt::Chunk &buffer, unsigned dst_ch, const v3<float> &delt
 			dst[i * dst_ch + c] = v;
 		}
 	}
-	position += ((int)(dst_n * pitch));
-	if (loop) {
-		position %= src_n;
-		//LOG_DEBUG(("position %d", position));
-		if (position < 0)
-			position += src_n;
-	}
-	
+	update_position((int)(dst_n * pitch), src_n);	
 	return vol;
 }
 

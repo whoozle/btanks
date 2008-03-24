@@ -52,6 +52,8 @@ private:
 	void hrtf(mrt::Chunk &result, int dst_n, const Sint16 *src, int src_ch, int src_n, const kemar_ptr& kemar_data, int kemar_idx);
 
 	int position;
+	
+	void update_position(const int dp, const int src_n);
 };
 }
 
