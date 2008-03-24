@@ -264,6 +264,9 @@ void IGame::init(const int argc, char *argv[]) {
 			if (fps_limit > 100 || fps_limit == 50) 
 				Config->set("engine.fps-limit", 100);
 		}
+		if (revision < 6571) {
+			Config->set("engine.sound.sample-rate", 22050);
+		}
 		
 		Config->set("engine.revision", getRevision());
 	}
