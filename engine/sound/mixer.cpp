@@ -37,18 +37,6 @@
 #include "clunk/source.h"
 #include "clunk/context.h"
 
-void IMixer::ObjectInfo::play(const std::string &name, const clunk::Sample *sample) {
-	
-}
-
-void IMixer::ObjectInfo::cancel(const std::string &name) {
-
-}
-
-void IMixer::ObjectInfo::cancel_all() {
-
-}
-
 IMPLEMENT_SINGLETON(Mixer, IMixer);
 
 void IMixer::reset() {
@@ -312,7 +300,7 @@ void IMixer::updateObject(const Object *o) {
 	GET_CONFIG_VALUE("engine.sound.positioning-divisor", float, k, 40.0);
 	
 	const clunk::v3<float> clunk_pos( pos.x / k, -pos.y / k, 0*o->getZ() / k ), clunk_vel( vel.x / k, -vel.y / k, 0);
-	i->second.object->update(clunk_pos, clunk_vel);
+	i->second->update(clunk_pos, clunk_vel);
 }
 
 void IMixer::tick(const float dt) {
@@ -342,7 +330,7 @@ void IMixer::cancelSample(const Object *o, const std::string &name) {
 	if (i == _objects.end())
 		return;
 	
-	i->second.cancel(name);
+	i->second->cancel(name);
 }
 
 void IMixer::cancelAll(const Object *o) {
@@ -355,7 +343,7 @@ void IMixer::cancelAll(const Object *o) {
 	if (i == _objects.end())
 		return;
 
-	i->second.cancel_all();
+	i->second->cancel_all();
 }
 
 
