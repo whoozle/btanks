@@ -90,10 +90,7 @@ void Context::process(Sint16 *stream, int size) {
 	}
 	sources.clear();
 
-	Sint16 *dst = stream;
-	for(int i = 0; i < size / 2; ++i) {
-		*dst++ = 0;
-	}
+	memset(stream, 0, size);
 
 	for(streams_type::iterator i = streams.begin(); i != streams.end();) {
 		//LOG_DEBUG(("processing stream %d", i->first));
