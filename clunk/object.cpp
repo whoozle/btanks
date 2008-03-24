@@ -58,7 +58,6 @@ void Object::cancel_all() {
 		i->second->loop = false;
 		//delete i->second;
 	}
-	sources.clear();
 }
 
 Object::~Object() {
