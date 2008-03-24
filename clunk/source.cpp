@@ -27,6 +27,7 @@
 
 #ifdef _WINDOWS
 #	define pow10f(x) powf(10.0f, (x))
+#	define log2f(x) (logf(x) / M_LN2)
 #endif
 
 using namespace clunk;
