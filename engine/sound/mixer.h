@@ -61,6 +61,7 @@ public:
 	
 	void tick(const float dt);
 	void updateObject(const Object *o);
+	void deleteObject(const Object *o);
 	
 	void setFXVolume(const float volume);
 	void setAmbienceVolume(const float volume);

@@ -242,10 +242,11 @@ void IMixer::playSample(const Object *o, const std::string &name, const bool loo
 
 	GET_CONFIG_VALUE("engine.sound.positioning-divisor", float, k, 40.0);
 
-	v2<float> pos, vel;
 	if (o) {
+		v2<float> pos, vel;
 		o->getInfo(pos, vel);
 		//fixme !		
+		const clunk::v3<float> clunk_pos( pos.x / k, -pos.y / k, 0*o->getZ() / k ), clunk_vel( vel.x / k, -vel.y / k, 0);
 	}
 	
 	TRY {
@@ -301,6 +302,17 @@ void IMixer::updateObject(const Object *o) {
 	
 	const clunk::v3<float> clunk_pos( pos.x / k, -pos.y / k, 0*o->getZ() / k ), clunk_vel( vel.x / k, -vel.y / k, 0);
 	i->second->update(clunk_pos, clunk_vel);
+}
+
+void IMixer::deleteObject(const Object *o) {
+TRY {
+	Objects::iterator i = _objects.find(o->getID());
+	if (i == _objects.end())
+		return;
+
+	delete i->second;
+	_objects.erase(i);
+} CATCH("deleteObject", );
 }
 
 void IMixer::tick(const float dt) {

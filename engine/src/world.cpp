@@ -105,9 +105,14 @@ void IWorld::setSafeMode(const bool safe_mode) {
 	LOG_DEBUG(("set safe mode to %s", _safe_mode?"true":"false"));
 }
 
+#include "sound/mixer.h"
+//fixme: port to callbacks!
+
 void IWorld::deleteObject(const Object *o) {
 	if (o == NULL)
 		return;
+
+	Mixer->deleteObject(o);
 	const int id = o->_id;
 	for(StaticCollisionMap::iterator i = _static_collision_map.begin(); i != _static_collision_map.end(); ) {
 		if (i->first.first == id || i->first.second == id) {
@@ -120,8 +125,6 @@ void IWorld::deleteObject(const Object *o) {
 	delete o;
 }
 
-#include "sound/mixer.h"
-//fixme: port to callbacks!
 
 void IWorld::updateObject(const Object *o) {
 	Mixer->updateObject(o);
