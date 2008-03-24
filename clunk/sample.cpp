@@ -61,7 +61,7 @@ void Sample::init(const mrt::Chunk &src_data, int rate, const Uint16 format, con
 	spec.freq = context->get_spec().freq;
 	spec.channels = channels;
 	spec.format = context->get_spec().format;
-	context->convert(data, src_data, spec.freq, spec.format, channels);
+	context->convert(data, src_data, rate, format, channels);
 }
 
 Sample::~Sample() {
