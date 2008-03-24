@@ -24,6 +24,7 @@
 #include "export_clunk.h"
 #include "v3.h"
 #include <map>
+#include <string>
 
 namespace clunk {
 class Context;

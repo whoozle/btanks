@@ -19,7 +19,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 */
 
-
+#include "export_clunk.h"
 #include "v3.h"
 #include <SDL_audio.h>
 
@@ -30,7 +30,7 @@ namespace mrt {
 namespace clunk {
 
 class Sample;
-class Source {
+class CLUNKAPI Source {
 public:
 	const Sample * const sample;
 
