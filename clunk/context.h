@@ -57,10 +57,12 @@ public:
 	void set_volume(const int id, float volume);
 
 	void set_fx_volume(float volume);
-	void stop_all(bool stop_streams);
+	void stop_all();
 
 
 	void convert(mrt::Chunk &dst, const mrt::Chunk &src, int rate, const Uint16 format, const Uint8 channels);
+	
+	Object *get_listener() { return listener; }
 
 private: 
 	SDL_AudioSpec spec;
@@ -87,7 +89,7 @@ private:
 	typedef std::map<const int, stream_info> streams_type;
 	streams_type streams;
 
-	v3<float> listener;
+	Object *listener;
 	unsigned max_sources;
 };
 }

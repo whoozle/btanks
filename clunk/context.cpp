@@ -33,7 +33,7 @@
 
 using namespace clunk;
 
-Context::Context() : period_size(0), max_sources(8) {
+Context::Context() : period_size(0), listener(NULL), max_sources(8) {
 }
 
 void Context::callback(void *userdata, Uint8 *bstream, int len) {
@@ -62,7 +62,7 @@ void Context::process(Sint16 *stream, int size) {
 			} else {
 				++j;
 			}
-			v3<float> position = base + s->delta_position - listener;
+			v3<float> position = base + s->delta_position - listener->position;
 			float dist = position.length();
 			if (sources.size() < max_sources) {
 				sources.insert(sources_type::value_type(dist, std::pair<v3<float>, Source *>(position, s)));
@@ -77,20 +77,18 @@ void Context::process(Sint16 *stream, int size) {
 	std::vector<std::pair<v3<float>, Source *> > lsources;
 	sources_type::iterator j = sources.begin();
 	for(unsigned i = 0; i < max_sources && j != sources.end(); ++i, ++j) {
-		LOG_DEBUG(("%u: source in %g", i, j->first));
+		//LOG_DEBUG(("%u: source in %g", i, j->first));
 		lsources.push_back(j->second);
 	}
 	sources.clear();
 
-	unsigned n = size / spec.channels / 2;
-	LOG_DEBUG(("generating %u samples", n));
 	Sint16 *dst = stream;
 	for(int i = 0; i < size / 2; ++i) {
 		*dst++ = 0;
 	}
 
 	for(streams_type::iterator i = streams.begin(); i != streams.end();) {
-		LOG_DEBUG(("processing stream %d", i->first));
+		//LOG_DEBUG(("processing stream %d", i->first));
 		stream_info &stream_info = i->second;
 		while ((int)stream_info.buffer.getSize() < size) {
 			mrt::Chunk data;
@@ -110,7 +108,7 @@ void Context::process(Sint16 *stream, int size) {
 			}
 		}
 		int buf_size = stream_info.buffer.getSize();
-		LOG_DEBUG(("buffered %d bytes", buf_size));
+		//LOG_DEBUG(("buffered %d bytes", buf_size));
 		if (buf_size == 0) {
 			//all data buffered. continue;
 			LOG_DEBUG(("stream %d finished. dropping.", i->first));
@@ -147,7 +145,7 @@ void Context::process(Sint16 *stream, int size) {
 		if (volume <= 0)
 			continue;
 		int sdl_v = (int)floor(SDL_MIX_MAXVOLUME * volume + 0.5f);
-		LOG_DEBUG(("mixing source with volume %g (%d)", volume, sdl_v));
+		LOG_DEBUG(("%u: mixing source with volume %g (%d)", i, volume, sdl_v));
 		SDL_MixAudio((Uint8 *)stream, (Uint8 *)buf.getPtr(), size, sdl_v);
 	}
 }
@@ -185,6 +183,8 @@ void Context::init(const int sample_rate, const Uint8 channels, int period_size)
 	LOG_DEBUG(("opened audio device, sample rate: %d, period: %d", spec.freq, spec.samples));
 //	SDL_InitSubSystem(SDL_INIT_AUDIO);
 	SDL_PauseAudio(0);
+	
+	listener = new Object(this);
 }
 
 void Context::delete_object(Object *o) {
@@ -193,6 +193,9 @@ void Context::delete_object(Object *o) {
 }
 
 void Context::deinit() {
+	delete listener;
+	listener = NULL;
+	
 	SDL_PauseAudio(1);
 	SDL_QuitSubSystem(SDL_INIT_AUDIO);
 }
@@ -260,8 +263,12 @@ void Context::set_fx_volume(float volume) {
 	LOG_WARN(("ignoring set_fx_volume(%g)", volume));
 }
 
-void Context::stop_all(bool stop_streams) {
-	LOG_WARN(("ignoring stop_all()"));
+void Context::stop_all() {
+	AudioLocker l;
+	for(streams_type::iterator i = streams.begin(); i != streams.end(); ++i) {
+		delete i->second.stream;
+	}
+	streams.clear();
 }
 
 void Context::convert(mrt::Chunk &dst, const mrt::Chunk &src, int rate, const Uint16 format, const Uint8 channels) {

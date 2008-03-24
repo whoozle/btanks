@@ -168,7 +168,7 @@ float Source::process(mrt::Chunk &buffer, unsigned dst_ch, const v3<float> &delt
 
 	mrt::Chunk sample3d;
 	int idt_abs = idt_offset > 0? idt_offset: -idt_offset;
-	hrtf(sample3d, dst_n + idt_abs, src, src_ch, src_n, kemar_data, kemar_idx);
+	hrtf(sample3d, (int)((dst_n + idt_abs) * pitch), src, src_ch, src_n, kemar_data, kemar_idx);
 	
 	//LOG_DEBUG(("angle: %g", angle_gr));
 	//LOG_DEBUG(("idt offset %d samples", idt_offset));

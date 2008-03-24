@@ -95,7 +95,7 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 }
 
 void IMixer::deinit() {
-	_context->stop_all(true);
+	_context->stop_all();
 
 	delete _context;
 	_context = NULL;
@@ -331,7 +331,11 @@ void IMixer::setListener(const v3<float> &pos, const v3<float> &vel, const float
 	//LOG_DEBUG(("setListener: %g %g", pos.x, pos.y));
 	GET_CONFIG_VALUE("engine.sound.positioning-divisor", float, k, 40.0);
 	clunk::v3<float> clunk_pos (pos.x / k, -pos.y / k, 0*pos.z / k);
-	LOG_WARN(("ignoring setListener(%g,%g,%g)", pos.x, pos.y, pos.z));
+	clunk::v3<float> clunk_vel (vel.x / k, -vel.y / k, 0*vel.z / k);
+	//LOG_WARN(("ignoring setListener(%g,%g,%g)", pos.x, pos.y, pos.z));
+	clunk::Object *listener = _context->get_listener();
+	assert(listener != NULL);
+	listener->update(clunk_pos, clunk_vel);
 }
 
 void IMixer::cancelSample(const Object *o, const std::string &name) {
@@ -369,7 +373,9 @@ void IMixer::cancelAll() {
 	if (_nosound)
 		return;
 
-	_context->stop_all(false);
+	for(Objects::iterator i = _objects.begin(); i != _objects.end(); ++i) {
+		delete i->second;
+	}
 	_objects.clear();
 }
 
