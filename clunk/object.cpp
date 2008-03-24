@@ -62,6 +62,8 @@ void Object::cancel_all() {
 }
 
 Object::~Object() {
+	if (dead)
+		return;
 	AudioLocker l;
 	cancel_all();
 	context->delete_object(this);

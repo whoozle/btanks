@@ -51,7 +51,6 @@ void Context::process(Sint16 *stream, int size) {
 	
 	for(objects_type::iterator i = objects.begin(); i != objects.end(); ) {
 		Object *o = *i;
-		v3<float> base = o->position;
 		Object::Sources & sset = o->sources;
 		if (sset.empty() && o->dead) {
 			//autodeleted object
@@ -59,6 +58,7 @@ void Context::process(Sint16 *stream, int size) {
 			objects.erase(i++);
 			continue;
 		}
+		v3<float> base = o->position;
 		for(Object::Sources::iterator j = sset.begin(); j != sset.end(); ) {
 			Source *s = j->second;
 			if (!s->playing()) {
