@@ -254,8 +254,10 @@ TRY {
 			clunk_object = _objects[id] = _context->create_object();
 		}
 		
-		if (loop && clunk_object->playing(name))
+		if (loop && clunk_object->playing(name)) {
+			clunk_object->set_loop(name, true);
 			return;
+		};
 
 		if (_debug)
 			LOG_DEBUG(("playSample('%s', %s, %g)", name.c_str(), loop?"loop":"once", _volume_fx * gain));
