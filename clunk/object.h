@@ -39,6 +39,8 @@ public:
 	bool playing(const std::string &name) const;
 	void cancel(const std::string &name);
 	void cancel_all();
+	
+	bool active() const;
 
 private: 
 	friend class Context;

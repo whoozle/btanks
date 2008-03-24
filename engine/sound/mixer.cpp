@@ -319,6 +319,10 @@ TRY {
 	Objects::iterator i = _objects.find(o->getID());
 	if (i == _objects.end())
 		return;
+	if (i->second->active()) {
+		i->second->cancel_all();
+		return; //delete it later
+	}
 
 	delete i->second;
 	_objects.erase(i);

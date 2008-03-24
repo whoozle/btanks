@@ -66,3 +66,8 @@ Object::~Object() {
 	cancel_all();
 	context->delete_object(this);
 }
+
+bool Object::active() const {
+	AudioLocker l;
+	return !sources.empty();
+}
