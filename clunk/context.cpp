@@ -184,7 +184,7 @@ void Context::init(const int sample_rate, const Uint8 channels, int period_size)
 //	SDL_InitSubSystem(SDL_INIT_AUDIO);
 	SDL_PauseAudio(0);
 	
-	listener = new Object(this);
+	listener = create_object();
 }
 
 void Context::delete_object(Object *o) {
