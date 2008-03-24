@@ -32,7 +32,9 @@
 
 using namespace clunk;
 Source::Source(const Sample * sample, const bool loop, const v3<float> &delta, float gain, float pitch) : 
-	sample(sample), loop(loop), delta_position(delta), gain(gain), pitch(pitch), position(0) {
+	sample(sample), loop(loop), delta_position(delta), gain(gain), pitch(pitch), 
+	reference_distance(1), rolloff_factor(1), 
+	position(0)  {
 	if (sample == NULL)
 		throw_ex(("sample for source cannot be NULL"));
 }
@@ -151,9 +153,13 @@ float Source::process(mrt::Chunk &buffer, unsigned dst_ch, const v3<float> &delt
 	unsigned src_n = sample->data.getSize() / src_ch / 2;
 
 	//LOG_DEBUG(("delta position: %g %g", delta_position.x, delta_position.y));
-	float r2 = delta_position.quick_length();
+	float r2 = delta_position.length();
+	if (r2 < reference_distance) 
+		r2 = reference_distance;
 	
-	float vol = (r2 > 1)?fx_volume * gain / log2f(r2): fx_volume * gain;
+	//float vol = (r2 > 1)?fx_volume * gain / r2: fx_volume * gain;
+	float vol = fx_volume * gain / (1 + rolloff_factor * ((r2 - reference_distance) / reference_distance));
+	
 	if (vol > 1)
 		vol = 1;
 

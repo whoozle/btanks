@@ -38,6 +38,8 @@ public:
 	v3<float> delta_position; //0 - from the center of the object. 
 	float gain;
 	float pitch;
+
+	float reference_distance, rolloff_factor;
 	
 	Source(const Sample * sample, const bool loop = false, const v3<float> &delta = v3<float>(), float gain = 1, float pitch = 1);
 
