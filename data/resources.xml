@@ -24,7 +24,7 @@
 
 	<animation-model id="launcher-animation" speed="10">
 		<pose id="hold">0</pose>
-		<pose id="move" sound="engine-car.ogg">0,1,0</pose>
+		<pose id="move">0,1,0</pose>
 	</animation-model>
 
 	<animation-model id="mortar-animation" speed="10">
@@ -33,9 +33,9 @@
 	</animation-model>
 
 	<animation-model id="car-animation" speed="10">
-		<pose id="hold">0</pose>
+		<pose id="hold" sound="engine-car.ogg" gain="0.3">0</pose>
 		<pose id="main">0</pose> <!-- hack to make destructable-object work with this model -->
-		<pose id="move" sound="engine-car.ogg">0,1</pose>
+		<pose id="move" sound="engine-car.ogg" gain="0.3">0,1</pose>
 	</animation-model>
 
 	<animation-model id="choo-choo-train-animation" speed="10">
