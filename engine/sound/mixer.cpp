@@ -264,6 +264,10 @@ TRY {
 		if (_debug)
 			LOG_DEBUG(("pitch = %g", pitch));
 		clunk_object->play(name, new clunk::Source(sample, loop, clunk::v3<float>(), gain, pitch));
+	} else {
+		clunk::Object * listener = _context->get_listener();
+		if (listener != NULL)
+			listener->play(name, new clunk::Source(sample, loop, clunk::v3<float>(), gain));
 	}
 
 } CATCH("playSample", { });
@@ -328,12 +332,16 @@ void IMixer::tick(const float dt) {
 
 
 void IMixer::setListener(const v3<float> &pos, const v3<float> &vel, const float r) {
+	clunk::Object *listener = _context->get_listener();
+	if (listener == NULL) {
+		LOG_WARN(("listener is not yet created, skipping setListener(...)"));
+		return;
+	}
 	//LOG_DEBUG(("setListener: %g %g", pos.x, pos.y));
 	GET_CONFIG_VALUE("engine.sound.positioning-divisor", float, k, 40.0);
 	clunk::v3<float> clunk_pos (pos.x / k, -pos.y / k, 0*pos.z / k);
 	clunk::v3<float> clunk_vel (vel.x / k, -vel.y / k, 0*vel.z / k);
 	//LOG_WARN(("ignoring setListener(%g,%g,%g)", pos.x, pos.y, pos.z));
-	clunk::Object *listener = _context->get_listener();
 	assert(listener != NULL);
 	listener->update(clunk_pos, clunk_vel);
 }
