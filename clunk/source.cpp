@@ -139,11 +139,13 @@ float Source::process(mrt::Chunk &buffer, unsigned dst_ch, const v3<float> &delt
 	unsigned src_n = sample->data.getSize() / src_ch / 2;
 
 	//LOG_DEBUG(("delta position: %g %g", delta_position.x, delta_position.y));
+	float r2 = delta_position.quick_length(); //linear
 	
 	kemar_ptr kemar_data;
 	int angles;
 	get_kemar_data(kemar_data, angles, delta_position);
-	if (kemar_data == NULL) {
+
+	if (r2 < 1 || kemar_data == NULL) {
 		//2d stereo sound! 
 		for(unsigned i = 0; i < dst_n; ++i) {
 			for(unsigned c = 0; c < dst_ch; ++c) {
@@ -172,9 +174,6 @@ float Source::process(mrt::Chunk &buffer, unsigned dst_ch, const v3<float> &delt
 	
 	//LOG_DEBUG(("data: %p, angles: %d", (void *) kemar_data, angles));
 	
-	float r2 = delta_position.length(); //linear
-	if (r2 < 1)
-		r2 = 1;
 	float vol = gain / r2;
 	if (vol < 0)
 		return 0;
