@@ -140,6 +140,14 @@ float Source::process(mrt::Chunk &buffer, unsigned dst_ch, const v3<float> &delt
 
 	//LOG_DEBUG(("delta position: %g %g", delta_position.x, delta_position.y));
 	float r2 = delta_position.quick_length(); //linear
+	float vol = gain / r2;
+	if (vol < 0)
+		return 0;
+	if (vol > 1)
+		vol = 1;
+
+	if ((int)floor(SDL_MIX_MAXVOLUME * vol + 0.5f) == 0) 
+		return 0;
 	
 	kemar_ptr kemar_data;
 	int angles;
@@ -173,12 +181,6 @@ float Source::process(mrt::Chunk &buffer, unsigned dst_ch, const v3<float> &delt
 	}
 	
 	//LOG_DEBUG(("data: %p, angles: %d", (void *) kemar_data, angles));
-	
-	float vol = gain / r2;
-	if (vol < 0)
-		return 0;
-	if (vol > 1)
-		vol = 1;
 	
 	if (position >= (int)src_n) {
 		return 0;
