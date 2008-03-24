@@ -231,38 +231,42 @@ void IMixer::playSample(const Object *o, const std::string &name, const bool loo
 	if (_nosound || name.empty())
 		return;
 
+TRY {
 	//LOG_DEBUG(("object: %d requests %s (%s)", id, name.c_str(), loop?"loop":"single"));
 	Sounds::const_iterator i = _sounds.find(name);
 	if (i == _sounds.end()) {
 		LOG_WARN(("sound %s was not loaded. skipped.", name.c_str()));
 		return;
 	}
-
-	const int id = (o)?o->getID():0;
+	clunk::Sample *sample = i->second;
 
 	GET_CONFIG_VALUE("engine.sound.positioning-divisor", float, k, 40.0);
 
+	if (_debug)
+		LOG_DEBUG(("playSample('%s', %s, %g)", name.c_str(), loop?"loop":"once", _volume_fx * gain));
+
+	double pitch = 1.0;
 	if (o) {
+		const int id = o->getID();
+		
+		clunk::Object *clunk_object = _objects[id];
+		if (clunk_object == NULL) {
+			clunk_object = _objects[id] = _context->create_object();
+		}
+		
 		v2<float> pos, vel;
 		o->getInfo(pos, vel);
-		//fixme !		
 		const clunk::v3<float> clunk_pos( pos.x / k, -pos.y / k, 0*o->getZ() / k ), clunk_vel( vel.x / k, -vel.y / k, 0);
-	}
+		clunk_object->update(clunk_pos, clunk_vel);
 	
-	TRY {
+		GET_CONFIG_VALUE("engine.sound.delta-pitch", float, sdp, 0.019440643702144828169815632631f); //1/3 semitone
+		pitch = 1.0 + (double)sdp * (mrt::random(2000) - 1000) / 1000.0;
 		if (_debug)
-			LOG_DEBUG(("playSample('%s', %s, %g)", name.c_str(), loop?"loop":"once", _volume_fx * gain));
+			LOG_DEBUG(("pitch = %g", pitch));
+		clunk_object->play(name, new clunk::Source(sample, loop, clunk::v3<float>(), gain, pitch));
+	}
 
-		double pitch = 1.0;
-		if (o) {
-			GET_CONFIG_VALUE("engine.sound.delta-pitch", float, sdp, 0.019440643702144828169815632631f); //1/3 semitone
-			pitch = 1.0 + (double)sdp * (mrt::random(2000) - 1000) / 1000.0;
-			if (_debug)
-				LOG_DEBUG(("pitch = %g", pitch));
-		} else {
-			//fixme!
-		}		
-	} CATCH("playSample", { });
+} CATCH("playSample", { });
 }
 
 void IMixer::setFXVolume(const float volume) {
