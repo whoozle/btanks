@@ -713,6 +713,56 @@
 		<object id="traffic-lights"/>
 		<object id="umbrella"/>
 	</map>
+	<map id="wastes">
+		<object id="alt-missiles-on-launcher"/>
+		<object id="armed-mine"/>
+		<object id="biotoilet"/>
+		<object id="boomerang-missiles-item"/>
+		<object id="corpse"/>
+		<object id="damage-digits"/>
+		<object id="dirt-bullets-item"/>
+		<object id="dispersion-bullet"/>
+		<object id="dispersion-bullets-item"/>
+		<object id="dumb-missiles-item"/>
+		<object id="explosion"/>
+		<object id="fake-mod"/>
+		<object id="gate"/>
+		<object id="grenade"/>
+		<object id="grenade-explosion"/>
+		<object id="guided-missiles-item"/>
+		<object id="heal"/>
+		<object id="helmet"/>
+		<object id="impassable-static-corpse"/>
+		<object id="machinegunner"/>
+		<object id="machinegunner-bullet"/>
+		<object id="machinegunner-item"/>
+		<object id="megaheal"/>
+		<object id="mines-item"/>
+		<object id="missiles-on-launcher"/>
+		<object id="missiles-on-tank"/>
+		<object id="nuke-explosion"/>
+		<object id="nuke-missiles-item"/>
+		<object id="oil-barrels"/>
+		<object id="outline"/>
+		<object id="ricochet-bullet"/>
+		<object id="ricochet-bullets-item"/>
+		<object id="road-sign"/>
+		<object id="sandworm"/>
+		<object id="sandworm-head"/>
+		<object id="shilka"/>
+		<object id="shilka-bullet"/>
+		<object id="single-pose"/>
+		<object id="smoke-missiles-item"/>
+		<object id="static-corpse"/>
+		<object id="static-dirt"/>
+		<object id="static-launcher"/>
+		<object id="static-mortar"/>
+		<object id="static-shilka"/>
+		<object id="static-smoke-cloud"/>
+		<object id="static-tank"/>
+		<object id="stun-missiles-item"/>
+		<object id="thrower-item"/>
+	</map>
 	<object id="alt-missiles-on-launcher">
 		<animation id="guided-missiles-on-launcher"/>
 	</object>
@@ -913,6 +963,8 @@
 	</object>
 	<object id="impassable-static-corpse">
 		<animation id="dead-cannon"/>
+		<animation id="dead-choo-choo-train"/>
+		<animation id="dead-choo-choo-wagon"/>
 		<animation id="dead-cyan-car"/>
 		<animation id="dead-cyan-launcher"/>
 		<animation id="dead-cyan-shilka"/>
@@ -1137,6 +1189,9 @@
 		<animation id="green-shilka"/>
 		<animation id="red-shilka"/>
 		<animation id="yellow-shilka"/>
+	</object>
+	<object id="static-smoke-cloud">
+		<animation id="smoke-cloud"/>
 	</object>
 	<object id="static-tank">
 		<animation id="cyan-tank"/>

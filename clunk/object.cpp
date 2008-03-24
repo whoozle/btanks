@@ -45,16 +45,18 @@ void Object::cancel(const std::string &name) {
 	AudioLocker l;
 	Sources::iterator b = sources.lower_bound(name);
 	Sources::iterator e = sources.upper_bound(name);
-	for(Sources::iterator i = b; i != e; ) {
-		delete i->second;
-		sources.erase(i++);
+	for(Sources::iterator i = b; i != e; ++i) {
+		//delete i->second;
+		i->second->loop = false;
+		//sources.erase(i++);
 	}
 }
 
 void Object::cancel_all() {
 	AudioLocker l;
 	for(Sources::iterator i = sources.begin(); i != sources.end(); ++i) {
-		delete i->second;
+		i->second->loop = false;
+		//delete i->second;
 	}
 	sources.clear();
 }
