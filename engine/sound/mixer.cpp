@@ -95,10 +95,12 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 }
 
 void IMixer::deinit() {
-	_context->stop_all();
+	if (_context != NULL) {
+		_context->stop_all();
 
-	delete _context;
-	_context = NULL;
+		delete _context;
+		_context = NULL;
+	}
 
 	_objects.clear();
 
