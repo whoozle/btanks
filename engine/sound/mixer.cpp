@@ -307,6 +307,9 @@ void IMixer::setAmbienceVolume(const float volume) {
 
 
 void IMixer::updateObject(const Object *o) {
+	if (_nosound)
+		return;
+
 	const int id = o->getID();
 	Objects::iterator i = _objects.find(id);
 	if (i == _objects.end())
@@ -322,6 +325,9 @@ void IMixer::updateObject(const Object *o) {
 
 void IMixer::deleteObject(const Object *o) {
 TRY {
+	if (_nosound)
+		return;
+
 	Objects::iterator i = _objects.find(o->getID());
 	if (i == _objects.end())
 		return;
