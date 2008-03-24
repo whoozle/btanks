@@ -67,7 +67,7 @@ void Source::idt(const v3<float> &delta, float &idt_offset, float &angle_gr) {
 	}
 
 	//printf("idt_angle = %g (%d)\n", idt_angle, (int)(idt_angle * 180 / M_PI));
-	idt_offset = head_r / 343 * (idt_angle + sin(idt_angle));
+	idt_offset = - head_r / 343 * (idt_angle + sin(idt_angle));
 	//printf("idt_offset %g", idt_offset);
 }
 
@@ -172,7 +172,7 @@ float Source::process(mrt::Chunk &buffer, unsigned dst_ch, const v3<float> &delt
 	
 	LOG_DEBUG(("data: %p, angles: %d", (void *) kemar_data, angles));
 	
-	float r2 = delta_position.quick_length();
+	float r2 = delta_position.length(); //linear
 	if (r2 < 1)
 		r2 = 1;
 	float vol = gain / r2;
