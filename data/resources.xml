@@ -468,6 +468,8 @@
 
 	<sound file="vehicle-explosion.ogg" class="vehicle-explosion" />
 	<sound file="vehicle-explosion2.ogg" class="vehicle-explosion" />
+
+	<sound file="vehicle-sound.ogg" class="vehicle-sound" />
 	
 	<sound file="klaxon.ogg" class="klaxon" />
 	<sound file="klaxon-funny.ogg" class="klaxon" />
