@@ -245,7 +245,6 @@ TRY {
 
 	GET_CONFIG_VALUE("engine.sound.positioning-divisor", float, k, 40.0);
 
-	double pitch = 1.0;
 	if (o) {
 		const int id = o->getID();
 		
@@ -268,8 +267,11 @@ TRY {
 		const clunk::v3<float> clunk_pos( pos.x / k, -pos.y / k, 0*o->getZ() / k ), clunk_vel( vel.x / k, -vel.y / k, 0);
 		clunk_object->update(clunk_pos, clunk_vel);
 	
+		double pitch = 1;
 		GET_CONFIG_VALUE("engine.sound.delta-pitch", float, sdp, 0.019440643702144828169815632631f); //1/3 semitone
-		pitch = 1.0 + (double)sdp * (mrt::random(2000) - 1000) / 1000.0;
+		if (!loop) 
+			pitch += (double)sdp * (mrt::random(2000) - 1000) / 1000.0;
+
 		if (_debug)
 			LOG_DEBUG(("pitch = %g", pitch));
 		clunk_object->play(name, new clunk::Source(sample, loop, clunk::v3<float>(), gain, pitch));
