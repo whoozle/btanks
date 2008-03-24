@@ -183,8 +183,10 @@ void Object::cancelRepeatable() {
 
 
 void Object::cancelAll() {
-	Mixer->cancelAll(this);
-	_events.clear();
+	while(!_events.empty()) {
+		Mixer->cancelSample(this, _events.front().sound);
+		_events.pop_front();
+	}
 	_pos = 0;
 }
 
