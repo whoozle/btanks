@@ -23,7 +23,7 @@
 
 #include "export_clunk.h"
 #include "v3.h"
-#include <set>
+#include <map>
 
 namespace clunk {
 class Context;
@@ -34,11 +34,10 @@ public:
 	~Object();
 	void update(const v3<float> &pos, const v3<float> &vel);
 
-	void play(Source *source);
-	bool playing(Source *source) const;
-	
-	void remove(Source *source);
-	void remove_all();
+	void play(const std::string &name, Source *source);
+	bool playing(const std::string &name) const;
+	void cancel(const std::string &name);
+	void cancel_all();
 
 private: 
 	friend class Context;
@@ -46,7 +45,8 @@ private:
 	Context *context;
 	v3<float> position, velocity;
 
-	std::set<Source *> sources;
+	typedef std::multimap<const std::string, Source *> Sources;
+	Sources sources;
 };
 }
 

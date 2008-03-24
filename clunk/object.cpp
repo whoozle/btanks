@@ -19,6 +19,7 @@
 #include "object.h"
 #include "context.h"
 #include "locker.h"
+#include "source.h"
 
 using namespace clunk;
 
@@ -30,27 +31,36 @@ void Object::update(const v3<float> &pos, const v3<float> &vel) {
 	velocity = vel;
 }
 
-void Object::play(Source *source) {
+void Object::play(const std::string &name, Source *source) {
 	AudioLocker l;
-	sources.insert(source);
+	sources.insert(Sources::value_type(name, source));
 }
 
-bool Object::playing(Source *source) const {
+bool Object::playing(const std::string &name) const {
 	AudioLocker l;
-	return sources.find(source) != sources.end();
+	return sources.find(name) != sources.end();
 }
 
-void Object::remove(Source *source) {
+void Object::cancel(const std::string &name) {
 	AudioLocker l;
-	sources.erase(source);
+	Sources::iterator b = sources.lower_bound(name);
+	Sources::iterator e = sources.upper_bound(name);
+	for(Sources::iterator i = b; i != e; ) {
+		delete i->second;
+		sources.erase(i++);
+	}
 }
 
-void Object::remove_all() {
+void Object::cancel_all() {
 	AudioLocker l;
+	for(Sources::iterator i = sources.begin(); i != sources.end(); ++i) {
+		delete i->second;
+	}
 	sources.clear();
 }
 
 Object::~Object() {
 	AudioLocker l;
+	cancel_all();
 	context->delete_object(this);
 }

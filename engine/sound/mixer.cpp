@@ -38,8 +38,9 @@
 #include "clunk/context.h"
 
 void IMixer::ObjectInfo::play(const std::string &name, const clunk::Sample *sample) {
-
+	
 }
+
 void IMixer::ObjectInfo::cancel(const std::string &name) {
 
 }

@@ -75,17 +75,7 @@ public:
 private:
 	bool _nosound, _nomusic;
 
-	struct ObjectInfo {
-		clunk::Object *object;
-		ObjectInfo(clunk::Object *object) : object(object) {}
-
-		std::map<const std::string, clunk::Source *> sources;
-		void play(const std::string &name, const clunk::Sample *sample);
-		void cancel(const std::string &name);
-		void cancel_all();
-	};
-	
-	typedef std::map<const int, ObjectInfo> Objects;
+	typedef std::map<const int, clunk::Object *> Objects;
 	Objects _objects;
 	
 	typedef std::map<const std::string, clunk::Sample *> Sounds;

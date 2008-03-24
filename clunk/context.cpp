@@ -52,9 +52,9 @@ void Context::process(Sint16 *stream, int size) {
 	for(objects_type::iterator i = objects.begin(); i != objects.end(); ++i) {
 		Object *o = *i;
 		v3<float> base = o->position;
-		std::set<Source *> & sset = o->sources;
-		for(std::set<Source *>::iterator j = sset.begin(); j != sset.end(); ) {
-			Source *s = *j;
+		Object::Sources & sset = o->sources;
+		for(Object::Sources::iterator j = sset.begin(); j != sset.end(); ) {
+			Source *s = j->second;
 			if (!s->playing()) {
 				LOG_DEBUG(("purging inactive source"));
 				sset.erase(j++);
