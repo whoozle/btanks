@@ -233,12 +233,12 @@ float Source::process(mrt::Chunk &buffer, unsigned dst_ch, const v3<float> &delt
 
 void Source::get_kemar_data(kemar_ptr & kemar_data, int & elev_n, const v3<float> &pos) {
 	
-	int elev_gr = (int)(180 * atan2(pos.z, sqrt(pos.x * pos.x + pos.y * pos.y)) / M_PI);
-
 	kemar_data = NULL;
 	elev_n = 0;
 	if (pos.is0())
 		return;
+
+	int elev_gr = (int)(180 * atan2(pos.z, sqrt(pos.x * pos.x + pos.y * pos.y)) / M_PI);
 
 	if (elev_gr < -35) {
 		kemar_data = elev_m40;
