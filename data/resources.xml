@@ -77,6 +77,13 @@
 	<animation-model id="man-animation" speed="7">
 		<pose id="hold">0</pose>
 		<pose id="walk" sound="man-steps.ogg">1,2,3,2,4,5,6,5</pose>
+		<pose id="run" sound="man-steps.ogg">7,8,9,10</pose>
+		<pose id="thinking">11,0,12,0</pose>
+	</animation-model>
+
+	<animation-model id="kamikaze-animation" speed="7">
+		<pose id="hold">0</pose>
+		<pose id="walk" sound="man-steps.ogg">1,2,3,2,4,5,6,5</pose>
 		<pose id="run" sound="kamikaze-scream.ogg">7,8,9,10</pose>
 		<pose id="thinking">11,0,12,0</pose>
 	</animation-model>
@@ -116,8 +123,8 @@
 	<animation-model id="trooper-animation" speed="7">
 		<pose id="disembark" sound="disembark.ogg">0</pose>
 		<pose id="hold">0</pose>
-		<pose id="walk">1,2,3,2,4,5,6,5</pose>
-		<pose id="run">7,8,9,10</pose>
+		<pose id="walk" sound="man-steps.ogg">1,2,3,2,4,5,6,5</pose>
+		<pose id="run" sound="man-steps.ogg">7,8,9,10</pose>
 		<pose id="fire">11,12,13</pose>
 		<pose id="throw" speed="10">14,15</pose>
 	</animation-model>
@@ -125,8 +132,8 @@
 	<animation-model id="machinegunner-animation" speed="7">
 		<pose id="disembark" sound="disembark.ogg">0</pose>
 		<pose id="hold">0</pose>
-		<pose id="walk">1,2,3,2,4,5,6,5</pose>
-		<pose id="run">7,8,9,10</pose>
+		<pose id="walk" sound="man-steps.ogg">1,2,3,2,4,5,6,5</pose>
+		<pose id="run" sound="man-steps.ogg">7,8,9,10</pose>
 		<pose id="fire" sound="machinegunner-bullet.ogg">11,12,13</pose>
 		<pose id="throw" speed="10">14,15</pose>
 	</animation-model>
@@ -709,7 +716,7 @@
 	<!-- troops --> 
 	<animation id="paratrooper" model="paratrooper-animation" tile="paratrooper.png" />
 	<animation id="gay-paratrooper" model="paratrooper-animation" tile="gay_paratrooper.png" />
-	<animation id="kamikaze" model="man-animation" tile="kamikaze.png" />
+	<animation id="kamikaze" model="kamikaze-animation" tile="kamikaze.png" />
 	<animation id="machinegunner" model="machinegunner-animation" tile="machinegunner.png" />
 	<animation id="nukeman" model="trooper-animation" tile="nukeman.png" />
 	<animation id="dead-machinegunner" model="dead-man-animation" tile="machinegunner_dead.png" />
