@@ -35,6 +35,11 @@ void Object::play(Source *source) {
 	sources.insert(source);
 }
 
+bool Object::playing(Source *source) const {
+	AudioLocker l;
+	return sources.find(source) != sources.end();
+}
+
 void Object::remove(Source *source) {
 	AudioLocker l;
 	sources.erase(source);

@@ -35,6 +35,8 @@ public:
 	void update(const v3<float> &pos, const v3<float> &vel);
 
 	void play(Source *source);
+	bool playing(Source *source) const;
+	
 	void remove(Source *source);
 	void remove_all();
 

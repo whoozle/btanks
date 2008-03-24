@@ -31,7 +31,14 @@
 
 using namespace clunk;
 Source::Source(const Sample * sample, const bool loop, const v3<float> &delta, float gain, float pitch) : 
-	sample(sample), loop(loop), delta_position(delta), gain(gain), pitch(pow(2.0f, pitch)), position(0) {}
+	sample(sample), loop(loop), delta_position(delta), gain(gain), pitch(pow(2.0f, pitch)), position(0) {
+	if (sample == NULL)
+		throw_ex(("sample for source cannot be NULL"));
+}
+	
+bool Source::playing() const {
+	return loop?true: position < (int)(sample->data.getSize() / sample->spec.channels / 2);
+}
 	
 void Source::idt(const v3<float> &delta, float &idt_offset, float &angle_gr) {
 	float head_r = 0.09554140127388535032f;

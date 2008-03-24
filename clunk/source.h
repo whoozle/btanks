@@ -42,6 +42,7 @@ public:
 	Source(const Sample * sample, const bool loop = false, const v3<float> &delta = v3<float>(), float gain = 1, float pitch = 0);
 
 	float process(mrt::Chunk &buffer, unsigned ch, const v3<float> &position);
+	bool playing() const;
 
 private: 
 	typedef const float (*kemar_ptr)[2][512];
