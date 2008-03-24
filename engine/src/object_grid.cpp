@@ -36,11 +36,10 @@ static inline int wrap(int x, int y) {
 	return x < 0? x + y: x;
 }
 
-void Grid::collide(std::vector<int> &objects, const GridMatrix &grid, const v2<int> &grid_size, const v2<int>& area_pos, const v2<int>& area_size) const {
+void Grid::collide(std::set<int> &result, const GridMatrix &grid, const v2<int> &grid_size, const v2<int>& area_pos, const v2<int>& area_size) const {
 	const v2<int> start = area_pos / grid_size;
 	const v2<int> end = (area_pos + area_size - 1) / grid_size;
 
-	IDSet result;
 	const int y1 = _wrap? start.y: math::max(0, start.y), y2 = _wrap? end.y: math::min((int)grid.size() - 1, end.y);
 	const int x1 = _wrap? start.x: math::max(0, start.x);
 	for(int y = y1; y <= y2; ++y) {
@@ -48,10 +47,9 @@ void Grid::collide(std::vector<int> &objects, const GridMatrix &grid, const v2<i
 		const int x2 = _wrap?end.x: math::min((int)row.size() - 1, end.x);
 		for(int x = x1; x <= x2; ++x) {
 			const IDSet &set = row[wrap(x, row.size())];
-			result |= set;
+			result.insert(set.begin(), set.end());
 		}
 	}
-	result.store(objects);
 }
 
 void Grid::removeFromGrid(GridMatrix &grid, const v2<int> &grid_size, const int id, const Object &o) {
@@ -86,7 +84,7 @@ void Grid::update(GridMatrix &grid, const v2<int> &grid_size, const int id, cons
 
 
 
-void Grid::collide(std::vector<int> &objects, const v2<int>& area_pos, const v2<int>& area_size) const {
+void Grid::collide(std::set<int> &objects, const v2<int>& area_pos, const v2<int>& area_size) const {
 	v2<int> size = area_size / _grid_size;
 	int n = size.x * size.y;
 	GET_CONFIG_VALUE("engine.grid-1x-limit", int, limit, 16);

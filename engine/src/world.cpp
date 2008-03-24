@@ -454,11 +454,11 @@ TRY {
 	sdlx::Rect my((int)position.x, (int)position.y,(int)obj->size.x, (int)obj->size.y);
 
 
-	std::vector<int> objects;
+	std::set<int> objects;
 	_grid.collide(objects, position, obj->size.convert<int>());
 	//consult grid
 
-	for(std::vector<int>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
+	for(std::set<int>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
 		ObjectMap::const_iterator o_i = _objects.find(*i);
 		if (o_i == _objects.end())
 			continue;
@@ -1552,11 +1552,11 @@ const Object* IWorld::getNearestObject(const Object *obj, const std::set<std::st
 	float distance = std::numeric_limits<float>::infinity();
 	float range2 = range * range;
 
-	std::vector<int> objects;
+	std::set<int> objects;
 	_grid.collide(objects, (obj->_position - range).convert<int>(), v2<int>((int)range * 2, (int)range * 2));
 	//consult grid
 
-	for(std::vector<int>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
+	for(std::set<int>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
 		ObjectMap::const_iterator o_i = _objects.find(*i);
 		if (o_i == _objects.end())
 			continue;
@@ -1720,11 +1720,11 @@ void IWorld::enumerateObjects(std::set<const Object *> &id_set, const Object *sr
 
 	float r2 = range * range;
 	
-	std::vector<int> objects;
+	std::set<int> objects;
 	_grid.collide(objects, (src->_position - range).convert<int>(), v2<int>((int)range * 2, (int)range * 2));
 	//consult grid
 
-	for(std::vector<int>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
+	for(std::set<int>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
 		ObjectMap::const_iterator o_i = _objects.find(*i);
 		if (o_i == _objects.end())
 			continue;
