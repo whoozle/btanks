@@ -182,16 +182,17 @@ void IMixer::play() {
 void IMixer::loadSample(const std::string &filename, const std::string &classname) {
 	if (_nosound) 
 		return;
-	LOG_DEBUG(("loading sample %s", filename.c_str()));
-	
 	
 	if (_sounds.find(filename) != _sounds.end()) {
 		//fix classname anyway to allow one sample have multiply classes.
 		if (!classname.empty())
 			_classes[classname].insert(filename);
-		LOG_DEBUG(("already loaded, skipped."));
+		LOG_DEBUG(("sample %s already loaded, skipped.", filename.c_str()));
 		return;
 	}
+
+	LOG_DEBUG(("loading sample %s", filename.c_str()));
+	
 
 	clunk::Sample * sample = NULL;
 	TRY {
