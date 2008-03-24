@@ -60,7 +60,7 @@ void Shilka::onSpawn() {
 	GET_CONFIG_VALUE("objects.shilka.special-fire-rate", float, sfr, 0.4);
 	_special_fire.set(sfr);
 	play("hold", true);
-	playSound("vehicle-sound", true, 0.2f);
+	playSound("vehicle-sound", true, 0.4f);
 }
 
 Object * Shilka::clone() const {

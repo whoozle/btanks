@@ -56,7 +56,7 @@ void Buggy::onSpawn() {
 	Object *turrel = add("mod", ai?"turrel(ground-aim)":"turrel", "buggy-gun", v2<float>(), Centered);
 	turrel->setZ(getZ() + 5, true);
 
-	playSound("vehicle-sound", true, 0.2f);
+	playSound("vehicle-sound", true, 0.4f);
 }
 
 void Buggy::getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const {
