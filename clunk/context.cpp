@@ -33,7 +33,7 @@
 
 using namespace clunk;
 
-Context::Context() : period_size(0), listener(NULL), max_sources(8) {
+Context::Context() : period_size(0), listener(NULL), max_sources(4) {
 }
 
 void Context::callback(void *userdata, Uint8 *bstream, int len) {
@@ -57,6 +57,7 @@ void Context::process(Sint16 *stream, int size) {
 			Source *s = j->second;
 			if (!s->playing()) {
 				LOG_DEBUG(("purging inactive source"));
+				delete j->second;
 				sset.erase(j++);
 				continue;
 			} else {
