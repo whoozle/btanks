@@ -4,7 +4,7 @@
 		<pose id="hold">0</pose>
 		<pose id="start" speed="10">0,1,2</pose>
 		<pose id="move">0,1,2</pose>
-		<pose id="fire" speed="10">3,4</pose>
+		<pose id="fire" speed="10" sound="@cannon" gain="0.6">3,4</pose>
 	</animation-model>
 
 	<animation-model id="dead-vehicle-animation" speed="7">
@@ -18,8 +18,8 @@
 		<pose id="hold">0</pose>
 		<pose id="start" speed="10">0,1,2</pose>
 		<pose id="move">0,1,2</pose>
-		<pose id="fire-left" speed="10">3</pose>
-		<pose id="fire-right" speed="10">4</pose>
+		<pose id="fire-left" speed="10" sound="@cannon" gain="0.5">3</pose>
+		<pose id="fire-right" speed="10" sound="@cannon" gain="0.5">4</pose>
 	</animation-model>
 
 	<animation-model id="launcher-animation" speed="10">
@@ -29,7 +29,7 @@
 
 	<animation-model id="mortar-animation" speed="10">
 		<pose id="hold">0</pose>
-		<pose id="move" sound="vehicle-car.ogg">1,2,3,4</pose>
+		<pose id="move" sound="vehicle-sound.ogg">1,2,3,4</pose>
 	</animation-model>
 
 	<animation-model id="car-animation" speed="10">
@@ -121,6 +121,15 @@
 		<pose id="fire">11,12,13</pose>
 		<pose id="throw" speed="10">14,15</pose>
 	</animation-model>
+
+	<animation-model id="machinegunner-animation" speed="7">
+		<pose id="disembark" sound="disembark.ogg">0</pose>
+		<pose id="hold">0</pose>
+		<pose id="walk">1,2,3,2,4,5,6,5</pose>
+		<pose id="run">7,8,9,10</pose>
+		<pose id="fire" sound="machinegunner-bullet.ogg">11,12,13</pose>
+		<pose id="throw" speed="10">14,15</pose>
+	</animation-model>
 	
 	<animation-model id="machinegunner-helmet" speed="7">
 		<pose id="disembark">0</pose>
@@ -206,12 +215,12 @@
 	</animation-model>
 
 	<animation-model id="bullet-animation" speed="1">
-		<pose id="shot" sound="@cannon">0</pose>
+		<pose id="shot">0</pose>
 		<pose id="move">0</pose>
 	</animation-model>
 
 	<animation-model id="machinegunner-bullet-animation" speed="1">
-		<pose id="shot" sound="machinegunner-bullet.ogg">0</pose>
+		<pose id="shot">0</pose>
 		<pose id="move">0</pose>
 	</animation-model>
 
@@ -419,8 +428,8 @@
 	<animation-model id="buggy-gun-animation" speed="10">
 		<pose id="hold">0</pose>
 		<pose id="move">0,1,2</pose>
-		<pose id="fire-left">3,1</pose>
-		<pose id="fire-right">4,1</pose>
+		<pose id="fire-left" sound="machinegunner-bullet.ogg">3,1</pose>
+		<pose id="fire-right" sound="machinegunner-bullet.ogg">4,1</pose>
 	</animation-model>
 	
 	<animation-model id="target-animation" speed="7">
@@ -701,7 +710,7 @@
 	<animation id="paratrooper" model="paratrooper-animation" tile="paratrooper.png" />
 	<animation id="gay-paratrooper" model="paratrooper-animation" tile="gay_paratrooper.png" />
 	<animation id="kamikaze" model="man-animation" tile="kamikaze.png" />
-	<animation id="machinegunner" model="trooper-animation" tile="machinegunner.png" />
+	<animation id="machinegunner" model="machinegunner-animation" tile="machinegunner.png" />
 	<animation id="nukeman" model="trooper-animation" tile="nukeman.png" />
 	<animation id="dead-machinegunner" model="dead-man-animation" tile="machinegunner_dead.png" />
 	<animation id="dead-machinegunner-static" model="dead-man-animation-static" tile="machinegunner_dead.png" />
