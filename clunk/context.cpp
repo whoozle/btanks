@@ -33,7 +33,7 @@
 
 using namespace clunk;
 
-Context::Context() : period_size(0), listener(NULL), max_sources(4) {
+Context::Context() : period_size(0), listener(NULL), max_sources(8) {
 }
 
 void Context::callback(void *userdata, Uint8 *bstream, int len) {

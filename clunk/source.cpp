@@ -138,7 +138,7 @@ float Source::process(mrt::Chunk &buffer, unsigned dst_ch, const v3<float> &delt
 	unsigned src_ch = sample->spec.channels; 
 	unsigned src_n = sample->data.getSize() / src_ch / 2;
 
-	LOG_DEBUG(("delta position: %g %g", delta_position.x, delta_position.y));
+	//LOG_DEBUG(("delta position: %g %g", delta_position.x, delta_position.y));
 	
 	kemar_ptr kemar_data;
 	int angles;
@@ -170,7 +170,7 @@ float Source::process(mrt::Chunk &buffer, unsigned dst_ch, const v3<float> &delt
 		return 1.0f;
 	}
 	
-	LOG_DEBUG(("data: %p, angles: %d", (void *) kemar_data, angles));
+	//LOG_DEBUG(("data: %p, angles: %d", (void *) kemar_data, angles));
 	
 	float r2 = delta_position.length(); //linear
 	if (r2 < 1)
