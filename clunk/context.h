@@ -91,6 +91,7 @@ private:
 
 	Object *listener;
 	unsigned max_sources;
+	float fx_volume;
 };
 }
 

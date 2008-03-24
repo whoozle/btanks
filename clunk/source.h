@@ -41,7 +41,7 @@ public:
 	
 	Source(const Sample * sample, const bool loop = false, const v3<float> &delta = v3<float>(), float gain = 1, float pitch = 1);
 
-	float process(mrt::Chunk &buffer, unsigned ch, const v3<float> &position);
+	float process(mrt::Chunk &buffer, unsigned ch, const v3<float> &position, const float fx_volume);
 	bool playing() const;
 
 private: 

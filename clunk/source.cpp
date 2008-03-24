@@ -126,7 +126,7 @@ void Source::hrtf(mrt::Chunk &result, int dst_n, const Sint16 *src, int src_ch, 
 	kiss_fft_free(kiss_cfg_i);
 }
 
-float Source::process(mrt::Chunk &buffer, unsigned dst_ch, const v3<float> &delta_position) {
+float Source::process(mrt::Chunk &buffer, unsigned dst_ch, const v3<float> &delta_position, const float fx_volume) {
 	Sint16 * dst = (Sint16*) buffer.getPtr();
 	unsigned dst_n = buffer.getSize() / dst_ch / 2;
 	const Sint16 * src = (Sint16*) sample->data.getPtr();
@@ -140,7 +140,7 @@ float Source::process(mrt::Chunk &buffer, unsigned dst_ch, const v3<float> &delt
 
 	//LOG_DEBUG(("delta position: %g %g", delta_position.x, delta_position.y));
 	float r2 = delta_position.quick_length(); //linear
-	float vol = gain / r2;
+	float vol = fx_volume * gain / r2;
 	if (vol < 0)
 		return 0;
 	if (vol > 1)
