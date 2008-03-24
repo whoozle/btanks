@@ -39,7 +39,7 @@ public:
 	float gain;
 	float pitch;
 	
-	Source(const Sample * sample, const bool loop = false, const v3<float> &delta = v3<float>(), float gain = 1, float pitch = 0);
+	Source(const Sample * sample, const bool loop = false, const v3<float> &delta = v3<float>(), float gain = 1, float pitch = 1);
 
 	float process(mrt::Chunk &buffer, unsigned ch, const v3<float> &position);
 	bool playing() const;
