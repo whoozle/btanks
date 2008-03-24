@@ -59,9 +59,9 @@ void Sample::init(const mrt::Chunk &src_data, int rate, const Uint16 format, con
 	AudioLocker l;
 
 	spec.freq = context->get_spec().freq;
-	spec.channels = 1; //fixme: do not 
+	spec.channels = channels;
 	spec.format = context->get_spec().format;
-	context->convert(data, src_data, spec.freq, spec.format, 1);
+	context->convert(data, src_data, spec.freq, spec.format, channels);
 }
 
 Sample::~Sample() {
