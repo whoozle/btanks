@@ -23,7 +23,7 @@
 
 using namespace clunk;
 
-Object::Object(Context *context) : context(context) {}
+Object::Object(Context *context) : context(context), dead(false) {}
 
 void Object::update(const v3<float> &pos, const v3<float> &vel) {
 	AudioLocker l;
@@ -70,4 +70,10 @@ Object::~Object() {
 bool Object::active() const {
 	AudioLocker l;
 	return !sources.empty();
+}
+
+void Object::autodelete() {
+	AudioLocker l;
+	cancel_all();
+	dead = true;
 }

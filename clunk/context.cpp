@@ -49,10 +49,16 @@ void Context::process(Sint16 *stream, int size) {
 	typedef std::multimap<const float, std::pair<v3<float>, Source *> > sources_type;
 	sources_type sources;
 	
-	for(objects_type::iterator i = objects.begin(); i != objects.end(); ++i) {
+	for(objects_type::iterator i = objects.begin(); i != objects.end(); ) {
 		Object *o = *i;
 		v3<float> base = o->position;
 		Object::Sources & sset = o->sources;
+		if (sset.empty() && o->dead) {
+			//autodeleted object
+			delete o;
+			objects.erase(i++);
+			continue;
+		}
 		for(Object::Sources::iterator j = sset.begin(); j != sset.end(); ) {
 			Source *s = j->second;
 			if (!s->playing()) {
@@ -74,6 +80,7 @@ void Context::process(Sint16 *stream, int size) {
 				sources.insert(sources_type::value_type(dist, std::pair<v3<float>, Source *>(position, s)));
 			}
 		}
+		++i;
 	}
 	std::vector<std::pair<v3<float>, Source *> > lsources;
 	sources_type::iterator j = sources.begin();

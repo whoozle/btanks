@@ -42,6 +42,8 @@ public:
 	
 	bool active() const;
 
+	void autodelete();
+
 private: 
 	friend class Context;
 	Object(Context *context);
@@ -50,6 +52,8 @@ private:
 
 	typedef std::multimap<const std::string, Source *> Sources;
 	Sources sources;
+	
+	bool dead;
 };
 }
 
