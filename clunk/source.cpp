@@ -188,6 +188,7 @@ float Source::process(mrt::Chunk &buffer, unsigned dst_ch, const v3<float> &delt
 	//LOG_DEBUG(("data: %p, angles: %d", (void *) kemar_data, angles));
 	
 	if (position >= (int)src_n) {
+		LOG_WARN(("process called on inactive source"));
 		return 0;
 	}
 
