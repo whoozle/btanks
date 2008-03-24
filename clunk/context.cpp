@@ -56,7 +56,7 @@ void Context::process(Sint16 *stream, int size) {
 		for(Object::Sources::iterator j = sset.begin(); j != sset.end(); ) {
 			Source *s = j->second;
 			if (!s->playing()) {
-				LOG_DEBUG(("purging inactive source"));
+				//LOG_DEBUG(("purging inactive source"));
 				delete j->second;
 				sset.erase(j++);
 				continue;
@@ -146,7 +146,7 @@ void Context::process(Sint16 *stream, int size) {
 		if (volume <= 0)
 			continue;
 		int sdl_v = (int)floor(SDL_MIX_MAXVOLUME * volume + 0.5f);
-		LOG_DEBUG(("%u: mixing source with volume %g (%d)", i, volume, sdl_v));
+		//LOG_DEBUG(("%u: mixing source with volume %g (%d)", i, volume, sdl_v));
 		SDL_MixAudio((Uint8 *)stream, (Uint8 *)buf.getPtr(), size, sdl_v);
 	}
 }
