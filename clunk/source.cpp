@@ -211,8 +211,8 @@ float Source::process(mrt::Chunk &buffer, unsigned dst_ch, const v3<float> &delt
 				} else if (left && idt_offset < 0) {
 					p += idt_offset;
 				}
-				assert(p >= 0 && p * 2 < (int)sample3d.getSize());
-				v = src_3d[p]; 
+				if (p >= 0 && p * 2 < (int)sample3d.getSize())
+					v = src_3d[p];
 				//LOG_DEBUG(("%d->%d", p, v));
 			}
 			dst[i * dst_ch + c] = v;
