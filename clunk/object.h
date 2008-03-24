@@ -43,6 +43,7 @@ public:
 	bool active() const;
 
 	void autodelete();
+	void set_loop(const std::string &name, const bool loop);
 
 private: 
 	friend class Context;
