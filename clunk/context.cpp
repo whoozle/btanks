@@ -53,8 +53,15 @@ void Context::process(Sint16 *stream, int size) {
 		Object *o = *i;
 		v3<float> base = o->position;
 		std::set<Source *> & sset = o->sources;
-		for(std::set<Source *>::iterator j = sset.begin(); j != sset.end(); ++j) {
+		for(std::set<Source *>::iterator j = sset.begin(); j != sset.end(); ) {
 			Source *s = *j;
+			if (!s->playing()) {
+				LOG_DEBUG(("purging inactive source"));
+				sset.erase(j++);
+				continue;
+			} else {
+				++j;
+			}
 			v3<float> position = base + s->delta_position - listener;
 			float dist = position.length();
 			if (sources.size() < max_sources) {
