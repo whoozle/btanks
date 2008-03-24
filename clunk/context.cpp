@@ -282,7 +282,7 @@ void Context::stop_all() {
 void Context::convert(mrt::Chunk &dst, const mrt::Chunk &src, int rate, const Uint16 format, const Uint8 channels) {
 	SDL_AudioCVT cvt;
 	memset(&cvt, 0, sizeof(cvt));
-	if (SDL_BuildAudioCVT(&cvt, format, channels, rate, spec.format, spec.channels, spec.freq) == -1) {
+	if (SDL_BuildAudioCVT(&cvt, format, channels, rate, spec.format, channels, spec.freq) == -1) {
 		throw_sdl(("DL_BuildAudioCVT(%d, %04x, %u)", rate, format, channels));
 	}
 	size_t buf_size = (size_t)(src.getSize() * cvt.len_mult);
