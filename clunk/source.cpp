@@ -127,11 +127,48 @@ void Source::hrtf(mrt::Chunk &result, int dst_n, const Sint16 *src, int src_ch, 
 }
 
 float Source::process(mrt::Chunk &buffer, unsigned dst_ch, const v3<float> &delta_position) {
+	Sint16 * dst = (Sint16*) buffer.getPtr();
+	unsigned dst_n = buffer.getSize() / dst_ch / 2;
+	const Sint16 * src = (Sint16*) sample->data.getPtr();
+	if (src == NULL)
+		throw_ex(("uninitialized sample used (%p)", (void *)sample));
+	if (pitch < 0)
+		throw_ex(("pitch %g could not be negative", pitch));
+		
+	unsigned src_ch = sample->spec.channels; 
+	unsigned src_n = sample->data.getSize() / src_ch / 2;
+
 	LOG_DEBUG(("delta position: %g %g", delta_position.x, delta_position.y));
 	
 	kemar_ptr kemar_data;
 	int angles;
 	get_kemar_data(kemar_data, angles, delta_position);
+	if (kemar_data == NULL) {
+		//2d stereo sound! 
+		for(unsigned i = 0; i < dst_n; ++i) {
+			for(unsigned c = 0; c < dst_ch; ++c) {
+				int p = position + (int)(i * pitch);
+			
+				Sint16 v = 0;
+				if (p >= 0 && p < (int)src_n) {
+					if (c < src_ch) {
+						v = src[p * src_ch + c];
+					} else {
+						v = src[p * src_ch];//expand mono channel if needed
+					}
+				}
+				dst[i * dst_ch + c] = v;
+			}
+		}
+		position += ((int)(dst_n * pitch));
+		if (loop) {
+			position %= src_n;
+			//LOG_DEBUG(("position %d", position));
+			if (position < 0)
+				position += src_n;
+		}
+		return 1.0f;
+	}
 	
 	LOG_DEBUG(("data: %p, angles: %d", (void *) kemar_data, angles));
 	
@@ -144,21 +181,9 @@ float Source::process(mrt::Chunk &buffer, unsigned dst_ch, const v3<float> &delt
 	if (vol > 1)
 		vol = 1;
 	
-	const Sint16 * src = (Sint16*) sample->data.getPtr();
-	if (src == NULL)
-		throw_ex(("uninitialized sample used (%p)", (void *)sample));
-	if (pitch < 0)
-		throw_ex(("pitch %g could not be negative", pitch));
-		
-
-	unsigned src_ch = sample->spec.channels; 
-	unsigned src_n = sample->data.getSize() / src_ch / 2;
 	if (position >= (int)src_n) {
 		return 0;
 	}
-
-	Sint16 * dst = (Sint16*) buffer.getPtr();
-	unsigned dst_n = buffer.getSize() / dst_ch / 2;
 
 	float t_idt, angle_gr;
 	idt(delta_position, t_idt, angle_gr);
