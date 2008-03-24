@@ -244,9 +244,6 @@ TRY {
 
 	GET_CONFIG_VALUE("engine.sound.positioning-divisor", float, k, 40.0);
 
-	if (_debug)
-		LOG_DEBUG(("playSample('%s', %s, %g)", name.c_str(), loop?"loop":"once", _volume_fx * gain));
-
 	double pitch = 1.0;
 	if (o) {
 		const int id = o->getID();
@@ -255,6 +252,13 @@ TRY {
 		if (clunk_object == NULL) {
 			clunk_object = _objects[id] = _context->create_object();
 		}
+		
+		if (loop && clunk_object->playing(name))
+			return;
+
+		if (_debug)
+			LOG_DEBUG(("playSample('%s', %s, %g)", name.c_str(), loop?"loop":"once", _volume_fx * gain));
+
 		
 		v2<float> pos, vel;
 		o->getInfo(pos, vel);
@@ -267,6 +271,8 @@ TRY {
 			LOG_DEBUG(("pitch = %g", pitch));
 		clunk_object->play(name, new clunk::Source(sample, loop, clunk::v3<float>(), gain, pitch));
 	} else {
+		if (_debug)
+			LOG_DEBUG(("playSample(@listener)('%s', %s, %g)", name.c_str(), loop?"loop":"once", _volume_fx * gain));
 		clunk::Object * listener = _context->get_listener();
 		if (listener != NULL)
 			listener->play(name, new clunk::Source(sample, loop, clunk::v3<float>(), gain));
@@ -340,6 +346,9 @@ void IMixer::tick(const float dt) {
 
 
 void IMixer::setListener(const v3<float> &pos, const v3<float> &vel, const float r) {
+	if (_nosound || _context == NULL)
+		return;
+	
 	clunk::Object *listener = _context->get_listener();
 	if (listener == NULL) {
 		LOG_WARN(("listener is not yet created, skipping setListener(...)"));
