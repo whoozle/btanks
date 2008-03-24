@@ -65,6 +65,7 @@ void Launcher::onSpawn() {
 	GET_CONFIG_VALUE("objects.launcher.fire-rate", float, fr, 0.3);
 	_fire.set(fr);
 	play("hold", true);
+	playSound("vehicle-sound", true, 0.2f);
 }
 
 void Launcher::emit(const std::string &event, Object * emitter) {
