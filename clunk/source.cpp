@@ -150,8 +150,9 @@ float Source::process(mrt::Chunk &buffer, unsigned dst_ch, const v3<float> &delt
 	unsigned src_n = sample->data.getSize() / src_ch / 2;
 
 	//LOG_DEBUG(("delta position: %g %g", delta_position.x, delta_position.y));
-	float r2 = delta_position.quick_length(); //linear
-	float vol = (r2 > 1)?fx_volume * gain / r2: fx_volume * gain;
+	float r2 = delta_position.quick_length();
+	
+	float vol = (r2 > 1)?fx_volume * gain / log2f(r2): fx_volume * gain;
 	if (vol > 1)
 		vol = 1;
 
