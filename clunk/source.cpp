@@ -30,6 +30,14 @@
 #	define log2f(x) (logf(x) / M_LN2)
 #endif
 
+template <typename T> inline T clunk_min(T a, T b) {
+	return a < b? a: b;
+}
+
+template <typename T> inline T clunk_max(T a, T b) {
+	return a > b? a: b;
+}
+
 using namespace clunk;
 Source::Source(const Sample * sample, const bool loop, const v3<float> &delta, float gain, float pitch) : 
 	sample(sample), loop(loop), delta_position(delta), gain(gain), pitch(pitch), 
@@ -92,7 +100,7 @@ void Source::hrtf(mrt::Chunk &result, int dst_n, const Sint16 *src, int src_ch, 
 		kiss_fft_cpx freq[CLUNK_WINDOW_SIZE / 2 + 1];
 		//printf("fft #%d\n", i);
 		for(int j = 0; j < CLUNK_WINDOW_SIZE; ++j) {
-			int p = (int)(position + i * CLUNK_ACTUAL_WINDOW + j * pitch);
+			int p = (int)(position + (i * CLUNK_ACTUAL_WINDOW + j) * pitch);
 
 			int v = 0;
 			if (p >= 0 || p < src_n || loop) {
@@ -122,11 +130,11 @@ void Source::hrtf(mrt::Chunk &result, int dst_n, const Sint16 *src, int src_ch, 
 		kiss_fftri(kiss_cfg_i, freq, src_data);
 		
 		int offset = i * CLUNK_ACTUAL_WINDOW;
-		if (offset + CLUNK_ACTUAL_WINDOW > dst_n)
-			offset = dst_n - CLUNK_ACTUAL_WINDOW ; //this will not work for < 512 samples long
+		int more = dst_n - i * CLUNK_ACTUAL_WINDOW;
 
 		float max = CLUNK_WINDOW_SIZE;
-		for(int j = 0; j < CLUNK_WINDOW_SIZE; ++j) {
+		int jmax = clunk_min(more, CLUNK_WINDOW_SIZE);
+		for(int j = 0; j < jmax; ++j) {
 			float v = src_data[j];
 			if (v > max) {
 				//LOG_DEBUG(("increased max to %g", v));
@@ -139,12 +147,12 @@ void Source::hrtf(mrt::Chunk &result, int dst_n, const Sint16 *src, int src_ch, 
 			//if (x > 32767 || x < -32767) 
 			//	LOG_WARN(("sample overflow: %d", x));
 			
-			if (use_overlap && j < CLUNK_WINDOW_OVERLAP) {
+			if (use_overlap && j < CLUNK_WINDOW_OVERLAP && more > CLUNK_WINDOW_OVERLAP) {
 				x = (x * j + overlap_data[j] * (CLUNK_WINDOW_OVERLAP - j)) / CLUNK_WINDOW_OVERLAP;
 			}
 
-			if (j >= CLUNK_ACTUAL_WINDOW) {
-				overlap_data[j - CLUNK_ACTUAL_WINDOW] = x;
+			if (j >= jmax) {
+				overlap_data[j - jmax] = x;
 				use_overlap = true;
 			} else {
 				assert(offset + j < dst_n);
