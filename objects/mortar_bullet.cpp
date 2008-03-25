@@ -53,6 +53,7 @@ public:
 			return;
 			
 		bool collision = event == "collision";
+		bool mortar = registered_name == "mortar-bullet";
 
 		if (collision) {
 			float idle, moving;
@@ -60,7 +61,7 @@ public:
 			float progress = ttl / (ttl + moving + idle);
 			bool fly = (progress >= 0.3f && progress < 0.7f);
 			//LOG_DEBUG(("fly: %c, emitter: %s", fly?'+':'-', emitter != NULL?emitter->animation.c_str(): "-"));
-			if (fly && (emitter == NULL || emitter->speed == 0))
+			if (fly && (emitter == NULL || (emitter->speed == 0 && emitter->registered_name != "sandworm-head")))
 				return;
 		}
 		
@@ -70,7 +71,7 @@ public:
 				dpos = getRelativePosition(emitter) / 2;
 			} 
 			
-			if (registered_name == "mortar-bullet") 
+			if (mortar) 
 				spawn("mortar-explosion", "mortar-explosion", dpos);
 			else 
 				spawn("grenade-explosion", "grenade-explosion", dpos);
