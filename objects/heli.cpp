@@ -22,6 +22,7 @@
 #include "config.h"
 #include "zbox.h"
 #include "mrt/random.h"
+#include "tmx/map.h"
 
 Heli::Heli(const std::string &classname) : 
 	Object(classname), _fire(false), _alt_fire(false), _left(false) {
@@ -49,20 +50,44 @@ void Heli::tick(const float dt) {
 	}
 	if (_state.alt_fire && _alt_fire.tick(dt)) {
 		_alt_fire.reset();
-		Object *o;
-		if (_variants.has("kamikazes")) {
-			bool gay = mrt::random(6) == 3;
-			o = spawn("paratrooper-kamikaze", gay? "gay-paratrooper": "paratrooper");
-		} else if (_variants.has("machinegunners")) {
-			bool gay = mrt::random(6) == 4;
-			o = spawn("paratrooper-machinegunner", gay? "gay-paratrooper": "paratrooper");
-		} else if (_variants.has("throwers")) {
-			bool gay = mrt::random(6) == 2;
-			o = spawn("paratrooper-thrower", gay? "gay-paratrooper": "paratrooper");
-		} else {
-			o = spawn("bomb", "bomb");
+
+		const Matrix<int> & matrix  = Map->getImpassabilityMatrix(0);
+		
+		v2<int> pos, pos2;
+		getCenterPosition(pos); 
+		v2<int> para_size(64, 64);
+		pos -= para_size / 2;
+		
+		pos2 = pos;
+		pos2 += para_size;
+		pos2 -= 1;
+
+		const v2<int> tile_size = Map->getTileSize();
+
+		pos /= tile_size;
+		pos2 /= tile_size;
+		/*
+		LOG_DEBUG(("%d %d", matrix.get(pos.y, pos.x), matrix.get(pos.y, pos2.x)));
+		LOG_DEBUG(("%d %d", matrix.get(pos2.y, pos.x), matrix.get(pos2.y, pos2.x)));
+		*/
+		if (matrix.get(pos.y, pos.x) >= 0 || matrix.get(pos.y, pos2.x) >= 0 || 
+			matrix.get(pos2.y, pos.x) >= 0 || matrix.get(pos2.y, pos2.x) >= 0) {
+			
+			Object *o;
+			if (_variants.has("kamikazes")) {
+				bool gay = mrt::random(6) == 3;
+				o = spawn("paratrooper-kamikaze", gay? "gay-paratrooper": "paratrooper");
+			} else if (_variants.has("machinegunners")) {
+				bool gay = mrt::random(6) == 4;
+				o = spawn("paratrooper-machinegunner", gay? "gay-paratrooper": "paratrooper");
+			} else if (_variants.has("throwers")) {
+				bool gay = mrt::random(6) == 2;
+				o = spawn("paratrooper-thrower", gay? "gay-paratrooper": "paratrooper");
+			} else {
+				o = spawn("bomb", "bomb");
+			}
+			o->setZ(getZ() - 1, true);
 		}
-		o->setZ(getZ() - 1, true);
 	}
 	if (classname == "fighting-vehicle" || classname == "helicopter") {
 		int z = getZ();

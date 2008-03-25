@@ -83,8 +83,7 @@ void Helicopter::tick(const float dt) {
 		if (getChildren("kamikaze") >= max_c) 
 			return;
 		
-		Matrix<int> matrix; 
-		getImpassabilityMatrix(matrix, NULL);
+		const Matrix<int> & matrix  = Map->getImpassabilityMatrix(0);
 
 		v2<int> pos, pos2;
 		getCenterPosition(pos); 
