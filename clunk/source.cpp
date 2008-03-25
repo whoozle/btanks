@@ -121,11 +121,11 @@ void Source::hrtf(mrt::Chunk &result, int dst_n, const Sint16 *src, int src_ch, 
 			//LOG_DEBUG(("length: %g", len));
 			const int kemar_angle_idx = j * 512 / (CLUNK_WINDOW_SIZE / 2 + 1);
 			assert(kemar_angle_idx < 512);
-			float m = sqrt(pow10f(kemar_data[kemar_idx][1][kemar_angle_idx] * len / 20));
-			//printf("%d: multiplicator = %g, len: %g\n", j, m, len);
+			float m = pow10f(kemar_data[kemar_idx][1][kemar_angle_idx] * len / 20);
 			freq[j].r *= m;
 			freq[j].i *= m;
-			//printf("%g <--> %g\n", kemar_data[idx][0][j], elev_0[idx][1][j]);
+			//float len2 = sqrt(freq[j].r * freq[j].r + freq[j].i * freq[j].i);
+			//LOG_DEBUG(("%d: multiplicator = %g, len: %g -> %g", j, m, len, len2));
 		}
 
 		kiss_fftri(kiss_cfg_i, freq, src_data);
