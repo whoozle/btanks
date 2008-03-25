@@ -30,6 +30,7 @@ public:
 	AICivilian() : Civilian("civilian"), _thinking_timer(true), _guard_timer(false), _thinking(false), _guard(false) {}
 	void onSpawn() {
 		//GET_CONFIG_VALUE("object.civilian.thinking-duration", float, td, 3.0f);
+		_variants.add("no-grenades");
 		_thinking_timer.set(3.0f);
 		_guard_timer.set(2.0f);
 	

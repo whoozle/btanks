@@ -77,7 +77,7 @@ void Trooper::tick(const float dt) {
 			Object *o = spawn("nuke-explosion", "nuke-explosion");
 			emit("death", o); //fix frags calculation to remove this player manager call: 
 			PlayerManager->onPlayerDeath(this, o);
-		} else {
+		} else if (!_variants.has("no-grenades")) {
 			if (getState() != "throw")
 				playNow("throw");
 			spawn("grenade", "grenade", v2<float>(), _direction);
