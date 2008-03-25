@@ -29,8 +29,13 @@ namespace mrt {
 
 namespace clunk {
 
-#define CLUNK_WINDOW_SIZE 512
-#define CLUNK_WINDOW_OVERLAP 32
+#ifndef CLUNK_WINDOW_SIZE
+#	define CLUNK_WINDOW_SIZE 512
+#endif
+
+#ifndef CLUNK_WINDOW_OVERLAP
+#	define CLUNK_WINDOW_OVERLAP 32
+#endif
 
 class Sample;
 class CLUNKAPI Source {
