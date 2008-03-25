@@ -25,7 +25,7 @@
 #include "sample.h"
 #include <SDL_audio.h>
 #include <map>
-#include <set>
+#include <deque>
 #include "mrt/chunk.h"
 
 namespace clunk {
@@ -74,7 +74,7 @@ private:
 	friend clunk::Object::~Object();
 	friend clunk::Sample::~Sample();
 	
-	typedef std::set<Object *> objects_type;
+	typedef std::deque<Object *> objects_type;
 	objects_type objects;
 	
 	struct stream_info {

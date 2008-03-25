@@ -54,9 +54,11 @@ void Object::cancel(const std::string &name) {
 
 void Object::set_loop(const std::string &name, const bool loop) {
 	AudioLocker l;
-	Sources::iterator i = sources.find(name);
-	if (i != sources.end())
-		i->second->loop = loop;
+	Sources::iterator b = sources.lower_bound(name);
+	Sources::iterator e = sources.upper_bound(name);
+	for(Sources::iterator i = b; i != e; ++i) {
+		i->second->loop = i == b? loop: false; //set loop only for the first. disable others. 
+	}
 }
 
 void Object::cancel_all(bool force) {

@@ -32,6 +32,16 @@ class Source;
 
 class CLUNKAPI Object {
 public: 
+	friend struct DistanceOrder;
+	struct DistanceOrder {
+		v3<float> listener;
+		DistanceOrder(const v3<float> &listener) : listener(listener) {}
+
+		inline bool operator()(const Object *a, const Object * b) const {
+			return listener.quick_distance(a->position) < listener.quick_distance(b->position); 
+		}
+	};
+
 	~Object();
 	void update(const v3<float> &pos, const v3<float> &vel);
 
@@ -47,6 +57,7 @@ public:
 
 private: 
 	friend class Context;
+	
 	Object(Context *context);
 	Context *context;
 	v3<float> position, velocity;

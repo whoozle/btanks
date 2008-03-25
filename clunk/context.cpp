@@ -28,8 +28,10 @@
 #include <assert.h>
 #include <math.h>
 #include <map>
+#include <algorithm>
 #include "locker.h"
 #include "stream.h"
+#include "object.h"
 
 using namespace clunk;
 
@@ -45,9 +47,19 @@ void Context::callback(void *userdata, Uint8 *bstream, int len) {
 	} CATCH("callback", )
 }
 
+#include "mrt/timespy.h"
+
 void Context::process(Sint16 *stream, int size) {
-	typedef std::multimap<const float, std::pair<v3<float>, Source *> > sources_type;
-	sources_type sources;
+	//TIMESPY(("total"));
+
+	v3<float> listener = this->listener->position;
+	{
+		//TIMESPY(("sorting objects"));
+		std::sort(objects.begin(), objects.end(), Object::DistanceOrder(listener));
+	}
+	//LOG_DEBUG(("sorted %u objects", (unsigned)objects.size()));
+	
+	std::vector<std::pair<v3<float>, Source *> > lsources;
 	
 	for(objects_type::iterator i = objects.begin(); i != objects.end(); ) {
 		Object *o = *i;
@@ -55,40 +67,25 @@ void Context::process(Sint16 *stream, int size) {
 		if (sset.empty() && o->dead) {
 			//autodeleted object
 			delete o;
-			objects.erase(i++);
+			i = objects.erase(i);
 			continue;
 		}
-		v3<float> base = o->position;
 		for(Object::Sources::iterator j = sset.begin(); j != sset.end(); ) {
 			Source *s = j->second;
 			if (!s->playing()) {
-				//LOG_DEBUG(("purging inactive source"));
+				LOG_DEBUG(("purging inactive source %s", j->first.c_str()));
 				delete j->second;
 				sset.erase(j++);
 				continue;
-			} else {
-				++j;
 			}
-			v3<float> position = base + s->delta_position - listener->position;
-			float dist = position.length();
-			if (sources.size() < max_sources) {
-				sources.insert(sources_type::value_type(dist, std::pair<v3<float>, Source *>(position, s)));
-			} else {
-				if (sources.rbegin()->first <= dist) 
-					continue;
-				//sources.erase(sources.rbegin());
-				sources.insert(sources_type::value_type(dist, std::pair<v3<float>, Source *>(position, s)));
-			}
+			lsources.push_back(std::pair<v3<float>, Source *>(o->position + s->delta_position - listener, s));
+			if (lsources.size() >= max_sources) 
+				goto mix_stream;
+			++j;
 		}
 		++i;
 	}
-	std::vector<std::pair<v3<float>, Source *> > lsources;
-	sources_type::iterator j = sources.begin();
-	for(unsigned i = 0; i < max_sources && j != sources.end(); ++i, ++j) {
-		//LOG_DEBUG(("%u: source in %g", i, j->first));
-		lsources.push_back(j->second);
-	}
-	sources.clear();
+mix_stream: 
 
 	memset(stream, 0, size);
 
@@ -143,6 +140,8 @@ void Context::process(Sint16 *stream, int size) {
 	mrt::Chunk buf;
 	buf.setSize(size);
 	
+	//TIMESPY(("mixing sources"));
+	//LOG_DEBUG(("mixing %u sources", (unsigned)lsources.size()));
 	for(unsigned i = 0; i < lsources.size(); ++i ) {
 		v3<float> & position = lsources[i].first;
 		Source * source = lsources[i].second;
@@ -161,7 +160,7 @@ void Context::process(Sint16 *stream, int size) {
 Object *Context::create_object() {
 	AudioLocker l;
 	Object *o = new Object(this);
-	objects.insert(o);
+	objects.push_back(o);
 	return o;
 }
 
@@ -196,7 +195,9 @@ void Context::init(const int sample_rate, const Uint8 channels, int period_size)
 
 void Context::delete_object(Object *o) {
 	AudioLocker l;
-	objects.erase(o);
+	objects_type::iterator i = std::find(objects.begin(), objects.end(), o);
+	while(i != objects.end() && *i == o)
+		i = objects.erase(i); //just for fun
 }
 
 void Context::deinit() {
