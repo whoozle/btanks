@@ -119,15 +119,15 @@ void Source::hrtf(mrt::Chunk &result, int dst_n, const Sint16 *src, int src_ch, 
 			//printf("%g <--> %g\n", kemar_data[idx][0][j], elev_0[idx][1][j]);
 		}
 
-		float max = WINDOW_SIZE;
 		kiss_fftri(kiss_cfg_i, freq, src_data);
 		int offset = i * (WINDOW_SIZE - WINDOW_OVERLAP);
 		if (offset + WINDOW_SIZE > dst_n)
 			offset = dst_n - WINDOW_SIZE; //this will not work for < 512 samples long
 
+		float max = WINDOW_SIZE;
 		for(int j = 0; j < WINDOW_SIZE; ++j) {
 			float v = src_data[j];
-			if (v > WINDOW_SIZE)
+			if (v > max)
 				max = v;
 			int x = (int)(v / max * 32767);
 
