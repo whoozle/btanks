@@ -78,14 +78,13 @@ void Context::process(Sint16 *stream, int size) {
 				sset.erase(j++);
 				continue;
 			}
-			lsources.push_back(std::pair<v3<float>, Source *>(o->position + s->delta_position - listener, s));
-			if (lsources.size() >= max_sources) 
-				goto mix_stream;
+			if (lsources.size() < max_sources) {
+				lsources.push_back(std::pair<v3<float>, Source *>(o->position + s->delta_position - listener, s));
+			}
 			++j;
 		}
 		++i;
 	}
-mix_stream: 
 
 	memset(stream, 0, size);
 
