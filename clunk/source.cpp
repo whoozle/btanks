@@ -75,14 +75,17 @@ void Source::idt(const v3<float> &delta, float &idt_offset, float &angle_gr) {
 }
 
 #define WINDOW_SIZE 512
+#define WINDOW_OVERLAP 32
 #include "kiss/kiss_fftr.h"
 
 void Source::hrtf(mrt::Chunk &result, int dst_n, const Sint16 *src, int src_ch, int src_n, const kemar_ptr& kemar_data, int kemar_idx) {
 	kiss_fftr_cfg kiss_cfg = kiss_fftr_alloc(512, 0, NULL, NULL);
 	kiss_fftr_cfg kiss_cfg_i = kiss_fftr_alloc(512, 1, NULL, NULL);
 	
-	int n = (dst_n - 1) / WINDOW_SIZE + 1;
-	result.setSize(2 * WINDOW_SIZE * n);
+	int n = (dst_n - 1) / (WINDOW_SIZE - WINDOW_OVERLAP) + 1;
+	result.setSize(2 * (WINDOW_SIZE - WINDOW_OVERLAP) * n + WINDOW_OVERLAP);
+	assert((int)result.getSize() >= 2 * dst_n);
+
 	Sint16 *dst = (Sint16 *)result.getPtr();
 	
 	for(int i = 0; i < n; ++i) {
@@ -90,7 +93,7 @@ void Source::hrtf(mrt::Chunk &result, int dst_n, const Sint16 *src, int src_ch, 
 		kiss_fft_cpx freq[WINDOW_SIZE / 2 + 1];
 		//printf("fft #%d\n", i);
 		for(int j = 0; j < WINDOW_SIZE; ++j) {
-			int p = (int)(position + i * WINDOW_SIZE + j * pitch);
+			int p = (int)(position + i * (WINDOW_SIZE - WINDOW_OVERLAP) + j * pitch);
 
 			int v = 0;
 			if (p >= 0 || p < src_n || loop) {
@@ -118,12 +121,18 @@ void Source::hrtf(mrt::Chunk &result, int dst_n, const Sint16 *src, int src_ch, 
 
 		float max = WINDOW_SIZE;
 		kiss_fftri(kiss_cfg_i, freq, src_data);
+		int offset = i * (WINDOW_SIZE - WINDOW_OVERLAP);
+		if (offset + WINDOW_SIZE > dst_n)
+			offset = dst_n - WINDOW_SIZE; //this will not work for < 512 samples long
+
 		for(int j = 0; j < WINDOW_SIZE; ++j) {
 			float v = src_data[j];
 			if (v > WINDOW_SIZE)
 				max = v;
 			int x = (int)(v / max * 32767);
-			dst[i * WINDOW_SIZE + j] = x;
+
+			assert(offset + j < dst_n);
+			dst[offset + j] = x;
 			//LOG_DEBUG(("%g: %d", src_data[j], dst[i * WINDOW_SIZE + j]));
 			//printf("%g,%g ", tr[pos + j], tr[pos + j] / 1024);
 		}
