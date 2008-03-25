@@ -48,5 +48,5 @@ TimeSpy::~TimeSpy() {
 	if (gettimeofday(&now, NULL) == -1)
 		throw_io(("gettimeofday"));
 	
-	LOG_DEBUG(("%s: %ld ms", message.c_str(), (now.tv_sec - tm.tv_sec) * 1000000 + (now.tv_usec - tm.tv_usec)));
+	LOG_DEBUG(("%s: %ld mcs", message.c_str(), (now.tv_sec - tm.tv_sec) * 1000000 + (now.tv_usec - tm.tv_usec)));
 }
