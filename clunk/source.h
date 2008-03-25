@@ -64,6 +64,9 @@ private:
 	int position;
 	
 	void update_position(const int dp, const int src_n);
+	
+	Sint16 overlap_data[CLUNK_WINDOW_OVERLAP];
+	bool use_overlap;
 };
 }
 

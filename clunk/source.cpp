@@ -34,7 +34,7 @@ using namespace clunk;
 Source::Source(const Sample * sample, const bool loop, const v3<float> &delta, float gain, float pitch) : 
 	sample(sample), loop(loop), delta_position(delta), gain(gain), pitch(pitch), 
 	reference_distance(1), rolloff_factor(1), 
-	position(0)  {
+	position(0), use_overlap(false)  {
 	if (sample == NULL)
 		throw_ex(("sample for source cannot be NULL"));
 }
@@ -125,11 +125,20 @@ void Source::hrtf(mrt::Chunk &result, int dst_n, const Sint16 *src, int src_ch, 
 		float max = CLUNK_WINDOW_SIZE;
 		for(int j = 0; j < CLUNK_WINDOW_SIZE; ++j) {
 			float v = src_data[j];
-			if (v > max)
+			if (v > max) {
+				LOG_DEBUG(("increased max to %g", v));
 				max = v;
-			int x = (int)(v / max * 32767);
+			}
+			int x = (int)(v / max * 32000);
+			if (use_overlap && j < CLUNK_WINDOW_OVERLAP) {
+				x = (x + overlap_data[j]) / 2;
+			}
 
 			assert(offset + j < dst_n);
+			if (j >= CLUNK_WINDOW_SIZE - CLUNK_WINDOW_OVERLAP) {
+				overlap_data[j - CLUNK_WINDOW_SIZE + CLUNK_WINDOW_OVERLAP] = x;
+				use_overlap = true;
+			}
 			dst[offset + j] = x;
 			//LOG_DEBUG(("%g: %d", src_data[j], dst[i * CLUNK_WINDOW_SIZE + j]));
 			//printf("%g,%g ", tr[pos + j], tr[pos + j] / 1024);
