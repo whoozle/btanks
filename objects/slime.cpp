@@ -30,7 +30,7 @@ public:
 
 	void emit(const std::string &event, Object * emitter) {
 		if (event == "death") {
-			spawn("corpse(zombie-death)", "dead-" + animation);
+			spawn("corpse(slime-death)", "dead-" + animation);
 		}
 		Object::emit(event, emitter);
 	}

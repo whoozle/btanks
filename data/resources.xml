@@ -475,7 +475,8 @@
 	<sound file="deadman2.ogg" class="human-death" />
 	<sound file="deadman3.ogg" class="human-death" />
 
-	<sound file="zombie-dead.ogg" class="zombie-death" />
+	<sound file="zombie-dead.ogg" />
+	<sound file="slime-dead.ogg" />
 
 	<sound file="cannon1.ogg" class="cannon" />
 	<sound file="cannon2.ogg" class="cannon" />

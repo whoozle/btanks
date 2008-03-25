@@ -71,7 +71,9 @@ void Corpse::onSpawn() {
 	if (_variants.has("human-death")) {
 		playRandomSound("human-death", false);
 	} else if (_variants.has("zombie-death")) {
-		playRandomSound("zombie-death", false);
+		playSound("zombie-dead", false);
+	} else if (_variants.has("slime-death")) {
+		playSound("slime-dead", false);
 	}
 	
 	if (_fire_cycles > 0) {
