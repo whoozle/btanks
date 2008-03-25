@@ -129,7 +129,7 @@ void Source::hrtf(mrt::Chunk &result, int dst_n, const Sint16 *src, int src_ch, 
 				LOG_DEBUG(("increased max to %g", v));
 				max = v;
 			}
-			int x = (int)(v / max * 32000);
+			int x = (int)(v / max * 32766);
 			if (use_overlap && j < CLUNK_WINDOW_OVERLAP) {
 				x = (x + overlap_data[j]) / 2;
 			}
