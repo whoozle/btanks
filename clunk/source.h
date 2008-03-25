@@ -27,6 +27,8 @@ namespace mrt {
 	class Chunk;
 }
 
+struct kiss_fftr_state;
+
 namespace clunk {
 
 #ifndef CLUNK_WINDOW_SIZE
@@ -36,6 +38,7 @@ namespace clunk {
 #ifndef CLUNK_WINDOW_OVERLAP
 #	define CLUNK_WINDOW_OVERLAP 64
 #endif
+
 
 class Sample;
 class CLUNKAPI Source {
@@ -56,6 +59,8 @@ public:
 
 	void update_position(const int dp);
 	
+	~Source();
+	
 private: 
 	typedef const float (*kemar_ptr)[2][512];
 	void get_kemar_data(kemar_ptr & kemar_data, int & samples, const v3<float> &delta_position);
@@ -67,6 +72,8 @@ private:
 	
 	Sint16 overlap_data[CLUNK_WINDOW_OVERLAP];
 	bool use_overlap;
+	
+	kiss_fftr_state *fft_state, *ffti_state;
 };
 }
 

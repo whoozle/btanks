@@ -42,7 +42,9 @@ using namespace clunk;
 Source::Source(const Sample * sample, const bool loop, const v3<float> &delta, float gain, float pitch) : 
 	sample(sample), loop(loop), delta_position(delta), gain(gain), pitch(pitch), 
 	reference_distance(1), rolloff_factor(1), 
-	position(0), use_overlap(false)  {
+	position(0), use_overlap(false) , 
+	fft_state(NULL), ffti_state(NULL) 
+	 {
 	if (sample == NULL)
 		throw_ex(("sample for source cannot be NULL"));
 }
@@ -89,9 +91,10 @@ void Source::idt(const v3<float> &delta, float &idt_offset, float &angle_gr) {
 void Source::hrtf(mrt::Chunk &result, int dst_n, const Sint16 *src, int src_ch, int src_n, const kemar_ptr& kemar_data, int kemar_idx) {
 	//const int lowpass_cutoff = 5000 * CLUNK_ACTUAL_WINDOW / sample->spec.freq;
 	//LOG_DEBUG(("using cutoff at %d", lowpass_cutoff));
-
-	kiss_fftr_cfg kiss_cfg = kiss_fftr_alloc(CLUNK_WINDOW_SIZE, 0, NULL, NULL);
-	kiss_fftr_cfg kiss_cfg_i = kiss_fftr_alloc(CLUNK_WINDOW_SIZE, 1, NULL, NULL);
+	if (fft_state == NULL)
+		fft_state = kiss_fftr_alloc(CLUNK_WINDOW_SIZE, 0, NULL, NULL);
+	if (ffti_state == NULL)
+		ffti_state = kiss_fftr_alloc(CLUNK_WINDOW_SIZE, 1, NULL, NULL);
 	
 	int n = (dst_n - 1) / CLUNK_ACTUAL_WINDOW + 1;
 	result.setSize(2 * dst_n);
@@ -115,7 +118,7 @@ void Source::hrtf(mrt::Chunk &result, int dst_n, const Sint16 *src, int src_ch, 
 			src_data[j] = v / 32767.0;
 		}
 		
-		kiss_fftr(kiss_cfg, src_data, freq);
+		kiss_fftr(fft_state, src_data, freq);
 		
 		//LOG_DEBUG(("kemar angle index: %d\n", kemar_idx));
 		for(int j = 0; j <= CLUNK_WINDOW_SIZE / 2; ++j) {
@@ -138,7 +141,7 @@ void Source::hrtf(mrt::Chunk &result, int dst_n, const Sint16 *src, int src_ch, 
 			//LOG_DEBUG(("%d: multiplicator = %g, len: %g -> %g", j, m, len, len2));
 		}
 
-		kiss_fftri(kiss_cfg_i, freq, src_data);
+		kiss_fftri(ffti_state, freq, src_data);
 		
 		int offset = i * CLUNK_ACTUAL_WINDOW;
 		int more = dst_n - offset;
@@ -172,8 +175,6 @@ void Source::hrtf(mrt::Chunk &result, int dst_n, const Sint16 *src, int src_ch, 
 			}
 		}
 	}
-	kiss_fft_free(kiss_cfg);
-	kiss_fft_free(kiss_cfg_i);
 }
 
 void Source::update_position(const int dp) {
@@ -343,4 +344,11 @@ void Source::get_kemar_data(kemar_ptr & kemar_data, int & elev_n, const v3<float
 		kemar_data = elev_90;
 		elev_n = ELEV_90_N;
 	}
+}
+
+Source::~Source() {
+	if (fft_state != NULL) 
+		kiss_fft_free(fft_state);
+	if (ffti_state != NULL)
+		kiss_fft_free(ffti_state);
 }
