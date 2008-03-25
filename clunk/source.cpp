@@ -76,13 +76,14 @@ void Source::idt(const v3<float> &delta, float &idt_offset, float &angle_gr) {
 
 #include "kiss/kiss_fftr.h"
 
+#define CLUNK_ACTUAL_WINDOW (CLUNK_WINDOW_SIZE - CLUNK_WINDOW_OVERLAP)
+
 void Source::hrtf(mrt::Chunk &result, int dst_n, const Sint16 *src, int src_ch, int src_n, const kemar_ptr& kemar_data, int kemar_idx) {
 	kiss_fftr_cfg kiss_cfg = kiss_fftr_alloc(512, 0, NULL, NULL);
 	kiss_fftr_cfg kiss_cfg_i = kiss_fftr_alloc(512, 1, NULL, NULL);
 	
-	int n = (dst_n - 1) / (CLUNK_WINDOW_SIZE - CLUNK_WINDOW_OVERLAP) + 1;
-	result.setSize(2 * (CLUNK_WINDOW_SIZE - CLUNK_WINDOW_OVERLAP) * n + CLUNK_WINDOW_OVERLAP);
-	assert((int)result.getSize() >= 2 * dst_n);
+	int n = (dst_n - 1) / CLUNK_ACTUAL_WINDOW + 1;
+	result.setSize(2 * dst_n);
 
 	Sint16 *dst = (Sint16 *)result.getPtr();
 	
@@ -91,7 +92,7 @@ void Source::hrtf(mrt::Chunk &result, int dst_n, const Sint16 *src, int src_ch, 
 		kiss_fft_cpx freq[CLUNK_WINDOW_SIZE / 2 + 1];
 		//printf("fft #%d\n", i);
 		for(int j = 0; j < CLUNK_WINDOW_SIZE; ++j) {
-			int p = (int)(position + i * (CLUNK_WINDOW_SIZE - CLUNK_WINDOW_OVERLAP) + j * pitch);
+			int p = (int)(position + i * CLUNK_ACTUAL_WINDOW + j * pitch);
 
 			int v = 0;
 			if (p >= 0 || p < src_n || loop) {
@@ -118,30 +119,36 @@ void Source::hrtf(mrt::Chunk &result, int dst_n, const Sint16 *src, int src_ch, 
 		}
 
 		kiss_fftri(kiss_cfg_i, freq, src_data);
-		int offset = i * (CLUNK_WINDOW_SIZE - CLUNK_WINDOW_OVERLAP);
-		if (offset + CLUNK_WINDOW_SIZE > dst_n)
-			offset = dst_n - CLUNK_WINDOW_SIZE; //this will not work for < 512 samples long
+		
+		int offset = i * CLUNK_ACTUAL_WINDOW;
+		if (offset + CLUNK_ACTUAL_WINDOW > dst_n)
+			offset = dst_n - CLUNK_ACTUAL_WINDOW ; //this will not work for < 512 samples long
 
 		float max = CLUNK_WINDOW_SIZE;
 		for(int j = 0; j < CLUNK_WINDOW_SIZE; ++j) {
 			float v = src_data[j];
 			if (v > max) {
-				LOG_DEBUG(("increased max to %g", v));
+				//LOG_DEBUG(("increased max to %g", v));
 				max = v;
+			} else if (v < -max) {
+				//LOG_DEBUG(("increased min to %g", v));
+				max = -v;
 			}
 			int x = (int)(v / max * 32766);
+			//if (x > 32767 || x < -32767) 
+			//	LOG_WARN(("sample overflow: %d", x));
+			
 			if (use_overlap && j < CLUNK_WINDOW_OVERLAP) {
-				x = (x + overlap_data[j]) / 2;
+				x = (x * j + overlap_data[j] * (CLUNK_WINDOW_OVERLAP - j)) / CLUNK_WINDOW_OVERLAP;
 			}
 
-			assert(offset + j < dst_n);
-			if (j >= CLUNK_WINDOW_SIZE - CLUNK_WINDOW_OVERLAP) {
-				overlap_data[j - CLUNK_WINDOW_SIZE + CLUNK_WINDOW_OVERLAP] = x;
+			if (j >= CLUNK_ACTUAL_WINDOW) {
+				overlap_data[j - CLUNK_ACTUAL_WINDOW] = x;
 				use_overlap = true;
+			} else {
+				assert(offset + j < dst_n);
+				dst[offset + j] = x;
 			}
-			dst[offset + j] = x;
-			//LOG_DEBUG(("%g: %d", src_data[j], dst[i * CLUNK_WINDOW_SIZE + j]));
-			//printf("%g,%g ", tr[pos + j], tr[pos + j] / 1024);
 		}
 	}
 	kiss_fft_free(kiss_cfg);
