@@ -74,26 +74,24 @@ void Source::idt(const v3<float> &delta, float &idt_offset, float &angle_gr) {
 	//printf("idt_offset %g", idt_offset);
 }
 
-#define WINDOW_SIZE 512
-#define WINDOW_OVERLAP 32
 #include "kiss/kiss_fftr.h"
 
 void Source::hrtf(mrt::Chunk &result, int dst_n, const Sint16 *src, int src_ch, int src_n, const kemar_ptr& kemar_data, int kemar_idx) {
 	kiss_fftr_cfg kiss_cfg = kiss_fftr_alloc(512, 0, NULL, NULL);
 	kiss_fftr_cfg kiss_cfg_i = kiss_fftr_alloc(512, 1, NULL, NULL);
 	
-	int n = (dst_n - 1) / (WINDOW_SIZE - WINDOW_OVERLAP) + 1;
-	result.setSize(2 * (WINDOW_SIZE - WINDOW_OVERLAP) * n + WINDOW_OVERLAP);
+	int n = (dst_n - 1) / (CLUNK_WINDOW_SIZE - CLUNK_WINDOW_OVERLAP) + 1;
+	result.setSize(2 * (CLUNK_WINDOW_SIZE - CLUNK_WINDOW_OVERLAP) * n + CLUNK_WINDOW_OVERLAP);
 	assert((int)result.getSize() >= 2 * dst_n);
 
 	Sint16 *dst = (Sint16 *)result.getPtr();
 	
 	for(int i = 0; i < n; ++i) {
-		kiss_fft_scalar src_data[WINDOW_SIZE];
-		kiss_fft_cpx freq[WINDOW_SIZE / 2 + 1];
+		kiss_fft_scalar src_data[CLUNK_WINDOW_SIZE];
+		kiss_fft_cpx freq[CLUNK_WINDOW_SIZE / 2 + 1];
 		//printf("fft #%d\n", i);
-		for(int j = 0; j < WINDOW_SIZE; ++j) {
-			int p = (int)(position + i * (WINDOW_SIZE - WINDOW_OVERLAP) + j * pitch);
+		for(int j = 0; j < CLUNK_WINDOW_SIZE; ++j) {
+			int p = (int)(position + i * (CLUNK_WINDOW_SIZE - CLUNK_WINDOW_OVERLAP) + j * pitch);
 
 			int v = 0;
 			if (p >= 0 || p < src_n || loop) {
@@ -108,7 +106,7 @@ void Source::hrtf(mrt::Chunk &result, int dst_n, const Sint16 *src, int src_ch, 
 		kiss_fftr(kiss_cfg, src_data, freq);
 		
 		//LOG_DEBUG(("kemar angle index: %d\n", kemar_idx));
-		for(int j = 0; j <= WINDOW_SIZE / 2; ++j) {
+		for(int j = 0; j <= CLUNK_WINDOW_SIZE / 2; ++j) {
 			//float * dst = (ch == 0)?tr_left + pos:tr_right + pos;
 			float len = sqrt(freq[j].r * freq[j].r + freq[j].i * freq[j].i);
 			//LOG_DEBUG(("length: %g", len));
@@ -120,12 +118,12 @@ void Source::hrtf(mrt::Chunk &result, int dst_n, const Sint16 *src, int src_ch, 
 		}
 
 		kiss_fftri(kiss_cfg_i, freq, src_data);
-		int offset = i * (WINDOW_SIZE - WINDOW_OVERLAP);
-		if (offset + WINDOW_SIZE > dst_n)
-			offset = dst_n - WINDOW_SIZE; //this will not work for < 512 samples long
+		int offset = i * (CLUNK_WINDOW_SIZE - CLUNK_WINDOW_OVERLAP);
+		if (offset + CLUNK_WINDOW_SIZE > dst_n)
+			offset = dst_n - CLUNK_WINDOW_SIZE; //this will not work for < 512 samples long
 
-		float max = WINDOW_SIZE;
-		for(int j = 0; j < WINDOW_SIZE; ++j) {
+		float max = CLUNK_WINDOW_SIZE;
+		for(int j = 0; j < CLUNK_WINDOW_SIZE; ++j) {
 			float v = src_data[j];
 			if (v > max)
 				max = v;
@@ -133,7 +131,7 @@ void Source::hrtf(mrt::Chunk &result, int dst_n, const Sint16 *src, int src_ch, 
 
 			assert(offset + j < dst_n);
 			dst[offset + j] = x;
-			//LOG_DEBUG(("%g: %d", src_data[j], dst[i * WINDOW_SIZE + j]));
+			//LOG_DEBUG(("%g: %d", src_data[j], dst[i * CLUNK_WINDOW_SIZE + j]));
 			//printf("%g,%g ", tr[pos + j], tr[pos + j] / 1024);
 		}
 	}
