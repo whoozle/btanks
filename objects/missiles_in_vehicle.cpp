@@ -146,6 +146,7 @@ void MissilesInVehicle::updatePose() {
 }
 
 void MissilesInVehicle::onSpawn() {
+	setZ(5);
 	update();
 	updatePose();
 }
