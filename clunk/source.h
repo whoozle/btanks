@@ -54,6 +54,8 @@ public:
 	float process(mrt::Chunk &buffer, unsigned ch, const v3<float> &position, const float fx_volume);
 	bool playing() const;
 
+	void update_position(const int dp);
+	
 private: 
 	typedef const float (*kemar_ptr)[2][512];
 	void get_kemar_data(kemar_ptr & kemar_data, int & samples, const v3<float> &delta_position);
@@ -62,8 +64,6 @@ private:
 	void hrtf(mrt::Chunk &result, int dst_n, const Sint16 *src, int src_ch, int src_n, const kemar_ptr& kemar_data, int kemar_idx);
 
 	int position;
-	
-	void update_position(const int dp);
 	
 	Sint16 overlap_data[CLUNK_WINDOW_OVERLAP];
 	bool use_overlap;

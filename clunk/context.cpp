@@ -60,6 +60,7 @@ void Context::process(Sint16 *stream, int size) {
 	//LOG_DEBUG(("sorted %u objects", (unsigned)objects.size()));
 	
 	std::vector<std::pair<v3<float>, Source *> > lsources;
+	int n = size / 2 / spec.channels;
 	
 	for(objects_type::iterator i = objects.begin(); i != objects.end(); ) {
 		Object *o = *i;
@@ -80,6 +81,8 @@ void Context::process(Sint16 *stream, int size) {
 			}
 			if (lsources.size() < max_sources) {
 				lsources.push_back(std::pair<v3<float>, Source *>(o->position + s->delta_position - listener, s));
+			} else {
+				s->update_position(n);
 			}
 			++j;
 		}
