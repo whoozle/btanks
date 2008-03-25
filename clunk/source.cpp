@@ -87,6 +87,9 @@ void Source::idt(const v3<float> &delta, float &idt_offset, float &angle_gr) {
 #define CLUNK_ACTUAL_WINDOW (CLUNK_WINDOW_SIZE - CLUNK_WINDOW_OVERLAP)
 
 void Source::hrtf(mrt::Chunk &result, int dst_n, const Sint16 *src, int src_ch, int src_n, const kemar_ptr& kemar_data, int kemar_idx) {
+	//const int lowpass_cutoff = 5000 * CLUNK_ACTUAL_WINDOW / sample->spec.freq;
+	//LOG_DEBUG(("using cutoff at %d", lowpass_cutoff));
+
 	kiss_fftr_cfg kiss_cfg = kiss_fftr_alloc(CLUNK_WINDOW_SIZE, 0, NULL, NULL);
 	kiss_fftr_cfg kiss_cfg_i = kiss_fftr_alloc(CLUNK_WINDOW_SIZE, 1, NULL, NULL);
 	
@@ -122,6 +125,13 @@ void Source::hrtf(mrt::Chunk &result, int dst_n, const Sint16 *src, int src_ch, 
 			const int kemar_angle_idx = j * 512 / (CLUNK_WINDOW_SIZE / 2 + 1);
 			assert(kemar_angle_idx < 512);
 			float m = pow10f(kemar_data[kemar_idx][1][kemar_angle_idx] * len / 20);
+			/*
+			if (j > lowpass_cutoff) {
+				float k = 1.0f - (1.0f * j - lowpass_cutoff) / (CLUNK_WINDOW_SIZE / 2 - lowpass_cutoff);
+				m *= k / 2;
+				//LOG_DEBUG(("%d -> %g", j, k);
+			}
+			*/
 			freq[j].r *= m;
 			freq[j].i *= m;
 			//float len2 = sqrt(freq[j].r * freq[j].r + freq[j].i * freq[j].i);
