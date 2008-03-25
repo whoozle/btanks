@@ -59,11 +59,17 @@ void Object::set_loop(const std::string &name, const bool loop) {
 		i->second->loop = loop;
 }
 
-void Object::cancel_all() {
+void Object::cancel_all(bool force) {
 	AudioLocker l;
 	for(Sources::iterator i = sources.begin(); i != sources.end(); ++i) {
-		i->second->loop = false;
-		//delete i->second;
+		if (force) {
+			delete i->second;
+		} else {
+			i->second->loop = false;
+		}
+	}
+	if (force) {
+		sources.clear();
 	}
 }
 

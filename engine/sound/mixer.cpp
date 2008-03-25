@@ -410,6 +410,7 @@ void IMixer::cancelAll() {
 		return;
 
 	for(Objects::iterator i = _objects.begin(); i != _objects.end(); ++i) {
+		i->second->cancel_all(true);
 		delete i->second;
 	}
 	_objects.clear();

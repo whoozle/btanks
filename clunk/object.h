@@ -38,7 +38,7 @@ public:
 	void play(const std::string &name, Source *source);
 	bool playing(const std::string &name) const;
 	void cancel(const std::string &name);
-	void cancel_all();
+	void cancel_all(bool force = false);
 	
 	bool active() const;
 
