@@ -51,9 +51,9 @@ private:
 };
 }
 
-#define MRT_CONCATENATE(x, y) CONCATENATE_DIRECT(x, y) 
+#define MRT_CONCATENATE(x, y) MRT_CONCATENATE_DIRECT(x, y) 
 #define MRT_CONCATENATE_DIRECT(x, y) x##y
-#define TIMESPY(str) mrt::TimeSpy CONCATENATE(spy, __LINE__) ( mrt::formatString str );
+#define TIMESPY(str) mrt::TimeSpy MRT_CONCATENATE(spy, __LINE__) ( mrt::formatString str );
 
 #endif
 
