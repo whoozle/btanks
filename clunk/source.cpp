@@ -242,7 +242,7 @@ float Source::process(mrt::Chunk &buffer, unsigned dst_ch, const v3<float> &delt
 	idt(delta_position, t_idt, angle_gr);
 
 	const int kemar_idx_right = ((((int)angle_gr  + 180 / (int)angles)/ (360 / (int)angles)) % (int)angles);
-	const int kemar_idx_left = (((360 - (int)angle_gr  + 180 / (int)angles)/ (360 / (int)angles)) % (int)angles);
+	const int kemar_idx_left = (((360 - (int)angle_gr - 180 / (int)angles) / (360 / (int)angles)) % (int)angles);
 	
 	int idt_offset = (int)(t_idt * sample->spec.freq);
 
