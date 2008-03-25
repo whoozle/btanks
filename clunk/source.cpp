@@ -116,14 +116,13 @@ void Source::hrtf(mrt::Chunk &result, int dst_n, const Sint16 *src, int src_ch, 
 			//printf("%g <--> %g\n", kemar_data[idx][0][j], elev_0[idx][1][j]);
 		}
 
-		float max = 32766;
+		float max = WINDOW_SIZE;
 		kiss_fftri(kiss_cfg_i, freq, src_data);
 		for(int j = 0; j < WINDOW_SIZE; ++j) {
-			int x = (int)(src_data[j] * (max / WINDOW_SIZE));
-			if (x > 32766) {
-				max /= x / 32766.0;
-				x = (int)(src_data[j] * (max / WINDOW_SIZE));
-			}
+			float v = src_data[j];
+			if (v > WINDOW_SIZE)
+				max = v;
+			int x = (int)(v / max * 32767);
 			dst[i * WINDOW_SIZE + j] = x;
 			//LOG_DEBUG(("%g: %d", src_data[j], dst[i * WINDOW_SIZE + j]));
 			//printf("%g,%g ", tr[pos + j], tr[pos + j] / 1024);
