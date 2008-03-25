@@ -638,6 +638,8 @@ void IGameMonitor::loadMap(Campaign *campaign, const std::string &name, const bo
 			throw_ex(("loadMap() called with skip Map::load() flag. Map must be initialized at this point."));
 	}
 
+	ResourceManager->preload();
+
 	_waypoints.clear();
 	_waypoint_edges.clear();
 	
@@ -851,8 +853,6 @@ void IGameMonitor::loadMap(Campaign *campaign, const std::string &name, const bo
 
 #	endif
 
-	ResourceManager->preload();
-	
 	Window->resetTimer();
 }
 
