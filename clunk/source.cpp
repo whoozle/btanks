@@ -87,8 +87,8 @@ void Source::idt(const v3<float> &delta, float &idt_offset, float &angle_gr) {
 #define CLUNK_ACTUAL_WINDOW (CLUNK_WINDOW_SIZE - CLUNK_WINDOW_OVERLAP)
 
 void Source::hrtf(mrt::Chunk &result, int dst_n, const Sint16 *src, int src_ch, int src_n, const kemar_ptr& kemar_data, int kemar_idx) {
-	kiss_fftr_cfg kiss_cfg = kiss_fftr_alloc(512, 0, NULL, NULL);
-	kiss_fftr_cfg kiss_cfg_i = kiss_fftr_alloc(512, 1, NULL, NULL);
+	kiss_fftr_cfg kiss_cfg = kiss_fftr_alloc(CLUNK_WINDOW_SIZE, 0, NULL, NULL);
+	kiss_fftr_cfg kiss_cfg_i = kiss_fftr_alloc(CLUNK_WINDOW_SIZE, 1, NULL, NULL);
 	
 	int n = (dst_n - 1) / CLUNK_ACTUAL_WINDOW + 1;
 	result.setSize(2 * dst_n);
@@ -130,11 +130,11 @@ void Source::hrtf(mrt::Chunk &result, int dst_n, const Sint16 *src, int src_ch, 
 		kiss_fftri(kiss_cfg_i, freq, src_data);
 		
 		int offset = i * CLUNK_ACTUAL_WINDOW;
-		int more = dst_n - i * CLUNK_ACTUAL_WINDOW;
+		int more = dst_n - offset;
 
 		float max = CLUNK_WINDOW_SIZE;
-		int jmax = clunk_min(more, CLUNK_WINDOW_SIZE);
-		for(int j = 0; j < jmax; ++j) {
+		int jmax = clunk_min(more, CLUNK_ACTUAL_WINDOW);
+		for(int j = 0; j < jmax + CLUNK_WINDOW_OVERLAP; ++j) {
 			float v = src_data[j];
 			if (v > max) {
 				//LOG_DEBUG(("increased max to %g", v));
@@ -147,11 +147,12 @@ void Source::hrtf(mrt::Chunk &result, int dst_n, const Sint16 *src, int src_ch, 
 			//if (x > 32767 || x < -32767) 
 			//	LOG_WARN(("sample overflow: %d", x));
 			
-			if (use_overlap && j < CLUNK_WINDOW_OVERLAP && more > CLUNK_WINDOW_OVERLAP) {
+			if (use_overlap && j < CLUNK_WINDOW_OVERLAP && jmax >= CLUNK_WINDOW_OVERLAP) {
 				x = (x * j + overlap_data[j] * (CLUNK_WINDOW_OVERLAP - j)) / CLUNK_WINDOW_OVERLAP;
 			}
 
 			if (j >= jmax) {
+				assert(j - jmax < CLUNK_WINDOW_OVERLAP);
 				overlap_data[j - jmax] = x;
 				use_overlap = true;
 			} else {

@@ -30,7 +30,7 @@ namespace mrt {
 namespace clunk {
 
 #ifndef CLUNK_WINDOW_SIZE
-#	define CLUNK_WINDOW_SIZE 512
+#	define CLUNK_WINDOW_SIZE 256
 #endif
 
 #ifndef CLUNK_WINDOW_OVERLAP
