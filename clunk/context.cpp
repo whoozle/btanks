@@ -73,7 +73,7 @@ void Context::process(Sint16 *stream, int size) {
 		for(Object::Sources::iterator j = sset.begin(); j != sset.end(); ) {
 			Source *s = j->second;
 			if (!s->playing()) {
-				LOG_DEBUG(("purging inactive source %s", j->first.c_str()));
+				//LOG_DEBUG(("purging inactive source %s", j->first.c_str()));
 				delete j->second;
 				sset.erase(j++);
 				continue;
