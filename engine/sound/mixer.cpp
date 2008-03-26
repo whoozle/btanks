@@ -131,7 +131,7 @@ void IMixer::loadPlaylist(const std::string &file) {
 }
 
 const bool IMixer::play(const std::string &fname, const bool continuous) {
-	if (_nomusic) 
+	if (_nomusic || _context == NULL) 
 		return false;
 
 	_loop = continuous;	
@@ -180,7 +180,7 @@ void IMixer::play() {
 }
 
 void IMixer::loadSample(const std::string &filename, const std::string &classname) {
-	if (_nosound) 
+	if (_nosound || _context == NULL) 
 		return;
 	
 	if (_sounds.find(filename) != _sounds.end()) {
@@ -231,7 +231,7 @@ void IMixer::playRandomSample(const Object *o, const std::string &classname, con
 }
 
 void IMixer::playSample(const Object *o, const std::string &name, const bool loop, const float gain) {
-	if (_nosound || name.empty())
+	if (_nosound || _context == NULL || name.empty())
 		return;
 
 TRY {
@@ -290,7 +290,8 @@ void IMixer::setFXVolume(const float volume) {
 	if (volume < 0 || volume > 1) 
 		throw_ex(("volume value %g is out of range [0-1]", volume));	
 
-	_context->set_fx_volume(volume);
+	if (_context != NULL)
+		_context->set_fx_volume(volume);
 	_volume_fx = volume;
 }
 
@@ -298,15 +299,17 @@ void IMixer::setMusicVolume(const float volume) {
 	if (volume < 0 || volume > 1) 
 		throw_ex(("volume value %g is out of range [0-1]", volume));	
 
-	_context->set_volume(0, volume);
+	if (_context != NULL)
+		_context->set_volume(0, volume);
 	_volume_music = volume;	
 }
 
 void IMixer::setAmbienceVolume(const float volume) {
 	if (volume < 0 || volume > 1) 
 		throw_ex(("volume value %g is out of range [0-1]", volume));	
-	
-	_context->set_volume(1, volume);
+
+	if (_context != NULL)
+		_context->set_volume(1, volume);
 	_volume_ambience = volume;	
 }
 
