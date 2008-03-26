@@ -31,7 +31,7 @@ class PillBox : public DestructableObject, protected ai::Base {
 	bool _skip2, _skip3;
 public: 
 	PillBox(const std::string &object) : 
-		DestructableObject("cannon"), _reaction(true), 
+		DestructableObject("pillbox"), _reaction(true), 
 		_fire(false), _fire2(false), _fire3(false), _object(object), _skip2(false), _skip3(false) {}
 
 	virtual Object * clone() const { return new PillBox(*this); }
