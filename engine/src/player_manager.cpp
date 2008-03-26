@@ -67,6 +67,10 @@ const int IPlayerManager::onConnect(Message &message) {
 	LOG_DEBUG(("sending server status message..."));
 	message.type = Message::ServerStatus;
 	message.set("version", getVersion());
+	bool fog;
+	Config->get("engine.fog-of-war.enabled", fog, false);
+	if (fog)
+		message.set("fog", "o'war");
 
 	mrt::Serializator s;
 	Map->serialize(s);
@@ -97,6 +101,7 @@ void IPlayerManager::onDisconnect(const int cid) {
 	}
 }
 
+#include "var.h"
 
 void IPlayerManager::onMessage(const int cid, const Message &message, const int timestamp) {
 TRY {
@@ -110,6 +115,12 @@ TRY {
 		mrt::Serializator s(&message.data);
 		Map->deserialize(s);
 		GameMonitor->loadMap(NULL, Map->getName(), false, true);
+		
+		if (message.has("fog")) {
+			Var v_true("bool");
+			v_true.b = true;
+			Config->setOverride("engine.fog-of-war.enabled", v_true);
+		}
 		
 		int n;
 		s.get(n);
