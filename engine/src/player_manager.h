@@ -98,7 +98,7 @@ public:
 	void onMap();
 	
 	void onPlayerDeath(const Object *player, const Object *killer);
-	void gameOver(const std::string &reason, const float time);
+	void gameOver(const std::string &area, const std::string &message, const float time);
 	
 	void onDestroyMap(const std::set<v3<int> > & cells);
 	

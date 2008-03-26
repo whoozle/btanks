@@ -297,7 +297,7 @@ void IGameMonitor::gameOver(const std::string &area, const std::string &message,
 	_game_over = true;
 	_win = win;
 	displayMessage(area, message, time);
-	PlayerManager->gameOver(message, time);
+	PlayerManager->gameOver(area, message, time);
 	resetTimer();
 }
 

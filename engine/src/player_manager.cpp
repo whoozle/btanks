@@ -471,10 +471,10 @@ TRY {
 	}
 	case Message::GameOver: {
 		float dt = (now + _net_stats.getDelta() - timestamp) / 1000.0f;
-		LOG_DEBUG(("respawn, delta: %+d, dt: %g", _net_stats.getDelta(), dt));
+		LOG_DEBUG(("gameover, delta: %+d, dt: %g", _net_stats.getDelta(), dt));
 
 		TRY {
-			GameMonitor->gameOver("messages", message.get("message"), atof(message.get("duration").c_str()) - dt, false);
+			GameMonitor->gameOver(message.get("area"), message.get("message"), atof(message.get("duration").c_str()) - dt, false);
 		} CATCH("on-message(gameover)", throw; )
 		break;
 	}
@@ -1200,11 +1200,12 @@ void IPlayerManager::getDefaultVehicle(std::string &vehicle, std::string &animat
 	} else animation = ra;
 }
 
-void IPlayerManager::gameOver(const std::string &reason, const float time) {
+void IPlayerManager::gameOver(const std::string &area, const std::string &message, const float time) {
 	if (!isServerActive())
 		return;
 	Message m(Message::GameOver);
-	m.set("message", reason);
+	m.set("area", area);
+	m.set("message", message);
 	m.set("duration", mrt::formatString("%g", time));
 	broadcast(m, true);
 }
