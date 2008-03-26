@@ -454,8 +454,10 @@ TRY {
 	s.add(_game_over);
 	s.add(_specials);
 
-	//s.add(_state);
-	//s.add(_state_timer);
+	if (_game_over) {
+		s.add(_state);
+		s.add(_state_timer);
+	}
 	
 	s.add(_timer_message);
 	s.add(_timer_message_area);
@@ -472,8 +474,10 @@ TRY {
 	s.get(_game_over);
 	s.get(_specials);
 
-	//s.get(_state);
-	//s.get(_state_timer);
+	if (_game_over) {
+		s.get(_state);
+		s.get(_state_timer);
+	}
 	
 	s.get(_timer_message);
 	s.get(_timer_message_area);
