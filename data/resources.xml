@@ -460,6 +460,7 @@
 	<sound file="teleport.ogg" />
 	<sound file="nuke-missile.ogg" />
 	<sound file="boomerang-missile.ogg" />
+	<sound file="boomerang-hit.ogg" />
 	<sound file="guided-missile.ogg" class="missile" />
 	<sound file="dumb-missile.ogg" class="missile" />
 	<sound file="smoke-missile.ogg" class="missile" />

@@ -135,6 +135,7 @@ void Missile::emit(const std::string &event, Object * emitter) {
 		} else {
 			//emitter == NULL
 			if (type == "boomerang") {
+				playSound("boomerang-hit", false);
 				_velocity = -_velocity;
 				return;
 			}

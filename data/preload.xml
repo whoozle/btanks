@@ -717,7 +717,9 @@
 		<object id="alt-missiles-on-launcher"/>
 		<object id="armed-mine"/>
 		<object id="biotoilet"/>
+		<object id="boomerang-missile"/>
 		<object id="boomerang-missiles-item"/>
+		<object id="cannon-explosion"/>
 		<object id="corpse"/>
 		<object id="damage-digits"/>
 		<object id="dirt-bullets-item"/>
@@ -726,6 +728,7 @@
 		<object id="dumb-missiles-item"/>
 		<object id="explosion"/>
 		<object id="fake-mod"/>
+		<object id="fire"/>
 		<object id="gate"/>
 		<object id="grenade"/>
 		<object id="grenade-explosion"/>
@@ -742,6 +745,7 @@
 		<object id="missiles-on-tank"/>
 		<object id="nuke-explosion"/>
 		<object id="nuke-mine"/>
+		<object id="nuke-missile"/>
 		<object id="nuke-missiles-item"/>
 		<object id="oil-barrels"/>
 		<object id="outline"/>
@@ -762,6 +766,8 @@
 		<object id="static-smoke-cloud"/>
 		<object id="static-tank"/>
 		<object id="stun-missiles-item"/>
+		<object id="tank"/>
+		<object id="tank-bullet"/>
 		<object id="thrower-item"/>
 	</map>
 	<object id="alt-missiles-on-launcher">
