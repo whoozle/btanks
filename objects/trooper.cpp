@@ -39,8 +39,13 @@ void Trooper::tick(const float dt) {
 	setDirection(_velocity.getDirection8() - 1);
 	Object::tick(dt);
 	
-	const std::string state = getState();
+	if (!_state.fire) {
+		if (getState() == "fire")
+			cancelAll();
+	}
+	
 	if (_velocity.is0()) {
+		const std::string state = getState();
 		if (state != "hold" && state != "fire" && state != "throw") {
 			cancelAll();
 			play("hold", true);
@@ -51,7 +56,8 @@ void Trooper::tick(const float dt) {
 			}
 		}
 	} else {
-		if (state == "hold") {
+		const std::string state = getState();
+		if (state == "hold" || state.empty()) {
 			cancelAll();
 			play("run", true);
 			if (has("helmet")) {
@@ -65,8 +71,10 @@ void Trooper::tick(const float dt) {
 	if (!_object.empty() && _fire.tick(dt) && _state.fire && !_variants.has("nukeman")) {
 		_fire.reset();
 		if (disable_ai || validateFire(0)) {
-			if (getState() != "fire")
-				playNow("fire");
+			if (getState() != "fire") {
+				cancelAll();
+				play("fire", true);
+			}
 			spawn(_object, _object, v2<float>(), _direction);
 		}
 	}
