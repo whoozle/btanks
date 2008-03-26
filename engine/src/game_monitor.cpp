@@ -274,7 +274,7 @@ void IGameMonitor::add(const GameItem &item_, const bool dont_respawn) {
 		_items.back().respawn();
 }
 
-void IGameMonitor::pushState(const std::string &state, const float time) {
+void IGameMonitor::pushState(const std::string &state, float time) {
 	if (time <= 0) 
 		throw_ex(("message time <= 0 is not allowed"));
 	
@@ -290,7 +290,7 @@ const std::string IGameMonitor::popState(const float dt) {
 	return r;
 }
 
-void IGameMonitor::gameOver(const std::string &area, const std::string &message, const float time, const bool win) {
+void IGameMonitor::gameOver(const std::string &area, const std::string &message, float time, const bool win) {
 	if (_game_over)
 		return;
 	
@@ -301,10 +301,12 @@ void IGameMonitor::gameOver(const std::string &area, const std::string &message,
 	resetTimer();
 }
 
-void IGameMonitor::displayMessage(const std::string &area, const std::string &message, const float time, const bool global) {
+void IGameMonitor::displayMessage(const std::string &area, const std::string &message, float time, const bool global) {
 	pushState(I18n->get(area, message), time);
 
 	if (global && PlayerManager->isServer()) {
+		if (time <= 0)
+			throw_ex(("server attempts to set up %g s timer", time));
 		PlayerManager->broadcastMessage(area, message, time);
 	}
 }
@@ -313,7 +315,7 @@ void IGameMonitor::hideMessage() {
 	_timer = 0;
 }
 
-void IGameMonitor::setTimer(const std::string &area, const std::string &message, const float time, const bool win_at_end) {
+void IGameMonitor::setTimer(const std::string &area, const std::string &message, float time, const bool win_at_end) {
 	_timer_message_area = area;
 	_timer_message = message;
 	_timer = time;

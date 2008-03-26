@@ -86,17 +86,17 @@ public:
 	const std::vector<v3<int> >& getSpecials() const { return _specials; }
 	const size_t getItemsCount() const { return _items.size(); }
 
-	void gameOver(const std::string &area, const std::string &message, const float time, const bool win);
-	void displayMessage(const std::string &area, const std::string &message, const float time, const bool global = false);
+	void gameOver(const std::string &area, const std::string &message, float time, const bool win);
+	void displayMessage(const std::string &area, const std::string &message, float time, const bool global = false);
 	void hideMessage();
-	void setTimer(const std::string &area, const std::string &message, const float time, const bool win_at_end);
+	void setTimer(const std::string &area, const std::string &message, float time, const bool win_at_end);
 	void resetTimer();
 
 	void clear();
 	
 	void tick(const float dt);
 
-	void pushState(const std::string &state, const float time);
+	void pushState(const std::string &state, float time);
 	const std::string popState(const float dt);
 	
 	void render(sdlx::Surface &window);
