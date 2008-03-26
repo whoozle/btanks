@@ -587,6 +587,7 @@ void Object::deserialize(const mrt::Serializator &s) {
 			if (!o->_need_sync) {
 				LOG_DEBUG(("incomplete data for object %d:%s", o->_id, o->animation.c_str()));
 				//incomplete object serialization. mark object as dead for future restoring.
+				o->_dead = true;
 				_dead = true;
 			}
 		} else {
