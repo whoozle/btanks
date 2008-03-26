@@ -37,6 +37,7 @@ public:
 	Context();
 	
 	void init(const int sample_rate, const Uint8 channels, int period_size);
+	void set_sources_num(int sources);
 	void deinit();
 	
 	Object *create_object();

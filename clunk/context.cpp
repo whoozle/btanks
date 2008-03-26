@@ -287,6 +287,11 @@ void Context::stop_all() {
 	streams.clear();
 }
 
+void Context::set_sources_num(int sources) {
+	AudioLocker l;
+	max_sources = sources;
+}
+
 void Context::convert(mrt::Chunk &dst, const mrt::Chunk &src, int rate, const Uint16 format, const Uint8 channels) {
 	SDL_AudioCVT cvt;
 	memset(&cvt, 0, sizeof(cvt));
