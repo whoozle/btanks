@@ -70,7 +70,7 @@ void PoisonCloud::emit(const std::string &event, Object * emitter) {
 			return;
 		
 		const std::string &ec = emitter->classname;
-		if (ec != "trooper" && ec != "citizen" && 
+		if (ec != "trooper" && ec != "civilian" && 
 			ec != "kamikaze" && ec != "watchtower" && 
 			ec != "monster" && ec != "cannon" && 
 			emitter->registered_name != "machinegunner")
