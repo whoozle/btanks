@@ -303,6 +303,9 @@ void Surface::convertAlpha() {
 
 void Surface::convertToDisplay() {
 	SDL_Surface *r = SDL_DisplayFormat(surface);
+	if (r == surface)
+		return;
+	
 	if (r == NULL)
 		throw_sdl(("SDL_DisplayFormat"));
 	assign(r);
