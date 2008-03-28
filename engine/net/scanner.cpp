@@ -7,6 +7,7 @@
 #include "mrt/socket_set.h"
 #include "mrt/udp_socket.h"
 #include "mrt/serializator.h"
+#include "mrt/net_exception.h"
 
 #ifdef _WINDOWS
 #	include <Winsock2.h>
@@ -47,7 +48,28 @@ TRY {
 	udp_sock.create();
 	udp_sock.setBroadcastMode(1);
 	LOG_DEBUG(("udp socket started..."));
-	
+
+#ifdef _WINDOWS
+	std::set<mrt_uint32_t> banned_addrs;
+	TRY {
+		char ac[256];
+		if (gethostname(ac, sizeof(ac)) == SOCKET_ERROR) 
+			throw_net(("gethostname"));
+		
+		struct hostent *he = gethostbyname(ac);
+		if (he == NULL) 
+			throw_net(("gethostbyname"));
+		
+		for (int i = 0; he->h_addr_list[i] != 0; ++i) {
+			struct in_addr addr;
+	        memcpy(&addr, he->h_addr_list[i], sizeof(struct in_addr));
+
+			LOG_DEBUG(("my address %s", inet_ntoa(addr)));
+			banned_addrs.insert(addr.S_un.S_addr);
+		}
+	} CATCH("getting host ip addresses", )
+	    
+#endif	
 	
 	while(_running) {
 		mrt::SocketSet set; 
@@ -68,7 +90,7 @@ TRY {
 		
 		if (set.check(udp_sock, mrt::SocketSet::Exception)) {
 			TRY {
-				throw_io(("udp_socket"));
+				throw_net(("udp_socket"));
 			} CATCH("select", )
 			LOG_DEBUG(("restarting udp socket..."));
 			udp_sock.create();
@@ -80,7 +102,7 @@ TRY {
 			int r = udp_sock.recv(addr, data.getPtr(), data.getSize());
 			TRY { 
 				if (r == 0 || r == -1)
-					throw_io(("udp_sock.recv"));
+					throw_net(("udp_sock.recv"));
 			} CATCH("recv", continue; );
 			data.setSize(r);
 			//LOG_DEBUG(("data from addr %s: %s", addr.getAddr().c_str(), data.dump().c_str()));
@@ -106,6 +128,10 @@ TRY {
 
 				if (delta > 120000) 
 					throw_ex(("server returned bogus timestamp value"));
+				if (banned_addrs.find(addr.ip) != banned_addrs.end()) {
+					LOG_DEBUG(("skipping %s as banned or local", addr.getAddr().c_str()));
+					continue;
+				}
 								
 				std::string ip = addr.getAddr();
 				LOG_DEBUG(("found server: %s, players: %u, slots: %u", ip.c_str(), players, slots));
