@@ -640,10 +640,12 @@ TRY {
 					}
 				}
 
+				slot.clear();
+				
 				if (over) {
 					GameMonitor->gameOver("messages", "game-over", 5, false);
-					return;
 				}
+				return;
 			}
 			LOG_DEBUG(("%d lives left", slot.spawn_limit));
 		}
