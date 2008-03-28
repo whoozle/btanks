@@ -35,12 +35,12 @@
 
 PlayerSlot::PlayerSlot() : 
 id(-1), control_method(NULL), need_sync(false), dont_interpolate(false), remote(-1), visible(false), 
-classname(), animation(), frags(0), spawn_limit(0), score(0), last_tooltip(NULL), last_tooltip_used(false)
+classname(), animation(), frags(0), spawn_limit(0), score(0), spectator(false), last_tooltip(NULL), last_tooltip_used(false)
 {}
 
 PlayerSlot::PlayerSlot(const int id) : 
 id(id), control_method(NULL), need_sync(false), dont_interpolate(false), remote(-1), visible(false), 
-classname(), animation(), frags(0), spawn_limit(0), score(0), last_tooltip(NULL), last_tooltip_used(false)
+classname(), animation(), frags(0), spawn_limit(0), score(0), spectator(false), last_tooltip(NULL), last_tooltip_used(false)
 {}
 
 void PlayerSlot::serialize(mrt::Serializator &s) const {
@@ -90,6 +90,7 @@ void PlayerSlot::clear() {
 	dead_time = 0;
 	score = 0;
 	name.clear();
+	spectator = false;
 	
 	while(!tooltips.empty()) {
 		delete tooltips.front().second;

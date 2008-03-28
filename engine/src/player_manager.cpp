@@ -622,15 +622,17 @@ TRY {
 			continue;
 		}
 		
+		if (slot.spectator) 
+			continue;
+		
 		slot.dead_time += dt;
 		GET_CONFIG_VALUE("engine.player-respawn-interval", float, ri, 0.5f);
 		if (slot.dead_time < ri)
 			continue;
-
 		if (slot.spawn_limit > 0) {
 			--slot.spawn_limit;
 			if (slot.spawn_limit <= 0) {
-				slot.clear();
+				slot.spectator = true;
 				bool over = true;
 
 				for(size_t i = 0; i < _players.size(); ++i) {
@@ -640,17 +642,14 @@ TRY {
 					}
 				}
 
-				slot.clear();
-				
 				if (over) {
 					GameMonitor->gameOver("messages", "game-over", 5, false);
 				}
-				return;
+				continue;
 			}
 			LOG_DEBUG(("%d lives left", slot.spawn_limit));
 		}
-		
-		
+				
 		LOG_DEBUG(("player in slot %u is dead. respawning. frags: %d", (unsigned)i, slot.frags));
 
 		slot.spawnPlayer(slot.classname, slot.animation);
@@ -676,6 +675,13 @@ TRY {
 	for(size_t i = 0; i < n; ++i) {
 		PlayerSlot &slot = _players[i];
 		Object *obj = slot.getObject();
+		if (slot.spectator) {
+			if (slot.control_method != NULL) {
+				slot.control_method->updateState(slot, slot.old_state);
+				//LOG_DEBUG(("SPECTATOR: %s", slot.old_state.dump().c_str()));
+			}
+			continue;
+		}
 
 		if (obj != NULL) {
 			if (slot.control_method != NULL) {

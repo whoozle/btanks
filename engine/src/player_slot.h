@@ -68,6 +68,8 @@ public:
 	int score;
 	std::string name;
 	
+	bool spectator;
+	
 	PlayerSlot();
 	PlayerSlot(const int id);
 	void clear();
