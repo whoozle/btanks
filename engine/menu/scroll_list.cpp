@@ -161,6 +161,7 @@ void ScrollList::render(sdlx::Surface &surface, const int x, const int y) const 
 	surface.copyFrom(*_scrollers, sdlx::Rect(0, 0, scroller_w, scroller_h), x + (int)_up_area.x, y + (int)_up_area.y);
 	_down_area = sdlx::Rect(_up_area.x, my + _client_h - scroller_h, scroller_w, scroller_h);
 	surface.copyFrom(*_scrollers, sdlx::Rect(scroller_w, 0, scroller_w, scroller_h), x + (int)_down_area.x, y + (int)_down_area.y);
+	
 	_items_area = sdlx::Rect(mx, my, _client_w - 2 * mx, _client_h);
 
 	if (_list.empty()) {
@@ -182,6 +183,7 @@ void ScrollList::render(sdlx::Surface &surface, const int x, const int y) const 
 	int item_pos = 0, item_size = 0;
 	getItemY(p, item_pos, item_size);
 	int yp = my + (_spacing + 1)/ 2 + y - ((int)_pos - item_pos);
+
 	for(; p < n; ++p) {
 		int w, h;
 		_list[p]->getSize(w, h);
@@ -202,9 +204,13 @@ void ScrollList::render(sdlx::Surface &surface, const int x, const int y) const 
 		}
 		_list[p]->render(surface, xp, yp);
 		yp += h;
+
+		if (yp - y - my > _items_area.h) 
+			break;
 	}
 
 	surface.setClipRect(old_clip);
+	
 	Container::render(surface, x, y);
 }
 
