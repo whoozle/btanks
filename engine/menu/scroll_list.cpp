@@ -184,10 +184,14 @@ void ScrollList::render(sdlx::Surface &surface, const int x, const int y) const 
 	getItemY(p, item_pos, item_size);
 	int yp = my + (_spacing + 1)/ 2 + y - ((int)_pos - item_pos);
 
+	int average_h = 0;
+	int visible_items = 0;
 	for(; p < n; ++p) {
 		int w, h;
 		_list[p]->getSize(w, h);
 		h += _spacing;
+		average_h += h;	
+		++visible_items;	
 
 		if (p == (int)_current_item) {
 			_background.renderHL(surface, x - 3 * mx, yp + h / 2 - _spacing / 2 + 1);
@@ -210,6 +214,28 @@ void ScrollList::render(sdlx::Surface &surface, const int x, const int y) const 
 	}
 
 	surface.setClipRect(old_clip);
+
+	int scroller_area_h = _items_area.h - 2 * scroller_h;
+	int boxes = scroller_area_h / scroller_h;
+	if (visible_items > 0 && boxes > 1) {
+		//render scrollers
+		average_h /= visible_items;
+		int total_h = average_h * n;
+		int vboxes = boxes * scroller_area_h / total_h - 2;
+		if (vboxes < 0)
+			vboxes = 0;
+		
+		int scroller_pos = total_h > _items_area.h? (int)_pos * (scroller_area_h - (vboxes + 2) * scroller_h) / (total_h - _items_area.h) : 0;
+
+		int xp = x + (int)_up_area.x;
+		int yp = y + (int)_up_area.y + (int)_up_area.h + scroller_pos;
+		surface.copyFrom(*_scrollers, sdlx::Rect(scroller_w * 3, 0, scroller_w, scroller_h), xp, yp);
+		yp += scroller_h;
+		for(int i = 0; i < vboxes; ++i, yp += scroller_h) {
+			surface.copyFrom(*_scrollers, sdlx::Rect(scroller_w * 4, 0, scroller_w, scroller_h), xp, yp);
+		}
+		surface.copyFrom(*_scrollers, sdlx::Rect(scroller_w * 5, 0, scroller_w, scroller_h), xp, yp);
+	}
 	
 	Container::render(surface, x, y);
 }
