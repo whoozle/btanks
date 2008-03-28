@@ -296,6 +296,7 @@ bool ScrollList::onKey(const SDL_keysym sym) {
 }
 
 void ScrollList::up(const int n) {
+	_grab = false;
 	if (_list.empty())
 		return;
 	
@@ -307,6 +308,7 @@ void ScrollList::up(const int n) {
 }
 
 void ScrollList::down(const int n) {
+	_grab = false;
 	if (_list.empty())
 		return;
 	
@@ -318,7 +320,6 @@ void ScrollList::down(const int n) {
 }
 
 bool ScrollList::onMouse(const int button, const bool pressed, const int x, const int y) {
-	_grab = false;
 	if (Container::onMouse(button, pressed, x, y))
 		return true;
 	//implement dragging of scroller here.
@@ -339,11 +340,11 @@ bool ScrollList::onMouse(const int button, const bool pressed, const int x, cons
 		return true;
 	}
 
-
 	int mx, my;
 	_background.getMargins(mx, my);
 	
 	if (_items_area.in(x, y)) {
+		_grab = false;
 		//LOG_DEBUG(("%d %d -> %d", x, y, y + (int)_pos - my));
 		int item = getItemIndex(y - my + (int)_pos);
 		if (item >= 0 && item < (int)_list.size()) {
@@ -375,7 +376,7 @@ bool ScrollList::onMouse(const int button, const bool pressed, const int x, cons
 
 bool ScrollList::onMouseMotion(const int state, const int x, const int y, const int xrel, const int yrel) {
 	if (state == 0 || _scroll_mul <= 0) {
-		_grab = false;
+		//_grab = false;
 		return true;
 	}
 	_grab = true;
