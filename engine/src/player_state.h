@@ -22,6 +22,7 @@
 
 #include "export_btanks.h"
 #include "mrt/serializable.h"
+#include "math/v2.h"
 #include <string>
 
 class BTANKSAPI PlayerState : public mrt::Serializable {
@@ -41,6 +42,19 @@ public:
 	const bool operator==(const PlayerState &other) const;
 	inline const bool operator!=(const PlayerState &other) const {
 		return !(*this == other);
+	}
+
+	template <typename T>
+	void get_velocity(v2<T> &result) {
+		result.clear();
+		if (left)
+			--result.x;
+		if (right)
+			++result.x;
+		if (up)
+			--result.y;
+		if (down)
+			++result.y;
 	}
 
 	virtual void serialize(mrt::Serializator &s) const;

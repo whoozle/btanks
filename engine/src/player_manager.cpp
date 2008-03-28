@@ -632,6 +632,7 @@ TRY {
 		if (slot.spawn_limit > 0) {
 			--slot.spawn_limit;
 			if (slot.spawn_limit <= 0) {
+				slot.old_state.clear();
 				slot.spectator = true;
 				bool over = true;
 
@@ -679,6 +680,9 @@ TRY {
 			if (slot.control_method != NULL) {
 				slot.control_method->updateState(slot, slot.old_state);
 				//LOG_DEBUG(("SPECTATOR: %s", slot.old_state.dump().c_str()));
+				slot.old_state.get_velocity(slot.map_vel);
+				slot.map_vel *= 500;
+				slot.map_pos += slot.map_vel * dt;
 			}
 			continue;
 		}
