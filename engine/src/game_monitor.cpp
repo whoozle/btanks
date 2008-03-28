@@ -1019,7 +1019,7 @@ void IGameMonitor::onScriptZone(const int slot_id, const SpecialZone &zone, cons
 		if (global)
 			lua_hooks->call(zone.name);
 		else 
-			lua_hooks->call1(zone.name, slot_id);
+			lua_hooks->call1(zone.name, slot_id + 1);
 	} CATCH("onScriptZone", {
 		Game->clear();
 		displayMessage("errors", "script-error", 1);
