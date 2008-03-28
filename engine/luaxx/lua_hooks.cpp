@@ -542,7 +542,7 @@ static int lua_hooks_spawn(lua_State *L) {
 	//	if (dir) 
 	//		o->setDirection(dir);
 	
-		World->addObject(o, v2<float>(x, y) + o->size / 2);
+		World->addObject(o, v2<float>(x, y) - o->size / 2);
 		lua_pushinteger(L, o->getID());
 		return 1;
 	} LUA_CATCH("spawn")
