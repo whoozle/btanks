@@ -49,8 +49,8 @@ TRY {
 	udp_sock.setBroadcastMode(1);
 	LOG_DEBUG(("udp socket started..."));
 
-#ifdef _WINDOWS
 	std::set<mrt_uint32_t> banned_addrs;
+#ifdef _WINDOWS
 	TRY {
 		char ac[256];
 		if (gethostname(ac, sizeof(ac)) == SOCKET_ERROR) 
