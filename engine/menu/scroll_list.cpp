@@ -218,15 +218,16 @@ void ScrollList::render(sdlx::Surface &surface, const int x, const int y) const 
 	surface.setClipRect(old_clip);
 
 	int boxes = _scroller_area.h / scroller_h;
-	if (visible_items > 0 && boxes > 1) {
+	average_h /= visible_items;
+	int total_h = average_h * n;
+	if (visible_items > 0 && boxes > 1 && total_h > _items_area.h) {
 		//render scrollers
-		average_h /= visible_items;
-		int total_h = average_h * n;
 		int vboxes = boxes * _scroller_area.h / total_h - 2;
 		if (vboxes < 0)
 			vboxes = 0;
 		
-		_scroll_mul = total_h > _items_area.h? 1.0f * (_scroller_area.h - (vboxes + 2) * scroller_h) / (total_h - _items_area.h) : 0;
+		//note total_h > _items_area.h in line below !
+		_scroll_mul = 1.0f * (_scroller_area.h - (vboxes + 2) * scroller_h) / (total_h - _items_area.h);
 		int scroller_pos = (int)(_pos * _scroll_mul);
 
 		int xp = x + (int)_up_area.x;
