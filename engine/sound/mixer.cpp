@@ -75,6 +75,7 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 	LOG_DEBUG(("volumes: music: %g, ambience: %g, fx: %g", _volume_music, _volume_ambience, _volume_fx));
 	
 	_nosound = nosound;
+	_context->set_fx_volume(_volume_fx);
 	
 	TRY {
 		//if (!nomusic)
