@@ -1797,4 +1797,11 @@ void IWorld::onMapResize(int left, int right, int up, int down) {
 	}
 }
 
+void IWorld::teleport(Object *object, const v2<float> &position) {
+	object->_position = position - object->size / 2;
+	updateObject(object);
+	object->addEffect("teleportation", 1);
+}
+
+
 #include "world_old_pf.cpp"

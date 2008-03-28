@@ -112,15 +112,13 @@ void Teleport::emit(const std::string &event, Object * emitter) {
 			return;
 
 		Teleport *dst = teleports[(teleports.size() == 1)?0: mrt::random(teleports.size())];
-		dst->getCenterPosition(emitter->_position);
+		World->teleport(emitter, dst->getCenterPosition());
 
-		emitter->_position -= emitter->size / 2;
 		//LOG_DEBUG(("dst z = %d, dst box base = %d", dst->getZ(), ZBox::getBoxBase(dst->getZ())));
 		emitter->setZBox(ZBox::getBoxBase(dst->getZ()));
 		dst->track = emitter->getID();
 		dst->invalidate();
 		dst->playSound("teleport", false);
-		emitter->addEffect("teleportation", 1);
 	} else Object::emit(event, emitter);
 }
 

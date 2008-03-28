@@ -105,6 +105,8 @@ public:
 
 	void enumerateObjects(std::set<const Object *> &o_set, const Object *src, const float range, const std::set<std::string> *classfilter);
 	void sync(const int id);
+	
+	void teleport(Object *object, const v2<float> &position); //do not use this! 
 
 protected: 
 	friend class Editor;
