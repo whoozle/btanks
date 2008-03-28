@@ -628,10 +628,22 @@ TRY {
 			continue;
 
 		if (slot.spawn_limit > 0) {
-			if (--slot.spawn_limit <= 0) {
+			--slot.spawn_limit;
+			if (slot.spawn_limit <= 0) {
 				slot.clear();
-				GameMonitor->gameOver("messages", "game-over", 5, false);
-				continue;
+				bool over = true;
+
+				for(size_t i = 0; i < _players.size(); ++i) {
+					if (_players[i].spawn_limit > 0) {
+						over = false;
+						break;
+					}
+				}
+
+				if (over) {
+					GameMonitor->gameOver("messages", "game-over", 5, false);
+					return;
+				}
 			}
 			LOG_DEBUG(("%d lives left", slot.spawn_limit));
 		}
