@@ -629,6 +629,7 @@ TRY {
 		GET_CONFIG_VALUE("engine.player-respawn-interval", float, ri, 0.5f);
 		if (slot.dead_time < ri)
 			continue;
+
 		if (slot.spawn_limit > 0) {
 			--slot.spawn_limit;
 			if (slot.spawn_limit <= 0) {
@@ -683,6 +684,26 @@ TRY {
 				slot.old_state.get_velocity(slot.map_vel);
 				slot.map_vel *= 500;
 				slot.map_pos += slot.map_vel * dt;
+			}
+
+			if (slot.old_state.fire) {
+				int max = 1;
+				int max_slot = -1;
+				
+				for(size_t j = 0; j < n; ++j) {
+					if (i == j)
+						continue;
+					PlayerSlot &slot = _players[j];
+					if (!slot.empty() && slot.spawn_limit > max) {
+						max = slot.spawn_limit;
+						max_slot = j;
+					}
+				}
+				if (max_slot >= 0) {
+					slot.spawn_limit = 2;
+					slot.spectator = false;
+					--_players[max_slot].spawn_limit;
+				}
 			}
 			continue;
 		}
