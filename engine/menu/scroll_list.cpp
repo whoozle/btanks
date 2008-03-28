@@ -163,6 +163,7 @@ void ScrollList::render(sdlx::Surface &surface, const int x, const int y) const 
 	surface.copyFrom(*_scrollers, sdlx::Rect(scroller_w, 0, scroller_w, scroller_h), x + (int)_down_area.x, y + (int)_down_area.y);
 	
 	_items_area = sdlx::Rect(mx, my, _client_w - 2 * mx, _client_h);
+	_scroller_area = sdlx::Rect(_client_w + my - scroller_w, my, scroller_w, _items_area.h - 2 * scroller_h);
 
 	if (_list.empty()) {
 		Container::render(surface, x, y);
@@ -215,17 +216,16 @@ void ScrollList::render(sdlx::Surface &surface, const int x, const int y) const 
 
 	surface.setClipRect(old_clip);
 
-	int scroller_area_h = _items_area.h - 2 * scroller_h;
-	int boxes = scroller_area_h / scroller_h;
+	int boxes = _scroller_area.h / scroller_h;
 	if (visible_items > 0 && boxes > 1) {
 		//render scrollers
 		average_h /= visible_items;
 		int total_h = average_h * n;
-		int vboxes = boxes * scroller_area_h / total_h - 2;
+		int vboxes = boxes * _scroller_area.h / total_h - 2;
 		if (vboxes < 0)
 			vboxes = 0;
 		
-		int scroller_pos = total_h > _items_area.h? (int)_pos * (scroller_area_h - (vboxes + 2) * scroller_h) / (total_h - _items_area.h) : 0;
+		int scroller_pos = total_h > _items_area.h? (int)_pos * (_scroller_area.h - (vboxes + 2) * scroller_h) / (total_h - _items_area.h) : 0;
 
 		int xp = x + (int)_up_area.x;
 		int yp = y + (int)_up_area.y + (int)_up_area.h + scroller_pos;

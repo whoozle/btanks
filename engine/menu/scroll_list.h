@@ -71,7 +71,7 @@ public:
 private:
 	Box _background;
 	const sdlx::Surface *_scrollers;
-	mutable sdlx::Rect _up_area, _down_area, _items_area;
+	mutable sdlx::Rect _up_area, _down_area, _items_area, _scroller_area;
 	mutable int _client_w, _client_h;
 	Align _align;
 
