@@ -45,7 +45,7 @@ Teleport::Teleports Teleport::_teleports;
 
 void Teleport::tick(const float dt) {
 	Object::tick(dt);
-	if (aiDisabled()) {
+	if (aiDisabled() || _variants.has("dead-end")) {
 		if (getState() != "hold") {
 			cancelAll();
 			play("hold", true);
