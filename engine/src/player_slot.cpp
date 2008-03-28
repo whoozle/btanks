@@ -52,6 +52,7 @@ void PlayerSlot::serialize(mrt::Serializator &s) const {
 	s.add(animation);
 	s.add(score);
 	s.add(name);
+	s.add(spectator);
 }
 
 void PlayerSlot::deserialize(const mrt::Serializator &s) {
@@ -62,6 +63,7 @@ void PlayerSlot::deserialize(const mrt::Serializator &s) {
 	s.get(animation);
 	s.get(score);
 	s.get(name);
+	s.get(spectator);
 }
 
 Object * PlayerSlot::getObject() const {
