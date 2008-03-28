@@ -30,7 +30,8 @@
 #include "menu/textual.h"
 
 ScrollList::ScrollList(const std::string &background, const std::string &font, const int w, const int h, const int spacing, const int hl_h) : 
-_client_w(64), _client_h(64), _align(AlignLeft), _pos(0), _vel(0), _current_item(0), _spacing(spacing) {
+_client_w(64), _client_h(64), _align(AlignLeft), 
+_pos(0), _vel(0), _grab(false), _current_item(0), _spacing(spacing) {
 	_background.init(background, w, h, hl_h);
 	_font = ResourceManager->loadFont(font, true);
 	_scrollers = ResourceManager->loadSurface("menu/v_scroller.png");
@@ -114,7 +115,7 @@ void ScrollList::tick(const float dt) {
 			_vel = 0;
 	}
 
-	if (yp < _pos + scroll_marg || yp > _pos + _client_h - scroll_marg) {
+	if (!_grab && (yp < _pos + scroll_marg || yp > _pos + _client_h - scroll_marg)) {
 		int dpos = (int)(math::max<int>(yp - _client_h / 2, 0) - _pos);
 		_vel = math::max(300, 2 * math::abs(dpos)) * math::sign<int>(dpos);
 		_pos += math::sign(dpos) * math::min(math::abs(_vel * dt), math::abs((float)dpos));
@@ -225,7 +226,8 @@ void ScrollList::render(sdlx::Surface &surface, const int x, const int y) const 
 		if (vboxes < 0)
 			vboxes = 0;
 		
-		int scroller_pos = total_h > _items_area.h? (int)_pos * (_scroller_area.h - (vboxes + 2) * scroller_h) / (total_h - _items_area.h) : 0;
+		_scroll_mul = total_h > _items_area.h? 1.0f * (_scroller_area.h - (vboxes + 2) * scroller_h) / (total_h - _items_area.h) : 0;
+		int scroller_pos = (int)(_pos * _scroll_mul);
 
 		int xp = x + (int)_up_area.x;
 		int yp = y + (int)_up_area.y + (int)_up_area.h + scroller_pos;
@@ -241,6 +243,7 @@ void ScrollList::render(sdlx::Surface &surface, const int x, const int y) const 
 }
 
 bool ScrollList::onKey(const SDL_keysym sym) {
+	_grab = false;
 	if (Container::onKey(sym))
 		return true;
 
@@ -315,6 +318,7 @@ void ScrollList::down(const int n) {
 }
 
 bool ScrollList::onMouse(const int button, const bool pressed, const int x, const int y) {
+	_grab = false;
 	if (Container::onMouse(button, pressed, x, y))
 		return true;
 	//implement dragging of scroller here.
@@ -367,6 +371,17 @@ bool ScrollList::onMouse(const int button, const bool pressed, const int x, cons
 	}
 	
 	return false;
+}
+
+bool ScrollList::onMouseMotion(const int state, const int x, const int y, const int xrel, const int yrel) {
+	if (state == 0 || _scroll_mul <= 0) {
+		_grab = false;
+		return true;
+	}
+	_grab = true;
+	//LOG_DEBUG(("mouse motion %d %d", xrel, yrel));
+	_pos += yrel / _scroll_mul;
+	return true;
 }
 
 void ScrollList::getSize(int &w, int &h) const {
