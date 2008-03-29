@@ -575,10 +575,13 @@
 		<object id="mortar-bullet"/>
 		<object id="mortar-explosion"/>
 		<object id="nuke-explosion"/>
+		<object id="nuke-mine"/>
 		<object id="nuke-missile"/>
 		<object id="nuke-missiles-item"/>
 		<object id="outline"/>
 		<object id="regular-mine"/>
+		<object id="shilka"/>
+		<object id="shilka-bullet"/>
 		<object id="single-pose"/>
 		<object id="static-launcher"/>
 		<object id="static-mortar"/>
@@ -589,6 +592,7 @@
 		<object id="tank"/>
 		<object id="tank-bullet"/>
 		<object id="teleport"/>
+		<object id="thrower"/>
 		<object id="thrower-item"/>
 		<object id="thrower-missile"/>
 		<object id="thrower-on-launcher"/>
