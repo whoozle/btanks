@@ -23,6 +23,7 @@
 #include "shilka.h"
 #include "config.h"
 #include "fakemod.h"
+#include "rt_config.h"
 
 void Shilka::getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const {
 	base = 0;
@@ -174,7 +175,7 @@ skip_left_toggle:
 			int n;
 			Config->get("objects.shilka.units-limit", n, 10); //fixme: add type restrictions
 			if (mod->getCount() > 0 && getChildren("trooper") < n) {
-				spawn(mod_type + "(disembark)(ally)", mod_type, _direction*(size.length()/-2), v2<float>());
+				spawn(mod_type + "(disembark)" + (RTConfig->game_type == GameTypeCooperative? "ally":""), mod_type, _direction*(size.length()/-2), v2<float>());
 				mod->decreaseCount();
 			}
 		}
