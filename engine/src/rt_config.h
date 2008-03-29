@@ -22,12 +22,17 @@
 
 #include "mrt/singleton.h"
 
+enum GameType {
+	GameTypeDeathMatch, GameTypeCooperative, GameTypeRacing 
+};
+
 class BTANKSAPI IRTConfig {
 public:
 	DECLARE_SINGLETON(IRTConfig);
 	IRTConfig();
 	
 	bool server_mode;
+	GameType game_type;
 };
 
 SINGLETON(BTANKSAPI, RTConfig, IRTConfig);

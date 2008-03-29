@@ -20,4 +20,4 @@
 
 IMPLEMENT_SINGLETON(RTConfig, IRTConfig);
 
-IRTConfig::IRTConfig() : server_mode(false) {}
+IRTConfig::IRTConfig() : server_mode(false), game_type(GameTypeDeathMatch) {}

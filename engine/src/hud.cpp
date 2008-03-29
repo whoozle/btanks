@@ -31,6 +31,7 @@
 #include "mrt/random.h"
 #include "math/binary.h"
 #include "special_zone.h"
+#include "rt_config.h"
 
 static Uint32 index2color(const sdlx::Surface &surface, const unsigned idx, const Uint8 a) {
 	unsigned rgb = idx & 7;
@@ -55,13 +56,8 @@ void Hud::initMap() {
 	
 	_pointer = NULL;
 	_pointer_dir = -1;
-	if (Config->has("multiplayer.game-type")) {
-		std::string type; 
-		Config->get("multiplayer.game-type", type, "deathmatch");
-		if (type == "racing") {
-			_pointer = ResourceManager->loadSurface("pointer.png");
-			//_pointer_dir = 2;
-		}
+	if (RTConfig->game_type == GameTypeRacing) {
+		_pointer = ResourceManager->loadSurface("pointer.png");
 	}
 }
 

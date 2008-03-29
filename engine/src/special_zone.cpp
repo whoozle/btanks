@@ -25,6 +25,7 @@
 #include "config.h"
 #include "menu/tooltip.h"
 #include "object.h"
+#include "rt_config.h"
 #include "sound/mixer.h"
 #include <set>
 
@@ -155,12 +156,10 @@ void SpecialZone::onCheckpoint(const int slot_id) {
 	if (PlayerManager->isClient())
 		return; //no checkpoints on client
 
-	std::string type;
-	if (Config->has("multiplayer.game-type"))
-		Config->get("multiplayer.game-type", type, "deathmatch");
+	GameType game_type;
 	
 	PlayerSlot &slot = PlayerManager->getSlot(slot_id);
-	if (type == "racing") {
+	if (game_type == GameTypeRacing) {
 		const SpecialZone &zone = PlayerManager->getNextCheckpoint(slot);
 		if (zone.name != name) {
 			LOG_DEBUG(("wrong checkpoint, next checkpoint: %s", zone.name.c_str()));
@@ -182,7 +181,7 @@ void SpecialZone::onCheckpoint(const int slot_id) {
 
 			GameMonitor->gameOver("messages", "mission-accomplished", 5, true);
 		} else {
-			if (type != "racing")
+			if (game_type != GameTypeRacing)
 				GameMonitor->displayMessage("messages", "checkpoint-reached", 3, false);
 		}
 	}

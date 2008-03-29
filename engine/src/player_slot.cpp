@@ -30,6 +30,7 @@
 #include "math/binary.h"
 #include "mrt/random.h"
 #include "player_manager.h"
+#include "rt_config.h"
 
 #include "i18n.h"
 
@@ -284,13 +285,11 @@ void PlayerSlot::spawnPlayer(const std::string &classname, const std::string &an
 	if (control_method != NULL || remote != -1)
 		obj->disable_ai = true;
 
-	std::string type;
-	Config->get("multiplayer.game-type", type, "deathmatch");
-
 	obj->setZBox(position.z);
 	
 	bool random_respawn = false;
-	if (type == "deathmatch") {
+	GameType game_type = RTConfig->game_type;
+	if (game_type == GameTypeDeathMatch) {
 		Config->get("multiplayer.random-respawn", random_respawn, false);
 	}
 	
@@ -344,13 +343,13 @@ void PlayerSlot::spawnPlayer(const std::string &classname, const std::string &an
 	this->animation = animation;
 	
 
-	if (type == "deathmatch") {
+	if (game_type == GameTypeDeathMatch) {
 		//moo	
-	} else if (type == "racing") {
+	} else if (game_type == GameTypeRacing) {
 		Variants v; 
 		v.add("racing");
 		obj->updateVariants(v);
-	} else if (type == "cooperative") {
+	} else if (game_type == GameTypeCooperative) {
 		/*
 		LOG_DEBUG(("prepending cooperative owners."));
 		int i, n = PlayerManager->getSlotsCount();
@@ -366,7 +365,7 @@ void PlayerSlot::spawnPlayer(const std::string &classname, const std::string &an
 		}
 		*/
 		obj->prependOwner(OWNER_COOPERATIVE);
-	} else throw_ex(("unknown multiplayer type '%s' used", type.c_str()));
+	} else throw_ex(("unknown multiplayer type %d used", (int)game_type));
 	
 	GameMonitor->addBonuses(*this);
 	dead_time = 0;

@@ -26,10 +26,19 @@
 #include "player_name_control.h"
 #include "prompt.h"
 #include "text_control.h"
+#include "rt_config.h"
 
 UpperBox::UpperBox(int _w, int _h, const bool server) : _server(server) {
 	_checkbox = ResourceManager->loadSurface("menu/radio.png");
-	Config->get("multiplayer.game-type", value, "deathmatch");
+	switch(RTConfig->game_type) {
+	case GameTypeDeathMatch:
+		value = "deathmatch";
+	case GameTypeCooperative:
+		value = "cooperative";
+	case GameTypeRacing:
+		value = "racing";
+	}
+	
 	add(0, 0, _box = new Box("menu/background_box.png", _w, _h));
 	
 	int mx, my;

@@ -667,9 +667,7 @@ void IGame::onTick(const float dt) {
 		if (Window->running() && !_paused) {
 			GameMonitor->tick(dt);
 			if (GameMonitor->gameOver()) {
-				std::string type;
-				Config->get("multiplayer.game-type", type, "deathmatch");
-				if (type == "deathmatch")
+				if (RTConfig->game_type == GameTypeDeathMatch)
 					_show_stats = true;
 			}
 		}
