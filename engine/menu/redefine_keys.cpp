@@ -162,6 +162,7 @@ bool RedefineKeys::onKey(const SDL_keysym sym) {
 	case SDLK_TAB:
 	case SDLK_F12:
 	case SDLK_m:
+	case SDLK_KP_ENTER:
 	case SDLK_RETURN:
 		return true;
 		

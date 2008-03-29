@@ -96,6 +96,7 @@ void AddObjectDialog::start(const std::string &name, Attrs &attr) {
 bool AddObjectDialog::onKey(const SDL_keysym sym) {
 	switch(sym.sym) {
 	case SDLK_LCTRL:
+	case SDLK_KP_ENTER:
 	case SDLK_RETURN: 
 		{	
 			Animations::const_iterator i = _user_data[ScrollList::get()];

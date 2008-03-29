@@ -61,6 +61,7 @@ bool ResizeDialog::onKey(const SDL_keysym sym) {
 		return true;
 	switch(sym.sym) {
 	
+	case SDLK_KP_ENTER:
 	case SDLK_RETURN: 
 		hide();
 		resize();

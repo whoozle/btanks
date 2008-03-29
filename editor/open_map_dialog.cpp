@@ -105,6 +105,7 @@ bool OpenMapDialog::onKey(const SDL_keysym sym) {
 		c_map->right();
 		return true;
 
+	case SDLK_KP_ENTER:
 	case SDLK_RETURN:
 		if (Container::onKey(sym))
 			return true;

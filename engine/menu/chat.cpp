@@ -49,6 +49,7 @@ void Chat::addMessage(const std::string &nick, const std::string &m) {
 
 bool Chat::onKey(const SDL_keysym sym) {
 	switch(sym.sym) {
+	case SDLK_KP_ENTER:
 	case SDLK_RETURN: 
 		last_message = _input->get();
 					

@@ -432,6 +432,7 @@ bool OptionsMenu::onKey(const SDL_keysym sym) {
 
 	switch(sym.sym) {
 
+	case SDLK_KP_ENTER:
 	case SDLK_RETURN:
 		_parent->back();
 		save();

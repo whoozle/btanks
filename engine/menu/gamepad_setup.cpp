@@ -384,6 +384,7 @@ bool GamepadSetup::onKey(const SDL_keysym sym) {
 	switch(sym.sym) {
 
 	case SDLK_RETURN:
+	case SDLK_KP_ENTER:
 	case SDLK_ESCAPE: 
 		save();
 		hide();

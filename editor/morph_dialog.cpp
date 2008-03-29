@@ -24,6 +24,7 @@ bool MorphDialog::onKey(const SDL_keysym sym) {
 		hide();
 		return true;
 		
+	case SDLK_KP_ENTER:
 	case SDLK_RETURN: 
 		hide();
 		invalidate();

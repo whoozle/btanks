@@ -30,6 +30,7 @@ const bool AddTilesetDialog::init(const std::string &fname, TilesetList &tileset
 
 bool AddTilesetDialog::onKey(const SDL_keysym sym) {
 	switch(sym.sym) {
+	case SDLK_KP_ENTER:
 	case SDLK_RETURN: 
 		{
 			//adding tileset.

@@ -100,6 +100,7 @@ bool Shop::onKey(const SDL_keysym sym) {
 	
 	case SDLK_SPACE: 
 	case SDLK_LCTRL: 
+	case SDLK_KP_ENTER:
 	case SDLK_RETURN: 
 	case SDLK_KP_PLUS:
 	case SDLK_PLUS:

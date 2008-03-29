@@ -75,7 +75,7 @@ bool Prompt::onKey(const SDL_keysym sym) {
 		set(std::string());
 		invalidate();
 		return true;
-	} else if (sym.sym == SDLK_RETURN) {
+	} else if (sym.sym == SDLK_RETURN || sym.sym == SDLK_KP_ENTER) {
 		//LOG_DEBUG(("invalidating prompt"));
 		value = _text->get();
 		invalidate();

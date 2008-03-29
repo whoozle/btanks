@@ -248,6 +248,7 @@ bool MainMenu::onKey(const SDL_keysym sym, const bool pressed) {
 			return true;
 
 		case SDLK_RETURN: 
+		case SDLK_KP_ENTER:
 			activateSelectedItem();
 			return true;
 		case SDLK_ESCAPE:

@@ -78,6 +78,7 @@ bool IConsole::onKey(const SDL_keysym sym, const bool pressed) {
 		break;
 	}			
 
+	case SDLK_KP_ENTER:
 	case SDLK_RETURN: {
 			//LOG_DEBUG(("string: %s", _buffer.back().first.c_str()));
 			std::vector<std::string> cmd;
