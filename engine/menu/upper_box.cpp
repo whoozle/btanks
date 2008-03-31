@@ -26,10 +26,10 @@
 #include "player_name_control.h"
 #include "prompt.h"
 #include "text_control.h"
-#include "rt_config.h"
 
 void UpperBox::update(const GameType game_type) {
-	switch(RTConfig->game_type) {
+	LOG_DEBUG(("update"));
+	switch(game_type) {
 	case GameTypeDeathMatch:
 		value = "deathmatch"; break;
 	case GameTypeCooperative:
@@ -37,7 +37,7 @@ void UpperBox::update(const GameType game_type) {
 	case GameTypeRacing:
 		value = "racing"; break;
 	default: 
-		throw_ex(("invalid game_type value! (%d)", (int)RTConfig->game_type));
+		throw_ex(("invalid game_type value! (%d)", (int)game_type));
 	}
 }
 
