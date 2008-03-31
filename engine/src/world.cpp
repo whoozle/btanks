@@ -1574,7 +1574,7 @@ const Object* IWorld::getNearestObject(const Object *obj, const std::set<std::st
 			
 		Object *o = o_i->second;
 		//LOG_DEBUG(("%s is looking for %s. found: %s", obj->classname.c_str(), classname.c_str(), o->classname.c_str()));
-		if (o->_id == obj->_id || PIERCEABLE_PAIR(obj, o) || !ZBox::sameBox(obj->getZ(), o->getZ()) ||
+		if (o->_id == obj->_id || o->impassability == 0 || PIERCEABLE_PAIR(obj, o) || !ZBox::sameBox(obj->getZ(), o->getZ()) ||
 			classnames.find(o->classname) == classnames.end() || o->hasSameOwner(obj))
 			continue;
 
