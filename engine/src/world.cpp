@@ -226,6 +226,7 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::R
 		o->getSubObjects(objects);
 		for(std::set<Object *>::iterator j = objects.begin(); j != objects.end(); ++j) {
 			Object *o = *j;
+			assert(o != NULL);
 		
 			if (o->_z < _z1 || o->_z >= _z2) 	
 				continue;
@@ -258,22 +259,23 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::R
 			map.render(surface, src, dst, z1, z2);
 		}
 		z1 = z2;
-		Object &o = *i->second;
+		Object *o = i->second;
+		assert(o != NULL);
 		//LOG_DEBUG(("rendering %s with %d,%d", o.animation.c_str(), (int)o._position.x - src.x + dst.x, (int)o._position.y - src.y + dst.y));
-		v2<int> screen_pos((int)o._position.x - src.x, (int)o._position.y - src.y);
+		v2<int> screen_pos((int)o->_position.x - src.x, (int)o->_position.y - src.y);
 		if (Map->torus()) {
 			screen_pos %= map_size;
-			if (screen_pos.x < 0 && screen_pos.x + o.size.x < 0)
+			if (screen_pos.x < 0 && screen_pos.x + o->size.x < 0)
 				screen_pos.x += map_size.x;
-			if (screen_pos.y < 0 && screen_pos.y + o.size.y < 0)
+			if (screen_pos.y < 0 && screen_pos.y + o->size.y < 0)
 				screen_pos.y += map_size.y;
 		}
 		//Map->validate(screen_pos);
 		//LOG_DEBUG(("object: %s(%gx%g), position: %d %d", o.animation.c_str(), o.size.x, o.size.y, screen_pos.x, screen_pos.y));
 
-		o.render(surface, screen_pos.x + dst.x, screen_pos.y + dst.y);
+		o->render(surface, screen_pos.x + dst.x, screen_pos.y + dst.y);
 		
-		const Way & way = o.getWay();
+		const Way & way = o->getWay();
 		if (show_waypoints && !way.empty()) {
 			const Animation *a = ResourceManager.get_const()->getAnimation("waypoint-16");
 			assert(a != NULL);
@@ -286,13 +288,13 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::R
 					wp.x - src.x + dst.x - 8, wp.y - src.y + dst.y - 8);
 			}
 		}
-		if (o.hp >= 0 && o._parent == NULL && (special_ids.find(o.getID()) != special_ids.end() || (rhb && (o.impassability == 1.0f && !o.piercing)))) {
+		if (o->hp >= 0 && o->_parent == NULL && (special_ids.find(o->getID()) != special_ids.end() || (rhb && (o->impassability == 1.0f && !o->piercing)))) {
 			int h = _hp_bar->getHeight() / 16;
-			int y = (o.hp >= 0)?15 * (o.max_hp - o.hp) / o.max_hp: 0;
+			int y = (o->hp >= 0)?15 * (o->max_hp - o->hp) / o->max_hp: 0;
 			sdlx::Rect hp_src(0, y * h, _hp_bar->getWidth(), h);
 			surface.copyFrom(*_hp_bar, hp_src, 
-					(int)o._position.x - src.x + dst.x + (int)(o.size.x) - _hp_bar->getWidth() - 4, 
-					(int)o._position.y - src.y + dst.y + 4);
+					(int)o->_position.x - src.x + dst.x + (int)(o->size.x) - _hp_bar->getWidth() - 4, 
+					(int)o->_position.y - src.y + dst.y + 4);
 		}
 	}
 	map.render(surface, src, dst, z1, _z2);
