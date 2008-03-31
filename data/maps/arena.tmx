@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <map version="0.99b" orientation="orthogonal" width="40" height="40" tilewidth="64" tileheight="64">
 	<properties>
+		<property name="config:map.default-impassability" value="int:40"/>
 		<property name="config:map.helicopter-with-kamikazes.respawn-interval" value="int:-1"/>
 		<property name="config:map.launcher.respawn-interval" value="int:-1"/>
 		<property name="config:map.raider-helicopter.respawn-interval" value="int:-1"/>

@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <map version="0.99b" orientation="orthogonal" width="20" height="80" tilewidth="64" tileheight="64">
 	<properties>
+		<property name="ambient-sound" value="space.ogg"/>
 		<property name="config:hud.radar.inverse" value="bool:true"/>
 		<property name="config:map.cannon.respawn-interval" value="int:-1"/>
 		<property name="config:map.choo-choo-train.respawn-interval" value="int:-1"/>
