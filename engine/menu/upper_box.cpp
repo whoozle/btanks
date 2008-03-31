@@ -120,7 +120,7 @@ void UpperBox::render(sdlx::Surface &surface, const int x, const int y) const{
 	_off_area.w = wt;
 	_on_area.h = _off_area.h = 32;
 	
-	surface.copyFrom(*_checkbox, split?off:on, x + wt, y + line2_y);
+	surface.copyFrom(*_checkbox, split?off:on, x + wt, y + line2_y + font_dy);
 	wt += cw;
 	wt += 16 + _medium->render(surface, x + wt, y + line2_y + font_dy - 2, I18n->get("menu", "off"));
 	_off_area.w = wt - _off_area.w + 1;
@@ -128,7 +128,7 @@ void UpperBox::render(sdlx::Surface &surface, const int x, const int y) const{
 	_on_area.x = wt;
 	_on_area.y = line2_y;
 	_on_area.w = wt;
-	surface.copyFrom(*_checkbox, split?on:off, x + wt, y + line2_y);
+	surface.copyFrom(*_checkbox, split?on:off, x + wt, y + line2_y + font_dy);
 	wt += cw;
 	wt += 16 + _medium->render(surface, x + wt, y + line2_y + font_dy - 2, I18n->get("menu", "on"));
 	_on_area.w = wt - _on_area.w + 1;
