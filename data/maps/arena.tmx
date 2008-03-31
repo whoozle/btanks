@@ -111,6 +111,9 @@
 		</data>
 	</layer>
 	<layer name="sand" width="40" height="40">
+		<properties>
+			<property name="impassability" value="40"/>
+		</properties>
 		<data encoding="base64" compression="gzip">
 			H4sIAAAAAAACC+3BAQ0AAADCoPdPbQ8HFAAAAAAAwJcBSxPzAQAZAAA=
 		</data>
