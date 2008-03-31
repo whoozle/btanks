@@ -844,10 +844,10 @@ void IPlayerManager::startClient(const std::string &address, const size_t n) {
 		delete _server;
 		_server = NULL;
 	}
-	if (_client != NULL && _recent_address == address) {
-		LOG_DEBUG(("skipping connection to the same address (%s)", address.c_str()));
-		return;
-	}
+	//if (_client != NULL && _recent_address == address) {
+	//	LOG_DEBUG(("skipping connection to the same address (%s)", address.c_str()));
+	//	return;
+	//}
 	delete _client;
 	_client = NULL;
 	
