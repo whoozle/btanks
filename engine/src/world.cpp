@@ -129,7 +129,7 @@ void IWorld::deleteObject(const Object *o) {
 
 void IWorld::updateObject(const Object *o) {
 	Mixer->updateObject(o);
-	if (o->impassability == 0 || o->size.is0())
+	if (o->size.is0())
 		return;
 	
 	_grid.update(o->_id, o->_position.convert<int>(), o->size.convert<int>());
