@@ -27,6 +27,7 @@
 #include "map_desc.h"
 #include "player_manager.h"
 #include "i18n.h"
+#include "rt_config.h"
 
 StartServerMenu::StartServerMenu(MainMenu *parent, const int w, const int h) : _parent(parent)  {
 	_back = new Button("big", I18n->get("menu", "back"));
@@ -46,6 +47,7 @@ void StartServerMenu::start() {
 		GameMonitor->displayMessage("menu", "no-slots-in-map", 1);
 		return;
 	}
+	RTConfig->game_type = map.game_type;
 
 	LOG_DEBUG(("start multiplayer server requested"));
 	Game->clear();

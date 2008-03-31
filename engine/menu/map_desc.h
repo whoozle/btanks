@@ -20,15 +20,15 @@
  */
 
 #include <string>
+#include "rt_config.h"
 
 	struct MapDesc {
-		std::string base, name, object_restriction, game_type;
+		std::string base, name, object_restriction;
+		GameType game_type;
 		int slots;
-		MapDesc(const std::string &base, const std::string &name, const std::string &object, const std::string &game_type, const int slots) : 
-			base(base), name(name), object_restriction(object), game_type(game_type), slots(slots) {
-				if (game_type.empty()) 
-					this->game_type = "deathmatch";
-			}
+		
+		MapDesc(const std::string &base, const std::string &name, const std::string &object, const GameType game_type, const int slots) : 
+			base(base), name(name), object_restriction(object), game_type(game_type), slots(slots) {}
 
 		const bool operator<(const MapDesc &other) const;
 	};

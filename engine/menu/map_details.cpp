@@ -103,7 +103,7 @@ void MapDetails::set(const MapDesc & map_desc) {
 	
 	_map_desc = new Tooltip("maps/descriptions", I18n->has("maps/descriptions", map)? map:"(default)" , false, _background.w - 2 * mx);
 	if (_ai_hint != NULL) {
-		_ai_hint->hide(map_desc.game_type != "deathmatch");
+		_ai_hint->hide(map_desc.game_type != GameTypeDeathMatch);
 	}
 }
 

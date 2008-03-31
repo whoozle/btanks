@@ -46,10 +46,11 @@
 #include "game_monitor.h"
 
 struct MapScanner : mrt::XMLParser {
-	MapScanner() : slots(0) {}
 	int slots;
 	std::string object_restriction;
-	std::string game_type;
+	GameType game_type;
+
+	MapScanner() : slots(0), game_type(GameTypeDeathMatch) {}
 
 	void scan(const std::string &name) {
 		scoped_ptr<mrt::BaseFile> f(Finder->get_file(Finder->find("maps/" + name + ".tmx"), "rt"));
@@ -65,7 +66,15 @@ private:
 			else if (attr["name"] == "config:multiplayer.restrict-start-vehicle" && attr["value"].substr(0, 7) == "string:") {
 				object_restriction = attr["value"].substr(7);
 			} else if (attr["name"] == "config:multiplayer.game-type" && attr["value"].substr(0, 7) == "string:") {
-				game_type = attr["value"].substr(7);
+				std::string type = attr["value"].substr(7);
+				if (type == "deathmatch") {
+					game_type = GameTypeDeathMatch;
+				} else if (type == "cooperative") {
+					game_type = GameTypeCooperative;
+				} else if (type == "racing") {
+					game_type = GameTypeRacing;
+				} else 
+					throw_ex(("unsupported game type '%s'", type.c_str()));
 			}
 		}
 	}
@@ -96,18 +105,17 @@ void MapPicker::scan(const std::string &base) {
 }
 
 void MapPicker::tick(const float dt) {
-	const MapDesc &map = getCurrentMap();
-	_upper_box->value = map.game_type;
-
 	if (_upper_box->changed() || _index != _list->get() || _list->changed()) {
 		_index = _list->get();
-		//LOG_DEBUG(("index: %d", _index));
+		const MapDesc & map = _maps[_index];
+
 		_list->reset();
 		_upper_box->reset();
+		_upper_box->update(map.game_type);
 
-		Config->set("menu.default-mp-map", _maps[_index].name);
-		_details->set(_maps[_index]);
-		_picker->set(_maps[_index]);
+		Config->set("menu.default-mp-map", map.name);
+		_details->set(map);
+		_picker->set(map);
 	}
 	Container::tick(dt);
 }

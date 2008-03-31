@@ -21,11 +21,14 @@
 #include "image_view.h"
 #include "menu/video_control.h"
 #include "tmx/map.h"
+#include "rt_config.h"
 
 void CampaignMenu::start() {
 	int ci = _active_campaign->get();
 	Campaign &campaign = _campaigns[ci];
 	const Campaign::Map &map = campaign.maps[map_id[_maps->get()]];
+
+	RTConfig->game_type = GameTypeCooperative;
 	LOG_DEBUG(("campaign: %s, map: %s", campaign.name.c_str(), map.id.c_str()));
 	//ensure world is created 
 	GameMonitor->startGame(&campaign, map.id);

@@ -325,7 +325,7 @@ void PlayerPicker::set(const MapDesc &map) {
 	_time_limit = NULL;
 	_random_respawn = NULL;
 
-	if (map.game_type == "deathmatch") {
+	if (map.game_type == GameTypeDeathMatch) {
 		int yp = _background.h - my;
 		int w, h;
 

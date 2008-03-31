@@ -22,6 +22,7 @@
 #include <string>
 #include "container.h"
 #include "sdlx/rect.h"
+#include "rt_config.h"
 
 namespace sdlx {
 	class Font;
@@ -33,13 +34,15 @@ class Prompt;
 
 class UpperBox : public Container {
 public: 
-	std::string value;
-
 	UpperBox(int w, int h, const bool server);
+	void update(const GameType game_type);
+	
 	virtual void tick(const float dt);
 	virtual void render(sdlx::Surface &surface, const int x, const int y) const;
 	virtual bool onMouse(const int button, const bool pressed, const int x, const int y);
 private: 
+	std::string value;
+
 	void layout();
 
 	bool _server;

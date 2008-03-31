@@ -28,17 +28,21 @@
 #include "text_control.h"
 #include "rt_config.h"
 
-UpperBox::UpperBox(int _w, int _h, const bool server) : _server(server) {
-	_checkbox = ResourceManager->loadSurface("menu/radio.png");
+void UpperBox::update(const GameType game_type) {
 	switch(RTConfig->game_type) {
 	case GameTypeDeathMatch:
-		value = "deathmatch";
+		value = "deathmatch"; break;
 	case GameTypeCooperative:
-		value = "cooperative";
+		value = "cooperative"; break;
 	case GameTypeRacing:
-		value = "racing";
+		value = "racing"; break;
+	default: 
+		throw_ex(("invalid game_type value! (%d)", (int)RTConfig->game_type));
 	}
-	
+}
+
+UpperBox::UpperBox(int _w, int _h, const bool server) : value("deathmatch"), _server(server) {
+	_checkbox = ResourceManager->loadSurface("menu/radio.png");
 	add(0, 0, _box = new Box("menu/background_box.png", _w, _h));
 	
 	int mx, my;
