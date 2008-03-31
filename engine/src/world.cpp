@@ -244,7 +244,9 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::R
 	v2<int> map_size = Map->getSize(), map_tile_size = map_size / Map->getTileSize();
 	int z1 = _z1;
 	for(LayerMap::iterator i = layers.begin(); i != layers.end(); ++i) {
-		if (i->second->isDead())
+		Object *o = i->second;
+		assert(o != NULL);
+		if (o->isDead())
 			continue;
 		
 		int z2 = i->first;
@@ -259,8 +261,6 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::R
 			map.render(surface, src, dst, z1, z2);
 		}
 		z1 = z2;
-		Object *o = i->second;
-		assert(o != NULL);
 		//LOG_DEBUG(("rendering %s with %d,%d", o.animation.c_str(), (int)o._position.x - src.x + dst.x, (int)o._position.y - src.y + dst.y));
 		v2<int> screen_pos((int)o->_position.x - src.x, (int)o->_position.y - src.y);
 		if (Map->torus()) {
