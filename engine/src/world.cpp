@@ -166,6 +166,7 @@ void IWorld::addObject(Object *o, const v2<float> &pos, const int id) {
 }
 
 #include "game_monitor.h"
+#include "mrt/timespy.h"
 
 void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::Rect &dst, const int _z1, const int _z2, const Object * player) {
 	bool fog = false;
@@ -213,9 +214,12 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::R
 	LayerMap layers;
 	const IMap &map = *Map.get_const();
 	GET_CONFIG_VALUE("engine.show-waypoints", bool, show_waypoints, false);
-	
-	for(ObjectMap::iterator i = _objects.begin(); i != _objects.end(); ++i) {
-		Object *o = i->second;
+
+	std::set<int> objects; 
+	_grid.collide(objects, v2<int>(src.x, src.y), v2<int>(dst.w, dst.h));
+	for(std::set<int>::iterator i = objects.begin(); i != objects.end(); ++i) {
+		Object *o = getObjectByID(*i);
+		assert(o != NULL);
 		if (o->isDead() || o->skipRendering()) {
 			//LOG_DEBUG(("render: skipped dead object: %s", o->registered_name.c_str()));
 			continue;
