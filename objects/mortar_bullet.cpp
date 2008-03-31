@@ -46,6 +46,14 @@ public:
 		float v0 = real_ttl * g / 2;
 		float t = real_ttl - ttl;
 		_velocity = v2<float>(0, g * t - v0) + _vel_backup;
+
+		float progress = ttl / real_ttl;
+		bool fly = (progress >= 0.3f && progress < 0.7f);
+		if (fly && getZ() != 999) {
+			setZ(999);
+		} else if (!fly && getZ() != 201) {
+			setZ(201);
+		}
 	}
 	
 	void emit(const std::string &event, Object * emitter) {
