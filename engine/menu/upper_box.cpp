@@ -28,7 +28,6 @@
 #include "text_control.h"
 
 void UpperBox::update(const GameType game_type) {
-	LOG_DEBUG(("update"));
 	switch(game_type) {
 	case GameTypeDeathMatch:
 		value = "deathmatch"; break;
