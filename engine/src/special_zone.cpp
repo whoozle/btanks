@@ -156,7 +156,7 @@ void SpecialZone::onCheckpoint(const int slot_id) {
 	if (PlayerManager->isClient())
 		return; //no checkpoints on client
 
-	GameType game_type;
+	GameType game_type = RTConfig->game_type;
 	
 	PlayerSlot &slot = PlayerManager->getSlot(slot_id);
 	if (game_type == GameTypeRacing) {
