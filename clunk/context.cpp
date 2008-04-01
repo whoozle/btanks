@@ -203,6 +203,7 @@ void Context::delete_object(Object *o) {
 }
 
 void Context::deinit() {
+	//cleanup objects here too.
 	if (!SDL_WasInit(SDL_INIT_AUDIO))
 		return;
 	
