@@ -38,6 +38,8 @@
 
 static uint32_t mrt_rand_seed;
 
+//LPRG
+#if 0
 static uint32_t rand_impl() {
 	uint64_t x = mrt_rand_seed;
 	x *= 279470273; 
@@ -45,6 +47,14 @@ static uint32_t rand_impl() {
 	mrt_rand_seed = (uint32_t)x;
 	return x;
 }
+#endif
+
+#if 1
+//LFSR
+static uint32_t rand_impl() {
+	return mrt_rand_seed = (mrt_rand_seed >> 1) ^ (-(mrt_rand_seed & 1u) & 0xd0000001u); /* taps 32 31 29 1 */
+}
+#endif
 
 const int mrt::random(const unsigned max) {
 	if (max < 2) 
