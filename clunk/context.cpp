@@ -203,6 +203,9 @@ void Context::delete_object(Object *o) {
 }
 
 void Context::deinit() {
+	if (!SDL_WasInit(SDL_INIT_AUDIO))
+		return;
+	
 	delete listener;
 	listener = NULL;
 	

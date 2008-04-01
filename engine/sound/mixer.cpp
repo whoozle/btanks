@@ -98,6 +98,11 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 void IMixer::deinit() {
 	if (_context != NULL) {
 		_context->stop_all();
+		
+		_context->deinit();
+		
+		std::for_each(_sounds.begin(), _sounds.end(), delete_ptr2<Sounds::value_type>());
+		_sounds.clear();
 
 		delete _context;
 		_context = NULL;
