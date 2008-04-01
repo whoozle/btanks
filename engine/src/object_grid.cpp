@@ -40,7 +40,8 @@ void Grid::collide(std::set<int> &result, const GridMatrix &grid, const v2<int> 
 	const v2<int> start = area_pos / grid_size;
 	const v2<int> end = (area_pos + area_size - 1) / grid_size;
 
-	const int y1 = _wrap? start.y: math::max(0, start.y), y2 = _wrap? end.y: math::min((int)grid.size() - 1, end.y);
+	const int y1 = _wrap? start.y: math::max(0, start.y);
+	const int y2 = _wrap? end.y: math::min((int)grid.size() - 1, end.y);
 	const int x1 = _wrap? start.x: math::max(0, start.x);
 	for(int y = y1; y <= y2; ++y) {
 		const SetVector &row = grid[wrap(y, grid.size())];
@@ -55,7 +56,9 @@ void Grid::collide(std::set<int> &result, const GridMatrix &grid, const v2<int> 
 void Grid::removeFromGrid(GridMatrix &grid, const v2<int> &grid_size, const int id, const Object &o) {
 	const v2<int> start = o.pos / grid_size;
 	const v2<int> end = (o.pos + o.size - 1) / grid_size;
-	const int y1 = _wrap? start.y: math::max(0, start.y), y2 = _wrap? end.y: math::min((int)grid.size() - 1, end.y);
+
+	const int y1 = _wrap? start.y: math::max(0, start.y);
+	const int y2 = _wrap? end.y: math::min((int)grid.size() - 1, end.y);
 	const int x1 = _wrap? start.x: math::max(0, start.x);
 	for(int y = y1; y <= y2; ++y) {
 		SetVector &row = grid[wrap(y, grid.size())];
@@ -71,7 +74,8 @@ void Grid::update(GridMatrix &grid, const v2<int> &grid_size, const int id, cons
 	const v2<int> start = pos / grid_size;
 	const v2<int> end = (pos + size - 1) / grid_size;
 	//LOG_DEBUG(("updating %d (%d, %d) -> (%d, %d) (%d %d)", id, start.x, start.y, end.x, end.y, pos.x, pos.y));
-	const int y1 = _wrap? start.y: math::max(0, start.y), y2 = _wrap? end.y: math::min((int)grid.size() - 1, end.y);
+	const int y1 = _wrap? start.y: math::max(0, start.y);
+	const int y2 = _wrap? end.y: math::min((int)grid.size() - 1, end.y);
 	const int x1 = _wrap? start.x: math::max(0, start.x);
 	for(int y = y1; y <= y2; ++y) {
 		SetVector &row = grid[wrap(y, grid.size())];
@@ -81,8 +85,6 @@ void Grid::update(GridMatrix &grid, const v2<int> &grid_size, const int id, cons
 		}
 	}
 }
-
-
 
 void Grid::collide(std::set<int> &objects, const v2<int>& area_pos, const v2<int>& area_size) const {
 	v2<int> size = area_size / _grid_size;
