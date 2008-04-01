@@ -64,11 +64,17 @@ SpecialZone::SpecialZone(const ZBox & zbox, const std::string &type, const std::
 void SpecialZone::onTimer(const int slot_id, const bool win) {
 	float duration = (float)atof(subname.c_str());
 	LOG_DEBUG(("activating timer %s for %g seconds", name.c_str(), duration));
-	PlayerSlot &slot = PlayerManager->getSlot(slot_id);
 
+	int spawn_limit = 0;
 	std::string key_name = "timer." + name + ".spawn-limit";
 	if (Config->has(key_name))
-		Config->get(key_name, slot.spawn_limit, 1);
+		Config->get(key_name, spawn_limit, 1);
+	
+	if (spawn_limit > 0) 
+		for(size_t i = 0; i < PlayerManager->getSlotsCount(); ++i) {
+			PlayerSlot &slot = PlayerManager->getSlot(i);
+			slot.spawn_limit = spawn_limit;
+		}
 	
 	if (win) {
 		GameMonitor->setTimer("messages", "mission-accomplished", duration, true);

@@ -638,7 +638,7 @@ TRY {
 				bool over = true;
 
 				for(size_t i = 0; i < _players.size(); ++i) {
-					if (_players[i].spawn_limit > 0) {
+					if (!_players[i].empty() && _players[i].spawn_limit > 0) {
 						over = false;
 						break;
 					}

@@ -52,6 +52,7 @@ void PlayerSlot::serialize(mrt::Serializator &s) const {
 	s.add(classname);
 	s.add(animation);
 	s.add(score);
+	s.add(spawn_limit);
 	s.add(name);
 	s.add(spectator);
 }
@@ -63,6 +64,7 @@ void PlayerSlot::deserialize(const mrt::Serializator &s) {
 	s.get(classname);
 	s.get(animation);
 	s.get(score);
+	s.get(spawn_limit);
 	s.get(name);
 	s.get(spectator);
 }
