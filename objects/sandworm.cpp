@@ -79,7 +79,7 @@ public:
 				bool snatch = false;
 				for(std::set<const Object *>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
 					const Object *o = *i;
-					if (o->speed != 0 && !o->piercing && o->registered_name != "mortar") {
+					if (o->impassability != 0 && o->speed != 0 && !o->piercing && o->registered_name != "mortar") {
 						snatch = true;
 						break;
 					}
