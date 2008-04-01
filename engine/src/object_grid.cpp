@@ -37,8 +37,14 @@ static inline int wrap(int x, int y) {
 }
 
 void Grid::collide(std::set<int> &result, const GridMatrix &grid, const v2<int> &grid_size, const v2<int>& area_pos, const v2<int>& area_size) const {
+	v2<int> delta = v2<int>(grid[0].size(), grid.size()) * grid_size - _map_size;
+	
 	const v2<int> start = area_pos / grid_size;
-	const v2<int> end = (area_pos + area_size - 1) / grid_size;
+	v2<int> end = (area_pos + area_size - 1) / grid_size;
+
+	if (end.y < (int)grid.size() - 1) delta.y = 0;
+	if (end.x < (int)grid[0].size() - 1) delta.x = 0;
+	end = (area_pos + area_size + delta - 1) / grid_size;
 
 	const int y1 = _wrap? start.y: math::max(0, start.y);
 	const int y2 = _wrap? end.y: math::min((int)grid.size() - 1, end.y);
@@ -54,8 +60,14 @@ void Grid::collide(std::set<int> &result, const GridMatrix &grid, const v2<int> 
 }
 
 void Grid::removeFromGrid(GridMatrix &grid, const v2<int> &grid_size, const int id, const Object &o) {
+	v2<int> delta = v2<int>(grid[0].size(), grid.size()) * grid_size - _map_size;
+
 	const v2<int> start = o.pos / grid_size;
-	const v2<int> end = (o.pos + o.size - 1) / grid_size;
+	v2<int> end = (o.pos + o.size - 1) / grid_size;
+
+	if (end.y < (int)grid.size() - 1) delta.y = 0;
+	if (end.x < (int)grid[0].size() - 1) delta.x = 0;
+	end = (o.pos + o.size + delta - 1) / grid_size;
 
 	const int y1 = _wrap? start.y: math::max(0, start.y);
 	const int y2 = _wrap? end.y: math::min((int)grid.size() - 1, end.y);
@@ -70,10 +82,17 @@ void Grid::removeFromGrid(GridMatrix &grid, const v2<int> &grid_size, const int 
 }
 
 void Grid::update(GridMatrix &grid, const v2<int> &grid_size, const int id, const v2<int> &pos, const v2<int> &size) {
-	//insert
+	v2<int> delta = v2<int>(grid[0].size(), grid.size()) * grid_size - _map_size;
+	
 	const v2<int> start = pos / grid_size;
-	const v2<int> end = (pos + size - 1) / grid_size;
+	v2<int> end = (pos + size - 1) / grid_size;
+	
+	if (end.y < (int)grid.size() - 1) delta.y = 0;
+	if (end.x < (int)grid[0].size() - 1) delta.x = 0;
+	end = (pos + size + delta - 1) / grid_size;
+	
 	//LOG_DEBUG(("updating %d (%d, %d) -> (%d, %d) (%d %d)", id, start.x, start.y, end.x, end.y, pos.x, pos.y));
+	
 	const int y1 = _wrap? start.y: math::max(0, start.y);
 	const int y2 = _wrap? end.y: math::min((int)grid.size() - 1, end.y);
 	const int x1 = _wrap? start.x: math::max(0, start.x);
