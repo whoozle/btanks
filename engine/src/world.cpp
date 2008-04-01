@@ -1344,7 +1344,7 @@ Object * IWorld::deserializeObject(const mrt::Serializator &s) {
 					delete o;
 					o = NULL;
 					i->second = ao;
-					if (!ao->_need_sync) {
+					if (!ao->_need_sync || ao->_dead) {
 						LOG_DEBUG(("incomplete data for object %d:%s", ao->_id, ao->animation.c_str()));
 						ao->_dead = true;
 						sync(ao->_id);
@@ -1361,8 +1361,8 @@ Object * IWorld::deserializeObject(const mrt::Serializator &s) {
 				assert(ao->_id == id);
 				
 				_objects[id] = ao;
-				if (!ao->_need_sync) {
-					LOG_DEBUG(("incomplete data for object %d:%s", ao->_id, ao->animation.c_str()));
+				if (!ao->_need_sync || ao->_dead) {
+					LOG_DEBUG(("incomplete data for object %d:%s", ao->_id, ao->rn.c_str()));
 					ao->_dead = true;
 					sync(ao->_id);
 				}
