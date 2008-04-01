@@ -102,12 +102,12 @@ const int Timer::microdelta() const {
 	struct timeval now;
 	if (gettimeofday(&now, NULL) == -1)
 		throw_io(("gettimeofday"));
-	return ((int)now.tv_sec - tv.tv_sec) *1000000 + ((int)now.tv_usec - tv.tv_usec) / 1000;
+	return ((int)now.tv_sec - (int)tv.tv_sec) *1000000 + (int)now.tv_usec - (int)tv.tv_usec;
 #else
 	struct timespec now;
 	if (clock_gettime(clock_id, &now) != 0)
 		throw_io(("clock_gettime"));
-	return (now.tv_sec - tm.tv_sec) *1000000 + (now.tv_nsec - tm.tv_nsec) / 1000;
+	return ((int)now.tv_sec - (int)tm.tv_sec) *1000000 + ((int)now.tv_nsec - (int)tm.tv_nsec) / 1000;
 #endif
 }
 
