@@ -53,6 +53,8 @@ private:
 	v2<int> _grid_size; 
 	v2<int> _grid4_size;
 	
+	v2<int> _map_size;
+	
 	GridMatrix _grid, _grid4;
 	
 	typedef std::map<const int, Object> Index;

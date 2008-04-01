@@ -114,6 +114,7 @@ void Grid::setSize(const v2<int> &size, const int step, const bool wrap) {
 	_grid4_size = v2<int>(step * 4, step * 4);
 	resize(_grid4, _grid4_size, size);
 	_wrap = wrap;
+	_map_size = size;
 }
 
 void Grid::update(const int id, const v2<int> &pos, const v2<int> &size) {
