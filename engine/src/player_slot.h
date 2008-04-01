@@ -92,6 +92,8 @@ public:
 	
 	const Tooltip *currentTooltip() const { return tooltips.empty()? NULL: tooltips.front().second; }
 	void setViewport(const sdlx::Rect &rect);
+
+	void getDefaultVehicle(std::string &vehicle, std::string &animation);
 	
 private: 
 	typedef std::queue<std::pair<float, Tooltip *> > Tooltips;

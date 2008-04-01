@@ -208,7 +208,7 @@ void MapPicker::fillSlots() const {
 		std::string animation;
 		mrt::toLower(object);
 		LOG_DEBUG(("before: %s:%s", object.c_str(), animation.c_str()));
-		PlayerManager->getDefaultVehicle(object, animation);
+		slot.getDefaultVehicle(object, animation);
 		LOG_DEBUG(("after: %s:%s", object.c_str(), animation.c_str()));
 		
 		mrt::toLower(type);

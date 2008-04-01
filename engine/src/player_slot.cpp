@@ -426,3 +426,28 @@ void PlayerSlot::setViewport(const sdlx::Rect &rect) {
 	map_pos.x = (int)pos.x - rect.w / 2;
 	map_pos.y = (int)pos.y - rect.h / 2;
 }
+
+void PlayerSlot::getDefaultVehicle(std::string &vehicle, std::string &animation) {
+	std::string rv, ra;
+	Config->get("multiplayer.restrict-start-vehicle", rv, std::string());
+	Config->get("multiplayer.restrict-start-animation", ra, std::string());
+
+	if (!this->classname.empty()) {
+		vehicle = this->classname;
+	} else if (rv.empty()) {
+		if (vehicle.empty()) 
+			Config->get("menu.default-vehicle-1", vehicle, "tank");
+	} else vehicle = rv;
+
+	if (!this->animation.empty()) {
+		animation = this->animation;
+	} else if (ra.empty()) {
+		if (animation.empty()) {
+			if (vehicle == "tank" || vehicle == "launcher" || vehicle == "shilka") {
+				static const char * colors[4] = {"green", "red", "yellow", "cyan"};
+				animation = colors[mrt::random(4)];
+				animation += "-" + vehicle;
+			} else animation = vehicle;
+		}
+	} else animation = ra;
+}

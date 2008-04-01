@@ -155,22 +155,9 @@ TRY {
 		int id = findEmptySlot();
 		PlayerSlot &slot = _players[id];
 		
-		std::string vehicle, animation;
-		Config->get("multiplayer.restrict-start-vehicle", vehicle, "");
-		Config->get("multiplayer.restrict-start-animation", animation, "");
+		std::string vehicle(message.get("vehicle")), animation;
 
-		if (vehicle.empty()) {	
-			vehicle = message.get("vehicle");
-		}
-
-		if (animation.empty()) {
-			if (vehicle == "tank" || vehicle == "launcher" || vehicle == "shilka") {
-				static const char * colors[4] = {"green", "red", "yellow", "cyan"};
-				animation = colors[mrt::random(4)];
-				animation += "-" + vehicle;
-			} else animation = vehicle;
-		} 
-
+		slot.getDefaultVehicle(vehicle, animation);
 		slot.name = message.get("name");
 		mrt::utf8_resize(slot.name, 32);
 		LOG_DEBUG(("player%d: %s:%s, name: %s", id, vehicle.c_str(), animation.c_str(), slot.name.c_str()));
@@ -1223,26 +1210,6 @@ void IPlayerManager::onPlayerDeath(const Object *player, const Object *killer) {
 	} else {
 		++(slot->frags);
 	}
-}
-
-void IPlayerManager::getDefaultVehicle(std::string &vehicle, std::string &animation) {
-	std::string rv, ra;
-	Config->get("multiplayer.restrict-start-vehicle", rv, "");
-	Config->get("multiplayer.restrict-start-animation", ra, "");
-	if (rv.empty()) {
-		if (vehicle.empty()) 
-			Config->get("menu.default-vehicle-1", vehicle, "tank");
-	} else vehicle = rv;
-	
-	if (ra.empty()) {
-		if (animation.empty()) {
-			if (vehicle == "tank" || vehicle == "launcher" || vehicle == "shilka") {
-				static const char * colors[4] = {"green", "red", "yellow", "cyan"};
-				animation = colors[mrt::random(4)];
-				animation += "-" + vehicle;
-			} else animation = vehicle;
-		}
-	} else animation = ra;
 }
 
 void IPlayerManager::gameOver(const std::string &area, const std::string &message, const float time) {

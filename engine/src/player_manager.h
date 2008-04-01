@@ -81,8 +81,6 @@ public:
 	
 	void screen2world(v2<float> &pos, const int p, const int x, const int y);
 
-	void getDefaultVehicle(std::string &vehicle, std::string &animation);
-	
 	const int findEmptySlot() const;
 	const int spawnPlayer(const std::string &classname, const std::string &animation, const std::string &method);
 
