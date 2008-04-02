@@ -258,7 +258,7 @@ public:
 		);
 		for(std::set<const Object *>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
 			const Object *target = *i;
-			if (hasSameOwner(target) || target->aiDisabled())
+			if (hasSameOwner(target) || target->aiDisabled() || target->impassability == 0 || target->pierceable)
 				continue;
 			
 			v2<float> dpos = getRelativePosition(target);
