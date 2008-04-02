@@ -43,7 +43,6 @@ struct reader_state {
 
 
 static const char * chunk_reader(lua_State *L, void *data, size_t *size) {
-	LOG_DEBUG(("reader: %p, %p, %u", (void *)L, data, (unsigned)*size));
 	assert(size != NULL);
 	reader_state * x = (reader_state *) data;
 	if (x->pos < x->data.getSize()) {
