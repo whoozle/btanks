@@ -216,14 +216,14 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::R
 	}
 	
 	surface.setClipRect(dst);
-	typedef std::priority_queue<Object *, std::vector<Object *>, ObjectZCompare> LayerMap;
+	typedef std::priority_queue<Object *, std::deque<Object *>, ObjectZCompare> LayerMap;
 	LayerMap layers;
 	const IMap &map = *Map.get_const();
 	GET_CONFIG_VALUE("engine.show-waypoints", bool, show_waypoints, false);
 
 	std::set<int> objects; 
 	_grid.collide(objects, v2<int>(src.x, src.y), v2<int>(dst.w, dst.h));
-	LOG_DEBUG(("render: collide returns %u objects", (unsigned)objects.size()));
+	//LOG_DEBUG(("render: collide returns %u objects", (unsigned)objects.size()));
 	for(std::set<int>::iterator i = objects.begin(); i != objects.end(); ++i) {
 		Object *o = getObjectByID(*i);
 		assert(o != NULL);
@@ -251,7 +251,7 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::R
 		}
 	}
 
-	LOG_DEBUG(("rendering %u objects", (unsigned)layers.size()));
+	//LOG_DEBUG(("rendering %u objects", (unsigned)layers.size()));
 	v2<int> map_size = Map->getSize(), map_tile_size = map_size / Map->getTileSize();
 	int z1 = _z1;
 	while(!layers.empty()) {
