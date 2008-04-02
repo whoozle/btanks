@@ -56,10 +56,17 @@ static uint32_t rand_impl() {
 }
 #endif
 
+//#include "logger.h"
+
 const int mrt::random(const unsigned max) {
 	if (max < 2) 
 		return 0;
 
+	int bits;
+	unsigned m = max;
+	for(bits = 1; m >>= 1; ++bits);
+	bits = (32 - bits) / 2; //take middle bits of the generated number
+	
 	unsigned x = rand_impl();
 	/*
 	unsigned len, n = max;
@@ -70,8 +77,8 @@ const int mrt::random(const unsigned max) {
 	//LOG_DEBUG(("random number: 0x%08x, shifted: %u, max: %u", x, x >> len, max));
 	x >>= len;
 	*/
-	x %= max;
-	//LOG_DEBUG(("result: %u of %d", x, max));
+	x = (x >> bits) % max;
+	//LOG_DEBUG(("result: %u of %d, bits: %d", x, max, bits));
 	return (int)x;
 }
 
