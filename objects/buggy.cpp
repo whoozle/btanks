@@ -101,6 +101,14 @@ public:
 	virtual void calculate(const float dt);
 	virtual Object * clone() const {return new AIBuggy(*this);}
 	virtual void onSpawn();
+	virtual void serialize(mrt::Serializator &s) const {
+		Buggy::serialize(s);
+		ai::Waypoints::serialize(s);
+	}
+	virtual void deserialize(const mrt::Serializator &s) {
+		Buggy::deserialize(s);
+		ai::Waypoints::deserialize(s);
+	}
 
 private:
 	virtual void onObstacle(const Object *o);	
