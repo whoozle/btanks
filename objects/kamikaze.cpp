@@ -98,7 +98,7 @@ void Kamikaze::tick(const float dt) {
 }
 
 void Kamikaze::onSpawn() {
-	GET_CONFIG_VALUE("objects.kamikaze.reaction-time", float, rt, 0.1);
+	GET_CONFIG_VALUE("objects.kamikaze.reaction-time", float, rt, 0.2);
 	mrt::randomize(rt, rt/10);
 	_reaction.set(rt);
 	play("hold", true);
