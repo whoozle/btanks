@@ -513,7 +513,7 @@ bool IGame::onKey(const SDL_keysym key, const bool pressed) {
 		std::string name = Map->getName();
 		path += name.empty()?"screenshot":name;
 
-		int n = 0;
+		int n = 1;
 		std::string fname;
 		mrt::Directory dir;
 		do {
