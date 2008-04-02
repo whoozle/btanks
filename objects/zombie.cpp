@@ -181,9 +181,9 @@ void Zombie::calculate(const float dt) {
 void Zombie::onSpawn() {
 	BaseZombie::onSpawn();
 
-	float rt, drt = 0.5;
+	float rt;
 	
-	Config->get("objects." + registered_name + ".reaction-time", rt, drt);
+	Config->get("objects." + registered_name + ".reaction-time", rt, 0.5f);
 	mrt::randomize(rt, rt/10);
 	_reaction.set(rt);
 }
