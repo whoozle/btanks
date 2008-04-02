@@ -1292,7 +1292,7 @@ void IWorld::sync(const int id) {
 
 Object * IWorld::deserializeObject(const mrt::Serializator &s) {
 	int id;
-	std::string rn, an;
+	std::string rn;
 	Object *ao = NULL, *result = NULL;
 	TRY {
 		s.get(id);
@@ -1334,44 +1334,46 @@ Object * IWorld::deserializeObject(const mrt::Serializator &s) {
 					}
 					
 					result = o;
-					assert(result != NULL);
 				} else {
 					//object storage type differs from existing object
-					result = ao = ResourceManager->createObject(rn);
+					ao = ResourceManager->createObject(rn);
 					//LOG_DEBUG(("created ('%s', '%s')", rn.c_str(), an.c_str()));
 					ao->deserialize(s);
 					
 					delete o;
 					o = NULL;
 					i->second = ao;
-					if (!ao->_need_sync || ao->_dead) {
-						LOG_DEBUG(("incomplete data for object %d:%s", ao->_id, ao->animation.c_str()));
-						ao->_dead = true;
-						sync(ao->_id);
-					}
+					result = ao;
 					ao = NULL;
+					
+					if (!result->_need_sync || result->_dead) {
+						LOG_DEBUG(("incomplete data for object %d:%s", result->_id, result->animation.c_str()));
+						result->_dead = true;
+						sync(result->_id);
+					}
 				}
 			} else {
 				//new object.
-				result = ao = ResourceManager->createObject(rn);
+				ao = ResourceManager->createObject(rn);
 				//LOG_DEBUG(("created ('%s', '%s')", rn.c_str(), an.c_str()));
-				assert(ao != NULL);
 				
 				ao->deserialize(s);
 				assert(ao->_id == id);
 				
 				_objects[id] = ao;
-				if (!ao->_need_sync || ao->_dead) {
-					LOG_DEBUG(("incomplete data for object %d:%s", ao->_id, rn.c_str()));
-					ao->_dead = true;
-					sync(ao->_id);
-				}
+				result = ao;
 				ao = NULL;
+				
+				if (!result->_need_sync || result->_dead) {
+					LOG_DEBUG(("incomplete data for object %d:%s", result->_id, rn.c_str()));
+					result->_dead = true;
+					sync(result->_id);
+				}
 			}
 
 			//LOG_DEBUG(("deserialized %d: %s", ao->_id, ao->classname.c_str()));
 		}
-	} CATCH(mrt::formatString("deserializeObject('%d:%s:%s')", id, rn.c_str(), an.c_str()).c_str(), { 
+	} CATCH(mrt::formatString("deserializeObject('%d:%s')", id, rn.c_str()).c_str(), { 
 			delete ao; throw; 
 		})
 	assert(result != NULL);
