@@ -498,10 +498,22 @@ int d3dSDL_SaveBMP(SDL_Surface *surface, const char *file) {
 	}
 	if (surface == g_screen) {
 		//screenshot! 
-		if (FAILED(g_pD3D->GetFrontBuffer(0, dst))) {
+		LPDIRECT3DSURFACE9 dst;
+		if (FAILED(g_pd3dDevice->CreateOffscreenPlainSurface(surface->w, surface->h, D3DFMT_A8R8G8B8, D3DPOOL_SCRATCH, &dst, NULL))) {
+			SDL_SetError("CreateOffscreenPlainSurface failed");
+			return -1;
+		}
+		
+		if (FAILED(g_pd3dDevice->GetFrontBufferData(0, dst))) {
 			SDL_SetError("GetFrontBuffer failed");
 			return -1;
 		}
+
+		if (FAILED(D3DXSaveSurfaceToFile(file, D3DXIFF_BMP, dst, NULL, NULL))) {
+			SDL_SetError("D3DXSaveSurfaceToFile failed");
+			return -1;
+		}
+		RELEASE_OBJECT(dst);
 		
 		return 0;
 	}
