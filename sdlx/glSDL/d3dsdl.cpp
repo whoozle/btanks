@@ -496,6 +496,16 @@ int d3dSDL_SaveBMP(SDL_Surface *surface, const char *file) {
 	if (g_pD3D == NULL) {
 		return SDL_SaveBMP(surface, file);
 	}
+	if (surface == g_screen) {
+		//screenshot! 
+		if (FAILED(g_pD3D->GetFrontBuffer(0, dst))) {
+			SDL_SetError("GetFrontBuffer failed");
+			return -1;
+		}
+		
+		return 0;
+	}
+	
 	texinfo *tex = getTexture(surface);
 	if (tex == NULL) {
 		return SDL_SaveBMP(surface, file); //generic save
