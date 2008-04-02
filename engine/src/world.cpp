@@ -168,6 +168,12 @@ void IWorld::addObject(Object *o, const v2<float> &pos, const int id) {
 #include "game_monitor.h"
 #include "mrt/timespy.h"
 
+struct ObjectZCompare {
+	inline bool operator()(const Object * a, const Object * b) const {
+		return a->getZ() > b->getZ();
+	}
+};
+
 void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::Rect &dst, const int _z1, const int _z2, const Object * player) {
 	bool fog = false;
 	
@@ -210,13 +216,14 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::R
 	}
 	
 	surface.setClipRect(dst);
-	typedef std::multimap<const int, Object *> LayerMap;
+	typedef std::priority_queue<Object *, std::vector<Object *>, ObjectZCompare> LayerMap;
 	LayerMap layers;
 	const IMap &map = *Map.get_const();
 	GET_CONFIG_VALUE("engine.show-waypoints", bool, show_waypoints, false);
 
 	std::set<int> objects; 
 	_grid.collide(objects, v2<int>(src.x, src.y), v2<int>(dst.w, dst.h));
+	LOG_DEBUG(("render: collide returns %u objects", (unsigned)objects.size()));
 	for(std::set<int>::iterator i = objects.begin(); i != objects.end(); ++i) {
 		Object *o = getObjectByID(*i);
 		assert(o != NULL);
@@ -240,20 +247,22 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::R
 			//LOG_DEBUG(("%d,%d:%d,%d vs %d,%d:%d,%d result: %s", 
 			//	r.x, r.y, r.w, r.h, src_rect.x, src_rect.y, src_rect.w, src_rect.h, Map->intersects(r, src_rect)?"true":"false"));
 			if (Map->intersects(r, fogged? fog_rect: src) || (show_waypoints && o->isDriven())) 
-				layers.insert(LayerMap::value_type(o->_z, o));
+				layers.push(o);
 		}
 	}
 
-	//LOG_DEBUG(("rendering %d objects", layers.size()));
+	LOG_DEBUG(("rendering %u objects", (unsigned)layers.size()));
 	v2<int> map_size = Map->getSize(), map_tile_size = map_size / Map->getTileSize();
 	int z1 = _z1;
-	for(LayerMap::iterator i = layers.begin(); i != layers.end(); ++i) {
-		Object *o = i->second;
+	while(!layers.empty()) {
+		Object *o = layers.top();
+		layers.pop();
+		
 		assert(o != NULL);
 		if (o->isDead())
 			continue;
 		
-		int z2 = i->first;
+		int z2 = o->getZ();
 		if (z2 < z1) 
 			continue;
 
