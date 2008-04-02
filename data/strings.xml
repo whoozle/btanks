@@ -826,7 +826,7 @@
 		<string id="checkpoints" lang="it">Le mappe di squadra salvano automaticamente la partita al raggiungimento di un CHECKPOINT.</string>
 		
 		<string id="deathmatch-bots">Have not planned to play with an opponent? Add some bots while playing deathmatch game</string>
-		<string id="deathmatch-bots" lang="ru">Если вы не планируете играть с кем-то по сети в десматч, добавте ботов (AI) в меню выбора машинок</string>
+		<string id="deathmatch-bots" lang="ru">Если вы не планируете играть с кем-то по сети в десматч, добавьте ботов (AI) в меню выбора машинок</string>
 		<string id="deathmatch-bots" lang="fr">Vous n'avez pas d'adversaire contre qui jouer ? Ajoutez des robots (AI) pour les combats à mort.</string>
 		<string id="deathmatch-bots" lang="it">Non hai avversari? Aggiungi qualche BOT mentri giochi.</string>
 		<string id="deathmatch-bots" lang="de">Haben Sie keinen Rivalen? Fügen Sie einige Roboters zum Deathmatch-Spiel hinzu.</string>
