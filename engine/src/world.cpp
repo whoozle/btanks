@@ -604,10 +604,6 @@ void IWorld::getImpassabilityMatrix(Matrix<int> &matrix, const Object *src, cons
 #include "ai/buratino.h"
 
 void IWorld::_tick(Object &o, const float dt, const bool do_calculate) {
-	if (o.animation.empty()) {
-		o._dead = true;
-		return;
-	}
 	if (o.isDead()) 
 		return;
 
