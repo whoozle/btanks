@@ -49,6 +49,7 @@ public:
 
 protected: 
 	IConsole(); 
+	~IConsole();
 	
 private:
 	sl08::slot2<bool, const SDL_keysym, const bool, IConsole> on_key_slot;
