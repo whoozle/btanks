@@ -112,6 +112,14 @@ void IConsole::print(const std::string &msg) {
 
 IConsole::IConsole() : _active(false), _pos(0) {}
 
+IConsole::~IConsole() {
+	for(Buffer::iterator i = _buffer.begin(); i != _buffer.end(); ++i) {
+		delete i->second;
+	}
+	_buffer.clear();
+}
+
+
 void IConsole::init() {
 	GET_CONFIG_VALUE("engine.enable-console", bool, ec, false);
 	if (!ec) {
