@@ -105,7 +105,7 @@ void Bullet::calculate(const float dt) {
 		
 		for(std::set<const Object *>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
 			const Object *o = *i;
-			if (hasSameOwner(o))
+			if (hasSameOwner(o) || o->pierceable || o->impassability == 0)
 				continue;
 			v2<float> rel = getRelativePosition(o);
 			if (rel.is0())

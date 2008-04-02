@@ -127,7 +127,7 @@ public:
 		enumerateObjects(objects, range, &ai::Targets->troops );
 		for(std::set<const Object *>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
 			const Object *target = *i;
-			if (hasSameOwner(target) || target->aiDisabled())
+			if (hasSameOwner(target) || target->aiDisabled() || target->pierceable || target->impassability == 0)
 				continue;
 			
 			v2<float> dpos = getRelativePosition(target);

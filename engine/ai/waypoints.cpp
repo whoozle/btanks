@@ -45,7 +45,7 @@ void Waypoints::calculate(Object *object, const float dt) {
 		object->enumerateObjects(objs, (object->size.x + object->size.y) * 2 / 3, NULL /* &obstacle_filter */);
 		std::set<const Object *>::const_iterator i;
 		for(i = objs.begin(); i != objs.end(); ++i) {
-			if ((*i)->speed == 0)
+			if ((*i)->speed == 0 || (*i)->impassability == 0)
 				continue;
 			
 			v2<float> dpos = object->getRelativePosition(*i);
