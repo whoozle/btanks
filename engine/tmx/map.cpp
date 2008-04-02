@@ -855,11 +855,17 @@ void IMap::end(const std::string &name) {
 		//LOG_DEBUG(("(1,1) = %d", _layers[z]->get(1,1)));
 		_layer = false;
 	} else if (name == "property") {
-		mrt::trim(e.attrs["name"]);
-		if (_layer)
-			_properties[e.attrs["name"]] = e.attrs["value"];
-		else 
-			properties[e.attrs["name"]] = e.attrs["value"];
+		std::string name = e.attrs["name"];
+		mrt::trim(name);
+		if (_layer) {
+			if (_properties.find(name) != _properties.end())
+				throw_ex(("duplicate property name '%s'", name.c_str()));
+			_properties[name] = e.attrs["value"];
+		} else {
+			if (properties.find(name) != properties.end())
+				throw_ex(("duplicate property name '%s'", name.c_str()));
+			properties[name] = e.attrs["value"];
+		}
 	} else if (name == "tileset" && _image != NULL && _image_is_tileset) {
 		int n = ((_image->getWidth() - 1) / _tw + 1) * ((_image->getHeight() - 1) / _th + 1);
 		LOG_DEBUG(("tileset: %s, first_gid: %d, estimated tiles: %d", _image_source.c_str(), _firstgid, n));
