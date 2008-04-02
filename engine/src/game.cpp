@@ -520,7 +520,9 @@ bool IGame::onKey(const SDL_keysym key, const bool pressed) {
 			fname = path + mrt::formatString("%02d.bmp", n++);
 		} while(dir.exists(fname));
 		LOG_DEBUG(("saving screenshot to %s", fname.c_str()));
-		Window->getSurface().saveBMP(fname);
+		TRY {
+			Window->getSurface().saveBMP(fname);
+		} CATCH("saving screenshot", );
 		return true;
 	}
 	if (key.sym==SDLK_m && key.mod & KMOD_SHIFT && Map->loaded()) {
@@ -539,7 +541,9 @@ bool IGame::onKey(const SDL_keysym key, const bool pressed) {
 
 		sdlx::Rect viewport(0, 0, msize.x, msize.y);
 		World->render(screenshot, viewport, viewport);
-		screenshot.saveBMP(path);
+		TRY {
+			screenshot.saveBMP(path);
+		} CATCH("saving screenshot", );
 		return true;
 	}
 
