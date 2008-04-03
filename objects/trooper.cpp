@@ -34,8 +34,6 @@ void Trooper::getImpassabilityPenalty(const float impassability, float &base, fl
 	}
 }
 
-#include "player_manager.h"
-
 void Trooper::tick(const float dt) {
 	setDirection(_velocity.getDirection8() - 1);
 	Object::tick(dt);
@@ -84,8 +82,7 @@ void Trooper::tick(const float dt) {
 		if (_variants.has("nukeman")) {
 			//MUGGAGAGAGAGAG!!!
 			Object *o = spawn("nuke-explosion", "nuke-explosion");
-			emit("death", o); //fix frags calculation to remove this player manager call: 
-			PlayerManager->onPlayerDeath(this, o);
+			emit("death", o); 
 		} else if (!_variants.has("no-grenades")) {
 			if (getState() != "throw")
 				playNow("throw");
