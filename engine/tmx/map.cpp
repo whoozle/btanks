@@ -859,11 +859,11 @@ void IMap::end(const std::string &name) {
 		mrt::trim(name);
 		if (_layer) {
 			if (_properties.find(name) != _properties.end())
-				throw_ex(("duplicate property name '%s'", name.c_str()));
+				throw_ex(("duplicate property name '%s' found in layer %s", name.c_str(), _layer_name.c_str()));
 			_properties[name] = e.attrs["value"];
 		} else {
 			if (properties.find(name) != properties.end())
-				throw_ex(("duplicate property name '%s'", name.c_str()));
+				throw_ex(("duplicate property name '%s' found", name.c_str()));
 			properties[name] = e.attrs["value"];
 		}
 	} else if (name == "tileset" && _image != NULL && _image_is_tileset) {
