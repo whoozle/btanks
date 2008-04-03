@@ -148,7 +148,8 @@ void IWorld::addObject(Object *o, const v2<float> &pos, const int id) {
 //	if (o->getState().empty())
 //		throw_ex(("object %s:%s was not set up default pose. fixme.", o->registered_name.c_str(), o->animation.c_str()));
 	o->invalidate();
-
+	
+	on_object_add.emit(o);
 	updateObject(o);
 
 	GET_CONFIG_VALUE("engine.enable-profiler", bool, ep, false);
@@ -1621,16 +1622,6 @@ const int IWorld::getChildren(const int id, const std::string &classname) const 
 			++c;
 	}
 	return c;
-}
-
-const bool IWorld::itemExists(const std::set<std::string> &classes) const {
-	for(ObjectMap::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
-		const Object *o = i->second;
-		if (o->hasOwner(OWNER_MAP) && !o->_variants.has("ally") && classes.find(o->classname) != classes.end()) {
-			return true;
-		}
-	}
-	return false;
 }
 
 void IWorld::replaceID(const int old_id, const int new_id) {

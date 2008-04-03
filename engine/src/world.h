@@ -49,6 +49,7 @@ class BTANKSAPI IWorld : public mrt::Serializable {
 public:
 	DECLARE_SINGLETON(IWorld);
 	
+	sl08::signal1<void, const Object *> on_object_add;
 	sl08::signal1<void, const Object *> on_object_update;
 	sl08::signal1<void, const Object *> on_object_delete;
 
@@ -100,7 +101,6 @@ public:
 	const float getImpassability(Object *obj, const v2<int> &position, const Object **collided_with = NULL, const bool probe = false, const bool skip_moving = false) const;
 	
 	const int getChildren(const int id, const std::string &classname) const;
-	const bool itemExists(const std::set<std::string> &classes) const;
 	void setMode(const std::string &mode, const bool value);
 	
 	void enumerateObjects(std::set<const Object *> &o_set, const Object *src, const float range, const std::set<std::string> *classfilter);
