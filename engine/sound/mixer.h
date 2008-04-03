@@ -25,6 +25,7 @@
 #include <set>
 #include <math/v3.h>
 #include "alarm.h"
+#include "sl08/sl08.h"
 
 namespace mrt{
 class Chunk;
@@ -60,6 +61,7 @@ public:
 	void cancelAll();
 	
 	void tick(const float dt);
+	
 	void updateObject(const Object *o);
 	void deleteObject(const Object *o);
 	
@@ -74,6 +76,9 @@ public:
 	void stopAmbient();
 
 private:
+	sl08::slot1<void, const Object *, IMixer> update_object_slot;
+	sl08::slot1<void, const Object *, IMixer> delete_object_slot;
+
 	bool _nosound, _nomusic;
 
 	typedef std::map<const int, clunk::Object *> Objects;

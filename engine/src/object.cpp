@@ -1536,14 +1536,6 @@ const Matrix<int> &Object::getImpassabilityMatrix() const {
 	return Map->getImpassabilityMatrix(getZ());
 }
 
-const bool Object::detachVehicle() {
-	return World->detachVehicle(this);
-}
-
-const bool Object::attachVehicle(Object *vehicle) {
-	return World->attachVehicle(this, vehicle);
-}
-
 void Object::enumerateObjects(std::set<const Object *> &o_set, const float range, const std::set<std::string> *classfilter) const {
 	World->enumerateObjects(o_set, this, range, classfilter);
 }
@@ -1578,4 +1570,86 @@ const bool Object::take(const BaseObject *obj, const std::string &type) {
 		}
 	}
 	return BaseObject::take(obj, type);
+}
+
+const bool Object::attachVehicle(Object *vehicle) {
+	if (vehicle == NULL) 
+		return false;
+	
+	PlayerSlot *slot = PlayerManager->getSlotByID(getID());
+	if (slot == NULL)
+		return false;
+	
+	//vehicle->classname = "player";
+	
+	int old_id = getID();
+	int new_id = vehicle->getID();
+	
+	Object::emit("death", NULL); //emit death BEFORE assigning slot.id (avoid to +1 to frags) :)))
+
+	if (vehicle->classname == "vehicle" || vehicle->classname == "fighting-vehicle")
+		Mixer->playSample(vehicle, "engine-start.ogg", false);
+	
+	vehicle->_spawned_by = _spawned_by;
+	if (!vehicle->_variants.has("safe") && vehicle->classname != "monster") //do not change classname for safe vehicles
+		vehicle->classname = "fighting-vehicle";
+	
+	if (_variants.has("player"))
+		vehicle->_variants.add("player");
+	
+	vehicle->copyOwners(this);
+	vehicle->disable_ai = disable_ai;
+
+	World->replaceID(old_id, new_id);
+	slot->id = new_id;
+	slot->need_sync = true;
+	
+	return true;
+}
+
+const bool Object::detachVehicle() {
+	PlayerSlot * slot = PlayerManager->getSlotByID(getID());
+	if (slot == NULL || classname == "monster" ||
+		(disable_ai && 
+			(registered_name == "machinegunner" || registered_name == "civilian")
+	   )) 
+	   	return false;
+		
+	if (isEffectActive("cage")) 
+		return false;
+
+	LOG_DEBUG(("leaving vehicle..."));
+	
+	_velocity.clear();
+	updatePlayerState(PlayerState());
+
+	Object * man = spawn(disable_ai?"machinegunner(player)": "machinegunner-player(player)", "machinegunner", _direction * (size.x + size.y) / 4, v2<float>());
+	
+	if (classname == "helicopter")
+		man->setZBox(ResourceManager->getClass("machinegunner")->getZ());
+
+	man->disable_ai = disable_ai;
+	classname = "vehicle";
+	if (_variants.has("player"))
+		_variants.remove("player");
+
+	man->copyOwners(this);
+
+	int new_id = man->getID();
+
+	disown();
+
+	int old_id = getID();
+
+	World->replaceID(old_id, new_id);
+	//man->prependOwner(OWNER_COOPERATIVE);
+	//object->prependOwner(OWNER_COOPERATIVE);
+	
+	slot->id = new_id;
+	slot->need_sync = true;
+	
+	invalidate();
+	man->invalidate();
+	
+	return true;
 }

@@ -106,14 +106,8 @@ void IWorld::setSafeMode(const bool safe_mode) {
 	LOG_DEBUG(("set safe mode to %s", _safe_mode?"true":"false"));
 }
 
-#include "sound/mixer.h"
-//fixme: port to callbacks!
-
 void IWorld::deleteObject(const Object *o) {
-	if (o == NULL)
-		return;
-
-	Mixer->deleteObject(o);
+	on_object_delete.emit(o);
 	const int id = o->_id;
 	for(StaticCollisionMap::iterator i = _static_collision_map.begin(); i != _static_collision_map.end(); ) {
 		if (i->first.first == id || i->first.second == id) {
@@ -128,12 +122,11 @@ void IWorld::deleteObject(const Object *o) {
 
 
 void IWorld::updateObject(const Object *o) {
-	Mixer->updateObject(o);
 	if (o->size.is0())
 		return;
 	
 	_grid.update(o->_id, o->_position.convert<int>(), o->size.convert<int>());
-	//place for callbacks
+	on_object_update.emit(o);
 }
 
 void IWorld::addObject(Object *o, const v2<float> &pos, const int id) {
@@ -730,7 +723,7 @@ TRY {
 	if(o.getPlayerState().leave) {
 		//if (!detachVehicle(&o))
 		//	o.getPlayerState().leave = false; //do not trigger MP stuff. :)
-		detachVehicle(&o);
+		o.detachVehicle();
 	}
 } CATCH("detaching from vehicle", throw;)
 
@@ -1652,88 +1645,6 @@ void IWorld::replaceID(const int old_id, const int new_id) {
 	}
 }
 
-const bool IWorld::attachVehicle(Object *object, Object *vehicle) {
-	if (object == NULL || vehicle == NULL) 
-		return false;
-	
-	PlayerSlot *slot = PlayerManager->getSlotByID(object->getID());
-	if (slot == NULL)
-		return false;
-	
-	//vehicle->classname = "player";
-	
-	int old_id = object->getID();
-	int new_id = vehicle->getID();
-	
-	object->Object::emit("death", NULL); //emit death BEFORE assigning slot.id (avoid to +1 to frags) :)))
-
-	if (vehicle->classname == "vehicle" || vehicle->classname == "fighting-vehicle")
-		Mixer->playSample(vehicle, "engine-start.ogg", false);
-	
-	vehicle->_spawned_by = object->_spawned_by;
-	if (!vehicle->_variants.has("safe") && vehicle->classname != "monster") //do not change classname for safe vehicles
-		vehicle->classname = "fighting-vehicle";
-	
-	if (object->_variants.has("player"))
-		vehicle->_variants.add("player");
-	
-	vehicle->copyOwners(object);
-	vehicle->disable_ai = object->disable_ai;
-
-	replaceID(old_id, new_id);
-	slot->id = new_id;
-	slot->need_sync = true;
-	
-	
-	return true;
-}
-
-const bool IWorld::detachVehicle(Object *object) {
-	if (object == NULL)
-		throw_ex(("detachVehicle(NULL) is prohibited"));
-	
-	PlayerSlot * slot = PlayerManager->getSlotByID(object->getID());
-	if (slot == NULL || object->classname == "monster" ||
-		(object->disable_ai && 
-			(object->registered_name == "machinegunner" || object->registered_name == "civilian")
-	   )) 
-	   	return false;
-		
-	LOG_DEBUG(("leaving vehicle..."));
-	if (object->isEffectActive("cage")) 
-		return false;
-	
-	object->_velocity.clear();
-	object->updatePlayerState(PlayerState());
-
-	Object * man = spawn(object, object->disable_ai?"machinegunner(player)": "machinegunner-player(player)", "machinegunner", object->_direction * (object->size.x + object->size.y) / 4, v2<float>());
-	
-	if (object->classname == "helicopter")
-		man->setZBox(ResourceManager->getClass("machinegunner")->getZ());
-
-	man->disable_ai = object->disable_ai;
-	object->classname = "vehicle";
-	if (object->_variants.has("player"))
-		object->_variants.remove("player");
-
-	man->copyOwners(object);
-
-	int new_id = man->getID();
-
-	object->disown();
-
-	int old_id = object->getID();
-	replaceID(old_id, new_id);
-	//man->prependOwner(OWNER_COOPERATIVE);
-	//object->prependOwner(OWNER_COOPERATIVE);
-	
-	slot->id = new_id;
-	slot->need_sync = true;
-	object->invalidate();
-	man->invalidate();
-	
-	return true;
-}
 
 void IWorld::enumerateObjects(std::set<const Object *> &id_set, const Object *src, const float range, const std::set<std::string> *classfilter) {
 	id_set.clear();

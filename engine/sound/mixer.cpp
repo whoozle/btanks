@@ -27,6 +27,7 @@
 #include "utils.h"
 
 #include "ogg_stream.h"
+#include "world.h"
 
 #include "config.h"
 #include "object.h"
@@ -48,7 +49,10 @@ void IMixer::reset() {
 IMixer::IMixer() : _nosound(true), _nomusic(true), 
 	_volume_fx(1.0f), _volume_ambience(0.5f), _volume_music(1.0f), _debug(false), _loop(false), 
 	
-	_context(NULL) {}
+	_context(NULL) {
+		update_object_slot.assign(this, &IMixer::updateObject, World->on_object_update);
+		delete_object_slot.assign(this, &IMixer::deleteObject, World->on_object_delete);
+	}
 
 void IMixer::init(const bool nosound, const bool nomusic) {
 	if (nosound && nomusic) {

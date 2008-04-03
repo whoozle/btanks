@@ -48,6 +48,9 @@ class Object;
 class BTANKSAPI IWorld : public mrt::Serializable {
 public:
 	DECLARE_SINGLETON(IWorld);
+	
+	sl08::signal1<void, const Object *> on_object_update;
+	sl08::signal1<void, const Object *> on_object_delete;
 
 	void clear();
 	~IWorld();
@@ -100,14 +103,12 @@ public:
 	const bool itemExists(const std::set<std::string> &classes) const;
 	void setMode(const std::string &mode, const bool value);
 	
-	const bool attachVehicle(Object *object, Object *vehicle);
-	const bool detachVehicle(Object *object);
-
 	void enumerateObjects(std::set<const Object *> &o_set, const Object *src, const float range, const std::set<std::string> *classfilter);
 	void sync(const int id);
 	
 	void teleport(Object *object, const v2<float> &position); //do not use this! 
-
+	void replaceID(const int old_id, const int new_id); //and this! 
+	
 protected: 
 	friend class Editor;
 	friend class Command;
@@ -124,8 +125,6 @@ private:
 	
 	void updateObject(const Object *o);
 	void deleteObject(const Object *o);
-	
-	void replaceID(const int old_id, const int new_id);
 	
 	typedef std::map<const std::pair<int, int>, bool> CollisionMap;
 	mutable CollisionMap _collision_map;
