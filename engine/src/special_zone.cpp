@@ -165,6 +165,8 @@ void SpecialZone::onCheckpoint(const int slot_id) {
 	GameType game_type = RTConfig->game_type;
 	
 	PlayerSlot &slot = PlayerManager->getSlot(slot_id);
+	slot.need_sync = true;
+	
 	if (game_type == GameTypeRacing) {
 		const SpecialZone &zone = PlayerManager->getNextCheckpoint(slot);
 		if (zone.name != name) {
@@ -178,30 +180,29 @@ void SpecialZone::onCheckpoint(const int slot_id) {
 					
 	//v3<int> spawn_pos(_zones[c].position + checkpoint_size.convert2v3(0) / 2);
 	//slot.position = spawn_pos;
-	if (slot.visible) {
-		if (final()) {
-			Object *o = slot.getObject();
-			if (o != NULL) {
-				o->addEffect("invulnerability", -1);
-			}
-
-			GameMonitor->gameOver("messages", "mission-accomplished", 5, true);
-		} else {
-			if (game_type != GameTypeRacing)
-				GameMonitor->displayMessage("messages", "checkpoint-reached", 3, false);
+	if (final()) {
+		Object *o = slot.getObject();
+		if (o != NULL) {
+			o->addEffect("invulnerability", -1);
 		}
+
+		GameMonitor->gameOver("messages", "mission-accomplished", 5, true);
+		return;
 	}
-
-	slot.need_sync = true;
-
-	if (slot.remote != -1 && PlayerManager->isServer() ) {
-		Message m(Message::TextMessage);
-		m.channel = slot_id;
-		m.set("hint", "0");
-		m.set("area", "messages");
-		m.set("message", "checkpoint-reached");
-		m.set("duration", "3");
-		PlayerManager->send(slot, m);
+	
+	if (slot.visible) {
+		if (game_type != GameTypeRacing)
+			GameMonitor->displayMessage("messages", "checkpoint-reached", 3, false);
+	} else {
+		if (slot.remote != -1 && PlayerManager->isServer() ) {
+			Message m(Message::TextMessage);
+			m.channel = slot_id;
+			m.set("hint", "0");
+			m.set("area", "messages");
+			m.set("message", "checkpoint-reached");
+			m.set("duration", "3");
+			PlayerManager->send(slot, m);
+		}
 	}
 }
 
