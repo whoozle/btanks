@@ -57,6 +57,8 @@ IGameMonitor::IGameMonitor() : _game_over(false), _win(false), _check_items(0.5,
 {
 	on_console_slot.assign(this, &IGameMonitor::onConsole, Console->on_command);
 	on_map_resize_slot.assign(this, &IGameMonitor::parseWaypoints, Map->map_resize_signal);
+	add_object_slot.assign(this, &IGameMonitor::addObject, World->on_object_add);
+	delete_object_slot.assign(this, &IGameMonitor::deleteObject, World->on_object_delete);	
 }
 
 void GameItem::respawn() {
@@ -176,6 +178,26 @@ GameItem& IGameMonitor::find(const std::string &property) {
 	throw_ex(("could not find item %s", property.c_str()));
 }
 
+void IGameMonitor::addObject(const Object *o) {
+	const int id = o->getID();
+	if (
+		_present_objects.find(id) != _present_objects.end() || //already here. int is faster than classname check and alwaysupdate
+		!o->hasOwner(OWNER_MAP) || 
+		o->getVariants().has("ally") || 
+		_destroy_classes.find(o->classname) == _destroy_classes.end()
+	)
+		return;
+
+	_present_objects.insert(id);
+	//LOG_DEBUG(("adding target object: %s (%s)", o->animation.c_str(), o->classname.c_str()));
+}
+
+void IGameMonitor::deleteObject(const Object *o) {
+	const int id = o->getID();	
+	_present_objects.erase(id);
+	//LOG_DEBUG(("deleting target object: %s (%s)", o->animation.c_str(), o->classname.c_str()));
+}
+
 void IGameMonitor::checkItems(const float dt) {	
 	if (_game_over || !_check_items.tick(dt))
 		return;
@@ -184,7 +206,7 @@ void IGameMonitor::checkItems(const float dt) {
 	
 	if (!_destroy_classes.empty()) {
 		++goal_total;
-		if (!World->itemExists(_destroy_classes)) 
+		if (_present_objects.empty()) 
 			++goal;
 	}
 	

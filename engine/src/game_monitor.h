@@ -139,8 +139,14 @@ public:
 	
 	void startGameTimer(const std::string &name, const float period, const bool repeat);
 	void stopGameTimer(const std::string &name);
+
+	void addObject(const Object *o);
+	void deleteObject(const Object *o);
 	
 private:
+	sl08::slot1<void, const Object *, IGameMonitor> add_object_slot;
+	sl08::slot1<void, const Object *, IGameMonitor> delete_object_slot;
+
 	void saveCampaign();
 
 	sl08::slot2<const std::string, const std::string &, const std::string &, IGameMonitor> on_console_slot;
@@ -166,6 +172,7 @@ private:
 	
 	std::set<std::string> _disabled;
 	std::set<std::string> _destroy_classes;
+	std::set<int> _present_objects;
 	
 	//waypoints stuff
 	typedef std::map<const std::string, v2<int> > WaypointMap;
