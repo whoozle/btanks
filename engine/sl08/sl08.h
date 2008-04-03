@@ -38,7 +38,7 @@ namespace sl08 {
 			typedef std::deque<signal_type *> signals_type;
 			signals_type signals;
 		public: 
-			virtual return_type operator() () = 0;
+			virtual return_type operator() () const = 0;
 			inline base_slot0 () : signals() {} 
 
 			inline void connect(signal_type &signal_ref) {
@@ -78,7 +78,7 @@ namespace sl08 {
 			inline void assign(object_type *o, func_t f) { object = o; func = f; }
 			inline void assign(object_type *o, func_t f, signal_type &signal_ref = NULL) { object = o; func = f; connect(signal_ref); }
 	
-			inline return_type operator() () { 
+			inline return_type operator() () const { 
 				return (object->*func) () ;
 			} 
 	
@@ -99,7 +99,7 @@ namespace sl08 {
 			inline void assign(object_type *o, func_t f) { object = o; func = f; }
 			inline void assign(object_type *o, func_t f, signal_type &signal_ref) { object = o; func = f; connect(signal_ref); }
 	
-			inline void operator() () { 
+			inline void operator() () const { 
 				(object->*func) (); 
 			} 
 	
@@ -116,7 +116,7 @@ namespace sl08 {
 			slots_type slots;
 		
 		public: 
-			inline virtual return_type emit () = 0;
+			inline virtual return_type emit () const = 0;
 
 			inline void connect(slot_type *slot) {
 				slots.push_back(slot);
@@ -148,11 +148,11 @@ namespace sl08 {
 			typedef base_signal0 <return_type> parent_type; 
 			typedef typename deconst<return_type>::type non_const_return_type;
 			
-			inline virtual return_type emit () {
+			inline virtual return_type emit () const {
 				validator_type v;
 				non_const_return_type r;
 				
-				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
+				for(typename parent_type::slots_type::const_iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
 					r = (*i)->operator() ();
 					if (!v(r))
 						return r;
@@ -165,8 +165,8 @@ namespace sl08 {
 		class signal0 <void, validator_type> : public base_signal0 <void> { 
 		typedef base_signal0 <void> parent_type; 
 		public: 
-			inline void emit () {  
-				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
+			inline void emit () const {  
+				for(typename parent_type::slots_type::const_iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
 					(*i)->operator() () ; 
 				} 
 			} 
@@ -175,7 +175,7 @@ namespace sl08 {
 		class signal0 <int, validator_type> : public base_signal0 <int> { 
 			typedef base_signal0 <int> parent_type; 
 		public: 
-			inline int emit () {  
+			inline int emit () const {  
 				validator_type v;
 				int r = (int)0;
 				
@@ -191,7 +191,7 @@ namespace sl08 {
 		class signal0 <bool, validator_type> : public base_signal0 <bool> { 
 			typedef base_signal0 <bool> parent_type; 
 		public: 
-			inline bool emit () {  
+			inline bool emit () const {  
 				validator_type v;
 				bool r = (bool)0;
 				
@@ -213,7 +213,7 @@ namespace sl08 {
 			typedef std::deque<signal_type *> signals_type;
 			signals_type signals;
 		public: 
-			virtual return_type operator() (arg1_type a1) = 0;
+			virtual return_type operator() (arg1_type a1) const = 0;
 			inline base_slot1 () : signals() {} 
 
 			inline void connect(signal_type &signal_ref) {
@@ -253,7 +253,7 @@ namespace sl08 {
 			inline void assign(object_type *o, func_t f) { object = o; func = f; }
 			inline void assign(object_type *o, func_t f, signal_type &signal_ref = NULL) { object = o; func = f; connect(signal_ref); }
 	
-			inline return_type operator() (arg1_type a1) { 
+			inline return_type operator() (arg1_type a1) const { 
 				return (object->*func) (a1) ;
 			} 
 	
@@ -274,7 +274,7 @@ namespace sl08 {
 			inline void assign(object_type *o, func_t f) { object = o; func = f; }
 			inline void assign(object_type *o, func_t f, signal_type &signal_ref) { object = o; func = f; connect(signal_ref); }
 	
-			inline void operator() (arg1_type a1) { 
+			inline void operator() (arg1_type a1) const { 
 				(object->*func) (a1); 
 			} 
 	
@@ -291,7 +291,7 @@ namespace sl08 {
 			slots_type slots;
 		
 		public: 
-			inline virtual return_type emit (arg1_type a1) = 0;
+			inline virtual return_type emit (arg1_type a1) const = 0;
 
 			inline void connect(slot_type *slot) {
 				slots.push_back(slot);
@@ -323,11 +323,11 @@ namespace sl08 {
 			typedef base_signal1 <return_type, arg1_type> parent_type; 
 			typedef typename deconst<return_type>::type non_const_return_type;
 			
-			inline virtual return_type emit (arg1_type a1) {
+			inline virtual return_type emit (arg1_type a1) const {
 				validator_type v;
 				non_const_return_type r;
 				
-				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
+				for(typename parent_type::slots_type::const_iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
 					r = (*i)->operator() (a1);
 					if (!v(r))
 						return r;
@@ -340,8 +340,8 @@ namespace sl08 {
 		class signal1 <void, arg1_type, validator_type> : public base_signal1 <void, arg1_type> { 
 		typedef base_signal1 <void, arg1_type> parent_type; 
 		public: 
-			inline void emit (arg1_type a1) {  
-				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
+			inline void emit (arg1_type a1) const {  
+				for(typename parent_type::slots_type::const_iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
 					(*i)->operator() (a1) ; 
 				} 
 			} 
@@ -350,7 +350,7 @@ namespace sl08 {
 		class signal1 <int, arg1_type, validator_type> : public base_signal1 <int, arg1_type> { 
 			typedef base_signal1 <int, arg1_type> parent_type; 
 		public: 
-			inline int emit (arg1_type a1) {  
+			inline int emit (arg1_type a1) const {  
 				validator_type v;
 				int r = (int)0;
 				
@@ -366,7 +366,7 @@ namespace sl08 {
 		class signal1 <bool, arg1_type, validator_type> : public base_signal1 <bool, arg1_type> { 
 			typedef base_signal1 <bool, arg1_type> parent_type; 
 		public: 
-			inline bool emit (arg1_type a1) {  
+			inline bool emit (arg1_type a1) const {  
 				validator_type v;
 				bool r = (bool)0;
 				
@@ -388,7 +388,7 @@ namespace sl08 {
 			typedef std::deque<signal_type *> signals_type;
 			signals_type signals;
 		public: 
-			virtual return_type operator() (arg1_type a1, arg2_type a2) = 0;
+			virtual return_type operator() (arg1_type a1, arg2_type a2) const = 0;
 			inline base_slot2 () : signals() {} 
 
 			inline void connect(signal_type &signal_ref) {
@@ -428,7 +428,7 @@ namespace sl08 {
 			inline void assign(object_type *o, func_t f) { object = o; func = f; }
 			inline void assign(object_type *o, func_t f, signal_type &signal_ref = NULL) { object = o; func = f; connect(signal_ref); }
 	
-			inline return_type operator() (arg1_type a1, arg2_type a2) { 
+			inline return_type operator() (arg1_type a1, arg2_type a2) const { 
 				return (object->*func) (a1, a2) ;
 			} 
 	
@@ -449,7 +449,7 @@ namespace sl08 {
 			inline void assign(object_type *o, func_t f) { object = o; func = f; }
 			inline void assign(object_type *o, func_t f, signal_type &signal_ref) { object = o; func = f; connect(signal_ref); }
 	
-			inline void operator() (arg1_type a1, arg2_type a2) { 
+			inline void operator() (arg1_type a1, arg2_type a2) const { 
 				(object->*func) (a1, a2); 
 			} 
 	
@@ -466,7 +466,7 @@ namespace sl08 {
 			slots_type slots;
 		
 		public: 
-			inline virtual return_type emit (arg1_type a1, arg2_type a2) = 0;
+			inline virtual return_type emit (arg1_type a1, arg2_type a2) const = 0;
 
 			inline void connect(slot_type *slot) {
 				slots.push_back(slot);
@@ -498,11 +498,11 @@ namespace sl08 {
 			typedef base_signal2 <return_type, arg1_type, arg2_type> parent_type; 
 			typedef typename deconst<return_type>::type non_const_return_type;
 			
-			inline virtual return_type emit (arg1_type a1, arg2_type a2) {
+			inline virtual return_type emit (arg1_type a1, arg2_type a2) const {
 				validator_type v;
 				non_const_return_type r;
 				
-				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
+				for(typename parent_type::slots_type::const_iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
 					r = (*i)->operator() (a1, a2);
 					if (!v(r))
 						return r;
@@ -515,8 +515,8 @@ namespace sl08 {
 		class signal2 <void, arg1_type, arg2_type, validator_type> : public base_signal2 <void, arg1_type, arg2_type> { 
 		typedef base_signal2 <void, arg1_type, arg2_type> parent_type; 
 		public: 
-			inline void emit (arg1_type a1, arg2_type a2) {  
-				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
+			inline void emit (arg1_type a1, arg2_type a2) const {  
+				for(typename parent_type::slots_type::const_iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
 					(*i)->operator() (a1, a2) ; 
 				} 
 			} 
@@ -525,7 +525,7 @@ namespace sl08 {
 		class signal2 <int, arg1_type, arg2_type, validator_type> : public base_signal2 <int, arg1_type, arg2_type> { 
 			typedef base_signal2 <int, arg1_type, arg2_type> parent_type; 
 		public: 
-			inline int emit (arg1_type a1, arg2_type a2) {  
+			inline int emit (arg1_type a1, arg2_type a2) const {  
 				validator_type v;
 				int r = (int)0;
 				
@@ -541,7 +541,7 @@ namespace sl08 {
 		class signal2 <bool, arg1_type, arg2_type, validator_type> : public base_signal2 <bool, arg1_type, arg2_type> { 
 			typedef base_signal2 <bool, arg1_type, arg2_type> parent_type; 
 		public: 
-			inline bool emit (arg1_type a1, arg2_type a2) {  
+			inline bool emit (arg1_type a1, arg2_type a2) const {  
 				validator_type v;
 				bool r = (bool)0;
 				
@@ -563,7 +563,7 @@ namespace sl08 {
 			typedef std::deque<signal_type *> signals_type;
 			signals_type signals;
 		public: 
-			virtual return_type operator() (arg1_type a1, arg2_type a2, arg3_type a3) = 0;
+			virtual return_type operator() (arg1_type a1, arg2_type a2, arg3_type a3) const = 0;
 			inline base_slot3 () : signals() {} 
 
 			inline void connect(signal_type &signal_ref) {
@@ -603,7 +603,7 @@ namespace sl08 {
 			inline void assign(object_type *o, func_t f) { object = o; func = f; }
 			inline void assign(object_type *o, func_t f, signal_type &signal_ref = NULL) { object = o; func = f; connect(signal_ref); }
 	
-			inline return_type operator() (arg1_type a1, arg2_type a2, arg3_type a3) { 
+			inline return_type operator() (arg1_type a1, arg2_type a2, arg3_type a3) const { 
 				return (object->*func) (a1, a2, a3) ;
 			} 
 	
@@ -624,7 +624,7 @@ namespace sl08 {
 			inline void assign(object_type *o, func_t f) { object = o; func = f; }
 			inline void assign(object_type *o, func_t f, signal_type &signal_ref) { object = o; func = f; connect(signal_ref); }
 	
-			inline void operator() (arg1_type a1, arg2_type a2, arg3_type a3) { 
+			inline void operator() (arg1_type a1, arg2_type a2, arg3_type a3) const { 
 				(object->*func) (a1, a2, a3); 
 			} 
 	
@@ -641,7 +641,7 @@ namespace sl08 {
 			slots_type slots;
 		
 		public: 
-			inline virtual return_type emit (arg1_type a1, arg2_type a2, arg3_type a3) = 0;
+			inline virtual return_type emit (arg1_type a1, arg2_type a2, arg3_type a3) const = 0;
 
 			inline void connect(slot_type *slot) {
 				slots.push_back(slot);
@@ -673,11 +673,11 @@ namespace sl08 {
 			typedef base_signal3 <return_type, arg1_type, arg2_type, arg3_type> parent_type; 
 			typedef typename deconst<return_type>::type non_const_return_type;
 			
-			inline virtual return_type emit (arg1_type a1, arg2_type a2, arg3_type a3) {
+			inline virtual return_type emit (arg1_type a1, arg2_type a2, arg3_type a3) const {
 				validator_type v;
 				non_const_return_type r;
 				
-				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
+				for(typename parent_type::slots_type::const_iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
 					r = (*i)->operator() (a1, a2, a3);
 					if (!v(r))
 						return r;
@@ -690,8 +690,8 @@ namespace sl08 {
 		class signal3 <void, arg1_type, arg2_type, arg3_type, validator_type> : public base_signal3 <void, arg1_type, arg2_type, arg3_type> { 
 		typedef base_signal3 <void, arg1_type, arg2_type, arg3_type> parent_type; 
 		public: 
-			inline void emit (arg1_type a1, arg2_type a2, arg3_type a3) {  
-				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
+			inline void emit (arg1_type a1, arg2_type a2, arg3_type a3) const {  
+				for(typename parent_type::slots_type::const_iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
 					(*i)->operator() (a1, a2, a3) ; 
 				} 
 			} 
@@ -700,7 +700,7 @@ namespace sl08 {
 		class signal3 <int, arg1_type, arg2_type, arg3_type, validator_type> : public base_signal3 <int, arg1_type, arg2_type, arg3_type> { 
 			typedef base_signal3 <int, arg1_type, arg2_type, arg3_type> parent_type; 
 		public: 
-			inline int emit (arg1_type a1, arg2_type a2, arg3_type a3) {  
+			inline int emit (arg1_type a1, arg2_type a2, arg3_type a3) const {  
 				validator_type v;
 				int r = (int)0;
 				
@@ -716,7 +716,7 @@ namespace sl08 {
 		class signal3 <bool, arg1_type, arg2_type, arg3_type, validator_type> : public base_signal3 <bool, arg1_type, arg2_type, arg3_type> { 
 			typedef base_signal3 <bool, arg1_type, arg2_type, arg3_type> parent_type; 
 		public: 
-			inline bool emit (arg1_type a1, arg2_type a2, arg3_type a3) {  
+			inline bool emit (arg1_type a1, arg2_type a2, arg3_type a3) const {  
 				validator_type v;
 				bool r = (bool)0;
 				
@@ -738,7 +738,7 @@ namespace sl08 {
 			typedef std::deque<signal_type *> signals_type;
 			signals_type signals;
 		public: 
-			virtual return_type operator() (arg1_type a1, arg2_type a2, arg3_type a3, arg4_type a4) = 0;
+			virtual return_type operator() (arg1_type a1, arg2_type a2, arg3_type a3, arg4_type a4) const = 0;
 			inline base_slot4 () : signals() {} 
 
 			inline void connect(signal_type &signal_ref) {
@@ -778,7 +778,7 @@ namespace sl08 {
 			inline void assign(object_type *o, func_t f) { object = o; func = f; }
 			inline void assign(object_type *o, func_t f, signal_type &signal_ref = NULL) { object = o; func = f; connect(signal_ref); }
 	
-			inline return_type operator() (arg1_type a1, arg2_type a2, arg3_type a3, arg4_type a4) { 
+			inline return_type operator() (arg1_type a1, arg2_type a2, arg3_type a3, arg4_type a4) const { 
 				return (object->*func) (a1, a2, a3, a4) ;
 			} 
 	
@@ -799,7 +799,7 @@ namespace sl08 {
 			inline void assign(object_type *o, func_t f) { object = o; func = f; }
 			inline void assign(object_type *o, func_t f, signal_type &signal_ref) { object = o; func = f; connect(signal_ref); }
 	
-			inline void operator() (arg1_type a1, arg2_type a2, arg3_type a3, arg4_type a4) { 
+			inline void operator() (arg1_type a1, arg2_type a2, arg3_type a3, arg4_type a4) const { 
 				(object->*func) (a1, a2, a3, a4); 
 			} 
 	
@@ -816,7 +816,7 @@ namespace sl08 {
 			slots_type slots;
 		
 		public: 
-			inline virtual return_type emit (arg1_type a1, arg2_type a2, arg3_type a3, arg4_type a4) = 0;
+			inline virtual return_type emit (arg1_type a1, arg2_type a2, arg3_type a3, arg4_type a4) const = 0;
 
 			inline void connect(slot_type *slot) {
 				slots.push_back(slot);
@@ -848,11 +848,11 @@ namespace sl08 {
 			typedef base_signal4 <return_type, arg1_type, arg2_type, arg3_type, arg4_type> parent_type; 
 			typedef typename deconst<return_type>::type non_const_return_type;
 			
-			inline virtual return_type emit (arg1_type a1, arg2_type a2, arg3_type a3, arg4_type a4) {
+			inline virtual return_type emit (arg1_type a1, arg2_type a2, arg3_type a3, arg4_type a4) const {
 				validator_type v;
 				non_const_return_type r;
 				
-				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
+				for(typename parent_type::slots_type::const_iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
 					r = (*i)->operator() (a1, a2, a3, a4);
 					if (!v(r))
 						return r;
@@ -865,8 +865,8 @@ namespace sl08 {
 		class signal4 <void, arg1_type, arg2_type, arg3_type, arg4_type, validator_type> : public base_signal4 <void, arg1_type, arg2_type, arg3_type, arg4_type> { 
 		typedef base_signal4 <void, arg1_type, arg2_type, arg3_type, arg4_type> parent_type; 
 		public: 
-			inline void emit (arg1_type a1, arg2_type a2, arg3_type a3, arg4_type a4) {  
-				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
+			inline void emit (arg1_type a1, arg2_type a2, arg3_type a3, arg4_type a4) const {  
+				for(typename parent_type::slots_type::const_iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
 					(*i)->operator() (a1, a2, a3, a4) ; 
 				} 
 			} 
@@ -875,7 +875,7 @@ namespace sl08 {
 		class signal4 <int, arg1_type, arg2_type, arg3_type, arg4_type, validator_type> : public base_signal4 <int, arg1_type, arg2_type, arg3_type, arg4_type> { 
 			typedef base_signal4 <int, arg1_type, arg2_type, arg3_type, arg4_type> parent_type; 
 		public: 
-			inline int emit (arg1_type a1, arg2_type a2, arg3_type a3, arg4_type a4) {  
+			inline int emit (arg1_type a1, arg2_type a2, arg3_type a3, arg4_type a4) const {  
 				validator_type v;
 				int r = (int)0;
 				
@@ -891,7 +891,7 @@ namespace sl08 {
 		class signal4 <bool, arg1_type, arg2_type, arg3_type, arg4_type, validator_type> : public base_signal4 <bool, arg1_type, arg2_type, arg3_type, arg4_type> { 
 			typedef base_signal4 <bool, arg1_type, arg2_type, arg3_type, arg4_type> parent_type; 
 		public: 
-			inline bool emit (arg1_type a1, arg2_type a2, arg3_type a3, arg4_type a4) {  
+			inline bool emit (arg1_type a1, arg2_type a2, arg3_type a3, arg4_type a4) const {  
 				validator_type v;
 				bool r = (bool)0;
 				
@@ -913,7 +913,7 @@ namespace sl08 {
 			typedef std::deque<signal_type *> signals_type;
 			signals_type signals;
 		public: 
-			virtual return_type operator() (arg1_type a1, arg2_type a2, arg3_type a3, arg4_type a4, arg5_type a5) = 0;
+			virtual return_type operator() (arg1_type a1, arg2_type a2, arg3_type a3, arg4_type a4, arg5_type a5) const = 0;
 			inline base_slot5 () : signals() {} 
 
 			inline void connect(signal_type &signal_ref) {
@@ -953,7 +953,7 @@ namespace sl08 {
 			inline void assign(object_type *o, func_t f) { object = o; func = f; }
 			inline void assign(object_type *o, func_t f, signal_type &signal_ref = NULL) { object = o; func = f; connect(signal_ref); }
 	
-			inline return_type operator() (arg1_type a1, arg2_type a2, arg3_type a3, arg4_type a4, arg5_type a5) { 
+			inline return_type operator() (arg1_type a1, arg2_type a2, arg3_type a3, arg4_type a4, arg5_type a5) const { 
 				return (object->*func) (a1, a2, a3, a4, a5) ;
 			} 
 	
@@ -974,7 +974,7 @@ namespace sl08 {
 			inline void assign(object_type *o, func_t f) { object = o; func = f; }
 			inline void assign(object_type *o, func_t f, signal_type &signal_ref) { object = o; func = f; connect(signal_ref); }
 	
-			inline void operator() (arg1_type a1, arg2_type a2, arg3_type a3, arg4_type a4, arg5_type a5) { 
+			inline void operator() (arg1_type a1, arg2_type a2, arg3_type a3, arg4_type a4, arg5_type a5) const { 
 				(object->*func) (a1, a2, a3, a4, a5); 
 			} 
 	
@@ -991,7 +991,7 @@ namespace sl08 {
 			slots_type slots;
 		
 		public: 
-			inline virtual return_type emit (arg1_type a1, arg2_type a2, arg3_type a3, arg4_type a4, arg5_type a5) = 0;
+			inline virtual return_type emit (arg1_type a1, arg2_type a2, arg3_type a3, arg4_type a4, arg5_type a5) const = 0;
 
 			inline void connect(slot_type *slot) {
 				slots.push_back(slot);
@@ -1023,11 +1023,11 @@ namespace sl08 {
 			typedef base_signal5 <return_type, arg1_type, arg2_type, arg3_type, arg4_type, arg5_type> parent_type; 
 			typedef typename deconst<return_type>::type non_const_return_type;
 			
-			inline virtual return_type emit (arg1_type a1, arg2_type a2, arg3_type a3, arg4_type a4, arg5_type a5) {
+			inline virtual return_type emit (arg1_type a1, arg2_type a2, arg3_type a3, arg4_type a4, arg5_type a5) const {
 				validator_type v;
 				non_const_return_type r;
 				
-				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
+				for(typename parent_type::slots_type::const_iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
 					r = (*i)->operator() (a1, a2, a3, a4, a5);
 					if (!v(r))
 						return r;
@@ -1040,8 +1040,8 @@ namespace sl08 {
 		class signal5 <void, arg1_type, arg2_type, arg3_type, arg4_type, arg5_type, validator_type> : public base_signal5 <void, arg1_type, arg2_type, arg3_type, arg4_type, arg5_type> { 
 		typedef base_signal5 <void, arg1_type, arg2_type, arg3_type, arg4_type, arg5_type> parent_type; 
 		public: 
-			inline void emit (arg1_type a1, arg2_type a2, arg3_type a3, arg4_type a4, arg5_type a5) {  
-				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
+			inline void emit (arg1_type a1, arg2_type a2, arg3_type a3, arg4_type a4, arg5_type a5) const {  
+				for(typename parent_type::slots_type::const_iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
 					(*i)->operator() (a1, a2, a3, a4, a5) ; 
 				} 
 			} 
@@ -1050,7 +1050,7 @@ namespace sl08 {
 		class signal5 <int, arg1_type, arg2_type, arg3_type, arg4_type, arg5_type, validator_type> : public base_signal5 <int, arg1_type, arg2_type, arg3_type, arg4_type, arg5_type> { 
 			typedef base_signal5 <int, arg1_type, arg2_type, arg3_type, arg4_type, arg5_type> parent_type; 
 		public: 
-			inline int emit (arg1_type a1, arg2_type a2, arg3_type a3, arg4_type a4, arg5_type a5) {  
+			inline int emit (arg1_type a1, arg2_type a2, arg3_type a3, arg4_type a4, arg5_type a5) const {  
 				validator_type v;
 				int r = (int)0;
 				
@@ -1066,7 +1066,7 @@ namespace sl08 {
 		class signal5 <bool, arg1_type, arg2_type, arg3_type, arg4_type, arg5_type, validator_type> : public base_signal5 <bool, arg1_type, arg2_type, arg3_type, arg4_type, arg5_type> { 
 			typedef base_signal5 <bool, arg1_type, arg2_type, arg3_type, arg4_type, arg5_type> parent_type; 
 		public: 
-			inline bool emit (arg1_type a1, arg2_type a2, arg3_type a3, arg4_type a4, arg5_type a5) {  
+			inline bool emit (arg1_type a1, arg2_type a2, arg3_type a3, arg4_type a4, arg5_type a5) const {  
 				validator_type v;
 				bool r = (bool)0;
 				

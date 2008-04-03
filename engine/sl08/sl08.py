@@ -98,7 +98,7 @@ class Generator(object):
 			typedef std::deque<signal_type *> signals_type;
 			signals_type signals;
 		public: 
-			virtual return_type operator() %s = 0;
+			virtual return_type operator() %s const = 0;
 			inline base_slotXXX () : signals() {} 
 
 			inline void connect(signal_type &signal_ref) {
@@ -138,7 +138,7 @@ class Generator(object):
 			inline void assign(object_type *o, func_t f) { object = o; func = f; }
 			inline void assign(object_type *o, func_t f, signal_type &signal_ref = NULL) { object = o; func = f; connect(signal_ref); }
 	
-			inline return_type operator() %s { 
+			inline return_type operator() %s const { 
 				return (object->*func) %s ;
 			} 
 	
@@ -172,7 +172,7 @@ class Generator(object):
 			inline void assign(object_type *o, func_t f) { object = o; func = f; }
 			inline void assign(object_type *o, func_t f, signal_type &signal_ref) { object = o; func = f; connect(signal_ref); }
 	
-			inline void operator() %s { 
+			inline void operator() %s const { 
 				(object->*func) %s; 
 			} 
 	
@@ -200,7 +200,7 @@ class Generator(object):
 			slots_type slots;
 		
 		public: 
-			inline virtual return_type emit %s = 0;
+			inline virtual return_type emit %s const = 0;
 
 			inline void connect(slot_type *slot) {
 				slots.push_back(slot);
@@ -232,11 +232,11 @@ class Generator(object):
 			typedef base_signalXXX %s parent_type; 
 			typedef typename deconst<return_type>::type non_const_return_type;
 			
-			inline virtual return_type emit %s {
+			inline virtual return_type emit %s const {
 				validator_type v;
 				non_const_return_type r;
 				
-				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
+				for(typename parent_type::slots_type::const_iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
 					r = (*i)->operator() %s;
 					if (!v(r))
 						return r;
@@ -260,8 +260,8 @@ class Generator(object):
 		class signalXXX %s : public base_signalXXX %s { 
 		typedef base_signalXXX %s parent_type; 
 		public: 
-			inline void emit %s {  
-				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
+			inline void emit %s const {  
+				for(typename parent_type::slots_type::const_iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
 					(*i)->operator() %s ; 
 				} 
 			} 
@@ -286,7 +286,7 @@ class Generator(object):
 		class signalXXX %s : public base_signalXXX %s { 
 			typedef base_signalXXX %s parent_type; 
 		public: 
-			inline void emit %s {  
+			inline void emit %s const {  
 				validator_type v;
 				void r = (void)0;
 				
