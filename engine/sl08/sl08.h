@@ -179,7 +179,7 @@ namespace sl08 {
 				validator_type v;
 				int r = (int)0;
 				
-				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
+				for(typename parent_type::slots_type::const_iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
 					r = (*i)->operator() ();
 					if (!v(r))
 						return r;
@@ -195,7 +195,7 @@ namespace sl08 {
 				validator_type v;
 				bool r = (bool)0;
 				
-				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
+				for(typename parent_type::slots_type::const_iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
 					r = (*i)->operator() ();
 					if (!v(r))
 						return r;
@@ -354,7 +354,7 @@ namespace sl08 {
 				validator_type v;
 				int r = (int)0;
 				
-				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
+				for(typename parent_type::slots_type::const_iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
 					r = (*i)->operator() (a1);
 					if (!v(r))
 						return r;
@@ -370,7 +370,7 @@ namespace sl08 {
 				validator_type v;
 				bool r = (bool)0;
 				
-				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
+				for(typename parent_type::slots_type::const_iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
 					r = (*i)->operator() (a1);
 					if (!v(r))
 						return r;
@@ -529,7 +529,7 @@ namespace sl08 {
 				validator_type v;
 				int r = (int)0;
 				
-				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
+				for(typename parent_type::slots_type::const_iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
 					r = (*i)->operator() (a1, a2);
 					if (!v(r))
 						return r;
@@ -545,7 +545,7 @@ namespace sl08 {
 				validator_type v;
 				bool r = (bool)0;
 				
-				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
+				for(typename parent_type::slots_type::const_iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
 					r = (*i)->operator() (a1, a2);
 					if (!v(r))
 						return r;
@@ -704,7 +704,7 @@ namespace sl08 {
 				validator_type v;
 				int r = (int)0;
 				
-				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
+				for(typename parent_type::slots_type::const_iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
 					r = (*i)->operator() (a1, a2, a3);
 					if (!v(r))
 						return r;
@@ -720,7 +720,7 @@ namespace sl08 {
 				validator_type v;
 				bool r = (bool)0;
 				
-				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
+				for(typename parent_type::slots_type::const_iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
 					r = (*i)->operator() (a1, a2, a3);
 					if (!v(r))
 						return r;
@@ -879,7 +879,7 @@ namespace sl08 {
 				validator_type v;
 				int r = (int)0;
 				
-				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
+				for(typename parent_type::slots_type::const_iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
 					r = (*i)->operator() (a1, a2, a3, a4);
 					if (!v(r))
 						return r;
@@ -895,7 +895,7 @@ namespace sl08 {
 				validator_type v;
 				bool r = (bool)0;
 				
-				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
+				for(typename parent_type::slots_type::const_iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
 					r = (*i)->operator() (a1, a2, a3, a4);
 					if (!v(r))
 						return r;
@@ -1054,7 +1054,7 @@ namespace sl08 {
 				validator_type v;
 				int r = (int)0;
 				
-				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
+				for(typename parent_type::slots_type::const_iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
 					r = (*i)->operator() (a1, a2, a3, a4, a5);
 					if (!v(r))
 						return r;
@@ -1070,7 +1070,7 @@ namespace sl08 {
 				validator_type v;
 				bool r = (bool)0;
 				
-				for(typename parent_type::slots_type::iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
+				for(typename parent_type::slots_type::const_iterator i = parent_type::slots.begin(); i != parent_type::slots.end(); ++i) { 
 					r = (*i)->operator() (a1, a2, a3, a4, a5);
 					if (!v(r))
 						return r;
