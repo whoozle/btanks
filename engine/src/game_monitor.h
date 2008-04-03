@@ -172,6 +172,7 @@ private:
 	std::set<std::string> _disabled;
 	std::set<std::string> _destroy_classes;
 	std::set<int> _present_objects;
+	bool _objects_limit_reached;
 	
 	//waypoints stuff
 	typedef std::map<const std::string, v2<int> > WaypointMap;
