@@ -1181,7 +1181,7 @@ PlayerSlot *IPlayerManager::getSlotByIDRecursive(const Object *object) {
 	PlayerSlot *slot = NULL;
 
 	if (object->getSummoner() > 0)
-	for(Object *parent = World->getObjectByID(object->getSummoner()); parent != NULL && parent->getSummoner() > 0; parent = World->getObjectByID(parent->getSummoner())) {
+	for(Object *parent = World->getObjectByID(object->getSummoner()); parent != NULL; parent = World->getObjectByID(parent->getSummoner())) {
 		slot = getSlotByID(parent->getID());
 		if (slot != NULL) 
 			return slot;
