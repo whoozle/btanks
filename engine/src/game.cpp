@@ -677,8 +677,7 @@ void IGame::onTick(const float dt) {
 		if (Window->running() && !_paused) {
 			GameMonitor->tick(dt);
 			if (GameMonitor->gameOver()) {
-				if (RTConfig->game_type == GameTypeDeathMatch)
-					_show_stats = true;
+				_show_stats = true;
 			}
 		}
 
