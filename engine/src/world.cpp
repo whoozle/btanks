@@ -425,11 +425,11 @@ const bool IWorld::collides(Object *obj1, const v2<int> &position, Object *obj2,
 				obj1->emit("collision", obj2);
 			
 				if (obj2->isDead()) {
-					PlayerManager->onPlayerDeath(obj2, obj1);
+					on_object_death.emit(obj2, obj1);
 				}
 
 				if (obj1->isDead()) {
-					PlayerManager->onPlayerDeath(obj1, obj2);
+					on_object_death.emit(obj1, obj2);
 				}
 			
 				if (obj1->isDead() || obj2->isDead() || obj1->impassability == 0 || obj2->impassability == 0) {

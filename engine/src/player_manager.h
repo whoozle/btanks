@@ -95,7 +95,6 @@ public:
 	void onDisconnect(const int id);	
 	void onMap();
 	
-	void onPlayerDeath(const Object *player, const Object *killer);
 	void gameOver(const std::string &area, const std::string &message, const float time);
 	
 	void onDestroyMap(const std::set<v3<int> > & cells);
@@ -118,8 +117,12 @@ public:
 	void requestObjects(const int first_id);
 
 private: 
+	PlayerSlot *getSlotByIDRecursive(const Object *object);
+	void onPlayerDeath(const Object *player, const Object *killer);
+	
 	sl08::slot1<void, const std::set<v3<int> > &, IPlayerManager> on_destroy_map_slot;
 	sl08::slot0<void, IPlayerManager> on_load_map_slot;
+	sl08::slot2<void, const Object *, const Object *, IPlayerManager> on_object_death_slot;
 	
 	void serializeSlots(mrt::Serializator &s) const;
 	void deserializeSlots(const mrt::Serializator &s);

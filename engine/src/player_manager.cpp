@@ -50,6 +50,7 @@
 #include "mrt/utf8_utils.h"
 
 #include "sl08/sl08.h"
+#include "rt_config.h"
 
 
 IMPLEMENT_SINGLETON(PlayerManager, IPlayerManager);
@@ -801,6 +802,7 @@ IPlayerManager::IPlayerManager() :
 {
 	on_destroy_map_slot.assign(this, &IPlayerManager::onDestroyMap, Map->destroyed_cells_signal);
 	on_load_map_slot.assign(this, &IPlayerManager::onMap, Map->load_map_final_signal);
+	on_object_death_slot.assign(this, &IPlayerManager::onPlayerDeath, World->on_object_death);
 }
 
 IPlayerManager::~IPlayerManager() {}
@@ -1175,34 +1177,43 @@ const bool IPlayerManager::isServerActive() const {
 	return false;
 }
 
-void IPlayerManager::onPlayerDeath(const Object *player, const Object *killer) {
-	if (isClient() || GameMonitor->gameOver())
-		return;
-	{
-		PlayerSlot *player_slot = getSlotByID(player->getID());
-		if (player_slot == NULL)
-			return;
-	}
+PlayerSlot *IPlayerManager::getSlotByIDRecursive(const Object *object) {
 	PlayerSlot *slot = NULL;
 
+	if (object->getSummoner() > 0)
+	for(Object *parent = World->getObjectByID(object->getSummoner()); parent != NULL && parent->getSummoner() > 0; parent = World->getObjectByID(parent->getSummoner())) {
+		slot = getSlotByID(parent->getID());
+		if (slot != NULL) 
+			return slot;
+	}
+	
 	std::deque<int> owners;
-	killer->getOwners(owners);
+	object->getOwners(owners);
 	for(std::deque<int>::const_iterator i = owners.begin(); i != owners.end(); ++i) {
 		slot = getSlotByID(*i);
 		if (slot != NULL) 
-			break;
+			return slot;
 	}
 	
-	if (slot == NULL)
-		slot = getSlotByID(killer->getSummoner());
+	return NULL;
+}
 
-	if (slot == NULL)
+void IPlayerManager::onPlayerDeath(const Object *player, const Object *killer) {
+	if (isClient() || GameMonitor->gameOver())
 		return;
+
+	if (RTConfig->game_type != GameTypeCooperative) { //skip this check in coop mode
+		PlayerSlot *player_slot = getSlotByID(player->getID());
+		if (player_slot == NULL)
+			return;
+	} 
 	
-	if (killer->getID() == slot->id) 
+	PlayerSlot *slot = getSlotByIDRecursive(killer);
+
+	if (slot == NULL || killer->getID() == slot->id) 
 		return; //skip attachVehicle() call. magic. :)
 	
-	LOG_DEBUG(("player: %s killed by %s", player->registered_name.c_str(), killer->registered_name.c_str()));
+	LOG_DEBUG(("player: %s killed by %s", player->animation.c_str(), killer->animation.c_str()));
 		
 	if (slot->id == player->getID()) { //suicide
 		if (slot->frags > 0)
