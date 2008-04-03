@@ -1210,8 +1210,8 @@ void IPlayerManager::onPlayerDeath(const Object *player, const Object *killer) {
 	
 	PlayerSlot *slot = getSlotByIDRecursive(killer);
 
-	if (slot == NULL || killer->getID() == slot->id) 
-		return; //skip attachVehicle() call. magic. :)
+	if (slot == NULL) 
+		return;
 	
 	LOG_DEBUG(("player: %s killed by %s", player->animation.c_str(), killer->animation.c_str()));
 		
