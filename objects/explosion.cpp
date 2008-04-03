@@ -150,7 +150,7 @@ void Explosion::emit(const std::string &event, Object * emitter) {
 						emitter->Object::emit("death", this);
 						
 						Object * zombie = emitter->spawn((p&1)? "zombie": "slime", (p&1)? "zombie": "slime");
-						World->attachVehicle(emitter, zombie);
+						emitter->attachVehicle(zombie);
 					}
 				}
 			}
