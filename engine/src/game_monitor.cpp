@@ -179,6 +179,9 @@ GameItem& IGameMonitor::find(const std::string &property) {
 }
 
 void IGameMonitor::addObject(const Object *o) {
+	if (_destroy_classes.empty())
+		return;
+	
 	const int id = o->getID();
 	if (
 		_present_objects.find(id) != _present_objects.end() || //already here. int is faster than classname check and alwaysupdate
@@ -193,6 +196,9 @@ void IGameMonitor::addObject(const Object *o) {
 }
 
 void IGameMonitor::deleteObject(const Object *o) {
+	if (_destroy_classes.empty())
+		return;
+
 	const int id = o->getID();	
 	_present_objects.erase(id);
 	//LOG_DEBUG(("deleting target object: %s (%s)", o->animation.c_str(), o->classname.c_str()));
@@ -211,6 +217,20 @@ void IGameMonitor::checkItems(const float dt) {
 	}
 	
 	_specials.clear();
+	GET_CONFIG_VALUE("engine.kill-em-all-mode-display-last-targets", int, dlt, 5);
+	if (!_present_objects.empty() && (int)_present_objects.size() <= dlt) {
+		std::set<int>::iterator po = _present_objects.begin();
+		for(int i = 0; i < dlt && po != _present_objects.end(); ++i) {
+			const int id = *po++;
+			Object *o = World->getObjectByID(id);
+			if (o == NULL)
+				continue;
+			
+			v2<int> pos;
+			o->getCenterPosition(pos);
+			_specials.push_back(v3<int>(pos.x, pos.y, id));	
+		}
+	}
 	for(size_t i = 0; i < _external_specials.size(); ++i) {
 		const int id = _external_specials[i];
 		Object *o = World->getObjectByID(id);

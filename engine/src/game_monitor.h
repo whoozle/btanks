@@ -140,12 +140,11 @@ public:
 	void startGameTimer(const std::string &name, const float period, const bool repeat);
 	void stopGameTimer(const std::string &name);
 
-	void addObject(const Object *o);
-	void deleteObject(const Object *o);
-	
 private:
 	sl08::slot1<void, const Object *, IGameMonitor> add_object_slot;
 	sl08::slot1<void, const Object *, IGameMonitor> delete_object_slot;
+	void addObject(const Object *o);
+	void deleteObject(const Object *o);
 
 	void saveCampaign();
 
