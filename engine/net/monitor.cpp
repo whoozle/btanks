@@ -23,10 +23,13 @@
 #include "mrt/exception.h"
 #include "mrt/socket_set.h"
 #include "mrt/tcp_socket.h"
+#include "mrt/udp_socket.h"
 #include "mrt/gzip.h"
 #include "connection.h"
 #include "config.h"
 #include "sdlx/timer.h"
+#include "message.h"
+#include "player_manager.h"
 
 #ifdef _WINDOWS
 #	include "Winsock2.h"
@@ -45,6 +48,44 @@
 #	include <stdint.h>
 #endif
 
+//public accept
+
+void Monitor::accept() {
+	{
+		sdlx::AutoMutex m(_connections_mutex);
+		if (_new_connections.empty())
+			return;
+	}
+
+	LOG_DEBUG(("client(s) connected... [main thread context]"));
+	Message msg(Message::ServerStatus);
+	int id = PlayerManager->onConnect(msg);
+
+	{
+		sdlx::AutoMutex m(_connections_mutex);
+		delete _connections[id];
+		_connections[id] = new Connection(_new_connections.front());
+		_new_connections.pop_front();
+	}
+
+	mrt::Chunk data;
+	msg.serialize2(data);
+
+	LOG_DEBUG(("sending message '%s' to %d", msg.getType(), id));
+	send(id, data, msg.realtime());
+}
+
+//private accept
+void Monitor::_accept() {
+	mrt::TCPSocket *s = NULL;
+	TRY {
+		s = new mrt::TCPSocket;
+		_server_sock->accept(*s);
+		s->noDelay();
+		sdlx::AutoMutex m(_connections_mutex);
+		_new_connections.push_back(s);
+	} CATCH("accept", { delete s; s = NULL; })
+}
 
 Monitor::Task::Task(const int id) : 
 	id(id), data(new mrt::Chunk), pos(0), len(0), size_task(false), flags(0), timestamp(0) {}
@@ -61,7 +102,7 @@ Monitor::Monitor() : _running(false),
 	_send_q(), _recv_q(), _result_q(), 
 	_disconnections(), _connections(), 
 	_connections_mutex(), _result_mutex(), _send_q_mutex(), 
-	_comp_level(0), _dgram_sock(NULL) {
+	_comp_level(0), _dgram_sock(NULL), _server_sock(NULL) {
 	GET_CONFIG_VALUE("multiplayer.compression-level", int, cl, 1);
 	_comp_level = cl;
 	LOG_DEBUG(("compression level = %d", _comp_level));
@@ -71,6 +112,9 @@ void Monitor::add(mrt::UDPSocket *socket) {
 	_dgram_sock = socket;
 }
 
+void Monitor::add(mrt::TCPSocket *socket) {
+	_server_sock = socket;
+}
 
 void Monitor::add(const int id, Connection *c) {
 	sdlx::AutoMutex m(_connections_mutex);
@@ -270,9 +314,18 @@ TRY {
 			set.add(_dgram_sock, _send_dgram.empty()? mrt::SocketSet::Read: mrt::SocketSet::Read | mrt::SocketSet::Write);
 		}
 
+		if (_server_sock != NULL) {
+			set.add(_server_sock, mrt::SocketSet::Read);
+		}
+
 		if (set.check(mpi) == 0) {
 			///LOG_DEBUG(("no events"));
 			continue;
+		}
+
+		if (_server_sock != NULL && set.check(_server_sock, mrt::SocketSet::Read)) {
+			LOG_DEBUG(("accepting connection..."));
+			_accept();
 		}
 			
 		if (_dgram_sock != NULL && set.check(_dgram_sock, mrt::SocketSet::Read)) {

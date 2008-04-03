@@ -46,6 +46,7 @@ void Server::init() {
 
 	_monitor = new Monitor;
 	_monitor->add(&_udp_sock);
+	_monitor->add(&_sock);
 	_monitor->start();
 }
 
@@ -71,28 +72,12 @@ void Server::restart() {
 void Server::tick(const float dt) {
 	if (!_monitor) 
 		return;
+	TRY {
+		_monitor->accept();
+	} CATCH("accepting client", throw);
+	
 	int id = -1;
 	TRY {
-		//send world coordinated, receive events.
-		mrt::SocketSet set;
-		set.add(_sock);
-		
-		int socks_n = set.check(0);
-		if (socks_n > 0 && set.check(_sock, mrt::SocketSet::Read)) {
-			mrt::TCPSocket *s = NULL;
-			TRY {
-				s = new mrt::TCPSocket;
-				_sock.accept(*s);
-				s->noDelay();
-				
-				LOG_DEBUG(("client connected..."));
-				Message msg(Message::ServerStatus);
-				int id = PlayerManager->onConnect(msg);
-				_monitor->add(id, new Connection(s));
-				send(id, msg);
-			} CATCH("accept", { delete s; s = NULL; })
-		}
-
 		mrt::Chunk data;
 		int delta;
 		

@@ -24,10 +24,11 @@
 #include <map>
 #include "sdlx/thread.h"
 #include "sdlx/mutex.h"
-#include "mrt/udp_socket.h"
 
 namespace mrt {
 	class Chunk;
+	class UDPSocket;
+	class TCPSocket;
 }
 
 class Connection;
@@ -40,17 +41,20 @@ public:
 	
 	void send(const int id, const mrt::Chunk &data, const bool dgram = false);
 	void broadcast(const mrt::Chunk &data, const bool dgram = false);
+	void accept();
 	const bool recv(int &id, mrt::Chunk &data, int &timestamp);
 	const bool disconnected(int &id);
 	
 	void disconnect(const int id);
 	
 	void add(mrt::UDPSocket *socket);
+	void add(mrt::TCPSocket *server_socket);
 	
 	~Monitor();
 	Connection *pop();
 
 private:
+	void _accept();
 	volatile bool _running;
 	
 	virtual const int run();
@@ -76,6 +80,7 @@ private:
 	
 	typedef std::deque<Task *> TaskQueue;
 	TaskQueue _send_q, _send_dgram, _recv_q, _result_q;
+	std::deque<mrt::TCPSocket *> _new_connections;
 	std::deque<int> _disconnections;
 	
 	ConnectionMap _connections;
@@ -87,6 +92,7 @@ private:
 	
 	int _comp_level;
 	mrt::UDPSocket *_dgram_sock;
+	mrt::TCPSocket *_server_sock;
 };
 
 #endif
