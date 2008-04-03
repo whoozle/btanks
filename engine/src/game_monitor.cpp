@@ -50,7 +50,8 @@
 
 IMPLEMENT_SINGLETON(GameMonitor, IGameMonitor);
 
-IGameMonitor::IGameMonitor() : _game_over(false), _win(false), _check_items(0.5, true), _state_timer(false), _timer(0), _campaign(NULL)
+IGameMonitor::IGameMonitor() : _game_over(false), _win(false), _check_items(0.5, true), _state_timer(false), _timer(0), 
+	_objects_limit_reached(false), _campaign(NULL)
 #ifdef ENABLE_LUA
 , lua_hooks(new LuaHooks) 
 #endif
@@ -218,9 +219,10 @@ void IGameMonitor::checkItems(const float dt) {
 	
 	_specials.clear();
 	GET_CONFIG_VALUE("engine.kill-em-all-mode-display-last-targets", int, dlt, 5);
-	if (!_present_objects.empty() && (int)_present_objects.size() <= dlt) {
+	if (!_present_objects.empty() && (_objects_limit_reached || (int)_present_objects.size() <= dlt)) {
+		_objects_limit_reached = true; //once displayed, always display
 		std::set<int>::iterator po = _present_objects.begin();
-		for(int i = 0; i < dlt && po != _present_objects.end(); ++i) {
+		for(int i = 0; po != _present_objects.end() && (_objects_limit_reached || i < dlt); ++i) {
 			const int id = *po++;
 			Object *o = World->getObjectByID(id);
 			if (o == NULL)
@@ -386,6 +388,7 @@ void IGameMonitor::clear() {
 	_check_items.reset();
 	_disabled.clear();
 	_destroy_classes.clear();
+	_objects_limit_reached = false;
 
 	_waypoints.clear();
 	_all_waypoints.clear();
