@@ -41,38 +41,16 @@ Client::~Client() {
 void Client::init(const std::string &host) {
 	delete _monitor;
 
-	GET_CONFIG_VALUE("multiplayer.bind-address", std::string, bindaddr, std::string());
 	GET_CONFIG_VALUE("multiplayer.port", int, port, 27255);
 	
 	LOG_DEBUG(("client::init('%s':%u)", host.c_str(), port));	
 	//_udp_sock.create();
 	//_udp_sock.listen(bindaddr, port);
-	_udp_sock.connect(host, port);
-	//LOG_DEBUG(("udp socket started..."));
-
-	Connection *conn = NULL;
-	TRY { 
-		conn = new Connection(new mrt::TCPSocket);
-		conn->sock->connect(host, port, true);
-		conn->sock->noDelay();
-		_monitor = new Monitor;
-		_monitor->add(&_udp_sock);
-		_monitor->start();
-		_monitor->add(0, conn);
-		conn = NULL;
-	} CATCH("init", {delete conn; conn = NULL; throw; });
+	_monitor = new Monitor;
+	_monitor->add(&_udp_sock);
+	_monitor->connect(host);
+	_monitor->start();
 }
-
-/*
-void Client::notify(const PlayerState &state) {
-	if (!_monitor)
-		return;
-	
-	Message m(Message::PlayerState);
-	state.serialize2(m.data);
-	send(m);
-}
-*/
 
 void Client::send(const Message &m) {
 	LOG_DEBUG(("sending '%s' via channel %d", m.getType(), m.channel));

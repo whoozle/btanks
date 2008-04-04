@@ -22,6 +22,7 @@
 
 #include <deque>
 #include <map>
+#include <string>
 #include "sdlx/thread.h"
 #include "sdlx/mutex.h"
 
@@ -39,6 +40,7 @@ public:
 	void add(const int id, Connection *);
 	const bool active() const;
 	
+	void connect(const std::string &host);
 	void send(const int id, const mrt::Chunk &data, const bool dgram = false);
 	void broadcast(const mrt::Chunk &data, const bool dgram = false);
 	void accept();
@@ -55,6 +57,7 @@ public:
 
 private:
 	void _accept();
+	void _connect();
 	volatile bool _running;
 	
 	virtual const int run();
@@ -93,6 +96,7 @@ private:
 	int _comp_level;
 	mrt::UDPSocket *_dgram_sock;
 	mrt::TCPSocket *_server_sock;
+	std::string _connect_host;
 };
 
 #endif

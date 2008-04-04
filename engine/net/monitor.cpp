@@ -48,6 +48,34 @@
 #	include <stdint.h>
 #endif
 
+
+void Monitor::connect(const std::string &host) {
+	sdlx::AutoMutex m(_connections_mutex);
+	_connect_host = host;
+}
+
+void Monitor::_connect() {
+	std::string host;
+	{
+		sdlx::AutoMutex m(_connections_mutex);
+		host = _connect_host;
+		_connect_host.clear();
+	}
+	GET_CONFIG_VALUE("multiplayer.port", int, port, 27255);
+	LOG_DEBUG(("[monitor thread] connecting to %s:%d", host.c_str(), port));
+	
+	_dgram_sock->connect(host, port);
+
+	Connection *conn = NULL;
+	TRY { 
+		conn = new Connection(new mrt::TCPSocket);
+		conn->sock->connect(host, port, true);
+		conn->sock->noDelay();
+		add(0, conn);
+		conn = NULL;
+	} CATCH("init", {delete conn; conn = NULL; throw; });
+}
+
 //public accept
 
 void Monitor::accept() {
@@ -288,6 +316,11 @@ const int Monitor::run() {
 TRY {
 	_running = true;
 	LOG_DEBUG(("network monitor thread was started..."));
+	{
+		sdlx::AutoMutex m(_connections_mutex);
+		if (!_connect_host.empty())
+			_connect();
+	}
 	GET_CONFIG_VALUE("multiplayer.polling-interval", int, mpi, 1);
 	while(_running) {
 		std::set<int> cids;
