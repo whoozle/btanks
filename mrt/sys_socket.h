@@ -62,10 +62,13 @@ namespace mrt {
 		
 		void close(); 
 		virtual ~Socket();
+		
 	protected: 
 		int _sock;
 
 		friend class SocketSet;
+	private: 
+		void no_linger();
 	};
 }
 

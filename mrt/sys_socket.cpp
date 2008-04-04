@@ -89,13 +89,15 @@ void Socket::create(const int af, int type, int protocol) {
 	_sock = socket(af, type, protocol);
 	if (_sock == -1) 
 		throw_net(("socket"));
+
+	no_linger();
 }
 
 void Socket::close() {
 	if (_sock == -1)
 		return;
 	
-	shutdown(_sock, 2);
+	//shutdown(_sock, 2); //we use do not use lingering by default
 #ifdef _WINDOWS
 	::closesocket(_sock);
 #else
@@ -106,4 +108,14 @@ void Socket::close() {
 
 Socket::~Socket() {
 	close();
+}
+
+void Socket::no_linger() {
+TRY {
+	struct linger lflags;
+	memset(&lflags, 0, sizeof(lflags)); //disable linger
+	int r = setsockopt(_sock, SOL_SOCKET, SO_LINGER, (char *)&lflags, sizeof(lflags));
+	if (r < 0) 
+		throw_net(("setsockopt(TCP_NODELAY)"));
+} CATCH("noLinger", {});
 }
