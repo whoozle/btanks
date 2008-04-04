@@ -21,18 +21,22 @@
 
 
 #include "player_state.h"
+#include "alarm.h"
 
 class PlayerSlot;
 
 class ControlMethod {
 protected:
 	virtual void _updateState(PlayerSlot &slot, PlayerState &state) = 0;
-public:
+public:	
+	ControlMethod();
 	void updateState(PlayerSlot &slot, PlayerState &state, const float dt);
 	virtual void probe() const = 0;
 	virtual ~ControlMethod() {}
 private: 
-	PlayerState old_state;
+	bool _release_set;
+	Alarm _release_timer;
+	PlayerState _old_state;
 };
 
 #endif
