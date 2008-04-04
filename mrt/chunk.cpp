@@ -35,19 +35,19 @@ const Chunk& Chunk::operator=(const Chunk& c) {
 	if (this == &c) 
 		return *this; // same object
 
-    if (c.ptr == NULL) {
-    	free();
-    	return *this;
-    }
-    assert(c.size > 0);
+	if (c.ptr == NULL) {
+		free();
+		return *this;
+	}
+	assert(c.size > 0);
 
-    void *p = realloc(ptr, c.size);
-    if (p == NULL) 
-		throw_io(("realloc"));
+	void *p = realloc(ptr, c.size);
+	if (p == NULL) 
+		throw_io(("realloc (%p, %u)", ptr, (unsigned)c.size));
 	ptr = p;
-    size = c.size;
-    memcpy(ptr, c.ptr, c.size);
-    return *this;
+	size = c.size;
+	memcpy(ptr, c.ptr, c.size);
+	return *this;
 }
 
 void Chunk::setSize(size_t s) {
@@ -61,19 +61,19 @@ void Chunk::setSize(size_t s) {
 
 	void * x = realloc(ptr, s);
 	if (x == NULL) 
-		throw_io(("realloc (%p, %d)", ptr, s));
+		throw_io(("realloc (%p, %u)", ptr, (unsigned)s));
 	ptr = x;
 	size = s;
 }
 
 void Chunk::setData(const void *p, const size_t s) {
 	if (p == NULL || s == 0)
-		throw_ex(("calling setData(%p, %u) is invalid", p, s));
+		throw_ex(("calling setData(%p, %u) is invalid", p, (unsigned)s));
 
 	void *x = realloc(ptr, s);
 
 	if (x == NULL) 
-		throw_io(("realloc (%p, %d)", ptr, s));
+		throw_io(("realloc (%p, %d)", ptr, (unsigned)s));
 	ptr = x;
 	memcpy(ptr, p, s);
 	size = s;
@@ -81,7 +81,7 @@ void Chunk::setData(const void *p, const size_t s) {
 
 void Chunk::setData(void *p, const size_t s, const bool own) {
 	if (p == NULL || s == 0) 
-		throw_ex(("calling setData(%p, %u, %s) is invalid", p, s, own?"true":"false"));
+		throw_ex(("calling setData(%p, %u, %s) is invalid", p, (unsigned)s, own?"true":"false"));
 	
 	if (own) {
 		free();
@@ -90,7 +90,7 @@ void Chunk::setData(void *p, const size_t s, const bool own) {
 	} else {
 		void *x = realloc(ptr, s);
 		if (x == NULL) 
-			throw_io(("realloc(%p, %d)", ptr, s));
+			throw_io(("realloc(%p, %d)", ptr, (unsigned)s));
 		ptr = x;
 		size = s;
 		memcpy(ptr, p, s);
@@ -123,7 +123,7 @@ const std::string Chunk::dump() const {
 		return "empty memory chunk";
 	assert(ptr != 0);
 	
-	std::string result = formatString("-[memory dump]-[size: %d]---", size);
+	std::string result = formatString("-[memory dump]-[size: %u]---", (unsigned)size);
 	size_t n = (size - 1)/ 16 + 1;
 	for(size_t i = 0; i < n; ++i) {
 		result += "\n";
