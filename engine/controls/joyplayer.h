@@ -26,10 +26,10 @@
 class JoyPlayer :public ControlMethod {
 public:
 	JoyPlayer(const int idx);
-	virtual void updateState(PlayerSlot &slot, PlayerState &state);
 	virtual void probe() const;
 
 private:
+	virtual void _updateState(PlayerSlot &slot, PlayerState &state);
 	int _idx;
 	mutable std::string _name;
 	sdlx::Joystick _joy;

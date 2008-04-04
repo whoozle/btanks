@@ -20,14 +20,19 @@
  */
 
 
-class PlayerState;
+#include "player_state.h"
+
 class PlayerSlot;
 
 class ControlMethod {
+protected:
+	virtual void _updateState(PlayerSlot &slot, PlayerState &state) = 0;
 public:
-	virtual void updateState(PlayerSlot &slot, PlayerState &state) = 0;
+	void updateState(PlayerSlot &slot, PlayerState &state, const float dt);
 	virtual void probe() const = 0;
 	virtual ~ControlMethod() {}
+private: 
+	PlayerState old_state;
 };
 
 #endif

@@ -26,7 +26,8 @@
 class ExternalControl : public ControlMethod {
 public:
 	PlayerState state;
-	virtual void updateState(PlayerSlot &slot, PlayerState &s);
+private: 
+	virtual void _updateState(PlayerSlot &slot, PlayerState &s);
 };
 
 #endif
