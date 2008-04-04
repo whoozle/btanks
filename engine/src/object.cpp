@@ -971,14 +971,6 @@ void Object::calculate(const float dt) {
 }
 
 
-const bool Object::old_findPath(const v2<float> &position, Way &way) const {
-	return World->old_findPath(this, position, way);
-}
-
-const bool Object::old_findPath(const Object *target, Way &way) const {
-	return World->old_findPath(this, getRelativePosition(target), way, target);
-}
-
 const std::string Object::getType() const {
 	static const std::string empty;
 	return empty;
@@ -1542,10 +1534,6 @@ void Object::enumerateObjects(std::set<const Object *> &o_set, const float range
 
 const int Object::getChildren(const std::string &classname) const {
 	return World->getChildren(getID(), classname);
-}
-
-void Object::getImpassabilityMatrix(Matrix<int> &matrix, const Object *dst) const {
-	World->getImpassabilityMatrix(matrix, this, dst);
 }
 
 const bool Object::take(const BaseObject *obj, const std::string &type) {

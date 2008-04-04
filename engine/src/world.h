@@ -75,7 +75,6 @@ public:
 	const bool getNearest(const Object *obj, const std::set<std::string> &classnames, const float range, v2<float> &position, v2<float> &velocity, const bool check_shooting_range) const;
 //end of the nearest
 
-	const bool old_findPath(const Object *obj, const v2<float>& position, Way & way, const Object * dst = NULL) const;
 	void getImpassabilityMatrix(Matrix<int> &matrix, const Object *src, const Object *dst) const;
 
 	virtual void serialize(mrt::Serializator &s) const;

@@ -131,7 +131,6 @@ public:
 	virtual const bool attachVehicle(Object *vehicle);
 
 	const int getChildren(const std::string &classname) const;
-	void getImpassabilityMatrix(Matrix<int> &matrix, const Object *dst) const;
 	void enumerateObjects(std::set<const Object *> &o_set, const float range, const std::set<std::string> *classfilter) const;
 
 	static const bool checkDistance(const v2<float> &map1, const v2<float>& map2, const int z, const bool use_pierceable_fixes);
@@ -184,9 +183,6 @@ protected:
 	void calculateWayVelocity();
 
 	Object * spawnGrouped(const std::string &classname, const std::string &animation, const v2<float> &dpos, const GroupType type);
-
-	const bool old_findPath(const v2<float> &position, Way &way) const;
-	const bool old_findPath(const Object *target, Way &way) const;
 
 	const bool getNearest(const std::set<std::string> &classnames, const float range, v2<float> &position, v2<float> &velocity, const bool check_shooting_range) const;
 	const Object * getNearestObject(const std::set<std::string> &classnames, const float range, const bool check_shooting_range) const;

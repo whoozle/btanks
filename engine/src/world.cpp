@@ -1728,5 +1728,3 @@ void IWorld::teleport(Object *object, const v2<float> &position) {
 	object->addEffect("teleportation", 1);
 }
 
-
-#include "world_old_pf.cpp"
