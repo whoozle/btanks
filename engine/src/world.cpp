@@ -604,7 +604,7 @@ void IWorld::getImpassabilityMatrix(Matrix<int> &matrix, const Object *src, cons
 	//LOG_DEBUG(("projected objects:\n%s", matrix.dump().c_str()));
 }
 
-#include "ai/buratino.h"
+#include "ai/synchronizable.h"
 
 void IWorld::_tick(Object &o, const float dt, const bool do_calculate) {
 	if (o.isDead()) 
@@ -713,7 +713,7 @@ TRY {
 					o.calculate(dt);
 				}
 			}
-			if (old_state != o.getPlayerState() && dynamic_cast<ai::Buratino *>(&o) != NULL) {
+			if (old_state != o.getPlayerState() && dynamic_cast<ai::Synchronizable *>(&o) != NULL) {
 				//LOG_DEBUG(("buratino %s changed state", o.animation.c_str()));
 				PlayerManager->sendObjectState(o.getID(), o.getPlayerState());
 			}

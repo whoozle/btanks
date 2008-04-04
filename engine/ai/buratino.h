@@ -25,9 +25,10 @@
 #include <string>
 #include <set>
 #include "alarm.h"
+#include "synchronizable.h"
 
 namespace ai {
-class BTANKSAPI Buratino {
+class BTANKSAPI Buratino : public ai::Synchronizable {
 public: 
 	Buratino();
 	virtual ~Buratino();
