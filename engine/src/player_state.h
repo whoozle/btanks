@@ -43,6 +43,7 @@ public:
 	inline const bool operator!=(const PlayerState &other) const {
 		return !(*this == other);
 	}
+	bool compare_directions(const PlayerState &other) const;
 
 	template <typename T>
 	void get_velocity(v2<T> &result) {

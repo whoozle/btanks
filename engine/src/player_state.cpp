@@ -35,6 +35,10 @@ const bool PlayerState::operator==(const PlayerState &other) const {
 		fire == other.fire && alt_fire == other.alt_fire && leave == other.leave && hint_control == other.hint_control;
 }
 
+bool PlayerState::compare_directions(const PlayerState &other) const {
+	return left == other.left && right == other.right && up == other.up && down == other.down;
+}
+
 #define TEST_BIT(var, n) ((var & (1<<n)) != 0)
 
 void PlayerState::deserialize(const mrt::Serializator &s) {
