@@ -124,6 +124,13 @@ void Missile::calculate(const float dt) {
 
 void Missile::emit(const std::string &event, Object * emitter) {
 	if (event == "collision") {
+		if (type == "boomerang") {
+			if (emitter == NULL || emitter->hp == -1) {
+				playSound("boomerang-hit", false);
+				_velocity = -_velocity;
+				return;
+			}
+		}
 		if (emitter != NULL) { 
 			if (type == "stun") {
 				GET_CONFIG_VALUE("objects.stun-missile.stun-duration", float, sd, 5);
@@ -132,14 +139,7 @@ void Missile::emit(const std::string &event, Object * emitter) {
 			}
 			if (emitter->classname == "smoke-cloud" && type != "smoke")
 				return;
-		} else {
-			//emitter == NULL
-			if (type == "boomerang") {
-				playSound("boomerang-hit", false);
-				_velocity = -_velocity;
-				return;
-			}
-		}
+		} 
 		emit("death", emitter);
 	} if (event == "death" && type == "smoke") {
 		GET_CONFIG_VALUE("objects.smoke-cloud-downwards-z-override", int, csdzo, 350);
