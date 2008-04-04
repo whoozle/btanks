@@ -28,17 +28,21 @@ const bool Alarm::tick(const float dt) {
 	if (dt < 0) {
 		return false;
 	}
+	
+	if (!_repeat) {
+		if (_t < _period)
+			_t += dt;
+		return _t >= _period;
+	} else {
+		_t += dt;
+		if (_t < _period)
+			return false;
 
-	_t += dt;
-	if (_t < _period)
-		return false;
-
-	if (_period) {
 		while(_t > _period)
 			_t -= _period;
-	}
 	
-	return true;
+		return true;	
+	}
 }
 
 const float Alarm::get() const {
