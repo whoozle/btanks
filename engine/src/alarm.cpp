@@ -26,37 +26,33 @@ Alarm::Alarm(const bool repeat): _period(0), _t(0), _repeat(repeat) {}
 const bool Alarm::tick(const float dt) {
 	assert(_period != 0);
 	if (dt < 0) {
-		//_t -= dt;
 		return false;
 	}
-	
-	if (_t == 0)
-		return true;
-	int n = (int) (dt / _period);
-	
-	_t -= (dt - (n * _period));
-	
-	if (_t <= 0) {
-		_t = _repeat?_period + _t:0;
-		return true;
+
+	_t += dt;
+	if (_t < _period)
+		return false;
+
+	if (_period) {
+		while(_t > _period)
+			_t -= _period;
 	}
-	return false;
+	
+	return true;
 }
 
 const float Alarm::get() const {
-	return _t / _period;
+	return (_t >= _period)?1: _t / _period;
 }
-
 
 void Alarm::set(const float period, const bool reset) {
 	_period = period;
 	if (reset)
-		_t = period;
+		_t = 0;
 }
 
-
 void Alarm::reset() {
-	_t = _period;
+	_t = 0;
 }
 
 void Alarm::serialize(mrt::Serializator &s) const {
