@@ -81,7 +81,7 @@ const int IPlayerManager::onConnect(Message &message) {
 	
 	serializeSlots(s);	
 
-	message.data = s.getData();
+	s.finalize(message.data);
 	LOG_DEBUG(("server status message size = %u", (unsigned) message.data.getSize()));
 
 	//LOG_DEBUG(("world: %s", message.data.dump().c_str()));
@@ -173,7 +173,7 @@ TRY {
 		
 		Message m(Message::GameJoined);
 		m.channel = id;
-		m.data = s.getData();
+		s.finalize(m.data);
 		_server->send(cid, m);
 
 		Window->resetTimer();
@@ -241,7 +241,7 @@ TRY {
 			
 		Message m(Message::UpdateWorld);
 		m.set("sync", "1");
-		m.data = s.getData();
+		s.finalize(m.data);
 		_server->send(cid, m);
 		break;
 	}
@@ -366,7 +366,7 @@ TRY {
 		out.add(delta);
 
 		Message m(Message::Pang);
-		m.data = out.getData();
+		out.finalize(m.data);
 				
 		_server->send(cid, m);
 		break;
@@ -405,7 +405,7 @@ TRY {
 		out.add(_net_stats.getDelta());
 
 		Message m(Message::Pong);
-		m.data = out.getData();
+		out.finalize(m.data);
 		_client->send(m);
 	} break;
 	
@@ -554,7 +554,7 @@ void IPlayerManager::ping() {
 	s.add(_net_stats.getDelta());
 	
 	Message m(Message::Ping);
-	m.data = s.getData();
+	s.finalize(m.data);
 	_client->send(m);
 }
 
@@ -655,7 +655,7 @@ TRY {
 			serializeSlots(s);
 			World->generateUpdate(s, false);
 			
-			m.data = s.getData();
+			s.finalize(m.data);
 			send(slot, m);
 		}
 	}
@@ -736,7 +736,7 @@ TRY {
 	
 			Message m(Message::PlayerState);
 			m.channel = i;
-			m.data = s.getData();
+			s.finalize(m.data);
 			_client->send(m);
 			_players[i].need_sync = false;
 		}
@@ -787,7 +787,7 @@ TRY {
 
 		if (send) {
 			Message m(Message::UpdatePlayers);
-			m.data = s.getData();
+			s.finalize(m.data);
 			broadcast(m, true);
 		}
 	}
@@ -974,7 +974,7 @@ TRY {
 				serializeSlots(s);
 				World->generateUpdate(s, true);
 				GameMonitor->serialize(s);
-				m.data = s.getData();
+				s.finalize(m.data);
 			}
 			LOG_DEBUG(("sending world update... (size: %u)", (unsigned)m.data.getSize()));
 			broadcast(m, true);
@@ -1244,7 +1244,7 @@ void IPlayerManager::onDestroyMap(const std::set<v3<int> > & cells) {
 	}
 
 	Message m(Message::DestroyMap);
-	m.data = s.getData();
+	s.finalize(m.data);
 	broadcast(m, true);	
 }
 
@@ -1419,6 +1419,6 @@ void IPlayerManager::requestObjects(const int first_id) {
 	Message m(Message::RequestObjects);
 	mrt::Serializator s;
 	s.add(first_id);
-	m.data = s.getData();
+	s.finalize(m.data);
 	_client->send(m);
 }

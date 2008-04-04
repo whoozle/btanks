@@ -32,7 +32,7 @@ void Scanner::createMessage(mrt::Chunk &data) {
 	Uint32 ticks = SDL_GetTicks();
 	mrt::Serializator s;
 	s.add(ticks);
-	m.data = s.getData();
+	s.finalize(m.data);
 	m.serialize2(data);
 }
 

@@ -25,7 +25,7 @@ using namespace mrt;
 void Serializable::serialize2(mrt::Chunk &d) const {
 	mrt::Serializator s;
 	serialize(s);
-	d = s.getData();
+	s.finalize(d);
 }
 
 void Serializable::deserialize2(const mrt::Chunk &d) {

@@ -141,7 +141,7 @@ void AITrooper::calculate(const float dt) {
 		return;
 	}
 
-	{
+	{/*
 		static std::set<std::string> bullets; 
 		if (bullets.empty()) {
 			bullets.insert("bullet");
@@ -169,6 +169,7 @@ void AITrooper::calculate(const float dt) {
 				}
 			}
 		}
+		*/
 	}
 
 	if (getState() == "fire") {

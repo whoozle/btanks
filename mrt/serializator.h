@@ -54,6 +54,7 @@ public:
 	void get(Chunk &c) const;
 	
 	const Chunk & getData() const;
+	void finalize(mrt::Chunk &data); //destroys serializator, but have no overhead on copy. for serialize2 method
 
 	void add(const void *raw, const int size); //same as add(chunk)
 

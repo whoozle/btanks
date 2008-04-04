@@ -265,3 +265,8 @@ void Serializator::get(Chunk &c)  const {
 const Chunk & Serializator::getData() const {
 	return *_data;
 }
+
+void Serializator::finalize(mrt::Chunk &data) {
+	data.setData(_data->getPtr(), _data->getSize(), true);
+	_data->unlink();
+}
