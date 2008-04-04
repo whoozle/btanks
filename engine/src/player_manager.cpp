@@ -964,7 +964,7 @@ void IPlayerManager::validateViewports() {
 }
 
 void IPlayerManager::tick(const float dt) {
-	if (!Map->loaded() || _players.empty())
+	if (_server != NULL && (!Map->loaded() || _players.empty()))
 		return;
 TRY {
 	Uint32 now = SDL_GetTicks();
