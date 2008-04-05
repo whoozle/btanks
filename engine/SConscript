@@ -9,10 +9,10 @@ Import('sdl_libs')
 
 Import('smpeg_lib')
 
-venv = env.Copy()
-env = env.Copy()
+venv = env.Clone()
+env = env.Clone()
 env.Append(CPPPATH=['#/engine', '#/engine/src'])
-bt_env = env.Copy()
+bt_env = env.Clone()
 
 env.MergeFlags(sdl_cflags, sdl_libs)
 bt_env.MergeFlags(sdl_cflags, sdl_libs)

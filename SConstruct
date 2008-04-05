@@ -36,7 +36,7 @@ opts.Add(BoolOption('gcc_visibility', 'gcc visibility', 'false'))
 opts.Add(BoolOption('enable_lua', 'enable lua support', 'true'))
 
 opts.Update(env)
-opts.Save('options.cache', env.Copy())
+opts.Save('options.cache', env.Clone())
 
 Help(opts.GenerateHelpText(env))
 
@@ -103,7 +103,7 @@ else:
 	env.Append(CCFLAGS=['-Wall', '-pedantic', '-Wno-long-long', '-pipe', '-pthread'])
 
 
-conf_env = env.Copy()
+conf_env = env.Clone()
 conf = Configure(conf_env)
 
 #print conf.env['CCFLAGS']
