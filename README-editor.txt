@@ -22,7 +22,7 @@ try opening existing map for learning basic techniques.
 
 keyboard controls: 
 
-alt-q                exit (DO NOT SAVES MAP!)
+alt-q                exit (DOES NOT SAVE MAP!)
 ctrl-c/ctrl-x        copy/cut
 escape               close dialog/remove brush
 insert,i             add object from the list. 
