@@ -25,13 +25,13 @@ void ControlMethod::updateState(PlayerSlot &slot, PlayerState &state, const floa
 	}
 	
 	if (!_release_set) {
-		LOG_DEBUG(("setting release timer"));
+		//LOG_DEBUG(("setting release timer"));
 		_release_timer.reset();
 		_release_set = true;
 		state = _old_state;
 		return;
 	} else if (_release_timer.tick(dt)) {
-		LOG_DEBUG(("release timer stopped"));
+		//LOG_DEBUG(("release timer stopped"));
 		_old_state = state;
 		_release_set = false;	
 	} else {
