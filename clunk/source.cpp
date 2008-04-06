@@ -115,7 +115,7 @@ void Source::hrtf(mrt::Chunk &result, int dst_n, const Sint16 *src, int src_ch, 
 					p += src_n;
 				v = src[p * src_ch];
 			}
-			src_data[j] = v / 32767.0;
+			src_data[j] = (v / 32767.0); // * sin(M_PI * j / (CLUNK_WINDOW_SIZE - 1));
 		}
 		
 		kiss_fftr(fft_state, src_data, freq);
