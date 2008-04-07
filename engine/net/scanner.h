@@ -4,7 +4,7 @@
 #include <set>
 #include <string>
 #include <map>
-#include <deque>
+#include <queue>
 #include "sdlx/thread.h"
 #include "sdlx/mutex.h"
 
@@ -41,9 +41,8 @@ private:
 	volatile bool _running, _scan, _changed;
 	sdlx::Mutex _hosts_lock;
 	HostMap _hosts;
-	typedef std::deque<std::pair<std::string, std::string> > CheckQueue;
+	typedef std::queue<std::pair<std::string, std::string> > CheckQueue;
 	CheckQueue check_queue;
 };
-
 
 #endif

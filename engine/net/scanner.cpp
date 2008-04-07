@@ -161,7 +161,7 @@ void Scanner::ping(mrt::UDPSocket &udp_sock, unsigned int port) {
 				return;
 			ip = check_queue.front().first;
 			host = check_queue.front().second;
-			check_queue.pop_front();
+			check_queue.pop();
 		}
 		if (ip.empty() && host.empty())
 			return;
@@ -206,6 +206,6 @@ void Scanner::get(HostMap &hosts) const {
 
 void Scanner::add(const std::string &ip, const std::string &name) {
 	sdlx::AutoMutex m(_hosts_lock);
-	check_queue.push_back(CheckQueue::value_type(ip, name));
+	check_queue.push(CheckQueue::value_type(ip, name));
 }
 

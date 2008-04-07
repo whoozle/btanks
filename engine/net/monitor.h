@@ -20,7 +20,7 @@
  */
 
 
-#include <deque>
+#include <list>
 #include <map>
 #include <string>
 #include "sdlx/thread.h"
@@ -81,10 +81,10 @@ private:
 	static void parse(mrt::Chunk &data, const unsigned char *buf, const int len, int &timestamp);
 	Task * createTask(const int id, const mrt::Chunk &data);
 	
-	typedef std::deque<Task *> TaskQueue;
+	typedef std::list<Task *> TaskQueue;
 	TaskQueue _send_q, _send_dgram, _recv_q, _result_q;
-	std::deque<mrt::TCPSocket *> _new_connections;
-	std::deque<int> _disconnections;
+	std::list<mrt::TCPSocket *> _new_connections;
+	std::list<int> _disconnections;
 	
 	ConnectionMap _connections;
 	sdlx::Mutex _connections_mutex, _result_mutex, _send_q_mutex, _send_dgram_mutex;
