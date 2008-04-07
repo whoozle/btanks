@@ -1,7 +1,7 @@
 #include "control_method.h"
 
 ControlMethod::ControlMethod() : _release_set(false), _release_timer(false) {
-	_release_timer.set(0.1f);
+	_release_timer.set(0.075f);
 }
 
 void ControlMethod::updateState(PlayerSlot &slot, PlayerState &state, const float dt) {
