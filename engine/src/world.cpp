@@ -1391,8 +1391,12 @@ void IWorld::cropObjects(const std::set<int> &ids) {
 			_objects.erase(i++);
 		} else {
 			if (o->_dead && (_out_of_sync == -1 || o->_id < _out_of_sync) ) {
-				LOG_DEBUG(("resurrecting object %d(%s) from the dead", o->getID(), o->animation.c_str()));
-				o->_dead = false;
+				if (o->animation.empty()) {
+					sync(o->getID());
+				} else {
+					LOG_DEBUG(("resurrecting object %d(%s) from the dead", o->getID(), o->animation.c_str()));
+					o->_dead = false;
+				}
 			}
 			++i;
 		}
