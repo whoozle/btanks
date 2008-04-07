@@ -550,6 +550,7 @@ void Object::serializeAll(mrt::Serializator &s) const {
 	for(Group::const_iterator i = _group.begin(); i != _group.end(); ++i) {
 		o = const_cast<Object *>(i->second);
 		if (!o->_need_sync) {
+			restore.push_back(o);
 			o->_need_sync = true;
 		}
 	}
