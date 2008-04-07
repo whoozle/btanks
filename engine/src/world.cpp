@@ -1392,6 +1392,7 @@ void IWorld::cropObjects(const std::set<int> &ids) {
 		} else {
 			if (o->_dead && (_out_of_sync == -1 || o->_id < _out_of_sync) ) {
 				if (o->animation.empty()) {
+					LOG_WARN(("BUG: object %d is out of sync, double check out-of-sync code.", o->getID()));
 					sync(o->getID());
 				} else {
 					LOG_DEBUG(("resurrecting object %d(%s) from the dead", o->getID(), o->animation.c_str()));
