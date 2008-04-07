@@ -11,7 +11,7 @@ file(file), method(method), flags(flags), offset(offset), csize(csize), usize(us
 		throw_ex(("compression method %u unsupported", method));
 	//LOG_DEBUG(("file created with usize: %ld", this->usize));
 	if (fseek(file, offset, SEEK_SET) == -1)
-		throw_io(("fseek(%lu, SEEK_SET)", offset));
+		throw_io(("fseek(%u, SEEK_SET)", offset));
 }
 
 void ZipFile::open(const std::string &fname, const std::string &mode) {
