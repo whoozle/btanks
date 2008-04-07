@@ -263,6 +263,11 @@ TRY {
 
 		PlayerState state;
 		state.deserialize(s);
+		if (slot.spectator) {
+			LOG_DEBUG(("activity in spectator slot: %s", state.dump().c_str()));
+			slot.old_state = state;
+			break;
+		}
 
 		Object * obj = slot.getObject();
 		if (obj == NULL) {
@@ -667,14 +672,22 @@ TRY {
 		Object *obj = slot.getObject();
 		if (slot.spectator) {
 			if (slot.control_method != NULL) {
+				bool old_fire = slot.old_state.fire != 0;
 				slot.control_method->updateState(slot, slot.old_state, dt);
 				//LOG_DEBUG(("SPECTATOR: %s", slot.old_state.dump().c_str()));
 				slot.old_state.get_velocity(slot.map_vel);
 				slot.map_vel *= 500;
 				slot.map_pos += slot.map_vel * dt;
+
+				if (_client && !old_fire && slot.old_state.fire != 0) {
+					LOG_DEBUG(("requesting extra life..."));
+					slot.need_sync = true;
+					updated = true;
+					continue;
+				}
 			}
 
-			if (slot.old_state.fire) {
+			if (!_client && slot.old_state.fire) {
 				int max = 1;
 				int max_slot = -1;
 				
@@ -728,11 +741,16 @@ TRY {
 			PlayerSlot &slot = _players[i];
 			if (slot.remote == -1 || !slot.need_sync)
 				continue;
+			
+			if (!slot.spectator) {
+				const Object * o = slot.getObject();
+				if (o == NULL)
+					continue;
 				
-			const Object * o = slot.getObject();
-			if (o == NULL)
-				continue;
-			o->getPlayerState().serialize(s);
+				o->getPlayerState().serialize(s);
+			} else {
+				slot.old_state.serialize(s);
+			}
 	
 			Message m(Message::PlayerState);
 			m.channel = i;
