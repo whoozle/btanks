@@ -22,7 +22,6 @@
 
 #include "mrt/tcp_socket.h"
 #include "mrt/udp_socket.h"
-#include <deque>
 
 class PlayerState;
 class Message;
