@@ -199,18 +199,18 @@ void Monitor::send(const int id, const mrt::Chunk &rawdata, const bool dgram) {
 }
 
 void Monitor::broadcast(const mrt::Chunk &data, const bool dgram) {
-	std::deque<Task *> tasks;
+	std::queue<Task *> tasks;
 	{
 		sdlx::AutoMutex m(_connections_mutex);
 		for(ConnectionMap::const_iterator i = _connections.begin(); i != _connections.end(); ++i) {
-			tasks.push_back(createTask(i->first, data));	
+			tasks.push(createTask(i->first, data));	
 		}
 	}
 	
 	sdlx::AutoMutex m(dgram?_send_dgram_mutex:_send_q_mutex);
 	while(!tasks.empty()) {
 		(dgram?_send_dgram:_send_q).push_back(tasks.front());
-		tasks.pop_front();
+		tasks.pop();
 	}
 }
 
