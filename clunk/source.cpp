@@ -148,6 +148,9 @@ void Source::hrtf(mrt::Chunk &result, int dst_n, const Sint16 *src, int src_ch, 
 
 		float max = CLUNK_WINDOW_SIZE;
 		int jmax = clunk_min(more, CLUNK_ACTUAL_WINDOW);
+		int jmin = clunk_min(jmax, CLUNK_WINDOW_OVERLAP);
+		//LOG_DEBUG(("last chunk : %d, overlap first %d", jmax, jmin));
+
 		for(int j = 0; j < jmax + CLUNK_WINDOW_OVERLAP; ++j) {
 			float v = src_data[j];
 			if (v > max) {
@@ -161,19 +164,23 @@ void Source::hrtf(mrt::Chunk &result, int dst_n, const Sint16 *src, int src_ch, 
 			//if (x > 32767 || x < -32767) 
 			//	LOG_WARN(("sample overflow: %d", x));
 			
-			if (use_overlap && j < CLUNK_WINDOW_OVERLAP && jmax >= CLUNK_WINDOW_OVERLAP) {
-				x = (x * j + overlap_data[j] * (CLUNK_WINDOW_OVERLAP - j)) / CLUNK_WINDOW_OVERLAP;
-			}
-
 			if (j >= jmax) {
 				assert(j - jmax < CLUNK_WINDOW_OVERLAP);
 				overlap_data[j - jmax] = x;
+				//if (jmax != CLUNK_ACTUAL_WINDOW)
+				//	LOG_DEBUG(("overlap[%d] = %d", j - jmax, x));
 				use_overlap = true;
 			} else {
 				assert(offset + j < dst_n);
+
+				if (use_overlap && j < jmin) {
+					x = (x * j + overlap_data[j] * (jmin - j)) / jmin;
+				}
+
 				dst[offset + j] = x;
 			}
 		}
+		//assert (jmax == CLUNK_ACTUAL_WINDOW || offset + jmax == dst_n);
 	}
 }
 
