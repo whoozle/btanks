@@ -95,7 +95,7 @@ class Generator(object):
 		template %s 
 		class base_slotXXX {
 			typedef base_signalXXX %s signal_type; 
-			typedef std::deque<signal_type *> signals_type;
+			typedef std::list<signal_type *> signals_type;
 			signals_type signals;
 		public: 
 			virtual return_type operator() %s const = 0;
@@ -196,7 +196,7 @@ class Generator(object):
 		class base_signalXXX {
 		protected: 
 			typedef base_slotXXX %s slot_type; 
-			typedef std::deque<slot_type *> slots_type;
+			typedef std::list<slot_type *> slots_type;
 			slots_type slots;
 		
 		public: 
@@ -316,7 +316,7 @@ for i in xrange(0, 6):
 print """#ifndef BTANKS_SL08_SLOTSANDSIGNALS_H__
 #define BTANKS_SL08_SLOTSANDSIGNALS_H__
 
-#include <deque>
+#include <list>
 
 #ifndef NULL
 #define NULL            ((void*) 0)

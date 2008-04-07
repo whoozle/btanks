@@ -1,7 +1,7 @@
 #ifndef BTANKS_SL08_SLOTSANDSIGNALS_H__
 #define BTANKS_SL08_SLOTSANDSIGNALS_H__
 
-#include <deque>
+#include <list>
 
 #ifndef NULL
 #define NULL            ((void*) 0)
@@ -35,7 +35,7 @@ namespace sl08 {
 		template <typename return_type> 
 		class base_slot0 {
 			typedef base_signal0 <return_type> signal_type; 
-			typedef std::deque<signal_type *> signals_type;
+			typedef std::list<signal_type *> signals_type;
 			signals_type signals;
 		public: 
 			virtual return_type operator() () const = 0;
@@ -112,7 +112,7 @@ namespace sl08 {
 		class base_signal0 {
 		protected: 
 			typedef base_slot0 <return_type> slot_type; 
-			typedef std::deque<slot_type *> slots_type;
+			typedef std::list<slot_type *> slots_type;
 			slots_type slots;
 		
 		public: 
@@ -210,7 +210,7 @@ namespace sl08 {
 		template <typename return_type, typename arg1_type> 
 		class base_slot1 {
 			typedef base_signal1 <return_type, arg1_type> signal_type; 
-			typedef std::deque<signal_type *> signals_type;
+			typedef std::list<signal_type *> signals_type;
 			signals_type signals;
 		public: 
 			virtual return_type operator() (arg1_type a1) const = 0;
@@ -287,7 +287,7 @@ namespace sl08 {
 		class base_signal1 {
 		protected: 
 			typedef base_slot1 <return_type, arg1_type> slot_type; 
-			typedef std::deque<slot_type *> slots_type;
+			typedef std::list<slot_type *> slots_type;
 			slots_type slots;
 		
 		public: 
@@ -385,7 +385,7 @@ namespace sl08 {
 		template <typename return_type, typename arg1_type, typename arg2_type> 
 		class base_slot2 {
 			typedef base_signal2 <return_type, arg1_type, arg2_type> signal_type; 
-			typedef std::deque<signal_type *> signals_type;
+			typedef std::list<signal_type *> signals_type;
 			signals_type signals;
 		public: 
 			virtual return_type operator() (arg1_type a1, arg2_type a2) const = 0;
@@ -462,7 +462,7 @@ namespace sl08 {
 		class base_signal2 {
 		protected: 
 			typedef base_slot2 <return_type, arg1_type, arg2_type> slot_type; 
-			typedef std::deque<slot_type *> slots_type;
+			typedef std::list<slot_type *> slots_type;
 			slots_type slots;
 		
 		public: 
@@ -560,7 +560,7 @@ namespace sl08 {
 		template <typename return_type, typename arg1_type, typename arg2_type, typename arg3_type> 
 		class base_slot3 {
 			typedef base_signal3 <return_type, arg1_type, arg2_type, arg3_type> signal_type; 
-			typedef std::deque<signal_type *> signals_type;
+			typedef std::list<signal_type *> signals_type;
 			signals_type signals;
 		public: 
 			virtual return_type operator() (arg1_type a1, arg2_type a2, arg3_type a3) const = 0;
@@ -637,7 +637,7 @@ namespace sl08 {
 		class base_signal3 {
 		protected: 
 			typedef base_slot3 <return_type, arg1_type, arg2_type, arg3_type> slot_type; 
-			typedef std::deque<slot_type *> slots_type;
+			typedef std::list<slot_type *> slots_type;
 			slots_type slots;
 		
 		public: 
@@ -735,7 +735,7 @@ namespace sl08 {
 		template <typename return_type, typename arg1_type, typename arg2_type, typename arg3_type, typename arg4_type> 
 		class base_slot4 {
 			typedef base_signal4 <return_type, arg1_type, arg2_type, arg3_type, arg4_type> signal_type; 
-			typedef std::deque<signal_type *> signals_type;
+			typedef std::list<signal_type *> signals_type;
 			signals_type signals;
 		public: 
 			virtual return_type operator() (arg1_type a1, arg2_type a2, arg3_type a3, arg4_type a4) const = 0;
@@ -812,7 +812,7 @@ namespace sl08 {
 		class base_signal4 {
 		protected: 
 			typedef base_slot4 <return_type, arg1_type, arg2_type, arg3_type, arg4_type> slot_type; 
-			typedef std::deque<slot_type *> slots_type;
+			typedef std::list<slot_type *> slots_type;
 			slots_type slots;
 		
 		public: 
@@ -910,7 +910,7 @@ namespace sl08 {
 		template <typename return_type, typename arg1_type, typename arg2_type, typename arg3_type, typename arg4_type, typename arg5_type> 
 		class base_slot5 {
 			typedef base_signal5 <return_type, arg1_type, arg2_type, arg3_type, arg4_type, arg5_type> signal_type; 
-			typedef std::deque<signal_type *> signals_type;
+			typedef std::list<signal_type *> signals_type;
 			signals_type signals;
 		public: 
 			virtual return_type operator() (arg1_type a1, arg2_type a2, arg3_type a3, arg4_type a4, arg5_type a5) const = 0;
@@ -987,7 +987,7 @@ namespace sl08 {
 		class base_signal5 {
 		protected: 
 			typedef base_slot5 <return_type, arg1_type, arg2_type, arg3_type, arg4_type, arg5_type> slot_type; 
-			typedef std::deque<slot_type *> slots_type;
+			typedef std::list<slot_type *> slots_type;
 			slots_type slots;
 		
 		public: 
