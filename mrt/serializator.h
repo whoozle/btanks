@@ -24,6 +24,7 @@
 #include <string>
 #include "export_mrt.h"
 
+#include <list>
 #include <deque>
 #include <map>
 #include <set>
@@ -80,6 +81,24 @@ public:
 		}
 	}
 
+	//std::list
+	
+	template <typename T> 
+	void add(const std::list<T> &l) {
+		add((unsigned)l.size());
+		for(typename std::list<T>::const_iterator i = l.begin(); i != l.end(); ++i) 
+			add(*i);
+	}
+
+	template <typename T>
+	void get(std::list<T> &l) const {
+		unsigned n; get(n);
+		l.resize(n);
+		for(typename std::list<T>::iterator i = l.begin(); i != l.end(); ++i) {
+			get(*i);
+		}
+	}
+
 	//std::deque
 	
 	template <typename T> 
@@ -93,8 +112,8 @@ public:
 	void get(std::deque<T> &q) const {
 		unsigned n; get(n);
 		q.resize(n);
-		for(unsigned i = 0; i < n; ++i) {
-			get(q[i]);
+		for(typename std::deque<T>::iterator i = q.begin(); i != q.end(); ++i) {
+			get(*i);
 		}
 	}
 
