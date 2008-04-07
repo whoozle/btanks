@@ -62,10 +62,10 @@ const int mrt::random(const unsigned max) {
 	if (max < 2) 
 		return 0;
 
-	int bits;
-	unsigned m = max;
-	for(bits = 1; m >>= 1; ++bits);
-	bits = (32 - bits) / 2; //take middle bits of the generated number
+//	int bits;
+//	unsigned m = max;
+//	for(bits = 1; m >>= 1; ++bits);
+//	bits = (32 - bits) / 2; //take middle bits of the generated number
 	
 	unsigned x = rand_impl();
 	/*
@@ -77,7 +77,8 @@ const int mrt::random(const unsigned max) {
 	//LOG_DEBUG(("random number: 0x%08x, shifted: %u, max: %u", x, x >> len, max));
 	x >>= len;
 	*/
-	x = (x >> bits) % max;
+	//x = (x >> bits) % max;
+	x %= max;
 	//LOG_DEBUG(("result: %u of %d, bits: %d", x, max, bits));
 	return (int)x;
 }
