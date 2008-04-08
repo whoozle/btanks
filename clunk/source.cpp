@@ -42,7 +42,7 @@ using namespace clunk;
 Source::Source(const Sample * sample, const bool loop, const v3<float> &delta, float gain, float pitch) : 
 	sample(sample), loop(loop), delta_position(delta), gain(gain), pitch(pitch), 
 	reference_distance(1), rolloff_factor(1), 
-	position(0), use_overlap(false) , 
+	position(0), fadeout(0), fadeout_total(0), use_overlap(false) , 
 	fft_state(NULL), ffti_state(NULL) 
 	 {
 	if (sample == NULL)
@@ -50,6 +50,9 @@ Source::Source(const Sample * sample, const bool loop, const v3<float> &delta, f
 }
 	
 bool Source::playing() const {
+	if (fadeout_total > 0 && fadeout <= 0)
+		return false;
+	
 	return loop?true: position < (int)(sample->data.getSize() / sample->spec.channels / 2);
 }
 	
@@ -192,6 +195,13 @@ void Source::update_position(const int dp) {
 		//LOG_DEBUG(("position %d", position));
 		if (position < 0)
 			position += src_n;
+	}
+	if (fadeout_total > 0) {
+		fadeout -= dp;
+		if (fadeout <= 0) {
+			fadeout = 0;
+			loop = false;
+		}
 	}
 }
 
@@ -358,4 +368,8 @@ Source::~Source() {
 		kiss_fft_free(fft_state);
 	if (ffti_state != NULL)
 		kiss_fft_free(ffti_state);
+}
+
+void Source::fade_out(const float sec) {
+	fadeout = fadeout_total = (int)(sample->spec.freq * sec);
 }

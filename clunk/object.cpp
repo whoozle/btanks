@@ -46,9 +46,7 @@ void Object::cancel(const std::string &name) {
 	Sources::iterator b = sources.lower_bound(name);
 	Sources::iterator e = sources.upper_bound(name);
 	for(Sources::iterator i = b; i != e; ++i) {
-		//delete i->second;
-		i->second->loop = false;
-		//sources.erase(i++);
+		i->second->fade_out(0.2f);
 	}
 }
 
@@ -67,7 +65,7 @@ void Object::cancel_all(bool force) {
 		if (force) {
 			delete i->second;
 		} else {
-			i->second->loop = false;
+			i->second->fade_out(0.2f);
 		}
 	}
 	if (force) {

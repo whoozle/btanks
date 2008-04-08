@@ -58,6 +58,8 @@ public:
 	bool playing() const;
 
 	void update_position(const int dp);
+
+	void fade_out(const float sec);
 	
 	~Source();
 	
@@ -68,7 +70,7 @@ private:
 	void idt(const v3<float> &delta, float &idt_offset, float &angle_gr);
 	void hrtf(mrt::Chunk &result, int dst_n, const Sint16 *src, int src_ch, int src_n, const kemar_ptr& kemar_data, int kemar_idx);
 
-	int position;
+	int position, fadeout, fadeout_total;
 	
 	Sint16 overlap_data[CLUNK_WINDOW_OVERLAP];
 	bool use_overlap;
