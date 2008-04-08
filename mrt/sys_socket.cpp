@@ -112,17 +112,10 @@ Socket::~Socket() {
 
 void Socket::no_linger() {
 TRY {
-#ifdef _WINDOWS
-	int val = 1;
-	int r = setsockopt(_sock, SOL_SOCKET, SO_DONTLINGER, (char *)&val, sizeof(val));
-	if (r < 0) 
-		throw_net(("setsockopt(SO_DONTLINGER)"));
-#else
 	struct linger lflags;
 	memset(&lflags, 0, sizeof(lflags)); //disable linger
 	int r = setsockopt(_sock, SOL_SOCKET, SO_LINGER, (char *)&lflags, sizeof(lflags));
 	if (r < 0) 
 		throw_net(("setsockopt(SO_LINGER)"));
-#endif
 } CATCH("noLinger", {});
 }
