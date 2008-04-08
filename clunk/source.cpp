@@ -283,17 +283,19 @@ float Source::process(mrt::Chunk &buffer, unsigned dst_ch, const v3<float> &delt
 	int idt_offset = (int)(t_idt * sample->spec.freq);
 
 	mrt::Chunk sample3d_left, sample3d_right;
-	int idt_abs = idt_offset > 0? idt_offset: -idt_offset;
-	hrtf(sample3d_left, (int)((dst_n + idt_abs) * pitch), src, src_ch, src_n, kemar_data, kemar_idx_left);
-	hrtf(sample3d_right, (int)((dst_n + idt_abs) * pitch), src, src_ch, src_n, kemar_data, kemar_idx_right);
+	int idt_abs = idt_offset >= 0? idt_offset: -idt_offset;
+	hrtf(sample3d_left, dst_n + idt_abs, src, src_ch, src_n, kemar_data, kemar_idx_left);
+	hrtf(sample3d_right, dst_n + idt_abs, src, src_ch, src_n, kemar_data, kemar_idx_right);
 	
 	//LOG_DEBUG(("angle: %g", angle_gr));
 	//LOG_DEBUG(("idt offset %d samples", idt_offset));
 	Sint16 * src_3d[2] = { (Sint16 *)sample3d_left.getPtr(), (Sint16 *)sample3d_right.getPtr() };
 	
+	//LOG_DEBUG(("size: %u", (unsigned)sample3d_left.getSize()));
+	
 	for(unsigned i = 0; i < dst_n; ++i) {
 		for(unsigned c = 0; c < dst_ch; ++c) {
-			int p = idt_abs + (int)(i * pitch);
+			int p = idt_abs + i;
 			
 			Sint16 v = 0;
 			if (c <= 1) {
@@ -305,7 +307,6 @@ float Source::process(mrt::Chunk &buffer, unsigned dst_ch, const v3<float> &delt
 				}
 				if (p >= 0 && p * 2 < (int)sample3d_left.getSize())
 					v = src_3d[c][p];
-				//LOG_DEBUG(("%d->%d", p, v));
 			}
 			dst[i * dst_ch + c] = v;
 		}
