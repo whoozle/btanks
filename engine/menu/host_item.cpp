@@ -10,9 +10,14 @@ HostItem::HostItem() : ping(0), players(0), slots(0) , _line(new Label("small", 
 void HostItem::update() {
 	std::string prefix = slots != 0? mrt::formatString("[%d/%d] ", players, slots) : std::string("[-/-] ");
 	std::string mapstr;
-	if (ping > 0) 
-		mapstr = mrt::formatString("[%s: %s, %s: %d ms]", I18n->get("menu", "map").c_str(), map.c_str(), I18n->get("menu", "ping").c_str(), ping - 1);
-
+	
+	if (ping > 0) {
+		mapstr = "[";
+		if (!map.empty())
+			mapstr += mrt::formatString("%s: %s, ", I18n->get("menu", "map").c_str(), map.c_str());
+		mapstr += mrt::formatString("%s: %d ms]", I18n->get("menu", "ping").c_str(), ping - 1);
+	}
+	
 	std::string hoststr = name;
 	if (hoststr.empty()) {
 		hoststr = ip;
