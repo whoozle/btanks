@@ -338,7 +338,18 @@ const std::string IGameMonitor::popState(const float dt) {
 void IGameMonitor::gameOver(const std::string &area, const std::string &message, float time, const bool win) {
 	if (_game_over)
 		return;
-	
+
+	if (win) {
+		size_t n = PlayerManager->getSlotsCount();
+		for(size_t i = 0; i < n; ++i) {
+			PlayerSlot &slot = PlayerManager->getSlot(i);
+			Object *o = slot.getObject();
+			if (o != NULL) {
+				o->addEffect("invulnerability", -1);
+			}
+		}
+	}
+
 	_game_over = true;
 	_win = win;
 	displayMessage(area, message, time);
