@@ -26,7 +26,6 @@
 #include "mrt/udp_socket.h"
 #include "mrt/gzip.h"
 #include "connection.h"
-#include "config.h"
 #include "sdlx/timer.h"
 #include "message.h"
 #include "player_manager.h"
@@ -61,15 +60,14 @@ void Monitor::_connect() {
 		host = _connect_host;
 		_connect_host.clear();
 	}
-	GET_CONFIG_VALUE("multiplayer.port", int, port, 27255);
-	LOG_DEBUG(("[monitor thread] connecting to %s:%d", host.c_str(), port));
+	LOG_DEBUG(("[monitor thread] connecting to %s:%d", host.c_str(), _port));
 	
-	_dgram_sock->connect(host, port);
+	_dgram_sock->connect(host, _port);
 
 	Connection *conn = NULL;
 	TRY { 
 		conn = new Connection(new mrt::TCPSocket);
-		conn->sock->connect(host, port, true);
+		conn->sock->connect(host, _port, true);
 		conn->sock->noDelay();
 		add(0, conn);
 		conn = NULL;
@@ -126,12 +124,12 @@ Monitor::Task::Task(const int id, const int size) :
 
 void Monitor::Task::clear() { delete data; pos = len = 0; }
 
-Monitor::Monitor() : _running(false), 
+Monitor::Monitor(const int port, const int cl) : 
+	_port(port), _running(false), 
 	_send_q(), _recv_q(), _result_q(), 
 	_disconnections(), _connections(), 
 	_connections_mutex(), _result_mutex(), _send_q_mutex(), 
 	_comp_level(0), _dgram_sock(NULL), _server_sock(NULL) {
-	GET_CONFIG_VALUE("multiplayer.compression-level", int, cl, 1);
 	_comp_level = cl;
 	LOG_DEBUG(("compression level = %d", _comp_level));
 }
@@ -293,8 +291,7 @@ void Monitor::parse(mrt::Chunk &data, const unsigned char *buf, const int r, int
 	
 	unsigned long len = ntohl(*((const uint32_t *)buf));
 	ts = ntohl(*((const uint32_t *)(buf + 4)));
-	GET_CONFIG_VALUE("multiplayer.maximum-packet-length", int, max_len, 1024 * 1024);
-	if (len > (unsigned long)max_len)
+	if (len > 1048576)
 		throw_ex(("recv'ed packet length of %u. it seems to be far too long for regular packet (probably broken/obsoleted client)", (unsigned int)len));
 
 	unsigned char flags = buf[8];
@@ -321,7 +318,6 @@ TRY {
 		if (!_connect_host.empty())
 			_connect();
 	}
-	GET_CONFIG_VALUE("multiplayer.polling-interval", int, mpi, 1);
 	while(_running) {
 		std::set<int> cids;
 		mrt::SocketSet set; 
@@ -351,7 +347,7 @@ TRY {
 			set.add(_server_sock, mrt::SocketSet::Read);
 		}
 
-		if (set.check(mpi) == 0) {
+		if (set.check(1) == 0) {
 			///LOG_DEBUG(("no events"));
 			continue;
 		}
@@ -506,8 +502,7 @@ TRY {
 						const char * ptr = (char *)t->data->getPtr();
 						unsigned long len = ntohl(*((uint32_t *)ptr));
 						unsigned long ts = ntohl(*((uint32_t *)(ptr + 4)));
-						GET_CONFIG_VALUE("multiplayer.maximum-packet-length", int, max_len, 1024 * 1024);
-						if (len > (unsigned long)max_len)
+						if (len > 1048576)
 							throw_ex(("recv'ed packet length of %u. it seems to be far too long for regular packet (probably broken/obsoleted client)", (unsigned int)len));
 						unsigned char flags = *((unsigned char *)(t->data->getPtr()) + 8);
 						//LOG_DEBUG(("added task for %u bytes. flags = %02x", len, flags));
@@ -526,9 +521,7 @@ TRY {
 						}
 						_recv_q.erase(ti);
 
-						GET_CONFIG_VALUE("multiplayer.debug-delay", int, debug_delay, 0);
-						if (debug_delay > 0)
-							sdlx::Timer::microsleep("debug delay", debug_delay * 1000);
+						//sdlx::Timer::microsleep("debug delay", 100000);
 
 						sdlx::AutoMutex m2(_result_mutex);
 						_result_q.push_back(t);

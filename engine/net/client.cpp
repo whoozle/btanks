@@ -42,11 +42,12 @@ void Client::init(const std::string &host) {
 	delete _monitor;
 
 	GET_CONFIG_VALUE("multiplayer.port", int, port, 27255);
+	GET_CONFIG_VALUE("multiplayer.compression-level", int, cl, 1);
 	
 	LOG_DEBUG(("client::init('%s':%u)", host.c_str(), port));	
 	//_udp_sock.create();
 	//_udp_sock.listen(bindaddr, port);
-	_monitor = new Monitor;
+	_monitor = new Monitor(port, cl);
 	_monitor->add(&_udp_sock);
 	_monitor->connect(host);
 	_monitor->start();

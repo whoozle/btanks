@@ -35,7 +35,7 @@ namespace mrt {
 class Connection;
 class Monitor : public sdlx::Thread {
 public:
-	Monitor();
+	Monitor(const int port, const int cl);
 	void setCompressionLevel(const int level = 3);
 	void add(const int id, Connection *);
 	const bool active() const;
@@ -58,6 +58,7 @@ public:
 private:
 	void _accept();
 	void _connect();
+	int _port;
 	volatile bool _running;
 	
 	virtual const int run();

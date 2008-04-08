@@ -36,6 +36,7 @@ Server::~Server() {
 void Server::init() {
 	GET_CONFIG_VALUE("multiplayer.bind-address", std::string, bindaddr, std::string());
 	GET_CONFIG_VALUE("multiplayer.port", int, port, 27255);
+	GET_CONFIG_VALUE("multiplayer.compression-level", int, cl, 1);
 
 	LOG_DEBUG(("starting game server at port %d", port));
 
@@ -44,7 +45,7 @@ void Server::init() {
 	_sock.listen(bindaddr, port, true);
 	_sock.noDelay();
 
-	_monitor = new Monitor;
+	_monitor = new Monitor(port, cl);
 	_monitor->add(&_udp_sock);
 	_monitor->add(&_sock);
 	_monitor->start();
