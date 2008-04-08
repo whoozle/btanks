@@ -181,7 +181,30 @@ Monitor::Task * Monitor::createTask(const int id, const mrt::Chunk &rawdata) {
 	return t;
 }
 
-	
+void Monitor::pack(mrt::Chunk &result, const mrt::Chunk &rawdata) {
+	mrt::Chunk data;
+	unsigned char flags = 0;
+	if (_comp_level > 0) {
+		flags = 1; //compressed
+		mrt::ZStream::compress(data, rawdata, false, _comp_level);
+	} else data = rawdata; //fixme: optimize it somehow.
+
+	int size = data.getSize();
+
+	result.setSize(size + 9);
+
+	unsigned char * ptr = static_cast<unsigned char *>(result.getPtr());
+
+	uint32_t nsize = htonl((long)size);
+	memcpy(ptr, &nsize, 4);
+
+	nsize = htonl((long)SDL_GetTicks());
+	memcpy(ptr + 4, &nsize, 4);
+
+	*(ptr + 8) = flags;
+	memcpy(ptr + 9, data.getPtr(), size);
+}
+
 void Monitor::send(const int id, const mrt::Chunk &rawdata, const bool dgram) {
 	{
 		sdlx::AutoMutex m(_connections_mutex);

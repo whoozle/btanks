@@ -79,6 +79,7 @@ private:
 		int timestamp;
 	};
 	
+	void pack(mrt::Chunk &result, const mrt::Chunk &rawdata);
 	static void parse(mrt::Chunk &data, const unsigned char *buf, const int len, int &timestamp);
 	Task * createTask(const int id, const mrt::Chunk &data);
 	
