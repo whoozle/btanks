@@ -109,14 +109,21 @@ void Source::hrtf(mrt::Chunk &result, int dst_n, const Sint16 *src, int src_ch, 
 		kiss_fft_cpx freq[CLUNK_WINDOW_SIZE / 2 + 1];
 		//printf("fft #%d\n", i);
 		for(int j = 0; j < CLUNK_WINDOW_SIZE; ++j) {
-			int p = (int)(position + (i * CLUNK_ACTUAL_WINDOW + j) * pitch);
+			int idx = i * CLUNK_ACTUAL_WINDOW + j;
+			int p = (int)(position + idx * pitch);
 
 			int v = 0;
-			if (p >= 0 || p < src_n || loop) {
+			if (fadeout_total > 0 && fadeout - idx <= 0) {
+				//no sound
+			} else if (p >= 0 || p < src_n || loop) {
 				p %= src_n;
 				if (p < 0)
 					p += src_n;
 				v = src[p * src_ch];
+			}
+			if (fadeout_total > 0 && fadeout - idx > 0) {
+				//LOG_DEBUG(("fadeout %d: %d -> %d", fadeout - idx, v, v * (fadeout - idx) / fadeout_total));
+				v = v * (fadeout - idx) / fadeout_total;
 			}
 			src_data[j] = (v / 32767.0); // * sin(M_PI * j / (CLUNK_WINDOW_SIZE - 1));
 		}
