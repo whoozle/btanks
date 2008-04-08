@@ -26,13 +26,11 @@
 #include "special_owners.h"
 
 class PillBox : public DestructableObject, protected ai::Base {
-	Alarm _reaction, _fire, _fire2, _fire3; 
+	Alarm _reaction, _fire; 
 	std::string _object;
-	bool _skip2, _skip3;
 public: 
 	PillBox(const std::string &object) : 
-		DestructableObject("pillbox"), _reaction(true), 
-		_fire(false), _fire2(false), _fire3(false), _object(object), _skip2(false), _skip3(false) {}
+		DestructableObject("pillbox"), _reaction(true), _fire(false), _object(object) {}
 
 	virtual Object * clone() const { return new PillBox(*this); }
 	
@@ -43,11 +41,6 @@ public:
 
 		GET_CONFIG_VALUE("objects.pillbox.fire-rate", float, fr, 0.2);
 		_fire.set(fr);
-		mrt::randomize(fr, fr / 2);
-		_fire2.set(fr);
-		mrt::randomize(fr, fr / 2);
-		_fire3.set(fr);
-		_skip2 = _skip3 = false;
 		
 		DestructableObject::onSpawn();
 		ai::Base::onSpawn(this);
@@ -59,34 +52,27 @@ public:
 		ai::Base::serialize(s);
 		s.add(_reaction);
 		s.add(_fire);
-		s.add(_fire2);
-		s.add(_fire3);
 		s.add(_object);
-		s.add(_skip2);
-		s.add(_skip3);
 	}
 	virtual void deserialize(const mrt::Serializator &s) {
 		DestructableObject::deserialize(s);
 		ai::Base::deserialize(s);
 		s.get(_reaction);
 		s.get(_fire);
-		s.get(_fire2);
-		s.get(_fire3);
 		s.get(_object);
-		s.get(_skip2);
-		s.get(_skip3);
 	}
 	
 	virtual void tick(const float dt) {
 		Object::tick(dt);
 		if (!_broken && _state.fire) {
-			
+
+			bool fire = false;
 			if (_fire.tick(dt)) {
 				_fire.reset();
 				if (canFire()) {
+					fire = true;
 					spawn(_object, _object, v2<float>(), _direction);
-				} else 
-					_skip2 = _skip3 = true;
+				} 
 			}
 			
 			int dirs = 16/* bullet->getDirectionsNumber() */, d = _direction.getDirection(dirs);
@@ -94,19 +80,9 @@ public:
 			dpos.fromDirection((d + dirs / 4) % dirs, dirs);
 			dpos *= 16;
 
-			if (_fire2.tick(dt)) {
-				_fire2.reset();
-				if (!_skip2)
-					spawn(_object, _object, dpos, _direction);
-				else 
-					_skip3 = false;
-			}
-			if (_fire3.tick(dt)) {
-				_fire3.reset();
-				if (!_skip3)
-					spawn(_object, _object, -dpos, _direction);
-				else
-					_skip3 = false;
+			if (fire) {
+				spawn(_object, _object, dpos, _direction);
+				spawn(_object, _object, -dpos, _direction);
 			}
 		}
 	}
@@ -151,7 +127,7 @@ public:
 		Object *o = spawn("explosion", "cannon-explosion");
 		o->setZ(getZ() + 1, true);
 		for(int i = 0; i < 2; ++i) {
-			o = spawn("machinegunner", "machinegunner", size / 2.5);
+			o = spawn("machinegunner", "machinegunner", size / 2);
 			o->disown();
 			if (hasOwner(OWNER_MAP))
 				o->addOwner(OWNER_MAP);
