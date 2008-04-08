@@ -29,13 +29,17 @@ Scanner::~Scanner() {
 	wait();
 }
 
-void Scanner::createMessage(mrt::Chunk &data) {
+#include "monitor.h" //hack me, move all packet related code to message! 
+
+void Scanner::createMessage(mrt::Chunk &result) {
+	mrt::Chunk data;
 	Message m(Message::ServerDiscovery);
 	Uint32 ticks = SDL_GetTicks();
 	mrt::Serializator s;
 	s.add(ticks);
 	s.finalize(m.data);
 	m.serialize2(data);
+	Monitor::pack(result, data, 0);
 }
 
 const int Scanner::run() {

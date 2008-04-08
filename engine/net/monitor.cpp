@@ -181,12 +181,12 @@ Monitor::Task * Monitor::createTask(const int id, const mrt::Chunk &rawdata) {
 	return t;
 }
 
-void Monitor::pack(mrt::Chunk &result, const mrt::Chunk &rawdata) {
+void Monitor::pack(mrt::Chunk &result, const mrt::Chunk &rawdata, const int comp_level) {
 	mrt::Chunk data;
 	unsigned char flags = 0;
-	if (_comp_level > 0) {
+	if (comp_level > 0) {
 		flags = 1; //compressed
-		mrt::ZStream::compress(data, rawdata, false, _comp_level);
+		mrt::ZStream::compress(data, rawdata, false, comp_level);
 	} else data = rawdata; //fixme: optimize it somehow.
 
 	int size = data.getSize();
@@ -419,7 +419,9 @@ TRY {
 
 					TRY {
 						mrt::Chunk data;
-						data.setData(buf, r);
+						int ts = 0;
+						parse(data, buf, r, ts);
+
 						Message msg;
 						msg.deserialize2(data);
 						if (msg.type != Message::ServerDiscovery) 
@@ -441,7 +443,9 @@ TRY {
 						msg.set("map", Map->getName());
 							
 						msg.serialize2(data);
-						_dgram_sock->send(addr, data.getPtr(), data.getSize()); //returning same message
+						mrt::Chunk result;
+						pack(result, data, _comp_level);
+						_dgram_sock->send(addr, result.getPtr(), result.getSize()); //returning same message
 					} CATCH("discovery message", );
 					if (!ok) {
 						LOG_WARN(("incoming datagram from unknown client(%s:%d)", addr.getAddr().c_str(), addr.port));

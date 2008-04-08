@@ -55,6 +55,7 @@ public:
 	~Monitor();
 	Connection *pop();
 
+	static void pack(mrt::Chunk &result, const mrt::Chunk &rawdata, const int comp_level);
 private:
 	void _accept();
 	void _connect();
@@ -79,7 +80,6 @@ private:
 		int timestamp;
 	};
 	
-	void pack(mrt::Chunk &result, const mrt::Chunk &rawdata);
 	static void parse(mrt::Chunk &data, const unsigned char *buf, const int len, int &timestamp);
 	Task * createTask(const int id, const mrt::Chunk &data);
 	
