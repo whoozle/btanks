@@ -41,12 +41,12 @@ bool Object::playing(const std::string &name) const {
 	return sources.find(name) != sources.end();
 }
 
-void Object::cancel(const std::string &name) {
+void Object::cancel(const std::string &name, const float fadeout) {
 	AudioLocker l;
 	Sources::iterator b = sources.lower_bound(name);
 	Sources::iterator e = sources.upper_bound(name);
 	for(Sources::iterator i = b; i != e; ++i) {
-		i->second->fade_out(0.2f);
+		i->second->fade_out(fadeout);
 	}
 }
 
@@ -59,13 +59,13 @@ void Object::set_loop(const std::string &name, const bool loop) {
 	}
 }
 
-void Object::cancel_all(bool force) {
+void Object::cancel_all(bool force, const float fadeout) {
 	AudioLocker l;
 	for(Sources::iterator i = sources.begin(); i != sources.end(); ++i) {
 		if (force) {
 			delete i->second;
 		} else {
-			i->second->fade_out(0.2f);
+			i->second->fade_out(fadeout);
 		}
 	}
 	if (force) {
