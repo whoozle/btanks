@@ -37,6 +37,9 @@ const bool Alarm::tick(const float dt) {
 		_t += dt;
 		if (_t < _period)
 			return false;
+			
+		int n = (int)(_t / _period);
+		_t -= _period * n;
 
 		while(_t > _period)
 			_t -= _period;
