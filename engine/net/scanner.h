@@ -43,6 +43,9 @@ private:
 	HostMap _hosts;
 	typedef std::queue<std::pair<std::string, std::string> > CheckQueue;
 	CheckQueue check_queue;
+	
+	std::string _bindaddr;
+	int _port;
 };
 
 #endif

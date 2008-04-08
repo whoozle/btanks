@@ -18,6 +18,8 @@
 #endif
 
 Scanner::Scanner() : _running(true), _scan(false), _changed(false) {
+	Config->get("multiplayer.bind-address", _bindaddr, std::string());
+	Config->get("multiplayer.port", _port, 27255);
 	start();
 }
 
@@ -38,10 +40,8 @@ void Scanner::createMessage(mrt::Chunk &data) {
 
 const int Scanner::run() {
 TRY {
-	GET_CONFIG_VALUE("multiplayer.bind-address", std::string, bindaddr, std::string());
-	GET_CONFIG_VALUE("multiplayer.port", int, port, 27255);
 
-	LOG_DEBUG(("searching for servers at port %d", port));
+	LOG_DEBUG(("searching for servers at port %d", _port));
 
 	mrt::UDPSocket udp_sock;
 	//udp_sock.listen(bindaddr, port, false);
@@ -78,11 +78,11 @@ TRY {
 			mrt::Chunk data;
 			createMessage(data);
 	
-			udp_sock.broadcast(data, port);	
+			udp_sock.broadcast(data, _port);	
 			_scan = false;
 		}
 
-		ping(udp_sock, port);
+		ping(udp_sock, _port);
 	
 		if (set.check(100) == 0) {
 			continue;
