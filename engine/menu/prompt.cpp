@@ -28,11 +28,11 @@ Prompt::~Prompt() {
 
 Prompt::Prompt(const int w, const int h, TextControl * text) : _text(text), value(text->get()) {
 	_background.init("menu/background_box_dark.png", w, h, 24);
-	int mx, my;
+	int mx, my, bw, bh;
 	_background.getMargins(mx, my);
-	_text_rect = sdlx::Rect(mx, my, w - mx * 2, h - my * 2);
+	_background.getSize(bw, bh);
+	_text_rect = sdlx::Rect(mx, my, w - mx * 2, bh - 2 * my);
 	//add(_text_rect, _text = text);
-	int bw, bh;
 
 	_b_back = new Button("medium_dark", I18n->get("menu", "back"));
 	_b_back->getSize(bw, bh);
@@ -110,7 +110,6 @@ void Prompt::render(sdlx::Surface& surface, const int x, const int y) const {
 	
 	clip.x += x;
 	clip.y += y;
-	LOG_DEBUG(("clip %d,%d %d,%d", clip.x, clip.y, clip.w, clip.h));
 	
 	surface.setClipRect(clip);
 	int w, h;
