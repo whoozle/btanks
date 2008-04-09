@@ -82,8 +82,9 @@ void Monitor::accept() {
 		if (_new_connections.empty())
 			return;
 	}
-	try {
 	LOG_DEBUG(("client(s) connected... [main thread context]"));
+	int id = -1;
+	try {
 	Message msg(Message::ServerStatus);
 	int id = PlayerManager->onConnect(msg);
 
@@ -100,7 +101,8 @@ void Monitor::accept() {
 	LOG_DEBUG(("sending message '%s' to %d", msg.getType(), id));
 	send(id, data, msg.realtime());
 	} CATCH("accept", {
-		disconnect(id);
+		if (id >= 0)
+			disconnect(id);
 	}) 
 }
 
