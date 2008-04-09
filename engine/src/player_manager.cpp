@@ -1218,22 +1218,27 @@ PlayerSlot *IPlayerManager::getSlotByIDRecursive(const Object *object) {
 	return NULL;
 }
 
+#include "special_owners.h"
+
 void IPlayerManager::onPlayerDeath(const Object *player, const Object *killer) {
-	if (isClient() || GameMonitor->gameOver())
+	if (player == NULL || killer == NULL || _client != NULL || GameMonitor->gameOver())
 		return;
 
 	if (RTConfig->game_type != GameTypeCooperative) { //skip this check in coop mode
 		PlayerSlot *player_slot = getSlotByID(player->getID());
 		if (player_slot == NULL)
 			return;
-	} 
+	} else {
+		if (!player->hasOwner(OWNER_MAP))
+		return;
+	}
 	
 	PlayerSlot *slot = getSlotByIDRecursive(killer);
 
 	if (slot == NULL) 
 		return;
 	
-	LOG_DEBUG(("player: %s killed by %s", player->animation.c_str(), killer->animation.c_str()));
+	LOG_DEBUG(("object %s killed by %s", player->animation.c_str(), killer->animation.c_str()));
 		
 	if (slot->id == player->getID()) { //suicide
 		if (slot->frags > 0)

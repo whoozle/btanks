@@ -424,14 +424,6 @@ const bool IWorld::collides(Object *obj1, const v2<int> &position, Object *obj2,
 				obj2->emit("collision", obj1);
 				obj1->emit("collision", obj2);
 			
-				if (obj2->isDead()) {
-					on_object_death.emit(obj2, obj1);
-				}
-
-				if (obj1->isDead()) {
-					on_object_death.emit(obj1, obj2);
-				}
-			
 				if (obj1->isDead() || obj2->isDead() || obj1->impassability == 0 || obj2->impassability == 0) {
 					return false; //the most common case is the bullet which collides with object.
 				}

@@ -563,7 +563,7 @@ bool IGame::onKey(const SDL_keysym key, const bool pressed) {
 
 			Object *o = slot->getObject();
 			if (o)
-				o->emit("death", 0);
+				o->emit("death", o);
 		} CATCH("f12-suicide", {});
 		return true;
 	}

@@ -149,6 +149,8 @@ public:
 	void groupEmit(const std::string &name, const std::string &event);
 
 	const bool getRenderRect(sdlx::Rect &src) const;
+	
+	bool is_subobject() const { return _parent != NULL; }
 
 protected:
 

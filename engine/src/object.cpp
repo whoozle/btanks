@@ -641,6 +641,9 @@ void Object::deserialize(const mrt::Serializator &s) {
 
 void Object::emit(const std::string &event, Object * emitter) {
 	if (event == "death") {
+		if (emitter != NULL && !_dead && _parent == NULL) {
+			World->on_object_death.emit(this, emitter);
+		}
 		_dead = true;
 		for(Group::iterator i = _group.begin(); i != _group.end(); ++i) {
 			i->second->emit("death", emitter);
