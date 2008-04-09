@@ -1230,7 +1230,7 @@ void IPlayerManager::onPlayerDeath(const Object *player, const Object *killer) {
 			return;
 	} else {
 		if (!player->hasOwner(OWNER_MAP))
-		return;
+			return;
 	}
 	
 	PlayerSlot *slot = getSlotByIDRecursive(killer);
