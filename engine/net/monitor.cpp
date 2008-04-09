@@ -447,7 +447,8 @@ TRY {
 						msg.serialize2(data);
 						mrt::Chunk result;
 						pack(result, data, _comp_level);
-						_dgram_sock->send(addr, result.getPtr(), result.getSize()); //returning same message
+						r = _dgram_sock->send(addr, result.getPtr(), result.getSize()); //returning same message
+						LOG_DEBUG(("send(%u) returned %d", (unsigned)result.getSize(), r));
 					} CATCH("discovery message", );
 					if (!ok) {
 						LOG_WARN(("incoming datagram from unknown client(%s:%d)", addr.getAddr().c_str(), addr.port));

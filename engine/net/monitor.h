@@ -56,6 +56,8 @@ public:
 	Connection *pop();
 
 	static void pack(mrt::Chunk &result, const mrt::Chunk &rawdata, const int comp_level);
+	static void parse(mrt::Chunk &data, const unsigned char *buf, const int len, int &timestamp);
+
 private:
 	void _accept();
 	void _connect();
@@ -80,7 +82,6 @@ private:
 		int timestamp;
 	};
 	
-	static void parse(mrt::Chunk &data, const unsigned char *buf, const int len, int &timestamp);
 	Task * createTask(const int id, const mrt::Chunk &data);
 	
 	typedef std::list<Task *> TaskQueue;

@@ -101,16 +101,19 @@ TRY {
 			udp_sock.setBroadcastMode(1);
 		} else if (set.check(udp_sock, mrt::SocketSet::Read)) {
 			mrt::Socket::addr addr;
-			mrt::Chunk data;
-			data.setSize(1500);
-			int r = udp_sock.recv(addr, data.getPtr(), data.getSize());
+			unsigned char buf[1500]; //fixme ?
+			int r = udp_sock.recv(addr, buf, sizeof(buf));
 			TRY { 
 				if (r == 0 || r == -1)
 					throw_net(("udp_sock.recv"));
 			} CATCH("recv", continue; );
-			data.setSize(r);
-			//LOG_DEBUG(("data from addr %s: %s", addr.getAddr().c_str(), data.dump().c_str()));
+
+			LOG_DEBUG(("data from addr %s (%d)", addr.getAddr().c_str(), r));
 			TRY {
+				int ts;
+				mrt::Chunk data;
+				Monitor::parse(data, buf, r, ts);
+				
 				Message msg;
 				msg.deserialize2(data);
 				if (msg.type != Message::ServerDiscovery)
