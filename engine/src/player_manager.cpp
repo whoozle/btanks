@@ -1197,9 +1197,9 @@ const bool IPlayerManager::isServerActive() const {
 	return false;
 }
 
-PlayerSlot *IPlayerManager::getSlotByIDRecursive(const Object *parent) {
+PlayerSlot *IPlayerManager::getSlotByIDRecursive(const Object *first) {
 	std::queue<const Object *> queue;
-	queue.push(parent);
+	queue.push(first);
 
 	while(!queue.empty()) {
 		const Object *object = queue.front();
@@ -1211,15 +1211,19 @@ PlayerSlot *IPlayerManager::getSlotByIDRecursive(const Object *parent) {
 			return slot;
 		
 		const Object *parent = World->getObjectByID(object->getSummoner());
-		if (parent != NULL)
+		if (parent != NULL) {
+			//LOG_DEBUG(("found summoner: %s", parent->animation.c_str()));
 			queue.push(parent);
+		}
 		
 		std::deque<int> owners;
 		object->getOwners(owners);
 		for(std::deque<int>::const_iterator i = owners.begin(); i != owners.end(); ++i) {
 			const Object *parent = World->getObjectByID(*i);
-			if (parent != NULL)
+			if (parent != NULL) {
+				//LOG_DEBUG(("found owner: %s", parent->animation.c_str()));
 				queue.push(parent);
+			}
 		}
 	}
 	
@@ -1237,9 +1241,11 @@ void IPlayerManager::onPlayerDeath(const Object *player, const Object *killer) {
 		if (player_slot == NULL)
 			return;
 	} else {
-		if (!player->hasOwner(OWNER_MAP))
+		if (player->hasOwner(OWNER_COOPERATIVE)) {
 			return;
+		}
 	}
+	//LOG_DEBUG(("prepare: object %s killed by %s", player->animation.c_str(), killer->animation.c_str()));
 	
 	PlayerSlot *slot = getSlotByIDRecursive(killer);
 
