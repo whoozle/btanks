@@ -110,6 +110,7 @@ void Prompt::render(sdlx::Surface& surface, const int x, const int y) const {
 	
 	clip.x += x;
 	clip.y += y;
+	LOG_DEBUG(("clip %d,%d %d,%d", clip.x, clip.y, clip.w, clip.h));
 	
 	surface.setClipRect(clip);
 	int w, h;
