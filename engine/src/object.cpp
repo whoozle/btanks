@@ -641,7 +641,7 @@ void Object::deserialize(const mrt::Serializator &s) {
 
 void Object::emit(const std::string &event, Object * emitter) {
 	if (event == "death") {
-		if (emitter != NULL && !_dead && _parent == NULL) {
+		if (emitter != NULL && !_dead && _parent == NULL && !piercing) {
 			World->on_object_death.emit(this, emitter);
 		}
 		_dead = true;

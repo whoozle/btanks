@@ -1197,22 +1197,30 @@ const bool IPlayerManager::isServerActive() const {
 	return false;
 }
 
-PlayerSlot *IPlayerManager::getSlotByIDRecursive(const Object *object) {
-	PlayerSlot *slot = NULL;
+PlayerSlot *IPlayerManager::getSlotByIDRecursive(const Object *parent) {
+	std::queue<const Object *> queue;
+	queue.push(parent);
 
-	if (object->getSummoner() > 0)
-	for(Object *parent = World->getObjectByID(object->getSummoner()); parent != NULL; parent = World->getObjectByID(parent->getSummoner())) {
-		slot = getSlotByID(parent->getID());
-		if (slot != NULL) 
+	while(!queue.empty()) {
+		const Object *object = queue.front();
+		queue.pop();
+		assert(object != NULL);
+
+		PlayerSlot *slot = getSlotByID(object->getID());
+		if (slot != NULL)
 			return slot;
-	}
-	
-	std::deque<int> owners;
-	object->getOwners(owners);
-	for(std::deque<int>::const_iterator i = owners.begin(); i != owners.end(); ++i) {
-		slot = getSlotByID(*i);
-		if (slot != NULL) 
-			return slot;
+		
+		const Object *parent = World->getObjectByID(object->getSummoner());
+		if (parent != NULL)
+			queue.push(parent);
+		
+		std::deque<int> owners;
+		object->getOwners(owners);
+		for(std::deque<int>::const_iterator i = owners.begin(); i != owners.end(); ++i) {
+			const Object *parent = World->getObjectByID(*i);
+			if (parent != NULL)
+				queue.push(parent);
+		}
 	}
 	
 	return NULL;
