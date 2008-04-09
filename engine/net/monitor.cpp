@@ -82,7 +82,7 @@ void Monitor::accept() {
 		if (_new_connections.empty())
 			return;
 	}
-
+	try {
 	LOG_DEBUG(("client(s) connected... [main thread context]"));
 	Message msg(Message::ServerStatus);
 	int id = PlayerManager->onConnect(msg);
@@ -99,6 +99,9 @@ void Monitor::accept() {
 
 	LOG_DEBUG(("sending message '%s' to %d", msg.getType(), id));
 	send(id, data, msg.realtime());
+	} CATCH("accept", {
+		disconnect(id);
+	}) 
 }
 
 //private accept
@@ -210,7 +213,6 @@ void Monitor::send(const int id, const mrt::Chunk &rawdata, const bool dgram) {
 		sdlx::AutoMutex m(_connections_mutex);
 		if (_connections.find(id) == _connections.end()) {
 			throw_ex(("sending data to non-existent connection %d", id));
-			return;
 		}
 	}
 	Task *t = createTask(id, rawdata);

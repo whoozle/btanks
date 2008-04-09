@@ -75,7 +75,7 @@ void Server::tick(const float dt) {
 		return;
 	TRY {
 		_monitor->accept();
-	} CATCH("accepting client", throw);
+	} CATCH("accepting client", );
 	
 	int id = -1;
 	TRY {
