@@ -154,7 +154,7 @@ void Grid<T>::update(GridMatrix &grid, const v2<int> &grid_size, T id, const v2<
 
 template<typename T> 
 void Grid<T>::collide(std::set<T> &objects, const v2<int>& area_pos, const v2<int>& area_size) const {
-	v2<int> size = area_size / _grid_size;
+	v2<int> size = (area_size - 1) / _grid_size + 1;
 	int n = size.x * size.y;
 	if (n >= 16) { //replace with config ? 
 		collide(objects, _grid4, _grid4_size, area_pos, area_size);	
