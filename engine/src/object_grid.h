@@ -200,7 +200,7 @@ void Grid<T>::update(T id, const v2<int> &pos, const v2<int> &size) {
 		i->second.pos = pos;
 		i->second.size = size;
 	} else 
-		_index.insert(Index::value_type(id, Object(pos, size)));
+		_index.insert(typename Index::value_type(id, Object(pos, size)));
 
 	update(_grid, _grid_size, id, pos, size);
 	update(_grid4, _grid4_size, id, pos, size);
