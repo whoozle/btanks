@@ -186,7 +186,7 @@ void Grid<T>::setSize(const v2<int> &size, const int step, const bool wrap) {
 
 template<typename T> 
 void Grid<T>::update(T id, const v2<int> &pos, const v2<int> &size) {
-	Index::iterator i = _index.find(id);
+	typename Index::iterator i = _index.find(id);
 	if (i != _index.end()) {
 	//skip modification if grid coordinates
 		if (pos / _grid_size == i->second.pos / _grid_size &&
@@ -208,7 +208,7 @@ void Grid<T>::update(T id, const v2<int> &pos, const v2<int> &size) {
 
 template<typename T> 
 void Grid<T>::remove(T id) {
-	Index::iterator i = _index.find(id);
+	typename Index::iterator i = _index.find(id);
 	if (i != _index.end()) {
 		removeFromGrid(_grid, _grid_size, id, i->second);		
 		removeFromGrid(_grid4, _grid4_size, id, i->second);		
