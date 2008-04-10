@@ -434,6 +434,7 @@
 	</map>
 	<map id="hell_swamp">
 		<object id="alt-missiles-on-launcher"/>
+		<object id="cannon-explosion"/>
 		<object id="corpse"/>
 		<object id="damage-digits"/>
 		<object id="destructable-object"/>
@@ -442,6 +443,8 @@
 		<object id="explosion"/>
 		<object id="fake-mod"/>
 		<object id="fire"/>
+		<object id="grenade"/>
+		<object id="grenade-explosion"/>
 		<object id="heal"/>
 		<object id="helmet"/>
 		<object id="impassable-static-corpse"/>

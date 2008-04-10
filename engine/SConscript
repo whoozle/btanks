@@ -42,7 +42,7 @@ bt_sources = 	[
 	
 	'src/alarm.cpp', 'src/base_object.cpp', 'src/notifying_xml_parser.cpp', 'src/xml_parser.cpp', 
 	'src/special_zone.cpp', 'src/game_monitor.cpp', 
-	'src/player_manager.cpp', 'src/object_grid.cpp', 'src/variants.cpp', 
+	'src/player_manager.cpp', 'src/variants.cpp', 
 
 	'ai/base.cpp', 'ai/buratino.cpp', 'ai/herd.cpp', 'ai/traits.cpp', 'ai/waypoints.cpp', 'ai/rush.cpp', 'ai/old_school.cpp', 'ai/trooper.cpp', 'ai/targets.cpp', 
 		
@@ -124,7 +124,7 @@ if sys.platform != 'win32':
 	bt_env.Append(LINKFLAGS=['-Wl,-rpath-link,build/' + env['mode'] + '/sdlx'])
 	bt_env.Append(LINKFLAGS=['-Wl,-rpath-link,build/' + env['mode'] + '/clunk'])
 
-bt_main = bt_env.Program('bt', bt_main_sources, LIBS=bt_main_libs, RPATH=[lib_dir])
+bt_main = bt_env.Program('btanks', bt_main_sources, LIBS=bt_main_libs, RPATH=[lib_dir])
 Install('#', bt_main)
 
 if sys.platform == 'win32': 

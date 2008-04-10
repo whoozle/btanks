@@ -123,8 +123,8 @@ private:
 	sl08::slot0<void, IWorld> init_map_slot;
 	void initMap();
 	
-	void updateObject(const Object *o);
-	void deleteObject(const Object *o);
+	void updateObject(Object *o);
+	void deleteObject(Object *o);
 	
 	typedef std::map<const std::pair<int, int>, bool> CollisionMap;
 	mutable CollisionMap _collision_map;
@@ -144,7 +144,7 @@ private:
 	void onMapResize(int left, int right, int up, int down);
 
 	ObjectMap _objects;
-	Grid _grid; //hopefully it'll be our saviour.
+	Grid<Object *> _grid;
 	int _last_id;
 	bool _safe_mode, _atatat;
 	float _max_dt;

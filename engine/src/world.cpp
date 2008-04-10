@@ -106,7 +106,7 @@ void IWorld::setSafeMode(const bool safe_mode) {
 	LOG_DEBUG(("set safe mode to %s", _safe_mode?"true":"false"));
 }
 
-void IWorld::deleteObject(const Object *o) {
+void IWorld::deleteObject(Object *o) {
 	on_object_delete.emit(o);
 	const int id = o->_id;
 	for(StaticCollisionMap::iterator i = _static_collision_map.begin(); i != _static_collision_map.end(); ) {
@@ -116,16 +116,16 @@ void IWorld::deleteObject(const Object *o) {
 			++i;
 		}
 	}
-	_grid.remove(id);
+	_grid.remove(o);
 	delete o;
 }
 
 
-void IWorld::updateObject(const Object *o) {
+void IWorld::updateObject(Object *o) {
 	if (o->size.is0())
 		return;
 	
-	_grid.update(o->_id, o->_position.convert<int>(), o->size.convert<int>());
+	_grid.update(o, o->_position.convert<int>(), o->size.convert<int>());
 	on_object_update.emit(o);
 }
 
@@ -215,11 +215,11 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::R
 	const IMap &map = *Map.get_const();
 	GET_CONFIG_VALUE("engine.show-waypoints", bool, show_waypoints, false);
 
-	std::set<int> objects; 
+	std::set<Object *> objects; 
 	_grid.collide(objects, v2<int>(src.x, src.y), v2<int>(dst.w, dst.h));
 	//LOG_DEBUG(("render: collide returns %u objects", (unsigned)objects.size()));
-	for(std::set<int>::iterator i = objects.begin(); i != objects.end(); ++i) {
-		Object *o = getObjectByID(*i);
+	for(std::set<Object *>::iterator i = objects.begin(); i != objects.end(); ++i) {
+		Object *o = *i;
 		assert(o != NULL);
 		if (o->isDead() || o->skipRendering()) {
 			//LOG_DEBUG(("render: skipped dead object: %s", o->registered_name.c_str()));
@@ -456,16 +456,12 @@ TRY {
 	sdlx::Rect my((int)position.x, (int)position.y,(int)obj->size.x, (int)obj->size.y);
 
 
-	std::set<int> objects;
+	std::set<Object *> objects;
 	_grid.collide(objects, position, obj->size.convert<int>());
 	//consult grid
 
-	for(std::set<int>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
-		ObjectMap::const_iterator o_i = _objects.find(*i);
-		if (o_i == _objects.end())
-			continue;
-			
-		Object *o = o_i->second;
+	for(std::set<Object *>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
+		Object *o = *i;
 		
 		if (obj->speed == 0 && o->impassability < 1 && o->impassability >= 0)
 			continue;
@@ -1331,11 +1327,14 @@ Object * IWorld::deserializeObject(const mrt::Serializator &s) {
 					//LOG_DEBUG(("created ('%s', '%s')", rn.c_str(), an.c_str()));
 					ao->deserialize(s);
 					
+					_grid.remove(o);
 					delete o;
 					o = NULL;
 					i->second = ao;
 					result = ao;
 					ao = NULL;
+					_grid.update(result, result->_position.convert<int>(), result->size.convert<int>());
+
 					
 					if (!result->_need_sync || result->_dead) {
 						LOG_DEBUG(("incomplete data for object %d:%s", result->_id, result->animation.c_str()));
@@ -1566,16 +1565,12 @@ const Object* IWorld::getNearestObject(const Object *obj, const std::set<std::st
 	float distance = std::numeric_limits<float>::infinity();
 	float range2 = range * range;
 
-	std::set<int> objects;
+	std::set<Object *> objects;
 	_grid.collide(objects, (obj->_position - range).convert<int>(), v2<int>((int)range * 2, (int)range * 2));
 	//consult grid
 
-	for(std::set<int>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
-		ObjectMap::const_iterator o_i = _objects.find(*i);
-		if (o_i == _objects.end())
-			continue;
-			
-		Object *o = o_i->second;
+	for(std::set<Object *>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
+		Object *o = *i;;
 		//LOG_DEBUG(("%s is looking for %s. found: %s", obj->classname.c_str(), classname.c_str(), o->classname.c_str()));
 		if (o->_id == obj->_id || o->impassability == 0 || PIERCEABLE_PAIR(obj, o) || !ZBox::sameBox(obj->getZ(), o->getZ()) ||
 			classnames.find(o->classname) == classnames.end() || o->hasSameOwner(obj))
@@ -1642,15 +1637,12 @@ void IWorld::enumerateObjects(std::set<const Object *> &id_set, const Object *sr
 
 	float r2 = range * range;
 	
-	std::set<int> objects;
+	std::set<Object *> objects;
 	_grid.collide(objects, (src->_position - range).convert<int>(), v2<int>((int)range * 2, (int)range * 2));
 	//consult grid
 
-	for(std::set<int>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
-		ObjectMap::const_iterator o_i = _objects.find(*i);
-		if (o_i == _objects.end())
-			continue;
-		Object *o = o_i->second;
+	for(std::set<Object *>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
+		Object *o = *i;
 		
 		v2<float> dpos = Map->distance(src->getCenterPosition(), o->getCenterPosition());
 		if (o->_id == src->_id || !ZBox::sameBox(src->getZ(), o->getZ()) || dpos.quick_length() > r2)
