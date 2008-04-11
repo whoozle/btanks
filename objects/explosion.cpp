@@ -118,7 +118,7 @@ void Explosion::emit(const std::string &event, Object * emitter) {
 		if (registered_name == "mutagen-explosion") {
 			if (_variants.has("chained") && emitter->classname == "explosive" && emitter->getState() == "main") {
 				float p = getStateProgress();
-				//LOG_DEBUG(("%d: progress = %g", getID(), p));
+			//LOG_DEBUG(("%d: progress = %g", getID(), p));
 				if (p < 0.03f)
 					return;
 				emitter->emit("destroy", this);
@@ -147,8 +147,6 @@ void Explosion::emit(const std::string &event, Object * emitter) {
 					if (ResourceManager->hasAnimation(an)) {
 						emitter->init(an);
 					} else {
-						emitter->Object::emit("death", this);
-						
 						Object * zombie = emitter->spawn((p&1)? "zombie": "slime", (p&1)? "zombie": "slime");
 						emitter->attachVehicle(zombie);
 					}
