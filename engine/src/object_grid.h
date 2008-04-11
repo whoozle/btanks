@@ -19,22 +19,75 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include "math/v2.h"
 #include <map>
 #include <string>
 #include <set>
+#include <algorithm>
+#include "math/v2.h"
+#include "math/binary.h"
+
 
 template<typename T> 
 class Grid {
 public: 
 	Grid() {}
-	void setSize(const v2<int> &size, const int step, const bool wrap);
 
-	void clear();
-	void update(T id, const v2<int> &pos, const v2<int> &size);
-	void remove(T id);
+	void setSize(const v2<int> &size, const int step, const bool wrap) {
+		clear();
+		_grid_size = v2<int>(step, step);
+		resize(_grid, _grid_size, size);
+		_grid4_size = v2<int>(step * 4, step * 4);
+		resize(_grid4, _grid4_size, size);
+		_wrap = wrap;
+		_map_size = size;
+	}
 
-	void collide(typename std::set<T> &objects, const v2<int>& area_pos, const v2<int>& area_size) const;
+	void clear() {
+		_grid.clear();
+		_grid4.clear();
+		_index.clear();
+	}
+
+	void update(T id, const v2<int> &pos, const v2<int> &size) {
+		typename Index::iterator i = _index.find(id);
+		if (i != _index.end()) {
+		//skip modification if grid coordinates
+			if (pos / _grid_size == i->second.pos / _grid_size &&
+				(pos + size - 1) / _grid_size == (i->second.pos + size - 1) / _grid_size) {
+				return;	
+			}
+			
+
+			removeFromGrid(_grid, _grid_size, id, i->second);
+			removeFromGrid(_grid4, _grid4_size, id, i->second);
+			i->second.pos = pos;
+			i->second.size = size;
+		} else 
+			_index.insert(typename Index::value_type(id, Object(pos, size)));
+
+		update(_grid, _grid_size, id, pos, size);
+		update(_grid4, _grid4_size, id, pos, size);
+	}
+
+	void remove(T id) {
+		typename Index::iterator i = _index.find(id);
+		if (i != _index.end()) {
+			removeFromGrid(_grid, _grid_size, id, i->second);		
+			removeFromGrid(_grid4, _grid4_size, id, i->second);		
+			_index.erase(i);
+		} 
+	}
+
+	void collide(std::set<T> &objects, const v2<int>& area_pos, const v2<int>& area_size) const {
+		v2<int> size = (area_size - 1) / _grid_size + 1;
+		int n = size.x * size.y;
+		if (n >= 16) { //replace with config ? 
+			collide(objects, _grid4, _grid4_size, area_pos, area_size);	
+		} else {
+			collide(objects, _grid, _grid_size, area_pos, area_size);		
+		}
+		//LOG_DEBUG(("returned %u objects", (unsigned)objects.size()));
+	}
 	
 private:
 	static inline int wrap(int x, int y) {
@@ -51,10 +104,81 @@ private:
 		v2<int> pos, size;
 	};
 
-	void collide(std::set<T> &objects, const GridMatrix &grid, const v2<int> &grid_size, const v2<int>& area_pos, const v2<int>& area_size) const;
-	void removeFromGrid(GridMatrix &grid, const v2<int> &grid_size, T id, const Object &o);
-	void update(GridMatrix &grid, const v2<int> &grid_size, T id, const v2<int> &pos, const v2<int> &size);
-	void resize(GridMatrix &grid, const v2<int> &grid_size, const v2<int> &map_size);
+	void collide(std::set<T> &result, const GridMatrix &grid, const v2<int> &grid_size, const v2<int>& area_pos, const v2<int>& area_size) const {
+		v2<int> delta = v2<int>(grid[0].size(), grid.size()) * grid_size - _map_size;
+		
+		const v2<int> start = area_pos / grid_size;
+		v2<int> end = (area_pos + area_size - 1) / grid_size;
+
+		if (end.y < (int)grid.size() - 1) delta.y = 0;
+		if (end.x < (int)grid[0].size() - 1) delta.x = 0;
+		end = (area_pos + area_size + delta - 1) / grid_size;
+
+		const int y1 = _wrap? start.y: math::max(0, start.y);
+		const int y2 = _wrap? end.y: math::min((int)grid.size() - 1, end.y);
+		const int x1 = _wrap? start.x: math::max(0, start.x);
+		for(int y = y1; y <= y2; ++y) {
+			const SetVector &row = grid[wrap(y, grid.size())];
+			const int x2 = _wrap?end.x: math::min((int)row.size() - 1, end.x);
+			for(int x = x1; x <= x2; ++x) {
+				const IDSet &set = row[wrap(x, row.size())];
+				result.insert(set.begin(), set.end());
+			}
+		}
+	}
+
+	void removeFromGrid(GridMatrix &grid, const v2<int> &grid_size, T id, const Object &o) {
+		v2<int> delta = v2<int>(grid[0].size(), grid.size()) * grid_size - _map_size;
+
+		const v2<int> start = o.pos / grid_size;
+		v2<int> end = (o.pos + o.size - 1) / grid_size;
+
+		if (end.y < (int)grid.size() - 1) delta.y = 0;
+		if (end.x < (int)grid[0].size() - 1) delta.x = 0;
+		end = (o.pos + o.size + delta - 1) / grid_size;
+
+		const int y1 = _wrap? start.y: math::max(0, start.y);
+		const int y2 = _wrap? end.y: math::min((int)grid.size() - 1, end.y);
+		const int x1 = _wrap? start.x: math::max(0, start.x);
+		for(int y = y1; y <= y2; ++y) {
+			SetVector &row = grid[wrap(y, grid.size())];
+			const int x2 = _wrap? end.x: math::min((int)row.size() - 1, end.x);
+			for(int x = x1; x <= x2; ++x) {
+				row[wrap(x, row.size())].erase(id);
+			}
+		}
+	}
+
+	void update(GridMatrix &grid, const v2<int> &grid_size, T id, const v2<int> &pos, const v2<int> &size) {
+		v2<int> delta = v2<int>(grid[0].size(), grid.size()) * grid_size - _map_size;
+		
+		const v2<int> start = pos / grid_size;
+		v2<int> end = (pos + size - 1) / grid_size;
+		
+		if (end.y < (int)grid.size() - 1) delta.y = 0;
+		if (end.x < (int)grid[0].size() - 1) delta.x = 0;
+		end = (pos + size + delta - 1) / grid_size;
+		
+		//LOG_DEBUG(("updating %d (%d, %d) -> (%d, %d) (%d %d)", id, start.x, start.y, end.x, end.y, pos.x, pos.y));
+		
+		const int y1 = _wrap? start.y: math::max(0, start.y);
+		const int y2 = _wrap? end.y: math::min((int)grid.size() - 1, end.y);
+		const int x1 = _wrap? start.x: math::max(0, start.x);
+		for(int y = y1; y <= y2; ++y) {
+			SetVector &row = grid[wrap(y, grid.size())];
+			const int x2 = _wrap? end.x: math::min((int)grid[y].size() - 1, end.x);
+			for(int x = x1; x <= x2; ++x) {
+				row[wrap(x, row.size())].insert(id);
+			}
+		}
+	}
+
+	void resize(GridMatrix &grid, const v2<int> &grid_size, const v2<int> &map_size) {
+		v2<int> dim = (map_size - 1) / grid_size + 1;
+		grid.resize(dim.y);
+		for(int y = 0; y < dim.y; ++y) 
+			grid[y].resize(dim.x);
+	}
 
 	v2<int> _grid_size; 
 	v2<int> _grid4_size;
@@ -67,155 +191,6 @@ private:
 	Index _index;
 	bool _wrap;
 };
-
-#include "object_grid.h"
-#include <algorithm>
-#include "math/binary.h"
-
-
-template<typename T> 
-void Grid<T>::clear() {
-	_grid.clear();
-	_grid4.clear();
-	_index.clear();
-}
-
-template<typename T> 
-void Grid<T>::collide(std::set<T> &result, const GridMatrix &grid, const v2<int> &grid_size, const v2<int>& area_pos, const v2<int>& area_size) const {
-	v2<int> delta = v2<int>(grid[0].size(), grid.size()) * grid_size - _map_size;
-	
-	const v2<int> start = area_pos / grid_size;
-	v2<int> end = (area_pos + area_size - 1) / grid_size;
-
-	if (end.y < (int)grid.size() - 1) delta.y = 0;
-	if (end.x < (int)grid[0].size() - 1) delta.x = 0;
-	end = (area_pos + area_size + delta - 1) / grid_size;
-
-	const int y1 = _wrap? start.y: math::max(0, start.y);
-	const int y2 = _wrap? end.y: math::min((int)grid.size() - 1, end.y);
-	const int x1 = _wrap? start.x: math::max(0, start.x);
-	for(int y = y1; y <= y2; ++y) {
-		const SetVector &row = grid[wrap(y, grid.size())];
-		const int x2 = _wrap?end.x: math::min((int)row.size() - 1, end.x);
-		for(int x = x1; x <= x2; ++x) {
-			const IDSet &set = row[wrap(x, row.size())];
-			result.insert(set.begin(), set.end());
-		}
-	}
-}
-
-template<typename T> 
-void Grid<T>::removeFromGrid(GridMatrix &grid, const v2<int> &grid_size, T id, const Object &o) {
-	v2<int> delta = v2<int>(grid[0].size(), grid.size()) * grid_size - _map_size;
-
-	const v2<int> start = o.pos / grid_size;
-	v2<int> end = (o.pos + o.size - 1) / grid_size;
-
-	if (end.y < (int)grid.size() - 1) delta.y = 0;
-	if (end.x < (int)grid[0].size() - 1) delta.x = 0;
-	end = (o.pos + o.size + delta - 1) / grid_size;
-
-	const int y1 = _wrap? start.y: math::max(0, start.y);
-	const int y2 = _wrap? end.y: math::min((int)grid.size() - 1, end.y);
-	const int x1 = _wrap? start.x: math::max(0, start.x);
-	for(int y = y1; y <= y2; ++y) {
-		SetVector &row = grid[wrap(y, grid.size())];
-		const int x2 = _wrap? end.x: math::min((int)row.size() - 1, end.x);
-		for(int x = x1; x <= x2; ++x) {
-			row[wrap(x, row.size())].erase(id);
-		}
-	}
-}
-
-template<typename T> 
-void Grid<T>::update(GridMatrix &grid, const v2<int> &grid_size, T id, const v2<int> &pos, const v2<int> &size) {
-	v2<int> delta = v2<int>(grid[0].size(), grid.size()) * grid_size - _map_size;
-	
-	const v2<int> start = pos / grid_size;
-	v2<int> end = (pos + size - 1) / grid_size;
-	
-	if (end.y < (int)grid.size() - 1) delta.y = 0;
-	if (end.x < (int)grid[0].size() - 1) delta.x = 0;
-	end = (pos + size + delta - 1) / grid_size;
-	
-	//LOG_DEBUG(("updating %d (%d, %d) -> (%d, %d) (%d %d)", id, start.x, start.y, end.x, end.y, pos.x, pos.y));
-	
-	const int y1 = _wrap? start.y: math::max(0, start.y);
-	const int y2 = _wrap? end.y: math::min((int)grid.size() - 1, end.y);
-	const int x1 = _wrap? start.x: math::max(0, start.x);
-	for(int y = y1; y <= y2; ++y) {
-		SetVector &row = grid[wrap(y, grid.size())];
-		const int x2 = _wrap? end.x: math::min((int)grid[y].size() - 1, end.x);
-		for(int x = x1; x <= x2; ++x) {
-			row[wrap(x, row.size())].insert(id);
-		}
-	}
-}
-
-template<typename T> 
-void Grid<T>::collide(std::set<T> &objects, const v2<int>& area_pos, const v2<int>& area_size) const {
-	v2<int> size = (area_size - 1) / _grid_size + 1;
-	int n = size.x * size.y;
-	if (n >= 16) { //replace with config ? 
-		collide(objects, _grid4, _grid4_size, area_pos, area_size);	
-	} else {
-		collide(objects, _grid, _grid_size, area_pos, area_size);		
-	}
-	//LOG_DEBUG(("returned %u objects", (unsigned)objects.size()));
-}
-
-
-template<typename T> 
-void Grid<T>::resize(GridMatrix &grid, const v2<int> &grid_size, const v2<int> &map_size) {
-	v2<int> dim = (map_size - 1) / grid_size + 1;
-	grid.resize(dim.y);
-	for(int y = 0; y < dim.y; ++y) 
-		grid[y].resize(dim.x);
-}
-
-template<typename T> 
-void Grid<T>::setSize(const v2<int> &size, const int step, const bool wrap) {
-	clear();
-	_grid_size = v2<int>(step, step);
-	resize(_grid, _grid_size, size);
-	_grid4_size = v2<int>(step * 4, step * 4);
-	resize(_grid4, _grid4_size, size);
-	_wrap = wrap;
-	_map_size = size;
-}
-
-template<typename T> 
-void Grid<T>::update(T id, const v2<int> &pos, const v2<int> &size) {
-	typename Index::iterator i = _index.find(id);
-	if (i != _index.end()) {
-	//skip modification if grid coordinates
-		if (pos / _grid_size == i->second.pos / _grid_size &&
-			(pos + size - 1) / _grid_size == (i->second.pos + size - 1) / _grid_size) {
-			return;	
-		}
-		
-
-		removeFromGrid(_grid, _grid_size, id, i->second);
-		removeFromGrid(_grid4, _grid4_size, id, i->second);
-		i->second.pos = pos;
-		i->second.size = size;
-	} else 
-		_index.insert(typename Index::value_type(id, Object(pos, size)));
-
-	update(_grid, _grid_size, id, pos, size);
-	update(_grid4, _grid4_size, id, pos, size);
-}
-
-template<typename T> 
-void Grid<T>::remove(T id) {
-	typename Index::iterator i = _index.find(id);
-	if (i != _index.end()) {
-		removeFromGrid(_grid, _grid_size, id, i->second);		
-		removeFromGrid(_grid4, _grid4_size, id, i->second);		
-		_index.erase(i);
-	} 
-}
-
 
 #endif
 
