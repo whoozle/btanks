@@ -4,7 +4,7 @@
 		*) reuse UDP address. Added broadcast mode support.
 		*) New on-demand serialization model: 2-3-10 times smaller packets send thru network.
 		*) Improved client dialog: show map/slots info and hostname/ip. 
-	*) Removed acceleration code for all objects. This add annoying effect of slowness.
+	*) Removed acceleration code for all objects. This added annoying effect of slowness.
 		 (especially while playing on gamepad).
 	*) Put resources in single big file.
 	*) Map editor went public (user unfriendly) 
