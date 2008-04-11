@@ -1,11 +1,16 @@
-0.8.XXXX: 
+0.8.*: 
 	*) Multiplayer fixes: 
 		*) Added 'scan' feature - scanning/querying servers in the local network. 
 		*) reuse UDP address. Added broadcast mode support.
 		*) New on-demand serialization model: 2-3-10 times smaller packets send thru network.
 		*) Improved client dialog: show map/slots info and hostname/ip. 
-		*) Removed acceleration code for all objects. This add annoying effect of slowness.
-			 (especially while playing on gamepad).
+	*) Removed acceleration code for all objects. This add annoying effect of slowness.
+		 (especially while playing on gamepad).
+	*) Put resources in single big file.
+	*) Map editor went public (user unfriendly) 
+	*) Various menu controls improvements/fixes.
+	*) Added Direct3d(tm)(r) wrapper for SDL. (2d over 3d) no more OpenGL(tm) on Windows(tm). :)
+	*) 6204+
 0.7.5800: 
 	*) Introduce lua scripting support (map zones and special handlers): 
 		*) Hiding/showing/spawning items
