@@ -1203,14 +1203,14 @@ void IPlayerManager::onPlayerDeath(const Object *player, const Object *killer) {
 	if (player == NULL || killer == NULL || _client != NULL || killer->getSlot() < 0 || killer->getSlot() >= (int)_players.size() || GameMonitor->gameOver())
 		return;
 
-	LOG_DEBUG(("handler %s %s", player->animation.c_str(), killer->animation.c_str()));
+	//LOG_DEBUG(("handler %s %s", player->animation.c_str(), killer->animation.c_str()));
 
 	if (RTConfig->game_type != GameTypeCooperative) { //skip this check in coop mode
 		PlayerSlot *player_slot = getSlotByID(player->getID());
 		if (player_slot == NULL)
 			return;
 	} else {
-		if (player->hasOwner(OWNER_COOPERATIVE)) {
+		if (player->hasOwner(OWNER_COOPERATIVE) || player->getSlot() >= 0) {
 			return;
 		}
 	}
