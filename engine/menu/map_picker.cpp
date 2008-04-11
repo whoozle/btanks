@@ -234,7 +234,7 @@ void MapPicker::fillSlots() const {
 				slot.name = Nickname::generate();
 		}
 		slot.createControlMethod(cm);
-		slot.spawnPlayer(object, animation);
+		slot.spawnPlayer(i, object, animation);
 	}
 
 	if (!split) {	

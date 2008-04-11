@@ -86,7 +86,7 @@ public:
 	void tick(const float dt);
 	
 	void createControlMethod(const std::string &name);
-	void spawnPlayer(const std::string &classname, const std::string &animation);
+	void spawnPlayer(const int slot_id, const std::string &classname, const std::string &animation);
 	void validatePosition(v2<float>& position);
 	void addScore(const int s);
 	

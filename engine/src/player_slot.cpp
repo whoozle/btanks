@@ -270,7 +270,7 @@ void PlayerSlot::createControlMethod(const std::string &control_method_name) {
 #include "player_manager.h"
 #include "campaign.h"
 
-void PlayerSlot::spawnPlayer(const std::string &classname, const std::string &animation) {
+void PlayerSlot::spawnPlayer(const int slot_id, const std::string &classname, const std::string &animation) {
 	if (spawn_limit <= 0 && Config->has("map.spawn-limit")) {
 		Config->get("map.spawn-limit", spawn_limit, 0);
 		const Campaign * campaign = GameMonitor->getCampaign();
@@ -280,9 +280,9 @@ void PlayerSlot::spawnPlayer(const std::string &classname, const std::string &an
 			spawn_limit += al;
 		}
 	}
-
 	Object *obj = ResourceManager->createObject(classname + "(player)", animation);
 	assert(obj != NULL);
+	obj->setSlot(slot_id);
 	
 	if (control_method != NULL || remote != -1)
 		obj->disable_ai = true;

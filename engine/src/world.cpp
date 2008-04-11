@@ -1176,6 +1176,7 @@ Object* IWorld::spawn(const Object *src, const std::string &classname, const std
 	assert(obj->_owners.size() == 0);
 	
 	obj->copyOwners(src);
+	obj->_slot_id = src->_slot_id;
 		
 	obj->addOwner(src->_id);
 	//LOG_DEBUG(("%s spawns %s", src->classname.c_str(), obj->classname.c_str()));

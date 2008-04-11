@@ -1042,7 +1042,7 @@ void IGameMonitor::startGame(Campaign *campaign, const std::string &name) {
 
 	std::string object, vehicle;
 	slot.getDefaultVehicle(object, vehicle);
-	slot.spawnPlayer(object, vehicle);
+	slot.spawnPlayer(0, object, vehicle);
 	PlayerManager->getSlot(0).setViewport(Window->getSize());
 }
 

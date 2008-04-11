@@ -117,7 +117,6 @@ public:
 	void requestObjects(const int first_id);
 
 private: 
-	PlayerSlot *getSlotByIDRecursive(const Object *object);
 	void onPlayerDeath(const Object *player, const Object *killer);
 	
 	sl08::slot1<void, const std::set<v3<int> > &, IPlayerManager> on_destroy_map_slot;

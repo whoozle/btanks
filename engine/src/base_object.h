@@ -103,7 +103,10 @@ public:
 	inline void getOwners(std::deque<int> &owners) const { owners = _owners; }
 	void copyOwners(const BaseObject *from);
 	
-	const int getSummoner() const { return _spawned_by; }
+	inline const int getSummoner() const { return _spawned_by; }
+	inline const int getSlot() const { return _slot_id; }
+	void setSlot(const int id);
+	
 	void getTimes(float &moving, float &idle) const { moving = _moving_time; idle = _idle_time; }
 	
 	void interpolate();
@@ -138,7 +141,7 @@ private:
 	std::deque<int> _owners;
 	std::set<int> _owner_set;
 
-	int _spawned_by;
+	int _spawned_by, _slot_id;
 	
 	friend class IWorld;
 	friend class Object;

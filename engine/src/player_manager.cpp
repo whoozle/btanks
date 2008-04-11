@@ -165,7 +165,7 @@ TRY {
 
 		slot.remote = cid;
 		
-		slot.spawnPlayer(vehicle, animation);
+		slot.spawnPlayer(id, vehicle, animation);
 
 		mrt::Serializator s;
 		World->serialize(s);
@@ -647,7 +647,7 @@ TRY {
 				
 		LOG_DEBUG(("player in slot %u is dead. respawning. frags: %d", (unsigned)i, slot.frags));
 
-		slot.spawnPlayer(slot.classname, slot.animation);
+		slot.spawnPlayer(i, slot.classname, slot.animation);
 
 		if (slot.getObject()) {
 			Mixer->playSample(slot.getObject(), "respawn.ogg", false);
@@ -964,8 +964,8 @@ const int IPlayerManager::spawnPlayer(const std::string &classname, const std::s
 
 	slot.createControlMethod(control_method);
 	
-	LOG_DEBUG(("player: %s.%s using control method: %s", classname.c_str(), animation.c_str(), control_method.c_str()));
-	slot.spawnPlayer(classname, animation);
+	LOG_DEBUG(("player[%d]: %s.%s using control method: %s", i, classname.c_str(), animation.c_str(), control_method.c_str()));
+	slot.spawnPlayer(i, classname, animation);
 	return i;
 }
 
@@ -1197,43 +1197,10 @@ const bool IPlayerManager::isServerActive() const {
 	return false;
 }
 
-PlayerSlot *IPlayerManager::getSlotByIDRecursive(const Object *first) {
-	std::queue<const Object *> queue;
-	queue.push(first);
-
-	while(!queue.empty()) {
-		const Object *object = queue.front();
-		queue.pop();
-		assert(object != NULL);
-
-		PlayerSlot *slot = getSlotByID(object->getID());
-		if (slot != NULL)
-			return slot;
-		
-		const Object *parent = World->getObjectByID(object->getSummoner());
-		if (parent != NULL) {
-			//LOG_DEBUG(("found summoner: %s", parent->animation.c_str()));
-			queue.push(parent);
-		}
-		
-		std::deque<int> owners;
-		object->getOwners(owners);
-		for(std::deque<int>::const_iterator i = owners.begin(); i != owners.end(); ++i) {
-			const Object *parent = World->getObjectByID(*i);
-			if (parent != NULL) {
-				//LOG_DEBUG(("found owner: %s", parent->animation.c_str()));
-				queue.push(parent);
-			}
-		}
-	}
-	
-	return NULL;
-}
-
 #include "special_owners.h"
 
 void IPlayerManager::onPlayerDeath(const Object *player, const Object *killer) {
-	if (player == NULL || killer == NULL || _client != NULL || GameMonitor->gameOver())
+	if (player == NULL || killer == NULL || _client != NULL || killer->getSlot() < 0 || killer->getSlot() >= (int)_players.size() || GameMonitor->gameOver())
 		return;
 
 	if (RTConfig->game_type != GameTypeCooperative) { //skip this check in coop mode
@@ -1246,19 +1213,15 @@ void IPlayerManager::onPlayerDeath(const Object *player, const Object *killer) {
 		}
 	}
 	//LOG_DEBUG(("prepare: object %s killed by %s", player->animation.c_str(), killer->animation.c_str()));
-	
-	PlayerSlot *slot = getSlotByIDRecursive(killer);
+	PlayerSlot &slot = _players[killer->getSlot()];
 
-	if (slot == NULL) 
-		return;
-	
 	LOG_DEBUG(("object %s killed by %s", player->animation.c_str(), killer->animation.c_str()));
 		
-	if (slot->id == player->getID()) { //suicide
-		if (slot->frags > 0)
-			--(slot->frags);
+	if (slot.id == player->getID()) { //suicide
+		if (slot.frags > 0)
+			--(slot.frags);
 	} else {
-		++(slot->frags);
+		++(slot.frags);
 	}
 }
 
