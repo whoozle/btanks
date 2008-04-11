@@ -874,6 +874,7 @@ Object* Object::add(const std::string &name, const std::string &classname, const
 	obj->addOwner(_id);
 	obj->_id = _id;
 	obj->_spawned_by = _id;
+	obj->_slot_id = getSlot();
 
 	obj->onSpawn();
 	
