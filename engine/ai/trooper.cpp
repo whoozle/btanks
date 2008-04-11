@@ -36,13 +36,6 @@ void StupidTrooper::calculate(Object *object, PlayerState &_state, v2<float> &_v
 		return;
 	}
 	
-	if (object->getState() == "fire") {
-		_state.fire = true; //just to be sure.
-		return;
-	}
-	
-	_state.fire = false;
-	
 	float range = object->getWeaponRange(_object);
 
 	_target_dir = object->getTargetPosition(_velocity, _targets, range);
@@ -58,6 +51,7 @@ void StupidTrooper::calculate(Object *object, PlayerState &_state, v2<float> &_v
 		if (_velocity.length() >= 9) {
 			object->quantizeVelocity();
 			_direction.fromDirection(object->getDirection(), dirs);
+			_state.fire = false;
 		} else {
 			_velocity.clear();
 			object->setDirection(_target_dir);
@@ -70,5 +64,6 @@ void StupidTrooper::calculate(Object *object, PlayerState &_state, v2<float> &_v
 		_velocity.clear();
 		_target_dir = -1;
 		onIdle();
+		_state.fire = false;
 	}
 }

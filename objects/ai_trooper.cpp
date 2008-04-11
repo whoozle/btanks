@@ -190,6 +190,7 @@ void AITrooper::calculate(const float dt) {
 		if (_velocity.length() >= 9) {
 			quantizeVelocity();
 			_direction.fromDirection(getDirection(), getDirectionsNumber());
+			_state.fire = false;
 		} else {
 			_velocity.clear();
 			setDirection(_target_dir);
