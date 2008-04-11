@@ -34,7 +34,7 @@ BaseObject::BaseObject(const std::string &classname):
 	_need_sync(true),
 	_dead(false), 
 	_position(), _interpolation_progress(1), _z(0), 
-	_owners(), _owner_set(), _spawned_by(0), _slot_id(-1) {
+	_owners(), _owner_set(), _spawned_by(0) {
 	//LOG_DEBUG(("allocated id %ld", _id));
 }
 
@@ -416,7 +416,3 @@ void BaseObject::updateVariants(const Variants &vars, const bool remove_old) {
 	_variants.update(vars, remove_old);
 }
 
-void BaseObject::setSlot(const int id) {
-	assert(_slot_id < 0);
-	_slot_id = id;
-}

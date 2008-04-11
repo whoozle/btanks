@@ -152,6 +152,9 @@ public:
 	
 	bool is_subobject() const { return _parent != NULL; }
 
+	inline const int getSlot() const { return _slot_id; }
+	void setSlot(const int id);
+
 protected:
 
 	//pathfinding
@@ -264,6 +267,7 @@ private:
 	Group _group;
 	
 	Alarm _blinking;
+	int _slot_id;
 
 	void setSync(const bool sync);
 	

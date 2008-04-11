@@ -73,7 +73,8 @@ Object::Object(const std::string &classname) :
 	_rotation_time(0), 
 	_dst_direction(-1), 
 	_position_delta(), 
-	_group(), _blinking(true)
+	_group(), _blinking(true), 
+	_slot_id(-1)
 	 {
 	 	GET_CONFIG_VALUE("engine.spawn-invulnerability-blinking-interval", float, ibi, 0.3);
 	 	_blinking.set(ibi);
@@ -1592,6 +1593,7 @@ const bool Object::attachVehicle(Object *vehicle) {
 	
 	vehicle->copyOwners(this);
 	vehicle->disable_ai = disable_ai;
+	vehicle->setSlot(getSlot());
 
 	World->replaceID(old_id, new_id);
 	slot->id = new_id;
@@ -1645,4 +1647,11 @@ const bool Object::detachVehicle() {
 	man->invalidate();
 	
 	return true;
+}
+
+void Object::setSlot(const int id) {
+	_slot_id = id;
+	for(Group::iterator i = _group.begin(); i != _group.end(); ++i) {
+		i->second->setSlot(id);
+	}
 }

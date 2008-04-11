@@ -104,8 +104,6 @@ public:
 	void copyOwners(const BaseObject *from);
 	
 	inline const int getSummoner() const { return _spawned_by; }
-	inline const int getSlot() const { return _slot_id; }
-	void setSlot(const int id);
 	
 	void getTimes(float &moving, float &idle) const { moving = _moving_time; idle = _idle_time; }
 	
@@ -141,7 +139,7 @@ private:
 	std::deque<int> _owners;
 	std::set<int> _owner_set;
 
-	int _spawned_by, _slot_id;
+	int _spawned_by;
 	
 	friend class IWorld;
 	friend class Object;
