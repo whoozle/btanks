@@ -172,13 +172,6 @@ void AITrooper::calculate(const float dt) {
 		*/
 	}
 
-	if (getState() == "fire") {
-		_state.fire = true; //just to be sure.
-		return;
-	}
-	
-	_state.fire = false;
-	
 	float range = getWeaponRange(_object);
 	
 
@@ -209,6 +202,7 @@ void AITrooper::calculate(const float dt) {
 		_velocity.clear();
 		_target_dir = -1;
 		onIdle(dt);
+		_state.fire = false;
 	}
 }
 //==============================================================================
