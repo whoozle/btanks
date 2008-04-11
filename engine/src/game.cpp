@@ -267,6 +267,9 @@ void IGame::init(const int argc, char *argv[]) {
 		if (revision < 6571) {
 			Config->set("engine.sound.sample-rate", 22050);
 		}
+		if (revision < 6831) {
+			Config->remove("objects.kamikaze.reaction-time");
+		}
 		
 		Config->set("engine.revision", getRevision());
 	}
