@@ -34,7 +34,20 @@ DERIVE_EXCEPTION(MRTAPI, XMLException);
 
 class MRTAPI XMLParser {
 public:
-	typedef std::map<const std::string, std::string> Attrs;
+	struct Attrs : public std::map<const std::string, std::string> {
+		inline bool get(const std::string &name, bool defv) const {
+			const_iterator i;
+			return (i = find(name)) != end()? i->second == "true": defv;
+		}
+		inline int get(const std::string &name, int defv) const {
+			const_iterator i;
+			return (i = find(name)) != end()? atoi(i->second.c_str()): defv;
+		}
+		inline float get(const std::string &name, float defv) const {
+			const_iterator i;
+			return (i = find(name)) != end()? atof(i->second.c_str()): defv;
+		}
+	};
 
 	static void getFileStats(int &tags, const std::string &fname);
 	static void getFileStats(int &tags, const mrt::BaseFile &file);
