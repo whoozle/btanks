@@ -45,7 +45,7 @@ public:
 		}
 		inline float get(const std::string &name, float defv) const {
 			const_iterator i;
-			return (i = find(name)) != end()? atof(i->second.c_str()): defv;
+			return (i = find(name)) != end()? (float)atof(i->second.c_str()): defv;
 		}
 	};
 
