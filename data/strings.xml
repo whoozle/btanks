@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <strings>
 	<area id="menu">
+		<string id="network-status">You have one or more users connected. Click the button below to disconnect them all.</string>
+		<string id="network-status" lang="ru">К вам подключено несколько пользователей. Нажмите на кнопку с крестиком чтобы отключить их.</string>
+	
 		<string id="map">ping</string>
 		<string id="map" lang="ru">карта</string>
 		
