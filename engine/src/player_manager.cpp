@@ -1430,5 +1430,6 @@ void IPlayerManager::requestObjects(const int first_id) {
 void IPlayerManager::disconnect_all() {
 	if (_server == NULL) 
 		return;
-	
+	LOG_DEBUG(("disconnecting all clients"));
+	_server->disconnect_all();
 }

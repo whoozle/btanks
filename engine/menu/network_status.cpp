@@ -20,9 +20,10 @@ void NetworkStatusControl::render(sdlx::Surface &surface, const int x, const int
 }
 
 bool NetworkStatusControl::onMouse(const int button, const bool pressed, const int x, const int y) {
-	if (!pressed && _close_area.in(x, y)) {
+	if (_close_area.in(x, y)) {
 		//LOG_DEBUG(("%d %d", x, y));
-		
+		if (!pressed)
+			invalidate();
 		return true;
 	}
 	return false;

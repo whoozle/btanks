@@ -35,6 +35,7 @@
 #include "resource_manager.h"
 #include "menu_config.h"
 #include "sound/mixer.h"
+#include "player_manager.h"
 
 bool MainMenu::generate_key_events_for_gamepad = true;
 
@@ -277,7 +278,8 @@ void MainMenu::render(sdlx::Surface &dst) const {
 	const BaseMenu * sm = getMenu(_active_menu);
 	if (sm != NULL) {
 		sm->render(dst, 0, 0);
-		_netstat->render(dst, 0, 0);
+		if (PlayerManager->isServerActive())
+			_netstat->render(dst, 0, 0);
 	} else {
 		int base_x = (dst.getWidth() - _background.w) / 2, base_y = (dst.getHeight() - _background.h) / 2;
 		_background.render(dst, base_x, base_y);
@@ -306,7 +308,7 @@ void MainMenu::render(sdlx::Surface &dst) const {
 		}
 	}
 	
-	//if (PlayerManager->isServerActive())
+	if (PlayerManager->isServerActive())
 		_netstat->render(dst, 0, 0);
 }
 
@@ -369,7 +371,11 @@ bool MainMenu::onMouse(const int button, const bool pressed, const int x, const 
 	if (!_active)
 		return false;
 	
-	if (_netstat != NULL && _netstat->onMouse(button, pressed, x, y)) {
+	if (_netstat != NULL && PlayerManager->isServerActive() && _netstat->onMouse(button, pressed, x, y)) {
+		if (_netstat->changed()) {
+			_netstat->reset();
+			PlayerManager->disconnect_all();
+		}
 		return true;
 	}
 	

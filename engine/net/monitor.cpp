@@ -623,11 +623,27 @@ void Monitor::setCompressionLevel(const int level) {
 }
 
 Connection *Monitor::pop() {
-	sdlx::AutoMutex m(_connections_mutex);
-	ConnectionMap::iterator i = _connections.begin();
-	if (i == _connections.end())
-		return NULL;
-	Connection *r = i->second;
-	_connections.erase(i);
+	int cid;
+	Connection *r;
+	{
+		sdlx::AutoMutex m(_connections_mutex);
+		ConnectionMap::iterator i = _connections.begin();
+		if (i == _connections.end())
+			return NULL;
+		cid = i->first;
+		r = i->second;
+		_connections.erase(i);
+	}
+
+	{ 
+		sdlx::AutoMutex m(_send_q_mutex); 
+		eraseTasks(_send_q, cid);
+	}
+				
+	{
+		sdlx::AutoMutex m(_result_mutex);
+		eraseTasks(_result_q, cid);
+	}
+	
 	return r;
 }

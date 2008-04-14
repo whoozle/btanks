@@ -70,6 +70,12 @@ void Server::restart() {
 	}
 }
 
+void Server::disconnect_all() {
+	Connection *c;
+	while((c = _monitor->pop()) != NULL)
+		delete c;
+}
+
 void Server::tick(const float dt) {
 	if (!_monitor) 
 		return;

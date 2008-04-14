@@ -40,6 +40,7 @@ public:
 	void disconnect(const int id);
 	
 	void restart();
+	void disconnect_all();
 	
 private:
 	Server(const Server &);
