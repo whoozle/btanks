@@ -63,6 +63,7 @@ public:
 	inline const bool isClient() const { return _client != NULL; }
 	inline const bool isServer() const { return _server != NULL; }	
 	const bool isServerActive() const;
+	void disconnect_all();
 
 	void addSlot(const v3<int> &position);
 	void addSpecialZone(const SpecialZone& zone);

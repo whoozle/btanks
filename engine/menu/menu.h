@@ -34,6 +34,7 @@ namespace sdlx {
 
 class MenuItem;
 class BaseMenu;
+class NetworkStatusControl;
 
 class MainMenu {
 public:
@@ -96,6 +97,8 @@ private:
 	//joystick hack: 
 	bool _key_active;
 	SDL_keysym _key_emulated;
+	
+	NetworkStatusControl *_netstat;
 };
 
 

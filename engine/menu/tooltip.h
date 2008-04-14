@@ -33,9 +33,11 @@ public:
 	void getSize(int &w, int &h) const;
 	const float getReadingTime() const { return _time; }
 
-private: 
+protected: 
 	bool _use_background;
 	Box _background;
+
+private: 
 	sdlx::Surface _surface;
 	std::vector<int> _lines;
 	float _time;

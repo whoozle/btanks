@@ -1426,3 +1426,9 @@ void IPlayerManager::requestObjects(const int first_id) {
 	s.finalize(m.data);
 	_client->send(m);
 }
+
+void IPlayerManager::disconnect_all() {
+	if (_server == NULL) 
+		return;
+	
+}

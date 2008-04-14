@@ -23,6 +23,7 @@
 #include "join_server_menu.h"
 #include "options_menu.h"
 #include "campaign_menu.h"
+#include "network_status.h"
 #include "i18n.h"
 
 #include "sdlx/surface.h"
@@ -44,6 +45,8 @@ MainMenu::MainMenu() : _active(false), _active_item(0), _key_active(false) {
 	on_mouse_slot.assign(this, &MainMenu::onMouse, Window->mouse_signal);
 	on_mouse_motion_slot.assign(this, &MainMenu::onMouseMotion, Window->mouse_motion_signal);
 	on_event_slot.assign(this, &MainMenu::onEvent, Window->event_signal);
+	
+	_netstat = new NetworkStatusControl;
 }
 
 void MainMenu::init(const int w, const int h) {
@@ -158,6 +161,7 @@ void MainMenu::deinit() {
 }
 
 MainMenu::~MainMenu() { 
+	delete _netstat;
 	LOG_DEBUG(("cleaning up menus..."));
 	deinit(); 
 }
@@ -273,35 +277,37 @@ void MainMenu::render(sdlx::Surface &dst) const {
 	const BaseMenu * sm = getMenu(_active_menu);
 	if (sm != NULL) {
 		sm->render(dst, 0, 0);
-		return;
-	}
-
-	int base_x = (dst.getWidth() - _background.w) / 2, base_y = (dst.getHeight() - _background.h) / 2;
-	_background.render(dst, base_x, base_y);
+		_netstat->render(dst, 0, 0);
+	} else {
+		int base_x = (dst.getWidth() - _background.w) / 2, base_y = (dst.getHeight() - _background.h) / 2;
+		_background.render(dst, base_x, base_y);
 	
-	int x = (dst.getWidth() - _menu_size.x) /2;
-	int y = (dst.getHeight() - _menu_size.y) / 2;
+		int x = (dst.getWidth() - _menu_size.x) /2;
+		int y = (dst.getHeight() - _menu_size.y) / 2;
 
-	_background_area.x = x;
-	_background_area.y = y;
+		_background_area.x = x;
+		_background_area.y = y;
 	
-	MenuMap::const_iterator i = _items.find(_active_menu);
-	if ( i == _items.end())
-		return;
-	
-	const ItemList & items = i->second;
-	size_t n = items.size();
-	for(size_t i = 0; i < n ;++i) {
-		int w,h;
-		items[i]->getSize(w, h);
+		MenuMap::const_iterator i = _items.find(_active_menu);
+		if ( i != _items.end()) {
+			const ItemList & items = i->second;
+			size_t n = items.size();
+			for(size_t i = 0; i < n ;++i) {
+				int w,h;
+				items[i]->getSize(w, h);
 
-		if (_active_item == i) {
-			_background.renderHL(dst, base_x, y + h / 2);
+				if (_active_item == i) {
+					_background.renderHL(dst, base_x, y + h / 2);
+				}
+	
+				items[i]->render(dst, x + (_menu_size.x - w) / 2, y);
+				y += h + ITEM_SPACING;
+			}
 		}
-	
-		items[i]->render(dst, x + (_menu_size.x - w) / 2, y);
-		y += h + ITEM_SPACING;
 	}
+	
+	//if (PlayerManager->isServerActive())
+		_netstat->render(dst, 0, 0);
 }
 
 #include "sdlx/cursor.h"
@@ -362,6 +368,10 @@ bool MainMenu::onMouseMotion(const int state, const int x, const int y, const in
 bool MainMenu::onMouse(const int button, const bool pressed, const int x, const int y) {
 	if (!_active)
 		return false;
+	
+	if (_netstat != NULL && _netstat->onMouse(button, pressed, x, y)) {
+		return true;
+	}
 	
 	BaseMenu * bm = getMenu(_active_menu);
 	if (bm != NULL) {
