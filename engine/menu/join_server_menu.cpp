@@ -223,6 +223,7 @@ void JoinServerMenu::tick(const float dt) {
 
 	if (_scanner == NULL) {
 		_scanner = new Scanner;
+		ping(); 
 	}
 	
 	if (_scanner != NULL && _scanner->changed()) {
