@@ -79,25 +79,61 @@ const bool IFinder::exists(const std::string &name) const {
 	return true;
 }
 
-IFinder::IFinder() {
-	std::string path;
-#ifdef PREFIX
-	Config->get("engine.path", path, RESOURCES_DIR "/private/data:" RESOURCES_DIR "/data");
-#else
-	Config->get("engine.path", path, "private/data:data");
+#ifndef RESOURCES_DIR
+#	define RESOURCES_DIR "."
 #endif
+
+static void scan(std::vector<std::string> &path) {
+	mrt::Directory dir;
+	dir.open(RESOURCES_DIR);
+	std::string base_dir;
+	while(!(base_dir = dir.read()).empty()) {
+		if (base_dir[0] == '.' || !mrt::FSNode::is_dir(base_dir))
+			continue;
+		
+		TRY {
+			mrt::Directory subdir;
+			subdir.open(base_dir);
+			std::string data_dir;
+			while(!(data_dir = subdir.read()).empty()) {
+				std::string dname = base_dir + "/" + data_dir;
+				if (data_dir == "data" && mrt::FSNode::is_dir(dname)) {
+					//LOG_DEBUG(("data_dir = %s", dname.c_str()));
+					path.push_back(dname.c_str());
+				}
+			}
+			subdir.close();
+		} CATCH("scan", )
+	}
+	std::string dname = RESOURCES_DIR "/data";
+	if (mrt::FSNode::is_dir(dname)) {
+		path.push_back(dname);
+	}
+	dir.close();
+}
+
+IFinder::IFinder() {
+	mrt::Directory dir;
+
+	std::string path;
+	Config->get("engine.path", path, std::string());
+	
 	LOG_DEBUG(("engine.path = %s", path.c_str()));
+
 	std::vector<std::string> r;
 	mrt::split(r, path, ":");
-	mrt::Directory dir;
+
+	scan(r);
+	
 	for(size_t i = 0; i < r.size(); ++i) {
-		LOG_DEBUG(("checking for directory: %s", r[i].c_str()));
+		const std::string &p = r[i];
+		LOG_DEBUG(("checking for directory: %s", p.c_str()));
 		bool found = false;
-		if (dir.exists(r[i])) {
-			_path.push_back(r[i]);
+		if (dir.exists(p)) {
+			_path.push_back(p);
 			found = true;
 		} 
-		std::string dat = mrt::FSNode::getParentDir(r[i]) + "/resources.dat";
+		std::string dat = mrt::FSNode::getParentDir(p) + "/resources.dat";
 		LOG_DEBUG(("checking for compressed resources in %s", dat.c_str()));
 		if (dir.exists(dat)) {
 			TRY {
@@ -114,16 +150,16 @@ IFinder::IFinder() {
 				}
 				LOG_DEBUG(("%u files were read from the archive", (unsigned)package->files.size()));
 				*/
-				delete packages[r[i]];
-				packages[r[i]] = package.release();
+				delete packages[p];
+				packages[p] = package.release();
 				if (!found)
-					_path.push_back(r[i]);
+					_path.push_back(p);
 				found = true;
 			} CATCH("loading packed resources", );
 		} 
 		
 		if (!found)
-			LOG_DEBUG(("skipped non-existent path item %s", r[i].c_str()));
+			LOG_DEBUG(("skipped non-existent path item %s", p.c_str()));
 	}
 	if (_path.empty())
 		throw_ex(("none of the directories listed in engine.path('%s') exist", path.c_str()));

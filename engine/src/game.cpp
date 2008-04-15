@@ -270,6 +270,9 @@ void IGame::init(const int argc, char *argv[]) {
 		if (revision < 6831) {
 			Config->remove("objects.kamikaze.reaction-time");
 		}
+		if (revision < 6850) {
+			Config->remove("engine.path");
+		}
 		
 		Config->set("engine.revision", getRevision());
 	}
