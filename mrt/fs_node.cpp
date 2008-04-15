@@ -132,3 +132,10 @@ const std::string FSNode::normalize(const std::string &path_) {
 	mrt::join(path, r, "/");
 	return path;
 }
+
+bool FSNode::is_dir(const std::string &name) {
+	struct stat buf;
+	if (stat(name.c_str(), &buf) != 0)
+		return false;
+	return S_ISDIR(buf.st_mode);
+}

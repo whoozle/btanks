@@ -33,6 +33,7 @@ public:
 	static const std::string getFilename(const std::string &fname, const bool return_ext = true);
 	static const std::string relativePath(const std::string &from_dir, const std::string &to_dir);
 	static const std::string normalize(const std::string &path);
+	static bool is_dir(const std::string &name);
 };
 
 }
