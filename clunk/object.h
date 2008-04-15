@@ -54,6 +54,7 @@ public:
 
 	void autodelete();
 	void set_loop(const std::string &name, const bool loop);
+	bool get_loop(const std::string &name);
 
 private: 
 	friend class Context;

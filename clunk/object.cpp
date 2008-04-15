@@ -50,6 +50,18 @@ void Object::cancel(const std::string &name, const float fadeout) {
 	}
 }
 
+bool Object::get_loop(const std::string &name) {
+	AudioLocker l;
+	Sources::iterator b = sources.lower_bound(name);
+	Sources::iterator e = sources.upper_bound(name);
+	for(Sources::iterator i = b; i != e; ++i) {
+		if (i->second->loop)
+			return true;
+	}
+	return false;
+}
+
+
 void Object::set_loop(const std::string &name, const bool loop) {
 	AudioLocker l;
 	Sources::iterator b = sources.lower_bound(name);
