@@ -28,8 +28,9 @@ opts.Add('CPPPATH', 'extra cpp path', '')
 
 if sys.platform != "win32":
 	opts.Add('prefix', 'prefix for **nix packaging', '')
-	opts.Add('resources_dir', 'resources directory (default: prefix/share)', '')
-	opts.Add('lib_dir', 'resources directory (default: prefix/share)', '')
+	opts.Add('lib_dir', 'resources directory (default: prefix/lib)', '')
+	opts.Add('plugins_dir', 'plugins directory (default: prefix/lib/btanks)', '')
+	opts.Add('resources_dir', 'resources directory (default: prefix/share/btanks)', '')
 
 opts.Add(EnumOption('mode', 'build mode', 'release', allowed_values=('debug','release')))
 opts.Add(BoolOption('gcc_visibility', 'gcc visibility', 'false'))
@@ -182,6 +183,14 @@ try :
 				lib_dir = env['lib_dir']
 			else: 
 				lib_dir = prefix + "/lib"
+
+			if len(env['plugins_dir']):
+				plugins_dir = env['plugins_dir']
+			else: 
+				plugins_dir = lib_dir + "/btanks"
+
+			env.Append(CPPDEFINES='PLUGINS_DIR="\\"' + plugins_dir + '\\""')
+
 	except: 
 		info = sys.exc_info()
 		print "%s %s %s" %(info[0], info[1], info[2])
