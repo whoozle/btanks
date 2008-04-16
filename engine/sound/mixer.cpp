@@ -402,6 +402,22 @@ void IMixer::cancelSample(const Object *o, const std::string &name) {
 	i->second->cancel(name);
 }
 
+void IMixer::fadeoutSample(const Object *o, const std::string &name) {
+	if (_nosound || name.empty())
+		return;
+	
+	if (_debug)
+		LOG_DEBUG(("object %d fadeouts %s", o->getID(), name.c_str()));
+
+	const int id = o->getID();
+	Objects::iterator i = _objects.find(id);
+	if (i == _objects.end())
+		return;
+	
+	i->second->fade_out(name);
+}
+
+
 void IMixer::cancelAll(const Object *o) {
 	if (_nosound)
 		return;

@@ -333,6 +333,10 @@ void Object::playSound(const std::string &name, const bool loop, const float gai
 	Mixer->playSample(this, name + ".ogg", loop, gain);
 }
 
+void Object::fadeoutSound(const std::string &name) {
+	Mixer->fadeoutSample(this, name + ".ogg");
+}
+
 void Object::playRandomSound(const std::string &classname, const bool loop, const float gain) {
 	Mixer->playRandomSample(this, classname, loop, gain);
 }

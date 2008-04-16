@@ -57,6 +57,7 @@ public:
 	
 	void playSound(const std::string &name, const bool loop, const float gain = 1.0);
 	void playRandomSound(const std::string &classname, const bool loop, const float gain = 1.0);
+	void fadeoutSound(const std::string &name);
 
 	inline const int getDirection() const { return _direction_idx; }
 	inline const int getDirectionsNumber() const { return _directions_n; }

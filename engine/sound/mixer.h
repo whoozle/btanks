@@ -57,6 +57,7 @@ public:
 	void playSample(const Object *o, const std::string &name, const bool loop, const float gain = 1.0);
 	void playRandomSample(const Object *o, const std::string &classname, const bool loop, const float gain = 1.0);
 	void cancelSample(const Object *o, const std::string &name);
+	void fadeoutSample(const Object *o, const std::string &name);
 	void cancelAll(const Object *o);
 	void cancelAll();
 	
