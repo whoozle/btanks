@@ -133,9 +133,13 @@ const std::string FSNode::normalize(const std::string &path_) {
 	return path;
 }
 
+#ifndef S_ISDIR
+#	define S_ISDIR(mode) ((mode) & _S_IFDIR)
+#endif
+
 bool FSNode::is_dir(const std::string &name) {
 	struct stat buf;
 	if (stat(name.c_str(), &buf) != 0)
 		return false;
-	return S_ISDIR(buf.st_mode);
+	return S_ISDIR(buf.st_mode) != 0;
 }
