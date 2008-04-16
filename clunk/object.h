@@ -47,8 +47,10 @@ public:
 
 	void play(const std::string &name, Source *source);
 	bool playing(const std::string &name) const;
+
 	void cancel(const std::string &name, const float fadeout = 0.1f);
 	void cancel_all(bool force = false, const float fadeout = 0.1f);
+	void fade_out(const std::string &name, const float fadeout = 0.1f);
 	
 	bool active() const;
 
