@@ -106,7 +106,7 @@ static void scan(std::vector<std::string> &path) {
 		} CATCH("scan", )
 	}
 	std::string dname = RESOURCES_DIR "/data";
-	if (mrt::FSNode::is_dir(dname) || dir.exists(RESOURCES_DIR "/data")) {
+	if (mrt::FSNode::is_dir(dname) || dir.exists(RESOURCES_DIR "/resources.dat")) {
 		path.push_back(dname);
 #ifdef PLUGINS_DIR
 		path.push_back(PLUGINS_DIR "/data"); //plugins loaded from path ../bt_objects.
