@@ -94,20 +94,15 @@ static void scan(std::vector<std::string> &path) {
 			continue;
 		
 		TRY {
-			mrt::Directory subdir;
-			subdir.open(base_dir);
-			std::string data_dir;
-			while(!(data_dir = subdir.read()).empty()) {
-				std::string dname = base_dir + "/" + data_dir;
-				if (data_dir == "data" && mrt::FSNode::is_dir(dname)) {
+			std::string dname = base_dir + "/data";
+			std::string rname = base_dir + "/resources.dat";
+			if (mrt::FSNode::is_dir(dname) || dir.exists(rname)) {
 					//LOG_DEBUG(("data_dir = %s", dname.c_str()));
 					path.push_back(dname.c_str());
 #ifdef PLUGINS_DIR
-					path.push_back(PLUGINS_DIR + "/" + base_dir + "/data"); //plugins loaded from path ../bt_objects.
+					path.push_back(PLUGINS_DIR + "/" + dname); //plugins loaded from path ../bt_objects.
 #endif
-				}
 			}
-			subdir.close();
 		} CATCH("scan", )
 	}
 	std::string dname = RESOURCES_DIR "/data";
