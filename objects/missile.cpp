@@ -141,29 +141,30 @@ void Missile::emit(const std::string &event, Object * emitter) {
 				return;
 		} 
 		emit("death", emitter);
-	} if (event == "death" && type == "smoke") {
-		GET_CONFIG_VALUE("objects.smoke-cloud-downwards-z-override", int, csdzo, 350);
-		int z = (_velocity.y > 0)? csdzo: 0;
-		//LOG_DEBUG(("edzo = %d", edzo));
-		spawn("smoke-cloud", "smoke-cloud", v2<float>(), v2<float>(), z);
-		Object::emit(event, emitter);
-	} else if (event == "death" && (type == "nuke" || type == "mutagen")) {
-		Object *o = World->getObjectByID(getSummoner()); //player
-		v2<float> dpos;
-		if (o != NULL) {
-			dpos = o->getRelativePosition(this);
-		}
-		Object * e = (o != NULL? o: this)->spawn(type + "-explosion", type + "-explosion", dpos, v2<float>());
+	} if (event == "death") {
+		fadeoutSound(type + "-missile");
+		if (type == "smoke") {
+			GET_CONFIG_VALUE("objects.smoke-cloud-downwards-z-override", int, csdzo, 350);
+			int z = (_velocity.y > 0)? csdzo: 0;
+			//LOG_DEBUG(("edzo = %d", edzo));
+			spawn("smoke-cloud", "smoke-cloud", v2<float>(), v2<float>(), z);
+		} else if (type == "nuke" || type == "mutagen") {
+			Object *o = World->getObjectByID(getSummoner()); //player
+			v2<float> dpos;
+			if (o != NULL) {
+				dpos = o->getRelativePosition(this);
+			}
+			Object * e = (o != NULL? o: this)->spawn(type + "-explosion", type + "-explosion", dpos, v2<float>());
 		
-		e->disown();
-		Object::emit(event, emitter);
-	} else if (event == "death") {
-		v2<float> dpos;
-		
-		GET_CONFIG_VALUE("objects.explosion-downwards-z-override", int, edzo, 180);
-		int z = (_velocity.y >= 0)?edzo: 0;
+			e->disown();
+		} else {
+			v2<float> dpos;
+			
+			GET_CONFIG_VALUE("objects.explosion-downwards-z-override", int, edzo, 180);
+			int z = (_velocity.y >= 0)?edzo: 0;
 
-		spawn("explosion", "missile-explosion", dpos, v2<float>(), z);
+			spawn("explosion", "missile-explosion", dpos, v2<float>(), z);
+		}
 		Object::emit(event, emitter);
 	} else Object::emit(event, emitter);
 }
