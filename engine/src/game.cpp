@@ -161,14 +161,6 @@ void IGame::init(const int argc, char *argv[]) {
 		//place for upgrade.
 		int revision;
 		Config->get("engine.revision", revision, getRevision()); 
-		if (revision < 1639) {
-			int pfs;
-			Config->get("engine.pathfinding-slice", pfs, 1);
-			if (pfs > 1) {
-				LOG_DEBUG(("upgrading engine.pathfinding-slice value. (reset it to 1)"));
-				Config->set("engine.pathfinding-slice", 1);
-			}
-		}
 		if (revision < 1852) {
 			int rz;
 			Config->get("hud.radar.zoom", rz, 2);
@@ -272,6 +264,14 @@ void IGame::init(const int argc, char *argv[]) {
 		}
 		if (revision < 6850) {
 			Config->remove("engine.path");
+		}
+		if (revision < 6865) {
+			int pfs;
+			Config->get("engine.pathfinding-slice", pfs, 2);
+			if (pfs < 2) {
+				LOG_DEBUG(("upgrading engine.pathfinding-slice value. (reset it to 2)"));
+				Config->set("engine.pathfinding-slice", 2);
+			}
 		}
 		
 		Config->set("engine.revision", getRevision());
