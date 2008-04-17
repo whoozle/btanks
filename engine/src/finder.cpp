@@ -119,9 +119,9 @@ IFinder::IFinder() {
 	mrt::Directory dir;
 
 	std::string path;
-	Config->get("engine.path", path, std::string());
+	Config->get("engine.mods", path, std::string());
 	
-	LOG_DEBUG(("engine.path = %s", path.c_str()));
+	LOG_DEBUG(("engine.mods = %s", path.c_str()));
 
 	std::vector<std::string> r;
 	mrt::split(r, path, ":");
@@ -165,7 +165,7 @@ IFinder::IFinder() {
 			LOG_DEBUG(("skipped non-existent path item %s", p.c_str()));
 	}
 	if (_path.empty())
-		throw_ex(("none of the directories listed in engine.path('%s') exist", path.c_str()));
+		throw_ex(("none of the directories listed in engine.mods('%s') exist", path.c_str()));
 }
 
 IFinder::~IFinder() {
