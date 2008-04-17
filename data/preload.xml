@@ -642,6 +642,8 @@
 		<object id="megaheal"/>
 		<object id="missiles-on-launcher"/>
 		<object id="missiles-on-tank"/>
+		<object id="nuke-explosion"/>
+		<object id="nuke-mine"/>
 		<object id="nuke-missiles-item"/>
 		<object id="oil-barrels"/>
 		<object id="outline"/>
