@@ -79,15 +79,17 @@ const bool IFinder::exists(const std::string &name) const {
 	return true;
 }
 
-#ifndef RESOURCES_DIR
-#	define RESOURCES_DIR "."
-#endif
-
 //#define PLUGINS_DIR "/usr/lib/games/btanks" //just for fun :)
 
 static void scan(std::vector<std::string> &path) {
 	mrt::Directory dir;
+
+#ifdef RESOURCES_DIR
 	dir.open(RESOURCES_DIR);
+#else
+	dir.open(".");
+#endif
+
 	std::string base_dir;
 	while(!(base_dir = dir.read()).empty()) {
 		if (base_dir[0] == '.' || !mrt::FSNode::is_dir(base_dir))
@@ -105,8 +107,15 @@ static void scan(std::vector<std::string> &path) {
 			}
 		} CATCH("scan", )
 	}
+#ifdef RESOURCES_DIR
 	std::string dname = RESOURCES_DIR "/data";
-	if (mrt::FSNode::is_dir(dname) || dir.exists(RESOURCES_DIR "/resources.dat")) {
+	std::string rname = RESOURCES_DIR + "/resources.dat";
+#else
+	std::string dname = "data";
+	std::string rname = "resources.dat";
+#endif
+
+	if (mrt::FSNode::is_dir(dname) || dir.exists(rname)) {
 		path.push_back(dname);
 #ifdef PLUGINS_DIR
 		path.push_back(PLUGINS_DIR "/data"); //plugins loaded from path ../bt_objects.
