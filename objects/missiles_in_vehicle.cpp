@@ -146,7 +146,7 @@ void MissilesInVehicle::updatePose() {
 }
 
 void MissilesInVehicle::onSpawn() {
-	setZ(5);
+	setZ(registered_name != "alt-missiles-on-launcher"?5:3);
 	update();
 	updatePose();
 }
