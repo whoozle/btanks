@@ -4,5 +4,7 @@
 #define OWNER_MAP (-42)
 #define OWNER_COOPERATIVE (-1)
 
+enum TeamID { TeamRed, TeamGreen, TeamBlue, TeamYellow };
+
 #endif
 
