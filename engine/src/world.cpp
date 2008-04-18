@@ -1684,6 +1684,7 @@ void IWorld::move(const Object *object, const int x, const int y) {
 	if (o != NULL) {
 		o->_position.x = x; 
 		o->_position.y = y; 
+		updateObject(o);
 	}
 }
 
