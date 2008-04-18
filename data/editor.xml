@@ -106,6 +106,12 @@
 	<class id="cow">
 		<animation id="cow" />
 	</class>
+	<class id="ctf-base">
+		<animation id="ctf-base-red" />
+		<animation id="ctf-base-green" />
+		<animation id="ctf-base-blue" />
+		<animation id="ctf-base-yellow" />
+	</class>
 	<class id="damage-digits">
 	</class>
 	<class id="destructable-object">
