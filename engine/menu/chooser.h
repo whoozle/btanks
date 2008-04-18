@@ -42,6 +42,7 @@ public:
 	void set(const int i);
 	const int get() const { return _i; }
 	const int size() const { return _n; }
+	bool empty() const { return _options.empty(); }
 	void set(const std::string &name);
 	const std::string& getValue() const;
 	
