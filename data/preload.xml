@@ -6,6 +6,7 @@
 		<object id="bus-stop"/>
 		<object id="cannon-explosion"/>
 		<object id="corpse"/>
+		<object id="ctf-base"/>
 		<object id="damage-digits"/>
 		<object id="dispersion-bullet"/>
 		<object id="dispersion-bullets-item"/>
@@ -892,6 +893,10 @@
 	</object>
 	<object id="cow">
 		<animation id="cow"/>
+	</object>
+	<object id="ctf-base">
+		<animation id="ctf-base-green"/>
+		<animation id="ctf-base-red"/>
 	</object>
 	<object id="damage-digits">
 		<animation id="damage-digits"/>
