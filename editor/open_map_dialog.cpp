@@ -162,7 +162,7 @@ OpenMapDialog::OpenMapDialog() {
 	yp += ch;
 
 	TRY {
-		c_base->set(Finder->get_default_path());
+		c_base->set(Finder->get_base_path());
 	} CATCH("ctor", )
 	
 	for(size_t i = 0; i < path.size(); ++i) {

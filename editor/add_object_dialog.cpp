@@ -10,7 +10,7 @@
 
 AddObjectDialog::AddObjectDialog(const int w, const int h) : 
 ScrollList("menu/background_box_dark.png", "small", w, h), selected_z(0) {
-	_base = Finder->get_default_path();
+	_base = Finder->get_base_path();
 	_fname = "editor.xml";
 	
 	std::string src = Finder->find(_base, _fname, false);
