@@ -21,17 +21,16 @@
 
 class CTFBase : public Object {
 public:
-	CTFBase() : Object("ctf-base") {
-		impassability = -1;
-		hp = -1;
+	void tick(const float dt) {
+		Object::tick(dt);
 	}
-	virtual Object * clone() const { return CTFBase(*this); }
-	
-	virtual void tick(const float dt);
 
-	void onSpawn() {
-		play("main", true);
+	void emit(const std::string &event, Object * emitter) {
+		if (event == "collision") {
+			//add flag handling here.
+		} else emit(event, emitter);
 	}
+
 
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
@@ -41,12 +40,17 @@ public:
 		Object::deserialize(s);
 	}
 
+	CTFBase() : Object("ctf-base") {
+		impassability = -1;
+		hp = -1;
+	}
+	virtual Object * clone() const { return new CTFBase(*this); }
+	
+	void onSpawn() {
+		play("main", true);
+	}
+
 private:
 };
-
-void SinglePose::tick(const float dt) {
-	Object::tick(dt);
-}
-
 
 REGISTER_OBJECT("ctf-base", CTFBase, ());
