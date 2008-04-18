@@ -453,6 +453,10 @@
 		<pose id="fire" speed="10" sound="slime-fire.ogg">1,2,1</pose>
 	</animation-model>
 	
+	<animation-model id="ctf-base-animation" speed="1">
+		<pose id="main">0,1</pose>
+	</animation-model>
+	
 	<!-- 
 		sound tag allows you to load samples that don't reside in any animation model.
 	-->
@@ -794,6 +798,16 @@
 	<animation id="slime" tile="slime.png" model="slime-animation" size="64" />
 	<animation id="slime-acid" tile="slime_bullet.png" model="bullet-animation" size="64" />
 	<animation id="dead-slime" tile="slime_dead.png" model="dead-slime-animation" size="128" />
+	
+	<animation id="ctf-base-red" tile="base_red.png" model="ctf-base-animation" size="128" />
+	<animation id="ctf-base-green" tile="base_green.png" model="ctf-base-animation" size="128" />
+	<animation id="ctf-base-yellow" tile="base_yellow.png" model="ctf-base-animation" size="128" />
+	<animation id="ctf-base-cyan" tile="base_blue.png" model="ctf-base-animation" size="128" />
+
+	<animation id="ctf-flag-red" tile="flag_red.png" model="single-tile" size="64" />
+	<animation id="ctf-flag-green" tile="flag_green.png" model="single-tile" size="64" />
+	<animation id="ctf-flag-yellow" tile="flag_yellow.png" model="single-tile" size="64" />
+	<animation id="ctf-flag-cyan" tile="flag_blue.png" model="single-tile" size="64" />
 	
 	<!-- OBJECTS -->
 
