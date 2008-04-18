@@ -187,6 +187,8 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 		_am = new AnimationModel(speed);
 		_am_id = id;		
 	} else if (name == "pose") {
+		if (_am == NULL)
+			throw_ex(("pose tag must have parent animation-model"));
 		_pose_id = attr["id"];
 		if (_pose_id.size() == 0) 
 			throw_ex(("pose must have id"));
