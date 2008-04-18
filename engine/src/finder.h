@@ -57,8 +57,11 @@ public:
 	void enumerate(std::vector<std::string>&files, const std::string &base, const std::string &root) const;
 	
 	const bool packed(const std::string &base) const;
+	
+	const std::string get_base_path() const { return _base_path; }
 
 private: 
+	void scan(std::vector<std::string> &path);
 	void applyPatches(std::vector<std::string>& files, const std::string &fname) const;
 
 	std::vector<std::string> _path;
@@ -66,6 +69,8 @@ private:
 	
 	typedef std::map<const std::string, Package*> Packages;
 	Packages packages;
+	
+	std::string _base_path;
 };
 
 SINGLETON(BTANKSAPI, Finder, IFinder);
