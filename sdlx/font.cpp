@@ -64,7 +64,7 @@ void Font::clear() {
 }
 
 void Font::addPage(const unsigned base, const mrt::Chunk &data, const bool alpha) {
-	Page page;
+	Page page(alpha);
 
 	page.surface = new sdlx::Surface;
 	page.surface->loadImage(data);
@@ -96,7 +96,7 @@ void Font::addPage(const unsigned base, const mrt::Chunk &data, const bool alpha
 				Uint32 p = page.surface->getPixel(x1 + c * w, y);
 				Uint8 r, g, b, a;
 				page.surface->getRGBA(p, r, g, b, a);
-				if (a > 128) {
+				if (a > (alpha? 230: 128)) { 
 					//LOG_DEBUG(("line %d:%d, break on %d %d %d %d", y, x1, r, g, b, a));
 					break;
 				}
@@ -126,7 +126,7 @@ void Font::addPage(const unsigned base, const mrt::Chunk &data, const bool alpha
 		//LOG_DEBUG(("%s: char: %d, x1: %d, x2: %d", file.c_str(), c, _width_map[c].first, _width_map[c].second));
 	}
 	page.surface->unlock();
-	_pages[base] = page;
+	_pages.insert(Pages::value_type(base, page));
 }
 
 void Font::load(const mrt::Chunk &data, const Type type, const bool alpha) {
@@ -292,9 +292,13 @@ const int Font::render(sdlx::Surface *window, const int x, const int y, const st
 		}
 		
 		if (window != NULL) {
-			sdlx::Rect src(c * fw + x1, 0, x2 - x1 + 1, fh);
-		
-			window->copyFrom(*page.surface, src, x + w, y);
+			if (page.alpha) {
+				sdlx::Rect src(c * fw, 0, fw, fh);
+				window->copyFrom(*page.surface, src, x + w - x1, y);
+			} else {
+				sdlx::Rect src(c * fw + x1, 0, x2 - x1 + 1, fh);
+				window->copyFrom(*page.surface, src, x + w, y);
+			}
 		}
 		w += spacing;
 		

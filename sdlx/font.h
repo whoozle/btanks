@@ -60,9 +60,10 @@ private:
 	const Font& operator=(const Font &);
 	
 	struct Page {
-		Page() : width_map(), surface(NULL) {}
+		Page(bool alpha) : width_map(), surface(NULL), alpha(alpha) {}
 		std::vector<std::pair<int, int> > width_map;
 		sdlx::Surface *surface;
+		bool alpha;
 	};
 	typedef std::map<const unsigned int, Page, std::greater<const unsigned int> > Pages;
 	Pages _pages;
