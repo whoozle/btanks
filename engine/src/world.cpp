@@ -164,7 +164,7 @@ void IWorld::addObject(Object *o, const v2<float> &pos, const int id) {
 
 struct ObjectZCompare {
 	inline bool operator()(const Object * a, const Object * b) const {
-		return a->getZ() != b->getZ()? a->getZ() > b->getZ(): a->getID() < b->getID();
+		return a->getZ() != b->getZ()? a->getZ() > b->getZ(): a > b; //hack to maintain object order with equal range
 	}
 };
 
