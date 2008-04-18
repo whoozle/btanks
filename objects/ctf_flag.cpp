@@ -45,6 +45,8 @@ public:
 	void emit(const std::string &event, Object * emitter) {
 		if (event == "collision") {
 			//add flag handling here.
+			if (emitter == NULL || !emitter->getVariants().has("player"))
+				return;
 		} else emit(event, emitter);
 	}
 
