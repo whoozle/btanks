@@ -7,6 +7,7 @@
 		<object id="cannon-explosion"/>
 		<object id="corpse"/>
 		<object id="ctf-base"/>
+		<object id="ctf-flag"/>
 		<object id="damage-digits"/>
 		<object id="dispersion-bullet"/>
 		<object id="dispersion-bullets-item"/>
@@ -897,6 +898,10 @@
 	<object id="ctf-base">
 		<animation id="ctf-base-green"/>
 		<animation id="ctf-base-red"/>
+	</object>
+	<object id="ctf-flag">
+		<animation id="ctf-flag-green"/>
+		<animation id="ctf-flag-red"/>
 	</object>
 	<object id="damage-digits">
 		<animation id="damage-digits"/>
