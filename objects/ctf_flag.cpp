@@ -20,18 +20,33 @@
 #include "registrar.h"
 #include "special_owners.h"
 
-class CTFBase : public Object {
+class CTFFlag : public Object {
 public:
 	void tick(const float dt) {
 		Object::tick(dt);
 	}
 	
+	static TeamID get_team(const Object *o) {
+		if (o->animation.compare(0, 5, "flag-") != 0 || o->animation.compare(0, 8, "ctf-base") != 0)
+			return TeamNone;
+		size_t l = o->animation.size();
+		if (o->animation.compare(l - 4, 4, "-red") == 0) {
+			return TeamRed;
+		} else if (o->animation.compare(l - 6, 6, "-green") == 0) {
+			return TeamGreen;
+		} else if (o->animation.compare(l - 5, 5, "-blue") == 0) {
+			return TeamBlue;
+		} else if (o->animation.compare(l - 7, 7, "-yellow") == 0) {
+			return TeamYellow;
+		} 
+		return TeamNone;
+	}
+
 	void emit(const std::string &event, Object * emitter) {
 		if (event == "collision") {
 			//add flag handling here.
 		} else emit(event, emitter);
 	}
-
 
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
@@ -41,19 +56,18 @@ public:
 		Object::deserialize(s);
 	}
 
-	CTFBase() : Object("ctf-base") {
+	CTFFlag() : Object("ctf-flag") {
 		impassability = -1;
 		hp = -1;
 	}
 	
-	virtual Object * clone() const { return new CTFBase(*this); }
+	virtual Object * clone() const { return new CTFFlag(*this); }
 	
 	void onSpawn() {
 		play("main", true);
-		spawn("ctf-flag", mrt::formatString("ctf-flag-%s", get_team_color(get_team(this))));
 	}
 
 private:
 };
 
-REGISTER_OBJECT("ctf-base", CTFBase, ());
+REGISTER_OBJECT("ctf-flag", CTFFlag, ());
