@@ -137,6 +137,7 @@ IFinder::IFinder() {
 	mrt::split(r, path, ":");
 
 	scan(r);
+	LOG_DEBUG(("base pack found at %s", _base_path.c_str()));
 	
 	for(size_t i = 0; i < r.size(); ++i) {
 		const std::string &p = r[i];
