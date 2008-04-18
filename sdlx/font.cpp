@@ -96,7 +96,7 @@ void Font::addPage(const unsigned base, const mrt::Chunk &data, const bool alpha
 				Uint32 p = page.surface->getPixel(x1 + c * w, y);
 				Uint8 r, g, b, a;
 				page.surface->getRGBA(p, r, g, b, a);
-				if (a > (alpha? 230: 128)) { 
+				if (a > 128) { 
 					//LOG_DEBUG(("line %d:%d, break on %d %d %d %d", y, x1, r, g, b, a));
 					break;
 				}
