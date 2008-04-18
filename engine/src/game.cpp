@@ -41,6 +41,7 @@
 #include "sdlx/joystick.h"
 #include "sdlx/color.h"
 #include "sdlx/timer.h"
+#include "sdlx/font.h"
 
 #include "net/server.h"
 #include "net/client.h"

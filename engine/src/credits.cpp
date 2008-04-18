@@ -23,6 +23,7 @@
 #include "sound/mixer.h"
 #include "resource_manager.h"
 #include "finder.h"
+#include "sdlx/font.h"
 
 Credits::Credits() : _w(0), _h(0) {
 	Mixer->playSample(NULL, "menu/select.ogg", false);

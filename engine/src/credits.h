@@ -19,9 +19,12 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include "sdlx/font.h"
 #include "sdlx/surface.h"
 #include "math/v3.h"
+
+namespace sdlx {
+class Font;
+}
 
 class Credits {
 public:

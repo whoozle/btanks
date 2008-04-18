@@ -32,6 +32,7 @@
 #include "math/binary.h"
 #include "special_zone.h"
 #include "rt_config.h"
+#include "sdlx/font.h"
 
 static Uint32 index2color(const sdlx::Surface &surface, const unsigned idx, const Uint8 a) {
 	unsigned rgb = idx & 7;

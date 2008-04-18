@@ -22,7 +22,6 @@
 #include "sl08/sl08.h"
 #include "export_btanks.h"
 #include "sdlx/surface.h"
-#include "sdlx/font.h"
 #include "math/v3.h"
 #include "alarm.h"
 
@@ -31,7 +30,10 @@
 #include <string>
 #include <vector>
 
+namespace sdlx {
 class Font;
+}
+
 class Object;
 
 class BTANKSAPI Hud {
