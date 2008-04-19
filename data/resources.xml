@@ -516,11 +516,11 @@
 	<animation id="green-tank" tile="tank01.png" model="tank-animation"/>
 	<animation id="red-tank" tile="tank02.png" model="tank-animation"/>
 	<animation id="yellow-tank" tile="tank03.png" model="tank-animation"/>
-	<animation id="cyan-tank" tile="tank04.png" model="tank-animation"/>
+	<animation id="blue-tank" tile="tank04.png" model="tank-animation"/>
 	<animation id="dead-green-tank" tile="tank01_crash.png" model="dead-vehicle-animation"/>
 	<animation id="dead-red-tank" tile="tank02_crash.png" model="dead-vehicle-animation"/>
 	<animation id="dead-yellow-tank" tile="tank03_crash.png" model="dead-vehicle-animation"/>
-	<animation id="dead-cyan-tank" tile="tank04_crash.png" model="dead-vehicle-animation"/>
+	<animation id="dead-blue-tank" tile="tank04_crash.png" model="dead-vehicle-animation"/>
 	<animation id="tank-smoke" tile="tank_smoke.png" model="smoke-animation" />
 	<animation id="guided-missiles-on-tank" tile="tank_missile01.png" model="missiles-on-tank-animation" />
 	<animation id="smoke-missiles-on-tank" tile="tank_missile02.png" model="missiles-on-tank-animation" />
@@ -533,11 +533,11 @@
 	<animation id="green-shilka" tile="shilka01.png" model="shilka-animation"/>
 	<animation id="red-shilka" tile="shilka02.png" model="shilka-animation"/>
 	<animation id="yellow-shilka" tile="shilka03.png" model="shilka-animation"/>
-	<animation id="cyan-shilka" tile="shilka04.png" model="shilka-animation"/>
+	<animation id="blue-shilka" tile="shilka04.png" model="shilka-animation"/>
 	<animation id="dead-green-shilka" tile="shilka01_crash.png" model="dead-vehicle-animation"/>
 	<animation id="dead-red-shilka" tile="shilka02_crash.png" model="dead-vehicle-animation"/>
 	<animation id="dead-yellow-shilka" tile="shilka03_crash.png" model="dead-vehicle-animation"/>
-	<animation id="dead-cyan-shilka" tile="shilka04_crash.png" model="dead-vehicle-animation"/>
+	<animation id="dead-blue-shilka" tile="shilka04_crash.png" model="dead-vehicle-animation"/>
 
 	<animation id="shilka-bullet-right" tile="shilka_bullet1.png" model="bullet-animation"/>
 	<animation id="shilka-bullet-left" tile="shilka_bullet2.png" model="bullet-animation"/>
@@ -547,11 +547,11 @@
 	<animation id="green-launcher" tile="launcher01.png" model="launcher-animation"/>
 	<animation id="red-launcher" tile="launcher02.png" model="launcher-animation"/>
 	<animation id="yellow-launcher" tile="launcher03.png" model="launcher-animation"/>
-	<animation id="cyan-launcher" tile="launcher04.png" model="launcher-animation"/>
+	<animation id="blue-launcher" tile="launcher04.png" model="launcher-animation"/>
 	<animation id="dead-green-launcher" tile="launcher01_crash.png" model="dead-vehicle-animation"/>
 	<animation id="dead-red-launcher" tile="launcher02_crash.png" model="dead-vehicle-animation"/>
 	<animation id="dead-yellow-launcher" tile="launcher03_crash.png" model="dead-vehicle-animation"/>
-	<animation id="dead-cyan-launcher" tile="launcher04_crash.png" model="dead-vehicle-animation"/>
+	<animation id="dead-blue-launcher" tile="launcher04_crash.png" model="dead-vehicle-animation"/>
 	<animation id="launcher-smoke" tile="launcher_smoke.png" model="smoke-animation" />
 
 	<animation id="guided-missiles-on-launcher" tile="launcher_missile01.png" model="missiles-on-launcher-animation" />
@@ -568,7 +568,7 @@
 	<animation id="green-mortar" tile="mortar.png" model="mortar-animation"/>
 	<animation id="red-mortar" tile="mortar.png" model="mortar-animation"/>
 	<animation id="yellow-mortar" tile="mortar.png" model="mortar-animation"/>
-	<animation id="cyan-mortar" tile="mortar.png" model="mortar-animation"/>
+	<animation id="blue-mortar" tile="mortar.png" model="mortar-animation"/>
 	<animation id="dead-mortar" tile="mortar_crash.png" model="dead-vehicle-animation"/>
 
 	<!-- a little note on outlines and animations : 
@@ -579,17 +579,17 @@
 
 	<animation id="green-tank-outline" tile="tank_outline.png" model="single-tile" />
 	<animation id="red-tank-outline" tile="tank_outline.png" model="single-tile" />
-	<animation id="cyan-tank-outline" tile="tank_outline.png" model="single-tile" />
+	<animation id="blue-tank-outline" tile="tank_outline.png" model="single-tile" />
 	<animation id="yellow-tank-outline" tile="tank_outline.png" model="single-tile" />
 
 	<animation id="green-shilka-outline" tile="shilka_outline.png" model="single-tile" />
 	<animation id="red-shilka-outline" tile="shilka_outline.png" model="single-tile" />
-	<animation id="cyan-shilka-outline" tile="shilka_outline.png" model="single-tile" />
+	<animation id="blue-shilka-outline" tile="shilka_outline.png" model="single-tile" />
 	<animation id="yellow-shilka-outline" tile="shilka_outline.png" model="single-tile" />
 
 	<animation id="green-launcher-outline" tile="launcher_outline.png" model="single-tile" />
 	<animation id="red-launcher-outline" tile="launcher_outline.png" model="single-tile" />
-	<animation id="cyan-launcher-outline" tile="launcher_outline.png" model="single-tile" />
+	<animation id="blue-launcher-outline" tile="launcher_outline.png" model="single-tile" />
 	<animation id="yellow-launcher-outline" tile="launcher_outline.png" model="single-tile" />
 
 	<animation id="mortar-outline" tile="mortar_outline.png" model="single-tile" />
@@ -598,11 +598,11 @@
 	<animation id="nukeman-outline" tile="nukeman_outline.png" model="single-tile" />
 
 	<animation id="red-car" tile="car01.png" model="car-animation"/>
-	<animation id="cyan-car" tile="car02.png" model="car-animation"/>
+	<animation id="blue-car" tile="car02.png" model="car-animation"/>
 	<animation id="yellow-car" tile="car03.png" model="car-animation"/>
 	<animation id="white-car" tile="car04.png" model="car-animation"/>
 	<animation id="dead-red-car" tile="car01_crash.png" model="dead-vehicle-animation"/>
-	<animation id="dead-cyan-car" tile="car02_crash.png" model="dead-vehicle-animation"/>
+	<animation id="dead-blue-car" tile="car02_crash.png" model="dead-vehicle-animation"/>
 	<animation id="dead-yellow-car" tile="car03_crash.png" model="dead-vehicle-animation"/>
 	<animation id="dead-white-car" tile="car04_crash.png" model="dead-vehicle-animation"/>
 	
@@ -736,11 +736,11 @@
 	<animation id="red-machinegunner-helmet" model="machinegunner-helmet" tile="helmet_red.png" />
 	<animation id="green-machinegunner-helmet" model="machinegunner-helmet" tile="helmet_green.png" />
 	<animation id="yellow-machinegunner-helmet" model="machinegunner-helmet" tile="helmet_yellow.png" />
-	<animation id="cyan-machinegunner-helmet" model="machinegunner-helmet" tile="helmet_cyan.png" />
+	<animation id="blue-machinegunner-helmet" model="machinegunner-helmet" tile="helmet_blue.png" />
 	<animation id="red-thrower-helmet" model="thrower-helmet" tile="helmet_red.png" />
 	<animation id="green-thrower-helmet" model="thrower-helmet" tile="helmet_green.png" />
 	<animation id="yellow-thrower-helmet" model="thrower-helmet" tile="helmet_yellow.png" />
-	<animation id="cyan-thrower-helmet" model="thrower-helmet" tile="helmet_cyan.png" />
+	<animation id="blue-thrower-helmet" model="thrower-helmet" tile="helmet_blue.png" />
 	
 
 	<!-- road signs -->
@@ -802,12 +802,12 @@
 	<animation id="ctf-base-red" tile="base_red.png" model="ctf-base-animation" size="128" />
 	<animation id="ctf-base-green" tile="base_green.png" model="ctf-base-animation" size="128" />
 	<animation id="ctf-base-yellow" tile="base_yellow.png" model="ctf-base-animation" size="128" />
-	<animation id="ctf-base-cyan" tile="base_blue.png" model="ctf-base-animation" size="128" />
+	<animation id="ctf-base-blue" tile="base_blue.png" model="ctf-base-animation" size="128" />
 
 	<animation id="ctf-flag-red" tile="flag_red.png" model="single-tile" size="64" />
 	<animation id="ctf-flag-green" tile="flag_green.png" model="single-tile" size="64" />
 	<animation id="ctf-flag-yellow" tile="flag_yellow.png" model="single-tile" size="64" />
-	<animation id="ctf-flag-cyan" tile="flag_blue.png" model="single-tile" size="64" />
+	<animation id="ctf-flag-blue" tile="flag_blue.png" model="single-tile" size="64" />
 	
 	<!-- OBJECTS -->
 

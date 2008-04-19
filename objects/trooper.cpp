@@ -117,7 +117,7 @@ void Trooper::onSpawn() {
 	const Object *summoner = World->getObjectByID(sid);
 	if (summoner != NULL) {
 		const std::string &a = summoner->animation;
-		static const char *colors[4] = {"red-", "green-", "yellow-", "cyan-"};
+		static const char *colors[4] = {"red-", "green-", "yellow-", "blue-"};
 		int i;
 		for(i = 0; i < 4; ++i) {
 			size_t l = strlen(colors[i]);

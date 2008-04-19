@@ -41,17 +41,17 @@
 		<property name="object:impassable-static-corpse:dead-cannon:4" value="1323,598,-1850"/>
 		<property name="object:impassable-static-corpse:dead-cannon:5" value="1389,612,-1850"/>
 		<property name="object:impassable-static-corpse:dead-cannon:7" value="890,49,150"/>
-		<property name="object:impassable-static-corpse:dead-cyan-car:1" value="475,636,-1800"/>
-		<property name="object:impassable-static-corpse:dead-cyan-car:2" value="927,261,-1800"/>
-		<property name="object:impassable-static-corpse:dead-cyan-car:3" value="1257,1187,-1800"/>
-		<property name="object:impassable-static-corpse:dead-cyan-car:4" value="237,1565,-1800"/>
-		<property name="object:impassable-static-corpse:dead-cyan-car:5" value="416,1869,-1990"/>
-		<property name="object:impassable-static-corpse:dead-cyan-car:6" value="1399,688,-1690"/>
-		<property name="object:impassable-static-corpse:dead-cyan-car:7" value="736,33,150"/>
-		<property name="object:impassable-static-corpse:dead-cyan-launcher:2" value="731,1,150"/>
-		<property name="object:impassable-static-corpse:dead-cyan-shilka:1" value="220,1059,-1800"/>
-		<property name="object:impassable-static-corpse:dead-cyan-tank:2" value="1480,1306,-1800"/>
-		<property name="object:impassable-static-corpse:dead-cyan-tank:3" value="457,681,-1800"/>
+		<property name="object:impassable-static-corpse:dead-blue-car:1" value="475,636,-1800"/>
+		<property name="object:impassable-static-corpse:dead-blue-car:2" value="927,261,-1800"/>
+		<property name="object:impassable-static-corpse:dead-blue-car:3" value="1257,1187,-1800"/>
+		<property name="object:impassable-static-corpse:dead-blue-car:4" value="237,1565,-1800"/>
+		<property name="object:impassable-static-corpse:dead-blue-car:5" value="416,1869,-1990"/>
+		<property name="object:impassable-static-corpse:dead-blue-car:6" value="1399,688,-1690"/>
+		<property name="object:impassable-static-corpse:dead-blue-car:7" value="736,33,150"/>
+		<property name="object:impassable-static-corpse:dead-blue-launcher:2" value="731,1,150"/>
+		<property name="object:impassable-static-corpse:dead-blue-shilka:1" value="220,1059,-1800"/>
+		<property name="object:impassable-static-corpse:dead-blue-tank:2" value="1480,1306,-1800"/>
+		<property name="object:impassable-static-corpse:dead-blue-tank:3" value="457,681,-1800"/>
 		<property name="object:impassable-static-corpse:dead-green-launcher:1" value="392,1871,-2000"/>
 		<property name="object:impassable-static-corpse:dead-green-tank:1" value="1750,0,-10"/>
 		<property name="object:impassable-static-corpse:dead-orange-bus:1" value="153,988,-1800"/>
@@ -123,13 +123,13 @@
 		<property name="object:static-corpse:dead-thrower-static:7" value="1878,465,-2020"/>
 		<property name="object:static-corpse:dead-thrower-static:8" value="606,1759,-2020"/>
 		<property name="object:static-corpse:dead-thrower:1" value="1443,677,-1850"/>
-		<property name="object:static-launcher:cyan-launcher:1" value="1679,240,-2000"/>
+		<property name="object:static-launcher:blue-launcher:1" value="1679,240,-2000"/>
 		<property name="object:static-launcher:red-launcher:1" value="1418,1315,-2000"/>
 		<property name="object:static-launcher:red-launcher:4" value="1,821,-2000"/>
 		<property name="object:static-mortar:yellow-mortar:1" value="@19,17,-2000"/>
-		<property name="object:static-shilka:cyan-shilka:3" value="738,1298,-1650"/>
+		<property name="object:static-shilka:blue-shilka:3" value="738,1298,-1650"/>
 		<property name="object:static-shilka:yellow-shilka:1" value="582,612,-2000"/>
-		<property name="object:static-tank:cyan-tank:1" value="890,313,-2000"/>
+		<property name="object:static-tank:blue-tank:1" value="890,313,-2000"/>
 		<property name="object:static-tank:red-tank:1" value="365,1823,-2000"/>
 		<property name="object:static-tank:yellow-tank:1" value="1338,1852,-1850"/>
 		<property name="object:teleport(a):teleport:22" value="@6,17,-2002"/>

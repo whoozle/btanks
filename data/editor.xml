@@ -80,7 +80,7 @@
 	</class>
 	<class id="car">
 		<animation id="red-car" />
-		<animation id="cyan-car" />
+		<animation id="blue-car" />
 		<animation id="yellow-car" />
 		<animation id="white-car" />
 		<variant id="safe" />
@@ -199,18 +199,18 @@
 		<animation id="dead-green-launcher" />
 		<animation id="dead-red-launcher" />
 		<animation id="dead-yellow-launcher" />
-		<animation id="dead-cyan-launcher" />
+		<animation id="dead-blue-launcher" />
 		<animation id="dead-green-shilka" />
 		<animation id="dead-red-shilka" />
 		<animation id="dead-yellow-shilka" />
-		<animation id="dead-cyan-shilka" />
+		<animation id="dead-blue-shilka" />
 		<animation id="dead-green-tank" />
 		<animation id="dead-red-tank" />
 		<animation id="dead-yellow-tank" />
-		<animation id="dead-cyan-tank" />
+		<animation id="dead-blue-tank" />
 		<animation id="dead-orange-bus" />
 		<animation id="dead-red-car" />
-		<animation id="dead-cyan-car" />
+		<animation id="dead-blue-car" />
 		<animation id="dead-yellow-car" />
 		<animation id="dead-white-car" />
 		<animation id="dead-harvester" />
@@ -237,7 +237,7 @@
 		<animation id="green-launcher" />
 		<animation id="red-launcher" />
 		<animation id="yellow-launcher" />
-		<animation id="cyan-launcher" />
+		<animation id="blue-launcher" />
 	</class>
 	<class id="lodge">
 		<animation id="lodge" />
@@ -358,7 +358,7 @@
 		<animation id="green-shilka" />
 		<animation id="red-shilka" />
 		<animation id="yellow-shilka" />
-		<animation id="cyan-shilka" />
+		<animation id="blue-shilka" />
 	</class>
 	<class id="shilka-bullet">
 	</class>
@@ -402,7 +402,7 @@
 	</class>
 	<class id="static-car">
 		<animation id="red-car" />
-		<animation id="cyan-car" />
+		<animation id="blue-car" />
 		<animation id="yellow-car" />
 		<animation id="white-car" />
 		<animation id="orange-bus" />
@@ -432,7 +432,7 @@
 		<animation id="green-launcher" />
 		<animation id="red-launcher" />
 		<animation id="yellow-launcher" />
-		<animation id="cyan-launcher" />
+		<animation id="blue-launcher" />
 	</class>
 	<class id="static-mortar">
 		<animation id="green-mortar" />
@@ -441,7 +441,7 @@
 		<animation id="green-shilka" />
 		<animation id="red-shilka" />
 		<animation id="yellow-shilka" />
-		<animation id="cyan-shilka" />
+		<animation id="blue-shilka" />
 	</class>
 	<class id="static-smoke-cloud">
 		<animation id="smoke-cloud" />
@@ -450,7 +450,7 @@
 		<animation id="green-tank" />
 		<animation id="red-tank" />
 		<animation id="yellow-tank" />
-		<animation id="cyan-tank" />
+		<animation id="blue-tank" />
 	</class>
 	<class id="static-target">
 	</class>
@@ -469,7 +469,7 @@
 		<animation id="green-tank" />
 		<animation id="red-tank" />
 		<animation id="yellow-tank" />
-		<animation id="cyan-tank" />
+		<animation id="blue-tank" />
 	</class>
 	<class id="tank-bullet">
 	</class>

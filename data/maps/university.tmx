@@ -45,7 +45,7 @@
 		<property name="edge:9:20" value="1"/>
 		<property name="object:bus-stop:bus-stop-left:1" value="127,329,500"/>
 		<property name="object:bus-stop:bus-stop-right:1" value="974,465"/>
-		<property name="object:car:cyan-car:1" value="896,1024/2"/>
+		<property name="object:car:blue-car:1" value="896,1024/2"/>
 		<property name="object:car:orange-bus:1" value="@0,12"/>
 		<property name="object:car:orange-bus:2" value="1043,128"/>
 		<property name="object:car:orange-bus:3" value="@7,6"/>
@@ -127,7 +127,7 @@
 		<property name="object:stall:stall-left:2" value="258,20,510"/>
 		<property name="object:stall:stall-right:1" value="127,435,510"/>
 		<property name="object:stall:stall-right:2" value="356,21,510"/>
-		<property name="object:static-mortar:cyan-mortar:3" value="@7,8"/>
+		<property name="object:static-mortar:blue-mortar:3" value="@7,8"/>
 		<property name="object:stun-missiles-item:stun-missiles-item:1" value="752,662"/>
 		<property name="object:teleport(a):teleport:1" value="546,878,-10"/>
 		<property name="object:teleport(a):teleport:2" value="545,626,1900"/>

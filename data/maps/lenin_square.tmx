@@ -45,12 +45,12 @@
 		<property name="object:stall:stall-right:1" value="194,890,145"/>
 		<property name="object:stall:stall-right:15" value="626,190,155"/>
 		<property name="object:static-buggy:buggy:1" value="1721,1177/2"/>
-		<property name="object:static-car:cyan-car:1" value="1006,184/6"/>
-		<property name="object:static-launcher:cyan-launcher:1" value="545,1129"/>
+		<property name="object:static-car:blue-car:1" value="1006,184/6"/>
+		<property name="object:static-launcher:blue-launcher:1" value="545,1129"/>
 		<property name="object:static-launcher:yellow-launcher:1" value="1411,4"/>
 		<property name="object:static-mortar:yellow-mortar:1" value="793,1435"/>
 		<property name="object:static-shilka:red-shilka:1" value="1172,1072"/>
-		<property name="object:static-tank:cyan-tank:1" value="828,115"/>
+		<property name="object:static-tank:blue-tank:1" value="828,115"/>
 		<property name="object:stun-missiles-item:stun-missiles-item:3" value="379,1124"/>
 		<property name="object:tent:tent-top:14" value="572,192,150"/>
 		<property name="object:thrower-item:thrower-item:1" value="983,1570"/>

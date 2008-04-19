@@ -19,8 +19,8 @@
 		<property name="object:heal:heal:5" value="2322,1102"/>
 		<property name="object:heal:heal:6" value="1808,888,250"/>
 		<property name="object:heal:heal:7" value="1226,412,250"/>
-		<property name="object:impassable-static-corpse:dead-cyan-shilka:1" value="1828,1208"/>
-		<property name="object:impassable-static-corpse:dead-cyan-shilka:2" value="810,1806"/>
+		<property name="object:impassable-static-corpse:dead-blue-shilka:1" value="1828,1208"/>
+		<property name="object:impassable-static-corpse:dead-blue-shilka:2" value="810,1806"/>
 		<property name="object:impassable-static-corpse:dead-yellow-launcher:1" value="1446,1064"/>
 		<property name="object:impassable-static-corpse:dead-yellow-launcher:2" value="290,228"/>
 		<property name="object:impassable-static-corpse:dead-yellow-launcher:3" value="594,938"/>
@@ -89,13 +89,13 @@
 		<property name="object:static-dirt:dirt:35" value="1140,724,-10"/>
 		<property name="object:static-dirt:dirt:8" value="1924,1524,-510"/>
 		<property name="object:static-dirt:dirt:9" value="2062,1466,-510"/>
-		<property name="object:static-launcher:cyan-launcher:1" value="2498,364"/>
-		<property name="object:static-launcher:cyan-launcher:2" value="250,152"/>
+		<property name="object:static-launcher:blue-launcher:1" value="2498,364"/>
+		<property name="object:static-launcher:blue-launcher:2" value="250,152"/>
 		<property name="object:static-launcher:red-launcher:1" value="1516,226"/>
 		<property name="object:static-launcher:red-launcher:2" value="548,1184"/>
 		<property name="object:static-launcher:yellow-launcher:1" value="2136,1392"/>
 		<property name="object:static-mortar:yellow-mortar:1" value="@18,8"/>
-		<property name="object:static-tank:cyan-tank:1" value="1392,1032"/>
+		<property name="object:static-tank:blue-tank:1" value="1392,1032"/>
 		<property name="object:static-tank:red-tank:1" value="1032,780"/>
 		<property name="spawn:1" value="@10,22"/>
 		<property name="spawn:2" value="@11,7"/>

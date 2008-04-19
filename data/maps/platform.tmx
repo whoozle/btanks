@@ -74,9 +74,9 @@
 		<property name="object:heal:heal:4" value="723,-14"/>
 		<property name="object:heal:heal:5" value="673,2264"/>
 		<property name="object:heal:heal:6" value="965,3813"/>
-		<property name="object:impassable-static-corpse:dead-cyan-car:2" value="8,4530"/>
-		<property name="object:impassable-static-corpse:dead-cyan-car:3" value="1081,3365,272"/>
-		<property name="object:impassable-static-corpse:dead-cyan-launcher:1" value="278,3557,212"/>
+		<property name="object:impassable-static-corpse:dead-blue-car:2" value="8,4530"/>
+		<property name="object:impassable-static-corpse:dead-blue-car:3" value="1081,3365,272"/>
+		<property name="object:impassable-static-corpse:dead-blue-launcher:1" value="278,3557,212"/>
 		<property name="object:impassable-static-corpse:dead-green-tank:1" value="977,4192,-18"/>
 		<property name="object:impassable-static-corpse:dead-orange-bus:1" value="737,2468"/>
 		<property name="object:impassable-static-corpse:dead-orange-bus:3" value="977,5086"/>
@@ -155,7 +155,7 @@
 		<property name="object:static-launcher:green-launcher:2" value="501,4664"/>
 		<property name="object:static-launcher:yellow-launcher:1" value="303,2471/1"/>
 		<property name="object:static-mortar:green-mortar:1" value="126,3137"/>
-		<property name="object:static-shilka:cyan-shilka:1" value="308,218/4"/>
+		<property name="object:static-shilka:blue-shilka:1" value="308,218/4"/>
 		<property name="object:static-shilka:green-shilka:1" value="500,4610"/>
 		<property name="object:static-shilka:yellow-shilka:1" value="296,2352/1"/>
 		<property name="object:static-tank:green-tank:1" value="501,4554"/>

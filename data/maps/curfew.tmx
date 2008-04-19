@@ -41,9 +41,9 @@
 		<property name="object:bus-stop:bus-stop-right:2" value="704,442"/>
 		<property name="object:bus-stop:bus-stop-right:3" value="1418,442"/>
 		<property name="object:bus-stop:bus-stop-right:4" value="704,1638"/>
-		<property name="object:car:cyan-car:1" value="2304,384/6"/>
-		<property name="object:car:cyan-car:2" value="1792,896/4"/>
-		<property name="object:car:cyan-car:3" value="1171,127/7"/>
+		<property name="object:car:blue-car:1" value="2304,384/6"/>
+		<property name="object:car:blue-car:2" value="1792,896/4"/>
+		<property name="object:car:blue-car:3" value="1171,127/7"/>
 		<property name="object:car:orange-bus:2" value="1340,1713"/>
 		<property name="object:car:orange-bus:3" value="2351,1743"/>
 		<property name="object:car:red-car:6" value="578,52/6"/>
@@ -82,11 +82,11 @@
 		<property name="object:heal:heal:7" value="50,230"/>
 		<property name="object:heal:heal:8" value="540,686"/>
 		<property name="object:heal:heal:9" value="232,1496"/>
-		<property name="object:impassable-static-corpse:dead-cyan-car:1" value="2284,1357"/>
-		<property name="object:impassable-static-corpse:dead-cyan-shilka:1" value="644,1445"/>
-		<property name="object:impassable-static-corpse:dead-cyan-shilka:2" value="1237,493"/>
-		<property name="object:impassable-static-corpse:dead-cyan-shilka:3" value="1353,54"/>
-		<property name="object:impassable-static-corpse:dead-cyan-shilka:4" value="2465,812"/>
+		<property name="object:impassable-static-corpse:dead-blue-car:1" value="2284,1357"/>
+		<property name="object:impassable-static-corpse:dead-blue-shilka:1" value="644,1445"/>
+		<property name="object:impassable-static-corpse:dead-blue-shilka:2" value="1237,493"/>
+		<property name="object:impassable-static-corpse:dead-blue-shilka:3" value="1353,54"/>
+		<property name="object:impassable-static-corpse:dead-blue-shilka:4" value="2465,812"/>
 		<property name="object:impassable-static-corpse:dead-orange-bus:1" value="1368,1261"/>
 		<property name="object:impassable-static-corpse:dead-orange-bus:28" value="18,991"/>
 		<property name="object:impassable-static-corpse:dead-orange-bus:29" value="2524,868"/>
@@ -150,7 +150,7 @@
 		<property name="object:static-corpse:dead-thrower-static:5" value="344,1143"/>
 		<property name="object:static-corpse:dead-thrower-static:6" value="2085,970"/>
 		<property name="object:static-corpse:dead-thrower-static:7" value="2220,45"/>
-		<property name="object:static-launcher:cyan-launcher:1" value="34,1544"/>
+		<property name="object:static-launcher:blue-launcher:1" value="34,1544"/>
 		<property name="object:static-launcher:yellow-launcher:1" value="892,213"/>
 		<property name="object:static-mortar:yellow-mortar:1" value="@39,3"/>
 		<property name="object:static-shilka:red-shilka:1" value="2463,1401/4"/>

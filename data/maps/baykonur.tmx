@@ -126,11 +126,11 @@
 		<property name="object:impassable-static-corpse:dead-cannon:1" value="225,1344,200"/>
 		<property name="object:impassable-static-corpse:dead-cannon:2" value="2650,1119,200"/>
 		<property name="object:impassable-static-corpse:dead-cannon:3" value="1805,1642,200"/>
-		<property name="object:impassable-static-corpse:dead-cyan-car:1" value="3010,2744"/>
-		<property name="object:impassable-static-corpse:dead-cyan-car:2" value="1168,511,200"/>
-		<property name="object:impassable-static-corpse:dead-cyan-launcher:1" value="1116,1235,200"/>
-		<property name="object:impassable-static-corpse:dead-cyan-tank:1" value="1692,1512,200"/>
-		<property name="object:impassable-static-corpse:dead-cyan-tank:2" value="1248,1134,200"/>
+		<property name="object:impassable-static-corpse:dead-blue-car:1" value="3010,2744"/>
+		<property name="object:impassable-static-corpse:dead-blue-car:2" value="1168,511,200"/>
+		<property name="object:impassable-static-corpse:dead-blue-launcher:1" value="1116,1235,200"/>
+		<property name="object:impassable-static-corpse:dead-blue-tank:1" value="1692,1512,200"/>
+		<property name="object:impassable-static-corpse:dead-blue-tank:2" value="1248,1134,200"/>
 		<property name="object:impassable-static-corpse:dead-green-launcher:1" value="234,2477,10"/>
 		<property name="object:impassable-static-corpse:dead-green-launcher:2" value="935,2545,10"/>
 		<property name="object:impassable-static-corpse:dead-green-launcher:3" value="1340,809,10"/>
@@ -287,7 +287,7 @@
 		<property name="object:static-corpse:dead-civilian-static-1:7" value="2043,1385,-10"/>
 		<property name="object:static-corpse:dead-civilian-static-1:8" value="2385,36,-10"/>
 		<property name="object:static-corpse:dead-civilian-static-1:9" value="2806,383,-10"/>
-		<property name="object:static-corpse:dead-cyan-shilka:1" value="1149,2706,-100"/>
+		<property name="object:static-corpse:dead-blue-shilka:1" value="1149,2706,-100"/>
 		<property name="object:static-corpse:dead-thrower-static:1" value="2825,1732,-10"/>
 		<property name="object:static-corpse:dead-thrower-static:10" value="534,2002,-10"/>
 		<property name="object:static-corpse:dead-thrower-static:11" value="158,1395,-10"/>
@@ -317,13 +317,13 @@
 		<property name="object:static-launcher:red-launcher:3" value="2408,1031"/>
 		<property name="object:static-launcher:yellow-launcher:2" value="43,1180"/>
 		<property name="object:static-mortar:yellow-mortar:1" value="@13,40"/>
-		<property name="object:static-shilka:cyan-shilka:1" value="3129,2927"/>
+		<property name="object:static-shilka:blue-shilka:1" value="3129,2927"/>
 		<property name="object:static-shilka:green-shilka:1" value="1144,1685"/>
 		<property name="object:static-shilka:green-shilka:3" value="46,1004"/>
 		<property name="object:static-shilka:red-shilka:1" value="1063,1684"/>
 		<property name="object:static-shilka:red-shilka:2" value="1241,1"/>
-		<property name="object:static-tank:cyan-tank:1" value="46,1089"/>
-		<property name="object:static-tank:cyan-tank:2" value="1481,3012"/>
+		<property name="object:static-tank:blue-tank:1" value="46,1089"/>
+		<property name="object:static-tank:blue-tank:2" value="1481,3012"/>
 		<property name="object:static-tank:green-tank:1" value="2976,2816"/>
 		<property name="object:static-tank:red-tank:2" value="3132,3006"/>
 		<property name="object:static-tank:red-tank:3" value="1321,3"/>

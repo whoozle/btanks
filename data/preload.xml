@@ -846,7 +846,7 @@
 		<animation id="cannon-explosion"/>
 	</object>
 	<object id="car">
-		<animation id="cyan-car"/>
+		<animation id="blue-car"/>
 		<animation id="orange-bus"/>
 		<animation id="red-car"/>
 		<animation id="white-car"/>
@@ -864,14 +864,14 @@
 		<animation id="civilian-3"/>
 	</object>
 	<object id="corpse">
+		<animation id="dead-blue-car"/>
+		<animation id="dead-blue-launcher"/>
+		<animation id="dead-blue-shilka"/>
+		<animation id="dead-blue-tank"/>
 		<animation id="dead-boat"/>
 		<animation id="dead-buggy"/>
 		<animation id="dead-cannon"/>
 		<animation id="dead-cow"/>
-		<animation id="dead-cyan-car"/>
-		<animation id="dead-cyan-launcher"/>
-		<animation id="dead-cyan-shilka"/>
-		<animation id="dead-cyan-tank"/>
 		<animation id="dead-green-launcher"/>
 		<animation id="dead-green-shilka"/>
 		<animation id="dead-green-tank"/>
@@ -978,8 +978,8 @@
 		<animation id="dead-helicopter"/>
 	</object>
 	<object id="helmet">
-		<animation id="cyan-machinegunner-helmet"/>
-		<animation id="cyan-thrower-helmet"/>
+		<animation id="blue-machinegunner-helmet"/>
+		<animation id="blue-thrower-helmet"/>
 		<animation id="green-machinegunner-helmet"/>
 		<animation id="green-thrower-helmet"/>
 		<animation id="red-machinegunner-helmet"/>
@@ -992,13 +992,13 @@
 		<animation id="dead-choo-choo-wagon"/>
 	</object>
 	<object id="impassable-static-corpse">
+		<animation id="dead-blue-car"/>
+		<animation id="dead-blue-launcher"/>
+		<animation id="dead-blue-shilka"/>
+		<animation id="dead-blue-tank"/>
 		<animation id="dead-cannon"/>
 		<animation id="dead-choo-choo-train"/>
 		<animation id="dead-choo-choo-wagon"/>
-		<animation id="dead-cyan-car"/>
-		<animation id="dead-cyan-launcher"/>
-		<animation id="dead-cyan-shilka"/>
-		<animation id="dead-cyan-tank"/>
 		<animation id="dead-green-launcher"/>
 		<animation id="dead-green-shilka"/>
 		<animation id="dead-green-tank"/>
@@ -1020,7 +1020,7 @@
 		<animation id="kamikaze-explosion"/>
 	</object>
 	<object id="launcher">
-		<animation id="cyan-launcher"/>
+		<animation id="blue-launcher"/>
 		<animation id="green-launcher"/>
 		<animation id="red-launcher"/>
 		<animation id="yellow-launcher"/>
@@ -1062,7 +1062,7 @@
 		<animation id="guided-missiles-on-tank"/>
 	</object>
 	<object id="mortar">
-		<animation id="cyan-mortar"/>
+		<animation id="blue-mortar"/>
 		<animation id="green-mortar"/>
 		<animation id="red-mortar"/>
 		<animation id="yellow-mortar"/>
@@ -1089,9 +1089,9 @@
 		<animation id="oil-barrels"/>
 	</object>
 	<object id="outline">
-		<animation id="cyan-launcher-outline"/>
-		<animation id="cyan-shilka-outline"/>
-		<animation id="cyan-tank-outline"/>
+		<animation id="blue-launcher-outline"/>
+		<animation id="blue-shilka-outline"/>
+		<animation id="blue-tank-outline"/>
 		<animation id="green-launcher-outline"/>
 		<animation id="green-shilka-outline"/>
 		<animation id="green-tank-outline"/>
@@ -1145,7 +1145,7 @@
 		<animation id="sandworm-head"/>
 	</object>
 	<object id="shilka">
-		<animation id="cyan-shilka"/>
+		<animation id="blue-shilka"/>
 		<animation id="green-shilka"/>
 		<animation id="red-shilka"/>
 		<animation id="yellow-shilka"/>
@@ -1188,14 +1188,14 @@
 		<animation id="buggy"/>
 	</object>
 	<object id="static-car">
-		<animation id="cyan-car"/>
+		<animation id="blue-car"/>
 	</object>
 	<object id="static-corpse">
+		<animation id="dead-blue-shilka"/>
 		<animation id="dead-civilian-1"/>
 		<animation id="dead-civilian-static-1"/>
 		<animation id="dead-civilian-static-2"/>
 		<animation id="dead-civilian-static-3"/>
-		<animation id="dead-cyan-shilka"/>
 		<animation id="dead-thrower"/>
 		<animation id="dead-thrower-static"/>
 		<animation id="dead-ziehharmonikaspieler-static"/>
@@ -1204,18 +1204,18 @@
 		<animation id="dirt"/>
 	</object>
 	<object id="static-launcher">
-		<animation id="cyan-launcher"/>
+		<animation id="blue-launcher"/>
 		<animation id="green-launcher"/>
 		<animation id="red-launcher"/>
 		<animation id="yellow-launcher"/>
 	</object>
 	<object id="static-mortar">
-		<animation id="cyan-mortar"/>
+		<animation id="blue-mortar"/>
 		<animation id="green-mortar"/>
 		<animation id="yellow-mortar"/>
 	</object>
 	<object id="static-shilka">
-		<animation id="cyan-shilka"/>
+		<animation id="blue-shilka"/>
 		<animation id="green-shilka"/>
 		<animation id="red-shilka"/>
 		<animation id="yellow-shilka"/>
@@ -1224,7 +1224,7 @@
 		<animation id="smoke-cloud"/>
 	</object>
 	<object id="static-tank">
-		<animation id="cyan-tank"/>
+		<animation id="blue-tank"/>
 		<animation id="green-tank"/>
 		<animation id="red-tank"/>
 		<animation id="yellow-tank"/>
@@ -1239,7 +1239,7 @@
 		<animation id="submarine"/>
 	</object>
 	<object id="tank">
-		<animation id="cyan-tank"/>
+		<animation id="blue-tank"/>
 		<animation id="green-tank"/>
 		<animation id="red-tank"/>
 		<animation id="yellow-tank"/>

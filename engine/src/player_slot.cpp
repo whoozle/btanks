@@ -444,7 +444,7 @@ void PlayerSlot::getDefaultVehicle(std::string &vehicle, std::string &animation)
 	} else if (ra.empty()) {
 		if (animation.empty()) {
 			if (vehicle == "tank" || vehicle == "launcher" || vehicle == "shilka") {
-				static const char * colors[4] = {"green", "red", "yellow", "cyan"};
+				static const char * colors[4] = {"green", "red", "yellow", "blue"};
 				animation = colors[mrt::random(4)];
 				animation += "-" + vehicle;
 			} else animation = vehicle;

@@ -63,7 +63,7 @@
 		<property name="object:static-launcher:red-launcher:1" value="892,1211/4"/>
 		<property name="object:static-mortar:yellow-mortar:1" value="1209,64"/>
 		<property name="object:static-shilka:yellow-shilka:1" value="-24,757"/>
-		<property name="object:static-tank:cyan-tank:1" value="953,1/6"/>
+		<property name="object:static-tank:blue-tank:1" value="953,1/6"/>
 		<property name="object:stun-missiles-item:stun-missiles-item:1" value="1029,83,180"/>
 		<property name="object:submarine:submarine:1" value="16,0,-500"/>
 		<property name="object:thrower-item:thrower-item:1" value="1309,1312"/>
