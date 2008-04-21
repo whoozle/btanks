@@ -8,6 +8,7 @@
 		<object id="corpse"/>
 		<object id="ctf-base"/>
 		<object id="ctf-flag"/>
+		<object id="ctf-flag-on-vehicle"/>
 		<object id="damage-digits"/>
 		<object id="dispersion-bullet"/>
 		<object id="dispersion-bullets-item"/>
@@ -44,6 +45,7 @@
 		<object id="shilka"/>
 		<object id="shilka-bullet"/>
 		<object id="single-pose"/>
+		<object id="single-tile"/>
 		<object id="stall"/>
 		<object id="static-corpse"/>
 		<object id="static-launcher"/>
@@ -903,6 +905,9 @@
 		<animation id="ctf-flag-green"/>
 		<animation id="ctf-flag-red"/>
 	</object>
+	<object id="ctf-flag-on-vehicle">
+		<animation id="ctf-flag-red"/>
+	</object>
 	<object id="damage-digits">
 		<animation id="damage-digits"/>
 	</object>
@@ -1155,9 +1160,13 @@
 		<animation id="shilka-bullet-right"/>
 	</object>
 	<object id="single-pose">
+		<animation id="ctf-flag-red"/>
 		<animation id="launcher-smoke"/>
 		<animation id="missile-fire"/>
 		<animation id="tank-smoke"/>
+	</object>
+	<object id="single-tile">
+		<animation id="ctf-flag-red"/>
 	</object>
 	<object id="slime">
 		<animation id="slime"/>

@@ -34,7 +34,7 @@ public:
 			
 			//check color and team ! 
 			
-			emitter->add("#ctf-flag", "single-pose", animation, v2<float>(), Centered);
+			emitter->add("#ctf-flag", "ctf-flag-on-vehicle", animation, v2<float>(5, -10), Centered);
 			emit("death", this);
 		} else Object::emit(event, emitter);
 	}
@@ -50,6 +50,7 @@ public:
 	CTFFlag() : Object("ctf-flag") {
 		impassability = -1;
 		hp = -1;
+		setDirectionsNumber(1);
 	}
 	
 	virtual Object * clone() const { return new CTFFlag(*this); }

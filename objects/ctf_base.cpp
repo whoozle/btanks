@@ -44,6 +44,7 @@ public:
 	CTFBase() : Object("ctf-base") {
 		impassability = -1;
 		hp = -1;
+		setDirectionsNumber(1);
 	}
 	
 	virtual Object * clone() const { return new CTFBase(*this); }
