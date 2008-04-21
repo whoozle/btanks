@@ -4,7 +4,13 @@
 #include "container.h"
 #include "sdlx/surface.h"
 
+namespace sdlx {
+	class Font;
+}
+
 class Box;
+class Label;
+
 class JoinTeamControl : public Container {
 public: 
 	JoinTeamControl();
@@ -13,6 +19,7 @@ public:
 private: 
 	int teams;
 	Box * _background;
+	Label * _title;
 	sdlx::Surface team_logo[4];
 };
 
