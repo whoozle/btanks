@@ -1,7 +1,7 @@
-#include "special_owners.h"
+#include "team.h"
 #include "object.h"
 
-const char * get_team_color(TeamID t) {
+const char * Team::get_color(ID t) {
 	switch(t) {
 		case TeamRed:
 			return "red";
@@ -16,7 +16,7 @@ const char * get_team_color(TeamID t) {
 	}
 }
 
-TeamID get_team(const Object *o) {
+Team::ID Team::get_team(const Object *o) {
 	if (o->animation.compare(0, 5, "flag-") != 0 && o->animation.compare(0, 8, "ctf-base") != 0)
 		return TeamNone;
 
