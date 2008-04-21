@@ -43,6 +43,7 @@ public:
 private: 
 	const sdlx::Font * _font;
 	std::string _label;
+	int _label_size;
 };
 
 #endif

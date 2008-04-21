@@ -20,20 +20,25 @@
 #include "sdlx/font.h"
 #include "resource_manager.h"
 
-Label::Label(const sdlx::Font *font, const std::string &label) : _font(font), _label(label) {}
-Label::Label(const std::string &font, const std::string &label) : _font(ResourceManager->loadFont(font, true)), _label(label) {}
+Label::Label(const sdlx::Font *font, const std::string &label) : 
+	_font(font), _label(label), _label_size(_font->render(0, 0, 0, _label)) {}
+
+Label::Label(const std::string &font, const std::string &label) : 
+	_font(ResourceManager->loadFont(font, true)), _label(label), _label_size(_font->render(0, 0, 0, _label)) {}
 
 void Label::getSize(int &w, int &h) const {
-	w = _font->render(NULL, 0, 0, _label);
+	w = _label_size;
 	h = _font->getHeight();
 }
 
 void Label::setFont(const std::string &font) {
 	_font = ResourceManager->loadFont(font, true);
+	_label_size = _font->render(0, 0, 0, _label);
 }
 
 void Label::set(const std::string &label) {
 	_label = label;
+	_label_size = _font->render(0, 0, 0, _label);
 }
 
 const std::string Label::get() const { 
