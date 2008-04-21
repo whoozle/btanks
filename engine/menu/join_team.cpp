@@ -18,15 +18,16 @@ JoinTeamControl::JoinTeamControl() {
 	int title_w, title_h;
 	_title->getSize(title_w, title_h);
 
-	int w = math::max(2 * SQUARE_SPACING + (SQUARE_SIZE + SQUARE_SPACING) * teams,  title_w + 2 * SQUARE_SPACING);
-	_background = new Box("menu/background_box.png", w, SQUARE_SIZE + 2 * SQUARE_SPACING + title_h);
+	int w = math::max(SQUARE_SPACING + (SQUARE_SIZE + SQUARE_SPACING) * teams,  title_w + 2 * SQUARE_SPACING), h = SQUARE_SIZE + 2 * SQUARE_SPACING + title_h;
+	_background = new Box("menu/background_box.png", w, h);
 
 	add(0, 0, _background);
 	
 	int mx, my;
 	_background->getMargins(mx, my);
+	_background->getSize(w, h);
 
-	add(mx, my, _title);
+	add((w - title_w) / 2, my, _title);
 
 	static Uint8 colors[][4] = {
 		{255, 0, 0, 128}, 
@@ -50,8 +51,8 @@ void JoinTeamControl::render(sdlx::Surface& surface, const int x, const int y) c
 	int title_w, title_h;
 	_title->getSize(title_w, title_h);
 
-	int xp = mx + (w - 2 * mx - (SQUARE_SIZE + SQUARE_SPACING) * teams - SQUARE_SPACING) / 2 + SQUARE_SPACING;
-	int yp = my + (h - 2 * my - (SQUARE_SIZE + SQUARE_SPACING * 2)) / 2 + SQUARE_SPACING + title_h;
+	int xp = mx + SQUARE_SPACING + (w - 2 * mx - (SQUARE_SIZE + SQUARE_SPACING) * teams - SQUARE_SPACING) / 2;
+	int yp = my + SQUARE_SPACING + (h - 2 * my - (SQUARE_SIZE + SQUARE_SPACING * 2)) / 2 + title_h;
 	for(int i = 0; i < teams; ++i) {
 		surface.copyFrom(team_logo[i], x + xp + (SQUARE_SIZE + SQUARE_SPACING) * i, y + yp);
 	}
