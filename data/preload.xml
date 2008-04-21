@@ -906,6 +906,7 @@
 		<animation id="ctf-flag-red"/>
 	</object>
 	<object id="ctf-flag-on-vehicle">
+		<animation id="ctf-flag-green"/>
 		<animation id="ctf-flag-red"/>
 	</object>
 	<object id="damage-digits">

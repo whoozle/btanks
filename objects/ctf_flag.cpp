@@ -33,6 +33,11 @@ public:
 				return;
 			
 			//check color and team ! 
+			if (emitter->has("#ctf-flag")) {
+				LOG_DEBUG(("frag! frag!"));
+				emitter->remove("#ctf-flag");
+				return;
+			}
 			
 			emitter->add("#ctf-flag", "ctf-flag-on-vehicle", animation, v2<float>(), Centered);
 			emit("death", this);
