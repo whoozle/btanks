@@ -6,7 +6,7 @@
 class Object;
 
 struct BTANKSAPI Team {
-	enum ID { TeamNone, TeamRed, TeamGreen, TeamBlue, TeamYellow };
+	enum ID { None = -1, Red = 0, Green = 1, Blue = 2, Yellow = 3 };
 
 	static const char * get_color(ID t);
 	static ID get_team(const Object *o);

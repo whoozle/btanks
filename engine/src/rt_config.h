@@ -33,6 +33,7 @@ public:
 	
 	bool server_mode;
 	GameType game_type;
+	int teams; //for team games, usually 2 for CTF
 };
 
 SINGLETON(BTANKSAPI, RTConfig, IRTConfig);

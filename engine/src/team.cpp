@@ -3,13 +3,13 @@
 
 const char * Team::get_color(ID t) {
 	switch(t) {
-		case TeamRed:
+		case Red:
 			return "red";
-		case TeamGreen: 
+		case Green: 
 			return "green";
-		case TeamBlue: 
+		case Blue: 
 			return "blue";
-		case TeamYellow: 
+		case Yellow: 
 			return "yellow";
 		default: 
 			return "unknown";
@@ -18,17 +18,17 @@ const char * Team::get_color(ID t) {
 
 Team::ID Team::get_team(const Object *o) {
 	if (o->animation.compare(0, 5, "flag-") != 0 && o->animation.compare(0, 8, "ctf-base") != 0)
-		return TeamNone;
+		return None;
 
 	size_t l = o->animation.size();
 	if (o->animation.compare(l - 4, 4, "-red") == 0) {
-		return TeamRed;
+		return Red;
 	} else if (o->animation.compare(l - 6, 6, "-green") == 0) {
-		return TeamGreen;
+		return Green;
 	} else if (o->animation.compare(l - 5, 5, "-blue") == 0) {
-		return TeamBlue;
+		return Blue;
 	} else if (o->animation.compare(l - 7, 7, "-yellow") == 0) {
-		return TeamYellow;
+		return Yellow;
 	} 
-	return TeamNone;
+	return None;
 }
