@@ -2,7 +2,7 @@ grab video in software mode (--no-gl):
 recordmydesktop -windowid `xwininfo -root -tree | grep Battle | awk '{ print $1; } '` --overwrite -fps 15 --no-sound
 
 recode to mpeg4 for cinerella editing: 
-mencoder single01.ogv -o single01.avi -ofps 25  -ovc lavc -lavcopts vcodec=msmpeg4 -forceidx -lavcopts vqscale=0
+mencoder single01.ogv -o single01.avi -ofps 25  -ovc lavc -lavcopts vcodec=h263p -forceidx -lavcopts vqscale=0
 
 recode to mpeg2 no sound:
 mencoder -ovc lavc -lavcopts vcodec=mpeg1video out.ogv -nosound -vf scale=160:120 -of rawvideo -o out.mpg -nosound
