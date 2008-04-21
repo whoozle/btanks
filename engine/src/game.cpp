@@ -278,7 +278,7 @@ void IGame::init(const int argc, char *argv[]) {
 		Config->set("engine.revision", getRevision());
 	}
 
-	GET_CONFIG_VALUE("engine.show-fps", bool, show_fps, true);
+	GET_CONFIG_VALUE("engine.show-fps", bool, show_fps, false);
 	GET_CONFIG_VALUE("engine.show-log-lines", bool, show_log_lines, false);
 	
 	_show_fps = show_fps;
