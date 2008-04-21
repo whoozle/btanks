@@ -40,10 +40,13 @@ scores = {
 }
 
 animations = {
-	launcher={"red-launcher", "green-launcher", "cyan-launcher", "yellow-launcher", },
-	tank={"red-tank", "green-tank", "cyan-tank", "yellow-tank", },
-	shilka={"red-shilka", "green-shilka", "cyan-shilka", "yellow-shilka", },
-	mortar={"red-mortar", "green-mortar", "cyan-mortar", "yellow-mortar", }, 
+	launcher={"red-launcher", "green-launcher", "blue-launcher", 
+"yellow-launcher", },
+	tank={"red-tank", "green-tank", "blue-tank", "yellow-tank", },
+	shilka={"red-shilka", "green-shilka", "blue-shilka", 
+"yellow-shilka", },
+	mortar={"red-mortar", "green-mortar", "blue-mortar", 
+"yellow-mortar", }, 
 	watchtower_with_machinegunner = {"watchtower"},
 	watchtower_with_thrower = {"watchtower"},
 	heli_bomb = {"helicopter"},
