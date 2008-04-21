@@ -1583,6 +1583,11 @@ const bool Object::attachVehicle(Object *vehicle) {
 	int old_id = getID();
 	int new_id = vehicle->getID();
 	
+	if (has("#ctf-flag")) {
+		vehicle->add("#ctf-flag", "ctf-flag-on-vehicle", get("#ctf-flag")->animation, v2<float>(), Centered);
+		remove("#ctf-flag");
+	}
+
 	Object::emit("death", NULL); //emit death BEFORE assigning slot.id (avoid to +1 to frags) :)))
 
 	if (vehicle->classname == "vehicle" || vehicle->classname == "fighting-vehicle")
@@ -1649,6 +1654,10 @@ const bool Object::detachVehicle() {
 	
 	invalidate();
 	man->invalidate();
+	if (has("#ctf-flag")) {
+		man->add("#ctf-flag", "ctf-flag-on-vehicle", get("#ctf-flag")->animation, v2<float>(0, 0), Centered);
+		remove("#ctf-flag");
+	}
 	
 	return true;
 }
