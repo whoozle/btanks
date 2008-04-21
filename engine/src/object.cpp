@@ -646,6 +646,11 @@ void Object::deserialize(const mrt::Serializator &s) {
 
 void Object::emit(const std::string &event, Object * emitter) {
 	if (event == "death") {
+		if (has("#ctf-flag")) {
+			Object * o = spawn("ctf-flag", get("#ctf-flag")->animation);
+			o->disown();
+		}
+	
 		if (emitter != NULL && !_dead && _parent == NULL && !piercing) {
 			World->on_object_death.emit(this, emitter);
 		}
