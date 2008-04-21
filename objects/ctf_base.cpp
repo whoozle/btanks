@@ -18,7 +18,7 @@
 
 #include "object.h"
 #include "registrar.h"
-#include "special_owners.h"
+#include "team.h"
 
 class CTFBase : public Object {
 public:
@@ -50,7 +50,7 @@ public:
 	
 	void onSpawn() {
 		play("main", true);
-		spawn("ctf-flag", mrt::formatString("ctf-flag-%s", get_team_color(get_team(this))));
+		spawn("ctf-flag", mrt::formatString("ctf-flag-%s", Team::get_color(Team::get_team(this))));
 	}
 
 private:

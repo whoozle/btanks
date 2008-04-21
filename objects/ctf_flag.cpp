@@ -18,7 +18,7 @@
 
 #include "object.h"
 #include "registrar.h"
-#include "special_owners.h"
+#include "team.h"
 
 class CTFFlag : public Object {
 public:
@@ -26,28 +26,17 @@ public:
 		Object::tick(dt);
 	}
 	
-	static TeamID get_team(const Object *o) {
-		if (o->animation.compare(0, 5, "flag-") != 0 || o->animation.compare(0, 8, "ctf-base") != 0)
-			return TeamNone;
-		size_t l = o->animation.size();
-		if (o->animation.compare(l - 4, 4, "-red") == 0) {
-			return TeamRed;
-		} else if (o->animation.compare(l - 6, 6, "-green") == 0) {
-			return TeamGreen;
-		} else if (o->animation.compare(l - 5, 5, "-blue") == 0) {
-			return TeamBlue;
-		} else if (o->animation.compare(l - 7, 7, "-yellow") == 0) {
-			return TeamYellow;
-		} 
-		return TeamNone;
-	}
-
 	void emit(const std::string &event, Object * emitter) {
 		if (event == "collision") {
 			//add flag handling here.
 			if (emitter == NULL || !emitter->getVariants().has("player"))
 				return;
-		} else emit(event, emitter);
+			
+			//check color and team ! 
+			
+			emitter->add("#ctf-flag", "single-pose", animation, v2<float>(), Centered);
+			emit("death", this);
+		} else Object::emit(event, emitter);
 	}
 
 	virtual void serialize(mrt::Serializator &s) const {
