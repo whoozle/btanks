@@ -4,7 +4,7 @@
 		<string id="network-status">You have one or more users connected. Click the button below to disconnect them all.</string>
 		<string id="network-status" lang="ru">К вам подключено несколько пользователей. Нажмите на кнопку с крестиком чтобы отключить их.</string>
 
-		<string id="choose-team">Choose your team:</string>
+		<string id="choose-team">Join team:</string>
 		<string id="choose-team" lang="ru">Выберите команду:</string>
 	
 		<string id="map">ping</string>
