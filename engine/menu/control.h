@@ -42,7 +42,7 @@ public:
 	inline const bool changed() const { return _changed; } 
 	inline void reset() { _changed = false; }
 	
-	inline void hide(const bool hide = true) { _hidden = hide; }
+	virtual void hide(const bool hide = true);
 	inline const bool hidden() const { return _hidden; }
 	
 	virtual void activate(const bool active);

@@ -68,6 +68,8 @@ public:
 
 	enum Align { AlignLeft, AlignCenter, AlignRight };
 	void setAlign(const Align align) { _align = align; }
+	
+	virtual void hide(const bool hide = true);
 
 private:
 	Box _background;

@@ -24,7 +24,12 @@ Control::Control() : _changed(false), _hidden(false) {}
 
 void Control::tick(const float dt) {}
 
-void Control::activate(const bool active) {}
+void Control::activate(const bool active) {
+}
+
+void Control::hide(const bool hide) {
+	_hidden = hide;
+}
 
 bool Control::onKey(const SDL_keysym sym) {
 	return false;

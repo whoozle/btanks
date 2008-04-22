@@ -458,3 +458,12 @@ void ScrollList::sort() {
 void ScrollList::setHLColor(int r, int g, int b, int a) {
 	_background.setHLColor(r, g, b, a);
 }
+
+void ScrollList::hide(const bool hide) {
+	if (hide && !_hidden) {
+		_list[_current_item]->activate(false);
+	} else if (!hide && _hidden) {
+		_list[_current_item]->activate(true);
+	}
+	Control::hide(hide);
+}
