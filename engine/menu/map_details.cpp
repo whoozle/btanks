@@ -26,7 +26,7 @@
 #include "map_desc.h"
 #include "mrt/chunk.h"
 
-MapDetails::MapDetails(const int w, const int h, const bool hint) : _map_desc(0), _ai_hint(NULL), has_tactics(false) {
+MapDetails::MapDetails(const int w, const int h) : _map_desc(0), _ai_hint(NULL), has_tactics(false) {
 	_background.init("menu/background_box.png", w, h);
 
 	mrt::Chunk data;
@@ -37,7 +37,7 @@ MapDetails::MapDetails(const int w, const int h, const bool hint) : _map_desc(0)
 
 	int mx, my;
 	_background.getMargins(mx, my);
-
+/*
 	if (hint && I18n->has("tips", "deathmatch-bots")) {
 		int mw, mh;
 		getSize(mw, mh);
@@ -46,6 +46,7 @@ MapDetails::MapDetails(const int w, const int h, const bool hint) : _map_desc(0)
 		_ai_hint->getSize(tw, th);
 		add((mw - tw) / 2, mh + 2, _ai_hint);
 	}
+*/
 }
 
 void MapDetails::getSize(int &w, int &h) const {
