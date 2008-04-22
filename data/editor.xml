@@ -112,6 +112,10 @@
 		<animation id="ctf-base-blue" />
 		<animation id="ctf-base-yellow" />
 	</class>
+	<class id="ctf-flag">
+	</class>
+	<class id="ctf-flag-on-vehicle">
+	</class>
 	<class id="damage-digits">
 	</class>
 	<class id="destructable-object">
