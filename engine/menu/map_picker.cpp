@@ -143,8 +143,13 @@ MapPicker::MapPicker(const int w, const int h) : _index(0) {
 	if (_index >= (int)_maps.size())
 		_index = 0;
 	LOG_DEBUG(("map index: %d", _index));
+	
+	_upper_box = new UpperBox(w, 80, true);
+	int xdummy, ybase;
+	_upper_box->getSize(xdummy, ybase);
+	ybase += 4;
 
-	sdlx::Rect list_pos(0, 128, (w - 64)/3, h - 256);
+	sdlx::Rect list_pos(0, ybase, (w - 64)/3, h - 256);
 	_list = NULL;
 	TRY {
 		_list = new ScrollList("menu/background_box.png", "medium", list_pos.w, list_pos.h);
@@ -155,21 +160,20 @@ MapPicker::MapPicker(const int w, const int h) : _index(0) {
 		_list->set(_index);
 	} CATCH("MapPicker::ctor", {delete _list; throw; });
 
-	sdlx::Rect map_pos(list_pos.w + 16, 128, (w - 64) / 3, h - 256);
+	sdlx::Rect map_pos(list_pos.w + 16, ybase, (w - 64) / 3, h - 256);
 
 	_picker = NULL;
 	TRY {
 		_picker = new PlayerPicker(w - map_pos.x - map_pos.w - 16, h - 256);
 		_picker->set(_maps[_index]);
-		add(map_pos.x + map_pos.w + 16, 128, _picker);
+		add(map_pos.x + map_pos.w + 16, ybase, _picker);
 	} CATCH("PlayerPicker::ctor", {delete _picker; throw; });
 
 	
 	TRY {
-		_upper_box = new UpperBox(w, 80, true);
 		int cw, ch;
 		_upper_box->getSize(cw, ch);
-		add((w - cw) / 2, 32, _upper_box);
+		add((w - cw) / 2, 0, _upper_box);
 	} CATCH("StartServerMenu", {delete _upper_box; throw; });
 
 	_details = NULL;	
