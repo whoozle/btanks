@@ -28,6 +28,7 @@ class ScrollList;
 class MapDetails;
 class PlayerPicker;
 class UpperBox;
+class ModePanel;
 
 class MapPicker : public Container {
 public: 
@@ -50,6 +51,7 @@ private:
 	ScrollList *_list;
 	MapDetails *_details;
 	PlayerPicker *_picker;
+	ModePanel *_mode_panel;
 };
 
 #endif

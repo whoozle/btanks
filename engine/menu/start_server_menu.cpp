@@ -30,15 +30,19 @@
 #include "rt_config.h"
 
 StartServerMenu::StartServerMenu(MainMenu *parent, const int w, const int h) : _parent(parent)  {
+	_map_picker = new MapPicker(w, h);
+	int cw, ch, bw, bh;
+	_map_picker->getSize(cw, ch);
+
 	_back = new Button("big", I18n->get("menu", "back"));
-	add(64, h - 96, _back);
+	_back->getSize(bw, bh);
+	add(64, h + 43 - (h - ch) / 2 - bh / 2, _back);
 	
 	_start = new Button("big", I18n->get("menu", "start"));
-	int bw, bh;
 	_start->getSize(bw, bh);
-	add(w - 64 - bw, h - 96, _start);
+	add(w - 64 - bw, h + 43 - (h - ch) / 2 - bh / 2, _start);
 
-	add(0, 0, _map_picker = new MapPicker(w, h));
+	add(0, 0, _map_picker);
 }
 
 void StartServerMenu::start() {

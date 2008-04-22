@@ -44,6 +44,7 @@
 #include "mrt/scoped_ptr.h"
 #include "mrt/base_file.h"
 #include "game_monitor.h"
+#include "mode_panel.h"
 
 struct MapScanner : mrt::XMLParser {
 	int slots;
@@ -116,6 +117,7 @@ void MapPicker::tick(const float dt) {
 		Config->set("menu.default-mp-map", map.name);
 		_details->set(map);
 		_picker->set(map);
+		_mode_panel->set(map);
 	}
 	Container::tick(dt);
 }
@@ -183,6 +185,10 @@ MapPicker::MapPicker(const int w, const int h) : _index(0) {
 		add(map_pos.x, map_pos.y, _details);
 	} CATCH("MapPicker::ctor", {delete _details; _details = NULL; throw; });
 
+	int ydummy;
+	_list->getSize(xdummy, ydummy);
+	ybase += ydummy + 4;
+	add(0, ybase, _mode_panel = new ModePanel(w));
 }
 
 void MapPicker::fillSlots() const {
