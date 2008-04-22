@@ -103,7 +103,7 @@ void VideoControl::checkStatus() {
 
 void VideoControl::tick(const float dt) {
 	Control::tick(dt);
-	if (mpeg == NULL) 
+	if (mpeg == NULL || !active) 
 		return;
 		
 	checkStatus();
