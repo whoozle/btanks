@@ -877,7 +877,7 @@ Object* Object::add(const std::string &name, const std::string &classname, const
 	Object *obj = ResourceManager->createObject(classname, animation);
 
 	assert(obj != NULL);
-	assert(obj->_owners.size() == 0);
+	assert(obj->_owners.empty());
 
 	obj->_parent = this;
 	obj->copyOwners(this);

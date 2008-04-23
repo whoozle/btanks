@@ -114,16 +114,16 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 		_th = atol(attr["tile_height"].c_str());
 		if (_th == 0)
 			throw_ex(("resources tag must contain `tile_height' attribute (default tile height)"));
-		if (attr["version"].size() == 0)
+		if (attr["version"].empty())
 			throw_ex(("resources tag must contain `version' attribute"));
 		LOG_DEBUG(("file version: %s", attr["version"].c_str()));
 	} else if (name == "animation") {
 		const std::string &id = attr["id"];
-		if (id.size() == 0)
+		if (id.empty())
 			throw_ex(("animation.id was not set"));
 
 		const std::string &model = attr["model"];
-		if (model.size() == 0)
+		if (model.empty())
 			throw_ex(("animation.model was not set"));
 
 		long tw = atol(attr["tile_width"].c_str());
@@ -177,7 +177,7 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 	
 	} else if (name == "animation-model") {
 		const std::string & id = attr["id"];
-		if (id.size() == 0) 
+		if (id.empty()) 
 			throw_ex(("animation model must have id"));
 		
 		float speed = atof(attr["speed"].c_str());
@@ -190,7 +190,7 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 		if (_am == NULL)
 			throw_ex(("pose tag must have parent animation-model"));
 		_pose_id = attr["id"];
-		if (_pose_id.size() == 0) 
+		if (_pose_id.empty()) 
 			throw_ex(("pose must have id"));
 		float speed = atof(attr["speed"].c_str());
 		if (speed == 0)
@@ -211,7 +211,7 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 			Mixer->loadSample(sound);
 	} else if (name == "object") {
 		const std::string classname = attr["class"];
-		if (classname.size() == 0)
+		if (classname.empty())
 			throw_ex(("tag 'object' must provide its classname id."));
 		ObjectMap::iterator object; 
 		if ((object = _objects.find(classname)) == _objects.end()) {

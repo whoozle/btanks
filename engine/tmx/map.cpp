@@ -689,9 +689,9 @@ void IMap::end(const std::string &name) {
 
 	} else if (name == "data") {
 		std::string enc = e.attrs["encoding"];
-		if (enc.size() == 0) enc = "none";
+		if (enc.empty()) enc = "none";
 		std::string comp = e.attrs["compression"];
-		if (comp.size() == 0) comp = "none";
+		if (comp.empty()) comp = "none";
 
 		LOG_DEBUG(("data found. encoding: %s, compression: %s", enc.c_str(), comp.c_str()));
 		
@@ -903,7 +903,7 @@ void IMap::charData(const std::string &d) {
 	//LOG_DEBUG(("char1 %s", d.c_str()));
 	std::string data(d);
 	mrt::trim(data);
-	if (data.size() == 0)
+	if (data.empty())
 		return;
 	
 	//LOG_DEBUG(("char2 %s", data.c_str()));

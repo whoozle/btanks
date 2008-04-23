@@ -1173,7 +1173,7 @@ Object *IWorld::getObjectByID(const int id) {
 Object* IWorld::spawn(const Object *src, const std::string &classname, const std::string &animation, const v2<float> &dpos, const v2<float> &vel, const int z) {
 	Object *obj = ResourceManager->createObject(classname, animation);
 	
-	assert(obj->_owners.size() == 0);
+	assert(obj->_owners.empty());
 	
 	obj->copyOwners(src);
 	obj->setSlot(src->getSlot());

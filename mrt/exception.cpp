@@ -41,7 +41,7 @@ void Exception::addMessage(const char * file, const int line) {
 }
 
 void Exception::addMessage(const std::string &msg) {
-	if (msg.size() == 0) return;
+	if (msg.empty()) return;
 	
 	_error += ": " + msg;
 }

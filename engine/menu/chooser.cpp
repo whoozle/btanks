@@ -42,7 +42,7 @@ _options(options), _i(0), _n(options.size()), _surface(NULL), _w(0) {
 }
 
 const std::string& Chooser::getValue() const {
-	if (_options.size() == 0)
+	if (_options.empty())
 		throw_ex(("getValue() on non-text Chooser is invalid"));
 	return _options[_i];
 }

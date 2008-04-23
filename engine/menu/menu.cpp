@@ -336,7 +336,7 @@ void MainMenu::reset() {
 }
 
 const bool MainMenu::back() {
-	if (_menu_path.size() == 0) 
+	if (_menu_path.empty()) 
 		return false;
 	
 	Mixer->playSample(NULL, "menu/return.ogg", false);
