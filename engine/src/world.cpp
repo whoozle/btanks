@@ -833,12 +833,14 @@ TRY {
 	float map_im = 0, obj_im = 0;
 	
 	GET_CONFIG_VALUE("engine.debug-stuck-resolution-code", bool, dorc, false);
+	if (dorc && !o._variants.has("player"))
+		dorc = false;
 
 TRY {	
 	
 	int save_dir = o.getDirection();
 	int dirs = o.getDirectionsNumber();
-	bool hidden_attempt[3] = { false, false, false };
+	bool hidden_attempt[5] = { false, false, false, false, false };
 	outline_animation = o.animation + "-outline";
 	//LOG_DEBUG(("outline: %s", outline_animation.c_str()));
 	has_outline = ResourceManager->hasAnimation(outline_animation);
@@ -847,12 +849,12 @@ TRY {
 	
 	GET_CONFIG_VALUE("engine.disable-sliding", bool, ds, false);
 
-	for(attempt =0; attempt < 3; ++attempt) {
+	for(attempt =0; attempt < 5; ++attempt) {
 		v2<int> pos;
 		if (attempt == 0) {
 			pos = new_pos;
 			new_velocity = o._velocity;
-		} else { 
+		} else if (attempt >= 1 && attempt <= 2) { 
 			int dir = save_dir;
 			dir = (dir + ((attempt == 1)?-1:1) + dirs ) % dirs;
 			
@@ -863,7 +865,20 @@ TRY {
 			o.setDirection(dir);
 			//LOG_DEBUG(("%s: %d:trying %d (original: %d, dirs: %d)", 
 			//	o.animation.c_str(), attempt, dir, save_dir, dirs ));
-		} 
+		} else if (attempt >= 3) {
+			o.setDirection(save_dir);
+			int dir = save_dir;
+			dir = (dir + (attempt == 3?-dirs/4:dirs/4) + dirs ) % dirs;
+			
+			new_velocity.fromDirection(dir, dirs); //position
+			new_velocity *= 7;
+			
+			if (o._variants.has("player"))
+				LOG_DEBUG(("new position delta: %g, %g", new_velocity.x, new_velocity.y));
+
+			float im = (result_im < 1.0f)?result_im:0.9f;
+			pos = (new_velocity + o._position + (1.0f - im) * e_speed * obj_speed * o._velocity * dt).convert<int>();
+		}
 		
 		map_im = map.getImpassability(&o, pos, NULL, has_outline?(hidden_attempt + attempt):NULL) / 100.0f;
 		obj_im = getImpassability(&o, pos, &other_obj, attempt > 0);  //make sure no cached collision event reported here
@@ -902,12 +917,13 @@ TRY {
 		
 	}
 	
-	if (attempt == 1) {
+	if (attempt == 1 || attempt == 2) {
 		o._velocity = new_velocity;
-		hidden = hidden_attempt[1];
-	} else if (attempt == 2) {
-		o._velocity = new_velocity;
-		hidden = hidden_attempt[2];
+		hidden = hidden_attempt[attempt];
+	} else if (attempt == 3 || attempt == 4) {
+		o._position += new_velocity;
+		hidden = hidden_attempt[attempt];
+		o.setDirection(save_dir);
 	} else {
 		o.setDirection(save_dir);
 		hidden = hidden_attempt[0];
