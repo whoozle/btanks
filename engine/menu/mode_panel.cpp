@@ -64,7 +64,7 @@ void ModePanel::set(const MapDesc &map) {
 		teams.push_back("2");
 		teams.push_back("3");
 		teams.push_back("4");
-		grid->set(0, 2, _teams = new Chooser("big", teams, "menu/teams.png"));
+		grid->set(0, 2, _teams = new Chooser("big", teams, "menu/teams.png"), Grid::Middle | Grid::Center);
 		grid->set(0, 3, new Label("small", I18n->get("menu", "teams")), Grid::Middle);
 
 		bool ctf;
