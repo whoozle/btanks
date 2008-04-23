@@ -159,7 +159,6 @@ void Grid::recalculate(const int w, const int h) {
 		for(size_t j = 0; j < _split_h.size(); ++j) 
 			real_h += _split_h[j];
 		int dy = (h - real_h) / (int)_split_h.size();
-		LOG_DEBUG(("dy: %d", dy));
 		for(size_t i = 0; i < _split_h.size(); ++i) 
 			_split_h[i] += dy;
 	}
