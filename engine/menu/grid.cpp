@@ -68,7 +68,7 @@ void Grid::render(sdlx::Surface &surface, const int x, const int y) const {
 	}
 }
 
-Grid::ControlDescriptor * Grid::find(const int x, const int y) {
+Grid::ControlDescriptor * Grid::find(int& x, int& y) {
 	int yp = 0;
 	for(size_t i = 0; i < _controls.size(); ++i) {
 		if (yp > y)
@@ -105,8 +105,10 @@ Grid::ControlDescriptor * Grid::find(const int x, const int y) {
 				
 				//LOG_DEBUG(("%u,%u: x: %d y: %d, xp: %d, yp: %d, xc: %d, yc: %d, cw: %d, ch: %d", i, j, x, y, xp, yp, xc, yc, cw, ch));
 				sdlx::Rect rect(0, 0, cw, ch);
-				if (rect.in(x - xp - xc, y - yp - yc))
+				if (rect.in(x - xp - xc, y - yp - yc)) {
+					x -= xp + xc; y -= yp + yc;
 					return &d;
+				}
 			}
 			xp += _split_w[j];
 		}
@@ -187,15 +189,17 @@ bool Grid::onKey(const SDL_keysym sym) {
 
 bool Grid::onMouse(const int button, const bool pressed, const int x, const int y) {
 	//LOG_DEBUG(("%d, %d", x, y));
-	ControlDescriptor * d = find(x, y);
+	int rx = x, ry = y;
+	ControlDescriptor * d = find(rx, ry);
 	if (d == NULL || d->c == NULL)
 		return false;
-	return d->c->onMouse(button, pressed, x, y);
+	return d->c->onMouse(button, pressed, rx, ry);
 }
 
 bool Grid::onMouseMotion(const int state, const int x, const int y, const int xrel, const int yrel) {
-	ControlDescriptor * d = find(x, y);
+	int rx = x, ry = y;
+	ControlDescriptor * d = find(rx, ry);
 	if (d == NULL || d->c == NULL)
 		return false;
-	return d->c->onMouseMotion(state, x, y, xrel, yrel);
+	return d->c->onMouseMotion(state, rx, ry, xrel, yrel);
 }
