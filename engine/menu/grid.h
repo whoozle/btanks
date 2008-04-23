@@ -6,13 +6,13 @@
 
 class Grid : public Control {
 public: 
-	enum Align { Left = 0, Right = 1, Center = 2, Top = 0, Bottom = 4, Middle = 8};
+	enum Align { None = 0, Left = 1, Right = 2, Center = 3, Top = 4, Bottom = 8, Middle = 12};
 
 	Grid(const int w, const int h);
 	void set_spacing(const int spacing) { _spacing = spacing; }
 	~Grid();
 	
-	void set(const int row, const int col, Control *ctrl, const int align = (Left | Top));
+	void set(const int row, const int col, Control *ctrl, const int align = None);
 
 	virtual void render(sdlx::Surface &surface, const int x, const int y) const;
 	virtual void getSize(int &w, int &h) const;

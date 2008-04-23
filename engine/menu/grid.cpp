@@ -39,7 +39,27 @@ void Grid::render(sdlx::Surface &surface, const int x, const int y) const {
 		for(size_t j = 0; j < row.size(); ++j) {
 			const ControlDescriptor &d = row[j];
 			if (d.c != NULL) {
-				d.c->render(surface, xp + _spacing, yp + _spacing);
+				int xc, yc;
+				int cw, ch;
+				d.c->getSize(cw, ch);
+
+				if (d.align & Center) {
+					xc = (_split_w[j] - cw) / 2;
+				} else if (d.align & Right) {
+					xc = _split_w[j] - cw - _spacing;
+				} else {
+					xc = _spacing;
+				}
+
+				if (d.align & Middle) {
+					yc = (_split_h[i] - ch) / 2;
+				} else if (d.align & Bottom) {
+					yc = _split_h[i] - ch - _spacing;
+				} else {
+					yc = _spacing;
+				}
+
+				d.c->render(surface, xp + xc, yp + yc);
 			}
 			xp += _split_w[j];
 		}

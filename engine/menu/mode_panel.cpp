@@ -58,7 +58,7 @@ void ModePanel::set(const MapDesc &map) {
 
 		grid->set(1, 0, _random_respawn = new Checkbox(rr), Grid::Middle | Grid::Center);
 		grid->set(1, 1, new Label("small", I18n->get("menu", "random-respawn")), Grid::Middle);
-		grid->set_spacing(2);
+		grid->set_spacing(5);
 		grid->recalculate(0, h - 2 * my);
 	}
 }
