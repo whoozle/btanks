@@ -768,11 +768,7 @@ TRY {
 			getImpassability(&o, o._position.convert<int>());
 		}
 		return;
-	} else {
-		o._idle_time = 0;
-		o._moving_time += dt * e_speed;
-		o._direction = o._velocity;
-	}
+	} 
 	
 	/*
 	GET_CONFIG_VALUE("engine.mass-acceleration-divisor", float, ac_div, 1000.0);
@@ -1037,6 +1033,11 @@ TRY {
 
 	result_im = math::max(map_im, obj_im);
 	dpos = e_speed * obj_speed * o._velocity * dt * (1.0f - result_im);
+	if (!dpos.is0()) {
+		o._idle_time = 0;
+		o._moving_time += dt * e_speed;
+		o._direction = o._velocity;
+	}
 
 
 //	if (o.piercing) {
