@@ -30,7 +30,7 @@ private:
 		int align;
 	};
 	
-	ControlDescriptor * find(const int x, const int y) const;
+	ControlDescriptor * find(const int x, const int y);
 	
 	typedef std::vector<ControlDescriptor> Row;
 	typedef std::vector<Row> Matrix;
