@@ -67,6 +67,11 @@ void Grid::render(sdlx::Surface &surface, const int x, const int y) const {
 	}
 }
 
+Grid::ControlDescriptor * Grid::find(const int x, const int y) const {
+	return NULL;
+}
+
+
 void Grid::recalculate(const int w, const int h) {
 	for(size_t i = 0; i < _split_w.size(); ++i) {
 		_split_w[i] = 0;
@@ -135,9 +140,15 @@ bool Grid::onKey(const SDL_keysym sym) {
 }
 
 bool Grid::onMouse(const int button, const bool pressed, const int x, const int y) {
-	return false;
+	ControlDescriptor * d = find(x, y);
+	if (d == NULL || d->c == NULL)
+		return false;
+	return d->c->onMouse(button, pressed, x, y);
 }
 
 bool Grid::onMouseMotion(const int state, const int x, const int y, const int xrel, const int yrel) {
-	return false;
+	ControlDescriptor * d = find(x, y);
+	if (d == NULL || d->c == NULL)
+		return false;
+	return d->c->onMouseMotion(state, x, y, xrel, yrel);
 }

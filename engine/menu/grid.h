@@ -29,6 +29,9 @@ private:
 		Control *c;
 		int align;
 	};
+	
+	ControlDescriptor * find(const int x, const int y) const;
+	
 	typedef std::vector<ControlDescriptor> Row;
 	typedef std::vector<Row> Matrix;
 	Matrix _controls;
