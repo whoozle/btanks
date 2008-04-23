@@ -22,7 +22,7 @@ private:
 	typedef std::map<const int, std::string> TimeLimits;
 	TimeLimits _time_limits;
 
-	Chooser *_time_limit;
+	Chooser *_time_limit, *_teams;
 	Checkbox * _random_respawn;
 };
 

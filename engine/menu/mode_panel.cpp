@@ -45,7 +45,7 @@ void ModePanel::set(const MapDesc &map) {
 				pos = idx;
 		}
 		
-		Grid *grid = new Grid(2, 2);
+		Grid *grid = new Grid(4, 2);
 		add(mx, my, grid);
 		
 		_time_limit = new Chooser("big", values);
@@ -58,6 +58,20 @@ void ModePanel::set(const MapDesc &map) {
 
 		grid->set(1, 0, _random_respawn = new Checkbox(rr), Grid::Middle | Grid::Center);
 		grid->set(1, 1, new Label("small", I18n->get("menu", "random-respawn")), Grid::Middle);
+		
+		std::vector<std::string> teams;
+		teams.push_back("0");
+		teams.push_back("2");
+		teams.push_back("3");
+		teams.push_back("4");
+		grid->set(0, 2, _teams = new Chooser("big", teams, "menu/teams.png"));
+		grid->set(0, 3, new Label("small", I18n->get("menu", "teams")), Grid::Middle);
+
+		bool ctf;
+		Config->get("multiplayer.capture-the-flag", ctf, false);
+		grid->set(1, 2, _random_respawn = new Checkbox(ctf), Grid::Middle | Grid::Center);
+		grid->set(1, 3, new Label("small", I18n->get("menu", "capture-the-flag")), Grid::Middle);
+		
 		grid->set_spacing(5);
 		grid->recalculate(0, h - 2 * my);
 	}

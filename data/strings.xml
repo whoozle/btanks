@@ -9,6 +9,9 @@
 
 		<string id="time-limit">Time limit</string>
 		<string id="time-limit" lang="ru">Ограничение времени</string>
+		
+		<string id="teams">Teams</string>
+		<string id="teams" lang="ru">Выбор количества команд</string>
 
 		<string id="capture-the-flag">Capture the flag</string>
 		<string id="capture-the-flag" lang="ru">Захват флага</string>
