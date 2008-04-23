@@ -6,6 +6,12 @@
 
 		<string id="choose-team">Join team:</string>
 		<string id="choose-team" lang="ru">Выберите команду:</string>
+
+		<string id="time-limit">Time limit</string>
+		<string id="time-limit" lang="ru">Ограничение времени</string>
+
+		<string id="capture-the-flag">Capture the flag</string>
+		<string id="capture-the-flag" lang="ru">Захват флага</string>
 	
 		<string id="map">ping</string>
 		<string id="map" lang="ru">карта</string>
