@@ -71,14 +71,14 @@ void Grid::render(sdlx::Surface &surface, const int x, const int y) const {
 Grid::ControlDescriptor * Grid::find(const int x, const int y) {
 	int yp = 0;
 	for(size_t i = 0; i < _controls.size(); ++i) {
-//		if (yp > y)
-//			return NULL;
+		if (yp > y)
+			return NULL;
 		
 		int xp = 0;
 		Row &row = _controls[i];
 		for(size_t j = 0; j < row.size(); ++j) {
-			//if (xp > x)
-			//	break;
+			if (xp > x)
+				break;
 			
 			ControlDescriptor &d = row[j];
 			if (d.c != NULL) {
