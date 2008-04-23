@@ -1,6 +1,6 @@
 #include "grid.h"
 
-Grid::Grid(const int w, const int h) {
+Grid::Grid(const int w, const int h) : _spacing(0) {
 	_controls.resize(h);
 	for(int i = 0; i < h; ++i) {
 		_controls[i].resize(w);
@@ -29,8 +29,6 @@ void Grid::set(const int r, const int c, Control *ctrl, const int align) {
 	delete d.c;
 	d.c = ctrl;
 	d.align = align;
-	
-	recalculate();
 }
 
 void Grid::render(sdlx::Surface &surface, const int x, const int y) const {
@@ -40,16 +38,16 @@ void Grid::render(sdlx::Surface &surface, const int x, const int y) const {
 		const Row &row = _controls[i];
 		for(size_t j = 0; j < row.size(); ++j) {
 			const ControlDescriptor &d = row[j];
-			if (d.c == NULL)
-				continue;
-			d.c->render(surface, xp, yp);
+			if (d.c != NULL) {
+				d.c->render(surface, xp + _spacing, yp + _spacing);
+			}
 			xp += _split_w[j];
 		}
 		yp += _split_h[i];
 	}
 }
 
-void Grid::recalculate() {
+void Grid::recalculate(const int w, const int h) {
 	for(size_t i = 0; i < _split_w.size(); ++i) {
 		_split_w[i] = 0;
 	}
@@ -65,6 +63,8 @@ void Grid::recalculate() {
 				continue;
 			int cw, ch;
 			c->getSize(cw, ch);
+			cw += 2 * _spacing;
+			ch += 2 * _spacing;
 			if (cw > _split_w[j]) {
 				_split_w[j] = cw;
 			}
@@ -72,6 +72,24 @@ void Grid::recalculate() {
 				_split_h[i] = ch;
 			}
 		}
+	}
+
+	if (w != 0) {
+		int real_w = 0;
+		for(size_t i = 0; i < _split_w.size(); ++i) 
+			real_w += _split_w[i];
+		int dx = (w - real_w) / _split_w.size();
+		for(size_t i = 0; i < _split_w.size(); ++i) 
+			_split_w[i] += dx;
+	}
+
+	if (h != 0) {
+		int real_h = 0;
+		for(size_t j = 0; j < _split_h.size(); ++j) 
+			real_h += _split_h[j];
+		int dy = (h - real_h) / _split_h.size();
+		for(size_t i = 0; i < _split_h.size(); ++i) 
+			_split_h[i] += dy;
 	}
 }
 

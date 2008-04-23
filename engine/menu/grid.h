@@ -9,6 +9,7 @@ public:
 	enum Align { Left = 0, Right = 1, Center = 2, Top = 0, Bottom = 4, Middle = 8};
 
 	Grid(const int w, const int h);
+	void set_spacing(const int spacing) { _spacing = spacing; }
 	~Grid();
 	
 	void set(const int row, const int col, Control *ctrl, const int align = (Left | Top));
@@ -20,7 +21,7 @@ public:
 	virtual bool onMouse(const int button, const bool pressed, const int x, const int y);
 	virtual bool onMouseMotion(const int state, const int x, const int y, const int xrel, const int yrel);
 
-	void recalculate();
+	void recalculate(const int w = 0, const int h = 0);
 
 private: 
 	struct ControlDescriptor {
@@ -33,6 +34,7 @@ private:
 	Matrix _controls;
 	
 	std::vector<int> _split_w, _split_h;
+	int _spacing;
 };
 
 #endif
