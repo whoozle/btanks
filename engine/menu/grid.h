@@ -1,0 +1,39 @@
+#ifndef BTANKS_MENU_TABLE_H__
+#define BTANKS_MENU_TABLE_H__
+
+#include "control.h"
+#include "math/matrix.h"
+
+class Grid : public Control {
+public: 
+	enum Align { Left = 0, Right = 1, Center = 2, Top = 0, Bottom = 4, Middle = 8};
+
+	Grid(const int w, const int h);
+	~Grid();
+	
+	void set(const int row, const int col, Control *ctrl, const int align = (Left | Top));
+
+	virtual void render(sdlx::Surface &surface, const int x, const int y) const;
+	virtual void getSize(int &w, int &h) const;
+	
+	virtual bool onKey(const SDL_keysym sym);
+	virtual bool onMouse(const int button, const bool pressed, const int x, const int y);
+	virtual bool onMouseMotion(const int state, const int x, const int y, const int xrel, const int yrel);
+
+	void recalculate();
+
+private: 
+	struct ControlDescriptor {
+		ControlDescriptor() : c(NULL), align(0) {}
+		Control *c;
+		int align;
+	};
+	typedef std::vector<ControlDescriptor> Row;
+	typedef std::vector<Row> Matrix;
+	Matrix _controls;
+	
+	std::vector<int> _split_w, _split_h;
+};
+
+#endif
+

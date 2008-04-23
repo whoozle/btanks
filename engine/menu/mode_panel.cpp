@@ -18,6 +18,8 @@ ModePanel::ModePanel(const int w) : _w(w), _time_limit(NULL), _random_respawn(NU
 	_time_limits.insert(std::pair<const int, std::string>(600, "9:99"));
 }
 
+#include "grid.h"
+
 void ModePanel::set(const MapDesc &map) {
 	clear();
 	
@@ -32,8 +34,6 @@ void ModePanel::set(const MapDesc &map) {
 		int mx, my;
 		_background->getMargins(mx, my);
 
-		int yp = h / 2;
-
 		std::vector<std::string> values;
 
 		int tl, pos = 0, idx = 0;
@@ -45,28 +45,19 @@ void ModePanel::set(const MapDesc &map) {
 				pos = idx;
 		}
 		
-		
-		int xp = mx;
+		Grid *grid = new Grid(2, 2);
+		add(mx, my, grid);
 		
 		_time_limit = new Chooser("big", values);
 		_time_limit->set(pos);
-		_time_limit->getSize(w, h);
-		yp -= h;
-
-		add(xp, yp, _time_limit);
-		xp += w + 2;
+		grid->set(0, 0, _time_limit, Grid::Middle | Grid::Center);
+		grid->set(0, 1, new Label("small", I18n->get("menu", "time-limit")), Grid::Middle);
 		
 		bool rr;
 		Config->get("multiplayer.random-respawn", rr, false);
-		_random_respawn = new Checkbox(rr);
-		_random_respawn->getSize(w, h);
-		
-		Label *l = new Label("small", I18n->get("menu", "random-respawn"));
-		int lw, lh;
-		l->getSize(lw, lh);
-		xp += (_background->w - (xp + lw + w + mx)) / 2;
-		add(xp, yp, _random_respawn);
-		add(xp + w, yp + (h - lh) / 2, l);
+
+		grid->set(1, 0, _random_respawn = new Checkbox(rr), Grid::Middle | Grid::Center);
+		grid->set(1, 1, new Label("small", I18n->get("menu", "random-respawn")), Grid::Middle);
 	}
 }
 
