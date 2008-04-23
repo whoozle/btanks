@@ -873,8 +873,8 @@ TRY {
 			new_velocity.fromDirection(dir, dirs); //position
 			new_velocity *= 7;
 			
-			if (o._variants.has("player"))
-				LOG_DEBUG(("new position delta: %g, %g", new_velocity.x, new_velocity.y));
+			if (dorc)
+				LOG_DEBUG(("new position delta[strafe workaround]: %g, %g", new_velocity.x, new_velocity.y));
 
 			float im = (result_im < 1.0f)?result_im:0.9f;
 			pos = (new_velocity + o._position + (1.0f - im) * e_speed * obj_speed * o._velocity * dt).convert<int>();
