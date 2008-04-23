@@ -21,11 +21,12 @@ ModePanel::ModePanel(const int w) : _w(w), _time_limit(NULL), _random_respawn(NU
 void ModePanel::set(const MapDesc &map) {
 	clear();
 	
-	add(0, 0, _background = new Box("menu/background_box.png", _w, 80));
 	_time_limit = NULL;
 	_random_respawn = NULL;
 
 	if (map.game_type == GameTypeDeathMatch) {
+		add(0, 0, _background = new Box("menu/background_box.png", _w, 80));
+		
 		int w, h;
 		getSize(w, h);
 		int mx, my;
