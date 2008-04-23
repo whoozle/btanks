@@ -479,6 +479,7 @@
 	</class>
 	<class id="teleport">
 		<animation id="teleport" />
+		<variant id="dead-end" />
 	</class>
 	<class id="tent">
 		<animation id="tent-left" />
