@@ -22,7 +22,6 @@
 
 #include "sdlx/system.h"
 #include "game.h"
-#include "version.h"
 #include <stdlib.h>
 
 #ifdef _WINDOWS
@@ -36,15 +35,8 @@ extern "C"
 #endif
 	int main(int argc, char *argv[]);
 
-
-#include "mrt/memory.h"
-
 int main(int argc, char *argv[]) {
 	try {
-		LOG_NOTICE(("starting up... version: %s", getVersion().c_str()));
-		
-		LOG_NOTICE(("mem avail: %d mb", mrt::MemoryInfo::available()));
-
 #ifdef DEBUG		
 		mrt::install_crash_handlers();
 #endif

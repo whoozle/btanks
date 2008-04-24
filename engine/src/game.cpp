@@ -93,6 +93,9 @@ IGame::IGame() : _main_menu(NULL),
 		}
 	}
 #endif
+		LOG_NOTICE(("starting up... version: %s", getVersion().c_str()));
+		
+		//LOG_NOTICE(("mem avail: %d mb", mrt::MemoryInfo::available()));
 }
  
 IGame::~IGame() {
