@@ -165,6 +165,10 @@ TRY {
 
 		slot.remote = cid;
 		
+		if (RTConfig->game_type == GameTypeCTF || RTConfig->game_type == GameTypeTeamDeathMatch) {
+			std::string team = message.get("team"); //just a little reminder 
+		}
+		
 		slot.spawnPlayer(id, vehicle, animation);
 
 		mrt::Serializator s;
