@@ -39,7 +39,7 @@ class BTANKSAPI PlayerSlot : public mrt::Serializable {
 public:
 	int id;
 	
-	inline const bool empty() const { return id <= 0; }
+	inline const bool empty() const { return id < 0; }
 	
 	ControlMethod * control_method;
 	PlayerState old_state; //help broadcast AI state changes.

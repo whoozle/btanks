@@ -272,9 +272,13 @@ void PlayerSlot::createControlMethod(const std::string &control_method_name) {
 #include "campaign.h"
 
 void PlayerSlot::spawnPlayer(const int slot_id, const std::string &classname, const std::string &animation) {
+	this->classname = classname;
+	this->animation = animation;
+	id = 0; //hack hack hack! :)
+	
 	if (RTConfig->game_type == GameTypeTeamDeathMatch || RTConfig->game_type == GameTypeCTF && team == Team::None) {
 		//fixme : assign AIs to teams automatically !!
-		
+		team = Team::Red;
 		spectator = true;
 		return;
 	}
@@ -349,10 +353,6 @@ void PlayerSlot::spawnPlayer(const int slot_id, const std::string &classname, co
 	obj->addEffect("invulnerability", sid);
 
 	id = obj->getID();
-	this->classname = classname;
-	this->animation = animation;
-	
-
 	switch(game_type) {
 		case GameTypeDeathMatch: 
 			break;

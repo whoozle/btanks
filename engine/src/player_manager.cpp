@@ -670,6 +670,10 @@ TRY {
 	}
 	
 	bool updated = false;
+
+	int spawn_limit;
+	Config->get("map.spawn-limit", spawn_limit, 0);
+
 	
 	for(size_t i = 0; i < n; ++i) {
 		PlayerSlot &slot = _players[i];
@@ -691,22 +695,28 @@ TRY {
 			}
 
 			if (!_client && slot.old_state.fire) {
-				int max = 1;
-				int max_slot = -1;
-				
-				for(size_t j = 0; j < n; ++j) {
-					if (i == j)
-						continue;
-					PlayerSlot &slot = _players[j];
-					if (!slot.empty() && slot.spawn_limit > max) {
-						max = slot.spawn_limit;
-						max_slot = j;
-					}
-				}
-				if (max_slot >= 0) {
-					slot.spawn_limit = 2;
+				LOG_DEBUG(("respawn button hit!"));
+				if (spawn_limit <= 0) {
+					//infinite lives
 					slot.spectator = false;
-					--_players[max_slot].spawn_limit;
+				} else { 
+					int max = 1;
+					int max_slot = -1;
+				
+					for(size_t j = 0; j < n; ++j) {
+						if (i == j)
+							continue;
+						PlayerSlot &slot = _players[j];
+						if (!slot.empty() && slot.spawn_limit > max) {
+							max = slot.spawn_limit;
+							max_slot = j;
+						}
+					}
+					if (max_slot >= 0) {
+						slot.spawn_limit = 2;
+						slot.spectator = false;
+						--_players[max_slot].spawn_limit;
+					}
 				}
 			}
 			continue;
