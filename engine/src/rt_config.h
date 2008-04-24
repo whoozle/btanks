@@ -23,7 +23,7 @@
 #include "mrt/singleton.h"
 
 enum GameType {
-	GameTypeDeathMatch, GameTypeCooperative, GameTypeRacing, GameTypeCTF
+	GameTypeDeathMatch, GameTypeCooperative, GameTypeRacing, GameTypeCTF, GameTypeTeamDeathMatch
 };
 
 class BTANKSAPI IRTConfig {

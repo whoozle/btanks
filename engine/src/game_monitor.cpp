@@ -793,16 +793,19 @@ void IGameMonitor::loadMap(Campaign *campaign, const std::string &name, const bo
 			PlayerManager->addSlot(pos);
 		} else {
 			if (type == "object") {
-				LOG_DEBUG(("spawning: object %s, animation %s, pos: %s", res[1].c_str(), res[2].c_str(), i->second.c_str()));
 				if (res.size() < 4)
 					throw_ex(("'%s' misses an argument", i->first.c_str()));
+				
+				const std::string classname = res[1];
+				LOG_DEBUG(("spawning: object %s, animation %s, pos: %s", classname.c_str(), res[2].c_str(), i->second.c_str()));
 				//LOG_DEBUG(("name: %s", res[3].c_str()));
 				res.resize(5);
 				GameItem item(res[1], res[2], i->first, v2<int>(pos.x, pos.y), pos.z);
 				item.setup(res[3], res[4]);
 				item.dir = dir;
 				
-				add(item, true);
+				if (RTConfig->game_type == GameTypeCTF || classname.compare(0, 4, "ctf-") != 0)
+					add(item, true);
 			} else if (type == "config") {
 				if (res.size() < 2)
 					throw_ex(("'%s' misses an argument", i->first.c_str()));
