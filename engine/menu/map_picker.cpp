@@ -50,8 +50,9 @@ struct MapScanner : mrt::XMLParser {
 	int slots;
 	std::string object_restriction;
 	GameType game_type;
+	bool supports_ctf;
 
-	MapScanner() : slots(0), game_type(GameTypeDeathMatch) {}
+	MapScanner() : slots(0), game_type(GameTypeDeathMatch), supports_ctf(false) {}
 
 	void scan(const std::string &name) {
 		scoped_ptr<mrt::BaseFile> f(Finder->get_file(Finder->find("maps/" + name + ".tmx"), "rt"));
@@ -62,12 +63,14 @@ struct MapScanner : mrt::XMLParser {
 private: 
 	virtual void start(const std::string &name, Attrs &attr) {
 		if (name == "property") {
-			if (attr["name"].substr(0, 6) == "spawn:")
+			const std::string &pname = attr["name"];
+			const std::string &pvalue = attr["value"];
+			if (pname.compare(0, 6, "spawn:") == 0) {
 				++slots;
-			else if (attr["name"] == "config:multiplayer.restrict-start-vehicle" && attr["value"].substr(0, 7) == "string:") {
-				object_restriction = attr["value"].substr(7);
-			} else if (attr["name"] == "config:multiplayer.game-type" && attr["value"].substr(0, 7) == "string:") {
-				std::string type = attr["value"].substr(7);
+			} else if (pname == "config:multiplayer.restrict-start-vehicle" && pvalue.compare(0, 7, "string:") == 0) {
+				object_restriction = pvalue.substr(7);
+			} else if (pname == "config:multiplayer.game-type" && pvalue.compare(0, 7, "string:") == 0) {
+				std::string type = pvalue.substr(7);
 				if (type == "deathmatch") {
 					game_type = GameTypeDeathMatch;
 				} else if (type == "cooperative") {
@@ -76,6 +79,8 @@ private:
 					game_type = GameTypeRacing;
 				} else 
 					throw_ex(("unsupported game type '%s'", type.c_str()));
+			} else if (pname.compare(0, 11, "object:ctf-") == 0) {
+				supports_ctf = true;
 			}
 		}
 	}
@@ -101,7 +106,7 @@ void MapPicker::scan(const std::string &base) {
 		TRY {
 			m.scan(map);
 		} CATCH("scanning map", {});
-		_maps.push_back(MapList::value_type(base, map, m.object_restriction, m.game_type, m.slots));
+		_maps.push_back(MapList::value_type(base, map, m.object_restriction, m.game_type, m.slots, m.supports_ctf));
 	}	
 }
 
