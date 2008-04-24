@@ -89,7 +89,7 @@ IGame::IGame() : _main_menu(NULL),
 		if (log[0] == '/') {
 			mrt::Logger->assign(log);
 		} else {
-			mrt::Logger->assign(base_dir + "/" + log);
+			mrt::Logger->assign(path + "/" + log);
 		}
 	}
 #endif
