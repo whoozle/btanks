@@ -22,7 +22,7 @@ private:
 	TimeLimits _time_limits;
 
 	Chooser *_time_limit, *_teams;
-	Checkbox * _random_respawn;
+	Checkbox * _random_respawn, *_ctf;
 };
 
 #endif

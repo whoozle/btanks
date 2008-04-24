@@ -60,7 +60,7 @@ ModePanel::ModePanel(const int width) : _time_limit(NULL), _random_respawn(NULL)
 
 		bool ctf;
 		Config->get("multiplayer.capture-the-flag", ctf, false);
-		grid->set(1, 2, _random_respawn = new Checkbox(ctf), Grid::Middle | Grid::Center);
+		grid->set(1, 2, _ctf = new Checkbox(ctf), Grid::Middle | Grid::Center);
 		grid->set(1, 3, new Label("small", I18n->get("menu", "capture-the-flag")), Grid::Middle);
 		
 		grid->set_spacing(5);
@@ -72,7 +72,9 @@ void ModePanel::set(const MapDesc &map) {
 }
 
 void ModePanel::tick(const float dt) {
-	if (_time_limit != NULL && _time_limit->changed()) {
+	//LOG_DEBUG(("tick(%g)", dt));
+	Container::tick(dt);
+	if (_time_limit->changed()) {
 		_time_limit->reset();
 		int idx = _time_limit->get();
 		if (idx >= 0) {
@@ -83,7 +85,7 @@ void ModePanel::tick(const float dt) {
 			Config->set("multiplayer.time-limit", i->first);
 		}
 	}
-	if (_random_respawn != NULL && _random_respawn->changed()) {
+	if (_random_respawn->changed()) {
 		_random_respawn->reset();
 		Config->set("multiplayer.random-respawn", _random_respawn->get());
 	}
