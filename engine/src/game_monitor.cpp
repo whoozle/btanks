@@ -91,8 +91,8 @@ void GameItem::kill() {
 }
 
 void GameItem::setup(const std::string &name, const std::string &subname) {
-	destroy_for_victory = name.substr(0, 19) == "destroy-for-victory";
-	special = name.substr(0, 7) == "special";
+	destroy_for_victory = name.compare(0, 19, "destroy-for-victory") == 0;
+	special = name.compare(0, 7, "special") == 0;
 	
 	if (name == "save-for-victory")
 		save_for_victory = subname;

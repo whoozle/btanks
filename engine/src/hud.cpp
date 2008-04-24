@@ -423,7 +423,7 @@ void Hud::render(sdlx::Surface &window) const {
 		bool any_effect = false;
 		int old_xp = xp;
 		for(IconMap::const_iterator ic = a; ic != _icons_map.end(); ++ic) {
-			if (ic->first.substr(0, 7) != "effect:") 
+			if (ic->first.compare(0, 7, "effect:") != 0) 
 				break;
 			const std::string name = ic->first.substr(7);
 			

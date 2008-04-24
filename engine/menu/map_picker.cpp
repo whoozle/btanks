@@ -96,7 +96,7 @@ void MapPicker::scan(const std::string &base) {
 		std::string map = entries[i];
 		
 		mrt::toLower(map);
-		if (map.size() < 5 || map.substr(map.size() - 4) != ".tmx")
+		if (map.size() < 5 || map.compare(map.size() - 4, 4, ".tmx") != 0)
 			continue;
 		map = map.substr(0, map.size() - 4);
 		if (GameMonitor->usedInCampaign(base, map))

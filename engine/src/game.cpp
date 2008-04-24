@@ -934,7 +934,7 @@ try {
 				tiled_pos = true;
 				par[2] = par[2].substr(1);
 			} 
-			if (par[2].substr(0, 6) == "player") {
+			if (par[2].compare(0, 6, "player") == 0) {
 				int idx = par[2][6] - '0';
 				Object *o = PlayerManager->getSlot(idx).getObject();
 				if (o == NULL)

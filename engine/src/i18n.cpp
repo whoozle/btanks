@@ -103,7 +103,7 @@ const std::string& II18n::get(const std::string &_area, const std::string &id) c
 		if (p == area.npos)
 			area.clear();
 		else 
-			area = area.substr(0, p - 1);
+			area.resize(p - 1);
 	} while (true);
 	
 
