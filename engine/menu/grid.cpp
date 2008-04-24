@@ -39,7 +39,7 @@ void Grid::render(sdlx::Surface &surface, const int x, const int y) const {
 		const Row &row = _controls[i];
 		for(size_t j = 0; j < row.size(); ++j) {
 			const ControlDescriptor &d = row[j];
-			if (d.c != NULL) {
+			if (d.c != NULL && !d.c->hidden()) {
 				int xc, yc;
 				int cw, ch;
 				d.c->getSize(cw, ch);
@@ -81,7 +81,7 @@ Grid::ControlDescriptor * Grid::find(int& x, int& y) {
 				break;
 			
 			ControlDescriptor &d = row[j];
-			if (d.c != NULL) {
+			if (d.c != NULL && !d.c->hidden()) {
 				int xc, yc;
 				int cw = -1, ch = -1;
 				d.c->getSize(cw, ch);
@@ -180,7 +180,8 @@ bool Grid::onKey(const SDL_keysym sym) {
 	for(size_t i = 0; i < _controls.size(); ++i) {
 		Row &row = _controls[i];
 		for(size_t j = 0; j < row.size(); ++j) {
-			if (row[j].c != NULL &&	row[j].c->onKey(sym))
+			Control *c = row[j].c;
+			if (c != NULL && !c->hidden() && row[j].c->onKey(sym))
 				return true;
 		}
 	}
@@ -191,7 +192,7 @@ bool Grid::onMouse(const int button, const bool pressed, const int x, const int 
 	//LOG_DEBUG(("%d, %d", x, y));
 	int rx = x, ry = y;
 	ControlDescriptor * d = find(rx, ry);
-	if (d == NULL || d->c == NULL)
+	if (d == NULL || d->c == NULL || d->c->hidden())
 		return false;
 	return d->c->onMouse(button, pressed, rx, ry);
 }
@@ -199,7 +200,7 @@ bool Grid::onMouse(const int button, const bool pressed, const int x, const int 
 bool Grid::onMouseMotion(const int state, const int x, const int y, const int xrel, const int yrel) {
 	int rx = x, ry = y;
 	ControlDescriptor * d = find(rx, ry);
-	if (d == NULL || d->c == NULL)
+	if (d == NULL || d->c == NULL || d->c->hidden())
 		return false;
 	return d->c->onMouseMotion(state, rx, ry, xrel, yrel);
 }
