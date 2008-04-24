@@ -132,7 +132,7 @@ void IWorld::updateObject(Object *o) {
 void IWorld::addObject(Object *o, const v2<float> &pos, const int id) {
 	if (o == NULL) 
 		throw_ex(("adding NULL as world object is not allowed"));
-	o->_id = (id >= 0)?id:++_last_id;
+	o->_id = (id > 0)?id:++_last_id;
 	
 	assert (_objects.find(o->_id) == _objects.end());
 

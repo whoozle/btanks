@@ -348,6 +348,7 @@ void PlayerSlot::spawnPlayer(const int slot_id, const std::string &classname, co
 	} else {
 		World->addObject(obj, v2<float>(position.x, position.y) - obj->size / 2, id);
 	}
+	id = obj->getID();
 
 	GET_CONFIG_VALUE("engine.spawn-invulnerability-duration", float, sid, 3);
 	obj->addEffect("invulnerability", sid);
