@@ -133,7 +133,7 @@ OpenMapDialog::OpenMapDialog() {
 			std::string map = entries[j];
 		
 			mrt::toLower(map);
-			if (map.size() < 5 || map.substr(map.size() - 4) != ".tmx")
+			if (map.size() < 5 || map.compare(map.size() - 4, 4, ".tmx") != 0)
 				continue;
 			map = map.substr(0, map.size() - 4);
 			LOG_DEBUG(("found map: %s", map.c_str()));
