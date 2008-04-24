@@ -673,7 +673,6 @@ TRY {
 	
 	for(size_t i = 0; i < n; ++i) {
 		PlayerSlot &slot = _players[i];
-		Object *obj = slot.getObject();
 		if (slot.spectator) {
 			if (slot.control_method != NULL) {
 				bool old_fire = slot.old_state.fire != 0;
@@ -713,6 +712,7 @@ TRY {
 			continue;
 		}
 
+		Object *obj = slot.getObject();
 		if (obj != NULL) {
 			if (slot.control_method != NULL) {
 				PlayerState state = obj->getPlayerState();
