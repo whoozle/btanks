@@ -36,12 +36,8 @@
 
 PlayerSlot::PlayerSlot() : 
 id(-1), control_method(NULL), need_sync(false), dont_interpolate(false), remote(-1), visible(false), 
-classname(), animation(), frags(0), spawn_limit(0), score(0), spectator(false), last_tooltip(NULL), last_tooltip_used(false)
-{}
-
-PlayerSlot::PlayerSlot(const int id) : 
-id(id), control_method(NULL), need_sync(false), dont_interpolate(false), remote(-1), visible(false), 
-classname(), animation(), frags(0), spawn_limit(0), score(0), spectator(false), last_tooltip(NULL), last_tooltip_used(false)
+classname(), animation(), frags(0), spawn_limit(0), score(0), spectator(false), team(Team::None), 
+last_tooltip(NULL), last_tooltip_used(false)
 {}
 
 void PlayerSlot::serialize(mrt::Serializator &s) const {
@@ -55,6 +51,7 @@ void PlayerSlot::serialize(mrt::Serializator &s) const {
 	s.add(spawn_limit);
 	s.add(name);
 	s.add(spectator);
+	s.add((int)team);
 }
 
 void PlayerSlot::deserialize(const mrt::Serializator &s) {
@@ -67,6 +64,9 @@ void PlayerSlot::deserialize(const mrt::Serializator &s) {
 	s.get(spawn_limit);
 	s.get(name);
 	s.get(spectator);
+	int t;
+	s.get(t);
+	team = (Team::ID)t;
 }
 
 Object * PlayerSlot::getObject() const {
@@ -96,6 +96,7 @@ void PlayerSlot::clear() {
 	score = 0;
 	name.clear();
 	spectator = false;
+	team = Team::None;
 	
 	while(!tooltips.empty()) {
 		delete tooltips.front().second;

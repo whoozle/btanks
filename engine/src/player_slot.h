@@ -29,6 +29,7 @@
 #include "sdlx/rect.h"
 #include "player_state.h"
 #include "netstats.h"
+#include "team.h"
 
 class Object;
 class ControlMethod;
@@ -69,9 +70,9 @@ public:
 	std::string name;
 	
 	bool spectator;
+	Team::ID team;
 	
 	PlayerSlot();
-	PlayerSlot(const int id);
 	void clear();
 	
 	Object * getObject() const; 
