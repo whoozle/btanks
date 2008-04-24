@@ -81,7 +81,19 @@ IGame::IGame() : _main_menu(NULL),
 	std::string path;
 	path = mrt::Directory::getAppDir("Battle Tanks", "btanks") + "/";
 	Config->load(path + "bt.xml");
- }
+
+#ifndef WIN32
+	std::string log;
+	Config->get("engine.log", log, "log");
+	if (!log.empty() && log != "stderr" && log != "<stderr>" ) {
+		if (log[0] == '/') {
+			mrt::Logger->assign(log);
+		} else {
+			mrt::Logger->assign(base_dir + "/" + log);
+		}
+	}
+#endif
+}
  
 IGame::~IGame() {
 	delete _net_talk;
