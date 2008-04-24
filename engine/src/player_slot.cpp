@@ -295,7 +295,7 @@ void PlayerSlot::spawnPlayer(const int slot_id, const std::string &classname, co
 		Config->get("multiplayer.random-respawn", random_respawn, false);
 	}
 	
-	if (random_respawn) {
+	if (game_type == GameTypeCTF || random_respawn) {
 		//const Matrix<int>& matrix = Map->getImpassabilityMatrix(ZBox::getBox(position.z));
 		Matrix<int> matrix;
 		World->getImpassabilityMatrix(matrix, obj, NULL);
@@ -345,29 +345,27 @@ void PlayerSlot::spawnPlayer(const int slot_id, const std::string &classname, co
 	this->animation = animation;
 	
 
-	if (game_type == GameTypeDeathMatch) {
-		//moo	
-	} else if (game_type == GameTypeRacing) {
-		Variants v; 
-		v.add("racing");
-		obj->updateVariants(v);
-	} else if (game_type == GameTypeCooperative) {
-		/*
-		LOG_DEBUG(("prepending cooperative owners."));
-		int i, n = PlayerManager->getSlotsCount();
-		for(i = 0; i < n; ++i) {
-			PlayerSlot &other_slot = PlayerManager->getSlot(i);
-			if (other_slot.id == -1 || id == other_slot.id) 
-				continue;
-			Object *o1 = getObject(), *o2 = other_slot.getObject();
-			if (o1 == NULL || o2 == NULL)
-				continue;
-			o1->prependOwner(other_slot.id);
-			o2->prependOwner(id);
+	switch(game_type) {
+		case GameTypeDeathMatch: 
+			break;
+
+		case GameTypeRacing: {
+			Variants v; 
+			v.add("racing");
+			obj->updateVariants(v);
+			break;
 		}
-		*/
-		obj->prependOwner(OWNER_COOPERATIVE);
-	} else throw_ex(("unknown multiplayer type %d used", (int)game_type));
+
+		case GameTypeCooperative: 
+			obj->prependOwner(OWNER_COOPERATIVE);
+			break;
+
+		case GameTypeCTF: 
+			//obj->prependOwner(OWNER_COOPERATIVE);//fixme: add team owner
+			break;
+		default:
+			throw_ex(("unknown multiplayer type %d used", (int)game_type));
+	}
 	
 	GameMonitor->addBonuses(*this);
 	dead_time = 0;
