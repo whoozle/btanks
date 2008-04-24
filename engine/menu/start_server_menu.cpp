@@ -36,11 +36,11 @@ StartServerMenu::StartServerMenu(MainMenu *parent, const int w, const int h) : _
 
 	_back = new Button("big", I18n->get("menu", "back"));
 	_back->getSize(bw, bh);
-	add(64, h + 43 - (h - ch) / 2 - bh / 2, _back);
+	add(64, h - (h - ch) / 2 - bh / 2, _back);
 	
 	_start = new Button("big", I18n->get("menu", "start"));
 	_start->getSize(bw, bh);
-	add(w - 64 - bw, h + 43 - (h - ch) / 2 - bh / 2, _start);
+	add(w - 64 - bw, h - (h - ch) / 2 - bh / 2, _start);
 
 	add(0, 0, _map_picker);
 }
