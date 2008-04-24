@@ -8,7 +8,7 @@
 #include "label.h"
 #include "grid.h"
 
-ModePanel::ModePanel(const int width) : _time_limit(NULL), _random_respawn(NULL) {
+ModePanel::ModePanel(const int width) : enable_ctf(false) {
 	_time_limits.insert(std::pair<const int, std::string>(0,   "-:--"));
 	_time_limits.insert(std::pair<const int, std::string>(60,  "1:00"));
 	_time_limits.insert(std::pair<const int, std::string>(90,  "1:30"));
@@ -71,6 +71,9 @@ ModePanel::ModePanel(const int width) : _time_limit(NULL), _random_respawn(NULL)
 
 void ModePanel::set(const MapDesc &map) {
 	hide(map.game_type != GameTypeDeathMatch);
+	enable_ctf = map.supports_ctf;
+	//LOG_DEBUG(("ctf supported: %s", enable_ctf?"yes":"no"));
+	validate();
 }
 
 void ModePanel::tick(const float dt) {
@@ -99,14 +102,17 @@ void ModePanel::tick(const float dt) {
 	}
 	if (_teams->changed()) {
 		_teams->reset();
-		bool ctf = _ctf->get();
+		bool ctf = enable_ctf && _ctf->get();
 		if (!ctf)
 			Config->set("multiplayer.teams", (int)atoi(_teams->getValue().c_str()));
 	}
 }
 
 void ModePanel::validate() {
-	bool ctf = _ctf->get();
+	_ctf_label->hide(!enable_ctf);
+	_ctf->hide(!enable_ctf);
+	
+	bool ctf = enable_ctf && _ctf->get();
 
 	_random_respawn->hide(ctf);
 	_rr_label->hide(ctf);
