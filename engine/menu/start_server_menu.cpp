@@ -28,6 +28,7 @@
 #include "player_manager.h"
 #include "i18n.h"
 #include "rt_config.h"
+#include "config.h"
 
 StartServerMenu::StartServerMenu(MainMenu *parent, const int w, const int h) : _parent(parent)  {
 	_map_picker = new MapPicker(w, h);
@@ -52,7 +53,14 @@ void StartServerMenu::start() {
 		return;
 	}
 	RTConfig->game_type = map.game_type;
-
+	if (map.supports_ctf) {
+		bool ctf;
+		Config->get("multiplayer.capture-the-flag", ctf, false);
+		if (ctf) {
+			LOG_DEBUG(("starting map in CTF mode. good luck."));
+			RTConfig->game_type = GameTypeCTF;
+		}
+	}
 	LOG_DEBUG(("start multiplayer server requested"));
 	Game->clear();
 	PlayerManager->startServer();
