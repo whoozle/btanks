@@ -272,6 +272,13 @@ void PlayerSlot::createControlMethod(const std::string &control_method_name) {
 #include "campaign.h"
 
 void PlayerSlot::spawnPlayer(const int slot_id, const std::string &classname, const std::string &animation) {
+	if (RTConfig->game_type == GameTypeTeamDeathMatch || RTConfig->game_type == GameTypeCTF && team == Team::None) {
+		//fixme : assign AIs to teams automatically !!
+		
+		spectator = true;
+		return;
+	}
+
 	if (spawn_limit <= 0 && Config->has("map.spawn-limit")) {
 		Config->get("map.spawn-limit", spawn_limit, 0);
 		const Campaign * campaign = GameMonitor->getCampaign();
@@ -419,7 +426,7 @@ void PlayerSlot::setViewport(const sdlx::Rect &rect) {
 	viewport = rect;
 	const Object *o = getObject();
 	if (o == NULL)
-		throw_ex(("setViewport() called on empty slot."));
+		return;
 	
 	v2<float> pos = o->getCenterPosition();
 	map_pos.x = (int)pos.x - rect.w / 2;
