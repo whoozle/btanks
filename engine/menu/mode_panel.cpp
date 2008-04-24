@@ -6,8 +6,9 @@
 #include "box.h"
 #include "config.h"
 #include "label.h"
+#include "grid.h"
 
-ModePanel::ModePanel(const int w) : _w(w), _time_limit(NULL), _random_respawn(NULL) {
+ModePanel::ModePanel(const int width) : _time_limit(NULL), _random_respawn(NULL) {
 	_time_limits.insert(std::pair<const int, std::string>(0,   "-:--"));
 	_time_limits.insert(std::pair<const int, std::string>(60,  "1:00"));
 	_time_limits.insert(std::pair<const int, std::string>(90,  "1:30"));
@@ -16,18 +17,8 @@ ModePanel::ModePanel(const int w) : _w(w), _time_limit(NULL), _random_respawn(NU
 	_time_limits.insert(std::pair<const int, std::string>(300, "5:00"));
 	_time_limits.insert(std::pair<const int, std::string>(420, "7:00"));
 	_time_limits.insert(std::pair<const int, std::string>(600, "9:99"));
-}
 
-#include "grid.h"
-
-void ModePanel::set(const MapDesc &map) {
-	clear();
-	
-	_time_limit = NULL;
-	_random_respawn = NULL;
-
-	if (map.game_type == GameTypeDeathMatch) {
-		add(0, 0, _background = new Box("menu/background_box.png", _w, 80));
+		add(0, 0, _background = new Box("menu/background_box.png", width, 80));
 		
 		int w, h;
 		getSize(w, h);
@@ -74,7 +65,10 @@ void ModePanel::set(const MapDesc &map) {
 		
 		grid->set_spacing(5);
 		grid->recalculate(0, h - 2 * my);
-	}
+}
+
+void ModePanel::set(const MapDesc &map) {
+	hide(map.game_type != GameTypeDeathMatch);
 }
 
 void ModePanel::tick(const float dt) {

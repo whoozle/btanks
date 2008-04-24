@@ -16,7 +16,6 @@ public:
 	void set(const MapDesc &map);
 
 private: 
-	int _w;
 	Box *_background;
 
 	typedef std::map<const int, std::string> TimeLimits;
