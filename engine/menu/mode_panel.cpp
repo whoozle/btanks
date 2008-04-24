@@ -99,7 +99,9 @@ void ModePanel::tick(const float dt) {
 	}
 	if (_teams->changed()) {
 		_teams->reset();
-		Config->set("multiplayer.teams", (int)atoi(_teams->getValue().c_str()));
+		bool ctf = _ctf->get();
+		if (!ctf)
+			Config->set("multiplayer.teams", (int)atoi(_teams->getValue().c_str()));
 	}
 }
 
