@@ -274,9 +274,9 @@ void PlayerSlot::createControlMethod(const std::string &control_method_name) {
 void PlayerSlot::spawnPlayer(const int slot_id, const std::string &classname, const std::string &animation) {
 	this->classname = classname;
 	this->animation = animation;
-	id = 0; //hack hack hack! :)
 	
 	if (RTConfig->game_type == GameTypeTeamDeathMatch || RTConfig->game_type == GameTypeCTF && team == Team::None) {
+		id = 0; //hack hack hack! :)
 		//fixme : assign AIs to teams automatically !!
 		team = Team::Red;
 		spectator = true;
