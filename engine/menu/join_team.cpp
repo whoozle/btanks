@@ -59,6 +59,6 @@ void JoinTeamControl::render(sdlx::Surface& surface, const int x, const int y) c
 		int x0 = x + xp + (SQUARE_SIZE + SQUARE_SPACING) * i, y0 = y + yp;
 		surface.copyFrom(team_logo[i], x0, y0);
 		if (i == 0)
-			surface.copyFrom(*join_logo, x0, y0);
+			surface.copyFrom(*join_logo, x0 + dx, y0 + dy);
 	}
 }
