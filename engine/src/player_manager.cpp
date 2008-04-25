@@ -1089,18 +1089,10 @@ void IPlayerManager::render(sdlx::Surface &window, const int vx, const int vy) {
 				}
 			}
 				
-			slot.viewport.x += vx;
-			slot.viewport.y += vy;
-
-			GET_CONFIG_VALUE("player.controls.immediate-camera-sliding", bool, ics, false);		
-			
-			v2<float> pos = ics?slot.map_pos + slot.map_dpos.convert<float>() : slot.map_pos;
-			slot.validatePosition(pos);
-			
-			World->render(window, sdlx::Rect((int)pos.x, (int)pos.y, slot.viewport.w, slot.viewport.h), 
-				slot.viewport, -10000, 10001, slot.getObject());
-
+			slot.render(window, vx, vy);
+		
 			GET_CONFIG_VALUE("engine.show-special-zones", bool, ssz, false);
+
 			if (ssz) {
 				for(size_t i = 0; i < _zones.size(); ++i) {
 					sdlx::Rect pos(_zones[i].position.x, _zones[i].position.y, _zones[i].size.x, _zones[i].size.y);
@@ -1116,19 +1108,9 @@ void IPlayerManager::render(sdlx::Surface &window, const int vx, const int vy) {
 					pos.y -= (int)slot.map_pos.y;
 					for(int y = 0; y <= (_zones[i].size.y - 1) / zone.getHeight(); ++y) 
 						for(int x = 0; x <= (_zones[i].size.x - 1) / zone.getWidth(); ++x) 
-						window.copyFrom(zone, pos.x + x * zone.getWidth(), pos.y + y * zone.getHeight());
+							window.copyFrom(zone, pos.x + x * zone.getWidth(), pos.y + y * zone.getHeight());
 				}
 			}
-			
-			const Tooltip *t = slot.currentTooltip();
-			if (t != NULL) {
-				int w, h;
-				t->getSize(w, h);
-				t->render(window, slot.viewport.x, slot.viewport.h - h);
-			}
-	
-			slot.viewport.x -= vx;
-			slot.viewport.y -= vy;
 		}
 }
 

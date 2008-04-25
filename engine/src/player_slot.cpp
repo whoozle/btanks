@@ -458,3 +458,26 @@ void PlayerSlot::getDefaultVehicle(std::string &vehicle, std::string &animation)
 		}
 	} else animation = ra;
 }
+
+void PlayerSlot::render(sdlx::Surface &window, const int vx, const int vy) {
+	viewport.x += vx;
+	viewport.y += vy;
+
+	GET_CONFIG_VALUE("player.controls.immediate-camera-sliding", bool, ics, false);		
+			
+	v2<float> pos = ics?map_pos + map_dpos.convert<float>() : map_pos;
+	validatePosition(pos);
+			
+	World->render(window, sdlx::Rect((int)pos.x, (int)pos.y, viewport.w, viewport.h), 
+		viewport, -10000, 10001, getObject());
+
+	const Tooltip *t = currentTooltip();
+	if (t != NULL) {
+		int w, h;
+		t->getSize(w, h);
+		t->render(window, viewport.x, viewport.h - h);
+	}
+
+	viewport.x -= vx;
+	viewport.y -= vy;		
+}

@@ -23,6 +23,10 @@
 #include <set>
 #include <queue>
 
+namespace sdlx {
+	class Surface;
+}
+
 #include "mrt/serializable.h"
 #include "math/v2.h"
 #include "math/v3.h"
@@ -85,6 +89,7 @@ public:
 	void displayTooltip(const std::string &area, const std::string &message);
 	void removeTooltips();
 	void tick(const float dt);
+	void render(sdlx::Surface &window, const int x, const int y);
 	
 	void createControlMethod(const std::string &name);
 	void spawnPlayer(const int slot_id, const std::string &classname, const std::string &animation);
