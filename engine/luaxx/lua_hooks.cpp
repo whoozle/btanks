@@ -1205,7 +1205,19 @@ LUA_TRY {
 } LUA_CATCH("group_remove")
 }
 
+#include "campaign.h"
 
+static int lua_hooks_get_difficulty(lua_State *L) {
+	LUA_TRY {
+		const Campaign *campaign = GameMonitor->getCampaign();
+		if (campaign == NULL)
+			throw_ex(("get_difficulty could be used only from campaign script"));
+
+		int difficulty;
+		Config->get("campaign." + campaign->name + ".difficulty", difficulty, 1);
+		return difficulty;		
+	} LUA_CATCH("get_difficulty");
+}
 
 #include "finder.h"
 
@@ -1281,6 +1293,8 @@ void LuaHooks::load(const std::string &name) {
 	lua_register(state, "group_add", lua_hooks_group_add);
 	lua_register(state, "group_has", lua_hooks_group_has);
 	lua_register(state, "group_remove", lua_hooks_group_remove);
+	
+	lua_register(state, "get_difficulty", lua_hooks_get_difficulty);
 
 	
 	state.call(0, LUA_MULTRET);
