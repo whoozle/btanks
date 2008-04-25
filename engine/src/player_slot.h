@@ -38,6 +38,7 @@ namespace sdlx {
 class Object;
 class ControlMethod;
 class Tooltip;
+class JoinTeamControl;
 
 class BTANKSAPI PlayerSlot : public mrt::Serializable {
 public:
@@ -107,6 +108,8 @@ private:
 	
 	Tooltip * last_tooltip;
 	bool last_tooltip_used;
+	
+	JoinTeamControl * join_team;
 };
 
 #endif

@@ -20,6 +20,7 @@
 #include "world.h"
 #include "controls/control_method.h"
 #include "menu/tooltip.h"
+#include "menu/join_team.h"
 #include "tmx/map.h"
 #include "i18n.h"
 #include "special_owners.h"
@@ -37,7 +38,7 @@
 PlayerSlot::PlayerSlot() : 
 id(-1), control_method(NULL), need_sync(false), dont_interpolate(false), remote(-1), visible(false), 
 classname(), animation(), frags(0), spawn_limit(0), score(0), spectator(false), team(Team::None), 
-last_tooltip(NULL), last_tooltip_used(false)
+last_tooltip(NULL), last_tooltip_used(false), join_team(NULL) 
 {}
 
 void PlayerSlot::serialize(mrt::Serializator &s) const {
@@ -105,6 +106,8 @@ void PlayerSlot::clear() {
 	delete last_tooltip;
 	last_tooltip = NULL;
 	last_tooltip_used = false;
+	delete join_team;
+	join_team = NULL;
 }
 
 void PlayerSlot::displayLast() {
@@ -170,6 +173,14 @@ void PlayerSlot::tick(const float dt) {
 	}
 	if (!visible) 
 		return;
+
+	if (RTConfig->game_type == GameTypeCTF || RTConfig->game_type == GameTypeCTF) {
+		if (team == Team::None) {
+			if (join_team == NULL)
+				join_team = new JoinTeamControl;
+			
+		}
+	}
 		
 	const Object * p = getObject();
 	if (p == NULL)
@@ -278,7 +289,6 @@ void PlayerSlot::spawnPlayer(const int slot_id, const std::string &classname, co
 	if (RTConfig->game_type == GameTypeTeamDeathMatch || RTConfig->game_type == GameTypeCTF && team == Team::None) {
 		id = 0; //hack hack hack! :)
 		//fixme : assign AIs to teams automatically !!
-		team = Team::Red;
 		spectator = true;
 		return;
 	}
@@ -479,5 +489,11 @@ void PlayerSlot::render(sdlx::Surface &window, const int vx, const int vy) {
 	}
 
 	viewport.x -= vx;
-	viewport.y -= vy;		
+	viewport.y -= vy;
+
+	if (join_team != NULL) {
+		int w, h;
+		join_team->getSize(w, h);
+		join_team->render(window, (viewport.w - w) / 2, (viewport.h - h) / 2);
+	}
 }

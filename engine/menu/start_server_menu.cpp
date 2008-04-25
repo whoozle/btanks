@@ -59,6 +59,7 @@ void StartServerMenu::start() {
 		if (ctf) {
 			LOG_DEBUG(("starting map in CTF mode. good luck."));
 			RTConfig->game_type = GameTypeCTF;
+			RTConfig->teams = 2;
 		}
 	}
 	LOG_DEBUG(("start multiplayer server requested"));
