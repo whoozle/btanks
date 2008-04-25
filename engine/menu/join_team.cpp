@@ -10,7 +10,7 @@
 #define SQUARE_SIZE 64
 #define SQUARE_SPACING 16
 
-JoinTeamControl::JoinTeamControl() {
+JoinTeamControl::JoinTeamControl(): join_logo(ResourceManager->loadSurface("menu/team_chooser.png")) {
 	teams = RTConfig->teams;
 	if (teams < 2 || teams > 4) 
 		throw_ex(("CTF teams counter was not set up properly (%d)", teams));
@@ -50,10 +50,15 @@ void JoinTeamControl::render(sdlx::Surface& surface, const int x, const int y) c
 	_background->getMargins(mx, my);
 	int title_w, title_h;
 	_title->getSize(title_w, title_h);
+	
+	int dx = (SQUARE_SIZE - join_logo->getWidth()) / 2, dy = (SQUARE_SIZE - join_logo->getHeight()) / 2;
 
 	int xp = mx + SQUARE_SPACING + (w - 2 * mx - (SQUARE_SIZE + SQUARE_SPACING) * teams - SQUARE_SPACING) / 2;
 	int yp = my + SQUARE_SPACING + (h - 2 * my - (SQUARE_SIZE + SQUARE_SPACING * 2)) / 2 + title_h;
 	for(int i = 0; i < teams; ++i) {
-		surface.copyFrom(team_logo[i], x + xp + (SQUARE_SIZE + SQUARE_SPACING) * i, y + yp);
+		int x0 = x + xp + (SQUARE_SIZE + SQUARE_SPACING) * i, y0 = y + yp;
+		surface.copyFrom(team_logo[i], x0, y0);
+		if (i == 0)
+			surface.copyFrom(*join_logo, x0, y0);
 	}
 }

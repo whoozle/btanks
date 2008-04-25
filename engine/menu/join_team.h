@@ -21,6 +21,7 @@ private:
 	Box * _background;
 	Label * _title;
 	sdlx::Surface team_logo[4];
+	const sdlx::Surface *join_logo;
 };
 
 #endif
