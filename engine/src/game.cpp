@@ -82,7 +82,7 @@ IGame::IGame() : _main_menu(NULL),
 	path = mrt::Directory::getAppDir("Battle Tanks", "btanks") + "/";
 	Config->load(path + "bt.xml");
 
-#ifndef WIN32
+#ifndef _WINDOWS
 	std::string log;
 	Config->get("engine.log", log, "log");
 	if (!log.empty() && log != "stderr" && log != "<stderr>" ) {
