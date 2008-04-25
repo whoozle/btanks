@@ -19,7 +19,7 @@ JoinTeamControl::JoinTeamControl() {
 	_title->getSize(title_w, title_h);
 
 	int w = math::max(SQUARE_SPACING + (SQUARE_SIZE + SQUARE_SPACING) * teams,  title_w + 2 * SQUARE_SPACING), h = SQUARE_SIZE + 2 * SQUARE_SPACING + title_h;
-	_background = new Box("menu/background_box.png", w, h);
+	_background = new Box("menu/background_box_dark.png", w, h);
 
 	add(0, 0, _background);
 	
