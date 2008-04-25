@@ -497,6 +497,6 @@ void PlayerSlot::render(sdlx::Surface &window, const int vx, const int vy) {
 		sdlx::Cursor::Enable();
 		int w, h;
 		join_team->getSize(w, h);
-		join_team->render(window, (viewport.w - w) / 2, (viewport.h - h) / 2);
+		join_team->render(window, viewport.x + (viewport.w - w) / 2, viewport.y + (viewport.h - h) / 2);
 	}
 }
