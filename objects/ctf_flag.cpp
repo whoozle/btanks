@@ -44,29 +44,31 @@ public:
 			}
 
 			if (slot->team == team) {
-				//LOG_DEBUG(("returning to base"));
-
-				//return to the base
-				int base_id = getSummoner(); //FIX THIS. summoner could be dead player
+				int base_id = getSummoner(); 
 				const Object *base = World->getObjectByID(base_id);
 				if (base != NULL) {
 					v2<float> dpos = getRelativePosition(base);
 					if (dpos.quick_length() > size.x * size.y / 4)
 						World->teleport(this, base->getCenterPosition());
+					else {
+						//my flag is close to the base. if i have foreign flag, frag it
+						if (emitter->has("#ctf-flag")) {
+							Object *flag = emitter->drop("#ctf-flag");
+							const Object *base = World->getObjectByID(flag->getSummoner());
+							if (base != NULL) {
+								World->teleport(flag, base->getCenterPosition());
+							} else {
+								LOG_WARN(("could not find base for the flag %s", flag->animation.c_str()));
+							}
+						}
+					}
 				} else {
 					LOG_WARN(("could not find base %d", base_id));
 				}
-				//check color and team ! 
-				if (emitter->has("#ctf-flag")) {
-					LOG_DEBUG(("frag! frag!"));
-					emitter->remove("#ctf-flag");
-					return;
-				}
+			} else {
+				if (!emitter->has("#ctf-flag"))  //just for the future expansion
+					emitter->pick("#ctf-flag", this);
 			}
-
-			
-			emitter->add("#ctf-flag", "ctf-flag-on-vehicle", animation, v2<float>(), Centered);
-			emit("death", this);
 		} else Object::emit(event, emitter);
 	}
 
