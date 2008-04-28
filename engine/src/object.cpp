@@ -870,6 +870,27 @@ void Object::limitRotation(const float dt, const float speed, const bool rotate_
 
 //grouped object stuff
 
+void Object::pick(const std::string &name, Object *object) {
+	if (_group.find(name) != _group.end())
+		throw_ex(("object '%s' was already added to group", name.c_str()));
+
+	World->pop(object);
+	object->_parent = this;
+	_group.insert(Group::value_type(name, object));
+}
+
+Object *Object::drop(const std::string &name, const v2<float> &dpos) {
+	Group::iterator i = _group.find(name);
+	if (i == _group.end())
+		throw_ex(("object '%s' was not added to group", name.c_str()));
+
+	Object *o = i->second;
+	World->push(this, o, dpos);
+	o->_parent = NULL;
+	_group.erase(i);
+	return o;
+}
+
 Object* Object::add(const std::string &name, const std::string &classname, const std::string &animation, const v2<float> &dpos, const GroupType type) {
 	if (_group.find(name) != _group.end())
 		throw_ex(("object '%s' was already added to group", name.c_str()));

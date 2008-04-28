@@ -1723,3 +1723,23 @@ void IWorld::teleport(Object *object, const v2<float> &position) {
 	object->addEffect("teleportation", 1);
 }
 
+void IWorld::push(Object *parent, Object *object, const v2<float> &dpos) {
+	int object_id = object->getID();
+	
+	ObjectMap::iterator i = _objects.find(object_id);
+	if (i != _objects.end())
+		throw_ex(("object %d:%s:%s is already in a world", object->getID(), object->registered_name.c_str(), object->animation.c_str()));
+
+	_objects.insert(ObjectMap::value_type(object_id, object));
+	object->_position = parent->_position + dpos;
+	updateObject(object);
+}
+
+void IWorld::pop(Object *object) {
+	ObjectMap::iterator i = _objects.find(object->getID());
+	if (i == _objects.end())
+		throw_ex(("object %d:%s:%s was not found", object->getID(), object->registered_name.c_str(), object->animation.c_str()));
+
+	_grid.remove(i->second);
+	_objects.erase(i);
+}

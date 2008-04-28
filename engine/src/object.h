@@ -144,6 +144,9 @@ public:
 	void invalidate() { setSync(true); }
 
 	//grouped object handling
+	void pick(const std::string &name, Object *object); //picks up object and insert as group one, i.e. ctf-flag 
+	Object *drop(const std::string &name, const v2<float> &dpos = v2<float>()); //pops object and inserts into world again
+	
 	Object *add(const std::string &name, const std::string &classname, const std::string &animation, const v2<float> &dpos, const GroupType type);
 	Object *get(const std::string &name);
 	void remove(const std::string &name);

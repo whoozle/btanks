@@ -109,6 +109,9 @@ public:
 	void teleport(Object *object, const v2<float> &position); //do not use this! 
 	void replaceID(const int old_id, const int new_id); //and this! 
 	
+	void push(Object *parent, Object *object, const v2<float> &dpos); //and this! 
+	void pop(Object *object); //and this :)))
+	
 protected: 
 	friend class Editor;
 	friend class Command;
