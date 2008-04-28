@@ -16,8 +16,13 @@ public:
 	JoinTeamControl();
 	void update();
 	virtual void render(sdlx::Surface& surface, const int x, const int y) const;
+	
+	void left();
+	void right();
+	
+	int get() const { return current_team; }
 private: 
-	int teams;
+	int teams, current_team;
 	Box * _background;
 	Label * _title;
 	sdlx::Surface team_logo[4];

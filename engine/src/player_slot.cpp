@@ -249,8 +249,21 @@ PlayerSlot::~PlayerSlot() {
 void PlayerSlot::updateState(PlayerState &state, const float dt) {
 	if (control_method == NULL)
 		throw_ex(("updateState called on slot without control_method"));
-	control_method->updateState(*this, state, dt);
 	//handle custom stuff here. 
+	if (join_team != NULL) {
+		PlayerState s;
+		s = old_state;		
+		control_method->updateState(*this, state, dt);
+		if (state.left && !s.left) {
+			//LOG_DEBUG(("left"));
+			join_team->left();
+		} else if (state.right && !s.right) {
+			//LOG_DEBUG(("right"));
+			join_team->right();
+		}
+	} else {
+		control_method->updateState(*this, state, dt);
+	}
 }
 
 
