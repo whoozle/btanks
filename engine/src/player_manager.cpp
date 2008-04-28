@@ -1196,9 +1196,15 @@ const bool IPlayerManager::isServerActive() const {
 #include "special_owners.h"
 
 void IPlayerManager::onPlayerDeath(const Object *player, const Object *killer) {
-	if (player == NULL || killer == NULL || _client != NULL || killer->getSlot() < 0 || killer->getSlot() >= (int)_players.size() || GameMonitor->gameOver())
+	if (player == NULL || 
+		killer == NULL || 
+		_client != NULL || 
+		killer->getSlot() < 0 || 
+		killer->getSlot() >= (int)_players.size() || 
+		GameMonitor->gameOver() ||
+		RTConfig->game_type == GameTypeCTF)
 		return;
-
+		
 	//LOG_DEBUG(("handler %s %s", player->animation.c_str(), killer->animation.c_str()));
 
 	if (RTConfig->game_type != GameTypeCooperative) { //skip this check in coop mode
