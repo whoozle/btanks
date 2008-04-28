@@ -1215,7 +1215,8 @@ static int lua_hooks_get_difficulty(lua_State *L) {
 
 		int difficulty;
 		Config->get("campaign." + campaign->name + ".difficulty", difficulty, 1);
-		return difficulty;		
+		lua_pushinteger(L, difficulty);
+		return 1;
 	} LUA_CATCH("get_difficulty");
 }
 
