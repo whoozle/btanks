@@ -19,6 +19,8 @@
 #include "object.h"
 #include "registrar.h"
 #include "team.h"
+#include "player_manager.h"
+#include "world.h"
 
 class CTFFlag : public Object {
 public:
@@ -29,15 +31,40 @@ public:
 	void emit(const std::string &event, Object * emitter) {
 		if (event == "collision") {
 			//add flag handling here.
-			if (emitter == NULL || !emitter->getVariants().has("player"))
-				return;
-			
-			//check color and team ! 
-			if (emitter->has("#ctf-flag")) {
-				LOG_DEBUG(("frag! frag!"));
-				emitter->remove("#ctf-flag");
+			if (emitter == NULL || !emitter->getVariants().has("player")) {
 				return;
 			}
+			
+			Team::ID team = Team::get_team(this);
+			assert(team != Team::None);
+				
+			PlayerSlot *slot = PlayerManager->getSlotByID(emitter->getID());
+			if (slot == NULL) {
+				LOG_DEBUG(("no slot"));
+				return;
+			}
+
+			if (slot->team == team) {
+				//LOG_DEBUG(("returning to base"));
+
+				//return to the base
+				int base_id = getSummoner(); //FIX THIS. summoner could be dead player
+				const Object *base = World->getObjectByID(base_id);
+				if (base != NULL) {
+					v2<float> dpos = getRelativePosition(base);
+					if (dpos.quick_length() > size.x * size.y / 4)
+						World->teleport(this, base->getCenterPosition());
+				} else {
+					LOG_WARN(("could not find base %d", base_id));
+				}
+				//check color and team ! 
+				if (emitter->has("#ctf-flag")) {
+					LOG_DEBUG(("frag! frag!"));
+					emitter->remove("#ctf-flag");
+					return;
+				}
+			}
+
 			
 			emitter->add("#ctf-flag", "ctf-flag-on-vehicle", animation, v2<float>(), Centered);
 			emit("death", this);
