@@ -50,6 +50,21 @@ static Uint32 index2color(const sdlx::Surface &surface, const unsigned idx, cons
 	return surface.mapRGBA(r, g, b, a);
 }
 
+static Uint32 team2color(const sdlx::Surface &surface, const unsigned idx, const Uint8 a) {
+	switch(idx) {
+		case 0: //red team
+			return surface.mapRGBA(255, 0, 0, a);
+		case 1: //green team
+			return surface.mapRGBA(0, 255, 0, a);
+		case 2: //blue team
+			return surface.mapRGBA(0, 0, 255, a);
+		case 3: //yellow team
+			return surface.mapRGBA(255, 255, 0, a);
+		default: 
+			return 0;
+	}
+}
+
 void Hud::initMap() {
 	_radar.free();
 	_radar_bg.free();
@@ -117,6 +132,61 @@ void Hud::generateRadarBG(const sdlx::Rect &viewport) {
 }
 
 void Hud::renderStats(sdlx::Surface &surface) {
+	if (RTConfig->game_type == GameTypeTeamDeathMatch || RTConfig->game_type == GameTypeCTF)
+		renderTeamStats(surface);
+	else 
+		renderPlayerStats(surface); 
+}
+
+void Hud::renderTeamStats(sdlx::Surface &surface) {
+	unsigned slots = PlayerManager->getSlotsCount(), teams = RTConfig->teams;
+	
+	int max_w = 0;
+	std::map<const Team::ID, int> team_frags;
+	
+	for(unsigned p = 0; p < slots; ++p) {
+		PlayerSlot &slot = PlayerManager->getSlot(p);
+		if (slot.empty() || slot.team == Team::None)
+			continue;
+			
+		team_frags[slot.team] += slot.frags;
+	}
+	
+	for(int team = 0; team < RTConfig->teams; ++team) {
+		int w = _font->render(NULL, 0, 0, Team::get_color((Team::ID)team));
+		if (w > max_w)
+			max_w = w;
+	}
+
+	Box background;
+	const int item_h = 10 + _font->getHeight() ;
+	background.init("menu/background_box.png", max_w + 96, item_h * teams + 2 * item_h);
+	int mx, my;
+	background.getMargins(mx, my);
+	
+	int xp = (surface.getWidth() - background.w) / 2;
+	int yp = (surface.getHeight() - background.h) / 2;
+
+	background.render(surface, xp, yp);
+
+	xp += mx;
+	yp += (background.h - item_h * teams) / 2 + _font->getHeight() / 4;
+
+	int box_h = _font->getHeight();
+	int box_w2 = _font->getWidth();
+	int box_w1 = box_w2 * 3 / 4;
+	
+	for(int team = 0; team < RTConfig->teams; ++team) {
+		surface.fillRect(sdlx::Rect(xp, yp, box_w1, box_h), team2color(surface, (unsigned)team, 255));
+		_font->render(surface, xp + box_w2, yp, Team::get_color((Team::ID)team));
+		std::string score = mrt::formatString("%d", team_frags[(Team::ID)team]);
+		int sw = _font->render(NULL, 0, 0, score);
+		_font->render(surface, xp + background.w - 2 * mx - sw, yp, score);
+		yp += item_h;
+	}
+}
+
+void Hud::renderPlayerStats(sdlx::Surface &surface) {
 	unsigned active_slots = 0, slots = PlayerManager->getSlotsCount();
 	
 	int nick_w = 0;
@@ -139,7 +209,7 @@ void Hud::renderStats(sdlx::Surface &surface) {
 	const int item_h = 10 + _font->getHeight() ;
 	
 	
-	background.init("menu/background_box.png", nick_w + 64, item_h * active_slots + 2 * item_h);
+	background.init("menu/background_box.png", nick_w + 96, item_h * active_slots + 2 * item_h);
 	int mx, my;
 	background.getMargins(mx, my);
 	

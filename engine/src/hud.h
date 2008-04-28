@@ -46,11 +46,15 @@ public:
 	void renderSplash(sdlx::Surface &window) const;
 	const bool renderLoadingBar(sdlx::Surface &window, const float old_progress, const float progress, const bool splash = true) const;
 	void renderRadar(const float dt, sdlx::Surface &window, const std::vector<v3<int> > &specials, const sdlx::Rect &viewport);
-	void renderStats(sdlx::Surface &surface);
+
+	void renderStats(sdlx::Surface &surface); //autoproxy
+	void renderPlayerStats(sdlx::Surface &surface);
+	void renderTeamStats(sdlx::Surface &surface);
 
 	~Hud();
 	
 private: 
+
 	sl08::slot0<void, Hud> init_map_slot;
 	void initMap();
 	
