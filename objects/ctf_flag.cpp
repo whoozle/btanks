@@ -40,7 +40,6 @@ public:
 				
 			PlayerSlot *slot = PlayerManager->getSlotByID(emitter->getID());
 			if (slot == NULL) {
-				LOG_DEBUG(("no slot"));
 				return;
 			}
 
