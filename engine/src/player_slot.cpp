@@ -246,6 +246,14 @@ PlayerSlot::~PlayerSlot() {
 #include "controls/mouse_control.h"
 //#include "controls/external_control.h"
 
+void PlayerSlot::updateState(PlayerState &state, const float dt) {
+	if (control_method == NULL)
+		throw_ex(("updateState called on slot without control_method"));
+	control_method->updateState(*this, state, dt);
+	//handle custom stuff here. 
+}
+
+
 void PlayerSlot::createControlMethod(const std::string &control_method_name) {
 	delete control_method;
 	control_method = NULL;

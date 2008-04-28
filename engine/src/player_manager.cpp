@@ -680,7 +680,7 @@ TRY {
 		if (slot.spectator) {
 			if (slot.control_method != NULL) {
 				bool old_fire = slot.old_state.fire != 0;
-				slot.control_method->updateState(slot, slot.old_state, dt);
+				slot.updateState(slot.old_state, dt);
 				//LOG_DEBUG(("SPECTATOR: %s", slot.old_state.dump().c_str()));
 				slot.old_state.get_velocity(slot.map_vel);
 				slot.map_vel *= 500;
@@ -727,7 +727,7 @@ TRY {
 			if (slot.control_method != NULL) {
 				PlayerState state = obj->getPlayerState();
 				bool hint = state.hint_control;
-				slot.control_method->updateState(slot, state, dt);
+				slot.updateState(state, dt);
 				
 				obj->updatePlayerState(state);
 				if (state.hint_control && !hint) {

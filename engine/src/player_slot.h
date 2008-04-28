@@ -101,6 +101,8 @@ public:
 	void setViewport(const sdlx::Rect &rect);
 
 	void getDefaultVehicle(std::string &vehicle, std::string &animation);
+
+	void updateState(PlayerState &state, float dt);	
 	
 private: 
 	typedef std::queue<std::pair<float, Tooltip *> > Tooltips;
