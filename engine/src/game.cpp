@@ -580,7 +580,7 @@ bool IGame::onKey(const SDL_keysym key, const bool pressed) {
 			if (slot == NULL)
 				return true;
 		
-			if (slot->frags > 0) 
+			if (slot->frags > 0 && RTConfig->game_type != GameTypeCTF) 
 				--slot->frags;
 
 			Object *o = slot->getObject();
