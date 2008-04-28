@@ -54,6 +54,7 @@ public:
 						//my flag is close to the base. if i have foreign flag, frag it
 						if (emitter->has("#ctf-flag")) {
 							Object *flag = emitter->drop("#ctf-flag");
+							++slot->frags;
 							const Object *base = World->getObjectByID(flag->getSummoner());
 							if (base != NULL) {
 								World->teleport(flag, base->getCenterPosition());
