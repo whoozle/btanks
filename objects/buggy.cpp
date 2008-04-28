@@ -53,7 +53,7 @@ void Buggy::onSpawn() {
 
 	play("hold", true);
 	bool ai = registered_name == "buggy" && hasOwner(OWNER_MAP);
-	Object *turrel = add("mod", ai?"turrel(ground-aim)":"turrel", "buggy-gun", v2<float>(), Centered);
+	Object *turrel = add("mod", ai?"turrel-on-buggy(ground-aim)":"turrel-on-buggy", "buggy-gun", v2<float>(), Centered);
 	turrel->setZ(getZ() + 5, true);
 
 	playSound("vehicle-sound", true, 0.4f);

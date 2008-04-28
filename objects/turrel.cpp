@@ -158,3 +158,4 @@ void Turrel::deserialize(const mrt::Serializator &s) {
 
 
 REGISTER_OBJECT("turrel", Turrel, ("turrel"));
+REGISTER_OBJECT("turrel-on-buggy", Turrel, ("turrel"));
