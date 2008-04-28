@@ -19,6 +19,7 @@
 #include "alarm.h"
 #include "mrt/serializator.h"
 #include <assert.h>
+#include <math.h>
 
 Alarm::Alarm(const float period, const bool repeat) : _period(period), _t(0), _repeat(repeat) {}
 Alarm::Alarm(const bool repeat): _period(0), _t(0), _repeat(repeat) {}
