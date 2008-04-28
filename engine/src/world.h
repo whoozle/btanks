@@ -147,6 +147,8 @@ private:
 	void onMapResize(int left, int right, int up, int down);
 
 	ObjectMap _objects;
+	ObjectMap::iterator next_object;
+	
 	Grid<Object *> _grid;
 	int _last_id;
 	bool _safe_mode, _atatat;

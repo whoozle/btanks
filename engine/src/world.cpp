@@ -1135,12 +1135,19 @@ void IWorld::tick(ObjectMap &objects, const float dt, const bool do_calculate) {
 
 
 void IWorld::_tick(ObjectMap &objects, const float dt, const bool do_calculate) {
-	for(ObjectMap::iterator i = objects.begin(); i != objects.end(); ++i) {
+	for(ObjectMap::iterator i = objects.begin(); i != objects.end(); ) {
+		next_object = objects.end();
+		
 		Object *o = i->second;
 		assert(o != NULL);
 		TRY {
 			_tick(*o, dt, do_calculate);
 		} CATCH(mrt::formatString("tick for object[%p] id:%d %s:%s:%s", (void *)o, o->getID(), o->registered_name.c_str(), o->classname.c_str(), o->animation.c_str()).c_str(), throw;);
+		if (next_object != objects.end()) {
+			i = next_object;
+		} else {
+			++i;
+		}
 	}
 	purge(dt);
 }
@@ -1741,5 +1748,8 @@ void IWorld::pop(Object *object) {
 		throw_ex(("object %d:%s:%s was not found", object->getID(), object->registered_name.c_str(), object->animation.c_str()));
 
 	_grid.remove(i->second);
+	next_object = i;
+	++next_object;
+	
 	_objects.erase(i);
 }
