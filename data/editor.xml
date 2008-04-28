@@ -517,6 +517,8 @@
 	<class id="turrel">
 		<animation id="turrel" />
 	</class>
+	<class id="turrel-on-buggy">
+	</class>
 	<class id="uberzombie">
 		<animation id="uberzombie" />
 	</class>

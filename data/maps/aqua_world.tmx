@@ -35,12 +35,6 @@
 		<property name="object:heal:heal:3" value="1451,379,-1650"/>
 		<property name="object:heal:heal:4" value="71,1797"/>
 		<property name="object:heal:heal:5" value="535,49,150"/>
-		<property name="object:impassable-static-corpse:dead-cannon:1" value="213,1234,-1800"/>
-		<property name="object:impassable-static-corpse:dead-cannon:2" value="215,1234,-1800"/>
-		<property name="object:impassable-static-corpse:dead-cannon:3" value="679,1319,-1800"/>
-		<property name="object:impassable-static-corpse:dead-cannon:4" value="1323,598,-1850"/>
-		<property name="object:impassable-static-corpse:dead-cannon:5" value="1389,612,-1850"/>
-		<property name="object:impassable-static-corpse:dead-cannon:7" value="890,49,150"/>
 		<property name="object:impassable-static-corpse:dead-blue-car:1" value="475,636,-1800"/>
 		<property name="object:impassable-static-corpse:dead-blue-car:2" value="927,261,-1800"/>
 		<property name="object:impassable-static-corpse:dead-blue-car:3" value="1257,1187,-1800"/>
@@ -52,12 +46,17 @@
 		<property name="object:impassable-static-corpse:dead-blue-shilka:1" value="220,1059,-1800"/>
 		<property name="object:impassable-static-corpse:dead-blue-tank:2" value="1480,1306,-1800"/>
 		<property name="object:impassable-static-corpse:dead-blue-tank:3" value="457,681,-1800"/>
+		<property name="object:impassable-static-corpse:dead-cannon:1" value="213,1234,-1800"/>
+		<property name="object:impassable-static-corpse:dead-cannon:2" value="215,1234,-1800"/>
+		<property name="object:impassable-static-corpse:dead-cannon:3" value="679,1319,-1800"/>
+		<property name="object:impassable-static-corpse:dead-cannon:4" value="1323,598,-1850"/>
+		<property name="object:impassable-static-corpse:dead-cannon:5" value="1389,612,-1850"/>
+		<property name="object:impassable-static-corpse:dead-cannon:7" value="890,49,150"/>
 		<property name="object:impassable-static-corpse:dead-green-launcher:1" value="392,1871,-2000"/>
 		<property name="object:impassable-static-corpse:dead-green-tank:1" value="1750,0,-10"/>
 		<property name="object:impassable-static-corpse:dead-orange-bus:1" value="153,988,-1800"/>
 		<property name="object:impassable-static-corpse:dead-orange-bus:2" value="153,989,-1800"/>
 		<property name="object:impassable-static-corpse:dead-orange-bus:3" value="227,1700,-1800"/>
-		<property name="object:impassable-static-corpse:dead-orange-bus:4" value="459,566,-1700"/>
 		<property name="object:impassable-static-corpse:dead-orange-bus:5" value="1862,902,-1700"/>
 		<property name="object:impassable-static-corpse:dead-orange-bus:6" value="1362,722,-1710"/>
 		<property name="object:impassable-static-corpse:dead-red-car:1" value="202,1195,-1800"/>
