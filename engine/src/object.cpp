@@ -647,8 +647,7 @@ void Object::deserialize(const mrt::Serializator &s) {
 void Object::emit(const std::string &event, Object * emitter) {
 	if (event == "death") {
 		if (has("#ctf-flag")) {
-			Object * o = spawn("ctf-flag", get("#ctf-flag")->animation);
-			o->disown();
+			drop("#ctf-flag");
 		}
 	
 		if (emitter != NULL && !_dead && _parent == NULL && !piercing) {
@@ -1610,8 +1609,8 @@ const bool Object::attachVehicle(Object *vehicle) {
 	int new_id = vehicle->getID();
 	
 	if (has("#ctf-flag")) {
-		vehicle->add("#ctf-flag", "ctf-flag-on-vehicle", get("#ctf-flag")->animation, v2<float>(), Centered);
-		remove("#ctf-flag");
+		Object *o = drop("#ctf-flag");
+		vehicle->pick("#ctf-flag", o);
 	}
 
 	Object::emit("death", NULL); //emit death BEFORE assigning slot.id (avoid to +1 to frags) :)))
@@ -1680,9 +1679,10 @@ const bool Object::detachVehicle() {
 	
 	invalidate();
 	man->invalidate();
+
 	if (has("#ctf-flag")) {
-		man->add("#ctf-flag", "ctf-flag-on-vehicle", get("#ctf-flag")->animation, v2<float>(0, 0), Centered);
-		remove("#ctf-flag");
+		Object *flag = drop("#ctf-flag");
+		man->pick("#ctf-flag", flag);
 	}
 	
 	return true;
