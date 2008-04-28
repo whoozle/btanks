@@ -208,18 +208,26 @@ const bool Shilka::take(const BaseObject *obj, const std::string &type) {
 		if (type == "machinegunner" || type == "thrower") {
 			removeEffect("dirt");
 			FakeMod *mod = getMod("mod");
-			mod->setType(type);
+
 			int n;
 			Config->get("objects.shilka." + type + "-capacity", n, 5);
+			if (mod->getCount() >= n && type == mod->getType()) 
+				return false;
+
+			mod->setType(type);
 			mod->setCount(n);
 			return true;
 		}
 	} else if (obj->classname == "mines") {
 		removeEffect("dirt");
 		FakeMod *mod = getMod("mod");
-		mod->setType(obj->classname + ":" + type);
 		int n;
 		Config->get("objects.shilka." + type + "-" + obj->classname + "-capacity", n, 7);
+		
+		if (mod->getCount() >= n && mod->getType() == obj->classname + ":" + type)
+			return false;
+		
+		mod->setType(obj->classname + ":" + type);
 		mod->setCount(n);
 		return true;		
 	} else if (obj->classname == "missiles" && type == "nuke") {
