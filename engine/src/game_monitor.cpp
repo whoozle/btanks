@@ -881,7 +881,8 @@ void IGameMonitor::loadMap(Campaign *campaign, const std::string &name, const bo
 	}
 
 
-	if (RTConfig->game_type == GameTypeDeathMatch && Config->has("multiplayer.time-limit")) {
+	if ((RTConfig->game_type == GameTypeDeathMatch || RTConfig->game_type == GameTypeTeamDeathMatch || RTConfig->game_type == GameTypeCTF )
+		&& Config->has("multiplayer.time-limit")) {
 		int tl; 
 		Config->get("multiplayer.time-limit", tl, 0);
 		if (tl != 0) 
