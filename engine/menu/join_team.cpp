@@ -66,15 +66,11 @@ void JoinTeamControl::render(sdlx::Surface& surface, const int x, const int y) c
 }
 
 void JoinTeamControl::left() {
-	--current_team;
-	current_team %= teams;
-	if (current_team < 0)
-		current_team += teams;
+	if (current_team > 0)
+		--current_team;
 }
 
 void JoinTeamControl::right() {
-	++current_team;
-	current_team %= teams;
-	if (current_team < 0)
-		current_team += teams;
+	if (current_team + 1 < teams)
+		++current_team;
 }
