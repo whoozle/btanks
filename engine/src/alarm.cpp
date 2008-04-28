@@ -38,10 +38,10 @@ const bool Alarm::tick(const float dt) {
 		if (_t < _period)
 			return false;
 			
-		int n = (int)(_t / _period);
+		long n = floor(_t / _period);
 		_t -= _period * n;
 
-		while(_t > _period)
+		while(_t > _period && _t > 0) //paranoid stuff
 			_t -= _period;
 	
 		return true;	
