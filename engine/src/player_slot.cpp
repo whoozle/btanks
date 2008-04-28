@@ -257,9 +257,23 @@ void PlayerSlot::updateState(PlayerState &state, const float dt) {
 		if (state.left && !s.left) {
 			//LOG_DEBUG(("left"));
 			join_team->left();
-		} else if (state.right && !s.right) {
+		} 
+		if (state.right && !s.right) {
 			//LOG_DEBUG(("right"));
 			join_team->right();
+		}
+		join_team->reset(); 
+		
+		if (state.fire && !s.fire) {
+			int t = join_team->get();
+			if (t < 0 || t >= 4) 
+				throw_ex(("invalid team %d", t));
+			
+			LOG_DEBUG(("choosing team %d", t));
+			team = (Team::ID)t;
+			spectator = false;
+			delete join_team;
+			join_team = NULL;
 		}
 	} else {
 		control_method->updateState(*this, state, dt);

@@ -68,9 +68,11 @@ void JoinTeamControl::render(sdlx::Surface& surface, const int x, const int y) c
 void JoinTeamControl::left() {
 	if (current_team > 0)
 		--current_team;
+	invalidate();
 }
 
 void JoinTeamControl::right() {
 	if (current_team + 1 < teams)
 		++current_team;
+	invalidate();
 }
