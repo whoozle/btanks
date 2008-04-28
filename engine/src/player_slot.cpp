@@ -274,6 +274,11 @@ void PlayerSlot::updateState(PlayerState &state, const float dt) {
 			spectator = false;
 			delete join_team;
 			join_team = NULL;
+			
+			std::string v, a;
+			getDefaultVehicle(v, a); //hack to recreate animation 
+			classname = v;
+			animation = a;
 		}
 	} else {
 		control_method->updateState(*this, state, dt);
@@ -491,12 +496,16 @@ void PlayerSlot::getDefaultVehicle(std::string &vehicle, std::string &animation)
 			Config->get("menu.default-vehicle-1", vehicle, "tank");
 	} else vehicle = rv;
 
-	if (!this->animation.empty()) {
+	static const char * colors[4] = {"red", "green", "blue", "yellow"};
+	if (team != Team::None && (vehicle == "tank" || vehicle == "launcher" || vehicle == "shilka")) {
+		LOG_DEBUG(("picking team color %d", (int)team));
+		animation = colors[(int)team];
+		animation += "-" + vehicle;
+	} else if (!this->animation.empty()) {
 		animation = this->animation;
 	} else if (ra.empty()) {
 		if (animation.empty()) {
 			if (vehicle == "tank" || vehicle == "launcher" || vehicle == "shilka") {
-				static const char * colors[4] = {"green", "red", "yellow", "blue"};
 				animation = colors[mrt::random(4)];
 				animation += "-" + vehicle;
 			} else animation = vehicle;
