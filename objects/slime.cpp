@@ -28,6 +28,14 @@ public:
 	Slime() : Object("monster"), ai::StupidTrooper("slime-acid", ai::Targets->monster), _fire(false) {}
 	Object *clone() const { return new Slime(*this); }
 
+	void getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const {
+		if (impassability > 0.2f) {
+			base_value = 0.2f;
+			base = 0;
+			penalty = 0;
+		}
+	}
+
 	const bool take(const BaseObject *obj, const std::string &type) {
 		return false;
 	}

@@ -28,6 +28,14 @@ class BaseZombie : public Object {
 public: 
 	virtual Object * clone() const { return new BaseZombie(*this); }
 	BaseZombie(const std::string &classname): Object(classname), _can_punch(true) {}
+	
+	void getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const {
+		if (impassability > 0.2f) {
+			base_value = 0.2f;
+			base = 0;
+			penalty = 0;
+		}
+	}
 
 	virtual void onSpawn();
 	virtual void tick(const float dt);

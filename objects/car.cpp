@@ -60,7 +60,7 @@ void Car::onSpawn() {
 void Car::getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const {
 	if (impassability >= 0.2) {
 		base = 0.2;
-		base_value = 0.6;
+		base_value = 0.5;
 		penalty = 0;
 		return;
 	}
