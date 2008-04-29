@@ -179,9 +179,9 @@ void Zombie::calculate(const float dt) {
 			onIdle(dt);
 	}
 
+drive:
 	GET_CONFIG_VALUE("objects.zombie.rotation-time", float, rt, 0.1);
 
-drive:
 	calculateWayVelocity();
 	limitRotation(dt, rt, true, false);
 	updateStateFromVelocity();
