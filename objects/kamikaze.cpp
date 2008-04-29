@@ -30,6 +30,14 @@ class Kamikaze : public Object, public ai::Herd {
 public:
 	Kamikaze() : 
 		Object("kamikaze"), _reaction(true) {}
+
+	void getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const {
+		if (impassability > 0.2f) {
+			base_value = 0.2f;
+			base = 0;
+			penalty = 0;
+		}
+	}
 	
 	virtual void tick(const float dt);
 	virtual void calculate(const float dt);
