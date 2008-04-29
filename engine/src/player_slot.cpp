@@ -271,7 +271,7 @@ void PlayerSlot::updateState(PlayerState &state, const float dt) {
 	if (control_method == NULL)
 		throw_ex(("updateState called on slot without control_method"));
 	//handle custom stuff here. 
-	if (join_team != NULL) {
+	if (join_team != NULL && team == Team::None) {
 		PlayerState s;
 		s = old_state;		
 		control_method->updateState(*this, state, dt);
@@ -575,7 +575,7 @@ void PlayerSlot::render(sdlx::Surface &window, const int vx, const int vy) {
 	viewport.x -= vx;
 	viewport.y -= vy;
 
-	if (join_team != NULL) {
+	if (join_team != NULL && team == Team::None) {
 		int w, h;
 		join_team->getSize(w, h);
 		join_team->render(window, viewport.x + (viewport.w - w) / 2, viewport.y + (viewport.h - h) / 2);
