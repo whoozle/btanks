@@ -265,8 +265,8 @@ TRY {
 		if (t < 0 || t > 3)
 			throw_ex(("invalid team id (%d)", t));
 
-		slot.team = (Team::ID)t;
 		LOG_DEBUG(("player %d joins team %s", id, Team::get_color(slot.team)));
+		join((Team::ID)t);
 		break;
 	} 
 

@@ -103,6 +103,7 @@ public:
 	void getDefaultVehicle(std::string &vehicle, std::string &animation);
 
 	void updateState(PlayerState &state, float dt);	
+	void join(const Team::ID t);
 	
 private: 
 	typedef std::queue<std::pair<float, Tooltip *> > Tooltips;

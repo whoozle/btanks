@@ -246,6 +246,18 @@ PlayerSlot::~PlayerSlot() {
 #include "controls/mouse_control.h"
 //#include "controls/external_control.h"
 
+void PlayerSlot::join(const Team::ID t) {
+	team = t;
+	spectator = false;
+	delete join_team;
+	join_team = NULL;
+	
+	std::string v, a;
+	getDefaultVehicle(v, a); //hack to recreate animation 
+	classname = v;
+	animation = a;	
+}
+
 void PlayerSlot::updateState(PlayerState &state, const float dt) {
 	if (control_method == NULL)
 		throw_ex(("updateState called on slot without control_method"));
@@ -270,15 +282,7 @@ void PlayerSlot::updateState(PlayerState &state, const float dt) {
 				throw_ex(("invalid team %d", t));
 			
 			LOG_DEBUG(("choosing team %d", t));
-			team = (Team::ID)t;
-			spectator = false;
-			delete join_team;
-			join_team = NULL;
-			
-			std::string v, a;
-			getDefaultVehicle(v, a); //hack to recreate animation 
-			classname = v;
-			animation = a;
+			join((Team::ID)t);
 		}
 	} else {
 		control_method->updateState(*this, state, dt);
