@@ -806,8 +806,13 @@
 
 	<animation id="ctf-flag-red" tile="flag_red.png" model="single-tile" size="64" />
 	<animation id="ctf-flag-green" tile="flag_green.png" model="single-tile" size="64" />
-	<animation id="ctf-flag-yellow" tile="flag_yellow.png" model="single-tile" size="64" />
 	<animation id="ctf-flag-blue" tile="flag_blue.png" model="single-tile" size="64" />
+	<animation id="ctf-flag-yellow" tile="flag_yellow.png" model="single-tile" size="64" />
+
+	<animation id="ctf-flag-red-outline" tile="flag_blue_outline.png" model="single-tile" size="64" />
+	<animation id="ctf-flag-green-outline" tile="flag_blue_outline.png" model="single-tile" size="64" />
+	<animation id="ctf-flag-blue-outline" tile="flag_blue_outline.png" model="single-tile" size="64" />
+	<animation id="ctf-flag-yellow-outline" tile="flag_blue_outline.png" model="single-tile" size="64" />
 	
 	<!-- OBJECTS -->
 
