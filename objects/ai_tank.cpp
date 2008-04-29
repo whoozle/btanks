@@ -83,6 +83,7 @@ void AITank::onSpawn() {
 	addBonusName("megaheal");
 	
 	addBonusName("teleport");
+	addBonusName("ctf-flag");
 
 	//primary weapon	
 	addBonusName("dispersion-bullets-item");

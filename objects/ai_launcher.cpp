@@ -71,6 +71,7 @@ void AILauncher::onSpawn() {
 	addEnemyClass("monster");
 	
 	addBonusName("teleport");
+	addBonusName("ctf-flag");
 
 	addBonusName("heal");
 	addBonusName("megaheal");
