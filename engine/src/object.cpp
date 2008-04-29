@@ -875,7 +875,9 @@ void Object::pick(const std::string &name, Object *object) {
 
 	object = World->pop(object);
 	object->_parent = this;
+	object->invalidate();
 	_group.insert(Group::value_type(name, object));
+	invalidate();
 }
 
 Object *Object::drop(const std::string &name, const v2<float> &dpos) {
@@ -885,8 +887,10 @@ Object *Object::drop(const std::string &name, const v2<float> &dpos) {
 
 	Object *o = i->second;
 	World->push(this, o, dpos);
+	o->invalidate();
 	o->_parent = NULL;
 	_group.erase(i);
+	invalidate();
 	return o;
 }
 
