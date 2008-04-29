@@ -29,6 +29,7 @@
 #include "vehicle_traits.h"
 #include "tmx/map.h"
 #include "special_zone.h"
+#include "team.h"
 
 using namespace ai;
 
@@ -435,6 +436,27 @@ const Object * Buratino::findTarget(const Object *src, const std::set<std::strin
 		} else if (o->classname == "teleport") {
 			max = 1;
 		} else if (o->classname == "vehicle") {
+			max = 1;
+		} else if (o->classname == "ctf-flag") {
+			PlayerSlot *slot = PlayerManager->getSlotByID(src->getID());
+			if (slot == NULL)
+				continue;
+			Team::ID flag_team = Team::get_team(o);
+			if (flag_team == slot->team) {
+				const Object *base = World->getObjectByID(o->getSummoner());
+				if (base == NULL) {
+					LOG_WARN(("could not find base #%d for %s", o->getSummoner(), o->animation.c_str()));
+					continue;
+				}
+
+				v2<float> dpos = o->getRelativePosition(base);
+				if (dpos.quick_length() < o->size.x * o->size.y / 4) {
+					//my flag is on the base
+					continue;
+				}
+
+			} 
+			min = 0;
 			max = 1;
 		}
 		float value = 0;
