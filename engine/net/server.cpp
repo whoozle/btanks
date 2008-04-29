@@ -102,6 +102,8 @@ void Server::tick(const float dt) {
 			case Message::RequestObjects:
 			case Message::JoinTeam:
 				PlayerManager->onMessage(id, m, delta);
+
+			case Message::ServerDiscovery:
 				break;
 			default:
 				throw_ex(("message type %s is not allowed", m.getType()));
