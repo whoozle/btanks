@@ -245,6 +245,31 @@ TRY {
 		_server->send(cid, m);
 		break;
 	}
+
+	case Message::JoinTeam: {
+		int id = message.channel;
+		
+		if (RTConfig->game_type != GameTypeTeamDeathMatch && RTConfig->game_type != GameTypeCTF) 
+			throw_ex(("join team valid only for team games"));
+		
+		if (id < 0 || (unsigned)id >= _players.size())
+			throw_ex(("player id exceeds players count (%d/%d)", id, (int)_players.size()));
+
+		PlayerSlot &slot = _players[id];
+		if (slot.remote != cid)
+			throw_ex(("client in connection %d sent wrong channel id %d", cid, id));
+		
+		mrt::Serializator s(&message.data);
+		int t; 
+		s.get(t);
+		if (t < 0 || t > 3)
+			throw_ex(("invalid team id (%d)", t));
+
+		slot.team = (Team::ID)t;
+		LOG_DEBUG(("player %d joins team %s", id, Team::get_color(slot.team)));
+		break;
+	} 
+
 	case Message::PlayerState: {
 		int id = message.channel;
 		if (id < 0 || (unsigned)id >= _players.size())
@@ -676,7 +701,16 @@ TRY {
 		if (slot.spectator) {
 			if (slot.control_method != NULL) {
 				bool old_fire = slot.old_state.fire != 0;
+				Team::ID old_team = slot.team;
 				slot.updateState(slot.old_state, dt);
+				if (_client != NULL && slot.team != old_team && slot.remote >= 0) {
+					Message m(Message::JoinTeam);
+					m.channel = i;
+					mrt::Serializator s;
+					s.add((int)slot.team);
+					s.finalize(m.data);
+					_client->send(m);
+				}
 				//LOG_DEBUG(("SPECTATOR: %s", slot.old_state.dump().c_str()));
 				slot.old_state.get_velocity(slot.map_vel);
 				slot.map_vel *= 500;
