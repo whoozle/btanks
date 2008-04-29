@@ -28,6 +28,10 @@ public:
 	Slime() : Object("monster"), ai::StupidTrooper("slime-acid", ai::Targets->monster), _fire(false) {}
 	Object *clone() const { return new Slime(*this); }
 
+	const bool take(const BaseObject *obj, const std::string &type) {
+		return false;
+	}
+
 	void emit(const std::string &event, Object * emitter) {
 		if (event == "death") {
 			spawn("corpse(slime-death)", "dead-" + animation);
