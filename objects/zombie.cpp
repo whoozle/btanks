@@ -153,17 +153,19 @@ void Zombie::onIdle(const float dt) {
 
 
 void Zombie::calculate(const float dt) {
+	v2<float> vel;
+	int tt;
+	
 	if (isDriven())
 		goto drive; 
 	
 	if (!_reaction.tick(dt))
 		return;
 	
-	v2<float> vel;
 	
 	GET_CONFIG_VALUE("objects.zombie.targeting-range(stable)", int, trs, 600);
 	GET_CONFIG_VALUE("objects.zombie.targeting-range(alerted)", int, tra, 900);
-	int tt = (hp < max_hp)?tra:trs;
+	tt = (hp < max_hp)?tra:trs;
 	
 	if (getNearest(ai::Targets->monster, tt, _velocity, vel, false)) {
 		if (_velocity.quick_length() > size.quick_length())
