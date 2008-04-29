@@ -1,5 +1,5 @@
-grab video in software mode (--no-gl): 
-recordmydesktop -windowid `xwininfo -root -tree | grep Battle | awk '{ print $1; } '` --overwrite -fps 15 --no-sound
+grab video in GL mode (full shots): 
+recordmydesktop -windowid `xwininfo -root -tree | grep Battle | awk '{ print $1; } '` --overwrite -fps 15 --no-sound --full-shots
 
 recode to mpeg4 for cinerella editing: 
 mencoder single01.ogv -o single01.avi -ofps 25  -ovc lavc -lavcopts vcodec=h263p -forceidx -lavcopts vqscale=0
