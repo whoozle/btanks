@@ -873,7 +873,7 @@ void Object::pick(const std::string &name, Object *object) {
 	if (_group.find(name) != _group.end())
 		throw_ex(("object '%s' was already added to group", name.c_str()));
 
-	World->pop(object);
+	object = World->pop(object);
 	object->_parent = this;
 	_group.insert(Group::value_type(name, object));
 }
