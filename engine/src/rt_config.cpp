@@ -17,15 +17,18 @@
  */
 
 #include "rt_config.h"
+#include "mrt/serializator.h"
 
 IMPLEMENT_SINGLETON(RTConfig, IRTConfig);
 
 IRTConfig::IRTConfig() : server_mode(false), game_type(GameTypeDeathMatch), teams(0) {}
 
-void IRTConfig::serialize(Serializator &s) const {
+void IRTConfig::serialize(mrt::Serializator &s) const {
+	s.add((int)game_type);
+	s.add(teams);
 }
 
-void IRTConfig::deserialize(const Serializator &s) {
+void IRTConfig::deserialize(const mrt::Serializator &s) {
 	int t;
 	s.get(t);
 	game_type = (GameType)t;

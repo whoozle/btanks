@@ -26,6 +26,10 @@ enum GameType {
 	GameTypeDeathMatch, GameTypeCooperative, GameTypeRacing, GameTypeCTF, GameTypeTeamDeathMatch
 };
 
+namespace mrt {
+	class Serializator;
+}
+
 class BTANKSAPI IRTConfig {
 public:
 	DECLARE_SINGLETON(IRTConfig);
@@ -35,8 +39,8 @@ public:
 	GameType game_type;
 	int teams; //for team games, usually 2 for CTF
 
-	void serialize(Serializator &s) const;
-	void deserialize(const Serializator &s);
+	void serialize(mrt::Serializator &s) const;
+	void deserialize(const mrt::Serializator &s);
 };
 
 SINGLETON(BTANKSAPI, RTConfig, IRTConfig);
