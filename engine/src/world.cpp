@@ -1135,19 +1135,12 @@ void IWorld::tick(ObjectMap &objects, const float dt, const bool do_calculate) {
 
 
 void IWorld::_tick(ObjectMap &objects, const float dt, const bool do_calculate) {
-	for(ObjectMap::iterator i = objects.begin(); i != objects.end(); ) {
-		delete_current_object_from_tick = false;
-				
+	for(ObjectMap::iterator i = objects.begin(); i != objects.end(); ++i) {
 		Object *o = i->second;
 		assert(o != NULL);
 		TRY {
 			_tick(*o, dt, do_calculate);
 		} CATCH(mrt::formatString("tick for object[%p] id:%d %s:%s:%s", (void *)o, o->getID(), o->registered_name.c_str(), o->classname.c_str(), o->animation.c_str()).c_str(), throw;);
-		if (delete_current_object_from_tick) {
-			objects.erase(i++);
-		} else {
-			++i;
-		}
 	}
 	purge(dt);
 }
@@ -1159,6 +1152,7 @@ void IWorld::purge(const float dt) {
 void IWorld::purge(ObjectMap &objects, const float dt) {
 	for(ObjectMap::iterator i = objects.begin(); i != objects.end(); ) {
 		Object *o = i->second;
+		assert(o != NULL);
 
 		if (!o->_dead) {
 			o->groupTick(dt);
@@ -1454,6 +1448,7 @@ void IWorld::generateUpdate(mrt::Serializator &s, const bool clean_sync_flag, co
 	} else {
 		for(ObjectMap::iterator i = _objects.begin(); i != _objects.end(); ++i) {
 			Object *o = i->second;
+			assert(o != NULL);
 			if (first_id != -1 && o->_id < first_id) {
 				skipped_objects.insert(o->_id);
 				continue; 
@@ -1465,6 +1460,7 @@ void IWorld::generateUpdate(mrt::Serializator &s, const bool clean_sync_flag, co
 	s.add(n);
 	for(ObjectMap::iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		Object *o = i->second;
+		assert(o != NULL);
 		if (first_id != -1 && o->_id < first_id) //rewrite it with lower_bound ? 
 			continue; 
 		serializeObject(s, o, first_id != -1);	
@@ -1508,7 +1504,9 @@ void IWorld::interpolateObjects(ObjectMap &objects) {
 		return;
 	
 	for(ObjectMap::iterator i = objects.begin(); i != objects.end(); ++i) {
-		interpolateObject(i->second);
+		Object *o = i->second;
+		assert(o != NULL);
+		interpolateObject(o);
 	}
 }
 
@@ -1642,6 +1640,7 @@ const int IWorld::getChildren(const int id, const std::string &classname) const 
 void IWorld::replaceID(const int old_id, const int new_id) {
 	for(ObjectMap::iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		Object *o = i->second;
+		assert(o != NULL);
 		if(o->_spawned_by == old_id) 
 			o->_spawned_by = new_id;
 		if (o->hasOwner(old_id)) {
@@ -1702,6 +1701,8 @@ void IWorld::onMapResize(int left, int right, int up, int down) {
 	v2<int> map_size = Map->getSize();
 	for(ObjectMap::iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		Object *o = i->second;
+		assert(o != NULL);
+		
 		o->_position.x += left;
 		o->_position.y += up;
 		if (o->_position.x < 0)
@@ -1740,11 +1741,15 @@ void IWorld::push(Object *parent, Object *object, const v2<float> &dpos) {
 	updateObject(object);
 }
 
-void IWorld::pop(Object *object) {
-	ObjectMap::iterator i = _objects.find(object->getID());
+Object * IWorld::pop(Object *object) {
+	int id = object->getID();
+	ObjectMap::iterator i = _objects.find(id);
 	if (i == _objects.end())
-		throw_ex(("object %d:%s:%s was not found", object->getID(), object->registered_name.c_str(), object->animation.c_str()));
+		throw_ex(("object %d:%s:%s was not found", id, object->registered_name.c_str(), object->animation.c_str()));
 
-	_grid.remove(i->second);
-	delete_current_object_from_tick = true;
+	Object *o = i->second;
+	assert(o != NULL);
+	o->_dead = true;
+
+	return o->clone(); 
 }

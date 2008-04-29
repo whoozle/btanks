@@ -110,7 +110,7 @@ public:
 	void replaceID(const int old_id, const int new_id); //and this! 
 	
 	void push(Object *parent, Object *object, const v2<float> &dpos); //and this! 
-	void pop(Object *object); //and this :)))
+	Object * pop(Object *object); //and this :)))
 	
 protected: 
 	friend class Editor;
@@ -147,7 +147,6 @@ private:
 	void onMapResize(int left, int right, int up, int down);
 
 	ObjectMap _objects;
-	bool delete_current_object_from_tick;
 	
 	Grid<Object *> _grid;
 	int _last_id;
