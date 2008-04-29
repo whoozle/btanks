@@ -1294,7 +1294,7 @@ void IWorld::serialize(mrt::Serializator &s) const {
 
 	GET_CONFIG_VALUE("engine.speed", float, e_speed, 1.0f);
 	s.add(e_speed);
-	s.add((int)RTConfig->game_type);
+	RTConfig->serialize(s);
 }
 
 void IWorld::sync(const int id) {
@@ -1443,7 +1443,7 @@ TRY {
 	setSpeed(speed);
 	int type;
 	s.get(type);
-	RTConfig->game_type = (GameType)type;
+	RTConfig->deserialize(s);
 } CATCH("World::deserialize()", throw;);
 	//LOG_DEBUG(("deserialization completed successfully"));
 }

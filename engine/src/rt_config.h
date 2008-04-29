@@ -34,6 +34,9 @@ public:
 	bool server_mode;
 	GameType game_type;
 	int teams; //for team games, usually 2 for CTF
+
+	void serialize(Serializator &s) const;
+	void deserialize(const Serializator &s);
 };
 
 SINGLETON(BTANKSAPI, RTConfig, IRTConfig);

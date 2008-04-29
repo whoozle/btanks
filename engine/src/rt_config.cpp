@@ -21,3 +21,13 @@
 IMPLEMENT_SINGLETON(RTConfig, IRTConfig);
 
 IRTConfig::IRTConfig() : server_mode(false), game_type(GameTypeDeathMatch), teams(0) {}
+
+void IRTConfig::serialize(Serializator &s) const {
+}
+
+void IRTConfig::deserialize(const Serializator &s) {
+	int t;
+	s.get(t);
+	game_type = (GameType)t;
+	s.get(teams);
+}
