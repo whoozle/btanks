@@ -153,6 +153,9 @@ void Zombie::onIdle(const float dt) {
 
 
 void Zombie::calculate(const float dt) {
+	if (isDriven())
+		goto drive; 
+	
 	if (!_reaction.tick(dt))
 		return;
 	
@@ -175,7 +178,11 @@ void Zombie::calculate(const float dt) {
 	}
 
 	GET_CONFIG_VALUE("objects.zombie.rotation-time", float, rt, 0.1);
+
+drive:
+	calculateWayVelocity();
 	limitRotation(dt, rt, true, false);
+	updateStateFromVelocity();
 }
 
 void Zombie::onSpawn() {
