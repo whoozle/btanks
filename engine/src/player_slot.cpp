@@ -173,6 +173,8 @@ void PlayerSlot::tick(const float dt) {
 	}
 	if (!visible) 
 		return;
+	if (join_team != NULL) 
+		join_team->tick(dt);
 
 	if (RTConfig->game_type == GameTypeCTF || RTConfig->game_type == GameTypeCTF) {
 		if (team == Team::None) {

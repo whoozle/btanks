@@ -6,12 +6,13 @@
 #include "i18n.h"
 #include "math/binary.h"
 #include "menu/label.h"
+#include "sdlx/font.h"
 
 #define SQUARE_SIZE 64
 #define SQUARE_SPACING 16
 
 JoinTeamControl::JoinTeamControl(): 
-current_team(0), join_logo(ResourceManager->loadSurface("menu/team_chooser.png")) 
+current_team(0), join_logo(ResourceManager->loadSurface("menu/team_chooser.png")) , _font(ResourceManager->loadFont("medium", true))
 	{
 	teams = RTConfig->teams;
 	if (teams < 2 || teams > 4) 
@@ -43,10 +44,26 @@ current_team(0), join_logo(ResourceManager->loadSurface("menu/team_chooser.png")
 		team_logo[i].convertAlpha();
 		team_logo[i].fill(team_logo[i].mapRGBA(colors[i][0], colors[i][1], colors[i][2], colors[i][3]));
 	}
+	memset(team_stats, 0, sizeof(team_stats));
+}
+
+#include "player_manager.h"
+
+void JoinTeamControl::tick(const float dt) {
+	LOG_DEBUG(("tick(%g)", dt));
+	Container::tick(dt);
+	memset(team_stats, 0, sizeof(team_stats));
+	int n = PlayerManager->getSlotsCount();
+	for(int i = 0; i < n; ++i) {
+		PlayerSlot &slot = PlayerManager->getSlot(i);
+		if (slot.team != Team::None) 
+			++team_stats[(int)slot.team];
+	}
 }
 
 void JoinTeamControl::render(sdlx::Surface& surface, const int x, const int y) const {
 	Container::render(surface, x, y);
+
 	int w, h, mx, my;
 	getSize(w, h);
 	_background->getMargins(mx, my);
@@ -60,6 +77,11 @@ void JoinTeamControl::render(sdlx::Surface& surface, const int x, const int y) c
 	for(int i = 0; i < teams; ++i) {
 		int x0 = x + xp + (SQUARE_SIZE + SQUARE_SPACING) * i, y0 = y + yp;
 		surface.copyFrom(team_logo[i], x0, y0);
+		
+		std::string players = mrt::formatString("%d", team_stats[i]);
+		int w = _font->render(NULL, 0, 0, players);
+		_font->render(surface, x0 + (SQUARE_SIZE - w) / 2, y0 + (SQUARE_SIZE - _font->getHeight()) / 2, players);
+		
 		if (i == current_team)
 			surface.copyFrom(*join_logo, x0 + dx, y0 + dy);
 	}

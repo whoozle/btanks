@@ -21,12 +21,17 @@ public:
 	void right();
 	
 	int get() const { return current_team; }
+
+	void tick(const float dt);
 private: 
 	int teams, current_team;
 	Box * _background;
 	Label * _title;
 	sdlx::Surface team_logo[4];
 	const sdlx::Surface *join_logo;
+	
+	int team_stats[4];
+	const sdlx::Font *_font;
 };
 
 #endif
