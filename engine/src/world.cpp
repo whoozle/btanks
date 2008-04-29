@@ -1441,8 +1441,6 @@ TRY {
 	float speed;
 	s.get(speed);
 	setSpeed(speed);
-	int type;
-	s.get(type);
 	RTConfig->deserialize(s);
 } CATCH("World::deserialize()", throw;);
 	//LOG_DEBUG(("deserialization completed successfully"));
