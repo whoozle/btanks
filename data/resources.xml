@@ -839,8 +839,6 @@
 
 	<alias name="ziehharmonikaspieler" class="civilian" />
 	
-	<alias name="ctf-flag-on-vehicle" class="single-pose(no-directions)" />
-	
 	<object class="watchtower-with-machinegunner" mass="1000" hp="20" z="200" impassability="1" />
 	<object class="watchtower-with-thrower" mass="1000" hp="20" z="200" impassability="1" />
 	<object class="watchtower-top" z="205" impassability="0" />
@@ -980,7 +978,7 @@
 	<object class="static-buggy" parent="buggy" />
 	<object class="teleport" z="-5" />
 	<object class="ctf-base" z="-10" />
-	<object class="ctf-flag-on-vehicle" z="10" />
+	<object class="ctf-flag" z="11" />
 	
 	<!-- items -->
 	<object class="base-item" z="180" impassability="-1" />
