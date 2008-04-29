@@ -326,9 +326,9 @@ void PlayerSlot::createControlMethod(const std::string &control_method_name) {
 #include "player_manager.h"
 #include "campaign.h"
 
-void PlayerSlot::spawnPlayer(const int slot_id, const std::string &classname, const std::string &animation) {
-	this->classname = classname;
-	this->animation = animation;
+void PlayerSlot::spawnPlayer(const int slot_id, const std::string &classname_, const std::string &animation_) {
+	classname = classname_;
+	animation = animation_;
 	
 	if ((RTConfig->game_type == GameTypeTeamDeathMatch || RTConfig->game_type == GameTypeCTF) && team == Team::None) {
 		if (control_method != NULL) {
@@ -345,7 +345,7 @@ void PlayerSlot::spawnPlayer(const int slot_id, const std::string &classname, co
 					++stats[(int)slot.team];
 			};
 			
-			team = Team::Red;
+			Team::ID team = Team::Red;
 			int min = stats[0];
 			
 			for(int i = 1; i < RTConfig->teams; ++i) {
@@ -356,6 +356,7 @@ void PlayerSlot::spawnPlayer(const int slot_id, const std::string &classname, co
 			}
 			
 			LOG_DEBUG(("auto assign ai slot %d: %s", slot_id, Team::get_color(team)));
+			join(team);
 		}
 	}
 
