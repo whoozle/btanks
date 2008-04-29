@@ -331,10 +331,32 @@ void PlayerSlot::spawnPlayer(const int slot_id, const std::string &classname, co
 	this->animation = animation;
 	
 	if ((RTConfig->game_type == GameTypeTeamDeathMatch || RTConfig->game_type == GameTypeCTF) && team == Team::None) {
-		id = 0; //hack hack hack! :)
-		//fixme : assign AIs to teams automatically !!
-		spectator = true;
-		return;
+		if (control_method != NULL) {
+			id = 0; //hack hack hack! :)
+			spectator = true;
+			return;
+		} else if (remote == -1) {
+			//assigning AIs to teams automatically !!
+			int n = PlayerManager->getSlotsCount();
+			int stats[4] = {0, 0, 0, 0};
+			for(int i = 0; i < n; ++i) {
+				PlayerSlot &slot = PlayerManager->getSlot(i);
+				if (slot.team != Team::None) 
+					++stats[(int)slot.team];
+			};
+			
+			team = Team::Red;
+			int min = stats[0];
+			
+			for(int i = 1; i < RTConfig->teams; ++i) {
+				if (stats[i] < min) {
+					team = (Team::ID)i;
+					min = stats[i];
+				}
+			}
+			
+			LOG_DEBUG(("auto assign ai slot %d: %s", slot_id, Team::get_color(team)));
+		}
 	}
 
 	if (spawn_limit <= 0 && Config->has("map.spawn-limit")) {
