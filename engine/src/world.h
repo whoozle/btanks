@@ -147,7 +147,7 @@ private:
 	void onMapResize(int left, int right, int up, int down);
 
 	ObjectMap _objects;
-	ObjectMap::iterator next_object;
+	bool delete_current_object_from_tick;
 	
 	Grid<Object *> _grid;
 	int _last_id;
