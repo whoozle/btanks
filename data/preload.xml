@@ -336,6 +336,7 @@
 		<object id="nuke-missiles-item"/>
 		<object id="oil-barrels"/>
 		<object id="outline"/>
+		<object id="random-tooltip"/>
 		<object id="regular-mine"/>
 		<object id="road-sign"/>
 		<object id="sandworm"/>
@@ -694,18 +695,24 @@
 		<object id="car"/>
 		<object id="corpse"/>
 		<object id="damage-digits"/>
+		<object id="dispersion-bullet"/>
 		<object id="dispersion-bullets-item"/>
 		<object id="dumb-missile"/>
 		<object id="dumb-missiles-item"/>
 		<object id="explosion"/>
 		<object id="fake-mod"/>
 		<object id="fire"/>
+		<object id="grenade"/>
+		<object id="grenade-explosion"/>
 		<object id="guided-missile"/>
 		<object id="guided-missiles-item"/>
 		<object id="heal"/>
 		<object id="helicopter"/>
 		<object id="helicopter-bullet"/>
+		<object id="helicorpse"/>
+		<object id="helmet"/>
 		<object id="launcher"/>
+		<object id="machinegunner"/>
 		<object id="machinegunner-bullet"/>
 		<object id="machinegunner-item"/>
 		<object id="machinegunner-on-launcher"/>
@@ -715,6 +722,7 @@
 		<object id="missiles-on-tank"/>
 		<object id="oil-barrels"/>
 		<object id="outline"/>
+		<object id="ricochet-bullet"/>
 		<object id="ricochet-bullets-item"/>
 		<object id="road-sign"/>
 		<object id="shilka"/>
@@ -722,12 +730,15 @@
 		<object id="single-pose"/>
 		<object id="stall"/>
 		<object id="static-mortar"/>
+		<object id="stun-missile"/>
 		<object id="stun-missiles-item"/>
 		<object id="tank"/>
 		<object id="tank-bullet"/>
 		<object id="teleport"/>
 		<object id="tent"/>
+		<object id="thrower"/>
 		<object id="thrower-item"/>
+		<object id="thrower-missile"/>
 		<object id="traffic-lights"/>
 		<object id="umbrella"/>
 	</map>
@@ -922,6 +933,8 @@
 	</object>
 	<object id="dirt-bullet">
 		<animation id="dirt-bullet"/>
+		<animation id="shilka-dirt-bullet-left"/>
+		<animation id="shilka-dirt-bullet-right"/>
 	</object>
 	<object id="dirt-bullets-item">
 		<animation id="dirt-bullets-item"/>
