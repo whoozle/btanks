@@ -100,6 +100,7 @@ void Server::tick(const float dt) {
 			case Message::TextMessage:	
 			case Message::PlayerMessage: 
 			case Message::RequestObjects:
+			case Message::JoinTeam:
 				PlayerManager->onMessage(id, m, delta);
 				break;
 			default:
