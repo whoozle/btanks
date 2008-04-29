@@ -54,6 +54,7 @@ const char * Message::getType() const {
 	case DestroyMap: return "DestroyMap";
 	case PlayerMessage: return "PlayerMessage";
 	case RequestObjects: return "RequestObjects";
+	case JoinTeam: return "JoinTeam";
 	case ServerDiscovery: return "ServerDiscovery";
 	}
 	return "Unknown/Damaged";

@@ -47,6 +47,7 @@ public:
 		DestroyMap, 
 		PlayerMessage, 
 		RequestObjects,
+		JoinTeam,
 		ServerDiscovery
 	};
 	
