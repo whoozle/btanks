@@ -50,7 +50,6 @@ current_team(0), join_logo(ResourceManager->loadSurface("menu/team_chooser.png")
 #include "player_manager.h"
 
 void JoinTeamControl::tick(const float dt) {
-	LOG_DEBUG(("tick(%g)", dt));
 	Container::tick(dt);
 	memset(team_stats, 0, sizeof(team_stats));
 	int n = PlayerManager->getSlotsCount();
