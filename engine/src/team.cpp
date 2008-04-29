@@ -1,5 +1,22 @@
 #include "team.h"
 #include "object.h"
+#include "special_owners.h"
+
+int Team::get_owner(const Team::ID team) {
+	switch(team) {
+		case Red:
+			return OWNER_TEAM_RED;
+		case Green: 
+			return OWNER_TEAM_GREEN;
+		case Blue: 
+			return OWNER_TEAM_BLUE;
+		case Yellow: 
+			return OWNER_TEAM_YELLOW;
+		default: 
+			throw_ex(("no owner for team %d", (int)team));
+	}
+}
+
 
 const char * Team::get_color(ID t) {
 	switch(t) {

@@ -10,6 +10,7 @@ struct BTANKSAPI Team {
 
 	static const char * get_color(ID t);
 	static ID get_team(const Object *o);
+	static int get_owner(const Team::ID team);
 };
 
 #endif

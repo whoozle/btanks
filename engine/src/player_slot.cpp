@@ -407,9 +407,14 @@ void PlayerSlot::spawnPlayer(const int slot_id, const std::string &classname, co
 	GET_CONFIG_VALUE("engine.spawn-invulnerability-duration", float, sid, 3);
 	obj->addEffect("invulnerability", sid);
 
-	id = obj->getID();
 	switch(game_type) {
 		case GameTypeDeathMatch: 
+			break;
+
+		case GameTypeTeamDeathMatch: 
+		case GameTypeCTF: 
+			if (team != Team::None)
+				obj->prependOwner(Team::get_owner(team));
 			break;
 
 		case GameTypeRacing: {
@@ -423,9 +428,6 @@ void PlayerSlot::spawnPlayer(const int slot_id, const std::string &classname, co
 			obj->prependOwner(OWNER_COOPERATIVE);
 			break;
 
-		case GameTypeCTF: 
-			//obj->prependOwner(OWNER_COOPERATIVE);//fixme: add team owner
-			break;
 		default:
 			throw_ex(("unknown multiplayer type %d used", (int)game_type));
 	}
