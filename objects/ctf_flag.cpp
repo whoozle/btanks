@@ -48,15 +48,17 @@ public:
 				const Object *base = World->getObjectByID(base_id);
 				if (base != NULL) {
 					v2<float> dpos = getRelativePosition(base);
-					if (dpos.quick_length() > size.x * size.y / 4)
+					if (dpos.quick_length() > size.x * size.y / 4) {
+						setZBox(base->getZ());
 						World->teleport(this, base->getCenterPosition());
-					else {
+					} else {
 						//my flag is close to the base. if i have foreign flag, frag it
 						if (emitter->has("#ctf-flag")) {
 							Object *flag = emitter->drop("#ctf-flag");
 							++slot->frags;
 							const Object *base = World->getObjectByID(flag->getSummoner());
 							if (base != NULL) {
+								setZBox(base->getZ());
 								World->teleport(flag, base->getCenterPosition());
 							} else {
 								LOG_WARN(("could not find base for the flag %s", flag->animation.c_str()));
@@ -85,6 +87,7 @@ public:
 		impassability = -1;
 		hp = -1;
 		setDirectionsNumber(1);
+		pierceable = true;
 	}
 	
 	virtual Object * clone() const { return new CTFFlag(*this); }

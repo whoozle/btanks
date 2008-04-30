@@ -26,13 +26,6 @@ public:
 		Object::tick(dt);
 	}
 	
-	void emit(const std::string &event, Object * emitter) {
-		if (event == "collision") {
-			//add flag handling here.
-		} else emit(event, emitter);
-	}
-
-
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
 	}
@@ -42,9 +35,10 @@ public:
 	}
 
 	CTFBase() : Object("ctf-base") {
-		impassability = -1;
+		impassability = 0;
 		hp = -1;
 		setDirectionsNumber(1);
+		pierceable = true;
 	}
 	
 	virtual Object * clone() const { return new CTFBase(*this); }
