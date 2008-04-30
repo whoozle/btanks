@@ -25,6 +25,7 @@
 
 #include <set>
 #include <map>
+#include <list>
 
 #include "math/v2.h"
 #include "math/matrix.h"
@@ -92,7 +93,6 @@ public:
 
 	void tick(Object &o, const float dt, const bool do_calculate = true);
 	void tick(ObjectMap &objects, const float dt, const bool do_calculate = true);
-	void purge(ObjectMap &objects, const float dt);
 	void purge(const float dt);
 	
 	void setSafeMode(const bool safe_mode = true);
@@ -113,6 +113,7 @@ public:
 	Object * pop(Object *object); //and this :)))
 	
 protected: 
+	void purge(ObjectMap &objects, const float dt);
 	friend class Editor;
 	friend class Command;
 	
@@ -147,6 +148,9 @@ private:
 	void onMapResize(int left, int right, int up, int down);
 
 	ObjectMap _objects;
+	typedef std::list<Object *> ObjectList;
+	ObjectMap push_objects;
+	std::set<int> pop_objects;
 	
 	Grid<Object *> _grid;
 	int _last_id;

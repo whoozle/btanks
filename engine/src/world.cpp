@@ -1,4 +1,3 @@
-
 /* Battle Tanks Game
  * Copyright (C) 2006-2008 Battle Tanks team
  *
@@ -1150,6 +1149,29 @@ void IWorld::purge(const float dt) {
 }
 
 void IWorld::purge(ObjectMap &objects, const float dt) {
+	for(std::set<int>::const_iterator i = pop_objects.begin(); i != pop_objects.end(); ++i) {
+		const int object_id = *i;
+		objects.erase(object_id);
+	}
+	pop_objects.clear();
+
+	for(ObjectMap::iterator i = push_objects.begin(); i != push_objects.end(); ++i) {
+		const int object_id = i->first;
+		Object *o = i->second;
+		assert(o != NULL);
+		
+		ObjectMap::iterator j = objects.find(object_id);
+		if (j != objects.end()) {
+			_grid.remove(j->second);
+			delete j->second;
+			j->second = o;
+		} else {
+			objects.insert(ObjectMap::value_type(object_id, o));
+		}
+		updateObject(o);
+	}
+	push_objects.clear();
+	
 	for(ObjectMap::iterator i = objects.begin(); i != objects.end(); ) {
 		Object *o = i->second;
 		assert(o != NULL);
@@ -1731,25 +1753,34 @@ void IWorld::teleport(Object *object, const v2<float> &position) {
 
 void IWorld::push(Object *parent, Object *object, const v2<float> &dpos) {
 	int object_id = object->getID();
-	
-	ObjectMap::iterator i = _objects.find(object_id);
-	if (i != _objects.end())
-		throw_ex(("object %d:%s:%s is already in a world", object->getID(), object->registered_name.c_str(), object->animation.c_str()));
+	{
+		ObjectMap::iterator j = push_objects.find(object_id);
+		if (j != push_objects.end())
+			throw_ex(("double push detected for %s pushing %s", parent->animation.c_str(), object->animation.c_str()));
+	}
 
-	_objects.insert(ObjectMap::value_type(object_id, object));
 	object->_position = parent->_position + dpos;
-	updateObject(object);
+	
+	pop_objects.erase(object_id);
+	push_objects.insert(ObjectMap::value_type(object_id, object));
 }
 
 Object * IWorld::pop(Object *object) {
-	int id = object->getID();
-	ObjectMap::iterator i = _objects.find(id);
-	if (i == _objects.end())
-		throw_ex(("object %d:%s:%s was not found", id, object->registered_name.c_str(), object->animation.c_str()));
+	int object_id = object->getID();
+	
+	Object *r;
+	ObjectMap::iterator j = push_objects.find(object_id);
+	if (j != push_objects.end()) {
+		r = j->second;
+		push_objects.erase(j);
+	} else {
+		j = _objects.find(object_id);
+		if (j == _objects.end())
+			throw_ex(("popping non-existent object %d %s", object_id, object->animation.c_str()));
+		r = j->second;
+	}
 
-	Object *o = i->second;
-	assert(o != NULL);
-	o->_dead = true;
-
-	return o->clone(); 
+	pop_objects.insert(object_id);
+	assert(r != NULL);
+	return r;
 }
