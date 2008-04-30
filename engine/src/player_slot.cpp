@@ -174,20 +174,14 @@ void PlayerSlot::tick(const float dt) {
 	if (!visible) 
 		return;
 
-	if (join_team != NULL) {
-		if (team == Team::None) {
-			join_team->tick(dt);
-		} else {
-			delete join_team;
-			join_team = NULL;
-		}
-	}
-
 	if (RTConfig->game_type == GameTypeCTF || RTConfig->game_type == GameTypeCTF) {
 		if (team == Team::None) {
 			if (join_team == NULL)
 				join_team = new JoinTeamControl;
-			
+			join_team->tick(dt);			
+		} else {
+			delete join_team;
+			join_team = NULL;		
 		}
 	}
 		
@@ -256,6 +250,9 @@ PlayerSlot::~PlayerSlot() {
 //#include "controls/external_control.h"
 
 void PlayerSlot::join(const Team::ID t) {
+	if (PlayerManager->isClient())  //do not assign teams on client side
+		return;
+	
 	team = t;
 	spectator = false;
 	delete join_team;
@@ -341,6 +338,7 @@ void PlayerSlot::spawnPlayer(const int slot_id, const std::string &classname_, c
 	
 	if ((RTConfig->game_type == GameTypeTeamDeathMatch || RTConfig->game_type == GameTypeCTF) && team == Team::None) {
 		if (control_method != NULL) {
+			LOG_DEBUG(("team mode on, do not respawn player %d before (s)he joins any team", slot_id));
 			id = 0; //hack hack hack! :)
 			spectator = true;
 			return;

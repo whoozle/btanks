@@ -989,7 +989,16 @@ LUA_TRY {
 
 
 static int lua_hooks_players_number(lua_State *L) {
-	lua_pushinteger(L, (int)PlayerManager->getSlotsCount());
+	int pn = (int)PlayerManager->getSlotsCount();
+	
+	int n = lua_gettop(L);
+	if (n >= 1) {
+		bool active = lua_toboolean(L, 1) != 0;
+		if (active)
+			pn -= PlayerManager->getFreeSlotsCount();
+	}
+	
+	lua_pushinteger(L, pn);
 	return 1;
 }
 

@@ -74,6 +74,8 @@ const int IPlayerManager::onConnect(Message &message) {
 		message.set("fog", "o'war");
 
 	mrt::Serializator s;
+	RTConfig->serialize(s);
+
 	Map->serialize(s);
 	
 	//s.add(client_id);
@@ -107,13 +109,15 @@ void IPlayerManager::onDisconnect(const int cid) {
 void IPlayerManager::onMessage(const int cid, const Message &message, const int timestamp) {
 TRY {
 	int now = SDL_GetTicks();
-	LOG_DEBUG(("incoming message %s, incoming timestamp: %d, my timestamp: %d, delta + ping: %+d", message.getType(), timestamp, now, timestamp - now));
+	//LOG_DEBUG(("incoming message %s, incoming timestamp: %d, my timestamp: %d, delta + ping: %+d", message.getType(), timestamp, now, timestamp - now));
 	switch(message.type) {
 	case Message::ServerStatus: {
 		LOG_DEBUG(("server version: %s", message.get("version").c_str()));
 		LOG_DEBUG(("loading map..."));
 		
 		mrt::Serializator s(&message.data);
+		RTConfig->deserialize(s);
+		
 		Map->deserialize(s);
 		GameMonitor->loadMap(NULL, Map->getName(), false, true);
 		
@@ -132,7 +136,6 @@ TRY {
 			slot.deserialize(s);
 			_players.push_back(slot);
 		}
-		
 		
 		for(size_t i = 0; i < _local_clients; ++i) {
 			Message m(Message::RequestPlayer);
@@ -322,7 +325,7 @@ TRY {
 		ObjectMap updated_objects, interpolated_objects;
 
 		float dt = (now + _net_stats.getDelta() - timestamp) / 1000.0f;
-		LOG_DEBUG(("update players, delta: %+d, dt: %g", _net_stats.getDelta(), dt));
+		//LOG_DEBUG(("update players, delta: %+d, dt: %g", _net_stats.getDelta(), dt));
 		if (dt < 0) 
 			dt = 0;
 
@@ -349,11 +352,11 @@ TRY {
 				LOG_WARN(("nothing known about object id %d now, skip update", id));
 				continue;
 			}
-
+/*
 			LOG_DEBUG(("id: %d, state: %s %s (my state: %s) %s", 
 				id, state.dump().c_str(), my_state?"[skipped]":"", o->getPlayerState().dump().c_str(), 
 				(my_state && state != o->getPlayerState())?"**DIFFERS**":""));
-
+*/
 			if (!my_state)
 				o->updatePlayerState(state); //update states for all players but me.
 

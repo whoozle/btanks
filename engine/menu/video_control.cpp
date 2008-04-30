@@ -65,7 +65,7 @@ base(base), name(name), mpeg(0), lock(SDL_CreateMutex()), active(false), started
 
 void VideoControl::activate(const bool a) {
 	active = a;
-	checkStatus();
+	//checkStatus();
 }
 
 void VideoControl::checkStatus() {
@@ -88,7 +88,7 @@ void VideoControl::checkStatus() {
 				SMPEG_loop(mpeg, 1);
 				started = true;
 			} else {
-				LOG_DEBUG(("calling SMPEG_pause"));
+				LOG_DEBUG(("calling SMPEG_pause: resuming"));
 				SMPEG_pause(mpeg);
 			}
 		}

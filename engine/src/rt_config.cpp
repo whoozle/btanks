@@ -28,9 +28,13 @@ void IRTConfig::serialize(mrt::Serializator &s) const {
 	s.add(teams);
 }
 
+#include "mrt/logger.h"
+
 void IRTConfig::deserialize(const mrt::Serializator &s) {
 	int t;
 	s.get(t);
+	LOG_DEBUG(("deserialized game type %d", t));
 	game_type = (GameType)t;
 	s.get(teams);
+	LOG_DEBUG(("deserialized teams %d", teams));
 }

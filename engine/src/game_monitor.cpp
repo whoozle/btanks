@@ -97,7 +97,7 @@ void GameItem::setup(const std::string &name, const std::string &subname) {
 	if (name == "save-for-victory")
 		save_for_victory = subname;
 
-	special |= destroy_for_victory | !save_for_victory.empty();
+	special |= destroy_for_victory;
 
 	size_t pos1 = name.find('(');
 	if (pos1 == name.npos) 

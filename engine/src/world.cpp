@@ -1149,11 +1149,6 @@ void IWorld::purge(const float dt) {
 }
 
 void IWorld::purge(ObjectMap &objects, const float dt) {
-	for(std::set<int>::const_iterator i = pop_objects.begin(); i != pop_objects.end(); ++i) {
-		const int object_id = *i;
-		objects.erase(object_id);
-	}
-	pop_objects.clear();
 
 	for(ObjectMap::iterator i = push_objects.begin(); i != push_objects.end(); ++i) {
 		const int object_id = i->first;
@@ -1171,6 +1166,18 @@ void IWorld::purge(ObjectMap &objects, const float dt) {
 		updateObject(o);
 	}
 	push_objects.clear();
+
+	for(std::set<int>::const_iterator i = pop_objects.begin(); i != pop_objects.end(); ++i) {
+		const int object_id = *i;
+		ObjectMap::iterator j = objects.find(object_id);
+		if (j != objects.end()) {
+			Object *o = j->second;
+			if (o->_dead && !o->animation.empty())
+				o->_dead = false;
+			objects.erase(j);
+		}
+	}
+	pop_objects.clear();
 	
 	for(ObjectMap::iterator i = objects.begin(); i != objects.end(); ) {
 		Object *o = i->second;
@@ -1310,7 +1317,6 @@ void IWorld::serialize(mrt::Serializator &s) const {
 
 	GET_CONFIG_VALUE("engine.speed", float, e_speed, 1.0f);
 	s.add(e_speed);
-	RTConfig->serialize(s);
 }
 
 void IWorld::sync(const int id) {
@@ -1457,7 +1463,6 @@ TRY {
 	float speed;
 	s.get(speed);
 	setSpeed(speed);
-	RTConfig->deserialize(s);
 } CATCH("World::deserialize()", throw;);
 	//LOG_DEBUG(("deserialization completed successfully"));
 }
@@ -1778,6 +1783,7 @@ Object * IWorld::pop(Object *object) {
 		if (j == _objects.end())
 			throw_ex(("popping non-existent object %d %s", object_id, object->animation.c_str()));
 		r = j->second;
+		r->_dead = true;
 	}
 
 	pop_objects.insert(object_id);
