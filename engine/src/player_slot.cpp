@@ -250,9 +250,6 @@ PlayerSlot::~PlayerSlot() {
 //#include "controls/external_control.h"
 
 void PlayerSlot::join(const Team::ID t) {
-	if (PlayerManager->isClient())  //do not assign teams on client side
-		return;
-	
 	team = t;
 	spectator = false;
 	delete join_team;
