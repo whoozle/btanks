@@ -60,7 +60,7 @@ IGameMonitor::IGameMonitor() : _game_over(false), _win(false), _check_items(0.5,
 	on_map_resize_slot.assign(this, &IGameMonitor::parseWaypoints, Map->map_resize_signal);
 	add_object_slot.assign(this, &IGameMonitor::addObject, World->on_object_add);
 	delete_object_slot.assign(this, &IGameMonitor::deleteObject, World->on_object_delete);	
-	delete_object_slot.assign(this, &IGameMonitor::deleteObject, World->on_object_broken);	
+	delete_object_slot.assign(this, &IGameMonitor::deleteObject, World->on_object_broke);	
 }
 
 void GameItem::respawn() {
