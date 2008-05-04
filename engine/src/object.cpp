@@ -1551,7 +1551,7 @@ const float Object::getStateProgress() const {
 #include "zbox.h"
 
 void Object::setZBox(const int zb) {
-	LOG_DEBUG(("%s::setZBox(%d)", registered_name.c_str(), zb));
+	//LOG_DEBUG(("%s::setZBox(%d)", registered_name.c_str(), zb));
 	int z = getZ();
 	z -= ZBox::getBoxBase(z); //removing current box
 	z += ZBox::getBoxBase(zb);
