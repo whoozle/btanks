@@ -890,8 +890,10 @@
 		</area>
 
 		<area id="suicide">
-			<string id="_leg">$1 shoot himself in a leg!</string>
-			<string id="_leg" lang="ru">$1 прострелил себе ногу и умер</string>
+			<string id="_1">$1 shoot himself in a leg!</string>
+			<string id="_1" lang="ru">$1 прострелил себе ногу и умер</string>
+			<string id="_2">$1 said farewell to this cruel existence and killed himself</string>
+			<string id="_2" lang="ru">$1 попрощался с этим жестоким миром и убил себя</string>
 			
 			<string id="mine1">$1 heedlessly stepped on its own mine!</string>
 			<string id="mine1" lang="ru">$1 наступил на собственную мину</string>
