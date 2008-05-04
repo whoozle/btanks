@@ -43,7 +43,7 @@ void Chat::layout() {
 		if (line.nick.empty())
 			continue;
 
-		int w = line.font->render(NULL, 0, 0, nick);
+		int w = line.font->render(NULL, 0, 0, line.nick);
 		if (w > nick_w)
 			nick_w = w;
 		yp += line.font->getHeight();
