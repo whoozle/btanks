@@ -253,6 +253,9 @@ void Object::tick(const float dt) {
 		if (pose->need_notify) {
 			emit(event.name);
 		}
+		if (event.name == "broken") {
+			World->on_object_broke.emit(this);
+		}
 	}
 	
 	_pos += dt * pose->speed;
