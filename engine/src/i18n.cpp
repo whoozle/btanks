@@ -82,6 +82,15 @@ const bool II18n::has(const std::string &_area, const std::string &id) const {
 	return false;
 }
 
+const std::string& get(const std::string &id) const {
+	if (id.empty())
+		throw_ex(("I18n->get(/empty-id/) is not allowed"));
+
+	Strings::const_iterator i = _strings.find(id);
+	if (i == _strings.end())
+		throw_ex(("message with id %s could not be found. (raw get)", id.c_str()));
+	return i->second;
+}
 
 const std::string& II18n::get(const std::string &_area, const std::string &id) const {
 	if (id.empty())

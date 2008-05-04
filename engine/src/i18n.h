@@ -45,6 +45,7 @@ public:
 	
 	void enumerateKeys(std::deque<std::string> &keys, const std::string &area) const;
 	void getSupportedLanguages(std::set<std::string> & result) const { result = _langs; }
+	const std::string& get(const std::string &id) const; //raw get, use only for enumerated keys
 	
 private: 
 	void load(const std::string &file, const std::string &language);
