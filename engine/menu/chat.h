@@ -37,7 +37,8 @@ private:
 	};
 	typedef std::deque<Line> Text;
 	Text text;
-	size_t nick_w, lines;
+	int nick_w;
+	size_t lines;
 	std::string last_message;
 };
 
