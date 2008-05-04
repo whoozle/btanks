@@ -47,8 +47,6 @@ II18n::II18n() {
 
 void II18n::enumerateKeys(std::deque<std::string> &keys, const std::string &area) const {
 	std::string base = area;
-	if (!base.empty() && base[base.size() - 1] != '/')
-		base += '/';
 
 	keys.clear();
 	
