@@ -44,12 +44,26 @@ void Chat::layout() {
 	setBase(_input, xp, yp);
 }
 
+void Chat::addAction(const std::string &m) {
+	std::string n = "*";
+	Line line(n, m, _font[0]);
+	text.push_back(line);
+	
+	if (text.size() > lines)
+		text.erase(text.begin());
+	
+	size_t nw = line.font->render(NULL, 0, 0, n);
+	if (nw > nick_w)
+		nick_w = nw;
+	layout();
+}
+
+
 
 void Chat::addMessage(const PlayerSlot &slot, const std::string &m) {
-	//LOG_DEBUG(("addMessage('%s', '%s')", nick.c_str(), m.c_str()));
 	const std::string n = "<" + slot.name + ">";
 	int idx = (int)slot.team + 1;
-	assert(idx < 5);
+	assert(idx >= 0 && idx < 5);
 
 	Line line(n, m, _font[idx]);
 	text.push_back(line);

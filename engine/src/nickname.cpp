@@ -8,9 +8,9 @@
 const std::string Nickname::generate() {
 	std::deque<std::string> prefixes, suffixes, roots;
 	
-	I18n->enumerateKeys(prefixes, "names/prefixes");
-	I18n->enumerateKeys(roots, "names/roots");
-	I18n->enumerateKeys(suffixes, "names/suffixes");
+	I18n->enumerateKeys(prefixes, "names/prefixes/");
+	I18n->enumerateKeys(roots, "names/roots/");
+	I18n->enumerateKeys(suffixes, "names/suffixes/");
 	if (prefixes.empty() || roots.empty() || suffixes.empty())
 		throw_ex(("nick generation requires proper setup in names/ area of strings.xml"));
 	

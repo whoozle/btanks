@@ -56,6 +56,7 @@ public:
 						if (emitter->has("#ctf-flag")) {
 							Object *flag = emitter->drop("#ctf-flag");
 							++slot->frags;
+							PlayerManager->action(*slot, "ctf");
 							const Object *base = World->getObjectByID(flag->getSummoner());
 							if (base != NULL) {
 								setZBox(base->getZ());

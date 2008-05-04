@@ -105,6 +105,7 @@ public:
 	//for special zones
 	void send(const PlayerSlot &slot, const Message & msg);
 	void say(const std::string &message);
+	void action(const PlayerSlot &slot, const std::string &type, const std::string &subtype = std::string(), const PlayerSlot * killer_slot = NULL);
 	
 	void broadcastMessage(const std::string &area, const std::string &message, const float duration);
 	void sendHint(const int slot_id, const std::string &area, const std::string &message);

@@ -1234,10 +1234,11 @@ void IPlayerManager::onPlayerDeath(const Object *player, const Object *killer) {
 		_client != NULL || 
 		killer->getSlot() < 0 || 
 		killer->getSlot() >= (int)_players.size() || 
-		GameMonitor->gameOver() ||
-		RTConfig->game_type == GameTypeCTF)
+		GameMonitor->gameOver())
 		return;
-		
+
+	bool add_frags = RTConfig->game_type != GameTypeCTF;
+	
 	//LOG_DEBUG(("handler %s %s", player->animation.c_str(), killer->animation.c_str()));
 
 	if (RTConfig->game_type != GameTypeCooperative) { //skip this check in coop mode
@@ -1255,10 +1256,13 @@ void IPlayerManager::onPlayerDeath(const Object *player, const Object *killer) {
 	LOG_DEBUG(("object %s killed by %s", player->animation.c_str(), killer->animation.c_str()));
 		
 	if (slot.id == player->getID()) { //suicide
-		if (slot.frags > 0)
+		action(slot, "suicide", killer->classname);
+		if (add_frags && slot.frags > 0)
 			--(slot.frags);
 	} else {
-		++(slot.frags);
+		action(slot, killer->classname);
+		if (add_frags)
+			++slot.frags;
 	}
 }
 
@@ -1359,6 +1363,49 @@ void IPlayerManager::sendHint(const int slot_id, const std::string &area, const 
 	m.set("hint", "1");
 	send(slot, m);
 }
+
+#include "i18n.h"
+
+void IPlayerManager::action(const PlayerSlot &slot, const std::string &type, const std::string &subtype, const PlayerSlot *killer_slot) {
+	if (_client != NULL)
+		return;
+		
+	//insults :)
+	std::queue<std::string> bases;
+	if (!subtype.empty())
+		bases.push("multiplayer/" + type + "/" + subtype);
+	bases.push("multiplayer/" + type + "/_");
+	if (!subtype.empty())
+		bases.push("multiplayer/generic/" + subtype);
+	bases.push("multiplayer/generic/_");
+
+	std::deque<std::string> keys;
+	std::string base;
+
+	while(keys.empty() && !bases.empty()) {
+		base = bases.front();
+		LOG_DEBUG(("enumerating %s", base.c_str()));
+		I18n->enumerateKeys(keys, base); //plus single key
+		bases.pop();
+	}
+
+	if (keys.empty())
+		return; //sorry, no results - no insults. 
+
+	int idx = mrt::random(keys.size());
+	const std::string& key = keys[idx];
+	//LOG_DEBUG(("key = %s", key.c_str()));
+	std::string message = I18n->get(base + key);
+	mrt::replace(message, "$1", slot.name);
+	if (killer_slot != NULL) 
+		mrt::replace(message, "$2", killer_slot->name);
+
+	Game->getChat()->addAction(message);
+
+	if (_server == NULL) //do not send anything if not server
+		return; 
+}
+
 
 void IPlayerManager::say(const std::string &message) {
 TRY {
