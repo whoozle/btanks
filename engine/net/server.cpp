@@ -122,7 +122,7 @@ void Server::tick(const float dt) {
 
 void Server::send(const int id, const Message &m) {
 	TRY {
-		LOG_DEBUG(("sending message '%s' to %d", m.getType(), id));
+		//LOG_DEBUG(("sending message '%s' to %d", m.getType(), id));
 		mrt::Chunk data;
 		m.serialize2(data);
 		_monitor->send(id, data, m.realtime());
