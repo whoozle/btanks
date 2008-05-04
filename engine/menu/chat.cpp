@@ -48,7 +48,10 @@ void Chat::layout() {
 void Chat::addMessage(const PlayerSlot &slot, const std::string &m) {
 	//LOG_DEBUG(("addMessage('%s', '%s')", nick.c_str(), m.c_str()));
 	const std::string n = "<" + slot.name + ">";
-	Line line(n, m, _font[0]);
+	int idx = (int)slot.team + 1;
+	assert(idx < 5);
+
+	Line line(n, m, _font[idx]);
 	text.push_back(line);
 	
 	if (text.size() > lines)
