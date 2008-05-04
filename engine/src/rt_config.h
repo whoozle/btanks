@@ -35,7 +35,7 @@ public:
 	DECLARE_SINGLETON(IRTConfig);
 	IRTConfig();
 	
-	bool server_mode;
+	bool server_mode, editor_mode;
 	GameType game_type;
 	int teams; //for team games, usually 2 for CTF
 

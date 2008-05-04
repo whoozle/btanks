@@ -426,7 +426,7 @@ void IResourceManager::clear() {
 
 	_am = NULL;
 	
-	if (Map->soloAwareMode())
+	if (RTConfig->editor_mode)
 		return;
 	
 	std::map<const std::string, std::string> xml_data;

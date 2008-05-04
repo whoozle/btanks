@@ -48,7 +48,7 @@
 IMPLEMENT_SINGLETON(Map, IMap);
 
 IMap::IMap() : _w(0), _h(0), _tw(0), _th(0), _ptw(0), _pth(0), _firstgid(0), _split(0), 
-	_generator(new MapGenerator), _solo_aware(false) , _torus(false) 
+	_generator(new MapGenerator), _torus(false) 
 {
 	_lastz = -1001;
 	_image = NULL;
@@ -511,7 +511,7 @@ void IMap::generateMatrixes() {
 	_cover_map.setSize(_h, _w, -10000);
 	_cover_map.useDefault(-10000);
 	
-	if (!_solo_aware) {
+	if (!RTConfig->editor_mode) {
 	unsigned int ot = 0;
 	for(LayerMap::iterator l = _layers.begin(); l != _layers.end(); ++l) {
 		if (!l->second->velocity.is0() || !l->second->visible)
@@ -764,7 +764,7 @@ void IMap::end(const std::string &name) {
 			}
 		}
 		Layer *layer = NULL;
-		if (!_solo_aware) {
+		if (!RTConfig->editor_mode) {
 		
 		if (!_properties["visible-if-damaged"].empty()) {
 			layer = new DestructableLayer(true);
@@ -782,7 +782,7 @@ void IMap::end(const std::string &name) {
 			_damage4[_layer_name] = damage;
 		}
 
-		} //_solo_aware
+		} //editor
 		
 		LOG_DEBUG(("layer '%s'. %dx%d. z: %d, size: %u, impassability: %d", e.attrs["name"].c_str(), w, h, z, (unsigned)_data.getSize(), impassability));
 		if (_layers.find(z) != _layers.end())
@@ -790,7 +790,7 @@ void IMap::end(const std::string &name) {
 		if(layer == NULL)
 			layer = new Layer;
 			
-		if (_solo_aware) {
+		if (RTConfig->editor_mode) {
 			int visible = (!e.attrs["visible"].empty())?atoi(e.attrs["visible"].c_str()):-1;
 			LOG_DEBUG(("visible = %d", visible));
 			if (visible == 0)
@@ -841,7 +841,7 @@ void IMap::end(const std::string &name) {
 			{delete layer; layer = NULL; throw; }
 		);
 		
-		if (!_solo_aware) 
+		if (!RTConfig->editor_mode) 
 		for(PropertyMap::iterator i = _properties.begin(); i != _properties.end(); ++i) {
 			if (i->first.compare(0, 10, "generator:") == 0) {		
 				TRY {
@@ -912,7 +912,7 @@ void IMap::charData(const std::string &d) {
 
 const bool IMap::hasSoloLayers() const {
 	bool solo_layer = false;
-	if (_solo_aware) {
+	if (RTConfig->editor_mode) {
 		for(LayerMap::const_iterator l = _layers.begin(); l != _layers.end(); ++l) 
 			if (l->second->solo) {
 				solo_layer = true;
@@ -1384,10 +1384,6 @@ Layer* IMap::getLayer(const int z) {
 	if (i == _layers.end())
 		throw_ex(("getLayer(%d) could not find layer with given z", z));
 	return i->second;
-}
-
-void IMap::setSoloAwareMode(const bool value) {
-	_solo_aware = value;
 }
 
 const IMap::TileDescriptor & IMap::getTile(const size_t idx) const {

@@ -715,7 +715,7 @@ void IGameMonitor::loadMap(Campaign *campaign, const std::string &name, const bo
 
 	std::string script = Finder->find("maps/" + name + ".lua", false);
 
-	if (!skip_loadmap && !script.empty() && !Map->soloAwareMode()) {
+	if (!skip_loadmap && !script.empty() && !RTConfig->editor_mode) {
 #	ifdef ENABLE_LUA	
 		TRY {
 			if (lua_hooks) {
@@ -804,7 +804,7 @@ void IGameMonitor::loadMap(Campaign *campaign, const std::string &name, const bo
 				item.setup(res[3], res[4]);
 				item.dir = dir;
 				
-				if (RTConfig->game_type == GameTypeCTF || classname.compare(0, 4, "ctf-") != 0)
+				if (RTConfig->editor_mode || (RTConfig->game_type == GameTypeCTF || classname.compare(0, 4, "ctf-") != 0))
 					add(item, true);
 			} else if (type == "config") {
 				if (res.size() < 2)

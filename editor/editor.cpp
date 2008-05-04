@@ -18,6 +18,7 @@
 #include "var.h"
 #include "config.h"
 #include "hud.h"
+#include "rt_config.h"
 
 #include "tmx/layer.h"
 #include "tmx/map.h"
@@ -387,7 +388,7 @@ void Editor::init(int argc, char *argv[]) {
 	add((window_size.w - cw) / 2, (window_size.h - ch) / 2, c);
 	c->hide();
 	
-	Map->setSoloAwareMode();
+	RTConfig->editor_mode = true;
 	
 	_small_font = ResourceManager->loadFont("small", true);
 	

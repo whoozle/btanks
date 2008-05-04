@@ -117,9 +117,6 @@ public:
 	inline const std::string &getPath() const { return _path; }
 	inline const std::string &getName() const { return _name; }
 
-	void setSoloAwareMode(const bool value = true);
-	const bool soloAwareMode() const { return _solo_aware; }
-	
 	void generateXML(std::string &result) const;
 	
 	void addLayer(const int after_z, const std::string &name);
@@ -302,7 +299,6 @@ private:
 	TilesetList _tilesets;
 	std::string _name, _path;
 	
-	bool _solo_aware;
 	bool _torus;
 	
 	typedef std::map<const int, int> CorrectionMap;
