@@ -1589,6 +1589,7 @@ TRY {
 	if (_out_of_sync != -1) {
 		PlayerManager->requestObjects(_out_of_sync);
 	}
+	purge(_objects, 0);
 } CATCH("applyUpdate", throw;)
 }
 
