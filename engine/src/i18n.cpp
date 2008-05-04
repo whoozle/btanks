@@ -82,7 +82,7 @@ const bool II18n::has(const std::string &_area, const std::string &id) const {
 	return false;
 }
 
-const std::string& get(const std::string &id) const {
+const std::string& II18n::get(const std::string &id) const {
 	if (id.empty())
 		throw_ex(("I18n->get(/empty-id/) is not allowed"));
 
