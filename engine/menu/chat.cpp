@@ -52,7 +52,7 @@ void Chat::layout() {
 }
 
 void Chat::addAction(const std::string &m) {
-	Line line(std::string(), m, _font[0]);
+	Line line(std::string(), "*" + m, _font[0]);
 	text.push_back(line);
 	
 	if (text.size() > lines)
