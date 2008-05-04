@@ -882,6 +882,11 @@
 			<string id="mine">$1 step on its own mine!</string>
 			<string id="mine" lang="ru">$1 наступил на собственную мину</string>
 		</area>
+
+		<area id="ctf">
+			<string id="_1">$1 won another point!</string>
+			<string id="_1" lang="ru">$1 выйграл ещё одно очко для своей команды!</string>
+		</area>
 		
 	</area>
 	
