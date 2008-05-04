@@ -580,9 +580,6 @@ bool IGame::onKey(const SDL_keysym key, const bool pressed) {
 			if (slot == NULL)
 				return true;
 		
-			if (slot->frags > 0 && RTConfig->game_type != GameTypeCTF) 
-				--slot->frags;
-
 			Object *o = slot->getObject();
 			if (o)
 				o->emit("death", o);
@@ -865,7 +862,7 @@ void IGame::resetLoadingBar(const int total) {
 		return;
 	
 	std::deque<std::string> keys;
-	I18n->enumerateKeys(keys, "tips");
+	I18n->enumerateKeys(keys, "tips/");
 	LOG_DEBUG(("%u tips found...", (unsigned)keys.size()));
 
 	if (keys.empty())
