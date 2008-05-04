@@ -1252,8 +1252,9 @@ void IPlayerManager::onPlayerDeath(const Object *player, const Object *killer) {
 	
 	//LOG_DEBUG(("handler %s %s", player->animation.c_str(), killer->animation.c_str()));
 
+	PlayerSlot *player_slot = NULL;
 	if (RTConfig->game_type != GameTypeCooperative) { //skip this check in coop mode
-		PlayerSlot *player_slot = getSlotByID(player->getID());
+		player_slot = getSlotByID(player->getID());
 		if (player_slot == NULL)
 			return;
 	} else {
@@ -1271,7 +1272,9 @@ void IPlayerManager::onPlayerDeath(const Object *player, const Object *killer) {
 		if (add_frags && slot.frags > 0)
 			--(slot.frags);
 	} else {
-		action(slot, killer->classname);
+		if (player_slot != NULL)
+			action(*player_slot, killer->classname, std::string(), &slot);
+		
 		if (add_frags)
 			++slot.frags;
 	}
