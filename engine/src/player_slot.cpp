@@ -337,7 +337,7 @@ void PlayerSlot::spawnPlayer(const int slot_id, const std::string &classname_, c
 	animation = animation_;
 	
 	if ((RTConfig->game_type == GameTypeTeamDeathMatch || RTConfig->game_type == GameTypeCTF) && team == Team::None) {
-		if (control_method != NULL) {
+		if (control_method != NULL || remote >= 0) {
 			LOG_DEBUG(("team mode on, do not respawn player %d before (s)he joins any team", slot_id));
 			id = 0; //hack hack hack! :)
 			spectator = true;

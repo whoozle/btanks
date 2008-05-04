@@ -707,6 +707,7 @@ TRY {
 				Team::ID old_team = slot.team;
 				slot.updateState(slot.old_state, dt);
 				if (_client != NULL && slot.team != old_team && slot.remote >= 0) {
+					LOG_DEBUG(("sending JoinTeam request"));
 					Message m(Message::JoinTeam);
 					m.channel = i;
 					mrt::Serializator s;
