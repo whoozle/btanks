@@ -530,18 +530,29 @@ TRY {
 		break;
 	}
 	case Message::PlayerMessage: {
-		int id = message.channel;
-		if (id < 0 || (unsigned)id >= _players.size())
-			throw_ex(("player id exceeds players count (%d/%d)", id, (int)_players.size()));
-
-		PlayerSlot &slot = _players[id];
-
 		if (_client) {
-			Game->getChat()->addMessage(slot, message.get("text"));
+			if (message.has("nick")) {
+				const std::string name = message.get("nick");
+				int n = PlayerManager->getSlotsCount();
+				for(int i = 0; i < n; ++i) {
+					PlayerSlot & slot = PlayerManager->getSlot(i);
+					if (slot.name == name) {
+						Game->getChat()->addMessage(slot, message.get("text"));
+						break;
+					}
+				}
+			} else {
+				Game->getChat()->addAction(message.get("text"));
+			}
 			break;
 		} 
 	
 		if (_server) {
+			int id = message.channel;
+			if (id < 0 || (unsigned)id >= _players.size())
+				throw_ex(("player id exceeds players count (%d/%d)", id, (int)_players.size()));
+
+			PlayerSlot &slot = _players[id];
 			if (slot.remote != cid)
 				throw_ex(("client in connection %d sent wrong channel id %d", cid, id));
 	
@@ -1404,6 +1415,10 @@ void IPlayerManager::action(const PlayerSlot &slot, const std::string &type, con
 
 	if (_server == NULL) //do not send anything if not server
 		return; 
+
+	Message m(Message::PlayerMessage);
+	m.set("text", message);
+	broadcast(m, true);
 }
 
 
@@ -1427,6 +1442,7 @@ TRY {
 			throw_ex(("cannot get my slot."));
 		
 		Game->getChat()->addMessage(*my_slot, message);
+		m.set("nick", my_slot->name);
 		broadcast(m, true);
 	}
 	if (_client) {
