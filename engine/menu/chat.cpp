@@ -5,7 +5,8 @@
 #include "player_slot.h"
 #include "team.h"
 
-Chat::Chat(const size_t lines) :nick_w(0), lines(lines) {
+Chat::Chat() :nick_w(0), lines(10) {
+	//GET_CONFIG_VALUE("multiplayer.chat.lines-number", int, lines, 6);
 	_font[0] = ResourceManager->loadFont("small", true);
 	for(int t = 0; t < 4; ++t)
 		_font[t + 1] = ResourceManager->loadFont(mrt::formatString("small_%s", Team::get_color((Team::ID)t)), true);
@@ -97,3 +98,20 @@ bool Chat::onKey(const SDL_keysym sym) {
 	return true;
 }
 
+void Chat::tick(const float dt) {
+	Container::tick(dt);
+
+	bool do_layout = false;
+	float max = 3;
+	for(std::deque<Line>::iterator i = text.begin(); i != text.end();) {
+		i->t += dt;
+		if (i->t >= max) {
+			i = text.erase(i);
+			do_layout = true;
+		} else {
+			++i;
+		}
+	}
+	if (do_layout)
+		layout();
+}

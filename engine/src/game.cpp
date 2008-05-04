@@ -457,8 +457,7 @@ if (!RTConfig->server_mode) {
 	}
 	
 	if (!RTConfig->server_mode) {
-		GET_CONFIG_VALUE("multiplayer.chat.lines-number", int, lines, 6);
-		_net_talk = new Chat(lines);
+		_net_talk = new Chat();
 		_net_talk->hide();
 
 		if (_autojoin) {
@@ -752,7 +751,7 @@ void IGame::onTick(const float dt) {
 				_hud->renderStats(window);
 			}
 
-			if (!_net_talk->hidden()) {
+			if (_net_talk != NULL) {
 				_net_talk->tick(dt);
 				
 			}

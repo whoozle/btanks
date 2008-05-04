@@ -14,13 +14,16 @@ class PlayerSlot;
 
 class Chat : public Container {
 public:
-	Chat(const size_t lines);
+	Chat();
 	virtual void render(sdlx::Surface &surface, const int x, const int y) const;
 	virtual bool onKey(const SDL_keysym sym);
+	void tick(const float dt);
+	const std::string get() const { return last_message; }
+
 	void addMessage(const PlayerSlot &slot, const std::string &text);
 	void addAction(const std::string &text);
-	const std::string get() const { return last_message; }
 	void clear();
+	
 	
 private: 
 	void layout();
@@ -28,12 +31,13 @@ private:
 	const sdlx::Font *_font[5];
 	TextControl *_input;
 	struct Line {
-		Line() : font(NULL) {}
+		Line() : font(NULL), t(0) {}
 		Line(const std::string &nick, const std::string &message, const sdlx::Font *font): 
-			nick(nick), message(message), font(font) {}
+			nick(nick), message(message), font(font), t(0) {}
 		
 		std::string nick, message;
 		const sdlx::Font *font;
+		float t;
 	};
 	typedef std::deque<Line> Text;
 	Text text;
