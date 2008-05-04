@@ -1277,7 +1277,7 @@ void IPlayerManager::onPlayerDeath(const Object *player, const Object *killer) {
 			--(slot.frags);
 	} else {
 		if (player_slot != NULL)
-			action(*player_slot, killer->classname, std::string(), &slot);
+			action(slot, killer->classname, std::string(), player_slot);
 		
 		if (add_frags)
 			++slot.frags;
