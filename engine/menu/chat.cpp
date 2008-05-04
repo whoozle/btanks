@@ -37,24 +37,27 @@ void Chat::render(sdlx::Surface &surface, const int x, const int y) const {
 void Chat::layout() {
 	int xp = 4;
 	int yp = 0;
+	nick_w = 0;
 	for(Text::const_iterator i = text.begin(); i != text.end(); ++i) {
 		const Line &line = *i;
+		if (line.nick.empty())
+			continue;
+
+		int w = line.font->render(NULL, 0, 0, nick);
+		if (w > nick_w)
+			nick_w = w;
 		yp += line.font->getHeight();
 	}
 	setBase(_input, xp, yp);
 }
 
 void Chat::addAction(const std::string &m) {
-	std::string n = "*";
-	Line line(n, m, _font[0]);
+	Line line(std::string(), m, _font[0]);
 	text.push_back(line);
 	
 	if (text.size() > lines)
 		text.erase(text.begin());
 	
-	size_t nw = line.font->render(NULL, 0, 0, n);
-	if (nw > nick_w)
-		nick_w = nw;
 	layout();
 }
 
@@ -71,9 +74,6 @@ void Chat::addMessage(const PlayerSlot &slot, const std::string &m) {
 	if (text.size() > lines)
 		text.erase(text.begin());
 	
-	size_t nw = line.font->render(NULL, 0, 0, n);
-	if (nw > nick_w)
-		nick_w = nw;
 	layout();
 }
 
