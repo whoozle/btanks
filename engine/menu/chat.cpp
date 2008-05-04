@@ -27,8 +27,12 @@ void Chat::render(sdlx::Surface &surface, const int x, const int y) const {
 	int ybase = 0;
 	for(Text::const_iterator i = text.begin(); i != text.end(); ++i) {
 		const Line &line = *i;
-		line.font->render(surface, x + 4, y + ybase, line.nick);
-		line.font->render(surface, x + 4 + nick_w, y + ybase, line.message);
+		if (!line.nick.empty()) {
+			line.font->render(surface, x + 4, y + ybase, line.nick);
+			line.font->render(surface, x + 4 + nick_w, y + ybase, line.message);
+		} else {
+			line.font->render(surface, x + 4, y + ybase, line.message);
+		}
 		ybase += line.font->getHeight();
 	}
 	if (!hidden())
@@ -41,12 +45,11 @@ void Chat::layout() {
 	nick_w = 0;
 	for(Text::const_iterator i = text.begin(); i != text.end(); ++i) {
 		const Line &line = *i;
-		if (line.nick.empty())
-			continue;
-
-		int w = line.font->render(NULL, 0, 0, line.nick);
-		if (w > nick_w)
-			nick_w = w;
+		if (!line.nick.empty()) { 
+			int w = line.font->render(NULL, 0, 0, line.nick);
+			if (w > nick_w)
+				nick_w = w;
+		}
 		yp += line.font->getHeight();
 	}
 	setBase(_input, xp, yp);
