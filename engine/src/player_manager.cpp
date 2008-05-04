@@ -1276,8 +1276,10 @@ void IPlayerManager::onPlayerDeath(const Object *player, const Object *killer) {
 		if (add_frags && slot.frags > 0)
 			--(slot.frags);
 	} else {
-		if (player_slot != NULL)
-			action(slot, killer->classname, std::string(), player_slot);
+		if (player_slot != NULL) {
+			std::string type = player->isEffectActive("telefrag")?std::string("telefrag"): killer->classname;
+			action(slot, type, std::string(), player_slot);
+		}
 		
 		if (add_frags)
 			++slot.frags;
