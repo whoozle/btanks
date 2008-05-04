@@ -52,6 +52,7 @@ public:
 	
 	sl08::signal1<void, const Object *> on_object_add;
 	sl08::signal1<void, const Object *> on_object_update;
+	sl08::signal1<void, const Object *> on_object_broke;
 	sl08::signal1<void, const Object *> on_object_delete;
 	sl08::signal2<void, const Object *, const Object *> on_object_death; //death emitted after collision handler
 
