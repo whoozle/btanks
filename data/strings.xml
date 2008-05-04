@@ -851,6 +851,17 @@
 	</area>
 
 	<area id="multiplayer">
+		<area id="network">
+			<string id="join1">$1 joined the game</string>
+			<string id="join1" lang="ru">К нам пришёл $1</string>
+
+			<string id="join2">$1 connected.</string>
+			<string id="join2" lang="ru">$1 подключился к игре</string>
+			
+			<string id="leave">$1 left the game</string>
+			<string id="leave" lang="ru">$1 отключился</string>
+		</area>
+		
 		<area id="telefrag">
 			<string id="_1">$1 telefragged $2</string>
 			<string id="_1" lang="ru">$1 телефрагнул $2</string>
