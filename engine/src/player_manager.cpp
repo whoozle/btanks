@@ -706,7 +706,7 @@ TRY {
 				bool old_fire = slot.old_state.fire != 0;
 				Team::ID old_team = slot.team;
 				slot.updateState(slot.old_state, dt);
-				if (_client != NULL && slot.team != old_team && slot.remote >= 0) {
+				if (_client != NULL && slot.team != old_team) {
 					LOG_DEBUG(("sending JoinTeam request"));
 					Message m(Message::JoinTeam);
 					m.channel = i;
