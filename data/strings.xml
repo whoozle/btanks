@@ -865,6 +865,9 @@
 
 			<string id="_2">$1 torn $2 down</string>
 			<string id="_2" lang="ru">$1 порвал как грелку $2</string>
+			
+			<string id="mine">$1 triggered its own mine</string>
+			<string id="mine" lang="ru">$1 подорвался на мине</string>
 		</area>
 
 		<area id="missile">
@@ -879,8 +882,11 @@
 			<string id="_leg">$1 shoot himself in a leg!</string>
 			<string id="_leg" lang="ru">$1 прострелил себе ногу и умер</string>
 			
-			<string id="mine">$1 step on its own mine!</string>
-			<string id="mine" lang="ru">$1 наступил на собственную мину</string>
+			<string id="mine1">$1 heedlessly stepped on its own mine!</string>
+			<string id="mine1" lang="ru">$1 наступил на собственную мину</string>
+
+			<string id="mine2">$1 triggered its own mine!</string>
+			<string id="mine2" lang="ru">$1 взорвал себя на собственной мине</string>
 		</area>
 
 		<area id="ctf">
