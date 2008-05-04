@@ -10,22 +10,32 @@ namespace sdlx {
 }
 
 class TextControl;
+class PlayerSlot;
 
 class Chat : public Container {
 public:
 	Chat(const size_t lines);
 	virtual void render(sdlx::Surface &surface, const int x, const int y) const;
 	virtual bool onKey(const SDL_keysym sym);
-	void addMessage(const std::string &nick, const std::string &text);
+	void addMessage(const PlayerSlot &slot, const std::string &text);
 	const std::string get() const { return last_message; }
 	void clear();
 	
 private: 
 	void layout();
 	
-	const sdlx::Font *_font;
+	const sdlx::Font *_font[5];
 	TextControl *_input;
-	std::deque<std::pair<std::string, std::string> > text;
+	struct Line {
+		Line() : font(NULL) {}
+		Line(const std::string &nick, const std::string &message, const sdlx::Font *font): 
+			nick(nick), message(message), font(font) {}
+		
+		std::string nick, message;
+		const sdlx::Font *font;
+	};
+	typedef std::deque<Line> Text;
+	Text text;
 	size_t nick_w, lines;
 	std::string last_message;
 };

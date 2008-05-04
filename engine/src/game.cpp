@@ -771,7 +771,7 @@ void IGame::onTick(const float dt) {
 flip:
 		float fr = Window->getFrameRate();
 		if (_show_fps) {
-			_fps->hp = floor(fr);
+			_fps->hp = (int)floor(fr);
 			_fps->render(window, window.getWidth() - (int)(_fps->size.x * 3), window.getHeight() - (int)_fps->size.y);
 		}
 		if (_show_log_lines) {
