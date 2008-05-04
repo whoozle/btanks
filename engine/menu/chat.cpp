@@ -105,7 +105,7 @@ void Chat::tick(const float dt) {
 	Container::tick(dt);
 
 	bool do_layout = false;
-	float max = 3;
+	float max = 5;
 	for(std::deque<Line>::iterator i = text.begin(); i != text.end();) {
 		i->t += dt;
 		if (i->t >= max) {
