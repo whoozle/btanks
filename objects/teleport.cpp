@@ -71,7 +71,7 @@ void Teleport::tick(const float dt) {
 		v2<int> pos, tpos;
 		getCenterPosition(pos);
 		o->getCenterPosition(tpos);
-		if (pos.quick_distance(tpos) >= size.x * size.y) {
+		if (pos.quick_distance(tpos) >= size.x * size.y / 2) { //~1.5 sizes
 			LOG_DEBUG(("dropped target %d", track));
 			track = 0;
 			invalidate();
