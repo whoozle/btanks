@@ -95,7 +95,9 @@ void IPlayerManager::onDisconnect(const int cid) {
 		PlayerSlot &slot = _players[i];
 		if (slot.remote != cid)
 			continue;
-		
+
+		action(slot, "network", "leave");
+
 		Object *obj = slot.getObject();
 		if (obj)
 			obj->Object::emit("death", NULL);
@@ -178,6 +180,8 @@ TRY {
 		m.channel = id;
 		s.finalize(m.data);
 		_server->send(cid, m);
+		
+		action(slot, "network", "join");
 
 		Window->resetTimer();
 		break;
