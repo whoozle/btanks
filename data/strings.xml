@@ -515,7 +515,6 @@
 		</area>
 	</area>
 	
-
 	<area id="maps/descriptions">
 		<string id="arena">Battle Tanks Arena: check your Battle Tanks skill. Kill all opponents to win. (NEW!)</string>
 		<string id="arena" lang="ru">Танковая Арена: проверь своё умение убивать. (Новая карта!)</string>
@@ -591,7 +590,6 @@
 		<string id="(default)" lang="it">Spiacente, nessuna descrizione per questa mappa. :(</string>
 	</area>         
 
-
 	<area id="hints">
 		<string id="be-careful">Shhh... Be careful!</string>
 		<string id="be-careful" lang="ru">Тише! Тут надо быть осторожным</string>
@@ -664,13 +662,11 @@
 		</area> 
 	</area>
 
-
 	<area id="editor">
 		<string id="new-map">New map</string>
 		<string id="new-map" lang="de">Neue Karte</string>
 		<string id="new-map" lang="ru">Новая карта</string>
 	</area>
-
 
 	<area id="messages">
 		<string id="restart-game">Restart game to see changes.</string>
@@ -729,7 +725,6 @@
 		<string id="go" lang="ru">В АТАКУ!!!</string>
 	</area>
 
-
 	<area id="errors">
 		<string id="connection-failed">Connection failed.</string>
 		<string id="connection-failed" lang="ru">Ошибка соединения.</string>
@@ -747,10 +742,7 @@
 		<string id="script-error" lang="ru">Ошибка в скрипте.</string>
 	</area>         
 
-
 	<area id="tips">
-		<!-- <string id="score">Noticed score at upper right corner ? 
-			It has important role in campaigns. Check our site for details.</string> -->
 		<string id="minimap">You can show/hide minimap with the 'M' key.</string>
 		<string id="minimap" lang="ru">Вы можете прятать карту при помощи кнопки &lt;M&gt;.</string>
 		<string id="minimap" lang="fr">Vous pouvez afficher/masquer la minicarte avec la touche 'M'.</string>
@@ -857,5 +849,40 @@
 		<string id="buggy">Buggy can kill helicopters with its alternative fire</string>
 		<string id="buggy" lang="ru">Багги может убивать вертолёты при помощи автоматической зенитной пушки. Зажмите кнопку альтернативного огня и ищите удобную позицию. </string>
 	</area>
-</strings>    
-                      
+
+	<area id="multiplayer">
+		<area id="telefrag">
+			<string id="_1">$1 telefragged $2</string>
+			<string id="_1" lang="ru">$1 телефрагнул $2</string>
+			
+			<string id="_2">$1 split $2 into atoms</string>
+			<string id="_2" lang="ru">$1 распылил $2 на атомы</string>
+		</area>
+		
+		<area id="generic">
+			<string id="_1" lang="ru">$1 fried $2</string>
+			<string id="_1" lang="ru">$1 разнёс в клочья $2</string>
+
+			<string id="_2">$1 torn $2 down</string>
+			<string id="_2" lang="ru">$1 порвал как грелку $2</string>
+		</area>
+
+		<area id="missile">
+			<string id="_1">$1 ate $2's missile</string>
+			<string id="_1" lang="ru">$1 съел ракету $2</string>
+			
+			<string id="_2">$1 swallowed $2 missile</string>
+			<string id="_2" lang="ru">$1 проглотил ракету $2</string>
+		</area>
+
+		<area id="suicide">
+			<string id="_leg">$1 shoot himself in a leg!</string>
+			<string id="_leg" lang="ru">$1 прострелил себе ногу и умер</string>
+			
+			<string id="mine">$1 step on its own mine!</string>
+			<string id="mine" lang="ru">$1 наступил на собственную мину</string>
+		</area>
+		
+	</area>
+	
+</strings>
