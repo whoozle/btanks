@@ -1331,7 +1331,6 @@ Object * IWorld::deserializeObject(const mrt::Serializator &s) {
 	TRY {
 		s.get(id);
 		s.get(rn);
-		
 		{
 			ObjectMap::iterator i = _objects.find(id);
 			if (i != _objects.end()) {
@@ -1474,10 +1473,10 @@ void IWorld::generateUpdate(mrt::Serializator &s, const bool clean_sync_flag, co
 		Object *o = i->second;
 		assert(o != NULL);
 
-		if (first_id != -1 && o->_id < first_id) 
-			continue;
-		
-		if (first_id == -1 && o->speed == 0 && !o->_need_sync) { //only regular update + leg disabled object.
+		if (
+			(first_id != -1 && o->_id < first_id) ||
+			(first_id == -1 && o->speed == 0 && !o->_need_sync)
+		) { //only regular update + leg disabled object.
 			skipped_objects.insert(o->_id);
 			continue; 
 		}
