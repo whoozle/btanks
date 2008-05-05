@@ -432,7 +432,7 @@ void PlayerSlot::spawnPlayer(const int slot_id, const std::string &classname_, c
 	id = obj->getID();
 
 	GET_CONFIG_VALUE("engine.spawn-invulnerability-duration", float, sid, 3);
-	obj->addEffect("invulnerability", sid);
+	obj->add_effect("invulnerability", sid);
 
 	switch(game_type) {
 		case GameTypeDeathMatch: 

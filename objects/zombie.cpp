@@ -99,7 +99,7 @@ void BaseZombie::emit(const std::string &event, Object * emitter) {
 			GET_CONFIG_VALUE("objects.zombie.damage", int, kd, 15);
 		
 			if (emitter && emitter->classname != "explosion") 
-				emitter->addDamage(this, kd);
+				emitter->add_damage(this, kd);
 			
 			return;
 		}

@@ -655,14 +655,14 @@ TRY {
 		
 		o.updatePlayerState(state);
 		o.Object::calculate(dt);
-	} else if (o.isEffectActive("drifting")) {
+	} else if (o.has_effect("drifting")) {
 		//drifting
 		drifting = true;
 		//LOG_DEBUG(("drifting! %s", o.animation.c_str()));
 		GET_CONFIG_VALUE("engine.drifting-duration", float, dd, 0.1);
 	//	GET_CONFIG_VALUE("engine.drifting-rotation", float, dr, 0.03);
 
-		float t = o.getEffectTimer("drifting");
+		float t = o.get_effect_timer("drifting");
 		//LOG_DEBUG(("%g", t));
 		if (t == dd) {
 			TRY { 
@@ -681,7 +681,7 @@ TRY {
 		GET_CONFIG_VALUE("engine.enable-profiler", bool, ep, false);
 		TRY { 
 			PlayerState old_state = o.getPlayerState();
-			if (o.isEffectActive("obey")) {
+			if (o.has_effect("obey")) {
 				//LOG_DEBUG(("obey!!!"));
 				if (o.isDriven()) {
 					o.calculateWayVelocity();
@@ -731,8 +731,8 @@ TRY {
 	} 
 		
 	TRY { 
-		bool tap = o.isEffectActive("tap");
-		bool cork = o.isEffectActive("cork");
+		bool tap = o.has_effect("tap");
+		bool cork = o.has_effect("cork");
 		PlayerState state_backup = o.getPlayerState();
 		if (tap) 
 			o._state.fire = false;
@@ -790,11 +790,11 @@ TRY {
 	float obj_speed = o.speed;
 	
 	{
-		const bool speedup = o.isEffectActive("speedup");
-		const bool slowdown = o.isEffectActive("slowdown");
+		const bool speedup = o.has_effect("speedup");
+		const bool slowdown = o.has_effect("slowdown");
 		if (speedup && slowdown) {
-			o.removeEffect("speedup");
-			o.removeEffect("slowdown");
+			o.remove_effect("speedup");
+			o.remove_effect("slowdown");
 		} else if (speedup) {
 			GET_CONFIG_VALUE("objects.speedup-item.speedup-factor", float, su, 1.5f);
 			obj_speed *= su;
@@ -1757,7 +1757,7 @@ void IWorld::onMapResize(int left, int right, int up, int down) {
 void IWorld::teleport(Object *object, const v2<float> &position) {
 	object->_position = position - object->size / 2;
 	updateObject(object);
-	object->addEffect("teleportation", 1);
+	object->add_effect("teleportation", 1);
 }
 
 void IWorld::push(Object *parent, Object *object, const v2<float> &dpos) {

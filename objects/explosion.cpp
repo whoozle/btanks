@@ -153,7 +153,7 @@ void Explosion::emit(const std::string &event, Object * emitter) {
 				}
 			}
 		} else {
-			emitter->addDamage(this, max_hp);
+			emitter->add_damage(this, max_hp);
 		}
 		
 		_damaged_objects.insert(id);

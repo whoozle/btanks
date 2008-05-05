@@ -83,15 +83,15 @@ public:
 	}
 	const float getStateProgress() const;
 	//effects
-	void addEffect(const std::string &name, const float ttl = -1);
-	inline const bool isEffectActive(const std::string &name) const {
+	void add_effect(const std::string &name, const float ttl = -1);
+	inline const bool has_effect(const std::string &name) const {
 		return _effects.find(name) != _effects.end();
 	}
-	const float getEffectTimer(const std::string &name) const;
-	void removeEffect(const std::string &name);
+	const float get_effect_timer(const std::string &name) const;
+	void remove_effect(const std::string &name);
 	
-	virtual void addDamage(Object *from, const int hp, const bool emitDeath = true);
-	void addDamage(Object *from, const bool emitDeath = true);
+	virtual void add_damage(Object *from, const int hp, const bool emitDeath = true);
+	void add_damage(Object *from, const bool emitDeath = true);
 
 	virtual void emit(const std::string &event, Object * emitter = NULL);
 	virtual void serialize(mrt::Serializator &s) const;

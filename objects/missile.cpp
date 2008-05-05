@@ -135,7 +135,7 @@ void Missile::emit(const std::string &event, Object * emitter) {
 			if (type == "stun") {
 				GET_CONFIG_VALUE("objects.stun-missile.stun-duration", float, sd, 5);
 				if (emitter != NULL)
-					emitter->addEffect("stunned", sd);
+					emitter->add_effect("stunned", sd);
 			}
 			if (emitter->classname == "smoke-cloud" && type != "smoke")
 				return;

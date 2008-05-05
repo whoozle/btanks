@@ -175,7 +175,7 @@ void Bullet::emit(const std::string &event, Object * emitter) {
 			
 			float sd;
 			Config->get("objects." + registered_name + ".stun-duration", sd, 3.0f);
-			emitter->addEffect("stunned", sd);
+			emitter->add_effect("stunned", sd);
 		} else if (_type == "dirt") {
 			spawn("dirt", "dirt", dpos);
 		} else if (_type == "cannon") {

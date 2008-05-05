@@ -499,12 +499,12 @@ void Hud::render(sdlx::Surface &window) const {
 			
 			//LOG_DEBUG(("%s %s", ic->first.c_str(), name.c_str()));
 			
-			if (obj->isEffectActive(name)) {
+			if (obj->has_effect(name)) {
 				sdlx::Rect src(icon_w * ic->second, 0, icon_w, icon_h);
 				window.copyFrom(*_icons, src, xp, yp);
 				xp += icon_w;
 			
-				float effect_rt = obj->getEffectTimer(name);
+				float effect_rt = obj->get_effect_timer(name);
 				int rm;
 				if (effect_rt < 10) {
 					rm = (int)(10 * effect_rt);

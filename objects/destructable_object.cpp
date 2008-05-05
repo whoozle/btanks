@@ -77,11 +77,11 @@ void DestructableObject::destroy() {
 }
 
 
-void DestructableObject::addDamage(Object *from, const int dhp, const bool emitDeath) {
+void DestructableObject::add_damage(Object *from, const int dhp, const bool emitDeath) {
 	if (_broken)
 		return;
 
-	Object::addDamage(from, dhp, false);
+	Object::add_damage(from, dhp, false);
 	if (hp <= 0) {
 		destroy();
 	}

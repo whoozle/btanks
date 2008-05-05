@@ -25,7 +25,7 @@ public:
 	TrafficLights() : Object("traffic-lights"), _idx(0), _broken(false) {}
 	virtual void tick(const float dt);
 	virtual Object * clone() const;
-	virtual void addDamage(Object *from, const int hp, const bool emitDeath = true);
+	virtual void add_damage(Object *from, const int hp, const bool emitDeath = true);
 	virtual void onSpawn();
 
 	virtual void serialize(mrt::Serializator &s) const {
@@ -49,11 +49,11 @@ void TrafficLights::onSpawn() {
 	play("red");
 }
 
-void TrafficLights::addDamage(Object *from, const int dhp, const bool emitDeath) {
+void TrafficLights::add_damage(Object *from, const int dhp, const bool emitDeath) {
 	if (_broken)
 		return;
 
-	Object::addDamage(from, dhp, false);
+	Object::add_damage(from, dhp, false);
 	if (hp <= 0) {
 		_broken = true;
 		cancelAll();

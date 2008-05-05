@@ -78,16 +78,16 @@ const bool Tank::take(const BaseObject *obj, const std::string &type) {
 		float def = 10;
 		if (type == "dispersion") {
 			def = -1;
-			removeEffect("dirt");
-			removeEffect("ricochet");
+			remove_effect("dirt");
+			remove_effect("ricochet");
 		} else if (type == "ricochet") {
 			def = 60;
-			removeEffect("dirt");
-			removeEffect("dispersion");
+			remove_effect("dirt");
+			remove_effect("dispersion");
 		}
 		float d;
 		Config->get("objects.tank." + type + ".duration", d, def);
-		addEffect(type, d);
+		add_effect(type, d);
 		return true;
 	}
 	if (get("mod")->take(obj, type))
@@ -137,11 +137,11 @@ void Tank::tick(const float dt) {
 		//v.normalize();
 		std::string bullet("tank-bullet");
 		std::string var;
-		if (isEffectActive("dirt")) {
+		if (has_effect("dirt")) {
 			bullet = "dirt-bullet";
-		} else if (isEffectActive("dispersion")) {
+		} else if (has_effect("dispersion")) {
 			bullet = "dispersion-bullet";
-		} else if (isEffectActive("ricochet")) {
+		} else if (has_effect("ricochet")) {
 			bullet = "ricochet-bullet";
 			var = "(auto-aim)";
 		}

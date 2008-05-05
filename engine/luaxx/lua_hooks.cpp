@@ -760,7 +760,7 @@ LUA_TRY {
 	float duration = lua_tonumber(L, 3);
 	LOG_DEBUG(("adding effect %s for %g seconds", effect, duration));
 	
-	o->addEffect(effect, duration);
+	o->add_effect(effect, duration);
 	return 0;	
 } LUA_CATCH("add_effect")	
 }
@@ -785,7 +785,7 @@ LUA_TRY {
 	if (effect == NULL)
 		throw_ex(("effect name could not be converted to string"));
 	
-	o->removeEffect(effect);
+	o->remove_effect(effect);
 	return 0;	
 } LUA_CATCH("remove_effect")	
 }

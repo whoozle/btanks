@@ -346,7 +346,7 @@ void IGameMonitor::gameOver(const std::string &area, const std::string &message,
 			PlayerSlot &slot = PlayerManager->getSlot(i);
 			Object *o = slot.getObject();
 			if (o != NULL) {
-				o->addEffect("invulnerability", -1);
+				o->add_effect("invulnerability", -1);
 			}
 		}
 	}

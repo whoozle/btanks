@@ -68,7 +68,7 @@ void OldSchoolDestructableObject::addDamage(Object *from, const int dhp, const b
 	if (_hops <= 0)
 		return;
 
-	Object::addDamage(from, dhp, false);
+	Object::add_damage(from, dhp, false);
 	if (hp <= 0 && _explosions == 0) {
 		Config->get("objects." + registered_name + ".explosions", _explosions, 16);		
 		hp = -1;

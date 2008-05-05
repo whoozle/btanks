@@ -101,7 +101,7 @@ void Mine::emit(const std::string &event, Object * emitter) {
 			
 			spawn(nuke?"nuke-explosion":"explosion", nuke?"nuke-explosion":"explosion");
 			Object::emit("death", emitter);
-			emitter->addDamage(this, max_hp);
+			emitter->add_damage(this, max_hp);
 		} 
 	} else Object::emit(event, emitter);
 }

@@ -398,7 +398,7 @@ const bool Object::getRenderRect(sdlx::Rect &src) const {
 }
 
 const bool Object::skipRendering() const {
-	if (!isEffectActive("invulnerability") || getEffectTimer("invulnerability") == -1)
+	if (!has_effect("invulnerability") || get_effect_timer("invulnerability") == -1)
 		return false;
 	return _blinking.get() >= 0.5;
 }
@@ -412,7 +412,7 @@ void Object::render(sdlx::Surface &surface, const int x_, const int y_) {
 		return;
 		
 	int x = x_, y = y_;
-	if (isEffectActive("teleportation")) {
+	if (has_effect("teleportation")) {
 		int dx = (int)(_blinking.get() * 50) % 3;
 		int dy = (int)(_blinking.get() * 50 + 7) % 3;
 		if (dx != 1) {
@@ -571,7 +571,7 @@ void Object::serializeAll(mrt::Serializator &s) const {
 void Object::setSync(const bool sync) {
 	_need_sync = sync;
 	for(Group::iterator i = _group.begin(); i != _group.end(); ++i) {
-		i->second->_need_sync = sync;
+		i->second->setSync(sync);
 	}
 }
 
@@ -662,7 +662,7 @@ void Object::emit(const std::string &event, Object * emitter) {
 		}
 	} else if (event == "collision") {
 		if (piercing && emitter != NULL)
-			emitter->addDamage(this);
+			emitter->add_damage(this);
 	} else 
 		LOG_WARN(("%s[%d]: unhandled event '%s'", registered_name.c_str(), _id, event.c_str()));
 }
@@ -976,19 +976,19 @@ void Object::groupEmit(const std::string &name, const std::string &event) {
 }
 
 //effects
-void Object::addEffect(const std::string &name, const float ttl) {
+void Object::add_effect(const std::string &name, const float ttl) {
 	_effects[name] = ttl;
 	_need_sync = true;
 }
 
-const float Object::getEffectTimer(const std::string &name) const {
+const float Object::get_effect_timer(const std::string &name) const {
 	EffectMap::const_iterator i = _effects.find(name);
 	if (i == _effects.end())
 		throw_ex(("getEffectTimer: object does not have effect '%s'", name.c_str()));
 	return i->second;
 }
 
-void Object::removeEffect(const std::string &name) {
+void Object::remove_effect(const std::string &name) {
 	_effects.erase(name);
 	_need_sync = true;
 }
@@ -1107,7 +1107,7 @@ const int Object::getTargetPosition(v2<float> &relative_position, const std::set
 		dir.fromDirection(d, dirs);
 		for(std::set<const Object *>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
 			const Object *o = *i;
-			if (hasSameOwner(o) || o->aiDisabled() || o->impassability == 0 || o->isEffectActive("invulnerability"))
+			if (hasSameOwner(o) || o->aiDisabled() || o->impassability == 0 || o->has_effect("invulnerability"))
 				continue;
 			
 			v2<float> pos, tp = getRelativePosition(o);
@@ -1453,20 +1453,18 @@ const std::string Object::getNearestWaypoint(const std::string &name) const {
 	return GameMonitor->getNearestWaypoint(this, name);
 }
 
-void Object::addDamage(Object *from, const bool emitDeath) {
+void Object::add_damage(Object *from, const bool emitDeath) {
 	if (from == NULL || !from->piercing)
 		return;
 	if (hasSameOwner(from)) //friendly fire
 		return;
-	addDamage(from, from->max_hp, emitDeath);
+	add_damage(from, from->max_hp, emitDeath);
 }
 
 #include "player_slot.h"
 
-void Object::addDamage(Object *from, const int d, const bool emitDeath) {
-	if (hp < 0 || d == 0 || from == NULL)
-		return;
-	if (isEffectActive("invulnerability"))
+void Object::add_damage(Object *from, const int d, const bool emitDeath) {
+	if (hp < 0 || d == 0 || from == NULL || has_effect("invulnerability"))
 		return;
 	
 	int damage = d;
@@ -1584,7 +1582,7 @@ const bool Object::take(const BaseObject *obj, const std::string &type) {
 		if (type == "invulnerability" || type == "speedup") {
 			float d;
 			Config->get("objects." + registered_name + "." + type + "-duration", d, 10.0f);
-			addEffect(type, d);
+			add_effect(type, d);
 			return true;
 		} else if (type == "slowdown") {
 			float d;
@@ -1595,7 +1593,7 @@ const bool Object::take(const BaseObject *obj, const std::string &type) {
 				PlayerSlot &slot = PlayerManager->getSlot(i);
 				Object *o = slot.getObject();
 				if (o != NULL && o->getID() != getID()) 
-					o->addEffect(type, d);
+					o->add_effect(type, d);
 			}
 			return true;
 		}
@@ -1646,15 +1644,16 @@ const bool Object::attachVehicle(Object *vehicle) {
 
 const bool Object::detachVehicle() {
 	PlayerSlot * slot = PlayerManager->getSlotByID(getID());
-	if (slot == NULL || classname == "monster" ||
+	if (
+		slot == NULL || 
+		classname == "monster" ||
 		(disable_ai && 
 			(registered_name == "machinegunner" || registered_name == "civilian")
-	   )) 
-	   	return false;
-		
-	if (isEffectActive("cage")) 
+		) || 
+		has_effect("cage")
+	) 
 		return false;
-
+		
 	LOG_DEBUG(("leaving vehicle..."));
 	
 	_velocity.clear();

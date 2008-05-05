@@ -65,7 +65,7 @@ void Cow::onIdle(const float dt) {
 
 
 void Cow::calculate(const float dt) {
-	if (_reaction.tick(dt) && !isEffectActive("panic"))
+	if (_reaction.tick(dt) && !has_effect("panic"))
 		onIdle(dt);
 
 	GET_CONFIG_VALUE("objects.cow.rotation-time", float, rt, 0.2);
@@ -111,7 +111,7 @@ void Cow::emit(const std::string &event, Object * emitter) {
 		setDirection(dir);
 		_velocity.fromDirection(dir, dirs);
 		_direction = _velocity;
-		addEffect("panic", 3.0f);
+		add_effect("panic", 3.0f);
 	}
 	Object::emit(event, emitter);
 }

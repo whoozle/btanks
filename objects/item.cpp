@@ -38,7 +38,7 @@ void Item::onSpawn() {
 	play("main", true);
 }
 
-void Item::addDamage(Object *from, const int hp, const bool emitDeath) {
+void Item::add_damage(Object *from, const int hp, const bool emitDeath) {
 	return;
 }
 

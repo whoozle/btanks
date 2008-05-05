@@ -43,7 +43,7 @@ public:
 		if (emitter != NULL && _variants.has("do-damage") && event == "collision" && emitter->classname != "corpse") {
 			if (getState() == "burn" || getState() == "fade-out") {
 				if (hp > 0)
-					emitter->addDamage(this, emitter->hp);
+					emitter->add_damage(this, emitter->hp);
 			}
 		}
 		Object::emit(event, emitter);

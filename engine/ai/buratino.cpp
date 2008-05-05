@@ -384,7 +384,7 @@ const Object * Buratino::findTarget(const Object *src, const std::set<std::strin
 		if (o->impassability == 0 || o->_id == src->_id ||
 			!ZBox::sameBox(src->getZ(), o->getZ()) || 
 			o->hasSameOwner(src) || 
-			o->isEffectActive("invulnerability") || 
+			o->has_effect("invulnerability") || 
 			skip_objects.find(o->getID()) != skip_objects.end()
 			)
 			continue;
@@ -408,7 +408,7 @@ const Object * Buratino::findTarget(const Object *src, const std::set<std::strin
 		}
 		if (!o->getType().empty()) 
 			mod_type += ":" + o->getType();
-		if (o->isEffectActive("invulnerability"))
+		if (o->has_effect("invulnerability"))
 			continue;
 		
 		if (o->classname == "missiles" || o->classname == "mines") {

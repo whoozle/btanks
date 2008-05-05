@@ -121,7 +121,7 @@ void Teleport::emit(const std::string &event, Object * emitter) {
 			PlayerSlot *slot = PlayerManager->getSlotByID(dst->track);
 			Object *o;
 			if (slot != NULL && (o = slot->getObject()) != NULL) {
-				o->addEffect("telefrag", -1);
+				o->add_effect("telefrag", -1);
 				o->emit("death", emitter);
 			}
 		}

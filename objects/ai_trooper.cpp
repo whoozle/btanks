@@ -126,7 +126,7 @@ Object* AITrooper::clone() const  {
 void AITrooper::calculate(const float dt) {
 	//calculateWayVelocity();
 	//LOG_DEBUG(("calculate"));
-	if (_target_dir != -1 && isEffectActive("panic")) {
+	if (_target_dir != -1 && has_effect("panic")) {
 		//LOG_DEBUG(("panic: %d", _target_dir));
 		_velocity.fromDirection(_target_dir, getDirectionsNumber());
 	

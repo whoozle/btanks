@@ -25,7 +25,7 @@ public:
 	virtual Object * clone() const;
 	virtual void tick(const float dt);
 	virtual void onSpawn();
-	virtual void addDamage(Object *from, const int hp, const bool emitDeath = true);
+	virtual void add_damage(Object *from, const int hp, const bool emitDeath = true);
 	virtual void onBreak();
 
 	virtual void serialize(mrt::Serializator &s) const;

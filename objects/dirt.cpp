@@ -39,8 +39,8 @@ void Dirt::onSpawn() {
 void Dirt::emit(const std::string &event, Object * emitter) {
 	if (emitter != NULL && emitter->speed != 0 && event == "collision") {
 		GET_CONFIG_VALUE("engine.drifting-duration", float, dd, 0.1);
-		if (!emitter->isEffectActive("drifting"))
-			emitter->addEffect("drifting", dd);
+		if (!emitter->has_effect("drifting"))
+			emitter->add_effect("drifting", dd);
 	} else Object::emit(event, emitter);
 }
 

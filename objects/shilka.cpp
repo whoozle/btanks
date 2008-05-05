@@ -123,10 +123,10 @@ void Shilka::tick(const float dt) {
 		static const std::string right_fire = "shilka-bullet-right";
 		std::string animation = "shilka-bullet-";
 		animation += (_left_fire)?"left":"right";
-		if (isEffectActive("ricochet")) {
+		if (has_effect("ricochet")) {
 			spawn("ricochet-bullet(auto-aim)", "ricochet-bullet", v2<float>(), _direction);
 			play_fire = true;
-		} else if (isEffectActive("dispersion")) {
+		} else if (has_effect("dispersion")) {
 			if (special_fire_possible) {
 				_special_fire.reset();
 				spawn("dispersion-bullet", "dispersion-bullet", v2<float>(), _direction);
@@ -148,7 +148,7 @@ skip_left_toggle:
 		FakeMod * mod = getMod("mod");
 		std::string mod_type = mod->getType();
 		
-		if (isEffectActive("dirt")) {
+		if (has_effect("dirt")) {
 			if (getState().substr(0,4) == "fire") 
 				cancel();
 		
@@ -196,17 +196,17 @@ const bool Shilka::take(const BaseObject *obj, const std::string &type) {
 	
 	if (obj->classname == "effects") {
 		if (type == "dispersion") {
-			removeEffect("ricochet");
+			remove_effect("ricochet");
 		} else if (type == "ricochet") {
-			removeEffect("dispersion");
+			remove_effect("dispersion");
 		} else if (type == "dirt") {
 			getMod("mod")->setType(std::string());
 		}
-		addEffect(type);
+		add_effect(type);
 		return true;
 	} else if (obj->classname =="mod") {
 		if (type == "machinegunner" || type == "thrower") {
-			removeEffect("dirt");
+			remove_effect("dirt");
 			FakeMod *mod = getMod("mod");
 
 			int n;
@@ -219,7 +219,7 @@ const bool Shilka::take(const BaseObject *obj, const std::string &type) {
 			return true;
 		}
 	} else if (obj->classname == "mines") {
-		removeEffect("dirt");
+		remove_effect("dirt");
 		FakeMod *mod = getMod("mod");
 		int n;
 		Config->get("objects.shilka." + type + "-" + obj->classname + "-capacity", n, 7);
@@ -231,7 +231,7 @@ const bool Shilka::take(const BaseObject *obj, const std::string &type) {
 		mod->setCount(n);
 		return true;		
 	} else if (obj->classname == "missiles" && type == "nuke") {
-		removeEffect("dirt");
+		remove_effect("dirt");
 		FakeMod *mod = getMod("mod");
 		mod->setType("mines:nuke");
 		int n;

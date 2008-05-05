@@ -87,8 +87,8 @@ void Car::emit(const std::string &event, Object * emitter) {
 			//no items.
 			if (item == NULL) {
 				GET_CONFIG_VALUE("objects.car.damage", int, d, 5);
-				emitter->addDamage(this, d);
-				emitter->addEffect("stunned", 0.1f);
+				emitter->add_damage(this, d);
+				emitter->add_effect("stunned", 0.1f);
 				emit("death", emitter);
 			}
 		}
