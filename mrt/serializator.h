@@ -36,28 +36,28 @@ class DLLEXPORT Serializator {
 public:
 	Serializator();
 	Serializator(const mrt::Chunk *chunk);
-	~Serializator();
+	virtual ~Serializator();
 	
-	void add(const int n);
-	void add(const unsigned int n);
-	void add(const float f);
-	void add(const std::string &str);
-	void add(const bool b);
-	void add(const Chunk &c);
+	virtual void add(const int n);
+	virtual void add(const unsigned int n);
+	virtual void add(const float f);
+	virtual void add(const std::string &str);
+	virtual void add(const bool b);
+	virtual void add(const Chunk &c);
 
-	const bool end() const;
+	virtual const bool end() const;
 	
-	void get(int &n) const;
-	void get(unsigned int &n) const;
-	void get(float &f) const;
-	void get(std::string &str) const;
-	void get(bool &b) const;
-	void get(Chunk &c) const;
+	virtual void get(int &n) const;
+	virtual void get(unsigned int &n) const;
+	virtual void get(float &f) const;
+	virtual void get(std::string &str) const;
+	virtual void get(bool &b) const;
+	virtual void get(Chunk &c) const;
 	
-	const Chunk & getData() const;
-	void finalize(mrt::Chunk &data); //destroys serializator, but have no overhead on copy. for serialize2 method
+	virtual const Chunk & getData() const;
+	virtual void finalize(mrt::Chunk &data); //destroys serializator, but have no overhead on copy. for serialize2 method
 
-	void add(const void *raw, const int size); //same as add(chunk)
+	virtual void add(const void *raw, const int size); //same as add(chunk)
 
 	//add/get for std containers
 	
