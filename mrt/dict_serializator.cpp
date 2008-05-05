@@ -27,6 +27,7 @@ DictionarySerializator::DictionarySerializator() : Serializator(), next_id(0) {}
 DictionarySerializator::DictionarySerializator(const mrt::Chunk *chunk) : Serializator(chunk), next_id(0) {
 	unsigned n;
 	Serializator::get(n);
+	LOG_DEBUG(("dictionary:  %u items", n));
 	std::string str;
 	int id;
 	while(n--) {
@@ -63,7 +64,7 @@ const Chunk & DictionarySerializator::getData() const {
 }
 
 void DictionarySerializator::finalize(mrt::Chunk &data) {
-	LOG_DEBUG(("finalize: %u items in dictionary", (unsigned)data.getSize()));
+	LOG_DEBUG(("finalize: %u items in dictionary", (unsigned)dict.size()));
 
 	mrt::Serializator s;
 	s.add(dict);
