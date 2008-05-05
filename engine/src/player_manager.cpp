@@ -44,6 +44,7 @@
 #include "tmx/map.h"
 
 #include "mrt/random.h"
+#include "mrt/dict_serializator.h"
 
 #include "math/unary.h"
 #include "math/binary.h"
@@ -176,7 +177,7 @@ TRY {
 		
 		slot.spawnPlayer(id, vehicle, animation);
 
-		mrt::Serializator s;
+		mrt::DictionarySerializator s;
 		World->serialize(s);
 		serializeSlots(s);
 		
@@ -218,7 +219,7 @@ TRY {
 			slot.createControlMethod(control_method);
 		} else throw_ex(("cannot handle %u clients", (unsigned)_local_clients));
 		
-		mrt::Serializator s(&message.data);
+		mrt::DictionarySerializator s(&message.data);
 		World->deserialize(s);
 		deserializeSlots(s);
 
@@ -228,7 +229,7 @@ TRY {
 	}
 	
 	case Message::UpdateWorld: {
-		mrt::Serializator s(&message.data);
+		mrt::DictionarySerializator s(&message.data);
 		deserializeSlots(s);
 		float dt = (now + _net_stats.getDelta() - timestamp) / 1000.0f;
 		LOG_DEBUG(("update world, delta: %+d, dt: %g", _net_stats.getDelta(), dt));
@@ -245,7 +246,7 @@ TRY {
 			md.get(first_id);
 		}
 
-		mrt::Serializator s;
+		mrt::DictionarySerializator s;
 		serializeSlots(s);
 		World->generateUpdate(s, false, first_id);
 		GameMonitor->serialize(s);
@@ -488,7 +489,7 @@ TRY {
 		//PlayerSlot &slot = _players[id];
 		//if (slot.remote != cid) //client side, no need for this check
 		//	throw_ex(("client in connection %d sent wrong channel id %d", cid, id));
-		mrt::Serializator s(&message.data);
+		mrt::DictionarySerializator s(&message.data);
 		deserializeSlots(s);
 
 		float dt = (now + _net_stats.getDelta() - timestamp) / 1000.0f;
@@ -702,7 +703,7 @@ TRY {
 		if (isServer() && slot.remote != -1) {
 			Message m(Message::Respawn);
 			m.channel = i;
-			mrt::Serializator s;
+			mrt::DictionarySerializator s;
 			serializeSlots(s);
 			World->generateUpdate(s, false);
 			
@@ -1056,7 +1057,7 @@ TRY {
 		if (_next_sync.tick(dt) && isServerActive()) {
 			Message m(Message::UpdateWorld);
 			{
-				mrt::Serializator s;
+				mrt::DictionarySerializator s;
 				serializeSlots(s);
 				World->generateUpdate(s, true);
 				GameMonitor->serialize(s);
