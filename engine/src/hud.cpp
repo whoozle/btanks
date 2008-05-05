@@ -579,6 +579,7 @@ void Hud::renderSplash(sdlx::Surface &window) const {
 	window.copyFrom(*_splash, spx, spy);
 }
 
+#include "i18n.h"
 
 const bool Hud::renderLoadingBar(sdlx::Surface &window, const float old_progress, const float progress, const char * what, const bool render_splash) const {
 	assert(old_progress >= 0 && old_progress <= 1.0);
@@ -612,8 +613,12 @@ const bool Hud::renderLoadingBar(sdlx::Surface &window, const float old_progress
 		window.copyFrom(*_loading_item, border + x + i * _loading_item->getWidth(), y + border);
 	}
 
-	if (what != NULL)
-		LOG_DEBUG(("status: %s", what));
+	if (what != NULL) {
+		std::string status = what;
+		if (I18n->has("loading", status)) {
+			_small_font->render(window, x + 2 * border, y + (_loading_border->getHeight() - _small_font->getHeight()) / 2, I18n->get("loading", status));
+		} else LOG_WARN(("unknown loading status message: '%s'", what));
+	};
 /*	w -= n * _loading_item.getWidth();
 	sdlx::Rect src(0, 0, w, _loading_item.getHeight());
 	window.copyFrom(_loading_item, src, border + x + i * _loading_item.getWidth(), y + border);
@@ -650,6 +655,7 @@ Hud::Hud(const int w, const int h) :  _pointer(NULL), _pointer_dir(-1), _update_
 	
 	_font = ResourceManager->loadFont("medium", true);
 	_big_font = ResourceManager->loadFont("big", true);
+	_small_font = ResourceManager->loadFont("small", true);
 	
 	LOG_DEBUG(("searching splash... %dx%d", w, h));
 	int sw = 0;

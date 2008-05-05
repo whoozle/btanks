@@ -922,5 +922,7 @@
 		<string id="layer" lang="ru">загрузка слоёв карты...</string>
 		<string id="tileset">loading tilesets...</string>
 		<string id="tileset" lang="ru">загрузка тайлсетов...</string>
+		<string id="menu">creating menu...</string>
+		<string id="menu" lang="ru">создание меню...</string>
 	</area>
 </strings>

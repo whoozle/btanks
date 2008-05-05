@@ -67,7 +67,7 @@ private:
 
 	const sdlx::Surface *_background, *_loading_border, *_loading_item, *_splash, *_splitter, *_screen_splitter, *_icons;
 	sdlx::Surface _radar_bg, _radar;
-	const sdlx::Font *_font, *_big_font;
+	const sdlx::Font *_font, *_big_font, *_small_font;
 	const sdlx::Surface *_pointer;
 	mutable int _pointer_dir;
 	Alarm _update_radar;

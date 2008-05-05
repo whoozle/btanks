@@ -409,6 +409,7 @@ const sdlx::CollisionMap *IResourceManager::getCollisionMap(const std::string &i
 
 void IResourceManager::init(const std::vector<std::pair<std::string, std::string> > &fname) {
 	parseFiles(fname);
+	status = "menu"; //small hack. menu takes some time to setup and load. 
 }
 
 #include "mrt/file.h"
