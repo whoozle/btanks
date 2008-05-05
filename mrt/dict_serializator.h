@@ -28,10 +28,10 @@ public:
 	DictionarySerializator(const mrt::Chunk *chunk);
 	~DictionarySerializator();
 	
-	void add(const std::string &str);
-	void get(std::string &str) const;
+	virtual void add(const std::string &str);
+	virtual void get(std::string &str) const;
 
-	void finalize(mrt::Chunk &data); //destroys serializator, but have no overhead on copy. for serialize2 method
+	virtual void finalize(mrt::Chunk &data); //destroys serializator, but have no overhead on copy. for serialize2 method
 
 private:
 	DictionarySerializator(const DictionarySerializator &s);
