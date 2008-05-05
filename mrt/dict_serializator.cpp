@@ -25,6 +25,10 @@ using namespace mrt;
 DictionarySerializator::DictionarySerializator() : Serializator(), next_id(0) {}
 
 DictionarySerializator::DictionarySerializator(const mrt::Chunk *chunk) : Serializator(chunk), next_id(0) {
+	read_dict();
+}
+
+DictionarySerializator::read_dict() {
 	unsigned n;
 	Serializator::get(n);
 	LOG_DEBUG(("dictionary:  %u items", n));

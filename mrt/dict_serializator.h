@@ -38,6 +38,7 @@ private:
 	const DictionarySerializator & operator=(const DictionarySerializator &s);
 
 	const Chunk & getData() const;
+	void read_dict();
 	
 	int next_id;
 	typedef std::map<const std::string, int> Dict;
