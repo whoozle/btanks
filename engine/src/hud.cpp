@@ -616,7 +616,8 @@ const bool Hud::renderLoadingBar(sdlx::Surface &window, const float old_progress
 	if (what != NULL) {
 		std::string status = what;
 		if (I18n->has("loading", status)) {
-			_small_font->render(window, x + 2 * border, y + (_loading_border->getHeight() - _small_font->getHeight()) / 2, I18n->get("loading", status));
+			int dy = (_loading_border->getHeight() - _small_font->getHeight()) / 2;
+			_small_font->render(window, x + dy, y + dy, I18n->get("loading", status));
 		} else LOG_WARN(("unknown loading status message: '%s'", what));
 	};
 /*	w -= n * _loading_item.getWidth();
