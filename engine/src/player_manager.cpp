@@ -96,13 +96,17 @@ void IPlayerManager::onDisconnect(const int cid) {
 		if (slot.remote != cid)
 			continue;
 
-		action(slot, "network", "leave");
-
+		std::string name = slot.name;
 		Object *obj = slot.getObject();
 		if (obj)
 			obj->Object::emit("death", NULL);
 	
 		slot.clear();
+
+		//hackish :(
+		slot.name = name;
+		action(slot, "network", "leave");
+		slot.name.clear();
 	}
 }
 
