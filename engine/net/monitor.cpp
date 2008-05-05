@@ -165,7 +165,7 @@ Monitor::Task * Monitor::createTask(const int id, const mrt::Chunk &rawdata) {
 	if (_comp_level > 0) {
 		flags = 1; //compressed
 		mrt::ZStream::compress(data, rawdata, false, _comp_level);
-		LOG_DEBUG(("sending(%d, %u) (compressed: %u)", id, (unsigned)rawdata.getSize(), (unsigned)data.getSize()));
+		//LOG_DEBUG(("sending(%d, %u) (compressed: %u)", id, (unsigned)rawdata.getSize(), (unsigned)data.getSize()));
 	} else data = rawdata; //fixme: optimize it somehow.
 
 	int size = data.getSize();
@@ -260,7 +260,7 @@ const bool Monitor::recv(int &id, mrt::Chunk &data, int &timestamp) {
 	TRY { 
 		id = task->id;
 		data = *(task->data);
-		LOG_DEBUG(("recv-ed %u bytes", (unsigned)data.getSize()));
+		//LOG_DEBUG(("recv-ed %u bytes", (unsigned)data.getSize()));
 		timestamp = task->timestamp;
 
 		task->clear();
