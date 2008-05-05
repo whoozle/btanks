@@ -639,6 +639,7 @@ void IMap::start(const std::string &name, Attrs &attrs) {
 		
 		LOG_DEBUG(("initializing map. size: %dx%d, tilesize: %dx%d", _w, _h, _tw, _th));
 	} else if (name == "tileset") {
+		status = "tileset";
 		_firstgid = atol(e.attrs["firstgid"].c_str());
 		if (_firstgid < 1) 
 			throw_ex(("tileset.firstgid must be > 0"));
@@ -649,6 +650,9 @@ void IMap::start(const std::string &name, Attrs &attrs) {
 		_layer_name = e.attrs["name"];
 		if (_layer_name.empty())
 			throw_ex(("layer name cannot be empty!"));
+	} else if (name == "properties") {
+		if (!_layer)
+			status = "properties";
 	}
 	
 	_stack.push(e);
