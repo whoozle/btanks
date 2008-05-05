@@ -22,6 +22,8 @@
 #include "serializator.h"
 
 namespace mrt {
+
+#if 0 
 class DLLEXPORT DictionarySerializator : public Serializator {
 public:
 	DictionarySerializator();
@@ -46,6 +48,9 @@ private:
 	Dict dict;
 	RDict rdict;
 };
+#else 
+typedef Serializator DictionarySerializator;
+#endif
 
 }
 
