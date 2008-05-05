@@ -27,7 +27,7 @@ class NotifyingXMLParser : public mrt::XMLParser {
 public: 
 	NotifyingXMLParser();
 	sl08::signal1<void, const int> reset_progress;
-	sl08::signal1<void, const int> notify_progress;
+	sl08::signal2<void, const int, const char *> notify_progress;
 
 protected:	
 	virtual void parseFile(const std::string &file);
@@ -37,7 +37,8 @@ protected:
 
 	virtual void start(const std::string &name, Attrs &attr);
 	virtual void end(const std::string &name);
-
+	
+	const char *status;
 };
 
 #endif

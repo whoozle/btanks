@@ -75,9 +75,11 @@ public:
 	Chat *getChat() { return _net_talk; }
 
 private:
-	sl08::slot1<void, const int, IGame> reset_slot, notify_slot;
+	sl08::slot1<void, const int, IGame> reset_slot;
 	void resetLoadingBar(const int total);
-	void notifyLoadingBar(const int progress = 1);
+
+	sl08::slot2<void, const int, const char *, IGame> notify_slot;
+	void notifyLoadingBar(const int progress, const char *what);
 
 	sl08::slot1<void, const float, IGame> on_tick_slot;
 	void onTick(const float dt);

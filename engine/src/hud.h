@@ -44,7 +44,7 @@ public:
 	void render(sdlx::Surface &window) const;
 
 	void renderSplash(sdlx::Surface &window) const;
-	const bool renderLoadingBar(sdlx::Surface &window, const float old_progress, const float progress, const bool splash = true) const;
+	const bool renderLoadingBar(sdlx::Surface &window, const float old_progress, const float progress, const char * what, const bool splash = true) const;
 	void renderRadar(const float dt, sdlx::Surface &window, const std::vector<v3<int> > &specials, const sdlx::Rect &viewport);
 
 	void renderStats(sdlx::Surface &surface); //autoproxy

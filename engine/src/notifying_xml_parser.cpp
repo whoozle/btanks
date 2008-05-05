@@ -21,7 +21,7 @@
 #include "finder.h"
 #include "mrt/base_file.h"
 
-NotifyingXMLParser::NotifyingXMLParser() : reset_progress(), notify_progress() {}
+NotifyingXMLParser::NotifyingXMLParser() : reset_progress(), notify_progress(), status(NULL) {}
 
 
 void NotifyingXMLParser::parseFile(const std::string &file) {
@@ -58,5 +58,5 @@ void NotifyingXMLParser::parseFiles(const std::vector<std::pair<std::string, std
 void NotifyingXMLParser::start(const std::string &name, Attrs &attr) {}
 
 void NotifyingXMLParser::end(const std::string &name) {
-	notify_progress.emit(1);
+	notify_progress.emit(1, status);
 }

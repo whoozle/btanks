@@ -580,7 +580,7 @@ void Hud::renderSplash(sdlx::Surface &window) const {
 }
 
 
-const bool Hud::renderLoadingBar(sdlx::Surface &window, const float old_progress, const float progress, const bool render_splash) const {
+const bool Hud::renderLoadingBar(sdlx::Surface &window, const float old_progress, const float progress, const char * what, const bool render_splash) const {
 	assert(old_progress >= 0 && old_progress <= 1.0);
 	assert(progress >= 0 && progress <= 1.0);
 
@@ -611,6 +611,9 @@ const bool Hud::renderLoadingBar(sdlx::Surface &window, const float old_progress
 	for(int i = 0; i < n; ++i) {
 		window.copyFrom(*_loading_item, border + x + i * _loading_item->getWidth(), y + border);
 	}
+
+	if (what != NULL)
+		LOG_DEBUG(("status: %s", what));
 /*	w -= n * _loading_item.getWidth();
 	sdlx::Rect src(0, 0, w, _loading_item.getHeight());
 	window.copyFrom(_loading_item, src, border + x + i * _loading_item.getWidth(), y + border);

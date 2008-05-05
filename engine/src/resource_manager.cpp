@@ -655,6 +655,6 @@ void IResourceManager::preload() {
 			Animation *a = getAnimation(name);
 			loadSurface(a->surface);
 		}
-		notify_progress.emit(1);
+		notify_progress.emit(1, "graphics");
 	}
 }

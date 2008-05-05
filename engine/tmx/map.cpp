@@ -1236,7 +1236,7 @@ void IMap::deserialize(const mrt::Serializator &s) {
 		} CATCH("deserialize", { delete image; throw; });
 		
 		_tilesets.add(name, gid, n);
-		notify_progress.emit(1);
+		notify_progress.emit(1, "tilesets");
 	}
 	
 	while(ln--) {
@@ -1267,7 +1267,7 @@ void IMap::deserialize(const mrt::Serializator &s) {
 			throw;
 		});
 		
-		notify_progress.emit(1);
+		notify_progress.emit(1, "layers");
 	}
 
 	for(LayerMap::iterator i = _layers.begin(); i != _layers.end(); ++i) {

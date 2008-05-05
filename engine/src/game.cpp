@@ -887,7 +887,7 @@ void IGame::resetLoadingBar(const int total) {
 	_tip = new Tooltip("tips", tip, true, 320);
 }
 
-void IGame::notifyLoadingBar(const int progress) {
+void IGame::notifyLoadingBar(const int progress, const char *what) {
 	GET_CONFIG_VALUE("hud.disable-loading-screen", bool, disable_bar, false);
 	if (disable_bar)
 		return;
@@ -907,7 +907,7 @@ void IGame::notifyLoadingBar(const int progress) {
 	
 	sdlx::Surface &window = Window->getSurface();
 	const sdlx::Rect window_size = Window->getSize();
-	if (_hud->renderLoadingBar(window, old_progress, 1.0 * _loading_bar_now / _loading_bar_total)) {
+	if (_hud->renderLoadingBar(window, old_progress, 1.0 * _loading_bar_now / _loading_bar_total, what)) {
 		if (_tip != NULL) {
 			int w, h;
 			_tip->getSize(w, h);
