@@ -909,4 +909,18 @@
 		
 	</area>
 	
+	<area id="loading">
+		<string id="model">loading models...</string>
+		<string id="model" lang="ru">загрузка моделей...</string>
+		<string id="animation">loading animations...</string>
+		<string id="animation" lang="ru">загрука анимации...</string>
+		<string id="object">setting up objects...</string>
+		<string id="object" lang="ru">настройка объектов...</string>
+		<string id="sound">loading sounds...</string>
+		<string id="sound" lang="ru">загрузка звуков...</string>
+		<string id="layer">loading layers...</string>
+		<string id="layer" lang="ru">загрузка слоёв карты...</string>
+		<string id="tileset">loading tilesets...</string>
+		<string id="tileset" lang="ru">загрузка тайлсетов...</string>
+	</area>
 </strings>
