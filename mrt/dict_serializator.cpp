@@ -28,7 +28,7 @@ DictionarySerializator::DictionarySerializator(const mrt::Chunk *chunk) : Serial
 	read_dict();
 }
 
-DictionarySerializator::read_dict() {
+void DictionarySerializator::read_dict() {
 	unsigned n;
 	Serializator::get(n);
 	LOG_DEBUG(("dictionary:  %u items", n));
