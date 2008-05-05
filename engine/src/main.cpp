@@ -17,7 +17,6 @@
  */
 
 #include "mrt/logger.h"
-#include "mrt/crash.h"
 #include "mrt/random.h"
 
 #include "sdlx/system.h"
@@ -37,9 +36,6 @@ extern "C"
 
 int main(int argc, char *argv[]) {
 	try {
-#ifdef DEBUG		
-		mrt::install_crash_handlers();
-#endif
 		mrt::init_seed();
 		
 		Game->loadPlugins();

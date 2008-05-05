@@ -927,7 +927,6 @@ void Editor::onEvent(const SDL_Event &event) {
 #	include <windows.h>
 #endif
 
-#include "mrt/crash.h"
 #include "sdlx/system.h"
 
 #ifdef __cplusplus
@@ -936,7 +935,6 @@ extern "C"
 int main(int argc, char *argv[]) {
 try {
 	LOG_DEBUG(("bt editor"));
-	mrt::install_crash_handlers();
 	Game->loadPlugins();
 
 	Editor editor;
