@@ -1470,27 +1470,30 @@ TRY {
 void IWorld::generateUpdate(mrt::Serializator &s, const bool clean_sync_flag, const int first_id) {
 	unsigned n = 0;
 	std::set<int> skipped_objects; 
-	if (first_id == -1) {
-		n = _objects.size();
-	} else {
-		for(ObjectMap::iterator i = _objects.begin(); i != _objects.end(); ++i) {
-			Object *o = i->second;
-			assert(o != NULL);
-			if (first_id != -1 && o->_id < first_id) {
-				skipped_objects.insert(o->_id);
-				continue; 
-			}
-			++n;
-		}
-	}
-	LOG_DEBUG(("generate update: %u objects", n));
-	s.add(n);
 	for(ObjectMap::iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		Object *o = i->second;
 		assert(o != NULL);
-		if (first_id != -1 && o->_id < first_id) //rewrite it with lower_bound ? 
+
+		if (first_id != -1 && o->_id < first_id) 
+			continue;
+		
+		if (first_id == -1 && o->speed == 0 && !o->_need_sync) { //only regular update + leg disabled object.
+			skipped_objects.insert(o->_id);
 			continue; 
-		serializeObject(s, o, first_id != -1);	
+		}
+		++n;
+	}
+	
+	LOG_DEBUG(("generate update: %u objects (%u skipped)", n, (unsigned)skipped_objects.size()));
+	s.add(n);
+	for(ObjectMap::iterator i = _objects.begin(); i != _objects.end(); ++i) {
+		if (skipped_objects.find(i->first) != skipped_objects.end())
+			continue;
+		
+		Object *o = i->second;
+		assert(o != NULL);
+		
+		serializeObject(s, o, first_id != -1);
 		if (clean_sync_flag)
 			o->setSync(false);
 	}
