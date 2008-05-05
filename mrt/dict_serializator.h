@@ -34,8 +34,10 @@ public:
 	void finalize(mrt::Chunk &data); //destroys serializator, but have no overhead on copy. for serialize2 method
 
 private:
-	const Chunk & getData() const;
+	DictionarySerializator(const DictionarySerializator &s);
 	const DictionarySerializator & operator=(const DictionarySerializator &s);
+
+	const Chunk & getData() const;
 	
 	int next_id;
 	typedef std::map<const std::string, int> Dict;
