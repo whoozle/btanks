@@ -924,5 +924,7 @@
 		<string id="tileset" lang="ru">загрузка тайлсетов...</string>
 		<string id="menu">creating menu...</string>
 		<string id="menu" lang="ru">создание меню...</string>
+		<string id="properties">reading map properties...</string>
+		<string id="properties" lang="ru">чтение свойств карты...</string>
 	</area>
 </strings>
