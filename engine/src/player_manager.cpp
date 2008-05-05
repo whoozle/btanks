@@ -567,6 +567,7 @@ TRY {
 	
 			Game->getChat()->addMessage(slot, message.get("text"));
 			Message msg(message);
+			msg.set("nick", slot.name);
 			broadcast(msg, true);
 		}
 		
