@@ -89,8 +89,8 @@ private:
 	//slots: 
 	sl08::slot1<void, const int, Editor> reset_slot;
 	void resetLoadingBar(const int total);
-	sl08::slot1<void, const int, Editor> notify_slot;
-	void notifyLoadingBar(const int progress = 1);
+	sl08::slot2<void, const int, const char *, Editor> notify_slot;
+	void notifyLoadingBar(const int progress, const char *what);
 	
 	int _current_layer_z;
 	BaseBrush *_brush;

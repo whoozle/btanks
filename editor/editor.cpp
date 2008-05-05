@@ -876,7 +876,7 @@ void Editor::resetLoadingBar(const int total) {
 	_loading_bar_total = total;
 }
 
-void Editor::notifyLoadingBar(const int progress) {
+void Editor::notifyLoadingBar(const int progress, const char *what) {
 	GET_CONFIG_VALUE("hud.disable-loading-screen", bool, disable_bar, false);
 	if (disable_bar)
 		return;
