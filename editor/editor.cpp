@@ -884,7 +884,7 @@ void Editor::notifyLoadingBar(const int progress, const char *what) {
 	float old_progress = 1.0 * _loading_bar_now / _loading_bar_total;
 	_loading_bar_now += progress;
 	
-	if (_hud->renderLoadingBar(Window->getSurface(), old_progress, 1.0 * _loading_bar_now / _loading_bar_total, false)) {
+	if (_hud->renderLoadingBar(Window->getSurface(), old_progress, 1.0 * _loading_bar_now / _loading_bar_total, NULL, false)) {
 		Window->flip();
 		Window->getSurface().fill(Window->getSurface().mapRGB(255, 255, 255));
 	}
