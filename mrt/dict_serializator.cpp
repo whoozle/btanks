@@ -15,7 +15,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 */
-#if 0
 #include "dict_serializator.h"
 #include "exception.h"
 #include "logger.h"
@@ -79,5 +78,3 @@ void DictionarySerializator::finalize(mrt::Chunk &data) {
 	Serializator::finalize(stub);
 	data.append(stub); //optimize it
 }
-
-#endif
