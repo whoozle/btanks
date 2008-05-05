@@ -29,6 +29,7 @@
 #	include <sys/time.h>
 #	include <sys/types.h>
 #	include <unistd.h>
+#	include <errno.h>
 #endif
 
 using namespace mrt;
@@ -93,8 +94,13 @@ const int SocketSet::check(const unsigned int timeout) {
 	tv.tv_usec = ( timeout % 1000 ) * 1000;
 	
 	int r = select(_n, (fd_set*)_r_set, (fd_set*)_w_set, (fd_set*)_e_set, &tv);
-	if (r == -1)
+	if (r == -1) {
+#ifndef _WINDOWS
+		if (errno == EINTR) 
+			return 0;
+#endif
 		throw_net(("select"));
+	}
 	
 	return r;
 }
