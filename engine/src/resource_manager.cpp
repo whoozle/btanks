@@ -118,6 +118,7 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 			throw_ex(("resources tag must contain `version' attribute"));
 		LOG_DEBUG(("file version: %s", attr["version"].c_str()));
 	} else if (name == "animation") {
+		status = "animation";
 		const std::string &id = attr["id"];
 		if (id.empty())
 			throw_ex(("animation.id was not set"));
@@ -176,6 +177,8 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 		_animations[id] = new Animation(model, _base_dir, tile, tw, th);
 	
 	} else if (name == "animation-model") {
+		status = "model";
+
 		const std::string & id = attr["id"];
 		if (id.empty()) 
 			throw_ex(("animation model must have id"));
@@ -210,6 +213,7 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 		if (!sound.empty() && sound[0] != '@')
 			Mixer->loadSample(sound);
 	} else if (name == "object") {
+		status = "object";
 		const std::string classname = attr["class"];
 		if (classname.empty())
 			throw_ex(("tag 'object' must provide its classname id."));
@@ -253,12 +257,14 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 		}
 		LOG_DEBUG(("%s", object->second->dump().c_str()));
 	} else if (name == "alias") {
+		status = "object";
 		std::string name = attr["name"];
 		std::string classname = attr["class"];
 		if (name.empty() || classname.empty())
 			throw_ex(("alias must have both 'name' and 'class' attributes"));
 		createAlias(name, classname);
 	} else if (name == "sound") {
+		status = "sound";
 		std::string file = attr["file"];
 		if (file.empty())
 			throw_ex(("sound.file MUST not be empty."));

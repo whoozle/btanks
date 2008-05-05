@@ -660,6 +660,7 @@ void IMap::end(const std::string &name) {
 	Entity &e = _stack.top();
 	
 	if (name == "tile") {
+		status = "tileset";
 		if (e.attrs.find("id") == e.attrs.end())
 			throw_ex(("tile.id was not found")); 
 			
@@ -713,6 +714,7 @@ void IMap::end(const std::string &name) {
 		data.free();
 		//LOG_DEBUG(("%s", _data.dump().c_str()));
 	} else if (name == "image") {
+		status = "tileset";
 		delete _image;
 		_image = NULL;
 		
@@ -745,6 +747,7 @@ void IMap::end(const std::string &name) {
 		
 		LOG_DEBUG(("image loaded. (%dx%d)", _image->getWidth(), _image->getHeight()));
 	} else if (name == "layer") {
+		status = "layer";
 		int w = atol(e.attrs["width"].c_str());
 		int h = atol(e.attrs["height"].c_str());
 		int z = (_properties.find("z") == _properties.end())?++_lastz:atol(_properties["z"].c_str());
@@ -867,6 +870,8 @@ void IMap::end(const std::string &name) {
 			properties[name] = e.attrs["value"];
 		}
 	} else if (name == "tileset" && _image != NULL && _image_is_tileset) {
+		status = "tileset";
+
 		int n = ((_image->getWidth() - 1) / _tw + 1) * ((_image->getHeight() - 1) / _th + 1);
 		LOG_DEBUG(("tileset: %s, first_gid: %d, estimated tiles: %d", _image_source.c_str(), _firstgid, n));
 		
@@ -1236,7 +1241,7 @@ void IMap::deserialize(const mrt::Serializator &s) {
 		} CATCH("deserialize", { delete image; throw; });
 		
 		_tilesets.add(name, gid, n);
-		notify_progress.emit(1, "tilesets");
+		notify_progress.emit(1, "tileset");
 	}
 	
 	while(ln--) {
@@ -1267,7 +1272,7 @@ void IMap::deserialize(const mrt::Serializator &s) {
 			throw;
 		});
 		
-		notify_progress.emit(1, "layers");
+		notify_progress.emit(1, "layer");
 	}
 
 	for(LayerMap::iterator i = _layers.begin(); i != _layers.end(); ++i) {
