@@ -576,6 +576,7 @@ void Object::setSync(const bool sync) {
 }
 
 void Object::deserialize(const mrt::Serializator &s) {
+try {
 	BaseObject::deserialize(s);
 
 	int en;
@@ -645,6 +646,7 @@ void Object::deserialize(const mrt::Serializator &s) {
 	_cmap = NULL;
 
 	checkAnimation();
+} CATCH("deserialize", throw);
 }
 
 void Object::emit(const std::string &event, Object * emitter) {
