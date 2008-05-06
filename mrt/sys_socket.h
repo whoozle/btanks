@@ -47,9 +47,14 @@ namespace mrt {
 			addr(unsigned ip, unsigned port) : ip(ip), port(port) {}
 			
 			const bool empty() const { return ip == 0; }
+
+			const bool operator<(const addr &other) const {
+				return ip != other.ip ? ip < other.ip: port < other.port;
+			}
 			const bool operator==(const addr &other) const {
 				return ip == other.ip && port == other.port;
 			}
+
 			void getAddr(const std::string &name);
 			const std::string getAddr() const;
 			const std::string getName() const; //gethostbyaddr
