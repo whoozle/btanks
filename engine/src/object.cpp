@@ -82,7 +82,6 @@ Object::Object(const std::string &classname) :
 	 
 
 Object::~Object() { 
-	Mixer->cancelAll(this); 
 	delete _fadeout_surface; 
 	for(Group::iterator i = _group.begin(); i != _group.end(); ++i) {
 		delete i->second;
