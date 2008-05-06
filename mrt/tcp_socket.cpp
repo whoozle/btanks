@@ -71,10 +71,26 @@ void TCPSocket::listen(const std::string &bindaddr, const unsigned port, const b
 		throw_net(("listen"));
 }
 
-void TCPSocket::connect(const std::string &host, const int port, const bool no_delay) {
+void TCPSocket::connect(const addr &addr, const bool no_delay) {
 	create(PF_INET, SOCK_STREAM, 0);
 	if (no_delay)
 		noDelay();
+
+	struct sockaddr_in sin_addr;
+	memset(&sin_addr, 0, sizeof(sin_addr));
+	sin_addr.sin_family = AF_INET;
+	sin_addr.sin_port = htons(addr.port);
+	sin_addr.sin_addr.s_addr = addr.ip;
+
+	LOG_DEBUG(("connect %s:%d", inet_ntoa(sin_addr.sin_addr), addr.port));
+	if (::connect(_sock, (const struct sockaddr*)&sin_addr, sizeof(sin_addr))	 == -1)
+		throw_net(("connect"));
+
+	_addr = addr;
+}
+
+
+void TCPSocket::connect(const std::string &host, const int port, const bool no_delay) {
 
 	struct sockaddr_in addr;
 	memset(&addr, 0, sizeof(addr));
