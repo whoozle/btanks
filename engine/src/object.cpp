@@ -1245,8 +1245,8 @@ void Object::close(const v2<int> & vertex) {
 */
 }
 
-static inline const int h(const v2<int>& src, const v2<int>& dst) {
-	v2<int> dist = Map->distance(src, dst);
+static inline const int h(const v2<int>& src, const v2<int>& dst, const int step) {
+	v2<int> dist = Map->distance(src * step, dst * step);
 	return 500 * (math::abs(dist.x) + math::abs<int>(dist.y));
 }
 
@@ -1272,7 +1272,7 @@ void Object::findPath(const v2<int> target, const int step) {
 	Point p;
 	p.id = _begin;
 	p.g = 0;
-	p.h = h(p.id, _end);
+	p.h = h(p.id, _end, _step);
 	p.dir = getDirection();
 
 	_open_list.push(PD(p.g + p.h, p.id));
@@ -1379,7 +1379,7 @@ const bool Object::findPathDone(Way &way) {
 			p.dir = i;
 			p.parent = current.id;
 			p.g = current.g + (int)(((d.x != 0 && d.y != 0)?141:100) * result_im);
-			p.h = h(id, _end);
+			p.h = h(id, _end, _step);
 
 
 			//add penalty for turning
