@@ -54,6 +54,9 @@ namespace mrt {
 			const bool operator==(const addr &other) const {
 				return ip == other.ip && port == other.port;
 			}
+			const bool operator!=(const addr &other) const {
+				return !(*this == other);
+			}
 
 			void getAddr(const std::string &name);
 			const std::string getAddr() const;
