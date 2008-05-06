@@ -91,6 +91,9 @@ void TCPSocket::connect(const addr &addr, const bool no_delay) {
 
 
 void TCPSocket::connect(const std::string &host, const int port, const bool no_delay) {
+	create(PF_INET, SOCK_STREAM, 0);
+	if (no_delay)
+		noDelay();
 
 	struct sockaddr_in addr;
 	memset(&addr, 0, sizeof(addr));
