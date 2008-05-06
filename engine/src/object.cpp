@@ -1246,7 +1246,8 @@ void Object::close(const v2<int> & vertex) {
 }
 
 static inline const int h(const v2<int>& src, const v2<int>& dst) {
-	return 500 * (math::abs(src.x - dst.x) + math::abs<int>(src.y - dst.y));
+	v2<int> dist = Map->distance(src, dst);
+	return 500 * (math::abs(dist.x) + math::abs<int>(dist.y));
 }
 
 
@@ -1330,8 +1331,10 @@ const bool Object::findPathDone(Way &way) {
 			d.x += x;
 			d.y += y;
 			
-			if (d.x < 0 || d.x >= map_size.x || d.y < 0 || d.y >= map_size.y)
+			if (!Map->torus() && (d.x < 0 || d.x >= map_size.x || d.y < 0 || d.y >= map_size.y))
 				continue;
+
+			Map->validate(d);
 			
 			v2<int> id((int)(d.x / _step), (int)(d.y / _step));
 			
