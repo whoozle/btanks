@@ -2,6 +2,31 @@
 <map version="0.99b" orientation="orthogonal" width="30" height="25" tilewidth="64" tileheight="64">
 	<properties>
 		<property name="config:map.torus" value="bool:true"/>
+		<property name="edge:10:11" value="true"/>
+		<property name="edge:11:12" value="true"/>
+		<property name="edge:12:13" value="true"/>
+		<property name="edge:13:14" value="true"/>
+		<property name="edge:14:15" value="true"/>
+		<property name="edge:15:16" value="true"/>
+		<property name="edge:16:17" value="true"/>
+		<property name="edge:17:18" value="true"/>
+		<property name="edge:18:19" value="true"/>
+		<property name="edge:19:20" value="true"/>
+		<property name="edge:1:2" value="true"/>
+		<property name="edge:20:21" value="true"/>
+		<property name="edge:21:22" value="true"/>
+		<property name="edge:22:23" value="true"/>
+		<property name="edge:23:24" value="true"/>
+		<property name="edge:24:25" value="true"/>
+		<property name="edge:25:1" value="true"/>
+		<property name="edge:2:3" value="true"/>
+		<property name="edge:3:4" value="true"/>
+		<property name="edge:4:5" value="true"/>
+		<property name="edge:5:6" value="true"/>
+		<property name="edge:6:7" value="true"/>
+		<property name="edge:7:8" value="true"/>
+		<property name="edge:8:9" value="true"/>
+		<property name="edge:9:10" value="true"/>
 		<property name="edge:a10:a11" value="true"/>
 		<property name="edge:a11:a12" value="true"/>
 		<property name="edge:a12:a13" value="true"/>
@@ -79,12 +104,6 @@
 		<property name="edge:x4:x5" value="true"/>
 		<property name="edge:x5:x6" value="true"/>
 		<property name="edge:x6:x1" value="true"/>
-		<property name="waypoint:car:x1" value="1147,136"/>
-		<property name="waypoint:car:x2" value="1147,768"/>
-		<property name="waypoint:car:x3" value="1147,1393"/>
-		<property name="waypoint:car:x4" value="1092,1384"/>
-		<property name="waypoint:car:x5" value="1091,767"/>
-		<property name="waypoint:car:x6" value="1092,127"/>
 		<property name="object:boomerang-missiles-item:boomerang-missiles-item:1" value="1553,444"/>
 		<property name="object:boomerang-missiles-item:boomerang-missiles-item:2" value="340,809"/>
 		<property name="object:broken-object:traffic-lights:1" value="1031,874"/>
@@ -95,14 +114,15 @@
 		<property name="object:bus-stop:bus-stop-right:2" value="1232,1012"/>
 		<property name="object:bus-stop:bus-stop-top:1" value="836,630"/>
 		<property name="object:bus-stop:bus-stop-top:2" value="856,1442"/>
-		<property name="object:car:blue-car:1" value="65,11/2"/>
-		<property name="object:car:orange-bus:1" value="885,1544/4"/>
-		<property name="object:car:orange-bus:2" value="1816,-2"/>
-		<property name="object:car:red-car:1" value="1096,214/2"/>
-		<property name="object:car:red-car:2" value="838,707/4"/>
+		<property name="object:car:blue-car:1" value="61,72/2"/>
+		<property name="object:car:orange-bus:1" value="343,1545/4"/>
+		<property name="object:car:orange-bus:2" value="1472,-5"/>
+		<property name="object:car:red-car:1" value="1151,204/2"/>
+		<property name="object:car:red-car:2" value="821,821"/>
 		<property name="object:car:white-car:1" value="65,1020/2"/>
-		<property name="object:car:yellow-car:1" value="1147,1290/6"/>
-		<property name="object:car:yellow-car:2" value="0,316/6"/>
+		<property name="object:car:white-car:2" value="1792,834"/>
+		<property name="object:car:yellow-car:1" value="1095,1309/6"/>
+		<property name="object:car:yellow-car:2" value="7,191/6"/>
 		<property name="object:civilian:civilian-1:1" value="1675,1472/4"/>
 		<property name="object:civilian:civilian-1:2" value="876,1479/4"/>
 		<property name="object:civilian:civilian-1:3" value="1206,571"/>
@@ -113,7 +133,7 @@
 		<property name="object:civilian:civilian-3:1" value="1854,1194/3"/>
 		<property name="object:civilian:civilian-3:2" value="1438,636"/>
 		<property name="object:civilian:civilian-3:3" value="301,229/6"/>
-		<property name="object:dispersion-bullets-item:dispersion-bullets-item:1" value="-6,702"/>
+		<property name="object:dispersion-bullets-item:dispersion-bullets-item:1" value="-5,687"/>
 		<property name="object:dumb-missiles-item:dumb-missiles-item:1" value="684,631,680"/>
 		<property name="object:dumb-missiles-item:dumb-missiles-item:2" value="1891,1270"/>
 		<property name="object:dumb-missiles-item:dumb-missiles-item:3" value="1186,292"/>
@@ -204,6 +224,37 @@
 		<property name="spawn:2" value="1473,1065"/>
 		<property name="spawn:3" value="1453,284"/>
 		<property name="spawn:4" value="775,1167"/>
+		<property name="waypoint:car:1" value="902,715"/>
+		<property name="waypoint:car:10" value="6,329"/>
+		<property name="waypoint:car:11" value="6,725"/>
+		<property name="waypoint:car:12" value="1337,716"/>
+		<property name="waypoint:car:13" value="1347,815"/>
+		<property name="waypoint:car:14" value="7,817"/>
+		<property name="waypoint:car:15" value="5,1214"/>
+		<property name="waypoint:car:16" value="5,1545"/>
+		<property name="waypoint:car:17" value="1660,1544"/>
+		<property name="waypoint:car:18" value="1043,1543"/>
+		<property name="waypoint:car:19" value="248,1543"/>
+		<property name="waypoint:car:2" value="250,726"/>
+		<property name="waypoint:car:20" value="250,1161"/>
+		<property name="waypoint:car:21" value="58,1155"/>
+		<property name="waypoint:car:22" value="58,376"/>
+		<property name="waypoint:car:23" value="198,379"/>
+		<property name="waypoint:car:24" value="198,823"/>
+		<property name="waypoint:car:25" value="888,809"/>
+		<property name="waypoint:car:3" value="248,-6"/>
+		<property name="waypoint:car:4" value="844,-6"/>
+		<property name="waypoint:car:5" value="1532,-6"/>
+		<property name="waypoint:car:6" value="58,-4"/>
+		<property name="waypoint:car:7" value="57,1212"/>
+		<property name="waypoint:car:8" value="202,1214"/>
+		<property name="waypoint:car:9" value="196,319"/>
+		<property name="waypoint:car:x1" value="1147,136"/>
+		<property name="waypoint:car:x2" value="1147,768"/>
+		<property name="waypoint:car:x3" value="1147,1393"/>
+		<property name="waypoint:car:x4" value="1092,1384"/>
+		<property name="waypoint:car:x5" value="1091,767"/>
+		<property name="waypoint:car:x6" value="1092,127"/>
 		<property name="waypoint:civilian:a1" value="596,1470"/>
 		<property name="waypoint:civilian:a10" value="1597,347"/>
 		<property name="waypoint:civilian:a11" value="1251,379"/>
