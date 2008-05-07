@@ -59,9 +59,9 @@ void Server::init() {
 	_monitor->start();
 	
 	if (RTConfig->server_mode) {
-		GET_CONFIG_VALUE("multiplayer.server.master-server-port", int, mport, 27254);
 		GET_CONFIG_VALUE("multiplayer.server.register-on-master-server", bool, rms, true);
 		GET_CONFIG_VALUE("multiplayer.server.master-server", std::string, mname, "btanks.media.netive.ru");
+		GET_CONFIG_VALUE("multiplayer.server.master-server-port", int, mport, 27254);
 		if (rms) {
 			LOG_DEBUG(("registering server on master server..."));
 			TRY {
