@@ -102,15 +102,21 @@ IGame::~IGame() {
 	delete _net_talk;
 }
 
+void IGame::stop() { 
+	server_running = false; 
+	Window->stop(); 
+}
+
 void IGame::run() {
 	if (!RTConfig->server_mode) {
 		Window->run();
 	} else {
+		server_running = true;
 		LOG_DEBUG(("server is up and running!"));
 		sdlx::Timer _timer;	
 		const float limit = 1.0f / 60;
 		float dt = limit;
-		while(true) {
+		while(server_running) {
 			_timer.reset();
 			tick(dt);
 			float dt2 = _timer.microdelta() / 1000000.0f;

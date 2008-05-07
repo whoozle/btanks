@@ -27,6 +27,14 @@
 #	include "sdlx/SDL_main.h"
 #	define WIN32_LEAN_AND_MEAN
 #	include <windows.h>
+#else
+#	include <signal.h>
+#	include <stdio.h>
+
+static void clean_exit(int sno) {
+	Game->stop();
+}
+
 #endif
 
 #ifdef __cplusplus
@@ -36,6 +44,19 @@ extern "C"
 
 int main(int argc, char *argv[]) {
 	try {
+#ifndef _WINDOWS
+		struct sigaction sa;
+		memset(&sa, 0, sizeof(sa));
+		sa.sa_flags = SA_RESTART;
+		sa.sa_handler = &clean_exit;
+
+		if (sigaction(SIGTERM, &sa, NULL) == -1) 
+			perror("sigaction");
+		if (sigaction(SIGINT, &sa, NULL) == -1) 
+			perror("sigaction");
+		if (sigaction(SIGQUIT, &sa, NULL) == -1) 
+			perror("sigaction");
+#endif
 		mrt::init_seed();
 		
 		Game->loadPlugins();
