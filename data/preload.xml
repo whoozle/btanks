@@ -363,6 +363,45 @@
 		<object id="watchtower-with-machinegunner"/>
 		<object id="zombie"/>
 	</map>
+	<map id="four_rooms">
+		<object id="alt-missiles-on-launcher"/>
+		<object id="boomerang-missiles-item"/>
+		<object id="broken-object"/>
+		<object id="bus-stop"/>
+		<object id="car"/>
+		<object id="civilian"/>
+		<object id="dispersion-bullets-item"/>
+		<object id="dumb-missiles-item"/>
+		<object id="explosion"/>
+		<object id="fake-mod"/>
+		<object id="guided-missile"/>
+		<object id="guided-missiles-item"/>
+		<object id="heal"/>
+		<object id="impassable-static-corpse"/>
+		<object id="machinegunner-item"/>
+		<object id="megaheal"/>
+		<object id="mines-item"/>
+		<object id="missiles-on-launcher"/>
+		<object id="missiles-on-tank"/>
+		<object id="nuke-missiles-item"/>
+		<object id="ricochet-bullets-item"/>
+		<object id="road-sign"/>
+		<object id="single-pose"/>
+		<object id="smoke-missiles-item"/>
+		<object id="stall"/>
+		<object id="static-buggy"/>
+		<object id="static-corpse"/>
+		<object id="static-launcher"/>
+		<object id="static-mortar"/>
+		<object id="static-shilka"/>
+		<object id="static-tank"/>
+		<object id="stun-missiles-item"/>
+		<object id="tank"/>
+		<object id="tent"/>
+		<object id="thrower-item"/>
+		<object id="traffic-lights"/>
+		<object id="turrel-on-buggy"/>
+	</map>
 	<map id="gaddino">
 		<object id="alt-missiles-on-launcher"/>
 		<object id="ballistic-missile"/>
@@ -1025,6 +1064,7 @@
 		<animation id="dead-green-launcher"/>
 		<animation id="dead-green-shilka"/>
 		<animation id="dead-green-tank"/>
+		<animation id="dead-mortar"/>
 		<animation id="dead-orange-bus"/>
 		<animation id="dead-red-car"/>
 		<animation id="dead-red-launcher"/>
@@ -1313,6 +1353,9 @@
 		<animation id="train-smoke"/>
 	</object>
 	<object id="turrel">
+		<animation id="buggy-gun"/>
+	</object>
+	<object id="turrel-on-buggy">
 		<animation id="buggy-gun"/>
 	</object>
 	<object id="umbrella">
