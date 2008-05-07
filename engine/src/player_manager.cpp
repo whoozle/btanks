@@ -565,7 +565,9 @@ TRY {
 			if (slot.remote != cid)
 				throw_ex(("client in connection %d sent wrong channel id %d", cid, id));
 	
-			Game->getChat()->addMessage(slot, message.get("text"));
+			if (!RTConfig->server_mode)
+				Game->getChat()->addMessage(slot, message.get("text"));
+	
 			Message msg(message);
 			msg.set("nick", slot.name);
 			broadcast(msg, true);
@@ -1426,7 +1428,8 @@ void IPlayerManager::action(const PlayerSlot &slot, const std::string &type, con
 	if (killer_slot != NULL) 
 		mrt::replace(message, "$2", killer_slot->name);
 
-	Game->getChat()->addAction(message);
+	if (!RTConfig->server_mode)
+		Game->getChat()->addAction(message);
 
 	if (_server == NULL) //do not send anything if not server
 		return; 
