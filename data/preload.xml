@@ -384,6 +384,7 @@
 		<object id="missiles-on-launcher"/>
 		<object id="missiles-on-tank"/>
 		<object id="nuke-missiles-item"/>
+		<object id="outline"/>
 		<object id="ricochet-bullets-item"/>
 		<object id="road-sign"/>
 		<object id="single-pose"/>
