@@ -370,7 +370,11 @@
 		<object id="bus-stop"/>
 		<object id="car"/>
 		<object id="civilian"/>
+		<object id="corpse"/>
+		<object id="damage-digits"/>
+		<object id="dispersion-bullet"/>
 		<object id="dispersion-bullets-item"/>
+		<object id="dumb-missile"/>
 		<object id="dumb-missiles-item"/>
 		<object id="explosion"/>
 		<object id="fake-mod"/>
@@ -383,8 +387,11 @@
 		<object id="mines-item"/>
 		<object id="missiles-on-launcher"/>
 		<object id="missiles-on-tank"/>
+		<object id="nuke-explosion"/>
+		<object id="nuke-missile"/>
 		<object id="nuke-missiles-item"/>
 		<object id="outline"/>
+		<object id="ricochet-bullet"/>
 		<object id="ricochet-bullets-item"/>
 		<object id="road-sign"/>
 		<object id="single-pose"/>
@@ -398,6 +405,7 @@
 		<object id="static-tank"/>
 		<object id="stun-missiles-item"/>
 		<object id="tank"/>
+		<object id="tank-bullet"/>
 		<object id="tent"/>
 		<object id="thrower-item"/>
 		<object id="traffic-lights"/>
