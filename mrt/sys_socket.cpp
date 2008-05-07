@@ -18,6 +18,7 @@
 
 #include "sys_socket.h"
 #include "net_exception.h"
+#include "serializator.h"
 #include <string.h>
 
 #ifdef _WINDOWS
@@ -118,4 +119,17 @@ TRY {
 	if (r < 0) 
 		throw_net(("setsockopt(SO_LINGER)"));
 } CATCH("noLinger", {});
+}
+
+void Socket::addr::serialize(Serializator &s) const {
+	s.add((unsigned)ip);
+	s.add((unsigned)port);
+}
+
+void Socket::addr::deserialize(const Serializator &s) {
+	unsigned n;
+	s.get(n);
+	ip = n;
+	s.get(n);
+	port = n;
 }
