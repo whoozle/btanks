@@ -72,7 +72,7 @@ void Server::init() {
 				*((uint16_t *)(buf + 1)) = htons(port);
 				int r = sock.send(buf, 3);
 				LOG_DEBUG(("sent %d bytes...", r));
-				sock.recv(buf, 3);
+				//sock.recv(buf, 3);
 			} CATCH("registering on master server", );
 		}
 	}
