@@ -21,7 +21,6 @@
 
 
 #include "export_mrt.h"
-#include "mrt/serializable.h"
 #include <string>
 
 #ifdef _WINDOWS
@@ -38,9 +37,10 @@
 #endif
 
 namespace mrt {
+	class Serializator;
 	class MRTAPI Socket {
 	public:
-		struct MRTAPI addr : public mrt::Serializable {
+		struct MRTAPI addr {
 			mrt_uint32_t ip;
 			mrt_uint16_t port;
 
