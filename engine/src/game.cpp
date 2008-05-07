@@ -352,6 +352,7 @@ void IGame::init(const int argc, char *argv[]) {
 	if (!RTConfig->server_mode) {
 		Window->init(argc, argv);
 	} else {
+		sdlx::System::init(SDL_INIT_TIMER);
 		sdlx::Surface::setDefaultFlags(SDL_SRCALPHA);
 	}
 
