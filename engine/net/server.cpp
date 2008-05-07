@@ -26,6 +26,14 @@
 #include "monitor.h"
 #include "connection.h"
 #include "config.h"
+#include "rt_config.h"
+
+#ifdef _WINDOWS
+#	include <Winsock2.h>
+#else
+#	include <arpa/inet.h>
+#endif              
+
 
 Server::Server()  : _monitor(NULL), _sock() {}
 Server::~Server() {
@@ -49,6 +57,25 @@ void Server::init() {
 	_monitor->add(&_udp_sock);
 	_monitor->add(&_sock);
 	_monitor->start();
+	
+	if (RTConfig->server_mode) {
+		GET_CONFIG_VALUE("multiplayer.server.master-server-port", int, mport, 27254);
+		GET_CONFIG_VALUE("multiplayer.server.register-on-master-server", bool, rms, true);
+		if (rms) {
+			LOG_DEBUG(("registering server on master server..."));
+			TRY {
+				char buf[3];
+				mrt::TCPSocket sock;
+				sock.connect("localhost", mport);
+				
+				buf[0] = 's';
+				*((uint16_t *)(buf + 1)) = htons(port);
+				int r = sock.send(buf, 3);
+				LOG_DEBUG(("sent %d bytes...", r));
+				sock.recv(buf, 3);
+			} CATCH("registering on master server", );
+		}
+	}
 }
 
 void Server::restart() {
