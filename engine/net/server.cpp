@@ -61,12 +61,13 @@ void Server::init() {
 	if (RTConfig->server_mode) {
 		GET_CONFIG_VALUE("multiplayer.server.master-server-port", int, mport, 27254);
 		GET_CONFIG_VALUE("multiplayer.server.register-on-master-server", bool, rms, true);
+		GET_CONFIG_VALUE("multiplayer.server.master-server", std::string, mname, "btanks.media.netive.ru");
 		if (rms) {
 			LOG_DEBUG(("registering server on master server..."));
 			TRY {
 				char buf[3];
 				mrt::TCPSocket sock;
-				sock.connect("localhost", mport);
+				sock.connect(mname, mport);
 				
 				buf[0] = 's';
 				*((uint16_t *)(buf + 1)) = htons(port);
