@@ -174,7 +174,7 @@ void PlayerSlot::tick(const float dt) {
 	if (!visible) 
 		return;
 
-	if (RTConfig->game_type == GameTypeCTF || RTConfig->game_type == GameTypeCTF) {
+	if (RTConfig->game_type == GameTypeCTF || RTConfig->game_type == GameTypeTeamDeathMatch) {
 		if (team == Team::None) {
 			if (join_team == NULL)
 				join_team = new JoinTeamControl;
