@@ -267,6 +267,10 @@ const Chunk & Serializator::getData() const {
 }
 
 void Serializator::finalize(mrt::Chunk &data) {
+	if (_data->empty()) {
+		data.free();
+		return;
+	}
 	data.setData(_data->getPtr(), _data->getSize(), true);
 	_data->unlink();
 }
