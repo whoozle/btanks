@@ -62,6 +62,14 @@ void StartServerMenu::start() {
 			RTConfig->teams = 2;
 		}
 	}
+	if (RTConfig->game_type == GameTypeDeathMatch) {
+		int teams;
+		Config->get("multiplayer.teams", teams, 0);
+		if (teams > 0) {
+			RTConfig->game_type = GameTypeTeamDeathMatch;
+			RTConfig->teams = teams;
+		}
+	}
 	LOG_DEBUG(("start multiplayer server requested"));
 	Game->clear();
 	PlayerManager->startServer();
