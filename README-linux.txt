@@ -24,3 +24,8 @@ consult your distro's documentation for details):
 
 CCFLAGS = ['-O', '-march=YOUR_CPU', '-mtune=YOUR_CPU']
 CXXFLAGS = ['-O', '-march=YOUR_CPU', '-mtune=YOUR_CPU']
+
+//for debian-based systems(i.e. ubuntu) you could use the following command 
+to install all dependencies: 
+sudo apt-get install gcc g++ libsdl-image1.2-dev libsdl1.2-dev libvorbis-dev libexpat1-dev zlib1g-dev liblua5.1-0-dev libsmpeg-dev
+
