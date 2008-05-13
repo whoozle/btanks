@@ -146,7 +146,7 @@ const std::string Chunk::dump() const {
 
 		for(j = 0; j < m; ++j) {
 			const unsigned char *p = ((unsigned char *)ptr) + i*16 + j;
-			result += formatString("%c", (*p>=32 && *p < 128)? *p: '.');
+			result += formatString("%c", (*p>=32 && *p < 127)? *p: '.');
 			if (j == 7) 
 				result += " ";
 		}
