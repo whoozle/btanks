@@ -126,7 +126,7 @@ const std::string Chunk::dump() const {
 	std::string result = formatString("-[memory dump]-[size: %u]---", (unsigned)size);
 	size_t n = (size - 1)/ 16 + 1;
 	for(size_t i = 0; i < n; ++i) {
-		result += "\n";
+		result += mrt::formatString("\n%06x\t", (unsigned)(i * 16));
 		size_t j, m = (size - i * 16);
 		if (m > 16) 
 			m = 16;
