@@ -95,7 +95,7 @@ void Serializator::add(const int n) {
 		len = 1;
 	} else if (x <= 65535) {
 		* (uint16_t *)buf = htons(x);
-		len = sizeof(unsigned short);
+		len = 2;
 	} else if (x <= 2147483647) {
 		* (uint32_t *)buf = htonl(x); //defined as uint32 even on 64bit arch
 		len = 4;
