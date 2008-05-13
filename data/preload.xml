@@ -383,7 +383,9 @@
 		<object id="guided-missile"/>
 		<object id="guided-missiles-item"/>
 		<object id="heal"/>
+		<object id="helmet"/>
 		<object id="impassable-static-corpse"/>
+		<object id="machinegunner"/>
 		<object id="machinegunner-item"/>
 		<object id="megaheal"/>
 		<object id="mines-item"/>
@@ -397,6 +399,7 @@
 		<object id="ricochet-bullet"/>
 		<object id="ricochet-bullets-item"/>
 		<object id="road-sign"/>
+		<object id="shilka-bullet"/>
 		<object id="single-pose"/>
 		<object id="smoke-cloud"/>
 		<object id="smoke-missile"/>
