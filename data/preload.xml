@@ -365,6 +365,7 @@
 	</map>
 	<map id="four_rooms">
 		<object id="alt-missiles-on-launcher"/>
+		<object id="boomerang-missile"/>
 		<object id="boomerang-missiles-item"/>
 		<object id="broken-object"/>
 		<object id="bus-stop"/>
@@ -378,6 +379,7 @@
 		<object id="dumb-missiles-item"/>
 		<object id="explosion"/>
 		<object id="fake-mod"/>
+		<object id="fire"/>
 		<object id="guided-missile"/>
 		<object id="guided-missiles-item"/>
 		<object id="heal"/>
@@ -391,10 +393,13 @@
 		<object id="nuke-missile"/>
 		<object id="nuke-missiles-item"/>
 		<object id="outline"/>
+		<object id="regular-mine"/>
 		<object id="ricochet-bullet"/>
 		<object id="ricochet-bullets-item"/>
 		<object id="road-sign"/>
 		<object id="single-pose"/>
+		<object id="smoke-cloud"/>
+		<object id="smoke-missile"/>
 		<object id="smoke-missiles-item"/>
 		<object id="stall"/>
 		<object id="static-buggy"/>
@@ -936,6 +941,9 @@
 		<animation id="dead-boat"/>
 		<animation id="dead-buggy"/>
 		<animation id="dead-cannon"/>
+		<animation id="dead-civilian-1"/>
+		<animation id="dead-civilian-2"/>
+		<animation id="dead-civilian-3"/>
 		<animation id="dead-cow"/>
 		<animation id="dead-green-launcher"/>
 		<animation id="dead-green-shilka"/>
