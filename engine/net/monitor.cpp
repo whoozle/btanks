@@ -211,6 +211,7 @@ void Monitor::pack(mrt::Chunk &result, const mrt::Chunk &rawdata, const int comp
 }
 
 void Monitor::send(const int id, const mrt::Chunk &rawdata, const bool dgram) {
+	LOG_DEBUG(("send(%d): %s", id, rawdata.dump().c_str()));
 	{
 		sdlx::AutoMutex m(_connections_mutex);
 		if (_connections.find(id) == _connections.end()) {

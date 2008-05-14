@@ -47,6 +47,8 @@ StartServerMenu::StartServerMenu(MainMenu *parent, const int w, const int h) : _
 }
 
 void StartServerMenu::start() {
+	LOG_DEBUG(("starting the game"));
+	
 	const MapDesc &map = _map_picker->getCurrentMap();
 	if (map.slots < 1) {
 		GameMonitor->displayMessage("menu", "no-slots-in-map", 1);
@@ -70,7 +72,14 @@ void StartServerMenu::start() {
 			RTConfig->teams = teams;
 		}
 	}
-	LOG_DEBUG(("start multiplayer server requested"));
+	if (RTConfig->game_type != GameTypeCooperative && RTConfig->game_type != GameTypeRacing) {
+		int tl; 
+		Config->get("multiplayer.time-limit", tl, 0);
+		RTConfig->time_limit = (float)tl;
+	} else {
+		RTConfig->time_limit = 0;
+	}
+	
 	Game->clear();
 	PlayerManager->startServer();
 	GameMonitor->loadMap(NULL, map.name);

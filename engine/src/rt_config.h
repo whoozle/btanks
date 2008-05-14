@@ -39,6 +39,8 @@ public:
 	GameType game_type;
 	int teams; //for team games, usually 2 for CTF
 
+	float time_limit;
+
 	void serialize(mrt::Serializator &s) const;
 	void deserialize(const mrt::Serializator &s);
 };

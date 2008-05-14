@@ -21,7 +21,7 @@
 
 IMPLEMENT_SINGLETON(RTConfig, IRTConfig);
 
-IRTConfig::IRTConfig() : server_mode(false), editor_mode(false), game_type(GameTypeDeathMatch), teams(0) {}
+IRTConfig::IRTConfig() : server_mode(false), editor_mode(false), game_type(GameTypeDeathMatch), teams(0), time_limit(0) {}
 
 void IRTConfig::serialize(mrt::Serializator &s) const {
 	s.add((int)game_type);
