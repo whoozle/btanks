@@ -952,7 +952,8 @@ void IPlayerManager::clear() {
 	_net_stats.clear();
 
 	GET_CONFIG_VALUE("multiplayer.sync-interval", float, sync_interval, 103.0/101);
-	_next_sync.set(sync_interval);
+	GET_CONFIG_VALUE("multiplayer.sync-interval-divisor", int, sync_div, 10);
+	_next_sync.set(sync_interval / sync_div);
 
 	LOG_DEBUG(("cleaning up players..."));
 	_global_zones_reached.clear();

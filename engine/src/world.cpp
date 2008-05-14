@@ -137,6 +137,7 @@ void IWorld::addObject(Object *o, const v2<float> &pos, const int id) {
 
 	o->_position = pos;
 	
+	assert(o->_id > 0);
 	_objects[o->_id] = o;
 	if (o->_variants.has("ally")) {
 		o->removeOwner(OWNER_MAP);
@@ -1330,6 +1331,9 @@ Object * IWorld::deserializeObject(const mrt::Serializator &s) {
 	Object *ao = NULL, *result = NULL;
 	TRY {
 		s.get(id);
+		if (id <= 0)
+			return NULL; //end of stream - to avoid needless estimate calculations
+		
 		s.get(rn);
 		{
 			ObjectMap::iterator i = _objects.find(id);
@@ -1467,37 +1471,45 @@ TRY {
 }
 
 void IWorld::generateUpdate(mrt::Serializator &s, const bool clean_sync_flag, const int first_id) {
-	unsigned n = 0;
-	std::set<int> skipped_objects; 
-	for(ObjectMap::iterator i = _objects.begin(); i != _objects.end(); ++i) {
-		Object *o = i->second;
-		assert(o != NULL);
-
-		if (
-			(first_id != -1 && o->_id < first_id) ||
-			(first_id == -1 && o->speed == 0 && !o->_need_sync)
-		) { //only regular update + leg disabled object.
-			skipped_objects.insert(o->_id);
-			continue; 
-		}
-		++n;
-	}
+	GET_CONFIG_VALUE("multiplayer.sync-interval-divisor", int, sync_div, 10);
 	
-	LOG_DEBUG(("generate update: %u objects (%u skipped)", n, (unsigned)skipped_objects.size()));
-	s.add(n);
-	for(ObjectMap::iterator i = _objects.begin(); i != _objects.end(); ++i) {
-		if (skipped_objects.find(i->first) != skipped_objects.end())
-			continue;
-		
+	const bool sync_update = first_id > 0;
+	bool id0 = sync_update? first_id: _current_update_id;
+	
+	ObjectMap::iterator i;
+	for(i = _objects.lower_bound(id0); i != _objects.end() && i->first < id0; ++i);
+	
+	int n = 0, max_n = _objects.size() / sync_div;
+	for( ; i != _objects.end() && n < max_n; ++i) {
 		Object *o = i->second;
 		assert(o != NULL);
-		
-		serializeObject(s, o, first_id != -1);
+		assert(o->_id >= id0);
+
+		if (!sync_update && o->speed == 0 && !o->_need_sync) 
+			continue;
+
+		serializeObject(s, o, sync_update);
 		if (clean_sync_flag)
 			o->setSync(false);
+		
+		++n;
 	}
-	s.add(skipped_objects);
+	{
+		int dummy = 0;
+		s.add(dummy); //end of stream marker
+	}
 	
+	bool crop = i == _objects.end();
+	s.add(crop);
+	if (crop) {
+		std::set<int> ids;
+		for(ObjectMap::iterator i = _objects.begin(); i != _objects.end(); ++i) 
+			ids.insert(i->first);
+		s.add(ids);
+	}
+	
+	//LOG_DEBUG(("generated update: %d objects", n));
+		
 	s.add(_last_id);
 	GET_CONFIG_VALUE("engine.speed", float, e_speed, 1.0f);
 	s.add(e_speed);
@@ -1547,27 +1559,18 @@ TRY {
 		_out_of_sync = -1;
 	}
 
-	unsigned int n;
-	s.get(n);
-	LOG_DEBUG(("there's %u objects in update", n));
 	ObjectMap objects;
+	Object *o;
+	while((o = deserializeObject(s)) != NULL) {
+		objects.insert(ObjectMap::value_type(o->_id, o));
+	}
 	std::set<int> ids;
 	
-	while(n--) {
-		Object *o = deserializeObject(s);
-		if (o == NULL) {
-			LOG_WARN(("some object failed to deserialize. wait for the next update"));
-			continue;
-		}
-		objects.insert(ObjectMap::value_type(o->_id, o));
-		ids.insert(o->_id);
-	}
-	{
-		std::set<int> skipped_ids;
-		s.get(skipped_ids);
-		for(std::set<int>::const_iterator i = skipped_ids.begin(); i != skipped_ids.end(); ++i) {
-			ids.insert(*i);
-		}
+	bool crop;
+	s.get(crop); 
+	
+	if (crop) {
+		s.get(ids);
 	}
 
 	s.get(_last_id);
@@ -1580,7 +1583,8 @@ TRY {
 
 	//_last_id += 10000;
 	TRY {
-		cropObjects(ids);
+		if (crop)
+			cropObjects(ids);
 	} CATCH("applyUpdate::cropObjects", throw;);
 
 	TRY {
