@@ -1475,7 +1475,7 @@ void IWorld::generateUpdate(mrt::Serializator &s, const bool clean_sync_flag, co
 	GET_CONFIG_VALUE("multiplayer.sync-interval-divisor", int, sync_div, 10);
 	
 	const bool sync_update = first_id > 0;
-	bool id0 = sync_update? first_id: _current_update_id;
+	int id0 = sync_update? first_id: _current_update_id;
 	
 	ObjectMap::iterator i;
 	for(i = _objects.lower_bound(id0); i != _objects.end() && i->first < id0; ++i);
