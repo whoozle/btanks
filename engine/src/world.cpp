@@ -1480,7 +1480,7 @@ void IWorld::generateUpdate(mrt::Serializator &s, const bool clean_sync_flag, co
 	for(i = _objects.lower_bound(id0); i != _objects.end() && i->first < id0; ++i);
 	
 	int n = 0, max_n = _objects.size() / sync_div;
-	for( ; i != _objects.end() && n < max_n; ++i) {
+	for( ; i != _objects.end() && (sync_update || n < max_n); ++i) {
 		Object *o = i->second;
 		assert(o != NULL);
 		assert(o->_id >= id0);
@@ -1506,13 +1506,15 @@ void IWorld::generateUpdate(mrt::Serializator &s, const bool clean_sync_flag, co
 		for(ObjectMap::iterator i = _objects.begin(); i != _objects.end(); ++i) 
 			ids.insert(i->first);
 		s.add(ids);
+	
+		s.add(_last_id);
+		
+		GET_CONFIG_VALUE("engine.speed", float, e_speed, 1.0f);
+		s.add(e_speed);
 	}
 	
 	//LOG_DEBUG(("generated update: %d objects", n));
 		
-	s.add(_last_id);
-	GET_CONFIG_VALUE("engine.speed", float, e_speed, 1.0f);
-	s.add(e_speed);
 	mrt::random_serialize(s);
 }
 
@@ -1571,15 +1573,14 @@ TRY {
 	
 	if (crop) {
 		s.get(ids);
+		s.get(_last_id);
+
+		float speed;
+		s.get(speed);
+		setSpeed(speed);
 	}
 
-	s.get(_last_id);
-
-	float speed;
-	s.get(speed);
 	mrt::random_deserialize(s);
-
-	setSpeed(speed);
 
 	//_last_id += 10000;
 	TRY {
