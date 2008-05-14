@@ -613,6 +613,7 @@
 		<object id="thrower-on-launcher"/>
 		<object id="traffic-lights"/>
 		<object id="turrel"/>
+		<object id="turrel-on-buggy"/>
 		<object id="umbrella"/>
 		<object id="van"/>
 		<object id="vehicle-machinegunner-bullet"/>
