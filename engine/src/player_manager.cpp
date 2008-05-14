@@ -245,6 +245,7 @@ TRY {
 			mrt::Serializator md(&message.data);
 			md.get(first_id);
 		}
+		LOG_DEBUG(("out-of-sync message : %d", first_id));
 
 		mrt::DictionarySerializator s;
 		serializeSlots(s);
