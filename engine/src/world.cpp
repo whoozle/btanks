@@ -80,6 +80,7 @@ void IWorld::clear() {
 	_atatat = _safe_mode = false;
 	profiler.dump();
 	_out_of_sync = -1;
+	_current_update_id = -1;
 }
 
 void IWorld::setMode(const std::string &mode, const bool value) {
@@ -90,7 +91,7 @@ void IWorld::setMode(const std::string &mode, const bool value) {
 }
 
 
-IWorld::IWorld() : _last_id(0), _safe_mode(false), _atatat(false), _max_dt(1), _out_of_sync(-1), _hp_bar(NULL) {
+IWorld::IWorld() : _last_id(0), _safe_mode(false), _atatat(false), _max_dt(1), _out_of_sync(-1), _current_update_id(-1), _hp_bar(NULL) {
 	LOG_DEBUG(("world ctor"));
 	init_map_slot.assign(this, &IWorld::initMap, Map->load_map_signal);
 	map_resize_slot.assign(this, &IWorld::onMapResize, Map->map_resize_signal);
@@ -1494,6 +1495,14 @@ void IWorld::generateUpdate(mrt::Serializator &s, const bool clean_sync_flag, co
 		
 		++n;
 	}
+	if (!sync_update) {
+		if (i != _objects.end()) {
+			_current_update_id = i->first;
+		} else {
+			_current_update_id = -1;
+		}
+	}
+	
 	{
 		int dummy = 0;
 		s.add(dummy); //end of stream marker
