@@ -1334,6 +1334,8 @@ Object * IWorld::deserializeObject(const mrt::Serializator &s) {
 		s.get(id);
 		if (id <= 0)
 			return NULL; //end of stream - to avoid needless estimate calculations
+		if (id > _last_id) 
+			_last_id = id;
 		
 		s.get(rn);
 		{
