@@ -232,7 +232,7 @@ TRY {
 		mrt::DictionarySerializator s(&message.data);
 		deserializeSlots(s);
 		float dt = (now + _net_stats.getDelta() - timestamp) / 1000.0f;
-		LOG_DEBUG(("update world, delta: %+d, dt: %g", _net_stats.getDelta(), dt));
+		//LOG_DEBUG(("update world, delta: %+d, dt: %g", _net_stats.getDelta(), dt));
 		World->applyUpdate(s, dt, message.has("sync"));
 		GameMonitor->deserialize(s);
 		break;
@@ -335,7 +335,7 @@ TRY {
 		ObjectMap updated_objects, interpolated_objects;
 
 		float dt = (now + _net_stats.getDelta() - timestamp) / 1000.0f;
-		//LOG_DEBUG(("update players, delta: %+d, dt: %g", _net_stats.getDelta(), dt));
+		//LOG_DEBUG(("update players, now: %d, timestamp: %d, _delta: %+d, dt: %g", now, timestamp, _net_stats.getDelta(), dt));
 		if (dt < 0) 
 			dt = 0;
 
