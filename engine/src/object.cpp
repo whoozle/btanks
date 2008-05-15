@@ -300,8 +300,8 @@ void Object::groupTick(const float dt) {
 				Object *parent = o->_parent;
 				assert(parent != NULL);
 				
-				while(o->_parent != NULL)
-					parent = o->_parent;
+				while(parent->_parent != NULL)
+					parent = parent->_parent;
 				
 				World->sync(parent->getID());
 			
