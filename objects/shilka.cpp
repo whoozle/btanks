@@ -233,9 +233,13 @@ const bool Shilka::take(const BaseObject *obj, const std::string &type) {
 	} else if (obj->classname == "missiles" && type == "nuke") {
 		remove_effect("dirt");
 		FakeMod *mod = getMod("mod");
-		mod->setType("mines:nuke");
 		int n;
 		Config->get("objects.shilka.nuke-mines-capacity", n, 3);
+
+		if (mod->getCount() >= n && mod->getType() == "mines:nuke")
+			return false;
+
+		mod->setType("mines:nuke");
 		mod->setCount(n);
 		return true;
 	}
