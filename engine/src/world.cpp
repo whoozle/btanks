@@ -1315,7 +1315,7 @@ void IWorld::serializeObject(mrt::Serializator &s, const Object *o, const bool f
 void IWorld::serialize(mrt::Serializator &s) const {
 	s.add(_last_id);
 	s.add((unsigned int)_objects.size());
-	for(ObjectMap::const_reverse_iterator i = _objects.rbegin(); i != _objects.rend(); ++i) {
+	for(ObjectMap::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		const Object *o = i->second;
 		serializeObject(s, o, true);
 	}
