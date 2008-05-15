@@ -116,7 +116,7 @@ void IPlayerManager::onDisconnect(const int cid) {
 void IPlayerManager::onMessage(const int cid, const Message &message) {
 TRY {
 	int now = SDL_GetTicks();
-	const unsigned timestamp = message.get_timestamp();
+	const int timestamp = (int)message.get_timestamp();
 	//LOG_DEBUG(("incoming message %s, incoming timestamp: %d, my timestamp: %d, delta + ping: %+d", message.getType(), timestamp, now, timestamp - now));
 	switch(message.type) {
 	case Message::ServerStatus: {
