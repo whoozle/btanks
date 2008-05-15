@@ -61,10 +61,17 @@ void BaseObject::serialize(mrt::Serializator &s) const {
 	s.add(_direction);
 	s.add(_moving_time);	
 	s.add(_idle_time);	
+
+	v2<float> pos = _position;
 	if (_interpolation_progress < 1.0f) {
-		s.add(_position + _interpolation_vector * ( 1.0f - _interpolation_progress));
-	} else 
-		s.add(_position);
+		Map->add(pos, _interpolation_vector * ( 1.0f - _interpolation_progress));
+	} else {
+		v2<float> pos = _position;
+		Map->validate(pos);
+	}
+
+	s.add(pos);
+
 	s.add(_z);
 
 	s.add(_state);
@@ -386,7 +393,7 @@ void BaseObject::uninterpolate() {
 	if (_interpolation_progress >= 1.0f)
 		return;
 	
-	_position += _interpolation_vector * (1.0f - _interpolation_progress);
+	Map->add(_position, _interpolation_vector * (1.0f - _interpolation_progress));
 	_interpolation_position_backup.clear();
 }
 

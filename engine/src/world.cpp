@@ -128,6 +128,7 @@ void IWorld::updateObject(Object *o) {
 	if (o->size.is0())
 		return;
 	
+	Map->validate(o->_position);
 	_grid.update(o, o->_position.convert<int>(), o->size.convert<int>());
 	on_object_update.emit(o);
 }
@@ -732,7 +733,7 @@ TRY {
 		if (dp > dp_max)
 			dp = dp_max;
 		
-		o._position += o._interpolation_vector * dp;
+		Map->add(o._position, o._interpolation_vector * dp);
 	} 
 		
 	TRY { 
@@ -814,6 +815,7 @@ TRY {
 	bool stuck = result_im >= 1.0f;
 
 	v2<int> new_pos = (o._position + dpos).convert<int>();
+	Map->validate(new_pos);
 
 /*
 	DOUBLE CHECK IT
@@ -879,6 +881,7 @@ TRY {
 			float im = (result_im < 1.0f)?result_im:0.9f;
 			pos = (new_velocity + o._position + (1.0f - im) * e_speed * obj_speed * o._velocity * dt).convert<int>();
 		}
+		Map->validate(pos);
 		
 		map_im = map.getImpassability(&o, pos, NULL, has_outline?(hidden_attempt + attempt):NULL) / 100.0f;
 		obj_im = getImpassability(&o, pos, &other_obj, attempt > 0);  //make sure no cached collision event reported here
@@ -921,7 +924,7 @@ TRY {
 		o._velocity = new_velocity;
 		hidden = hidden_attempt[attempt];
 	} else if (attempt == 3 || attempt == 4) {
-		o._position += new_velocity;
+		Map->add(o._position, new_velocity);
 		hidden = hidden_attempt[attempt];
 		o.setDirection(save_dir);
 	} else {
@@ -1056,8 +1059,9 @@ TRY {
 		obj_im = dim;
 	
 	new_pos = (o._position + dpos).convert<int>();
-
+	
 	if (!Map->torus()) {
+
 		if (!o.piercing) {
 			if ((dpos.x < 0 && new_pos.x < -o.size.x / 2) || (dpos.x > 0 && new_pos.x + o.size.x / 2 >= map_size.x))
 				dpos.x = 0;
@@ -1074,19 +1078,7 @@ TRY {
 	
 		}
 	}
-	o._position += dpos;
-	if (Map->torus()) {
-		if (o._position.x < 0)
-			o._position.x += map_size.x;
-		if (o._position.y < 0)
-			o._position.y += map_size.y;
-		
-		if (o._position.x >= map_size.x)
-			o._position.x -= map_size.x;
-		if (o._position.y >= map_size.y)
-			o._position.y -= map_size.y;
-	}
-
+	Map->add(o._position, dpos);
 	updateObject(&o);
 	
 } CATCH("tick(final)", throw;);
@@ -1257,10 +1249,16 @@ Object* IWorld::spawn(const Object *src, const std::string &classname, const std
 }
 
 void IWorld::serializeObjectPV(mrt::Serializator &s, const Object *o) const {
+	v2<float> pos = o->_position;
+
 	if (o->_interpolation_progress < 1.0f) {
-		s.add(o->_position + o->_interpolation_vector * ( 1.0f - o->_interpolation_progress ));
-	} else 
-		s.add(o->_position);
+		Map->add(pos, o->_interpolation_vector * ( 1.0f - o->_interpolation_progress));
+		s.add(pos);
+	} else {
+		Map->validate(pos);
+		s.add(pos);
+	}
+
 	s.add(o->_velocity);
 	s.add(o->getZ());
 	s.add(o->_direction);
@@ -1549,7 +1547,7 @@ void IWorld::interpolateObject(Object *o) {
 		return;
 	}
 			
-	o->_interpolation_vector = o->_position - o->_interpolation_position_backup;
+	o->_interpolation_vector = Map->distance(o->_interpolation_position_backup, o->_position);
 	o->_position = o->_interpolation_position_backup;
 	o->_interpolation_position_backup.clear();
 	o->_interpolation_progress = 0;
@@ -1789,6 +1787,7 @@ void IWorld::push(Object *parent, Object *object, const v2<float> &dpos) {
 	}
 
 	object->_position = parent->_position + dpos;
+	Map->validate(object->_position);
 	
 	pop_objects.erase(object_id);
 	push_objects.insert(ObjectMap::value_type(object_id, object));
