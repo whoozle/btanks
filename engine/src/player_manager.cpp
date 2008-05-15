@@ -1060,6 +1060,8 @@ void IPlayerManager::tick(const float dt) {
 TRY {
 	Uint32 now = SDL_GetTicks();
 	if (_server) {
+		_server->tick(dt);
+		
 		if (_next_sync.tick(dt) && isServerActive()) {
 			Message m(Message::UpdateWorld);
 			{
@@ -1072,7 +1074,6 @@ TRY {
 			//LOG_DEBUG(("sending world update... (size: %u)", (unsigned)m.data.getSize()));
 			broadcast(m, true);
 		}
-		_server->tick(dt);
 	}
 
 	if (_client) {
