@@ -328,7 +328,7 @@ TRY {
 		slot.need_sync = true;
 		
 		World->tick(*obj, dt);
-		//World->interpolateObject(obj);
+		World->interpolateObject(obj);
 		break;
 	} 
 	case Message::UpdatePlayers: { 
