@@ -68,6 +68,7 @@ void Message::serialize(mrt::Serializator &s) const {
 	s.add((int)type);
 	s.add<std::string, std::string>(_attrs);
 	s.add(data);
+	s.add(timestamp);
 }
 
 void Message::deserialize(const mrt::Serializator &s) {
@@ -77,6 +78,7 @@ void Message::deserialize(const mrt::Serializator &s) {
 	type = (Message::Type) t;
 	s.get<std::string, std::string>(_attrs);
 	s.get(data);
+	s.get(timestamp);
 }
 
 void Message::set(const std::string &key, const std::string &value) {
