@@ -434,8 +434,8 @@ TRY {
 		LOG_DEBUG(("pang: delta: %+d, server delta: %+d", delta, server_delta));
 		
 		_net_stats.updateDelta(delta);
-		if (server_delta)
-			_net_stats.updateDelta(-server_delta);
+		//if (server_delta)
+		//	_net_stats.updateDelta(-server_delta);
 
 		LOG_DEBUG(("ping: %g, delta: %d", _net_stats.getPing(), _net_stats.getDelta()));
 		
