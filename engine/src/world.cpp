@@ -1286,8 +1286,8 @@ void IWorld::deserializeObjectPV(const mrt::Serializator &s, Object *o) {
 		LOG_WARN(("skipped deserializeObjectPV for NULL object"));
 		return;
 	}
+	o->uninterpolate();
 	o->_interpolation_position_backup = o->_position;
-	o->_interpolation_progress = 1.0f;
 	
 	s.get(o->_position);
 	s.get(o->_velocity);
