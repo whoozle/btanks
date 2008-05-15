@@ -421,6 +421,7 @@
 		<object id="tank"/>
 		<object id="tank-bullet"/>
 		<object id="tent"/>
+		<object id="thrower"/>
 		<object id="thrower-item"/>
 		<object id="thrower-missile"/>
 		<object id="traffic-lights"/>
