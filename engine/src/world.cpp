@@ -1127,6 +1127,7 @@ void IWorld::tick(ObjectMap &objects, const float dt, const bool do_calculate) {
 		if (dt2 < 0) 
 			_tick(objects, dt2, do_calculate);
 	}
+	purge(dt);
 }
 
 
@@ -1138,7 +1139,6 @@ void IWorld::_tick(ObjectMap &objects, const float dt, const bool do_calculate) 
 			_tick(*o, dt, do_calculate);
 		} CATCH(mrt::formatString("tick for object[%p] id:%d %s:%s:%s", (void *)o, o->getID(), o->registered_name.c_str(), o->classname.c_str(), o->animation.c_str()).c_str(), throw;);
 	}
-	purge(dt);
 }
 
 void IWorld::purge(const float dt) {
