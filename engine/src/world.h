@@ -157,7 +157,7 @@ private:
 	int _last_id;
 	bool _safe_mode, _atatat;
 	float _max_dt;
-	int _out_of_sync, _current_update_id;
+	int _out_of_sync, _out_of_sync_sent, _current_update_id;
 	
 	const sdlx::Surface *_hp_bar;
 

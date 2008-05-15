@@ -80,6 +80,7 @@ void IWorld::clear() {
 	_atatat = _safe_mode = false;
 	profiler.dump();
 	_out_of_sync = -1;
+	_out_of_sync_sent = -1;
 	_current_update_id = -1;
 }
 
@@ -91,7 +92,9 @@ void IWorld::setMode(const std::string &mode, const bool value) {
 }
 
 
-IWorld::IWorld() : _last_id(0), _safe_mode(false), _atatat(false), _max_dt(1), _out_of_sync(-1), _current_update_id(-1), _hp_bar(NULL) {
+IWorld::IWorld() : _last_id(0), _safe_mode(false), _atatat(false), 
+	_max_dt(1), _out_of_sync(-1), _out_of_sync_sent(-1), _current_update_id(-1), _hp_bar(NULL) {
+	
 	LOG_DEBUG(("world ctor"));
 	init_map_slot.assign(this, &IWorld::initMap, Map->load_map_signal);
 	map_resize_slot.assign(this, &IWorld::onMapResize, Map->map_resize_signal);
@@ -1570,6 +1573,7 @@ TRY {
 	if (reset_sync) {
 		LOG_DEBUG(("catched update with 'sync' flag set"));
 		_out_of_sync = -1;
+		_out_of_sync_sent = -1;
 	}
 
 	ObjectMap objects;
@@ -1604,8 +1608,9 @@ TRY {
 	} CATCH("applyUpdate::tick", throw;);
 	
 	interpolateObjects(objects);
-	if (_out_of_sync != -1) {
+	if (_out_of_sync != _out_of_sync_sent) {
 		PlayerManager->requestObjects(_out_of_sync);
+		_out_of_sync_sent = _out_of_sync;
 	}
 	purge(_objects, 0);
 } CATCH("applyUpdate", throw;)
