@@ -171,9 +171,9 @@ const std::string Directory::getAppDir(const std::string &name, const std::strin
 }
 
 const std::string Directory::getHome() {
-    SDL_SysWMinfo   info;
 	HWND hwnd = NULL;
 /*
+    SDL_SysWMinfo   info;
     SDL_VERSION(&info.version);
     if (SDL_GetWMInfo(&info) != -1)
         hwnd = info.window;
