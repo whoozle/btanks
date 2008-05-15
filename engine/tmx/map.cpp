@@ -1074,6 +1074,7 @@ void IMap::damage(const v2<float> &position, const int hp) {
 		return;
 
 	v2<int> pos = position.convert<int>();
+	validate(pos);
 	pos.x /= _tw;
 	pos.y /= _th;
 	
