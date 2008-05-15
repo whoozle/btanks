@@ -297,6 +297,14 @@ void Object::groupTick(const float dt) {
 				delete o;
 				_group.erase(i++);
 			} else {
+				Object *parent = o->_parent;
+				assert(parent != NULL);
+				
+				while(o->_parent != NULL)
+					parent = o->_parent;
+				
+				World->sync(parent->getID());
+			
 				++i;
 			}
 			continue;
