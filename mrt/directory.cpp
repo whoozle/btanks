@@ -96,6 +96,7 @@ void Directory::create(const std::string &path, const bool recurse) {
 
 
 #else 
+#include <windows.h>
 #include <io.h>
 
 void Directory::open(const std::string &path) {
