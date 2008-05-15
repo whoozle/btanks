@@ -18,7 +18,7 @@
 
 #include "surface.h"
 #include "sdl_ex.h"
-#include "SDL/SDL_rwops.h"
+#include <SDL_rwops.h>
 #include "mrt/chunk.h"
 
 using namespace sdlx;
