@@ -318,7 +318,7 @@ TRY {
 		//obj->interpolate();
 		
 		float dt = (now + slot.net_stats.getDelta() - timestamp ) / 1000.0f; 
-		LOG_DEBUG(("player state, delta: %+d, dt: %g", slot.net_stats.getDelta(), dt));
+		LOG_DEBUG(("player state, now: %u, timestamp: %u, delta: %+d, dt: %g", now, timestamp, slot.net_stats.getDelta(), dt));
 		if (dt < 0) 
 			dt = 0;
 		World->tick(*obj, -dt, false);
@@ -401,8 +401,8 @@ TRY {
 			if (slot.remote != cid)
 				continue;
 			
-			if (client_delta) 
-				slot.net_stats.updateDelta(-client_delta);
+			//if (client_delta) 
+			//	slot.net_stats.updateDelta(-client_delta);
 			delta = slot.net_stats.getDelta();
 		}
 		
@@ -474,8 +474,8 @@ TRY {
 		
 			slot.net_stats.updatePing(ping);
 			slot.net_stats.updateDelta(delta);
-			if (client_delta)
-				slot.net_stats.updateDelta(-client_delta);
+			//if (client_delta)
+			//	slot.net_stats.updateDelta(-client_delta);
 			LOG_DEBUG(("player %u: ping: %g ms, delta: %+d", (unsigned)id, slot.net_stats.getPing(), slot.net_stats.getDelta()));		
 		}
 	} break;
@@ -1068,7 +1068,7 @@ TRY {
 				GameMonitor->serialize(s);
 				s.finalize(m.data);
 			}
-			LOG_DEBUG(("sending world update... (size: %u)", (unsigned)m.data.getSize()));
+			//LOG_DEBUG(("sending world update... (size: %u)", (unsigned)m.data.getSize()));
 			broadcast(m, true);
 		}
 		_server->tick(dt);
