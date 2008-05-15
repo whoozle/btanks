@@ -397,6 +397,7 @@
 		<object id="missiles-on-launcher"/>
 		<object id="missiles-on-tank"/>
 		<object id="nuke-explosion"/>
+		<object id="nuke-mine"/>
 		<object id="nuke-missile"/>
 		<object id="nuke-missiles-item"/>
 		<object id="outline"/>
@@ -421,6 +422,7 @@
 		<object id="tank-bullet"/>
 		<object id="tent"/>
 		<object id="thrower-item"/>
+		<object id="thrower-missile"/>
 		<object id="traffic-lights"/>
 		<object id="turrel-on-buggy"/>
 		<object id="vehicle-machinegunner-bullet"/>
