@@ -69,8 +69,7 @@ void Client::tick(const float dt) {
 
 	int id;
 	mrt::Chunk data;
-	int delta;
-	while(_monitor->recv(id, data, delta)) {
+	while(_monitor->recv(id, data)) {
 		assert(id == 0);
 		Message m;
 		m.deserialize2(data);
@@ -86,7 +85,7 @@ void Client::tick(const float dt) {
 		case Message::TextMessage:
 		case Message::DestroyMap:
 		case Message::PlayerMessage:
-			PlayerManager->onMessage(0, m, delta);
+			PlayerManager->onMessage(0, m);
 			break;
 
 		default:

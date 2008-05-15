@@ -110,9 +110,8 @@ TRY {
 
 			LOG_DEBUG(("data from addr %s (%d)", addr.getAddr().c_str(), r));
 			TRY {
-				int ts;
 				mrt::Chunk data;
-				Monitor::parse(data, buf, r, ts);
+				Monitor::parse(data, buf, r);
 				
 				Message msg;
 				msg.deserialize2(data);

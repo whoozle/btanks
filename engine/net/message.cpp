@@ -32,9 +32,11 @@
 #	include <arpa/inet.h>
 #endif
 
-Message::Message() : channel(-1), type(None), data(), _attrs() {}
+#include <SDL.h>
 
-Message::Message(const Message::Type type) : channel(-1), type(type), data(), _attrs() {}
+Message::Message() : channel(-1), type(None), data(), _attrs(), timestamp(SDL_GetTicks()) {}
+
+Message::Message(const Message::Type type) : channel(-1), type(type), data(), _attrs(), timestamp(SDL_GetTicks()) {}
 
 const char * Message::getType() const {
 	switch(type) {

@@ -44,7 +44,7 @@ public:
 	void send(const int id, const mrt::Chunk &data, const bool dgram = false);
 	void broadcast(const mrt::Chunk &data, const bool dgram = false);
 	void accept();
-	const bool recv(int &id, mrt::Chunk &data, int &timestamp);
+	const bool recv(int &id, mrt::Chunk &data);
 	const bool disconnected(int &id);
 	
 	void disconnect(const int id);
@@ -56,7 +56,7 @@ public:
 	Connection *pop();
 
 	static void pack(mrt::Chunk &result, const mrt::Chunk &rawdata, const int comp_level);
-	static void parse(mrt::Chunk &data, const unsigned char *buf, const int len, int &timestamp);
+	static void parse(mrt::Chunk &data, const unsigned char *buf, const int len);
 
 private:
 	void _accept();
@@ -79,7 +79,6 @@ private:
 		unsigned int len;
 		bool size_task;
 		unsigned char flags;
-		int timestamp;
 	};
 	
 	Task * createTask(const int id, const mrt::Chunk &data);

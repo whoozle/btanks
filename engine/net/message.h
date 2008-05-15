@@ -70,9 +70,13 @@ public:
 	Type type;
 
 	mrt::Chunk data;
+	
+	inline unsigned get_timestamp() const { return timestamp; }
+	
 private:
 	typedef std::map<const std::string, std::string> AttrMap;
 	AttrMap _attrs;
+	unsigned timestamp;
 };
 
 #endif

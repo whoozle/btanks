@@ -114,9 +114,8 @@ void Server::tick(const float dt) {
 	int id = -1;
 	TRY {
 		mrt::Chunk data;
-		int delta;
 		
-		while(_monitor->recv(id, data, delta)) {
+		while(_monitor->recv(id, data)) {
 			Message m;
 			m.deserialize2(data);
 
@@ -129,7 +128,7 @@ void Server::tick(const float dt) {
 			case Message::PlayerMessage: 
 			case Message::RequestObjects:
 			case Message::JoinTeam:
-				PlayerManager->onMessage(id, m, delta);
+				PlayerManager->onMessage(id, m);
 
 			case Message::ServerDiscovery:
 				break;

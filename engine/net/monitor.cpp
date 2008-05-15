@@ -1,4 +1,3 @@
-
 /* Battle Tanks Game
  * Copyright (C) 2006-2008 Battle Tanks team
  *
@@ -25,8 +24,9 @@
 #include "mrt/tcp_socket.h"
 #include "mrt/udp_socket.h"
 #include "mrt/gzip.h"
-#include "connection.h"
+
 #include "sdlx/timer.h"
+#include "connection.h"
 #include "message.h"
 #include "player_manager.h"
 
@@ -119,13 +119,13 @@ void Monitor::_accept() {
 }
 
 Monitor::Task::Task(const int id) : 
-	id(id), data(new mrt::Chunk), pos(0), len(0), size_task(false), flags(0), timestamp(0) {}
+	id(id), data(new mrt::Chunk), pos(0), len(0), size_task(false), flags(0){}
 
 Monitor::Task::Task(const int id, const mrt::Chunk &d) : 
-	id(id), data(new mrt::Chunk(d)), pos(0), len(data->getSize()), size_task(false), flags(0), timestamp(0) {}
+	id(id), data(new mrt::Chunk(d)), pos(0), len(data->getSize()), size_task(false), flags(0) {}
 
 Monitor::Task::Task(const int id, const int size) : 
-	id(id), data(new mrt::Chunk(size)), pos(0), len(data->getSize()), size_task(false), flags(0), timestamp(0) {}
+	id(id), data(new mrt::Chunk(size)), pos(0), len(data->getSize()), size_task(false), flags(0) {}
 
 void Monitor::Task::clear() { delete data; pos = len = 0; }
 
@@ -170,18 +170,15 @@ Monitor::Task * Monitor::createTask(const int id, const mrt::Chunk &rawdata) {
 
 	int size = data.getSize();
 
-	Task *t = new Task(id, size + 9);
+	Task *t = new Task(id, size + 5);
 
 	char * ptr = (char *) t->data->getPtr();
 
 	uint32_t nsize = htonl((long)size);
 	memcpy(ptr, &nsize, 4);
 
-	nsize = htonl((long)SDL_GetTicks());
-	memcpy(ptr + 4, &nsize, 4);
-
-	*((unsigned char *)t->data->getPtr() + 8) = flags;
-	memcpy((unsigned char *)t->data->getPtr() + 9, data.getPtr(), size);
+	*((unsigned char *)t->data->getPtr() + 4) = flags;
+	memcpy((unsigned char *)t->data->getPtr() + 5, data.getPtr(), size);
 	
 	return t;
 }
@@ -196,18 +193,15 @@ void Monitor::pack(mrt::Chunk &result, const mrt::Chunk &rawdata, const int comp
 
 	int size = data.getSize();
 
-	result.setSize(size + 9);
+	result.setSize(size + 5);
 
 	unsigned char * ptr = static_cast<unsigned char *>(result.getPtr());
 
 	uint32_t nsize = htonl((long)size);
 	memcpy(ptr, &nsize, 4);
 
-	nsize = htonl((long)SDL_GetTicks());
-	memcpy(ptr + 4, &nsize, 4);
-
-	*(ptr + 8) = flags;
-	memcpy(ptr + 9, data.getPtr(), size);
+	*(ptr + 4) = flags;
+	memcpy(ptr + 5, data.getPtr(), size);
 }
 
 void Monitor::send(const int id, const mrt::Chunk &rawdata, const bool dgram) {
@@ -250,7 +244,7 @@ Monitor::TaskQueue::iterator Monitor::findTask(TaskQueue &queue, const int conn_
 }
 
 
-const bool Monitor::recv(int &id, mrt::Chunk &data, int &timestamp) {
+const bool Monitor::recv(int &id, mrt::Chunk &data) {
 	sdlx::AutoMutex m(_result_mutex);
 	if (_result_q.empty())
 		return false;
@@ -262,8 +256,6 @@ const bool Monitor::recv(int &id, mrt::Chunk &data, int &timestamp) {
 		id = task->id;
 		data = *(task->data);
 		//LOG_DEBUG(("recv-ed %u bytes", (unsigned)data.getSize()));
-		timestamp = task->timestamp;
-
 		task->clear();
 	} CATCH("recv", { task->clear(); delete task; throw; });
 	delete task;
@@ -314,23 +306,22 @@ void Monitor::disconnect(const int cid) {
 	}
 }
 
-void Monitor::parse(mrt::Chunk &data, const unsigned char *buf, const int r, int &ts) {
-	if (r < 9) 
+void Monitor::parse(mrt::Chunk &data, const unsigned char *buf, const int r) {
+	if (r < 6) 
 		throw_ex(("packet too short (%u)", (unsigned)r));
 	
 	unsigned long len = ntohl(*((const uint32_t *)buf));
-	ts = ntohl(*((const uint32_t *)(buf + 4)));
 	if (len > 1048576)
 		throw_ex(("recv'ed packet length of %u. it seems to be far too long for regular packet (probably broken/obsoleted client)", (unsigned int)len));
 
-	unsigned char flags = buf[8];
+	unsigned char flags = buf[4];
 
 	if (flags & 1) {
 		mrt::Chunk src;
-		src.setData(buf + 9, r - 9);
+		src.setData(buf + 5, r - 5);
 		mrt::ZStream::decompress(data, src, false);
 	} else {
-		data.setData(buf + 9, r - 9);
+		data.setData(buf + 5, r - 5);
 	}
 }
 
@@ -391,7 +382,7 @@ TRY {
 			mrt::Socket::addr addr;
 			int r = _dgram_sock->recv(addr, buf, sizeof(buf));
 			//LOG_DEBUG(("recv() == %d", r));
-			//if (r > 9) {
+			//if (r > 5) {
 			TRY {
 				sdlx::AutoMutex m(_connections_mutex);
 				ConnectionMap::iterator i;
@@ -410,7 +401,7 @@ TRY {
 					TRY {
 						t = new Task(i->first);
 					
-						parse(*t->data, buf, r, t->timestamp);
+						parse(*t->data, buf, r);
 					} CATCH("processing datagram", {
 						delete t;
 						t = NULL;
@@ -427,8 +418,7 @@ TRY {
 
 					TRY {
 						mrt::Chunk data;
-						int ts = 0;
-						parse(data, buf, r, ts);
+						parse(data, buf, r);
 
 						Message msg;
 						msg.deserialize2(data);
@@ -512,7 +502,7 @@ TRY {
 
 				TaskQueue::iterator ti = findTask(_recv_q, cid);
 				if (ti == _recv_q.end()) {
-					Task *t = new Task(cid, 9);
+					Task *t = new Task(cid, 5);
 					t->size_task = true;
 					_recv_q.push_back(t);
 					//LOG_DEBUG(("added size task to r-queue"));
@@ -537,16 +527,14 @@ TRY {
 					if (t->size_task) {
 						const char * ptr = (char *)t->data->getPtr();
 						unsigned long len = ntohl(*((uint32_t *)ptr));
-						unsigned long ts = ntohl(*((uint32_t *)(ptr + 4)));
 						if (len > 1048576)
 							throw_ex(("recv'ed packet length of %u. it seems to be far too long for regular packet (probably broken/obsoleted client)", (unsigned int)len));
-						unsigned char flags = *((unsigned char *)(t->data->getPtr()) + 8);
+						unsigned char flags = *((unsigned char *)(t->data->getPtr()) + 4);
 						//LOG_DEBUG(("added task for %u bytes. flags = %02x", len, flags));
 						eraseTask(_recv_q, ti);
 						
 						Task *t = new Task(cid, len);
 						t->flags = flags;
-						t->timestamp = ts;
 						_recv_q.push_back(t);
 					} else {
 						if (t->flags & 1) {
