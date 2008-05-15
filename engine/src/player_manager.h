@@ -92,7 +92,7 @@ public:
 	void render(sdlx::Surface &window, const int x, const int y);
 	
 	const int onConnect(Message &message);
-	void onMessage(const int id, const Message &message, const int delta);
+	void onMessage(const int id, const Message &message);
 	void onDisconnect(const int id);	
 	void onMap();
 	
