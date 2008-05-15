@@ -127,7 +127,7 @@ void IWindow::initSDL() {
 #endif
 
 	LOG_DEBUG(("initializing SDL..."));
-	Uint32 subsystems = SDL_INIT_VIDEO | SDL_INIT_TIMER | (_init_joystick?SDL_INIT_JOYSTICK:0);
+	Uint32 subsystems = SDL_INIT_VIDEO | SDL_INIT_TIMER | (_init_joystick? SDL_INIT_JOYSTICK: 0);
 #ifdef DEBUG
 	sdlx::System::init(subsystems | SDL_INIT_NOPARACHUTE);
 #else
