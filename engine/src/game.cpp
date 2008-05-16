@@ -18,7 +18,6 @@
 
 #include <stdlib.h>
 #include <time.h>
-#include <math.h>
 #include "object.h"
 #include "game.h"
 #include "version.h"
@@ -70,6 +69,7 @@
 #include "menu/tooltip.h"
 
 #include "i18n.h"
+#define _USE_MATH_DEFINES
 #include <math.h>
 #include "special_owners.h"
 #include "mrt/calendar.h"
