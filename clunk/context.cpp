@@ -192,6 +192,7 @@ void Context::init(const int sample_rate, const Uint8 channels, int period_size)
 //	SDL_InitSubSystem(SDL_INIT_AUDIO);
 	SDL_PauseAudio(0);
 	
+	AudioLocker l;
 	listener = create_object();
 }
 
@@ -207,10 +208,11 @@ void Context::deinit() {
 	if (!SDL_WasInit(SDL_INIT_AUDIO))
 		return;
 	
+	AudioLocker l;
 	delete listener;
 	listener = NULL;
-	
-	SDL_PauseAudio(1);
+	SDL_CloseAudio();
+
 	SDL_QuitSubSystem(SDL_INIT_AUDIO);
 }
 	
