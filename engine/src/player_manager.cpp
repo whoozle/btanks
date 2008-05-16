@@ -257,7 +257,7 @@ TRY {
 		GameMonitor->serialize(s);
 			
 		Message m(Message::UpdateWorld);
-		m.set("sync", "1");
+		m.set("sync", mrt::formatString("%d", first_id));
 		s.finalize(m.data);
 		_server->send(cid, m);
 		break;
