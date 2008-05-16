@@ -1,42 +1,64 @@
 0.8.*: 
+	*) CaptureTheFlag AND TEAMDEATHMATCH!
+		*) Spectator mode and life loans. 
+		*) Rewrote frags handling in a accurate and clean way.
+		*) Added team colors to the chat.
+		*) Automatic join/leave and insulting messages.
+
+	*) Gameplay fixes: 
+		*) Removed acceleration code for all objects. This added annoying effect of slowness.
+			 (especially while playing on gamepad). Adjusted speed for the most of the objects.
+		*) Help player with diagonal aiming (small delay between releasing buttons to allow stay in diagonal position)
+		*) Added one-way teleports.
+		*) Grenade amd mortar's "can" could fly over fences and other stuff.
+		*) Several double-takes fixed.
+		*) "Telefrag" - if two or more players teleports in the same teleport, only the last one survives.
+		*) Changed the oldest visual effect : earthquake to the smooth one. :)
+	
 	*) Multiplayer fixes: 
 		*) Added 'scan' feature - scanning/querying servers in the local network. 
-		*) Keep clients connected between games
+		*) Keep clients connected between games. 
 		*) reuse UDP address. Added broadcast mode support.
 		*) New on-demand serialization model: 2-3-10 times smaller packets send thru network.
 		*) Improved client dialog: show map/slots info and hostname/ip. 
-		*) Removed unnesessary memory allocation in serializator
-	*) Massive performance optimizations, removed almost all object loops. [ported to object grid]
-	*) Removed acceleration code for all objects. This added annoying effect of slowness.
-		 (especially while playing on gamepad).
-	*) Put resources in single big file.
-	*) In a kill'em'all mode show marks on map if 5 or less targets available. 
-	*) Rewrite frags handling in a accurate and clean way.
-	*) Map editor went public (user unfriendly) 
-	*) Help player with diagonal aiming (small delay between releasing buttons to allow stay in diagonal position)
-	*) Various menu controls improvements/fixes.
-	*) Added Direct3d(tm)(r) wrapper for SDL (2d over 3d).  No more OpenGL(tm) on Microsoft(r) Windows(tm). :)
-	*) Added MPEG-1 video control for GUI (campaign dialog)
-	*) Added `trainophobic' variant for the troops (attacking train)
-	*) Added `obey` effect for controlling ai objects from script. Added pose control functions. Added timer.
-	*) Grenade could fly over fences and other stuff.
-	*) Removed sigc++ library in a favor of my own stupid lite and working sl08 (what a weird name though) :)
-	*) All stuff ported to g++ 4.3, made sources compatible with the recent STLPort
-	*) Get available resolutions from the SDL, removed hardcored values.
-	*) Added stubs for server mode.
+		*) Removed unnesessary memory allocation in serializator.
+		*) Added dictionary-based serializator for the better compression.
+		*) Server mode with registration on the master server. 
+		*) Round-robin updates broken in smaller pieces - better consistancy, less glitches.
+		*) Moved timestamp code into engine level to avoid timing errors.
+
+	*) Scripting improvements: 
+		*) Added `trainophobic' variant for the troops (attacking train)
+		*) Added `obey` effect for controlling ai objects from script. Added pose control functions. Added timer.
+
 	*) Implemented 3d-spatial sound library with HRTF (clunk). Dropped OpenAL support.
 		*) Unlimited objects
 		*) Unlimited sources
 		*) Unlimited music streams with simple api. 
 		*) HRTF and family
 		*) Fadeout sample cancellation
-	*) Added one-way teleports
-	*) Spectator mode and life loan. 
+	
+	*) Massive performance optimizations: 
+		*) Inner object loops ported to the grid-based approach. 
+		*) Added notifications for the adding/removing objects from the map.
+
+	*) Added pick/drop api to the engine. CTF flag use picking and dropping now. 
+	*) Put resources in single big file.
+	*) In a kill'em'all mode show marks on map if 5 or less targets available. 
+	*) Map editor went public (user unfriendly) 
+	*) Various menu controls improvements/fixes.
+	*) Added Direct3d(tm)(r) wrapper for SDL (2d over 3d).  No more OpenGL(tm) on Microsoft(r) Windows(tm). :)
+	*) Added MPEG-1 video control for GUI (campaign dialog)
+	*) Removed sigc++ library in a favor of my own stupid lite and working sl08 (what a weird name though) :)
+	*) All stuff ported to g++ 4.3, made sources compatible with the recent STLPort
+	*) Get available resolutions from the SDL, removed hardcored values.
 	*) Better random with the period of 2^32
 	*) Rewrite core alarming system in a clean and simple way.
 	*) Remove some deques if no random access needed. (avoid iterator corruption too)
 	*) Fixed possible thread-safety problems in network threads. 
-	*) Billions bugfixes.
+	*) Added various messages while loading game.
+	*) Fixed torus modes once again: pathfinding and position validation.
+	*) Billions bugfixes. 
 	
 0.7.5800: 
 	*) Introduce lua scripting support (map zones and special handlers): 
