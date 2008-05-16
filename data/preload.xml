@@ -417,6 +417,7 @@
 		<object id="static-mortar"/>
 		<object id="static-shilka"/>
 		<object id="static-tank"/>
+		<object id="stun-missile"/>
 		<object id="stun-missiles-item"/>
 		<object id="tank"/>
 		<object id="tank-bullet"/>
