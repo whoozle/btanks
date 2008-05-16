@@ -234,7 +234,10 @@ TRY {
 		deserializeSlots(s);
 		float dt = (now + _net_stats.getDelta() - timestamp) / 1000.0f;
 		//LOG_DEBUG(("update world, delta: %+d, dt: %g", _net_stats.getDelta(), dt));
-		World->applyUpdate(s, dt, message.has("sync"));
+		int sync_id = -1;
+		if (message.has("sync"))
+			sync_id = atoi(message.get("sync").c_str());
+		World->applyUpdate(s, dt, sync_id);
 		GameMonitor->deserialize(s);
 		break;
 	} 
@@ -497,7 +500,7 @@ TRY {
 		float dt = (now + _net_stats.getDelta() - timestamp) / 1000.0f;
 		LOG_DEBUG(("respawn, delta: %+d, dt: %g", _net_stats.getDelta(), dt));
 	
-		World->applyUpdate(s, dt, false);
+		World->applyUpdate(s, dt);
 		} CATCH("on-message(respawn)", throw;);
 	break;
 	}

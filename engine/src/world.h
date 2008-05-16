@@ -82,7 +82,7 @@ public:
 	virtual void serialize(mrt::Serializator &s) const;
 	virtual void deserialize(const mrt::Serializator &s);
 	void generateUpdate(mrt::Serializator &s, const bool clean_sync_flag, const int first_id = -1);
-	void applyUpdate(const mrt::Serializator &s, const float dt, const bool reset_sync_flag);
+	void applyUpdate(const mrt::Serializator &s, const float dt, const int sync_id = -1);
 
 	void serializeObject(mrt::Serializator &, const Object *, const bool force) const;
 	Object* deserializeObject(const mrt::Serializator &);

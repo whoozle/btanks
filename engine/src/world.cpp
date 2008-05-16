@@ -138,16 +138,50 @@ void IWorld::addObject(Object *o, const v2<float> &pos, const int id) {
 		throw_ex(("adding NULL as world object is not allowed"));
 	o->_id = (id > 0)?id:++_last_id;
 	
-	assert (_objects.find(o->_id) == _objects.end());
+	ObjectMap::iterator existing_object = _objects.find(o->_id);
+	if (_safe_mode && existing_object != _objects.end()) {
+		//client mode: actual id may overlap due possible races.
+		//note that it's temporary solution: on the next cropping update
+		//this objects will be killed or replaced :)
+		if (id > 0) {
+			Object *eo = existing_object->second;
+			_grid.remove(eo);
+			delete eo;
+			existing_object->second = o;
+		} else {
+			ObjectMap::iterator i;
+			for(i = existing_object; i != _objects.end(); ++i) {
+				Object *eo = i->second;
+				if (eo->_dead) {
+					_grid.remove(eo);
+					delete eo; 
+
+					o->_id = i->first;
+					i->second = o;
+					break;
+				}
+			}
+
+			if (i == _objects.end()) {
+				o->_id = _objects.rbegin()->first + 1;
+				assert(_objects.find(o->_id) == _objects.end());
+				_objects.insert(ObjectMap::value_type(o->_id, o));
+			}
+		}
+		
+	} else {
+		assert(o->_id > 0);
+		assert (existing_object == _objects.end());
+		_objects.insert(ObjectMap::value_type(o->_id, o));
+	}
 
 	o->_position = pos;
 	
-	assert(o->_id > 0);
-	_objects[o->_id] = o;
 	if (o->_variants.has("ally")) {
 		o->removeOwner(OWNER_MAP);
 		o->prependOwner(OWNER_COOPERATIVE);
 	}
+	
 	assert(o->_group.empty());
 	o->onSpawn();
 //	if (o->getState().empty())
@@ -1565,13 +1599,15 @@ void IWorld::interpolateObjects(ObjectMap &objects) {
 	}
 }
 
-void IWorld::applyUpdate(const mrt::Serializator &s, const float dt, const bool reset_sync) {
+void IWorld::applyUpdate(const mrt::Serializator &s, const float dt, const int sync_id) {
 TRY {
 	_collision_map.clear();
-	if (reset_sync) {
-		LOG_DEBUG(("catched update with 'sync' flag set"));
-		_out_of_sync = -1;
-		_out_of_sync_sent = -1;
+	if (sync_id > 0) {
+		LOG_DEBUG(("catched update with 'sync=%d' flag set", sync_id));
+		if (_out_of_sync <= sync_id) {
+			_out_of_sync = -1;
+			_out_of_sync_sent = -1;
+		}
 	}
 
 	ObjectMap objects;
