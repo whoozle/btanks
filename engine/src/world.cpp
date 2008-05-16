@@ -1604,7 +1604,7 @@ TRY {
 	_collision_map.clear();
 	if (sync_id > 0) {
 		LOG_DEBUG(("catched update with 'sync=%d' flag set", sync_id));
-		if (_out_of_sync <= sync_id) {
+		if (_out_of_sync >= sync_id) {
 			_out_of_sync = -1;
 			_out_of_sync_sent = -1;
 		}
