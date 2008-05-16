@@ -121,7 +121,7 @@ private:
 
 	bool _autojoin;
 
-	float _shake;
+	float _shake, _shake_max;
 	int _shake_int;
 	
 	Hud *_hud;

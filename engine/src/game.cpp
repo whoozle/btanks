@@ -76,7 +76,7 @@
 IMPLEMENT_SINGLETON(Game, IGame);
 
 IGame::IGame() : _main_menu(NULL),
- _autojoin(false), _shake(0), _show_stats(false), _credits(NULL), _cheater(NULL), _tip(NULL), _net_talk(NULL) {
+ _autojoin(false), _shake(0), _shake_max(0), _show_stats(false), _credits(NULL), _cheater(NULL), _tip(NULL), _net_talk(NULL) {
 
 	std::string path;
 	path = mrt::Directory::getAppDir("Battle Tanks", "btanks") + "/";
@@ -737,13 +737,14 @@ void IGame::onTick(const float dt) {
 		}
 	
 		if (_shake > 0) {
-			vy += _shake_int;
+			vy += (int)floor(_shake_int * 5 * sin((1 - _shake / _shake_max) * M_PI * 2 * 6) * (_shake / _shake_max));
+			//vy += _shake_int;
 		}		
 
 		PlayerManager->render(window, vx, vy);
 		
 		if (_shake > 0) {
-			_shake_int = -_shake_int;
+			//_shake_int = -_shake_int;
 			_shake -= dt;
 		}
 		
@@ -857,6 +858,7 @@ void IGame::clear() {
 
 void IGame::shake(const float duration, const int intensity) {
 	_shake = duration;
+	_shake_max = duration;
 	_shake_int = intensity;
 }
 
