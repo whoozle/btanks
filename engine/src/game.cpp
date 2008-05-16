@@ -18,6 +18,7 @@
 
 #include <stdlib.h>
 #include <time.h>
+#include <math.h>
 #include "object.h"
 #include "game.h"
 #include "version.h"
