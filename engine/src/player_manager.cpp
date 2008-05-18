@@ -318,8 +318,8 @@ TRY {
 		}
 
 		assert(slot.id == obj->getID());
-		//obj->uninterpolate();
-		//obj->interpolate();
+		obj->uninterpolate();
+		obj->interpolate();
 		
 		float dt = (now + slot.net_stats.getDelta() - timestamp ) / 1000.0f; 
 		LOG_DEBUG(("player state, now: %u, timestamp: %u, delta: %+d, dt: %g", now, timestamp, slot.net_stats.getDelta(), dt));
