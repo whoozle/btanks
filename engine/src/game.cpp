@@ -115,15 +115,15 @@ void IGame::run() {
 		server_running = true;
 		LOG_DEBUG(("server is up and running!"));
 		sdlx::Timer _timer;	
-		const float limit = 1.0f / 100;
-		float dt = limit;
+		
+		int limit = 1000000 / 100;
+		float dt = limit / 1000000;
 		while(server_running) {
 			_timer.reset();
 			tick(dt);
-			float dt2 = _timer.microdelta() / 1000000.0f;
-			//LOG_DEBUG(("dt2 %g", dt2));
-			if (dt2 < limit) {
-				_timer.microsleep("server fps limit", (int)((limit - dt2) * 1000000));
+			int t = _timer.microdelta();
+			if (t < limit) {
+				_timer.microsleep("server fps limit", limit - t);
 			}
 			dt = _timer.microdelta() / 1000000.0f;
 		}
