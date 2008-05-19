@@ -116,11 +116,12 @@ void Teleport::emit(const std::string &event, Object * emitter) {
 
 		//LOG_DEBUG(("dst z = %d, dst box base = %d", dst->getZ(), ZBox::getBoxBase(dst->getZ())));
 		emitter->setZBox(ZBox::getBoxBase(dst->getZ()));
-		if (dst->track > 0) {
+		if (dst->track > 0 && dst->track != emitter->getID()) {
 			//telefrag detection
 			PlayerSlot *slot = PlayerManager->getSlotByID(dst->track);
 			Object *o;
 			if (slot != NULL && (o = slot->getObject()) != NULL) {
+				//LOG_DEBUG(("telefragged %s", o->animation.c_str()));
 				o->add_effect("telefrag", -1);
 				o->emit("death", emitter);
 			}
