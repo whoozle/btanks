@@ -274,8 +274,9 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::R
 		
 			if (o->_z < _z1 || o->_z >= _z2) 	
 				continue;
-		
-			sdlx::Rect r((int)o->_position.x, (int)o->_position.y, (int)o->size.x, (int)o->size.y);
+			
+			v2<float> position = o->_parent != NULL? o->_position + o->_parent->_position: o->_position;
+			sdlx::Rect r((int)position.x, (int)position.y, (int)o->size.x, (int)o->size.y);
 			bool fogged = fog;// && o->speed != 0;
 			//LOG_DEBUG(("%d,%d:%d,%d vs %d,%d:%d,%d result: %s", 
 			//	r.x, r.y, r.w, r.h, src_rect.x, src_rect.y, src_rect.w, src_rect.h, Map->intersects(r, src_rect)?"true":"false"));
@@ -308,7 +309,8 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::R
 		}
 		z1 = z2;
 		//LOG_DEBUG(("rendering %s with %d,%d", o.animation.c_str(), (int)o._position.x - src.x + dst.x, (int)o._position.y - src.y + dst.y));
-		v2<int> screen_pos((int)o->_position.x - src.x, (int)o->_position.y - src.y);
+		v2<float> position = o->_parent != NULL? o->_position + o->_parent->_position: o->_position;
+		v2<int> screen_pos((int)position.x - src.x, (int)position.y - src.y);
 		if (Map->torus()) {
 			screen_pos %= map_size;
 			if (screen_pos.x < 0 && screen_pos.x + o->size.x < 0)
@@ -1847,5 +1849,6 @@ Object * IWorld::pop(Object *object) {
 
 	pop_objects.insert(object_id);
 	assert(r != NULL);
+	r->_position.clear();
 	return r;
 }

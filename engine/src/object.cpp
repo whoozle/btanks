@@ -72,7 +72,6 @@ Object::Object(const std::string &classname) :
 	_way(), _next_target(), _next_target_rel(), 
 	_rotation_time(0), 
 	_dst_direction(-1), 
-	_position_delta(), 
 	_group(), _blinking(true), 
 	_slot_id(-1)
 	 {
@@ -288,9 +287,6 @@ void Object::groupTick(const float dt) {
 		assert(o != NULL);
 		assert(o->_parent == this);
 		
-		o->_position = _position + o->_position_delta;
-		o->_velocity = _velocity;
-
 		if (o->isDead()) {
 			LOG_DEBUG(("%d:%s, grouped '%s':%s is dead.", getID(), animation.c_str(), i->first.c_str(), o->animation.c_str()));
 			if (!safe_mode) {
@@ -550,7 +546,6 @@ void Object::serialize(mrt::Serializator &s) const {
 	
 	s.add(_rotation_time);
 	s.add(_dst_direction);
-	s.add(_position_delta);
 
 	_blinking.serialize(s);
 }
@@ -643,7 +638,6 @@ try {
 
 	s.get(_rotation_time);
 	s.get(_dst_direction);
-	s.get(_position_delta);
 
 	_blinking.deserialize(s);
 
@@ -921,13 +915,14 @@ Object* Object::add(const std::string &name, const std::string &classname, const
 	obj->_id = _id;
 	obj->_spawned_by = _id;
 	obj->setSlot(getSlot());
+	obj->_position = dpos;
 
 	obj->onSpawn();
 	
-	obj->_position_delta = dpos;
+	
 	switch(type) {
 		case Centered:
-			obj->_position_delta += (size - obj->size)/2;
+			obj->_position += (size - obj->size)/2;
 			break;
 		case Fixed:
 			break;

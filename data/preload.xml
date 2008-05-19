@@ -375,6 +375,8 @@
 		<object id="car"/>
 		<object id="civilian"/>
 		<object id="corpse"/>
+		<object id="ctf-base"/>
+		<object id="ctf-flag"/>
 		<object id="damage-digits"/>
 		<object id="dispersion-bullet"/>
 		<object id="dispersion-bullets-item"/>
