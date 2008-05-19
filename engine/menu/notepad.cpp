@@ -51,7 +51,7 @@ void Notepad::recalculate_sizes() {
 
 void Notepad::getSize(int &w, int &h) const {
 	w = width;
-	h = font->getHeight();
+	h = tabbg->getHeight();
 }
 
 bool Notepad::onMouse(const int button, const bool pressed, const int x, const int y) {
