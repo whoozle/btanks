@@ -53,6 +53,8 @@
 		<property name="object:car:white-car:10" value="@10,7"/>
 		<property name="object:car:yellow-car:1" value="@16,10"/>
 		<property name="object:car:yellow-car:2" value="@0,3"/>
+		<property name="object:ctf-base:ctf-base-green:1" value="1022,810,1990"/>
+		<property name="object:ctf-base:ctf-base-red:1" value="119,65,1990"/>
 		<property name="object:dispersion-bullets-item:dispersion-bullets-item:1" value="962,822"/>
 		<property name="object:dumb-missiles-item:dumb-missiles-item:1" value="@10,5"/>
 		<property name="object:dumb-missiles-item:dumb-missiles-item:2" value="@2,13"/>
@@ -68,7 +70,6 @@
 		<property name="object:helicopter:helicopter:special-4" value="@6,9,2800"/>
 		<property name="object:helicopter:helicopter:special-5" value="@9,9,2800"/>
 		<property name="object:helicopter:helicopter:special-6" value="@6,6,2800"/>
-
 		<property name="object:machinegunner-item:machinegunner-item:2" value="433,305"/>
 		<property name="object:machinegunner-item:machinegunner-item:3" value="1064,72,2150"/>
 		<property name="object:megaheal:megaheal:1" value="623,411,2150"/>

@@ -237,6 +237,8 @@
 		<object id="cannon-explosion"/>
 		<object id="car"/>
 		<object id="corpse"/>
+		<object id="ctf-base"/>
+		<object id="ctf-flag"/>
 		<object id="damage-digits"/>
 		<object id="dispersion-bullet"/>
 		<object id="dispersion-bullets-item"/>
@@ -562,6 +564,8 @@
 		<object id="bus-stop"/>
 		<object id="car"/>
 		<object id="corpse"/>
+		<object id="ctf-base"/>
+		<object id="ctf-flag"/>
 		<object id="damage-digits"/>
 		<object id="dispersion-bullet"/>
 		<object id="dispersion-bullets-item"/>
@@ -633,6 +637,8 @@
 	<map id="paintball">
 		<object id="alt-missiles-on-launcher"/>
 		<object id="corpse"/>
+		<object id="ctf-base"/>
+		<object id="ctf-flag"/>
 		<object id="damage-digits"/>
 		<object id="dispersion-bullet"/>
 		<object id="dispersion-bullets-item"/>
