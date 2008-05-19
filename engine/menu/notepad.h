@@ -16,10 +16,11 @@ namespace sdlx {
 
 class Notepad : public Control {
 public: 
-	Notepad(const int w, const int h, const std::string &font);
+	Notepad(const int w, const std::string &font);
 	void add(const std::string &area, const std::string &label);
 	void render(sdlx::Surface &surface, const int x, const int y) const;
 	void getSize(int &w, int &h) const;
+	bool onMouse(const int button, const bool pressed, const int x, const int y);
 
 private:
 	void recalculate_sizes();
