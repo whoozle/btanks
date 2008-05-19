@@ -771,6 +771,8 @@
 		<object id="cannon-explosion"/>
 		<object id="car"/>
 		<object id="corpse"/>
+		<object id="ctf-base"/>
+		<object id="ctf-flag"/>
 		<object id="damage-digits"/>
 		<object id="dispersion-bullet"/>
 		<object id="dispersion-bullets-item"/>
@@ -797,6 +799,8 @@
 		<object id="megaheal"/>
 		<object id="missiles-on-launcher"/>
 		<object id="missiles-on-tank"/>
+		<object id="mortar-bullet"/>
+		<object id="mortar-explosion"/>
 		<object id="oil-barrels"/>
 		<object id="outline"/>
 		<object id="ricochet-bullet"/>
