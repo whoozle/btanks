@@ -73,6 +73,12 @@
 			<string id="cooperative" lang="fr">COOPÉRATION</string>
 			<string id="cooperative" lang="de">KOOPERATION</string>
 			<string id="cooperative" lang="it">SQUADRE</string>
+
+			<string id="capture-the-flag">CAPTURE THE FLAG</string>
+			<string id="capture-the-flag" lang="ru">ЗАХВАТ ФЛАГА</string>
+
+			<string id="team-deathmatch">TEAM DEATHMATCH</string>
+			<string id="team-deathmatch" lang="ru">КОМАНДНЫЙ ДЕСМАТЧ</string>
 		</area>
 
 		<string id="add">ADD</string>
