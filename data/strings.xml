@@ -34,11 +34,11 @@
 		<string id="ok" lang="de">ОК</string>
 		<string id="ok" lang="it">ОК</string>
 		
-		<string id="mode">MODE</string>
-		<string id="mode" lang="ru">РЕЖИМ</string>
-		<string id="mode" lang="fr">MODE</string>
-		<string id="mode" lang="de">MODE</string>
-		<string id="mode" lang="it">MODO</string>
+		<string id="mode">Mode</string>
+		<string id="mode" lang="ru">Режим игры</string>
+		<string id="mode" lang="fr">Mode</string>
+		<string id="mode" lang="de">Mode</string>
+		<string id="mode" lang="it">Mode</string>
 		
 		<string id="split-screen">SPLIT SCREEN</string>
 		<string id="split-screen" lang="ru">ДВОЕ ИГРОКОВ</string>
