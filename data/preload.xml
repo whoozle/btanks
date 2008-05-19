@@ -388,6 +388,7 @@
 		<object id="heal"/>
 		<object id="helmet"/>
 		<object id="impassable-static-corpse"/>
+		<object id="launcher"/>
 		<object id="machinegunner"/>
 		<object id="machinegunner-bullet"/>
 		<object id="machinegunner-item"/>

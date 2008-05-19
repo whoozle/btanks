@@ -805,7 +805,15 @@ void IGameMonitor::loadMap(Campaign *campaign, const std::string &name, const bo
 				item.setup(res[3], res[4]);
 				item.dir = dir;
 				
-				if (RTConfig->editor_mode || (RTConfig->game_type == GameTypeCTF || classname.compare(0, 4, "ctf-") != 0))
+				bool add_item = true; 
+				
+				if (classname.compare(0, 4, "ctf-") == 0 || res[3].find("(ctf)") != std::string::npos || res[4].find("(ctf)") != std::string::npos)
+					add_item = RTConfig->game_type == GameTypeCTF;
+
+				if (res[3].find("(no-ctf)") != std::string::npos || res[4].find("(no-ctf)") != std::string::npos)
+					add_item = RTConfig->game_type != GameTypeCTF;
+								
+				if (RTConfig->editor_mode || add_item)
 					add(item, true);
 			} else if (type == "config") {
 				if (res.size() < 2)
