@@ -127,6 +127,7 @@ void MapPicker::tick(const float dt) {
 	Container::tick(dt);
 }
 
+#include "notepad.h"
 
 MapPicker::MapPicker(const int w, const int h) : _index(0) {
 	std::vector<std::string> path;
@@ -155,6 +156,20 @@ MapPicker::MapPicker(const int w, const int h) : _index(0) {
 	int xdummy, ybase;
 	_upper_box->getSize(xdummy, ybase);
 	ybase += 4;
+	
+	Notepad * notepad = new Notepad(w, "medium");
+	
+	notepad->add("menu/modes", "deathmatch");
+	notepad->add("menu/modes", "team-deathmatch");
+	notepad->add("menu/modes", "cooperative");
+	notepad->add("menu/modes", "capture-the-flag");
+
+	add(0, ybase, notepad);
+	{
+		int w, h;
+		notepad->getSize(w, h);
+		ybase += h;
+	}
 
 	sdlx::Rect list_pos(0, ybase, (w - 64)/3, h - 256);
 	_list = NULL;
@@ -194,6 +209,7 @@ MapPicker::MapPicker(const int w, const int h) : _index(0) {
 	_list->getSize(xdummy, ydummy);
 	ybase += ydummy + 4;
 	add(0, ybase, _mode_panel = new ModePanel(w));
+
 }
 
 void MapPicker::fillSlots() const {
