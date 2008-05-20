@@ -275,7 +275,7 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::R
 			if (o->_z < _z1 || o->_z >= _z2) 	
 				continue;
 			
-			v2<float> position = o->_parent != NULL? o->_position + o->_parent->_position: o->_position;
+			v2<float> position = o->get_absolute_position();
 			sdlx::Rect r((int)position.x, (int)position.y, (int)o->size.x, (int)o->size.y);
 			bool fogged = fog;// && o->speed != 0;
 			//LOG_DEBUG(("%d,%d:%d,%d vs %d,%d:%d,%d result: %s", 
@@ -309,7 +309,7 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::R
 		}
 		z1 = z2;
 		//LOG_DEBUG(("rendering %s with %d,%d", o.animation.c_str(), (int)o._position.x - src.x + dst.x, (int)o._position.y - src.y + dst.y));
-		v2<float> position = o->_parent != NULL? o->_position + o->_parent->_position: o->_position;
+		v2<float> position = o->get_absolute_position();
 		v2<int> screen_pos((int)position.x - src.x, (int)position.y - src.y);
 		if (Map->torus()) {
 			screen_pos %= map_size;
@@ -1221,7 +1221,7 @@ Object* IWorld::spawn(const Object *src, const std::string &classname, const std
 	
 	//LOG_DEBUG(("spawning %s, position = %g %g dPosition = %g:%g, velocity: %g %g", 
 	//	classname.c_str(), src->_position.x, src->_position.y, dpos.x, dpos.y, vel.x, vel.y));
-	v2<float> pos = src->_position + (src->size / 2)+ dpos - (obj->size / 2);
+	v2<float> pos = src->get_absolute_position() + (src->size / 2)+ dpos - (obj->size / 2);
 
 	obj->_z -= ZBox::getBoxBase(obj->_z);
 	obj->_z += ZBox::getBoxBase(src->_z);
@@ -1235,7 +1235,6 @@ Object* IWorld::spawn(const Object *src, const std::string &classname, const std
 	obj->_z += ZBox::getBoxBase(src->_z);
 	//LOG_DEBUG(("spawn: %s: %d, parent: %s, %d", obj->animation.c_str(), obj->_z, src->animation.c_str(), src->_z));
 
-	//LOG_DEBUG(("result: %f %f", obj->_position.x, obj->_position.y));
 	return obj;
 }
 
@@ -1629,7 +1628,8 @@ const Object* IWorld::getNearestObject(const Object *obj, const std::set<std::st
 	float range2 = range * range;
 
 	std::set<Object *> objects;
-	_grid.collide(objects, (obj->_position - range).convert<int>(), v2<int>((int)range * 2, (int)range * 2));
+	v2<float> position = obj->get_absolute_position() + obj->size / 2;
+	_grid.collide(objects, (position - range).convert<int>(), v2<int>((int)(range * 2), (int)(range * 2)));
 	//consult grid
 
 	for(std::set<Object *>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
@@ -1639,10 +1639,10 @@ const Object* IWorld::getNearestObject(const Object *obj, const std::set<std::st
 			classnames.find(o->classname) == classnames.end() || o->hasSameOwner(obj))
 			continue;
 
-		if (check_shooting_range && !Object::checkDistance(obj->getCenterPosition(), o->getCenterPosition(), o->getZ(), true))	
+		if (check_shooting_range && !Object::checkDistance(position, o->getCenterPosition(), o->getZ(), true))	
 			continue;
 
-		v2<float> dpos = Map->distance(o->getCenterPosition(), obj->_position);
+		v2<float> dpos = Map->distance(o->getCenterPosition(), position);
 		
 		float d = dpos.quick_length();
 		if (d < range2 && d < distance) {
@@ -1659,7 +1659,9 @@ const bool IWorld::getNearest(const Object *obj, const std::set<std::string> &cl
 	if (target == NULL) 
 		return false;
 
-	position = Map->distance(obj->getCenterPosition(), target->getCenterPosition()) ;
+	v2<float> pos = obj->get_absolute_position() + obj->size / 2;
+
+	position = Map->distance(pos, target->getCenterPosition()) ;
 	velocity = target->_velocity;
 	velocity.normalize();
 	velocity *= target->speed;
@@ -1702,13 +1704,14 @@ void IWorld::enumerateObjects(std::set<const Object *> &id_set, const Object *sr
 	float r2 = range * range;
 	
 	std::set<Object *> objects;
-	_grid.collide(objects, (src->_position - range).convert<int>(), v2<int>((int)range * 2, (int)range * 2));
+	v2<float> position = src->get_absolute_position(), center_position = position + src->size / 2;
+	_grid.collide(objects, (position - range).convert<int>(), v2<int>((int)(range * 2), (int)(range * 2)));
 	//consult grid
 
 	for(std::set<Object *>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
 		Object *o = *i;
 		
-		v2<float> dpos = Map->distance(src->getCenterPosition(), o->getCenterPosition());
+		v2<float> dpos = Map->distance(center_position, o->getCenterPosition());
 		if (o->_id == src->_id || !ZBox::sameBox(src->getZ(), o->getZ()) || dpos.quick_length() > r2)
 			continue;
 
