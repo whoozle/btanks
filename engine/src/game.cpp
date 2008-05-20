@@ -686,16 +686,14 @@ void IGame::quit() {
 void IGame::tick(const float dt) {
 	GameMonitor->tick(dt);
 	if (Map->loaded()) {
-		if (!PlayerManager->isClient())
-			GameMonitor->checkItems(dt);
+		GameMonitor->checkItems(dt);
 			
-			Map->tick(dt);
-			World->tick(dt);
+		Map->tick(dt);
+		World->tick(dt);
 
-			PlayerManager->updatePlayers(dt);
+		PlayerManager->updatePlayers(dt);
+		PlayerManager->tick(dt);
 	}
-
-	PlayerManager->tick(dt);
 }
 
 void IGame::onTick(const float dt) {
