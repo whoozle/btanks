@@ -59,8 +59,6 @@ void BaseObject::serialize(mrt::Serializator &s) const {
 	
 	s.add(_velocity);
 	s.add(_direction);
-	s.add(_moving_time);	
-	s.add(_idle_time);	
 
 	v2<float> pos = _position;
 	if (_interpolation_progress < 1.0f) {
@@ -78,6 +76,9 @@ void BaseObject::serialize(mrt::Serializator &s) const {
 	
 	if (!_need_sync)
 		return;
+
+	s.add(_moving_time);	
+	s.add(_idle_time);	
 
 	s.add(size);
 	s.add(mass);
@@ -107,8 +108,6 @@ void BaseObject::deserialize(const mrt::Serializator &s) {
 	
 	s.get(_velocity);
 	s.get(_direction);
-	s.get(_moving_time);	
-	s.get(_idle_time);	
 
 	interpolate();
 	_position.deserialize(s);
@@ -118,6 +117,9 @@ void BaseObject::deserialize(const mrt::Serializator &s) {
 
 	if (!_need_sync)
 		return;
+
+	s.get(_moving_time);	
+	s.get(_idle_time);	
 
 	s.get(size);
 	s.get(mass);
