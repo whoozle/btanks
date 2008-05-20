@@ -1661,7 +1661,7 @@ const bool IWorld::getNearest(const Object *obj, const std::set<std::string> &cl
 
 	v2<float> pos = obj->get_absolute_position() + obj->size / 2;
 
-	position = Map->distance(pos, target->getCenterPosition()) ;
+	position = Map->distance(pos, target->getCenterPosition());
 	velocity = target->_velocity;
 	velocity.normalize();
 	velocity *= target->speed;
