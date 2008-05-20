@@ -174,55 +174,7 @@ const float BaseObject::getCollisionTime(const v2<float> &dpos, const v2<float> 
 	if (r <= range)
 		return t;
 	return -1;
-		
-/*	//v2<float> dpos = pos - _position;
-	float a = vel.x * vel.x + vel.y * vel.y;
-	if (a == 0)
-		return -1;
-	//LOG_DEBUG(("a = %g", a));
-	float b = 2 * (vel.x * dpos.x + vel.y * dpos.y) ;
-	float c = dpos.x * dpos.x + dpos.y * dpos.y - r * r;
-	//LOG_DEBUG(("dpos: %g %g", dpos.x, dpos.y));
-	//LOG_DEBUG(("b = %g, c = %g, r = %g", b, c, r));
-	
-	if (b/a > 0 && c/a > 0) //both t1,t2 < 0
-		return -2;
-	
-	float d = b * b - 4 * a * c;
-	if (d < 0) 
-		return -3; //no solution
-
-	d = sqrt(d);
-	
-	float t1 = (-b + d) / 2 / a;
-	if (t1 > 0) 
-		return t1;
-		
-	float t2 = (-b - d) / 2 / a;
-	if (t2 > 0)
-		return t2;
-	
-	return -4;
-*/
 }
-
-void BaseObject::convertToAbsolute(v2<float> &pos, const v2<float> &dpos) {
-	pos = _position;
-	pos += dpos;
-}
-
-/*
-void BaseObject::state2velocity() {
-	_velocity.clear();
-		
-	if (_state.left) _velocity.x -= 1;
-	if (_state.right) _velocity.x += 1;
-	if (_state.up) _velocity.y -= 1;
-	if (_state.down) _velocity.y += 1;
-	
-	_velocity.normalize();
-}
-*/
 
 void BaseObject::setZ(const int z0, const bool absolute) {
 	if (absolute) {
