@@ -155,6 +155,14 @@ public:
 	const bool getRenderRect(sdlx::Rect &src) const;
 	
 	bool is_subobject() const { return _parent != NULL; }
+	
+	inline const v2<float> get_absolute_position() const {
+		v2<float> pos;
+		getPosition(pos);
+		if (_parent != NULL)
+			pos += _parent->get_absolute_position();
+		return pos;
+	}
 
 	inline const int getSlot() const { return _slot_id; }
 	void setSlot(const int id);
