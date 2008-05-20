@@ -536,51 +536,6 @@ TRY {
 	return 0;
 }
 
-/*
-void IWorld::getImpassability2(float &old_pos_im, float &new_pos_im, Object *obj, const v2<int> &new_position, const Object **old_pos_collided_with) const {
-	old_pos_im = 0;
-	new_pos_im = 0;
-
-	if (obj->impassability == 0) {
-		if (old_pos_collided_with != NULL)
-			*old_pos_collided_with = NULL;
-		return;
-	}
-	
-	v2<int> old_position = 	obj->_position.convert<int>();
-	const Object *result = NULL;
-	sdlx::Rect my_new((int)new_position.x, (int)new_position.y,(int)obj->size.x, (int)obj->size.y);
-	sdlx::Rect my_old((int)obj->_position.x, (int)obj->_position.y,(int)obj->size.x, (int)obj->size.y);
-	
-	for(ObjectMap::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
-		Object *o = i->second;
-		if (obj->_id == o->_id || o->impassability == 0)
-			continue;
-
-		sdlx::Rect other((int)o->_position.x, (int)o->_position.y,(int)o->size.x, (int)o->size.y);
-		if (!my_old.intersects(other) && !my_new.intersects(other)) 
-			continue;
-
-	//old position collisions
-		if (collides(obj, old_position, o)) {
-			if (o->impassability > old_pos_im) {
-				old_pos_im = o->impassability;
-				result = o;
-			}
-		}
-	//new position collisions
-		if (collides(obj, new_position, o)) {
-			if (o->impassability > new_pos_im) {
-				new_pos_im = o->impassability;
-			}
-		}
-
-	}
-	if (old_pos_collided_with != NULL)
-		*old_pos_collided_with = result;
-}
-*/
-
 void IWorld::getImpassabilityMatrix(Matrix<int> &matrix, const Object *src, const Object *dst) const {
 	const v2<int> size = Map->getTileSize();
 	const v2<int> tile_size = Map->getTileSize();
