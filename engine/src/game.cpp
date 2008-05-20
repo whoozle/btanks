@@ -67,6 +67,7 @@
 #include "menu/menu.h"
 #include "menu/chat.h"
 #include "menu/tooltip.h"
+#include "nickname.h"
 
 #include "i18n.h"
 #define _USE_MATH_DEFINES
@@ -77,7 +78,7 @@
 IMPLEMENT_SINGLETON(Game, IGame);
 
 IGame::IGame() : _main_menu(NULL),
- _autojoin(false), _shake(0), _shake_max(0), _show_stats(false), _credits(NULL), _cheater(NULL), _tip(NULL), _net_talk(NULL) {
+ _autojoin(false), _shake(0), _shake_max(0), _show_stats(false), _credits(NULL), _cheater(NULL), _tip(NULL), _net_talk(NULL), spawn_ai(0) {
 
 	std::string path;
 	path = mrt::Directory::getAppDir("Battle Tanks", "btanks") + "/";
@@ -323,6 +324,7 @@ void IGame::init(const int argc, char *argv[]) {
 		else if (strcmp(argv[i], "--no-xmas") == 0) { xmas = false; }
 		else if (strcmp(argv[i], "--sound") == 0) { no_sound = false; no_music = false; }
 		else if (strcmp(argv[i], "--server") == 0) { RTConfig->server_mode = true; }
+		else if (strncmp(argv[i], "--ai=", 5) == 0) { spawn_ai = atoi(argv[i] + 5); }
 		else if (strcmp(argv[i], "--help") == 0) { 
 			printf(
 					"\t--connect=ip/host\tconnect to given host as mp-client\n" 
@@ -476,8 +478,20 @@ if (!RTConfig->server_mode) {
 	} else {
 		_net_talk = NULL;
 	}
-	if (!preload_map.empty())
+	if (!preload_map.empty()) {
 		GameMonitor->startGame(NULL, preload_map);
+		for(int i = 0; i < spawn_ai; ++i) {
+			const char *c_vehicle[] = {"tank", "shilka", "launcher", };
+			std::string vehicle = c_vehicle[mrt::random(3)], animation;
+			const int slot_id = PlayerManager->findEmptySlot();
+			PlayerSlot &slot = PlayerManager->getSlot(slot_id);
+			
+			slot.getDefaultVehicle(vehicle, animation);
+			slot.name = Nickname::generate();
+			LOG_DEBUG(("player%d: %s:%s, name: %s", slot_id, vehicle.c_str(), animation.c_str(), slot.name.c_str()));
+			slot.spawnPlayer(slot_id, vehicle, animation);
+		}
+	}
 }
 
 #include "controls/keyplayer.h"

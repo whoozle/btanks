@@ -137,6 +137,7 @@ private:
 	Tooltip *_tip;
 	Chat *_net_talk;
 	bool server_running;
+	int spawn_ai;
 	
 	IGame(const IGame &);
 	const IGame& operator=(const IGame &);
