@@ -1090,8 +1090,10 @@ void IWorld::tick(Object &o, const float dt, const bool do_calculate) {
 }
 
 void IWorld::tick(ObjectMap &objects, const float dt, const bool do_calculate) {
-	if (dt < 0.001f && dt > -0.001f)
+	if (dt < 0.001f && dt > -0.001f) {
+		purge(dt);
 		return;
+	}
 
 	float max_dt = dt >= 0? _max_dt: -_max_dt;
 	int n = math::abs((int)(dt / max_dt));
