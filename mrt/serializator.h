@@ -163,6 +163,8 @@ public:
 
 	template <class T> void add(const T& t) { t.serialize(*this); }
 	template <class T> void get(T& t) const { t.deserialize(*this); }
+	
+	size_t get_current_position() const { return _pos; } //debug only!
 
 protected:
 	void get(void *raw, const int size) const; //this one doesnt check anything, just copy next `size` bytes to pointer.
