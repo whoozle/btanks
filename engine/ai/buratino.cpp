@@ -411,6 +411,8 @@ const Object * Buratino::findTarget(const Object *src, const std::set<std::strin
 
 		//bonus!
 		int min = 0, max = 0;
+		float multiplier = 1;
+		
 		std::string mod_type = o->classname;
 		if (mod_type == "teleport") {
 			v2<float> dpos = src->getRelativePosition(o);
@@ -465,7 +467,7 @@ const Object * Buratino::findTarget(const Object *src, const std::set<std::strin
 					//my flag is on the base
 					continue;
 				}
-
+				multiplier = 3;
 			} 
 			min = 0;
 			max = 1;
@@ -474,13 +476,13 @@ const Object * Buratino::findTarget(const Object *src, const std::set<std::strin
 		const std::string type = o->getType();
 
 		if (enemy) {
-			value = traits.get("enemy", type.empty()?o->classname:type, 1000.0, 1000.0);
+			value = traits.get("enemy", type.empty()?o->classname:type, 1000.0, 1000.0) * multiplier;
 		} else if (bonus) {
 			if (max == 0) {
 				LOG_WARN(("cannot determine bonus for %s", o->registered_name.c_str()));
 				continue;
 			}
-			value = traits.get("value", mod_type, 1.0, 1000.0) * (max - min) / max;
+			value = traits.get("value", mod_type, 1.0, 1000.0) * (max - min) * multiplier / max;
 		} else assert(0);
 				
 		if (enemy) {
