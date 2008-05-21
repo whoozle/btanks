@@ -43,24 +43,26 @@ public:
 				return;
 			}
 
+			int base_id = getSummoner(); 
+			Object *base = World->getObjectByID(base_id);
 			if (slot->team == team) {
-				int base_id = getSummoner(); 
-				const Object *base = World->getObjectByID(base_id);
 				if (base != NULL) {
 					v2<float> dpos = getRelativePosition(base);
 					if (dpos.quick_length() > size.x * size.y / 4) {
 						setZBox(base->getZ());
 						World->teleport(this, base->getCenterPosition());
+						base->remove_effect("abandoned");
 					} else {
 						//my flag is close to the base. if i have foreign flag, frag it
 						if (emitter->has("#ctf-flag")) {
 							Object *flag = emitter->drop("#ctf-flag");
 							++slot->frags;
 							PlayerManager->action(*slot, "ctf");
-							const Object *base = World->getObjectByID(flag->getSummoner());
+							Object *base = World->getObjectByID(flag->getSummoner());
 							if (base != NULL) {
 								setZBox(base->getZ());
 								World->teleport(flag, base->getCenterPosition());
+								base->remove_effect("abandoned");
 							} else {
 								LOG_WARN(("could not find base for the flag %s", flag->animation.c_str()));
 							}
@@ -70,6 +72,8 @@ public:
 					LOG_WARN(("could not find base %d", base_id));
 				}
 			} else {
+				if (base != NULL)
+					base->add_effect("abandoned", -1);
 				if (!emitter->has("#ctf-flag"))  //just for the future expansion
 					emitter->pick("#ctf-flag", this);
 			}

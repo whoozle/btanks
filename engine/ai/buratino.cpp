@@ -373,7 +373,7 @@ const Object * Buratino::findTarget(const Object *src, const std::set<std::strin
 			throw_ex(("flag team must be red or green"));
 		int base_id = GameMonitor->getBase(team == Team::Red? Team::Green: Team::Red);
 		Object *base = World->getObjectByID(base_id);
-		if (base != NULL) {
+		if (base != NULL && !base->has_effect("abandoned")) {
 			return base;
 		}
 	}
@@ -467,7 +467,7 @@ const Object * Buratino::findTarget(const Object *src, const std::set<std::strin
 					//my flag is on the base
 					continue;
 				}
-				multiplier = 3;
+				multiplier = traits.get("value", "ctf-base", 2, 4);
 			} 
 			min = 0;
 			max = 1;
@@ -487,6 +487,8 @@ const Object * Buratino::findTarget(const Object *src, const std::set<std::strin
 				
 		if (enemy) {
 			value *= (getFirePower(src, traits) + 1) / (getFirePower(o, traits) + 1);
+			if (o->has("#ctf-flag"))
+				value *= traits.get("value", "pwned-ctf-flag", 2, 4);
 		}
 		value /= (src->_position.distance(o->_position));
 		//LOG_DEBUG(("item: %s, value: %g", o->registered_name.c_str(), value));
