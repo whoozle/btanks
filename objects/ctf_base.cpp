@@ -26,14 +26,6 @@ public:
 		Object::tick(dt);
 	}
 	
-	virtual void serialize(mrt::Serializator &s) const {
-		Object::serialize(s);
-	}
-
-	virtual void deserialize(const mrt::Serializator &s) {
-		Object::deserialize(s);
-	}
-
 	CTFBase() : Object("ctf-base") {
 		impassability = 0;
 		hp = -1;
