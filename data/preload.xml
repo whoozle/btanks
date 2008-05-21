@@ -836,6 +836,8 @@
 		<object id="ctf-base"/>
 		<object id="ctf-flag"/>
 		<object id="damage-digits"/>
+		<object id="dirt"/>
+		<object id="dirt-bullet"/>
 		<object id="dirt-bullets-item"/>
 		<object id="dispersion-bullet"/>
 		<object id="dispersion-bullets-item"/>
@@ -860,6 +862,8 @@
 		<object id="mines-item"/>
 		<object id="missiles-on-launcher"/>
 		<object id="missiles-on-tank"/>
+		<object id="mortar-bullet"/>
+		<object id="mortar-explosion"/>
 		<object id="nuke-explosion"/>
 		<object id="nuke-mine"/>
 		<object id="nuke-missile"/>
@@ -885,6 +889,7 @@
 		<object id="static-shilka"/>
 		<object id="static-smoke-cloud"/>
 		<object id="static-tank"/>
+		<object id="stun-missile"/>
 		<object id="stun-missiles-item"/>
 		<object id="tank"/>
 		<object id="tank-bullet"/>
