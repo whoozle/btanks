@@ -193,12 +193,8 @@ void IGameMonitor::addObject(const Object *o) {
 	} else if (o->registered_name == "ctf-flag") {
 		int team = (int)Team::get_team(o);
 		if (team >= 0 && team < 2) {
-			_flags.resize(2);
-			v2<int> pos;
-			o->getPosition(pos);
-			_flags[team].x = pos.x;
-			_flags[team].y = pos.y;
-			_flags[team].z = o->getID();
+			_flag_id.resize(2);
+			_flag_id[team] = o->getID();
 		}
 	}
 	if (_destroy_classes.empty())
@@ -254,6 +250,18 @@ void IGameMonitor::checkItems(const float dt) {
 			_specials.push_back(v3<int>(pos.x, pos.y, id));	
 		}
 	}
+	
+	_flags.clear();
+	for(size_t i = 0; i < _flag_id.size(); ++i) {
+		const int id = _flag_id[i];
+		Object *o = World->getObjectByID(id);
+		if (o == NULL)
+			continue;
+		v2<int> pos;
+		o->getPosition(pos);
+		_flags.push_back(v3<int>(pos.x, pos.y, id));
+	}
+	
 	for(size_t i = 0; i < _external_specials.size(); ++i) {
 		const int id = _external_specials[i];
 		Object *o = World->getObjectByID(id);

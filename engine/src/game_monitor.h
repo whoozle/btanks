@@ -160,6 +160,7 @@ private:
 
 	typedef std::deque<GameItem> Items;
 	Items _items;
+	std::vector<int> _flag_id;
 	std::vector<v3<int> > _specials, _flags;
 	std::vector<int> _external_specials;
 
