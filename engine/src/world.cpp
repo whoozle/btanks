@@ -1147,13 +1147,13 @@ void IWorld::purge(ObjectMap &objects, const float dt) {
 		Object *o = i->second;
 		assert(o != NULL);
 		
-		ObjectMap::iterator j = objects.find(object_id);
-		if (j != objects.end()) {
+		ObjectMap::iterator j = _objects.find(object_id);
+		if (j != _objects.end()) {
 			_grid.remove(j->second);
 			delete j->second;
 			j->second = o;
 		} else {
-			objects.insert(ObjectMap::value_type(object_id, o));
+			_objects.insert(ObjectMap::value_type(object_id, o));
 		}
 		updateObject(o);
 	}
@@ -1161,12 +1161,14 @@ void IWorld::purge(ObjectMap &objects, const float dt) {
 
 	for(std::set<int>::const_iterator i = pop_objects.begin(); i != pop_objects.end(); ++i) {
 		const int object_id = *i;
-		ObjectMap::iterator j = objects.find(object_id);
-		if (j != objects.end()) {
+		ObjectMap::iterator j = _objects.find(object_id);
+		if (j != _objects.end()) {
 			Object *o = j->second;
-			if (o->_dead && !o->animation.empty())
-				o->_dead = false;
-			objects.erase(j);
+			delete o;
+			_grid.remove(o);
+			//if (o->_dead && !o->animation.empty())
+			//	o->_dead = false;
+			_objects.erase(j);
 		}
 	}
 	pop_objects.clear();
@@ -1176,13 +1178,14 @@ void IWorld::purge(ObjectMap &objects, const float dt) {
 		assert(o != NULL);
 
 		if (!o->_dead) {
-			o->groupTick(dt);
+			if (dt > 0)
+				o->groupTick(dt);
 			++i;
 		} else if (!_safe_mode) { //dead and server mode
 			//LOG_DEBUG(("object %d:%s is dead. cleaning up. (global map: %s)", o->getID(), o->classname.c_str(), &objects == &_objects?"true":"false" ));
 			deleteObject(o);
 			o = NULL;
-			objects.erase(i++);
+			_objects.erase(i++);
 		} else {
 			++i; //dead and safe mode. waiting for the update.
 		}
@@ -1574,6 +1577,12 @@ TRY {
 	Object *o;
 	while((o = deserializeObject(s)) != NULL) {
 		objects.insert(ObjectMap::value_type(o->_id, o));
+		ObjectMap::iterator i = push_objects.find(o->_id);
+		if (i != push_objects.end()) {
+			delete i->second;
+			push_objects.erase(i);
+		}
+		pop_objects.erase(o->_id);
 	}
 	std::set<int> ids;
 	
@@ -1606,7 +1615,8 @@ TRY {
 		PlayerManager->requestObjects(_out_of_sync);
 		_out_of_sync_sent = _out_of_sync;
 	}
-	purge(_objects, 0);
+	purge(objects, dt);
+	purge(0);
 } CATCH("applyUpdate", throw;)
 }
 
@@ -1805,8 +1815,8 @@ Object * IWorld::pop(Object *object) {
 		j = _objects.find(object_id);
 		if (j == _objects.end())
 			throw_ex(("popping non-existent object %d %s", object_id, object->animation.c_str()));
-		r = j->second;
-		r->_dead = true;
+		r = j->second->clone();
+		j->second->_dead = true;
 	}
 
 	pop_objects.insert(object_id);
