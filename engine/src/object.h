@@ -50,7 +50,7 @@ public:
 	inline void getPosition(v2<T> &position) const { 
 		position = _position.convert<T>(); 
 		if (_parent != NULL) 
-			position += getPosition().convert<T>();
+			position += _parent->getPosition().convert<T>();
 	}
 
 	inline const v2<float> getCenterPosition() const { return getPosition() + size / 2; }
