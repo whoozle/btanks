@@ -854,6 +854,7 @@
 		<object id="heal"/>
 		<object id="helmet"/>
 		<object id="impassable-static-corpse"/>
+		<object id="launcher"/>
 		<object id="machinegunner"/>
 		<object id="machinegunner-bullet"/>
 		<object id="machinegunner-item"/>
@@ -893,7 +894,9 @@
 		<object id="stun-missiles-item"/>
 		<object id="tank"/>
 		<object id="tank-bullet"/>
+		<object id="thrower"/>
 		<object id="thrower-item"/>
+		<object id="thrower-missile"/>
 	</map>
 	<object id="alt-missiles-on-launcher">
 		<animation id="guided-missiles-on-launcher"/>
