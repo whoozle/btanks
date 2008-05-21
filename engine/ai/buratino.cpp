@@ -366,6 +366,17 @@ skip_calculations:
 const Object * Buratino::findTarget(const Object *src, const std::set<std::string> &enemies, const std::set<std::string> &bonuses, ai::Traits &traits, const std::set<int> &skip_objects) const {
 	if (src->getVariants().has("racing"))
 		return NULL;
+
+	if (src->has("#ctf-flag")) {
+		Team::ID team = Team::get_team(src->get("#ctf-flag"));
+		if (team != Team::Red && team != Team::Green) 
+			throw_ex(("flag team must be red or green"));
+		int base_id = GameMonitor->getBase(team == Team::Red? Team::Green: Team::Red);
+		Object *base = World->getObjectByID(base_id);
+		if (base != NULL) {
+			return base;
+		}
+	}
 	
 	if (src->getType().empty())
 		throw_ex(("findTarget source must always provide its type"));
