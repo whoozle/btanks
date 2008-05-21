@@ -467,7 +467,7 @@ const Object * Buratino::findTarget(const Object *src, const std::set<std::strin
 					//my flag is on the base
 					continue;
 				}
-				multiplier = traits.get("value", "ctf-base", 2, 4);
+				multiplier = traits.get("value", "ctf-flag-multiplier", 2, 4);
 			} 
 			min = 0;
 			max = 1;
