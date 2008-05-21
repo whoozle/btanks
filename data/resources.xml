@@ -983,7 +983,7 @@
 	<object class="buggy" hp="40" mass="300" speed="400" z="0" />
 	<object class="static-buggy" parent="buggy" />
 	<object class="teleport" z="-5" />
-	<object class="ctf-base" z="-10" />
+	<object class="ctf-base" z="-35" />
 	<object class="ctf-flag" z="11" />
 	
 	<!-- items -->
