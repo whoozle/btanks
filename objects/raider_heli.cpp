@@ -107,10 +107,10 @@ void RaiderHeli::calculate(const float dt) {
 		//LOG_DEBUG(("attacking player %d", _player));
 		
 		v2<float> pos, vel;
-		player->getInfo(pos, vel);
+		pos = getRelativePosition(player);
+		player->get_velocity(vel);
 		vel.normalize();
 		
-		pos = getRelativePosition(player);
 		float est = pos.length() / speed;
 		
 		v2<float> dir = pos  + speed * vel * est - v2<float>(0, 128); //bomb correction

@@ -103,8 +103,8 @@ void Cow::emit(const std::string &event, Object * emitter) {
 	if (event == "death") {
 		spawn("corpse", "dead-cow", v2<float>(), v2<float>());
 	} else if (emitter != NULL && emitter->piercing && event == "collision") {
-		v2<float> p, v; 
-		emitter->getInfo(p, v);
+		v2<float> v; 
+		emitter->get_velocity(v);
 		int dirs = getDirectionsNumber();
 		int dir = v.getDirection(dirs);
 		dir = (dirs + dir + dirs / (mrt::random(2)?4:-4)) % dirs;
