@@ -1082,6 +1082,7 @@ void IWorld::tick(const float dt) {
 	//LOG_DEBUG(("tick dt = %f", dt));
 	_collision_map.clear();
 	tick(_objects, dt, true);
+	purge(dt);
 }
 
 void IWorld::tick(Object &o, const float dt, const bool do_calculate) {
@@ -1122,7 +1123,6 @@ void IWorld::tick(ObjectMap &objects, const float dt, const bool do_calculate) {
 		if (dt2 < 0) 
 			_tick(objects, dt2, do_calculate);
 	}
-	purge(dt);
 }
 
 
