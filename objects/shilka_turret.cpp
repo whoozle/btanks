@@ -25,7 +25,7 @@ public:
 		Object::tick(dt);
 	}
 	
-	CTFBase() : Object("turrel") {
+	ShilkaTurret() : Object("turrel") {
 		impassability = 0;
 		hp = -1;
 		setDirectionsNumber(16);
