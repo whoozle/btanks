@@ -180,7 +180,17 @@ GameItem& IGameMonitor::find(const std::string &property) {
 	throw_ex(("could not find item %s", property.c_str()));
 }
 
+const int IGameMonitor::getBase(const Team::ID id) const {
+	int idx = (int)id;
+	return (idx >= 0 && idx < 4)? team_base[idx]:0;
+}
+
 void IGameMonitor::addObject(const Object *o) {
+	if (o->registered_name == "ctf-base") {
+		int team = (int)Team::get_team(o);
+		if (team >= 0 && team < 4) 
+			team_base[team] = o->getID();
+	}
 	if (_destroy_classes.empty())
 		return;
 	
@@ -406,6 +416,8 @@ void IGameMonitor::clear() {
 	_all_waypoints.clear();
 	_waypoint_edges.clear();
 	bonuses.clear();
+	
+	memset(team_base, 0, sizeof(team_base));
 }
 
 void IGameMonitor::tick(const float dt) {	

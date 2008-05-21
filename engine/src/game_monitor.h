@@ -33,6 +33,7 @@
 #include "export_btanks.h"
 #include "menu/box.h"
 #include "sl08/sl08.h"
+#include "team.h"
 
 namespace sdlx {
 class Surface;
@@ -139,6 +140,8 @@ public:
 	
 	void startGameTimer(const std::string &name, const float period, const bool repeat);
 	void stopGameTimer(const std::string &name);
+	
+	const int getBase(const Team::ID id) const;
 
 private:
 	sl08::slot1<void, const Object *, IGameMonitor> add_object_slot;
@@ -206,6 +209,8 @@ private:
 	};
 	typedef std::map<const std::string, Timer> Timers;
 	Timers timers;
+	
+	int team_base[4];
 };
 
 SINGLETON(BTANKSAPI, GameMonitor, IGameMonitor);
