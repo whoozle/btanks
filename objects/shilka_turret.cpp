@@ -33,7 +33,7 @@ public:
 	}
 
 	void calculate(const float dt) {
-		
+		Object::calculate(dt);
 	}
 	
 	virtual Object * clone() const { return new ShilkaTurret(*this); }
