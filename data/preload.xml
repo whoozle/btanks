@@ -833,10 +833,13 @@
 		<object id="boomerang-missiles-item"/>
 		<object id="cannon-explosion"/>
 		<object id="corpse"/>
+		<object id="ctf-base"/>
+		<object id="ctf-flag"/>
 		<object id="damage-digits"/>
 		<object id="dirt-bullets-item"/>
 		<object id="dispersion-bullet"/>
 		<object id="dispersion-bullets-item"/>
+		<object id="dumb-missile"/>
 		<object id="dumb-missiles-item"/>
 		<object id="explosion"/>
 		<object id="fake-mod"/>
@@ -844,6 +847,7 @@
 		<object id="gate"/>
 		<object id="grenade"/>
 		<object id="grenade-explosion"/>
+		<object id="guided-missile"/>
 		<object id="guided-missiles-item"/>
 		<object id="heal"/>
 		<object id="helmet"/>
@@ -851,6 +855,7 @@
 		<object id="machinegunner"/>
 		<object id="machinegunner-bullet"/>
 		<object id="machinegunner-item"/>
+		<object id="machinegunner-player"/>
 		<object id="megaheal"/>
 		<object id="mines-item"/>
 		<object id="missiles-on-launcher"/>
@@ -870,6 +875,8 @@
 		<object id="shilka"/>
 		<object id="shilka-bullet"/>
 		<object id="single-pose"/>
+		<object id="smoke-cloud"/>
+		<object id="smoke-missile"/>
 		<object id="smoke-missiles-item"/>
 		<object id="static-corpse"/>
 		<object id="static-dirt"/>
