@@ -190,7 +190,8 @@ void PlayerSlot::tick(const float dt) {
 		return;
 					
 	v2<float> pos, vel;
-	p->getInfo(pos, vel);
+	p->getPosition(pos);
+	p->get_velocity(vel);
 	vel.normalize();
 		
 	float moving, idle;

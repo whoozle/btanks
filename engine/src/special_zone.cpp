@@ -215,7 +215,8 @@ void SpecialZone::onTick(const int slot_id) {
 		return;
 
 	v2<float> pos, vel;
-	o->getInfo(pos, vel);
+	o->getPosition(pos); o->get_velocity(vel);
+	
 	
 	v2<int> left_pos, right_pos; 
 	o->getPosition(left_pos);

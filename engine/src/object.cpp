@@ -34,6 +34,10 @@
 #include "game_monitor.h"
 #include "zbox.h"
 
+const v2<float> Object::getRelativePosition(const Object *obj) const {
+	return Map->distance(this->getCenterPosition(), obj->getCenterPosition());
+}
+
 Object::Event::Event() : name(), repeat(false), sound(), gain(1.0f), played(false), cached_pose(NULL) {}
 
 Object::Event::Event(const std::string name, const bool repeat, const std::string &sound, const float gain, const Pose * p): 

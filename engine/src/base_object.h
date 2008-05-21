@@ -57,8 +57,8 @@ public:
 	
 	virtual void tick(const float dt) = 0;
 	virtual void render(sdlx::Surface &surf, const int x, const int y) = 0;
-	
-	const float getCollisionTime(const v2<float> &pos, const v2<float> &vel, const float r) const;
+	void get_velocity(v2<float> &vel) const { vel = _velocity; vel.normalize(); vel *= speed; }
+	static const float getCollisionTime(const v2<float> &pos, const v2<float> &vel, const float r);
 	
 	inline const bool isDead() const { return _dead; }
 	inline const int getID() const { return _id; }
@@ -75,17 +75,6 @@ public:
 	void heal(const int hp);
 	virtual const bool take(const BaseObject *obj, const std::string &type);
 	
-	const v2<float> getRelativePosition(const BaseObject *obj) const;
-
-	inline const v2<float> & getPosition() const { return _position; }
-	inline void getPosition(v2<float> &position) const { position = _position; }
-	inline void getPosition(v2<int> &position) const { position = _position.convert<int>(); }
-
-	inline const v2<float> getCenterPosition() const { return _position + size / 2; }
-	inline void getCenterPosition(v2<float> &position) const { position = _position; position += size / 2; }
-	inline void getCenterPosition(v2<int> &position) const { position = (_position + size / 2).convert<int>();  }
-
-	void getInfo(v2<float> &pos, v2<float> &vel) const;
 	void updateStateFromVelocity();
 	void setZ(const int z, const bool absolute = false); 
 	inline const int getZ() const { return _z; }
@@ -125,9 +114,9 @@ protected:
 
 	bool _need_sync, _dead;
 	Variants _variants;
+	v2<float> _position;
 
 private:
-	v2<float> _position;
 	
 	//do not serialize interpolation stuff.
 	v2<float> _interpolation_vector, _interpolation_position_backup;

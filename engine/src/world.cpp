@@ -275,7 +275,8 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::R
 			if (o->_z < _z1 || o->_z >= _z2) 	
 				continue;
 			
-			v2<float> position = o->get_absolute_position();
+			v2<float> position;
+			o->getPosition(position);
 			sdlx::Rect r((int)position.x, (int)position.y, (int)o->size.x, (int)o->size.y);
 			bool fogged = fog;// && o->speed != 0;
 			//LOG_DEBUG(("%d,%d:%d,%d vs %d,%d:%d,%d result: %s", 
@@ -309,7 +310,8 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::R
 		}
 		z1 = z2;
 		//LOG_DEBUG(("rendering %s with %d,%d", o.animation.c_str(), (int)o._position.x - src.x + dst.x, (int)o._position.y - src.y + dst.y));
-		v2<float> position = o->get_absolute_position();
+		v2<float> position;
+		o->getPosition(position);
 		v2<int> screen_pos((int)position.x - src.x, (int)position.y - src.y);
 		if (Map->torus()) {
 			screen_pos %= map_size;
@@ -1223,7 +1225,7 @@ Object* IWorld::spawn(const Object *src, const std::string &classname, const std
 	
 	//LOG_DEBUG(("spawning %s, position = %g %g dPosition = %g:%g, velocity: %g %g", 
 	//	classname.c_str(), src->_position.x, src->_position.y, dpos.x, dpos.y, vel.x, vel.y));
-	v2<float> pos = src->get_absolute_position() + (src->size / 2)+ dpos - (obj->size / 2);
+	v2<float> pos = src->getPosition() + (src->size / 2)+ dpos - (obj->size / 2);
 
 	obj->_z -= ZBox::getBoxBase(obj->_z);
 	obj->_z += ZBox::getBoxBase(src->_z);
@@ -1630,7 +1632,7 @@ const Object* IWorld::getNearestObject(const Object *obj, const std::set<std::st
 	float range2 = range * range;
 
 	std::set<Object *> objects;
-	v2<float> position = obj->get_absolute_position() + obj->size / 2;
+	v2<float> position = obj->getCenterPosition();
 	_grid.collide(objects, (position - range).convert<int>(), v2<int>((int)(range * 2), (int)(range * 2)));
 	//consult grid
 
@@ -1661,7 +1663,7 @@ const bool IWorld::getNearest(const Object *obj, const std::set<std::string> &cl
 	if (target == NULL) 
 		return false;
 
-	v2<float> pos = obj->get_absolute_position() + obj->size / 2;
+	v2<float> pos = obj->getCenterPosition();
 
 	position = Map->distance(pos, target->getCenterPosition());
 	velocity = target->_velocity;
@@ -1706,7 +1708,7 @@ void IWorld::enumerateObjects(std::set<const Object *> &id_set, const Object *sr
 	float r2 = range * range;
 	
 	std::set<Object *> objects;
-	v2<float> position = src->get_absolute_position(), center_position = position + src->size / 2;
+	v2<float> position = src->getPosition(), center_position = src->getCenterPosition();
 	_grid.collide(objects, (position - range).convert<int>(), v2<int>((int)(range * 2), (int)(range * 2)));
 	//consult grid
 

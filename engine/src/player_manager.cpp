@@ -1104,7 +1104,9 @@ TRY {
 			continue;
 
 		v2<float> pos, vel;
-		o->getInfo(pos, vel);
+		o->getPosition(pos); 
+		o->get_velocity(vel);
+		
 		listener_pos += pos;
 		listener_vel += vel;
 		listeners += 1;

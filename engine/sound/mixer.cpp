@@ -273,7 +273,8 @@ TRY {
 
 		
 		v2<float> pos, vel;
-		o->getInfo(pos, vel);
+		o->getPosition(pos);
+		o->get_velocity(vel);
 		const clunk::v3<float> clunk_pos( pos.x / k, -pos.y / k, 0*o->getZ() / k ), clunk_vel( vel.x / k, -vel.y / k, 0);
 		clunk_object->update(clunk_pos, clunk_vel);
 	
@@ -334,7 +335,8 @@ void IMixer::updateObject(const Object *o) {
 		return;
 	
 	v2<float> pos, vel;
-	o->getInfo(pos, vel);
+	o->getPosition(pos);
+	o->get_velocity(vel);
 	GET_CONFIG_VALUE("engine.sound.positioning-divisor", float, k, 40.0);
 	
 	const clunk::v3<float> clunk_pos( pos.x / k, -pos.y / k, 0*o->getZ() / k ), clunk_vel( vel.x / k, -vel.y / k, 0);

@@ -43,6 +43,20 @@ class Pose;
 
 class BTANKSAPI Object : public BaseObject {
 public:
+	const v2<float> getRelativePosition(const Object *obj) const;
+	inline const v2<float> getPosition() const { return _parent == NULL? _position: _position + _parent->getPosition(); }
+
+	template<typename T>
+	inline void getPosition(v2<T> &position) const { 
+		position = _position.convert<T>(); 
+		if (_parent != NULL) 
+			position += getPosition().convert<T>();
+	}
+
+	inline const v2<float> getCenterPosition() const { return getPosition() + size / 2; }
+	template<typename T>
+	inline void getCenterPosition(v2<T> &position) const { getPosition<T>(position); position += (size / 2).convert<T>(); }
+
 	const std::string registered_name; 
 	
 	std::string animation;
@@ -156,14 +170,6 @@ public:
 	
 	bool is_subobject() const { return _parent != NULL; }
 	
-	inline const v2<float> get_absolute_position() const {
-		v2<float> pos;
-		getPosition(pos);
-		if (_parent != NULL)
-			pos += _parent->get_absolute_position();
-		return pos;
-	}
-
 	inline const int getSlot() const { return _slot_id; }
 	void setSlot(const int id);
 
@@ -285,6 +291,7 @@ private:
 	friend class IWorld;
 	friend class ai::Buratino;
 	friend class ai::Waypoints;
+	using BaseObject::_position;
 };
 
 

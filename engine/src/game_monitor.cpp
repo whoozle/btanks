@@ -608,7 +608,7 @@ const std::string IGameMonitor::getRandomWaypoint(const std::string &classname, 
 	return "*bug*";
 }
 
-const std::string IGameMonitor::getNearestWaypoint(const BaseObject *obj, const std::string &classname) const {
+const std::string IGameMonitor::getNearestWaypoint(const Object *obj, const std::string &classname) const {
 	v2<int> pos;
 	obj->getPosition(pos);
 	int distance = -1;

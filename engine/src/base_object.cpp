@@ -166,18 +166,6 @@ const std::string BaseObject::dump() const {
 
 BaseObject::~BaseObject() { _dead = true; }
 
-const float BaseObject::getCollisionTime(const v2<float> &dpos, const v2<float> &vel, const float range) const {
-	if (vel.is0())
-		return -1;
-
-	float r = dpos.length(), v = vel.length(), t = r / v;
-	v2<float> d = dpos + vel * t;
-	r = d.length();
-	if (r <= range)
-		return t;
-	return -1;
-}
-
 void BaseObject::setZ(const int z0, const bool absolute) {
 	if (absolute) {
 		_z = z0;
@@ -309,10 +297,6 @@ void BaseObject::truncateOwners(const int n) {
 }
 
 
-const v2<float> BaseObject::getRelativePosition(const BaseObject *obj) const {
-	return Map->distance(this->getCenterPosition(), obj->getCenterPosition());
-}
-
 const bool BaseObject::updatePlayerState(const PlayerState &state) {
 	bool updated = _state != state;
 	if (updated) {
@@ -320,14 +304,6 @@ const bool BaseObject::updatePlayerState(const PlayerState &state) {
 		_state = state;
 	}
 	return updated;
-}
-
-void BaseObject::getInfo(v2<float> &pos, v2<float> &vel) const {
-	pos = _position;
-	vel = _velocity;
-	
-	vel.normalize();
-	vel *= speed;
 }
 
 void BaseObject::updateStateFromVelocity() {
@@ -375,5 +351,17 @@ const float BaseObject::getEffectiveImpassability(const float impassability) con
 
 void BaseObject::updateVariants(const Variants &vars, const bool remove_old) {
 	_variants.update(vars, remove_old);
+}
+
+const float BaseObject::getCollisionTime(const v2<float> &dpos, const v2<float> &vel, const float range) {
+	if (vel.is0())
+		return -1;
+
+	float r = dpos.length(), v = vel.length(), t = r / v;
+	v2<float> d = dpos + vel * t;
+	r = d.length();
+	if (r <= range)
+		return t;
+	return -1;
 }
 

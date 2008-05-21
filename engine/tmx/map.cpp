@@ -132,7 +132,8 @@ TRY {
 	}
 	
 	v2<float> position, velocity;
-	obj->getInfo(position, velocity);
+	obj->getPosition(position);
+	obj->get_velocity(velocity);
 	
 	GET_CONFIG_VALUE("engine.debug-map-collision-code", bool, debug, false);
 	
