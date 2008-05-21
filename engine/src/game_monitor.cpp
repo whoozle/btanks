@@ -190,6 +190,16 @@ void IGameMonitor::addObject(const Object *o) {
 		int team = (int)Team::get_team(o);
 		if (team >= 0 && team < 4) 
 			team_base[team] = o->getID();
+	} else if (o->registered_name == "ctf-flag") {
+		int team = (int)Team::get_team(o);
+		if (team >= 0 && team < 2) {
+			_flags.resize(2);
+			v2<int> pos;
+			o->getPosition(pos);
+			_flags[team].x = pos.x;
+			_flags[team].y = pos.y;
+			_flags[team].z = o->getID();
+		}
 	}
 	if (_destroy_classes.empty())
 		return;
@@ -405,6 +415,7 @@ void IGameMonitor::clear() {
 	
 	_items.clear();
 	_specials.clear();
+	_flags.clear();
 	_external_specials.clear();
 	
 	_check_items.reset();
@@ -523,6 +534,7 @@ void IGameMonitor::serialize(mrt::Serializator &s) const {
 TRY {
 	s.add(_game_over);
 	s.add(_specials);
+	s.add(_flags);
 
 	if (_game_over) {
 		s.add(_state);
@@ -547,6 +559,7 @@ void IGameMonitor::deserialize(const mrt::Serializator &s) {
 TRY {
 	s.get(_game_over);
 	s.get(_specials);
+	s.get(_flags);
 
 	if (_game_over) {
 		s.get(_state);

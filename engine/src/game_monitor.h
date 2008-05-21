@@ -85,6 +85,8 @@ public:
 	void checkItems(const float dt);
 	
 	const std::vector<v3<int> >& getSpecials() const { return _specials; }
+	const std::vector<v3<int> >& getFlags() const { return _flags; }
+	
 	const size_t getItemsCount() const { return _items.size(); }
 
 	void gameOver(const std::string &area, const std::string &message, float time, const bool win);
@@ -158,7 +160,7 @@ private:
 
 	typedef std::deque<GameItem> Items;
 	Items _items;
-	std::vector<v3<int> > _specials;
+	std::vector<v3<int> > _specials, _flags;
 	std::vector<int> _external_specials;
 
 	Alarm _check_items;

@@ -242,7 +242,7 @@ void Hud::renderPlayerStats(sdlx::Surface &surface) {
 
 
 
-void Hud::renderRadar(const float dt, sdlx::Surface &window, const std::vector<v3<int> > &specials, const sdlx::Rect &viewport) {
+void Hud::renderRadar(const float dt, sdlx::Surface &window, const std::vector<v3<int> > &specials, const std::vector<v3<int> > &flags, const sdlx::Rect &viewport) {
 	if (!Map->loaded()) {
 		_radar.free();
 		_radar_bg.free();
@@ -375,7 +375,33 @@ void Hud::renderRadar(const float dt, sdlx::Surface &window, const std::vector<v
 		}
 	}
 	
+
+	n = flags.size();
+	if (n > 2) 
+		n = 2;
+
+	for(size_t i = 0; i < n; ++i) {
+		v3<int> pos = flags[i];
+		{
+			v2<int> p(pos.x, pos.y);
+			p -= radar_shift;
+			Map->validate(p);
+			pos.x = p.x; pos.y = p.y;
+		}
+		
+		Uint32 color[2] = { _radar.mapRGB(255, 0, 0), _radar.mapRGB(0, 255, 0), };
+		_radar.putPixel(0 + pos.x * _radar_bg.getWidth() / msize.x, 0 + pos.y * _radar_bg.getHeight() / msize.y, color[i]);
+		_radar.putPixel(1 + pos.x * _radar_bg.getWidth() / msize.x, 0 + pos.y * _radar_bg.getHeight() / msize.y, color[i]);
+		_radar.putPixel(2 + pos.x * _radar_bg.getWidth() / msize.x, 0 + pos.y * _radar_bg.getHeight() / msize.y, color[i]);
+		_radar.putPixel(0 + pos.x * _radar_bg.getWidth() / msize.x, 1 + pos.y * _radar_bg.getHeight() / msize.y, color[i]);
+		_radar.putPixel(1 + pos.x * _radar_bg.getWidth() / msize.x, 1 + pos.y * _radar_bg.getHeight() / msize.y, color[i]);
+		_radar.putPixel(0 + pos.x * _radar_bg.getWidth() / msize.x, 2 + pos.y * _radar_bg.getHeight() / msize.y, color[i]);
+		_radar.putPixel(1 + pos.x * _radar_bg.getWidth() / msize.x, 2 + pos.y * _radar_bg.getHeight() / msize.y, color[i]);
+		_radar.putPixel(2 + pos.x * _radar_bg.getWidth() / msize.x, 2 + pos.y * _radar_bg.getHeight() / msize.y, color[i]);
+		_radar.putPixel(0 + pos.x * _radar_bg.getWidth() / msize.x, 3 + pos.y * _radar_bg.getHeight() / msize.y, color[i]);
 	}
+
+	} //blink
 	
 	_radar.unlock();
 	
