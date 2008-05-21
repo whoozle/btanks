@@ -480,7 +480,7 @@ const Object * Buratino::findTarget(const Object *src, const std::set<std::strin
 				LOG_WARN(("cannot determine bonus for %s", o->registered_name.c_str()));
 				continue;
 			}
-			value = traits.get("value", mod_type, 1.0, 1000.0) * (max - min);
+			value = traits.get("value", mod_type, 1.0, 1000.0) * (max - min) / max;
 		} else assert(0);
 				
 		if (enemy) {
