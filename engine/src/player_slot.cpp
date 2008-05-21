@@ -37,7 +37,7 @@
 
 PlayerSlot::PlayerSlot() : 
 id(-1), control_method(NULL), need_sync(false), dont_interpolate(false), remote(-1), visible(false), 
-classname(), animation(), frags(0), spawn_limit(0), score(0), spectator(false), team(Team::None), 
+classname(), animation(), frags(0), spawn_limit(0), dead_time(0), score(0), spectator(false), team(Team::None), 
 last_tooltip(NULL), last_tooltip_used(false), join_team(NULL) 
 {}
 
