@@ -1631,13 +1631,13 @@ const Object* IWorld::getNearestObject(const Object *obj, const std::set<std::st
 	float distance = std::numeric_limits<float>::infinity();
 	float range2 = range * range;
 
-	std::set<Object *> objects;
 	v2<float> position = obj->getCenterPosition();
+	std::set<Object *> objects;
 	_grid.collide(objects, (position - range).convert<int>(), v2<int>((int)(range * 2), (int)(range * 2)));
 	//consult grid
 
 	for(std::set<Object *>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
-		Object *o = *i;;
+		Object *o = *i;
 		//LOG_DEBUG(("%s is looking for %s. found: %s", obj->classname.c_str(), classname.c_str(), o->classname.c_str()));
 		if (o->_id == obj->_id || o->impassability == 0 || PIERCEABLE_PAIR(obj, o) || !ZBox::sameBox(obj->getZ(), o->getZ()) ||
 			classnames.find(o->classname) == classnames.end() || o->hasSameOwner(obj))
