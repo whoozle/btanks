@@ -718,6 +718,9 @@ void Object::calculateWayVelocity() {
 
 	while (!_way.empty()) {
 		_velocity.clear();
+		size_t way_size = _way.size();
+		if (way_size == 1) 
+			af = 1;
 		
 		if (_next_target.is0()) {
 			_next_target = _way.begin()->convert<float>();
@@ -726,7 +729,7 @@ void Object::calculateWayVelocity() {
 			
 			sdlx::Rect wp_rect((int)_next_target.x - af, (int)_next_target.y - af, af * 2, af * 2);
 			
-			if (wp_rect.inside(me)) {
+			if (way_size > 1 && wp_rect.inside(me)) {
 				//LOG_DEBUG(("%s skipped waypoint because of close match", animation.c_str()));
 				_next_target.clear();
 				_velocity.clear();
@@ -742,7 +745,7 @@ void Object::calculateWayVelocity() {
 			}
 			*/
 			
-			if (rel.quick_length() < 4) {
+			if (rel.quick_length() < af) {
 				//LOG_DEBUG(("%s skipped waypoint because of short distance (%g)", animation.c_str(), rel.quick_length()));
 				_next_target.clear();
 				_velocity.clear();
