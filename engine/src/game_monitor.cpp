@@ -535,6 +535,10 @@ TRY {
 
 	s.add(_disabled);
 	s.add(_destroy_classes);
+	s.add(team_base[0]);
+	s.add(team_base[1]);
+	s.add(team_base[2]);
+	s.add(team_base[3]);
 
 } CATCH("serialize", throw);
 }
@@ -555,6 +559,11 @@ TRY {
 
 	s.get(_disabled);
 	s.get(_destroy_classes);
+
+	s.get(team_base[0]);
+	s.get(team_base[1]);
+	s.get(team_base[2]);
+	s.get(team_base[3]);
 	
 } CATCH("deserialize", throw);
 }
