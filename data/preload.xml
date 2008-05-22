@@ -47,6 +47,7 @@
 		<object id="road-sign"/>
 		<object id="shilka"/>
 		<object id="shilka-bullet"/>
+		<object id="shilka-turret"/>
 		<object id="single-pose"/>
 		<object id="single-tile"/>
 		<object id="stall"/>
@@ -1280,6 +1281,7 @@
 	</object>
 	<object id="shilka-turret">
 		<animation id="blue-shilka-turret"/>
+		<animation id="green-shilka-turret"/>
 		<animation id="red-shilka-turret"/>
 		<animation id="yellow-shilka-turret"/>
 	</object>
