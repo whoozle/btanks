@@ -95,7 +95,7 @@ void Shilka::tick(const float dt) {
 	}
 
 	Object::tick(dt);
-	if (_state.fire) {
+	{
 		PlayerState state = _state;
 		state.left = 0;
 		state.right = 0;

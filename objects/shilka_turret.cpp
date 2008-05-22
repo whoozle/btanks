@@ -44,14 +44,14 @@ public:
 				static const std::string right_fire = "shilka-bullet-right";
 				std::string animation = "shilka-dirt-bullet-";
 				animation += (_left_fire)?"left":"right";
-
+				
 				spawn("dirt-bullet", animation, v2<float>(), _direction);
 	
-				_left_fire = ! _left_fire;
 				play_fire = true;
 			} else if (has_effect("ricochet")) {
 				spawn("ricochet-bullet(auto-aim)", "ricochet-bullet", v2<float>(), _direction);
 				play_fire = true;
+				_left_fire = ! _left_fire;
 			} else if (has_effect("dispersion")) {
 			/*
 				if (special_fire_possible) {
@@ -60,12 +60,14 @@ public:
 					play_fire = true;
 				};
 			*/
+				_left_fire = ! _left_fire;
 				goto skip_left_toggle;
 			} else { 
+				LOG_DEBUG(("%g %g", _direction.x, _direction.y));
 				spawn("shilka-bullet", animation, v2<float>(), _direction);
 				play_fire = true;
+				_left_fire = ! _left_fire;
 			}
-			_left_fire = ! _left_fire;
 		}
 
 skip_left_toggle:
@@ -77,10 +79,12 @@ skip_left_toggle:
 	}
 
 
-	}
+	} //end of tick()
 	
 	void calculate(const float dt) {
 		Object::calculate(dt);
+		if (!_state.fire)
+			return;
 	}
 
 	void onSpawn() {
