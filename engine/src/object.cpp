@@ -1009,7 +1009,6 @@ void Object::calculate(const float dt) {
 		if (_directions_n > 1) {
 			_direction = _parent->_direction;
 			_direction_idx = _parent->_direction_idx * _directions_n / _parent->_directions_n;
-			//o->setDirection(getDirection());
 		}
 		return;
 	}
