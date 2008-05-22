@@ -56,7 +56,7 @@ void Shilka::onSpawn() {
 	Object *_smoke = add("smoke", "single-pose", "tank-smoke", v2<float>(), Centered);
 	_smoke->impassability = 0;
 	
-	GET_CONFIG_VALUE("objects.shilka.special-fire-rate", float, sfr, 0.4);
+	GET_CONFIG_VALUE("objects.shilka.special-fire-rate", float, sfr, 0.4f);
 	_special_fire.set(sfr);
 	play("hold", true);
 	playSound("vehicle-sound", true, 0.4f);

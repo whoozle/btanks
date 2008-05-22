@@ -130,11 +130,13 @@ skip_left_toggle:
 
 	void onSpawn() {
 		play("hold", true);
-		GET_CONFIG_VALUE("objects.shilka.fire-rate", float, fr, 0.2);
+		GET_CONFIG_VALUE("objects.shilka.fire-rate", float, fr, 0.2f);
 		_fire.set(fr);
+		GET_CONFIG_VALUE("objects.shilka.special-fire-rate", float, sfr, 0.4f);
+		_special_fire.set(sfr);
 	}
 
-	ShilkaTurret() : Object("turrel"), _reaction(0.1f, true), _fire(false), _left_fire(false) {
+	ShilkaTurret() : Object("turrel"), _reaction(0.1f, true), _fire(false), _special_fire(false), _left_fire(false) {
 		impassability = 0;
 		hp = -1;
 		setDirectionsNumber(16);
@@ -143,13 +145,17 @@ skip_left_toggle:
 
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
+		s.add(_reaction);	
 		s.add(_fire);
+		s.add(_special_fire);
 		s.add(_left_fire);
 	}
 
 	virtual void deserialize(const mrt::Serializator &s) {
 		Object::deserialize(s);
+		s.get(_reaction);	
 		s.get(_fire);	
+		s.get(_special_fire);
 		s.get(_left_fire);
 	}
 	
@@ -157,7 +163,7 @@ skip_left_toggle:
 	
 
 private:
-	Alarm _reaction, _fire;
+	Alarm _reaction, _fire, _special_fire;
 	bool _left_fire;
 };
 
