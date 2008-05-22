@@ -127,6 +127,10 @@ const std::string Buratino::convertName(const std::string &weapon) {
 const bool Buratino::checkTarget(const Object *object, const Object * target, const std::string &weapon) const {
 	if (!isEnemy(target))
 		return false;
+
+	if (object->registered_name == "shilka" || object->registered_name == "static-shilka") {
+		return true;
+	}
 	
 	v2<float> pos = object->getRelativePosition(target);
 	
