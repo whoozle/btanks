@@ -366,6 +366,8 @@
 	</class>
 	<class id="shilka-bullet">
 	</class>
+	<class id="shilka-turret">
+	</class>
 	<class id="single-pose">
 		<variant id="no-directions" />
 		<variant id="once" />
