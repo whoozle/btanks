@@ -540,9 +540,9 @@
 	<animation id="yellow-shilka" tile="shilka_green.png" model="shilka-animation"/>
 	<animation id="blue-shilka" tile="shilka_green.png" model="shilka-animation"/>
 	<animation id="green-shilka-turret" tile="shilka_turret_green.png" model="shilka-turret-animation"/>
-	<animation id="red-shilka-turret" tile="shilka_turret_green.png" model="shilka-turret-animation"/>
-	<animation id="yellow-shilka-turret" tile="shilka_turret_green.png" model="shilka-turret-animation"/>
-	<animation id="blue-shilka-turret" tile="shilka_turret_green.png" model="shilka-turret-animation"/>
+	<animation id="red-shilka-turret" tile="shilka_turret_red.png" model="shilka-turret-animation"/>
+	<animation id="yellow-shilka-turret" tile="shilka_turret_yellow.png" model="shilka-turret-animation"/>
+	<animation id="blue-shilka-turret" tile="shilka_turret_blue.png" model="shilka-turret-animation"/>
 	<animation id="dead-green-shilka" tile="shilka01_crash.png" model="dead-vehicle-animation"/>
 	<animation id="dead-red-shilka" tile="shilka02_crash.png" model="dead-vehicle-animation"/>
 	<animation id="dead-yellow-shilka" tile="shilka03_crash.png" model="dead-vehicle-animation"/>
