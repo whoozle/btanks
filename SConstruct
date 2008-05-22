@@ -72,6 +72,7 @@ else:
 env.Append(CPPDEFINES = ['USE_GLSDL'])
 env.Append(CPPDEFINES = ['V3_DISABLE_Z'])
 env.Append(CPPDEFINES = ['_REENTRANT'])
+env.Prepend(CPPPATH=['/home/megath/projects/STLport-5.1.5/stlport'])
 
 #print sys.platform
 if sys.platform == "win32":

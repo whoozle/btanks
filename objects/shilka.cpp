@@ -32,7 +32,7 @@ void Shilka::getImpassabilityPenalty(const float impassability, float &base, flo
 }
 
 Shilka::Shilka(const std::string &classname) 
-: Object(classname), _fire(false), _special_fire(false), _left_fire(true) {
+: Object(classname), _special_fire(false), _left_fire(true) {
 }
 
 FakeMod *Shilka::getMod(const std::string &name) {
@@ -50,14 +50,12 @@ void Shilka::onSpawn() {
 		disable_ai = true;
 	}
 	
-	add("mod", "fake-mod", "damage-digits", v2<float>(), Centered);
+	add("mod", "shilka-turret", animation + "-turret", v2<float>(), Centered);
+	add("alt-mod", "fake-mod", "damage-digits", v2<float>(), Centered);
 	
 	Object *_smoke = add("smoke", "single-pose", "tank-smoke", v2<float>(), Centered);
 	_smoke->impassability = 0;
 	
-	GET_CONFIG_VALUE("objects.shilka.fire-rate", float, fr, 0.2);
-	_fire.set(fr);
-
 	GET_CONFIG_VALUE("objects.shilka.special-fire-rate", float, sfr, 0.4);
 	_special_fire.set(sfr);
 	play("hold", true);
@@ -97,8 +95,16 @@ void Shilka::tick(const float dt) {
 	}
 
 	Object::tick(dt);
+	if (_state.fire) {
+		PlayerState state = _state;
+		state.left = 0;
+		state.right = 0;
+		state.up = 0;
+		state.down = 0;
+		get("mod")->updatePlayerState(state);
+	}
+		
 
-	const bool fire_possible = _fire.tick(dt);
 	const bool special_fire_possible = _special_fire.tick(dt);
 	
 
@@ -109,59 +115,17 @@ void Shilka::tick(const float dt) {
 	} else {
 		if (getState() == "hold") {
 			cancelAll();
-			play("start", false);
 			play("move", true);
 		}
 	}
 	
-	bool play_fire = false;
-
-	if (_state.fire && fire_possible) {
-		_fire.reset();
-			
-		static const std::string left_fire = "shilka-bullet-left";
-		static const std::string right_fire = "shilka-bullet-right";
-		std::string animation = "shilka-bullet-";
-		animation += (_left_fire)?"left":"right";
-		if (has_effect("ricochet")) {
-			spawn("ricochet-bullet(auto-aim)", "ricochet-bullet", v2<float>(), _direction);
-			play_fire = true;
-		} else if (has_effect("dispersion")) {
-			if (special_fire_possible) {
-				_special_fire.reset();
-				spawn("dispersion-bullet", "dispersion-bullet", v2<float>(), _direction);
-				play_fire = true;
-				goto skip_left_toggle;
-			};
-		} else { 
-			spawn("shilka-bullet", animation, v2<float>(), _direction);
-			play_fire = true;
-		}
-		_left_fire = ! _left_fire;
-	}
-
-skip_left_toggle:
-
 	if (_state.alt_fire && special_fire_possible) {
 		_special_fire.reset();
 		
-		FakeMod * mod = getMod("mod");
+		FakeMod * mod = getMod("alt-mod");
 		std::string mod_type = mod->getType();
 		
-		if (has_effect("dirt")) {
-			if (getState().substr(0,4) == "fire") 
-				cancel();
-		
-			static const std::string left_fire = "shilka-bullet-left";
-			static const std::string right_fire = "shilka-bullet-right";
-			std::string animation = "shilka-dirt-bullet-";
-			animation += (_left_fire)?"left":"right";
-
-			spawn("dirt-bullet", animation, v2<float>(), _direction);
-
-			_left_fire = ! _left_fire;
-			play_fire = true;
-		} else if (mod_type.substr(0, 6) == "mines:") {
+		if (mod_type.substr(0, 6) == "mines:") {
 			std::vector<std::string> res;
 			mrt::split(res, mod_type, ":", 2);
 			res[0].resize(res[0].size() - 1);
@@ -180,14 +144,6 @@ skip_left_toggle:
 			}
 		}
 	}
-
-
-	if (play_fire) {
-		if (getState().substr(0,4) == "fire") 
-			cancel();
-		
-		playNow(_left_fire?"fire-left":"fire-right");
-	}
 }
 
 const bool Shilka::take(const BaseObject *obj, const std::string &type) {
@@ -200,14 +156,14 @@ const bool Shilka::take(const BaseObject *obj, const std::string &type) {
 		} else if (type == "ricochet") {
 			remove_effect("dispersion");
 		} else if (type == "dirt") {
-			getMod("mod")->setType(std::string());
+			getMod("alt-mod")->setType(std::string());
 		}
 		add_effect(type);
 		return true;
 	} else if (obj->classname =="mod") {
 		if (type == "machinegunner" || type == "thrower") {
 			remove_effect("dirt");
-			FakeMod *mod = getMod("mod");
+			FakeMod *mod = getMod("alt-mod");
 
 			int n;
 			Config->get("objects.shilka." + type + "-capacity", n, 5);
@@ -220,7 +176,7 @@ const bool Shilka::take(const BaseObject *obj, const std::string &type) {
 		}
 	} else if (obj->classname == "mines") {
 		remove_effect("dirt");
-		FakeMod *mod = getMod("mod");
+		FakeMod *mod = getMod("alt-mod");
 		int n;
 		Config->get("objects.shilka." + type + "-" + obj->classname + "-capacity", n, 7);
 		
@@ -232,7 +188,7 @@ const bool Shilka::take(const BaseObject *obj, const std::string &type) {
 		return true;		
 	} else if (obj->classname == "missiles" && type == "nuke") {
 		remove_effect("dirt");
-		FakeMod *mod = getMod("mod");
+		FakeMod *mod = getMod("alt-mod");
 		int n;
 		Config->get("objects.shilka.nuke-mines-capacity", n, 3);
 
@@ -248,13 +204,9 @@ const bool Shilka::take(const BaseObject *obj, const std::string &type) {
 
 void Shilka::serialize(mrt::Serializator &s) const {
 	Object::serialize(s);
-	s.add(_fire);
 	s.add(_special_fire);
-	s.add(_left_fire);
 }
 void Shilka::deserialize(const mrt::Serializator &s) {
 	Object::deserialize(s);
-	s.get(_fire);
 	s.get(_special_fire);
-	s.get(_left_fire);
 }

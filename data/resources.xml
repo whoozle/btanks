@@ -17,14 +17,6 @@
 
 	<animation-model id="shilka-animation" speed="10">
 		<pose id="hold">0</pose>
-		<pose id="start" speed="10">0,1,2</pose>
-		<pose id="move">0,1,2</pose>
-		<pose id="fire-left" speed="10" sound="@cannon" gain="0.5">3</pose>
-		<pose id="fire-right" speed="10" sound="@cannon" gain="0.5">4</pose>
-	</animation-model>
-
-	<animation-model id="shilka2-animation" speed="10">
-		<pose id="hold">0</pose>
 		<pose id="move">0</pose>
 	</animation-model>
 	
@@ -543,16 +535,10 @@
 	<animation id="boomerang-missiles-on-tank" tile="tank_missile05.png" model="missiles-on-tank-animation" />
 	<animation id="stun-missiles-on-tank" tile="tank_missile06.png" model="missiles-on-tank-animation" />
 
-	<animation id="green-shilka" tile="shilka01.png" model="shilka-animation"/>
-	<animation id="red-shilka" tile="shilka02.png" model="shilka-animation"/>
-	<animation id="yellow-shilka" tile="shilka03.png" model="shilka-animation"/>
-	<animation id="blue-shilka" tile="shilka04.png" model="shilka-animation"/>
-
-	<animation id="green-shilka2" tile="shilka_green.png" model="shilka2-animation"/>
-	<animation id="red-shilka2" tile="shilka_green.png" model="shilka2-animation"/>
-	<animation id="yellow-shilka2" tile="shilka_green.png" model="shilka2-animation"/>
-	<animation id="blue-shilka2" tile="shilka_green.png" model="shilka2-animation"/>
-	
+	<animation id="green-shilka" tile="shilka_green.png" model="shilka-animation"/>
+	<animation id="red-shilka" tile="shilka_green.png" model="shilka-animation"/>
+	<animation id="yellow-shilka" tile="shilka_green.png" model="shilka-animation"/>
+	<animation id="blue-shilka" tile="shilka_green.png" model="shilka-animation"/>
 	<animation id="green-shilka-turret" tile="shilka_turret_green.png" model="shilka-turret-animation"/>
 	<animation id="red-shilka-turret" tile="shilka_turret_green.png" model="shilka-turret-animation"/>
 	<animation id="yellow-shilka-turret" tile="shilka_turret_green.png" model="shilka-turret-animation"/>
@@ -562,8 +548,8 @@
 	<animation id="dead-yellow-shilka" tile="shilka03_crash.png" model="dead-vehicle-animation"/>
 	<animation id="dead-blue-shilka" tile="shilka04_crash.png" model="dead-vehicle-animation"/>
 
-	<animation id="shilka-bullet-right" tile="shilka_bullet1.png" model="bullet-animation"/>
-	<animation id="shilka-bullet-left" tile="shilka_bullet2.png" model="bullet-animation"/>
+	<animation id="shilka-bullet-right" tile="shilka_bullet_1_16.png" model="bullet-animation"/>
+	<animation id="shilka-bullet-left" tile="shilka_bullet_2_16.png" model="bullet-animation"/>
 	<animation id="shilka-dirt-bullet-left" tile="shilka_dirt_bullet2.png" model="bullet-animation"/>
 	<animation id="shilka-dirt-bullet-right" tile="shilka_dirt_bullet1.png" model="bullet-animation"/>
 
@@ -887,6 +873,7 @@
 	<object class="static-launcher" parent="launcher" z="0" />
 	<object class="shilka" speed="400" mass="400" hp="60" z="0" />
 	<object class="static-shilka" parent="shilka" z="0" />
+	<object class="shilka-turret" parent="shilka" z="1" />
 	<object class="mortar" speed="90" mass="400" hp="100" z="0" />
 	<object class="static-mortar" parent="mortar" />
 

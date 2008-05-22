@@ -44,7 +44,7 @@ public:
 	void getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const;
 
 private:
-	Alarm _fire, _special_fire;
+	Alarm _special_fire;
 	bool _left_fire;
 };
 
