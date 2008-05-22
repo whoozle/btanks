@@ -29,6 +29,8 @@ class ShilkaTurret : public Object {
 public:
 	void tick(const float dt) {
 		Object::tick(dt);
+		if (_parent == NULL)
+			throw_ex(("turret is only operable attached to shilka "));
 
 		bool play_fire = false;
 		const bool fire_possible = _fire.tick(dt);
@@ -40,7 +42,7 @@ public:
 			static const std::string right_fire = "shilka-bullet-right";
 			std::string animation = "shilka-bullet-";
 			animation += (_left_fire)?"left":"right";
-			if (has_effect("dirt")) {
+			if (_parent->has_effect("dirt")) {
 				if (getState().substr(0,4) == "fire") 
 					cancel();
 		
@@ -52,11 +54,11 @@ public:
 				spawn("dirt-bullet", animation, v2<float>(), _direction);
 	
 				play_fire = true;
-			} else if (has_effect("ricochet")) {
+			} else if (_parent->has_effect("ricochet")) {
 				spawn("ricochet-bullet(auto-aim)", "ricochet-bullet", v2<float>(), _direction);
 				play_fire = true;
 				_left_fire = ! _left_fire;
-			} else if (has_effect("dispersion")) {
+			} else if (_parent->has_effect("dispersion")) {
 			/*
 				if (special_fire_possible) {
 					_special_fire.reset();
@@ -67,7 +69,6 @@ public:
 				_left_fire = ! _left_fire;
 				goto skip_left_toggle;
 			} else { 
-				//LOG_DEBUG(("%g %g", _direction.x, _direction.y));
 				spawn("shilka-bullet", animation, v2<float>(), _direction);
 				play_fire = true;
 				_left_fire = ! _left_fire;
