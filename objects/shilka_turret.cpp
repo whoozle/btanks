@@ -34,14 +34,11 @@ public:
 
 		bool play_fire = false;
 		const bool fire_possible = _fire.tick(dt);
+		const bool alt_fire_possible = _special_fire.tick(dt);
 
-		if (_state.fire && fire_possible) {
-			_fire.reset();
-			
-			static const std::string left_fire = "shilka-bullet-left";
-			static const std::string right_fire = "shilka-bullet-right";
-			std::string animation = "shilka-bullet-";
-			animation += (_left_fire)?"left":"right";
+
+		if (_state.alt_fire && alt_fire_possible) {
+			_special_fire.reset();
 			if (_parent->has_effect("dirt")) {
 				if (getState().substr(0,4) == "fire") 
 					cancel();
@@ -54,28 +51,37 @@ public:
 				spawn("dirt-bullet", animation, v2<float>(), _direction);
 	
 				play_fire = true;
-			} else if (_parent->has_effect("ricochet")) {
+			} 
+		}
+
+		if (_state.fire && fire_possible) {
+			_fire.reset();
+			
+			if (_parent->has_effect("ricochet")) {
 				spawn("ricochet-bullet(auto-aim)", "ricochet-bullet", v2<float>(), _direction);
 				play_fire = true;
 				_left_fire = ! _left_fire;
 			} else if (_parent->has_effect("dispersion")) {
-			/*
-				if (special_fire_possible) {
+			
+				if (alt_fire_possible) {
 					_special_fire.reset();
 					spawn("dispersion-bullet", "dispersion-bullet", v2<float>(), _direction);
 					play_fire = true;
+					_left_fire = ! _left_fire;
 				};
-			*/
-				_left_fire = ! _left_fire;
-				goto skip_left_toggle;
+			
 			} else { 
+				static const std::string left_fire = "shilka-bullet-left";
+				static const std::string right_fire = "shilka-bullet-right";
+				std::string animation = "shilka-bullet-";
+				animation += (_left_fire)?"left":"right";
+				
 				spawn("shilka-bullet", animation, v2<float>(), _direction);
 				play_fire = true;
 				_left_fire = ! _left_fire;
 			}
 		}
 
-skip_left_toggle:
 	if (play_fire) {
 		if (getState().substr(0,4) == "fire") 
 			cancel();
