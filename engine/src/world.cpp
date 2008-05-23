@@ -1189,7 +1189,7 @@ void IWorld::purge(ObjectMap &objects, const float dt) {
 			deleteObject(o);
 			o = NULL;
 			objects.erase(i++);
-			ObjectMap::iterator j = _objects.find(id)
+			ObjectMap::iterator j = _objects.find(id);
 			if (j != _objects.end())
 				_objects.erase(j);
 		} else {
