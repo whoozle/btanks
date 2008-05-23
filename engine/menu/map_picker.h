@@ -29,6 +29,7 @@ class MapDetails;
 class PlayerPicker;
 class UpperBox;
 class ModePanel;
+class Notepad;
 
 class MapPicker : public Container {
 public: 
@@ -52,6 +53,7 @@ private:
 	MapDetails *_details;
 	PlayerPicker *_picker;
 	ModePanel *_mode_panel;
+	Notepad *nodepad;
 };
 
 #endif

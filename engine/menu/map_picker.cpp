@@ -45,6 +45,7 @@
 #include "mrt/base_file.h"
 #include "game_monitor.h"
 #include "mode_panel.h"
+#include "notepad.h"
 
 struct MapScanner : mrt::XMLParser {
 	int slots;
@@ -124,10 +125,11 @@ void MapPicker::tick(const float dt) {
 		_picker->set(map);
 		_mode_panel->set(map);
 	}
+	if (notepad->changed()) {
+		
+	}
 	Container::tick(dt);
 }
-
-#include "notepad.h"
 
 MapPicker::MapPicker(const int w, const int h) : _index(0) {
 	std::vector<std::string> path;
@@ -157,12 +159,15 @@ MapPicker::MapPicker(const int w, const int h) : _index(0) {
 	_upper_box->getSize(xdummy, ybase);
 	ybase += 4;
 	
-	Notepad * notepad = new Notepad(w, "medium");
+	notepad = new Notepad(w, "medium");
 	
 	notepad->add("menu/modes", "deathmatch");
 	notepad->add("menu/modes", "team-deathmatch");
 	notepad->add("menu/modes", "cooperative");
 	notepad->add("menu/modes", "capture-the-flag");
+	
+	GET_CONFIG_VALUE("menu.default-game-mode", int, dgm, 0);
+	notepad->set(dgm);
 
 	add(0, ybase, notepad);
 	{
