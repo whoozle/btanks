@@ -148,27 +148,21 @@ void MapPicker::reload() {
 	std::string map, default_map = (mode == 2)?"baykonur": "curfew";
 	Config->get(mrt::formatString("menu.mode-%d.default-mp-map", mode), map, default_map);
 
-	_index = -1;
-	for(size_t i = 0; i < _maps.size(); ++i) {
-		if (map_visible(mode, _maps[i]) && _maps[i].name == map) {
-			_index = (int)i;
-			break;
-		}
-	}
+	_index = 0;
 
-	if (_index < 0)
-		_index = 0;
-
-	LOG_DEBUG(("map index: %d, mode: %d", _index, mode));
 	_list->clear();
 	map_indexes.clear();
 	
 	for(size_t i = 0; i < _maps.size(); ++i) {
 		if (map_visible(mode, _maps[i])) {
-			map_indexes[_list->size()] = i;
+			int list_idx = _list->size();
+			if (_maps[i].name == map)
+				_index = list_idx;
+			map_indexes[list_idx] = i;
 			_list->append(_maps[i].name);
 		}
 	}
+	LOG_DEBUG(("map index: %d, mode: %d", _index, mode));
 	_list->set(_index);
 }
 
