@@ -297,6 +297,10 @@ void IGame::init(const int argc, char *argv[]) {
 				Config->set("engine.pathfinding-slice", 2);
 			}
 		}
+		if (revision < 7292) {
+			Config->remove("menu.state");
+			Config->remove("menu.default-mp-map");
+		}
 		
 		Config->set("engine.revision", getRevision());
 	}

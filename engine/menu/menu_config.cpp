@@ -95,11 +95,13 @@ void IMenuConfig::update(const std::string &map, const std::string &variant, con
 	slots[idx] = slot;
 }
 
-void IMenuConfig::load() {
+void IMenuConfig::load(const int mode) {
+	save();
+	this->mode = mode;
 TRY {
 	mrt::Chunk data;
 	std::string src;
-	Config->get("menu.state", src, "");
+	Config->get(mrt::formatString("menu.mode-%d.state", mode), src, std::string());
 	if (src.empty())
 		return;
 	mrt::Base64::decode(data, src);
@@ -110,12 +112,15 @@ TRY {
 
 
 void IMenuConfig::save() {
+	if (mode < 0)
+		return;
+	
 	mrt::Chunk data;
 	serialize2(data);
 	std::string dump;
 	mrt::Base64::encode(dump, data);
 	//LOG_DEBUG(("dump: %s", dump.c_str()));
-	Config->set("menu.state", dump);
+	Config->set(mrt::formatString("menu.mode-%d.state", mode), dump);
 }
 
 void IMenuConfig::serialize(mrt::Serializator &s) const {

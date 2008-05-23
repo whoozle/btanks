@@ -37,6 +37,7 @@ struct SlotConfig : public mrt::Serializable {
 class IMenuConfig : public mrt::Serializable {
 public: 
 	DECLARE_SINGLETON(IMenuConfig);
+	IMenuConfig() : mode(-1) {}
 
 	const bool empty(const std::string &map, const std::string &variant) const;
 	void fill(const std::string &map, const std::string &variant, std::vector<SlotConfig> &config);
@@ -44,12 +45,13 @@ public:
 	void update(const std::string &map, const std::string &variant, const int idx, const SlotConfig &slot);
 
 	void save();
-	void load();
+	void load(const int mode);
 
 	virtual void serialize(mrt::Serializator &s) const;
 	virtual void deserialize(const mrt::Serializator &s);
 
 private:
+	int mode;
 
 	typedef std::map<const std::string, std::vector<SlotConfig> > VariantMap;
 	typedef std::map<const std::string, VariantMap> ConfigMap;

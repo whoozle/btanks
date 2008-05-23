@@ -51,8 +51,6 @@ MainMenu::MainMenu() : _active(false), _active_item(0), _key_active(false) {
 }
 
 void MainMenu::init(const int w, const int h) {
-	MenuConfig->load();
-	
 	_active = true;
 	
 	LOG_DEBUG(("loading font..."));

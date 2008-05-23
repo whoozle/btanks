@@ -143,8 +143,9 @@ static inline bool map_visible(const int mode, const MapDesc &map) {
 }
 
 void MapPicker::reload() {
-
 	int mode = notepad->get();
+	MenuConfig->load(mode);
+	
 	std::string map, default_map = (mode == 2)?"baykonur": "curfew";
 	Config->get(mrt::formatString("menu.mode-%d.default-mp-map", mode), map, default_map);
 
