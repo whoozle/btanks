@@ -89,6 +89,13 @@ private:
 //	virtual void charData(const std::string &data);
 };
 
+const MapDesc &MapPicker::getCurrentMap() const { 
+	std::map<const int, int>::const_iterator i = map_indexes.find(_index);
+	if (i == map_indexes.end())
+		throw_ex(("getCurrentMap called before initialization"));
+	return _maps[i->second];
+}
+
 
 void MapPicker::scan(const std::string &base) {
 	std::vector<std::string> entries;

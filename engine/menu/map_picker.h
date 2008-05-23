@@ -38,7 +38,7 @@ public:
 	MapPicker(const int w, const int h);
 	virtual void tick(const float dt);
 	
-	const MapDesc &getCurrentMap() const { return _maps[_index]; }
+	const MapDesc &getCurrentMap() const;
 	void fillSlots() const;
 
 private:
