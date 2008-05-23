@@ -49,6 +49,13 @@ void Notepad::recalculate_sizes() {
 	width += tab_x1;
 }
 
+void Notepad::set(const int idx) {
+	if (idx < 0 || idx >= (int)pages.size())
+		return;
+	current_page = idx;
+	invalidate(false);
+}
+
 void Notepad::getSize(int &w, int &h) const {
 	w = width;
 	h = tabbg->getHeight();

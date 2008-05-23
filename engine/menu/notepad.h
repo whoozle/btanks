@@ -21,6 +21,7 @@ public:
 	void render(sdlx::Surface &surface, const int x, const int y) const;
 	void getSize(int &w, int &h) const;
 	bool onMouse(const int button, const bool pressed, const int x, const int y);
+	void set(const int idx);
 
 private:
 	void recalculate_sizes();
