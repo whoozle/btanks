@@ -22,6 +22,7 @@ public:
 	void getSize(int &w, int &h) const;
 	bool onMouse(const int button, const bool pressed, const int x, const int y);
 	void set(const int idx);
+	int get() const { return (int)current_page; }
 
 private:
 	void recalculate_sizes();

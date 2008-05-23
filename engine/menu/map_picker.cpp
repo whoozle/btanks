@@ -126,6 +126,8 @@ void MapPicker::tick(const float dt) {
 		_mode_panel->set(map);
 	}
 	if (notepad->changed()) {
+		int idx = notepad->get();
+		Config->set("menu.default-game-mode", idx);
 		
 	}
 	Container::tick(dt);
