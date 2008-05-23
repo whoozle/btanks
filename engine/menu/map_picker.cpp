@@ -114,7 +114,9 @@ void MapPicker::scan(const std::string &base) {
 void MapPicker::tick(const float dt) {
 	if (_upper_box->changed() || _index != _list->get() || _list->changed()) {
 		_index = _list->get();
-		const MapDesc & map = _maps[_index];
+		int  real = map_indexes[_index];
+		assert(real >= 0 && real < (int)_maps.size());
+		const MapDesc & map = _maps[real];
 
 		_list->reset();
 		_upper_box->reset();
@@ -159,10 +161,13 @@ void MapPicker::reload() {
 
 	LOG_DEBUG(("map index: %d, mode: %d", _index, mode));
 	_list->clear();
-
-	for(MapList::const_iterator i = _maps.begin(); i != _maps.end(); ++i) {
-		if (map_visible(mode, *i)) 
-			_list->append(i->name);
+	map_indexes.clear();
+	
+	for(size_t i = 0; i < _maps.size(); ++i) {
+		if (map_visible(mode, _maps[i])) {
+			map_indexes[_list->size()] = i;
+			_list->append(_maps[i].name);
+		}
 	}
 	_list->set(_index);
 }

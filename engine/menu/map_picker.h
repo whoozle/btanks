@@ -22,6 +22,7 @@
 #include "container.h"
 #include <vector>
 #include <string>
+#include <map>
 #include "map_desc.h"
 
 class ScrollList;
@@ -55,6 +56,8 @@ private:
 	PlayerPicker *_picker;
 	ModePanel *_mode_panel;
 	Notepad *notepad;
+	
+	std::map<const int, int> map_indexes;
 };
 
 #endif
