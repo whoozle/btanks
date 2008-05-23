@@ -536,9 +536,9 @@
 	<animation id="stun-missiles-on-tank" tile="tank_missile06.png" model="missiles-on-tank-animation" />
 
 	<animation id="green-shilka" tile="shilka_green.png" model="shilka-animation"/>
-	<animation id="red-shilka" tile="shilka_green.png" model="shilka-animation"/>
-	<animation id="yellow-shilka" tile="shilka_green.png" model="shilka-animation"/>
-	<animation id="blue-shilka" tile="shilka_green.png" model="shilka-animation"/>
+	<animation id="red-shilka" tile="shilka_red.png" model="shilka-animation"/>
+	<animation id="yellow-shilka" tile="shilka_yellow.png" model="shilka-animation"/>
+	<animation id="blue-shilka" tile="shilka_blue.png" model="shilka-animation"/>
 	<animation id="green-shilka-turret" tile="shilka_turret_green.png" model="shilka-turret-animation"/>
 	<animation id="red-shilka-turret" tile="shilka_turret_red.png" model="shilka-turret-animation"/>
 	<animation id="yellow-shilka-turret" tile="shilka_turret_yellow.png" model="shilka-turret-animation"/>
