@@ -62,6 +62,9 @@ void Notepad::getSize(int &w, int &h) const {
 }
 
 bool Notepad::onMouse(const int button, const bool pressed, const int x, const int y) {
+	if (pressed)
+		return false;
+	
 	for(size_t i = 0; i < pages.size(); ++i) {
 		const Page &page = pages[i];
 		if (page.tab_rect.in(x, y)) {

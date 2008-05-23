@@ -126,11 +126,45 @@ void MapPicker::tick(const float dt) {
 		_mode_panel->set(map);
 	}
 	if (notepad->changed()) {
+		notepad->reset();
 		int idx = notepad->get();
 		Config->set("menu.default-game-mode", idx);
-		
+		reload();
 	}
 	Container::tick(dt);
+}
+
+static inline bool map_visible(const int mode, const MapDesc &map) {
+	return (mode == 2 && map.game_type == GameTypeCooperative) ||
+		   (mode == 3 && map.supports_ctf) || 
+		   (mode < 2 && map.game_type == GameTypeDeathMatch);
+}
+
+void MapPicker::reload() {
+
+	int mode = notepad->get();
+	std::string map, default_map = (mode == 2)?"baykonur": "curfew";
+	Config->get(mrt::formatString("menu.mode-%d.default-mp-map", mode), map, default_map);
+
+	_index = -1;
+	for(size_t i = 0; i < _maps.size(); ++i) {
+		if (map_visible(mode, _maps[i]) && _maps[i].name == map) {
+			_index = (int)i;
+			break;
+		}
+	}
+
+	if (_index < 0)
+		_index = 0;
+
+	LOG_DEBUG(("map index: %d, mode: %d", _index, mode));
+	_list->clear();
+
+	for(MapList::const_iterator i = _maps.begin(); i != _maps.end(); ++i) {
+		if (map_visible(mode, *i)) 
+			_list->append(i->name);
+	}
+	_list->set(_index);
 }
 
 MapPicker::MapPicker(const int w, const int h) : _index(0) {
@@ -145,16 +179,6 @@ MapPicker::MapPicker(const int w, const int h) : _index(0) {
 		
 	std::sort(_maps.begin(), _maps.end());
 	
-	std::string map;
-
-	Config->get("menu.default-mp-map", map, "lenin_square");
-	for(_index = 0; _index < (int)_maps.size(); ++_index) {
-		if (_maps[_index].name == map)
-			break;
-	}
-	if (_index >= (int)_maps.size())
-		_index = 0;
-	LOG_DEBUG(("map index: %d", _index));
 	
 	_upper_box = new UpperBox(w, 80, true);
 	int xdummy, ybase;
@@ -179,15 +203,10 @@ MapPicker::MapPicker(const int w, const int h) : _index(0) {
 	}
 
 	sdlx::Rect list_pos(0, ybase, (w - 64)/3, h - 256);
-	_list = NULL;
-	TRY {
-		_list = new ScrollList("menu/background_box.png", "medium", list_pos.w, list_pos.h);
-		for(MapList::const_iterator i = _maps.begin(); i != _maps.end(); ++i) {
-			_list->append(i->name);
-		}
-		add(list_pos.x, list_pos.y, _list);
-		_list->set(_index);
-	} CATCH("MapPicker::ctor", {delete _list; throw; });
+	_list = new ScrollList("menu/background_box.png", "medium", list_pos.w, list_pos.h);
+	add(list_pos.x, list_pos.y, _list);
+	
+	reload();
 
 	sdlx::Rect map_pos(list_pos.w + 16, ybase, (w - 64) / 3, h - 256);
 

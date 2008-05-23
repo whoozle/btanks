@@ -41,6 +41,7 @@ public:
 	void fillSlots() const;
 
 private:
+	void reload(); 
 	void loadScreenshot();
 	void scan(const std::string &dir);
 
