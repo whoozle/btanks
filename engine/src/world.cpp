@@ -746,6 +746,10 @@ TRY {
 			o._state.alt_fire = state_backup.alt_fire;
 	} CATCH("calling o.tick", throw;)
 
+	TRY {
+		o.groupTick(dt);
+	} CATCH("calling groupTick", throw);
+
 	if (o.speed == 0) {
 		TRY {
 			o._idle_time += dt * e_speed;
@@ -1178,8 +1182,6 @@ void IWorld::purge(ObjectMap &objects, const float dt) {
 		assert(o != NULL);
 
 		if (!o->_dead) {
-			if (dt > 0)
-				o->groupTick(dt);
 			++i;
 		} else if (!_safe_mode) { //dead and server mode
 			//LOG_DEBUG(("object %d:%s is dead. cleaning up. (global map: %s)", o->getID(), o->classname.c_str(), &objects == &_objects?"true":"false" ));
