@@ -83,6 +83,7 @@
 		<animation id="blue-car" />
 		<animation id="yellow-car" />
 		<animation id="white-car" />
+		<animation id="orange-bus" />
 		<variant id="safe" />
 	</class>
 	<class id="choo-choo-train">
