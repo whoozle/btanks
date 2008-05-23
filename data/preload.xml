@@ -398,10 +398,13 @@
 		<object id="machinegunner-bullet"/>
 		<object id="machinegunner-item"/>
 		<object id="machinegunner-on-launcher"/>
+		<object id="machinegunner-player"/>
 		<object id="megaheal"/>
 		<object id="mines-item"/>
 		<object id="missiles-on-launcher"/>
 		<object id="missiles-on-tank"/>
+		<object id="mortar-bullet"/>
+		<object id="mortar-explosion"/>
 		<object id="nuke-explosion"/>
 		<object id="nuke-mine"/>
 		<object id="nuke-missile"/>
@@ -681,6 +684,7 @@
 		<object id="regular-mine"/>
 		<object id="shilka"/>
 		<object id="shilka-bullet"/>
+		<object id="shilka-turret"/>
 		<object id="single-pose"/>
 		<object id="static-launcher"/>
 		<object id="static-mortar"/>

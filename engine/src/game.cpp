@@ -731,6 +731,7 @@ void IGame::onTick(const float dt) {
 			World->tick(dt);
 
 			PlayerManager->updatePlayers(dt);
+			World->purge(dt);
 		}
 
 		if (Window->running() && !_paused) {

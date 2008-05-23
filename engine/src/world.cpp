@@ -1086,7 +1086,6 @@ void IWorld::tick(const float dt) {
 	//LOG_DEBUG(("tick dt = %f", dt));
 	_collision_map.clear();
 	tick(_objects, dt, true);
-	purge(dt);
 }
 
 void IWorld::tick(Object &o, const float dt, const bool do_calculate) {
@@ -1098,7 +1097,6 @@ void IWorld::tick(Object &o, const float dt, const bool do_calculate) {
 
 void IWorld::tick(ObjectMap &objects, const float dt, const bool do_calculate) {
 	if (dt < 0.001f && dt > -0.001f) {
-		purge(objects, dt);
 		return;
 	}
 
@@ -1181,9 +1179,7 @@ void IWorld::purge(ObjectMap &objects, const float dt) {
 		Object *o = i->second;
 		assert(o != NULL);
 
-		if (!o->_dead) {
-			++i;
-		} else if (!_safe_mode) { //dead and server mode
+		if (!_safe_mode && o->_dead) { //not dead/dead and server mode
 			//LOG_DEBUG(("object %d:%s is dead. cleaning up. (global map: %s)", o->getID(), o->classname.c_str(), &objects == &_objects?"true":"false" ));
 			int id = i->first;
 			deleteObject(o);
@@ -1193,7 +1189,7 @@ void IWorld::purge(ObjectMap &objects, const float dt) {
 			if (j != _objects.end())
 				_objects.erase(j);
 		} else {
-			++i; //dead and safe mode. waiting for the update.
+			++i; //not dead / dead and safe mode. waiting for the update.
 		}
 	}
 }
