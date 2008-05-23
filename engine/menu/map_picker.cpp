@@ -122,7 +122,7 @@ void MapPicker::tick(const float dt) {
 		_upper_box->reset();
 		_upper_box->update(map.game_type);
 
-		Config->set("menu.default-mp-map", map.name);
+		Config->set(mrt::formatString("menu.mode-%d.default-mp-map", notepad->get()), map.name);
 		_details->set(map);
 		_picker->set(map);
 		_mode_panel->set(map);
