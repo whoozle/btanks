@@ -93,7 +93,10 @@ const MapDesc &MapPicker::getCurrentMap() const {
 	std::map<const int, int>::const_iterator i = map_indexes.find(_index);
 	if (i == map_indexes.end())
 		throw_ex(("getCurrentMap called before initialization"));
-	return _maps[i->second];
+	int idx = i->second;
+	if (idx < 0 || idx >= (int) _maps.size())
+		throw_ex(("index %d is out of range", idx));
+	return _maps[idx];
 }
 
 
