@@ -22,6 +22,8 @@
 #include "config.h"
 #include "ai/targets.h"
 #include "zbox.h"
+#include "player_manager.h"
+#include "mrt/random.h"
 
 #define PIERCEABLE_PAIR(o1, o2) ((o1->piercing && o2->pierceable) || (o2->piercing && o1->pierceable))
 
@@ -93,8 +95,16 @@ public:
 	} //end of tick()
 	
 	void calculate(const float dt) {
+		if (!_reaction.tick(dt)) 
+			return;
+		
 		if (_parent == NULL)
 			throw_ex(("turret is only operable attached to shilka "));
+
+		if (_parent->disable_ai && PlayerManager->getSlotByID(_parent->getID()) == NULL) {
+			Object::calculate(dt);
+			return;
+		}
 					
 		v2<float> pos, vel;
 		std::set<const Object *> objects;
@@ -142,11 +152,14 @@ public:
 		_special_fire.set(sfr);
 	}
 
-	ShilkaTurret() : Object("turrel"), _reaction(0.1f, true), _fire(false), _special_fire(false), _left_fire(false) {
+	ShilkaTurret() : Object("turrel"), _reaction(true), _fire(false), _special_fire(false), _left_fire(false) {
 		impassability = 0;
 		hp = -1;
 		setDirectionsNumber(16);
 		pierceable = true;
+		float rt = 0.1f;
+		mrt::randomize(rt, rt/10);
+		_reaction.set(rt);
 	}
 
 	virtual void serialize(mrt::Serializator &s) const {
