@@ -53,7 +53,7 @@ private:
 	MapDetails *_details;
 	PlayerPicker *_picker;
 	ModePanel *_mode_panel;
-	Notepad *nodepad;
+	Notepad *notepad;
 };
 
 #endif

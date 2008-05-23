@@ -45,7 +45,7 @@
 #include "mrt/base_file.h"
 #include "game_monitor.h"
 #include "mode_panel.h"
-#include "notepad.h"
+#include "menu/notepad.h"
 
 struct MapScanner : mrt::XMLParser {
 	int slots;
