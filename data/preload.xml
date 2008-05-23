@@ -411,7 +411,9 @@
 		<object id="ricochet-bullet"/>
 		<object id="ricochet-bullets-item"/>
 		<object id="road-sign"/>
+		<object id="shilka"/>
 		<object id="shilka-bullet"/>
+		<object id="shilka-turret"/>
 		<object id="single-pose"/>
 		<object id="smoke-cloud"/>
 		<object id="smoke-missile"/>
@@ -447,6 +449,8 @@
 		<object id="choo-choo-wagon"/>
 		<object id="corpse"/>
 		<object id="cow"/>
+		<object id="ctf-base"/>
+		<object id="ctf-flag"/>
 		<object id="damage-digits"/>
 		<object id="dirt"/>
 		<object id="dirt-bullet"/>
@@ -492,6 +496,7 @@
 		<object id="road-sign"/>
 		<object id="shilka"/>
 		<object id="shilka-bullet"/>
+		<object id="shilka-turret"/>
 		<object id="single-pose"/>
 		<object id="smoke-cloud"/>
 		<object id="smoke-missile"/>

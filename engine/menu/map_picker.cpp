@@ -185,8 +185,7 @@ MapPicker::MapPicker(const int w, const int h) : _index(0) {
 		throw_ex(("no maps found. sorry. install some maps/reinstall game."));
 		
 	std::sort(_maps.begin(), _maps.end());
-	
-	
+		
 	_upper_box = new UpperBox(w, 80, true);
 	int xdummy, ybase;
 	_upper_box->getSize(xdummy, ybase);
@@ -220,7 +219,7 @@ MapPicker::MapPicker(const int w, const int h) : _index(0) {
 	_picker = NULL;
 	TRY {
 		_picker = new PlayerPicker(w - map_pos.x - map_pos.w - 16, h - 256);
-		_picker->set(_maps[_index]);
+		_picker->set(getCurrentMap());
 		add(map_pos.x + map_pos.w + 16, ybase, _picker);
 	} CATCH("PlayerPicker::ctor", {delete _picker; throw; });
 
@@ -234,7 +233,7 @@ MapPicker::MapPicker(const int w, const int h) : _index(0) {
 	_details = NULL;	
 	TRY {
 		_details = new MapDetails(map_pos.w, map_pos.h);
-		_details->set(_maps[_index]);
+		_details->set(getCurrentMap());
 		add(map_pos.x, map_pos.y, _details);
 	} CATCH("MapPicker::ctor", {delete _details; _details = NULL; throw; });
 
@@ -253,10 +252,11 @@ void MapPicker::fillSlots() const {
 	Config->get("multiplayer.split-screen-mode", split, false);
 
 	std::vector<SlotConfig> config;
-	MenuConfig->fill(_maps[_index].name, _picker->getVariant(), config);
+	const MapDesc & map = getCurrentMap();
+	MenuConfig->fill(map.name, _picker->getVariant(), config);
 	int idx1 = -1, idx2 = -1;
 	for(size_t i = 0; i < config.size(); ++i) {
-		if (i >= (size_t)_maps[_index].slots)
+		if (i >= (size_t)map.slots)
 			break;
 		
 		PlayerSlot &slot = PlayerManager->getSlot(i);
