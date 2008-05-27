@@ -36,7 +36,7 @@ ModePanel::ModePanel(const int width) : enable_ctf(false), mode(-1) {
 				pos = idx;
 		}
 		
-		Grid *grid = new Grid(4, 2);
+		Grid *grid = new Grid(6, 1);
 		add(mx, my, grid);
 		
 		_time_limit = new Chooser("big", values);
@@ -47,8 +47,8 @@ ModePanel::ModePanel(const int width) : enable_ctf(false), mode(-1) {
 		bool rr;
 		Config->get("multiplayer.random-respawn", rr, false);
 
-		grid->set(1, 0, _random_respawn = new Checkbox(rr), Grid::Middle | Grid::Center);
-		grid->set(1, 1, _rr_label = new Label("small", I18n->get("menu", "random-respawn")), Grid::Middle);
+		grid->set(0, 4, _random_respawn = new Checkbox(rr), Grid::Middle | Grid::Center);
+		grid->set(0, 5, _rr_label = new Label("small", I18n->get("menu", "random-respawn")), Grid::Middle);
 		
 		std::vector<std::string> teams;
 		teams.push_back("0");
