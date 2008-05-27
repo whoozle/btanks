@@ -88,24 +88,23 @@ void ModePanel::tick(const float dt) {
 		_random_respawn->reset();
 		Config->set("multiplayer.random-respawn", _random_respawn->get());
 	}
-	/*
+	
 	if (_teams->changed()) {
 		_teams->reset();
 		Config->set("multiplayer.teams", (int)atoi(_teams->getValue().c_str()));
 	}
-	*/
 }
 
 void ModePanel::validate() {
 	//_random_respawn->hide(ctf);
 	//_rr_label->hide(ctf);
 	
-	bool ctf = mode == 3;
+	bool ctf = mode == 3, tdm = mode == 1;
 	
 	_teams->hide(ctf);
 	_teams_label->hide(ctf);
 	
-	if (!ctf) {
+	if (tdm) {
 		int t;
 		Config->get("multiplayer.teams", t, 0);
 		for(int i = 0; i < _teams->size(); ++i) 
