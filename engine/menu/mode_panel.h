@@ -26,7 +26,6 @@ private:
 	Chooser *_time_limit, *_teams;
 	Checkbox * _random_respawn;
 	Label *_tl_label, *_rr_label, *_teams_label;
-	bool enable_ctf;
 	int mode;
 };
 

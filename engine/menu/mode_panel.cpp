@@ -8,7 +8,7 @@
 #include "label.h"
 #include "grid.h"
 
-ModePanel::ModePanel(const int width) : enable_ctf(false), mode(-1) {
+ModePanel::ModePanel(const int width) : mode(-1) {
 	_time_limits.insert(std::pair<const int, std::string>(0,   "-:--"));
 	_time_limits.insert(std::pair<const int, std::string>(60,  "1:00"));
 	_time_limits.insert(std::pair<const int, std::string>(90,  "1:30"));
@@ -47,16 +47,15 @@ ModePanel::ModePanel(const int width) : enable_ctf(false), mode(-1) {
 		bool rr;
 		Config->get("multiplayer.random-respawn", rr, false);
 
-		grid->set(0, 4, _random_respawn = new Checkbox(rr), Grid::Middle | Grid::Center);
-		grid->set(0, 5, _rr_label = new Label("small", I18n->get("menu", "random-respawn")), Grid::Middle);
+		grid->set(0, 2, _random_respawn = new Checkbox(rr), Grid::Middle | Grid::Center);
+		grid->set(0, 3, _rr_label = new Label("small", I18n->get("menu", "random-respawn")), Grid::Middle);
 		
 		std::vector<std::string> teams;
-		teams.push_back("0");
 		teams.push_back("2");
 		teams.push_back("3");
 		teams.push_back("4");
-		grid->set(0, 2, _teams = new Chooser("big", teams, "menu/teams.png"), Grid::Middle | Grid::Center);
-		grid->set(0, 3, _teams_label = new Label("small", I18n->get("menu", "teams")), Grid::Middle);
+		grid->set(0, 4, _teams = new Chooser("big", teams, "menu/teams.png"), Grid::Middle | Grid::Center);
+		grid->set(0, 5, _teams_label = new Label("small", I18n->get("menu", "teams")), Grid::Middle);
 
 		grid->set_spacing(5);
 		grid->recalculate(0, h - 2 * my);
@@ -66,7 +65,6 @@ ModePanel::ModePanel(const int width) : enable_ctf(false), mode(-1) {
 
 void ModePanel::set(const MapDesc &map, const int mode) {
 	hide(map.game_type != GameTypeDeathMatch);
-	enable_ctf = map.supports_ctf;
 	this->mode = mode;
 	//LOG_DEBUG(("ctf supported: %s", enable_ctf?"yes":"no"));
 	validate();
@@ -90,30 +88,24 @@ void ModePanel::tick(const float dt) {
 		_random_respawn->reset();
 		Config->set("multiplayer.random-respawn", _random_respawn->get());
 	}
+	/*
 	if (_teams->changed()) {
 		_teams->reset();
-		bool ctf = enable_ctf;
-		if (!ctf)
-			Config->set("multiplayer.teams", (int)atoi(_teams->getValue().c_str()));
+		Config->set("multiplayer.teams", (int)atoi(_teams->getValue().c_str()));
 	}
+	*/
 }
 
 void ModePanel::validate() {
-	//_ctf_label->hide(!enable_ctf);
-	//_ctf->hide(!enable_ctf);
+	//_random_respawn->hide(ctf);
+	//_rr_label->hide(ctf);
 	
-	bool ctf = enable_ctf;// && _ctf->get();
-
-	_random_respawn->hide(ctf);
-	_rr_label->hide(ctf);
+	bool ctf = mode == 3;
 	
-	//_teams->hide(!ctf);
-	//_teams_label->hide(!ctf);	
-	if (ctf) {
-		for(int i = 0; i < _teams->size(); ++i) 
-			_teams->disable(i, i != 1);
-		_teams->reset();
-	} else {
+	_teams->hide(ctf);
+	_teams_label->hide(ctf);
+	
+	if (!ctf) {
 		int t;
 		Config->get("multiplayer.teams", t, 0);
 		for(int i = 0; i < _teams->size(); ++i) 
