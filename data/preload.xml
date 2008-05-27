@@ -201,6 +201,7 @@
 		<object id="ricochet-bullets-item"/>
 		<object id="road-sign"/>
 		<object id="shilka-bullet"/>
+		<object id="shilka-turret"/>
 		<object id="single-pose"/>
 		<object id="smoke-cloud"/>
 		<object id="smoke-missile"/>
@@ -279,6 +280,7 @@
 		<object id="road-sign"/>
 		<object id="shilka"/>
 		<object id="shilka-bullet"/>
+		<object id="shilka-turret"/>
 		<object id="single-pose"/>
 		<object id="smoke-cloud"/>
 		<object id="smoke-missile"/>
