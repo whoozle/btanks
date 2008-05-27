@@ -80,11 +80,15 @@ void Notepad::left() {
 	if (current_page <= 0)
 		return;
 	--current_page;
+	invalidate();
 }
 
 void Notepad::right() {
-	if (current_page + 1 < pages.size()) 
-		++current_page;
+	if (current_page + 1 >= pages.size()) 
+		return;
+	
+	++current_page;
+	invalidate();
 }
 
 bool Notepad::onKey(const SDL_keysym sym) {
