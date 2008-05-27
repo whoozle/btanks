@@ -76,6 +76,32 @@ bool Notepad::onMouse(const int button, const bool pressed, const int x, const i
 	return false;
 }
 
+void Notepad::left() {
+	if (current_page <= 0)
+		return;
+	--current_page;
+}
+
+void Notepad::right() {
+	if (current_page + 1 < pages.size()) 
+		++current_page;
+}
+
+bool Notepad::onKey(const SDL_keysym sym) {
+	switch(sym.sym) {
+		case SDLK_LEFT: 
+			left(); 
+			return true;
+
+		case SDLK_RIGHT: 
+			right(); 
+			return true;
+			
+		default: 
+			return false;
+	}
+}
+
 void Notepad::render(sdlx::Surface &surface, const int x, const int y) const {
 	int xp = x;
 	int yp = y + tabbg->getHeight() / 2 - font->getHeight() / 2;
