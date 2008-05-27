@@ -88,6 +88,7 @@ void StartServerMenu::start() {
 			throw_ex(("menu game type == cooperative, map game type: %d", (int)map.game_type));
 		RTConfig->game_type = map.game_type;
 		break;
+	
 	default: 
 		throw_ex(("unsupported game type %d", idx));
 	}
