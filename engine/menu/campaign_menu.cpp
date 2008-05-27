@@ -20,6 +20,7 @@
 #include "button.h"
 #include "image_view.h"
 #include "menu/video_control.h"
+#include "menu/video_control_disabled.h"
 #include "tmx/map.h"
 #include "rt_config.h"
 
@@ -140,10 +141,14 @@ void CampaignMenu::init() {
 	for(size_t i = 0; i < campaign.maps.size(); ++i) {
 
 		const Campaign::Map &map = campaign.maps[i];
-		if (!campaign.visible(map))	
-			continue;
+		Control *c = NULL;
+		TRY {
+		c = campaign.visible(map)? 
+				static_cast<Control *>(new VideoControl(campaign.base, map.id)): 
+				static_cast<Control *>(new DisabledVideoControl(campaign.base, map.id));
+		} CATCH("init", continue; );
 		
-		_maps->append(new VideoControl(campaign.base, map.id));
+		_maps->append(c);
 		map_id.push_back((int)i);
 		if (map.id == current_map) {
 			_maps->set(_maps->size() - 1);
