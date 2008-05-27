@@ -58,11 +58,6 @@ ModePanel::ModePanel(const int width) : enable_ctf(false) {
 		grid->set(0, 2, _teams = new Chooser("big", teams, "menu/teams.png"), Grid::Middle | Grid::Center);
 		grid->set(0, 3, _teams_label = new Label("small", I18n->get("menu", "teams")), Grid::Middle);
 
-		bool ctf;
-		Config->get("multiplayer.capture-the-flag", ctf, false);
-		grid->set(1, 2, _ctf = new Checkbox(ctf), Grid::Middle | Grid::Center);
-		grid->set(1, 3, _ctf_label = new Label("small", I18n->get("menu", "capture-the-flag")), Grid::Middle);
-		
 		grid->set_spacing(5);
 		grid->recalculate(0, h - 2 * my);
 
@@ -94,25 +89,19 @@ void ModePanel::tick(const float dt) {
 		_random_respawn->reset();
 		Config->set("multiplayer.random-respawn", _random_respawn->get());
 	}
-	if (_ctf->changed()) {
-		_ctf->reset();
-		bool ctf = _ctf->get();
-		Config->set("multiplayer.capture-the-flag", ctf);
-		validate();
-	}
 	if (_teams->changed()) {
 		_teams->reset();
-		bool ctf = enable_ctf && _ctf->get();
+		bool ctf = enable_ctf;
 		if (!ctf)
 			Config->set("multiplayer.teams", (int)atoi(_teams->getValue().c_str()));
 	}
 }
 
 void ModePanel::validate() {
-	_ctf_label->hide(!enable_ctf);
-	_ctf->hide(!enable_ctf);
+	//_ctf_label->hide(!enable_ctf);
+	//_ctf->hide(!enable_ctf);
 	
-	bool ctf = enable_ctf && _ctf->get();
+	bool ctf = enable_ctf;// && _ctf->get();
 
 	_random_respawn->hide(ctf);
 	_rr_label->hide(ctf);

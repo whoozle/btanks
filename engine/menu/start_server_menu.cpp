@@ -54,24 +54,44 @@ void StartServerMenu::start() {
 		GameMonitor->displayMessage("menu", "no-slots-in-map", 1);
 		return;
 	}
-	RTConfig->game_type = map.game_type;
-	if (map.supports_ctf) {
-		bool ctf;
-		Config->get("multiplayer.capture-the-flag", ctf, false);
-		if (ctf) {
-			LOG_DEBUG(("starting map in CTF mode. good luck."));
-			RTConfig->game_type = GameTypeCTF;
-			RTConfig->teams = 2;
-		}
-	}
-	if (RTConfig->game_type == GameTypeDeathMatch) {
+	int idx;
+	Config->get("menu.default-game-mode", idx, 0);
+	
+	switch(idx) {
+	case 3: //ctf
+		if (!map.supports_ctf) 
+			throw_ex(("start: map does not support ctf, but menu requested mode %d", idx));
+		
+		LOG_DEBUG(("starting map in CTF mode. good luck."));
+		RTConfig->game_type = GameTypeCTF;
+		RTConfig->teams = 2;
+		break;
+
+	case 1: { //team dethmatch 
 		int teams;
 		Config->get("multiplayer.teams", teams, 0);
-		if (teams > 0) {
-			RTConfig->game_type = GameTypeTeamDeathMatch;
-			RTConfig->teams = teams;
-		}
+		if (teams <= 0) 
+			throw_ex(("start: requested team deathmatch, but teams == %d", teams));
+
+		RTConfig->game_type = GameTypeTeamDeathMatch;
+		RTConfig->teams = teams;
+		} break;
+
+	case 0: 
+		if (map.game_type != GameTypeDeathMatch)
+			throw_ex(("menu game type == deathmatch, map game type: %d", (int)map.game_type));
+		RTConfig->game_type = map.game_type;
+		break;
+
+	case 2: 
+		if (map.game_type != GameTypeCooperative)
+			throw_ex(("menu game type == cooperative, map game type: %d", (int)map.game_type));
+		RTConfig->game_type = map.game_type;
+		break;
+	default: 
+		throw_ex(("unsupported game type %d", idx));
 	}
+	
 	if (RTConfig->game_type != GameTypeCooperative && RTConfig->game_type != GameTypeRacing) {
 		int tl; 
 		Config->get("multiplayer.time-limit", tl, 0);

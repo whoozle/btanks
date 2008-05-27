@@ -24,8 +24,8 @@ private:
 	TimeLimits _time_limits;
 
 	Chooser *_time_limit, *_teams;
-	Checkbox * _random_respawn, *_ctf;
-	Label *_tl_label, *_rr_label, *_ctf_label, *_teams_label;
+	Checkbox * _random_respawn;
+	Label *_tl_label, *_rr_label, *_teams_label;
 	bool enable_ctf;
 };
 
