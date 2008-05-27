@@ -28,6 +28,8 @@ void CampaignMenu::start() {
 	int ci = _active_campaign->get();
 	Campaign &campaign = _campaigns[ci];
 	const Campaign::Map &map = campaign.maps[map_id[_maps->get()]];
+	if (!campaign.visible(map))
+		return;
 
 	RTConfig->game_type = GameTypeCooperative;
 	LOG_DEBUG(("campaign: %s, map: %s", campaign.name.c_str(), map.id.c_str()));
