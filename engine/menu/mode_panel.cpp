@@ -18,7 +18,7 @@ ModePanel::ModePanel(const int width) : mode(-1) {
 	_time_limits.insert(std::pair<const int, std::string>(420, "7:00"));
 	_time_limits.insert(std::pair<const int, std::string>(600, "9:99"));
 
-		add(0, 0, _background = new Box("menu/background_box.png", width, 80));
+		add(0, 0, _background = new Box("menu/background_box.png", width, 48));
 		
 		int w, h;
 		getSize(w, h);
@@ -101,8 +101,8 @@ void ModePanel::validate() {
 	
 	bool ctf = mode == 3, tdm = mode == 1;
 	
-	_teams->hide(ctf);
-	_teams_label->hide(ctf);
+	_teams->hide(!tdm);
+	_teams_label->hide(!tdm);
 	
 	if (tdm) {
 		int t;
