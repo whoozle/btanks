@@ -1487,6 +1487,10 @@ void IWorld::generateUpdate(mrt::Serializator &s, const bool clean_sync_flag, co
 		Object *o = i->second;
 		assert(o != NULL);
 		assert(o->_id >= id0);
+		if (o->_dead) {
+			LOG_WARN(("%d:%s is dead, skipping object", o->_id, o->animation.c_str()));
+			continue;
+		}
 
 		if (!sync_update && o->speed == 0 && !o->_need_sync) 
 			continue;
