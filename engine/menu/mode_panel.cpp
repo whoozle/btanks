@@ -8,7 +8,7 @@
 #include "label.h"
 #include "grid.h"
 
-ModePanel::ModePanel(const int width) : enable_ctf(false) {
+ModePanel::ModePanel(const int width) : enable_ctf(false), mode(-1) {
 	_time_limits.insert(std::pair<const int, std::string>(0,   "-:--"));
 	_time_limits.insert(std::pair<const int, std::string>(60,  "1:00"));
 	_time_limits.insert(std::pair<const int, std::string>(90,  "1:30"));
@@ -64,9 +64,10 @@ ModePanel::ModePanel(const int width) : enable_ctf(false) {
 	validate();
 }
 
-void ModePanel::set(const MapDesc &map) {
+void ModePanel::set(const MapDesc &map, const int mode) {
 	hide(map.game_type != GameTypeDeathMatch);
 	enable_ctf = map.supports_ctf;
+	this->mode = mode;
 	//LOG_DEBUG(("ctf supported: %s", enable_ctf?"yes":"no"));
 	validate();
 }

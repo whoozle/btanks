@@ -135,7 +135,7 @@ void MapPicker::tick(const float dt) {
 		Config->set(mrt::formatString("menu.mode-%d.default-mp-map", notepad->get()), map.name);
 		_details->set(map);
 		_picker->set(map);
-		_mode_panel->set(map);
+		_mode_panel->set(map, notepad->get());
 	}
 	if (notepad->changed()) {
 		notepad->reset();

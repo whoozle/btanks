@@ -14,7 +14,7 @@ public:
 	ModePanel(const int w);
 
 	void tick(const float dt);
-	void set(const MapDesc &map);
+	void set(const MapDesc &map, const int mode);
 
 private: 
 	void validate();
@@ -27,6 +27,7 @@ private:
 	Checkbox * _random_respawn;
 	Label *_tl_label, *_rr_label, *_teams_label;
 	bool enable_ctf;
+	int mode;
 };
 
 #endif
