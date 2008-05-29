@@ -34,13 +34,13 @@ sdlx_sources = 	['cursor.cpp', 'sdl_ex.cpp', 'surface.cpp', 'system.cpp', 'joyst
 	] #  'ttf.cpp', 
 
 if sys.platform == 'win32': 
-	sdlx_sources.append('glSDL/d3dsdl.cpp')
+	sdlx_sources.append('wrappers/d3dsdl.cpp')
 	env.Append(CPPPATH=[os.environ['DXSDK_DIR'] + 'Include'])
 	env.Append(LIBPATH=[os.environ['DXSDK_DIR'] + 'Lib\\x86'])
 	libs.append('d3d9')
 	libs.append('d3dx9')
 else: 
-	sdlx_sources.append('glSDL/glSDL.c')
+	sdlx_sources.append('wrappers/glSDL.c')
 
 sdlx = env.SharedLibrary('sdlx', sdlx_sources, LIBS=libs)
 Install('#', sdlx[0])

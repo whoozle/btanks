@@ -3,9 +3,9 @@
 
 #ifdef USE_GLSDL
 #	ifdef _WINDOWS
-#		include "glSDL/d3dsdl.h"
+#		include "wrappers/d3dsdl.h"
 #	else
-#		include "glSDL/glSDL.h"
+#		include "wrappers/glSDL.h"
 #	endif
 #else
 #	include <SDL.h>
