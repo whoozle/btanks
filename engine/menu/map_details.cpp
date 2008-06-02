@@ -95,7 +95,7 @@ void MapDetails::set(const MapDesc & map_desc) {
 	//const std::string &comments = I18n->has("maps/descriptions", map)?I18n->get("maps/descriptions", map): 
 	//I18n->get("maps/descriptions", "(default)");
 	
-	_map_desc = new Tooltip("maps/descriptions", I18n->has("maps/descriptions", map)? map:"(default)" , false, _w - 32);
+	_map_desc = new Tooltip("maps/descriptions", I18n->has("maps/descriptions", map)? map:"(default)" , false, _w);
 	if (_ai_hint != NULL) {
 		_ai_hint->hide(map_desc.game_type != GameTypeDeathMatch);
 	}
