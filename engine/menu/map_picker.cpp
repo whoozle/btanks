@@ -204,7 +204,7 @@ MapPicker::MapPicker(const int w, const int h) : _index(0) {
 	GET_CONFIG_VALUE("menu.default-game-mode", int, dgm, 0);
 	notepad->set(dgm);
 
-	add(0, ybase, notepad);
+	add(16, ybase, notepad);
 	{
 		int w, h;
 		notepad->getSize(w, h);
@@ -213,7 +213,7 @@ MapPicker::MapPicker(const int w, const int h) : _index(0) {
 	ybase1 = ybase;
 
 	sdlx::Rect list_pos(0, ybase, (w - 64)/3, h - 256);
-	_list = new ScrollList("menu/background_box.png", "medium", list_pos.w, list_pos.h);
+	_list = new ScrollList(std::string(), "medium", list_pos.w, list_pos.h);
 	add(list_pos.x, list_pos.y, _list);
 	
 	reload();

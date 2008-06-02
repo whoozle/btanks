@@ -21,7 +21,6 @@
 
 
 #include "container.h"
-#include "box.h"
 #include "sdlx/surface.h"
 #include "sdlx/font.h"
 
@@ -39,7 +38,7 @@ public:
 	void set(const MapDesc & map_desc);
 	~MapDetails();
 private: 
-	Box _background;
+	int _w, _h;
 	Tooltip *_map_desc, *_ai_hint;
 	std::string base, map;
 	bool has_tactics;

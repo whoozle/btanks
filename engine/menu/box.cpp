@@ -38,6 +38,20 @@ void Box::getSize(int &rw, int &rh) const {
 
 void Box::init(const std::string &tile, int _w, int _h, int hl_h) {
 	_highlight.free();
+	if (tile.empty()) {
+		_surface = NULL;
+		w = _w; 
+		h = _h;
+		x1 = x2 = 16; 
+		y1 = y2 = 32; 
+		xn = yn = 1;
+		if (hl_h > 0) {
+			_highlight.createRGB(w, hl_h, 32);
+			_highlight.convertAlpha();
+			_highlight.fill(_highlight.mapRGBA(255, 255, 255, 77));
+		}
+		return;
+	}
 		
 	_surface = ResourceManager->loadSurface(tile);
 	x1 = _surface->getWidth() / 3;
@@ -63,11 +77,6 @@ void Box::init(const std::string &tile, int _w, int _h, int hl_h) {
 	w = xn * cw + x1 * 2;
 	h = yn * ch + y1 * 2;
 
-	if (hl_h > 0) {
-		_highlight.createRGB(w, hl_h, 32);
-		_highlight.convertAlpha();
-		_highlight.fill(_highlight.mapRGBA(255, 255, 255, 77));
-	}
 	
 	//16x blending optimization.
 	_filler.createRGB(cw * TILE_SIZE, cw * TILE_SIZE, 32);
@@ -114,10 +123,17 @@ void Box::init(const std::string &tile, int _w, int _h, int hl_h) {
 	}
 	
 	foo->setAlpha(255);
+
+	if (hl_h > 0) {
+		_highlight.createRGB(w, hl_h, 32);
+		_highlight.convertAlpha();
+		_highlight.fill(_highlight.mapRGBA(255, 255, 255, 77));
+	}
 }
 
 void Box::render(sdlx::Surface &surface, const int x0, const int y0) const {
-	assert(_surface != NULL);
+	if (_surface == NULL)
+		return;
 	
 	sdlx::Rect ul(0,	0,	x1,								y1);
 	sdlx::Rect u (x1,	0,	x2 - x1,	 					y1);

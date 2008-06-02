@@ -20,7 +20,6 @@
  */
 
 #include "container.h"
-#include "box.h"
 #include <string>
 #include <vector>
 #include <map>
@@ -49,7 +48,6 @@ private:
 	const bool changeAnySlotTypeExcept(const std::string &what, const std::string &to, const int e);
 	const bool changeSlotTypesExcept(const std::string &what, const std::string &to, const int e, const int skip);
 
-	Box _background;
 	const sdlx::Surface *_vehicles;
 	std::vector<SlotLine *> _slots;
 };

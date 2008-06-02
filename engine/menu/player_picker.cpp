@@ -146,7 +146,6 @@ private:
 };
 
 PlayerPicker::PlayerPicker(const int w, const int h) {
-	_background.init("menu/background_box.png", w, h);
 	_vehicles = ResourceManager->loadSurface("menu/vehicles.png");
 }
 
@@ -276,8 +275,7 @@ void PlayerPicker::tick(const float dt) {
 
 void PlayerPicker::set(const MapDesc &map) {
 	clear();
-	int mx, my;
-	_background.getMargins(mx, my);
+	int mx = 16, my = 16;
 
 	std::vector<SlotConfig> config;
 
@@ -299,10 +297,6 @@ void PlayerPicker::set(const MapDesc &map) {
 }
 
 void PlayerPicker::render(sdlx::Surface &surface, const int x, const int y) const {
-	_background.render(surface, x, y);
-	
-	int mx, my;
-	_background.getMargins(mx, my);
 	Container::render(surface, x, y);
 }
 

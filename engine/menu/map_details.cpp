@@ -26,17 +26,13 @@
 #include "map_desc.h"
 #include "mrt/chunk.h"
 
-MapDetails::MapDetails(const int w, const int h) : _map_desc(0), _ai_hint(NULL), has_tactics(false) {
-	_background.init("menu/background_box.png", w, h);
-
+MapDetails::MapDetails(const int w, const int h) : _w(w), _h(h), _map_desc(0), _ai_hint(NULL), has_tactics(false) {
 	mrt::Chunk data;
 	Finder->load(data, "maps/null.png");
 	_null_screenshot.loadImage(data);
 	_null_screenshot.convertAlpha();
 	_small_font = ResourceManager->loadFont("small", true);
 
-	int mx, my;
-	_background.getMargins(mx, my);
 /*
 	if (hint && I18n->has("tips", "deathmatch-bots")) {
 		int mw, mh;
@@ -50,7 +46,7 @@ MapDetails::MapDetails(const int w, const int h) : _map_desc(0), _ai_hint(NULL),
 }
 
 void MapDetails::getSize(int &w, int &h) const {
-	w = _background.w; h = _background.h;
+	w = _w; h = _h;
 }
 
 bool MapDetails::onMouse(const int button, const bool pressed, const int x, const int y) {
@@ -95,14 +91,11 @@ void MapDetails::set(const MapDesc & map_desc) {
 	delete _map_desc; 
 	_map_desc = NULL;
 	
-	int mx, my;
-	_background.getMargins(mx, my);
-
 	delete _map_desc;
 	//const std::string &comments = I18n->has("maps/descriptions", map)?I18n->get("maps/descriptions", map): 
 	//I18n->get("maps/descriptions", "(default)");
 	
-	_map_desc = new Tooltip("maps/descriptions", I18n->has("maps/descriptions", map)? map:"(default)" , false, _background.w - 2 * mx);
+	_map_desc = new Tooltip("maps/descriptions", I18n->has("maps/descriptions", map)? map:"(default)" , false, _w - 32);
 	if (_ai_hint != NULL) {
 		_ai_hint->hide(map_desc.game_type != GameTypeDeathMatch);
 	}
@@ -110,14 +103,12 @@ void MapDetails::set(const MapDesc & map_desc) {
 
 void MapDetails::render(sdlx::Surface &surface, const int x, const int y) const {
 	Container::render(surface, x, y);
-	_background.render(surface, x, y);
-	int mx, my;
-	_background.getMargins(mx, my);
 	
+	int mx = 16, my = 16;
 	int yp = my * 3 / 2;
 
 	const sdlx::Surface &screenshot = _screenshot.isNull()?_null_screenshot:_screenshot;
-	int xs = (_background.w - screenshot.getWidth()) / 2;
+	int xs = (_w - screenshot.getWidth()) / 2;
 	surface.copyFrom(screenshot, x + xs, y + yp);
 	int ys = screenshot.getHeight();
 	yp += (ys < 140)?140:ys;
@@ -125,7 +116,7 @@ void MapDetails::render(sdlx::Surface &surface, const int x, const int y) const 
 	if (has_tactics) {
 		std::string click_here = I18n->get("menu", "view-map");
 		int w = _small_font->render(NULL, 0, 0, click_here);
-		_small_font->render(surface, x + (_background.w - w) / 2, y + yp, click_here);
+		_small_font->render(surface, x + (_w - w) / 2, y + yp, click_here);
 	}
 	yp += _small_font->getHeight() + 12;
 
@@ -133,7 +124,7 @@ void MapDetails::render(sdlx::Surface &surface, const int x, const int y) const 
 		_map_desc->render(surface, x + mx, y + yp);
 	
 	if (!_tactics.isNull()) {
-		surface.copyFrom(_tactics, x + _background.w / 2 - _tactics.getWidth() / 2, y + _background.h / 2 - _tactics.getHeight() / 2);
+		surface.copyFrom(_tactics, x + _w / 2 - _tactics.getWidth() / 2, y + _h / 2 - _tactics.getHeight() / 2);
 	}
 }
 
