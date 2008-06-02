@@ -108,7 +108,7 @@ public:
 					
 		v2<float> pos, vel;
 		std::set<const Object *> objects;
-		enumerateObjects(objects, getWeaponRange("shilka-bullet"), &ai::Targets->troops);
+		_parent->enumerateObjects(objects, getWeaponRange("shilka-bullet"), &ai::Targets->troops);
 
 		int dirs = getDirectionsNumber();
 		//int parent_dir = _parent->getDirection();
