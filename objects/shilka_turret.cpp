@@ -50,7 +50,7 @@ public:
 				std::string animation = "shilka-dirt-bullet-";
 				animation += (_left_fire)?"left":"right";
 				
-				spawn("dirt-bullet", animation, v2<float>(), _direction);
+				_parent->spawn("dirt-bullet", animation, v2<float>(), _direction);
 	
 				play_fire = true;
 			} 
@@ -60,14 +60,14 @@ public:
 			_fire.reset();
 			
 			if (_parent->has_effect("ricochet")) {
-				spawn("ricochet-bullet(auto-aim)", "ricochet-bullet", v2<float>(), _direction);
+				_parent->spawn("ricochet-bullet(auto-aim)", "ricochet-bullet", v2<float>(), _direction);
 				play_fire = true;
 				_left_fire = ! _left_fire;
 			} else if (_parent->has_effect("dispersion")) {
 			
 				if (alt_fire_possible) {
 					_special_fire.reset();
-					spawn("dispersion-bullet", "dispersion-bullet", v2<float>(), _direction);
+					_parent->spawn("dispersion-bullet", "dispersion-bullet", v2<float>(), _direction);
 					play_fire = true;
 					_left_fire = ! _left_fire;
 				};
@@ -78,7 +78,7 @@ public:
 				std::string animation = "shilka-bullet-";
 				animation += (_left_fire)?"left":"right";
 				
-				spawn("shilka-bullet", animation, v2<float>(), _direction);
+				_parent->spawn("shilka-bullet", animation, v2<float>(), _direction);
 				play_fire = true;
 				_left_fire = ! _left_fire;
 			}
