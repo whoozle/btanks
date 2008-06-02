@@ -103,6 +103,8 @@ void ModePanel::validate() {
 	
 	_teams->hide(!tdm);
 	_teams_label->hide(!tdm);
+	_random_respawn->hide(ctf);
+	_rr_label->hide(ctf);
 	
 	if (tdm) {
 		int t;
