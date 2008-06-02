@@ -29,13 +29,19 @@
 #include "i18n.h"
 #include "rt_config.h"
 #include "config.h"
+#include "box.h"
 
 StartServerMenu::StartServerMenu(MainMenu *parent, const int w, const int h) : _parent(parent)  {
 	_map_picker = new MapPicker(w, h);
-	int cw, ch, bw, bh;
+	int y1, y2;
+	_map_picker->getBaseSize(y1, y2);
+	add(0, y1, new Box("menu/background_box.png", w, y2 - y1));
+	
+	int cw, ch;
 	_map_picker->getSize(cw, ch);
 
 	_back = new Button("big", I18n->get("menu", "back"));
+	int bw, bh;
 	_back->getSize(bw, bh);
 	add(64, h - (h - ch) / 2 - bh / 2, _back);
 	

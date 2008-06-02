@@ -210,6 +210,7 @@ MapPicker::MapPicker(const int w, const int h) : _index(0) {
 		notepad->getSize(w, h);
 		ybase += h;
 	}
+	ybase1 = ybase;
 
 	sdlx::Rect list_pos(0, ybase, (w - 64)/3, h - 256);
 	_list = new ScrollList("menu/background_box.png", "medium", list_pos.w, list_pos.h);
@@ -242,6 +243,7 @@ MapPicker::MapPicker(const int w, const int h) : _index(0) {
 
 	int ydummy;
 	_list->getSize(xdummy, ydummy);
+	ybase2 = ybase + ydummy;
 	ybase += ydummy + 4;
 	add(0, ybase, _mode_panel = new ModePanel(w));
 

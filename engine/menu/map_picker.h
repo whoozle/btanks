@@ -41,6 +41,8 @@ public:
 	const MapDesc &getCurrentMap() const;
 	void fillSlots() const;
 
+	void getBaseSize(int &y1, int &y2) { y1 = ybase1; y2 = ybase2; }
+	
 private:
 	void reload(); 
 	void loadScreenshot();
@@ -58,6 +60,8 @@ private:
 	Notepad *notepad;
 	
 	std::map<const int, int> map_indexes;
+	
+	int ybase1, ybase2;
 };
 
 #endif
