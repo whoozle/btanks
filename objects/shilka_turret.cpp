@@ -108,7 +108,7 @@ public:
 					
 		v2<float> pos, vel;
 		std::set<const Object *> objects;
-		enumerateObjects(objects, getWeaponRange("shilka-bullet"), &ai::Targets->troops);
+		_parent->enumerateObjects(objects, getWeaponRange("shilka-bullet"), &ai::Targets->troops);
 
 		int dirs = getDirectionsNumber();
 		//int parent_dir = _parent->getDirection();
@@ -118,8 +118,8 @@ public:
 		v2<float> target_pos;
 		for(std::set<const Object *>::iterator i = objects.begin(); i != objects.end(); ++i) {
 			const Object *o = *i;
-			if (o->getID() == getID() || o->impassability == 0 || 
-				PIERCEABLE_PAIR(this, o) || !ZBox::sameBox(getZ(), o->getZ()) || hasSameOwner(o) ||
+			if (o->getID() == _parent->getID() || o->impassability == 0 || 
+				PIERCEABLE_PAIR(_parent, o) || !ZBox::sameBox(_parent->getZ(), o->getZ()) || _parent->hasSameOwner(o) ||
 				o->has_effect("invulnerability")
 				)
 				continue;
