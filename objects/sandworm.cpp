@@ -231,7 +231,7 @@ void SandWormHead::tick(const float dt) {
 
 void SandWormHead::emit(const std::string &event, Object * emitter) {
 	if (event == "collision") {
-		if (emitter == NULL)
+		if (emitter == NULL || emitter->classname == "ctf-flag" || emitter->classname == "ctf-base")
 			return;
 		if (emitter->piercing) {
 			if (emitter->registered_name == "mortar-bullet")
