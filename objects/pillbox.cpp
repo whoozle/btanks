@@ -128,11 +128,7 @@ public:
 		o->setZ(getZ() + 1, true);
 		for(int i = 0; i < 2; ++i) {
 			o = spawn("machinegunner", "machinegunner", size / 2);
-			o->disown();
-			if (hasOwner(OWNER_MAP))
-				o->addOwner(OWNER_MAP);
-			if (hasOwner(OWNER_COOPERATIVE))
-				o->addOwner(OWNER_COOPERATIVE);
+			o->copy_special_owners(this);
 		}
 	}
 };

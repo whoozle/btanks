@@ -23,6 +23,7 @@
 #include "zbox.h"
 #include "mrt/random.h"
 #include "tmx/map.h"
+#include "special_owners.h"
 
 Heli::Heli(const std::string &classname) : 
 	Object(classname), _fire(false), _alt_fire(false), _left(false) {
@@ -109,7 +110,7 @@ void Heli::tick(const float dt) {
 
 void Heli::onSpawn() {
 	if (registered_name.compare(0, 6, "static") == 0)
-		disown();
+		removeOwner(OWNER_MAP);
 
 	GET_CONFIG_VALUE("objects.helicopter.fire-rate", float, fr, 0.1f);
 	_fire.set(fr);

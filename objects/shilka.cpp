@@ -24,6 +24,7 @@
 #include "config.h"
 #include "fakemod.h"
 #include "rt_config.h"
+#include "special_owners.h"
 
 void Shilka::getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const {
 	base = 0;
@@ -46,7 +47,7 @@ FakeMod *Shilka::getMod(const std::string &name) {
 
 void Shilka::onSpawn() {
 	if (registered_name.substr(0, 6) == "static") {
-		disown();
+		removeOwner(OWNER_MAP);
 		disable_ai = true;
 	}
 	

@@ -22,6 +22,7 @@
 #include "object.h"
 #include "tank.h"
 #include "config.h"
+#include "special_owners.h"
 
 void Tank::getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const {
 	if (impassability > 0.4) {
@@ -38,7 +39,7 @@ Tank::Tank(const std::string &classname)
 
 void Tank::onSpawn() {
 	if (registered_name.substr(0, 6) == "static") {
-		disown();
+		removeOwner(OWNER_MAP);
 		disable_ai = true;
 	}
 

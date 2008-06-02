@@ -77,11 +77,7 @@ void Barrack::tick(const float dt) {
 			dpos.y = size.y / 2 + 16; //fixme: use debiloids size here.
 			
 			Object * o = spawn(_object, _animation, dpos);
-			o->disown();
-			if (hasOwner(OWNER_MAP))
-				o->addOwner(OWNER_MAP);
-			if (hasOwner(OWNER_COOPERATIVE))
-				o->addOwner(OWNER_COOPERATIVE);
+			o->copy_special_owners(this);
 			playNow("spawn");
 		}
 	}

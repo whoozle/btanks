@@ -21,7 +21,7 @@
 #include "object.h"
 #include "launcher.h"
 #include "config.h"
-
+#include "special_owners.h"
 
 void Launcher::getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const {
 	if (impassability > 0.2) {
@@ -42,7 +42,7 @@ Object * Launcher::clone() const {
 
 void Launcher::onSpawn() {
 	if (registered_name.substr(0, 6) == "static") {
-		disown();
+		removeOwner(OWNER_MAP);
 		disable_ai = true;
 	}
 

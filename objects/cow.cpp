@@ -22,6 +22,7 @@
 #include "config.h"
 #include "mrt/random.h"
 #include "ai/herd.h"
+#include "special_owners.h"
 
 class Cow : public Object, public ai::Herd{
 public:
@@ -96,7 +97,7 @@ void Cow::onSpawn() {
 	_reaction.set(rt);
 	play("hold", true);
 	
-	disown();
+	removeOwner(OWNER_MAP);
 }
 
 void Cow::emit(const std::string &event, Object * emitter) {

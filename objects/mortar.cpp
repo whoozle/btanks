@@ -22,6 +22,7 @@
 #include "object.h"
 #include "mortar.h"
 #include "config.h"
+#include "special_owners.h"
 
 void Mortar::getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const {
 	penalty = 0;
@@ -36,7 +37,7 @@ Mortar::Mortar(const std::string &classname)
 void Mortar::onSpawn() {
 	if (registered_name.substr(0, 6) == "static") {
 		disable_ai = true;
-		disown();
+		removeOwner(OWNER_MAP);
 	}
 
 	GET_CONFIG_VALUE("objects.mortar.fire-rate", float, fr, 0.7);

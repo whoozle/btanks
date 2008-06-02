@@ -47,7 +47,7 @@ private:
 
 void Buggy::onSpawn() {
 	if (registered_name.substr(0, 6) == "static") {
-		disown();
+		removeOwner(OWNER_MAP);
 		disable_ai = true;
 	}
 
