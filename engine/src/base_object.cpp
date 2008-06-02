@@ -215,6 +215,27 @@ void BaseObject::copyOwners(const BaseObject *from) {
 	assert(_owners.size() == _owner_set.size());
 }
 
+void BaseObject::copy_special_owners(const BaseObject *from) {
+	_owners.clear();
+	_owner_set.clear();
+
+	if (from->hasOwner(OWNER_MAP))
+		addOwner(OWNER_MAP);
+	if (from->hasOwner(OWNER_COOPERATIVE))
+		addOwner(OWNER_COOPERATIVE);
+
+	if (from->hasOwner(OWNER_TEAM_RED))
+		addOwner(OWNER_TEAM_RED);
+	if (from->hasOwner(OWNER_TEAM_GREEN))
+		addOwner(OWNER_TEAM_GREEN);
+	if (from->hasOwner(OWNER_TEAM_YELLOW))
+		addOwner(OWNER_TEAM_YELLOW);
+	if (from->hasOwner(OWNER_TEAM_BLUE))
+		addOwner(OWNER_TEAM_BLUE);
+	
+	assert(_owners.size() == _owner_set.size());
+}
+
 
 void BaseObject::addOwner(const int oid) {
 	if (hasOwner(oid))

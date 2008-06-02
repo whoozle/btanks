@@ -90,6 +90,7 @@ public:
 	void truncateOwners(const int n);
 	inline void getOwners(std::deque<int> &owners) const { owners = _owners; }
 	void copyOwners(const BaseObject *from);
+	void copy_special_owners(const BaseObject *from);
 	
 	inline const int getSummoner() const { return _spawned_by; }
 	
