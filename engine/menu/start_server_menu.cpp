@@ -35,7 +35,7 @@ StartServerMenu::StartServerMenu(MainMenu *parent, const int w, const int h) : _
 	_map_picker = new MapPicker(w, h);
 	int y1, y2;
 	_map_picker->getBaseSize(y1, y2);
-	add(0, y1, new Box("menu/background_box.png", w, y2 - y1));
+	add(0, y1, new Box("menu/background_box.png", w, y2 - y1 - 16));
 	
 	int cw, ch;
 	_map_picker->getSize(cw, ch);
