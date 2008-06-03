@@ -147,9 +147,16 @@ private:
 	void onMapResize(int left, int right, int up, int down);
 
 	ObjectMap _objects;
-	typedef std::list<Object *> ObjectList;
-	ObjectMap push_objects;
-	std::set<int> pop_objects;
+	struct Command {
+		enum Type {Push, Pop};
+		Type type;
+		int id;
+		Object *object;
+
+		Command(Type type): type(type), id(0), object(NULL) {}
+	};
+	typedef std::list<Command> Commands;
+	Commands _commands;
 	
 	Grid<Object *> _grid;
 	int _last_id;

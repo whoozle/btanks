@@ -1143,38 +1143,41 @@ void IWorld::purge(const float dt) {
 }
 
 void IWorld::purge(ObjectMap &objects, const float dt) {
-
-	for(ObjectMap::iterator i = push_objects.begin(); i != push_objects.end(); ++i) {
-		const int object_id = i->first;
-		Object *o = i->second;
-		assert(o != NULL);
+	for(Commands::iterator i = _commands.begin(); i != _commands.end(); ++i) {
+		Command &cmd = *i;
+		switch(cmd.type) {
+			case Command::Push: {
+					assert(cmd.object != NULL);
+					ObjectMap::iterator j = _objects.find(cmd.id);
+					if (j != _objects.end()) {
+						_grid.remove(j->second);
+						delete j->second;
+						j->second = cmd.object;
+					} else {
+						_objects.insert(ObjectMap::value_type(cmd.id, cmd.object));
+					}
+					updateObject(cmd.object);
+				}
+				break;
+			case Command::Pop: {
+					ObjectMap::iterator j = _objects.find(cmd.id);
+					if (j != _objects.end()) {
+						Object *o = j->second;
+						_grid.remove(o);
+						delete o;
+						//if (o->_dead && !o->animation.empty())
+						//	o->_dead = false;
+						_objects.erase(j);
+					}
+				}
+				break;
+			default: 
+				assert(0);
+		}
 		
-		ObjectMap::iterator j = _objects.find(object_id);
-		if (j != _objects.end()) {
-			_grid.remove(j->second);
-			delete j->second;
-			j->second = o;
-		} else {
-			_objects.insert(ObjectMap::value_type(object_id, o));
-		}
-		updateObject(o);
 	}
-	push_objects.clear();
+	_commands.clear();
 
-	for(std::set<int>::const_iterator i = pop_objects.begin(); i != pop_objects.end(); ++i) {
-		const int object_id = *i;
-		ObjectMap::iterator j = _objects.find(object_id);
-		if (j != _objects.end()) {
-			Object *o = j->second;
-			delete o;
-			_grid.remove(o);
-			//if (o->_dead && !o->animation.empty())
-			//	o->_dead = false;
-			_objects.erase(j);
-		}
-	}
-	pop_objects.clear();
-	
 	for(ObjectMap::iterator i = objects.begin(); i != objects.end(); ) {
 		Object *o = i->second;
 		assert(o != NULL);
@@ -1583,12 +1586,13 @@ TRY {
 	Object *o;
 	while((o = deserializeObject(s)) != NULL) {
 		objects.insert(ObjectMap::value_type(o->_id, o));
-		ObjectMap::iterator i = push_objects.find(o->_id);
+		/*ObjectMap::iterator i = push_objects.find(o->_id);
 		if (i != push_objects.end()) {
 			delete i->second;
 			push_objects.erase(i);
 		}
 		pop_objects.erase(o->_id);
+		*/
 	}
 	std::set<int> ids;
 	
@@ -1795,38 +1799,46 @@ void IWorld::teleport(Object *object, const v2<float> &position) {
 }
 
 void IWorld::push(Object *parent, Object *object, const v2<float> &dpos) {
-	int object_id = object->getID();
-	{
-		ObjectMap::iterator j = push_objects.find(object_id);
-		if (j != push_objects.end())
-			throw_ex(("double push detected for %s pushing %s", parent->animation.c_str(), object->animation.c_str()));
-	}
+	LOG_DEBUG(("push (%s, %s)", parent->animation.c_str(), object->animation.c_str()));
+	Command cmd(Command::Push);
+	cmd.id = object->getID();
 
 	object->_position = parent->_position + dpos;
+	object->_parent = NULL;
+	
 	Map->validate(object->_position);
 	
-	pop_objects.erase(object_id);
-	push_objects.insert(ObjectMap::value_type(object_id, object));
+	cmd.object = object;
+	_commands.push_back(cmd);
 }
 
 Object * IWorld::pop(Object *object) {
-	int object_id = object->getID();
-	
-	Object *r;
-	ObjectMap::iterator j = push_objects.find(object_id);
-	if (j != push_objects.end()) {
-		r = j->second;
-		push_objects.erase(j);
-	} else {
-		j = _objects.find(object_id);
-		if (j == _objects.end())
-			throw_ex(("popping non-existent object %d %s", object_id, object->animation.c_str()));
-		r = j->second->deep_clone();
-		j->second->_dead = true;
-	}
+	LOG_DEBUG(("pop %d:%s:%s", object->_id, object->animation.c_str(), object->_dead?"true":"false"));
+	Command cmd(Command::Pop);
+	cmd.id = object->getID();
 
-	pop_objects.insert(object_id);
+	Object *r = NULL;
+	for(Commands::reverse_iterator i = _commands.rbegin(); i != _commands.rend(); ++i) {
+		if (i->id == cmd.id) {
+			r = i->object;
+			assert(r != NULL);
+			break;
+		}
+	}
+	if (r == NULL) {
+		ObjectMap::iterator j = _objects.find(cmd.id);
+		if (j == _objects.end())
+			throw_ex(("popping non-existent object %d %s", cmd.id, object->animation.c_str()));
+		r = j->second;
+	}
 	assert(r != NULL);
-	r->_position.clear();
-	return r;
+
+	Object *o = r->deep_clone();
+	assert(o != NULL);
+
+	r->_dead = true;
+	o->_position.clear();
+
+	_commands.push_back(cmd);
+	return o;
 }
