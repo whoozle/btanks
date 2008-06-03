@@ -8,4 +8,4 @@ recode to mpeg2 no sound:
 mencoder -ovc lavc -lavcopts vcodec=mpeg1video out.ogv -nosound -vf scale=160:120 -of rawvideo -o out.mpg -nosound
 
 recode to flv: 
-mencoder ~/misc/4Gmegath/MOV/Mike_Talbot.mov -ofps 15 -o ~/Mike_Talbot.flv -of lavf -oac mp3lame -lameopts abr:br=64 -srate 22050 -ovc lavc -lavcopts vcodec=flv:keyint=50:vbitrate=256:mbd=2:mv0:trell:v4mv:cbp:last_pred=3
+mencoder source.file -ofps 15 -o outputfile -of lavf -oac mp3lame -lameopts abr:br=64 -srate 22050 -ovc lavc -lavcopts vcodec=flv:keyint=50:vbitrate=256:mbd=2:mv0:trell:v4mv:cbp:last_pred=3
