@@ -1821,7 +1821,7 @@ Object * IWorld::pop(Object *object) {
 		j = _objects.find(object_id);
 		if (j == _objects.end())
 			throw_ex(("popping non-existent object %d %s", object_id, object->animation.c_str()));
-		r = j->second->clone();
+		r = j->second->deep_clone();
 		j->second->_dead = true;
 	}
 
