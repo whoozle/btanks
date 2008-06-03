@@ -58,6 +58,14 @@ Object * Object::clone() const {
 	return NULL;
 }
 
+Object * Object::deep_clone() const {
+	Object *r = clone();
+	for(Group::iterator i = r->_group.begin(); i != r->_group.end(); ++i) {
+		i->second = i->second->deep_clone();
+	}
+	return r;
+}
+
 const bool Object::aiDisabled() const {
 	if (_variants.has("ally") || disable_ai)
 		return false;
