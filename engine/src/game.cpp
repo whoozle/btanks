@@ -694,6 +694,7 @@ void IGame::tick(const float dt) {
 			
 		Map->tick(dt);
 		World->tick(dt);
+		World->purge(dt);
 
 		PlayerManager->updatePlayers(dt);
 		PlayerManager->tick(dt);
