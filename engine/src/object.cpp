@@ -60,8 +60,10 @@ Object * Object::clone() const {
 
 Object * Object::deep_clone() const {
 	Object *r = clone();
+	r->_fadeout_surface = NULL;
 	for(Group::iterator i = r->_group.begin(); i != r->_group.end(); ++i) {
 		i->second = i->second->deep_clone();
+		i->second->_parent = const_cast<Object *>(r);
 	}
 	return r;
 }
@@ -84,12 +86,8 @@ Object::Object(const std::string &classname) :
 	_way(), _next_target(), _next_target_rel(), 
 	_rotation_time(0), 
 	_dst_direction(-1), 
-	_group(), _blinking(true), 
-	_slot_id(-1)
-	 {
-	 	GET_CONFIG_VALUE("engine.spawn-invulnerability-blinking-interval", float, ibi, 0.3);
-	 	_blinking.set(ibi);
-	 }
+	_group(), _slot_id(-1)
+	 { }
 	 
 
 Object::~Object() { 
@@ -217,8 +215,6 @@ void Object::tick(const float dt) {
 				_direction = _velocity;
 				_velocity.clear();
 			}
-		} else if (ei->first == "invulnerability" || ei->first == "teleportation") {
-			_blinking.tick(dt);
 		}
 		++ei;
 	}
@@ -342,6 +338,8 @@ void Object::getSubObjects(std::set<Object *> &objects) {
 		return;
 
 	for(Group::iterator i = _group.begin(); i != _group.end(); ++i) {
+		if (i->first[0] == '.') 
+			continue;
 		objects.insert(i->second);
 		i->second->getSubObjects(objects);
 	}
@@ -413,9 +411,16 @@ const bool Object::getRenderRect(sdlx::Rect &src) const {
 }
 
 const bool Object::skipRendering() const {
-	if (!has_effect("invulnerability") || get_effect_timer("invulnerability") == -1)
+	if (!has_effect("invulnerability"))
 		return false;
-	return _blinking.get() >= 0.5;
+	float t = get_effect_timer("invulnerability");
+	if (t < 0)
+		return false;
+
+ 	GET_CONFIG_VALUE("engine.spawn-invulnerability-blinking-interval", float, ibi, 0.3);
+ 	int n = (int)(t / ibi * 2); //2 is legacy :)
+		
+	return n & 1;
 }
 
 void Object::render(sdlx::Surface &surface, const int x_, const int y_) {
@@ -428,8 +433,9 @@ void Object::render(sdlx::Surface &surface, const int x_, const int y_) {
 		
 	int x = x_, y = y_;
 	if (has_effect("teleportation")) {
-		int dx = (int)(_blinking.get() * 50) % 3;
-		int dy = (int)(_blinking.get() * 50 + 7) % 3;
+		float t = get_effect_timer("teleportation");
+		int dx = (int)(t * 50) % 3;
+		int dy = (int)(t * 50 + 7) % 3;
 		if (dx != 1) {
 			x += 5 * (dx - 1);
 			y += 5 * (dy - 1);
@@ -558,8 +564,6 @@ void Object::serialize(mrt::Serializator &s) const {
 	
 	s.add(_rotation_time);
 	s.add(_dst_direction);
-
-	_blinking.serialize(s);
 }
 
 void Object::serializeAll(mrt::Serializator &s) const {
@@ -650,8 +654,6 @@ try {
 
 	s.get(_rotation_time);
 	s.get(_dst_direction);
-
-	_blinking.deserialize(s);
 
 	_animation = NULL;
 	_model = NULL;
@@ -916,6 +918,8 @@ Object *Object::drop(const std::string &name, const v2<float> &dpos) {
 }
 
 Object* Object::add(const std::string &name, const std::string &classname, const std::string &animation, const v2<float> &dpos, const GroupType type) {
+	if (name.empty())
+		throw_ex(("empty names are not allowed in group"));
 	if (_group.find(name) != _group.end())
 		throw_ex(("object '%s' was already added to group", name.c_str()));
 
@@ -1630,17 +1634,12 @@ const bool Object::attachVehicle(Object *vehicle) {
 	if (slot == NULL)
 		return false;
 	
-	//vehicle->classname = "player";
-	
-	int old_id = getID();
-	int new_id = vehicle->getID();
-	
+	updatePlayerState(PlayerState());
+
 	if (has("#ctf-flag")) {
 		Object *o = drop("#ctf-flag");
 		vehicle->pick("#ctf-flag", o);
 	}
-
-	Object::emit("death", NULL); //emit death BEFORE assigning slot.id (avoid to +1 to frags) :)))
 
 	if (vehicle->classname == "vehicle" || vehicle->classname == "fighting-vehicle")
 		Mixer->playSample(vehicle, "engine-start.ogg", false);
@@ -1656,10 +1655,11 @@ const bool Object::attachVehicle(Object *vehicle) {
 	vehicle->disable_ai = disable_ai;
 	vehicle->setSlot(getSlot());
 
-	World->replaceID(old_id, new_id);
-	slot->id = new_id;
+	vehicle->pick(".me", this);
+	World->push(getID(), World->pop(vehicle), getPosition());
+
 	slot->need_sync = true;
-	
+
 	return true;
 }
 
@@ -1677,10 +1677,19 @@ const bool Object::detachVehicle() {
 		
 	LOG_DEBUG(("leaving vehicle..."));
 	
+	slot->need_sync = true;
+	
 	_velocity.clear();
 	updatePlayerState(PlayerState());
 
-	Object * man = spawn(disable_ai?"machinegunner(player)": "machinegunner-player(player)", "machinegunner", _direction * (size.x + size.y) / 4, v2<float>());
+	bool has_me = has(".me");
+	Object *man;
+	if (has_me) {
+		man = drop(".me", _direction * (size.x + size.y) / 4);
+	} else {
+		man = ResourceManager->createObject(disable_ai?"machinegunner(player)": "machinegunner-player(player)", "machinegunner");
+		man->onSpawn();
+	}
 	
 	if (classname == "helicopter")
 		man->setZBox(ResourceManager->getClass("machinegunner")->getZ());
@@ -1692,18 +1701,7 @@ const bool Object::detachVehicle() {
 
 	man->copyOwners(this);
 
-	int new_id = man->getID();
-
 	disown();
-
-	int old_id = getID();
-
-	World->replaceID(old_id, new_id);
-	//man->prependOwner(OWNER_COOPERATIVE);
-	//object->prependOwner(OWNER_COOPERATIVE);
-	
-	slot->id = new_id;
-	slot->need_sync = true;
 	
 	invalidate();
 	man->invalidate();
@@ -1712,6 +1710,11 @@ const bool Object::detachVehicle() {
 		Object *flag = drop("#ctf-flag");
 		man->pick("#ctf-flag", flag);
 	}
+	
+	World->push(-1, World->pop(this), getPosition());
+	
+	if (!has_me) 
+		World->push(getID(), man, getCenterPosition() + _direction * (size.x + size.y) / 4 - man->size / 2);
 	
 	return true;
 }

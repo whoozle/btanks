@@ -181,13 +181,10 @@ void IWorld::addObject(Object *o, const v2<float> &pos, const int id) {
 		o->removeOwner(OWNER_MAP);
 		o->prependOwner(OWNER_COOPERATIVE);
 	}
-	
+
 	assert(o->_group.empty());
 	o->onSpawn();
-//	if (o->getState().empty())
-//		throw_ex(("object %s:%s was not set up default pose. fixme.", o->registered_name.c_str(), o->animation.c_str()));
-	o->invalidate();
-	
+
 	on_object_add.emit(o);
 	updateObject(o);
 
@@ -195,6 +192,8 @@ void IWorld::addObject(Object *o, const v2<float> &pos, const int id) {
 	if (ep) {
 		profiler.create(o->registered_name);
 	}
+
+	o->invalidate();
 	//LOG_DEBUG(("object %d added, objects: %d", o->_id, _objects.size()));
 }
 
@@ -1148,6 +1147,17 @@ void IWorld::purge(ObjectMap &objects, const float dt) {
 		switch(cmd.type) {
 			case Command::Push: {
 					assert(cmd.object != NULL);
+					if (cmd.id < 0) {
+						cmd.id = _objects.empty()? 1: _objects.rbegin()->first + 1;
+						if (cmd.id > _last_id)
+							_last_id = cmd.id;
+					}
+
+					assert(cmd.id > 0);
+					cmd.object->_dead = false;
+					cmd.object->_id = cmd.id;
+					LOG_DEBUG(("pushing %s", cmd.object->animation.c_str()));
+					
 					ObjectMap::iterator j = _objects.find(cmd.id);
 					if (j != _objects.end()) {
 						_grid.remove(j->second);
@@ -1183,7 +1193,7 @@ void IWorld::purge(ObjectMap &objects, const float dt) {
 		assert(o != NULL);
 
 		if (!_safe_mode && o->_dead) { //not dead/dead and server mode
-			//LOG_DEBUG(("object %d:%s is dead. cleaning up. (global map: %s)", o->getID(), o->classname.c_str(), &objects == &_objects?"true":"false" ));
+			LOG_DEBUG(("object %d:%s is dead. cleaning up. (global map: %s)", o->getID(), o->classname.c_str(), &objects == &_objects?"true":"false"));
 			int id = i->first;
 			deleteObject(o);
 			o = NULL;
@@ -1705,20 +1715,6 @@ const int IWorld::getChildren(const int id, const std::string &classname) const 
 	return c;
 }
 
-void IWorld::replaceID(const int old_id, const int new_id) {
-	for(ObjectMap::iterator i = _objects.begin(); i != _objects.end(); ++i) {
-		Object *o = i->second;
-		assert(o != NULL);
-		if(o->_spawned_by == old_id) 
-			o->_spawned_by = new_id;
-		if (o->hasOwner(old_id)) {
-			o->removeOwner(old_id);
-			o->addOwner(new_id);
-		}		
-	}
-}
-
-
 void IWorld::enumerateObjects(std::set<const Object *> &id_set, const Object *src, const float range, const std::set<std::string> *classfilter) {
 	id_set.clear();
 
@@ -1799,11 +1795,25 @@ void IWorld::teleport(Object *object, const v2<float> &position) {
 }
 
 void IWorld::push(Object *parent, Object *object, const v2<float> &dpos) {
-	LOG_DEBUG(("push (%s, %s)", parent->animation.c_str(), object->animation.c_str()));
+	LOG_DEBUG(("push (%s, %s, (%+g, %+g))", parent->animation.c_str(), object->animation.c_str(), dpos.x, dpos.y));
 	Command cmd(Command::Push);
 	cmd.id = object->getID();
 
 	object->_position = parent->_position + dpos;
+	object->_parent = NULL;
+	
+	Map->validate(object->_position);
+	
+	cmd.object = object;
+	_commands.push_back(cmd);
+}
+
+void IWorld::push(const int id, Object *object, const v2<float> &pos) {
+	LOG_DEBUG(("push (%d, %s, (%g,%g))", id, object->animation.c_str(), pos.x, pos.y));
+	Command cmd(Command::Push);
+	cmd.id = id;
+
+	object->_position = pos;
 	object->_parent = NULL;
 	
 	Map->validate(object->_position);

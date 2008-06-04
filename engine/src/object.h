@@ -284,7 +284,6 @@ private:
 	typedef std::map<const std::string, Object *> Group;
 	Group _group;
 	
-	Alarm _blinking;
 	int _slot_id;
 
 	void setSync(const bool sync);
