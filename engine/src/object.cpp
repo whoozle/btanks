@@ -1685,7 +1685,12 @@ const bool Object::detachVehicle() {
 	bool has_me = has(".me");
 	Object *man;
 	if (has_me) {
-		man = drop(".me", _direction * (size.x + size.y) / 4);
+		Group::iterator i = _group.find(".me");
+		assert(i != _group.end());
+
+		man = i->second;
+		man->_parent = NULL;
+		_group.erase(i);
 	} else {
 		man = ResourceManager->createObject(disable_ai?"machinegunner(player)": "machinegunner-player(player)", "machinegunner");
 		man->onSpawn();
@@ -1712,9 +1717,7 @@ const bool Object::detachVehicle() {
 	}
 	
 	World->push(-1, World->pop(this), getPosition());
-	
-	if (!has_me) 
-		World->push(getID(), man, getCenterPosition() + _direction * (size.x + size.y) / 4 - man->size / 2);
+	World->push(getID(), man, getCenterPosition() + _direction * (size.x + size.y) / 4 - man->size / 2);
 	
 	return true;
 }

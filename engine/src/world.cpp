@@ -595,7 +595,7 @@ void IWorld::_tick(Object &o, const float dt, const bool do_calculate) {
 	if (o.isDead()) 
 		return;
 
-	//LOG_DEBUG(("tick object %p: %d: %s", (void *)&o, o.getID(), o.classname.c_str()));
+	//LOG_DEBUG(("tick object %p: %d: %s", (void *)&o, o.getID(), o.animation.c_str()));
 	GET_CONFIG_VALUE("engine.speed", float, e_speed, 1.0f);
 
 	const IMap &map = *IMap::get_instance();
@@ -1148,7 +1148,7 @@ void IWorld::purge(ObjectMap &objects, const float dt) {
 			case Command::Push: {
 					assert(cmd.object != NULL);
 					if (cmd.id < 0) {
-						cmd.id = _objects.empty()? 1: _objects.rbegin()->first + 1;
+						cmd.id = 1 + math::max((_objects.empty()? 0: _objects.rbegin()->first), _last_id);
 						if (cmd.id > _last_id)
 							_last_id = cmd.id;
 					}
@@ -1156,7 +1156,7 @@ void IWorld::purge(ObjectMap &objects, const float dt) {
 					assert(cmd.id > 0);
 					//cmd.object->_dead = false;
 					cmd.object->_id = cmd.id;
-					LOG_DEBUG(("pushing %s", cmd.object->animation.c_str()));
+					LOG_DEBUG(("pushing %d:%s", cmd.id, cmd.object->animation.c_str()));
 					
 					ObjectMap::iterator j = _objects.find(cmd.id);
 					if (j != _objects.end()) {
@@ -1193,7 +1193,7 @@ void IWorld::purge(ObjectMap &objects, const float dt) {
 		assert(o != NULL);
 
 		if (!_safe_mode && o->_dead) { //not dead/dead and server mode
-			LOG_DEBUG(("object %d:%s is dead. cleaning up. (global map: %s)", o->getID(), o->classname.c_str(), &objects == &_objects?"true":"false"));
+			//LOG_DEBUG(("object %d:%s is dead. cleaning up. (global map: %s)", o->getID(), o->classname.c_str(), &objects == &_objects?"true":"false"));
 			int id = i->first;
 			deleteObject(o);
 			o = NULL;
