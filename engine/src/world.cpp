@@ -1313,6 +1313,10 @@ void IWorld::deserializeObjectPV(const mrt::Serializator &s, Object *o) {
 
 
 void IWorld::serializeObject(mrt::Serializator &s, const Object *o, const bool force) const {
+	if (o->_dead) {
+		LOG_WARN(("%d:%s is dead, skipping object", o->_id, o->animation.c_str()));
+		return;
+	}
 	s.add(o->_id);
 	s.add(o->registered_name);
 	if (force)
