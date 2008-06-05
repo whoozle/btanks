@@ -1734,3 +1734,27 @@ void Object::setSlot(const int id) {
 		i->second->setSlot(id);
 	}
 }
+
+void Object::update_outline(const bool hidden) {
+TRY {
+	std::string outline_animation = animation + "-outline";
+	//LOG_DEBUG(("outline: %s", outline_animation.c_str()));
+	bool has_outline = ResourceManager->hasAnimation(outline_animation);
+	if (!has_outline) 
+		return;
+	
+	if (hidden) {
+		if (!has("_outline")) {
+			//LOG_DEBUG(("%d:%s:%s: adding outline", o._id, o.classname.c_str(), o.animation.c_str()));
+			Object *outline = add("_outline", "outline", outline_animation, v2<float>(), Centered);
+			outline->setZ(9999, true);
+		}
+		//LOG_DEBUG(("%d:%s:%s: whoaaa!!! i'm in domik", o._id, o.classname.c_str(), o.animation.c_str()));
+	} else {
+		if (has("_outline")) {
+			//LOG_DEBUG(("%d:%s:%s: removing outline", o._id, o.classname.c_str(), o.animation.c_str()));
+			remove("_outline");
+		}
+	}
+} CATCH("update_outline", throw;);
+}

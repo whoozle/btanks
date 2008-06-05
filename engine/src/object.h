@@ -173,6 +173,8 @@ public:
 	
 	inline const int getSlot() const { return _slot_id; }
 	void setSlot(const int id);
+	
+	void update_outline(const bool hidden);
 
 protected:
 
