@@ -52,11 +52,12 @@ Object * Mortar::clone() const {
 
 void Mortar::emit(const std::string &event, Object * emitter) {
 	if (event == "death") {
-		detachVehicle();
 		spawn("corpse", "dead-mortar");
 		_velocity.clear();
 		Object::emit(event, emitter);
-	} else Object::emit(event, emitter);
+		detachVehicle();
+	} else 
+		Object::emit(event, emitter);
 }
 
 const bool Mortar::take(const BaseObject *obj, const std::string &type) {

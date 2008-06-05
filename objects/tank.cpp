@@ -61,14 +61,13 @@ Object * Tank::clone() const {
 
 void Tank::emit(const std::string &event, Object * emitter) {
 	if (event == "death") {
-		LOG_DEBUG(("dead"));
 		cancelAll();
-		//play("dead", true);
-		detachVehicle();
 		spawn("corpse", "dead-" + animation);
 		_velocity.clear();
 		Object::emit(event, emitter);
-	} else Object::emit(event, emitter);
+		detachVehicle();
+	} else 
+		Object::emit(event, emitter);
 }
 
 const bool Tank::take(const BaseObject *obj, const std::string &type) {

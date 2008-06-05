@@ -70,10 +70,12 @@ void Buggy::getImpassabilityPenalty(const float impassability, float &base, floa
 
 void Buggy::emit(const std::string &event, Object * emitter) {
 	if (event == "death") {
-		detachVehicle();
 		spawn("corpse", "dead-" + animation, v2<float>(), v2<float>());
+		Object::emit(event, emitter);
+		detachVehicle();
+	} else {
+		Object::emit(event, emitter);
 	}
-	Object::emit(event, emitter);
 }
 
 void Buggy::calculate(const float dt) {

@@ -71,13 +71,14 @@ Object * Shilka::clone() const {
 void Shilka::emit(const std::string &event, Object * emitter) {
 	if (event == "death") {
 		LOG_DEBUG(("dead"));
-		detachVehicle();
 		
 		cancelAll();
 		//play("dead", true);
 		spawn("corpse", "dead-" + animation);
 		Object::emit(event, emitter);
-	} else Object::emit(event, emitter);
+		detachVehicle();
+	} else 
+		Object::emit(event, emitter);
 }
 
 

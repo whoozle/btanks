@@ -70,12 +70,11 @@ void Launcher::onSpawn() {
 
 void Launcher::emit(const std::string &event, Object * emitter) {
 	if (event == "death") {
-		LOG_DEBUG(("dead"));
-		detachVehicle();
-		
 		spawn("corpse", "dead-" + animation);
 		Object::emit(event, emitter);
-	} else Object::emit(event, emitter);
+		detachVehicle();
+	} else 
+		Object::emit(event, emitter);
 }
 
 
