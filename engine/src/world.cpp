@@ -712,6 +712,8 @@ TRY {
 		o.detachVehicle();
 	}
 } CATCH("detaching from vehicle", throw;)
+	if (o._dead)
+		return;
 
 	//interpolation stuff
 	if (o._interpolation_progress < 1.0) {
