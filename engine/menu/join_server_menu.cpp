@@ -337,4 +337,9 @@ bool JoinServerMenu::onKey(const SDL_keysym sym) {
 	return false;
 }
 
-JoinServerMenu::~JoinServerMenu() {}
+JoinServerMenu::~JoinServerMenu() {
+	if (_scanner != NULL) {
+		delete _scanner;
+		_scanner = NULL;
+	}
+}
