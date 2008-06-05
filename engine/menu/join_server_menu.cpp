@@ -95,8 +95,8 @@ JoinServerMenu::JoinServerMenu(MainMenu *parent, const int w, const int h) : pin
 	options.push_back("civilian");
 	options.push_back("mortar");
 		
-	_vehicle = new Chooser("medium", options, "menu/vehicles.png");
-	_vehicle2 = new Chooser("medium", options, "menu/vehicles.png");
+	_vehicle = new Chooser("medium", options, "menu/vehicles.png", true);
+	_vehicle2 = new Chooser("medium", options, "menu/vehicles.png", true);
 
 	_vehicle->disable(0);
 	_vehicle2->disable(0);
@@ -118,7 +118,7 @@ JoinServerMenu::JoinServerMenu(MainMenu *parent, const int w, const int h) : pin
 
 	_vehicle->getSize(bw, bh);
 		
-	add(map_pos.x + map_pos.w / 2 - bw / 2, map_pos.y + map_pos.h - bh * 2, _vehicle);
+	add(map_pos.x + map_pos.w / 2 - bw, map_pos.y + map_pos.h - bh * 2, _vehicle);
 	add(map_pos.x + map_pos.w / 2 + bw / 2, map_pos.y + map_pos.h - bh * 2, _vehicle2);
 }
 

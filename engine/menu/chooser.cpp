@@ -21,13 +21,14 @@
 #include "math/binary.h"
 #include "sdlx/surface.h"
 #include "sdlx/font.h"
+#include "box.h"
 
 #ifdef _WINDOWS
 #	define strcasecmp _stricmp
 #endif
 
-Chooser::Chooser(const std::string &font, const std::vector<std::string> &options, const std::string &surface) : 
-_options(options), _i(0), _n(options.size()), _surface(NULL), _w(0) {
+Chooser::Chooser(const std::string &font, const std::vector<std::string> &options, const std::string &surface, bool with_background) :
+_options(options), _i(0), _n(options.size()), _surface(NULL), _w(0), _background(NULL) {
 	_disabled.resize(_n);
 	if (!surface.empty())
 		_surface = ResourceManager->loadSurface(surface);
@@ -38,6 +39,11 @@ _options(options), _i(0), _n(options.size()), _surface(NULL), _w(0) {
 		int w = _font->render(NULL, 0, 0, options[i]);
 		if (w > _w)
 			_w = w;
+	}
+	if (with_background) {
+		int w, h;
+		Chooser::getSize(w, h);
+		_background = new Box("menu/background_box_dark.png", w, h);
 	}
 }
 
@@ -64,7 +70,9 @@ void Chooser::getSize(int &w, int &h) const {
 }
 
 void Chooser::render(sdlx::Surface &surface, const int x, const int y) const {
-	Container::render(surface, x, y);
+	if (_background != NULL) 
+		_background->render(surface, x - 4, y - 4);
+	
 	int lrw = _left_right->getWidth() / 2;
 	int lrh = _left_right->getHeight();
 	
@@ -99,7 +107,7 @@ bool Chooser::onMouse(const int button, const bool pressed, const int x, const i
 		right();
 		return true;
 	} 
-	return Container::onMouse(button, pressed, x, y);
+	return false;
 }
 
 bool Chooser::onKey(const SDL_keysym sym) {
@@ -161,4 +169,8 @@ void Chooser::disable(const int i, const bool value) {
 	_disabled[i] = value;
 	if (_disabled[_i])
 		right();
+}
+
+Chooser::~Chooser() {
+	delete _background;
 }

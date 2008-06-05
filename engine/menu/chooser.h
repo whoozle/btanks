@@ -19,7 +19,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include "container.h"
+#include "control.h"
 #include "sdlx/rect.h"
 #include <string>
 #include <vector>
@@ -30,9 +30,12 @@ class Surface;
 class Font;
 }
 
-class BTANKSAPI Chooser : public Container {
+class Box;
+
+class BTANKSAPI Chooser : public Control {
 public: 
-	Chooser(const std::string &font, const std::vector<std::string> &options, const std::string &surface = std::string());
+	Chooser(const std::string &font, const std::vector<std::string> &options, const std::string &surface = std::string(), bool with_background = false);
+	~Chooser();
 	void getSize(int &w, int &h) const;
 
 	virtual void render(sdlx::Surface &surface, const int x, const int y) const;
@@ -60,6 +63,7 @@ private:
 	//textual chooser: 
 	const sdlx::Font *_font;
 	int _w;
+	Box * _background;
 
 	mutable sdlx::Rect _left_area, _right_area;
 };
