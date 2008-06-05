@@ -42,6 +42,8 @@ public:
 	void remove();
 	
 	virtual bool onKey(const SDL_keysym sym);
+	
+	void update();
 
 private: 
 	void onHide();
@@ -51,7 +53,7 @@ private:
 	MainMenu *_parent;
 	UpperBox *_upper_box;
 	HostList *_hosts;
-	MapDetails *_details;
+	//MapDetails *_details;
 	Prompt *_add_dialog;
 	Chooser *_vehicle, *_vehicle2;
 	Button *_back, *_add, *_del, *_scan, *_join;

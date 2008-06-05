@@ -22,7 +22,7 @@
 #include "menu.h"
 #include "menu_config.h"
 #include "host_list.h"
-#include "map_details.h"
+//#include "map_details.h"
 #include "prompt.h"
 #include "text_control.h"
 #include "player_manager.h"
@@ -76,8 +76,8 @@ JoinServerMenu::JoinServerMenu(MainMenu *parent, const int w, const int h) : pin
 
 	sdlx::Rect map_pos(list_pos.x + list_pos.w + 16, 128, (w - 64) / 3, h - 256);
 
-	_details = new MapDetails(map_pos.w, map_pos.h);
-	add(map_pos.x, map_pos.y, _details);	
+	//_details = new MapDetails(map_pos.w, map_pos.h);
+	//add(map_pos.x, map_pos.y, _details);	
 	
 	_add_dialog->getSize(bw, bh);
 	add(w / 3, (h - bh) / 2, _add_dialog);
@@ -288,7 +288,21 @@ void JoinServerMenu::tick(const float dt) {
 			dup_ips.insert(host->ip);
 			++i;
 		}
+		update();
 	}
+	
+	if (_hosts->changed()) {
+		_hosts->reset();
+		update();
+	}
+}
+
+void JoinServerMenu::update() {
+	const HostItem * host = dynamic_cast<const HostItem*>(_hosts->getItem(_hosts->get()));
+	if (host == NULL) 
+		return;
+	//const std::string & map = host->map;
+	//LOG_DEBUG(("showing map: %s", map.c_str()));
 }
 
 void JoinServerMenu::ping() {
