@@ -24,6 +24,7 @@
 #include "config.h"
 #include "trooper.h"
 #include "game_monitor.h"
+#include "rt_config.h"
 #include <string.h>
 
 void Trooper::getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const {
@@ -93,7 +94,7 @@ void Trooper::tick(const float dt) {
 
 const bool Trooper::take(const BaseObject *obj, const std::string &type) {
 	if (obj->classname == "missiles" && type == "nuke" && _variants.has("player") && !_variants.has("nukeman")) {
-		if (GameMonitor->getCampaign() != NULL) 
+		if (GameMonitor->getCampaign() != NULL || RTConfig->game_type == GameTypeCTF) 
 			return Object::take(obj, type);
 
 		_variants.add("nukeman");
