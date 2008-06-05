@@ -1675,7 +1675,8 @@ const bool Object::detachVehicle() {
 	) 
 		return false;
 		
-	LOG_DEBUG(("leaving vehicle..."));
+	bool dead = isDead();
+	LOG_DEBUG(("leaving %s vehicle...", dead? "dead": ""));
 	
 	slot->need_sync = true;
 	
@@ -1716,7 +1717,12 @@ const bool Object::detachVehicle() {
 		man->pick("#ctf-flag", flag);
 	}
 	
-	World->push(-1, World->pop(this), getPosition());
+	Object *me = World->pop(this);
+	if (!dead) 
+		World->push(-1, me, getPosition());
+	else 
+		delete me;
+	
 	World->push(getID(), man, getCenterPosition() + _direction * (size.x + size.y) / 4 - man->size / 2);
 	
 	return true;
