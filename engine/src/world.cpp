@@ -751,10 +751,19 @@ TRY {
 		o.groupTick(dt);
 	} CATCH("calling groupTick", throw);
 
+	const std::string outline_animation = o.animation + "-outline";
+	const bool has_outline = ResourceManager->hasAnimation(outline_animation);
+	bool hidden = false;
+	//LOG_DEBUG(("outline: %s", outline_animation.c_str()));
+
 	if (o.speed == 0) {
 		TRY {
 			o._idle_time += dt * e_speed;
 			if (o.impassability < 0 || o.impassability >= 1.0f) {
+				if (has_outline) {
+					map.getImpassability(&o, pos, NULL, has_outline? &hidden: NULL) / 100.0f;
+					o.update_outline(hidden);
+				}
 				getImpassability(&o, o._position.convert<int>());
 			}
 		} CATCH("tick(speed==0)", throw;);
@@ -822,9 +831,6 @@ TRY {
 		return;
 	}
 */
-	bool has_outline = false;
-	bool hidden = false;
-	std::string outline_animation;
 	
 	const Object *other_obj = NULL;
 
@@ -841,9 +847,6 @@ TRY {
 	int save_dir = o.getDirection();
 	int dirs = o.getDirectionsNumber();
 	bool hidden_attempt[5] = { false, false, false, false, false };
-	outline_animation = o.animation + "-outline";
-	//LOG_DEBUG(("outline: %s", outline_animation.c_str()));
-	has_outline = ResourceManager->hasAnimation(outline_animation);
 	
 	v2<float> new_velocity;
 	
@@ -939,24 +942,7 @@ TRY {
 	mrt::formatString("tick.impassability check (attempt: %d, stuck_in: %p)", attempt, (void *)stuck_in).c_str(), 
 	throw;);
 
-TRY {
-	if (has_outline) {
-		if (hidden) {
-			if (has_outline && !o.has("_outline")) {
-				//LOG_DEBUG(("%d:%s:%s: adding outline", o._id, o.classname.c_str(), o.animation.c_str()));
-				Object *outline = o.add("_outline", "outline", outline_animation, v2<float>(), Centered);
-				outline->setZ(9999, true);
-			}
-		//LOG_DEBUG(("%d:%s:%s: whoaaa!!! i'm in domik", o._id, o.classname.c_str(), o.animation.c_str()));
-		} else {
-			if (o.has("_outline")) {
-				//LOG_DEBUG(("%d:%s:%s: removing outline", o._id, o.classname.c_str(), o.animation.c_str()));
-				o.remove("_outline");
-			}
-		}
-	} 
-} CATCH("tick.outline", throw;);
-
+	o.update_outline(hidden);
 
 TRY {
 	if (o.piercing) {
