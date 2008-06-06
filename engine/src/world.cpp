@@ -763,6 +763,7 @@ TRY {
 			if (o.impassability < 0 || o.impassability >= 1.0f) {
 				if (has_outline) {
 					map.getImpassability(&o, pos, NULL, has_outline? &hidden: NULL);
+					//LOG_DEBUG(("o: %s, hidden: %s", o.animation.c_str(), hidden?"yes":"no"));
 					o.update_outline(hidden);
 				}
 				getImpassability(&o, pos);

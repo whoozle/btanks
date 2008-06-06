@@ -1738,7 +1738,7 @@ void Object::setSlot(const int id) {
 void Object::update_outline(const bool hidden) {
 TRY {
 	std::string outline_animation = animation + "-outline";
-	//LOG_DEBUG(("outline: %s", outline_animation.c_str()));
+	//LOG_DEBUG(("%s: outline: %s", animation.c_str(), outline_animation.c_str()));
 	bool has_outline = ResourceManager->hasAnimation(outline_animation);
 	if (!has_outline) 
 		return;
