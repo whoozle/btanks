@@ -982,7 +982,7 @@
 	<object class="random-tooltip" z="995" />
 	<object class="spaceport-baykonur" hp="200" z="0"/> 
 
-	<object class="zombie" hp="40" speed="60" mass="85" z="-1" />	
+	<object class="zombie" hp="40" speed="50" mass="85" z="-1" />	
 	<object class="slime" hp="40" speed="35" mass="100" z="-1" />
 	
 	<object class="cow" hp="40" speed="80" mass="120" z="-1" />	
