@@ -762,7 +762,7 @@ TRY {
 			v2<int> pos = o._position.convert<int>();
 			if (o.impassability < 0 || o.impassability >= 1.0f) {
 				if (has_outline) {
-					map.getImpassability(&o, pos, NULL, has_outline? &hidden: NULL) / 100.0f;
+					map.getImpassability(&o, pos, NULL, has_outline? &hidden: NULL);
 					o.update_outline(hidden);
 				}
 				getImpassability(&o, pos);
