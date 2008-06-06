@@ -759,12 +759,13 @@ TRY {
 	if (o.speed == 0) {
 		TRY {
 			o._idle_time += dt * e_speed;
+			v2<int> pos = o._position.convert<int>();
 			if (o.impassability < 0 || o.impassability >= 1.0f) {
 				if (has_outline) {
 					map.getImpassability(&o, pos, NULL, has_outline? &hidden: NULL) / 100.0f;
 					o.update_outline(hidden);
 				}
-				getImpassability(&o, o._position.convert<int>());
+				getImpassability(&o, pos);
 			}
 		} CATCH("tick(speed==0)", throw;);
 
