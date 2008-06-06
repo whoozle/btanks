@@ -1232,6 +1232,7 @@
 		<animation id="blue-launcher-outline"/>
 		<animation id="blue-shilka-outline"/>
 		<animation id="blue-tank-outline"/>
+		<animation id="ctf-flag-green-outline"/>
 		<animation id="green-launcher-outline"/>
 		<animation id="green-shilka-outline"/>
 		<animation id="green-tank-outline"/>
