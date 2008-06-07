@@ -21,18 +21,34 @@
 
 #include <math.h>
 namespace clunk {
-
+/*! 
+	3-d vector 
+	\tparam T type of the axis. usually int or float. 
+*/
 template <typename T> class v3  {
 public:
-	T x, y, z;
+	///x component
+	T x;
+	///y component
+	T y;
+	///z component
+	T z;
+	///default ctor: initializes all components with zeroes.
 	inline v3<T>() : x(0), y(0), z(0) {}
+	///initializes all components with given values
 	inline v3<T>(const T x, const T y, const T z) : x(x), y(y), z(z) {} 
-
+	
+	///nullify vector
 	inline void clear() { x = y = z = 0; }
+	///returns true if x == y == z == 0 ? 
 	inline const bool is0() const {
 		return x== 0 && y == 0 && z == 0;
 	}
-	
+
+	/*! 
+		\brief normalizes vector. 
+		\return old length of this vector
+	*/ 
 	inline const T normalize() {
 		const T len = length();
 		if (len == (T)0 || len ==(T)1) 
@@ -44,6 +60,12 @@ public:
 		return len;
 	}
 
+	/*! 
+		\brief normalizes vector with given length
+		\param[in] nlen length
+		\return old length of this vector
+	*/ 
+
 	inline const T normalize(const T nlen) {
 		const T len = length();
 		if (len == (T)0 || len == nlen) 
@@ -54,7 +76,7 @@ public:
 		z *= nlen / len;
 		return len;
 	}
-	
+	///returns length of this vector
 	inline const T length() const {
 		const T ql = x * x + y * y + z * z;
 		if (ql == (T)0 || ql == (T)1) 
@@ -62,21 +84,23 @@ public:
 		
 		return (T)sqrt(ql);
 	}
-
+	///returns square of length. To avoid sqrt if needed.
 	inline const T quick_length() const {
 		return (T)(x * x + y * y + z * z);
 	}
 
+	///converts to vector of another type
 	template <typename T2> 
 		inline v3<T2> convert() const { return v3<T2>((T2)x, (T2)y, (T2)z); }
-	
+
+	///returns distance between two points	
 	inline const T distance(const v3<T>& other) const {
 		v3<T>d(*this);
 		d-= other;
 		return d.length();
 	}
 	
-	
+	///return square distance between two points
 	inline const T quick_distance(const v3<T>& other) const {
 		const T dx = x - other.x;
 		const T dy = y - other.y;
@@ -84,7 +108,7 @@ public:
 		return (dx * dx + dy * dy + dz * dz);
 	}
 
-	//operators 
+	///allows v3 be placed in sorted STL container such std::map
 	inline const bool operator<(const v3<T> &other) const {
 		if (x != other.x) {
 			return x < other.x;
@@ -95,66 +119,76 @@ public:
 		return z < other.z;
 	}
 
-
+	///negate all components
 	inline const v3<T> operator-() const {
 		return v3<T>(-x, -y, -z);
 	}
-	
+	///test equality 
 	inline const bool operator==(const v3<T> &other) const {
 		return x == other.x && y == other.y && z == other.z;
 	}
 
+	///test inequality 
 	inline const bool operator!=(const v3<T> &other) const {
 		return x != other.x || y != other.y || z != other.z;
 	}
 	
-
+	///adds another vector
 	inline const v3<T>& operator+=(const v3<T>& other) {
 		x += other.x; y += other.y; z += other.z;
 		return *this;
 	}
 
+	///substracts another vector
 	inline const v3<T>& operator-=(const v3<T>& other) {
 		x -= other.x; y -= other.y; z -= other.z;
 		return *this;
 	}
 
+	///multiplies another vector
 	inline const v3<T>& operator*=(const v3<T>& other) {
 		x *= other.x; y *= other.y; z *= other.z;
 		return *this;
 	}
 
+	///divide with another vector
 	inline const v3<T>& operator/=(const v3<T>& other) {
 		x /= other.x; y /= other.y; z /= other.z;
 		return *this;
 	}
-	
+	///multiplication
 	inline const v3<T> operator*(const v3<T>& other) const {
 		return v3<T>(x * other.x, y * other.y, z * other.z);
 	}
+	///summing
 	inline const v3<T> operator+(const v3<T>& other) const {
 		return v3<T>(x + other.x, y + other.y, z + other.z);
 	}
+	///substraction
 	inline const v3<T> operator-(const v3<T>& other) const {
 		return v3<T>(x - other.x, y - other.y, z - other.z);
 	}
+	///division
 	inline const v3<T> operator/(const v3<T>& other) const {
 		return v3<T>(x / other.x, y / other.y, z / other.z);
 	}
-
+	///multiplies all components with constant
 	inline const v3<T> operator*(const T& other) const {
 		return v3<T>(x * other, y * other, z * other);
 	}
+	///sums all components with constant
 	inline const v3<T> operator+(const T& other) const {
 		return v3<T>(x + other, y + other, z + other);
 	}
+	///substracts all components with constant
 	inline const v3<T> operator-(const T& other) const {
 		return v3<T>(x - other, y - other, z - other);
 	}
+	///divides all components by constant
 	inline const v3<T> operator/(const T& other) const {
 		return v3<T>(x / other, y / other, z / other);
 	}
-
+	///divides this vector by constant
 	inline const v3<T>& operator/=(const T& other) {
 		x /= other;
 		y /= other;
@@ -162,6 +196,7 @@ public:
 		return *this;
 	}
 
+	///multiplies this vector with constant
 	inline const v3<T>& operator*=(const T& other) {
 		x *= other;
 		y *= other;
@@ -169,6 +204,7 @@ public:
 		return *this;
 	}
 
+	///sums this vector with constant
 	inline const v3<T>& operator+=(const T& other) {
 		x += other;
 		y += other;
@@ -176,6 +212,7 @@ public:
 		return *this;
 	}
 
+	///substracts this vector with constant
 	inline const v3<T>& operator-=(const T& other) {
 		x -= other;
 		y -= other;
@@ -183,33 +220,36 @@ public:
 		return *this;
 	}
 };
-	
+///external operator+
 template <typename T>
 	const v3<T> operator+(const T a, const v3<T> &v)  {
 		return v3<T>(v.x + a, v.y + a, v.z + a);
 	}
 
+///external operator+
 template <typename T>
 	const v3<T> operator+(const v3<T> &v, const T a)  {
 		return v3<T>(v.x + a, v.y + a, v.z + a);
 	}
 
-
+///external operator*
 template <typename T>
 	const v3<T> operator*(const T a, const v3<T> &v)  {
 		return v3<T>(v.x *a, v.y * a, v.z * a);
 	}
-
+///external operator*
 template <typename T>
 	const v3<T> operator*(const v3<T> &v, const T a)  {
 		return v3<T>(v.x *a, v.y * a, v.z * a);
 	}
 
+///external operator/
 template <typename T>
 	const v3<T> operator/(const T a, const v3<T> &v)  {
 		return v3<T>(a / v.x, a / v.y, a / v.z);
 	}
 
+///external operator/
 template <typename T>
 	const v3<T> operator/(const v3<T> &v, const T a)  {
 		return v3<T>(v.x / a, v.y  / a, v.z / a);

@@ -316,3 +316,121 @@ void Context::convert(mrt::Chunk &dst, const mrt::Chunk &src, int rate, const Ui
 
 	dst.setData(cvt.buf, (size_t)(cvt.len * cvt.len_ratio), true);
 }
+
+/*!
+	\mainpage Tutorial 
+	\section overview Overview
+	Hello there! 
+	Here's quick explanation of the clunk library concepts and usage scenarios. 
+	\section scenario Typical scenario
+
+	Let's initialize context with typical values: 22kHz sample rate, 2 channels and 1024 bytes period: 
+	\code
+	Context context; 
+	context.init(22050, 2, 1024);
+	//main code
+	context.deinit();
+	\endcode
+	If you choose greater sample rate such as 44kHz or even 48kHz, you will need more CPU power to handle it and it could hurt overall game performance. 
+	You could raise period value to avoid clicks, but you get more latency for that. 
+	Latency could be calculated with the following formula: 
+	\code latency (in seconds) = period_size / channels / byte per sample (2 for 16 bit sound) / sample_rate \endcode
+	in this example latency is only 12ms. Such small delays are almost invisible even for perfect ears :)
+	
+	Then application should load some samples to the library. Clunk itself does not provide code to decode audio formats, or load raw wave files. 
+	Check ogg/vorbis library for a free production-quality audio codec. Samples allocates within context internally with clunk::Context::create_sample() method. 
+
+	\code
+	mrt::Chunk data; //placeholder for a memory chunk
+	//decode ogg sample into data
+	clunk::Sample *sample = Context->create_sample();
+	sample->init(data, ogg_rate, AUDIO_S16LSB, ogg_channels);
+	\endcode
+	
+	So all audio data were loaded and initialized. Next step is to allocate objects. Clunk was designed to be easily integrated into programs. 
+	The most useful object is clunk::Object. It could hold several playing \link clunk::Source sources \endlink. 
+	You could use two different approaches here: 
+		\li create global mixer proxy object and leave all clunk stuff to it, such as mapping your objects to clunk ones. 
+		\li directly include clunk::Object pointer into every object in game or program. 
+
+	You wont ever need to track objects and/or manage its destruction, clunk will do it itself. 
+	Example allowing sound to play after your object's death: 
+	\code
+	clunk::Object *clunk_object; 
+	
+	GameObject::~GameObject() {
+		if (clunk_object != NULL) {
+			clunk_object->autodelete(); //destroy me! 
+			clunk_object = NULL; //leave destruction to the clunk::Context
+		}
+	}
+	\endcode
+	
+	So the next step is source management. It's the most easiest part. Each source connects to its audio sample. 
+	Source holds data about actual playing sound: position in wave data, pitch, gain and distance. It processes audio data 
+	and simulate 3d sound positioning with hrtf function. 
+	
+	Creating source and adding it to the object : (the most easiest part)
+	\code
+		clunk_object->play("voice", new Source(yeti_sound_sample)); // no loop, no pitch, no gain adjustments. 
+	\endcode
+	Sources are automatically purged from the object when they are not needed anymore. So, you don't need to worry about its deletion or any management. 
+	Anyway, you could cancel any playing source: 
+	\code 
+		clunk_object->cancel("voice"); 
+	\endcode
+	
+	Or cancel all sounds from this object at once: 
+	\code 
+		clunk_object->cancel_all(true);
+	\endcode
+	
+	\section streaming Playing music and ambient sounds
+	Clunk is able to mix as many music streams as you want (or your CPU could handle :) ). 
+	First of all you need to implement your stream class derived from the clunk::Stream. 
+	Don't worry, you need to implement just 2(!) clunk-related methods to make the music play. 
+	\code 
+		class FooStream : public clunk::Stream {
+		public: 
+			void FooStream(const std::string &file) {
+				//open music file. 
+				//store music parameters into members : 
+				sample_rate = music_rate;
+				channels = music_channels;
+				format = AUDIO_S16LSB; 
+				//this values here are only for educational purpose. Don't forget to fill it with actual values from the music file!
+			}
+			
+			void rewind() {
+				//rewind your stream here
+			}
+			
+			bool read(mrt::Chunk &data, unsigned hint) {
+				//read as many data as you want, but it'd better to read around 'hint' bytes to avoid memory queue overhead. 
+			}
+
+			virtual ~FooStream() {
+				//don't forget to close your stream here. Leaks are unwanted guests here. 
+			}
+		};
+	\endcode
+	
+	So, the most complicated part passed by. Let the party begin !
+	\code 
+		context.play(0, new FooStream("data/background_music.ogg"), false); //do not loop music, look below for details.
+		context.play(1, new FooStream("data/ambience_city.ogg"), true); //loops ambient
+	\endcode
+
+	There's no magic numbers here. I've chosen 0 and 1 just for fun. You could use any integer id. 42 for example. 
+	Why don't I use loop == true for music ? We need it to change various tunes. Let's periodically test if music ends and restart with new tune: 
+	\code 
+		if (!context.playing(0)) {
+			context.play(0, new FooStream(next_song));
+		}
+	\endcode
+	
+	\section final Final words from author
+	I've covered almost all major topics of the clunk here in this tutorial. If you have suggestion - feel free to contact me directly. 
+	Hope all this code will be useful for someone. Good luck! We're waiting for your feedback!
+	
+*/

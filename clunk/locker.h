@@ -19,19 +19,21 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 */
 
-
-
 #include <SDL_audio.h>
 #include "export_clunk.h"
-/*! 
-	This class locks audio in ctor and releases lock from the dtor. 
-	This prevents callback from being called while clunk::AudioLocker is in the scope. 
-*/
 namespace clunk {
+
+/*! 
+	This struct locks audio in ctor and releases lock from the dtor. 
+	This prevents audio callback from being called while clunk::AudioLocker is in the scope. 
+*/
+
 struct CLUNKAPI AudioLocker {
+	///locks audio 
 	AudioLocker () {
 		SDL_LockAudio();
 	}
+	///unlocks audio 
 	~AudioLocker() {
 		SDL_UnlockAudio();
 	}
