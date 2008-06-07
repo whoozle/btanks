@@ -331,7 +331,7 @@ void Context::convert(mrt::Chunk &dst, const mrt::Chunk &src, int rate, const Ui
 	//main code
 	context.deinit();
 	\endcode
-	If you choose greater sample rate such as 44kHz or even 48kHz, you will need more CPU power to handle it and it could hurt overall game performance. 
+	If you choose greater sample rate such as 44kHz or even 48kHz, you will need more CPU power to mix sounds and it could hurt overall game performance. 
 	You could raise period value to avoid clicks, but you get more latency for that. 
 	Latency could be calculated with the following formula: 
 	\code latency (in seconds) = period_size / channels / byte per sample (2 for 16 bit sound) / sample_rate \endcode
