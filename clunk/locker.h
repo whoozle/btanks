@@ -2,7 +2,7 @@
 #define CLUNK_LOCKER_H__
 
 /* libclunk - realtime 2d/3d sound render library
- * Copyright (C) 2005-2008 Netive Media Group
+ * Copyright (C) 2007-2008 Netive Media Group
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,7 +23,11 @@
 
 #include <SDL_audio.h>
 #include "export_clunk.h"
-
+/*! 
+	This class locks audio in ctor and releases lock from the dtor. 
+	This prevents callback from being called while clunk::AudioLocker is in the scope. 
+*/
+namespace clunk {
 struct CLUNKAPI AudioLocker {
 	AudioLocker () {
 		SDL_LockAudio();
@@ -32,6 +36,7 @@ struct CLUNKAPI AudioLocker {
 		SDL_UnlockAudio();
 	}
 };
+}
 
 
 #endif

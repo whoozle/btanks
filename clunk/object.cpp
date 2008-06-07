@@ -1,5 +1,5 @@
 /* libclunk - realtime 2d/3d sound render library
- * Copyright (C) 2005-2008 Netive Media Group
+ * Copyright (C) 2007-2008 Netive Media Group
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public

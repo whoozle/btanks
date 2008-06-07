@@ -2,7 +2,7 @@
 #define CLUNK_STREAM_H__
 
 /* libclunk - realtime 2d/3d sound render library
- * Copyright (C) 2005-2008 Netive Media Group
+ * Copyright (C) 2007-2008 Netive Media Group
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -30,15 +30,38 @@ namespace mrt {
 namespace clunk {
 class Context;
 
+/*! 
+	simple abstract class allowing you to play audio streams. Note that stream's methods will be called from the audio callback. 
+	Usually it's the different thread context and if you're using any global variables from the stream code, you need to protect it with mutex
+	or clunk::AudioLocker. 
+*/
+
 class CLUNKAPI Stream {
 public: 
 	Stream();
+	///rewinds stream
+	/*!
+		Rewind your stream in your function
+	*/
 	virtual void rewind() = 0;
+	
+	/*! 
+		\brief reads some data from the stream. 
+		\param[out] data destination buffer
+		\param[in] hint points out for the recommented data size. You could read less or more hint. 
+	*/
 	virtual bool read(mrt::Chunk &data, unsigned hint) = 0;
 	virtual ~Stream();
+
 protected: 
+	///stream sample rate
+	/*! initialize it from your open() method */
 	int sample_rate;
+	///stream audio format 
+	/*! initialize it from your open() method */
 	Uint16 format;
+	///stream channels. 
+	/*! initialize it from your open() method */
 	Uint8 channels;
 
 	friend class Context;

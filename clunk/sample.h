@@ -2,7 +2,7 @@
 #define CLUNK_SAMPLE_H__
 
 /* libclunk - realtime 2d/3d sound render library
- * Copyright (C) 2005-2008 Netive Media Group
+ * Copyright (C) 2007-2008 Netive Media Group
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -30,10 +30,26 @@ namespace mrt {
 
 namespace clunk {
 class Context;
+
+/*! 
+	holds raw wave data. 
+*/
 class CLUNKAPI Sample {
 public: 
 	~Sample();
+	/*!
+		\brief initializes sample
+		\param[in] data raw audio data
+		\param[in] rate sample rate
+		\param[in] format SDL audio format. Look SDL_audio.h or SDL documentation. 
+		\param[in] channels audio channels
+	*/	
 	void init(const mrt::Chunk &data, int rate, const Uint16 format, const Uint8 channels);
+	/*! 
+		\brief generate sine wave with given length (seconds)
+		\param[in] freq frequency
+		\param[in] len of the sample in seconds
+	*/
 	void generateSine(const int freq, const float len);
 	
 private: 	

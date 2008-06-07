@@ -2,7 +2,7 @@
 #define CLUNK_SOURCE_H__
 
 /* libclunk - realtime 2d/3d sound render library
- * Copyright (C) 2005-2008 Netive Media Group
+ * Copyright (C) 2007-2008 Netive Media Group
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -39,26 +39,52 @@ namespace clunk {
 #	define CLUNK_WINDOW_OVERLAP 64
 #endif
 
-
 class Sample;
+
+/*! 
+	class holding information about source. 
+*/
 class CLUNKAPI Source {
 public:
+	///pointer to the sample holding audio data
 	const Sample * const sample;
-
-	bool loop;
-	v3<float> delta_position; //0 - from the center of the object. 
-	float gain;
-	float pitch;
-
-	float reference_distance, rolloff_factor;
 	
+	///loop flag
+	bool loop;
+	///delta position from the object's center
+	v3<float> delta_position; //0 - from the center of the object. 
+	///gain
+	float gain;
+	///pitch, 2.0f - pitching up one octave
+	float pitch;
+	///minimal reference distance
+	float reference_distance;
+	///rolloff factor
+	float rolloff_factor;
+	/*! 
+		\brief constructs new source
+		\param[in] sample audio data
+		\param[in] loop loops sample
+		\param[in] delta delta position. (0, 0) is the object's center.
+		\param[in] gain gain
+		\param[in] pitch pitch
+	*/
 	Source(const Sample * sample, const bool loop = false, const v3<float> &delta = v3<float>(), float gain = 1, float pitch = 1);
-
+	/*! 
+		\brief for the internal use only. DO NOT USE IT. 
+		\internal for the internal use only. 
+	*/
 	float process(mrt::Chunk &buffer, unsigned ch, const v3<float> &position, const float fx_volume);
+	///returns current source's status.
 	bool playing() const;
 
+	/*! 
+		\brief for the internal use only. DO NOT USE IT. 
+		\internal for the internal use only. 
+	*/
 	void update_position(const int dp);
 
+	///fades out source. usually you do not need this method
 	void fade_out(const float sec);
 	
 	~Source();
