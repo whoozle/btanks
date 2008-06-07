@@ -385,6 +385,17 @@ void Context::convert(mrt::Chunk &dst, const mrt::Chunk &src, int rate, const Ui
 		clunk_object->cancel_all(true);
 	\endcode
 	
+	\section positioning Object positioning
+	Usually objects are positioning the some sort of ticking function called every frame or from the on_object_update callback. 
+	Positioning is really simple: 
+	\code
+		clunk_object->update(clunk::v3<float>(x, y, z), clunk::v3<float>(velocity_x, velocity_y, velocity_z));
+	\endcode
+	Moving listener is easy too, listener is regular clunk::Object, but it's stored in clunk::Context and holds information about your position
+	\code
+		context.get_listener()->update(clunk::v3<float>(x, y, z), clunk::v3<float>(velocity_x, velocity_y, velocity_z));
+	\endcode
+	
 	\section streaming Playing music and ambient sounds
 	Clunk is able to mix as many music streams as you want (or your CPU could handle :) ). 
 	First of all you need to implement your stream class derived from the clunk::Stream. 
