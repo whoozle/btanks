@@ -250,7 +250,7 @@ MapPicker::MapPicker(const int w, const int h) : _index(0) {
 }
 
 void MapPicker::fillSlots() const {
-	if (PlayerManager->get_slotsCount() < 1)
+	if (PlayerManager->get_slots_count() < 1)
 		return;
 
 	bool split;
@@ -303,7 +303,7 @@ void MapPicker::fillSlots() const {
 				slot.name = Nickname::generate();
 		}
 		slot.createControlMethod(cm);
-		slot.spawnPlayer(i, object, animation);
+		slot.spawn_player(i, object, animation);
 	}
 
 	if (!split) {	
@@ -324,5 +324,5 @@ void MapPicker::fillSlots() const {
 		PlayerManager->get_slot((idx1 == -1)?0:idx1).setViewport(vp1);
 		PlayerManager->get_slot((idx2 == -1)?(idx1 != 1?1:0):idx2).setViewport(vp2); //avoid duplication of viewports
 	}
-	PlayerManager->validateViewports();
+	PlayerManager->validate_viewports();
 }

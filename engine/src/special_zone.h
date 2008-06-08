@@ -44,7 +44,7 @@ public:
 private: 
 	void onCheckpoint(const int slot_id);
 	void onHint(const int slot_id);
-	void onMessage(const int slot_id);
+	void on_message(const int slot_id);
 	void onTimer(const int slot_id, const bool win);
 	void onWarp(const int slot_id, const bool enter);
 	

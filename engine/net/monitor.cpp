@@ -86,7 +86,7 @@ void Monitor::accept() {
 	int id = -1;
 	try {
 	Message msg(Message::ServerStatus);
-	int id = PlayerManager->onConnect(msg);
+	int id = PlayerManager->on_connect(msg);
 
 	{
 		sdlx::AutoMutex m(_connections_mutex);
@@ -435,8 +435,8 @@ TRY {
 						mrt::Serializator out;
 							
 						out.add(t0);
-						out.add((unsigned)PlayerManager->getFreeSlotsCount());
-						out.add((unsigned)PlayerManager->get_slotsCount());
+						out.add((unsigned)PlayerManager->get_free_slots_count());
+						out.add((unsigned)PlayerManager->get_slots_count());
 						out.finalize(msg.data);
 						msg.set("map", Map->getName());
 							

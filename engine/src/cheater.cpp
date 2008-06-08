@@ -95,7 +95,7 @@ void Cheater::onEvent(const SDL_Event &event) {
 		Config->invalidateCachedValues();
 	} else if (cheat == "gh0st" || cheat == "phant0m") {
 	TRY {
-		PlayerSlot *my_slot = PlayerManager->getMySlot();
+		PlayerSlot *my_slot = PlayerManager->get_my_slot();
 		if (my_slot == NULL)
 			throw_ex(("no world to wander in"));
 		Object *o = my_slot->getObject();

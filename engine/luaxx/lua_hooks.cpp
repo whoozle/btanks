@@ -572,7 +572,7 @@ static int lua_hooks_game_over(lua_State *L) {
 		}
 		lua_Number time = lua_tonumber(L, 3);
 		bool win = lua_toboolean(L, 4) != 0;
-		GameMonitor->gameOver(area, message, (float)time, win);
+		GameMonitor->game_over(area, message, (float)time, win);
 	} LUA_CATCH("game_over")
 	return 0;		
 }
@@ -989,13 +989,13 @@ LUA_TRY {
 
 
 static int lua_hooks_players_number(lua_State *L) {
-	int pn = (int)PlayerManager->get_slotsCount();
+	int pn = (int)PlayerManager->get_slots_count();
 	
 	int n = lua_gettop(L);
 	if (n >= 1) {
 		bool active = lua_toboolean(L, 1) != 0;
 		if (active)
-			pn -= PlayerManager->getFreeSlotsCount();
+			pn -= PlayerManager->get_free_slots_count();
 	}
 	
 	lua_pushinteger(L, pn);

@@ -62,61 +62,61 @@ public:
 	
 	inline const bool is_client() const { return _client != NULL; }
 	inline const bool is_server() const { return _server != NULL; }	
-	const bool is_serverActive() const;
+	const bool is_server_active() const;
 	void disconnect_all();
 
-	void addSlot(const v3<int> &position);
-	void addSpecialZone(const SpecialZone& zone);
+	void add_slot(const v3<int> &position);
+	void add_special_zone(const SpecialZone& zone);
 
-	PlayerSlot *getMySlot(); //remove me
+	PlayerSlot *get_my_slot(); //remove me
 
 	PlayerSlot &get_slot(const unsigned int idx);
 	const PlayerSlot &get_slot(const unsigned int idx) const;
 
-	const int get_slotID(const int object_id) const;
-	PlayerSlot *get_slotByID(const int id);
-	const PlayerSlot *get_slotByID(const int id) const;
+	const int get_slot_id(const int object_id) const;
+	PlayerSlot *get_slot_by_id(const int id);
+	const PlayerSlot *get_slot_by_id(const int id) const;
 
-	const size_t get_slotsCount() const;
-	const size_t getFreeSlotsCount() const;
+	const size_t get_slots_count() const;
+	const size_t get_free_slots_count() const;
 	
 	void screen2world(v2<float> &pos, const int p, const int x, const int y);
 
-	const int findEmptySlot() const;
-	const int spawnPlayer(const std::string &classname, const std::string &animation, const std::string &method);
+	const int find_empty_slot() const;
+	const int spawn_player(const std::string &classname, const std::string &animation, const std::string &method);
 
-	void updatePlayers(const float dt);
+	void update_players(const float dt);
 	void ping();
 	
 	void tick(const float dt);
 	void render(sdlx::Surface &window, const int x, const int y);
 	
-	const int onConnect(Message &message);
-	void onMessage(const int id, const Message &message);
-	void onDisconnect(const int id);	
+	const int on_connect(Message &message);
+	void on_message(const int id, const Message &message);
+	void on_disconnect(const int id);	
 	void onMap();
 	
-	void gameOver(const std::string &area, const std::string &message, const float time);
+	void game_over(const std::string &area, const std::string &message, const float time);
 	
-	void onDestroyMap(const std::set<v3<int> > & cells);
+	void on_destroy_map(const std::set<v3<int> > & cells);
 	
-	void validateViewports();
+	void validate_viewports();
 	
 	//for special zones
 	void send(const PlayerSlot &slot, const Message & msg);
 	void say(const std::string &message);
 	void action(const PlayerSlot &slot, const std::string &type, const std::string &subtype = std::string(), const PlayerSlot * killer_slot = NULL);
 	
-	void broadcastMessage(const std::string &area, const std::string &message, const float duration);
-	void sendHint(const int slot_id, const std::string &area, const std::string &message);
+	void broadcast_message(const std::string &area, const std::string &message, const float duration);
+	void send_hint(const int slot_id, const std::string &area, const std::string &message);
 	
-	void updateControls(); //recreates control methods.
+	void update_controls(); //recreates control methods.
 	
-	const SpecialZone& getNextCheckpoint(PlayerSlot &slot); 
-	void fixCheckpoints(PlayerSlot &slot, const SpecialZone &zone); 
+	const SpecialZone& get_next_checkpoint(PlayerSlot &slot); 
+	void fix_checkpoints(PlayerSlot &slot, const SpecialZone &zone); 
 	
-	void sendObjectState(const int id, const PlayerState & state);
-	void requestObjects(const int first_id);
+	void send_object_state(const int id, const PlayerState & state);
+	void request_objects(const int first_id);
 
 private: 
 	void onPlayerDeath(const Object *player, const Object *killer);
@@ -125,8 +125,8 @@ private:
 	sl08::slot0<void, IPlayerManager> on_load_map_slot;
 	sl08::slot2<void, const Object *, const Object *, IPlayerManager> on_object_death_slot;
 	
-	void serializeSlots(mrt::Serializator &s) const;
-	void deserializeSlots(const mrt::Serializator &s);
+	void serialize_slots(mrt::Serializator &s) const;
+	void deserialize_slots(const mrt::Serializator &s);
 	
 	void broadcast(const Message &m, const bool per_connection);
 	

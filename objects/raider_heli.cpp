@@ -61,7 +61,7 @@ void RaiderHeli::calculate(const float dt) {
 	if (_player == -1) {
 	//deferred initialization
 		int players = 0;
-		int i, n = PlayerManager->get_slotsCount();
+		int i, n = PlayerManager->get_slots_count();
 		for(i = 0; i < n; ++i) {
 			const PlayerSlot &slot = PlayerManager->get_slot(i);
 			if (slot.empty())
@@ -100,7 +100,7 @@ void RaiderHeli::calculate(const float dt) {
 		PlayerSlot &slot = PlayerManager->get_slot(_player);
 		Object *player = slot.getObject();
 		if (player == NULL || _toggle.tick(dt)) {
-			(++_player) %= PlayerManager->get_slotsCount();
+			(++_player) %= PlayerManager->get_slots_count();
 			//LOG_DEBUG(("changing player to %d", _player));
 			return;
 		}

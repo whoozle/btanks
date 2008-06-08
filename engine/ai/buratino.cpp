@@ -296,12 +296,12 @@ void Buratino::calculate(Object *object, const float dt) {
 			goto gogogo;
 		}
 		if (!object->is_driven()) {
-			int slot_id = PlayerManager->get_slotID(object->get_id());
+			int slot_id = PlayerManager->get_slot_id(object->get_id());
 			if (slot_id <= 0) 
 				throw_ex(("ai in racing mode cannot operate without slot."));
 		
 			PlayerSlot &slot = PlayerManager->get_slot(slot_id);
-			const SpecialZone &zone = PlayerManager->getNextCheckpoint(slot);
+			const SpecialZone &zone = PlayerManager->get_next_checkpoint(slot);
 			v3<int> position = zone.getPlayerPosition(slot_id);
 		
 			object->find_path(v2<int>(position.x, position.y), 24);
@@ -455,7 +455,7 @@ const Object * Buratino::findTarget(const Object *src, const std::set<std::strin
 		} else if (o->classname == "vehicle") {
 			max = 1;
 		} else if (o->classname == "ctf-flag") {
-			PlayerSlot *slot = PlayerManager->get_slotByID(src->get_id());
+			PlayerSlot *slot = PlayerManager->get_slot_by_id(src->get_id());
 			if (slot == NULL)
 				continue;
 			Team::ID flag_team = Team::get_team(o);

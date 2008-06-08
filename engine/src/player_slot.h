@@ -93,7 +93,7 @@ public:
 	void render(sdlx::Surface &window, const int x, const int y);
 	
 	void createControlMethod(const std::string &name);
-	void spawnPlayer(const int slot_id, const std::string &classname, const std::string &animation);
+	void spawn_player(const int slot_id, const std::string &classname, const std::string &animation);
 	void validatePosition(v2<float>& position);
 	void addScore(const int s);
 	

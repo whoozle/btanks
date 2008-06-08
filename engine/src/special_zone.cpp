@@ -71,7 +71,7 @@ void SpecialZone::onTimer(const int slot_id, const bool win) {
 		Config->get(key_name, spawn_limit, 1);
 	
 	if (spawn_limit > 0) 
-		for(size_t i = 0; i < PlayerManager->get_slotsCount(); ++i) {
+		for(size_t i = 0; i < PlayerManager->get_slots_count(); ++i) {
 			PlayerSlot &slot = PlayerManager->get_slot(i);
 			slot.spawn_limit = spawn_limit;
 		}
@@ -97,7 +97,7 @@ void SpecialZone::onEnter(const int slot_id) {
 	else if (type == "hint") 
 		onHint(slot_id);
 	else if (type == "message") 
-		onMessage(slot_id);
+		on_message(slot_id);
 	else if (type == "timer-lose") 
 		onTimer(slot_id, false);
 	else if (type == "timer-win") 
@@ -122,7 +122,7 @@ void SpecialZone::onEnter(const int slot_id) {
 		throw_ex(("unhandled enter for type '%s'", type.c_str()));
 }
 
-void SpecialZone::onMessage(const int slot_id) {
+void SpecialZone::on_message(const int slot_id) {
 	GameMonitor->displayMessage(area, name, 3, global());
 }
 
@@ -130,14 +130,14 @@ void SpecialZone::onHint(const int slot_id) {
 	PlayerSlot &slot = PlayerManager->get_slot(slot_id);
 
 	//Game->pause();
-	if (slot.remote != -1 && !PlayerManager->isClient()) //useless but just for sure
-		PlayerManager->sendHint(slot_id, area, name);
+	if (slot.remote != -1 && !PlayerManager->is_client()) //useless but just for sure
+		PlayerManager->send_hint(slot_id, area, name);
 	else 
 		slot.displayTooltip(area, name);
 }
 
 const v3<int> SpecialZone::getPlayerPosition(const int slot_id) const {
-	int players = PlayerManager->get_slotsCount();
+	int players = PlayerManager->get_slots_count();
 
 	int yn = (int) sqrt((double)size.y * players / size.x);
 	if (yn < 1) 
@@ -159,7 +159,7 @@ const v3<int> SpecialZone::getPlayerPosition(const int slot_id) const {
 
 
 void SpecialZone::onCheckpoint(const int slot_id) {
-	if (PlayerManager->isClient())
+	if (PlayerManager->is_client())
 		return; //no checkpoints on client
 
 	GameType game_type = RTConfig->game_type;
@@ -168,20 +168,20 @@ void SpecialZone::onCheckpoint(const int slot_id) {
 	slot.need_sync = true;
 	
 	if (game_type == GameTypeRacing) {
-		const SpecialZone &zone = PlayerManager->getNextCheckpoint(slot);
+		const SpecialZone &zone = PlayerManager->get_next_checkpoint(slot);
 		if (zone.name != name) {
 			LOG_DEBUG(("wrong checkpoint, next checkpoint: %s", zone.name.c_str()));
 			GameMonitor->displayMessage("messages", "wrong-checkpoint", 3, false);
 			return;
 		}
-		PlayerManager->fixCheckpoints(slot, zone); //remove all wrong checkpoints from list
+		PlayerManager->fix_checkpoints(slot, zone); //remove all wrong checkpoints from list
 	}
 	slot.position = getPlayerPosition(slot_id);
 					
 	//v3<int> spawn_pos(_zones[c].position + checkpoint_size.convert2v3(0) / 2);
 	//slot.position = spawn_pos;
 	if (final()) {
-		GameMonitor->gameOver("messages", "mission-accomplished", 5, true);
+		GameMonitor->game_over("messages", "mission-accomplished", 5, true);
 		return;
 	}
 	
@@ -189,7 +189,7 @@ void SpecialZone::onCheckpoint(const int slot_id) {
 		if (game_type != GameTypeRacing)
 			GameMonitor->displayMessage("messages", "checkpoint-reached", 3, false);
 	} else {
-		if (slot.remote != -1 && PlayerManager->isServer() ) {
+		if (slot.remote != -1 && PlayerManager->is_server() ) {
 			Message m(Message::TextMessage);
 			m.channel = slot_id;
 			m.set("hint", "0");

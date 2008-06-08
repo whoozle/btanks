@@ -89,7 +89,7 @@ public:
 	
 	const size_t getItemsCount() const { return _items.size(); }
 
-	void gameOver(const std::string &area, const std::string &message, float time, const bool win);
+	void game_over(const std::string &area, const std::string &message, float time, const bool win);
 	void displayMessage(const std::string &area, const std::string &message, float time, const bool global = false);
 	void hideMessage();
 	void setTimer(const std::string &area, const std::string &message, float time, const bool win_at_end);
@@ -127,7 +127,7 @@ public:
 	
 	const Campaign * getCampaign() const {return _campaign; }
 	
-	const bool gameOver() const { return _game_over; }
+	const bool game_over() const { return _game_over; }
 
 	void onScriptZone(const int slot_id, const SpecialZone &zone, const bool global);
 	void setSpecials(const std::vector<int> &ex) { _external_specials = ex; }

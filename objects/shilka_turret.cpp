@@ -101,7 +101,7 @@ public:
 		if (_parent == NULL)
 			throw_ex(("turret is only operable attached to shilka "));
 
-		if (_parent->disable_ai && PlayerManager->get_slotByID(_parent->get_id()) == NULL) {
+		if (_parent->disable_ai && PlayerManager->get_slot_by_id(_parent->get_id()) == NULL) {
 			Object::calculate(dt);
 			return;
 		}

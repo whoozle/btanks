@@ -62,7 +62,7 @@ void Teleport::tick(const float dt) {
 			invalidate();
 			return;
 		}
-		PlayerSlot *slot = PlayerManager->get_slotByID(track);
+		PlayerSlot *slot = PlayerManager->get_slot_by_id(track);
 		if (slot != NULL) {
 			slot->dont_interpolate = true;
 			slot->need_sync = true;
@@ -118,7 +118,7 @@ void Teleport::emit(const std::string &event, Object * emitter) {
 		emitter->setZBox(ZBox::getBoxBase(dst->getZ()));
 		if (dst->track > 0 && dst->track != emitter->get_id()) {
 			//telefrag detection
-			PlayerSlot *slot = PlayerManager->get_slotByID(dst->track);
+			PlayerSlot *slot = PlayerManager->get_slot_by_id(dst->track);
 			Object *o;
 			if (slot != NULL && (o = slot->getObject()) != NULL) {
 				//LOG_DEBUG(("telefragged %s", o->animation.c_str()));

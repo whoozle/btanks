@@ -303,7 +303,7 @@ void IGameMonitor::checkItems(const float dt) {
 		//object is dead.
 		
 		if (!item.save_for_victory.empty()) {
-			gameOver("messages", item.save_for_victory, 5, false);
+			game_over("messages", item.save_for_victory, 5, false);
 			continue;
 		}
 
@@ -329,13 +329,13 @@ void IGameMonitor::checkItems(const float dt) {
 		}
 	}
 	if (goal_total > 0 && goal == goal_total) {
-		gameOver("messages", "mission-accomplished", 5, true);
+		game_over("messages", "mission-accomplished", 5, true);
 	}
 }
 
 void IGameMonitor::add(const GameItem &item_, const bool dont_respawn) {
 	GameItem item(item_);
-	const bool client = PlayerManager->isClient();
+	const bool client = PlayerManager->is_client();
 
 #ifdef ENABLE_LUA
 	if (!client && lua_hooks != NULL)
@@ -364,12 +364,12 @@ const std::string IGameMonitor::popState(const float dt) {
 	return r;
 }
 
-void IGameMonitor::gameOver(const std::string &area, const std::string &message, float time, const bool win) {
+void IGameMonitor::game_over(const std::string &area, const std::string &message, float time, const bool win) {
 	if (_game_over)
 		return;
 
 	if (win) {
-		size_t n = PlayerManager->get_slotsCount();
+		size_t n = PlayerManager->get_slots_count();
 		for(size_t i = 0; i < n; ++i) {
 			PlayerSlot &slot = PlayerManager->get_slot(i);
 			Object *o = slot.getObject();
@@ -382,17 +382,17 @@ void IGameMonitor::gameOver(const std::string &area, const std::string &message,
 	_game_over = true;
 	_win = win;
 	displayMessage(area, message, time);
-	PlayerManager->gameOver(area, message, time);
+	PlayerManager->game_over(area, message, time);
 	resetTimer();
 }
 
 void IGameMonitor::displayMessage(const std::string &area, const std::string &message, float time, const bool global) {
 	pushState(I18n->get(area, message), time);
 
-	if (global && PlayerManager->isServer()) {
+	if (global && PlayerManager->is_server()) {
 		if (time <= 0)
 			throw_ex(("server attempts to set up %g s timer", time));
-		PlayerManager->broadcastMessage(area, message, time);
+		PlayerManager->broadcast_message(area, message, time);
 	}
 }
 void IGameMonitor::hideMessage() {
@@ -440,7 +440,7 @@ void IGameMonitor::clear() {
 }
 
 void IGameMonitor::tick(const float dt) {	
-	const bool client = PlayerManager->isClient();
+	const bool client = PlayerManager->is_client();
 
 #ifdef ENABLE_LUA
 	if (!client && lua_hooks != NULL) {
@@ -460,7 +460,7 @@ void IGameMonitor::tick(const float dt) {
 		_timer -= dt;
 		if (_timer <= 0) {
 			if (!client)
-				gameOver(_timer_message_area, _timer_message, 5, _timer_win_at_end);
+				game_over(_timer_message_area, _timer_message, 5, _timer_win_at_end);
 			_timer = 0;
 		}
 	}
@@ -733,7 +733,7 @@ static void coord2v(T &pos, const std::string &str) {
 
 void IGameMonitor::loadMap(Campaign *campaign, const std::string &name, const bool spawn_objects, const bool skip_loadmap) {
 	_campaign = campaign;
-	const bool client = PlayerManager->isClient();
+	const bool client = PlayerManager->is_client();
 
 	IMap &map = *IMap::get_instance();
 
@@ -833,7 +833,7 @@ void IGameMonitor::loadMap(Campaign *campaign, const std::string &name, const bo
 			v2<int> tile_size = Map->getTileSize();
 			pos.x += tile_size.x / 2;
 			pos.y += tile_size.y / 2;
-			PlayerManager->addSlot(pos);
+			PlayerManager->add_slot(pos);
 		} else {
 			if (type == "object") {
 				if (res.size() < 4)
@@ -909,7 +909,7 @@ void IGameMonitor::loadMap(Campaign *campaign, const std::string &name, const bo
 				
 				SpecialZone zone(ZBox(pos, size), res[1], res[2], res[3]);
 				zone.area = "hints/" + name;
-				PlayerManager->addSpecialZone(zone);
+				PlayerManager->add_special_zone(zone);
 			} 
 		}
 	}
@@ -1080,7 +1080,7 @@ void IGameMonitor::startGame(Campaign *campaign, const std::string &name) {
 	if (!Map->loaded())
 		return; //error 
 
-	if (PlayerManager->get_slotsCount() <= 0)
+	if (PlayerManager->get_slots_count() <= 0)
 		throw_ex(("no slots available on map"));
 	
 	if (RTConfig->server_mode)
@@ -1094,7 +1094,7 @@ void IGameMonitor::startGame(Campaign *campaign, const std::string &name) {
 
 	std::string object, vehicle;
 	slot.getDefaultVehicle(object, vehicle);
-	slot.spawnPlayer(0, object, vehicle);
+	slot.spawn_player(0, object, vehicle);
 	PlayerManager->get_slot(0).setViewport(Window->get_size());
 }
 
@@ -1112,7 +1112,7 @@ void IGameMonitor::onTooltip(const std::string &event, const int slot_id, const 
 }
 
 void IGameMonitor::onScriptZone(const int slot_id, const SpecialZone &zone, const bool global) {
-	const bool client = PlayerManager->isClient();
+	const bool client = PlayerManager->is_client();
 	if (client)
 		return;
 	
@@ -1166,7 +1166,7 @@ void IGameMonitor::saveCampaign() {
 	LOG_DEBUG(("saving compaign state..."));
 	const std::string mname = "campaign." + _campaign->name + ".maps." + Map->getName();
 	
-	if (PlayerManager->get_slotsCount()) {
+	if (PlayerManager->get_slots_count()) {
 		PlayerSlot &slot = PlayerManager->get_slot(0); 
 		int score; 
 		Config->get("campaign." + _campaign->name + ".score", score, 0);

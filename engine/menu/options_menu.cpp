@@ -380,7 +380,7 @@ void OptionsMenu::save() {
 	Config->set("engine.donate-screen-duration", (_donate->get())?0.0f:1.5f);
 	Config->set("engine.fog-of-war.enabled", _fog_of_war->get());
 	
-	PlayerManager->updateControls();
+	PlayerManager->update_controls();
 
 	if (need_restart) 
 		GameMonitor->displayMessage("messages", "restart-game", 2.0f);

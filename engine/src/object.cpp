@@ -1517,13 +1517,13 @@ void Object::add_damage(Object *from, const int d, const bool emitDeath) {
 		o->hp += hp;
 
 	{
-		PlayerSlot *slot = PlayerManager->get_slotByID(from->getSummoner());
+		PlayerSlot *slot = PlayerManager->get_slot_by_id(from->getSummoner());
 
 		if (slot == NULL) {
 			std::deque<int> owners;
 			from->getOwners(owners);
 			for(std::deque<int>::const_iterator i = owners.begin(); i != owners.end(); ++i) {
-				slot = PlayerManager->get_slotByID(*i);
+				slot = PlayerManager->get_slot_by_id(*i);
 				if (slot != NULL) 
 					break;
 			}
@@ -1535,7 +1535,7 @@ void Object::add_damage(Object *from, const int d, const bool emitDeath) {
 		
 		
 		GET_CONFIG_VALUE("engine.score-decreasing-factor-for-damage", float, sdf, 0.25f);
-		if ((slot = PlayerManager->get_slotByID(get_id())) != NULL) {
+		if ((slot = PlayerManager->get_slot_by_id(get_id())) != NULL) {
 			slot->addScore(- (int)(o->hp * sdf));
 		}
 		
@@ -1613,7 +1613,7 @@ const bool Object::take(const BaseObject *obj, const std::string &type) {
 			float d;
 			Config->get("objects." + registered_name + "." + type + "-duration", d, 10.0f);
 			
-			size_t n = PlayerManager->get_slotsCount();
+			size_t n = PlayerManager->get_slots_count();
 			for(size_t i = 0; i < n; ++i) {
 				PlayerSlot &slot = PlayerManager->get_slot(i);
 				Object *o = slot.getObject();
@@ -1630,7 +1630,7 @@ const bool Object::attachVehicle(Object *vehicle) {
 	if (vehicle == NULL) 
 		return false;
 	
-	PlayerSlot *slot = PlayerManager->get_slotByID(get_id());
+	PlayerSlot *slot = PlayerManager->get_slot_by_id(get_id());
 	if (slot == NULL)
 		return false;
 	
@@ -1664,7 +1664,7 @@ const bool Object::attachVehicle(Object *vehicle) {
 }
 
 const bool Object::detachVehicle() {
-	PlayerSlot * slot = PlayerManager->get_slotByID(get_id());
+	PlayerSlot * slot = PlayerManager->get_slot_by_id(get_id());
 	if (
 		slot == NULL || 
 		classname == "monster" ||

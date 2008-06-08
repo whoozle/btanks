@@ -140,7 +140,7 @@ void IGame::pause() {
 		return;
 	}
 	
-	if (!PlayerManager->isServerActive())
+	if (!PlayerManager->is_server_active() && !PlayerManager->is_client())
 		_paused = true;
 }
 
@@ -487,13 +487,13 @@ if (!RTConfig->server_mode) {
 		for(int i = 0; i < spawn_ai; ++i) {
 			const char *c_vehicle[] = {"tank", "shilka", "launcher", };
 			std::string vehicle = c_vehicle[mrt::random(3)], animation;
-			const int slot_id = PlayerManager->findEmptySlot();
+			const int slot_id = PlayerManager->find_empty_slot();
 			PlayerSlot &slot = PlayerManager->get_slot(slot_id);
 			
 			slot.getDefaultVehicle(vehicle, animation);
 			slot.name = Nickname::generate();
 			LOG_DEBUG(("player%d: %s:%s, name: %s", slot_id, vehicle.c_str(), animation.c_str(), slot.name.c_str()));
-			slot.spawnPlayer(slot_id, vehicle, animation);
+			slot.spawn_player(slot_id, vehicle, animation);
 		}
 	}
 }
@@ -599,9 +599,9 @@ bool IGame::onKey(const SDL_keysym key, const bool pressed) {
 		return true;
 	}
 
-	if (!PlayerManager->isClient() && key.sym==SDLK_F12 && PlayerManager->get_slotsCount() > 0) {
+	if (!PlayerManager->is_client() && key.sym==SDLK_F12 && PlayerManager->get_slots_count() > 0) {
 		TRY {
-			PlayerSlot *slot = PlayerManager->getMySlot();
+			PlayerSlot *slot = PlayerManager->get_my_slot();
 			if (slot == NULL)
 				return true;
 		
@@ -625,7 +625,7 @@ bool IGame::onKey(const SDL_keysym key, const bool pressed) {
 		
 		LOG_DEBUG(("escape hit, paused: %s", _paused?"true":"false"));
 		
-		if (PlayerManager->isServer() || PlayerManager->isClient()) {
+		if (PlayerManager->is_server() || PlayerManager->is_client()) {
 			_paused = false;
 		} else {
 			if (_main_menu)
@@ -661,7 +661,7 @@ void IGame::onMenu(const std::string &name, const std::string &value) {
 	if (name == "quit") {
 		quit();
 		//Window->stop();
-	} else if (name == "credits" && !PlayerManager->isServerActive()) {
+	} else if (name == "credits" && !PlayerManager->is_server_active()) {
 		LOG_DEBUG(("show credits."));
 		_credits = new Credits;
 	}
@@ -696,7 +696,7 @@ void IGame::tick(const float dt) {
 		World->tick(dt);
 		World->purge(dt);
 
-		PlayerManager->updatePlayers(dt);
+		PlayerManager->update_players(dt);
 		PlayerManager->tick(dt);
 	}
 }
@@ -719,19 +719,19 @@ void IGame::onTick(const float dt) {
 
 		if (Window->running() && !_paused) {
 			GameMonitor->tick(dt);
-			if (GameMonitor->gameOver()) {
+			if (GameMonitor->game_over()) {
 				_show_stats = true;
 			}
 		}
 
 		if (Map->loaded() && _credits == NULL && Window->running() && !_paused) {
-			if (!PlayerManager->isClient())
+			if (!PlayerManager->is_client())
 				GameMonitor->checkItems(dt);
 			
 			Map->tick(dt);
 			World->tick(dt);
 
-			PlayerManager->updatePlayers(dt);
+			PlayerManager->update_players(dt);
 			World->purge(dt);
 		}
 
@@ -770,7 +770,7 @@ void IGame::onTick(const float dt) {
 		if (Map->loaded()) {
 			_hud->render(window);
 
-			const PlayerSlot *slot = PlayerManager->getMySlot();
+			const PlayerSlot *slot = PlayerManager->get_my_slot();
 			_hud->renderRadar(dt, window, GameMonitor->getSpecials(), GameMonitor->getFlags(), 
 				slot?sdlx::Rect((int)slot->map_pos.x, (int)slot->map_pos.y, slot->viewport.w, slot->viewport.h): sdlx::Rect());
 			
@@ -956,9 +956,9 @@ try {
 		std::vector<std::string> par;
 		mrt::split(par, param, " ", 3);
 		if (par.size() < 3 || par[0].empty() || par[1].empty() || par[2].empty())
-			return "usage: spawnPlayer object animation control-method";
+			return "usage: spawn_player object animation control-method";
 		
-		PlayerManager->spawnPlayer(par[0], par[1], par[2]);
+		PlayerManager->spawn_player(par[0], par[1], par[2]);
 		return "ok";
 	} else if (cmd == "spawn") {
 		std::vector<std::string> par;
@@ -1040,7 +1040,7 @@ void IGame::onMap() {
 
 	delete _cheater;
 	_cheater = NULL;
-	if (!PlayerManager->isClient())
+	if (!PlayerManager->is_client())
 		_cheater = new Cheater;	
 }
 

@@ -276,7 +276,7 @@ void MainMenu::render(sdlx::Surface &dst) const {
 	const BaseMenu * sm = getMenu(_active_menu);
 	if (sm != NULL) {
 		sm->render(dst, 0, 0);
-		if (PlayerManager->isServerActive())
+		if (PlayerManager->is_server_active())
 			_netstat->render(dst, 0, 0);
 	} else {
 		int base_x = (dst.get_width() - _background.w) / 2, base_y = (dst.get_height() - _background.h) / 2;
@@ -306,7 +306,7 @@ void MainMenu::render(sdlx::Surface &dst) const {
 		}
 	}
 	
-	if (PlayerManager->isServerActive())
+	if (PlayerManager->is_server_active())
 		_netstat->render(dst, 0, 0);
 }
 
@@ -369,7 +369,7 @@ bool MainMenu::onMouse(const int button, const bool pressed, const int x, const 
 	if (!_active)
 		return false;
 	
-	if (_netstat != NULL && PlayerManager->isServerActive() && _netstat->onMouse(button, pressed, x, y)) {
+	if (_netstat != NULL && PlayerManager->is_server_active() && _netstat->onMouse(button, pressed, x, y)) {
 		if (_netstat->changed()) {
 			_netstat->reset();
 			PlayerManager->disconnect_all();

@@ -700,7 +700,7 @@ TRY {
 			}
 			if (old_state != o.getPlayerState() && dynamic_cast<ai::Synchronizable *>(&o) != NULL) {
 				//LOG_DEBUG(("buratino %s changed state", o.animation.c_str()));
-				PlayerManager->sendObjectState(o.get_id(), o.getPlayerState());
+				PlayerManager->send_object_state(o.get_id(), o.getPlayerState());
 			}
 		} CATCH("calling o.calculate", throw;)
 	}
@@ -1353,7 +1353,7 @@ Object * IWorld::deserializeObject(const mrt::Serializator &s) {
 				assert(o->_id == id);
 				
 				if (rn == o->registered_name) {
-					PlayerSlot * slot = PlayerManager->get_slotByID(id);
+					PlayerSlot * slot = PlayerManager->get_slot_by_id(id);
 					if (slot == NULL) {
 						o->deserialize(s);
 						if (o->_dead) {
@@ -1625,7 +1625,7 @@ TRY {
 	
 	interpolateObjects(objects);
 	if (_out_of_sync != _out_of_sync_sent) {
-		PlayerManager->requestObjects(_out_of_sync);
+		PlayerManager->request_objects(_out_of_sync);
 		_out_of_sync_sent = _out_of_sync;
 	}
 	purge(objects, dt);

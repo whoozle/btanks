@@ -90,7 +90,7 @@ void Server::restart() {
 		conns.pop();
 		TRY {
 			Message msg(Message::ServerStatus);
-			int id = PlayerManager->onConnect(msg);
+			int id = PlayerManager->on_connect(msg);
 			_monitor->add(id, c);
 			c = NULL;
 			send(id, msg);
@@ -128,7 +128,7 @@ void Server::tick(const float dt) {
 			case Message::PlayerMessage: 
 			case Message::RequestObjects:
 			case Message::JoinTeam:
-				PlayerManager->onMessage(id, m);
+				PlayerManager->on_message(id, m);
 
 			case Message::ServerDiscovery:
 				break;
@@ -138,7 +138,7 @@ void Server::tick(const float dt) {
 		}
 
 		while(_monitor->disconnected(id)) {
-			PlayerManager->onDisconnect(id);
+			PlayerManager->on_disconnect(id);
 		}
 	} CATCH("tick", {
 		if (id >= 0) {
@@ -172,5 +172,5 @@ const bool Server::active() const { return _monitor->active(); }
 
 void Server::disconnect(const int id) {
 	_monitor->disconnect(id);
-	PlayerManager->onDisconnect(id);
+	PlayerManager->on_disconnect(id);
 }

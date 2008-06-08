@@ -121,11 +121,11 @@ void PlayerSlot::displayLast() {
 		delete last_tooltip;
 		last_tooltip = tooltips.front().second;
 		if (!last_tooltip_used)
-			GameMonitor->onTooltip("hide", PlayerManager->get_slotID(id), last_tooltip->area, last_tooltip->message);
+			GameMonitor->onTooltip("hide", PlayerManager->get_slot_id(id), last_tooltip->area, last_tooltip->message);
 		last_tooltip_used = false;
 		tooltips.pop();
 		if (!tooltips.empty()) {
-			GameMonitor->onTooltip("show", PlayerManager->get_slotID(id), tooltips.front().second->area, tooltips.front().second->message);	
+			GameMonitor->onTooltip("show", PlayerManager->get_slot_id(id), tooltips.front().second->area, tooltips.front().second->message);	
 		}
 	}
 }
@@ -138,7 +138,7 @@ void PlayerSlot::removeTooltips() {
 		delete last_tooltip;
 		last_tooltip = tooltips.front().second;
 		if (!last_tooltip_used)
-			GameMonitor->onTooltip("hide", PlayerManager->get_slotID(id), last_tooltip->area, last_tooltip->message);		
+			GameMonitor->onTooltip("hide", PlayerManager->get_slot_id(id), last_tooltip->area, last_tooltip->message);		
 		last_tooltip_used = false;
 		tooltips.pop();
 	} 
@@ -149,7 +149,7 @@ void PlayerSlot::removeTooltips() {
 void PlayerSlot::displayTooltip(const std::string &area, const std::string &message) {
 	Tooltip *tooltip = new Tooltip(area, message, true);
 	if (tooltips.empty()) {
-		GameMonitor->onTooltip("show", PlayerManager->get_slotID(id), area, message);	
+		GameMonitor->onTooltip("show", PlayerManager->get_slot_id(id), area, message);	
 	}
 	tooltips.push(PlayerSlot::Tooltips::value_type(tooltip->getReadingTime(), tooltip));
 }
@@ -162,12 +162,12 @@ void PlayerSlot::tick(const float dt) {
 			last_tooltip = tooltips.front().second;
 	
 			if (!last_tooltip_used)
-				GameMonitor->onTooltip("hide", PlayerManager->get_slotID(id), last_tooltip->area, last_tooltip->message);
+				GameMonitor->onTooltip("hide", PlayerManager->get_slot_id(id), last_tooltip->area, last_tooltip->message);
 			last_tooltip_used = false;
 			
 			tooltips.pop();
 			if (!tooltips.empty()) {
-				GameMonitor->onTooltip("show", PlayerManager->get_slotID(id), tooltips.front().second->area, tooltips.front().second->message);	
+				GameMonitor->onTooltip("show", PlayerManager->get_slot_id(id), tooltips.front().second->area, tooltips.front().second->message);	
 			}
 		}
 	}
@@ -330,7 +330,7 @@ void PlayerSlot::createControlMethod(const std::string &control_method_name) {
 #include "player_manager.h"
 #include "campaign.h"
 
-void PlayerSlot::spawnPlayer(const int slot_id, const std::string &classname_, const std::string &animation_) {
+void PlayerSlot::spawn_player(const int slot_id, const std::string &classname_, const std::string &animation_) {
 	classname = classname_;
 	animation = animation_;
 	
@@ -342,7 +342,7 @@ void PlayerSlot::spawnPlayer(const int slot_id, const std::string &classname_, c
 			return;
 		} else if (remote == -1) {
 			//assigning AIs to teams automatically !!
-			int n = PlayerManager->get_slotsCount();
+			int n = PlayerManager->get_slots_count();
 			int stats[4] = {0, 0, 0, 0};
 			for(int i = 0; i < n; ++i) {
 				PlayerSlot &slot = PlayerManager->get_slot(i);

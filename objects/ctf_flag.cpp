@@ -38,7 +38,7 @@ public:
 			Team::ID team = Team::get_team(this);
 			assert(team != Team::None);
 				
-			PlayerSlot *slot = PlayerManager->get_slotByID(emitter->get_id());
+			PlayerSlot *slot = PlayerManager->get_slot_by_id(emitter->get_id());
 			if (slot == NULL) {
 				return;
 			}

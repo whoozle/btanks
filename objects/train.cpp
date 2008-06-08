@@ -127,10 +127,10 @@ void Train::tick(const float dt) {
 		if (pos.y >= 0 && !_wagon_id) {
 			_wagon_id = spawn("choo-choo-wagon", "choo-choo-wagon", v2<float>(0, -size.y))->get_id();
 		}
-		if (pos.y  >= dst_y && !GameMonitor->gameOver()) { 
+		if (pos.y  >= dst_y && !GameMonitor->game_over()) { 
 			LOG_DEBUG(("escaped!"));
 			if (_variants.has("win-on-exit")) 
-				GameMonitor->gameOver("messages", "train-saved", 5, true);
+				GameMonitor->game_over("messages", "train-saved", 5, true);
 			//Object::emit("death", NULL);
 		}
 	}

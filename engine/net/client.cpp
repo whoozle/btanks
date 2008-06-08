@@ -85,7 +85,7 @@ void Client::tick(const float dt) {
 		case Message::TextMessage:
 		case Message::DestroyMap:
 		case Message::PlayerMessage:
-			PlayerManager->onMessage(0, m);
+			PlayerManager->on_message(0, m);
 			break;
 
 		default:
@@ -93,11 +93,11 @@ void Client::tick(const float dt) {
 		}
 	}
 	while(_monitor->disconnected(id)) {
-		PlayerManager->onDisconnect(id);
+		PlayerManager->on_disconnect(id);
 	}
 }
 
 void Client::disconnect() {
 	_monitor->disconnect(0);
-	PlayerManager->onDisconnect(0);
+	PlayerManager->on_disconnect(0);
 }

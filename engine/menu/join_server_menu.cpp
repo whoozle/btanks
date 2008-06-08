@@ -150,7 +150,7 @@ void JoinServerMenu::join() {
 	Config->get("multiplayer.split-screen-mode", split, false);
 		
 	Game->clear();
-	PlayerManager->startClient(host, split?2:1);
+	PlayerManager->start_client(host, split?2:1);
 	onHide();
 }
 

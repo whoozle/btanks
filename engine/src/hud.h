@@ -59,7 +59,7 @@ private:
 	void initMap();
 	
 	sl08::slot1<void, const std::set<v3<int> > &, Hud> on_destroy_map_slot;
-	void onDestroyMap(const std::set<v3<int> > & cells);
+	void on_destroy_map(const std::set<v3<int> > & cells);
 
 	void generateRadarBG(const sdlx::Rect &viewport);
 

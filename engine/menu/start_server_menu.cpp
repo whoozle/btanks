@@ -108,7 +108,7 @@ void StartServerMenu::start() {
 	}
 	
 	Game->clear();
-	PlayerManager->startServer();
+	PlayerManager->start_server();
 	GameMonitor->loadMap(NULL, map.name);
 		
 	_map_picker->fillSlots();

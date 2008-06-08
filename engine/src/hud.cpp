@@ -139,7 +139,7 @@ void Hud::renderStats(sdlx::Surface &surface) {
 }
 
 void Hud::renderTeamStats(sdlx::Surface &surface) {
-	unsigned slots = PlayerManager->get_slotsCount(), teams = RTConfig->teams;
+	unsigned slots = PlayerManager->get_slots_count(), teams = RTConfig->teams;
 	
 	int max_w = 0;
 	std::map<const Team::ID, int> team_frags;
@@ -187,7 +187,7 @@ void Hud::renderTeamStats(sdlx::Surface &surface) {
 }
 
 void Hud::renderPlayerStats(sdlx::Surface &surface) {
-	unsigned active_slots = 0, slots = PlayerManager->get_slotsCount();
+	unsigned active_slots = 0, slots = PlayerManager->get_slots_count();
 	
 	int nick_w = 0;
 	
@@ -327,7 +327,7 @@ void Hud::renderRadar(const float dt, sdlx::Surface &window, const std::vector<v
 
 	_radar.lock();
 	
-	size_t n = PlayerManager->get_slotsCount();
+	size_t n = PlayerManager->get_slots_count();
 	for(size_t i = 0; i < n; ++i) {
 		PlayerSlot &slot = PlayerManager->get_slot(i);
 		const Object *obj = slot.getObject();
@@ -449,7 +449,7 @@ void Hud::render(sdlx::Surface &window) const {
 	
 	window.blit(*_background, 0, 0);
 	
-	size_t n = PlayerManager->get_slotsCount();
+	size_t n = PlayerManager->get_slots_count();
 
 	GET_CONFIG_VALUE("hud.icon.width", int, icon_w, 16);
 	GET_CONFIG_VALUE("hud.icon.height", int, icon_h, 24);
@@ -572,7 +572,7 @@ void Hud::render(sdlx::Surface &window) const {
 		yp = slot.viewport.y + _background->get_height();
 
 		if (_pointer != NULL) {
-			const SpecialZone &zone = PlayerManager->getNextCheckpoint(slot);
+			const SpecialZone &zone = PlayerManager->get_next_checkpoint(slot);
 			v2<float> pos;
 			obj->get_position(pos);
 			pos = v2<float>(zone.position.x, zone.position.y)  + zone.size.convert<float>() / 2 - pos;
@@ -671,7 +671,7 @@ static void find_splashes(std::vector<std::string> &splashes, const std::string 
 
 Hud::Hud(const int w, const int h) :  _pointer(NULL), _pointer_dir(-1), _update_radar(true), _map_mode(MapSmall) {
 	init_map_slot.assign(this, &Hud::initMap, Map->load_map_final_signal);
-	on_destroy_map_slot.assign(this, &Hud::onDestroyMap, Map->destroyed_cells_signal);
+	on_destroy_map_slot.assign(this, &Hud::on_destroy_map, Map->destroyed_cells_signal);
 
 	_background = ResourceManager->loadSurface("hud/hud_line.png");
 	_loading_border = ResourceManager->loadSurface("hud/loading_border.png");
@@ -735,7 +735,7 @@ Hud::Hud(const int w, const int h) :  _pointer(NULL), _pointer_dir(-1), _update_
 
 Hud::~Hud() {}
 
-void Hud::onDestroyMap(const std::set<v3<int> > & cells) {
+void Hud::on_destroy_map(const std::set<v3<int> > & cells) {
 	_radar_bg.free();
 }
 
