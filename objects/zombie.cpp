@@ -37,7 +37,7 @@ public:
 		}
 	}
 
-	virtual void onSpawn();
+	virtual void on_spawn();
 	virtual void tick(const float dt);
 	virtual void emit(const std::string &event, Object * emitter = NULL);
 	const bool take(const BaseObject *obj, const std::string &type) {
@@ -58,7 +58,7 @@ private:
 	bool _can_punch;	
 };
 
-void BaseZombie::onSpawn() {
+void BaseZombie::on_spawn() {
 	play("hold", true);
 	disown();
 }
@@ -66,20 +66,20 @@ void BaseZombie::onSpawn() {
 void BaseZombie::tick(const float dt) {
 	Object::tick(dt);
 
-	if (_state.fire && getState() != "punch") {
+	if (_state.fire && get_state() != "punch") {
 		_can_punch = true;
-		playNow("punch");
+		play_now("punch");
 		return;
 	}
 
 	if (_velocity.is0()) {
-		if (getState() != "hold") {
-			cancelAll();
+		if (get_state() != "hold") {
+			cancel_all();
 			play("hold", true);
 		}
 	} else {
-		if (getState() == "hold") {
-			cancelAll();
+		if (get_state() == "hold") {
+			cancel_all();
 			play("walk", true);
 		}		
 	}
@@ -90,10 +90,10 @@ void BaseZombie::emit(const std::string &event, Object * emitter) {
 	if (event == "death") {
 		spawn("corpse(zombie-death)", "dead-zombie", v2<float>(), v2<float>());
 	} else if (emitter != NULL && event == "collision") {
-		if (getState() != "punch" && emitter->registered_name != "zombie") {
+		if (get_state() != "punch" && emitter->registered_name != "zombie") {
 			_state.fire = true;
 		}	
-		if (_state.fire && _can_punch && getStateProgress() >= 0.5 && getState() == "punch" && emitter->registered_name != "zombie") {
+		if (_state.fire && _can_punch && get_state_progress() >= 0.5 && get_state() == "punch" && emitter->registered_name != "zombie") {
 			_can_punch = false;
 			
 			GET_CONFIG_VALUE("objects.zombie.damage", int, kd, 15);
@@ -124,7 +124,7 @@ public:
 	virtual void calculate(const float dt);
 
 	virtual Object * clone() const;
-	virtual void onSpawn();
+	virtual void on_spawn();
 
 	virtual void serialize(mrt::Serializator &s) const {
 		BaseZombie::serialize(s);
@@ -164,7 +164,7 @@ void Zombie::calculate(const float dt) {
 	v2<float> vel;
 	int tt;
 	
-	if (isDriven())
+	if (is_driven())
 		goto drive; 
 	
 	if (!_reaction.tick(dt))
@@ -175,12 +175,12 @@ void Zombie::calculate(const float dt) {
 	GET_CONFIG_VALUE("objects.zombie.targeting-range(alerted)", int, tra, 900);
 	tt = (hp < max_hp)?tra:trs;
 	
-	if (getNearest(ai::Targets->monster, tt, _velocity, vel, false)) {
+	if (get_nearest(ai::Targets->monster, tt, _velocity, vel, false)) {
 		if (_velocity.quick_length() > size.quick_length())
 			_state.fire = false;
 		
 		_velocity.normalize();
-		quantizeVelocity();		
+		quantize_velocity();		
 	} else {
 		_state.fire = false;
 		if (!_variants.has("no-herd"))
@@ -190,13 +190,13 @@ void Zombie::calculate(const float dt) {
 drive:
 	GET_CONFIG_VALUE("objects.zombie.rotation-time", float, rt, 0.1);
 
-	calculateWayVelocity();
-	limitRotation(dt, rt, true, false);
+	calculate_way_velocity();
+	limit_rotation(dt, rt, true, false);
 	updateStateFromVelocity();
 }
 
-void Zombie::onSpawn() {
-	BaseZombie::onSpawn();
+void Zombie::on_spawn() {
+	BaseZombie::on_spawn();
 
 	float rt;
 	

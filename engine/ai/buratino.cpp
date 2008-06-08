@@ -36,7 +36,7 @@ using namespace ai;
 Buratino::Buratino() : _reaction_time(true), _refresh_path(false), _target_id(-1), _target_dir(-1) {}
 
 const bool Buratino::active() const {
-	return !PlayerManager->isClient();
+	return !PlayerManager->is_client();
 }
 
 Buratino::~Buratino() {
@@ -56,17 +56,17 @@ void Buratino::addBonusName(const std::string &rname) {
 }
 
 void Buratino::processPF(Object *object) {
-	if (object->calculatingPath()) {
+	if (object->calculating_path()) {
 		Way way;
 		int n = 1;
 		bool found;
-		while(! (found = object->findPathDone(way)) && n < _pf_slice)
+		while(! (found = object->find_path_done(way)) && n < _pf_slice)
 			++n;
 		
 		if (found) {
 			//LOG_DEBUG(("n = %d", n));
 			if (!way.empty()) {
-				object->setWay(way);
+				object->set_way(way);
 				_skip_objects.clear();
 			} else {
 				LOG_DEBUG(("no path, adding %d to targets black list ", _target_id));
@@ -80,7 +80,7 @@ void Buratino::processPF(Object *object) {
 }
 
 
-void Buratino::onSpawn(const Object *object) {
+void Buratino::on_spawn(const Object *object) {
 	if (!active())
 		return;
 	
@@ -132,7 +132,7 @@ const bool Buratino::checkTarget(const Object *object, const Object * target, co
 		return true;
 	}
 	
-	v2<float> pos = object->getRelativePosition(target);
+	v2<float> pos = object->get_relative_position(target);
 	
 	std::string wc, wt;
 	{
@@ -178,7 +178,7 @@ void Buratino::calculateCloseCombat(Object *object, const Object *target, const 
 	//LOG_DEBUG(("close combat with %s, range: %g, dumb: %c", target->animation.c_str(), range, dumb?'+':'-'));
 
 	if (!dumb) {
-		_target_dir = object->getTarget_position(_target_position, object->getRelativePosition(target), range);
+		_target_dir = object->get_target_position(_target_position, object->get_relative_position(target), range);
 		if (_target_dir >= 0)
 			Map->add(_target_position, object->get_center_position());
 	} 
@@ -190,11 +190,11 @@ void Buratino::calculateCloseCombat(Object *object, const Object *target, const 
 	if (_target_dir >= 0) {
 		int dirs = object->get_directions_number();
 		if (object->_velocity.length() >= 9) {
-			object->quantizeVelocity();
+			object->quantize_velocity();
 			object->_direction.fromDirection(object->get_direction(), dirs);
 		} else {
 			object->_velocity.clear();
-			object->setDirection(_target_dir);
+			object->set_direction(_target_dir);
 			//LOG_DEBUG(("%d", _target_dir));
 			object->_direction.fromDirection(_target_dir, dirs);
 			std::string weapon1 = getWeapon(0), weapon2 = getWeapon(1);
@@ -221,13 +221,13 @@ const float Buratino::getWeaponRange(const Object *object) const {
 }
 
 void Buratino::calculate(Object *object, const float dt) {
-	if (object->aiDisabled()) {
+	if (object->ai_disabled()) {
 		return;
 	}
 	
 	if (!active()) {
-		if (object->isDriven()) 
-			object->calculateWayVelocity();
+		if (object->is_driven()) 
+			object->calculate_way_velocity();
 		else 
 			object->Object::calculate(dt);
 		object->updateStateFromVelocity();
@@ -235,7 +235,7 @@ void Buratino::calculate(Object *object, const float dt) {
 	}
 
 	const bool racing = object->getVariants().has("racing");
-	const bool refresh_path = !racing && _refresh_path.tick(dt) && object->isDriven();
+	const bool refresh_path = !racing && _refresh_path.tick(dt) && object->is_driven();
 	const bool dumb = !_reaction_time.tick(dt);
 	const Object *target = NULL;
 	
@@ -276,14 +276,14 @@ void Buratino::calculate(Object *object, const float dt) {
 
 		float range = getWeaponRange(object);
 		
-		v2<float> dpos = object->getRelativePosition(target);
+		v2<float> dpos = object->get_relative_position(target);
 		if (_enemy && dpos.length() <= range) {
 			//processPF(object);
 			calculateCloseCombat(object, target, range, false);
 			
 			if (_target_dir >= 0) {
-				if (object->isDriven())
-					object->setWay(Way());
+				if (object->is_driven())
+					object->set_way(Way());
 			}
 		} else {
 			_target_dir = -1;
@@ -292,19 +292,19 @@ void Buratino::calculate(Object *object, const float dt) {
 	
 	if (racing) {
 		Way way;
-		if (object->calculatingPath()) {
+		if (object->calculating_path()) {
 			goto gogogo;
 		}
-		if (!object->isDriven()) {
-			int slot_id = PlayerManager->getSlotID(object->get_id());
+		if (!object->is_driven()) {
+			int slot_id = PlayerManager->get_slotID(object->get_id());
 			if (slot_id <= 0) 
 				throw_ex(("ai in racing mode cannot operate without slot."));
 		
-			PlayerSlot &slot = PlayerManager->getSlot(slot_id);
+			PlayerSlot &slot = PlayerManager->get_slot(slot_id);
 			const SpecialZone &zone = PlayerManager->getNextCheckpoint(slot);
 			v3<int> position = zone.getPlayerPosition(slot_id);
 		
-			object->findPath(v2<int>(position.x, position.y), 24);
+			object->find_path(v2<int>(position.x, position.y), 24);
 		}
 	}
 		
@@ -322,21 +322,21 @@ void Buratino::calculate(Object *object, const float dt) {
 /*
 			if (_enemy && !weapon1.empty()) {
 				v2<float> r;
-				if (object->getTarget_position(r, target->get_position(), convertName(weapon1)))
+				if (object->get_target_position(r, target->get_position(), convertName(weapon1)))
 					_target_position = r.convert<int>();
 			}
 */		
 			LOG_DEBUG(("%d: %s: next target: %s at %d,%d", 
 				object->get_id(), object->animation.c_str(), target->animation.c_str(), target_position.x, target_position.y));
-			object->findPath(target_position, 24);
+			object->find_path(target_position, 24);
 			_refresh_path.reset();
 		
 			//Way way;
-			//if (!old_findPath(target, way))
+			//if (!old_find_path(target, way))
 			//	LOG_WARN(("no way"));
-			//else setWay(way);
+			//else set_way(way);
 		}
-	} else if (!object->isDriven()) {
+	} else if (!object->is_driven()) {
 		//LOG_DEBUG(("%d:%s idle", object->_id, object->animation.c_str()));
 		object->_velocity.clear();
 	}
@@ -348,14 +348,14 @@ void Buratino::calculate(Object *object, const float dt) {
 	//LOG_DEBUG(("w1: %s", getWeapon(0).c_str()));
 	//LOG_DEBUG(("w2: %s", getWeapon(1).c_str()));
 	
-	//bool driven = isDriven();
+	//bool driven = is_driven();
 	
 	//LOG_DEBUG(("calculating: %c, driven: %c", calculating?'+':'-', driven?'+':'-'));
 	gogogo:
 	
 	processPF(object);
 	
-	object->calculateWayVelocity();
+	object->calculate_way_velocity();
 
 skip_calculations: 	
 	if (target != NULL) {
@@ -391,7 +391,7 @@ const Object * Buratino::findTarget(const Object *src, const std::set<std::strin
 	{
 		float range;
 		Config->get("objects." + src->registered_name + ".range", range, 640.0f);
-		World->enumerateObjects(objects, src, range, NULL);
+		World->enumerate_objects(objects, src, range, NULL);
 	}
 	
 	for(std::set<const Object *>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
@@ -419,7 +419,7 @@ const Object * Buratino::findTarget(const Object *src, const std::set<std::strin
 		
 		std::string mod_type = o->classname;
 		if (mod_type == "teleport") {
-			v2<float> dpos = src->getRelativePosition(o);
+			v2<float> dpos = src->get_relative_position(o);
 			if (dpos.quick_length() < ((o->size.x + o->size.y) * 141 / 100)) 
 				continue;
 		}
@@ -455,7 +455,7 @@ const Object * Buratino::findTarget(const Object *src, const std::set<std::strin
 		} else if (o->classname == "vehicle") {
 			max = 1;
 		} else if (o->classname == "ctf-flag") {
-			PlayerSlot *slot = PlayerManager->getSlotByID(src->get_id());
+			PlayerSlot *slot = PlayerManager->get_slotByID(src->get_id());
 			if (slot == NULL)
 				continue;
 			Team::ID flag_team = Team::get_team(o);
@@ -466,7 +466,7 @@ const Object * Buratino::findTarget(const Object *src, const std::set<std::strin
 					continue;
 				}
 
-				v2<float> dpos = o->getRelativePosition(base);
+				v2<float> dpos = o->get_relative_position(base);
 				if (dpos.quick_length() < o->size.x * o->size.y / 4) {
 					//my flag is on the base
 					continue;

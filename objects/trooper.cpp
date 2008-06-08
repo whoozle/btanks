@@ -36,33 +36,33 @@ void Trooper::getImpassabilityPenalty(const float impassability, float &base, fl
 }
 
 void Trooper::tick(const float dt) {
-	setDirection(_velocity.get_direction8() - 1);
+	set_direction(_velocity.get_direction8() - 1);
 	Object::tick(dt);
 	
 	if (!_state.fire) {
-		if (getState() == "fire")
-			cancelAll();
+		if (get_state() == "fire")
+			cancel_all();
 	}
 	
 	if (_velocity.is0()) {
-		const std::string state = getState();
+		const std::string state = get_state();
 		if (state != "hold" && state != "fire" && state != "throw") {
-			cancelAll();
+			cancel_all();
 			play("hold", true);
 			if (has("helmet")) {
 				Object *helmet = get("helmet");
-				helmet->cancelAll();
+				helmet->cancel_all();
 				helmet->play("hold", true);
 			}
 		}
 	} else {
-		const std::string state = getState();
+		const std::string state = get_state();
 		if (state == "hold" || state.empty()) {
-			cancelAll();
+			cancel_all();
 			play("run", true);
 			if (has("helmet")) {
 				Object *helmet = get("helmet");
-				helmet->cancelAll();
+				helmet->cancel_all();
 				helmet->play("run", true);
 			}
 		}		
@@ -71,8 +71,8 @@ void Trooper::tick(const float dt) {
 	if (!_object.empty() && _fire.tick(dt) && _state.fire && !_variants.has("nukeman")) {
 		_fire.reset();
 		if (disable_ai || validateFire(0)) {
-			if (getState() != "fire") {
-				cancelAll();
+			if (get_state() != "fire") {
+				cancel_all();
 				play("fire", true);
 			}
 			spawn(_object, _object, v2<float>(), _direction);
@@ -85,8 +85,8 @@ void Trooper::tick(const float dt) {
 			Object *o = spawn("nuke-explosion", "nuke-explosion");
 			emit("death", o); 
 		} else if (!_variants.has("no-grenades")) {
-			if (getState() != "throw")
-				playNow("throw");
+			if (get_state() != "throw")
+				play_now("throw");
 			spawn("grenade", "grenade", v2<float>(), _direction);
 		}
 	}
@@ -108,7 +108,7 @@ const bool Trooper::take(const BaseObject *obj, const std::string &type) {
 
 #include "world.h"
 
-void Trooper::onSpawn() {
+void Trooper::on_spawn() {
 	if (_variants.has("player")) {
 		speed *= 1.75f;
 		hp = max_hp *= 2;
@@ -135,7 +135,7 @@ void Trooper::onSpawn() {
 	}
 	
 	if (_variants.has("disembark")) {
-		playSound("disembark", false);
+		play_sound("disembark", false);
 		//add helmet if parent player detected.
 	}
 	GET_CONFIG_VALUE("objects.trooper.grenade-rate", float, gr, 1.2f);
@@ -161,7 +161,7 @@ void Trooper::emit(const std::string &event, Object * emitter) {
 	} else if (event == "collision" && emitter != NULL && emitter->classname == "vehicle" && !_variants.has("nukeman")) {
 		if (
 			(
-				(disable_ai && _velocity.same_sign(getRelativePosition(emitter))) || 
+				(disable_ai && _velocity.same_sign(get_relative_position(emitter))) || 
 				(registered_name == "machinegunner-player")
 			) && attachVehicle(emitter))
 			return;

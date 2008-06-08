@@ -24,7 +24,7 @@
 class Explosive : public DestructableObject {
 public: 
 	Explosive();
-	virtual void onSpawn();
+	virtual void on_spawn();
 	virtual void onBreak();
 
 	Object* clone() const  {
@@ -32,9 +32,9 @@ public:
 	}
 };
 
-void Explosive::onSpawn() {
+void Explosive::on_spawn() {
 	disown();
-	DestructableObject::onSpawn();
+	DestructableObject::on_spawn();
 }
 
 Explosive::Explosive() : DestructableObject("explosive") {

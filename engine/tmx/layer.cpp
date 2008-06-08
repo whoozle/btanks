@@ -57,7 +57,7 @@ void DestructableLayer::onDeath(const int idx) {
 	
 	const sdlx::Surface *s = NULL;
 	const sdlx::CollisionMap *cm = NULL;
-	ResourceManager->checkSurface("building-explosion", s, cm);
+	ResourceManager->check_surface("building-explosion", s, cm);
 	assert(s != NULL);
 	
 	Object * o = ResourceManager->createObject("explosion(building)", "building-explosion");
@@ -68,8 +68,8 @@ void DestructableLayer::onDeath(const int idx) {
 	int dirs = (s->get_width() - 1) / (int)o->size.x + 1;
 	int dir = mrt::random(dirs);
 	//LOG_DEBUG(("set dir %d (%d)", dir, dirs));
-	o->setDirectionsNumber(dirs);
-	o->setDirection(dir);
+	o->set_directions_number(dirs);
+	o->set_direction(dir);
 	
 	World->addObject(o, pos);
 }

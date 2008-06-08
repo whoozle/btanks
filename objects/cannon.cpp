@@ -24,7 +24,7 @@
 class Cannon : public Object {
 public:
 	Cannon(const int dir) : Object("cannon"), _fire(false), _reaction(true) {
-		setDirection(dir);
+		set_direction(dir);
 	}
 	virtual Object* clone() const  { return new Cannon(*this); }
 	
@@ -32,7 +32,7 @@ public:
 	virtual void tick(const float dt);
 	virtual void emit(const std::string &event, Object * emitter);
 
-	virtual void onSpawn();
+	virtual void on_spawn();
 
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
@@ -56,9 +56,9 @@ void Cannon::calculate(const float dt) {
 	
 	static float range = getWeaponRange("cannon-bullet");
 	v2<float> pos, vel;
-	if (getNearest(_variants.has("trainophobic")? ai::Targets->infantry_and_train: ai::Targets->infantry, range, pos, vel, true)) {
+	if (get_nearest(_variants.has("trainophobic")? ai::Targets->infantry_and_train: ai::Targets->infantry, range, pos, vel, true)) {
 		pos.normalize();
-		setDirection(pos.get_direction(get_directions_number()) - 1);
+		set_direction(pos.get_direction(get_directions_number()) - 1);
 		_direction = pos;
 		_state.fire = true;
 	} else _state.fire = false;
@@ -66,7 +66,7 @@ void Cannon::calculate(const float dt) {
 
 void Cannon::tick(const float dt) {
 	Object::tick(dt);
-	if (getState() == "real-fire") {
+	if (get_state() == "real-fire") {
 		cancel();
 		spawn("cannon-bullet", "cannon-bullet", v2<float>(), _direction);
 	}
@@ -75,8 +75,8 @@ void Cannon::tick(const float dt) {
 	if (_state.fire && can_fire) {
 		_fire.reset();
 		
-		if (getState() == "hold") {
-			cancelAll();
+		if (get_state() == "hold") {
+			cancel_all();
 			play("fire", false);
 			play("real-fire", true);
 			play("after-fire", false);
@@ -93,7 +93,7 @@ void Cannon::emit(const std::string &event, Object * emitter) {
 }
 
 
-void Cannon::onSpawn() {
+void Cannon::on_spawn() {
 	GET_CONFIG_VALUE("objects.cannon.fire-rate", float, fr, 2);
 	_fire.set(fr);
 	GET_CONFIG_VALUE("objects.cannon.reaction-time", float, rt, 0.105);

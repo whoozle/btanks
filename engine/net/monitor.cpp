@@ -436,7 +436,7 @@ TRY {
 							
 						out.add(t0);
 						out.add((unsigned)PlayerManager->getFreeSlotsCount());
-						out.add((unsigned)PlayerManager->getSlotsCount());
+						out.add((unsigned)PlayerManager->get_slotsCount());
 						out.finalize(msg.data);
 						msg.set("map", Map->getName());
 							

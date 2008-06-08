@@ -25,7 +25,7 @@ class Damage : public Object {
 public:
 	Damage();
 	virtual void render(sdlx::Surface &surface, const int x, const int y);
-	virtual void onSpawn();
+	virtual void on_spawn();
 	//virtual void tick(const float dt);
 	virtual Object * clone() const;
 };
@@ -34,11 +34,11 @@ public:
 Damage::Damage() : Object("damage-digits") { 
 	impassability = 0; 
 	hp = -1;
-	setDirectionsNumber(10);
+	set_directions_number(10);
 }
 Object * Damage::clone() const { return new Damage(*this); } 
 
-void Damage::onSpawn() { 
+void Damage::on_spawn() { 
 	play("main", true); 
 	_state.up = true; 
 } 
@@ -66,7 +66,7 @@ void Damage::render(sdlx::Surface &surface, const int x, const int y) {
 		n %= mult;
 		mult /= 10;
 		//LOG_DEBUG(("digit %d", d));
-		setDirection(d);
+		set_direction(d);
 		Object::render(surface, xp, y);
 		xp += (int)size.x;
 	}

@@ -36,7 +36,7 @@ public:
 	Object* clone() const  { return new Explosion(*this); }
 
 	virtual void tick(const float dt);
-	virtual void onSpawn();
+	virtual void on_spawn();
 	virtual void emit(const std::string &event, Object * emitter = NULL);
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
@@ -69,12 +69,12 @@ void Explosion::damageMap() const {
 
 void Explosion::tick(const float dt) {
 	Object::tick(dt);
-	const std::string state = getState();
+	const std::string state = get_state();
 
 	GET_CONFIG_VALUE("objects.nuke-explosion.damage-map-after", float, dma, 0.65);
 
 	if  (
-			!_damage_done && getStateProgress() >= dma && state != "start"
+			!_damage_done && get_state_progress() >= dma && state != "start"
 		) {
 		_damage_done = true;
 	
@@ -87,10 +87,10 @@ void Explosion::tick(const float dt) {
 	}
 }
 
-void Explosion::onSpawn() {
+void Explosion::on_spawn() {
 	play("boom", false);
 	if (_variants.has("building")) {
-		playRandomSound("building-explosion", false);
+		play_random_sound("building-explosion", false);
 	}
 	if (registered_name == "nuke-explosion" && !_variants.has("no-shaking")) 
 		Game->shake(1, 4);
@@ -116,8 +116,8 @@ void Explosion::emit(const std::string &event, Object * emitter) {
 			return; //damage was already added for this object.
 		
 		if (registered_name == "mutagen-explosion") {
-			if (_variants.has("chained") && emitter->classname == "explosive" && emitter->getState() == "main") {
-				float p = getStateProgress();
+			if (_variants.has("chained") && emitter->classname == "explosive" && emitter->get_state() == "main") {
+				float p = get_state_progress();
 			//LOG_DEBUG(("%d: progress = %g", get_id(), p));
 				if (p < 0.03f)
 					return;

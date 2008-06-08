@@ -32,7 +32,7 @@ public:
 	virtual const bool take(const BaseObject *obj, const std::string &type);
 	virtual void tick(const float dt);
 	virtual void calculate(const float dt);
-	virtual void onSpawn();
+	virtual void on_spawn();
 	virtual void serialize(mrt::Serializator &s) const;
 	virtual void deserialize(const mrt::Serializator &s);
 	virtual const std::string getType() const { return "launcher"; }

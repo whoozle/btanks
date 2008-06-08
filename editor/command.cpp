@@ -131,7 +131,7 @@ void Command::exec() {
 		Object *object = getObject();
 		GameItem &item = GameMonitor->find(object);
 		int dirs = object->get_directions_number();
-		object->setDirection((object->get_direction() + dirs + z) % dirs);
+		object->set_direction((object->get_direction() + dirs + z) % dirs);
 		item.updateMapProperty();		
 		break;
 	}
@@ -196,7 +196,7 @@ void Command::undo() {
 		Object *object = getObject();
 		GameItem &item = GameMonitor->find(object);
 		int dirs = object->get_directions_number();
-		object->setDirection((object->get_direction() + dirs - z) % dirs);
+		object->set_direction((object->get_direction() + dirs - z) % dirs);
 		item.updateMapProperty();
 		break;
 	}

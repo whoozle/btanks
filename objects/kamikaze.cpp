@@ -43,7 +43,7 @@ public:
 	virtual void calculate(const float dt);
 
 	virtual Object * clone() const;
-	virtual void onSpawn();
+	virtual void on_spawn();
 	virtual void emit(const std::string &event, Object * emitter = NULL);
 	void on_idle(const int range, const float dt);
 
@@ -80,32 +80,32 @@ void Kamikaze::calculate(const float dt) {
 	
 	GET_CONFIG_VALUE("objects.kamikaze.targeting-range", int, tt, 800);
 
-	if (getNearest(_variants.has("trainophobic")? ai::Targets->infantry_and_train: ai::Targets->infantry, tt, _velocity, vel, false)) {
-		quantizeVelocity();
+	if (get_nearest(_variants.has("trainophobic")? ai::Targets->infantry_and_train: ai::Targets->infantry, tt, _velocity, vel, false)) {
+		quantize_velocity();
 	} else on_idle(tt, dt);
 
 	GET_CONFIG_VALUE("objects.kamikaze.rotation-time", float, rt, 0.05);
-	limitRotation(dt, rt, true, false);
+	limit_rotation(dt, rt, true, false);
 	updateStateFromVelocity();	
 }
 
 void Kamikaze::tick(const float dt) {
-	const std::string state = getState();
+	const std::string state = get_state();
 	if (_velocity.is0()) {
 		if (state != "hold") {
-			cancelAll();
+			cancel_all();
 			play("hold", true);
 		}
 	} else {
 		if (state == "hold") {
-			cancelAll();
+			cancel_all();
 			play("run", true);
 		}		
 	}
 	Object::tick(dt);
 }
 
-void Kamikaze::onSpawn() {
+void Kamikaze::on_spawn() {
 	GET_CONFIG_VALUE("objects.kamikaze.reaction-time", float, rt, 0.2);
 	mrt::randomize(rt, rt/10);
 	_reaction.set(rt);

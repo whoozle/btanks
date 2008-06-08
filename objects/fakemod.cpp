@@ -51,7 +51,7 @@ void FakeMod::setType(const std::string &type) {
 }
 
 
-void FakeMod::onSpawn() {
+void FakeMod::on_spawn() {
 	play("main", true);
 }
 

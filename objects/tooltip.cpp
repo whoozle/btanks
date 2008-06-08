@@ -25,27 +25,27 @@
 class TooltipObject : public Object {
 public:
 	TooltipObject() : Object("tooltip"), _change(true) { impassability = 0; hp = -1; }
-	virtual void onSpawn() {
+	virtual void on_spawn() {
 		GET_CONFIG_VALUE("objects.random-tooltip.show-time", float, st, 3.0);
 		_change.set(st);
 	
-		const sdlx::Surface * s = getSurface();
+		const sdlx::Surface * s = get_surface();
 		int w = s->get_width();
 		int n = (w - 1) / (int)size.x + 1;
-		setDirectionsNumber(n);
+		set_directions_number(n);
 		//LOG_DEBUG(("dirs = %d", n));
-		Object::setDirection(mrt::random(n));
+		Object::set_direction(mrt::random(n));
 		play("main", true);
 	}
 	
 	virtual void tick(const float dt) {
 		Object::tick(dt);
 		if (_change.tick(dt)) {
-			Object::setDirection(mrt::random(get_directions_number()));
+			Object::set_direction(mrt::random(get_directions_number()));
 		}
 	}
 	
-	virtual void setDirection(const int dir) {}
+	virtual void set_direction(const int dir) {}
 
 	virtual Object * clone() const {
 		return new TooltipObject(*this);

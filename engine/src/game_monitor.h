@@ -118,8 +118,8 @@ public:
 	//waypoints
 	const bool hasWaypoints(const std::string &classname) const;
 	const std::string getRandomWaypoint(const std::string &classname, const std::string &last_wp = std::string()) const;
-	const std::string getNearestWaypoint(const Object *obj, const std::string &classname) const;
-	void getWaypoint(v2<float> &wp, const std::string &classname, const std::string &name);
+	const std::string get_nearest_waypoint(const Object *obj, const std::string &classname) const;
+	void get_waypoint(v2<float> &wp, const std::string &classname, const std::string &name);
 	
 	void renderWaypoints(sdlx::Surface &surface, const sdlx::Rect &src, const sdlx::Rect &viewport);	
 

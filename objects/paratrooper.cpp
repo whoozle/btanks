@@ -27,7 +27,7 @@ public:
 	}
 	virtual void tick(const float dt);
 	virtual Object * clone() const;
-	virtual void onSpawn();
+	virtual void on_spawn();
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
 		s.add(_spawn_object);
@@ -45,7 +45,7 @@ private:
 
 void Paratrooper::tick(const float dt) {
 	Object::tick(dt);
-	if (getState().empty()) {	
+	if (get_state().empty()) {	
 		//LOG_DEBUG(("over"));
 		Object *kamikaze = spawn(_spawn_object, _spawn_animation);
 		kamikaze->setZBox(0);
@@ -53,8 +53,8 @@ void Paratrooper::tick(const float dt) {
 	}
 }
 
-void Paratrooper::onSpawn() {
-	setDirection(0);
+void Paratrooper::on_spawn() {
+	set_direction(0);
 	play("main", false);
 }
 

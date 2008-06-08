@@ -85,7 +85,7 @@ void Hud::generateRadarBG(const sdlx::Rect &viewport) {
 
 	GET_CONFIG_VALUE("hud.radar.zoom", int, zoom, 2);
 	GET_CONFIG_VALUE("hud.radar.inverse", bool, hri, false);
-	const Matrix<int>& matrix = Map->getImpassabilityMatrix(0);
+	const Matrix<int>& matrix = Map->get_impassability_matrix(0);
 	
 	_radar_bg.create_rgb(zoom * matrix.get_width(), zoom * matrix.get_height(), 32);
 	_radar_bg.display_format_alpha();
@@ -102,7 +102,7 @@ void Hud::generateRadarBG(const sdlx::Rect &viewport) {
 	}
 	*/
 	for(std::set<int>::iterator i = layers.begin(); i != layers.end(); ++i, ++n) {
-		const Matrix<int>& matrix = Map->getImpassabilityMatrix((*i) * 2000);
+		const Matrix<int>& matrix = Map->get_impassability_matrix((*i) * 2000);
 
 		//update radar;
 		const int h = matrix.get_height(), w = matrix.get_width();
@@ -139,13 +139,13 @@ void Hud::renderStats(sdlx::Surface &surface) {
 }
 
 void Hud::renderTeamStats(sdlx::Surface &surface) {
-	unsigned slots = PlayerManager->getSlotsCount(), teams = RTConfig->teams;
+	unsigned slots = PlayerManager->get_slotsCount(), teams = RTConfig->teams;
 	
 	int max_w = 0;
 	std::map<const Team::ID, int> team_frags;
 	
 	for(unsigned p = 0; p < slots; ++p) {
-		PlayerSlot &slot = PlayerManager->getSlot(p);
+		PlayerSlot &slot = PlayerManager->get_slot(p);
 		if (slot.empty() || slot.team == Team::None)
 			continue;
 			
@@ -187,12 +187,12 @@ void Hud::renderTeamStats(sdlx::Surface &surface) {
 }
 
 void Hud::renderPlayerStats(sdlx::Surface &surface) {
-	unsigned active_slots = 0, slots = PlayerManager->getSlotsCount();
+	unsigned active_slots = 0, slots = PlayerManager->get_slotsCount();
 	
 	int nick_w = 0;
 	
 	for(unsigned p = 0; p < slots; ++p) {
-		PlayerSlot &slot = PlayerManager->getSlot(p);
+		PlayerSlot &slot = PlayerManager->get_slot(p);
 		if (slot.empty())
 			continue;
 		++active_slots;
@@ -226,7 +226,7 @@ void Hud::renderPlayerStats(sdlx::Surface &surface) {
 	int box_w1 = box_w2 * 3 / 4;
 	
 	for(unsigned p = 0; p < slots; ++p) {
-		PlayerSlot &slot = PlayerManager->getSlot(p);
+		PlayerSlot &slot = PlayerManager->get_slot(p);
 		if (slot.empty())
 			continue;
 		surface.fill_rect(sdlx::Rect(xp, yp, box_w1, box_h), index2color(surface, p + 1, 255));
@@ -327,9 +327,9 @@ void Hud::renderRadar(const float dt, sdlx::Surface &window, const std::vector<v
 
 	_radar.lock();
 	
-	size_t n = PlayerManager->getSlotsCount();
+	size_t n = PlayerManager->get_slotsCount();
 	for(size_t i = 0; i < n; ++i) {
-		PlayerSlot &slot = PlayerManager->getSlot(i);
+		PlayerSlot &slot = PlayerManager->get_slot(i);
 		const Object *obj = slot.getObject();
 		if (obj == NULL) 
 			continue;
@@ -449,7 +449,7 @@ void Hud::render(sdlx::Surface &window) const {
 	
 	window.blit(*_background, 0, 0);
 	
-	size_t n = PlayerManager->getSlotsCount();
+	size_t n = PlayerManager->get_slotsCount();
 
 	GET_CONFIG_VALUE("hud.icon.width", int, icon_w, 16);
 	GET_CONFIG_VALUE("hud.icon.height", int, icon_h, 24);
@@ -458,7 +458,7 @@ void Hud::render(sdlx::Surface &window) const {
 
 	int c = 0;
 	for(size_t i = 0; i < n; ++i) {
-		PlayerSlot &slot = PlayerManager->getSlot(i);
+		PlayerSlot &slot = PlayerManager->get_slot(i);
 		if (!slot.visible)
 			continue;
 

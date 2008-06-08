@@ -34,7 +34,7 @@ void Waypoints::calculate(Object *object, const float dt) {
 		//LOG_DEBUG(("no waypoints stub!"));
 		if (_reaction_time.tick(dt))
 			ai::OldSchool::calculateV(object->_velocity, object);
-		object->calculateWayVelocity();
+		object->calculate_way_velocity();
 		return;
 	}
 	
@@ -42,13 +42,13 @@ void Waypoints::calculate(Object *object, const float dt) {
 		const Object * obstacle = NULL;
 		
 		std::set<const Object *> objs;
-		object->enumerateObjects(objs, (object->size.x + object->size.y) * 2 / 3, NULL /* &obstacle_filter */);
+		object->enumerate_objects(objs, (object->size.x + object->size.y) * 2 / 3, NULL /* &obstacle_filter */);
 		std::set<const Object *>::const_iterator i;
 		for(i = objs.begin(); i != objs.end(); ++i) {
 			if ((*i)->speed == 0 || (*i)->impassability == 0)
 				continue;
 			
-			v2<float> dpos = object->getRelativePosition(*i);
+			v2<float> dpos = object->get_relative_position(*i);
 			dpos.normalize();
 			int odir = dpos.get_direction(object->get_directions_number()) - 1;
 			//LOG_DEBUG(("%s: (%g %g)dir = %d, my_dir = %d", animation.c_str(), dpos.x, dpos.y, odir, get_direction()));
@@ -71,13 +71,13 @@ void Waypoints::calculate(Object *object, const float dt) {
 		return;
 	}
 
-	if (!object->calculatingPath() && !object->isDriven()) {
+	if (!object->calculating_path() && !object->is_driven()) {
 		v2<float> waypoint;
 		object->_velocity.clear();
 		if (_waypoint_name.empty()) {
-			_waypoint_name = object->getNearestWaypoint(object->registered_name);
+			_waypoint_name = object->get_nearest_waypoint(object->registered_name);
 			assert(!_waypoint_name.empty());
-			GameMonitor->getWaypoint(waypoint, object->registered_name, _waypoint_name);
+			GameMonitor->get_waypoint(waypoint, object->registered_name, _waypoint_name);
 			if (waypoint.quick_length() < object->size.x * object->size.y) {
 				//LOG_DEBUG(("waypoint is too close..."));
 				goto random_wp; //REWRITE THIS UGLY CODE
@@ -87,15 +87,15 @@ void Waypoints::calculate(Object *object, const float dt) {
 		random_wp:
 			//LOG_DEBUG(("%s[%d] reached waypoint '%s'", object->animation.c_str(), object->get_id(), _waypoint_name.c_str()));
 			_waypoint_name = GameMonitor->getRandomWaypoint(object->registered_name, _waypoint_name);
-			GameMonitor->getWaypoint(waypoint, object->registered_name, _waypoint_name);
+			GameMonitor->get_waypoint(waypoint, object->registered_name, _waypoint_name);
 			//LOG_DEBUG(("%s[%d] moving to next waypoint '%s' at %g %g", object->animation.c_str(), object->get_id(), _waypoint_name.c_str(), waypoint.x, waypoint.y));
 		}
 		int pfs;
 		Config->get("objects." + object->registered_name + ".pathfinding-step", pfs, 16);
-		object->findPath(waypoint.convert<int>(), pfs);
+		object->find_path(waypoint.convert<int>(), pfs);
 	}
 	Way way;
-	if (object->calculatingPath() && object->findPathDone(way)) {
+	if (object->calculating_path() && object->find_path_done(way)) {
 		if (way.size() == 1) { 
 			object->_velocity.clear();
 			return;
@@ -105,14 +105,14 @@ void Waypoints::calculate(Object *object, const float dt) {
 				object->registered_name.c_str(), object->animation.c_str(), object->get_id(), (unsigned)way.size()));
 			//emit("death", NULL);
 		}
-		object->setWay(way);
+		object->set_way(way);
 	} else object->_velocity.clear();
 
-	object->calculateWayVelocity();	
+	object->calculate_way_velocity();	
 }
 
 
-void Waypoints::onSpawn(const Object *object) {
+void Waypoints::on_spawn(const Object *object) {
 	float rt;
 	Config->get("objects." + object->registered_name + ".reaction-time", rt, 0.3f);
 	if (rt <= 0.3f) {
@@ -126,5 +126,5 @@ void Waypoints::onSpawn(const Object *object) {
 	_stop = false;
 	_no_waypoints = !GameMonitor->hasWaypoints(object->registered_name);
 	if (_no_waypoints) 
-		ai::OldSchool::onSpawn(object);
+		ai::OldSchool::on_spawn(object);
 }

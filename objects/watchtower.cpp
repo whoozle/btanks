@@ -31,7 +31,7 @@ public:
 		
 	Object *clone() const { return new WatchTower(*this); }
 	
-	virtual void onSpawn() {
+	virtual void on_spawn() {
 		if (_object == "top") {
 			play("top", true);
 			return;
@@ -39,7 +39,7 @@ public:
 		if (_variants.has("trainophobic"))
 			_object += "(trainophobic)";
 
-		DestructableObject::onSpawn();
+		DestructableObject::on_spawn();
 		Object *o = add("machinegunner", _object, _animation, v2<float>(0, -12), Centered);
 		o->setZ(getZ() + 1);
 		o = add("top", "watchtower-top", "watchtower", v2<float>(0, 0), Centered);

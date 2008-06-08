@@ -209,7 +209,7 @@ void Editor::onTick(const float dt) {
 	
 	World->purge(0);
 	
-	render(Window->getSurface(), dt);	
+	render(Window->get_surface(), dt);	
 }
 
 
@@ -884,9 +884,9 @@ void Editor::notifyLoadingBar(const int progress, const char *what) {
 	float old_progress = 1.0 * _loading_bar_now / _loading_bar_total;
 	_loading_bar_now += progress;
 	
-	if (_hud->renderLoadingBar(Window->getSurface(), old_progress, 1.0 * _loading_bar_now / _loading_bar_total, NULL, false)) {
+	if (_hud->renderLoadingBar(Window->get_surface(), old_progress, 1.0 * _loading_bar_now / _loading_bar_total, NULL, false)) {
 		Window->flip();
-		Window->getSurface().fill(Window->getSurface().map_rgb(255, 255, 255));
+		Window->get_surface().fill(Window->get_surface().map_rgb(255, 255, 255));
 	}
 }
 

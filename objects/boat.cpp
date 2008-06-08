@@ -32,7 +32,7 @@ public:
 	
 	virtual void calculate(const float dt);
 	virtual void tick(const float dt);
-	virtual void onSpawn();
+	virtual void on_spawn();
 	void emit(const std::string &event, Object * emitter);
 
 	virtual void serialize(mrt::Serializator &s) const {
@@ -66,10 +66,10 @@ void Boat::emit(const std::string &event, Object * emitter) {
 
 void Boat::calculate(const float dt) {
 	if (!_reaction.tick(dt)) {
-		calculateWayVelocity();
+		calculate_way_velocity();
 
 		GET_CONFIG_VALUE("objects." + registered_name + ".rotation-time", float, rt, 0.1f);
-		limitRotation(dt, rt, true, false);
+		limit_rotation(dt, rt, true, false);
 
 		return;
 	}
@@ -78,48 +78,48 @@ void Boat::calculate(const float dt) {
 	Config->get("objects." + registered_name + ".targeting-range", tr, 800);
 	
 	v2<float> pos, vel;
-	if (getNearest(ai::Targets->players, tr, pos, vel, true)) {
+	if (get_nearest(ai::Targets->players, tr, pos, vel, true)) {
 		_state.fire = true;
 	} else _state.fire = false;
 	
 	_velocity.clear();
-	if (!isDriven() && !_variants.has("stale")) {
+	if (!is_driven() && !_variants.has("stale")) {
 		//LOG_DEBUG(("finding next target..."));
 		
 		Way way;
 		ai::Rush::calculateW(way, this, "water");
-		setWay(way);
+		set_way(way);
 	} 
 	
-	calculateWayVelocity();
+	calculate_way_velocity();
 
 	GET_CONFIG_VALUE("objects." + registered_name + ".rotation-time", float, rt, 0.1f);
-	limitRotation(dt, rt, true, false);
+	limit_rotation(dt, rt, true, false);
 }
 
 void Boat::tick(const float dt) {
 	Object::tick(dt);
 
-	const std::string state = getState();
+	const std::string state = get_state();
 	if (state == "reload" && _reload.tick(dt)) {
 		_reload.reset();
-		cancelAll();
-		groupEmit("mod", "reload");
+		cancel_all();
+		group_emit("mod", "reload");
 		play("main", true);
 	}
 	
 	bool can_fire = _fire.tick(dt);
 	if (_state.fire && can_fire && state != "reload") {
 		_fire.reset();
-		groupEmit("mod", "launch");
+		group_emit("mod", "launch");
 		if (get("mod")->getCount() == 0) {
-			cancelRepeatable();
+			cancel_repeatable();
 			play("reload", true);
 		}
 	}
 }
 
-void Boat::onSpawn() {
+void Boat::on_spawn() {
 	play("main", true);
 	
 	GET_CONFIG_VALUE("objects.missile-boat.fire-rate", float, fr, 0.5);
@@ -139,7 +139,7 @@ Boat::Boat(const std::string &object) : Object("boat"),
 	_fire(false), 
 	_reload(false), 
 	_reaction(true) {
-	setDirectionsNumber(8);
+	set_directions_number(8);
 }
 
 

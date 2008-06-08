@@ -27,7 +27,7 @@ class AIShilka:  public Shilka, public ai::Buratino {
 public: 
 	AIShilka(const std::string &classname) : Shilka(classname) {}
 //	~AIShilka();
-	virtual void onSpawn();
+	virtual void on_spawn();
 	virtual void calculate(const float dt);
 
 	virtual Object * clone() const { return new AIShilka(*this); }
@@ -75,7 +75,7 @@ const int AIShilka::getWeaponAmount(const int idx) const{
 }
 
 
-void AIShilka::onSpawn() {
+void AIShilka::on_spawn() {
 	addEnemyClass("fighting-vehicle");
 	addEnemyClass("cannon");
 	addEnemyClass("trooper");
@@ -102,15 +102,15 @@ void AIShilka::onSpawn() {
 	addBonusName("mines-item");
 	addBonusName("nuke-missiles-item");
 
-	ai::Buratino::onSpawn(this);
-	Shilka::onSpawn();
+	ai::Buratino::on_spawn(this);
+	Shilka::on_spawn();
 }
 
 void AIShilka::calculate(const float dt) {
 	ai::Buratino::calculate(this, dt);
 	
 	GET_CONFIG_VALUE("objects.shilka.rotation-time", float, rt, 0.05);
-	limitRotation(dt, rt, true, false);
+	limit_rotation(dt, rt, true, false);
 	updateStateFromVelocity();	
 }
 

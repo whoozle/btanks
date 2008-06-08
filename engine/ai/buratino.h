@@ -34,7 +34,7 @@ public:
 	virtual ~Buratino();
 
 	virtual void calculate(Object *obj, const float dt);
-	virtual void onSpawn(const Object *obj);
+	virtual void on_spawn(const Object *obj);
 	
 	virtual const std::string getWeapon(const int idx) const = 0;
 	virtual const int getWeaponAmount(const int idx) const = 0;

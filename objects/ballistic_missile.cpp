@@ -12,11 +12,11 @@ public:
 	virtual Object * clone() const { return new BallisticMissile(*this); }
 	
 	BallisticMissile() : Object("ballistic-missile"), _fall(false), _launch(false), _reaction(true) {
-		setDirectionsNumber(16);
+		set_directions_number(16);
 		piercing = true;
 	}
 	
-	void onSpawn() {
+	void on_spawn() {
 		play("main", true);
 		float duration = 5.0f, launch_duration = 512.0f / speed;
 		_launch.set(launch_duration);
@@ -26,7 +26,7 @@ public:
 		mrt::randomize(reaction, reaction / 10);
 		_reaction.set(reaction);
 		
-		setDirection(4);
+		set_direction(4);
 		_direction = _velocity = v2<float>(0, -1);
 
 		Object *target = spawn("ballistic-missile-target", "target");
@@ -34,7 +34,7 @@ public:
 		speed_backup = speed;
 	}
 	
-	virtual const bool skipRendering() const {
+	virtual const bool skip_rendering() const {
 		float l = _launch.get(), f = _fall.get();
 		if (l <= 0 && f > 0)
 			return true;
@@ -55,15 +55,15 @@ public:
 					return;
 				}
 				speed = target->speed * 1.3f;
-				_velocity = getRelativePosition(target) + v2<float>(0, -512);
+				_velocity = get_relative_position(target) + v2<float>(0, -512);
 				//LOG_DEBUG(("correcting: %g", _velocity.x));
 			}
 		} else { //falling
 			if (speed != speed_backup) {
 				speed = speed_backup;
 				Object *target = World->getObjectByID(target_id);
-				ttl = ((target != NULL)?getRelativePosition(target).length():512.0f) / speed;
-				setDirection(12);
+				ttl = ((target != NULL)?get_relative_position(target).length():512.0f) / speed;
+				set_direction(12);
 			}
 			_velocity = v2<float>(0, 1);
 			/*
@@ -133,10 +133,10 @@ public:
 	virtual Object * clone() const { return new BallisticMissileTarget(*this); }
 	
 	BallisticMissileTarget() : Object("mark"), _reaction(true) {
-		setDirectionsNumber(1);
+		set_directions_number(1);
 	}
 	
-	void onSpawn() { 
+	void on_spawn() { 
 		GET_CONFIG_VALUE("objects.target.reaction-time", float, rt, 0.2f);
 		mrt::randomize(rt, rt / 10);
 		_reaction.set(rt);
@@ -147,7 +147,7 @@ public:
 		if (!_reaction.tick(dt))
 			return;
 		v2<float> pos, vel;
-		if (getNearest(ai::Targets->troops, speed * 5.0f, pos, vel, false)) {
+		if (get_nearest(ai::Targets->troops, speed * 5.0f, pos, vel, false)) {
 			_velocity = pos;
 			return;
 		}

@@ -26,10 +26,10 @@
 class Turrel : public Object, protected ai::Base {
 public:
 	Turrel(const std::string &classname) : 
-		Object(classname), _reaction(true), _fire(true), _left(false) { impassability = 1; setDirectionsNumber(8); }
+		Object(classname), _reaction(true), _fire(true), _left(false) { impassability = 1; set_directions_number(8); }
 	
 	virtual Object * clone() const { return new Turrel(*this); }
-	virtual void onSpawn();
+	virtual void on_spawn();
 	virtual void tick(const float dt);
 	virtual void calculate(const float dt);
 	virtual void emit(const std::string &event, Object * emitter = NULL);
@@ -45,7 +45,7 @@ private:
 	bool _left;
 };
 
-void Turrel::onSpawn() {
+void Turrel::on_spawn() {
 	play("hold", true);
 
 	float fr;
@@ -57,7 +57,7 @@ void Turrel::onSpawn() {
 	_reaction.set(rt);
 
 	ai::Base::multiplier = 5.0f;
-	ai::Base::onSpawn(this);
+	ai::Base::on_spawn(this);
 }
 
 void Turrel::tick(const float dt) {
@@ -66,7 +66,7 @@ void Turrel::tick(const float dt) {
 	//LOG_DEBUG(("ai: %s, _parent: %s, parent->disable_ai : %s", ai?"true":"false", _parent?_parent->animation.c_str():"-", _parent?(_parent->disable_ai?"true":"false"):"-"));
 	if (_fire.tick(dt) && _state.fire && (!ai || canFire())) {
 		bool air_mode = (_parent != NULL)?_parent->getPlayerState().alt_fire:true;
-		cancelAll();
+		cancel_all();
 		play(_left? "fire-left": "fire-right", false);
 		play("hold", true);
 		std::string animation = mrt::format_string("buggy-%s-%s", air_mode?"air-bullet":"bullet", _left?"left":"right");
@@ -104,11 +104,11 @@ void Turrel::calculate(const float dt) {
 			setZ(z0 + 2000, true); //temporary move up turrel %) hack for air mode :)
 		}
 
-		if (getNearest(targets, getWeaponRange("buggy-bullet"), pos, vel, true)) {
+		if (get_nearest(targets, getWeaponRange("buggy-bullet"), pos, vel, true)) {
 			_direction = pos;
 			_state.fire = true;
 			_direction.quantize8();
-			setDirection(_direction.get_direction8() - 1);
+			set_direction(_direction.get_direction8() - 1);
 		} else {
 			_state.fire = false;
 		}
@@ -121,7 +121,7 @@ void Turrel::calculate(const float dt) {
 			_state.fire = _parent->getPlayerState().fire;
 
 			int idx = _parent->get_direction();
-			setDirection(idx);
+			set_direction(idx);
 			_direction.fromDirection(idx, get_directions_number());
 		}
 	}
@@ -129,7 +129,7 @@ void Turrel::calculate(const float dt) {
 
 void Turrel::emit(const std::string &event, Object * emitter) {
 	if (event == "hold" || event == "move") {
-		cancelAll();
+		cancel_all();
 		play(event, true);
 		return;
 	}

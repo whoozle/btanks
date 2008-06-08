@@ -34,7 +34,7 @@ Mortar::Mortar(const std::string &classname)
 : Object(classname), _fire(false) {
 }
 
-void Mortar::onSpawn() {
+void Mortar::on_spawn() {
 	if (registered_name.substr(0, 6) == "static") {
 		disable_ai = true;
 		removeOwner(OWNER_MAP);
@@ -43,7 +43,7 @@ void Mortar::onSpawn() {
 	GET_CONFIG_VALUE("objects.mortar.fire-rate", float, fr, 0.7);
 	_fire.set(fr);
 	play("hold", true);
-	playSound("vehicle-sound", true, 0.4f);
+	play_sound("vehicle-sound", true, 0.4f);
 }
 
 Object * Mortar::clone() const {
@@ -70,11 +70,11 @@ const bool Mortar::take(const BaseObject *obj, const std::string &type) {
 void Mortar::calculate(const float dt) {
 	Object::calculate(dt);
 	GET_CONFIG_VALUE("objects.mortar.rotation-time", float, rt, 0.2);
-	limitRotation(dt, rt, true, false);
+	limit_rotation(dt, rt, true, false);
 }
 
 void Mortar::tick(const float dt) {
-	if (getState().empty()) {
+	if (get_state().empty()) {
 		play("hold", true);
 	}
 
@@ -84,11 +84,11 @@ void Mortar::tick(const float dt) {
 	
 	_velocity.normalize();
 	if (_velocity.is0()) {
-		cancelRepeatable();
+		cancel_repeatable();
 		play("hold", true);
 	} else {
-		if (getState() == "hold") {
-			cancelAll();
+		if (get_state() == "hold") {
+			cancel_all();
 			play("move", true);
 		}
 	}
@@ -97,10 +97,10 @@ void Mortar::tick(const float dt) {
 	if (_state.fire && fire_possible) {
 		_fire.reset();
 		/*
-		if (getState() == "fire") 
+		if (get_state() == "fire") 
 			cancel();
 		
-		playNow("fire");
+		play_now("fire");
 		*/
 		spawn("mortar-bullet", "mortar-bullet", v2<float>(), _direction);
 	}

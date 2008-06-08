@@ -15,7 +15,7 @@ public:
 		pierceable = true;
 	}
 
-	virtual void onSpawn();
+	virtual void on_spawn();
 	virtual Object * clone() const;
 
 	virtual void emit(const std::string &event, Object * emitter = NULL);
@@ -45,9 +45,9 @@ Teleport::Teleports Teleport::_teleports;
 
 void Teleport::tick(const float dt) {
 	Object::tick(dt);
-	if (aiDisabled() || _variants.has("dead-end")) {
-		if (getState() != "hold") {
-			cancelAll();
+	if (ai_disabled() || _variants.has("dead-end")) {
+		if (get_state() != "hold") {
+			cancel_all();
 			play("hold", true);
 		}
 		return;
@@ -62,7 +62,7 @@ void Teleport::tick(const float dt) {
 			invalidate();
 			return;
 		}
-		PlayerSlot *slot = PlayerManager->getSlotByID(track);
+		PlayerSlot *slot = PlayerManager->get_slotByID(track);
 		if (slot != NULL) {
 			slot->dont_interpolate = true;
 			slot->need_sync = true;
@@ -84,7 +84,7 @@ void Teleport::emit(const std::string &event, Object * emitter) {
 		if (emitter->classname == "helicopter") 
 			return;
 		
-		if (getState() == "hold") {
+		if (get_state() == "hold") {
 			return;
 		}
 		
@@ -118,7 +118,7 @@ void Teleport::emit(const std::string &event, Object * emitter) {
 		emitter->setZBox(ZBox::getBoxBase(dst->getZ()));
 		if (dst->track > 0 && dst->track != emitter->get_id()) {
 			//telefrag detection
-			PlayerSlot *slot = PlayerManager->getSlotByID(dst->track);
+			PlayerSlot *slot = PlayerManager->get_slotByID(dst->track);
 			Object *o;
 			if (slot != NULL && (o = slot->getObject()) != NULL) {
 				//LOG_DEBUG(("telefragged %s", o->animation.c_str()));
@@ -129,7 +129,7 @@ void Teleport::emit(const std::string &event, Object * emitter) {
 		
 		dst->track = emitter->get_id();
 		dst->invalidate();
-		dst->playSound("teleport", false);
+		dst->play_sound("teleport", false);
 	} else Object::emit(event, emitter);
 }
 
@@ -137,7 +137,7 @@ Teleport::~Teleport() {
 	_teleports.erase(this);
 }
 
-void Teleport::onSpawn() {
+void Teleport::on_spawn() {
 	play("main", true);
 	_teleports.insert(this);
 }

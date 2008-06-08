@@ -26,7 +26,7 @@ public:
 
 	virtual Object * clone() const;
 	virtual void tick(const float dt);
-	virtual void onSpawn();
+	virtual void on_spawn();
 
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
@@ -41,7 +41,7 @@ public:
 	
 	void emit(const std::string &event, Object * emitter) {
 		if (emitter != NULL && _variants.has("do-damage") && event == "collision" && emitter->classname != "corpse") {
-			if (getState() == "burn" || getState() == "fade-out") {
+			if (get_state() == "burn" || get_state() == "fade-out") {
 				if (hp > 0)
 					emitter->add_damage(this, emitter->hp);
 			}
@@ -56,25 +56,25 @@ private:
 
 void Corpse::tick(const float dt) {
 	Object::tick(dt);
-	if (getState().empty()) {	
+	if (get_state().empty()) {	
 		//LOG_DEBUG(("over"));
 		emit("death", this);
 		return;
 	}
-	if (_variants.has("with-fire") && !has("fire") && (getState() == "burn" || getState() == "fade-out")) {
+	if (_variants.has("with-fire") && !has("fire") && (get_state() == "burn" || get_state() == "fade-out")) {
 		Object *o = add("fire", "fire", "fire", v2<float>(), Centered);
 		o->setZ(getZ() + 1, true);
 	}
 }
 
-void Corpse::onSpawn() {
+void Corpse::on_spawn() {
 	//LOG_DEBUG(("single-pose: play('%s', %s)", _pose.c_str(), _repeat?"true":"false"));
 	if (_variants.has("human-death")) {
-		playRandomSound("human-death", false);
+		play_random_sound("human-death", false);
 	} else if (_variants.has("zombie-death")) {
-		playSound("zombie-dead", false);
+		play_sound("zombie-dead", false);
 	} else if (_variants.has("slime-death")) {
-		playSound("slime-dead", false);
+		play_sound("slime-dead", false);
 	}
 	
 	if (_fire_cycles > 0) {
@@ -85,7 +85,7 @@ void Corpse::onSpawn() {
 	}
 	if (_play_dead)
 		play("dead", true);
-	if (getState().empty())
+	if (get_state().empty())
 		throw_ex(("corpse w/o state!"));
 }
 

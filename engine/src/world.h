@@ -73,11 +73,11 @@ public:
 	Object * spawn(const Object *src, const std::string &classname, const std::string &animation, const v2<float> &dpos, const v2<float> &vel, const int z = 0);
 
 //the nearest objects
-	const Object* getNearestObject(const Object *obj, const std::set<std::string> &classnames, const float range, const bool check_shooting_range) const;
-	const bool getNearest(const Object *obj, const std::set<std::string> &classnames, const float range, v2<float> &position, v2<float> &velocity, const bool check_shooting_range) const;
+	const Object* get_nearest_object(const Object *obj, const std::set<std::string> &classnames, const float range, const bool check_shooting_range) const;
+	const bool get_nearest(const Object *obj, const std::set<std::string> &classnames, const float range, v2<float> &position, v2<float> &velocity, const bool check_shooting_range) const;
 //end of the nearest
 
-	void getImpassabilityMatrix(Matrix<int> &matrix, const Object *src, const Object *dst) const;
+	void get_impassability_matrix(Matrix<int> &matrix, const Object *src, const Object *dst) const;
 
 	virtual void serialize(mrt::Serializator &s) const;
 	virtual void deserialize(const mrt::Serializator &s);
@@ -101,10 +101,10 @@ public:
 
 	const float getImpassability(Object *obj, const v2<int> &position, const Object **collided_with = NULL, const bool probe = false, const bool skip_moving = false) const;
 	
-	const int getChildren(const int id, const std::string &classname) const;
+	const int get_children(const int id, const std::string &classname) const;
 	void setMode(const std::string &mode, const bool value);
 	
-	void enumerateObjects(std::set<const Object *> &o_set, const Object *src, const float range, const std::set<std::string> *classfilter);
+	void enumerate_objects(std::set<const Object *> &o_set, const Object *src, const float range, const std::set<std::string> *classfilter);
 	void sync(const int id);
 	
 	void teleport(Object *object, const v2<float> &position); //do not use this! 

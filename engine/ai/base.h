@@ -32,7 +32,7 @@ class BTANKSAPI Base {
 public: 
 	Base();
 	virtual ~Base() {}
-	void onSpawn(Object *src);
+	void on_spawn(Object *src);
 	const bool canFire();
 
 	virtual void serialize(mrt::Serializator &s) const;

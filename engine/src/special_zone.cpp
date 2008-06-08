@@ -71,8 +71,8 @@ void SpecialZone::onTimer(const int slot_id, const bool win) {
 		Config->get(key_name, spawn_limit, 1);
 	
 	if (spawn_limit > 0) 
-		for(size_t i = 0; i < PlayerManager->getSlotsCount(); ++i) {
-			PlayerSlot &slot = PlayerManager->getSlot(i);
+		for(size_t i = 0; i < PlayerManager->get_slotsCount(); ++i) {
+			PlayerSlot &slot = PlayerManager->get_slot(i);
 			slot.spawn_limit = spawn_limit;
 		}
 	
@@ -127,7 +127,7 @@ void SpecialZone::onMessage(const int slot_id) {
 }
 
 void SpecialZone::onHint(const int slot_id) {
-	PlayerSlot &slot = PlayerManager->getSlot(slot_id);
+	PlayerSlot &slot = PlayerManager->get_slot(slot_id);
 
 	//Game->pause();
 	if (slot.remote != -1 && !PlayerManager->isClient()) //useless but just for sure
@@ -137,7 +137,7 @@ void SpecialZone::onHint(const int slot_id) {
 }
 
 const v3<int> SpecialZone::getPlayerPosition(const int slot_id) const {
-	int players = PlayerManager->getSlotsCount();
+	int players = PlayerManager->get_slotsCount();
 
 	int yn = (int) sqrt((double)size.y * players / size.x);
 	if (yn < 1) 
@@ -164,7 +164,7 @@ void SpecialZone::onCheckpoint(const int slot_id) {
 
 	GameType game_type = RTConfig->game_type;
 	
-	PlayerSlot &slot = PlayerManager->getSlot(slot_id);
+	PlayerSlot &slot = PlayerManager->get_slot(slot_id);
 	slot.need_sync = true;
 	
 	if (game_type == GameTypeRacing) {
@@ -202,14 +202,14 @@ void SpecialZone::onCheckpoint(const int slot_id) {
 }
 
 void SpecialZone::onWarp(const int slot_id, const bool enter) {
-	PlayerSlot &slot = PlayerManager->getSlot(slot_id);
+	PlayerSlot &slot = PlayerManager->get_slot(slot_id);
 	Object *o = slot.getObject();
 	if (o == NULL)
 		return;
 }
 
 void SpecialZone::onTick(const int slot_id) {
-	PlayerSlot &slot = PlayerManager->getSlot(slot_id);
+	PlayerSlot &slot = PlayerManager->get_slot(slot_id);
 	Object *o = slot.getObject();
 	if (o == NULL)
 		return;

@@ -67,9 +67,9 @@ public:
 	
 	virtual Object * clone() const;
 	virtual void emit(const std::string &event, Object * emitter = NULL);
-	virtual void onSpawn();
+	virtual void on_spawn();
 
-	virtual const bool skipRendering() const;
+	virtual const bool skip_rendering() const;
 	virtual const bool take(const BaseObject *obj, const std::string &type);
 	
 	void updatePose();
@@ -114,10 +114,10 @@ private:
 	bool _install_default;
 };
 
-const bool MissilesInVehicle::skipRendering() const {
+const bool MissilesInVehicle::skip_rendering() const {
 	if (n == 0)
 		return true;
-	return Object::skipRendering();
+	return Object::skip_rendering();
 }
 
 
@@ -139,13 +139,13 @@ const bool MissilesInVehicle::take(const BaseObject *obj, const std::string &typ
 void MissilesInVehicle::updatePose() {
 	if (n == 0)
 		return;
-	cancelAll();
+	cancel_all();
 	std::string pose = mrt::format_string("missile-%d%s", (n > max_v || n == -1)?max_v:n, hold?"-hold":"");
 	//LOG_DEBUG(("updating pose to '%s'", pose.c_str()));
 	play(pose, true);
 }
 
-void MissilesInVehicle::onSpawn() {
+void MissilesInVehicle::on_spawn() {
 	setZ(registered_name != "alt-missiles-on-launcher"?5:3);
 	update();
 	updatePose();
@@ -176,7 +176,7 @@ void MissilesInVehicle::emit(const std::string &event, Object * emitter) {
 					dpos /= 2;
 		
 					Object *o = emitter->spawn("missile-launch", "missile-launch", dpos, v2<float>());
-					o->setDirection(get_direction());
+					o->set_direction(get_direction());
 				}
 */
 				//LOG_DEBUG(("dir: %d", o->get_direction()));	

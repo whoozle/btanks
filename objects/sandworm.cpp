@@ -28,9 +28,9 @@
 class SandWorm : public Object {
 public: 
 	SandWorm(): Object("monster"), _reaction_time(true), _fire(false), _head_id(0)  {
-		setDirectionsNumber(1);
+		set_directions_number(1);
 	}
-	virtual void onSpawn() {
+	virtual void on_spawn() {
 		disown();
 		play("main", true);
 
@@ -74,7 +74,7 @@ public:
 			if (cpos.distance(_last_snatch) > msd) {
 				std::set<const Object *> objects;
 				GET_CONFIG_VALUE("objects.sandworm.snatch-range", float, sr, 32.0f);
-				enumerateObjects(objects, sr, NULL);
+				enumerate_objects(objects, sr, NULL);
 				//LOG_DEBUG(("%u objects around", (unsigned) objects.size()));
 				bool snatch = false;
 				for(std::set<const Object *>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
@@ -113,9 +113,9 @@ public:
 			_state.fire = true;
 		}
 		
-		if (!active || isDriven()) {
-			if (isDriven()) {
-				calculateWayVelocity();
+		if (!active || is_driven()) {
+			if (is_driven()) {
+				calculate_way_velocity();
 				updateStateFromVelocity();
 			} 
 			//else LOG_DEBUG(("tail <-> parent: velocity: %g %g", _velocity.x, _velocity.y));
@@ -129,7 +129,7 @@ public:
 				emit("death", NULL);
 				return;
 			}
-			_velocity = getRelativePosition(summoner);
+			_velocity = get_relative_position(summoner);
 			float l = _velocity.normalize();
 			if (l < (size.x  + size.y) / 2)
 				_velocity.clear();
@@ -138,11 +138,11 @@ public:
 		}
 
 		if (_variants.has("withdrawn")) {
-			if (!isDriven()) {
+			if (!is_driven()) {
 				Way way;
 				ai::Rush::calculateW(way, this, "sandworm");
 				if (!way.empty()) 
-					setWay(way);
+					set_way(way);
 			}
 			return;
 		}
@@ -171,7 +171,7 @@ public:
 		
 		Way way;
 		way.push_back(WayPoint(i->first * tile_size.x + tile_size.x / 2, i->second * tile_size.y + tile_size.y / 2));
-		setWay(way);
+		set_way(way);
 	}
 	
 	Object* clone() const  {
@@ -210,19 +210,19 @@ public:
 	SandWormHead() : Object("monster") {}
 	Object* clone() const  { return new SandWormHead(*this); }
 
-	virtual void onSpawn();
+	virtual void on_spawn();
 	virtual void tick(const float dt);
 	virtual void emit(const std::string &event, Object * emitter = NULL);
 };
 
-void SandWormHead::onSpawn() {
+void SandWormHead::on_spawn() {
 	play("snatch", false);
 }
 
 void SandWormHead::tick(const float dt) {
 	Object::tick(dt);
 
-	if (getState().empty()) {
+	if (get_state().empty()) {
 		Object::emit("death", NULL);
 		return;
 	};
@@ -240,7 +240,7 @@ void SandWormHead::emit(const std::string &event, Object * emitter) {
 		}
 		
 		GET_CONFIG_VALUE("objects.sandworm-head.damage-after", float, da, 0.4);
-		if (getStateProgress() < da)
+		if (get_state_progress() < da)
 			return;
 		
 		if (emitter == NULL || registered_name == "explosion" || 

@@ -35,7 +35,7 @@ public:
 	virtual Object* clone() const  { return new Barrack(*this); }
 	
 	virtual void tick(const float dt);
-	virtual void onSpawn();
+	virtual void on_spawn();
 
 	virtual void serialize(mrt::Serializator &s) const {
 		DestructableObject::serialize(s);
@@ -65,25 +65,25 @@ void Barrack::tick(const float dt) {
 			Config->get("objects." + registered_name + ".targeting-range", tr, 500);
 
 			v2<float> pos, vel;
-			if (!getNearest(ai::Targets->infantry, tr, pos, vel, false))
+			if (!get_nearest(ai::Targets->infantry, tr, pos, vel, false))
 				return; //skip spawning
 		}
 		
 		int max_c;
 		Config->get("objects." + registered_name + ".maximum-children", max_c, 5);
-		int n = getChildren(std::string());
+		int n = get_children(std::string());
 		if (n < max_c) {
 			v2<float>dpos;
 			dpos.y = size.y / 2 + 16; //fixme: use debiloids size here.
 			
 			Object * o = spawn(_object, _animation, dpos);
 			o->copy_special_owners(this);
-			playNow("spawn");
+			play_now("spawn");
 		}
 	}
 }
 
-void Barrack::onSpawn() {
+void Barrack::on_spawn() {
 	play("main", true);
 	float sr;
 	Config->get("objects." + registered_name + ".spawn-rate", sr, 5);

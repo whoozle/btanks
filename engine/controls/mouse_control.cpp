@@ -43,7 +43,7 @@ bool MouseControl::onMouse(const int button, const bool pressed, const int x, co
 	PlayerManager->screen2world(world, 0, x, y); //fixme!! hardcoded player number
 	if (_shoot) {
 		Object *o = getObject();
-		if (o->getTarget_position(_target, world, "bullet"))
+		if (o->get_target_position(_target, world, "bullet"))
 			_target += o->get_position();
 	}
 	else _target = world;
@@ -78,7 +78,7 @@ void MouseControl::_updateState(PlayerSlot &slot, PlayerState &state) {
 	
 	state.fire = _target_rel.is0() && _shoot;
 	if (state.fire) {
-		getObject()->setDirection(_target_dir);
+		getObject()->set_direction(_target_dir);
 	}
 	
 	if (_target_rel.x == 0) {
@@ -98,7 +98,7 @@ void MouseControl::_updateState(PlayerSlot &slot, PlayerState &state) {
 }
 
 Object * MouseControl::getObject() const {
-	PlayerSlot &slot = PlayerManager->getSlot(0);
+	PlayerSlot &slot = PlayerManager->get_slot(0);
 	return slot.getObject();
 }
 

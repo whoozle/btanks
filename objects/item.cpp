@@ -24,17 +24,17 @@ Item::Item(const std::string &classname, const std::string &type) : Object(class
 	pierceable = true;
 	impassability = -1;
 	speed = 0;
-	setDirectionsNumber(1);
+	set_directions_number(1);
 }
 
 
 void Item::tick(const float dt) {
 	Object::tick(dt);
-	if (getState().empty()) 
+	if (get_state().empty()) 
 		Object::emit("death", this);
 }
 
-void Item::onSpawn() {
+void Item::on_spawn() {
 	play("main", true);
 }
 
@@ -54,7 +54,7 @@ void Item::emit(const std::string &event, Object * emitter) {
 		hp = 0;
 		impassability = 0;
 		setZ(999); //fly up on the vehicle
-		cancelAll();
+		cancel_all();
 		play("take", false);
 	} else Object::emit(event, emitter);
 }

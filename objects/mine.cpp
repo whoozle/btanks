@@ -26,12 +26,12 @@ class Mine : public Object {
 public:
 	Mine() : Object("mine") { piercing = false; pierceable = true; impassability = -1; }
 	virtual Object * clone() const;
-	virtual void onSpawn();
+	virtual void on_spawn();
 	virtual void tick(const float dt);
 	virtual void emit(const std::string &event, Object * emitter = NULL);
 };
 
-void Mine::onSpawn() {
+void Mine::on_spawn() {
 	if (_variants.has("bomberman"))
 		disown();
 	
@@ -48,9 +48,9 @@ void Mine::onSpawn() {
 
 void Mine::tick(const float dt) {
 	Object::tick(dt);
-	if (hasOwners() && getState() == "armed") 
+	if (hasOwners() && get_state() == "armed") 
 		disown();
-	if (getState() == "armed" && _variants.has("bomberman")) {
+	if (get_state() == "armed" && _variants.has("bomberman")) {
 		emit("death", NULL);
 	}
 }
@@ -68,7 +68,7 @@ void Mine::emit(const std::string &event, Object * emitter) {
 		v2<float> path_tile_size = Map->getPathTileSize().convert<float>();
 		//LOG_DEBUG(("tile_size: %g, %g", tile_size.x, tile_size.y));
 		
-		const Matrix<int>& matrix = getImpassabilityMatrix();
+		const Matrix<int>& matrix = get_impassability_matrix();
 		for (int d = 0; d < 4; ++d) {
 			for(int i = 1; i <= 2; ++i) {
 				v2<float> dpos;
@@ -92,7 +92,7 @@ void Mine::emit(const std::string &event, Object * emitter) {
 		}
 		Object::emit(event, emitter);	
 	} if (event == "collision") {
-		if (emitter != NULL && getState() == "armed") {
+		if (emitter != NULL && get_state() == "armed") {
 			GET_CONFIG_VALUE("objects.regular-mine.triggering-mass", int, m, 20);
 			if (emitter->mass < m)
 				return;

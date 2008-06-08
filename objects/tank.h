@@ -27,7 +27,7 @@ class Tank : public Object {
 public:
 	Tank(const std::string &classname);
 	virtual Object * clone() const;
-	virtual void onSpawn();
+	virtual void on_spawn();
 
 	virtual void emit(const std::string &event, Object * emitter);
 	virtual void calculate(const float dt);

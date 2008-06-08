@@ -31,11 +31,11 @@ public:
 	Object("bullet"), _type(type), _clone(false), _guard_interval(false), _guard_state(true) {
 		impassability = 1;
 		piercing = true;
-		setDirectionsNumber(dirs);
+		set_directions_number(dirs);
 	}
 	virtual void calculate(const float dt);
 	virtual Object * clone() const;
-	virtual void onSpawn();
+	virtual void on_spawn();
 	virtual void tick(const float dt);
 	virtual void emit(const std::string &event, Object * emitter = NULL);
 
@@ -99,7 +99,7 @@ void Bullet::calculate(const float dt) {
 		GET_CONFIG_VALUE("engine.auto-aim.range", float, aar, 192.0f);
 		std::set<const Object *> objects;
 		
-		enumerateObjects(objects, aar, &ai::Targets->troops);
+		enumerate_objects(objects, aar, &ai::Targets->troops);
 		GET_CONFIG_VALUE("engine.auto-aim.minimum-cosine", float, min_cos, 0.9848f); //~cos(10')
 		const Object *target = NULL;
 		
@@ -107,7 +107,7 @@ void Bullet::calculate(const float dt) {
 			const Object *o = *i;
 			if (hasSameOwner(o) || o->pierceable || o->impassability == 0)
 				continue;
-			v2<float> rel = getRelativePosition(o);
+			v2<float> rel = get_relative_position(o);
 			if (rel.is0())
 				continue;
 
@@ -121,13 +121,13 @@ void Bullet::calculate(const float dt) {
 		if (target)	{
 			if (_vel_backup.is0())
 				_vel_backup = _velocity;
-			_velocity = getRelativePosition(target);
+			_velocity = get_relative_position(target);
 			//LOG_DEBUG(("target: %s, cos: %g", target->animation.c_str(), min_cos));
 		} else _velocity = _vel_backup;
 	}
 }
 
-void Bullet::onSpawn() {
+void Bullet::on_spawn() {
 	if (_type == "ricochet") {
 		GET_CONFIG_VALUE("objects.ricochet.guard-interval", float, gi, 0.1f);
 		_guard_interval.set(gi);
@@ -137,7 +137,7 @@ void Bullet::onSpawn() {
 		GET_CONFIG_VALUE("objects.dispersion-bullet.clone-interval", float, ci, 0.1f);
 		_clone.set(ci);
 		if (!_variants.has("no-sound")) 
-			playSound("dispersion-bullet", false);
+			play_sound("dispersion-bullet", false);
 	} else {
 		GET_CONFIG_VALUE("engine.auto-aim.checking-interval", float, ci, 0.05f);
 		_clone.set(ci);
@@ -146,7 +146,7 @@ void Bullet::onSpawn() {
 	play("shot", false);
 	play("move", true);
 	
-	quantizeVelocity();
+	quantize_velocity();
 	_vel_backup = _direction = _velocity;
 }
 
@@ -162,7 +162,7 @@ void Bullet::emit(const std::string &event, Object * emitter) {
 	}
 	if (event == "collision" || event == "death") {
 /*		if (emitter) {
-			dpos = getRelativePosition(emitter) / 2;
+			dpos = get_relative_position(emitter) / 2;
 		} 
 */
 		if (_type == "regular") {
@@ -200,7 +200,7 @@ void Bullet::emit(const std::string &event, Object * emitter) {
 			int d = sign * (mrt::random(dirs/4 - 1) + 1) ;
 			dir = ( dir + d + dirs + dirs / 2) % dirs;
 			
-			setDirection(dir);
+			set_direction(dir);
 			_velocity.fromDirection(dir, dirs);
 			_direction = _velocity;
 			_vel_backup = _velocity;

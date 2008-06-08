@@ -49,7 +49,7 @@ public:
 	void init(const std::vector<std::pair<std::string, std::string> > &fname);
 	void clear();
 	
-	AnimationModel *getAnimationModel(const std::string &id);
+	AnimationModel *get_animation_model(const std::string &id);
 	
 	void registerObject(const std::string &classname, Object *);
 	Object *createObject(const std::string &classname) const;
@@ -60,7 +60,7 @@ public:
 	const bool hasAnimation(const std::string &id) const;
 
 	const sdlx::Surface *loadSurface(const std::string &id);
-	const sdlx::Surface *getSurface(const std::string &id) const;
+	const sdlx::Surface *get_surface(const std::string &id) const;
 	const sdlx::CollisionMap *getCollisionMap(const std::string &id) const;
 	const sdlx::Font *loadFont(const std::string &id, const bool alpha);
 
@@ -68,7 +68,7 @@ public:
 	
 	void createAlias(const std::string &name, const std::string &classname);
 	
-	void checkSurface(const std::string &animation, const sdlx::Surface *& surface_ptr, const sdlx::CollisionMap *&cmap);
+	void check_surface(const std::string &animation, const sdlx::Surface *& surface_ptr, const sdlx::CollisionMap *&cmap);
 	
 	void getAllClasses(std::set<std::string> &classes);
 

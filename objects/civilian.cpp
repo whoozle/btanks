@@ -35,7 +35,7 @@ public:
 class AICivilian : public Civilian, public ai::Waypoints  {
 public: 
 	AICivilian() : Civilian("civilian"), _thinking_timer(true), _guard_timer(false), _thinking(false), _guard(false) {}
-	void onSpawn() {
+	void on_spawn() {
 		//GET_CONFIG_VALUE("object.civilian.thinking-duration", float, td, 3.0f);
 		_variants.add("no-grenades");
 		_thinking_timer.set(3.0f);
@@ -44,17 +44,17 @@ public:
 		_pose = "walk";
 		disown();
 
-		Trooper::onSpawn();
+		Trooper::on_spawn();
 
 		_avoid_obstacles = true;
 		_stop_on_obstacle = false;
 		
-		ai::Waypoints::onSpawn(this);
+		ai::Waypoints::on_spawn(this);
 	}
 	void tick(const float dt) {
 		if (_thinking) {
-			if (getState() != "thinking") {
-				cancelAll();
+			if (get_state() != "thinking") {
+				cancel_all();
 				play("thinking", true);
 				LOG_DEBUG(("playing thinking..."));
 			}
@@ -97,7 +97,7 @@ public:
 		_thinking_timer.reset();
 
 		int dirs = get_directions_number();
-		setDirection(getRelativePosition(o).get_direction(dirs));
+		set_direction(get_relative_position(o).get_direction(dirs));
 	}
 
 	virtual void serialize(mrt::Serializator &s) const {

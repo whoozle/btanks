@@ -11,7 +11,7 @@ public:
 		state = !state;
 		update();
 	}
-	const bool getState() const { return state; }
+	const bool get_state() const { return state; }
 private: 
 	void update() {
 		setFont(state?"medium_dark":"medium");
@@ -34,7 +34,7 @@ void PopupMenu::get(std::set<std::string> &labels) const {
 		const ToggleLabel * l = dynamic_cast<const ToggleLabel *>(i->second);
 		if (l == NULL) 
 			continue;
-		if (l->getState())
+		if (l->get_state())
 			labels.insert(l->get());
 	}		
 }

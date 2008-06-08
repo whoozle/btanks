@@ -24,7 +24,7 @@ class PoisonCloud : public Object {
 public:
 	PoisonCloud() : Object("poison"), _damage(true) { pierceable = true; }
 	virtual Object * clone() const { return new PoisonCloud(*this); }
-	virtual void onSpawn();
+	virtual void on_spawn();
 	virtual void tick(const float dt);
 	virtual void emit(const std::string &event, Object * emitter = NULL);
 
@@ -52,7 +52,7 @@ void PoisonCloud::tick(const float dt) {
 	}
 }
 
-void PoisonCloud::onSpawn() {
+void PoisonCloud::on_spawn() {
 	float di;
 	Config->get("objects." + registered_name + ".damage-interval", di, 1);
 	_damage.set(di);

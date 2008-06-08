@@ -30,7 +30,7 @@ public:
 
 	virtual Object * clone() const;
 	virtual void tick(const float dt);
-	virtual void onSpawn();
+	virtual void on_spawn();
 	virtual void render(sdlx::Surface &surface, const int x, const int y);
 
 	virtual void serialize(mrt::Serializator &s) const {
@@ -49,24 +49,24 @@ private:
 
 void SinglePose::render(sdlx::Surface &surface, const int x, const int y) {
 	if (_variants.has("no-directions"))
-		setDirection(0);
+		set_direction(0);
 	Object::render(surface, x, y);
 }
 
 
 void SinglePose::tick(const float dt) {
 	Object::tick(dt);
-	if (getState().empty()) {	
+	if (get_state().empty()) {	
 		//LOG_DEBUG(("over"));
 		emit("death", this);
 	}
 }
 
-void SinglePose::onSpawn() {
+void SinglePose::on_spawn() {
 	//LOG_DEBUG(("single-pose: play('%s', %s)", _pose.c_str(), _repeat?"true":"false"));
 	play(_pose, !_variants.has("once"));
 	if (_variants.has("play-start")) {
-		playNow("start");
+		play_now("start");
 	}
 }
 

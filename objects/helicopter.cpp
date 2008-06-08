@@ -35,7 +35,7 @@ public:
 	virtual void calculate(const float dt);
 	virtual void tick(const float dt);
 	virtual Object * clone() const;
-	void onSpawn();
+	void on_spawn();
 	void emit(const std::string &event, Object * emitter);
 
 	virtual void serialize(mrt::Serializator &s) const {
@@ -62,7 +62,7 @@ private:
 	std::string _paratrooper;
 };
 
-void Helicopter::onSpawn() {
+void Helicopter::on_spawn() {
 	play("move", true);
 	GET_CONFIG_VALUE("objects.helicopter-with-kamikazes.spawn-rate", float, sr, 1.5);
 	_spawn.set(sr);
@@ -80,10 +80,10 @@ void Helicopter::tick(const float dt) {
 	Object::tick(dt);
 	GET_CONFIG_VALUE("objects.helicopter-with-kamikazes.maximum-children", int, max_c, 10);
 	if (_active && _spawn.tick(dt)) {
-		if (getChildren("kamikaze") >= max_c) 
+		if (get_children("kamikaze") >= max_c) 
 			return;
 		
-		const Matrix<int> & matrix  = Map->getImpassabilityMatrix(0);
+		const Matrix<int> & matrix  = Map->get_impassability_matrix(0);
 
 		v2<int> pos, pos2;
 		get_center_position(pos); 
@@ -143,7 +143,7 @@ void Helicopter::calculate(const float dt) {
 	//LOG_DEBUG(("vel: %g %g", _velocity.x, _velocity.y));
 	
 	GET_CONFIG_VALUE("objects.helicopter.rotation-time", float, rt, 0.2);
-	limitRotation(dt, rt, true, false);
+	limit_rotation(dt, rt, true, false);
 }
 
 

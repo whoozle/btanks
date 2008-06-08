@@ -26,7 +26,7 @@ public:
 	std::string type;
 	Item(const std::string &classname, const std::string &type = std::string());
 	virtual Object * clone() const;
-	virtual void onSpawn();
+	virtual void on_spawn();
 	virtual void tick(const float dt);
 	virtual void emit(const std::string &event, Object * emitter = NULL);
 	virtual void add_damage(Object *from, const int hp, const bool emitDeath = true);

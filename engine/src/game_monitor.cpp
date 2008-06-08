@@ -76,7 +76,7 @@ void GameItem::respawn() {
 	o->addOwner(OWNER_MAP);
 
 	if (dir) 
-		o->setDirection(dir);
+		o->set_direction(dir);
 	
 	World->addObject(o, position.convert<float>());
 	id = o->get_id();
@@ -265,7 +265,7 @@ void IGameMonitor::checkItems(const float dt) {
 	for(size_t i = 0; i < _external_specials.size(); ++i) {
 		const int id = _external_specials[i];
 		Object *o = World->getObjectByID(id);
-		if (o == NULL || o->getState() == "broken")
+		if (o == NULL || o->get_state() == "broken")
 			continue;
 
 		v2<int> pos;
@@ -281,7 +281,7 @@ void IGameMonitor::checkItems(const float dt) {
 
 		bool dead = true;
 		if (o != NULL) {
-			dead = o->getState() == "broken";
+			dead = o->get_state() == "broken";
 		}
 		
 		if (item.destroy_for_victory) {
@@ -369,9 +369,9 @@ void IGameMonitor::gameOver(const std::string &area, const std::string &message,
 		return;
 
 	if (win) {
-		size_t n = PlayerManager->getSlotsCount();
+		size_t n = PlayerManager->get_slotsCount();
 		for(size_t i = 0; i < n; ++i) {
-			PlayerSlot &slot = PlayerManager->getSlot(i);
+			PlayerSlot &slot = PlayerManager->get_slot(i);
 			Object *o = slot.getObject();
 			if (o != NULL) {
 				o->add_effect("invulnerability", -1);
@@ -629,7 +629,7 @@ const std::string IGameMonitor::getRandomWaypoint(const std::string &classname, 
 	return "*bug*";
 }
 
-const std::string IGameMonitor::getNearestWaypoint(const Object *obj, const std::string &classname) const {
+const std::string IGameMonitor::get_nearest_waypoint(const Object *obj, const std::string &classname) const {
 	v2<int> pos;
 	obj->get_position(pos);
 	int distance = -1;
@@ -653,9 +653,9 @@ const std::string IGameMonitor::getNearestWaypoint(const Object *obj, const std:
 }
 
 
-void IGameMonitor::getWaypoint(v2<float> &wp, const std::string &classname, const std::string &name) {
+void IGameMonitor::get_waypoint(v2<float> &wp, const std::string &classname, const std::string &name) {
 	if (name.empty() || classname.empty()) 
-		throw_ex(("getWaypoint('%s', '%s') called with empty classname and/or name", classname.c_str(), name.c_str()));
+		throw_ex(("get_waypoint('%s', '%s') called with empty classname and/or name", classname.c_str(), name.c_str()));
 	
 	WaypointClassMap::const_iterator wp_class = _waypoints.find(classname);
 	if (wp_class == _waypoints.end() && classname.compare(0, 7, "static-") == 0)  //no matter static or not
@@ -1075,18 +1075,18 @@ void IGameMonitor::addBonuses(const PlayerSlot &slot) {
 
 void IGameMonitor::startGame(Campaign *campaign, const std::string &name) {
 	Game->clear();
-	PlayerManager->startServer();
+	PlayerManager->start_server();
 	GameMonitor->loadMap(campaign, name);
 	if (!Map->loaded())
 		return; //error 
 
-	if (PlayerManager->getSlotsCount() <= 0)
+	if (PlayerManager->get_slotsCount() <= 0)
 		throw_ex(("no slots available on map"));
 	
 	if (RTConfig->server_mode)
 		return;
 	
-	PlayerSlot &slot = PlayerManager->getSlot(0);
+	PlayerSlot &slot = PlayerManager->get_slot(0);
 	std::string cm;
 	Config->get("player.control-method", cm, "keys");
 	Config->get("player.name-1", slot.name, Nickname::generate());
@@ -1095,7 +1095,7 @@ void IGameMonitor::startGame(Campaign *campaign, const std::string &name) {
 	std::string object, vehicle;
 	slot.getDefaultVehicle(object, vehicle);
 	slot.spawnPlayer(0, object, vehicle);
-	PlayerManager->getSlot(0).setViewport(Window->get_size());
+	PlayerManager->get_slot(0).setViewport(Window->get_size());
 }
 
 IGameMonitor::~IGameMonitor() {
@@ -1166,8 +1166,8 @@ void IGameMonitor::saveCampaign() {
 	LOG_DEBUG(("saving compaign state..."));
 	const std::string mname = "campaign." + _campaign->name + ".maps." + Map->getName();
 	
-	if (PlayerManager->getSlotsCount()) {
-		PlayerSlot &slot = PlayerManager->getSlot(0); 
+	if (PlayerManager->get_slotsCount()) {
+		PlayerSlot &slot = PlayerManager->get_slot(0); 
 		int score; 
 		Config->get("campaign." + _campaign->name + ".score", score, 0);
 		score += slot.score;

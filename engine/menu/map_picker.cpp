@@ -250,7 +250,7 @@ MapPicker::MapPicker(const int w, const int h) : _index(0) {
 }
 
 void MapPicker::fillSlots() const {
-	if (PlayerManager->getSlotsCount() < 1)
+	if (PlayerManager->get_slotsCount() < 1)
 		return;
 
 	bool split;
@@ -264,7 +264,7 @@ void MapPicker::fillSlots() const {
 		if (i >= (size_t)map.slots)
 			break;
 		
-		PlayerSlot &slot = PlayerManager->getSlot(i);
+		PlayerSlot &slot = PlayerManager->get_slot(i);
 		std::string type = config[i].type;
 		if (type.empty() || type == "?")
 			continue;
@@ -307,7 +307,7 @@ void MapPicker::fillSlots() const {
 	}
 
 	if (!split) {	
-		PlayerManager->getSlot((idx1 == -1)?0:idx1).setViewport(Window->get_size());
+		PlayerManager->get_slot((idx1 == -1)?0:idx1).setViewport(Window->get_size());
 	} else {
 		v2<int> ts = Map->getTileSize();
 		sdlx::Rect window_size = Window->get_size();
@@ -321,8 +321,8 @@ void MapPicker::fillSlots() const {
 		vp2.w = w;
 		LOG_DEBUG(("p1: %d %d %d %d", vp1.x, vp1.y, vp1.w, vp1.h));
 		LOG_DEBUG(("p2: %d %d %d %d", vp2.x, vp2.y, vp2.w, vp2.h));
-		PlayerManager->getSlot((idx1 == -1)?0:idx1).setViewport(vp1);
-		PlayerManager->getSlot((idx2 == -1)?(idx1 != 1?1:0):idx2).setViewport(vp2); //avoid duplication of viewports
+		PlayerManager->get_slot((idx1 == -1)?0:idx1).setViewport(vp1);
+		PlayerManager->get_slot((idx2 == -1)?(idx1 != 1?1:0):idx2).setViewport(vp2); //avoid duplication of viewports
 	}
 	PlayerManager->validateViewports();
 }

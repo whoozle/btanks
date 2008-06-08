@@ -25,11 +25,11 @@ class Dirt : public Object {
 public:
 	Dirt() : Object("dirt") { pierceable = true; hp = -1; }
 	virtual Object * clone() const;
-	virtual void onSpawn();
+	virtual void on_spawn();
 	virtual void emit(const std::string &event, Object * emitter = NULL);
 };
 
-void Dirt::onSpawn() {
+void Dirt::on_spawn() {
 	if (registered_name.substr(0, 7) != "static-")
 		play("fade-in", false);
 	play("main", true);

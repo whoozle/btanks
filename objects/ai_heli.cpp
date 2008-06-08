@@ -28,7 +28,7 @@ class AIHeli : public Heli, public ai::Base {
 public:
 	AIHeli() : Heli("helicopter"), _reaction(true), _target_dir(-1) {
 	}
-	virtual void onSpawn();
+	virtual void on_spawn();
 	void calculate(const float dt);
 	virtual void serialize(mrt::Serializator &s) const {
 		Heli::serialize(s);
@@ -63,16 +63,16 @@ void AIHeli::onIdle(const float dt) {
 		next_target.y = (int)size.y / 2 + mrt::random(map_size.y - (int)size.y);
 		way.push_back(next_target);		
 	}
-	setWay(way);
+	set_way(way);
 }
 
 
-void AIHeli::onSpawn() {
+void AIHeli::on_spawn() {
 	GET_CONFIG_VALUE("objects.helicopter.reaction-time", float, rt, 0.1);
 	mrt::randomize(rt, rt/10);
 	_reaction.set(rt);
-	Heli::onSpawn();
-	ai::Base::onSpawn(this);
+	Heli::on_spawn();
+	ai::Base::on_spawn(this);
 	ai::Base::multiplier = 3.0f;
 }
 
@@ -83,22 +83,22 @@ void AIHeli::calculate(const float dt) {
 		
 	_state.fire = false;
 	
-	_target_dir = getTarget_position(_velocity, ai::Targets->troops, "helicopter-bullet");
+	_target_dir = get_target_position(_velocity, ai::Targets->troops, "helicopter-bullet");
 	if (_target_dir >= 0) {
 		//LOG_DEBUG(("target: %g %g %g, dir: %d", _velocity.x, _velocity.y, _velocity.length(), _target_dir));
 		/*
 		Way way;
-		if (findPath(tp, way)) {
-		setWay(way);
-			calculateWayVelocity();
+		if (find_path(tp, way)) {
+		set_way(way);
+			calculate_way_velocity();
 		}
 		*/
 		if (_velocity.length() >= 25) {
-			quantizeVelocity();
+			quantize_velocity();
 			//_direction.fromDirection(get_direction(), get_directions_number());
 		} else {
 			_velocity.clear();
-			setDirection(_target_dir);
+			set_direction(_target_dir);
 			//LOG_DEBUG(("%d", _target_dir));
 			_direction.fromDirection(_target_dir, get_directions_number());
 		}
@@ -108,7 +108,7 @@ void AIHeli::calculate(const float dt) {
 		}	
 	} 
 	
-	if (_target_dir < 0 && !isDriven()) {
+	if (_target_dir < 0 && !is_driven()) {
 		_velocity.clear();
 		_target_dir = -1;
 		onIdle(dt);
@@ -120,10 +120,10 @@ done:
 	const float ac_t = mass / ac_div * 0.8;
 	_state.alt_fire = _moving_time >= ac_t;
 
-	calculateWayVelocity();
+	calculate_way_velocity();
 
 	GET_CONFIG_VALUE("objects.helicopter.rotation-time", float, rt, 0.2f);
-	limitRotation(dt, rt, true, true);	
+	limit_rotation(dt, rt, true, true);	
 	updateStateFromVelocity();
 }
 

@@ -29,7 +29,7 @@ public:
 	virtual void serialize(mrt::Serializator &s) const;
 	virtual void deserialize(const mrt::Serializator &s);
 	
-	virtual void onSpawn();
+	virtual void on_spawn();
 	
 	virtual void tick(const float dt);
 	virtual void calculate(const float dt);

@@ -86,7 +86,7 @@ const Matrix<int>& IMap::getAreaMatrix(const std::string &name) {
 }
 
 
-const Matrix<int>& IMap::getImpassabilityMatrix(const int z, const bool only_pierceable) {
+const Matrix<int>& IMap::get_impassability_matrix(const int z, const bool only_pierceable) {
 	return getMatrix(z, only_pierceable);
 }
 
@@ -986,7 +986,7 @@ void IMap::render(sdlx::Surface &window, const sdlx::Rect &src, const sdlx::Rect
 					continue;
 				}
 				
-				const sdlx::Surface * s = getSurface(l->second, sx, sy);
+				const sdlx::Surface * s = get_surface(l->second, sx, sy);
 				if (s == NULL)
 					continue;
 				
@@ -1071,7 +1071,7 @@ const v2<int> IMap::getPathTileSize() const {
 
 
 void IMap::damage(const v2<float> &position, const int hp) {
-	if (PlayerManager->isClient())
+	if (PlayerManager->is_client())
 		return;
 
 	v2<int> pos = position.convert<int>();
@@ -1090,7 +1090,7 @@ void IMap::damage(const v2<float> &position, const int hp) {
 }
 
 void IMap::damage(const v2<float> &center, const int hp, const float radius) {
-	if (PlayerManager->isClient())
+	if (PlayerManager->is_client())
 		return;
 
 	v2<float> position2 = center + radius, position = center - radius;
@@ -1147,7 +1147,7 @@ const Uint32 IMap::getTile(const Layer *l, const int x, const int y) const {
 	return l->get(mx >= 0? mx: mx + _w, my >= 0? my: my + _h);
 }
 
-const sdlx::Surface* IMap::getSurface(const Layer *l, const int x, const int y) const {
+const sdlx::Surface* IMap::get_surface(const Layer *l, const int x, const int y) const {
 	Uint32 t = getTile(l, x, y);
 	if (t == 0 || t >= _tiles.size())
 		return NULL;

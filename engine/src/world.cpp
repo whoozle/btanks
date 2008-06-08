@@ -183,7 +183,7 @@ void IWorld::addObject(Object *o, const v2<float> &pos, const int id) {
 	}
 
 	assert(o->_group.empty());
-	o->onSpawn();
+	o->on_spawn();
 
 	on_object_add.emit(o);
 	updateObject(o);
@@ -259,14 +259,14 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::R
 	for(std::set<Object *>::iterator i = objects.begin(); i != objects.end(); ++i) {
 		Object *o = *i;
 		assert(o != NULL);
-		if (o->isDead() || o->skipRendering()) {
+		if (o->isDead() || o->skip_rendering()) {
 			//LOG_DEBUG(("render: skipped dead object: %s", o->registered_name.c_str()));
 			continue;
 		}
 		
 		std::set<Object *> objects;
 		objects.insert(o);
-		o->getSubObjects(objects);
+		o->get_subobjects(objects);
 		for(std::set<Object *>::iterator j = objects.begin(); j != objects.end(); ++j) {
 			Object *o = *j;
 			assert(o != NULL);
@@ -280,7 +280,7 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::R
 			bool fogged = fog;// && o->speed != 0;
 			//LOG_DEBUG(("%d,%d:%d,%d vs %d,%d:%d,%d result: %s", 
 			//	r.x, r.y, r.w, r.h, src_rect.x, src_rect.y, src_rect.w, src_rect.h, Map->intersects(r, src_rect)?"true":"false"));
-			if (Map->intersects(r, fogged? fog_rect: src) || (show_waypoints && o->isDriven())) 
+			if (Map->intersects(r, fogged? fog_rect: src) || (show_waypoints && o->is_driven())) 
 				layers.push(o);
 		}
 	}
@@ -324,7 +324,7 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::R
 
 		o->render(surface, screen_pos.x + dst.x, screen_pos.y + dst.y);
 		
-		const Way & way = o->getWay();
+		const Way & way = o->get_way();
 		if (show_waypoints && !way.empty()) {
 			const Animation *a = ResourceManager.get_const()->getAnimation("waypoint-16");
 			assert(a != NULL);
@@ -537,7 +537,7 @@ TRY {
 	return 0;
 }
 
-void IWorld::getImpassabilityMatrix(Matrix<int> &matrix, const Object *src, const Object *dst) const {
+void IWorld::get_impassability_matrix(Matrix<int> &matrix, const Object *src, const Object *dst) const {
 	const v2<int> size = Map->getTileSize();
 	const v2<int> tile_size = Map->getTileSize();
 	int z = 0;
@@ -547,7 +547,7 @@ void IWorld::getImpassabilityMatrix(Matrix<int> &matrix, const Object *src, cons
 	GET_CONFIG_VALUE("map.pathfinding-step", int, ps, 32);
 	const int split = 2 * ((tile_size.x - 1) / 2 + 1) / ps;
 
-	matrix = Map->getImpassabilityMatrix(z);
+	matrix = Map->get_impassability_matrix(z);
 	for(ObjectMap::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		Object *o = i->second;
 		if (o == src || o == dst || o->impassability <= 0 || o->piercing)
@@ -575,7 +575,7 @@ void IWorld::getImpassabilityMatrix(Matrix<int> &matrix, const Object *src, cons
 
 		v2<int> p = ((o->_position + o->size/2) / tile_size.convert<float>()).convert<int>();
 		Matrix<bool> proj;
-		o->checkSurface();
+		o->check_surface();
 		o->_cmap->project(proj, split, split);
 		//LOG_DEBUG(("projection: %s", proj.dump().c_str()));
 		//_imp_map.set(y, x, im);
@@ -681,12 +681,12 @@ TRY {
 			PlayerState old_state = o.getPlayerState();
 			if (o.has_effect("obey")) {
 				//LOG_DEBUG(("obey!!!"));
-				if (o.isDriven()) {
-					o.calculateWayVelocity();
+				if (o.is_driven()) {
+					o.calculate_way_velocity();
 				} else {
 					o._velocity.clear();
 				}
-				o.limitRotation(dt, 0.1f, true, false);
+				o.limit_rotation(dt, 0.1f, true, false);
 			} else if (o.disable_ai) {
 				o.Object::calculate(dt);
 			} else {
@@ -748,8 +748,8 @@ TRY {
 	} CATCH("calling o.tick", throw;)
 
 	TRY {
-		o.groupTick(dt);
-	} CATCH("calling groupTick", throw);
+		o.group_tick(dt);
+	} CATCH("calling group_tick", throw);
 
 	const std::string outline_animation = o.animation + "-outline";
 	const bool has_outline = ResourceManager->hasAnimation(outline_animation);
@@ -867,11 +867,11 @@ TRY {
 
 			float im = (result_im < 1.0f)?result_im:0.9f;
 			pos = (o._position + (1.0f - im) * e_speed * obj_speed * new_velocity * dt).convert<int>();
-			o.setDirection(dir);
+			o.set_direction(dir);
 			//LOG_DEBUG(("%s: %d:trying %d (original: %d, dirs: %d)", 
 			//	o.animation.c_str(), attempt, dir, save_dir, dirs ));
 		} else if (attempt >= 3) {
-			o.setDirection(save_dir);
+			o.set_direction(save_dir);
 			int dir = save_dir;
 			dir = (dir + (attempt == 3?-dirs/4:dirs/4) + dirs ) % dirs;
 			
@@ -929,9 +929,9 @@ TRY {
 	} else if (attempt == 3 || attempt == 4) {
 		Map->add(o._position, new_velocity);
 		hidden = hidden_attempt[attempt];
-		o.setDirection(save_dir);
+		o.set_direction(save_dir);
 	} else {
-		o.setDirection(save_dir);
+		o.set_direction(save_dir);
 		hidden = hidden_attempt[0];
 		if (attempt >= 3) 
 			stuck = true;
@@ -1222,7 +1222,7 @@ Object* IWorld::spawn(const Object *src, const std::string &classname, const std
 	assert(obj->_owners.empty());
 	
 	obj->copyOwners(src);
-	obj->setSlot(src->getSlot());
+	obj->set_slot(src->get_slot());
 		
 	obj->addOwner(src->_id);
 	//LOG_DEBUG(("%s spawns %s", src->classname.c_str(), obj->classname.c_str()));
@@ -1309,7 +1309,7 @@ void IWorld::serializeObject(mrt::Serializator &s, const Object *o, const bool f
 	s.add(o->_id);
 	s.add(o->registered_name);
 	if (force)
-		o->serializeAll(s);
+		o->serialize_all(s);
 	else 
 		o->serialize(s);
 }
@@ -1353,7 +1353,7 @@ Object * IWorld::deserializeObject(const mrt::Serializator &s) {
 				assert(o->_id == id);
 				
 				if (rn == o->registered_name) {
-					PlayerSlot * slot = PlayerManager->getSlotByID(id);
+					PlayerSlot * slot = PlayerManager->get_slotByID(id);
 					if (slot == NULL) {
 						o->deserialize(s);
 						if (o->_dead) {
@@ -1503,7 +1503,7 @@ void IWorld::generateUpdate(mrt::Serializator &s, const bool clean_sync_flag, co
 
 		serializeObject(s, o, sync_update);
 		if (clean_sync_flag)
-			o->setSync(false);
+			o->set_sync(false);
 		
 		++n;
 	}
@@ -1646,7 +1646,7 @@ void IWorld::setSpeed(const float speed) {
 	}
 }
 
-const Object* IWorld::getNearestObject(const Object *obj, const std::set<std::string> &classnames, const float range, const bool check_shooting_range) const {
+const Object* IWorld::get_nearest_object(const Object *obj, const std::set<std::string> &classnames, const float range, const bool check_shooting_range) const {
 	if (classnames.empty())
 		return NULL;
 
@@ -1666,7 +1666,7 @@ const Object* IWorld::getNearestObject(const Object *obj, const std::set<std::st
 			classnames.find(o->classname) == classnames.end() || o->hasSameOwner(obj))
 			continue;
 
-		if (check_shooting_range && !Object::checkDistance(position, o->get_center_position(), o->getZ(), true))	
+		if (check_shooting_range && !Object::check_distance(position, o->get_center_position(), o->getZ(), true))	
 			continue;
 
 		v2<float> dpos = Map->distance(o->get_center_position(), position);
@@ -1680,8 +1680,8 @@ const Object* IWorld::getNearestObject(const Object *obj, const std::set<std::st
 	return result;
 }
 
-const bool IWorld::getNearest(const Object *obj, const std::set<std::string> &classnames, const float range, v2<float> &position, v2<float> &velocity, const bool check_shooting_range) const {
-	const Object *target = getNearestObject(obj, classnames, range, check_shooting_range);
+const bool IWorld::get_nearest(const Object *obj, const std::set<std::string> &classnames, const float range, v2<float> &position, v2<float> &velocity, const bool check_shooting_range) const {
+	const Object *target = get_nearest_object(obj, classnames, range, check_shooting_range);
 	
 	if (target == NULL) 
 		return false;
@@ -1696,7 +1696,7 @@ const bool IWorld::getNearest(const Object *obj, const std::set<std::string> &cl
 	return true;
 }
 
-const int IWorld::getChildren(const int id, const std::string &classname) const {
+const int IWorld::get_children(const int id, const std::string &classname) const {
 	int c = 0;
 	for(ObjectMap::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		if (i->first != id && 
@@ -1708,7 +1708,7 @@ const int IWorld::getChildren(const int id, const std::string &classname) const 
 	return c;
 }
 
-void IWorld::enumerateObjects(std::set<const Object *> &id_set, const Object *src, const float range, const std::set<std::string> *classfilter) {
+void IWorld::enumerate_objects(std::set<const Object *> &id_set, const Object *src, const float range, const std::set<std::string> *classfilter) {
 	id_set.clear();
 
 	if (classfilter != NULL && classfilter->empty())

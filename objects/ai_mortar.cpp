@@ -27,7 +27,7 @@ class AIMortar:  public Mortar, public ai::Buratino {
 public: 
 	AIMortar(const std::string &classname) : Mortar(classname) {}
 //	~AIMortar();
-	virtual void onSpawn();
+	virtual void on_spawn();
 	virtual void calculate(const float dt);
 
 	virtual Object * clone() const { return new AIMortar(*this); }
@@ -61,7 +61,7 @@ const int AIMortar::getWeaponAmount(const int idx) const{
 }
 
 
-void AIMortar::onSpawn() {
+void AIMortar::on_spawn() {
 	addEnemyClass("fighting-vehicle");
 	addEnemyClass("trooper");
 	addEnemyClass("kamikaze");
@@ -77,15 +77,15 @@ void AIMortar::onSpawn() {
 	
 	addBonusName("teleport");
 
-	ai::Buratino::onSpawn(this);
-	Mortar::onSpawn();
+	ai::Buratino::on_spawn(this);
+	Mortar::on_spawn();
 }
 
 void AIMortar::calculate(const float dt) {
 	ai::Buratino::calculate(this, dt);
 	
 	GET_CONFIG_VALUE("objects.mortar.rotation-time", float, rt, 0.1);
-	limitRotation(dt, rt, true, false);
+	limit_rotation(dt, rt, true, false);
 	updateStateFromVelocity();	
 }
 

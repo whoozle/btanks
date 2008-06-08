@@ -50,13 +50,13 @@ void DestructableObject::destroy() {
 		hp = -1;
 		if (_variants.has("make-pierceable"))
 			pierceable = true;
-		cancelAll();
+		cancel_all();
 		play("fade-out", false); 
 		play("broken", true);
 		classname = "debris";
 		
 		if (_variants.has("with-fire")) {
-			const AnimationModel *model = getAnimationModel();
+			const AnimationModel *model = get_animation_model();
 			int my_z = getZ();
 			if (model != NULL) {
 				const Pose * pose = model->getPose("broken");
@@ -95,7 +95,7 @@ void DestructableObject::emit(const std::string &event, Object * emitter) {
 
 void DestructableObject::tick(const float dt) {
 	Object::tick(dt);
-	const std::string& state = getState();
+	const std::string& state = get_state();
 	if (state.empty()) {
 		//LOG_DEBUG(("over"));
 		emit("death", this);
@@ -105,17 +105,17 @@ void DestructableObject::tick(const float dt) {
 		LOG_DEBUG(("repairing..."));
 		hp = max_hp;
 		_broken = false;
-		cancelAll();
-		onSpawn();
+		cancel_all();
+		on_spawn();
 		
 		if (_variants.has("make-pierceable"))
 			pierceable = false;
 	}
 }
 
-void DestructableObject::onSpawn() {
+void DestructableObject::on_spawn() {
 	play("main", true);
-	if (getState().empty())
+	if (get_state().empty())
 		throw_ex(("%s:%s does not have initial pose ('main')", registered_name.c_str(), animation.c_str()));
 }
 

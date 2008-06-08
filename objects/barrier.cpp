@@ -25,7 +25,7 @@ class Barrier : public Object {
 public:
 	Barrier() : Object("barrier"), _toggle(true) { pierceable = true; }
 	virtual Object * clone() const;
-	virtual void onSpawn();
+	virtual void on_spawn();
 	virtual void calculate(const float dt);
 	virtual void tick(const float dt);
 
@@ -43,7 +43,7 @@ private:
 	Alarm _toggle;
 };
 
-void Barrier::onSpawn() {
+void Barrier::on_spawn() {
 	GET_CONFIG_VALUE("objects.barrier.toggle-interval", float, ti, 3.0f);
 	_toggle.set(ti);
 	play("closed", true);
@@ -56,14 +56,14 @@ void Barrier::calculate(const float dt) {
 
 void Barrier::tick(const float dt) {
 	Object::tick(dt);
-	if (_state.fire && getState() == "closed") {
-		cancelAll();
+	if (_state.fire && get_state() == "closed") {
+		cancel_all();
 		play("opening", false);
 		play("opened", true);
 	}
 
-	if (!_state.fire && getState() == "opened") {
-		cancelAll();
+	if (!_state.fire && get_state() == "opened") {
+		cancel_all();
 		play("closing", false);
 		play("closed", true);
 	}

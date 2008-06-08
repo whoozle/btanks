@@ -28,7 +28,7 @@ public:
 	AIMachinegunnerPlayer() :  Trooper("trooper", "machinegunner-bullet") {}
 //	~AIMachinegunnerPlayer();
 	virtual const std::string getType() const { return "machinegunner"; }
-	virtual void onSpawn();
+	virtual void on_spawn();
 	virtual void calculate(const float dt);
 
 	virtual Object * clone() const { return new AIMachinegunnerPlayer(*this); }
@@ -62,7 +62,7 @@ const int AIMachinegunnerPlayer::getWeaponAmount(const int idx) const{
 }
 
 
-void AIMachinegunnerPlayer::onSpawn() {
+void AIMachinegunnerPlayer::on_spawn() {
 	addEnemyClass("fighting-vehicle");
 	addEnemyClass("trooper");
 	addEnemyClass("cannon");
@@ -90,15 +90,15 @@ void AIMachinegunnerPlayer::onSpawn() {
 	//addBonusName("stun-missiles-item");
 	//addBonusName("mines-item");
 
-	ai::Buratino::onSpawn(this);
-	Trooper::onSpawn();
+	ai::Buratino::on_spawn(this);
+	Trooper::on_spawn();
 }
 
 void AIMachinegunnerPlayer::calculate(const float dt) {
 	ai::Buratino::calculate(this, dt);
 	
 	GET_CONFIG_VALUE("objects.trooper.rotation-time", float, rt, 0.07);
-	limitRotation(dt, rt, true, false);
+	limit_rotation(dt, rt, true, false);
 	updateStateFromVelocity();	
 }
 

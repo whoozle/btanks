@@ -62,10 +62,10 @@ public:
 	void tick(const float dt);
 	void calculate(const float dt);
 	
-	void onSpawn() {
+	void on_spawn() {
 		disown();
 		play("hold", true);
-		ai::StupidTrooper::onSpawn();
+		ai::StupidTrooper::on_spawn();
 		//GET_CONFIG_VALUE("objects.slime.fire-rate", float, fr, 1.0f);
 		float fr = 1.0f;
 		_fire.set(fr);
@@ -88,26 +88,26 @@ void Slime::calculate(const float dt) {
 	ai::StupidTrooper::calculate(this, _state, _velocity, _direction, dt);
 
 	GET_CONFIG_VALUE("objects.slime.rotation-time", float, rt, 0.2);
-	limitRotation(dt, rt, true, false);	
+	limit_rotation(dt, rt, true, false);	
 }
 
 void Slime::tick(const float dt) {
 	Object::tick(dt);
 
-	const std::string state = getState();
+	const std::string state = get_state();
 	
 	if (_velocity.is0() && state == "move") {
-		cancelAll();
+		cancel_all();
 		play("hold", true);
 	} else if (!_velocity.is0() && state == "hold") {
-		cancelAll();
+		cancel_all();
 		play("move", true);
 	}
 	if (_fire.tick(dt) && _state.fire) {
 		_fire.reset();
 		spawn("slime-acid", "slime-acid", v2<float>(), _direction);
 		if (state != "fire") 
-			playNow("fire");
+			play_now("fire");
 	}
 }
 

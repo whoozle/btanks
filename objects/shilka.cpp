@@ -45,7 +45,7 @@ FakeMod *Shilka::getMod(const std::string &name) {
 	return f;
 }
 
-void Shilka::onSpawn() {
+void Shilka::on_spawn() {
 	if (registered_name.substr(0, 6) == "static") {
 		removeOwner(OWNER_MAP);
 		disable_ai = true;
@@ -60,7 +60,7 @@ void Shilka::onSpawn() {
 	GET_CONFIG_VALUE("objects.shilka.special-fire-rate", float, sfr, 0.4f);
 	_special_fire.set(sfr);
 	play("hold", true);
-	playSound("vehicle-sound", true, 0.4f);
+	play_sound("vehicle-sound", true, 0.4f);
 }
 
 Object * Shilka::clone() const {
@@ -72,7 +72,7 @@ void Shilka::emit(const std::string &event, Object * emitter) {
 	if (event == "death") {
 		LOG_DEBUG(("dead"));
 		
-		cancelAll();
+		cancel_all();
 		//play("dead", true);
 		spawn("corpse", "dead-" + animation);
 		Object::emit(event, emitter);
@@ -85,14 +85,14 @@ void Shilka::emit(const std::string &event, Object * emitter) {
 void Shilka::calculate(const float dt) {
 	Object::calculate(dt);	
 	GET_CONFIG_VALUE("objects.shilka.rotation-time", float, rt, 0.05);
-	limitRotation(dt, rt, true, false);
+	limit_rotation(dt, rt, true, false);
 
 	//LOG_DEBUG(("_velocity: %g %g", _velocity.x, _velocity.y));
 }
 
 
 void Shilka::tick(const float dt) {
-	if (getState().empty()) {
+	if (get_state().empty()) {
 		play("hold", true);
 	}
 
@@ -112,11 +112,11 @@ void Shilka::tick(const float dt) {
 
 	_velocity.normalize();
 	if (_velocity.is0()) {
-		cancelRepeatable();
+		cancel_repeatable();
 		play("hold", true);
 	} else {
-		if (getState() == "hold") {
-			cancelAll();
+		if (get_state() == "hold") {
+			cancel_all();
 			play("move", true);
 		}
 	}
@@ -140,7 +140,7 @@ void Shilka::tick(const float dt) {
 		} else if (!mod_type.empty()) {
 			int n;
 			Config->get("objects.shilka.units-limit", n, 10); //fixme: add type restrictions
-			if (mod->getCount() > 0 && getChildren("trooper") < n) {
+			if (mod->getCount() > 0 && get_children("trooper") < n) {
 				spawn(mod_type + "(disembark)" + (RTConfig->game_type == GameTypeCooperative? "(ally)":""), mod_type, _direction*(size.length()/-2), v2<float>());
 				mod->decreaseCount();
 			}

@@ -27,7 +27,7 @@ public:
 	Car(const std::string &classname) : Object(classname), _alt_fire(1, false) {}
 	virtual void calculate(const float dt);
 	virtual void tick(const float dt);
-	virtual void onSpawn();
+	virtual void on_spawn();
 	virtual Object * clone() const { return new Car(*this); }
 	
 	void emit(const std::string &event, Object * emitter);
@@ -48,7 +48,7 @@ private:
 	virtual void getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const;
 };
 
-void Car::onSpawn() {
+void Car::on_spawn() {
 	if (registered_name.compare(0, 7, "static-") == 0) {
 		disown();
 		disable_ai = true;
@@ -101,20 +101,20 @@ void Car::emit(const std::string &event, Object * emitter) {
 void Car::calculate(const float dt) {
 	Object::calculate(dt);
 	GET_CONFIG_VALUE("objects." + registered_name + ".rotation-time", float, rt, 0.05f);
-	limitRotation(dt, rt, true, false);
+	limit_rotation(dt, rt, true, false);
 }
 
 void Car::tick(const float dt) {
 	if (_alt_fire.tick(dt) && _state.alt_fire) {
 		_alt_fire.reset();
-		playRandomSound("klaxon", false);
+		play_random_sound("klaxon", false);
 	}
 	Object::tick(dt);
-	if (_velocity.is0() && getState() != "hold") {
-		cancelAll();
+	if (_velocity.is0() && get_state() != "hold") {
+		cancel_all();
 		play("hold", true);
-	} else if (!_velocity.is0() && getState() != "move") {
-		cancelAll();
+	} else if (!_velocity.is0() && get_state() != "move") {
+		cancel_all();
 		play("move", true);
 	}
 }
@@ -124,7 +124,7 @@ public:
 	AICar(const std::string &classname) : Car(classname){}
 	virtual void calculate(const float dt);
 	virtual Object * clone() const {return new AICar(*this);}
-	virtual void onSpawn();
+	virtual void on_spawn();
 
 	virtual void serialize(mrt::Serializator &s) const {
 		Car::serialize(s);
@@ -139,15 +139,15 @@ private:
 	virtual void onObstacle(const Object *o);	
 };
 
-void AICar::onSpawn() {
-	Car::onSpawn();
+void AICar::on_spawn() {
+	Car::on_spawn();
 	//obstacle_filter.insert("car");
 	//obstacle_filter.insert("civilian");
 	//obstacle_filter.insert("trooper");
 	//obstacle_filter.insert("fighting-vehicle");
 	_avoid_obstacles = true;
 
-	ai::Waypoints::onSpawn(this);
+	ai::Waypoints::on_spawn(this);
 	_alt_fire.set(5);
 	//GET_CONFIG_VALUE("objects.car.refreshing-path-interval", float, rpi, 1);
 	//_refresh_waypoints.set(rpi);
@@ -159,7 +159,7 @@ void AICar::onSpawn() {
 void AICar::onObstacle(const Object *o) {
 /*
 	if ((idx % 21) == 1) { //approx once per 5 second
-		playRandomSound("klaxon", false);
+		play_random_sound("klaxon", false);
 	}
 */
 	_state.alt_fire = true;
@@ -170,7 +170,7 @@ void AICar::calculate(const float dt) {
 
 	float rt;
 	Config->get("objects." + registered_name + ".rotation-time", rt, 0.05f);
-	limitRotation(dt, rt, true, false);
+	limit_rotation(dt, rt, true, false);
 	updateStateFromVelocity();
 }
 

@@ -26,8 +26,8 @@
 
 class Wagon : public Object {
 public: 
-	Wagon() : Object("train") { setDirectionsNumber(1); }
-	virtual void onSpawn() { 
+	Wagon() : Object("train") { set_directions_number(1); }
+	virtual void on_spawn() { 
 		play("move", true); 
 		disown(); 
 	
@@ -45,7 +45,7 @@ public:
 			emit("death", NULL);
 			return;
 		}
-		_velocity = getRelativePosition(o);
+		_velocity = get_relative_position(o);
 		float l = _velocity.normalize();
 		//LOG_DEBUG(("velocity: %g,%g (%g) (%g)", _velocity.x, _velocity.y, l, 1.2f * size.y));
 		if (l < 1.0f * size.y || l > 1.2f * size.y)
@@ -66,9 +66,9 @@ public:
 
 class Train : public Object {
 public:
-	Train() : Object("train"), _smoke(1.0, true), _wagon_id(0) { setDirectionsNumber(1); }
+	Train() : Object("train"), _smoke(1.0, true), _wagon_id(0) { set_directions_number(1); }
 	virtual Object * clone() const;
-	virtual void onSpawn();
+	virtual void on_spawn();
 	virtual void calculate(const float dt);
 	virtual void tick(const float dt);
 	virtual void emit(const std::string &event, Object * emitter = NULL);
@@ -97,7 +97,7 @@ private:
 	int _wagon_id;
 };
 
-void Train::onSpawn() {
+void Train::on_spawn() {
 	play("move", true);
 	v2<int> map_size = Map->get_size();
 	dst_y = map_size.y - (int)(size.y) / 2 - 4; //fixme. :)

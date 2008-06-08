@@ -65,8 +65,8 @@ LUA_TRY {
 	Object *obj = ResourceManager->createObject(object, animation);
 
 	//Matrix<int> matrix;
-	//World->getImpassabilityMatrix(matrix, obj, NULL);
-	const Matrix<int> &matrix = Map->getImpassabilityMatrix(0);
+	//World->get_impassability_matrix(matrix, obj, NULL);
+	const Matrix<int> &matrix = Map->get_impassability_matrix(0);
 		
 	const v2<int> tile_size = Map->getPathTileSize();
 	if (obj->size.is0())
@@ -147,7 +147,7 @@ LUA_TRY {
 	bool strict = (n >= 2)? lua_toboolean(L, 2) != 0: false;
 		
 	bool exists = o?!o->isDead():false;
-	if (exists && !strict && o->getState() == "broken")
+	if (exists && !strict && o->get_state() == "broken")
 		exists = false;
 		
 	lua_pushboolean(L, exists?1:0);
@@ -240,7 +240,7 @@ LUA_TRY {
 	int id = lua_tointeger(L, 1);
 	if (id < 1) 
 		throw_ex(("slot #%d is invalid", id));
-	PlayerSlot &slot =  PlayerManager->getSlot(id - 1);
+	PlayerSlot &slot =  PlayerManager->get_slot(id - 1);
 		
 	const char *cprop = lua_tostring(L, 2);
 	if (cprop == NULL)
@@ -285,7 +285,7 @@ LUA_TRY {
 	int id = lua_tointeger(L, 1);
 	if (id < 1) 
 		throw_ex(("slot #%d is invalid", id));
-	PlayerSlot &slot =  PlayerManager->getSlot(id - 1);
+	PlayerSlot &slot =  PlayerManager->get_slot(id - 1);
 
 	const char *area = lua_tostring(L, 2);
 	if (area == NULL)
@@ -312,7 +312,7 @@ LUA_TRY {
 	int id = lua_tointeger(L, 1);
 	if (id < 1) 
 		throw_ex(("slot #%d is invalid", id));
-	PlayerSlot &slot =  PlayerManager->getSlot(id - 1);
+	PlayerSlot &slot =  PlayerManager->get_slot(id - 1);
 	slot.removeTooltips();
 
 	return 0;
@@ -330,7 +330,7 @@ LUA_TRY {
 	int id = lua_tointeger(L, 1);
 	if (id < 1) 
 		throw_ex(("slot #%d is invalid", id));
-	PlayerSlot &slot =  PlayerManager->getSlot(id - 1);
+	PlayerSlot &slot =  PlayerManager->get_slot(id - 1);
 		
 	const char *cprop = lua_tostring(L, 2);
 	if (cprop == NULL)
@@ -501,7 +501,7 @@ static int lua_hooks_item_exists(lua_State *L) {
 		const Object *o = World->getObjectByID(item.id);
 		
 		bool exists = o?!o->isDead():false;
-		if (exists && !strict && o->getState() == "broken")
+		if (exists && !strict && o->get_state() == "broken")
 			exists = false;
 		
 		lua_pushboolean(L, exists?1:0);
@@ -540,7 +540,7 @@ static int lua_hooks_spawn(lua_State *L) {
 		o->addOwner(OWNER_MAP);
 
 	//	if (dir) 
-	//		o->setDirection(dir);
+	//		o->set_direction(dir);
 	
 		World->addObject(o, v2<float>(x, y) - o->size / 2);
 		lua_pushinteger(L, o->get_id());
@@ -817,7 +817,7 @@ LUA_TRY {
 	Way way;
 	way.push_back(dst_pos);
 
-	src->setWay(way);
+	src->set_way(way);
 	return 0;
 } LUA_CATCH("add_waypoint_object")
 }
@@ -856,7 +856,7 @@ LUA_TRY {
 		lua_pop(L, 1);  /* removes `value'; keeps `key' for next iteration */
 	}
 
-	o->setWay(way);
+	o->set_way(way);
 	
 	return 0;
 } LUA_CATCH("add_waypoints")
@@ -873,7 +873,7 @@ LUA_TRY {
 	}
 	int id = lua_tointeger(L, 1);
 	Object *o = World->getObjectByID(id);
-	lua_pushboolean(L, o != NULL && o->isDriven()? 1:0);
+	lua_pushboolean(L, o != NULL && o->is_driven()? 1:0);
 	return 1;
 } LUA_CATCH("has_waypoints")
 }
@@ -964,7 +964,7 @@ LUA_TRY {
 		}
 	}
 	if (name == NULL)
-		Mixer->cancelAll(o);
+		Mixer->cancel_all(o);
 	else 
 		Mixer->cancelSample(o, name);
 	
@@ -989,7 +989,7 @@ LUA_TRY {
 
 
 static int lua_hooks_players_number(lua_State *L) {
-	int pn = (int)PlayerManager->getSlotsCount();
+	int pn = (int)PlayerManager->get_slotsCount();
 	
 	int n = lua_gettop(L);
 	if (n >= 1) {
@@ -1047,7 +1047,7 @@ LUA_TRY {
 		bool loop = lua_toboolean(L, 3) != 0;
 		o->play(pose, loop);
 	} else {
-		o->playNow(pose);
+		o->play_now(pose);
 	}
 	return 0;
 } LUA_CATCH("play_animation")
@@ -1072,10 +1072,10 @@ LUA_TRY {
 		o->cancel();
 		break;
 	case 1: 
-		o->cancelAll();
+		o->cancel_all();
 		break;
 	case 2: 
-		o->cancelRepeatable();
+		o->cancel_repeatable();
 		break;
 	default:  
 		throw_ex(("invalid mode %d", mode));
@@ -1096,7 +1096,7 @@ LUA_TRY {
 	int id = lua_tointeger(L, 1);
 
 	Object *o = World->getObjectByID(id);
-	lua_pushstring(L, o != NULL? o->getState().c_str(): "");
+	lua_pushstring(L, o != NULL? o->get_state().c_str(): "");
 	return 1;
 } LUA_CATCH("get_state")
 }

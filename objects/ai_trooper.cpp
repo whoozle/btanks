@@ -30,7 +30,7 @@ class AITrooper : public Trooper, private ai::Herd, private ai::Base, ai::OldSch
 public:
 	AITrooper(const std::string &object, const bool aim_missiles) : 
 		Trooper("trooper", object), _reaction(true), _target_dir(-1), _aim_missiles(aim_missiles) {}
-	virtual void onSpawn();
+	virtual void on_spawn();
 	virtual void serialize(mrt::Serializator &s) const {
 		Trooper::serialize(s);
 		ai::Base::serialize(s);
@@ -80,7 +80,7 @@ void AITrooper::onIdle(const float dt) {
 	} else if ((summoner != 0 && summoner != OWNER_MAP) || _variants.has("herd")) {
 		Object *parent = World->getObjectByID(summoner);
 		if (parent != NULL) {
-			v2<float> dpos = getRelativePosition(parent);
+			v2<float> dpos = get_relative_position(parent);
 			float dist = dpos.length();
 			//LOG_DEBUG(("%d: %s: summoner distance: %g", get_id(), animation.c_str(), dist));
 			if (dist > 800) {
@@ -103,19 +103,19 @@ void AITrooper::onIdle(const float dt) {
 	_state.fire = false;
 
 	GET_CONFIG_VALUE("objects.ai-trooper.rotation-time", float, rt, 0.05);
-	calculateWayVelocity();
-	limitRotation(dt, rt, true, false);
+	calculate_way_velocity();
+	limit_rotation(dt, rt, true, false);
 	updateStateFromVelocity();	
 }
 
-void AITrooper::onSpawn() {
-	ai::Base::onSpawn(this);
-	ai::OldSchool::onSpawn(this);
+void AITrooper::on_spawn() {
+	ai::Base::on_spawn(this);
+	ai::OldSchool::on_spawn(this);
 	GET_CONFIG_VALUE("objects.ai-trooper.reaction-time", float, rt, 0.15f);
 	mrt::randomize(rt, rt / 10);
 	//LOG_DEBUG(("rt = %g", rt));
 	_reaction.set(rt);	
-	Trooper::onSpawn();
+	Trooper::on_spawn();
 }
 
 Object* AITrooper::clone() const  {
@@ -124,20 +124,20 @@ Object* AITrooper::clone() const  {
 
 
 void AITrooper::calculate(const float dt) {
-	//calculateWayVelocity();
+	//calculate_way_velocity();
 	//LOG_DEBUG(("calculate"));
 	if (_target_dir != -1 && has_effect("panic")) {
 		//LOG_DEBUG(("panic: %d", _target_dir));
 		_velocity.fromDirection(_target_dir, get_directions_number());
 	
 		GET_CONFIG_VALUE("objects.ai-trooper.rotation-time", float, rt, 0.05f);
-		limitRotation(dt, rt, true, false);
+		limit_rotation(dt, rt, true, false);
 		updateStateFromVelocity();
 		return;
 	}
 	
-	if (!_reaction.tick(dt) || isDriven()) {
-		calculateWayVelocity();
+	if (!_reaction.tick(dt) || is_driven()) {
+		calculate_way_velocity();
 		return;
 	}
 
@@ -151,7 +151,7 @@ void AITrooper::calculate(const float dt) {
 		v2<float> pos, vel;
 		float r = speed * 5.0f; 
 
-		if (getNearest(bullets, r, pos, vel, false)) {
+		if (get_nearest(bullets, r, pos, vel, false)) {
 			float ct = getCollisionTime(pos, vel, 16);
 			//LOG_DEBUG(("bullet at %g %g, est: %g", pos.x, pos.y, ct));
 			if (ct > 0 && ct > 0.15f) {
@@ -161,7 +161,7 @@ void AITrooper::calculate(const float dt) {
 				int dirs = get_directions_number(), escape = dpos.get_direction(dirs) - 1;
 				if (escape >= 0) {
 					_target_dir = escape;
-					setDirection(escape);
+					set_direction(escape);
 					_velocity.fromDirection(_target_dir, get_directions_number());
 					_direction.fromDirection(_target_dir, get_directions_number());
 					addEffect("panic", ct);
@@ -175,25 +175,25 @@ void AITrooper::calculate(const float dt) {
 	float range = getWeaponRange(_object);
 	
 
-	_target_dir = getTarget_position(_velocity,
+	_target_dir = get_target_position(_velocity,
 		_variants.has("trainophobic")? (_aim_missiles? ai::Targets->troops_train_and_missiles: ai::Targets->troops_and_missiles): (_aim_missiles? ai::Targets->troops_and_missiles: ai::Targets->troops), 
 		range);
 	if (_target_dir >= 0) {
 		//LOG_DEBUG(("target: %g %g %g", tp.x, tp.y, tp.length()));
 		/*
 		Way way;
-		if (findPath(tp, way)) {
-		setWay(way);
-			calculateWayVelocity();
+		if (find_path(tp, way)) {
+		set_way(way);
+			calculate_way_velocity();
 		}
 		*/
 		if (_velocity.length() >= 9) {
-			quantizeVelocity();
+			quantize_velocity();
 			_direction.fromDirection(get_direction(), get_directions_number());
 			_state.fire = false;
 		} else {
 			_velocity.clear();
-			setDirection(_target_dir);
+			set_direction(_target_dir);
 			//LOG_DEBUG(("%d", _target_dir));
 			_direction.fromDirection(_target_dir, get_directions_number());
 			_state.fire = true;
@@ -213,14 +213,14 @@ public:
 		Trooper("trooper", object), _reaction(true), _aim_missiles(aim_missiles) {}
 	virtual Object * clone() const { return new TrooperInWatchTower(*this); }
 	
-	virtual void onSpawn() { 
-		ai::Base::onSpawn(this);
+	virtual void on_spawn() { 
+		ai::Base::on_spawn(this);
 	
 		GET_CONFIG_VALUE("objects.ai-trooper.reaction-time", float, rt, 0.15f);
 		mrt::randomize(rt, rt/10);
 		_reaction.set(rt);
 	
-		Trooper::onSpawn();
+		Trooper::on_spawn();
 	}
 
 	virtual void serialize(mrt::Serializator &s) const {
@@ -249,16 +249,16 @@ public:
 		float dist = -1;
 		
 		std::set<const Object *> objects;
-		enumerateObjects(objects, range, 
+		enumerate_objects(objects, range, 
 			&(_variants.has("trainophobic")? (_aim_missiles? ai::Targets->troops_train_and_missiles: ai::Targets->troops_and_missiles): (_aim_missiles? ai::Targets->troops_and_missiles: ai::Targets->troops))
 		);
 		for(std::set<const Object *>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
 			const Object *target = *i;
-			if (hasSameOwner(target) || target->aiDisabled() || target->impassability == 0 || target->pierceable)
+			if (hasSameOwner(target) || target->ai_disabled() || target->impassability == 0 || target->pierceable)
 				continue;
 			
-			v2<float> dpos = getRelativePosition(target);
-			if (checkDistance(get_center_position(), target->get_center_position(), getZ(), true)) {
+			v2<float> dpos = get_relative_position(target);
+			if (check_distance(get_center_position(), target->get_center_position(), getZ(), true)) {
 				if (result == NULL || dpos.quick_length() < dist) {
 					result = target;
 					dist = dpos.quick_length();
@@ -268,9 +268,9 @@ public:
 		
 		if (result != NULL) {
 			_state.fire = true;
-			_direction = getRelativePosition(result);
+			_direction = get_relative_position(result);
 			_direction.normalize();
-			setDirection(_direction.get_direction(get_directions_number()) - 1);
+			set_direction(_direction.get_direction(get_directions_number()) - 1);
 		}
 	}
 private: 

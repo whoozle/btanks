@@ -37,7 +37,7 @@ Tank::Tank(const std::string &classname)
 : Object(classname), _fire(false) {
 }
 
-void Tank::onSpawn() {
+void Tank::on_spawn() {
 	if (registered_name.substr(0, 6) == "static") {
 		removeOwner(OWNER_MAP);
 		disable_ai = true;
@@ -52,7 +52,7 @@ void Tank::onSpawn() {
 	GET_CONFIG_VALUE("objects.tank.fire-rate", float, fr, 0.3);
 	_fire.set(fr);
 	play("hold", true);
-	playSound("vehicle-sound", true, 0.4f);
+	play_sound("vehicle-sound", true, 0.4f);
 }
 
 Object * Tank::clone() const {
@@ -61,7 +61,7 @@ Object * Tank::clone() const {
 
 void Tank::emit(const std::string &event, Object * emitter) {
 	if (event == "death") {
-		cancelAll();
+		cancel_all();
 		spawn("corpse", "dead-" + animation);
 		_velocity.clear();
 		Object::emit(event, emitter);
@@ -98,11 +98,11 @@ const bool Tank::take(const BaseObject *obj, const std::string &type) {
 void Tank::calculate(const float dt) {
 	Object::calculate(dt);
 	GET_CONFIG_VALUE("objects.tank.rotation-time", float, rt, 0.05);
-	limitRotation(dt, rt, true, false);
+	limit_rotation(dt, rt, true, false);
 }
 
 void Tank::tick(const float dt) {
-	if (getState().empty()) {
+	if (get_state().empty()) {
 		play("hold", true);
 	}
 
@@ -111,15 +111,15 @@ void Tank::tick(const float dt) {
 	bool fire_possible = _fire.tick(dt);
 	_velocity.normalize();
 	if (_velocity.is0()) {
-		cancelRepeatable();
+		cancel_repeatable();
 		play("hold", true);
-		groupEmit("mod", "hold");
+		group_emit("mod", "hold");
 	} else {
-		if (getState() == "hold") {
-			cancelAll();
+		if (get_state() == "hold") {
+			cancel_all();
 			play("start", false);
 			play("move", true);
-			groupEmit("mod", "move");
+			group_emit("mod", "move");
 		}
 	}
 
@@ -127,10 +127,10 @@ void Tank::tick(const float dt) {
 	if (_state.fire && fire_possible) {
 		_fire.reset();
 		
-		if (getState() == "fire") 
+		if (get_state() == "fire") 
 			cancel();
 		
-		playNow("fire");
+		play_now("fire");
 		
 		//LOG_DEBUG(("vel: %f %f", _state.old_vx, _state.old_vy));
 		//v2<float> v = _velocity.is0()?_direction:_velocity;
@@ -149,7 +149,7 @@ void Tank::tick(const float dt) {
 	}
 	if (_state.alt_fire && fire_possible) {
 		_fire.reset();
-		groupEmit("mod", "launch");
+		group_emit("mod", "launch");
 	}
 	
 	//LOG_DEBUG(("_velocity: %g %g", _velocity.x, _velocity.y));

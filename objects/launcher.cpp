@@ -40,7 +40,7 @@ Object * Launcher::clone() const {
 	return new Launcher(*this);
 }
 
-void Launcher::onSpawn() {
+void Launcher::on_spawn() {
 	if (registered_name.substr(0, 6) == "static") {
 		removeOwner(OWNER_MAP);
 		disable_ai = true;
@@ -65,7 +65,7 @@ void Launcher::onSpawn() {
 	GET_CONFIG_VALUE("objects.launcher.fire-rate", float, fr, 0.3);
 	_fire.set(fr);
 	play("hold", true);
-	playSound("vehicle-sound", true, 0.4f);
+	play_sound("vehicle-sound", true, 0.4f);
 }
 
 void Launcher::emit(const std::string &event, Object * emitter) {
@@ -81,7 +81,7 @@ void Launcher::emit(const std::string &event, Object * emitter) {
 void Launcher::calculate(const float dt) {
 	Object::calculate(dt);
 	GET_CONFIG_VALUE("objects.launcher.rotation-time", float, rt, 0.07);
-	limitRotation(dt, rt, true, false);
+	limit_rotation(dt, rt, true, false);
 	//LOG_DEBUG(("_velocity: %g %g", _velocity.x, _velocity.y));
 }
 
@@ -91,31 +91,31 @@ void Launcher::tick(const float dt) {
 
 	bool fire_possible = _fire.tick(dt);
 	
-	if (getState().empty()) {
+	if (get_state().empty()) {
 		play("hold", true);
-		groupEmit("mod", "hold");
+		group_emit("mod", "hold");
 	}
 
 	if (_velocity.is0()) {	
-		cancelRepeatable();
+		cancel_repeatable();
 		play("hold", true);
-		groupEmit("mod", "hold");
+		group_emit("mod", "hold");
 	} else {
-		if (getState() == "hold") {
-			cancelAll();
+		if (get_state() == "hold") {
+			cancel_all();
 			//play("start", false);
 			play("move", true);
-			groupEmit("mod", "move");
+			group_emit("mod", "move");
 		}
 	}
 
 	if (_state.fire && fire_possible) {
 		_fire.reset();
-		groupEmit("mod", "launch");
+		group_emit("mod", "launch");
 	}
 	if (_state.alt_fire && fire_possible) {
 		_fire.reset();
-		groupEmit("alt-mod", "launch");
+		group_emit("alt-mod", "launch");
 	}
 }
 

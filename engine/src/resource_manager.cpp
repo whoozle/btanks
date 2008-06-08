@@ -333,14 +333,14 @@ const Animation *IResourceManager::getAnimation(const std::string &id) const {
 	return i->second;
 }
 
-AnimationModel *IResourceManager::getAnimationModel(const std::string &id) {
+AnimationModel *IResourceManager::get_animation_model(const std::string &id) {
 	AnimationModelMap::iterator i = _animation_models.find(id);
 	if (i == _animation_models.end()) 
 		throw_ex(("could not find animation model with id '%s'", id.c_str()));
 	return i->second;
 }
 
-const sdlx::Surface *IResourceManager::getSurface(const std::string &id) const  {
+const sdlx::Surface *IResourceManager::get_surface(const std::string &id) const  {
 	SurfaceMap::const_iterator i = _surfaces.find(id);
 	if (i == _surfaces.end()) 
 		throw_ex(("could not find surface with id '%s'", id.c_str()));
@@ -579,7 +579,7 @@ const bool IResourceManager::hasClass(const std::string &classname) const {
 
 #include "mrt/fs_node.h"
 
-void IResourceManager::checkSurface(const std::string &animation, const sdlx::Surface *& surface_ptr, const sdlx::CollisionMap *& cmap_ptr) {
+void IResourceManager::check_surface(const std::string &animation, const sdlx::Surface *& surface_ptr, const sdlx::CollisionMap *& cmap_ptr) {
 	if (surface_ptr != NULL && cmap_ptr != NULL) 
 		return;
 

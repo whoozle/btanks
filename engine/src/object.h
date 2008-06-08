@@ -43,7 +43,7 @@ class Pose;
 
 class BTANKSAPI Object : public BaseObject {
 public:
-	const v2<float> getRelativePosition(const Object *obj) const;
+	const v2<float> get_relative_position(const Object *obj) const;
 	inline const v2<float> get_position() const { return _parent == NULL? _position: _position + _parent->get_position(); }
 
 	template<typename T>
@@ -70,14 +70,14 @@ public:
 	virtual Object * clone() const;
 	Object * deep_clone() const;
 	
-	void playSound(const std::string &name, const bool loop, const float gain = 1.0);
-	void playRandomSound(const std::string &classname, const bool loop, const float gain = 1.0);
-	void fadeoutSound(const std::string &name);
+	void play_sound(const std::string &name, const bool loop, const float gain = 1.0);
+	void play_random_sound(const std::string &classname, const bool loop, const float gain = 1.0);
+	void fadeout_sound(const std::string &name);
 
 	inline const int get_direction() const { return _direction_idx; }
 	inline const int get_directions_number() const { return _directions_n; }
-	virtual void setDirection(const int dir);
-	void setDirectionsNumber(const int dirs);
+	virtual void set_direction(const int dir);
+	void set_directions_number(const int dirs);
 	
 	virtual void tick(const float dt);
 	virtual void render(sdlx::Surface &surface, const int x, const int y);
@@ -86,17 +86,17 @@ public:
 
 	// animation:
 	void play(const std::string &id, const bool repeat = false);
-	void playNow(const std::string &id);
+	void play_now(const std::string &id);
 	void cancel();
-	void cancelRepeatable();
-	void cancelAll();
-	inline const std::string& getState() const {
+	void cancel_repeatable();
+	void cancel_all();
+	inline const std::string& get_state() const {
 		static const std::string empty;
 		if (_events.empty())
 			return empty;
 		return _events.front().name;
 	}
-	const float getStateProgress() const;
+	const float get_state_progress() const;
 	//effects
 	void add_effect(const std::string &name, const float ttl = -1);
 	inline const bool has_effect(const std::string &name) const {
@@ -112,9 +112,9 @@ public:
 	virtual void serialize(mrt::Serializator &s) const;
 	virtual void deserialize(const mrt::Serializator &s);
 
-	void serializeAll(mrt::Serializator &s) const;
+	void serialize_all(mrt::Serializator &s) const;
 	
-	virtual void onSpawn();
+	virtual void on_spawn();
 	
 	inline const bool rotating() const { return _direction_idx != _dst_direction; }
 
@@ -128,35 +128,35 @@ public:
 
 	const float getWeaponRange(const std::string &weapon) const;
 
-	const int getTarget_position(v2<float> &relative_position, const v2<float> &target, const std::string &weapon) const;
-	const int getTarget_position(v2<float> &relative_position, const v2<float> &target, const float range) const;
-	const int getTarget_position(v2<float> &relative_position, const std::set<std::string> &targets, const std::string &weapon) const;
-	const int getTarget_position(v2<float> &relative_position, const std::set<std::string> &targets, const float range) const;
+	const int get_target_position(v2<float> &relative_position, const v2<float> &target, const std::string &weapon) const;
+	const int get_target_position(v2<float> &relative_position, const v2<float> &target, const float range) const;
+	const int get_target_position(v2<float> &relative_position, const std::set<std::string> &targets, const std::string &weapon) const;
+	const int get_target_position(v2<float> &relative_position, const std::set<std::string> &targets, const float range) const;
 
-	void quantizeVelocity();
+	void quantize_velocity();
 	
-	inline const Way& getWay() const { return _way; } 
-	void setWay(const Way & way);
-	const bool isDriven() const;
+	inline const Way& get_way() const { return _way; } 
+	void set_way(const Way & way);
+	const bool is_driven() const;
 	
-	const std::string getNearestWaypoint(const std::string &classname) const;
+	const std::string get_nearest_waypoint(const std::string &classname) const;
 
 	void setZBox(const int z);
 
 	virtual const bool detachVehicle();
 	virtual const bool attachVehicle(Object *vehicle);
 
-	const int getChildren(const std::string &classname) const;
-	void enumerateObjects(std::set<const Object *> &o_set, const float range, const std::set<std::string> *classfilter) const;
+	const int get_children(const std::string &classname) const;
+	void enumerate_objects(std::set<const Object *> &o_set, const float range, const std::set<std::string> *classfilter) const;
 
-	static const bool checkDistance(const v2<float> &map1, const v2<float>& map2, const int z, const bool use_pierceable_fixes);
+	static const bool check_distance(const v2<float> &map1, const v2<float>& map2, const int z, const bool use_pierceable_fixes);
 
-	const bool aiDisabled() const;
+	const bool ai_disabled() const;
 	virtual const bool take(const BaseObject *obj, const std::string &type);
 
 	Object * spawn(const std::string &classname, const std::string &animation, const v2<float> &dpos = v2<float>(), const v2<float> &vel = v2<float>(), const int z = 0);
 
-	void invalidate() { setSync(true); }
+	void invalidate() { set_sync(true); }
 
 	//grouped object handling
 	void pick(const std::string &name, Object *object); //picks up object and insert as group one, i.e. ctf-flag 
@@ -165,14 +165,14 @@ public:
 	Object *add(const std::string &name, const std::string &classname, const std::string &animation, const v2<float> &dpos, const GroupType type);
 	Object *get(const std::string &name);
 	void remove(const std::string &name);
-	void groupEmit(const std::string &name, const std::string &event);
+	void group_emit(const std::string &name, const std::string &event);
 
-	const bool getRenderRect(sdlx::Rect &src) const;
+	const bool get_render_rect(sdlx::Rect &src) const;
 	
 	bool is_subobject() const { return _parent != NULL; }
 	
-	inline const int getSlot() const { return _slot_id; }
-	void setSlot(const int id);
+	inline const int get_slot() const { return _slot_id; }
+	void set_slot(const int id);
 	
 	void update_outline(const bool hidden);
 
@@ -201,28 +201,25 @@ protected:
 	typedef std::map<const v2<int>, Point> PointMap;
 
 
-	void findPath(const v2<int> target, const int step);
-	const bool findPathDone(Way &way);
-	inline const bool calculatingPath() const { return !_open_list.empty(); }
+	void find_path(const v2<int> target, const int step);
+	const bool find_path_done(Way &way);
+	inline const bool calculating_path() const { return !_open_list.empty(); }
 
+	void calculate_way_velocity();
 
-	void calculateWayVelocity();
-
-	Object * spawnGrouped(const std::string &classname, const std::string &animation, const v2<float> &dpos, const GroupType type);
-
-	const bool getNearest(const std::set<std::string> &classnames, const float range, v2<float> &position, v2<float> &velocity, const bool check_shooting_range) const;
-	const Object * getNearestObject(const std::set<std::string> &classnames, const float range, const bool check_shooting_range) const;
+	const bool get_nearest(const std::set<std::string> &classnames, const float range, v2<float> &position, v2<float> &velocity, const bool check_shooting_range) const;
+	const Object * get_nearest_object(const std::set<std::string> &classnames, const float range, const bool check_shooting_range) const;
 	
-	void limitRotation(const float dt, const float speed, const bool rotate_even_stopped, const bool allow_backward);
+	void limit_rotation(const float dt, const float speed, const bool rotate_even_stopped, const bool allow_backward);
 	
-	void checkSurface() const;
+	void check_surface() const;
 	
-	virtual const bool skipRendering() const;
+	virtual const bool skip_rendering() const;
 	
-	const sdlx::Surface * getSurface() const;
-	const Matrix<int> &getImpassabilityMatrix() const;
+	const sdlx::Surface * get_surface() const;
+	const Matrix<int> &get_impassability_matrix() const;
 	
-	inline const AnimationModel * getAnimationModel() const { return _model; }
+	inline const AnimationModel * get_animation_model() const { return _model; }
 	
 	Object * _parent;
 	
@@ -251,9 +248,9 @@ private:
 		virtual void deserialize(const mrt::Serializator &s);
 	};
 	
-	void checkAnimation() const;
-	void getSubObjects(std::set<Object *> &objects);
-	void groupTick(const float dt);
+	void check_animation() const;
+	void get_subobjects(std::set<Object *> &objects);
+	void group_tick(const float dt);
 	
 	mutable const Animation *_animation;
 	mutable const AnimationModel *_model;
@@ -288,7 +285,7 @@ private:
 	
 	int _slot_id;
 
-	void setSync(const bool sync);
+	void set_sync(const bool sync);
 	
 	friend class IWorld;
 	friend class ai::Buratino;

@@ -35,7 +35,7 @@ void Heli::calculate(const float dt) {
 	Object::calculate(dt);
 
 	GET_CONFIG_VALUE("objects.helicopter.rotation-time", float, rt, 0.2);
-	limitRotation(dt, rt, true, true);	
+	limit_rotation(dt, rt, true, true);	
 }
 
 
@@ -52,7 +52,7 @@ void Heli::tick(const float dt) {
 	if (_state.alt_fire && _alt_fire.tick(dt)) {
 		_alt_fire.reset();
 
-		const Matrix<int> & matrix  = Map->getImpassabilityMatrix(0);
+		const Matrix<int> & matrix  = Map->get_impassability_matrix(0);
 		
 		v2<int> pos, pos2;
 		get_center_position(pos); 
@@ -108,7 +108,7 @@ void Heli::tick(const float dt) {
 	}
 }
 
-void Heli::onSpawn() {
+void Heli::on_spawn() {
 	if (registered_name.compare(0, 6, "static") == 0)
 		removeOwner(OWNER_MAP);
 

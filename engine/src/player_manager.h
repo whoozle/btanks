@@ -56,13 +56,13 @@ public:
 	DECLARE_SINGLETON(IPlayerManager);
 	~IPlayerManager();
 		
-	void startServer();
-	void startClient(const std::string &address, const size_t n);
+	void start_server();
+	void start_client(const std::string &address, const size_t n);
 	void clear();
 	
-	inline const bool isClient() const { return _client != NULL; }
-	inline const bool isServer() const { return _server != NULL; }	
-	const bool isServerActive() const;
+	inline const bool is_client() const { return _client != NULL; }
+	inline const bool is_server() const { return _server != NULL; }	
+	const bool is_serverActive() const;
 	void disconnect_all();
 
 	void addSlot(const v3<int> &position);
@@ -70,14 +70,14 @@ public:
 
 	PlayerSlot *getMySlot(); //remove me
 
-	PlayerSlot &getSlot(const unsigned int idx);
-	const PlayerSlot &getSlot(const unsigned int idx) const;
+	PlayerSlot &get_slot(const unsigned int idx);
+	const PlayerSlot &get_slot(const unsigned int idx) const;
 
-	const int getSlotID(const int object_id) const;
-	PlayerSlot *getSlotByID(const int id);
-	const PlayerSlot *getSlotByID(const int id) const;
+	const int get_slotID(const int object_id) const;
+	PlayerSlot *get_slotByID(const int id);
+	const PlayerSlot *get_slotByID(const int id) const;
 
-	const size_t getSlotsCount() const;
+	const size_t get_slotsCount() const;
 	const size_t getFreeSlotsCount() const;
 	
 	void screen2world(v2<float> &pos, const int p, const int x, const int y);

@@ -52,9 +52,9 @@ current_team(0), join_logo(ResourceManager->loadSurface("menu/team_chooser.png")
 void JoinTeamControl::tick(const float dt) {
 	Container::tick(dt);
 	memset(team_stats, 0, sizeof(team_stats));
-	int n = PlayerManager->getSlotsCount();
+	int n = PlayerManager->get_slotsCount();
 	for(int i = 0; i < n; ++i) {
-		PlayerSlot &slot = PlayerManager->getSlot(i);
+		PlayerSlot &slot = PlayerManager->get_slot(i);
 		if (slot.team != Team::None) 
 			++team_stats[(int)slot.team];
 	}

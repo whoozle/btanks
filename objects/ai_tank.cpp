@@ -27,7 +27,7 @@ class AITank:  public Tank, public ai::Buratino {
 public: 
 	AITank(const std::string &classname) : Tank(classname) {}
 //	~AITank();
-	virtual void onSpawn();
+	virtual void on_spawn();
 	virtual void calculate(const float dt);
 
 	virtual Object * clone() const { return new AITank(*this); }
@@ -68,7 +68,7 @@ const int AITank::getWeaponAmount(const int idx) const{
 }
 
 
-void AITank::onSpawn() {
+void AITank::on_spawn() {
 	addEnemyClass("fighting-vehicle");
 	addEnemyClass("cannon");
 	addEnemyClass("trooper");
@@ -97,15 +97,15 @@ void AITank::onSpawn() {
 	addBonusName("stun-missiles-item");
 	addBonusName("mines-item");
 
-	ai::Buratino::onSpawn(this);
-	Tank::onSpawn();
+	ai::Buratino::on_spawn(this);
+	Tank::on_spawn();
 }
 
 void AITank::calculate(const float dt) {
 	ai::Buratino::calculate(this, dt);
 	
 	GET_CONFIG_VALUE("objects.tank.rotation-time", float, rt, 0.05);
-	limitRotation(dt, rt, true, false);
+	limit_rotation(dt, rt, true, false);
 	updateStateFromVelocity();	
 }
 

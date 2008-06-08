@@ -35,7 +35,7 @@ namespace ai {
 class BTANKSAPI Waypoints : private ai::OldSchool {
 public: 
 	Waypoints();
-	virtual void onSpawn(const Object *object);
+	virtual void on_spawn(const Object *object);
 	void calculate(Object *object, const float dt);
 
 	virtual void onObstacle(const Object *o) = 0;

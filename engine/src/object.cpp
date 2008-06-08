@@ -34,7 +34,7 @@
 #include "game_monitor.h"
 #include "zbox.h"
 
-const v2<float> Object::getRelativePosition(const Object *obj) const {
+const v2<float> Object::get_relative_position(const Object *obj) const {
 	return Map->distance(this->get_center_position(), obj->get_center_position());
 }
 
@@ -68,7 +68,7 @@ Object * Object::deep_clone() const {
 	return r;
 }
 
-const bool Object::aiDisabled() const {
+const bool Object::ai_disabled() const {
 	if (_variants.has("ally") || disable_ai)
 		return false;
 	return GameMonitor->disabled(this);
@@ -102,41 +102,41 @@ Object* Object::spawn(const std::string &classname, const std::string &animation
 	return World->spawn(this, classname, animation, dpos, vel, z);
 }
 
-const bool Object::getNearest(const std::set<std::string> &classnames, const float range, v2<float> &position, v2<float> &velocity, const bool check_shooting_range) const {
-	if (aiDisabled())
+const bool Object::get_nearest(const std::set<std::string> &classnames, const float range, v2<float> &position, v2<float> &velocity, const bool check_shooting_range) const {
+	if (ai_disabled())
 		return false;
 	
-	return World->getNearest(this, classnames, range, position, velocity, check_shooting_range);
+	return World->get_nearest(this, classnames, range, position, velocity, check_shooting_range);
 }
 
-const Object * Object::getNearestObject(const std::set<std::string> &classnames, const float range, const bool check_shooting_range) const {
-	if (aiDisabled())
+const Object * Object::get_nearest_object(const std::set<std::string> &classnames, const float range, const bool check_shooting_range) const {
+	if (ai_disabled())
 		return NULL;
 	
-	return World->getNearestObject(this, classnames, range, check_shooting_range);
+	return World->get_nearest_object(this, classnames, range, check_shooting_range);
 }
 
 
-void Object::setDirection(const int dir) {
+void Object::set_direction(const int dir) {
 	if (dir >= _directions_n)
-		LOG_WARN(("%s:%s setDirection(%d) called on object with %d directions", registered_name.c_str(), animation.c_str(), dir, _directions_n));
+		LOG_WARN(("%s:%s set_direction(%d) called on object with %d directions", registered_name.c_str(), animation.c_str(), dir, _directions_n));
 	if (dir >= 0)
 		_direction_idx = dir;
 }
 
-void Object::setDirectionsNumber(const int dirs) {
+void Object::set_directions_number(const int dirs) {
 	if (dirs >= 0) 
 		_directions_n = dirs;
 }
 
-void Object::quantizeVelocity() {
+void Object::quantize_velocity() {
 	_velocity.normalize();
 	if (_directions_n == 8) {
 		_velocity.quantize8();
-		setDirection(_velocity.get_direction8() - 1);
+		set_direction(_velocity.get_direction8() - 1);
 	} else if (_directions_n == 16) {
 		_velocity.quantize16();
-		setDirection(_velocity.get_direction16() - 1);
+		set_direction(_velocity.get_direction16() - 1);
 	} //else throw_ex(("%s:%s cannot handle %d directions", registered_name.c_str(), animation.c_str(), _directions_n));
 	//redesign this ^^ 
 }
@@ -145,7 +145,7 @@ void Object::quantizeVelocity() {
 void Object::play(const std::string &id, const bool repeat) {
 	if (_events.empty())
 		_pos = 0;
-	checkAnimation();
+	check_animation();
 	const Pose *pose = _model->getPose(id);
 	if (pose == NULL) {
 		LOG_WARN(("%d:%s:%s: animation model %s does not have pose '%s'", 
@@ -156,8 +156,8 @@ void Object::play(const std::string &id, const bool repeat) {
 	_events.push_back(Event(id, repeat, pose->sound, pose->gain, pose));
 }
 
-void Object::playNow(const std::string &id) {
-	checkAnimation();
+void Object::play_now(const std::string &id) {
+	check_animation();
 
 	const Pose *pose = _model->getPose(id);
 	if (pose == NULL) {
@@ -178,7 +178,7 @@ void Object::cancel() {
 	_pos = 0;
 }
 
-void Object::cancelRepeatable() {
+void Object::cancel_repeatable() {
 	for (EventQueue::iterator i = _events.begin(); i != _events.end();) {
 		if (i->repeat) {
 			if (i == _events.begin())
@@ -191,7 +191,7 @@ void Object::cancelRepeatable() {
 }
 
 
-void Object::cancelAll() {
+void Object::cancel_all() {
 	while(!_events.empty()) {
 		Mixer->cancelSample(this, _events.front().sound);
 		_events.pop_front();
@@ -233,7 +233,7 @@ void Object::tick(const float dt) {
 	//LOG_DEBUG(("%p: event: %s, pos = %f", (void *)this, event.name.c_str(), _pos));
 	pose = event.cached_pose;
 	if (pose == NULL) {
-		checkAnimation();
+		check_animation();
 		event.cached_pose = pose = _model->getPose(event.name);
 	}
 	
@@ -287,8 +287,8 @@ void Object::tick(const float dt) {
 
 #include "player_manager.h"
 
-void Object::groupTick(const float dt) {
-	bool safe_mode = PlayerManager->isClient(); 
+void Object::group_tick(const float dt) {
+	bool safe_mode = PlayerManager->is_client(); 
 	
 	for(Group::iterator i = _group.begin(); i != _group.end(); ) {
 		Object *o = i->second;
@@ -333,32 +333,32 @@ void Object::groupTick(const float dt) {
 	}
 }
 
-void Object::getSubObjects(std::set<Object *> &objects) {
-	if (skipRendering())
+void Object::get_subobjects(std::set<Object *> &objects) {
+	if (skip_rendering())
 		return;
 
 	for(Group::iterator i = _group.begin(); i != _group.end(); ++i) {
 		if (i->first[0] == '.') 
 			continue;
 		objects.insert(i->second);
-		i->second->getSubObjects(objects);
+		i->second->get_subobjects(objects);
 	}
 }
 
-void Object::playSound(const std::string &name, const bool loop, const float gain) {
+void Object::play_sound(const std::string &name, const bool loop, const float gain) {
 	Mixer->playSample(this, name + ".ogg", loop, gain);
 }
 
-void Object::fadeoutSound(const std::string &name) {
+void Object::fadeout_sound(const std::string &name) {
 	Mixer->fadeoutSample(this, name + ".ogg");
 }
 
-void Object::playRandomSound(const std::string &classname, const bool loop, const float gain) {
+void Object::play_random_sound(const std::string &classname, const bool loop, const float gain) {
 	Mixer->playRandomSample(this, classname, loop, gain);
 }
 
 
-const bool Object::getRenderRect(sdlx::Rect &src) const {
+const bool Object::get_render_rect(sdlx::Rect &src) const {
 	if (_events.empty()) {
 		if (!isDead() && _parent == NULL)
 			LOG_WARN(("%s: no animation played. latest position: %g", registered_name.c_str(), _pos));
@@ -368,7 +368,7 @@ const bool Object::getRenderRect(sdlx::Rect &src) const {
 	const Event & event = _events.front();
 	const Pose * pose = event.cached_pose;
 	if (pose == NULL) {
-		checkAnimation();
+		check_animation();
 		event.cached_pose = pose = _model->getPose(event.name);
 	}
 
@@ -396,7 +396,7 @@ const bool Object::getRenderRect(sdlx::Rect &src) const {
 	frame = pose->frames[frame];
 	
 	
-	checkSurface();
+	check_surface();
 	
 	if (frame * _th >= _surface->get_height()) {
 		LOG_WARN(("%s:%s event '%s' tile row %d is out of range.", registered_name.c_str(), animation.c_str(), _events.front().name.c_str(), frame));
@@ -410,7 +410,7 @@ const bool Object::getRenderRect(sdlx::Rect &src) const {
 	return true;
 }
 
-const bool Object::skipRendering() const {
+const bool Object::skip_rendering() const {
 	if (!has_effect("invulnerability"))
 		return false;
 	float t = get_effect_timer("invulnerability");
@@ -424,11 +424,11 @@ const bool Object::skipRendering() const {
 }
 
 void Object::render(sdlx::Surface &surface, const int x_, const int y_) {
-	if (skipRendering())
+	if (skip_rendering())
 		return;
 
 	sdlx::Rect src;
-	if (!getRenderRect(src))
+	if (!get_render_rect(src))
 		return;
 		
 	int x = x_, y = y_;
@@ -447,7 +447,7 @@ void Object::render(sdlx::Surface &surface, const int x_, const int y_) {
 		alpha = (int)(255 * (fadeout_time - ttl) / fadeout_time);
 	//LOG_DEBUG(("alpha = %d", alpha));
 	
-	checkSurface();
+	check_surface();
 	
 	if (alpha == 0) {
 		surface.blit(*_surface, src, x, y);
@@ -503,9 +503,9 @@ void Object::render(sdlx::Surface &surface, const int x_, const int y_) {
 const bool Object::collides(const Object *other, const int x, const int y, const bool hidden_by_other) const {
 	sdlx::Rect src, other_src;
 	assert(other != NULL);
-	if (!getRenderRect(src)) 
+	if (!get_render_rect(src)) 
 		return false;
-	if (!other->getRenderRect(other_src)) 
+	if (!other->get_render_rect(other_src)) 
 		return false;
 /*	LOG_DEBUG(("::collide(%s:%d,%d,%d,%d, %s:%d,%d,%d,%d)", 
 		classname.c_str(),
@@ -514,8 +514,8 @@ const bool Object::collides(const Object *other, const int x, const int y, const
 		other_src.x, other_src.y, other_src.w, other_src.h
 		));
 */
-	checkSurface();
-	other->checkSurface();
+	check_surface();
+	other->check_surface();
 	
 	return _cmap->collides(src, other->_cmap, other_src, x, y, hidden_by_other);
 }
@@ -523,10 +523,10 @@ const bool Object::collides(const Object *other, const int x, const int y, const
 const bool Object::collides(const sdlx::CollisionMap *other, const int x, const int y, const bool hidden_by_other) const {
 	assert(other != NULL);
 	sdlx::Rect src;
-	if (!getRenderRect(src)) 
+	if (!get_render_rect(src)) 
 		return false;
 
-	checkSurface();
+	check_surface();
 	return _cmap->collides(src, other, sdlx::Rect(), x, y, hidden_by_other);
 }
 
@@ -566,7 +566,7 @@ void Object::serialize(mrt::Serializator &s) const {
 	s.add(_dst_direction);
 }
 
-void Object::serializeAll(mrt::Serializator &s) const {
+void Object::serialize_all(mrt::Serializator &s) const {
 	std::deque<Object *> restore;
 	Object *o = const_cast<Object *>(this);
 	if  (!_need_sync) {
@@ -586,10 +586,10 @@ void Object::serializeAll(mrt::Serializator &s) const {
 	}
 }
 
-void Object::setSync(const bool sync) {
+void Object::set_sync(const bool sync) {
 	_need_sync = sync;
 	for(Group::iterator i = _group.begin(); i != _group.end(); ++i) {
-		i->second->setSync(sync);
+		i->second->set_sync(sync);
 	}
 }
 
@@ -660,7 +660,7 @@ try {
 	_surface = NULL;
 	_cmap = NULL;
 
-	checkAnimation();
+	check_animation();
 } CATCH("deserialize", throw);
 }
 
@@ -684,7 +684,7 @@ void Object::emit(const std::string &event, Object * emitter) {
 		LOG_WARN(("%s[%d]: unhandled event '%s'", registered_name.c_str(), _id, event.c_str()));
 }
 
-void Object::setWay(const Way & new_way) {
+void Object::set_way(const Way & new_way) {
 	v2<int> pos;
 	get_center_position(pos);
 
@@ -718,7 +718,7 @@ void Object::setWay(const Way & new_way) {
 	_need_sync = true;
 }
 
-void Object::calculateWayVelocity() {
+void Object::calculate_way_velocity() {
 	if (_way.empty())
 		return;
 	
@@ -789,16 +789,16 @@ void Object::calculateWayVelocity() {
 }
 
 
-const bool Object::isDriven() const {
+const bool Object::is_driven() const {
 	return !_way.empty();
 }
 
 void Object::init(const std::string &an) {
 	const Animation * a = ResourceManager.get_const()->getAnimation(an);
 	_animation = a;
-	_model = ResourceManager->getAnimationModel(a->model);
+	_model = ResourceManager->get_animation_model(a->model);
 	
-	_surface = ResourceManager->getSurface(a->surface);
+	_surface = ResourceManager->get_surface(a->surface);
 	_cmap = ResourceManager->getCollisionMap(a->surface);
 
 	_tw = a->tw;
@@ -814,11 +814,11 @@ void Object::init(const std::string &an) {
 	invalidate();
 }
 
-void Object::onSpawn() {
-	throw_ex(("%s: object MUST define onSpawn() method.", registered_name.c_str()));
+void Object::on_spawn() {
+	throw_ex(("%s: object MUST define on_spawn() method.", registered_name.c_str()));
 }
 
-void Object::limitRotation(const float dt, const float speed, const bool rotate_even_stopped, const bool allow_backward) {
+void Object::limit_rotation(const float dt, const float speed, const bool rotate_even_stopped, const bool allow_backward) {
 	const int dirs = get_directions_number();
 	if (dirs == 1)
 		return;
@@ -933,10 +933,10 @@ Object* Object::add(const std::string &name, const std::string &classname, const
 	obj->addOwner(_id);
 	obj->_id = _id;
 	obj->_spawned_by = _id;
-	obj->setSlot(getSlot());
+	obj->set_slot(get_slot());
 	obj->_position = dpos;
 
-	obj->onSpawn();
+	obj->on_spawn();
 	
 	
 	switch(type) {
@@ -989,7 +989,7 @@ void Object::remove(const std::string &name) {
 }
 
 
-void Object::groupEmit(const std::string &name, const std::string &event) {
+void Object::group_emit(const std::string &name, const std::string &event) {
 	Group::const_iterator i = _group.find(name);
 	if (i == _group.end())
 		throw_ex(("there's no object '%s' in group", name.c_str()));
@@ -1032,7 +1032,7 @@ void Object::calculate(const float dt) {
 	if (_state.up) _velocity.y -= 1;
 	if (_state.down) _velocity.y += 1;
 	
-	quantizeVelocity();
+	quantize_velocity();
 }
 
 
@@ -1065,15 +1065,15 @@ const float Object::getWeaponRange(const std::string &weapon) const {
 
 #include "math/vector.h"
 
-const int Object::getTarget_position(v2<float> &relative_position, const std::set<std::string> &targets, const std::string &weapon) const {
+const int Object::get_target_position(v2<float> &relative_position, const std::set<std::string> &targets, const std::string &weapon) const {
 	float range = getWeaponRange(weapon);
-	return getTarget_position(relative_position, targets, range);
+	return get_target_position(relative_position, targets, range);
 }
 
-const bool Object::checkDistance(const v2<float> &_map1, const v2<float>& map2, const int z, const bool use_pierceable_fixes) {
+const bool Object::check_distance(const v2<float> &_map1, const v2<float>& map2, const int z, const bool use_pierceable_fixes) {
 	const v2<int> pfs = Map->getPathTileSize();
-	const Matrix<int> &matrix = Map->getImpassabilityMatrix(z);
-	const Matrix<int> *pmatrix = use_pierceable_fixes? &Map->getImpassabilityMatrix(z, true): NULL;
+	const Matrix<int> &matrix = Map->get_impassability_matrix(z);
+	const Matrix<int> *pmatrix = use_pierceable_fixes? &Map->get_impassability_matrix(z, true): NULL;
 
 	v2<float> map1 = _map1;
 	v2<float> dp = Map->distance(map1, map2);
@@ -1108,16 +1108,16 @@ const bool Object::checkDistance(const v2<float> &_map1, const v2<float>& map2, 
 	return true;
 }
 
-const int Object::getTarget_position(v2<float> &relative_position, const std::set<std::string> &targets, const float range) const {
-	if (aiDisabled())
+const int Object::get_target_position(v2<float> &relative_position, const std::set<std::string> &targets, const float range) const {
+	if (ai_disabled())
 		return -1;
 
 	const v2<int> pfs = Map->getPathTileSize();
 	const int dirs = _directions_n == 1?16:_directions_n;
-	const Matrix<int> &matrix = getImpassabilityMatrix();
+	const Matrix<int> &matrix = get_impassability_matrix();
 	
 	std::set<const Object *> objects;
-	World->enumerateObjects(objects, this, range, &targets);
+	World->enumerate_objects(objects, this, range, &targets);
 	
 //		v2<int> map_pos = (pos + get_position()).convert<int>() / pfs;
 
@@ -1129,10 +1129,10 @@ const int Object::getTarget_position(v2<float> &relative_position, const std::se
 		dir.fromDirection(d, dirs);
 		for(std::set<const Object *>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
 			const Object *o = *i;
-			if (hasSameOwner(o) || o->aiDisabled() || o->impassability == 0 || o->has_effect("invulnerability"))
+			if (hasSameOwner(o) || o->ai_disabled() || o->impassability == 0 || o->has_effect("invulnerability"))
 				continue;
 			
-			v2<float> pos, tp = getRelativePosition(o);
+			v2<float> pos, tp = get_relative_position(o);
 			if (!tp.same_sign(dir))
 				continue;
 			
@@ -1158,11 +1158,11 @@ const int Object::getTarget_position(v2<float> &relative_position, const std::se
 				//checking map projection
 				v2<float> map1 = pos + get_center_position();
 				v2<float> map2 = o->get_center_position();
-				if (!checkDistance(map1, map2, getZ(), true))
+				if (!check_distance(map1, map2, getZ(), true))
 					continue;
 				map1 = get_center_position();
 				map2 = pos + get_center_position();
-				if (!checkDistance(map1, map2, getZ(), false))
+				if (!check_distance(map1, map2, getZ(), false))
 					continue;
 			} 
 				
@@ -1177,16 +1177,16 @@ const int Object::getTarget_position(v2<float> &relative_position, const std::se
 	return result_dir;
 }
 
-const int Object::getTarget_position(v2<float> &relative_position, const v2<float> &target, const std::string &weapon) const {
-	if (aiDisabled())
+const int Object::get_target_position(v2<float> &relative_position, const v2<float> &target, const std::string &weapon) const {
+	if (ai_disabled())
 		return -1;
 
 	float range = getWeaponRange(weapon);
-	return getTarget_position(relative_position, target, range);
+	return get_target_position(relative_position, target, range);
 }
 
-const int Object::getTarget_position(v2<float> &relative_position, const v2<float> &target, const float range) const {
-	if (aiDisabled())
+const int Object::get_target_position(v2<float> &relative_position, const v2<float> &target, const float range) const {
+	if (ai_disabled())
 		return -1;
 
 	const int dirs = _directions_n == 1?16:_directions_n;
@@ -1211,12 +1211,12 @@ const int Object::getTarget_position(v2<float> &relative_position, const v2<floa
 			
 			v2<float> map1 = pos + get_center_position();
 			v2<float> map2 = target + get_center_position();
-			if (!checkDistance(map1, map2, getZ(), true))
+			if (!check_distance(map1, map2, getZ(), true))
 				continue;
 			
 			map1 = get_center_position();
 			map2 = pos + get_center_position();
-			if (!checkDistance(map1, map2, getZ(), false))
+			if (!check_distance(map1, map2, getZ(), false))
 				continue;
 			
 		} 
@@ -1233,19 +1233,19 @@ const int Object::getTarget_position(v2<float> &relative_position, const v2<floa
 	return result_dir;
 }
 
-void Object::checkAnimation() const {
+void Object::check_animation() const {
 	if (_animation && _model)
 		return;
 	_animation = ResourceManager.get_const()->getAnimation(animation);
-	_model = ResourceManager->getAnimationModel(_animation->model);
+	_model = ResourceManager->get_animation_model(_animation->model);
 }
 
 
-void Object::checkSurface() const {
+void Object::check_surface() const {
 	if (_surface && _cmap) 
 		return;
 	Object *nc_this = const_cast<Object *>(this);
-	ResourceManager->checkSurface(animation, nc_this->_surface, nc_this->_cmap);
+	ResourceManager->check_surface(animation, nc_this->_surface, nc_this->_cmap);
 	assert(_surface != NULL);
 	assert(_cmap != NULL);
 }
@@ -1272,7 +1272,7 @@ static inline const int h(const v2<int>& src, const v2<int>& dst, const int step
 }
 
 
-void Object::findPath(const v2<int> target, const int step) {
+void Object::find_path(const v2<int> target, const int step) {
 	_step = step;
 	_end = target;
 	get_center_position(_begin);
@@ -1280,7 +1280,7 @@ void Object::findPath(const v2<int> target, const int step) {
 	_begin /= step;
 	_end /= step;
 	
-	//LOG_DEBUG(("%s[%d]: findPath %d:%d -> %d:%d", registered_name.c_str(), get_id(), _begin.x, _begin.y, _end.x, _end.y));
+	//LOG_DEBUG(("%s[%d]: find_path %d:%d -> %d:%d", registered_name.c_str(), get_id(), _begin.x, _begin.y, _end.x, _end.y));
 	
 	//while(!_open_list.empty())
 	//	_open_list.pop();
@@ -1302,8 +1302,8 @@ void Object::findPath(const v2<int> target, const int step) {
 
 #include "player_manager.h"
 
-const bool Object::findPathDone(Way &way) {
-//	if (PlayerManager->isClient()) 
+const bool Object::find_path_done(Way &way) {
+//	if (PlayerManager->is_client()) 
 //		return false;
 	
 	if (_begin == _end) {
@@ -1365,7 +1365,7 @@ const bool Object::findPathDone(Way &way) {
 				continue;
 	
 	
-			setDirection(i);
+			set_direction(i);
 			v2<int> world_pos(id.x * _step - (int)size.x / 2, id.y * _step - (int)size.y / 2);
 			float map_im = Map->getImpassability(this, world_pos) / 100.0f;
 			assert(map_im >= 0);
@@ -1440,7 +1440,7 @@ const bool Object::findPathDone(Way &way) {
 			ps = -1;
 	}
 	
-	setDirection(dir_save);
+	set_direction(dir_save);
 
 	if (ps < 0) {
 		return false;
@@ -1458,7 +1458,7 @@ found:
 	
 	_close_list.clear();
 	
-	setDirection(dir_save);
+	set_direction(dir_save);
 
 	for(v2<int> id = _end; id != _begin; ) {
 		Point &p = _points[id];
@@ -1474,8 +1474,8 @@ found:
 
 #include "game.h"
 
-const std::string Object::getNearestWaypoint(const std::string &name) const {
-	return GameMonitor->getNearestWaypoint(this, name);
+const std::string Object::get_nearest_waypoint(const std::string &name) const {
+	return GameMonitor->get_nearest_waypoint(this, name);
 }
 
 void Object::add_damage(Object *from, const bool emitDeath) {
@@ -1517,13 +1517,13 @@ void Object::add_damage(Object *from, const int d, const bool emitDeath) {
 		o->hp += hp;
 
 	{
-		PlayerSlot *slot = PlayerManager->getSlotByID(from->getSummoner());
+		PlayerSlot *slot = PlayerManager->get_slotByID(from->getSummoner());
 
 		if (slot == NULL) {
 			std::deque<int> owners;
 			from->getOwners(owners);
 			for(std::deque<int>::const_iterator i = owners.begin(); i != owners.end(); ++i) {
-				slot = PlayerManager->getSlotByID(*i);
+				slot = PlayerManager->get_slotByID(*i);
 				if (slot != NULL) 
 					break;
 			}
@@ -1535,7 +1535,7 @@ void Object::add_damage(Object *from, const int d, const bool emitDeath) {
 		
 		
 		GET_CONFIG_VALUE("engine.score-decreasing-factor-for-damage", float, sdf, 0.25f);
-		if ((slot = PlayerManager->getSlotByID(get_id())) != NULL) {
+		if ((slot = PlayerManager->get_slotByID(get_id())) != NULL) {
 			slot->addScore(- (int)(o->hp * sdf));
 		}
 		
@@ -1548,12 +1548,12 @@ void Object::add_damage(Object *from, const int d, const bool emitDeath) {
 	o->setZ(getZ() + 1, true);
 }
 
-const sdlx::Surface * Object::getSurface() const {
-	checkSurface();
+const sdlx::Surface * Object::get_surface() const {
+	check_surface();
 	return _surface;
 }
 
-const float Object::getStateProgress() const {
+const float Object::get_state_progress() const {
 	if (_events.empty()) 
 		return 0;
 
@@ -1561,7 +1561,7 @@ const float Object::getStateProgress() const {
 	//LOG_DEBUG(("%p: event: %s, pos = %f", (void *)this, event.name.c_str(), _pos));
 	const Pose * pose = event.cached_pose;
 	if (pose == NULL) { 
-		checkAnimation();
+		check_animation();
 		event.cached_pose = pose = _model->getPose(event.name);
 	}
 	
@@ -1590,16 +1590,16 @@ void Object::setZBox(const int zb) {
 	}
 }
 
-const Matrix<int> &Object::getImpassabilityMatrix() const {
-	return Map->getImpassabilityMatrix(getZ());
+const Matrix<int> &Object::get_impassability_matrix() const {
+	return Map->get_impassability_matrix(getZ());
 }
 
-void Object::enumerateObjects(std::set<const Object *> &o_set, const float range, const std::set<std::string> *classfilter) const {
-	World->enumerateObjects(o_set, this, range, classfilter);
+void Object::enumerate_objects(std::set<const Object *> &o_set, const float range, const std::set<std::string> *classfilter) const {
+	World->enumerate_objects(o_set, this, range, classfilter);
 }
 
-const int Object::getChildren(const std::string &classname) const {
-	return World->getChildren(get_id(), classname);
+const int Object::get_children(const std::string &classname) const {
+	return World->get_children(get_id(), classname);
 }
 
 const bool Object::take(const BaseObject *obj, const std::string &type) {
@@ -1613,9 +1613,9 @@ const bool Object::take(const BaseObject *obj, const std::string &type) {
 			float d;
 			Config->get("objects." + registered_name + "." + type + "-duration", d, 10.0f);
 			
-			size_t n = PlayerManager->getSlotsCount();
+			size_t n = PlayerManager->get_slotsCount();
 			for(size_t i = 0; i < n; ++i) {
-				PlayerSlot &slot = PlayerManager->getSlot(i);
+				PlayerSlot &slot = PlayerManager->get_slot(i);
 				Object *o = slot.getObject();
 				if (o != NULL && o->get_id() != get_id()) 
 					o->add_effect(type, d);
@@ -1630,7 +1630,7 @@ const bool Object::attachVehicle(Object *vehicle) {
 	if (vehicle == NULL) 
 		return false;
 	
-	PlayerSlot *slot = PlayerManager->getSlotByID(get_id());
+	PlayerSlot *slot = PlayerManager->get_slotByID(get_id());
 	if (slot == NULL)
 		return false;
 	
@@ -1653,7 +1653,7 @@ const bool Object::attachVehicle(Object *vehicle) {
 	
 	vehicle->copyOwners(this);
 	vehicle->disable_ai = disable_ai;
-	vehicle->setSlot(getSlot());
+	vehicle->set_slot(get_slot());
 
 	vehicle->pick(".me", this);
 	World->push(get_id(), World->pop(vehicle), get_position());
@@ -1664,7 +1664,7 @@ const bool Object::attachVehicle(Object *vehicle) {
 }
 
 const bool Object::detachVehicle() {
-	PlayerSlot * slot = PlayerManager->getSlotByID(get_id());
+	PlayerSlot * slot = PlayerManager->get_slotByID(get_id());
 	if (
 		slot == NULL || 
 		classname == "monster" ||
@@ -1694,7 +1694,7 @@ const bool Object::detachVehicle() {
 		_group.erase(i);
 	} else {
 		man = ResourceManager->createObject(disable_ai?"machinegunner(player)": "machinegunner-player(player)", "machinegunner");
-		man->onSpawn();
+		man->on_spawn();
 	}
 	
 	if (classname == "helicopter")
@@ -1728,10 +1728,10 @@ const bool Object::detachVehicle() {
 	return true;
 }
 
-void Object::setSlot(const int id) {
+void Object::set_slot(const int id) {
 	_slot_id = id;
 	for(Group::iterator i = _group.begin(); i != _group.end(); ++i) {
-		i->second->setSlot(id);
+		i->second->set_slot(id);
 	}
 }
 

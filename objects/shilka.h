@@ -29,7 +29,7 @@ class Shilka : public Object {
 public:
 	Shilka(const std::string &classname);
 	virtual Object * clone() const;
-	virtual void onSpawn();
+	virtual void on_spawn();
 
 	virtual void emit(const std::string &event, Object * emitter);
 	virtual void tick(const float dt);

@@ -58,8 +58,8 @@ public:
 	void playRandomSample(const Object *o, const std::string &classname, const bool loop, const float gain = 1.0);
 	void cancelSample(const Object *o, const std::string &name);
 	void fadeoutSample(const Object *o, const std::string &name);
-	void cancelAll(const Object *o);
-	void cancelAll();
+	void cancel_all(const Object *o);
+	void cancel_all();
 	
 	void tick(const float dt);
 	

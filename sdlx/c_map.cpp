@@ -157,7 +157,7 @@ const bool CollisionMap::collides(const sdlx::Rect &src, const CollisionMap *oth
 			assert(pos1 >= 0 && pos1 < size1);
 			assert(pos2 >= 0 && pos2 < size2);
 			*/ //collision detection code works in 99% cases. 
-			//this asserts above can be triggered by malicious objects (invalid rectangle returned by getRenderRect)
+			//this asserts above can be triggered by malicious objects (invalid rectangle returned by get_render_rect)
 			//so skip it. :)
 			if (pos1 < 0 || pos2 < 0)
 				continue;

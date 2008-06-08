@@ -27,7 +27,7 @@ class AILauncher:  public Launcher, public ai::Buratino {
 public: 
 	AILauncher(const std::string &classname) : Launcher(classname) {}
 //	~AILauncher();
-	virtual void onSpawn();
+	virtual void on_spawn();
 	virtual void calculate(const float dt);
 
 	virtual Object * clone() const { return new AILauncher(*this); }
@@ -59,7 +59,7 @@ const int AILauncher::getWeaponAmount(const int idx) const{
 }
 
 
-void AILauncher::onSpawn() {
+void AILauncher::on_spawn() {
 	addEnemyClass("fighting-vehicle");
 	addEnemyClass("cannon");
 	addEnemyClass("trooper");
@@ -85,15 +85,15 @@ void AILauncher::onSpawn() {
 	addBonusName("machinegunner-item");
 	addBonusName("thrower-item");
 
-	ai::Buratino::onSpawn(this);
-	Launcher::onSpawn();
+	ai::Buratino::on_spawn(this);
+	Launcher::on_spawn();
 }
 
 void AILauncher::calculate(const float dt) {
 	ai::Buratino::calculate(this, dt);
 	
 	GET_CONFIG_VALUE("objects.launcher.rotation-time", float, rt, 0.07);
-	limitRotation(dt, rt, true, false);
+	limit_rotation(dt, rt, true, false);
 	updateStateFromVelocity();	
 }
 

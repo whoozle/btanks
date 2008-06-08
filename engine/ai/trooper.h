@@ -41,7 +41,7 @@ public:
 	
 	StupidTrooper(const std::string &object, const std::set<std::string> &targets);
 	virtual ~StupidTrooper();
-	void onSpawn();
+	void on_spawn();
 	void calculate(Object *object, PlayerState &state, v2<float> &velocity, v2<float> &direction, const float dt);
 
 	virtual void serialize(mrt::Serializator &s) const;

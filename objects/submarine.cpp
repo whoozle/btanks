@@ -26,7 +26,7 @@ class Submarine : public Object {
 public:
 	Submarine() : Object("submarine"), _wakeup(false) { impassability = 0; hp = -1; }
 	virtual Object * clone() const;
-	virtual void onSpawn();
+	virtual void on_spawn();
 	virtual void tick(const float dt);
 
 	virtual void serialize(mrt::Serializator &s) const {
@@ -45,16 +45,16 @@ protected:
 	Alarm _wakeup;
 };
 
-void Submarine::onSpawn() {
+void Submarine::on_spawn() {
 	play("hold", true);
 	_wakeup.set(mrt::random(5) + 5);
-	playSound("submarine", true);
+	play_sound("submarine", true);
 }
 
 
 bool Submarine::spawnBallistic() {
 	v2<float> pos, vel;
-	if (getNearest(ai::Targets->troops, 640.0f, pos, vel, false)) {
+	if (get_nearest(ai::Targets->troops, 640.0f, pos, vel, false)) {
 		spawn("ballistic-missile", "nuke-missile");
 		return true;
 	}
@@ -64,7 +64,7 @@ bool Submarine::spawnBallistic() {
 void Submarine::tick(const float dt) {
 	Object::tick(dt);
 
-	if (getState().empty()) {
+	if (get_state().empty()) {
 		_wakeup.set(mrt::random(5) + 5);
 		play("hold", true);
 	}
@@ -73,7 +73,7 @@ void Submarine::tick(const float dt) {
 		spawnBallistic();
 		_wakeup.set(3600);
 		
-		cancelAll();
+		cancel_all();
 		play("fade-in", false);
 		int n = mrt::random(3) + 3;
 		for(int i = 0; i < n; ++i) {

@@ -42,7 +42,7 @@ public:
 		if (_state.alt_fire && alt_fire_possible) {
 			_special_fire.reset();
 			if (_parent->has_effect("dirt")) {
-				if (getState().substr(0,4) == "fire") 
+				if (get_state().substr(0,4) == "fire") 
 					cancel();
 		
 				static const std::string left_fire = "shilka-bullet-left";
@@ -85,10 +85,10 @@ public:
 		}
 
 	if (play_fire) {
-		if (getState().substr(0,4) == "fire") 
+		if (get_state().substr(0,4) == "fire") 
 			cancel();
 		
-		playNow(_left_fire?"fire-left":"fire-right");
+		play_now(_left_fire?"fire-left":"fire-right");
 	}
 
 
@@ -101,14 +101,14 @@ public:
 		if (_parent == NULL)
 			throw_ex(("turret is only operable attached to shilka "));
 
-		if (_parent->disable_ai && PlayerManager->getSlotByID(_parent->get_id()) == NULL) {
+		if (_parent->disable_ai && PlayerManager->get_slotByID(_parent->get_id()) == NULL) {
 			Object::calculate(dt);
 			return;
 		}
 					
 		v2<float> pos, vel;
 		std::set<const Object *> objects;
-		_parent->enumerateObjects(objects, getWeaponRange("shilka-bullet"), &ai::Targets->troops);
+		_parent->enumerate_objects(objects, getWeaponRange("shilka-bullet"), &ai::Targets->troops);
 
 		int dirs = get_directions_number();
 		//int parent_dir = _parent->get_direction();
@@ -124,7 +124,7 @@ public:
 				)
 				continue;
 			
-			pos = getRelativePosition(o);
+			pos = get_relative_position(o);
 			if (target == NULL || pos.quick_length() < target_pos.quick_length()) {
 				target = o;
 				target_pos = pos;
@@ -141,10 +141,10 @@ public:
 		}
 
 		_direction = target_pos;		
-		setDirection(dir);
+		set_direction(dir);
 	}
 
-	void onSpawn() {
+	void on_spawn() {
 		play("hold", true);
 		GET_CONFIG_VALUE("objects.shilka.fire-rate", float, fr, 0.2f);
 		_fire.set(fr);
@@ -155,7 +155,7 @@ public:
 	ShilkaTurret() : Object("turrel"), _reaction(true), _fire(false), _special_fire(false), _left_fire(false) {
 		impassability = 0;
 		hp = -1;
-		setDirectionsNumber(16);
+		set_directions_number(16);
 		pierceable = true;
 		float rt = 0.1f;
 		mrt::randomize(rt, rt/10);

@@ -54,7 +54,7 @@ public:
 	const float getFrameRate() const { return _fr; }
 	
 	void resetTimer();
-	sdlx::Surface &getSurface() { return _window; }
+	sdlx::Surface &get_surface() { return _window; }
 	
 	void flip();
 

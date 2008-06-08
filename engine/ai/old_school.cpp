@@ -26,12 +26,12 @@
 
 ai::OldSchool::OldSchool() : trottle(0) {}
 
-void ai::OldSchool::onSpawn(const Object *object) {
+void ai::OldSchool::on_spawn(const Object *object) {
 	trottle = 0;
 }
 
 void ai::OldSchool::calculateV(v2<float> &velocity, Object *object) {
-	if (object->isDriven())
+	if (object->is_driven())
 		return;
 	velocity.clear();
 	++trottle;
@@ -51,7 +51,7 @@ void ai::OldSchool::calculateV(v2<float> &velocity, Object *object) {
 
 	if (action != 1 && dirs0 > 1) {
 		int dir = mrt::random(dirs);
-		object->setDirection(dir);
+		object->set_direction(dir);
 		velocity.clear();
 	} else if (action == 1) {
 		int dir = mrt::random(dirs);
@@ -59,7 +59,7 @@ void ai::OldSchool::calculateV(v2<float> &velocity, Object *object) {
 		object->get_center_position(pos);
 		v2<int> tile_size = Map->getPathTileSize();
 	
-		const Matrix<int> &matrix = Map->getImpassabilityMatrix(object->getZ());
+		const Matrix<int> &matrix = Map->get_impassability_matrix(object->getZ());
 	
 		v2<float> delta;
 		delta.fromDirection(dir, dirs);
@@ -73,7 +73,7 @@ void ai::OldSchool::calculateV(v2<float> &velocity, Object *object) {
 		if (matrix.get(pos.y, pos.x) != -1 && matrix.get(pos2.y, pos2.x) != -1) {
 			Way way;
 			way.push_back(pos2 * tile_size + tile_size / 2);
-			object->setWay(way);
+			object->set_way(way);
 		}
 	}
 }

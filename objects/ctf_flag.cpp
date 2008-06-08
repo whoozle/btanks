@@ -38,7 +38,7 @@ public:
 			Team::ID team = Team::get_team(this);
 			assert(team != Team::None);
 				
-			PlayerSlot *slot = PlayerManager->getSlotByID(emitter->get_id());
+			PlayerSlot *slot = PlayerManager->get_slotByID(emitter->get_id());
 			if (slot == NULL) {
 				return;
 			}
@@ -47,7 +47,7 @@ public:
 			Object *base = World->getObjectByID(base_id);
 			if (slot->team == team) {
 				if (base != NULL) {
-					v2<float> dpos = getRelativePosition(base);
+					v2<float> dpos = get_relative_position(base);
 					if (dpos.quick_length() > size.x * size.y / 4) {
 						setZBox(base->getZ());
 						World->teleport(this, base->get_center_position());
@@ -91,13 +91,13 @@ public:
 	CTFFlag() : Object("ctf-flag") {
 		impassability = -1;
 		hp = -1;
-		setDirectionsNumber(1);
+		set_directions_number(1);
 		pierceable = true;
 	}
 	
 	virtual Object * clone() const { return new CTFFlag(*this); }
 	
-	void onSpawn() {
+	void on_spawn() {
 		play("main", true);
 	}
 

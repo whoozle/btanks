@@ -24,7 +24,7 @@ class Bomb : public Object {
 public:
 	Bomb() : Object("bomb"), z1(0), z2(0) { piercing = true; pierceable = true; }
 	virtual Object * clone() const;
-	virtual void onSpawn();
+	virtual void on_spawn();
 	virtual void calculate(const float dt);
 	virtual void tick(const float dt);
 	virtual void emit(const std::string &event, Object * emitter = NULL);
@@ -45,7 +45,7 @@ private:
 	int z1, z2;
 };
 
-void Bomb::onSpawn() {
+void Bomb::on_spawn() {
 	play("main", false);
 	z1 = getZ();
 	GET_CONFIG_VALUE("objects.bomb.lowest-z", int, z, 610);
@@ -59,16 +59,16 @@ void Bomb::calculate(const float dt) {
 
 void Bomb::tick(const float dt) {
 	Object::tick(dt);
-	if (getState().empty())
+	if (get_state().empty())
 		emit("death", this);
-	int z = (int)(getStateProgress() * (z2 - z1)  + z1);
+	int z = (int)(get_state_progress() * (z2 - z1)  + z1);
 	//LOG_DEBUG(("setting z = %d [%d-%d]", z, z1, z2));
 	setZ(z, true);
 }
 
 void Bomb::emit(const std::string &event, Object * emitter) {
 	if (event == "collision") {
-		if (emitter == NULL || getStateProgress() >= 0.8) 
+		if (emitter == NULL || get_state_progress() >= 0.8) 
 			emit("death", emitter);
 		return; //do not emit addDamage
 	} else if (event == "death") {

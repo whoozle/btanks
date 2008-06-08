@@ -420,7 +420,7 @@ void IMixer::fadeoutSample(const Object *o, const std::string &name) {
 }
 
 
-void IMixer::cancelAll(const Object *o) {
+void IMixer::cancel_all(const Object *o) {
 	if (_nosound)
 		return;
 	
@@ -434,7 +434,7 @@ void IMixer::cancelAll(const Object *o) {
 }
 
 
-void IMixer::cancelAll() {
+void IMixer::cancel_all() {
 	stopAmbient();
 	
 	if (_nosound)

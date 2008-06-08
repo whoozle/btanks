@@ -31,13 +31,13 @@ public:
 	std::string type;
 	Missile(const std::string &type) : Object("missile"), type(type), _reaction(true) {
 		piercing = true;
-		setDirectionsNumber(16);
+		set_directions_number(16);
 	}
 	virtual void addDamage(BaseObject *from, const int hp, const bool emitDeath = true) {}
 	virtual void calculate(const float dt);
 	virtual Object * clone() const;
 	virtual void emit(const std::string &event, Object * emitter = NULL);
-	void onSpawn();
+	void on_spawn();
 
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
@@ -56,7 +56,7 @@ private:
 	v2<float> _target;
 };
 
-void Missile::onSpawn() {
+void Missile::on_spawn() {
 	if (type == "guided" || type == "stun") {
 		GET_CONFIG_VALUE("objects.guided-missile.reaction-time", float, rt, 0.05);
 		mrt::randomize(rt, rt / 10);
@@ -66,19 +66,19 @@ void Missile::onSpawn() {
 	play("main", true);
 	if (type != "boomerang") {
 		Object *_fire = add("fire", "single-pose", "missile-fire", v2<float>(), Centered);
-		_fire->setDirectionsNumber(16);
+		_fire->set_directions_number(16);
 		_fire->impassability = 0;
 	} 
 	
-	playSound(type + "-missile", false);
-	quantizeVelocity();
+	play_sound(type + "-missile", false);
+	quantize_velocity();
 	_target = _velocity;
 }
 
 void Missile::calculate(const float dt) {
 	if (type == "guided" || type == "stun") {
 		v2<float> pos, vel;
-		if (_reaction.tick(dt) && getNearest(type == "stun"? ai::Targets->players_and_monsters: ai::Targets->troops, math::min(ttl * speed, 800.0f), pos, vel, true)) {
+		if (_reaction.tick(dt) && get_nearest(type == "stun"? ai::Targets->players_and_monsters: ai::Targets->troops, math::min(ttl * speed, 800.0f), pos, vel, true)) {
 			float est_t = pos.length() / speed;
 			if (est_t > 1)
 				est_t = 1;
@@ -89,11 +89,11 @@ void Missile::calculate(const float dt) {
 		//LOG_DEBUG(("%d: velocity: %g %g", get_id(), _velocity.x, _velocity.y));
 
 		GET_CONFIG_VALUE("objects." + type + "-missile.rotation-time", float, rotation_time, 0.2);
-		limitRotation(dt, rotation_time, false, false);
+		limit_rotation(dt, rotation_time, false, false);
 	} else if (type == "boomerang") {
 		GET_CONFIG_VALUE("objects.boomerang.rotation-speed", float, rs, 30);
 		int dir = ((int)(_moving_time * rs)) % 8;
-		setDirection(dir);
+		set_direction(dir);
 
 		const Object *leader = World->getObjectByID(getSummoner());
 		if (leader == NULL) {
@@ -106,7 +106,7 @@ void Missile::calculate(const float dt) {
 		_direction.normalize();
 		//LOG_DEBUG(("direction %g %g", _direction.x, _direction.y));
 		_velocity.normalize();
-		v2<float> lpos = getRelativePosition(leader);
+		v2<float> lpos = get_relative_position(leader);
 
 		GET_CONFIG_VALUE("objects.boomerang.radius", float, r, 3000);
 		GET_CONFIG_VALUE("objects.boomerang.turning-speed", float, ts, 0.1);
@@ -126,7 +126,7 @@ void Missile::emit(const std::string &event, Object * emitter) {
 	if (event == "collision") {
 		if (type == "boomerang") {
 			if (emitter == NULL || emitter->hp == -1) {
-				playSound("boomerang-hit", false);
+				play_sound("boomerang-hit", false);
 				_velocity = -_velocity;
 				return;
 			}
@@ -142,7 +142,7 @@ void Missile::emit(const std::string &event, Object * emitter) {
 		} 
 		emit("death", emitter);
 	} if (event == "death") {
-		fadeoutSound(type + "-missile");
+		fadeout_sound(type + "-missile");
 		if (type == "smoke") {
 			GET_CONFIG_VALUE("objects.smoke-cloud-downwards-z-override", int, csdzo, 350);
 			int z = (_velocity.y > 0)? csdzo: 0;
@@ -152,7 +152,7 @@ void Missile::emit(const std::string &event, Object * emitter) {
 			Object *o = World->getObjectByID(getSummoner()); //player
 			v2<float> dpos;
 			if (o != NULL) {
-				dpos = o->getRelativePosition(this);
+				dpos = o->get_relative_position(this);
 			}
 			Object * e = (o != NULL? o: this)->spawn(type + "-explosion", type + "-explosion", dpos, v2<float>());
 		

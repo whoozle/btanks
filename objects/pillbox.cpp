@@ -34,7 +34,7 @@ public:
 
 	virtual Object * clone() const { return new PillBox(*this); }
 	
-	virtual void onSpawn() { 
+	virtual void on_spawn() { 
 		GET_CONFIG_VALUE("objects.pillbox.reaction-time", float, rt, 0.1);
 		mrt::randomize(rt, rt / 2);
 		_reaction.set(rt);
@@ -42,8 +42,8 @@ public:
 		GET_CONFIG_VALUE("objects.pillbox.fire-rate", float, fr, 0.2);
 		_fire.set(fr);
 		
-		DestructableObject::onSpawn();
-		ai::Base::onSpawn(this);
+		DestructableObject::on_spawn();
+		ai::Base::on_spawn(this);
 		ai::Base::multiplier = 5.0f;
 	}
 
@@ -100,14 +100,14 @@ public:
 		float dist = -1;
 		
 		std::set<const Object *> objects;
-		enumerateObjects(objects, range, &ai::Targets->troops );
+		enumerate_objects(objects, range, &ai::Targets->troops );
 		for(std::set<const Object *>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
 			const Object *target = *i;
-			if (hasSameOwner(target) || target->aiDisabled() || target->pierceable || target->impassability == 0)
+			if (hasSameOwner(target) || target->ai_disabled() || target->pierceable || target->impassability == 0)
 				continue;
 			
-			v2<float> dpos = getRelativePosition(target);
-			if (checkDistance(get_center_position(), target->get_center_position(), getZ(), true)) {
+			v2<float> dpos = get_relative_position(target);
+			if (check_distance(get_center_position(), target->get_center_position(), getZ(), true)) {
 				if (result == NULL || dpos.quick_length() < dist) {
 					result = target;
 					dist = dpos.quick_length();
@@ -117,9 +117,9 @@ public:
 		
 		if (result != NULL) {
 			_state.fire = true;
-			_direction = getRelativePosition(result);
+			_direction = get_relative_position(result);
 			_direction.normalize();
-			//setDirection(_direction.get_direction(get_directions_number()) - 1);
+			//set_direction(_direction.get_direction(get_directions_number()) - 1);
 		}
 	}
 	

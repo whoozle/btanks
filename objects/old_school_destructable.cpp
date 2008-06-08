@@ -26,7 +26,7 @@ public:
 
 	virtual Object * clone() const { return new OldSchoolDestructableObject(*this); }
 	virtual void tick(const float dt);
-	virtual void onSpawn();
+	virtual void on_spawn();
 	virtual void addDamage(Object *from, const int hp, const bool emitDeath = true);
 
 	virtual void serialize(mrt::Serializator &s) const;
@@ -88,7 +88,7 @@ void OldSchoolDestructableObject::tick(const float dt) {
 		if (_explosions == (e + 1)/2) {
 			--_hops;
 
-			cancelAll();
+			cancel_all();
 
 			if (_hops == 0) {
 				//completely dead
@@ -109,7 +109,7 @@ void OldSchoolDestructableObject::tick(const float dt) {
 	}
 }
 
-void OldSchoolDestructableObject::onSpawn() {
+void OldSchoolDestructableObject::on_spawn() {
 	_spawn.set(0.2f);
 	play("main", true);
 }

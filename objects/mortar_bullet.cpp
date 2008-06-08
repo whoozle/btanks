@@ -28,10 +28,10 @@ public:
 	MortarBullet() : Object("bullet") {
 		impassability = -1;
 		piercing = true;
-		setDirectionsNumber(1);
+		set_directions_number(1);
 	}
 	
-	void onSpawn() {
+	void on_spawn() {
 		play("shot", false);
 		play("move", true);
 	
@@ -76,7 +76,7 @@ public:
 		if (collision || event == "death") {
 			v2<float> dpos;
 			if (emitter) {
-				dpos = getRelativePosition(emitter) / 2;
+				dpos = get_relative_position(emitter) / 2;
 			} 
 			
 			if (mortar) 

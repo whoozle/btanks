@@ -26,10 +26,10 @@ class Machinegunner : public Object {
 public:
 	Machinegunner(const char *object) : 
 		Object("trooper-on-launcher"), _fire(true), _object(object)
-		{ hp = -1; impassability = 0; setDirectionsNumber(16); }
+		{ hp = -1; impassability = 0; set_directions_number(16); }
 
 	virtual Object * clone() const { return new Machinegunner(*this); }
-	virtual void onSpawn();
+	virtual void on_spawn();
 	virtual void tick(const float dt);
 	virtual void calculate(const float dt);
 	virtual void emit(const std::string &event, Object * emitter = NULL);
@@ -45,7 +45,7 @@ private:
 	std::string _object;
 };
 
-void Machinegunner::onSpawn() {
+void Machinegunner::on_spawn() {
 	play("main", true);
 
 	float fr;
@@ -72,7 +72,7 @@ void Machinegunner::calculate(const float dt) {
 
 	GET_CONFIG_VALUE("objects.machinegunner-on-launcher.targeting-range", int, range, (int)getWeaponRange("machinegunner-bullet"));
 
-	if (!getNearest(ai::Targets->troops, range, pos, vel, true)) {
+	if (!get_nearest(ai::Targets->troops, range, pos, vel, true)) {
 		_state.fire = false;
 		Object::calculate(dt);
 		return;
@@ -80,7 +80,7 @@ void Machinegunner::calculate(const float dt) {
 	_direction = pos;
 	_state.fire = true;
 	_direction.quantize16();
-	setDirection(_direction.get_direction16() - 1);
+	set_direction(_direction.get_direction16() - 1);
 	//LOG_DEBUG(("found! %g %g dir= %d", _direction.x, _direction.y, dir));
 }
 

@@ -121,11 +121,11 @@ void PlayerSlot::displayLast() {
 		delete last_tooltip;
 		last_tooltip = tooltips.front().second;
 		if (!last_tooltip_used)
-			GameMonitor->onTooltip("hide", PlayerManager->getSlotID(id), last_tooltip->area, last_tooltip->message);
+			GameMonitor->onTooltip("hide", PlayerManager->get_slotID(id), last_tooltip->area, last_tooltip->message);
 		last_tooltip_used = false;
 		tooltips.pop();
 		if (!tooltips.empty()) {
-			GameMonitor->onTooltip("show", PlayerManager->getSlotID(id), tooltips.front().second->area, tooltips.front().second->message);	
+			GameMonitor->onTooltip("show", PlayerManager->get_slotID(id), tooltips.front().second->area, tooltips.front().second->message);	
 		}
 	}
 }
@@ -138,7 +138,7 @@ void PlayerSlot::removeTooltips() {
 		delete last_tooltip;
 		last_tooltip = tooltips.front().second;
 		if (!last_tooltip_used)
-			GameMonitor->onTooltip("hide", PlayerManager->getSlotID(id), last_tooltip->area, last_tooltip->message);		
+			GameMonitor->onTooltip("hide", PlayerManager->get_slotID(id), last_tooltip->area, last_tooltip->message);		
 		last_tooltip_used = false;
 		tooltips.pop();
 	} 
@@ -149,7 +149,7 @@ void PlayerSlot::removeTooltips() {
 void PlayerSlot::displayTooltip(const std::string &area, const std::string &message) {
 	Tooltip *tooltip = new Tooltip(area, message, true);
 	if (tooltips.empty()) {
-		GameMonitor->onTooltip("show", PlayerManager->getSlotID(id), area, message);	
+		GameMonitor->onTooltip("show", PlayerManager->get_slotID(id), area, message);	
 	}
 	tooltips.push(PlayerSlot::Tooltips::value_type(tooltip->getReadingTime(), tooltip));
 }
@@ -162,12 +162,12 @@ void PlayerSlot::tick(const float dt) {
 			last_tooltip = tooltips.front().second;
 	
 			if (!last_tooltip_used)
-				GameMonitor->onTooltip("hide", PlayerManager->getSlotID(id), last_tooltip->area, last_tooltip->message);
+				GameMonitor->onTooltip("hide", PlayerManager->get_slotID(id), last_tooltip->area, last_tooltip->message);
 			last_tooltip_used = false;
 			
 			tooltips.pop();
 			if (!tooltips.empty()) {
-				GameMonitor->onTooltip("show", PlayerManager->getSlotID(id), tooltips.front().second->area, tooltips.front().second->message);	
+				GameMonitor->onTooltip("show", PlayerManager->get_slotID(id), tooltips.front().second->area, tooltips.front().second->message);	
 			}
 		}
 	}
@@ -342,10 +342,10 @@ void PlayerSlot::spawnPlayer(const int slot_id, const std::string &classname_, c
 			return;
 		} else if (remote == -1) {
 			//assigning AIs to teams automatically !!
-			int n = PlayerManager->getSlotsCount();
+			int n = PlayerManager->get_slotsCount();
 			int stats[4] = {0, 0, 0, 0};
 			for(int i = 0; i < n; ++i) {
-				PlayerSlot &slot = PlayerManager->getSlot(i);
+				PlayerSlot &slot = PlayerManager->get_slot(i);
 				if (slot.team != Team::None) 
 					++stats[(int)slot.team];
 			};
@@ -376,7 +376,7 @@ void PlayerSlot::spawnPlayer(const int slot_id, const std::string &classname_, c
 	}
 	Object *obj = ResourceManager->createObject(classname + "(player)", animation);
 	assert(obj != NULL);
-	obj->setSlot(slot_id);
+	obj->set_slot(slot_id);
 	
 	if (control_method != NULL || remote != -1)
 		obj->disable_ai = true;
@@ -390,9 +390,9 @@ void PlayerSlot::spawnPlayer(const int slot_id, const std::string &classname_, c
 	}
 	
 	if (game_type == GameTypeCTF || random_respawn) {
-		//const Matrix<int>& matrix = Map->getImpassabilityMatrix(ZBox::getBox(position.z));
+		//const Matrix<int>& matrix = Map->get_impassability_matrix(ZBox::getBox(position.z));
 		Matrix<int> matrix;
-		World->getImpassabilityMatrix(matrix, obj, NULL);
+		World->get_impassability_matrix(matrix, obj, NULL);
 		
 		const v2<int> tile_size = Map->getPathTileSize();
 		if (obj->size.is0())

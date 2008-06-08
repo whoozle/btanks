@@ -29,13 +29,13 @@ public:
 	CTFBase() : Object("ctf-base") {
 		impassability = 0;
 		hp = -1;
-		setDirectionsNumber(1);
+		set_directions_number(1);
 		pierceable = true;
 	}
 	
 	virtual Object * clone() const { return new CTFBase(*this); }
 	
-	void onSpawn() {
+	void on_spawn() {
 		play("main", true);
 		spawn("ctf-flag", mrt::format_string("ctf-flag-%s", Team::get_color(Team::get_team(this))));
 	}

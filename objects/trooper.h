@@ -31,7 +31,7 @@ public:
 	virtual void tick(const float dt);
 
 	virtual Object * clone() const;
-	virtual void onSpawn();
+	virtual void on_spawn();
 	virtual void emit(const std::string &event, Object * emitter = NULL);
 	virtual const bool validateFire(const int idx);
 

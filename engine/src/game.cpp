@@ -418,8 +418,8 @@ if (!RTConfig->server_mode) {
 	_paused = false;
 
 	if (!RTConfig->server_mode) {
-		Window->getSurface().fill(0);
-		Window->getSurface().flip();
+		Window->get_surface().fill(0);
+		Window->get_surface().flip();
 	
 		LOG_DEBUG(("initializing hud..."));
 		sdlx::Rect window_size = Window->get_size();
@@ -454,14 +454,14 @@ if (!RTConfig->server_mode) {
 	if (_show_fps && !RTConfig->server_mode) {
 		LOG_DEBUG(("creating `digits' object..."));
 		_fps = ResourceManager->createObject("damage-digits", "damage-digits");
-		_fps->onSpawn();
+		_fps->on_spawn();
 		_fps->speed = 0;
 	} else _fps = NULL;
 
 	if (_show_log_lines && !RTConfig->server_mode) {
 		LOG_DEBUG(("creating `digits' object..."));
 		_log_lines = ResourceManager->createObject("damage-digits", "damage-digits");
-		_log_lines->onSpawn();
+		_log_lines->on_spawn();
 		_log_lines->speed = 0;
 	} else _log_lines = NULL;
 
@@ -475,7 +475,7 @@ if (!RTConfig->server_mode) {
 		_net_talk->hide();
 
 		if (_autojoin) {
-			PlayerManager->startClient(address, 1);
+			PlayerManager->start_client(address, 1);
 			if (_main_menu)
 				_main_menu->setActive(false);
 		}
@@ -488,7 +488,7 @@ if (!RTConfig->server_mode) {
 			const char *c_vehicle[] = {"tank", "shilka", "launcher", };
 			std::string vehicle = c_vehicle[mrt::random(3)], animation;
 			const int slot_id = PlayerManager->findEmptySlot();
-			PlayerSlot &slot = PlayerManager->getSlot(slot_id);
+			PlayerSlot &slot = PlayerManager->get_slot(slot_id);
 			
 			slot.getDefaultVehicle(vehicle, animation);
 			slot.name = Nickname::generate();
@@ -546,7 +546,7 @@ bool IGame::onKey(const SDL_keysym key, const bool pressed) {
 #	ifndef _WINDOWS
 	if (key.sym==SDLK_RETURN && key.mod & KMOD_CTRL) {
 		TRY {
-			Window->getSurface().toggle_fullscreen();
+			Window->get_surface().toggle_fullscreen();
 		} CATCH("main loop", {});
 		return true;
 	}
@@ -568,7 +568,7 @@ bool IGame::onKey(const SDL_keysym key, const bool pressed) {
 		} while(dir.exists(fname));
 		LOG_DEBUG(("saving screenshot to %s", fname.c_str()));
 		TRY {
-			Window->getSurface().save_bmp(fname);
+			Window->get_surface().save_bmp(fname);
 		} CATCH("saving screenshot", );
 		return true;
 	}
@@ -599,7 +599,7 @@ bool IGame::onKey(const SDL_keysym key, const bool pressed) {
 		return true;
 	}
 
-	if (!PlayerManager->isClient() && key.sym==SDLK_F12 && PlayerManager->getSlotsCount() > 0) {
+	if (!PlayerManager->isClient() && key.sym==SDLK_F12 && PlayerManager->get_slotsCount() > 0) {
 		TRY {
 			PlayerSlot *slot = PlayerManager->getMySlot();
 			if (slot == NULL)
@@ -702,7 +702,7 @@ void IGame::tick(const float dt) {
 }
 
 void IGame::onTick(const float dt) {
-	sdlx::Surface &window = Window->getSurface();
+	sdlx::Surface &window = Window->get_surface();
 	int vx = 0, vy = 0;
 	
 	if (_donate_timer > 0 && _donate) {
@@ -849,7 +849,7 @@ void IGame::deinit() {
 
 void IGame::clear() {
 	LOG_DEBUG(("cleaning up main game object..."));
-	Mixer->cancelAll();
+	Mixer->cancel_all();
 	Mixer->reset();
 
 	PlayerManager->clear();
@@ -933,7 +933,7 @@ void IGame::notifyLoadingBar(const int progress, const char *what) {
 	float old_progress = 1.0f * _loading_bar_now / _loading_bar_total;
 	_loading_bar_now += progress;
 	
-	sdlx::Surface &window = Window->getSurface();
+	sdlx::Surface &window = Window->get_surface();
 	const sdlx::Rect window_size = Window->get_size();
 	if (_hud->renderLoadingBar(window, old_progress, 1.0 * _loading_bar_now / _loading_bar_total, what)) {
 		if (_tip != NULL) {
@@ -975,7 +975,7 @@ try {
 			} 
 			if (par[2].compare(0, 6, "player") == 0) {
 				int idx = par[2][6] - '0';
-				Object *o = PlayerManager->getSlot(idx).getObject();
+				Object *o = PlayerManager->get_slot(idx).getObject();
 				if (o == NULL)
 					throw_ex(("no object in slot %d", idx));
 				o->get_position(pos);
@@ -992,7 +992,7 @@ try {
 		if (param.empty())
 			return "usage: kill 0-n (slot number)";
 		int idx = atoi(param.c_str());
-		Object *o = PlayerManager->getSlot(idx).getObject();
+		Object *o = PlayerManager->get_slot(idx).getObject();
 		if (o == NULL)
 			throw_ex(("no object in slot %d", idx));
 		o->emit("death", NULL);
@@ -1004,7 +1004,7 @@ try {
 			return "usage: setz <slot> <new z>";
 
 		int idx = atoi(p[0].c_str());
-		Object *o = PlayerManager->getSlot(idx).getObject();
+		Object *o = PlayerManager->get_slot(idx).getObject();
 		if (o == NULL)
 			throw_ex(("no object in slot %d", idx));
 		int z = atoi(p[1].c_str());
@@ -1014,7 +1014,7 @@ try {
 		if (param.empty())
 			return "usage: position <slot>";
 		int idx = atoi(param.c_str());
-		Object *o = PlayerManager->getSlot(idx).getObject();
+		Object *o = PlayerManager->get_slot(idx).getObject();
 		if (o == NULL)
 			throw_ex(("no object in slot %d", idx));
 

@@ -27,7 +27,7 @@ public:
 	virtual Object * clone() const { return new RaiderHeli(*this); }
 	RaiderHeli() : Heli("helicopter"), _player(-1), _leaving(false), _toggle(true) {}
 	
-	virtual void onSpawn();
+	virtual void on_spawn();
 	void calculate(const float dt);
 	virtual void serialize(mrt::Serializator &s) const {
 		Heli::serialize(s);
@@ -48,8 +48,8 @@ private:
 };
 
 
-void RaiderHeli::onSpawn() {
-	Heli::onSpawn();
+void RaiderHeli::on_spawn() {
+	Heli::on_spawn();
 	_player = -1;
 /*
 */
@@ -61,9 +61,9 @@ void RaiderHeli::calculate(const float dt) {
 	if (_player == -1) {
 	//deferred initialization
 		int players = 0;
-		int i, n = PlayerManager->getSlotsCount();
+		int i, n = PlayerManager->get_slotsCount();
 		for(i = 0; i < n; ++i) {
-			const PlayerSlot &slot = PlayerManager->getSlot(i);
+			const PlayerSlot &slot = PlayerManager->get_slot(i);
 			if (slot.empty())
 				continue;
 			++players;
@@ -97,17 +97,17 @@ void RaiderHeli::calculate(const float dt) {
 
 	{	
 	//main ai
-		PlayerSlot &slot = PlayerManager->getSlot(_player);
+		PlayerSlot &slot = PlayerManager->get_slot(_player);
 		Object *player = slot.getObject();
 		if (player == NULL || _toggle.tick(dt)) {
-			(++_player) %= PlayerManager->getSlotsCount();
+			(++_player) %= PlayerManager->get_slotsCount();
 			//LOG_DEBUG(("changing player to %d", _player));
 			return;
 		}
 		//LOG_DEBUG(("attacking player %d", _player));
 		
 		v2<float> pos, vel;
-		pos = getRelativePosition(player);
+		pos = get_relative_position(player);
 		player->get_velocity(vel);
 		vel.normalize();
 		
@@ -132,10 +132,10 @@ done:
 	const float ac_t = mass / ac_div * 0.8;
 	_state.alt_fire = _moving_time >= ac_t;
 
-	calculateWayVelocity();
+	calculate_way_velocity();
 
 	GET_CONFIG_VALUE("objects.helicopter.rotation-time", float, rt, 0.2f);
-	limitRotation(dt, rt, false, false);	
+	limit_rotation(dt, rt, false, false);	
 	updateStateFromVelocity();
 }
 

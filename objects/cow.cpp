@@ -33,7 +33,7 @@ public:
 	virtual void calculate(const float dt);
 
 	virtual Object * clone() const;
-	virtual void onSpawn();
+	virtual void on_spawn();
 	virtual void emit(const std::string &event, Object * emitter = NULL);
 
 	virtual void serialize(mrt::Serializator &s) const {
@@ -70,26 +70,26 @@ void Cow::calculate(const float dt) {
 		onIdle(dt);
 
 	GET_CONFIG_VALUE("objects.cow.rotation-time", float, rt, 0.2);
-	limitRotation(dt, rt, true, false);
+	limit_rotation(dt, rt, true, false);
 }
 
 void Cow::tick(const float dt) {
 	Object::tick(dt);
 
 	if (_velocity.is0()) {
-		if (getState() != "hold") {
-			cancelAll();
+		if (get_state() != "hold") {
+			cancel_all();
 			play("hold", true);
 		}
 	} else {
-		if (getState() == "hold") {
-			cancelAll();
+		if (get_state() == "hold") {
+			cancel_all();
 			play("walk", true);
 		}		
 	}
 }
 
-void Cow::onSpawn() {
+void Cow::on_spawn() {
 	float rt, drt = 1;
 	
 	Config->get("objects." + registered_name + ".reaction-time", rt, drt);
@@ -109,7 +109,7 @@ void Cow::emit(const std::string &event, Object * emitter) {
 		int dirs = get_directions_number();
 		int dir = v.get_direction(dirs);
 		dir = (dirs + dir + dirs / (mrt::random(2)?4:-4)) % dirs;
-		setDirection(dir);
+		set_direction(dir);
 		_velocity.fromDirection(dir, dirs);
 		_direction = _velocity;
 		add_effect("panic", 3.0f);

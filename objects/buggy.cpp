@@ -29,7 +29,7 @@ public:
 	}
 	virtual void calculate(const float dt);
 	virtual void tick(const float dt);
-	virtual void onSpawn();
+	virtual void on_spawn();
 	virtual Object * clone() const { return new Buggy(*this); }
 	
 	void emit(const std::string &event, Object * emitter);
@@ -45,7 +45,7 @@ private:
 	virtual void getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const;
 };
 
-void Buggy::onSpawn() {
+void Buggy::on_spawn() {
 	if (registered_name.substr(0, 6) == "static") {
 		removeOwner(OWNER_MAP);
 		disable_ai = true;
@@ -56,7 +56,7 @@ void Buggy::onSpawn() {
 	Object *turrel = add("mod", ai?"turrel-on-buggy(ground-aim)":"turrel-on-buggy", "buggy-gun", v2<float>(), Centered);
 	turrel->setZ(getZ() + 5, true);
 
-	playSound("vehicle-sound", true, 0.4f);
+	play_sound("vehicle-sound", true, 0.4f);
 }
 
 void Buggy::getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const {
@@ -81,17 +81,17 @@ void Buggy::emit(const std::string &event, Object * emitter) {
 void Buggy::calculate(const float dt) {
 	Object::calculate(dt);
 	GET_CONFIG_VALUE("objects." + registered_name + ".rotation-time", float, rt, 0.05);
-	limitRotation(dt, rt, true, false);
+	limit_rotation(dt, rt, true, false);
 }
 
 void Buggy::tick(const float dt) {
 	Object::tick(dt);
-	if (_velocity.is0() && getState() != "hold") {
-		cancelAll();
+	if (_velocity.is0() && get_state() != "hold") {
+		cancel_all();
 		play("hold", true);
 		get("mod")->emit("hold", this);
-	} else if (!_velocity.is0() && getState() != "move") {
-		cancelAll();
+	} else if (!_velocity.is0() && get_state() != "move") {
+		cancel_all();
 		play("move", true);
 		get("mod")->emit("move", this);
 	}
@@ -102,7 +102,7 @@ public:
 	AIBuggy(const std::string &classname) : Buggy(classname) {}
 	virtual void calculate(const float dt);
 	virtual Object * clone() const {return new AIBuggy(*this);}
-	virtual void onSpawn();
+	virtual void on_spawn();
 	virtual void serialize(mrt::Serializator &s) const {
 		Buggy::serialize(s);
 		ai::Waypoints::serialize(s);
@@ -116,8 +116,8 @@ private:
 	virtual void onObstacle(const Object *o);	
 };
 
-void AIBuggy::onSpawn() {
-	Buggy::onSpawn();
+void AIBuggy::on_spawn() {
+	Buggy::on_spawn();
 	
 	//obstacle_filter.insert("buggy");
 	//obstacle_filter.insert("civilian");
@@ -125,7 +125,7 @@ void AIBuggy::onSpawn() {
 	//obstacle_filter.insert("fighting-vehicle");
 	_avoid_obstacles = true;
 
-	ai::Waypoints::onSpawn(this);
+	ai::Waypoints::on_spawn(this);
 	//GET_CONFIG_VALUE("objects.buggy.refreshing-path-interval", float, rpi, 1);
 	//_refresh_waypoints.set(rpi);
 }
@@ -134,7 +134,7 @@ void AIBuggy::onSpawn() {
 void AIBuggy::onObstacle(const Object *o) {
 /*
 	if ((idx % 21) == 1) { //approx once per 5 second
-		playRandomSound("klaxon", false);
+		play_random_sound("klaxon", false);
 	}
 */
 }
@@ -144,7 +144,7 @@ void AIBuggy::calculate(const float dt) {
 
 	float rt;
 	Config->get("objects." + registered_name + ".rotation-time", rt, 0.05f);
-	limitRotation(dt, rt, true, false);
+	limit_rotation(dt, rt, true, false);
 	updateStateFromVelocity();
 }
 

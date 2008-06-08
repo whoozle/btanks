@@ -24,7 +24,7 @@ public:
 
 	virtual Object * clone() const;
 	virtual void tick(const float dt);
-	virtual void onSpawn();
+	virtual void on_spawn();
 	virtual void add_damage(Object *from, const int hp, const bool emitDeath = true);
 	virtual void onBreak();
 

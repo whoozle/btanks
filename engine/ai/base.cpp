@@ -46,7 +46,7 @@ const bool Base::canFire() {
 	return !wait;
 }
 
-void Base::onSpawn(Object *src)  {
+void Base::on_spawn(Object *src)  {
 	int id = src->get_id();
 	row = id % MAGIC_ROWS;
 	pos = (id * 3 + 7)  % MAGIC_SIZE;

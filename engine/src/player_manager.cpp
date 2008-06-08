@@ -346,7 +346,7 @@ TRY {
 		while(!s.end()) {
 			int id;
 			s.get(id);
-			PlayerSlot *slot = getSlotByID(id);
+			PlayerSlot *slot = get_slotByID(id);
 			bool my_state = false;
 			
 			if (slot != NULL) {
@@ -547,9 +547,9 @@ TRY {
 		if (_client) {
 			if (message.has("nick")) {
 				const std::string name = message.get("nick");
-				int n = PlayerManager->getSlotsCount();
+				int n = PlayerManager->get_slotsCount();
 				for(int i = 0; i < n; ++i) {
-					PlayerSlot & slot = PlayerManager->getSlot(i);
+					PlayerSlot & slot = PlayerManager->get_slot(i);
 					if (slot.name == name) {
 						Game->getChat()->add_message(slot, message.get("text"));
 						break;
@@ -900,7 +900,7 @@ IPlayerManager::IPlayerManager() :
 
 IPlayerManager::~IPlayerManager() {}
 
-void IPlayerManager::startServer() {
+void IPlayerManager::start_server() {
 	clear();
 	TRY {
 		if (_client != NULL) {
@@ -920,7 +920,7 @@ void IPlayerManager::startServer() {
 	});
 }
 
-void IPlayerManager::startClient(const std::string &address, const size_t n) {
+void IPlayerManager::start_client(const std::string &address, const size_t n) {
 	clear();
 	if (_server != NULL) {
 		delete _server;
@@ -980,18 +980,18 @@ void IPlayerManager::addSpecialZone(const SpecialZone &zone) {
 	_zones.push_back(zone);
 }
 
-PlayerSlot &IPlayerManager::getSlot(const unsigned int idx) {
+PlayerSlot &IPlayerManager::get_slot(const unsigned int idx) {
 	if (idx >= _players.size())
 		throw_ex(("slot #%u does not exist", idx));
 	return _players[idx];
 }
-const PlayerSlot &IPlayerManager::getSlot(const unsigned int idx) const {
+const PlayerSlot &IPlayerManager::get_slot(const unsigned int idx) const {
 	if (idx >= _players.size())
 		throw_ex(("slot #%u does not exist", idx));
 	return _players[idx];
 }
 
-const int IPlayerManager::getSlotID(const int object_id) const {
+const int IPlayerManager::get_slotID(const int object_id) const {
 	if (object_id <= 0)
 		return -1;
 
@@ -1002,7 +1002,7 @@ const int IPlayerManager::getSlotID(const int object_id) const {
 	return -1;
 }
 
-PlayerSlot *IPlayerManager::getSlotByID(const int id) {
+PlayerSlot *IPlayerManager::get_slotByID(const int id) {
 	if (id <= 0)
 		return NULL;
 	
@@ -1013,7 +1013,7 @@ PlayerSlot *IPlayerManager::getSlotByID(const int id) {
 	}
 	return NULL;
 }
-const PlayerSlot *IPlayerManager::getSlotByID(const int id) const {
+const PlayerSlot *IPlayerManager::get_slotByID(const int id) const {
 	for(std::vector<PlayerSlot>::const_iterator i = _players.begin(); i != _players.end(); ++i) {
 		const PlayerSlot &slot = *i;
 		if (slot.id == id) 
@@ -1185,7 +1185,7 @@ void IPlayerManager::screen2world(v2<float> &pos, const int p, const int x, cons
 	pos.y = slot.map_pos.x + y;
 }
 
-const size_t IPlayerManager::getSlotsCount() const {
+const size_t IPlayerManager::get_slotsCount() const {
 	return _players.size();
 }
 
@@ -1264,8 +1264,8 @@ void IPlayerManager::onPlayerDeath(const Object *player, const Object *killer) {
 	if (player == NULL || 
 		killer == NULL || 
 		_client != NULL || 
-		killer->getSlot() < 0 || 
-		killer->getSlot() >= (int)_players.size() || 
+		killer->get_slot() < 0 || 
+		killer->get_slot() >= (int)_players.size() || 
 		GameMonitor->gameOver())
 		return;
 
@@ -1275,16 +1275,16 @@ void IPlayerManager::onPlayerDeath(const Object *player, const Object *killer) {
 
 	PlayerSlot *player_slot = NULL;
 	if (RTConfig->game_type != GameTypeCooperative) { //skip this check in coop mode
-		player_slot = getSlotByID(player->get_id());
+		player_slot = get_slotByID(player->get_id());
 		if (player_slot == NULL)
 			return;
 	} else {
-		if (player->hasOwner(OWNER_COOPERATIVE) || player->getSlot() >= 0) {
+		if (player->hasOwner(OWNER_COOPERATIVE) || player->get_slot() >= 0) {
 			return;
 		}
 	}
 	//LOG_DEBUG(("prepare: object %s killed by %s", player->animation.c_str(), killer->animation.c_str()));
-	PlayerSlot &slot = _players[killer->getSlot()];
+	PlayerSlot &slot = _players[killer->get_slot()];
 
 	LOG_DEBUG(("object %s killed by %s", player->animation.c_str(), killer->animation.c_str()));
 		
@@ -1391,7 +1391,7 @@ TRY {
 }
 
 void IPlayerManager::sendHint(const int slot_id, const std::string &area, const std::string &message) {
-	PlayerSlot &slot = getSlot(slot_id);
+	PlayerSlot &slot = get_slot(slot_id);
 	
 	Message m(Message::TextMessage);
 	m.channel = slot_id;
@@ -1535,7 +1535,7 @@ void IPlayerManager::fixCheckpoints(PlayerSlot &slot, const SpecialZone &zone) {
 }
 
 void IPlayerManager::sendObjectState(const int id, const PlayerState & state) {
-	if (!isServerActive() || getSlotByID(id) != NULL) //object doesnt reside in any slot.
+	if (!isServerActive() || get_slotByID(id) != NULL) //object doesnt reside in any slot.
 		return;
 	_object_states.insert(id);
 }

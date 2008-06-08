@@ -26,7 +26,7 @@ public:
 	virtual void tick(const float dt);
 	virtual Object * clone() const;
 	virtual void add_damage(Object *from, const int hp, const bool emitDeath = true);
-	virtual void onSpawn();
+	virtual void on_spawn();
 
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
@@ -45,7 +45,7 @@ private:
 };
 
 
-void TrafficLights::onSpawn() {
+void TrafficLights::on_spawn() {
 	play("red");
 }
 
@@ -56,7 +56,7 @@ void TrafficLights::add_damage(Object *from, const int dhp, const bool emitDeath
 	Object::add_damage(from, dhp, false);
 	if (hp <= 0) {
 		_broken = true;
-		cancelAll();
+		cancel_all();
 		play("fade-out", false); 
 		play("broken", true);
 		pierceable = true;
@@ -68,7 +68,7 @@ void TrafficLights::tick(const float dt) {
 
 	static const char *names[] = {"red", "flashing-red", "yellow", "green", "flashing-green", "yellow"};
 	
-	if (getState().empty()) {
+	if (get_state().empty()) {
 		++_idx; 
 		_idx %= sizeof(names) / sizeof(names[0]);
 
